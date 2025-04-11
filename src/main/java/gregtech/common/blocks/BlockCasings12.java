@@ -16,7 +16,7 @@ import gregtech.api.util.GTLanguageManager;
 public class BlockCasings12 extends BlockCasingsAbstract {
 
     public BlockCasings12() {
-        super(ItemCasings12.class, "gt.blockcasings12", MaterialCasings.INSTANCE, 16);
+        super(ItemCasings.class, "gt.blockcasings12", MaterialCasings.INSTANCE, 16);
         GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".0.name", "Simple Vat Casing");
         GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".1.name", "Advanced Vat Casing");
         GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".2.name", "Biologically Enhanced Vat Casing");

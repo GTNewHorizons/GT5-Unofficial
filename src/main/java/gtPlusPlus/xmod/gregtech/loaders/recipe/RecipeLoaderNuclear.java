@@ -32,7 +32,6 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.core.item.chemistry.GenericChem;
 import gtPlusPlus.core.material.MaterialMisc;
 import gtPlusPlus.core.material.MaterialsAlloy;
 import gtPlusPlus.core.material.MaterialsElements;
@@ -290,9 +289,7 @@ public class RecipeLoaderNuclear {
 
         // Sodium Fluoride
         GTValues.RA.stdBuilder()
-            .itemInputs(
-                CI.getNumberedBioCircuit(15),
-                ItemUtils.getItemStackOfAmountFromOreDict("dustSodiumHydroxide", 3))
+            .itemInputs(GTUtility.getIntegratedCircuit(15), Materials.SodiumHydroxide.getDust(3))
             .itemOutputs(MaterialsFluorides.SODIUM_FLUORIDE.getDust(2))
             .fluidInputs(FluidUtils.getFluidStack("hydrofluoricacid", 500))
             .fluidOutputs(FluidUtils.getWater(1000))
@@ -301,9 +298,7 @@ public class RecipeLoaderNuclear {
             .addTo(UniversalChemical);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(
-                CI.getNumberedBioCircuit(15),
-                ItemUtils.getItemStackOfAmountFromOreDict("dustSodiumHydroxide", 3))
+            .itemInputs(GTUtility.getIntegratedCircuit(15), Materials.SodiumHydroxide.getDust(3))
             .itemOutputs(MaterialsFluorides.SODIUM_FLUORIDE.getDust(2))
             .fluidInputs(FluidUtils.getFluidStack("hydrofluoricacid_gt5u", 1000))
             .fluidOutputs(FluidUtils.getWater(1000))
@@ -316,7 +311,6 @@ public class RecipeLoaderNuclear {
 
         // Makes 7-Lithium
         GTValues.RA.stdBuilder()
-            .itemInputs(CI.getNumberedAdvancedCircuit(14))
             .fluidInputs(FluidUtils.getFluidStack("sulfuriclithium", 1440))
             .itemOutputs(
                 ItemUtils.getItemStackOfAmountFromOreDict("dustSulfur", 3),
@@ -347,7 +341,7 @@ public class RecipeLoaderNuclear {
         if (ItemUtils.checkForInvalidItems(ItemUtils.getItemStackOfAmountFromOreDict("dustQuicklime", 1))) {
             // CaO + H2O = Ca(OH)2
             GTValues.RA.stdBuilder()
-                .itemInputs(CI.getNumberedBioCircuit(20), ItemUtils.getItemStackOfAmountFromOreDict("dustQuicklime", 2))
+                .itemInputs(ItemUtils.getItemStackOfAmountFromOreDict("dustQuicklime", 2))
                 .itemOutputs(ItemUtils.getItemStackOfAmountFromOreDict("dustCalciumHydroxide", 5))
                 .fluidInputs(FluidUtils.getFluidStack("water", 1000))
                 .eut(TierEU.RECIPE_MV)
@@ -363,9 +357,7 @@ public class RecipeLoaderNuclear {
 
         // 2 LiOH + CaCO3
         GTValues.RA.stdBuilder()
-            .itemInputs(
-                CI.getNumberedAdvancedCircuit(20),
-                ItemUtils.getItemStackOfAmountFromOreDict("dustLi2CO3CaOH2", 11))
+            .itemInputs(ItemUtils.getItemStackOfAmountFromOreDict("dustLi2CO3CaOH2", 11))
             .itemOutputs(
                 ItemUtils.getItemStackOfAmountFromOreDict("dustLithiumHydroxide", 6),
                 ItemUtils.getItemStackOfAmountFromOreDict("dustCalciumCarbonate", 5))
@@ -375,7 +367,6 @@ public class RecipeLoaderNuclear {
 
         // LiOH Liquid to Dust
         GTValues.RA.stdBuilder()
-            .itemInputs(CI.getNumberedAdvancedCircuit(22))
             .itemOutputs(ItemUtils.getItemStackOfAmountFromOreDict("dustLithiumHydroxide", 1))
             .fluidInputs(FluidUtils.getFluidStack("lithiumhydroxide", 144))
             .eut(64)
@@ -383,10 +374,10 @@ public class RecipeLoaderNuclear {
             .addTo(chemicalDehydratorRecipes);
 
         // Zirconium Chloride -> TetraFluoride
-        FluidStack aHydrogenChloride = new FluidStack(GenericChem.HydrochloricAcid, 800);
+        FluidStack aHydrogenChloride = Materials.HydrochloricAcid.getFluid(800);
         GTValues.RA.stdBuilder()
             .itemInputs(
-                CI.getNumberedAdvancedCircuit(11),
+                GTUtility.getIntegratedCircuit(11),
                 ItemUtils.getItemStackOfAmountFromOreDict("dustCookedZrCl4", 1))
             .itemOutputs(MaterialsFluorides.ZIRCONIUM_TETRAFLUORIDE.getDust(1))
             .fluidInputs(FluidUtils.getFluidStack("hydrofluoricacid", 400))
@@ -398,7 +389,7 @@ public class RecipeLoaderNuclear {
         // Zirconium Chloride -> TetraFluoride
         GTValues.RA.stdBuilder()
             .itemInputs(
-                CI.getNumberedAdvancedCircuit(10),
+                GTUtility.getIntegratedCircuit(10),
                 ItemUtils.getItemStackOfAmountFromOreDict("dustCookedZrCl4", 1))
             .itemOutputs(MaterialsFluorides.ZIRCONIUM_TETRAFLUORIDE.getDust(1))
             .fluidInputs(FluidUtils.getFluidStack("hydrofluoricacid_gt5u", 800))
@@ -420,7 +411,7 @@ public class RecipeLoaderNuclear {
             .addTo(chemicalDehydratorRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialsFluorides.BERYLLIUM_HYDROXIDE.getDust(3), CI.getNumberedAdvancedCircuit(17))
+            .itemInputs(MaterialsFluorides.BERYLLIUM_HYDROXIDE.getDust(3))
             .fluidInputs(MaterialsFluorides.AMMONIUM_BIFLUORIDE.getFluidStack(1152))
             .fluidOutputs(
                 Materials.Water.getFluid(2000L),
@@ -435,7 +426,7 @@ public class RecipeLoaderNuclear {
         // Industrial strength hydrofluoric acid follows its usual convention where it is twice as dense as regular
         // hydrofluoric acid
         GTValues.RA.stdBuilder()
-            .itemInputs(CI.getNumberedAdvancedCircuit(17), CI.emptyCells(3))
+            .itemInputs(GTUtility.getIntegratedCircuit(17), CI.emptyCells(3))
             .itemOutputs(
                 MaterialMisc.AMMONIA.getCell(2),
                 ItemUtils.getItemStackOfAmountFromOreDict("cellHydrofluoricAcid", 1),
@@ -446,7 +437,7 @@ public class RecipeLoaderNuclear {
             .addTo(chemicalDehydratorRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(CI.getNumberedAdvancedCircuit(17))
+            .itemInputs(GTUtility.getIntegratedCircuit(17))
             .itemOutputs(MaterialsFluorides.BERYLLIUM_FLUORIDE.getDust(3))
             .fluidInputs(MaterialsFluorides.AMMONIUM_TETRAFLUOROBERYLLATE.getFluidStack(1000))
             .fluidOutputs(MaterialMisc.AMMONIA.getFluidStack(2000), FluidUtils.getFluidStack("hydrofluoricacid", 1000))
@@ -556,7 +547,7 @@ public class RecipeLoaderNuclear {
             .fluidOutputs(new FluidStack(MaterialsElements.getInstance().NEON.getPlasma(), 1000))
             .duration(3 * SECONDS + 4 * TICKS)
             .eut(TierEU.RECIPE_LuV)
-            .metadata(FUSION_THRESHOLD, 100_000_000)
+            .metadata(FUSION_THRESHOLD, 100_000_000L)
             .addTo(fusionRecipes);
 
         GTValues.RA.stdBuilder()
@@ -566,7 +557,7 @@ public class RecipeLoaderNuclear {
             .fluidOutputs(new FluidStack(MaterialsElements.STANDALONE.FORCE.getPlasma(), 1000))
             .duration(1 * SECONDS + 12 * TICKS)
             .eut(TierEU.RECIPE_LuV)
-            .metadata(FUSION_THRESHOLD, 100_000_000)
+            .metadata(FUSION_THRESHOLD, 100_000_000L)
             .addTo(fusionRecipes);
 
         // Mk2
@@ -575,7 +566,7 @@ public class RecipeLoaderNuclear {
             .fluidOutputs(new FluidStack(MaterialsElements.getInstance().KRYPTON.getPlasma(), 144))
             .duration(32 * TICKS)
             .eut(TierEU.RECIPE_ZPM)
-            .metadata(FUSION_THRESHOLD, 300_000_000)
+            .metadata(FUSION_THRESHOLD, 300_000_000L)
             .addTo(fusionRecipes);
 
         GTValues.RA.stdBuilder()
@@ -585,7 +576,7 @@ public class RecipeLoaderNuclear {
             .fluidOutputs(new FluidStack(MaterialsElements.STANDALONE.ASTRAL_TITANIUM.getPlasma(), 1000))
             .duration(32 * TICKS)
             .eut(TierEU.RECIPE_ZPM)
-            .metadata(FUSION_THRESHOLD, 300_000_000)
+            .metadata(FUSION_THRESHOLD, 300_000_000L)
             .addTo(fusionRecipes);
 
         GTValues.RA.stdBuilder()
@@ -595,7 +586,7 @@ public class RecipeLoaderNuclear {
             .fluidOutputs(new FluidStack(MaterialsElements.STANDALONE.RUNITE.getPlasma(), 1000))
             .duration(32 * TICKS)
             .eut(TierEU.RECIPE_ZPM)
-            .metadata(FUSION_THRESHOLD, 300_000_000)
+            .metadata(FUSION_THRESHOLD, 300_000_000L)
             .addTo(fusionRecipes);
 
         // Mk3
@@ -604,7 +595,7 @@ public class RecipeLoaderNuclear {
             .fluidOutputs(new FluidStack(MaterialsElements.getInstance().XENON.getPlasma(), 144))
             .duration(16 * TICKS)
             .eut(TierEU.RECIPE_UV)
-            .metadata(FUSION_THRESHOLD, 500_000_000)
+            .metadata(FUSION_THRESHOLD, 500_000_000L)
             .addTo(fusionRecipes);
 
         GTValues.RA.stdBuilder()
@@ -614,7 +605,7 @@ public class RecipeLoaderNuclear {
             .fluidOutputs(new FluidStack(MaterialsElements.STANDALONE.ADVANCED_NITINOL.getPlasma(), 1000))
             .duration(16 * TICKS)
             .eut(TierEU.RECIPE_UV)
-            .metadata(FUSION_THRESHOLD, 500_000_000)
+            .metadata(FUSION_THRESHOLD, 500_000_000L)
             .addTo(fusionRecipes);
 
         GTValues.RA.stdBuilder()
@@ -624,7 +615,7 @@ public class RecipeLoaderNuclear {
             .fluidOutputs(new FluidStack(MaterialsElements.STANDALONE.CELESTIAL_TUNGSTEN.getPlasma(), 1000))
             .duration(8 * TICKS)
             .eut(TierEU.RECIPE_UV)
-            .metadata(FUSION_THRESHOLD, 500_000_000)
+            .metadata(FUSION_THRESHOLD, 500_000_000L)
             .addTo(fusionRecipes);
     }
 

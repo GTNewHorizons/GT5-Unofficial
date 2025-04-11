@@ -4,35 +4,92 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
-import javax.annotation.Nonnull;
-
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 
+import org.jetbrains.annotations.NotNull;
+
 import com.google.common.io.ByteArrayDataInput;
-import com.gtnewhorizons.modularui.api.screen.ModularWindow;
-import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
 import gregtech.api.GregTechAPI;
-import gregtech.api.gui.modularui.CoverUIBuildContext;
+import gregtech.api.covers.CoverContext;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
-import gregtech.api.util.CoverBehaviorBase;
 import gregtech.api.util.GTUtility;
-import gregtech.api.util.ISerializableObject;
-import gregtech.common.gui.modularui.widget.CoverDataControllerWidget;
-import gregtech.common.gui.modularui.widget.CoverDataFollowerNumericWidget;
-import gregtech.common.gui.modularui.widget.CoverDataFollowerToggleButtonWidget;
+import gregtech.common.covers.Cover;
 import io.netty.buffer.ByteBuf;
 
-public abstract class CoverAdvancedWirelessRedstoneBase<T extends CoverAdvancedWirelessRedstoneBase.WirelessData>
-    extends CoverBehaviorBase<T> {
+public abstract class CoverAdvancedWirelessRedstoneBase extends Cover {
 
-    public CoverAdvancedWirelessRedstoneBase(Class<T> typeToken, ITexture coverTexture) {
-        super(typeToken, coverTexture);
+    protected int frequency;
+
+    /**
+     * If UUID is set to null, the cover frequency is public, rather than private
+     **/
+    protected UUID uuid;
+
+    public CoverAdvancedWirelessRedstoneBase(CoverContext context, ITexture coverTexture) {
+        super(context, coverTexture);
+        this.frequency = 0;
+        this.uuid = null;
+    }
+
+    public int getFrequency() {
+        return frequency;
+    }
+
+    public CoverAdvancedWirelessRedstoneBase setFrequency(int frequency) {
+        this.frequency = frequency;
+        return this;
+    }
+
+    public UUID getUuid() {
+        return uuid;
+    }
+
+    public CoverAdvancedWirelessRedstoneBase setUuid(UUID uuid) {
+        this.uuid = uuid;
+        return this;
+    }
+
+    @Override
+    protected void readDataFromNbt(NBTBase nbt) {
+        NBTTagCompound tag = (NBTTagCompound) nbt;
+        frequency = tag.getInteger("frequency");
+        if (tag.hasKey("uuid")) {
+            uuid = UUID.fromString(tag.getString("uuid"));
+        }
+    }
+
+    @Override
+    public void readDataFromPacket(ByteArrayDataInput byteData) {
+        frequency = byteData.readInt();
+        if (byteData.readBoolean()) {
+            uuid = new UUID(byteData.readLong(), byteData.readLong());
+        }
+    }
+
+    @Override
+    protected @NotNull NBTBase saveDataToNbt() {
+        NBTTagCompound tag = new NBTTagCompound();
+        tag.setInteger("frequency", frequency);
+        if (uuid != null) {
+            tag.setString("uuid", uuid.toString());
+        }
+
+        return tag;
+    }
+
+    @Override
+    protected void writeDataToByteBuf(ByteBuf byteBuf) {
+        byteBuf.writeInt(frequency);
+        byteBuf.writeBoolean(uuid != null);
+        if (uuid != null) {
+            byteBuf.writeLong(uuid.getLeastSignificantBits());
+            byteBuf.writeLong(uuid.getMostSignificantBits());
+        }
     }
 
     public static Byte getSignalAt(UUID uuid, int frequency, CoverAdvancedRedstoneReceiverBase.GateMode mode) {
@@ -102,125 +159,56 @@ public abstract class CoverAdvancedWirelessRedstoneBase<T extends CoverAdvancedW
      * x hashed into first 20 bytes y hashed into second 20 bytes z hashed into fifth 10 bytes dim hashed into sixth 10
      * bytes side hashed into last 4 bytes
      */
-    public static long hashCoverCoords(ICoverable tile, ForgeDirection side) {
+    public static long hashCoverCoords(@NotNull ICoverable tile, @NotNull ForgeDirection side) {
         return (((((long) tile.getXCoord() << 20) + tile.getZCoord() << 10) + tile.getYCoord() << 10)
             + tile.getWorld().provider.dimensionId << 4) + side.ordinal();
     }
 
     @Override
-    public boolean letsEnergyInImpl(ForgeDirection side, int aCoverID, T aCoverVariable, ICoverable aTileEntity) {
+    public boolean letsEnergyIn() {
         return true;
     }
 
     @Override
-    public boolean letsEnergyOutImpl(ForgeDirection side, int aCoverID, T aCoverVariable, ICoverable aTileEntity) {
+    public boolean letsEnergyOut() {
         return true;
     }
 
     @Override
-    public boolean letsFluidInImpl(ForgeDirection side, int aCoverID, T aCoverVariable, Fluid aFluid,
-        ICoverable aTileEntity) {
+    public boolean letsFluidIn(Fluid aFluid) {
         return true;
     }
 
     @Override
-    public boolean letsFluidOutImpl(ForgeDirection side, int aCoverID, T aCoverVariable, Fluid aFluid,
-        ICoverable aTileEntity) {
+    public boolean letsFluidOut(Fluid aFluid) {
         return true;
     }
 
     @Override
-    public boolean letsItemsInImpl(ForgeDirection side, int aCoverID, T aCoverVariable, int aSlot,
-        ICoverable aTileEntity) {
+    public boolean letsItemsIn(int aSlot) {
         return true;
     }
 
     @Override
-    public boolean letsItemsOutImpl(ForgeDirection side, int aCoverID, T aCoverVariable, int aSlot,
-        ICoverable aTileEntity) {
+    public boolean letsItemsOut(int aSlot) {
         return true;
     }
 
     @Override
-    public String getDescriptionImpl(ForgeDirection side, int aCoverID, T aCoverVariable, ICoverable aTileEntity) {
-        return GTUtility.trans("081", "Frequency: ") + aCoverVariable.frequency
+    public String getDescription() {
+        return GTUtility.trans("081", "Frequency: ") + frequency
             + ", Transmission: "
-            + (aCoverVariable.uuid == null ? "Public" : "Private");
+            + (uuid == null ? "Public" : "Private");
     }
 
     @Override
-    public int getTickRateImpl(ForgeDirection side, int aCoverID, T aCoverVariable, ICoverable aTileEntity) {
+    public int getMinimumTickRate() {
         return 1;
     }
 
     @Override
-    protected int getDefaultTickRateImpl(ForgeDirection side, int aCoverID, T aCoverVariable, ICoverable aTileEntity) {
+    public int getDefaultTickRate() {
         return 5;
-    }
-
-    public abstract static class WirelessData implements ISerializableObject {
-
-        protected int frequency;
-
-        /**
-         * If UUID is set to null, the cover frequency is public, rather than private
-         **/
-        protected UUID uuid;
-
-        public WirelessData(int frequency, UUID uuid) {
-            this.frequency = frequency;
-            this.uuid = uuid;
-        }
-
-        public UUID getUuid() {
-            return uuid;
-        }
-
-        public int getFrequency() {
-            return frequency;
-        }
-
-        @Nonnull
-        @Override
-        public NBTBase saveDataToNBT() {
-            NBTTagCompound tag = new NBTTagCompound();
-            tag.setInteger("frequency", frequency);
-            if (uuid != null) {
-                tag.setString("uuid", uuid.toString());
-            }
-
-            return tag;
-        }
-
-        @Override
-        public void writeToByteBuf(ByteBuf aBuf) {
-            aBuf.writeInt(frequency);
-            aBuf.writeBoolean(uuid != null);
-            if (uuid != null) {
-                aBuf.writeLong(uuid.getLeastSignificantBits());
-                aBuf.writeLong(uuid.getMostSignificantBits());
-            }
-        }
-
-        @Override
-        public void loadDataFromNBT(NBTBase aNBT) {
-            NBTTagCompound tag = (NBTTagCompound) aNBT;
-            frequency = tag.getInteger("frequency");
-            if (tag.hasKey("uuid")) {
-                uuid = UUID.fromString(tag.getString("uuid"));
-            }
-        }
-
-        @Nonnull
-        @Override
-        public ISerializableObject readFromPacket(ByteArrayDataInput aBuf, EntityPlayerMP aPlayer) {
-            frequency = aBuf.readInt();
-            if (aBuf.readBoolean()) {
-                uuid = new UUID(aBuf.readLong(), aBuf.readLong());
-            }
-
-            return this;
-        }
     }
 
     // GUI stuff
@@ -230,74 +218,4 @@ public abstract class CoverAdvancedWirelessRedstoneBase<T extends CoverAdvancedW
         return true;
     }
 
-    protected abstract class AdvancedWirelessRedstoneBaseUIFactory extends UIFactory {
-
-        protected static final int startX = 10;
-        protected static final int startY = 25;
-        protected static final int spaceX = 18;
-        protected static final int spaceY = 18;
-
-        public AdvancedWirelessRedstoneBaseUIFactory(CoverUIBuildContext buildContext) {
-            super(buildContext);
-        }
-
-        @Override
-        protected int getGUIWidth() {
-            return 250;
-        }
-
-        @Override
-        protected void addUIWidgets(ModularWindow.Builder builder) {
-            final int privateExtraColumn = isShiftPrivateLeft() ? 1 : 5;
-
-            CoverDataControllerWidget<T> dataController = new CoverDataControllerWidget<>(
-                this::getCoverData,
-                this::setCoverData,
-                CoverAdvancedWirelessRedstoneBase.this);
-            dataController.setPos(startX, startY);
-            addUIForDataController(dataController);
-
-            builder.widget(dataController)
-                .widget(
-                    new TextWidget(GTUtility.trans("246", "Frequency")).setDefaultColor(COLOR_TEXT_GRAY.get())
-                        .setPos(startX + spaceX * 5, 4 + startY + spaceY * getFrequencyRow()))
-                .widget(
-                    new TextWidget(GTUtility.trans("602", "Use Private Frequency"))
-                        .setDefaultColor(COLOR_TEXT_GRAY.get())
-                        .setPos(startX + spaceX * privateExtraColumn, 4 + startY + spaceY * getButtonRow()));
-        }
-
-        protected void addUIForDataController(CoverDataControllerWidget<T> controller) {
-            controller.addFollower(
-                new CoverDataFollowerNumericWidget<>(),
-                coverData -> (double) coverData.frequency,
-                (coverData, state) -> {
-                    coverData.frequency = state.intValue();
-                    return coverData;
-                },
-                widget -> widget.setScrollValues(1, 1000, 10)
-                    .setBounds(0, Integer.MAX_VALUE)
-                    .setPos(1, 2 + spaceY * getFrequencyRow())
-                    .setSize(spaceX * 5 - 4, 12))
-                .addFollower(
-                    CoverDataFollowerToggleButtonWidget.ofCheck(),
-                    coverData -> coverData.uuid != null,
-                    (coverData, state) -> {
-                        if (state) {
-                            coverData.uuid = getUIBuildContext().getPlayer()
-                                .getUniqueID();
-                        } else {
-                            coverData.uuid = null;
-                        }
-                        return coverData;
-                    },
-                    widget -> widget.setPos(0, spaceY * getButtonRow()));
-        }
-
-        protected abstract int getFrequencyRow();
-
-        protected abstract int getButtonRow();
-
-        protected abstract boolean isShiftPrivateLeft();
-    }
 }

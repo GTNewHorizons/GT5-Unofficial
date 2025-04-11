@@ -38,6 +38,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
@@ -162,7 +163,7 @@ public class MTEElectricImplosionCompressor extends MTEExtendedPowerMultiBlockBa
                 if (te.piston) {
                     Block candidate = world.getBlock(x, y, z);
                     int candidateMeta = world.getBlockMetadata(x, y, z);
-                    return getTierOfBlock(candidate, candidateMeta) != -1;
+                    return getTierOfBlock(candidate, candidateMeta) != null;
                 }
                 return true;
             }
@@ -237,9 +238,10 @@ public class MTEElectricImplosionCompressor extends MTEExtendedPowerMultiBlockBa
         return MTEElectricImplosionCompressor::getTierOfBlock;
     }
 
-    private static int getTierOfBlock(Block block, int meta) {
+    @Nullable
+    private static Integer getTierOfBlock(Block block, int meta) {
         if (block == null) {
-            return -1;
+            return null;
         }
         if (block == GregTechAPI.sBlockMetal5 && meta == 2) {
             return 1; // Neutronium
@@ -255,7 +257,7 @@ public class MTEElectricImplosionCompressor extends MTEExtendedPowerMultiBlockBa
                 default -> -1;
             };
         }
-        return -1;
+        return null;
     }
 
     private void setBlockTier(int tier) {
@@ -331,7 +333,12 @@ public class MTEElectricImplosionCompressor extends MTEExtendedPowerMultiBlockBa
                     .setEUt(MTEElectricImplosionCompressor.this.getMaxInputEu())
                     .setAmperage(1);
             }
-        }.setMaxParallelSupplier(() -> (int) Math.pow(4, Math.max(this.mBlockTier - 1, 0)));
+        }.setMaxParallelSupplier(this::getTrueParallel);
+    }
+
+    @Override
+    public int getMaxParallelRecipes() {
+        return (int) Math.pow(4, Math.max(this.mBlockTier - 1, 0));
     }
 
     private void updateChunkCoordinates() {

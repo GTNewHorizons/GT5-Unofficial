@@ -51,12 +51,19 @@ public enum Mixin {
     VanillaAccessors(new Builder("Adds various accessors")
         .addMixinClasses(
             "minecraft.accessors.BlockStemMixin",
+            "minecraft.accessors.ChunkCacheMixin",
             "minecraft.accessors.VanillaShapedRecipeMixin",
             "minecraft.accessors.VanillaShapelessRecipeMixin",
             "minecraft.accessors.ForgeShapedRecipeMixin",
             "minecraft.accessors.ForgeShapelessRecipeMixin",
+            "minecraft.accessors.ItemArmorMixin",
             "minecraft.accessors.PotionMixin",
             "minecraft.accessors.EntityPlayerMPMixin")
+        .addTargetedMod(VANILLA)
+        .setApplyIf(() -> true)
+        .setPhase(Phase.EARLY)
+        .setSide(Side.BOTH)),
+    ItemMixinCoverFix(new Builder("Allow cover items to bypass sneak checks").addMixinClasses("minecraft.ItemMixin")
         .addTargetedMod(VANILLA)
         .setApplyIf(() -> true)
         .setPhase(Phase.EARLY)
@@ -75,12 +82,19 @@ public enum Mixin {
         .setApplyIf(() -> true)
         .setPhase(Phase.LATE)
         .setSide(Side.BOTH)),
+
+    // Hazmat armors
     IC2_HAZMAT(new Builder("Hazmat").setPhase(Phase.LATE)
         .setSide(Side.BOTH)
-        .addMixinClasses("ic2.MixinIc2Hazmat")
+        .addMixinClasses("ic2.MixinIc2Hazmat", "ic2.MixinIc2Nano", "ic2.MixinIc2Quantum")
         .setApplyIf(() -> true)
         .addTargetedMod(TargetedMod.IC2)
         .addExcludedMod(TargetedMod.GT6)),
+    ADV_SOLAR_HAZMAT(new Builder("Applies Hazmat API to Advanced Solar helmets").setSide(Side.BOTH)
+        .setPhase(Phase.LATE)
+        .addMixinClasses("advanced_solar_panels.MixinAdvancedSolarHelmet")
+        .setApplyIf(() -> true)
+        .addTargetedMod(TargetedMod.ADVANCED_SOLAR_PANELS)),
 
     // Pollution
     POLLUTION_RENDER_BLOCKS(new Builder("Changes colors of certain blocks based on pollution levels")

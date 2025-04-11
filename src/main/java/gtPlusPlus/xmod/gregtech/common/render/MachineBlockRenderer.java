@@ -282,7 +282,7 @@ public class MachineBlockRenderer extends GTRendererBlock {
                 final EnumSet<ForgeDirection> coveredSides = EnumSet.noneOf(ForgeDirection.class);
 
                 for (final ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
-                    if (aTileEntity.getCoverIDAtSide(side) != 0) coveredSides.add(side);
+                    if (aTileEntity.hasCoverAtSide(side)) coveredSides.add(side);
                 }
 
                 if (coveredSides.containsAll(EnumSet.of(DOWN, UP, NORTH, SOUTH, WEST, EAST))) {
@@ -1068,7 +1068,7 @@ public class MachineBlockRenderer extends GTRendererBlock {
     public static void renderNegativeYFacing(IBlockAccess aWorld, RenderBlocks aRenderer, Block aBlock, int aX, int aY,
         int aZ, ITexture[] aIcon, boolean aFullBlock) {
         if (aWorld != null) {
-            if (aFullBlock && !aBlock.shouldSideBeRendered(aWorld, aX, aY - 1, aZ, 0)) {
+            if (aFullBlock && !aRenderer.renderAllFaces && !aBlock.shouldSideBeRendered(aWorld, aX, aY - 1, aZ, 0)) {
                 return;
             }
 
@@ -1090,7 +1090,7 @@ public class MachineBlockRenderer extends GTRendererBlock {
     public static void renderPositiveYFacing(IBlockAccess aWorld, RenderBlocks aRenderer, Block aBlock, int aX, int aY,
         int aZ, ITexture[] aIcon, boolean aFullBlock) {
         if (aWorld != null) {
-            if (aFullBlock && !aBlock.shouldSideBeRendered(aWorld, aX, aY + 1, aZ, 1)) {
+            if (aFullBlock && !aRenderer.renderAllFaces && !aBlock.shouldSideBeRendered(aWorld, aX, aY + 1, aZ, 1)) {
                 return;
             }
 
@@ -1112,7 +1112,7 @@ public class MachineBlockRenderer extends GTRendererBlock {
     public static void renderNegativeZFacing(IBlockAccess aWorld, RenderBlocks aRenderer, Block aBlock, int aX, int aY,
         int aZ, ITexture[] aIcon, boolean aFullBlock) {
         if (aWorld != null) {
-            if (aFullBlock && !aBlock.shouldSideBeRendered(aWorld, aX, aY, aZ - 1, 2)) {
+            if (aFullBlock && !aRenderer.renderAllFaces && !aBlock.shouldSideBeRendered(aWorld, aX, aY, aZ - 1, 2)) {
                 return;
             }
 
@@ -1135,7 +1135,7 @@ public class MachineBlockRenderer extends GTRendererBlock {
     public static void renderPositiveZFacing(IBlockAccess aWorld, RenderBlocks aRenderer, Block aBlock, int aX, int aY,
         int aZ, ITexture[] aIcon, boolean aFullBlock) {
         if (aWorld != null) {
-            if (aFullBlock && !aBlock.shouldSideBeRendered(aWorld, aX, aY, aZ + 1, 3)) {
+            if (aFullBlock && !aRenderer.renderAllFaces && !aBlock.shouldSideBeRendered(aWorld, aX, aY, aZ + 1, 3)) {
                 return;
             }
 
@@ -1157,7 +1157,7 @@ public class MachineBlockRenderer extends GTRendererBlock {
     public static void renderNegativeXFacing(IBlockAccess aWorld, RenderBlocks aRenderer, Block aBlock, int aX, int aY,
         int aZ, ITexture[] aIcon, boolean aFullBlock) {
         if (aWorld != null) {
-            if (aFullBlock && !aBlock.shouldSideBeRendered(aWorld, aX - 1, aY, aZ, 4)) {
+            if (aFullBlock && !aRenderer.renderAllFaces && !aBlock.shouldSideBeRendered(aWorld, aX - 1, aY, aZ, 4)) {
                 return;
             }
 
@@ -1179,7 +1179,7 @@ public class MachineBlockRenderer extends GTRendererBlock {
     public static void renderPositiveXFacing(IBlockAccess aWorld, RenderBlocks aRenderer, Block aBlock, int aX, int aY,
         int aZ, ITexture[] aIcon, boolean aFullBlock) {
         if (aWorld != null) {
-            if (aFullBlock && !aBlock.shouldSideBeRendered(aWorld, aX + 1, aY, aZ, 5)) {
+            if (aFullBlock && !aRenderer.renderAllFaces && !aBlock.shouldSideBeRendered(aWorld, aX + 1, aY, aZ, 5)) {
                 return;
             }
 

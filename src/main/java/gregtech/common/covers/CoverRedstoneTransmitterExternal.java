@@ -1,33 +1,22 @@
 package gregtech.common.covers;
 
-import net.minecraftforge.common.util.ForgeDirection;
-
 import gregtech.api.GregTechAPI;
+import gregtech.api.covers.CoverContext;
 import gregtech.api.interfaces.ITexture;
-import gregtech.api.interfaces.tileentity.ICoverable;
-import gregtech.api.util.ISerializableObject;
 
 public class CoverRedstoneTransmitterExternal extends CoverRedstoneWirelessBase {
 
-    public CoverRedstoneTransmitterExternal(ITexture coverTexture) {
-        super(coverTexture);
+    public CoverRedstoneTransmitterExternal(CoverContext context, ITexture coverTexture) {
+        super(context, coverTexture);
     }
 
     @Override
-    public int doCoverThings(ForgeDirection side, byte aInputRedstone, int aCoverID, int aCoverVariable,
-        ICoverable aTileEntity, long aTimer) {
-        GregTechAPI.sWirelessRedstone.put(aCoverVariable, aInputRedstone);
-        return aCoverVariable;
+    public void doCoverThings(byte aInputRedstone, long aTimer) {
+        GregTechAPI.sWirelessRedstone.put(coverData, aInputRedstone);
     }
 
     @Override
-    protected boolean isRedstoneSensitiveImpl(ForgeDirection side, int aCoverID,
-        ISerializableObject.LegacyCoverData aCoverVariable, ICoverable aTileEntity, long aTimer) {
-        return true;
-    }
-
-    @Override
-    public boolean letsRedstoneGoIn(ForgeDirection side, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
+    public boolean letsRedstoneGoIn() {
         return true;
     }
 }

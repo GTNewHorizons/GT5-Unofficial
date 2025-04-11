@@ -1,12 +1,12 @@
 package gregtech.common.tileentities.machines.multi;
 
-import static bartworks.API.GlassTier.getGlassTier;
 import static gregtech.api.enums.GTValues.debugCleanroom;
 import static gregtech.api.enums.Textures.BlockIcons.BLOCK_PLASCRETE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TOP_CLEANROOM;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TOP_CLEANROOM_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TOP_CLEANROOM_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TOP_CLEANROOM_GLOW;
+import static gregtech.api.util.GlassTier.getGlassBlockTier;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -23,6 +23,7 @@ import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import com.gtnewhorizon.gtnhlib.capability.Capabilities;
 import com.gtnewhorizon.structurelib.StructureLibAPI;
 import com.gtnewhorizon.structurelib.alignment.constructable.IConstructable;
 import com.gtnewhorizons.modularui.api.math.Alignment;
@@ -284,8 +285,12 @@ public class MTECleanroom extends MTETooltipMultiBlockBase
         if ((allowedMask & MASK_FILTER) != 0 && block == FILTER_BLOCK && meta == FILTER_META)
             return CleanroomBlockType.FILTER;
 
-        if ((allowedMask & MASK_GLASS) != 0 && getGlassTier(block, meta) >= MIN_GLASS_TIER)
-            return CleanroomBlockType.GLASS;
+        if ((allowedMask & MASK_GLASS) != 0) {
+            Integer glassTier = getGlassBlockTier(block, meta);
+            if (glassTier != null && glassTier >= MIN_GLASS_TIER) {
+                return CleanroomBlockType.GLASS;
+            }
+        }
 
         if ((allowedMask & MASK_OTHER) != 0 && (ALLOWED_BLOCKS.contains(block.getUnlocalizedName())
             || ALLOWED_BLOCKS.contains(block.getUnlocalizedName() + ":" + meta))) return CleanroomBlockType.OTHER;
@@ -663,7 +668,8 @@ public class MTECleanroom extends MTETooltipMultiBlockBase
             for (int dx = dxMin + 1; dx <= dxMax - 1; ++dx) {
                 for (int dz = dzMin + 1; dz <= dzMax - 1; dz++) {
                     TileEntity te = aBaseMetaTileEntity.getTileEntityOffset(dx, dy, dz);
-                    if (te instanceof ICleanroomReceiver receiver) {
+                    ICleanroomReceiver receiver = Capabilities.getCapability(te, ICleanroomReceiver.class);
+                    if (receiver != null) {
                         receiver.setCleanroom(this);
                         cleanroomReceivers.add(receiver);
                     }

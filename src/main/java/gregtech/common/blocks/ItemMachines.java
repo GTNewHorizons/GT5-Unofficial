@@ -1,6 +1,7 @@
 package gregtech.common.blocks;
 
 import static gregtech.GTMod.GT_FML_LOGGER;
+import static gregtech.api.util.GTUtility.formatStringSafe;
 
 import java.util.List;
 
@@ -35,15 +36,16 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.CoverableTileEntity;
 import gregtech.api.metatileentity.implementations.MTECable;
-import gregtech.api.metatileentity.implementations.MTEFluid;
+import gregtech.api.metatileentity.implementations.MTEFluidPipe;
 import gregtech.api.metatileentity.implementations.MTEFrame;
-import gregtech.api.metatileentity.implementations.MTEItem;
+import gregtech.api.metatileentity.implementations.MTEItemPipe;
 import gregtech.api.util.GTItsNotMyFaultException;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTUtility;
 import gregtech.common.tileentities.storage.MTEDigitalTankBase;
 import gregtech.common.tileentities.storage.MTESuperChest;
 import gregtech.common.tileentities.storage.MTESuperTank;
+import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GTPPMTEFluidPipe;
 
 public class ItemMachines extends ItemBlock implements IFluidContainerItem {
 
@@ -176,8 +178,9 @@ public class ItemMachines extends ItemBlock implements IFluidContainerItem {
                     tBuffer.append("%s");
                     tRep[j / 2] = tSplitStrings[j];
                 }
-                final String tTranslated = String
-                    .format(GTLanguageManager.addStringLocalization(tKey, tBuffer.toString()), (Object[]) tRep);
+                final String tTranslated = formatStringSafe(
+                    GTLanguageManager.addStringLocalization(tKey, tBuffer.toString()),
+                    (Object[]) tRep);
                 if (aList != null) aList.add(tTranslated);
             } else {
                 String tTranslated = GTLanguageManager.addStringLocalization(tKey, tDescLine);
@@ -226,14 +229,16 @@ public class ItemMachines extends ItemBlock implements IFluidContainerItem {
         if (aDamage >= 0 && aDamage < GregTechAPI.METATILEENTITIES.length
             && GregTechAPI.METATILEENTITIES[aDamage] != null) {
             Materials aMaterial = null;
-            if (GregTechAPI.METATILEENTITIES[aDamage] instanceof MTEItem) {
-                aMaterial = ((MTEItem) GregTechAPI.METATILEENTITIES[aDamage]).mMaterial;
-            } else if (GregTechAPI.METATILEENTITIES[aDamage] instanceof MTEFluid) {
-                aMaterial = ((MTEFluid) GregTechAPI.METATILEENTITIES[aDamage]).mMaterial;
-            } else if (GregTechAPI.METATILEENTITIES[aDamage] instanceof MTECable) {
-                aMaterial = ((MTECable) GregTechAPI.METATILEENTITIES[aDamage]).mMaterial;
-            } else if (GregTechAPI.METATILEENTITIES[aDamage] instanceof MTEFrame) {
-                aMaterial = ((MTEFrame) GregTechAPI.METATILEENTITIES[aDamage]).mMaterial;
+            if (GregTechAPI.METATILEENTITIES[aDamage] instanceof MTEItemPipe itemPipe) {
+                aMaterial = itemPipe.mMaterial;
+            } else if (GregTechAPI.METATILEENTITIES[aDamage] instanceof GTPPMTEFluidPipe gtppFluidPipe) {
+                aName = gtppFluidPipe.pipeStats.getLocalizedNameForItem(aName);
+            } else if (GregTechAPI.METATILEENTITIES[aDamage] instanceof MTEFluidPipe fluidPipe) {
+                aMaterial = fluidPipe.mMaterial;
+            } else if (GregTechAPI.METATILEENTITIES[aDamage] instanceof MTECable cable) {
+                aMaterial = cable.mMaterial;
+            } else if (GregTechAPI.METATILEENTITIES[aDamage] instanceof MTEFrame frame) {
+                aMaterial = frame.mMaterial;
             }
             if (aMaterial != null) {
                 aName = aMaterial.getLocalizedNameForItem(aName);

@@ -25,6 +25,7 @@ import java.util.stream.Collectors;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.StatCollector;
 
 import org.apache.commons.lang3.tuple.Pair;
 
@@ -104,7 +105,10 @@ public class MTEIndustrialForgeHammer extends GTPPMultiBlockBase<MTEIndustrialFo
             .addEnergyHatch("Any Casing", 1)
             .addMaintenanceHatch("Any Casing", 1)
             .addMufflerHatch("Any Casing", 1)
-            .addOtherStructurePart("Anvil", "In the center of 3x3x3 structure", 2)
+            .addOtherStructurePart(
+                StatCollector.translateToLocal("GTPP.tooltip.structure.anvil"),
+                "In the center of 3x3x3 structure",
+                2)
             .toolTipFinisher();
         return tt;
     }
@@ -163,7 +167,7 @@ public class MTEIndustrialForgeHammer extends GTPPMultiBlockBase<MTEIndustrialFo
     }
 
     private static ITierConverter<Integer> anvilTierConverter(Map<Block, Integer> anvilTiers) {
-        return (block, meta) -> block == null ? 0 : anvilTiers.getOrDefault(block, 0);
+        return (block, meta) -> block == null ? null : anvilTiers.getOrDefault(block, null);
     }
 
     @Override
@@ -221,7 +225,7 @@ public class MTEIndustrialForgeHammer extends GTPPMultiBlockBase<MTEIndustrialFo
     @Override
     protected ProcessingLogic createProcessingLogic() {
         return new ProcessingLogic().setSpeedBonus(1 / 2F)
-            .setMaxParallelSupplier(this::getMaxParallelRecipes);
+            .setMaxParallelSupplier(this::getTrueParallel);
     }
 
     @Override

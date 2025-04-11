@@ -20,7 +20,6 @@ import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 
 import gregtech.GTMod;
 import gregtech.api.enums.ItemList;
-import gregtech.api.gui.modularui.GTUIInfos;
 import gregtech.api.gui.widgets.PhantomItemButton;
 import gregtech.api.interfaces.IDataCopyable;
 import gregtech.api.interfaces.ITexture;
@@ -89,11 +88,6 @@ public class MTEHatchOutputBus extends MTEHatch implements IAddUIWidgets, IItemL
     }
 
     @Override
-    public boolean isSimpleMachine() {
-        return true;
-    }
-
-    @Override
     public boolean isFacingValid(ForgeDirection facing) {
         return true;
     }
@@ -116,13 +110,13 @@ public class MTEHatchOutputBus extends MTEHatch implements IAddUIWidgets, IItemL
     @Override
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
         if (!acceptsItemLock() || !(aPlayer instanceof EntityPlayerMP)) {
-            GTUIInfos.openGTTileEntityUI(aBaseMetaTileEntity, aPlayer);
+            openGui(aPlayer);
             return true;
         }
 
         final ItemStack dataStick = aPlayer.inventory.getCurrentItem();
         if (!ItemList.Tool_DataStick.isStackEqual(dataStick, false, true)) {
-            GTUIInfos.openGTTileEntityUI(aBaseMetaTileEntity, aPlayer);
+            openGui(aPlayer);
             return true;
         }
 
@@ -219,6 +213,15 @@ public class MTEHatchOutputBus extends MTEHatch implements IAddUIWidgets, IItemL
         return false;
     }
 
+    /**
+     * Does this Output Bus push its content to the adjacent inventory.
+     *
+     * @return true if this Output Bus should push its contents, false otherwise.
+     */
+    public boolean pushOutputInventory() {
+        return true;
+    }
+
     @Override
     public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
         ItemStack aStack) {
@@ -234,7 +237,9 @@ public class MTEHatchOutputBus extends MTEHatch implements IAddUIWidgets, IItemL
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         super.onPostTick(aBaseMetaTileEntity, aTick);
-        if (aBaseMetaTileEntity.isServerSide() && aBaseMetaTileEntity.isAllowedToWork() && (aTick & 0x7) == 0) {
+        if (aBaseMetaTileEntity.isServerSide() && aBaseMetaTileEntity.isAllowedToWork()
+            && (aTick & 0x7) == 0
+            && pushOutputInventory()) {
             final IInventory tTileEntity = aBaseMetaTileEntity
                 .getIInventoryAtSide(aBaseMetaTileEntity.getFrontFacing());
             if (tTileEntity != null) {

@@ -22,6 +22,7 @@ import java.util.concurrent.ThreadLocalRandom;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
@@ -298,9 +299,18 @@ public class MTEPurificationUnitUVTreatment extends MTEPurificationUnitBase<MTEP
                 56,
                 EnumChatFormatting.GOLD,
                 false)
-            .addOtherStructurePart("Input Hatch, Output Hatch", EnumChatFormatting.GOLD + "1+", 1)
-            .addOtherStructurePart("Lens Housing", EnumChatFormatting.GOLD + "1", 2)
-            .addOtherStructurePart("Lens Indicator", EnumChatFormatting.GOLD + "1", 3)
+            .addOtherStructurePart(
+                StatCollector.translateToLocal("GT5U.tooltip.structure.input_hatch_output_hatch"),
+                EnumChatFormatting.GOLD + "1+",
+                1)
+            .addOtherStructurePart(
+                StatCollector.translateToLocal("GT5U.tooltip.structure.lens_housing"),
+                EnumChatFormatting.GOLD + "1",
+                2)
+            .addOtherStructurePart(
+                StatCollector.translateToLocal("GT5U.tooltip.structure.lens_indicator"),
+                EnumChatFormatting.GOLD + "1",
+                3)
             .toolTipFinisher(AuthorNotAPenguin);
         return tt;
     }
@@ -415,13 +425,18 @@ public class MTEPurificationUnitUVTreatment extends MTEPurificationUnitBase<MTEP
     public String[] getInfoData() {
         ArrayList<String> infoData = new ArrayList<>(Arrays.asList(super.getInfoData()));
         if (this.lensCycle != null) {
-            infoData.add("Lens swaps performed this run: " + EnumChatFormatting.YELLOW + numSwapsPerformed);
             infoData.add(
-                "Current lens requested: " + EnumChatFormatting.GREEN
-                    + lensCycle.current()
-                        .getDisplayName());
+                StatCollector.translateToLocalFormatted(
+                    "GT5U.infodata.purification_unit_uv_treatment.lens_swaps",
+                    "" + EnumChatFormatting.YELLOW + numSwapsPerformed));
+            infoData.add(
+                StatCollector.translateToLocalFormatted(
+                    "GT5U.infodata.purification_unit_uv_treatment.lens_requested",
+                    EnumChatFormatting.GREEN + lensCycle.current()
+                        .getDisplayName()));
             if (removedTooEarly) {
-                infoData.add("Removed lens too early. Failing this recipe.");
+                infoData.add(
+                    StatCollector.translateToLocal("GT5U.infodata.purification_unit_uv_treatment.removed_too_early"));
             }
         }
         return infoData.toArray(new String[] {});

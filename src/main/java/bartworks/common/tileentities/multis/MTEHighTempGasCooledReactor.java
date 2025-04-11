@@ -26,6 +26,7 @@ import java.util.List;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
@@ -400,18 +401,33 @@ public class MTEHighTempGasCooledReactor extends MTEEnhancedMultiBlockBase<MTEHi
 
     @Override
     public String[] getInfoData() {
-        return new String[] { "Mode:", this.empty ? "Emptying" : "Normal", "Progress:",
-            GTUtility.formatNumbers(this.mProgresstime / 20) + "s / "
-                + GTUtility.formatNumbers(this.mMaxProgresstime / 20)
-                + "s",
-            "Fuel type:",
-            this.fueltype == -1 ? "NONE" : "TRISO (" + HTGRMaterials.sHTGR_Fuel[this.fueltype].sEnglish + ")",
-            "Fuel amount:", GTUtility.formatNumbers(this.fuelsupply) + " pcs.", "Helium-Level:",
-            GTUtility.formatNumbers(this.HeliumSupply) + "L / "
-                + GTUtility.formatNumbers(MTEHighTempGasCooledReactor.HELIUM_NEEDED)
-                + "L",
-            "Coolant:", GTUtility.formatNumbers(this.coolanttaking) + "L/s", "Problems:",
-            String.valueOf(this.getIdealStatus() - this.getRepairStatus()) };
+        return new String[] {
+            StatCollector.translateToLocalFormatted(
+                "BW.infoData.htgr.mode",
+                this.empty ? StatCollector.translateToLocal("BW.infoData.htgr.mode.emptying")
+                    : StatCollector.translateToLocal("BW.infoData.htgr.mode.normal")),
+            StatCollector.translateToLocalFormatted(
+                "BW.infoData.htgr.progress",
+                GTUtility.formatNumbers(this.mProgresstime / 20),
+                GTUtility.formatNumbers(this.mMaxProgresstime / 20)),
+            StatCollector.translateToLocalFormatted(
+                "BW.infoData.htgr.fuel_type",
+                this.fueltype == -1 ? StatCollector.translateToLocal("BW.infoData.htgr.fuel_type.none")
+                    : StatCollector.translateToLocalFormatted(
+                        "BW.infoData.htgr.fuel_type.triso",
+                        // TODO: check how to get fuel type localized name
+                        HTGRMaterials.sHTGR_Fuel[this.fueltype].sEnglish)),
+            StatCollector
+                .translateToLocalFormatted("BW.infoData.htgr.fuel_amount", GTUtility.formatNumbers(this.fuelsupply)),
+            StatCollector.translateToLocalFormatted(
+                "BW.infoData.htr.helium_level",
+                GTUtility.formatNumbers(this.HeliumSupply),
+                GTUtility.formatNumbers(MTEHighTempGasCooledReactor.HELIUM_NEEDED)),
+            StatCollector
+                .translateToLocalFormatted("BW.infoData.htgr.coolant", GTUtility.formatNumbers(this.coolanttaking)),
+            StatCollector.translateToLocalFormatted(
+                "BW.infoData.htr.problems",
+                String.valueOf(this.getIdealStatus() - this.getRepairStatus())) };
     }
 
     @Override
@@ -478,7 +494,7 @@ public class MTEHighTempGasCooledReactor extends MTEEnhancedMultiBlockBase<MTEHi
             public void addInformation(ItemStack p_77624_1_, EntityPlayer p_77624_2_, List aList, boolean p_77624_4_) {
                 if (this.tooltip.containsKey(this.getDamage(p_77624_1_)))
                     aList.add(this.tooltip.get(this.getDamage(p_77624_1_)));
-                aList.add("Material for High Temperature Gas-cooled Reactor");
+                aList.add(StatCollector.translateToLocal("tooltip.bw.high_temp_gas_cooled_reactor.material"));
                 super.addInformation(p_77624_1_, p_77624_2_, aList, p_77624_4_);
             }
         }
@@ -604,7 +620,6 @@ public class MTEHighTempGasCooledReactor extends MTEEnhancedMultiBlockBase<MTEHi
                     .duration(1 * HOURS)
                     .eut(powerUsage)
                     .ignoreCollision()
-                    .noOptimize()
                     .fake()
                     .addTo(htgrFakeRecipes);
 

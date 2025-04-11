@@ -39,7 +39,6 @@ import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
-import bartworks.API.BorosilicateGlass;
 import goodgenerator.blocks.tileEntity.GTMetaTileEntity.MTEYOTTAHatch;
 import goodgenerator.blocks.tileEntity.base.MTETooltipMultiBlockBaseEM;
 import goodgenerator.client.GUI.GGUITextures;
@@ -95,7 +94,7 @@ public class MTEYottaFluidTank extends MTETooltipMultiBlockBaseEM implements ICo
      */
     public FluidStack mLockedFluid = null;
     protected boolean isFluidLocked = false;
-    protected int glassMeta;
+    protected int glassTier = -1;
     protected int maxCell;
     protected final String YOTTANK_BOTTOM = mName + "buttom";
     protected final String YOTTANK_MID = mName + "mid";
@@ -128,14 +127,6 @@ public class MTEYottaFluidTank extends MTETooltipMultiBlockBaseEM implements ICo
 
     public MTEYottaFluidTank(String name) {
         super(name);
-    }
-
-    public int getMeta() {
-        return glassMeta;
-    }
-
-    public void setMeta(int meta) {
-        glassMeta = meta;
     }
 
     public String getCap() {
@@ -272,7 +263,7 @@ public class MTEYottaFluidTank extends MTETooltipMultiBlockBaseEM implements ICo
     @Override
     public boolean checkMachine_EM(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         mStorage = BigInteger.ZERO;
-        glassMeta = 0;
+        glassTier = -1;
         maxCell = 0;
         if (!structureCheck_EM(YOTTANK_BOTTOM, 2, 0, 0)) return false;
         int cnt = 0;
@@ -281,8 +272,8 @@ public class MTEYottaFluidTank extends MTETooltipMultiBlockBaseEM implements ICo
         }
         if (cnt > 15 || cnt < 1) return false;
         if (!structureCheck_EM(YOTTANK_TOP, 2, cnt + 2, 0)) return false;
-        // maxCell+1 = Tier of highest Cell. glassMeta is the glass voltage tier
-        if (maxCell + 3 <= glassMeta) {
+        // maxCell+1 = Tier of highest Cell. glassTier is the glass voltage tier
+        if (maxCell + 3 <= glassTier) {
             if (mStorage.compareTo(mStorageCurrent) < 0) mStorageCurrent = mStorage;
             if (mFluid == null) {
                 mStorageCurrent = BigInteger.ZERO;
@@ -308,16 +299,7 @@ public class MTEYottaFluidTank extends MTETooltipMultiBlockBaseEM implements ICo
                         new String[][] { { "FFFFF", "F   F", "F   F", "F   F", "FFFFF" },
                             { "CCCCC", "CIIIC", "CIIIC", "CIIIC", "CCCCC" } }))
                 .addElement('C', ofBlock(Loaders.yottaFluidTankCasing, 0))
-                .addElement(
-                    'G',
-                    withChannel(
-                        "glass",
-                        BorosilicateGlass.ofBoroGlass(
-                            (byte) 0,
-                            (byte) 1,
-                            Byte.MAX_VALUE,
-                            MTEYottaFluidTank::setMeta,
-                            te -> (byte) te.getMeta())))
+                .addElement('G', chainAllGlasses(-1, (te, t) -> te.glassTier = t, te -> te.glassTier))
                 .addElement('R', ofChain(cells(10)))
                 .addElement('F', ofFrame(Materials.Steel))
                 .addElement(
@@ -425,11 +407,12 @@ public class MTEYottaFluidTank extends MTETooltipMultiBlockBaseEM implements ICo
             .beginVariableStructureBlock(5, 5, 1, 15, 5, 5, false)
             .addController("Front of the second layer")
             .addCasingInfoExactly("Steel Frame Box", 16, false)
-            .addCasingInfoRange("Glass (HV+)", 16, 240, true)
+            .addCasingInfoRange("Any Tiered Glass", 16, 240, true)
             .addCasingInfoRange("Fluid Cell Block", 9, 135, true)
             .addCasingInfoRange("YOTTank Casing", 25, 43, false)
             .addInputHatch("Hint block with dot 1")
             .addOutputHatch("Hint block with dot 3")
+            .addSubChannelUsage("glass", "Glass Tier")
             .toolTipFinisher();
         return tt;
     }
@@ -607,13 +590,22 @@ public class MTEYottaFluidTank extends MTETooltipMultiBlockBaseEM implements ICo
         int colorIndex, boolean aActive, boolean aRedstone) {
         if (side == facing) {
             if (aActive) return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(1537),
-                TextureFactory.of(textureFontOn), TextureFactory.builder()
+                TextureFactory.builder()
+                    .addIcon(textureFontOn)
+                    .extFacing()
+                    .build(),
+                TextureFactory.builder()
                     .addIcon(textureFontOn_Glow)
+                    .extFacing()
                     .glow()
                     .build() };
-            else return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(1537),
-                TextureFactory.of(textureFontOff), TextureFactory.builder()
+            else return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(1537), TextureFactory.builder()
+                .addIcon(textureFontOff)
+                .extFacing()
+                .build(),
+                TextureFactory.builder()
                     .addIcon(textureFontOff_Glow)
+                    .extFacing()
                     .glow()
                     .build() };
         } else return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(1537) };

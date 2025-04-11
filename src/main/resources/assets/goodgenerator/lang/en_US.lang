@@ -223,6 +223,12 @@ huiCircuit.tooltip.4=§5Paradox§r
 EssentiaOutputHatch.tooltip.0=Shift right click it with empty hands to clear the container.
 EssentiaOutputHatch.tooltip.1=Capacity:
 
+gg.structure.tooltip.antimatter_hatch=Antimatter Hatch
+gg.structure.tooltip.laser_source_hatch=Laser Source Hatch
+gg.structure.tooltip.input_hatch=Input Hatch
+gg.structure.tooltip.output_hatch=Output Hatch
+gg.structure.tooltip.essentia_input_hatch=Essentia Input Hatch
+
 #Fluids
 fluid.lightlyCrackedNaquadahGas=Lightly Cracked Naquadah Gas
 fluid.moderatelyCrackedNaquadahGas=Moderately Cracked Naquadah Gas
@@ -336,6 +342,21 @@ scanner.info.XHE.0=Steam Output is equal to
 scanner.info.XHE.1=Overheated Threshold:
 scanner.info.UX.0=Running Parallel
 scanner.info.CASS.tier=Casing Tier:
+scanner.info.CASS.tier.none=None!
+
+gg.scanner.info.antimatter_forge=Antimatter Forge
+gg.scanner.info.les.parallel=Parallel:
+gg.scanner.info.les.node_power=Node Power:
+gg.scanner.info.les.purification_efficiency=Purification Efficiency:
+gg.scanner.info.les.speed_up=Speed Up:
+
+gg.scanner.info.generator.generates=Currently generates: %s EU/t
+gg.scanner.info.generator.problems=Problems:
+gg.scanner.info.generator.efficiency=Efficiency:
+gg.scanner.info.neutron_activator.progress=Progress: %s s / %s s
+gg.scanner.info.neutron_activator.input=Current Neutron Kinetic Energy Input: %sev
+
+gg.scanner.info.fusion_reactor_mk=Fusion Reactor MK
 
 #GUI Info
 GT5U.gui.text.node_too_small=§7Node too small
@@ -427,7 +448,7 @@ NeutronActivator.hint.5=2 - Output Hatch/Output Bus/Maintenance Hatch/Neutron Ac
 NeutronActivator.hint.6=3 - EV+ Tier Glass
 YOTTank.hint.0=At least 47x YOTTank Casing
 YOTTank.hint.1=16x Steel Frame Box
-YOTTank.hint.2=16x Borosilicate Glass Block of the same tier for every layer
+YOTTank.hint.2=16x Glass Block of the same tier for every layer
 YOTTank.hint.3=9x Fluid Cell Block for every layer
 YOTTank.hint.4=1 - Input Hatch/YOTTank Casing
 YOTTank.hint.5=2 - Maintenance Hatch/YOTTank Casing
@@ -447,7 +468,7 @@ PreciseAssembler.hint.4=1 - Any Hatch/Precise Electronic Unit Casing
 PreciseAssembler.hint.5=2 - EV+ Tier Glass
 PreciseAssembler.hint.6=Support TecTech Energy Hatches!
 LargeFusion1.hint.0=At least 1666x LuV Machine Casings
-LargeFusion1.hint.1=At least 63x Chrome Reinforced Borosilicate Glass Blocks
+LargeFusion1.hint.1=At least 63x Rhodium-Plated Palladium Reinforced Borosilicate Glass Blocks
 LargeFusion1.hint.2=558x Ameliorated Superconduct Coils
 LargeFusion1.hint.3=128x Naquadah Alloy Frame Boxes
 LargeFusion1.hint.4=1 - Input Hatch
@@ -474,7 +495,7 @@ LargeFusion3.hint.6=2 - Energy Hatch
 LargeFusion3.hint.7=All Hatches must be UV or better.
 LargeFusion3.hint.8=Support TecTech Hatches.
 LargeFusion4.hint.0=At least 1666x Fusion Machine Casing MK III
-LargeFusion4.hint.1=At least 63x Uranium Reinforced Borosilicate Glass Blocks
+LargeFusion4.hint.1=At least 63x Neutronium Reinforced Borosilicate Glass Blocks
 LargeFusion4.hint.2=558x Compact Fusion Coil MK-II Prototype
 LargeFusion4.hint.3=128x Infinity Catalyst Frame Boxes
 LargeFusion4.hint.4=1 - Input Hatch
@@ -483,7 +504,7 @@ LargeFusion4.hint.6=2 - Energy Hatch
 LargeFusion4.hint.7=All Hatches must be UHV or better.
 LargeFusion4.hint.8=Support TecTech Hatches.
 LargeFusion5.hint.0=At least 1666x Fusion Machine Casing MK IV
-LargeFusion5.hint.1=At least 63x Europium Reinforced Borosilicate Glass Blocks
+LargeFusion5.hint.1=At least 63x Cosmic Neutronium Reinforced Borosilicate Glass Blocks
 LargeFusion5.hint.2=558x Compact Fusion Coil MK-II Finaltype
 LargeFusion5.hint.3=128x Infinity Frame Boxes
 LargeFusion5.hint.4=1 - Input Hatch

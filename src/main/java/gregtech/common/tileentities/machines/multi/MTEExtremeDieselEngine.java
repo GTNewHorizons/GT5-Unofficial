@@ -130,6 +130,11 @@ public class MTEExtremeDieselEngine extends MTEDieselEngine {
     }
 
     @Override
+    public boolean supportsPowerPanel() {
+        return false;
+    }
+
+    @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new MTEExtremeDieselEngine(this.mName);
     }
@@ -180,7 +185,9 @@ public class MTEExtremeDieselEngine extends MTEDieselEngine {
                 .getEUCapacity();
         }
 
-        return new String[] { EnumChatFormatting.BLUE + "Extreme Diesel Engine" + EnumChatFormatting.RESET,
+        return new String[] {
+            EnumChatFormatting.BLUE + StatCollector.translateToLocal("GT5U.infodata.extreme_diesel_engine")
+                + EnumChatFormatting.RESET,
             StatCollector.translateToLocal("GT5U.multiblock.energy") + ": "
                 + EnumChatFormatting.GREEN
                 + GTUtility.formatNumbers(storedEnergy)

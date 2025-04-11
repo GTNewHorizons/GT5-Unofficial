@@ -34,13 +34,14 @@ import java.util.Optional;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
+import org.apache.commons.lang3.tuple.Pair;
+
 import bartworks.MainMod;
 import bartworks.system.oredict.OreDictHandler;
 import bartworks.util.BWColorUtil;
 import bartworks.util.BWUtil;
 import bartworks.util.MurmurHash3;
 import bartworks.util.NonNullWrappedHashMap;
-import bartworks.util.Pair;
 import bwcrossmod.BartWorksCrossmod;
 import bwcrossmod.tgregworks.MaterialsInjector;
 import cpw.mods.fml.common.Loader;
@@ -137,7 +138,7 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
             mID,
             materials.mIconSet,
             (List) materials.mOreByProducts,
-            new Pair<>(materials, 1));
+            Pair.of(materials, 1));
         if (mID <= 31_766 || mID > 32_767) throw new IllegalArgumentException();
         this.stats.mass = materials.getMass();
         this.stats.protons = materials.getProtons();
@@ -414,12 +415,12 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
                 if (p.getKey() instanceof Werkstoff) set.addAll(Arrays.asList(((Werkstoff) p.getKey()).getTCAspects()));
             }
             tc_aspectStacks.forEach(
-                tc_aspectStack -> set.add(new Pair<>(tc_aspectStack.mAspect.mAspect, (int) tc_aspectStack.mAmount)));
+                tc_aspectStack -> set.add(Pair.of(tc_aspectStack.mAspect.mAspect, (int) tc_aspectStack.mAmount)));
             this.stats.mTC_Aspects = set.toArray(new Pair[0]);
         }
         Pair<Object, Integer>[] ret = this.stats.mTC_Aspects.clone();
         for (int i = 0; i < ret.length; i++) {
-            ret[i] = ret[i].copyWithNewValue(ret[i].getValue() * ratio);
+            ret[i] = Pair.of(ret[i].getKey(), ret[i].getValue() * ratio);
         }
         return ret;
     }
@@ -467,7 +468,7 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
                 ret = 1;
                 break;
         }
-        return new Pair<>(ret, this.CONTENTS);
+        return Pair.of(ret, this.CONTENTS);
     }
 
     public int getNoOfByProducts() {
@@ -807,41 +808,8 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
             return this;
         }
 
-        @Deprecated
-        public boolean hasDusts() {
-            return (this.toGenerate & 0b1) != 0;
-        }
-
-        @Deprecated
-        public boolean hasGems() {
-            return (this.toGenerate & 0b100) != 0;
-        }
-
-        @Deprecated
-        public boolean hasOres() {
-            return (this.toGenerate & 0b1000) != 0;
-        }
-
         public Werkstoff.GenerationFeatures enforceUnification() {
             this.enforceUnification = true;
-            return this;
-        }
-
-        @Deprecated
-        public Werkstoff.GenerationFeatures removeGems() {
-            if (this.hasGems()) this.toGenerate = this.toGenerate ^ 0b100;
-            return this;
-        }
-
-        @Deprecated
-        public Werkstoff.GenerationFeatures removeDusts() {
-            if (this.hasDusts()) this.toGenerate = this.toGenerate ^ 0b1;
-            return this;
-        }
-
-        @Deprecated
-        public Werkstoff.GenerationFeatures removeOres() {
-            if (this.hasOres()) this.toGenerate = this.toGenerate ^ 0b1000;
             return this;
         }
 
@@ -928,16 +896,6 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
             return this;
         }
 
-        @Deprecated
-        public boolean hasCells() {
-            return (this.toGenerate & 0b10000) != 0;
-        }
-
-        @Deprecated
-        public boolean hasMolten() {
-            return (this.toGenerate & 0b1000000) != 0;
-        }
-
         public Werkstoff.GenerationFeatures addMolten() {
             this.toGenerate = this.toGenerate | 0b1000000;
             return this;
@@ -959,11 +917,6 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
         public Werkstoff.GenerationFeatures addCasings() {
             this.toGenerate = this.toGenerate | 0x382;
             return this;
-        }
-
-        @Deprecated
-        public boolean hasSimpleMetalWorkingItems() {
-            return (this.toGenerate & 0b10000000) != 0;
         }
 
         public Werkstoff.GenerationFeatures addCraftingMetalWorkingItems() {

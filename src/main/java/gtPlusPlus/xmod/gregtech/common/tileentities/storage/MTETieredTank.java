@@ -8,13 +8,13 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Textures;
-import gregtech.api.gui.modularui.GTUIInfos;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
@@ -94,11 +94,6 @@ public class MTETieredTank extends MTEBasicTank {
     }
 
     @Override
-    public boolean isSimpleMachine() {
-        return true;
-    }
-
-    @Override
     public boolean isFacingValid(final ForgeDirection facing) {
         return true;
     }
@@ -137,11 +132,20 @@ public class MTETieredTank extends MTEBasicTank {
     public String[] getInfoData() {
 
         if (this.mFluid == null) {
-            return new String[] { GTValues.VOLTAGE_NAMES[this.mTier] + " Fluid Tank", "Stored Fluid:", "No Fluid",
-                0 + "L", this.getCapacity() + "L" };
+            return new String[] {
+                StatCollector.translateToLocalFormatted(
+                    "gtpp.infodata.tiered_tank.name",
+                    GTValues.getLocalizedLongVoltageName(this.mTier)),
+                StatCollector.translateToLocal("GT5U.infodata.digital_tank.stored_fluid"),
+                StatCollector.translateToLocal("GT5U.infodata.digital_tank.stored_fluid.empty"), 0 + "L",
+                this.getCapacity() + "L" };
         }
-        return new String[] { GTValues.VOLTAGE_NAMES[this.mTier] + " Fluid Tank", "Stored Fluid:",
-            this.mFluid.getLocalizedName(), this.mFluid.amount + "L", this.getCapacity() + "L" };
+        return new String[] {
+            StatCollector.translateToLocalFormatted(
+                "gtpp.infodata.tiered_tank.name",
+                GTValues.getLocalizedLongVoltageName(this.mTier)),
+            StatCollector.translateToLocal("GT5U.infodata.digital_tank.stored_fluid"), this.mFluid.getLocalizedName(),
+            this.mFluid.amount + "L", this.getCapacity() + "L" };
     }
 
     @Override
@@ -156,18 +160,8 @@ public class MTETieredTank extends MTEBasicTank {
 
     @Override
     public boolean onRightclick(final IGregTechTileEntity aBaseMetaTileEntity, final EntityPlayer aPlayer) {
-        GTUIInfos.openGTTileEntityUI(aBaseMetaTileEntity, aPlayer);
+        openGui(aPlayer);
         return true;
-    }
-
-    @Override
-    public boolean displaysItemStack() {
-        return true;
-    }
-
-    @Override
-    public boolean displaysStackSize() {
-        return false;
     }
 
     @Override

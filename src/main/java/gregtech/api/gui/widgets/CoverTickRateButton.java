@@ -1,7 +1,7 @@
 package gregtech.api.gui.widgets;
 
 import static gregtech.api.gui.modularui.GTUITextures.OVERLAY_BUTTON_HOURGLASS;
-import static gregtech.common.covers.CoverInfo.MAX_TICK_RATE_ADDITION;
+import static gregtech.common.covers.Cover.MAX_TICK_RATE_ADDITION;
 
 import java.util.List;
 
@@ -17,31 +17,32 @@ import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
 import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
 
 import gregtech.api.gui.modularui.GTUITextures;
-import gregtech.common.covers.CoverInfo;
+import gregtech.common.covers.Cover;
+import gregtech.common.text.ClientTickRateFormatter;
 
 public class CoverTickRateButton extends ButtonWidget {
 
     private static final UITexture BACKGROUND = GTUITextures.BUTTON_COVER_NORMAL.getSubArea(0, 0, 1, 0.5f);
 
-    private final CoverInfo coverInfo;
+    private final Cover cover;
     private int clientTickRate;
     private int tickRateAddition;
 
-    public CoverTickRateButton(@NotNull CoverInfo coverInfo, @NotNull IWidgetBuilder<?> builder) {
-        this.coverInfo = coverInfo;
-        this.clientTickRate = coverInfo.getTickRate();
-        this.tickRateAddition = coverInfo.getTickRateAddition();
+    public CoverTickRateButton(@NotNull Cover cover, @NotNull IWidgetBuilder<?> builder) {
+        this.cover = cover;
+        this.clientTickRate = cover.getTickRate();
+        this.tickRateAddition = cover.getTickRateAddition();
 
         super.setBackground(BACKGROUND, OVERLAY_BUTTON_HOURGLASS);
         super.setOnClick(this::onClick);
         super.dynamicTooltip(this::dynamicTooltip);
         super.attachSyncer(
-            new FakeSyncWidget.IntegerSyncer(this.coverInfo::getTickRate, integer -> clientTickRate = integer),
+            new FakeSyncWidget.IntegerSyncer(this.cover::getTickRate, integer -> clientTickRate = integer),
             builder,
             (widget, aInt) -> notifyTooltipChange())
                 .attachSyncer(
                     new FakeSyncWidget.IntegerSyncer(
-                        this.coverInfo::getTickRateAddition,
+                        this.cover::getTickRateAddition,
                         integer -> tickRateAddition = integer),
                     builder);
 
@@ -54,7 +55,7 @@ public class CoverTickRateButton extends ButtonWidget {
         // Do five operations at once if Ctrl is held down. Since the actual increase granted by each invocation can be
         // different on each call, just call the method several times rather than trying to do a bunch of weird math.
         for (int i = 0; i < iterations; i++) {
-            coverInfo.adjustTickRateMultiplier(isDecreasing);
+            cover.adjustTickRateMultiplier(isDecreasing);
         }
     }
 
@@ -74,7 +75,7 @@ public class CoverTickRateButton extends ButtonWidget {
         return ImmutableList.of(
             StatCollector.translateToLocalFormatted(
                 "gt.cover.info.button.tick_rate.1",
-                new CoverInfo.ClientTickRateFormatter(clientTickRate),
+                new ClientTickRateFormatter(clientTickRate),
                 boundsNotification),
             StatCollector.translateToLocal("gt.cover.info.button.tick_rate.2"),
             StatCollector.translateToLocal("gt.cover.info.button.tick_rate.3"));

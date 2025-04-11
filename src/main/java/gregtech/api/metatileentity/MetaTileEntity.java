@@ -9,20 +9,25 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import com.gtnewhorizons.modularui.api.forge.ItemStackHandler;
+import com.cleanroommc.modularui.utils.item.IItemHandlerModifiable;
+import com.cleanroommc.modularui.utils.item.ItemStackHandler;
 
+import appeng.api.crafting.ICraftingIconProvider;
 import appeng.api.implementations.IPowerChannelState;
 import appeng.api.networking.energy.IEnergyGrid;
 import appeng.api.networking.pathing.IPathingGrid;
 import appeng.api.util.AECableType;
 import appeng.core.localization.WailaText;
 import appeng.me.helpers.AENetworkProxy;
+import cpw.mods.fml.common.registry.LanguageRegistry;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.GTValues;
@@ -30,7 +35,6 @@ import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.SteamVariant;
 import gregtech.api.gui.GUIColorOverride;
 import gregtech.api.gui.modularui.GUITextureSet;
-import gregtech.api.interfaces.ICleanroom;
 import gregtech.api.interfaces.ICleanroomReceiver;
 import gregtech.api.interfaces.IConfigurationCircuitSupport;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -41,10 +45,12 @@ import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTTooltipDataCache;
 import gregtech.api.util.GTUtil;
 import gregtech.api.util.GTUtility;
+import gregtech.common.capability.CleanroomReference;
+import gregtech.mixin.interfaces.accessors.EntityPlayerMPAccessor;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 import tectech.thing.metaTileEntity.pipe.MTEPipeData;
-import tectech.thing.metaTileEntity.pipe.MTEPipeEnergy;
+import tectech.thing.metaTileEntity.pipe.MTEPipeLaser;
 
 /**
  * NEVER INCLUDE THIS FILE IN YOUR MOD!!!
@@ -53,10 +59,10 @@ import tectech.thing.metaTileEntity.pipe.MTEPipeEnergy;
  * and also not postload!) Implement the newMetaEntity-Method to return a new ready instance of your MetaTileEntity
  * <p/>
  * Call the Constructor like the following example inside the Load Phase, to register it. "new
- * GT_MetaTileEntity_E_Furnace(54, "GT_E_Furnace", "Automatic E-Furnace");"
+ * MTEFurnace(54, "GT_E_Furnace", "Automatic E-Furnace");"
  */
 @SuppressWarnings("unused")
-public abstract class MetaTileEntity extends CommonMetaTileEntity implements ICleanroomReceiver {
+public abstract class MetaTileEntity extends CommonMetaTileEntity implements ICraftingIconProvider {
 
     /**
      * Inventory wrapper for ModularUI
@@ -66,17 +72,23 @@ public abstract class MetaTileEntity extends CommonMetaTileEntity implements ICl
     protected GUIColorOverride colorOverride;
     protected GTTooltipDataCache mTooltipCache = new GTTooltipDataCache();
 
+    private static final String[] FACING_DIRECTION_NAMES = new String[] { "GT5U.waila.facing.down",
+        "GT5U.waila.facing.up", "GT5U.waila.facing.north", "GT5U.waila.facing.south", "GT5U.waila.facing.west",
+        "GT5U.waila.facing.east", "GT5U.waila.facing.unknown" };
+
     @Override
-    public ItemStackHandler getInventoryHandler() {
+    public IItemHandlerModifiable getInventoryHandler() {
         return inventoryHandler;
     }
 
-    private ICleanroom cleanroom;
+    protected final ICleanroomReceiver cleanroomReference = new CleanroomReference();
 
     /**
      * accessibility to this Field is no longer given, see below
      */
     private IGregTechTileEntity mBaseMetaTileEntity;
+
+    private String playerLang;
 
     /**
      * This registers your Machine at the List. Use only ID's larger than 2048 - the ones lower are reserved by GT.
@@ -87,7 +99,7 @@ public abstract class MetaTileEntity extends CommonMetaTileEntity implements ICl
      *
      * <pre>
      *
-     * public GT_MetaTileEntity_EBench(int id, String name, String nameRegional) {
+     * public MTEBench(int id, String name, String nameRegional) {
      *     super(id, name, nameRegional);
      * }
      * </pre>
@@ -101,7 +113,13 @@ public abstract class MetaTileEntity extends CommonMetaTileEntity implements ICl
         setBaseMetaTileEntity(GregTechAPI.constructBaseMetaTileEntity());
         getBaseMetaTileEntity().setMetaTileID((short) aID);
 
-        inventoryHandler = new ItemStackHandler(mInventory);
+        inventoryHandler = new ItemStackHandler(mInventory) {
+
+            @Override
+            protected void onContentsChanged(int slot) {
+                MetaTileEntity.this.onContentsChanged(slot);
+            }
+        };
     }
 
     /**
@@ -109,7 +127,13 @@ public abstract class MetaTileEntity extends CommonMetaTileEntity implements ICl
      */
     public MetaTileEntity(String aName, int aInvSlotCount) {
         super(aName, aInvSlotCount);
-        inventoryHandler = new ItemStackHandler(mInventory);
+        inventoryHandler = new ItemStackHandler(mInventory) {
+
+            @Override
+            protected void onContentsChanged(int slot) {
+                MetaTileEntity.this.onContentsChanged(slot);
+            }
+        };
         colorOverride = GUIColorOverride.get(getGUITextureSet().getMainBackground().location);
     }
 
@@ -134,6 +158,25 @@ public abstract class MetaTileEntity extends CommonMetaTileEntity implements ICl
     public boolean isValid() {
         return getBaseMetaTileEntity() != null && getBaseMetaTileEntity().getMetaTileEntity() == this
             && !getBaseMetaTileEntity().isDead();
+    }
+
+    /**
+     * Override to delegate capability this machine implements to baseMTE. Don't forget to fall back to
+     * {@code super.getCapability}.
+     *
+     * @see com.gtnewhorizon.gtnhlib.capability.CapabilityProvider CapabilityProvider
+     * @inheritDoc
+     */
+    @Nullable
+    @Override
+    public <T> T getCapability(@NotNull Class<T> capability, @NotNull ForgeDirection side) {
+        if (capability == ICleanroomReceiver.class) {
+            return capability.cast(cleanroomReference);
+        }
+        if (capability == ICraftingIconProvider.class) {
+            return capability.cast(this);
+        }
+        return super.getCapability(capability, side);
     }
 
     @Override
@@ -257,18 +300,39 @@ public abstract class MetaTileEntity extends CommonMetaTileEntity implements ICl
     @Override
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer, ForgeDirection side,
         float aX, float aY, float aZ) {
+        if (aBaseMetaTileEntity.isServerSide()) {
+            if (aPlayer instanceof EntityPlayerMPAccessor) {
+                playerLang = ((EntityPlayerMPAccessor) aPlayer).gt5u$getTranslator();
+            }
+        }
+
         return onRightclick(aBaseMetaTileEntity, aPlayer);
     }
 
-    @Nullable
-    @Override
-    public ICleanroom getCleanroom() {
-        return cleanroom;
+    protected String translate(String key) {
+        String base;
+
+        if (playerLang != null) {
+            // note: playerLang is set in onRightclick, so this may not be 100% correct in some situations
+            // on server
+            base = LanguageRegistry.instance()
+                .getStringLocalization(key, playerLang);
+        } else {
+            // on client
+            base = LanguageRegistry.instance()
+                .getStringLocalization(key);
+        }
+
+        if (base.isEmpty()) {
+            base = LanguageRegistry.instance()
+                .getStringLocalization(key, "en_US");
+        }
+
+        return base;
     }
 
-    @Override
-    public void setCleanroom(ICleanroom cleanroom) {
-        this.cleanroom = cleanroom;
+    protected String translate(String key, Object... params) {
+        return String.format(translate(key), params);
     }
 
     /**
@@ -487,20 +551,6 @@ public abstract class MetaTileEntity extends CommonMetaTileEntity implements ICl
     }
 
     /**
-     * If this accepts up to 4 Overclockers
-     */
-    public boolean isOverclockerUpgradable() {
-        return false;
-    }
-
-    /**
-     * If this accepts Transformer Upgrades
-     */
-    public boolean isTransformerUpgradable() {
-        return false;
-    }
-
-    /**
      * If this TileEntity makes use of Sided Redstone behaviors. Determines only, if the Output Redstone Array is
      * getting filled with 0 for true, or 15 for false.
      */
@@ -542,6 +592,16 @@ public abstract class MetaTileEntity extends CommonMetaTileEntity implements ICl
             }
         }
         super.setInventorySlotContents(aIndex, aStack);
+        onContentsChanged(aIndex);
+    }
+
+    /**
+     * Called when a slot is changed.
+     * Note: {@link #setInventorySlotContents} is not called when the player interacts with a
+     * {@link gregtech.api.interfaces.modularui.IAddInventorySlots} slot.
+     */
+    protected void onContentsChanged(int slot) {
+
     }
 
     public int fill_default(ForgeDirection side, FluidStack aFluid, boolean doFill) {
@@ -591,7 +651,7 @@ public abstract class MetaTileEntity extends CommonMetaTileEntity implements ICl
             final IGregTechTileEntity iGregTechTileEntity = meta.getIGregTechTileEntityAtSide(side);
 
             if (iGregTechTileEntity != null) {
-                if (iGregTechTileEntity.getMetaTileEntity() instanceof MTEPipeEnergy neighbor) {
+                if (iGregTechTileEntity.getMetaTileEntity() instanceof MTEPipeLaser neighbor) {
                     neighbor.mConnections &= ~side.getOpposite().flag;
                     neighbor.connectionCount--;
                 }
@@ -616,7 +676,7 @@ public abstract class MetaTileEntity extends CommonMetaTileEntity implements ICl
 
             final IGregTechTileEntity iGregTechTileEntity = meta.getIGregTechTileEntityAtSide(side);
             if (iGregTechTileEntity != null) {
-                if (iGregTechTileEntity.getMetaTileEntity() instanceof MTEPipeEnergy pipe) pipe.updateNetwork(true);
+                if (iGregTechTileEntity.getMetaTileEntity() instanceof MTEPipeLaser pipe) pipe.updateNetwork(true);
                 if (iGregTechTileEntity.getMetaTileEntity() instanceof MTEPipeData pipe) pipe.updateNetwork(true);
             }
         }
@@ -667,14 +727,7 @@ public abstract class MetaTileEntity extends CommonMetaTileEntity implements ICl
 
     @Override
     public ItemStack getMachineCraftingIcon() {
-        final IGregTechTileEntity mte = getBaseMetaTileEntity();
-        if (mte == null) {
-            return null;
-        }
-        return mte.getDrops()
-            .stream()
-            .findAny()
-            .orElse(null);
+        return getStackForm(1);
     }
 
     // === Waila compat ===
@@ -683,10 +736,11 @@ public abstract class MetaTileEntity extends CommonMetaTileEntity implements ICl
     public void getWailaBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor,
         IWailaConfigHandler config) {
         currenttip.add(
-            String.format(
-                "Facing: %s",
-                mBaseMetaTileEntity.getFrontFacing()
-                    .name()));
+            StatCollector.translateToLocalFormatted(
+                "GT5U.waila.facing",
+                getFacingNameLocalized(
+                    mBaseMetaTileEntity.getFrontFacing()
+                        .ordinal())));
 
         if (this instanceof IPowerChannelState state) {
             final NBTTagCompound tag = accessor.getNBTData();
@@ -695,6 +749,13 @@ public abstract class MetaTileEntity extends CommonMetaTileEntity implements ICl
             final boolean isBooting = tag.getBoolean("isBooting");
             currenttip.add(WailaText.getPowerState(isActive, isPowered, isBooting));
         }
+    }
+
+    protected static @NotNull String getFacingNameLocalized(int id) {
+        if (id >= 0 && id < FACING_DIRECTION_NAMES.length) {
+            return StatCollector.translateToLocal(FACING_DIRECTION_NAMES[id]);
+        }
+        return StatCollector.translateToLocal("GT5U.waila.facing.unknown");
     }
 
     @Override
@@ -712,20 +773,24 @@ public abstract class MetaTileEntity extends CommonMetaTileEntity implements ICl
 
     protected String getAEDiagnostics() {
         try {
-            if (getProxy() == null) return "(proxy)";
-            if (getProxy().getNode() == null) return "(node)";
+            if (getProxy() == null) return StatCollector.translateToLocal("GT5U.infodata.hatch.me.diagnostics.proxy");
+            if (getProxy().getNode() == null)
+                return StatCollector.translateToLocal("GT5U.infodata.hatch.me.diagnostics.node");
             if (getProxy().getNode()
-                .getGrid() == null) return "(grid)";
+                .getGrid() == null) return StatCollector.translateToLocal("GT5U.infodata.hatch.me.diagnostics.grid");
             if (!getProxy().getNode()
-                .meetsChannelRequirements()) return "(channels)";
+                .meetsChannelRequirements())
+                return StatCollector.translateToLocal("GT5U.infodata.hatch.me.diagnostics.channels");
             IPathingGrid pg = getProxy().getNode()
                 .getGrid()
                 .getCache(IPathingGrid.class);
-            if (!pg.isNetworkBooting()) return "(booting)";
+            if (!pg.isNetworkBooting())
+                return StatCollector.translateToLocal("GT5U.infodata.hatch.me.diagnostics.booting");
             IEnergyGrid eg = getProxy().getNode()
                 .getGrid()
                 .getCache(IEnergyGrid.class);
-            if (!eg.isNetworkPowered()) return "(power)";
+            if (!eg.isNetworkPowered())
+                return StatCollector.translateToLocal("GT5U.infodata.hatch.me.diagnostics.power");
         } catch (Throwable ex) {
             ex.printStackTrace();
         }

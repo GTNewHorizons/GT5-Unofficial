@@ -57,11 +57,6 @@ public class MTEFrame extends MetaPipeEntity implements ITemporaryTE {
     }
 
     @Override
-    public final boolean isSimpleMachine() {
-        return true;
-    }
-
-    @Override
     public final boolean isFacingValid(ForgeDirection facing) {
         return false;
     }
@@ -77,7 +72,12 @@ public class MTEFrame extends MetaPipeEntity implements ITemporaryTE {
     }
 
     @Override
-    public final float getThickNess() {
+    public final float getThickness() {
+        return 1.0F;
+    }
+
+    @Override
+    public float getCollisionThickness() {
         return 1.0F;
     }
 

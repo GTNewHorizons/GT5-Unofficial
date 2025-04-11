@@ -12,6 +12,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
@@ -58,21 +59,6 @@ public class MTETesseractGenerator extends MTEBasicTank {
     @Override
     public MetaTileEntity newMetaEntity(final IGregTechTileEntity aTileEntity) {
         return new MTETesseractGenerator(this.mName, this.mTier, this.mDescriptionArray, this.mTextures);
-    }
-
-    @Override
-    public boolean isTransformerUpgradable() {
-        return true;
-    }
-
-    @Override
-    public boolean isOverclockerUpgradable() {
-        return false;
-    }
-
-    @Override
-    public boolean isSimpleMachine() {
-        return false;
     }
 
     @Override
@@ -317,8 +303,11 @@ public class MTETesseractGenerator extends MTEBasicTank {
             && (((IGregTechDeviceInformation) tTileEntity).isGivingInformation())) {
             return ((IGregTechDeviceInformation) tTileEntity).getInfoData();
         }
-        return new String[] { "Tesseract Generator", "Freqency:", "" + this.mFrequency,
-            (getGeneratorEntity() == this) && (this.isWorking >= 20) ? "Active" : "Inactive" };
+        return new String[] { "Tesseract Generator",
+            StatCollector.translateToLocalFormatted("gtpp.infodata.tesseract_generator.frequency", this.mFrequency),
+            (getGeneratorEntity() == this) && (this.isWorking >= 20)
+                ? StatCollector.translateToLocal("gtpp.infodata.tesseract_generator.status.active")
+                : StatCollector.translateToLocal("gtpp.infodata.tesseract_generator.status.inactive") };
     }
 
     @Override
@@ -772,16 +761,6 @@ public class MTETesseractGenerator extends MTEBasicTank {
 
     @Override
     public boolean canTankBeEmptied() {
-        return false;
-    }
-
-    @Override
-    public boolean displaysItemStack() {
-        return false;
-    }
-
-    @Override
-    public boolean displaysStackSize() {
         return false;
     }
 

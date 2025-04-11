@@ -84,7 +84,7 @@ import gregtech.common.items.CombType;
 import gregtech.loaders.misc.GTBees;
 import gregtech.mixin.interfaces.accessors.IRecipeMutableAccess;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
-import gtPlusPlus.core.item.chemistry.GenericChem;
+import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 
 public class NaquadahReworkRecipeLoader {
 
@@ -107,7 +107,7 @@ public class NaquadahReworkRecipeLoader {
                 Materials.Oxygen.getGas(100L))
             .duration(10 * SECONDS)
             .eut(GTValues.VP[10])
-            .metadata(QFT_CATALYST, GTUtility.copyAmount(0, GenericChem.mSimpleNaquadahCatalyst))
+            .metadata(QFT_CATALYST, GregtechItemList.SimpleNaquadahCatalyst.get(0))
             .metadata(QFT_FOCUS_TIER, 2)
             .addTo(quantumForceTransformerRecipes);
         // Enriched Naquadah (UIV)
@@ -121,7 +121,7 @@ public class NaquadahReworkRecipeLoader {
             .fluidOutputs(wasteLiquid.getFluidOrGas(32000))
             .duration(10 * SECONDS)
             .eut(GTValues.VP[11])
-            .metadata(QFT_CATALYST, GTUtility.copyAmount(0, GenericChem.mSimpleNaquadahCatalyst))
+            .metadata(QFT_CATALYST, GregtechItemList.SimpleNaquadahCatalyst.get(0))
             .metadata(QFT_FOCUS_TIER, 2)
             .addTo(quantumForceTransformerRecipes);
         // Naquadria (UMV)
@@ -138,7 +138,7 @@ public class NaquadahReworkRecipeLoader {
                 Materials.Oxygen.getGas(100L))
             .duration(5 * SECONDS)
             .eut(GTValues.VP[12])
-            .metadata(QFT_CATALYST, GTUtility.copyAmount(0, GenericChem.mAdvancedNaquadahCatalyst))
+            .metadata(QFT_CATALYST, GregtechItemList.AdvancedNaquadahCatalyst.get(0))
             .metadata(QFT_FOCUS_TIER, 3)
             .addTo(quantumForceTransformerRecipes);
 
@@ -152,7 +152,6 @@ public class NaquadahReworkRecipeLoader {
             .duration(1 * MINUTES + 40 * SECONDS)
             .eut(0)
             .metadata(NKE_RANGE, computeRangeNKE(600, 500))
-            .noOptimize()
             .addTo(neutronActivatorRecipes);
         GTValues.RA.stdBuilder()
             .itemInputs(
@@ -164,7 +163,6 @@ public class NaquadahReworkRecipeLoader {
             .duration(1 * MINUTES + 40 * SECONDS)
             .eut(0)
             .metadata(NKE_RANGE, computeRangeNKE(900, 850))
-            .noOptimize()
             .addTo(neutronActivatorRecipes);
         GTValues.RA.stdBuilder()
             .itemInputs(inertNaquadria.get(OrePrefixes.dust, 64), inertNaquadria.get(OrePrefixes.dust, 32))
@@ -174,7 +172,6 @@ public class NaquadahReworkRecipeLoader {
             .duration(1 * MINUTES + 40 * SECONDS)
             .eut(0)
             .metadata(NKE_RANGE, computeRangeNKE(1100, 1080))
-            .noOptimize()
             .addTo(neutronActivatorRecipes);
 
         // Naquadah Rework Line
@@ -264,7 +261,6 @@ public class NaquadahReworkRecipeLoader {
             .duration(5 * SECONDS)
             .eut(0)
             .metadata(NKE_RANGE, computeRangeNKE(230, 200))
-            .noOptimize()
             .addTo(neutronActivatorRecipes);
 
         GTValues.RA.stdBuilder()
@@ -344,7 +340,6 @@ public class NaquadahReworkRecipeLoader {
             .duration(6 * SECONDS)
             .eut(0)
             .metadata(NKE_RANGE, computeRangeNKE(480, 460))
-            .noOptimize()
             .addTo(neutronActivatorRecipes);
 
         // Nq+(SO4)2 + 2Zn = Nq+ + 2ZnSO4
@@ -422,7 +417,6 @@ public class NaquadahReworkRecipeLoader {
             .duration(5 * SECONDS)
             .eut(0)
             .metadata(NKE_RANGE, computeRangeNKE(1100, 1050))
-            .noOptimize()
             .addTo(neutronActivatorRecipes);
 
         GTValues.RA.stdBuilder()

@@ -9,6 +9,7 @@ import static mcp.mobius.waila.api.SpecialChars.RED;
 import static mcp.mobius.waila.api.SpecialChars.RESET;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -19,7 +20,10 @@ import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.GTMod;
+import gregtech.api.enums.StructureError;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
@@ -36,6 +40,7 @@ import gregtech.api.util.HatchElementBuilder;
 import gregtech.api.util.IGTHatchAdder;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
+import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchSteamBusInput;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchSteamBusOutput;
 import mcp.mobius.waila.api.IWailaConfigHandler;
@@ -82,7 +87,7 @@ public abstract class MTESteamMultiBase<T extends MTESteamMultiBase<T>> extends 
 
     @Override
     protected ProcessingLogic createProcessingLogic() {
-        return new ProcessingLogic().setMaxParallelSupplier(this::getMaxParallelRecipes);
+        return new ProcessingLogic().setMaxParallelSupplier(this::getTrueParallel);
     }
 
     @Override
@@ -352,6 +357,30 @@ public abstract class MTESteamMultiBase<T extends MTESteamMultiBase<T>> extends 
     }
 
     @Override
+    protected void validateStructure(Collection<StructureError> errors, NBTTagCompound context) {
+        super.validateStructure(errors, context);
+
+        if (mSteamInputFluids.isEmpty()) {
+            errors.add(StructureError.MISSING_STEAM_HATCH);
+        }
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    protected void localizeStructureErrors(Collection<StructureError> errors, NBTTagCompound context,
+        List<String> lines) {
+        super.localizeStructureErrors(errors, context, lines);
+
+        if (errors.contains(StructureError.MISSING_STEAM_HATCH)) {
+            lines.add(
+                StatCollector.translateToLocalFormatted(
+                    "GT5U.gui.missing_hatch",
+                    GregtechItemList.Hatch_Input_Steam.get(1)
+                        .getDisplayName()));
+        }
+    }
+
+    @Override
     public boolean resetRecipeMapForAllInputHatches(RecipeMap<?> aMap) {
         boolean ret = super.resetRecipeMapForAllInputHatches(aMap);
         for (MTEHatchSteamBusInput hatch : mSteamInputs) {
@@ -374,13 +403,17 @@ public abstract class MTESteamMultiBase<T extends MTESteamMultiBase<T>> extends 
         final NBTTagCompound tag = accessor.getNBTData();
 
         if (tag.getBoolean("incompleteStructure")) {
-            currentTip.add(RED + "** INCOMPLETE STRUCTURE **" + RESET);
+            currentTip
+                .add(RED + StatCollector.translateToLocalFormatted("GT5U.waila.multiblock.status.incomplete") + RESET);
         }
-        String efficiency = RESET + "  Efficiency: " + tag.getFloat("efficiency") + "%";
+        String efficiency = RESET + StatCollector
+            .translateToLocalFormatted("GT5U.waila.multiblock.status.efficiency", tag.getFloat("efficiency"));
         if (tag.getBoolean("hasProblems")) {
-            currentTip.add(RED + "** HAS PROBLEMS **" + efficiency);
+            currentTip
+                .add(RED + StatCollector.translateToLocal("GT5U.waila.multiblock.status.has_problem") + efficiency);
         } else if (!tag.getBoolean("incompleteStructure")) {
-            currentTip.add(GREEN + "Running Fine" + efficiency);
+            currentTip
+                .add(GREEN + StatCollector.translateToLocal("GT5U.waila.multiblock.status.running_fine") + efficiency);
         }
 
         boolean isActive = tag.getBoolean("isActive");
@@ -401,7 +434,9 @@ public abstract class MTESteamMultiBase<T extends MTESteamMultiBase<T>> extends 
         // Show ns on the tooltip
         if (GTMod.gregtechproxy.wailaAverageNS && tag.hasKey("averageNS")) {
             int tAverageTime = tag.getInteger("averageNS");
-            currentTip.add("Average CPU load of ~" + formatNumbers(tAverageTime) + " ns");
+            currentTip.add(
+                StatCollector
+                    .translateToLocalFormatted("GT5U.waila.multiblock.status.cpu_load", formatNumbers(tAverageTime)));
         }
         super.getMTEWailaBody(itemStack, currentTip, accessor, config);
     }

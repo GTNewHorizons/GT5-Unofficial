@@ -57,6 +57,10 @@ public class MTEHatchEnergyMulti extends MTEHatch {
         Amperes = maxAmperes = aAmp;
     }
 
+    public int getHatchType() {
+        return 1;
+    }
+
     @Override
     public ITexture[] getTexturesActive(ITexture aBaseTexture) {
         return new ITexture[] { aBaseTexture, Textures.OVERLAYS_ENERGY_IN_POWER_TT[mTier] };
@@ -65,11 +69,6 @@ public class MTEHatchEnergyMulti extends MTEHatch {
     @Override
     public ITexture[] getTexturesInactive(ITexture aBaseTexture) {
         return new ITexture[] { aBaseTexture, Textures.OVERLAYS_ENERGY_IN_POWER_TT[mTier] };
-    }
-
-    @Override
-    public boolean isSimpleMachine() {
-        return true;
     }
 
     @Override

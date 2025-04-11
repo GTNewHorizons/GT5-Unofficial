@@ -9,6 +9,7 @@ import java.util.Collections;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -30,7 +31,6 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.items.MetaGeneratedTool;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEBasicMachine;
-import gregtech.api.objects.GTItemStack;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
@@ -768,11 +768,18 @@ public class MTEAtmosphericReconditioner extends MTEBasicMachine {
                 * Math.max((tTier - 2), 1);
             reduction = MathUtils.safeInt(((long) reduction / 100) * this.mOptimalAirFlow);
 
-            aTooltipSuper.add("Maximum pollution removed per second: " + reduction);
+            aTooltipSuper.add(
+                StatCollector.translateToLocalFormatted(
+                    "gtpp.infodata.atmospheric_reconditioner.maximum_pollution_removed",
+                    reduction));
         } catch (Throwable t) {
-            aTooltipSuper.add("Maximum pollution removed per second: " + mPollutionReduction);
+            aTooltipSuper.add(
+                StatCollector.translateToLocalFormatted(
+                    "gtpp.infodata.atmospheric_reconditioner.maximum_pollution_removed",
+                    mPollutionReduction));
         }
-        aTooltipSuper.add("Air Sides: " + mAirSides);
+        aTooltipSuper.add(
+            StatCollector.translateToLocalFormatted("gtpp.infodata.atmospheric_reconditioner.air_sides", mAirSides));
 
         String[] mBuiltOutput = new String[aTooltipSuper.size()];
         int aIndex = 0;
@@ -789,11 +796,11 @@ public class MTEAtmosphericReconditioner extends MTEBasicMachine {
     }
 
     @Override
-    public boolean allowCoverOnSide(ForgeDirection side, GTItemStack aCoverID) {
+    public boolean allowCoverOnSide(ForgeDirection side, ItemStack coverItem) {
         if (side.offsetY != 0) {
             return false;
         }
-        return super.allowCoverOnSide(side, aCoverID);
+        return super.allowCoverOnSide(side, coverItem);
     }
 
     @Override

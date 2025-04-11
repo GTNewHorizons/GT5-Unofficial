@@ -5,6 +5,7 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose
 import static gregtech.api.enums.GTValues.V;
 import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.Maintenance;
+import static gregtech.api.recipe.RecipeMaps.quantumComputerFakeRecipes;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTUtility.validMTEList;
 import static net.minecraft.util.StatCollector.translateToLocal;
@@ -22,6 +23,7 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
@@ -41,6 +43,7 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatch;
+import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
@@ -157,6 +160,11 @@ public class MTEQuantumComputer extends TTMultiblockBase implements ISurvivalCon
         super(aName);
         eCertainMode = 5;
         eCertainStatus = -128; // no-brain value
+    }
+
+    @Override
+    public RecipeMap<?> getRecipeMap() {
+        return quantumComputerFakeRecipes;
     }
 
     @Override
@@ -554,12 +562,13 @@ public class MTEQuantumComputer extends TTMultiblockBase implements ISurvivalCon
         if (wirelessModeEnabled) {
             WirelessComputationPacket wirelessComputationPacket = WirelessComputationPacket
                 .getPacketByUserId(getBaseMetaTileEntity().getOwnerUuid());
-            data.add("Wireless mode: " + EnumChatFormatting.GREEN + "enabled");
+            data.add(StatCollector.translateToLocal("tt.infodata.qc.wireless_mode.enabled"));
             data.add(
-                "Total wireless computation available: " + EnumChatFormatting.YELLOW
-                    + wirelessComputationPacket.getAvailableComputationStored());
+                StatCollector.translateToLocalFormatted(
+                    "tt.infodata.qc.total_wireless_computation",
+                    "" + EnumChatFormatting.YELLOW + wirelessComputationPacket.getAvailableComputationStored()));
         } else {
-            data.add("Wireless mode: " + EnumChatFormatting.RED + "disabled");
+            data.add(StatCollector.translateToLocal("tt.infodata.qc.wireless_mode.disabled"));
         }
         return data.toArray(new String[] {});
     }

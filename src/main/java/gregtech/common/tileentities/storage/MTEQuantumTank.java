@@ -1,6 +1,7 @@
 package gregtech.common.tileentities.storage;
 
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -11,10 +12,6 @@ public class MTEQuantumTank extends MTEDigitalTankBase {
 
     public MTEQuantumTank(int aID, String aName, String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional, aTier);
-    }
-
-    public MTEQuantumTank(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {
-        super(aName, aTier, aDescription, aTextures);
     }
 
     public MTEQuantumTank(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
@@ -30,8 +27,13 @@ public class MTEQuantumTank extends MTEDigitalTankBase {
     public String[] getInfoData() {
 
         if (mFluid == null) {
-            return new String[] { EnumChatFormatting.BLUE + "Quantum Tank" + EnumChatFormatting.RESET, "Stored Fluid:",
-                EnumChatFormatting.GOLD + "No Fluid" + EnumChatFormatting.RESET,
+            return new String[] {
+                EnumChatFormatting.BLUE + StatCollector.translateToLocal("GT5U.infodata.quantum_tank.name")
+                    + EnumChatFormatting.RESET,
+                StatCollector.translateToLocal("GT5U.infodata.digital_tank.stored_fluid"),
+                EnumChatFormatting.GOLD
+                    + StatCollector.translateToLocal("GT5U.infodata.digital_tank.stored_fluid.empty")
+                    + EnumChatFormatting.RESET,
                 EnumChatFormatting.GREEN + Integer.toString(0)
                     + " L"
                     + EnumChatFormatting.RESET
@@ -41,7 +43,10 @@ public class MTEQuantumTank extends MTEDigitalTankBase {
                     + " L"
                     + EnumChatFormatting.RESET };
         }
-        return new String[] { EnumChatFormatting.BLUE + "Quantum Tank" + EnumChatFormatting.RESET, "Stored Fluid:",
+        return new String[] {
+            EnumChatFormatting.BLUE + StatCollector.translateToLocal("GT5U.infodata.quantum_tank.name")
+                + EnumChatFormatting.RESET,
+            StatCollector.translateToLocal("GT5U.infodata.digital_tank.stored_fluid"),
             EnumChatFormatting.GOLD + mFluid.getLocalizedName() + EnumChatFormatting.RESET,
             EnumChatFormatting.GREEN + GTUtility.formatNumbers(mFluid.amount)
                 + " L"

@@ -5,17 +5,13 @@ import static gregtech.api.enums.Mods.IndustrialCraft2;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
-import java.util.TreeMap;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.IntFunction;
-import java.util.stream.Collectors;
 
 import javax.annotation.Nonnull;
 
@@ -26,17 +22,13 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
-import com.google.common.collect.Multimap;
-import com.google.common.collect.Multimaps;
 import com.google.common.collect.SetMultimap;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.api.enums.GTValues;
+import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
-import gregtech.api.enums.SoundResource;
 import gregtech.api.interfaces.IDamagableItem;
-import gregtech.api.interfaces.internal.IGTRecipeAdder;
 import gregtech.api.interfaces.internal.IThaumcraftCompat;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IMachineBlockUpdateable;
@@ -53,7 +45,6 @@ import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gregtech.api.world.GTWorldgen;
 import gregtech.common.GTDummyWorld;
-import gregtech.common.items.ItemIntegratedCircuit;
 
 /**
  * Please do not include this File in your Mod-download as it ruins compatibility, like with the IC2-API You may just
@@ -93,7 +84,13 @@ public class GregTechAPI {
      */
     public static final CreativeTabs TAB_GREGTECH = new GTCreativeTab("Main", "Main"),
         TAB_GREGTECH_MATERIALS = new GTCreativeTab("Materials", "Materials"),
-        TAB_GREGTECH_ORES = new GTCreativeTab("Ores", "Ores");
+        TAG_GREGTECH_CASINGS = new GTCreativeTab("Casings", "Casings") {
+
+            @Override
+            public ItemStack getIconItemStack() {
+                return ItemList.Casing_RobustTungstenSteel.get(1);
+            }
+        }, TAB_GREGTECH_ORES = new GTCreativeTab("Ores", "Ores");
 
     public static final IMetaTileEntity[] METATILEENTITIES = new IMetaTileEntity[MAXIMUM_METATILE_IDS];
 
@@ -123,29 +120,12 @@ public class GregTechAPI {
      */
     public static final Map<String, ItemStack> sBookList = new ConcurrentHashMap<>();
     /**
-     * The List of all Sounds used in GT, indices are in the static Block at the bottom
-     *
-     * @deprecated Use {@link SoundResource}
-     */
-    @Deprecated
-    public static final Map<Integer, String> sSoundList = SoundResource.asSoundList();
-    /**
      * The List of Tools, which can be used. Accepts regular damageable Items and Electric Items
      */
     public static final GTHashSet sToolList = new GTHashSet(), sCrowbarList = new GTHashSet(),
         sScrewdriverList = new GTHashSet(), sWrenchList = new GTHashSet(), sSoftHammerList = new GTHashSet(),
         sHardHammerList = new GTHashSet(), sWireCutterList = new GTHashSet(), sSolderingToolList = new GTHashSet(),
         sSolderingMetalList = new GTHashSet(), sJackhammerList = new GTHashSet();
-    /**
-     * The List of Hazmat Armors
-     */
-    public static final GTHashSet sGasHazmatList = new GTHashSet(), sBioHazmatList = new GTHashSet(),
-        sFrostHazmatList = new GTHashSet(), sHeatHazmatList = new GTHashSet(), sRadioHazmatList = new GTHashSet(),
-        sElectroHazmatList = new GTHashSet();
-
-    private static final Multimap<Integer, ItemStack> sRealConfigurationList = Multimaps
-        .newListMultimap(new TreeMap<>(), ArrayList::new);
-    private static final Map<Integer, List<ItemStack>> sConfigurationLists = new ConcurrentHashMap<>();
 
     /**
      * The List of Dimensions, which are Whitelisted for the Teleporter. This list should not contain other Planets.
@@ -166,12 +146,6 @@ public class GregTechAPI {
      */
     public static volatile int VERSION = 509;
 
-    /**
-     * @deprecated Use {@link GTValues#RA}
-     */
-    @SuppressWarnings("DeprecatedIsStillUsed") // Still need be initialized for backward compat
-    @Deprecated
-    public static IGTRecipeAdder sRecipeAdder;
     /**
      * Registers Aspects to Thaumcraft. This Object might be {@code null} if Thaumcraft isn't installed.
      */
@@ -351,7 +325,11 @@ public class GregTechAPI {
     public static boolean isMachineBlock(Block aBlock, int aMeta) {
         if (aBlock != null) {
             Integer id = sMachineIDs.get(aBlock);
-            return id != null && (id & B[aMeta]) != 0;
+            if (id != null) {
+                if (id == -1) // for all-meta registrations, also with meta > 32
+                    return true;
+                return (id & B[aMeta]) != 0;
+            }
         }
         return false;
     }
@@ -368,60 +346,6 @@ public class GregTechAPI {
             e.printStackTrace(GTLog.err);
             throw new RuntimeException(e);
         }
-    }
-
-    /**
-     * Register a new ItemStack as configuration circuits. Duplicates or invalid stacks will be silently ignored.
-     */
-    public static void registerConfigurationCircuit(ItemStack aStack) {
-        registerConfigurationCircuit(aStack, 0);
-    }
-
-    /**
-     * Register a new ItemStack as configuration circuits. Duplicates or invalid stacks will be silently ignored.
-     *
-     * @param minTier the minimal tier this circuit can be offered for free, e.g. normal configuration circuit is
-     *                available in LV+ single blocks, GT++ breakthrough circuit is offered in HV+ single blocks
-     */
-    public static void registerConfigurationCircuit(ItemStack aStack, int minTier) {
-        if (GTUtility.isStackInvalid(aStack)) return;
-        for (ItemStack tRegistered : sRealConfigurationList.values())
-            if (GTUtility.areStacksEqual(tRegistered, aStack)) return;
-        ItemStack stack = GTUtility.copyAmount(0, aStack);
-        sRealConfigurationList.put(minTier, stack);
-        for (Map.Entry<Integer, List<ItemStack>> e : sConfigurationLists.entrySet()) {
-            if (e.getKey() >= minTier) {
-                e.getValue()
-                    .add(stack);
-                e.getValue()
-                    .sort(getConfigurationCircuitsComparator());
-            }
-        }
-    }
-
-    /**
-     * Get a list of Configuration circuits. These stacks will have a stack size of 0. Use
-     * {@link #registerConfigurationCircuit(ItemStack, int)} or its overload to add to this list.
-     *
-     * @param machineTier The voltage tier where this list will be used. use Integer.MAX_VALUE to get all circuits
-     * @return An unmodifiable view of actual list. DO NOT MODIFY THE ItemStacks!
-     */
-    public static List<ItemStack> getConfigurationCircuitList(int machineTier) {
-        return Collections.unmodifiableList(
-            sConfigurationLists.computeIfAbsent(
-                machineTier,
-                (t) -> sRealConfigurationList.entries()
-                    .stream()
-                    .filter(e -> e.getKey() <= machineTier)
-                    .map(Map.Entry::getValue)
-                    .sorted(getConfigurationCircuitsComparator())
-                    .collect(Collectors.toList())));
-    }
-
-    public static Comparator<ItemStack> getConfigurationCircuitsComparator() {
-        return Comparator.comparingInt((ItemStack is) -> is.getItem() instanceof ItemIntegratedCircuit ? 0 : 1)
-            .thenComparing(ItemStack::getUnlocalizedName)
-            .thenComparing(ItemStack::getItemDamage);
     }
 
     /**

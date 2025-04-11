@@ -621,7 +621,7 @@ public class MTEPCBFactory extends MTEAOUnitBase<MTEPCBFactory> implements ISurv
             protected OverclockCalculator createOverclockCalculator(@Nonnull GTRecipe recipe) {
                 return super.createOverclockCalculator(recipe).setNoOverclock(isNoOC())
                     .setEUtDiscount(Math.sqrt(mUpgradesInstalled == 0 ? 1 : mUpgradesInstalled))
-                    .setSpeedBoost(getDurationMultiplierFromRoughness())
+                    .setDurationModifier(getDurationMultiplierFromRoughness())
                     .setDurationDecreasePerOC(mOCTier2 ? 4.0 : 2.0);
             }
 

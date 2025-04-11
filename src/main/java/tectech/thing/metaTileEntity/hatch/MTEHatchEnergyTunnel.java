@@ -16,7 +16,6 @@ import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 import com.gtnewhorizons.modularui.common.widget.textfield.NumericWidget;
 
-import gregtech.api.gui.modularui.GTUIInfos;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -51,6 +50,11 @@ public class MTEHatchEnergyTunnel extends MTEHatchEnergyMulti implements IConnec
 
     public MTEHatchEnergyTunnel(String aName, int aTier, int aAmp, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, aAmp, aDescription, aTextures);
+    }
+
+    @Override
+    public int getHatchType() {
+        return 2;
     }
 
     @Override
@@ -108,7 +112,7 @@ public class MTEHatchEnergyTunnel extends MTEHatchEnergyMulti implements IConnec
     @Override
     public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
         ItemStack aTool) {
-        GTUIInfos.openGTTileEntityUI(this.getBaseMetaTileEntity(), aPlayer);
+        openGui(aPlayer);
         super.onScrewdriverRightClick(side, aPlayer, aX, aY, aZ, aTool);
     }
 

@@ -883,17 +883,17 @@ public class RecipeLoader2 {
 
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(24))
-            .fluidInputs(FluidRegistry.getFluidStack("fluid.coaltaroil", 100))
-            .fluidOutputs(GGMaterial.cyclopentadiene.getFluidOrGas(30))
-            .duration(5 * SECONDS)
+            .fluidInputs(FluidRegistry.getFluidStack("fluid.coaltaroil", 20))
+            .fluidOutputs(GGMaterial.cyclopentadiene.getFluidOrGas(6))
+            .duration(1 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(distilleryRecipes);
 
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(24))
-            .fluidInputs(Materials.WoodTar.getFluid(500))
-            .fluidOutputs(GGMaterial.cyclopentadiene.getFluidOrGas(20))
-            .duration(5 * SECONDS)
+            .fluidInputs(Materials.WoodTar.getFluid(100))
+            .fluidOutputs(GGMaterial.cyclopentadiene.getFluidOrGas(4))
+            .duration(1 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(distilleryRecipes);
 
@@ -1217,7 +1217,6 @@ public class RecipeLoader2 {
                 .duration(5 * SECONDS)
                 .eut(TierEU.RECIPE_LuV)
                 .metadata(PRECISE_ASSEMBLER_CASING_TIER, 1)
-                .noOptimize()
                 .addTo(preciseAssemblerRecipes);
             GTValues.RA.stdBuilder()
                 .itemInputs(
@@ -1234,7 +1233,6 @@ public class RecipeLoader2 {
                 .duration(5 * SECONDS)
                 .eut(TierEU.RECIPE_LuV)
                 .metadata(PRECISE_ASSEMBLER_CASING_TIER, 1)
-                .noOptimize()
                 .addTo(preciseAssemblerRecipes);
             GTValues.RA.stdBuilder()
                 .itemInputs(
@@ -1251,7 +1249,6 @@ public class RecipeLoader2 {
                 .duration(5 * SECONDS)
                 .eut(TierEU.RECIPE_ZPM)
                 .metadata(PRECISE_ASSEMBLER_CASING_TIER, 2)
-                .noOptimize()
                 .addTo(preciseAssemblerRecipes);
             GTValues.RA.stdBuilder()
                 .itemInputs(
@@ -1268,7 +1265,6 @@ public class RecipeLoader2 {
                 .duration(5 * SECONDS)
                 .eut(TierEU.RECIPE_ZPM)
                 .metadata(PRECISE_ASSEMBLER_CASING_TIER, 2)
-                .noOptimize()
                 .addTo(preciseAssemblerRecipes);
             GTValues.RA.stdBuilder()
                 .itemInputs(
@@ -1285,7 +1281,6 @@ public class RecipeLoader2 {
                 .duration(5 * SECONDS)
                 .eut(TierEU.RECIPE_UV)
                 .metadata(PRECISE_ASSEMBLER_CASING_TIER, 3)
-                .noOptimize()
                 .addTo(preciseAssemblerRecipes);
             GTValues.RA.stdBuilder()
                 .itemInputs(
@@ -1302,7 +1297,6 @@ public class RecipeLoader2 {
                 .duration(5 * SECONDS)
                 .eut(TierEU.RECIPE_UV)
                 .metadata(PRECISE_ASSEMBLER_CASING_TIER, 3)
-                .noOptimize()
                 .addTo(preciseAssemblerRecipes);
             GTValues.RA.stdBuilder()
                 .itemInputs(
@@ -1319,7 +1313,6 @@ public class RecipeLoader2 {
                 .duration(5 * SECONDS)
                 .eut(TierEU.RECIPE_UHV)
                 .metadata(PRECISE_ASSEMBLER_CASING_TIER, 3)
-                .noOptimize()
                 .addTo(preciseAssemblerRecipes);
             GTValues.RA.stdBuilder()
                 .itemInputs(
@@ -1336,7 +1329,6 @@ public class RecipeLoader2 {
                 .duration(5 * SECONDS)
                 .eut(TierEU.RECIPE_UHV)
                 .metadata(PRECISE_ASSEMBLER_CASING_TIER, 3)
-                .noOptimize()
                 .addTo(preciseAssemblerRecipes);
 
             GTValues.RA.stdBuilder()
@@ -1427,7 +1419,6 @@ public class RecipeLoader2 {
             .duration(60 * SECONDS)
             .eut(9001)
             .metadata(PRECISE_ASSEMBLER_CASING_TIER, 1)
-            .noOptimize()
             .addTo(preciseAssemblerRecipes);
         // Compact MK2 Fusion Coil
         GTValues.RA.stdBuilder()
@@ -1440,7 +1431,6 @@ public class RecipeLoader2 {
             .duration(40 * SECONDS)
             .eut(14000)
             .metadata(PRECISE_ASSEMBLER_CASING_TIER, 2)
-            .noOptimize()
             .addTo(preciseAssemblerRecipes);
         // Compact MK3 Fusion Coil
         GTValues.RA.stdBuilder()
@@ -1454,7 +1444,6 @@ public class RecipeLoader2 {
             .duration(40 * SECONDS)
             .eut(114514)
             .metadata(PRECISE_ASSEMBLER_CASING_TIER, 3)
-            .noOptimize()
             .addTo(preciseAssemblerRecipes);
 
         GTValues.RA.stdBuilder()
@@ -1478,10 +1467,7 @@ public class RecipeLoader2 {
             .metadata(SCANNING, new Scanning(2 * MINUTES + 30 * SECONDS, TierEU.RECIPE_LuV))
             .itemInputs(
                 ItemList.FusionComputer_ZPMV.get(48),
-                new Object[] { "circuitUltimate", 1 },
-                new Object[] { "circuitUltimate", 1 },
-                new Object[] { "circuitUltimate", 1 },
-                new Object[] { "circuitUltimate", 1 },
+                new Object[] { OrePrefixes.circuit.get(Materials.ZPM), 4 },
                 ItemList.Circuit_Wafer_UHPIC.get(32),
                 ItemList.ZPM_Coil.get(16),
                 ItemList.Neutron_Reflector.get(4),
@@ -1503,10 +1489,7 @@ public class RecipeLoader2 {
             .metadata(SCANNING, new Scanning(2 * MINUTES + 30 * SECONDS, TierEU.RECIPE_ZPM))
             .itemInputs(
                 ItemList.FusionComputer_UV.get(48),
-                new Object[] { "circuitSuperconductor", 1 },
-                new Object[] { "circuitSuperconductor", 1 },
-                new Object[] { "circuitSuperconductor", 1 },
-                new Object[] { "circuitSuperconductor", 1 },
+                new Object[] { OrePrefixes.circuit.get(Materials.UV), 4 },
                 ItemList.Circuit_Wafer_NPIC.get(64),
                 ItemList.UV_Coil.get(16),
                 ItemRefer.Advanced_Radiation_Protection_Plate.get(8),
@@ -1532,7 +1515,6 @@ public class RecipeLoader2 {
             .duration(1 * MINUTES + 40 * SECONDS)
             .eut(TierEU.RECIPE_UV)
             .metadata(PRECISE_ASSEMBLER_CASING_TIER, 3)
-            .noOptimize()
             .addTo(preciseAssemblerRecipes);
 
         // Compact MK4 Fusion Disassembly Recipe
@@ -1543,16 +1525,16 @@ public class RecipeLoader2 {
             .eut(TierEU.RECIPE_UEV)
             .addTo(assemblerRecipes);
 
+        // Compact MK4 Computer
         TTRecipeAdder.addResearchableAssemblylineRecipe(
             ItemRefer.Compact_Fusion_MK3.get(1),
             2_560_000,
             4_096,
             (int) TierEU.RECIPE_UHV,
             256,
-            new Object[] { GregtechItemList.FusionComputer_UV2.get(48), new Object[] { "circuitInfinite", 1 },
-                new Object[] { "circuitInfinite", 1 }, new Object[] { "circuitInfinite", 1 },
-                new Object[] { "circuitInfinite", 1 }, ItemList.Circuit_Wafer_PPIC.get(64), ItemList.UHV_Coil.get(16),
-                MaterialsAlloy.TITANSTEEL.getPlateDense(8), ItemRefer.HiC_T4.get(8),
+            new Object[] { GregtechItemList.FusionComputer_UV2.get(48),
+                new Object[] { OrePrefixes.circuit.get(Materials.UHV), 4 }, ItemList.Circuit_Wafer_PPIC.get(64),
+                ItemList.UHV_Coil.get(16), MaterialsAlloy.TITANSTEEL.getPlateDense(8), ItemRefer.HiC_T4.get(8),
                 ItemList.Field_Generator_UHV.get(8),
                 GGMaterial.enrichedNaquadahAlloy.get(OrePrefixes.gearGtSmall, 64) },
             new FluidStack[] { Materials.RadoxPolymer.getMolten(1296), GGMaterial.dalisenite.getMolten(1152),
@@ -1575,7 +1557,6 @@ public class RecipeLoader2 {
             .duration(1 * MINUTES + 40 * SECONDS)
             .eut(TierEU.RECIPE_UHV)
             .metadata(PRECISE_ASSEMBLER_CASING_TIER, 3)
-            .noOptimize()
             .addTo(preciseAssemblerRecipes);
 
         // Compact MK5 Computer
@@ -1585,11 +1566,11 @@ public class RecipeLoader2 {
             16_384,
             (int) TierEU.RECIPE_UEV,
             256,
-            new Object[] { GregtechItemList.FusionComputer_UV3.get(48), new Object[] { "circuitBio", 1 },
-                new Object[] { "circuitBio", 1 }, new Object[] { "circuitBio", 1 }, new Object[] { "circuitBio", 1 },
-                ItemList.Circuit_Wafer_QPIC.get(64), ItemList.UHV_Coil.get(64),
-                MaterialsElements.STANDALONE.HYPOGEN.getPlateDense(8), ItemRefer.HiC_T5.get(8),
-                ItemList.Field_Generator_UEV.get(8), GGMaterial.metastableOganesson.get(OrePrefixes.gearGtSmall, 64) },
+            new Object[] { GregtechItemList.FusionComputer_UV3.get(48),
+                new Object[] { OrePrefixes.circuit.get(Materials.UEV), 4 }, ItemList.Circuit_Wafer_QPIC.get(64),
+                ItemList.UHV_Coil.get(64), MaterialsElements.STANDALONE.HYPOGEN.getPlateDense(8),
+                ItemRefer.HiC_T5.get(8), ItemList.Field_Generator_UEV.get(8),
+                GGMaterial.metastableOganesson.get(OrePrefixes.gearGtSmall, 64) },
             new FluidStack[] { GGMaterial.tairitsu.getMolten(2304), MaterialsAlloy.OCTIRON.getFluidStack(1152),
                 MaterialsElements.STANDALONE.RHUGNOR.getFluidStack(288) },
             ItemRefer.Compact_Fusion_MK5.get(1),
@@ -1823,7 +1804,7 @@ public class RecipeLoader2 {
             .fluidOutputs(GGMaterial.metastableOganesson.getMolten(36))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_UV)
-            .metadata(FUSION_THRESHOLD, 1_000_000_000)
+            .metadata(FUSION_THRESHOLD, 1_000_000_000L)
             .addTo(fusionRecipes);
 
         // Mk5 recipe
@@ -1832,7 +1813,7 @@ public class RecipeLoader2 {
             .fluidOutputs(GGMaterial.metastableOganesson.getMolten(288))
             .eut(TierEU.RECIPE_UEV)
             .duration(5 * SECONDS)
-            .metadata(FUSION_THRESHOLD, 1_000_000_000)
+            .metadata(FUSION_THRESHOLD, 1_000_000_000L)
             .addTo(fusionRecipes);
 
         GTValues.RA.stdBuilder()
@@ -1841,7 +1822,6 @@ public class RecipeLoader2 {
             .duration(1 * MINUTES + 40 * SECONDS)
             .eut(0)
             .metadata(NKE_RANGE, computeRangeNKE(1100, 1000))
-            .noOptimize()
             .addTo(neutronActivatorRecipes);
 
         GTValues.RA.stdBuilder()

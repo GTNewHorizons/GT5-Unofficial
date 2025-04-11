@@ -11,6 +11,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ChatComponentTranslation;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -33,7 +34,6 @@ import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Textures;
-import gregtech.api.gui.modularui.GTUIInfos;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.gui.modularui.GUITextureSet;
 import gregtech.api.interfaces.ITexture;
@@ -51,19 +51,19 @@ public class MTEAdvDebugStructureWriter extends MTETieredMachineBlock implements
     private final short[] numbers = new short[6];
     private boolean transpose = false;
     private boolean showHighlightBox = true;
-    private String[] result = new String[] { "Undefined" };
+    private String[] result = new String[] { StatCollector.translateToLocal("GT5U.infodata.undefined") };
 
     public MTEAdvDebugStructureWriter(int aID, String aName, String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional, aTier, 0, "");
     }
 
-    public MTEAdvDebugStructureWriter(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {
+    public MTEAdvDebugStructureWriter(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, 0, aDescription, aTextures);
     }
 
     @Override
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new MTEAdvDebugStructureWriter(mName, mTier, "", mTextures);
+        return new MTEAdvDebugStructureWriter(mName, mTier, mDescriptionArray, mTextures);
     }
 
     @Override
@@ -116,11 +116,6 @@ public class MTEAdvDebugStructureWriter extends MTETieredMachineBlock implements
         }
         transpose = aNBT.getBoolean("Transpose");
         showHighlightBox = aNBT.getBoolean("HighlightBox");
-    }
-
-    @Override
-    public boolean isSimpleMachine() {
-        return false;
     }
 
     @Override
@@ -193,7 +188,7 @@ public class MTEAdvDebugStructureWriter extends MTETieredMachineBlock implements
 
     @Override
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
-        GTUIInfos.openGTTileEntityUI(aBaseMetaTileEntity, aPlayer);
+        openGui(aPlayer);
         return true;
     }
 

@@ -34,6 +34,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.IllegalFormatException;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
@@ -136,7 +137,6 @@ import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
 import gregtech.api.damagesources.GTDamageSources;
 import gregtech.api.damagesources.GTDamageSources.DamageSourceHotItem;
-import gregtech.api.enchants.EnchantmentHazmat;
 import gregtech.api.enchants.EnchantmentRadioactivity;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
@@ -148,6 +148,7 @@ import gregtech.api.enums.SubTag;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.ToolDictNames;
 import gregtech.api.events.BlockScanningEvent;
+import gregtech.api.hazards.HazardProtection;
 import gregtech.api.interfaces.IBlockContainer;
 import gregtech.api.interfaces.IDebugableBlock;
 import gregtech.api.interfaces.IHasIndexedTexture;
@@ -172,6 +173,7 @@ import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.threads.RunnableSound;
 import gregtech.api.util.extensions.ArrayExt;
 import gregtech.common.blocks.BlockOresAbstract;
+import gregtech.common.items.ItemIntegratedCircuit;
 import gregtech.common.pollution.Pollution;
 import ic2.api.recipe.IRecipeInput;
 import ic2.api.recipe.RecipeInputItemStack;
@@ -1878,12 +1880,15 @@ public class GTUtility {
             }
             return null;
         }
-        if (aCheckIFluidContainerItems && aStack.getItem() instanceof IFluidContainerItem
-            && ((IFluidContainerItem) aStack.getItem()).getFluid(aStack) == null
-            && ((IFluidContainerItem) aStack.getItem()).getCapacity(aStack) <= aFluid.amount) {
-            if (aRemoveFluidDirectly) aFluid.amount -= ((IFluidContainerItem) aStack.getItem())
-                .fill(aStack = copyAmount(1, aStack), aFluid, true);
-            else((IFluidContainerItem) aStack.getItem()).fill(aStack = copyAmount(1, aStack), aFluid, true);
+        if (aCheckIFluidContainerItems && aStack.getItem() instanceof IFluidContainerItem fluidContainerItem
+            && fluidContainerItem.getFluid(aStack) == null
+            && fluidContainerItem.getCapacity(aStack) > 0
+            && fluidContainerItem.getCapacity(aStack) <= aFluid.amount) {
+            if (aRemoveFluidDirectly) {
+                aFluid.amount -= fluidContainerItem.fill(aStack = copyAmount(1, aStack), aFluid, true);
+            } else {
+                fluidContainerItem.fill(aStack = copyAmount(1, aStack), aFluid, true);
+            }
             return aStack;
         }
         Map<String, FluidContainerData> tFluidToContainer = sEmptyContainerToFluidToData.get(new GTItemStack(aStack));
@@ -2571,34 +2576,6 @@ public class GTUtility {
                 + metaFromBlock);
     }
 
-    /**
-     * Converts a Number to a String
-     */
-    public static String parseNumberToString(int aNumber) {
-        boolean temp = true, negative = false;
-
-        if (aNumber < 0) {
-            aNumber *= -1;
-            negative = true;
-        }
-
-        StringBuilder tStringB = new StringBuilder();
-        for (int i = 1000000000; i > 0; i /= 10) {
-            int tDigit = (aNumber / i) % 10;
-            if (temp && tDigit != 0) temp = false;
-            if (!temp) {
-                tStringB.append(tDigit);
-                if (i != 1) for (int j = i; j > 0; j /= 1000) if (j == 1) tStringB.append(",");
-            }
-        }
-
-        String tString = tStringB.toString();
-
-        if (tString.equals(E)) tString = "0";
-
-        return negative ? "-" + tString : tString;
-    }
-
     public static NBTTagCompound getNBTContainingBoolean(NBTTagCompound aNBT, Object aTag, boolean aValue) {
         if (aNBT == null) aNBT = new NBTTagCompound();
         aNBT.setBoolean(aTag.toString(), aValue);
@@ -2642,81 +2619,6 @@ public class GTUtility {
         return aNBT;
     }
 
-    public static boolean isWearingFullFrostHazmat(EntityLivingBase aEntity) {
-        for (byte i = 1; i < 5; i++) {
-            ItemStack tStack = aEntity.getEquipmentInSlot(i);
-
-            if (!isStackInList(tStack, GregTechAPI.sFrostHazmatList) && !hasHazmatEnchant(tStack)) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    public static boolean isWearingFullHeatHazmat(EntityLivingBase aEntity) {
-        for (byte i = 1; i < 5; i++) {
-            ItemStack tStack = aEntity.getEquipmentInSlot(i);
-
-            if (!isStackInList(tStack, GregTechAPI.sHeatHazmatList) && !hasHazmatEnchant(tStack)) {
-                return false;
-            }
-        }
-
-        return true;
-    }
-
-    public static boolean isWearingFullBioHazmat(EntityLivingBase aEntity) {
-        for (byte i = 1; i < 5; i++) {
-            ItemStack tStack = aEntity.getEquipmentInSlot(i);
-
-            if (!isStackInList(tStack, GregTechAPI.sBioHazmatList) && !hasHazmatEnchant(tStack)) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    public static boolean isWearingFullRadioHazmat(EntityLivingBase aEntity) {
-        for (byte i = 1; i < 5; i++) {
-            ItemStack tStack = aEntity.getEquipmentInSlot(i);
-
-            if (!isStackInList(tStack, GregTechAPI.sRadioHazmatList) && !hasHazmatEnchant(tStack)) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    public static boolean isWearingFullElectroHazmat(EntityLivingBase aEntity) {
-        for (byte i = 1; i < 5; i++) {
-            ItemStack tStack = aEntity.getEquipmentInSlot(i);
-
-            if (!isStackInList(tStack, GregTechAPI.sElectroHazmatList) && !hasHazmatEnchant(tStack)) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    public static boolean isWearingFullGasHazmat(EntityLivingBase aEntity) {
-        for (byte i = 1; i < 5; i++) {
-            ItemStack tStack = aEntity.getEquipmentInSlot(i);
-
-            if (!isStackInList(tStack, GregTechAPI.sGasHazmatList) && !hasHazmatEnchant(tStack)) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    public static boolean hasHazmatEnchant(ItemStack aStack) {
-        if (aStack == null) return false;
-        Map<Integer, Integer> tEnchantments = EnchantmentHelper.getEnchantments(aStack);
-        Integer tLevel = tEnchantments.get(EnchantmentHazmat.INSTANCE.effectId);
-
-        return tLevel != null && tLevel >= 1;
-    }
-
     public static float getHeatDamageFromItem(ItemStack aStack) {
         ItemData tData = GTOreDictUnificator.getItemData(aStack);
         return tData == null ? 0
@@ -2735,10 +2637,6 @@ public class GTUtility {
         return EnchantmentHelper.getEnchantmentLevel(EnchantmentRadioactivity.INSTANCE.effectId, aStack);
     }
 
-    public static boolean isImmuneToBreathingGasses(EntityLivingBase aEntity) {
-        return isWearingFullGasHazmat(aEntity);
-    }
-
     public static boolean applyHeatDamage(EntityLivingBase entity, float damage) {
         return applyHeatDamage(entity, damage, GTDamageSources.getHeatDamage());
     }
@@ -2748,7 +2646,7 @@ public class GTUtility {
     }
 
     private static boolean applyHeatDamage(EntityLivingBase aEntity, float aDamage, DamageSource source) {
-        if (aDamage > 0 && aEntity != null && !isWearingFullHeatHazmat(aEntity)) {
+        if (aDamage > 0 && aEntity != null && !HazardProtection.isWearingFullHeatHazmat(aEntity)) {
             try {
                 return aEntity.attackEntityFrom(source, aDamage);
             } catch (Throwable t) {
@@ -2759,7 +2657,7 @@ public class GTUtility {
     }
 
     public static boolean applyFrostDamage(EntityLivingBase aEntity, float aDamage) {
-        if (aDamage > 0 && aEntity != null && !isWearingFullFrostHazmat(aEntity)) {
+        if (aDamage > 0 && aEntity != null && !HazardProtection.isWearingFullFrostHazmat(aEntity)) {
             return aEntity.attackEntityFrom(GTDamageSources.getFrostDamage(), aDamage);
         }
         return false;
@@ -2767,7 +2665,7 @@ public class GTUtility {
 
     public static boolean applyElectricityDamage(EntityLivingBase aEntity, long aVoltage, long aAmperage) {
         long aDamage = getTier(aVoltage) * aAmperage * 4;
-        if (aDamage > 0 && aEntity != null && !isWearingFullElectroHazmat(aEntity)) {
+        if (aDamage > 0 && aEntity != null && !HazardProtection.isWearingFullElectroHazmat(aEntity)) {
             return aEntity.attackEntityFrom(GTDamageSources.getElectricDamage(), aDamage);
         }
         return false;
@@ -2777,7 +2675,7 @@ public class GTUtility {
         if (aLevel > 0 && aEntity != null
             && aEntity.getCreatureAttribute() != EnumCreatureAttribute.UNDEAD
             && aEntity.getCreatureAttribute() != EnumCreatureAttribute.ARTHROPOD
-            && !isWearingFullRadioHazmat(aEntity)) {
+            && !HazardProtection.isWearingFullRadioHazmat(aEntity)) {
             PotionEffect tEffect = null;
             aEntity.addPotionEffect(
                 new PotionEffect(
@@ -3591,8 +3489,8 @@ public class GTUtility {
         try {
             if (tTileEntity instanceof ICoverable coverable) {
                 rEUAmount += 300;
-                final String tString = coverable.getCoverInfoAtSide(side)
-                    .getBehaviorDescription();
+                final String tString = coverable.getCoverAtSide(side)
+                    .getDescription();
                 if (tString != null && !tString.equals(E)) tList.add(tString);
             }
         } catch (Throwable e) {
@@ -3797,54 +3695,57 @@ public class GTUtility {
 
     /**
      * This Function determines the direction a Block gets when being Wrenched. returns -1 if invalid. Even though that
-     * could never happen.
+     * could never happen. Normalizes values into the range [0.0f, 1.0f].
      */
     public static ForgeDirection determineWrenchingSide(ForgeDirection side, float aX, float aY, float aZ) {
+        float modX = (aX % 1.0f + 1.0f) % 1.0f;
+        float modY = (aY % 1.0f + 1.0f) % 1.0f;
+        float modZ = (aZ % 1.0f + 1.0f) % 1.0f;
         ForgeDirection tBack = side.getOpposite();
         switch (side) {
             case DOWN, UP -> {
-                if (aX < 0.25) {
-                    if (aZ < 0.25) return tBack;
-                    if (aZ > 0.75) return tBack;
+                if (modX < 0.25) {
+                    if (modZ < 0.25) return tBack;
+                    if (modZ > 0.75) return tBack;
                     return WEST;
                 }
-                if (aX > 0.75) {
-                    if (aZ < 0.25) return tBack;
-                    if (aZ > 0.75) return tBack;
+                if (modX > 0.75) {
+                    if (modZ < 0.25) return tBack;
+                    if (modZ > 0.75) return tBack;
                     return EAST;
                 }
-                if (aZ < 0.25) return NORTH;
-                if (aZ > 0.75) return SOUTH;
+                if (modZ < 0.25) return NORTH;
+                if (modZ > 0.75) return SOUTH;
                 return side;
             }
             case NORTH, SOUTH -> {
-                if (aX < 0.25) {
-                    if (aY < 0.25) return tBack;
-                    if (aY > 0.75) return tBack;
+                if (modX < 0.25) {
+                    if (modY < 0.25) return tBack;
+                    if (modY > 0.75) return tBack;
                     return WEST;
                 }
-                if (aX > 0.75) {
-                    if (aY < 0.25) return tBack;
-                    if (aY > 0.75) return tBack;
+                if (modX > 0.75) {
+                    if (modY < 0.25) return tBack;
+                    if (modY > 0.75) return tBack;
                     return EAST;
                 }
-                if (aY < 0.25) return DOWN;
-                if (aY > 0.75) return UP;
+                if (modY < 0.25) return DOWN;
+                if (modY > 0.75) return UP;
                 return side;
             }
             case WEST, EAST -> {
-                if (aZ < 0.25) {
-                    if (aY < 0.25) return tBack;
-                    if (aY > 0.75) return tBack;
+                if (modZ < 0.25) {
+                    if (modY < 0.25) return tBack;
+                    if (modY > 0.75) return tBack;
                     return NORTH;
                 }
-                if (aZ > 0.75) {
-                    if (aY < 0.25) return tBack;
-                    if (aY > 0.75) return tBack;
+                if (modZ > 0.75) {
+                    if (modY < 0.25) return tBack;
+                    if (modY > 0.75) return tBack;
                     return SOUTH;
                 }
-                if (aY < 0.25) return DOWN;
-                if (aY > 0.75) return UP;
+                if (modY < 0.25) return DOWN;
+                if (modY > 0.75) return UP;
                 return side;
             }
         }
@@ -3874,6 +3775,24 @@ public class GTUtility {
 
     public static String formatNumbers(double aNumber) {
         return getDecimalFormat().format(aNumber);
+    }
+
+    /**
+     * {@link String#format} without throwing exception. Falls back to {@code format} without {@code args}.
+     * Since it suppresses errors, it should be used only when inputs are unreliable,
+     * e.g. processing text input by player, or processing placeholders in localization entries.
+     */
+    @Nonnull
+    public static String formatStringSafe(@Nonnull String format, Object... args) {
+        try {
+            return String.format(format, args);
+        } catch (IllegalFormatException ignored) {
+            return format;
+        }
+    }
+
+    public static String translate(String key, Object... parameters) {
+        return StatCollector.translateToLocalFormatted(key, parameters);
     }
 
     /*
@@ -3918,6 +3837,13 @@ public class GTUtility {
 
     public static ItemStack getIntegratedCircuit(int config) {
         return ItemList.Circuit_Integrated.getWithDamage(0, config);
+    }
+
+    /**
+     * @return A list of every integrated circuit, excluding zero. Do not modify the ItemStacks!
+     */
+    public static List<ItemStack> getAllIntegratedCircuits() {
+        return ItemIntegratedCircuit.NON_ZERO_VARIANTS;
     }
 
     public static float getBlockHardnessAt(World aWorld, int aX, int aY, int aZ) {
@@ -4539,8 +4465,16 @@ public class GTUtility {
             .count();
     }
 
+    public static long clamp(long val, long lo, long hi) {
+        return val < lo ? lo : val > hi ? hi : val;
+    }
+
     public static int clamp(int val, int lo, int hi) {
         return MathHelper.clamp_int(val, lo, hi);
+    }
+
+    public static float clamp(float val, float lo, float hi) {
+        return val < lo ? lo : val > hi ? hi : val;
     }
 
     public static int min(int first, int... rest) {
@@ -4612,6 +4546,10 @@ public class GTUtility {
         v.z = signum(v.z);
 
         return v;
+    }
+
+    public static int mod(int value, int divisor) {
+        return ((value % divisor) + divisor) % divisor;
     }
 
     /**
@@ -4781,6 +4719,12 @@ public class GTUtility {
         public int size() {
             return size;
         }
+    }
+
+    public static String[] breakLines(String... lines) {
+        return Arrays.stream(lines)
+            .flatMap(s -> Arrays.stream(s.split("\\\\n")))
+            .toArray(String[]::new);
     }
 
     @AutoValue

@@ -15,6 +15,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -145,17 +146,15 @@ public class BaseItemComponent extends Item {
                     + "]");
             Material.mComponentMap.put(componentMaterial.getUnlocalizedName(), aMap);
             if (componentType == ComponentTypes.PLATE) {
-                CoverRegistry.registerCover(
+                CoverRegistry.registerDecorativeCover(
                     componentMaterial.getPlate(1),
                     TextureFactory
-                        .of(componentMaterial.getTextureSet().mTextures[71], componentMaterial.getRGBA(), false),
-                    null);
+                        .of(componentMaterial.getTextureSet().mTextures[71], componentMaterial.getRGBA(), false));
             } else if (componentType == ComponentTypes.PLATEDOUBLE) {
-                CoverRegistry.registerCover(
+                CoverRegistry.registerDecorativeCover(
                     componentMaterial.getPlateDouble(1),
                     TextureFactory
-                        .of(componentMaterial.getTextureSet().mTextures[72], componentMaterial.getRGBA(), false),
-                    null);
+                        .of(componentMaterial.getTextureSet().mTextures[72], componentMaterial.getRGBA(), false));
             }
             return true;
         } else {
@@ -251,12 +250,7 @@ public class BaseItemComponent extends Item {
                     if (this.componentType == ComponentTypes.INGOT || this.componentType == ComponentTypes.HOTINGOT) {
                         if (this.unlocalName.toLowerCase()
                             .contains("hot")) {
-                            list.add(
-                                EnumChatFormatting.GRAY + "Warning: "
-                                    + EnumChatFormatting.RED
-                                    + "Very hot! "
-                                    + EnumChatFormatting.GRAY
-                                    + " Avoid direct handling..");
+                            list.add(StatCollector.translateToLocal("gtpp.tooltip.ingot.very_hot"));
                         }
                     }
                 } else {
@@ -272,19 +266,21 @@ public class BaseItemComponent extends Item {
                         String type = this.componentMaterial.getTextureSet().mSetName;
                         String output = type.substring(0, 1)
                             .toUpperCase() + type.substring(1);
-                        list.add(EnumChatFormatting.GRAY + "Material Type: " + output + ".");
                         list.add(
-                            EnumChatFormatting.GRAY + "Material State: "
-                                + this.componentMaterial.getState()
-                                    .name()
-                                + ".");
+                            EnumChatFormatting.GRAY
+                                + StatCollector.translateToLocalFormatted("GTPP.tooltip.material.type", output));
                         list.add(
-                            EnumChatFormatting.GRAY + "Radioactivity Level: "
-                                + this.componentMaterial.vRadiationLevel
-                                + ".");
+                            EnumChatFormatting.GRAY + StatCollector.translateToLocalFormatted(
+                                "GTPP.tooltip.material.state",
+                                this.componentMaterial.getState()
+                                    .name()));
+                        list.add(
+                            EnumChatFormatting.GRAY + StatCollector.translateToLocalFormatted(
+                                "GTPP.tooltip.material.radioactivity",
+                                this.componentMaterial.vRadiationLevel));
                     }
                 } else {
-                    list.add(EnumChatFormatting.DARK_GRAY + "Hold Ctrl to show additional info.");
+                    list.add(EnumChatFormatting.DARK_GRAY + StatCollector.translateToLocal("GTPP.tooltip.hold_ctrl"));
                 }
             }
         } catch (Throwable t) {}

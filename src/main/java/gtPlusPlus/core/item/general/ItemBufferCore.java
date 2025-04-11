@@ -7,10 +7,13 @@ import java.util.List;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 
+import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.GTValues;
+import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.item.base.BaseItemWithDamageValue;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.math.MathUtils;
@@ -23,7 +26,9 @@ public class ItemBufferCore extends BaseItemWithDamageValue {
         super(unlocalizedName + i);
         this.setTextureName(GTPlusPlus.ID + ":" + unlocalizedName);
         this.setMaxStackSize(32);
+        this.setCreativeTab(AddToCreativeTab.tabMachines);
         this.coreTier = i;
+        GameRegistry.registerItem(this, getUnlocalizedName());
     }
 
     @Override
@@ -41,9 +46,9 @@ public class ItemBufferCore extends BaseItemWithDamageValue {
     @Override
     public void addInformation(final ItemStack stack, final EntityPlayer aPlayer, final List list, final boolean bool) {
         list.add(
-            EnumChatFormatting.GRAY + "A key crafting component for "
-                + GTValues.VN[this.coreTier - 1]
-                + " Applicances");
+            EnumChatFormatting.GRAY + StatCollector.translateToLocalFormatted(
+                "gtpp.tooltip.buffer_core.key_crafting_component",
+                GTValues.VN[this.coreTier - 1]));
     }
 
     public final int getCoreTier() {

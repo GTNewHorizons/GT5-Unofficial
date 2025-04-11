@@ -1,8 +1,9 @@
 package gregtech.common.blocks;
 
+import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.translatedText;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.Facing;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
@@ -11,7 +12,6 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Textures;
-import gregtech.api.util.GTLanguageManager;
 
 /**
  * The glass is split into separate files because they are registered as regular blocks, and a regular block can have
@@ -22,24 +22,18 @@ import gregtech.api.util.GTLanguageManager;
 public class BlockGlass1 extends BlockCasingsAbstract {
 
     public BlockGlass1() {
-        super(ItemGlass1.class, "gt.blockglass1", Material.glass, 4);
+        super(ItemCasings.class, "gt.blockglass1", Material.glass, 4);
         this.opaque = false;
 
-        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".0.name", "Chemical Grade Glass");
-        GTLanguageManager
-            .addStringLocalization(getUnlocalizedName() + ".1.name", "Electron-Permeable Neutronium Coated Glass");
-        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".2.name", "Omni-Purpose Infinity Fused Glass");
-        GTLanguageManager
-            .addStringLocalization(getUnlocalizedName() + ".3.name", "Non-Photonic Matter Exclusion Glass");
-        GTLanguageManager
-            .addStringLocalization(getUnlocalizedName() + ".4.name", "Hawking Radiation Realignment Focus");
-
-        ItemList.GlassPHResistant.set(new ItemStack(this, 1, 0));
-        ItemList.GlassUVResistant.set(new ItemStack(this, 1, 1));
-        ItemList.GlassOmniPurposeInfinityFused.set(new ItemStack(this, 1, 2));
-        ItemList.GlassQuarkContainment.set(new ItemStack(this, 1, 3));
-        ItemList.GlassQuarkContainment.set(new ItemStack(this, 1, 3));
-        ItemList.Hawking_Glass.set(new ItemStack(this, 1, 4));
+        register(0, ItemList.GlassPHResistant, "Chemical Grade Glass", translatedText("gt.casing.chemical-resistant"));
+        register(1, ItemList.GlassUVResistant, "Electron-Permeable Neutronium Coated Glass");
+        register(2, ItemList.GlassOmniPurposeInfinityFused, "Omni-Purpose Infinity Fused Glass");
+        register(3, ItemList.GlassQuarkContainment, "Non-Photonic Matter Exclusion Glass");
+        register(
+            4,
+            ItemList.Hawking_Glass,
+            "Hawking Radiation Realignment Focus",
+            translatedText("gt.casing.hawking-focus"));
     }
 
     @Override

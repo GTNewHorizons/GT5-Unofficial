@@ -2,6 +2,7 @@ package tectech.loader.thing;
 
 import net.minecraft.item.ItemStack;
 
+import gregtech.api.covers.CoverPlacer;
 import gregtech.api.covers.CoverRegistry;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
@@ -29,19 +30,22 @@ public class CoverLoader implements Runnable {
         CoverRegistry.registerCover(
             new ItemStack(ItemTeslaCoilCover.INSTANCE, 1, 0),
             TextureFactory.of(TESLA_OVERLAY),
-            new CoverTeslaCoil());
+            CoverTeslaCoil::new);
         CoverRegistry.registerCover(
             new ItemStack(ItemTeslaCoilCover.INSTANCE, 1, 1),
             TextureFactory.of(TESLA_OVERLAY_ULTIMATE),
-            new CoverTeslaCoilUltimate());
+            CoverTeslaCoilUltimate::new);
         CoverRegistry.registerCover(
             new ItemStack(ItemEnderFluidLinkCover.INSTANCE, 1, 0),
             TextureFactory.of(ENDERFLUIDLINK_OVERLAY),
-            new CoverEnderFluidLink());
+            CoverEnderFluidLink::new);
         CoverRegistry.registerCover(
             new ItemStack(ItemPowerPassUpgradeCover.INSTANCE, 1, 0),
             TextureFactory.of(POWERPASSUPGRADE_OVERLAY),
-            new CoverPowerPassUpgrade());
+            CoverPowerPassUpgrade::new,
+            CoverPlacer.builder()
+                .onlyPlaceIf(CoverPowerPassUpgrade::isCoverPlaceable)
+                .build());
         TecTech.LOGGER.info("Cover functionality registered");
     }
 }

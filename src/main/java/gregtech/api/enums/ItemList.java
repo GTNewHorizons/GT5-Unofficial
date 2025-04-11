@@ -193,7 +193,6 @@ public enum ItemList implements IItemContainer {
     White_Dwarf_Shape_Extruder_Small_Gear,
     White_Dwarf_Shape_Extruder_ToolHeadDrill,
 
-    Crate_Empty,
     Credit_Copper,
     Credit_Iron,
     Credit_Silver,
@@ -379,8 +378,6 @@ public enum ItemList implements IItemContainer {
     Circuit_Data,
     Circuit_Elite,
     Circuit_Master,
-    @Deprecated
-    Circuit_Ultimate,
     Circuit_Biowarecomputer,
     Circuit_Biowaresupercomputer,
 
@@ -664,7 +661,6 @@ public enum ItemList implements IItemContainer {
     Tool_Scanner,
     Tool_DataOrb,
     Tool_DataStick,
-    Tool_Sonictron,
     Tool_Sword_Bronze,
     Tool_Pickaxe_Bronze,
     Tool_Shovel_Bronze,
@@ -1807,6 +1803,7 @@ public enum ItemList implements IItemContainer {
     OreDrill4,
     PyrolyseOven,
     OilCracker,
+    SolarFactory,
     NanoForge,
     Crop_Drop_UUMBerry,
     Crop_Drop_UUABerry,
@@ -2123,7 +2120,6 @@ public enum ItemList implements IItemContainer {
     TierdDrone2,
     Hatch_DroneDownLink,
     ElectronicsLump,
-    Casing_Shielded_Accelerator,
     WormholeGenerator,
     Hatch_pHSensor,
     Hatch_LensHousing,
@@ -2609,6 +2605,7 @@ public enum ItemList implements IItemContainer {
     Thermal_Superconductor,
     Relativistic_Heat_Capacitor,
     Phononic_Seed_Crystal,
+    Harmonic_Compound,
     ResearchCompleter,
     SpaceElevatorController, // Populated in GTNH-Intergalactic
     Spray_Color_Infinite,

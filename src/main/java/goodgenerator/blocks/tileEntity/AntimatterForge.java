@@ -50,7 +50,6 @@ import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
 import gregtech.api.metatileentity.implementations.MTEHatchOutput;
 import gregtech.api.objects.GTChunkManager;
-import gregtech.api.objects.GTItemStack;
 import gregtech.api.objects.overclockdescriber.OverclockDescriber;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
@@ -299,7 +298,10 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
             .addCasingInfoMin("Protomatter Activation Coil", 126, false)
             .addInputHatch("1-6, Hint block with dot 1", 1)
             .addEnergyHatch("1-9, Hint block with dot 2", 2)
-            .addOtherStructurePart("Antimatter Hatch", "16, Hint Block with dot 3", 3)
+            .addOtherStructurePart(
+                StatCollector.translateToLocal("gg.structure.tooltip.antimatter_hatch"),
+                "16, Hint Block with dot 3",
+                3)
             .toolTipFinisher();
         return tt;
     }
@@ -307,6 +309,11 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
     @Override
     public IStructureDefinition<AntimatterForge> getStructureDefinition() {
         return STRUCTURE_DEFINITION.get(getClass());
+    }
+
+    @Override
+    public boolean supportsPowerPanel() {
+        return false;
     }
 
     public Block getCasingBlock(int type) {
@@ -359,7 +366,7 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
     }
 
     @Override
-    public boolean allowCoverOnSide(ForgeDirection side, GTItemStack aStack) {
+    public boolean allowCoverOnSide(ForgeDirection side, ItemStack coverItem) {
         return side != getBaseMetaTileEntity().getFrontFacing();
     }
 
@@ -731,7 +738,10 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
                 .getEUCapacity();
         }
 
-        return new String[] { EnumChatFormatting.BLUE + "Antimatter Forge " + EnumChatFormatting.GRAY,
+        return new String[] {
+            EnumChatFormatting.BLUE + StatCollector.translateToLocal("gg.info.antimatter_forge")
+                + " "
+                + EnumChatFormatting.GRAY,
             StatCollector.translateToLocal("GT5U.multiblock.Progress") + ": "
                 + EnumChatFormatting.GREEN
                 + GTUtility.formatNumbers(mProgresstime)
@@ -764,7 +774,7 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
                 + EnumChatFormatting.LIGHT_PURPLE
                 + GTUtility.formatNumbers(this.guiActiveEnergy)
                 + EnumChatFormatting.RESET
-                + " EU/t",
+                + " EU/s",
             StatCollector.translateToLocal("gui.AntimatterForge.3") + ": "
                 + EnumChatFormatting.AQUA
                 + GTUtility.formatNumbers(this.guiAntimatterChange)

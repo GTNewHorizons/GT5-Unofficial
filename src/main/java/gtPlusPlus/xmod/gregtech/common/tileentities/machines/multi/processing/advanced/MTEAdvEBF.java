@@ -11,6 +11,7 @@ import static gregtech.api.enums.HatchElement.Maintenance;
 import static gregtech.api.enums.HatchElement.Muffler;
 import static gregtech.api.enums.HatchElement.OutputBus;
 import static gregtech.api.enums.HatchElement.OutputHatch;
+import static gregtech.api.util.GTStructureUtility.activeCoils;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.ofCoil;
 import static gregtech.api.util.GTUtility.validMTEList;
@@ -100,7 +101,7 @@ public class MTEAdvEBF extends GTPPMultiBlockBase<MTEAdvEBF> implements ISurviva
             .addInfo("Constructed exactly the same as a normal EBF")
             .addPollutionAmount(getPollutionPerSecond(null))
             .addController("Bottom center")
-            .addCasingInfoMin(mCasingName, 8, false)
+            .addCasingInfoMin(mCasingName, 6, false)
             .addInputHatch("Any Casing", 1)
             .addInputBus("Any Casing", 1)
             .addOutputBus("Any Casing", 1)
@@ -146,7 +147,7 @@ public class MTEAdvEBF extends GTPPMultiBlockBase<MTEAdvEBF> implements ISurviva
                             .dot(1)
                             .build(),
                         onElementPass(x -> ++x.mCasing, ofBlock(ModBlocks.blockCasings3Misc, 11))))
-                .addElement('H', ofCoil(MTEAdvEBF::setCoilLevel, MTEAdvEBF::getCoilLevel))
+                .addElement('H', activeCoils(ofCoil(MTEAdvEBF::setCoilLevel, MTEAdvEBF::getCoilLevel)))
                 .build();
         }
         return STRUCTURE_DEFINITION;
@@ -168,7 +169,7 @@ public class MTEAdvEBF extends GTPPMultiBlockBase<MTEAdvEBF> implements ISurviva
         mCasing = 0;
         mPyrotheumHatches.clear();
         setCoilLevel(HeatingCoilLevel.None);
-        return checkPiece(mName, 1, 3, 0) && mCasing >= 8 && getCoilLevel() != HeatingCoilLevel.None && checkHatch();
+        return checkPiece(mName, 1, 3, 0) && mCasing >= 6 && getCoilLevel() != HeatingCoilLevel.None && checkHatch();
     }
 
     @Override
@@ -256,7 +257,7 @@ public class MTEAdvEBF extends GTPPMultiBlockBase<MTEAdvEBF> implements ISurviva
             }
         }.setSpeedBonus(1F / 2.2F)
             .setEuModifier(0.9F)
-            .setMaxParallelSupplier(this::getMaxParallelRecipes);
+            .setMaxParallelSupplier(this::getTrueParallel);
     }
 
     @Override

@@ -9,8 +9,6 @@ import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.RESET;
 import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.animatedText;
 import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.chain;
 import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.text;
-import static gregtech.api.enums.Mods.GregTech;
-import static gregtech.api.enums.Mods.IndustrialCraft2;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
@@ -21,7 +19,9 @@ import java.util.Set;
 import java.util.function.Supplier;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.launchwrapper.Launch;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
@@ -202,28 +202,6 @@ public class GTValues {
      * most of the time I don't know what kind of Data Type the "null" stands for
      */
     public static final FluidStack NF = null;
-
-    /**
-     * File Paths and Resource Paths
-     */
-    @Deprecated
-    public static final String TEX_DIR = "textures/";
-    @Deprecated
-    public static final String RES_PATH = GregTech.getResourcePath(TEX_DIR);
-    @Deprecated
-    public static final String RES_PATH_GUI = GregTech.getResourcePath("textures", "gui/");
-    @Deprecated
-    public static final String RES_PATH_ITEM = GregTech.getResourcePath();
-    @Deprecated
-    public static final String RES_PATH_BLOCK = GregTech.getResourcePath();
-    @Deprecated
-    public static final String RES_PATH_ENTITY = GregTech.getResourcePath("textures", "entity/");
-    @Deprecated
-    public static final String RES_PATH_ASPECTS = GregTech.getResourcePath("textures", "aspects/");
-    @Deprecated
-    public static final String RES_PATH_MODEL = GregTech.getResourcePath("textures", "models/");
-    @Deprecated
-    public static final String RES_PATH_IC2 = IndustrialCraft2.getResourcePath();
 
     /**
      * NBT String Keys
@@ -470,6 +448,14 @@ public class GTValues {
     public static final IIconContainer[] emptyIconContainerArray = new IIconContainer[3];
 
     /**
+     * Detects if we're in a deobfuscated environment, meaning that additional sanity checks should be ran.
+     * If the blackboard is null, we're in a unit test that hasn't set its env up properly and also want those checks to
+     * be ran.
+     */
+    public static boolean DEVENV = Launch.blackboard == null ? true
+        : (boolean) Launch.blackboard.get("fml.deobfuscatedEnvironment");
+
+    /**
      * Pretty formatting for author names.
      */
     public static final String Colen = "" + EnumChatFormatting.DARK_RED
@@ -611,6 +597,17 @@ public class GTValues {
 
     public static final String TecTechHatches = "Supports " + TT + " laser and multi-amp hatches";
 
+    public static final String AuthorPureBluez = "Author: " + EnumChatFormatting.WHITE
+        + "Pure"
+        + EnumChatFormatting.AQUA
+        + "B"
+        + EnumChatFormatting.DARK_AQUA
+        + "l"
+        + EnumChatFormatting.BLUE
+        + "u"
+        + EnumChatFormatting.DARK_BLUE
+        + "ez";
+
     // 7.5F comes from GT_Tool_Turbine_Large#getBaseDamage() given huge turbines are the most efficient now.
     public static double getMaxPlasmaTurbineEfficiencyFromMaterial(Materials material) {
         return (5F + (7.5F + material.mToolQuality)) / 10.0;
@@ -647,5 +644,18 @@ public class GTValues {
             }
         }
         return EXPLOSION_LOOKUP_POWER[EXPLOSION_LOOKUP_POWER.length - 1];
+    }
+
+    public static String getLocalizedLongVoltageName(int voltage) {
+        if (voltage >= VOLTAGE_NAMES.length) {
+            return StatCollector.translateToLocal("GT5U.voltage_names.error_voltage_report_this");
+        }
+        String unlocalizedName = "GT5U.voltage_names." + VOLTAGE_NAMES[voltage].toLowerCase()
+            .replace(",", "")
+            .replace(' ', '_');
+        if (StatCollector.canTranslate(unlocalizedName)) {
+            return StatCollector.translateToLocal(unlocalizedName);
+        }
+        return StatCollector.translateToLocal("GT5U.voltage_names.error_voltage_report_this");
     }
 }

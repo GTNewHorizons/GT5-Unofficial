@@ -10,6 +10,8 @@ import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 
 import java.util.List;
 
+import javax.annotation.Nullable;
+
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
@@ -108,6 +110,11 @@ public class MTESteamWaterPump extends MTESteamMultiBase<MTESteamWaterPump> impl
         return (int) (currentHumidity * BASE_WATER_PER_SECOND * mSetTier);
     }
 
+    @Override
+    public boolean supportsPowerPanel() {
+        return false;
+    }
+
     // spotless:off
     @Override
     public IStructureDefinition<MTESteamWaterPump> getStructureDefinition() {
@@ -144,12 +151,13 @@ public class MTESteamWaterPump extends MTESteamMultiBase<MTESteamWaterPump> impl
     }
     // spotless:on
 
-    public static int getFrameTier(Block block, int meta) {
+    @Nullable
+    public static Integer getFrameTier(Block block, int meta) {
         if (block == GregTechAPI.sBlockFrames) {
             if (meta == Materials.Bronze.mMetaItemSubID) return 1;
             if (meta == Materials.Steel.mMetaItemSubID) return 2;
         }
-        return 0;
+        return null;
     }
 
     @Override
@@ -189,7 +197,7 @@ public class MTESteamWaterPump extends MTESteamMultiBase<MTESteamWaterPump> impl
         if (this.mOutputHatches.size() != 1 || this.mSteamInputFluids.size() != 1) return false;
 
         currentHumidity = getHumidity();
-        return mCountCasing >= 9 && mSetTier > 0;
+        return mCountCasing >= 9;
     }
 
     @Override

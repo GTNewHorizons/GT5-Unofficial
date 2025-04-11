@@ -160,7 +160,7 @@ public class ContainerVolumetricFlaskSetter extends Container {
     public void updateProgressBar(int par1, int par2) {
         super.updateProgressBar(par1, par2);
         if (par1 == 0) {
-            mCustomValue = (short) par2;
+            mCustomValue = par2;
         }
     }
 

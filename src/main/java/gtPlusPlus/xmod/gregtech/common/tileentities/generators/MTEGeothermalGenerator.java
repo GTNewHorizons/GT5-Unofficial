@@ -9,7 +9,6 @@ import org.apache.commons.lang3.ArrayUtils;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Textures;
-import gregtech.api.gui.modularui.GTUIInfos;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
@@ -24,17 +23,13 @@ import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
 public class MTEGeothermalGenerator extends MTEBasicGenerator {
 
-    public int mEfficiency;
-
     public MTEGeothermalGenerator(final int aID, final String aName, final String aNameRegional, final int aTier) {
         super(aID, aName, aNameRegional, aTier, "Requires Pahoehoe Lava or Normal Lava as Fuel");
-        this.setEfficiency();
     }
 
     public MTEGeothermalGenerator(final String aName, final int aTier, final String[] aDescription,
         final ITexture[][][] aTextures) {
         super(aName, aTier, aDescription, aTextures);
-        this.setEfficiency();
     }
 
     @Override
@@ -49,7 +44,7 @@ public class MTEGeothermalGenerator extends MTEBasicGenerator {
 
     @Override
     public boolean onRightclick(final IGregTechTileEntity aBaseMetaTileEntity, final EntityPlayer aPlayer) {
-        GTUIInfos.openGTTileEntityUI(aBaseMetaTileEntity, aPlayer);
+        openGui(aPlayer);
         return true;
     }
 
@@ -59,13 +54,9 @@ public class MTEGeothermalGenerator extends MTEBasicGenerator {
         return 5000 * this.mTier;
     }
 
-    public void setEfficiency() {
-        this.mEfficiency = (100 - (this.mTier * 7));
-    }
-
     @Override
     public int getEfficiency() {
-        return this.mEfficiency;
+        return 100 - (this.mTier * 7);
     }
 
     @Override

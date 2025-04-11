@@ -5,6 +5,7 @@ import static gregtech.api.enums.GTValues.VN;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_ME_INPUT_FLUID_HATCH;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_ME_INPUT_FLUID_HATCH_ACTIVE;
 
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.EnumSet;
@@ -118,7 +119,7 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
     protected static final FluidStack[] EMPTY_FLUID_STACK = new FluidStack[0];
 
     public MTEHatchInputME(int aID, boolean autoPullAvailable, String aName, String aNameRegional) {
-        super(aID, aName, aNameRegional, autoPullAvailable ? 9 : 8, 1, getDescriptionArray(autoPullAvailable));
+        super(aID, 1, aName, aNameRegional, autoPullAvailable ? 9 : 8, getDescriptionArray(autoPullAvailable));
         this.autoPullAvailable = autoPullAvailable;
     }
 
@@ -145,15 +146,28 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
 
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTimer) {
-        if (getBaseMetaTileEntity().isServerSide()) {
+        if (aBaseMetaTileEntity.isServerSide()) {
             if (aTimer % autoPullRefreshTime == 0 && autoPullFluidList) {
                 refreshFluidList();
             }
             if (aTimer % 20 == 0) {
-                getBaseMetaTileEntity().setActive(isActive());
+                aBaseMetaTileEntity.setActive(isActive());
             }
         }
         super.onPostTick(aBaseMetaTileEntity, aTimer);
+    }
+
+    protected boolean isAllowedToWork() {
+        IGregTechTileEntity igte = getBaseMetaTileEntity();
+
+        return igte != null && igte.isAllowedToWork();
+    }
+
+    @Override
+    public void onEnableWorking() {
+        if (expediteRecipeCheck) {
+            justHadNewFluids = true;
+        }
     }
 
     private void refreshFluidList() {
@@ -190,11 +204,6 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
         } catch (final GridAccessException ignored) {}
     }
 
-    @Override
-    public boolean displaysStackSize() {
-        return true;
-    }
-
     protected void setSavedFluid(int i, FluidStack stack) {
         shadowStoredFluids[i] = stack;
         savedStackSizes[i] = stack == null ? 0 : stack.amount;
@@ -228,7 +237,7 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
 
     @Override
     public boolean justUpdated() {
-        if (expediteRecipeCheck) {
+        if (expediteRecipeCheck && isAllowedToWork()) {
             boolean ret = justHadNewFluids;
             justHadNewFluids = false;
             return ret;
@@ -411,6 +420,11 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
 
         AENetworkProxy proxy = getProxy();
         if (proxy == null || !proxy.isActive()) {
+            storedInformationFluids[index] = null;
+            return;
+        }
+
+        if (!isAllowedToWork()) {
             storedInformationFluids[index] = null;
             return;
         }
@@ -820,13 +834,23 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
                 boolean isActive = isActive();
                 boolean isPowered = isPowered();
                 boolean isBooting = isBooting();
-                EnumChatFormatting color = (isActive && isPowered) ? EnumChatFormatting.GREEN
-                    : EnumChatFormatting.DARK_RED;
-                return color + WailaText.getPowerState(isActive, isPowered, isBooting);
+
+                String state = WailaText.getPowerState(isActive, isPowered, isBooting);
+
+                if (isActive && isPowered) {
+                    return MessageFormat.format(
+                        "{0}{1}§f ({2})",
+                        EnumChatFormatting.GREEN,
+                        state,
+                        StatCollector
+                            .translateToLocal(isAllowedToWork() ? "GT5U.gui.text.enabled" : "GT5U.gui.text.disabled"));
+                } else {
+                    return EnumChatFormatting.DARK_RED + state;
+                }
             })
                 .setTextAlignment(Alignment.Center)
-                .setSize(90, 9)
-                .setPos(43, 84));
+                .setSize(130, 9)
+                .setPos(23, 84));
     }
 
     private FluidStackTank createTankForFluidStack(FluidStack[] fluidStacks, int slotIndex, int capacity) {

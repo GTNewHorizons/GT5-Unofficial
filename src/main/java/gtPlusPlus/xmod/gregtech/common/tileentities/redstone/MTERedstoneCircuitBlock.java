@@ -24,7 +24,6 @@ import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTValues;
-import gregtech.api.gui.modularui.GTUIInfos;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.IRedstoneCircuitBlock;
 import gregtech.api.interfaces.ITexture;
@@ -36,8 +35,7 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.CircuitryBehavior;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTUtility;
-import gregtech.api.util.ISerializableObject;
-import gregtech.common.covers.CoverInfo;
+import gregtech.common.covers.Cover;
 import gtPlusPlus.xmod.gregtech.api.gui.GTPPUITextures;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
@@ -138,7 +136,7 @@ public class MTERedstoneCircuitBlock extends MTERedstoneBase implements IRedston
 
     @Override
     public boolean onRightclick(final IGregTechTileEntity aBaseMetaTileEntity, final EntityPlayer aPlayer) {
-        GTUIInfos.openGTTileEntityUI(aBaseMetaTileEntity, aPlayer);
+        openGui(aPlayer);
         return true;
     }
 
@@ -379,19 +377,8 @@ public class MTERedstoneCircuitBlock extends MTERedstoneBase implements IRedston
     }
 
     @Override
-    public CoverInfo getCover(ForgeDirection side) {
-        return getBaseMetaTileEntity().getCoverInfoAtSide(side);
-    }
-
-    @Override
-    public int getCoverID(ForgeDirection side) {
-        return getBaseMetaTileEntity().getCoverIDAtSide(side);
-    }
-
-    @Override
-    public ISerializableObject getCoverData(ForgeDirection side) {
-        return getBaseMetaTileEntity().getCoverInfoAtSide(side)
-            .getCoverData();
+    public Cover getCover(ForgeDirection side) {
+        return getBaseMetaTileEntity().getCoverAtSide(side);
     }
 
     @Override
@@ -589,7 +576,7 @@ public class MTERedstoneCircuitBlock extends MTERedstoneBase implements IRedston
                 CircuitryBehavior tCircuit = GregTechAPI.sCircuitryBehaviors.get(mGate);
                 if (tCircuit != null) {
                     String tString = tCircuit.getDataDisplay(mGateData, 0);
-                    return tString == null ? GTUtility.parseNumberToString(mGateData[0]) : tString;
+                    return tString == null ? GTUtility.formatNumbers(mGateData[0]) : tString;
                 }
                 return "";
             })
@@ -600,7 +587,7 @@ public class MTERedstoneCircuitBlock extends MTERedstoneBase implements IRedston
                 CircuitryBehavior tCircuit = GregTechAPI.sCircuitryBehaviors.get(mGate);
                 if (tCircuit != null) {
                     String tString = tCircuit.getDataDisplay(mGateData, 1);
-                    return tString == null ? GTUtility.parseNumberToString(mGateData[1]) : tString;
+                    return tString == null ? GTUtility.formatNumbers(mGateData[1]) : tString;
                 }
                 return "";
             })
@@ -611,7 +598,7 @@ public class MTERedstoneCircuitBlock extends MTERedstoneBase implements IRedston
                 CircuitryBehavior tCircuit = GregTechAPI.sCircuitryBehaviors.get(mGate);
                 if (tCircuit != null) {
                     String tString = tCircuit.getDataDisplay(mGateData, 2);
-                    return tString == null ? GTUtility.parseNumberToString(mGateData[2]) : tString;
+                    return tString == null ? GTUtility.formatNumbers(mGateData[2]) : tString;
                 }
                 return "";
             })
@@ -622,7 +609,7 @@ public class MTERedstoneCircuitBlock extends MTERedstoneBase implements IRedston
                 CircuitryBehavior tCircuit = GregTechAPI.sCircuitryBehaviors.get(mGate);
                 if (tCircuit != null) {
                     String tString = tCircuit.getDataDisplay(mGateData, 3);
-                    return tString == null ? GTUtility.parseNumberToString(mGateData[3]) : tString;
+                    return tString == null ? GTUtility.formatNumbers(mGateData[3]) : tString;
                 }
                 return "";
             })

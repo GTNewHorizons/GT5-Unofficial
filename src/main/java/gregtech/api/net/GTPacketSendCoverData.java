@@ -6,11 +6,9 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import com.google.common.io.ByteArrayDataInput;
 
-import gregtech.api.covers.CoverRegistry;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.metatileentity.CoverableTileEntity;
-import gregtech.api.util.ISerializableObject;
-import gregtech.common.covers.CoverInfo;
+import gregtech.common.covers.Cover;
 import io.netty.buffer.ByteBuf;
 
 /**
@@ -21,48 +19,25 @@ public class GTPacketSendCoverData extends GTPacket {
     protected int mX;
     protected short mY;
     protected int mZ;
-
     protected ForgeDirection side;
     protected int coverID;
-    protected ISerializableObject coverData;
+
+    protected Cover cover;
 
     public GTPacketSendCoverData() {
         super();
     }
 
-    public GTPacketSendCoverData(int mX, short mY, int mZ, ForgeDirection coverSide, int coverID,
-        ISerializableObject coverData) {
-        super();
-        this.mX = mX;
-        this.mY = mY;
-        this.mZ = mZ;
-
-        this.side = coverSide;
-        this.coverID = coverID;
-        this.coverData = coverData;
-    }
-
-    public GTPacketSendCoverData(CoverInfo info, ICoverable tile) {
+    public GTPacketSendCoverData(Cover cover, ICoverable tile, ForgeDirection side) {
         super();
         this.mX = tile.getXCoord();
         this.mY = tile.getYCoord();
         this.mZ = tile.getZCoord();
+        this.coverID = cover.getCoverID();
 
-        this.side = info.getSide();
-        this.coverID = info.getCoverID();
-        this.coverData = info.getCoverData();
-    }
+        this.side = side;
 
-    public GTPacketSendCoverData(ForgeDirection coverSide, int coverID, ISerializableObject coverData,
-        ICoverable tile) {
-        super();
-        this.mX = tile.getXCoord();
-        this.mY = tile.getYCoord();
-        this.mZ = tile.getZCoord();
-
-        this.side = coverSide;
-        this.coverID = coverID;
-        this.coverData = coverData;
+        this.cover = cover;
     }
 
     @Override
@@ -75,33 +50,27 @@ public class GTPacketSendCoverData extends GTPacket {
         aOut.writeInt(mX);
         aOut.writeShort(mY);
         aOut.writeInt(mZ);
-
-        aOut.writeByte(side.ordinal());
         aOut.writeInt(coverID);
-        coverData.writeToByteBuf(aOut);
+        aOut.writeByte(side.ordinal());
+
+        cover.writeToByteBuf(aOut);
     }
 
     @Override
     public GTPacket decode(ByteArrayDataInput aData) {
-        final int coverId;
-        return new GTPacketSendCoverData(
-            aData.readInt(),
-            aData.readShort(),
-            aData.readInt(),
-            ForgeDirection.getOrientation(aData.readByte()),
-            coverId = aData.readInt(),
-            CoverRegistry.getCoverBehaviorNew(coverId)
-                .createDataObject()
-                .readFromPacket(aData, null));
+        return new GTPacketDecodeAtProcess(aData, GTPacketSendCoverData::decodeAndProcess);
+    }
+
+    public static void decodeAndProcess(ByteArrayDataInput data, IBlockAccess world) {
+        if (world == null) return;
+        final TileEntity tile = world.getTileEntity(data.readInt(), data.readShort(), data.readInt());
+        if (tile instanceof CoverableTileEntity coverable && !coverable.isDead()) {
+            coverable.updateAttachedCover(data);
+        }
     }
 
     @Override
     public void process(IBlockAccess aWorld) {
-        if (aWorld != null) {
-            final TileEntity tile = aWorld.getTileEntity(mX, mY, mZ);
-            if (tile instanceof CoverableTileEntity coverable && !coverable.isDead()) {
-                coverable.receiveCoverData(side, coverID, coverData, null);
-            }
-        }
+        // Unused, processing happens with decodeAndProcess
     }
 }

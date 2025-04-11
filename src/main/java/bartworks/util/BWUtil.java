@@ -44,7 +44,6 @@ import com.gtnewhorizon.structurelib.structure.IStructureElement;
 
 import bartworks.API.BioVatLogicAdder;
 import bartworks.API.BorosilicateGlass;
-import bartworks.API.GlassTier;
 import bartworks.MainMod;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OreDictNames;
@@ -57,13 +56,10 @@ import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTShapedRecipe;
 import gregtech.api.util.GTUtility;
+import gregtech.api.util.GlassTier;
 
 public class BWUtil {
 
-    @Deprecated
-    public static final int STANDART = 0;
-    @Deprecated
-    public static final int LOWGRAVITY = -100;
     @Deprecated
     public static final int CLEANROOM = -200;
 
@@ -213,23 +209,6 @@ public class BWUtil {
         return 0;
     }
 
-    /**
-     * @deprecated Use stuff in {@link BorosilicateGlass} instead
-     */
-    @Deprecated
-    public static byte getTierFromGlasMeta(int meta) {
-        return switch (meta) {
-            case 1 -> 4;
-            case 2, 12 -> 5;
-            case 3 -> 6;
-            case 4 -> 7;
-            case 5 -> 8;
-            case 13 -> 9;
-            case 14 -> 10;
-            default -> 3;
-        };
-    }
-
     public static EnumRarity getRarityFromByte(byte b) {
         return switch (b) {
             case 1 -> EnumRarity.uncommon;
@@ -282,6 +261,10 @@ public class BWUtil {
         return ret;
     }
 
+    /**
+     * @deprecated use gregtech.api.util.GTStructureUtility.chainAllGlasses
+     */
+    @Deprecated
     public static <T> IStructureElement<T> ofGlassTiered(byte mintier, byte maxtier, byte notset,
         BiConsumer<T, Byte> setter, Function<T, Byte> getter, int aDots) {
         return new IStructureElement<>() {
@@ -295,7 +278,7 @@ public class BWUtil {
                 Block block = world.getBlock(x, y, z);
                 int meta = world.getBlockMetadata(x, y, z);
 
-                int glassTier = GlassTier.getGlassTier(block, meta);
+                int glassTier = GlassTier.getGlassBlockTier(block, meta);
 
                 // If it is not a glass, the tier will be 0.
                 if (glassTier == 0 || glassTier == notset || glassTier < mintier || glassTier > maxtier) return false;
@@ -310,7 +293,7 @@ public class BWUtil {
                 Block block = world.getBlock(x, y, z);
                 int meta = world.getBlockMetadata(x, y, z);
 
-                int glassTier = GlassTier.getGlassTier(block, meta);
+                int glassTier = GlassTier.getGlassBlockTier(block, meta);
 
                 // If it is not a glass, the tier will be 0.
                 return glassTier != 0 && glassTier != notset && glassTier >= mintier && glassTier <= maxtier;
@@ -335,6 +318,7 @@ public class BWUtil {
         };
     }
 
+    @Deprecated
     public static <T> IStructureElement<T> ofGlassTieredMixed(byte mintier, byte maxtier, int aDots) {
         return new IStructureElement<>() {
 
@@ -346,7 +330,7 @@ public class BWUtil {
                 if (world.isAirBlock(x, y, z)) return false;
                 Block block = world.getBlock(x, y, z);
                 int meta = world.getBlockMetadata(x, y, z);
-                int glassTier = GlassTier.getGlassTier(block, meta);
+                int glassTier = GlassTier.getGlassBlockTier(block, meta);
 
                 if (glassTier == 0) return false; // Not a glass.
                 return glassTier >= mintier && glassTier <= maxtier;

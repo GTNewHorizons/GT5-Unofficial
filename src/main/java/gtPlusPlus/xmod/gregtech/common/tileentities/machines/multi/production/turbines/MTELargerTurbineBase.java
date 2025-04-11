@@ -121,9 +121,6 @@ public abstract class MTELargerTurbineBase extends GTPPMultiBlockBase<MTELargerT
     protected boolean looseFit = false;
     protected float[] flowMultipliers = new float[] { 1, 1, 1 };
 
-    public ITexture frontFace = TextureFactory.of(TexturesGtBlock.Overlay_Machine_Controller_Advanced);
-    public ITexture frontFaceActive = TextureFactory.of(TexturesGtBlock.Overlay_Machine_Controller_Advanced_Active);
-
     public ArrayList<MTEHatchTurbine> mTurbineRotorHatches = new ArrayList<>();
 
     public MTELargerTurbineBase(int aID, String aName, String aNameRegional) {
@@ -141,6 +138,11 @@ public abstract class MTELargerTurbineBase extends GTPPMultiBlockBase<MTELargerT
     protected abstract boolean isDenseSteam();
 
     protected abstract boolean requiresOutputHatch();
+
+    @Override
+    public boolean supportsPowerPanel() {
+        return false;
+    }
 
     @Override
     protected final MultiblockTooltipBuilder createTooltip() {
@@ -162,7 +164,10 @@ public abstract class MTELargerTurbineBase extends GTPPMultiBlockBase<MTELargerT
             .addController("Top Middle")
             .addCasingInfoMin(getCasingName(), 360, false)
             .addCasingInfoMin("Turbine Shaft", 30, false)
-            .addOtherStructurePart("Rotor Assembly", "Any 1 dot hint", 1)
+            .addOtherStructurePart(
+                StatCollector.translateToLocal("GTPP.tooltip.structure.rotor_assembly"),
+                "Any 1 dot hint",
+                1)
             .addInputBus("Any 4 dot hint (min 1)", 4)
             .addInputHatch("Any 4 dot hint(min 1)", 4);
         if (requiresOutputHatch()) {
@@ -688,9 +693,15 @@ public abstract class MTELargerTurbineBase extends GTPPMultiBlockBase<MTELargerT
 
     protected ITexture getFrontFacingTurbineTexture(boolean isActive) {
         if (isActive) {
-            return frontFaceActive;
+            return TextureFactory.builder()
+                .addIcon(TexturesGtBlock.Overlay_Machine_Controller_Advanced_Active)
+                .extFacing()
+                .build();
         }
-        return frontFace;
+        return TextureFactory.builder()
+            .addIcon(TexturesGtBlock.Overlay_Machine_Controller_Advanced)
+            .extFacing()
+            .build();
     }
 
     @Override

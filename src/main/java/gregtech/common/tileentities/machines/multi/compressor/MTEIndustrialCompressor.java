@@ -150,12 +150,13 @@ public class MTEIndustrialCompressor extends MTEExtendedPowerMultiBlockBase<MTEI
             .addController("Front Center")
             .addCasingInfoMin("Electric Compressor Casing", 95, false)
             .addCasingInfoMin("Compressor Pipe Casing", 45, false)
-            .addCasingInfoExactly("Any Glass", 6, false)
+            .addCasingInfoExactly("Any Tiered Glass", 6, false)
             .addInputBus("Pipe Casings on Side", 2)
             .addInputHatch("Pipe Casings on Side", 2)
             .addOutputBus("Pipe Casings on Side", 2)
             .addEnergyHatch("Any Electric Compressor Casing", 1)
             .addMaintenanceHatch("Any Electric Compressor Casing", 1)
+            .addSubChannelUsage("glass", "Glass Tier")
             .toolTipFinisher(AuthorFourIsTheNumber, Ollie);
         return tt;
     }
@@ -201,10 +202,11 @@ public class MTEIndustrialCompressor extends MTEExtendedPowerMultiBlockBase<MTEI
                 return super.validateRecipe(recipe);
             }
         }.setSpeedBonus(1F / 2F)
-            .setMaxParallelSupplier(this::getMaxParallelRecipes)
+            .setMaxParallelSupplier(this::getTrueParallel)
             .setEuModifier(0.9F);
     }
 
+    @Override
     public int getMaxParallelRecipes() {
         return (2 * GTUtility.getTier(this.getMaxInputVoltage()));
     }

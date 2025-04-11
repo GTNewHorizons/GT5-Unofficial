@@ -5,11 +5,12 @@ import java.util.ArrayList;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
 import gregtech.api.enums.GTValues;
+import gregtech.api.hazards.HazardProtection;
 import gregtech.api.recipe.RecipeMaps;
-import gregtech.api.util.GTUtility;
 import ic2.api.reactor.IReactor;
 import ic2.api.reactor.IReactorComponent;
 import ic2.core.IC2Potion;
@@ -50,17 +51,18 @@ public class ItemRadioactiveCellIC extends ItemRadioactiveCell implements IReact
                 .itemInputs(new ItemStack(this))
                 .itemOutputs(aDepleted)
                 .setNEIDesc(
-                    aMox ? "MOX Model" : "Uranium Model",
-                    "Neutron Pulse: " + aCellcount,
-                    aCellcount == 1
-                        ? String.format("Heat: %.1f * n1 * (n1 + 1)", (aHeat * MYSTERIOUS_MULTIPLIER_HEAT) / 2f)
-                        : String.format(
-                            "Heat: %.1f * (%d + n1) * (%d + n1)",
+                    StatCollector
+                        .translateToLocal(aMox ? "GT5U.nei.nuclear.model.mox" : "GT5U.nei.nuclear.model.uranium"),
+                    StatCollector.translateToLocalFormatted("GT5U.nei.nuclear.neutron_pulse", aCellcount),
+                    aCellcount == 1 ? StatCollector
+                        .translateToLocalFormatted("GT5U.nei.nuclear.heat.0", (aHeat * MYSTERIOUS_MULTIPLIER_HEAT) / 2f)
+                        : StatCollector.translateToLocalFormatted(
+                            "GT5U.nei.nuclear.heat.1",
                             (aHeat * MYSTERIOUS_MULTIPLIER_HEAT) * aCellcount / 2f,
                             aCellcount,
                             aCellcount + 1),
-                    String.format(
-                        "Energy: %.1f + n2 * %.1f EU/t",
+                    StatCollector.translateToLocalFormatted(
+                        "GT5U.nei.nuclear.energy",
                         aEnergy * aCellcount * pulses * nukePowerMult,
                         aEnergy * nukePowerMult))
                 .duration(0)
@@ -198,7 +200,7 @@ public class ItemRadioactiveCellIC extends ItemRadioactiveCell implements IReact
     @Override
     public void onUpdate(ItemStack stack, World world, Entity entity, int slotIndex, boolean isCurrentItem) {
         if (this.sRadiation > 0 && (entity instanceof EntityLivingBase entityLiving)) {
-            if (!GTUtility.isWearingFullRadioHazmat(entityLiving)) {
+            if (!HazardProtection.isWearingFullRadioHazmat(entityLiving)) {
                 IC2Potion.radiation.applyTo(entityLiving, sRadiation * 20, sRadiation * 10);
             }
         }
