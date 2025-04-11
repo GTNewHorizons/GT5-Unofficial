@@ -369,14 +369,14 @@ public class OverclockCalculator {
         calculatedConsumption = (long) Math.ceil(recipePower * Math.pow(eutIncreasePerOC, overclocks));
         duration /= Math.pow(durationDecreasePerHeatOC, heatOverclocks);
         duration /= Math.pow(durationDecreasePerOC, regularOverclocks);
-        calculatedDuration = (int) Math.max(duration, 1);
+        calculatedDuration = (int) Math.ceil(duration);
     }
 
     /**
      * Returns duration as a double to show how much it is overclocking too much to determine extra parallel. This
      * doesn't count as calculating
      */
-    public double calculateDurationUnderOneTick() {
+    public double calculateFractionalDuration() {
         // Determine the base duration, using the custom supplier if available.
         double duration = durationUnderOneTickSupplier != null ? durationUnderOneTickSupplier.get()
             : this.duration * durationModifier;
