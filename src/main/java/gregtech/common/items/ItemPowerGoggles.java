@@ -4,7 +4,6 @@ import static gregtech.api.enums.GTValues.NW;
 
 import java.util.List;
 
-import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
