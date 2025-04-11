@@ -28,7 +28,7 @@ public class AssemblyLine implements Runnable {
             .metadata(RESEARCH_ITEM, ItemList.Hatch_DataAccess_EV.get(1))
             .metadata(SCANNING, new Scanning(1 * MINUTES + 30 * SECONDS, TierEU.RECIPE_LuV))
             .itemInputs(
-                CustomItemList.Machine_Multi_Switch.get(1),
+                CustomItemList.Machine_Multi_Switch_Adv.get(1),
                 new Object[] { OrePrefixes.circuit.get(Materials.LuV), 2 },
                 ItemList.Tool_DataOrb.get(1),
                 ItemList.Cover_Screen.get(1))
@@ -110,7 +110,7 @@ public class AssemblyLine implements Runnable {
             .metadata(RESEARCH_ITEM, ItemList.Tool_DataOrb.get(1))
             .metadata(SCANNING, new Scanning(2 * MINUTES, TierEU.RECIPE_LuV))
             .itemInputs(
-                CustomItemList.Machine_Multi_Switch.get(1),
+                CustomItemList.Machine_Multi_Switch_Adv.get(1),
                 new Object[] { OrePrefixes.circuit.get(Materials.UV), 2 },
                 ItemList.Tool_DataOrb.get(1),
                 ItemList.Cover_Screen.get(1),
@@ -133,7 +133,7 @@ public class AssemblyLine implements Runnable {
             .metadata(RESEARCH_ITEM, ItemList.ScannerZPM.get(1))
             .metadata(SCANNING, new Scanning(1 * MINUTES + 30 * SECONDS, TierEU.RECIPE_LuV))
             .itemInputs(
-                CustomItemList.Machine_Multi_Switch.get(1),
+                CustomItemList.Machine_Multi_Switch_Adv.get(1),
                 ItemList.Sensor_ZPM.get(8),
                 new Object[] { OrePrefixes.circuit.get(Materials.UV), 4 },
                 ItemList.Field_Generator_ZPM.get(1),

@@ -109,6 +109,7 @@ import static gregtech.api.enums.MetaTileEntityIDs.MAX4AWirelessEnergyHatch;
 import static gregtech.api.enums.MetaTileEntityIDs.MAX64AWirelessEnergyHatch;
 import static gregtech.api.enums.MetaTileEntityIDs.MegaUltimateBuckConverter;
 import static gregtech.api.enums.MetaTileEntityIDs.MicrowaveGrinder;
+import static gregtech.api.enums.MetaTileEntityIDs.NetworkSwitchAdv;
 import static gregtech.api.enums.MetaTileEntityIDs.NetworkSwitchWithQoS;
 import static gregtech.api.enums.MetaTileEntityIDs.ObjectHolder;
 import static gregtech.api.enums.MetaTileEntityIDs.OpticalFiberCable;
@@ -329,6 +330,7 @@ import static tectech.thing.CustomItemList.Machine_Multi_QuarkGluonPlasmaModule;
 import static tectech.thing.CustomItemList.Machine_Multi_Research;
 import static tectech.thing.CustomItemList.Machine_Multi_SmeltingModule;
 import static tectech.thing.CustomItemList.Machine_Multi_Switch;
+import static tectech.thing.CustomItemList.Machine_Multi_Switch_Adv;
 import static tectech.thing.CustomItemList.Machine_Multi_TeslaCoil;
 import static tectech.thing.CustomItemList.Machine_Multi_Transformer;
 import static tectech.thing.CustomItemList.Machine_OwnerDetector;
@@ -642,6 +644,7 @@ import tectech.thing.metaTileEntity.multi.MTEEnergyInfuser;
 import tectech.thing.metaTileEntity.multi.MTEEyeOfHarmony;
 import tectech.thing.metaTileEntity.multi.MTEMicrowave;
 import tectech.thing.metaTileEntity.multi.MTENetworkSwitch;
+import tectech.thing.metaTileEntity.multi.MTENetworkSwitchAdv;
 import tectech.thing.metaTileEntity.multi.MTEQuantumComputer;
 import tectech.thing.metaTileEntity.multi.MTEResearchStation;
 import tectech.thing.metaTileEntity.multi.MTETeslaTower;
@@ -2214,6 +2217,9 @@ public class MachineLoader implements Runnable {
             .set(new MTETeslaTower(TeslaTower.ID, "multimachine.tm.teslaCoil", "Tesla Tower").getStackForm(1L));
         Machine_Multi_Switch.set(
             new MTENetworkSwitch(NetworkSwitchWithQoS.ID, "multimachine.em.switch", "Network Switch With QoS")
+                .getStackForm(1L));
+        Machine_Multi_Switch_Adv.set(
+            new MTENetworkSwitchAdv(NetworkSwitchAdv.ID, "multimachine.em.switch.adv", "Network Switch With QoS")
                 .getStackForm(1L));
         Machine_Multi_Computer.set(
             new MTEQuantumComputer(QuantumComputer.ID, "multimachine.em.computer", "Quantum Computer")
