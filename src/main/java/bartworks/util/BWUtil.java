@@ -50,6 +50,7 @@ import gregtech.api.enums.OreDictNames;
 import gregtech.api.enums.ToolDictNames;
 import gregtech.api.interfaces.IItemContainer;
 import gregtech.api.objects.ItemData;
+import gregtech.api.util.CustomGlyphs;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTModHandler;
@@ -110,7 +111,7 @@ public class BWUtil {
         char[] nu = new char[chars.length];
         for (int i = 0; i < chars.length; i++) {
             nu[i] = switch (chars[i]) {
-                case '0' -> '\u2080';
+                case '0' -> CustomGlyphs.SUBSCRIPT0.charAt(0);
                 case '1' -> '\u2081';
                 case '2' -> '\u2082';
                 case '3' -> '\u2083';
@@ -131,16 +132,16 @@ public class BWUtil {
         char[] nu = new char[chars.length];
         for (int i = 0; i < chars.length; i++) {
             nu[i] = switch (chars[i]) {
-                case '0' -> '\u2070';
-                case '1' -> '\u2071';
-                case '2' -> '\u00B2';
-                case '3' -> '\u00B3';
-                case '4' -> '\u2074';
-                case '5' -> '\u2075';
-                case '6' -> '\u2076';
-                case '7' -> '\u2077';
-                case '8' -> '\u2078';
-                case '9' -> '\u2079';
+                case '0' -> CustomGlyphs.SUPERSCRIPT0.charAt(0);
+                case '1' -> CustomGlyphs.SUPERSCRIPT1.charAt(0);
+                case '2' -> CustomGlyphs.SUPERSCRIPT2.charAt(0);
+                case '3' -> CustomGlyphs.SUPERSCRIPT3.charAt(0);
+                case '4' -> CustomGlyphs.SUPERSCRIPT4.charAt(0);
+                case '5' -> CustomGlyphs.SUPERSCRIPT5.charAt(0);
+                case '6' -> CustomGlyphs.SUPERSCRIPT6.charAt(0);
+                case '7' -> CustomGlyphs.SUPERSCRIPT7.charAt(0);
+                case '8' -> CustomGlyphs.SUPERSCRIPT8.charAt(0);
+                case '9' -> CustomGlyphs.SUPERSCRIPT9.charAt(0);
                 default -> chars[i];
             };
         }
