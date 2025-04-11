@@ -58,6 +58,7 @@ import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.GTUtilityClient;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.api.util.TurbineStatCalculator;
 import gregtech.common.items.MetaGeneratedTool01;
 import gregtech.common.pollution.Pollution;
 
@@ -72,7 +73,7 @@ public abstract class MTEAirFilterBase extends MTEEnhancedMultiBlockBase<MTEAirF
 
     private static final Random RANDOM = new XSTR();
 
-    protected int baseEff = 0;
+    protected float baseEff = 0;
     protected int multiTier = 0;
     protected int chunkIndex = 0;
     protected boolean hasPollution = false;
@@ -296,7 +297,9 @@ public abstract class MTEAirFilterBase extends MTEEnhancedMultiBlockBase<MTEAirF
         if (damage == -1) {
             return CheckRecipeResultRegistry.NO_TURBINE_FOUND;
         }
-        baseEff = GTUtility.safeInt((long) ((50.0F + 10.0F * damage) * 100));
+
+        TurbineStatCalculator turbine = new TurbineStatCalculator((MetaGeneratedTool) aStack.getItem(), aStack);
+        baseEff = turbine.getEfficiency();
         tickCounter = 0; // resetting the counter in case of a power failure, etc
 
         // scan the inventory to search for filter if none has been loaded previously
@@ -401,7 +404,7 @@ public abstract class MTEAirFilterBase extends MTEEnhancedMultiBlockBase<MTEAirF
     }
 
     public void cleanPollution() {
-        int cleaningRate = getPollutionCleaningRatePerSecond(baseEff / 10000f, mEfficiency / 10000f, isFilterLoaded);
+        int cleaningRate = getPollutionCleaningRatePerSecond(baseEff, mEfficiency / 10000f, isFilterLoaded);
         if (cleaningRate > 0) {
             World world = this.getBaseMetaTileEntity()
                 .getWorld();
@@ -633,8 +636,7 @@ public abstract class MTEAirFilterBase extends MTEEnhancedMultiBlockBase<MTEAirF
             StatCollector.translateToLocalFormatted(
                 "GT5U.infodata.air_filter.pollution_reduction",
                 EnumChatFormatting.GREEN
-                    + Integer.toString(
-                        getPollutionCleaningRatePerTick(baseEff / 10000f, mEfficiency / 10000f, isFilterLoaded))
+                    + Integer.toString(getPollutionCleaningRatePerTick(baseEff, mEfficiency / 10000f, isFilterLoaded))
                     + EnumChatFormatting.RESET),
             StatCollector.translateToLocalFormatted("GT5U.infodata.air_filter.has_filter", isFilterLoaded),
             StatCollector
