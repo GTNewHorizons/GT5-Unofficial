@@ -142,10 +142,10 @@ public class CoverItemMeter extends Cover {
         if (aPlayer.isSneaking()) {
             if (inverted) {
                 inverted = false;
-                GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("055", "Normal"));
+                GTUtility.sendChatToPlayer(aPlayer, GTUtility.getDescLoc("normal"));
             } else {
                 inverted = true;
-                GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("054", "Inverted"));
+                GTUtility.sendChatToPlayer(aPlayer, GTUtility.getDescLoc("inverted"));
             }
         } else {
             slot++;

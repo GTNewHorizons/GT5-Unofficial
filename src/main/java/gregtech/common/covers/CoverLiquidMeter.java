@@ -127,10 +127,10 @@ public class CoverLiquidMeter extends Cover {
     public void onCoverScrewdriverClick(EntityPlayer aPlayer, float aX, float aY, float aZ) {
         if (inverted) {
             inverted = false;
-            GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("055", "Normal"));
+            GTUtility.sendChatToPlayer(aPlayer, GTUtility.getDescLoc("normal"));
         } else {
             inverted = true;
-            GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("054", "Inverted"));
+            GTUtility.sendChatToPlayer(aPlayer, GTUtility.getDescLoc("inverted"));
         }
     }
 
