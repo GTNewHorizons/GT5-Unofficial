@@ -16,6 +16,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -68,6 +69,7 @@ public class MTEBioPipe extends MTEBaseFactoryPipe implements AOFactoryElement {
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
         ArtificialOrganism AO = network.getAO();
 
+        tag.setBoolean("ruined", isRuined);
         tag.setString("species", AO != null ? AO.toString() : "INVALID");
         tag.setString("network", network == null ? "null" : network.toString());
     }
@@ -76,12 +78,16 @@ public class MTEBioPipe extends MTEBaseFactoryPipe implements AOFactoryElement {
     public void getWailaBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor,
         IWailaConfigHandler config) {
         super.getWailaBody(itemStack, currenttip, accessor, config);
-        currenttip.add(
-            "Species: " + accessor.getNBTData()
-                .getString("species"));
-        currenttip.add(
-            "Network: " + accessor.getNBTData()
-                .getString("network"));
+        NBTTagCompound tag = accessor.getNBTData();
+        if (!tag.getBoolean("ruined")) {
+            currenttip.add(
+                "Species: " + tag.getString("species"));
+            currenttip.add(
+                "Network: " + tag.getString("network"));
+        } else {
+            currenttip.add(EnumChatFormatting.RED + "DESTROYED");
+            currenttip.add("Connections broken...");
+        }
     }
 
     @Override
@@ -299,5 +305,17 @@ public class MTEBioPipe extends MTEBaseFactoryPipe implements AOFactoryElement {
         super.onRemoval();
 
         AOFactoryGrid.INSTANCE.removeElement(this);
+    }
+
+    @Override
+    public void saveNBTData(NBTTagCompound nbtTagCompound) {
+        super.saveNBTData(nbtTagCompound);
+        nbtTagCompound.setBoolean("isRuined", isRuined);
+    }
+
+    @Override
+    public void loadNBTData(NBTTagCompound nbtTagCompound) {
+        super.loadNBTData(nbtTagCompound);
+        isRuined = nbtTagCompound.getBoolean("isRuined");
     }
 }
