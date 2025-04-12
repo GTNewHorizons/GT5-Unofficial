@@ -6,13 +6,13 @@ import static gregtech.api.recipe.RecipeMaps.latheRecipes;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
 
-import gregtech.api.items.MetaGeneratedItem;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.items.MetaGeneratedItem;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
@@ -34,7 +34,7 @@ public class ProcessingPlank implements gregtech.api.interfaces.IOreRecipeRegist
             else registeredEXU = true;
         }
         if (aOreDictName.startsWith("plankWood")) {
-            if(aStack.getItem() instanceof MetaGeneratedItem) {
+            if (aStack.getItem() instanceof MetaGeneratedItem) {
                 // https://github.com/GTNewHorizons/GT-New-Horizons-Modpack/issues/19273
                 // "plankWood" from GT are also having other recipes in cutters, which causing recipe conflicts.
                 // And I don't think people would use this kind of plankWood to make wooden products, so just skipping
