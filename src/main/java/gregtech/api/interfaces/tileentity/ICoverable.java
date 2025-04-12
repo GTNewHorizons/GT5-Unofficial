@@ -30,7 +30,7 @@ public interface ICoverable extends IRedstoneTileEntity, IHasInventory, IBasicEn
      *
      * @param cover The cover
      */
-    void attachCover(Cover cover);
+    void attachCover(@NotNull Cover cover);
 
     boolean hasCoverAtSide(ForgeDirection side);
 
