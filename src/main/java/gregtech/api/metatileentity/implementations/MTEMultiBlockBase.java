@@ -23,7 +23,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.function.LongConsumer;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -1039,12 +1038,19 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
             return result;
         }
         List<Byte> hatchColors = Stream.concat(
-            mInputBusses.stream().map(bus -> bus.getBaseMetaTileEntity().getColorization()),
-            mInputHatches.stream().map(hatch -> hatch.getBaseMetaTileEntity().getColorization())
-        ).distinct().collect(Collectors.toList());
+            mInputBusses.stream()
+                .map(
+                    bus -> bus.getBaseMetaTileEntity()
+                        .getColorization()),
+            mInputHatches.stream()
+                .map(
+                    hatch -> hatch.getBaseMetaTileEntity()
+                        .getColorization()))
+            .distinct()
+            .collect(Collectors.toList());
 
         boolean doColorChecking = hatchColors.size() > 1;
-        for(byte color : hatchColors) {
+        for (byte color : hatchColors) {
             processingLogic.setInputFluids(getStoredFluidsForColor(Optional.of(color)));
 
             if (isInputSeparationEnabled()) {
@@ -1062,7 +1068,10 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
                         if (bus instanceof MTEHatchCraftingInputME) {
                             continue;
                         }
-                        if (doColorChecking && color != -1 && bus.getBaseMetaTileEntity().getColorization() != color) continue;
+                        if (doColorChecking && color != -1
+                            && bus.getBaseMetaTileEntity()
+                                .getColorization() != color)
+                            continue;
                         List<ItemStack> inputItems = new ArrayList<>();
                         for (int i = bus.getSizeInventory() - 1; i >= 0; i--) {
                             ItemStack stored = bus.getStackInSlot(i);
@@ -1590,12 +1599,13 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         return getStoredFluidsForColor(Optional.empty());
     }
 
-    public ArrayList<FluidStack> getStoredFluidsForColor(Optional<Byte> color){
+    public ArrayList<FluidStack> getStoredFluidsForColor(Optional<Byte> color) {
         ArrayList<FluidStack> rList = new ArrayList<>();
         Map<Fluid, FluidStack> inputsFromME = new HashMap<>();
         for (MTEHatchInput tHatch : validMTEList(mInputHatches)) {
-            byte hatchColor = tHatch.getBaseMetaTileEntity().getColorization();
-            if(color.isPresent() && hatchColor != -1 && hatchColor != color.get()) continue;
+            byte hatchColor = tHatch.getBaseMetaTileEntity()
+                .getColorization();
+            if (color.isPresent() && hatchColor != -1 && hatchColor != color.get()) continue;
             setHatchRecipeMap(tHatch);
             if (tHatch instanceof MTEHatchMultiInput multiInputHatch) {
                 for (FluidStack tFluid : multiInputHatch.getStoredFluid()) {
@@ -1665,14 +1675,15 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         return getStoredInputsForColor(Optional.empty());
     }
 
-    public ArrayList<ItemStack> getStoredInputsForColor(Optional<Byte> color){
+    public ArrayList<ItemStack> getStoredInputsForColor(Optional<Byte> color) {
         ArrayList<ItemStack> rList = new ArrayList<>();
         Map<GTUtility.ItemId, ItemStack> inputsFromME = new HashMap<>();
         for (MTEHatchInputBus tHatch : validMTEList(mInputBusses)) {
             if (tHatch instanceof MTEHatchCraftingInputME) {
                 continue;
             }
-            byte busColor = tHatch.getBaseMetaTileEntity().getColorization();
+            byte busColor = tHatch.getBaseMetaTileEntity()
+                .getColorization();
             if (color.isPresent() && busColor != -1 && busColor != color.get()) continue;
             tHatch.mRecipeMap = getRecipeMap();
             IGregTechTileEntity tileEntity = tHatch.getBaseMetaTileEntity();
