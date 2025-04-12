@@ -269,7 +269,6 @@ public class RedstoneSnifferGuiBuilder {
                 .child(
                     new SingleChildWidget<>().sizeRel(1, 0.9f)
                         .child(advancedListWidget)));
-
         panel.child(
             new Column().margin(10)
                 .child(

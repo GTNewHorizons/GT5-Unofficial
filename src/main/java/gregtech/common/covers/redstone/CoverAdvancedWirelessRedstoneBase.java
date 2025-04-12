@@ -59,17 +59,11 @@ public abstract class CoverAdvancedWirelessRedstoneBase extends Cover {
     protected void readDataFromNbt(NBTBase nbt) {
         NBTTagCompound tag = (NBTTagCompound) nbt;
         ICoverable cover = coveredTile.get();;
-        if (cover != null) {
-            if (((uuid != null && !tag.hasKey("uuid")) || (uuid == null && tag.hasKey("uuid"))
-                || (uuid != null && tag.hasKey("uuid")
-                    && !uuid.toString()
-                        .equals(tag.getString("uuid"))))
-                || (!tag.getString("frequency")
-                    .equals(frequency))) {
-                GregTechAPI.sAdvancedWirelessRedstone.get(uuid == null ? "null" : uuid.toString())
-                    .get(frequency)
-                    .remove(getCoverKey(cover, coverSide));
-            }
+        if (cover != null && cover.getWorld() != null) {
+            GregTechAPI.sAdvancedWirelessRedstone
+                .computeIfAbsent(uuid == null ? "null" : uuid.toString(), (k) -> new ConcurrentHashMap<>())
+                .computeIfAbsent(frequency, (k) -> new ConcurrentHashMap<>())
+                .remove(getCoverKey(cover, coverSide));
         }
         frequency = tag.getString("frequency");
         if (tag.hasKey("uuid")) {
