@@ -3026,7 +3026,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
             .widget(new FakeSyncWidget.BooleanSyncer(() -> mCrowbar, val -> mCrowbar = val));
         screenElements
             .widget(
-                new TextWidget(GTUtility.trans("138", "Incomplete Structure.")).setTextAlignment(Alignment.CenterLeft)
+                new TextWidget(GTUtility.getDescLoc("mb.incomplete")).setTextAlignment(Alignment.CenterLeft)
                     .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setEnabled(widget -> !mMachine))
             .widget(new FakeSyncWidget.BooleanSyncer(() -> mMachine, val -> mMachine = val));
@@ -3041,23 +3041,23 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
                 .setDefaultColor(COLOR_TEXT_WHITE.get())
                 .setEnabled(widget -> (getErrorDisplayID() & 256) != 0));
 
-        screenElements
-            .widget(
-                new TextWidget(GTUtility.trans("139", "Hit with Soft Mallet")).setDefaultColor(COLOR_TEXT_WHITE.get())
-                    .setEnabled(widget -> getErrorDisplayID() == 0 && !getBaseMetaTileEntity().isActive()))
+        screenElements.widget(
+            new TextWidget(GTUtility.getDescLoc("mb.idle.1")).setDefaultColor(COLOR_TEXT_WHITE.get())
+                .setEnabled(widget -> getErrorDisplayID() == 0 && !getBaseMetaTileEntity().isActive()))
             .widget(new FakeSyncWidget.IntegerSyncer(this::getErrorDisplayID, this::setErrorDisplayID))
             .widget(
                 new FakeSyncWidget.BooleanSyncer(
                     () -> getBaseMetaTileEntity().isActive(),
                     val -> getBaseMetaTileEntity().setActive(val)));
         screenElements.widget(
-            new TextWidget(GTUtility.trans("140", "to (re-)start the Machine")).setDefaultColor(COLOR_TEXT_WHITE.get())
+            new TextWidget(GTUtility.getDescLoc("mb.idle.2")).setDefaultColor(COLOR_TEXT_WHITE.get())
                 .setEnabled(widget -> getErrorDisplayID() == 0 && !getBaseMetaTileEntity().isActive()));
         screenElements.widget(
-            new TextWidget(GTUtility.trans("141", "if it doesn't start.")).setDefaultColor(COLOR_TEXT_WHITE.get())
+            new TextWidget(GTUtility.getDescLoc("mb.idle.3")).setDefaultColor(COLOR_TEXT_WHITE.get())
                 .setEnabled(widget -> getErrorDisplayID() == 0 && !getBaseMetaTileEntity().isActive()));
+
         screenElements.widget(
-            new TextWidget(GTUtility.trans("142", "Running perfectly.")).setDefaultColor(COLOR_TEXT_WHITE.get())
+            new TextWidget(GTUtility.getDescLoc("mb.running")).setDefaultColor(COLOR_TEXT_WHITE.get())
                 .setEnabled(widget -> getErrorDisplayID() == 0 && getBaseMetaTileEntity().isActive()));
 
         screenElements.widget(TextWidget.dynamicString(() -> {

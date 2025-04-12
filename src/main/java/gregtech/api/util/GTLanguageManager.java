@@ -200,10 +200,6 @@ public class GTLanguageManager {
     }
 
     public static void writePlaceholderStrings() {
-        addStringLocalization("Interaction_DESCRIPTION_Index_043", "Filter input, Deny output");
-        addStringLocalization("Interaction_DESCRIPTION_Index_044", "Invert input, Deny output");
-        addStringLocalization("Interaction_DESCRIPTION_Index_045", "Filter input, Permit any output");
-        addStringLocalization("Interaction_DESCRIPTION_Index_046", "Invert input, Permit any output");
         addStringLocalization("Interaction_DESCRIPTION_Index_047", "Filter Fluid: ");
         addStringLocalization("Interaction_DESCRIPTION_Index_048", "Pump speed: ");
         addStringLocalization("Interaction_DESCRIPTION_Index_049", "L/tick ");
@@ -283,9 +279,6 @@ public class GTLanguageManager {
         addStringLocalization("Interaction_DESCRIPTION_Index_136", "Circuitry burned out. (Soldering)");
         addStringLocalization("Interaction_DESCRIPTION_Index_137", "That doesn't belong there. (Crowbar)");
         addStringLocalization("Interaction_DESCRIPTION_Index_138", "Incomplete Structure.");
-        addStringLocalization("Interaction_DESCRIPTION_Index_139", "Hit with Soft Mallet");
-        addStringLocalization("Interaction_DESCRIPTION_Index_140", "to (re-)start the Machine");
-        addStringLocalization("Interaction_DESCRIPTION_Index_141", "if it doesn't start.");
         addStringLocalization("Interaction_DESCRIPTION_Index_142", "Running perfectly.");
         addStringLocalization("Interaction_DESCRIPTION_Index_143", "Missing Mining Pipe");
         addStringLocalization("Interaction_DESCRIPTION_Index_144", "Missing Turbine Rotor");
@@ -432,10 +425,6 @@ public class GTLanguageManager {
         addStringLocalization("Interaction_DESCRIPTION_Index_304", "Avg. Input");
         addStringLocalization("Interaction_DESCRIPTION_Index_305", "Avg. Output");
         addStringLocalization("Interaction_DESCRIPTION_Index_306", "EU stored");
-        addStringLocalization("Interaction_DESCRIPTION_Index_307", "Deny input, Filter output");
-        addStringLocalization("Interaction_DESCRIPTION_Index_308", "Deny input, Invert output");
-        addStringLocalization("Interaction_DESCRIPTION_Index_309", "Permit any input, Filter output");
-        addStringLocalization("Interaction_DESCRIPTION_Index_310", "Permit any input, Invert output");
         addStringLocalization("Interaction_DESCRIPTION_Index_311", "Block Output");
         addStringLocalization("Interaction_DESCRIPTION_Index_312", "Allow Output");
         addStringLocalization("Interaction_DESCRIPTION_Index_313", "Block Input");
