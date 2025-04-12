@@ -266,12 +266,7 @@ public class MTEAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTEAssemblyL
                 .setAmperageOC(mEnergyHatches.size() != 1)
                 .setDuration(tRecipe.mDuration)
                 .setParallel(originalMaxParallel);
-
-            double tickTimeAfterOC = calculator.calculateDurationUnderOneTick();
-            if (tickTimeAfterOC < 1) {
-                maxParallel = GTUtility.safeInt((long) (maxParallel / tickTimeAfterOC), 0);
-            }
-
+            maxParallel = GTUtility.safeInt((long) (maxParallel * calculator.calculateMultiplierUnderOneTick()), 0);
             int maxParallelBeforeBatchMode = maxParallel;
             if (isBatchModeEnabled()) {
                 maxParallel = GTUtility.safeInt((long) maxParallel * getMaxBatchSize(), 0);
