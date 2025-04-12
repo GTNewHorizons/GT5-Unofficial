@@ -474,6 +474,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.MathHelper;
+import net.minecraft.util.StatCollector;
 
 import cpw.mods.fml.common.Optional;
 import gregtech.api.GregTechAPI;
@@ -497,7 +498,6 @@ import gregtech.api.objects.MaterialStack;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTFoodStat;
-import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
@@ -548,8 +548,6 @@ import mods.railcraft.common.items.firestone.IItemFirestoneBurning;
 public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFirestoneBurning {
 
     public static MetaGeneratedItem01 INSTANCE;
-    private final String mToolTipPurify = GTLanguageManager
-        .addStringLocalization("metaitem.01.tooltip.purify", "Throw into Cauldron to get clean Dust");
     private static final String aTextEmptyRow = "   ";
     private static final String aTextShape = " P ";
     private static final String PartCoverText = " L/t (";
@@ -3518,7 +3516,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
             if ((aMaterial != null) && (aMaterial != Materials.Empty) && (aMaterial != Materials._NULL)) {
                 OrePrefixes aPrefix = this.mGeneratedPrefixList[(aDamage / 1000)];
                 if ((aPrefix == OrePrefixes.dustImpure) || (aPrefix == OrePrefixes.dustPure)) {
-                    aList.add(this.mToolTipPurify);
+                    aList.add(StatCollector.translateToLocal("GT5U.tooltip.purify.1"));
                 }
             }
         }

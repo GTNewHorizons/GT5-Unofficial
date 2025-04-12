@@ -6,6 +6,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 
@@ -17,7 +18,6 @@ import gregtech.api.GregTechAPI;
 import gregtech.api.covers.CoverContext;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
-import gregtech.api.util.GTUtility;
 import gregtech.common.covers.Cover;
 import gregtech.common.covers.CoverPosition;
 import io.netty.buffer.ByteBuf;
@@ -215,9 +215,11 @@ public abstract class CoverAdvancedWirelessRedstoneBase extends Cover {
 
     @Override
     public String getDescription() {
-        return GTUtility.trans("081", "Frequency: ") + frequency
-            + ", Transmission: "
-            + (uuid == null ? "Public" : "Private");
+        return StatCollector.translateToLocalFormatted(
+            "gt.interact.desc.freq_perm",
+            frequency,
+            uuid == null ? StatCollector.translateToLocal("gt.interact.desc.public")
+                : StatCollector.translateToLocal("gt.interact.desc.private"));
     }
 
     @Override

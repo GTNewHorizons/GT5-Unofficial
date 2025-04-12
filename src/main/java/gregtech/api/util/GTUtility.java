@@ -3661,19 +3661,11 @@ public class GTUtility {
     }
 
     /**
-     * @deprecated Use standard translation with {@link StatCollector}.
+     * @deprecated Use {@link StatCollector}
      */
     @Deprecated
     public static String trans(String aKey, String aEnglish) {
         return GTLanguageManager.addStringLocalization("Interaction_DESCRIPTION_Index_" + aKey, aEnglish);
-    }
-
-    /**
-     * @deprecated Use standard translation with {@link StatCollector}.
-     */
-    @Deprecated
-    public static String getTrans(String aKey) {
-        return GTLanguageManager.getTranslation("Interaction_DESCRIPTION_Index_" + aKey);
     }
 
     /**

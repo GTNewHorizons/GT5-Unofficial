@@ -2,6 +2,7 @@ package gregtech.common.gui.mui1.cover;
 
 import java.util.Arrays;
 
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
@@ -41,8 +42,8 @@ public class LiquidMeterUIFactory extends CoverUIFactory<CoverLiquidMeter> {
     @SuppressWarnings("PointlessArithmeticExpression")
     @Override
     protected void addUIWidgets(ModularWindow.Builder builder) {
-        final String INVERTED = GTUtility.trans("INVERTED", "Inverted");
-        final String NORMAL = GTUtility.trans("NORMAL", "Normal");
+        final String INVERTED = StatCollector.translateToLocal("gt.interact.desc.inverted");
+        final String NORMAL = StatCollector.translateToLocal("gt.interact.desc.normal");
 
         setMaxCapacity();
 

@@ -434,26 +434,24 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
                 aList.add(
                     tOffset + 0,
                     EnumChatFormatting.GRAY + String.format(
-                        transItem("001", "Durability: %s/%s"),
+                        getItemDescLoc("durability"),
                         EnumChatFormatting.GREEN + formatNumbers(turbine.getCurrentDurability()) + " ",
                         " " + formatNumbers(turbine.getMaxDurability())) + EnumChatFormatting.GRAY);
                 aList.add(
                     tOffset + 1,
                     EnumChatFormatting.GRAY + String.format(
-                        transItem("002", "%s Tier %s"),
+                        getItemDescLoc("tier"),
                         tMaterial.mLocalizedName + ":" + EnumChatFormatting.YELLOW,
                         "" + getHarvestLevel(aStack, "")) + EnumChatFormatting.GRAY);
                 aList.add(
                     tOffset + 2,
                     EnumChatFormatting.WHITE
                         + String.format(
-                            transItem("005", "Base Efficiency: %s"),
+                            getItemDescLoc("base_eff"),
                             "" + EnumChatFormatting.BLUE + (int) Math.ceil(turbine.getEfficiency() * 100))
                         + "%"
                         + EnumChatFormatting.GRAY);
-                aList.add(
-                    tOffset + 3,
-                    EnumChatFormatting.GRAY + transItem("006", "Fuel | Optimal Flow > EU/t Produced | Efficiency"));
+                aList.add(tOffset + 3, EnumChatFormatting.GRAY + getItemDescLoc("fuel_eff"));
                 aList.add(
                     tOffset + 4,
                     EnumChatFormatting.WHITE
@@ -569,31 +567,31 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
                 aList.add(
                     tOffset + 11,
                     EnumChatFormatting.LIGHT_PURPLE + String.format(
-                        transItem("502", "Overflow Efficiency Tier: %s"),
+                        getItemDescLoc("eff_tier"),
                         "" + EnumChatFormatting.GOLD + turbine.getOverflowEfficiency() + EnumChatFormatting.GRAY));
             } else {
                 aList.add(
                     tOffset,
                     EnumChatFormatting.WHITE + String.format(
-                        transItem("001", "Durability: %s/%s"),
+                        getItemDescLoc("durability"),
                         EnumChatFormatting.GREEN + formatNumbers(tMaxDamage - getToolDamage(aStack)) + " ",
                         " " + formatNumbers(tMaxDamage)) + EnumChatFormatting.GRAY);
                 aList.add(
                     tOffset + 1,
                     EnumChatFormatting.WHITE + String.format(
-                        transItem("002", "%s lvl %s"),
+                        getItemDescLoc("level"),
                         tMaterial.mLocalizedName + EnumChatFormatting.YELLOW,
                         "" + getHarvestLevel(aStack, "")) + EnumChatFormatting.GRAY);
                 aList.add(
                     tOffset + 2,
-                    EnumChatFormatting.WHITE + String.format(
-                        transItem("003", "Attack Damage: %s"),
-                        "" + EnumChatFormatting.BLUE + getToolCombatDamage(aStack)) + EnumChatFormatting.GRAY);
+                    EnumChatFormatting.WHITE + String
+                        .format(getItemDescLoc("damage"), "" + EnumChatFormatting.BLUE + getToolCombatDamage(aStack))
+                        + EnumChatFormatting.GRAY);
                 aList.add(
                     tOffset + 3,
                     EnumChatFormatting.WHITE
                         + String.format(
-                            transItem("004", "Mining Speed: %s"),
+                            getItemDescLoc("mine_speed"),
                             "" + EnumChatFormatting.GOLD
                                 + Math.max(
                                     Float.MIN_NORMAL,

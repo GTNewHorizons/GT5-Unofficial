@@ -3,6 +3,7 @@ package gregtech.common.covers;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 
@@ -153,9 +154,10 @@ public class CoverArm extends CoverLegacyData {
     private void sendMessageToPlayer(EntityPlayer aPlayer, int var) {
         if ((var & EXPORT_MASK) != 0) GTUtility.sendChatToPlayer(
             aPlayer,
-            GTUtility.trans("001", "Puts out into adjacent Slot #") + (((var >> 14) & SLOT_ID_MASK) - 1));
-        else GTUtility
-            .sendChatToPlayer(aPlayer, GTUtility.trans("002", "Grabs in for own Slot #") + ((var & SLOT_ID_MASK) - 1));
+            StatCollector.translateToLocal("gt.interact.desc.out_slot") + (((var >> 14) & SLOT_ID_MASK) - 1));
+        else GTUtility.sendChatToPlayer(
+            aPlayer,
+            StatCollector.translateToLocal("gt.interact.desc.in_slot") + ((var & SLOT_ID_MASK) - 1));
     }
 
     private int getNewVar(int var, int step) {
