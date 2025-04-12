@@ -1,11 +1,18 @@
 package gregtech.api.factory.artificialorganisms;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import com.google.common.collect.ImmutableList;
+import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
+import gregtech.api.util.GTOreDictUnificator;
+import gregtech.common.covers.Cover;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -30,9 +37,17 @@ import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 import tectech.thing.metaTileEntity.pipe.MTEBaseFactoryPipe;
 
+import static gregtech.api.objects.XSTR.XSTR_INSTANCE;
+import static gtnhlanth.common.register.WerkstoffMaterialPool.Gangue;
+
 public class MTEBioPipe extends MTEBaseFactoryPipe implements AOFactoryElement {
 
     private static Textures.BlockIcons.CustomIcon pipeTexture;
+    private static Textures.BlockIcons.CustomIcon pipeTextureRuined;
+
+    private AOFactoryNetwork network;
+    boolean isRuined = false;
+    boolean queuedHavoc = false;
 
     public MTEBioPipe(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -79,13 +94,38 @@ public class MTEBioPipe extends MTEBaseFactoryPipe implements AOFactoryElement {
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister aBlockIconRegister) {
         pipeTexture = new Textures.BlockIcons.CustomIcon("iconsets/BIOPIPE");
+        pipeTextureRuined = new Textures.BlockIcons.CustomIcon("iconsets/BIOPIPE_RUINED");
         super.registerIcons(aBlockIconRegister);
     }
 
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, int aConnections,
         int colorIndex, boolean aConnected, boolean aRedstone) {
-        return new ITexture[] { TextureFactory.of(pipeTexture) };
+        return new ITexture[] { TextureFactory.of(isRuined ? pipeTextureRuined : pipeTexture) };
+    }
+
+    //TODO: uncomment when dropped item pr merges
+
+    /*@Override
+    public ArrayList<ItemStack> getDroppedItem() {
+        if (!isRuined) return null;
+        ArrayList<ItemStack> drops = new ArrayList<>();
+        drops.add(Gangue.get(OrePrefixes.dust, 8));
+        drops.add(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Iron, 2));
+        return drops;
+    }
+     */
+
+    @Override
+    public void onValueUpdate(byte aValue) {
+        boolean oldValue = isRuined;
+        isRuined = (aValue & 1) == 1;
+        if (oldValue != isRuined) getBaseMetaTileEntity().issueTextureUpdate();
+    }
+
+    @Override
+    public byte getUpdateData() {
+        return (byte) (isRuined ? 1 : 0);
     }
 
     @Override
@@ -147,6 +187,21 @@ public class MTEBioPipe extends MTEBaseFactoryPipe implements AOFactoryElement {
         return false;
     }
 
+    @Override
+    public boolean letsIn(Cover cover) {
+        return true;
+    }
+
+    @Override
+    public boolean letsOut(Cover cover) {
+        return true;
+    }
+
+    @Override
+    public boolean allowCoverOnSide(ForgeDirection side, ItemStack coverItem) {
+        return false;
+    }
+
     public void connectPipeOnSide(ForgeDirection side, EntityPlayer entityPlayer) {
         if (!isConnectedAtSide(side)) {
             if (connect(side) > 0) {
@@ -171,7 +226,7 @@ public class MTEBioPipe extends MTEBaseFactoryPipe implements AOFactoryElement {
     }
 
     @Override
-    public void havocEvent() {
+    public void sentienceEvent() {
         queuedHavoc = true;
     }
 
@@ -187,30 +242,33 @@ public class MTEBioPipe extends MTEBaseFactoryPipe implements AOFactoryElement {
         return false;
     }
 
-    boolean queuedHavoc = false;
-
     @Override
     public void onPostTick(IGregTechTileEntity base, long aTick) {
         super.onPostTick(base, aTick);
-        if (queuedHavoc) getBaseMetaTileEntity().setToFire();
+        if (queuedHavoc) {
+            isRuined = true;
+        }
     }
 
-    private AOFactoryNetwork network;
-
     // Only detect connected neighbors instead of any
+    // Ruined pipes don't connect to anything and cannot be connected to
     @Override
     public void getNeighbours(Collection<AOFactoryElement> neighbours) {
         IGregTechTileEntity base = getBaseMetaTileEntity();
-
-        if (base == null || base.isDead()) return;
-
+        if (isRuined || base == null || base.isDead()) return;
         for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
             if (base.getTileEntityAtSide(dir) instanceof IGregTechTileEntity igte) {
                 if (igte.getMetaTileEntity() instanceof AOFactoryElement element) {
+                    if (element instanceof MTEBioPipe pipe && pipe.isRuined) return;
                     if (isConnectedAtSide(dir)) neighbours.add(element);
                 }
             }
         }
+    }
+
+    @Override
+    public void onBlockDestroyed() {
+        super.onBlockDestroyed();
     }
 
     @Override

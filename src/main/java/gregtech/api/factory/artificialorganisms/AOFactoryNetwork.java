@@ -19,10 +19,13 @@ public class AOFactoryNetwork extends StandardFactoryNetwork<AOFactoryNetwork, A
     }
 
     public void initiateHavoc() {
+        ArtificialOrganism ao = getAO();
+        if (ao != null) ao.purgeAOs();
+
         // Copy the set first so that any network updates don't cause concurrent modification
         HashSet<AOFactoryElement> oldElements = new HashSet<>(elements);
         for (AOFactoryElement e : oldElements) {
-            if (XSTR_INSTANCE.nextInt(4) == 0) e.havocEvent();
+            if (XSTR_INSTANCE.nextInt(4) == 0) e.sentienceEvent();
         }
     }
 }

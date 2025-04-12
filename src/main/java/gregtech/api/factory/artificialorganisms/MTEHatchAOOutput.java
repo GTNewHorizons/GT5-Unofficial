@@ -23,6 +23,9 @@ import tectech.thing.metaTileEntity.hatch.MTEBaseFactoryHatch;
 
 public class MTEHatchAOOutput extends MTEBaseFactoryHatch implements AOFactoryElement, IAOStorageComponent {
 
+    protected ArtificialOrganism currentSpecies;
+    private AOFactoryNetwork network;
+
     public MTEHatchAOOutput(int aID, String aName, String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional, aTier, new String[] { "Distributes Artificial Organisms" });
     }
@@ -32,8 +35,8 @@ public class MTEHatchAOOutput extends MTEBaseFactoryHatch implements AOFactoryEl
     }
 
     @Override
-    public void havocEvent() {
-        getBaseMetaTileEntity().setToFire();
+    public void sentienceEvent() {
+
     }
 
     @Override
@@ -83,8 +86,6 @@ public class MTEHatchAOOutput extends MTEBaseFactoryHatch implements AOFactoryEl
         return side == getBaseMetaTileEntity().getFrontFacing();
     }
 
-    protected ArtificialOrganism currentSpecies;
-
     public void setSpecies(ArtificialOrganism species) {
         currentSpecies = species;
     }
@@ -110,7 +111,7 @@ public class MTEHatchAOOutput extends MTEBaseFactoryHatch implements AOFactoryEl
             if (igte.getMetaTileEntity() instanceof AOFactoryElement element) {
                 // Handle pipes separately because of connection check
                 if (element instanceof MTEBioPipe pipe) {
-                    if (pipe.isConnectedAtSide(dir.getOpposite())) {
+                    if (!pipe.isRuined && pipe.isConnectedAtSide(dir.getOpposite())) {
                         neighbours.add(element);
                     }
                 }
@@ -121,8 +122,6 @@ public class MTEHatchAOOutput extends MTEBaseFactoryHatch implements AOFactoryEl
             }
         }
     }
-
-    private AOFactoryNetwork network;
 
     @Override
     public AOFactoryNetwork getNetwork() {

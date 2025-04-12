@@ -22,6 +22,8 @@ import tectech.thing.metaTileEntity.hatch.MTEBaseFactoryHatch;
 
 public class MTEHatchAOInput extends MTEBaseFactoryHatch implements AOFactoryElement {
 
+    private AOFactoryNetwork network;
+
     public MTEHatchAOInput(int aID, String aName, String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional, aTier, new String[] { "Receives Artificial Organisms" });
     }
@@ -31,7 +33,7 @@ public class MTEHatchAOInput extends MTEBaseFactoryHatch implements AOFactoryEle
     }
 
     @Override
-    public void havocEvent() {
+    public void sentienceEvent() {
         getBaseMetaTileEntity().setToFire();
     }
 
@@ -93,7 +95,7 @@ public class MTEHatchAOInput extends MTEBaseFactoryHatch implements AOFactoryEle
             if (igte.getMetaTileEntity() instanceof AOFactoryElement element) {
                 // Handle pipes separately because of connection check
                 if (element instanceof MTEBioPipe pipe) {
-                    if (pipe.isConnectedAtSide(dir.getOpposite())) {
+                    if (!pipe.isRuined && pipe.isConnectedAtSide(dir.getOpposite())) {
                         neighbours.add(element);
                     }
                 }
@@ -104,8 +106,6 @@ public class MTEHatchAOInput extends MTEBaseFactoryHatch implements AOFactoryEle
             }
         }
     }
-
-    private AOFactoryNetwork network;
 
     @Override
     public AOFactoryNetwork getNetwork() {
