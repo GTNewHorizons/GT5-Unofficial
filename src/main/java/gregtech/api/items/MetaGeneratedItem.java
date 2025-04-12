@@ -22,6 +22,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 
+import org.jetbrains.annotations.NotNull;
+
 import cpw.mods.fml.common.Optional;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -43,6 +45,7 @@ import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gregtech.common.render.items.GeneratedMaterialRenderer;
+import mods.railcraft.common.items.firestone.IItemFirestoneBurning;
 import squeek.applecore.api.food.FoodValues;
 import squeek.applecore.api.food.IEdible;
 import squeek.applecore.api.food.ItemFoodProxy;
@@ -62,8 +65,14 @@ import squeek.applecore.api.food.ItemFoodProxy;
  *         These Items can also have special RightClick abilities, electric Charge or even be set to become a Food alike
  *         Item.
  */
-@Optional.Interface(iface = "squeek.applecore.api.food.IEdible", modid = Mods.Names.APPLE_CORE)
-public abstract class MetaGeneratedItem extends MetaBaseItem implements IGT_ItemWithMaterialRenderer, IEdible {
+
+@Optional.InterfaceList({
+    @Optional.Interface(iface = "squeek.applecore.api.food.IEdible", modid = Mods.Names.APPLE_CORE),
+    @Optional.Interface(
+        iface = "mods.railcraft.common.items.firestone.IItemFirestoneBurning",
+        modid = Mods.Names.RAILCRAFT), })
+public abstract class MetaGeneratedItem extends MetaBaseItem
+    implements IGT_ItemWithMaterialRenderer, IEdible, IItemFirestoneBurning {
 
     /**
      * All instances of this Item Class are listed here. This gets used to register the Renderer to all Items of this
@@ -84,6 +93,7 @@ public abstract class MetaGeneratedItem extends MetaBaseItem implements IGT_Item
     public final ConcurrentHashMap<Short, Long[]> mElectricStats = new ConcurrentHashMap<>();
     public final ConcurrentHashMap<Short, Long[]> mFluidContainerStats = new ConcurrentHashMap<>();
     public final ConcurrentHashMap<Short, Short> mBurnValues = new ConcurrentHashMap<>();
+    public final ConcurrentHashMap<Short, Boolean> shouldFireStats = new ConcurrentHashMap<>();
 
     /**
      * Creates the Item using these Parameters.
@@ -417,5 +427,24 @@ public abstract class MetaGeneratedItem extends MetaBaseItem implements IGT_Item
     @Override
     public boolean getIsRepairable(ItemStack aStack, ItemStack aMaterial) {
         return false;
+    }
+
+    /**
+     * Sets if the Item should set fire around like Firestone.
+     *
+     * @param metaValue  the Meta Value of the Item you want to set it to. [0-32765]
+     * @param shouldBurn {@code true} to set fire around like Firestone.
+     * @return the Item itself for convenience in constructing.
+     */
+    public MetaGeneratedItem setShouldBurn(int metaValue, boolean shouldBurn) {
+        if (metaValue < 0 || metaValue >= mOffset + mEnabledItems.length()) return this;
+        shouldFireStats.put((short) metaValue, shouldBurn);
+        return this;
+    }
+
+    @Override
+    @Optional.Method(modid = Mods.Names.RAILCRAFT)
+    public boolean shouldBurn(@NotNull ItemStack itemStack) {
+        return shouldFireStats.getOrDefault((short) getDamage(itemStack), false);
     }
 }

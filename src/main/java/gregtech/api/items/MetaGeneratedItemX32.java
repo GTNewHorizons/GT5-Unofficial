@@ -77,6 +77,9 @@ public abstract class MetaGeneratedItemX32 extends MetaGeneratedItem {
                     GregTechAPI.sSolderingMetalList.add(tStack);
                     GTModHandler.registerBoxableItemToToolBox(tStack);
                 }
+                if (tMaterial == Materials.Firestone) {
+                    setShouldBurn(i, true);
+                }
             }
         }
     }
