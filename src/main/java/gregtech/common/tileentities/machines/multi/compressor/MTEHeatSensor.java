@@ -57,6 +57,11 @@ public class MTEHeatSensor extends MTEHatch {
     }
 
     @Override
+    public boolean hasSidedRedstoneOutputBehavior() {
+        return true;
+    }
+
+    @Override
     public boolean allowGeneralRedstoneOutput() {
         return true;
     }

@@ -399,6 +399,11 @@ public abstract class MTEBuffer extends MTETieredMachineBlock implements IAddUIW
     }
 
     @Override
+    public boolean hasSidedRedstoneOutputBehavior() {
+        return true;
+    }
+
+    @Override
     public boolean allowGeneralRedstoneOutput() {
         return true;
     }
