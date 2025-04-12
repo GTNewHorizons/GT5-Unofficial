@@ -2198,6 +2198,18 @@ public class RecipesMachines {
             CI.getTieredCircuit(7),
             GregtechItemList.Hatch_Air_Intake_Extreme.get(1));
 
+        RecipeUtils.addShapedGregtechRecipe(
+            MaterialsAlloy.OCTIRON.getPlate(1),
+            GregtechItemList.Hatch_Air_Intake_Extreme.get(1),
+            MaterialsAlloy.OCTIRON.getPlate(1),
+            MaterialsAlloy.OCTIRON.getPlate(1),
+            ItemList.FluidRegulator_UHV.get(1),
+            MaterialsAlloy.OCTIRON.getPlate(1),
+            GTOreDictUnificator.get(OrePrefixes.circuit, Materials.UHV, 1),
+            ItemList.Hatch_Input_UHV.get(1),
+            GTOreDictUnificator.get(OrePrefixes.circuit, Materials.UHV, 1),
+            GregtechItemList.Hatch_Air_Intake_Atmospheric.get(1));
+
         // Thorium Reactor
         RECIPE_LFTRController = GregtechItemList.ThoriumReactor.get(1);
         RECIPE_LFTRInnerCasing = GregtechItemList.Casing_Reactor_II.get(1); // Zeron
