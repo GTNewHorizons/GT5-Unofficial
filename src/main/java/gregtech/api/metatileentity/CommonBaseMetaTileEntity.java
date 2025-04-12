@@ -7,7 +7,9 @@ import java.util.List;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
+import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.cleanroommc.modularui.utils.item.IItemHandlerModifiable;
@@ -31,7 +33,10 @@ import gregtech.api.util.GTUtility;
 
 public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity implements IGregTechTileEntity {
 
-    protected boolean mNeedsBlockUpdate = true, mNeedsUpdate = true, mSendClientData = false, mInventoryChanged = false;
+    protected boolean mNeedsBlockUpdate = true, mNeedsUpdate = true, mNeedsTileUpdate = false, mSendClientData = false,
+        mInventoryChanged = false;
+
+    protected NBTTagCompound pendingDescriptionPacket;
 
     // Profiling
     private final int[] mTimeStatistics = new int[GregTechAPI.TICKS_FOR_LAG_AVERAGING];
@@ -48,6 +53,11 @@ public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity imple
                 .setBaseMetaTileEntity(this);
             mTickTimer = 0;
             mID = aID;
+            // If we have a pending description packet that was received before the MTE was created, load it
+            if (pendingDescriptionPacket != null) {
+                getMetaTileEntity().onDescriptionPacket(pendingDescriptionPacket);
+                pendingDescriptionPacket = null;
+            }
             return true;
         }
         return false;
@@ -242,7 +252,31 @@ public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity imple
     @Override
     public Packet getDescriptionPacket() {
         issueClientUpdate();
-        return null;
+
+        IMetaTileEntity imte = getMetaTileEntity();
+
+        if (imte == null) return null;
+
+        NBTTagCompound data = imte.getDescriptionData();
+
+        if (data == null) return null;
+
+        return new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, blockMetadata, data);
+    }
+
+    @Override
+    public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt) {
+        IMetaTileEntity imte = getMetaTileEntity();
+
+        if (imte == null) {
+            // If we don't have a meta tile yet, it's likely because it hasn't been created on the client yet
+            // Let's just store a reference to the data and process it once the meta tile has been created
+            // If this tile entity is about to be destroyed then we won't be causing a memory leak here so this is safe
+            pendingDescriptionPacket = pkt.func_148857_g();
+            return;
+        }
+
+        imte.onDescriptionPacket(pkt.func_148857_g());
     }
 
     @Override
@@ -258,6 +292,11 @@ public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity imple
     @Override
     public void issueBlockUpdate() {
         mNeedsBlockUpdate = true;
+    }
+
+    @Override
+    public void issueTileUpdate() {
+        mNeedsTileUpdate = true;
     }
 
     @Override
