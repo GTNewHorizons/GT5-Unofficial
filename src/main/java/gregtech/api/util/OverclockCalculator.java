@@ -400,6 +400,9 @@ public class OverclockCalculator {
             while (eutOverclock * 4.0 < machinePower && regularOverclocks < maxRegularOverclocks) {
                 eutOverclock *= 4.0;
                 regularOverclocks++;
+                if (duration / Math.pow(durationDecreasePerOC, overclocks) < 2 && neededOverclocks == 0) {
+                    neededOverclocks = regularOverclocks;
+                }
             }
 
             // Keep increasing power until it hits the machine's limit.
@@ -407,10 +410,13 @@ public class OverclockCalculator {
             while (eutOverclock * (4.0 + 0.3 * (laserOverclocks + 1)) < machinePower) {
                 eutOverclock *= (4.0 + 0.3 * (laserOverclocks + 1));
                 laserOverclocks++;
+                if (duration / Math.pow(durationDecreasePerOC, overclocks) < 2 && neededOverclocks == 0) {
+                    neededOverclocks = overclocks + laserOverclocks;
+                }
             }
 
             int overclocks = regularOverclocks + laserOverclocks;
-            return duration / Math.pow(durationDecreasePerOC, overclocks);
+            return Math.pow(durationDecreasePerOC, Math.max(neededOverclocks - overclocks, 0));
         }
 
         // Limit overclocks allowed by power tier.
