@@ -13,6 +13,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
+import gregtech.common.misc.GTStructureChannels;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -276,7 +277,7 @@ public class MTENetworkSwitchAdv extends TTMultiblockBase
         tt.beginStructureBlock();
         tt.addAllCasingInfo();
 
-        tt.addSubChannelUsage("length", "middle slice count");
+        tt.addSubChannelUsage(GTStructureChannels.STRUCTURE_LENGTH, "middle slice count");
 
         tt.toolTipFinisher();
 
