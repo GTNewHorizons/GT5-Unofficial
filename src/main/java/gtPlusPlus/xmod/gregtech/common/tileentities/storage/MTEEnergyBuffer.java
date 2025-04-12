@@ -424,7 +424,8 @@ public class MTEEnergyBuffer extends MTETieredMachineBlock {
     }
 
     @Override
-    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
+        ItemStack aTool) {
         byte aTest = (byte) (aCurrentOutputAmperage + 1);
         if (aTest > 16 || aTest <= 0) {
             aTest = 1;

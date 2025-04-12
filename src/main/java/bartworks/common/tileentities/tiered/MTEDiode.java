@@ -25,6 +25,7 @@ import static gregtech.api.enums.MetaTileEntityIDs.Diode8A_MAX;
 import static gregtech.api.enums.MetaTileEntityIDs.Diode8A_ULV;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -65,8 +66,9 @@ public class MTEDiode extends MTEBasicHull {
     }
 
     @Override
-    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        super.onScrewdriverRightClick(side, aPlayer, aX, aY, aZ);
+    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
+        ItemStack aTool) {
+        super.onScrewdriverRightClick(side, aPlayer, aX, aY, aZ, aTool);
 
         if (this.getBaseMetaTileEntity()
             .getWorld().isRemote) return;
