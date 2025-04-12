@@ -132,7 +132,7 @@ public class MTETeslaCoil extends MTEBasicBatteryBuffer implements ITeslaConnect
 
     @Override
     public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
-        float aX, float aY, float aZ) {
+        float aX, float aY, float aZ, ItemStack aTool) {
         if (aPlayer.isSneaking()) {
             if (transferRadius > transferRadiusMin) {
                 transferRadius--;
@@ -145,7 +145,7 @@ public class MTETeslaCoil extends MTEBasicBatteryBuffer implements ITeslaConnect
         PlayerChatHelper.SendInfo(
             aPlayer,
             translateToLocalFormatted("tt.keyphrase.Tesla_radius_set_to", clientLocale) + " " + transferRadius + "m");
-        return false;
+        return true;
     }
 
     // Cheeky skrub stuff to get machine to switch powerPass on soft mallet
