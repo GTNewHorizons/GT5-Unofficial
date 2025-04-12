@@ -683,6 +683,11 @@ public class MTECleanroom extends MTETooltipMultiBlockBase
     }
 
     @Override
+    public boolean hasSidedRedstoneOutputBehavior() {
+        return true;
+    }
+
+    @Override
     public boolean allowGeneralRedstoneOutput() {
         return true;
     }
