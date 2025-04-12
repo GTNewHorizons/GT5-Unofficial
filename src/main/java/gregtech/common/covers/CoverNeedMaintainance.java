@@ -1,8 +1,8 @@
 package gregtech.common.covers;
 
-import static gregtech.api.util.GTUtility.getDescLoc;
 import static gregtech.api.util.GTUtility.sendChatToPlayer;
 import static gregtech.common.gui.mui1.cover.NeedMaintainanceUIFactory.maintLoc;
+import static net.minecraft.util.StatCollector.translateToLocal;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -96,10 +96,16 @@ public class CoverNeedMaintainance extends CoverLegacyData {
             case 7 -> sendChatToPlayer(aPlayer, maintLoc(4, true));
             case 8 -> sendChatToPlayer(aPlayer, maintLoc(5, false));
             case 9 -> sendChatToPlayer(aPlayer, maintLoc(5, true));
-            case 10 -> sendChatToPlayer(aPlayer, getDescLoc("need_maint_rotor_lo"));
-            case 11 -> sendChatToPlayer(aPlayer, getDescLoc("need_maint_rotor_lo") + getDescLoc("inverted_b"));
-            case 12 -> sendChatToPlayer(aPlayer, getDescLoc("need_maint_rotor_hi"));
-            case 13 -> sendChatToPlayer(aPlayer, getDescLoc("need_maint_rotor_hi") + getDescLoc("inverted_b"));
+            case 10 -> sendChatToPlayer(aPlayer, translateToLocal("gt.interact.desc.need_maint_rotor_lo"));
+            case 11 -> sendChatToPlayer(
+                aPlayer,
+                translateToLocal("gt.interact.desc.need_maint_rotor_lo")
+                    + translateToLocal("gt.interact.desc.inverted_b"));
+            case 12 -> sendChatToPlayer(aPlayer, translateToLocal("gt.interact.desc.need_maint_rotor_hi"));
+            case 13 -> sendChatToPlayer(
+                aPlayer,
+                translateToLocal("gt.interact.desc.need_maint_rotor_hi")
+                    + translateToLocal("gt.interact.desc.inverted_b"));
         }
     }
 

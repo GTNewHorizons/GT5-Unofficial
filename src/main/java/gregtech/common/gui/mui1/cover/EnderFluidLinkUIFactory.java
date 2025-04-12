@@ -1,6 +1,6 @@
 package gregtech.common.gui.mui1.cover;
 
-import static gregtech.api.util.GTUtility.getDescLoc;
+import static net.minecraft.util.StatCollector.translateToLocal;
 import static tectech.thing.cover.CoverEnderFluidLink.PUBLIC_PRIVATE_MASK;
 import static tectech.thing.cover.CoverEnderFluidLink.toggleBit;
 
@@ -80,34 +80,34 @@ public class EnderFluidLinkUIFactory extends CoverLegacyDataUIFactory {
                             PUBLIC_BUTTON_ID,
                             CoverDataFollowerToggleButtonWidget.ofDisableable(),
                             widget -> widget.setStaticTexture(GTUITextures.OVERLAY_BUTTON_WHITELIST)
-                                .addTooltip(getDescLoc("public"))
+                                .addTooltip(translateToLocal("gt.interact.desc.public"))
                                 .setPos(START_X + SPACE_X * 0, START_Y + SPACE_Y * 2))
                         .addToggleButton(
                             PRIVATE_BUTTON_ID,
                             CoverDataFollowerToggleButtonWidget.ofDisableable(),
                             widget -> widget.setStaticTexture(GTUITextures.OVERLAY_BUTTON_BLACKLIST)
-                                .addTooltip(getDescLoc("private"))
+                                .addTooltip(translateToLocal("gt.interact.desc.private"))
                                 .setPos(START_X + SPACE_X * 1, START_Y + SPACE_Y * 2))
                         .addToggleButton(
                             IMPORT_BUTTON_ID,
                             CoverDataFollowerToggleButtonWidget.ofDisableable(),
                             widget -> widget.setStaticTexture(GTUITextures.OVERLAY_BUTTON_IMPORT)
-                                .addTooltip(getDescLoc("i"))
+                                .addTooltip(translateToLocal("gt.interact.desc.i"))
                                 .setPos(START_X + SPACE_X * 0, START_Y + SPACE_Y * 3))
                         .addToggleButton(
                             EXPORT_BUTTON_ID,
                             CoverDataFollowerToggleButtonWidget.ofDisableable(),
                             widget -> widget.setStaticTexture(GTUITextures.OVERLAY_BUTTON_EXPORT)
-                                .addTooltip(getDescLoc("o"))
+                                .addTooltip(translateToLocal("gt.interact.desc.o"))
                                 .setPos(START_X + SPACE_X * 1, START_Y + SPACE_Y * 3)))
             .widget(
-                new TextWidget(getDescLoc("channel")).setDefaultColor(COLOR_TEXT_GRAY.get())
+                new TextWidget(translateToLocal("gt.interact.desc.channel")).setDefaultColor(COLOR_TEXT_GRAY.get())
                     .setPos(START_X + SPACE_X * 5, 4 + START_Y + SPACE_Y * 0))
             .widget(
-                new TextWidget(getDescLoc("set_perm")).setDefaultColor(COLOR_TEXT_GRAY.get())
+                new TextWidget(translateToLocal("gt.interact.desc.set_perm")).setDefaultColor(COLOR_TEXT_GRAY.get())
                     .setPos(START_X + SPACE_X * 2, 4 + START_Y + SPACE_Y * 2))
             .widget(
-                new TextWidget(getDescLoc("set_io")).setDefaultColor(COLOR_TEXT_GRAY.get())
+                new TextWidget(translateToLocal("gt.interact.desc.set_io")).setDefaultColor(COLOR_TEXT_GRAY.get())
                     .setPos(START_X + SPACE_X * 2, 4 + START_Y + SPACE_Y * 3));
     }
 

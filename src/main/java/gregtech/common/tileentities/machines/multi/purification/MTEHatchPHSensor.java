@@ -21,7 +21,6 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GTUtility;
 import gregtech.common.gui.modularui.widget.CoverCycleButtonWidget;
 
 public class MTEHatchPHSensor extends MTEHatch {
@@ -148,8 +147,8 @@ public class MTEHatchPHSensor extends MTEHatch {
     }
 
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
-        final String INVERTED = GTUtility.getDescLoc("inverted");
-        final String NORMAL = GTUtility.getDescLoc("normal");
+        final String INVERTED = StatCollector.translateToLocal("gt.interact.desc.inverted");
+        final String NORMAL = StatCollector.translateToLocal("gt.interact.desc.normal");
 
         builder.widget(
             new CoverCycleButtonWidget().setToggle(() -> inverted, (val) -> inverted = val)

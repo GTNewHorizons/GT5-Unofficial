@@ -1,7 +1,7 @@
 package gregtech.common.covers;
 
 import static gregtech.api.enums.GTValues.E;
-import static gregtech.api.util.GTUtility.getDescLoc;
+import static net.minecraft.util.StatCollector.translateToLocal;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -107,14 +107,14 @@ public class CoverFluidfilter extends Cover {
 
     public String getFilterMode(int aFilterMode) {
         return switch (aFilterMode) {
-            case FILTER_INPUT_DENY_OUTPUT -> getDescLoc("filter_i_deny_o");
-            case INVERT_INPUT_DENY_OUTPUT -> getDescLoc("invert_i_deny_o");
-            case FILTER_INPUT_ANY_OUTPUT -> getDescLoc("filter_i_any_o");
-            case INVERT_INPUT_ANY_OUTPUT -> getDescLoc("invert_i_any_o");
-            case DENY_INPUT_FILTER_OUTPUT -> getDescLoc("deny_i_filter_o");
-            case DENY_INPUT_INVERT_OUTPUT -> getDescLoc("deny_i_invert_o");
-            case ANY_INPUT_FILTER_OUTPUT -> getDescLoc("any_i_filter_o");
-            case ANY_INPUT_INVERT_OUTPUT -> getDescLoc("any_i_invert_o");
+            case FILTER_INPUT_DENY_OUTPUT -> translateToLocal("gt.interact.desc.filter_i_deny_o");
+            case INVERT_INPUT_DENY_OUTPUT -> translateToLocal("gt.interact.desc.invert_i_deny_o");
+            case FILTER_INPUT_ANY_OUTPUT -> translateToLocal("gt.interact.desc.filter_i_any_o");
+            case INVERT_INPUT_ANY_OUTPUT -> translateToLocal("gt.interact.desc.invert_i_any_o");
+            case DENY_INPUT_FILTER_OUTPUT -> translateToLocal("gt.interact.desc.deny_i_filter_o");
+            case DENY_INPUT_INVERT_OUTPUT -> translateToLocal("gt.interact.desc.deny_i_invert_o");
+            case ANY_INPUT_FILTER_OUTPUT -> translateToLocal("gt.interact.desc.any_i_filter_o");
+            case ANY_INPUT_INVERT_OUTPUT -> translateToLocal("gt.interact.desc.any_i_invert_o");
             default -> ("UNKNOWN");
         };
     }

@@ -1,6 +1,6 @@
 package gregtech.common.gui.mui1.cover;
 
-import static gregtech.api.util.GTUtility.getDescLoc;
+import static net.minecraft.util.StatCollector.translateToLocal;
 
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
@@ -24,11 +24,12 @@ public class NeedMaintainanceUIFactory extends CoverLegacyDataUIFactory {
     @Override
     protected void addUIWidgets(ModularWindow.Builder builder) {
         final String[] tooltipText = { maintLoc(1, false), maintLoc(2, false), maintLoc(3, false), maintLoc(4, false),
-            maintLoc(5, false), getDescLoc("need_maint_rotor_lo"), getDescLoc("need_maint_rotor_hi") };
+            maintLoc(5, false), translateToLocal("gt.interact.desc.need_maint_rotor_lo"),
+            translateToLocal("gt.interact.desc.need_maint_rotor_hi") };
 
         final String[] buttonText = { issueLoc(1), issueLoc(2), issueLoc(3), issueLoc(4), issueLoc(5),
-            getDescLoc("issue_rotor_low"), getDescLoc("issue_rotor_dead"), getDescLoc("inverted"),
-            getDescLoc("normal") };
+            translateToLocal("gt.interact.desc.issue_rotor_low"), translateToLocal("gt.interact.desc.issue_rotor_dead"),
+            translateToLocal("gt.interact.desc.inverted"), translateToLocal("gt.interact.desc.normal") };
 
         builder
             .widget(
@@ -121,10 +122,14 @@ public class NeedMaintainanceUIFactory extends CoverLegacyDataUIFactory {
     }
 
     public static String maintLoc(int count, boolean inverted) {
-        return String.format(getDescLoc("need_maint_count"), count, inverted ? getDescLoc("inverted_b") : "");
+        return String.format(
+            translateToLocal("gt.interact.desc.need_maint_count"),
+            count,
+            inverted ? translateToLocal("gt.interact.desc.inverted_b") : "");
     }
 
     private static String issueLoc(int count) {
-        return count == 1 ? getDescLoc("issue") : String.format(getDescLoc("issues"), count);
+        return count == 1 ? translateToLocal("gt.interact.desc.issue")
+            : String.format(translateToLocal("gt.interact.desc.issues"), count);
     }
 }
