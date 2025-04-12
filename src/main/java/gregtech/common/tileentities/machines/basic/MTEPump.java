@@ -291,8 +291,7 @@ public class MTEPump extends MTEBasicMachine {
 
     @Override
     public boolean onSolderingToolRightClick(ForgeDirection side, ForgeDirection wrenchingSide,
-        EntityPlayer entityPlayer, float aX, float aY, float aZ) {
-        if (super.onSolderingToolRightClick(side, wrenchingSide, entityPlayer, aX, aY, aZ)) return true;
+        EntityPlayer entityPlayer, float aX, float aY, float aZ, ItemStack aTool) {
         mDisallowRetract = !mDisallowRetract;
         GTUtility.sendChatToPlayer(
             entityPlayer,
