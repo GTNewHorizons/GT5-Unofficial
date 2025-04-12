@@ -208,6 +208,8 @@ GT5U.MBTT.HatchInfo=Any %s
 GT5U.MBTT.HatchDots= (dots: %s)
 GT5U.MBTT.BoroGlassAny=Borosilicate Glass (any, mixed)
 GT5U.MBTT.BoroGlassTiered=Borosilicate Glass (any)
+GT5U.MBTT.AlchemyCasingAny=Alchemically Resistant/Inert/Immune Casing
+GT5U.MBTT.AlchemicalConstructAny=Alchemical Construct
 
 GT5U.MBTT.subchannel=Uses sub channel §6%s§r§7 for §6%s
 GT5U.tooltip.channelvalue=Use value §6%d§r§7 for sub channel §6%s
@@ -412,6 +414,7 @@ gt.recipe.largeboilerfakefuels=Large Boiler
 gt.recipe.nanoforge=Nano Forge
 gt.recipe.pcbfactory=PCB Factory
 gt.recipe.ic2nuke=Nuclear Fission
+gt.recipe.entropic-processing=Entropic Processing
 gt.recipe.purificationplantclarifier=Clarifier
 gt.recipe.purificationplantflocculation=Flocculation
 gt.recipe.purificationplantphadjustment=pH Neutralization
