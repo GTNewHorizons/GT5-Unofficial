@@ -6,7 +6,6 @@ import java.util.UUID;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -30,8 +29,12 @@ import gtPlusPlus.xmod.gregtech.common.helpers.ChargingHelper;
 
 public class MTEWirelessCharger extends MTETieredMachineBlock {
 
+    private static final int MODE_LONG_RANGE = 0;
+    private static final int MODE_LOCAL = 1;
+    private static final int MODE_MIXED = 2;
+
     private int mCurrentDimension = 0;
-    public int mMode = 0;
+    public int mMode = MODE_LONG_RANGE;
     public boolean mLocked = true;
 
     public MTEWirelessCharger(final int aID, final String aName, final String aNameRegional, final int aTier,
@@ -52,8 +55,8 @@ public class MTEWirelessCharger extends MTETieredMachineBlock {
             "Can also be locked with a lock upgrade",
             "",
             "3 Modes, Long-Range, Local and Mixed.",
-            "Long-Range: Can supply 2A of power to a single player up to " + (GTValues.V[this.mTier] * 4) + "m away.",
-            "Local: Can supply several Amps to each player within " + this.mTier * 20 + "m.",
+            "Long-Range: Can supply 2A of power to a single player up to " + this.getLongRange(false) + "m away.",
+            "Local: Can supply several Amps to each player within " + this.getLocalRange(false) + "m.",
             "Mixed: Provides both 2A of long range and 1A per player locally.",
             "Mixed mode is more conservative of power and as a result only",
             "Gets half the distances each singular mode gets.",
@@ -169,23 +172,20 @@ public class MTEWirelessCharger extends MTETieredMachineBlock {
         mLocalChargingMap.clear();
         if (!this.getBaseMetaTileEntity()
             .getWorld().playerEntities.isEmpty()) {
-            for (Object mTempPlayer : this.getBaseMetaTileEntity()
+            for (EntityPlayer player : this.getBaseMetaTileEntity()
                 .getWorld().playerEntities) {
-                if (mTempPlayer instanceof EntityPlayer || mTempPlayer instanceof EntityPlayerMP) {
-                    EntityPlayer mTemp = (EntityPlayer) mTempPlayer;
-                    ChargingHelper.removeValidPlayer(mTemp, this);
-                }
+                ChargingHelper.removeValidPlayer(player, this);
             }
         }
 
-        if (this.mMode >= 2) {
-            this.mMode = 0;
+        if (this.mMode >= MODE_MIXED) {
+            this.mMode = MODE_LONG_RANGE;
         } else {
             this.mMode++;
         }
-        if (this.mMode == 0) {
+        if (this.mMode == MODE_LONG_RANGE) {
             PlayerUtils.messagePlayer(aPlayer, "Now in Long-Range Charge Mode.");
-        } else if (this.mMode == 1) {
+        } else if (this.mMode == MODE_LOCAL) {
             PlayerUtils.messagePlayer(aPlayer, "Now in Local Charge Mode.");
         } else {
             PlayerUtils.messagePlayer(aPlayer, "Now in Mixed Charge Mode.");
@@ -272,9 +272,9 @@ public class MTEWirelessCharger extends MTETieredMachineBlock {
 
     @Override
     public long maxAmperesIn() {
-        if (this.mMode == 0) {
+        if (this.mMode == MODE_LONG_RANGE) {
             return 2;
-        } else if (this.mMode == 1) {
+        } else if (this.mMode == MODE_LOCAL) {
             return this.mLocalChargingMap.size() * 8;
         } else {
             return ((this.mLocalChargingMap.size() * 4) + this.mWirelessChargingMap.size());
@@ -454,89 +454,66 @@ public class MTEWirelessCharger extends MTETieredMachineBlock {
     @Override
     public void onPostTick(final IGregTechTileEntity aBaseMetaTileEntity, final long aTick) {
         super.onPostTick(aBaseMetaTileEntity, aTick);
-        if (this.getBaseMetaTileEntity()
+        if (!this.getBaseMetaTileEntity()
             .isServerSide()) {
+            return;
+        }
 
-            if (this.mCurrentDimension != aBaseMetaTileEntity.getWorld().provider.dimensionId) {
-                this.mCurrentDimension = aBaseMetaTileEntity.getWorld().provider.dimensionId;
+        if (this.mCurrentDimension != aBaseMetaTileEntity.getWorld().provider.dimensionId) {
+            this.mCurrentDimension = aBaseMetaTileEntity.getWorld().provider.dimensionId;
+        }
+
+        if (aTick % 20 == 0) {
+            boolean mHasBeenMapped = this.equals(ChargingHelper.getEntry(getTileEntityPosition()));
+            if (!mHasBeenMapped) {
+                mHasBeenMapped = ChargingHelper.addEntry(getTileEntityPosition(), this);
             }
 
-            if (aTick % 20 == 0) {
-                boolean mHasBeenMapped = this.equals(ChargingHelper.getEntry(getTileEntityPosition()));
-                if (!mHasBeenMapped) {
-                    mHasBeenMapped = ChargingHelper.addEntry(getTileEntityPosition(), this);
-                }
-
-                if (mHasBeenMapped && !aBaseMetaTileEntity.getWorld().playerEntities.isEmpty()) {
-                    for (Object mTempPlayer : aBaseMetaTileEntity.getWorld().playerEntities) {
-                        if (mTempPlayer instanceof EntityPlayer || mTempPlayer instanceof EntityPlayerMP) {
-                            EntityPlayer mTemp = (EntityPlayer) mTempPlayer;
-
-                            if (this.mMode == 1 || this.mMode == 2) {
-                                int tempRange = (this.mMode == 1 ? this.mTier * 20 : this.mTier * 10);
-                                if (getDistanceBetweenTwoPositions(getTileEntityPosition(), getPositionOfEntity(mTemp))
-                                    < tempRange) {
-                                    if (isValidPlayer(mTemp)
-                                        && !mLocalChargingMap.containsKey(mTemp.getDisplayName())) {
-                                        mLocalChargingMap.put(mTemp.getDisplayName(), mTemp.getPersistentID());
-                                        ChargingHelper.addValidPlayer(mTemp, this);
-                                        // PlayerUtils.messagePlayer(mTemp, "You have entered charging range.
-                                        // ["+tempRange+"m - Local].");
-                                    }
-                                } else {
-                                    if (mLocalChargingMap.containsKey(mTemp.getDisplayName())) {
-                                        if (mLocalChargingMap.remove(mTemp.getDisplayName()) != null) {
-                                            // PlayerUtils.messagePlayer(mTemp, "You have left charging range.
-                                            // ["+tempRange+"m - Local].");
-                                            ChargingHelper.removeValidPlayer(mTemp, this);
-                                        }
-                                    }
+            if (mHasBeenMapped && !aBaseMetaTileEntity.getWorld().playerEntities.isEmpty()) {
+                for (EntityPlayer player : aBaseMetaTileEntity.getWorld().playerEntities) {
+                    if (this.mMode == MODE_LOCAL || this.mMode == MODE_MIXED) {
+                        if (getDistanceBetweenTwoPositions(getTileEntityPosition(), getPositionOfEntity(player))
+                            < this.getLocalRange(this.mMode == MODE_MIXED)) {
+                            if (isValidPlayer(player) && !mLocalChargingMap.containsKey(player.getDisplayName())) {
+                                mLocalChargingMap.put(player.getDisplayName(), player.getPersistentID());
+                                ChargingHelper.addValidPlayer(player, this);
+                            }
+                        } else {
+                            if (mLocalChargingMap.containsKey(player.getDisplayName())) {
+                                if (mLocalChargingMap.remove(player.getDisplayName()) != null) {
+                                    ChargingHelper.removeValidPlayer(player, this);
                                 }
                             }
-                            if (this.mMode == 0 || this.mMode == 2) {
-                                int tempRange = (int) (this.mMode == 0 ? 4 * GTValues.V[this.mTier]
-                                    : 2 * GTValues.V[this.mTier]);
-                                if (getDistanceBetweenTwoPositions(getTileEntityPosition(), getPositionOfEntity(mTemp))
-                                    <= tempRange) {
-                                    if (!mWirelessChargingMap.containsKey(mTemp.getDisplayName())) {
-                                        if (isValidPlayer(mTemp)) {
-                                            mWirelessChargingMap.put(mTemp.getDisplayName(), mTemp.getPersistentID());
-                                            ChargingHelper.addValidPlayer(mTemp, this);
-                                            PlayerUtils.messagePlayer(
-                                                mTemp,
-                                                "You have entered charging range. [" + tempRange + "m - Long-Range].");
-                                        }
-                                    }
-                                } else {
-                                    if (mWirelessChargingMap.containsKey(mTemp.getDisplayName())) {
-                                        if (mWirelessChargingMap.remove(mTemp.getDisplayName()) != null) {
-                                            PlayerUtils.messagePlayer(
-                                                mTemp,
-                                                "You have left charging range. [" + tempRange + "m - Long Range].");
-                                            ChargingHelper.removeValidPlayer(mTemp, this);
-                                        }
-                                    }
+                        }
+                    }
+                    if (this.mMode == MODE_LONG_RANGE || this.mMode == MODE_MIXED) {
+                        int tempRange = getLongRange(this.mMode == MODE_MIXED);
+                        if (getDistanceBetweenTwoPositions(getTileEntityPosition(), getPositionOfEntity(player))
+                            <= tempRange) {
+                            if (!mWirelessChargingMap.containsKey(player.getDisplayName())) {
+                                if (isValidPlayer(player)) {
+                                    mWirelessChargingMap.put(player.getDisplayName(), player.getPersistentID());
+                                    ChargingHelper.addValidPlayer(player, this);
+                                    PlayerUtils.messagePlayer(
+                                        player,
+                                        "You have entered charging range. [" + tempRange + "m - Long-Range].");
                                 }
                             }
-                            /*
-                             * if (this.mMode == 0 || this.mMode == 2){ int tempRange = (int) (this.mMode == 0 ?
-                             * 4*GT_Values.V[this.mTier] : 2*GT_Values.V[this.mTier]); if
-                             * (getDistanceBetweenTwoPositions(getTileEntityPosition(), getPositionOfEntity(mTemp)) <
-                             * tempRange){ if (!mWirelessChargingMap.containsKey(mTemp)){
-                             * mWirelessChargingMap.put(mTemp, mTemp.getPersistentID());
-                             * PlayerUtils.messagePlayer(mTemp, "You have entered charging range. ["+tempRange+"m].");
-                             * ChargingHelper.addValidPlayer(mTemp, this); } } else { if
-                             * (mWirelessChargingMap.containsKey(mTemp)){ if (mWirelessChargingMap.remove(mTemp) !=
-                             * null){ PlayerUtils.messagePlayer(mTemp,
-                             * "You have left charging range. ["+tempRange+"m].");
-                             * ChargingHelper.removeValidPlayer(mTemp, this); } } } }
-                             */
-
+                        } else {
+                            if (mWirelessChargingMap.containsKey(player.getDisplayName())) {
+                                if (mWirelessChargingMap.remove(player.getDisplayName()) != null) {
+                                    PlayerUtils.messagePlayer(
+                                        player,
+                                        "You have left charging range. [" + tempRange + "m - Long Range].");
+                                    ChargingHelper.removeValidPlayer(player, this);
+                                }
+                            }
                         }
                     }
                 }
             }
         }
+
     }
 
     public BlockPos getTileEntityPosition() {
@@ -562,13 +539,11 @@ public class MTEWirelessCharger extends MTETieredMachineBlock {
         if (objectA == null || objectB == null) {
             return 0f;
         }
-        int[] objectArray1 = new int[] { objectA.xPos, objectA.yPos, objectA.zPos };
-        int[] objectArray2 = new int[] { objectB.xPos, objectB.yPos, objectB.zPos };
 
         return Math.sqrt(
-            (objectArray2[0] - objectArray1[0]) * (objectArray2[0] - objectArray1[0])
-                + (objectArray2[1] - objectArray1[1]) * (objectArray2[1] - objectArray1[1])
-                + (objectArray2[2] - objectArray1[2]) * (objectArray2[2] - objectArray1[2]));
+            (objectB.xPos - objectA.xPos) * (objectB.xPos - objectA.xPos)
+                + (objectB.yPos - objectA.yPos) * (objectB.yPos - objectA.yPos)
+                + (objectB.zPos - objectA.zPos) * (objectB.zPos - objectA.zPos));
     }
 
     @Override
@@ -580,33 +555,31 @@ public class MTEWirelessCharger extends MTETieredMachineBlock {
         mLocalChargingMap.clear();
         if (!this.getBaseMetaTileEntity()
             .getWorld().playerEntities.isEmpty()) {
-            for (Object mTempPlayer : this.getBaseMetaTileEntity()
+            for (EntityPlayer player : this.getBaseMetaTileEntity()
                 .getWorld().playerEntities) {
-                if (mTempPlayer instanceof EntityPlayer || mTempPlayer instanceof EntityPlayerMP) {
-                    EntityPlayer mTemp = (EntityPlayer) mTempPlayer;
-                    ChargingHelper.removeValidPlayer(mTemp, this);
-                }
+                ChargingHelper.removeValidPlayer(player, this);
             }
         }
 
         super.onRemoval();
     }
 
+    private int getLongRange(boolean mixed) {
+        return (int) GTValues.V[this.mTier] * (mixed ? 2 : 4);
+    }
+
+    private int getLocalRange(boolean mixed) {
+        return this.mTier * (mixed ? 10 : 20);
+    }
+
     @Override
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer, ForgeDirection side,
         float aX, float aY, float aZ) {
 
-        int tempRange;
-
-        if (this.mMode == 0 || this.mMode == 2) {
-            tempRange = (int) (this.mMode == 0 ? 4 * GTValues.V[this.mTier] : 2 * GTValues.V[this.mTier]);
-        } else {
-            tempRange = this.mMode == 1 ? this.mTier * 20 : this.mTier * 10;
-        }
-
-        if (this.mMode == 2) {
-            PlayerUtils
-                .messagePlayer(aPlayer, "Mixed Mode | Local: " + this.mTier * 10 + "m | Long: " + tempRange + "m");
+        if (this.mMode == MODE_MIXED) {
+            PlayerUtils.messagePlayer(
+                aPlayer,
+                "Mixed Mode | Local: " + this.getLocalRange(true) + "m | Long: " + this.getLongRange(true) + "m");
             PlayerUtils.messagePlayer(aPlayer, "Players with access:");
             for (String name : this.getLocalMap()
                 .keySet()) {
@@ -616,8 +589,8 @@ public class MTEWirelessCharger extends MTETieredMachineBlock {
                 .keySet()) {
                 PlayerUtils.messagePlayer(aPlayer, "Long: " + name);
             }
-        } else if (this.mMode == 1) {
-            PlayerUtils.messagePlayer(aPlayer, "Local Mode: " + this.mTier * 20 + "m");
+        } else if (this.mMode == MODE_LOCAL) {
+            PlayerUtils.messagePlayer(aPlayer, "Local Mode: " + this.getLocalRange(false) + "m");
             PlayerUtils.messagePlayer(aPlayer, "Players with access:");
             for (String name : this.getLocalMap()
                 .keySet()) {
@@ -625,7 +598,7 @@ public class MTEWirelessCharger extends MTETieredMachineBlock {
             }
 
         } else {
-            PlayerUtils.messagePlayer(aPlayer, "Long-range Mode: " + tempRange + "m");
+            PlayerUtils.messagePlayer(aPlayer, "Long-range Mode: " + this.getLongRange(false) + "m");
             PlayerUtils.messagePlayer(aPlayer, "Players with access:");
             for (String name : this.getLongRangeMap()
                 .keySet()) {
