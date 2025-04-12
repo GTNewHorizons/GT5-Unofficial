@@ -13,23 +13,21 @@
 
 package bartworks.common.tileentities.multis.mega;
 
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.withChannel;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static gregtech.api.enums.HatchElement.*;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.casingTexturePages;
-import static gregtech.api.util.GTStructureUtility.activeCoils;
-import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
-import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
-import static gregtech.api.util.GTStructureUtility.ofCoil;
+import static gregtech.api.util.GTStructureUtility.*;
 
 import java.util.Arrays;
 
 import javax.annotation.Nonnull;
 
+import gregtech.api.enums.Materials;
+import gregtech.common.tileentities.machines.multi.MTEOilDrill1;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -69,70 +67,193 @@ import gregtech.common.pollution.PollutionConfig;
 
 public class MTEMegaBlastFurnace extends MegaMultiBlockBase<MTEMegaBlastFurnace> implements ISurvivalConstructable {
 
+    private static final String[] multiTop = {
+        "               ",
+        "      ttt      ",
+        "    ttttttt    ",
+        "   ttttttttt   ",
+        "  ttttttttttt  ",
+        "  ttttttttttt  ",
+        " ttttttttttttt ",
+        " ttttttmtttttt ",
+        " ttttttttttttt ",
+        "  ttttttttttt  ",
+        "  ttttttttttt  ",
+        "   ttttttttt   ",
+        "    ttttttt    ",
+        "      ttt      ",
+        "               "
+    };
+
+    private static final String[] multiSubTop = {
+        "               ",
+        "      ggg      ",
+        "    ggCCCgg    ",
+        "   gCC===CCg   ",
+        "  gC=======Cg  ",
+        "  gC=======Cg  ",
+        " gC=========Cg ",
+        " gC=========Cg ",
+        " gC=========Cg ",
+        "  gC=======Cg  ",
+        "  gC=======Cg  ",
+        "   gCC===CCg   ",
+        "    ggCCCgg    ",
+        "      ggg      ",
+        "               "
+    };
+
+    private static final String[] multiMiddle = {
+        "               ",
+        "      hhh      ",
+        "    hhCCChh    ",
+        "   hCC===CCh   ",
+        "  hC=======Ch  ",
+        "  hC=======Ch  ",
+        " hC=========Ch ",
+        " hC=========Ch ",
+        " hC=========Ch ",
+        "  hC=======Ch  ",
+        "  hC=======Ch  ",
+        "   hCC===CCh   ",
+        "    hhCCChh    ",
+        "      hhh      ",
+        "               "
+    };
+
+    private static final String[] multiSubMiddle = {
+        "      hhh      ",
+        "    hhhhhhh    ",
+        "   hhhCCChhh   ",
+        "  hhCC===CChh  ",
+        " hhC=======Chh ",
+        " hhC=======Chh ",
+        "hhC=========Chh",
+        "hhC=========Chh",
+        "hhC=========Chh",
+        " hhC=======Chh ",
+        " hhC=======Chh ",
+        "  hhCC===CChh  ",
+        "   hhhCCChhh   ",
+        "    hhhhhhh    ",
+        "      hhh      "
+    };
+
+    private static final String[] multiSCCoil = {
+        "      sss      ",
+        "    ssCCCss    ",
+        "   sCCCCCCCs   ",
+        "  sCCC===CCCs  ",
+        " sCC=======CCs ",
+        " sCC=======CCs ",
+        "sCC=========CCs",
+        "sCC=========CCs",
+        "sCC=========CCs",
+        " sCC=======CCs ",
+        " sCC=======CCs ",
+        "  sCCC===CCCs  ",
+        "   sCCCCCCCs   ",
+        "    ssCCCss    ",
+        "      sss      "
+    };
+
+    private static final String[] multiController = {
+        "      h~h      ",
+        "    ggCCCgg    ",
+        "   gCCCCCCCg   ",
+        "  gCCC===CCCg  ",
+        " gCC=======CCg ",
+        " gCC=======CCg ",
+        "hCC=========CCh",
+        "hCC=========CCh",
+        "hCC=========CCh",
+        " gCC=======CCg ",
+        " gCC=======CCg ",
+        "  gCCC===CCCg  ",
+        "   gCCCCCCCg   ",
+        "    ggCCCgg    ",
+        "      hhh      "
+    };
+
+    private static final String[] multiSubController = {
+        "      hhh      ",
+        "    ggCCCgg    ",
+        "   gCCCCCCCg   ",
+        "  gCCC===CCCg  ",
+        " gCC=======CCg ",
+        " gCC=======CCg ",
+        "hCC=========CCh",
+        "hCC=========CCh",
+        "hCC=========CCh",
+        " gCC=======CCg ",
+        " gCC=======CCg ",
+        "  gCCC===CCCg  ",
+        "   gCCCCCCCg   ",
+        "    ggCCCgg    ",
+        "      hhh      "
+    };
+
+    private static final String[] multiBase = {
+
+        "      bbb      ",
+        "    bbbbbbb    ",
+        "   bbbbbbbbb   ",
+        "  bbbbbbbbbbb  ",
+        " bbbbbbbbbbbbb ",
+        " bbbbbbbbbbbbb ",
+        "bbbbbbbbbbbbbbb",
+        "bbbbbbbbbbbbbbb",
+        "bbbbbbbbbbbbbbb",
+        " bbbbbbbbbbbbb ",
+        " bbbbbbbbbbbbb ",
+        "  bbbbbbbbbbb  ",
+        "   bbbbbbbbb   ",
+        "    bbbbbbb    ",
+        "      bbb      "
+    };
+
     private static final int CASING_INDEX = 11;
     private static final IStructureDefinition<MTEMegaBlastFurnace> STRUCTURE_DEFINITION = StructureDefinition
         .<MTEMegaBlastFurnace>builder()
-        .addShape("main", createShape())
+        .addShape("main", transpose(
+            new String[][] {
+                multiTop,
+                multiSubTop,
+                multiSubTop,
+                multiSubTop,
+                multiSubTop,
+                multiSubTop,
+                multiSubTop,
+                multiSubTop,
+                multiSubTop,
+                multiSubTop,
+                multiSubTop,
+                multiSubTop,
+                multiMiddle,
+                multiSubMiddle,
+                multiSCCoil,
+                multiSubController,
+                multiController,
+                multiSubController,
+                multiSCCoil,
+                multiBase
+            }))
         .addElement('=', StructureElementAirNoHint.getInstance())
-        .addElement(
-            't',
-            buildHatchAdder(MTEMegaBlastFurnace.class).atLeast(OutputHatch)
+        .addElement('t', buildHatchAdder(MTEMegaBlastFurnace.class).atLeast(OutputHatch)
                 .casingIndex(CASING_INDEX)
                 .dot(1)
                 .buildAndChain(GregTechAPI.sBlockCasings1, CASING_INDEX))
         .addElement('m', Muffler.newAny(CASING_INDEX, 2))
-        .addElement(
-            'C',
-            withChannel(
-                "coil",
-                activeCoils(ofCoil(MTEMegaBlastFurnace::setCoilLevel, MTEMegaBlastFurnace::getCoilLevel))))
+        .addElement('C', withChannel("coil", activeCoils(ofCoil(MTEMegaBlastFurnace::setCoilLevel, MTEMegaBlastFurnace::getCoilLevel))))
         .addElement('g', chainAllGlasses(-1, (te, t) -> te.glassTier = t, te -> te.glassTier))
-        .addElement(
-            'b',
-            buildHatchAdder(MTEMegaBlastFurnace.class)
+        .addElement('b', buildHatchAdder(MTEMegaBlastFurnace.class)
                 .atLeast(InputHatch, OutputHatch, InputBus, OutputBus, Maintenance, Energy.or(ExoticEnergy))
                 .casingIndex(CASING_INDEX)
                 .dot(1)
                 .buildAndChain(GregTechAPI.sBlockCasings1, CASING_INDEX))
+        .addElement('h', ofBlock(GregTechAPI.sBlockCasings1, CASING_INDEX))
+        .addElement('s', ofBlock(GregTechAPI.sBlockCasings1, 15))
         .build();
-
-    private static String[][] createShape() {
-        String[][] raw = new String[20][];
-
-        raw[0] = new String[15];
-        String topCasing = "ttttttttttttttt";
-        String middleTopCasing = "tttttttmttttttt";
-        raw[0][0] = topCasing;
-        for (int i = 1; i < 15; i++) {
-            raw[0][i] = topCasing;
-        }
-        raw[0][7] = middleTopCasing;
-
-        raw[1] = new String[15];
-        String allGlass = "ggggggggggggggg";
-        String allCoil = "gCCCCCCCCCCCCCg";
-        String middleLine = "gC===========Cg";
-        raw[1][0] = allGlass;
-        raw[1][1] = allCoil;
-        raw[1][13] = allCoil;
-        raw[1][14] = allGlass;
-        for (int i = 2; i < 13; i++) {
-            raw[1][i] = middleLine;
-        }
-        for (int i = 2; i < 19; i++) {
-            raw[i] = raw[1];
-        }
-        String bottomCasing = "bbbbbbbbbbbbbbb";
-        raw[19] = new String[15];
-        for (int i = 0; i < 15; i++) {
-            raw[19][i] = bottomCasing;
-        }
-
-        raw[17] = Arrays.copyOf(raw[17], raw[17].length);
-        raw[17][0] = "ggggggg~ggggggg";
-
-        return transpose(raw);
-    }
 
     private HeatingCoilLevel mCoilLevel;
     private int mHeatingCapacity;
@@ -298,7 +419,7 @@ public class MTEMegaBlastFurnace extends MegaMultiBlockBase<MTEMegaBlastFurnace>
 
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
-        this.buildPiece("main", stackSize, hintsOnly, 7, 17, 0);
+        this.buildPiece("main", stackSize, hintsOnly, 7, 16, 0);
     }
 
     @Override
@@ -307,7 +428,7 @@ public class MTEMegaBlastFurnace extends MegaMultiBlockBase<MTEMegaBlastFurnace>
         int realBudget = elementBudget >= 200 ? elementBudget : Math.min(200, elementBudget * 5);
         this.glassTier = -1;
         this.setCoilLevel(HeatingCoilLevel.None);
-        return this.survivialBuildPiece("main", stackSize, 7, 17, 0, realBudget, env, false, true);
+        return this.survivialBuildPiece("main", stackSize, 7, 16, 0, realBudget, env, false, true);
     }
 
     public void setCoilLevel(HeatingCoilLevel aCoilLevel) {
@@ -325,7 +446,7 @@ public class MTEMegaBlastFurnace extends MegaMultiBlockBase<MTEMegaBlastFurnace>
 
         this.setCoilLevel(HeatingCoilLevel.None);
 
-        if (!this.checkPiece("main", 7, 17, 0) || this.getCoilLevel() == HeatingCoilLevel.None
+        if (!this.checkPiece("main", 7, 16, 0) || this.getCoilLevel() == HeatingCoilLevel.None
             || this.mMaintenanceHatches.size() != 1) return false;
 
         if (this.glassTier < VoltageIndex.UV) {
