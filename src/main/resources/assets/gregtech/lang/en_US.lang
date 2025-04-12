@@ -652,6 +652,8 @@ GT5U.machines.laser_hatch.amperage=Amperage
 GT5U.machines.hatch_output.lockfluid.label=Locked Fluid
 GT5U.machines.hatch_output.lockfluid.empty=None
 GT5U.machines.basic_tank.liquid_amount=Liquid Amount
+GT5U.machines.computation_hatch.pending_computation=§7Total Computation I/O: §b%d§r
+GT5U.machines.computation_hatch.wasted_computation=§7Wasted Computation: §b%d§r
 
 GT5U.recipe_filter.empty_representation_slot.tooltip=§7Click with a machine to set filter
 GT5U.recipe_filter.representation_slot.tooltip=§7Click to clear
