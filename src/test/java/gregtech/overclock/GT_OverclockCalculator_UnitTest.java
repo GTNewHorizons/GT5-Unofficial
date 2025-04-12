@@ -237,7 +237,7 @@ class GT_OverclockCalculator_UnitTest {
             .setEUt(V[6])
             .setDuration(77)
             .calculate();
-        assertEquals((int) (77 / Math.pow(2, 5)), calculator.getDuration(), messageDuration);
+        assertEquals((int) Math.ceil(77 / Math.pow(2, 5)), calculator.getDuration(), messageDuration);
         assertEquals(VP[6], calculator.getConsumption(), messageEUt);
     }
 
@@ -283,7 +283,7 @@ class GT_OverclockCalculator_UnitTest {
             .setDurationModifier(0.9)
             .setDuration(1024)
             .calculate();
-        assertEquals((int) (1024 * 0.9f / Math.pow(2, 5)), calculator.getDuration(), messageDuration);
+        assertEquals((int) Math.ceil(1024 * 0.9f / Math.pow(2, 5)), calculator.getDuration(), messageDuration);
         assertEquals(VP[6], calculator.getConsumption(), messageEUt);
     }
 
@@ -295,7 +295,7 @@ class GT_OverclockCalculator_UnitTest {
             .setDuration(2048)
             .enablePerfectOC()
             .calculate();
-        assertEquals((int) ((2048 * 0.9f) / Math.pow(4, 5)), calculator.getDuration(), messageDuration);
+        assertEquals((int) Math.ceil((2048 * 0.9f) / Math.pow(4, 5)), calculator.getDuration(), messageDuration);
         assertEquals(VP[6], calculator.getConsumption(), messageEUt);
     }
 
@@ -354,7 +354,7 @@ class GT_OverclockCalculator_UnitTest {
             .setEUt(V[5])
             .setDuration(30)
             .calculate();
-        assertEquals(1, calculator.getDuration(), messageDuration);
+        assertEquals(2, calculator.getDuration(), messageDuration);
         assertEquals(16 * Math.pow(4, 7), calculator.getConsumption(), messageEUt);
     }
 
@@ -387,7 +387,7 @@ class GT_OverclockCalculator_UnitTest {
             .setMachineHeat(15500)
             .setEUt(V[12] * 1_048_576)
             .setDuration(250);
-        calculator.setCurrentParallel((int) (256 / calculator.calculateDurationUnderOneTick()))
+        calculator.setCurrentParallel((int) (256 / calculator.calculateFractionalDuration()))
             .calculate();
         assertEquals(Math.ceil((((long) 1920 * 256) * Math.pow(4, 14)) * heatDiscount), calculator.getConsumption());
     }
@@ -423,7 +423,7 @@ class GT_OverclockCalculator_UnitTest {
     void testNoOverclockCorrectWithUnderOneTickLogic_Test() {
         OverclockCalculator calculator = OverclockCalculator.ofNoOverclock(2_693_264_510L, 100)
             .setParallel(24 * 64);
-        assertEquals(100, calculator.calculateDurationUnderOneTick());
+        assertEquals(100, calculator.calculateFractionalDuration());
     }
 
     @Test
@@ -547,7 +547,7 @@ class GT_OverclockCalculator_UnitTest {
 
     @Test
     void overclockWithAbnormalDurationDecrease_Test() {
-        int expectedDuration = (int) Math.floor(1024 / Math.pow(2.1, 5));
+        int expectedDuration = (int) Math.ceil(1024 / Math.pow(2.1, 5));
         OverclockCalculator calculator = new OverclockCalculator().setRecipeEUt(VP[1])
             .setEUt(V[6])
             .setDuration(1024)
@@ -591,7 +591,7 @@ class GT_OverclockCalculator_UnitTest {
             .setDurationModifier(speedBoost)
             .setEUtDiscount(eutDiscount)
             .setParallel(maxParallel);
-        double tickTimeAfterOC = calculator.calculateDurationUnderOneTick();
+        double tickTimeAfterOC = calculator.calculateFractionalDuration();
         maxParallel = GTUtility.safeInt((long) (maxParallel / tickTimeAfterOC), 0);
         calculator.setCurrentParallel(maxParallel)
             .calculate();
