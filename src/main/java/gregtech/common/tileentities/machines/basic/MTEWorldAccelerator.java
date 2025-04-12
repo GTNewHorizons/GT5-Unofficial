@@ -282,7 +282,7 @@ public class MTEWorldAccelerator extends MTETieredMachineBlock {
     // This uses the Wrench as second tool to cycle speeds
     @Override
     public boolean onWrenchRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer pPlayer, float aX,
-        float aY, float aZ) {
+        float aY, float aZ, ItemStack aTool) {
         incSpeedTierOverride();
 
         markDirty();

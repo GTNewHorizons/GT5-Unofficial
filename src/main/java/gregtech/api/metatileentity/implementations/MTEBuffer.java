@@ -308,13 +308,13 @@ public abstract class MTEBuffer extends MTETieredMachineBlock implements IAddUIW
 
     @Override
     public boolean onWrenchRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer entityPlayer,
-        float aX, float aY, float aZ) {
+        float aX, float aY, float aZ, ItemStack aTool) {
         wrenchingSide = wrenchingSide.getOpposite();
         if (getBaseMetaTileEntity().isValidFacing(wrenchingSide)) {
             getBaseMetaTileEntity().setFrontFacing(wrenchingSide);
             return true;
         }
-        return false;
+        return super.onWrenchRightClick(side, wrenchingSide, entityPlayer, aX, aY, aZ, aTool);
     }
 
     protected void handleRedstoneOutput(IGregTechTileEntity aBaseMetaTileEntity) {
