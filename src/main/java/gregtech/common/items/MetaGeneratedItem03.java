@@ -260,10 +260,9 @@ import static gregtech.common.items.IDMetaItem03.White_Dwarf_Shape_Extruder_Wire
 import static gregtech.common.items.IDMetaItem03.WovenKevlar;
 import static gregtech.common.items.IDMetaItem03.ZPM_Coil;
 
-import cpw.mods.fml.common.Optional;
-
 import net.minecraft.item.ItemStack;
 
+import cpw.mods.fml.common.Optional;
 import gregtech.api.covers.CoverPlacer;
 import gregtech.api.covers.CoverRegistry;
 import gregtech.api.enums.GTValues;
@@ -1559,11 +1558,9 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 implements IItemFi
     @Optional.Method(modid = "Railcraft")
     public boolean shouldBurn(ItemStack itemStack) {
         ItemData data = GTOreDictUnificator.getAssociation(itemStack);
-        if (data == null || data.mMaterial == null
-            || data.mPrefix == null) {
+        if (data == null || data.mMaterial == null || data.mPrefix == null) {
             return false;
         }
-        return data.mMaterial.mMaterial == Materials.Firestone
-            && data.mPrefix == OrePrefixes.rawOre;
+        return data.mMaterial.mMaterial == Materials.Firestone && data.mPrefix == OrePrefixes.rawOre;
     }
 }

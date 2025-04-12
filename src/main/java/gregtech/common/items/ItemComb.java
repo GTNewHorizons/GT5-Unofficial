@@ -1258,6 +1258,7 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer, IIte
             }
         }
     }
+
     @Override
     @Optional.Method(modid = "Railcraft")
     public boolean shouldBurn(ItemStack itemStack) {

@@ -568,13 +568,13 @@ public class CraftingRecipes implements Runnable {
                 OrePrefixes.screw.get(Materials.Titanium), 'T', GregtechItemList.TransmissionComponent_EV.get(1), 'R',
                 craftingToolScrewdriver, 'P', OrePrefixes.plate.get(Materials.Titanium), 'W', craftingToolWrench });
 
-  GTModHandler.addCraftingRecipe(
+        GTModHandler.addCraftingRecipe(
             ItemList.Item_Power_Goggles.get(1),
             0,
             new Object[] { "MPM", "LSL", "PRP", 'M', ItemList.Cover_Screen.get(1), 'P',
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.Polytetrafluoroethylene, 1L), 'L',
                 GTOreDictUnificator.get(OrePrefixes.lens, Materials.GarnetYellow, 1L), 'S', ItemList.Sensor_IV.get(1),
                 'R', OrePrefixes.foil.get(Materials.AnySyntheticRubber) });
-    
+
     }
 }

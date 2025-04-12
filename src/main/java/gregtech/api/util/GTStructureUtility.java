@@ -23,7 +23,6 @@ import java.util.function.ToIntFunction;
 
 import javax.annotation.Nonnull;
 
-import com.gtnewhorizon.structurelib.item.ItemConstructableTrigger.TriggerMode;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
@@ -42,6 +41,7 @@ import org.jetbrains.annotations.Nullable;
 import com.gtnewhorizon.gtnhlib.util.CoordinatePacker;
 import com.gtnewhorizon.structurelib.StructureLibAPI;
 import com.gtnewhorizon.structurelib.item.ItemConstructableTrigger;
+import com.gtnewhorizon.structurelib.item.ItemConstructableTrigger.TriggerMode;
 import com.gtnewhorizon.structurelib.structure.AutoPlaceEnvironment;
 import com.gtnewhorizon.structurelib.structure.IItemSource;
 import com.gtnewhorizon.structurelib.structure.IStructureElement;
@@ -312,7 +312,9 @@ public class GTStructureUtility {
                 TriggerMode mode = ItemConstructableTrigger.getMode(trigger);
                 PlaceResult skipOrRejectBasedOnCheck = checkForRemoving(mode, check(t, world, x, y, z), world, x, y, z);
                 if (skipOrRejectBasedOnCheck != ACCEPT) return skipOrRejectBasedOnCheck;
-                if (mode != REMOVING && shouldSkip != null && world.getTileEntity(x, y, z) instanceof IGregTechTileEntity igte && shouldSkip.test(t, igte)) {
+                if (mode != REMOVING && shouldSkip != null
+                    && world.getTileEntity(x, y, z) instanceof IGregTechTileEntity igte
+                    && shouldSkip.test(t, igte)) {
                     return SKIP;
                 }
                 if (mode == BUILDING && !StructureLibAPI.isBlockTriviallyReplaceable(world, x, y, z, env.getActor()))
@@ -399,7 +401,9 @@ public class GTStructureUtility {
                 TriggerMode mode = ItemConstructableTrigger.getMode(trigger);
                 PlaceResult skipOrRejectBasedOnCheck = checkForRemoving(mode, check(t, world, x, y, z), world, x, y, z);
                 if (skipOrRejectBasedOnCheck != ACCEPT) return skipOrRejectBasedOnCheck;
-                if (mode != REMOVING && shouldSkip != null && world.getTileEntity(x, y, z) instanceof IGregTechTileEntity igte && shouldSkip.test(t, igte)) {
+                if (mode != REMOVING && shouldSkip != null
+                    && world.getTileEntity(x, y, z) instanceof IGregTechTileEntity igte
+                    && shouldSkip.test(t, igte)) {
                     return SKIP;
                 }
                 if (mode == BUILDING && !StructureLibAPI.isBlockTriviallyReplaceable(world, x, y, z, env.getActor()))
@@ -594,9 +598,11 @@ public class GTStructureUtility {
                 AutoPlaceEnvironment env) {
                 TriggerMode mode = ItemConstructableTrigger.getMode(trigger);
                 Block block = world.getBlock(x, y, z);
-                boolean isCoil = block instanceof IHeatingCoil coilBlock && coilBlock.getCoilHeat(world.getBlockMetadata(x, y, z)) == getHeatFromHint(trigger);
+                boolean isCoil = block instanceof IHeatingCoil coilBlock
+                    && coilBlock.getCoilHeat(world.getBlockMetadata(x, y, z)) == getHeatFromHint(trigger);
                 if (mode == BUILDING && isCoil) return SKIP;
-                else if (mode != BUILDING && (!(block instanceof IHeatingCoil) && !world.isAirBlock(x, y, z))) return REJECT;
+                else if (mode != BUILDING && (!(block instanceof IHeatingCoil) && !world.isAirBlock(x, y, z)))
+                    return REJECT;
                 return com.gtnewhorizon.structurelib.structure.StructureUtility.survivalPlaceBlock(
                     GregTechAPI.sBlockCasings5,
                     getMetaFromHint(trigger),
