@@ -330,7 +330,7 @@ public class MTEHighTempGasCooledReactor extends MTEEnhancedMultiBlockBase<MTEHi
                     HTGRMaterials.MATERIALS_PER_FUEL * this.fueltype + HTGRMaterials.USABLE_FUEL_INDEX);
                 boolean storedAll = false;
                 for (MTEHatchOutputBus tHatch : validMTEList(mOutputBusses)) {
-                    if (tHatch.storeAll(iStack)) {
+                    if (tHatch.storePartial(iStack)) {
                         storedAll = true;
                         break;
                     }
