@@ -360,14 +360,10 @@ public class GTLanguageManager {
         addStringLocalization("Interaction_DESCRIPTION_Index_215", "Disconnected");
         addStringLocalization("Interaction_DESCRIPTION_Index_216", "Deprecated Recipe");
         addStringLocalization("Interaction_DESCRIPTION_Index_219", "Extended Facing: ");
-        addStringLocalization("Interaction_DESCRIPTION_Index_220", "Single recipe locking disabled.");
         addStringLocalization("Interaction_DESCRIPTION_Index_221", "Item threshold");
         addStringLocalization("Interaction_DESCRIPTION_Index_222", "Fluid threshold");
         addStringLocalization("Interaction_DESCRIPTION_Index_222.1", "Energy threshold");
 
-        addStringLocalization(
-            "Interaction_DESCRIPTION_Index_223",
-            "Single recipe locking enabled. Will lock to next recipe.");
         addStringLocalization("Interaction_DESCRIPTION_Index_224", "Always On");
         addStringLocalization("Interaction_DESCRIPTION_Index_225", "Active with Redstone Signal");
         addStringLocalization("Interaction_DESCRIPTION_Index_226", "Inactive with Redstone Signal");
@@ -460,7 +456,6 @@ public class GTLanguageManager {
         addStringLocalization("Interaction_DESCRIPTION_Index_343.1", "Use Inverted Machine Processing State");
         addStringLocalization("Interaction_DESCRIPTION_Index_344", "Input Blocking");
         addStringLocalization("Interaction_DESCRIPTION_Index_344.1", "Output Blocking");
-        addStringLocalization("Interaction_DESCRIPTION_Index_400", "Running mode: ");
         addStringLocalization("Interaction_DESCRIPTION_Index_500", "Fitting: Loose - More Flow");
         addStringLocalization("Interaction_DESCRIPTION_Index_501", "Fitting: Tight - More Efficiency");
         addStringLocalization("Interaction_DESCRIPTION_Index_502", "Mining chunk loading enabled");
