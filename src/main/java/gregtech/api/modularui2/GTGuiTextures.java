@@ -46,6 +46,13 @@ public final class GTGuiTextures {
             GTTextureIds.BACKGROUND_TITLE_STEEL,
             GTTextureIds.BACKGROUND_TITLE_PRIMITIVE)
         .build();
+    private static final UITexture BACKGROUND_TITLE_ORGANIC = UITexture.builder()
+        .location(GregTech.ID,"gui/background/organic")
+        .imageSize(176, 166)
+        .adaptable(4)
+        .canApplyTheme()
+        .name(GTTextureIds.BACKGROUND_ORGANIC)
+        .build();
 
     public static final UITexture BACKGROUND_POPUP_STANDARD = UITexture.builder()
         .location(GregTech.ID, "gui/background/popup")
@@ -398,6 +405,11 @@ public final class GTGuiTextures {
             GTTextureIds.PICTURE_GT_LOGO_BRONZE,
             GTTextureIds.PICTURE_GT_LOGO_STEEL,
             GTTextureIds.PICTURE_GT_LOGO_PRIMITIVE)
+        .build();
+    public static final UITexture PICTURE_GT_LOGO_ORGANIC = UITexture.builder()
+        .location(GregTech.ID, "gui/picture/AOLogo")
+        .fullImage()
+        .name(GTTextureIds.PICTURE_GT_LOGO_ORGANIC)
         .build();
 
     // endregion picture

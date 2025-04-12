@@ -7,17 +7,38 @@ import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.InputBus;
 import static gregtech.api.enums.HatchElement.InputHatch;
 import static gregtech.api.enums.HatchElement.Maintenance;
+import static gregtech.api.enums.Mods.GregTech;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_BIOVAT_EMPTY;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_BIOVAT_EMPTY_GLOW;
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
+import static gregtech.common.modularui2.util.CommonGuiComponents.gridTemplate1by1;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import com.cleanroommc.modularui.api.drawable.IDrawable;
+import com.cleanroommc.modularui.api.drawable.IKey;
+import com.cleanroommc.modularui.drawable.UITexture;
+import com.cleanroommc.modularui.drawable.text.TextIcon;
+import com.cleanroommc.modularui.factory.PosGuiData;
+import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.screen.RichTooltip;
+import com.cleanroommc.modularui.utils.Alignment;
+import com.cleanroommc.modularui.value.sync.DoubleSyncValue;
+import com.cleanroommc.modularui.value.sync.IntSyncValue;
+import com.cleanroommc.modularui.value.sync.InteractionSyncHandler;
+import com.cleanroommc.modularui.value.sync.PanelSyncManager;
+import com.cleanroommc.modularui.widgets.ButtonWidget;
+import com.cleanroommc.modularui.widgets.ItemSlot;
+import com.cleanroommc.modularui.widgets.ProgressWidget;
+import gregtech.api.modularui2.GTGuiTheme;
+import gregtech.api.modularui2.GTGuiThemes;
+import gregtech.api.modularui2.GTGuis;
+import gregtech.common.tileentities.machines.multi.MTEIndustrialElectromagneticSeparator;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -39,25 +60,7 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureUtility;
-import com.gtnewhorizons.modularui.api.drawable.IDrawable;
-import com.gtnewhorizons.modularui.api.drawable.ItemDrawable;
-import com.gtnewhorizons.modularui.api.drawable.Text;
-import com.gtnewhorizons.modularui.api.drawable.UITexture;
 import com.gtnewhorizons.modularui.api.forge.ItemStackHandler;
-import com.gtnewhorizons.modularui.api.math.Alignment;
-import com.gtnewhorizons.modularui.api.math.Pos2d;
-import com.gtnewhorizons.modularui.api.screen.ModularWindow;
-import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
-import com.gtnewhorizons.modularui.api.widget.IWidgetBuilder;
-import com.gtnewhorizons.modularui.api.widget.Widget;
-import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
-import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
-import com.gtnewhorizons.modularui.common.widget.DynamicPositionedColumn;
-import com.gtnewhorizons.modularui.common.widget.DynamicTextWidget;
-import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
-import com.gtnewhorizons.modularui.common.widget.ProgressBar;
-import com.gtnewhorizons.modularui.common.widget.SlotWidget;
-import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Materials;
@@ -147,15 +150,10 @@ public class MTEEvolutionChamber extends MTEExtendedPowerMultiBlockBase<MTEEvolu
 
     private final ArrayList<MTEHatchAOOutput> bioHatches = new ArrayList<>();
 
-    ArtificialOrganism currentSpecies = new ArtificialOrganism();
+    public ArtificialOrganism currentSpecies = new ArtificialOrganism();
 
     private long powerUsage = 0;
     private FluidStack nutrientUsage;
-
-    private int intelligence;
-    private int strength;
-    private int count;
-    private int sentience;
 
     private int casingTier;
     private int maxAOs;
@@ -318,7 +316,7 @@ public class MTEEvolutionChamber extends MTEExtendedPowerMultiBlockBase<MTEEvolu
     }
 
     private void triggerElectricityLoss() {
-        sentience += 1;
+        currentSpecies.increaseSentience(1);
     }
 
     @Override
@@ -335,22 +333,13 @@ public class MTEEvolutionChamber extends MTEExtendedPowerMultiBlockBase<MTEEvolu
             }
         }
 
-        if (currentSpecies.cooperative) sentience += 1;
+        if (currentSpecies.cooperative) currentSpecies.increaseSentience(1);
 
         if (!drainEnergyInput(powerUsage)) triggerElectricityLoss();
 
         if (!useNutrients()) {
             triggerNutrientLoss();
         } else if (currentSpecies.getCount() < maxAOs) currentSpecies.doReproduction();
-
-        updateSpecies();
-    }
-
-    private void updateSpecies() {
-        intelligence = currentSpecies.getIntelligence();
-        strength = currentSpecies.getStrength();
-        count = currentSpecies.getCount();
-        sentience = currentSpecies.getSentience();
     }
 
     @Override
@@ -449,6 +438,101 @@ public class MTEEvolutionChamber extends MTEExtendedPowerMultiBlockBase<MTEEvolu
 
     Trait activeTraitWindow;
 
+    @Override
+    protected boolean forceUseMui2() {
+        return true;
+    }
+
+    @Override
+    protected GTGuiTheme getGuiTheme() {
+        return GTGuiThemes.ORGANIC;
+    }
+
+    @Override
+    public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager) {
+
+        UITexture intIcon = UITexture.builder()
+            .location(GregTech.ID, "gui/picture/icon_intelligence")
+            .imageSize(10, 10)
+            .build();
+        UITexture strIcon = UITexture.builder()
+            .location(GregTech.ID, "gui/picture/icon_strength")
+            .imageSize(10, 10)
+            .build();
+        UITexture repIcon = UITexture.builder()
+            .location(GregTech.ID, "gui/picture/icon_reproduction")
+            .imageSize(10, 10)
+            .build();
+
+        UITexture progressBar = UITexture.builder()
+            .location(GregTech.ID, "gui/progressbar/sentience_progress")
+            .adaptable(1)
+            .imageSize(16, 128)
+            .build();
+
+        UITexture intProgressBar = UITexture.builder()
+            .location(GregTech.ID, "gui/progressbar/intelligence_bar")
+            .adaptable(1)
+            .imageSize(32, 16)
+            .build();
+
+        UITexture strProgressBar = UITexture.builder()
+            .location(GregTech.ID, "gui/progressbar/strength_bar")
+            .adaptable(1)
+            .imageSize(32, 16)
+            .build();
+
+        UITexture repProgressBar = UITexture.builder()
+            .location(GregTech.ID, "gui/progressbar/reproduction_bar")
+            .adaptable(1)
+            .imageSize(32, 16)
+            .build();
+
+        return GTGuis.mteTemplatePanelBuilder(this, data, syncManager)
+            .build()
+            .child(new ProgressWidget()
+                .value(new DoubleSyncValue(() -> (double) currentSpecies.getSentience() / 100))
+                .texture(progressBar, 16)
+                .direction(ProgressWidget.Direction.UP)
+                .size(16, 64)
+                .pos(100, 0))
+            .child(new ProgressWidget()
+                .value(new DoubleSyncValue(() -> ((double) currentSpecies.getIntelligence() / 32) + ((double) 1 /32)))
+                .texture(intProgressBar, 16)
+                .direction(ProgressWidget.Direction.RIGHT)
+                .hoverOverlay(IKey.dynamic(() -> EnumChatFormatting.WHITE + Integer.toString(currentSpecies.getIntelligence()) + "/30")
+                    .alignment(Alignment.BottomCenter).shadow(true).scale(0.8F).asIcon().margin(0, 0))
+                .size(32, 8)
+                .pos(16, 6))
+            .child(new ProgressWidget()
+                .value(new DoubleSyncValue(() -> ((double) currentSpecies.getStrength() / 32) + ((double) 1 /32)))
+                .texture(strProgressBar, 16)
+                .direction(ProgressWidget.Direction.RIGHT)
+                .hoverOverlay(IKey.dynamic(() -> EnumChatFormatting.WHITE + Integer.toString(currentSpecies.getStrength()) + "/30")
+                    .alignment(Alignment.BottomCenter).shadow(true).scale(0.8F).asIcon().margin(0, 0))
+                .size(32, 8)
+                .pos(16, 18))
+            .child(new ProgressWidget()
+                .value(new DoubleSyncValue(() -> ((double) currentSpecies.getReproduction() / 32) + ((double) 1 /32), ignored -> {}))
+                .texture(repProgressBar, 16)
+                .direction(ProgressWidget.Direction.RIGHT)
+                .hoverOverlay(IKey.dynamic(() -> EnumChatFormatting.WHITE +  Integer.toString(currentSpecies.getReproduction()) + "/30")
+                    .alignment(Alignment.BottomCenter).shadow(true).scale(0.8F).asIcon().margin(0, 0))
+                .size(32, 8)
+                .pos(16, 30))
+
+            .child(intIcon.asWidget().pos(5, 5).size(10, 10)
+                .addTooltipStringLines(ImmutableList.of(EnumChatFormatting.UNDERLINE + "Intelligence", "Required for AOs", "to perform certain recipes.")))
+            .child(strIcon.asWidget().pos(5, 17).size(10, 10)
+                .addTooltipStringLines(ImmutableList.of(EnumChatFormatting.UNDERLINE + "Strength", "Allows AOs to perform", "most recipes quicker.")))
+            .child(repIcon.asWidget().pos(5, 29).size(10, 10)
+                .addTooltipStringLines(ImmutableList.of(EnumChatFormatting.UNDERLINE + "Reproduction", "How quickly the tank", "will fill with AOs.")))
+            .child(new ButtonWidget<>().pos(60, 60)
+                .syncHandler(new InteractionSyncHandler()
+                    .setOnMousePressed(mouseData -> currentSpecies = new ArtificialOrganism(14, 29, 5, 100, 0))));
+    }
+
+    /*
     @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
         builder.widget(
@@ -648,4 +732,6 @@ public class MTEEvolutionChamber extends MTEExtendedPowerMultiBlockBase<MTEEvolu
             .setSize(16, 16)
             .setBackground(() -> new IDrawable[] { GTUITextures.BUTTON_STANDARD_PRESSED, new ItemDrawable(costStack) });
     }
+
+     */
 }

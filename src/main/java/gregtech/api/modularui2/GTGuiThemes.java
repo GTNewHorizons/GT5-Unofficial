@@ -1,6 +1,8 @@
 package gregtech.api.modularui2;
 
 import gregtech.api.enums.Dyes;
+import gregtech.api.gui.modularui.GTUITextures;
+import gregtech.api.gui.modularui.GUITextureSet;
 import gtPlusPlus.xmod.gregtech.common.modularui2.GTPPTextureIds;
 
 /**
@@ -140,5 +142,12 @@ public final class GTGuiThemes {
             GTTextureIds.BUTTON_COVER_TAB_HIGHLIGHT_PRIMITIVE)
         .themedButton(GTWidgetThemes.BUTTON_COVER_TAB_DISABLED, GTTextureIds.BUTTON_COVER_TAB_DISABLED_PRIMITIVE)
         .themedTexture(GTWidgetThemes.PICTURE_LOGO, GTTextureIds.PICTURE_GT_LOGO_PRIMITIVE)
+        .build();
+
+    public static final GTGuiTheme ORGANIC = GTGuiTheme.builder("gregtech:organic")
+        .parent(STANDARD)
+        .panel(GTTextureIds.BACKGROUND_ORGANIC)
+        .color(Dyes.dyeWhite.toInt())
+        .themedTexture(GTWidgetThemes.PICTURE_LOGO, GTTextureIds.PICTURE_GT_LOGO_ORGANIC)
         .build();
 }

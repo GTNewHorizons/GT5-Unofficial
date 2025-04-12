@@ -105,6 +105,10 @@ public class ArtificialOrganism {
         return strength;
     }
 
+    public int getReproduction() {
+        return reproduction;
+    }
+
     public int getSentience() {
         return sentience;
     }

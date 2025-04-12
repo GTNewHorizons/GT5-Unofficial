@@ -6,6 +6,7 @@ public final class GTTextureIds {
     public static final String BACKGROUND_BRONZE = "gregtech:bg_bronze";
     public static final String BACKGROUND_STEEL = "gregtech:bg_steel";
     public static final String BACKGROUND_PRIMITIVE = "gregtech:bg_primitive";
+    public static final String BACKGROUND_ORGANIC = "gregtech:bg_organic";
 
     public static final String BACKGROUND_POPUP_STANDARD = "gregtech:bg_popup_standard";
     public static final String BACKGROUND_POPUP_BRONZE = "gregtech:bg_popup_bronze";
@@ -96,4 +97,5 @@ public final class GTTextureIds {
     public static final String PICTURE_GT_LOGO_BRONZE = "gregtech:picture_gt_logo_bronze";
     public static final String PICTURE_GT_LOGO_STEEL = "gregtech:picture_gt_logo_steel";
     public static final String PICTURE_GT_LOGO_PRIMITIVE = "gregtech:picture_gt_logo_primitive";
+    public static final String PICTURE_GT_LOGO_ORGANIC = "gregtech:picture_gt_logo_organic";
 }
