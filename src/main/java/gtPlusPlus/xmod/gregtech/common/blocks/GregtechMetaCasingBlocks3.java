@@ -16,6 +16,7 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTUtility;
 import gregtech.common.blocks.MaterialCasings;
+import gregtech.common.misc.GTStructureChannels;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.CasingTextureHandler3;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
@@ -94,6 +95,10 @@ public class GregtechMetaCasingBlocks3 extends GregtechMetaCasingBlocksAbstract 
         GregtechItemList.Casing_Fusion_External.set(new ItemStack(this, 1, 12));
         GregtechItemList.Casing_Fusion_Internal.set(new ItemStack(this, 1, 13));
         GregtechItemList.Casing_Containment.set(new ItemStack(this, 1, 15));
+
+        for (int i = 4; i < 9; i++) {
+            GTStructureChannels.PSS_CELL.registerAsIndicator(new ItemStack(this, 1, i), i - 2);
+        }
     }
 
     @Override

@@ -15,7 +15,6 @@ package bartworks.common.tileentities.multis.mega;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.withChannel;
 import static gregtech.api.enums.HatchElement.*;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_OIL_CRACKER;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_OIL_CRACKER_ACTIVE;
@@ -64,6 +63,7 @@ import gregtech.api.recipe.maps.OilCrackerBackend;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.tileentities.machines.IRecipeProcessingAwareHatch;
 import gregtech.common.tileentities.machines.MTEHatchInputME;
 
@@ -93,7 +93,8 @@ public class MTEMegaOilCracker extends MegaMultiBlockBase<MTEMegaOilCracker> imp
                         "ppppppppppppp", "ppppppppppppp", "ppppppppppppp", "ppmmmmmmmmmpp" }, }))
         .addElement(
             'c',
-            withChannel("coil", activeCoils(ofCoil(MTEMegaOilCracker::setCoilLevel, MTEMegaOilCracker::getCoilLevel))))
+            GTStructureChannels.HEATING_COIL
+                .use(activeCoils(ofCoil(MTEMegaOilCracker::setCoilLevel, MTEMegaOilCracker::getCoilLevel))))
 
         .addElement('p', ofBlock(GregTechAPI.sBlockCasings4, 1))
         .addElement(
@@ -166,7 +167,7 @@ public class MTEMegaOilCracker extends MegaMultiBlockBase<MTEMegaOilCracker> imp
             .addOutputHatch("Hint block", 2, 3)
             .addInputHatch("Steam/Hydrogen ONLY, Hint block", 4)
             .addInputBus("Optional, for programmed circuit automation. Hint block", 1)
-            .addSubChannelUsage("glass", "Glass Tier")
+            .addSubChannelUsage(GTStructureChannels.BOROGLASS)
             .toolTipFinisher();
         return tt;
     }

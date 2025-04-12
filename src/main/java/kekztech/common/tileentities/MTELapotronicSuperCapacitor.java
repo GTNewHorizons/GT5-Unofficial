@@ -1,7 +1,6 @@
 package kekztech.common.tileentities;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlockAnyMeta;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onlyIf;
@@ -30,16 +29,14 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 import java.util.UUID;
-import java.util.function.Consumer;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.IChatComponent;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -48,9 +45,8 @@ import org.jetbrains.annotations.NotNull;
 
 import com.google.common.collect.ImmutableList;
 import com.gtnewhorizon.structurelib.StructureLibAPI;
-import com.gtnewhorizon.structurelib.alignment.constructable.ChannelDataAccessor;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
-import com.gtnewhorizon.structurelib.structure.IItemSource;
+import com.gtnewhorizon.structurelib.structure.AutoPlaceEnvironment;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.IStructureElement;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
@@ -93,6 +89,7 @@ import gregtech.api.util.LongData;
 import gregtech.api.util.LongRunningAverage;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.gui.modularui.widget.ShutDownReasonSyncer;
+import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.misc.WirelessNetworkManager;
 import gregtech.common.misc.spaceprojects.SpaceProjectManager;
 import kekztech.client.gui.KTUITextures;
@@ -134,7 +131,7 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
 
     private final BigInteger guiCapacityStoredReformatLimit = BigInteger.valueOf(1_000_000_000_000L);
 
-    private enum Capacitor {
+    public enum Capacitor {
 
         IV(2, BigInteger.valueOf(ItemBlockLapotronicEnergyUnit.IV_cap_storage)),
         LuV(3, BigInteger.valueOf(ItemBlockLapotronicEnergyUnit.LuV_cap_storage)),
@@ -149,8 +146,8 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
 
         private final int minimalGlassTier;
         private final BigInteger providedCapacity;
-        static final Capacitor[] VALUES = values();
-        static final Capacitor[] VALUES_BY_TIER = Arrays.stream(values())
+        public static final Capacitor[] VALUES = values();
+        public static final Capacitor[] VALUES_BY_TIER = Arrays.stream(values())
             .sorted(Comparator.comparingInt(Capacitor::getMinimalGlassTier))
             .toArray(Capacitor[]::new);
 
@@ -212,7 +209,7 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
             buildHatchAdder(
                 MTELapotronicSuperCapacitor.class).atLeast(LSCHatchElement.Energy, LSCHatchElement.Dynamo, Maintenance)
                     .hatchItemFilterAnd(
-                        (t, h) -> ChannelDataAccessor.getChannelData(h, "glass") < 6
+                        (t, h) -> GTStructureChannels.BOROGLASS.getValue(h) < 6
                             ? filterByMTEClass(ImmutableList.of(MTEHatchEnergyTunnel.class, MTEHatchDynamoTunnel.class))
                                 .negate()
                             : s -> true)
@@ -230,76 +227,8 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
                         chainAllGlasses(-1, (te, t) -> te.glassTier = t, te -> te.glassTier))),
                 onlyIf(
                     te -> te.topState != TopState.Top,
-                    onElementPass(
-                        te -> te.topState = TopState.NotTop,
-                        new IStructureElement<MTELapotronicSuperCapacitor>() {
-
-                            @Override
-                            public boolean check(MTELapotronicSuperCapacitor t, World world, int x, int y, int z) {
-                                Block worldBlock = world.getBlock(x, y, z);
-                                int meta = worldBlock.getDamageValue(world, x, y, z);
-                                if (LSC_PART != worldBlock || meta == 0) return false;
-                                t.capacitors[meta - 1]++;
-                                return true;
-                            }
-
-                            @Override
-                            public boolean couldBeValid(MTELapotronicSuperCapacitor mteLapotronicSuperCapacitor,
-                                World world, int x, int y, int z, ItemStack trigger) {
-                                Block worldBlock = world.getBlock(x, y, z);
-                                int meta = worldBlock.getDamageValue(world, x, y, z);
-                                return LSC_PART == worldBlock && meta != 0;
-                            }
-
-                            private int getHint(ItemStack stack) {
-                                return Capacitor.VALUES_BY_TIER[min(
-                                    Capacitor.VALUES_BY_TIER.length,
-                                    ChannelDataAccessor.getChannelData(stack, "capacitor")) - 1].getMinimalGlassTier()
-                                    + 1;
-                            }
-
-                            @Override
-                            public boolean spawnHint(MTELapotronicSuperCapacitor t, World world, int x, int y, int z,
-                                ItemStack trigger) {
-                                StructureLibAPI.hintParticle(world, x, y, z, LSC_PART, getHint(trigger));
-                                return true;
-                            }
-
-                            @Override
-                            public boolean placeBlock(MTELapotronicSuperCapacitor t, World world, int x, int y, int z,
-                                ItemStack trigger) {
-                                world.setBlock(x, y, z, LSC_PART, getHint(trigger), 3);
-                                return true;
-                            }
-
-                            @Override
-                            public PlaceResult survivalPlaceBlock(MTELapotronicSuperCapacitor t, World world, int x,
-                                int y, int z, ItemStack trigger, IItemSource source, EntityPlayerMP actor,
-                                Consumer<IChatComponent> chatter) {
-                                if (check(t, world, x, y, z)) return PlaceResult.SKIP;
-                                int glassTier = ChannelDataAccessor.getChannelData(trigger, "glass") + 2;
-                                ItemStack targetStack = source.takeOne(
-                                    s -> s != null && s.stackSize >= 0
-                                        && s.getItem() == LSC_PART_ITEM
-                                        && Capacitor.VALUES[min(s.getItemDamage(), Capacitor.VALUES.length) - 1]
-                                            .getMinimalGlassTier() > glassTier,
-                                    true);
-                                if (targetStack == null) return PlaceResult.REJECT;
-                                return StructureUtility.survivalPlaceBlock(
-                                    targetStack,
-                                    NBTMode.EXACT,
-                                    targetStack.stackTagCompound,
-                                    true,
-                                    world,
-                                    x,
-                                    y,
-                                    z,
-                                    source,
-                                    actor,
-                                    chatter);
-                            }
-                        }))))
-        .addElement('C', ofBlockAnyMeta(LSC_PART, 1))
+                    onElementPass(te -> te.topState = TopState.NotTop, CellElement.INSTANCE))))
+        .addElement('C', CellElement.INSTANCE)
         .build();
 
     private static final BigInteger MAX_LONG = BigInteger.valueOf(Long.MAX_VALUE);
@@ -515,9 +444,11 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
                     + EnumChatFormatting.GRAY
                     + "-tier glass")
             .addStructureInfo("You can have several I/O Hatches")
-            .addSubChannelUsage("glass", "Glass Tier")
-            .addSubChannelUsage("capacitor", "Maximum Capacitor Tier")
-            .addSubChannelUsage("height", "Height of structure")
+            .addSubChannelUsage(GTStructureChannels.BOROGLASS)
+            .addSubChannelUsage(
+                GTStructureChannels.LSC_CAPACITOR,
+                "Capacitor Tier if specified. Otherwise pick any acceptable capacitor.")
+            .addSubChannelUsage(GTStructureChannels.STRUCTURE_HEIGHT)
             .addMaintenanceHatch("Any casing")
             .toolTipFinisher();
         return tt;
@@ -637,7 +568,7 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
 
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
-        int layer = min(stackSize.stackSize + 3, 50);
+        int layer = GTStructureChannels.STRUCTURE_HEIGHT.getValueClamped(stackSize, 4, 50);
         buildPiece(STRUCTURE_PIECE_BASE, stackSize, hintsOnly, 2, 1, 0);
         for (int i = 2; i < layer - 1; i++) buildPiece(STRUCTURE_PIECE_MID, stackSize, hintsOnly, 2, i, 0);
         buildPiece(STRUCTURE_PIECE_TOP, stackSize, hintsOnly, 2, layer - 1, 0);
@@ -646,7 +577,7 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
-        int layer = min(ChannelDataAccessor.getChannelData(stackSize, "height") + 3, 50);
+        int layer = GTStructureChannels.STRUCTURE_HEIGHT.getValueClamped(stackSize, 4, 50);
         int built;
         built = survivialBuildPiece(STRUCTURE_PIECE_BASE, stackSize, 2, 1, 0, elementBudget, env, false, true);
         if (built >= 0) return built;
@@ -1571,6 +1502,88 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
         @Override
         public IGTHatchAdder<? super MTELapotronicSuperCapacitor> adder() {
             return MTELapotronicSuperCapacitor::addBottomHatches;
+        }
+    }
+
+    private enum CellElement implements IStructureElement<MTELapotronicSuperCapacitor> {
+
+        INSTANCE;
+
+        @Override
+        public boolean check(MTELapotronicSuperCapacitor t, World world, int x, int y, int z) {
+            Block worldBlock = world.getBlock(x, y, z);
+            int meta = worldBlock.getDamageValue(world, x, y, z);
+            if (LSC_PART != worldBlock || meta == 0) return false;
+            t.capacitors[meta - 1]++;
+            return true;
+        }
+
+        @Override
+        public boolean couldBeValid(MTELapotronicSuperCapacitor mteLapotronicSuperCapacitor, World world, int x, int y,
+            int z, ItemStack trigger) {
+            Block worldBlock = world.getBlock(x, y, z);
+            int meta = worldBlock.getDamageValue(world, x, y, z);
+            return LSC_PART == worldBlock && meta != 0;
+        }
+
+        private int getHint(ItemStack stack) {
+            return Capacitor.VALUES_BY_TIER[GTStructureChannels.LSC_CAPACITOR
+                .getValueClamped(stack, 0, Capacitor.VALUES_BY_TIER.length)].getMinimalGlassTier() + 1;
+        }
+
+        @Override
+        public boolean spawnHint(MTELapotronicSuperCapacitor t, World world, int x, int y, int z, ItemStack trigger) {
+            StructureLibAPI.hintParticle(world, x, y, z, LSC_PART, getHint(trigger));
+            return true;
+        }
+
+        @Override
+        public boolean placeBlock(MTELapotronicSuperCapacitor t, World world, int x, int y, int z, ItemStack trigger) {
+            world.setBlock(x, y, z, LSC_PART, getHint(trigger), 3);
+            return true;
+        }
+
+        @Override
+        public PlaceResult survivalPlaceBlock(MTELapotronicSuperCapacitor t, World world, int x, int y, int z,
+            ItemStack trigger, AutoPlaceEnvironment env) {
+            if (check(t, world, x, y, z)) return PlaceResult.SKIP;
+            int glassTier = GTStructureChannels.BOROGLASS.getValue(trigger) + 2;
+            ItemStack targetStack;
+            // if user specified a capacitor tier, use it.
+            // otherwise scan for any capacitor that can be used
+            if (GTStructureChannels.LSC_CAPACITOR.hasValue(trigger)) {
+                int capacitorTier = GTStructureChannels.LSC_CAPACITOR
+                    .getValueClamped(trigger, 0, Capacitor.VALUES_BY_TIER.length);
+                if (Capacitor.VALUES_BY_TIER[capacitorTier].getMinimalGlassTier() > glassTier) {
+                    env.getChatter()
+                        .accept(new ChatComponentTranslation("kekztech.structure.glass_incompatible"));
+                    return PlaceResult.REJECT;
+                }
+                targetStack = new ItemStack(LSC_PART_ITEM, 1, Capacitor.VALUES_BY_TIER[capacitorTier].ordinal() + 1);
+                if (!env.getSource()
+                    .takeOne(targetStack, true)) return PlaceResult.REJECT;
+            } else {
+                targetStack = env.getSource()
+                    .takeOne(
+                        s -> s != null && s.stackSize >= 0
+                            && s.getItem() == LSC_PART_ITEM
+                            && Capacitor.VALUES[min(s.getItemDamage(), Capacitor.VALUES.length) - 1]
+                                .getMinimalGlassTier() > glassTier,
+                        true);
+            }
+            if (targetStack == null) return PlaceResult.REJECT;
+            return StructureUtility.survivalPlaceBlock(
+                targetStack,
+                NBTMode.EXACT,
+                targetStack.stackTagCompound,
+                true,
+                world,
+                x,
+                y,
+                z,
+                env.getSource(),
+                env.getActor(),
+                env.getChatter());
         }
     }
 }

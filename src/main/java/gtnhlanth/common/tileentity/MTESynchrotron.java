@@ -1,7 +1,6 @@
 package gtnhlanth.common.tileentity;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.withChannel;
 import static gregtech.api.enums.GTValues.VN;
 import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.ExoticEnergy;
@@ -60,6 +59,7 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReason;
 import gregtech.api.util.shutdown.SimpleShutDownReason;
+import gregtech.common.misc.GTStructureChannels;
 import gtnhlanth.common.beamline.BeamInformation;
 import gtnhlanth.common.beamline.BeamLinePacket;
 import gtnhlanth.common.beamline.Particle;
@@ -460,7 +460,7 @@ public class MTESynchrotron extends MTEExtendedPowerMultiBlockBase<MTESynchrotro
                 // Adder overriden due to ExoticEnergy originally calling its own adder, giving false positives
                 .addElement('e', buildHatchAdder(MTESynchrotron.class).atLeast(ImmutableMap.of(Energy.or(ExoticEnergy), 4)).adder(MTESynchrotron::addEnergyInputToMachineList).dot(6).casingIndex(CASING_INDEX).build())
                 .addElement('n', ofBlock(LanthItemList.NIOBIUM_CAVITY_CASING, 0))
-                .addElement('a', withChannel("antenna", StructureUtility.ofBlocksTiered(
+                .addElement('a', GTStructureChannels.SYNCHROTRON_ANTENNA.use(StructureUtility.ofBlocksTiered(
                 		MTESynchrotron::getAntennaBlockTier,
                 		ImmutableList.of(
                 				Pair.of(LanthItemList.ANTENNA_CASING_T1, 0),
@@ -527,7 +527,8 @@ public class MTESynchrotron extends MTEExtendedPowerMultiBlockBase<MTESynchrotro
             .addInputHatch(addDotText(4))
             .addOutputHatch(addDotText(5))
             .addEnergyHatch(addDotText(6))
-            .addSubChannelUsage("glass", "Glass Tier")
+            .addSubChannelUsage(GTStructureChannels.BOROGLASS)
+            .addSubChannelUsage(GTStructureChannels.SYNCHROTRON_ANTENNA)
             .toolTipFinisher();
         return tt;
     }

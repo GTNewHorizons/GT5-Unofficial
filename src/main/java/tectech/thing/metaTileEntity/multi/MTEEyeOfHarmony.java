@@ -3,7 +3,6 @@ package tectech.thing.metaTileEntity.multi;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlocksTiered;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.withChannel;
 import static gregtech.api.enums.HatchElement.InputBus;
 import static gregtech.api.enums.HatchElement.InputHatch;
 import static gregtech.api.enums.HatchElement.OutputBus;
@@ -78,6 +77,7 @@ import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReason;
+import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.tileentities.machines.MTEHatchInputBusME;
 import gregtech.common.tileentities.machines.MTEHatchOutputBusME;
 import gregtech.common.tileentities.machines.MTEHatchOutputME;
@@ -711,8 +711,7 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements IConstructable,
                         "                                 " } }))
         .addElement(
             'A',
-            withChannel(
-                "spacetime compression",
+            GTStructureChannels.EOH_COMPRESSION.use(
                 ofBlocksTiered(
                     (block, meta) -> block == TTCasingsContainer.SpacetimeCompressionFieldGenerators ? meta : null,
                     ImmutableList.of(
@@ -730,8 +729,7 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements IConstructable,
                     t -> t.spacetimeCompressionFieldMetadata)))
         .addElement(
             'S',
-            withChannel(
-                "stabilisation",
+            GTStructureChannels.EOH_STABILISATION.use(
                 ofBlocksTiered(
                     (block, meta) -> block == TTCasingsContainer.StabilisationFieldGenerators ? meta : null,
                     ImmutableList.of(
@@ -757,8 +755,7 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements IConstructable,
                 .buildAndChain(TTCasingsContainer.sBlockCasingsBA0, 12))
         .addElement(
             'E',
-            withChannel(
-                "time dilation",
+            GTStructureChannels.EOH_DILATION.use(
                 ofBlocksTiered(
                     (block, meta) -> block == TTCasingsContainer.TimeAccelerationFieldGenerator ? meta : null,
                     ImmutableList.of(
@@ -1132,6 +1129,9 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements IConstructable,
             .addStructureInfo("Requires " + EnumChatFormatting.GOLD + 1 + EnumChatFormatting.GRAY + " ME output hatch.")
             .addStructureInfo("Requires " + EnumChatFormatting.GOLD + 1 + EnumChatFormatting.GRAY + " input bus.")
             .addStructureInfo("Requires " + EnumChatFormatting.GOLD + 1 + EnumChatFormatting.GRAY + " ME output bus.")
+            .addSubChannelUsage(GTStructureChannels.EOH_STABILISATION)
+            .addSubChannelUsage(GTStructureChannels.EOH_DILATION)
+            .addSubChannelUsage(GTStructureChannels.EOH_COMPRESSION)
             .toolTipFinisher(EnumChatFormatting.GOLD, 87, GTValues.AuthorColen);
         return tt;
     }
