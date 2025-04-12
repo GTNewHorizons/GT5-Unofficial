@@ -224,11 +224,6 @@ public abstract class MetaTileEntity extends CommonMetaTileEntity implements ICr
     public boolean onSolderingToolRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
         float aX, float aY, float aZ, ItemStack aTool) {
 
-        // glue
-        if (onSolderingToolRightClick(side, wrenchingSide, aPlayer, aX, aY, aZ)) {
-            return true;
-        }
-
         if (!aPlayer.isSneaking()) return false;
         final ForgeDirection oppositeSide = wrenchingSide.getOpposite();
         TileEntity tTileEntity = getBaseMetaTileEntity().getTileEntityAtSide(wrenchingSide);
@@ -238,12 +233,6 @@ public abstract class MetaTileEntity extends CommonMetaTileEntity implements ICr
             return gtTE.getMetaTileEntity()
                 .onSolderingToolRightClick(wrenchingSide, oppositeSide, aPlayer, aX, aY, aZ, aTool);
         }
-        return false;
-    }
-
-    @Deprecated
-    public boolean onSolderingToolRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
-        float aX, float aY, float aZ) {
         return false;
     }
 
