@@ -23,7 +23,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.function.LongConsumer;
+import java.util.stream.Collector;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -1036,35 +1038,17 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         if (result.wasSuccessful()) {
             return result;
         }
+        List<Byte> hatchColors = Stream.concat(
+            mInputBusses.stream().map(bus -> bus.getBaseMetaTileEntity().getColorization()),
+            mInputHatches.stream().map(hatch -> hatch.getBaseMetaTileEntity().getColorization())
+        ).distinct().collect(Collectors.toList());
 
-        processingLogic.setInputFluids(getStoredFluids());
+        boolean doColorChecking = hatchColors.size() > 1;
+        for(byte color : hatchColors) {
+            processingLogic.setInputFluids(getStoredFluidsForColor(Optional.of(color)));
 
-        if (isInputSeparationEnabled()) {
-            if (mInputBusses.isEmpty()) {
-                CheckRecipeResult foundResult = processingLogic.process();
-                if (foundResult.wasSuccessful()) {
-                    return foundResult;
-                }
-                if (foundResult != CheckRecipeResultRegistry.NO_RECIPE) {
-                    // Recipe failed in interesting way, so remember that and continue searching
-                    result = foundResult;
-                }
-            } else {
-                for (MTEHatchInputBus bus : mInputBusses) {
-                    if (bus instanceof MTEHatchCraftingInputME) {
-                        continue;
-                    }
-                    List<ItemStack> inputItems = new ArrayList<>();
-                    for (int i = bus.getSizeInventory() - 1; i >= 0; i--) {
-                        ItemStack stored = bus.getStackInSlot(i);
-                        if (stored != null) {
-                            inputItems.add(stored);
-                        }
-                    }
-                    if (canUseControllerSlotForRecipe() && getControllerSlot() != null) {
-                        inputItems.add(getControllerSlot());
-                    }
-                    processingLogic.setInputItems(inputItems);
+            if (isInputSeparationEnabled()) {
+                if (mInputBusses.isEmpty()) {
                     CheckRecipeResult foundResult = processingLogic.process();
                     if (foundResult.wasSuccessful()) {
                         return foundResult;
@@ -1073,21 +1057,47 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
                         // Recipe failed in interesting way, so remember that and continue searching
                         result = foundResult;
                     }
+                } else {
+                    for (MTEHatchInputBus bus : mInputBusses) {
+                        if (bus instanceof MTEHatchCraftingInputME) {
+                            continue;
+                        }
+                        if (doColorChecking && color != -1 && bus.getBaseMetaTileEntity().getColorization() != color) continue;
+                        List<ItemStack> inputItems = new ArrayList<>();
+                        for (int i = bus.getSizeInventory() - 1; i >= 0; i--) {
+                            ItemStack stored = bus.getStackInSlot(i);
+                            if (stored != null) {
+                                inputItems.add(stored);
+                            }
+                        }
+                        if (canUseControllerSlotForRecipe() && getControllerSlot() != null) {
+                            inputItems.add(getControllerSlot());
+                        }
+                        processingLogic.setInputItems(inputItems);
+                        CheckRecipeResult foundResult = processingLogic.process();
+                        if (foundResult.wasSuccessful()) {
+                            return foundResult;
+                        }
+                        if (foundResult != CheckRecipeResultRegistry.NO_RECIPE) {
+                            // Recipe failed in interesting way, so remember that and continue searching
+                            result = foundResult;
+                        }
+                    }
                 }
-            }
-        } else {
-            List<ItemStack> inputItems = getStoredInputs();
-            if (canUseControllerSlotForRecipe() && getControllerSlot() != null) {
-                inputItems.add(getControllerSlot());
-            }
-            processingLogic.setInputItems(inputItems);
-            CheckRecipeResult foundResult = processingLogic.process();
-            if (foundResult.wasSuccessful()) {
-                return foundResult;
-            }
-            if (foundResult != CheckRecipeResultRegistry.NO_RECIPE) {
-                // Recipe failed in interesting way, so remember that
-                result = foundResult;
+            } else {
+                List<ItemStack> inputItems = getStoredInputsForColor(Optional.of(color));
+                if (canUseControllerSlotForRecipe() && getControllerSlot() != null) {
+                    inputItems.add(getControllerSlot());
+                }
+                processingLogic.setInputItems(inputItems);
+                CheckRecipeResult foundResult = processingLogic.process();
+                if (foundResult.wasSuccessful()) {
+                    return foundResult;
+                }
+                if (foundResult != CheckRecipeResultRegistry.NO_RECIPE) {
+                    // Recipe failed in interesting way, so remember that
+                    result = foundResult;
+                }
             }
         }
         return result;
@@ -1577,9 +1587,15 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
     }
 
     public ArrayList<FluidStack> getStoredFluids() {
+        return getStoredFluidsForColor(Optional.empty());
+    }
+
+    public ArrayList<FluidStack> getStoredFluidsForColor(Optional<Byte> color){
         ArrayList<FluidStack> rList = new ArrayList<>();
         Map<Fluid, FluidStack> inputsFromME = new HashMap<>();
         for (MTEHatchInput tHatch : validMTEList(mInputHatches)) {
+            byte hatchColor = tHatch.getBaseMetaTileEntity().getColorization();
+            if(color.isPresent() && hatchColor != -1 && hatchColor != color.get()) continue;
             setHatchRecipeMap(tHatch);
             if (tHatch instanceof MTEHatchMultiInput multiInputHatch) {
                 for (FluidStack tFluid : multiInputHatch.getStoredFluid()) {
@@ -1646,12 +1662,18 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
     }
 
     public ArrayList<ItemStack> getStoredInputs() {
+        return getStoredInputsForColor(Optional.empty());
+    }
+
+    public ArrayList<ItemStack> getStoredInputsForColor(Optional<Byte> color){
         ArrayList<ItemStack> rList = new ArrayList<>();
         Map<GTUtility.ItemId, ItemStack> inputsFromME = new HashMap<>();
         for (MTEHatchInputBus tHatch : validMTEList(mInputBusses)) {
             if (tHatch instanceof MTEHatchCraftingInputME) {
                 continue;
             }
+            byte busColor = tHatch.getBaseMetaTileEntity().getColorization();
+            if (color.isPresent() && busColor != -1 && busColor != color.get()) continue;
             tHatch.mRecipeMap = getRecipeMap();
             IGregTechTileEntity tileEntity = tHatch.getBaseMetaTileEntity();
             boolean isMEBus = tHatch instanceof MTEHatchInputBusME;
@@ -1675,6 +1697,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
             rList.addAll(inputsFromME.values());
         }
         return rList;
+
     }
 
     /**
