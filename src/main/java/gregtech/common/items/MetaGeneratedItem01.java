@@ -4732,7 +4732,6 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
             || data.mPrefix == OrePrefixes.crushed
             || data.mPrefix == OrePrefixes.crushedPurified
             || data.mPrefix == OrePrefixes.crushedCentrifuged
-            || data.mPrefix == OrePrefixes.gem
-            || data.mPrefix == OrePrefixes.block;
+            || data.mPrefix == OrePrefixes.gem;
     }
 }
