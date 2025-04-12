@@ -197,10 +197,6 @@ public abstract class MetaTileEntity extends CommonMetaTileEntity implements ICr
     public boolean onWrenchRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer entityPlayer,
         float aX, float aY, float aZ, ItemStack aTool) {
 
-        // glue
-        if (onWrenchRightClick(side, wrenchingSide, entityPlayer, aX, aY, aZ)) {
-            return true;
-        }
         if (getBaseMetaTileEntity().isValidFacing(wrenchingSide)) {
             getBaseMetaTileEntity().setFrontFacing(wrenchingSide);
             return true;
@@ -257,12 +253,6 @@ public abstract class MetaTileEntity extends CommonMetaTileEntity implements ICr
     @Deprecated
     public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
         float aX, float aY, float aZ) {
-        return false;
-    }
-
-    @Deprecated
-    public boolean onWrenchRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer, float aX,
-        float aY, float aZ) {
         return false;
     }
 
