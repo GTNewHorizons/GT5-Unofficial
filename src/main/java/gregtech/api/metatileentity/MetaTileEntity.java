@@ -191,9 +191,7 @@ public abstract class MetaTileEntity extends CommonMetaTileEntity implements ICr
 
     @Override
     public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
-        ItemStack aTool) {
-        onScrewdriverRightClick(side, aPlayer, aX, aY, aZ);
-    }
+        ItemStack aTool) {}
 
     @Override
     public boolean onWrenchRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer entityPlayer,
@@ -266,11 +264,6 @@ public abstract class MetaTileEntity extends CommonMetaTileEntity implements ICr
     public boolean onWrenchRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer, float aX,
         float aY, float aZ) {
         return false;
-    }
-
-    @Deprecated
-    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-
     }
 
     @Override
