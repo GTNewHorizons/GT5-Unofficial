@@ -242,8 +242,9 @@ public class MTEDroneCentre extends MTEExtendedPowerMultiBlockBase<MTEDroneCentr
     }
 
     @Override
-    public final void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        super.onScrewdriverRightClick(side, aPlayer, aX, aY, aZ);
+    public final void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
+        ItemStack aTool) {
+        super.onScrewdriverRightClick(side, aPlayer, aX, aY, aZ, aTool);
         useRender = !useRender;
         aPlayer.addChatComponentMessage(
             new ChatComponentTranslation(

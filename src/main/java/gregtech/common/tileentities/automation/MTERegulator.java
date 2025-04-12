@@ -95,7 +95,8 @@ public class MTERegulator extends MTEBuffer {
     }
 
     @Override
-    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
+        ItemStack aTool) {
         // Regulation per Screwdriver is overridden by GUI regulation.
     }
 

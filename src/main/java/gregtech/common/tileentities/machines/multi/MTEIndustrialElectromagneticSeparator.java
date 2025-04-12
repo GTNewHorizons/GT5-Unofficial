@@ -332,7 +332,8 @@ public class MTEIndustrialElectromagneticSeparator
     }
 
     @Override
-    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
+        ItemStack aTool) {
         setMachineMode(nextMachineMode());
         PlayerUtils.messagePlayer(
             aPlayer,

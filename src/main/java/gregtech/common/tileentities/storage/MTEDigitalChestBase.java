@@ -213,7 +213,8 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
     }
 
     @Override
-    public final void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+    public final void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
+        ItemStack aTool) {
         mVoidOverflow = !mVoidOverflow;
         GTUtility.sendChatToPlayer(
             aPlayer,

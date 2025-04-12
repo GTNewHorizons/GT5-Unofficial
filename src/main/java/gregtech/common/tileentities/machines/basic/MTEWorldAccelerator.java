@@ -294,7 +294,8 @@ public class MTEWorldAccelerator extends MTETieredMachineBlock {
     }
 
     @Override
-    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer pPlayer, float pX, float pY, float pZ) {
+    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer pPlayer, float pX, float pY, float pZ,
+        ItemStack aTool) {
         if (pPlayer.isSneaking()) {
             if (mMode == 0) {
                 incRadiusTierOverride();

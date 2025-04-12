@@ -342,7 +342,8 @@ public class MTEHatchTurbine extends MTEHatch {
     }
 
     @Override
-    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
+        ItemStack aTool) {
         if (!aPlayer.isSneaking()) {
             PlayerUtils.messagePlayer(aPlayer, "Using Animations? " + usingAnimations());
             PlayerUtils.messagePlayer(aPlayer, "Has Controller? " + this.mHasController);

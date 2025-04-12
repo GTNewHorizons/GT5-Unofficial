@@ -886,7 +886,8 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
     }
 
     @Override
-    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
+        ItemStack aTool) {
         if (side == getBaseMetaTileEntity().getFrontFacing() || side == mMainFacing) {
             if (aPlayer.isSneaking()) {
                 mDisableFilter = !mDisableFilter;

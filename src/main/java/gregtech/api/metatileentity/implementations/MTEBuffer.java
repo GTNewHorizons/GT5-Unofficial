@@ -288,7 +288,8 @@ public abstract class MTEBuffer extends MTETieredMachineBlock implements IAddUIW
     }
 
     @Override
-    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
+        ItemStack aTool) {
         if (side == getBaseMetaTileEntity().getBackFacing()) {
 
             mTargetStackSize = (byte) ((mTargetStackSize + (aPlayer.isSneaking() ? -1 : 1)) % 65);

@@ -122,14 +122,15 @@ public class MTEPollutionCreator extends MTETieredMachineBlock {
     }
 
     @Override
-    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
+        ItemStack aTool) {
         if (pollutionMultiplier > 99) {
             pollutionMultiplier = 1;
         } else {
             pollutionMultiplier++;
         }
         PlayerUtils.messagePlayer(aPlayer, "Pollution Mutliplier is now " + pollutionMultiplier + ".");
-        super.onScrewdriverRightClick(side, aPlayer, aX, aY, aZ);
+        super.onScrewdriverRightClick(side, aPlayer, aX, aY, aZ, aTool);
     }
 
     @Override

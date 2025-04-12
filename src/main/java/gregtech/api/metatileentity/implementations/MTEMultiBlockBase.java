@@ -233,7 +233,8 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
     }
 
     @Override
-    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
+        ItemStack aTool) {
         if (supportsSingleRecipeLocking()) {
             mLockedToSingleRecipe = !mLockedToSingleRecipe;
             if (mLockedToSingleRecipe) {
