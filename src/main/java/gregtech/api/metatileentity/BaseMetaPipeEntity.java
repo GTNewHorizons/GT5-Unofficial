@@ -63,7 +63,7 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
     public byte mConnections = IConnectable.NO_CONNECTION;
     protected MetaPipeEntity mMetaTileEntity;
     private boolean mWorkUpdate = false, mWorks = true;
-    private byte mColor = 0, oColor = 0, oStrongRedstone = 0, oRedstoneData = 63, oTextureData = 0, oUpdateData = 0;
+    private byte mColor = 0, oColor = 0, oStrongRedstone = 0, oRedstoneData = 63, oConnections = 0, oUpdateData = 0;
     private int oX = 0, oY = 0, oZ = 0;
     protected Node node;
     protected NodePath nodePath;
@@ -234,16 +234,29 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
                 }
 
                 if (mTickTimer > 10) {
-                    if (mConnections != oTextureData) sendBlockEvent((byte) 0, oTextureData = mConnections);
-                    byte tData = mMetaTileEntity.getUpdateData();
-                    if (tData != oUpdateData) sendBlockEvent((byte) 1, oUpdateData = tData);
-                    if (mColor != oColor) sendBlockEvent((byte) 2, oColor = mColor);
-                    tData = (byte) (((mSidedRedstone[0] > 0) ? 1 : 0) | ((mSidedRedstone[1] > 0) ? 2 : 0)
-                        | ((mSidedRedstone[2] > 0) ? 4 : 0)
-                        | ((mSidedRedstone[3] > 0) ? 8 : 0)
-                        | ((mSidedRedstone[4] > 0) ? 16 : 0)
-                        | ((mSidedRedstone[5] > 0) ? 32 : 0));
-                    if (tData != oRedstoneData) sendBlockEvent((byte) 3, oRedstoneData = tData);
+                    if (mConnections != oConnections) {
+                        oConnections = mConnections;
+                        sendBlockEvent(GregTechTileClientEvents.CHANGE_COMMON_DATA, oConnections);
+                    }
+
+                    byte updateData = mMetaTileEntity.getUpdateData();
+
+                    if (updateData != oUpdateData) {
+                        oUpdateData = updateData;
+                        sendBlockEvent(GregTechTileClientEvents.CHANGE_CUSTOM_DATA, oUpdateData);
+                    }
+
+                    if (mColor != oColor) {
+                        oColor = mColor;
+                        sendBlockEvent(GregTechTileClientEvents.CHANGE_COLOR, oColor);
+                    }
+
+                    byte redstone = getSidedRedstoneMask();
+
+                    if (redstone != oRedstoneData) {
+                        oRedstoneData = redstone;
+                        sendBlockEvent(GregTechTileClientEvents.CHANGE_REDSTONE_OUTPUT, oRedstoneData);
+                    }
                 }
 
                 if (mNeedsBlockUpdate) {
@@ -269,6 +282,11 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
 
     private void sendClientData() {
         if (mSendClientData) {
+            oConnections = mConnections;
+            oUpdateData = hasValidMetaTileEntity() ? mMetaTileEntity.getUpdateData() : 0;
+            oRedstoneData = getSidedRedstoneMask();
+            oColor = mColor;
+
             if (mMetaTileEntity instanceof ITemporaryTE) {
                 NW.sendPacketToAllPlayersInRange(
                     worldObj,
@@ -283,14 +301,11 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
                         getCoverAtSide(ForgeDirection.SOUTH).getCoverID(),
                         getCoverAtSide(ForgeDirection.WEST).getCoverID(),
                         getCoverAtSide(ForgeDirection.EAST).getCoverID(),
-                        oTextureData = mConnections,
-                        oUpdateData = hasValidMetaTileEntity() ? mMetaTileEntity.getUpdateData() : 0,
-                        oRedstoneData = (byte) (((mSidedRedstone[0] > 0) ? 1 : 0) | ((mSidedRedstone[1] > 0) ? 2 : 0)
-                            | ((mSidedRedstone[2] > 0) ? 4 : 0)
-                            | ((mSidedRedstone[3] > 0) ? 8 : 0)
-                            | ((mSidedRedstone[4] > 0) ? 16 : 0)
-                            | ((mSidedRedstone[5] > 0) ? 32 : 0)),
-                        oColor = mColor),
+                        oConnections,
+                        oUpdateData,
+                        oRedstoneData,
+                        oColor,
+                        GTPacketCreateTE.TYPE_META_PIPE),
                     xCoord,
                     zCoord);
             } else {
@@ -307,24 +322,21 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
                         getCoverAtSide(ForgeDirection.SOUTH).getCoverID(),
                         getCoverAtSide(ForgeDirection.WEST).getCoverID(),
                         getCoverAtSide(ForgeDirection.EAST).getCoverID(),
-                        oTextureData = mConnections,
-                        oUpdateData = hasValidMetaTileEntity() ? mMetaTileEntity.getUpdateData() : 0,
-                        oRedstoneData = (byte) (((mSidedRedstone[0] > 0) ? 1 : 0) | ((mSidedRedstone[1] > 0) ? 2 : 0)
-                            | ((mSidedRedstone[2] > 0) ? 4 : 0)
-                            | ((mSidedRedstone[3] > 0) ? 8 : 0)
-                            | ((mSidedRedstone[4] > 0) ? 16 : 0)
-                            | ((mSidedRedstone[5] > 0) ? 32 : 0)),
-                        oColor = mColor),
+                        oConnections,
+                        oUpdateData,
+                        oRedstoneData,
+                        oColor),
                     xCoord,
                     zCoord);
                 mSendClientData = false;
             }
         }
+
         sendCoverDataIfNeeded();
     }
 
     public final void receiveMetaTileEntityData(short aID, int aCover0, int aCover1, int aCover2, int aCover3,
-        int aCover4, int aCover5, byte aTextureData, byte aUpdateData, byte aRedstoneData, byte aColorData) {
+        int aCover4, int aCover5, byte aConnections, byte aUpdateData, byte aRedstoneData, byte aColorData) {
         issueTextureUpdate();
         if (aID > 0 && mID != aID) {
             mID = aID;
@@ -333,7 +345,7 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
 
         CoverRegistry.cover(this, aCover0, aCover1, aCover2, aCover3, aCover4, aCover5);
 
-        receiveClientEvent(GregTechTileClientEvents.CHANGE_COMMON_DATA, aTextureData);
+        receiveClientEvent(GregTechTileClientEvents.CHANGE_COMMON_DATA, aConnections);
         receiveClientEvent(GregTechTileClientEvents.CHANGE_CUSTOM_DATA, aUpdateData);
         receiveClientEvent(GregTechTileClientEvents.CHANGE_COLOR, aColorData);
         receiveClientEvent(GregTechTileClientEvents.CHANGE_REDSTONE_OUTPUT, aRedstoneData);

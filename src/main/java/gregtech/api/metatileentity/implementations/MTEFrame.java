@@ -14,6 +14,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaPipeEntity;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTLanguageManager;
+import gregtech.api.util.GTUtility;
 
 public class MTEFrame extends MetaPipeEntity implements ITemporaryTE {
 
@@ -35,7 +36,7 @@ public class MTEFrame extends MetaPipeEntity implements ITemporaryTE {
 
     @Override
     public byte getTileEntityBaseType() {
-        return (byte) (mMaterial == null ? 4 : (byte) (4) + Math.max(0, Math.min(3, mMaterial.mToolQuality)));
+        return (byte) (4 + (mMaterial == null ? 0 : GTUtility.clamp(mMaterial.mToolQuality, 0, 3)));
     }
 
     @Override
