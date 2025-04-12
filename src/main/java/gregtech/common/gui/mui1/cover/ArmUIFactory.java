@@ -1,5 +1,7 @@
 package gregtech.common.gui.mui1.cover;
 
+import static net.minecraft.util.StatCollector.translateToLocal;
+
 import java.text.FieldPosition;
 
 import net.minecraft.inventory.IInventory;
@@ -62,7 +64,7 @@ public class ArmUIFactory extends CoverLegacyDataUIFactory {
                     }
                 },
                 widget -> widget.setStaticTexture(GTUITextures.OVERLAY_BUTTON_EXPORT)
-                    .addTooltip(GTUtility.getDescLoc("o"))
+                    .addTooltip(translateToLocal("gt.interact.desc.o"))
                     .setPos(spaceX * 0, spaceY * 0))
                 .addFollower(
                     CoverDataFollowerToggleButtonWidget.ofDisableable(),
@@ -77,7 +79,7 @@ public class ArmUIFactory extends CoverLegacyDataUIFactory {
                         }
                     },
                     widget -> widget.setStaticTexture(GTUITextures.OVERLAY_BUTTON_IMPORT)
-                        .addTooltip(GTUtility.getDescLoc("i"))
+                        .addTooltip(translateToLocal("gt.interact.desc.i"))
                         .setPos(spaceX * 1, spaceY * 0))
                 .addFollower(
                     new CoverDataFollowerNumericWidget<>(),
@@ -132,8 +134,8 @@ public class ArmUIFactory extends CoverLegacyDataUIFactory {
                 new TextWidget()
                     .setStringSupplier(
                         getCoverString(
-                            c -> (c.getVariable() & CoverArm.EXPORT_MASK) > 0 ? GTUtility.getDescLoc("o")
-                                : GTUtility.getDescLoc("i")))
+                            c -> (c.getVariable() & CoverArm.EXPORT_MASK) > 0 ? translateToLocal("gt.interact.desc.o")
+                                : translateToLocal("gt.interact.desc.i")))
                     .setDefaultColor(COLOR_TEXT_GRAY.get())
                     .setPos(startX + spaceX * 3, 4 + startY + spaceY * 0))
             .widget(

@@ -3026,7 +3026,8 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
             .widget(new FakeSyncWidget.BooleanSyncer(() -> mCrowbar, val -> mCrowbar = val));
         screenElements
             .widget(
-                new TextWidget(GTUtility.getDescLoc("mb.incomplete")).setTextAlignment(Alignment.CenterLeft)
+                new TextWidget(StatCollector.translateToLocal("gt.interact.desc.mb.incomplete"))
+                    .setTextAlignment(Alignment.CenterLeft)
                     .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setEnabled(widget -> !mMachine))
             .widget(new FakeSyncWidget.BooleanSyncer(() -> mMachine, val -> mMachine = val));
@@ -3041,23 +3042,28 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
                 .setDefaultColor(COLOR_TEXT_WHITE.get())
                 .setEnabled(widget -> (getErrorDisplayID() & 256) != 0));
 
-        screenElements.widget(
-            new TextWidget(GTUtility.getDescLoc("mb.idle.1")).setDefaultColor(COLOR_TEXT_WHITE.get())
-                .setEnabled(widget -> getErrorDisplayID() == 0 && !getBaseMetaTileEntity().isActive()))
+        screenElements
+            .widget(
+                new TextWidget(StatCollector.translateToLocal("gt.interact.desc.mb.idle.1"))
+                    .setDefaultColor(COLOR_TEXT_WHITE.get())
+                    .setEnabled(widget -> getErrorDisplayID() == 0 && !getBaseMetaTileEntity().isActive()))
             .widget(new FakeSyncWidget.IntegerSyncer(this::getErrorDisplayID, this::setErrorDisplayID))
             .widget(
                 new FakeSyncWidget.BooleanSyncer(
                     () -> getBaseMetaTileEntity().isActive(),
                     val -> getBaseMetaTileEntity().setActive(val)));
         screenElements.widget(
-            new TextWidget(GTUtility.getDescLoc("mb.idle.2")).setDefaultColor(COLOR_TEXT_WHITE.get())
+            new TextWidget(StatCollector.translateToLocal("gt.interact.desc.mb.idle.2"))
+                .setDefaultColor(COLOR_TEXT_WHITE.get())
                 .setEnabled(widget -> getErrorDisplayID() == 0 && !getBaseMetaTileEntity().isActive()));
         screenElements.widget(
-            new TextWidget(GTUtility.getDescLoc("mb.idle.3")).setDefaultColor(COLOR_TEXT_WHITE.get())
+            new TextWidget(StatCollector.translateToLocal("gt.interact.desc.mb.idle.3"))
+                .setDefaultColor(COLOR_TEXT_WHITE.get())
                 .setEnabled(widget -> getErrorDisplayID() == 0 && !getBaseMetaTileEntity().isActive()));
 
         screenElements.widget(
-            new TextWidget(GTUtility.getDescLoc("mb.running")).setDefaultColor(COLOR_TEXT_WHITE.get())
+            new TextWidget(StatCollector.translateToLocal("gt.interact.desc.mb.running"))
+                .setDefaultColor(COLOR_TEXT_WHITE.get())
                 .setEnabled(widget -> getErrorDisplayID() == 0 && getBaseMetaTileEntity().isActive()));
 
         screenElements.widget(TextWidget.dynamicString(() -> {

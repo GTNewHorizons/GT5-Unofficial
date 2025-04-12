@@ -297,7 +297,8 @@ public abstract class MTEDigitalTankBase extends MTEBasicTank
             mAllowInputFromOutputSide = !mAllowInputFromOutputSide;
             GTUtility.sendChatToPlayer(
                 aPlayer,
-                mAllowInputFromOutputSide ? GTUtility.getDescLoc("i2o_on") : GTUtility.getDescLoc("i2o_off"));
+                mAllowInputFromOutputSide ? StatCollector.translateToLocal("gt.interact.desc.i2o_on")
+                    : StatCollector.translateToLocal("gt.interact.desc.i2o_off"));
         }
     }
 
@@ -622,9 +623,13 @@ public abstract class MTEDigitalTankBase extends MTEBasicTank
             .widget(new CycleButtonWidget().setToggle(() -> mAllowInputFromOutputSide, val -> {
                 mAllowInputFromOutputSide = val;
                 if (!mAllowInputFromOutputSide) {
-                    GTUtility.sendChatToPlayer(buildContext.getPlayer(), GTUtility.getDescLoc("i2o_off"));
+                    GTUtility.sendChatToPlayer(
+                        buildContext.getPlayer(),
+                        StatCollector.translateToLocal("gt.interact.desc.i2o_off"));
                 } else {
-                    GTUtility.sendChatToPlayer(buildContext.getPlayer(), GTUtility.getDescLoc("i2o_on"));
+                    GTUtility.sendChatToPlayer(
+                        buildContext.getPlayer(),
+                        StatCollector.translateToLocal("gt.interact.desc.i2o_on"));
                 }
             })
                 .setVariableBackground(GTUITextures.BUTTON_STANDARD_TOGGLE)

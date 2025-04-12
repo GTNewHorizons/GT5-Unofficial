@@ -2,6 +2,8 @@ package gregtech.common.gui.mui1.cover;
 
 import static gregtech.common.covers.CoverDoesWork.*;
 
+import net.minecraft.util.StatCollector;
+
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
@@ -71,8 +73,9 @@ public class DoesWorkUIFactory extends CoverLegacyDataUIFactory {
                 TextWidget
                     .dynamicString(
                         getCoverString(
-                            c -> isFlagSet(c.getVariable(), FLAG_INVERTED) ? GTUtility.getDescLoc("inverted")
-                                : GTUtility.getDescLoc("normal")))
+                            c -> isFlagSet(c.getVariable(), FLAG_INVERTED)
+                                ? StatCollector.translateToLocal("gt.interact.desc.inverted")
+                                : StatCollector.translateToLocal("gt.interact.desc.normal")))
                     .setSynced(false)
                     .setDefaultColor(COLOR_TEXT_GRAY.get())
                     .setPos(startX + spaceX * 3, 4 + startY + spaceY * 1));

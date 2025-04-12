@@ -18,7 +18,6 @@ import gregtech.api.GregTechAPI;
 import gregtech.api.covers.CoverContext;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
-import gregtech.api.util.GTUtility;
 import gregtech.common.covers.Cover;
 import io.netty.buffer.ByteBuf;
 
@@ -200,7 +199,8 @@ public abstract class CoverAdvancedWirelessRedstoneBase extends Cover {
         return StatCollector.translateToLocalFormatted(
             "gt.interact.desc.freq_perm",
             frequency,
-            uuid == null ? GTUtility.getDescLoc("public") : GTUtility.getDescLoc("private"));
+            uuid == null ? StatCollector.translateToLocal("gt.interact.desc.public")
+                : StatCollector.translateToLocal("gt.interact.desc.private"));
     }
 
     @Override

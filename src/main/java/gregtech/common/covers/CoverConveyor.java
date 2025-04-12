@@ -1,8 +1,8 @@
 package gregtech.common.covers;
 
-import static gregtech.api.util.GTUtility.getDescLoc;
 import static gregtech.api.util.GTUtility.moveMultipleItemStacks;
 import static gregtech.api.util.GTUtility.sendChatToPlayer;
+import static net.minecraft.util.StatCollector.translateToLocal;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
@@ -72,18 +72,18 @@ public class CoverConveyor extends CoverLegacyData {
             coverData = 11;
         }
         switch (coverData) {
-            case 0 -> sendChatToPlayer(aPlayer, getDescLoc("o"));
-            case 1 -> sendChatToPlayer(aPlayer, getDescLoc("i"));
-            case 2 -> sendChatToPlayer(aPlayer, getDescLoc("o_c"));
-            case 3 -> sendChatToPlayer(aPlayer, getDescLoc("i_c"));
-            case 4 -> sendChatToPlayer(aPlayer, getDescLoc("o_c_i"));
-            case 5 -> sendChatToPlayer(aPlayer, getDescLoc("i_c_i"));
-            case 6 -> sendChatToPlayer(aPlayer, getDescLoc("i2o"));
-            case 7 -> sendChatToPlayer(aPlayer, getDescLoc("o2i"));
-            case 8 -> sendChatToPlayer(aPlayer, getDescLoc("i2o_c"));
-            case 9 -> sendChatToPlayer(aPlayer, getDescLoc("o2i_c"));
-            case 10 -> sendChatToPlayer(aPlayer, getDescLoc("i2o_c_i"));
-            case 11 -> sendChatToPlayer(aPlayer, getDescLoc("o2i_c_i"));
+            case 0 -> sendChatToPlayer(aPlayer, translateToLocal("gt.interact.desc.o"));
+            case 1 -> sendChatToPlayer(aPlayer, translateToLocal("gt.interact.desc.i"));
+            case 2 -> sendChatToPlayer(aPlayer, translateToLocal("gt.interact.desc.o_c"));
+            case 3 -> sendChatToPlayer(aPlayer, translateToLocal("gt.interact.desc.i_c"));
+            case 4 -> sendChatToPlayer(aPlayer, translateToLocal("gt.interact.desc.o_c_i"));
+            case 5 -> sendChatToPlayer(aPlayer, translateToLocal("gt.interact.desc.i_c_i"));
+            case 6 -> sendChatToPlayer(aPlayer, translateToLocal("gt.interact.desc.i2o"));
+            case 7 -> sendChatToPlayer(aPlayer, translateToLocal("gt.interact.desc.o2i"));
+            case 8 -> sendChatToPlayer(aPlayer, translateToLocal("gt.interact.desc.i2o_c"));
+            case 9 -> sendChatToPlayer(aPlayer, translateToLocal("gt.interact.desc.o2i_c"));
+            case 10 -> sendChatToPlayer(aPlayer, translateToLocal("gt.interact.desc.i2o_c_i"));
+            case 11 -> sendChatToPlayer(aPlayer, translateToLocal("gt.interact.desc.o2i_c_i"));
         }
     }
 
