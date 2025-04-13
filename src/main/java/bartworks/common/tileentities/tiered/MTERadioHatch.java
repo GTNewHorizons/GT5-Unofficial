@@ -16,6 +16,7 @@ package bartworks.common.tileentities.tiered;
 import static bartworks.common.loaders.RadioHatchMaterialLoader.getRadioHatchMaterialFromInput;
 import static bartworks.common.loaders.RadioHatchMaterialLoader.getRadioHatchMaterialList;
 import static gregtech.api.enums.GTValues.ticksBetweenSounds;
+import static gregtech.common.modularui2.util.CommonGuiComponents.gridTemplate1by1;
 
 import java.util.Collections;
 
@@ -27,6 +28,19 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import com.cleanroommc.modularui.api.IPanelHandler;
+import com.cleanroommc.modularui.api.drawable.IDrawable;
+import com.cleanroommc.modularui.api.drawable.IKey;
+import com.cleanroommc.modularui.factory.PosGuiData;
+import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.value.sync.IntSyncValue;
+import com.cleanroommc.modularui.value.sync.LongSyncValue;
+import com.cleanroommc.modularui.value.sync.PanelSyncManager;
+import com.cleanroommc.modularui.value.sync.StringSyncValue;
+import com.cleanroommc.modularui.widgets.ItemSlot;
+import com.cleanroommc.modularui.widgets.ProgressWidget;
+import com.cleanroommc.modularui.widgets.slot.ModularSlot;
+import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
 import com.gtnewhorizons.modularui.api.ModularUITextures;
 import com.gtnewhorizons.modularui.api.drawable.ItemDrawable;
 import com.gtnewhorizons.modularui.api.drawable.shapes.Rectangle;
@@ -40,7 +54,6 @@ import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
 import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
 import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
 import com.gtnewhorizons.modularui.common.widget.ProgressBar;
-import com.gtnewhorizons.modularui.common.widget.ProgressBar.Direction;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 import com.gtnewhorizons.modularui.common.widget.textfield.NumericWidget;
 
@@ -62,6 +75,8 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.RecipeMapWorkable;
 import gregtech.api.metatileentity.BaseMetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatch;
+import gregtech.api.modularui2.GTGuiTextures;
+import gregtech.api.modularui2.GTGuis;
 import gregtech.api.objects.ItemData;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.render.TextureFactory;
@@ -341,8 +356,140 @@ public class MTERadioHatch extends MTEHatch implements RecipeMapWorkable, IAddGr
     private static final int RADIATION_SHUTTER_WINDOW_ID = 999;
 
     @Override
+    protected boolean useMui2() {
+        return true;
+    }
+
+    @Override
+    public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager) {
+        IPanelHandler popupPanel = syncManager
+            .panel("popup_panel", (manager, handler) -> createShutterPanel(manager), true);
+        syncManager.registerSlotGroup("item_inv", 1);
+        syncManager.syncValue("mass", new IntSyncValue(() -> mass, value -> mass = (byte) value));
+        syncManager.syncValue("sievert", new IntSyncValue(() -> sievert, value -> sievert = value));
+        syncManager.syncValue("color0", new IntSyncValue(() -> colorForGUI[0], c -> colorForGUI[0] = (short) c));
+        syncManager.syncValue("color1", new IntSyncValue(() -> colorForGUI[1], c -> colorForGUI[1] = (short) c));
+        syncManager.syncValue("color2", new IntSyncValue(() -> colorForGUI[2], c -> colorForGUI[2] = (short) c));
+        syncManager.syncValue("decayTime", new LongSyncValue(() -> decayTime, time -> decayTime = time));
+        syncManager.syncValue("timer", new LongSyncValue(() -> timer, time -> timer = time));
+
+        return GTGuis.mteTemplatePanelBuilder(this, data, syncManager)
+            .doesAddGregTechLogo(false)
+            .build()
+            .child(
+                gridTemplate1by1(
+                    index -> new ItemSlot().slot(new ModularSlot(inventoryHandler, index).slotGroup("item_inv"))))
+            .child(
+                GTGuiTextures.PICTURE_SIEVERT_CONTAINER.asWidget()
+                    .pos(61, 9)
+                    .size(56, 24))
+            .child(
+                new ProgressWidget().progress(() -> this.getSievert() / 148f)
+                    .direction(ProgressWidget.Direction.RIGHT)
+                    .texture(GTGuiTextures.PROGRESSBAR_SIEVERT, 24)
+                    .pos(65, 13)
+                    .size(48, 16))
+            .child(
+                GTGuiTextures.PICTURE_DECAY_TIME_INSIDE.asWidget()
+                    .pos(124, 18)
+                    .size(16, 48))
+            .child(new IDrawable.DrawableWidget((context, x, y, width, height, widgetTheme) -> {
+                float partialTicks = context.getPartialTicks();
+                if (MTERadioHatch.this.decayTime > 0) {
+                    int drawableHeight = MathUtils.ceilInt(
+                        48 * ((MTERadioHatch.this.decayTime - MTERadioHatch.this.timer % MTERadioHatch.this.decayTime)
+                            / (float) MTERadioHatch.this.decayTime));
+                    new Rectangle()
+                        .setColor(
+                            Color.argb(
+                                MTERadioHatch.this.colorForGUI[0],
+                                MTERadioHatch.this.colorForGUI[1],
+                                MTERadioHatch.this.colorForGUI[2],
+                                255))
+                        .draw(new Pos2d(0, 48 - drawableHeight), new Size(16, drawableHeight), partialTicks);
+                }
+            }).tooltipBuilder(
+                tooltip -> tooltip.add(
+                    StatCollector.translateToLocalFormatted(
+                        "tooltip.tile.radhatch.10.name",
+                        this.timer <= 1 ? 0 : (this.decayTime - this.timer) / 20,
+                        this.timer <= 1 ? 0 : this.decayTime / 20)))
+                .pos(124, 18)
+                .size(18, 48))
+            .child(
+                GTGuiTextures.PICTURE_DECAY_TIME_CONTAINER.asWidget()
+                    .pos(120, 14)
+                    .size(24, 56))
+            .child(
+                IKey.dynamic(() -> StatCollector.translateToLocalFormatted("BW.NEI.display.radhatch.1", this.getMass()))
+                    .alignment(com.cleanroommc.modularui.utils.Alignment.Center)
+                    .asWidget()
+                    .pos(65, 62))
+            .child(
+                IKey.dynamic(
+                    () -> StatCollector.translateToLocalFormatted("BW.NEI.display.radhatch.0", this.getSievert()))
+                    .alignment(com.cleanroommc.modularui.utils.Alignment.Center)
+                    .asWidget()
+                    .pos(60, 72))
+            .child(new com.cleanroommc.modularui.widgets.ButtonWidget<>().onMousePressed(mouseButton -> {
+                popupPanel.openPanel();
+                return popupPanel.isPanelOpen();
+            })
+                .background(GTGuiTextures.BUTTON_STANDARD)
+                .tooltip(tooltip -> tooltip.add("Radiation Shutter"))
+                .pos(153, 5)
+                .size(18, 18))
+            .child(
+                new com.cleanroommc.modularui.drawable.ItemDrawable(
+                    MetaGeneratedTool01.INSTANCE.getToolWithStats(IDMetaTool01.SCREWDRIVER.ID, 1, null, null, null))
+                        .asWidget()
+                        .pos(154, 6))
+            .child(
+                GTGuiTextures.PICTURE_BARTWORKS_LOGO_STANDARD.asWidget()
+                    .pos(10, 53)
+                    .size(47, 21))
+            .bindPlayerInventory();
+    }
+
+    private ModularPanel createShutterPanel(PanelSyncManager syncManager) {
+        ModularPanel ui = new ModularPanel("bw:radio_hatch_shutter");
+        ui.size(176, 107);
+        syncManager.syncValue("coverage", new IntSyncValue(() -> this.coverage, value -> this.coverage = (byte) value));
+
+        return ui.child(
+            IKey.str("Radiation Shutter Control")
+                .color(this.COLOR_TITLE.get())
+                .asWidget()
+                .pos(10, 9))
+            .child(
+                GTGuiTextures.PICTURE_RADIATION_SHUTTER_FRAME.asWidget()
+                    .pos(14, 27)
+                    .size(55, 54))
+            .child(
+                new ProgressWidget().progress(() -> 1 - ((double) this.coverage / 100D))
+                    .texture(
+                        GTGuiTextures.PICTURE_RADIATION_SHUTTER_EMPTY,
+                        GTGuiTextures.PICTURE_RADIATION_SHUTTER_INSIDE,
+                        50)
+                    .direction(ProgressWidget.Direction.UP)
+                    .pos(16, 29)
+                    .size(51, 50))
+            .child(
+                new TextFieldWidget().setNumbers(0, 100)
+                    .value(
+                        new StringSyncValue(
+                            () -> String.valueOf(this.coverage),
+                            value -> this.coverage = Byte.parseByte(String.valueOf(value))))
+                    .setTextColor(com.cleanroommc.modularui.utils.Color.WHITE.darker(1))
+                    .setTextAlignment(com.cleanroommc.modularui.utils.Alignment.CenterLeft)
+                    .pos(86, 27)
+                    .size(30, 12));
+
+    }
+
+    @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
-        buildContext.addSyncedWindow(RADIATION_SHUTTER_WINDOW_ID, this::createShutterWindow);
+        buildContext.addSyncedWindow(RADIATION_SHUTTER_WINDOW_ID, this::createMui1ShutterWindow);
 
         this.getBaseMetaTileEntity()
             .add1by1Slot(builder);
@@ -352,7 +499,7 @@ public class MTERadioHatch extends MTEHatch implements RecipeMapWorkable, IAddGr
                 .setSize(56, 24))
             .widget(
                 new ProgressBar().setProgress(() -> this.getSievert() / 148f)
-                    .setDirection(Direction.RIGHT)
+                    .setDirection(ProgressBar.Direction.RIGHT)
                     .setTexture(BWUITextures.PROGRESSBAR_SIEVERT, 24)
                     .setPos(65, 13)
                     .setSize(48, 16))
@@ -433,7 +580,7 @@ public class MTERadioHatch extends MTEHatch implements RecipeMapWorkable, IAddGr
                         .setPos(154, 6));
     }
 
-    private ModularWindow createShutterWindow(EntityPlayer player) {
+    private ModularWindow createMui1ShutterWindow(EntityPlayer player) {
         ModularWindow.Builder builder = ModularWindow.builder(176, 107);
         builder.setBackground(ModularUITextures.VANILLA_BACKGROUND);
         builder.setGuiTint(this.getGUIColorization());
