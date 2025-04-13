@@ -2,6 +2,7 @@ package gregtech.common.tileentities.machines.multi;
 
 import static gregtech.api.casing.Casings.AlchemicalCasing;
 import static gregtech.api.casing.Casings.AlchemicalConstructTiered;
+import static gregtech.api.casing.Casings.BorosilicateGlassAny;
 import static gregtech.api.casing.Casings.WardedGlass;
 import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.InputBus;
@@ -126,7 +127,12 @@ public class MTEEntropicProcessor extends MTEExtendedPowerMultiBlockBase<MTEEntr
 
     @Override
     public IStructureDefinition<MTEEntropicProcessor> compile(String[][] def) {
-        structure.addCasing('A', WardedGlass);
+        if (Mods.Thaumcraft.isModLoaded()) {
+            structure.addCasing('A', WardedGlass);
+        } else {
+            structure.addCasing('A', BorosilicateGlassAny);
+        }
+
         structure.addCasing('B', AlchemicalCasing)
             .withHatches(1, 32, Arrays.asList(InputHatch, OutputHatch, InputBus, OutputBus, Maintenance, Energy))
             .withChannel("casing");
