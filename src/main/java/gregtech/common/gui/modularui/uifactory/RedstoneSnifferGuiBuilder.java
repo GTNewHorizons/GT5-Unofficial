@@ -56,6 +56,7 @@ public class RedstoneSnifferGuiBuilder {
     private final PanelSyncManager guiSyncManager;
     private String freqFilter = "";
     private String ownerFilter = "";
+    private boolean playerIsOp;
 
     public RedstoneSnifferGuiBuilder(GuiData guiData, PanelSyncManager guiSyncManager) {
         this.guiData = guiData;
@@ -109,8 +110,10 @@ public class RedstoneSnifferGuiBuilder {
 
         guiSyncManager.syncValue("player_is_op", new BooleanSyncValue(() -> false, () -> {
             EntityPlayerMP player = (EntityPlayerMP) guiData.getPlayer();
-            return player.mcServer.getConfigurationManager()
+            boolean result = player.mcServer.getConfigurationManager()
                 .func_152596_g(player.getGameProfile());
+            playerIsOp = result;
+            return result;
         }));
         StringSyncValue freqFilterSyncer = new StringSyncValue(() -> this.freqFilter, (freq -> {
             this.freqFilter = freq;
@@ -164,11 +167,7 @@ public class RedstoneSnifferGuiBuilder {
             entries.forEach(entry -> {
                 bgStripe.getAndIncrement();
                 regularList.add(
-                    new Row().setEnabledIf(
-                        w -> ((StringSyncValue) guiSyncManager.getSyncHandler("freq_filter:0")).getStringValue()
-                            .isEmpty()
-                            || entry.freq.equals(
-                                ((StringSyncValue) guiSyncManager.getSyncHandler("freq_filter:0")).getStringValue()))
+                    new Row().setEnabledIf(w -> (freqFilter.isEmpty() || entry.freq.equals(freqFilter)))
                         .sizeRel(1f, 0.1f * scale)
                         .expanded()
                         .background(
@@ -212,8 +211,7 @@ public class RedstoneSnifferGuiBuilder {
             () -> {
                 List<ItemRedstoneSniffer.SnifferEntry> result = new ArrayList<>();
                 GregTechAPI.sAdvancedWirelessRedstone.forEach((uuid, coverMap) -> {
-                    if (((BooleanSyncValue) guiSyncManager.getSyncHandler("player_is_op:0")).getBoolValue()
-                        || canSeeCovers(guiData, uuid)) {
+                    if (playerIsOp || canSeeCovers(guiData, uuid)) {
                         String owner = uuid.equals("null") ? "Public"
                             : SpaceProjectManager.getPlayerNameFromUUID(UUID.fromString(uuid));
                         coverMap.forEach((frequency, covers) -> {
@@ -292,14 +290,7 @@ public class RedstoneSnifferGuiBuilder {
                         .child(
                             new TextFieldWidget().sizeRel(0.25f, 0.5f)
                                 .setTextColor(textColor)
-                                .value(
-                                    SyncHandlers.string(
-                                        () -> ((StringSyncValue) guiSyncManager.getSyncHandler("freq_filter:0"))
-                                            .getStringValue(),
-                                        filter -> {
-                                            ((StringSyncValue) guiSyncManager.getSyncHandler("freq_filter:0"))
-                                                .setStringValue(filter);
-                                        })))
+                                .value(SyncHandlers.string(() -> freqFilter, filter -> freqFilter = filter)))
                         .child(
                             new TextWidget(IKey.lang("gt.item.redstone_sniffer.owner_filter")).widthRel(0.25f)
                                 .color(textColor)
@@ -307,14 +298,7 @@ public class RedstoneSnifferGuiBuilder {
                         .child(
                             new TextFieldWidget().sizeRel(0.25f, 0.5f)
                                 .setTextColor(textColor)
-                                .value(
-                                    SyncHandlers.string(
-                                        () -> ((StringSyncValue) guiSyncManager.getSyncHandler("owner_filter:0"))
-                                            .getStringValue(),
-                                        filter -> {
-                                            ((StringSyncValue) guiSyncManager.getSyncHandler("owner_filter:0"))
-                                                .setStringValue(filter);
-                                        }))))
+                                .value(SyncHandlers.string(() -> ownerFilter, filter -> { ownerFilter = filter; }))))
                 .child(data));
         panel.background(new Rectangle().setColor(Color.rgb(53, 46, 77)));
         return panel;
@@ -341,12 +325,8 @@ public class RedstoneSnifferGuiBuilder {
             result.add(
                 new Row()
                     .setEnabledIf(
-                        w -> ((((StringSyncValue) guiSyncManager.getSyncHandler("owner_filter:0")).getStringValue()
-                            .isEmpty()
-                            || entry.owner.contains(
-                                ((StringSyncValue) guiSyncManager.getSyncHandler("owner_filter:0")).getStringValue()))
-                            && entry.freq.contains(
-                                ((StringSyncValue) guiSyncManager.getSyncHandler("freq_filter:0")).getStringValue())))
+                        w -> ((ownerFilter.isEmpty() || entry.owner.contains(ownerFilter))
+                            && entry.freq.contains((freqFilter))))
                     .sizeRel(1f, 0.1f * scale)
                     .background(
                         (bgStripe.get() % 2 == 0) ? new Rectangle().setColor(stripe1)
@@ -410,10 +390,7 @@ public class RedstoneSnifferGuiBuilder {
                                                 return true;
                                             })))
                             .child(
-                                new SingleChildWidget<>()
-                                    .setEnabledIf(
-                                        w -> ((BooleanSyncValue) guiSyncManager.getSyncHandler("player_is_op:0"))
-                                            .getBoolValue())
+                                new SingleChildWidget<>().setEnabledIf(w -> playerIsOp)
                                     .widthRel(0.5f)
                                     .child(
                                         new ButtonWidget<>().size(25, 25)
