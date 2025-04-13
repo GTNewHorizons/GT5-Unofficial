@@ -1,6 +1,10 @@
 package gregtech.api.objects;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Random;
+import java.util.Set;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -10,12 +14,16 @@ import gregtech.api.enums.ItemList;
 
 public class ArtificialOrganism {
 
+    private static final int STAT_MAX = 30;
+
     private int intelligence;
     private int strength;
     private int reproduction;
 
     private int count;
     private int sentience;
+
+    public final ArrayList<Trait> traits = new ArrayList<>();
 
     // Feature traits
     public boolean photosynthetic;
@@ -121,9 +129,11 @@ public class ArtificialOrganism {
     }
 
     public void addTrait(Trait trait) {
-        intelligence += trait.baseInt;
-        strength += trait.baseStr;
-        reproduction += trait.baseRep;
+        intelligence += Math.min(trait.baseInt, STAT_MAX);
+        strength += Math.min(trait.baseStr, STAT_MAX);
+        reproduction += Math.min(trait.baseRep, STAT_MAX);
+
+        traits.add(trait);
 
         switch (trait) {
             case Photosynthetic -> photosynthetic = true;
@@ -170,6 +180,14 @@ public class ArtificialOrganism {
             + reproduction
             + " Count: "
             + count;
+    }
+
+    public static final HashMap<Item, Trait> itemTraitMap = new HashMap<>();
+
+    static {
+        for (Trait t : Trait.values()) {
+            itemTraitMap.put(t.cultureItem, t);
+        }
     }
 
     public enum Trait {

@@ -11,6 +11,10 @@ import static gregtech.api.enums.Mods.GregTech;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_BIOVAT_EMPTY;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_BIOVAT_EMPTY_GLOW;
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
+import static gregtech.api.modularui2.GTGuiTextures.OVERLAY_BUTTON_ADDITION;
+import static gregtech.api.modularui2.GTGuiTextures.OVERLAY_BUTTON_CHECKMARK;
+import static gregtech.api.modularui2.GTGuiTextures.OVERLAY_BUTTON_CROSS;
+import static gregtech.api.modularui2.GTGuiTextures.OVERLAY_BUTTON_EXPORT;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 import static gregtech.common.modularui2.util.CommonGuiComponents.gridTemplate1by1;
@@ -20,8 +24,11 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import com.cleanroommc.modularui.api.IPanelHandler;
 import com.cleanroommc.modularui.api.drawable.IDrawable;
 import com.cleanroommc.modularui.api.drawable.IKey;
+import com.cleanroommc.modularui.api.widget.IWidget;
+import com.cleanroommc.modularui.drawable.ItemDrawable;
 import com.cleanroommc.modularui.drawable.UITexture;
 import com.cleanroommc.modularui.drawable.text.TextIcon;
 import com.cleanroommc.modularui.factory.PosGuiData;
@@ -32,9 +39,19 @@ import com.cleanroommc.modularui.value.sync.DoubleSyncValue;
 import com.cleanroommc.modularui.value.sync.IntSyncValue;
 import com.cleanroommc.modularui.value.sync.InteractionSyncHandler;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
+import com.cleanroommc.modularui.widget.DraggableWidget;
+import com.cleanroommc.modularui.widget.ScrollWidget;
+import com.cleanroommc.modularui.widget.Widget;
+import com.cleanroommc.modularui.widget.WidgetTree;
 import com.cleanroommc.modularui.widgets.ButtonWidget;
+import com.cleanroommc.modularui.widgets.CategoryList;
 import com.cleanroommc.modularui.widgets.ItemSlot;
+import com.cleanroommc.modularui.widgets.ListWidget;
 import com.cleanroommc.modularui.widgets.ProgressWidget;
+import com.cleanroommc.modularui.widgets.layout.Flow;
+import com.cleanroommc.modularui.widgets.layout.Row;
+import com.cleanroommc.modularui.widgets.slot.ModularSlot;
+import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
 import gregtech.api.modularui2.GTGuiTheme;
 import gregtech.api.modularui2.GTGuiThemes;
 import gregtech.api.modularui2.GTGuis;
@@ -431,12 +448,15 @@ public class MTEEvolutionChamber extends MTEExtendedPowerMultiBlockBase<MTEEvolu
         return GUITextureSet.ORGANIC;
     }
 
+    private boolean isValidCulture(ItemStack input) {
+        return ArtificialOrganism.itemTraitMap.containsKey(input.getItem());
+    }
+
+    private boolean canAddTrait() {
+        return currentSpecies.traits.size() < casingTier;
+    }
+
     // UI Pit of Doom
-
-    protected ItemStackHandler inputSlotHandler = new ItemStackHandler(1);
-    private static final int TRAIT_WINDOW_ID = 9;
-
-    Trait activeTraitWindow;
 
     @Override
     protected boolean forceUseMui2() {
@@ -448,21 +468,68 @@ public class MTEEvolutionChamber extends MTEExtendedPowerMultiBlockBase<MTEEvolu
         return GTGuiThemes.ORGANIC;
     }
 
+    private static final UITexture intIcon = UITexture.builder()
+        .location(GregTech.ID, "gui/picture/icon_intelligence")
+        .imageSize(10, 10)
+        .build();
+    private static final UITexture strIcon = UITexture.builder()
+        .location(GregTech.ID, "gui/picture/icon_strength")
+        .imageSize(10, 10)
+        .build();
+    private static final UITexture repIcon = UITexture.builder()
+        .location(GregTech.ID, "gui/picture/icon_reproduction")
+        .imageSize(10, 10)
+        .build();
+
+    private ModularPanel getTraitPopup() {
+        ListWidget<IWidget, CategoryList.Root> list = new ListWidget<>();
+        list.size(92, 158);
+        list.pos(4, 4);
+        ModularPanel popup = new ModularPanel("trait_listing")
+            .size(100, 166)
+            .pos(132, 86)
+            .child(list);
+
+        for (Trait t : ArtificialOrganism.Trait.values()) {
+            ItemStack fakeItem = new ItemStack(t.cultureItem, 1);
+
+            list.child(new Row().height(16).childPadding(2)
+                .child(new ItemDrawable(fakeItem).asWidget().size(12, 12)
+                    .addTooltipElement("Add " + fakeItem.getDisplayName() + " as a culture to add " + StatCollector.translateToLocal(t.nameLocKey) + "."))
+                .child(IKey.str(EnumChatFormatting.UNDERLINE + StatCollector.translateToLocal(t.nameLocKey)).asWidget()));
+            list.child(new Row().height(10).childPadding(1)
+                .child(intIcon.asWidget().size(10, 10)
+                    .addTooltipStringLines(ImmutableList.of(EnumChatFormatting.UNDERLINE + "Intelligence", "Required for AOs", "to perform certain recipes.")))
+                .child(IKey.str(Integer.toString(t.baseInt)).asWidget().width(14).alignment(Alignment.Center))
+                .child(strIcon.asWidget().size(10, 10)
+                    .addTooltipStringLines(ImmutableList.of(EnumChatFormatting.UNDERLINE + "Strength", "Allows AOs to perform", "most recipes quicker.")))
+                .child(IKey.str(Integer.toString(t.baseStr)).asWidget().width(14).alignment(Alignment.Center))
+                .child(repIcon.asWidget().size(10, 10)
+                    .addTooltipStringLines(ImmutableList.of(EnumChatFormatting.UNDERLINE + "Reproduction", "How quickly the tank", "will fill with AOs.")))
+                .child(IKey.str(Integer.toString(t.baseRep)).asWidget().width(14).alignment(Alignment.Center))
+                .child(UITexture.builder()
+                    .location(GregTech.ID, "gui/picture/artificial_organisms/trait_" + t.id)
+                    .imageSize(10, 10)
+                    .build()
+                    .asWidget().size(10, 10)
+                    .addTooltipStringLines(ImmutableList.of(EnumChatFormatting.UNDERLINE + "Trait", StatCollector.translateToLocal(t.descLocKey)))));
+        }
+
+        return popup;
+    }
+
     @Override
     public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager) {
 
-        UITexture intIcon = UITexture.builder()
-            .location(GregTech.ID, "gui/picture/icon_intelligence")
-            .imageSize(10, 10)
-            .build();
-        UITexture strIcon = UITexture.builder()
-            .location(GregTech.ID, "gui/picture/icon_strength")
-            .imageSize(10, 10)
-            .build();
-        UITexture repIcon = UITexture.builder()
-            .location(GregTech.ID, "gui/picture/icon_reproduction")
-            .imageSize(10, 10)
-            .build();
+        ModularPanel panel = GTGuis.mteTemplatePanelBuilder(this, data, syncManager).build();
+
+        Row traitRow = new Row();
+        traitRow.pos(5, 41).size(50, 10).childPadding(6);
+
+        IPanelHandler traitPanel = syncManager.panel(
+            "trait_listing", (p_syncManager, syncHandler) -> getTraitPopup(), true);
+
+        syncManager.registerSlotGroup("culture_slot", 1);
 
         UITexture progressBar = UITexture.builder()
             .location(GregTech.ID, "gui/progressbar/sentience_progress")
@@ -488,14 +555,51 @@ public class MTEEvolutionChamber extends MTEExtendedPowerMultiBlockBase<MTEEvolu
             .imageSize(32, 16)
             .build();
 
-        return GTGuis.mteTemplatePanelBuilder(this, data, syncManager)
-            .build()
-            .child(new ProgressWidget()
+        panel.child(new ProgressWidget()
                 .value(new DoubleSyncValue(() -> (double) currentSpecies.getSentience() / 100))
                 .texture(progressBar, 16)
                 .direction(ProgressWidget.Direction.UP)
                 .size(16, 64)
                 .pos(100, 0))
+
+            .child(new ItemSlot()
+                .pos(7, 60)
+                .slot(new ModularSlot(inventoryHandler, 0).slotGroup("culture_slot")
+                            .filter(this::isValidCulture)))
+            .child(new ButtonWidget<>().pos(26, 60)
+                .syncHandler(new InteractionSyncHandler()
+                    .setOnMousePressed(mouseData ->  {
+                        ItemStack is = inventoryHandler.getStackInSlot(0);
+                        if (is != null && canAddTrait()) {
+                            Trait t = ArtificialOrganism.itemTraitMap.get(is.getItem());
+
+                            currentSpecies.addTrait(t);
+                            traitRow.child(UITexture.builder()
+                                .location(GregTech.ID, "gui/picture/artificial_organisms/trait_" + t.id)
+                                .imageSize(10, 10)
+                                .build()
+                                .asWidget().size(10, 10).background()
+                                .addTooltipStringLines(ImmutableList.of(EnumChatFormatting.UNDERLINE +
+                                    StatCollector.translateToLocal(t.nameLocKey),
+                                    StatCollector.translateToLocal(t.descLocKey))));
+
+                            if (syncManager.isClient()) {
+                                WidgetTree.resize(panel);
+                            }}}))
+                .overlay(OVERLAY_BUTTON_ADDITION)
+                .addTooltipLine("Add Culture Item")
+                .setEnabledIf(ignored -> canAddTrait()))
+            .child(new ButtonWidget<>().pos(60, 60)
+                .syncHandler(new InteractionSyncHandler()
+                    .setOnMousePressed(mouseData -> createNewAOs()))
+                .overlay(OVERLAY_BUTTON_CHECKMARK)
+                .addTooltipLine("Finalize Batch")
+            .child(new ButtonWidget<>().pos(60, 41)
+                .syncHandler(new InteractionSyncHandler()
+                    .setOnMousePressed(ignored -> traitPanel.openPanel()))
+                .overlay(OVERLAY_BUTTON_EXPORT)
+                .addTooltipLine("View Trait List")))
+
             .child(new ProgressWidget()
                 .value(new DoubleSyncValue(() -> ((double) currentSpecies.getIntelligence() / 32) + ((double) 1 /32)))
                 .texture(intProgressBar, 16)
@@ -526,10 +630,23 @@ public class MTEEvolutionChamber extends MTEExtendedPowerMultiBlockBase<MTEEvolu
             .child(strIcon.asWidget().pos(5, 17).size(10, 10)
                 .addTooltipStringLines(ImmutableList.of(EnumChatFormatting.UNDERLINE + "Strength", "Allows AOs to perform", "most recipes quicker.")))
             .child(repIcon.asWidget().pos(5, 29).size(10, 10)
-                .addTooltipStringLines(ImmutableList.of(EnumChatFormatting.UNDERLINE + "Reproduction", "How quickly the tank", "will fill with AOs.")))
-            .child(new ButtonWidget<>().pos(60, 60)
-                .syncHandler(new InteractionSyncHandler()
-                    .setOnMousePressed(mouseData -> currentSpecies = new ArtificialOrganism(14, 29, 5, 100, 0))));
+                .addTooltipStringLines(ImmutableList.of(EnumChatFormatting.UNDERLINE + "Reproduction", "How quickly the tank", "will fill with AOs.")));
+
+
+
+            for (Trait t : currentSpecies.traits) {
+                traitRow.child(UITexture.builder()
+                    .location(GregTech.ID, "gui/picture/artificial_organisms/trait_" + t.id)
+                    .imageSize(10, 10)
+                    .build()
+                    .asWidget().size(10, 10).background()
+                    .addTooltipStringLines(ImmutableList.of(EnumChatFormatting.UNDERLINE +
+                        StatCollector.translateToLocal(t.nameLocKey),
+                        StatCollector.translateToLocal(t.descLocKey))));
+            }
+
+            panel.child(traitRow);
+            return panel;
     }
 
     /*
