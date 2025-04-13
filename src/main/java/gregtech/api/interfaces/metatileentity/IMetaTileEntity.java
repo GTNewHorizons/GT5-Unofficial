@@ -222,6 +222,11 @@ public interface IMetaTileEntity extends ISidedInventory, IFluidTank, IFluidHand
     boolean shouldDropItemAt(int index);
 
     /**
+     * Override to change which items are dropped when block is broken.
+     */
+    ArrayList<ItemStack> getDroppedItem();
+
+    /**
      * @return if aIndex can be set to Zero stackSize, when being removed.
      */
     boolean setStackToZeroInsteadOfNull(int aIndex);
