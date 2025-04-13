@@ -253,6 +253,11 @@ public abstract class CommonMetaTileEntity implements IMetaTileEntity {
         return list;
     }
 
+    @Override
+    public ArrayList<ItemStack> getDroppedItem() {
+        return null;
+    }
+
     /**
      * Returns the fluid this block contains.
      */
