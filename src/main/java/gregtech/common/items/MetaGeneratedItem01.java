@@ -475,7 +475,6 @@ import net.minecraft.potion.Potion;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.MathHelper;
 
-import cpw.mods.fml.common.Optional;
 import gregtech.api.GregTechAPI;
 import gregtech.api.covers.CoverPlacer;
 import gregtech.api.covers.CoverRegistry;
@@ -542,10 +541,8 @@ import gregtech.common.items.behaviors.BehaviourSprayColorInfinite;
 import gregtech.common.items.behaviors.BehaviourSprayColorRemover;
 import gregtech.common.items.behaviors.BehaviourWrittenBook;
 import gregtech.common.tileentities.machines.multi.MTEIndustrialElectromagneticSeparator.MagnetTiers;
-import mods.railcraft.common.items.firestone.IItemFirestoneBurning;
 
-@Optional.Interface(iface = "mods.railcraft.common.items.firestone.IItemFirestoneBurning", modid = "Railcraft")
-public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFirestoneBurning {
+public class MetaGeneratedItem01 extends MetaGeneratedItemX32 {
 
     public static MetaGeneratedItem01 INSTANCE;
     private final String mToolTipPurify = GTLanguageManager
@@ -4713,26 +4710,5 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
         registerTieredTooltip(ItemList.BatteryHull_UMV_Full.get(1), UMV);
         registerTieredTooltip(ItemList.BatteryHull_UxV_Full.get(1), UXV);
 
-    }
-
-    @Override
-    @Optional.Method(modid = "Railcraft")
-    public boolean shouldBurn(ItemStack itemStack) {
-        ItemData data = GTOreDictUnificator.getAssociation(itemStack);
-        if (data == null || data.mMaterial == null
-            || data.mMaterial.mMaterial != Materials.Firestone
-            || data.mPrefix == null) {
-            return false;
-        }
-        return data.mPrefix == OrePrefixes.dustTiny || data.mPrefix == OrePrefixes.dustSmall
-            || data.mPrefix == OrePrefixes.dust
-            || data.mPrefix == OrePrefixes.dustImpure
-            || data.mPrefix == OrePrefixes.dustRefined
-            || data.mPrefix == OrePrefixes.dustPure
-            || data.mPrefix == OrePrefixes.crushed
-            || data.mPrefix == OrePrefixes.crushedPurified
-            || data.mPrefix == OrePrefixes.crushedCentrifuged
-            || data.mPrefix == OrePrefixes.gem
-            || data.mPrefix == OrePrefixes.block;
     }
 }
