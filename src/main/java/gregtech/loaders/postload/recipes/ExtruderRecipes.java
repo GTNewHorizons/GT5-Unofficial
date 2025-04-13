@@ -34,6 +34,12 @@ public class ExtruderRecipes implements Runnable {
                 .duration(4 * SECONDS)
                 .eut(16)
                 .addTo(extruderRecipes);
+            GTValues.RA.stdBuilder()
+                .itemInputs(ItemList.Food_Dough.get(1L), ItemList.Shape_Extruder_Plate.get(0L))
+                .itemOutputs(GTModHandler.getModItem(Mods.PamsHarvestCraft.ID, "pastaItem", 1, 0))
+                .duration(4 * SECONDS)
+                .eut(16)
+                .addTo(extruderRecipes);
         }
     }
 }
