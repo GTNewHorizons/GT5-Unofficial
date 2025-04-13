@@ -53,6 +53,7 @@ import gregtech.api.recipe.maps.FluidOnlyFrontend;
 import gregtech.api.recipe.maps.FormingPressBackend;
 import gregtech.api.recipe.maps.FuelBackend;
 import gregtech.api.recipe.maps.FurnaceBackend;
+import gregtech.api.recipe.maps.IsotopeDecayFrontend;
 import gregtech.api.recipe.maps.LargeBoilerFuelBackend;
 import gregtech.api.recipe.maps.LargeBoilerFuelFrontend;
 import gregtech.api.recipe.maps.LargeNEIFrontend;
@@ -1225,4 +1226,10 @@ public final class RecipeMaps {
         .frontend(LargeNEIFrontend::new)
         .build();
 
+    public static final RecipeMap<RecipeMapBackend> isotopeDecay = RecipeMapBuilder.of("gt.recipe.isotope-decay")
+        .maxIO(1, 1, 0, 0)
+        .minInputs(1, 0)
+        .progressBar(GTUITextures.PROGRESSBAR_ARROW)
+        .frontend(IsotopeDecayFrontend::new)
+        .build();
 }

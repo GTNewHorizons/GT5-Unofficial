@@ -749,6 +749,23 @@ public class GTStructureUtility {
             lazy(t -> ofBlocksTiered(GlassTier::getGlassBlockTier, GlassTier.getGlassList(), notSet, setter, getter)));
     }
 
+    public static <T> IStructureElement<T> noSurvivalAutoplace(IStructureElement<T> element) {
+        return new ProxyStructureElement<>(element) {
+
+            @Override
+            public PlaceResult survivalPlaceBlock(T multi, World world, int x, int y, int z, ItemStack trigger,
+                AutoPlaceEnvironment env) {
+                return PlaceResult.SKIP;
+            }
+
+            @Override
+            public PlaceResult survivalPlaceBlock(T multi, World world, int x, int y, int z, ItemStack trigger,
+                IItemSource s, EntityPlayerMP actor, Consumer<IChatComponent> chatter) {
+                return PlaceResult.SKIP;
+            }
+        };
+    }
+
     /**
      * Just a structure element that proxies its operations to another one. Useful for overriding or hooking into
      * specific operations while keeping the rest unchanged.
