@@ -17,6 +17,7 @@ import static gregtech.api.util.GTUtility.validMTEList;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.EntityLivingBase;
@@ -432,9 +433,12 @@ public class MTEIsaMill extends GTPPMultiBlockBase<MTEIsaMill> implements ISurvi
      */
 
     @Override
-    public ArrayList<ItemStack> getStoredInputs() {
+    public ArrayList<ItemStack> getStoredInputsForColor(Optional<Byte> color) {
         ArrayList<ItemStack> tItems = super.getStoredInputs();
         for (MTEHatchMillingBalls tHatch : validMTEList(mMillingBallBuses)) {
+            byte busColor = tHatch.getBaseMetaTileEntity()
+                .getColorization();
+            if (color.isPresent() && busColor != -1 && busColor != color.get()) continue;
             ArrayList<ItemStack> aHatchContent = tHatch.getContentUsageSlots();
             if (!aHatchContent.isEmpty()) {
                 tItems.addAll(aHatchContent);
