@@ -115,16 +115,14 @@ public class RedstoneSnifferGuiBuilder {
             playerIsOp = result;
             return result;
         }));
-        StringSyncValue freqFilterSyncer = new StringSyncValue(() -> this.freqFilter, (freq -> {
-            this.freqFilter = freq;
+        StringSyncValue freqFilterSyncer = new StringSyncValue(() -> this.freqFilter, (k -> {
             if (guiSyncManager.isClient()) {
                 WidgetTree.resize(regularListWidget);
                 WidgetTree.resize(advancedListWidget);
             }
         }));
         guiSyncManager.syncValue("freq_filter", freqFilterSyncer);
-        StringSyncValue ownerFilterSyncer = new StringSyncValue(() -> ownerFilter, (owner -> {
-            ownerFilter = owner;
+        StringSyncValue ownerFilterSyncer = new StringSyncValue(() -> ownerFilter, (k -> {
             if (guiSyncManager.isClient()) {
                 WidgetTree.resize(advancedListWidget);
             }
