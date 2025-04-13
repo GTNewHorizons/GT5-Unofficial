@@ -28,6 +28,7 @@ public class DustDecayable extends BaseItemTickable {
         super(true, true, unlocal, colour, (maxTicks / 1), desc1);
         this.turnsIntoItem = turnsInto;
         this.radLevel = radLevel;
+        this.maxStackSize = 64;
         GTOreDictUnificator.registerOre(unlocal, ItemUtils.getSimpleStack(this));
         new DecayableRecipe(maxTicks, getSimpleStack(this), getSimpleStack(turnsInto));
     }
@@ -63,6 +64,8 @@ public class DustDecayable extends BaseItemTickable {
             if (!((EntityPlayer) entityHolding).capabilities.isCreativeMode) {
                 EntityUtils.applyRadiationDamageToEntity(iStack.stackSize, this.radLevel, world, entityHolding);
             }
+            // don't decay when held by a player
+            return;
         }
         boolean a1, a2;
 
