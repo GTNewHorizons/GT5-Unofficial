@@ -25,7 +25,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -1041,28 +1040,44 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         if (result.wasSuccessful()) {
             return result;
         }
-        List<Byte> hatchColors = Stream.concat(
-            mInputBusses.stream()
-                .map(
-                    bus -> bus.getBaseMetaTileEntity()
-                        .getColorization()),
-            mInputHatches.stream()
-                .map(
-                    hatch -> hatch.getBaseMetaTileEntity()
-                        .getColorization()))
-            .distinct()
-            .collect(Collectors.toList());
-        if (this instanceof MTESteamMultiBase<?>) {
-            hatchColors = Stream.concat(
-                ((MTESteamMultiBase<?>) this).mSteamInputs.stream()
-                    .map(
-                        bus -> bus.getBaseMetaTileEntity()
-                            .getColorization()),
-                ((MTESteamMultiBase<?>) this).mSteamInputFluids.stream()
-                    .map(
-                        hatch -> hatch.getBaseMetaTileEntity()
-                            .getColorization()))
-                .collect(Collectors.toList());
+
+        List<Byte> hatchColors = new ArrayList<>();
+
+        hatchColors.add((byte) -1);
+
+        for (var bus : mInputBusses) {
+            byte color = bus.getBaseMetaTileEntity()
+                .getColorization();
+            if (!hatchColors.contains(color)) {
+                hatchColors.add(color);
+            }
+        }
+
+        for (var hatch : mInputHatches) {
+            byte color = hatch.getBaseMetaTileEntity()
+                .getColorization();
+            if (!hatchColors.contains(color)) {
+                hatchColors.add(color);
+            }
+        }
+        if (this instanceof MTESteamMultiBase<?>steamMultiBase) {
+            hatchColors = new ArrayList<>();
+            hatchColors.add((byte) -1);
+            for (var bus : steamMultiBase.mSteamInputs) {
+                byte color = bus.getBaseMetaTileEntity()
+                    .getColorization();
+                if (!hatchColors.contains(color)) {
+                    hatchColors.add(color);
+                }
+            }
+
+            for (var hatch : steamMultiBase.mSteamInputFluids) {
+                byte color = hatch.getBaseMetaTileEntity()
+                    .getColorization();
+                if (!hatchColors.contains(color)) {
+                    hatchColors.add(color);
+                }
+            }
         }
 
         boolean doColorChecking = hatchColors.size() > 1;
