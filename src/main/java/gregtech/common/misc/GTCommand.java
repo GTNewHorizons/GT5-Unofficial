@@ -271,7 +271,7 @@ public final class GTCommand extends CommandBase {
                 String formattedUsernameTeam = EnumChatFormatting.BLUE + usernameTeam + EnumChatFormatting.RESET;
 
                 UUID uuidSubject = SpaceProjectManager.getPlayerUUIDFromName(usernameSubject);
-                UUID uuidTeam = SpaceProjectManager.getLeader(SpaceProjectManager.getPlayerUUIDFromName(usernameTeam));
+                UUID uuidTeam = SpaceProjectManager.getPlayerUUIDFromName(usernameTeam);
 
                 if (uuidSubject.equals(uuidTeam)) {
                     // leave team
@@ -284,7 +284,8 @@ public final class GTCommand extends CommandBase {
 
                 // join other's team
 
-                if (uuidSubject.equals(uuidTeam)) {
+                if (SpaceProjectManager.getLeader(uuidSubject)
+                    .equals(SpaceProjectManager.getLeader(uuidTeam))) {
                     sender.addChatMessage(new ChatComponentText("They are already in the same network!"));
                     break;
                 }
