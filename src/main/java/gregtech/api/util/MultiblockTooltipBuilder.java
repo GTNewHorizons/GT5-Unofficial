@@ -783,6 +783,15 @@ public class MultiblockTooltipBuilder {
     }
 
     /**
+     * @deprecated use overload that accepts {@link IStructureChannels} instead
+     */
+    @Deprecated
+    public MultiblockTooltipBuilder addSubChannelUsage(String channel, String purpose) {
+        sLines.add(TAB + StatCollector.translateToLocalFormatted("GT5U.MBTT.subchannel", channel, purpose));
+        return this;
+    }
+
+    /**
      * Use this method to add non-standard structural info.<br>
      * (indent)info
      *
