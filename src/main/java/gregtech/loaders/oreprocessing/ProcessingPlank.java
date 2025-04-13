@@ -34,13 +34,6 @@ public class ProcessingPlank implements gregtech.api.interfaces.IOreRecipeRegist
             else registeredEXU = true;
         }
         if (aOreDictName.startsWith("plankWood")) {
-            if (aStack.getItem() instanceof MetaGeneratedItem) {
-                // https://github.com/GTNewHorizons/GT-New-Horizons-Modpack/issues/19273
-                // "plankWood" from GT are also having other recipes in cutters, which causing recipe conflicts.
-                // And I don't think people would use this kind of plankWood to make wooden products, so just skipping
-                // these recipes to temporary fix this error.
-                return;
-            }
             GTValues.RA.stdBuilder()
                 .itemInputs(GTUtility.copyAmount(1, aStack))
                 .itemOutputs(GTOreDictUnificator.get(OrePrefixes.stick, Materials.Wood, 2L))
@@ -53,6 +46,14 @@ public class ProcessingPlank implements gregtech.api.interfaces.IOreRecipeRegist
                 .duration(40 * SECONDS)
                 .eut(4)
                 .addTo(assemblerRecipes);
+
+            if (aStack.getItem() instanceof MetaGeneratedItem) {
+                // https://github.com/GTNewHorizons/GT-New-Horizons-Modpack/issues/19273
+                // "plankWood" from GT are also having other recipes in cutters, which causing recipe conflicts.
+                // And I don't think people would use this kind of plankWood to make wooden products, so just skipping
+                // these recipes to temporary fix this error.
+                return;
+            }
 
             if (aStack.getItemDamage() == 32767) {
                 for (byte i = 0; i < 64; i = (byte) (i + 1)) {
