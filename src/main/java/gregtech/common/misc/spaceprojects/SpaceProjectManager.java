@@ -11,6 +11,8 @@ import net.minecraftforge.fluids.FluidStack;
 
 import org.apache.commons.lang3.tuple.Pair;
 
+import com.mojang.authlib.GameProfile;
+
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.util.GTRecipe;
 import gregtech.common.misc.spaceprojects.interfaces.ISpaceBody;
@@ -299,10 +301,10 @@ public class SpaceProjectManager {
      * Gets the player's name using their UUID
      */
     public static String getPlayerNameFromUUID(UUID playerUUID) {
-        return MinecraftServer.getServer()
+        GameProfile profile = MinecraftServer.getServer()
             .func_152358_ax()
-            .func_152652_a(playerUUID)
-            .getName();
+            .func_152652_a(playerUUID); // The profile can be null (offline mode issue?)
+        return profile == null ? "ERROR_NULL_PROFILE" : profile.getName();
     }
 
     // #endregion
