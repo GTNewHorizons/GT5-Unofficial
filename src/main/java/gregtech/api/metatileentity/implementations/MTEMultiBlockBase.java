@@ -1039,26 +1039,32 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
             return result;
         }
         List<Byte> hatchColors = Stream.concat(
-            mInputBusses.stream()
-                .map(
-                    bus -> bus.getBaseMetaTileEntity()
-                        .getColorization()),
-            mInputHatches.stream()
-                .map(
-                    hatch -> hatch.getBaseMetaTileEntity()
-                        .getColorization()))
-            .distinct()
-            .collect(Collectors.toList());
-        if (this instanceof MTESteamMultiBase<?>) {
-            hatchColors = Stream.concat(
-                ((MTESteamMultiBase<?>) this).mSteamInputs.stream()
+            Stream.of((byte) -1),
+            Stream.concat(
+                mInputBusses.stream()
                     .map(
                         bus -> bus.getBaseMetaTileEntity()
                             .getColorization()),
-                ((MTESteamMultiBase<?>) this).mSteamInputFluids.stream()
+                mInputHatches.stream()
                     .map(
                         hatch -> hatch.getBaseMetaTileEntity()
-                            .getColorization()))
+                            .getColorization())))
+            .distinct()
+            .collect(Collectors.toList());
+        if (this instanceof MTESteamMultiBase<?>) {
+            hatchColors = Stream
+                .concat(
+                    Stream.of((byte) -1),
+                    Stream.concat(
+                        ((MTESteamMultiBase<?>) this).mSteamInputs.stream()
+                            .map(
+                                bus -> bus.getBaseMetaTileEntity()
+                                    .getColorization()),
+                        ((MTESteamMultiBase<?>) this).mSteamInputFluids.stream()
+                            .map(
+                                hatch -> hatch.getBaseMetaTileEntity()
+                                    .getColorization())))
+                .distinct()
                 .collect(Collectors.toList());
         }
 
