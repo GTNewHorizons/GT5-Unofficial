@@ -129,6 +129,7 @@ import gregtech.common.tileentities.machines.MTEHatchOutputBusME;
 import gregtech.common.tileentities.machines.MTEHatchOutputME;
 import gregtech.common.tileentities.machines.multi.MTELargeTurbine;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchSteamBusInput;
+import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.MTESteamMultiBase;
 import it.unimi.dsi.fastutil.longs.LongArrayList;
 import it.unimi.dsi.fastutil.objects.Object2ReferenceOpenHashMap;
 import it.unimi.dsi.fastutil.objects.Reference2ReferenceOpenHashMap;
@@ -1051,6 +1052,18 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
                         .getColorization()))
             .distinct()
             .collect(Collectors.toList());
+        if (this instanceof MTESteamMultiBase<?>) {
+            hatchColors = Stream.concat(
+                ((MTESteamMultiBase<?>) this).mSteamInputs.stream()
+                    .map(
+                        bus -> bus.getBaseMetaTileEntity()
+                            .getColorization()),
+                ((MTESteamMultiBase<?>) this).mSteamInputFluids.stream()
+                    .map(
+                        hatch -> hatch.getBaseMetaTileEntity()
+                            .getColorization()))
+                .collect(Collectors.toList());
+        }
 
         boolean doColorChecking = hatchColors.size() > 1;
         for (byte color : hatchColors) {
