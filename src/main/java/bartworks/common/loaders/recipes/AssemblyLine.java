@@ -2,9 +2,7 @@ package bartworks.common.loaders.recipes;
 
 import static gregtech.api.util.GTRecipeBuilder.MINUTES;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
-import static gregtech.api.util.GTRecipeConstants.AssemblyLine;
-import static gregtech.api.util.GTRecipeConstants.RESEARCH_ITEM;
-import static gregtech.api.util.GTRecipeConstants.SCANNING;
+import static gregtech.api.util.GTRecipeConstants.*;
 
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -12,6 +10,7 @@ import net.minecraftforge.fluids.FluidStack;
 
 import bartworks.common.loaders.ItemRegistry;
 import bartworks.system.material.WerkstoffLoader;
+import goodgenerator.items.GGMaterial;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
@@ -62,6 +61,32 @@ public class AssemblyLine implements Runnable {
             .itemOutputs(ItemRegistry.cal.copy())
             .eut(TierEU.RECIPE_ZPM)
             .duration(60 * SECONDS)
+            .addTo(AssemblyLine);
+
+        // Mega Electric Blast Furnace
+        GTValues.RA.stdBuilder()
+            .metadata(RESEARCH_ITEM, ItemList.Machine_Multi_BlastFurnace.get(1L))
+            .metadata(SCANNING, new Scanning(60 * MINUTES, TierEU.RECIPE_IV))
+            .itemInputs(
+                ItemList.Machine_Multi_BlastFurnace.get(64L),
+                ItemList.Machine_Multi_BlastFurnace.get(64L),
+                ItemList.Machine_Multi_BlastFurnace.get(64L),
+                ItemList.Machine_Multi_BlastFurnace.get(64L),
+                ItemList.LuV_Coil.get(16L),
+                ItemList.Conveyor_Module_LuV.get(4L, new Object() {}),
+                new Object[] { OrePrefixes.circuit.get(Materials.LuV), 8 },
+                new Object[] { OrePrefixes.circuit.get(Materials.EV), 16 },
+                ItemList.Circuit_Chip_HPIC.get(16, new Object() {}),
+                Materials.Osmiridium.getPlates(16),
+                WerkstoffLoader.LuVTierMaterial.get(OrePrefixes.plate, 16),
+                WerkstoffLoader.Ruridit.get(OrePrefixes.screw, 16))
+            .fluidInputs(
+                GGMaterial.lumiium.getMolten(1440),
+                Materials.Naquadah.getMolten(1440),
+                Materials.SolderingAlloy.getMolten(1440))
+            .itemOutputs(ItemRegistry.megaMachines[0])
+            .eut(TierEU.RECIPE_LuV)
+            .duration(60 * MINUTES)
             .addTo(AssemblyLine);
     }
 }

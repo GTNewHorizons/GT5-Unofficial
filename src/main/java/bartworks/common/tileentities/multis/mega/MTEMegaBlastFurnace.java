@@ -22,12 +22,8 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ELECTRIC_BLAS
 import static gregtech.api.enums.Textures.BlockIcons.casingTexturePages;
 import static gregtech.api.util.GTStructureUtility.*;
 
-import java.util.Arrays;
-
 import javax.annotation.Nonnull;
 
-import gregtech.api.enums.Materials;
-import gregtech.common.tileentities.machines.multi.MTEOilDrill1;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -67,186 +63,73 @@ import gregtech.common.pollution.PollutionConfig;
 
 public class MTEMegaBlastFurnace extends MegaMultiBlockBase<MTEMegaBlastFurnace> implements ISurvivalConstructable {
 
-    private static final String[] multiTop = {
-        "               ",
-        "      ttt      ",
-        "    ttttttt    ",
-        "   ttttttttt   ",
-        "  ttttttttttt  ",
-        "  ttttttttttt  ",
-        " ttttttttttttt ",
-        " ttttttmtttttt ",
-        " ttttttttttttt ",
-        "  ttttttttttt  ",
-        "  ttttttttttt  ",
-        "   ttttttttt   ",
-        "    ttttttt    ",
-        "      ttt      ",
-        "               "
-    };
+    private static final String[] multiTop = { "               ", "      ttt      ", "    ttttttt    ",
+        "   ttttttttt   ", "  ttttttttttt  ", "  ttttttttttt  ", " ttttttttttttt ", " ttttttmtttttt ",
+        " ttttttttttttt ", "  ttttttttttt  ", "  ttttttttttt  ", "   ttttttttt   ", "    ttttttt    ",
+        "      ttt      ", "               " };
 
-    private static final String[] multiSubTop = {
-        "               ",
-        "      ggg      ",
-        "    ggCCCgg    ",
-        "   gCC===CCg   ",
-        "  gC=======Cg  ",
-        "  gC=======Cg  ",
-        " gC=========Cg ",
-        " gC=========Cg ",
-        " gC=========Cg ",
-        "  gC=======Cg  ",
-        "  gC=======Cg  ",
-        "   gCC===CCg   ",
-        "    ggCCCgg    ",
-        "      ggg      ",
-        "               "
-    };
+    private static final String[] multiSubTop = { "               ", "      ggg      ", "    ggCCCgg    ",
+        "   gCC===CCg   ", "  gC=======Cg  ", "  gC=======Cg  ", " gC=========Cg ", " gC=========Cg ",
+        " gC=========Cg ", "  gC=======Cg  ", "  gC=======Cg  ", "   gCC===CCg   ", "    ggCCCgg    ",
+        "      ggg      ", "               " };
 
-    private static final String[] multiMiddle = {
-        "               ",
-        "      hhh      ",
-        "    hhCCChh    ",
-        "   hCC===CCh   ",
-        "  hC=======Ch  ",
-        "  hC=======Ch  ",
-        " hC=========Ch ",
-        " hC=========Ch ",
-        " hC=========Ch ",
-        "  hC=======Ch  ",
-        "  hC=======Ch  ",
-        "   hCC===CCh   ",
-        "    hhCCChh    ",
-        "      hhh      ",
-        "               "
-    };
+    private static final String[] multiMiddle = { "               ", "      hhh      ", "    hhCCChh    ",
+        "   hCC===CCh   ", "  hC=======Ch  ", "  hC=======Ch  ", " hC=========Ch ", " hC=========Ch ",
+        " hC=========Ch ", "  hC=======Ch  ", "  hC=======Ch  ", "   hCC===CCh   ", "    hhCCChh    ",
+        "      hhh      ", "               " };
 
-    private static final String[] multiSubMiddle = {
-        "      hhh      ",
-        "    hhhhhhh    ",
-        "   hhhCCChhh   ",
-        "  hhCC===CChh  ",
-        " hhC=======Chh ",
-        " hhC=======Chh ",
-        "hhC=========Chh",
-        "hhC=========Chh",
-        "hhC=========Chh",
-        " hhC=======Chh ",
-        " hhC=======Chh ",
-        "  hhCC===CChh  ",
-        "   hhhCCChhh   ",
-        "    hhhhhhh    ",
-        "      hhh      "
-    };
+    private static final String[] multiSubMiddle = { "      hhh      ", "    hhhhhhh    ", "   hhhCCChhh   ",
+        "  hhCC===CChh  ", " hhC=======Chh ", " hhC=======Chh ", "hhC=========Chh", "hhC=========Chh",
+        "hhC=========Chh", " hhC=======Chh ", " hhC=======Chh ", "  hhCC===CChh  ", "   hhhCCChhh   ",
+        "    hhhhhhh    ", "      hhh      " };
 
-    private static final String[] multiSCCoil = {
-        "      sss      ",
-        "    ssCCCss    ",
-        "   sCCCCCCCs   ",
-        "  sCCC===CCCs  ",
-        " sCC=======CCs ",
-        " sCC=======CCs ",
-        "sCC=========CCs",
-        "sCC=========CCs",
-        "sCC=========CCs",
-        " sCC=======CCs ",
-        " sCC=======CCs ",
-        "  sCCC===CCCs  ",
-        "   sCCCCCCCs   ",
-        "    ssCCCss    ",
-        "      sss      "
-    };
+    private static final String[] multiSCCoil = { "      sss      ", "    ssCCCss    ", "   sCCCCCCCs   ",
+        "  sCCC===CCCs  ", " sCC=======CCs ", " sCC=======CCs ", "sCC=========CCs", "sCC=========CCs",
+        "sCC=========CCs", " sCC=======CCs ", " sCC=======CCs ", "  sCCC===CCCs  ", "   sCCCCCCCs   ",
+        "    ssCCCss    ", "      sss      " };
 
-    private static final String[] multiController = {
-        "      h~h      ",
-        "    ggCCCgg    ",
-        "   gCCCCCCCg   ",
-        "  gCCC===CCCg  ",
-        " gCC=======CCg ",
-        " gCC=======CCg ",
-        "hCC=========CCh",
-        "hCC=========CCh",
-        "hCC=========CCh",
-        " gCC=======CCg ",
-        " gCC=======CCg ",
-        "  gCCC===CCCg  ",
-        "   gCCCCCCCg   ",
-        "    ggCCCgg    ",
-        "      hhh      "
-    };
+    private static final String[] multiController = { "      h~h      ", "    ggCCCgg    ", "   gCCCCCCCg   ",
+        "  gCCC===CCCg  ", " gCC=======CCg ", " gCC=======CCg ", "hCC=========CCh", "hCC=========CCh",
+        "hCC=========CCh", " gCC=======CCg ", " gCC=======CCg ", "  gCCC===CCCg  ", "   gCCCCCCCg   ",
+        "    ggCCCgg    ", "      hhh      " };
 
-    private static final String[] multiSubController = {
-        "      hhh      ",
-        "    ggCCCgg    ",
-        "   gCCCCCCCg   ",
-        "  gCCC===CCCg  ",
-        " gCC=======CCg ",
-        " gCC=======CCg ",
-        "hCC=========CCh",
-        "hCC=========CCh",
-        "hCC=========CCh",
-        " gCC=======CCg ",
-        " gCC=======CCg ",
-        "  gCCC===CCCg  ",
-        "   gCCCCCCCg   ",
-        "    ggCCCgg    ",
-        "      hhh      "
-    };
+    private static final String[] multiSubController = { "      hhh      ", "    ggCCCgg    ", "   gCCCCCCCg   ",
+        "  gCCC===CCCg  ", " gCC=======CCg ", " gCC=======CCg ", "hCC=========CCh", "hCC=========CCh",
+        "hCC=========CCh", " gCC=======CCg ", " gCC=======CCg ", "  gCCC===CCCg  ", "   gCCCCCCCg   ",
+        "    ggCCCgg    ", "      hhh      " };
 
     private static final String[] multiBase = {
 
-        "      bbb      ",
-        "    bbbbbbb    ",
-        "   bbbbbbbbb   ",
-        "  bbbbbbbbbbb  ",
-        " bbbbbbbbbbbbb ",
-        " bbbbbbbbbbbbb ",
-        "bbbbbbbbbbbbbbb",
-        "bbbbbbbbbbbbbbb",
-        "bbbbbbbbbbbbbbb",
-        " bbbbbbbbbbbbb ",
-        " bbbbbbbbbbbbb ",
-        "  bbbbbbbbbbb  ",
-        "   bbbbbbbbb   ",
-        "    bbbbbbb    ",
-        "      bbb      "
-    };
+        "      bbb      ", "    bbbbbbb    ", "   bbbbbbbbb   ", "  bbbbbbbbbbb  ", " bbbbbbbbbbbbb ",
+        " bbbbbbbbbbbbb ", "bbbbbbbbbbbbbbb", "bbbbbbbbbbbbbbb", "bbbbbbbbbbbbbbb", " bbbbbbbbbbbbb ",
+        " bbbbbbbbbbbbb ", "  bbbbbbbbbbb  ", "   bbbbbbbbb   ", "    bbbbbbb    ", "      bbb      " };
 
     private static final int CASING_INDEX = 11;
     private static final IStructureDefinition<MTEMegaBlastFurnace> STRUCTURE_DEFINITION = StructureDefinition
         .<MTEMegaBlastFurnace>builder()
-        .addShape("main", transpose(
-            new String[][] {
-                multiTop,
-                multiSubTop,
-                multiSubTop,
-                multiSubTop,
-                multiSubTop,
-                multiSubTop,
-                multiSubTop,
-                multiSubTop,
-                multiSubTop,
-                multiSubTop,
-                multiSubTop,
-                multiSubTop,
-                multiMiddle,
-                multiSubMiddle,
-                multiSCCoil,
-                multiSubController,
-                multiController,
-                multiSubController,
-                multiSCCoil,
-                multiBase
-            }))
+        .addShape(
+            "main",
+            transpose(
+                new String[][] { multiTop, multiSubTop, multiSubTop, multiSubTop, multiSubTop, multiSubTop, multiSubTop,
+                    multiSubTop, multiSubTop, multiSubTop, multiSubTop, multiSubTop, multiMiddle, multiSubMiddle,
+                    multiSCCoil, multiSubController, multiController, multiSubController, multiSCCoil, multiBase }))
         .addElement('=', StructureElementAirNoHint.getInstance())
-        .addElement('t', buildHatchAdder(MTEMegaBlastFurnace.class).atLeast(OutputHatch)
+        .addElement(
+            't',
+            buildHatchAdder(MTEMegaBlastFurnace.class).atLeast(OutputHatch)
                 .casingIndex(CASING_INDEX)
                 .dot(1)
                 .buildAndChain(GregTechAPI.sBlockCasings1, CASING_INDEX))
         .addElement('m', Muffler.newAny(CASING_INDEX, 2))
-        .addElement('C', withChannel("coil", activeCoils(ofCoil(MTEMegaBlastFurnace::setCoilLevel, MTEMegaBlastFurnace::getCoilLevel))))
+        .addElement(
+            'C',
+            withChannel(
+                "coil",
+                activeCoils(ofCoil(MTEMegaBlastFurnace::setCoilLevel, MTEMegaBlastFurnace::getCoilLevel))))
         .addElement('g', chainAllGlasses(-1, (te, t) -> te.glassTier = t, te -> te.glassTier))
-        .addElement('b', buildHatchAdder(MTEMegaBlastFurnace.class)
+        .addElement(
+            'b',
+            buildHatchAdder(MTEMegaBlastFurnace.class)
                 .atLeast(InputHatch, OutputHatch, InputBus, OutputBus, Maintenance, Energy.or(ExoticEnergy))
                 .casingIndex(CASING_INDEX)
                 .dot(1)
