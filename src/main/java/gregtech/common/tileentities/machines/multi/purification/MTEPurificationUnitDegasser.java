@@ -762,29 +762,49 @@ public class MTEPurificationUnitDegasser extends MTEPurificationUnitBase<MTEPuri
     }
 
     private static String generateInfoStringForBit(int i, ControlBitStatus status) {
-        String base = "Bit " + (i + 1) + " status: ";
+        String base = StatCollector.translateToLocalFormatted("GT5U.infodata.purification_unit_degasser.bit", (i + 1));
         if (status.satisfied) {
-            return base + EnumChatFormatting.GREEN + "OK";
+            return base + EnumChatFormatting.GREEN
+                + StatCollector.translateToLocal("GT5U.infodata.purification_unit_degasser.bit.ok");
         } else {
-            return base + EnumChatFormatting.RED + "NOT OK";
+            return base + EnumChatFormatting.RED
+                + StatCollector.translateToLocal("GT5U.infodata.purification_unit_degasser.bit.not_ok");
         }
     }
 
     @Override
     public String[] getInfoData() {
         ArrayList<String> info = new ArrayList<>(Arrays.asList(super.getInfoData()));
-        info.add("Current control signal (binary): 0b" + EnumChatFormatting.YELLOW + controlSignal.toString());
-        info.add("Current output multiplier: " + EnumChatFormatting.YELLOW + outputMultiplier);
+        info.add(
+            StatCollector.translateToLocalFormatted(
+                "GT5U.infodata.purification_unit_degasser.control_signal",
+                EnumChatFormatting.YELLOW + controlSignal.toString()));
+        info.add(
+            StatCollector.translateToLocalFormatted(
+                "GT5U.infodata.purification_unit_degasser.output_multiplier",
+                "" + EnumChatFormatting.YELLOW + outputMultiplier));
         for (FluidStack stack : insertedStuffThisCycle.values()) {
             info.add(
-                "Fluid inserted this cycle: " + EnumChatFormatting.YELLOW
-                    + stack.amount
-                    + "L "
-                    + stack.getLocalizedName());
+                StatCollector.translateToLocalFormatted(
+                    "GT5U.infodata.purification_unit_degasser.fluid_inserted",
+                    "" + EnumChatFormatting.YELLOW + stack.amount,
+                    stack.getLocalizedName()));
         }
-        info.add(generateInfoStringForBit(0, isBit0Satisfied()));
-        info.add(generateInfoStringForBit(1, isBit1Satisfied()));
-        info.add(generateInfoStringForBit(2, isBit2Satisfied()));
+        info.add(
+            generateInfoStringForBit(
+                0,
+                controlSignal.getBit(3) && isBit3Satisfied().satisfied ? new ControlBitStatus(null, true)
+                    : isBit0Satisfied()));
+        info.add(
+            generateInfoStringForBit(
+                1,
+                controlSignal.getBit(3) && isBit3Satisfied().satisfied ? new ControlBitStatus(null, true)
+                    : isBit1Satisfied()));
+        info.add(
+            generateInfoStringForBit(
+                2,
+                controlSignal.getBit(3) && isBit3Satisfied().satisfied ? new ControlBitStatus(null, true)
+                    : isBit2Satisfied()));
         info.add(generateInfoStringForBit(3, isBit3Satisfied()));
         return info.toArray(new String[] {});
     }

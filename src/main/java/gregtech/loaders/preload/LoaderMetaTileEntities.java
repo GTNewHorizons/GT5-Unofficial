@@ -740,6 +740,7 @@ import static gregtech.api.enums.MetaTileEntityIDs.SLICING_MACHINE_UMV;
 import static gregtech.api.enums.MetaTileEntityIDs.SLICING_MACHINE_UV;
 import static gregtech.api.enums.MetaTileEntityIDs.SLICING_MACHINE_ZPM;
 import static gregtech.api.enums.MetaTileEntityIDs.SMALL_COAL_BOILER;
+import static gregtech.api.enums.MetaTileEntityIDs.SOLAR_FACTORY_CONTROLLER;
 import static gregtech.api.enums.MetaTileEntityIDs.STEAM_ALLOY_SMELTER;
 import static gregtech.api.enums.MetaTileEntityIDs.STEAM_COMPRESSOR;
 import static gregtech.api.enums.MetaTileEntityIDs.STEAM_EXTRACTOR;
@@ -1063,6 +1064,7 @@ import gregtech.common.tileentities.machines.multi.MTEPlasmaForge;
 import gregtech.common.tileentities.machines.multi.MTEProcessingArray;
 import gregtech.common.tileentities.machines.multi.MTEPyrolyseOven;
 import gregtech.common.tileentities.machines.multi.MTEResearchCompleter;
+import gregtech.common.tileentities.machines.multi.MTESolarFactory;
 import gregtech.common.tileentities.machines.multi.MTETranscendentPlasmaMixer;
 import gregtech.common.tileentities.machines.multi.MTEVacuumFreezer;
 import gregtech.common.tileentities.machines.multi.MTEWormholeGenerator;
@@ -1526,6 +1528,10 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
             new MTEPyrolyseOven(PYROLYSE_OVEN_CONTROLLER.ID, "multimachine.pyro", "Pyrolyse Oven").getStackForm(1));
         ItemList.OilCracker.set(
             new MTEOilCracker(OIL_CRACKER_CONTROLLER.ID, "multimachine.cracker", "Oil Cracking Unit").getStackForm(1));
+
+        ItemList.SolarFactory.set(
+            new MTESolarFactory(SOLAR_FACTORY_CONTROLLER.ID, "multimachine.solarfactory", "Solar Factory")
+                .getStackForm(1));
 
         ItemList.Machine_Multi_Assemblyline.set(
             new MTEAssemblyLine(ASSEMBLING_LINE_CONTROLLER.ID, "multimachine.assemblyline", "Assembly Line")

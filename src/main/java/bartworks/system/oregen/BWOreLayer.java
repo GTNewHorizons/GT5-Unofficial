@@ -26,6 +26,8 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.IChunkProvider;
 
+import org.apache.commons.lang3.tuple.Pair;
+
 import com.google.common.collect.ArrayListMultimap;
 
 import bartworks.MainMod;
@@ -35,7 +37,6 @@ import bartworks.system.material.BWTileEntityMetaGeneratedOre;
 import bartworks.system.material.Werkstoff;
 import bartworks.system.material.WerkstoffLoader;
 import bartworks.util.MurmurHash3;
-import bartworks.util.Pair;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.ISubTagContainer;
@@ -113,10 +114,10 @@ public abstract class BWOreLayer extends GTWorldgen {
 
     public List<Pair<Integer, Boolean>> getStacksRawData() {
         ArrayList<Pair<Integer, Boolean>> ret = new ArrayList<>();
-        ret.add(new Pair<>(this.mPrimaryMeta, (this.bwOres & 0b1000) != 0));
-        ret.add(new Pair<>(this.mSecondaryMeta, (this.bwOres & 0b0100) != 0));
-        ret.add(new Pair<>(this.mBetweenMeta, (this.bwOres & 0b0010) != 0));
-        ret.add(new Pair<>(this.mSporadicMeta, (this.bwOres & 0b0001) != 0));
+        ret.add(Pair.of(this.mPrimaryMeta, (this.bwOres & 0b1000) != 0));
+        ret.add(Pair.of(this.mSecondaryMeta, (this.bwOres & 0b0100) != 0));
+        ret.add(Pair.of(this.mBetweenMeta, (this.bwOres & 0b0010) != 0));
+        ret.add(Pair.of(this.mSporadicMeta, (this.bwOres & 0b0001) != 0));
         return ret;
     }
 

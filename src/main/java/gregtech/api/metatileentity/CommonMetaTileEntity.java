@@ -82,7 +82,15 @@ public abstract class CommonMetaTileEntity implements IMetaTileEntity {
         if (GregTechAPI.METATILEENTITIES[id] == null) {
             GregTechAPI.METATILEENTITIES[id] = this;
         } else {
-            throw new IllegalArgumentException("MetaTileEntity id " + id + " is already occupied!");
+            var existing = GregTechAPI.METATILEENTITIES[id];
+            throw new IllegalArgumentException(
+                "MetaTileEntity id " + id
+                    + " is already occupied! Existing MTE is "
+                    + existing.getMetaName()
+                    + "("
+                    + existing.getClass()
+                        .getCanonicalName()
+                    + ").");
         }
         mInventory = new ItemStack[invSlotCount];
         mName = basicName.replace(" ", "_")
@@ -149,6 +157,8 @@ public abstract class CommonMetaTileEntity implements IMetaTileEntity {
     public void onTickFail(IGregTechTileEntity baseMetaTileEntity, long tick) {}
 
     public void onSetActive(boolean active) {}
+
+    public void onEnableWorking() {}
 
     public void onDisableWorking() {}
 
@@ -241,6 +251,11 @@ public abstract class CommonMetaTileEntity implements IMetaTileEntity {
     public ArrayList<String> getSpecialDebugInfo(IGregTechTileEntity baseMetaTileEntity, EntityPlayer player,
         int logLevel, ArrayList<String> list) {
         return list;
+    }
+
+    @Override
+    public ArrayList<ItemStack> getDroppedItem() {
+        return null;
     }
 
     /**
@@ -549,7 +564,7 @@ public abstract class CommonMetaTileEntity implements IMetaTileEntity {
      */
     @SuppressWarnings("deprecation")
     public void openGui(EntityPlayer player) {
-        if (GTGuis.GLOBAL_SWITCH_MUI2 && useMui2()) {
+        if ((GTGuis.GLOBAL_SWITCH_MUI2 && useMui2()) || forceUseMui2()) {
             if (!NetworkUtils.isClient(player)) {
                 MetaTileEntityGuiHandler.open(player, this);
             }
@@ -563,6 +578,14 @@ public abstract class CommonMetaTileEntity implements IMetaTileEntity {
      * MUI1.
      */
     protected boolean useMui2() {
+        return false;
+    }
+
+    /**
+     * Returning true means opening GUI with MUI2, regardless of {@link GTGuis#GLOBAL_SWITCH_MUI2}. Note that cover tabs
+     * are currently unfinished.
+     */
+    protected boolean forceUseMui2() {
         return false;
     }
 

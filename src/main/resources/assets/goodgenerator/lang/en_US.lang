@@ -342,6 +342,21 @@ scanner.info.XHE.0=Steam Output is equal to
 scanner.info.XHE.1=Overheated Threshold:
 scanner.info.UX.0=Running Parallel
 scanner.info.CASS.tier=Casing Tier:
+scanner.info.CASS.tier.none=None!
+
+gg.scanner.info.antimatter_forge=Antimatter Forge
+gg.scanner.info.les.parallel=Parallel:
+gg.scanner.info.les.node_power=Node Power:
+gg.scanner.info.les.purification_efficiency=Purification Efficiency:
+gg.scanner.info.les.speed_up=Speed Up:
+
+gg.scanner.info.generator.generates=Currently generates: %s EU/t
+gg.scanner.info.generator.problems=Problems:
+gg.scanner.info.generator.efficiency=Efficiency:
+gg.scanner.info.neutron_activator.progress=Progress: %s s / %s s
+gg.scanner.info.neutron_activator.input=Current Neutron Kinetic Energy Input: %sev
+
+gg.scanner.info.fusion_reactor_mk=Fusion Reactor MK
 
 #GUI Info
 GT5U.gui.text.node_too_small=§7Node too small
@@ -433,7 +448,7 @@ NeutronActivator.hint.5=2 - Output Hatch/Output Bus/Maintenance Hatch/Neutron Ac
 NeutronActivator.hint.6=3 - EV+ Tier Glass
 YOTTank.hint.0=At least 47x YOTTank Casing
 YOTTank.hint.1=16x Steel Frame Box
-YOTTank.hint.2=16x Borosilicate Glass Block of the same tier for every layer
+YOTTank.hint.2=16x Glass Block of the same tier for every layer
 YOTTank.hint.3=9x Fluid Cell Block for every layer
 YOTTank.hint.4=1 - Input Hatch/YOTTank Casing
 YOTTank.hint.5=2 - Maintenance Hatch/YOTTank Casing

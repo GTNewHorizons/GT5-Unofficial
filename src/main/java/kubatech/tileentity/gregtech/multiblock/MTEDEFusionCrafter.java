@@ -109,11 +109,11 @@ public class MTEDEFusionCrafter extends KubaTechGTMultiBlockBase<MTEDEFusionCraf
         .addElement('n', onElementPass(e -> e.mCasing++, ofBlock(BlockLoader.defcCasingBlock, 7)))
         .addElement('f', ofBlock(GregTechAPI.sBlockCasings4, 7))
         .addElement('F', ofBlocksTiered((Block b, int m) -> {
-            if (b != GregTechAPI.sBlockCasings4 || (m != 6 && m != 8)) return -2;
+            if (b != GregTechAPI.sBlockCasings4 || (m != 6 && m != 8)) return null;
             return m == 6 ? 1 : 2;
         }, fusionCasingTiers, -1, (e, i) -> e.mFusionTierCasing = i, e -> e.mFusionTierCasing))
         .addElement('R', ofBlocksTiered((Block b, int m) -> {
-            if (b != BlockLoader.defcCasingBlock || m < 8 || m > 12) return -2;
+            if (b != BlockLoader.defcCasingBlock || m < 8 || m > 12) return null;
             return m - 7;
         }, coreTiers, -1, (e, i) -> e.mTierCasing = i, e -> e.mTierCasing))
         .build();
@@ -129,7 +129,6 @@ public class MTEDEFusionCrafter extends KubaTechGTMultiBlockBase<MTEDEFusionCraf
         mFusionTierCasing = -1;
         if (!checkPiece(STRUCTURE_PIECE_MAIN, 2, 9, 0)) return false;
         if (mCasing < 19) return false;
-        if (mTierCasing == -2 || mFusionTierCasing == -2) return false;
         if (mTierCasing > 3 && mFusionTierCasing < 2) return false;
         return mMaintenanceHatches.size() == 1;
     }
@@ -226,7 +225,7 @@ public class MTEDEFusionCrafter extends KubaTechGTMultiBlockBase<MTEDEFusionCraf
             @Override
             protected OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
                 return super.createOverclockCalculator(recipe)
-                    .setSpeedBoost(1.0 / (mTierCasing - recipe.mSpecialValue + 1));
+                    .setDurationModifier(1.0 / (mTierCasing - recipe.mSpecialValue + 1));
             }
         };
     }

@@ -29,7 +29,6 @@ import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.metatileentity.MetaPipeEntity;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
-import gregtech.common.GTClient;
 import gregtech.common.covers.Cover;
 
 public class MTEItemPipe extends MetaPipeEntity implements IMetaTileEntityItemPipe {
@@ -85,7 +84,7 @@ public class MTEItemPipe extends MetaPipeEntity implements IMetaTileEntityItemPi
         int aColorIndex, boolean aConnected, boolean redstoneLevel) {
         if (mIsRestrictive) {
             if (aConnected) {
-                float tThickNess = getThickNess();
+                float tThickNess = getThickness();
                 if (tThickNess < 0.124F) return new ITexture[] { TextureFactory.of(
                     mMaterial.mIconSet.mTextures[OrePrefixes.pipe.mTextureIndex],
                     Dyes.getModulation(aColorIndex, mMaterial.mRGBa)), TextureFactory.of(PIPE_RESTRICTOR) };
@@ -114,7 +113,7 @@ public class MTEItemPipe extends MetaPipeEntity implements IMetaTileEntityItemPi
                 Dyes.getModulation(aColorIndex, mMaterial.mRGBa)), TextureFactory.of(PIPE_RESTRICTOR) };
         }
         if (aConnected) {
-            float tThickNess = getThickNess();
+            float tThickNess = getThickness();
             if (tThickNess < 0.124F) return new ITexture[] { TextureFactory.of(
                 mMaterial.mIconSet.mTextures[OrePrefixes.pipe.mTextureIndex],
                 Dyes.getModulation(aColorIndex, mMaterial.mRGBa)) };
@@ -412,8 +411,7 @@ public class MTEItemPipe extends MetaPipeEntity implements IMetaTileEntityItemPi
     }
 
     @Override
-    public float getThickNess() {
-        if (GTMod.instance.isClientSide() && (GTClient.hideValue & 0x1) != 0) return 0.0625F;
+    public float getCollisionThickness() {
         return mThickNess;
     }
 }

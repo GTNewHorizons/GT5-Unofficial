@@ -738,7 +738,10 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
                 .getEUCapacity();
         }
 
-        return new String[] { EnumChatFormatting.BLUE + "Antimatter Forge " + EnumChatFormatting.GRAY,
+        return new String[] {
+            EnumChatFormatting.BLUE + StatCollector.translateToLocal("gg.info.antimatter_forge")
+                + " "
+                + EnumChatFormatting.GRAY,
             StatCollector.translateToLocal("GT5U.multiblock.Progress") + ": "
                 + EnumChatFormatting.GREEN
                 + GTUtility.formatNumbers(mProgresstime)
@@ -771,7 +774,7 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
                 + EnumChatFormatting.LIGHT_PURPLE
                 + GTUtility.formatNumbers(this.guiActiveEnergy)
                 + EnumChatFormatting.RESET
-                + " EU/t",
+                + " EU/s",
             StatCollector.translateToLocal("gui.AntimatterForge.3") + ": "
                 + EnumChatFormatting.AQUA
                 + GTUtility.formatNumbers(this.guiAntimatterChange)

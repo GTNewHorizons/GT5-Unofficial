@@ -46,7 +46,7 @@ import gregtech.api.util.OverclockCalculator;
 public class MTEFuelRefineFactory extends MTETooltipMultiBlockBaseEM implements IConstructable, ISurvivalConstructable {
 
     private IStructureDefinition<MTEFuelRefineFactory> multiDefinition = null;
-    private int Tier = -1;
+    private int tier = -1;
     private static final Block[] coils = new Block[] { Loaders.FRF_Coil_1, Loaders.FRF_Coil_2, Loaders.FRF_Coil_3,
         Loaders.FRF_Coil_4 };
 
@@ -142,11 +142,11 @@ public class MTEFuelRefineFactory extends MTETooltipMultiBlockBaseEM implements 
     }
 
     private void setCoilTier(int tier) {
-        this.Tier = tier;
+        this.tier = tier;
     }
 
     private int getCoilTier() {
-        return this.Tier;
+        return this.tier;
     }
 
     @Override
@@ -175,13 +175,13 @@ public class MTEFuelRefineFactory extends MTETooltipMultiBlockBaseEM implements 
 
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
-        this.Tier = aNBT.getInteger("mTier");
+        this.tier = aNBT.getInteger("mTier");
         super.loadNBTData(aNBT);
     }
 
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
-        aNBT.setInteger("mTier", this.Tier);
+        aNBT.setInteger("mTier", this.tier);
         super.saveNBTData(aNBT);
     }
 
@@ -192,7 +192,7 @@ public class MTEFuelRefineFactory extends MTETooltipMultiBlockBaseEM implements 
 
     @Override
     public boolean checkMachine_EM(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        Tier = -1;
+        tier = -1;
         return structureCheck_EM(mName, 7, 12, 1);
     }
 
@@ -208,7 +208,7 @@ public class MTEFuelRefineFactory extends MTETooltipMultiBlockBaseEM implements 
             @NotNull
             @Override
             protected CheckRecipeResult validateRecipe(@NotNull GTRecipe recipe) {
-                if (recipe.mSpecialValue > Tier) {
+                if (recipe.mSpecialValue > tier) {
                     return CheckRecipeResultRegistry.insufficientMachineTier(recipe.mSpecialValue);
                 }
                 return CheckRecipeResultRegistry.SUCCESSFUL;
@@ -217,8 +217,7 @@ public class MTEFuelRefineFactory extends MTETooltipMultiBlockBaseEM implements 
             @NotNull
             @Override
             protected OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
-                int overclockAmount = Tier - recipe.mSpecialValue;
-                return super.createOverclockCalculator(recipe).limitOverclockCount(overclockAmount);
+                return super.createOverclockCalculator(recipe).setMaxOverclocks(tier - recipe.mSpecialValue);
             }
         }.enablePerfectOverclock();
     }
@@ -243,7 +242,7 @@ public class MTEFuelRefineFactory extends MTETooltipMultiBlockBaseEM implements 
     public String[] getInfoData() {
         String[] infoData = new String[super.getInfoData().length + 1];
         System.arraycopy(super.getInfoData(), 0, infoData, 0, super.getInfoData().length);
-        infoData[super.getInfoData().length] = StatCollector.translateToLocal("scanner.info.FRF") + " " + this.Tier;
+        infoData[super.getInfoData().length] = StatCollector.translateToLocal("scanner.info.FRF") + " " + this.tier;
         return infoData;
     }
 

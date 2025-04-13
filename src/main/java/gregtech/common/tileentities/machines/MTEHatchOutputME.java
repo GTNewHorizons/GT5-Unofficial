@@ -25,6 +25,7 @@ import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidContainerRegistry;
+import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidContainerItem;
 
@@ -68,6 +69,7 @@ import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchOutput;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
+import gregtech.common.items.ItemFluidDisplay;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
@@ -214,6 +216,8 @@ public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelSta
 
                         if (tFluid == null && stack.getItem() instanceof IFluidContainerItem)
                             tFluid = ((IFluidContainerItem) stack.getItem()).getFluid(stack);
+                        if (tFluid == null && stack.getItem() instanceof ItemFluidDisplay)
+                            tFluid = new FluidStack(FluidRegistry.getFluid(stack.getItemDamage()), 1);
 
                         if (tFluid != null) {
                             hadFilters = true;
@@ -634,17 +638,22 @@ public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelSta
     public String[] getInfoData() {
         List<String> ss = new ArrayList<>();
         ss.add(
-            "The hatch is " + ((getProxy() != null && getProxy().isActive()) ? EnumChatFormatting.GREEN + "online"
-                : EnumChatFormatting.RED + "offline" + getAEDiagnostics()) + EnumChatFormatting.RESET);
+            (getProxy() != null && getProxy().isActive())
+                ? StatCollector.translateToLocal("GT5U.infodata.hatch.crafting_input_me.bus.online")
+                : StatCollector.translateToLocalFormatted(
+                    "GT5U.infodata.hatch.crafting_input_me.bus.offline",
+                    getAEDiagnostics()));
         ss.add(
-            "Fluid cache capacity: " + EnumChatFormatting.GOLD
-                + GTUtility.formatNumbers(getCacheCapacity())
-                + " L"
-                + EnumChatFormatting.RESET);
+            StatCollector.translateToLocalFormatted(
+                "GT5U.infodata.hatch.output_me.cache_capacity",
+                EnumChatFormatting.GOLD + GTUtility.formatNumbers(getCacheCapacity())
+                    + " L"
+                    + EnumChatFormatting.RESET));
         if (fluidCache.isEmpty()) {
-            ss.add("The bus has no cached fluids");
+            ss.add(StatCollector.translateToLocal("GT5U.infodata.hatch.output_me.empty"));
         } else {
-            ss.add(String.format("The hatch contains %d cached fluids: ", fluidCache.size()));
+            ss.add(
+                StatCollector.translateToLocalFormatted("GT5U.infodata.hatch.output_me.contains", fluidCache.size()));
             int counter = 0;
             for (IAEFluidStack s : fluidCache) {
                 ss.add(
