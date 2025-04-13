@@ -152,6 +152,14 @@ GT5U.autoplace.error.no_hatch=§cSuggested to place hatch §4%s§c but none was 
 GT5U.autoplace.error.no_mte.id=§cSuggested to place machine with meta ID §4%s§c but none was found
 GT5U.autoplace.error.no_mte.class_name=§cSuggested to place machine with class name §4%d§c but none was found
 GT5U.providesfullhazmatprotection=Provides full hazmat protection.
+GT5U.providesCBRNprotection=Provides CBRN protection.
+GT5U.providesextremetemperatureprotection=Provides thermal protection.
+GT5U.providesbiologicalhazmatprotection=Provides biological hazard protection.
+GT5U.providesfrosthazmatprotection=Provides frost protection.
+GT5U.providesheathazmatprotection=Provides heat protection.
+GT5U.providesradiohazmatprotection=Provides radiation protection.
+GT5U.provideselectricalhazmatprotection=Provides electrical protection.
+GT5U.providesgashazmatprotection=Provides gas protection.
 
 # Multiblock Tooltip Builder Keywords
 # Context can be found in the class gregtech.api.util.MultiblockTooltipBuilder
@@ -744,6 +752,7 @@ GT5U.gui.text.not_enough_energy=§7Not enough energy
 GT5U.gui.text.power_overflow=§7Power overflowed
 GT5U.gui.text.duration_overflow=§7Processing time overflowed
 GT5U.gui.text.insufficient_power=§7Recipe needs more power to start. Required: %s EU/t (%s§7)
+GT5U.gui.text.insufficient_voltage=§7Recipe needs a higher voltage to start. Required: %s EU/t (%s§7)
 GT5U.gui.text.insufficient_heat=§7Recipe needs more heat to start. Required: %s K (%s§7)
 GT5U.gui.text.insufficient_machine_tier=§7Recipe needs higher structure tier. Required: %s
 GT5U.gui.text.insufficient_startup_power=§7Recipe needs higher startup power. Required: %s
@@ -1084,8 +1093,8 @@ GT5U.waila.multiblock.status.running_fine=Running Fine
 GT5U.waila.multiblock.status.cpu_load=Average CPU load of ~%s ns
 GT5U.waila.multiblock.status.locked_recipe=Locked Recipe:
 
-achievement.flintpick=First Tools
-achievement.flintpick.desc=Craft a flint pick
+achievement.gettingstartedwithgt=Getting Started with GT
+achievement.gettingstartedwithgt.desc=Craft a wooden pickaxe
 achievement.crops=Farming
 achievement.crops.desc=Craft Crops
 achievement.havestlead=Harvest Lead
@@ -1116,8 +1125,6 @@ achievement.hammertime=Hammertime
 achievement.hammertime.desc=Craft a Jackhammer
 achievement.repair=Repairs
 achievement.repair.desc=Craft a Disassembler
-achievement.unitool=Universal Tool
-achievement.unitool.desc=Craft a Universal Spade
 achievement.recycling=Recycling
 achievement.recycling.desc=Craft an Arc Furnace
 achievement.crushed=Crushed
