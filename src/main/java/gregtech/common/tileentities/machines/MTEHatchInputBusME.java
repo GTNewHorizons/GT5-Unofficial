@@ -668,6 +668,10 @@ public class MTEHatchInputBusME extends MTEHatchInputBus
         return shadowInventory[index];
     }
 
+    public int getShadowInventorySize() {
+        return shadowInventory.length;
+    }
+
     @Override
     public boolean isValidSlot(int aIndex) {
         return aIndex == getManualSlot();
