@@ -99,7 +99,7 @@ public class RedstoneSnifferGuiBuilder {
             @Override
             public void setPage(int page) {
                 super.setPage(page);
-                ((IntSyncValue) guiSyncManager.getSyncHandler("last_page:0")).setValue(page);
+                pageSyncer.setValue(page);
             }
         };
         ListWidget<IWidget, CategoryList.Root> regularListWidget = new ListWidget<>();
