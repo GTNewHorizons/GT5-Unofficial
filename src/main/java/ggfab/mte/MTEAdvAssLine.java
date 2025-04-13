@@ -21,7 +21,7 @@ import static gregtech.api.enums.HatchElement.OutputBus;
 import static gregtech.api.enums.Textures.BlockIcons.casingTexturePages;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.ofHatchAdder;
-import static gregtech.api.util.GTUtility.formatNumbers;
+import static gregtech.api.util.GTUtility.getTier;
 import static gregtech.api.util.GTUtility.validMTEList;
 
 import java.util.ArrayList;
@@ -309,20 +309,24 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Assembly Line, AAL")
-            .addInfo("Built exactly the same as standard Assembly Line")
             .addInfo("Assembly Line with item pipelining")
-            .addInfo("All fluids are however consumed at start")
-            .addInfo("Use voltage of worst energy hatch for overclocking")
-            .addInfo("Performs normal overclock with given voltage")
-            .addInfo("Recipe tier limited by the Energy Hatch tier")
-            .addTecTechHatchInfo()
-            .addInfo("Performs laser overclock with extra amperage from multi-amp energy hatches")
-            .addInfo("Each laser overclock reduces recipe time by 50%")
+            .addInfo("All fluids are consumed at the start of the recipe")
+            .addInfo("Recipe tier is limited by the lowest Energy Hatch tier")
+            .addSeparator(EnumChatFormatting.GOLD, 67)
+            .addInfo("Uses regular overclocks until Energy Hatch tier")
+            .addInfo("Additional overclocks become increasingly more expensive")
             .addInfo(
-                "and multiplies power by (4 + " + formatNumbers(LASER_OVERCLOCK_PENALTY_FACTOR)
-                    + " * total laser overclock count)")
-            .addInfo(EnumChatFormatting.BOLD + "Will not overclock beyond 1 tick.")
-            .addInfo("EU/t is (number of slices working) * (overclocked EU/t)")
+                EnumChatFormatting.AQUA
+                    + "Multiplier = 4^(Regular Overclocks) × 4.3 × 4.6 × … × (4 + 0.3 × Extra Overclocks)"
+                    + EnumChatFormatting.GRAY)
+            .addInfo(
+                EnumChatFormatting.AQUA + "Power usage = Multiplier × (Active Slices) × (Recipe EU/t)"
+                    + EnumChatFormatting.GRAY)
+            .addInfo("Overclocking assumes all recipe slices are active")
+            .addInfo(EnumChatFormatting.BOLD + "Will not overclock beyond 1 tick")
+            .addSeparator(EnumChatFormatting.GOLD, 67)
+            .addInfo("Constructed identically to the Assembly Line")
+            .addTecTechHatchInfo()
             .beginVariableStructureBlock(5, 16, 4, 4, 3, 3, false)
             .addStructureInfo("From Bottom to Top, Left to Right")
             .addStructureInfo(
@@ -342,7 +346,7 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
                 "Optional, next to controller",
                 2)
             .addSubChannelUsage("glass", "Glass Tier")
-            .toolTipFinisher();
+            .toolTipFinisher(EnumChatFormatting.GRAY, 67);
         return tt;
     }
 
@@ -728,35 +732,27 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
                 continue;
             }
 
+            // Check voltage tier is at least recipe tier.
             if (recipe.mEUt > inputVoltage) {
-                result = CheckRecipeResultRegistry.insufficientPower(recipe.mEUt);
+                result = CheckRecipeResultRegistry.insufficientVoltage(recipe.mEUt);
+                continue;
+            }
+
+            // Check all slices can run with provided power.
+            if ((long) recipe.mInputs.length * recipe.mEUt > inputEUt) {
+                result = CheckRecipeResultRegistry.insufficientPower((long) recipe.mInputs.length * recipe.mEUt);
                 continue;
             }
 
             int originalMaxParallel = 1;
             int maxParallel = originalMaxParallel;
 
-            OverclockCalculator calculator;
-
-            OverclockCalculator normalOCCalculator = new OverclockCalculator().setRecipeEUt(recipe.mEUt)
+            OverclockCalculator calculator = new OverclockCalculator().setRecipeEUt(recipe.mEUt)
                 .setDurationUnderOneTickSupplier(() -> ((double) (recipe.mDuration) / recipe.mInputs.length))
                 .setParallel(originalMaxParallel)
-                .setEUt(inputVoltage);
-
-            if (!mExoticEnergyHatches.isEmpty()) {
-                normalOCCalculator
-                    .setCurrentParallel((int) Math.max(1 / normalOCCalculator.calculateDurationUnderOneTick(), 1))
-                    .calculate();
-                int normalOverclockCount = normalOCCalculator.getPerformedOverclocks();
-
-                calculator = new OverclockCalculator().setRecipeEUt(recipe.mEUt)
-                    .setDurationUnderOneTickSupplier(() -> ((double) (recipe.mDuration) / recipe.mInputs.length))
-                    .setLaserOC(true)
-                    .setParallel(originalMaxParallel)
-                    .setEUt(inputEUt / recipe.mInputs.length);
-            } else {
-                calculator = normalOCCalculator;
-            }
+                .setEUt(inputEUt / recipe.mInputs.length)
+                .setLaserOC(true)
+                .setMaxRegularOverclocks(getTier(inputVoltage) - getTier(recipe.mEUt));
 
             // Disabled to disable overclocking under one tick.
             /*
