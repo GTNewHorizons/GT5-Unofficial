@@ -640,7 +640,12 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
         MTEHatchInputBus inputBus = mInputBusses.get(index);
         if (!inputBus.isValid()) return null;
         if (inputBus instanceof MTEHatchInputBusME meBus) {
-            ItemStack item = meBus.getShadowItemStack(0);
+            ItemStack item;
+            byte slotToCheck = 0;
+            do {
+                item = meBus.getShadowItemStack(slotToCheck);
+                slotToCheck++;
+            } while (item == null && slotToCheck < meBus.getShadowInventorySize());
             if (item == null) return null;
             GTUtility.ItemId id = GTUtility.ItemId.createNoCopy(item);
             if (!curBatchItemsFromME.containsKey(id)) return null;
@@ -655,7 +660,12 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
         MTEHatchInput inputHatch = mInputHatches.get(index);
         if (!inputHatch.isValid()) return null;
         if (inputHatch instanceof MTEHatchInputME meHatch) {
-            FluidStack fluid = meHatch.getShadowFluidStack(0);
+            FluidStack fluid;
+            byte slotToCheck = 0;
+            do {
+                fluid = meHatch.getShadowFluidStack(slotToCheck);
+                slotToCheck++;
+            } while (fluid == null && slotToCheck < meHatch.getShadowStoredFluidsSize());
             if (fluid == null) return null;
             if (!curBatchFluidsFromME.containsKey(fluid.getFluid())) return null;
             return curBatchFluidsFromME.get(fluid.getFluid());

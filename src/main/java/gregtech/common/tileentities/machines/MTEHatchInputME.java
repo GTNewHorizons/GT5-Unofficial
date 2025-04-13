@@ -491,6 +491,10 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
         return shadowStoredFluids[index];
     }
 
+    public int getShadowStoredFluidsSize() {
+        return shadowStoredFluids.length;
+    }
+
     public int getFluidSlot(FluidStack fluidStack) {
         if (fluidStack == null) return -1;
 
