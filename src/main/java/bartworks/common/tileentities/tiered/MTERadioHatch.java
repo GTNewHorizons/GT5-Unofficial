@@ -20,7 +20,6 @@ import static gregtech.common.modularui2.util.CommonGuiComponents.gridTemplate1b
 
 import java.util.Collections;
 
-import gregtech.api.modularui2.GTGuis;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -77,6 +76,7 @@ import gregtech.api.interfaces.tileentity.RecipeMapWorkable;
 import gregtech.api.metatileentity.BaseMetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.modularui2.GTGuiTextures;
+import gregtech.api.modularui2.GTGuis;
 import gregtech.api.objects.ItemData;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.render.TextureFactory;
@@ -373,7 +373,8 @@ public class MTERadioHatch extends MTEHatch implements RecipeMapWorkable, IAddGr
         syncManager.syncValue("decayTime", new LongSyncValue(() -> decayTime, time -> decayTime = time));
         syncManager.syncValue("timer", new LongSyncValue(() -> timer, time -> timer = time));
 
-        return GTGuis.mteTemplatePanelBuilder(this, data, syncManager).doesAddGregTechLogo(false)
+        return GTGuis.mteTemplatePanelBuilder(this, data, syncManager)
+            .doesAddGregTechLogo(false)
             .build()
             .child(
                 gridTemplate1by1(
