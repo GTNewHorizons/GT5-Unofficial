@@ -1,8 +1,6 @@
 package gregtech.api.modularui2;
 
 import gregtech.api.enums.Dyes;
-import gregtech.api.gui.modularui.GTUITextures;
-import gregtech.api.gui.modularui.GUITextureSet;
 import gtPlusPlus.xmod.gregtech.common.modularui2.GTPPTextureIds;
 
 /**

@@ -47,7 +47,7 @@ public final class GTGuiTextures {
             GTTextureIds.BACKGROUND_TITLE_PRIMITIVE)
         .build();
     private static final UITexture BACKGROUND_TITLE_ORGANIC = UITexture.builder()
-        .location(GregTech.ID,"gui/background/organic")
+        .location(GregTech.ID, "gui/background/organic")
         .imageSize(176, 166)
         .adaptable(4)
         .canApplyTheme()

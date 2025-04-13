@@ -1,18 +1,11 @@
 package gregtech.api.factory.artificialorganisms;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import com.google.common.collect.ImmutableList;
-import gregtech.api.enums.Materials;
-import gregtech.api.enums.OrePrefixes;
-import gregtech.api.util.GTOreDictUnificator;
-import gregtech.common.covers.Cover;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -34,12 +27,10 @@ import gregtech.api.objects.ArtificialOrganism;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
 import gregtech.common.config.Other;
+import gregtech.common.covers.Cover;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 import tectech.thing.metaTileEntity.pipe.MTEBaseFactoryPipe;
-
-import static gregtech.api.objects.XSTR.XSTR_INSTANCE;
-import static gtnhlanth.common.register.WerkstoffMaterialPool.Gangue;
 
 public class MTEBioPipe extends MTEBaseFactoryPipe implements AOFactoryElement {
 
@@ -80,10 +71,8 @@ public class MTEBioPipe extends MTEBaseFactoryPipe implements AOFactoryElement {
         super.getWailaBody(itemStack, currenttip, accessor, config);
         NBTTagCompound tag = accessor.getNBTData();
         if (!tag.getBoolean("ruined")) {
-            currenttip.add(
-                "Species: " + tag.getString("species"));
-            currenttip.add(
-                "Network: " + tag.getString("network"));
+            currenttip.add("Species: " + tag.getString("species"));
+            currenttip.add("Network: " + tag.getString("network"));
         } else {
             currenttip.add(EnumChatFormatting.RED + "DESTROYED");
             currenttip.add("Connections broken...");
@@ -110,16 +99,17 @@ public class MTEBioPipe extends MTEBaseFactoryPipe implements AOFactoryElement {
         return new ITexture[] { TextureFactory.of(isRuined ? pipeTextureRuined : pipeTexture) };
     }
 
-    //TODO: uncomment when dropped item pr merges
+    // TODO: uncomment when dropped item pr merges
 
-    /*@Override
-    public ArrayList<ItemStack> getDroppedItem() {
-        if (!isRuined) return null;
-        ArrayList<ItemStack> drops = new ArrayList<>();
-        drops.add(Gangue.get(OrePrefixes.dust, 8));
-        drops.add(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Iron, 2));
-        return drops;
-    }
+    /*
+     * @Override
+     * public ArrayList<ItemStack> getDroppedItem() {
+     * if (!isRuined) return null;
+     * ArrayList<ItemStack> drops = new ArrayList<>();
+     * drops.add(Gangue.get(OrePrefixes.dust, 8));
+     * drops.add(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Iron, 2));
+     * return drops;
+     * }
      */
 
     @Override

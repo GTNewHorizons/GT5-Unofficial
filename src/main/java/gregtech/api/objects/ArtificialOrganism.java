@@ -2,9 +2,7 @@ package gregtech.api.objects;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Random;
-import java.util.Set;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -22,6 +20,8 @@ public class ArtificialOrganism {
 
     private int count;
     private int sentience;
+
+    private boolean finalized = false;
 
     public final ArrayList<Trait> traits = new ArrayList<>();
 
@@ -121,6 +121,10 @@ public class ArtificialOrganism {
         return sentience;
     }
 
+    public boolean getFinalized() {
+        return finalized;
+    }
+
     /**
      * Returns current number of AOs, used in recipe validation
      */
@@ -148,6 +152,7 @@ public class ArtificialOrganism {
     }
 
     public void finalize(int maxAOs) {
+        finalized = true;
         if (decaying || immortal) count = maxAOs;
         else count = 50;
     }
@@ -202,7 +207,7 @@ public class ArtificialOrganism {
             "GT5U.artificialorganisms.traitdesc.cooperative"),
         Decaying(Items.rotten_flesh, 10, 10, 10, 5, "GT5U.artificialorganisms.traitname.decaying",
             "GT5U.artificialorganisms.traitdesc.decaying"),
-        Genius(Items.poisonous_potato, 5, 5, 5, 6, "GT5U.artificialorganisms.traitname.genius",
+        Genius(ItemList.Neuron_Cell_Cluster.getItem(), 5, 5, 5, 6, "GT5U.artificialorganisms.traitname.genius",
             "GT5U.artificialorganisms.traitdesc.genius"),
         Cancerous(Items.poisonous_potato, 5, 5, 5, 7, "GT5U.artificialorganisms.traitname.cancerous",
             "GT5U.artificialorganisms.traitdesc.cancerous"),

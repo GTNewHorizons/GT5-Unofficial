@@ -10,54 +10,18 @@ import static gregtech.api.enums.HatchElement.Maintenance;
 import static gregtech.api.enums.Mods.GregTech;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_BIOVAT_EMPTY;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_BIOVAT_EMPTY_GLOW;
-import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 import static gregtech.api.modularui2.GTGuiTextures.OVERLAY_BUTTON_ADDITION;
 import static gregtech.api.modularui2.GTGuiTextures.OVERLAY_BUTTON_CHECKMARK;
-import static gregtech.api.modularui2.GTGuiTextures.OVERLAY_BUTTON_CROSS;
 import static gregtech.api.modularui2.GTGuiTextures.OVERLAY_BUTTON_EXPORT;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
-import static gregtech.common.modularui2.util.CommonGuiComponents.gridTemplate1by1;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import com.cleanroommc.modularui.api.IPanelHandler;
-import com.cleanroommc.modularui.api.drawable.IDrawable;
-import com.cleanroommc.modularui.api.drawable.IKey;
-import com.cleanroommc.modularui.api.widget.IWidget;
-import com.cleanroommc.modularui.drawable.ItemDrawable;
-import com.cleanroommc.modularui.drawable.UITexture;
-import com.cleanroommc.modularui.drawable.text.TextIcon;
-import com.cleanroommc.modularui.factory.PosGuiData;
-import com.cleanroommc.modularui.screen.ModularPanel;
-import com.cleanroommc.modularui.screen.RichTooltip;
-import com.cleanroommc.modularui.utils.Alignment;
-import com.cleanroommc.modularui.value.sync.DoubleSyncValue;
-import com.cleanroommc.modularui.value.sync.IntSyncValue;
-import com.cleanroommc.modularui.value.sync.InteractionSyncHandler;
-import com.cleanroommc.modularui.value.sync.PanelSyncManager;
-import com.cleanroommc.modularui.widget.DraggableWidget;
-import com.cleanroommc.modularui.widget.ScrollWidget;
-import com.cleanroommc.modularui.widget.Widget;
-import com.cleanroommc.modularui.widget.WidgetTree;
-import com.cleanroommc.modularui.widgets.ButtonWidget;
-import com.cleanroommc.modularui.widgets.CategoryList;
-import com.cleanroommc.modularui.widgets.ItemSlot;
-import com.cleanroommc.modularui.widgets.ListWidget;
-import com.cleanroommc.modularui.widgets.ProgressWidget;
-import com.cleanroommc.modularui.widgets.layout.Flow;
-import com.cleanroommc.modularui.widgets.layout.Row;
-import com.cleanroommc.modularui.widgets.slot.ModularSlot;
-import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
-import gregtech.api.modularui2.GTGuiTheme;
-import gregtech.api.modularui2.GTGuiThemes;
-import gregtech.api.modularui2.GTGuis;
-import gregtech.common.tileentities.machines.multi.MTEIndustrialElectromagneticSeparator;
 import net.minecraft.block.Block;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -71,6 +35,27 @@ import net.minecraftforge.fluids.FluidStack;
 
 import org.apache.commons.lang3.tuple.Pair;
 
+import com.cleanroommc.modularui.api.IPanelHandler;
+import com.cleanroommc.modularui.api.drawable.IKey;
+import com.cleanroommc.modularui.api.widget.IWidget;
+import com.cleanroommc.modularui.drawable.ItemDrawable;
+import com.cleanroommc.modularui.drawable.UITexture;
+import com.cleanroommc.modularui.factory.PosGuiData;
+import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.utils.Alignment;
+import com.cleanroommc.modularui.utils.item.IItemHandler;
+import com.cleanroommc.modularui.utils.item.IItemHandlerModifiable;
+import com.cleanroommc.modularui.value.sync.DoubleSyncValue;
+import com.cleanroommc.modularui.value.sync.InteractionSyncHandler;
+import com.cleanroommc.modularui.value.sync.PanelSyncManager;
+import com.cleanroommc.modularui.widget.WidgetTree;
+import com.cleanroommc.modularui.widgets.ButtonWidget;
+import com.cleanroommc.modularui.widgets.CategoryList;
+import com.cleanroommc.modularui.widgets.ItemSlot;
+import com.cleanroommc.modularui.widgets.ListWidget;
+import com.cleanroommc.modularui.widgets.ProgressWidget;
+import com.cleanroommc.modularui.widgets.layout.Row;
+import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 import com.google.common.collect.ImmutableList;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
@@ -83,7 +68,6 @@ import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
 import gregtech.api.factory.artificialorganisms.MTEHatchAOOutput;
-import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.gui.modularui.GUITextureSet;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
@@ -93,6 +77,9 @@ import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
+import gregtech.api.modularui2.GTGuiTheme;
+import gregtech.api.modularui2.GTGuiThemes;
+import gregtech.api.modularui2.GTGuis;
 import gregtech.api.objects.ArtificialOrganism;
 import gregtech.api.objects.ArtificialOrganism.Trait;
 import gregtech.api.render.TextureFactory;
@@ -176,6 +163,8 @@ public class MTEEvolutionChamber extends MTEExtendedPowerMultiBlockBase<MTEEvolu
     private int maxAOs;
 
     private int traitCount = 0;
+
+    private int status = 0;
 
     public MTEEvolutionChamber(final int aID, final String aName, final String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -314,14 +303,13 @@ public class MTEEvolutionChamber extends MTEExtendedPowerMultiBlockBase<MTEEvolu
         return mCasingAmount >= 0;
     }
 
-    private boolean useNutrients() {
-        if (nutrientUsage == null) {
-            // Something went wrong!
+    private boolean useNutrients(FluidStack fluid) {
+        if (fluid == null) {
             return false;
         }
 
         for (MTEHatchInput hatch : mInputHatches) {
-            if (drain(hatch, nutrientUsage, true)) {
+            if (drain(hatch, fluid, true)) {
                 return true;
             }
         }
@@ -343,6 +331,11 @@ public class MTEEvolutionChamber extends MTEExtendedPowerMultiBlockBase<MTEEvolu
         if (!aBaseMetaTileEntity.isServerSide() || aTick % 20 != 0 || currentSpecies == null || !finalizedSpecies)
             return;
 
+        if (status == 1) {
+
+            return;
+        }
+
         if (currentSpecies.photosynthetic) {
             if (!aBaseMetaTileEntity.getSkyAtSideAndDistance(ForgeDirection.UP, 5)) {
                 triggerElectricityLoss();
@@ -354,7 +347,7 @@ public class MTEEvolutionChamber extends MTEExtendedPowerMultiBlockBase<MTEEvolu
 
         if (!drainEnergyInput(powerUsage)) triggerElectricityLoss();
 
-        if (!useNutrients()) {
+        if (!useNutrients(nutrientUsage)) {
             triggerNutrientLoss();
         } else if (currentSpecies.getCount() < maxAOs) currentSpecies.doReproduction();
     }
@@ -453,10 +446,11 @@ public class MTEEvolutionChamber extends MTEExtendedPowerMultiBlockBase<MTEEvolu
     }
 
     private boolean canAddTrait() {
-        return currentSpecies.traits.size() < casingTier;
+        return !currentSpecies.getFinalized() && currentSpecies.traits.size() < casingTier;
     }
 
     // UI Pit of Doom
+    // I've tried to comment what individual components are...
 
     @Override
     protected boolean forceUseMui2() {
@@ -482,55 +476,137 @@ public class MTEEvolutionChamber extends MTEExtendedPowerMultiBlockBase<MTEEvolu
         .build();
 
     private ModularPanel getTraitPopup() {
+        // This list is the scrollable element that contains each trait's individual ui
         ListWidget<IWidget, CategoryList.Root> list = new ListWidget<>();
         list.size(92, 158);
         list.pos(4, 4);
-        ModularPanel popup = new ModularPanel("trait_listing")
-            .size(100, 166)
+
+        // The actual panel
+        ModularPanel popup = new ModularPanel("trait_listing").size(100, 166)
             .pos(132, 86)
             .child(list);
 
+        // Iterate through all the traits to generate a ui for each one within the list
         for (Trait t : ArtificialOrganism.Trait.values()) {
             ItemStack fakeItem = new ItemStack(t.cultureItem, 1);
 
-            list.child(new Row().height(16).childPadding(2)
-                .child(new ItemDrawable(fakeItem).asWidget().size(12, 12)
-                    .addTooltipElement("Add " + fakeItem.getDisplayName() + " as a culture to add " + StatCollector.translateToLocal(t.nameLocKey) + "."))
-                .child(IKey.str(EnumChatFormatting.UNDERLINE + StatCollector.translateToLocal(t.nameLocKey)).asWidget()));
-            list.child(new Row().height(10).childPadding(1)
-                .child(intIcon.asWidget().size(10, 10)
-                    .addTooltipStringLines(ImmutableList.of(EnumChatFormatting.UNDERLINE + "Intelligence", "Required for AOs", "to perform certain recipes.")))
-                .child(IKey.str(Integer.toString(t.baseInt)).asWidget().width(14).alignment(Alignment.Center))
-                .child(strIcon.asWidget().size(10, 10)
-                    .addTooltipStringLines(ImmutableList.of(EnumChatFormatting.UNDERLINE + "Strength", "Allows AOs to perform", "most recipes quicker.")))
-                .child(IKey.str(Integer.toString(t.baseStr)).asWidget().width(14).alignment(Alignment.Center))
-                .child(repIcon.asWidget().size(10, 10)
-                    .addTooltipStringLines(ImmutableList.of(EnumChatFormatting.UNDERLINE + "Reproduction", "How quickly the tank", "will fill with AOs.")))
-                .child(IKey.str(Integer.toString(t.baseRep)).asWidget().width(14).alignment(Alignment.Center))
-                .child(UITexture.builder()
-                    .location(GregTech.ID, "gui/picture/artificial_organisms/trait_" + t.id)
-                    .imageSize(10, 10)
-                    .build()
-                    .asWidget().size(10, 10)
-                    .addTooltipStringLines(ImmutableList.of(EnumChatFormatting.UNDERLINE + "Trait", StatCollector.translateToLocal(t.descLocKey)))));
+            // The icon of the culture's item, with tooltip naming it
+            list.child(
+                new Row().height(16)
+                    .childPadding(2)
+                    .child(
+                        new ItemDrawable(fakeItem).asWidget()
+                            .size(12, 12)
+                            .addTooltipElement(
+                                "Add " + fakeItem.getDisplayName()
+                                    + " as a culture to add "
+                                    + StatCollector.translateToLocal(t.nameLocKey)
+                                    + "."))
+                    .child(
+                        IKey.str(EnumChatFormatting.UNDERLINE + StatCollector.translateToLocal(t.nameLocKey))
+                            .asWidget()));
+
+            // Stat icons and text with the trait's value for each stat, aligned row-wise
+            list.child(
+                new Row().height(10)
+                    .childPadding(1)
+                    .child(
+                        intIcon.asWidget()
+                            .size(10, 10)
+                            .addTooltipStringLines(
+                                ImmutableList.of(
+                                    EnumChatFormatting.UNDERLINE + "Intelligence",
+                                    "Required for AOs",
+                                    "to perform certain recipes.")))
+                    .child(
+                        IKey.str(Integer.toString(t.baseInt))
+                            .asWidget()
+                            .width(14)
+                            .alignment(Alignment.Center))
+                    .child(
+                        strIcon.asWidget()
+                            .size(10, 10)
+                            .addTooltipStringLines(
+                                ImmutableList.of(
+                                    EnumChatFormatting.UNDERLINE + "Strength",
+                                    "Allows AOs to perform",
+                                    "most recipes quicker.")))
+                    .child(
+                        IKey.str(Integer.toString(t.baseStr))
+                            .asWidget()
+                            .width(14)
+                            .alignment(Alignment.Center))
+                    .child(
+                        repIcon.asWidget()
+                            .size(10, 10)
+                            .addTooltipStringLines(
+                                ImmutableList.of(
+                                    EnumChatFormatting.UNDERLINE + "Reproduction",
+                                    "How quickly the tank",
+                                    "will fill with AOs.")))
+                    .child(
+                        IKey.str(Integer.toString(t.baseRep))
+                            .asWidget()
+                            .width(14)
+                            .alignment(Alignment.Center))
+
+                    // Add the unique trait icon and get the Trait's descLocKey as a tooltip
+                    .child(
+                        UITexture.builder()
+                            .location(GregTech.ID, "gui/picture/artificial_organisms/trait_" + t.id)
+                            .imageSize(10, 10)
+                            .build()
+                            .asWidget()
+                            .size(10, 10)
+                            .addTooltipStringLines(
+                                ImmutableList.of(
+                                    EnumChatFormatting.UNDERLINE + "Trait",
+                                    StatCollector.translateToLocal(t.descLocKey)))));
         }
 
         return popup;
     }
 
+    // I do not understand these interfaces, I do not understand if this is a reasonable thing to do
+    // But I want my 1-item limited slot handler
+    private static class LimitingItemStackHandler extends ItemStackHandler
+        implements IItemHandlerModifiable, IItemHandler {
+
+        private final int slotLimit;
+
+        private LimitingItemStackHandler(int slots, int slotLimit) {
+            super(slots);
+            this.slotLimit = slotLimit;
+        }
+
+        @Override
+        public int getSlotLimit(int slot) {
+            return slotLimit;
+        }
+    }
+
+    LimitingItemStackHandler limitedHandler = new LimitingItemStackHandler(1, 1);
+
     @Override
     public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager) {
 
-        ModularPanel panel = GTGuis.mteTemplatePanelBuilder(this, data, syncManager).build();
+        ModularPanel panel = GTGuis.mteTemplatePanelBuilder(this, data, syncManager)
+            .build();
 
+        // This row displays the currently active traits
         Row traitRow = new Row();
-        traitRow.pos(5, 41).size(50, 10).childPadding(6);
+        traitRow.pos(5, 41)
+            .size(50, 10)
+            .childPadding(6);
 
-        IPanelHandler traitPanel = syncManager.panel(
-            "trait_listing", (p_syncManager, syncHandler) -> getTraitPopup(), true);
+        // The popup panel which shows trait details
+        IPanelHandler traitPanel = syncManager
+            .panel("trait_listing", (p_syncManager, syncHandler) -> getTraitPopup(), true);
 
+        // Inventory slot handler
         syncManager.registerSlotGroup("culture_slot", 1);
 
+        // Defining a bunch of textures. TODO: define this in GTUITextures!
         UITexture progressBar = UITexture.builder()
             .location(GregTech.ID, "gui/progressbar/sentience_progress")
             .adaptable(1)
@@ -555,300 +631,167 @@ public class MTEEvolutionChamber extends MTEExtendedPowerMultiBlockBase<MTEEvolu
             .imageSize(32, 16)
             .build();
 
-        panel.child(new ProgressWidget()
-                .value(new DoubleSyncValue(() -> (double) currentSpecies.getSentience() / 100))
+        // Sentience progressbar
+        panel.child(
+            new ProgressWidget().value(new DoubleSyncValue(() -> (double) currentSpecies.getSentience() / 100))
                 .texture(progressBar, 16)
                 .direction(ProgressWidget.Direction.UP)
                 .size(16, 64)
                 .pos(100, 0))
 
-            .child(new ItemSlot()
-                .pos(7, 60)
-                .slot(new ModularSlot(inventoryHandler, 0).slotGroup("culture_slot")
-                            .filter(this::isValidCulture)))
-            .child(new ButtonWidget<>().pos(26, 60)
-                .syncHandler(new InteractionSyncHandler()
-                    .setOnMousePressed(mouseData ->  {
-                        ItemStack is = inventoryHandler.getStackInSlot(0);
+            // The actual itemslot for inserting cultures
+            .child(
+                new ItemSlot().pos(7, 60)
+                    .slot(
+                        new ModularSlot(limitedHandler, 0).slotGroup("culture_slot")
+                            .ignoreMaxStackSize(true)
+                            .filter(this::isValidCulture))
+                    .setEnabledIf(ignored -> canAddTrait())
+                    .size(16, 16))
+            // This is the "insert item" button
+            .child(
+                new ButtonWidget<>().pos(27, 61)
+                    .syncHandler(new InteractionSyncHandler().setOnMousePressed(mouseData -> {
+                        ItemStack is = limitedHandler.getStackInSlot(0);
                         if (is != null && canAddTrait()) {
                             Trait t = ArtificialOrganism.itemTraitMap.get(is.getItem());
 
                             currentSpecies.addTrait(t);
-                            traitRow.child(UITexture.builder()
-                                .location(GregTech.ID, "gui/picture/artificial_organisms/trait_" + t.id)
-                                .imageSize(10, 10)
-                                .build()
-                                .asWidget().size(10, 10).background()
-                                .addTooltipStringLines(ImmutableList.of(EnumChatFormatting.UNDERLINE +
-                                    StatCollector.translateToLocal(t.nameLocKey),
-                                    StatCollector.translateToLocal(t.descLocKey))));
+                            traitRow.child(
+                                UITexture.builder()
+                                    .location(GregTech.ID, "gui/picture/artificial_organisms/trait_" + t.id)
+                                    .imageSize(10, 10)
+                                    .build()
+                                    .asWidget()
+                                    .size(10, 10)
+                                    .background()
+                                    .addTooltipStringLines(
+                                        ImmutableList.of(
+                                            EnumChatFormatting.UNDERLINE + StatCollector.translateToLocal(t.nameLocKey),
+                                            StatCollector.translateToLocal(t.descLocKey))));
 
                             if (syncManager.isClient()) {
                                 WidgetTree.resize(panel);
-                            }}}))
-                .overlay(OVERLAY_BUTTON_ADDITION)
-                .addTooltipLine("Add Culture Item")
-                .setEnabledIf(ignored -> canAddTrait()))
-            .child(new ButtonWidget<>().pos(60, 60)
-                .syncHandler(new InteractionSyncHandler()
-                    .setOnMousePressed(mouseData -> createNewAOs()))
-                .overlay(OVERLAY_BUTTON_CHECKMARK)
-                .addTooltipLine("Finalize Batch")
-            .child(new ButtonWidget<>().pos(60, 41)
-                .syncHandler(new InteractionSyncHandler()
-                    .setOnMousePressed(ignored -> traitPanel.openPanel()))
-                .overlay(OVERLAY_BUTTON_EXPORT)
-                .addTooltipLine("View Trait List")))
+                            }
+                        }
+                    }))
+                    .overlay(OVERLAY_BUTTON_ADDITION)
+                    .addTooltipLine("Add Culture Item")
+                    .size(16, 16)
+                    .setEnabledIf(ignored -> canAddTrait()))
+            // This button finalizes the aos, preventing further modification and allowing user to add primordial soup
+            .child(
+                new ButtonWidget<>().pos(45, 61)
+                    .syncHandler(new InteractionSyncHandler().setOnMousePressed(mouseData -> createNewAOs()))
+                    .overlay(OVERLAY_BUTTON_CHECKMARK)
+                    .addTooltipLine("Finalize Batch")
+                    .size(16, 16)
+                    .setEnabledIf(ignored -> !currentSpecies.getFinalized()))
+            // Opens the trait list popup
+            .child(
+                new ButtonWidget<>().pos(-20, 61)
+                    .syncHandler(new InteractionSyncHandler().setOnMousePressed(ignored -> traitPanel.openPanel()))
+                    .overlay(OVERLAY_BUTTON_EXPORT)
+                    .size(16, 16)
+                    .addTooltipLine("View Trait List"))
 
-            .child(new ProgressWidget()
-                .value(new DoubleSyncValue(() -> ((double) currentSpecies.getIntelligence() / 32) + ((double) 1 /32)))
-                .texture(intProgressBar, 16)
-                .direction(ProgressWidget.Direction.RIGHT)
-                .hoverOverlay(IKey.dynamic(() -> EnumChatFormatting.WHITE + Integer.toString(currentSpecies.getIntelligence()) + "/30")
-                    .alignment(Alignment.BottomCenter).shadow(true).scale(0.8F).asIcon().margin(0, 0))
-                .size(32, 8)
-                .pos(16, 6))
-            .child(new ProgressWidget()
-                .value(new DoubleSyncValue(() -> ((double) currentSpecies.getStrength() / 32) + ((double) 1 /32)))
-                .texture(strProgressBar, 16)
-                .direction(ProgressWidget.Direction.RIGHT)
-                .hoverOverlay(IKey.dynamic(() -> EnumChatFormatting.WHITE + Integer.toString(currentSpecies.getStrength()) + "/30")
-                    .alignment(Alignment.BottomCenter).shadow(true).scale(0.8F).asIcon().margin(0, 0))
-                .size(32, 8)
-                .pos(16, 18))
-            .child(new ProgressWidget()
-                .value(new DoubleSyncValue(() -> ((double) currentSpecies.getReproduction() / 32) + ((double) 1 /32), ignored -> {}))
-                .texture(repProgressBar, 16)
-                .direction(ProgressWidget.Direction.RIGHT)
-                .hoverOverlay(IKey.dynamic(() -> EnumChatFormatting.WHITE +  Integer.toString(currentSpecies.getReproduction()) + "/30")
-                    .alignment(Alignment.BottomCenter).shadow(true).scale(0.8F).asIcon().margin(0, 0))
-                .size(32, 8)
-                .pos(16, 30))
+            // Progress bars for the three primary stats
+            .child(
+                new ProgressWidget()
+                    .value(
+                        new DoubleSyncValue(() -> ((double) currentSpecies.getIntelligence() / 32) + ((double) 1 / 32)))
+                    .texture(intProgressBar, 16)
+                    .direction(ProgressWidget.Direction.RIGHT)
+                    .hoverOverlay(
+                        IKey.dynamic(
+                            () -> EnumChatFormatting.WHITE + Integer.toString(currentSpecies.getIntelligence()) + "/30")
+                            .alignment(Alignment.BottomCenter)
+                            .shadow(true)
+                            .scale(0.8F)
+                            .asIcon()
+                            .margin(0, 0))
+                    .size(32, 8)
+                    .pos(16, 6))
+            .child(
+                new ProgressWidget()
+                    .value(new DoubleSyncValue(() -> ((double) currentSpecies.getStrength() / 32) + ((double) 1 / 32)))
+                    .texture(strProgressBar, 16)
+                    .direction(ProgressWidget.Direction.RIGHT)
+                    .hoverOverlay(
+                        IKey.dynamic(
+                            () -> EnumChatFormatting.WHITE + Integer.toString(currentSpecies.getStrength()) + "/30")
+                            .alignment(Alignment.BottomCenter)
+                            .shadow(true)
+                            .scale(0.8F)
+                            .asIcon()
+                            .margin(0, 0))
+                    .size(32, 8)
+                    .pos(16, 18))
+            .child(
+                new ProgressWidget()
+                    .value(
+                        new DoubleSyncValue(
+                            () -> ((double) currentSpecies.getReproduction() / 32) + ((double) 1 / 32),
+                            ignored -> {}))
+                    .texture(repProgressBar, 16)
+                    .direction(ProgressWidget.Direction.RIGHT)
+                    .hoverOverlay(
+                        IKey.dynamic(
+                            () -> EnumChatFormatting.WHITE + Integer.toString(currentSpecies.getReproduction()) + "/30")
+                            .alignment(Alignment.BottomCenter)
+                            .shadow(true)
+                            .scale(0.8F)
+                            .asIcon()
+                            .margin(0, 0))
+                    .size(32, 8)
+                    .pos(16, 30))
 
-            .child(intIcon.asWidget().pos(5, 5).size(10, 10)
-                .addTooltipStringLines(ImmutableList.of(EnumChatFormatting.UNDERLINE + "Intelligence", "Required for AOs", "to perform certain recipes.")))
-            .child(strIcon.asWidget().pos(5, 17).size(10, 10)
-                .addTooltipStringLines(ImmutableList.of(EnumChatFormatting.UNDERLINE + "Strength", "Allows AOs to perform", "most recipes quicker.")))
-            .child(repIcon.asWidget().pos(5, 29).size(10, 10)
-                .addTooltipStringLines(ImmutableList.of(EnumChatFormatting.UNDERLINE + "Reproduction", "How quickly the tank", "will fill with AOs.")));
+            // Description icons for the primary stats
+            .child(
+                intIcon.asWidget()
+                    .pos(5, 5)
+                    .size(10, 10)
+                    .addTooltipStringLines(
+                        ImmutableList.of(
+                            EnumChatFormatting.UNDERLINE + "Intelligence",
+                            "Required for AOs",
+                            "to perform certain recipes.")))
+            .child(
+                strIcon.asWidget()
+                    .pos(5, 17)
+                    .size(10, 10)
+                    .addTooltipStringLines(
+                        ImmutableList.of(
+                            EnumChatFormatting.UNDERLINE + "Strength",
+                            "Allows AOs to perform",
+                            "most recipes quicker.")))
+            .child(
+                repIcon.asWidget()
+                    .pos(5, 29)
+                    .size(10, 10)
+                    .addTooltipStringLines(
+                        ImmutableList.of(
+                            EnumChatFormatting.UNDERLINE + "Reproduction",
+                            "How quickly the tank",
+                            "will fill with AOs.")));
 
-
-
-            for (Trait t : currentSpecies.traits) {
-                traitRow.child(UITexture.builder()
+        // Render the trait icons for traits previously added
+        for (Trait t : currentSpecies.traits) {
+            traitRow.child(
+                UITexture.builder()
                     .location(GregTech.ID, "gui/picture/artificial_organisms/trait_" + t.id)
                     .imageSize(10, 10)
                     .build()
-                    .asWidget().size(10, 10).background()
-                    .addTooltipStringLines(ImmutableList.of(EnumChatFormatting.UNDERLINE +
-                        StatCollector.translateToLocal(t.nameLocKey),
-                        StatCollector.translateToLocal(t.descLocKey))));
-            }
+                    .asWidget()
+                    .size(10, 10)
+                    .background()
+                    .addTooltipStringLines(
+                        ImmutableList.of(
+                            EnumChatFormatting.UNDERLINE + StatCollector.translateToLocal(t.nameLocKey),
+                            StatCollector.translateToLocal(t.descLocKey))));
+        }
 
-            panel.child(traitRow);
-            return panel;
+        panel.child(traitRow);
+        return panel;
     }
-
-    /*
-    @Override
-    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
-        builder.widget(
-            new DrawableWidget().setDrawable(GTUITextures.PICTURE_SCREEN_BLACK)
-                .setPos(24, 4)
-                .setSize(170, 85));
-
-        final DynamicPositionedColumn screenElements = new DynamicPositionedColumn();
-        screenElements.setSynced(false)
-            .setSpace(0)
-            .setPos(34, 7);
-        screenElements.widget(new TextWidget("Current Species: ").setDefaultColor(COLOR_TEXT_WHITE.get()));
-        screenElements.widget(
-            new DynamicTextWidget(() -> new Text("Intelligence: " + intelligence)).setSynced(false)
-                .setDefaultColor(COLOR_TEXT_WHITE.get()))
-            .widget(new FakeSyncWidget.IntegerSyncer(() -> intelligence, val -> intelligence = val))
-            .widget(
-                new DynamicTextWidget(() -> new Text("Strength: " + strength)).setSynced(false)
-                    .setDefaultColor(COLOR_TEXT_WHITE.get()))
-            .widget(new FakeSyncWidget.IntegerSyncer(() -> strength, val -> strength = val))
-            .widget(
-                new DynamicTextWidget(() -> new Text("Count: " + count)).setSynced(false)
-                    .setDefaultColor(COLOR_TEXT_WHITE.get()))
-            .widget(new FakeSyncWidget.IntegerSyncer(() -> count, val -> count = val))
-            .widget(
-                new DynamicTextWidget(() -> new Text("Sentience: " + sentience)).setSynced(false)
-                    .setDefaultColor(COLOR_TEXT_WHITE.get()))
-            .widget(new FakeSyncWidget.IntegerSyncer(() -> sentience, val -> sentience = val));
-        // screenElements.setEnabled(widget -> currentSpecies != null);
-
-        builder.widget(createPurgeButton(builder));
-        builder.widget(createSentienceBar(builder));
-        builder.widget(createTraitWindowButton(builder, Trait.Photosynthetic, new Pos2d(4, 4)));
-        builder.widget(createTraitWindowButton(builder, Trait.HiveMind, new Pos2d(4, 20)));
-        builder.widget(createTraitWindowButton(builder, Trait.Laborer, new Pos2d(4, 36)));
-        builder.widget(createTraitWindowButton(builder, Trait.Decaying, new Pos2d(4, 52)));
-        builder.widget(screenElements);
-
-        // Windows
-        buildContext.addSyncedWindow(TRAIT_WINDOW_ID, this::createTraitWindow);
-    }
-
-    private Widget createSentienceBar(IWidgetBuilder<?> builder) {
-        return new ProgressBar().setProgress(() -> (float) sentience / 100)
-            .setDirection(ProgressBar.Direction.UP)
-            .setTexture(GTUITextures.PROGRESSBAR_SENTIENCE, 64)
-            .setSynced(true, false)
-            .setSize(16, 64)
-            .setPos(173, 120);
-    }
-
-    private ModularWindow createTraitWindow(final EntityPlayer player) {
-        ModularWindow.Builder builder = ModularWindow.builder(
-            getBaseMetaTileEntity().getMetaTileEntity()
-                .getGUIWidth(),
-            getBaseMetaTileEntity().getMetaTileEntity()
-                .getGUIHeight())
-            .setDraggable(false);
-
-        builder.widget(
-            new DrawableWidget().setDrawable(GTUITextures.PICTURE_SCREEN_BLACK)
-                .setPos(0, 0)
-                .setSize(170, 85))
-            .widget(createTraitItemWidget(new ItemStack(activeTraitWindow.cultureItem, 1)).setPos(95, 50))
-            .widget(createAddTraitButton().setPos(95, 66))
-            .widget(createFinalizeAOsButton().setPos(116, 66));
-
-        final DynamicPositionedColumn screenElements = new DynamicPositionedColumn();
-        screenElements.setSynced(false)
-            .setSpace(0)
-            .setSize(170, 85)
-            .setPos(0, 0);
-
-        screenElements.widget(
-            new TextWidget(EnumChatFormatting.UNDERLINE + StatCollector.translateToLocal(activeTraitWindow.nameLocKey))
-                .setDefaultColor(COLOR_TEXT_WHITE.get())
-                .setTextAlignment(Alignment.Center)
-                .setSize(170, 20));
-        screenElements.widget(
-            new TextWidget(StatCollector.translateToLocal(activeTraitWindow.descLocKey))
-                .setDefaultColor(COLOR_TEXT_WHITE.get())
-                .setTextAlignment(Alignment.Center)
-                .setSize(170, 20));
-
-        builder.widget(screenElements);
-
-        return builder.build();
-    }
-
-    private ButtonWidget createTraitWindowButton(IWidgetBuilder<?> builder, Trait trait, Pos2d pos) {
-        Widget button = new ButtonWidget().setOnClick((clickData, widget) -> {
-            activeTraitWindow = trait;
-            if (!widget.isClient()) {
-                widget.getContext()
-                    .closeWindow(TRAIT_WINDOW_ID);
-                widget.getContext()
-                    .openSyncedWindow(TRAIT_WINDOW_ID);
-            }
-        })
-            .setPlayClickSound(supportsVoidProtection())
-            .setBackground(
-                () -> new IDrawable[] { GTUITextures.BUTTON_STANDARD_PRESSED,
-                    new ItemDrawable(new ItemStack(trait.cultureItem)) })
-            .addTooltip(StatCollector.translateToLocal(trait.nameLocKey))
-            .setTooltipShowUpDelay(TOOLTIP_DELAY)
-            .setPos(pos)
-            .setSize(16, 16);
-        return (ButtonWidget) button;
-    }
-
-    private ButtonWidget createPurgeButton(IWidgetBuilder<?> builder) {
-        Widget button = new ButtonWidget().setOnClick((clickData, widget) -> {
-            intelligence = 0;
-            strength = 0;
-            count = 0;
-            sentience = 0;
-            currentSpecies = new ArtificialOrganism();
-            traitCount = 0;
-            for (MTEHatchAOOutput hatch : bioHatches) hatch.setSpecies(currentSpecies);
-        })
-            .setPlayClickSound(supportsVoidProtection())
-            .setBackground(() -> {
-                List<UITexture> ret = new ArrayList<>();
-                ret.add(getVoidingMode().buttonTexture);
-                ret.add(getVoidingMode().buttonOverlay);
-                if (!supportsVoidProtection()) {
-                    ret.add(GTUITextures.OVERLAY_BUTTON_FORBIDDEN);
-                }
-                return ret.toArray(new IDrawable[0]);
-            })
-            .addTooltip("Purge tank")
-            .setTooltipShowUpDelay(TOOLTIP_DELAY)
-            .setPos(26, 91)
-            .setSize(16, 16);
-        return (ButtonWidget) button;
-    }
-
-    private ButtonWidget createFinalizeAOsButton() {
-        Widget button = new ButtonWidget().setOnClick((clickData, widget) -> {
-            if (!widget.isClient()) {
-                createNewAOs();
-            }
-        })
-            .setPlayClickSound(supportsVoidProtection())
-            .setBackground(() -> {
-                List<UITexture> ret = new ArrayList<>();
-                ret.add(getVoidingMode().buttonTexture);
-                ret.add(getVoidingMode().buttonOverlay);
-                if (!supportsVoidProtection()) {
-                    ret.add(GTUITextures.OVERLAY_BUTTON_FORBIDDEN);
-                }
-                return ret.toArray(new IDrawable[0]);
-            })
-            .addTooltip("Finalize Population")
-            .setTooltipShowUpDelay(TOOLTIP_DELAY)
-            .setSize(16, 16);
-        return (ButtonWidget) button;
-    }
-
-    private ButtonWidget createAddTraitButton() {
-        Widget button = new ButtonWidget().setOnClick((clickData, widget) -> {
-            if (!widget.isClient()) {
-                ItemStack inputItem = inputSlotHandler.getStackInSlot(0);
-                if (inputItem == null) return;
-                if (inputItem.getItem() == activeTraitWindow.cultureItem && traitCount < casingTier) {
-                    inputItem.stackSize -= 1;
-                    currentSpecies.addTrait(activeTraitWindow);
-                    updateSpecies();
-                    traitCount++;
-                }
-            }
-        })
-            .setPlayClickSound(supportsVoidProtection())
-            .setBackground(() -> {
-                List<UITexture> ret = new ArrayList<>();
-                ret.add(getVoidingMode().buttonTexture);
-                ret.add(getVoidingMode().buttonOverlay);
-                if (!supportsVoidProtection()) {
-                    ret.add(GTUITextures.OVERLAY_BUTTON_FORBIDDEN);
-                }
-                return ret.toArray(new IDrawable[0]);
-            })
-            .addTooltip("Add Culture")
-            .setTooltipShowUpDelay(TOOLTIP_DELAY)
-            .setSize(16, 16);
-        return (ButtonWidget) button;
-    }
-
-    public Widget createTraitItemWidget(final ItemStack costStack) {
-        // Item slot
-        ItemStack handlerStack = costStack.copy();
-        handlerStack.stackSize = 1;
-        return new SlotWidget(inputSlotHandler, 0).setAccess(true, true)
-            .setFilter((stack) -> stack.getItem() == costStack.getItem())
-            .setRenderStackSize(false)
-            .setPos(26, 91)
-            .setSize(16, 16)
-            .setBackground(() -> new IDrawable[] { GTUITextures.BUTTON_STANDARD_PRESSED, new ItemDrawable(costStack) });
-    }
-
-     */
 }
