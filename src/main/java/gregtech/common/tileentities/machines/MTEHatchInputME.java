@@ -491,6 +491,21 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
         return shadowStoredFluids[index];
     }
 
+    /**
+     * Gets the first non-null shadow fluid stack.
+     * 
+     * @return The first shadow fluid stack, or null if this doesn't exist.
+     */
+    public FluidStack getFirstShadowFluidStack() {
+        FluidStack fluidStack;
+        byte slotToCheck = 0;
+        do {
+            fluidStack = getShadowFluidStack(slotToCheck);
+            slotToCheck++;
+        } while (fluidStack == null && slotToCheck < getShadowStoredFluidsSize());
+        return fluidStack;
+    }
+
     public int getShadowStoredFluidsSize() {
         return shadowStoredFluids.length;
     }

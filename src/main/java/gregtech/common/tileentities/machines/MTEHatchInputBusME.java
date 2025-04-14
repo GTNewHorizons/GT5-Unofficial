@@ -673,6 +673,21 @@ public class MTEHatchInputBusME extends MTEHatchInputBus
         return shadowInventory.length;
     }
 
+    /**
+     * Gets the first non-null shadow item stack.
+     * 
+     * @return The first shadow item stack, or null if this doesn't exist.
+     */
+    public ItemStack getFirstShadowItemStack() {
+        ItemStack item;
+        byte slotToCheck = 0;
+        do {
+            item = getShadowItemStack(slotToCheck);
+            slotToCheck++;
+        } while (item == null && slotToCheck < getShadowInventorySize());
+        return item;
+    }
+
     @Override
     public boolean isValidSlot(int aIndex) {
         return aIndex == getManualSlot();
