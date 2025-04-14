@@ -7,8 +7,7 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ENGRAVER;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ENGRAVER_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ENGRAVER_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ENGRAVER_GLOW;
-import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
-import static gregtech.api.util.GTStructureUtility.ofFrame;
+import static gregtech.api.util.GTStructureUtility.*;
 
 import java.util.HashMap;
 import java.util.List;
@@ -33,7 +32,6 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
-import bartworks.API.BorosilicateGlass;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
@@ -55,6 +53,7 @@ import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.api.util.OverclockCalculator;
 import gregtech.common.blocks.BlockCasings10;
 import gregtech.common.tileentities.render.TileEntityLaser;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
@@ -76,16 +75,13 @@ public class MTEIndustrialLaserEngraver extends MTEExtendedPowerMultiBlockBase<M
         .addElement(
             'a',
             buildHatchAdder(MTEIndustrialLaserEngraver.class)
-                .atLeast(InputBus, OutputBus, InputHatch, OutputHatch, Maintenance, Energy)
+                .atLeast(InputBus, OutputBus, InputHatch, OutputHatch, Maintenance, Energy, MultiAmpEnergy)
                 .casingIndex(((BlockCasings10) GregTechAPI.sBlockCasings10).getTextureIndex(1))
                 .dot(1)
                 .buildAndChain(
                     onElementPass(MTEIndustrialLaserEngraver::onCasingAdded, ofBlock(GregTechAPI.sBlockCasings10, 1))))
         .addElement('f', ofFrame(Materials.TungstenSteel))
-        .addElement(
-            'g',
-            BorosilicateGlass
-                .ofBoroGlass((byte) 0, (byte) 1, Byte.MAX_VALUE, (te, t) -> te.glassTier = t, te -> te.glassTier))
+        .addElement('g', chainAllGlasses(-1, (te, t) -> te.glassTier = t, te -> te.glassTier))
         .addElement('r', ofBlock(GregTechAPI.sLaserRender, 0))
         .addElement(
             's',
@@ -97,7 +93,7 @@ public class MTEIndustrialLaserEngraver extends MTEExtendedPowerMultiBlockBase<M
         .build();
 
     protected TileEntityLaser renderer;
-    private byte glassTier = 0;
+    private int glassTier = -1;
     private MTEHatchDynamoTunnel laserSource = null;
     private int laserAmps = 0;
     private int laserTier = 0;
@@ -235,28 +231,33 @@ public class MTEIndustrialLaserEngraver extends MTEExtendedPowerMultiBlockBase<M
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Laser Engraver, HILE")
-            .addInfo("200% faster than single block machines of the same voltage")
+            .addInfo("250% faster than single block machines of the same voltage")
             .addInfo("Uses 80% of the EU normally required")
             .addInfo("Laser source hatch determines maximum recipe tier and parallels")
-            .addInfo("Can perform recipes up to laser source tier + 1")
+            .addInfo("Recipe tier and overclocks limited to laser source tier + 1")
+            .addInfo("With UEV laser source, 1 multi-amp energy hatch is allowed (instead of regular hatches)")
             .addInfo("Parallels equal to the cube root of laser source amperage input")
             .addInfo("Glass tier determines maximum laser source tier")
-            .addInfo("UMV glass accepts all laser source hatches")
+            .addInfo(
+                GTValues.TIER_COLORS[VoltageIndex.UMV] + GTValues.VN[VoltageIndex.UMV]
+                    + EnumChatFormatting.GRAY
+                    + "-tier glass accepts all laser source hatches")
             .addInfo("Use screwdriver to disable laser rendering")
             .addInfo("Use wire cutter to toggle realism mode if you hate angled lasers")
             .beginStructureBlock(5, 5, 5, false)
             .addController("Front Center")
             .addCasingInfoMin("Laser Containment Casing", 35, false)
             .addCasingInfoExactly("Tungstensteel Frame Box", 9, false)
-            .addCasingInfoExactly("Glass", 3, true)
+            .addCasingInfoExactly("Any Tiered Glass", 3, true)
             .addOtherStructurePart("Laser Resistant Plate", "x1")
-            .addOtherStructurePart("Laser Source Hatch", "x1", 3)
+            .addOtherStructurePart(StatCollector.translateToLocal("GT5U.tooltip.structure.laser_source_hatch"), "x1", 3)
             .addInputBus("Any Casing", 1)
             .addInputHatch("Any Casing", 1)
             .addOutputBus("Any Casing", 1)
             .addOutputHatch("Any Casing", 1)
             .addEnergyHatch("Any Casing", 1)
             .addMaintenanceHatch("Any Casing", 1)
+            .addSubChannelUsage("glass", "Glass Tier")
             .toolTipFinisher(AuthorFourIsTheNumber);
         return tt;
     }
@@ -294,13 +295,21 @@ public class MTEIndustrialLaserEngraver extends MTEExtendedPowerMultiBlockBase<M
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         mCasingAmount = 0;
-        glassTier = 0;
+        glassTier = -1;
         IGregTechTileEntity base = getBaseMetaTileEntity();
 
         if (!checkPiece(STRUCTURE_PIECE_MAIN, 2, 4, 0)) return false;
         if (mCasingAmount < 35) return false;
         if (laserSource == null) return false;
         if (!findLaserRenderer(base.getWorld(), base.getXCoord(), base.getYCoord(), base.getZCoord())) return false;
+
+        // If there are exotic hatches, ensure there is only 1 and that the laser source requirement is met
+        if (!mExoticEnergyHatches.isEmpty()) {
+            if (laserSource.mTier < VoltageIndex.UEV) return false;
+            if (!mEnergyHatches.isEmpty()) return false;
+            return (mExoticEnergyHatches.size() == 1);
+        }
+
         return glassTier >= VoltageIndex.UMV || laserSource.mTier <= glassTier;
     }
 
@@ -341,14 +350,21 @@ public class MTEIndustrialLaserEngraver extends MTEExtendedPowerMultiBlockBase<M
                 return super.onRecipeStart(recipe);
             }
 
+            @NotNull
+            @Override
+            protected OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
+                return super.createOverclockCalculator(recipe)
+                    .setMaxOverclocks((laserSource.mTier + 1) - GTUtility.getTier(recipe.mEUt));
+            }
+
             @Override
             public ProcessingLogic clear() {
                 if (renderer != null) renderer.setShouldRender(false);
                 return super.clear();
             }
-        }.setSpeedBonus(1F / 3F)
+        }.setSpeedBonus(1F / 3.5F)
             .setEuModifier(0.8F)
-            .setMaxParallelSupplier(this::getMaxParallelRecipes);
+            .setMaxParallelSupplier(this::getTrueParallel);
     }
 
     @Override
@@ -356,7 +372,8 @@ public class MTEIndustrialLaserEngraver extends MTEExtendedPowerMultiBlockBase<M
         return true;
     }
 
-    private int getMaxParallelRecipes() {
+    @Override
+    public int getMaxParallelRecipes() {
         return laserAmps;
     }
 
@@ -407,8 +424,10 @@ public class MTEIndustrialLaserEngraver extends MTEExtendedPowerMultiBlockBase<M
 
     @Override
     protected void setProcessingLogicPower(ProcessingLogic logic) {
-        logic.setAvailableVoltage(GTUtility.roundUpVoltage(this.getMaxInputVoltage()));
-        logic.setAvailableAmperage(1L);
+        if (mExoticEnergyHatches.isEmpty()) {
+            logic.setAvailableVoltage(GTUtility.roundUpVoltage(this.getMaxInputVoltage()));
+            logic.setAvailableAmperage(1L);
+        } else super.setProcessingLogicPower(logic);
     }
 
     @Override

@@ -209,7 +209,7 @@ public class FluidExtractorRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(GTModHandler.getIC2Item("TritiumCell", 1))
-            .itemOutputs(GTModHandler.getIC2Item("fuelRod", 1))
+            .itemOutputs(ItemList.IC2_Fuel_Rod_Empty.get(1))
             .outputChances(10000)
             .fluidOutputs(Materials.Tritium.getGas(32))
             .duration(16 * TICKS)
@@ -555,13 +555,6 @@ public class FluidExtractorRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(GTModHandler.getModItem(TinkerConstruct.ID, "oreBerries", 1L, 3))
             .fluidOutputs(Materials.Tin.getMolten(16))
-            .duration(2 * SECONDS)
-            .eut(TierEU.RECIPE_MV)
-            .addTo(fluidExtractionRecipes);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(GTModHandler.getModItem(TinkerConstruct.ID, "oreBerries", 1L, 4))
-            .fluidOutputs(Materials.Aluminium.getMolten(16))
             .duration(2 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(fluidExtractionRecipes);

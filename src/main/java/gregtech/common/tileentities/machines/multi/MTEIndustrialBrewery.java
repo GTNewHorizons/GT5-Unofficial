@@ -14,6 +14,7 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_BREWERY
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_BREWERY_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_BREWERY_GLOW;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
+import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 
 import net.minecraft.item.ItemStack;
@@ -32,7 +33,6 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
-import gregtech.api.multitileentity.multiblock.casing.Glasses;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
@@ -77,7 +77,7 @@ public class MTEIndustrialBrewery extends MTEExtendedPowerMultiBlockBase<MTEIndu
                 .dot(1)
                 .buildAndChain(
                     onElementPass(MTEIndustrialBrewery::onCasingAdded, ofBlock(GregTechAPI.sBlockCasings10, 15))))
-        .addElement('A', Glasses.chainAllGlasses())
+        .addElement('A', chainAllGlasses())
         .addElement('C', ofFrame(Materials.Steel))
         .build();
 
@@ -152,7 +152,7 @@ public class MTEIndustrialBrewery extends MTEExtendedPowerMultiBlockBase<MTEIndu
             .beginStructureBlock(3, 5, 3, true)
             .addController("Front Center")
             .addCasingInfoMin("Reinforced Wooden Casing", 14, false)
-            .addCasingInfoExactly("Any Glass", 6, false)
+            .addCasingInfoExactly("Any Tiered Glass", 6, false)
             .addCasingInfoExactly("Steel Frame Box", 4, false)
             .addInputBus("Any Wooden Casing", 1)
             .addOutputBus("Any Wooden Casing", 1)
@@ -160,6 +160,7 @@ public class MTEIndustrialBrewery extends MTEExtendedPowerMultiBlockBase<MTEIndu
             .addOutputHatch("Any Wooden Casing", 1)
             .addEnergyHatch("Any Wooden Casing", 1)
             .addMaintenanceHatch("Any Wooden Casing", 1)
+            .addSubChannelUsage("glass", "Glass Tier")
             .toolTipFinisher(AuthorFourIsTheNumber);
         return tt;
     }
@@ -196,9 +197,10 @@ public class MTEIndustrialBrewery extends MTEExtendedPowerMultiBlockBase<MTEIndu
     @Override
     protected ProcessingLogic createProcessingLogic() {
         return new ProcessingLogic().setSpeedBonus(1F / 1.5F)
-            .setMaxParallelSupplier(this::getMaxParallelRecipes);
+            .setMaxParallelSupplier(this::getTrueParallel);
     }
 
+    @Override
     public int getMaxParallelRecipes() {
         return (4 * GTUtility.getTier(this.getMaxInputVoltage()));
     }

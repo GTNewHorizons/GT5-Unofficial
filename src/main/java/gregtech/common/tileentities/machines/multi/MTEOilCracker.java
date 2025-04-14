@@ -8,6 +8,7 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_OIL_CRACKER_A
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_OIL_CRACKER_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_OIL_CRACKER_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.casingTexturePages;
+import static gregtech.api.util.GTStructureUtility.activeCoils;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.ofCoil;
 import static gregtech.api.util.GTUtility.validMTEList;
@@ -60,7 +61,7 @@ public class MTEOilCracker extends MTEEnhancedMultiBlockBase<MTEOilCracker> impl
             transpose(
                 new String[][] { { "lcmcr", "lcmcr", "lcmcr" }, { "lc~cr", "l---r", "lcmcr" },
                     { "lcmcr", "lcmcr", "lcmcr" }, }))
-        .addElement('c', ofCoil(MTEOilCracker::setCoilLevel, MTEOilCracker::getCoilLevel))
+        .addElement('c', activeCoils(ofCoil(MTEOilCracker::setCoilLevel, MTEOilCracker::getCoilLevel)))
         .addElement(
             'l',
             buildHatchAdder(MTEOilCracker.class)
@@ -304,7 +305,7 @@ public class MTEOilCracker extends MTEEnhancedMultiBlockBase<MTEOilCracker> impl
             for (int yPos = tY - 1; yPos <= tY + 1; yPos++)
                 for (int zPos = tZ - 1; zPos <= tZ + 1; zPos += (xDir != 0 ? 2 : 1)) {
                     if ((yPos == tY) && (xPos == tX || zPos == tZ)) continue;
-                    final byte tUsedMeta = aBaseMetaTileEntity.getMetaID(xPos, yPos, zPos);
+                    final int tUsedMeta = aBaseMetaTileEntity.getMetaID(xPos, yPos, zPos);
                     if (tUsedMeta < 12) continue;
                     if (tUsedMeta > 14) continue;
                     if (aBaseMetaTileEntity.getBlock(xPos, yPos, zPos) != GregTechAPI.sBlockCasings1) continue;

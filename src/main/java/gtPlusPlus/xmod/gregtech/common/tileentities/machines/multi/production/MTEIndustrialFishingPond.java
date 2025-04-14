@@ -10,9 +10,10 @@ import static gregtech.api.enums.HatchElement.Maintenance;
 import static gregtech.api.enums.HatchElement.Muffler;
 import static gregtech.api.enums.HatchElement.OutputBus;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
-import static gtPlusPlus.core.util.data.ArrayUtils.removeNulls;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
@@ -56,6 +57,7 @@ import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase;
 import ic2.core.init.BlocksItems;
 import ic2.core.init.InternalName;
+import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 
 public class MTEIndustrialFishingPond extends GTPPMultiBlockBase<MTEIndustrialFishingPond>
     implements ISurvivalConstructable {
@@ -175,8 +177,18 @@ public class MTEIndustrialFishingPond extends GTPPMultiBlockBase<MTEIndustrialFi
     }
 
     @Override
+    protected IIconContainer getActiveGlowOverlay() {
+        return Textures.BlockIcons.OVERLAY_FRONT_VACUUM_FREEZER_ACTIVE_GLOW;
+    }
+
+    @Override
     protected IIconContainer getInactiveOverlay() {
         return Textures.BlockIcons.OVERLAY_FRONT_VACUUM_FREEZER;
+    }
+
+    @Override
+    protected IIconContainer getInactiveGlowOverlay() {
+        return Textures.BlockIcons.OVERLAY_FRONT_VACUUM_FREEZER_GLOW;
     }
 
     @Override
@@ -226,7 +238,9 @@ public class MTEIndustrialFishingPond extends GTPPMultiBlockBase<MTEIndustrialFi
             return CheckRecipeResultRegistry.NO_RECIPE;
         }
 
-        mFishOutput = removeNulls(mFishOutput);
+        List<ItemStack> list = new ObjectArrayList<>(mFishOutput);
+        list.removeAll(Collections.singleton((ItemStack) null));
+        mFishOutput = list.toArray(new ItemStack[0]);
         GTRecipe g = new GTRecipe(
             true,
             new ItemStack[] {},
@@ -245,7 +259,7 @@ public class MTEIndustrialFishingPond extends GTPPMultiBlockBase<MTEIndustrialFi
             .setItemInputs(tItemInputs)
             .setFluidInputs(tFluidInputs)
             .setAvailableEUt(tEnergy)
-            .setMaxParallel(getMaxParallelRecipes())
+            .setMaxParallel(getTrueParallel())
             .setConsumption(true)
             .setOutputCalculation(true)
             .setMachine(this)
@@ -316,7 +330,7 @@ public class MTEIndustrialFishingPond extends GTPPMultiBlockBase<MTEIndustrialFi
             for (int j = mOffsetZ_Lower + 1; j <= mOffsetZ_Upper - 1; ++j) {
                 for (int h = 0; h < 2; h++) {
                     Block tBlock = aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j);
-                    byte tMeta = aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j);
+                    int tMeta = aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j);
                     if (isNotStaticWater(tBlock, tMeta)) {
                         if (this.getStoredFluids() != null) {
                             for (FluidStack stored : this.getStoredFluids()) {
@@ -350,7 +364,7 @@ public class MTEIndustrialFishingPond extends GTPPMultiBlockBase<MTEIndustrialFi
         return tAmount >= 60;
     }
 
-    private boolean isNotStaticWater(Block block, byte meta) {
+    private boolean isNotStaticWater(Block block, int meta) {
         return block == Blocks.air || block == Blocks.flowing_water
             || block == BlocksItems.getFluidBlock(InternalName.fluidDistilledWater)
             || (cofhWater != null && cofhWater.isAssignableFrom(block.getClass()) && meta != 0);

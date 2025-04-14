@@ -14,6 +14,8 @@ import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import java.util.List;
 import java.util.Random;
 
+import javax.annotation.Nullable;
+
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -69,10 +71,11 @@ public class MTEIndustrialMacerator extends GTPPMultiBlockBase<MTEIndustrialMace
     private static final int DEPTH_OFF_SET = 0;
     private static IStructureDefinition<MTEIndustrialMacerator> STRUCTURE_DEFINITION = null;
 
-    private static int getStructureCasingTier(Block b, int m) {
+    @Nullable
+    private static Integer getStructureCasingTier(Block b, int m) {
         if (b == GregTechAPI.sBlockCasings4 && m == 2) return 1;
         if (b == ModBlocks.blockCasingsMisc && m == 7) return 2;
-        return 0;
+        return null;
     }
 
     public MTEIndustrialMacerator(final int aID, final String aName, final String aNameRegional) {
@@ -217,8 +220,18 @@ public class MTEIndustrialMacerator extends GTPPMultiBlockBase<MTEIndustrialMace
     }
 
     @Override
+    protected IIconContainer getActiveGlowOverlay() {
+        return TexturesGtBlock.Overlay_MatterFab_Active_Glow;
+    }
+
+    @Override
     protected IIconContainer getInactiveOverlay() {
         return TexturesGtBlock.Overlay_MatterFab;
+    }
+
+    @Override
+    protected IIconContainer getInactiveGlowOverlay() {
+        return TexturesGtBlock.Overlay_MatterFab_Glow;
     }
 
     @Override
@@ -242,7 +255,7 @@ public class MTEIndustrialMacerator extends GTPPMultiBlockBase<MTEIndustrialMace
         super.onPreTick(aBaseMetaTileEntity, aTick);
         if ((aBaseMetaTileEntity.isClientSide()) && (aBaseMetaTileEntity.isActive())
             && (aBaseMetaTileEntity.getFrontFacing() != ForgeDirection.UP)
-            && (aBaseMetaTileEntity.getCoverIDAtSide(ForgeDirection.UP) == 0)
+            && (!aBaseMetaTileEntity.hasCoverAtSide(ForgeDirection.UP))
             && (!aBaseMetaTileEntity.getOpacityAtSide(ForgeDirection.UP))) {
             final Random tRandom = aBaseMetaTileEntity.getWorld().rand;
             aBaseMetaTileEntity.getWorld()
@@ -340,7 +353,7 @@ public class MTEIndustrialMacerator extends GTPPMultiBlockBase<MTEIndustrialMace
     @Override
     protected ProcessingLogic createProcessingLogic() {
         return new ProcessingLogic().setSpeedBonus(1F / 1.6F)
-            .setMaxParallelSupplier(this::getMaxParallelRecipes);
+            .setMaxParallelSupplier(this::getTrueParallel);
     }
 
     @Override
@@ -358,11 +371,6 @@ public class MTEIndustrialMacerator extends GTPPMultiBlockBase<MTEIndustrialMace
     @Override
     public int getPollutionPerSecond(final ItemStack aStack) {
         return PollutionConfig.pollutionPerSecondMultiIndustrialMacerator;
-    }
-
-    @Override
-    public boolean isOverclockerUpgradable() {
-        return true;
     }
 
     @Override

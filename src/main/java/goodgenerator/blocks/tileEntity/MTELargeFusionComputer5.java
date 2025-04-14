@@ -74,7 +74,7 @@ public class MTELargeFusionComputer5 extends MTELargeFusionComputerPP {
             .addOutputHatch("1-16, Hint block with dot 1", 1)
             .addStructureInfo("Supports Crafting Input Buffer")
             .addStructureInfo(
-                "ALL Hatches must be " + GTUtility.getColoredTierNameFromTier((byte) hatchTier())
+                "Energy Hatches must be " + GTUtility.getColoredTierNameFromTier((byte) energyHatchTier())
                     + EnumChatFormatting.GRAY
                     + " or better")
             .toolTipFinisher();
@@ -122,7 +122,7 @@ public class MTELargeFusionComputer5 extends MTELargeFusionComputerPP {
     }
 
     @Override
-    public int hatchTier() {
+    public int energyHatchTier() {
         return 10;
     }
 
@@ -153,7 +153,7 @@ public class MTELargeFusionComputer5 extends MTELargeFusionComputerPP {
     }
 
     @Override
-    public int extraPara(int startEnergy) {
+    public int extraPara(long startEnergy) {
         if (startEnergy < 160000000) return 5;
         if (startEnergy < 320000000) return 4;
         if (startEnergy < 640000000) return 3;

@@ -24,6 +24,7 @@ import java.util.concurrent.ThreadLocalRandom;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -354,6 +355,7 @@ public class MTEPurificationUnitBaryonicPerfection
                     + EnumChatFormatting.ITALIC
                     + "This ultimately creates both Stabilised Baryonic Matter and, most importantly, absolutely perfectly purified water.")
             .beginStructureBlock(17, 17, 17, false)
+            .addController("Front center")
             .addCasingInfoMinColored(
                 "Quark Exclusion Casing",
                 EnumChatFormatting.GRAY,
@@ -384,7 +386,6 @@ public class MTEPurificationUnitBaryonicPerfection
                 108,
                 EnumChatFormatting.GOLD,
                 false)
-            .addController("Front Center")
             .addInputBus("Any Quark Exclusion Casing. Stocking bus is blacklisted.", 1)
             .addInputHatch("Any Quark Exclusion Casing", 1)
             .addOutputBus("Any Quark Exclusion Casing", 1)
@@ -467,6 +468,7 @@ public class MTEPurificationUnitBaryonicPerfection
         super.runMachine(aBaseMetaTileEntity, aTick);
         // Every 20 ticks, add all catalysts from the input bus to the internal inventory.
         if (mMaxProgresstime > 0 && aTick % 20 == 0) {
+            startRecipeProcessing();
             ArrayList<ItemStack> storedInputs = getStoredInputs();
             // For each stack in the input, check if it is a valid catalyst item and if so consume it
             for (ItemStack stack : storedInputs) {
@@ -487,6 +489,7 @@ public class MTEPurificationUnitBaryonicPerfection
                     // If we could not drain, stop the machine
                     if (!drained) {
                         stopMachine(ShutDownReasonRegistry.outOfFluid(inputCost));
+                        endRecipeProcessing();
                         return;
                     }
                     // Now add the catalysts to the list, one by one since there may be multiples and we want to
@@ -499,6 +502,7 @@ public class MTEPurificationUnitBaryonicPerfection
                     this.depleteInput(stack);
                 }
             }
+            endRecipeProcessing();
 
             // Only do this check if we didn't find a correct combination yet
             if (correctStartIndex != -1) return;
@@ -568,7 +572,7 @@ public class MTEPurificationUnitBaryonicPerfection
 
     public String[] getInfoData() {
         ArrayList<String> info = new ArrayList<>(Arrays.asList(super.getInfoData()));
-        info.add("Catalyst insertion history for this recipe cycle");
+        info.add(StatCollector.translateToLocal("GT5U.infodata.pubp.catalyst_history"));
         for (int i = 0; i < insertedCatalysts.size(); ++i) {
             ItemStack stack = insertedCatalysts.get(i);
             String name = stack.getDisplayName();
@@ -583,7 +587,9 @@ public class MTEPurificationUnitBaryonicPerfection
                     + "-"
                     + split[1]);
         }
-        info.add("Quark Combination correctly identified: " + getCorrectlyDecodedString());
+        info.add(
+            StatCollector
+                .translateToLocalFormatted("GT5U.infodata.pubp.quark_combination", getCorrectlyDecodedString()));
         return info.toArray(new String[] {});
     }
 

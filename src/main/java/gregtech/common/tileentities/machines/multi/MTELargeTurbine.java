@@ -17,15 +17,14 @@ import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTUtility.validMTEList;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import net.minecraft.block.Block;
-import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
-import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -45,12 +44,14 @@ import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.IIconContainer;
+import gregtech.api.interfaces.INEIPreviewModifier;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.items.MetaGeneratedTool;
 import gregtech.api.metatileentity.implementations.MTEEnhancedMultiBlockBase;
 import gregtech.api.metatileentity.implementations.MTEHatchDynamo;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
+import gregtech.api.render.RenderOverlay;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.GTUtilityClient;
 import gregtech.api.util.TurbineStatCalculator;
@@ -58,7 +59,7 @@ import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.common.items.MetaGeneratedTool01;
 
 public abstract class MTELargeTurbine extends MTEEnhancedMultiBlockBase<MTELargeTurbine>
-    implements ISurvivalConstructable {
+    implements ISurvivalConstructable, INEIPreviewModifier {
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final ClassValue<IStructureDefinition<MTELargeTurbine>> STRUCTURE_DEFINITION = new ClassValue<>() {
@@ -97,6 +98,7 @@ public abstract class MTELargeTurbine extends MTEEnhancedMultiBlockBase<MTELarge
     protected final float[] flowMultipliers = new float[] { 1, 1, 1 };
 
     // client side stuff
+    protected final List<RenderOverlay.OverlayTicket> overlayTickets = new ArrayList<>();
     protected boolean mHasTurbine;
     // mMachine got overwritten by StructureLib extended facing query response
     // so we use a separate field for this
@@ -149,18 +151,6 @@ public abstract class MTELargeTurbine extends MTEEnhancedMultiBlockBase<MTELarge
     }
 
     @Override
-    public boolean checkStructure(boolean aForceReset, IGregTechTileEntity aBaseMetaTileEntity) {
-        boolean f = super.checkStructure(aForceReset, aBaseMetaTileEntity);
-        if (f && getBaseMetaTileEntity().isServerSide()) {
-            // while is this a client side field, blockrenderer will reuse the server world for client side rendering
-            // so we must set it as well...
-            mFormed = true;
-            return true;
-        }
-        return f;
-    }
-
-    @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         return checkPiece(STRUCTURE_PIECE_MAIN, 2, 2, 1) && mMaintenanceHatches.size() == 1
             && mMufflerHatches.isEmpty() == (getPollutionPerTick(null) == 0);
@@ -189,16 +179,28 @@ public abstract class MTELargeTurbine extends MTEEnhancedMultiBlockBase<MTELarge
     }
 
     @Override
-    public boolean renderInWorld(IBlockAccess aWorld, int aX, int aY, int aZ, Block aBlock, RenderBlocks aRenderer) {
-        if (!isNewStyleRendering() || !mFormed) return false;
+    public void onFirstTick(IGregTechTileEntity aBaseMetaTileEntity) {
+        super.onFirstTick(aBaseMetaTileEntity);
+        setTurbineOverlay();
+    }
+
+    protected void setTurbineOverlay() {
+        IGregTechTileEntity tile = getBaseMetaTileEntity();
+        if (tile.isServerSide()) return;
 
         IIconContainer[] tTextures;
-        if (getBaseMetaTileEntity().isActive()) tTextures = getTurbineTextureActive();
+        if (tile.isActive()) tTextures = getTurbineTextureActive();
         else if (hasTurbine()) tTextures = getTurbineTextureFull();
         else tTextures = getTurbineTextureEmpty();
-        GTUtilityClient
-            .renderTurbineOverlay(aWorld, aX, aY, aZ, aRenderer, getExtendedFacing(), getCasingBlock(), tTextures);
-        return false;
+
+        GTUtilityClient.setTurbineOverlay(
+            tile.getWorld(),
+            tile.getXCoord(),
+            tile.getYCoord(),
+            tile.getZCoord(),
+            getExtendedFacing(),
+            tTextures,
+            overlayTickets);
     }
 
     @Override
@@ -206,6 +208,13 @@ public abstract class MTELargeTurbine extends MTEEnhancedMultiBlockBase<MTELarge
         mHasTurbine = (aValue & 0x1) != 0;
         mFormed = (aValue & 0x2) != 0;
         super.onValueUpdate(aValue);
+        setTurbineOverlay();
+    }
+
+    @Override
+    public void onRemoval() {
+        super.onRemoval();
+        if (getBaseMetaTileEntity().isClientSide()) GTUtilityClient.clearTurbineOverlay(overlayTickets);
     }
 
     @Override
@@ -448,5 +457,10 @@ public abstract class MTELargeTurbine extends MTEEnhancedMultiBlockBase<MTELarge
     @Override
     protected SoundResource getActivitySoundLoop() {
         return SoundResource.GT_MACHINES_LARGE_TURBINES_LOOP;
+    }
+
+    @Override
+    public void onPreviewStructureComplete(@NotNull ItemStack trigger) {
+        mFormed = true;
     }
 }

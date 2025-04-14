@@ -59,6 +59,11 @@ public class MTESOFuelCellMK2 extends MTEEnhancedMultiBlockBase<MTESOFuelCellMK2
         return new MTESOFuelCellMK2(super.mName);
     }
 
+    @Override
+    public boolean supportsPowerPanel() {
+        return false;
+    }
+
     private int mCasing = 0;
 
     private static final int CASING_TEXTURE_ID = 48;
@@ -198,11 +203,6 @@ public class MTESOFuelCellMK2 extends MTEEnhancedMultiBlockBase<MTESOFuelCellMK2
     @Override
     public int getMaxEfficiency(ItemStack stack) {
         return 10000;
-    }
-
-    @Override
-    public int getPollutionPerTick(ItemStack stack) {
-        return 0;
     }
 
     @Override

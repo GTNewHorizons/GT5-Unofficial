@@ -596,6 +596,16 @@ public class Pulverizer implements Runnable {
             .addTo(maceratorRecipes);
 
         GTValues.RA.stdBuilder()
+            .itemInputs(GTOreDictUnificator.get(OrePrefixes.rod, Materials.Blizz, 1))
+            .itemOutputs(
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Blizz, 3),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Blizz, 1))
+            .outputChances(10000, 5000)
+            .duration(20 * SECONDS)
+            .eut(2)
+            .addTo(maceratorRecipes);
+
+        GTValues.RA.stdBuilder()
             .itemInputs(new ItemStack(Blocks.web, 1, 0))
             .itemOutputs(new ItemStack(Items.string, 1), new ItemStack(Items.string, 1))
             .outputChances(10000, 5000)
@@ -633,7 +643,7 @@ public class Pulverizer implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.IC2_EnergyCrystal.get(1))
-            .itemOutputs(getIC2Item("energiumDust", 9))
+            .itemOutputs(ItemList.IC2_Energium_Dust.get(9L))
             .duration(15 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(maceratorRecipes);

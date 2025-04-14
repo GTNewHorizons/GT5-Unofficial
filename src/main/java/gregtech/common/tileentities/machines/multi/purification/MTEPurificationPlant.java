@@ -32,6 +32,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.google.common.collect.ImmutableList;
@@ -241,6 +242,7 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
                     + EnumChatFormatting.ITALIC
                     + "purification processes, and this multiblock is the heart of the operation.")
             .beginStructureBlock(7, 9, 8, false)
+            .addController("Front center")
             .addCasingInfoExactlyColored(
                 "Superplasticizer-Treated High Strength Concrete",
                 EnumChatFormatting.GRAY,
@@ -272,7 +274,6 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
                 6,
                 EnumChatFormatting.GOLD,
                 false)
-            .addController("Front center")
             .addEnergyHatch(EnumChatFormatting.GOLD + "1", 1)
             .addMaintenanceHatch(EnumChatFormatting.GOLD + "1", 1)
             .addStructureInfo("Requires water to be placed in the tank.")
@@ -534,7 +535,7 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
     public String[] getInfoData() {
         var ret = new ArrayList<String>();
         // Show linked purification units and their status
-        ret.add("Linked Purification Units: ");
+        ret.add(StatCollector.translateToLocal("GT5U.infodata.purification_plant.linked_units"));
         for (LinkedPurificationUnit unit : this.mLinkedUnits) {
             String text = EnumChatFormatting.AQUA + unit.metaTileEntity()
                 .getLocalName() + ": ";
@@ -542,13 +543,18 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
                 .status();
             switch (status) {
                 case ONLINE -> {
-                    text = text + EnumChatFormatting.GREEN + "Online";
+                    text = text + EnumChatFormatting.GREEN
+                        + StatCollector.translateToLocal("GT5U.infodata.purification_plant.linked_units.status.online");
                 }
                 case DISABLED -> {
-                    text = text + EnumChatFormatting.YELLOW + "Disabled";
+                    text = text + EnumChatFormatting.YELLOW
+                        + StatCollector
+                            .translateToLocal("GT5U.infodata.purification_plant.linked_units.status.disabled");
                 }
                 case INCOMPLETE_STRUCTURE -> {
-                    text = text + EnumChatFormatting.RED + "Incomplete Structure";
+                    text = text + EnumChatFormatting.RED
+                        + StatCollector
+                            .translateToLocal("GT5U.infodata.purification_plant.linked_units.status.incomplete");
                 }
             }
             ret.add(text);
@@ -580,12 +586,8 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
         screenElements.widget(
             new TextWidget("Hit with Soft Mallet to start.").setTextAlignment(Alignment.CenterLeft)
                 .setDefaultColor(EnumChatFormatting.BLACK)
-                .setEnabled(
-                    widget -> getBaseMetaTileEntity().getErrorDisplayID() == 0 && !getBaseMetaTileEntity().isActive()))
-            .widget(
-                new FakeSyncWidget.IntegerSyncer(
-                    () -> getBaseMetaTileEntity().getErrorDisplayID(),
-                    val -> getBaseMetaTileEntity().setErrorDisplayID(val)))
+                .setEnabled(widget -> getErrorDisplayID() == 0 && !getBaseMetaTileEntity().isActive()))
+            .widget(new FakeSyncWidget.IntegerSyncer(this::getErrorDisplayID, this::setErrorDisplayID))
             .widget(
                 new FakeSyncWidget.BooleanSyncer(
                     () -> getBaseMetaTileEntity().isActive(),
@@ -593,8 +595,7 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
         screenElements.widget(
             new TextWidget(GTUtility.trans("142", "Running perfectly.")).setTextAlignment(Alignment.CenterLeft)
                 .setDefaultColor(EnumChatFormatting.GREEN)
-                .setEnabled(
-                    widget -> getBaseMetaTileEntity().getErrorDisplayID() == 0 && getBaseMetaTileEntity().isActive()));
+                .setEnabled(widget -> getErrorDisplayID() == 0 && getBaseMetaTileEntity().isActive()));
         screenElements.widget(
             TextWidget.dynamicString(
                 () -> getBaseMetaTileEntity().getLastShutDownReason()

@@ -45,6 +45,7 @@ import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.StructureError;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.VoidingMode;
 import gregtech.api.gui.modularui.GTUITextures;
@@ -88,10 +89,10 @@ import tectech.thing.metaTileEntity.hatch.MTEHatchDynamoMulti;
 import tectech.thing.metaTileEntity.hatch.MTEHatchEnergyMulti;
 
 // Glee8e - 11/12/21 - 2:15pm
-// Yeah, now I see what's wrong. Someone inherited from GregtechMeta_MultiBlockBase instead of
-// GregtechMeta_MultiBlockBase<GregtechMetaTileEntity_IndustrialDehydrator> as it should have been
-// so any method in GregtechMetaTileEntity_IndustrialDehydrator would see generic field declared in
-// GregtechMeta_MultiBlockBase without generic parameter
+// Yeah, now I see what's wrong. Someone inherited from GTPPMultiBlockBase instead of
+// GTPPMultiBlockBase<MTEIndustrialDehydrator> as it should have been
+// so any method in MTEIndustrialDehydrator would see generic field declared in
+// GTPPMultiBlockBase without generic parameter
 
 public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBase<T>>
     extends MTEExtendedPowerMultiBlockBase<T> {
@@ -261,27 +262,20 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
                 + EnumChatFormatting.RESET);
 
         mInfo.add(
-            "Total Time Since Built: " + EnumChatFormatting.DARK_GREEN
-                + weeks
-                + EnumChatFormatting.RESET
-                + " Weeks, "
-                + EnumChatFormatting.DARK_GREEN
-                + days
-                + EnumChatFormatting.RESET
-                + " Days, ");
+            StatCollector.translateToLocalFormatted(
+                "gtpp.infodata.multi_block.total_time",
+                "" + EnumChatFormatting.DARK_GREEN + weeks + EnumChatFormatting.RESET,
+                "" + EnumChatFormatting.DARK_GREEN + days + EnumChatFormatting.RESET));
         mInfo.add(
-            EnumChatFormatting.DARK_GREEN + Long.toString(hours)
-                + EnumChatFormatting.RESET
-                + " Hours, "
-                + EnumChatFormatting.DARK_GREEN
-                + minutes
-                + EnumChatFormatting.RESET
-                + " Minutes, "
-                + EnumChatFormatting.DARK_GREEN
-                + second
-                + EnumChatFormatting.RESET
-                + " Seconds.");
-        mInfo.add("Total Time in ticks: " + EnumChatFormatting.DARK_GREEN + this.mTotalRunTime);
+            StatCollector.translateToLocalFormatted(
+                "gtpp.infodata.multi_block.total_time.0",
+                EnumChatFormatting.DARK_GREEN + Long.toString(hours) + EnumChatFormatting.RESET,
+                EnumChatFormatting.DARK_GREEN + Long.toString(minutes) + EnumChatFormatting.RESET,
+                EnumChatFormatting.DARK_GREEN + Long.toString(second) + EnumChatFormatting.RESET));
+        mInfo.add(
+            StatCollector.translateToLocalFormatted(
+                "gtpp.infodata.multi_block.total_time.in_ticks",
+                "" + EnumChatFormatting.DARK_GREEN + this.mTotalRunTime));
 
         return mInfo.toArray(new String[0]);
     }
@@ -338,8 +332,6 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
     public static final String TAG_HIDE_MAINT = "TAG_HIDE_MAINT";
     public static final String TAG_HIDE_POLLUTION = "TAG_HIDE_POLLUTION";
     public static final String TAG_HIDE_MACHINE_TYPE = "TAG_HIDE_MACHINE_TYPE";
-
-    public abstract int getMaxParallelRecipes();
 
     @Override
     public boolean isCorrectMachinePart(final ItemStack paramItemStack) {
@@ -490,8 +482,43 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
         super.updateSlots();
     }
 
+    @Override
+    protected void localizeStructureErrors(Collection<StructureError> errors, NBTTagCompound context,
+        List<String> lines) {
+        super.localizeStructureErrors(errors, context, lines);
+
+        if (errors.contains(StructureError.MISSING_MAINTENANCE)) {
+            lines.add(StatCollector.translateToLocal("GT5U.gui.text.no_maintenance"));
+        }
+
+        if (errors.contains(StructureError.MISSING_MUFFLER)) {
+            lines.add(StatCollector.translateToLocal("GT5U.gui.text.no_muffler"));
+        }
+
+        if (errors.contains(StructureError.UNNEEDED_MUFFLER)) {
+            lines.add(StatCollector.translateToLocal("GT5U.gui.text.unneeded_muffler"));
+        }
+    }
+
+    @Override
+    protected void validateStructure(Collection<StructureError> errors, NBTTagCompound context) {
+        super.validateStructure(errors, context);
+
+        if (shouldCheckMaintenance() && mMaintenanceHatches.isEmpty()) {
+            errors.add(StructureError.MISSING_MAINTENANCE);
+        }
+
+        if (this.getPollutionPerSecond(null) > 0 && mMufflerHatches.isEmpty()) {
+            errors.add(StructureError.MISSING_MUFFLER);
+        }
+
+        if (this.getPollutionPerSecond(null) == 0 && !mMufflerHatches.isEmpty()) {
+            errors.add(StructureError.UNNEEDED_MUFFLER);
+        }
+    }
+
     public boolean checkHatch() {
-        return mMaintenanceHatches.size() <= 1 && (this.getPollutionPerSecond(null) <= 0 || !mMufflerHatches.isEmpty());
+        return true;
     }
 
     @Override
@@ -987,7 +1014,7 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
 
     @Override
     public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
-        float aX, float aY, float aZ) {
+        float aX, float aY, float aZ, ItemStack aTool) {
         if (aPlayer.isSneaking()) {
             batchMode = !batchMode;
             if (batchMode) {
@@ -1002,7 +1029,7 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
 
     @Override
     public boolean onSolderingToolRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
-        float aX, float aY, float aZ) {
+        float aX, float aY, float aZ, ItemStack aTool) {
         if (supportsVoidProtection() && wrenchingSide == getBaseMetaTileEntity().getFrontFacing()) {
             Set<VoidingMode> allowed = getAllowedVoidingModes();
             setVoidingMode(getVoidingMode().nextInCollection(allowed));
@@ -1011,7 +1038,7 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
                 StatCollector.translateToLocal("GT5U.gui.button.voiding_mode") + " "
                     + StatCollector.translateToLocal(getVoidingMode().getTransKey()));
             return true;
-        } else return super.onSolderingToolRightClick(side, wrenchingSide, aPlayer, aX, aY, aZ);
+        } else return super.onSolderingToolRightClick(side, wrenchingSide, aPlayer, aX, aY, aZ, aTool);
     }
 
     // Only support to use meta to tier
@@ -1069,6 +1096,18 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
             }
 
             @Override
+            public boolean couldBeValid(T t, World world, int x, int y, int z, ItemStack trigger) {
+                Block tBlock = world.getBlock(x, y, z);
+                if (aBlock == tBlock) {
+                    int expectedMeta = getMeta(trigger);
+                    int blockMeta = tBlock.getDamageValue(world, x, y, z) + 1;
+                    if (blockMeta > maxMeta || blockMeta < minMeta + 1) return false;
+                    return expectedMeta == blockMeta;
+                }
+                return false;
+            }
+
+            @Override
             public boolean spawnHint(T t, World world, int x, int y, int z, ItemStack trigger) {
                 StructureLibAPI.hintParticle(world, x, y, z, aBlock, getMeta(trigger));
                 return true;
@@ -1119,24 +1158,53 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
         int aColorIndex, boolean aActive, boolean aRedstone) {
-        if (side == facing) {
-            if (aActive) return new ITexture[] { getCasingTexture(), TextureFactory.builder()
-                .addIcon(getActiveOverlay())
-                .extFacing()
-                .build() };
-            return new ITexture[] { getCasingTexture(), TextureFactory.builder()
-                .addIcon(getInactiveOverlay())
-                .extFacing()
-                .build() };
+        ITexture casingTexture = getCasingTexture();
+        if (side != facing) {
+            return new ITexture[] { casingTexture };
         }
-        return new ITexture[] { getCasingTexture() };
+
+        int textures = 1;
+        IIconContainer container = aActive ? getActiveOverlay() : getInactiveOverlay();
+        ITexture overlay = null;
+        if (container != null) {
+            textures++;
+            overlay = TextureFactory.builder()
+                .addIcon(container)
+                .extFacing()
+                .build();
+        }
+
+        IIconContainer glowContainer = aActive ? getActiveGlowOverlay() : getInactiveGlowOverlay();
+        ITexture glowOverlay = null;
+        if (glowContainer != null) {
+            textures++;
+            glowOverlay = TextureFactory.builder()
+                .addIcon(glowContainer)
+                .extFacing()
+                .glow()
+                .build();
+        }
+
+        ITexture[] retVal = new ITexture[textures];
+        retVal[0] = getCasingTexture();
+        if (overlay != null) retVal[1] = overlay;
+        if (glowOverlay != null) retVal[2] = glowOverlay;
+        return retVal;
     }
 
     protected IIconContainer getActiveOverlay() {
         return null;
     }
 
+    protected IIconContainer getActiveGlowOverlay() {
+        return null;
+    }
+
     protected IIconContainer getInactiveOverlay() {
+        return null;
+    }
+
+    protected IIconContainer getInactiveGlowOverlay() {
         return null;
     }
 
@@ -1390,7 +1458,7 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
                     .dynamicString(
                         () -> StatCollector.translateToLocal("GTPP.multiblock.pollution") + ": "
                             + EnumChatFormatting.RED
-                            + (getPollutionPerTick(null) * 20)
+                            + getPollutionPerSecond(null)
                             + EnumChatFormatting.RESET
                             + "/sec")
                     .setTextAlignment(Alignment.CenterLeft)

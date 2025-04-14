@@ -67,7 +67,7 @@ public class MTEIndustrialMolecularTransformer extends GTPPMultiBlockBase<MTEInd
             .beginStructureBlock(7, 7, 7, false)
             .addController("Top Center")
             .addCasingInfoMin("Robust Tungstensteel Machine Casing", 40, false)
-            .addCasingInfoMin("Tungstensteel Coils", 16, false)
+            .addCasingInfoMin("TPV-Alloy Coils", 16, false)
             .addCasingInfoMin("Molecular Containment Casing", 52, false)
             .addCasingInfoMin("High Voltage Current Capacitor", 32, false)
             .addCasingInfoMin("Particle Containment Casing", 4, false)
@@ -187,8 +187,18 @@ public class MTEIndustrialMolecularTransformer extends GTPPMultiBlockBase<MTEInd
     }
 
     @Override
+    protected IIconContainer getActiveGlowOverlay() {
+        return TexturesGtBlock.oMCAIndustrialMolecularTransformerActiveGlow;
+    }
+
+    @Override
     protected IIconContainer getInactiveOverlay() {
         return TexturesGtBlock.oMCAIndustrialMolecularTransformer;
+    }
+
+    @Override
+    protected IIconContainer getInactiveGlowOverlay() {
+        return TexturesGtBlock.oMCAIndustrialMolecularTransformerGlow;
     }
 
     @Override

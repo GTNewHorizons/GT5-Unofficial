@@ -36,7 +36,6 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.metatileentity.implementations.MTEHatchDynamo;
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
-import gregtech.api.objects.GTRenderedTexture;
 import gregtech.api.objects.XSTR;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
@@ -473,23 +472,25 @@ public class MTELargeEssentiaGenerator extends MTETooltipMultiBlockBaseEM
             .addMaintenanceHatch("Hint block with dot 1", 1)
             .addInputHatch("Hint block with dot 1", 1)
             .addDynamoHatch("Hint block with dot 1", 1)
-            .addOtherStructurePart("Essentia Input Hatch", "Essentia Input", 1)
+            .addOtherStructurePart(
+                StatCollector.translateToLocal("gg.structure.tooltip.essentia_input_hatch"),
+                "Essentia Input",
+                1)
             .toolTipFinisher();
         return tt;
     }
 
     @Override
-    @SuppressWarnings("ALL")
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
         int colorIndex, boolean aActive, boolean aRedstone) {
         if (side == facing) {
             if (aActive) return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(1536),
-                new GTRenderedTexture(Textures.BlockIcons.MACHINE_CASING_DRAGONEGG), TextureFactory.builder()
+                TextureFactory.of(Textures.BlockIcons.MACHINE_CASING_DRAGONEGG), TextureFactory.builder()
                     .addIcon(Textures.BlockIcons.MACHINE_CASING_DRAGONEGG_GLOW)
                     .glow()
                     .build() };
             return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(1536),
-                new GTRenderedTexture(Textures.BlockIcons.MACHINE_CASING_DRAGONEGG) };
+                TextureFactory.of(Textures.BlockIcons.MACHINE_CASING_DRAGONEGG) };
         }
         return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(1536) };
     }

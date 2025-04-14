@@ -500,7 +500,7 @@ public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge> i
                 new TextWidget(StatCollector.translateToLocal("GT5U.gui.button.tier") + " " + mSpecialTier)
                     .setTextAlignment(Alignment.CenterLeft)
                     .setDefaultColor(COLOR_TEXT_WHITE.get())
-                    .setEnabled(widget -> getBaseMetaTileEntity().getErrorDisplayID() == 0))
+                    .setEnabled(widget -> getErrorDisplayID() == 0))
             .widget(
                 new FakeSyncWidget.IntegerSyncer(
                     () -> (int) mSpecialTier,
@@ -574,14 +574,14 @@ public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge> i
                     + EnumChatFormatting.GRAY
                     + "+"
                     + EnumChatFormatting.GRAY
-                    + " input busses.")
+                    + " input buses.")
             .addStructureInfo(
                 "Requires " + EnumChatFormatting.GOLD
                     + 1
                     + EnumChatFormatting.GRAY
                     + "+"
                     + EnumChatFormatting.GRAY
-                    + " output busses.")
+                    + " output buses.")
             .toolTipFinisher(AuthorBlueWeabo);
         return tt;
     }

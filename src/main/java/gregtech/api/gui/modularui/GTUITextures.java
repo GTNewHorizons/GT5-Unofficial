@@ -10,6 +10,9 @@ import com.gtnewhorizons.modularui.api.drawable.AdaptableUITexture;
 import com.gtnewhorizons.modularui.api.drawable.FallbackableUITexture;
 import com.gtnewhorizons.modularui.api.drawable.UITexture;
 
+/**
+ * Textures for MUI1.
+ */
 public class GTUITextures {
 
     public static final UITexture TRANSPARENT = UITexture.fullImage(GregTech.ID, "gui/picture/transparent");
@@ -216,6 +219,12 @@ public class GTUITextures {
         .fullImage(GregTech.ID, "gui/progressbar/water_plasma_heater");
     public static final UITexture PROGRESSBAR_UV_TREATMENT = UITexture
         .fullImage(GregTech.ID, "gui/progressbar/uvtreatment");
+    public static final UITexture PROGRESSBAR_STEAM_FILL = UITexture
+        .fullImage(GregTech.ID, "gui/progressbar/steam_fill");
+    public static final UITexture PROGRESSBAR_STEAM_FILL_STEEL = UITexture
+        .fullImage(GregTech.ID, "gui/progressbar/steam_fill_steel");
+    public static final UITexture PROGRESSBAR_NAME_REMOVER = UITexture
+        .fullImage(GregTech.ID, "gui/progressbar/name_remover");
 
     public static FallbackableUITexture fallbackableProgressbar(String name, UITexture fallback) {
         return new FallbackableUITexture(UITexture.fullImage(GregTech.ID, "gui/progressbar/" + name), fallback);
@@ -409,6 +418,9 @@ public class GTUITextures {
         .fullImage(GregTech.ID, "gui/overlay_button/hourglass");
     public static final UITexture OVERLAY_BUTTON_PATTERN_OPTIMIZE = UITexture
         .fullImage(GregTech.ID, "gui/overlay_button/pattern_optimize");
+    public static final UITexture OVERLAY_BUTTON_X2 = UITexture.fullImage(GregTech.ID, "gui/overlay_button/x2");
+    public static final UITexture OVERLAY_BUTTON_POWER_PANEL = UITexture
+        .fullImage(GregTech.ID, "gui/overlay_button/power_panel");
 
     public static final UITexture OVERLAY_BUTTON_LIQUIDMODE = UITexture
         .fullImage(GregTech.ID, "gui/overlay_button/LiquidMode");
@@ -466,8 +478,6 @@ public class GTUITextures {
         .fullImage(GregTech.ID, "gui/picture/gt_logo_17x17_transparent_gray");
     public static final SteamTexture PICTURE_GT_LOGO_17x17_TRANSPARENT_STEAM = SteamTexture
         .fullImage(GregTech.ID, "gui/picture/gt_logo_17x17_transparent_%s");
-    public static final UITexture PICTURE_GT_LOGO_18x18 = UITexture.fullImage(GregTech.ID, "gui/picture/gt_logo_18x18");
-    public static final UITexture PICTURE_GT_LOGO_19x19 = UITexture.fullImage(GregTech.ID, "gui/picture/gt_logo_19x19");
     public static final UITexture PICTURE_INFORMATION = UITexture.fullImage(GregTech.ID, "gui/picture/information");
     public static final UITexture PICTURE_STALLED_ELECTRICITY = UITexture
         .fullImage(GregTech.ID, "gui/picture/stalled_electricity");

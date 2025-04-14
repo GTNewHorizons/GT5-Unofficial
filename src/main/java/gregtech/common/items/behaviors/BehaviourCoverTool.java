@@ -6,32 +6,50 @@ import java.util.List;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import gregtech.api.GregTechAPI;
+import org.jetbrains.annotations.NotNull;
+
+import com.google.common.collect.ImmutableList;
+
+import gregtech.api.covers.CoverRegistry;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.interfaces.IItemBehaviour;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.items.MetaBaseItem;
-import gregtech.api.util.CoverBehaviorBase;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTUtility;
-import gregtech.api.util.ISerializableObject;
+import gregtech.common.covers.Cover;
 
 public class BehaviourCoverTool extends BehaviourNone {
 
     public static final IItemBehaviour<MetaBaseItem> INSTANCE = new BehaviourCoverTool();
+    private static final String NBT_COVER_ID = "mCoverId";
+    private static final String NBT_COVER_DATA = "mCoverData";
     private final String mTooltip = GTLanguageManager
         .addStringLocalization("gt.behaviour.cover_copy_paste", "Can copy/paste cover data.");
 
-    private ISerializableObject mStoredData = GregTechAPI.sNoBehavior.createDataObject();
-    private int mCoverType;
-    private int mTickRateAddition = 0;
+    @Override
+    public boolean shouldInterruptBlockActivation(final EntityPlayer player, final TileEntity tileEntity,
+        final ForgeDirection side) {
+        return tileEntity instanceof ICoverable;
+    }
+
+    @Override
+    // Included for Ring of Loki support.
+    public boolean onItemUse(final MetaBaseItem aItem, final ItemStack aStack, final EntityPlayer aPlayer,
+        final World aWorld, final int aX, final int aY, final int aZ, final int ordinalSide, final float hitX,
+        final float hitY, final float hitZ) {
+        if (aWorld.getTileEntity(aX, aY, aZ) instanceof ICoverable) {
+            final ForgeDirection side = ForgeDirection.getOrientation(ordinalSide);
+            return onItemUseFirst(aItem, aStack, aPlayer, aWorld, aX, aY, aZ, side, hitX, hitY, hitZ);
+        }
+        return false;
+    }
 
     @Override
     public boolean onItemUseFirst(MetaBaseItem aItem, ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX,
@@ -42,57 +60,60 @@ public class BehaviourCoverTool extends BehaviourNone {
         final NBTTagCompound tNBT = aStack.getTagCompound();
         final TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
         final boolean isCopyMode = aPlayer.isSneaking();
-        initDataFromNBT(tNBT);
-        if (((aPlayer instanceof EntityPlayerMP)) && (aItem.canUse(aStack, 100.0D))) {
-            if (isCopyMode) {
-                ArrayList<String> tList = new ArrayList<>();
-                doCopy(tTileEntity, aWorld, aX, aY, aZ, side, hitX, hitY, hitZ, tList);
-                aItem.discharge(aStack, 100.0D, Integer.MAX_VALUE, true, false, false);
-                writeListToNBT(tList, tNBT, aPlayer);
-                saveDataToNBT(tNBT);
+        double useCost = isCopyMode ? 100.0D : 25.00;
+        if (tNBT != null && ((aPlayer instanceof EntityPlayerMP)) && (aItem.canUse(aStack, useCost))) {
+            Cover targetCover = getTargetCover(tTileEntity, side, hitX, hitY, hitZ);
+            List<String> chats;
+            if (tTileEntity instanceof ICoverable coverable && targetCover != CoverRegistry.NO_COVER) {
+                if (isCopyMode) {
+                    if (targetCover.allowsCopyPasteTool()) {
+                        chats = getCopyText(targetCover, aX, aY, aZ, aWorld.provider.dimensionId);
+                        writeChatsToNBT(chats, tNBT);
+                        saveCoverToNBT(targetCover, tNBT);
+                    } else {
+                        chats = ImmutableList.of("Copy unavailable for this cover type");
+                    }
+                } else {
+                    int copiedCoverId = tNBT.getInteger(NBT_COVER_ID);
+                    if (copiedCoverId == 0) {
+                        chats = ImmutableList.of("Please Copy a Valid Cover First.");
+                    } else if (targetCover.getCoverID() == copiedCoverId) {
+                        coverable.updateAttachedCover(
+                            copiedCoverId,
+                            targetCover.getSide(),
+                            tNBT.getCompoundTag(NBT_COVER_DATA));
+                        chats = ImmutableList.of("Cover Data Pasted.");
+                    } else {
+                        chats = ImmutableList.of("Not Matched Cover.");
+                    }
+                }
             } else {
-                doPaste(tTileEntity, side, hitX, hitY, hitZ, aPlayer);
-                aItem.discharge(aStack, 25.0D, Integer.MAX_VALUE, true, false, false);
+                chats = ImmutableList.of("No Cover Found.");
             }
+            sendChatsToPlayer(chats, aPlayer);
+            aItem.discharge(aStack, useCost, Integer.MAX_VALUE, true, false, false);
+            GTUtility.doSoundAtClient(SoundResource.IC2_TOOLS_OD_SCANNER, 1, 1.0F, aX, aY, aZ);
         }
-        GTUtility.doSoundAtClient(SoundResource.IC2_TOOLS_OD_SCANNER, 1, 1.0F, aX, aY, aZ);
         return aPlayer instanceof EntityPlayerMP;
     }
 
-    private void initDataFromNBT(NBTTagCompound aNBT) {
-        if (aNBT != null) {
-            mCoverType = aNBT.getInteger("mCoverType");
-            CoverBehaviorBase<?> tBehavior = GregTechAPI.getCoverBehaviorNew(mCoverType);
-            NBTBase tData = aNBT.getTag("mCoverData");
-            if (tData != null) mStoredData = tBehavior.createDataObject(tData);
-            else mStoredData = GregTechAPI.sNoBehavior.createDataObject();
-            mTickRateAddition = aNBT.hasKey("mTickRateAddition") ? aNBT.getInteger("mTickRateAddition") : 0;
-        }
-    }
-
-    private void saveDataToNBT(NBTTagCompound aNBT) {
-        aNBT.setInteger("mCoverType", mCoverType);
-        if (mStoredData == null) mStoredData = GregTechAPI.sNoBehavior.createDataObject();
-        aNBT.setTag("mCoverData", mStoredData.saveDataToNBT());
-        aNBT.setInteger("mTickRateAddition", mTickRateAddition);
-    }
-
-    @SuppressWarnings("rawtypes")
-    private void writeListToNBT(List aList, NBTTagCompound aNBT, EntityPlayer aPlayer) {
-        if (aList != null && aNBT != null) {
-            int tSize = aList.size();
-            aNBT.setInteger("dataLinesCount", tSize);
-            for (int i = 0; i < tSize; i++) {
-                aNBT.setString("dataLines" + i, (String) aList.get(i));
-                GTUtility.sendChatToPlayer(aPlayer, (String) aList.get(i));
+    private static Cover getTargetCover(TileEntity tileEntity, ForgeDirection side, float hitX, float hitY,
+        float hitZ) {
+        if (tileEntity instanceof ICoverable coverable) {
+            Cover coverAtSide = coverable.getCoverAtSide(side);
+            if (coverAtSide != CoverRegistry.NO_COVER) {
+                return coverAtSide;
             }
+            return coverable.getCoverAtSide(GTUtility.determineWrenchingSide(side, hitX, hitY, hitZ));
+        } else {
+            return CoverRegistry.NO_COVER;
         }
     }
 
-    @SuppressWarnings({ "unchecked", "rawtypes" })
-    private void doCopy(TileEntity aTileEntity, World aWorld, int aX, int aY, int aZ, ForgeDirection side, float hitX,
-        float hitY, float hitZ, List aList) {
-        aList.add(
+    private static @NotNull List<String> getCopyText(@NotNull Cover targetCover, int aX, int aY, int aZ,
+        int dimensionId) {
+        List<String> chats = new ArrayList<>();
+        chats.add(
             EnumChatFormatting.STRIKETHROUGH + "-----"
                 + EnumChatFormatting.RESET
                 + " X: "
@@ -109,74 +130,35 @@ public class BehaviourCoverTool extends BehaviourNone {
                 + EnumChatFormatting.RESET
                 + " D: "
                 + EnumChatFormatting.AQUA
-                + aWorld.provider.dimensionId
+                + dimensionId
                 + EnumChatFormatting.RESET
                 + " "
                 + EnumChatFormatting.STRIKETHROUGH
                 + "-----");
-        if (aTileEntity instanceof ICoverable tCoverable) {
-            final ForgeDirection tSide = tCoverable.getCoverItemAtSide(side) != null ? side
-                : tCoverable.getCoverItemAtSide(GTUtility.determineWrenchingSide(side, hitX, hitY, hitZ)) != null
-                    ? GTUtility.determineWrenchingSide(side, hitX, hitY, hitZ)
-                    : ForgeDirection.UNKNOWN;
-            if (tSide != ForgeDirection.UNKNOWN) {
-                if (tCoverable.getCoverBehaviorAtSideNew(tSide)
-                    .allowsCopyPasteTool()) {
-                    mStoredData = tCoverable.getComplexCoverDataAtSide(tSide);
-                    mCoverType = tCoverable.getCoverIDAtSide(tSide);
-                    mTickRateAddition = tCoverable.getCoverInfoAtSide(tSide)
-                        .getTickRateAddition();
+        ForgeDirection tSide = targetCover.getSide();
+        chats.add("Block Side: " + EnumChatFormatting.AQUA + tSide.name() + EnumChatFormatting.RESET);
+        String coverDisplayName = targetCover.asItemStack()
+            .getDisplayName();
+        chats.add("Cover Type: " + EnumChatFormatting.GREEN + coverDisplayName + EnumChatFormatting.RESET);
+        return chats;
+    }
 
-                    aList.add("Block Side: " + EnumChatFormatting.AQUA + tSide.name() + EnumChatFormatting.RESET);
-                    aList.add(
-                        "Cover Type: " + EnumChatFormatting.GREEN
-                            + tCoverable.getCoverItemAtSide(tSide)
-                                .getDisplayName()
-                            + EnumChatFormatting.RESET);
-                } else {
-                    mStoredData = GregTechAPI.sNoBehavior.createDataObject();
-                    mCoverType = 0;
-                    mTickRateAddition = 0;
-                    aList.add("Copy unavailable for this cover type");
-                }
-            } else {
-                mStoredData = GregTechAPI.sNoBehavior.createDataObject();
-                mCoverType = 0;
-                mTickRateAddition = 0;
-                aList.add("No Cover Found");
-            }
-        } else {
-            mStoredData = GregTechAPI.sNoBehavior.createDataObject();
-            mCoverType = 0;
-            mTickRateAddition = 0;
-            aList.add("No Cover Found");
+    private void saveCoverToNBT(Cover cover, NBTTagCompound aNBT) {
+        aNBT.setInteger(NBT_COVER_ID, cover.getCoverID());
+        aNBT.setTag(NBT_COVER_DATA, cover.writeToNBT(new NBTTagCompound()));
+    }
+
+    private void writeChatsToNBT(@NotNull List<String> chats, @NotNull NBTTagCompound aNBT) {
+        int tSize = chats.size();
+        aNBT.setInteger("dataLinesCount", tSize);
+        for (int i = 0; i < tSize; i++) {
+            aNBT.setString("dataLines" + i, chats.get(i));
         }
     }
 
-    private void doPaste(TileEntity aTileEntity, ForgeDirection side, float hitX, float hitY, float hitZ,
-        EntityPlayer aPlayer) {
-        if (aTileEntity instanceof ICoverable tCoverable) {
-            if (mCoverType == 0 || mStoredData == null) {
-                GTUtility.sendChatToPlayer(aPlayer, "Please Copy a Valid Cover First.");
-                return;
-            }
-            final ForgeDirection tSide = tCoverable.getCoverItemAtSide(side) != null ? side
-                : tCoverable.getCoverItemAtSide(GTUtility.determineWrenchingSide(side, hitX, hitY, hitZ)) != null
-                    ? GTUtility.determineWrenchingSide(side, hitX, hitY, hitZ)
-                    : ForgeDirection.UNKNOWN;
-            if (tSide != ForgeDirection.UNKNOWN) {
-                int tCoverID = tCoverable.getCoverIDAtSide(tSide);
-                if (tCoverID == mCoverType) {
-                    tCoverable.setCoverDataAtSide(tSide, mStoredData);
-                    tCoverable.getCoverInfoAtSide(tSide)
-                        .setTickRateAddition(mTickRateAddition);
-                    GTUtility.sendChatToPlayer(aPlayer, "Cover Data Pasted.");
-                } else {
-                    GTUtility.sendChatToPlayer(aPlayer, "Not Matched Cover.");
-                }
-            } else {
-                GTUtility.sendChatToPlayer(aPlayer, "No Cover Found.");
-            }
+    private void sendChatsToPlayer(@NotNull List<String> chats, @NotNull EntityPlayer aPlayer) {
+        for (String chat : chats) {
+            GTUtility.sendChatToPlayer(aPlayer, chat);
         }
     }
 

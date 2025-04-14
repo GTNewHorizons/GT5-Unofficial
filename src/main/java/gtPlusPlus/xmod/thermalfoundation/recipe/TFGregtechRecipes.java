@@ -25,8 +25,6 @@ public class TFGregtechRecipes {
 
     private static void start() {
 
-        final FluidStack moltenBlaze = getFluidStack("molten.blaze", 1440);
-
         // Gelid Cryotheum
         GTValues.RA.stdBuilder()
             .itemInputs(GTOreDictUnificator.get(OrePrefixes.ore, Materials.Cinnabar, 1L))
@@ -38,10 +36,10 @@ public class TFGregtechRecipes {
 
         // Blizz Powder
         GTValues.RA.stdBuilder()
-            .itemInputs(new ItemStack(Items.snowball, 4))
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Blizz, 1L))
-            .fluidInputs(moltenBlaze)
-            .duration(20 * SECONDS)
+            .itemInputs(new ItemStack(Items.blaze_powder, 4))
+            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Blizz, 4L))
+            .fluidInputs(Materials.LiquidNitrogen.getGas(100L))
+            .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_HV / 2)
             .addTo(chemicalBathRecipes);
 
@@ -49,7 +47,7 @@ public class TFGregtechRecipes {
         GTValues.RA.stdBuilder()
             .itemInputs(new ItemStack(Items.blaze_rod))
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.stick, Materials.Blizz, 1L))
-            .duration(((int) Math.max((Materials.Blaze.getMass() * 4) * 3L, 1L)) * TICKS)
+            .duration(((int) Math.max((Materials.Blaze.getMass()) * 3L, 1L)) * TICKS)
             .eut(TierEU.RECIPE_MV)
             .addTo(vacuumFreezerRecipes);
 

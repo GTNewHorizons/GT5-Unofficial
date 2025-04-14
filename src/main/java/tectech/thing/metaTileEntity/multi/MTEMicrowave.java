@@ -15,6 +15,7 @@ import javax.annotation.Nonnull;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.EnumChatFormatting;
@@ -22,11 +23,13 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
 
-import com.gtnewhorizon.structurelib.alignment.constructable.IConstructable;
+import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
+import com.gtnewhorizon.structurelib.structure.IItemSource;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.util.Vec3Impl;
 
 import gregtech.api.enums.Textures;
+import gregtech.api.hazards.HazardProtection;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -34,9 +37,9 @@ import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.util.GTRecipe;
-import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReason;
+import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import tectech.Reference;
 import tectech.loader.MainLoader;
 import tectech.recipe.TTRecipeAdder;
@@ -50,7 +53,7 @@ import tectech.thing.metaTileEntity.multi.base.render.TTRenderedExtendedFacingTe
 /**
  * Created by danie_000 on 17.12.2016.
  */
-public class MTEMicrowave extends TTMultiblockBase implements IConstructable {
+public class MTEMicrowave extends TTMultiblockBase implements ISurvivalConstructable {
 
     // region variables
     private boolean hasBeenPausedThisCycle = false;
@@ -167,34 +170,34 @@ public class MTEMicrowave extends TTMultiblockBase implements IConstructable {
 
         boolean inside = true;
         do {
-            for (Object entity : mte.getWorld()
+            for (Entity entity : mte.getWorld()
                 .getEntitiesWithinAABBExcludingEntity(null, aabb)) {
-                if (entity instanceof Entity) {
-                    if (tickedStuff.add((Entity) entity)) {
-                        if (inside && entity instanceof EntityItem) {
-                            GTRecipe tRecipe = RecipeMaps.microwaveRecipes.findRecipeQuery()
-                                .items(((EntityItem) entity).getEntityItem())
-                                .voltage(128)
-                                .notUnificated(true)
-                                .find();
-                            if (tRecipe == null || tRecipe.mInputs.length == 0 || tRecipe.mInputs[0].stackSize != 1) {
-                                itemsToOutput.add(((EntityItem) entity).getEntityItem());
-                            } else {
-                                ItemStack newStuff = tRecipe.getOutput(0)
-                                    .copy();
-                                newStuff.stackSize = ((EntityItem) entity).getEntityItem().stackSize;
-                                itemsToOutput.add(newStuff);
-                            }
-                            ((EntityItem) entity).delayBeforeCanPickup = 2;
-                            ((EntityItem) entity).setDead();
-                        } else if (entity instanceof EntityLivingBase) {
-                            if (!GTUtility.isWearingFullElectroHazmat((EntityLivingBase) entity)) {
-                                ((EntityLivingBase) entity).attackEntityFrom(MainLoader.microwaving, damagingFactor);
-                            }
+
+                if (tickedStuff.add(entity)) {
+                    if (inside && entity instanceof EntityItem) {
+                        GTRecipe tRecipe = RecipeMaps.microwaveRecipes.findRecipeQuery()
+                            .items(((EntityItem) entity).getEntityItem())
+                            .voltage(128)
+                            .notUnificated(true)
+                            .find();
+                        if (tRecipe == null || tRecipe.mInputs.length == 0 || tRecipe.mInputs[0].stackSize != 1) {
+                            itemsToOutput.add(((EntityItem) entity).getEntityItem());
+                        } else {
+                            ItemStack newStuff = tRecipe.getOutput(0)
+                                .copy();
+                            newStuff.stackSize = ((EntityItem) entity).getEntityItem().stackSize;
+                            itemsToOutput.add(newStuff);
+                        }
+                        ((EntityItem) entity).delayBeforeCanPickup = 2;
+                        entity.setDead();
+                    } else if (entity instanceof EntityLivingBase) {
+                        if (!HazardProtection.isWearingFullElectroHazmat((EntityLivingBase) entity)) {
+                            entity.attackEntityFrom(MainLoader.microwaving, damagingFactor);
                         }
                     }
                 }
             }
+
             aabb.offset(xyzOffsets.get0(), xyzOffsets.get1(), xyzOffsets.get2());
             aabb = aabb.expand(xyzExpansion.get0() * 1.5, xyzExpansion.get1() * 1.5, xyzExpansion.get2() * 1.5);
             inside = false;
@@ -206,7 +209,7 @@ public class MTEMicrowave extends TTMultiblockBase implements IConstructable {
         if (remainingTime.get() <= 0) {
             mte.getWorld()
                 .playSoundEffect(xPos, yPos, zPos, Reference.MODID + ":microwave_ding", 1, 1);
-            stopMachine();
+            stopMachine(ShutDownReasonRegistry.NONE);
         }
     }
 
@@ -241,11 +244,6 @@ public class MTEMicrowave extends TTMultiblockBase implements IConstructable {
                 translateToLocal("tt.keyword.Structure.DataConnector"),
                 translateToLocal("tt.keyword.Structure.AnyOuterCasingOnBottom"),
                 2) // Output Bus: Any outer casing on the bottom layer
-            .addOtherStructurePart(
-                translateToLocal("gt.blockmachines.hatch.param.tier.05.name"),
-                translateToLocal("tt.keyword.Structure.Optional") + " "
-                    + translateToLocal("tt.keyword.Structure.AnyOuterCasingOnBottom"),
-                2) // Parametrizer: (optional) Any outer casing on the bottom layer
             .addEnergyHatch(translateToLocal("tt.keyword.Structure.AnyOuterCasingOnBottom"), 1) // Energy Hatch: Any
                                                                                                 // outer casing on
                                                                                                 // the bottom layer
@@ -311,6 +309,12 @@ public class MTEMicrowave extends TTMultiblockBase implements IConstructable {
     }
 
     @Override
+    public int survivalConstruct(ItemStack stackSize, int elementBudget, IItemSource source, EntityPlayerMP actor) {
+        if (mMachine) return -1;
+        return survivialBuildPiece("main", stackSize, 2, 2, 0, elementBudget, source, actor, false, true);
+    }
+
+    @Override
     public IStructureDefinition<MTEMicrowave> getStructure_EM() {
         return STRUCTURE_DEFINITION;
     }
@@ -321,17 +325,7 @@ public class MTEMicrowave extends TTMultiblockBase implements IConstructable {
     }
 
     @Override
-    public boolean isPowerPassButtonEnabled() {
-        return true;
-    }
-
-    @Override
     public boolean isSafeVoidButtonEnabled() {
         return false;
-    }
-
-    @Override
-    public boolean isAllowedToWorkButtonEnabled() {
-        return true;
     }
 }

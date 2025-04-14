@@ -20,6 +20,7 @@ import net.minecraft.stats.AchievementList;
 import net.minecraft.stats.StatList;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.MathHelper;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.event.world.BlockEvent;
 
@@ -29,11 +30,11 @@ import gregtech.api.enchants.EnchantmentRadioactivity;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
 import gregtech.api.interfaces.IDamagableItem;
+import gregtech.api.interfaces.IToolStats;
 import gregtech.api.items.MetaGeneratedTool;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
 import gtPlusPlus.core.creative.AddToCreativeTab;
-import gtPlusPlus.xmod.gregtech.api.interfaces.internal.IToolStats;
 import mods.railcraft.api.core.items.IToolCrowbar;
 
 /**
@@ -58,7 +59,7 @@ public abstract class GTMetaTool extends MetaGeneratedTool implements IDamagable
 
     /* ---------- CONSTRUCTOR AND MEMBER VARIABLES ---------- */
 
-    public final HashMap<Short, gregtech.api.interfaces.IToolStats> mToolStats = new HashMap<>();
+    public final HashMap<Short, IToolStats> mToolStats = new HashMap<>();
 
     /**
      * Creates the Item using these Parameters.
@@ -78,9 +79,9 @@ public abstract class GTMetaTool extends MetaGeneratedTool implements IDamagable
      */
     @Override
     public void onHarvestBlockEvent(final ArrayList<ItemStack> aDrops, final ItemStack aStack,
-        final EntityPlayer aPlayer, final Block aBlock, final int aX, final int aY, final int aZ, final byte aMetaData,
+        final EntityPlayer aPlayer, final Block aBlock, final int aX, final int aY, final int aZ, final int aMetaData,
         final int aFortune, final boolean aSilkTouch, final BlockEvent.HarvestDropsEvent aEvent) {
-        final gregtech.api.interfaces.IToolStats tStats = this.getToolStats(aStack);
+        final IToolStats tStats = this.getToolStats(aStack);
         if (this.isItemStackUsable(aStack) && (this.getDigSpeed(aStack, aBlock, aMetaData) > 0.0F)) {
             this.doDamage(
                 aStack,
@@ -101,7 +102,7 @@ public abstract class GTMetaTool extends MetaGeneratedTool implements IDamagable
 
     @Override
     public boolean onLeftClickEntity(final ItemStack aStack, final EntityPlayer aPlayer, final Entity aEntity) {
-        final gregtech.api.interfaces.IToolStats tStats = this.getToolStats(aStack);
+        final IToolStats tStats = this.getToolStats(aStack);
         if ((tStats == null) || !this.isItemStackUsable(aStack)) {
             return true;
         }
@@ -182,7 +183,7 @@ public abstract class GTMetaTool extends MetaGeneratedTool implements IDamagable
 
     @Override
     public ItemStack onItemRightClick(final ItemStack aStack, final World aWorld, final EntityPlayer aPlayer) {
-        final gregtech.api.interfaces.IToolStats tStats = this.getToolStats(aStack);
+        final IToolStats tStats = this.getToolStats(aStack);
         if ((tStats != null) && tStats.canBlock()) {
             aPlayer.setItemInUse(aStack, 72000);
         }
@@ -193,7 +194,7 @@ public abstract class GTMetaTool extends MetaGeneratedTool implements IDamagable
     public void addAdditionalToolTips(final List aList, final ItemStack aStack) {
         final long tMaxDamage = getToolMaxDamage(aStack);
         final Materials tMaterial = getPrimaryMaterial(aStack);
-        final gregtech.api.interfaces.IToolStats tStats = this.getToolStats(aStack);
+        final IToolStats tStats = this.getToolStats(aStack);
         final int tOffset = this.getElectricStats(aStack) != null ? 2 : 1;
         if (tStats != null) {
             final String name = aStack.getUnlocalizedName();
@@ -287,7 +288,7 @@ public abstract class GTMetaTool extends MetaGeneratedTool implements IDamagable
     public void addAdditionalToolTips(final List aList, final ItemStack aStack, final EntityPlayer aPlayer) {
         final long tMaxDamage = getToolMaxDamage(aStack);
         final Materials tMaterial = getPrimaryMaterial(aStack);
-        final gregtech.api.interfaces.IToolStats tStats = this.getToolStats(aStack);
+        final IToolStats tStats = this.getToolStats(aStack);
         final int tOffset = this.getElectricStats(aStack) != null ? 2 : 1;
         if (tStats != null) {
             final String name = aStack.getUnlocalizedName();
@@ -296,7 +297,8 @@ public abstract class GTMetaTool extends MetaGeneratedTool implements IDamagable
                 || name.equals("gt.metatool.01.176")) {
                 aList.add(
                     tOffset + 0,
-                    EnumChatFormatting.WHITE + "Durability: "
+                    EnumChatFormatting.WHITE + StatCollector.translateToLocal("gtpp.tooltip.tool.durability")
+                        + " "
                         + EnumChatFormatting.GREEN
                         + (tMaxDamage - getToolDamage(aStack))
                         + " / "
@@ -311,22 +313,22 @@ public abstract class GTMetaTool extends MetaGeneratedTool implements IDamagable
                         + EnumChatFormatting.GRAY);
                 aList.add(
                     tOffset + 2,
-                    EnumChatFormatting.WHITE + "Turbine Efficency: "
+                    EnumChatFormatting.WHITE + StatCollector.translateToLocal("gtpp.tooltip.tool.turbine_efficiency")
+                        + " "
                         + EnumChatFormatting.BLUE
                         + (50.0F + (10.0F * this.getToolCombatDamage(aStack)))
                         + EnumChatFormatting.GRAY);
                 aList.add(
                     tOffset + 3,
-                    EnumChatFormatting.WHITE + "Optimal Steam flow: "
-                        + EnumChatFormatting.LIGHT_PURPLE
-                        + Math.max(
+                    EnumChatFormatting.WHITE + StatCollector.translateToLocalFormatted(
+                        "gtpp.tooltip.tool.optimal_steam_flow",
+                        Math.max(
                             Float.MIN_NORMAL,
-                            tStats.getSpeedMultiplier() * getPrimaryMaterial(aStack).mToolSpeed * 1000)
-                        + EnumChatFormatting.GRAY
-                        + "L/sec");
+                            tStats.getSpeedMultiplier() * getPrimaryMaterial(aStack).mToolSpeed * 1000)));
                 aList.add(
                     tOffset + 3,
-                    EnumChatFormatting.WHITE + "Optimal Gas flow(EU burnvalue per tick): "
+                    EnumChatFormatting.WHITE + StatCollector.translateToLocal("gtpp.tooltip.tool.optimal_gas_flow")
+                        + " "
                         + EnumChatFormatting.LIGHT_PURPLE
                         + Math.max(
                             Float.MIN_NORMAL,
@@ -335,7 +337,8 @@ public abstract class GTMetaTool extends MetaGeneratedTool implements IDamagable
                         + "EU/t");
                 aList.add(
                     tOffset + 3,
-                    EnumChatFormatting.WHITE + "Optimal Plasma flow(Plasma energyvalue per tick): "
+                    EnumChatFormatting.WHITE + StatCollector.translateToLocal("gtpp.tooltip.tool.optimal_plasma_flow")
+                        + " "
                         + EnumChatFormatting.LIGHT_PURPLE
                         + Math.max(
                             Float.MIN_NORMAL,
@@ -346,7 +349,8 @@ public abstract class GTMetaTool extends MetaGeneratedTool implements IDamagable
             } else {
                 aList.add(
                     tOffset + 0,
-                    EnumChatFormatting.WHITE + "Durability: "
+                    EnumChatFormatting.WHITE + StatCollector.translateToLocal("gtpp.tooltip.tool.durability")
+                        + " "
                         + EnumChatFormatting.GREEN
                         + (tMaxDamage - getToolDamage(aStack))
                         + " / "
@@ -361,13 +365,15 @@ public abstract class GTMetaTool extends MetaGeneratedTool implements IDamagable
                         + EnumChatFormatting.GRAY);
                 aList.add(
                     tOffset + 2,
-                    EnumChatFormatting.WHITE + "Attack Damage: "
+                    EnumChatFormatting.WHITE + StatCollector.translateToLocal("gtpp.tooltip.tool.attack_damage")
+                        + " "
                         + EnumChatFormatting.BLUE
                         + this.getToolCombatDamage(aStack)
                         + EnumChatFormatting.GRAY);
                 aList.add(
                     tOffset + 3,
-                    EnumChatFormatting.WHITE + "Mining Speed: "
+                    EnumChatFormatting.WHITE + StatCollector.translateToLocal("gtpp.tooltip.tool.mining_speed")
+                        + " "
                         + EnumChatFormatting.LIGHT_PURPLE
                         + Math
                             .max(Float.MIN_NORMAL, tStats.getSpeedMultiplier() * getPrimaryMaterial(aStack).mToolSpeed)
@@ -395,9 +401,9 @@ public abstract class GTMetaTool extends MetaGeneratedTool implements IDamagable
 
                         aList.add(
                             tOffset + 3,
-                            EnumChatFormatting.RED + "Heat: "
-                                + aNBT.getInteger("Heat")
-                                + " K"
+                            EnumChatFormatting.RED
+                                + StatCollector
+                                    .translateToLocalFormatted("GT5U.tooltip.tool.heat", aNBT.getInteger("Heat"))
                                 + EnumChatFormatting.GRAY);
                     }
                 }
@@ -425,7 +431,7 @@ public abstract class GTMetaTool extends MetaGeneratedTool implements IDamagable
 
     @Override
     public float getToolCombatDamage(final ItemStack aStack) {
-        final gregtech.api.interfaces.IToolStats tStats = this.getToolStats(aStack);
+        final IToolStats tStats = this.getToolStats(aStack);
         if (tStats == null) {
             return 0;
         }
@@ -437,11 +443,11 @@ public abstract class GTMetaTool extends MetaGeneratedTool implements IDamagable
         if (!this.isItemStackUsable(aStack)) {
             return 0.0F;
         }
-        final gregtech.api.interfaces.IToolStats tStats = this.getToolStats(aStack);
+        final IToolStats tStats = this.getToolStats(aStack);
         if ((tStats == null) || (Math.max(0, this.getHarvestLevel(aStack, "")) < aBlock.getHarvestLevel(aMetaData))) {
             return 0.0F;
         }
-        return tStats.isMinableBlock(aBlock, (byte) aMetaData)
+        return tStats.isMinableBlock(aBlock, aMetaData)
             ? Math.max(Float.MIN_NORMAL, tStats.getSpeedMultiplier() * getPrimaryMaterial(aStack).mToolSpeed)
             : 0.0F;
     }
@@ -452,7 +458,7 @@ public abstract class GTMetaTool extends MetaGeneratedTool implements IDamagable
         if (!this.isItemStackUsable(aStack)) {
             return false;
         }
-        final gregtech.api.interfaces.IToolStats tStats = this.getToolStats(aStack);
+        final IToolStats tStats = this.getToolStats(aStack);
         if (tStats == null) {
             return false;
         }
@@ -468,7 +474,7 @@ public abstract class GTMetaTool extends MetaGeneratedTool implements IDamagable
             return null;
         }
         aStack = GTUtility.copyAmount(1, aStack);
-        final gregtech.api.interfaces.IToolStats tStats = this.getToolStats(aStack);
+        final IToolStats tStats = this.getToolStats(aStack);
         if (tStats == null) {
             return null;
         }
@@ -485,7 +491,7 @@ public abstract class GTMetaTool extends MetaGeneratedTool implements IDamagable
     }
 
     private IToolStats getToolStatsInternal(final ItemStack aStack) {
-        return (IToolStats) (aStack == null ? null : this.mToolStats.get((short) aStack.getItemDamage()));
+        return aStack == null ? null : this.mToolStats.get((short) aStack.getItemDamage());
     }
 
     @Override
@@ -494,13 +500,13 @@ public abstract class GTMetaTool extends MetaGeneratedTool implements IDamagable
         if (!this.isItemStackUsable(aStack)) {
             return false;
         }
-        final gregtech.api.interfaces.IToolStats tStats = this.getToolStats(aStack);
+        final IToolStats tStats = this.getToolStats(aStack);
         return (tStats != null) && tStats.isCrowbar();
     }
 
     @Override
     public void onWhack(final EntityPlayer aPlayer, final ItemStack aStack, final int aX, final int aY, final int aZ) {
-        final gregtech.api.interfaces.IToolStats tStats = this.getToolStats(aStack);
+        final IToolStats tStats = this.getToolStats(aStack);
         if (tStats != null) {
             this.doDamage(aStack, tStats.getToolDamagePerEntityAttack());
         }
@@ -530,7 +536,7 @@ public abstract class GTMetaTool extends MetaGeneratedTool implements IDamagable
         if (player.getCurrentEquippedItem() == null) {
             return;
         }
-        final gregtech.api.interfaces.IToolStats tStats = this.getToolStats(player.getCurrentEquippedItem());
+        final IToolStats tStats = this.getToolStats(player.getCurrentEquippedItem());
         if (tStats != null) {
             this.doDamage(player.getCurrentEquippedItem(), tStats.getToolDamagePerEntityAttack());
         }
@@ -541,13 +547,13 @@ public abstract class GTMetaTool extends MetaGeneratedTool implements IDamagable
         if (!this.isItemStackUsable(aStack)) {
             return false;
         }
-        final gregtech.api.interfaces.IToolStats tStats = this.getToolStats(aStack);
+        final IToolStats tStats = this.getToolStats(aStack);
         return (tStats != null) && tStats.isCrowbar();
     }
 
     @Override
     public void onLink(final EntityPlayer aPlayer, final ItemStack aStack, final EntityMinecart cart) {
-        final gregtech.api.interfaces.IToolStats tStats = this.getToolStats(aStack);
+        final IToolStats tStats = this.getToolStats(aStack);
         if (tStats != null) {
             this.doDamage(aStack, tStats.getToolDamagePerEntityAttack());
         }
@@ -558,13 +564,13 @@ public abstract class GTMetaTool extends MetaGeneratedTool implements IDamagable
         if (!this.isItemStackUsable(aStack)) {
             return false;
         }
-        final gregtech.api.interfaces.IToolStats tStats = this.getToolStats(aStack);
+        final IToolStats tStats = this.getToolStats(aStack);
         return (tStats != null) && tStats.isCrowbar();
     }
 
     @Override
     public void onBoost(final EntityPlayer aPlayer, final ItemStack aStack, final EntityMinecart cart) {
-        final gregtech.api.interfaces.IToolStats tStats = this.getToolStats(aStack);
+        final IToolStats tStats = this.getToolStats(aStack);
         if (tStats != null) {
             this.doDamage(aStack, tStats.getToolDamagePerEntityAttack());
         }
@@ -572,7 +578,7 @@ public abstract class GTMetaTool extends MetaGeneratedTool implements IDamagable
 
     @Override
     public void onCreated(final ItemStack aStack, final World aWorld, final EntityPlayer aPlayer) {
-        final gregtech.api.interfaces.IToolStats tStats = this.getToolStats(aStack);
+        final IToolStats tStats = this.getToolStats(aStack);
         if ((tStats != null) && (aPlayer != null)) {
             tStats.onToolCrafted(aStack, aPlayer);
         }
@@ -586,7 +592,7 @@ public abstract class GTMetaTool extends MetaGeneratedTool implements IDamagable
 
     @Override
     public boolean isItemStackUsable(final ItemStack aStack) {
-        final gregtech.api.interfaces.IToolStats tStats = this.getToolStatsInternal(aStack);
+        final IToolStats tStats = this.getToolStatsInternal(aStack);
         if (((aStack.getItemDamage() % 2) == 1) || (tStats == null)) {
             final NBTTagCompound aNBT = aStack.getTagCompound();
             if (aNBT != null) {

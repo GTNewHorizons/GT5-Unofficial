@@ -9,6 +9,7 @@ import static tectech.thing.casing.TTCasingsContainer.GodforgeCasings;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
@@ -18,10 +19,15 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import com.gtnewhorizon.structurelib.alignment.constructable.IConstructable;
+import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
+import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+import com.gtnewhorizons.modularui.api.ModularUITextures;
 import com.gtnewhorizons.modularui.api.drawable.IDrawable;
 import com.gtnewhorizons.modularui.api.drawable.Text;
 import com.gtnewhorizons.modularui.api.drawable.UITexture;
@@ -59,7 +65,7 @@ import tectech.thing.gui.TecTechUITextures;
 import tectech.thing.metaTileEntity.multi.base.TTMultiblockBase;
 import tectech.thing.metaTileEntity.multi.godforge.util.ForgeOfGodsUI;
 
-public class MTEBaseModule extends TTMultiblockBase {
+public class MTEBaseModule extends TTMultiblockBase implements IConstructable, ISurvivalConstructable {
 
     protected final int tier = getTier();
     protected boolean isConnected = false;
@@ -83,7 +89,6 @@ public class MTEBaseModule extends TTMultiblockBase {
     private static Textures.BlockIcons.CustomIcon ScreenOFF;
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
-    private static final int VOLTAGE_WINDOW_ID = 9;
     private static final int GENERAL_INFO_WINDOW_ID = 10;
     private static final int TEXTURE_INDEX = 960;
 
@@ -156,6 +161,10 @@ public class MTEBaseModule extends TTMultiblockBase {
 
     public int getMaxParallel() {
         return maximumParallel;
+    }
+
+    public int getActualParallel() {
+        return Math.max(1, alwaysMaxParallel ? getMaxParallel() : Math.min(getMaxParallel(), powerPanelMaxParallel));
     }
 
     public void setSpeedBonus(double bonus) {
@@ -255,6 +264,11 @@ public class MTEBaseModule extends TTMultiblockBase {
         return GTValues.V[tier];
     }
 
+    // This prevents processingLogic from overflowing on energy, can be changed if/when it can handle > max long
+    protected long getSafeProcessingVoltage() {
+        return Math.min(getProcessingVoltage(), Long.MAX_VALUE / getActualParallel());
+    }
+
     @Override
     public IStructureDefinition<? extends TTMultiblockBase> getStructure_EM() {
         if (this instanceof MTESmeltingModule) {
@@ -266,6 +280,11 @@ public class MTEBaseModule extends TTMultiblockBase {
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
         structureBuild_EM(STRUCTURE_PIECE_MAIN, 3, 3, 0, stackSize, hintsOnly);
+    }
+
+    public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
+        int realBudget = elementBudget >= 200 ? elementBudget : Math.min(1000, elementBudget * 5);
+        return survivialBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 3, 3, 0, realBudget, env, false, true);
     }
 
     @Override
@@ -300,8 +319,8 @@ public class MTEBaseModule extends TTMultiblockBase {
         final SlotWidget inventorySlot = new SlotWidget(inventoryHandler, 1);
         drawTexts(screenElements, inventorySlot);
 
-        buildContext.addSyncedWindow(VOLTAGE_WINDOW_ID, this::createVoltageWindow);
         buildContext.addSyncedWindow(GENERAL_INFO_WINDOW_ID, this::createGeneralInfoWindow);
+        buildContext.addSyncedWindow(POWER_PANEL_WINDOW_ID, this::createPowerPanel);
 
         builder.widget(
             new DrawableWidget().setSize(18, 18)
@@ -340,83 +359,13 @@ public class MTEBaseModule extends TTMultiblockBase {
                     .setPos(172, 67)
                     .setTooltipShowUpDelay(TOOLTIP_DELAY))
             .widget(createPowerSwitchButton(builder))
-            .widget(createVoltageButton(builder))
-            .widget(createStructureUpdateButton(builder));
+            .widget(createStructureUpdateButton(builder))
+            .widget(createPowerPanelButton(builder));
 
         if (supportsVoidProtection()) builder.widget(createVoidExcessButton(builder));
         if (supportsInputSeparation()) builder.widget(createInputSeparationButton(builder));
         if (supportsBatchMode()) builder.widget(createBatchModeButton(builder));
         if (supportsSingleRecipeLocking()) builder.widget(createLockToSingleRecipeButton(builder));
-    }
-
-    protected Widget createVoltageButton(IWidgetBuilder<?> builder) {
-        Widget button = new ButtonWidget().setOnClick((clickData, widget) -> {
-            if (isVoltageConfigUnlocked) {
-                TecTech.proxy.playSound(getBaseMetaTileEntity(), "fx_click");
-                if (!widget.isClient()) {
-                    widget.getContext()
-                        .openSyncedWindow(VOLTAGE_WINDOW_ID);
-                }
-            }
-        })
-            .setPlayClickSound(false)
-            .setBackground(() -> {
-                List<UITexture> ret = new ArrayList<>();
-                ret.add(TecTechUITextures.BUTTON_CELESTIAL_32x32);
-                if (isVoltageConfigUnlocked) {
-                    ret.add(TecTechUITextures.OVERLAY_BUTTON_POWER_PASS_ON);
-                } else {
-                    ret.add(TecTechUITextures.OVERLAY_BUTTON_POWER_PASS_DISABLED);
-                }
-                return ret.toArray(new IDrawable[0]);
-            })
-            .addTooltip(translateToLocal("fog.button.voltageconfig.tooltip.01"))
-            .setTooltipShowUpDelay(TOOLTIP_DELAY)
-            .setPos(174, 112)
-            .setSize(16, 16)
-            .attachSyncer(
-                new FakeSyncWidget.BooleanSyncer(() -> isVoltageConfigUnlocked, val -> isVoltageConfigUnlocked = val),
-                builder);
-        if (!isVoltageConfigUnlocked) {
-            button.addTooltip(EnumChatFormatting.GRAY + translateToLocal("fog.button.voltageconfig.tooltip.02"));
-        }
-        return button;
-    }
-
-    protected ModularWindow createVoltageWindow(final EntityPlayer player) {
-        final int WIDTH = 158;
-        final int HEIGHT = 52;
-        final int PARENT_WIDTH = getGUIWidth();
-        final int PARENT_HEIGHT = getGUIHeight();
-        ModularWindow.Builder builder = ModularWindow.builder(WIDTH, HEIGHT);
-        builder.setBackground(GTUITextures.BACKGROUND_SINGLEBLOCK_DEFAULT);
-        builder.setGuiTint(getGUIColorization());
-        builder.setDraggable(true);
-        builder.setPos(
-            (size, window) -> Alignment.Center.getAlignedPos(size, new Size(PARENT_WIDTH, PARENT_HEIGHT))
-                .add(
-                    Alignment.BottomRight.getAlignedPos(new Size(PARENT_WIDTH, PARENT_HEIGHT), new Size(WIDTH, HEIGHT))
-                        .add(WIDTH - 3, 0)
-                        .subtract(0, 10)));
-        builder.widget(
-            TextWidget.localised("gt.blockmachines.multimachine.FOG.voltageinfo")
-                .setPos(3, 4)
-                .setSize(150, 20))
-            .widget(
-                new NumericWidget().setSetter(val -> processingVoltage = (long) val)
-                    .setGetter(() -> processingVoltage)
-                    .setBounds(2_000_000_000, Long.MAX_VALUE)
-                    .setDefaultValue(2_000_000_000)
-                    .setScrollValues(1, 4, 64)
-                    .setTextAlignment(Alignment.Center)
-                    .setTextColor(Color.WHITE.normal)
-                    .setSize(150, 18)
-                    .setPos(4, 25)
-                    .setBackground(GTUITextures.BACKGROUND_TEXT_FIELD)
-                    .attachSyncer(
-                        new FakeSyncWidget.LongSyncer(this::getProcessingVoltage, this::setProcessingVoltage),
-                        builder));
-        return builder.build();
     }
 
     protected ModularWindow createGeneralInfoWindow(final EntityPlayer player) {
@@ -454,6 +403,136 @@ public class MTEBaseModule extends TTMultiblockBase {
     }
 
     @Override
+    public ButtonWidget createPowerPanelButton(IWidgetBuilder<?> builder) {
+        Widget button = new ButtonWidget().setOnClick((clickData, widget) -> {
+            TecTech.proxy.playSound(getBaseMetaTileEntity(), "fx_click");
+            if (!widget.isClient()) widget.getContext()
+                .openSyncedWindow(POWER_PANEL_WINDOW_ID);
+        })
+            .setPlayClickSound(false)
+            .setBackground(() -> {
+                List<UITexture> ret = new ArrayList<>();
+                ret.add(TecTechUITextures.BUTTON_CELESTIAL_32x32);
+                ret.add(TecTechUITextures.OVERLAY_BUTTON_POWER_PANEL);
+                return ret.toArray(new IDrawable[0]);
+            })
+            .addTooltip(StatCollector.translateToLocal("GT5U.gui.button.power_panel"))
+            .setTooltipShowUpDelay(TOOLTIP_DELAY)
+            .setPos(174, 112)
+            .setSize(16, 16);
+        return (ButtonWidget) button;
+    }
+
+    @Override
+    public ModularWindow createPowerPanel(EntityPlayer player) {
+        if (getBaseMetaTileEntity().isServerSide()) maxParallel = getMaxParallel();
+        if (alwaysMaxParallel) powerPanelMaxParallel = maxParallel;
+
+        final int w = 138;
+        final int h = 105;
+        final int parentW = getGUIWidth();
+        final int parentH = getGUIHeight();
+
+        ModularWindow.Builder builder = ModularWindow.builder(w, h);
+
+        builder.setBackground(GTUITextures.BACKGROUND_SINGLEBLOCK_DEFAULT);
+        builder.setGuiTint(getGUIColorization());
+        builder.setDraggable(true);
+        builder.setPos(
+            (size, window) -> Alignment.Center.getAlignedPos(size, new Size(parentW, parentH))
+                .add(
+                    Alignment.TopRight.getAlignedPos(new Size(parentW, parentH), new Size(w, h))
+                        .add(w - 3, 0)));
+
+        builder.widget(
+            new TextWidget(EnumChatFormatting.UNDERLINE + StatCollector.translateToLocal("GT5U.gui.text.power_panel"))
+                .setPos(0, 2)
+                .setSize(138, 18));
+
+        builder.widget(new FakeSyncWidget.IntegerSyncer(this::getMaxParallel, val -> maxParallel = val));
+        builder
+            .widget(new FakeSyncWidget.IntegerSyncer(() -> powerPanelMaxParallel, val -> powerPanelMaxParallel = val));
+        builder.widget(new FakeSyncWidget.BooleanSyncer(() -> alwaysMaxParallel, val -> alwaysMaxParallel = val));
+
+        builder.widget(
+            TextWidget.localised("GTPP.CC.parallel")
+                .setPos(0, 24)
+                .setSize(125, 18));
+
+        NumericWidget textField = (NumericWidget) new NumericWidget()
+            .setSetter(val -> powerPanelMaxParallel = (int) val)
+            .setGetter(() -> powerPanelMaxParallel)
+            .setValidator(val -> {
+                powerPanelMaxParallel = (int) Math
+                    .min(maxParallel, Math.max(val, (alwaysMaxParallel ? maxParallel : 1)));
+                return powerPanelMaxParallel;
+            })
+            .setDefaultValue(powerPanelMaxParallel)
+            .setScrollValues(1, 4, 64)
+            .setTextAlignment(Alignment.Center)
+            .setTextColor(Color.WHITE.normal)
+            .dynamicTooltip(
+                () -> Collections.singletonList(
+                    alwaysMaxParallel
+                        ? StatCollector.translateToLocalFormatted("GT5U.gui.text.lockedvalue", maxParallel)
+                        : StatCollector.translateToLocalFormatted("GT5U.gui.text.rangedvalue", 1, maxParallel)))
+            .setTooltipShowUpDelay(TOOLTIP_DELAY)
+            .setSize(70, 18)
+            .setPos(12, 40)
+            .setBackground(GTUITextures.BACKGROUND_TEXT_FIELD);
+
+        builder.widget(
+            TextWidget.localised("gt.blockmachines.multimachine.FOG.voltageinfo")
+                .setPos(0, 59)
+                .setSize(138, 15));
+        builder.widget(
+            new DrawableWidget().setDrawable(ModularUITextures.ICON_INFO)
+                .setPos(127, 67)
+                .setSize(8, 8)
+                .addTooltip(translateToLocal("fog.text.tooltip.voltageadjustment"))
+                .addTooltip(translateToLocal("fog.text.tooltip.voltageadjustment.1"))
+                .setEnabled($ -> isVoltageConfigUnlocked)
+                .setTooltipShowUpDelay(TOOLTIP_DELAY))
+            .widget(
+                new NumericWidget().setSetter(val -> processingVoltage = (long) val)
+                    .setGetter(() -> processingVoltage)
+                    .setBounds(2_000_000_000, Long.MAX_VALUE)
+                    .setDefaultValue(2_000_000_000)
+                    .setScrollValues(1, 4, 64)
+                    .setTextAlignment(Alignment.Center)
+                    .setTextColor(Color.WHITE.normal)
+                    .setSize(130, 18)
+                    .setPos(4, 76)
+                    .setBackground(GTUITextures.BACKGROUND_TEXT_FIELD)
+                    .setEnabled($ -> isVoltageConfigUnlocked)
+                    .attachSyncer(
+                        new FakeSyncWidget.LongSyncer(this::getProcessingVoltage, this::setProcessingVoltage),
+                        builder)
+                    .attachSyncer(
+                        new FakeSyncWidget.BooleanSyncer(
+                            () -> isVoltageConfigUnlocked,
+                            val -> isVoltageConfigUnlocked = val),
+                        builder))
+            .widget(
+                new DrawableWidget().setDrawable(GTUITextures.OVERLAY_BUTTON_CROSS)
+                    .setPos(54, 70)
+                    .setSize(30, 30)
+                    .addTooltip(translateToLocal("fog.button.voltageconfig.tooltip.02"))
+                    .setEnabled($ -> !isVoltageConfigUnlocked)
+                    .setTooltipShowUpDelay(TOOLTIP_DELAY)
+                    .attachSyncer(
+                        new FakeSyncWidget.BooleanSyncer(
+                            () -> isVoltageConfigUnlocked,
+                            val -> isVoltageConfigUnlocked = val),
+                        builder));
+
+        builder.widget(textField);
+        builder.widget(createMaxParallelCheckBox(textField));
+
+        return builder.build();
+    }
+
+    @Override
     public void addGregTechLogo(ModularWindow.Builder builder) {
         builder.widget(
             new DrawableWidget().setDrawable(TecTechUITextures.PICTURE_GODFORGE_LOGO)
@@ -478,11 +557,6 @@ public class MTEBaseModule extends TTMultiblockBase {
 
     @Override
     public boolean supportsSingleRecipeLocking() {
-        return true;
-    }
-
-    @Override
-    public boolean isSimpleMachine() {
         return true;
     }
 

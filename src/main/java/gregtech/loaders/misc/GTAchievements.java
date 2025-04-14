@@ -52,14 +52,8 @@ public class GTAchievements {
             registerAssAchievement(recipe);
         }
 
-        registerAchievement(
-            "flintpick",
-            0,
-            0,
-            MetaGeneratedTool01.INSTANCE.getToolWithStats(2, 1, Materials.Flint, Materials.Wood, null),
-            "",
-            false);
-        registerAchievement("crops", -4, 0, GTModHandler.getIC2Item("crop", 1L), "flintpick", false);
+        registerAchievement("gettingstartedwithgt", 0, 0, new ItemStack(Items.wooden_pickaxe), "", false);
+        registerAchievement("crops", -4, 0, GTModHandler.getIC2Item("crop", 1L), "gettingstartedwithgt", false);
         registerAchievement("havestlead", -4, 2, ItemList.Crop_Drop_Plumbilia.get(1), "crops", false);
         registerAchievement("havestcopper", -2, 1, ItemList.Crop_Drop_Coppon.get(1), "crops", false);
         registerAchievement("havesttin", -2, -1, ItemList.Crop_Drop_Tine.get(1), "crops", false);
@@ -75,7 +69,7 @@ public class GTAchievements {
             4,
             MetaGeneratedTool01.INSTANCE
                 .getToolWithStats(IDMetaTool01.HARDHAMMER.ID, 1, Materials.Iron, Materials.Wood, null),
-            "flintpick",
+            "gettingstartedwithgt",
             false);
         registerAchievement(
             "driltime",
@@ -114,15 +108,7 @@ public class GTAchievements {
             "highpowerdrill",
             false);
 
-        registerAchievement(
-            "unitool",
-            -2,
-            4,
-            MetaGeneratedTool01.INSTANCE
-                .getToolWithStats(IDMetaTool01.UNIVERSALSPADE.ID, 1, Materials.Steel, Materials.Iron, null),
-            "tools",
-            false);
-        registerAchievement("recycling", -4, 4, ItemList.Machine_LV_ArcFurnace.get(1), "unitool", false);
+        registerAchievement("recycling", -2, 4, ItemList.Machine_LV_ArcFurnace.get(1), "tools", false);
 
         registerAchievement(
             "crushed",
@@ -168,7 +154,7 @@ public class GTAchievements {
             2,
             0,
             GTOreDictUnificator.get(OrePrefixes.dust, Materials.Bronze, 1L),
-            "flintpick",
+            "gettingstartedwithgt",
             false);
         registerAchievement(
             "simplyeco",
@@ -499,8 +485,7 @@ public class GTAchievements {
                 issueAchievement(player, "finalpreparations");
             }
         }
-        if (stack.getUnlocalizedName()
-            .equals("ic2.itemPartIndustrialDiamond")) {
+        if (ItemList.IC2_Industrial_Diamond.isStackEqual(stack)) {
             issueAchievement(player, "artificaldia");
             issueAchievement(player, "buildCoalDiamond");
         }
@@ -535,6 +520,7 @@ public class GTAchievements {
             }
         }
         switch (stack.getUnlocalizedName()) {
+            case "item.pickaxeWood" -> issueAchievement(player, "gettingstartedwithgt");
             case "gt.metaitem.01.2300" -> issueAchievement(player, "bronze");
             case "gt.metaitem.01.32700" -> issueAchievement(player, "smallparts");
             case "gt.metaitem.01.32702" -> issueAchievement(player, "bettercircuits");

@@ -13,7 +13,6 @@
 
 package bartworks.common.tileentities.multis;
 
-import static bartworks.util.BWUtil.ofGlassTieredMixed;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.InputBus;
@@ -27,6 +26,7 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_LINE
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_LINE_GLOW;
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
+import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 import static gregtech.api.util.GTUtility.getColoredTierNameFromTier;
 import static gregtech.api.util.GTUtility.validMTEList;
 
@@ -66,6 +66,7 @@ import bartworks.system.material.CircuitGeneration.CircuitImprintLoader;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
+import gregtech.api.enums.VoltageIndex;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -105,6 +106,7 @@ public class MTECircuitAssemblyLine extends MTEEnhancedMultiBlockBase<MTECircuit
 
     private int length;
     private int mode;
+    private int glassTier = -1;
     private String imprintedItemName;
     private ItemStack imprintedStack;
 
@@ -128,7 +130,7 @@ public class MTECircuitAssemblyLine extends MTEEnhancedMultiBlockBase<MTECircuit
                 .casingIndex(CASING_INDEX)
                 .dot(1)
                 .buildAndChain(GregTechAPI.sBlockCasings3, 10))
-        .addElement('g', ofGlassTieredMixed((byte) 4, (byte) 127, 5))
+        .addElement('g', chainAllGlasses(-1, (te, t) -> te.glassTier = t, te -> te.glassTier))
         .addElement('l', ofBlock(GregTechAPI.sBlockCasings2, 5)) // assembly line casings
         .addElement(
             'b',
@@ -191,8 +193,13 @@ public class MTECircuitAssemblyLine extends MTEEnhancedMultiBlockBase<MTECircuit
             .addInputHatch("Any layer 1 casing", 2)
             .addInputBus("As specified on layer 1", 3, 4)
             .addOutputBus("As specified in final slice on layer 1", 4)
-            .addOtherStructurePart(getColoredTierNameFromTier((byte) 4) + "+ Tier Glass", "As specified on layer 2", 5)
+            .addOtherStructurePart(
+                StatCollector
+                    .translateToLocalFormatted("tooltip.bw.structure.tier_glass", getColoredTierNameFromTier((byte) 4)),
+                "As specified on layer 2",
+                5)
             .addMaintenanceHatch("Any layer 1 casing", 2)
+
             .toolTipFinisher();
         return tt;
     }
@@ -418,11 +425,6 @@ public class MTECircuitAssemblyLine extends MTEEnhancedMultiBlockBase<MTECircuit
     }
 
     @Override
-    public int getPollutionPerTick(ItemStack itemStack) {
-        return 0;
-    }
-
-    @Override
     public int getDamageToComponent(ItemStack itemStack) {
         return 0;
     }
@@ -481,9 +483,11 @@ public class MTECircuitAssemblyLine extends MTEEnhancedMultiBlockBase<MTECircuit
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+        this.glassTier = -1;
         if (!this.checkPiece(STRUCTURE_PIECE_FIRST, 0, 0, 0)) {
             return false;
         }
+        if (this.glassTier < VoltageIndex.EV) return false;
         return this.checkMachine(true) || this.checkMachine(false);
     }
 
@@ -593,14 +597,13 @@ public class MTECircuitAssemblyLine extends MTEEnhancedMultiBlockBase<MTECircuit
 
     @Override
     public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
-        float aX, float aY, float aZ) {
+        float aX, float aY, float aZ, ItemStack aTool) {
         if (!aPlayer.isSneaking()) {
             if (mode == 0) return false;
             inputSeparation = !inputSeparation;
             GTUtility.sendChatToPlayer(
                 aPlayer,
                 StatCollector.translateToLocal("GT5U.machines.separatebus") + " " + inputSeparation);
-            return true;
         } else {
             batchMode = !batchMode;
             if (batchMode) {
@@ -608,8 +611,8 @@ public class MTECircuitAssemblyLine extends MTEEnhancedMultiBlockBase<MTECircuit
             } else {
                 GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOff"));
             }
-            return true;
         }
+        return true;
     }
 
     @Override

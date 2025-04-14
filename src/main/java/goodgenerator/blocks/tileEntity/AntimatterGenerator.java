@@ -131,6 +131,11 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase
     }
 
     @Override
+    public boolean supportsPowerPanel() {
+        return false;
+    }
+
+    @Override
     public boolean isCorrectMachinePart(ItemStack aStack) {
         return true;
     }
@@ -238,7 +243,8 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
-        return survivialBuildPiece(MAIN_NAME, stackSize, 17, 41, 0, elementBudget, env, false, true);
+        int realBudget = elementBudget >= 200 ? elementBudget : Math.min(200, elementBudget * 5);
+        return survivialBuildPiece(MAIN_NAME, stackSize, 17, 41, 0, realBudget, env, false, true);
     }
 
     @Override
@@ -261,11 +267,6 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase
     @Override
     public int getMaxEfficiency(ItemStack aStack) {
         return 10000;
-    }
-
-    @Override
-    public int getPollutionPerTick(ItemStack aStack) {
-        return 0;
     }
 
     @Override
@@ -351,7 +352,10 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase
             .addCasingInfoMin("Naquadria Frame Box", 293, false)
             .addCasingInfoMin("Advanced Filter Casing", 209, false)
             .addInputHatch("2, Hint block with dot 1", 1)
-            .addOtherStructurePart("Laser Source Hatch", "1-64, Hint Block with dot 2", 2)
+            .addOtherStructurePart(
+                StatCollector.translateToLocal("gg.structure.tooltip.laser_source_hatch"),
+                "1-64, Hint Block with dot 2",
+                2)
             .toolTipFinisher();
         return tt;
     }
@@ -409,7 +413,10 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase
         if (storedEnergy < 0) storedEnergy = Long.MAX_VALUE;
         if (maxEnergy < 0) maxEnergy = Long.MAX_VALUE;
 
-        return new String[] { EnumChatFormatting.BLUE + "Antimatter Forge " + EnumChatFormatting.GRAY,
+        return new String[] {
+            EnumChatFormatting.BLUE + StatCollector.translateToLocal("gg.info.antimatter_forge")
+                + " "
+                + EnumChatFormatting.GRAY,
             StatCollector.translateToLocal("GT5U.multiblock.Progress") + ": "
                 + EnumChatFormatting.GREEN
                 + GTUtility.formatNumbers(mProgresstime)

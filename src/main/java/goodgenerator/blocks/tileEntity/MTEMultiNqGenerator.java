@@ -11,10 +11,12 @@ import java.util.List;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
+import org.apache.commons.lang3.tuple.Pair;
 import org.jetbrains.annotations.NotNull;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.IConstructable;
@@ -23,7 +25,6 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
-import bartworks.util.Pair;
 import goodgenerator.api.recipe.GoodGeneratorRecipeMaps;
 import goodgenerator.blocks.tileEntity.base.MTETooltipMultiBlockBaseEM;
 import goodgenerator.items.GGMaterial;
@@ -42,7 +43,6 @@ import gregtech.api.metatileentity.implementations.MTEHatchDynamo;
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
 import gregtech.api.metatileentity.implementations.MTEHatchMaintenance;
 import gregtech.api.metatileentity.implementations.MTEHatchOutput;
-import gregtech.api.objects.GTRenderedTexture;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
@@ -68,16 +68,16 @@ public class MTEMultiNqGenerator extends MTETooltipMultiBlockBaseEM implements I
 
     static {
         excitedLiquid = Arrays.asList(
-            new Pair<>(MaterialsUEVplus.Space.getMolten(20L), ExcitedLiquidCoe[0]),
-            new Pair<>(GGMaterial.atomicSeparationCatalyst.getMolten(20), ExcitedLiquidCoe[1]),
-            new Pair<>(Materials.Naquadah.getMolten(20L), ExcitedLiquidCoe[2]),
-            new Pair<>(Materials.Uranium235.getMolten(180L), ExcitedLiquidCoe[3]),
-            new Pair<>(Materials.Caesium.getMolten(180L), ExcitedLiquidCoe[4]));
+            Pair.of(MaterialsUEVplus.Space.getMolten(20L), ExcitedLiquidCoe[0]),
+            Pair.of(GGMaterial.atomicSeparationCatalyst.getMolten(20), ExcitedLiquidCoe[1]),
+            Pair.of(Materials.Naquadah.getMolten(20L), ExcitedLiquidCoe[2]),
+            Pair.of(Materials.Uranium235.getMolten(180L), ExcitedLiquidCoe[3]),
+            Pair.of(Materials.Caesium.getMolten(180L), ExcitedLiquidCoe[4]));
         coolant = Arrays.asList(
-            new Pair<>(MaterialsUEVplus.Time.getMolten(20L), CoolantEfficiency[0]),
-            new Pair<>(FluidRegistry.getFluidStack("cryotheum", 1000), CoolantEfficiency[1]),
-            new Pair<>(Materials.SuperCoolant.getFluid(1000L), CoolantEfficiency[2]),
-            new Pair<>(FluidRegistry.getFluidStack("ic2coolant", 1000), CoolantEfficiency[3]));
+            Pair.of(MaterialsUEVplus.Time.getMolten(20L), CoolantEfficiency[0]),
+            Pair.of(FluidRegistry.getFluidStack("cryotheum", 1000), CoolantEfficiency[1]),
+            Pair.of(Materials.SuperCoolant.getFluid(1000L), CoolantEfficiency[2]),
+            Pair.of(FluidRegistry.getFluidStack("ic2coolant", 1000), CoolantEfficiency[3]));
     }
 
     @Override
@@ -278,14 +278,16 @@ public class MTEMultiNqGenerator extends MTETooltipMultiBlockBaseEM implements I
     @Override
     public String[] getInfoData() {
         String[] info = super.getInfoData();
-        info[4] = "Currently generates: " + EnumChatFormatting.RED
-            + GTUtility.formatNumbers(Math.abs(this.trueOutput))
-            + EnumChatFormatting.RESET
-            + " EU/t";
-        info[6] = "Problems: " + EnumChatFormatting.RED
+        info[4] = StatCollector.translateToLocalFormatted(
+            "gg.scanner.info.generator.generates",
+            EnumChatFormatting.RED + GTUtility.formatNumbers(Math.abs(this.trueOutput)) + EnumChatFormatting.RESET);
+        info[6] = StatCollector.translateToLocal("gg.scanner.info.generator.problems") + " "
+            + EnumChatFormatting.RED
             + (this.getIdealStatus() - this.getRepairStatus())
             + EnumChatFormatting.RESET
-            + " Efficiency: "
+            + " "
+            + StatCollector.translateToLocal("gg.scanner.info.generator.efficiency")
+            + " "
             + EnumChatFormatting.YELLOW
             + trueEff
             + EnumChatFormatting.RESET
@@ -379,11 +381,6 @@ public class MTEMultiNqGenerator extends MTETooltipMultiBlockBaseEM implements I
     }
 
     @Override
-    public int getPollutionPerTick(ItemStack aStack) {
-        return 0;
-    }
-
-    @Override
     public int getDamageToComponent(ItemStack aStack) {
         return 0;
     }
@@ -431,6 +428,10 @@ public class MTEMultiNqGenerator extends MTETooltipMultiBlockBaseEM implements I
             .addTecTechHatchInfo()
             .beginStructureBlock(7, 8, 7, true)
             .addController("Front bottom")
+            .addCasingInfoExactly("Field Restriction Casing", 48, false)
+            .addCasingInfoExactly("Radiation Proof Steel Frame Box", 36, false)
+            .addCasingInfoExactly("Tungstensteel Pipe Casing", 6, false)
+            .addCasingInfoExactly("Radiation Proof Machine Casing", 121, false)
             .addDynamoHatch("Any bottom layer casing, only accept ONE!")
             .addInputHatch("Any bottom layer casing")
             .addOutputHatch("Any bottom layer casing")
@@ -440,17 +441,22 @@ public class MTEMultiNqGenerator extends MTETooltipMultiBlockBaseEM implements I
     }
 
     @Override
-    @SuppressWarnings("ALL")
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
         int colorIndex, boolean aActive, boolean aRedstone) {
         if (side == facing) {
-            if (aActive) return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(44),
-                new GTRenderedTexture(Textures.BlockIcons.NAQUADAH_REACTOR_SOLID_FRONT_ACTIVE), TextureFactory.builder()
+            if (aActive) return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(44), TextureFactory.builder()
+                .addIcon(Textures.BlockIcons.NAQUADAH_REACTOR_SOLID_FRONT_ACTIVE)
+                .extFacing()
+                .build(),
+                TextureFactory.builder()
                     .addIcon(Textures.BlockIcons.NAQUADAH_REACTOR_SOLID_FRONT_ACTIVE_GLOW)
+                    .extFacing()
                     .glow()
                     .build() };
-            return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(44),
-                new GTRenderedTexture(Textures.BlockIcons.NAQUADAH_REACTOR_SOLID_FRONT) };
+            return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(44), TextureFactory.builder()
+                .addIcon(Textures.BlockIcons.NAQUADAH_REACTOR_SOLID_FRONT)
+                .extFacing()
+                .build() };
         }
         return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(44) };
     }

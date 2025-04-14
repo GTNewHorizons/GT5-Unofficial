@@ -1,16 +1,11 @@
 package gtPlusPlus.xmod.gregtech.registration.gregtech;
 
-import static gregtech.api.enums.MetaTileEntityIDs.GT_MetaTileEntity_ChiselBus_HV;
-import static gregtech.api.enums.MetaTileEntityIDs.GT_MetaTileEntity_ChiselBus_LV;
-import static gregtech.api.enums.MetaTileEntityIDs.GT_MetaTileEntity_ChiselBus_MV;
-import static gregtech.api.enums.MetaTileEntityIDs.GT_MetaTileEntity_Solidifier_I;
-import static gregtech.api.enums.MetaTileEntityIDs.GT_MetaTileEntity_Solidifier_II;
-import static gregtech.api.enums.MetaTileEntityIDs.GT_MetaTileEntity_Solidifier_III;
-import static gregtech.api.enums.MetaTileEntityIDs.GT_MetaTileEntity_Solidifier_IV;
+import static gregtech.api.enums.MetaTileEntityIDs.ChiselBus_HV;
+import static gregtech.api.enums.MetaTileEntityIDs.ChiselBus_LV;
+import static gregtech.api.enums.MetaTileEntityIDs.ChiselBus_MV;
 import static gregtech.api.enums.MetaTileEntityIDs.Hatch_Air_Intake;
 import static gregtech.api.enums.MetaTileEntityIDs.Hatch_Air_Intake_Extreme;
 import static gregtech.api.enums.MetaTileEntityIDs.Hatch_Input_Cryotheum;
-import static gregtech.api.enums.MetaTileEntityIDs.Hatch_Input_Naquadah;
 import static gregtech.api.enums.MetaTileEntityIDs.Hatch_Input_Pyrotheum;
 import static gregtech.api.enums.MetaTileEntityIDs.Hatch_Input_Steam;
 import static gregtech.api.enums.MetaTileEntityIDs.Hatch_Input_TurbineHousing;
@@ -24,6 +19,10 @@ import static gregtech.api.enums.MetaTileEntityIDs.Hatch_Muffler_Adv_MV;
 import static gregtech.api.enums.MetaTileEntityIDs.Hatch_Muffler_Adv_UV;
 import static gregtech.api.enums.MetaTileEntityIDs.Hatch_Muffler_Adv_ZPM;
 import static gregtech.api.enums.MetaTileEntityIDs.Hatch_Reservoir;
+import static gregtech.api.enums.MetaTileEntityIDs.Hatch_Solidifier_I;
+import static gregtech.api.enums.MetaTileEntityIDs.Hatch_Solidifier_II;
+import static gregtech.api.enums.MetaTileEntityIDs.Hatch_Solidifier_III;
+import static gregtech.api.enums.MetaTileEntityIDs.Hatch_Solidifier_IV;
 import static gregtech.api.enums.MetaTileEntityIDs.Hatch_SuperBus_Input_EV;
 import static gregtech.api.enums.MetaTileEntityIDs.Hatch_SuperBus_Input_HV;
 import static gregtech.api.enums.MetaTileEntityIDs.Hatch_SuperBus_Input_IV;
@@ -52,7 +51,6 @@ import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.METHatchAirIn
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchAirIntakeExtreme;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchChiselBus;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchMufflerAdvanced;
-import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchNaquadah;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchReservoir;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchSolidifier;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchSuperBusInput;
@@ -97,13 +95,6 @@ public class GregtechCustomHatches {
                 5 // Casing texture
             ).getStackForm(1L));
 
-        GregtechItemList.Hatch_Input_Naquadah.set(
-            new MTEHatchNaquadah(
-                Hatch_Input_Naquadah.ID, // ID
-                "hatch.naquadah.input.tier.00", // unlocal name
-                "Naquadah Reactor Input hatch" // Local name
-            ).getStackForm(1L));
-
         GregtechItemList.Hatch_Input_TurbineHousing.set(
             new MTEHatchTurbineProvider(
                 Hatch_Input_TurbineHousing.ID, // ID
@@ -120,7 +111,7 @@ public class GregtechCustomHatches {
                 Hatch_Air_Intake_Extreme.ID,
                 "hatch.air.intake.tier.01",
                 "Extreme Air Intake Hatch",
-                6).getStackForm(1L));
+                7).getStackForm(1L));
 
         // Multiblock Reservoir Hatch
         GregtechItemList.Hatch_Reservoir.set(
@@ -322,43 +313,28 @@ public class GregtechCustomHatches {
     }
 
     private static void run4() {
-        GregtechItemList.GT_MetaTileEntity_ChiselBus_LV.set(
-            (makeChiselBus(GT_MetaTileEntity_ChiselBus_LV.ID, "hatch.chisel.tier.01", "Chisel Bus I", 1))
-                .getStackForm(1L));
-        GregtechItemList.GT_MetaTileEntity_ChiselBus_MV.set(
-            (makeChiselBus(GT_MetaTileEntity_ChiselBus_MV.ID, "hatch.chisel.tier.02", "Chisel Bus II", 2))
-                .getStackForm(1L));
-        GregtechItemList.GT_MetaTileEntity_ChiselBus_HV.set(
-            (makeChiselBus(GT_MetaTileEntity_ChiselBus_HV.ID, "hatch.chisel.tier.03", "Chisel Bus III", 3))
-                .getStackForm(1L));
+        GregtechItemList.ChiselBus_LV
+            .set((makeChiselBus(ChiselBus_LV.ID, "hatch.chisel.tier.01", "Chisel Bus I", 1)).getStackForm(1L));
+        GregtechItemList.ChiselBus_MV
+            .set((makeChiselBus(ChiselBus_MV.ID, "hatch.chisel.tier.02", "Chisel Bus II", 2)).getStackForm(1L));
+        GregtechItemList.ChiselBus_HV
+            .set((makeChiselBus(ChiselBus_HV.ID, "hatch.chisel.tier.03", "Chisel Bus III", 3)).getStackForm(1L));
 
     }
 
     private static void run6() {
-        GregtechItemList.GT_MetaTileEntity_Solidifier_I.set(
-            new MTEHatchSolidifier(
-                GT_MetaTileEntity_Solidifier_I.ID,
-                "hatch.solidifier.tier.05",
-                "Solidifier Hatch I",
-                5).getStackForm(1L));
-        GregtechItemList.GT_MetaTileEntity_Solidifier_II.set(
-            new MTEHatchSolidifier(
-                GT_MetaTileEntity_Solidifier_II.ID,
-                "hatch.solidifier.tier.06",
-                "Solidifier Hatch II",
-                6).getStackForm(1L));
-        GregtechItemList.GT_MetaTileEntity_Solidifier_III.set(
-            new MTEHatchSolidifier(
-                GT_MetaTileEntity_Solidifier_III.ID,
-                "hatch.solidifier.tier.07",
-                "Solidifier Hatch III",
-                7).getStackForm(1L));
-        GregtechItemList.GT_MetaTileEntity_Solidifier_IV.set(
-            new MTEHatchSolidifier(
-                GT_MetaTileEntity_Solidifier_IV.ID,
-                "hatch.solidifier.tier.08",
-                "Solidifier Hatch IV",
-                8).getStackForm(1L));
+        GregtechItemList.Hatch_Solidifier_I.set(
+            new MTEHatchSolidifier(Hatch_Solidifier_I.ID, "hatch.solidifier.tier.05", "Solidifier Hatch I", 5)
+                .getStackForm(1L));
+        GregtechItemList.Hatch_Solidifier_II.set(
+            new MTEHatchSolidifier(Hatch_Solidifier_II.ID, "hatch.solidifier.tier.06", "Solidifier Hatch II", 6)
+                .getStackForm(1L));
+        GregtechItemList.Hatch_Solidifier_III.set(
+            new MTEHatchSolidifier(Hatch_Solidifier_III.ID, "hatch.solidifier.tier.07", "Solidifier Hatch III", 7)
+                .getStackForm(1L));
+        GregtechItemList.Hatch_Solidifier_IV.set(
+            new MTEHatchSolidifier(Hatch_Solidifier_IV.ID, "hatch.solidifier.tier.08", "Solidifier Hatch IV", 8)
+                .getStackForm(1L));
     }
 
 }

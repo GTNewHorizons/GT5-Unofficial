@@ -42,8 +42,8 @@ public class MTENeutronAccelerator extends MTEHatchEnergy {
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         if (aBaseMetaTileEntity.isServerSide()) {
-            if (aBaseMetaTileEntity.getStoredEU() >= getMaxEUConsume() && aBaseMetaTileEntity.isAllowedToWork()) {
-                setEUVar(aBaseMetaTileEntity.getStoredEU() - getMaxEUConsume());
+            if (getEUVar() >= getMaxEUConsume() && aBaseMetaTileEntity.isAllowedToWork()) {
+                setEUVar(getEUVar() - getMaxEUConsume());
                 aBaseMetaTileEntity.setActive(true);
             } else {
                 aBaseMetaTileEntity.setActive(false);

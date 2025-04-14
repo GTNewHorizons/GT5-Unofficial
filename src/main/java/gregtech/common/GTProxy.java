@@ -5,30 +5,17 @@ import static gregtech.api.enums.FluidState.GAS;
 import static gregtech.api.enums.FluidState.LIQUID;
 import static gregtech.api.enums.FluidState.MOLTEN;
 import static gregtech.api.enums.FluidState.PLASMA;
-import static gregtech.api.enums.GTValues.W;
 import static gregtech.api.enums.GTValues.debugEntityCramming;
-import static gregtech.api.enums.Mods.AdvancedSolarPanel;
 import static gregtech.api.enums.Mods.AppliedEnergistics2;
-import static gregtech.api.enums.Mods.Avaritia;
 import static gregtech.api.enums.Mods.BetterLoadingScreen;
-import static gregtech.api.enums.Mods.DraconicEvolution;
-import static gregtech.api.enums.Mods.ElectroMagicTools;
-import static gregtech.api.enums.Mods.EnderIO;
 import static gregtech.api.enums.Mods.Forestry;
-import static gregtech.api.enums.Mods.GTPlusPlus;
 import static gregtech.api.enums.Mods.GalacticraftCore;
-import static gregtech.api.enums.Mods.GalaxySpace;
-import static gregtech.api.enums.Mods.GraviSuite;
 import static gregtech.api.enums.Mods.GregTech;
 import static gregtech.api.enums.Mods.IguanaTweaksTinkerConstruct;
 import static gregtech.api.enums.Mods.Railcraft;
-import static gregtech.api.enums.Mods.TaintedMagic;
 import static gregtech.api.enums.Mods.Thaumcraft;
-import static gregtech.api.enums.Mods.ThaumicBoots;
-import static gregtech.api.enums.Mods.ThaumicTinkerer;
 import static gregtech.api.enums.Mods.TinkerConstruct;
 import static gregtech.api.enums.Mods.TwilightForest;
-import static gregtech.api.enums.Mods.WitchingGadgets;
 import static gregtech.api.recipe.RecipeMaps.crackingRecipes;
 import static gregtech.api.recipe.RecipeMaps.cutterRecipes;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
@@ -46,6 +33,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.TreeSet;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
@@ -75,8 +63,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.MathHelper;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.ChunkCoordIntPair;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.feature.WorldGenMinable;
 import net.minecraftforge.common.MinecraftForge;
@@ -115,7 +102,6 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Dyes;
-import gregtech.api.enums.FluidState;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.ManualOreDictTweaks;
@@ -128,6 +114,9 @@ import gregtech.api.enums.TCAspects.TC_AspectStack;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.ToolDictNames;
 import gregtech.api.fluid.GTFluidFactory;
+import gregtech.api.hazards.Hazard;
+import gregtech.api.hazards.HazardProtection;
+import gregtech.api.hazards.HazardProtectionTooltip;
 import gregtech.api.interfaces.IBlockOnWalkOver;
 import gregtech.api.interfaces.IProjectileItem;
 import gregtech.api.interfaces.IToolStats;
@@ -137,7 +126,6 @@ import gregtech.api.items.MetaGeneratedItem;
 import gregtech.api.items.MetaGeneratedTool;
 import gregtech.api.net.GTPacketMusicSystemData;
 import gregtech.api.objects.GTChunkManager;
-import gregtech.api.objects.GTItemStack;
 import gregtech.api.objects.GTUODimensionList;
 import gregtech.api.objects.ItemData;
 import gregtech.api.recipe.RecipeMaps;
@@ -176,9 +164,6 @@ public abstract class GTProxy implements IGTMod, IFuelHandler {
         OreGenEvent.GenerateMinable.EventType.LAPIS,
         OreGenEvent.GenerateMinable.EventType.QUARTZ);
     public final HashSet<ItemStack> mRegisteredOres = new HashSet<>(10000);
-    public final ArrayList<String> mSoundNames = new ArrayList<>();
-    public final ArrayList<ItemStack> mSoundItems = new ArrayList<>();
-    public final ArrayList<Integer> mSoundCounts = new ArrayList<>();
     private final Collection<OreDictEventContainer> mEvents = new HashSet<>();
     private final Collection<String> mIgnoredItems = new HashSet<>(
         Arrays.asList(
@@ -538,7 +523,7 @@ public abstract class GTProxy implements IGTMod, IFuelHandler {
     public boolean mAxeWhenAdventure = true;
     public boolean mSurvivalIntoAdventure = false;
     public boolean mNerfedWoodPlank = true;
-    public boolean mNerfedVanillaTools = true;
+    public boolean mChangeWoodenVanillaTools = true;
     public boolean mHungerEffect = true;
     public boolean mIgnoreTcon = true;
     public boolean mAchievements = true;
@@ -569,10 +554,10 @@ public abstract class GTProxy implements IGTMod, IFuelHandler {
     public int mPollutionLargeCombustionEnginePerSecond = 480;
     public int mPollutionExtremeCombustionEnginePerSecond = 3840;
     public int mPollutionImplosionCompressorPerSecond = 10000;
-    public int mPollutionLargeBronzeBoilerPerSecond = 1000;
-    public int mPollutionLargeSteelBoilerPerSecond = 2000;
-    public int mPollutionLargeTitaniumBoilerPerSecond = 3000;
-    public int mPollutionLargeTungstenSteelBoilerPerSecond = 4000;
+    public int mPollutionLargeBronzeBoilerPerSecond = 200;
+    public int mPollutionLargeSteelBoilerPerSecond = 400;
+    public int mPollutionLargeTitaniumBoilerPerSecond = 800;
+    public int mPollutionLargeTungstenSteelBoilerPerSecond = 1600;
     public double mPollutionReleasedByThrottle = 1.0 / 24.0; // divided by 24 because 24 circuit conf
     public int mPollutionLargeGasTurbinePerSecond = 300;
     public int mPollutionMultiSmelterPerSecond = 400;
@@ -581,7 +566,7 @@ public abstract class GTProxy implements IGTMod, IFuelHandler {
     public int mPollutionHighPressureLavaBoilerPerSecond = 20;
     public int mPollutionHighPressureCoalBoilerPerSecond = 30;
     public int mPollutionBaseDieselGeneratorPerSecond = 200;
-    public double[] mPollutionDieselGeneratorReleasedByTier = new double[] { 0.1, 1.0, 0.9, 0.8 };
+    public double[] mPollutionDieselGeneratorReleasedByTier = new double[] { 0.1, 1.0, 0.9, 0.8, 0.7, 0.6 };
     public int mPollutionBaseGasTurbinePerSecond = 200;
     public double[] mPollutionGasTurbineReleasedByTier = new double[] { 0.1, 1.0, 0.9, 0.8, 0.7, 0.6 };
     public final GTUODimensionList mUndergroundOil = new GTUODimensionList();
@@ -689,6 +674,12 @@ public abstract class GTProxy implements IGTMod, IFuelHandler {
      * continuous line
      */
     public int tooltipFinisherStyle = 1;
+
+    /**
+     * Enables scrolling up while hovering the ghost circuit of a machine UI to increment the circuit number instead of
+     * decrement
+     */
+    public boolean invertCircuitScrollDirection = false;
 
     /**
      * Whether to show seconds or ticks on NEI
@@ -988,7 +979,7 @@ public abstract class GTProxy implements IGTMod, IFuelHandler {
         GTModHandler.sNonReplaceableItems.add(GTModHandler.getIC2Item("cfPack", 1L, 32767));
         // GTModHandler.sNonReplaceableItems.add(GTModHandler.getIC2Item("jetpack", 1L, 32767));
         GTModHandler.sNonReplaceableItems.add(GTModHandler.getIC2Item("treetap", 1L, 32767));
-        GTModHandler.sNonReplaceableItems.add(GTModHandler.getIC2Item("weedEx", 1L, 32767));
+        GTModHandler.sNonReplaceableItems.add(ItemList.IC2_Spray_WeedEx.getWithDamage(1L, 32767));
         GTModHandler.sNonReplaceableItems.add(GTModHandler.getIC2Item("staticBoots", 1L, 32767));
         GTModHandler.sNonReplaceableItems.add(GTModHandler.getIC2Item("compositeArmor", 1L, 32767));
         GTModHandler.sNonReplaceableItems.add(GTModHandler.getIC2Item("hazmatHelmet", 1L, 32767));
@@ -1088,119 +1079,6 @@ public abstract class GTProxy implements IGTMod, IFuelHandler {
             .bus()
             .register(new GTWorldgenerator.OregenPatternSavedData(""));
 
-        // IC2 Hazmat
-        addFullHazmatToIC2Item("hazmatHelmet");
-        addFullHazmatToIC2Item("hazmatChestplate");
-        addFullHazmatToIC2Item("hazmatLeggings");
-        addFullHazmatToIC2Item("hazmatBoots");
-        addFullHazmatToIC2Item("nanoHelmet");
-        addFullHazmatToIC2Item("nanoBoots");
-        addFullHazmatToIC2Item("nanoLeggings");
-        addFullHazmatToIC2Item("nanoBodyarmor");
-        addFullHazmatToIC2Item("quantumHelmet");
-        addFullHazmatToIC2Item("quantumBodyarmor");
-        addFullHazmatToIC2Item("quantumLeggings");
-        addFullHazmatToIC2Item("quantumBoots");
-
-        // GT++ Hazmat
-        addFullHazmatToGeneralItem(GTPlusPlus.ID, "itemArmorHazmatHelmetEx", 1);
-        addFullHazmatToGeneralItem(GTPlusPlus.ID, "itemArmorHazmatChestplateEx", 1);
-        addFullHazmatToGeneralItem(GTPlusPlus.ID, "itemArmorHazmatLeggingsEx", 1);
-        addFullHazmatToGeneralItem(GTPlusPlus.ID, "itemArmorRubBootsEx", 1);
-
-        // GraviSuite Hazmat
-        addFullHazmatToGeneralItem(GraviSuite.ID, "graviChestPlate", 1L);
-        addFullHazmatToGeneralItem(GraviSuite.ID, "advNanoChestPlate", 1L);
-
-        // EMT Hazmat
-        addFullHazmatToGeneralItem(ElectroMagicTools.ID, "itemArmorQuantumChestplate", 1L);
-        addFullHazmatToGeneralItem(ElectroMagicTools.ID, "NanoBootsTraveller", 1L);
-        addFullHazmatToGeneralItem(ElectroMagicTools.ID, "NanosuitGogglesRevealing", 1L);
-        addFullHazmatToGeneralItem(ElectroMagicTools.ID, "QuantumBootsTraveller", 1L);
-        addFullHazmatToGeneralItem(ElectroMagicTools.ID, "QuantumGogglesRevealing", 1L);
-        addFullHazmatToGeneralItem(ElectroMagicTools.ID, "SolarHelmetRevealing", 1L);
-        addFullHazmatToGeneralItem(ElectroMagicTools.ID, "NanosuitWing", 1L);
-        addFullHazmatToGeneralItem(ElectroMagicTools.ID, "QuantumWing", 1L);
-
-        // Thaumic Boots Hazmat
-        addFullHazmatToGeneralItem(ThaumicBoots.ID, "item.ItemQuantumVoid", 1L);
-        addFullHazmatToGeneralItem(ThaumicBoots.ID, "item.ItemQuantumMeteor", 1L);
-        addFullHazmatToGeneralItem(ThaumicBoots.ID, "item.ItemQuantumComet", 1L);
-        addFullHazmatToGeneralItem(ThaumicBoots.ID, "item.ItemNanoVoid", 1L);
-        addFullHazmatToGeneralItem(ThaumicBoots.ID, "item.ItemNanoMeteor", 1L);
-        addFullHazmatToGeneralItem(ThaumicBoots.ID, "item.ItemNanoComet", 1L);
-        addFullHazmatToGeneralItem(ThaumicBoots.ID, "item.ItemElectricVoid", 1L);
-        addFullHazmatToGeneralItem(ThaumicBoots.ID, "item.ItemVoidMeteor", 1L);
-        addFullHazmatToGeneralItem(ThaumicBoots.ID, "item.ItemVoidComet", 1L);
-
-        // DraconicEvolution Hazmat
-        addFullHazmatToGeneralItem(DraconicEvolution.ID, "draconicBoots", 1L, 0);
-        addFullHazmatToGeneralItem(DraconicEvolution.ID, "draconicHelm", 1L, 0);
-        addFullHazmatToGeneralItem(DraconicEvolution.ID, "draconicLeggs", 1L, 0);
-        addFullHazmatToGeneralItem(DraconicEvolution.ID, "draconicChest", 1L, 0);
-        addFullHazmatToGeneralItem(DraconicEvolution.ID, "wyvernBoots", 1L, 0);
-        addFullHazmatToGeneralItem(DraconicEvolution.ID, "wyvernHelm", 1L, 0);
-        addFullHazmatToGeneralItem(DraconicEvolution.ID, "wyvernLeggs", 1L, 0);
-        addFullHazmatToGeneralItem(DraconicEvolution.ID, "wyvernChest", 1L, 0);
-
-        // AdvancedSolarPanel
-        addFullHazmatToGeneralItem(AdvancedSolarPanel.ID, "advanced_solar_helmet", 1L);
-        addFullHazmatToGeneralItem(AdvancedSolarPanel.ID, "hybrid_solar_helmet", 1L);
-        addFullHazmatToGeneralItem(AdvancedSolarPanel.ID, "ultimate_solar_helmet", 1L);
-
-        // TaintedMagic Hazmat
-        addFullHazmatToGeneralItem(TaintedMagic.ID, "ItemVoidwalkerBoots", 1L);
-        addFullHazmatToGeneralItem(TaintedMagic.ID, "ItemShadowFortressHelmet", 1L);
-        addFullHazmatToGeneralItem(TaintedMagic.ID, "ItemShadowFortressChestplate", 1L);
-        addFullHazmatToGeneralItem(TaintedMagic.ID, "ItemShadowFortressLeggings", 1L);
-        addFullHazmatToGeneralItem(TaintedMagic.ID, "ItemVoidFortressHelmet", 1L);
-        addFullHazmatToGeneralItem(TaintedMagic.ID, "ItemVoidFortressChestplate", 1L);
-        addFullHazmatToGeneralItem(TaintedMagic.ID, "ItemVoidFortressLeggings", 1L);
-        addFullHazmatToGeneralItem(TaintedMagic.ID, "ItemVoidmetalGoggles", 1L);
-
-        // WitchingGadgets Hazmat
-        addFullHazmatToGeneralItem(WitchingGadgets.ID, "item.WG_PrimordialHelm", 1L);
-        addFullHazmatToGeneralItem(WitchingGadgets.ID, "item.WG_PrimordialChest", 1L);
-        addFullHazmatToGeneralItem(WitchingGadgets.ID, "item.WG_PrimordialLegs", 1L);
-        addFullHazmatToGeneralItem(WitchingGadgets.ID, "item.WG_PrimordialBoots", 1L);
-
-        // ThaumicTinkerer Hazmat
-        addFullHazmatToGeneralItem(ThaumicTinkerer.ID, "ichorclothChestGem", 1L);
-        addFullHazmatToGeneralItem(ThaumicTinkerer.ID, "ichorclothBootsGem", 1L);
-        addFullHazmatToGeneralItem(ThaumicTinkerer.ID, "ichorclothHelmGem", 1L);
-        addFullHazmatToGeneralItem(ThaumicTinkerer.ID, "ichorclothLegsGem", 1L);
-
-        // GalaxySpace Hazmat
-        addFullHazmatToGeneralItem(GalaxySpace.ID, "item.spacesuit_helmet", 1L);
-        addFullHazmatToGeneralItem(GalaxySpace.ID, "item.spacesuit_helmetglasses", 1L);
-        addFullHazmatToGeneralItem(GalaxySpace.ID, "item.spacesuit_plate", 1L);
-        addFullHazmatToGeneralItem(GalaxySpace.ID, "item.spacesuit_jetplate", 1L);
-        addFullHazmatToGeneralItem(GalaxySpace.ID, "item.spacesuit_leg", 1L);
-        addFullHazmatToGeneralItem(GalaxySpace.ID, "item.spacesuit_boots", 1L);
-        addFullHazmatToGeneralItem(GalaxySpace.ID, "item.spacesuit_gravityboots", 1L);
-
-        // Extra Hazmat
-        GregTechAPI.sElectroHazmatList.add(new ItemStack(Items.chainmail_helmet, 1, W));
-        GregTechAPI.sElectroHazmatList.add(new ItemStack(Items.chainmail_chestplate, 1, W));
-        GregTechAPI.sElectroHazmatList.add(new ItemStack(Items.chainmail_leggings, 1, W));
-        GregTechAPI.sElectroHazmatList.add(new ItemStack(Items.chainmail_boots, 1, W));
-
-        // Infinity Hazmat
-        addFullHazmatToGeneralItem(Avaritia.ID, "Infinity_Helm", 1L);
-        addFullHazmatToGeneralItem(Avaritia.ID, "Infinity_Chest", 1L);
-        addFullHazmatToGeneralItem(Avaritia.ID, "Infinity_Pants", 1L);
-        addFullHazmatToGeneralItem(Avaritia.ID, "Infinity_Shoes", 1L);
-
-        // EnderIO Hazmat
-        addFullHazmatToGeneralItem(EnderIO.ID, "item.endSteel_helmet", 1L);
-        addFullHazmatToGeneralItem(EnderIO.ID, "item.endSteel_chestplate", 1L);
-        addFullHazmatToGeneralItem(EnderIO.ID, "item.endSteel_leggings", 1L);
-        addFullHazmatToGeneralItem(EnderIO.ID, "item.endSteel_boots", 1L);
-        addFullHazmatToGeneralItem(EnderIO.ID, "item.stellar_helmet", 1L);
-        addFullHazmatToGeneralItem(EnderIO.ID, "item.stellar_chestplate", 1L);
-        addFullHazmatToGeneralItem(EnderIO.ID, "item.stellar_leggings", 1L);
-        addFullHazmatToGeneralItem(EnderIO.ID, "item.stellar_boots", 1L);
-
         GregTechAPI.sLoadStarted = true;
         for (FluidContainerRegistry.FluidContainerData tData : FluidContainerRegistry
             .getRegisteredFluidContainerData()) {
@@ -1235,14 +1113,14 @@ public abstract class GTProxy implements IGTMod, IFuelHandler {
             }
         }
         GTLog.out.println("GTMod: Adding Configs specific for MetaTileEntities");
-        try {
-            for (int i = 1; i < GregTechAPI.METATILEENTITIES.length; i++) {
-                if (GregTechAPI.METATILEENTITIES[i] != null) {
+        for (int i = 1; i < GregTechAPI.METATILEENTITIES.length; i++) {
+            if (GregTechAPI.METATILEENTITIES[i] != null) {
+                try {
                     GregTechAPI.METATILEENTITIES[i].onConfigLoad();
+                } catch (Throwable e) {
+                    GT_FML_LOGGER.error("Could not load config for MTE " + GregTechAPI.METATILEENTITIES[i], e);
                 }
             }
-        } catch (Throwable e) {
-            e.printStackTrace(GTLog.err);
         }
         GTLog.out.println("GTMod: Adding Tool Usage Crafting Recipes for OreDict Items.");
         for (Materials aMaterial : Materials.values()) {
@@ -1292,11 +1170,11 @@ public abstract class GTProxy implements IGTMod, IFuelHandler {
                 GTModHandler.addCraftingRecipe(
                     GTOreDictUnificator.get(OrePrefixes.dustSmall, aMaterial, 4L),
                     tBits,
-                    new Object[] { " X ", 'X', OrePrefixes.dust.get(aMaterial) });
+                    new Object[] { " X ", "   ", "   ", 'X', OrePrefixes.dust.get(aMaterial) });
                 GTModHandler.addCraftingRecipe(
                     GTOreDictUnificator.get(OrePrefixes.dustTiny, aMaterial, 9L),
                     tBits,
-                    new Object[] { "X  ", 'X', OrePrefixes.dust.get(aMaterial) });
+                    new Object[] { "X  ", "   ", "   ", 'X', OrePrefixes.dust.get(aMaterial) });
                 GTModHandler.addCraftingRecipe(
                     GTOreDictUnificator.get(OrePrefixes.dust, aMaterial, 1L),
                     tBits,
@@ -1331,19 +1209,20 @@ public abstract class GTProxy implements IGTMod, IFuelHandler {
                 break;
             }
         }
-        try {
-            for (int i = 1; i < GregTechAPI.METATILEENTITIES.length; i++) {
-                if (GregTechAPI.METATILEENTITIES[i] != null) {
+        for (int i = 1; i < GregTechAPI.METATILEENTITIES.length; i++) {
+            if (GregTechAPI.METATILEENTITIES[i] != null) {
+                try {
                     GregTechAPI.METATILEENTITIES[i].onServerStart();
+                } catch (Throwable e) {
+                    throw new RuntimeException(
+                        "Could not call onServerStart MTE " + GregTechAPI.METATILEENTITIES[i],
+                        e);
                 }
             }
-        } catch (Throwable e) {
-            e.printStackTrace(GTLog.err);
         }
     }
 
     public void onServerStarted() {
-        GregTechAPI.sWirelessRedstone.clear();
         MTEDroneCentre.getCentreMap()
             .clear();
         GTLog.out.println(
@@ -1373,20 +1252,21 @@ public abstract class GTProxy implements IGTMod, IFuelHandler {
         GTMusicSystem.ServerSystem.reset();
         File tSaveDirectory = getSaveDirectory();
         GregTechAPI.sWirelessRedstone.clear();
+        GregTechAPI.sAdvancedWirelessRedstone.clear();
         if (tSaveDirectory != null) {
-            try {
-                for (int i = 1; i < GregTechAPI.METATILEENTITIES.length; i++) {
-                    if (GregTechAPI.METATILEENTITIES[i] != null) {
+            for (int i = 1; i < GregTechAPI.METATILEENTITIES.length; i++) {
+                if (GregTechAPI.METATILEENTITIES[i] != null) {
+                    try {
                         GregTechAPI.METATILEENTITIES[i].onWorldSave(tSaveDirectory);
+                    } catch (Throwable e) {
+                        throw new RuntimeException(
+                            "Could not call onWorldSave for MTE " + GregTechAPI.METATILEENTITIES[i],
+                            e);
                     }
                 }
-            } catch (Throwable e) {
-                e.printStackTrace(GTLog.err);
             }
         }
         this.mUniverse = null;
-        // GT_ChunkAssociatedData.saveAll(); todo: figure out if this is needed
-
     }
 
     @SubscribeEvent
@@ -1555,7 +1435,7 @@ public abstract class GTProxy implements IGTMod, IFuelHandler {
         if (stats == null) return;
 
         TileEntity tile = event.world.getTileEntity(event.x, event.y, event.z);
-        stats.onBreakBlock(player, event.x, event.y, event.z, event.block, (byte) event.blockMetadata, tile, event);
+        stats.onBreakBlock(player, event.x, event.y, event.z, event.block, event.blockMetadata, tile, event);
     }
 
     @SubscribeEvent
@@ -1574,7 +1454,7 @@ public abstract class GTProxy implements IGTMod, IFuelHandler {
                 aEvent.x,
                 aEvent.y,
                 aEvent.z,
-                (byte) aEvent.blockMetadata,
+                aEvent.blockMetadata,
                 aEvent.fortuneLevel,
                 aEvent.isSilkTouching,
                 aEvent);
@@ -1626,8 +1506,9 @@ public abstract class GTProxy implements IGTMod, IFuelHandler {
         try {
             aEvent.Ore.stackSize = 1;
 
-            // skipping TinkerConstruct ore registration
-            if (this.mIgnoreTcon && aOriginalMod.equals(TinkerConstruct.ID)) {
+            // skipping TinkerConstruct ore registration except for blocks
+            if (this.mIgnoreTcon && aOriginalMod.equals(TinkerConstruct.ID)
+                && !(aEvent.Ore.getItem() instanceof ItemBlock)) {
                 return;
             }
             String tModToName = aMod + " -> " + aEvent.Name;
@@ -2048,7 +1929,8 @@ public abstract class GTProxy implements IGTMod, IFuelHandler {
                 registerRecipes(tOre);
             }
         } catch (Throwable e) {
-            e.printStackTrace(GTLog.err);
+            GT_FML_LOGGER
+                .error("Could not register ore (oredict name=" + aEvent.Name + ", item stack=" + aEvent.Ore + ")", e);
         }
     }
 
@@ -2126,14 +2008,16 @@ public abstract class GTProxy implements IGTMod, IFuelHandler {
                 File tSaveDiretory = getSaveDirectory();
                 if (tSaveDiretory != null) {
                     this.isFirstServerWorldTick = false;
-                    try {
-                        for (int i = 1; i < GregTechAPI.METATILEENTITIES.length; i++) {
-                            if (GregTechAPI.METATILEENTITIES[i] != null) {
+                    for (int i = 1; i < GregTechAPI.METATILEENTITIES.length; i++) {
+                        if (GregTechAPI.METATILEENTITIES[i] != null) {
+                            try {
                                 GregTechAPI.METATILEENTITIES[i].onWorldLoad(tSaveDiretory);
+                            } catch (Throwable e) {
+                                throw new RuntimeException(
+                                    "Could not call onWorldLoad for MTE " + GregTechAPI.METATILEENTITIES[i],
+                                    e);
                             }
                         }
-                    } catch (Throwable e) {
-                        e.printStackTrace(GTLog.err);
                     }
                 }
             }
@@ -2560,50 +2444,6 @@ public abstract class GTProxy implements IGTMod, IFuelHandler {
         aMaterial.setSteamCrackedFluids(crackedFluids);
     }
 
-    /**
-     * @see GTFluidFactory#of(String, String, Materials, FluidState, int)
-     * @see GTFluidFactory#of(String, String, FluidState, int)
-     * @deprecated use {@link GTFluidFactory#builder}
-     */
-    @Deprecated
-    public Fluid addFluid(String aName, String aLocalized, Materials aMaterial, int aState, int aTemperatureK) {
-        return GTFluidFactory.of(aName, aLocalized, aMaterial, FluidState.VALID_STATES[aState], aTemperatureK);
-    }
-
-    /**
-     * @deprecated use {@link GTFluidFactory#builder}
-     */
-    @SuppressWarnings({ "MethodWithTooManyParameters" }) // Deprecated method
-    @Deprecated
-    public Fluid addFluid(String aName, String aLocalized, Materials aMaterial, int aState, int aTemperatureK,
-        ItemStack aFullContainer, ItemStack aEmptyContainer, int aFluidAmount) {
-        return GTFluidFactory.builder(aName)
-            .withLocalizedName(aLocalized)
-            .withStateAndTemperature(FluidState.fromValue(aState), aTemperatureK)
-            .buildAndRegister()
-            .configureMaterials(aMaterial)
-            .registerContainers(aFullContainer, aEmptyContainer, aFluidAmount)
-            .asFluid();
-    }
-
-    /**
-     * @deprecated use {@link GTFluidFactory#builder}
-     */
-    @Deprecated
-    @SuppressWarnings({ "MethodWithTooManyParameters" }) // Deprecated method
-    public Fluid addFluid(String aName, String aTexture, String aLocalized, Materials aMaterial, short[] aRGBa,
-        int aState, int aTemperatureK, ItemStack aFullContainer, ItemStack aEmptyContainer, int aFluidAmount) {
-        return GTFluidFactory.builder(aName)
-            .withLocalizedName(aLocalized)
-            .withStillIconResourceLocation(new ResourceLocation(GregTech.ID, "fluids/fluid." + aTexture))
-            .withColorRGBA(aRGBa)
-            .withStateAndTemperature(FluidState.fromValue(aState), aTemperatureK)
-            .buildAndRegister()
-            .configureMaterials(aMaterial)
-            .registerContainers(aFullContainer, aEmptyContainer, aFluidAmount)
-            .asFluid();
-    }
-
     public File getSaveDirectory() {
         return this.mUniverse == null ? null
             : this.mUniverse.getSaveHandler()
@@ -2651,29 +2491,7 @@ public abstract class GTProxy implements IGTMod, IFuelHandler {
         }
     }
 
-    @Deprecated
-    public static final HashMap<Integer, HashMap<ChunkCoordIntPair, int[]>> dimensionWiseChunkData = new HashMap<>(16); // stores
-    // chunk
-    // data
-    // that
-    // is
-    // loaded/saved
-
     public static final HashMap<Integer, Pollution> dimensionWisePollution = new HashMap<>(16); // stores
-    // GT_Polluttors
-    // objects
-    public static final byte GTOIL = 3, GTOILFLUID = 2, GTPOLLUTION = 1, GTMETADATA = 0, NOT_LOADED = 0, LOADED = 1; // consts
-
-    // TO get default's fast
-    @Deprecated
-    public static int[] getDefaultChunkDataOnCreation() {
-        return new int[] { NOT_LOADED, 0, -1, -1 };
-    }
-
-    @Deprecated
-    public static int[] getDefaultChunkDataOnLoad() {
-        return new int[] { LOADED, 0, -1, -1 };
-    }
 
     @SubscribeEvent
     public void handleChunkLoadEvent(ChunkDataEvent.Load event) {
@@ -2694,7 +2512,7 @@ public abstract class GTProxy implements IGTMod, IFuelHandler {
                     aEvent.x,
                     aEvent.y,
                     aEvent.z,
-                    (byte) aEvent.metadata,
+                    aEvent.metadata,
                     aEvent);
             }
         }
@@ -2722,51 +2540,35 @@ public abstract class GTProxy implements IGTMod, IFuelHandler {
             .equals("blockAlloyGlass")) GregTechAPI.causeMachineUpdate(event.world, event.x, event.y, event.z);
     }
 
-    public static void addFullHazmatToGeneralItem(String aModID, String aItem, long aAmount, int aMeta) {
-        ItemStack item = GTModHandler.getModItem(aModID, aItem, aAmount, aMeta);
-        addItemToHazmatLists(item);
-    }
-
-    public static void addFullHazmatToGeneralItem(String aModID, String aItem, long aAmount) {
-        ItemStack item = GTModHandler.getModItem(aModID, aItem, aAmount, W);
-        addItemToHazmatLists(item);
-    }
-
-    public static void addFullHazmatToIC2Item(String aItem) {
-        ItemStack item = GTModHandler.getIC2Item(aItem, 1L, W);
-        addItemToHazmatLists(item);
-    }
-
-    private static void addItemToHazmatLists(ItemStack item) {
-        GregTechAPI.sGasHazmatList.add(item);
-        GregTechAPI.sBioHazmatList.add(item);
-        GregTechAPI.sFrostHazmatList.add(item);
-        GregTechAPI.sHeatHazmatList.add(item);
-        GregTechAPI.sRadioHazmatList.add(item);
-        GregTechAPI.sElectroHazmatList.add(item);
-    }
-
-    public static boolean providesProtection(ItemStack aStack) {
-
-        if (GTUtility.hasHazmatEnchant(aStack)) return true;
-
-        boolean isGas = GTUtility.isStackInList(aStack, GregTechAPI.sGasHazmatList);
-        boolean isBio = GTUtility.isStackInList(aStack, GregTechAPI.sBioHazmatList);
-        boolean isFrost = GTUtility.isStackInList(aStack, GregTechAPI.sFrostHazmatList);
-        boolean isHeat = GTUtility.isStackInList(aStack, GregTechAPI.sHeatHazmatList);
-        boolean isRadio = GTUtility.isStackInList(aStack, GregTechAPI.sRadioHazmatList);
-        boolean isElectro = GTUtility.isStackInList(aStack, GregTechAPI.sElectroHazmatList);
-        return isGas && isBio && isFrost && isHeat && isRadio && isElectro;
+    private void addHazmatTooltip(ItemTooltipEvent event, String translationKey) {
+        event.toolTip.add(EnumChatFormatting.LIGHT_PURPLE + StatCollector.translateToLocal(translationKey));
     }
 
     @SubscribeEvent
     public void onItemTooltip(ItemTooltipEvent event) {
-        if (event.itemStack != null) {
-            ItemStack aStackTemp = event.itemStack;
-            GTItemStack aStack = new GTItemStack(aStackTemp);
-            if (providesProtection(aStackTemp)) {
-                event.toolTip.add(EnumChatFormatting.LIGHT_PURPLE + "Provides full hazmat protection.");
+        if (HazardProtection.providesFullHazmatProtection(event.itemStack)) {
+            addHazmatTooltip(event, HazardProtectionTooltip.FULL_PROTECTION_TRANSLATION_KEY);
+            return;
+        }
+
+        // TreeSet so it's always the same order
+        TreeSet<Hazard> protections = new TreeSet<Hazard>();
+        for (Hazard hazard : Hazard.values()) {
+            if (HazardProtection.protectsAgainstHazard(event.itemStack, hazard)) {
+                protections.add(hazard);
             }
+        }
+        if (protections.containsAll(HazardProtectionTooltip.CBRN_HAZARDS)) {
+            protections.removeAll(HazardProtectionTooltip.CBRN_HAZARDS);
+            addHazmatTooltip(event, HazardProtectionTooltip.CBRN_TRANSLATION_KEY);
+        } ;
+
+        if (protections.containsAll(HazardProtectionTooltip.TEMPERATURE_HAZARDS)) {
+            protections.removeAll(HazardProtectionTooltip.TEMPERATURE_HAZARDS);
+            addHazmatTooltip(event, HazardProtectionTooltip.EXTREME_TEMP_TRANSLATION_KEY);
+        } ;
+        for (Hazard hazard : protections) {
+            addHazmatTooltip(event, HazardProtectionTooltip.singleHazardTranslationKey(hazard));
         }
     }
 

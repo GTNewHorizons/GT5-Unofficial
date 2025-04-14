@@ -14,6 +14,7 @@ import org.apache.logging.log4j.Logger;
 
 import bartworks.common.configs.Configuration;
 import cpw.mods.fml.relauncher.FMLLaunchHandler;
+import gregtech.common.config.Gregtech;
 import gregtech.common.pollution.PollutionConfig;
 
 public enum Mixin {
@@ -50,28 +51,50 @@ public enum Mixin {
     VanillaAccessors(new Builder("Adds various accessors")
         .addMixinClasses(
             "minecraft.accessors.BlockStemMixin",
+            "minecraft.accessors.ChunkCacheMixin",
             "minecraft.accessors.VanillaShapedRecipeMixin",
             "minecraft.accessors.VanillaShapelessRecipeMixin",
             "minecraft.accessors.ForgeShapedRecipeMixin",
             "minecraft.accessors.ForgeShapelessRecipeMixin",
+            "minecraft.accessors.ItemArmorMixin",
             "minecraft.accessors.PotionMixin",
             "minecraft.accessors.EntityPlayerMPMixin")
         .addTargetedMod(VANILLA)
         .setApplyIf(() -> true)
         .setPhase(Phase.EARLY)
         .setSide(Side.BOTH)),
+    ItemMixinCoverFix(new Builder("Allow cover items to bypass sneak checks").addMixinClasses("minecraft.ItemMixin")
+        .addTargetedMod(VANILLA)
+        .setApplyIf(() -> true)
+        .setPhase(Phase.EARLY)
+        .setSide(Side.BOTH)),
+
+    VanillaToolChanges(
+        new Builder("Changes wooden tools to be a little faster").addMixinClasses("minecraft.ItemToolMaterialMixin")
+            .addTargetedMod(VANILLA)
+            .setApplyIf(() -> Gregtech.general.changedWoodenVanillaTools)
+            .setPhase(Phase.EARLY)
+            .setSide(Side.BOTH)),
+
     IC2_MACHINE_WRENCHING(new Builder("Changes the behavior of the wrenching mechanic for IC2 machines")
         .addMixinClasses("ic2.MixinDamageDropped", "ic2.MixinHarvestTool", "ic2.MixinItemDropped")
         .addTargetedMod(TargetedMod.IC2)
         .setApplyIf(() -> true)
         .setPhase(Phase.LATE)
         .setSide(Side.BOTH)),
+
+    // Hazmat armors
     IC2_HAZMAT(new Builder("Hazmat").setPhase(Phase.LATE)
         .setSide(Side.BOTH)
-        .addMixinClasses("ic2.MixinIc2Hazmat")
+        .addMixinClasses("ic2.MixinIc2Hazmat", "ic2.MixinIc2Nano", "ic2.MixinIc2Quantum")
         .setApplyIf(() -> true)
         .addTargetedMod(TargetedMod.IC2)
         .addExcludedMod(TargetedMod.GT6)),
+    ADV_SOLAR_HAZMAT(new Builder("Applies Hazmat API to Advanced Solar helmets").setSide(Side.BOTH)
+        .setPhase(Phase.LATE)
+        .addMixinClasses("advanced_solar_panels.MixinAdvancedSolarHelmet")
+        .setApplyIf(() -> true)
+        .addTargetedMod(TargetedMod.ADVANCED_SOLAR_PANELS)),
 
     // Pollution
     POLLUTION_RENDER_BLOCKS(new Builder("Changes colors of certain blocks based on pollution levels")

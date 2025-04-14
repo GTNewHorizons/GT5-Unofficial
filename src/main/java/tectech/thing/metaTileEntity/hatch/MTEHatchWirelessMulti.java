@@ -8,6 +8,8 @@ import static gregtech.api.enums.GTValues.AuthorColen;
 import static gregtech.api.enums.GTValues.V;
 import static gregtech.common.misc.WirelessNetworkManager.addEUToGlobalEnergyMap;
 import static gregtech.common.misc.WirelessNetworkManager.strongCheckOrAddUser;
+import static gregtech.common.misc.WirelessNetworkManager.ticks_between_energy_addition;
+import static gregtech.common.misc.WirelessNetworkManager.totalStorage;
 import static java.lang.Long.min;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
@@ -16,19 +18,25 @@ import java.util.UUID;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.google.common.math.LongMath;
+import com.gtnewhorizons.modularui.api.math.Alignment;
+import com.gtnewhorizons.modularui.api.math.Color;
+import com.gtnewhorizons.modularui.api.screen.ModularWindow;
+import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
+import com.gtnewhorizons.modularui.common.widget.TextWidget;
+import com.gtnewhorizons.modularui.common.widget.textfield.NumericWidget;
 
+import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.interfaces.tileentity.IWirelessEnergyHatchInformation;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.util.GTUtility;
 import tectech.thing.metaTileEntity.Textures;
-import tectech.util.TTUtility;
 
-public class MTEHatchWirelessMulti extends MTEHatchEnergyMulti implements IWirelessEnergyHatchInformation {
+public class MTEHatchWirelessMulti extends MTEHatchEnergyMulti {
 
     private final long precisionMultiplier = LongMath.pow(10, 15);
     private final BigInteger eu_transferred_per_operation = BigInteger.valueOf(Amperes * V[mTier])
@@ -57,6 +65,7 @@ public class MTEHatchWirelessMulti extends MTEHatchEnergyMulti implements IWirel
             0,
             new String[] { GRAY + "Stores energy globally in a network, up to 2^(2^31) EU.",
                 GRAY + "Does not connect to wires. This block withdraws EU from the network.",
+                translateToLocal("gt.blockmachines.hatch.screwdrivertooltip"),
                 AuthorColen + GRAY + BOLD + " & " + BLUE + BOLD + "Cloud",
                 translateToLocal("gt.blockmachines.hatch.energytunnel.desc.1") + ": "
                     + YELLOW
@@ -64,7 +73,12 @@ public class MTEHatchWirelessMulti extends MTEHatchEnergyMulti implements IWirel
                     + GRAY
                     + " EU/t" },
             aAmp);
-        TTUtility.setTier(aTier, this);
+    }
+
+    @Override
+    public int getHatchType() {
+        // If amperage is > 64, this is a "wireless laser" and should not be usable on multi-amp only machines
+        return maxAmperes <= 64 ? 1 : 2;
     }
 
     public MTEHatchWirelessMulti(String aName, int aTier, int aAmp, String[] aDescription, ITexture[][][] aTextures) {
@@ -119,43 +133,13 @@ public class MTEHatchWirelessMulti extends MTEHatchEnergyMulti implements IWirel
     }
 
     @Override
-    public boolean isSimpleMachine() {
-        return true;
-    }
-
-    @Override
-    public boolean isFacingValid(ForgeDirection facing) {
-        return true;
-    }
-
-    @Override
-    public boolean isAccessAllowed(EntityPlayer aPlayer) {
-        return true;
-    }
-
-    @Override
     public boolean isEnetInput() {
-        return false;
-    }
-
-    @Override
-    public boolean isInputFacing(ForgeDirection side) {
-        return side == getBaseMetaTileEntity().getFrontFacing();
-    }
-
-    @Override
-    public boolean isValidSlot(int aIndex) {
         return false;
     }
 
     @Override
     public long getMinimumStoredEU() {
         return Amperes * V[mTier];
-    }
-
-    @Override
-    public long maxEUInput() {
-        return V[mTier];
     }
 
     @Override
@@ -169,25 +153,8 @@ public class MTEHatchWirelessMulti extends MTEHatchEnergyMulti implements IWirel
     }
 
     @Override
-    public long maxWorkingAmperesIn() {
-        return Amperes;
-    }
-
-    @Override
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new MTEHatchWirelessMulti(mName, mTier, Amperes, mDescriptionArray, mTextures);
-    }
-
-    @Override
-    public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
-        ItemStack aStack) {
-        return false;
-    }
-
-    @Override
-    public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
-        ItemStack aStack) {
-        return false;
     }
 
     @Override
@@ -235,5 +202,51 @@ public class MTEHatchWirelessMulti extends MTEHatchEnergyMulti implements IWirel
         if (euToTransfer <= 0) return; // nothing to transfer
         if (!addEUToGlobalEnergyMap(owner_uuid, -euToTransfer)) return;
         setEUVar(currentEU + euToTransfer);
+    }
+
+    @Override
+    public void saveNBTData(NBTTagCompound aNBT) {
+        super.saveNBTData(aNBT);
+        if (Amperes != maxAmperes) {
+            aNBT.setInteger("amperes", Amperes);
+        }
+    }
+
+    @Override
+    public void loadNBTData(NBTTagCompound aNBT) {
+        super.loadNBTData(aNBT);
+        int savedAmperes = aNBT.getInteger("amperes");
+        if (savedAmperes != 0) {
+            Amperes = savedAmperes;
+        }
+    }
+
+    @Override
+    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
+        ItemStack aTool) {
+        openGui(aPlayer);
+        super.onScrewdriverRightClick(side, aPlayer, aX, aY, aZ, aTool);
+    }
+
+    @Override
+    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
+        builder.setBackground(GTUITextures.BACKGROUND_SINGLEBLOCK_DEFAULT);
+        builder.setGuiTint(getGUIColorization());
+        final int x = getGUIWidth() / 2 - 37;
+        final int y = getGUIHeight() / 5 - 7;
+        builder.widget(
+            TextWidget.localised("GT5U.machines.laser_hatch.amperage")
+                .setPos(x, y)
+                .setSize(74, 14))
+            .widget(
+                new NumericWidget().setSetter(val -> Amperes = (int) val)
+                    .setGetter(() -> Amperes)
+                    .setBounds(1, maxAmperes)
+                    .setScrollValues(1, 4, 64)
+                    .setTextAlignment(Alignment.Center)
+                    .setTextColor(Color.WHITE.normal)
+                    .setSize(70, 18)
+                    .setPos(x, y + 16)
+                    .setBackground(GTUITextures.BACKGROUND_TEXT_FIELD));
     }
 }

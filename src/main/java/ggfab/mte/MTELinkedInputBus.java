@@ -337,13 +337,8 @@ public class MTELinkedInputBus extends MTEHatchInputBus implements IRecipeProces
 
     @Override
     public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        if (!getBaseMetaTileEntity().getCoverBehaviorAtSideNew(side)
-            .isGUIClickable(
-                side,
-                getBaseMetaTileEntity().getCoverIDAtSide(side),
-                getBaseMetaTileEntity().getComplexCoverDataAtSide(side),
-                getBaseMetaTileEntity()))
-            return;
+        if (!getBaseMetaTileEntity().getCoverAtSide(side)
+            .isGUIClickable()) return;
         if (aPlayer.isSneaking()) {
             if (this.mRealInventory == null) {
                 aPlayer.addChatMessage(new ChatComponentTranslation("ggfab.info.linked_input_bus.no_channel"));
@@ -405,7 +400,8 @@ public class MTELinkedInputBus extends MTEHatchInputBus implements IRecipeProces
         if (GTUtility.isStackInvalid(circuit)) circuit = null;
         if ("".equals(channel)) {
             return false;
-        } else if (circuit != null && getConfigurationCircuits().stream()
+        } else if (circuit != null && GTUtility.getAllIntegratedCircuits()
+            .stream()
             .noneMatch(circuit::isItemEqual)) {
                 return false;
             }
@@ -442,7 +438,8 @@ public class MTELinkedInputBus extends MTEHatchInputBus implements IRecipeProces
         if ("".equals(channel)) {
             aPlayer.addChatMessage(new ChatComponentTranslation("ggfab.info.linked_input_bus.no_data"));
             return true;
-        } else if (circuit != null && getConfigurationCircuits().stream()
+        } else if (circuit != null && GTUtility.getAllIntegratedCircuits()
+            .stream()
             .noneMatch(circuit::isItemEqual)) {
                 aPlayer.addChatMessage(new ChatComponentTranslation("ggfab.info.linked_input_bus.invalid_circuit"));
                 return true;

@@ -1,28 +1,23 @@
 package gregtech.api.interfaces.tileentity;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
 
 import javax.annotation.Nonnull;
 
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.IFluidHandler;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import com.gtnewhorizon.gtnhlib.capability.CapabilityProvider;
+
 import gregtech.api.interfaces.IDescribable;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.modularui.IAddInventorySlots;
 import gregtech.api.interfaces.modularui.IGetGUITextureSet;
 import gregtech.api.util.shutdown.ShutDownReason;
-import gregtech.common.blocks.BlockMachines;
 
 /**
  * A simple compound Interface for all my TileEntities.
@@ -31,19 +26,9 @@ import gregtech.common.blocks.BlockMachines;
  * <p/>
  * It can cause Problems to include this Interface!
  */
-public interface IGregTechTileEntity extends ITexturedTileEntity, IGearEnergyTileEntity, ICoverable, IFluidHandler,
-    ITurnable, IGregTechDeviceInformation, IUpgradableMachine, IDigitalChest, IDescribable, IMachineBlockUpdateable,
-    IGregtechWailaProvider, IGetGUITextureSet, IAddInventorySlots {
-
-    /**
-     * gets the Error displayed on the GUI
-     */
-    int getErrorDisplayID();
-
-    /**
-     * sets the Error displayed on the GUI
-     */
-    void setErrorDisplayID(int aErrorID);
+public interface IGregTechTileEntity extends ITexturedTileEntity, ICoverable, IFluidHandler, ITurnable,
+    IGregTechDeviceInformation, IUpgradableMachine, IDigitalChest, IDescribable, IMachineBlockUpdateable,
+    IGregtechWailaProvider, IGetGUITextureSet, IAddInventorySlots, CapabilityProvider {
 
     /**
      * @return the MetaID of the Block or the MetaTileEntity ID.
@@ -68,6 +53,11 @@ public interface IGregTechTileEntity extends ITexturedTileEntity, IGearEnergyTil
      * @param aMetaTileEntity a MetaTileEntity
      */
     void setMetaTileEntity(IMetaTileEntity aMetaTileEntity);
+
+    /**
+     * @return If this TileEntity is valid as a MetaTileEntity holder.
+     */
+    boolean canAccessData();
 
     /**
      * Causes a general Texture update.
@@ -134,31 +124,12 @@ public interface IGregTechTileEntity extends ITexturedTileEntity, IGearEnergyTil
      */
     boolean onRightclick(EntityPlayer aPlayer, ForgeDirection side, float aX, float aY, float aZ);
 
-    float getBlastResistance(ForgeDirection side);
-
-    default void onBlockDestroyed() {}
-
     ArrayList<ItemStack> getDrops();
-
-    /**
-     * Check if the item at the specific index should be dropped or not
-     *
-     * @param index Index that will be checked
-     * @return True if it should drop, else false
-     */
-    boolean shouldDropItemAt(int index);
 
     /**
      * 255 = 100%
      */
     int getLightOpacity();
-
-    void addCollisionBoxesToList(World aWorld, int aX, int aY, int aZ, AxisAlignedBB inputAABB,
-        List<AxisAlignedBB> outputAABB, Entity collider);
-
-    AxisAlignedBB getCollisionBoundingBoxFromPool(World aWorld, int aX, int aY, int aZ);
-
-    void onEntityCollidedWithBlock(World aWorld, int aX, int aY, int aZ, Entity collider);
 
     /**
      * Checks validity of meta tile and delegates to it
@@ -183,17 +154,6 @@ public interface IGregTechTileEntity extends ITexturedTileEntity, IGearEnergyTil
     default void setShutdownStatus(boolean newStatus) {}
 
     default void setShutDownReason(@Nonnull ShutDownReason reason) {}
-
-    /**
-     * A randomly called display update to be able to add particles or other items for display The event is proxied by
-     * the {@link BlockMachines#randomDisplayTick}
-     */
-    @SideOnly(Side.CLIENT)
-    default void onRandomDisplayTick() {
-        if (getMetaTileEntity() != null && getMetaTileEntity().getBaseMetaTileEntity() == this) {
-            getMetaTileEntity().onRandomDisplayTick(this);
-        }
-    }
 
     /**
      * gets the time statistics used for CPU timing

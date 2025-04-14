@@ -9,8 +9,6 @@ import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.RESET;
 import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.animatedText;
 import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.chain;
 import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.text;
-import static gregtech.api.enums.Mods.GregTech;
-import static gregtech.api.enums.Mods.IndustrialCraft2;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
@@ -21,7 +19,9 @@ import java.util.Set;
 import java.util.function.Supplier;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.launchwrapper.Launch;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
@@ -204,105 +204,11 @@ public class GTValues {
     public static final FluidStack NF = null;
 
     /**
-     * File Paths and Resource Paths
-     */
-    @Deprecated
-    public static final String TEX_DIR = "textures/";
-    @Deprecated
-    public static final String RES_PATH = GregTech.getResourcePath(TEX_DIR);
-    @Deprecated
-    public static final String RES_PATH_GUI = GregTech.getResourcePath("textures", "gui/");
-    @Deprecated
-    public static final String RES_PATH_ITEM = GregTech.getResourcePath();
-    @Deprecated
-    public static final String RES_PATH_BLOCK = GregTech.getResourcePath();
-    @Deprecated
-    public static final String RES_PATH_ENTITY = GregTech.getResourcePath("textures", "entity/");
-    @Deprecated
-    public static final String RES_PATH_ASPECTS = GregTech.getResourcePath("textures", "aspects/");
-    @Deprecated
-    public static final String RES_PATH_MODEL = GregTech.getResourcePath("textures", "models/");
-    @Deprecated
-    public static final String RES_PATH_IC2 = IndustrialCraft2.getResourcePath();
-
-    /**
      * NBT String Keys
      */
     public static final class NBT {
 
-        public static final String COLOR = "gt.color", // Integer
-            COVERS = "gt.covers", // String
-            CUSTOM_NAME = "name", // String
-            DISPLAY = "gt.display", // String
-            TIER = "gt.tier", // Number
-            FACING = "gt.facing", // Byte
-            LOCK_UPGRADE = "gt.locked", // Boolean
-            MATERIAL = "gt.material", // String containing the Material Name.
-            MODE = "gt.mode", // Number
-            ALLOWED_MODES = "gt.amode", // Number
-            MTE_ID = "gt.mte.id", // Containing the MTE ID
-            MTE_REG = "gt.mte.reg", // Containing the MTE Registry ID
-            OWNER = "gt.owner", // String
-            OWNER_UUID = "gt.ownerUuid", // UUID (String)
-
-            // Machines
-            ACTIVE = "gt.active", // Boolean
-            FLUID_OUT = "gt.fluidout", // Output Fluid
-            ITEM_OUT = "gt.itemout", // Output Item
-            PARALLEL = "gt.parallel", // Number
-            TANK_CAPACITY = "gt.tankcap", // Number
-            TANK_IN = "gt.tank.in.", // FluidStack
-            TANK_OUT = "gt.tank.out.", // FluidStack
-            TEXTURE_FOLDER = "gt.texture.folder", // String
-            INV_INPUT_SIZE = "gt.invsize.in", // Number
-            INV_OUTPUT_SIZE = "gt.invsize.out", // Number
-            INV_INPUT_LIST = "gt.invlist.in", // NBT List
-            INV_OUTPUT_LIST = "gt.invlist.out", // NBT List
-            VOLTAGE = "gt.voltage", // Number
-            AMPERAGE = "gt.amperage", // Number
-            STORED_ENERGY = "gt.stored.energy", // Number
-            MAXIMUM_ENERGY = "gt.maximum.energy", // Number
-            EUT_CONSUMPTION = "gt.eut.consumption", // Number
-            BURN_TIME_LEFT = "gt.burn.time.left", // Number
-            TOTAL_BURN_TIME = "gt.total.burn.time", // Number
-            ALLOWED_WORK = "gt.allowed.work", // Boolean
-            TASKS = "gt.tasks", // Compound
-
-            // MultiBlock
-            STRUCTURE_OK = "gt.structure.ok", ROTATION = "gt.eRotation", FLIP = "gt.eFlip", TARGET = "gt.target", // Boolean
-            TARGET_X = "gt.target.x", // Number
-            TARGET_Y = "gt.target.y", // Number
-            TARGET_Z = "gt.target.z", // Number
-            LOCKED_FLUID = "gt.locked.fluid", // String
-            LOCKED_INVENTORY = "gt.locked.inv", // String
-            LOCKED_INVENTORY_INDEX = "gt.locked.inv.index", // Number
-            UPGRADE_INVENTORY_SIZE = "gt.invsize.upg", // String
-            UPGRADE_INVENTORY_UUID = "gt.invuuid.upg", // String
-            UPGRADE_INVENTORY_NAME = "gt.invname.upg", // String
-            UPGRADE_INVENTORIES_INPUT = "gt.invlist.upg.in", // NBT List
-            UPGRADE_INVENTORIES_OUTPUT = "gt.invlist.upg.out", // NBT List
-            UPGRADE_TANK_CAPACITY = "gt.tank.cap.upg", // Long
-            UPGRADE_TANK_COUNT = "gt.tank.ct.upg", // Int
-            UPGRADE_TANK_CAPACITY_MULTIPLIER = "gt.tank.cap.mult.upg", // Long
-            UPGRADE_TANK_UUID = "gt.tankuuid.upg", // String
-            UPGRADE_TANK_NAME = "gt.tankname.upg", // String
-            UPGRADE_TANKS_INPUT = "gt.tanklist.upg.in", // NBT List
-            UPGRADE_TANKS_OUTPUT = "gt.tanklist.upg.out", // NBT List
-            UPGRADE_TANKS_PREFIX = "gt.tank.upg", // NBT Tag
-            UPGRADE_AMPERAGE = "gt.amp.upg", // Long
-            SEPARATE_INPUTS = "gt.separate.inputs", // Boolean
-            VOIDING_MODE = "gt.voiding.mode", // String
-            BATCH_MODE = "gt.batch.mode", // Boolean
-            RECIPE_LOCK = "gt.recipe.lock", // Boolean
-
-            // Logic
-            POWER_LOGIC = "gt.pow.logic", // NBT Tag
-            POWER_LOGIC_STORED_ENERGY = "gt.pow.energy", // Number
-            POWER_LOGIC_ENERGY_CAPACITY = "gt.pow.energy.cap", // Number
-            POWER_LOGIC_VOLTAGE = "gt.pow.volt", // Number
-            POWER_LOGIC_AMPERAGE = "gt.pow.amp", // Number
-            POWER_LOGIC_TYPE = "gt.pow.type", // Number
-            empty_ = "";
+        public static final String COVERS = "gt.covers"; // String
     }
 
     /** The Color White as RGB Short Array. */
@@ -436,11 +342,6 @@ public class GTValues {
      */
     public static boolean debugWorldData = false;
     /**
-     * Parameter if multi tile entities (MuTEs) should be enabled in the pack. Turned off by default until
-     * implementation is done.
-     */
-    public static boolean enableMultiTileEntities = false;
-    /**
      * Number of ticks between sending sound packets to clients for electric machines. Default is 1.5 seconds. Trying to
      * mitigate lag and FPS drops.
      */
@@ -545,6 +446,14 @@ public class GTValues {
     public static final FluidStack[] emptyFluidStack = new FluidStack[0];
     public static final ItemStack[] emptyItemStackArray = new ItemStack[0];
     public static final IIconContainer[] emptyIconContainerArray = new IIconContainer[3];
+
+    /**
+     * Detects if we're in a deobfuscated environment, meaning that additional sanity checks should be ran.
+     * If the blackboard is null, we're in a unit test that hasn't set its env up properly and also want those checks to
+     * be ran.
+     */
+    public static boolean DEVENV = Launch.blackboard == null ? true
+        : (boolean) Launch.blackboard.get("fml.deobfuscatedEnvironment");
 
     /**
      * Pretty formatting for author names.
@@ -688,6 +597,17 @@ public class GTValues {
 
     public static final String TecTechHatches = "Supports " + TT + " laser and multi-amp hatches";
 
+    public static final String AuthorPureBluez = "Author: " + EnumChatFormatting.WHITE
+        + "Pure"
+        + EnumChatFormatting.AQUA
+        + "B"
+        + EnumChatFormatting.DARK_AQUA
+        + "l"
+        + EnumChatFormatting.BLUE
+        + "u"
+        + EnumChatFormatting.DARK_BLUE
+        + "ez";
+
     // 7.5F comes from GT_Tool_Turbine_Large#getBaseDamage() given huge turbines are the most efficient now.
     public static double getMaxPlasmaTurbineEfficiencyFromMaterial(Materials material) {
         return (5F + (7.5F + material.mToolQuality)) / 10.0;
@@ -724,5 +644,18 @@ public class GTValues {
             }
         }
         return EXPLOSION_LOOKUP_POWER[EXPLOSION_LOOKUP_POWER.length - 1];
+    }
+
+    public static String getLocalizedLongVoltageName(int voltage) {
+        if (voltage >= VOLTAGE_NAMES.length) {
+            return StatCollector.translateToLocal("GT5U.voltage_names.error_voltage_report_this");
+        }
+        String unlocalizedName = "GT5U.voltage_names." + VOLTAGE_NAMES[voltage].toLowerCase()
+            .replace(",", "")
+            .replace(' ', '_');
+        if (StatCollector.canTranslate(unlocalizedName)) {
+            return StatCollector.translateToLocal(unlocalizedName);
+        }
+        return StatCollector.translateToLocal("GT5U.voltage_names.error_voltage_report_this");
     }
 }

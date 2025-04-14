@@ -27,7 +27,6 @@ import com.gtnewhorizons.modularui.common.widget.textfield.NumericWidget;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Textures;
-import gregtech.api.gui.modularui.GTUIInfos;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -36,13 +35,12 @@ import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTETieredMachineBlock;
-import gregtech.api.objects.GTRenderedTexture;
+import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
 import tectech.mechanics.pipe.IConnectsToEnergyTunnel;
 import tectech.thing.metaTileEntity.hatch.MTEHatchEnergyTunnel;
-import tectech.thing.metaTileEntity.pipe.MTEPipeEnergy;
+import tectech.thing.metaTileEntity.pipe.MTEPipeLaser;
 import tectech.util.CommonValues;
-import tectech.util.TTUtility;
 
 /**
  * Created by Tec on 23.03.2017.
@@ -50,7 +48,7 @@ import tectech.util.TTUtility;
 public class MTEDebugPowerGenerator extends MTETieredMachineBlock
     implements IConnectsToEnergyTunnel, IAddUIWidgets, IAddGregtechLogo {
 
-    public static GTRenderedTexture GENNY;
+    public static ITexture GENNY;
     private boolean LASER = false;
     public int EUT = 0, AMP = 0;
     public boolean producing = true;
@@ -67,12 +65,10 @@ public class MTEDebugPowerGenerator extends MTETieredMachineBlock
                 EnumChatFormatting.AQUA + translateToLocal("gt.blockmachines.debug.tt.genny.desc.3"),
                 EnumChatFormatting.BLUE + translateToLocal("gt.blockmachines.debug.tt.genny.desc.1"),
                 EnumChatFormatting.BLUE + translateToLocal("gt.blockmachines.debug.tt.genny.desc.2") });
-        TTUtility.setTier(aTier, this);
     }
 
     public MTEDebugPowerGenerator(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, 0, aDescription, aTextures);
-        TTUtility.setTier(aTier, this);
     }
 
     @Override
@@ -92,7 +88,7 @@ public class MTEDebugPowerGenerator extends MTETieredMachineBlock
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister aBlockIconRegister) {
         super.registerIcons(aBlockIconRegister);
-        GENNY = new GTRenderedTexture(new Textures.BlockIcons.CustomIcon("iconsets/GENNY"));
+        GENNY = TextureFactory.of(new Textures.BlockIcons.CustomIcon("iconsets/GENNY"));
     }
 
     @Override
@@ -142,11 +138,6 @@ public class MTEDebugPowerGenerator extends MTETieredMachineBlock
     }
 
     @Override
-    public boolean isSimpleMachine() {
-        return false;
-    }
-
-    @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         if (aBaseMetaTileEntity.isServerSide()) {
             aBaseMetaTileEntity.setActive(producing);
@@ -170,7 +161,7 @@ public class MTEDebugPowerGenerator extends MTETieredMachineBlock
 
     @Override
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
-        GTUIInfos.openGTTileEntityUI(aBaseMetaTileEntity, aPlayer);
+        openGui(aPlayer);
         return true;
     }
 
@@ -296,9 +287,9 @@ public class MTEDebugPowerGenerator extends MTETieredMachineBlock
                                     aMetaTileEntity.getBaseMetaTileEntity()
                                         .getStoredEU() + diff);
                             }
-                        } else if (aMetaTileEntity instanceof MTEPipeEnergy) {
-                            if (((MTEPipeEnergy) aMetaTileEntity).connectionCount < 2) {} else {
-                                ((MTEPipeEnergy) aMetaTileEntity).markUsed();
+                        } else if (aMetaTileEntity instanceof MTEPipeLaser) {
+                            if (((MTEPipeLaser) aMetaTileEntity).connectionCount < 2) {} else {
+                                ((MTEPipeLaser) aMetaTileEntity).markUsed();
                             }
                         }
                     }

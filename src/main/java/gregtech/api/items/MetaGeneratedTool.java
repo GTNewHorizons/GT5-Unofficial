@@ -255,7 +255,7 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
      */
     @Mod.EventHandler
     public void onHarvestBlockEvent(ArrayList<ItemStack> aDrops, ItemStack aStack, EntityPlayer aPlayer, Block aBlock,
-        int aX, int aY, int aZ, byte aMetaData, int aFortune, boolean aSilkTouch, BlockEvent.HarvestDropsEvent aEvent) {
+        int aX, int aY, int aZ, int aMetaData, int aFortune, boolean aSilkTouch, BlockEvent.HarvestDropsEvent aEvent) {
         IToolStats tStats = getToolStats(aStack);
         if (isItemStackUsable(aStack) && getDigSpeed(aStack, aBlock, aMetaData) > 0.0F) doDamage(
             aStack,
@@ -266,7 +266,7 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
 
     @Mod.EventHandler
     public float onBlockBreakSpeedEvent(float aDefault, ItemStack aStack, EntityPlayer aPlayer, Block aBlock, int aX,
-        int aY, int aZ, byte aMetaData, PlayerEvent.BreakSpeed aEvent) {
+        int aY, int aZ, int aMetaData, PlayerEvent.BreakSpeed aEvent) {
         IToolStats tStats = getToolStats(aStack);
         return tStats == null ? aDefault
             : tStats.getMiningSpeed(aBlock, aMetaData, aDefault, aPlayer, aPlayer.worldObj, aX, aY, aZ);
@@ -456,7 +456,8 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
                     EnumChatFormatting.GRAY + transItem("006", "Fuel | Optimal Flow > EU/t Produced | Efficiency"));
                 aList.add(
                     tOffset + 4,
-                    EnumChatFormatting.WHITE + "  Steam "
+                    EnumChatFormatting.WHITE
+                        + String.format("  %s ", StatCollector.translateToLocal("GT5U.tootlip.tool.turbine.steam"))
                         + EnumChatFormatting.GRAY
                         + " | "
                         + String.format(
@@ -473,7 +474,8 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
                                 + EnumChatFormatting.GRAY));
                 aList.add(
                     tOffset + 5,
-                    EnumChatFormatting.WHITE + "  Loose "
+                    EnumChatFormatting.WHITE
+                        + String.format("  %s ", StatCollector.translateToLocal("GT5U.tootlip.tool.turbine.loose"))
                         + EnumChatFormatting.GRAY
                         + " | "
                         + String.format(
@@ -490,10 +492,12 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
                                 + EnumChatFormatting.GRAY));
                 aList.add(
                     tOffset + 6,
-                    EnumChatFormatting.DARK_GRAY + "  Supercritical and Superheated EU values are 2x");
+                    EnumChatFormatting.DARK_GRAY
+                        + String.format("  %s", StatCollector.translateToLocal("GT5U.tootlip.tool.turbine.super")));
                 aList.add(
                     tOffset + 7,
-                    EnumChatFormatting.AQUA + "  Gas "
+                    EnumChatFormatting.AQUA
+                        + String.format("  %s ", StatCollector.translateToLocal("GT5U.tootlip.tool.turbine.gas"))
                         + EnumChatFormatting.GRAY
                         + " | "
                         + String.format(
@@ -510,7 +514,8 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
                                 + EnumChatFormatting.GRAY));
                 aList.add(
                     tOffset + 8,
-                    EnumChatFormatting.AQUA + "  Loose "
+                    EnumChatFormatting.AQUA
+                        + String.format("  %s ", StatCollector.translateToLocal("GT5U.tootlip.tool.turbine.loose"))
                         + EnumChatFormatting.GRAY
                         + " | "
                         + String.format(
@@ -527,7 +532,8 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
                                 + EnumChatFormatting.GRAY));
                 aList.add(
                     tOffset + 9,
-                    EnumChatFormatting.LIGHT_PURPLE + "  Plasma"
+                    EnumChatFormatting.LIGHT_PURPLE
+                        + String.format("  %s", StatCollector.translateToLocal("GT5U.tootlip.tool.turbine.plasma"))
                         + EnumChatFormatting.GRAY
                         + " | "
                         + String.format(
@@ -544,7 +550,8 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
                                 + EnumChatFormatting.GRAY));
                 aList.add(
                     tOffset + 10,
-                    EnumChatFormatting.LIGHT_PURPLE + "  Loose"
+                    EnumChatFormatting.LIGHT_PURPLE
+                        + String.format("  %s", StatCollector.translateToLocal("GT5U.tootlip.tool.turbine.loose"))
                         + EnumChatFormatting.GRAY
                         + " | "
                         + String.format(
@@ -611,9 +618,9 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
 
                         aList.add(
                             tOffset + 3,
-                            EnumChatFormatting.RED + "Heat: "
-                                + aNBT.getInteger("Heat")
-                                + " K"
+                            EnumChatFormatting.RED
+                                + StatCollector
+                                    .translateToLocalFormatted("GT5U.tooltip.tool.heat", aNBT.getInteger("Heat"))
                                 + EnumChatFormatting.GRAY);
                     }
                 }
@@ -695,14 +702,14 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
         if (!isItemStackUsable(aStack)) return 0.0F;
         IToolStats tStats = getToolStats(aStack);
         if (tStats == null || Math.max(0, getHarvestLevel(aStack, "")) < aBlock.getHarvestLevel(aMetaData)) return 0.0F;
-        return tStats.isMinableBlock(aBlock, (byte) aMetaData)
+        return tStats.isMinableBlock(aBlock, aMetaData)
             ? Math.max(Float.MIN_NORMAL, tStats.getSpeedMultiplier() * getPrimaryMaterial(aStack).mToolSpeed)
             : 0.0F;
     }
 
     @Override
     public final boolean canHarvestBlock(Block aBlock, ItemStack aStack) {
-        return getDigSpeed(aStack, aBlock, (byte) 0) > 0.0F;
+        return getDigSpeed(aStack, aBlock, 0) > 0.0F;
     }
 
     @Override
@@ -847,7 +854,7 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
     public boolean canLink(EntityPlayer aPlayer, ItemStack aStack, EntityMinecart cart) {
         if (!isItemStackUsable(aStack)) return false;
         IToolStats tStats = getToolStats(aStack);
-        return tStats != null && tStats.isCrowbar();
+        return tStats != null && tStats.isCrowbar() && aPlayer.isSneaking();
     }
 
     @Override
@@ -860,7 +867,7 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
     public boolean canBoost(EntityPlayer aPlayer, ItemStack aStack, EntityMinecart cart) {
         if (!isItemStackUsable(aStack)) return false;
         IToolStats tStats = getToolStats(aStack);
-        return tStats != null && tStats.isCrowbar();
+        return tStats != null && tStats.isCrowbar() && !aPlayer.isSneaking();
     }
 
     @Override

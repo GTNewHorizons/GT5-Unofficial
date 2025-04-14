@@ -26,9 +26,12 @@ import java.util.List;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
+
+import org.jetbrains.annotations.NotNull;
 
 import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
@@ -51,10 +54,14 @@ import gregtech.api.metatileentity.implementations.MTEEnhancedMultiBlockBase;
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
 import gregtech.api.metatileentity.implementations.MTEHatchOutputBus;
 import gregtech.api.recipe.RecipeMap;
+import gregtech.api.recipe.check.CheckRecipeResult;
+import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.api.util.shutdown.ShutDownReasonRegistry;
+import gregtech.api.util.shutdown.SimpleShutDownReason;
 
 public class MTEHighTempGasCooledReactor extends MTEEnhancedMultiBlockBase<MTEHighTempGasCooledReactor> {
 
@@ -257,23 +264,23 @@ public class MTEHighTempGasCooledReactor extends MTEEnhancedMultiBlockBase<MTEHi
     }
 
     @Override
-    public boolean checkRecipe(ItemStack controllerStack) {
+    public @NotNull CheckRecipeResult checkProcessing() {
 
         if (this.empty) {
             if (this.HeliumSupply > 0 || this.fuelsupply > 0) {
                 this.mEfficiency = 10000;
                 this.mMaxProgresstime = 100;
-                return true;
+                return CheckRecipeResultRegistry.SUCCESSFUL;
             }
-            return false;
+            return CheckRecipeResultRegistry.NO_RECIPE;
         }
         if (this.HeliumSupply < MTEHighTempGasCooledReactor.HELIUM_NEEDED || this.fuelsupply < mincapacity)
-            return false;
+            return CheckRecipeResultRegistry.NO_RECIPE;
 
         double eff = Math.min(Math.pow((double) this.fuelsupply / (double) mincapacity, 2D), 100D) / 100D
             - (this.getIdealStatus() - this.getRepairStatus()) / 10D;
 
-        if (eff <= 0) return false;
+        if (eff <= 0) return CheckRecipeResultRegistry.NO_RECIPE;
 
         int toReduce = MathUtils.floorInt(this.fuelsupply * 0.025D * eff);
 
@@ -285,7 +292,7 @@ public class MTEHighTempGasCooledReactor extends MTEEnhancedMultiBlockBase<MTEHi
 
         ItemStack[] toOutput = { new ItemStack(HTGRMaterials.aHTGR_Materials, burnedballs, meta),
             new ItemStack(HTGRMaterials.aHTGR_Materials, toReduce, meta + 1) };
-        if (!this.canOutputAll(toOutput)) return false;
+        if (!this.canOutputAll(toOutput)) return CheckRecipeResultRegistry.NO_RECIPE;
 
         this.fuelsupply -= originalToReduce;
         this.mOutputItems = toOutput;
@@ -298,7 +305,7 @@ public class MTEHighTempGasCooledReactor extends MTEEnhancedMultiBlockBase<MTEHi
         this.mEfficiencyIncrease = 0;
         this.mEUt = -powerUsage;
         this.mMaxProgresstime = (int) (72000 * (1d - eff / 2d));
-        return true;
+        return CheckRecipeResultRegistry.SUCCESSFUL;
     }
 
     private int runningtick = 0;
@@ -344,7 +351,7 @@ public class MTEHighTempGasCooledReactor extends MTEEnhancedMultiBlockBase<MTEHi
         }
         // USE DA POWAH
         if (!this.drainEnergyInput(-this.mEUt)) {
-            this.criticalStopMachine();
+            this.stopMachine(ShutDownReasonRegistry.POWER_LOSS);
             return false;
         }
 
@@ -366,7 +373,7 @@ public class MTEHighTempGasCooledReactor extends MTEEnhancedMultiBlockBase<MTEHi
 
             this.updateSlots();
 
-            if (takecoolant > 0) this.stopMachine();
+            if (takecoolant > 0) this.stopMachine(SimpleShutDownReason.ofNormal("no_coolant"));
         }
 
         return true;
@@ -375,11 +382,6 @@ public class MTEHighTempGasCooledReactor extends MTEEnhancedMultiBlockBase<MTEHi
     @Override
     public int getMaxEfficiency(ItemStack itemStack) {
         return 10000;
-    }
-
-    @Override
-    public int getPollutionPerTick(ItemStack itemStack) {
-        return 0;
     }
 
     @Override
@@ -399,18 +401,33 @@ public class MTEHighTempGasCooledReactor extends MTEEnhancedMultiBlockBase<MTEHi
 
     @Override
     public String[] getInfoData() {
-        return new String[] { "Mode:", this.empty ? "Emptying" : "Normal", "Progress:",
-            GTUtility.formatNumbers(this.mProgresstime / 20) + "s / "
-                + GTUtility.formatNumbers(this.mMaxProgresstime / 20)
-                + "s",
-            "Fuel type:",
-            this.fueltype == -1 ? "NONE" : "TRISO (" + HTGRMaterials.sHTGR_Fuel[this.fueltype].sEnglish + ")",
-            "Fuel amount:", GTUtility.formatNumbers(this.fuelsupply) + " pcs.", "Helium-Level:",
-            GTUtility.formatNumbers(this.HeliumSupply) + "L / "
-                + GTUtility.formatNumbers(MTEHighTempGasCooledReactor.HELIUM_NEEDED)
-                + "L",
-            "Coolant:", GTUtility.formatNumbers(this.coolanttaking) + "L/s", "Problems:",
-            String.valueOf(this.getIdealStatus() - this.getRepairStatus()) };
+        return new String[] {
+            StatCollector.translateToLocalFormatted(
+                "BW.infoData.htgr.mode",
+                this.empty ? StatCollector.translateToLocal("BW.infoData.htgr.mode.emptying")
+                    : StatCollector.translateToLocal("BW.infoData.htgr.mode.normal")),
+            StatCollector.translateToLocalFormatted(
+                "BW.infoData.htgr.progress",
+                GTUtility.formatNumbers(this.mProgresstime / 20),
+                GTUtility.formatNumbers(this.mMaxProgresstime / 20)),
+            StatCollector.translateToLocalFormatted(
+                "BW.infoData.htgr.fuel_type",
+                this.fueltype == -1 ? StatCollector.translateToLocal("BW.infoData.htgr.fuel_type.none")
+                    : StatCollector.translateToLocalFormatted(
+                        "BW.infoData.htgr.fuel_type.triso",
+                        // TODO: check how to get fuel type localized name
+                        HTGRMaterials.sHTGR_Fuel[this.fueltype].sEnglish)),
+            StatCollector
+                .translateToLocalFormatted("BW.infoData.htgr.fuel_amount", GTUtility.formatNumbers(this.fuelsupply)),
+            StatCollector.translateToLocalFormatted(
+                "BW.infoData.htr.helium_level",
+                GTUtility.formatNumbers(this.HeliumSupply),
+                GTUtility.formatNumbers(MTEHighTempGasCooledReactor.HELIUM_NEEDED)),
+            StatCollector
+                .translateToLocalFormatted("BW.infoData.htgr.coolant", GTUtility.formatNumbers(this.coolanttaking)),
+            StatCollector.translateToLocalFormatted(
+                "BW.infoData.htr.problems",
+                String.valueOf(this.getIdealStatus() - this.getRepairStatus())) };
     }
 
     @Override
@@ -477,7 +494,7 @@ public class MTEHighTempGasCooledReactor extends MTEEnhancedMultiBlockBase<MTEHi
             public void addInformation(ItemStack p_77624_1_, EntityPlayer p_77624_2_, List aList, boolean p_77624_4_) {
                 if (this.tooltip.containsKey(this.getDamage(p_77624_1_)))
                     aList.add(this.tooltip.get(this.getDamage(p_77624_1_)));
-                aList.add("Material for High Temperature Gas-cooled Reactor");
+                aList.add(StatCollector.translateToLocal("tooltip.bw.high_temp_gas_cooled_reactor.material"));
                 super.addInformation(p_77624_1_, p_77624_2_, aList, p_77624_4_);
             }
         }
@@ -603,7 +620,6 @@ public class MTEHighTempGasCooledReactor extends MTEEnhancedMultiBlockBase<MTEHi
                     .duration(1 * HOURS)
                     .eut(powerUsage)
                     .ignoreCollision()
-                    .noOptimize()
                     .fake()
                     .addTo(htgrFakeRecipes);
 

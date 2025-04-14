@@ -8,6 +8,7 @@ import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.Maintenance;
 import static gregtech.api.recipe.RecipeMaps.scannerFakeRecipes;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
+import static gregtech.api.util.GTUtility.getTier;
 import static gregtech.api.util.GTUtility.validMTEList;
 import static mcp.mobius.waila.api.SpecialChars.GREEN;
 import static mcp.mobius.waila.api.SpecialChars.RED;
@@ -221,12 +222,13 @@ public class MTEResearchStation extends TTMultiblockBase implements ISurvivalCon
                                 }
                                 this.tRecipe = assRecipe;
                                 // Set property
-                                computationRequired = computationRemaining = assRecipe.mResearchTime;
+                                computationRequired = computationRemaining = (long) (assRecipe.mResearchTime
+                                    * Math.pow(2, getTier(assRecipe.mResearchVoltage) - 1));
                                 mMaxProgresstime = 20;
                                 mEfficiencyIncrease = 10000;
                                 eRequiredData = 1;
                                 eAmpereFlow = 1;
-                                mEUt = (int) -TierEU.RECIPE_UV;
+                                mEUt = -Math.max(assRecipe.mResearchVoltage, (int) TierEU.RECIPE_UV);
                                 eHolders.get(0)
                                     .getBaseMetaTileEntity()
                                     .setActive(true);
@@ -276,42 +278,34 @@ public class MTEResearchStation extends TTMultiblockBase implements ISurvivalCon
     @Override
     public MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType(translateToLocal("gt.blockmachines.multimachine.em.research.type")) // Machine Type: Research
-                                                                                              // Station, Scanner
-            .addInfo(translateToLocal("gt.blockmachines.multimachine.em.research.desc.1")) // Used to scan Data
-                                                                                           // Sticks for
-            // Assembling Line Recipes
-            .addInfo(translateToLocal("gt.blockmachines.multimachine.em.research.desc.2")) // Needs to be fed with
-                                                                                           // computation to work
-            .addInfo(translateToLocal("gt.blockmachines.multimachine.em.research.desc.3")) // Does not consume the
-                                                                                           // item until
-            // the Data Stick is written
-            .addInfo(translateToLocal("gt.blockmachines.multimachine.em.research.desc.4")) // Use screwdriver to change
-                                                                                           // mode
+        // Machine Type: Research Station, Scanner
+        tt.addMachineType(translateToLocal("gt.blockmachines.multimachine.em.research.type"))
+            // Used to scan Data Sticks for Assembling Line Recipes
+            .addInfo(translateToLocal("gt.blockmachines.multimachine.em.research.desc.1"))
+            // Needs to be fed with computation to work
+            .addInfo(translateToLocal("gt.blockmachines.multimachine.em.research.desc.2"))
+            // Does not consume the item until the Data Stick is written
+            .addInfo(translateToLocal("gt.blockmachines.multimachine.em.research.desc.3"))
+            // Use screwdriver to change mode
+            .addInfo(translateToLocal("gt.blockmachines.multimachine.em.research.desc.4"))
+            .addInfo(translateToLocal("gt.blockmachines.multimachine.em.research.desc.5"))
+            .addInfo(translateToLocal("gt.blockmachines.multimachine.em.research.desc.6"))
             .addTecTechHatchInfo()
             .beginStructureBlock(3, 7, 7, false)
+            // Object Holder: Center of the front pillar
             .addOtherStructurePart(
                 translateToLocal("gt.blockmachines.hatch.holder.tier.09.name"),
                 translateToLocal("tt.keyword.Structure.CenterPillar"),
-                2) // Object Holder: Center of the front pillar
+                2)
+            // Optical Connector: Any Computer Casing on the backside of the main body
             .addOtherStructurePart(
                 translateToLocal("tt.keyword.Structure.DataConnector"),
                 translateToLocal("tt.keyword.Structure.AnyComputerCasingBackMain"),
-                1) // Optical Connector: Any Computer Casing on the backside of the main body
-            .addEnergyHatch(translateToLocal("tt.keyword.Structure.AnyComputerCasingBackMain"), 1) // Energy Hatch:
-                                                                                                   // Any Computer
-                                                                                                   // Casing on the
-                                                                                                   // backside of
-                                                                                                   // the main body
-            .addMaintenanceHatch(translateToLocal("tt.keyword.Structure.AnyComputerCasingBackMain"), 1) // Maintenance
-                                                                                                        // Hatch:
-                                                                                                        // Any
-                                                                                                        // Computer
-                                                                                                        // Casing on
-                                                                                                        // the
-                                                                                                        // backside
-                                                                                                        // of the
-                                                                                                        // main body
+                1)
+            // Energy Hatch: Any Computer Casing on the backside of the main body
+            .addEnergyHatch(translateToLocal("tt.keyword.Structure.AnyComputerCasingBackMain"), 1)
+            // Maintenance Hatch: Any Computer Casing on the backside of the main body
+            .addMaintenanceHatch(translateToLocal("tt.keyword.Structure.AnyComputerCasingBackMain"), 1)
             .toolTipFinisher();
         return tt;
     }
@@ -599,7 +593,7 @@ public class MTEResearchStation extends TTMultiblockBase implements ISurvivalCon
         int z) {
         tag.setBoolean("hasProblems", (getIdealStatus() - getRepairStatus()) > 0);
         tag.setFloat("efficiency", mEfficiency / 100.0F);
-        tag.setBoolean("incompleteStructure", (getBaseMetaTileEntity().getErrorDisplayID() & 64) != 0);
+        tag.setBoolean("incompleteStructure", (getErrorDisplayID() & 64) != 0);
         tag.setString("machineType", machineType);
         tag.setLong("computation", getComputationConsumed());
         tag.setLong("computationRequired", getComputationRequired());
@@ -624,21 +618,24 @@ public class MTEResearchStation extends TTMultiblockBase implements ISurvivalCon
         final NBTTagCompound tag = accessor.getNBTData();
 
         if (tag.getBoolean("incompleteStructure")) {
-            currentTip.add(RED + "** INCOMPLETE STRUCTURE **" + RESET);
+            currentTip.add(RED + StatCollector.translateToLocal("GT5U.waila.multiblock.status.incomplete") + RESET);
         }
-        String efficiency = RESET + "  Efficiency: " + tag.getFloat("efficiency") + "%";
+        String efficiency = RESET + StatCollector
+            .translateToLocalFormatted("GT5U.waila.multiblock.status.efficiency", tag.getFloat("efficiency"));
         if (tag.getBoolean("hasProblems")) {
-            currentTip.add(RED + "** HAS PROBLEMS **" + efficiency);
+            currentTip
+                .add(RED + StatCollector.translateToLocal("GT5U.waila.multiblock.status.has_problem") + efficiency);
         } else if (!tag.getBoolean("incompleteStructure")) {
-            currentTip.add(GREEN + "Running Fine" + efficiency);
+            currentTip
+                .add(GREEN + StatCollector.translateToLocal("GT5U.waila.multiblock.status.running_fine") + efficiency);
         }
         currentTip.add(
             StatCollector.translateToLocal(
                 "gt.blockmachines.multimachine.em.research.mode." + tag.getString("machineType")
                     .replace(" ", "_")));
         currentTip.add(
-            String.format(
-                "Computation: %,d / %,d",
+            StatCollector.translateToLocalFormatted(
+                "gt.blockmachines.multimachine.em.research.computation",
                 tag.getInteger("computation"),
                 tag.getInteger("computationRequired")));
     }

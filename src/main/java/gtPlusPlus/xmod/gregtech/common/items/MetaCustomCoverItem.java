@@ -11,15 +11,15 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
 import org.apache.commons.lang3.StringUtils;
 
 import cpw.mods.fml.common.registry.GameRegistry;
-import gregtech.api.GregTechAPI;
+import gregtech.api.covers.CoverRegistry;
 import gregtech.api.interfaces.IIconContainer;
-import gregtech.api.objects.GTMultiTexture;
-import gregtech.api.objects.GTRenderedTexture;
+import gregtech.api.render.TextureFactory;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.util.Utils;
@@ -71,10 +71,7 @@ public class MetaCustomCoverItem extends Item {
             if (i > 0 && hide()) {
                 ItemUtils.hideItemFromNEI(thisStack);
             }
-            GregTechAPI.registerCover(
-                thisStack,
-                new GTMultiTexture(new GTRenderedTexture(mTextures[i])),
-                new CoverToggleVisual());
+            CoverRegistry.registerCover(thisStack, TextureFactory.of(mTextures[i]), CoverToggleVisual::new);
         }
     }
 
@@ -182,9 +179,11 @@ public class MetaCustomCoverItem extends Item {
 
     @Override
     public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean bool) {
-        boolean cons = getCoverConnections(stack);
-        list.add(EnumChatFormatting.GRAY + "Allows Connections: " + cons);
-        list.add(EnumChatFormatting.GRAY + "Shift Rmb to change state before applying");
+        list.add(
+            EnumChatFormatting.GRAY + (getCoverConnections(stack)
+                ? StatCollector.translateToLocal("gtpp.tooltip.cover_item.connection.allow")
+                : StatCollector.translateToLocal("gtpp.tooltip.cover_item.connection.deny")));
+        list.add(EnumChatFormatting.GRAY + StatCollector.translateToLocal("gtpp.tooltip.cover_item.change_state"));
         super.addInformation(stack, player, list, bool);
     }
 

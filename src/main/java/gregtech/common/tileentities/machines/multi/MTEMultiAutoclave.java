@@ -10,14 +10,15 @@ import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.InputBus;
 import static gregtech.api.enums.HatchElement.InputHatch;
 import static gregtech.api.enums.HatchElement.Maintenance;
-import static gregtech.api.enums.HatchElement.Muffler;
 import static gregtech.api.enums.HatchElement.OutputBus;
 import static gregtech.api.enums.HatchElement.OutputHatch;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_AUTOCLAVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_AUTOCLAVE_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_AUTOCLAVE_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_AUTOCLAVE_GLOW;
+import static gregtech.api.util.GTStructureUtility.activeCoils;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
+import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 import static gregtech.api.util.GTStructureUtility.ofCoil;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 import static net.minecraft.util.EnumChatFormatting.BLUE;
@@ -26,6 +27,7 @@ import java.text.DecimalFormat;
 import java.util.List;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
@@ -58,7 +60,6 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
-import gregtech.api.multitileentity.multiblock.casing.Glasses;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
@@ -87,9 +88,10 @@ public class MTEMultiAutoclave extends MTEExtendedPowerMultiBlockBase<MTEMultiAu
     protected int itemPipeTier = 0;
     protected int fluidPipeTier = 0;
 
+    @Nullable
     private static Integer getItemPipeTierFromMeta(Block block, Integer metaID) {
-        if (block != GregTechAPI.sBlockCasings11) return -1;
-        if (metaID < 0 || metaID > 7) return -1;
+        if (block != GregTechAPI.sBlockCasings11) return null;
+        if (metaID < 0 || metaID > 7) return null;
         return metaID + 1;
     }
 
@@ -101,9 +103,10 @@ public class MTEMultiAutoclave extends MTEExtendedPowerMultiBlockBase<MTEMultiAu
         return itemPipeTier;
     }
 
+    @Nullable
     private static Integer getFluidTierFromMeta(Block block, Integer metaID) {
-        if (block != GregTechAPI.sBlockCasings2) return -1;
-        if (metaID < 12 || metaID > 15) return -1;
+        if (block != GregTechAPI.sBlockCasings2) return null;
+        if (metaID < 12 || metaID > 15) return null;
         return metaID - 11;
     }
 
@@ -135,7 +138,7 @@ public class MTEMultiAutoclave extends MTEExtendedPowerMultiBlockBase<MTEMultiAu
                 new String[][] {
                     { "  AAA  ", "  AFA  ", "  AFA  ", "  AFA  ", "  AFA  ", "  AFA  ", "  AFA  ", "  AFA  ",
                         "  AAA  " },
-                    { " ABBBA ", " A   A ", " A   A ", " A   A ", " A   A ", " A   A ", " A   A ", " A   A ",
+                    { " ABBBA ", " AA AA ", " A   A ", " A   A ", " A   A ", " A   A ", " A   A ", " AA AA ",
                         " ABBBA ", },
                     { "ABBBBBA", "A C C A", "A C C A", "A C C A", "A C C A", "A C C A", "A C C A", "A C C A",
                         "ABBBBBA", },
@@ -143,49 +146,55 @@ public class MTEMultiAutoclave extends MTEExtendedPowerMultiBlockBase<MTEMultiAu
                         "ABBBBBA", },
                     { "ABBBBBA", "A C C A", "A C C A", "A C C A", "A C C A", "A C C A", "A C C A", "A C C A",
                         "ABBBBBA", },
-                    { "AABBBAA", " A   A ", " A   A ", " A   A ", " A   A ", " A   A ", " A   A ", " A   A ",
+                    { "AABBBAA", " AA AA ", " A   A ", " A   A ", " A   A ", " A   A ", " A   A ", " AA AA ",
                         "AABBBAA", },
                     { "A A~A A", "  AAA  ", "  AAA  ", "  AAA  ", "  AAA  ", "  AAA  ", "  AAA  ", "  AAA  ",
                         "A AAA A" } }))
         .addElement(
             'A',
             buildHatchAdder(MTEMultiAutoclave.class)
-                .atLeast(InputBus, OutputBus, InputHatch, OutputHatch, Maintenance, Muffler, Energy)
+                .atLeast(InputBus, OutputBus, InputHatch, OutputHatch, Maintenance, Energy)
                 .casingIndex(((BlockCasings10) GregTechAPI.sBlockCasings10).getTextureIndex(3))
                 .dot(1)
                 .buildAndChain(
                     onElementPass(MTEMultiAutoclave::onCasingAdded, ofBlock(GregTechAPI.sBlockCasings10, 3))))
-        .addElement('B', Glasses.chainAllGlasses()) // Steel Casings
+        .addElement('B', chainAllGlasses()) // Steel Casings
         .addElement('C', ofFrame(Materials.Polytetrafluoroethylene)) // PTFE Frame
         .addElement(
             'D',
-            ofBlocksTiered(
-                MTEMultiAutoclave::getFluidTierFromMeta,
-                ImmutableList.of(
-                    Pair.of(GregTechAPI.sBlockCasings2, 12),
-                    Pair.of(GregTechAPI.sBlockCasings2, 13),
-                    Pair.of(GregTechAPI.sBlockCasings2, 14),
-                    Pair.of(GregTechAPI.sBlockCasings2, 15)),
-                -2,
-                MTEMultiAutoclave::setFluidPipeTier,
-                MTEMultiAutoclave::getFluidPipeTier))
+            withChannel(
+                "pipe",
+                ofBlocksTiered(
+                    MTEMultiAutoclave::getFluidTierFromMeta,
+                    ImmutableList.of(
+                        Pair.of(GregTechAPI.sBlockCasings2, 12),
+                        Pair.of(GregTechAPI.sBlockCasings2, 13),
+                        Pair.of(GregTechAPI.sBlockCasings2, 14),
+                        Pair.of(GregTechAPI.sBlockCasings2, 15)),
+                    -1,
+                    MTEMultiAutoclave::setFluidPipeTier,
+                    MTEMultiAutoclave::getFluidPipeTier)))
         .addElement(
             'E',
-            ofBlocksTiered(
-                MTEMultiAutoclave::getItemPipeTierFromMeta,
-                ImmutableList.of(
-                    Pair.of(GregTechAPI.sBlockCasings11, 0),
-                    Pair.of(GregTechAPI.sBlockCasings11, 1),
-                    Pair.of(GregTechAPI.sBlockCasings11, 2),
-                    Pair.of(GregTechAPI.sBlockCasings11, 3),
-                    Pair.of(GregTechAPI.sBlockCasings11, 4),
-                    Pair.of(GregTechAPI.sBlockCasings11, 5),
-                    Pair.of(GregTechAPI.sBlockCasings11, 6),
-                    Pair.of(GregTechAPI.sBlockCasings11, 7)),
-                -2,
-                MTEMultiAutoclave::setItemPipeTier,
-                MTEMultiAutoclave::getItemPipeTier))
-        .addElement('F', withChannel("coil", ofCoil(MTEMultiAutoclave::setCoilLevel, MTEMultiAutoclave::getCoilLevel)))
+            withChannel(
+                "item_pipe",
+                ofBlocksTiered(
+                    MTEMultiAutoclave::getItemPipeTierFromMeta,
+                    ImmutableList.of(
+                        Pair.of(GregTechAPI.sBlockCasings11, 0),
+                        Pair.of(GregTechAPI.sBlockCasings11, 1),
+                        Pair.of(GregTechAPI.sBlockCasings11, 2),
+                        Pair.of(GregTechAPI.sBlockCasings11, 3),
+                        Pair.of(GregTechAPI.sBlockCasings11, 4),
+                        Pair.of(GregTechAPI.sBlockCasings11, 5),
+                        Pair.of(GregTechAPI.sBlockCasings11, 6),
+                        Pair.of(GregTechAPI.sBlockCasings11, 7)),
+                    -1,
+                    MTEMultiAutoclave::setItemPipeTier,
+                    MTEMultiAutoclave::getItemPipeTier)))
+        .addElement(
+            'F',
+            withChannel("coil", activeCoils(ofCoil(MTEMultiAutoclave::setCoilLevel, MTEMultiAutoclave::getCoilLevel))))
         .build();
 
     @Override
@@ -204,7 +213,7 @@ public class MTEMultiAutoclave extends MTEExtendedPowerMultiBlockBase<MTEMultiAu
             .beginStructureBlock(7, 7, 9, true)
             .addController("Front Center")
             .addCasingInfoMin("Pressure Containment Casings", 128, false)
-            .addCasingInfoExactly("Any Glass", 42, false)
+            .addCasingInfoExactly("Any Tiered Glass", 42, false)
             .addCasingInfoExactly("Item Pipe Casings", 7, true)
             .addCasingInfoExactly("Pipe Casings", 14, true)
             .addCasingInfoExactly("Heating Coils", 7, true)
@@ -215,7 +224,10 @@ public class MTEMultiAutoclave extends MTEExtendedPowerMultiBlockBase<MTEMultiAu
             .addOutputHatch("Any Pressure Containment Casing", 1)
             .addEnergyHatch("Any Pressure Containment Casing", 1)
             .addMaintenanceHatch("Any Pressure Containment Casing", 1)
-            .addMufflerHatch("Any Pressure Containment Casing", 1)
+            .addSubChannelUsage("glass", "Glass Tier")
+            .addSubChannelUsage("item_pipe", "Item Pipe Casing Tier")
+            .addSubChannelUsage("pipe", "Pipe Casing Tier")
+            .addSubChannelUsage("coil", "Heating Coils Tier")
             .toolTipFinisher(AuthorVolence);
         return tt;
     }
@@ -228,13 +240,13 @@ public class MTEMultiAutoclave extends MTEExtendedPowerMultiBlockBase<MTEMultiAu
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        fluidPipeTier = -2;
-        itemPipeTier = -2;
+        fluidPipeTier = -1;
+        itemPipeTier = -1;
         mCasingAmount = 0;
         mEnergyHatches.clear();
         setCoilLevel(HeatingCoilLevel.None);
         if (!checkPiece(STRUCTURE_PIECE_MAIN, 3, 6, 0)) return false;
-        return mCasingAmount >= 128 && mMufflerHatches.size() == 1;
+        return mCasingAmount >= 128;
     }
 
     @Override
@@ -311,6 +323,7 @@ public class MTEMultiAutoclave extends MTEExtendedPowerMultiBlockBase<MTEMultiAu
         return (float) 1 / (1 + 0.25f * coilTier);
     }
 
+    @Override
     public int getMaxParallelRecipes() {
         return itemPipeTier * 12;
     }
@@ -326,7 +339,7 @@ public class MTEMultiAutoclave extends MTEExtendedPowerMultiBlockBase<MTEMultiAu
                 speedBoost = speedBoost(getCoilTier());
                 return super.process();
             }
-        }.setMaxParallelSupplier(this::getMaxParallelRecipes);
+        }.setMaxParallelSupplier(this::getTrueParallel);
     }
 
     @Override

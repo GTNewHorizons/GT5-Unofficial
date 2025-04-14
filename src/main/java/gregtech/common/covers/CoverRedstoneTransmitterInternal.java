@@ -1,43 +1,62 @@
 package gregtech.common.covers;
 
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.nbt.NBTBase;
+import net.minecraft.nbt.NBTTagCompound;
+
+import org.jetbrains.annotations.NotNull;
 
 import gregtech.api.GregTechAPI;
+import gregtech.api.covers.CoverContext;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
 
 public class CoverRedstoneTransmitterInternal extends CoverRedstoneWirelessBase {
 
-    public CoverRedstoneTransmitterInternal(ITexture coverTexture) {
-        super(coverTexture);
+    public CoverRedstoneTransmitterInternal(CoverContext context, ITexture coverTexture) {
+        super(context, coverTexture);
     }
 
-    @Override
-    public boolean isRedstoneSensitive(ForgeDirection side, int aCoverID, int aCoverVariable, ICoverable aTileEntity,
-        long aTimer) {
+    public boolean isRedstoneSensitive(long aTimer) {
         return false;
     }
 
     @Override
-    public int doCoverThings(ForgeDirection side, byte aInputRedstone, int aCoverID, int aCoverVariable,
-        ICoverable aTileEntity, long aTimer) {
-        GregTechAPI.sWirelessRedstone.put(aCoverVariable, aTileEntity.getOutputRedstoneSignal(side));
-        return aCoverVariable;
+    public void onCoverRemoval() {
+        GregTechAPI.sWirelessRedstone.remove(coverData);
     }
 
     @Override
-    public boolean letsRedstoneGoOut(ForgeDirection side, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
+    public void doCoverThings(byte aInputRedstone, long aTimer) {
+        ICoverable coverable = coveredTile.get();
+        if (coverable == null) {
+            return;
+        }
+        GregTechAPI.sWirelessRedstone.put(coverData, coverable.getOutputRedstoneSignal(coverSide));
+    }
+
+    @Override
+    public boolean letsRedstoneGoOut() {
         return true;
     }
 
     @Override
-    public int getTickRate(ForgeDirection side, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
-        return 1;
+    public boolean manipulatesSidedRedstoneOutput() {
+        return true;
     }
 
     @Override
-    public boolean manipulatesSidedRedstoneOutput(ForgeDirection side, int aCoverID, int aCoverVariable,
-        ICoverable aTileEntity) {
-        return true;
+    protected void readDataFromNbt(NBTBase nbt) {
+        NBTTagCompound tag = (NBTTagCompound) nbt;
+        if (tag.hasKey("frequency") && !(tag.getInteger("frequency") == coverData)) {
+            GregTechAPI.sWirelessRedstone.remove(coverData);
+        }
+        coverData = tag.getInteger("frequency");
+    }
+
+    @Override
+    protected @NotNull NBTBase saveDataToNbt() {
+        NBTTagCompound tag = new NBTTagCompound();
+        tag.setInteger("frequency", coverData);
+        return tag;
     }
 }

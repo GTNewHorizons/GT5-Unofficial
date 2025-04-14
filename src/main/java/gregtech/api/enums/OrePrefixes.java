@@ -12,6 +12,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.oredict.OreDictionary;
 
 import com.google.common.collect.ImmutableList;
 
@@ -25,7 +26,10 @@ import gregtech.api.objects.ItemData;
 import gregtech.api.objects.MaterialStack;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTUtility;
+import gregtech.api.util.GTUtility.ItemId;
 import gregtech.loaders.materialprocessing.ProcessingModSupport;
+import it.unimi.dsi.fastutil.Pair;
+import it.unimi.dsi.fastutil.objects.Object2ObjectLinkedOpenHashMap;
 import it.unimi.dsi.fastutil.objects.ObjectOpenCustomHashSet;
 import it.unimi.dsi.fastutil.objects.ObjectSet;
 
@@ -97,18 +101,6 @@ public enum OrePrefixes {
         64, -1),
     dirtyGravel("Dirty Gravels", "", "", true, true, false, false, false, false, false, false, false, true, B[3], -1,
         64, -1),
-    /** A quintuple Ingot. */
-    ingotQuintuple("5x Ingots", "Quintuple ", " Ingot", true, true, false, false, false, false, true, true, false,
-        false, B[1], M * 5, 64, 16),
-    /** A quadruple Ingot. */
-    ingotQuadruple("4x Ingots", "Quadruple ", " Ingot", true, true, false, false, false, false, true, true, false,
-        false, B[1], M * 4, 64, 15),
-    /** A triple Ingot. */
-    ingotTriple("3x Ingots", "Triple ", " Ingot", true, true, false, false, false, false, true, false, false, false,
-        B[1], M * 3, 64, 14),
-    /** A double Ingot. Introduced by TerraFirmaCraft */
-    ingotDouble("2x Ingots", "Double ", " Ingot", true, true, false, false, false, false, true, true, false, false,
-        B[1], M * 2, 64, 13),
     /** A hot Ingot, which has to be cooled down by a Vacuum Freezer. */
     ingotHot("Hot Ingots", "Hot ", " Ingot", true, true, false, false, false, false, false, true, false, false, B[1],
         M * 1, 64, 12),
@@ -595,7 +587,9 @@ public enum OrePrefixes {
         64, -1),
     // Beamline Masks
     mask("A Photolithographic Mask", "", "", false, false, true, false, false, false, false, false, false, false, 0, -1,
-        1, -1);
+        1, -1),
+    wrapCircuit("A Circuit Wrap", "", "", false, false, true, false, false, false, false, false, false, false, 0, -1,
+        64, -1);
 
     public static final ImmutableList<OrePrefixes> CELL_TYPES = ImmutableList.of(
         cell,
@@ -679,28 +673,13 @@ public enum OrePrefixes {
         frame.mNotGeneratedItems.add(MaterialsUEVplus.Universium);
         frameGt.mNotGeneratedItems.add(MaterialsUEVplus.Universium);
 
-        plateDouble.mNotGeneratedItems.add(MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter);
-        plateTriple.mNotGeneratedItems.add(MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter);
-        plateQuadruple.mNotGeneratedItems.add(MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter);
-        plateQuintuple.mNotGeneratedItems.add(MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter);
         cell.mNotGeneratedItems.add(MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter);
-        ingotDouble.mNotGeneratedItems.add(MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter);
-        ingotTriple.mNotGeneratedItems.add(MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter);
-        ingotQuadruple.mNotGeneratedItems.add(MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter);
-        ingotQuintuple.mNotGeneratedItems.add(MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter);
         turbineBlade.mNotGeneratedItems.add(MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter);
         dust.mNotGeneratedItems.add(MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter);
         dustSmall.mNotGeneratedItems.add(MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter);
         dustTiny.mNotGeneratedItems.add(MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter);
 
-        plateTriple.mNotGeneratedItems.add(MaterialsUEVplus.HotProtoHalkonite);
-        plateQuadruple.mNotGeneratedItems.add(MaterialsUEVplus.HotProtoHalkonite);
-        plateQuintuple.mNotGeneratedItems.add(MaterialsUEVplus.HotProtoHalkonite);
-        cell.mNotGeneratedItems.add(MaterialsUEVplus.HotProtoHalkonite);
-        ingotDouble.mNotGeneratedItems.add(MaterialsUEVplus.HotProtoHalkonite);
-        ingotTriple.mNotGeneratedItems.add(MaterialsUEVplus.HotProtoHalkonite);
-        ingotQuadruple.mNotGeneratedItems.add(MaterialsUEVplus.HotProtoHalkonite);
-        ingotQuintuple.mNotGeneratedItems.add(MaterialsUEVplus.HotProtoHalkonite);
+        cell.mNotGeneratedItems.add(MaterialsUEVplus.HotProtoHalkonite);;
         turbineBlade.mNotGeneratedItems.add(MaterialsUEVplus.HotProtoHalkonite);
         dust.mNotGeneratedItems.add(MaterialsUEVplus.HotProtoHalkonite);
         dustSmall.mNotGeneratedItems.add(MaterialsUEVplus.HotProtoHalkonite);
@@ -710,14 +689,7 @@ public enum OrePrefixes {
         nugget.mNotGeneratedItems.add(MaterialsUEVplus.HotProtoHalkonite);
         itemCasing.mNotGeneratedItems.add(MaterialsUEVplus.HotProtoHalkonite);
 
-        plateTriple.mNotGeneratedItems.add(MaterialsUEVplus.ProtoHalkonite);
-        plateQuadruple.mNotGeneratedItems.add(MaterialsUEVplus.ProtoHalkonite);
-        plateQuintuple.mNotGeneratedItems.add(MaterialsUEVplus.ProtoHalkonite);
         cell.mNotGeneratedItems.add(MaterialsUEVplus.ProtoHalkonite);
-        ingotDouble.mNotGeneratedItems.add(MaterialsUEVplus.ProtoHalkonite);
-        ingotTriple.mNotGeneratedItems.add(MaterialsUEVplus.ProtoHalkonite);
-        ingotQuadruple.mNotGeneratedItems.add(MaterialsUEVplus.ProtoHalkonite);
-        ingotQuintuple.mNotGeneratedItems.add(MaterialsUEVplus.ProtoHalkonite);
         turbineBlade.mNotGeneratedItems.add(MaterialsUEVplus.ProtoHalkonite);
         dust.mNotGeneratedItems.add(MaterialsUEVplus.ProtoHalkonite);
         dustSmall.mNotGeneratedItems.add(MaterialsUEVplus.ProtoHalkonite);
@@ -727,15 +699,7 @@ public enum OrePrefixes {
         nugget.mNotGeneratedItems.add(MaterialsUEVplus.ProtoHalkonite);
         itemCasing.mNotGeneratedItems.add(MaterialsUEVplus.ProtoHalkonite);
 
-        plateDouble.mNotGeneratedItems.add(MaterialsUEVplus.HotExoHalkonite);
-        plateTriple.mNotGeneratedItems.add(MaterialsUEVplus.HotExoHalkonite);
-        plateQuadruple.mNotGeneratedItems.add(MaterialsUEVplus.HotExoHalkonite);
-        plateQuintuple.mNotGeneratedItems.add(MaterialsUEVplus.HotExoHalkonite);
         cell.mNotGeneratedItems.add(MaterialsUEVplus.HotExoHalkonite);
-        ingotDouble.mNotGeneratedItems.add(MaterialsUEVplus.HotExoHalkonite);
-        ingotTriple.mNotGeneratedItems.add(MaterialsUEVplus.HotExoHalkonite);
-        ingotQuadruple.mNotGeneratedItems.add(MaterialsUEVplus.HotExoHalkonite);
-        ingotQuintuple.mNotGeneratedItems.add(MaterialsUEVplus.HotExoHalkonite);
         turbineBlade.mNotGeneratedItems.add(MaterialsUEVplus.HotExoHalkonite);
         dust.mNotGeneratedItems.add(MaterialsUEVplus.HotExoHalkonite);
         dustSmall.mNotGeneratedItems.add(MaterialsUEVplus.HotExoHalkonite);
@@ -745,15 +709,7 @@ public enum OrePrefixes {
         nugget.mNotGeneratedItems.add(MaterialsUEVplus.HotExoHalkonite);
         itemCasing.mNotGeneratedItems.add(MaterialsUEVplus.HotExoHalkonite);
 
-        plateDouble.mNotGeneratedItems.add(MaterialsUEVplus.ExoHalkonite);
-        plateTriple.mNotGeneratedItems.add(MaterialsUEVplus.ExoHalkonite);
-        plateQuadruple.mNotGeneratedItems.add(MaterialsUEVplus.ExoHalkonite);
-        plateQuintuple.mNotGeneratedItems.add(MaterialsUEVplus.ExoHalkonite);
         cell.mNotGeneratedItems.add(MaterialsUEVplus.ExoHalkonite);
-        ingotDouble.mNotGeneratedItems.add(MaterialsUEVplus.ExoHalkonite);
-        ingotTriple.mNotGeneratedItems.add(MaterialsUEVplus.ExoHalkonite);
-        ingotQuadruple.mNotGeneratedItems.add(MaterialsUEVplus.ExoHalkonite);
-        ingotQuintuple.mNotGeneratedItems.add(MaterialsUEVplus.ExoHalkonite);
         turbineBlade.mNotGeneratedItems.add(MaterialsUEVplus.ExoHalkonite);
         dust.mNotGeneratedItems.add(MaterialsUEVplus.ExoHalkonite);
         dustSmall.mNotGeneratedItems.add(MaterialsUEVplus.ExoHalkonite);
@@ -957,26 +913,12 @@ public enum OrePrefixes {
             SubTag.PAPER,
             new ICondition.Not<>(SubTag.NO_SMASHING),
             SubTag.STRETCHY);
-        plateTriple.mCondition = new ICondition.Or<>(
-            SubTag.PAPER,
-            new ICondition.Not<>(SubTag.NO_SMASHING),
-            SubTag.STRETCHY);
-        plateQuadruple.mCondition = new ICondition.Or<>(
-            SubTag.PAPER,
-            new ICondition.Not<>(SubTag.NO_SMASHING),
-            SubTag.STRETCHY);
-        plateQuintuple.mCondition = new ICondition.Or<>(
-            SubTag.PAPER,
-            new ICondition.Not<>(SubTag.NO_SMASHING),
-            SubTag.STRETCHY);
+        plateTriple.mCondition = new ICondition.And<>(SubTag.MULTI_PLATE);
+        plateQuadruple.mCondition = new ICondition.And<>(SubTag.MULTI_PLATE);
+        plateQuintuple.mCondition = new ICondition.And<>(SubTag.MULTI_PLATE);
 
         plateDense.mCondition = new ICondition.Or<>(new ICondition.Not<>(SubTag.NO_SMASHING), SubTag.STRETCHY);
         plateSuperdense.mCondition = new ICondition.Or<>(new ICondition.Not<>(SubTag.NO_SMASHING), SubTag.STRETCHY);
-
-        ingotDouble.mCondition = new ICondition.Or<>(new ICondition.Not<>(SubTag.NO_SMASHING), SubTag.STRETCHY);
-        ingotTriple.mCondition = new ICondition.Or<>(new ICondition.Not<>(SubTag.NO_SMASHING), SubTag.STRETCHY);
-        ingotQuadruple.mCondition = new ICondition.Or<>(new ICondition.Not<>(SubTag.NO_SMASHING), SubTag.STRETCHY);
-        ingotQuintuple.mCondition = new ICondition.Or<>(new ICondition.Not<>(SubTag.NO_SMASHING), SubTag.STRETCHY);
 
         wireFine.mCondition = SubTag.METAL;
 
@@ -1054,10 +996,6 @@ public enum OrePrefixes {
         Arrays.asList(
             OrePrefixes.gem,
             OrePrefixes.ingotHot,
-            OrePrefixes.ingotDouble,
-            OrePrefixes.ingotTriple,
-            OrePrefixes.ingotQuadruple,
-            OrePrefixes.ingotQuintuple,
             OrePrefixes.plate,
             OrePrefixes.plateDouble,
             OrePrefixes.plateTriple,
@@ -1182,6 +1120,53 @@ public enum OrePrefixes {
             }
         }
         return aOre;
+    }
+
+    public static Pair<OrePrefixes, String> detectPrefix(String oredictName) {
+        for (OrePrefixes prefix : values()) {
+            if (oredictName.startsWith(prefix.name())) {
+                return Pair.of(
+                    prefix,
+                    oredictName.substring(
+                        prefix.name()
+                            .length()));
+            }
+        }
+
+        return null;
+    }
+
+    private static final ThreadLocal<Object2ObjectLinkedOpenHashMap<ItemId, ImmutableList<Pair<OrePrefixes, String>>>> PREFIX_CACHE = ThreadLocal
+        .withInitial(Object2ObjectLinkedOpenHashMap::new);
+
+    public static ImmutableList<Pair<OrePrefixes, String>> detectPrefix(ItemStack stack) {
+        Object2ObjectLinkedOpenHashMap<ItemId, ImmutableList<Pair<OrePrefixes, String>>> cache = PREFIX_CACHE.get();
+
+        ItemId itemId = ItemId.create(stack);
+
+        var cacheResult = cache.getAndMoveToFirst(itemId);
+
+        if (cacheResult != null) return cacheResult;
+
+        ImmutableList.Builder<Pair<OrePrefixes, String>> result = ImmutableList.builder();
+
+        for (int id : OreDictionary.getOreIDs(stack)) {
+            Pair<OrePrefixes, String> p = detectPrefix(OreDictionary.getOreName(id));
+
+            if (p != null) {
+                result.add(p);
+            }
+        }
+
+        ImmutableList<Pair<OrePrefixes, String>> prefixes = result.build();
+
+        cache.putAndMoveToFirst(itemId, prefixes);
+
+        while (cache.size() > 1024) {
+            cache.removeLast();
+        }
+
+        return prefixes;
     }
 
     public static String replacePrefix(String aOre, OrePrefixes aPrefix) {

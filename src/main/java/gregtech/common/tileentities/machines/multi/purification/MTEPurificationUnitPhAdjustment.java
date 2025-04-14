@@ -23,6 +23,7 @@ import java.util.concurrent.ThreadLocalRandom;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -405,6 +406,7 @@ public class MTEPurificationUnitPhAdjustment extends MTEPurificationUnitBase<MTE
                     + EnumChatFormatting.ITALIC
                     + "materials. This necessitates the use of the corresponding neutralizing agents to pH balance the water.")
             .beginStructureBlock(7, 4, 7, false)
+            .addController("Front center")
             .addCasingInfoExactlyColored(
                 "Stabilized Naquadah Water Plant Casing",
                 EnumChatFormatting.GRAY,
@@ -429,12 +431,26 @@ public class MTEPurificationUnitPhAdjustment extends MTEPurificationUnitBase<MTE
                 67 * 2,
                 EnumChatFormatting.GOLD,
                 false)
-            .addController("Front center")
-            .addOtherStructurePart("Input Hatch (Water)", EnumChatFormatting.GOLD + "1+", 1)
-            .addOtherStructurePart("Output Hatch", EnumChatFormatting.GOLD + "1", 1)
-            .addOtherStructurePart("pH Sensor Hatch", EnumChatFormatting.GOLD + "2", 2)
-            .addOtherStructurePart("Input Bus (Sodium Hydroxide)", EnumChatFormatting.GOLD + "1", 3)
-            .addOtherStructurePart("Input Hatch (Hydrochloric Acid)", EnumChatFormatting.GOLD + "1", 4)
+            .addOtherStructurePart(
+                StatCollector.translateToLocal("GT5U.tooltip.structure.input_hatch_water"),
+                EnumChatFormatting.GOLD + "1+",
+                1)
+            .addOtherStructurePart(
+                StatCollector.translateToLocal("GT5U.tooltip.structure.output_hatch"),
+                EnumChatFormatting.GOLD + "1",
+                1)
+            .addOtherStructurePart(
+                StatCollector.translateToLocal("GT5U.tooltip.structure.ph_sensor_hatch"),
+                EnumChatFormatting.GOLD + "2",
+                2)
+            .addOtherStructurePart(
+                StatCollector.translateToLocal("GT5U.tooltip.structure.input_bus_sodium_hydroxide"),
+                EnumChatFormatting.GOLD + "1",
+                3)
+            .addOtherStructurePart(
+                StatCollector.translateToLocal("GT5U.tooltip.structure.input_hatch_hydrochloric_acid"),
+                EnumChatFormatting.GOLD + "1",
+                4)
             .toolTipFinisher(AuthorNotAPenguin);
         return tt;
     }
@@ -551,7 +567,10 @@ public class MTEPurificationUnitPhAdjustment extends MTEPurificationUnitBase<MTE
     @Override
     public String[] getInfoData() {
         ArrayList<String> infoData = new ArrayList<>(Arrays.asList(super.getInfoData()));
-        infoData.add("Current pH Value: " + EnumChatFormatting.YELLOW + currentpHValue + " pH");
+        infoData.add(
+            StatCollector.translateToLocalFormatted(
+                "GT5U.infodata.purification_unit_ph_adjustment.ph",
+                "" + EnumChatFormatting.YELLOW + currentpHValue));
         return infoData.toArray(new String[] {});
     }
 

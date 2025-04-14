@@ -12,6 +12,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -42,12 +43,12 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEHatch;
-import gregtech.api.objects.GTRenderedTexture;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.metadata.CompressionTierKey;
+import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
@@ -98,7 +99,8 @@ public class MTESteamCompressor extends MTESteamMultiBase<MTESteamCompressor> im
 
     private int tierMachineCasing = -1;
 
-    public int getTierMachineCasing(Block block, int meta) {
+    @Nullable
+    public Integer getTierMachineCasing(Block block, int meta) {
         if (block == sBlockCasings1 && 10 == meta) {
             mCountCasing++;
             return 1;
@@ -107,7 +109,7 @@ public class MTESteamCompressor extends MTESteamMultiBase<MTESteamCompressor> im
             mCountCasing++;
             return 2;
         }
-        return 0;
+        return null;
     }
 
     protected void updateHatchTexture() {
@@ -132,13 +134,19 @@ public class MTESteamCompressor extends MTESteamMultiBase<MTESteamCompressor> im
     }
 
     @Override
-    protected GTRenderedTexture getFrontOverlay() {
-        return new GTRenderedTexture(Textures.BlockIcons.OVERLAY_FRONT_STEAM_COMPRESSOR);
+    protected ITexture getFrontOverlay() {
+        return TextureFactory.builder()
+            .addIcon(Textures.BlockIcons.OVERLAY_FRONT_STEAM_COMPRESSOR)
+            .extFacing()
+            .build();
     }
 
     @Override
-    protected GTRenderedTexture getFrontOverlayActive() {
-        return new GTRenderedTexture(Textures.BlockIcons.OVERLAY_FRONT_STEAM_COMPRESSOR_ACTIVE);
+    protected ITexture getFrontOverlayActive() {
+        return TextureFactory.builder()
+            .addIcon(Textures.BlockIcons.OVERLAY_FRONT_STEAM_COMPRESSOR_ACTIVE)
+            .extFacing()
+            .build();
     }
 
     @Override
@@ -202,7 +210,6 @@ public class MTESteamCompressor extends MTESteamMultiBase<MTESteamCompressor> im
         mCountCasing = 0;
         tierMachineCasing = -1;
         if (!checkPiece(STRUCTUR_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET)) return false;
-        if (tierMachineCasing < 0) return false;
         if (tierMachineCasing == 1 && mCountCasing >= 25 && checkHatches()) {
             updateHatchTexture();
             tierMachine = 1;
@@ -255,9 +262,9 @@ public class MTESteamCompressor extends MTESteamMultiBase<MTESteamCompressor> im
             protected OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
                 return OverclockCalculator.ofNoOverclock(recipe)
                     .setEUtDiscount(1.25 * tierMachine)
-                    .setSpeedBoost(1.6 / tierMachine);
+                    .setDurationModifier(1.6 / tierMachine);
             }
-        }.setMaxParallelSupplier(this::getMaxParallelRecipes);
+        }.setMaxParallelSupplier(this::getTrueParallel);
     }
 
     @Override
@@ -273,7 +280,7 @@ public class MTESteamCompressor extends MTESteamMultiBase<MTESteamCompressor> im
             .addInfo("Only consumes steam at 62.5% of the L/s normally required")
             .addInfo("Processes up to 8 items at once")
             .addInfo(HIGH_PRESSURE_TOOLTIP_NOTICE)
-            .beginStructureBlock(3, 3, 4, false)
+            .beginStructureBlock(3, 3, 4, true)
             .addInputBus(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + " Any casing", 1)
             .addOutputBus(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + " Any casing", 1)
             .addStructureInfo(
@@ -296,8 +303,14 @@ public class MTESteamCompressor extends MTESteamMultiBase<MTESteamCompressor> im
     @Override
     public String[] getInfoData() {
         ArrayList<String> info = new ArrayList<>(Arrays.asList(super.getInfoData()));
-        info.add("Machine Tier: " + EnumChatFormatting.YELLOW + tierMachine);
-        info.add("Parallel: " + EnumChatFormatting.YELLOW + getMaxParallelRecipes());
+        info.add(
+            StatCollector.translateToLocalFormatted(
+                "gtpp.infodata.multi.steam.tier",
+                "" + EnumChatFormatting.YELLOW + tierMachine));
+        info.add(
+            StatCollector.translateToLocalFormatted(
+                "gtpp.infodata.multi.steam.parallel",
+                "" + EnumChatFormatting.YELLOW + getMaxParallelRecipes()));
         return info.toArray(new String[0]);
     }
 
@@ -323,7 +336,7 @@ public class MTESteamCompressor extends MTESteamMultiBase<MTESteamCompressor> im
         int z) {
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
         tag.setInteger("tierMachine", tierMachine);
-        tag.setInteger("parallel", getMaxParallelRecipes());
+        tag.setInteger("parallel", getTrueParallel());
     }
 
     @Override

@@ -1,41 +1,35 @@
 package gregtech.common.covers;
 
-import net.minecraftforge.common.util.ForgeDirection;
-
 import gregtech.api.GregTechAPI;
+import gregtech.api.covers.CoverContext;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
 
 public class CoverRedstoneReceiverExternal extends CoverRedstoneWirelessBase {
 
-    public CoverRedstoneReceiverExternal(ITexture coverTexture) {
-        super(coverTexture);
+    public CoverRedstoneReceiverExternal(CoverContext context, ITexture coverTexture) {
+        super(context, coverTexture);
     }
 
-    @Override
-    public boolean isRedstoneSensitive(ForgeDirection side, int aCoverID, int aCoverVariable, ICoverable aTileEntity,
-        long aTimer) {
+    public boolean isRedstoneSensitive(long aTimer) {
         return false;
     }
 
     @Override
-    public int doCoverThings(ForgeDirection side, byte aInputRedstone, int aCoverID, int aCoverVariable,
-        ICoverable aTileEntity, long aTimer) {
-        aTileEntity.setOutputRedstoneSignal(
-            side,
-            GregTechAPI.sWirelessRedstone.get(aCoverVariable) == null ? 0
-                : GregTechAPI.sWirelessRedstone.get(aCoverVariable));
-        return aCoverVariable;
+    public void doCoverThings(byte aInputRedstone, long aTimer) {
+        ICoverable coverable = coveredTile.get();
+        if (coverable == null) {
+            return;
+        }
+        coverable.setOutputRedstoneSignal(
+            coverSide,
+            GregTechAPI.sWirelessRedstone.get(this.coverData) == null ? 0
+                : GregTechAPI.sWirelessRedstone.get(this.coverData));
     }
 
     @Override
-    public boolean manipulatesSidedRedstoneOutput(ForgeDirection side, int aCoverID, int aCoverVariable,
-        ICoverable aTileEntity) {
+    public boolean manipulatesSidedRedstoneOutput() {
         return true;
     }
 
-    @Override
-    public int getTickRate(ForgeDirection side, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
-        return 1;
-    }
 }

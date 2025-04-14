@@ -1,9 +1,9 @@
 package goodgenerator.blocks.tileEntity;
 
-import static bartworks.util.BWUtil.ofGlassTieredMixed;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static gregtech.api.enums.HatchElement.*;
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
+import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 import static gregtech.api.util.GTUtility.validMTEList;
 
@@ -15,7 +15,9 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
+import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
@@ -50,6 +52,7 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
+import gregtech.api.enums.VoltageIndex;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
@@ -78,6 +81,7 @@ import gregtech.api.util.HatchElementBuilder;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
 import gregtech.common.tileentities.machines.IDualInputHatch;
+import gregtech.common.tileentities.machines.ISmartInputHatch;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 import tectech.thing.metaTileEntity.hatch.MTEHatchEnergyMulti;
@@ -99,6 +103,7 @@ public class MTEPreciseAssembler extends MTEExtendedPowerMultiBlockBase<MTEPreci
     protected int mode;
     protected int energyHatchTier;
     private static final int CASING_INDEX = 1541;
+    private int glassTier = -1;
 
     public MTEPreciseAssembler(String name) {
         super(name);
@@ -123,7 +128,7 @@ public class MTEPreciseAssembler extends MTEExtendedPowerMultiBlockBase<MTEPreci
                 .addElement(
                     'C',
                     withChannel(
-                        "unit casing",
+                        "unit_casing",
                         HatchElementBuilder.<MTEPreciseAssembler>builder()
                             .atLeast(
                                 InputBus,
@@ -140,8 +145,7 @@ public class MTEPreciseAssembler extends MTEExtendedPowerMultiBlockBase<MTEPreci
                                 onElementPass(
                                     x -> x.casingAmount++,
                                     StructureUtility.ofBlocksTiered(
-                                        (block, meta) -> block == Loaders.impreciseUnitCasing ? -1
-                                            : block == Loaders.preciseUnitCasing ? meta : -2,
+                                        MTEPreciseAssembler::getCasingBlockTier,
                                         ImmutableList.of(
                                             Pair.of(Loaders.impreciseUnitCasing, 0),
                                             Pair.of(Loaders.preciseUnitCasing, 0),
@@ -152,13 +156,14 @@ public class MTEPreciseAssembler extends MTEExtendedPowerMultiBlockBase<MTEPreci
                                         MTEPreciseAssembler::setCasingTier,
                                         MTEPreciseAssembler::getCasingTier)))))
                 .addElement('F', ofFrame(Materials.TungstenSteel))
-                .addElement('G', withChannel("glass", ofGlassTieredMixed((byte) 4, (byte) 127, 2)))
+                .addElement('G', chainAllGlasses(-1, (te, t) -> te.glassTier = t, te -> te.glassTier))
                 .addElement(
                     'M',
                     withChannel(
-                        "machine casing",
+                        "machine_casing",
                         StructureUtility.ofBlocksTiered(
-                            (block, meta) -> block == GregTechAPI.sBlockCasings1 ? meta : -2,
+                            (block, meta) -> (block == GregTechAPI.sBlockCasings1 && meta >= 0 && meta <= 9) ? meta
+                                : null,
                             IntStream.range(0, 10)
                                 .mapToObj(
                                     meta -> org.apache.commons.lang3.tuple.Pair.of(GregTechAPI.sBlockCasings1, meta))
@@ -178,6 +183,12 @@ public class MTEPreciseAssembler extends MTEExtendedPowerMultiBlockBase<MTEPreci
         IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
         if (aMetaTileEntity == null) {
             return false;
+        }
+        if (aMetaTileEntity instanceof ISmartInputHatch hatch) {
+            // Only add them to be iterated if enabled for performance reasons
+            if (hatch.doFastRecipeCheck()) {
+                mSmartInputHatches.add(hatch);
+            }
         }
         if (aMetaTileEntity instanceof MTEHatchInput) {
             return mInputHatches.add((MTEHatchInput) aMetaTileEntity);
@@ -260,9 +271,14 @@ public class MTEPreciseAssembler extends MTEExtendedPowerMultiBlockBase<MTEPreci
             @Nonnull
             @Override
             protected OverclockCalculator createOverclockCalculator(@Nonnull GTRecipe recipe) {
-                return super.createOverclockCalculator(recipe).setSpeedBoost(mode == 0 ? 1 : 0.5);
+                return super.createOverclockCalculator(recipe).setDurationModifier(mode == 0 ? 1 : 0.5);
             }
-        }.setMaxParallelSupplier(() -> mode == 0 ? 1 : (int) Math.pow(2, 4 + (casingTier + 1)));
+        }.setMaxParallelSupplier(this::getTrueParallel);
+    }
+
+    @Override
+    public int getMaxParallelRecipes() {
+        return mode == 0 ? 1 : (int) Math.pow(2, 4 + (casingTier + 1));
     }
 
     @Override
@@ -312,6 +328,7 @@ public class MTEPreciseAssembler extends MTEExtendedPowerMultiBlockBase<MTEPreci
         this.machineTier = -1;
         this.casingAmount = 0;
         this.casingTier = -3;
+        this.glassTier = -1;
         this.energyHatchTier = 0;
         if (checkPiece(mName, 4, 4, 0)) {
             energyHatchTier = checkEnergyHatchTier();
@@ -319,9 +336,8 @@ public class MTEPreciseAssembler extends MTEExtendedPowerMultiBlockBase<MTEPreci
                 reUpdate(CASING_INDEX + casingTier);
             }
             getBaseMetaTileEntity().sendBlockEvent(GregTechTileClientEvents.CHANGE_CUSTOM_DATA, getUpdateData());
-            return casingAmount >= 42 && machineTier >= 0
-                && casingTier >= -1
-                && mMaintenanceHatches.size() == 1
+            return casingAmount >= 42 && mMaintenanceHatches.size() == 1
+                && glassTier >= VoltageIndex.EV
                 && !mMufflerHatches.isEmpty();
         }
         return false;
@@ -346,7 +362,7 @@ public class MTEPreciseAssembler extends MTEExtendedPowerMultiBlockBase<MTEPreci
             .beginStructureBlock(9, 5, 5, true)
             .addController("Front bottom")
             .addCasingInfoExactly("Machine Casing", 21, true)
-            .addCasingInfoExactly("Glass (EV+)", 42, false)
+            .addCasingInfoExactly("Any Tiered Glass (EV+)", 42, false)
             .addCasingInfoRange("Precise Electronic Unit Casing", 42, 86, true)
             .addInputHatch("Any Casing")
             .addInputBus("Any Casing")
@@ -355,6 +371,9 @@ public class MTEPreciseAssembler extends MTEExtendedPowerMultiBlockBase<MTEPreci
             .addEnergyHatch("Any Casing")
             .addMufflerHatch("Any Casing")
             .addMaintenanceHatch("Any Casing")
+            .addSubChannelUsage("glass", "Glass Tier")
+            .addSubChannelUsage("unit_casing", "Precise Electronic Unit Casing Tier")
+            .addSubChannelUsage("machine_casing", "Machine Casing Tier")
             .toolTipFinisher();
         return tt;
     }
@@ -411,6 +430,13 @@ public class MTEPreciseAssembler extends MTEExtendedPowerMultiBlockBase<MTEPreci
         machineTier = i;
     }
 
+    @Nullable
+    public static Integer getCasingBlockTier(Block block, int meta) {
+        if (block == Loaders.impreciseUnitCasing) return -1;
+        else if (block == Loaders.preciseUnitCasing) return meta;
+        else return null;
+    }
+
     public void reUpdate(int texture) {
         for (IDualInputHatch hatch : mDualInputHatches) {
             if (((MetaTileEntity) hatch).isValid()) {
@@ -462,13 +488,23 @@ public class MTEPreciseAssembler extends MTEExtendedPowerMultiBlockBase<MTEPreci
         int t = Math.max(getCasingTier(), -1);
         if (side == facing) {
             if (aActive) return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX + t),
-                TextureFactory.of(textureFontOn), TextureFactory.builder()
+                TextureFactory.builder()
+                    .addIcon(textureFontOn)
+                    .extFacing()
+                    .build(),
+                TextureFactory.builder()
                     .addIcon(textureFontOn_Glow)
+                    .extFacing()
                     .glow()
                     .build() };
             else return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX + t),
-                TextureFactory.of(textureFontOff), TextureFactory.builder()
+                TextureFactory.builder()
+                    .addIcon(textureFontOff)
+                    .extFacing()
+                    .build(),
+                TextureFactory.builder()
                     .addIcon(textureFontOff_Glow)
+                    .extFacing()
                     .glow()
                     .build() };
         } else return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX + t) };

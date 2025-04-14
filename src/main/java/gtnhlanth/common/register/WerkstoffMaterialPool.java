@@ -5,8 +5,9 @@ import static bartworks.util.BWUtil.superscriptNumbers;
 
 import java.util.Arrays;
 
+import org.apache.commons.lang3.tuple.Pair;
+
 import bartworks.system.material.Werkstoff;
-import bartworks.util.Pair;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TextureSet;
@@ -225,7 +226,7 @@ public class WerkstoffMaterialPool implements Runnable {
     public static final Werkstoff NitratedRareEarthMonaziteConcentrate = new Werkstoff(
         new short[] { 250, 223, 173 },
         "Nitrogenated Monazite Rare Earth Concentrate",
-        subscriptNumbers("??LaNd??"),
+        subscriptNumbers("????"),
         new Werkstoff.Stats(),
         Werkstoff.Types.MIXTURE,
         new Werkstoff.GenerationFeatures().disable()
@@ -236,7 +237,7 @@ public class WerkstoffMaterialPool implements Runnable {
     public static final Werkstoff NitricMonaziteLeachedConcentrate = new Werkstoff(
         new short[] { 244, 202, 22 },
         "Nitric Monazite Leached Concentrate",
-        subscriptNumbers("??LaNd??"),
+        subscriptNumbers("????"),
         new Werkstoff.Stats(),
         Werkstoff.Types.MIXTURE,
         new Werkstoff.GenerationFeatures().disable()
@@ -355,8 +356,8 @@ public class WerkstoffMaterialPool implements Runnable {
         offsetID + 28,
         TextureSet.SET_DULL,
         Arrays.asList(Materials.Cerium, Materials.Oxygen),
-        new Pair<>(Materials.Cerium, 2),
-        new Pair<>(Materials.Oxygen, 3));
+        Pair.of(Materials.Cerium, 2),
+        Pair.of(Materials.Oxygen, 3));
 
     public static final Werkstoff CeriumRichMixture = new Werkstoff(
         new short[] { 244, 164, 96 },
@@ -416,7 +417,7 @@ public class WerkstoffMaterialPool implements Runnable {
     public static final Werkstoff SamaricResidue = new Werkstoff(
         new short[] { 248, 243, 231 },
         "Samaric Residue",
-        subscriptNumbers("??SmGd??"),
+        subscriptNumbers("Sm2Gd"),
         new Werkstoff.Stats(),
         Werkstoff.Types.MIXTURE,
         new Werkstoff.GenerationFeatures().disable()
@@ -787,8 +788,8 @@ public class WerkstoffMaterialPool implements Runnable {
         offsetID2 + 21,
         TextureSet.SET_DULL,
         Arrays.asList(Materials.Lanthanum, Materials.Chlorine),
-        new Pair<>(Materials.Lanthanum, 1),
-        new Pair<>(Materials.Chlorine, 3));
+        Pair.of(Materials.Lanthanum, 1),
+        Pair.of(Materials.Chlorine, 3));
 
     public static final Werkstoff NeodymiumOxide = new Werkstoff(
         new short[] { 82, 112, 102 },
@@ -801,8 +802,8 @@ public class WerkstoffMaterialPool implements Runnable {
         offsetID2 + 22,
         TextureSet.SET_DULL,
         Arrays.asList(Materials.Neodymium, Materials.Oxygen),
-        new Pair<>(Materials.Neodymium, 2),
-        new Pair<>(Materials.Oxygen, 3));
+        Pair.of(Materials.Neodymium, 2),
+        Pair.of(Materials.Oxygen, 3));
 
     public static final Werkstoff FluorinatedSamaricConcentrate = new Werkstoff(
         new short[] { 255, 182, 193 },
@@ -827,8 +828,8 @@ public class WerkstoffMaterialPool implements Runnable {
         offsetID2 + 24,
         TextureSet.SET_DULL,
         Arrays.asList(Materials.Calcium, Materials.Fluorine),
-        new Pair<>(Materials.Calcium, 1),
-        new Pair<>(Materials.Fluorine, 2));
+        Pair.of(Materials.Calcium, 1),
+        Pair.of(Materials.Fluorine, 2));
 
     public static final Werkstoff SamariumTerbiumMixture = new Werkstoff(
         new short[] { 223, 182, 193 },
@@ -863,9 +864,9 @@ public class WerkstoffMaterialPool implements Runnable {
         offsetID2 + 27,
         TextureSet.SET_DULL,
         Arrays.asList(Materials.Terbium, Materials.Nitrogen, Materials.Oxygen),
-        new Pair<>(Materials.Terbium, 1),
-        new Pair<>(Materials.Nitrogen, 1),
-        new Pair<>(Materials.Oxygen, 3));
+        Pair.of(Materials.Terbium, 1),
+        Pair.of(Materials.Nitrogen, 1),
+        Pair.of(Materials.Oxygen, 3));
 
     public static final Werkstoff SamariumOreConcentrate = new Werkstoff(
         new short[] { 255, 200, 230 },
@@ -1163,8 +1164,8 @@ public class WerkstoffMaterialPool implements Runnable {
         offsetID5 + 8,
         TextureSet.SET_DULL,
         Arrays.asList(Materials.Samarium, Materials.Oxygen),
-        new Pair<>(Materials.Samarium, 2),
-        new Pair<>(Materials.Oxygen, 3));
+        Pair.of(Materials.Samarium, 2),
+        Pair.of(Materials.Oxygen, 3));
 
     public static final Werkstoff ChlorinatedRareEarthConcentrate = new Werkstoff(
         new short[] { 130, 80, 60 },
@@ -1878,9 +1879,9 @@ public class WerkstoffMaterialPool implements Runnable {
             .enforceUnification(),
         offsetID3b,
         TextureSet.SET_DULL,
-        new Pair<>(Materials.Nickel, 4),
-        new Pair<>(Materials.Iron, 1),
-        new Pair<>(Materials.Molybdenum, 1));
+        Pair.of(Materials.Nickel, 4),
+        Pair.of(Materials.Iron, 1),
+        Pair.of(Materials.Molybdenum, 1));
 
     public static final Werkstoff MuMetal = new Werkstoff(
         new short[] { 210, 230, 225 },
@@ -1894,14 +1895,14 @@ public class WerkstoffMaterialPool implements Runnable {
         new Werkstoff.GenerationFeatures().disable()
             .onlyDust()
             .addMetalItems()
-            .addMultipleIngotMetalWorkingItems()
+            .addDoubleAndDensePlates()
             .addCraftingMetalWorkingItems()
             .enforceUnification(),
         offsetID3b + 1,
         TextureSet.SET_METALLIC,
-        new Pair<>(WerkstoffMaterialPool.Permalloy, 9),
-        new Pair<>(Materials.Copper, 1),
-        new Pair<>(Materials.Chrome, 1));
+        Pair.of(WerkstoffMaterialPool.Permalloy, 9),
+        Pair.of(Materials.Copper, 1),
+        Pair.of(Materials.Chrome, 1));
 
     public static final Werkstoff Thorium234 = new Werkstoff(
         new short[] { 0, 40, 0 },
@@ -1938,9 +1939,9 @@ public class WerkstoffMaterialPool implements Runnable {
             .addCells(),
         offsetID3b + 4,
         TextureSet.SET_FLUID,
-        new Pair<>(Materials.Carbon, 1),
-        new Pair<>(Materials.Hydrogen, 1),
-        new Pair<>(Materials.Fluorine, 3));
+        Pair.of(Materials.Carbon, 1),
+        Pair.of(Materials.Hydrogen, 1),
+        Pair.of(Materials.Fluorine, 3));
 
     public static final Werkstoff FluoroformOxygenMix = new Werkstoff(
         new short[] { 0, 0, 0 },
@@ -1963,8 +1964,8 @@ public class WerkstoffMaterialPool implements Runnable {
             .onlyDust(),
         offsetID3b + 6,
         TextureSet.SET_DULL,
-        new Pair<>(Materials.Boron, 2),
-        new Pair<>(Materials.Oxygen, 3));
+        Pair.of(Materials.Boron, 2),
+        Pair.of(Materials.Oxygen, 3));
 
     public static final Werkstoff BoronTrichloride = new Werkstoff(
         new short[] { 154, 96, 208 },
@@ -1976,8 +1977,8 @@ public class WerkstoffMaterialPool implements Runnable {
             .addCells(),
         offsetID3b + 7,
         TextureSet.SET_FLUID,
-        new Pair<>(Materials.Boron, 1),
-        new Pair<>(Materials.Chlorine, 3));
+        Pair.of(Materials.Boron, 1),
+        Pair.of(Materials.Chlorine, 3));
 
     public static final Werkstoff LanthanumHexaboride = new Werkstoff(
         new short[] { 140, 110, 120 },
@@ -1991,8 +1992,8 @@ public class WerkstoffMaterialPool implements Runnable {
             .addSimpleMetalWorkingItems(),
         offsetID3b + 8,
         TextureSet.SET_GEM_HORIZONTAL,
-        new Pair<>(Materials.Lanthanum, 1),
-        new Pair<>(Materials.Boron, 6));
+        Pair.of(Materials.Lanthanum, 1),
+        Pair.of(Materials.Boron, 6));
 
     public static final Werkstoff LanthanumOxide = new Werkstoff(
         new short[] { 105, 209, 180 },

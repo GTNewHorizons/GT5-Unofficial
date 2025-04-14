@@ -20,13 +20,15 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.enums.TierEU;
 import gregtech.api.interfaces.IRecipeMap;
 import gregtech.api.objects.ItemData;
 import gregtech.api.recipe.RecipeCategories;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.RecipeMetadataKey;
 import gregtech.api.recipe.metadata.SimpleRecipeMetadataKey;
+import gregtech.api.util.recipe.QuantumComputerRecipeData;
+import gregtech.api.util.recipe.Scanning;
+import gregtech.api.util.recipe.Sievert;
 import gregtech.common.items.IDMetaItem03;
 import gregtech.common.items.MetaGeneratedItem03;
 import gtnhlanth.common.item.ItemPhotolithographicMask;
@@ -57,13 +59,16 @@ public class GTRecipeConstants {
     /**
      * Used for fusion reactor. Denotes ignition threshold.
      */
-    public static final RecipeMetadataKey<Integer> FUSION_THRESHOLD = SimpleRecipeMetadataKey
-        .create(Integer.class, "fusion_threshold");
+    public static final RecipeMetadataKey<Long> FUSION_THRESHOLD = SimpleRecipeMetadataKey
+        .create(Long.class, "fusion_threshold");
+
     /**
-     * Research time in a scanner used in ticks.
+     * Scanning data used for scanner for assembly line recipes (time and voltage).
+     * Scanning time should be between 30 seconds and 3 minutes, and the voltage 1 tiers below the available scanner
+     * tier for the recipe.
      */
-    public static final RecipeMetadataKey<Integer> RESEARCH_TIME = SimpleRecipeMetadataKey
-        .create(Integer.class, "research_time");
+    public static final RecipeMetadataKey<Scanning> SCANNING = SimpleRecipeMetadataKey
+        .create(Scanning.class, "scanning");
     /**
      * Fuel type. TODO should we use enum directly?
      */
@@ -108,10 +113,22 @@ public class GTRecipeConstants {
     public static final RecipeMetadataKey<Boolean> ON_FIRE = SimpleRecipeMetadataKey.create(Boolean.class, "on_fire");
 
     /**
+     * Values of items used in quantum computer, used to show NEI recipes
+     */
+    public static final RecipeMetadataKey<QuantumComputerRecipeData> QUANTUM_COMPUTER_DATA = SimpleRecipeMetadataKey
+        .create(QuantumComputerRecipeData.class, "quantum_computer_data");
+
+    /**
      * Nano Forge Tier.
      */
     public static final RecipeMetadataKey<Integer> NANO_FORGE_TIER = SimpleRecipeMetadataKey
         .create(Integer.class, "nano_forge_tier");
+
+    /**
+     * PCB Factory nanite material
+     */
+    public static final RecipeMetadataKey<Materials> PCB_NANITE_MATERIAL = SimpleRecipeMetadataKey
+        .create(Materials.class, "pcb_nanite_material");
 
     /**
      * FOG Exotic recipe tier.
@@ -154,6 +171,12 @@ public class GTRecipeConstants {
      */
     public static final RecipeMetadataKey<Integer> QFT_FOCUS_TIER = SimpleRecipeMetadataKey
         .create(Integer.class, "qft_focus_tier");
+
+    /**
+     * QFT catalyst meta.
+     */
+    public static final RecipeMetadataKey<ItemStack> QFT_CATALYST = SimpleRecipeMetadataKey
+        .create(ItemStack.class, "qft_catalyst");
 
     /**
      * Tier of advanced compression (HIP/black hole)
@@ -208,18 +231,26 @@ public class GTRecipeConstants {
         .create(Integer.class, "lftr_output_power");
 
     /**
+     * Sparge Tower maximum byproduct outputs.
+     */
+    public static final RecipeMetadataKey<Integer> SPARGE_MAX_BYPRODUCT = SimpleRecipeMetadataKey
+        .create(Integer.class, "sparge_max_byproduct");
+
+    /**
      * Research Station data.
      */
     public static final RecipeMetadataKey<Integer> RESEARCH_STATION_DATA = SimpleRecipeMetadataKey
         .create(Integer.class, "research_station_data");
 
     /**
-     * glass tier required for the biovat recipes.
+     * sievert data required for the biovat recipes.
      */
-    public static final RecipeMetadataKey<Integer> SIEVERTS = SimpleRecipeMetadataKey.create(Integer.class, "sieverts");
 
-    public static final RecipeMetadataKey<Integer> DECAY_TICKS = SimpleRecipeMetadataKey
-        .create(Integer.class, "decay_ticks");
+    public static final RecipeMetadataKey<Sievert> SIEVERT = SimpleRecipeMetadataKey.create(Sievert.class, "SIEVERT");
+
+    public static final RecipeMetadataKey<Integer> GLASS = SimpleRecipeMetadataKey.create(Integer.class, "GLASS");
+
+    public static final RecipeMetadataKey<Integer> MASS = SimpleRecipeMetadataKey.create(Integer.class, "mass");
 
     public static final RecipeMetadataKey<Boolean> NOBLE_GASES = SimpleRecipeMetadataKey
         .create(Boolean.class, "noble_gases");
@@ -247,7 +278,7 @@ public class GTRecipeConstants {
         Collection<GTRecipe> ret = new ArrayList<>();
         for (Materials mat : new Materials[] { Materials.Argon, Materials.Nitrogen }) {
             builder.duration(Math.max(1, mat == Materials.Nitrogen ? aDuration / 4 : aDuration / 24));
-            int tPlasmaAmount = (int) Math.min(1L, aDuration / (mat.getMass() * 16L));
+            int tPlasmaAmount = (int) Math.max(1L, aDuration / (mat.getMass() * 16L));
             GTRecipeBuilder plasmaBuilder = builder.copy()
                 .fluidInputs(mat.getPlasma(tPlasmaAmount))
                 .fluidOutputs(mat.getGas(tPlasmaAmount));
@@ -447,8 +478,8 @@ public class GTRecipeConstants {
 
     /**
      * The one and only :tm: assline recipe adder.
-     * Uses {@link #RESEARCH_ITEM} metadata as research item, and {@link #RESEARCH_TIME} metadata as research time, unit
-     * in ticks.
+     * Uses {@link #RESEARCH_ITEM} metadata as research item, and {@link #SCANNING} metadata as research time and
+     * voltage.
      */
     public static final IRecipeMap AssemblyLine = IRecipeMap.newRecipeMap(builder -> {
         Optional<GTRecipe.GTRecipe_WithAlt> rr = builder.forceOreDictInput()
@@ -511,14 +542,16 @@ public class GTRecipeConstants {
             if (fluidInput == null) continue;
             tPersistentHash = tPersistentHash * 31 + GTUtility.persistentHash(fluidInput, true, false);
         }
-        int aResearchTime = builder.getMetadataOrDefault(RESEARCH_TIME, 0);
-        tPersistentHash = tPersistentHash * 31 + aResearchTime;
+        Scanning scanningData = builder.getMetadataOrDefault(SCANNING, new Scanning(0, 0));
+        tPersistentHash = tPersistentHash * 31 + scanningData.time;
+        tPersistentHash = tPersistentHash * 31 + (int) scanningData.voltage;
         tPersistentHash = tPersistentHash * 31 + r.mDuration;
         tPersistentHash = tPersistentHash * 31 + r.mEUt;
 
         GTRecipe.RecipeAssemblyLine tRecipe = new GTRecipe.RecipeAssemblyLine(
             aResearchItem,
-            aResearchTime,
+            scanningData.time,
+            (int) scanningData.voltage,
             r.mInputs,
             r.mFluidInputs,
             aOutput,
@@ -527,7 +560,6 @@ public class GTRecipeConstants {
             r.mOreDictAlt);
         tRecipe.setPersistentHash(tPersistentHash);
         GTRecipe.RecipeAssemblyLine.sAssemblylineRecipes.add(tRecipe);
-        AssemblyLineUtils.addRecipeToCache(tRecipe);
 
         Collection<GTRecipe> ret = new ArrayList<>(3);
         ret.addAll(
@@ -535,10 +567,9 @@ public class GTRecipeConstants {
                 .itemInputs(aResearchItem)
                 .itemOutputs(aOutput)
                 .special(tRecipe.newDataStickForNEI("Writes Research result"))
-                .duration(aResearchTime)
-                .eut(TierEU.RECIPE_LV)
+                .duration(scanningData.time)
+                .eut(scanningData.voltage)
                 .specialValue(-201) // means it's scanned
-                .noOptimize()
                 .ignoreCollision()
                 .fake()
                 .addTo(scannerFakeRecipes));
@@ -693,7 +724,6 @@ public class GTRecipeConstants {
 
     static {
         GTRecipeMapUtil.SPECIAL_VALUE_ALIASES.add(COIL_HEAT);
-        GTRecipeMapUtil.SPECIAL_VALUE_ALIASES.add(FUSION_THRESHOLD);
         GTRecipeMapUtil.SPECIAL_VALUE_ALIASES.add(FUEL_VALUE);
         GTRecipeMapUtil.SPECIAL_VALUE_ALIASES.add(NANO_FORGE_TIER);
         GTRecipeMapUtil.SPECIAL_VALUE_ALIASES.add(FOG_EXOTIC_TIER);
@@ -709,8 +739,5 @@ public class GTRecipeConstants {
         GTRecipeMapUtil.SPECIAL_VALUE_ALIASES.add(PRECISE_ASSEMBLER_CASING_TIER);
         GTRecipeMapUtil.SPECIAL_VALUE_ALIASES.add(COAL_CASING_TIER);
         GTRecipeMapUtil.SPECIAL_VALUE_ALIASES.add(RESEARCH_STATION_DATA);
-        GTRecipeMapUtil.SPECIAL_VALUE_ALIASES.add(SIEVERTS);
-        GTRecipeMapUtil.SPECIAL_VALUE_ALIASES.add(DECAY_TICKS);
-
     }
 }

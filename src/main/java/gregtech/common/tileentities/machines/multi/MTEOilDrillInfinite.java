@@ -29,6 +29,8 @@ public class MTEOilDrillInfinite extends MTEOilDrillBase {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Pump, FDP")
             .addInfo("Works on " + getRangeInChunks() + "x" + getRangeInChunks() + " chunks")
+            .addInfo("Minimum energy hatch tier: " + GTUtility.getColoredTierNameFromTier((byte) getMinTier()))
+            .addInfo("Base cycle time: 1 tick")
             .beginStructureBlock(3, 7, 3, false)
             .addController("Front bottom")
             .addOtherStructurePart(casings, "form the 3x1x3 Base")

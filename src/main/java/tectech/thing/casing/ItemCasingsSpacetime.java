@@ -9,19 +9,18 @@ import java.util.List;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 
-import gregtech.api.util.GTLanguageManager;
-import gregtech.common.blocks.ItemCasingsAbstract;
+import gregtech.common.blocks.ItemCasings;
 
-public class ItemCasingsSpacetime extends ItemCasingsAbstract {
+public class ItemCasingsSpacetime extends ItemCasings {
 
     public ItemCasingsSpacetime(Block par1) {
         super(par1);
     }
 
     @Override
-    public void addInformation(ItemStack aStack, EntityPlayer aPlayer, List<String> aList, boolean aF3_H) {
+    public void addInformation(ItemStack aStack, EntityPlayer aPlayer, List<String> tooltip, boolean aF3_H) {
         switch (aStack.getItemDamage()) {
             case 0:
             case 1:
@@ -32,25 +31,17 @@ public class ItemCasingsSpacetime extends ItemCasingsAbstract {
             case 6:
             case 7:
             case 8:
-                aList.add(
-                    GTLanguageManager.addStringLocalization(
-                        "EOH.Spacetime.Standard.Tooltip.0",
-                        "Supports an internal spacetime volume of up to ")
-                        + formatNumbers(pow(10, 5 + aStack.getItemDamage()))
-                        + "km³.");
-                aList.add(
-                    EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD
-                        + GTLanguageManager.addStringLocalization(
-                            "EOH.Spacetime.Standard.Tooltip.1",
-                            "Capable of running recipes up to tier ")
-                        + (aStack.getItemDamage() + 1));
+                tooltip.add(
+                    StatCollector.translateToLocalFormatted(
+                        "tt.eoh.spacetime.standard.tooltip.0",
+                        formatNumbers(pow(10, 5 + aStack.getItemDamage()))));
+                tooltip.add(
+                    StatCollector
+                        .translateToLocalFormatted("tt.eoh.spacetime.standard.tooltip.1", aStack.getItemDamage() + 1));
                 break;
             default:
-                aList.add(
-                    EnumChatFormatting.RED.toString() + EnumChatFormatting.BOLD
-                        + GTLanguageManager
-                            .addStringLocalization("EOH.TimeDilation.Error.Tooltip", "Error, report to GTNH team"));
+                tooltip.add(StatCollector.translateToLocal("tt.eoh.time_dilation.error.tooltip"));
         }
-        aList.add(AuthorColen);
+        tooltip.add(AuthorColen);
     }
 }

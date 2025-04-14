@@ -4,6 +4,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -14,8 +15,8 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEBasicGenerator;
-import gregtech.api.objects.GTRenderedTexture;
 import gregtech.api.recipe.RecipeMap;
+import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.common.pollution.Pollution;
@@ -28,7 +29,6 @@ import tectech.util.TTUtility;
 
 public class MTERTGenerator extends MTEBasicGenerator {
 
-    public int mEfficiency;
     private long mTicksToBurnFor;
     private int mVoltage = 0;
     private GTRecipe mCurrentRecipe;
@@ -213,73 +213,73 @@ public class MTERTGenerator extends MTEBasicGenerator {
 
     @Override
     public int getEfficiency() {
-        return this.mEfficiency = 100;
+        return 100;
     }
 
     @Override
     public ITexture[] getFront(byte aColor) {
-        return new ITexture[] { super.getFront(aColor)[0],
-            new GTRenderedTexture(Textures.BlockIcons.NAQUADAH_REACTOR_SOLID_TOP),
-            new GTRenderedTexture(Textures.BlockIcons.OVERLAY_FRONT_MASSFAB) };
+        return new ITexture[] { TextureFactory.of(Textures.BlockIcons.OVERLAY_SIDE_RTG) };
     }
 
     @Override
     public ITexture[] getBack(byte aColor) {
-        return new ITexture[] { super.getBack(aColor)[0],
-            new GTRenderedTexture(Textures.BlockIcons.NAQUADAH_REACTOR_SOLID_TOP) };
+        return new ITexture[] { TextureFactory.of(Textures.BlockIcons.OVERLAY_SIDE_RTG) };
     }
 
     @Override
     public ITexture[] getBottom(byte aColor) {
-        return new ITexture[] { super.getBottom(aColor)[0],
-            new GTRenderedTexture(Textures.BlockIcons.NAQUADAH_REACTOR_SOLID_TOP) };
+        return new ITexture[] { TextureFactory.of(Textures.BlockIcons.OVERLAY_TOP_RTG) };
     }
 
     @Override
     public ITexture[] getTop(byte aColor) {
-        return new ITexture[] { super.getTop(aColor)[0],
-            new GTRenderedTexture(Textures.BlockIcons.NAQUADAH_REACTOR_SOLID_TOP),
-            new GTRenderedTexture(Textures.BlockIcons.NAQUADAH_REACTOR_FLUID_SIDE) };
+        return new ITexture[] { TextureFactory.of(Textures.BlockIcons.OVERLAY_TOP_RTG) };
     }
 
     @Override
     public ITexture[] getSides(byte aColor) {
-        return new ITexture[] { gregtech.api.enums.Textures.BlockIcons.MACHINE_CASINGS[this.mTier][(0)],
-            new GTRenderedTexture(Textures.BlockIcons.NAQUADAH_REACTOR_SOLID_TOP_ACTIVE),
-            gregtech.api.enums.Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI[getTier()] };
+        return new ITexture[] { TextureFactory.of(Textures.BlockIcons.OVERLAY_SIDE_RTG),
+            Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI[getTier()] };
     }
 
     @Override
     public ITexture[] getFrontActive(byte aColor) {
-        return new ITexture[] { super.getFrontActive(aColor)[0],
-            new GTRenderedTexture(Textures.BlockIcons.NAQUADAH_REACTOR_SOLID_TOP_ACTIVE),
-            new GTRenderedTexture(Textures.BlockIcons.OVERLAY_FRONT_MASSFAB_ACTIVE) };
+        return new ITexture[] { TextureFactory.of(Textures.BlockIcons.OVERLAY_SIDE_RTG_ACTIVE), TextureFactory.builder()
+            .addIcon(Textures.BlockIcons.OVERLAY_SIDE_RTG_ACTIVE_GLOW)
+            .glow()
+            .build() };
     }
 
     @Override
     public ITexture[] getBackActive(byte aColor) {
-        return new ITexture[] { super.getBackActive(aColor)[0],
-            new GTRenderedTexture(Textures.BlockIcons.NAQUADAH_REACTOR_SOLID_TOP_ACTIVE) };
+        return new ITexture[] { TextureFactory.of(Textures.BlockIcons.OVERLAY_SIDE_RTG_ACTIVE), TextureFactory.builder()
+            .addIcon(Textures.BlockIcons.OVERLAY_SIDE_RTG_ACTIVE_GLOW)
+            .glow()
+            .build() };
     }
 
     @Override
     public ITexture[] getBottomActive(byte aColor) {
-        return new ITexture[] { super.getBottomActive(aColor)[0],
-            new GTRenderedTexture(Textures.BlockIcons.NAQUADAH_REACTOR_SOLID_TOP_ACTIVE) };
+        return new ITexture[] { TextureFactory.of(Textures.BlockIcons.OVERLAY_TOP_RTG_ACTIVE), TextureFactory.builder()
+            .addIcon(Textures.BlockIcons.OVERLAY_TOP_RTG_ACTIVE_GLOW)
+            .glow()
+            .build() };
     }
 
     @Override
     public ITexture[] getTopActive(byte aColor) {
-        return new ITexture[] { super.getTopActive(aColor)[0],
-            new GTRenderedTexture(Textures.BlockIcons.NAQUADAH_REACTOR_SOLID_TOP_ACTIVE),
-            new GTRenderedTexture(Textures.BlockIcons.NAQUADAH_REACTOR_FLUID_SIDE_ACTIVE) };
+        return new ITexture[] { TextureFactory.of(Textures.BlockIcons.OVERLAY_TOP_RTG_ACTIVE), TextureFactory.builder()
+            .addIcon(Textures.BlockIcons.OVERLAY_TOP_RTG_ACTIVE_GLOW)
+            .glow()
+            .build() };
     }
 
     @Override
     public ITexture[] getSidesActive(byte aColor) {
-        return new ITexture[] { gregtech.api.enums.Textures.BlockIcons.MACHINE_CASINGS[this.mTier][(0)],
-            new GTRenderedTexture(Textures.BlockIcons.NAQUADAH_REACTOR_SOLID_TOP_ACTIVE),
-            gregtech.api.enums.Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI[getTier()] };
+        return new ITexture[] { TextureFactory.of(Textures.BlockIcons.OVERLAY_SIDE_RTG_ACTIVE), TextureFactory.builder()
+            .addIcon(Textures.BlockIcons.OVERLAY_SIDE_RTG_ACTIVE_GLOW)
+            .glow()
+            .build(), Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI[getTier()] };
     }
 
     @Override
@@ -297,11 +297,9 @@ public class MTERTGenerator extends MTEBasicGenerator {
             this.mCurrentRecipe = tFuel;
             int voltage = tFuel.mEUt;
             this.mVoltage = voltage;
-            // this.mDaysRemaining = tFuel.mSpecialValue*365;
 
             // Do some voodoo.
             byte mTier2;
-            // mTier2 = ReflectionUtils.getField(this.getClass(), "mTier");
             try {
                 if (ItemStack.areItemStacksEqual(tFuel.mInputs[0], GregtechItemList.Pellet_RTG_AM241.get(1))) {
                     mTier2 = 1;
@@ -354,11 +352,20 @@ public class MTERTGenerator extends MTEBasicGenerator {
 
     @Override
     public String[] getInfoData() {
-        return new String[] { "RTG - Running at tier " + this.mTier, "Active: " + this.getBaseMetaTileEntity()
-            .isActive(), "Current Output: " + GTUtility.formatNumbers(mVoltage) + " EU/t",
-            "Days of Fuel remaining: " + GTUtility.formatNumbers(mTicksToBurnFor / 20 / 60 / 20),
-            "Hours of Fuel remaining: " + GTUtility.formatNumbers(mTicksToBurnFor / 20 / 60 / 60),
-            "Ticks of " + this.mVoltage + "v remaining: " + mTicksToBurnFor,
+        return new String[] { StatCollector.translateToLocalFormatted("gtpp.infodata.rtg.running_at", this.mTier),
+            StatCollector.translateToLocalFormatted(
+                "gtpp.infodata.rtg.active",
+                this.getBaseMetaTileEntity()
+                    .isActive()),
+            StatCollector.translateToLocalFormatted("gtpp.infodata.rtg.output", GTUtility.formatNumbers(mVoltage)),
+            StatCollector.translateToLocalFormatted(
+                "gtpp.infodata.rtg.remaining.days",
+                GTUtility.formatNumbers(mTicksToBurnFor / 20 / 60 / 20)),
+            StatCollector.translateToLocalFormatted(
+                "gtpp.infodata.rtg.remaining.hours",
+                GTUtility.formatNumbers(mTicksToBurnFor / 20 / 60 / 60)),
+            StatCollector
+                .translateToLocalFormatted("gtpp.infodata.rtg.remaining.ticks", this.mVoltage, mTicksToBurnFor),
             this.mCurrentRecipe.mInputs[0].getDisplayName() + " x1" };
     }
 }

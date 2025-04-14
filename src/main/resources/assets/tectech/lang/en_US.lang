@@ -18,6 +18,11 @@ tile.reactorSim.name=Reactor Simulator
 tile.reactorSim.desc.0=Fission Reaction Uncertainty Resolver 9001
 tile.reactorSim.desc.1=Explodes, but not as much...
 
+gt.spacetime_compression_field_generator.name=Spacetime Compression Field Generator
+gt.time_acceleration_field_generator.name=Time Dilation Field Generator
+
+tile.Forge of the Gods Renderer.name=Forge of the Gods Renderer
+
 #Items
 item.em.programmer.name=AVR programmer
 item.em.programmer.desc.0=Current PC
@@ -66,7 +71,13 @@ item.em.parametrizerMemoryCard.desc.0=Stores Parameters
 item.em.parametrizerMemoryCard.desc.1=Use on Multiblock Controller to configure it
 item.em.parametrizerMemoryCard.desc.2=Use on Multiblock Controller to store parameters
 item.em.parametrizerMemoryCard.desc.3=Sneak right click to lock/unlock
+item.em.parametrizerMemoryCard.desc.copied_controller=Copied from: %s at %s
+item.em.parametrizerMemoryCard.copyMessage=Configuration copied to the card
+item.em.parametrizerMemoryCard.pasteMessage=Configuration pasted from the card
+item.em.parametrizerMemoryCard.controllerMismatch=Can't paste configuration from %s to %s!
+item.em.parametrizerMemoryCard.noConfig=Can't paste from empty card!
 
+item.tm.teslaCoilCapacitor.name=Tesla Capacitor
 item.tm.teslaCoilCapacitor.0.name=LV Tesla Capacitor
 item.tm.teslaCoilCapacitor.1.name=MV Tesla Capacitor
 item.tm.teslaCoilCapacitor.2.name=HV Tesla Capacitor
@@ -80,10 +91,12 @@ item.tm.teslaCoilCapacitor.desc.2=Yeet this broken item into some spicy water!
 item.tm.teslaCoilCapacitor.desc.3=Insert into a Capacitor hatch of a Tesla Tower
 item.tm.teslaCoilCapacitor.desc.4=Capacitors are the same thing as batteries, right?
 
+item.tm.itemTeslaComponent.name=Tesla Windings
 item.tm.itemTeslaComponent.0.name=Electrum Tesla Windings
 item.tm.itemTeslaComponent.1.name=Superconductive Tesla Windings
 item.tm.itemTeslaComponent.desc=Tesla bois need these!
 
+item.tm.teslaCover.name=Tesla Coil Cover
 item.tm.teslaCover.0.name=Tesla Coil Cover
 item.tm.teslaCover.1.name=Tesla Coil Cover Rich Edition
 item.tm.teslaCover.desc.0=Tesla-Enables Machines!
@@ -110,6 +123,8 @@ item.tm.itemAstralArrayFabricator.desc0=Parallel dimensions?!
 item.tm.itemAstralArrayFabricator.desc1=Device capable of enhancing the Eye of Harmony's spatial compression,
 item.tm.itemAstralArrayFabricator.desc2=reaching into the space beyond.
 item.tm.itemAstralArrayFabricator.desc3=Allows for recipe parallelism.
+
+item.tm.fakeItemQGP.name=Fake Item
 
 #Death Messages
 death.attack.microwaving=%1$s was dehydrated by radiation.
@@ -497,11 +512,6 @@ gt.blockmachines.emout.tier.13.name=UXV Elemental Output Hatch
 gt.blockmachines.emout.desc=Elemental Output for Multiblocks
 
 #TODO change tier.05 to tier.04
-gt.blockmachines.hatch.param.tier.05.name=Parametrizer
-gt.blockmachines.hatch.param.tier.07.name=Parametrizer X
-gt.blockmachines.hatch.param.tier.10.name=Parametrizer tXt
-gt.blockmachines.hatch.param.desc.0=For parametrization of Multiblocks
-gt.blockmachines.hatch.param.desc.1=E=mine*craft
 
 gt.blockmachines.hatch.certain.tier.05.name=Uncertainty Resolver
 gt.blockmachines.hatch.certain.tier.07.name=Uncertainty Resolver X
@@ -546,6 +556,7 @@ gt.blockmachines.hatch.capacitor.desc.0=For Tesla Tower
 gt.blockmachines.hatch.capacitor.desc.1=Stores 'nergy! (for a while)
 
 #Casings
+gt.godforgecasing.name=Machine Casing
 gt.blockcasingsNH.10.name=UEV Machine Casing
 gt.blockcasingsNH.11.name=UIV Machine Casing
 gt.blockcasingsNH.12.name=UMV Machine Casing
@@ -575,6 +586,7 @@ gt.blockhintTT.desc.4=Make sure it does not contain Air material.
 gt.blockhintTT.15.name=Hint error
 gt.blockhintTT.desc.5=ERROR, what did u expect?
 
+gt.blockcasingsTT.name=Machine Casing
 gt.blockcasingsTT.0.name=High Power Casing
 gt.blockcasingsTT.0.desc.0=Well suited for high power applications.
 gt.blockcasingsTT.0.desc.1=The power levels are rising!
@@ -623,7 +635,10 @@ gt.blockcasingsTT.14.desc.1=Meh...
 gt.blockcasingsTT.15.name=Debug Sides
 gt.blockcasingsTT.15.desc.0=Lazy man way of determining sides.
 gt.blockcasingsTT.15.desc.1=0, 1, 2, 3, 4, 5, 6?!
+gt.blockcasingsTT.default.desc.0=Damn son where did you get that!?
+gt.blockcasingsTT.default.desc.1=From outer space... I guess...
 
+gt.blockcasingsBA0.name=Primary Tesla Windings
 gt.blockcasingsBA0.0.name=Redstone Alloy Primary Tesla Windings
 gt.blockcasingsBA0.1.name=MV Superconductor Primary Tesla Windings
 gt.blockcasingsBA0.2.name=HV Superconductor Primary Tesla Windings
@@ -649,7 +664,6 @@ gt.blockmachines.multimachine.em.transformer.machinetype=Active Transformer, AT
 gt.blockmachines.multimachine.em.transformer.hint=1 - Energy IO Hatches or High Power Casing
 gt.blockmachines.multimachine.em.transformer.desc.1=Can transform to and from any voltage
 gt.blockmachines.multimachine.em.transformer.desc.2=Only 0.004% power loss, HAYO!
-gt.blockmachines.multimachine.em.transformer.desc.3=Will explode if broken while running
 
 gt.blockmachines.multimachine.tm.microwave.name=Microwave Grinder
 gt.blockmachines.multimachine.tm.microwave.hint.0=1 - Classic Hatches or Clean Stainless Steel Casing
@@ -772,8 +786,11 @@ gt.blockmachines.multimachine.em.research.desc.1=Used to scan Data Sticks for As
 gt.blockmachines.multimachine.em.research.desc.2=Needs to be fed with computation to work
 gt.blockmachines.multimachine.em.research.desc.3=Does not consume the item until the Data Stick is written
 gt.blockmachines.multimachine.em.research.desc.4=Use screwdriver to change mode
+gt.blockmachines.multimachine.em.research.desc.5=Computation required in scanner mode follows the formula:
+gt.blockmachines.multimachine.em.research.desc.6=Recipe duration in seconds * (2 ^ (Recipe voltage tier - 1))
 gt.blockmachines.multimachine.em.research.mode.Assembly_line=Mode: Research Station
 gt.blockmachines.multimachine.em.research.mode.Scanner=Mode: Scanner
+gt.blockmachines.multimachine.em.research.computation=Computation: %,d / %,d
 
 gt.blockmachines.multimachine.em.collider.name=Matter Collider
 gt.blockmachines.multimachine.em.collider.hint.0=1 - Classic Hatches or High Power Casing
@@ -851,7 +868,8 @@ gt.blockcasingsBA0.11.desc.1=Can survive at least one big bang, maybe two...
 achievement.gt.blockcasingsBA0.10=Reinforced Temporal Structure Casing
 gt.blockcasingsBA0.10.desc.0=Resistant to temporal shearing from time dilation differences.
 gt.blockcasingsBA0.10.desc.1=This block can last an eternity without any decay.
-
+eoh.rightclick.wirecutter.1=Can't retrieve Astral Array Fabricators when the machine is working!
+eoh.rightclick.wirecutter.2=Retrieved %s Astral Array Fabricators
 
 # Antimatter
 gt.blockmachines.antimatterForge.name=Semi-Stable Antimatter Stabilization Sequencer
@@ -1036,7 +1054,7 @@ fog.button.magmattermode.tooltip.03=Magmatter Mode locked, missing upgrade
 fog.button.battery.tooltip.01=Toggle Battery Charging
 fog.button.battery.tooltip.02=Right click to open configuration menu (if unlocked)
 fog.button.voltageconfig.tooltip.01=Open voltage config
-fog.button.voltageconfig.tooltip.02=Voltage config locked, missing upgrade
+fog.button.voltageconfig.tooltip.02=Voltage config locked, requires The Boundless Flow (upgrade)
 fog.button.structurecheck.tooltip=Refresh module connection status
 fog.button.milestones.tooltip=Milestone Overview
 fog.button.materialrequirements.tooltip=Upgrade needs additional materials
@@ -1058,9 +1076,17 @@ fog.text.tooltip.parallel=Maximum parallel amount
 fog.text.tooltip.speedbonus=Multiplier for base recipe time, making it shorter
 fog.text.tooltip.energydiscount=Multiplier for base energy usage, reducing it
 fog.text.tooltip.ocdivisor=Divisor for recipe time reduction per overclock (does not affect perfect OCs)
-
+fog.text.tooltip.processingvoltage=Base processing voltage for recipes
+fog.text.tooltip.factorpreview=Enter fuel factor to simulate calculations with
+fog.text.tooltip.applysimulationchanges=Simulate new values
+fog.text.tooltip.voltageadjustment=Because of overflow concerns, actual processing voltage follows this formula:
+fog.text.tooltip.voltageadjustment.1=Voltage = Min(Selected Voltage, 2^63 / Max Parallel)
 
 achievement.gt.blockmachines.multimachine.em.forge_of_gods=Forge of the Gods
+achievement.gt.blockmachines.multimachine.em.smelting_module=Helioflare Power Forge
+achievement.gt.blockmachines.multimachine.em.molten_module=Helioflux Melting Core
+achievement.gt.blockmachines.multimachine.em.plasma_module=Heliothermal Plasma Fabricator
+achievement.gt.blockmachines.multimachine.em.exotic_module=Heliofusion Exoticizer
 achievement.gt.godforgecasing.0=Singularity Reinforced Stellar Shielding Casing
 achievement.gt.godforgecasing.1=Celestial Matter Guidance Casing
 achievement.gt.godforgecasing.2=Boundless Gravitationally Severed Structure Casing
@@ -1069,6 +1095,20 @@ achievement.gt.godforgecasing.4=Stellar Energy Siphon Casing
 achievement.gt.godforgecasing.5=Remote Graviton Flow Modulator
 achievement.gt.godforgecasing.6=Medial Graviton Flow Modulator
 achievement.gt.godforgecasing.7=Central Graviton Flow Modulator
+
+achievement.gt.blockmachines.multimachine.em.forge_of_gods.desc=BEEEEEEEEEAAAAAAM
+achievement.gt.blockmachines.multimachine.em.smelting_module.desc=The one furnace to rule them all.
+achievement.gt.blockmachines.multimachine.em.molten_module.desc=Hope you have good fluid solidifiers!
+achievement.gt.blockmachines.multimachine.em.plasma_module.desc=Fusion? No thanks.
+achievement.gt.blockmachines.multimachine.em.exotic_module.desc=Creating static since 2024!
+achievement.gt.godforgecasing.0.desc=Building block of the Forge of the Gods
+achievement.gt.godforgecasing.1.desc=Building block of the Forge of the Gods
+achievement.gt.godforgecasing.2.desc=Building block of the Forge of the Gods
+achievement.gt.godforgecasing.3.desc=Building block of the Forge of the Gods
+achievement.gt.godforgecasing.4.desc=Building block of the Forge of the Gods
+achievement.gt.godforgecasing.5.desc=Building block of the Forge of the Gods
+achievement.gt.godforgecasing.6.desc=Building block of the Forge of the Gods
+achievement.gt.godforgecasing.7.desc=Building block of the Forge of the Gods
 
 gt.blockmachines.multimachine.FOG.parallel=Parallel
 gt.blockmachines.multimachine.FOG.batch=Batch Size
@@ -1122,9 +1162,9 @@ gt.blockmachines.multimachine.FOG.modules=Modules
 gt.blockmachines.multimachine.FOG.upgrades=Upgrades
 gt.blockmachines.multimachine.FOG.milestones=Milestones
 gt.blockmachines.multimachine.FOG.fuelinfotext=Once the structure of the Forge is built and the multiblock is formed, just simply turning it on is not sufficient to make it functional. The Forge must be supplied with a certain amount of Star Fuel (the item) to actually boot up. The amount of Star Fuel needed depends on the current fuel consumption factor, which can be set in the fuel configuration menu. By default the maximum is 5, but it can be increased later on with upgrades. Star Fuel scaling is as follows: factor*25*1.2^factor. Star Fuel can be supplied via an input bus, it gets consumed periodically and stored internally. Once there is enough Star Fuel stored in the multi, it turns on for real (allowing modules to connect) and converts the consumed Star Fuel into stored Stellar Fuel. From this point onwards, the Forge must be fueled via one of the liquid fuels (type can be selected in the fuel config menu). If there isn't enough of the selected fuel present in the input hatch, the stored fuel amount will decrease and if it reaches 0, the Forge enters the previous 'off' state where modules disconnect and it has to be supplied with Star Fuel again. The amount of internally stored Stellar Fuel (liquid) can be increased by turning on battery charging, this will cause the fuel usage to double, but half of it will be stored in the internal battery.
-gt.blockmachines.multimachine.FOG.moduleinfotext=There are 4 types of modules that can be used in the Forge, the Helioflare Power Forge, Helioflux Melting Core, Heliothermal Plasma Fabricator and Heliofusion Exoticizer. These modules are separate multiblocks that have to be built into the Godforge structure at their designated spots. Once built, these modules have to connect to the Godforge, which happens automatically if all requirements for the respective module are met. Alternatively, there is a button to refresh their status without waiting for the timer. Each of these modules has its specialized functionality & requirements and is affected differently by certain upgrades. The first unlocked module is the §BHelioflare Power Forge§6, which simply put is a blast furnace even more powerful than the mega version. Additionally, this module has a furnace mode, turning it into a hyper powerful multi smelter. This module is unlocked by default and has 1024 base parallel. The second unlock is the §BHelioflux Melting Core§6, which also processes blast furnace recipes, but with a twist, the outputs are ejected in their molten form instead of hot/regular ingots. If an output does not have a molten form, it will output its regular form. This module has to be unlocked by an upgrade to function and has 512 base parallel. The third module is the §BHeliothermal Plasma Fabricator§6, which possesses a unique recipemap featuring direct material to plasma conversion recipes. These recipes are grouped by two properties, fusion tier and steps required, limiting which recipes can be processed before their respective upgrades are unlocked. Unlike regular fusion, these recipes produce the plasma of the input material. This module has 384 base parallel. The fourth and last module is the §BHeliofusion Exoticizer§6, a module capable of producing quark gluon plasma and later on magmatter. This module has unique automation challenges for both materials, so it is recommended to have two of these, as they have to be locked to either one of the materials. The common rule for both modes' automation challenges is as follows: the module outputs materials at the start of a recipe cycle and waits for the correct inputs to arrive before starting the actual processing of the output material. If producing quark-gluon plasma, the module outputs up to 7 different fluids/tiny piles with amounts between 1 and 64, and their corresponding plasmas and amounts have to be returned in order for the recipe to process. For each L of fluid, a bucket of plasma and for each tiny pile an ingot's worth of plasma must be returned for the recipe to work. The tiny piles are always ejected in multiples of 9. If magmatter mode is active, the automation challenge changes. Now the module outputs 1-50L of tachyon rich temporal fluid, 51-100L of spatially enlarged fluid and one tiny pile of a high tier material. The challenge is to return both the tachyon rich and spatially enlarged fluids, plus as much plasma of the tiny pile's material (in ingots) as the difference between the amounts of spatially enlarged and tachyon rich fluid. Once all of these have been returned in the correct amounts, the recipe will start to process and output magmatter. This module has 64 base parallel.
+gt.blockmachines.multimachine.FOG.moduleinfotext=There are 4 types of modules that can be used in the Forge, the Helioflare Power Forge, Helioflux Melting Core, Heliothermal Plasma Fabricator and Heliofusion Exoticizer. These modules are separate multiblocks that have to be built into the Godforge structure at their designated spots. Once built, these modules have to connect to the Godforge, which happens automatically if all requirements for the respective module are met. Alternatively, there is a button to refresh their status without waiting for the timer. Each of these modules has its specialized functionality & requirements and is affected differently by certain upgrades. The first unlocked module is the §BHelioflare Power Forge§6, which simply put is a blast furnace even more powerful than the mega version. Additionally, this module has a furnace mode, turning it into a hyper powerful multi smelter. This module is unlocked by default and has 1024 base parallel. The second unlock is the §BHelioflux Melting Core§6, which also processes blast furnace recipes, but with a twist, the outputs are ejected in their molten form instead of hot/regular ingots. If an output does not have a molten form, it will output its regular form. This module has to be unlocked by an upgrade to function and has 512 base parallel. The third module is the §BHeliothermal Plasma Fabricator§6, which possesses a unique recipemap featuring direct material to plasma conversion recipes. These recipes are grouped by two properties, fusion tier and steps required, limiting which recipes can be processed before their respective upgrades are unlocked. Unlike regular fusion, these recipes produce the plasma of the input material. This module has 384 base parallel. The fourth and last module is the §BHeliofusion Exoticizer§6, a module capable of producing quark gluon plasma and later on magmatter. This module has unique automation challenges for both materials, so it is recommended to have two of these, as they have to be locked to either one of the materials. The common rule for both modes' automation challenges is as follows: the module outputs materials at the start of a recipe cycle and waits for the correct inputs to arrive before starting the actual processing of the output material. If producing quark-gluon plasma, the module outputs up to 7 different fluids/dusts with amounts between 1-64 and 1-7 respectively, and their corresponding plasmas and amounts have to be returned in order for the recipe to process. For each L of fluid, a bucket of plasma and for each dust 9 ingots worth of plasma must be returned for the recipe to work. If magmatter mode is active, the automation challenge changes. Now the module outputs 1-50L of tachyon rich temporal fluid, 51-100L of spatially enlarged fluid and one dust of a high tier material. The challenge is to return both the tachyon rich and spatially enlarged fluids, plus as much plasma of the dust's material (in ingots) as the difference between the amounts of spatially enlarged and tachyon rich fluid. Once all of these have been returned in the correct amounts, the recipe will start to process and output magmatter. This module has 64 base parallel.
 gt.blockmachines.multimachine.FOG.upgradeinfotext=Upgrades are the heart and soul of the Godforge, they unlock most of its functionality and processing power. The upgrade tree can be accessed via its button on the main gui and each upgrade node can be clicked for more information on its effects and unlock requirements. In general, each upgrade can only be unlocked if the prior one is unlocked and there are enough available graviton shards. One exception to this is the first upgrade, as that one has no prior upgrade. Some upgrades can also have extra material costs, which are denoted next to the unlock button if applicable. If an upgrade has more than 1 connected prior upgrade, then there are two options, either the upgrade requires ALL connected prior upgrades or AT LEAST ONE (indicated by the connection's color, red means ALL, blue means AT LEAST ONE). Upgrades can be refunded by simply pressing the unlock button again, but this only works if ALL connected later upgrades are not active/unlocked. The block of upgrades following the unlock of the Heliufusion Exoticizer module are special, as they are what is considered §Bthe Split§6. As the name suggests, only one path out of the three may be chosen at first, and the others will be locked. Each path has specialized buffs that are primarily targeted towards a specific module, and thus affect other module types with reduced effect (unless stated otherwise). The amount of unlockable paths depends on the amount of rings the Godforge has, which in turn are limited by later upgrades.
-gt.blockmachines.multimachine.FOG.milestoneinfotext=Milestones are essential for upgrading the Godforge, as they are the source of graviton shards, the main currency needed for unlocking upgrades. In essence, milestones are just what their name suggests, thresholds that when reached, grant graviton shards. There are four types of milestones, Charge, Conversion, Catalyst and Composition, each referring to a stat of the Godforge. Each milestone has 7 tiers, each being harder to reach than the last, but also granting more graviton shards. The first tier grants 1 graviton shard, the second 2, etc. The §BCharge§6 milestone scales off total power consumption of all modules combined, the first tier being unlocked at 1e15 EU consumed, and each subsequent milestone scaling by 9x. The §BConversion§6 milestone scales off total recipes processed across all modules (excluding the Helioflare Power Forge's furnace mode) and its first tier is unlocked at 10M processed recipes. Following tiers scale by 6x. The §BCatalyst§6 milestone is based on the Forge's fuel consumption, counted in Stellar Fuel units (the number entered in the fuel config menu). Reaching the first tier requires 10,000 fuel units to be consumed, and each tier above scales by 3x. Last but not least, the §BComposition§6 milestone works a bit differently, as it scales off the Forge's structure. Milestone levels are granted for each unique type of module present in the structure (Heliofusion Exoticizer modules on quark-gluon and magmatter mode count as unique) and for each additional ring built. Your research suggests that something strange might happen if all milestones reach their final tier... Make sure to check back!
+gt.blockmachines.multimachine.FOG.milestoneinfotext=Milestones are essential for upgrading the Godforge, as they are the source of graviton shards, the main currency needed for unlocking upgrades. In essence, milestones are just what their name suggests, thresholds that when reached, grant graviton shards. There are four types of milestones, Charge, Conversion, Catalyst and Composition, each referring to a stat of the Godforge. Each milestone has 7 tiers, each being harder to reach than the last, but also granting more graviton shards. The first tier grants 1 graviton shard, the second 2, etc. The §BCharge§6 milestone scales off total power consumption of all modules combined, the first tier being unlocked at 1e15 EU consumed, and each subsequent milestone scaling by 9x. The §BConversion§6 milestone scales off total recipes processed across all modules (excluding the Helioflare Power Forge's furnace mode) and its first tier is unlocked at 10M processed recipes. Following tiers scale by 4x. The §BCatalyst§6 milestone is based on the Forge's fuel consumption, counted in Stellar Fuel units (the number entered in the fuel config menu). Reaching the first tier requires 10,000 fuel units to be consumed, and each tier above scales by 3x. Last but not least, the §BComposition§6 milestone works a bit differently, as it scales off the Forge's structure. Milestone levels are granted for each unique type of module present in the structure (Heliofusion Exoticizer modules on quark-gluon and magmatter mode count as unique) and for each additional ring built. Your research suggests that something strange might happen if all milestones reach their final tier... Make sure to check back!
 gt.blockmachines.multimachine.FOG.contributors=Contributors
 gt.blockmachines.multimachine.FOG.lead=Project Lead
 gt.blockmachines.multimachine.FOG.cloud=GDCloud
@@ -1150,6 +1190,8 @@ gt.blockmachines.multimachine.FOG.effectiveheat=Effective Heat
 gt.blockmachines.multimachine.FOG.speedbonus=Speed Bonus
 gt.blockmachines.multimachine.FOG.energydiscount=Energy Discount
 gt.blockmachines.multimachine.FOG.ocdivisor=OC Divisor
+gt.blockmachines.multimachine.FOG.processingvoltage=Processing Voltage
+gt.blockmachines.multimachine.FOG.factorpreview=Preview Fuel Factor:
 gt.blockmachines.multimachine.FOG.clickstat=Click to view value breakdown
 
 gt.blockmachines.multimachine.FOG.hint.0=1 - Classic Hatches or Transcendentally Amplified Magnetic Confinement Casing
@@ -1327,6 +1369,7 @@ GT5U.gui.text.invalid_hysteresis=§7Invalid hysteresis settings
 GT5U.gui.text.invalid_transfer_radius=§7Invalid transfer radius settings
 GT5U.gui.text.invalid_voltage_setting=§7Invalid voltage setting
 GT5U.gui.text.invalid_current_setting=§7Invalid current setting
+GT5U.gui.text.invalid_primary_winding=§7Primary winding tier is too low!
 GT5U.gui.text.invalid_time_setting=§7Invalid time setting
 GT5U.gui.text.invalid_overdrive_setting=§7Invalid overdrive setting
 GT5U.gui.text.insufficient_power_no_val=§7Insufficient power
@@ -1439,7 +1482,12 @@ tt.keyphrase.Tier_Rating=Tier Rating
 tt.keyphrase.Amp_Rating=Amp Rating
 tt.keyphrase.Computation_Available=Computation Available
 tt.keyphrase.Computation_Remaining=Computation Remaining
-tt.keyphrase.Content_Stack_Count=Content: Stack Count
+tt.keyphrase.AL_Recipe_Providing=Providing §6%s§7 Assembly Line Recipes
+tt.keyphrase.AL_Recipe_Receiving=Receiving §6%s§7 Assembly Line Recipes
+tt.keyphrase.AL_Recipe_Transmitting=Transmitting §6%s§7 Assembly Line Recipes
+tt.keyphrase.AL_Recipe_Header=§7Assembly Line Recipes:
+tt.keyphrase.AL_Recipe_Desc=§7- §a%s§7
+tt.keyphrase.AL_Recipe_None=§7- None
 tt.keyphrase.Base_computation=Base computation
 tt.keyphrase.After_overclocking=After overclocking
 tt.keyphrase.Heat_Accumulated=Heat Accumulated
@@ -1846,9 +1894,100 @@ tt.IUPAC.ium=ium
 tt.IUPAC.Anti=Anti
 tt.keyword.Weird=*
 
+tt.tooltip.mark_general=: Interdimensional
+tt.tooltip.mark_em=: Elemental Matter
+tt.tooltip.theta_movement=: Theta Movement
+tt.tooltip.cosmic_mark=: Cosmic
+tt.tooltip.godforge_mark=: Project Godforge
+
 tt.chat.debug.generator=Laser mode: %s
 
 GT5U.gui.config.general.debug=Debug
 GT5U.gui.config.general.features=Features
 GT5U.gui.config.general.teslatweaks=Tesla Tweaks
 GT5U.gui.config.general.visual=Visual
+
+tt.eoh.fancy_names.crude=Crude
+tt.eoh.fancy_names.primitive=Primitive
+tt.eoh.fancy_names.stable=Stable
+tt.eoh.fancy_names.Advanced=Advanced
+tt.eoh.fancy_names.superb=Superb
+tt.eoh.fancy_names.exotic=Exotic
+tt.eoh.fancy_names.perfect=Perfect
+tt.eoh.fancy_names.tipler=Tipler
+tt.eoh.fancy_names.gallifreyan=Gallifreyan
+tt.eoh.fancy_names.unknown=Unknown
+
+tt.godforge.casings.Error.Tooltip=Error, report to GTNH team
+tt.godforge.casings.0.Tooltip.0=Shielded by the event horizon of a singularity
+tt.godforge.casings.0.Tooltip.1=Don't get too close...
+tt.godforge.casings.1.Tooltip.0=Designed to route stellar matter using spacetime distortion
+tt.godforge.casings.1.Tooltip.1=Reality Distortion
+tt.godforge.casings.2.Tooltip.0=Unaffected by gravitational forces
+tt.godforge.casings.2.Tooltip.1=Not even a black hole could tear it apart.
+tt.godforge.casings.3.Tooltip.0=Creates enormous magnetic fields capable of constraining entire stars
+tt.godforge.casings.3.Tooltip.1=It's super effective!
+tt.godforge.casings.4.Tooltip.0=Taps into streams of stellar matter to harness their heat energy
+tt.godforge.casings.4.Tooltip.1=Turn up the heat!
+tt.godforge.casings.5.Tooltip.0=Controls the flow of gravitons to manipulate gravity
+tt.godforge.casings.5.Tooltip.1=Exponential scaling past 800 Galaxies
+tt.godforge.casings.6.Tooltip.0=Controls the flow of gravitons to manipulate gravity
+tt.godforge.casings.6.Tooltip.1=Getting closer...
+tt.godforge.casings.7.Tooltip.0=Controls the flow of gravitons to manipulate gravity
+tt.godforge.casings.7.Tooltip.1=Gravity Central
+tt.godforge.casings.8.Tooltip.0=Transfers and stores extreme amounts of heat without any loss
+tt.godforge.casings.8.Tooltip.1=<<<Thermal<<<
+tt.godforge.casings.8.Tooltip.2=>>>Wave>>>
+
+tt.eoh.stability.tooltip=§b§lIncreases stability of spacetime field.
+tt.eoh.time_dilation.standard.tooltip=§b§lTime dilation in a box.
+tt.eoh.time_dilation.error.tooltip=§c§lError, report to GTNH team
+tt.eoh.spacetime.standard.tooltip.0=Supports an internal spacetime volume of up to %d km³.
+tt.eoh.spacetime.standard.tooltip.1=§b§lCapable of running recipes up to tier %d
+
+# Info data
+
+tt.infodata.multi.energy_hatches=Energy Hatches: %s EU / %s EU
+tt.infodata.multi.currently_generates=Currently generates: %s EU/t at %s A
+tt.infodata.multi.computation=Computation: %s / %s
+tt.infodata.multi.max_parallel=Max Parallel: %s
+tt.infodata.multi.multiplier.recipe_time=Recipe time multiplier: %s
+tt.infodata.multi.multiplier.energy=Energy multiplier: %s
+tt.infodata.multi.divisor.recipe_time.non_perfect_oc=Recipe time divisor per non-perfect OC: %s
+tt.infodata.multi.currently_using=Currently using: %s EU/t
+tt.infodata.multi.capacity.heat=Heat Capacity: %s
+tt.infodata.multi.capacity.heat.effective=Effective Heat Capacity: %s
+
+## Eye of Harmony
+tt.infodata.eoh.control_block_statistics=Control Block Statistics
+tt.infodata.eoh.spacetime_compression.grade=Spacetime Compression Field Grade: %s (%s)
+tt.infodata.eoh.spacetime_compression.grade.none=Spacetime Compression Field Grade: None
+tt.infodata.eoh.time_dilation.grade=Time Dilation Field Grade: %s (%s)
+tt.infodata.eoh.time_dilation.grade.none=Time Dilation Field Grade: None
+tt.infodata.eoh.stabilisation_grade=Stabilisation Field Grade: %s (%s)
+tt.infodata.eoh.stabilisation_grade.none=Stabilisation Field Grade: None
+tt.infodata.eoh.internal_storage=Internal Storage
+tt.infodata.eoh.astral_array_fabricators=Astral Array Fabricators
+tt.infodata.eoh.other_stats=Other Stats
+tt.infodata.eoh.success_chance=Recipe Success Chance: %s
+tt.infodata.eoh.recipe_yield=Recipe Yield: %s
+tt.infodata.eoh.effective_astral_array_fabricators=Effective Astral Array Fabricators: %s
+tt.infodata.eoh.total_parallel=Total Parallel: %s
+tt.infodata.eoh.eu_output=EU Output: %s EU
+tt.infodata.eoh.eu_input=EU Input: %s EU
+tt.infodata.eoh.avg_output=Average %s Output: %s L, %s L/s
+tt.infodata.eoh.estimated_eu=Estimated EU/t: %s EU/t
+
+## Quantum Computer
+tt.infodata.qc.wireless_mode.enabled=Wireless mode: §aenabled
+tt.infodata.qc.wireless_mode.disabled=Wireless mode: §cdisabled
+tt.infodata.qc.total_wireless_computation=Total wireless computation available: %s
+
+## Forge of gods
+tt.infodata.fog.rings=Number of Rings: %s
+tt.infodata.fog.upgrades.unlocked=Total Upgrades Unlocked: %s
+tt.infodata.fog.connected=Connected Modules: %s
+
+## Base factory pipe
+tt.infodata.pipe.active=Active.
+tt.infodata.pipe.inactive=Not active.

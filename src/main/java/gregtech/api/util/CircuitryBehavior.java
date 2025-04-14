@@ -37,11 +37,7 @@ public abstract class CircuitryBehavior {
     public static boolean getAnyRedstone(IRedstoneCircuitBlock aRedstoneCircuitBlock) {
         for (final ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
             if (side != aRedstoneCircuitBlock.getOutputFacing() && aRedstoneCircuitBlock.getCover(side)
-                .letsRedstoneGoIn(
-                    side,
-                    aRedstoneCircuitBlock.getCoverID(side),
-                    aRedstoneCircuitBlock.getCoverVariable(side),
-                    aRedstoneCircuitBlock.getOwnTileEntity())) {
+                .letsRedstoneGoIn()) {
                 if (aRedstoneCircuitBlock.getInputRedstone(side) > 0) {
                     return true;
                 }
@@ -56,11 +52,7 @@ public abstract class CircuitryBehavior {
     public static boolean getAllRedstone(IRedstoneCircuitBlock aRedstoneCircuitBlock) {
         for (final ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
             if (side != aRedstoneCircuitBlock.getOutputFacing() && aRedstoneCircuitBlock.getCover(side)
-                .letsRedstoneGoIn(
-                    side,
-                    aRedstoneCircuitBlock.getCoverID(side),
-                    aRedstoneCircuitBlock.getCoverVariable(side),
-                    aRedstoneCircuitBlock.getOwnTileEntity())) {
+                .letsRedstoneGoIn()) {
                 if (aRedstoneCircuitBlock.getInputRedstone(side) == 0) {
                     return false;
                 }
@@ -76,11 +68,7 @@ public abstract class CircuitryBehavior {
         int tRedstoneAmount = 0;
         for (final ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
             if (side != aRedstoneCircuitBlock.getOutputFacing() && aRedstoneCircuitBlock.getCover(side)
-                .letsRedstoneGoIn(
-                    side,
-                    aRedstoneCircuitBlock.getCoverID(side),
-                    aRedstoneCircuitBlock.getCoverVariable(side),
-                    aRedstoneCircuitBlock.getOwnTileEntity())) {
+                .letsRedstoneGoIn()) {
                 if (aRedstoneCircuitBlock.getInputRedstone(side) > 0) {
                     tRedstoneAmount++;
                 }
@@ -96,11 +84,7 @@ public abstract class CircuitryBehavior {
         byte tRedstoneAmount = 0;
         for (final ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
             if (side != aRedstoneCircuitBlock.getOutputFacing() && aRedstoneCircuitBlock.getCover(side)
-                .letsRedstoneGoIn(
-                    side,
-                    aRedstoneCircuitBlock.getCoverID(side),
-                    aRedstoneCircuitBlock.getCoverVariable(side),
-                    aRedstoneCircuitBlock.getOwnTileEntity())) {
+                .letsRedstoneGoIn()) {
                 tRedstoneAmount = (byte) Math.max(tRedstoneAmount, aRedstoneCircuitBlock.getInputRedstone(side));
             }
         }
@@ -117,11 +101,7 @@ public abstract class CircuitryBehavior {
         byte tRedstoneAmount = 15;
         for (final ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
             if (side != aRedstoneCircuitBlock.getOutputFacing() && aRedstoneCircuitBlock.getCover(side)
-                .letsRedstoneGoIn(
-                    side,
-                    aRedstoneCircuitBlock.getCoverID(side),
-                    aRedstoneCircuitBlock.getCoverVariable(side),
-                    aRedstoneCircuitBlock.getOwnTileEntity())) {
+                .letsRedstoneGoIn()) {
                 if (aRedstoneCircuitBlock.getInputRedstone(side) > 0)
                     tRedstoneAmount = (byte) Math.min(tRedstoneAmount, aRedstoneCircuitBlock.getInputRedstone(side));
             }
@@ -137,11 +117,7 @@ public abstract class CircuitryBehavior {
         byte tRedstoneAmount = 15;
         for (final ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
             if (side != aRedstoneCircuitBlock.getOutputFacing() && aRedstoneCircuitBlock.getCover(side)
-                .letsRedstoneGoIn(
-                    side,
-                    aRedstoneCircuitBlock.getCoverID(side),
-                    aRedstoneCircuitBlock.getCoverVariable(side),
-                    aRedstoneCircuitBlock.getOwnTileEntity())) {
+                .letsRedstoneGoIn()) {
                 tRedstoneAmount = (byte) Math.min(tRedstoneAmount, aRedstoneCircuitBlock.getInputRedstone(side));
             }
         }
@@ -176,12 +152,6 @@ public abstract class CircuitryBehavior {
      * @param aRedstoneCircuitBlock, The Circuit Block MetaTileEntity itself
      */
     public abstract void onTick(int[] aCircuitData, IRedstoneCircuitBlock aRedstoneCircuitBlock);
-
-    /**
-     * If the ItemStack should be displayed. Parameters are between 0 and 3.
-     */
-    public abstract boolean displayItemStack(int[] aCircuitData, IRedstoneCircuitBlock aRedstoneCircuitBlock,
-        int aIndex);
 
     /**
      * The Name of the Gate for the GUI

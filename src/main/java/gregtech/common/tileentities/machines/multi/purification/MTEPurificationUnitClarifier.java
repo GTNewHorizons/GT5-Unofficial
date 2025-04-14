@@ -12,13 +12,13 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_TOWER_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_TOWER_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_TOWER_GLOW;
+import static gregtech.api.util.GTStructureUtility.ofAnyWater;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
-import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -111,7 +111,7 @@ public class MTEPurificationUnitClarifier extends MTEPurificationUnitBase<MTEPur
         .addElement('B', ofBlock(GregTechAPI.sBlockCasings8, 1))
         .addElement('C', ofFrame(Materials.Iridium))
         .addElement('D', ofFrame(Materials.DamascusSteel))
-        .addElement('W', ofChain(ofBlock(Blocks.water, 0)))
+        .addElement('W', ofAnyWater(false))
         // Filter machine casing
         .addElement('F', ofBlock(GregTechAPI.sBlockCasings3, 11))
         .build();
@@ -206,6 +206,7 @@ public class MTEPurificationUnitClarifier extends MTEPurificationUnitBase<MTEPur
                     + EnumChatFormatting.ITALIC
                     + "decreases so continual replacements must be supplied to maintain full function of the Clarifier.")
             .beginStructureBlock(11, 4, 11, false)
+            .addController("Front center")
             .addCasingInfoRangeColored(
                 "Reinforced Sterile Water Plant Casing",
                 EnumChatFormatting.GRAY,
@@ -232,7 +233,6 @@ public class MTEPurificationUnitClarifier extends MTEPurificationUnitBase<MTEPur
                 EnumChatFormatting.GOLD,
                 false)
             .addCasingInfoExactlyColored("PTFE Pipe Casing", EnumChatFormatting.GRAY, 3, EnumChatFormatting.GOLD, false)
-            .addController("Front center")
             .addInputBus(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + "+", 1)
             .addOutputBus(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + "+", 1)
             .addInputHatch(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + "+", 1)

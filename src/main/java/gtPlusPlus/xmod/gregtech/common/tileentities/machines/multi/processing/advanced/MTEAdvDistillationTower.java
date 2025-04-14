@@ -175,7 +175,7 @@ public class MTEAdvDistillationTower extends GTPPMultiBlockBase<MTEAdvDistillati
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
-            .addInfo("Use 85% less energy in distillery mode")
+            .addInfo("Uses 85% less energy in distillery mode")
             .addInfo("250%/100% faster in DT/distillery mode")
             .addInfo("Right click the controller with screwdriver to change mode.")
             .addInfo("Max parallel dictated by tower tier and mode")
@@ -183,6 +183,8 @@ public class MTEAdvDistillationTower extends GTPPMultiBlockBase<MTEAdvDistillati
             .addInfo("Distillery Mode: Tower Tier * (4*InputTier)")
             .addInfo("Distillery Mode require a full height tower")
             .addPollutionAmount(getPollutionPerSecond(null))
+            .beginVariableStructureBlock(3, 3, 3, 12, 3, 3, true)
+            .addController("Front bottom")
             .addCasingInfoMin("Clean Stainless Steel Machine Casing", 7, false)
             .addInputBus("Bottom Casing", 1)
             .addOutputBus("Bottom Casing", 1)
@@ -383,7 +385,7 @@ public class MTEAdvDistillationTower extends GTPPMultiBlockBase<MTEAdvDistillati
 
     @Override
     protected ProcessingLogic createProcessingLogic() {
-        return new ProcessingLogic().setMaxParallelSupplier(this::getMaxParallelRecipes);
+        return new ProcessingLogic().setMaxParallelSupplier(this::getTrueParallel);
     }
 
     @Override
@@ -412,8 +414,18 @@ public class MTEAdvDistillationTower extends GTPPMultiBlockBase<MTEAdvDistillati
     }
 
     @Override
+    protected IIconContainer getActiveGlowOverlay() {
+        return Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_TOWER_ACTIVE_GLOW;
+    }
+
+    @Override
     protected IIconContainer getInactiveOverlay() {
         return Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_TOWER;
+    }
+
+    @Override
+    protected IIconContainer getInactiveGlowOverlay() {
+        return Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_TOWER_GLOW;
     }
 
     @Override
@@ -441,7 +453,7 @@ public class MTEAdvDistillationTower extends GTPPMultiBlockBase<MTEAdvDistillati
         return this.mOutputHatchesByLayer.stream()
             .allMatch(
                 tLayerOutputHatches -> tLayerOutputHatches.stream()
-                    .anyMatch(tHatch -> (tHatch instanceof MTEHatchOutputME tMEHatch) && (tMEHatch.canAcceptFluid())));
+                    .anyMatch(tHatch -> (tHatch instanceof MTEHatchOutputME tMEHatch) && (tMEHatch.canFillFluid())));
     }
 
     @Override

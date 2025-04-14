@@ -5,76 +5,78 @@ import static ic2.api.info.Info.DMG_ELECTRIC;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import gregtech.api.covers.CoverContext;
+import gregtech.api.hazards.HazardProtection;
 import gregtech.api.interfaces.tileentity.ICoverable;
-import gregtech.api.util.CoverBehavior;
-import gregtech.api.util.GTUtility;
+import gregtech.common.covers.Cover;
 import tectech.mechanics.tesla.ITeslaConnectable;
 import tectech.mechanics.tesla.TeslaCoverConnection;
 
-public class CoverTeslaCoil extends CoverBehavior {
+public class CoverTeslaCoil extends Cover {
 
-    public CoverTeslaCoil() {}
+    public CoverTeslaCoil(CoverContext context) {
+        super(context, null);
+    }
 
     @Override
-    public int doCoverThings(ForgeDirection side, byte aInputRedstone, int aCoverID, int aCoverVariable,
-        ICoverable aTileEntity, long aTimer) {
+    public void doCoverThings(byte aInputRedstone, long aTimer) {
+        ICoverable coverable = coveredTile.get();
         // Only do stuff if we're on top and have power
-        if (side == ForgeDirection.UP || aTileEntity.getEUCapacity() > 0) {
+        if (coverable != null && coverSide == ForgeDirection.UP || coverable.getEUCapacity() > 0) {
             // Makes sure we're on the list
             ITeslaConnectable.TeslaUtil.teslaSimpleNodeSetAdd(
                 new TeslaCoverConnection(
-                    aTileEntity.getIGregTechTileEntityOffset(0, 0, 0),
+                    coverable.getIGregTechTileEntityOffset(0, 0, 0),
                     getTeslaReceptionCapability()));
         }
-        return super.doCoverThings(side, aInputRedstone, aCoverID, aCoverVariable, aTileEntity, aTimer);
     }
 
     @Override
-    public void onCoverUnload(ICoverable aTileEntity) {
-        if (!aTileEntity.isClientSide()) {
+    public void onCoverUnload() {
+        ICoverable coverable = coveredTile.get();
+        if (coverable != null && !coverable.isClientSide()) {
             ITeslaConnectable.TeslaUtil.teslaSimpleNodeSetRemove(
                 new TeslaCoverConnection(
-                    aTileEntity.getIGregTechTileEntityOffset(0, 0, 0),
+                    coverable.getIGregTechTileEntityOffset(0, 0, 0),
                     getTeslaReceptionCapability()));
         }
     }
 
     @Override
-    public boolean onCoverRemoval(ForgeDirection side, int aCoverID, int aCoverVariable, ICoverable aTileEntity,
-        boolean aForced) {
-        ITeslaConnectable.TeslaUtil.teslaSimpleNodeSetRemove(
-            new TeslaCoverConnection(aTileEntity.getIGregTechTileEntityOffset(0, 0, 0), getTeslaReceptionCapability()));
-        return super.onCoverRemoval(side, aCoverID, aCoverVariable, aTileEntity, aForced);
+    public void onCoverRemoval() {
+        ICoverable coverable = coveredTile.get();
+        if (coverable != null) ITeslaConnectable.TeslaUtil.teslaSimpleNodeSetRemove(
+            new TeslaCoverConnection(coverable.getIGregTechTileEntityOffset(0, 0, 0), getTeslaReceptionCapability()));
     }
 
     @Override
-    public void onBaseTEDestroyed(ForgeDirection side, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
-        ITeslaConnectable.TeslaUtil.teslaSimpleNodeSetRemove(
-            new TeslaCoverConnection(aTileEntity.getIGregTechTileEntityOffset(0, 0, 0), getTeslaReceptionCapability()));
+    public void onBaseTEDestroyed() {
+        ICoverable coverable = coveredTile.get();
+        if (coverable != null) ITeslaConnectable.TeslaUtil.teslaSimpleNodeSetRemove(
+            new TeslaCoverConnection(coverable.getIGregTechTileEntityOffset(0, 0, 0), getTeslaReceptionCapability()));
     }
 
     @Override
-    public String getDescription(ForgeDirection side, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
+    public String getDescription() {
         return "Do not attempt to use screwdriver!"; // TODO Translation support
     }
 
     @Override
-    public boolean letsEnergyIn(ForgeDirection side, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
+    public boolean letsEnergyIn() {
         return true;
     }
 
     @Override
-    public int onCoverScrewdriverclick(ForgeDirection side, int aCoverID, int aCoverVariable, ICoverable aTileEntity,
-        EntityPlayer aPlayer, float aX, float aY, float aZ) {
+    public void onCoverScrewdriverClick(EntityPlayer aPlayer, float aX, float aY, float aZ) {
+        ICoverable coverable = coveredTile.get();
         // Shock a non-hazmat player if they dare stuff a screwdriver into one of these
-        if (aTileEntity.getStoredEU() > 0 && !GTUtility.isWearingFullElectroHazmat(aPlayer)) {
+        if (coverable != null && coverable.getStoredEU() > 0 && !HazardProtection.isWearingFullElectroHazmat(aPlayer)) {
             aPlayer.attackEntityFrom(DMG_ELECTRIC, 20);
         }
-        return aCoverVariable;
     }
 
     @Override
-    public int getTickRate(ForgeDirection side, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
+    public int getMinimumTickRate() {
         // It updates once every 10 ticks, so once every 0.5 second
         return 10;
     }

@@ -24,7 +24,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -53,14 +52,6 @@ public abstract class MTEVoidMinerBase extends MTEDrillerBase {
     protected final byte TIER_MULTIPLIER;
 
     private boolean mBlacklist = false;
-
-    /**
-     * @Deprecated Use {@link VoidMinerUtility#addBlockToDimensionList}
-     */
-    @Deprecated
-    public static void addBlockToDimensionList(int dimId, Block block, int meta, float weight) {
-        VoidMinerUtility.addBlockToDimensionList(dimId, block, meta, weight);
-    }
 
     public MTEVoidMinerBase(int aID, String aName, String aNameRegional, int tier) {
         super(aID, aName, aNameRegional);
@@ -104,10 +95,15 @@ public abstract class MTEVoidMinerBase extends MTEDrillerBase {
         }
         this.mOutputItems = new ItemStack[0];
         this.mProgresstime = 0;
-        this.mMaxProgresstime = 10;
+        this.mMaxProgresstime = calculateMaxProgressTime(0);
         this.mEfficiency = this.getCurrentEfficiency(null);
         this.mEfficiencyIncrease = 10000;
         this.mEUt = this.mEUt > 0 ? -this.mEUt : this.mEUt;
+    }
+
+    @Override
+    public int calculateMaxProgressTime(int tier, boolean simulateWorking) {
+        return 10;
     }
 
     @Override

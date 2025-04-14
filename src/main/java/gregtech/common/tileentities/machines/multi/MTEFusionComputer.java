@@ -62,7 +62,6 @@ import gregtech.api.metatileentity.implementations.MTEEnhancedMultiBlockBase;
 import gregtech.api.metatileentity.implementations.MTEHatchEnergy;
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
 import gregtech.api.metatileentity.implementations.MTEHatchOutput;
-import gregtech.api.objects.GTItemStack;
 import gregtech.api.objects.overclockdescriber.FusionOverclockDescriber;
 import gregtech.api.objects.overclockdescriber.OverclockDescriber;
 import gregtech.api.recipe.RecipeMap;
@@ -71,6 +70,7 @@ import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTRecipe;
+import gregtech.api.util.GTRecipeConstants;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
@@ -199,7 +199,7 @@ public abstract class MTEFusionComputer extends MTEEnhancedMultiBlockBase<MTEFus
     public abstract MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity);
 
     @Override
-    public boolean allowCoverOnSide(ForgeDirection side, GTItemStack aStack) {
+    public boolean allowCoverOnSide(ForgeDirection side, ItemStack coverItem) {
 
         return side != getBaseMetaTileEntity().getFrontFacing();
     }
@@ -328,7 +328,8 @@ public abstract class MTEFusionComputer extends MTEEnhancedMultiBlockBase<MTEFus
             @NotNull
             @Override
             protected CheckRecipeResult validateRecipe(@NotNull GTRecipe recipe) {
-                if (!mRunningOnLoad && recipe.mSpecialValue > maxEUStore()) {
+                if (!mRunningOnLoad
+                    && recipe.getMetadataOrDefault(GTRecipeConstants.FUSION_THRESHOLD, 0L) > maxEUStore()) {
                     return CheckRecipeResultRegistry.insufficientStartupPower(recipe.mSpecialValue);
                 }
                 return CheckRecipeResultRegistry.SUCCESSFUL;
@@ -456,8 +457,7 @@ public abstract class MTEFusionComputer extends MTEEnhancedMultiBlockBase<MTEFus
                     stopMachine(ShutDownReasonRegistry.STRUCTURE_INCOMPLETE);
                 }
             }
-            aBaseMetaTileEntity
-                .setErrorDisplayID((aBaseMetaTileEntity.getErrorDisplayID() & ~127) | (mMachine ? 0 : 64));
+            setErrorDisplayID((getErrorDisplayID() & ~127) | (mMachine ? 0 : 64));
             aBaseMetaTileEntity.setActive(mMaxProgresstime > 0);
         } else {
             doActivitySound(getActivitySoundLoop());
@@ -504,7 +504,11 @@ public abstract class MTEFusionComputer extends MTEEnhancedMultiBlockBase<MTEFus
             }
         }
 
-        return new String[] { EnumChatFormatting.BLUE + "Fusion Reactor MK " + EnumChatFormatting.RESET + tier,
+        return new String[] {
+            EnumChatFormatting.BLUE + StatCollector.translateToLocal("GT5U.infodata.fusion_reactor_mk")
+                + " "
+                + EnumChatFormatting.RESET
+                + tier,
             StatCollector.translateToLocal("GT5U.fusion.req") + ": "
                 + EnumChatFormatting.RED
                 + GTUtility.formatNumbers(powerRequired)
@@ -592,15 +596,10 @@ public abstract class MTEFusionComputer extends MTEEnhancedMultiBlockBase<MTEFus
                 new TextWidget("Hit with Soft Mallet to (re-)start the Machine if it doesn't start.")
                     .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setTextAlignment(Alignment.Center)
-                    .setEnabled(
-                        widget -> getBaseMetaTileEntity().getErrorDisplayID() == 0
-                            && !getBaseMetaTileEntity().isActive())
+                    .setEnabled(widget -> getErrorDisplayID() == 0 && !getBaseMetaTileEntity().isActive())
                     .setPos(-getGUIWidth() / 2, 170)
                     .setSize(getGUIWidth() * 2, 9))
-            .widget(
-                new FakeSyncWidget.IntegerSyncer(
-                    () -> getBaseMetaTileEntity().getErrorDisplayID(),
-                    val -> getBaseMetaTileEntity().setErrorDisplayID(val)))
+            .widget(new FakeSyncWidget.IntegerSyncer(() -> getErrorDisplayID(), val -> setErrorDisplayID(val)))
             .widget(
                 new FakeSyncWidget.BooleanSyncer(
                     () -> getBaseMetaTileEntity().isActive(),
@@ -608,15 +607,10 @@ public abstract class MTEFusionComputer extends MTEEnhancedMultiBlockBase<MTEFus
             .widget(
                 new TextWidget("Running perfectly.").setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setTextAlignment(Alignment.Center)
-                    .setEnabled(
-                        widget -> getBaseMetaTileEntity().getErrorDisplayID() == 0
-                            && getBaseMetaTileEntity().isActive())
+                    .setEnabled(widget -> getErrorDisplayID() == 0 && getBaseMetaTileEntity().isActive())
                     .setPos(0, 170)
                     .setSize(getGUIWidth(), 9))
-            .widget(
-                new FakeSyncWidget.IntegerSyncer(
-                    () -> getBaseMetaTileEntity().getErrorDisplayID(),
-                    val -> getBaseMetaTileEntity().setErrorDisplayID(val)))
+            .widget(new FakeSyncWidget.IntegerSyncer(this::getErrorDisplayID, this::setErrorDisplayID))
             .widget(
                 new ProgressBar()
                     .setProgress(

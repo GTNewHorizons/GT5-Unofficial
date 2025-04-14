@@ -11,6 +11,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
 import gtPlusPlus.core.block.base.BlockBaseOre;
@@ -19,7 +20,8 @@ import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.material.MaterialStack;
 import gtPlusPlus.core.util.minecraft.EntityUtils;
 import gtPlusPlus.core.util.sys.KeyboardUtils;
-import gtPlusPlus.everglades.gen.gt.WorldGen_GT_Ore_Layer;
+import toxiceverglades.gen.WorldGenEvergladesOreLayer;
+import toxiceverglades.gen.WorldGenEvergladesOres;
 
 public class ItemBlockOre extends ItemBlock {
 
@@ -49,7 +51,7 @@ public class ItemBlockOre extends ItemBlock {
         final boolean bool) {
 
         if (!mInitOres_Everglades) {
-            for (WorldGen_GT_Ore_Layer f : gtPlusPlus.everglades.gen.gt.WorldGen_Ores.validOreveins.values()) {
+            for (WorldGenEvergladesOreLayer f : WorldGenEvergladesOres.validOreveins.values()) {
                 Material[] m2 = new Material[] { f.mPrimary, f.mSecondary, f.mBetween, f.mSporadic };
                 for (Material m1 : m2) {
                     HashSet<String> aMap = mMapOreBlockItemToDimName.get(
@@ -79,7 +81,7 @@ public class ItemBlockOre extends ItemBlock {
         }
 
         if (this.mThisMaterial != null) {
-            list.add("Ore contains:    ");
+            list.add(StatCollector.translateToLocal("GTPP.tooltip.ore.contains"));
             if (mThisMaterial.getComposites()
                 .isEmpty()) {
                 list.add("- " + mThisMaterial.getLocalizedName());
@@ -98,7 +100,10 @@ public class ItemBlockOre extends ItemBlock {
             if (b != null) {
                 int aMiningLevel1 = b.getHarvestLevel(stack.getItemDamage());
                 if (aMiningLevel1 != 0) {
-                    list.add("Mining Level: " + Math.min(Math.max(aMiningLevel1, 0), 5));
+                    list.add(
+                        StatCollector.translateToLocalFormatted(
+                            "GTPP.tooltip.ore.mining_level",
+                            Math.min(Math.max(aMiningLevel1, 0), 5)));
                 }
             }
 
@@ -111,17 +116,17 @@ public class ItemBlockOre extends ItemBlock {
                 }
             }
 
-            list.add("Found:    ");
+            list.add(StatCollector.translateToLocal("GTPP.tooltip.ore.found"));
             if (!mDimsForThisOre.isEmpty()) {
                 for (String m : mDimsForThisOre) {
                     list.add("- " + m);
                 }
             } else {
-                list.add("- Unknown");
+                list.add(StatCollector.translateToLocal("GTPP.tooltip.ore.unknown"));
             }
 
         } else {
-            list.add(EnumChatFormatting.DARK_GRAY + "Hold Ctrl to show additional info.");
+            list.add(EnumChatFormatting.DARK_GRAY + StatCollector.translateToLocal("GTPP.tooltip.hold_ctrl"));
         }
 
         super.addInformation(stack, aPlayer, list, bool);

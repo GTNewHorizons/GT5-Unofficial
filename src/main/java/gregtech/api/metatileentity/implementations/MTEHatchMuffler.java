@@ -26,8 +26,7 @@ public class MTEHatchMuffler extends MTEHatch {
     private static final String localizedDescFormat = GTLanguageManager.addStringLocalization(
         "gt.blockmachines.hatch.muffler.desc.format",
         "Outputs the Pollution (Might cause ... things)%n" + "DO NOT OBSTRUCT THE OUTPUT!%n"
-            + "Reduces Pollution to %d%%%n"
-            + "Recovers %d%% of CO2/CO/SO2");
+            + "Reduces Pollution to %d%%%n");
     private final int pollutionReduction = calculatePollutionReduction(100);
     private final int pollutionRecover = 100 - pollutionReduction;
     private final String[] description = String.format(localizedDescFormat, pollutionReduction, pollutionRecover)
@@ -40,10 +39,6 @@ public class MTEHatchMuffler extends MTEHatch {
     public MTEHatchMuffler(int aID, String aName, String aNameRegional, int aTier, int aInvSlotCount,
         String[] aDescription, ITexture... aTextures) {
         super(aID, aName, aNameRegional, aTier, aInvSlotCount, aDescription, aTextures);
-    }
-
-    public MTEHatchMuffler(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {
-        this(aName, aTier, new String[] { aDescription }, aTextures);
     }
 
     public MTEHatchMuffler(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
@@ -68,11 +63,6 @@ public class MTEHatchMuffler extends MTEHatch {
     @Override
     public ITexture[] getTexturesInactive(ITexture aBaseTexture) {
         return new ITexture[] { aBaseTexture, TextureFactory.of(OVERLAY_MUFFLER) };
-    }
-
-    @Override
-    public boolean isSimpleMachine() {
-        return true;
     }
 
     @Override
@@ -205,13 +195,5 @@ public class MTEHatchMuffler extends MTEHatch {
             return true;
         }
         return false;
-    }
-
-    /**
-     * @deprecated Use {@link #polluteEnvironment(MetaTileEntity, int)}.
-     */
-    @Deprecated
-    public boolean polluteEnvironment(MetaTileEntity mte) {
-        return polluteEnvironment(mte, 10000);
     }
 }

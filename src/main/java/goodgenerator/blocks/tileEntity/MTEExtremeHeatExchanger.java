@@ -4,6 +4,7 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static gregtech.api.enums.GTValues.V;
 import static gregtech.api.enums.Textures.BlockIcons.*;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
+import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -40,7 +41,6 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
 import gregtech.api.metatileentity.implementations.MTEHatchOutput;
-import gregtech.api.multitileentity.multiblock.casing.Glasses;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
@@ -124,7 +124,7 @@ public class MTEExtremeHeatExchanger extends MTETooltipMultiBlockBaseEM
                             .dot(5)
                             .build(),
                         onElementPass(x -> x.casingAmount++, ofBlock(GregTechAPI.sBlockCasings4, 0))))
-                .addElement('G', Glasses.chainAllGlasses())
+                .addElement('G', chainAllGlasses())
                 .addElement('P', ofBlock(GregTechAPI.sBlockCasings2, 15))
                 .addElement('W', ofBlock(Loaders.pressureResistantWalls, 0))
                 .build();
@@ -153,6 +153,11 @@ public class MTEExtremeHeatExchanger extends MTETooltipMultiBlockBaseEM
             mCooledFluidHatch = (MTEHatchOutput) aMetaTileEntity;
             return true;
         }
+        return false;
+    }
+
+    @Override
+    public boolean supportsPowerPanel() {
         return false;
     }
 
@@ -216,10 +221,19 @@ public class MTEExtremeHeatExchanger extends MTETooltipMultiBlockBaseEM
             .addCasingInfoExactly("EV+ Glass", 72, false)
             .addCasingInfoExactly("Pressure Resistant Wall", 48, false)
             .addCasingInfoExactly("Tungstensteel Pipe Casing", 60, false)
-            .addOtherStructurePart("Input Hatch", "Distilled water", 1)
-            .addOtherStructurePart("Output Hatch", "SC Steam/SH Steam", 2)
-            .addOtherStructurePart("Input Hatch", "Hot fluid or plasma", 3)
-            .addOtherStructurePart("Output Hatch", "Cold fluid", 4)
+            .addOtherStructurePart(
+                StatCollector.translateToLocal("gg.structure.tooltip.input_hatch"),
+                "Distilled water",
+                1)
+            .addOtherStructurePart(
+                StatCollector.translateToLocal("gg.structure.tooltip.output_hatch"),
+                "SC Steam/SH Steam",
+                2)
+            .addOtherStructurePart(
+                StatCollector.translateToLocal("gg.structure.tooltip.input_hatch"),
+                "Hot fluid or plasma",
+                3)
+            .addOtherStructurePart(StatCollector.translateToLocal("gg.structure.tooltip.output_hatch"), "Cold fluid", 4)
             .addMaintenanceHatch("Any Casing", 1, 2, 5)
             .toolTipFinisher();
         return tt;

@@ -14,6 +14,7 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_LINE
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_LINE_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_LINE_GLOW;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
+import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 import static gregtech.api.util.GTStructureUtility.ofHatchAdder;
 import static gregtech.api.util.GTUtility.validMTEList;
 
@@ -23,12 +24,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javax.annotation.Nonnull;
+
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
-
-import org.jetbrains.annotations.NotNull;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
@@ -37,7 +39,6 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTValues;
-import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.Textures.BlockIcons;
 import gregtech.api.enums.VoidingMode;
@@ -48,7 +49,6 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.metatileentity.implementations.MTEHatchDataAccess;
-import gregtech.api.multitileentity.multiblock.casing.Glasses;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
@@ -61,6 +61,7 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.IGTHatchAdder;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
+import gregtech.api.util.ParallelHelper;
 import gregtech.api.util.VoidProtectionHelper;
 
 public class MTEAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTEAssemblyLine> implements ISurvivalConstructable {
@@ -83,7 +84,7 @@ public class MTEAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTEAssemblyL
         .addElement('G', ofBlock(GregTechAPI.sBlockCasings3, 10)) // grate machine casing
         .addElement('l', ofBlock(GregTechAPI.sBlockCasings2, 9)) // assembler machine casing
         .addElement('m', ofBlock(GregTechAPI.sBlockCasings2, 5)) // assembling line casing
-        .addElement('g', Glasses.chainAllGlasses())
+        .addElement('g', chainAllGlasses())
         .addElement(
             'e',
             ofChain(
@@ -139,8 +140,7 @@ public class MTEAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTEAssemblyL
             .addStructureInfo("From Bottom to Top, Left to Right")
             .addStructureInfo(
                 "Layer 1 - Solid Steel Machine Casing, Input Bus (last can be Output Bus), Solid Steel Machine Casing")
-            .addStructureInfo(
-                "Layer 2 - Borosilicate Glass(any)/Warded Glass/Reinforced Glass, Assembly Line Casing, Reinforced Glass")
+            .addStructureInfo("Layer 2 - Glass, Assembly Line Casing, Glass")
             .addStructureInfo("Layer 3 - Grate Machine Casing, Assembler Machine Casing, Grate Machine Casing")
             .addStructureInfo("Layer 4 - Empty, Solid Steel Machine Casing, Empty")
             .addStructureInfo("Up to 16 repeating slices, each one allows for 1 more item in recipes")
@@ -150,7 +150,11 @@ public class MTEAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTEAssemblyL
             .addInputBus("As specified on layer 1", 4, 5)
             .addInputHatch("Any layer 1 casing", 3)
             .addOutputBus("Replaces Input Bus on final slice or on any solid steel casing on layer 1", 4)
-            .addOtherStructurePart("Data Access Hatch", "Optional, next to controller", 2)
+            .addOtherStructurePart(
+                StatCollector.translateToLocal("GT5U.tooltip.structure.data_access_hatch"),
+                "Optional, next to controller",
+                2)
+            .addSubChannelUsage("glass", "Glass Tier")
             .toolTipFinisher();
         return tt;
     }
@@ -192,19 +196,28 @@ public class MTEAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTEAssemblyL
     }
 
     @Override
-    @NotNull
-    public CheckRecipeResult checkProcessing() {
+    public @Nonnull CheckRecipeResult checkProcessing() {
         if (GTValues.D1) {
             GT_FML_LOGGER.info("Start ALine recipe check");
         }
         CheckRecipeResult result = CheckRecipeResultRegistry.NO_DATA_STICKS;
 
-        ArrayList<ItemStack> tDataStickList = getDataItems(2);
-        if (tDataStickList.isEmpty()) {
+        ArrayList<RecipeAssemblyLine> availableRecipes = new ArrayList<>();
+
+        if (AssemblyLineUtils.isItemDataStick(mInventory[1])) {
+            availableRecipes.addAll(AssemblyLineUtils.findALRecipeFromDataStick(mInventory[1]));
+        }
+
+        for (MTEHatchDataAccess dataAccess : validMTEList(mDataAccessHatches)) {
+            availableRecipes.addAll(dataAccess.getAssemblyLineRecipes());
+        }
+
+        if (availableRecipes.isEmpty()) {
             return result;
         }
+
         if (GTValues.D1) {
-            GT_FML_LOGGER.info("Stick accepted, " + tDataStickList.size() + " Data Sticks found");
+            GT_FML_LOGGER.info("Stick accepted, " + availableRecipes.size() + " Data Sticks found");
         }
 
         int[] tStacks = new int[0];
@@ -215,26 +228,7 @@ public class MTEAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTEAssemblyL
         Map<GTUtility.ItemId, ItemStack> inputsFromME = getStoredInputsFromME();
         Map<Fluid, FluidStack> fluidsFromME = getStoredFluidsFromME();
 
-        for (ItemStack tDataStick : tDataStickList) {
-            AssemblyLineUtils.LookupResult tLookupResult = AssemblyLineUtils
-                .findAssemblyLineRecipeFromDataStick(tDataStick, false);
-
-            if (tLookupResult.getType() == AssemblyLineUtils.LookupResultType.INVALID_STICK) {
-                result = CheckRecipeResultRegistry.NO_RECIPE;
-                continue;
-            }
-
-            GTRecipe.RecipeAssemblyLine tRecipe = tLookupResult.getRecipe();
-            // Check if the recipe on the data stick is the current recipe for it's given output, if not we update it
-            // and continue to next.
-            if (tLookupResult.getType() != AssemblyLineUtils.LookupResultType.VALID_STACK_AND_VALID_HASH) {
-                tRecipe = AssemblyLineUtils.processDataStick(tDataStick);
-                if (tRecipe == null) {
-                    result = CheckRecipeResultRegistry.NO_RECIPE;
-                    continue;
-                }
-            }
-
+        for (RecipeAssemblyLine tRecipe : availableRecipes) {
             // Recipe tier is limited to hatch tier + 1.
             if (tRecipe.mEUt > averageVoltage * 4) {
                 result = CheckRecipeResultRegistry.insufficientPower(tRecipe.mEUt);
@@ -260,7 +254,7 @@ public class MTEAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTEAssemblyL
                         mInputHatches.size(),
                         tRecipe.mFluidInputs.length);
                 }
-                result = CheckRecipeResultRegistry.NO_RECIPE;
+                if (result == CheckRecipeResultRegistry.NO_DATA_STICKS) result = CheckRecipeResultRegistry.NO_RECIPE;
                 continue;
             }
 
@@ -296,19 +290,23 @@ public class MTEAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTEAssemblyL
                 }
             }
 
-            int currentParallel = maxParallel;
             // Check Inputs allign
             int[] itemConsumptions = GTRecipe.RecipeAssemblyLine.getItemConsumptionAmountArray(mInputBusses, tRecipe);
             if (itemConsumptions == null || itemConsumptions.length == 0) {
-                result = CheckRecipeResultRegistry.NO_RECIPE;
+                if (result == CheckRecipeResultRegistry.NO_DATA_STICKS) result = CheckRecipeResultRegistry.NO_RECIPE;
                 continue;
             }
+
+            int currentParallel = maxParallel;
+
             currentParallel = (int) GTRecipe.RecipeAssemblyLine
                 .maxParallelCalculatedByInputItems(mInputBusses, currentParallel, itemConsumptions, inputsFromME);
+
             if (currentParallel <= 0) {
-                result = CheckRecipeResultRegistry.NO_RECIPE;
+                if (result == CheckRecipeResultRegistry.NO_DATA_STICKS) result = CheckRecipeResultRegistry.NO_RECIPE;
                 continue;
             }
+
             tStacks = itemConsumptions;
 
             if (GTValues.D1) {
@@ -323,7 +321,8 @@ public class MTEAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTEAssemblyL
                     tRecipe.mFluidInputs,
                     fluidsFromME);
                 if (currentParallel <= 0) {
-                    result = CheckRecipeResultRegistry.NO_RECIPE;
+                    if (result == CheckRecipeResultRegistry.NO_DATA_STICKS)
+                        result = CheckRecipeResultRegistry.NO_RECIPE;
                     continue;
                 }
                 tFluids = tRecipe.mFluidInputs;
@@ -358,8 +357,9 @@ public class MTEAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTEAssemblyL
                 GT_FML_LOGGER.info("Find available recipe");
             }
             result = CheckRecipeResultRegistry.SUCCESSFUL;
-            mOutputItems = new ItemStack[] { tRecipe.mOutput.copy() };
-            mOutputItems[0].stackSize *= maxParallelBeforeBatchMode * batchMultiplierMax;
+            ArrayList<ItemStack> outputs = new ArrayList<>();
+            ParallelHelper.addItemsLong(outputs, tRecipe.mOutput, (long) tRecipe.mOutput.stackSize * maxParallel);
+            mOutputItems = outputs.toArray(new ItemStack[0]);
             break;
         }
 
@@ -418,29 +418,6 @@ public class MTEAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTEAssemblyL
                 return !mEnergyHatches.isEmpty() && mMaintenanceHatches.size() == 1 && mDataAccessHatches.size() <= 1;
         }
         return false;
-    }
-
-    /**
-     * @param state using bitmask, 1 for IntegratedCircuit, 2 for DataStick, 4 for DataOrb
-     */
-    private static boolean isCorrectDataItem(ItemStack aStack, int state) {
-        if ((state & 1) != 0 && ItemList.Circuit_Integrated.isStackEqual(aStack, true, true)) return true;
-        if ((state & 2) != 0 && ItemList.Tool_DataStick.isStackEqual(aStack, false, true)) return true;
-        return (state & 4) != 0 && ItemList.Tool_DataOrb.isStackEqual(aStack, false, true);
-    }
-
-    /**
-     * @param state using bitmask, 1 for IntegratedCircuit, 2 for DataStick, 4 for DataOrb
-     */
-    public ArrayList<ItemStack> getDataItems(int state) {
-        ArrayList<ItemStack> rList = new ArrayList<>();
-        if (GTUtility.isStackValid(mInventory[1]) && isCorrectDataItem(mInventory[1], state)) {
-            rList.add(mInventory[1]);
-        }
-        for (MTEHatchDataAccess tHatch : validMTEList(mDataAccessHatches)) {
-            rList.addAll(tHatch.getInventoryItems(stack -> isCorrectDataItem(stack, state)));
-        }
-        return rList;
     }
 
     public boolean addDataAccessToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {

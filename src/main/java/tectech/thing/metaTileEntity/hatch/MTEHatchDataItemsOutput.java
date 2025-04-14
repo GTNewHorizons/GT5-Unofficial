@@ -2,22 +2,32 @@ package tectech.thing.metaTileEntity.hatch;
 
 import static net.minecraft.util.StatCollector.translateToLocal;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
-import tectech.mechanics.dataTransport.InventoryDataPacket;
+import gregtech.api.util.GTRecipe.RecipeAssemblyLine;
+import mcp.mobius.waila.api.IWailaConfigHandler;
+import mcp.mobius.waila.api.IWailaDataAccessor;
+import tectech.mechanics.dataTransport.ALRecipeDataPacket;
 import tectech.mechanics.pipe.IConnectsToDataPipe;
 import tectech.thing.metaTileEntity.pipe.MTEPipeData;
 import tectech.util.CommonValues;
-import tectech.util.TTUtility;
 
-public class MTEHatchDataItemsOutput extends MTEHatchDataConnector<InventoryDataPacket> {
+public class MTEHatchDataItemsOutput extends MTEHatchDataConnector<ALRecipeDataPacket> {
+
+    private ALRecipeDataPacket previousPacket;
 
     public MTEHatchDataItemsOutput(int aID, String aName, String aNameRegional, int aTier) {
         super(
@@ -28,16 +38,10 @@ public class MTEHatchDataItemsOutput extends MTEHatchDataConnector<InventoryData
             new String[] { CommonValues.TEC_MARK_EM, translateToLocal("gt.blockmachines.hatch.dataoutass.desc.0"),
                 translateToLocal("gt.blockmachines.hatch.dataoutass.desc.1"),
                 EnumChatFormatting.AQUA + translateToLocal("gt.blockmachines.hatch.dataoutass.desc.2") });
-        TTUtility.setTier(aTier, this);
     }
 
     public MTEHatchDataItemsOutput(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, aDescription, aTextures);
-    }
-
-    @Override
-    public boolean isSimpleMachine() {
-        return true;
     }
 
     @Override
@@ -78,8 +82,8 @@ public class MTEHatchDataItemsOutput extends MTEHatchDataConnector<InventoryData
     }
 
     @Override
-    protected InventoryDataPacket loadPacketFromNBT(NBTTagCompound nbt) {
-        return new InventoryDataPacket(nbt);
+    protected ALRecipeDataPacket loadPacketFromNBT(NBTTagCompound nbt) {
+        return new ALRecipeDataPacket(nbt);
     }
 
     @Override
@@ -104,6 +108,7 @@ public class MTEHatchDataItemsOutput extends MTEHatchDataConnector<InventoryData
             source = current;
             current = next;
         }
+        previousPacket = q;
         q = null;
     }
 
@@ -129,5 +134,40 @@ public class MTEHatchDataItemsOutput extends MTEHatchDataConnector<InventoryData
                         return (IConnectsToDataPipe) meta;
                     }
         return null;
+    }
+
+    @Override
+    public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
+        int z) {
+        super.getWailaNBTData(player, tile, tag, world, x, y, z);
+        tag.setInteger("recipeCount", previousPacket == null ? 0 : previousPacket.getContent().length);
+    }
+
+    @Override
+    public void getWailaBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor,
+        IWailaConfigHandler config) {
+        super.getWailaBody(itemStack, currenttip, accessor, config);
+
+        NBTTagCompound tag = accessor.getNBTData();
+        currenttip.add(translate("tt.keyphrase.AL_Recipe_Transmitting", tag.getInteger("recipeCount")));
+    }
+
+    @Override
+    public String[] getInfoData() {
+        ArrayList<String> lines = new ArrayList<>();
+
+        if (previousPacket != null) {
+            for (RecipeAssemblyLine recipe : previousPacket.getContent()) {
+                lines.add(translate("tt.keyphrase.AL_Recipe_Desc", recipe.mOutput.getDisplayName()));
+            }
+        } else {
+            lines.add(translate("tt.keyphrase.AL_Recipe_None"));
+        }
+
+        lines.sort(String::compareTo);
+
+        lines.add(0, translate("tt.keyphrase.AL_Recipe_Header"));
+
+        return lines.toArray(new String[0]);
     }
 }

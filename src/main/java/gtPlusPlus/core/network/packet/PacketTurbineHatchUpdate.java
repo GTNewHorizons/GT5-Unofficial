@@ -13,7 +13,7 @@ import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchTurbi
 import io.netty.buffer.ByteBuf;
 
 public class PacketTurbineHatchUpdate extends AbstractClientMessageHandler<PacketTurbineHatchUpdate>
-    implements AbstractPacket {
+    implements IMessage {
 
     private int x;
     private int y;
@@ -101,11 +101,6 @@ public class PacketTurbineHatchUpdate extends AbstractClientMessageHandler<Packe
 
     public void setController(BlockPos controller) {
         this.controller = controller;
-    }
-
-    @Override
-    public String getPacketName() {
-        return "Packet_VoluemtricFlaskSetter_ToClient";
     }
 
     @Override

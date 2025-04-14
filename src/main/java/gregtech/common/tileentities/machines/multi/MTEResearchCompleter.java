@@ -11,6 +11,8 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import org.jetbrains.annotations.NotNull;
+
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
@@ -23,9 +25,12 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEEnhancedMultiBlockBase;
 import gregtech.api.net.GTPacketNodeInfo;
+import gregtech.api.recipe.check.CheckRecipeResult;
+import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.api.util.OverclockCalculator;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
@@ -151,7 +156,7 @@ public class MTEResearchCompleter extends MTEEnhancedMultiBlockBase<MTEResearchC
 
     @Override
     public boolean onRunningTick(ItemStack aStack) {
-        float progressAmount = ((float) this.mProgresstime) / this.mMaxProgresstime;
+        float progressAmount = ((float) this.mProgresstime + 1) / this.mMaxProgresstime;
         int requiredVis = (int) Math.ceil(progressAmount * recipeAspectCost - aspectsAbsorbed);
         syncTimer--;
 
@@ -169,8 +174,7 @@ public class MTEResearchCompleter extends MTEEnhancedMultiBlockBase<MTEResearchC
             TileEntity tileEntity = aBaseMetaTileEntity.getWorld()
                 .getTileEntity(nodeX, nodeY, nodeZ);
 
-            if (tileEntity instanceof TileNode) {
-                TileNode aNode = (TileNode) tileEntity;
+            if (tileEntity instanceof TileNode aNode) {
                 AspectList aspectsBase = aNode.getAspectsBase();
 
                 for (Aspect aspect : aspectsBase.getAspects()) {
@@ -227,7 +231,7 @@ public class MTEResearchCompleter extends MTEEnhancedMultiBlockBase<MTEResearchC
     }
 
     @Override
-    public boolean checkRecipe(ItemStack itemStack) {
+    public @NotNull CheckRecipeResult checkProcessing() {
         ArrayList<ItemStack> tInputList = this.getStoredInputs();
 
         for (ItemStack stack : tInputList) {
@@ -241,15 +245,12 @@ public class MTEResearchCompleter extends MTEEnhancedMultiBlockBase<MTEResearchC
 
                     this.mEfficiency = 10000 - (this.getIdealStatus() - this.getRepairStatus()) * 1000;
                     this.mEfficiencyIncrease = 10000;
-                    this.calculateOverclockedNessMultiInternal(
-                        RECIPE_EUT,
-                        RECIPE_LENGTH,
-                        1,
-                        this.getMaxInputVoltage(),
-                        false);
-                    if (this.mMaxProgresstime == 2147483646 && this.mEUt == 2147483646) {
-                        return false;
-                    }
+                    OverclockCalculator calculator = new OverclockCalculator().setRecipeEUt(RECIPE_EUT)
+                        .setEUt(getMaxInputVoltage())
+                        .setDuration(RECIPE_LENGTH)
+                        .calculate();
+                    this.mEUt = (int) calculator.getConsumption();
+                    this.mMaxProgresstime = calculator.getDuration();
                     if (this.mEUt > 0) {
                         this.mEUt = -this.mEUt;
                     }
@@ -267,12 +268,12 @@ public class MTEResearchCompleter extends MTEEnhancedMultiBlockBase<MTEResearchC
 
                     this.sendLoopStart((byte) 20);
                     this.updateSlots();
-                    return true;
+                    return CheckRecipeResultRegistry.SUCCESSFUL;
                 }
             }
         }
 
-        return false;
+        return CheckRecipeResultRegistry.NO_RECIPE;
     }
 
     @Override
@@ -297,11 +298,6 @@ public class MTEResearchCompleter extends MTEEnhancedMultiBlockBase<MTEResearchC
     @Override
     public int getMaxEfficiency(ItemStack itemStack) {
         return 10000;
-    }
-
-    @Override
-    public int getPollutionPerTick(ItemStack itemStack) {
-        return 0;
     }
 
     @Override

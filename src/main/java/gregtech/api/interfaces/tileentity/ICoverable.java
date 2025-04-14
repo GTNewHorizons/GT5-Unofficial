@@ -1,59 +1,43 @@
 package gregtech.api.interfaces.tileentity;
 
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import gregtech.api.util.CoverBehavior;
-import gregtech.api.util.CoverBehaviorBase;
-import gregtech.api.util.ISerializableObject;
-import gregtech.common.covers.CoverInfo;
+import org.jetbrains.annotations.NotNull;
+
+import com.google.common.io.ByteArrayDataInput;
+
+import gregtech.common.covers.Cover;
 
 public interface ICoverable extends IRedstoneTileEntity, IHasInventory, IBasicEnergyContainer {
 
-    boolean canPlaceCoverIDAtSide(ForgeDirection side, int aID);
+    /**
+     * Remove the cover from the coverable and spawn the result of {@link #detachCover(ForgeDirection)} in the world on
+     * the dropped side.
+     */
+    void dropCover(ForgeDirection side, ForgeDirection droppedSide);
 
-    boolean canPlaceCoverItemAtSide(ForgeDirection side, ItemStack aCover);
+    /**
+     * Actually removes the cover from the coverable and return the cover item.
+     * <br>
+     * Called by {@link #dropCover(ForgeDirection, ForgeDirection)}
+     */
+    ItemStack detachCover(ForgeDirection side);
 
-    boolean dropCover(ForgeDirection side, ForgeDirection droppedSide, boolean aForced);
+    /**
+     * Called when the cover is initially attached to a machine.
+     *
+     * @param cover The cover
+     */
+    void attachCover(@NotNull Cover cover);
 
-    @Deprecated
-    void setCoverDataAtSide(ForgeDirection side, int aData);
+    boolean hasCoverAtSide(ForgeDirection side);
 
-    default void setCoverDataAtSide(ForgeDirection side, ISerializableObject aData) {
-        if (aData instanceof ISerializableObject.LegacyCoverData)
-            setCoverDataAtSide(side, ((ISerializableObject.LegacyCoverData) aData).get());
-    }
-
-    void setCoverIdAndDataAtSide(ForgeDirection side, int aId, ISerializableObject aData);
-
-    void setCoverIDAtSide(ForgeDirection side, int aID);
-
-    boolean setCoverIDAtSideNoUpdate(ForgeDirection side, int aID);
-
-    void setCoverItemAtSide(ForgeDirection side, ItemStack aCover);
-
-    @Deprecated
-    int getCoverDataAtSide(ForgeDirection side);
-
-    default CoverInfo getCoverInfoAtSide(ForgeDirection side) {
-        return null;
-    }
-
-    default ISerializableObject getComplexCoverDataAtSide(ForgeDirection side) {
-        return new ISerializableObject.LegacyCoverData(getCoverDataAtSide(side));
-    }
-
-    int getCoverIDAtSide(ForgeDirection side);
+    @NotNull
+    Cover getCoverAtSide(ForgeDirection side);
 
     ItemStack getCoverItemAtSide(ForgeDirection side);
-
-    @Deprecated
-    CoverBehavior getCoverBehaviorAtSide(ForgeDirection side);
-
-    default CoverBehaviorBase<?> getCoverBehaviorAtSideNew(ForgeDirection side) {
-        return getCoverBehaviorAtSide(side);
-    }
 
     /**
      * For use by the regular MetaTileEntities. Returns the Cover Manipulated input Redstone. Don't use this if you are
@@ -73,19 +57,16 @@ public interface ICoverable extends IRedstoneTileEntity, IHasInventory, IBasicEn
     void issueCoverUpdate(ForgeDirection side);
 
     /**
-     * Receiving a packet with cover data.
+     * Receiving nbt with cover data.
+     *
+     * @param nbt
      */
-    void receiveCoverData(ForgeDirection coverSide, int coverID, int coverData);
+    void updateAttachedCover(int coverId, ForgeDirection side, NBTTagCompound nbt);
 
     /**
      * Receiving a packet with cover data.
      *
-     * @param coverSide cover side
-     * @param aPlayer   the player who made the change
+     * @param data
      */
-    default void receiveCoverData(ForgeDirection coverSide, int aCoverID, ISerializableObject aCoverData,
-        EntityPlayerMP aPlayer) {
-        if (aCoverData instanceof ISerializableObject.LegacyCoverData)
-            receiveCoverData(coverSide, aCoverID, ((ISerializableObject.LegacyCoverData) aCoverData).get());
-    }
+    void updateAttachedCover(ByteArrayDataInput data);
 }

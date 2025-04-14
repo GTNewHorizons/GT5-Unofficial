@@ -13,7 +13,6 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipeConstants;
-import gtnhlanth.common.register.WerkstoffMaterialPool;
 
 public class ImplosionCompressorRecipes implements Runnable {
 
@@ -35,16 +34,6 @@ public class ImplosionCompressorRecipes implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.plateAlloy, Materials.Iridium, 1L),
                 GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.DarkAsh, 4L))
             .metadata(GTRecipeConstants.ADDITIVE_AMOUNT, 8)
-            .duration(1 * SECONDS)
-            .eut(TierEU.RECIPE_LV)
-            .addTo(implosionRecipes);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(WerkstoffMaterialPool.LanthanumHexaboride.get(OrePrefixes.dust, 4))
-            .itemOutputs(
-                WerkstoffMaterialPool.LanthanumHexaboride.get(OrePrefixes.gem, 3),
-                GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.DarkAsh, 12L))
-            .metadata(GTRecipeConstants.ADDITIVE_AMOUNT, 4)
             .duration(1 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(implosionRecipes);

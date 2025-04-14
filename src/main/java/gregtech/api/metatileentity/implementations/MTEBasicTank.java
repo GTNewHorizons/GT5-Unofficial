@@ -2,6 +2,7 @@ package gregtech.api.metatileentity.implementations;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
@@ -49,17 +50,8 @@ public abstract class MTEBasicTank extends MTETieredMachineBlock implements IAdd
         super(aID, aName, aNameRegional, aTier, aInvSlotCount, aDescription, aTextures);
     }
 
-    public MTEBasicTank(String aName, int aTier, int aInvSlotCount, String aDescription, ITexture[][][] aTextures) {
-        super(aName, aTier, aInvSlotCount, aDescription, aTextures);
-    }
-
     public MTEBasicTank(String aName, int aTier, int aInvSlotCount, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, aInvSlotCount, aDescription, aTextures);
-    }
-
-    @Override
-    public boolean isSimpleMachine() {
-        return false;
     }
 
     @Override
@@ -84,13 +76,6 @@ public abstract class MTEBasicTank extends MTETieredMachineBlock implements IAdd
     public abstract boolean canTankBeFilled();
 
     public abstract boolean canTankBeEmptied();
-
-    public abstract boolean displaysItemStack();
-
-    /**
-     * @return If fluid amount is shown on FluidDisplayItem
-     */
-    public abstract boolean displaysStackSize();
 
     public int getInputSlot() {
         return 0;
@@ -314,7 +299,8 @@ public abstract class MTEBasicTank extends MTETieredMachineBlock implements IAdd
                 createFluidSlot().setBackground(GTUITextures.TRANSPARENT)
                     .setPos(58, 41))
             .widget(
-                new TextWidget("Liquid Amount").setDefaultColor(COLOR_TEXT_WHITE.get())
+                new TextWidget(StatCollector.translateToLocal("GT5U.machines.basic_tank.liquid_amount"))
+                    .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setPos(10, 20))
             .widget(
                 new TextWidget().setStringSupplier(() -> numberFormat.format(mFluid != null ? mFluid.amount : 0))

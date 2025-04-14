@@ -6,24 +6,24 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.IBlockAccess;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.TAE;
+import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTUtility;
 import gregtech.common.blocks.MaterialCasings;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
-import gtPlusPlus.xmod.gregtech.api.objects.GTPPCopiedBlockTexture;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.CasingTextureHandler3;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
-import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.storage.GregtechMetaTileEntity_PowerSubStationController;
+import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.storage.MTEPowerSubStation;
 
 public class GregtechMetaCasingBlocks3 extends GregtechMetaCasingBlocksAbstract {
 
     public static boolean mConnectedMachineTextures = false;
-    CasingTextureHandler3 TextureHandler = new CasingTextureHandler3();
 
     public static class GregtechMetaCasingItemBlocks3 extends GregtechMetaCasingItems {
 
@@ -34,10 +34,13 @@ public class GregtechMetaCasingBlocks3 extends GregtechMetaCasingBlocksAbstract 
         @Override
         public void addInformation(ItemStack aStack, EntityPlayer aPlayer, List aList, boolean aF3_H) {
             int meta = aStack.getItemDamage();
-            int tier = GregtechMetaTileEntity_PowerSubStationController.getCellTier(field_150939_a, meta);
+            int tier = MTEPowerSubStation.getCellTier(field_150939_a, meta);
             if (tier > 0) {
-                long capacity = GregtechMetaTileEntity_PowerSubStationController.getCapacityFromCellTier(tier);
-                aList.add("Energy Storage: " + GTUtility.formatNumbers(capacity));
+                long capacity = MTEPowerSubStation.getCapacityFromCellTier(tier);
+                aList.add(
+                    StatCollector.translateToLocalFormatted(
+                        "gtpp.tooltip.meta_casing.energy_storage",
+                        GTUtility.formatNumbers(capacity)));
             }
             super.addInformation(aStack, aPlayer, aList, aF3_H);
         }
@@ -50,7 +53,7 @@ public class GregtechMetaCasingBlocks3 extends GregtechMetaCasingBlocksAbstract 
             if (i >= 4 && i <= 8) {
                 continue;
             }
-            TAE.registerTexture(2, i, new GTPPCopiedBlockTexture(this, 6, i));
+            TAE.registerTexture(2, i, TextureFactory.of(this, i));
         }
         GTLanguageManager.addStringLocalization(this.getUnlocalizedName() + ".0.name", "Aquatic Casing");
         GTLanguageManager.addStringLocalization(this.getUnlocalizedName() + ".1.name", "Inconel Reinforced Casing");

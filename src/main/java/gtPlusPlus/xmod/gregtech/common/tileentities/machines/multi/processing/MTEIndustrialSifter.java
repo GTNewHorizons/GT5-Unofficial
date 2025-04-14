@@ -131,8 +131,18 @@ public class MTEIndustrialSifter extends GTPPMultiBlockBase<MTEIndustrialSifter>
     }
 
     @Override
+    protected IIconContainer getActiveGlowOverlay() {
+        return TexturesGtBlock.oMCDIndustrialSifterActiveGlow;
+    }
+
+    @Override
     protected IIconContainer getInactiveOverlay() {
         return TexturesGtBlock.oMCDIndustrialSifter;
+    }
+
+    @Override
+    protected IIconContainer getInactiveGlowOverlay() {
+        return TexturesGtBlock.oMCDIndustrialSifterGlow;
     }
 
     @Override
@@ -155,7 +165,7 @@ public class MTEIndustrialSifter extends GTPPMultiBlockBase<MTEIndustrialSifter>
         super.onPreTick(aBaseMetaTileEntity, aTick);
         if ((aBaseMetaTileEntity.isClientSide()) && (aBaseMetaTileEntity.isActive())
             && (aBaseMetaTileEntity.getFrontFacing() != ForgeDirection.UP)
-            && (aBaseMetaTileEntity.getCoverIDAtSide(ForgeDirection.UP) == 0)
+            && (!aBaseMetaTileEntity.hasCoverAtSide(ForgeDirection.UP))
             && (!aBaseMetaTileEntity.getOpacityAtSide(ForgeDirection.UP))) {
             final Random tRandom = aBaseMetaTileEntity.getWorld().rand;
             if (tRandom.nextFloat() > 0.4) return;
@@ -179,7 +189,7 @@ public class MTEIndustrialSifter extends GTPPMultiBlockBase<MTEIndustrialSifter>
     protected ProcessingLogic createProcessingLogic() {
         return new ProcessingLogic().setSpeedBonus(1F / 5F)
             .setEuModifier(0.75F)
-            .setMaxParallelSupplier(this::getMaxParallelRecipes);
+            .setMaxParallelSupplier(this::getTrueParallel);
     }
 
     @Override
@@ -200,11 +210,6 @@ public class MTEIndustrialSifter extends GTPPMultiBlockBase<MTEIndustrialSifter>
     @Override
     public boolean explodesOnComponentBreak(final ItemStack aStack) {
         return false;
-    }
-
-    @Override
-    public boolean isOverclockerUpgradable() {
-        return true;
     }
 
     @SideOnly(Side.CLIENT)

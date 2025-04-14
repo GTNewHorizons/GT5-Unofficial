@@ -32,6 +32,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -124,7 +125,7 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer {
 
     @Override
     public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean debugInfo) {
-        tooltip.add(EnumChatFormatting.DARK_RED + "Forestry can't process it");
+        tooltip.add(EnumChatFormatting.DARK_RED + StatCollector.translateToLocal("GT5U.tooltip.comb.ban_forestry"));
     }
 
     @Override
@@ -582,7 +583,6 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer {
         addProcessGT(CombType.PALLADIUM, new Materials[] { Materials.Palladium }, Voltage.IV);
         addProcessGT(CombType.OSMIUM, new Materials[] { Materials.Osmium }, Voltage.IV);
         addProcessGT(CombType.NEODYMIUM, new Materials[] { Materials.Neodymium }, Voltage.MV);
-        addProcessGT(CombType.EUROPIUM, new Materials[] { Materials.Europium }, Voltage.LuV);
         addProcessGT(CombType.LITHIUM, new Materials[] { Materials.Lithium }, Voltage.MV);
         addProcessGT(CombType.ELECTROTINE, new Materials[] { Materials.Electrotine }, Voltage.MV);
         addProcessGT(CombType.DRACONIC, new Materials[] { Materials.Draconium }, Voltage.IV);
@@ -605,7 +605,6 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer {
         addProcessGT(CombType.NAQUADRIA, new Materials[] { Materials.Naquadria }, Voltage.LuV);
         addProcessGT(CombType.THORIUM, new Materials[] { Materials.Thorium }, Voltage.MV);
         addProcessGT(CombType.LUTETIUM, new Materials[] { Materials.Lutetium }, Voltage.IV);
-        addProcessGT(CombType.AMERICIUM, new Materials[] { Materials.Americium }, Voltage.LuV);
         addProcessGT(CombType.NEUTRONIUM, new Materials[] { Materials.Neutronium }, Voltage.UHV);
 
         // Twilight
@@ -653,7 +652,7 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer {
             CombType.ENDDUST,
             new ItemStack[] { GTModHandler.getModItem(MagicBees.ID, "wax", 1L, 0),
                 GTBees.propolis.getStackForType(PropolisType.End), GTBees.drop.getStackForType(DropType.ENDERGOO),
-                Materials.Endstone.getBlocks(4) },
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Endstone, 1L) },
             new int[] { 20 * 100, 15 * 100, 10 * 100, 100 * 100 },
             Voltage.HV);
         addCentrifugeToItemStack(
@@ -1147,7 +1146,7 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer {
         }
     }
 
-    enum Voltage {
+    public enum Voltage {
 
         ULV,
         LV,

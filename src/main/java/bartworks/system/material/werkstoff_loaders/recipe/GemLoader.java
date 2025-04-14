@@ -28,27 +28,31 @@ import static gregtech.api.enums.OrePrefixes.ore;
 import static gregtech.api.enums.OrePrefixes.plate;
 import static gregtech.api.recipe.RecipeMaps.compressorRecipes;
 import static gregtech.api.recipe.RecipeMaps.hammerRecipes;
+import static gregtech.api.recipe.RecipeMaps.implosionRecipes;
 import static gregtech.api.recipe.RecipeMaps.laserEngraverRecipes;
 import static gregtech.api.recipe.RecipeMaps.latheRecipes;
 import static gregtech.api.recipe.RecipeMaps.sifterRecipes;
 import static gregtech.api.util.GTRecipeBuilder.MINUTES;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
+import static gregtech.api.util.GTRecipeConstants.ADDITIVE_AMOUNT;
 
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 
 import bartworks.system.material.Werkstoff;
+import bartworks.system.material.WerkstoffLoader;
 import bartworks.system.material.werkstoff_loaders.IWerkstoffRunnable;
 import bartworks.util.BWColorUtil;
-import gregtech.api.GregTechAPI;
+import gregtech.api.covers.CoverRegistry;
 import gregtech.api.enums.GTValues;
+import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.TierEU;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTModHandler;
-import gregtech.common.covers.CoverLens;
+import gregtech.api.util.GTOreDictUnificator;
 
 public class GemLoader implements IWerkstoffRunnable {
 
@@ -133,6 +137,48 @@ public class GemLoader implements IWerkstoffRunnable {
                 .eut(16)
                 .addTo(hammerRecipes);
 
+            if (!werkstoff.contains(WerkstoffLoader.NO_BLAST)) {
+                GTValues.RA.stdBuilder()
+                    .itemInputs(werkstoff.get(gemFlawless, 3))
+                    .itemOutputs(werkstoff.get(gemExquisite), GTOreDictUnificator.get(dustTiny, Materials.DarkAsh, 2))
+                    .duration(20 * TICKS)
+                    .eut(TierEU.RECIPE_LV)
+                    .metadata(ADDITIVE_AMOUNT, 8)
+                    .addTo(implosionRecipes);
+
+                GTValues.RA.stdBuilder()
+                    .itemInputs(werkstoff.get(gem, 3))
+                    .itemOutputs(werkstoff.get(gemFlawless), GTOreDictUnificator.get(dustTiny, Materials.DarkAsh, 2))
+                    .duration(20 * TICKS)
+                    .eut(TierEU.RECIPE_LV)
+                    .metadata(ADDITIVE_AMOUNT, 8)
+                    .addTo(implosionRecipes);
+
+                GTValues.RA.stdBuilder()
+                    .itemInputs(werkstoff.get(gemFlawed, 3))
+                    .itemOutputs(werkstoff.get(gem), GTOreDictUnificator.get(dustTiny, Materials.DarkAsh, 2))
+                    .duration(20 * TICKS)
+                    .eut(TierEU.RECIPE_LV)
+                    .metadata(ADDITIVE_AMOUNT, 8)
+                    .addTo(implosionRecipes);
+
+                GTValues.RA.stdBuilder()
+                    .itemInputs(werkstoff.get(gemChipped, 3))
+                    .itemOutputs(werkstoff.get(gemFlawed), GTOreDictUnificator.get(dustTiny, Materials.DarkAsh, 2))
+                    .duration(20 * TICKS)
+                    .eut(TierEU.RECIPE_LV)
+                    .metadata(ADDITIVE_AMOUNT, 8)
+                    .addTo(implosionRecipes);
+
+                GTValues.RA.stdBuilder()
+                    .itemInputs(werkstoff.get(dust, 4))
+                    .itemOutputs(werkstoff.get(gem, 3), GTOreDictUnificator.get(dustTiny, Materials.DarkAsh, 8))
+                    .duration(20 * TICKS)
+                    .eut(TierEU.RECIPE_LV)
+                    .metadata(ADDITIVE_AMOUNT, 24)
+                    .addTo(implosionRecipes);
+            }
+
             if (werkstoff.hasItemType(plate)) {
 
                 GTValues.RA.stdBuilder()
@@ -154,10 +200,7 @@ public class GemLoader implements IWerkstoffRunnable {
             final ITexture texture = TextureFactory.of(
                 Textures.BlockIcons.MACHINE_CASINGS[2][0],
                 TextureFactory.of(Textures.BlockIcons.OVERLAY_LENS, werkstoff.getRGBA(), false));
-            GregTechAPI.registerCover(
-                werkstoff.get(lens),
-                texture,
-                new CoverLens(BWColorUtil.getDyeFromColor(werkstoff.getRGBA()).mIndex, texture));
+            CoverRegistry.registerDecorativeCover(werkstoff.get(lens), texture);
 
             for (ItemStack is : OreDictionary
                 .getOres("craftingLens" + BWColorUtil.getDyeFromColor(werkstoff.getRGBA()).mName.replace(" ", ""))) {

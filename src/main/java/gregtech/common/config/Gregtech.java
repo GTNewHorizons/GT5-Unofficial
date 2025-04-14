@@ -238,10 +238,10 @@ public class Gregtech {
         @Config.RequiresMcRestart
         public boolean nerfedWoodPlank;
 
-        @Config.Comment("if true, reduces the durability of the vanilla tools.")
+        @Config.Comment("if true, change the default durability of wooden vanilla tools to 64 and increase speed to match stone")
         @Config.DefaultBoolean(true)
         @Config.RequiresMcRestart
-        public boolean nerfedVanillaTools;
+        public boolean changedWoodenVanillaTools;
 
         @Config.Comment("if true, enables GT5U achievements.")
         @Config.DefaultBoolean(true)
@@ -529,11 +529,6 @@ public class Gregtech {
         @Config.DefaultBoolean(true)
         @Config.RequiresMcRestart
         public boolean useMachineMetal;
-
-        @Config.Comment("if true, enables MuTEs(multitile entities) to be added to the game. MuTEs are in the start of development and its not recommended to enable them unless you know what you are doing. (always activated in dev env)")
-        @Config.DefaultBoolean(false)
-        @Config.RequiresMcRestart
-        public boolean enableMultiTileEntities;
     }
 
     @Config.LangKey("GT5U.gui.config.gregtech.ore_drop_behavior")

@@ -5,6 +5,7 @@ import static gregtech.api.enums.GTValues.VN;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_ME_INPUT_HATCH;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_ME_INPUT_HATCH_ACTIVE;
 
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -62,6 +63,7 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.IConfigurationCircuitSupport;
 import gregtech.api.interfaces.IDataCopyable;
+import gregtech.api.interfaces.IMEConnectable;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.modularui.IAddGregtechLogo;
 import gregtech.api.interfaces.modularui.IAddUIWidgets;
@@ -79,24 +81,25 @@ import gregtech.common.gui.modularui.widget.AESlotWidget;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
-public class MTEHatchInputBusME extends MTEHatchInputBus implements IConfigurationCircuitSupport,
-    IRecipeProcessingAwareHatch, IAddGregtechLogo, IAddUIWidgets, IPowerChannelState, ISmartInputHatch, IDataCopyable {
+public class MTEHatchInputBusME extends MTEHatchInputBus
+    implements IConfigurationCircuitSupport, IRecipeProcessingAwareHatch, IAddGregtechLogo, IAddUIWidgets,
+    IPowerChannelState, ISmartInputHatch, IDataCopyable, IMEConnectable {
 
-    private static final int SLOT_COUNT = 16;
+    protected static final int SLOT_COUNT = 16;
     public static final String COPIED_DATA_IDENTIFIER = "stockingBus";
-    private BaseActionSource requestSource = null;
-    private @Nullable AENetworkProxy gridProxy = null;
-    private final ItemStack[] shadowInventory = new ItemStack[SLOT_COUNT];
-    private final int[] savedStackSizes = new int[SLOT_COUNT];
-    private boolean processingRecipe = false;
-    private final boolean autoPullAvailable;
-    private boolean autoPullItemList = false;
-    private int minAutoPullStackSize = 1;
-    private int autoPullRefreshTime = 100;
-    private static final int CONFIG_WINDOW_ID = 10;
-    private boolean additionalConnection = false;
-    private boolean justHadNewItems = false;
-    private boolean expediteRecipeCheck = false;
+    protected BaseActionSource requestSource = null;
+    protected @Nullable AENetworkProxy gridProxy = null;
+    protected final ItemStack[] shadowInventory = new ItemStack[SLOT_COUNT];
+    protected final int[] savedStackSizes = new int[SLOT_COUNT];
+    protected boolean processingRecipe = false;
+    protected final boolean autoPullAvailable;
+    protected boolean autoPullItemList = false;
+    protected int minAutoPullStackSize = 1;
+    protected int autoPullRefreshTime = 100;
+    protected static final int CONFIG_WINDOW_ID = 10;
+    protected boolean additionalConnection = false;
+    protected boolean justHadNewItems = false;
+    protected boolean expediteRecipeCheck = false;
 
     public MTEHatchInputBusME(int aID, boolean autoPullAvailable, String aName, String aNameRegional) {
         super(
@@ -134,15 +137,28 @@ public class MTEHatchInputBusME extends MTEHatchInputBus implements IConfigurati
 
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTimer) {
-        if (getBaseMetaTileEntity().isServerSide()) {
+        if (aBaseMetaTileEntity.isServerSide()) {
             if (aTimer % autoPullRefreshTime == 0 && autoPullItemList) {
                 refreshItemList();
             }
             if (aTimer % 20 == 0) {
-                getBaseMetaTileEntity().setActive(isActive());
+                aBaseMetaTileEntity.setActive(isActive());
             }
         }
         super.onPostTick(aBaseMetaTileEntity, aTimer);
+    }
+
+    protected boolean isAllowedToWork() {
+        IGregTechTileEntity igte = getBaseMetaTileEntity();
+
+        return igte != null && igte.isAllowedToWork();
+    }
+
+    @Override
+    public void onEnableWorking() {
+        if (expediteRecipeCheck) {
+            justHadNewItems = true;
+        }
     }
 
     @Override
@@ -156,7 +172,7 @@ public class MTEHatchInputBusME extends MTEHatchInputBus implements IConfigurati
         return isOutputFacing(forgeDirection) ? AECableType.SMART : AECableType.NONE;
     }
 
-    private void updateValidGridProxySides() {
+    protected void updateValidGridProxySides() {
         if (additionalConnection) {
             getProxy().setValidSides(EnumSet.complementOf(EnumSet.of(ForgeDirection.UNKNOWN)));
         } else {
@@ -177,6 +193,17 @@ public class MTEHatchInputBusME extends MTEHatchInputBus implements IConfigurati
         aPlayer.addChatComponentMessage(
             new ChatComponentTranslation("GT5U.hatch.additionalConnection." + additionalConnection));
         return true;
+    }
+
+    @Override
+    public boolean connectsToAllSides() {
+        return additionalConnection;
+    }
+
+    @Override
+    public void setConnectsToAllSides(boolean connects) {
+        additionalConnection = connects;
+        updateValidGridProxySides();
     }
 
     @Override
@@ -223,7 +250,7 @@ public class MTEHatchInputBusME extends MTEHatchInputBus implements IConfigurati
         getProxy().writeToNBT(aNBT);
     }
 
-    private void setAutoPullItemList(boolean pullItemList) {
+    protected void setAutoPullItemList(boolean pullItemList) {
         if (!autoPullAvailable) {
             return;
         }
@@ -276,9 +303,10 @@ public class MTEHatchInputBusME extends MTEHatchInputBus implements IConfigurati
 
     @Override
     public String[] getInfoData() {
-        return new String[] {
-            "The bus is " + ((getProxy() != null && getProxy().isActive()) ? EnumChatFormatting.GREEN + "online"
-                : EnumChatFormatting.RED + "offline" + getAEDiagnostics()) + EnumChatFormatting.RESET };
+        return new String[] { (getProxy() != null && getProxy().isActive())
+            ? StatCollector.translateToLocal("GT5U.infodata.hatch.crafting_input_me.bus.online")
+            : StatCollector
+                .translateToLocalFormatted("GT5U.infodata.hatch.crafting_input_me.bus.offline", getAEDiagnostics()) };
     }
 
     @Override
@@ -357,6 +385,7 @@ public class MTEHatchInputBusME extends MTEHatchInputBus implements IConfigurati
             if (nbt.hasKey("refreshTime")) {
                 autoPullRefreshTime = nbt.getInteger("refreshTime");
             }
+            expediteRecipeCheck = nbt.getBoolean("expediteRecipeCheck");
         }
 
         additionalConnection = nbt.getBoolean("additionalConnection");
@@ -378,6 +407,7 @@ public class MTEHatchInputBusME extends MTEHatchInputBus implements IConfigurati
         tag.setBoolean("autoPull", autoPullItemList);
         tag.setInteger("minStackSize", minAutoPullStackSize);
         tag.setInteger("refreshTime", autoPullRefreshTime);
+        tag.setBoolean("expediteRecipeCheck", expediteRecipeCheck);
         tag.setBoolean("additionalConnection", additionalConnection);
         tag.setTag("circuit", GTUtility.saveItem(getStackInSlot(getCircuitSlot())));
 
@@ -392,7 +422,7 @@ public class MTEHatchInputBusME extends MTEHatchInputBus implements IConfigurati
         return tag;
     }
 
-    private int getManualSlot() {
+    protected int getManualSlot() {
         return SLOT_COUNT * 2 + 1;
     }
 
@@ -418,7 +448,7 @@ public class MTEHatchInputBusME extends MTEHatchInputBus implements IConfigurati
 
     @Override
     public boolean justUpdated() {
-        if (expediteRecipeCheck) {
+        if (expediteRecipeCheck && isAllowedToWork()) {
             boolean ret = justHadNewItems;
             justHadNewItems = false;
             return ret;
@@ -441,22 +471,37 @@ public class MTEHatchInputBusME extends MTEHatchInputBus implements IConfigurati
     @Override
     public ItemStack getStackInSlot(int aIndex) {
         if (!processingRecipe) return super.getStackInSlot(aIndex);
+
         if (aIndex < 0 || aIndex > mInventory.length) return null;
-        if (aIndex >= SLOT_COUNT && aIndex < SLOT_COUNT * 2)
-            // Display slots
-            return null;
+
+        // Display slots
+        if (aIndex >= SLOT_COUNT && aIndex < SLOT_COUNT * 2) return null;
+
         if (aIndex == getCircuitSlot() || aIndex == getManualSlot()) return mInventory[aIndex];
+
         if (mInventory[aIndex] != null) {
+
             AENetworkProxy proxy = getProxy();
             if (proxy == null || !proxy.isActive()) {
                 return null;
             }
+
+            if (!isAllowedToWork()) {
+                this.shadowInventory[aIndex] = null;
+                this.savedStackSizes[aIndex] = 0;
+                super.setInventorySlotContents(aIndex + SLOT_COUNT, null);
+                return null;
+            }
+
             try {
                 IMEMonitor<IAEItemStack> sg = proxy.getStorage()
                     .getItemInventory();
+
                 IAEItemStack request = AEItemStack.create(mInventory[aIndex]);
                 request.setStackSize(Integer.MAX_VALUE);
+
                 IAEItemStack result = sg.extractItems(request, Actionable.SIMULATE, getRequestSource());
+
                 if (result != null) {
                     this.shadowInventory[aIndex] = result.getItemStack();
                     this.savedStackSizes[aIndex] = this.shadowInventory[aIndex].stackSize;
@@ -476,7 +521,7 @@ public class MTEHatchInputBusME extends MTEHatchInputBus implements IConfigurati
         return mInventory[aIndex];
     }
 
-    private BaseActionSource getRequestSource() {
+    protected BaseActionSource getRequestSource() {
         if (requestSource == null) requestSource = new MachineSource((IActionHost) getBaseMetaTileEntity());
         return requestSource;
     }
@@ -494,7 +539,7 @@ public class MTEHatchInputBusME extends MTEHatchInputBus implements IConfigurati
         updateAllInformationSlots();
     }
 
-    private void refreshItemList() {
+    protected void refreshItemList() {
         AENetworkProxy proxy = getProxy();
         try {
             IMEMonitor<IAEItemStack> sg = proxy.getStorage()
@@ -523,7 +568,7 @@ public class MTEHatchInputBusME extends MTEHatchInputBus implements IConfigurati
         } catch (final GridAccessException ignored) {}
     }
 
-    private void updateAllInformationSlots() {
+    protected void updateAllInformationSlots() {
         for (int index = 0; index < SLOT_COUNT; index++) {
             updateInformationSlot(index, mInventory[index]);
         }
@@ -582,6 +627,14 @@ public class MTEHatchInputBusME extends MTEHatchInputBus implements IConfigurati
                     super.setInventorySlotContents(aIndex + SLOT_COUNT, null);
                     return null;
                 }
+
+                if (!isAllowedToWork()) {
+                    this.shadowInventory[aIndex] = null;
+                    this.savedStackSizes[aIndex] = 0;
+                    super.setInventorySlotContents(aIndex + SLOT_COUNT, null);
+                    return null;
+                }
+
                 try {
                     IMEMonitor<IAEItemStack> sg = proxy.getStorage()
                         .getItemInventory();
@@ -749,12 +802,23 @@ public class MTEHatchInputBusME extends MTEHatchInputBus implements IConfigurati
             boolean isActive = isActive();
             boolean isPowered = isPowered();
             boolean isBooting = isBooting();
-            EnumChatFormatting color = (isActive && isPowered) ? EnumChatFormatting.GREEN : EnumChatFormatting.DARK_RED;
-            return color + WailaText.getPowerState(isActive, isPowered, isBooting);
+
+            String state = WailaText.getPowerState(isActive, isPowered, isBooting);
+
+            if (isActive && isPowered) {
+                return MessageFormat.format(
+                    "{0}{1}§f ({2})",
+                    EnumChatFormatting.GREEN,
+                    state,
+                    StatCollector
+                        .translateToLocal(isAllowedToWork() ? "GT5U.gui.text.enabled" : "GT5U.gui.text.disabled"));
+            } else {
+                return EnumChatFormatting.DARK_RED + state;
+            }
         })
             .setTextAlignment(Alignment.Center)
-            .setSize(90, 9)
-            .setPos(43, 84))
+            .setSize(130, 9)
+            .setPos(23, 84))
             .widget(
                 new SlotWidget(inventoryHandler, getManualSlot())
                     // ghost slots are prioritized over manual slot
@@ -863,7 +927,7 @@ public class MTEHatchInputBusME extends MTEHatchInputBus implements IConfigurati
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
     }
 
-    private static String[] getDescriptionArray(boolean autoPullAvailable) {
+    protected static String[] getDescriptionArray(boolean autoPullAvailable) {
         List<String> strings = new ArrayList<>(8);
         strings.add("Advanced item input for Multiblocks");
         strings.add("Hatch Tier: " + TIER_COLORS[autoPullAvailable ? 6 : 3] + VN[autoPullAvailable ? 6 : 3]);

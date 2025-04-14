@@ -37,8 +37,11 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityDispenser;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+
+import org.jetbrains.annotations.NotNull;
 
 import com.gtnewhorizon.structurelib.StructureLibAPI;
 import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
@@ -77,11 +80,14 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEEnhancedMultiBlockBase;
 import gregtech.api.objects.ItemData;
 import gregtech.api.recipe.RecipeMaps;
+import gregtech.api.recipe.check.CheckRecipeResult;
+import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.api.util.shutdown.ShutDownReason;
 import gregtech.common.items.IDMetaTool01;
 import gregtech.common.items.MetaGeneratedTool01;
 
@@ -154,6 +160,12 @@ public class MTEWindmill extends MTEEnhancedMultiBlockBase<MTEWindmill>
             }
 
             @Override
+            public boolean couldBeValid(MTEWindmill mteWindmill, World world, int x, int y, int z, ItemStack trigger) {
+                TileEntity tileEntity = world.getTileEntity(x, y, z);
+                return tileEntity instanceof TileEntityRotorBlock;
+            }
+
+            @Override
             public boolean spawnHint(MTEWindmill t, World world, int x, int y, int z, ItemStack trigger) {
                 StructureLibAPI.hintParticle(world, x, y, z, StructureLibAPI.getBlockHint(), 0);
                 return true;
@@ -196,7 +208,7 @@ public class MTEWindmill extends MTEEnhancedMultiBlockBase<MTEWindmill>
             .addCasingInfoMin("Hardened Clay block", 40, false)
             .addOtherStructurePart("Dispenser", "Any Hardened Clay block")
             .addOtherStructurePart("0-1 Wooden door", "Any Hardened Clay block")
-            .addStructureHint("Primitive Kinetic Shaftbox", 1)
+            .addStructureHint("tile.BWRotorBlock.0.name", 1)
             .toolTipFinisher();
         return tt;
     }
@@ -277,8 +289,9 @@ public class MTEWindmill extends MTEEnhancedMultiBlockBase<MTEWindmill>
     }
 
     @Override
-    public boolean checkRecipe(ItemStack itemStack) {
-        if (itemStack == null || itemStack.getItem() == null) return false;
+    public @NotNull CheckRecipeResult checkProcessing() {
+        ItemStack itemStack = getControllerSlot();
+        if (itemStack == null || itemStack.getItem() == null) return CheckRecipeResultRegistry.NO_RECIPE;
 
         if (this.mOutputItems == null) this.mOutputItems = new ItemStack[2];
 
@@ -287,7 +300,7 @@ public class MTEWindmill extends MTEEnhancedMultiBlockBase<MTEWindmill>
             .voltage(V[1])
             .find();
         if (tRecipe == null) {
-            return false;
+            return CheckRecipeResultRegistry.NO_RECIPE;
         }
 
         if (tRecipe.getOutput(0) != null) {
@@ -325,11 +338,11 @@ public class MTEWindmill extends MTEEnhancedMultiBlockBase<MTEWindmill>
         }
         this.mMaxProgresstime = tRecipe.mDuration * 2 * 100 * this.mMulti / this.getSpeed(this.rotorBlock);
         this.mMulti = 16;
-        return true;
+        return CheckRecipeResultRegistry.SUCCESSFUL;
     }
 
     @Override
-    public void stopMachine() {
+    public void stopMachine(@NotNull ShutDownReason reason) {
         this.getBaseMetaTileEntity()
             .disableWorking();
     }
@@ -408,11 +421,6 @@ public class MTEWindmill extends MTEEnhancedMultiBlockBase<MTEWindmill>
     }
 
     @Override
-    public int getPollutionPerTick(ItemStack itemStack) {
-        return 0;
-    }
-
-    @Override
     public int getDamageToComponent(ItemStack itemStack) {
         return 0;
     }
@@ -429,9 +437,11 @@ public class MTEWindmill extends MTEEnhancedMultiBlockBase<MTEWindmill>
 
     @Override
     public String[] getInfoData() {
-        return new String[] { "Progress:",
-            this.mProgresstime + " Grindings of " + this.mMaxProgresstime + " needed Grindings", "GrindPower:",
-            this.rotorBlock.getGrindPower() + "KU/t" };
+        return new String[] {
+            StatCollector
+                .translateToLocalFormatted("BW.infoData.wind_mill.progress", this.mProgresstime, this.mMaxProgresstime),
+            StatCollector
+                .translateToLocalFormatted("BW.infoData.wind_mill.grind_power", this.rotorBlock.getGrindPower()) };
     }
 
     @SideOnly(Side.CLIENT)
@@ -523,30 +533,28 @@ public class MTEWindmill extends MTEEnhancedMultiBlockBase<MTEWindmill>
     }
 
     public float OutputMultiplier(TileEntityRotorBlock rotorBlock) {
-        try {
-            return ((ItemStonageRotors) rotorBlock.rotorSlot.get()
-                .getItem()).getmRotor();
-        } catch (Exception e) {
-            return 1f;
+        ItemStack stack = rotorBlock.rotorSlot.get();
+        if (stack == null || !(stack.getItem() instanceof ItemStonageRotors rotor)) {
+            return 1;
         }
+        return rotor.getmRotor();
     }
 
     public int getSpeed(TileEntityRotorBlock rotorBlock) {
-        try {
-            return ((ItemStonageRotors) rotorBlock.rotorSlot.get()
-                .getItem()).getSpeed();
-        } catch (Exception e) {
+        ItemStack stack = rotorBlock.rotorSlot.get();
+        if (stack == null || !(stack.getItem() instanceof ItemStonageRotors rotor)) {
             return 1;
         }
+        return rotor.getSpeed();
     }
 
     public void setRotorDamage(TileEntityRotorBlock rotorBlock, int damage) {
-        try {
-            ((ItemStonageRotors) rotorBlock.rotorSlot.get()
-                .getItem()).damageItemStack(rotorBlock.rotorSlot.get(), damage);
-        } catch (Exception e) {
+        ItemStack stack = rotorBlock.rotorSlot.get();
+        if (stack == null || !(stack.getItem() instanceof ItemStonageRotors rotor)) {
             rotorBlock.rotorSlot.damage(damage, false);
+            return;
         }
+        rotor.damageItemStack(stack, damage);
     }
 
     @Override

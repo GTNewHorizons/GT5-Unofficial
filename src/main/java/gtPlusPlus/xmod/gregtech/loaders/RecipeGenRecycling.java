@@ -13,13 +13,14 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
 
+import org.apache.commons.lang3.tuple.Pair;
+
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.api.objects.data.Pair;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.material.state.MaterialState;
 import gtPlusPlus.core.util.Utils;
@@ -71,7 +72,7 @@ public class RecipeGenRecycling implements Runnable {
                 mValidPrefixesAsString[r].name() + Utils.sanitizeString(material.getLocalizedName()),
                 1);
             if (temp != null) {
-                mValidPairs[mSlotIndex++] = new Pair<>(mValidPrefixesAsString[r], temp.copy());
+                mValidPairs[mSlotIndex++] = Pair.of(mValidPrefixesAsString[r], temp.copy());
             }
         }
 
@@ -183,7 +184,7 @@ public class RecipeGenRecycling implements Runnable {
 
         if (mPrefix != null && mDust != null) {
             Logger.WARNING("Built valid dust pair.");
-            return new Pair<>(mPrefix, mDust);
+            return Pair.of(mPrefix, mDust);
         } else {
             Logger.WARNING("mPrefix: " + (mPrefix != null));
             Logger.WARNING("mDust: " + (mDust != null));
@@ -286,39 +287,33 @@ public class RecipeGenRecycling implements Runnable {
     }
 
     public static ItemStack getItemStackOfAmountFromOreDictNoBroken(String oredictName, final int amount) {
-
-        try {
-
-            if (oredictName.contains("-") || oredictName.contains("_")) {
-                oredictName = Utils.sanitizeString(oredictName, new char[] { '-', '_' });
-            } else {
-                oredictName = Utils.sanitizeString(oredictName);
-            }
-
-            // Adds a check to grab dusts using GT methodology if possible.
-            ItemStack returnValue = null;
-            if (oredictName.toLowerCase()
-                .contains("dust")) {
-                final String MaterialName = oredictName.toLowerCase()
-                    .replace("dust", "");
-                final Materials m = Materials.get(MaterialName);
-                if (m != null && m != Materials._NULL) {
-                    returnValue = ItemUtils.getGregtechDust(m, amount);
-                    if (ItemUtils.checkForInvalidItems(returnValue)) {
-                        return returnValue;
-                    }
-                }
-            }
-            if (returnValue == null) {
-                returnValue = getItemStackOfAmountFromOreDict(oredictName, amount);
-                if (ItemUtils.checkForInvalidItems(returnValue)) {
-                    return returnValue.copy();
-                }
-            }
-            return null;
-        } catch (final Throwable t) {
-            return null;
+        if (oredictName.contains("-") || oredictName.contains("_")) {
+            oredictName = Utils.sanitizeString(oredictName, new char[] { '-', '_' });
+        } else {
+            oredictName = Utils.sanitizeString(oredictName);
         }
+
+        // Adds a check to grab dusts using GT methodology if possible.
+        ItemStack returnValue = null;
+        if (oredictName.toLowerCase()
+            .contains("dust")) {
+            final String MaterialName = oredictName.toLowerCase()
+                .replace("dust", "");
+            final Materials m = Materials.get(MaterialName);
+            if (m != null && m != Materials._NULL) {
+                returnValue = ItemUtils.getGregtechDust(m, amount);
+                if (ItemUtils.checkForInvalidItems(returnValue)) {
+                    return returnValue;
+                }
+            }
+        }
+        if (returnValue == null) {
+            returnValue = getItemStackOfAmountFromOreDict(oredictName, amount);
+            if (ItemUtils.checkForInvalidItems(returnValue)) {
+                return returnValue.copy();
+            }
+        }
+        return null;
     }
 
     public static ItemStack getItemStackOfAmountFromOreDict(String oredictName, final int amount) {

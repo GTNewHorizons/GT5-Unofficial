@@ -6,6 +6,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
@@ -19,7 +20,7 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEBasicTank;
-import gregtech.api.objects.GTRenderedTexture;
+import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
 import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
@@ -47,21 +48,6 @@ public class MTETesseractTerminal extends MTEBasicTank {
     @Override
     public MetaTileEntity newMetaEntity(final IGregTechTileEntity aTileEntity) {
         return new MTETesseractTerminal(this.mName, this.mTier, this.mDescriptionArray, this.mTextures);
-    }
-
-    @Override
-    public boolean isTransformerUpgradable() {
-        return false;
-    }
-
-    @Override
-    public boolean isOverclockerUpgradable() {
-        return false;
-    }
-
-    @Override
-    public boolean isSimpleMachine() {
-        return false;
     }
 
     @Override
@@ -292,8 +278,11 @@ public class MTETesseractTerminal extends MTEBasicTank {
             .isAllowedToWork()) && (tTileEntity.isSendingInformation())) {
             return tTileEntity.getInfoData();
         }
-        return new String[] { "Tesseract Generator", "Freqency:", "" + this.mFrequency,
-            this.getTesseract(this.mFrequency, false) != null ? "Active" : "Inactive" };
+        return new String[] { StatCollector.translateToLocal("gtpp.infodata.tesseract_generator.name"),
+            StatCollector.translateToLocalFormatted("gtpp.infodata.tesseract_generator.frequency", this.mFrequency),
+            this.getTesseract(this.mFrequency, false) != null
+                ? StatCollector.translateToLocal("gtpp.infodata.tesseract_generator.status.active")
+                : StatCollector.translateToLocal("gtpp.infodata.tesseract_generator.status.inactive") };
     }
 
     @Override
@@ -569,10 +558,10 @@ public class MTETesseractTerminal extends MTEBasicTank {
     public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final ForgeDirection side,
         final ForgeDirection facing, final int aColorIndex, final boolean aActive, final boolean aRedstone) {
         return side == facing
-            ? new ITexture[] { new GTRenderedTexture(TexturesGtBlock.Casing_Machine_Dimensional),
-                new GTRenderedTexture(TexturesGtBlock.Casing_Machine_Screen_Frequency) }
-            : new ITexture[] { new GTRenderedTexture(TexturesGtBlock.Casing_Machine_Dimensional),
-                new GTRenderedTexture(Textures.BlockIcons.VOID) };
+            ? new ITexture[] { TextureFactory.of(TexturesGtBlock.Casing_Machine_Dimensional),
+                TextureFactory.of(TexturesGtBlock.Casing_Machine_Screen_Frequency) }
+            : new ITexture[] { TextureFactory.of(TexturesGtBlock.Casing_Machine_Dimensional),
+                TextureFactory.of(Textures.BlockIcons.VOID) };
     }
 
     // To-Do?
@@ -593,16 +582,6 @@ public class MTETesseractTerminal extends MTEBasicTank {
 
     @Override
     public boolean canTankBeEmptied() {
-        return false;
-    }
-
-    @Override
-    public boolean displaysItemStack() {
-        return false;
-    }
-
-    @Override
-    public boolean displaysStackSize() {
         return false;
     }
 

@@ -29,7 +29,6 @@ public class NeutronActivatorLoader {
             .duration(8 * MINUTES + 20 * SECONDS)
             .eut(0)
             .metadata(NKE_RANGE, computeRangeNKE(700, 500))
-            .noOptimize()
             .addTo(neutronActivatorRecipes);
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.copyAmount(0, GTOreDictUnificator.get(OrePrefixes.plate, Materials.Tungsten, 1)))
@@ -38,7 +37,6 @@ public class NeutronActivatorLoader {
             .duration(4 * SECONDS)
             .eut(0)
             .metadata(NKE_RANGE, computeRangeNKE(550, 450))
-            .noOptimize()
             .addTo(neutronActivatorRecipes);
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.copyAmount(0, GTOreDictUnificator.get(OrePrefixes.plate, Materials.Tritanium, 1)))
@@ -47,7 +45,6 @@ public class NeutronActivatorLoader {
             .duration(4 * SECONDS)
             .eut(0)
             .metadata(NKE_RANGE, computeRangeNKE(600, 500))
-            .noOptimize()
             .addTo(neutronActivatorRecipes);
 
         GTValues.RA.stdBuilder()
@@ -58,7 +55,6 @@ public class NeutronActivatorLoader {
             .duration(16400 * SECONDS)
             .eut(0)
             .metadata(NKE_RANGE, computeRangeNKE(1100, 1050))
-            .noOptimize()
             .addTo(neutronActivatorRecipes);
 
         GTValues.RA.stdBuilder()
@@ -69,7 +65,6 @@ public class NeutronActivatorLoader {
             .duration(24600 * SECONDS)
             .eut(0)
             .metadata(NKE_RANGE, computeRangeNKE(1100, 1075))
-            .noOptimize()
             .addTo(neutronActivatorRecipes);
 
     }

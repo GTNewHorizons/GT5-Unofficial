@@ -13,7 +13,6 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
-import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 
@@ -27,7 +26,7 @@ public class BenderRecipes implements Runnable {
                 GTUtility.getIntegratedCircuit(10))
             .itemOutputs(ItemList.RC_Rail_Standard.get(64L))
             .duration(15 * SECONDS)
-            .eut(TierEU.RECIPE_HV)
+            .eut(TierEU.RECIPE_LV)
             .addTo(benderRecipes);
 
         GTValues.RA.stdBuilder()
@@ -36,7 +35,7 @@ public class BenderRecipes implements Runnable {
                 GTUtility.getIntegratedCircuit(10))
             .itemOutputs(ItemList.RC_Rail_Standard.get(64L))
             .duration(15 * SECONDS)
-            .eut(TierEU.RECIPE_HV)
+            .eut(TierEU.RECIPE_LV)
             .addTo(benderRecipes);
 
         GTValues.RA.stdBuilder()
@@ -45,7 +44,7 @@ public class BenderRecipes implements Runnable {
                 GTUtility.getIntegratedCircuit(10))
             .itemOutputs(ItemList.RC_Rail_Standard.get(64L))
             .duration(15 * SECONDS)
-            .eut(TierEU.RECIPE_HV)
+            .eut(TierEU.RECIPE_LV)
             .addTo(benderRecipes);
 
         GTValues.RA.stdBuilder()
@@ -54,7 +53,7 @@ public class BenderRecipes implements Runnable {
                 GTUtility.getIntegratedCircuit(10))
             .itemOutputs(ItemList.RC_Rail_Standard.get(64L))
             .duration(15 * SECONDS)
-            .eut(TierEU.RECIPE_HV)
+            .eut(TierEU.RECIPE_LV)
             .addTo(benderRecipes);
 
         GTValues.RA.stdBuilder()
@@ -63,7 +62,7 @@ public class BenderRecipes implements Runnable {
                 GTUtility.getIntegratedCircuit(10))
             .itemOutputs(ItemList.RC_Rail_Standard.get(64L))
             .duration(15 * SECONDS)
-            .eut(TierEU.RECIPE_HV)
+            .eut(TierEU.RECIPE_LV)
             .addTo(benderRecipes);
 
         GTValues.RA.stdBuilder()
@@ -72,7 +71,7 @@ public class BenderRecipes implements Runnable {
                 GTUtility.getIntegratedCircuit(10))
             .itemOutputs(ItemList.RC_Rail_Standard.get(64L))
             .duration(15 * SECONDS)
-            .eut(TierEU.RECIPE_HV)
+            .eut(TierEU.RECIPE_LV)
             .addTo(benderRecipes);
 
         GTValues.RA.stdBuilder()
@@ -81,7 +80,7 @@ public class BenderRecipes implements Runnable {
                 GTUtility.getIntegratedCircuit(10))
             .itemOutputs(ItemList.RC_Rail_Standard.get(64L))
             .duration(15 * SECONDS)
-            .eut(TierEU.RECIPE_HV)
+            .eut(TierEU.RECIPE_LV)
             .addTo(benderRecipes);
 
         GTValues.RA.stdBuilder()
@@ -90,7 +89,7 @@ public class BenderRecipes implements Runnable {
                 GTUtility.getIntegratedCircuit(10))
             .itemOutputs(ItemList.RC_Rail_Standard.get(64L))
             .duration(15 * SECONDS)
-            .eut(TierEU.RECIPE_HV)
+            .eut(TierEU.RECIPE_LV)
             .addTo(benderRecipes);
 
         GTValues.RA.stdBuilder()
@@ -99,7 +98,7 @@ public class BenderRecipes implements Runnable {
                 GTUtility.getIntegratedCircuit(10))
             .itemOutputs(ItemList.RC_Rail_Standard.get(64L))
             .duration(15 * SECONDS)
-            .eut(TierEU.RECIPE_HV)
+            .eut(TierEU.RECIPE_LV)
             .addTo(benderRecipes);
 
         GTValues.RA.stdBuilder()
@@ -108,7 +107,7 @@ public class BenderRecipes implements Runnable {
                 GTUtility.getIntegratedCircuit(10))
             .itemOutputs(ItemList.RC_Rail_Standard.get(64L))
             .duration(15 * SECONDS)
-            .eut(TierEU.RECIPE_HV)
+            .eut(TierEU.RECIPE_LV)
             .addTo(benderRecipes);
 
         GTValues.RA.stdBuilder()
@@ -117,7 +116,7 @@ public class BenderRecipes implements Runnable {
                 GTUtility.getIntegratedCircuit(10))
             .itemOutputs(ItemList.RC_Rail_Standard.get(64L))
             .duration(15 * SECONDS)
-            .eut(TierEU.RECIPE_HV)
+            .eut(TierEU.RECIPE_LV)
             .addTo(benderRecipes);
 
         GTValues.RA.stdBuilder()
@@ -126,7 +125,7 @@ public class BenderRecipes implements Runnable {
                 GTUtility.getIntegratedCircuit(11))
             .itemOutputs(ItemList.RC_Rail_Reinforced.get(64L))
             .duration(30 * SECONDS)
-            .eut(TierEU.RECIPE_HV)
+            .eut(TierEU.RECIPE_MV)
             .addTo(benderRecipes);
 
         GTValues.RA.stdBuilder()
@@ -135,7 +134,7 @@ public class BenderRecipes implements Runnable {
                 GTUtility.getIntegratedCircuit(11))
             .itemOutputs(ItemList.RC_Rail_Reinforced.get(64L))
             .duration(30 * SECONDS)
-            .eut(TierEU.RECIPE_HV)
+            .eut(TierEU.RECIPE_MV)
             .addTo(benderRecipes);
 
         GTValues.RA.stdBuilder()
@@ -144,7 +143,7 @@ public class BenderRecipes implements Runnable {
                 GTUtility.getIntegratedCircuit(11))
             .itemOutputs(ItemList.RC_Rail_Reinforced.get(64L))
             .duration(30 * SECONDS)
-            .eut(TierEU.RECIPE_HV)
+            .eut(TierEU.RECIPE_MV)
             .addTo(benderRecipes);
 
         GTValues.RA.stdBuilder()
@@ -153,7 +152,7 @@ public class BenderRecipes implements Runnable {
                 GTUtility.getIntegratedCircuit(11))
             .itemOutputs(ItemList.RC_Rail_Reinforced.get(64L))
             .duration(30 * SECONDS)
-            .eut(TierEU.RECIPE_HV)
+            .eut(TierEU.RECIPE_MV)
             .addTo(benderRecipes);
 
         GTValues.RA.stdBuilder()
@@ -162,7 +161,7 @@ public class BenderRecipes implements Runnable {
                 GTUtility.getIntegratedCircuit(11))
             .itemOutputs(ItemList.RC_Rail_Reinforced.get(64L))
             .duration(30 * SECONDS)
-            .eut(TierEU.RECIPE_HV)
+            .eut(TierEU.RECIPE_MV)
             .addTo(benderRecipes);
 
         GTValues.RA.stdBuilder()
@@ -311,7 +310,7 @@ public class BenderRecipes implements Runnable {
             .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.itemCasing, Materials.Iron, 2L),
                 GTUtility.getIntegratedCircuit(2))
-            .itemOutputs(GTModHandler.getIC2Item("fuelRod", 1L))
+            .itemOutputs(ItemList.IC2_Fuel_Rod_Empty.get(1))
             .duration(5 * SECONDS)
             .eut(8)
             .addTo(benderRecipes);

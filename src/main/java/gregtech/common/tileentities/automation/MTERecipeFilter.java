@@ -14,7 +14,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.PacketBuffer;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.Constants;
@@ -35,12 +34,10 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.RecipeMapWorkable;
 import gregtech.api.metatileentity.implementations.MTESpecialFilter;
-import gregtech.api.multitileentity.MultiTileEntityItem;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
 import gregtech.common.blocks.ItemMachines;
-import gregtech.loaders.preload.GT_Loader_MultiTileEntities;
 
 public class MTERecipeFilter extends MTESpecialFilter {
 
@@ -60,10 +57,6 @@ public class MTERecipeFilter extends MTESpecialFilter {
             new String[] { "Filters 1 Recipe Type", "Use Screwdriver to regulate output stack size" });
     }
 
-    public MTERecipeFilter(String aName, int aTier, int aInvSlotCount, String aDescription, ITexture[][][] aTextures) {
-        super(aName, aTier, aInvSlotCount, aDescription, aTextures);
-    }
-
     public MTERecipeFilter(String aName, int aTier, int aInvSlotCount, String[] aDescription,
         ITexture[][][] aTextures) {
         super(aName, aTier, aInvSlotCount, aDescription, aTextures);
@@ -74,8 +67,6 @@ public class MTERecipeFilter extends MTESpecialFilter {
             IMetaTileEntity metaTileEntity = ItemMachines.getMetaTileEntity(stack);
             if (metaTileEntity != null) {
                 return getMetaTileEntityRecipeMap(metaTileEntity);
-            } else if (stack.getItem() instanceof MultiTileEntityItem) {
-                return getMuTeRecipeMap(stack);
             }
         }
         return null;
@@ -83,14 +74,6 @@ public class MTERecipeFilter extends MTESpecialFilter {
 
     private static RecipeMap<?> getMetaTileEntityRecipeMap(IMetaTileEntity metaTileEntity) {
         if (metaTileEntity instanceof RecipeMapWorkable recipeMapWorkable) {
-            return recipeMapWorkable.getRecipeMap();
-        }
-        return null;
-    }
-
-    private static RecipeMap<?> getMuTeRecipeMap(@NotNull ItemStack stack) {
-        final TileEntity tileEntity = GT_Loader_MultiTileEntities.MACHINE_REGISTRY.getReferenceTileEntity(stack);
-        if (tileEntity instanceof RecipeMapWorkable recipeMapWorkable) {
             return recipeMapWorkable.getRecipeMap();
         }
         return null;

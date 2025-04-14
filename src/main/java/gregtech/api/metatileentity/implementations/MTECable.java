@@ -2,11 +2,6 @@ package gregtech.api.metatileentity.implementations;
 
 import static gregtech.api.enums.Mods.GalacticraftCore;
 import static net.minecraftforge.common.util.ForgeDirection.DOWN;
-import static net.minecraftforge.common.util.ForgeDirection.EAST;
-import static net.minecraftforge.common.util.ForgeDirection.NORTH;
-import static net.minecraftforge.common.util.ForgeDirection.SOUTH;
-import static net.minecraftforge.common.util.ForgeDirection.UP;
-import static net.minecraftforge.common.util.ForgeDirection.WEST;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -18,7 +13,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
@@ -41,22 +35,16 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IConnectable;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntityCable;
-import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IEnergyConnected;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.logic.interfaces.PowerLogicHost;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.metatileentity.MetaPipeEntity;
-import gregtech.api.objects.GTCoverNone;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.CoverBehavior;
-import gregtech.api.util.CoverBehaviorBase;
 import gregtech.api.util.GTGCCompat;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
-import gregtech.api.util.ISerializableObject;
-import gregtech.common.GTClient;
-import gregtech.common.covers.CoverInfo;
+import gregtech.common.blocks.ItemMachines;
+import gregtech.common.covers.Cover;
 import gregtech.common.covers.CoverSolarPanel;
 import ic2.api.energy.EnergyNet;
 import ic2.api.energy.tile.IEnergyEmitter;
@@ -124,7 +112,7 @@ public class MTECable extends MetaPipeEntity implements IMetaTileEntityCable {
         if (!mInsulated) return new ITexture[] { TextureFactory
             .of(mMaterial.mIconSet.mTextures[TextureSet.INDEX_wire], Dyes.getModulation(colorIndex, mMaterial.mRGBa)) };
         if (active) {
-            float tThickNess = getThickNess();
+            float tThickNess = getThickness();
             if (tThickNess < 0.124F) return new ITexture[] { TextureFactory
                 .of(Textures.BlockIcons.INSULATION_FULL, Dyes.getModulation(colorIndex, Dyes.CABLE_INSULATION.mRGBa)) };
             if (tThickNess < 0.374F) // 0.375 x1
@@ -189,11 +177,6 @@ public class MTECable extends MetaPipeEntity implements IMetaTileEntityCable {
     }
 
     @Override
-    public boolean isSimpleMachine() {
-        return true;
-    }
-
-    @Override
     public boolean isFacingValid(ForgeDirection facing) {
         return false;
     }
@@ -221,16 +204,9 @@ public class MTECable extends MetaPipeEntity implements IMetaTileEntityCable {
     @Override
     public long injectEnergyUnits(ForgeDirection side, long voltage, long amperage) {
         if (!isConnectedAtSide(side) && side != ForgeDirection.UNKNOWN) return 0;
-        if (!getBaseMetaTileEntity().getCoverInfoAtSide(side)
+        if (!getBaseMetaTileEntity().getCoverAtSide(side)
             .letsEnergyIn()) return 0;
         return transferElectricity(side, voltage, amperage, (HashSet<TileEntity>) null);
-    }
-
-    @Override
-    @Deprecated
-    public long transferElectricity(ForgeDirection side, long aVoltage, long aAmperage,
-        ArrayList<TileEntity> aAlreadyPassedTileEntityList) {
-        return transferElectricity(side, aVoltage, aAmperage, new HashSet<>(aAlreadyPassedTileEntityList));
     }
 
     @Override
@@ -261,6 +237,154 @@ public class MTECable extends MetaPipeEntity implements IMetaTileEntityCable {
         if (aTick % 20 == 0 && aBaseMetaTileEntity.isServerSide()
             && (!GTMod.gregtechproxy.gt6Cable || mCheckConnections)) {
             checkConnections();
+        }
+    }
+
+    @Override
+    public void onLeftclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
+        // Only perform the logic if the player is sneaking.
+        if (!aPlayer.isSneaking()) {
+            return;
+        }
+
+        ItemStack handItem = aPlayer.inventory.getCurrentItem();
+        if (handItem == null) {
+            return;
+        }
+
+        IMetaTileEntity meta = ItemMachines.getMetaTileEntity(handItem);
+        if (!(meta instanceof MTECable handCable)) {
+            return;
+        }
+
+        // 1) Record & disconnect old cable from all sides where it was connected
+        MTECable oldCable = this;
+        byte oldConnections = oldCable.mConnections;
+
+        // We'll remember which sides were connected, so we can reconnect the new cable
+        List<ForgeDirection> oldConnectedSides = new ArrayList<>();
+        for (ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
+            if (oldCable.isConnectedAtSide(side)) {
+                oldConnectedSides.add(side);
+            }
+        }
+
+        short newMetaID = (short) handItem.getItemDamage();
+        long oldVoltage = this.mVoltage;
+        long oldAmperage = this.mAmperage;
+
+        // If the existing cable has the same specs as what we're holding, skip.
+        if (this.getClass() == handCable.getClass() && this.mMaterial == handCable.mMaterial
+            && this.mVoltage == handCable.mVoltage
+            && this.mAmperage == handCable.mAmperage) {
+            return;
+        }
+
+        short oldMetaID = (short) aBaseMetaTileEntity.getMetaTileID();
+
+        // Construct the new cable
+        MTECable newCable = new MTECable(
+            handCable.mName,
+            handCable.mThickNess,
+            handCable.mMaterial,
+            handCable.mCableLossPerMeter,
+            handCable.mAmperage,
+            handCable.mVoltage,
+            handCable.mInsulated,
+            handCable.mCanShock);
+
+        // Swap in the new cable
+        aBaseMetaTileEntity.setMetaTileID(newMetaID);
+        aBaseMetaTileEntity.setMetaTileEntity(newCable);
+
+        aBaseMetaTileEntity.markDirty();
+        aBaseMetaTileEntity.issueBlockUpdate();
+
+        // 7) Reconnect the *new* cable to the old sides (modified for both cables and machines)
+        if (newCable.getBaseMetaTileEntity() != null) {
+            // For each side that was previously connected
+            for (ForgeDirection side : oldConnectedSides) {
+                IGregTechTileEntity neighborTile = newCable.getBaseMetaTileEntity()
+                    .getIGregTechTileEntityAtSide(side);
+                int result = newCable.connect(side);
+                // If there is a neighbor tile, then:
+                if (neighborTile != null) {
+                    // If the neighbor is a cable (implements IConnectable), then require a successful connection
+                    if (neighborTile.getMetaTileEntity() instanceof IConnectable) {
+                        if (result > 0) {
+                            ((IConnectable) neighborTile.getMetaTileEntity()).connect(side.getOpposite());
+                        } else {
+                            newCable.disconnect(side);
+                        }
+                    }
+                    // Otherwise, if the neighbor is a machine (or any non-cable tile), don't connect.
+                } else {
+                    // No neighbor exists at this side, so disconnect
+                    newCable.disconnect(side);
+                }
+            }
+        }
+        aBaseMetaTileEntity.issueTextureUpdate();
+
+        // Handle inventory changes (old <-> new cable) if not creative
+        if (!aPlayer.capabilities.isCreativeMode) {
+            ItemStack oldCableStack = new ItemStack(handItem.getItem(), 1, oldMetaID);
+            boolean addedToInventory = false;
+
+            if (oldCableStack != null) {
+                // Try stacking with existing inventory
+                for (int i = 0; i < aPlayer.inventory.mainInventory.length; i++) {
+                    ItemStack slot = aPlayer.inventory.mainInventory[i];
+                    if (slot != null && slot.getItem() == oldCableStack.getItem()
+                        && slot.getItemDamage() == oldCableStack.getItemDamage()
+                        && slot.stackSize < slot.getMaxStackSize()) {
+                        slot.stackSize++;
+                        addedToInventory = true;
+                        break;
+                    }
+                }
+
+                // If not stacked, add new item
+                if (!addedToInventory) {
+                    addedToInventory = aPlayer.inventory.addItemStackToInventory(oldCableStack);
+                }
+                // If still unsuccessful, drop it
+                if (!addedToInventory) {
+                    aPlayer.dropPlayerItemWithRandomChoice(oldCableStack, false);
+                }
+            }
+
+            // Decrease the held cable quantity
+            handItem.stackSize--;
+            if (handItem.stackSize <= 0) {
+                aPlayer.inventory.setInventorySlotContents(aPlayer.inventory.currentItem, null);
+            }
+        }
+
+        // Optionally, notify the player if voltage or amperage changed
+        if (oldAmperage != handCable.mAmperage || oldVoltage != handCable.mVoltage) {
+            StringBuilder message = new StringBuilder();
+            if (oldAmperage != handCable.mAmperage) {
+                message.append(oldAmperage)
+                    .append("A → ")
+                    .append(handCable.mAmperage > oldAmperage ? EnumChatFormatting.GREEN : EnumChatFormatting.RED)
+                    .append(handCable.mAmperage)
+                    .append("A")
+                    .append(EnumChatFormatting.RESET);
+            }
+            if (oldAmperage != handCable.mAmperage && oldVoltage != handCable.mVoltage) {
+                message.append(" | ");
+            }
+            if (oldVoltage != handCable.mVoltage) {
+                message.append(oldVoltage)
+                    .append("V → ")
+                    .append(handCable.mVoltage > oldVoltage ? EnumChatFormatting.GREEN : EnumChatFormatting.RED)
+                    .append(handCable.mVoltage)
+                    .append("V")
+                    .append(EnumChatFormatting.RESET);
+            }
+            GTUtility
+                .sendChatToPlayer(aPlayer, StatCollector.translateToLocal("GT5U.item.cable.swapped") + " " + message);
         }
     }
 
@@ -299,54 +423,28 @@ public class MTECable extends MetaPipeEntity implements IMetaTileEntityCable {
     }
 
     @Override
-    public boolean letsIn(CoverBehavior coverBehavior, ForgeDirection side, int aCoverID, int aCoverVariable,
-        ICoverable aTileEntity) {
-        return coverBehavior.letsEnergyIn(side, aCoverID, aCoverVariable, aTileEntity);
+    public boolean letsIn(Cover cover) {
+        return cover.letsEnergyIn();
     }
 
     @Override
-    public boolean letsOut(CoverBehavior coverBehavior, ForgeDirection side, int aCoverID, int aCoverVariable,
-        ICoverable aTileEntity) {
-        return coverBehavior.letsEnergyOut(side, aCoverID, aCoverVariable, aTileEntity);
-    }
-
-    @Override
-    public boolean letsIn(CoverBehaviorBase<?> coverBehavior, ForgeDirection side, int aCoverID,
-        ISerializableObject aCoverVariable, ICoverable aTileEntity) {
-        return coverBehavior.letsEnergyIn(side, aCoverID, aCoverVariable, aTileEntity);
-    }
-
-    @Override
-    public boolean letsOut(CoverBehaviorBase<?> coverBehavior, ForgeDirection side, int aCoverID,
-        ISerializableObject aCoverVariable, ICoverable aTileEntity) {
-        return coverBehavior.letsEnergyOut(side, aCoverID, aCoverVariable, aTileEntity);
-    }
-
-    @Override
-    public boolean letsIn(CoverInfo coverInfo) {
-        return coverInfo.letsEnergyIn();
-    }
-
-    @Override
-    public boolean letsOut(CoverInfo coverInfo) {
-        return coverInfo.letsEnergyOut();
+    public boolean letsOut(Cover cover) {
+        return cover.letsEnergyOut();
     }
 
     @Override
     public boolean canConnect(ForgeDirection side, TileEntity tileEntity) {
         final IGregTechTileEntity baseMetaTile = getBaseMetaTileEntity();
-        final CoverBehaviorBase<?> coverBehavior = baseMetaTile.getCoverBehaviorAtSideNew(side);
         final ForgeDirection oppositeSide = side.getOpposite();
 
         // GT Machine handling
-        if ((tileEntity instanceof PowerLogicHost powerLogic && powerLogic.getPowerLogic(oppositeSide) != null)
-            || ((tileEntity instanceof IEnergyConnected energyConnected)
-                && (energyConnected.inputEnergyFrom(oppositeSide, false)
-                    || energyConnected.outputsEnergyTo(oppositeSide, false))))
+        if (((tileEntity instanceof IEnergyConnected energyConnected)
+            && (energyConnected.inputEnergyFrom(oppositeSide, false)
+                || energyConnected.outputsEnergyTo(oppositeSide, false))))
             return true;
 
         // Solar Panel Compat
-        if (coverBehavior instanceof CoverSolarPanel) return true;
+        if (baseMetaTile.getCoverAtSide(side) instanceof CoverSolarPanel) return true;
 
         // ((tIsGregTechTileEntity && tIsTileEntityCable) && (tAlwaysLookConnected || tLetEnergyIn || tLetEnergyOut) )
         // --> Not needed
@@ -429,8 +527,7 @@ public class MTECable extends MetaPipeEntity implements IMetaTileEntityCable {
     }
 
     @Override
-    public float getThickNess() {
-        if (GTMod.instance.isClientSide() && (GTClient.hideValue & 0x1) != 0) return 0.0625F;
+    public float getCollisionThickness() {
         return mThickNess;
     }
 
@@ -456,8 +553,11 @@ public class MTECable extends MetaPipeEntity implements IMetaTileEntityCable {
         final BaseMetaPipeEntity base = (BaseMetaPipeEntity) getBaseMetaTileEntity();
         final PowerNodePath path = (PowerNodePath) base.getNodePath();
 
+        path.reloadLocks();
+
         if (path == null)
-            return new String[] { EnumChatFormatting.RED + "Failed to get Power Node info" + EnumChatFormatting.RESET };
+            return new String[] { EnumChatFormatting.RED + StatCollector.translateToLocal("GT5U.infodata.cable.failed")
+                + EnumChatFormatting.RESET };
 
         final long currAmp = path.getAmperage();
         final long currVoltage = path.getVoltage();
@@ -468,98 +568,20 @@ public class MTECable extends MetaPipeEntity implements IMetaTileEntityCable {
         final long maxVoltageOut = (mVoltage - mCableLossPerMeter) * mAmperage;
 
         return new String[] {
-            "Amperage: " + EnumChatFormatting.GREEN
-                + GTUtility.formatNumbers(currAmp)
-                + EnumChatFormatting.RESET
-                + " / "
-                + EnumChatFormatting.YELLOW
-                + GTUtility.formatNumbers(mAmperage)
-                + EnumChatFormatting.RESET
-                + " A",
-            "Voltage Out: " + EnumChatFormatting.GREEN
-                + GTUtility.formatNumbers(currVoltage)
-                + EnumChatFormatting.RESET
-                + " / "
-                + EnumChatFormatting.YELLOW
-                + GTUtility.formatNumbers(maxVoltageOut)
-                + EnumChatFormatting.RESET
-                + " EU/t",
-            "Avg Amperage (20t): " + EnumChatFormatting.YELLOW
-                + GTUtility.formatNumbers(avgAmp)
-                + EnumChatFormatting.RESET
-                + " A",
-            "Avg Output (20t): " + EnumChatFormatting.YELLOW
-                + GTUtility.formatNumbers(avgVoltage)
-                + EnumChatFormatting.RESET
-                + " EU/t" };
-    }
-
-    @Override
-    public AxisAlignedBB getCollisionBoundingBoxFromPool(World aWorld, int aX, int aY, int aZ) {
-        if (GTMod.instance.isClientSide() && (GTClient.hideValue & 0x2) != 0)
-            return AxisAlignedBB.getBoundingBox(aX, aY, aZ, aX + 1, aY + 1, aZ + 1);
-        else return getActualCollisionBoundingBoxFromPool(aWorld, aX, aY, aZ);
-    }
-
-    private AxisAlignedBB getActualCollisionBoundingBoxFromPool(World aWorld, int aX, int aY, int aZ) {
-        float tSpace = (1f - mThickNess) / 2;
-        float spaceDown = tSpace;
-        float spaceUp = 1f - tSpace;
-        float spaceNorth = tSpace;
-        float spaceSouth = 1f - tSpace;
-        float spaceWest = tSpace;
-        float spaceEast = 1f - tSpace;
-
-        if (getBaseMetaTileEntity().getCoverIDAtSide(DOWN) != 0) {
-            spaceDown = spaceNorth = spaceWest = 0;
-            spaceSouth = spaceEast = 1;
-        }
-        if (getBaseMetaTileEntity().getCoverIDAtSide(UP) != 0) {
-            spaceNorth = spaceWest = 0;
-            spaceUp = spaceSouth = spaceEast = 1;
-        }
-        if (getBaseMetaTileEntity().getCoverIDAtSide(NORTH) != 0) {
-            spaceDown = spaceNorth = spaceWest = 0;
-            spaceUp = spaceEast = 1;
-        }
-        if (getBaseMetaTileEntity().getCoverIDAtSide(SOUTH) != 0) {
-            spaceDown = spaceWest = 0;
-            spaceUp = spaceSouth = spaceEast = 1;
-        }
-        if (getBaseMetaTileEntity().getCoverIDAtSide(WEST) != 0) {
-            spaceDown = spaceNorth = spaceWest = 0;
-            spaceUp = spaceSouth = 1;
-        }
-        if (getBaseMetaTileEntity().getCoverIDAtSide(EAST) != 0) {
-            spaceDown = spaceNorth = 0;
-            spaceUp = spaceSouth = spaceEast = 1;
-        }
-
-        byte tConn = ((BaseMetaPipeEntity) getBaseMetaTileEntity()).mConnections;
-        if ((tConn & DOWN.flag) != 0) spaceDown = 0f;
-        if ((tConn & UP.flag) != 0) spaceUp = 1f;
-        if ((tConn & NORTH.flag) != 0) spaceNorth = 0f;
-        if ((tConn & SOUTH.flag) != 0) spaceSouth = 1f;
-        if ((tConn & WEST.flag) != 0) spaceWest = 0f;
-        if ((tConn & EAST.flag) != 0) spaceEast = 1f;
-
-        return AxisAlignedBB.getBoundingBox(
-            aX + spaceWest,
-            aY + spaceDown,
-            aZ + spaceNorth,
-            aX + spaceEast,
-            aY + spaceUp,
-            aZ + spaceSouth);
-    }
-
-    @Override
-    public void addCollisionBoxesToList(World aWorld, int aX, int aY, int aZ, AxisAlignedBB inputAABB,
-        List<AxisAlignedBB> outputAABB, Entity collider) {
-        super.addCollisionBoxesToList(aWorld, aX, aY, aZ, inputAABB, outputAABB, collider);
-        if (GTMod.instance.isClientSide() && (GTClient.hideValue & 0x2) != 0) {
-            final AxisAlignedBB aabb = getActualCollisionBoundingBoxFromPool(aWorld, aX, aY, aZ);
-            if (inputAABB.intersectsWith(aabb)) outputAABB.add(aabb);
-        }
+            StatCollector.translateToLocalFormatted(
+                "GT5U.infodata.cable.amperage",
+                EnumChatFormatting.GREEN + GTUtility.formatNumbers(currAmp) + EnumChatFormatting.RESET,
+                EnumChatFormatting.YELLOW + GTUtility.formatNumbers(mAmperage) + EnumChatFormatting.RESET),
+            StatCollector.translateToLocalFormatted(
+                "GT5U.infodata.cable.voltage_out",
+                EnumChatFormatting.GREEN + GTUtility.formatNumbers(currVoltage) + EnumChatFormatting.RESET,
+                EnumChatFormatting.YELLOW + GTUtility.formatNumbers(maxVoltageOut) + EnumChatFormatting.RESET),
+            StatCollector.translateToLocalFormatted(
+                "GT5U.infodata.cable.avg_amperage",
+                EnumChatFormatting.YELLOW + GTUtility.formatNumbers(avgAmp) + EnumChatFormatting.RESET),
+            StatCollector.translateToLocalFormatted(
+                "GT5U.infodata.cable.avg_output",
+                EnumChatFormatting.YELLOW + GTUtility.formatNumbers(avgVoltage) + EnumChatFormatting.RESET) };
     }
 
     @Override
@@ -593,9 +615,9 @@ public class MTECable extends MetaPipeEntity implements IMetaTileEntityCable {
         if (pipe.getNode() != null) {
             for (final ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
                 if (isConnectedAtSide(side)) {
-                    final CoverInfo coverInfo = pipe.getCoverInfoAtSide(side);
-                    if (coverInfo.getCoverBehavior() instanceof GTCoverNone) continue;
-                    if (!letsIn(coverInfo) || !letsOut(coverInfo)) {
+                    final Cover cover = pipe.getCoverAtSide(side);
+                    if (!cover.isValid()) continue;
+                    if (!letsIn(cover) || !letsOut(cover)) {
                         pipe.addToLock(pipe, side);
                     } else {
                         pipe.removeFromLock(pipe, side);
@@ -606,10 +628,10 @@ public class MTECable extends MetaPipeEntity implements IMetaTileEntityCable {
             boolean dontAllow = false;
             for (final ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
                 if (isConnectedAtSide(side)) {
-                    final CoverInfo coverInfo = pipe.getCoverInfoAtSide(side);
-                    if (coverInfo.getCoverBehavior() instanceof GTCoverNone) continue;
+                    final Cover cover = pipe.getCoverAtSide(side);
+                    if (!cover.isValid()) continue;
 
-                    if (!letsIn(coverInfo) || !letsOut(coverInfo)) {
+                    if (!letsIn(cover) || !letsOut(cover)) {
                         dontAllow = true;
                     }
                 }

@@ -17,7 +17,6 @@ import gtPlusPlus.xmod.tinkers.HandlerTinkers;
 public class CompatIntermodStaging {
 
     public static void preInit(FMLPreInitializationEvent preinit) {
-        HandlerGT.preInit();
         HandlerTF.preInit();
         ForestryHandler.preInit();
         HandlerIC2.preInit();
@@ -45,6 +44,5 @@ public class CompatIntermodStaging {
 
     public static void onLoadComplete(FMLLoadCompleteEvent event) {
         HandlerGT.onLoadComplete(event);
-        RecipeRemovals.onLoadComplete();
     }
 }

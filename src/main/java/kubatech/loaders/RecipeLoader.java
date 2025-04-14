@@ -41,7 +41,7 @@ import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
 import static gregtech.api.util.GTRecipeConstants.AssemblyLine;
 import static gregtech.api.util.GTRecipeConstants.RESEARCH_ITEM;
-import static gregtech.api.util.GTRecipeConstants.RESEARCH_TIME;
+import static gregtech.api.util.GTRecipeConstants.SCANNING;
 import static gregtech.api.util.GTRecipeConstants.UniversalChemical;
 import static gtPlusPlus.api.recipe.GTPPRecipeMaps.chemicalDehydratorRecipes;
 import static kubatech.api.enums.ItemList.BlackTea;
@@ -81,14 +81,13 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidRegistry;
 
 import cpw.mods.fml.common.registry.GameRegistry;
-import forestry.plugins.PluginCore;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
-import ic2.core.Ic2Items;
+import gregtech.api.util.recipe.Scanning;
 import kubatech.api.enums.ItemList;
 import kubatech.tileentity.gregtech.multiblock.MTEDEFusionCrafter;
 import kubatech.tileentity.gregtech.multiblock.MTEExtremeEntityCrusher;
@@ -145,18 +144,16 @@ public class RecipeLoader {
         }
 
         if (Forestry.isModLoaded()) {
+            // Industrial Apicultural Acclimatiser and Drone Domestication Station
             GTValues.RA.stdBuilder()
                 .metadata(RESEARCH_ITEM, gregtech.api.enums.ItemList.Machine_IndustrialApiary.get(1))
-                .metadata(RESEARCH_TIME, 8 * MINUTES + 20 * SECONDS)
+                .metadata(SCANNING, new Scanning(2 * MINUTES + 50 * SECONDS, TierEU.RECIPE_ZPM))
                 .itemInputs(
                     gregtech.api.enums.ItemList.Machine_IndustrialApiary.get(64L),
                     gregtech.api.enums.ItemList.IndustrialApiary_Upgrade_Acceleration_8_Upgraded.get(64L),
                     gregtech.api.enums.ItemList.IndustrialApiary_Upgrade_STABILIZER.get(64L),
                     gregtech.api.enums.ItemList.Robot_Arm_UV.get(16L),
-                    new Object[] { OrePrefixes.circuit.get(Materials.UV), 4L },
-                    new Object[] { OrePrefixes.circuit.get(Materials.UV), 4L },
-                    new Object[] { OrePrefixes.circuit.get(Materials.UV), 4L },
-                    new Object[] { OrePrefixes.circuit.get(Materials.UV), 4L })
+                    new Object[] { OrePrefixes.circuit.get(Materials.UV), 16L })
                 .fluidInputs(
                     FluidRegistry.getFluidStack("molten.indalloy140", 28800),
                     FluidRegistry.getFluidStack("for.honey", 20000))
@@ -165,7 +162,7 @@ public class RecipeLoader {
                 .duration(5 * MINUTES)
                 .addTo(AssemblyLine);
 
-            MTEExtremeIndustrialGreenhouse.addFertilizerItem(PluginCore.items.fertilizerCompound.getItemStack(1));
+            MTEExtremeIndustrialGreenhouse.addFertilizerItem(gregtech.api.enums.ItemList.FR_Fertilizer.get(1));
         }
 
         GTModHandler.addCraftingRecipe(
@@ -177,8 +174,8 @@ public class RecipeLoader {
 
         // Vanilla should always be loaded
         MTEExtremeIndustrialGreenhouse.addFertilizerItem(new ItemStack(Items.dye, 1, 15));
-        // IC2 should always be loaded
-        MTEExtremeIndustrialGreenhouse.addFertilizerItem(Ic2Items.fertilizer);
+        // will need to be updated when ic2 goes the way of the dodo
+        MTEExtremeIndustrialGreenhouse.addFertilizerItem(gregtech.api.enums.ItemList.IC2_Fertilizer.get(1));
 
         if (DraconicEvolution.isModLoaded()) {
             // Controller recipe added in TecTech
@@ -305,7 +302,7 @@ public class RecipeLoader {
             GTValues.RA.stdBuilder()
                 .itemInputs(BlackTea.get(1))
                 .itemOutputs(LemonTea.get(1))
-                .fluidInputs(FluidRegistry.getFluidStack("potion.lemonjuice", 1000))
+                .fluidInputs(FluidRegistry.getFluidStack("potion.lemonjuice", 10))
                 .eut(TierEU.RECIPE_LV)
                 .duration(5 * SECONDS)
                 .addTo(mixerRecipes);
@@ -313,7 +310,7 @@ public class RecipeLoader {
             GTValues.RA.stdBuilder()
                 .itemInputs(BlackTea.get(1))
                 .itemOutputs(MilkTea.get(1))
-                .fluidInputs(FluidRegistry.getFluidStack("milk", 1000))
+                .fluidInputs(FluidRegistry.getFluidStack("milk", 100))
                 .eut(TierEU.RECIPE_LV)
                 .duration(5 * SECONDS)
                 .addTo(mixerRecipes);
@@ -333,18 +330,16 @@ public class RecipeLoader {
             GameRegistry.addSmelting(YellowTeaLeaf.get(1), YellowTea.get(1), 10);
         }
         if (Avaritia.isModLoaded() && NewHorizonsCoreMod.isModLoaded()) {
+            // Tea Acceptor
             GTValues.RA.stdBuilder()
                 .metadata(RESEARCH_ITEM, TeaAcceptorResearchNote.get(1))
-                .metadata(RESEARCH_TIME, 8 * MINUTES + 20 * SECONDS)
+                .metadata(SCANNING, new Scanning(1 * MINUTES + 40 * SECONDS, TierEU.RECIPE_UV))
                 .itemInputs(
                     LegendaryUltimateTea.get(0),
                     gregtech.api.enums.ItemList.Machine_Multi_NeutroniumCompressor.get(1),
                     gregtech.api.enums.ItemList.Quantum_Tank_EV.get(1),
                     FluidExtractorUHV.get(10),
-                    new Object[] { OrePrefixes.circuit.get(Materials.UV), 4L },
-                    new Object[] { OrePrefixes.circuit.get(Materials.UV), 4L },
-                    new Object[] { OrePrefixes.circuit.get(Materials.UV), 4L },
-                    new Object[] { OrePrefixes.circuit.get(Materials.UV), 4L })
+                    new Object[] { OrePrefixes.circuit.get(Materials.UV), 16L })
                 .fluidInputs(FluidRegistry.getFluidStack("molten.indalloy140", 28800))
                 .itemOutputs(TeaAcceptor.get(1))
                 .eut(TierEU.RECIPE_UHV)

@@ -3,7 +3,6 @@ package gregtech.api.util;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Objects;
-import java.util.Random;
 import java.util.function.Function;
 
 import javax.annotation.Nonnull;
@@ -13,8 +12,6 @@ import net.minecraftforge.fluids.FluidStack;
 
 import gregtech.api.interfaces.tileentity.IRecipeLockable;
 import gregtech.api.interfaces.tileentity.IVoidable;
-import gregtech.api.logic.FluidInventoryLogic;
-import gregtech.api.logic.ItemInventoryLogic;
 import gregtech.api.objects.XSTR;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
@@ -63,14 +60,6 @@ public class ParallelHelper {
      */
     private ItemStack[] itemInputs;
     /**
-     * The inputs of the machine for current recipe check
-     */
-    private ItemInventoryLogic itemInputInventory;
-    /**
-     * The output item inventory of the machine
-     */
-    private ItemInventoryLogic itemOutputInventory;
-    /**
      * The outputs of the recipe with the applied parallel
      */
     private ItemStack[] itemOutputs;
@@ -78,14 +67,6 @@ public class ParallelHelper {
      * The inputs of the multiblock for the current recipe check
      */
     private FluidStack[] fluidInputs;
-    /**
-     * The inputs of the machine for the current recipe check
-     */
-    private FluidInventoryLogic fluidInputInventory;
-    /**
-     * The output fluid inventory of the machine;
-     */
-    private FluidInventoryLogic fluidOutputInventory;
     /**
      * The outputs of the recipe with the applied parallel
      */
@@ -127,10 +108,6 @@ public class ParallelHelper {
      */
     private double chanceMultiplier = 1;
     /**
-     * Multiplier by which the output will be multiplied
-     */
-    private int outputMultiplier = 1;
-    /**
      * Method for calculating max parallel from given inputs.
      */
     private MaxParallelCalculator maxParallelCalculator = GTRecipe::maxParallelCalculatedByInputs;
@@ -149,12 +126,6 @@ public class ParallelHelper {
     private Function<Integer, ItemStack[]> customItemOutputCalculation;
 
     private Function<Integer, FluidStack[]> customFluidOutputCalculation;
-
-    /**
-     * MuTE Mode this is a mode for changing how the GT_ParallelHelper works as Mutes don't use ItemStack and FluidStack
-     * arrays for inputs
-     */
-    private boolean muteMode = false;
 
     public ParallelHelper() {}
 
@@ -239,15 +210,6 @@ public class ParallelHelper {
         return this;
     }
 
-    /**
-     * Sets the item/fluid output multiplier. 1 does nothing. 2 doubles the item and fluid outputs.
-     */
-    @Nonnull
-    public ParallelHelper setOutputMultiplier(int outputMultiplier) {
-        this.outputMultiplier = outputMultiplier;
-        return this;
-    }
-
     @Nonnull
     public ParallelHelper setCalculator(OverclockCalculator calculator) {
         this.calculator = calculator;
@@ -316,24 +278,6 @@ public class ParallelHelper {
         return this;
     }
 
-    @Nonnull
-    public ParallelHelper setMuTEMode(boolean muteMode) {
-        this.muteMode = muteMode;
-        return this;
-    }
-
-    @Nonnull
-    public ParallelHelper setItemInputInventory(ItemInventoryLogic itemInputInventory) {
-        this.itemInputInventory = itemInputInventory;
-        return this;
-    }
-
-    @Nonnull
-    public ParallelHelper setFluidInputInventory(FluidInventoryLogic fluidInputInventory) {
-        this.fluidInputInventory = fluidInputInventory;
-        return this;
-    }
-
     /**
      * Sets method for calculating max parallel from given inputs.
      */
@@ -347,18 +291,6 @@ public class ParallelHelper {
      */
     public ParallelHelper setInputConsumer(InputConsumer inputConsumer) {
         this.inputConsumer = inputConsumer;
-        return this;
-    }
-
-    @Nonnull
-    public ParallelHelper setItemOutputInventory(ItemInventoryLogic itemOutputInventory) {
-        this.itemOutputInventory = itemOutputInventory;
-        return this;
-    }
-
-    @Nonnull
-    public ParallelHelper setFluidOutputInventory(FluidInventoryLogic fluidOutputInventory) {
-        this.fluidOutputInventory = fluidOutputInventory;
         return this;
     }
 
@@ -461,7 +393,9 @@ public class ParallelHelper {
                 .setEUtDiscount(eutModifier);
         }
 
-        final int tRecipeEUt = (int) Math.ceil(recipe.mEUt * eutModifier);
+        double heatDiscountMultiplier = calculator.calculateHeatDiscountMultiplier();
+
+        final int tRecipeEUt = (int) Math.ceil(recipe.mEUt * eutModifier * heatDiscountMultiplier);
         if (availableEUt < tRecipeEUt) {
             result = CheckRecipeResultRegistry.insufficientPower(tRecipeEUt);
             return;
@@ -504,7 +438,7 @@ public class ParallelHelper {
 
         // Let's look at how many parallels we can get with void protection
         if (protectExcessItem || protectExcessFluid) {
-            if (machine == null && !muteMode) {
+            if (machine == null) {
                 throw new IllegalStateException("Tried to calculate void protection, but machine is not set");
             }
             VoidProtectionHelper voidProtectionHelper = new VoidProtectionHelper();
@@ -512,12 +446,8 @@ public class ParallelHelper {
                 .setItemOutputs(truncatedItemOutputs)
                 .setFluidOutputs(truncatedFluidOutputs)
                 .setChangeGetter(recipe::getOutputChance)
-                .setOutputMultiplier(outputMultiplier)
                 .setChanceMultiplier(chanceMultiplier)
                 .setMaxParallel(maxParallel)
-                .setItemOutputInventory(itemOutputInventory)
-                .setFluidOutputInventory(fluidOutputInventory)
-                .setMuTEMode(muteMode)
                 .build();
             maxParallel = Math.min(voidProtectionHelper.getMaxParallel(), maxParallel);
             if (voidProtectionHelper.isItemFull()) {
@@ -615,10 +545,10 @@ public class ParallelHelper {
             ItemStack origin = recipe.getOutput(i)
                 .copy();
             final long itemStackSize = origin.stackSize;
-            double chancedOutputMultiplier = calculateChancedOutputMultiplier(
+            long chancedOutputMultiplier = calculateIntegralChancedOutputMultiplier(
                 (int) (recipe.getOutputChance(i) * chanceMultiplier),
                 currentParallel);
-            long items = (long) Math.ceil(itemStackSize * chancedOutputMultiplier * outputMultiplier);
+            long items = itemStackSize * chancedOutputMultiplier;
             addItemsLong(itemOutputsList, origin, items);
         }
         itemOutputs = itemOutputsList.toArray(new ItemStack[0]);
@@ -635,14 +565,12 @@ public class ParallelHelper {
             if (recipe.getFluidOutput(i) == null) continue;
             FluidStack origin = recipe.getFluidOutput(i)
                 .copy();
-            long fluids = (long) this.outputMultiplier * origin.amount * currentParallel;
+            long fluids = (long) origin.amount * currentParallel;
 
             addFluidsLong(fluidOutputsList, origin, fluids);
         }
         fluidOutputs = fluidOutputsList.toArray(new FluidStack[0]);
     }
-
-    private static final Random rand = new Random();
 
     public static double calculateChancedOutputMultiplier(int chanceInt, int parallel) {
         // Multiply the integer part of the chance directly with parallel
@@ -658,7 +586,7 @@ public class ParallelHelper {
         boolean isSuitableForFittingWithNormalDistribution = mean - 3 * stdDev >= 0 && mean + 3 * stdDev <= parallel;
         if (isSuitableForFittingWithNormalDistribution) {
             // Use Normal Distribution to fit Binomial Distribution
-            double tMultiplier = stdDev * rand.nextGaussian() + mean;
+            double tMultiplier = stdDev * XSTR.XSTR_INSTANCE.nextGaussian() + mean;
             multiplier += Math.max(Math.min(tMultiplier, parallel), 0);
         } else {
             // Do Binomial Distribution by loop
@@ -671,31 +599,32 @@ public class ParallelHelper {
         return multiplier;
     }
 
+    public static long calculateIntegralChancedOutputMultiplier(int chanceInt, int parallel) {
+        double multiplier = calculateChancedOutputMultiplier(chanceInt, parallel);
+        if (multiplier != Math.floor(multiplier)
+            && multiplier - Math.floor(multiplier) > XSTR.XSTR_INSTANCE.nextDouble()) {
+            return (long) multiplier + 1;
+        }
+        return (long) multiplier;
+    }
+
     public static void addItemsLong(ArrayList<ItemStack> itemList, ItemStack origin, long amount) {
         if (amount > 0) {
             while (amount > Integer.MAX_VALUE) {
-                ItemStack item = origin.copy();
-                item.stackSize = Integer.MAX_VALUE;
-                itemList.add(item);
+                itemList.add(GTUtility.copyAmountUnsafe(Integer.MAX_VALUE, origin));
                 amount -= Integer.MAX_VALUE;
             }
-            ItemStack item = origin.copy();
-            item.stackSize = (int) amount;
-            itemList.add(item);
+            itemList.add(GTUtility.copyAmountUnsafe((int) amount, origin));
         }
     }
 
     public static void addFluidsLong(ArrayList<FluidStack> fluidList, FluidStack origin, long amount) {
         if (amount > 0) {
             while (amount > Integer.MAX_VALUE) {
-                FluidStack fluid = origin.copy();
-                fluid.amount = Integer.MAX_VALUE;
-                fluidList.add(fluid);
+                fluidList.add(GTUtility.copyAmount(Integer.MAX_VALUE, origin));
                 amount -= Integer.MAX_VALUE;
             }
-            FluidStack fluid = origin.copy();
-            fluid.amount = (int) amount;
-            fluidList.add(fluid);
+            fluidList.add(GTUtility.copyAmount((int) amount, origin));
         }
     }
 

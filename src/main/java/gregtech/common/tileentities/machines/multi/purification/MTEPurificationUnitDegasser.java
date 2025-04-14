@@ -25,6 +25,7 @@ import java.util.function.Supplier;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
@@ -460,6 +461,7 @@ public class MTEPurificationUnitDegasser extends MTEPurificationUnitBase<MTEPuri
                     + EnumChatFormatting.ITALIC
                     + "detects in the water, it will request various materials to complete the processes listed above.")
             .beginStructureBlock(17, 25, 17, false)
+            .addController("Front center")
             .addCasingInfoRangeColored(
                 "Heat-Resistant Trinium Plated Casing",
                 EnumChatFormatting.GRAY,
@@ -479,11 +481,10 @@ public class MTEPurificationUnitDegasser extends MTEPurificationUnitBase<MTEPuri
                 124,
                 EnumChatFormatting.GOLD,
                 false)
-            .addController("Front center")
             .addOutputHatch(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + "+, Any Trinium Casing", 1)
             .addInputHatch(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + "+, Any Trinium Casing", 1)
             .addOtherStructurePart(
-                "Degasser Control Hatch",
+                StatCollector.translateToLocal("GT5U.tooltip.structure.degasser_control_hatch"),
                 EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + ", Any Trinium Casing",
                 1)
             .toolTipFinisher(AuthorNotAPenguin);
@@ -668,8 +669,8 @@ public class MTEPurificationUnitDegasser extends MTEPurificationUnitBase<MTEPuri
     @Override
     public void addRecipeOutputs() {
         super.addRecipeOutputs();
-        if (outputMultiplier > 1.01f) {
-            FluidStack waterOutput = currentRecipe.mFluidOutputs[0];
+        if (outputMultiplier > 1.01f && mOutputFluids != null) {
+            FluidStack waterOutput = mOutputFluids[0];
             FluidStack bonusOutput = new FluidStack(
                 waterOutput.getFluid(),
                 (int) (this.effectiveParallel * waterOutput.amount * (outputMultiplier - 1.0f)));
@@ -722,6 +723,8 @@ public class MTEPurificationUnitDegasser extends MTEPurificationUnitBase<MTEPuri
         this.controlHatch = null;
         if (!checkPiece(STRUCTURE_PIECE_MAIN, STRUCTURE_X_OFFSET, STRUCTURE_Y_OFFSET, STRUCTURE_Z_OFFSET)) return false;
         if (casingCount < MIN_CASING) return false;
+        // Do not form without a valid control hatch
+        if (this.controlHatch == null || !this.controlHatch.isValid()) return false;
         return super.checkMachine(aBaseMetaTileEntity, aStack);
     }
 
@@ -759,29 +762,49 @@ public class MTEPurificationUnitDegasser extends MTEPurificationUnitBase<MTEPuri
     }
 
     private static String generateInfoStringForBit(int i, ControlBitStatus status) {
-        String base = "Bit " + (i + 1) + " status: ";
+        String base = StatCollector.translateToLocalFormatted("GT5U.infodata.purification_unit_degasser.bit", (i + 1));
         if (status.satisfied) {
-            return base + EnumChatFormatting.GREEN + "OK";
+            return base + EnumChatFormatting.GREEN
+                + StatCollector.translateToLocal("GT5U.infodata.purification_unit_degasser.bit.ok");
         } else {
-            return base + EnumChatFormatting.RED + "NOT OK";
+            return base + EnumChatFormatting.RED
+                + StatCollector.translateToLocal("GT5U.infodata.purification_unit_degasser.bit.not_ok");
         }
     }
 
     @Override
     public String[] getInfoData() {
         ArrayList<String> info = new ArrayList<>(Arrays.asList(super.getInfoData()));
-        info.add("Current control signal (binary): 0b" + EnumChatFormatting.YELLOW + controlSignal.toString());
-        info.add("Current output multiplier: " + EnumChatFormatting.YELLOW + outputMultiplier);
+        info.add(
+            StatCollector.translateToLocalFormatted(
+                "GT5U.infodata.purification_unit_degasser.control_signal",
+                EnumChatFormatting.YELLOW + controlSignal.toString()));
+        info.add(
+            StatCollector.translateToLocalFormatted(
+                "GT5U.infodata.purification_unit_degasser.output_multiplier",
+                "" + EnumChatFormatting.YELLOW + outputMultiplier));
         for (FluidStack stack : insertedStuffThisCycle.values()) {
             info.add(
-                "Fluid inserted this cycle: " + EnumChatFormatting.YELLOW
-                    + stack.amount
-                    + "L "
-                    + stack.getLocalizedName());
+                StatCollector.translateToLocalFormatted(
+                    "GT5U.infodata.purification_unit_degasser.fluid_inserted",
+                    "" + EnumChatFormatting.YELLOW + stack.amount,
+                    stack.getLocalizedName()));
         }
-        info.add(generateInfoStringForBit(0, isBit0Satisfied()));
-        info.add(generateInfoStringForBit(1, isBit1Satisfied()));
-        info.add(generateInfoStringForBit(2, isBit2Satisfied()));
+        info.add(
+            generateInfoStringForBit(
+                0,
+                controlSignal.getBit(3) && isBit3Satisfied().satisfied ? new ControlBitStatus(null, true)
+                    : isBit0Satisfied()));
+        info.add(
+            generateInfoStringForBit(
+                1,
+                controlSignal.getBit(3) && isBit3Satisfied().satisfied ? new ControlBitStatus(null, true)
+                    : isBit1Satisfied()));
+        info.add(
+            generateInfoStringForBit(
+                2,
+                controlSignal.getBit(3) && isBit3Satisfied().satisfied ? new ControlBitStatus(null, true)
+                    : isBit2Satisfied()));
         info.add(generateInfoStringForBit(3, isBit3Satisfied()));
         return info.toArray(new String[] {});
     }

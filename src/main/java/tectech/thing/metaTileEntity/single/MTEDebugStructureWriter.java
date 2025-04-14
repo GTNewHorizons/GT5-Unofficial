@@ -9,6 +9,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.gtnewhorizon.structurelib.alignment.enumerable.ExtendedFacing;
@@ -23,7 +24,6 @@ import com.gtnewhorizons.modularui.common.widget.TextWidget;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Textures;
-import gregtech.api.gui.modularui.GTUIInfos;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.modularui.IAddGregtechLogo;
@@ -31,20 +31,19 @@ import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTETieredMachineBlock;
-import gregtech.api.objects.GTRenderedTexture;
+import gregtech.api.render.TextureFactory;
 import tectech.TecTech;
 import tectech.util.CommonValues;
-import tectech.util.TTUtility;
 
 /**
  * Created by Tec on 23.03.2017.
  */
 public class MTEDebugStructureWriter extends MTETieredMachineBlock implements IAddUIWidgets, IAddGregtechLogo {
 
-    private static GTRenderedTexture MARK;
+    private static ITexture MARK;
     public short[] numbers = new short[6];
     public boolean size = false;
-    public String[] result = new String[] { "Undefined" };
+    public String[] result = new String[] { StatCollector.translateToLocal("GT5U.infodata.undefined") };
 
     public MTEDebugStructureWriter(int aID, String aName, String aNameRegional, int aTier) {
         super(
@@ -56,12 +55,10 @@ public class MTEDebugStructureWriter extends MTETieredMachineBlock implements IA
             new String[] { CommonValues.TEC_MARK_GENERAL, translateToLocal("gt.blockmachines.debug.tt.writer.desc.0"),
                 EnumChatFormatting.BLUE + translateToLocal("gt.blockmachines.debug.tt.writer.desc.1"),
                 EnumChatFormatting.BLUE + translateToLocal("gt.blockmachines.debug.tt.writer.desc.2") });
-        TTUtility.setTier(aTier, this);
     }
 
     public MTEDebugStructureWriter(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, 0, aDescription, aTextures);
-        TTUtility.setTier(aTier, this);
     }
 
     @Override
@@ -73,14 +70,14 @@ public class MTEDebugStructureWriter extends MTETieredMachineBlock implements IA
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister aBlockIconRegister) {
         super.registerIcons(aBlockIconRegister);
-        MARK = new GTRenderedTexture(new Textures.BlockIcons.CustomIcon("iconsets/MARK"));
+        MARK = TextureFactory.of(new Textures.BlockIcons.CustomIcon("iconsets/MARK"));
     }
 
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
         int colorIndex, boolean aActive, boolean aRedstone) {
         return new ITexture[] { tectech.thing.metaTileEntity.Textures.MACHINE_CASINGS_TT[mTier][colorIndex + 1],
-            side != facing ? new GTRenderedTexture(Textures.BlockIcons.OVERLAY_TELEPORTER_ACTIVE) : MARK };
+            side != facing ? TextureFactory.of(Textures.BlockIcons.OVERLAY_TELEPORTER_ACTIVE) : MARK };
     }
 
     @Override
@@ -112,11 +109,6 @@ public class MTEDebugStructureWriter extends MTETieredMachineBlock implements IA
         for (int i = 0; i < numbers.length; i++) {
             numbers[i] = aNBT.getShort("eData" + i);
         }
-    }
-
-    @Override
-    public boolean isSimpleMachine() {
-        return false;
     }
 
     @Override
@@ -176,7 +168,7 @@ public class MTEDebugStructureWriter extends MTETieredMachineBlock implements IA
 
     @Override
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
-        GTUIInfos.openGTTileEntityUI(aBaseMetaTileEntity, aPlayer);
+        openGui(aPlayer);
         return true;
     }
 

@@ -1,30 +1,29 @@
 package goodgenerator.blocks.tileEntity;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlocksTiered;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.StatCollector;
-import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import org.apache.commons.lang3.tuple.Pair;
 import org.jetbrains.annotations.NotNull;
 
-import com.gtnewhorizon.structurelib.StructureLibAPI;
 import com.gtnewhorizon.structurelib.alignment.constructable.IConstructable;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
-import com.gtnewhorizon.structurelib.structure.AutoPlaceEnvironment;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
-import com.gtnewhorizon.structurelib.structure.IStructureElement;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
+import com.gtnewhorizon.structurelib.structure.ITierConverter;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
-import com.gtnewhorizon.structurelib.structure.StructureUtility;
 
 import goodgenerator.api.recipe.GoodGeneratorRecipeMaps;
 import goodgenerator.blocks.tileEntity.base.MTETooltipMultiBlockBaseEM;
@@ -35,12 +34,6 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
-import gregtech.api.metatileentity.implementations.MTEHatch;
-import gregtech.api.metatileentity.implementations.MTEHatchEnergy;
-import gregtech.api.metatileentity.implementations.MTEHatchInput;
-import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
-import gregtech.api.metatileentity.implementations.MTEHatchOutput;
-import gregtech.api.objects.GTRenderedTexture;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
@@ -49,13 +42,11 @@ import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
-import tectech.thing.metaTileEntity.hatch.MTEHatchEnergyMulti;
 
 public class MTEFuelRefineFactory extends MTETooltipMultiBlockBaseEM implements IConstructable, ISurvivalConstructable {
 
     private IStructureDefinition<MTEFuelRefineFactory> multiDefinition = null;
-    private int Tier = -1;
-    private final int[] cnt = new int[] { 0, 0, 0, 0 };
+    private int tier = -1;
     private static final Block[] coils = new Block[] { Loaders.FRF_Coil_1, Loaders.FRF_Coil_2, Loaders.FRF_Coil_3,
         Loaders.FRF_Coil_4 };
 
@@ -110,7 +101,9 @@ public class MTEFuelRefineFactory extends MTETooltipMultiBlockBaseEM implements 
                             gregtech.api.enums.HatchElement.InputBus,
                             gregtech.api.enums.HatchElement.OutputHatch,
                             tectech.thing.metaTileEntity.multi.base.TTMultiblockBase.HatchElement.EnergyMulti
-                                .or(gregtech.api.enums.HatchElement.Energy))
+                                .or(gregtech.api.enums.HatchElement.Energy),
+                            tectech.thing.metaTileEntity.multi.base.TTMultiblockBase.HatchElement.DynamoMulti
+                                .or(gregtech.api.enums.HatchElement.Dynamo))
                         .casingIndex(179)
                         .dot(1)
                         .buildAndChain(ofBlock(Loaders.FRF_Casings, 0)))
@@ -118,64 +111,42 @@ public class MTEFuelRefineFactory extends MTETooltipMultiBlockBaseEM implements 
                 .addElement('G', ofBlock(Loaders.fieldRestrictingGlass, 0))
                 .addElement(
                     'F',
-                    ofChain(
-                        onElementPass(x -> ++x.cnt[0], ofFieldCoil(0)),
-                        onElementPass(x -> ++x.cnt[1], ofFieldCoil(1)),
-                        onElementPass(x -> ++x.cnt[2], ofFieldCoil(2)),
-                        onElementPass(x -> ++x.cnt[3], ofFieldCoil(3))))
+                    ofBlocksTiered(
+                        fieldCoilTierConverter(),
+                        getAllFieldCoilTiers(),
+                        -1,
+                        MTEFuelRefineFactory::setCoilTier,
+                        MTEFuelRefineFactory::getCoilTier))
                 .build();
         }
         return multiDefinition;
     }
 
-    public static <T> IStructureElement<T> ofFieldCoil(int aIndex) {
-        return new IStructureElement<>() {
-
-            @Override
-            public boolean check(T t, World world, int x, int y, int z) {
-                Block block = world.getBlock(x, y, z);
-                return block.equals(coils[aIndex]);
+    public static ITierConverter<Integer> fieldCoilTierConverter() {
+        return (block, meta) -> {
+            for (int i = 0; i < coils.length; i++) {
+                if (block.equals(coils[i])) {
+                    return i + 1;
+                }
             }
-
-            @Override
-            public boolean spawnHint(T t, World world, int x, int y, int z, ItemStack trigger) {
-                StructureLibAPI.hintParticle(world, x, y, z, coils[getIndex(trigger)], 0);
-                return true;
-            }
-
-            private int getIndex(ItemStack trigger) {
-                int s = trigger.stackSize;
-                if (s > 4 || s <= 0) s = 4;
-                return s - 1;
-            }
-
-            @Override
-            public boolean placeBlock(T t, World world, int x, int y, int z, ItemStack trigger) {
-                return world.setBlock(x, y, z, coils[getIndex(trigger)], 0, 3);
-            }
-
-            @Override
-            public BlocksToPlace getBlocksToPlace(T t, World world, int x, int y, int z, ItemStack trigger,
-                AutoPlaceEnvironment env) {
-                return BlocksToPlace.create(coils[getIndex(trigger)], 0);
-            }
-
-            @Override
-            public PlaceResult survivalPlaceBlock(T t, World world, int x, int y, int z, ItemStack trigger,
-                AutoPlaceEnvironment env) {
-                if (check(t, world, x, y, z)) return PlaceResult.SKIP;
-                return StructureUtility.survivalPlaceBlock(
-                    coils[getIndex(trigger)],
-                    0,
-                    world,
-                    x,
-                    y,
-                    z,
-                    env.getSource(),
-                    env.getActor(),
-                    env.getChatter());
-            }
+            return null;
         };
+    }
+
+    public static List<Pair<Block, Integer>> getAllFieldCoilTiers() {
+        ArrayList<Pair<Block, Integer>> tiers = new ArrayList<>();
+        for (Block coil : coils) {
+            tiers.add(Pair.of(coil, 0));
+        }
+        return tiers;
+    }
+
+    private void setCoilTier(int tier) {
+        this.tier = tier;
+    }
+
+    private int getCoilTier() {
+        return this.tier;
     }
 
     @Override
@@ -185,26 +156,32 @@ public class MTEFuelRefineFactory extends MTETooltipMultiBlockBaseEM implements 
             .addInfo("But at what cost?")
             .addInfo("Produces naquadah fuels.")
             .addInfo("Needs field restriction coils to control the fatal radiation.")
-            .addInfo("Use higher tier coils to unlock more fuel types and reduce the processing times.")
+            .addInfo("Use higher tier coils to unlock more fuel types and perform more overclocks.")
+            .addInfo(StatCollector.translateToLocal("GT5U.machines.perfectoc.tooltip"))
             .addTecTechHatchInfo()
             .beginStructureBlock(3, 15, 15, false)
+            .addController("Mid of the third layer")
+            .addCasingInfoExactly("Naquadah Fuel Refinery Casing", 114, false)
+            .addCasingInfoExactly("Field Restriction Coil", 32, true)
+            .addCasingInfoExactly("Field Restriction Glass", 8, false)
             .addInputHatch("The casings adjacent to field restriction glass.")
             .addInputBus("The casings adjacent to field restriction glass.", 1)
             .addOutputHatch("The casings adjacent to field restriction glass.", 1)
             .addEnergyHatch("The casings adjacent to field restriction glass.", 1)
+            .addDynamoHatch("The casings adjacent to field restriction glass.", 1)
             .toolTipFinisher();
         return tt;
     }
 
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
-        this.Tier = aNBT.getInteger("mTier");
+        this.tier = aNBT.getInteger("mTier");
         super.loadNBTData(aNBT);
     }
 
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
-        aNBT.setInteger("mTier", this.Tier);
+        aNBT.setInteger("mTier", this.tier);
         super.saveNBTData(aNBT);
     }
 
@@ -215,22 +192,8 @@ public class MTEFuelRefineFactory extends MTETooltipMultiBlockBaseEM implements 
 
     @Override
     public boolean checkMachine_EM(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        cnt[0] = 0;
-        cnt[1] = 0;
-        cnt[2] = 0;
-        cnt[3] = 0;
-        return structureCheck_EM(mName, 7, 12, 1) && getTier() != -1;
-    }
-
-    public int getTier() {
-        for (int i = 0; i < 4; i++) {
-            if (cnt[i] == 32) {
-                Tier = i + 1;
-                return i;
-            }
-        }
-        Tier = -1;
-        return -1;
+        tier = -1;
+        return structureCheck_EM(mName, 7, 12, 1);
     }
 
     @Override
@@ -245,7 +208,7 @@ public class MTEFuelRefineFactory extends MTETooltipMultiBlockBaseEM implements 
             @NotNull
             @Override
             protected CheckRecipeResult validateRecipe(@NotNull GTRecipe recipe) {
-                if (recipe.mSpecialValue > Tier) {
+                if (recipe.mSpecialValue > tier) {
                     return CheckRecipeResultRegistry.insufficientMachineTier(recipe.mSpecialValue);
                 }
                 return CheckRecipeResultRegistry.SUCCESSFUL;
@@ -254,10 +217,9 @@ public class MTEFuelRefineFactory extends MTETooltipMultiBlockBaseEM implements 
             @NotNull
             @Override
             protected OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
-                int overclockAmount = Tier - recipe.mSpecialValue;
-                return super.createOverclockCalculator(recipe).limitOverclockCount(overclockAmount);
+                return super.createOverclockCalculator(recipe).setMaxOverclocks(tier - recipe.mSpecialValue);
             }
-        }.setOverclock(4.0, 4.0); // Set Overclock to be 4/4
+        }.enablePerfectOverclock();
     }
 
     @Override
@@ -266,52 +228,9 @@ public class MTEFuelRefineFactory extends MTETooltipMultiBlockBaseEM implements 
         logic.setAvailableAmperage(1);
     }
 
-    public final boolean addToFRFList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
-        if (aTileEntity == null) {
-            return false;
-        } else {
-            IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
-            if (aMetaTileEntity == null) {
-                return false;
-            } else {
-                if (aMetaTileEntity instanceof MTEHatch) {
-                    ((MTEHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
-                }
-                if (aMetaTileEntity instanceof MTEHatchInput) {
-                    return this.mInputHatches.add((MTEHatchInput) aMetaTileEntity);
-                } else if (aMetaTileEntity instanceof MTEHatchOutput) {
-                    return this.mOutputHatches.add((MTEHatchOutput) aMetaTileEntity);
-                } else if (aMetaTileEntity instanceof MTEHatchInputBus) {
-                    return this.mInputBusses.add((MTEHatchInputBus) aMetaTileEntity);
-                } else if (aMetaTileEntity instanceof MTEHatchEnergy) {
-                    return this.mEnergyHatches.add((MTEHatchEnergy) aMetaTileEntity);
-                } else if (aMetaTileEntity instanceof MTEHatchEnergyMulti) {
-                    return this.eEnergyMulti.add((MTEHatchEnergyMulti) aMetaTileEntity);
-                } else {
-                    return false;
-                }
-            }
-        }
-    }
-
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new MTEFuelRefineFactory(this.mName);
-    }
-
-    @Override
-    public int getMaxEfficiency(ItemStack aStack) {
-        return 10000;
-    }
-
-    @Override
-    public int getPollutionPerTick(ItemStack aStack) {
-        return 0;
-    }
-
-    @Override
-    public int getDamageToComponent(ItemStack aStack) {
-        return 0;
     }
 
     @Override
@@ -320,21 +239,16 @@ public class MTEFuelRefineFactory extends MTETooltipMultiBlockBaseEM implements 
     }
 
     @Override
-    public boolean isCorrectMachinePart(ItemStack aStack) {
-        return true;
-    }
-
-    @Override
     public String[] getInfoData() {
         String[] infoData = new String[super.getInfoData().length + 1];
         System.arraycopy(super.getInfoData(), 0, infoData, 0, super.getInfoData().length);
-        infoData[super.getInfoData().length] = StatCollector.translateToLocal("scanner.info.FRF") + " " + this.Tier;
+        infoData[super.getInfoData().length] = StatCollector.translateToLocal("scanner.info.FRF") + " " + this.tier;
         return infoData;
     }
 
     @Override
     public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
-        float aX, float aY, float aZ) {
+        float aX, float aY, float aZ, ItemStack aTool) {
         batchMode = !batchMode;
         if (batchMode) {
             GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOn"));
@@ -355,18 +269,26 @@ public class MTEFuelRefineFactory extends MTETooltipMultiBlockBaseEM implements 
     }
 
     @Override
-    @SuppressWarnings("ALL")
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
         int colorIndex, boolean aActive, boolean aRedstone) {
         if (side == facing) {
             if (aActive) return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(179),
-                new GTRenderedTexture(Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_LINE_ACTIVE), TextureFactory.builder()
+                TextureFactory.builder()
+                    .addIcon(Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_LINE_ACTIVE)
+                    .extFacing()
+                    .build(),
+                TextureFactory.builder()
                     .addIcon(Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_LINE_ACTIVE_GLOW)
+                    .extFacing()
                     .glow()
                     .build() };
-            return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(179),
-                new GTRenderedTexture(Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_LINE), TextureFactory.builder()
+            return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(179), TextureFactory.builder()
+                .addIcon(Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_LINE)
+                .extFacing()
+                .build(),
+                TextureFactory.builder()
                     .addIcon(Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_LINE_GLOW)
+                    .extFacing()
                     .glow()
                     .build() };
         }

@@ -2,7 +2,6 @@ package tectech.thing.metaTileEntity.hatch;
 
 import static gregtech.api.enums.Dyes.MACHINE_METAL;
 import static net.minecraft.util.StatCollector.translateToLocal;
-import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 import static tectech.thing.metaTileEntity.hatch.MTEHatchDataConnector.EM_D_ACTIVE;
 import static tectech.thing.metaTileEntity.hatch.MTEHatchDataConnector.EM_D_CONN;
 import static tectech.thing.metaTileEntity.hatch.MTEHatchDataConnector.EM_D_SIDES;
@@ -11,10 +10,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.function.Predicate;
-import java.util.stream.Collectors;
 
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
@@ -25,24 +21,20 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchDataAccess;
-import gregtech.api.objects.GTRenderedTexture;
-import gregtech.mixin.interfaces.accessors.EntityPlayerMPAccessor;
-import tectech.mechanics.dataTransport.InventoryDataPacket;
+import gregtech.api.render.TextureFactory;
+import gregtech.api.util.AssemblyLineUtils;
+import gregtech.api.util.GTRecipe.RecipeAssemblyLine;
+import tectech.mechanics.dataTransport.ALRecipeDataPacket;
 import tectech.mechanics.pipe.IConnectsToDataPipe;
-import tectech.recipe.TTRecipeAdder;
 import tectech.util.CommonValues;
-import tectech.util.TTUtility;
 
 public class MTEHatchDataItemsInput extends MTEHatchDataAccess implements IConnectsToDataPipe {
 
     public boolean delDelay = true;
-    private ItemStack[] stacks;
-
-    private String clientLocale = "en_US";
+    private List<RecipeAssemblyLine> recipes;
 
     public MTEHatchDataItemsInput(int aID, String aName, String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional, aTier);
-        TTUtility.setTier(aTier, this);
     }
 
     public MTEHatchDataItemsInput(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
@@ -51,25 +43,17 @@ public class MTEHatchDataItemsInput extends MTEHatchDataAccess implements IConne
 
     @Override
     public ITexture[] getTexturesActive(ITexture aBaseTexture) {
-        return new ITexture[] { aBaseTexture,
-            new GTRenderedTexture(
-                EM_D_ACTIVE,
-                Dyes.getModulation(getBaseMetaTileEntity().getColorization(), MACHINE_METAL.getRGBA())),
-            new GTRenderedTexture(EM_D_CONN) };
+        return new ITexture[] { aBaseTexture, TextureFactory
+            .of(EM_D_ACTIVE, Dyes.getModulation(getBaseMetaTileEntity().getColorization(), MACHINE_METAL.getRGBA())),
+            TextureFactory.of(EM_D_CONN) };
     }
 
     @Override
     public ITexture[] getTexturesInactive(ITexture aBaseTexture) {
         return new ITexture[] { aBaseTexture,
-            new GTRenderedTexture(
-                EM_D_SIDES,
-                Dyes.getModulation(getBaseMetaTileEntity().getColorization(), MACHINE_METAL.getRGBA())),
-            new GTRenderedTexture(EM_D_CONN) };
-    }
-
-    @Override
-    public boolean isSimpleMachine() {
-        return true;
+            TextureFactory
+                .of(EM_D_SIDES, Dyes.getModulation(getBaseMetaTileEntity().getColorization(), MACHINE_METAL.getRGBA())),
+            TextureFactory.of(EM_D_CONN) };
     }
 
     @Override
@@ -80,17 +64,6 @@ public class MTEHatchDataItemsInput extends MTEHatchDataAccess implements IConne
     @Override
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new MTEHatchDataItemsInput(this.mName, this.mTier, mDescriptionArray, this.mTextures);
-    }
-
-    @Override
-    public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
-        if (aBaseMetaTileEntity.isClientSide()) {
-            return true;
-        }
-        if (aPlayer instanceof EntityPlayerMPAccessor) {
-            clientLocale = ((EntityPlayerMPAccessor) aPlayer).gt5u$getTranslator();
-        }
-        return true;
     }
 
     @Override
@@ -106,8 +79,18 @@ public class MTEHatchDataItemsInput extends MTEHatchDataAccess implements IConne
     }
 
     @Override
-    public int getInventoryStackLimit() {
-        return 1;
+    public int getSizeInventory() {
+        return 0;
+    }
+
+    @Override
+    public ItemStack getStackInSlot(int aIndex) {
+        return null;
+    }
+
+    @Override
+    public boolean shouldDropItemAt(int index) {
+        return false;
     }
 
     @Override
@@ -135,32 +118,34 @@ public class MTEHatchDataItemsInput extends MTEHatchDataAccess implements IConne
         return null;
     }
 
-    public void setContents(InventoryDataPacket iIn) {
+    public void setContents(ALRecipeDataPacket iIn) {
         if (iIn == null) {
-            stacks = null;
+            recipes = null;
         } else {
             if (iIn.getContent().length > 0) {
-                stacks = iIn.getContent();
+                recipes = new ArrayList<>(Arrays.asList(iIn.getContent()));
                 delDelay = true;
             } else {
-                stacks = null;
+                recipes = null;
             }
         }
     }
 
     @Override
-    public void onRemoval() {
-        stacks = null;
+    public List<RecipeAssemblyLine> getAssemblyLineRecipes() {
+        if (recipes == null) return Collections.emptyList();
+
+        return recipes;
     }
 
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
         NBTTagCompound stacksTag = new NBTTagCompound();
-        if (stacks != null) {
-            stacksTag.setInteger("count", stacks.length);
-            for (int i = 0; i < stacks.length; i++) {
-                stacksTag.setTag(Integer.toString(i), stacks[i].writeToNBT(new NBTTagCompound()));
+        if (recipes != null) {
+            stacksTag.setInteger("count", recipes.size());
+            for (int i = 0; i < recipes.size(); i++) {
+                stacksTag.setTag(Integer.toString(i), AssemblyLineUtils.saveRecipe(recipes.get(i)));
             }
         }
         aNBT.setTag("data_stacks", stacksTag);
@@ -172,47 +157,21 @@ public class MTEHatchDataItemsInput extends MTEHatchDataAccess implements IConne
         NBTTagCompound stacksTag = aNBT.getCompoundTag("data_stacks");
         int count = stacksTag.getInteger("count");
         if (count > 0) {
-            ArrayList<ItemStack> stacks = new ArrayList<>();
+            recipes = new ArrayList<>();
+
             for (int i = 0; i < count; i++) {
-                ItemStack stack = ItemStack.loadItemStackFromNBT(stacksTag.getCompoundTag(Integer.toString(i)));
-                if (stack != null) {
-                    stacks.add(stack);
-                }
+                recipes.addAll(AssemblyLineUtils.loadRecipe(stacksTag.getCompoundTag(Integer.toString(i))));
             }
-            if (!stacks.isEmpty()) {
-                this.stacks = stacks.toArray(TTRecipeAdder.nullItem);
-            }
+
+            if (recipes.isEmpty()) recipes = null;
         }
-    }
-
-    @Override
-    public int getSizeInventory() {
-        return stacks != null ? stacks.length : 0;
-    }
-
-    @Override
-    public ItemStack getStackInSlot(int aIndex) {
-        return stacks != null && aIndex < stacks.length ? stacks[aIndex] : null;
-    }
-
-    @Override
-    public List<ItemStack> getInventoryItems(Predicate<ItemStack> filter) {
-        if (stacks == null) return Collections.emptyList();
-        return Arrays.stream(stacks)
-            .filter(stack -> stack != null && filter.test(stack))
-            .collect(Collectors.toList());
-    }
-
-    @Override
-    public boolean shouldDropItemAt(int index) {
-        return false;
     }
 
     @Override
     public void onPreTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         super.onPreTick(aBaseMetaTileEntity, aTick);
         if (CommonValues.MOVE_AT == aTick % 20) {
-            if (stacks == null) {
+            if (recipes == null) {
                 getBaseMetaTileEntity().setActive(false);
             } else {
                 getBaseMetaTileEntity().setActive(true);
@@ -233,18 +192,12 @@ public class MTEHatchDataItemsInput extends MTEHatchDataAccess implements IConne
     }
 
     @Override
-    public boolean isGivingInformation() {
-        return true;
-    }
-
-    @Override
-    public String[] getInfoData() {
-        return new String[] { translateToLocalFormatted("tt.keyphrase.Content_Stack_Count", clientLocale) + ": "
-            + (stacks == null ? 0 : stacks.length) };
-    }
-
-    @Override
     public byte getColorization() {
         return getBaseMetaTileEntity().getColorization();
+    }
+
+    @Override
+    protected String getWailaDataI18nKey() {
+        return "tt.keyphrase.AL_Recipe_Receiving";
     }
 }

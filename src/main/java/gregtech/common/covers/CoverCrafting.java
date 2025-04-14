@@ -4,38 +4,30 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.ContainerWorkbench;
 import net.minecraft.network.play.server.S2DPacketOpenWindow;
-import net.minecraftforge.common.util.ForgeDirection;
 
+import gregtech.api.covers.CoverContext;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
-import gregtech.api.util.CoverBehavior;
-import gregtech.api.util.ISerializableObject;
 
-public class CoverCrafting extends CoverBehavior {
+public class CoverCrafting extends Cover {
 
-    public CoverCrafting(ITexture coverTexture) {
-        super(coverTexture);
+    public CoverCrafting(CoverContext context, ITexture coverTexture) {
+        super(context, coverTexture);
     }
 
     @Override
-    public boolean isRedstoneSensitive(ForgeDirection side, int aCoverID, int aCoverVariable, ICoverable aTileEntity,
-        long aTimer) {
-        return false;
-    }
-
-    @Override
-    public boolean onCoverRightclick(ForgeDirection side, int aCoverID, int aCoverVariable, ICoverable aTileEntity,
-        EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        if ((aPlayer instanceof EntityPlayerMP)) {
+    public boolean onCoverRightClick(EntityPlayer aPlayer, float aX, float aY, float aZ) {
+        ICoverable coverable = coveredTile.get();
+        if ((aPlayer instanceof EntityPlayerMP && coverable != null)) {
             ((EntityPlayerMP) aPlayer).getNextWindowId();
             ((EntityPlayerMP) aPlayer).playerNetServerHandler.sendPacket(
                 new S2DPacketOpenWindow(((EntityPlayerMP) aPlayer).currentWindowId, 1, "Crafting", 9, true));
             aPlayer.openContainer = new ContainerWorkbench(
                 aPlayer.inventory,
                 aPlayer.worldObj,
-                aTileEntity.getXCoord(),
-                aTileEntity.getYCoord(),
-                aTileEntity.getZCoord()) {
+                coverable.getXCoord(),
+                coverable.getYCoord(),
+                coverable.getZCoord()) {
 
                 @Override
                 public boolean canInteractWith(EntityPlayer player) {
@@ -46,11 +38,5 @@ public class CoverCrafting extends CoverBehavior {
             aPlayer.openContainer.addCraftingToCrafters((EntityPlayerMP) aPlayer);
         }
         return true;
-    }
-
-    @Override
-    protected boolean isGUIClickableImpl(ForgeDirection side, int aCoverID,
-        ISerializableObject.LegacyCoverData aCoverVariable, ICoverable aTileEntity) {
-        return false;
     }
 }
