@@ -561,7 +561,7 @@ public class CraftingRecipes implements Runnable {
             "UV " + StatCollector.translateToLocal("tile.radiohatch.name"),
             8,
             true);
-      
+
         GTModHandler.addCraftingRecipe(
             ItemList.Item_Power_Goggles.get(1),
             0,
@@ -569,7 +569,7 @@ public class CraftingRecipes implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.Polytetrafluoroethylene, 1L), 'L',
                 GTOreDictUnificator.get(OrePrefixes.lens, Materials.GarnetYellow, 1L), 'S', ItemList.Sensor_IV.get(1),
                 'R', OrePrefixes.foil.get(Materials.AnySyntheticRubber) });
-      
+
         GTModHandler.addCraftingRecipe(
             ItemList.Item_Redstone_Sniffer.get(1L),
             0,
