@@ -120,7 +120,7 @@ public class PowerGogglesEventHandler {
                 .displayGuiScreen(new PowerGogglesGuiHudConfig(screenInfo.displayWidth, screenInfo.displayHeight));
 
         }
-        if (PowerGogglesKeybindHandler.toggleChart.isPressed()) {
+        else if (PowerGogglesKeybindHandler.toggleChart.isPressed()) {
             PowerGogglesConfigHandler.showPowerChart = !PowerGogglesConfigHandler.showPowerChart;
             PowerGogglesConfigHandler.config.getCategory(Configuration.CATEGORY_GENERAL)
                 .get("Show Power Chart")
