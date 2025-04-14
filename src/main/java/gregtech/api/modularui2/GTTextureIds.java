@@ -71,6 +71,7 @@ public final class GTTextureIds {
 
     public static final String BUTTON_STANDARD = "gregtech:button_standard";
     public static final String BUTTON_STANDARD_PRESSED = "gregtech:button_standard_pressed";
+    public static final String BUTTON_STANDARD_TOGGLE = "gregtech:button_standard_toggle";
     public static final String BUTTON_BRONZE = "gregtech:button_bronze";
     public static final String BUTTON_BRONZE_PRESSED = "gregtech:button_bronze_pressed";
     public static final String BUTTON_STEEL = "gregtech:button_steel";
