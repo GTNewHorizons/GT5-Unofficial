@@ -4,6 +4,9 @@ import java.io.File;
 
 import net.minecraftforge.common.config.Configuration;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import com.gtnewhorizons.modularui.api.math.Color;
 
 public class PowerGogglesConfigHandler {
@@ -30,6 +33,7 @@ public class PowerGogglesConfigHandler {
     public static int textBadColor;
     public static int textOkColor;
     public static int textGoodColor;
+    public static final Logger GOGGLES_LOGGER = LogManager.getLogger("GT5U Power Goggles");
 
     public static void init(File confFile) {
         config = new Configuration(confFile);
@@ -154,8 +158,8 @@ public class PowerGogglesConfigHandler {
             textGoodColor = Color.rgb(textGoodRed, textGoodGreen, textGoodBlue);
 
         } catch (Exception e) {
-            System.out.println("Unable to load Config");
-            e.printStackTrace();
+            GOGGLES_LOGGER.error("Couldn't load goggles config.");
+            GOGGLES_LOGGER.debug(e);
         } finally {
             if (config.hasChanged()) config.save();
         }

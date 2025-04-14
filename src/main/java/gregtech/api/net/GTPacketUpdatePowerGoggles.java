@@ -63,10 +63,10 @@ public class GTPacketUpdatePowerGoggles extends GTPacket {
 
     @Override
     public void process(IBlockAccess aWorld) {
-        PowerGogglesHudHandler.setMeasurement(this.EU, lscCapacity);
         if (this.refresh) {
             PowerGogglesHudHandler.clear();
         }
+        PowerGogglesHudHandler.setMeasurement(this.EU, lscCapacity);
         PowerGogglesHudHandler.updateClient = true;
     }
 }
