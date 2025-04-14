@@ -72,12 +72,12 @@ public class RecipeHandlers {
         // Add real recipe that will actually be utilized in recipe checks
         builder.copy()
             .hidden()
-            .addTo(RecipeMaps.nanochipAssemblyMatrixRecipes);
+            .addTo(output.processingMap);
         // Add fake recipe that the user can see in NEI but will never actually be used for recipe checks
         builder.copy()
             .fake()
             .itemOutputs(realOutput)
-            .addTo(RecipeMaps.nanochipAssemblyMatrixRecipes);
+            .addTo(output.processingMap);
     }
 
     public static void populateCircuitComponentRecipeMaps() {
