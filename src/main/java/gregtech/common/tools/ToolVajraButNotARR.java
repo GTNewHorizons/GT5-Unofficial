@@ -1,5 +1,6 @@
 package gregtech.common.tools;
 
+import static gregtech.api.enums.GTValues.V;
 import static gregtech.api.enums.GTValues.VN;
 
 import java.util.List;
@@ -23,8 +24,8 @@ public class ToolVajraButNotARR extends ItemTool implements IElectricItem {
     public int maxCharge = (int) 1e7;
     public int baseCost = 1000;
     public int tier = 5;
-    public double transferLimit = 100;
-    private String tooltip;
+    public double transferLimit = V[tier];
+    private final String tooltip;
 
     public ToolVajraButNotARR(String aUnlocalized, String aEnglish, String aTooltip, int aMaxDamage, int aEntityDamage,
         boolean aSwingIfUsed) {
@@ -73,11 +74,6 @@ public class ToolVajraButNotARR extends ItemTool implements IElectricItem {
     @Override
     public boolean isRepairable() {
         return false;
-    }
-
-    @Override
-    public int getItemEnchantability() {
-        return 0;
     }
 
     @Override
