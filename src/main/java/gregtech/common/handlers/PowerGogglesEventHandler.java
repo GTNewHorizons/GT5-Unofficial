@@ -44,54 +44,58 @@ public class PowerGogglesEventHandler {
     @SubscribeEvent
     public void playerTickEnd(TickEvent.PlayerTickEvent event) {
         if (event.phase != TickEvent.Phase.END) return;
-        if (event.type != TickEvent.Type.PLAYER) return;
         if (event.side == Side.CLIENT) {
-            if (firstClientTick) {
-                InventoryBaubles baubles = PlayerHandler.getPlayerBaubles(event.player);
-                for (ItemStack bauble : baubles.stackList) {
-                    if (bauble == null) continue;
-                    if (bauble.getUnlocalizedName()
-                        .equals("gt.Power_Goggles")) {
-                        setLink(bauble);
-                    }
-                }
-                firstClientTick = false;
-            }
-            if (forceUpdate || PowerGogglesHudHandler.updateClient) PowerGogglesHudHandler.drawTick();
+            doClientStuff(event);
         } else {
-            if (ticks == 0 || forceUpdate) {
-                EntityPlayerMP player = (EntityPlayerMP) event.player;
-                if (isValidLink(player, lscLinkMap.get(player.getUniqueID()))) {
-                    DimensionalCoord coords = lscLinkMap.get(player.getUniqueID());
-                    WorldServer lscDim = player.mcServer.worldServerForDimension(coords.getDimension());
-                    TileEntity tileEntity = lscDim.getTileEntity(coords.x, coords.y, coords.z);
-                    MTELapotronicSuperCapacitor lsc = ((MTELapotronicSuperCapacitor) ((IGregTechTileEntity) tileEntity)
-                        .getMetaTileEntity());
-                    NW.sendToPlayer(
-                        new GTPacketUpdatePowerGoggles(
-                            BigInteger.valueOf(lsc.getEUVar()),
-                            lsc.maxEUStore(),
-                            forceRefresh),
-                        player);
-                } else {
-                    if (lscLinkMap.get(player.getUniqueID()) != null) {
-                        lscLinkMap.put(player.getUniqueID(), null);
-                        forceRefresh = true;
-                    }
-                    NW.sendToPlayer(
-                        new GTPacketUpdatePowerGoggles(
-                            WirelessNetworkManager.getUserEU((player).getUniqueID()),
-                            forceRefresh),
-                        player);
-                }
-                if (forceUpdate) ticks = 0;
-                forceUpdate = false;
-                forceRefresh = false;
-
-            }
-            ticks++;
-            ticks %= PowerGogglesHudHandler.ticksBetweenMeasurements;
+            doServerStuff(event);
         }
+    }
+
+    private void doClientStuff(TickEvent.PlayerTickEvent event) {
+        if (firstClientTick) {
+            InventoryBaubles baubles = PlayerHandler.getPlayerBaubles(event.player);
+            for (ItemStack bauble : baubles.stackList) {
+                if (bauble == null) continue;
+                if (bauble.getUnlocalizedName()
+                    .equals("gt.Power_Goggles")) {
+                    setLink(bauble);
+                }
+            }
+            firstClientTick = false;
+        }
+        if (forceUpdate || PowerGogglesHudHandler.updateClient) PowerGogglesHudHandler.drawTick();
+    }
+
+    private void doServerStuff(TickEvent.PlayerTickEvent event) {
+        ticks++;
+        ticks %= PowerGogglesHudHandler.ticksBetweenMeasurements;
+        if (forceUpdate) ticks = 1;
+        if (ticks != 1) return;
+
+        EntityPlayerMP player = (EntityPlayerMP) event.player;
+        if (isValidLink(player, lscLinkMap.get(player.getUniqueID()))) {
+            MTELapotronicSuperCapacitor lsc = getLsc(player);
+            NW.sendToPlayer(
+                new GTPacketUpdatePowerGoggles(BigInteger.valueOf(lsc.getEUVar()), lsc.maxEUStore(), forceRefresh),
+                player);
+        } else {
+            if (lscLinkMap.get(player.getUniqueID()) != null) {
+                lscLinkMap.put(player.getUniqueID(), null);
+                forceRefresh = true;
+            }
+            NW.sendToPlayer(
+                new GTPacketUpdatePowerGoggles(WirelessNetworkManager.getUserEU((player).getUniqueID()), forceRefresh),
+                player);
+        }
+        forceUpdate = false;
+        forceRefresh = false;
+    }
+
+    private MTELapotronicSuperCapacitor getLsc(EntityPlayerMP player) {
+        DimensionalCoord coords = lscLinkMap.get(player.getUniqueID());
+        WorldServer lscDim = player.mcServer.worldServerForDimension(coords.getDimension());
+        TileEntity tileEntity = lscDim.getTileEntity(coords.x, coords.y, coords.z);
+        return ((MTELapotronicSuperCapacitor) ((IGregTechTileEntity) tileEntity).getMetaTileEntity());
     }
 
     @SubscribeEvent
