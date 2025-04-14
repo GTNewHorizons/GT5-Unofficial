@@ -1,5 +1,6 @@
 package gregtech.common.tileentities.machines.multi;
 
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.lazy;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
 import static gregtech.api.enums.GTValues.AuthorBlueWeabo;
@@ -28,7 +29,6 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
-import tectech.thing.block.BlockQuantumGlass;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -66,6 +66,7 @@ import gregtech.api.util.ParallelHelper;
 import gregtech.common.blocks.BlockCasings8;
 import gregtech.common.tileentities.machines.MTEHatchInputBusME;
 import gtPlusPlus.core.block.ModBlocks;
+import tectech.thing.block.BlockQuantumGlass;
 
 public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge> implements ISurvivalConstructable {
 
@@ -74,7 +75,7 @@ public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge> i
     private static final String STRUCTURE_PIECE_TIER3 = "tier3";
     private static final String STRUCTURE_PIECE_TIER4 = "tier4";
     private static final String STRUCTURE_PIECE_TIER4_AIR = "tier4air";
-    //spotless:off
+    // spotless:off
     private static final String[][] STRUCTURE_PIECE_TIER4_STRUCT = transpose(new String[][]{
     {"                                         ","                                         ","                                         ","                                         ","                                         ","                                         ","                                         ","                                         ","                                         ","                                         ","                                         ","                                         ","                                         ","                                         ","                                         ","                                         ","                   SSS                   ","                 SSSSSSS                 ","                 SSSSSSS                 ","                SSSSSSSSS                ","                SSSSSSSSS                ","                SSSSSSSSS                ","                 SSSSSSS                 ","                 SSSSSSS                 ","                   SSS                   ","                                         ","                                         ","                                         ","                                         ","                                         ","                                         ","                                         ","                                         ","                                         ","                                         ","                                         ","                                         ","                                         ","                                         ","                                         ","                                         "},
     {"                                         ","                                         ","                                         ","                                         ","                                         ","                                         ","                                         ","                                         ","                                         ","                                         ","                                         ","                                         ","                                         ","                    S                    ","                 SSSSSSS                 ","                SSSSSSSSS                ","               SSSS   SSSS               ","              SSS       SSS              ","              SSS       SSS              ","              SS         SS              ","             SSS         SSS             ","              SS         SS              ","              SSS       SSS              ","              SSS       SSS              ","               SSSS   SSSS               ","                SSSSSSSSS                ","                 SSSSSSS                 ","                    S                    ","                                         ","                                         ","                                         ","                                         ","                                         ","                                         ","                                         ","                                         ","                                         ","                                         ","                                         ","                                         ","                                         "},
@@ -230,15 +231,16 @@ public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge> i
                 .casingIndex(((BlockCasings8) GregTechAPI.sBlockCasings8).getTextureIndex(10))
                 .buildAndChain(GregTechAPI.sBlockCasings8, 10))
         .addElement('Y', ofBlock(GregTechAPI.sBlockCasings8, 7))
-        .addElement('E', ofBlock(ModBlocks.blockCasingsMisc, 8))
-        .addElement('N',
+        .addElement('E', lazy(t -> ofBlock(ModBlocks.blockCasingsMisc, 8)))
+        .addElement(
+            'N',
             buildHatchAdder(MTENanoForge.class)
                 .atLeast(InputHatch, OutputBus, InputBus, Maintenance, Energy.or(ExoticEnergy))
                 .dot(1)
                 .casingIndex(((BlockCasings8) GregTechAPI.sBlockCasings8).getTextureIndex(10))
                 .buildAndChain(GregTechAPI.sBlockCasings8, 10))
         .addElement('H', ofBlock(GregTechAPI.sBlockCasings8, 7))
-        .addElement('S', ofBlock(BlockQuantumGlass.INSTANCE, 0))
+        .addElement('S', lazy(t -> ofBlock(BlockQuantumGlass.INSTANCE, 0)))
         .addElement('J', ofBlock(GregTechAPI.sBlockCasings8, 7))
         .addElement('Z', ofBlock(Blocks.air, 0))
         .build();
@@ -259,7 +261,7 @@ public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge> i
 
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
-        if (stackSize.stackSize < 3) {
+        if (stackSize.stackSize < 4) {
             buildPiece(STRUCTURE_PIECE_MAIN, stackSize, hintsOnly, 4, 37, 1);
             if (stackSize.stackSize > 1) {
                 buildPiece(STRUCTURE_PIECE_TIER2, stackSize, hintsOnly, -7, 14, 4);
@@ -267,8 +269,9 @@ public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge> i
             if (stackSize.stackSize > 2) {
                 buildPiece(STRUCTURE_PIECE_TIER3, stackSize, hintsOnly, 14, 26, 4);
             }
+        } else {
+            buildPiece(STRUCTURE_PIECE_TIER4, stackSize, hintsOnly, 20, 49, 0);
         }
-        buildPiece(STRUCTURE_PIECE_TIER4, stackSize, hintsOnly, 26, 50, 26);
     }
 
     @Override
@@ -389,7 +392,7 @@ public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge> i
             protected OverclockCalculator createOverclockCalculator(@Nonnull GTRecipe recipe) {
                 return super.createOverclockCalculator(recipe)
                     .setDurationDecreasePerOC(mSpecialTier > recipe.mSpecialValue ? 4.0 : 2.0)
-                    .setSpeedBoost(Math.pow(0.9999, maxParallel));
+                    .setDurationModifier(Math.pow(0.9999, maxParallel));
             }
         };
     }
@@ -428,13 +431,10 @@ public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge> i
                 && checkPiece(STRUCTURE_PIECE_TIER3, 14, 26, 4)) {
                 mSpecialTier = 3;
             }
-
-            if (aStack.isItemEqual(MaterialsUEVplus.Eternity.getNanite(1))
-                && checkPiece(STRUCTURE_PIECE_TIER2, -7, 14, 4)
-                && checkPiece(STRUCTURE_PIECE_TIER3, 14, 26, 4)) {
+        } else if (aStack.isItemEqual(MaterialsUEVplus.Eternity.getNanite(1))
+            && checkPiece(STRUCTURE_PIECE_TIER4, 20, 49, 0)) {
                 mSpecialTier = 4;
             }
-        }
 
         if (mMaintenanceHatches.size() != 1) {
             return false;
