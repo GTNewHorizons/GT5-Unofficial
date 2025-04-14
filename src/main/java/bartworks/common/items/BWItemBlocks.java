@@ -22,19 +22,14 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
+import net.minecraft.util.StatCollector;
 
 import bartworks.API.ITileAddsInformation;
 import bartworks.MainMod;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.api.util.GTLanguageManager;
 
 public class BWItemBlocks extends ItemBlock {
-
-    private final String mNoMobsToolTip = GTLanguageManager
-        .addStringLocalization("gt.nomobspawnsonthisblock", "Mobs cannot Spawn on this Block");
-    private final String mNoTileEntityToolTip = GTLanguageManager
-        .addStringLocalization("gt.notileentityinthisblock", "This is NOT a TileEntity!");
 
     public BWItemBlocks(Block par1) {
         super(par1);
@@ -60,8 +55,9 @@ public class BWItemBlocks extends ItemBlock {
         if (this.field_150939_a instanceof ITileAddsInformation) {
             aList.addAll(Arrays.asList(((ITileAddsInformation) this.field_150939_a).getInfoData()));
         }
-        aList.add(this.mNoMobsToolTip);
-        if (!(this.field_150939_a instanceof ITileEntityProvider)) aList.add(this.mNoTileEntityToolTip);
+        aList.add(StatCollector.translateToLocal("gt.casing.no-mob-spawning"));
+        if (!(this.field_150939_a instanceof ITileEntityProvider))
+            aList.add(StatCollector.translateToLocal("gt.casing.not-tile-entity"));
     }
 
     @Override
