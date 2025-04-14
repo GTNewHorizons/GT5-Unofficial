@@ -788,6 +788,10 @@ public abstract class MetaTileEntity extends CommonMetaTileEntity implements ICr
         return colorOverride.getTextColorOrDefault(textType, defaultColor);
     }
 
+    public byte getColor() {
+        return getBaseMetaTileEntity().getColorization();
+    }
+
     protected Supplier<Integer> COLOR_TITLE = () -> getTextColorOrDefault("title", 0x404040);
     protected Supplier<Integer> COLOR_TITLE_WHITE = () -> getTextColorOrDefault("title_white", 0xfafaff);
     protected Supplier<Integer> COLOR_TEXT_WHITE = () -> getTextColorOrDefault("text_white", 0xfafaff);
