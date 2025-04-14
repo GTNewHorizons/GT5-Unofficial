@@ -91,7 +91,8 @@ public enum CircuitComponent {
         ItemList.Circuit_Crystalcomputer.get(1)),
     CrystalComputer("gt.circuitcomponent.crystalcomputer", RecipeMaps.nanochipAssemblyMatrixRecipes,
         ItemList.Circuit_Ultimatecrystalcomputer.get(1)),
-    CrystalMainframe("gt.circuitcomponent.crystalmainframe", null, ItemList.Circuit_Crystalmainframe.get(1)),;
+    CrystalMainframe("gt.circuitcomponent.crystalmainframe", RecipeMaps.nanochipAssemblyMatrixRecipes,
+        ItemList.Circuit_Crystalmainframe.get(1)),;
 
     public final String unlocalizedName;
     public String fallbackLocalizedName = null;
@@ -154,6 +155,25 @@ public enum CircuitComponent {
 
     public static CircuitComponent getFromMetaDataUnsafe(int metadata) {
         return CircuitComponent.values()[metadata];
+    }
+
+    public static class CircuitComponentStack {
+
+        private final CircuitComponent mCircuitComponent;
+        private final int mSize;
+
+        public CircuitComponentStack(CircuitComponent mCircuitComponent, int mSize) {
+            this.mCircuitComponent = mCircuitComponent;
+            this.mSize = mSize;
+        }
+
+        public CircuitComponent getCircuitComponent() {
+            return mCircuitComponent;
+        }
+
+        public int getSize() {
+            return mSize;
+        }
     }
 
     static {

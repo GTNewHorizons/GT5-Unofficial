@@ -2,7 +2,7 @@ package gregtech.common.tileentities.machines.multi.nanochip.util;
 
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
 
-import java.util.Set;
+import java.util.*;
 
 import net.minecraft.item.ItemStack;
 
@@ -15,6 +15,8 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.metadata.NanochipAssemblyRecipeInfo;
 import gregtech.api.util.GTOreDictUnificator;
+import gregtech.api.util.GTRecipeBuilder;
+import gregtech.common.tileentities.machines.multi.nanochip.util.CircuitComponent.CircuitComponentStack;
 
 public class RecipeHandlers {
 
@@ -47,9 +49,35 @@ public class RecipeHandlers {
             .addTo(recipeMap);
     }
 
-    private static void addAssemblyMatrixRecipe(Set<ItemStack> input, CircuitComponent output, ModuleRecipeInfo info,
-        long eut) {
-
+    private static void addAssemblyMatrixRecipe(List<CircuitComponentStack> input, CircuitComponent output,
+        ModuleRecipeInfo info, long eut) {
+        if (!output.processingMap.equals(RecipeMaps.nanochipAssemblyMatrixRecipes)) {
+            throw new IllegalArgumentException("Invalid RecipeMap passed to addAssemblyMatrixRecipe!");
+        } else if (output.realCircuit == null) {
+            throw new IllegalArgumentException("No real circuit was defined for given output!");
+        }
+        ItemStack realOutput = output.realCircuit.copy();
+        realOutput.stackSize = info.getBaseParallel();
+        GTRecipeBuilder builder = GTValues.RA.stdBuilder()
+            .metadata(NanochipAssemblyRecipeInfo.INSTANCE, info)
+            .itemInputs(
+                input.stream()
+                    .map(
+                        c -> c.getCircuitComponent()
+                            .getFakeStack(info.getBaseParallel() * c.getSize()))
+                    .toArray(ItemStack[]::new))
+            .itemOutputs(output.getFakeStack(info.getBaseParallel()))
+            .duration(ModuleRecipeInfo.MODULE_RECIPE_TIME)
+            .eut(eut);
+        // Add real recipe that will actually be utilized in recipe checks
+        builder.copy()
+            .hidden()
+            .addTo(RecipeMaps.nanochipAssemblyMatrixRecipes);
+        // Add fake recipe that the user can see in NEI but will never actually be used for recipe checks
+        builder.copy()
+            .fake()
+            .itemOutputs(realOutput)
+            .addTo(RecipeMaps.nanochipAssemblyMatrixRecipes);
     }
 
     public static void populateCircuitComponentRecipeMaps() {
@@ -223,5 +251,19 @@ public class RecipeHandlers {
             CircuitComponent.ProcessedFrameboxAluminium,
             ModuleRecipeInfo.Medium,
             TierEU.RECIPE_LV);
+    }
+
+    public static void populateFinishedCircuitRecipeMaps() {
+        addAssemblyMatrixRecipe(
+            Arrays.asList(
+                new CircuitComponentStack(CircuitComponent.ProcessedBoardMultifiberglassElite, 1),
+                new CircuitComponentStack(CircuitComponent.ProcessedChipCrystalCPU, 1),
+                new CircuitComponentStack(CircuitComponent.ProcessedChipNanoCPU, 2),
+                new CircuitComponentStack(CircuitComponent.ProcessedAdvSMDCapacitor, 6),
+                new CircuitComponentStack(CircuitComponent.ProcessedAdvSMDTransistor, 6),
+                new CircuitComponentStack(CircuitComponent.ProcessedWireNiobiumTitanium, 8)),
+            CircuitComponent.CrystalProcessor,
+            ModuleRecipeInfo.Fast,
+            131072);
     }
 }
