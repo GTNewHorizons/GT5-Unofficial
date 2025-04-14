@@ -16,6 +16,7 @@ package bartworks.common.tileentities.tiered;
 import static bartworks.common.loaders.RadioHatchMaterialLoader.getRadioHatchMaterialFromInput;
 import static bartworks.common.loaders.RadioHatchMaterialLoader.getRadioHatchMaterialList;
 import static gregtech.api.enums.GTValues.ticksBetweenSounds;
+import static gregtech.api.modularui2.GTGuis.createPopUpPanel;
 import static gregtech.common.modularui2.util.CommonGuiComponents.gridTemplate1by1;
 
 import java.util.Collections;
@@ -33,10 +34,12 @@ import com.cleanroommc.modularui.api.drawable.IDrawable;
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.value.sync.ByteSyncValue;
 import com.cleanroommc.modularui.value.sync.IntSyncValue;
 import com.cleanroommc.modularui.value.sync.LongSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.value.sync.StringSyncValue;
+import com.cleanroommc.modularui.widget.sizer.Area;
 import com.cleanroommc.modularui.widgets.ItemSlot;
 import com.cleanroommc.modularui.widgets.ProgressWidget;
 import com.cleanroommc.modularui.widgets.slot.ModularSlot;
@@ -394,19 +397,18 @@ public class MTERadioHatch extends MTEHatch implements RecipeMapWorkable, IAddGr
                     .pos(124, 18)
                     .size(16, 48))
             .child(new IDrawable.DrawableWidget((context, x, y, width, height, widgetTheme) -> {
-                float partialTicks = context.getPartialTicks();
                 if (MTERadioHatch.this.decayTime > 0) {
                     int drawableHeight = MathUtils.ceilInt(
                         48 * ((MTERadioHatch.this.decayTime - MTERadioHatch.this.timer % MTERadioHatch.this.decayTime)
                             / (float) MTERadioHatch.this.decayTime));
-                    new Rectangle()
+                    new com.cleanroommc.modularui.drawable.Rectangle()
                         .setColor(
                             Color.argb(
                                 MTERadioHatch.this.colorForGUI[0],
                                 MTERadioHatch.this.colorForGUI[1],
                                 MTERadioHatch.this.colorForGUI[2],
                                 255))
-                        .draw(new Pos2d(0, 48 - drawableHeight), new Size(16, drawableHeight), partialTicks);
+                        .draw(context, new Area(0, 48 - drawableHeight, 16, drawableHeight), widgetTheme);
                 }
             }).tooltipBuilder(
                 tooltip -> tooltip.add(
@@ -428,9 +430,10 @@ public class MTERadioHatch extends MTEHatch implements RecipeMapWorkable, IAddGr
             .child(
                 IKey.dynamic(
                     () -> StatCollector.translateToLocalFormatted("BW.NEI.display.radhatch.0", this.getSievert()))
-                    .alignment(com.cleanroommc.modularui.utils.Alignment.Center)
+                    .alignment(com.cleanroommc.modularui.utils.Alignment.CenterLeft)
                     .asWidget()
-                    .pos(60, 72))
+                    .pos(60, 72)
+                    .size(80, 8))
             .child(new com.cleanroommc.modularui.widgets.ButtonWidget<>().onMousePressed(mouseButton -> {
                 popupPanel.openPanel();
                 return popupPanel.isPanelOpen();
@@ -452,15 +455,13 @@ public class MTERadioHatch extends MTEHatch implements RecipeMapWorkable, IAddGr
     }
 
     private ModularPanel createShutterPanel(PanelSyncManager syncManager) {
-        ModularPanel ui = new ModularPanel("bw:radio_hatch_shutter");
-        ui.size(176, 107);
-        syncManager.syncValue("coverage", new IntSyncValue(() -> this.coverage, value -> this.coverage = (byte) value));
-
-        return ui.child(
-            IKey.str("Radiation Shutter Control")
-                .color(this.COLOR_TITLE.get())
-                .asWidget()
-                .pos(10, 9))
+        syncManager.syncValue("coverage", new ByteSyncValue(() -> this.coverage, value -> this.coverage = value));
+        return createPopUpPanel("bw:radio_hatch_shutter", false, false).size(176, 107)
+            .child(
+                IKey.str("Radiation Shutter Control")
+                    .color(this.COLOR_TITLE.get())
+                    .asWidget()
+                    .pos(10, 9))
             .child(
                 GTGuiTextures.PICTURE_RADIATION_SHUTTER_FRAME.asWidget()
                     .pos(14, 27)
@@ -484,7 +485,6 @@ public class MTERadioHatch extends MTEHatch implements RecipeMapWorkable, IAddGr
                     .setTextAlignment(com.cleanroommc.modularui.utils.Alignment.CenterLeft)
                     .pos(86, 27)
                     .size(30, 12));
-
     }
 
     @Override

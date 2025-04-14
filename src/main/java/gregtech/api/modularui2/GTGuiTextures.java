@@ -414,31 +414,37 @@ public final class GTGuiTextures {
     public static final UITexture PICTURE_SIEVERT_CONTAINER = UITexture.builder()
         .location(MainMod.MOD_ID, "GUI/picture/sievert_container")
         .fullImage()
+        .canApplyTheme()
         .name(GTTextureIds.PICTURE_SIEVERT_CONTAINER)
         .build();
     public static final UITexture PICTURE_DECAY_TIME_CONTAINER = UITexture.builder()
         .location(MainMod.MOD_ID, "GUI/picture/decay_time_container")
         .fullImage()
+        .canApplyTheme()
         .name(GTTextureIds.PICTURE_DECAY_TIME_CONTAINER)
         .build();
     public static final UITexture PICTURE_DECAY_TIME_INSIDE = UITexture.builder()
         .location(MainMod.MOD_ID, "GUI/picture/decay_time_inside")
         .fullImage()
+        .canApplyTheme()
         .name(GTTextureIds.PICTURE_DECAY_TIME_INSIDE)
         .build();
     public static final UITexture PICTURE_RADIATION_SHUTTER_FRAME = UITexture.builder()
         .location(MainMod.MOD_ID, "GUI/picture/radiation_shutter_frame")
         .fullImage()
+        .canApplyTheme()
         .name(GTTextureIds.PICTURE_RADIATION_SHUTTER_FRAME)
         .build();
     public static final UITexture PICTURE_RADIATION_SHUTTER_INSIDE = UITexture.builder()
         .location(MainMod.MOD_ID, "GUI/picture/radiation_shutter_inside")
         .adaptable(1, 1, 1, 1)
+        .canApplyTheme()
         .name(GTTextureIds.PICTURE_RADIATION_SHUTTER_INSIDE)
         .build();
     public static final UITexture PICTURE_RADIATION_SHUTTER_EMPTY = UITexture.builder()
         .location(MainMod.MOD_ID, "GUI/picture/radiation_shutter_empty")
         .fullImage()
+        .canApplyTheme()
         .name(GTTextureIds.PICTURE_RADIATION_SHUTTER_EMPTY)
         .build();
 
