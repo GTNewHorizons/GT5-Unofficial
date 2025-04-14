@@ -5,7 +5,6 @@ import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
 import com.cleanroommc.modularui.value.sync.EnumSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
-import com.cleanroommc.modularui.widgets.ToggleButton;
 import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.cleanroommc.modularui.widgets.layout.Grid;
 
@@ -15,6 +14,7 @@ import gregtech.api.util.GTUtility;
 import gregtech.common.covers.CoverControlsWork;
 import gregtech.common.covers.conditions.RedstoneCondition;
 import gregtech.common.gui.modularui2.LinkedBoolValue;
+import gregtech.common.gui.modularui2.widgets.SelectButton;
 
 public class CoverControlsWorkGui extends CoverGui<CoverControlsWork> {
 
@@ -42,27 +42,27 @@ public class CoverControlsWorkGui extends CoverGui<CoverControlsWork> {
                 .minElementMarginLeft(0)
                 .alignment(Alignment.CenterLeft)
                 .row(
-                    new ToggleButton()
+                    new SelectButton()
                         .value(LinkedBoolValue.of(conditionModeSyncValue, RedstoneCondition.ENABLE_WITH_REDSTONE))
                         .overlay(GTGuiTextures.OVERLAY_BUTTON_REDSTONE_ON)
                         .size(16),
                     IKey.str(GTUtility.trans("243", "Enable with Redstone"))
                         .asWidget())
                 .row(
-                    new ToggleButton()
+                    new SelectButton()
                         .value(LinkedBoolValue.of(conditionModeSyncValue, RedstoneCondition.DISABLE_WITH_REDSTONE))
                         .overlay(GTGuiTextures.OVERLAY_BUTTON_REDSTONE_OFF)
                         .size(16),
                     IKey.str(GTUtility.trans("244", "Disable with Redstone"))
                         .asWidget())
                 .row(
-                    new ToggleButton().value(LinkedBoolValue.of(conditionModeSyncValue, RedstoneCondition.DISABLE))
+                    new SelectButton().value(LinkedBoolValue.of(conditionModeSyncValue, RedstoneCondition.DISABLE))
                         .overlay(GTGuiTextures.OVERLAY_BUTTON_CROSS)
                         .size(16),
                     IKey.str(GTUtility.trans("245", "Disable machine"))
                         .asWidget())
                 .row(
-                    new ToggleButton().value(safeModeSyncValue)
+                    new SelectButton().value(safeModeSyncValue)
                         .overlay(true, GTGuiTextures.OVERLAY_BUTTON_CHECKMARK)
                         .overlay(false, GTGuiTextures.OVERLAY_BUTTON_CROSS)
                         .size(16),
