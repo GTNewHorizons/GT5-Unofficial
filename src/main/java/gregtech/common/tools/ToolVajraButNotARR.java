@@ -6,10 +6,18 @@ import static gregtech.api.enums.GTValues.VN;
 import java.util.List;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockAir;
+import net.minecraft.block.material.Material;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.multiplayer.PlayerControllerMP;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.enchantment.Enchantment;
+import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -120,7 +128,26 @@ public class ToolVajraButNotARR extends ItemTool implements IElectricItem {
     public Item getEmptyItem(ItemStack itemStack) {
         return this;
     }
+    @Override
+    public boolean onItemUseFirst(ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX, int aY, int aZ,
+                                  int ordinalSide, float hitX, float hitY, float hitZ) {
 
+        if(aWorld.isRemote){
+            Minecraft.getMinecraft().playerController.onPlayerDestroyBlock(aX,aY,aZ,ordinalSide);
+            return super.onItemUseFirst(aStack, aPlayer, aWorld, aX, aY, aZ, ordinalSide, hitX, hitY, hitZ);
+        } else {
+            Block target = aWorld.getBlock(aX,aY,aZ);
+            aWorld.setBlock(aX,aY,aZ, Blocks.air);
+            if(EnchantmentHelper.getSilkTouchModifier(aPlayer)){
+                ItemStack item = new ItemStack(target);
+                aWorld.spawnEntityInWorld(new EntityItem(aWorld, aX, aY, aZ, item));
+            } else {
+                target.dropBlockAsItem(aWorld, aX,aY,aZ, 0, 0);
+            }
+
+            return true;
+        }
+    }
     @Override
     public ItemStack onItemRightClick(ItemStack itemStackIn, World worldIn, EntityPlayer player) {
         NBTTagCompound tag = itemStackIn.hasTagCompound() ? itemStackIn.getTagCompound() : new NBTTagCompound();
