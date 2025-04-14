@@ -5,6 +5,9 @@ import static gregtech.api.enums.GTValues.VN;
 
 import java.util.List;
 
+import bartworks.system.material.BWMetaGeneratedOres;
+import gregtech.common.blocks.BlockOres;
+import gtPlusPlus.core.block.base.BlockBaseOre;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockAir;
 import net.minecraft.block.ITileEntityProvider;
@@ -137,7 +140,7 @@ public class ToolVajraButNotARR extends ItemTool implements IElectricItem {
         int metaData = world.getBlockMetadata(x,y,z);
 
         if(!ElectricItem.manager.canUse(stack, baseCost * target.blockHardness)) return super.onItemUseFirst(stack, player, world, x, y, z, side, hitX, hitY, hitZ);
-        if(target instanceof ITileEntityProvider && !player.isSneaking()) return super.onItemUseFirst(stack, player, world, x, y, z, side, hitX, hitY, hitZ);
+        if(target instanceof ITileEntityProvider && !isTileEntityOre(target) && !player.isSneaking()) return super.onItemUseFirst(stack, player, world, x, y, z, side, hitX, hitY, hitZ);
 
         if(world.isRemote){
             Minecraft.getMinecraft().playerController.onPlayerDestroyBlock(x,y,z,side);
@@ -148,9 +151,13 @@ public class ToolVajraButNotARR extends ItemTool implements IElectricItem {
                 target.harvestBlock(world, player, x, y, z, metaData);
             }
         }
-        stack.getTagCompound().setBoolean("harvested",true);
+        stack.getTagCompound().setBoolean("harvested",true); //prevent onItemRightClick from going through
         ElectricItem.manager.use(stack, baseCost * target.blockHardness, player);
         return super.onItemUseFirst(stack, player, world, x, y, z, side, hitX, hitY, hitZ);
+    }
+
+    private boolean isTileEntityOre(Block target) {
+        return target instanceof BlockOres || target instanceof BWMetaGeneratedOres || target instanceof BlockBaseOre;
     }
 
     @Override
