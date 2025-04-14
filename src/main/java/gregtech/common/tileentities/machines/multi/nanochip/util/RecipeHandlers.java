@@ -2,9 +2,7 @@ package gregtech.common.tileentities.machines.multi.nanochip.util;
 
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
+import java.util.Set;
 
 import net.minecraft.item.ItemStack;
 
@@ -13,13 +11,10 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
-import gregtech.api.interfaces.IRecipeMap;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.metadata.NanochipAssemblyRecipeInfo;
 import gregtech.api.util.GTOreDictUnificator;
-import gregtech.api.util.GTRecipe;
-import gregtech.api.util.GTUtility;
 
 public class RecipeHandlers {
 
@@ -50,6 +45,11 @@ public class RecipeHandlers {
             .duration(ModuleRecipeInfo.MODULE_RECIPE_TIME)
             .eut(eut)
             .addTo(recipeMap);
+    }
+
+    private static void addAssemblyMatrixRecipe(Set<ItemStack> input, CircuitComponent output, ModuleRecipeInfo info,
+        long eut) {
+
     }
 
     public static void populateCircuitComponentRecipeMaps() {

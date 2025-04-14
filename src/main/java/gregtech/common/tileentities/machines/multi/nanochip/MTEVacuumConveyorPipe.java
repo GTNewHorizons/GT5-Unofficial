@@ -209,27 +209,33 @@ public class MTEVacuumConveyorPipe extends MetaPipeEntity implements IConnectsTo
         float tSide4 = tSpace;
         float tSide5 = 1f - tSpace;
 
-        if (getBaseMetaTileEntity().getCoverAtSide(ForgeDirection.DOWN).getCoverID() != 0) {
+        if (getBaseMetaTileEntity().getCoverAtSide(ForgeDirection.DOWN)
+            .getCoverID() != 0) {
             tSide0 = tSide2 = tSide4 = 0;
             tSide3 = tSide5 = 1;
         }
-        if (getBaseMetaTileEntity().getCoverAtSide(ForgeDirection.UP).getCoverID() != 0) {
+        if (getBaseMetaTileEntity().getCoverAtSide(ForgeDirection.UP)
+            .getCoverID() != 0) {
             tSide2 = tSide4 = 0;
             tSide1 = tSide3 = tSide5 = 1;
         }
-        if (getBaseMetaTileEntity().getCoverAtSide(ForgeDirection.NORTH).getCoverID() != 0) {
+        if (getBaseMetaTileEntity().getCoverAtSide(ForgeDirection.NORTH)
+            .getCoverID() != 0) {
             tSide0 = tSide2 = tSide4 = 0;
             tSide1 = tSide5 = 1;
         }
-        if (getBaseMetaTileEntity().getCoverAtSide(ForgeDirection.SOUTH).getCoverID() != 0) {
+        if (getBaseMetaTileEntity().getCoverAtSide(ForgeDirection.SOUTH)
+            .getCoverID() != 0) {
             tSide0 = tSide4 = 0;
             tSide1 = tSide3 = tSide5 = 1;
         }
-        if (getBaseMetaTileEntity().getCoverAtSide(ForgeDirection.WEST).getCoverID() != 0) {
+        if (getBaseMetaTileEntity().getCoverAtSide(ForgeDirection.WEST)
+            .getCoverID() != 0) {
             tSide0 = tSide2 = tSide4 = 0;
             tSide1 = tSide3 = 1;
         }
-        if (getBaseMetaTileEntity().getCoverAtSide(ForgeDirection.EAST).getCoverID() != 0) {
+        if (getBaseMetaTileEntity().getCoverAtSide(ForgeDirection.EAST)
+            .getCoverID() != 0) {
             tSide0 = tSide2 = 0;
             tSide1 = tSide3 = tSide5 = 1;
         }
