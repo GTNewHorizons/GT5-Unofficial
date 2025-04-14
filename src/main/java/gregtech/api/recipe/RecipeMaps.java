@@ -20,6 +20,7 @@ import static gregtech.api.util.GTUtility.getFluidForFilledItem;
 import static gregtech.api.util.GTUtility.isArrayEmptyOrNull;
 import static gregtech.api.util.GTUtility.isArrayOfLength;
 import static gregtech.api.util.GTUtility.multiplyStack;
+import static gregtech.common.tileentities.machines.multi.nanochip.util.RecipeHandlers.assemblyMatrixRecipeTransformer;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -1300,8 +1301,8 @@ public final class RecipeMaps {
         .minInputs(0, 0)
         .build();
 
-    static {
-        // Add transformer from circuit assembler recipes to nanochip assembly matrix recipe
-        RecipeMaps.circuitAssemblerRecipes.addDownstream(assemblyMatrixRecipeTransformer);
-    }
+//    static {
+//        // Add transformer from circuit assembler recipes to nanochip assembly matrix recipe
+//        RecipeMaps.circuitAssemblerRecipes.addDownstream(assemblyMatrixRecipeTransformer);
+//    }
 }

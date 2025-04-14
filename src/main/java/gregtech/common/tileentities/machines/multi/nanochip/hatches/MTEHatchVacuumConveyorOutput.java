@@ -34,10 +34,6 @@ public class MTEHatchVacuumConveyorOutput extends MTEHatchVacuumConveyor {
         return false;
     }
 
-    @Override
-    public boolean isSimpleMachine() {
-        return true;
-    }
 
     @Override
     public boolean isComponentsInputFacing(ForgeDirection side) {

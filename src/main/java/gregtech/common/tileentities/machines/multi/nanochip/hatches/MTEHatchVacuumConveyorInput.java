@@ -42,11 +42,6 @@ public class MTEHatchVacuumConveyorInput extends MTEHatchVacuumConveyor implemen
     }
 
     @Override
-    public boolean isSimpleMachine() {
-        return true;
-    }
-
-    @Override
     public boolean canConnect(ForgeDirection side) {
         return isInputFacing(side);
     }
