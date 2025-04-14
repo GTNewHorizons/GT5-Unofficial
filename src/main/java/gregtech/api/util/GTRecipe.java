@@ -1120,7 +1120,7 @@ public class GTRecipe implements Comparable<GTRecipe> {
 
                 FluidStack fluid;
                 if (inputHatch instanceof MTEHatchMultiInput multiInput) {
-                    fluid = multiInput.getFluid(0);
+                    fluid = multiInput.getFluid();
                 } else {
                     fluid = inputHatch.getFillableStack();
                 }
@@ -1172,7 +1172,7 @@ public class GTRecipe implements Comparable<GTRecipe> {
                     FluidStack fluidStack = meHatch.getFirstShadowFluidStack();
                     fluid = fluidsFromME.get(fluidStack.getFluid());
                 } else if (inputHatch instanceof MTEHatchMultiInput multiInput) {
-                    fluid = multiInput.getFluid(0);
+                    fluid = multiInput.getFluid();
                 } else {
                     fluid = inputHatch.getFillableStack();
                 }

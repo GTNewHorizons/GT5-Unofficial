@@ -658,7 +658,7 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
             return curBatchFluidsFromME.get(fluid.getFluid());
         }
         if (inputHatch instanceof MTEHatchMultiInput multiHatch) {
-            return multiHatch.getFluid(0);
+            return multiHatch.getFluid();
         }
         return inputHatch.getFillableStack();
     }
