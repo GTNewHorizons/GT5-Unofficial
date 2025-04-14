@@ -70,7 +70,7 @@ public class BlockCasings5 extends BlockCasingsAbstract implements IHeatingCoil,
         register(13, ItemList.Casing_Coil_Eternal, "Eternal Coil Block");
 
         for (int i = 0; i < 14; i++) {
-            GTStructureChannels.HEATING_COIL.registerAsIndicator(new ItemStack(this, 1, i), i + 1);
+            GTStructureChannels.HEATING_COIL.registerAsIndicator(new ItemStack(this, 1, i), getCoilHeat(i).ordinal() - 1);
         }
     }
 
