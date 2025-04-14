@@ -264,6 +264,11 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
                     oStrongRedstone = mStrongRedstone;
                     mNeedsBlockUpdate = false;
                 }
+
+                if (mNeedsTileUpdate) {
+                    worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+                    mNeedsTileUpdate = false;
+                }
             }
         }
 
