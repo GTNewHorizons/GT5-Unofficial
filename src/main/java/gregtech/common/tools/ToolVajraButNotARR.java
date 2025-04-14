@@ -129,24 +129,22 @@ public class ToolVajraButNotARR extends ItemTool implements IElectricItem {
         return this;
     }
     @Override
-    public boolean onItemUseFirst(ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX, int aY, int aZ,
-                                  int ordinalSide, float hitX, float hitY, float hitZ) {
+    public boolean onItemUseFirst(ItemStack stack, EntityPlayer player, World world, int x, int y, int z,
+                                  int side, float hitX, float hitY, float hitZ) {
+        if(super.onItemUseFirst(stack, player, world, x, y, z, side, hitX, hitY, hitZ)) return true;
 
-        if(aWorld.isRemote){
-            Minecraft.getMinecraft().playerController.onPlayerDestroyBlock(aX,aY,aZ,ordinalSide);
-            return super.onItemUseFirst(aStack, aPlayer, aWorld, aX, aY, aZ, ordinalSide, hitX, hitY, hitZ);
+        if(world.isRemote){
+            Minecraft.getMinecraft().playerController.onPlayerDestroyBlock(x,y,z,side);
         } else {
-            Block target = aWorld.getBlock(aX,aY,aZ);
-            aWorld.setBlock(aX,aY,aZ, Blocks.air);
-            if(EnchantmentHelper.getSilkTouchModifier(aPlayer)){
-                ItemStack item = new ItemStack(target);
-                aWorld.spawnEntityInWorld(new EntityItem(aWorld, aX, aY, aZ, item));
-            } else {
-                target.dropBlockAsItem(aWorld, aX,aY,aZ, 0, 0);
+            Block target = world.getBlock(x,y,z);
+            int metaData = world.getBlockMetadata(x,y,z);
+            target.onBlockHarvested(world, x, y, z, metaData, player);
+            if (target.removedByPlayer(world, player, x, y, z, true)) {
+                target.onBlockDestroyedByPlayer(world, x, y, z, metaData);
+                target.harvestBlock(world, player, x, y, z, metaData);
             }
-
-            return true;
         }
+        return true;
     }
     @Override
     public ItemStack onItemRightClick(ItemStack itemStackIn, World worldIn, EntityPlayer player) {
