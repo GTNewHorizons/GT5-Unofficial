@@ -37,7 +37,7 @@ public class CoverNeedMaintainance extends CoverLegacyData {
 
     public MaintenanceAlertCondition getMaintenanceAlertCondition() {
         int coverVariable = coverData;
-        if (coverVariable >= 0 && coverVariable < MaintenanceAlertCondition.values().length) {
+        if (coverVariable >= 0 && coverVariable < (MaintenanceAlertCondition.values().length << 1)) {
             return MaintenanceAlertCondition.values()[coverVariable >> 1];
         }
         return MaintenanceAlertCondition.ISSUE_1;
