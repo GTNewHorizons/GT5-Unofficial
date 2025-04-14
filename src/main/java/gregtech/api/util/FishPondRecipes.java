@@ -54,6 +54,7 @@ public class FishPondRecipes {
             chances[i] = (int) (lootTable.get(i).itemWeight * 100 * chanceMultiplier);
             try {
                 ItemStack output = (ItemStack) stackField.get(lootTable.get(i));
+                // Pufferfish check to keep Poisonous Brew outputs the same between the old implementation and current
                 if (output.getItem() instanceof ItemFishFood) {
                     ItemFishFood.FishType fishtype = ItemFishFood.FishType.func_150978_a(output);
                     if (fishtype == ItemFishFood.FishType.PUFFERFISH) {
