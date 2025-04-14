@@ -2,8 +2,6 @@ package gregtech.api.modularui2;
 
 public final class GTTextureIds {
 
-    public static final String TRANSPARENT = "gregtech:transparent";
-
     public static final String BACKGROUND_STANDARD = "gregtech:bg_standard";
     public static final String BACKGROUND_BRONZE = "gregtech:bg_bronze";
     public static final String BACKGROUND_STEEL = "gregtech:bg_steel";

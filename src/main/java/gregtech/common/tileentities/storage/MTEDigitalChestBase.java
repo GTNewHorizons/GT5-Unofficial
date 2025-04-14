@@ -523,7 +523,6 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
             .child(
                 new DynamicDrawable(() -> new ItemDrawable().setItem(ghost.getStack())).asIcon()
                     .asWidget()
-                    .background(GTGuiTextures.TRANSPARENT)
                     .pos(59, 42));
     }
 }

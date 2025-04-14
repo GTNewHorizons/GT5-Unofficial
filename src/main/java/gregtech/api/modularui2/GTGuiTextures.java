@@ -14,13 +14,6 @@ public final class GTGuiTextures {
 
     public static void init() {}
 
-    public static final UITexture TRANSPARENT = UITexture.builder()
-        .location(GregTech.ID, "gui/picture/transparent")
-        .fullImage()
-        .adaptable(0)
-        .name(GTTextureIds.TRANSPARENT)
-        .build();
-
     // region background
 
     public static final UITexture BACKGROUND_STANDARD = UITexture.builder()
