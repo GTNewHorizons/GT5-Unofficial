@@ -21,14 +21,8 @@ import goodgenerator.blocks.tileEntity.MTEEssentiaOutputHatch;
 import goodgenerator.main.GoodGenerator;
 import goodgenerator.util.CharExchanger;
 import goodgenerator.util.DescTextLocalization;
-import gregtech.api.util.GTLanguageManager;
 
 public class GGItemBlocks extends ItemBlock {
-
-    private final String mNoMobsToolTip = GTLanguageManager
-        .addStringLocalization("gt.nomobspawnsonthisblock", "Mobs cannot Spawn on this Block");
-    private final String mNoTileEntityToolTip = GTLanguageManager
-        .addStringLocalization("gt.notileentityinthisblock", "This is NOT a TileEntity!");
 
     public GGItemBlocks(Block block) {
         super(block);
@@ -70,7 +64,7 @@ public class GGItemBlocks extends ItemBlock {
     @SideOnly(Side.CLIENT)
     public void addInformation(ItemStack stack, EntityPlayer playerIn, List tooltip, boolean advanced) {
         if (stack == null) return;
-        tooltip.add(mNoMobsToolTip);
+        tooltip.add(StatCollector.translateToLocal("gt.casing.no-mob-spawning"));
         if (Block.getBlockFromItem(stack.getItem()) instanceof BlockTEContainer tile) {
             if (tile.getIndex() == 1)
                 tooltip.addAll(Arrays.asList(DescTextLocalization.addText("EssentiaHatch.tooltip", 2)));
@@ -81,7 +75,7 @@ public class GGItemBlocks extends ItemBlock {
                         + MTEEssentiaOutputHatch.CAPACITY);
             }
         } else {
-            tooltip.add(mNoTileEntityToolTip);
+            tooltip.add(StatCollector.translateToLocal("gt.casing.not-tile-entity"));
         }
 
         if (Block.getBlockFromItem(stack.getItem())

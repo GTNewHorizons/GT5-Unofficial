@@ -6,14 +6,11 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.StatCollector;
 
 import gregtech.api.GregTechAPI;
-import gregtech.api.util.GTLanguageManager;
 
 public class ItemStonesAbstract extends ItemBlock {
-
-    private final String mNoMobsToolTip = GTLanguageManager
-        .addStringLocalization("gt.nomobspawnsonthisblock", "Mobs cannot Spawn on this Block");
 
     public ItemStonesAbstract(Block block) {
         super(block);
@@ -36,7 +33,7 @@ public class ItemStonesAbstract extends ItemBlock {
     public void addInformation(ItemStack aStack, EntityPlayer aPlayer, List<String> aList, boolean aF3_H) {
         super.addInformation(aStack, aPlayer, aList, aF3_H);
         if (aStack.getItemDamage() % 8 >= 3) {
-            aList.add(this.mNoMobsToolTip);
+            aList.add(StatCollector.translateToLocal("gt.casing.no-mob-spawning"));
         }
     }
 }

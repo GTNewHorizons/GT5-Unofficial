@@ -6,7 +6,6 @@ import static gregtech.api.enums.Mods.GregTech;
 import java.awt.Color;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -51,6 +50,7 @@ public class BaseItemComponent extends Item {
     public final Material componentMaterial;
     public final String materialName;
     public final String unlocalName;
+    public final String translatedMaterialName;
     public final ComponentTypes componentType;
     public final int componentColour;
     public Object extraData;
@@ -62,6 +62,7 @@ public class BaseItemComponent extends Item {
         this.componentMaterial = material;
         this.unlocalName = "item" + componentType.COMPONENT_NAME + material.getUnlocalizedName();
         this.materialName = material.getLocalizedName();
+        this.translatedMaterialName = material.getTranslatedName();
         this.componentType = componentType;
         this.setCreativeTab(AddToCreativeTab.tabMisc);
         this.setUnlocalizedName(this.unlocalName);
@@ -98,6 +99,9 @@ public class BaseItemComponent extends Item {
         this.componentMaterial = aTempMaterial;
         this.unlocalName = "itemCell" + aFormattedNameForFluids;
         this.materialName = localName;
+        this.translatedMaterialName = getFluidName(
+            "fluid." + this.materialName.toLowerCase()
+                .replace(" ", ""));
         this.componentType = ComponentTypes.CELL;
         this.setCreativeTab(AddToCreativeTab.tabMisc);
         this.setUnlocalizedName(aFormattedNameForFluids);
@@ -189,15 +193,24 @@ public class BaseItemComponent extends Item {
     }
 
     public String getFluidName(String aKey) {
-        return StatCollector.canTranslate(aKey) ? StatCollector.translateToLocal(aKey)
-            : StatCollector.translateToLocal("fluid." + aKey);
+        String trans;
+        trans = GTLanguageManager.getTranslation(aKey);
+        if (!trans.equals(aKey)) return trans;
+        aKey = "fluid." + aKey;
+        trans = GTLanguageManager.getTranslation(aKey);
+        if (!trans.equals(aKey)) return trans;
+        return GTLanguageManager.addStringLocalization(
+            "gtplusplus.fluid." + this.materialName.toLowerCase()
+                .replace(" ", ""),
+            this.materialName);
     }
 
     @Override
     public String getItemStackDisplayName(ItemStack stack) {
-        return StatCollector.translateToLocalFormatted(
-            "gt.component." + componentType.COMPONENT_NAME.toLowerCase(Locale.US),
-            (componentMaterial == null ? "NULL" : componentMaterial.getTranslatedName()));
+        return GTLanguageManager.getTranslation("gtplusplus.item." + unlocalName + ".name")
+            .replace("%s", "%temp")
+            .replace("%material", translatedMaterialName)
+            .replace("%temp", "%s");
     }
 
     @SuppressWarnings({ "unchecked", "rawtypes" })

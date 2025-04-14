@@ -13,6 +13,8 @@ import static gregtech.api.util.GTUtility.validMTEList;
 import static mcp.mobius.waila.api.SpecialChars.GREEN;
 import static mcp.mobius.waila.api.SpecialChars.RED;
 import static mcp.mobius.waila.api.SpecialChars.RESET;
+import static net.minecraft.util.StatCollector.translateToLocal;
+import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
 import java.time.Duration;
 import java.util.ArrayList;
@@ -241,11 +243,9 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         if (supportsSingleRecipeLocking()) {
             mLockedToSingleRecipe = !mLockedToSingleRecipe;
             if (mLockedToSingleRecipe) {
-                GTUtility.sendChatToPlayer(
-                    aPlayer,
-                    GTUtility.trans("223", "Single recipe locking enabled. Will lock to next recipe."));
+                GTUtility.sendChatToPlayer(aPlayer, translateToLocal("gt.interact.desc.mb.locking_on"));
             } else {
-                GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("220", "Single recipe locking disabled."));
+                GTUtility.sendChatToPlayer(aPlayer, translateToLocal("gt.interact.desc.mb.locking_off"));
                 mSingleRecipeCheck = null;
             }
         }
@@ -2077,7 +2077,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         }
 
         return new String[] {
-            /* 1 */ StatCollector.translateToLocal("GT5U.multiblock.Progress") + ": "
+            /* 1 */ translateToLocal("GT5U.multiblock.Progress") + ": "
                 + EnumChatFormatting.GREEN
                 + formatNumbers(mProgresstime / 20)
                 + EnumChatFormatting.RESET
@@ -2086,7 +2086,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
                 + formatNumbers(mMaxProgresstime / 20)
                 + EnumChatFormatting.RESET
                 + " s",
-            /* 2 */ StatCollector.translateToLocal("GT5U.multiblock.energy") + ": "
+            /* 2 */ translateToLocal("GT5U.multiblock.energy") + ": "
                 + EnumChatFormatting.GREEN
                 + formatNumbers(storedEnergy)
                 + EnumChatFormatting.RESET
@@ -2095,33 +2095,33 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
                 + formatNumbers(maxEnergy)
                 + EnumChatFormatting.RESET
                 + " EU",
-            /* 3 */ StatCollector.translateToLocal("GT5U.multiblock.usage") + ": "
+            /* 3 */ translateToLocal("GT5U.multiblock.usage") + ": "
                 + EnumChatFormatting.RED
                 + formatNumbers(getActualEnergyUsage())
                 + EnumChatFormatting.RESET
                 + " EU/t",
-            /* 4 */ StatCollector.translateToLocal("GT5U.multiblock.mei") + ": "
+            /* 4 */ translateToLocal("GT5U.multiblock.mei") + ": "
                 + EnumChatFormatting.YELLOW
                 + formatNumbers(getMaxInputVoltage())
                 + EnumChatFormatting.RESET
                 + " EU/t(*2A) "
-                + StatCollector.translateToLocal("GT5U.machines.tier")
+                + translateToLocal("GT5U.machines.tier")
                 + ": "
                 + EnumChatFormatting.YELLOW
                 + VN[GTUtility.getTier(getMaxInputVoltage())]
                 + EnumChatFormatting.RESET,
-            /* 5 */ StatCollector.translateToLocal("GT5U.multiblock.problems") + ": "
+            /* 5 */ translateToLocal("GT5U.multiblock.problems") + ": "
                 + EnumChatFormatting.RED
                 + (getIdealStatus() - getRepairStatus())
                 + EnumChatFormatting.RESET
                 + " "
-                + StatCollector.translateToLocal("GT5U.multiblock.efficiency")
+                + translateToLocal("GT5U.multiblock.efficiency")
                 + ": "
                 + EnumChatFormatting.YELLOW
                 + mEfficiency / 100.0F
                 + EnumChatFormatting.RESET
                 + " %",
-            /* 6 */ StatCollector.translateToLocal("GT5U.multiblock.pollution") + ": "
+            /* 6 */ translateToLocal("GT5U.multiblock.pollution") + ": "
                 + EnumChatFormatting.GREEN
                 + getAveragePollutionPercentage()
                 + EnumChatFormatting.RESET
@@ -2175,17 +2175,14 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         final NBTTagCompound tag = accessor.getNBTData();
 
         if (tag.getBoolean("incompleteStructure")) {
-            currentTip
-                .add(RED + StatCollector.translateToLocalFormatted("GT5U.waila.multiblock.status.incomplete") + RESET);
+            currentTip.add(RED + translateToLocalFormatted("GT5U.waila.multiblock.status.incomplete") + RESET);
         }
-        String efficiency = RESET + StatCollector
-            .translateToLocalFormatted("GT5U.waila.multiblock.status.efficiency", tag.getFloat("efficiency"));
+        String efficiency = RESET
+            + translateToLocalFormatted("GT5U.waila.multiblock.status.efficiency", tag.getFloat("efficiency"));
         if (tag.getBoolean("hasProblems")) {
-            currentTip
-                .add(RED + StatCollector.translateToLocal("GT5U.waila.multiblock.status.has_problem") + efficiency);
+            currentTip.add(RED + translateToLocal("GT5U.waila.multiblock.status.has_problem") + efficiency);
         } else if (!tag.getBoolean("incompleteStructure")) {
-            currentTip
-                .add(GREEN + StatCollector.translateToLocal("GT5U.waila.multiblock.status.running_fine") + efficiency);
+            currentTip.add(GREEN + translateToLocal("GT5U.waila.multiblock.status.running_fine") + efficiency);
         }
 
         boolean isActive = tag.getBoolean("isActive");
@@ -2196,14 +2193,14 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
             if (energyTier > 0) {
                 if (actualEnergyUsage > 0) {
                     currentTip.add(
-                        StatCollector.translateToLocalFormatted(
+                        translateToLocalFormatted(
                             "GT5U.waila.energy.use_with_amperage",
                             formatNumbers(actualEnergyUsage),
                             GTUtility.getAmperageForTier(actualEnergyUsage, (byte) energyTier),
                             GTUtility.getColoredTierNameFromTier((byte) energyTier)));
                 } else if (actualEnergyUsage < 0) {
                     currentTip.add(
-                        StatCollector.translateToLocalFormatted(
+                        translateToLocalFormatted(
                             "GT5U.waila.energy.produce_with_amperage",
                             formatNumbers(-actualEnergyUsage),
                             GTUtility.getAmperageForTier(-actualEnergyUsage, (byte) energyTier),
@@ -2212,13 +2209,13 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
             } else {
                 if (actualEnergyUsage > 0) {
                     currentTip.add(
-                        StatCollector.translateToLocalFormatted(
+                        translateToLocalFormatted(
                             "GT5U.waila.energy.use",
                             formatNumbers(actualEnergyUsage),
                             GTUtility.getColoredTierNameFromVoltage(actualEnergyUsage)));
                 } else if (actualEnergyUsage < 0) {
                     currentTip.add(
-                        StatCollector.translateToLocalFormatted(
+                        translateToLocalFormatted(
                             "GT5U.waila.energy.produce",
                             formatNumbers(-actualEnergyUsage),
                             GTUtility.getColoredTierNameFromVoltage(-actualEnergyUsage)));
@@ -2231,7 +2228,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
 
         if (!isActive && isLockedToRecipe && !lockedRecipe.isEmpty()) {
             // Display locked recipe when the machine is idle
-            currentTip.add(StatCollector.translateToLocal("GT5U.waila.multiblock.status.locked_recipe"));
+            currentTip.add(translateToLocal("GT5U.waila.multiblock.status.locked_recipe"));
             String[] lines = lockedRecipe.split("\n");
             for (String line : lines) {
                 currentTip.add(line);
@@ -2242,9 +2239,9 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
             int totalOutputs = outputItemLength + outputFluidLength;
 
             if (totalOutputs > 0) {
-                currentTip.add(StatCollector.translateToLocal("GT5U.waila.producing"));
+                currentTip.add(translateToLocal("GT5U.waila.producing"));
                 if (isLockedToRecipe) {
-                    currentTip.add(StatCollector.translateToLocal("GT5U.waila.multiblock.status.locked_recipe"));
+                    currentTip.add(translateToLocal("GT5U.waila.multiblock.status.locked_recipe"));
                 }
                 for (int i = 0; i < min(3, outputItemLength); i++) {
                     currentTip.add(
@@ -2261,9 +2258,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
                 }
                 if (totalOutputs > 3) {
                     currentTip.add(
-                        StatCollector.translateToLocalFormatted(
-                            "GT5U.waila.producing.andmore",
-                            formatNumbers((totalOutputs - 3))));
+                        translateToLocalFormatted("GT5U.waila.producing.andmore", formatNumbers((totalOutputs - 3))));
                 }
             }
         }
@@ -2276,9 +2271,8 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         // Show ns on the tooltip
         if (GTMod.gregtechproxy.wailaAverageNS && tag.hasKey("averageNS")) {
             int tAverageTime = tag.getInteger("averageNS");
-            currentTip.add(
-                StatCollector
-                    .translateToLocalFormatted("GT5U.waila.multiblock.status.cpu_load", formatNumbers(tAverageTime)));
+            currentTip
+                .add(translateToLocalFormatted("GT5U.waila.multiblock.status.cpu_load", formatNumbers(tAverageTime)));
         }
 
         super.getWailaBody(itemStack, currentTip, accessor, config);
@@ -2842,8 +2836,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
 
         // Window header
         builder.widget(
-            new TextWidget(EnumChatFormatting.UNDERLINE + StatCollector.translateToLocal("GT5U.gui.text.power_panel"))
-                .setPos(0, 2)
+            new TextWidget(EnumChatFormatting.UNDERLINE + translateToLocal("GT5U.gui.text.power_panel")).setPos(0, 2)
                 .setSize(120, 18));
 
         // Syncing widgets
@@ -2875,9 +2868,8 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
             .setTextColor(Color.WHITE.normal)
             .dynamicTooltip(
                 () -> Collections.singletonList(
-                    alwaysMaxParallel
-                        ? StatCollector.translateToLocalFormatted("GT5U.gui.text.lockedvalue", maxParallel)
-                        : StatCollector.translateToLocalFormatted("GT5U.gui.text.rangedvalue", 1, maxParallel)))
+                    alwaysMaxParallel ? translateToLocalFormatted("GT5U.gui.text.lockedvalue", maxParallel)
+                        : translateToLocalFormatted("GT5U.gui.text.rangedvalue", 1, maxParallel)))
             .setTooltipShowUpDelay(TOOLTIP_DELAY)
             .setSize(70, 18)
             .setPos(12, 40)
@@ -2907,7 +2899,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
                 }
                 return ret.toArray(new IDrawable[0]);
             })
-            .addTooltip(StatCollector.translateToLocal("GT5U.gui.button.max_parallel"))
+            .addTooltip(translateToLocal("GT5U.gui.button.max_parallel"))
             .setTooltipShowUpDelay(TOOLTIP_DELAY)
             .setPos(88, 41)
             .setSize(16, 16);
@@ -3121,10 +3113,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         if (supportsMachineModeSwitch()) {
             screenElements.widget(
                 TextWidget
-                    .dynamicString(
-                        () -> EnumChatFormatting.WHITE + GTUtility.trans("400", "Running mode: ")
-                            + EnumChatFormatting.GOLD
-                            + getMachineModeName())
+                    .dynamicString(() -> translateToLocalFormatted("gt.interact.desc.mb.mode", getMachineModeName()))
                     .setTextAlignment(Alignment.CenterLeft));
         }
         screenElements
@@ -3168,28 +3157,23 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
                     .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setEnabled(widget -> !mCrowbar))
             .widget(new FakeSyncWidget.BooleanSyncer(() -> mCrowbar, val -> mCrowbar = val));
-        screenElements
-            .widget(
-                new TextWidget(StatCollector.translateToLocal("gt.interact.desc.mb.incomplete"))
-                    .setTextAlignment(Alignment.CenterLeft)
-                    .setDefaultColor(COLOR_TEXT_WHITE.get())
-                    .setEnabled(widget -> !mMachine))
+        screenElements.widget(
+            new TextWidget(translateToLocal("gt.interact.desc.mb.incomplete")).setTextAlignment(Alignment.CenterLeft)
+                .setDefaultColor(COLOR_TEXT_WHITE.get())
+                .setEnabled(widget -> !mMachine))
             .widget(new FakeSyncWidget.BooleanSyncer(() -> mMachine, val -> mMachine = val));
         screenElements.widget(
-            new TextWidget(StatCollector.translateToLocal("GT5U.gui.text.too_uncertain"))
-                .setTextAlignment(Alignment.CenterLeft)
+            new TextWidget(translateToLocal("GT5U.gui.text.too_uncertain")).setTextAlignment(Alignment.CenterLeft)
                 .setDefaultColor(COLOR_TEXT_WHITE.get())
                 .setEnabled(widget -> (getErrorDisplayID() & 128) != 0));
         screenElements.widget(
-            new TextWidget(StatCollector.translateToLocal("GT5U.gui.text.invalid_parameters"))
-                .setTextAlignment(Alignment.CenterLeft)
+            new TextWidget(translateToLocal("GT5U.gui.text.invalid_parameters")).setTextAlignment(Alignment.CenterLeft)
                 .setDefaultColor(COLOR_TEXT_WHITE.get())
                 .setEnabled(widget -> (getErrorDisplayID() & 256) != 0));
 
         screenElements
             .widget(
-                new TextWidget(StatCollector.translateToLocal("gt.interact.desc.mb.idle.1"))
-                    .setDefaultColor(COLOR_TEXT_WHITE.get())
+                new TextWidget(translateToLocal("gt.interact.desc.mb.idle.1")).setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setEnabled(widget -> getErrorDisplayID() == 0 && !getBaseMetaTileEntity().isActive()))
             .widget(new FakeSyncWidget.IntegerSyncer(this::getErrorDisplayID, this::setErrorDisplayID))
             .widget(
@@ -3197,22 +3181,19 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
                     () -> getBaseMetaTileEntity().isActive(),
                     val -> getBaseMetaTileEntity().setActive(val)));
         screenElements.widget(
-            new TextWidget(StatCollector.translateToLocal("gt.interact.desc.mb.idle.2"))
-                .setDefaultColor(COLOR_TEXT_WHITE.get())
+            new TextWidget(translateToLocal("gt.interact.desc.mb.idle.2")).setDefaultColor(COLOR_TEXT_WHITE.get())
                 .setEnabled(widget -> getErrorDisplayID() == 0 && !getBaseMetaTileEntity().isActive()));
         screenElements.widget(
-            new TextWidget(StatCollector.translateToLocal("gt.interact.desc.mb.idle.3"))
-                .setDefaultColor(COLOR_TEXT_WHITE.get())
+            new TextWidget(translateToLocal("gt.interact.desc.mb.idle.3")).setDefaultColor(COLOR_TEXT_WHITE.get())
                 .setEnabled(widget -> getErrorDisplayID() == 0 && !getBaseMetaTileEntity().isActive()));
 
         screenElements.widget(
-            new TextWidget(StatCollector.translateToLocal("gt.interact.desc.mb.running"))
-                .setDefaultColor(COLOR_TEXT_WHITE.get())
+            new TextWidget(translateToLocal("gt.interact.desc.mb.running")).setDefaultColor(COLOR_TEXT_WHITE.get())
                 .setEnabled(widget -> getErrorDisplayID() == 0 && getBaseMetaTileEntity().isActive()));
 
         screenElements.widget(TextWidget.dynamicString(() -> {
             Duration time = Duration.ofSeconds((mTotalRunTime - mLastWorkingTick) / 20);
-            return StatCollector.translateToLocalFormatted(
+            return translateToLocalFormatted(
                 "GT5U.gui.text.shutdown_duration",
                 time.toHours(),
                 time.toMinutes() % 60,
