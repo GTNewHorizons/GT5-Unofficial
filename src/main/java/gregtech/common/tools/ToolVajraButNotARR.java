@@ -59,13 +59,13 @@ public class ToolVajraButNotARR extends ItemTool implements IElectricItem {
 
     @Override
     public boolean canHarvestBlock(Block block, ItemStack stack) {
-        return true;
+        return ElectricItem.manager.canUse(stack, baseCost * block.blockHardness);
     }
 
     @Override
     public float getDigSpeed(ItemStack stack, Block block, int meta) {
-        if (!ElectricItem.manager.canUse(stack, baseCost)) {
-            return 1.0F;
+        if (!ElectricItem.manager.canUse(stack, baseCost * block.blockHardness)) {
+            return 0.0F;
         }
         return Integer.MAX_VALUE;
     }
