@@ -34,7 +34,6 @@ import com.cleanroommc.modularui.api.drawable.IDrawable;
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
-import com.cleanroommc.modularui.value.sync.ByteSyncValue;
 import com.cleanroommc.modularui.value.sync.IntSyncValue;
 import com.cleanroommc.modularui.value.sync.LongSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
@@ -365,16 +364,14 @@ public class MTERadioHatch extends MTEHatch implements RecipeMapWorkable, IAddGr
 
     @Override
     public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager) {
-        IPanelHandler popupPanel = syncManager
-            .panel("popup_panel", (manager, handler) -> createShutterPanel(manager), true);
+        IPanelHandler popupPanel = syncManager.panel("popup", (manager, handler) -> createShutterUI(syncManager), true);
         syncManager.registerSlotGroup("item_inv", 1);
         syncManager.syncValue("mass", new IntSyncValue(() -> mass, value -> mass = (byte) value));
         syncManager.syncValue("sievert", new IntSyncValue(() -> sievert, value -> sievert = value));
         syncManager.syncValue("color0", new IntSyncValue(() -> colorForGUI[0], c -> colorForGUI[0] = (short) c));
         syncManager.syncValue("color1", new IntSyncValue(() -> colorForGUI[1], c -> colorForGUI[1] = (short) c));
         syncManager.syncValue("color2", new IntSyncValue(() -> colorForGUI[2], c -> colorForGUI[2] = (short) c));
-        syncManager.syncValue("decayTime", new LongSyncValue(() -> decayTime, time -> decayTime = time));
-        syncManager.syncValue("timer", new LongSyncValue(() -> timer, time -> timer = time));
+        syncManager.syncValue("coverage", 0, new IntSyncValue(() -> coverage, value -> coverage = (byte) value));
 
         return GTGuis.mteTemplatePanelBuilder(this, data, syncManager)
             .doesAddGregTechLogo(false)
@@ -396,28 +393,7 @@ public class MTERadioHatch extends MTEHatch implements RecipeMapWorkable, IAddGr
                 GTGuiTextures.PICTURE_DECAY_TIME_INSIDE.asWidget()
                     .pos(124, 18)
                     .size(16, 48))
-            .child(new IDrawable.DrawableWidget((context, x, y, width, height, widgetTheme) -> {
-                if (MTERadioHatch.this.decayTime > 0) {
-                    int drawableHeight = MathUtils.ceilInt(
-                        48 * ((MTERadioHatch.this.decayTime - MTERadioHatch.this.timer % MTERadioHatch.this.decayTime)
-                            / (float) MTERadioHatch.this.decayTime));
-                    new com.cleanroommc.modularui.drawable.Rectangle()
-                        .setColor(
-                            Color.argb(
-                                MTERadioHatch.this.colorForGUI[0],
-                                MTERadioHatch.this.colorForGUI[1],
-                                MTERadioHatch.this.colorForGUI[2],
-                                255))
-                        .draw(context, new Area(0, 48 - drawableHeight, 16, drawableHeight), widgetTheme);
-                }
-            }).tooltipBuilder(
-                tooltip -> tooltip.add(
-                    StatCollector.translateToLocalFormatted(
-                        "tooltip.tile.radhatch.10.name",
-                        this.timer <= 1 ? 0 : (this.decayTime - this.timer) / 20,
-                        this.timer <= 1 ? 0 : this.decayTime / 20)))
-                .pos(124, 18)
-                .size(18, 48))
+            .child(createDurationMeter(syncManager))
             .child(
                 GTGuiTextures.PICTURE_DECAY_TIME_CONTAINER.asWidget()
                     .pos(120, 14)
@@ -454,8 +430,8 @@ public class MTERadioHatch extends MTEHatch implements RecipeMapWorkable, IAddGr
             .bindPlayerInventory();
     }
 
-    private ModularPanel createShutterPanel(PanelSyncManager syncManager) {
-        syncManager.syncValue("coverage", new ByteSyncValue(() -> this.coverage, value -> this.coverage = value));
+    private ModularPanel createShutterUI(PanelSyncManager syncManager) {
+        IntSyncValue coverageSyncer = (IntSyncValue) syncManager.getSyncHandler("coverage:0");
         return createPopUpPanel("bw:radio_hatch_shutter", false, false).size(176, 107)
             .child(
                 IKey.str("Radiation Shutter Control")
@@ -477,14 +453,42 @@ public class MTERadioHatch extends MTEHatch implements RecipeMapWorkable, IAddGr
                     .size(51, 50))
             .child(
                 new TextFieldWidget().setNumbers(0, 100)
-                    .value(
-                        new StringSyncValue(
-                            () -> String.valueOf(this.coverage),
-                            value -> this.coverage = Byte.parseByte(String.valueOf(value))))
+                    .value(new StringSyncValue(coverageSyncer::getStringValue, coverageSyncer::setStringValue))
                     .setTextColor(com.cleanroommc.modularui.utils.Color.WHITE.darker(1))
                     .setTextAlignment(com.cleanroommc.modularui.utils.Alignment.CenterLeft)
                     .pos(86, 27)
                     .size(30, 12));
+    }
+
+    private IDrawable.DrawableWidget createDurationMeter(PanelSyncManager syncManager) {
+        IDrawable.DrawableWidget widget = new IDrawable.DrawableWidget((context, x, y, width, height, widgetTheme) -> {
+            if (MTERadioHatch.this.decayTime > 0) {
+                int drawableHeight = MathUtils.ceilInt(
+                    48 * ((MTERadioHatch.this.decayTime - MTERadioHatch.this.timer % MTERadioHatch.this.decayTime)
+                        / (float) MTERadioHatch.this.decayTime));
+                new com.cleanroommc.modularui.drawable.Rectangle()
+                    .setColor(
+                        Color.argb(
+                            MTERadioHatch.this.colorForGUI[0],
+                            MTERadioHatch.this.colorForGUI[1],
+                            MTERadioHatch.this.colorForGUI[2],
+                            255))
+                    .draw(context, new Area(0, 48 - drawableHeight, 16, drawableHeight), widgetTheme);
+            }
+        }).tooltipBuilder(
+            tooltip -> tooltip.add(
+                StatCollector.translateToLocalFormatted(
+                    "tooltip.tile.radhatch.10.name",
+                    this.timer <= 1 ? 0 : (this.decayTime - this.timer) / 20,
+                    this.timer <= 1 ? 0 : this.decayTime / 20)))
+            .pos(124, 18)
+            .size(18, 48);
+
+        LongSyncValue timeSyncHandler = new LongSyncValue(() -> timer, time -> timer = time);
+        timeSyncHandler.setChangeListener(widget::markTooltipDirty);
+        syncManager.syncValue("decayTime", new LongSyncValue(() -> decayTime, time -> decayTime = time));
+        syncManager.syncValue("timer", timeSyncHandler);
+        return widget;
     }
 
     @Override
