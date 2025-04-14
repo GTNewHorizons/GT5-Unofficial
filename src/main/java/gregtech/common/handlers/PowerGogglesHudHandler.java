@@ -50,7 +50,6 @@ public class PowerGogglesHudHandler {
     static BigInteger measurement = BigInteger.valueOf(0);
     static BigInteger highest = BigInteger.valueOf(0);
     static long capacity = 0; // If this is higher than 0 there's a linked LSC
-    static int measurementCount = 0;
     static int change5mColor;
     static int change1hColor;
 
@@ -382,7 +381,6 @@ public class PowerGogglesHudHandler {
         currentEU = measurement;
         measurements.addFirst(measurement);
         if (measurements.size() > measurementCount1h) measurements.removeLast();
-        ++measurementCount;
     }
 
     public static int[] getGradient(double severity, double scale, int gradientLeft, int gradientRight) {
@@ -506,7 +504,6 @@ public class PowerGogglesHudHandler {
 
     public static void clear() {
         measurements.clear();
-        measurementCount = 0;
         highest = BigInteger.valueOf(0);
         capacity = 0;
     }

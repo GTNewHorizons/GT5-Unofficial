@@ -57,7 +57,7 @@ public class PowerGogglesEventHandler {
                 }
                 firstClientTick = false;
             }
-            if (PowerGogglesHudHandler.updateClient) PowerGogglesHudHandler.drawTick();
+            if (forceUpdate || PowerGogglesHudHandler.updateClient) PowerGogglesHudHandler.drawTick();
         } else {
             if (ticks == 0 || forceUpdate) {
                 EntityPlayerMP player = (EntityPlayerMP) event.player;
@@ -119,8 +119,7 @@ public class PowerGogglesEventHandler {
             Minecraft.getMinecraft()
                 .displayGuiScreen(new PowerGogglesGuiHudConfig(screenInfo.displayWidth, screenInfo.displayHeight));
 
-        }
-        else if (PowerGogglesKeybindHandler.toggleChart.isPressed()) {
+        } else if (PowerGogglesKeybindHandler.toggleChart.isPressed()) {
             PowerGogglesConfigHandler.showPowerChart = !PowerGogglesConfigHandler.showPowerChart;
             PowerGogglesConfigHandler.config.getCategory(Configuration.CATEGORY_GENERAL)
                 .get("Show Power Chart")

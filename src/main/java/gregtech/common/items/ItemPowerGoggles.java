@@ -21,8 +21,8 @@ import baubles.common.lib.PlayerHandler;
 import gregtech.api.interfaces.INetworkUpdatableItem;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.items.GTGenericItem;
-import gregtech.api.net.GTPacketLinkPowerGoggles;
 import gregtech.api.net.GTPacketUpdateItem;
+import gregtech.common.handlers.PowerGogglesEventHandler;
 import kekztech.common.tileentities.MTELapotronicSuperCapacitor;
 
 public class ItemPowerGoggles extends GTGenericItem implements IBauble, INetworkUpdatableItem {
@@ -122,17 +122,22 @@ public class ItemPowerGoggles extends GTGenericItem implements IBauble, INetwork
 
     @Override
     public void onEquipped(ItemStack itemstack, EntityLivingBase player) {
+        if (player.worldObj.isRemote || !(player instanceof EntityPlayerMP playerMP)) return;
         NBTTagCompound tag = itemstack.getTagCompound();
+        DimensionalCoord coords = null;
         if (tag != null && !tag.hasNoTags()) {
-            NW.sendToServer(
-                new GTPacketLinkPowerGoggles(
-                    new DimensionalCoord(
-                        tag.getInteger("x"),
-                        tag.getInteger("y"),
-                        tag.getInteger("z"),
-                        tag.getInteger("dim"))));
-        } else {
-            NW.sendToServer(new GTPacketLinkPowerGoggles());
+            coords = new DimensionalCoord(
+                tag.getInteger("x"),
+                tag.getInteger("y"),
+                tag.getInteger("z"),
+                tag.getInteger("dim"));
+        }
+        DimensionalCoord current = PowerGogglesEventHandler.getLscLink(player.getUniqueID());
+        if ((coords != null && current == null) || (coords == null && current != null)
+            || (current != null && !current.isEqual(coords))) {
+            PowerGogglesEventHandler.setLscLink(playerMP, coords);
+            PowerGogglesEventHandler.forceUpdate = true;
+            PowerGogglesEventHandler.forceRefresh = true;
         }
     }
 
