@@ -41,7 +41,7 @@ public class TextureSet {
         "/spring", "/arrowGtWood", "/arrowGtPlastic", "/gemChipped", "/gemFlawed", "/gemFlawless", "/gemExquisite",
         "/gearGt", "/oreRaw", aTextVoidDir, aTextVoidDir, "/oreSmall", "/ore", "/wire", "/foil", "/block1", "/block2",
         "/block3", "/block4", "/block5", "/block6", "/pipeSide", "/pipeTiny", "/pipeSmall", "/pipeMedium", "/pipeLarge",
-        "/pipeHuge", "/frameGt", "/pipeQuadruple", "/pipeNonuple", aTextVoidDir, aTextVoidDir, aTextVoidDir,
+        "/pipeHuge", "/frameGt", "/pipeQuadruple", "/pipeNonuple", "/beeComb", aTextVoidDir, aTextVoidDir,
         aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir,
         "/crateGtDust", "/crateGtIngot", "/crateGtGem", "/crateGtPlate", "/turbineBlade", aTextVoidDir, aTextVoidDir,
         aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir,
