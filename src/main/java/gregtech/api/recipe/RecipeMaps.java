@@ -20,7 +20,6 @@ import static gregtech.api.util.GTUtility.getFluidForFilledItem;
 import static gregtech.api.util.GTUtility.isArrayEmptyOrNull;
 import static gregtech.api.util.GTUtility.isArrayOfLength;
 import static gregtech.api.util.GTUtility.multiplyStack;
-import static gregtech.common.tileentities.machines.multi.nanochip.util.RecipeHandlers.assemblyMatrixRecipeTransformer;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -891,7 +890,6 @@ public final class RecipeMaps {
             (index, isFluid, isOutput, isSpecial) -> !isFluid && !isOutput ? GTUITextures.OVERLAY_SLOT_CIRCUIT : null)
         .progressBar(GTUITextures.PROGRESSBAR_CIRCUIT_ASSEMBLER)
         .unificateOutputNEI(!NEICustomDiagrams.isModLoaded())
-        .builderTransformer(assemblyMatrixRecipeTransformer::doAdd)
         .build();
     public static final RecipeMap<RecipeMapBackend> cannerRecipes = RecipeMapBuilder.of("gt.recipe.canner")
         .maxIO(2, 2, 0, 0)
@@ -1300,9 +1298,4 @@ public final class RecipeMaps {
         .maxIO(2, 1, 2, 0)
         .minInputs(0, 0)
         .build();
-
-//    static {
-//        // Add transformer from circuit assembler recipes to nanochip assembly matrix recipe
-//        RecipeMaps.circuitAssemblerRecipes.addDownstream(assemblyMatrixRecipeTransformer);
-//    }
 }
