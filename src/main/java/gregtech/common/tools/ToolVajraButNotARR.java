@@ -7,6 +7,7 @@ import java.util.List;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockAir;
+import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.PlayerControllerMP;
@@ -128,24 +129,30 @@ public class ToolVajraButNotARR extends ItemTool implements IElectricItem {
     public Item getEmptyItem(ItemStack itemStack) {
         return this;
     }
+
     @Override
     public boolean onItemUseFirst(ItemStack stack, EntityPlayer player, World world, int x, int y, int z,
                                   int side, float hitX, float hitY, float hitZ) {
-        if(super.onItemUseFirst(stack, player, world, x, y, z, side, hitX, hitY, hitZ)) return true;
+        Block target = world.getBlock(x,y,z);
+        int metaData = world.getBlockMetadata(x,y,z);
+
+        if(!ElectricItem.manager.canUse(stack, baseCost * target.blockHardness)) return super.onItemUseFirst(stack, player, world, x, y, z, side, hitX, hitY, hitZ);
+        if(target instanceof ITileEntityProvider && !player.isSneaking()) return super.onItemUseFirst(stack, player, world, x, y, z, side, hitX, hitY, hitZ);
 
         if(world.isRemote){
             Minecraft.getMinecraft().playerController.onPlayerDestroyBlock(x,y,z,side);
         } else {
-            Block target = world.getBlock(x,y,z);
-            int metaData = world.getBlockMetadata(x,y,z);
             target.onBlockHarvested(world, x, y, z, metaData, player);
             if (target.removedByPlayer(world, player, x, y, z, true)) {
                 target.onBlockDestroyedByPlayer(world, x, y, z, metaData);
                 target.harvestBlock(world, player, x, y, z, metaData);
             }
         }
-        return true;
+        stack.getTagCompound().setBoolean("harvested",true);
+        ElectricItem.manager.use(stack, baseCost * target.blockHardness, player);
+        return super.onItemUseFirst(stack, player, world, x, y, z, side, hitX, hitY, hitZ);
     }
+
     @Override
     public ItemStack onItemRightClick(ItemStack itemStackIn, World worldIn, EntityPlayer player) {
         NBTTagCompound tag = itemStackIn.hasTagCompound() ? itemStackIn.getTagCompound() : new NBTTagCompound();
@@ -153,6 +160,11 @@ public class ToolVajraButNotARR extends ItemTool implements IElectricItem {
             tag.setBoolean("silk",false);
             itemStackIn.setTagCompound(tag);
         }
+        if(tag.getBoolean("harvested")) {
+            tag.removeTag("harvested");
+            return super.onItemRightClick(itemStackIn,worldIn,player);
+        }
+
         if(!worldIn.isRemote && player.isSneaking()){
             if(itemStackIn.getTagCompound().getBoolean("silk")){
                 tag.removeTag("ench");
