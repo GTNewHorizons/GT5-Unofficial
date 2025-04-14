@@ -1003,7 +1003,7 @@ public class GTRecipe implements Comparable<GTRecipe> {
                 if (inputBus instanceof MTEHatchInputBusME meBus) {
                     slotStack = meBus.getFirstShadowItemStack();
                 } else {
-                    slotStack = inputBus.getStackInSlot(0);
+                    slotStack = inputBus.getFirstStack();
                 }
                 if (slotStack == null) return null;
 
@@ -1071,7 +1071,7 @@ public class GTRecipe implements Comparable<GTRecipe> {
                 if (!inputBus.isValid()) return 0;
                 if (inputBus instanceof MTEHatchInputBusME) continue;
 
-                ItemStack item = inputBus.getStackInSlot(0);
+                ItemStack item = inputBus.getFirstStack();
                 if (item == null) return 0;
                 // For non-consumed inputs
                 if (itemConsumptions[i] == 0) continue;
@@ -1149,7 +1149,7 @@ public class GTRecipe implements Comparable<GTRecipe> {
                     ItemStack itemStack = meBus.getFirstShadowItemStack();
                     item = inputsFromME.get(GTUtility.ItemId.createNoCopy(itemStack));
                 } else {
-                    item = inputBus.getStackInSlot(0);
+                    item = inputBus.getFirstStack();
                 }
                 item.stackSize -= itemConsumptions[i] * amountMultiplier;
             }

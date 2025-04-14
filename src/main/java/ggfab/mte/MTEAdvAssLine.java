@@ -643,7 +643,7 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
             if (!curBatchItemsFromME.containsKey(id)) return null;
             return curBatchItemsFromME.get(id);
         }
-        return inputBus.getStackInSlot(0);
+        return inputBus.getFirstStack();
 
     }
 
