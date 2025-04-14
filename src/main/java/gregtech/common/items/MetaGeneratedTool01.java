@@ -47,14 +47,12 @@ import static gregtech.common.items.IDMetaTool01.WRENCH_HV;
 import static gregtech.common.items.IDMetaTool01.WRENCH_LV;
 import static gregtech.common.items.IDMetaTool01.WRENCH_MV;
 
-import cpw.mods.fml.common.registry.GameRegistry;
-import gregtech.api.enums.ItemList;
-import gregtech.common.tools.ToolVajraButNotARR;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 
 import gregtech.api.GregTechAPI;
+import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TCAspects;
@@ -90,6 +88,7 @@ import gregtech.common.tools.ToolTurbineHuge;
 import gregtech.common.tools.ToolTurbineLarge;
 import gregtech.common.tools.ToolTurbineNormal;
 import gregtech.common.tools.ToolTurbineSmall;
+import gregtech.common.tools.ToolVajraButNotARR;
 import gregtech.common.tools.ToolWireCutter;
 import gregtech.common.tools.ToolWrench;
 import gregtech.common.tools.ToolWrenchHV;
@@ -525,13 +524,8 @@ public class MetaGeneratedTool01 extends MetaGeneratedTool {
             new TCAspects.TC_AspectStack(TCAspects.INSTRUMENTUM, 8),
             new TCAspects.TC_AspectStack(TCAspects.SENSUS, 4),
             new TCAspects.TC_AspectStack(TCAspects.PERDITIO, 2));
-        ItemList.Tool_Vajra.set(new ToolVajraButNotARR(
-            "Tool_Vajra",
-            "Vajra Uncringed",
-            "I HATE ARR MODS!!!!!",
-            20,
-            20,
-            true));
+        ItemList.Tool_Vajra
+            .set(new ToolVajraButNotARR("Tool_Vajra", "Vajra Uncringed", "I HATE ARR MODS!!!!!", 20, 20, true));
 
         initCraftingShapedRecipes();
         initCraftingShapelessRecipes();
