@@ -17,6 +17,18 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import com.cleanroommc.modularui.api.drawable.IDrawable;
+import com.cleanroommc.modularui.api.drawable.IKey;
+import com.cleanroommc.modularui.drawable.DynamicDrawable;
+import com.cleanroommc.modularui.drawable.ItemDrawable;
+import com.cleanroommc.modularui.factory.PosGuiData;
+import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.utils.Alignment;
+import com.cleanroommc.modularui.value.sync.IntSyncValue;
+import com.cleanroommc.modularui.value.sync.ItemSlotSH;
+import com.cleanroommc.modularui.value.sync.PanelSyncManager;
+import com.cleanroommc.modularui.widgets.ItemSlot;
+import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 import com.gtnewhorizons.modularui.api.NumberFormatMUI;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
@@ -39,6 +51,9 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTETieredMachineBlock;
+import gregtech.api.modularui2.GTGuiTextures;
+import gregtech.api.modularui2.GTGuis;
+import gregtech.api.modularui2.GTWidgetThemes;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTUtility;
@@ -461,5 +476,54 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
                     () -> this instanceof MTEQuantumChest ? ((MTEQuantumChest) this).mItemCount : 0,
                     value -> clientItemCount = value));
 
+    }
+
+    @Override
+    protected boolean useMui2() {
+        return true;
+    }
+
+    @Override
+    public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager) {
+        syncManager.registerSlotGroup("item_inv", 0);
+        IntSyncValue itemCountSyncHandler = new IntSyncValue(
+            () -> this instanceof MTEQuantumChest ? ((MTEQuantumChest) this).mItemCount : 0,
+            value -> clientItemCount = value);
+        syncManager.syncValue("digital_chest_amount", itemCountSyncHandler);
+        ModularSlot ghost = new ModularSlot(inventoryHandler, 2);
+        syncManager.syncValue("digital_chest_ghost", new ItemSlotSH(ghost));
+
+        return GTGuis.mteTemplatePanelBuilder(this, data, syncManager)
+            .build()
+            .child(
+                new ItemSlot().slot(new ModularSlot(inventoryHandler, 0).slotGroup("item_inv"))
+                    .pos(79, 16)
+                    .widgetTheme(GTWidgetThemes.OVERLAY_ITEM_SLOT_IN))
+            .child(
+                new ItemSlot().slot(
+                    new ModularSlot(inventoryHandler, 1).slotGroup("item_inv")
+                        .accessibility(false, true))
+                    .pos(79, 52)
+                    .widgetTheme(GTWidgetThemes.OVERLAY_ITEM_SLOT_OUT))
+            .child(
+                new IDrawable.DrawableWidget(GTGuiTextures.PICTURE_SCREEN_BLACK).pos(7, 16)
+                    .size(71, 45))
+            .child(
+                IKey.lang("GT5U.gui.text.item.amount")
+                    .color(COLOR_TEXT_WHITE.get())
+                    .asWidget()
+                    .pos(10, 20))
+            .child(
+                IKey.dynamic(() -> numberFormat.format(clientItemCount))
+                    .color(COLOR_TEXT_WHITE.get())
+                    .asWidget()
+                    .alignment(Alignment.CenterLeft)
+                    .pos(10, 30)
+                    .size(60, 10))
+            .child(
+                new DynamicDrawable(() -> new ItemDrawable().setItem(ghost.getStack())).asIcon()
+                    .asWidget()
+                    .background(GTGuiTextures.TRANSPARENT)
+                    .pos(59, 42));
     }
 }

@@ -2,6 +2,7 @@ package gregtech.api.modularui2;
 
 import static gregtech.api.enums.Mods.GregTech;
 
+import com.cleanroommc.modularui.drawable.AdaptableUITexture;
 import com.cleanroommc.modularui.drawable.UITexture;
 
 import gregtech.common.modularui2.util.SteamTextureRegisterer;
@@ -12,6 +13,13 @@ import gregtech.common.modularui2.util.SteamTextureRegisterer;
 public final class GTGuiTextures {
 
     public static void init() {}
+
+    public static final UITexture TRANSPARENT = UITexture.builder()
+        .location(GregTech.ID, "gui/picture/transparent")
+        .fullImage()
+        .adaptable(0)
+        .name(GTTextureIds.TRANSPARENT)
+        .build();
 
     // region background
 
@@ -398,6 +406,12 @@ public final class GTGuiTextures {
             GTTextureIds.PICTURE_GT_LOGO_BRONZE,
             GTTextureIds.PICTURE_GT_LOGO_STEEL,
             GTTextureIds.PICTURE_GT_LOGO_PRIMITIVE)
+        .build();
+    public static final AdaptableUITexture PICTURE_SCREEN_BLACK = (AdaptableUITexture) AdaptableUITexture.builder()
+        .location(GregTech.ID, "gui/picture/screen_black")
+        .name(GTTextureIds.PICTURE_GT_SCREEN_BLACK)
+        .adaptable(2)
+        .tiled(16, 16)
         .build();
 
     // endregion picture

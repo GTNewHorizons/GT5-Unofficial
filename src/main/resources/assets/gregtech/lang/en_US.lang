@@ -801,6 +801,7 @@ GT5U.gui.text.invalid_parameters=Invalid Parameters.
 GT5U.gui.text.enabled=§aEnabled§f
 GT5U.gui.text.disabled=§cDisabled§f
 GT5U.gui.text.repair_tip=Click with Tool to repair.
+GT5U.gui.text.item.amount=Item Amount
 
 
 GT5U.gui.config.client=Client

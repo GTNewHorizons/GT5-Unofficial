@@ -2,6 +2,8 @@ package gregtech.api.modularui2;
 
 public final class GTTextureIds {
 
+    public static final String TRANSPARENT = "gregtech:transparent";
+
     public static final String BACKGROUND_STANDARD = "gregtech:bg_standard";
     public static final String BACKGROUND_BRONZE = "gregtech:bg_bronze";
     public static final String BACKGROUND_STEEL = "gregtech:bg_steel";
@@ -96,4 +98,5 @@ public final class GTTextureIds {
     public static final String PICTURE_GT_LOGO_BRONZE = "gregtech:picture_gt_logo_bronze";
     public static final String PICTURE_GT_LOGO_STEEL = "gregtech:picture_gt_logo_steel";
     public static final String PICTURE_GT_LOGO_PRIMITIVE = "gregtech:picture_gt_logo_primitive";
+    public static final String PICTURE_GT_SCREEN_BLACK = "gregtech:picture_gt_screen_black";
 }
