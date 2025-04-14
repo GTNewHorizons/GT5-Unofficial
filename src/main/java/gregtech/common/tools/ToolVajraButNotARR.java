@@ -7,10 +7,14 @@ import java.util.List;
 
 import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 
 import cpw.mods.fml.relauncher.Side;
@@ -84,7 +88,7 @@ public class ToolVajraButNotARR extends ItemTool implements IElectricItem {
     @Override
     public void addInformation(ItemStack stack, EntityPlayer par2EntityPlayer, List<String> list, boolean par4) {
         list.add(this.tooltip);
-        list.add("Charge with" + VN[tier] + " thing idk");
+        list.add("Charge with " + VN[tier] + " thing idk");
     }
 
     @Override
@@ -115,5 +119,26 @@ public class ToolVajraButNotARR extends ItemTool implements IElectricItem {
     @Override
     public Item getEmptyItem(ItemStack itemStack) {
         return this;
+    }
+
+    @Override
+    public ItemStack onItemRightClick(ItemStack itemStackIn, World worldIn, EntityPlayer player) {
+        NBTTagCompound tag = itemStackIn.hasTagCompound() ? itemStackIn.getTagCompound() : new NBTTagCompound();
+        if(!worldIn.isRemote && !itemStackIn.hasTagCompound()){
+            tag.setBoolean("silk",false);
+            itemStackIn.setTagCompound(tag);
+        }
+        if(!worldIn.isRemote && player.isSneaking()){
+            if(itemStackIn.getTagCompound().getBoolean("silk")){
+                tag.removeTag("ench");
+                tag.setBoolean("silk",false);
+                player.addChatMessage(new ChatComponentText(EnumChatFormatting.RED + "Disabled vajra silk touch"));
+            } else {
+                itemStackIn.addEnchantment(Enchantment.silkTouch, 1);
+                tag.setBoolean("silk", true);
+                player.addChatMessage(new ChatComponentText(EnumChatFormatting.GREEN + "Enabled vajra silk touch"));
+            }
+        }
+        return super.onItemRightClick(itemStackIn,worldIn,player);
     }
 }

@@ -525,7 +525,7 @@ public class MetaGeneratedTool01 extends MetaGeneratedTool {
             new TCAspects.TC_AspectStack(TCAspects.SENSUS, 4),
             new TCAspects.TC_AspectStack(TCAspects.PERDITIO, 2));
         ItemList.Tool_Vajra
-            .set(new ToolVajraButNotARR("Tool_Vajra", "Vajra Uncringed", "I HATE ARR MODS!!!!!", 20, 20, true));
+            .set(new ToolVajraButNotARR("Tool_Vajra", "Vajra Uncringed", "I HATE ARR MODS!!!!!", 100, 20, true));
 
         initCraftingShapedRecipes();
         initCraftingShapelessRecipes();
