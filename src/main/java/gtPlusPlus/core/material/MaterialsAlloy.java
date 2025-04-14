@@ -30,8 +30,8 @@ public final class MaterialsAlloy {
         true, // Uses Blast furnace?
         // Material Stacks with Percentage of required elements.
         new MaterialStack(MaterialsElements.getInstance().AER, 25),
-        new MaterialStack(MaterialsElements.getInstance().IGNIS, 25),
         new MaterialStack(MaterialsElements.getInstance().TERRA, 25),
+        new MaterialStack(MaterialsElements.getInstance().IGNIS, 25),
         new MaterialStack(MaterialsElements.getInstance().AQUA, 25));
 
     public static final Material BLOODSTEEL = new Material(
