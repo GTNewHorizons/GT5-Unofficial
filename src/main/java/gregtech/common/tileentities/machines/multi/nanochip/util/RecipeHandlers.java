@@ -58,30 +58,34 @@ public class RecipeHandlers {
         }
         ItemStack realOutput = output.realCircuit.copy();
         realOutput.stackSize = info.getBaseParallel();
+        ItemStack[] inputsWithRealCircuits = input.stream()
+            .map(c -> {
+                if (c.getCircuitComponent().realCircuit != null) {
+                    ItemStack realCircuit = c.getCircuitComponent().realCircuit.copy();
+                    realCircuit.stackSize = info.getBaseParallel() * c.getSize();
+                    return realCircuit;
+                }
+                return c.getCircuitComponent()
+                    .getFakeStack(info.getBaseParallel() * c.getSize());
+            })
+            .toArray(ItemStack[]::new);
+        ItemStack[] inputsWithFakeCircuits = input.stream()
+            .map(c -> c.getCircuitComponent().getFakeStack(info.getBaseParallel() * c.getSize()))
+            .toArray(ItemStack[]::new);
         GTRecipeBuilder builder = GTValues.RA.stdBuilder()
             .metadata(NanochipAssemblyRecipeInfo.INSTANCE, info)
-            .itemInputs(
-                input.stream()
-                    .map(c -> {
-                        if (c.getCircuitComponent().realCircuit != null) {
-                            ItemStack realCircuit = c.getCircuitComponent().realCircuit.copy();
-                            realCircuit.stackSize = info.getBaseParallel() * c.getSize();
-                            return realCircuit;
-                        }
-                        return c.getCircuitComponent()
-                            .getFakeStack(info.getBaseParallel() * c.getSize());
-                    })
-                    .toArray(ItemStack[]::new))
             .itemOutputs(output.getFakeStack(info.getBaseParallel()))
             .duration(ModuleRecipeInfo.MODULE_RECIPE_TIME)
             .eut(eut);
         // Add real recipe that will actually be utilized in recipe checks
         builder.copy()
             .hidden()
+            .itemInputs(inputsWithFakeCircuits)
             .addTo(output.processingMap);
         // Add fake recipe that the user can see in NEI but will never actually be used for recipe checks
         builder.copy()
             .fake()
+            .itemInputs(inputsWithRealCircuits)
             .itemOutputs(realOutput)
             .addTo(output.processingMap);
     }
