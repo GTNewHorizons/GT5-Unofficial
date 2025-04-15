@@ -214,37 +214,59 @@ public class MTEMultiFurnace extends MTEAbstractMultiFurnace<MTEMultiFurnace> im
 
         int finalParallel = (int) (batchMultiplierMax * currentParallelBeforeBatchMode);
 
-        if (protectsExcessItem()) {
-            VoidProtectionHelper voidProtectionHelper = new VoidProtectionHelper()
-                .setMachine(this)
-                .setItemOutputs(plannedOutputs.toArray(new ItemStack[0]))
-                .setMaxParallel(finalParallel)
-                .build();
-
-            finalParallel = voidProtectionHelper.getMaxParallel();
-        }
-        if (finalParallel <= 0) {
-            return CheckRecipeResultRegistry.NO_RECIPE;
-        }
+        List<ItemStack> outputSlots = getItemOutputSlots(null);
 
         // Consume items and generate outputs
         ArrayList<ItemStack> smeltedOutputs = new ArrayList<>();
-        int remainingCost = finalParallel;
+        int toSmelt = finalParallel;
         for (ItemStack item : tInput) {
             ItemStack smeltedOutput = GTModHandler.getSmeltingOutput(item, false, null);
             if (smeltedOutput != null) {
-                if (remainingCost >= item.stackSize) {
-                    remainingCost -= item.stackSize;
-                    smeltedOutput.stackSize *= item.stackSize;
-                    item.stackSize = 0;
-                    smeltedOutputs.add(smeltedOutput);
-                } else {
-                    smeltedOutput.stackSize *= remainingCost;
-                    item.stackSize -= remainingCost;
-                    smeltedOutputs.add(smeltedOutput);
-                    break;
+                int maxOutput = 0;
+                int remainingToSmelt = Math.min(toSmelt, item.stackSize);
+
+                // Calculate how many of this output can fit in the output slots
+                int needed = remainingToSmelt;
+                ItemStack outputType = smeltedOutput.copy();
+                outputType.stackSize = 1;
+
+                for (int i = 0; i < outputSlots.size(); i++) {
+                    ItemStack slot = outputSlots.get(i);
+                    if (slot == null) {
+                        // Empty slot: can fit a full stack
+                        int canFit = Math.min(needed, outputType.getMaxStackSize());
+                        ItemStack newStack = outputType.copy();
+                        newStack.stackSize = canFit;
+                        outputSlots.set(i, newStack); // Fill the slot
+                        maxOutput += canFit;
+                        needed -= canFit;
+                    } else if (slot.isItemEqual(outputType)) {
+                        // Same type: can fit up to max stack size
+                        int space = outputType.getMaxStackSize() - slot.stackSize;
+                        int canFit = Math.min(needed, space);
+                        slot.stackSize += canFit;
+                        maxOutput += canFit;
+                        needed -= canFit;
+                        // No need to set, since slot is a reference
+                    }
+                    if (needed <= 0 ) break;
+                }
+
+                // If void protection is enabled, only process what fits
+                int toProcess = protectsExcessItem() ? maxOutput : remainingToSmelt;
+
+                if (toProcess > 0) {
+                    ItemStack outputStack = smeltedOutput.copy();
+                    outputStack.stackSize *= toProcess;
+                    smeltedOutputs.add(outputStack);
+
+                    item.stackSize -= toProcess;
+                    toSmelt -= toProcess;
                 }
             }
+        }
+        if (smeltedOutputs.isEmpty()){
+            return CheckRecipeResultRegistry.NO_RECIPE;
         }
 
         this.mOutputItems = smeltedOutputs.toArray(new ItemStack[0]);
