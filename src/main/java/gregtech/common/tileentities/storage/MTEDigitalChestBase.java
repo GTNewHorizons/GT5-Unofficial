@@ -3,10 +3,15 @@ package gregtech.common.tileentities.storage;
 import static gregtech.api.enums.Textures.BlockIcons.MACHINE_CASINGS;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_SCHEST;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_SCHEST_GLOW;
+import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 import static gregtech.api.util.GTUtility.moveMultipleItemStacks;
 
 import java.util.List;
 
+import com.cleanroommc.modularui.widgets.slot.SlotGroup;
+import com.gtnewhorizons.modularui.api.forge.ItemHandlerHelper;
+import com.gtnewhorizons.modularui.common.widget.CycleButtonWidget;
+import gregtech.api.interfaces.metatileentity.IItemLockable;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.IInventory;
@@ -67,14 +72,17 @@ import gregtech.crossmod.ae2.IMEAwareItemInventory;
 import gregtech.crossmod.ae2.MEItemInventoryHandler;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
+import org.jetbrains.annotations.Nullable;
 
 public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
-    implements IMEMonitor<IAEItemStack>, IMEAwareItemInventory, IAddUIWidgets {
+    implements IMEMonitor<IAEItemStack>, IMEAwareItemInventory, IAddUIWidgets, IItemLockable {
 
     public boolean mOutputItem = false;
+    public boolean mLockItem = false;
     protected boolean mVoidOverflow = false;
     protected boolean mDisableFilter;
     private final MEItemInventoryHandler<?> meInventoryHandler = new MEItemInventoryHandler<>(this);
+    protected ItemStack lockedItem = null;
 
     public MTEDigitalChestBase(int aID, String aName, String aNameRegional, int aTier) {
         super(
@@ -262,7 +270,10 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
 
         if (getBaseMetaTileEntity().isServerSide()) {
             if ((getItemCount() <= 0)) {
-                setItemStack(null);
+                if(getLockedItem() == null
+                    || (getLockedItem() != null && getItemStack() != null && !getItemStack().isItemEqual(getLockedItem()))) {
+                    setItemStack(null);
+                }
                 setItemCount(0);
             }
             if (getItemStack() == null && mInventory[0] != null) {
@@ -281,7 +292,7 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
                     mInventory[0] = null;
                 }
             }
-            if (mInventory[1] == null && stack != null) {
+            if (mInventory[1] == null && stack != null && (count > 0)) {
                 mInventory[1] = stack.copy();
                 mInventory[1].stackSize = Math.min(stack.getMaxStackSize(), count);
                 count -= mInventory[1].stackSize;
@@ -293,6 +304,9 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
                 }
             setItemCount(count);
             if (stack != null) {
+                if(mLockItem && getLockedItem() == null) {
+                    setLockedItem(stack);
+                }
                 mInventory[2] = stack.copy();
                 mInventory[2].stackSize = Math.min(stack.getMaxStackSize(), count);
             } else {
@@ -319,7 +333,7 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
                         (byte) 1,
                         mInventory.length);
                     for (int i = 0; i < mInventory.length; i++)
-                        if (mInventory[i] != null && mInventory[i].stackSize <= 0) mInventory[i] = null;
+                        if (mInventory[i] != null && mInventory[i].stackSize <= 0 && (i != 2 || !isLocked())) mInventory[i] = null;
                 }
             }
         }
@@ -403,6 +417,10 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
         aNBT.setBoolean("mVoidOverflow", mVoidOverflow);
         aNBT.setBoolean("mDisableFilter", mDisableFilter);
         aNBT.setBoolean("mOutputItem", mOutputItem);
+        aNBT.setBoolean("mLockItem", mLockItem);
+        if (lockedItem != null) {
+            aNBT.setTag("lockedItem", lockedItem.writeToNBT(new NBTTagCompound()));
+        }
     }
 
     @Override
@@ -413,6 +431,10 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
         mVoidOverflow = aNBT.getBoolean("mVoidOverflow");
         mDisableFilter = aNBT.getBoolean("mDisableFilter");
         mOutputItem = aNBT.getBoolean("mOutputItem");
+        mLockItem = aNBT.getBoolean("mLockItem");
+        if (aNBT.hasKey("lockedItem")) {
+            lockedItem = ItemStack.loadItemStackFromNBT(aNBT.getCompoundTag("lockedKey"));
+        }
     }
 
     @Override
@@ -426,6 +448,7 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
     public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
         ItemStack aStack) {
         if (GTValues.disableDigitalChestsExternalAccess && meInventoryHandler.hasActiveMEConnection()) return false;
+        if (lockedItem != null && !lockedItem.isItemEqual(aStack)) return false;
         if (aIndex != 0) return false;
         if ((mInventory[0] != null && !GTUtility.areStacksEqual(mInventory[0], aStack))) return false;
         if (mDisableFilter) return true;
@@ -442,6 +465,36 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
                 .addIcon(OVERLAY_SCHEST_GLOW)
                 .glow()
                 .build() };
+    }
+
+    @Override
+    public void setLockedItem(@Nullable ItemStack itemStack) {
+        if (itemStack == null) {
+            clearLock();
+        } else {
+            lockedItem = ItemHandlerHelper.copyStackWithSize(itemStack, 1);
+        }
+    }
+
+    @Nullable
+    @Override
+    public ItemStack getLockedItem() {
+        return lockedItem;
+    }
+
+    @Override
+    public void clearLock() {
+        lockedItem = null;
+    }
+
+    @Override
+    public boolean isLocked() {
+        return lockedItem != null;
+    }
+
+    @Override
+    public boolean acceptsItemLock() {
+        return true;
     }
 
     @Override
@@ -528,10 +581,40 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
         BooleanSyncValue autoOutputHandler = new BooleanSyncValue(() -> mOutputItem, value -> mOutputItem = value);
         syncManager.syncValue("auto_output", autoOutputHandler);
 
+        BooleanSyncValue lockItemHandler = new BooleanSyncValue(() -> mLockItem, value -> {
+            mLockItem = value;
+            if(getBaseMetaTileEntity().isServerSide()) {
+                if(mLockItem) {
+                    setLockedItem(getItemStack());
+                    if(getItemStack() != null) {
+                        data.getPlayer()
+                            .addChatMessage(
+                                new ChatComponentText(
+                                    StatCollector.translateToLocal("GT5U.machines.digitalchest.lockItem.enabled")));
+                    }
+                    else {
+                        data.getPlayer()
+                            .addChatMessage(
+                                new ChatComponentText(
+                                    StatCollector.translateToLocal("GT5U.machines.digitalchest.lockItem.none")));
+                    }
+                }
+                else {
+                    clearLock();
+                    data.getPlayer()
+                        .addChatMessage(
+                            new ChatComponentText(
+                                StatCollector.translateToLocal("GT5U.machines.digitalchest.lockItem.disabled")));
+                }
+            }
+        } );
+        syncManager.syncValue("lock_item", lockItemHandler);
+
         return GTGuis.mteTemplatePanelBuilder(this, data, syncManager)
             .build()
             .child(
-                new ItemSlot().slot(new ModularSlot(inventoryHandler, 0).slotGroup("item_inv"))
+                new ItemSlot().slot(new ModularSlot(inventoryHandler, 0).slotGroup("item_inv")
+                        .filter(itemStack -> ghost.getStack() == null || ghost.getStack().isItemEqual(itemStack)))
                     .pos(79, 16)
                     .widgetTheme(GTWidgetThemes.OVERLAY_ITEM_SLOT_IN))
             .child(
@@ -555,6 +638,11 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
                     .alignment(Alignment.CenterLeft)
                     .pos(10, 30)
                     .size(60, 10))
+            .child(
+                IKey.lang("GT5U.gui.text.locked")
+                    .color(COLOR_TEXT_WHITE.get())
+                    .asWidget()
+                    .pos(10, 40))
             .child(
                 new DynamicDrawable(() -> new ItemDrawable().setItem(ghost.getStack())).asIcon()
                     .asWidget()
@@ -584,9 +672,20 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
                 .stateBackground(GTGuiTextures.BUTTON_STANDARD_TOGGLE)
                 .overlay(GTGuiTextures.OVERLAY_BUTTON_AUTOOUTPUT_ITEM)
                 .pos(7, 63)
+                .size(18, 18))
+            .child(new ToggleButton().value(new BoolValue.Dynamic(lockItemHandler::getBoolValue,
+                    val -> lockItemHandler.setBoolValue(!lockItemHandler.getBoolValue())))
+                .tooltip(
+                    false,
+                    richTooltip -> richTooltip
+                        .addStringLines(mTooltipCache.getData("GT5U.machines.digitaltank.lockItem.tooltip").text))
+                .tooltip(
+                    true,
+                    richTooltip -> richTooltip
+                        .addStringLines(mTooltipCache.getData("GT5U.machines.digitaltank.lockItem.tooltip").text))
+                .stateBackground(GTGuiTextures.BUTTON_STANDARD_TOGGLE)
+                .overlay(GTGuiTextures.OVERLAY_BUTTON_LOCK)
+                .pos(25, 63)
                 .size(18, 18));
-
-        // .setGTTooltip(() -> mTooltipCache.getData("GT5U.machines.digitaltank.autooutput.tooltip"))
-        // .setTooltipShowUpDelay(TOOLTIP_DELAY)
     }
 }
