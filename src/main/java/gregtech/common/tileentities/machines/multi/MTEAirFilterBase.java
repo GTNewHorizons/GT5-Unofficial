@@ -299,7 +299,7 @@ public abstract class MTEAirFilterBase extends MTEEnhancedMultiBlockBase<MTEAirF
         }
 
         TurbineStatCalculator turbine = new TurbineStatCalculator((MetaGeneratedTool) aStack.getItem(), aStack);
-        baseEff = turbine.getEfficiency();
+        baseEff = turbine.getBaseEfficiency();
         tickCounter = 0; // resetting the counter in case of a power failure, etc
 
         // scan the inventory to search for filter if none has been loaded previously
