@@ -295,7 +295,6 @@ public class MTEElectricImplosionCompressor extends MTEExtendedPowerMultiBlockBa
 
     @Override
     public void onFirstTick(IGregTechTileEntity aBaseMetaTileEntity) {
-        isSuccessful = false;
         super.onFirstTick(aBaseMetaTileEntity);
         this.updateChunkCoordinates();
     }
