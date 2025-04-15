@@ -2975,52 +2975,64 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
             ret.append(EnumChatFormatting.WHITE);
             ret.append(")");
         } else {
-                ret.append(EnumChatFormatting.RESET);
-                ret.append(
-                    amountText + EnumChatFormatting.GOLD
-                        + formatNumbers(amount)
-                        + (isLiquid ? "L" : "")
-                        + EnumChatFormatting.RESET);
-                ret.append("\n");
-                ret.append(
-                    perSecondText + EnumChatFormatting.GOLD
-                        + formatNumbers(roundNumber.apply(perSecond))
-                        + (isLiquid ? "L" : "")
-                        + (perSecond > 1_000_000 ? EnumChatFormatting.WHITE + " ["
-                        + EnumChatFormatting.GRAY
-                        + formatShortenedLong((long) perSecond)
-                        + EnumChatFormatting.WHITE + "]" : "")
-                        + EnumChatFormatting.RESET);
-                ret.append("\n");
-                ret.append(
-                    perMinuteText + EnumChatFormatting.GOLD
-                        + formatNumbers(roundNumber.apply(perMinute))
-                        + (isLiquid ? "L" : "")
-                        + (perMinute > 1_000_000 ? EnumChatFormatting.WHITE + " ["
-                        + EnumChatFormatting.GRAY
-                        + formatShortenedLong((long) perMinute)
-                        + EnumChatFormatting.WHITE + "]" : "")
-                        + EnumChatFormatting.RESET);
-                ret.append("\n");
-                ret.append(
-                    perHourText + EnumChatFormatting.GOLD
-                        + formatNumbers(roundNumber.apply(perHour))
-                        + (isLiquid ? "L" : "")
-                        + (perHour > 1_000_000 ? EnumChatFormatting.WHITE + " ["
-                        + EnumChatFormatting.GRAY
-                        + formatShortenedLong((long) perHour)
-                        + EnumChatFormatting.WHITE + "]" : "")
-                        + EnumChatFormatting.RESET);
-                ret.append("\n");
-                ret.append(
-                    perDayText + EnumChatFormatting.GOLD
-                        + formatNumbers(roundNumber.apply(perDay))
-                        + (isLiquid ? "L" : "")
-                        + (perDay > 1_000_000 ? EnumChatFormatting.WHITE + " ["
-                        + EnumChatFormatting.GRAY
-                        + formatShortenedLong((long) perDay)
-                        + EnumChatFormatting.WHITE + "]" : "")
-                        + EnumChatFormatting.RESET);
+            ret.append(EnumChatFormatting.RESET);
+            ret.append(
+                amountText + EnumChatFormatting.GOLD
+                    + formatNumbers(amount)
+                    + (isLiquid ? "L" : "")
+                    + EnumChatFormatting.RESET);
+            ret.append("\n");
+            ret.append(
+                perSecondText + EnumChatFormatting.GOLD
+                    + formatNumbers(roundNumber.apply(perSecond))
+                    + (isLiquid ? "L" : "")
+                    + (perSecond > 1_000_000
+                        ? EnumChatFormatting.WHITE + " ["
+                            + EnumChatFormatting.GRAY
+                            + formatShortenedLong((long) perSecond)
+                            + EnumChatFormatting.WHITE
+                            + "]"
+                        : "")
+                    + EnumChatFormatting.RESET);
+            ret.append("\n");
+            ret.append(
+                perMinuteText + EnumChatFormatting.GOLD
+                    + formatNumbers(roundNumber.apply(perMinute))
+                    + (isLiquid ? "L" : "")
+                    + (perMinute > 1_000_000
+                        ? EnumChatFormatting.WHITE + " ["
+                            + EnumChatFormatting.GRAY
+                            + formatShortenedLong((long) perMinute)
+                            + EnumChatFormatting.WHITE
+                            + "]"
+                        : "")
+                    + EnumChatFormatting.RESET);
+            ret.append("\n");
+            ret.append(
+                perHourText + EnumChatFormatting.GOLD
+                    + formatNumbers(roundNumber.apply(perHour))
+                    + (isLiquid ? "L" : "")
+                    + (perHour > 1_000_000
+                        ? EnumChatFormatting.WHITE + " ["
+                            + EnumChatFormatting.GRAY
+                            + formatShortenedLong((long) perHour)
+                            + EnumChatFormatting.WHITE
+                            + "]"
+                        : "")
+                    + EnumChatFormatting.RESET);
+            ret.append("\n");
+            ret.append(
+                perDayText + EnumChatFormatting.GOLD
+                    + formatNumbers(roundNumber.apply(perDay))
+                    + (isLiquid ? "L" : "")
+                    + (perDay > 1_000_000
+                        ? EnumChatFormatting.WHITE + " ["
+                            + EnumChatFormatting.GRAY
+                            + formatShortenedLong((long) perDay)
+                            + EnumChatFormatting.WHITE
+                            + "]"
+                        : "")
+                    + EnumChatFormatting.RESET);
         }
         return ret.toString();
     }
