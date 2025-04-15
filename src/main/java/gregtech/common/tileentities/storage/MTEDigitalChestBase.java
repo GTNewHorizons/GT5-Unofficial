@@ -79,6 +79,7 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
 
     public boolean mOutputItem = false, mLockItem = false, mAllowInputFromOutputSide = true;
     protected boolean mVoidOverflow = false;
+    protected boolean mVoidFull = false;
     protected boolean mDisableFilter;
     private final MEItemInventoryHandler<?> meInventoryHandler = new MEItemInventoryHandler<>(this);
     protected ItemStack lockedItem = null;
@@ -141,6 +142,19 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
                         new ChatComponentText(
                             mVoidOverflow ? GTUtility.trans("268", "Overflow Voiding Mode Enabled")
                                 : GTUtility.trans("267", "Overflow Voiding Mode Disabled")));
+            }
+        });
+
+    private final BooleanSyncValue voidFullHandler = new BooleanSyncValue(
+        () -> mVoidFull,
+        value -> {
+            mVoidFull = value;
+            if (getBaseMetaTileEntity().isClientSide()) {
+                MCHelper.getPlayer()
+                    .addChatMessage(
+                        new ChatComponentText(
+                            mVoidFull ? GTUtility.trans("270", "Void Full Mode Enabled")
+                                : GTUtility.trans("269", "Void Full Mode Disabled")));
             }
         });
 
@@ -329,7 +343,7 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTimer) {
 
         if (getBaseMetaTileEntity().isServerSide()) {
-            if ((getItemCount() <= 0)) {
+            if ((getItemCount() <= 0) || mVoidFull) {
                 if (getLockedItem() == null || (getLockedItem() != null && getItemStack() != null
                     && !getItemStack().isItemEqual(getLockedItem()))) {
                     setItemStack(null);
@@ -483,6 +497,7 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
             aNBT.setTag("lockedItem", lockedItem.writeToNBT(new NBTTagCompound()));
         }
         aNBT.setBoolean("mAllowInputFromOutputSide", mAllowInputFromOutputSide);
+        aNBT.setBoolean("mVoidFull", mVoidFull);
     }
 
     @Override
@@ -498,6 +513,7 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
             lockedItem = ItemStack.loadItemStackFromNBT(aNBT.getCompoundTag("lockedKey"));
         }
         mAllowInputFromOutputSide = aNBT.getBoolean("mAllowInputFromOutputSide");
+        mVoidFull = aNBT.getBoolean("mVoidFull");
     }
 
     @Override
@@ -650,6 +666,7 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
         syncManager.syncValue("lock_item", lockItemHandler);
         syncManager.syncValue("allow_input_from_output_side", allowInputFromOutputSideHandler);
         syncManager.syncValue("void_overflow", voidOverflowHandler);
+        syncManager.syncValue("void_full", voidFullHandler);
     }
 
     private void buildChestIO(ModularPanel panel) {
@@ -786,6 +803,26 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
                     .tooltipShowUpTimer(TOOLTIP_DELAY)
                 .overlay(GTGuiTextures.OVERLAY_BUTTON_TANK_VOID_EXCESS)
                 .pos(98, 63)
-                .size(18, 18));
+                .size(18, 18))
+            .child(
+                new ToggleButton()
+                    .value(
+                        new BoolValue.Dynamic(
+                            voidFullHandler::getBoolValue,
+                            val -> voidFullHandler
+                                .setBoolValue(!voidFullHandler.getBoolValue())))
+                    .tooltip(
+                        false,
+                        richTooltip -> richTooltip.addStringLines(
+                            mTooltipCache.getData("GT5U.machines.digitalchest.voidfull.tooltip").text))
+                    .tooltip(
+                        true,
+                        richTooltip -> richTooltip.addStringLines(
+                            mTooltipCache.getData("GT5U.machines.digitalchest.voidfull.tooltip").text))
+                    .stateBackground(GTGuiTextures.BUTTON_STANDARD_TOGGLE)
+                    .tooltipShowUpTimer(TOOLTIP_DELAY)
+                    .overlay(GTGuiTextures.OVERLAY_BUTTON_TANK_VOID_ALL)
+                    .pos(116, 63)
+                    .size(18, 18));
     }
 }
