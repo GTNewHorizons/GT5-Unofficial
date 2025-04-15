@@ -22,6 +22,7 @@ import static gregtech.api.util.GTUtility.validMTEList;
 import java.util.ArrayList;
 import java.util.List;
 
+import gregtech.api.util.VoidProtectionHelper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
@@ -182,17 +183,20 @@ public class MTEMultiFurnace extends MTEAbstractMultiFurnace<MTEMultiFurnace> im
 
         int currentParallel = (int) Math.min(maxParallel, availableEUt / RECIPE_EUT);
         int itemParallel = 0;
+        List<ItemStack> plannedOutputs = new ArrayList<>();
         for (ItemStack item : tInput) {
             ItemStack smeltedOutput = GTModHandler.getSmeltingOutput(item, false, null);
             if (smeltedOutput != null) {
-                if (itemParallel + item.stackSize <= currentParallel) {
-                    itemParallel += item.stackSize;
-                } else {
-                    itemParallel = currentParallel;
-                    break;
+                int parallelsLeft = currentParallel - itemParallel;
+                int toSmelt = Math.min(item.stackSize, parallelsLeft);
+                if (toSmelt > 0) {
+                    itemParallel += toSmelt;
                 }
+                plannedOutputs.add(smeltedOutput);
             }
         }
+
+
         currentParallel = itemParallel;
         if (currentParallel <= 0) {
             return CheckRecipeResultRegistry.NO_RECIPE;
@@ -209,6 +213,19 @@ public class MTEMultiFurnace extends MTEAbstractMultiFurnace<MTEMultiFurnace> im
         }
 
         int finalParallel = (int) (batchMultiplierMax * currentParallelBeforeBatchMode);
+
+        if (protectsExcessItem()) {
+            VoidProtectionHelper voidProtectionHelper = new VoidProtectionHelper()
+                .setMachine(this)
+                .setItemOutputs(plannedOutputs.toArray(new ItemStack[0]))
+                .setMaxParallel(finalParallel)
+                .build();
+
+            finalParallel = voidProtectionHelper.getMaxParallel();
+        }
+        if (finalParallel <= 0) {
+            return CheckRecipeResultRegistry.NO_RECIPE;
+        }
 
         // Consume items and generate outputs
         ArrayList<ItemStack> smeltedOutputs = new ArrayList<>();
@@ -242,6 +259,11 @@ public class MTEMultiFurnace extends MTEAbstractMultiFurnace<MTEMultiFurnace> im
         this.updateSlots();
 
         return CheckRecipeResultRegistry.SUCCESSFUL;
+    }
+
+    @Override
+    public boolean supportsVoidProtection() {
+        return true;
     }
 
     @Override
