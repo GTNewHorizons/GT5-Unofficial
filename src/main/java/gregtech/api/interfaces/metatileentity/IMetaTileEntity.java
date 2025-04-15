@@ -390,6 +390,14 @@ public interface IMetaTileEntity extends ISidedInventory, IFluidTank, IFluidHand
 
     void onColorChangeClient(byte aColor);
 
+    default NBTTagCompound getDescriptionData() {
+        return null;
+    }
+
+    default void onDescriptionPacket(NBTTagCompound data) {
+
+    }
+
     /**
      * @return Actual color shown on GUI
      */
