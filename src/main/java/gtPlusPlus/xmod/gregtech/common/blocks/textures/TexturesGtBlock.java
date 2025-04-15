@@ -299,6 +299,8 @@ public class TexturesGtBlock {
     public static final CustomIcon Casing_Machine_Screen_1 = new CustomIcon("TileEntities/adv_machine_screen_random1");
     public static final CustomIcon Casing_Machine_Screen_2 = new CustomIcon("TileEntities/adv_machine_screen_random2");
     public static final CustomIcon Casing_Machine_Screen_3 = new CustomIcon("TileEntities/adv_machine_screen_random3");
+    public static final CustomIcon Casing_Machine_Screen_Inactive = new CustomIcon(
+        "TileEntities/adv_machine_screen_inactive");
 
     public static final CustomIcon Casing_Machine_Screen_Rainbow = new CustomIcon("TileEntities/overlay_rainbowscreen");
     public static final CustomIcon Casing_Machine_Screen_Frequency = new CustomIcon(
