@@ -618,11 +618,15 @@ public class MTEWirelessCharger extends MTETieredMachineBlock implements IWirele
             final int chargeableEU = (int) Math.min(
                 Integer.MAX_VALUE,
                 Math.min(maxChargeableEU - chargedEU, this.maxEUInput() * WirelessChargerManager.CHARGE_TICK));
-            if (stack.getItem() instanceof ic2.api.item.IElectricItem) {
+            if (stack.getItem() instanceof ic2.api.item.IElectricItem electricItem) {
                 final int charged = Math.max(
                     0,
-                    (int) ic2.api.item.ElectricItem.manager
-                        .charge(stack, chargeableEU, Integer.MAX_VALUE, true, false));
+                    (int) ic2.api.item.ElectricItem.manager.charge(
+                        stack,
+                        Math.min(chargeableEU, electricItem.getTransferLimit(stack)),
+                        Integer.MAX_VALUE,
+                        true,
+                        false));
                 chargedEU += charged;
             } else if (COFHCore.isModLoaded() && stack.getItem() instanceof IEnergyContainerItem rfItem) {
                 int chargeableRF = Math.min(
