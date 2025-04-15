@@ -2953,6 +2953,12 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         double perHour = perSecond * 3_600;
         double perDay = perSecond * 86_400;
 
+        final String amountText = StatCollector.translateToLocal("GT5U.gui.text.amount") + " ";
+        final String perSecondText = StatCollector.translateToLocal("GT5U.gui.text.per_second") + " ";
+        final String perMinuteText = StatCollector.translateToLocal("GT5U.gui.text.per_minute") + " ";
+        final String perHourText = StatCollector.translateToLocal("GT5U.gui.text.per_hour") + " ";
+        final String perDayText = StatCollector.translateToLocal("GT5U.gui.text.per_day") + " ";
+
         final Function<Double, Double> roundNumber = (number) -> {
             if (Math.abs(number) < 10) {
                 return Math.round(number * 100) / 100.0;
@@ -2971,13 +2977,13 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         } else {
                 ret.append(EnumChatFormatting.RESET);
                 ret.append(
-                    "Amount: " + EnumChatFormatting.GOLD
+                    amountText + EnumChatFormatting.GOLD
                         + formatNumbers(amount)
                         + (isLiquid ? "L" : "")
                         + EnumChatFormatting.RESET);
                 ret.append("\n");
                 ret.append(
-                    "Per second: " + EnumChatFormatting.GOLD
+                    perSecondText + EnumChatFormatting.GOLD
                         + formatNumbers(roundNumber.apply(perSecond))
                         + (isLiquid ? "L" : "")
                         + (perSecond > 1_000_000 ? EnumChatFormatting.WHITE + " ["
@@ -2987,7 +2993,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
                         + EnumChatFormatting.RESET);
                 ret.append("\n");
                 ret.append(
-                    "Per minute: " + EnumChatFormatting.GOLD
+                    perMinuteText + EnumChatFormatting.GOLD
                         + formatNumbers(roundNumber.apply(perMinute))
                         + (isLiquid ? "L" : "")
                         + (perMinute > 1_000_000 ? EnumChatFormatting.WHITE + " ["
@@ -2997,7 +3003,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
                         + EnumChatFormatting.RESET);
                 ret.append("\n");
                 ret.append(
-                    "Per hour: " + EnumChatFormatting.GOLD
+                    perHourText + EnumChatFormatting.GOLD
                         + formatNumbers(roundNumber.apply(perHour))
                         + (isLiquid ? "L" : "")
                         + (perHour > 1_000_000 ? EnumChatFormatting.WHITE + " ["
@@ -3007,7 +3013,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
                         + EnumChatFormatting.RESET);
                 ret.append("\n");
                 ret.append(
-                    "Per day: " + EnumChatFormatting.GOLD
+                    perDayText + EnumChatFormatting.GOLD
                         + formatNumbers(roundNumber.apply(perDay))
                         + (isLiquid ? "L" : "")
                         + (perDay > 1_000_000 ? EnumChatFormatting.WHITE + " ["
