@@ -452,6 +452,7 @@ GT5U.machines.oilfluidpump=Oil/Fluid Pump
 GT5U.machines.minermulti=Multiblock Miner
 GT5U.machines.digitalchest.voidoverflow.enabled=Overflow Voiding Mode §aOn§r
 GT5U.machines.digitalchest.voidoverflow.disabled=Overflow Voiding Mode §cOff§r
+GT5U.machines.digitalchest.voidoverflow.tooltip=Overflow Voiding Mode
 GT5U.machines.digitalchest.inputfilter.enabled=Input Filter §aOn§r
 GT5U.machines.digitalchest.inputfilter.disabled=Input Filter §cOff§r
 GT5U.machines.digitalchest.autooutput.enabled=Item Auto Output Enabled

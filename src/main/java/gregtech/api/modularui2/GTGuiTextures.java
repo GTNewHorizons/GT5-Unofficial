@@ -389,6 +389,7 @@ public final class GTGuiTextures {
     public static final UITexture OVERLAY_BUTTON_LOCK = fullImageGT("overlay_button/lock");
     public static final UITexture OVERLAY_BUTTON_INPUT_FROM_OUTPUT_SIDE = fullImageGT(
         "overlay_button/input_from_output_side");
+    public static final UITexture OVERLAY_BUTTON_TANK_VOID_EXCESS = fullImageGT("overlay_button/tank_void_excess");
 
     // endregion button overlay
 
