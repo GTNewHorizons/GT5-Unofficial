@@ -623,7 +623,9 @@ public class MTEWirelessCharger extends MTETieredMachineBlock implements IWirele
                     0,
                     (int) ic2.api.item.ElectricItem.manager.charge(
                         stack,
-                        Math.min(chargeableEU, electricItem.getTransferLimit(stack)),
+                        Math.min(
+                            chargeableEU,
+                            electricItem.getTransferLimit(stack) * WirelessChargerManager.CHARGE_TICK),
                         Integer.MAX_VALUE,
                         true,
                         false));
