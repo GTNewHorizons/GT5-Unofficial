@@ -3,15 +3,10 @@ package gregtech.common.tileentities.storage;
 import static gregtech.api.enums.Textures.BlockIcons.MACHINE_CASINGS;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_SCHEST;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_SCHEST_GLOW;
-import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 import static gregtech.api.util.GTUtility.moveMultipleItemStacks;
 
 import java.util.List;
 
-import com.cleanroommc.modularui.widgets.slot.SlotGroup;
-import com.gtnewhorizons.modularui.api.forge.ItemHandlerHelper;
-import com.gtnewhorizons.modularui.common.widget.CycleButtonWidget;
-import gregtech.api.interfaces.metatileentity.IItemLockable;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.IInventory;
@@ -24,6 +19,8 @@ import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.ForgeDirection;
+
+import org.jetbrains.annotations.Nullable;
 
 import com.cleanroommc.modularui.api.drawable.IDrawable;
 import com.cleanroommc.modularui.api.drawable.IKey;
@@ -41,6 +38,7 @@ import com.cleanroommc.modularui.widgets.ItemSlot;
 import com.cleanroommc.modularui.widgets.ToggleButton;
 import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 import com.gtnewhorizons.modularui.api.NumberFormatMUI;
+import com.gtnewhorizons.modularui.api.forge.ItemHandlerHelper;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
@@ -59,6 +57,7 @@ import appeng.api.storage.data.IItemList;
 import gregtech.api.enums.GTValues;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.metatileentity.IItemLockable;
 import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTETieredMachineBlock;
@@ -72,7 +71,6 @@ import gregtech.crossmod.ae2.IMEAwareItemInventory;
 import gregtech.crossmod.ae2.MEItemInventoryHandler;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
-import org.jetbrains.annotations.Nullable;
 
 public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
     implements IMEMonitor<IAEItemStack>, IMEAwareItemInventory, IAddUIWidgets, IItemLockable {
@@ -270,8 +268,8 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
 
         if (getBaseMetaTileEntity().isServerSide()) {
             if ((getItemCount() <= 0)) {
-                if(getLockedItem() == null
-                    || (getLockedItem() != null && getItemStack() != null && !getItemStack().isItemEqual(getLockedItem()))) {
+                if (getLockedItem() == null || (getLockedItem() != null && getItemStack() != null
+                    && !getItemStack().isItemEqual(getLockedItem()))) {
                     setItemStack(null);
                 }
                 setItemCount(0);
@@ -304,7 +302,7 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
                 }
             setItemCount(count);
             if (stack != null) {
-                if(mLockItem && getLockedItem() == null) {
+                if (mLockItem && getLockedItem() == null) {
                     setLockedItem(stack);
                 }
                 mInventory[2] = stack.copy();
@@ -333,7 +331,8 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
                         (byte) 1,
                         mInventory.length);
                     for (int i = 0; i < mInventory.length; i++)
-                        if (mInventory[i] != null && mInventory[i].stackSize <= 0 && (i != 2 || !isLocked())) mInventory[i] = null;
+                        if (mInventory[i] != null && mInventory[i].stackSize <= 0 && (i != 2 || !isLocked()))
+                            mInventory[i] = null;
                 }
             }
         }
@@ -570,9 +569,7 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
     public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager) {
         syncManager.registerSlotGroup("item_inv", 0);
 
-        IntSyncValue itemCountSyncHandler = new IntSyncValue(
-            () -> this instanceof MTEQuantumChest ? ((MTEQuantumChest) this).mItemCount : 0,
-            value -> clientItemCount = value);
+        IntSyncValue itemCountSyncHandler = new IntSyncValue(this::getItemCount, value -> clientItemCount = value);
         syncManager.syncValue("digital_chest_amount", itemCountSyncHandler);
 
         ModularSlot ghost = new ModularSlot(inventoryHandler, 2);
@@ -583,23 +580,21 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
 
         BooleanSyncValue lockItemHandler = new BooleanSyncValue(() -> mLockItem, value -> {
             mLockItem = value;
-            if(getBaseMetaTileEntity().isServerSide()) {
-                if(mLockItem) {
+            if (getBaseMetaTileEntity().isServerSide()) {
+                if (mLockItem) {
                     setLockedItem(getItemStack());
-                    if(getItemStack() != null) {
+                    if (getItemStack() != null) {
                         data.getPlayer()
                             .addChatMessage(
                                 new ChatComponentText(
                                     StatCollector.translateToLocal("GT5U.machines.digitalchest.lockItem.enabled")));
-                    }
-                    else {
+                    } else {
                         data.getPlayer()
                             .addChatMessage(
                                 new ChatComponentText(
                                     StatCollector.translateToLocal("GT5U.machines.digitalchest.lockItem.none")));
                     }
-                }
-                else {
+                } else {
                     clearLock();
                     data.getPlayer()
                         .addChatMessage(
@@ -607,14 +602,17 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
                                 StatCollector.translateToLocal("GT5U.machines.digitalchest.lockItem.disabled")));
                 }
             }
-        } );
+        });
         syncManager.syncValue("lock_item", lockItemHandler);
 
         return GTGuis.mteTemplatePanelBuilder(this, data, syncManager)
             .build()
             .child(
-                new ItemSlot().slot(new ModularSlot(inventoryHandler, 0).slotGroup("item_inv")
-                        .filter(itemStack -> ghost.getStack() == null || ghost.getStack().isItemEqual(itemStack)))
+                new ItemSlot().slot(
+                    new ModularSlot(inventoryHandler, 0).slotGroup("item_inv")
+                        .filter(
+                            itemStack -> ghost.getStack() == null || ghost.getStack()
+                                .isItemEqual(itemStack)))
                     .pos(79, 16)
                     .widgetTheme(GTWidgetThemes.OVERLAY_ITEM_SLOT_IN))
             .child(
@@ -639,13 +637,20 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
                     .pos(10, 30)
                     .size(60, 10))
             .child(
-                IKey.lang("GT5U.gui.text.locked")
+                IKey.lang(() -> lockItemHandler.getBoolValue() ? "GT5U.gui.text.locked" : "")
                     .color(COLOR_TEXT_WHITE.get())
                     .asWidget()
-                    .pos(10, 40))
+                    .pos(10, 40)
+                    .size(60, 10))
             .child(
                 new DynamicDrawable(() -> new ItemDrawable().setItem(ghost.getStack())).asIcon()
                     .asWidget()
+                    .tooltipBuilder(richTooltip -> {
+                        if (ghost.getStack() != null) {
+                            richTooltip.addFromItem(ghost.getStack());
+                        }
+                        richTooltip.markDirty();
+                    })
                     .pos(59, 42))
             .child(new ToggleButton().value(new BoolValue.Dynamic(autoOutputHandler::getBoolValue, val -> {
                 autoOutputHandler.setBoolValue(!autoOutputHandler.getBoolValue());
@@ -673,19 +678,23 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
                 .overlay(GTGuiTextures.OVERLAY_BUTTON_AUTOOUTPUT_ITEM)
                 .pos(7, 63)
                 .size(18, 18))
-            .child(new ToggleButton().value(new BoolValue.Dynamic(lockItemHandler::getBoolValue,
-                    val -> lockItemHandler.setBoolValue(!lockItemHandler.getBoolValue())))
-                .tooltip(
-                    false,
-                    richTooltip -> richTooltip
-                        .addStringLines(mTooltipCache.getData("GT5U.machines.digitaltank.lockItem.tooltip").text))
-                .tooltip(
-                    true,
-                    richTooltip -> richTooltip
-                        .addStringLines(mTooltipCache.getData("GT5U.machines.digitaltank.lockItem.tooltip").text))
-                .stateBackground(GTGuiTextures.BUTTON_STANDARD_TOGGLE)
-                .overlay(GTGuiTextures.OVERLAY_BUTTON_LOCK)
-                .pos(25, 63)
-                .size(18, 18));
+            .child(
+                new ToggleButton()
+                    .value(
+                        new BoolValue.Dynamic(
+                            lockItemHandler::getBoolValue,
+                            val -> lockItemHandler.setBoolValue(!lockItemHandler.getBoolValue())))
+                    .tooltip(
+                        false,
+                        richTooltip -> richTooltip
+                            .addStringLines(mTooltipCache.getData("GT5U.machines.digitaltank.lockItem.tooltip").text))
+                    .tooltip(
+                        true,
+                        richTooltip -> richTooltip
+                            .addStringLines(mTooltipCache.getData("GT5U.machines.digitaltank.lockItem.tooltip").text))
+                    .stateBackground(GTGuiTextures.BUTTON_STANDARD_TOGGLE)
+                    .overlay(GTGuiTextures.OVERLAY_BUTTON_LOCK)
+                    .pos(25, 63)
+                    .size(18, 18));
     }
 }
