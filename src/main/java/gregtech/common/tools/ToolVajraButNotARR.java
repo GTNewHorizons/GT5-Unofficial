@@ -132,6 +132,7 @@ public class ToolVajraButNotARR extends ItemTool implements IElectricItem {
         Block target = world.getBlock(x, y, z);
         int metaData = world.getBlockMetadata(x, y, z);
 
+        if(target.blockHardness < 0) return super.onItemUseFirst(stack, player, world, x, y, z, side, hitX, hitY, hitZ);
         if (!ElectricItem.manager.canUse(stack, baseCost * target.blockHardness))
             return super.onItemUseFirst(stack, player, world, x, y, z, side, hitX, hitY, hitZ);
         if (target instanceof ITileEntityProvider && !isTileEntityOre(target) && !player.isSneaking())
