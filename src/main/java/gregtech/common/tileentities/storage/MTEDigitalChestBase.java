@@ -1,13 +1,13 @@
 package gregtech.common.tileentities.storage;
 
-import static gregtech.api.enums.Textures.BlockIcons.MACHINE_CASINGS;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_SCHEST;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_SCHEST_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.*;
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 import static gregtech.api.util.GTUtility.moveMultipleItemStacks;
 
 import java.util.List;
 
+import net.minecraft.block.Block;
+import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.IInventory;
@@ -17,6 +17,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -66,9 +67,9 @@ import gregtech.api.metatileentity.implementations.MTETieredMachineBlock;
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.modularui2.GTGuis;
 import gregtech.api.modularui2.GTWidgetThemes;
-import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTUtility;
+import gregtech.common.render.DigitalChestRenderer;
 import gregtech.crossmod.ae2.IMEAwareItemInventory;
 import gregtech.crossmod.ae2.MEItemInventoryHandler;
 import mcp.mobius.waila.api.IWailaConfigHandler;
@@ -132,31 +133,27 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
             }
         });
 
-    private final BooleanSyncValue voidOverflowHandler = new BooleanSyncValue(
-        () -> mVoidOverflow,
-        value -> {
-            mVoidOverflow = value;
-            if (getBaseMetaTileEntity().isClientSide()) {
-                MCHelper.getPlayer()
-                    .addChatMessage(
-                        new ChatComponentText(
-                            mVoidOverflow ? GTUtility.trans("268", "Overflow Voiding Mode Enabled")
-                                : GTUtility.trans("267", "Overflow Voiding Mode Disabled")));
-            }
-        });
+    private final BooleanSyncValue voidOverflowHandler = new BooleanSyncValue(() -> mVoidOverflow, value -> {
+        mVoidOverflow = value;
+        if (getBaseMetaTileEntity().isClientSide()) {
+            MCHelper.getPlayer()
+                .addChatMessage(
+                    new ChatComponentText(
+                        mVoidOverflow ? GTUtility.trans("268", "Overflow Voiding Mode Enabled")
+                            : GTUtility.trans("267", "Overflow Voiding Mode Disabled")));
+        }
+    });
 
-    private final BooleanSyncValue voidFullHandler = new BooleanSyncValue(
-        () -> mVoidFull,
-        value -> {
-            mVoidFull = value;
-            if (getBaseMetaTileEntity().isClientSide()) {
-                MCHelper.getPlayer()
-                    .addChatMessage(
-                        new ChatComponentText(
-                            mVoidFull ? GTUtility.trans("270", "Void Full Mode Enabled")
-                                : GTUtility.trans("269", "Void Full Mode Disabled")));
-            }
-        });
+    private final BooleanSyncValue voidFullHandler = new BooleanSyncValue(() -> mVoidFull, value -> {
+        mVoidFull = value;
+        if (getBaseMetaTileEntity().isClientSide()) {
+            MCHelper.getPlayer()
+                .addChatMessage(
+                    new ChatComponentText(
+                        mVoidFull ? GTUtility.trans("270", "Void Full Mode Enabled")
+                            : GTUtility.trans("269", "Void Full Mode Disabled")));
+        }
+    });
 
     public MTEDigitalChestBase(int aID, String aName, String aNameRegional, int aTier) {
         super(
@@ -187,6 +184,18 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
 
     public MTEDigitalChestBase(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, 3, aDescription, aTextures);
+    }
+
+    @Override
+    public boolean renderInWorld(IBlockAccess world, int x, int y, int z, Block block, RenderBlocks renderer) {
+        DigitalChestRenderer.renderMachine(this, world, x, y, z, block, renderer);
+        return true;
+    }
+
+    @Override
+    public boolean renderInInventory(Block block, int meta, RenderBlocks renderer) {
+        DigitalChestRenderer.renderMachineInventory(this, null, 0, 0, 0, block, renderer);
+        return true;
     }
 
     @Override
@@ -545,12 +554,7 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
         int colorIndex, boolean aActive, boolean redstoneLevel) {
-        if (side != aFacing) return new ITexture[] { MACHINE_CASINGS[mTier][colorIndex + 1] };
-        return new ITexture[] { MACHINE_CASINGS[mTier][colorIndex + 1], TextureFactory.of(OVERLAY_SCHEST),
-            TextureFactory.builder()
-                .addIcon(OVERLAY_SCHEST_GLOW)
-                .glow()
-                .build() };
+        return null;
     }
 
     @Override
@@ -792,39 +796,37 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
                     .size(18, 18))
             .child(
                 new ToggleButton()
-                .value(
-                    new BoolValue.Dynamic(
-                        voidOverflowHandler::getBoolValue,
-                        val -> voidOverflowHandler
-                            .setBoolValue(!voidOverflowHandler.getBoolValue())))
-                .tooltip(
-                    false,
-                    richTooltip -> richTooltip.addStringLines(
-                        mTooltipCache.getData("GT5U.machines.digitalchest.voidoverflow.tooltip").text))
-                .tooltip(
-                    true,
-                    richTooltip -> richTooltip.addStringLines(
-                        mTooltipCache.getData("GT5U.machines.digitalchest.voidoverflow.tooltip").text))
+                    .value(
+                        new BoolValue.Dynamic(
+                            voidOverflowHandler::getBoolValue,
+                            val -> voidOverflowHandler.setBoolValue(!voidOverflowHandler.getBoolValue())))
+                    .tooltip(
+                        false,
+                        richTooltip -> richTooltip.addStringLines(
+                            mTooltipCache.getData("GT5U.machines.digitalchest.voidoverflow.tooltip").text))
+                    .tooltip(
+                        true,
+                        richTooltip -> richTooltip.addStringLines(
+                            mTooltipCache.getData("GT5U.machines.digitalchest.voidoverflow.tooltip").text))
                     .stateBackground(GTGuiTextures.BUTTON_STANDARD_TOGGLE)
                     .tooltipShowUpTimer(TOOLTIP_DELAY)
-                .overlay(GTGuiTextures.OVERLAY_BUTTON_TANK_VOID_EXCESS)
-                .pos(98, 63)
-                .size(18, 18))
+                    .overlay(GTGuiTextures.OVERLAY_BUTTON_TANK_VOID_EXCESS)
+                    .pos(98, 63)
+                    .size(18, 18))
             .child(
                 new ToggleButton()
                     .value(
                         new BoolValue.Dynamic(
                             voidFullHandler::getBoolValue,
-                            val -> voidFullHandler
-                                .setBoolValue(!voidFullHandler.getBoolValue())))
+                            val -> voidFullHandler.setBoolValue(!voidFullHandler.getBoolValue())))
                     .tooltip(
                         false,
-                        richTooltip -> richTooltip.addStringLines(
-                            mTooltipCache.getData("GT5U.machines.digitalchest.voidfull.tooltip").text))
+                        richTooltip -> richTooltip
+                            .addStringLines(mTooltipCache.getData("GT5U.machines.digitalchest.voidfull.tooltip").text))
                     .tooltip(
                         true,
-                        richTooltip -> richTooltip.addStringLines(
-                            mTooltipCache.getData("GT5U.machines.digitalchest.voidfull.tooltip").text))
+                        richTooltip -> richTooltip
+                            .addStringLines(mTooltipCache.getData("GT5U.machines.digitalchest.voidfull.tooltip").text))
                     .stateBackground(GTGuiTextures.BUTTON_STANDARD_TOGGLE)
                     .tooltipShowUpTimer(TOOLTIP_DELAY)
                     .overlay(GTGuiTextures.OVERLAY_BUTTON_TANK_VOID_ALL)
