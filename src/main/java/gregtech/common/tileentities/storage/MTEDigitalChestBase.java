@@ -486,6 +486,12 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
     protected abstract String localizedChestName();
 
     @Override
+    public void setItemNBT(NBTTagCompound aNBT) {
+        saveNBTData(aNBT);
+        super.setItemNBT(aNBT);
+    }
+
+    @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         aNBT.setInteger("mItemCount", getItemCount());
         if (getItemStack() != null) aNBT.setTag("mItemStack", getItemStack().writeToNBT(new NBTTagCompound()));
