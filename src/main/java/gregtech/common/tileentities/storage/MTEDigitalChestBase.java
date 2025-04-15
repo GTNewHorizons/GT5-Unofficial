@@ -22,6 +22,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.Nullable;
 
+import com.cleanroommc.modularui.api.MCHelper;
 import com.cleanroommc.modularui.api.drawable.IDrawable;
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.drawable.DynamicDrawable;
@@ -80,6 +81,54 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
     protected boolean mDisableFilter;
     private final MEItemInventoryHandler<?> meInventoryHandler = new MEItemInventoryHandler<>(this);
     protected ItemStack lockedItem = null;
+
+    private final IntSyncValue itemCountSyncHandler = new IntSyncValue(
+        this::getItemCount,
+        value -> clientItemCount = value);
+    private final ModularSlot ghost = new ModularSlot(inventoryHandler, 2);
+    private final BooleanSyncValue autoOutputHandler = new BooleanSyncValue(() -> mOutputItem, value -> {
+        mOutputItem = value;
+        if (getBaseMetaTileEntity().isClientSide()) {
+            MCHelper.getPlayer()
+                .addChatMessage(
+                    new ChatComponentText(
+                        StatCollector.translateToLocal(
+                            mOutputItem ? "GT5U.machines.digitalchest.autooutput.enabled"
+                                : "GT5U.machines.digitalchest.autooutput.disabled")));
+        }
+    });
+
+    private final BooleanSyncValue lockItemHandler = new BooleanSyncValue(() -> mLockItem, value -> {
+        mLockItem = value;
+        if (getBaseMetaTileEntity().isServerSide()) {
+            if (mLockItem) {
+                setLockedItem(getItemStack());
+            } else {
+                clearLock();
+            }
+        } else {
+            MCHelper.getPlayer()
+                .addChatMessage(
+                    new ChatComponentText(
+                        !mLockItem ? StatCollector.translateToLocal("GT5U.machines.digitalchest.lockItem.disabled")
+                            : ghost.getStack() != null
+                                ? StatCollector.translateToLocal("GT5U.machines.digitalchest.lockItem.enabled")
+                                : StatCollector.translateToLocal("GT5U.machines.digitalchest.lockItem.none")));
+        }
+    });
+
+    private final BooleanSyncValue allowInputFromOutputSideHandler = new BooleanSyncValue(
+        () -> mAllowInputFromOutputSide,
+        value -> {
+            mAllowInputFromOutputSide = value;
+            if (getBaseMetaTileEntity().isClientSide()) {
+                MCHelper.getPlayer()
+                    .addChatMessage(
+                        new ChatComponentText(
+                            mAllowInputFromOutputSide ? GTUtility.trans("095", "Input from Output Side allowed")
+                                : GTUtility.trans("096", "Input from Output Side forbidden")));
+            }
+        });
 
     public MTEDigitalChestBase(int aID, String aName, String aNameRegional, int aTier) {
         super(
@@ -569,87 +618,47 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
 
     @Override
     public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager) {
+        syncUIValues(syncManager);
+
+        ModularPanel panel = GTGuis.mteTemplatePanelBuilder(this, data, syncManager)
+            .build();
+        buildChestIO(panel);
+        buildDigitalInterface(panel);
+        buildToggleButtons(panel);
+        return panel;
+    }
+
+    private void syncUIValues(PanelSyncManager syncManager) {
         syncManager.registerSlotGroup("item_inv", 0);
-
-        IntSyncValue itemCountSyncHandler = new IntSyncValue(this::getItemCount, value -> clientItemCount = value);
         syncManager.syncValue("digital_chest_amount", itemCountSyncHandler);
-
-        ModularSlot ghost = new ModularSlot(inventoryHandler, 2);
         syncManager.syncValue("digital_chest_ghost", new ItemSlotSH(ghost));
-
-        BooleanSyncValue autoOutputHandler = new BooleanSyncValue(() -> mOutputItem, value -> {
-            mOutputItem = value;
-            if (!getBaseMetaTileEntity().isServerSide()) {
-                data.getPlayer()
-                    .addChatMessage(
-                        new ChatComponentText(
-                            mOutputItem
-                                ? StatCollector.translateToLocal("GT5U.machines.digitalchest.autooutput.enabled")
-                                : StatCollector.translateToLocal("GT5U.machines.digitalchest.autooutput.disabled")));
-            }
-        });
         syncManager.syncValue("auto_output", autoOutputHandler);
-
-        BooleanSyncValue lockItemHandler = new BooleanSyncValue(() -> mLockItem, value -> {
-            mLockItem = value;
-            if (getBaseMetaTileEntity().isServerSide()) {
-                if (mLockItem) {
-                    setLockedItem(getItemStack());
-                } else {
-                    clearLock();
-                }
-            } else {
-                if (mLockItem) {
-                    data.getPlayer()
-                        .addChatMessage(
-                            new ChatComponentText(
-                                ghost.getStack() != null
-                                    ? StatCollector.translateToLocal("GT5U.machines.digitalchest.lockItem.enabled")
-                                    : StatCollector.translateToLocal("GT5U.machines.digitalchest.lockItem.none")));
-                } else {
-                    data.getPlayer()
-                        .addChatMessage(
-                            new ChatComponentText(
-                                StatCollector.translateToLocal("GT5U.machines.digitalchest.lockItem.disabled")));
-                }
-            }
-        });
         syncManager.syncValue("lock_item", lockItemHandler);
-
-        BooleanSyncValue allowInputFromOutputSideHandler = new BooleanSyncValue(
-            () -> mAllowInputFromOutputSide,
-            value -> {
-                mAllowInputFromOutputSide = value;
-                if (!getBaseMetaTileEntity().isServerSide()) {
-                    data.getPlayer()
-                        .addChatMessage(
-                            new ChatComponentText(
-                                mAllowInputFromOutputSide ? GTUtility.trans("095", "Input from Output Side allowed")
-                                    : GTUtility.trans("096", "Input from Output Side forbidden")));
-                }
-            });
         syncManager.syncValue("allow_input_from_output_side", allowInputFromOutputSideHandler);
+    }
 
-        return GTGuis.mteTemplatePanelBuilder(this, data, syncManager)
-            .build()
-            .child(
-                new ItemSlot().slot(
-                    new ModularSlot(inventoryHandler, 0).slotGroup("item_inv")
-                        .filter(
-                            itemStack -> !lockItemHandler.getBoolValue() || ghost.getStack() == null
-                                || ghost.getStack()
-                                    .isItemEqual(itemStack)))
-                    .pos(79, 16)
-                    .widgetTheme(GTWidgetThemes.OVERLAY_ITEM_SLOT_IN))
+    private void buildChestIO(ModularPanel panel) {
+        panel.child(
+            new ItemSlot().slot(
+                new ModularSlot(inventoryHandler, 0).slotGroup("item_inv")
+                    .filter(
+                        itemStack -> !lockItemHandler.getBoolValue() || ghost.getStack() == null
+                            || ghost.getStack()
+                                .isItemEqual(itemStack)))
+                .pos(79, 16)
+                .widgetTheme(GTWidgetThemes.OVERLAY_ITEM_SLOT_IN))
             .child(
                 new ItemSlot().slot(
                     new ModularSlot(inventoryHandler, 1).slotGroup("item_inv")
                         .accessibility(false, true))
                     .pos(79, 52)
-                    .widgetTheme(GTWidgetThemes.OVERLAY_ITEM_SLOT_OUT))
-            .child(
-                new IDrawable.DrawableWidget(GTGuiTextures.PICTURE_SCREEN_BLACK).pos(7, 16)
-                    .size(71, 45))
+                    .widgetTheme(GTWidgetThemes.OVERLAY_ITEM_SLOT_OUT));
+    }
+
+    private void buildDigitalInterface(ModularPanel panel) {
+        panel.child(
+            new IDrawable.DrawableWidget(GTGuiTextures.PICTURE_SCREEN_BLACK).pos(7, 16)
+                .size(71, 45))
             .child(
                 IKey.lang("GT5U.gui.text.item.amount")
                     .color(COLOR_TEXT_WHITE.get())
@@ -680,7 +689,11 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
                         }
                         richTooltip.markDirty();
                     })
-                    .pos(59, 42))
+                    .pos(59, 42));
+    }
+
+    private void buildToggleButtons(ModularPanel panel) {
+        panel
             .child(
                 new ToggleButton()
                     .value(
