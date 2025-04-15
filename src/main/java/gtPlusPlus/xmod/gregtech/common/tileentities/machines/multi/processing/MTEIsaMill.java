@@ -434,7 +434,7 @@ public class MTEIsaMill extends GTPPMultiBlockBase<MTEIsaMill> implements ISurvi
 
     @Override
     public ArrayList<ItemStack> getStoredInputsForColor(Optional<Byte> color) {
-        ArrayList<ItemStack> tItems = super.getStoredInputs();
+        ArrayList<ItemStack> tItems = super.getStoredInputsForColor(color);
         for (MTEHatchMillingBalls tHatch : validMTEList(mMillingBallBuses)) {
             byte busColor = tHatch.getBaseMetaTileEntity()
                 .getColorization();
