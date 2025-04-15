@@ -6,6 +6,7 @@ import static net.minecraftforge.common.util.ForgeDirection.*;
 import java.util.EnumMap;
 
 import codechicken.lib.colour.ColourRGBA;
+import codechicken.lib.render.ColourMultiplier;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
@@ -125,10 +126,13 @@ public class DigitalChestRenderer {
             Dyes.MACHINE_METAL.mRGBa);
         Textures.BlockIcons casing = (Textures.BlockIcons) MACHINECASINGS_SIDE[mte.mTier];
         state.resetInstance();
-        state.baseColour = new ColourRGBA(rgba[0],rgba[1],rgba[2],rgba[3]).rgba();
+        state.baseColour = new ColourRGBA(rgba[0],rgba[1],rgba[2],255).rgba();
+        state.setDynamicInstance();
+        state.pullLightmapInstance();
         state.setPipelineInstance(
             new Translation(aX, aY, aZ),
-            new IconTransformation(casing.getIcon()));
+            new IconTransformation(casing.getIcon()),
+            state.lightMatrix);
         if(aWorld != null) {
             state.setBrightnessInstance(aWorld, aX, aY, aZ);
         }
