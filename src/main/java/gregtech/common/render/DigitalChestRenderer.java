@@ -5,6 +5,7 @@ import static net.minecraftforge.common.util.ForgeDirection.*;
 
 import java.util.EnumMap;
 
+import codechicken.lib.colour.ColourRGBA;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
@@ -61,31 +62,11 @@ public class DigitalChestRenderer {
             .getFrontFacing();
 
         CCRenderState state = CCRenderState.instance();
-        state.resetInstance();
-        Textures.BlockIcons casing = (Textures.BlockIcons) MACHINECASINGS_SIDE[mte.mTier];
-        state.setPipelineInstance(new Translation(aX, aY, aZ), new IconTransformation(casing.getIcon()));
-        CCRenderState.changeTexture(casing.getTextureFile());
         boolean isDrawing = false;
         if (aRenderer.useInventoryTint && !GTUtilityClient.isDrawing(Tessellator.instance)) {
             // Draw if we're not already drawing
             isDrawing = true;
             Tessellator.instance.startDrawingQuads();
-        }
-        final LightingHelper lighting = new LightingHelper(aRenderer);
-        if (aWorld != null) {
-            Tessellator.instance.setBrightness(
-                aBlock.getMixedBrightnessForBlock(
-                    aWorld,
-                    aX + frontFacing.offsetX,
-                    aY + frontFacing.offsetY,
-                    aZ + frontFacing.offsetZ));
-            lighting.setupLighting(aBlock, aX, aY, aZ, frontFacing)
-                .setupColor(
-                    frontFacing,
-                    Dyes.getModulation(
-                        mte.getBaseMetaTileEntity()
-                            .getColorization() - 1,
-                        Dyes.MACHINE_METAL.mRGBa));
         }
 
         // front frame
@@ -94,32 +75,32 @@ public class DigitalChestRenderer {
             if (boxFacing == frontFacing) continue;
 
             // render when the box face matches facing
-            renderFace(state, boxFacing, boxFacingMap.get(boxFacing));
+            renderFace(state, boxFacing, boxFacingMap.get(boxFacing), aWorld, aX, aY, aZ, aBlock, aRenderer, mte);
 
             // render when the box face is opposite of facing
-            renderFace(state, boxFacing.getOpposite(), boxFacingMap.get(boxFacing));
+            renderFace(state, boxFacing.getOpposite(), boxFacingMap.get(boxFacing), aWorld, aX, aY, aZ, aBlock, aRenderer, mte);
         }
 
         // render the sides of the box that face the front face
         if (frontFacing == UP) {
-            renderFace(state, frontFacing, boxFacingMap.get(ForgeDirection.NORTH));
-            renderFace(state, frontFacing, boxFacingMap.get(ForgeDirection.SOUTH));
-            renderFace(state, frontFacing, boxFacingMap.get(ForgeDirection.EAST));
-            renderFace(state, frontFacing, boxFacingMap.get(ForgeDirection.WEST));
-            renderFace(state, frontFacing, boxFacingMap.get(ForgeDirection.DOWN));
+            renderFace(state, frontFacing, boxFacingMap.get(ForgeDirection.NORTH), aWorld, aX, aY, aZ, aBlock, aRenderer, mte);
+            renderFace(state, frontFacing, boxFacingMap.get(ForgeDirection.SOUTH), aWorld, aX, aY, aZ, aBlock, aRenderer, mte);
+            renderFace(state, frontFacing, boxFacingMap.get(ForgeDirection.EAST), aWorld, aX, aY, aZ, aBlock, aRenderer, mte);
+            renderFace(state, frontFacing, boxFacingMap.get(ForgeDirection.WEST), aWorld, aX, aY, aZ, aBlock, aRenderer, mte);
+            renderFace(state, frontFacing, boxFacingMap.get(ForgeDirection.DOWN), aWorld, aX, aY, aZ, aBlock, aRenderer, mte);
         } else if (frontFacing == DOWN) {
-            renderFace(state, frontFacing, boxFacingMap.get(ForgeDirection.NORTH));
-            renderFace(state, frontFacing, boxFacingMap.get(ForgeDirection.SOUTH));
-            renderFace(state, frontFacing, boxFacingMap.get(ForgeDirection.EAST));
-            renderFace(state, frontFacing, boxFacingMap.get(ForgeDirection.WEST));
-            renderFace(state, frontFacing, boxFacingMap.get(ForgeDirection.UP));
+            renderFace(state, frontFacing, boxFacingMap.get(ForgeDirection.NORTH), aWorld, aX, aY, aZ, aBlock, aRenderer, mte);
+            renderFace(state, frontFacing, boxFacingMap.get(ForgeDirection.SOUTH), aWorld, aX, aY, aZ, aBlock, aRenderer, mte);
+            renderFace(state, frontFacing, boxFacingMap.get(ForgeDirection.EAST), aWorld, aX, aY, aZ, aBlock, aRenderer, mte);
+            renderFace(state, frontFacing, boxFacingMap.get(ForgeDirection.WEST), aWorld, aX, aY, aZ, aBlock, aRenderer, mte);
+            renderFace(state, frontFacing, boxFacingMap.get(ForgeDirection.UP), aWorld, aX, aY, aZ, aBlock, aRenderer, mte);
         } else {
-            renderFace(state, frontFacing, boxFacingMap.get(ForgeDirection.DOWN));
-            renderFace(state, frontFacing, boxFacingMap.get(ForgeDirection.UP));
+            renderFace(state, frontFacing, boxFacingMap.get(ForgeDirection.DOWN), aWorld, aX, aY, aZ, aBlock, aRenderer, mte);
+            renderFace(state, frontFacing, boxFacingMap.get(ForgeDirection.UP), aWorld, aX, aY, aZ, aBlock, aRenderer, mte);
 
             ForgeDirection facing = rotateYCCW(frontFacing);
-            renderFace(state, frontFacing, boxFacingMap.get(facing));
-            renderFace(state, frontFacing, boxFacingMap.get(facing.getOpposite()));
+            renderFace(state, frontFacing, boxFacingMap.get(facing), aWorld, aX, aY, aZ, aBlock, aRenderer, mte);
+            renderFace(state, frontFacing, boxFacingMap.get(facing.getOpposite()), aWorld, aX, aY, aZ, aBlock, aRenderer, mte);
         }
 
         if (aRenderer.useInventoryTint && isDrawing) {
@@ -136,10 +117,25 @@ public class DigitalChestRenderer {
         GTRendererBlock.INSTANCE.renderStandardBlock(aWorld, aX, aY, aZ, aBlock, aRenderer, textureArray);
     }
 
-    public static void renderFace(CCRenderState renderState, ForgeDirection face, Cuboid6 bounds) {
-        renderState.setModelInstance(blockFace);
+    public static void renderFace(CCRenderState state, ForgeDirection face, Cuboid6 bounds,
+                                  @Nullable IBlockAccess aWorld, int aX, int aY, int aZ,
+                                  Block aBlock, RenderBlocks aRenderer, MTEDigitalChestBase mte) {
+        int aColor = mte.getBaseMetaTileEntity().getColorization() - 1;
+        short[] rgba = Dyes.getModulation(aColor,
+            Dyes.MACHINE_METAL.mRGBa);
+        Textures.BlockIcons casing = (Textures.BlockIcons) MACHINECASINGS_SIDE[mte.mTier];
+        state.resetInstance();
+        state.baseColour = new ColourRGBA(rgba[0],rgba[1],rgba[2],rgba[3]).rgba();
+        state.setPipelineInstance(
+            new Translation(aX, aY, aZ),
+            new IconTransformation(casing.getIcon()));
+        if(aWorld != null) {
+            state.setBrightnessInstance(aWorld, aX, aY, aZ);
+        }
+
+        state.setModelInstance(blockFace);
         blockFace.loadCuboidFace(bounds, face.ordinal());
-        renderState.renderInstance();
+        state.renderInstance();
     }
 
     public static ForgeDirection rotateYCCW(ForgeDirection dir) {
