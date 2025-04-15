@@ -2947,7 +2947,6 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
     protected String appendRate(boolean isLiquid, Long amount, boolean isFormatShortened) {
         final StringBuffer ret = new StringBuffer();
         final DecimalFormat df = new DecimalFormat("0.00");
-        double processPerTick  = (double) amount / mMaxProgresstime * 20;
         final double progressTime = (double) mMaxProgresstime / 20;
         double perSecond = amount / progressTime;
         double perMinute = perSecond * 60;
@@ -3024,16 +3023,26 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         StringBuffer ret = new StringBuffer(StatCollector.translateToLocal("GT5U.gui.text.progress"));
         ret.append(" ");
 
-        numberFormat.setMinimumFractionDigits(2);
-        numberFormat.setMaximumFractionDigits(2);
-        numberFormat.format((double) mProgresstime / 20, ret);
-        ret.append("s / ");
-        numberFormat.format((double) mMaxProgresstime / 20, ret);
-        ret.append("s (");
         numberFormat.setMinimumFractionDigits(1);
         numberFormat.setMaximumFractionDigits(1);
         numberFormat.format((double) mProgresstime / mMaxProgresstime * 100, ret);
-        ret.append("%)\n");
+        ret.append("% ");
+        ret.append(EnumChatFormatting.GRAY);
+        ret.append("(");
+        ret.append(EnumChatFormatting.WHITE);
+        numberFormat.setMinimumFractionDigits((mMaxProgresstime / 20) > 1 ? 0 : 2);
+        numberFormat.setMaximumFractionDigits((mMaxProgresstime / 20) > 1 ? 0 : 2);
+        numberFormat.format((double) mProgresstime / 20, ret);
+        ret.append("s");
+        ret.append(EnumChatFormatting.GRAY);
+        ret.append("/");
+        ret.append(EnumChatFormatting.WHITE);
+        numberFormat.format((double) mMaxProgresstime / 20, ret);
+        ret.append("s");
+        ret.append(EnumChatFormatting.GRAY);
+        ret.append(")");
+        ret.append(EnumChatFormatting.RESET);
+        ret.append("\n");
         numberFormat.setMinimumFractionDigits(0);
         numberFormat.setMaximumFractionDigits(2);
         return ret.toString();
