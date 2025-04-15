@@ -62,9 +62,15 @@ public class RecipeHandlers {
             .metadata(NanochipAssemblyRecipeInfo.INSTANCE, info)
             .itemInputs(
                 input.stream()
-                    .map(
-                        c -> c.getCircuitComponent()
-                            .getFakeStack(info.getBaseParallel() * c.getSize()))
+                    .map(c -> {
+                        if (c.getCircuitComponent().realCircuit != null) {
+                            ItemStack realCircuit = c.getCircuitComponent().realCircuit.copy();
+                            realCircuit.stackSize = info.getBaseParallel() * c.getSize();
+                            return realCircuit;
+                        }
+                        return c.getCircuitComponent()
+                            .getFakeStack(info.getBaseParallel() * c.getSize());
+                    })
                     .toArray(ItemStack[]::new))
             .itemOutputs(output.getFakeStack(info.getBaseParallel()))
             .duration(ModuleRecipeInfo.MODULE_RECIPE_TIME)
@@ -264,6 +270,17 @@ public class RecipeHandlers {
                 new CircuitComponentStack(CircuitComponent.ProcessedWireNiobiumTitanium, 8)),
             CircuitComponent.CrystalProcessor,
             ModuleRecipeInfo.Fast,
-            131072);
+            32768);
+        addAssemblyMatrixRecipe(
+            Arrays.asList(
+                new CircuitComponentStack(CircuitComponent.ProcessedBoardMultifiberglassElite, 1),
+                new CircuitComponentStack(CircuitComponent.CrystalProcessor, 2),
+                new CircuitComponentStack(CircuitComponent.ProcessedAdvSMDInductor, 6),
+                new CircuitComponentStack(CircuitComponent.ProcessedAdvSMDCapacitor, 8),
+                new CircuitComponentStack(CircuitComponent.ProcessedChipRAM, 24),
+                new CircuitComponentStack(CircuitComponent.ProcessedWireNiobiumTitanium, 16)),
+            CircuitComponent.CrystalAssembly,
+            ModuleRecipeInfo.Fast,
+            32768);
     }
 }
