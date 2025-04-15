@@ -82,7 +82,7 @@ public class AssemblyLine implements Runnable {
                 WerkstoffLoader.Ruridit.get(OrePrefixes.screw, 16))
             .fluidInputs(
                 GGMaterial.lumiium.getMolten(1440),
-                Materials.Naquadah.getMolten(1440),
+                Materials.Mytryl.getMolten(1440),
                 Materials.SolderingAlloy.getMolten(1440))
             .itemOutputs(ItemRegistry.megaMachines[0])
             .eut(TierEU.RECIPE_LuV)
