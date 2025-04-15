@@ -579,18 +579,13 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
 
         BooleanSyncValue autoOutputHandler = new BooleanSyncValue(() -> mOutputItem, value -> {
             mOutputItem = value;
-            if(!getBaseMetaTileEntity().isServerSide()) {
-                if (mOutputItem) {
-                    data.getPlayer()
-                        .addChatMessage(
-                            new ChatComponentText(
-                                StatCollector.translateToLocal("GT5U.machines.digitalchest.autooutput.enabled")));
-                } else {
-                    data.getPlayer()
-                        .addChatMessage(
-                            new ChatComponentText(
-                                StatCollector.translateToLocal("GT5U.machines.digitalchest.autooutput.disabled")));
-                }
+            if (!getBaseMetaTileEntity().isServerSide()) {
+                data.getPlayer()
+                    .addChatMessage(
+                        new ChatComponentText(
+                            mOutputItem
+                                ? StatCollector.translateToLocal("GT5U.machines.digitalchest.autooutput.enabled")
+                                : StatCollector.translateToLocal("GT5U.machines.digitalchest.autooutput.disabled")));
             }
         });
         syncManager.syncValue("auto_output", autoOutputHandler);
@@ -603,20 +598,14 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
                 } else {
                     clearLock();
                 }
-            }
-            else {
+            } else {
                 if (mLockItem) {
-                    if (ghost.getStack() != null) {
-                        data.getPlayer()
-                            .addChatMessage(
-                                new ChatComponentText(
-                                    StatCollector.translateToLocal("GT5U.machines.digitalchest.lockItem.enabled")));
-                    } else {
-                        data.getPlayer()
-                            .addChatMessage(
-                                new ChatComponentText(
-                                    StatCollector.translateToLocal("GT5U.machines.digitalchest.lockItem.none")));
-                    }
+                    data.getPlayer()
+                        .addChatMessage(
+                            new ChatComponentText(
+                                ghost.getStack() != null
+                                    ? StatCollector.translateToLocal("GT5U.machines.digitalchest.lockItem.enabled")
+                                    : StatCollector.translateToLocal("GT5U.machines.digitalchest.lockItem.none")));
                 } else {
                     data.getPlayer()
                         .addChatMessage(
@@ -627,14 +616,29 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
         });
         syncManager.syncValue("lock_item", lockItemHandler);
 
+        BooleanSyncValue allowInputFromOutputSideHandler = new BooleanSyncValue(
+            () -> mAllowInputFromOutputSide,
+            value -> {
+                mAllowInputFromOutputSide = value;
+                if (!getBaseMetaTileEntity().isServerSide()) {
+                    data.getPlayer()
+                        .addChatMessage(
+                            new ChatComponentText(
+                                mAllowInputFromOutputSide ? GTUtility.trans("095", "Input from Output Side allowed")
+                                    : GTUtility.trans("096", "Input from Output Side forbidden")));
+                }
+            });
+        syncManager.syncValue("allow_input_from_output_side", allowInputFromOutputSideHandler);
+
         return GTGuis.mteTemplatePanelBuilder(this, data, syncManager)
             .build()
             .child(
                 new ItemSlot().slot(
                     new ModularSlot(inventoryHandler, 0).slotGroup("item_inv")
                         .filter(
-                            itemStack -> !lockItemHandler.getBoolValue() || ghost.getStack() == null || ghost.getStack()
-                                .isItemEqual(itemStack)))
+                            itemStack -> !lockItemHandler.getBoolValue() || ghost.getStack() == null
+                                || ghost.getStack()
+                                    .isItemEqual(itemStack)))
                     .pos(79, 16)
                     .widgetTheme(GTWidgetThemes.OVERLAY_ITEM_SLOT_IN))
             .child(
@@ -660,7 +664,8 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
                     .pos(10, 30)
                     .size(60, 10))
             .child(
-                IKey.lang(() -> (lockItemHandler.getBoolValue() && ghost.getStack() != null) ? "GT5U.gui.text.locked" : "")
+                IKey.lang(
+                    () -> (lockItemHandler.getBoolValue() && ghost.getStack() != null) ? "GT5U.gui.text.locked" : "")
                     .color(COLOR_TEXT_WHITE.get())
                     .asWidget()
                     .alignment(Alignment.CenterLeft)
@@ -676,20 +681,24 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
                         richTooltip.markDirty();
                     })
                     .pos(59, 42))
-            .child(new ToggleButton().value(new BoolValue.Dynamic(autoOutputHandler::getBoolValue,
-                    val -> autoOutputHandler.setBoolValue(!autoOutputHandler.getBoolValue())))
-                .tooltip(
-                    false,
-                    richTooltip -> richTooltip
-                        .addStringLines(mTooltipCache.getData("GT5U.machines.item_transfer.tooltip").text))
-                .tooltip(
-                    true,
-                    richTooltip -> richTooltip
-                        .addStringLines(mTooltipCache.getData("GT5U.machines.item_transfer.tooltip").text))
-                .stateBackground(GTGuiTextures.BUTTON_STANDARD_TOGGLE)
-                .overlay(GTGuiTextures.OVERLAY_BUTTON_AUTOOUTPUT_ITEM)
-                .pos(7, 63)
-                .size(18, 18))
+            .child(
+                new ToggleButton()
+                    .value(
+                        new BoolValue.Dynamic(
+                            autoOutputHandler::getBoolValue,
+                            val -> autoOutputHandler.setBoolValue(!autoOutputHandler.getBoolValue())))
+                    .tooltip(
+                        false,
+                        richTooltip -> richTooltip
+                            .addStringLines(mTooltipCache.getData("GT5U.machines.item_transfer.tooltip").text))
+                    .tooltip(
+                        true,
+                        richTooltip -> richTooltip
+                            .addStringLines(mTooltipCache.getData("GT5U.machines.item_transfer.tooltip").text))
+                    .stateBackground(GTGuiTextures.BUTTON_STANDARD_TOGGLE)
+                    .overlay(GTGuiTextures.OVERLAY_BUTTON_AUTOOUTPUT_ITEM)
+                    .pos(7, 63)
+                    .size(18, 18))
             .child(
                 new ToggleButton()
                     .value(
@@ -707,6 +716,25 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
                     .stateBackground(GTGuiTextures.BUTTON_STANDARD_TOGGLE)
                     .overlay(GTGuiTextures.OVERLAY_BUTTON_LOCK)
                     .pos(25, 63)
+                    .size(18, 18))
+            .child(
+                new ToggleButton()
+                    .value(
+                        new BoolValue.Dynamic(
+                            allowInputFromOutputSideHandler::getBoolValue,
+                            val -> allowInputFromOutputSideHandler
+                                .setBoolValue(!allowInputFromOutputSideHandler.getBoolValue())))
+                    .tooltip(
+                        false,
+                        richTooltip -> richTooltip.addStringLines(
+                            mTooltipCache.getData("GT5U.machines.digitalchest.inputfromoutput.tooltip").text))
+                    .tooltip(
+                        true,
+                        richTooltip -> richTooltip.addStringLines(
+                            mTooltipCache.getData("GT5U.machines.digitalchest.inputfromoutput.tooltip").text))
+                    .stateBackground(GTGuiTextures.BUTTON_STANDARD_TOGGLE)
+                    .overlay(GTGuiTextures.OVERLAY_BUTTON_INPUT_FROM_OUTPUT_SIDE)
+                    .pos(43, 63)
                     .size(18, 18));
     }
 }

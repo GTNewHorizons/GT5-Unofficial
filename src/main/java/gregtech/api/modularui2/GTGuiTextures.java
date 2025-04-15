@@ -387,6 +387,8 @@ public final class GTGuiTextures {
         "overlay_button/use_inverted_processing_state");
     public static final UITexture OVERLAY_BUTTON_WHITELIST = fullImageGT("overlay_button/whitelist");
     public static final UITexture OVERLAY_BUTTON_LOCK = fullImageGT("overlay_button/lock");
+    public static final UITexture OVERLAY_BUTTON_INPUT_FROM_OUTPUT_SIDE = fullImageGT(
+        "overlay_button/input_from_output_side");
 
     // endregion button overlay
 
