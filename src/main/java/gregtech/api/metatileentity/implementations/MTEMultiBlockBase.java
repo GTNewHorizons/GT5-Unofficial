@@ -14,6 +14,7 @@ import static mcp.mobius.waila.api.SpecialChars.GREEN;
 import static mcp.mobius.waila.api.SpecialChars.RED;
 import static mcp.mobius.waila.api.SpecialChars.RESET;
 
+import java.text.DecimalFormat;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -25,6 +26,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import javax.annotation.Nonnull;
@@ -2944,35 +2946,30 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
 
     protected String appendRate(boolean isLiquid, Long amount, boolean isFormatShortened) {
         final StringBuffer ret = new StringBuffer();
-        final double processPerTick = (double) amount / mMaxProgresstime * 20;
+        final DecimalFormat df = new DecimalFormat("0.00");
+        double processPerTick  = (double) amount / mMaxProgresstime * 20;
+        final double progressTime = (double) mMaxProgresstime / 20;
+        double perSecond = amount / progressTime;
+        double perMinute = perSecond * 60;
+        double perHour = perSecond * 3_600;
+        double perDay = perSecond * 86_400;
+
+        final Function<Double, Double> roundNumber = (number) -> {
+            if (Math.abs(number) < 10) {
+                return Math.round(number * 100) / 100.0;
+            } else {
+                return Math.floor(number);
+            }
+        };
 
         if (isFormatShortened) {
             ret.append(" (");
-            if (processPerTick > 1) {
-                ret.append(EnumChatFormatting.GRAY);
-                ret.append(formatShortenedLong((long) (Math.round(processPerTick * 10) / 10.0)));
-                ret.append("/s");
-                ret.append(EnumChatFormatting.WHITE);
-                ret.append(")");
-            } else {
-                ret.append(EnumChatFormatting.GRAY);
-                ret.append(formatShortenedLong((long) (Math.round(1 / processPerTick * 10) / 10.0)));
-                ret.append("s/ea");
-                ret.append(EnumChatFormatting.WHITE);
-                ret.append(")");
-            }
+            ret.append(EnumChatFormatting.GRAY);
+            ret.append(perSecond > 1 ? formatShortenedLong((long) perSecond) : df.format(perSecond));
+            ret.append("/s");
+            ret.append(EnumChatFormatting.WHITE);
+            ret.append(")");
         } else {
-            int perSecond = (int) (Math.round(processPerTick * 10) / 10.0);
-            String second = formatNumbers(perSecond);
-            String hours = formatNumbers(perSecond * 60L);
-            String days = formatNumbers(perSecond * 1440L);
-
-            int perSecondEa = (int) (Math.round(1 / processPerTick * 10) / 10.0);
-            String secondEa = formatNumbers(perSecondEa);
-            String hoursEa = formatNumbers(perSecond * 60L);
-            String daysEa = formatNumbers(perSecond * 1440L);
-
-            if (processPerTick > 1) {
                 ret.append(EnumChatFormatting.RESET);
                 ret.append(
                     "Amount: " + EnumChatFormatting.GOLD
@@ -2982,40 +2979,43 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
                 ret.append("\n");
                 ret.append(
                     "Per second: " + EnumChatFormatting.GOLD
-                        + second
+                        + formatNumbers(roundNumber.apply(perSecond))
                         + (isLiquid ? "L" : "")
+                        + (perSecond > 1_000_000 ? EnumChatFormatting.WHITE + " ["
+                        + EnumChatFormatting.GRAY
+                        + formatShortenedLong((long) perSecond)
+                        + EnumChatFormatting.WHITE + "]" : "")
                         + EnumChatFormatting.RESET);
                 ret.append("\n");
                 ret.append(
-                    "Per hour: " + EnumChatFormatting.GOLD + hours + (isLiquid ? "L" : "") + EnumChatFormatting.RESET);
-                ret.append("\n");
-                ret.append(
-                    "Per day: " + EnumChatFormatting.GOLD + days + (isLiquid ? "L" : "") + EnumChatFormatting.RESET);
-            } else {
-                ret.append(
-                    "Amount: " + EnumChatFormatting.GOLD
-                        + formatNumbers(amount)
+                    "Per minute: " + EnumChatFormatting.GOLD
+                        + formatNumbers(roundNumber.apply(perMinute))
                         + (isLiquid ? "L" : "")
+                        + (perMinute > 1_000_000 ? EnumChatFormatting.WHITE + " ["
+                        + EnumChatFormatting.GRAY
+                        + formatShortenedLong((long) perMinute)
+                        + EnumChatFormatting.WHITE + "]" : "")
                         + EnumChatFormatting.RESET);
                 ret.append("\n");
                 ret.append(
-                    "Per second ea: " + EnumChatFormatting.GOLD
-                        + secondEa
+                    "Per hour: " + EnumChatFormatting.GOLD
+                        + formatNumbers(roundNumber.apply(perHour))
                         + (isLiquid ? "L" : "")
+                        + (perHour > 1_000_000 ? EnumChatFormatting.WHITE + " ["
+                        + EnumChatFormatting.GRAY
+                        + formatShortenedLong((long) perHour)
+                        + EnumChatFormatting.WHITE + "]" : "")
                         + EnumChatFormatting.RESET);
                 ret.append("\n");
                 ret.append(
-                    "Per hour ea: " + EnumChatFormatting.GOLD
-                        + hoursEa
+                    "Per day: " + EnumChatFormatting.GOLD
+                        + formatNumbers(roundNumber.apply(perDay))
                         + (isLiquid ? "L" : "")
+                        + (perDay > 1_000_000 ? EnumChatFormatting.WHITE + " ["
+                        + EnumChatFormatting.GRAY
+                        + formatShortenedLong((long) perDay)
+                        + EnumChatFormatting.WHITE + "]" : "")
                         + EnumChatFormatting.RESET);
-                ret.append("\n");
-                ret.append(
-                    "Per day ea: " + EnumChatFormatting.GOLD
-                        + daysEa
-                        + (isLiquid ? "L" : "")
-                        + EnumChatFormatting.RESET);
-            }
         }
         return ret.toString();
     }
