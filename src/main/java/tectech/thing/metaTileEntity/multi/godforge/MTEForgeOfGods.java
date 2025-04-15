@@ -481,6 +481,9 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         super.onPostTick(aBaseMetaTileEntity, aTick);
         if (aBaseMetaTileEntity.isServerSide()) {
+            if (aTick == 1) {
+                updateRenderer();
+            }
             ticker++;
             // Check and drain fuel
             if (ticker % (5 * SECONDS) == 0) {
