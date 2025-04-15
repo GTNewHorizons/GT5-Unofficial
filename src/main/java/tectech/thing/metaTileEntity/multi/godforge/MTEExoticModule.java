@@ -27,6 +27,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
@@ -824,27 +825,34 @@ public class MTEExoticModule extends MTEBaseModule {
     public String[] getInfoData() {
         ArrayList<String> str = new ArrayList<>();
         str.add(
-            "Progress: " + GREEN
-                + formatNumbers(mProgresstime / 20)
-                + RESET
-                + " s / "
-                + YELLOW
-                + formatNumbers(mMaxProgresstime / 20)
-                + RESET
-                + " s");
+            StatCollector.translateToLocalFormatted(
+                "GT5U.infodata.progress",
+                GREEN + formatNumbers(mProgresstime / 20) + RESET,
+                YELLOW + formatNumbers(mMaxProgresstime / 20) + RESET));
         str.add(
-            "Currently using: " + RED
-                + (getBaseMetaTileEntity().isActive() ? formatNumbers(EUt * actualParallel) : "0")
-                + RESET
-                + " EU/t");
-        str.add(YELLOW + "Max Parallel: " + RESET + formatNumbers(getActualParallel()));
+            StatCollector.translateToLocalFormatted(
+                "tt.infodata.multi.currently_using",
+                RED + (getBaseMetaTileEntity().isActive() ? formatNumbers(EUt * actualParallel) : "0") + RESET));
         str.add(
-            YELLOW + "Current Parallel: "
-                + RESET
-                + (getBaseMetaTileEntity().isActive() ? formatNumbers(getActualParallel()) : "0"));
-        str.add(YELLOW + "Recipe time multiplier: " + RESET + formatNumbers(getSpeedBonus()));
-        str.add(YELLOW + "Energy multiplier: " + RESET + formatNumbers(getEnergyDiscount()));
-        str.add(YELLOW + "Recipe time divisor per non-perfect OC: " + RESET + formatNumbers(getOverclockTimeFactor()));
+            YELLOW + StatCollector.translateToLocalFormatted(
+                "tt.infodata.multi.max_parallel",
+                RESET + formatNumbers(getActualParallel())));
+        str.add(
+            YELLOW + StatCollector.translateToLocalFormatted(
+                "GT5U.infodata.parallel.current",
+                RESET + (getBaseMetaTileEntity().isActive() ? formatNumbers(getActualParallel()) : "0")));
+        str.add(
+            YELLOW + StatCollector.translateToLocalFormatted(
+                "tt.infodata.multi.multiplier.recipe_time",
+                RESET + formatNumbers(getSpeedBonus())));
+        str.add(
+            YELLOW + StatCollector.translateToLocalFormatted(
+                "tt.infodata.multi.multiplier.energy",
+                RESET + formatNumbers(getEnergyDiscount())));
+        str.add(
+            YELLOW + StatCollector.translateToLocalFormatted(
+                "tt.infodata.multi.divisor.recipe_time.non_perfect_oc",
+                RESET + formatNumbers(getOverclockTimeFactor())));
         return str.toArray(new String[0]);
     }
 

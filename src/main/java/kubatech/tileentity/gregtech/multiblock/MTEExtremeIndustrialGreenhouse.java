@@ -61,6 +61,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
@@ -1220,29 +1221,37 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
     @Override
     public String[] getInfoData() {
         List<String> info = new ArrayList<>(
-            Arrays.asList(
-                "Running in mode: " + EnumChatFormatting.GREEN
-                    + (this.setupPhase == 0 ? this.mode.getName()
-                        : ("Setup mode " + (this.setupPhase == 1 ? "(input)" : "(output)")))
-                    + EnumChatFormatting.RESET,
-                "Uses " + waterUsage + "L/operation of water",
-                "Uses " + weedEXUsage + "L/second of Weed-EX 9000",
-                "Max slots: " + EnumChatFormatting.GREEN + this.maxSeedTypes + EnumChatFormatting.RESET,
-                "Used slots: "
-                    + ((this.buckets.size() > maxSeedTypes) ? EnumChatFormatting.RED : EnumChatFormatting.GREEN)
-                    + this.buckets.size()
-                    + EnumChatFormatting.RESET));
+            Arrays
+                .asList(
+                    StatCollector.translateToLocal("kubatech.infodata.running_mode") + " "
+                        + EnumChatFormatting.GREEN
+                        + (this.setupPhase == 0 ? this.mode.getName()
+                            : (this.setupPhase == 1
+                                ? StatCollector.translateToLocal("kubatech.infodata.eig.running_mode.setup_mode.input")
+                                : StatCollector
+                                    .translateToLocal("kubatech.infodata.eig.running_mode.setup_mode.output")))
+                        + EnumChatFormatting.RESET,
+                    StatCollector.translateToLocalFormatted("kubatech.infodata.eig.uses.water", waterUsage),
+                    StatCollector.translateToLocalFormatted("kubatech.infodata.eig.uses.weedex", weedEXUsage),
+                    StatCollector.translateToLocal("kubatech.infodata.eig.max_slots") + EnumChatFormatting.GREEN
+                        + this.maxSeedTypes
+                        + EnumChatFormatting.RESET,
+                    StatCollector.translateToLocal("kubatech.infodata.eig.used_slots")
+                        + ((this.buckets.size() > maxSeedTypes) ? EnumChatFormatting.RED : EnumChatFormatting.GREEN)
+                        + this.buckets.size()
+                        + EnumChatFormatting.RESET));
         for (EIGBucket bucket : buckets) {
             info.add(bucket.getInfoData());
         }
         if (this.buckets.size() > this.maxSeedTypes) {
             info.add(
-                EnumChatFormatting.DARK_RED + "There are too many seed types inside to run!"
+                EnumChatFormatting.DARK_RED + StatCollector.translateToLocal("kubatech.infodata.eig.too_many_types")
                     + EnumChatFormatting.RESET);
         }
         if (this.getTotalSeedCount() > this.maxSeedCount) {
             info.add(
-                EnumChatFormatting.DARK_RED + "There are too many seeds inside to run!" + EnumChatFormatting.RESET);
+                EnumChatFormatting.DARK_RED + StatCollector.translateToLocal("kubatech.infodata.eig.too_many_seeds")
+                    + EnumChatFormatting.RESET);
         }
         info.addAll(Arrays.asList(super.getInfoData()));
         return info.toArray(new String[0]);

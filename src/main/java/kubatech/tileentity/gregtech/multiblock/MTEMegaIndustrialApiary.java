@@ -555,20 +555,20 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
     public String[] getInfoData() {
         ArrayList<String> info = new ArrayList<>(Arrays.asList(super.getInfoData()));
         info.add(
-            "Running in mode: " + EnumChatFormatting.GOLD
-                + (mPrimaryMode == 0 ? "Input mode"
-                    : (mPrimaryMode == 1 ? "Output mode"
-                        : (mSecondaryMode == 0 ? "Operating mode (NORMAL)" : "Operating mode (SWARMER)"))));
+            StatCollector.translateToLocal("kubatech.infodata.running_mode") + " "
+                + EnumChatFormatting.GOLD
+                + (mPrimaryMode == 0 ? StatCollector.translateToLocal("kubatech.infodata.mia.running_mode.input")
+                    : (mPrimaryMode == 1 ? StatCollector.translateToLocal("kubatech.infodata.mia.running_mode.output")
+                        : (mSecondaryMode == 0
+                            ? StatCollector.translateToLocal("kubatech.infodata.mia.running_mode.operating.normal")
+                            : StatCollector
+                                .translateToLocal("kubatech.infodata.mia.running_mode.operating.swarmer")))));
         info.add(
-            "Bee storage (" + EnumChatFormatting.GOLD
-                + mStorage.size()
-                + EnumChatFormatting.RESET
-                + "/"
-                + (mStorage.size() > mMaxSlots ? EnumChatFormatting.DARK_RED.toString()
-                    : EnumChatFormatting.GOLD.toString())
-                + mMaxSlots
-                + EnumChatFormatting.RESET
-                + "):");
+            StatCollector.translateToLocalFormatted(
+                "kubatech.infodata.mia.running_mode.bee_storage",
+                "" + EnumChatFormatting.GOLD + mStorage.size() + EnumChatFormatting.RESET,
+                (mStorage.size() > mMaxSlots ? EnumChatFormatting.DARK_RED.toString()
+                    : EnumChatFormatting.GOLD.toString()) + mMaxSlots + EnumChatFormatting.RESET));
         HashMap<String, Integer> infos = new HashMap<>();
         for (int i = 0; i < mStorage.size(); i++) {
             StringBuilder builder = new StringBuilder();

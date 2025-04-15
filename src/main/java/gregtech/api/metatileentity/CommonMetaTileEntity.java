@@ -82,7 +82,15 @@ public abstract class CommonMetaTileEntity implements IMetaTileEntity {
         if (GregTechAPI.METATILEENTITIES[id] == null) {
             GregTechAPI.METATILEENTITIES[id] = this;
         } else {
-            throw new IllegalArgumentException("MetaTileEntity id " + id + " is already occupied!");
+            var existing = GregTechAPI.METATILEENTITIES[id];
+            throw new IllegalArgumentException(
+                "MetaTileEntity id " + id
+                    + " is already occupied! Existing MTE is "
+                    + existing.getMetaName()
+                    + "("
+                    + existing.getClass()
+                        .getCanonicalName()
+                    + ").");
         }
         mInventory = new ItemStack[invSlotCount];
         mName = basicName.replace(" ", "_")
@@ -243,6 +251,11 @@ public abstract class CommonMetaTileEntity implements IMetaTileEntity {
     public ArrayList<String> getSpecialDebugInfo(IGregTechTileEntity baseMetaTileEntity, EntityPlayer player,
         int logLevel, ArrayList<String> list) {
         return list;
+    }
+
+    @Override
+    public ArrayList<ItemStack> getDroppedItem() {
+        return null;
     }
 
     /**

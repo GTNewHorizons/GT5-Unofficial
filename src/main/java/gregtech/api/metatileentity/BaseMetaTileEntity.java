@@ -376,6 +376,11 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
                     issueBlockUpdate();
                 }
 
+                if (mNeedsTileUpdate) {
+                    worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+                    mNeedsTileUpdate = false;
+                }
+
                 if (mTickTimer > 20 && mMetaTileEntity.isElectric()) {
                     mAcceptedAmperes = 0;
 
@@ -1401,7 +1406,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
 
                     if (GTUtility.isStackInList(tCurrentItem, GregTechAPI.sScrewdriverList)) {
                         if (GTModHandler.damageOrDechargeItem(tCurrentItem, 1, 200, aPlayer)) {
-                            setCoverDataAtSide(side, getCoverAtSide(side).onCoverScrewdriverClick(aPlayer, aX, aY, aZ));
+                            getCoverAtSide(side).onCoverScrewdriverClick(aPlayer, aX, aY, aZ);
                             mMetaTileEntity.onScrewdriverRightClick(side, aPlayer, aX, aY, aZ, tCurrentItem);
                             sendSoundToPlayers(SoundResource.IC2_TOOLS_WRENCH, 1.0F, -1);
                             if (tCurrentItem.stackSize == 0)

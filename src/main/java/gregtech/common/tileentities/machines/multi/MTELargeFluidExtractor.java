@@ -383,10 +383,26 @@ public class MTELargeFluidExtractor extends MTEExtendedPowerMultiBlockBase<MTELa
 
         ArrayList<String> data = new ArrayList<>(Arrays.asList(super.getInfoData()));
 
-        data.add(String.format("Max Parallels: %s%d%s", YELLOW, getMaxParallelRecipes(), RESET));
-        data.add(String.format("Heating Coil Speed Bonus: +%s%.0f%s %%", YELLOW, getCoilSpeedBonus() * 100, RESET));
-        data.add(String.format("Total Speed Multiplier: %s%.0f%s %%", YELLOW, getSpeedBonus() * 100, RESET));
-        data.add(String.format("Total EU/t Multiplier: %s%.0f%s %%", YELLOW, getEUMultiplier() * 100, RESET));
+        data.add(
+            StatCollector.translateToLocalFormatted("Max Parallels: %s%d%s", YELLOW, getMaxParallelRecipes(), RESET));
+        data.add(
+            StatCollector.translateToLocalFormatted(
+                "Heating Coil Speed Bonus: +%s%.0f%s %%",
+                YELLOW,
+                getCoilSpeedBonus() * 100,
+                RESET));
+        data.add(
+            StatCollector.translateToLocalFormatted(
+                "Total Speed Multiplier: %s%.0f%s %%",
+                YELLOW,
+                getSpeedBonus() * 100,
+                RESET));
+        data.add(
+            StatCollector.translateToLocalFormatted(
+                "Total EU/t Multiplier: %s%.0f%s %%",
+                YELLOW,
+                getEUMultiplier() * 100,
+                RESET));
 
         return data.toArray(new String[0]);
     }
