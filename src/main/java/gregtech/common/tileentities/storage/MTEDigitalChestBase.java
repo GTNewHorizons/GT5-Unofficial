@@ -75,8 +75,7 @@ import mcp.mobius.waila.api.IWailaDataAccessor;
 public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
     implements IMEMonitor<IAEItemStack>, IMEAwareItemInventory, IAddUIWidgets, IItemLockable {
 
-    public boolean mOutputItem = false;
-    public boolean mLockItem = false;
+    public boolean mOutputItem = false, mLockItem = false, mAllowInputFromOutputSide = false;
     protected boolean mVoidOverflow = false;
     protected boolean mDisableFilter;
     private final MEItemInventoryHandler<?> meInventoryHandler = new MEItemInventoryHandler<>(this);
@@ -420,6 +419,7 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
         if (lockedItem != null) {
             aNBT.setTag("lockedItem", lockedItem.writeToNBT(new NBTTagCompound()));
         }
+        aNBT.setBoolean("mAllowInputFromOutputSide", mAllowInputFromOutputSide);
     }
 
     @Override
@@ -434,6 +434,7 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
         if (aNBT.hasKey("lockedItem")) {
             lockedItem = ItemStack.loadItemStackFromNBT(aNBT.getCompoundTag("lockedKey"));
         }
+        mAllowInputFromOutputSide = aNBT.getBoolean("mAllowInputFromOutputSide");
     }
 
     @Override
@@ -448,6 +449,7 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
         ItemStack aStack) {
         if (GTValues.disableDigitalChestsExternalAccess && meInventoryHandler.hasActiveMEConnection()) return false;
         if (lockedItem != null && !lockedItem.isItemEqual(aStack)) return false;
+        if (!mAllowInputFromOutputSide && side == getBaseMetaTileEntity().getFrontFacing()) return false;
         if (aIndex != 0) return false;
         if ((mInventory[0] != null && !GTUtility.areStacksEqual(mInventory[0], aStack))) return false;
         if (mDisableFilter) return true;
@@ -575,7 +577,22 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
         ModularSlot ghost = new ModularSlot(inventoryHandler, 2);
         syncManager.syncValue("digital_chest_ghost", new ItemSlotSH(ghost));
 
-        BooleanSyncValue autoOutputHandler = new BooleanSyncValue(() -> mOutputItem, value -> mOutputItem = value);
+        BooleanSyncValue autoOutputHandler = new BooleanSyncValue(() -> mOutputItem, value -> {
+            mOutputItem = value;
+            if(!getBaseMetaTileEntity().isServerSide()) {
+                if (mOutputItem) {
+                    data.getPlayer()
+                        .addChatMessage(
+                            new ChatComponentText(
+                                StatCollector.translateToLocal("GT5U.machines.digitalchest.autooutput.enabled")));
+                } else {
+                    data.getPlayer()
+                        .addChatMessage(
+                            new ChatComponentText(
+                                StatCollector.translateToLocal("GT5U.machines.digitalchest.autooutput.disabled")));
+                }
+            }
+        });
         syncManager.syncValue("auto_output", autoOutputHandler);
 
         BooleanSyncValue lockItemHandler = new BooleanSyncValue(() -> mLockItem, value -> {
@@ -583,7 +600,13 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
             if (getBaseMetaTileEntity().isServerSide()) {
                 if (mLockItem) {
                     setLockedItem(getItemStack());
-                    if (getItemStack() != null) {
+                } else {
+                    clearLock();
+                }
+            }
+            else {
+                if (mLockItem) {
+                    if (ghost.getStack() != null) {
                         data.getPlayer()
                             .addChatMessage(
                                 new ChatComponentText(
@@ -595,7 +618,6 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
                                     StatCollector.translateToLocal("GT5U.machines.digitalchest.lockItem.none")));
                     }
                 } else {
-                    clearLock();
                     data.getPlayer()
                         .addChatMessage(
                             new ChatComponentText(
@@ -611,7 +633,7 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
                 new ItemSlot().slot(
                     new ModularSlot(inventoryHandler, 0).slotGroup("item_inv")
                         .filter(
-                            itemStack -> ghost.getStack() == null || ghost.getStack()
+                            itemStack -> !lockItemHandler.getBoolValue() || ghost.getStack() == null || ghost.getStack()
                                 .isItemEqual(itemStack)))
                     .pos(79, 16)
                     .widgetTheme(GTWidgetThemes.OVERLAY_ITEM_SLOT_IN))
@@ -628,6 +650,7 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
                 IKey.lang("GT5U.gui.text.item.amount")
                     .color(COLOR_TEXT_WHITE.get())
                     .asWidget()
+                    .alignment(Alignment.CenterLeft)
                     .pos(10, 20))
             .child(
                 IKey.dynamic(() -> numberFormat.format(clientItemCount))
@@ -637,9 +660,10 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
                     .pos(10, 30)
                     .size(60, 10))
             .child(
-                IKey.lang(() -> lockItemHandler.getBoolValue() ? "GT5U.gui.text.locked" : "")
+                IKey.lang(() -> (lockItemHandler.getBoolValue() && ghost.getStack() != null) ? "GT5U.gui.text.locked" : "")
                     .color(COLOR_TEXT_WHITE.get())
                     .asWidget()
+                    .alignment(Alignment.CenterLeft)
                     .pos(10, 40)
                     .size(60, 10))
             .child(
@@ -652,20 +676,8 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
                         richTooltip.markDirty();
                     })
                     .pos(59, 42))
-            .child(new ToggleButton().value(new BoolValue.Dynamic(autoOutputHandler::getBoolValue, val -> {
-                autoOutputHandler.setBoolValue(!autoOutputHandler.getBoolValue());
-                if (autoOutputHandler.getBoolValue()) {
-                    data.getPlayer()
-                        .addChatMessage(
-                            new ChatComponentText(
-                                StatCollector.translateToLocal("GT5U.machines.digitalchest.autooutput.enabled")));
-                } else {
-                    data.getPlayer()
-                        .addChatMessage(
-                            new ChatComponentText(
-                                StatCollector.translateToLocal("GT5U.machines.digitalchest.autooutput.disabled")));
-                }
-            }))
+            .child(new ToggleButton().value(new BoolValue.Dynamic(autoOutputHandler::getBoolValue,
+                    val -> autoOutputHandler.setBoolValue(!autoOutputHandler.getBoolValue())))
                 .tooltip(
                     false,
                     richTooltip -> richTooltip
