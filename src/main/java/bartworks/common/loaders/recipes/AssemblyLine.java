@@ -66,7 +66,7 @@ public class AssemblyLine implements Runnable {
         // Mega Electric Blast Furnace
         GTValues.RA.stdBuilder()
             .metadata(RESEARCH_ITEM, ItemList.Machine_Multi_BlastFurnace.get(1L))
-            .metadata(SCANNING, new Scanning(60 * MINUTES, TierEU.RECIPE_IV))
+            .metadata(SCANNING, new Scanning(2 * MINUTES, TierEU.RECIPE_IV))
             .itemInputs(
                 ItemList.Machine_Multi_BlastFurnace.get(64L),
                 ItemList.Machine_Multi_BlastFurnace.get(64L),
@@ -86,7 +86,7 @@ public class AssemblyLine implements Runnable {
                 Materials.SolderingAlloy.getMolten(1440))
             .itemOutputs(ItemRegistry.megaMachines[0])
             .eut(TierEU.RECIPE_LuV)
-            .duration(60 * MINUTES)
+            .duration(5 * MINUTES)
             .addTo(AssemblyLine);
     }
 }
