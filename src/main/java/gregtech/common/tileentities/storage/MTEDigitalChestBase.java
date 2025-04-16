@@ -101,17 +101,7 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
         this::getItemCount,
         value -> clientItemCount = value);
     private final ModularSlot ghost = new ModularSlot(inventoryHandler, 2);
-    private final BooleanSyncValue autoOutputHandler = new BooleanSyncValue(() -> mOutputItem, value -> {
-        mOutputItem = value;
-        if (getBaseMetaTileEntity().isClientSide()) {
-            MCHelper.getPlayer()
-                .addChatMessage(
-                    new ChatComponentText(
-                        StatCollector.translateToLocal(
-                            mOutputItem ? "GT5U.machines.digitalchest.autooutput.enabled"
-                                : "GT5U.machines.digitalchest.autooutput.disabled")));
-        }
-    });
+    private final BooleanSyncValue autoOutputHandler = new BooleanSyncValue(() -> mOutputItem, value -> mOutputItem = value);
 
     private final BooleanSyncValue lockItemHandler = new BooleanSyncValue(() -> mLockItem, value -> {
         mLockItem = value;
@@ -121,51 +111,16 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
             } else {
                 clearLock();
             }
-        } else {
-            MCHelper.getPlayer()
-                .addChatMessage(
-                    new ChatComponentText(
-                        !mLockItem ? StatCollector.translateToLocal("GT5U.machines.digitalchest.lockItem.disabled")
-                            : ghost.getStack() != null
-                                ? StatCollector.translateToLocal("GT5U.machines.digitalchest.lockItem.enabled")
-                                : StatCollector.translateToLocal("GT5U.machines.digitalchest.lockItem.none")));
         }
     });
 
     private final BooleanSyncValue allowInputFromOutputSideHandler = new BooleanSyncValue(
         () -> mAllowInputFromOutputSide,
-        value -> {
-            mAllowInputFromOutputSide = value;
-            if (getBaseMetaTileEntity().isClientSide()) {
-                MCHelper.getPlayer()
-                    .addChatMessage(
-                        new ChatComponentText(
-                            mAllowInputFromOutputSide ? GTUtility.trans("095", "Input from Output Side allowed")
-                                : GTUtility.trans("096", "Input from Output Side forbidden")));
-            }
-        });
+        value -> mAllowInputFromOutputSide = value);
 
-    private final BooleanSyncValue voidOverflowHandler = new BooleanSyncValue(() -> mVoidOverflow, value -> {
-        mVoidOverflow = value;
-        if (getBaseMetaTileEntity().isClientSide()) {
-            MCHelper.getPlayer()
-                .addChatMessage(
-                    new ChatComponentText(
-                        mVoidOverflow ? GTUtility.trans("268", "Overflow Voiding Mode Enabled")
-                            : GTUtility.trans("267", "Overflow Voiding Mode Disabled")));
-        }
-    });
+    private final BooleanSyncValue voidOverflowHandler = new BooleanSyncValue(() -> mVoidOverflow, value -> mVoidOverflow = value);
 
-    private final BooleanSyncValue voidFullHandler = new BooleanSyncValue(() -> mVoidFull, value -> {
-        mVoidFull = value;
-        if (getBaseMetaTileEntity().isClientSide()) {
-            MCHelper.getPlayer()
-                .addChatMessage(
-                    new ChatComponentText(
-                        mVoidFull ? GTUtility.trans("270", "Void Full Mode Enabled")
-                            : GTUtility.trans("269", "Void Full Mode Disabled")));
-        }
-    });
+    private final BooleanSyncValue voidFullHandler = new BooleanSyncValue(() -> mVoidFull, value -> mVoidFull = value);
 
     public MTEDigitalChestBase(int aID, String aName, String aNameRegional, int aTier) {
         super(
@@ -727,7 +682,7 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
             .build();
         buildChestIO(panel);
         buildDigitalInterface(panel);
-        buildToggleButtons(panel);
+        buildToggleButtons(panel, syncManager);
         return panel;
     }
 
@@ -797,14 +752,22 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
                     .pos(59, 42));
     }
 
-    private void buildToggleButtons(ModularPanel panel) {
+    private void buildToggleButtons(ModularPanel panel, PanelSyncManager syncManager) {
         panel
             .child(
                 new ToggleButton()
                     .value(
                         new BoolValue.Dynamic(
                             autoOutputHandler::getBoolValue,
-                            val -> autoOutputHandler.setBoolValue(!autoOutputHandler.getBoolValue())))
+                            val -> {
+                                autoOutputHandler.setBoolValue(!autoOutputHandler.getBoolValue());
+                                syncManager.getPlayer()
+                                    .addChatMessage(
+                                        new ChatComponentText(
+                                            StatCollector.translateToLocal(
+                                                mOutputItem ? "GT5U.machines.digitalchest.autooutput.enabled"
+                                                    : "GT5U.machines.digitalchest.autooutput.disabled")));
+                            }))
                     .tooltip(
                         false,
                         richTooltip -> richTooltip
@@ -823,7 +786,16 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
                     .value(
                         new BoolValue.Dynamic(
                             lockItemHandler::getBoolValue,
-                            val -> lockItemHandler.setBoolValue(!lockItemHandler.getBoolValue())))
+                            val -> {
+                                lockItemHandler.setBoolValue(!lockItemHandler.getBoolValue());
+                                syncManager.getPlayer()
+                                    .addChatMessage(
+                                        new ChatComponentText(
+                                            !mLockItem ? StatCollector.translateToLocal("GT5U.machines.digitalchest.lockItem.disabled")
+                                                : displayItem != null
+                                                ? StatCollector.translateToLocal("GT5U.machines.digitalchest.lockItem.enabled")
+                                                : StatCollector.translateToLocal("GT5U.machines.digitalchest.lockItem.none")));
+                            }))
                     .tooltip(
                         false,
                         richTooltip -> richTooltip
@@ -842,8 +814,15 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
                     .value(
                         new BoolValue.Dynamic(
                             allowInputFromOutputSideHandler::getBoolValue,
-                            val -> allowInputFromOutputSideHandler
-                                .setBoolValue(!allowInputFromOutputSideHandler.getBoolValue())))
+                            val -> {
+                                allowInputFromOutputSideHandler
+                                    .setBoolValue(!allowInputFromOutputSideHandler.getBoolValue());
+                                syncManager.getPlayer()
+                                    .addChatMessage(
+                                        new ChatComponentText(
+                                            mAllowInputFromOutputSide ? GTUtility.trans("095", "Input from Output Side allowed")
+                                                : GTUtility.trans("096", "Input from Output Side forbidden")));
+                            }))
                     .tooltip(
                         false,
                         richTooltip -> richTooltip.addStringLines(
@@ -862,7 +841,14 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
                     .value(
                         new BoolValue.Dynamic(
                             voidOverflowHandler::getBoolValue,
-                            val -> voidOverflowHandler.setBoolValue(!voidOverflowHandler.getBoolValue())))
+                            val -> {
+                                voidOverflowHandler.setBoolValue(!voidOverflowHandler.getBoolValue());
+                                syncManager.getPlayer()
+                                    .addChatMessage(
+                                        new ChatComponentText(
+                                            mVoidOverflow ? GTUtility.trans("268", "Overflow Voiding Mode Enabled")
+                                                : GTUtility.trans("267", "Overflow Voiding Mode Disabled")));
+                            }))
                     .tooltip(
                         false,
                         richTooltip -> richTooltip.addStringLines(
@@ -881,7 +867,14 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
                     .value(
                         new BoolValue.Dynamic(
                             voidFullHandler::getBoolValue,
-                            val -> voidFullHandler.setBoolValue(!voidFullHandler.getBoolValue())))
+                            val -> {
+                                voidFullHandler.setBoolValue(!voidFullHandler.getBoolValue());
+                                syncManager.getPlayer()
+                                    .addChatMessage(
+                                        new ChatComponentText(
+                                            mVoidFull ? GTUtility.trans("270", "Void Full Mode Enabled")
+                                                : GTUtility.trans("269", "Void Full Mode Disabled")));
+                            }))
                     .tooltip(
                         false,
                         richTooltip -> richTooltip
