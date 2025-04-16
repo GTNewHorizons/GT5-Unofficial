@@ -5,11 +5,8 @@ import static gregtech.api.util.GTUtility.moveMultipleItemStacks;
 
 import java.util.List;
 
-import cpw.mods.fml.common.network.ByteBufUtils;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import kubatech.api.tileentity.CustomTileEntityPacketHandler;
-import kubatech.network.CustomTileEntityPacket;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.entity.player.EntityPlayer;
@@ -28,7 +25,6 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.Nullable;
 
-import com.cleanroommc.modularui.api.MCHelper;
 import com.cleanroommc.modularui.api.drawable.IDrawable;
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.drawable.DynamicDrawable;
@@ -81,17 +77,19 @@ import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
 public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
-    implements IMEMonitor<IAEItemStack>, IMEAwareItemInventory, IAddUIWidgets, IItemLockable, ITESRProvider, CustomTileEntityPacketHandler {
+    implements IMEMonitor<IAEItemStack>, IMEAwareItemInventory, IAddUIWidgets, IItemLockable, ITESRProvider {
 
-    public boolean mOutputItem = false, mLockItem = false, mAllowInputFromOutputSide = false;
+    public boolean mOutputItem = false, mLockItem = false, mAllowInputFromOutputSide = true;
     protected boolean mVoidOverflow = false;
     protected boolean mVoidFull = false;
     protected boolean mDisableFilter;
     private final MEItemInventoryHandler<?> meInventoryHandler = new MEItemInventoryHandler<>(this);
     protected ItemStack lockedItem = null;
-    private CustomTileEntityPacket itemRenderPacket = null;
     private ItemStack displayItemCache = null;
     private int displayCountCache = 0;
+    /**
+     * Note this value may have incorrect item count.
+     */
     @SideOnly(Side.CLIENT)
     public ItemStack displayItem = null;
     @SideOnly(Side.CLIENT)
@@ -170,34 +168,26 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
         DigitalStorageRenderer.renderChestStack(this, x, y, z, timeSinceLastTick);
     }
 
-    public void sendRenderUpdatePacket(@Nullable ItemStack displayStack, int count) {
-        if (itemRenderPacket == null) {
-            itemRenderPacket = new CustomTileEntityPacket((TileEntity) this.getBaseMetaTileEntity(), null);
+    @Override
+    public NBTTagCompound getDescriptionData() {
+        NBTTagCompound data = new NBTTagCompound();
+        if(getItemStack() != null) {
+            data.setInteger("count", getItemCount());
+            getItemStack().writeToNBT(data);
         }
-        itemRenderPacket.resetHelperData();
-        if(displayStack != null) {
-            NBTTagCompound itemNBT = new NBTTagCompound();
-            displayStack.writeToNBT(itemNBT);
-            ByteBufUtils.writeTag(itemRenderPacket.customdata, itemNBT);
-            itemRenderPacket.addData(count);
-        }
-        itemRenderPacket.sendToAllAround(16);
+        return data;
     }
 
-    @SideOnly(Side.CLIENT)
     @Override
-    public void HandleCustomPacket(CustomTileEntityPacket customdata) {
-        if(customdata.customdata.readableBytes() > 0) {
-            NBTTagCompound tag = ByteBufUtils.readTag(customdata.customdata);
-            if (tag != null && !tag.hasNoTags()) {
-                displayItem =  ItemStack.loadItemStackFromNBT(tag);
-                displayItemCount = customdata.getDataInt();
-                return;
-            }
+    public void onDescriptionPacket(NBTTagCompound data) {
+        if(data.hasKey("count")) {
+            displayItemCount = data.getInteger("count");
+            displayItem =  ItemStack.loadItemStackFromNBT(data);
         }
-
-        displayItem = null;
-        displayItemCount = 0;
+        else {
+            displayItemCount = 0;
+            displayItem = null;
+        }
     }
 
     @Override
@@ -425,18 +415,16 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
 
             boolean sameStack = displayItemCache == null ? stack == null : GTUtility.areStacksEqual(stack, displayItemCache);
             boolean sameStackSize = displayItemCache == null ? stack == null : displayCountCache == count;
-            if(!sameStack || !sameStackSize
-                || aTimer % 20 == 0) { //We can't send DescriptionPacket from MTE yet
+            if(!sameStack || !sameStackSize) {
                 if(stack != null) {
-                    sendRenderUpdatePacket(stack, count);
                     displayItemCache = stack;
                     displayCountCache = count;
                 }
                 else {
-                    sendRenderUpdatePacket(null, 0);
                     displayItemCache = null;
                     displayCountCache = 0;
                 }
+                getBaseMetaTileEntity().issueTileUpdate();
             }
         }
     }
