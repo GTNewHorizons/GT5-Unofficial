@@ -184,16 +184,12 @@ public class MTEMultiFurnace extends MTEAbstractMultiFurnace<MTEMultiFurnace> im
 
         int currentParallel = (int) Math.min(maxParallel, availableEUt / RECIPE_EUT);
         int itemParallel = 0;
-        List<ItemStack> plannedOutputs = new ArrayList<>();
         for (ItemStack item : tInput) {
             ItemStack smeltedOutput = GTModHandler.getSmeltingOutput(item, false, null);
             if (smeltedOutput != null) {
                 int parallelsLeft = currentParallel - itemParallel;
-                int toSmelt = Math.min(item.stackSize, parallelsLeft);
-                if (toSmelt > 0) {
-                    itemParallel += toSmelt;
-                }
-                plannedOutputs.add(smeltedOutput);
+                if (parallelsLeft <= 0) break;
+                itemParallel += Math.min(item.stackSize, parallelsLeft);
             }
         }
 
@@ -221,6 +217,7 @@ public class MTEMultiFurnace extends MTEAbstractMultiFurnace<MTEMultiFurnace> im
             if (bus instanceof MTEHatchOutputBusME meBus) {
                 if (!meBus.isLocked() && meBus.canAcceptItem()) {
                     hasMEOutputBus = true;
+                    break;
                 }
             }
         }
@@ -282,6 +279,7 @@ public class MTEMultiFurnace extends MTEAbstractMultiFurnace<MTEMultiFurnace> im
 
                     item.stackSize -= toProcess;
                     toSmelt -= toProcess;
+                    if (toSmelt <= 0) break;
                 }
             }
         }
