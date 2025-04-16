@@ -5,33 +5,30 @@ import static net.minecraftforge.common.util.ForgeDirection.*;
 
 import java.util.EnumMap;
 
-import binnie.genetics.item.ItemRegistry;
-import codechicken.lib.colour.ColourRGBA;
-import cofh.lib.util.helpers.MathHelper;
-import com.cleanroommc.modularui.utils.GlStateManager;
-import gregtech.api.metatileentity.MetaTileEntity;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.entity.RenderItem;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.Nullable;
 
+import com.cleanroommc.modularui.utils.GlStateManager;
+
+import codechicken.lib.colour.ColourRGBA;
 import codechicken.lib.render.BlockRenderer;
 import codechicken.lib.render.CCRenderState;
 import codechicken.lib.render.uv.IconTransformation;
 import codechicken.lib.vec.Cuboid6;
 import codechicken.lib.vec.Translation;
+import cofh.lib.util.helpers.MathHelper;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
@@ -81,7 +78,7 @@ public class DigitalStorageRenderer {
             Tessellator.instance.startDrawingQuads();
         }
 
-        //spotless:off
+        // spotless:off
         // front frame
         for (var boxFacing : boxFacingMap.keySet()) {
             // do not render the box at the front face when "facing" is "frontFacing"
@@ -132,21 +129,21 @@ public class DigitalStorageRenderer {
     }
 
     public static void renderFace(CCRenderState state, ForgeDirection face, Cuboid6 bounds,
-                                  @Nullable IBlockAccess aWorld, int aX, int aY, int aZ,
-                                  Block aBlock, RenderBlocks aRenderer, MTEDigitalChestBase mte) {
-        int aColor = mte.getBaseMetaTileEntity().getColorization() - 1;
-        short[] rgba = Dyes.getModulation(aColor,
-            Dyes.MACHINE_METAL.mRGBa);
+        @Nullable IBlockAccess aWorld, int aX, int aY, int aZ, Block aBlock, RenderBlocks aRenderer,
+        MTEDigitalChestBase mte) {
+        int aColor = mte.getBaseMetaTileEntity()
+            .getColorization() - 1;
+        short[] rgba = Dyes.getModulation(aColor, Dyes.MACHINE_METAL.mRGBa);
         Textures.BlockIcons casing = (Textures.BlockIcons) MACHINECASINGS_SIDE[mte.mTier];
         state.resetInstance();
-        state.baseColour = new ColourRGBA(rgba[0],rgba[1],rgba[2],255).rgba();
+        state.baseColour = new ColourRGBA(rgba[0], rgba[1], rgba[2], 255).rgba();
         state.setDynamicInstance();
         state.pullLightmapInstance();
         state.setPipelineInstance(
             new Translation(aX, aY, aZ),
             new IconTransformation(casing.getIcon()),
             state.lightMatrix);
-        if(aWorld != null) {
+        if (aWorld != null) {
             state.setBrightnessInstance(aWorld, aX, aY, aZ);
         }
 
@@ -170,24 +167,29 @@ public class DigitalStorageRenderer {
         }
     }
 
-
-    public static void renderChestStack(MTEDigitalChestBase mte, double x, double y, double z, float timeSinceLastTick) {
-//        ItemStack content = mte.getItemStack();
-        ItemStack content = new ItemStack(Items.baked_potato, 1);
-//        if(content == null) {
-//            return;
-//        }
-        //TODO: config fancyrenderer
+    public static void renderChestStack(MTEDigitalChestBase mte, double x, double y, double z,
+        float timeSinceLastTick) {
+         ItemStack content = mte.displayItem;
+         if(content == null) {
+            return;
+         }
+        // TODO: config fancyrenderer
 
         float lastBrightnessX = OpenGlHelper.lastBrightnessX;
         float lastBrightnessY = OpenGlHelper.lastBrightnessY;
-        World world = mte.getBaseMetaTileEntity().getWorld();
-//        setLightingCorrectly(world, machine.getPos()); //TODO
+        World world = mte.getBaseMetaTileEntity()
+            .getWorld();
+        // setLightingCorrectly(world, machine.getPos()); //TODO
 
-        if (canRender(x, y, z, 8 *
-            MathHelper.clamp((double) Minecraft.getMinecraft().gameSettings.renderDistanceChunks / 8, 1.0, 2.5))) {
+        if (canRender(
+            x,
+            y,
+            z,
+            8 * MathHelper.clamp((double) Minecraft.getMinecraft().gameSettings.renderDistanceChunks / 8, 1.0, 2.5))) {
             float tick = world.getTotalWorldTime() + timeSinceLastTick;
-            EntityItem entityItem = new EntityItem(world, 0, 0, 0, content);
+            ItemStack displayContent = content.copy();
+            displayContent.stackSize = 1;
+            EntityItem entityItem = new EntityItem(world, 0, 0, 0, displayContent);
             entityItem.hoverStart = 0f;
             GlStateManager.pushMatrix();
             GlStateManager.translate(x, y, z);
@@ -198,9 +200,9 @@ public class DigitalStorageRenderer {
             GlStateManager.popMatrix();
         }
 
-//        OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 240, 240);
-//        renderAmountText(x, y, z, count, frontFacing);
-//        OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, lastBrightnessX, lastBrightnessY);
+        // OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 240, 240);
+        // renderAmountText(x, y, z, content.stackSize(), frontFacing);
+        // OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, lastBrightnessX, lastBrightnessY);
     }
 
     /**

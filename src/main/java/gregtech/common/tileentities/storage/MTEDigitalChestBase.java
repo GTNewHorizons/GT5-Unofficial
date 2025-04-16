@@ -5,6 +5,11 @@ import static gregtech.api.util.GTUtility.moveMultipleItemStacks;
 
 import java.util.List;
 
+import cpw.mods.fml.common.network.ByteBufUtils;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import kubatech.api.tileentity.CustomTileEntityPacketHandler;
+import kubatech.network.CustomTileEntityPacket;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.entity.player.EntityPlayer;
@@ -76,7 +81,7 @@ import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
 public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
-    implements IMEMonitor<IAEItemStack>, IMEAwareItemInventory, IAddUIWidgets, IItemLockable, ITESRProvider {
+    implements IMEMonitor<IAEItemStack>, IMEAwareItemInventory, IAddUIWidgets, IItemLockable, ITESRProvider, CustomTileEntityPacketHandler {
 
     public boolean mOutputItem = false, mLockItem = false, mAllowInputFromOutputSide = true;
     protected boolean mVoidOverflow = false;
@@ -84,6 +89,10 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
     protected boolean mDisableFilter;
     private final MEItemInventoryHandler<?> meInventoryHandler = new MEItemInventoryHandler<>(this);
     protected ItemStack lockedItem = null;
+    private CustomTileEntityPacket itemRenderPacket = null;
+    private ItemStack displayItemCache = null;
+    @SideOnly(Side.CLIENT)
+    public ItemStack displayItem = null;
 
     private final IntSyncValue itemCountSyncHandler = new IntSyncValue(
         this::getItemCount,
@@ -201,6 +210,31 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
     @Override
     public void renderTileEntityAt(TileEntity tile, double x, double y, double z, float timeSinceLastTick) {
         DigitalStorageRenderer.renderChestStack(this, x, y, z, timeSinceLastTick);
+    }
+
+    public void sendRenderUpdatePacket(@Nullable ItemStack displayStackWithAmount) {
+        if (itemRenderPacket == null) itemRenderPacket = new CustomTileEntityPacket((TileEntity) this.getBaseMetaTileEntity(), null);
+        itemRenderPacket.resetHelperData();
+        if(displayStackWithAmount != null) {
+            NBTTagCompound itemNBT = new NBTTagCompound();
+            displayStackWithAmount.writeToNBT(itemNBT);
+            ByteBufUtils.writeTag(itemRenderPacket.customdata, itemNBT);
+        }
+        itemRenderPacket.sendToAllAround(16);
+    }
+
+    @SideOnly(Side.CLIENT)
+    @Override
+    public void HandleCustomPacket(CustomTileEntityPacket customdata) {
+        if(customdata.customdata.readableBytes() > 0) {
+            NBTTagCompound tag = ByteBufUtils.readTag(customdata.customdata);
+            if (tag != null && !tag.hasNoTags()) {
+                displayItem =  ItemStack.loadItemStackFromNBT(tag);
+                return;
+            }
+        }
+
+        displayItem = null;
     }
 
     @Override
@@ -425,6 +459,12 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
                             mInventory[i] = null;
                 }
             }
+
+            boolean sameStackSize = displayItemCache == null ? stack == null : displayItemCache.stackSize == count;
+            if(!GTUtility.areStacksEqual(stack, displayItemCache) || !sameStackSize) {
+                sendRenderUpdatePacket(stack);
+            }
+            displayItemCache = stack;
         }
     }
 
@@ -525,6 +565,7 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
         if (aNBT.hasKey("mItemCount")) setItemCount(aNBT.getInteger("mItemCount"));
         if (aNBT.hasKey("mItemStack"))
             setItemStack(ItemStack.loadItemStackFromNBT((NBTTagCompound) aNBT.getTag("mItemStack")));
+        sendRenderUpdatePacket(getItemStack());
         mVoidOverflow = aNBT.getBoolean("mVoidOverflow");
         mDisableFilter = aNBT.getBoolean("mDisableFilter");
         mOutputItem = aNBT.getBoolean("mOutputItem");
