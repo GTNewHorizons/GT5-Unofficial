@@ -70,7 +70,9 @@ public class RecipeHandlers {
             })
             .toArray(ItemStack[]::new);
         ItemStack[] inputsWithFakeCircuits = input.stream()
-            .map(c -> c.getCircuitComponent().getFakeStack(info.getBaseParallel() * c.getSize()))
+            .map(
+                c -> c.getCircuitComponent()
+                    .getFakeStack(info.getBaseParallel() * c.getSize()))
             .toArray(ItemStack[]::new);
         GTRecipeBuilder builder = GTValues.RA.stdBuilder()
             .metadata(NanochipAssemblyRecipeInfo.INSTANCE, info)

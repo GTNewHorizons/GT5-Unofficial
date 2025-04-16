@@ -926,9 +926,6 @@ import static gregtech.api.recipe.RecipeMaps.slicerRecipes;
 import static gregtech.api.recipe.RecipeMaps.thermalCentrifugeRecipes;
 import static gregtech.api.recipe.RecipeMaps.wiremillRecipes;
 
-import gregtech.common.tileentities.machines.multi.nanochip.MTEVacuumConveyorPipe;
-import gregtech.common.tileentities.machines.multi.nanochip.hatches.MTEHatchVacuumConveyorInput;
-import gregtech.common.tileentities.machines.multi.nanochip.hatches.MTEHatchVacuumConveyorOutput;
 import net.minecraft.util.EnumChatFormatting;
 
 import gregtech.api.enums.ItemList;
@@ -1077,6 +1074,9 @@ import gregtech.common.tileentities.machines.multi.compressor.MTENeutroniumCompr
 import gregtech.common.tileentities.machines.multi.drone.MTEDroneCentre;
 import gregtech.common.tileentities.machines.multi.drone.MTEHatchDroneDownLink;
 import gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex;
+import gregtech.common.tileentities.machines.multi.nanochip.MTEVacuumConveyorPipe;
+import gregtech.common.tileentities.machines.multi.nanochip.hatches.MTEHatchVacuumConveyorInput;
+import gregtech.common.tileentities.machines.multi.nanochip.hatches.MTEHatchVacuumConveyorOutput;
 import gregtech.common.tileentities.machines.multi.nanochip.modules.*;
 import gregtech.common.tileentities.machines.multi.purification.MTEHatchDegasifierControl;
 import gregtech.common.tileentities.machines.multi.purification.MTEHatchLensHousing;
@@ -12419,14 +12419,19 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
 
     private static void registerVacuumComponents() {
         ItemList.Hatch_VacuumConveyor_Input.set(
-            new MTEHatchVacuumConveyorInput(HATCH_VACUUM_CONVEYOR_INPUT.ID, "vacuum.hatch.input", "Vacuum Conveyor Input", 1)
-                .getStackForm(1L));
+            new MTEHatchVacuumConveyorInput(
+                HATCH_VACUUM_CONVEYOR_INPUT.ID,
+                "vacuum.hatch.input",
+                "Vacuum Conveyor Input",
+                1).getStackForm(1L));
         ItemList.Hatch_VacuumConveyor_Output.set(
-            new MTEHatchVacuumConveyorOutput(HATCH_VACUUM_CONVEYOR_OUTPUT.ID, "vacuum.hatch.output", "Vacuum Conveyor Output", 1)
-                .getStackForm(1L));
+            new MTEHatchVacuumConveyorOutput(
+                HATCH_VACUUM_CONVEYOR_OUTPUT.ID,
+                "vacuum.hatch.output",
+                "Vacuum Conveyor Output",
+                1).getStackForm(1L));
         ItemList.VacuumConveyorPipe.set(
-            new MTEVacuumConveyorPipe(VACUUM_CONVEYOR_PIPE.ID, "vacuum.pipe", "Vacuum Conveyor Pipe")
-                .getStackForm(1L));
+            new MTEVacuumConveyorPipe(VACUUM_CONVEYOR_PIPE.ID, "vacuum.pipe", "Vacuum Conveyor Pipe").getStackForm(1L));
     }
 
     @Override

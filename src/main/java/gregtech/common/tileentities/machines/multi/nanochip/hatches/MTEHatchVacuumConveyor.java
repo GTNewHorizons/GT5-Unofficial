@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Map;
 
+import gregtech.api.util.GTUtility;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -149,11 +150,11 @@ public abstract class MTEHatchVacuumConveyor extends MTEHatch implements IConnec
         if (contents != null) {
             // TODO: Would be neat to get a gui that displays these in item form I suppose (using some fake items or
             // something)
-            Map<CircuitComponent, Integer> components = contents.getComponents();
-            for (Map.Entry<CircuitComponent, Integer> component : components.entrySet()) {
+            Map<CircuitComponent, Long> components = contents.getComponents();
+            for (Map.Entry<CircuitComponent, Long> component : components.entrySet()) {
                 info.add(
                     EnumChatFormatting.YELLOW + component.getKey()
-                        .getLocalizedName() + ": " + EnumChatFormatting.WHITE + component.getValue());
+                        .getLocalizedName() + ": " + EnumChatFormatting.WHITE + GTUtility.formatNumbers(component.getValue()));
             }
         }
         return info.toArray(new String[] {});

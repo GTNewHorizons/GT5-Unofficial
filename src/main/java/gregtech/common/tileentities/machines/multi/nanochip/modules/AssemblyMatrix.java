@@ -31,11 +31,8 @@ public class AssemblyMatrix extends MTENanochipAssemblyModuleBase<AssemblyMatrix
     protected static final int STRUCTURE_OFFSET_Z = -2;
 
     protected static final String STRUCTURE_PIECE_MAIN = "main";
-    private static final String[][] structure = new String[][] {
-        { "  AAA  ", "  AAA  ", "  AAA  " },
-        { "  AAA  ", "  A A  ", "  AAA  " },
-        { "  AAA  ", "  AAA  ", "  AAA  " }
-    };
+    private static final String[][] structure = new String[][] { { "  AAA  ", "  AAA  ", "  AAA  " },
+        { "  AAA  ", "  A A  ", "  AAA  " }, { "  AAA  ", "  AAA  ", "  AAA  " } };
 
     public static final IStructureDefinition<AssemblyMatrix> STRUCTURE_DEFINITION = ModuleStructureDefinition
         .<AssemblyMatrix>builder()

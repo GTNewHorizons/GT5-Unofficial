@@ -16,8 +16,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import gregtech.api.logic.ProcessingLogic;
-import gregtech.loaders.oreprocessing.ProcessingLog;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
@@ -33,6 +31,7 @@ import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
@@ -76,7 +75,7 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
     private int currentParallel;
 
     // Something, needs to be tested further what this should really be (probably MUCH higher and scale with hatch tier)
-    protected static long EU_BUFFER_BASE_SIZE = 160008000L * 1024;
+    protected static long EU_BUFFER_BASE_SIZE = 160008000L * 16384;
     protected final long euBufferSize = EU_BUFFER_BASE_SIZE;
 
     protected final Map<CircuitComponent, Long> processedItemCounts = new HashMap<>();
@@ -356,17 +355,8 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
 
             CircuitComponent fakeItem = CircuitComponent.tryGetFromFakeStack(mOutputItems[0]);
             incrementProcessedItemCounts(fakeItem, mOutputItems[0].stackSize);
-            this
-                .processingLogic
-                .setSpeedBonus(
-                    1F /
-                        Math.min(10, Math.max(1, 1 +
-                            getSpeedModifierForOutput(fakeItem))));
+            this.processingLogic.setSpeedBonus(1F / Math.min(10, Math.max(1, 1 + getSpeedModifierForOutput(fakeItem))));
 
-            System.out.println(1F /
-                Math.max(1, 1 +
-                    getSpeedModifierForOutput(fakeItem)));
-            System.out.println(processedItemCounts);
 
             mEfficiency = 10000;
             mEfficiencyIncrease = 10000;
@@ -396,11 +386,11 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
             throw new IllegalArgumentException("This item isn't in the item counts for the multi!");
         }
         double loss = 0;
-        for(Map.Entry<CircuitComponent, Long> c : this.processedItemCounts.entrySet()) {
-            if(c.getKey().equals(output)) continue;
+        for (Map.Entry<CircuitComponent, Long> c : this.processedItemCounts.entrySet()) {
+            if (c.getKey()
+                .equals(output)) continue;
             double thisLoss = Math.log(Math.log(c.getValue()) / Math.log(5000)) / Math.log(1.1);
-            if(thisLoss > 0)
-                loss += 2 * thisLoss;
+            if (thisLoss > 0) loss += 2 * thisLoss;
         }
         long count = this.processedItemCounts.get(output);
         return Math.log(Math.log(count) / Math.log(5000)) / Math.log(1.1) - loss;
