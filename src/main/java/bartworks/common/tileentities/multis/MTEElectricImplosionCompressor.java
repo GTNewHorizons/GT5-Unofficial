@@ -109,10 +109,14 @@ public class MTEElectricImplosionCompressor extends MTEExtendedPowerMultiBlockBa
         super(aName);
     }
 
+    @Override
+    public IMetaTileEntity newMetaEntity(IGregTechTileEntity iGregTechTileEntity) {
+        return new MTEElectricImplosionCompressor(this.mName);
+    }
+
     private static final int CASING_INDEX = 16;
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final String STRUCTURE_PIECE_MAIN_SUCCESSFUL = "main_successful";
-    private static IStructureDefinition<MTEElectricImplosionCompressor> STRUCTURE_DEFINITION = null;
     private static final String[][] shape = new String[][] { { "AAA", "ABA", "AAA" }, { "DDD", "DGD", "DDD" },
         { "DDD", "DGD", "DDD" }, { "EEE", "EEE", "EEE" }, { "EFE", "FFF", "EFE" }, { "EEE", "EEE", "EEE" },
         { "D~D", "DGD", "DDD" }, { "DDD", "DGD", "DDD" }, { "CCC", "CBC", "CCC" } };
@@ -134,6 +138,7 @@ public class MTEElectricImplosionCompressor extends MTEExtendedPowerMultiBlockBa
     }
 
     public static int getTierBlock(Block block, int meta) {
+        if (block == null) return -1;
         if (block == GregTechAPI.sBlockMetal5 && meta == 2) return 1;
         if (Mods.Avaritia.isModLoaded()) {
             if (block == LudicrousBlocks.resource_block && meta == 1) return 2;
@@ -145,12 +150,12 @@ public class MTEElectricImplosionCompressor extends MTEExtendedPowerMultiBlockBa
             if (block == GregTechAPI.sBlockMetal9 && meta == 3) return 3;
             if (block == GregTechAPI.sBlockMetal9 && meta == 8) return 4;
         }
-        return 0;
+        return -1;
     }
 
     @Override
     public IStructureDefinition<MTEElectricImplosionCompressor> getStructureDefinition() {
-        STRUCTURE_DEFINITION = StructureDefinition.<MTEElectricImplosionCompressor>builder()
+        return StructureDefinition.<MTEElectricImplosionCompressor>builder()
             .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
             .addShape(
                 STRUCTURE_PIECE_MAIN_SUCCESSFUL,
@@ -182,7 +187,7 @@ public class MTEElectricImplosionCompressor extends MTEExtendedPowerMultiBlockBa
             .addElement(
                 'E',
                 StructureUtility.withChannel(
-                    "tierblock",
+                    "piston_block",
                     StructureUtility.ofBlocksTiered(
                         MTEElectricImplosionCompressor::getTierBlock,
                         getTierBlockList(),
@@ -192,7 +197,7 @@ public class MTEElectricImplosionCompressor extends MTEExtendedPowerMultiBlockBa
             .addElement(
                 'F',
                 StructureUtility.withChannel(
-                    "tierblock",
+                    "piston_block",
                     StructureUtility.ofBlocksTiered(
                         MTEElectricImplosionCompressor::getTierBlock,
                         getTierBlockList(),
@@ -202,7 +207,6 @@ public class MTEElectricImplosionCompressor extends MTEExtendedPowerMultiBlockBa
             .addElement('G', ofBlock(BW_BLOCKS[2], 0))
             .addElement('H', isAir())
             .build();
-        return STRUCTURE_DEFINITION;
     }
 
     @Override
@@ -233,6 +237,7 @@ public class MTEElectricImplosionCompressor extends MTEExtendedPowerMultiBlockBa
             .addInputHatch("Any bottom casing", 1)
             .addOutputBus("Any bottom casing", 1)
             .addEnergyHatch("Bottom middle and/or top middle", 2)
+            .addSubChannelUsage("piston_block", "Metal Block Tier")
             .toolTipFinisher();
         return tt;
     }
@@ -364,6 +369,7 @@ public class MTEElectricImplosionCompressor extends MTEExtendedPowerMultiBlockBa
                 c -> aBaseMetaTileEntity.getWorld()
                     .setBlockToAir(c.posX, c.posY, c.posZ));
             this.piston = !this.piston;
+            this.isSuccessful = true;
         }
     }
 
@@ -410,11 +416,12 @@ public class MTEElectricImplosionCompressor extends MTEExtendedPowerMultiBlockBa
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack itemStack) {
         int pistonTier = this.mBlockTier;
-        this.mCasing = 0;
         int mMaxHatchTier = 0;
-        this.mBlockTier = -1;
         boolean isOK;
-        if (isSuccessful) {
+        this.mCasing = 0;
+        this.mBlockTier = -1;
+
+        if (this.isSuccessful) {
             isOK = this.checkPiece(STRUCTURE_PIECE_MAIN_SUCCESSFUL, 1, 6, 0);
         } else {
             isOK = this.checkPiece(STRUCTURE_PIECE_MAIN, 1, 6, 0);
@@ -428,12 +435,18 @@ public class MTEElectricImplosionCompressor extends MTEExtendedPowerMultiBlockBa
         isOK = isOK && this.mMaintenanceHatches.size() == 1 && !energyHatches.isEmpty();
         if (isOK) {
             this.activatePiston();
-            isSuccessful = true;
             return true;
         }
-        isSuccessful = false;
+
+        this.isSuccessful = false;
         this.resetPiston(pistonTier);
         return false;
+    }
+
+    @Override
+    public void onBlockDestroyed() {
+        this.resetPiston(this.mBlockTier);
+        super.onBlockDestroyed();
     }
 
     @Override
@@ -449,11 +462,6 @@ public class MTEElectricImplosionCompressor extends MTEExtendedPowerMultiBlockBa
     @Override
     public boolean explodesOnComponentBreak(ItemStack itemStack) {
         return false;
-    }
-
-    @Override
-    public IMetaTileEntity newMetaEntity(IGregTechTileEntity iGregTechTileEntity) {
-        return new MTEElectricImplosionCompressor(this.mName);
     }
 
     @Override
@@ -485,16 +493,14 @@ public class MTEElectricImplosionCompressor extends MTEExtendedPowerMultiBlockBa
 
     @Override
     public void construct(ItemStack itemStack, boolean b) {
-        mBlockTier = -1;
-        isSuccessful = false;
+        this.isSuccessful = false;
         this.buildPiece(STRUCTURE_PIECE_MAIN, itemStack, b, 1, 6, 0);
     }
 
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (this.mMachine) return -1;
-        mBlockTier = -1;
-        isSuccessful = false;
+        this.isSuccessful = false;
         return this.survivialBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 1, 6, 0, elementBudget, env, false, true);
     }
 
@@ -525,6 +531,6 @@ public class MTEElectricImplosionCompressor extends MTEExtendedPowerMultiBlockBa
 
     @Override
     public void onPreviewStructureComplete(@NotNull ItemStack trigger) {
-        resetPiston(mBlockTier);
+        resetPiston(this.mBlockTier);
     }
 }

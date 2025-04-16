@@ -2,14 +2,19 @@ package gregtech.common.blocks;
 
 import static gregtech.api.enums.Mods.NotEnoughItems;
 
+import java.util.List;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.util.GTLanguageManager;
@@ -69,4 +74,46 @@ public class BlockMetal extends BlockStorage {
         }
     }
 
+    public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean advancedTooltips) {
+        boolean isAvaritiaLoaded = Mods.Avaritia.isModLoaded();
+        int metadata = stack.getItemDamage();
+
+        if (this == GregTechAPI.sBlockMetal5) {
+            if (metadata == 2) {
+                tooltip.add(StatCollector.translateToLocalFormatted("GT5U.tooltip.channelvalue", 1, "piston_block"));
+            }
+        }
+
+        if (this == GregTechAPI.sBlockMetal9) {
+            switch (metadata) {
+                case 4:
+                    if (isAvaritiaLoaded) {
+                        tooltip.add(
+                            StatCollector.translateToLocalFormatted("GT5U.tooltip.channelvalue", 3, "piston_block"));
+                    } else {
+                        tooltip.add(
+                            StatCollector.translateToLocalFormatted("GT5U.tooltip.channelvalue", 2, "piston_block"));
+                    }
+                    break;
+                case 3:
+                    if (isAvaritiaLoaded) {
+                        tooltip.add(
+                            StatCollector.translateToLocalFormatted("GT5U.tooltip.channelvalue", 4, "piston_block"));
+                    } else {
+                        tooltip.add(
+                            StatCollector.translateToLocalFormatted("GT5U.tooltip.channelvalue", 3, "piston_block"));
+                    }
+                    break;
+                case 8:
+                    if (isAvaritiaLoaded) {
+                        tooltip.add(
+                            StatCollector.translateToLocalFormatted("GT5U.tooltip.channelvalue", 5, "piston_block"));
+                    } else {
+                        tooltip.add(
+                            StatCollector.translateToLocalFormatted("GT5U.tooltip.channelvalue", 4, "piston_block"));
+                    }
+                    break;
+            }
+        }
+    }
 }
