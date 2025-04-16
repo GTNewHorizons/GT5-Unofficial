@@ -5,8 +5,10 @@ import static net.minecraftforge.common.util.ForgeDirection.*;
 
 import java.util.EnumMap;
 
+import gregtech.api.util.GTUtility;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
@@ -37,13 +39,14 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtilityClient;
 import gregtech.common.tileentities.storage.MTEDigitalChestBase;
 
-// Backported from GTCEu with lots of tweaks
+// Backported from GTCEu
 public class DigitalStorageRenderer {
 
     private static final Cuboid6 glassBox = new Cuboid6(1 / 16.0, 1 / 16.0, 1 / 16.0, 15 / 16.0, 15 / 16.0, 15 / 16.0);
     private static final BlockRenderer.BlockFace blockFace = new BlockRenderer.BlockFace();
-
     private static final EnumMap<ForgeDirection, Cuboid6> boxFacingMap = new EnumMap<>(ForgeDirection.class);
+
+    private static final FontRenderer fontRenderer = Minecraft.getMinecraft().fontRenderer;
 
     static {
         boxFacingMap
@@ -169,13 +172,13 @@ public class DigitalStorageRenderer {
          if(content == null) {
             return;
          }
+         content.stackSize = 1;
         // TODO: config fancyrenderer
 
         float lastBrightnessX = OpenGlHelper.lastBrightnessX;
         float lastBrightnessY = OpenGlHelper.lastBrightnessY;
         World world = mte.getBaseMetaTileEntity()
             .getWorld();
-        // setLightingCorrectly(world, machine.getPos()); //TODO
 
         if (canRender(
             x,
@@ -183,9 +186,7 @@ public class DigitalStorageRenderer {
             z,
             8 * MathHelper.clamp((double) Minecraft.getMinecraft().gameSettings.renderDistanceChunks / 8, 1.0, 2.5))) {
             float tick = world.getTotalWorldTime() + timeSinceLastTick;
-            ItemStack displayContent = content.copy();
-            displayContent.stackSize = 1;
-            EntityItem entityItem = new EntityItem(world, 0, 0, 0, displayContent);
+            EntityItem entityItem = new EntityItem(world, 0, 0, 0, content);
             entityItem.hoverStart = 0f;
             GlStateManager.pushMatrix();
             GlStateManager.translate(x, y, z);
@@ -196,9 +197,33 @@ public class DigitalStorageRenderer {
             GlStateManager.popMatrix();
         }
 
-        // OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 240, 240);
-        // renderAmountText(x, y, z, content.stackSize(), frontFacing);
-        // OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, lastBrightnessX, lastBrightnessY);
+         OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 240, 240);
+         renderAmountText(x, y, z, mte.displayItemCount, mte.getBaseMetaTileEntity().getFrontFacing());
+         OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, lastBrightnessX, lastBrightnessY);
+    }
+
+    public static void renderAmountText(double x, double y, double z, long amount, ForgeDirection frontFacing) {
+        if (!canRender(x, y, z, 64))
+            return;
+
+        GlStateManager.pushMatrix();
+        GlStateManager.translate(x, y, z);
+        GlStateManager.translate(frontFacing.offsetX * -1 / 16f, frontFacing.offsetY * -1 / 16f,
+            frontFacing.offsetZ * -1 / 16f);
+        GlStateManager.translate(0.5 + frontFacing.offsetX * 0.5, 0.5 + frontFacing.offsetY * 0.5,
+            0.5 + frontFacing.offsetZ * 0.5);
+        if (frontFacing == UP || frontFacing == DOWN) {
+            rotateToFace(frontFacing, ForgeDirection.SOUTH);
+        } else {
+            rotateToFace(frontFacing, null);
+        }
+        String amountText = GTUtility.formatNumbers(amount);
+        GlStateManager.scale(1f / 64, 1f / 64, 0);
+        GlStateManager.translate(-32, -32, 0);
+        GlStateManager.disableLighting();
+        fontRenderer.drawString(amountText, 32 - fontRenderer.getStringWidth(amountText) / 2, 40, 0xFFFFFF,false);
+        GlStateManager.enableLighting();
+        GlStateManager.popMatrix();
     }
 
     /**
@@ -214,5 +239,43 @@ public class DigitalStorageRenderer {
     public static boolean canRender(double x, double y, double z, double range) {
         double distance = (x * x) + (y * y) + (z * z);
         return distance < range * range;
+    }
+
+    public static void rotateToFace(ForgeDirection face, @Nullable ForgeDirection spin) {
+        int angle = spin == ForgeDirection.EAST ? 90 : spin == ForgeDirection.SOUTH ? 180 : spin == ForgeDirection.WEST ? -90 : 0;
+        switch (face) {
+            case UP:
+                GlStateManager.scale(1.0f, -1.0f, 1.0f);
+                GlStateManager.rotate(90.0f, 1.0f, 0.0f, 0.0f);
+                GlStateManager.rotate(angle, 0, 0, 1);
+                break;
+            case DOWN:
+                GlStateManager.scale(1.0f, -1.0f, 1.0f);
+                GlStateManager.rotate(-90.0f, 1.0f, 0.0f, 0.0f);
+                GlStateManager.rotate(spin == ForgeDirection.EAST ? 90 :
+                    spin == ForgeDirection.NORTH ? 180 : spin == ForgeDirection.WEST ? -90 : 0, 0, 0, 1);
+                break;
+            case EAST:
+                GlStateManager.scale(-1.0f, -1.0f, -1.0f);
+                GlStateManager.rotate(-90.0f, 0.0f, 1.0f, 0.0f);
+                GlStateManager.rotate(angle, 0, 0, 1);
+                break;
+            case WEST:
+                GlStateManager.scale(-1.0f, -1.0f, -1.0f);
+                GlStateManager.rotate(90.0f, 0.0f, 1.0f, 0.0f);
+                GlStateManager.rotate(angle, 0, 0, 1);
+                break;
+            case NORTH:
+                GlStateManager.scale(-1.0f, -1.0f, -1.0f);
+                GlStateManager.rotate(angle, 0, 0, 1);
+                break;
+            case SOUTH:
+                GlStateManager.scale(-1.0f, -1.0f, -1.0f);
+                GlStateManager.rotate(180.0f, 0.0f, 1.0f, 0.0f);
+                GlStateManager.rotate(angle, 0, 0, 1);
+                break;
+            default:
+                break;
+        }
     }
 }

@@ -91,8 +91,11 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
     protected ItemStack lockedItem = null;
     private CustomTileEntityPacket itemRenderPacket = null;
     private ItemStack displayItemCache = null;
+    private int displayCountCache = 0;
     @SideOnly(Side.CLIENT)
     public ItemStack displayItem = null;
+    @SideOnly(Side.CLIENT)
+    public int displayItemCount = 0;
 
     private final IntSyncValue itemCountSyncHandler = new IntSyncValue(
         this::getItemCount,
@@ -212,13 +215,16 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
         DigitalStorageRenderer.renderChestStack(this, x, y, z, timeSinceLastTick);
     }
 
-    public void sendRenderUpdatePacket(@Nullable ItemStack displayStackWithAmount) {
-        if (itemRenderPacket == null) itemRenderPacket = new CustomTileEntityPacket((TileEntity) this.getBaseMetaTileEntity(), null);
+    public void sendRenderUpdatePacket(@Nullable ItemStack displayStack, int count) {
+        if (itemRenderPacket == null) {
+            itemRenderPacket = new CustomTileEntityPacket((TileEntity) this.getBaseMetaTileEntity(), null);
+        }
         itemRenderPacket.resetHelperData();
-        if(displayStackWithAmount != null) {
+        if(displayStack != null) {
             NBTTagCompound itemNBT = new NBTTagCompound();
-            displayStackWithAmount.writeToNBT(itemNBT);
+            displayStack.writeToNBT(itemNBT);
             ByteBufUtils.writeTag(itemRenderPacket.customdata, itemNBT);
+            itemRenderPacket.addData(count);
         }
         itemRenderPacket.sendToAllAround(16);
     }
@@ -230,11 +236,13 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
             NBTTagCompound tag = ByteBufUtils.readTag(customdata.customdata);
             if (tag != null && !tag.hasNoTags()) {
                 displayItem =  ItemStack.loadItemStackFromNBT(tag);
+                displayItemCount = customdata.getDataInt();
                 return;
             }
         }
 
         displayItem = null;
+        displayItemCount = 0;
     }
 
     @Override
@@ -460,11 +468,21 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
                 }
             }
 
-            boolean sameStackSize = displayItemCache == null ? stack == null : displayItemCache.stackSize == count;
-            if(!GTUtility.areStacksEqual(stack, displayItemCache) || !sameStackSize) {
-                sendRenderUpdatePacket(stack);
+            boolean sameStack = displayItemCache == null ? stack == null : GTUtility.areStacksEqual(stack, displayItemCache);
+            boolean sameStackSize = displayItemCache == null ? stack == null : displayCountCache == count;
+            if(!sameStack || !sameStackSize
+                || aTimer % 20 == 0) { //We can't send DescriptionPacket from MTE yet
+                if(stack != null) {
+                    sendRenderUpdatePacket(stack, count);
+                    displayItemCache = stack;
+                    displayCountCache = count;
+                }
+                else {
+                    sendRenderUpdatePacket(null, 0);
+                    displayItemCache = null;
+                    displayCountCache = 0;
+                }
             }
-            displayItemCache = stack;
         }
     }
 
@@ -565,7 +583,6 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
         if (aNBT.hasKey("mItemCount")) setItemCount(aNBT.getInteger("mItemCount"));
         if (aNBT.hasKey("mItemStack"))
             setItemStack(ItemStack.loadItemStackFromNBT((NBTTagCompound) aNBT.getTag("mItemStack")));
-        sendRenderUpdatePacket(getItemStack());
         mVoidOverflow = aNBT.getBoolean("mVoidOverflow");
         mDisableFilter = aNBT.getBoolean("mDisableFilter");
         mOutputItem = aNBT.getBoolean("mOutputItem");
