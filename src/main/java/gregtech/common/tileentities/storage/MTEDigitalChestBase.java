@@ -83,7 +83,7 @@ import mcp.mobius.waila.api.IWailaDataAccessor;
 public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
     implements IMEMonitor<IAEItemStack>, IMEAwareItemInventory, IAddUIWidgets, IItemLockable, ITESRProvider, CustomTileEntityPacketHandler {
 
-    public boolean mOutputItem = false, mLockItem = false, mAllowInputFromOutputSide = true;
+    public boolean mOutputItem = false, mLockItem = false, mAllowInputFromOutputSide = false;
     protected boolean mVoidOverflow = false;
     protected boolean mVoidFull = false;
     protected boolean mDisableFilter;
@@ -545,7 +545,12 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
         if (aNBT.hasKey("lockedItem")) {
             lockedItem = ItemStack.loadItemStackFromNBT(aNBT.getCompoundTag("lockedKey"));
         }
-        mAllowInputFromOutputSide = aNBT.getBoolean("mAllowInputFromOutputSide");
+        if(aNBT.hasKey("mAllowInputFromOutputSide")) {
+            mAllowInputFromOutputSide = aNBT.getBoolean("mAllowInputFromOutputSide");
+        }
+        else {
+            mAllowInputFromOutputSide = true; //previous version has no output side
+        }
         mVoidFull = aNBT.getBoolean("mVoidFull");
     }
 
