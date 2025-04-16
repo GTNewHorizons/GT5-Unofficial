@@ -2,6 +2,7 @@ package gregtech.common.tileentities.storage;
 
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 import static gregtech.api.util.GTUtility.moveMultipleItemStacks;
+import static net.minecraftforge.common.util.ForgeDirection.*;
 
 import java.util.List;
 
@@ -83,7 +84,9 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
     protected boolean mVoidOverflow = false;
     protected boolean mVoidFull = false;
     protected boolean mDisableFilter;
+    public boolean mFacingHasBeenUpdated = false;
     private final MEItemInventoryHandler<?> meInventoryHandler = new MEItemInventoryHandler<>(this);
+    public ForgeDirection mMainFacing = UNKNOWN;
     protected ItemStack lockedItem = null;
     private ItemStack displayItemCache = null;
     private int displayCountCache = 0;
@@ -188,6 +191,37 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
             displayItemCount = 0;
             displayItem = null;
         }
+    }
+
+    @Override
+    public void onValueUpdate(byte aValue) {
+        mMainFacing = ForgeDirection.getOrientation(aValue);
+    }
+
+    @Override
+    public byte getUpdateData() {
+        return (byte) mMainFacing.ordinal();
+    }
+
+    @Override
+    public void onFacingChange() {
+        super.onFacingChange();
+
+        // Set up the correct facing (front towards player, output opposite) client-side before the server packet
+        // arrives
+        if (mMainFacing == UNKNOWN) {
+            IGregTechTileEntity te = getBaseMetaTileEntity();
+            if (te != null && te.getWorld().isRemote) {
+                mMainFacing = te.getFrontFacing();
+                te.setFrontFacing(te.getBackFacing());
+            }
+        }
+    }
+
+    @Override
+    public void initDefaultModes(NBTTagCompound aNBT) {
+        super.initDefaultModes(aNBT);
+        mMainFacing = ForgeDirection.UNKNOWN;
     }
 
     @Override
@@ -344,6 +378,8 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTimer) {
 
         if (getBaseMetaTileEntity().isServerSide()) {
+            doDisplayThings();
+
             if ((getItemCount() <= 0) || mVoidFull) {
                 if (getLockedItem() == null || (getLockedItem() != null && getItemStack() != null
                     && !getItemStack().isItemEqual(getLockedItem()))) {
@@ -393,13 +429,13 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
 
             if (mOutputItem && mInventory[1] != null && (aTimer % 20 == 0)) {
                 final IInventory tTileEntity = aBaseMetaTileEntity
-                    .getIInventoryAtSide(aBaseMetaTileEntity.getFrontFacing());
+                    .getIInventoryAtSide(getBaseMetaTileEntity().getFrontFacing());
                 if (tTileEntity != null) {
                     moveMultipleItemStacks(
                         aBaseMetaTileEntity,
                         tTileEntity,
-                        aBaseMetaTileEntity.getFrontFacing(),
-                        aBaseMetaTileEntity.getBackFacing(),
+                        getBaseMetaTileEntity().getFrontFacing(),
+                        getBaseMetaTileEntity().getBackFacing(),
                         null,
                         false,
                         (byte) 64,
@@ -426,6 +462,20 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
                 }
                 getBaseMetaTileEntity().issueTileUpdate();
             }
+        }
+    }
+
+    protected boolean isValidMainFacing(ForgeDirection side) {
+        return (side.flag & UNKNOWN.flag) == 0;
+    }
+
+    protected void doDisplayThings() {
+        if (!isValidMainFacing(mMainFacing) && isValidMainFacing(getBaseMetaTileEntity().getFrontFacing())) {
+            mMainFacing = getBaseMetaTileEntity().getFrontFacing();
+        }
+        if (isValidMainFacing(mMainFacing) && !mFacingHasBeenUpdated) {
+            mFacingHasBeenUpdated = true;
+            getBaseMetaTileEntity().setFrontFacing(getBaseMetaTileEntity().getBackFacing());
         }
     }
 
@@ -502,12 +552,19 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
 
     @Override
     public void setItemNBT(NBTTagCompound aNBT) {
-        saveNBTData(aNBT);
+        savePersistentNBTData(aNBT);
         super.setItemNBT(aNBT);
     }
 
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
+        savePersistentNBTData(aNBT);
+
+        aNBT.setBoolean("mFacingHasBeenUpdated", mFacingHasBeenUpdated);
+        aNBT.setInteger("mMainFacing", mMainFacing.ordinal());
+    }
+
+    private void savePersistentNBTData(NBTTagCompound aNBT) {
         aNBT.setInteger("mItemCount", getItemCount());
         if (getItemStack() != null) aNBT.setTag("mItemStack", getItemStack().writeToNBT(new NBTTagCompound()));
         aNBT.setBoolean("mVoidOverflow", mVoidOverflow);
@@ -540,6 +597,8 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
             mAllowInputFromOutputSide = true; //previous version has no output side
         }
         mVoidFull = aNBT.getBoolean("mVoidFull");
+        mMainFacing = ForgeDirection.getOrientation(aNBT.getInteger("mMainFacing"));
+        mFacingHasBeenUpdated = aNBT.getBoolean("mFacingHasBeenUpdated");
     }
 
     @Override

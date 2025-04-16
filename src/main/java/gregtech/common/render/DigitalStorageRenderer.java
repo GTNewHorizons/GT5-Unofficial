@@ -71,15 +71,14 @@ public class DigitalStorageRenderer {
 
     public static void renderMachineInventory(MTEDigitalChestBase mte, @Nullable IBlockAccess aWorld, int aX, int aY,
         int aZ, Block aBlock, RenderBlocks aRenderer) {
-        mte.getBaseMetaTileEntity()
-            .setFrontFacing(ForgeDirection.WEST);
+        mte.mMainFacing = WEST;
+        mte.getBaseMetaTileEntity().setFrontFacing(EAST);
         renderMachine(mte, aWorld, aX, aY, aZ, aBlock, aRenderer);
     }
 
     public static void renderMachine(MTEDigitalChestBase mte, @Nullable IBlockAccess aWorld, int aX, int aY, int aZ,
         Block aBlock, RenderBlocks aRenderer) {
-        ForgeDirection frontFacing = mte.getBaseMetaTileEntity()
-            .getFrontFacing();
+        ForgeDirection frontFacing = mte.mMainFacing;
         IIcon casingIcon = MACHINECASINGS_SIDE[mte.mTier].getIcon();
 
         CCRenderState state = CCRenderState.instance();
@@ -157,6 +156,8 @@ public class DigitalStorageRenderer {
 
             }
         }
+        int outputFacing = mte.getBaseMetaTileEntity().getFrontFacing().ordinal();
+        textureArray[outputFacing] = new ITexture[] { TextureFactory.of(OVERLAY_PIPE_OUT) };
         GTRendererBlock.INSTANCE.renderStandardBlock(aWorld, aX, aY, aZ, aBlock, aRenderer, textureArray);
     }
 
@@ -230,7 +231,7 @@ public class DigitalStorageRenderer {
         }
 
          OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 240, 240);
-         renderAmountText(x, y, z, mte.displayItemCount, mte.getBaseMetaTileEntity().getFrontFacing());
+         renderAmountText(x, y, z, mte.displayItemCount, mte.mMainFacing);
          OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, lastBrightnessX, lastBrightnessY);
     }
 
