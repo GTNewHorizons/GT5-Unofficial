@@ -126,6 +126,16 @@ public class DigitalStorageRenderer {
             isDrawing = false;
             Tessellator.instance.draw();
         }
+
+        if(frontFacing != UP) {
+            ITexture[][] textureArray = new ITexture[6][];
+            textureArray[UP.ordinal()] = new ITexture[] { TextureFactory.of(OVERLAY_SCHEST),
+                TextureFactory.builder()
+                    .addIcon(OVERLAY_SCHEST_GLOW)
+                    .glow()
+                    .build() };
+            GTRendererBlock.INSTANCE.renderStandardBlock(aWorld, aX, aY, aZ, aBlock, aRenderer, textureArray);
+        }
     }
 
     private static void renderFace(CCRenderState state, ForgeDirection face, Cuboid6 bounds,
