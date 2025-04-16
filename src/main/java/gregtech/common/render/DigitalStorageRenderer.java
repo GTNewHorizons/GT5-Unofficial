@@ -3,8 +3,10 @@ package gregtech.common.render;
 import static gregtech.api.enums.Textures.BlockIcons.*;
 import static net.minecraftforge.common.util.ForgeDirection.*;
 
+import java.util.Arrays;
 import java.util.EnumMap;
 
+import gregtech.api.metatileentity.CoverableTileEntity;
 import gregtech.api.util.GTUtility;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
@@ -14,7 +16,6 @@ import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.item.EntityItem;
-import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
@@ -33,7 +34,6 @@ import codechicken.lib.vec.Cuboid6;
 import codechicken.lib.vec.Translation;
 import cofh.lib.util.helpers.MathHelper;
 import gregtech.api.enums.Dyes;
-import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtilityClient;
@@ -47,21 +47,27 @@ public class DigitalStorageRenderer {
     private static final EnumMap<ForgeDirection, Cuboid6> boxFacingMap = new EnumMap<>(ForgeDirection.class);
 
     private static final FontRenderer fontRenderer = Minecraft.getMinecraft().fontRenderer;
+    /**
+     * prevent z-fighting with GT covers
+     */
+    private static final double coverDif = 0.001d;
 
+    //spotless: off
     static {
         boxFacingMap
-            .put(ForgeDirection.UP, new Cuboid6(0 / 16.0, 14 / 16.0, 0 / 16.0, 16 / 16.0, 16 / 16.0, 16 / 16.0));
+            .put(ForgeDirection.UP, new Cuboid6(0 / 16.0, 14 / 16.0, 0 / 16.0, 16 / 16.0, 16 / 16.0, 16 / 16.0).expand(-coverDif));
         boxFacingMap
-            .put(ForgeDirection.DOWN, new Cuboid6(0 / 16.0, 0 / 16.0, 0 / 16.0, 16 / 16.0, 2 / 16.0, 16 / 16.0));
+            .put(ForgeDirection.DOWN, new Cuboid6(0 / 16.0, 0 / 16.0, 0 / 16.0, 16 / 16.0, 2 / 16.0, 16 / 16.0).expand(-coverDif));
         boxFacingMap
-            .put(ForgeDirection.WEST, new Cuboid6(0 / 16.0, 0 / 16.0, 0 / 16.0, 2 / 16.0, 16 / 16.0, 16 / 16.0));
+            .put(ForgeDirection.WEST, new Cuboid6(0 / 16.0, 0 / 16.0, 0 / 16.0, 2 / 16.0, 16 / 16.0, 16 / 16.0).expand(-coverDif));
         boxFacingMap
-            .put(ForgeDirection.EAST, new Cuboid6(14 / 16.0, 0 / 16.0, 0 / 16.0, 16 / 16.0, 16 / 16.0, 16 / 16.0));
+            .put(ForgeDirection.EAST, new Cuboid6(14 / 16.0, 0 / 16.0, 0 / 16.0, 16 / 16.0, 16 / 16.0, 16 / 16.0).expand(-coverDif));
         boxFacingMap
-            .put(ForgeDirection.SOUTH, new Cuboid6(0 / 16.0, 0 / 16.0, 14 / 16.0, 16 / 16.0, 16 / 16.0, 16 / 16.0));
+            .put(ForgeDirection.SOUTH, new Cuboid6(0 / 16.0, 0 / 16.0, 14 / 16.0, 16 / 16.0, 16 / 16.0, 16 / 16.0).expand(-coverDif));
         boxFacingMap
-            .put(ForgeDirection.NORTH, new Cuboid6(0 / 16.0, 0 / 16.0, 0 / 16.0, 16 / 16.0, 16 / 16.0, 2 / 16.0));
+            .put(ForgeDirection.NORTH, new Cuboid6(0 / 16.0, 0 / 16.0, 0 / 16.0, 16 / 16.0, 16 / 16.0, 2 / 16.0).expand(-coverDif));
     }
+    //spotless: on
 
     public static void renderMachineInventory(MTEDigitalChestBase mte, @Nullable IBlockAccess aWorld, int aX, int aY,
         int aZ, Block aBlock, RenderBlocks aRenderer) {
@@ -127,15 +133,31 @@ public class DigitalStorageRenderer {
             Tessellator.instance.draw();
         }
 
+        //BaseMetatileEntity#getTexture
+        ITexture[][] textureArray = new ITexture[6][];
         if(frontFacing != UP) {
-            ITexture[][] textureArray = new ITexture[6][];
             textureArray[UP.ordinal()] = new ITexture[] { TextureFactory.of(OVERLAY_SCHEST),
                 TextureFactory.builder()
                     .addIcon(OVERLAY_SCHEST_GLOW)
                     .glow()
                     .build() };
-            GTRendererBlock.INSTANCE.renderStandardBlock(aWorld, aX, aY, aZ, aBlock, aRenderer, textureArray);
         }
+        for (int i = 0; i < 6; i++) {
+            final ITexture coverTexture = ((CoverableTileEntity) mte.getBaseMetaTileEntity()).getCoverTexture(ForgeDirection.getOrientation(i));
+            final ITexture[] textureCovered;
+            if (coverTexture != null) {
+                if(textureArray[i] != null) {
+                    textureCovered = Arrays.copyOf(textureArray[i], textureArray[i].length + 1);
+                    textureCovered[textureArray[i].length] = coverTexture;
+                    textureArray[i] = textureCovered;
+                }
+                else {
+                    textureArray[i] = new ITexture[]{ coverTexture };
+                }
+
+            }
+        }
+        GTRendererBlock.INSTANCE.renderStandardBlock(aWorld, aX, aY, aZ, aBlock, aRenderer, textureArray);
     }
 
     private static void renderFace(CCRenderState state, ForgeDirection face, Cuboid6 bounds,
