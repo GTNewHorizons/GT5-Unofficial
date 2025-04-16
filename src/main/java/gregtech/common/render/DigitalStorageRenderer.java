@@ -5,12 +5,24 @@ import static net.minecraftforge.common.util.ForgeDirection.*;
 
 import java.util.EnumMap;
 
+import binnie.genetics.item.ItemRegistry;
 import codechicken.lib.colour.ColourRGBA;
-import codechicken.lib.render.ColourMultiplier;
+import cofh.lib.util.helpers.MathHelper;
+import com.cleanroommc.modularui.utils.GlStateManager;
+import gregtech.api.metatileentity.MetaTileEntity;
 import net.minecraft.block.Block;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.entity.RenderItem;
+import net.minecraft.client.renderer.entity.RenderManager;
+import net.minecraft.entity.item.EntityItem;
+import net.minecraft.init.Items;
+import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.Nullable;
@@ -25,11 +37,10 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtilityClient;
-import gregtech.api.util.LightingHelper;
 import gregtech.common.tileentities.storage.MTEDigitalChestBase;
 
-// Backported from GTCEu
-public class DigitalChestRenderer {
+// Backported from GTCEu with lots of tweaks
+public class DigitalStorageRenderer {
 
     private static final BlockRenderer.BlockFace blockFace = new BlockRenderer.BlockFace();
 
@@ -70,6 +81,7 @@ public class DigitalChestRenderer {
             Tessellator.instance.startDrawingQuads();
         }
 
+        //spotless:off
         // front frame
         for (var boxFacing : boxFacingMap.keySet()) {
             // do not render the box at the front face when "facing" is "frontFacing"
@@ -103,6 +115,7 @@ public class DigitalChestRenderer {
             renderFace(state, frontFacing, boxFacingMap.get(facing), aWorld, aX, aY, aZ, aBlock, aRenderer, mte);
             renderFace(state, frontFacing, boxFacingMap.get(facing.getOpposite()), aWorld, aX, aY, aZ, aBlock, aRenderer, mte);
         }
+        //spotless:on
 
         if (aRenderer.useInventoryTint && isDrawing) {
             // Draw if we initiated the drawing
@@ -155,5 +168,53 @@ public class DigitalChestRenderer {
             default:
                 throw new IllegalArgumentException("Can't rotate Y on " + dir);
         }
+    }
+
+
+    public static void renderChestStack(MTEDigitalChestBase mte, double x, double y, double z, float timeSinceLastTick) {
+//        ItemStack content = mte.getItemStack();
+        ItemStack content = new ItemStack(Items.baked_potato, 1);
+//        if(content == null) {
+//            return;
+//        }
+        //TODO: config fancyrenderer
+
+        float lastBrightnessX = OpenGlHelper.lastBrightnessX;
+        float lastBrightnessY = OpenGlHelper.lastBrightnessY;
+        World world = mte.getBaseMetaTileEntity().getWorld();
+//        setLightingCorrectly(world, machine.getPos()); //TODO
+
+        if (canRender(x, y, z, 8 *
+            MathHelper.clamp((double) Minecraft.getMinecraft().gameSettings.renderDistanceChunks / 8, 1.0, 2.5))) {
+            float tick = world.getTotalWorldTime() + timeSinceLastTick;
+            EntityItem entityItem = new EntityItem(world, 0, 0, 0, content);
+            entityItem.hoverStart = 0f;
+            GlStateManager.pushMatrix();
+            GlStateManager.translate(x, y, z);
+            GlStateManager.translate(0.5D, 0.25D, 0.5D);
+            GlStateManager.rotate(tick * (float) Math.PI * 2 / 40, 0, 1, 0);
+            GlStateManager.scale(1.5f, 1.5f, 1.5f);
+            RenderManager.instance.renderEntityWithPosYaw(entityItem, 0, 0, 0, 0, 0);
+            GlStateManager.popMatrix();
+        }
+
+//        OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 240, 240);
+//        renderAmountText(x, y, z, count, frontFacing);
+//        OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, lastBrightnessX, lastBrightnessY);
+    }
+
+    /**
+     * Takes in the difference in x, y, and z from the camera to the rendering TE and
+     * calculates the squared distance and checks if it's within the range squared
+     *
+     * @param x     the difference in x from entity to this rendering TE
+     * @param y     the difference in y from entity to this rendering TE
+     * @param z     the difference in z from entity to this rendering TE
+     * @param range distance needed to be rendered
+     * @return true if the camera is within the given range, otherwise false
+     */
+    public static boolean canRender(double x, double y, double z, double range) {
+        double distance = (x * x) + (y * y) + (z * z);
+        return distance < range * range;
     }
 }

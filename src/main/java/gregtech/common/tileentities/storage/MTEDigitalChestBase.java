@@ -1,6 +1,5 @@
 package gregtech.common.tileentities.storage;
 
-import static gregtech.api.enums.Textures.BlockIcons.*;
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 import static gregtech.api.util.GTUtility.moveMultipleItemStacks;
 
@@ -63,20 +62,21 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IItemLockable;
 import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.interfaces.tileentity.ITESRProvider;
 import gregtech.api.metatileentity.implementations.MTETieredMachineBlock;
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.modularui2.GTGuis;
 import gregtech.api.modularui2.GTWidgetThemes;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTUtility;
-import gregtech.common.render.DigitalChestRenderer;
+import gregtech.common.render.DigitalStorageRenderer;
 import gregtech.crossmod.ae2.IMEAwareItemInventory;
 import gregtech.crossmod.ae2.MEItemInventoryHandler;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
 public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
-    implements IMEMonitor<IAEItemStack>, IMEAwareItemInventory, IAddUIWidgets, IItemLockable {
+    implements IMEMonitor<IAEItemStack>, IMEAwareItemInventory, IAddUIWidgets, IItemLockable, ITESRProvider {
 
     public boolean mOutputItem = false, mLockItem = false, mAllowInputFromOutputSide = true;
     protected boolean mVoidOverflow = false;
@@ -188,14 +188,19 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
 
     @Override
     public boolean renderInWorld(IBlockAccess world, int x, int y, int z, Block block, RenderBlocks renderer) {
-        DigitalChestRenderer.renderMachine(this, world, x, y, z, block, renderer);
+        DigitalStorageRenderer.renderMachine(this, world, x, y, z, block, renderer);
         return true;
     }
 
     @Override
     public boolean renderInInventory(Block block, int meta, RenderBlocks renderer) {
-        DigitalChestRenderer.renderMachineInventory(this, null, 0, 0, 0, block, renderer);
+        DigitalStorageRenderer.renderMachineInventory(this, null, 0, 0, 0, block, renderer);
         return true;
+    }
+
+    @Override
+    public void renderTileEntityAt(TileEntity tile, double x, double y, double z, float timeSinceLastTick) {
+        DigitalStorageRenderer.renderChestStack(this, x, y, z, timeSinceLastTick);
     }
 
     @Override
