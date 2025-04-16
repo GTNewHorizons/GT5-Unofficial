@@ -1,8 +1,10 @@
 package gregtech.common.blocks;
 
 import static gregtech.GTMod.GT_FML_LOGGER;
-import static gregtech.api.util.GTUtility.formatStringSafe;
+import static gregtech.api.util.MultiblockTooltipBuilder.TAB;
+import static org.apache.commons.lang3.StringUtils.removeStart;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Nonnull;
@@ -25,12 +27,9 @@ import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidContainerItem;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.Materials;
-import gregtech.api.interfaces.ISecondaryDescribable;
 import gregtech.api.interfaces.metatileentity.IConnectable;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -40,8 +39,8 @@ import gregtech.api.metatileentity.implementations.MTEFluidPipe;
 import gregtech.api.metatileentity.implementations.MTEFrame;
 import gregtech.api.metatileentity.implementations.MTEItemPipe;
 import gregtech.api.util.GTItsNotMyFaultException;
-import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTUtility;
+import gregtech.api.util.StringUtils;
 import gregtech.common.tileentities.storage.MTEDigitalTankBase;
 import gregtech.common.tileentities.storage.MTESuperChest;
 import gregtech.common.tileentities.storage.MTESuperTank;
@@ -73,18 +72,9 @@ public class ItemMachines extends ItemBlock implements IFluidContainerItem {
 
             if (GregTechAPI.METATILEENTITIES[tDamage] != null) {
                 final IGregTechTileEntity tTileEntity = GregTechAPI.METATILEENTITIES[tDamage].getBaseMetaTileEntity();
-                if (!GregTechAPI.sPostloadFinished
-                    && tTileEntity.getMetaTileEntity() instanceof ISecondaryDescribable) {
-                    final String[] tSecondaryDescription = ((ISecondaryDescribable) tTileEntity.getMetaTileEntity())
-                        .getSecondaryDescription();
-                    addDescription(null, tSecondaryDescription, tDamage, "_Secondary");
-                }
+                final IMetaTileEntity tMetaTileEntity = tTileEntity.getMetaTileEntity();
                 {
-                    final IMetaTileEntity tMetaTileEntity = tTileEntity.getMetaTileEntity();
-                    final String tSuffix = (tMetaTileEntity instanceof ISecondaryDescribable
-                        && ((ISecondaryDescribable) tMetaTileEntity).isDisplaySecondaryDescription()) ? "_Secondary"
-                            : "";
-                    addDescription(aList, tTileEntity.getDescription(), tDamage, tSuffix);
+                    addDescription(aList, tMetaTileEntity.getDescription());
                     tMetaTileEntity.addAdditionalTooltipInformation(aStack, aList);
                 }
                 if (tTileEntity.getEUCapacity() > 0L) {
@@ -145,54 +135,52 @@ public class ItemMachines extends ItemBlock implements IFluidContainerItem {
         }
     }
 
-    private void addDescription(@Nullable List<String> aList, @Nullable String[] aDescription, int aDamage,
-        String aSuffix) {
+    private void addDescription(@Nullable List<String> aList, @Nullable String[] aDescription) {
         if (aDescription == null) return;
-        for (int i = 0, tLength = aDescription.length; i < tLength; i++) {
-            String tDescLine = aDescription[i];
+        for (String tDescLine : aDescription) {
             if (!GTUtility.isStringValid(tDescLine)) continue;
 
-            String tKey = String.format("TileEntity_DESCRIPTION_%05d%s_Index_%02d", aDamage, aSuffix, i);
-            if (tDescLine.contains("%%%")) {
-                final String[] tSplitStrings = tDescLine.split("%%%");
-                final StringBuilder tBuffer = new StringBuilder();
-                final String[] tRep = new String[tSplitStrings.length / 2];
-                for (int j = 0; j < tSplitStrings.length; j++) if (j % 2 == 0) tBuffer.append(tSplitStrings[j]);
-                else {
-                    tBuffer.append("%s");
-                    tRep[j / 2] = tSplitStrings[j];
+            if (tDescLine.contains(GTUtility.LOC_SEPARATOR)) {
+                final String[] tSplitStrings = tDescLine.split(GTUtility.LOC_SEPARATOR);
+                final String tKey = tSplitStrings[0];
+
+                List<Object> tParamsLoc = new ArrayList<>();
+                for (int j = 1; j < tSplitStrings.length; j++) {
+                    String param = tSplitStrings[j];
+                    String translated = StatCollector.translateToLocal(param);
+                    tParamsLoc.add(translated.equals(param) ? param : translated);
                 }
-                final String tTranslated = formatStringSafe(
-                    GTLanguageManager.addStringLocalization(tKey, tBuffer.toString()),
-                    (Object[]) tRep);
+
+                final String tTranslated = (tKey.startsWith(TAB) ? TAB : "")
+                    + StatCollector.translateToLocalFormatted(removeStart(tKey, TAB), tParamsLoc.toArray());
                 if (aList != null) aList.add(tTranslated);
+                applySeparatorLine(aList);
             } else {
-                String tTranslated = GTLanguageManager.addStringLocalization(tKey, tDescLine);
+                String tTranslated = (tDescLine.startsWith(TAB) ? TAB : "")
+                    + StatCollector.translateToLocal(removeStart(tDescLine, TAB));
                 if (aList != null) aList.add(tTranslated.isEmpty() ? tDescLine : tTranslated);
+                applySeparatorLine(aList);
             }
+
         }
     }
 
-    @SideOnly(Side.CLIENT)
-    public void registerDescription(int aDamage) {
-        if (aDamage >= GregTechAPI.METATILEENTITIES.length) return;
-        if (GregTechAPI.METATILEENTITIES[aDamage] != null) {
-            final IMetaTileEntity tMetaTileEntity = GregTechAPI.METATILEENTITIES[aDamage].getBaseMetaTileEntity()
-                .getMetaTileEntity();
-            if (tMetaTileEntity instanceof ISecondaryDescribable) {
-                final String[] tSecondaryDescription = ((ISecondaryDescribable) tMetaTileEntity)
-                    .getSecondaryDescription();
-                addDescription(null, tSecondaryDescription, aDamage, "_Secondary");
-            }
-            addDescription(null, tMetaTileEntity.getDescription(), aDamage, "");
-        }
-    }
-
-    @Override
-    public boolean onItemUseFirst(ItemStack stack, EntityPlayer player, World world, int x, int y, int z,
-        int ordinalSide, float hitX, float hitY, float hitZ) {
-        return false;
-    }
+    /*
+     * @SideOnly(Side.CLIENT)
+     * public void registerDescription(int aDamage) {
+     * if (aDamage >= GregTechAPI.METATILEENTITIES.length) return;
+     * if (GregTechAPI.METATILEENTITIES[aDamage] != null) {
+     * final IMetaTileEntity tMetaTileEntity = GregTechAPI.METATILEENTITIES[aDamage].getBaseMetaTileEntity()
+     * .getMetaTileEntity();
+     * if (tMetaTileEntity instanceof ISecondaryDescribable) {
+     * final String[] tSecondaryDescription = ((ISecondaryDescribable) tMetaTileEntity)
+     * .getSecondaryDescription();
+     * addDescription(null, tSecondaryDescription);
+     * }
+     * addDescription(null, tMetaTileEntity.getDescription());
+     * }
+     * }
+     */
 
     @Override
     public String getUnlocalizedName(ItemStack aStack) {
@@ -420,5 +408,25 @@ public class ItemMachines extends ItemBlock implements IFluidContainerItem {
             }
         }
         return null;
+    }
+
+    public static void applySeparatorLine(List<String> tooltips) {
+        if (tooltips == null || tooltips.isEmpty()) return;
+
+        int maxLength = tooltips.stream()
+            .filter(s -> !s.contains("%SEPARATORLINE%"))
+            .mapToInt(String::length)
+            .max()
+            .orElse(0);
+
+        String separatorLine = StringUtils.getRepetitionOf('-', maxLength);
+
+        for (int i = 0; i < tooltips.size(); i++) {
+            String line = tooltips.get(i);
+            if (line.contains("%SEPARATORLINE%")) {
+                String replacedLine = line.replace("%SEPARATORLINE%", separatorLine);
+                tooltips.set(i, replacedLine);
+            }
+        }
     }
 }

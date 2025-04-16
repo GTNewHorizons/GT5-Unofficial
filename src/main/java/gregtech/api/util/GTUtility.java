@@ -4277,6 +4277,8 @@ public class GTUtility {
         "bartworks.system.material.BWMetaGeneratedSmallOres",
         "gtPlusPlus.core.block.base.BlockBaseOre");
 
+    public static final String LOC_SEPARATOR = "\u001F";
+
     public static boolean isOre(Block aBlock, int aMeta) {
         return (aBlock instanceof BlockOresAbstract) || isOre(new ItemStack(aBlock, 1, aMeta))
             || ORE_BLOCK_CLASSES.contains(
