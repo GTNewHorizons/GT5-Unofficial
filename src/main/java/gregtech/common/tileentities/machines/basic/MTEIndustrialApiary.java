@@ -1467,7 +1467,9 @@ public class MTEIndustrialApiary extends MTEBasicMachine
         public ItemStack transferStackInSlot(EntityPlayer aPlayer, int aSlotIndex) {
             final Slot s = getSlot(aSlotIndex);
             if (s == null) return super.transferStackInSlot(aPlayer, aSlotIndex);
-            if (aSlotIndex >= playerInventorySlot) return super.transferStackInSlot(aPlayer, aSlotIndex);
+            if (aSlotIndex >= playerInventorySlot && aSlotIndex != playerInventorySlot + 2 + 4 + 9
+                && aSlotIndex != playerInventorySlot + 2 + 4 + 9 + 1)
+                return super.transferStackInSlot(aPlayer, aSlotIndex);
             final ItemStack aStack = s.getStack();
             if (aStack == null) return super.transferStackInSlot(aPlayer, aSlotIndex);
             if (!GTApiaryUpgrade.isUpgrade(aStack)) return super.transferStackInSlot(aPlayer, aSlotIndex);
