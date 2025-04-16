@@ -16,6 +16,7 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FUSION1_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_RAINBOWSCREEN_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.casingTexturePages;
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
+import static gregtech.api.util.GTStructureUtility.activeCoils;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.ofCoil;
 import static gregtech.api.util.GTUtility.validMTEList;
@@ -548,7 +549,7 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
     private static final IStructureDefinition<MTEPlasmaForge> STRUCTURE_DEFINITION = StructureDefinition
         .<MTEPlasmaForge>builder()
         .addShape(STRUCTURE_PIECE_MAIN, structure_string)
-        .addElement('C', ofCoil(MTEPlasmaForge::setCoilLevel, MTEPlasmaForge::getCoilLevel))
+        .addElement('C', activeCoils(ofCoil(MTEPlasmaForge::setCoilLevel, MTEPlasmaForge::getCoilLevel)))
         .addElement(
             'b',
             buildHatchAdder(MTEPlasmaForge.class)
@@ -954,7 +955,9 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
         return new String[] {
             EnumChatFormatting.STRIKETHROUGH + "------------"
                 + EnumChatFormatting.RESET
-                + " Critical Information "
+                + " "
+                + StatCollector.translateToLocal("GT5U.infodata.critical_info")
+                + " "
                 + EnumChatFormatting.STRIKETHROUGH
                 + "------------",
             StatCollector.translateToLocal("GT5U.multiblock.Progress") + ": "
@@ -999,15 +1002,19 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
                 + GTUtility.formatNumbers(mHeatingCapacity)
                 + EnumChatFormatting.RESET
                 + " K",
-            "Ticks run: " + EnumChatFormatting.GREEN
-                + GTUtility.formatNumbers(running_time)
-                + EnumChatFormatting.RESET
-                + ", Fuel Discount: "
-                + EnumChatFormatting.RED
-                + GTUtility.formatNumbers(100 * (1 - discount))
-                + EnumChatFormatting.RESET
-                + "%",
-            "Convergence: " + (convergence ? EnumChatFormatting.GREEN + "Active" : EnumChatFormatting.RED + "Inactive"),
+            StatCollector.translateToLocalFormatted(
+                "GT5U.infodata.plasma_forge.ticks_run_fuel_discount",
+                EnumChatFormatting.GREEN + GTUtility.formatNumbers(running_time) + EnumChatFormatting.RESET,
+                EnumChatFormatting.RED + GTUtility.formatNumbers(100 * (1 - discount))
+                    + EnumChatFormatting.RESET
+                    + "%"),
+            StatCollector.translateToLocalFormatted(
+                "GT5U.infodata.plasma_forge.convergence",
+                (convergence
+                    ? EnumChatFormatting.GREEN
+                        + StatCollector.translateToLocal("GT5U.infodata.plasma_forge.convergence.active")
+                    : EnumChatFormatting.RED
+                        + StatCollector.translateToLocal("GT5U.infodata.plasma_forge.convergence.inactive"))),
             EnumChatFormatting.STRIKETHROUGH + "-----------------------------------------" };
     }
 

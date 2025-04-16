@@ -1054,7 +1054,7 @@ fog.button.magmattermode.tooltip.03=Magmatter Mode locked, missing upgrade
 fog.button.battery.tooltip.01=Toggle Battery Charging
 fog.button.battery.tooltip.02=Right click to open configuration menu (if unlocked)
 fog.button.voltageconfig.tooltip.01=Open voltage config
-fog.button.voltageconfig.tooltip.02=Voltage config locked, missing upgrade
+fog.button.voltageconfig.tooltip.02=Voltage config locked, requires The Boundless Flow (upgrade)
 fog.button.structurecheck.tooltip=Refresh module connection status
 fog.button.milestones.tooltip=Milestone Overview
 fog.button.materialrequirements.tooltip=Upgrade needs additional materials
@@ -1906,3 +1906,88 @@ GT5U.gui.config.general.debug=Debug
 GT5U.gui.config.general.features=Features
 GT5U.gui.config.general.teslatweaks=Tesla Tweaks
 GT5U.gui.config.general.visual=Visual
+
+tt.eoh.fancy_names.crude=Crude
+tt.eoh.fancy_names.primitive=Primitive
+tt.eoh.fancy_names.stable=Stable
+tt.eoh.fancy_names.Advanced=Advanced
+tt.eoh.fancy_names.superb=Superb
+tt.eoh.fancy_names.exotic=Exotic
+tt.eoh.fancy_names.perfect=Perfect
+tt.eoh.fancy_names.tipler=Tipler
+tt.eoh.fancy_names.gallifreyan=Gallifreyan
+tt.eoh.fancy_names.unknown=Unknown
+
+tt.godforge.casings.Error.Tooltip=Error, report to GTNH team
+tt.godforge.casings.0.Tooltip.0=Shielded by the event horizon of a singularity
+tt.godforge.casings.0.Tooltip.1=Don't get too close...
+tt.godforge.casings.1.Tooltip.0=Designed to route stellar matter using spacetime distortion
+tt.godforge.casings.1.Tooltip.1=Reality Distortion
+tt.godforge.casings.2.Tooltip.0=Unaffected by gravitational forces
+tt.godforge.casings.2.Tooltip.1=Not even a black hole could tear it apart.
+tt.godforge.casings.3.Tooltip.0=Creates enormous magnetic fields capable of constraining entire stars
+tt.godforge.casings.3.Tooltip.1=It's super effective!
+tt.godforge.casings.4.Tooltip.0=Taps into streams of stellar matter to harness their heat energy
+tt.godforge.casings.4.Tooltip.1=Turn up the heat!
+tt.godforge.casings.5.Tooltip.0=Controls the flow of gravitons to manipulate gravity
+tt.godforge.casings.5.Tooltip.1=Exponential scaling past 800 Galaxies
+tt.godforge.casings.6.Tooltip.0=Controls the flow of gravitons to manipulate gravity
+tt.godforge.casings.6.Tooltip.1=Getting closer...
+tt.godforge.casings.7.Tooltip.0=Controls the flow of gravitons to manipulate gravity
+tt.godforge.casings.7.Tooltip.1=Gravity Central
+tt.godforge.casings.8.Tooltip.0=Transfers and stores extreme amounts of heat without any loss
+tt.godforge.casings.8.Tooltip.1=<<<Thermal<<<
+tt.godforge.casings.8.Tooltip.2=>>>Wave>>>
+
+tt.eoh.stability.tooltip=§b§lIncreases stability of spacetime field.
+tt.eoh.time_dilation.standard.tooltip=§b§lTime dilation in a box.
+tt.eoh.time_dilation.error.tooltip=§c§lError, report to GTNH team
+tt.eoh.spacetime.standard.tooltip.0=Supports an internal spacetime volume of up to %d km³.
+tt.eoh.spacetime.standard.tooltip.1=§b§lCapable of running recipes up to tier %d
+
+# Info data
+
+tt.infodata.multi.energy_hatches=Energy Hatches: %s EU / %s EU
+tt.infodata.multi.currently_generates=Currently generates: %s EU/t at %s A
+tt.infodata.multi.computation=Computation: %s / %s
+tt.infodata.multi.max_parallel=Max Parallel: %s
+tt.infodata.multi.multiplier.recipe_time=Recipe time multiplier: %s
+tt.infodata.multi.multiplier.energy=Energy multiplier: %s
+tt.infodata.multi.divisor.recipe_time.non_perfect_oc=Recipe time divisor per non-perfect OC: %s
+tt.infodata.multi.currently_using=Currently using: %s EU/t
+tt.infodata.multi.capacity.heat=Heat Capacity: %s
+tt.infodata.multi.capacity.heat.effective=Effective Heat Capacity: %s
+
+## Eye of Harmony
+tt.infodata.eoh.control_block_statistics=Control Block Statistics
+tt.infodata.eoh.spacetime_compression.grade=Spacetime Compression Field Grade: %s (%s)
+tt.infodata.eoh.spacetime_compression.grade.none=Spacetime Compression Field Grade: None
+tt.infodata.eoh.time_dilation.grade=Time Dilation Field Grade: %s (%s)
+tt.infodata.eoh.time_dilation.grade.none=Time Dilation Field Grade: None
+tt.infodata.eoh.stabilisation_grade=Stabilisation Field Grade: %s (%s)
+tt.infodata.eoh.stabilisation_grade.none=Stabilisation Field Grade: None
+tt.infodata.eoh.internal_storage=Internal Storage
+tt.infodata.eoh.astral_array_fabricators=Astral Array Fabricators
+tt.infodata.eoh.other_stats=Other Stats
+tt.infodata.eoh.success_chance=Recipe Success Chance: %s
+tt.infodata.eoh.recipe_yield=Recipe Yield: %s
+tt.infodata.eoh.effective_astral_array_fabricators=Effective Astral Array Fabricators: %s
+tt.infodata.eoh.total_parallel=Total Parallel: %s
+tt.infodata.eoh.eu_output=EU Output: %s EU
+tt.infodata.eoh.eu_input=EU Input: %s EU
+tt.infodata.eoh.avg_output=Average %s Output: %s L, %s L/s
+tt.infodata.eoh.estimated_eu=Estimated EU/t: %s EU/t
+
+## Quantum Computer
+tt.infodata.qc.wireless_mode.enabled=Wireless mode: §aenabled
+tt.infodata.qc.wireless_mode.disabled=Wireless mode: §cdisabled
+tt.infodata.qc.total_wireless_computation=Total wireless computation available: %s
+
+## Forge of gods
+tt.infodata.fog.rings=Number of Rings: %s
+tt.infodata.fog.upgrades.unlocked=Total Upgrades Unlocked: %s
+tt.infodata.fog.connected=Connected Modules: %s
+
+## Base factory pipe
+tt.infodata.pipe.active=Active.
+tt.infodata.pipe.inactive=Not active.

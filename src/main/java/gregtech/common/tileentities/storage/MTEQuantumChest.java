@@ -9,6 +9,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.util.StatCollector;
 
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -60,8 +61,8 @@ public class MTEQuantumChest extends MTEDigitalChestBase {
     }
 
     @Override
-    protected String chestName() {
-        return "Quantum Chest";
+    protected String localizedChestName() {
+        return StatCollector.translateToLocal("GT5U.infodata.quantum_chest.name");
     }
 
     @Override

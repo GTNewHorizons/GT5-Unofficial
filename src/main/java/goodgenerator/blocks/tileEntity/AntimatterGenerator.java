@@ -243,7 +243,8 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
-        return survivialBuildPiece(MAIN_NAME, stackSize, 17, 41, 0, elementBudget, env, false, true);
+        int realBudget = elementBudget >= 200 ? elementBudget : Math.min(200, elementBudget * 5);
+        return survivialBuildPiece(MAIN_NAME, stackSize, 17, 41, 0, realBudget, env, false, true);
     }
 
     @Override
@@ -412,7 +413,10 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase
         if (storedEnergy < 0) storedEnergy = Long.MAX_VALUE;
         if (maxEnergy < 0) maxEnergy = Long.MAX_VALUE;
 
-        return new String[] { EnumChatFormatting.BLUE + "Antimatter Forge " + EnumChatFormatting.GRAY,
+        return new String[] {
+            EnumChatFormatting.BLUE + StatCollector.translateToLocal("gg.info.antimatter_forge")
+                + " "
+                + EnumChatFormatting.GRAY,
             StatCollector.translateToLocal("GT5U.multiblock.Progress") + ": "
                 + EnumChatFormatting.GREEN
                 + GTUtility.formatNumbers(mProgresstime)

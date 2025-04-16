@@ -11,17 +11,15 @@ import net.minecraftforge.fluids.Fluid;
 
 import gregtech.api.covers.CoverContext;
 import gregtech.api.interfaces.tileentity.ICoverable;
-import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.objects.XSTR;
 import gregtech.api.util.GTUtility;
-import gregtech.api.util.ISerializableObject;
-import gregtech.common.covers.CoverBehavior;
+import gregtech.common.covers.CoverLegacyData;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.minecraft.BlockPos;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
 
 // TODO: Figure out what anything in this class is even supposed to do.
-public class CoverToggleVisual extends CoverBehavior {
+public class CoverToggleVisual extends CoverLegacyData {
 
     private static final Map<String, Integer> sConnectionStateForEntityMap = new ConcurrentHashMap<>();
     private static final Map<String, String> sPrefixMap = new ConcurrentHashMap<>();
@@ -85,23 +83,22 @@ public class CoverToggleVisual extends CoverBehavior {
     }
 
     @Override
-    public ISerializableObject.LegacyCoverData doCoverThings(byte aInputRedstone, long aTimer) {
-        int coverDataValue = coverData.get();
+    public void doCoverThings(byte aInputRedstone, long aTimer) {
         try {
             String aKey = generateUniqueKey(coverSide, coveredTile.get());
             Integer b = sConnectionStateForEntityMap.get(aKey);
-            if (b != null && coverDataValue != b) {
-                coverDataValue = b;
+            if (b != null && this.coverData != b) {
+                this.coverData = b;
             }
             if (b == null) {
-                b = coverDataValue;
+                b = this.coverData;
                 sConnectionStateForEntityMap.put(aKey, b);
-                trySetState(b == VALUE_ON ? VALUE_ON : VALUE_OFF);
+                // Try set cover state directly
+                this.coverData = b == VALUE_ON ? VALUE_ON : VALUE_OFF;
             }
         } catch (Throwable ignored) {
 
         }
-        return ISerializableObject.LegacyCoverData.of(coverDataValue);
     }
 
     @Override
@@ -140,14 +137,7 @@ public class CoverToggleVisual extends CoverBehavior {
     }
 
     public boolean getConnectionState() {
-        return coverData.get() == VALUE_ON;
-    }
-
-    private void trySetState(int aState) {
-        // Try set cover state directly
-        if (coveredTile.get() instanceof IGregTechTileEntity gTileEntity) {
-            gTileEntity.setCoverDataAtSide(coverSide, new ISerializableObject.LegacyCoverData(aState));
-        }
+        return coverData == VALUE_ON;
     }
 
     public static boolean getConnectionState(ForgeDirection side, ICoverable aTile) {

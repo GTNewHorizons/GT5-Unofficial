@@ -573,6 +573,8 @@ public class GTPreLoad {
         GTMod.gregtechproxy.separatorStyle = Client.iface.separatorStyle;
         GTMod.gregtechproxy.tooltipFinisherStyle = Client.iface.tooltipFinisherStyle;
 
+        GTMod.gregtechproxy.invertCircuitScrollDirection = Client.preference.invertCircuitScrollDirection;
+
         GTMod.gregtechproxy.mNEIRecipeSecondMode = Client.nei.NEIRecipeSecondMode;
         GTMod.gregtechproxy.mNEIRecipeOwner = Client.nei.NEIRecipeOwner;
         GTMod.gregtechproxy.mNEIRecipeOwnerStackTrace = Client.nei.NEIRecipeOwnerStackTrace;
