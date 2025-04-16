@@ -448,7 +448,7 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
                     EnumChatFormatting.WHITE
                         + String.format(
                             getItemDescLoc("base_eff"),
-                            "" + EnumChatFormatting.BLUE + (int) Math.ceil(turbine.getEfficiency() * 100))
+                            "" + EnumChatFormatting.BLUE + (int) Math.ceil(turbine.getBaseEfficiency() * 100))
                         + "%"
                         + EnumChatFormatting.GRAY);
                 aList.add(tOffset + 3, EnumChatFormatting.GRAY + getItemDescLoc("fuel_eff"));

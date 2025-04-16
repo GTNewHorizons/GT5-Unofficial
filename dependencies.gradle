@@ -40,9 +40,9 @@ dependencies {
     api("com.github.GTNewHorizons:NotEnoughIds:2.1.6:dev")
     api("com.github.GTNewHorizons:GTNHLib:0.6.19:dev")
     api("com.github.GTNewHorizons:ModularUI:1.2.18:dev")
-    api("com.github.GTNewHorizons:ModularUI2:2.2.6-1.7.10:dev")
+    api("com.github.GTNewHorizons:ModularUI2:2.2.7-1.7.10:dev")
     api("com.github.GTNewHorizons:waila:1.8.4:dev")
-    api("com.github.GTNewHorizons:Applied-Energistics-2-Unofficial:rv3-beta-580-GTNH:dev")
+    api("com.github.GTNewHorizons:Applied-Energistics-2-Unofficial:rv3-beta-584-GTNH:dev")
     api("com.github.GTNewHorizons:AE2FluidCraft-Rework:1.4.46-gtnh:dev")
     api('com.github.GTNewHorizons:Yamcl:0.7.0:dev')
     api("com.github.GTNewHorizons:Postea:1.0.13:dev")
@@ -64,7 +64,7 @@ dependencies {
     compileOnlyApi("com.github.GTNewHorizons:EnderIO:2.9.7:dev") { transitive = false }
     compileOnlyApi("com.github.GTNewHorizons:ForestryMC:4.10.5:dev") { transitive = false }
     compileOnlyApi("com.github.GTNewHorizons:ProjectRed:4.11.3-GTNH:dev") { transitive = false }
-    compileOnlyApi("com.github.GTNewHorizons:Railcraft:9.16.13:dev") { transitive = false }
+    compileOnlyApi("com.github.GTNewHorizons:Railcraft:9.16.18:dev") { transitive = false }
 
     compileOnly("TGregworks:TGregworks:1.7.10-GTNH-1.0.27:deobf") {transitive = false}
     compileOnly("com.github.GTNewHorizons:ThaumicBases:1.8.7:dev") { transitive = false }

@@ -192,10 +192,14 @@ public class GTPPRecipeMaps {
         .maxIO(9, 9, 1, 1)
         .build();
     public static final RecipeMap<RecipeMapBackend> fishPondRecipes = RecipeMapBuilder.of("gtpp.recipe.fishpond")
-        .maxIO(1, 1, 0, 0)
+        .maxIO(1, 25, 0, 0)
         .slotOverlays(
             (index, isFluid, isOutput, isSpecial) -> !isFluid && !isOutput ? GTUITextures.OVERLAY_SLOT_CAULDRON : null)
-        .progressBar(GTUITextures.PROGRESSBAR_ARROW_MULTIPLE)
+        // Bottom left of the recipe
+        .logoPos(7, 81)
+        .progressBarPos(52, 44)
+        .frontend(ZhuhaiFrontend::new)
+        .progressBar(GTUITextures.PROGRESSBAR_FISHING)
         .build();
     public static final RecipeMap<RecipeMapBackend> spargeTowerRecipes = RecipeMapBuilder
         .of("gtpp.recipe.lftr.sparging")
