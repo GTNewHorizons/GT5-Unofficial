@@ -14,6 +14,7 @@ import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -39,6 +40,7 @@ import gregtech.common.tileentities.storage.MTEDigitalChestBase;
 // Backported from GTCEu with lots of tweaks
 public class DigitalStorageRenderer {
 
+    private static final Cuboid6 glassBox = new Cuboid6(1 / 16.0, 1 / 16.0, 1 / 16.0, 15 / 16.0, 15 / 16.0, 15 / 16.0);
     private static final BlockRenderer.BlockFace blockFace = new BlockRenderer.BlockFace();
 
     private static final EnumMap<ForgeDirection, Cuboid6> boxFacingMap = new EnumMap<>(ForgeDirection.class);
@@ -69,6 +71,7 @@ public class DigitalStorageRenderer {
         Block aBlock, RenderBlocks aRenderer) {
         ForgeDirection frontFacing = mte.getBaseMetaTileEntity()
             .getFrontFacing();
+        IIcon casingIcon = MACHINECASINGS_SIDE[mte.mTier].getIcon();
 
         CCRenderState state = CCRenderState.instance();
         boolean isDrawing = false;
@@ -79,38 +82,39 @@ public class DigitalStorageRenderer {
         }
 
         // spotless:off
+        renderFace(state, frontFacing, glassBox, aWorld, aX, aY, aZ, aBlock, aRenderer, mte, OVERLAY_SCREEN_GLASS.getIcon());
         // front frame
         for (var boxFacing : boxFacingMap.keySet()) {
             // do not render the box at the front face when "facing" is "frontFacing"
             if (boxFacing == frontFacing) continue;
 
             // render when the box face matches facing
-            renderFace(state, boxFacing, boxFacingMap.get(boxFacing), aWorld, aX, aY, aZ, aBlock, aRenderer, mte);
+            renderFace(state, boxFacing, boxFacingMap.get(boxFacing), aWorld, aX, aY, aZ, aBlock, aRenderer, mte, casingIcon);
 
             // render when the box face is opposite of facing
-            renderFace(state, boxFacing.getOpposite(), boxFacingMap.get(boxFacing), aWorld, aX, aY, aZ, aBlock, aRenderer, mte);
+            renderFace(state, boxFacing.getOpposite(), boxFacingMap.get(boxFacing), aWorld, aX, aY, aZ, aBlock, aRenderer, mte, casingIcon);
         }
 
         // render the sides of the box that face the front face
         if (frontFacing == UP) {
-            renderFace(state, frontFacing, boxFacingMap.get(ForgeDirection.NORTH), aWorld, aX, aY, aZ, aBlock, aRenderer, mte);
-            renderFace(state, frontFacing, boxFacingMap.get(ForgeDirection.SOUTH), aWorld, aX, aY, aZ, aBlock, aRenderer, mte);
-            renderFace(state, frontFacing, boxFacingMap.get(ForgeDirection.EAST), aWorld, aX, aY, aZ, aBlock, aRenderer, mte);
-            renderFace(state, frontFacing, boxFacingMap.get(ForgeDirection.WEST), aWorld, aX, aY, aZ, aBlock, aRenderer, mte);
-            renderFace(state, frontFacing, boxFacingMap.get(ForgeDirection.DOWN), aWorld, aX, aY, aZ, aBlock, aRenderer, mte);
+            renderFace(state, frontFacing, boxFacingMap.get(ForgeDirection.NORTH), aWorld, aX, aY, aZ, aBlock, aRenderer, mte, casingIcon);
+            renderFace(state, frontFacing, boxFacingMap.get(ForgeDirection.SOUTH), aWorld, aX, aY, aZ, aBlock, aRenderer, mte, casingIcon);
+            renderFace(state, frontFacing, boxFacingMap.get(ForgeDirection.EAST), aWorld, aX, aY, aZ, aBlock, aRenderer, mte, casingIcon);
+            renderFace(state, frontFacing, boxFacingMap.get(ForgeDirection.WEST), aWorld, aX, aY, aZ, aBlock, aRenderer, mte, casingIcon);
+            renderFace(state, frontFacing, boxFacingMap.get(ForgeDirection.DOWN), aWorld, aX, aY, aZ, aBlock, aRenderer, mte, casingIcon);
         } else if (frontFacing == DOWN) {
-            renderFace(state, frontFacing, boxFacingMap.get(ForgeDirection.NORTH), aWorld, aX, aY, aZ, aBlock, aRenderer, mte);
-            renderFace(state, frontFacing, boxFacingMap.get(ForgeDirection.SOUTH), aWorld, aX, aY, aZ, aBlock, aRenderer, mte);
-            renderFace(state, frontFacing, boxFacingMap.get(ForgeDirection.EAST), aWorld, aX, aY, aZ, aBlock, aRenderer, mte);
-            renderFace(state, frontFacing, boxFacingMap.get(ForgeDirection.WEST), aWorld, aX, aY, aZ, aBlock, aRenderer, mte);
-            renderFace(state, frontFacing, boxFacingMap.get(ForgeDirection.UP), aWorld, aX, aY, aZ, aBlock, aRenderer, mte);
+            renderFace(state, frontFacing, boxFacingMap.get(ForgeDirection.NORTH), aWorld, aX, aY, aZ, aBlock, aRenderer, mte, casingIcon);
+            renderFace(state, frontFacing, boxFacingMap.get(ForgeDirection.SOUTH), aWorld, aX, aY, aZ, aBlock, aRenderer, mte, casingIcon);
+            renderFace(state, frontFacing, boxFacingMap.get(ForgeDirection.EAST), aWorld, aX, aY, aZ, aBlock, aRenderer, mte, casingIcon);
+            renderFace(state, frontFacing, boxFacingMap.get(ForgeDirection.WEST), aWorld, aX, aY, aZ, aBlock, aRenderer, mte, casingIcon);
+            renderFace(state, frontFacing, boxFacingMap.get(ForgeDirection.UP), aWorld, aX, aY, aZ, aBlock, aRenderer, mte, casingIcon);
         } else {
-            renderFace(state, frontFacing, boxFacingMap.get(ForgeDirection.DOWN), aWorld, aX, aY, aZ, aBlock, aRenderer, mte);
-            renderFace(state, frontFacing, boxFacingMap.get(ForgeDirection.UP), aWorld, aX, aY, aZ, aBlock, aRenderer, mte);
+            renderFace(state, frontFacing, boxFacingMap.get(ForgeDirection.DOWN), aWorld, aX, aY, aZ, aBlock, aRenderer, mte, casingIcon);
+            renderFace(state, frontFacing, boxFacingMap.get(ForgeDirection.UP), aWorld, aX, aY, aZ, aBlock, aRenderer, mte, casingIcon);
 
             ForgeDirection facing = rotateYCCW(frontFacing);
-            renderFace(state, frontFacing, boxFacingMap.get(facing), aWorld, aX, aY, aZ, aBlock, aRenderer, mte);
-            renderFace(state, frontFacing, boxFacingMap.get(facing.getOpposite()), aWorld, aX, aY, aZ, aBlock, aRenderer, mte);
+            renderFace(state, frontFacing, boxFacingMap.get(facing), aWorld, aX, aY, aZ, aBlock, aRenderer, mte, casingIcon);
+            renderFace(state, frontFacing, boxFacingMap.get(facing.getOpposite()), aWorld, aX, aY, aZ, aBlock, aRenderer, mte, casingIcon);
         }
         //spotless:on
 
@@ -119,29 +123,21 @@ public class DigitalStorageRenderer {
             isDrawing = false;
             Tessellator.instance.draw();
         }
-
-        // render glass panel at the front
-        ITexture[][] textureArray = new ITexture[6][];
-        textureArray[frontFacing.ordinal()] = new ITexture[] { TextureFactory.builder()
-            .addIcon(OVERLAY_SCREEN_GLASS)
-            .build() };
-        GTRendererBlock.INSTANCE.renderStandardBlock(aWorld, aX, aY, aZ, aBlock, aRenderer, textureArray);
     }
 
-    public static void renderFace(CCRenderState state, ForgeDirection face, Cuboid6 bounds,
-        @Nullable IBlockAccess aWorld, int aX, int aY, int aZ, Block aBlock, RenderBlocks aRenderer,
-        MTEDigitalChestBase mte) {
+    private static void renderFace(CCRenderState state, ForgeDirection face, Cuboid6 bounds,
+                                   @Nullable IBlockAccess aWorld, int aX, int aY, int aZ, Block aBlock, RenderBlocks aRenderer,
+                                   MTEDigitalChestBase mte, IIcon icon) {
         int aColor = mte.getBaseMetaTileEntity()
-            .getColorization() - 1;
+            .getColorization();
         short[] rgba = Dyes.getModulation(aColor, Dyes.MACHINE_METAL.mRGBa);
-        Textures.BlockIcons casing = (Textures.BlockIcons) MACHINECASINGS_SIDE[mte.mTier];
         state.resetInstance();
         state.baseColour = new ColourRGBA(rgba[0], rgba[1], rgba[2], 255).rgba();
         state.setDynamicInstance();
         state.pullLightmapInstance();
         state.setPipelineInstance(
             new Translation(aX, aY, aZ),
-            new IconTransformation(casing.getIcon()),
+            new IconTransformation(icon),
             state.lightMatrix);
         if (aWorld != null) {
             state.setBrightnessInstance(aWorld, aX, aY, aZ);
@@ -152,7 +148,7 @@ public class DigitalStorageRenderer {
         state.renderInstance();
     }
 
-    public static ForgeDirection rotateYCCW(ForgeDirection dir) {
+    private static ForgeDirection rotateYCCW(ForgeDirection dir) {
         switch (dir) {
             case NORTH:
                 return ForgeDirection.WEST;
