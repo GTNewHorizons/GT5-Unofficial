@@ -92,6 +92,7 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
     protected ItemStack lockedItem = null;
     private ItemStack displayItemCache = null;
     private int displayCountCache = 0;
+    private ThreadLocal<DigitalStorageRenderer> storageRenderer = ThreadLocal.withInitial(DigitalStorageRenderer::new);
     /**
      * Note this value may have incorrect item count.
      */
@@ -158,13 +159,13 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
 
     @Override
     public boolean renderInWorld(IBlockAccess world, int x, int y, int z, Block block, RenderBlocks renderer) {
-        DigitalStorageRenderer.renderMachine(this, world, x, y, z, block, renderer);
+        storageRenderer.get().renderMachine(this, world, x, y, z, block, renderer);
         return true;
     }
 
     @Override
     public boolean renderInInventory(Block block, int meta, RenderBlocks renderer) {
-        DigitalStorageRenderer.renderMachineInventory(this, null, 0, 0, 0, block, renderer);
+        storageRenderer.get().renderMachine(this, null, 0, 0, 0, block, renderer);
         return true;
     }
 

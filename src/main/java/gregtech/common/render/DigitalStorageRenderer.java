@@ -43,7 +43,6 @@ import gregtech.common.tileentities.storage.MTEDigitalChestBase;
 public class DigitalStorageRenderer {
 
     private static final Cuboid6 glassBox = new Cuboid6(1 / 16.0, 1 / 16.0, 1 / 16.0, 15 / 16.0, 15 / 16.0, 15 / 16.0);
-    private static final BlockRenderer.BlockFace blockFace = new BlockRenderer.BlockFace();
     private static final EnumMap<ForgeDirection, Cuboid6> boxFacingMap = new EnumMap<>(ForgeDirection.class);
 
     private static final FontRenderer fontRenderer = Minecraft.getMinecraft().fontRenderer;
@@ -69,14 +68,12 @@ public class DigitalStorageRenderer {
     }
     //spotless: on
 
-    public static void renderMachineInventory(MTEDigitalChestBase mte, @Nullable IBlockAccess aWorld, int aX, int aY,
+    public void renderMachineInventory(MTEDigitalChestBase mte, @Nullable IBlockAccess aWorld, int aX, int aY,
         int aZ, Block aBlock, RenderBlocks aRenderer) {
-        mte.mMainFacing = WEST;
-        mte.getBaseMetaTileEntity().setFrontFacing(EAST);
         renderMachine(mte, aWorld, aX, aY, aZ, aBlock, aRenderer);
     }
 
-    public static void renderMachine(MTEDigitalChestBase mte, @Nullable IBlockAccess aWorld, int aX, int aY, int aZ,
+    public void renderMachine(MTEDigitalChestBase mte, @Nullable IBlockAccess aWorld, int aX, int aY, int aZ,
         Block aBlock, RenderBlocks aRenderer) {
         ForgeDirection displayFacing = mte.mMainFacing;
         IIcon casingIcon = MACHINECASINGS_SIDE[mte.mTier].getIcon();
@@ -86,6 +83,7 @@ public class DigitalStorageRenderer {
             // Draw if we're not already drawing
             isDrawing = true;
             Tessellator.instance.startDrawingQuads();
+            displayFacing = WEST;
         }
 
         CCRenderState state = CCRenderState.instance();
@@ -128,15 +126,18 @@ public class DigitalStorageRenderer {
         //spotless:on
         state.resetInstance(); //model corruption will happen without it
 
+        ForgeDirection frontFacing = mte.getBaseMetaTileEntity().getFrontFacing();
         if (aRenderer.useInventoryTint && isDrawing) {
             // Draw if we initiated the drawing
             isDrawing = false;
+
             Tessellator.instance.draw();
+            frontFacing = EAST;
         }
 
         //BaseMetatileEntity#getTexture
         ITexture[][] textureArray = new ITexture[6][];
-        if(displayFacing != UP && mte.getBaseMetaTileEntity().getFrontFacing() != UP) {
+        if(displayFacing != UP && frontFacing != UP) {
             textureArray[UP.ordinal()] = new ITexture[] { TextureFactory.of(OVERLAY_SCHEST),
                 TextureFactory.builder()
                     .addIcon(OVERLAY_SCHEST_GLOW)
@@ -160,10 +161,10 @@ public class DigitalStorageRenderer {
         }
         int outputFacing = mte.getBaseMetaTileEntity().getFrontFacing().ordinal();
         textureArray[outputFacing] = new ITexture[] { TextureFactory.of(OVERLAY_PIPE_OUT) };
-        GTRendererBlock.INSTANCE.renderStandardBlock(aWorld, aX, aY, aZ, aBlock, aRenderer, textureArray);
+        new GTRendererBlock().renderStandardBlock(aWorld, aX, aY, aZ, aBlock, aRenderer, textureArray);
     }
 
-    private static void renderFace(CCRenderState state, ForgeDirection face, Cuboid6 bounds,
+    private void renderFace(CCRenderState state, ForgeDirection face, Cuboid6 bounds,
                                    @Nullable IBlockAccess aWorld, int aX, int aY, int aZ, Block aBlock, RenderBlocks aRenderer,
                                    MTEDigitalChestBase mte, IIcon icon) {
         int aColor = mte.getBaseMetaTileEntity()
@@ -190,6 +191,7 @@ public class DigitalStorageRenderer {
             };
         }
 
+        BlockRenderer.BlockFace blockFace = new BlockRenderer.BlockFace();
         state.setModelInstance(blockFace);
         blockFace.loadCuboidFace(bounds, face.ordinal());
         blockFace.computeLightCoords();
