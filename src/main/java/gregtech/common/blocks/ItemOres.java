@@ -14,8 +14,6 @@ import org.apache.commons.lang3.StringUtils;
 import cpw.mods.fml.common.Optional;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Materials;
-import gregtech.api.objects.ItemData;
-import gregtech.api.util.GTOreDictUnificator;
 import mods.railcraft.common.items.firestone.IItemFirestoneBurning;
 
 @Optional.Interface(iface = "mods.railcraft.common.items.firestone.IItemFirestoneBurning", modid = "Railcraft")
@@ -88,8 +86,8 @@ public class ItemOres extends ItemBlock implements IItemFirestoneBurning {
     @Optional.Method(modid = "Railcraft")
     public boolean shouldBurn(ItemStack itemStack) {
         if (this.field_150939_a instanceof BlockOres) {
-            ItemData itemData = GTOreDictUnificator.getAssociation(itemStack);
-            return itemData != null && itemData.mMaterial.mMaterial == Materials.Firestone;
+            int damage = itemStack.getItemDamage();
+            return GregTechAPI.sGeneratedMaterials[damage % 1000] == Materials.Firestone;
         }
         return false;
     }
