@@ -37,6 +37,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
@@ -137,9 +138,11 @@ public class MTEElectricImplosionCompressor extends MTEExtendedPowerMultiBlockBa
         return builder.build();
     }
 
-    public static int getTierBlock(Block block, int meta) {
-        if (block == null) return -1;
+    @Nullable
+    public static Integer getTierBlock(Block block, int meta) {
+        if (block == null) return null;
         if (block == GregTechAPI.sBlockMetal5 && meta == 2) return 1;
+
         if (Mods.Avaritia.isModLoaded()) {
             if (block == LudicrousBlocks.resource_block && meta == 1) return 2;
             if (block == GregTechAPI.sBlockMetal9 && meta == 4) return 3;
@@ -150,7 +153,7 @@ public class MTEElectricImplosionCompressor extends MTEExtendedPowerMultiBlockBa
             if (block == GregTechAPI.sBlockMetal9 && meta == 3) return 3;
             if (block == GregTechAPI.sBlockMetal9 && meta == 8) return 4;
         }
-        return -1;
+        return null;
     }
 
     @Override
