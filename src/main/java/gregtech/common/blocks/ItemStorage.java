@@ -11,19 +11,11 @@ import gregtech.api.GregTechAPI;
 
 public class ItemStorage extends ItemBlock {
 
-    public final BlockMetal blockMetal;
-
     public ItemStorage(Block block) {
         super(block);
         setMaxDamage(0);
         setHasSubtypes(true);
         setCreativeTab(GregTechAPI.TAB_GREGTECH_MATERIALS);
-
-        if (block instanceof BlockMetal) {
-            this.blockMetal = (BlockMetal) block;
-        } else {
-            this.blockMetal = null;
-        }
     }
 
     @Override
@@ -51,7 +43,5 @@ public class ItemStorage extends ItemBlock {
     @Override
     public void addInformation(ItemStack aStack, EntityPlayer aPlayer, List<String> aList, boolean aF3_H) {
         super.addInformation(aStack, aPlayer, aList, aF3_H);
-
-        blockMetal.addInformation(aStack, aPlayer, aList, aF3_H);
     }
 }
