@@ -180,37 +180,32 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
             .addInfo("gt.mb.purification_plant.desc.1", MAX_UNIT_DISTANCE)
             .addTecTechHatchInfo()
             .addSeparator()
-            .addInfo("gt.mb.purification_plant.desc.5", CYCLE_TIME_TICKS / SECONDS)
-            .addInfo("gt.mb.purification_plant.desc.6")
+            .addInfo("gt.mb.purification_plant.desc.2", CYCLE_TIME_TICKS / SECONDS)
             .addSeparator()
-            .addInfo("gt.mb.purification_plant.desc.7")
-            .addInfo("gt.mb.purification_plant.desc.8")
-            .addInfo("gt.mb.purification_plant.desc.9", GTUtility.formatNumbers(WATER_BOOST_NEEDED_FLUID * 100))
-            .addInfo("gt.mb.purification_plant.desc.10", GTUtility.formatNumbers(WATER_BOOST_BONUS_CHANCE * 100))
-            .addInfo("gt.mb.purification_plant.desc.11")
-            .addInfo("gt.mb.purification_plant.desc.12")
+            .addInfo(
+                "gt.mb.purification_plant.desc.3",
+                GTUtility.formatNumbers(WATER_BOOST_NEEDED_FLUID * 100),
+                GTUtility.formatNumbers(WATER_BOOST_BONUS_CHANCE * 100))
             .addSeparator()
-            .addInfo("gt.mb.purification_plant.desc.13")
-            .addInfo("gt.mb.purification_plant.desc.14")
-            .addInfo("gt.mb.purification_plant.desc.15")
+            .addInfo("gt.mb.purification_plant.desc.4")
             .addSeparator()
-            .addInfo("gt.mb.purification_plant.desc.16")
-            .addInfo("gt.mb.purification_plant.desc.17")
-            .addInfo("gt.mb.purification_plant.desc.18")
-            .addInfo("gt.mb.purification_plant.desc.19")
+            .addInfo("gt.mb.purification_plant.desc.5")
             .beginStructureBlock(7, 9, 8, false)
             .addController("gt.mb.controller_pos")
             .addCasingInfoExactly(
-                ItemList.BlockIndustrialStrengthConcrete.getInternalStack_unsafe().getDisplayName(),
+                ItemList.BlockIndustrialStrengthConcrete.getInternalStack_unsafe()
+                    .getDisplayName(),
                 56,
                 false)
             .addCasingInfoRange(
-                ItemList.BlockSterileWaterPlantCasing.getInternalStack_unsafe().getDisplayName(),
+                ItemList.BlockSterileWaterPlantCasing.getInternalStack_unsafe()
+                    .getDisplayName(),
                 71,
                 72,
                 false)
             .addCasingInfoExactly(
-                ItemList.BlockIndustrialWaterPlantCasing.getInternalStack_unsafe().getDisplayName(),
+                ItemList.BlockIndustrialWaterPlantCasing.getInternalStack_unsafe()
+                    .getDisplayName(),
                 77,
                 false)
             .addCasingInfoExactly(
@@ -221,7 +216,7 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
             .addCasingInfoExactly("gt.blocktintedglass.name", 6, false)
             .addEnergyHatch(EnumChatFormatting.GOLD + "1", 1)
             .addMaintenanceHatch(EnumChatFormatting.GOLD + "1", 1)
-            .addStructureInfo("gt.mb.purification_plant.desc.20")
+            .addStructureInfo("gt.mb.purification_plant.desc.6")
             .toolTipFinisher(AuthorNotAPenguin);
         return tt;
     }

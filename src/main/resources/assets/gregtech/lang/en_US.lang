@@ -3069,3 +3069,10 @@ mb.bw.windmill.desc1=A primitive Grinder powered by Kinetic energy
 mb.bw.windmill.desc2=Speed and output will be affected by wind speed, recipe and rotor
 mb.bw.windmill.desc3=Please use the Primitive Rotor
 mb.bw.windmill.desc4=Macerates %s items at a time
+
+gt.mb.purification_plant.desc.1=Main controller block for the Water Purification Plant.[BR]Freely place §ePurification Units§7 within §4%d§7 blocks along each axis.[BR]Left click this controller with a data stick, then right click a purification unit to link.[BR]Supplies power to linked purification units.
+gt.mb.purification_plant.desc.2=Works in fixed time processing cycles of §4%d§7 seconds.[BR]All linked units follow this cycle.
+gt.mb.purification_plant.desc.3=Every recipe has a base chance of success. Success rate can be boosted[BR]by using a portion of the target output as a secondary input.[BR]§4%d%%§7 of output yield will be consumed in exchange for an[BR]additive §4%d%%§7 increase to success.[BR]On recipe failure, each purification unit has a §450%%§7 chance[BR]to return water of the same quality as the input or lower.
+gt.mb.purification_plant.desc.4=Every purification unit has a configuration window to configure maximum parallel amount.[BR]This will only scale purified water input, ALL fluid output and power usage.[BR]Other catalysts and outputs are unchanged.[BR]Toggle debug mode to reduce cycle time to 30s but disable water I/O.
+gt.mb.purification_plant.desc.5=§b§oContaminants and ionized particles in water can cause significant imperfections in delicate[BR]§b§oprocesses related to the cutting and engraving of silicon wafers and chips. It is crucial that[BR]§b§othe water is systematically purified through a series of increasingly precise and complex[BR]§b§opurification processes, and this multiblock is the heart of the operation.
+gt.mb.purification_plant.desc.6=Requires water to be placed in the tank.

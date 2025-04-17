@@ -433,7 +433,7 @@ public class ItemMachines extends ItemBlock implements IFluidContainerItem {
 
     public static void splitLineByMark(List<String> list, String mark) {
         if (list == null) return;
-        for (int i = 0; i < list.size(); ) {
+        for (int i = 0; i < list.size();) {
             String str = list.get(i);
             if (str.contains(mark)) {
                 String[] parts = str.split(Pattern.quote(mark));
