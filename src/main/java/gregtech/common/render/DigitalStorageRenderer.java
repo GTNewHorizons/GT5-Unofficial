@@ -169,14 +169,19 @@ public class DigitalStorageRenderer {
         short[] rgba = Dyes.getModulation(aColor, Dyes.MACHINE_METAL.mRGBa);
         state.resetInstance();
         state.baseColour = new ColourRGBA(rgba[0], rgba[1], rgba[2], 255).rgba();
-        state.setDynamicInstance();
-        state.pullLightmapInstance();
-        state.setPipelineInstance(
-            new Translation(aX, aY, aZ),
-            new IconTransformation(icon),
-            state.lightMatrix);
-        if (aWorld != null) {
+        if(aWorld != null) {
+            state.useNormals = true;
+            state.setNormalInstance(face.offsetX, face.offsetY, face.offsetZ);
             state.setBrightnessInstance(aWorld, aX, aY, aZ);
+            state.setPipelineInstance(
+                new Translation(aX, aY, aZ),
+                new IconTransformation(icon));
+        }
+        else {
+            state.setDynamicInstance();
+            state.setPipelineInstance(
+                new Translation(aX, aY, aZ),
+                new IconTransformation(icon));
         }
 
         state.setModelInstance(blockFace);
