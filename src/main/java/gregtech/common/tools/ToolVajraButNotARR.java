@@ -30,7 +30,7 @@ import ic2.api.item.IElectricItem;
 public class ToolVajraButNotARR extends ItemTool implements IElectricItem {
 
     public int maxCharge = (int) 1e7;
-    public int baseCost = 1000;
+    public int baseCost = 3333;
     public int tier = 5;
     public double transferLimit = V[tier];
     private final String tooltip;
@@ -57,18 +57,18 @@ public class ToolVajraButNotARR extends ItemTool implements IElectricItem {
     @Override
     public boolean onBlockDestroyed(ItemStack stack, World world, Block block, int par4, int par5, int par6,
         EntityLivingBase entityLiving) {
-        ElectricItem.manager.use(stack, baseCost * block.blockHardness, entityLiving);
+        ElectricItem.manager.use(stack, baseCost, entityLiving);
         return true;
     }
 
     @Override
     public boolean canHarvestBlock(Block block, ItemStack stack) {
-        return ElectricItem.manager.canUse(stack, baseCost * block.blockHardness);
+        return ElectricItem.manager.canUse(stack, baseCost);
     }
 
     @Override
     public float getDigSpeed(ItemStack stack, Block block, int meta) {
-        if (!ElectricItem.manager.canUse(stack, baseCost * block.blockHardness)) {
+        if (!ElectricItem.manager.canUse(stack, baseCost)) {
             return 0.0F;
         }
         return Integer.MAX_VALUE;
