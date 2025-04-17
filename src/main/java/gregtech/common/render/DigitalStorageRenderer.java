@@ -78,7 +78,7 @@ public class DigitalStorageRenderer {
 
     public static void renderMachine(MTEDigitalChestBase mte, @Nullable IBlockAccess aWorld, int aX, int aY, int aZ,
         Block aBlock, RenderBlocks aRenderer) {
-        ForgeDirection frontFacing = mte.mMainFacing;
+        ForgeDirection displayFacing = mte.mMainFacing;
         IIcon casingIcon = MACHINECASINGS_SIDE[mte.mTier].getIcon();
 
         CCRenderState state = CCRenderState.instance();
@@ -90,11 +90,11 @@ public class DigitalStorageRenderer {
         }
 
         // spotless:off
-        renderFace(state, frontFacing, glassBox, aWorld, aX, aY, aZ, aBlock, aRenderer, mte, OVERLAY_SCREEN_GLASS.getIcon());
+        renderFace(state, displayFacing, glassBox, aWorld, aX, aY, aZ, aBlock, aRenderer, mte, OVERLAY_SCREEN_GLASS.getIcon());
         // front frame
         for (var boxFacing : boxFacingMap.keySet()) {
             // do not render the box at the front face when "facing" is "frontFacing"
-            if (boxFacing == frontFacing) continue;
+            if (boxFacing == displayFacing) continue;
 
             // render when the box face matches facing
             renderFace(state, boxFacing, boxFacingMap.get(boxFacing), aWorld, aX, aY, aZ, aBlock, aRenderer, mte, casingIcon);
@@ -104,25 +104,25 @@ public class DigitalStorageRenderer {
         }
 
         // render the sides of the box that face the front face
-        if (frontFacing == UP) {
-            renderFace(state, frontFacing, boxFacingMap.get(ForgeDirection.NORTH), aWorld, aX, aY, aZ, aBlock, aRenderer, mte, casingIcon);
-            renderFace(state, frontFacing, boxFacingMap.get(ForgeDirection.SOUTH), aWorld, aX, aY, aZ, aBlock, aRenderer, mte, casingIcon);
-            renderFace(state, frontFacing, boxFacingMap.get(ForgeDirection.EAST), aWorld, aX, aY, aZ, aBlock, aRenderer, mte, casingIcon);
-            renderFace(state, frontFacing, boxFacingMap.get(ForgeDirection.WEST), aWorld, aX, aY, aZ, aBlock, aRenderer, mte, casingIcon);
-            renderFace(state, frontFacing, boxFacingMap.get(ForgeDirection.DOWN), aWorld, aX, aY, aZ, aBlock, aRenderer, mte, casingIcon);
-        } else if (frontFacing == DOWN) {
-            renderFace(state, frontFacing, boxFacingMap.get(ForgeDirection.NORTH), aWorld, aX, aY, aZ, aBlock, aRenderer, mte, casingIcon);
-            renderFace(state, frontFacing, boxFacingMap.get(ForgeDirection.SOUTH), aWorld, aX, aY, aZ, aBlock, aRenderer, mte, casingIcon);
-            renderFace(state, frontFacing, boxFacingMap.get(ForgeDirection.EAST), aWorld, aX, aY, aZ, aBlock, aRenderer, mte, casingIcon);
-            renderFace(state, frontFacing, boxFacingMap.get(ForgeDirection.WEST), aWorld, aX, aY, aZ, aBlock, aRenderer, mte, casingIcon);
-            renderFace(state, frontFacing, boxFacingMap.get(ForgeDirection.UP), aWorld, aX, aY, aZ, aBlock, aRenderer, mte, casingIcon);
+        if (displayFacing == UP) {
+            renderFace(state, displayFacing, boxFacingMap.get(ForgeDirection.NORTH), aWorld, aX, aY, aZ, aBlock, aRenderer, mte, casingIcon);
+            renderFace(state, displayFacing, boxFacingMap.get(ForgeDirection.SOUTH), aWorld, aX, aY, aZ, aBlock, aRenderer, mte, casingIcon);
+            renderFace(state, displayFacing, boxFacingMap.get(ForgeDirection.EAST), aWorld, aX, aY, aZ, aBlock, aRenderer, mte, casingIcon);
+            renderFace(state, displayFacing, boxFacingMap.get(ForgeDirection.WEST), aWorld, aX, aY, aZ, aBlock, aRenderer, mte, casingIcon);
+            renderFace(state, displayFacing, boxFacingMap.get(ForgeDirection.DOWN), aWorld, aX, aY, aZ, aBlock, aRenderer, mte, casingIcon);
+        } else if (displayFacing == DOWN) {
+            renderFace(state, displayFacing, boxFacingMap.get(ForgeDirection.NORTH), aWorld, aX, aY, aZ, aBlock, aRenderer, mte, casingIcon);
+            renderFace(state, displayFacing, boxFacingMap.get(ForgeDirection.SOUTH), aWorld, aX, aY, aZ, aBlock, aRenderer, mte, casingIcon);
+            renderFace(state, displayFacing, boxFacingMap.get(ForgeDirection.EAST), aWorld, aX, aY, aZ, aBlock, aRenderer, mte, casingIcon);
+            renderFace(state, displayFacing, boxFacingMap.get(ForgeDirection.WEST), aWorld, aX, aY, aZ, aBlock, aRenderer, mte, casingIcon);
+            renderFace(state, displayFacing, boxFacingMap.get(ForgeDirection.UP), aWorld, aX, aY, aZ, aBlock, aRenderer, mte, casingIcon);
         } else {
-            renderFace(state, frontFacing, boxFacingMap.get(ForgeDirection.DOWN), aWorld, aX, aY, aZ, aBlock, aRenderer, mte, casingIcon);
-            renderFace(state, frontFacing, boxFacingMap.get(ForgeDirection.UP), aWorld, aX, aY, aZ, aBlock, aRenderer, mte, casingIcon);
+            renderFace(state, displayFacing, boxFacingMap.get(ForgeDirection.DOWN), aWorld, aX, aY, aZ, aBlock, aRenderer, mte, casingIcon);
+            renderFace(state, displayFacing, boxFacingMap.get(ForgeDirection.UP), aWorld, aX, aY, aZ, aBlock, aRenderer, mte, casingIcon);
 
-            ForgeDirection facing = rotateYCCW(frontFacing);
-            renderFace(state, frontFacing, boxFacingMap.get(facing), aWorld, aX, aY, aZ, aBlock, aRenderer, mte, casingIcon);
-            renderFace(state, frontFacing, boxFacingMap.get(facing.getOpposite()), aWorld, aX, aY, aZ, aBlock, aRenderer, mte, casingIcon);
+            ForgeDirection facing = rotateYCCW(displayFacing);
+            renderFace(state, displayFacing, boxFacingMap.get(facing), aWorld, aX, aY, aZ, aBlock, aRenderer, mte, casingIcon);
+            renderFace(state, displayFacing, boxFacingMap.get(facing.getOpposite()), aWorld, aX, aY, aZ, aBlock, aRenderer, mte, casingIcon);
         }
         //spotless:on
 
@@ -134,7 +134,7 @@ public class DigitalStorageRenderer {
 
         //BaseMetatileEntity#getTexture
         ITexture[][] textureArray = new ITexture[6][];
-        if(frontFacing != UP) {
+        if(displayFacing != UP && mte.getBaseMetaTileEntity().getFrontFacing() != UP) {
             textureArray[UP.ordinal()] = new ITexture[] { TextureFactory.of(OVERLAY_SCHEST),
                 TextureFactory.builder()
                     .addIcon(OVERLAY_SCHEST_GLOW)

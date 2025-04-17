@@ -8,6 +8,7 @@ import java.util.List;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.util.GTModHandler;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.entity.player.EntityPlayer;
@@ -24,6 +25,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import net.minecraftforge.event.ForgeEventFactory;
 import org.jetbrains.annotations.Nullable;
 
 import com.cleanroommc.modularui.api.drawable.IDrawable;
@@ -375,6 +377,18 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
     }
 
     @Override
+    public boolean onWrenchRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer, float aX, float aY, float aZ, ItemStack aTool) {
+        if (aPlayer.isSneaking() && setMainFacing(wrenchingSide)) {
+            GTModHandler.damageOrDechargeItem(aTool, 1, 1000, aPlayer);
+        } else if (super.onWrenchRightClick(side, wrenchingSide, aPlayer, aX, aY, aZ, aTool)) {
+            GTModHandler.damageOrDechargeItem(aTool, 1, 1000, aPlayer);
+        }
+
+        if (aTool.stackSize == 0) ForgeEventFactory.onPlayerDestroyItem(aPlayer, aTool);
+        return true;
+    }
+
+    @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTimer) {
 
         if (getBaseMetaTileEntity().isServerSide()) {
@@ -469,6 +483,17 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
         return (side.flag & UNKNOWN.flag) == 0;
     }
 
+    public boolean setMainFacing(ForgeDirection side) {
+        if (!isValidMainFacing(side)) return false;
+        mMainFacing = side;
+        if (getBaseMetaTileEntity().getFrontFacing() == mMainFacing) {
+            getBaseMetaTileEntity().setFrontFacing(side.getOpposite());
+        }
+        onFacingChange();
+        onMachineBlockUpdate();
+        return true;
+    }
+
     protected void doDisplayThings() {
         if (!isValidMainFacing(mMainFacing) && isValidMainFacing(getBaseMetaTileEntity().getFrontFacing())) {
             mMainFacing = getBaseMetaTileEntity().getFrontFacing();
@@ -487,7 +512,7 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
 
     @Override
     public boolean isFacingValid(ForgeDirection facing) {
-        return true;
+        return (facing.flag & ~mMainFacing.flag) != 0;
     }
 
     @Override
