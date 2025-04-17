@@ -27,7 +27,7 @@ import gtPlusPlus.core.block.base.BlockBaseOre;
 import ic2.api.item.ElectricItem;
 import ic2.api.item.IElectricItem;
 
-public class ToolVajraButNotARR extends ItemTool implements IElectricItem {
+public class ToolVajra extends ItemTool implements IElectricItem {
 
     public int maxCharge = (int) 1e7;
     public int baseCost = 3333;
@@ -35,8 +35,8 @@ public class ToolVajraButNotARR extends ItemTool implements IElectricItem {
     public double transferLimit = V[tier];
     private final String tooltip;
 
-    public ToolVajraButNotARR(String aUnlocalized, String aEnglish, String aTooltip, int aMaxDamage, int aEntityDamage,
-        boolean aSwingIfUsed) {
+    public ToolVajra(String aUnlocalized, String aEnglish, String aTooltip, int aMaxDamage, int aEntityDamage,
+                     boolean aSwingIfUsed) {
         super(aUnlocalized, aEnglish, aTooltip, aMaxDamage, aEntityDamage, aSwingIfUsed);
         this.tooltip = aTooltip;
     }

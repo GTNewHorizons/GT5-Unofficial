@@ -47,6 +47,7 @@ import static gregtech.common.items.IDMetaTool01.WRENCH_HV;
 import static gregtech.common.items.IDMetaTool01.WRENCH_LV;
 import static gregtech.common.items.IDMetaTool01.WRENCH_MV;
 
+import gregtech.common.tools.ToolVajra;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -88,7 +89,6 @@ import gregtech.common.tools.ToolTurbineHuge;
 import gregtech.common.tools.ToolTurbineLarge;
 import gregtech.common.tools.ToolTurbineNormal;
 import gregtech.common.tools.ToolTurbineSmall;
-import gregtech.common.tools.ToolVajraButNotARR;
 import gregtech.common.tools.ToolWireCutter;
 import gregtech.common.tools.ToolWrench;
 import gregtech.common.tools.ToolWrenchHV;
@@ -525,7 +525,7 @@ public class MetaGeneratedTool01 extends MetaGeneratedTool {
             new TCAspects.TC_AspectStack(TCAspects.SENSUS, 4),
             new TCAspects.TC_AspectStack(TCAspects.PERDITIO, 2));
         ItemList.Tool_Vajra
-            .set(new ToolVajraButNotARR("Tool_Vajra", "Vajra", "Your friendly instant block breaker", 100, 20, true));
+            .set(new ToolVajra("Tool_Vajra", "Vajra", "Your friendly instant block breaker", 100, 20, true));
 
         initCraftingShapedRecipes();
         initCraftingShapelessRecipes();
