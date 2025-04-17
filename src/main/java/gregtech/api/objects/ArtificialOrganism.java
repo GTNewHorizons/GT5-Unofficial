@@ -129,6 +129,30 @@ public class ArtificialOrganism {
         return finalized;
     }
 
+    public void setIntelligence(int intelligence) {
+        this.intelligence = intelligence;
+    }
+
+    public void setStrength(int strength) {
+        this.strength = strength;
+    }
+
+    public void setReproduction(int reproduction) {
+        this.reproduction = reproduction;
+    }
+
+    public void setCount(int count) {
+        this.count = count;
+    }
+
+    public void setSentience(int sentience) {
+        this.sentience = sentience;
+    }
+
+    public void setFinalized(boolean finalized) {
+        this.finalized = finalized;
+    }
+
     /**
      * Returns current number of AOs, used in recipe validation
      */
@@ -137,9 +161,15 @@ public class ArtificialOrganism {
     }
 
     public void addTrait(Trait trait) {
-        intelligence += Math.min(trait.baseInt, STAT_MAX);
-        strength += Math.min(trait.baseStr, STAT_MAX);
-        reproduction += Math.min(trait.baseRep, STAT_MAX);
+        addTrait(trait, false);
+    }
+
+    public void addTrait(Trait trait, boolean fromSerializer) {
+        if (!fromSerializer) {
+            intelligence += Math.min(trait.baseInt, STAT_MAX);
+            strength += Math.min(trait.baseStr, STAT_MAX);
+            reproduction += Math.min(trait.baseRep, STAT_MAX);
+        }
 
         traits.add(trait);
 
