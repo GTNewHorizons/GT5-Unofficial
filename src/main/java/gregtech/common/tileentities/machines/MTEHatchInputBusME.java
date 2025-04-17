@@ -674,17 +674,37 @@ public class MTEHatchInputBusME extends MTEHatchInputBus
 
     /**
      * Gets the first non-null shadow item stack.
-     * 
+     *
      * @return The first shadow item stack, or null if this doesn't exist.
      */
     public ItemStack getFirstShadowItemStack() {
-        ItemStack item;
+        return getFirstShadowItemStack(false);
+    }
+
+    /**
+     * Gets the first non-null shadow item stack.
+     * 
+     * @param hasToMatchGhost Whether the first item stack returned has to match the first non-null ghost stack
+     * @return The first shadow item stack, or null if this doesn't exist.
+     */
+    public ItemStack getFirstShadowItemStack(boolean hasToMatchGhost) {
+        ItemStack itemStack;
+        ItemStack lockedSlot = null;
+        if (hasToMatchGhost) {
+            byte slotToCheck = 0;
+            do {
+                lockedSlot = mInventory[slotToCheck];
+                slotToCheck++;
+            } while (lockedSlot == null && slotToCheck < getSizeInventory());
+            if (lockedSlot == null) return null;
+        }
         byte slotToCheck = 0;
         do {
-            item = getShadowItemStack(slotToCheck);
+            itemStack = getShadowItemStack(slotToCheck);
             slotToCheck++;
-        } while (item == null && slotToCheck < getShadowInventorySize());
-        return item;
+        } while ((itemStack == null || !(hasToMatchGhost && lockedSlot.getItem() == itemStack.getItem()))
+            && slotToCheck < getSizeInventory());
+        return itemStack;
     }
 
     @Override

@@ -1001,7 +1001,7 @@ public class GTRecipe implements Comparable<GTRecipe> {
                 if (!inputBus.isValid()) return null;
                 ItemStack slotStack;
                 if (inputBus instanceof MTEHatchInputBusME meBus) {
-                    slotStack = meBus.getFirstShadowItemStack();
+                    slotStack = meBus.getFirstShadowItemStack(true);
                 } else {
                     slotStack = inputBus.getFirstStack();
                 }
@@ -1048,7 +1048,7 @@ public class GTRecipe implements Comparable<GTRecipe> {
                 MTEHatchInputBus inputBus = inputBusses.get(i);
                 if (!inputBus.isValid()) return 0;
                 if (inputBus instanceof MTEHatchInputBusME meBus) {
-                    ItemStack item = meBus.getFirstShadowItemStack();
+                    ItemStack item = meBus.getFirstShadowItemStack(true);
                     if (item == null) return 0;
                     GTUtility.ItemId id = GTUtility.ItemId.createNoCopy(item);
                     itemConsumptionsFromME.merge(id, (long) itemConsumptions[i], Long::sum);
@@ -1097,7 +1097,7 @@ public class GTRecipe implements Comparable<GTRecipe> {
                 MTEHatchInput inputHatch = inputHatches.get(i);
                 if (!inputHatch.isValid()) return 0;
                 if (inputHatch instanceof MTEHatchInputME meHatch) {
-                    FluidStack fluid = meHatch.getFirstShadowFluidStack();
+                    FluidStack fluid = meHatch.getFirstShadowFluidStack(true);
                     if (fluid == null) return 0;
                     if (!GTUtility.areFluidsEqual(fluid, fluidConsumptions[i])) return 0;
                     fluidConsumptionsFromME.merge(fluid.getFluid(), (long) fluidConsumptions[i].amount, Long::sum);
@@ -1146,7 +1146,7 @@ public class GTRecipe implements Comparable<GTRecipe> {
                 if (!inputBus.isValid()) continue;
                 ItemStack item;
                 if (inputBus instanceof MTEHatchInputBusME meBus) {
-                    ItemStack itemStack = meBus.getFirstShadowItemStack();
+                    ItemStack itemStack = meBus.getFirstShadowItemStack(true);
                     item = inputsFromME.get(GTUtility.ItemId.createNoCopy(itemStack));
                 } else {
                     item = inputBus.getFirstStack();
@@ -1169,7 +1169,7 @@ public class GTRecipe implements Comparable<GTRecipe> {
                 if (!inputHatch.isValid()) continue;
                 FluidStack fluid;
                 if (inputHatch instanceof MTEHatchInputME meHatch) {
-                    FluidStack fluidStack = meHatch.getFirstShadowFluidStack();
+                    FluidStack fluidStack = meHatch.getFirstShadowFluidStack(true);
                     fluid = fluidsFromME.get(fluidStack.getFluid());
                 } else if (inputHatch instanceof MTEHatchMultiInput multiInput) {
                     fluid = multiInput.getFluid();
