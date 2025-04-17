@@ -81,13 +81,14 @@ public class DigitalStorageRenderer {
         ForgeDirection displayFacing = mte.mMainFacing;
         IIcon casingIcon = MACHINECASINGS_SIDE[mte.mTier].getIcon();
 
-        CCRenderState state = CCRenderState.instance();
         boolean isDrawing = false;
         if (aRenderer.useInventoryTint && !GTUtilityClient.isDrawing(Tessellator.instance)) {
             // Draw if we're not already drawing
             isDrawing = true;
             Tessellator.instance.startDrawingQuads();
         }
+
+        CCRenderState state = CCRenderState.instance();
 
         // spotless:off
         renderFace(state, displayFacing, glassBox, aWorld, aX, aY, aZ, aBlock, aRenderer, mte, OVERLAY_SCREEN_GLASS.getIcon());
@@ -125,6 +126,7 @@ public class DigitalStorageRenderer {
             renderFace(state, displayFacing, boxFacingMap.get(facing.getOpposite()), aWorld, aX, aY, aZ, aBlock, aRenderer, mte, casingIcon);
         }
         //spotless:on
+        state.resetInstance(); //model corruption will happen without it
 
         if (aRenderer.useInventoryTint && isDrawing) {
             // Draw if we initiated the drawing
@@ -169,23 +171,29 @@ public class DigitalStorageRenderer {
         short[] rgba = Dyes.getModulation(aColor, Dyes.MACHINE_METAL.mRGBa);
         state.resetInstance();
         state.baseColour = new ColourRGBA(rgba[0], rgba[1], rgba[2], 255).rgba();
+
+        CCRenderState.IVertexOperation[] ops;
         if(aWorld != null) {
-            state.useNormals = true;
-            state.setNormalInstance(face.offsetX, face.offsetY, face.offsetZ);
+            state.lightMatrix.locate(aWorld, aX, aY, aZ);
             state.setBrightnessInstance(aWorld, aX, aY, aZ);
-            state.setPipelineInstance(
+            ops = new CCRenderState.IVertexOperation[]{
                 new Translation(aX, aY, aZ),
-                new IconTransformation(icon));
+                new IconTransformation(icon),
+                state.lightMatrix
+            };
         }
         else {
             state.setDynamicInstance();
-            state.setPipelineInstance(
+            ops = new CCRenderState.IVertexOperation[]{
                 new Translation(aX, aY, aZ),
-                new IconTransformation(icon));
+                new IconTransformation(icon)
+            };
         }
 
         state.setModelInstance(blockFace);
         blockFace.loadCuboidFace(bounds, face.ordinal());
+        blockFace.computeLightCoords();
+        state.setPipelineInstance(ops);
         state.renderInstance();
     }
 
