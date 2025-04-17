@@ -1,6 +1,5 @@
 package gregtech.common.tileentities.machines.multi.artificialorganisms;
 
-import static com.cleanroommc.modularui.utils.serialization.ByteBufAdapters.makeAdapter;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static gregtech.api.enums.GTValues.AuthorFourIsTheNumber;
@@ -36,6 +35,7 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 
 import org.apache.commons.lang3.tuple.Pair;
+import org.jetbrains.annotations.NotNull;
 
 import com.cleanroommc.modularui.api.IPanelHandler;
 import com.cleanroommc.modularui.api.drawable.IKey;
@@ -43,12 +43,14 @@ import com.cleanroommc.modularui.api.widget.IWidget;
 import com.cleanroommc.modularui.drawable.ItemDrawable;
 import com.cleanroommc.modularui.drawable.UITexture;
 import com.cleanroommc.modularui.factory.PosGuiData;
+import com.cleanroommc.modularui.network.NetworkUtils;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.utils.item.IItemHandler;
 import com.cleanroommc.modularui.utils.item.IItemHandlerModifiable;
+import com.cleanroommc.modularui.utils.serialization.IByteBufAdapter;
 import com.cleanroommc.modularui.value.sync.DoubleSyncValue;
-import com.cleanroommc.modularui.value.sync.GenericListSyncHandler;
+import com.cleanroommc.modularui.value.sync.GenericSyncValue;
 import com.cleanroommc.modularui.value.sync.IntSyncValue;
 import com.cleanroommc.modularui.value.sync.InteractionSyncHandler;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
@@ -598,7 +600,11 @@ public class MTEEvolutionChamber extends MTEExtendedPowerMultiBlockBase<MTEEvolu
 
         ModularPanel panel = GTGuis.mteTemplatePanelBuilder(this, data, syncManager)
             .build();
-
+        GenericSyncValue<ArtificialOrganism> organismSyncer = new GenericSyncValue<ArtificialOrganism>(
+            () -> currentSpecies,
+            ao -> { currentSpecies = ao; },
+            new ArtificialOrganismAdapter());
+        syncManager.syncValue("ao", organismSyncer);
         // This row displays the currently active traits
         Row traitRow = new Row();
         traitRow.pos(5, 41)
@@ -790,22 +796,28 @@ public class MTEEvolutionChamber extends MTEExtendedPowerMultiBlockBase<MTEEvolu
                             "will fill with AOs.")));
 
         // Render the trait icons for traits previously added
-        for (Trait t : new GenericListSyncHandler<>(
-            () -> currentSpecies.traits,
-            makeAdapter(buf -> Trait.values()[buf.readInt()], this::writeTraitID, null)).getValue()) {
-            traitRow.child(
-                UITexture.builder()
-                    .location(GregTech.ID, "gui/picture/artificial_organisms/trait_" + t.id)
-                    .imageSize(10, 10)
-                    .build()
-                    .asWidget()
-                    .size(10, 10)
-                    .background()
-                    .addTooltipStringLines(
-                        ImmutableList.of(
-                            EnumChatFormatting.UNDERLINE + StatCollector.translateToLocal(t.nameLocKey),
-                            StatCollector.translateToLocal(t.descLocKey))));
-        }
+        organismSyncer.setChangeListener(() -> {
+            traitRow.getChildren()
+                .clear();
+
+            for (Trait t : currentSpecies.traits) {
+                traitRow.child(
+                    UITexture.builder()
+                        .location(GregTech.ID, "gui/picture/artificial_organisms/trait_" + t.id)
+                        .imageSize(10, 10)
+                        .build()
+                        .asWidget()
+                        .size(10, 10)
+                        .background()
+                        .addTooltipStringLines(
+                            ImmutableList.of(
+                                EnumChatFormatting.UNDERLINE + StatCollector.translateToLocal(t.nameLocKey),
+                                StatCollector.translateToLocal(t.descLocKey))));
+            }
+            if (NetworkUtils.isClient()) {
+                WidgetTree.resize(traitRow);
+            }
+        });
 
         panel.child(traitRow);
         return panel;
@@ -813,5 +825,54 @@ public class MTEEvolutionChamber extends MTEExtendedPowerMultiBlockBase<MTEEvolu
 
     private void writeTraitID(PacketBuffer buf, Trait t) {
         buf.writeInt(t.ordinal());
+    }
+
+    private static class ArtificialOrganismAdapter implements IByteBufAdapter<ArtificialOrganism> {
+
+        @Override
+        public void serialize(PacketBuffer buffer, ArtificialOrganism organism) {
+            buffer.writeInt(organism.getIntelligence());
+            buffer.writeInt(organism.getStrength());
+            buffer.writeInt(organism.getReproduction());
+            buffer.writeInt(organism.getCount());
+            buffer.writeInt(organism.getSentience());
+            buffer.writeBoolean(organism.getFinalized());
+
+            buffer.writeInt(organism.traits.size());
+            organism.traits.forEach(trait -> {
+                String traitString = trait.toString();
+                buffer.writeInt(traitString.length());
+                for (int i = 0; i < traitString.length(); i++) {
+                    buffer.writeChar(traitString.charAt(i));
+                }
+            });
+        }
+
+        @Override
+        public boolean areEqual(@NotNull ArtificialOrganism t1, @NotNull ArtificialOrganism t2) {
+            return t1.equals(t2);
+        }
+
+        @Override
+        public ArtificialOrganism deserialize(PacketBuffer buffer) {
+            ArtificialOrganism result = new ArtificialOrganism();
+            result.setIntelligence(buffer.readInt());
+            result.setStrength(buffer.readInt());
+            result.setReproduction(buffer.readInt());
+            result.setCount(buffer.readInt());
+            result.setSentience(buffer.readInt());
+            result.setFinalized(buffer.readBoolean());
+
+            int traitCount = buffer.readInt();
+            for (int i = 0; i < traitCount; i++) {
+                int strLength = buffer.readInt();
+                StringBuilder traitString = new StringBuilder();
+                for (int j = 0; j < strLength; j++) {
+                    traitString.append(buffer.readChar());
+                }
+                result.addTrait(Trait.valueOf(traitString.toString()), true);
+            }
+            return result;
+        }
     }
 }

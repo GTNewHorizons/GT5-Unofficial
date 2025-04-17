@@ -1,7 +1,9 @@
 package gregtech.api.objects;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Objects;
 import java.util.Random;
 
 import net.minecraft.init.Blocks;
@@ -129,6 +131,30 @@ public class ArtificialOrganism {
         return finalized;
     }
 
+    public void setIntelligence(int intelligence) {
+        this.intelligence = intelligence;
+    }
+
+    public void setStrength(int strength) {
+        this.strength = strength;
+    }
+
+    public void setReproduction(int reproduction) {
+        this.reproduction = reproduction;
+    }
+
+    public void setCount(int count) {
+        this.count = count;
+    }
+
+    public void setSentience(int sentience) {
+        this.sentience = sentience;
+    }
+
+    public void setFinalized(boolean finalized) {
+        this.finalized = finalized;
+    }
+
     /**
      * Returns current number of AOs, used in recipe validation
      */
@@ -137,9 +163,15 @@ public class ArtificialOrganism {
     }
 
     public void addTrait(Trait trait) {
-        intelligence += Math.min(trait.baseInt, STAT_MAX);
-        strength += Math.min(trait.baseStr, STAT_MAX);
-        reproduction += Math.min(trait.baseRep, STAT_MAX);
+        addTrait(trait, false);
+    }
+
+    public void addTrait(Trait trait, boolean fromSerializer) {
+        if (!fromSerializer) {
+            intelligence += Math.min(trait.baseInt, STAT_MAX);
+            strength += Math.min(trait.baseStr, STAT_MAX);
+            reproduction += Math.min(trait.baseRep, STAT_MAX);
+        }
 
         traits.add(trait);
 
@@ -237,6 +269,44 @@ public class ArtificialOrganism {
         }
     }
 
+    @Override
+    public boolean equals(Object obj) {
+
+        if (obj == null) return false;
+        if (!(obj instanceof ArtificialOrganism organism)) return false;
+
+        int[] thisInts = new int[] { this.intelligence, this.strength, this.reproduction, this.count, this.sentience };
+        int[] organismInts = new int[] { organism.intelligence, organism.strength, organism.reproduction,
+            organism.count, organism.sentience };
+        if (!Arrays.equals(thisInts, organismInts)) return false;
+
+        boolean[] thisBools = new boolean[] { this.finalized, this.photosynthetic, this.hiveMind, this.laborer,
+            this.cooperative, this.decaying, this.genius, this.cancerous, this.immortal };
+        boolean[] organismBools = new boolean[] { organism.finalized, organism.photosynthetic, organism.hiveMind,
+            organism.laborer, organism.cooperative, organism.decaying, organism.genius, organism.cancerous,
+            organism.immortal };
+        return Arrays.equals(thisBools, organismBools);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(
+            intelligence,
+            strength,
+            reproduction,
+            count,
+            sentience,
+            finalized,
+            photosynthetic,
+            hiveMind,
+            laborer,
+            cooperative,
+            decaying,
+            genius,
+            cancerous,
+            immortal);
+    }
+
     public enum Trait {
 
         Photosynthetic(ItemList.IC2_Plantball.getItem(), 6, 3, 1, 1,
@@ -271,4 +341,5 @@ public class ArtificialOrganism {
             this.descLocKey = descLocKey;
         }
     }
+
 }
