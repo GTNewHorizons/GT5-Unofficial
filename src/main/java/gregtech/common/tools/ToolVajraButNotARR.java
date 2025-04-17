@@ -1,7 +1,6 @@
 package gregtech.common.tools;
 
 import static gregtech.api.enums.GTValues.V;
-import static gregtech.api.enums.GTValues.VN;
 
 import java.util.List;
 
@@ -90,11 +89,11 @@ public class ToolVajraButNotARR extends ItemTool implements IElectricItem {
         return false;
     }
 
-    @Override
-    public void addInformation(ItemStack stack, EntityPlayer par2EntityPlayer, List<String> list, boolean par4) {
-        list.add(this.tooltip);
-        list.add("Charge with " + VN[tier] + " thing idk");
-    }
+    // @Override
+    // public void addInformation(ItemStack stack, EntityPlayer par2EntityPlayer, List<String> list, boolean par4) {
+    // list.add(this.tooltip);
+    // list.add("Can be charged in any " + VN[tier] + " machine");
+    // }
 
     @Override
     public boolean canProvideEnergy(ItemStack itemStack) {
@@ -132,7 +131,8 @@ public class ToolVajraButNotARR extends ItemTool implements IElectricItem {
         Block target = world.getBlock(x, y, z);
         int metaData = world.getBlockMetadata(x, y, z);
 
-        if(target.blockHardness < 0) return super.onItemUseFirst(stack, player, world, x, y, z, side, hitX, hitY, hitZ);
+        if (target.blockHardness < 0)
+            return super.onItemUseFirst(stack, player, world, x, y, z, side, hitX, hitY, hitZ);
         if (!ElectricItem.manager.canUse(stack, baseCost * target.blockHardness))
             return super.onItemUseFirst(stack, player, world, x, y, z, side, hitX, hitY, hitZ);
         if (target instanceof ITileEntityProvider && !isTileEntityOre(target) && !player.isSneaking())
@@ -174,11 +174,11 @@ public class ToolVajraButNotARR extends ItemTool implements IElectricItem {
                 .getBoolean("silk")) {
                 tag.removeTag("ench");
                 tag.setBoolean("silk", false);
-                player.addChatMessage(new ChatComponentText(EnumChatFormatting.RED + "Disabled vajra silk touch"));
+                player.addChatMessage(new ChatComponentText(EnumChatFormatting.RED + "Disabled silk touch"));
             } else {
                 itemStackIn.addEnchantment(Enchantment.silkTouch, 1);
                 tag.setBoolean("silk", true);
-                player.addChatMessage(new ChatComponentText(EnumChatFormatting.GREEN + "Enabled vajra silk touch"));
+                player.addChatMessage(new ChatComponentText(EnumChatFormatting.GREEN + "Enabled silk touch"));
             }
         }
         return super.onItemRightClick(itemStackIn, worldIn, player);
