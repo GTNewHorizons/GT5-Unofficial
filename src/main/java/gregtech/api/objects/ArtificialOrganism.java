@@ -7,6 +7,10 @@ import java.util.Random;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
+import net.minecraft.nbt.NBTTagString;
+import net.minecraftforge.common.util.Constants;
 
 import gregtech.api.enums.ItemList;
 
@@ -166,6 +170,44 @@ public class ArtificialOrganism {
         reproduction = 0;
         count = 0;
         sentience = 0;
+    }
+
+    public NBTTagCompound saveAOToCompound(NBTTagCompound tag) {
+        tag.setInteger("intelligence", intelligence);
+        tag.setInteger("strength", strength);
+        tag.setInteger("reproduction", reproduction);
+
+        tag.setInteger("count", count);
+        tag.setInteger("sentience", sentience);
+
+        tag.setBoolean("finalized", finalized);
+
+        NBTTagList traitList = new NBTTagList();
+        for (Trait t : traits) {
+            traitList.appendTag(new NBTTagString(t.name()));
+        }
+
+        tag.setTag("traitlist", traitList);
+        return tag;
+    }
+
+    /**
+     * Constructor to rebuild AO from an NBT tag
+     */
+    public ArtificialOrganism(NBTTagCompound tag) {
+        intelligence = tag.getInteger("intelligence");
+        strength = tag.getInteger("strength");
+        reproduction = tag.getInteger("reproduction");
+
+        count = tag.getInteger("count");
+        sentience = tag.getInteger("sentience");
+
+        finalized = tag.getBoolean("finalized");
+
+        NBTTagList traitList = tag.getTagList("traitlist", Constants.NBT.TAG_STRING);
+        for (Object t : traitList.tagList) {
+            traits.add(Trait.valueOf(((NBTTagString) t).func_150285_a_()));
+        }
     }
 
     public ArtificialOrganism(int intelligence, int strength, int reproduction, int count, int sentience) {

@@ -1,5 +1,6 @@
 package gregtech.common.tileentities.machines.multi.artificialorganisms;
 
+import static com.cleanroommc.modularui.utils.serialization.ByteBufAdapters.makeAdapter;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static gregtech.api.enums.GTValues.AuthorFourIsTheNumber;
@@ -25,6 +26,7 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.PacketBuffer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
@@ -46,6 +48,8 @@ import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.utils.item.IItemHandler;
 import com.cleanroommc.modularui.utils.item.IItemHandlerModifiable;
 import com.cleanroommc.modularui.value.sync.DoubleSyncValue;
+import com.cleanroommc.modularui.value.sync.GenericListSyncHandler;
+import com.cleanroommc.modularui.value.sync.IntSyncValue;
 import com.cleanroommc.modularui.value.sync.InteractionSyncHandler;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widget.WidgetTree;
@@ -161,8 +165,6 @@ public class MTEEvolutionChamber extends MTEExtendedPowerMultiBlockBase<MTEEvolu
 
     private int casingTier;
     private int maxAOs;
-
-    private int traitCount = 0;
 
     private int status = 0;
 
@@ -355,6 +357,12 @@ public class MTEEvolutionChamber extends MTEExtendedPowerMultiBlockBase<MTEEvolu
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
+        currentSpecies = new ArtificialOrganism(aNBT);
+    }
+
+    @Override
+    public void saveNBTData(NBTTagCompound aNBT) {
+        super.saveNBTData(currentSpecies.saveAOToCompound(aNBT));
     }
 
     @Override
@@ -529,8 +537,7 @@ public class MTEEvolutionChamber extends MTEExtendedPowerMultiBlockBase<MTEEvolu
                             .addTooltipStringLines(
                                 ImmutableList.of(
                                     EnumChatFormatting.UNDERLINE + "Strength",
-                                    "Allows AOs to perform",
-                                    "most recipes quicker.")))
+                                    "Allows AOs to perform most recipes quicker.")))
                     .child(
                         IKey.str(Integer.toString(t.baseStr))
                             .asWidget()
@@ -542,8 +549,7 @@ public class MTEEvolutionChamber extends MTEExtendedPowerMultiBlockBase<MTEEvolu
                             .addTooltipStringLines(
                                 ImmutableList.of(
                                     EnumChatFormatting.UNDERLINE + "Reproduction",
-                                    "How quickly the tank",
-                                    "will fill with AOs.")))
+                                    "How quickly the tank will fill with AOs.")))
                     .child(
                         IKey.str(Integer.toString(t.baseRep))
                             .asWidget()
@@ -704,7 +710,10 @@ public class MTEEvolutionChamber extends MTEExtendedPowerMultiBlockBase<MTEEvolu
                     .direction(ProgressWidget.Direction.RIGHT)
                     .hoverOverlay(
                         IKey.dynamic(
-                            () -> EnumChatFormatting.WHITE + Integer.toString(currentSpecies.getIntelligence()) + "/30")
+                            () -> EnumChatFormatting.WHITE
+                                + Integer
+                                    .toString(new IntSyncValue(() -> currentSpecies.getIntelligence()).getIntValue())
+                                + "/30")
                             .alignment(Alignment.BottomCenter)
                             .shadow(true)
                             .scale(0.8F)
@@ -719,7 +728,9 @@ public class MTEEvolutionChamber extends MTEExtendedPowerMultiBlockBase<MTEEvolu
                     .direction(ProgressWidget.Direction.RIGHT)
                     .hoverOverlay(
                         IKey.dynamic(
-                            () -> EnumChatFormatting.WHITE + Integer.toString(currentSpecies.getStrength()) + "/30")
+                            () -> EnumChatFormatting.WHITE
+                                + Integer.toString(new IntSyncValue(() -> currentSpecies.getStrength()).getIntValue())
+                                + "/30")
                             .alignment(Alignment.BottomCenter)
                             .shadow(true)
                             .scale(0.8F)
@@ -737,7 +748,10 @@ public class MTEEvolutionChamber extends MTEExtendedPowerMultiBlockBase<MTEEvolu
                     .direction(ProgressWidget.Direction.RIGHT)
                     .hoverOverlay(
                         IKey.dynamic(
-                            () -> EnumChatFormatting.WHITE + Integer.toString(currentSpecies.getReproduction()) + "/30")
+                            () -> EnumChatFormatting.WHITE
+                                + Integer
+                                    .toString(new IntSyncValue(() -> currentSpecies.getReproduction()).getIntValue())
+                                + "/30")
                             .alignment(Alignment.BottomCenter)
                             .shadow(true)
                             .scale(0.8F)
@@ -776,7 +790,9 @@ public class MTEEvolutionChamber extends MTEExtendedPowerMultiBlockBase<MTEEvolu
                             "will fill with AOs.")));
 
         // Render the trait icons for traits previously added
-        for (Trait t : currentSpecies.traits) {
+        for (Trait t : new GenericListSyncHandler<>(
+            () -> currentSpecies.traits,
+            makeAdapter(buf -> Trait.values()[buf.readInt()], this::writeTraitID, null)).getValue()) {
             traitRow.child(
                 UITexture.builder()
                     .location(GregTech.ID, "gui/picture/artificial_organisms/trait_" + t.id)
@@ -793,5 +809,9 @@ public class MTEEvolutionChamber extends MTEExtendedPowerMultiBlockBase<MTEEvolu
 
         panel.child(traitRow);
         return panel;
+    }
+
+    private void writeTraitID(PacketBuffer buf, Trait t) {
+        buf.writeInt(t.ordinal());
     }
 }
