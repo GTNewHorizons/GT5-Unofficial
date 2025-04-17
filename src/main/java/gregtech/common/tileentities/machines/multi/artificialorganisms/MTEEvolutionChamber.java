@@ -668,6 +668,8 @@ public class MTEEvolutionChamber extends MTEExtendedPowerMultiBlockBase<MTEEvolu
                         if (is != null && canAddTrait()) {
                             Trait t = ArtificialOrganism.itemTraitMap.get(is.getItem());
 
+                            limitedHandler.extractItem(0, 1, false);
+
                             currentSpecies.addTrait(t);
                             traitRow.child(
                                 UITexture.builder()
