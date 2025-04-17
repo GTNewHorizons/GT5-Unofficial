@@ -62,6 +62,7 @@ import com.gtnewhorizons.modularui.common.widget.TextWidget;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.Textures;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.gui.widgets.LockedWhileActiveButton;
@@ -71,10 +72,7 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GTLog;
-import gregtech.api.util.GTStructureUtility;
-import gregtech.api.util.GTUtility;
-import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.api.util.*;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.common.gui.modularui.widget.ShutDownReasonSyncer;
 import gregtech.common.gui.modularui.widget.TextButtonWidget;
@@ -179,10 +177,7 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("machtype.purification_plant")
-            .addInfo("gt.mb.purification_plant.desc.1")
-            .addInfo("gt.mb.purification_plant.desc.2", MAX_UNIT_DISTANCE)
-            .addInfo("gt.mb.purification_plant.desc.3")
-            .addInfo("gt.mb.purification_plant.desc.4")
+            .addInfo("gt.mb.purification_plant.desc.1", MAX_UNIT_DISTANCE)
             .addTecTechHatchInfo()
             .addSeparator()
             .addInfo("gt.mb.purification_plant.desc.5", CYCLE_TIME_TICKS / SECONDS)
@@ -205,11 +200,25 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
             .addInfo("gt.mb.purification_plant.desc.19")
             .beginStructureBlock(7, 9, 8, false)
             .addController("gt.mb.controller_pos")
-            .addCasingInfoExactly("gt.casing.sthsc", 56, false)
-            .addCasingInfoRange("gt.casing.sterile_water", 71, 72, false)
-            .addCasingInfoExactly("gt.casing.reinforced_sterile_water", 77, false)
-            .addCasingInfoExactly("gt.casing.frame.tungsten", 30, false)
-            .addCasingInfoExactly("gt.casing.tinted_industrial_glass", 6, false)
+            .addCasingInfoExactly(
+                ItemList.BlockIndustrialStrengthConcrete.getInternalStack_unsafe().getDisplayName(),
+                56,
+                false)
+            .addCasingInfoRange(
+                ItemList.BlockSterileWaterPlantCasing.getInternalStack_unsafe().getDisplayName(),
+                71,
+                72,
+                false)
+            .addCasingInfoExactly(
+                ItemList.BlockIndustrialWaterPlantCasing.getInternalStack_unsafe().getDisplayName(),
+                77,
+                false)
+            .addCasingInfoExactly(
+                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Tungsten, 1)
+                    .getDisplayName(),
+                30,
+                false)
+            .addCasingInfoExactly("gt.blocktintedglass.name", 6, false)
             .addEnergyHatch(EnumChatFormatting.GOLD + "1", 1)
             .addMaintenanceHatch(EnumChatFormatting.GOLD + "1", 1)
             .addStructureInfo("gt.mb.purification_plant.desc.20")

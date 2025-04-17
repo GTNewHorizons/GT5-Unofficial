@@ -4278,6 +4278,7 @@ public class GTUtility {
         "gtPlusPlus.core.block.base.BlockBaseOre");
 
     public static final String LOC_SEPARATOR = "\u001F";
+    public static final String YAP_SEPARATOR = "[BR]";
 
     public static boolean isOre(Block aBlock, int aMeta) {
         return (aBlock instanceof BlockOresAbstract) || isOre(new ItemStack(aBlock, 1, aMeta))

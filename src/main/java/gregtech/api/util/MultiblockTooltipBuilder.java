@@ -139,7 +139,10 @@ public class MultiblockTooltipBuilder {
      *
      * @param infoStrings The lines to be added.
      * @return Instance this method was called on.
-     *         TODO: Refactor
+     *
+     * @deprecated Use {@link MultiblockTooltipBuilder#addInfo}<br>
+     * and use {@link GTUtility#YAP_SEPARATOR} ({@code [BR]}) in lang entries as separator.<br>
+     * Like {@code gt.a_multiblock.desc.1=Yaps a lot,[BR]so we have to separate it.}
      */
     public MultiblockTooltipBuilder addInfoAll(String... infoStrings) {
         for (String info : infoStrings) {
@@ -216,7 +219,7 @@ public class MultiblockTooltipBuilder {
     public MultiblockTooltipBuilder beginVariableStructureBlock(int wmin, int wmax, int hmin, int hmax, int lmin,
         int lmax, boolean hollow) {
         addShiftInfo(
-            "GT5U.MBTT.Dimensions.Variable",
+            "GT5U.MBTT.DimensionsVariable",
             wmin,
             wmax,
             hmin,
@@ -724,8 +727,9 @@ public class MultiblockTooltipBuilder {
     public MultiblockTooltipBuilder addStructureInfoSeparator() {
         return addStructureInfoSeparator(
             EnumChatFormatting.GRAY,
-            StatCollector.translateToLocal("GT5U.MBTT.Structure.SeeStructure")
-                .length(),
+            (int) (StatCollector.translateToLocal("GT5U.MBTT.Structure.SeeStructure")
+                .replaceAll("§[0-9a-fk-or]", "")
+                .length() * 0.8),
             false);
     }
 
@@ -828,8 +832,9 @@ public class MultiblockTooltipBuilder {
         hLines.add(TT_structurehint);
         this.addStructureInfoSeparator(
             EnumChatFormatting.GRAY,
-            StatCollector.translateToLocal("GT5U.MBTT.Structure.SeeStructure")
-                .length(),
+            (int) (StatCollector.translateToLocal("GT5U.MBTT.Structure.SeeStructure")
+                .replaceAll("§[0-9a-fk-or]", "")
+                .length() * 0.8),
             true);
         addShiftInfo("GT5U.MBTT.Structure.Complex");
         addShiftInfo("GT5U.MBTT.Structure.SeeStructure");
