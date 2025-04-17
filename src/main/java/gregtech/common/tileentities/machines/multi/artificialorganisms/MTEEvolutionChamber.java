@@ -849,6 +849,11 @@ public class MTEEvolutionChamber extends MTEExtendedPowerMultiBlockBase<MTEEvolu
         }
 
         @Override
+        public boolean areEqual(@NotNull ArtificialOrganism t1, @NotNull ArtificialOrganism t2) {
+            return t1.equals(t2);
+        }
+
+        @Override
         public ArtificialOrganism deserialize(PacketBuffer buffer) {
             ArtificialOrganism result = new ArtificialOrganism();
             result.setIntelligence(buffer.readInt());
@@ -868,11 +873,6 @@ public class MTEEvolutionChamber extends MTEExtendedPowerMultiBlockBase<MTEEvolu
                 result.addTrait(Trait.valueOf(traitString.toString()), true);
             }
             return result;
-        }
-
-        @Override
-        public boolean areEqual(@NotNull ArtificialOrganism t1, @NotNull ArtificialOrganism t2) {
-            return false;
         }
     }
 }

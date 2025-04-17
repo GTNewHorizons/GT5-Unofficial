@@ -1,7 +1,9 @@
 package gregtech.api.objects;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Objects;
 import java.util.Random;
 
 import net.minecraft.init.Blocks;
@@ -267,6 +269,44 @@ public class ArtificialOrganism {
         }
     }
 
+    @Override
+    public boolean equals(Object obj) {
+
+        if (obj == null) return false;
+        if (!(obj instanceof ArtificialOrganism organism)) return false;
+
+        int[] thisInts = new int[] { this.intelligence, this.strength, this.reproduction, this.count, this.sentience };
+        int[] organismInts = new int[] { organism.intelligence, organism.strength, organism.reproduction,
+            organism.count, organism.sentience };
+        if (!Arrays.equals(thisInts, organismInts)) return false;
+
+        boolean[] thisBools = new boolean[] { this.finalized, this.photosynthetic, this.hiveMind, this.laborer,
+            this.cooperative, this.decaying, this.genius, this.cancerous, this.immortal };
+        boolean[] organismBools = new boolean[] { organism.finalized, organism.photosynthetic, organism.hiveMind,
+            organism.laborer, organism.cooperative, organism.decaying, organism.genius, organism.cancerous,
+            organism.immortal };
+        return Arrays.equals(thisBools, organismBools);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(
+            intelligence,
+            strength,
+            reproduction,
+            count,
+            sentience,
+            finalized,
+            photosynthetic,
+            hiveMind,
+            laborer,
+            cooperative,
+            decaying,
+            genius,
+            cancerous,
+            immortal);
+    }
+
     public enum Trait {
 
         Photosynthetic(ItemList.IC2_Plantball.getItem(), 6, 3, 1, 1,
@@ -301,4 +341,5 @@ public class ArtificialOrganism {
             this.descLocKey = descLocKey;
         }
     }
+
 }
