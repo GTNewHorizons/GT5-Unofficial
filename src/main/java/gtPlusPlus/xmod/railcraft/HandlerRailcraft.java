@@ -1,5 +1,6 @@
 package gtPlusPlus.xmod.railcraft;
 
+import static gregtech.api.enums.Materials.BioDiesel;
 import static gregtech.api.enums.Mods.GTPlusPlus;
 import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
 import static gregtech.api.enums.Mods.Railcraft;
@@ -23,6 +24,8 @@ import gregtech.api.util.GTUtility;
 import gtPlusPlus.core.item.base.BaseItemBurnable;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.railcraft.utils.RailcraftUtils;
+import mods.railcraft.api.fuel.FuelManager;
+import mods.railcraft.common.core.RailcraftConfig;
 
 public class HandlerRailcraft {
 
@@ -102,6 +105,12 @@ public class HandlerRailcraft {
             new ItemStack(Items.reeds),
             GregtechItemList.SugarCharcoal.get(1),
             GregtechItemList.SugarCoke.get(1));
+        // Taken from the Railcraft code
+        int bioheat = (int) (16000 * RailcraftConfig.boilerBiofuelMultiplier());
+        FuelManager.addBoilerFuel(
+            BioDiesel.getFluid(1L)
+                .getFluid(),
+            bioheat);
     }
 
     private static void addCokingRecipes(ItemStack plant, ItemStack charcoal, ItemStack coke) {
