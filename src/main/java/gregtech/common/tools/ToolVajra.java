@@ -36,7 +36,7 @@ public class ToolVajra extends ItemTool implements IElectricItem {
     private final String tooltip;
 
     public ToolVajra(String aUnlocalized, String aEnglish, String aTooltip, int aMaxDamage, int aEntityDamage,
-                     boolean aSwingIfUsed) {
+        boolean aSwingIfUsed) {
         super(aUnlocalized, aEnglish, aTooltip, aMaxDamage, aEntityDamage, aSwingIfUsed);
         this.tooltip = aTooltip;
     }
