@@ -597,7 +597,12 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
             mAllowInputFromOutputSide = true; //previous version has no output side
         }
         mVoidFull = aNBT.getBoolean("mVoidFull");
-        mMainFacing = ForgeDirection.getOrientation(aNBT.getInteger("mMainFacing"));
+        if(aNBT.hasKey("mMainFacing")) {
+            mMainFacing = ForgeDirection.getOrientation(aNBT.getInteger("mMainFacing"));
+        }
+        else {
+            mMainFacing = UNKNOWN;
+        }
         mFacingHasBeenUpdated = aNBT.getBoolean("mFacingHasBeenUpdated");
     }
 
