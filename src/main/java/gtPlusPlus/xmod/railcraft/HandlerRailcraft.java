@@ -106,11 +106,13 @@ public class HandlerRailcraft {
             GregtechItemList.SugarCharcoal.get(1),
             GregtechItemList.SugarCoke.get(1));
         // Taken from the Railcraft code
-        int bioheat = (int) (16000 * RailcraftConfig.boilerBiofuelMultiplier());
-        FuelManager.addBoilerFuel(
-            BioDiesel.getFluid(1L)
-                .getFluid(),
-            bioheat);
+        if (Railcraft.isModLoaded()) {
+            int bioheat = (int) (16000 * RailcraftConfig.boilerBiofuelMultiplier());
+            FuelManager.addBoilerFuel(
+                BioDiesel.getFluid(1L)
+                    .getFluid(),
+                bioheat);
+        }
     }
 
     private static void addCokingRecipes(ItemStack plant, ItemStack charcoal, ItemStack coke) {
