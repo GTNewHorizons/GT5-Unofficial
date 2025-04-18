@@ -24,6 +24,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
@@ -42,6 +43,7 @@ import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
+import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.MaterialsUEVplus;
@@ -65,6 +67,7 @@ import gregtech.api.util.OverclockCalculator;
 import gregtech.api.util.ParallelHelper;
 import gregtech.common.blocks.BlockCasings8;
 import gregtech.common.tileentities.machines.MTEHatchInputBusME;
+import gregtech.common.tileentities.render.TileEntityNanoForgeRenderer;
 import gtPlusPlus.core.block.ModBlocks;
 import tectech.thing.block.BlockQuantumGlass;
 
@@ -290,6 +293,7 @@ public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge> i
     private byte mSpecialTier = 0;
     private boolean renderActive = false;
     private boolean renderDisabled = false;
+    private long timer = 0;
 
     public MTENanoForge(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -457,6 +461,24 @@ public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge> i
             // TODO: Look for proper fix
             // Updates every 10 sec
             if (mUpdate <= -150) mUpdate = 50;
+            // if (renderActive && !renderDisabled) {
+            GTMod.GT_FML_LOGGER.debug("test1");
+            TileEntityNanoForgeRenderer tile = getRenderer();
+            if (tile != null) {
+                GTMod.GT_FML_LOGGER.debug("test2");
+                timer += 1;
+                if (mMaxProgresstime > 0) {
+                    timer += 1;
+                } else {
+                    // timer -= 100;
+                    // timer = Math.max(timer, 0);
+                }
+                if (timer / 36_000_000 == 1) {
+                    timer = 0;
+                }
+                tile.setTimer(timer);
+            }
+            // }
         }
     }
 
@@ -495,6 +517,7 @@ public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge> i
 
         if (!renderActive && mSpecialTier >= 4 && !renderDisabled) {
             destroyRenderStruct();
+            renderActive = true;
         }
 
         return mSpecialTier > 0;
@@ -578,6 +601,7 @@ public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge> i
         aNBT.setByte("mSpecialTier", mSpecialTier);
         aNBT.setBoolean("renderActive", renderActive);
         aNBT.setBoolean("renderDisabled", renderDisabled);
+        aNBT.setLong("runningTimer", timer);
     }
 
     @Override
@@ -590,6 +614,7 @@ public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge> i
         mSpecialTier = aNBT.getByte("mSpecialTier");
         renderActive = aNBT.getBoolean("renderActive");
         renderDisabled = aNBT.getBoolean("renderDisabled");
+        timer = aNBT.getLong("runningTimer");
     }
 
     @Override
@@ -722,17 +747,29 @@ public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge> i
         return true;
     }
 
+    private TileEntityNanoForgeRenderer getRenderer() {
+        ChunkCoordinates renderPos = getRenderPos();
+        TileEntity tile = this.getBaseMetaTileEntity()
+            .getWorld()
+            .getTileEntity(renderPos.posX, renderPos.posY, renderPos.posZ);
+
+        if (tile instanceof TileEntityNanoForgeRenderer nanoForgeTile) {
+            return nanoForgeTile;
+        }
+        return null;
+    }
+
     private ChunkCoordinates getRenderPos() {
         IGregTechTileEntity gregTechTileEntity = this.getBaseMetaTileEntity();
         int x = gregTechTileEntity.getXCoord();
         int y = gregTechTileEntity.getYCoord();
         int z = gregTechTileEntity.getZCoord();
         double xOffset = 20 * getExtendedFacing().getRelativeBackInWorld().offsetX
-            + 22 * getExtendedFacing().getRelativeUpInWorld().offsetX;
+            + 32 * getExtendedFacing().getRelativeUpInWorld().offsetX;
         double yOffset = 20 * getExtendedFacing().getRelativeBackInWorld().offsetY
-            + 22 * getExtendedFacing().getRelativeUpInWorld().offsetY;
+            + 32 * getExtendedFacing().getRelativeUpInWorld().offsetY;
         double zOffset = 20 * getExtendedFacing().getRelativeBackInWorld().offsetZ
-            + 22 * getExtendedFacing().getRelativeUpInWorld().offsetZ;
+            + 32 * getExtendedFacing().getRelativeUpInWorld().offsetZ;
         return new ChunkCoordinates((int) (x + xOffset), (int) (y + yOffset), (int) (z + zOffset));
     }
 
