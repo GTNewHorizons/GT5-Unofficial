@@ -126,10 +126,12 @@ public class MTELinkedInputBus extends MTEHatchInputBus implements IRecipeProces
                     .build()
                     .setPos(7, 24))
             .widget(
-                new TextWidget(new Text(StatCollector.translateToLocal("ggfab.gui.linked_input_bus.private"))).setPos(110, 3)
+                new TextWidget(new Text(StatCollector.translateToLocal("ggfab.gui.linked_input_bus.private")))
+                    .setPos(110, 3)
                     .setSize(43, 20))
             .widget(
-                new TextWidget(new Text(StatCollector.translateToLocal("ggfab.gui.linked_input_bus.channel"))).setPos(5, 3)
+                new TextWidget(new Text(StatCollector.translateToLocal("ggfab.gui.linked_input_bus.channel")))
+                    .setPos(5, 3)
                     .setSize(43, 20));
     }
 

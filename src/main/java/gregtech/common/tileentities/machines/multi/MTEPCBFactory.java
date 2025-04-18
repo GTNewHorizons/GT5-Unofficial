@@ -1077,7 +1077,8 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
                 .addTooltip("Configuration Menu")
                 .setPos(174, 130))
             .widget(
-                new TextWidget(new Text("Tier")).setTextAlignment(Alignment.Center)
+                new TextWidget(new Text(StatCollector.translateToLocal("GTPP.machines.tier")))
+                    .setTextAlignment(Alignment.Center)
                     .setScale(0.91f)
                     .setSize(20, 16)
                     .setPos(173, 98))
@@ -1188,7 +1189,8 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
                                 .setPos(20, 5))
                         .setEnabled(widget -> !getBaseMetaTileEntity().isActive()))
                     .widget(
-                        new TextWidget(new Text("Trace Size")).setSize(90, 18)
+                        new TextWidget(new Text(StatCollector.translateToLocal("GT5U.gui.text.pcb_factory.trace_size")))
+                            .setSize(90, 18)
                             .setEnabled(widget -> !getBaseMetaTileEntity().isActive())
                             .setPos(0, 4))
                     .widget(
@@ -1197,21 +1199,24 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
                             .setBounds(50, 200)
                             .setTextColor(Color.WHITE.normal)
                             .setTextAlignment(Alignment.Center)
-                            .addTooltip(
-                                "Set the trace size. Smaller traces allow material savings but take longer to fabricate. Larger traces waste material but are fast. 50-200 μm.")
+                            .addTooltip(StatCollector.translateToLocal("GT5U.gui.text.pcb_factory.trace_size.tooltip"))
                             .setBackground(GTUITextures.BACKGROUND_TEXT_FIELD)
                             .setSize(90, 16))
                     .widget(
                         new DrawableWidget().setDrawable(GTUITextures.OVERLAY_BUTTON_CROSS)
                             .setSize(18, 18)
-                            .addTooltip(new Text("Can't change configuration when running !").color(Color.RED.dark(3)))
+                            .addTooltip(
+                                new Text(StatCollector.translateToLocal("GT5U.gui.text.cannot_change_when_running"))
+                                    .color(Color.RED.dark(3)))
                             .setEnabled(widget -> getBaseMetaTileEntity().isActive()))
                     .setPos(10, 25))
             .widget(
                 new DynamicPositionedColumn().setSynced(false)
                     .widget(
-                        new TextWidget(new Text("Bio Upgrade Offsets")).setSize(72, 18)
-                            .setEnabled(widget -> !getBaseMetaTileEntity().isActive()))
+                        new TextWidget(
+                            new Text(StatCollector.translateToLocal("GT5U.gui.text.pcb_factory.bio_upgrade_offsets")))
+                                .setSize(72, 18)
+                                .setEnabled(widget -> !getBaseMetaTileEntity().isActive()))
                     .widget(
                         new DynamicPositionedRow().setSynced(false)
                             .widget(
@@ -1234,8 +1239,10 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
                                     .setSize(36, 18))
                             .setEnabled(widget -> !getBaseMetaTileEntity().isActive()))
                     .widget(
-                        new TextWidget(new Text("Cooler Tier 1 Offsets")).setSize(72, 18)
-                            .setEnabled(widget -> !getBaseMetaTileEntity().isActive()))
+                        new TextWidget(
+                            new Text(StatCollector.translateToLocal("GT5U.gui.text.pcb_factory.cooler_tier1_offsets")))
+                                .setSize(72, 18)
+                                .setEnabled(widget -> !getBaseMetaTileEntity().isActive()))
                     .widget(
                         new DynamicPositionedRow().setSynced(false)
                             .widget(
@@ -1258,8 +1265,10 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
                                     .setSize(36, 18))
                             .setEnabled(widget -> !getBaseMetaTileEntity().isActive()))
                     .widget(
-                        new TextWidget(new Text("Cooler Tier 2 Offsets")).setSize(72, 18)
-                            .setEnabled(widget -> !getBaseMetaTileEntity().isActive()))
+                        new TextWidget(
+                            new Text(StatCollector.translateToLocal("GT5U.gui.text.pcb_factory.cooler_tier2_offsets")))
+                                .setSize(72, 18)
+                                .setEnabled(widget -> !getBaseMetaTileEntity().isActive()))
                     .widget(
                         new DynamicPositionedRow().setSynced(false)
                             .widget(

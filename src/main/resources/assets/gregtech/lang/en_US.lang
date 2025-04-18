@@ -834,6 +834,14 @@ GT5U.gui.config.worldgen=Worldgen
 GT5U.gui.config.worldgen.end_asteroids=End Asteroids
 GT5U.gui.config.worldgen.general=General
 
+GT5U.gui.text.cannot_change_when_running=Can't change configuration when running !
+GT5U.gui.text.pcb_factory.trace_size=Trace Size
+GT5U.gui.text.pcb_factory.trace_size.tooltip=Set the trace size. Smaller traces allow material savings but take longer to fabricate. Larger traces waste material but are fast. 50-200 μm.
+GT5U.gui.text.pcb_factory.bio_upgrade_offsets=Bio Upgrade Offsets
+GT5U.gui.text.pcb_factory.cooler_tier1_offsets=Cooler Tier 1 Offsets
+GT5U.gui.text.pcb_factory.cooler_tier2_offsets=Cooler Tier 2 Offsets
+
+
 # Note to translators: this translation entry is supposed to be a number indicating how many taunts you define here
 # Game will randomly display one of them
 GT5U.item.programmed_circuit.no_screwdriver.count=3
