@@ -638,7 +638,8 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
 
         // Title widget
         builder.widget(
-            new TextWidget(EnumChatFormatting.BOLD + "Purification Unit Status").setTextAlignment(Alignment.Center)
+            new TextWidget(StatCollector.translateToLocal("GT5U.infodata.purification_plant.status_title"))
+                .setTextAlignment(Alignment.Center)
                 .setPos(5, 10)
                 .setSize(windowWidth, 8));
 
@@ -658,9 +659,10 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
     }
 
     private Widget makeStatusWindowButton() {
-        TextButtonWidget widget = (TextButtonWidget) new TextButtonWidget("Status").setLeftMargin(4)
-            .setSize(40, 16)
-            .setPos(10, 40);
+        TextButtonWidget widget = (TextButtonWidget) new TextButtonWidget(
+            StatCollector.translateToLocal("GT5U.infodata.purification_plant.status_button")).setLeftMargin(4)
+                .setSize(40, 16)
+                .setPos(10, 40);
         widget.button()
             .setOnClick(
                 (clickData, w) -> {

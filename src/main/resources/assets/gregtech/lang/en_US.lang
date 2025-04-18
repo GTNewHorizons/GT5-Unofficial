@@ -2846,6 +2846,8 @@ GT5U.infodata.wormhole_generator.hatch.right=Right
 GT5U.infodata.wormhole_generator.hatch.back=Back
 GT5U.infodata.wormhole_generator.hatch.front=Front
 
+GT5U.infodata.purification_plant.status_button=Status
+GT5U.infodata.purification_plant.status_title=§lPurification Unit Status
 GT5U.infodata.purification_plant.linked_units=Linked Purification Units:
 GT5U.infodata.purification_plant.linked_units.status.online=Online
 GT5U.infodata.purification_plant.linked_units.status.disabled=Disabled
