@@ -18,4 +18,4 @@ jobs:
           ! grep -E -r '(BartWorks|GalactiGreg|GGFab|GoodGenerator|GTNHLanthanides|GregTech|GTPlusPlus|KekzTech|KubaTech|TecTech|NEIOrePlugin)\.isModLoaded' src/main/java
           ! grep -E -r 'isModLoaded\(".*")' src/main/java
           ! grep -E -r '@(Optional.|)Method\(modid = ".*")' src/main/java
-          ! grep -E -r '@(Optional.|)Interface(.*modid = ".*".*)' src/main/java
+          ! grep -E -r '@(Optional.|)Interface\(.*modid = ".*".*)' src/main/java
