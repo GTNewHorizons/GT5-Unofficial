@@ -338,8 +338,8 @@ public enum Mods {
         public static final String BUILD_CRAFT_OIL_TWEAK = "OilTweak";
         public static final String CARPENTERS_BLOCKS = "CarpentersBlocks";
         public static final String CAT_WALKS = "catwalks";
-        public static final String CHISEL = "chisel";
-        public static final String CHISEL_API = "ChiselAPI";
+        public static final String CHISEL = "chisel",
+            CHISEL_API = "ChiselAPI";
         public static final String CHISEL_TONES = "chiseltones";
         public static final String CODE_CHICKEN_CORE = "CodeChickenCore";
         public static final String COMPUTRONICS = "computronics";
