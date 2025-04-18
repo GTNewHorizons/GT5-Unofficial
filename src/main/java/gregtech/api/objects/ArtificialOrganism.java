@@ -9,6 +9,7 @@ import java.util.Random;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.nbt.NBTTagString;
@@ -261,14 +262,6 @@ public class ArtificialOrganism {
             + count;
     }
 
-    public static final HashMap<Item, Trait> itemTraitMap = new HashMap<>();
-
-    static {
-        for (Trait t : Trait.values()) {
-            itemTraitMap.put(t.cultureItem, t);
-        }
-    }
-
     @Override
     public boolean equals(Object obj) {
 
@@ -307,31 +300,40 @@ public class ArtificialOrganism {
             immortal);
     }
 
+    // I tried to do something more optimized, but it gets really nasty when you try to take into account
+    // metaitems. This is not at all a hot path, so it should be fine.
+    public static Trait getTraitFromItem(ItemStack item) {
+        for (Trait t : Trait.values()) {
+            if (t.cultureItem.isItemEqual(item)) return t;
+        }
+        return null;
+    }
+
     public enum Trait {
 
-        Photosynthetic(ItemList.IC2_Plantball.getItem(), 6, 3, 1, 1,
+        Photosynthetic(ItemList.IC2_Plantball.get(1), 6, 3, 1, 1,
             "GT5U.artificialorganisms.traitname.photosynthetic", "GT5U.artificialorganisms.traitdesc.photosynthetic"),
-        HiveMind(Item.getItemFromBlock(Blocks.red_mushroom), 5, 5, 5, 2, "GT5U.artificialorganisms.traitname.hivemind",
+        HiveMind(new ItemStack(Blocks.red_mushroom, 1), 5, 5, 5, 2, "GT5U.artificialorganisms.traitname.hivemind",
             "GT5U.artificialorganisms.traitdesc.hivemind"),
-        Laborer(Items.beef, 3, 8, 5, 3, "GT5U.artificialorganisms.traitname.laborer",
+        Laborer(new ItemStack(Items.beef, 1), 3, 8, 5, 3, "GT5U.artificialorganisms.traitname.laborer",
             "GT5U.artificialorganisms.traitdesc.laborer"),
-        Cooperative(Items.poisonous_potato, 5, 5, 5, 4, "GT5U.artificialorganisms.traitname.cooperative",
+        Cooperative(new ItemStack(Items.diamond_sword, 1), 5, 5, 5, 4, "GT5U.artificialorganisms.traitname.cooperative",
             "GT5U.artificialorganisms.traitdesc.cooperative"),
-        Decaying(Items.rotten_flesh, 10, 10, 10, 5, "GT5U.artificialorganisms.traitname.decaying",
+        Decaying(new ItemStack(Items.rotten_flesh, 1), 10, 10, 10, 5, "GT5U.artificialorganisms.traitname.decaying",
             "GT5U.artificialorganisms.traitdesc.decaying"),
-        Genius(ItemList.Neuron_Cell_Cluster.getItem(), 5, 5, 5, 6, "GT5U.artificialorganisms.traitname.genius",
+        Genius(ItemList.Neuron_Cell_Cluster.get(1), 5, 5, 5, 6, "GT5U.artificialorganisms.traitname.genius",
             "GT5U.artificialorganisms.traitdesc.genius"),
-        Cancerous(Items.poisonous_potato, 5, 5, 5, 7, "GT5U.artificialorganisms.traitname.cancerous",
+        Cancerous(new ItemStack(Items.poisonous_potato, 1), 5, 5, 5, 7, "GT5U.artificialorganisms.traitname.cancerous",
             "GT5U.artificialorganisms.traitdesc.cancerous"),
-        Immortal(Items.nether_star, 10, 10, 10, 10, "GT5U.artificialorganisms.traitname.immortal",
+        Immortal(new ItemStack(Items.nether_star, 1), 10, 10, 10, 10, "GT5U.artificialorganisms.traitname.immortal",
             "GT5U.artificialorganisms.traitdesc.immortal");
 
-        public final Item cultureItem;
+        public final ItemStack cultureItem;
         public final int baseInt, baseStr, baseRep;
         public final int id;
         public final String nameLocKey, descLocKey;
 
-        Trait(Item cultureItem, int baseInt, int baseStr, int baseRep, int id, String nameLocKey, String descLocKey) {
+        Trait(ItemStack cultureItem, int baseInt, int baseStr, int baseRep, int id, String nameLocKey, String descLocKey) {
             this.cultureItem = cultureItem;
             this.baseInt = baseInt;
             this.baseStr = baseStr;
@@ -341,5 +343,4 @@ public class ArtificialOrganism {
             this.descLocKey = descLocKey;
         }
     }
-
 }

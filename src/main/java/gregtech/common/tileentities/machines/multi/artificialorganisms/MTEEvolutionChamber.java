@@ -452,7 +452,7 @@ public class MTEEvolutionChamber extends MTEExtendedPowerMultiBlockBase<MTEEvolu
     }
 
     private boolean isValidCulture(ItemStack input) {
-        return ArtificialOrganism.itemTraitMap.containsKey(input.getItem());
+        return ArtificialOrganism.getTraitFromItem(input) != null;
     }
 
     private boolean canAddTrait() {
@@ -498,7 +498,7 @@ public class MTEEvolutionChamber extends MTEExtendedPowerMultiBlockBase<MTEEvolu
 
         // Iterate through all the traits to generate a ui for each one within the list
         for (Trait t : ArtificialOrganism.Trait.values()) {
-            ItemStack fakeItem = new ItemStack(t.cultureItem, 1);
+            ItemStack fakeItem = t.cultureItem;
 
             // The icon of the culture's item, with tooltip naming it
             list.child(
@@ -666,7 +666,7 @@ public class MTEEvolutionChamber extends MTEExtendedPowerMultiBlockBase<MTEEvolu
                     .syncHandler(new InteractionSyncHandler().setOnMousePressed(mouseData -> {
                         ItemStack is = limitedHandler.getStackInSlot(0);
                         if (is != null && canAddTrait()) {
-                            Trait t = ArtificialOrganism.itemTraitMap.get(is.getItem());
+                            Trait t = ArtificialOrganism.getTraitFromItem(is);
 
                             limitedHandler.extractItem(0, 1, false);
 
