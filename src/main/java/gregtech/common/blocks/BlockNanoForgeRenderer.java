@@ -15,6 +15,7 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.common.tileentities.render.TileEntityBlackhole;
+import gregtech.common.tileentities.render.TileEntityNanoForgeRenderer;
 
 public class BlockNanoForgeRenderer extends Block {
 
@@ -60,7 +61,7 @@ public class BlockNanoForgeRenderer extends Block {
 
     @Override
     public TileEntity createTileEntity(World world, int metadata) {
-        return new TileEntityBlackhole();
+        return new TileEntityNanoForgeRenderer();
     }
 
     @Override
