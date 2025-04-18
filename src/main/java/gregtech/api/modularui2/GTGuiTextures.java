@@ -384,6 +384,7 @@ public final class GTGuiTextures {
         "overlay_button/use_inverted_processing_state");
     public static final UITexture OVERLAY_BUTTON_WHITELIST = fullImageGT("overlay_button/whitelist");
     public static final UITexture OVERLAY_BUTTON_ADDITION = fullImageGT("overlay_button/addition");
+    public static final UITexture OVERLAY_BUTTON_INFO = fullImageGT("overlay_button/info");
 
     // endregion button overlay
 

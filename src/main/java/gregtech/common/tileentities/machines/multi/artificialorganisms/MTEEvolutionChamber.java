@@ -13,6 +13,7 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_BIOVAT_EMPTY_
 import static gregtech.api.modularui2.GTGuiTextures.OVERLAY_BUTTON_ADDITION;
 import static gregtech.api.modularui2.GTGuiTextures.OVERLAY_BUTTON_CHECKMARK;
 import static gregtech.api.modularui2.GTGuiTextures.OVERLAY_BUTTON_EXPORT;
+import static gregtech.api.modularui2.GTGuiTextures.OVERLAY_BUTTON_INFO;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 
@@ -21,6 +22,9 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import com.cleanroommc.modularui.widget.ScrollWidget;
+import com.cleanroommc.modularui.widgets.TextWidget;
+import com.gtnewhorizons.modularui.common.widget.Scrollable;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
@@ -485,6 +489,33 @@ public class MTEEvolutionChamber extends MTEExtendedPowerMultiBlockBase<MTEEvolu
         .imageSize(10, 10)
         .build();
 
+    private ModularPanel getInfoPopup() {
+        ModularPanel popup = new ModularPanel("info_panel").size(176, 166)
+            .pos(232, 86);
+
+        ListWidget<IWidget, CategoryList.Root> list = new ListWidget<>();
+        list.size(168, 158);
+        list.pos(4, 4);
+
+        list.child(new TextWidget(EnumChatFormatting.UNDERLINE + StatCollector.translateToLocal("GT5U.artificialorganisms.infopanelintro.header")));
+        list.child(new TextWidget(StatCollector.translateToLocal("GT5U.artificialorganisms.infopanelintro.1")));
+
+        list.child(new TextWidget(EnumChatFormatting.UNDERLINE + StatCollector.translateToLocal("GT5U.artificialorganisms.infopanelhmc.header")));
+        list.child(new TextWidget(StatCollector.translateToLocal("GT5U.artificialorganisms.infopanelhmc.1")));
+        list.child(new TextWidget(StatCollector.translateToLocal("GT5U.artificialorganisms.infopanelhmc.2")));
+        list.child(new TextWidget(StatCollector.translateToLocal("GT5U.artificialorganisms.infopanelhmc.3")));
+        list.child(new TextWidget(StatCollector.translateToLocal("GT5U.artificialorganisms.infopanelhmc.4")));
+        list.child(new TextWidget(StatCollector.translateToLocal("GT5U.artificialorganisms.infopanelhmc.5")));
+        list.child(new TextWidget(StatCollector.translateToLocal("GT5U.artificialorganisms.infopanelhmc.6")));
+
+        list.child(new TextWidget(EnumChatFormatting.UNDERLINE + StatCollector.translateToLocal("GT5U.artificialorganisms.infopanelnetworks.header")));
+        list.child(new TextWidget(StatCollector.translateToLocal("GT5U.artificialorganisms.infopanelnetworks.1")));
+        list.child(new TextWidget(StatCollector.translateToLocal("GT5U.artificialorganisms.infopanelnetworks.2")));
+
+        popup.child(list);
+        return popup;
+    }
+
     private ModularPanel getTraitPopup() {
         // This list is the scrollable element that contains each trait's individual ui
         ListWidget<IWidget, CategoryList.Root> list = new ListWidget<>();
@@ -614,6 +645,9 @@ public class MTEEvolutionChamber extends MTEExtendedPowerMultiBlockBase<MTEEvolu
         // The popup panel which shows trait details
         IPanelHandler traitPanel = syncManager
             .panel("trait_listing", (p_syncManager, syncHandler) -> getTraitPopup(), true);
+        // The "tutorial" popup panel
+        IPanelHandler infoPanel = syncManager
+            .panel("info_panel", (p_syncManager, syncHandler) -> getInfoPopup(), true);
 
         // Inventory slot handler
         syncManager.registerSlotGroup("culture_slot", 1);
@@ -667,6 +701,7 @@ public class MTEEvolutionChamber extends MTEExtendedPowerMultiBlockBase<MTEEvolu
                         ItemStack is = limitedHandler.getStackInSlot(0);
                         if (is != null && canAddTrait()) {
                             Trait t = ArtificialOrganism.getTraitFromItem(is);
+                            if (t == null) return;
 
                             limitedHandler.extractItem(0, 1, false);
 
@@ -708,6 +743,12 @@ public class MTEEvolutionChamber extends MTEExtendedPowerMultiBlockBase<MTEEvolu
                     .overlay(OVERLAY_BUTTON_EXPORT)
                     .size(16, 16)
                     .addTooltipLine("View Trait List"))
+            .child(
+                new ButtonWidget<>().pos(-20, 44)
+                    .syncHandler(new InteractionSyncHandler().setOnMousePressed(ignored -> infoPanel.openPanel()))
+                    .overlay(OVERLAY_BUTTON_INFO)
+                    .size(16, 16)
+                    .addTooltipLine("Information"))
 
             // Progress bars for the three primary stats
             .child(

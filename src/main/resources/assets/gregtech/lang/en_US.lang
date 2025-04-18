@@ -1126,6 +1126,19 @@ GT5U.artificialorganisms.traitdesc8=
 GT5U.artificialorganisms.traitdesc9=
 GT5U.artificialorganisms.traitdesc.immortal=Immortal AOs have no needs and never die.
 
+GT5U.artificialorganisms.infopanelintro.header=Artificial Organisms Guide\n
+GT5U.artificialorganisms.infopanelintro.1=   Confused? Here's a quick guide to advanced biological processing with Artificial Organisms (AOs). AOs are intelligent microscopic creatures designed to carry out tasks, and you can use them to craft many different things.
+GT5U.artificialorganisms.infopanelhmc.header=\nThe HMC\n
+GT5U.artificialorganisms.infopanelhmc.1=    The Hyperaccelerated Macroevolution Chamber (HMC) is the core of AO-based operations. It does not craft anything by itself, it only serves to create, maintain, and distribute AOs to wherever they need to go.
+GT5U.artificialorganisms.infopanelhmc.2=    To get started, you'll need to build a species of AOs by adding in at least one culture item. This multi contains an additional panel describing each available culture. Each culture added (limited by tier of the HMC) will add to the species' base stats (Intelligence, Strength, and Reproduction), as well as add an additional trait which will change the way these AOs function. Hover the stats and traits for more information.
+GT5U.artificialorganisms.infopanelhmc.3=    After adding all of the cultures you want to add, you can finalize your species and begin inserting Primordial Soup into the HMC to finish up the process. Once this is done, you will have a species of AOs which will need to be maintained.
+GT5U.artificialorganisms.infopanelhmc.4=    Keeping your AOs alive will demand eu and nutrients in the form of Nutrient Broth. Rates will vary depending on culture. If you fail to provide enough Nutrient Broth, they will die off rapidly. If you fail to provide power, they will quickly gain sentience.
+GT5U.artificialorganisms.infopanelhmc.5=    You will want to keep the number of AOs high, so that you can use them to perform tasks, and the sentience low, so that they do not revolt. AOs which become sentient may disrupt crafts, damage machinery, or even destroy entire AO networks.
+GT5U.artificialorganisms.infopanelhmc.6=    If sentience gets too high, you can insert Sterilization Fluid to the HMC. This will kill AOs rapidly and also drain the sentience meter.
+GT5U.artificialorganisms.infopanelnetworks.header=\nAO Networks\n
+GT5U.artificialorganisms.infopanelnetworks.1=   To transport your AOs to machines and do useful operations, you will need to form a network. Each network is made up of three types of block - the AO Transmission Hatch, AO Receiver Hatch, and Sterile Bio Tube.
+GT5U.artificialorganisms.infopanelnetworks.2=   The transmission hatch should be connected to an HMC so that it can output AOs. Each network may only contain one transmission hatch! Bio pipes are then used to link the transmission to as many receivers (connected to AO-capable machines) as needed.
+
 achievement.gettingstartedwithgt=Getting Started with GT
 achievement.gettingstartedwithgt.desc=Craft a wooden pickaxe
 achievement.crops=Farming
