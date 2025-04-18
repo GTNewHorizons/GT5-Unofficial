@@ -2,13 +2,11 @@ package gregtech.api.objects;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.Objects;
 import java.util.Random;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -311,8 +309,8 @@ public class ArtificialOrganism {
 
     public enum Trait {
 
-        Photosynthetic(ItemList.IC2_Plantball.get(1), 6, 3, 1, 1,
-            "GT5U.artificialorganisms.traitname.photosynthetic", "GT5U.artificialorganisms.traitdesc.photosynthetic"),
+        Photosynthetic(ItemList.IC2_Plantball.get(1), 6, 3, 1, 1, "GT5U.artificialorganisms.traitname.photosynthetic",
+            "GT5U.artificialorganisms.traitdesc.photosynthetic"),
         HiveMind(new ItemStack(Blocks.red_mushroom, 1), 5, 5, 5, 2, "GT5U.artificialorganisms.traitname.hivemind",
             "GT5U.artificialorganisms.traitdesc.hivemind"),
         Laborer(new ItemStack(Items.beef, 1), 3, 8, 5, 3, "GT5U.artificialorganisms.traitname.laborer",
@@ -333,7 +331,8 @@ public class ArtificialOrganism {
         public final int id;
         public final String nameLocKey, descLocKey;
 
-        Trait(ItemStack cultureItem, int baseInt, int baseStr, int baseRep, int id, String nameLocKey, String descLocKey) {
+        Trait(ItemStack cultureItem, int baseInt, int baseStr, int baseRep, int id, String nameLocKey,
+            String descLocKey) {
             this.cultureItem = cultureItem;
             this.baseInt = baseInt;
             this.baseStr = baseStr;

@@ -1139,6 +1139,20 @@ GT5U.artificialorganisms.infopanelnetworks.header=\nAO Networks\n
 GT5U.artificialorganisms.infopanelnetworks.1=   To transport your AOs to machines and do useful operations, you will need to form a network. Each network is made up of three types of block - the AO Transmission Hatch, AO Receiver Hatch, and Sterile Bio Tube.
 GT5U.artificialorganisms.infopanelnetworks.2=   The transmission hatch should be connected to an HMC so that it can output AOs. Each network may only contain one transmission hatch! Bio pipes are then used to link the transmission to as many receivers (connected to AO-capable machines) as needed.
 
+GT5U.artificialorganisms.button.addculture=Add Culture
+GT5U.artificialorganisms.button.finalize=Finalize AO Batch
+GT5U.artificialorganisms.button.traitlist=View Trait List
+GT5U.artificialorganisms.button.info=Information
+
+GT5U.artificialorganisms.addculture=Add %s as a culture to activate %s
+
+GT5U.artificialorganisms.intelligence=Intelligence
+GT5U.artificialorganisms.intelligencedesc=Required for AOs to perform certain recipes. Increases sentience gain rate.
+GT5U.artificialorganisms.strength=Strength
+GT5U.artificialorganisms.strengthdesc=Allows AOs to perform most recipes quicker. Lowers natural death rate.
+GT5U.artificialorganisms.reproduction=Reproduction
+GT5U.artificialorganisms.reproductiondesc=Controls how quickly the HMC will fill with AOs.
+
 achievement.gettingstartedwithgt=Getting Started with GT
 achievement.gettingstartedwithgt.desc=Craft a wooden pickaxe
 achievement.crops=Farming

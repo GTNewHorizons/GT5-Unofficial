@@ -22,9 +22,6 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import com.cleanroommc.modularui.widget.ScrollWidget;
-import com.cleanroommc.modularui.widgets.TextWidget;
-import com.gtnewhorizons.modularui.common.widget.Scrollable;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
@@ -64,6 +61,7 @@ import com.cleanroommc.modularui.widgets.CategoryList;
 import com.cleanroommc.modularui.widgets.ItemSlot;
 import com.cleanroommc.modularui.widgets.ListWidget;
 import com.cleanroommc.modularui.widgets.ProgressWidget;
+import com.cleanroommc.modularui.widgets.TextWidget;
 import com.cleanroommc.modularui.widgets.layout.Row;
 import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 import com.google.common.collect.ImmutableList;
@@ -497,10 +495,16 @@ public class MTEEvolutionChamber extends MTEExtendedPowerMultiBlockBase<MTEEvolu
         list.size(168, 158);
         list.pos(4, 4);
 
-        list.child(new TextWidget(EnumChatFormatting.UNDERLINE + StatCollector.translateToLocal("GT5U.artificialorganisms.infopanelintro.header")));
+        list.child(
+            new TextWidget(
+                EnumChatFormatting.UNDERLINE
+                    + StatCollector.translateToLocal("GT5U.artificialorganisms.infopanelintro.header")));
         list.child(new TextWidget(StatCollector.translateToLocal("GT5U.artificialorganisms.infopanelintro.1")));
 
-        list.child(new TextWidget(EnumChatFormatting.UNDERLINE + StatCollector.translateToLocal("GT5U.artificialorganisms.infopanelhmc.header")));
+        list.child(
+            new TextWidget(
+                EnumChatFormatting.UNDERLINE
+                    + StatCollector.translateToLocal("GT5U.artificialorganisms.infopanelhmc.header")));
         list.child(new TextWidget(StatCollector.translateToLocal("GT5U.artificialorganisms.infopanelhmc.1")));
         list.child(new TextWidget(StatCollector.translateToLocal("GT5U.artificialorganisms.infopanelhmc.2")));
         list.child(new TextWidget(StatCollector.translateToLocal("GT5U.artificialorganisms.infopanelhmc.3")));
@@ -508,7 +512,10 @@ public class MTEEvolutionChamber extends MTEExtendedPowerMultiBlockBase<MTEEvolu
         list.child(new TextWidget(StatCollector.translateToLocal("GT5U.artificialorganisms.infopanelhmc.5")));
         list.child(new TextWidget(StatCollector.translateToLocal("GT5U.artificialorganisms.infopanelhmc.6")));
 
-        list.child(new TextWidget(EnumChatFormatting.UNDERLINE + StatCollector.translateToLocal("GT5U.artificialorganisms.infopanelnetworks.header")));
+        list.child(
+            new TextWidget(
+                EnumChatFormatting.UNDERLINE
+                    + StatCollector.translateToLocal("GT5U.artificialorganisms.infopanelnetworks.header")));
         list.child(new TextWidget(StatCollector.translateToLocal("GT5U.artificialorganisms.infopanelnetworks.1")));
         list.child(new TextWidget(StatCollector.translateToLocal("GT5U.artificialorganisms.infopanelnetworks.2")));
 
@@ -539,10 +546,10 @@ public class MTEEvolutionChamber extends MTEExtendedPowerMultiBlockBase<MTEEvolu
                         new ItemDrawable(fakeItem).asWidget()
                             .size(12, 12)
                             .addTooltipElement(
-                                "Add " + fakeItem.getDisplayName()
-                                    + " as a culture to add "
-                                    + StatCollector.translateToLocal(t.nameLocKey)
-                                    + "."))
+                                StatCollector.translateToLocalFormatted(
+                                    "GT5U.artificialorganisms.addculture",
+                                    fakeItem.getDisplayName(),
+                                    EnumChatFormatting.AQUA + StatCollector.translateToLocal(t.nameLocKey))))
                     .child(
                         IKey.str(EnumChatFormatting.UNDERLINE + StatCollector.translateToLocal(t.nameLocKey))
                             .asWidget()));
@@ -556,9 +563,9 @@ public class MTEEvolutionChamber extends MTEExtendedPowerMultiBlockBase<MTEEvolu
                             .size(10, 10)
                             .addTooltipStringLines(
                                 ImmutableList.of(
-                                    EnumChatFormatting.UNDERLINE + "Intelligence",
-                                    "Required for AOs",
-                                    "to perform certain recipes.")))
+                                    EnumChatFormatting.UNDERLINE
+                                        + StatCollector.translateToLocal("GT5U.artificialorganisms.intelligence"),
+                                    StatCollector.translateToLocal("GT5U.artificialorganisms.intelligencedesc"))))
                     .child(
                         IKey.str(Integer.toString(t.baseInt))
                             .asWidget()
@@ -569,8 +576,9 @@ public class MTEEvolutionChamber extends MTEExtendedPowerMultiBlockBase<MTEEvolu
                             .size(10, 10)
                             .addTooltipStringLines(
                                 ImmutableList.of(
-                                    EnumChatFormatting.UNDERLINE + "Strength",
-                                    "Allows AOs to perform most recipes quicker.")))
+                                    EnumChatFormatting.UNDERLINE
+                                        + StatCollector.translateToLocal("GT5U.artificialorganisms.strength"),
+                                    StatCollector.translateToLocal("GT5U.artificialorganisms.strengthdesc"))))
                     .child(
                         IKey.str(Integer.toString(t.baseStr))
                             .asWidget()
@@ -581,8 +589,9 @@ public class MTEEvolutionChamber extends MTEExtendedPowerMultiBlockBase<MTEEvolu
                             .size(10, 10)
                             .addTooltipStringLines(
                                 ImmutableList.of(
-                                    EnumChatFormatting.UNDERLINE + "Reproduction",
-                                    "How quickly the tank will fill with AOs.")))
+                                    EnumChatFormatting.UNDERLINE
+                                        + StatCollector.translateToLocal("GT5U.artificialorganisms.reproduction"),
+                                    StatCollector.translateToLocal("GT5U.artificialorganisms.reproductiondesc"))))
                     .child(
                         IKey.str(Integer.toString(t.baseRep))
                             .asWidget()
@@ -646,8 +655,7 @@ public class MTEEvolutionChamber extends MTEExtendedPowerMultiBlockBase<MTEEvolu
         IPanelHandler traitPanel = syncManager
             .panel("trait_listing", (p_syncManager, syncHandler) -> getTraitPopup(), true);
         // The "tutorial" popup panel
-        IPanelHandler infoPanel = syncManager
-            .panel("info_panel", (p_syncManager, syncHandler) -> getInfoPopup(), true);
+        IPanelHandler infoPanel = syncManager.panel("info_panel", (p_syncManager, syncHandler) -> getInfoPopup(), true);
 
         // Inventory slot handler
         syncManager.registerSlotGroup("culture_slot", 1);
@@ -725,7 +733,7 @@ public class MTEEvolutionChamber extends MTEExtendedPowerMultiBlockBase<MTEEvolu
                         }
                     }))
                     .overlay(OVERLAY_BUTTON_ADDITION)
-                    .addTooltipLine("Add Culture Item")
+                    .addTooltipLine(StatCollector.translateToLocal("GT5U.artificialorganisms.button.addculture"))
                     .size(16, 16)
                     .setEnabledIf(ignored -> canAddTrait()))
             // This button finalizes the aos, preventing further modification and allowing user to add primordial soup
@@ -733,7 +741,7 @@ public class MTEEvolutionChamber extends MTEExtendedPowerMultiBlockBase<MTEEvolu
                 new ButtonWidget<>().pos(45, 61)
                     .syncHandler(new InteractionSyncHandler().setOnMousePressed(mouseData -> createNewAOs()))
                     .overlay(OVERLAY_BUTTON_CHECKMARK)
-                    .addTooltipLine("Finalize Batch")
+                    .addTooltipLine(StatCollector.translateToLocal("GT5U.artificialorganisms.button.finalize"))
                     .size(16, 16)
                     .setEnabledIf(ignored -> !currentSpecies.getFinalized()))
             // Opens the trait list popup
@@ -742,13 +750,13 @@ public class MTEEvolutionChamber extends MTEExtendedPowerMultiBlockBase<MTEEvolu
                     .syncHandler(new InteractionSyncHandler().setOnMousePressed(ignored -> traitPanel.openPanel()))
                     .overlay(OVERLAY_BUTTON_EXPORT)
                     .size(16, 16)
-                    .addTooltipLine("View Trait List"))
+                    .addTooltipLine(StatCollector.translateToLocal("GT5U.artificialorganisms.button.traitlist")))
             .child(
                 new ButtonWidget<>().pos(-20, 44)
                     .syncHandler(new InteractionSyncHandler().setOnMousePressed(ignored -> infoPanel.openPanel()))
                     .overlay(OVERLAY_BUTTON_INFO)
                     .size(16, 16)
-                    .addTooltipLine("Information"))
+                    .addTooltipLine(StatCollector.translateToLocal("GT5U.artificialorganisms.button.info")))
 
             // Progress bars for the three primary stats
             .child(
@@ -816,27 +824,27 @@ public class MTEEvolutionChamber extends MTEExtendedPowerMultiBlockBase<MTEEvolu
                     .size(10, 10)
                     .addTooltipStringLines(
                         ImmutableList.of(
-                            EnumChatFormatting.UNDERLINE + "Intelligence",
-                            "Required for AOs",
-                            "to perform certain recipes.")))
+                            EnumChatFormatting.UNDERLINE
+                                + StatCollector.translateToLocal("GT5U.artificialorganisms.intelligence"),
+                            StatCollector.translateToLocal("GT5U.artificialorganisms.intelligencedesc"))))
             .child(
                 strIcon.asWidget()
                     .pos(5, 17)
                     .size(10, 10)
                     .addTooltipStringLines(
                         ImmutableList.of(
-                            EnumChatFormatting.UNDERLINE + "Strength",
-                            "Allows AOs to perform",
-                            "most recipes quicker.")))
+                            EnumChatFormatting.UNDERLINE
+                                + StatCollector.translateToLocal("GT5U.artificialorganisms.strength"),
+                            StatCollector.translateToLocal("GT5U.artificialorganisms.strengthdesc"))))
             .child(
                 repIcon.asWidget()
                     .pos(5, 29)
                     .size(10, 10)
                     .addTooltipStringLines(
                         ImmutableList.of(
-                            EnumChatFormatting.UNDERLINE + "Reproduction",
-                            "How quickly the tank",
-                            "will fill with AOs.")));
+                            EnumChatFormatting.UNDERLINE
+                                + StatCollector.translateToLocal("GT5U.artificialorganisms.reproduction"),
+                            StatCollector.translateToLocal("GT5U.artificialorganisms.reproductiondesc"))));
 
         // Render the trait icons for traits previously added
         organismSyncer.setChangeListener(() -> {
