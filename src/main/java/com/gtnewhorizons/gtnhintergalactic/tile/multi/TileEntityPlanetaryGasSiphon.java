@@ -451,7 +451,7 @@ public class TileEntityPlanetaryGasSiphon extends MTEEnhancedMultiBlockBase<Tile
      */
     @Override
     public boolean onSolderingToolRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer player,
-            float x, float y, float z) {
+            float x, float y, float z, ItemStack aTool) {
         if (side == getBaseMetaTileEntity().getFrontFacing()) {
             mChunkLoadingEnabled = !mChunkLoadingEnabled;
             GTUtility.sendChatToPlayer(
@@ -460,7 +460,7 @@ public class TileEntityPlanetaryGasSiphon extends MTEEnhancedMultiBlockBase<Tile
                             : GTUtility.trans("503", "Mining chunk loading disabled"));
             return true;
         }
-        return super.onSolderingToolRightClick(side, wrenchingSide, player, x, y, z);
+        return super.onSolderingToolRightClick(side, wrenchingSide, player, x, y, z, aTool);
     }
 
     /**
