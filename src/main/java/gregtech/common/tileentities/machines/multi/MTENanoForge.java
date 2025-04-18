@@ -17,7 +17,6 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_LINE
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 import static gregtech.api.util.GTUtility.filterValidMTEs;
-import static tectech.util.TTUtility.replaceLetters;
 
 import javax.annotation.Nonnull;
 
@@ -481,7 +480,7 @@ public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge> i
         } else if (aStack != null && aStack.isItemEqual(MaterialsUEVplus.Eternity.getNanite(1))) {
             if (checkPiece(STRUCTURE_PIECE_TIER4_BASE, 20, 12, 0)
                 && (checkPiece(STRUCTURE_PIECE_TIER4_RENDER, 20, 49, 0)
-                || checkPiece(STRUCTURE_PIECE_TIER4_AIR_RENDER, 20, 49, 0))) {
+                    || checkPiece(STRUCTURE_PIECE_TIER4_AIR_RENDER, 20, 49, 0))) {
                 mSpecialTier = 4;
             }
         }
@@ -524,15 +523,51 @@ public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge> i
             built += survivialBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 4, 37, 1, elementBudget, env, false, true);
             if (built >= 0) return built;
             if (stackSize.stackSize > 1) {
-                built += survivialBuildPiece(STRUCTURE_PIECE_TIER2, stackSize, -7, 14, 4, elementBudget, env, false, true);
+                built += survivialBuildPiece(
+                    STRUCTURE_PIECE_TIER2,
+                    stackSize,
+                    -7,
+                    14,
+                    4,
+                    elementBudget,
+                    env,
+                    false,
+                    true);
             }
             if (stackSize.stackSize > 2) {
-                built += survivialBuildPiece(STRUCTURE_PIECE_TIER3, stackSize, 14, 26, 4, elementBudget, env, false, true);
+                built += survivialBuildPiece(
+                    STRUCTURE_PIECE_TIER3,
+                    stackSize,
+                    14,
+                    26,
+                    4,
+                    elementBudget,
+                    env,
+                    false,
+                    true);
             }
         } else {
-            built += survivialBuildPiece(STRUCTURE_PIECE_TIER4_BASE, stackSize, 20, 12, 0, elementBudget, env, false, true);
+            built += survivialBuildPiece(
+                STRUCTURE_PIECE_TIER4_BASE,
+                stackSize,
+                20,
+                12,
+                0,
+                elementBudget,
+                env,
+                false,
+                true);
             if (built >= 0) return built;
-            built += survivialBuildPiece(STRUCTURE_PIECE_TIER4_RENDER, stackSize, 20, 49, 0, elementBudget, env, false, true);
+            built += survivialBuildPiece(
+                STRUCTURE_PIECE_TIER4_RENDER,
+                stackSize,
+                20,
+                49,
+                0,
+                elementBudget,
+                env,
+                false,
+                true);
         }
         return built;
     }
@@ -692,9 +727,12 @@ public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge> i
         int x = gregTechTileEntity.getXCoord();
         int y = gregTechTileEntity.getYCoord();
         int z = gregTechTileEntity.getZCoord();
-        double xOffset = 20 * getExtendedFacing().getRelativeBackInWorld().offsetX + 22 * getExtendedFacing().getRelativeUpInWorld().offsetX;
-        double yOffset = 20 * getExtendedFacing().getRelativeBackInWorld().offsetY + 22 * getExtendedFacing().getRelativeUpInWorld().offsetY;
-        double zOffset = 20 * getExtendedFacing().getRelativeBackInWorld().offsetZ + 22 * getExtendedFacing().getRelativeUpInWorld().offsetZ;
+        double xOffset = 20 * getExtendedFacing().getRelativeBackInWorld().offsetX
+            + 22 * getExtendedFacing().getRelativeUpInWorld().offsetX;
+        double yOffset = 20 * getExtendedFacing().getRelativeBackInWorld().offsetY
+            + 22 * getExtendedFacing().getRelativeUpInWorld().offsetY;
+        double zOffset = 20 * getExtendedFacing().getRelativeBackInWorld().offsetZ
+            + 22 * getExtendedFacing().getRelativeUpInWorld().offsetZ;
         return new ChunkCoordinates((int) (x + xOffset), (int) (y + yOffset), (int) (z + zOffset));
     }
 
