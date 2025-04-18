@@ -499,12 +499,15 @@ public class MTEEvolutionChamber extends MTEExtendedPowerMultiBlockBase<MTEEvolu
             new TextWidget(
                 EnumChatFormatting.UNDERLINE
                     + StatCollector.translateToLocal("GT5U.artificialorganisms.infopanelintro.header")));
+        list.child(new TextWidget(""));
         list.child(new TextWidget(StatCollector.translateToLocal("GT5U.artificialorganisms.infopanelintro.1")));
 
+        list.child(new TextWidget(""));
         list.child(
             new TextWidget(
                 EnumChatFormatting.UNDERLINE
                     + StatCollector.translateToLocal("GT5U.artificialorganisms.infopanelhmc.header")));
+        list.child(new TextWidget(""));
         list.child(new TextWidget(StatCollector.translateToLocal("GT5U.artificialorganisms.infopanelhmc.1")));
         list.child(new TextWidget(StatCollector.translateToLocal("GT5U.artificialorganisms.infopanelhmc.2")));
         list.child(new TextWidget(StatCollector.translateToLocal("GT5U.artificialorganisms.infopanelhmc.3")));
@@ -512,10 +515,12 @@ public class MTEEvolutionChamber extends MTEExtendedPowerMultiBlockBase<MTEEvolu
         list.child(new TextWidget(StatCollector.translateToLocal("GT5U.artificialorganisms.infopanelhmc.5")));
         list.child(new TextWidget(StatCollector.translateToLocal("GT5U.artificialorganisms.infopanelhmc.6")));
 
+        list.child(new TextWidget(""));
         list.child(
             new TextWidget(
                 EnumChatFormatting.UNDERLINE
                     + StatCollector.translateToLocal("GT5U.artificialorganisms.infopanelnetworks.header")));
+        list.child(new TextWidget(""));
         list.child(new TextWidget(StatCollector.translateToLocal("GT5U.artificialorganisms.infopanelnetworks.1")));
         list.child(new TextWidget(StatCollector.translateToLocal("GT5U.artificialorganisms.infopanelnetworks.2")));
 
