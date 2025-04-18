@@ -37,6 +37,39 @@ GT5U.gui.text.EIG_seedOverflow=Too many seeds inside!
 GT5U.gui.text.EIG_missingwater=No water!
 GT5U.gui.text.EIG_ic2glass=Insufficient glass tier!
 
+kubatech.gui.text.tee_ultimate.status=STATUS
+kubatech.gui.text.tee_ultimate.tea=Tea
+kubatech.gui.text.tee_ultimate.tea_limit=Tea limit
+kubatech.gui.text.tee_ultimate.exchange=EXCHANGE
+kubatech.gui.text.tee_ultimate.exchange.cost=Cost: %s Tea
+kubatech.gui.text.tee_ultimate.benefits=BENEFITS
+
+kubatech.gui.text.tee_acceptor.name=Tea Acceptor
+kubatech.gui.text.tee_acceptor.tea=[Tea]
+kubatech.gui.text.tee_acceptor.not_owner=This is not your block
+kubatech.gui.text.tee_acceptor.in=IN: %s/t
+kubatech.gui.text.tee_acceptor.in.tooltip=Average input from the last 5 seconds
+
+kubatech.gui.text.eec.infernal_drop=Is allowed to spawn infernal mobs
+kubatech.gui.text.eec.infernal_drop.always=Does not affect mobs that are always infernal !
+kubatech.gui.text.eec.void_all_damaged=Void all damaged and enchanted items
+kubatech.gui.text.eec.void_all_damaged.always=Does not affect infernal drops and some special drops like Sticky Sword!
+
+kubatech.gui.text.inventory=Inventory
+kubatech.gui.text.status=Status
+kubatech.gui.text.operating=Operating
+kubatech.gui.text.input=Input
+kubatech.gui.text.output=Output
+kubatech.gui.text.eig.setup_mode=Setup mode
+kubatech.gui.text.eig.disabled=Disabled
+kubatech.gui.text.eig.enabled=Enabled
+kubatech.gui.text.eig.ic2_mode=IC2 mode
+kubatech.gui.text.eig.no_humidity_mode=No Humidity mode
+kubatech.gui.text.mia.primary_mode=Primary mode
+kubatech.gui.text.mia.normal=Normal
+kubatech.gui.text.mia.swarmer=Swarmer
+
+
 # info data
 ## general
 kubatech.infodata.running_mode=Running in mode:

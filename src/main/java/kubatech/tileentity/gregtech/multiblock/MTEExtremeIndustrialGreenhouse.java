@@ -1006,7 +1006,9 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
 
         builder.widget(
             new CycleButtonWidget().setToggle(() -> isInInventory, i -> isInInventory = i)
-                .setTextureGetter(i -> i == 0 ? new Text("Inventory") : new Text("Status"))
+                .setTextureGetter(
+                    i -> i == 0 ? new Text(StatCollector.translateToLocal("kubatech.gui.text.inventory"))
+                        : new Text(StatCollector.translateToLocal("kubatech.gui.text.status")))
                 .setBackground(GTUITextures.BUTTON_STANDARD)
                 .setPos(140, 91)
                 .setSize(55, 16));
@@ -1055,21 +1057,35 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
                             if (!(player instanceof EntityPlayerMP)) return;
                             tryChangeSetupPhase(player);
                         })
-                        .addTooltip(0, new Text("Operating").color(Color.GREEN.dark(3)))
-                        .addTooltip(1, new Text("Input").color(Color.YELLOW.dark(3)))
-                        .addTooltip(2, new Text("Output").color(Color.YELLOW.dark(3)))
+                        .addTooltip(
+                            0,
+                            new Text(StatCollector.translateToLocal("kubatech.gui.text.operating"))
+                                .color(Color.GREEN.dark(3)))
+                        .addTooltip(
+                            1,
+                            new Text(StatCollector.translateToLocal("kubatech.gui.text.input"))
+                                .color(Color.YELLOW.dark(3)))
+                        .addTooltip(
+                            2,
+                            new Text(StatCollector.translateToLocal("kubatech.gui.text.output"))
+                                .color(Color.YELLOW.dark(3)))
                         .setTextureGetter(
-                            i -> i == 0 ? new Text("Operating").color(Color.GREEN.dark(3))
-                                .withFixedSize(70 - 18, 18, 15, 0)
-                                : i == 1 ? new Text("Input").color(Color.YELLOW.dark(3))
+                            i -> i == 0
+                                ? new Text(StatCollector.translateToLocal("kubatech.gui.text.operating"))
+                                    .color(Color.GREEN.dark(3))
                                     .withFixedSize(70 - 18, 18, 15, 0)
-                                    : new Text("Output").color(Color.YELLOW.dark(3))
+                                : i == 1
+                                    ? new Text(StatCollector.translateToLocal("kubatech.gui.text.input"))
+                                        .color(Color.YELLOW.dark(3))
+                                        .withFixedSize(70 - 18, 18, 15, 0)
+                                    : new Text(StatCollector.translateToLocal("kubatech.gui.text.output"))
+                                        .color(Color.YELLOW.dark(3))
                                         .withFixedSize(70 - 18, 18, 15, 0))
                         .setBackground(
                             ModularUITextures.VANILLA_BACKGROUND,
                             GTUITextures.OVERLAY_BUTTON_CYCLIC.withFixedSize(18, 18))
                         .setSize(70, 18)
-                        .addTooltip("Setup mode"))
+                        .addTooltip(StatCollector.translateToLocal("kubatech.gui.text.eig.setup_mode")))
                     .widget(
                         new CycleButtonWidget().setLength(2)
                             .setGetter(() -> this.mode.getUIIndex())
@@ -1077,18 +1093,27 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
                                 if (!(player instanceof EntityPlayerMP)) return;
                                 tryChangeMode(player);
                             })
-                            .addTooltip(0, new Text("Disabled").color(Color.RED.dark(3)))
-                            .addTooltip(1, new Text("Enabled").color(Color.GREEN.dark(3)))
+                            .addTooltip(
+                                0,
+                                new Text(StatCollector.translateToLocal("kubatech.gui.text.eig.disabled"))
+                                    .color(Color.RED.dark(3)))
+                            .addTooltip(
+                                1,
+                                new Text(StatCollector.translateToLocal("kubatech.gui.text.eig.enabled"))
+                                    .color(Color.GREEN.dark(3)))
                             .setTextureGetter(
-                                i -> i == 0 ? new Text("Disabled").color(Color.RED.dark(3))
-                                    .withFixedSize(70 - 18, 18, 15, 0)
-                                    : new Text("Enabled").color(Color.GREEN.dark(3))
+                                i -> i == 0
+                                    ? new Text(StatCollector.translateToLocal("kubatech.gui.text.eig.disabled"))
+                                        .color(Color.RED.dark(3))
+                                        .withFixedSize(70 - 18, 18, 15, 0)
+                                    : new Text(StatCollector.translateToLocal("kubatech.gui.text.eig.enabled"))
+                                        .color(Color.GREEN.dark(3))
                                         .withFixedSize(70 - 18, 18, 15, 0))
                             .setBackground(
                                 ModularUITextures.VANILLA_BACKGROUND,
                                 GTUITextures.OVERLAY_BUTTON_CYCLIC.withFixedSize(18, 18))
                             .setSize(70, 18)
-                            .addTooltip("IC2 mode"))
+                            .addTooltip(StatCollector.translateToLocal("kubatech.gui.text.eig.ic2_mode")))
                     .widget(
                         new CycleButtonWidget().setLength(2)
                             .setGetter(() -> useNoHumidity ? 1 : 0)
@@ -1096,31 +1121,47 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
                                 if (!(player instanceof EntityPlayerMP)) return;
                                 this.tryChangeHumidityMode(player);
                             })
-                            .addTooltip(0, new Text("Disabled").color(Color.RED.dark(3)))
-                            .addTooltip(1, new Text("Enabled").color(Color.GREEN.dark(3)))
+                            .addTooltip(
+                                0,
+                                new Text(StatCollector.translateToLocal("kubatech.gui.text.eig.disabled"))
+                                    .color(Color.RED.dark(3)))
+                            .addTooltip(
+                                1,
+                                new Text(StatCollector.translateToLocal("kubatech.gui.text.eig.enabled"))
+                                    .color(Color.GREEN.dark(3)))
                             .setTextureGetter(
-                                i -> i == 0 ? new Text("Disabled").color(Color.RED.dark(3))
-                                    .withFixedSize(70 - 18, 18, 15, 0)
-                                    : new Text("Enabled").color(Color.GREEN.dark(3))
+                                i -> i == 0
+                                    ? new Text(StatCollector.translateToLocal("kubatech.gui.text.eig.disabled"))
+                                        .color(Color.RED.dark(3))
+                                        .withFixedSize(70 - 18, 18, 15, 0)
+                                    : new Text(StatCollector.translateToLocal("kubatech.gui.text.eig.enabled"))
+                                        .color(Color.GREEN.dark(3))
                                         .withFixedSize(70 - 18, 18, 15, 0))
                             .setBackground(
                                 ModularUITextures.VANILLA_BACKGROUND,
                                 GTUITextures.OVERLAY_BUTTON_CYCLIC.withFixedSize(18, 18))
                             .setSize(70, 18)
-                            .addTooltip("No Humidity mode"))
+                            .addTooltip(StatCollector.translateToLocal("kubatech.gui.text.eig.no_humidity_mode")))
                     .setEnabled(widget -> !getBaseMetaTileEntity().isActive())
                     .setPos(10, 30))
             .widget(
-                new Column().widget(new TextWidget("Setup mode").setSize(100, 18))
-                    .widget(new TextWidget("IC2 mode").setSize(100, 18))
-                    .widget(new TextWidget("No Humidity mode").setSize(100, 18))
+                new Column().widget(
+                    new TextWidget(StatCollector.translateToLocal("kubatech.gui.text.eig.setup_mode")).setSize(100, 18))
+                    .widget(
+                        new TextWidget(StatCollector.translateToLocal("kubatech.gui.text.eig.ic2_mode"))
+                            .setSize(100, 18))
+                    .widget(
+                        new TextWidget(StatCollector.translateToLocal("kubatech.gui.text.eig.no_humidity_mode"))
+                            .setSize(100, 18))
                     .setEnabled(widget -> !getBaseMetaTileEntity().isActive())
                     .setPos(80, 30))
             .widget(
                 new DrawableWidget().setDrawable(GTUITextures.OVERLAY_BUTTON_CROSS)
                     .setSize(18, 18)
                     .setPos(10, 30)
-                    .addTooltip(new Text("Can't change configuration when running !").color(Color.RED.dark(3)))
+                    .addTooltip(
+                        new Text(StatCollector.translateToLocal("GT5U.gui.text.cannot_change_when_running"))
+                            .color(Color.RED.dark(3)))
                     .setEnabled(widget -> getBaseMetaTileEntity().isActive()));
         return builder.build();
     }
