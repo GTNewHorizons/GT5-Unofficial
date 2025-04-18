@@ -16,3 +16,4 @@ jobs:
         shell: bash
         run: |
           ! grep -E -r '(BartWorks|GalactiGreg|GGFab|GoodGenerator|GTNHLanthanides|GregTech|GTPlusPlus|KekzTech|KubaTech|TecTech|NEIOrePlugin)\.isModLoaded' src/main/java
+          ! grep -E -r 'isModLoaded\(".*")' src/main/java
