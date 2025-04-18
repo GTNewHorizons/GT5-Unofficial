@@ -80,13 +80,13 @@ public class BlockNanoForgeRenderer extends Block {
 
     @Override
     public AxisAlignedBB getCollisionBoundingBoxFromPool(World worldIn, int x, int y, int z) {
-        return super.getCollisionBoundingBoxFromPool(worldIn, x, y, z);
+        return null;
     }
 
     @Override
     @SideOnly(Side.CLIENT)
     public AxisAlignedBB getSelectedBoundingBoxFromPool(World worldIn, int x, int y, int z) {
-        return super.getSelectedBoundingBoxFromPool(worldIn, x, y, z);
+        return null;
     }
 
 }

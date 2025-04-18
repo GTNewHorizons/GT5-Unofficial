@@ -43,7 +43,6 @@ import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
-import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.MaterialsUEVplus;
@@ -293,7 +292,6 @@ public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge> i
     private byte mSpecialTier = 0;
     private boolean renderActive = false;
     private boolean renderDisabled = false;
-    private long timer = 0;
 
     public MTENanoForge(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -461,24 +459,13 @@ public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge> i
             // TODO: Look for proper fix
             // Updates every 10 sec
             if (mUpdate <= -150) mUpdate = 50;
-            // if (renderActive && !renderDisabled) {
-            GTMod.GT_FML_LOGGER.debug("test1");
-            TileEntityNanoForgeRenderer tile = getRenderer();
-            if (tile != null) {
-                GTMod.GT_FML_LOGGER.debug("test2");
-                timer += 1;
-                if (mMaxProgresstime > 0) {
-                    timer += 1;
-                } else {
-                    // timer -= 100;
-                    // timer = Math.max(timer, 0);
+            if (renderActive && !renderDisabled) {
+                TileEntityNanoForgeRenderer tile = getRenderer();
+                if (tile != null) {
+                    tile.setRunning(true);
+                    if (mMaxProgresstime > 0) {} else {}
                 }
-                if (timer / 36_000_000 == 1) {
-                    timer = 0;
-                }
-                tile.setTimer(timer);
             }
-            // }
         }
     }
 
@@ -601,7 +588,6 @@ public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge> i
         aNBT.setByte("mSpecialTier", mSpecialTier);
         aNBT.setBoolean("renderActive", renderActive);
         aNBT.setBoolean("renderDisabled", renderDisabled);
-        aNBT.setLong("runningTimer", timer);
     }
 
     @Override
@@ -614,7 +600,6 @@ public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge> i
         mSpecialTier = aNBT.getByte("mSpecialTier");
         renderActive = aNBT.getBoolean("renderActive");
         renderDisabled = aNBT.getBoolean("renderDisabled");
-        timer = aNBT.getLong("runningTimer");
     }
 
     @Override
