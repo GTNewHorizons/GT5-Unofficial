@@ -223,6 +223,7 @@ public enum Mods {
         public static final String BLOOD_MAGIC = "AWWayofTime";
         public static final String BOTANIA = "Botania";
         public static final String BOTANY = "Botany";
+        public static final String BUILD_CRAFT = "BuildCraft";
         public static final String BUILD_CRAFT_BUILDERS = "BuildCraft|Builders";
         public static final String BUILD_CRAFT_COMPAT = "BuildCraft|Compat";
         public static final String BUILD_CRAFT_CORE = "BuildCraft|Core";
@@ -234,6 +235,7 @@ public enum Mods {
         public static final String CARPENTERS_BLOCKS = "CarpentersBlocks";
         public static final String CAT_WALKS = "catwalks";
         public static final String CHISEL = "chisel";
+        public static final String CHISEL_API = "ChiselAPI";
         public static final String COMPACT_KINETIC_GENERATORS = "compactkineticgenerators";
         public static final String COMPUTRONICS = "computronics";
         public static final String CRAFT_TWEAKER = "MineTweaker3";
