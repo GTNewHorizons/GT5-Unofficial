@@ -9,14 +9,16 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_TOWER_GLOW;
 import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex.CASING_INDEX_WHITE;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
+import mcp.mobius.waila.api.IWailaConfigHandler;
+import mcp.mobius.waila.api.IWailaDataAccessor;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.StatCollector;
+import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -357,7 +359,6 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
             incrementProcessedItemCounts(fakeItem, mOutputItems[0].stackSize);
             this.processingLogic.setSpeedBonus(1F / Math.min(10, Math.max(1, 1 + getSpeedModifierForOutput(fakeItem))));
 
-
             mEfficiency = 10000;
             mEfficiencyIncrease = 10000;
             mMaxProgresstime = recipe.mDuration;
@@ -529,5 +530,30 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
                     .build() };
         }
         return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX_WHITE) };
+    }
+
+    @Override
+    public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y, int z) {
+        super.getWailaNBTData(player, tile, tag, world, x, y, z);
+
+        Map.Entry<CircuitComponent, Long> optimizedEntry = processedItemCounts.entrySet().stream().max(Map.Entry.comparingByValue()).orElse(null);
+        if (optimizedEntry != null) {
+            tag.setString("optimizedItem", optimizedEntry.getKey().getLocalizedName());
+            tag.setDouble("speedBoost", getSpeedModifierForOutput(optimizedEntry.getKey()));
+        }
+    }
+
+    @Override
+    public void getWailaBody(ItemStack itemStack, List<String> currentTip, IWailaDataAccessor accessor, IWailaConfigHandler config) {
+        super.getWailaBody(itemStack, currentTip, accessor, config);
+
+        NBTTagCompound tag = accessor.getNBTData();
+
+        int insertIdx = 0;
+        for(; insertIdx < currentTip.size() && !currentTip.get(insertIdx).startsWith("Producing"); insertIdx++) {}
+        if(tag.hasKey("optimizedItem"))
+            currentTip.add(insertIdx++, "Optimized for: " + tag.getString("optimizedItem"));
+        if(tag.hasKey("speedBoost"))
+            currentTip.add(insertIdx, "Speed boost: §b" + GTUtility.formatNumbers((100 * Math.min(10, tag.getDouble("speedBoost")))) + "%");
     }
 }
