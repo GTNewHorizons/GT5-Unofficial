@@ -1,10 +1,8 @@
 package gregtech.api.util;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
+import static org.apache.commons.lang3.StringUtils.removeEnd;
+
+import java.util.*;
 import java.util.function.Consumer;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
@@ -17,8 +15,11 @@ import net.minecraft.util.StatCollector;
 import org.jetbrains.annotations.NotNull;
 
 import com.github.bsideup.jabel.Desugar;
+import com.google.common.base.Joiner;
+import com.google.common.base.Strings;
 import com.google.common.collect.Multimaps;
 import com.google.common.collect.SetMultimap;
+import com.google.common.primitives.Ints;
 import com.gtnewhorizon.structurelib.StructureLibAPI;
 
 import gregtech.GTMod;
@@ -62,7 +63,7 @@ public class MultiblockTooltipBuilder {
     private static final String TT_outputbus = StatCollector.translateToLocal("GT5U.MBTT.OutputBus");
     private static final String TT_outputhatch = StatCollector.translateToLocal("GT5U.MBTT.OutputHatch");
     private static final String TT_structurehint = StatCollector.translateToLocal("GT5U.MBTT.StructureHint");
-    private static final String TT_addedBy = StatCollector.translateToLocal("GT5U.MBTT.Authors");
+    private static final String TT_partinfohint = StatCollector.translateToLocal("GT5U.MBTT.PartInfoHint");
     private static final String TT_air = StatCollector.translateToLocal("GT5U.MBTT.Air");
     private static final String[] TT_dots = IntStream.range(0, 16)
         .mapToObj(i -> StatCollector.translateToLocal("structurelib.blockhint." + i + ".name"))
@@ -87,12 +88,19 @@ public class MultiblockTooltipBuilder {
      * Add a line telling you what the machine type is. Usually, this will be the name of a SB version.<br>
      * Machine Type: machine
      *
-     * @param machine Name of the machine type
+     * @param machLocKeys Localization keys to machine types
      *
      * @return Instance this method was called on.
      */
-    public MultiblockTooltipBuilder addMachineType(String machine) {
-        addInfo("GT5U.MBTT.MachineType", machine);
+    public MultiblockTooltipBuilder addMachineType(String... machLocKeys) {
+        String placeholder = "%s" + EnumChatFormatting.GRAY + " | " + EnumChatFormatting.YELLOW;
+
+        addInfo(
+            "%s" + removeEnd(
+                Strings.repeat(placeholder, machLocKeys.length),
+                EnumChatFormatting.GRAY + " | " + EnumChatFormatting.YELLOW),
+            Stream.concat(Stream.of("GT5U.MBTT.MachineType"), Arrays.stream(machLocKeys))
+                .toArray());
         return this;
     }
 
@@ -144,6 +152,7 @@ public class MultiblockTooltipBuilder {
      *             and use {@link GTUtility#YAP_SEPARATOR} ({@code [BR]}) in lang entries as separator.<br>
      *             Like {@code gt.a_multiblock.desc.1=Yaps a lot,[BR]so we have to separate it.}
      */
+    @Deprecated
     public MultiblockTooltipBuilder addInfoAll(String... infoStrings) {
         for (String info : infoStrings) {
             addInfo(info);
@@ -226,20 +235,25 @@ public class MultiblockTooltipBuilder {
             hmax,
             lmin,
             lmax,
-            (hollow ? "GT5U.MBTT.Hollow" : ""));
+            (hollow ? "GT5U.MBTT.Hollow" : " "));
         addShiftInfo("GT5U.MBTT.Structure");
         return this;
     }
 
     /**
-     * Add a line of information about the structure:<br>
+     * Add a line of structure info for where to set the controller block<br>
      * (indent)Controller: info
      *
-     * @param info Positional information.
+     * @param info Lang key to positional information.<br>
+     *             <b>Preset values:</b><br>
+     *             {@code "fc"}: {@code Front center}, e.g. Oil Cracker<br>
+     *             {@code "fbm"}: {@code Front bottom middle}, e.g. EBF
      * @return Instance this method was called on.
      */
     public MultiblockTooltipBuilder addController(String info) {
-        addStructurePart("GT5U.MBTT.Controller", info);
+        addStructurePart(
+            "GT5U.MBTT.Controller",
+            info.equals("fc") ? "gt.mb.corepos.fc" : info.equals("fbm") ? "gt.mb.corepos.fbm" : info);
         return this;
     }
 
@@ -312,7 +326,9 @@ public class MultiblockTooltipBuilder {
         int minCount, EnumChatFormatting countColor, boolean isTiered) {
         addStructureInfo(
             "" + countColor + minCount + "x " + textColor + "%s%s%s",
-            casingName + "GT5U.MBTT.Minimum" + (isTiered ? "GT5U.MBTT.Tiered" : " "));
+            casingName,
+            "GT5U.MBTT.Minimum",
+            (isTiered ? "GT5U.MBTT.Tiered" : " "));
         return this;
     }
 
@@ -377,6 +393,7 @@ public class MultiblockTooltipBuilder {
      *
      * @deprecated Use {@link #addStructurePart(String, String)}
      */
+    @Deprecated
     public MultiblockTooltipBuilder addOtherStructurePart(String locKey, String info) {
         addShiftInfo(TAB + "GT5U.MBTT.PartInfo", locKey, info);
         return this;
@@ -394,6 +411,7 @@ public class MultiblockTooltipBuilder {
      *
      * @deprecated Use {@link #addStructurePart(String, String, int...)}
      */
+    @Deprecated
     public MultiblockTooltipBuilder addOtherStructurePart(String locKey, String info, int... dots) {
         addOtherStructurePart(locKey, info);
         for (int dot : dots) hBlocks.put(dot, StatCollector.translateToLocal(locKey));
@@ -406,7 +424,7 @@ public class MultiblockTooltipBuilder {
     }
 
     public MultiblockTooltipBuilder addStructurePart(String locKey, String info, int... dots) {
-        addOtherStructurePart(locKey, info);
+        addStructurePart(locKey, info);
         for (int dot : dots) hBlocks.put(dot, StatCollector.translateToLocal(locKey));
         return this;
     }
@@ -461,30 +479,6 @@ public class MultiblockTooltipBuilder {
 
     /**
      * Add a line of information about the structure:<br>
-     * (indent)Input Bus: info
-     *
-     * @param info Location where the bus goes
-     * @return Instance this method was called on.
-     */
-    public MultiblockTooltipBuilder addInputBus(String info) {
-        addStructurePart("GT5U.MBTT.InputBus", info);
-        return this;
-    }
-
-    /**
-     * Add a line of information about the structure:<br>
-     * (indent)Input Hatch: info
-     *
-     * @param info Location where the hatch goes
-     * @return Instance this method was called on.
-     */
-    public MultiblockTooltipBuilder addInputHatch(String info) {
-        addStructurePart("GT5U.MBTT.InputHatch", info);
-        return this;
-    }
-
-    /**
-     * Add a line of information about the structure:<br>
      * (indent)Output Bus: info
      *
      * @param info Location where the bus goes
@@ -492,18 +486,6 @@ public class MultiblockTooltipBuilder {
      */
     public MultiblockTooltipBuilder addOutputBus(String info) {
         addStructurePart("GT5U.MBTT.OutputBus", info);
-        return this;
-    }
-
-    /**
-     * Add a line of information about the structure:<br>
-     * (indent)Output Hatch: info
-     *
-     * @param info Location where the bus goes
-     * @return Instance this method was called on.
-     */
-    public MultiblockTooltipBuilder addOutputHatch(String info) {
-        addStructurePart("GT5U.MBTT.OutputHatch", info);
         return this;
     }
 
@@ -629,7 +611,7 @@ public class MultiblockTooltipBuilder {
      * @return Instance this method was called on.
      */
     public MultiblockTooltipBuilder addInputBus(String info, int... dots) {
-        addInputBus(info);
+        addStructurePart("GT5U.MBTT.InputBus", hintLine(info, dots));
         for (int dot : dots) hBlocks.put(dot, TT_inputbus);
         return this;
     }
@@ -643,7 +625,7 @@ public class MultiblockTooltipBuilder {
      * @return Instance this method was called on.
      */
     public MultiblockTooltipBuilder addInputHatch(String info, int... dots) {
-        addInputHatch(info);
+        addStructurePart("GT5U.MBTT.InputHatch", hintLine(info, dots));
         for (int dot : dots) hBlocks.put(dot, TT_inputhatch);
         return this;
     }
@@ -671,7 +653,7 @@ public class MultiblockTooltipBuilder {
      * @return Instance this method was called on.
      */
     public MultiblockTooltipBuilder addOutputHatch(String info, int... dots) {
-        addOutputHatch(info);
+        addStructurePart("GT5U.MBTT.OutputHatch", hintLine(info, dots));
         for (int dot : dots) hBlocks.put(dot, TT_outputhatch);
         return this;
     }
@@ -742,7 +724,7 @@ public class MultiblockTooltipBuilder {
      * @return Instance this method was called on.
      */
     public MultiblockTooltipBuilder addSubChannelUsage(String channel, String purpose) {
-        addShiftInfo(TAB + StatCollector.translateToLocalFormatted("GT5U.MBTT.subchannel", channel, purpose));
+        addStructureInfo("GT5U.MBTT.subchannel", channel, purpose);
         return this;
     }
 
@@ -807,7 +789,7 @@ public class MultiblockTooltipBuilder {
      * @param authors        Formatted names of the creators of this multiblock machine - if any
      */
 
-    public MultiblockTooltipBuilder toolTipFinisher(EnumChatFormatting separatorColor, int separatorLength,
+    public MultiblockTooltipBuilder toolTipFinisher(EnumChatFormatting separatorColor, int length,
         @Nullable String... authors) {
 
         switch (GTMod.gregtechproxy.tooltipFinisherStyle) {
@@ -824,10 +806,8 @@ public class MultiblockTooltipBuilder {
                 .toArray(String[]::new);
 
             addInfo(
-                TT_addedBy + COLON + EnumChatFormatting.GREEN + "%s" + EnumChatFormatting.RESET,
-                String.join(
-                    "" + EnumChatFormatting.RESET + EnumChatFormatting.GRAY + " & " + EnumChatFormatting.GREEN,
-                    processedAuthors));
+                "GT5U.MBTT.Authors",
+                String.join(EnumChatFormatting.GRAY + " & " + EnumChatFormatting.GREEN, processedAuthors));
         }
         hLines.add(TT_structurehint);
         this.addStructureInfoSeparator(
@@ -862,6 +842,14 @@ public class MultiblockTooltipBuilder {
 
     public String[] getStructureHint() {
         return hArray;
+    }
+
+    private String hintLine(String info, int... dots) {
+        return info.equals("<hint>") ? String.format(
+            TT_partinfohint,
+            Joiner.on(SEPARATOR)
+                .join(Ints.asList(dots)))
+            : info;
     }
 
     @Desugar

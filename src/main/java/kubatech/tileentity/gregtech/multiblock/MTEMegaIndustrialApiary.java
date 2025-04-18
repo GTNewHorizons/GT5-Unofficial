@@ -108,10 +108,7 @@ import forestry.apiculture.blocks.BlockApicultureType;
 import forestry.apiculture.genetics.Bee;
 import forestry.plugins.PluginApiculture;
 import gregtech.api.GregTechAPI;
-import gregtech.api.enums.GTValues;
-import gregtech.api.enums.SoundResource;
-import gregtech.api.enums.Textures;
-import gregtech.api.enums.VoltageIndex;
+import gregtech.api.enums.*;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -291,55 +288,34 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Mega Apiary, Mapiary")
-            .addInfo("The ideal home for your bees")
-            .addInfo("Use screwdriver to change primary mode (INPUT/OUTPUT/OPERATING)")
-            .addInfo("Use screwdriver + shift to change operation mode (NORMAL/SWARMER)")
+        tt.addMachineType("machtype.mapiary", "machtype.mapiary.short")
+            .addInfo("gt.mb.mapiary.desc.1")
             .addSeparator()
-            .addInfo(EnumChatFormatting.GOLD + "Input Mode:")
-            .addInfo("- Does not take power")
-            .addInfo("- Put your queens in the input bus to put them in the internal buffer")
+            .addInfo("gt.mb.mapiary.desc.2")
             .addSeparator()
-            .addInfo(EnumChatFormatting.GOLD + "Output Mode:")
-            .addInfo("- Does not take power")
-            .addInfo("- Will give your bees back to output bus")
+            .addInfo("gt.mb.mapiary.desc.3")
             .addSeparator()
-            .addInfo(EnumChatFormatting.GOLD + "Operating Mode:")
-            .addInfo("- NORMAL:")
-            .addInfo("  - For each " + voltageTooltipFormatted(6) + " amp you can insert 1 bee")
-            .addInfo("  - Processing time: 5 seconds")
-            .addInfo("  - Uses 1 " + voltageTooltipFormatted(6) + " amp per queen")
-            .addInfo("  - All bees are accelerated 64 times")
-            .addInfo("  - 8 production upgrades are applied")
-            .addInfo("  - Genetic Stabilizer upgrade applied")
-            .addInfo("  - Simulates perfect environment for your bees")
-            .addInfo("  - Additionally you can provide royal jelly to increase the outputs:")
-            .addInfo("    - 1 royal jelly grants 5% bonus per bee")
-            .addInfo("    - They will be consumed on each start of operation")
-            .addInfo("    - and be applied to that operation only")
-            .addInfo("    - Max bonus: 200%")
-            .addInfo("- SWARMER:")
-            .addInfo("  - You can only insert 1 queen")
-            .addInfo("  - It will slowly produce ignoble princesses")
-            .addInfo("  - Consumes 100 royal jelly per operation")
-            .addInfo("  - Base processing time: 1 minute")
-            .addInfo("  - Uses 1 amp " + voltageTooltipFormatted(5))
-            .addInfo("  - Can overclock")
+            .addInfo(
+                "gt.mb.mapiary.desc.4",
+                voltageTooltipFormatted(6),
+                voltageTooltipFormatted(6),
+                voltageTooltipFormatted(5))
             .beginStructureBlock(15, 17, 15, false)
-            .addController("Front Bottom Center")
-            .addCasingInfoMin("Bronze Plated Bricks", 190, false)
-            .addCasingInfoExactly("Any Tiered Glass", 121, false)
-            .addStructureInfo("The glass tier limits the Energy Input tier")
-            .addStructureInfo("Regular water and IC2 Distilled Water are accepted")
-            .addOtherStructurePart(
-                StatCollector.translateToLocal("kubatech.tooltip.structure.flowers"),
-                "On dirt/grass",
-                2)
-            .addInputBus("Any casing", 1)
-            .addOutputBus("Any casing", 1)
-            .addEnergyHatch("Any casing", 1)
-            .addMaintenanceHatch("Any casing", 1)
-            .addSubChannelUsage("glass", "Glass Tier")
+            .addController("fbm")
+            .addCasingInfoMin(
+                ItemList.Casing_BronzePlatedBricks.getInternalStack_unsafe()
+                    .getDisplayName(),
+                190,
+                false)
+            .addCasingInfoExactly("GT5U.MBTT.AnyGlass", 121, true)
+            .addStructureInfo("gt.mb.mapiary.s_desc.1")
+            .addStructureInfo("gt.mb.mapiary.s_desc.2")
+            .addStructurePart("kubatech.tooltip.structure.flowers", "gt.mb.mapiary.part.flowers.info", 2)
+            .addInputBus("GT5U.MBTT.AnyCasing", 1)
+            .addOutputBus("GT5U.MBTT.AnyCasing", 1)
+            .addEnergyHatch("GT5U.MBTT.AnyCasing", 1)
+            .addMaintenanceHatch("GT5U.MBTT.AnyCasing", 1)
+            .addSubChannelUsage("glass", "channelpurpose.glass_tier")
             .toolTipFinisher(GTValues.AuthorKuba, "Runakai");
         return tt;
     }

@@ -176,7 +176,7 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("machtype.purification_plant")
+        tt.addMachineType("machtype.purif_plant")
             .addInfo("gt.mb.purification_plant.desc.1", MAX_UNIT_DISTANCE)
             .addTecTechHatchInfo()
             .addSeparator()
@@ -191,7 +191,7 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
             .addSeparator()
             .addInfo("gt.mb.purification_plant.desc.5")
             .beginStructureBlock(7, 9, 8, false)
-            .addController("gt.mb.controller_pos")
+            .addController("fc")
             .addCasingInfoExactly(
                 ItemList.BlockIndustrialStrengthConcrete.getInternalStack_unsafe()
                     .getDisplayName(),
@@ -216,7 +216,7 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
             .addCasingInfoExactly("gt.blocktintedglass.name", 6, false)
             .addEnergyHatch(EnumChatFormatting.GOLD + "1", 1)
             .addMaintenanceHatch(EnumChatFormatting.GOLD + "1", 1)
-            .addStructureInfo("gt.mb.purification_plant.desc.6")
+            .addStructureInfo("gt.mb.purification_plant.s_desc.1")
             .toolTipFinisher(AuthorNotAPenguin);
         return tt;
     }
