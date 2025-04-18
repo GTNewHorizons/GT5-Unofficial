@@ -19,6 +19,7 @@ import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
 import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
+import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
 import cpw.mods.fml.relauncher.Side;
@@ -202,6 +203,9 @@ public class MTEBuckConverter extends MTETieredMachineBlock implements IAddUIWid
 
     @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
+        builder.widget(new FakeSyncWidget.IntegerSyncer(() -> EUT, val -> EUT = val));
+        builder.widget(new FakeSyncWidget.IntegerSyncer(() -> AMP, val -> AMP = val));
+
         builder.widget(
             new DrawableWidget().setDrawable(GTUITextures.PICTURE_SCREEN_BLACK)
                 .setSize(90, 72)

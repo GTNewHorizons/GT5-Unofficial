@@ -222,6 +222,11 @@ public interface IMetaTileEntity extends ISidedInventory, IFluidTank, IFluidHand
     boolean shouldDropItemAt(int index);
 
     /**
+     * Override to change which items are dropped when block is broken.
+     */
+    ArrayList<ItemStack> getDroppedItem();
+
+    /**
      * @return if aIndex can be set to Zero stackSize, when being removed.
      */
     boolean setStackToZeroInsteadOfNull(int aIndex);
@@ -384,6 +389,14 @@ public interface IMetaTileEntity extends ISidedInventory, IFluidTank, IFluidHand
     void onColorChangeServer(byte aColor);
 
     void onColorChangeClient(byte aColor);
+
+    default NBTTagCompound getDescriptionData() {
+        return null;
+    }
+
+    default void onDescriptionPacket(NBTTagCompound data) {
+
+    }
 
     /**
      * @return Actual color shown on GUI
