@@ -36,7 +36,8 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_TOWER_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_TOWER_GLOW;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
-import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
+import static gregtech.api.util.GTUtility.formatShortenedLong;
+import static gregtech.api.util.GTUtility.truncateText;
 import static kubatech.api.utils.ItemUtils.readItemStackFromNBT;
 import static kubatech.api.utils.ItemUtils.writeItemStackToNBT;
 
@@ -45,8 +46,10 @@ import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -76,11 +79,13 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.gtnewhorizons.modularui.api.ModularUITextures;
 import com.gtnewhorizons.modularui.api.drawable.Text;
 import com.gtnewhorizons.modularui.api.drawable.shapes.Rectangle;
+import com.gtnewhorizons.modularui.api.math.Alignment;
 import com.gtnewhorizons.modularui.api.math.Color;
 import com.gtnewhorizons.modularui.api.math.MainAxisAlignment;
 import com.gtnewhorizons.modularui.api.screen.ModularUIContext;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
+import com.gtnewhorizons.modularui.api.widget.Widget;
 import com.gtnewhorizons.modularui.common.builder.UIInfo;
 import com.gtnewhorizons.modularui.common.internal.wrapper.ModularUIContainer;
 import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
@@ -94,6 +99,7 @@ import com.gtnewhorizons.modularui.common.widget.Scrollable;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
+import bartworks.API.BorosilicateGlass;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import forestry.api.apiculture.EnumBeeType;
@@ -111,7 +117,6 @@ import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
-import gregtech.api.enums.VoltageIndex;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -133,7 +138,7 @@ import kubatech.client.effect.MegaApiaryBeesRenderer;
 public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaIndustrialApiary>
     implements ISurvivalConstructable {
 
-    private int glassTier = -1;
+    private byte mGlassTier = 0;
     private int mCasing = 0;
     private int mMaxSlots = 0;
     private int mPrimaryMode = 0;
@@ -181,7 +186,7 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
                                 .replaceAll("F", " "))
                         .toArray(String[]::new))
                 .toArray(String[][]::new))
-        .addElement('A', chainAllGlasses(-1, (te, t) -> te.glassTier = t, te -> te.glassTier))
+        .addElement('A', BorosilicateGlass.ofBoroGlass((byte) 0, (t, v) -> t.mGlassTier = v, t -> t.mGlassTier))
         .addElement('B', ofChain(ofBlockAnyMeta(Blocks.dirt, 0), ofBlock(Blocks.grass, 0)))
         .addElement(
             'G',
@@ -328,7 +333,7 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
             .beginStructureBlock(15, 17, 15, false)
             .addController("Front Bottom Center")
             .addCasingInfoMin("Bronze Plated Bricks", 190, false)
-            .addCasingInfoExactly("Any Tiered Glass", 121, false)
+            .addOtherStructurePart("Borosilicate Glass", "Look at the hologram")
             .addStructureInfo("The glass tier limits the Energy Input tier")
             .addStructureInfo("Regular water and IC2 Distilled Water are accepted")
             .addOtherStructurePart(
@@ -339,7 +344,6 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
             .addOutputBus("Any casing", 1)
             .addEnergyHatch("Any casing", 1)
             .addMaintenanceHatch("Any casing", 1)
-            .addSubChannelUsage("glass", "Glass Tier")
             .toolTipFinisher(GTValues.AuthorKuba, "Runakai");
         return tt;
     }
@@ -347,6 +351,7 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
+        aNBT.setByte("mGlassTier", mGlassTier);
         aNBT.setInteger("mPrimaryMode", mPrimaryMode);
         aNBT.setInteger("mSecondaryMode", mSecondaryMode);
         aNBT.setInteger("mStorageSize", mStorage.size());
@@ -360,6 +365,7 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
+        mGlassTier = aNBT.getByte("mGlassTier");
         mPrimaryMode = aNBT.getInteger("mPrimaryMode");
         mSecondaryMode = aNBT.getInteger("mSecondaryMode");
         for (int i = 0, isize = aNBT.getInteger("mStorageSize"); i < isize; i++)
@@ -578,7 +584,7 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        glassTier = -1;
+        mGlassTier = 0;
         mCasing = 0;
         if (isCacheDirty) {
             flowersCache.clear();
@@ -589,9 +595,10 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
         flowersCheck.clear();
         flowersCheck.addAll(flowersCache.keySet());
         if (!checkPiece(STRUCTURE_PIECE_MAIN, 7, 8, 0)) return false;
-        if (this.glassTier < VoltageIndex.UEV && !this.mEnergyHatches.isEmpty())
-            for (MTEHatchEnergy hatchEnergy : this.mEnergyHatches) if (this.glassTier < hatchEnergy.mTier) return false;
-        boolean valid = !this.mEnergyHatches.isEmpty() && this.mCasing >= 190;
+        if (this.mGlassTier < 10 && !this.mEnergyHatches.isEmpty())
+            for (MTEHatchEnergy hatchEnergy : this.mEnergyHatches)
+                if (this.mGlassTier < hatchEnergy.mTier) return false;
+        boolean valid = this.mMaintenanceHatches.size() == 1 && !this.mEnergyHatches.isEmpty() && this.mCasing >= 190;
         flowersError = valid && !this.flowersCheck.isEmpty();
         if (valid) updateMaxSlots();
         return valid;
@@ -888,42 +895,49 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
     private HashMap<ItemStack, Double> GUIDropProgress = new HashMap<>();
 
     @Override
-    protected String generateCurrentRecipeInfoString() {
-        if (mSecondaryMode == 1) return super.generateCurrentRecipeInfoString();
-        StringBuilder ret = new StringBuilder(EnumChatFormatting.WHITE + "Progress: ")
-            .append(String.format("%,.2f", (double) mProgresstime / 20))
-            .append("s / ")
-            .append(String.format("%,.2f", (double) mMaxProgresstime / 20))
-            .append("s (")
-            .append(String.format("%,.1f", (double) mProgresstime / mMaxProgresstime * 100))
-            .append("%)\n");
+    protected Widget generateCurrentRecipeInfoWidget() {
+        if (mSecondaryMode == 1) return super.generateCurrentRecipeInfoWidget();
 
-        for (Map.Entry<ItemStack, Double> drop : GUIDropProgress.entrySet()) {
+        final DynamicPositionedColumn processingDetails = new DynamicPositionedColumn();
+
+        if (mOutputItems == null || GUIDropProgress == null) return processingDetails;
+
+        LinkedHashMap<ItemStack, Double> sortedMap = GUIDropProgress.entrySet()
+            .stream()
+            .sorted(Comparator.comparingInt((Map.Entry<ItemStack, Double> entry) -> {
+                assert mOutputItems != null;
+                return Arrays.stream(mOutputItems)
+                    .filter(s -> s.isItemEqual(entry.getKey()))
+                    .mapToInt(i -> i.stackSize)
+                    .sum();
+            })
+                .reversed())
+            .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (e1, e2) -> e1, LinkedHashMap::new));
+
+        for (Map.Entry<ItemStack, Double> drop : sortedMap.entrySet()) {
+            assert mOutputItems != null;
             int outputSize = Arrays.stream(mOutputItems)
                 .filter(s -> s.isItemEqual(drop.getKey()))
                 .mapToInt(i -> i.stackSize)
                 .sum();
-            ret.append(EnumChatFormatting.AQUA)
-                .append(
-                    drop.getKey()
-                        .getDisplayName())
-                .append(EnumChatFormatting.WHITE)
-                .append(": ");
-            if (outputSize == 0) {
-                ret.append(String.format("%.2f", drop.getValue() * 100))
-                    .append("%\n");
-            } else {
-                ret.append(EnumChatFormatting.GOLD)
-                    .append(
-                        String.format(
-                            "x%d %s(+%.2f/sec)\n",
-                            outputSize,
-                            EnumChatFormatting.WHITE,
-                            (double) outputSize / (mMaxProgresstime / 20)));
+            if (outputSize != 0) {
+                Long itemCount = (long) outputSize;
+                String itemName = drop.getKey()
+                    .getDisplayName();
+                String itemAmountString = EnumChatFormatting.WHITE + " x "
+                    + EnumChatFormatting.GOLD
+                    + formatShortenedLong(itemCount)
+                    + EnumChatFormatting.WHITE
+                    + appendRate(false, itemCount, true);
+                String lineText = EnumChatFormatting.AQUA + truncateText(itemName, 20) + itemAmountString;
+                String lineTooltip = EnumChatFormatting.AQUA + itemName + "\n" + appendRate(false, itemCount, false);
+
+                processingDetails.widget(
+                    new TextWidget(lineText).setTextAlignment(Alignment.CenterLeft)
+                        .addTooltip(lineTooltip));
             }
         }
-
-        return ret.toString();
+        return processingDetails;
     }
 
     @Override
