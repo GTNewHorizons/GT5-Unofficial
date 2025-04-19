@@ -171,7 +171,6 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
             if (aID > 0) mID = aID;
             else mID = mID > 0 ? mID : 0;
             if (mID != 0) createNewMetatileEntity(mID);
-            mSidedRedstone = new byte[] { 0, 0, 0, 0, 0, 0 };
         } else {
             if (aID <= 0) mID = (short) aNBT.getInteger("mID");
             else mID = aID;
@@ -208,8 +207,6 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
             readCoverNBT(aNBT);
             loadMetaTileNBT(aNBT);
         }
-
-        if (mSidedRedstone.length != 6) mSidedRedstone = new byte[] { 0, 0, 0, 0, 0, 0 };
     }
 
     /**
