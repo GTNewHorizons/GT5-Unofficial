@@ -169,9 +169,11 @@ public class MTEMultiFurnace extends MTEAbstractMultiFurnace<MTEMultiFurnace> im
             .setDuration(RECIPE_DURATION)
             .setParallel(originalMaxParallel);
 
-        double fractionalDuration = calculator.calculateFractionalDuration();
-        double fractionalMultiplier = Math.ceil(fractionalDuration) / fractionalDuration;
-        maxParallel = (int) Math.floor(maxParallel * fractionalMultiplier);
+        double tickTimeAfterOC = calculator.calculateDurationUnderOneTick();
+
+        if (tickTimeAfterOC < 1) {
+            maxParallel = GTUtility.safeInt((long) (maxParallel / tickTimeAfterOC), 0);
+        }
 
         int maxParallelBeforeBatchMode = maxParallel;
         if (isBatchModeEnabled()) {
