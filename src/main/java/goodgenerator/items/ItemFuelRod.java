@@ -209,7 +209,7 @@ public class ItemFuelRod extends RadioactiveItem implements IReactorComponent, I
         if (this.Heat == 4) {
             tooltip.add(StatCollector.translateToLocal("fuelrodheat.tooltip.0"));
         } else {
-            tooltip.add(String.format(StatCollector.translateToLocal("fuelrodheat.tooltip.1"), tMut));
+            tooltip.add(StatCollector.translateToLocalFormatted("fuelrodheat.tooltip.1", tMut));
         }
         if (this.HeatBonus != 0) tooltip.add(StatCollector.translateToLocal("fuelrodheat.tooltip.2"));
     }

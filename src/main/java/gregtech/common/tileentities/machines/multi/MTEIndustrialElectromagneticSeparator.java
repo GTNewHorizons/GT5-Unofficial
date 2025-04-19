@@ -336,7 +336,7 @@ public class MTEIndustrialElectromagneticSeparator
         setMachineMode(nextMachineMode());
         PlayerUtils.messagePlayer(
             aPlayer,
-            String.format(StatCollector.translateToLocal("GT5U.MULTI_MACHINE_CHANGE"), getMachineModeName()));
+            StatCollector.translateToLocalFormatted("GT5U.MULTI_MACHINE_CHANGE", getMachineModeName()));
     }
 
     @Override

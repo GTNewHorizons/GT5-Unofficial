@@ -1,14 +1,20 @@
 package gregtech.common.blocks;
 
 import static gregtech.GTMod.GT_FML_LOGGER;
-import static gregtech.api.util.GTUtility.formatStringSafe;
+import static gregtech.api.util.MultiblockTooltipBuilder.TAB;
+import static org.apache.commons.lang3.StringUtils.removeStart;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.regex.Pattern;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import net.minecraft.block.Block;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -17,7 +23,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
-import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
@@ -30,7 +36,6 @@ import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.Materials;
-import gregtech.api.interfaces.ISecondaryDescribable;
 import gregtech.api.interfaces.metatileentity.IConnectable;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -40,8 +45,8 @@ import gregtech.api.metatileentity.implementations.MTEFluidPipe;
 import gregtech.api.metatileentity.implementations.MTEFrame;
 import gregtech.api.metatileentity.implementations.MTEItemPipe;
 import gregtech.api.util.GTItsNotMyFaultException;
-import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTUtility;
+import gregtech.api.util.StringUtils;
 import gregtech.common.tileentities.storage.MTEDigitalTankBase;
 import gregtech.common.tileentities.storage.MTESuperChest;
 import gregtech.common.tileentities.storage.MTESuperTank;
@@ -73,141 +78,96 @@ public class ItemMachines extends ItemBlock implements IFluidContainerItem {
 
             if (GregTechAPI.METATILEENTITIES[tDamage] != null) {
                 final IGregTechTileEntity tTileEntity = GregTechAPI.METATILEENTITIES[tDamage].getBaseMetaTileEntity();
-                if (!GregTechAPI.sPostloadFinished
-                    && tTileEntity.getMetaTileEntity() instanceof ISecondaryDescribable) {
-                    final String[] tSecondaryDescription = ((ISecondaryDescribable) tTileEntity.getMetaTileEntity())
-                        .getSecondaryDescription();
-                    addDescription(null, tSecondaryDescription, tDamage, "_Secondary");
-                }
+                final IMetaTileEntity tMetaTileEntity = tTileEntity.getMetaTileEntity();
                 {
-                    final IMetaTileEntity tMetaTileEntity = tTileEntity.getMetaTileEntity();
-                    final String tSuffix = (tMetaTileEntity instanceof ISecondaryDescribable
-                        && ((ISecondaryDescribable) tMetaTileEntity).isDisplaySecondaryDescription()) ? "_Secondary"
-                            : "";
-                    addDescription(aList, tTileEntity.getDescription(), tDamage, tSuffix);
+                    addDescription(aList, tMetaTileEntity.getDescription());
                     tMetaTileEntity.addAdditionalTooltipInformation(aStack, aList);
                 }
                 if (tTileEntity.getEUCapacity() > 0L) {
                     if (tTileEntity.getInputVoltage() > 0L) {
                         final byte inputTier = GTUtility.getTier(tTileEntity.getInputVoltage());
                         aList.add(
-                            GTLanguageManager.addStringLocalization("TileEntity_EUp_IN", "Voltage IN: ")
-                                + EnumChatFormatting.GREEN
-                                + GTUtility.formatNumbers(tTileEntity.getInputVoltage())
-                                + " ("
-                                + GTUtility.getColoredTierNameFromTier(inputTier)
-                                + EnumChatFormatting.GREEN
-                                + ")"
-                                + EnumChatFormatting.GRAY);
+                            StatCollector.translateToLocalFormatted(
+                                "gt.tileentity.eup_in",
+                                GTUtility.formatNumbers(tTileEntity.getInputVoltage()),
+                                GTUtility.getColoredTierNameFromTier(inputTier)));
                     }
                     if (tTileEntity.getOutputVoltage() > 0L) {
                         final byte outputTier = GTUtility.getTier(tTileEntity.getOutputVoltage());
                         aList.add(
-                            GTLanguageManager.addStringLocalization("TileEntity_EUp_OUT", "Voltage OUT: ")
-                                + EnumChatFormatting.GREEN
-                                + GTUtility.formatNumbers(tTileEntity.getOutputVoltage())
-                                + " ("
-                                + GTUtility.getColoredTierNameFromTier(outputTier)
-                                + EnumChatFormatting.GREEN
-                                + ")"
-                                + EnumChatFormatting.GRAY);
+                            StatCollector.translateToLocalFormatted(
+                                "gt.tileentity.eup_out",
+                                GTUtility.formatNumbers(tTileEntity.getOutputVoltage()),
+                                GTUtility.getColoredTierNameFromTier(outputTier)));
                     }
                     if (tTileEntity.getOutputAmperage() > 1L) {
                         aList.add(
-                            GTLanguageManager.addStringLocalization("TileEntity_EUp_AMOUNT", "Amperage: ")
-                                + EnumChatFormatting.YELLOW
-                                + GTUtility.formatNumbers(tTileEntity.getOutputAmperage())
-                                + EnumChatFormatting.GRAY);
+                            StatCollector.translateToLocalFormatted(
+                                "gt.tileentity.eup_amount",
+                                GTUtility.formatNumbers(tTileEntity.getOutputAmperage())));
                     }
                     aList.add(
-                        GTLanguageManager.addStringLocalization("TileEntity_EUp_STORE", "Capacity: ")
-                            + EnumChatFormatting.BLUE
-                            + GTUtility.formatNumbers(tTileEntity.getEUCapacity())
-                            + EnumChatFormatting.GRAY
-                            + " EU");
+                        StatCollector.translateToLocalFormatted(
+                            "gt.tileentity.eup_store",
+                            GTUtility.formatNumbers(tTileEntity.getEUCapacity())));
                 }
             }
             final NBTTagCompound aNBT = aStack.getTagCompound();
             if (aNBT != null) {
                 if (aNBT.getBoolean("mMuffler")) {
-                    aList.add(GTLanguageManager.addStringLocalization("GT_TileEntity_MUFFLER", "has Muffler Upgrade"));
+                    aList.add(StatCollector.translateToLocal("gt.tileentity.has_muffler"));
                 }
                 if (aNBT.getBoolean("mSteamConverter")) {
-                    aList.add(
-                        GTLanguageManager.addStringLocalization("GT_TileEntity_STEAMCONVERTER", "has Steam Upgrade"));
+                    aList.add(StatCollector.translateToLocal("gt.tileentity.has_steam_upgrade"));
                 }
-                int tAmount = 0;
+                int tAmount;
                 if ((tAmount = aNBT.getByte("mSteamTanks")) > 0) {
-                    aList.add(
-                        tAmount + " "
-                            + GTLanguageManager
-                                .addStringLocalization("GT_TileEntity_STEAMTANKS", "Steam Tank Upgrades"));
+                    aList.add(StatCollector.translateToLocalFormatted("gt.tileentity.steamtanks", tAmount));
                 }
 
                 CoverableTileEntity.addInstalledCoversInformation(aNBT, aList);
                 if (aNBT.hasKey("mColor") && aNBT.getByte("mColor") != -1) {
                     aList.add(
-                        GTLanguageManager.addStringLocalization("GT_TileEntity_COLORED", "Colored") + " ("
-                            + Dyes.get(aNBT.getByte("mColor") - 1).formatting
-                            + Dyes.get(aNBT.getByte("mColor") - 1).mName
-                            + EnumChatFormatting.GRAY
-                            + ")");
+                        StatCollector.translateToLocalFormatted(
+                            "gt.tileentity.colored",
+                            Dyes.get(aNBT.getByte("mColor") - 1).formatting,
+                            Dyes.get(aNBT.getByte("mColor") - 1).mName));
                 }
             }
         } catch (Throwable e) {
-            aList.add(String.format("§cAn exception was thrown while getting this item's info.§r"));
+            aList.add("§cAn exception was thrown while getting this item's info.§r");
             aList.add(e.getLocalizedMessage());
             GT_FML_LOGGER.error("addInformation", e);
         }
     }
 
-    private void addDescription(@Nullable List<String> aList, @Nullable String[] aDescription, int aDamage,
-        String aSuffix) {
+    private void addDescription(@Nullable List<String> aList, @Nullable String[] aDescription) {
         if (aDescription == null) return;
-        for (int i = 0, tLength = aDescription.length; i < tLength; i++) {
-            String tDescLine = aDescription[i];
+        for (String tDescLine : aDescription) {
             if (!GTUtility.isStringValid(tDescLine)) continue;
 
-            String tKey = String.format("TileEntity_DESCRIPTION_%05d%s_Index_%02d", aDamage, aSuffix, i);
-            if (tDescLine.contains("%%%")) {
-                final String[] tSplitStrings = tDescLine.split("%%%");
-                final StringBuilder tBuffer = new StringBuilder();
-                final String[] tRep = new String[tSplitStrings.length / 2];
-                for (int j = 0; j < tSplitStrings.length; j++) if (j % 2 == 0) tBuffer.append(tSplitStrings[j]);
-                else {
-                    tBuffer.append("%s");
-                    tRep[j / 2] = tSplitStrings[j];
+            if (tDescLine.contains(GTUtility.LOC_SEPARATOR)) {
+                final String[] tSplitStrings = tDescLine.split(GTUtility.LOC_SEPARATOR);
+                final String tKey = tSplitStrings[0];
+
+                List<Object> tParamsLoc = new ArrayList<>();
+                for (int j = 1; j < tSplitStrings.length; j++) {
+                    String param = tSplitStrings[j];
+                    String translated = StatCollector.translateToLocal(param);
+                    tParamsLoc.add(translated.equals(param) ? param : translated);
                 }
-                final String tTranslated = formatStringSafe(
-                    GTLanguageManager.addStringLocalization(tKey, tBuffer.toString()),
-                    (Object[]) tRep);
+
+                final String tTranslated = (tKey.startsWith(TAB) ? TAB : "")
+                    + StatCollector.translateToLocalFormatted(removeStart(tKey, TAB), tParamsLoc.toArray());
                 if (aList != null) aList.add(tTranslated);
             } else {
-                String tTranslated = GTLanguageManager.addStringLocalization(tKey, tDescLine);
+                final String tTranslated = (tDescLine.startsWith(TAB) ? TAB : "")
+                    + StatCollector.translateToLocal(removeStart(tDescLine, TAB));
                 if (aList != null) aList.add(tTranslated.isEmpty() ? tDescLine : tTranslated);
             }
         }
-    }
-
-    @SideOnly(Side.CLIENT)
-    public void registerDescription(int aDamage) {
-        if (aDamage >= GregTechAPI.METATILEENTITIES.length) return;
-        if (GregTechAPI.METATILEENTITIES[aDamage] != null) {
-            final IMetaTileEntity tMetaTileEntity = GregTechAPI.METATILEENTITIES[aDamage].getBaseMetaTileEntity()
-                .getMetaTileEntity();
-            if (tMetaTileEntity instanceof ISecondaryDescribable) {
-                final String[] tSecondaryDescription = ((ISecondaryDescribable) tMetaTileEntity)
-                    .getSecondaryDescription();
-                addDescription(null, tSecondaryDescription, aDamage, "_Secondary");
-            }
-            addDescription(null, tMetaTileEntity.getDescription(), aDamage, "");
-        }
-    }
-
-    @Override
-    public boolean onItemUseFirst(ItemStack stack, EntityPlayer player, World world, int x, int y, int z,
-        int ordinalSide, float hitX, float hitY, float hitZ) {
-        return false;
+        splitLineByMark(aList, GTUtility.YAP_SEPARATOR);
+        applySeparatorLine(aList);
     }
 
     @Override
@@ -436,5 +396,52 @@ public class ItemMachines extends ItemBlock implements IFluidContainerItem {
             }
         }
         return null;
+    }
+
+    @SideOnly(Side.CLIENT)
+    public static int getTooltipWidth(List<String> lines) {
+        FontRenderer fontRenderer = Minecraft.getMinecraft().fontRenderer;
+        int maxWidth = 0;
+        for (String line : lines) {
+            int lineWidth = fontRenderer.getStringWidth(line);
+            if (lineWidth > maxWidth) {
+                maxWidth = lineWidth;
+            }
+        }
+        return maxWidth;
+    }
+
+    @SideOnly(Side.CLIENT)
+    public static void applySeparatorLine(List<String> tooltips) {
+        if (tooltips == null || tooltips.isEmpty()) return;
+
+        int tooltipWidth = getTooltipWidth(tooltips);
+
+        FontRenderer fontRenderer = Minecraft.getMinecraft().fontRenderer;
+        int dashWidth = fontRenderer.getStringWidth("-");
+        int dashCount = tooltipWidth / dashWidth;
+
+        String separatorLine = StringUtils.getRepetitionOf('-', dashCount);
+
+        for (int i = 0; i < tooltips.size(); i++) {
+            String line = tooltips.get(i);
+            if (line.contains("%SEPARATORLINE%")) {
+                tooltips.set(i, line.replace("%SEPARATORLINE%", separatorLine));
+            }
+        }
+    }
+
+    public static void splitLineByMark(List<String> list, String mark) {
+        if (list == null) return;
+        for (int i = 0; i < list.size();) {
+            String str = list.get(i);
+            if (str.contains(mark)) {
+                String[] parts = str.split(Pattern.quote(mark));
+                list.remove(i);
+                list.addAll(i, Arrays.asList(parts));
+            } else {
+                i++;
+            }
+        }
     }
 }

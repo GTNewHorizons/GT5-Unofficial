@@ -1,5 +1,7 @@
 package gregtech.common.gui.mui1.cover;
 
+import net.minecraft.util.StatCollector;
+
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
@@ -36,8 +38,8 @@ public class EUMeterUIFactory extends CoverUIFactory<CoverEUMeter> {
     @SuppressWarnings("PointlessArithmeticExpression")
     @Override
     protected void addUIWidgets(ModularWindow.Builder builder) {
-        final String INVERTED = GTUtility.trans("INVERTED", "Inverted");
-        final String NORMAL = GTUtility.trans("NORMAL", "Normal");
+        final String INVERTED = StatCollector.translateToLocal("gt.interact.desc.inverted");
+        final String NORMAL = StatCollector.translateToLocal("gt.interact.desc.normal");
 
         final CoverDataFollowerNumericWidget<CoverEUMeter> numericWidget = new CoverDataFollowerNumericWidget<>();
 
