@@ -3,6 +3,8 @@ package gregtech.common.covers;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.fluids.Fluid;
 
+import org.jetbrains.annotations.NotNull;
+
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 
 import gregtech.api.covers.CoverContext;
@@ -11,16 +13,50 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IMachineProgress;
 import gregtech.api.util.GTUtility;
+import gregtech.common.covers.modes.DetectionMode;
+import gregtech.common.covers.modes.RedstoneMode;
+import gregtech.common.gui.modularui2.cover.CoverDoesWorkGui;
+import gregtech.common.gui.modularui2.cover.CoverGui;
 import gregtech.common.gui.mui1.cover.DoesWorkUIFactory;
 
 public class CoverDoesWork extends CoverLegacyData {
 
+    // TODO: Make those fields private when DoesWorkUIFactory is removed
     public static final int FLAG_INVERTED = 0x1;
     public static final int FLAG_PROGRESS = 0x2;
     public static final int FLAG_ENABLED = 0x4;
 
     public CoverDoesWork(CoverContext context, ITexture coverTexture) {
         super(context, coverTexture);
+    }
+
+    public DetectionMode getDetectionMode() {
+        if (isFlagSet(coverData, FLAG_PROGRESS)) {
+            return DetectionMode.MACHINE_IDLE;
+        } else if (isFlagSet(coverData, FLAG_ENABLED)) {
+            return DetectionMode.MACHINE_ENABLED;
+        } else {
+            return DetectionMode.RECIPE_PROGRESS;
+        }
+    }
+
+    public void setDetectionMode(DetectionMode mode) {
+        coverData = switch (mode) {
+            case RECIPE_PROGRESS -> (coverData & ~FLAG_ENABLED) & ~FLAG_PROGRESS;
+            case MACHINE_IDLE -> (coverData & ~FLAG_ENABLED) | FLAG_PROGRESS;
+            case MACHINE_ENABLED -> (coverData & ~FLAG_PROGRESS) | FLAG_ENABLED;
+        };
+    }
+
+    public RedstoneMode getRedstoneMode() {
+        return isFlagSet(coverData, FLAG_INVERTED) ? RedstoneMode.INVERTED : RedstoneMode.NORMAL;
+    }
+
+    public void setRedstoneMode(RedstoneMode mode) {
+        coverData = switch (mode) {
+            case NORMAL -> coverData & ~FLAG_INVERTED;
+            case INVERTED -> coverData | FLAG_INVERTED;
+        };
     }
 
     @Override
@@ -123,6 +159,11 @@ public class CoverDoesWork extends CoverLegacyData {
     // GUI stuff
 
     @Override
+    protected @NotNull CoverGui<?> getCoverGui() {
+        return new CoverDoesWorkGui();
+    }
+
+    @Override
     public boolean hasCoverGUI() {
         return true;
     }
@@ -132,6 +173,7 @@ public class CoverDoesWork extends CoverLegacyData {
         return new DoesWorkUIFactory(buildContext).createWindow();
     }
 
+    // TODO: Make it a private instance method when DoesWorkUIFactory is removed
     public static boolean isFlagSet(int coverVariable, int flag) {
         return (coverVariable & flag) == flag;
     }

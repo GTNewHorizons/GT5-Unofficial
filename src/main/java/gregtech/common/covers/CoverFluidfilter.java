@@ -21,6 +21,11 @@ import gregtech.api.covers.CoverContext;
 import gregtech.api.gui.modularui.CoverUIBuildContext;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.util.GTUtility;
+import gregtech.common.covers.modes.BlockMode;
+import gregtech.common.covers.modes.FilterDirectionMode;
+import gregtech.common.covers.modes.FilterType;
+import gregtech.common.gui.modularui2.cover.CoverFluidfilterGui;
+import gregtech.common.gui.modularui2.cover.CoverGui;
 import gregtech.common.gui.mui1.cover.FluidFilterUIFactory;
 import io.netty.buffer.ByteBuf;
 
@@ -61,6 +66,57 @@ public class CoverFluidfilter extends Cover {
     public CoverFluidfilter setFilterMode(int filterMode) {
         this.mFilterMode = filterMode;
         return this;
+    }
+
+    public FilterDirectionMode getFilterDirection() {
+        return (getFilterMode() >> 2 & 0x1) == 0 ? FilterDirectionMode.INPUT : FilterDirectionMode.OUTPUT;
+    }
+
+    public void setFilterDirection(FilterDirectionMode ioMode) {
+        FilterDirectionMode oldMode = getFilterDirection();
+        if (ioMode == oldMode) return;
+
+        int filterMode = getFilterMode();
+        if (ioMode == FilterDirectionMode.INPUT) {
+            filterMode &= 0x3;
+        } else {
+            filterMode |= 0x4;
+        }
+        setFilterMode(filterMode);
+    }
+
+    public FilterType getFilterType() {
+        return (getFilterMode() & 0x1) == 0 ? FilterType.WHITELIST : FilterType.BLACKLIST;
+    }
+
+    public void setFilterType(FilterType filterType) {
+        FilterType oldFilterType = getFilterType();
+        if (filterType == oldFilterType) return;
+
+        int filterMode = getFilterMode();
+        if (filterType == FilterType.WHITELIST) {
+            filterMode &= 0x6;
+        } else {
+            filterMode |= 0x1;
+        }
+        setFilterMode(filterMode);
+    }
+
+    public BlockMode getBlockMode() {
+        return (getFilterMode() >> 1 & 0x1) == 0 ? BlockMode.BLOCK : BlockMode.ALLOW;
+    }
+
+    public void setBlockMode(BlockMode blockMode) {
+        BlockMode oldBlockMode = getBlockMode();
+        if (blockMode == oldBlockMode) return;
+
+        int filterMode = getFilterMode();
+        if (blockMode == BlockMode.BLOCK) {
+            filterMode &= 0x5;
+        } else {
+            filterMode |= 0x2;
+        }
+        setFilterMode(filterMode);
     }
 
     @Override
@@ -214,6 +270,11 @@ public class CoverFluidfilter extends Cover {
     }
 
     // GUI stuff
+
+    @Override
+    protected @NotNull CoverGui<?> getCoverGui() {
+        return new CoverFluidfilterGui();
+    }
 
     @Override
     public boolean hasCoverGUI() {
