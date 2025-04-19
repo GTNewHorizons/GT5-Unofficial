@@ -881,6 +881,27 @@ GT5U.gui.text.wireless_maintenance_detector.extra.rotor_0=Rotor ≈ 0%
 GT5U.gui.text.fusion_computer.hit_to_start=Hit with Soft Mallet to (re-)start the Machine if it doesn't start.
 GT5U.gui.text.fusion_computer.running_perfectly=Running perfectly.
 
+GT5U.gui.text.large_fluid_extractor.not_enough_casings=Not enough casings: need %d, but\nhave %d.
+GT5U.gui.text.wormhole_generator.missing_entangled_singularity=§7Missing Entangled Singularity§f
+GT5U.gui.text.wormhole_generator.status.no_destination=§7Wormhole status: §cNo destination§f
+GT5U.gui.text.wormhole_generator.status.decaying=§7Wormhole status: §6Decaying§f
+GT5U.gui.text.wormhole_generator.status.active=§7Wormhole status: §bActive§f
+GT5U.gui.text.wormhole_generator.status.inactive=§7Wormhole status: Inactive§f
+GT5U.gui.text.wormhole_generator.diameter=§7Wormhole diameter: §b%,d§7 Å§f
+GT5U.gui.text.wormhole_generator.max_io=§7Max I/O per hatch: §b%,d§7 EU/t§f
+GT5U.gui.text.wormhole_generator.max_io.large=§7Max I/O per hatch: §b%3.3e§7 EU/t§f
+
+GT5U.gui.text.status.active=Active
+GT5U.gui.text.status.online=Online
+GT5U.gui.text.status.disabled=Disabled
+GT5U.gui.text.status.incomplete=Incomplete Structure
+GT5U.gui.text.x=X: %s
+GT5U.gui.text.y=Y: %s
+GT5U.gui.text.z=Z: %s
+GT5U.gui.text.dim=Dim: %s
+GT5U.gui.text.dim.valid=Dim Valid: Yes
+GT5U.gui.text.dim.invalid=Dim Valid: No
+
 GT5U.gui.title.unknown=Unknown
 GT5U.gui.text.item_amount=Item Amount
 
