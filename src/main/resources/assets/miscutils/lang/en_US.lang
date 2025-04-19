@@ -4032,6 +4032,12 @@ gtpp.tooltip.tool.optimal_plasma_flow=Optimal Plasma flow(Plasma energyvalue per
 gtpp.tooltip.tool.attack_damage=Attack Damage:
 gtpp.tooltip.tool.mining_speed=Mining Speed:
 
+gtpp.tooltip.wireless_charger.0=Can be locked to the owner by sneaking with a screwdriver.
+gtpp.tooltip.wireless_charger.1=Use screwdriver to change mode.
+gtpp.tooltip.wireless_charger.2=§aLong-Range Mode§7: Can supply 1A of power to each player up to %,dm away.
+gtpp.tooltip.wireless_charger.3=§aLocal Mode§7: Can supply 2A to each player within %,dm.
+gtpp.tooltip.wireless_charger.4=§aMixed Mode§7: Can supply 1A up to %,dm away and more 1A within %,dm.
+
 #gtpp info data
 gtpp.infodata.multi_block.total_time=Total Time Since Built: %s Weeks, %s Days,
 gtpp.infodata.multi_block.total_time.0=%s Hours, %s Minutes, %s Seconds.
@@ -4067,4 +4073,15 @@ gtpp.infodata.energy_buffer.eu_capacity=%s EU capacity
 gtpp.infodata.tiered_chest.name=Super Storage Chest
 gtpp.infodata.tiered_tank.name=%s Fluid Tank
 
-
+gtpp.chat.wireless_charger.mode_change=Now in %s %s.
+gtpp.chat.wireless_charger.mode_info=Current: %s %s
+gtpp.chat.wireless_charger.mode_info_player=Players with access:
+gtpp.chat.wireless_charger.mode=Mode
+gtpp.chat.wireless_charger.mode.long=Long-Range
+gtpp.chat.wireless_charger.mode.local=Local
+gtpp.chat.wireless_charger.mode.mixed=Mixed
+gtpp.chat.wireless_charger.range=Range
+gtpp.chat.wireless_charger.lock=Locked to owner
+gtpp.chat.wireless_charger.unlock=Unlocked
+gtpp.chat.wireless_charger.enter=You have entered charging range. [%,dm - %s]
+gtpp.chat.wireless_charger.leave=You have left charging range. [%,dm - %s]
