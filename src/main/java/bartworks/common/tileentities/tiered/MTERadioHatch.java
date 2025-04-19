@@ -32,6 +32,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 import com.cleanroommc.modularui.api.IPanelHandler;
 import com.cleanroommc.modularui.api.drawable.IDrawable;
 import com.cleanroommc.modularui.api.drawable.IKey;
+import com.cleanroommc.modularui.api.widget.IWidget;
 import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.value.sync.IntSyncValue;
@@ -393,11 +394,22 @@ public class MTERadioHatch extends MTEHatch implements RecipeMapWorkable, IAddGr
                 GTGuiTextures.PICTURE_DECAY_TIME_INSIDE.asWidget()
                     .pos(124, 18)
                     .size(16, 48))
-            .child(createDurationMeter(syncManager))
-            .child(
-                GTGuiTextures.PICTURE_DECAY_TIME_CONTAINER.asWidget()
-                    .pos(120, 14)
-                    .size(24, 56))
+            .child(new IDrawable.DrawableWidget((context, x, y, width, height, widgetTheme) -> {
+                if (MTERadioHatch.this.decayTime > 0) {
+                    int drawableHeight = MathUtils.ceilInt(
+                        48 * ((MTERadioHatch.this.decayTime - MTERadioHatch.this.timer % MTERadioHatch.this.decayTime)
+                            / (float) MTERadioHatch.this.decayTime));
+                    new com.cleanroommc.modularui.drawable.Rectangle()
+                        .setColor(
+                            com.cleanroommc.modularui.utils.Color.rgb(
+                                MTERadioHatch.this.colorForGUI[0],
+                                MTERadioHatch.this.colorForGUI[1],
+                                MTERadioHatch.this.colorForGUI[2]))
+                        .draw(context, new Area(0, 48 - drawableHeight, 16, drawableHeight), widgetTheme);
+                }
+            }).pos(124, 18)
+                .size(18, 48))
+            .child(createDurationMeterContainer(syncManager))
             .child(
                 IKey.dynamic(() -> StatCollector.translateToLocalFormatted("BW.NEI.display.radhatch.1", this.getMass()))
                     .alignment(com.cleanroommc.modularui.utils.Alignment.Center)
@@ -414,15 +426,11 @@ public class MTERadioHatch extends MTEHatch implements RecipeMapWorkable, IAddGr
                 popupPanel.openPanel();
                 return popupPanel.isPanelOpen();
             })
-                .background(GTGuiTextures.BUTTON_STANDARD)
+                .background(GTGuiTextures.BUTTON_STANDARD, GTGuiTextures.OVERLAY_BUTTON_SCREWDRIVER)
+                .disableHoverBackground()
                 .tooltip(tooltip -> tooltip.add("Radiation Shutter"))
                 .pos(153, 5)
                 .size(18, 18))
-            .child(
-                new com.cleanroommc.modularui.drawable.ItemDrawable(
-                    MetaGeneratedTool01.INSTANCE.getToolWithStats(IDMetaTool01.SCREWDRIVER.ID, 1, null, null, null))
-                        .asWidget()
-                        .pos(154, 6))
             .child(
                 GTGuiTextures.PICTURE_BARTWORKS_LOGO_STANDARD.asWidget()
                     .pos(10, 53)
@@ -444,10 +452,7 @@ public class MTERadioHatch extends MTEHatch implements RecipeMapWorkable, IAddGr
                     .size(55, 54))
             .child(
                 new ProgressWidget().progress(() -> 1 - ((double) this.coverage / 100D))
-                    .texture(
-                        GTGuiTextures.PICTURE_RADIATION_SHUTTER_EMPTY,
-                        GTGuiTextures.PICTURE_RADIATION_SHUTTER_INSIDE,
-                        50)
+                    .texture(GTGuiTextures.PICTURE_TRANSPARENT, GTGuiTextures.PICTURE_RADIATION_SHUTTER_INSIDE, 50)
                     .direction(ProgressWidget.Direction.UP)
                     .pos(16, 29)
                     .size(51, 50))
@@ -460,29 +465,16 @@ public class MTERadioHatch extends MTEHatch implements RecipeMapWorkable, IAddGr
                     .size(30, 12));
     }
 
-    private IDrawable.DrawableWidget createDurationMeter(PanelSyncManager syncManager) {
-        IDrawable.DrawableWidget widget = new IDrawable.DrawableWidget((context, x, y, width, height, widgetTheme) -> {
-            if (MTERadioHatch.this.decayTime > 0) {
-                int drawableHeight = MathUtils.ceilInt(
-                    48 * ((MTERadioHatch.this.decayTime - MTERadioHatch.this.timer % MTERadioHatch.this.decayTime)
-                        / (float) MTERadioHatch.this.decayTime));
-                new com.cleanroommc.modularui.drawable.Rectangle()
-                    .setColor(
-                        Color.argb(
-                            MTERadioHatch.this.colorForGUI[0],
-                            MTERadioHatch.this.colorForGUI[1],
-                            MTERadioHatch.this.colorForGUI[2],
-                            255))
-                    .draw(context, new Area(0, 48 - drawableHeight, 16, drawableHeight), widgetTheme);
-            }
-        }).tooltipBuilder(
-            tooltip -> tooltip.add(
-                StatCollector.translateToLocalFormatted(
-                    "tooltip.tile.radhatch.10.name",
-                    this.timer <= 1 ? 0 : (this.decayTime - this.timer) / 20,
-                    this.timer <= 1 ? 0 : this.decayTime / 20)))
-            .pos(124, 18)
-            .size(18, 48);
+    private IWidget createDurationMeterContainer(PanelSyncManager syncManager) {
+        IWidget widget = GTGuiTextures.PICTURE_DECAY_TIME_CONTAINER.asWidget()
+            .tooltipBuilder(
+                tooltip -> tooltip.add(
+                    StatCollector.translateToLocalFormatted(
+                        "tooltip.tile.radhatch.10.name",
+                        this.timer <= 1 ? 0 : (this.decayTime - this.timer) / 20,
+                        this.timer <= 1 ? 0 : this.decayTime / 20)))
+            .pos(120, 14)
+            .size(24, 56);
 
         LongSyncValue timeSyncHandler = new LongSyncValue(() -> timer, time -> timer = time);
         timeSyncHandler.setChangeListener(widget::markTooltipDirty);

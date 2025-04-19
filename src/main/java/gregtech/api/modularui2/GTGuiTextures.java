@@ -377,6 +377,7 @@ public final class GTGuiTextures {
     public static final UITexture OVERLAY_BUTTON_PROGRESS = fullImageGT("overlay_button/progress");
     public static final UITexture OVERLAY_BUTTON_REDSTONE_OFF = fullImageGT("overlay_button/redstone_off");
     public static final UITexture OVERLAY_BUTTON_REDSTONE_ON = fullImageGT("overlay_button/redstone_on");
+    public static final UITexture OVERLAY_BUTTON_SCREWDRIVER = fullImageGT("overlay_button/screwdriver");
     public static final UITexture OVERLAY_BUTTON_USE_PROCESSING_STATE = fullImageGT(
         "overlay_button/use_processing_state");
     public static final UITexture OVERLAY_BUTTON_USE_INVERTED_PROCESSING_STATE = fullImageGT(
@@ -411,6 +412,11 @@ public final class GTGuiTextures {
         .name(GTTextureIds.PICTURE_BW_LOGO_STANDARD)
         .build();
 
+    public static final UITexture PICTURE_TRANSPARENT = UITexture.builder()
+        .location(GregTech.ID, "gui/picture/transparent")
+        .fullImage()
+        .name(GTTextureIds.PICTURE_TRANSPARENT)
+        .build();
     public static final UITexture PICTURE_SIEVERT_CONTAINER = UITexture.builder()
         .location(MainMod.MOD_ID, "GUI/picture/sievert_container")
         .fullImage()
@@ -440,12 +446,6 @@ public final class GTGuiTextures {
         .adaptable(1, 1, 1, 1)
         .canApplyTheme()
         .name(GTTextureIds.PICTURE_RADIATION_SHUTTER_INSIDE)
-        .build();
-    public static final UITexture PICTURE_RADIATION_SHUTTER_EMPTY = UITexture.builder()
-        .location(MainMod.MOD_ID, "GUI/picture/radiation_shutter_empty")
-        .fullImage()
-        .canApplyTheme()
-        .name(GTTextureIds.PICTURE_RADIATION_SHUTTER_EMPTY)
         .build();
 
     // endregion picture

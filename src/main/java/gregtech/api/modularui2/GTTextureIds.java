@@ -98,11 +98,11 @@ public final class GTTextureIds {
     public static final String PICTURE_GT_LOGO_STEEL = "gregtech:picture_gt_logo_steel";
     public static final String PICTURE_GT_LOGO_PRIMITIVE = "gregtech:picture_gt_logo_primitive";
 
+    public static final String PICTURE_TRANSPARENT = "gregtech:picture_transparent";
     public static final String PICTURE_BW_LOGO_STANDARD = "bartworks:picture_bw_logo";
     public static final String PICTURE_SIEVERT_CONTAINER = "bartworks:picture_bw_sievert_container";
     public static final String PICTURE_DECAY_TIME_CONTAINER = "bartworks:picture_bw_decay_time_container";
     public static final String PICTURE_DECAY_TIME_INSIDE = "bartworks:picture_bw_decay_time_inside";
     public static final String PICTURE_RADIATION_SHUTTER_FRAME = "bartworks:picture_bw_shutter_frame";
     public static final String PICTURE_RADIATION_SHUTTER_INSIDE = "bartworks:picture_bw_shutter_frame_inside";
-    public static final String PICTURE_RADIATION_SHUTTER_EMPTY = "bartworks:picture_bw_shutter_frame_empty";
 }
