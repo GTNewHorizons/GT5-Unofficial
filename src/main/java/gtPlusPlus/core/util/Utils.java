@@ -2,13 +2,11 @@ package gtPlusPlus.core.util;
 
 import java.awt.Color;
 import java.io.File;
-import java.lang.reflect.Method;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 
-import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -17,8 +15,6 @@ import net.minecraft.nbt.NBTTagString;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.IChatComponent;
-import net.minecraftforge.common.util.EnumHelper;
-import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -26,7 +22,6 @@ import org.apache.commons.lang3.EnumUtils;
 
 import cpw.mods.fml.common.FMLCommonHandler;
 import gregtech.api.GregTechAPI;
-import gregtech.api.enums.ItemList;
 import gregtech.api.enums.TCAspects;
 import gregtech.api.enums.TCAspects.TC_AspectStack;
 import gregtech.api.util.GTLanguageManager;
@@ -35,11 +30,7 @@ import gregtech.api.util.GTUtility;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.lib.GTPPCore;
-import gtPlusPlus.core.util.minecraft.FluidUtils;
-import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.minecraft.NBTUtils;
-import ic2.core.init.InternalName;
-import ic2.core.item.resources.ItemCell;
 
 public class Utils {
 
@@ -230,36 +221,6 @@ public class Utils {
             }
         }
         return new File(".");
-    }
-
-    private static short cellID = 15;
-
-    public static ItemStack createInternalNameAndFluidCell(final String s) {
-        Logger.WARNING("1");
-        final InternalName yourName = EnumHelper.addEnum(InternalName.class, s, new Class[0], new Object[0]);
-        Logger.WARNING("2 " + yourName.name());
-        final ItemCell item = (ItemCell) ItemList.Cell_Empty.getItem();
-        Logger.WARNING("3 " + item.getUnlocalizedName());
-        try {
-            Logger.WARNING("4");
-            final Class<? extends ItemCell> clz = item.getClass();
-            Logger.WARNING("5 " + clz.getSimpleName());
-            final Method methode = clz.getDeclaredMethod("addCell", int.class, InternalName.class, Block[].class);
-            Logger.WARNING("6 " + methode.getName());
-            methode.setAccessible(true);
-            Logger.WARNING("7 " + methode.isAccessible());
-            final ItemStack temp = (ItemStack) methode.invoke(item, cellID++, yourName, new Block[0]);
-            Logger.WARNING("Successfully created " + temp.getDisplayName() + "s.");
-            FluidContainerRegistry.registerFluidContainer(
-                FluidUtils.getFluidStack(s.toLowerCase(), 1000),
-                temp.copy(),
-                ItemList.Cell_Empty.get(1));
-            ItemUtils.addItemToOreDictionary(temp.copy(), "cell" + s);
-            return temp;
-        } catch (final Exception e) {
-            e.printStackTrace();
-        }
-        return null;
     }
 
     public static String sanitizeString(final String input, final char[] dontRemove) {

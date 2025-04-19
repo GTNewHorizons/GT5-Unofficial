@@ -31,6 +31,8 @@ import gregtech.api.enums.ParticleFX;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
+import gregtech.api.modularui2.GTGuiTheme;
+import gregtech.api.modularui2.GTGuiThemes;
 import gregtech.api.objects.XSTR;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTOreDictUnificator;
@@ -252,4 +254,8 @@ public class MTEBoilerBronze extends MTEBoiler {
         return getCombustionPotential(stack, TileEntityFurnace.getItemBurnTime(stack)).isPresent();
     }
 
+    @Override
+    protected GTGuiTheme getGuiTheme() {
+        return GTGuiThemes.BRONZE;
+    }
 }

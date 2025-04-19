@@ -9,6 +9,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.gtnewhorizon.structurelib.alignment.enumerable.ExtendedFacing;
@@ -42,7 +43,7 @@ public class MTEDebugStructureWriter extends MTETieredMachineBlock implements IA
     private static ITexture MARK;
     public short[] numbers = new short[6];
     public boolean size = false;
-    public String[] result = new String[] { "Undefined" };
+    public String[] result = new String[] { StatCollector.translateToLocal("GT5U.infodata.undefined") };
 
     public MTEDebugStructureWriter(int aID, String aName, String aNameRegional, int aTier) {
         super(

@@ -10,7 +10,7 @@ import static gregtech.api.enums.HatchElement.OutputBus;
 import static gregtech.api.enums.HatchElement.OutputHatch;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTUtility.formatNumbers;
-import static gregtech.api.util.ParallelHelper.calculateChancedOutputMultiplier;
+import static gregtech.api.util.ParallelHelper.calculateIntegralChancedOutputMultiplier;
 import static gregtech.common.misc.WirelessNetworkManager.addEUToGlobalEnergyMap;
 import static gregtech.common.misc.WirelessNetworkManager.strongCheckOrAddUser;
 import static java.lang.Math.exp;
@@ -1371,7 +1371,7 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements IConstructable,
         // And stellar plasma is the second last.
         stellarPlasma = new FluidStackLong(outputFluids.get(outputFluids.size() - 2));
 
-        successfulParallelAmount = (long) calculateChancedOutputMultiplier(
+        successfulParallelAmount = calculateIntegralChancedOutputMultiplier(
             (int) (10000 * successChance),
             (int) parallelAmount);
         // Iterate over item output list and apply yield & successful parallel values.
@@ -1562,110 +1562,115 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements IConstructable,
                 + "-------------"
                 + RESET
                 + GOLD
-                + " Control Block Statistics "
+                + " "
+                + StatCollector.translateToLocal("tt.infodata.eoh.control_block_statistics")
+                + " "
                 + STRIKETHROUGH
                 + "-------------");
         if (spacetimeCompressionFieldMetadata < 0) {
-            str.add("Spacetime Compression Field Grade: None");
+            str.add(StatCollector.translateToLocal("tt.infodata.eoh.spacetime_compression.grade.none"));
         } else {
             str.add(
-                "Spacetime Compression Field Grade: "
-                    + CommonValues.EOH_TIER_FANCY_NAMES[spacetimeCompressionFieldMetadata]
-                    + RESET
-                    + " ("
-                    + YELLOW
-                    + (spacetimeCompressionFieldMetadata + 1)
-                    + RESET
-                    + ")");
+                StatCollector.translateToLocalFormatted(
+                    "tt.infodata.eoh.spacetime_compression.grade",
+                    CommonValues.getLocalizedEohTierFancyNames(spacetimeCompressionFieldMetadata) + RESET,
+                    "" + YELLOW + (spacetimeCompressionFieldMetadata + 1) + RESET));
         }
         if (timeAccelerationFieldMetadata < 0) {
-            str.add("Time Dilation Field Grade: None");
+            str.add(StatCollector.translateToLocal("tt.infodata.eoh.time_dilation.grade.none"));
         } else {
             str.add(
-                "Time Dilation Field Grade: " + CommonValues.EOH_TIER_FANCY_NAMES[timeAccelerationFieldMetadata]
-                    + RESET
-                    + " ("
-                    + YELLOW
-                    + (timeAccelerationFieldMetadata + 1)
-                    + RESET
-                    + ")");
+                StatCollector.translateToLocalFormatted(
+                    "tt.infodata.eoh.time_dilation.grade",
+                    CommonValues.getLocalizedEohTierFancyNames(timeAccelerationFieldMetadata) + RESET,
+                    "" + YELLOW + (timeAccelerationFieldMetadata + 1) + RESET));
         }
         if (stabilisationFieldMetadata < 0) {
-            str.add("Stabilisation Field Grade: None");
+            str.add(StatCollector.translateToLocal("tt.infodata.eoh.stabilisation_grade"));
         } else {
             str.add(
-                "Stabilisation Field Grade: " + CommonValues.EOH_TIER_FANCY_NAMES[stabilisationFieldMetadata]
-                    + RESET
-                    + " ("
-                    + YELLOW
-                    + (stabilisationFieldMetadata + 1)
-                    + RESET
-                    + ")");
+                StatCollector.translateToLocalFormatted(
+                    "tt.infodata.eoh.stabilisation_grade.none",
+                    CommonValues.getLocalizedEohTierFancyNames(stabilisationFieldMetadata) + RESET,
+                    "" + YELLOW + (stabilisationFieldMetadata + 1) + RESET));
         }
         str.add(
             GOLD.toString() + STRIKETHROUGH
                 + "-----------------"
                 + RESET
                 + GOLD
-                + " Internal Storage "
+                + " "
+                + StatCollector.translateToLocal("tt.infodata.eoh.internal_storage")
+                + " "
                 + STRIKETHROUGH
                 + "----------------");
         validFluidMap.forEach(
             (key, value) -> str.add(BLUE + key.getLocalizedName() + RESET + " : " + RED + formatNumbers(value)));
-        str.add(BLUE + "Astral Array Fabricators" + RESET + " : " + RED + formatNumbers(astralArrayAmount));
+        str.add(
+            BLUE + StatCollector.translateToLocal(
+                "tt.infodata.eoh.astral_array_fabricators") + RESET + " : " + RED + formatNumbers(astralArrayAmount));
         if (recipeRunning) {
             str.add(
                 GOLD.toString() + STRIKETHROUGH
                     + "-----------------"
                     + RESET
                     + GOLD
-                    + " Other Stats "
+                    + " "
+                    + StatCollector.translateToLocal("tt.infodata.eoh.other_stats")
+                    + " "
                     + STRIKETHROUGH
                     + "-----------------");
-            str.add("Recipe Success Chance: " + RED + formatNumbers(100 * successChance) + RESET + "%");
-            str.add("Recipe Yield: " + RED + formatNumbers(100 * yield) + RESET + "%");
             str.add(
-                "Effective Astral Array Fabricators: " + RED
-                    + formatNumbers(Math.min(astralArrayAmount, ASTRAL_ARRAY_LIMIT)));
-            str.add("Total Parallel: " + RED + formatNumbers(parallelAmount));
-            str.add("EU Output: " + RED + toStandardForm(outputEU_BigInt) + RESET + " EU");
-            str.add("EU Input:  " + RED + toStandardForm(usedEU.abs()) + RESET + " EU");
+                StatCollector.translateToLocalFormatted(
+                    "tt.infodata.eoh.success_chance",
+                    RED + formatNumbers(100 * successChance) + RESET + "%"));
+            str.add(
+                StatCollector.translateToLocalFormatted(
+                    "tt.infodata.eoh.recipe_yield",
+                    RED + formatNumbers(100 * yield) + RESET + "%"));
+            str.add(
+                StatCollector.translateToLocalFormatted(
+                    "tt.infodata.eoh.effective_astral_array_fabricators",
+                    RED + formatNumbers(Math.min(astralArrayAmount, ASTRAL_ARRAY_LIMIT))));
+            str.add(
+                StatCollector
+                    .translateToLocalFormatted("tt.infodata.eoh.total_parallel", RED + formatNumbers(parallelAmount)));
+            str.add(
+                StatCollector.translateToLocalFormatted(
+                    "tt.infodata.eoh.eu_output",
+                    RED + toStandardForm(outputEU_BigInt) + RESET));
+            str.add(
+                StatCollector
+                    .translateToLocalFormatted("tt.infodata.eoh.eu_input", RED + toStandardForm(usedEU.abs()) + RESET));
             int currentMaxProgresstime = Math.max(maxProgresstime(), 1);
             if (starMatter != null && starMatter.fluidStack != null) {
                 FluidStackLong starMatterOutput = new FluidStackLong(
                     starMatter.fluidStack,
                     (long) (starMatter.amount * yield * successChance * parallelAmount));
                 str.add(
-                    "Average " + starMatterOutput.fluidStack.getLocalizedName()
-                        + " Output: "
-                        + RED
-                        + formatNumbers(starMatterOutput.amount)
-                        + RESET
-                        + " L, "
-                        + YELLOW
-                        + formatNumbers(starMatterOutput.amount * 20.0 / currentMaxProgresstime)
-                        + RESET
-                        + " L/s");
+                    StatCollector.translateToLocalFormatted(
+                        "tt.infodata.eoh.avg_output",
+                        starMatterOutput.fluidStack.getLocalizedName(),
+                        RED + formatNumbers(starMatterOutput.amount) + RESET,
+                        YELLOW + formatNumbers(starMatterOutput.amount * 20.0 / currentMaxProgresstime) + RESET));
 
                 FluidStackLong stellarPlasmaOutput = new FluidStackLong(
                     MaterialsUEVplus.RawStarMatter.getFluid(0),
                     (long) (stellarPlasma.amount * yield * successChance * parallelAmount));
                 str.add(
-                    "Average " + stellarPlasmaOutput.fluidStack.getLocalizedName()
-                        + " Output: "
-                        + RED
-                        + formatNumbers(stellarPlasmaOutput.amount)
-                        + RESET
-                        + " L, "
-                        + YELLOW
-                        + formatNumbers(stellarPlasmaOutput.amount * 20.0 / currentMaxProgresstime)
-                        + RESET
-                        + " L/s");
+                    StatCollector.translateToLocalFormatted(
+                        "tt.infodata.eoh.avg_output",
+                        stellarPlasmaOutput.fluidStack.getLocalizedName(),
+                        RED + formatNumbers(stellarPlasmaOutput.amount) + RESET,
+                        YELLOW + formatNumbers(stellarPlasmaOutput.amount * 20.0 / currentMaxProgresstime) + RESET));
             }
             BigInteger euPerTick = (outputEU_BigInt.subtract(usedEU.abs()))
                 .divide(BigInteger.valueOf(currentMaxProgresstime));
 
-            str.add("Estimated EU/t: " + RED + toStandardForm(euPerTick) + RESET + " EU/t");
+            str.add(
+                StatCollector.translateToLocalFormatted(
+                    "tt.infodata.eoh.estimated_eu",
+                    RED + toStandardForm(euPerTick) + RESET));
         }
         str.add(GOLD.toString() + STRIKETHROUGH + "-----------------------------------------------------");
         return str.toArray(new String[0]);

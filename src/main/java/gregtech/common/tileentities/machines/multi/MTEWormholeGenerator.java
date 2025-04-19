@@ -3,13 +3,13 @@ package gregtech.common.tileentities.machines.multi;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.lazy;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.withChannel;
 import static gregtech.api.enums.GTValues.V;
 import static gregtech.api.enums.GTValues.VN;
 import static gregtech.api.enums.HatchElement.InputBus;
 import static gregtech.api.enums.HatchElement.Maintenance;
 import static gregtech.api.enums.Textures.BlockIcons.getCasingTextureForId;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
+import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -34,6 +34,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.MathHelper;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -49,7 +50,6 @@ import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
 import appeng.api.AEApi;
-import bartworks.API.BorosilicateGlass;
 import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTValues;
@@ -127,7 +127,6 @@ public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeG
     public static double RENDER_MAX_RADIUS = 2.999 / Math.sqrt(3);
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
-    private static final byte GLASS_TIER_UNSET = -2;
 
     private static final int TT_CASING_INDEX = BlockGTCasingsTT.textureOffset;
 
@@ -140,7 +139,7 @@ public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeG
     private static final String[] HATCH_NAMES = { "Top", "Bottom", "Left", "Right", "Back", "Front" };
     private static final boolean[] HATCH_MASK = { true, true, true, true, false, false };
 
-    private byte mGlassTier = -2;
+    private int glassTier = -1;
     private boolean mStructureBadGlassTier = false;
 
     private final MTEHatchEnergyMulti[] mSendHatches = new MTEHatchEnergyMulti[MAX_HATCHES];
@@ -228,12 +227,7 @@ public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeG
                 .dot(1)
                 .buildAndChain(lazy(() -> ofBlock(TTCasingsContainer.sBlockCasingsTT, 0))) // High Power Casing
         )
-        .addElement(
-            'A',
-            withChannel(
-                "glass",
-                BorosilicateGlass.ofBoroGlass(GLASS_TIER_UNSET, (te, t) -> te.mGlassTier = t, te -> te.mGlassTier))
-        )
+        .addElement('A', chainAllGlasses(-1, (te, t) -> te.glassTier = t, te -> te.glassTier))
         .addElement('D', ofBlock(GregTechAPI.sBlockCasings8, 5)) // Europium Reinforced Radiation Proof Machine Casing
         .addElement('B', ofBlock(GregTechAPI.sBlockCasings4, 7)) // Fusion Coil Block
         .addElement('F', lazy(() -> ofBlock(TTCasingsContainer.sBlockCasingsTT, 4))) // Molecular Casing
@@ -336,6 +330,7 @@ public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeG
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         Arrays.fill(mSendHatches, null);
         Arrays.fill(mReceiveHatches, null);
+        glassTier = -1;
 
         if (!checkPiece(STRUCTURE_PIECE_MAIN, 3, 3, 0)) return false;
 
@@ -346,7 +341,7 @@ public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeG
                 continue;
             }
 
-            if (energyHatch.getTierForStructure() > mGlassTier) {
+            if (energyHatch.getTierForStructure() > glassTier) {
                 mStructureBadGlassTier = true;
                 break;
             }
@@ -1004,6 +999,7 @@ public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeG
             .addInfo("Each laser target must have a laser source on the §oother§7 controller, on the §oopposite§7 side.")
             .addInfo("Consumes an AE2 Singularity from an input bus each time the wormhole is kick-started.")
             .addInfo("Right click the controller with a screwdriver to disable overclocking.")
+            .addGlassEnergyLimitInfo()
             .addTecTechHatchInfo()
             .beginStructureBlock(7, 9, 7, false)
             .addController("Front center")
@@ -1011,17 +1007,24 @@ public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeG
             .addCasingInfoExactly("Europium Reinforced Radiation Proof Machine Casing", 4, false)
             .addCasingInfoExactly("Fusion Coil Block", 3 * 4 + 5 * 2, false)
             .addCasingInfoRange("High Power Casing", 8 * 6 + 1, 8 * 6 + 1 + 4, false)
-            .addCasingInfoExactly("Borosilicate Glass (any)", 9 * 4, true)
+            .addCasingInfoExactly("Any Tiered Glass", 9 * 4, true)
             .addMaintenanceHatch("§61§r (dot 1)")
             .addInputBus("§61§r (dot 1)")
             .addDynamoHatch("§60§r - §64§r (laser only, dot 2)")
             .addEnergyHatch("§60§r - §64§r (laser only, dot 2)")
-            .addStructureInfo("§rThe glass tier limits the hatch tier.")
-            .addSubChannelUsage("glass", "Borosilicate Glass Tier")
+            .addSubChannelUsage("glass", "Glass Tier")
             .toolTipFinisher(GTValues.AuthorPineapple + EnumChatFormatting.GRAY + ", Rendering by: " + EnumChatFormatting.WHITE + "BucketBrigade");
         // spotless:on
 
         return tt;
+    }
+
+    private static String getLocalizedHatchName(int index) {
+        String unlocalizedName = "GT5U.infodata.wormhole_generator.hatch." + HATCH_NAMES[index].toLowerCase();
+        if (StatCollector.canTranslate(unlocalizedName)) {
+            return StatCollector.translateToLocal(unlocalizedName);
+        }
+        return HATCH_NAMES[index];
     }
 
     @Override
@@ -1030,24 +1033,24 @@ public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeG
         List<String> data = new ArrayList<>(Arrays.asList(super.getInfoData()));
 
         data.add(EnumChatFormatting.STRIKETHROUGH + "-----------------------");
-        data.add("Wormhole Generator Info");
+        data.add(StatCollector.translateToLocal("GT5U.infodata.wormhole_generator"));
 
         if (mStructureBadGlassTier) {
-            data.add("§cStructure errors:§r");
-            data.add("§cGlass tier must be greater than or equal to the energy hatch tiers.§r");
+            data.add(StatCollector.translateToLocal("GT5U.infodata.wormhole_generator.structure_error"));
+            data.add(StatCollector.translateToLocal("GT5U.infodata.wormhole_generator.bad_class_tier"));
         }
 
         if (mLink == null) {
-            data.add("An entangled singularity must be present in the controller slot");
+            data.add(StatCollector.translateToLocal("GT5U.infodata.wormhole_generator.no_link"));
         } else {
             if (!mLink.isFormed()) {
-                data.add("Wormhole status: §cNo destination§f");
+                data.add(StatCollector.translateToLocal("GT5U.infodata.wormhole_generator.status.no_destination"));
             } else {
                 if (mLink.mWormholeEnergy > 0) {
                     if (mLink.isActive()) {
-                        data.add("Wormhole status: §bActive§f");
+                        data.add(StatCollector.translateToLocal("GT5U.infodata.wormhole_generator.status.active"));
                     } else {
-                        data.add("Wormhole status: §6Decaying§f");
+                        data.add(StatCollector.translateToLocal("GT5U.infodata.wormhole_generator.status.decaying"));
                     }
                 } else {
                     boolean anyTransferable = false;
@@ -1062,16 +1065,21 @@ public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeG
                     }
 
                     if (anyTransferable) {
-                        data.add("Wormhole status: §7Inactive§f");
+                        data.add(StatCollector.translateToLocal("GT5U.infodata.wormhole_generator.status.inactive"));
                     } else {
-                        data.add("Wormhole status: §7No energy in input hatches§f");
+                        data.add(StatCollector.translateToLocal("GT5U.infodata.wormhole_generator.status.no_energy"));
                     }
                 }
 
                 double radius = Math.sqrt(mLink.mWormholeEnergy / 20.0 / 32.0);
-                data.add(String.format("Wormhole diameter: §b%,d§r angstrom", (long) (radius * 2)));
+                data.add(
+                    StatCollector
+                        .translateToLocalFormatted("GT5U.infodata.wormhole_generator.diameter", (long) (radius * 2)));
 
-                data.add(String.format("Optimal transfer speed: §b%,.0f§r EU/t", mLink.mWormholeEnergy / 20));
+                data.add(
+                    StatCollector.translateToLocalFormatted(
+                        "GT5U.infodata.wormhole_generator.optimal_transfer_speed",
+                        mLink.mWormholeEnergy / 20));
             }
         }
 
@@ -1103,9 +1111,9 @@ public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeG
 
             // spotless:off
             if(inputHatch != null) {
-                data.add(String.format(
-                    "%s hatch (%,dA/t %s) transferred §b%,d§f EU (equivalent to %,dA/t) with an efficiency of %.3f%% in the last %d seconds",
-                    HATCH_NAMES[i],
+                data.add(StatCollector.translateToLocalFormatted(
+                    "GT5U.infodata.wormhole_generator.transferred",
+                    getLocalizedHatchName(i),
                     inputHatch.Amperes,
                     VN[inputHatch.mTier],
                     avgSend,
@@ -1114,9 +1122,9 @@ public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeG
                     SCAN_AVG_WINDOW
                 ));
             } else if(outputHatch != null) {
-                data.add(String.format(
-                    "%s hatch (%,dA/t %s) received §b%,d§f EU (equivalent to %,dA/t) with an efficiency of %.3f%% in the last %d seconds",
-                    HATCH_NAMES[i],
+                data.add(StatCollector.translateToLocalFormatted(
+                    "GT5U.infodata.wormhole_generator.received",
+                    getLocalizedHatchName(i),
                     outputHatch.Amperes,
                     VN[outputHatch.mTier],
                     avgReceive,
@@ -1125,7 +1133,7 @@ public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeG
                     SCAN_AVG_WINDOW
                 ));
             } else {
-                data.add(String.format("%s hatch is not present", HATCH_NAMES[i]));
+                data.add(StatCollector.translateToLocalFormatted("GT5U.infodata.wormhole_generator.not_present", getLocalizedHatchName(i)));
             }
             // spotless:on
         }

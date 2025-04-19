@@ -52,6 +52,7 @@ import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.MathHelper;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -806,9 +807,17 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
     public String[] getInfoData() {
         ArrayList<String> str = new ArrayList<>(Arrays.asList(super.getInfoData()));
         str.add(SCANNER_INFO_BAR);
-        str.add("Number of Rings: " + EnumChatFormatting.GOLD + ringAmount);
-        str.add("Total Upgrades Unlocked: " + EnumChatFormatting.GOLD + getTotalActiveUpgrades());
-        str.add("Connected Modules: " + EnumChatFormatting.GOLD + moduleHatches.size());
+        str.add(
+            StatCollector
+                .translateToLocalFormatted("tt.infodata.fog.rings", "" + EnumChatFormatting.GOLD + ringAmount));
+        str.add(
+            StatCollector.translateToLocalFormatted(
+                "tt.infodata.fog.upgrades.unlocked",
+                "" + EnumChatFormatting.GOLD + getTotalActiveUpgrades()));
+        str.add(
+            StatCollector.translateToLocalFormatted(
+                "tt.infodata.fog.connected",
+                "" + EnumChatFormatting.GOLD + moduleHatches.size()));
         str.add(SCANNER_INFO_BAR);
         return str.toArray(new String[0]);
     }

@@ -262,27 +262,20 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
                 + EnumChatFormatting.RESET);
 
         mInfo.add(
-            "Total Time Since Built: " + EnumChatFormatting.DARK_GREEN
-                + weeks
-                + EnumChatFormatting.RESET
-                + " Weeks, "
-                + EnumChatFormatting.DARK_GREEN
-                + days
-                + EnumChatFormatting.RESET
-                + " Days, ");
+            StatCollector.translateToLocalFormatted(
+                "gtpp.infodata.multi_block.total_time",
+                "" + EnumChatFormatting.DARK_GREEN + weeks + EnumChatFormatting.RESET,
+                "" + EnumChatFormatting.DARK_GREEN + days + EnumChatFormatting.RESET));
         mInfo.add(
-            EnumChatFormatting.DARK_GREEN + Long.toString(hours)
-                + EnumChatFormatting.RESET
-                + " Hours, "
-                + EnumChatFormatting.DARK_GREEN
-                + minutes
-                + EnumChatFormatting.RESET
-                + " Minutes, "
-                + EnumChatFormatting.DARK_GREEN
-                + second
-                + EnumChatFormatting.RESET
-                + " Seconds.");
-        mInfo.add("Total Time in ticks: " + EnumChatFormatting.DARK_GREEN + this.mTotalRunTime);
+            StatCollector.translateToLocalFormatted(
+                "gtpp.infodata.multi_block.total_time.0",
+                EnumChatFormatting.DARK_GREEN + Long.toString(hours) + EnumChatFormatting.RESET,
+                EnumChatFormatting.DARK_GREEN + Long.toString(minutes) + EnumChatFormatting.RESET,
+                EnumChatFormatting.DARK_GREEN + Long.toString(second) + EnumChatFormatting.RESET));
+        mInfo.add(
+            StatCollector.translateToLocalFormatted(
+                "gtpp.infodata.multi_block.total_time.in_ticks",
+                "" + EnumChatFormatting.DARK_GREEN + this.mTotalRunTime));
 
         return mInfo.toArray(new String[0]);
     }

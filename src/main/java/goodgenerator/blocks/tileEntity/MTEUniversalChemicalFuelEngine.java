@@ -9,6 +9,7 @@ import java.util.List;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
@@ -250,14 +251,17 @@ public class MTEUniversalChemicalFuelEngine extends MTETooltipMultiBlockBaseEM
     @Override
     public String[] getInfoData() {
         String[] info = super.getInfoData();
-        info[4] = "Currently generates: " + EnumChatFormatting.RED
-            + GTUtility.formatNumbers(this.getPowerFlow() * tEff / 10000)
-            + EnumChatFormatting.RESET
-            + " EU/t";
-        info[6] = "Problems: " + EnumChatFormatting.RED
+        info[4] = StatCollector.translateToLocalFormatted(
+            "gg.scanner.info.generator.generates",
+            EnumChatFormatting.RED + GTUtility.formatNumbers(this.getPowerFlow() * tEff / 10000)
+                + EnumChatFormatting.RESET);
+        info[6] = StatCollector.translateToLocal("gg.scanner.info.generator.problems") + " "
+            + EnumChatFormatting.RED
             + GTUtility.formatNumbers(this.getIdealStatus() - this.getRepairStatus())
             + EnumChatFormatting.RESET
-            + " Efficiency: "
+            + " "
+            + StatCollector.translateToLocal("gg.scanner.info.generator.efficiency")
+            + " "
             + EnumChatFormatting.YELLOW
             + GTUtility.formatNumbers(tEff / 100D)
             + EnumChatFormatting.RESET

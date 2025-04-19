@@ -9,15 +9,10 @@ import gregtech.api.covers.CoverContext;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
 
-public class CoverCrafting extends CoverBehavior {
+public class CoverCrafting extends Cover {
 
     public CoverCrafting(CoverContext context, ITexture coverTexture) {
         super(context, coverTexture);
-    }
-
-    @Override
-    public boolean isRedstoneSensitive(long aTimer) {
-        return false;
     }
 
     @Override

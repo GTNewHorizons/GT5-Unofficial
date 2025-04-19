@@ -303,9 +303,10 @@ public class MTEHatchInputBusME extends MTEHatchInputBus
 
     @Override
     public String[] getInfoData() {
-        return new String[] {
-            "The bus is " + ((getProxy() != null && getProxy().isActive()) ? EnumChatFormatting.GREEN + "online"
-                : EnumChatFormatting.RED + "offline" + getAEDiagnostics()) + EnumChatFormatting.RESET };
+        return new String[] { (getProxy() != null && getProxy().isActive())
+            ? StatCollector.translateToLocal("GT5U.infodata.hatch.crafting_input_me.bus.online")
+            : StatCollector
+                .translateToLocalFormatted("GT5U.infodata.hatch.crafting_input_me.bus.offline", getAEDiagnostics()) };
     }
 
     @Override
@@ -665,6 +666,45 @@ public class MTEHatchInputBusME extends MTEHatchInputBus
             return null;
         }
         return shadowInventory[index];
+    }
+
+    public int getShadowInventorySize() {
+        return shadowInventory.length;
+    }
+
+    /**
+     * Gets the first non-null shadow item stack.
+     *
+     * @return The first shadow item stack, or null if this doesn't exist.
+     */
+    public ItemStack getFirstShadowItemStack() {
+        return getFirstShadowItemStack(false);
+    }
+
+    /**
+     * Gets the first non-null shadow item stack.
+     * 
+     * @param hasToMatchGhost Whether the first item stack returned has to match the first non-null ghost stack
+     * @return The first shadow item stack, or null if this doesn't exist.
+     */
+    public ItemStack getFirstShadowItemStack(boolean hasToMatchGhost) {
+        ItemStack itemStack;
+        ItemStack lockedSlot = null;
+        if (hasToMatchGhost) {
+            byte slotToCheck = 0;
+            do {
+                lockedSlot = mInventory[slotToCheck];
+                slotToCheck++;
+            } while (lockedSlot == null && slotToCheck < getSizeInventory());
+            if (lockedSlot == null) return null;
+        }
+        byte slotToCheck = 0;
+        do {
+            itemStack = getShadowItemStack(slotToCheck);
+            slotToCheck++;
+        } while ((itemStack == null || !(hasToMatchGhost && lockedSlot.getItem() == itemStack.getItem()))
+            && slotToCheck < getSizeInventory());
+        return itemStack;
     }
 
     @Override

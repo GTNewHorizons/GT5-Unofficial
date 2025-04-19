@@ -11,6 +11,7 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 
+import gregtech.api.hazards.HazardProtection;
 import gregtech.api.util.GTUtility;
 import gtPlusPlus.api.objects.minecraft.BlockPos;
 import gtPlusPlus.core.handler.events.EntityDeathHandler;
@@ -49,7 +50,7 @@ public class EntityUtils {
             if ((radiationLevel > 0) && (entityHolding instanceof final EntityLivingBase entityLiving)) {
                 if (!((EntityPlayer) entityHolding).capabilities.isCreativeMode) {
                     if (!ItemArmorHazmat.hasCompleteHazmat(entityLiving)
-                            && !GTUtility.isWearingFullRadioHazmat(entityLiving)) {
+                            && !HazardProtection.isWearingFullRadioHazmat(entityLiving)) {
                         if (entityLiving.getActivePotionEffect(IC2Potion.radiation) != null) {
                             entityLiving.getActivePotionEffect(IC2Potion.radiation);
                         }
@@ -120,7 +121,7 @@ public class EntityUtils {
         if (!world.isRemote) {
             if ((heatLevel > 0) && (entityHolding instanceof final EntityLivingBase entityLiving)) {
                 if (!((EntityPlayer) entityHolding).capabilities.isCreativeMode) {
-                    if (!GTUtility.isWearingFullHeatHazmat(entityLiving)) {
+                    if (!HazardProtection.isWearingFullHeatHazmat(entityLiving)) {
                         GTUtility.applyHeatDamage(entityLiving, heatLevel);
                     }
                 }

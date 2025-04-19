@@ -1,7 +1,6 @@
 package gtnhlanth.common.tileentity;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.withChannel;
 import static gregtech.api.enums.GTValues.VN;
 import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.InputHatch;
@@ -13,10 +12,13 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_OIL_CRACKER_A
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_OIL_CRACKER_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.casingTexturePages;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
+import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 import static gtnhlanth.util.DescTextLocalization.addDotText;
 
 import java.util.ArrayList;
 import java.util.Objects;
+
+import javax.annotation.Nullable;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
@@ -34,10 +36,10 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
-import bartworks.API.BorosilicateGlass;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.TickTime;
+import gregtech.api.enums.VoltageIndex;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -66,24 +68,29 @@ public class MTELINAC extends MTEEnhancedMultiBlockBase<MTELINAC> implements ISu
 
     protected static final String STRUCTURE_PIECE_BASE = "base";
     protected static final String STRUCTURE_PIECE_LAYER = "layer";
-    protected static final String STRUCTURE_PIECE_END = "end";
-
-    private byte glassTier;
-
-    private boolean onEndInnerLayer = false;
-
-    private int machineTemp = 0; // Coolant temperature
+    protected static final String STRUCTURE_PIECE_END = "end"; // Coolant temperature
 
     private final ArrayList<MTEHatchInputBeamline> mInputBeamline = new ArrayList<>();
     private final ArrayList<MTEHatchOutputBeamline> mOutputBeamline = new ArrayList<>();
 
     private static final int CASING_INDEX = 1662;
 
-    private static final byte MIN_GLASS_TIER = 6;
+    private int glassTier = -1;
+    private int machineTemp = 0;
+    private int length;
+
+    private float outputEnergy;
+    private int outputParticleID;
+    private int outputRate;
+    private float outputFocus;
 
     /*
-     * g: Grate Machine Casing b: Borosilicate glass c: Shielded accelerator casing v: Vacuum k: Shielded glass d:
-     * Coolant Delivery casing y: Superconducting coil
+     * g: Grate Machine Casing
+     * b: Borosilicate glass
+     * c: Shielded accelerator casing
+     * v: Vacuum k: Shielded glass
+     * d: Coolant Delivery casing
+     * y: Superconducting coil
      */
 
     static {
@@ -115,16 +122,7 @@ public class MTELINAC extends MTEEnhancedMultiBlockBase<MTELINAC> implements ISu
                     { "ccccccc", "cbbbbbc", "cbbbbbc", "cbbobbc", "cbbbbbc", "cbbbbbc", "ccccccc" } })
             .addElement('c', ofBlock(LanthItemList.SHIELDED_ACCELERATOR_CASING, 0))
             .addElement('g', ofBlock(GregTechAPI.sBlockCasings3, 10)) // Grate Machine Casing
-            .addElement(
-                'b',
-                withChannel(
-                    "glass",
-                    BorosilicateGlass.ofBoroGlass(
-                        (byte) 0,
-                        MIN_GLASS_TIER,
-                        Byte.MAX_VALUE,
-                        (te, t) -> te.glassTier = t,
-                        te -> te.glassTier)))
+            .addElement('b', chainAllGlasses(-1, (te, t) -> te.glassTier = t, te -> te.glassTier))
             .addElement(
                 'i',
                 buildHatchAdder(MTELINAC.class).hatchClass(MTEHatchInputBeamline.class)
@@ -149,28 +147,14 @@ public class MTELINAC extends MTEEnhancedMultiBlockBase<MTELINAC> implements ISu
                     .casingIndex(CASING_INDEX)
                     .dot(2)
                     .build())
-
             .addElement(
                 'j',
                 buildHatchAdder(MTELINAC.class).atLeast(Maintenance, Energy)
                     .casingIndex(CASING_INDEX)
                     .dot(1)
                     .buildAndChain(ofBlock(LanthItemList.SHIELDED_ACCELERATOR_CASING, 0)))
-
             .build();
     }
-
-    @Override
-    public boolean supportsPowerPanel() {
-        return false;
-    }
-
-    private float outputEnergy;
-    private int outputRate;
-    private int outputParticle;
-    private float outputFocus;
-
-    private int length;
 
     public MTELINAC(int id, String name, String nameRegional) {
         super(id, name, nameRegional);
@@ -194,17 +178,14 @@ public class MTELINAC extends MTEEnhancedMultiBlockBase<MTELINAC> implements ISu
             .addInfo("Increasing length increases output energy, but decreases focus")
             .addInfo("Use a lower temperature coolant to improve output focus")
             .addInfo("Output energy does not scale for input energies higher than 7500 keV")
-            // .addInfo("Extendable, with a minimum length of 18 blocks")
             .addInfo(DescTextLocalization.BEAMLINE_SCANNER_INFO)
             .addInfo("Valid Coolants:");
 
         // Valid coolant list
         for (String fluidName : BeamlineRecipeLoader.coolantMap.keySet()) {
-
             tt.addInfo(
                 "- " + FluidRegistry.getFluid(fluidName)
                     .getLocalizedName(null));
-
         }
 
         tt.addInfo("Requires (length)kL/s of coolant")
@@ -217,23 +198,22 @@ public class MTELINAC extends MTEEnhancedMultiBlockBase<MTELINAC> implements ISu
             .addCasingInfoRange("Superconducting Coil Block", 56, 312, false)
             .addCasingInfoRange(LanthItemList.ELECTRODE_CASING.getLocalizedName(), 156, 732, false)
             .addCasingInfoExactly("Grate Machine Casing", 47, false)
-            .addCasingInfoExactly("Borosilicate Glass (LuV+)", 48, false)
+            .addCasingInfoExactly("Any Tiered Glass (LuV+)", 48, false)
             .addEnergyHatch(addDotText(1))
             .addMaintenanceHatch(addDotText(1))
             .addInputHatch(addDotText(2))
             .addOutputHatch(addDotText(2))
             .addOtherStructurePart("Beamline Input Hatch", addDotText(3))
             .addOtherStructurePart("Beamline Output Hatch", addDotText(4))
+            .addSubChannelUsage("glass", "Glass Tier")
             .toolTipFinisher();
         return tt;
     }
 
     private boolean addBeamLineInputHatch(IGregTechTileEntity te, int casingIndex) {
-
         if (te == null) return false;
 
         IMetaTileEntity mte = te.getMetaTileEntity();
-
         if (mte == null) return false;
 
         if (mte instanceof MTEHatchInputBeamline) {
@@ -244,11 +224,9 @@ public class MTELINAC extends MTEEnhancedMultiBlockBase<MTELINAC> implements ISu
     }
 
     private boolean addBeamLineOutputHatch(IGregTechTileEntity te, int casingIndex) {
-
         if (te == null) return false;
 
         IMetaTileEntity mte = te.getMetaTileEntity();
-
         if (mte == null) return false;
 
         if (mte instanceof MTEHatchOutputBeamline) {
@@ -261,168 +239,223 @@ public class MTELINAC extends MTEEnhancedMultiBlockBase<MTELINAC> implements ISu
     @NotNull
     @Override
     public CheckRecipeResult checkProcessing() {
-
-        float tempFactor = 0;
-        // Focus as determined by multi properties
-        float machineFocus = 0;
-        // Input particle focus
-        float inputFocus = 0;
-
-        // Output focus to be set
-        outputFocus = 0;
-
-        float voltageFactor = 0;
-        float inputEnergy = 0;
-
-        machineTemp = 0;
-
-        // Energy quantity determined by multi
-        float machineEnergy = 0;
-        outputEnergy = 0;
-
-        int particleId = 0;
-        outputParticle = 0;
-
-        int inputRate = 0;
-        outputRate = 0;
-
         ArrayList<FluidStack> tFluidInputs = this.getStoredFluids();
         if (tFluidInputs.isEmpty()) {
             this.doRandomMaintenanceDamage(); // Penalise letting coolant run dry
             this.stopMachine(SimpleShutDownReason.ofCritical("gtnhlanth.nocoolant"));
             return CheckRecipeResultRegistry.NO_RECIPE;
         }
+        FluidStack fluidCoolant = tFluidInputs.get(0);
 
-        // Coolant input
-        FluidStack primFluid = tFluidInputs.get(0);
+        BeamInformation inputInfo = this.getInputInformation();
+        if (inputInfo == null) return CheckRecipeResultRegistry.NO_RECIPE;
 
-        // 1b (1000L)/m/operation
-        final int fluidConsumed = 1000 * (length + 1); // length variable is technically physical length - 1, adding
-                                                       // here so as to not affect existing math
-
-        this.mEfficiency = (10000 - (this.getIdealStatus() - this.getRepairStatus()) * 1000);
-        this.mEfficiencyIncrease = 10000;
-
-        if (this.getInputInformation() == null) {
-            return CheckRecipeResultRegistry.NO_RECIPE;
-        }
-
-        if (this.getInputInformation()
-            .getEnergy() == 0) {
-            return CheckRecipeResultRegistry.NO_RECIPE;
-        }
-
-        particleId = this.getInputInformation()
-            .getParticleId();
-        Particle inputParticle = Particle.getParticleFromId(particleId);
+        float inputEnergy = inputInfo.getEnergy();
+        int inputParticleID = inputInfo.getParticleId();
+        Particle inputParticle = Particle.getParticleFromId(inputParticleID);
+        float inputFocus = inputInfo.getFocus();
+        int inputRate = inputInfo.getRate();
+        if (inputEnergy == 0) return CheckRecipeResultRegistry.NO_RECIPE;
 
         if (!inputParticle.canAccelerate()) {
             stopMachine(SimpleShutDownReason.ofCritical("gtnhlanth.noaccel"));
             return CheckRecipeResultRegistry.NO_RECIPE;
         }
 
-        mMaxProgresstime = 1 * TickTime.SECOND;
+        this.machineTemp = Util.coolantFluidTemperature(fluidCoolant); // Used for tricorder too
+        float tempFactor = calculateTemperatureFactor(this.machineTemp);
 
-        // Consume the input tier's corresponding practical voltage instead of the maximum suggested by the logic
-        // 1A if one energy hatch, 4A if two
-        mEUt = (int) ((this.mEnergyHatches.size() == 1) ? -GTValues.VP[(int) this.getInputVoltageTier()]
+        this.mEfficiency = (10000 - (this.getIdealStatus() - this.getRepairStatus()) * 1000);
+        this.mEfficiencyIncrease = 10000;
+        this.mMaxProgresstime = TickTime.SECOND;
+        this.mEUt = (int) ((this.mEnergyHatches.size() == 1) ? -GTValues.VP[(int) this.getInputVoltageTier()]
             : (int) (-this.getMaxInputAmps() * GTValues.VP[(int) this.getInputVoltageTier()]));
-
-        // Particle stays the same with this multiblock
-        outputParticle = particleId;
-
-        int coolantTemperature = Util.coolantFluidTemperature(primFluid);
-
-        tempFactor = calculateTemperatureFactor(coolantTemperature);
-        machineTemp = coolantTemperature; // Solely for tricorder use
-
-        machineFocus = Math.max(((-0.9f) * this.length * tempFactor) + 110, 5); // Min of 5
-        if (machineFocus > 90) { // Max of 90
-            machineFocus = 90;
-        }
-
-        inputFocus = this.getInputInformation()
-            .getFocus();
-
-        outputFocus = (inputFocus > machineFocus) ? ((inputFocus + machineFocus) / 2)
-            : inputFocus * (machineFocus / 100); // If input focus > machine focus, take the average of both, else
-                                                 // weigh the former by the latter
 
         // 1A of full power if one energy hatch, 4A if two
         long voltage = (this.mEnergyHatches.size() == 1) ? this.getMaxInputVoltage() : this.getMaxInputPower();
-
-        machineEnergy = (float) Math.max(length / 4.0 * Math.pow(voltage, 1.0 / 3.0), 50); // Minimum of 50keV
-
-        inputEnergy = this.getInputInformation()
-            .getEnergy();
-
+        float machineEnergy = (float) Math.max((this.length - 1) / 4.0 * Math.pow(voltage, 1.0 / 3.0), 50);
         inputEnergy = Math.min(inputEnergy, 7500); // Does not scale past 7500 keV, prevents double LINAC issue
+        this.outputEnergy = (float) Math.pow(10, 1 + inputEnergy / inputParticle.maxSourceEnergy()) * machineEnergy;
 
-        outputEnergy = (float) Math.pow(
-            10,
-            1 + inputEnergy / Particle.getParticleFromId(outputParticle)
-                .maxSourceEnergy())
-            * machineEnergy;
+        this.outputParticleID = inputParticleID;
 
-        inputRate = this.getInputInformation()
-            .getRate();
-        outputRate = inputRate; // Cannot increase rate with this multiblock
+        float machineFocus = ((-0.9f) * (this.length - 1) * tempFactor) + 110;
+        machineFocus = Math.min(Math.max(machineFocus, 5), 90);
+        this.outputFocus = (inputFocus > machineFocus) ? ((inputFocus + machineFocus) / 2)
+            : inputFocus * (machineFocus / 100);
 
-        if (Util.coolantFluidCheck(primFluid, fluidConsumed)) {
+        this.outputRate = inputRate;
 
+        final int fluidConsumed = 1000 * (length);
+        if (Util.coolantFluidCheck(fluidCoolant, fluidConsumed)) {
             this.stopMachine(SimpleShutDownReason.ofCritical("gtnhlanth.inscoolant"));
             return CheckRecipeResultRegistry.NO_RECIPE;
-
         }
 
-        primFluid.amount -= fluidConsumed;
-
         Fluid fluidOutput = BeamlineRecipeLoader.coolantMap.get(
-            primFluid.getFluid()
+            fluidCoolant.getFluid()
                 .getName());
-
         if (Objects.isNull(fluidOutput)) return CheckRecipeResultRegistry.NO_RECIPE;
 
+        fluidCoolant.amount -= fluidConsumed;
         FluidStack fluidOutputStack = new FluidStack(fluidOutput, fluidConsumed);
-
-        if (Objects.isNull(fluidOutputStack)) return CheckRecipeResultRegistry.NO_RECIPE;
-
         this.addFluidOutputs(new FluidStack[] { fluidOutputStack });
 
-        outputAfterRecipe();
-
+        outputPacketAfterRecipe();
         return CheckRecipeResultRegistry.SUCCESSFUL;
     }
 
-    private void outputAfterRecipe() {
-
+    private void outputPacketAfterRecipe() {
         if (!mOutputBeamline.isEmpty()) {
-
             BeamLinePacket packet = new BeamLinePacket(
-                new BeamInformation(outputEnergy, outputRate, outputParticle, outputFocus));
+                new BeamInformation(outputEnergy, outputRate, outputParticleID, outputFocus));
 
             for (MTEHatchOutputBeamline o : mOutputBeamline) {
-
-                o.q = packet;
+                o.dataPacket = packet;
             }
         }
     }
 
     @Override
     public void stopMachine(@NotNull ShutDownReason reason) {
-
         outputFocus = 0;
         outputEnergy = 0;
-        outputParticle = 0;
+        outputParticleID = 0;
         outputRate = 0;
         machineTemp = 0;
         super.stopMachine(reason);
+    }
 
+    @Nullable
+    private BeamInformation getInputInformation() {
+        for (MTEHatchInputBeamline in : this.mInputBeamline) {
+            if (in.dataPacket == null) return new BeamInformation(0, 0, 0, 0);
+            return in.dataPacket.getContent();
+        }
+        return null;
+    }
+
+    private static float calculateTemperatureFactor(int fluidTemp) {
+        return (float) Math.pow(1.1, 0.2 * fluidTemp);
+    }
+
+    @Override
+    public boolean checkMachine(IGregTechTileEntity mte, ItemStack stack) {
+        mInputBeamline.clear();
+        mOutputBeamline.clear();
+
+        this.outputEnergy = 0;
+        this.outputRate = 0;
+        this.outputParticleID = 0;
+        this.outputFocus = 0;
+
+        this.glassTier = -1;
+
+        length = 8; // Base piece length
+
+        if (!checkPiece(STRUCTURE_PIECE_BASE, 3, 6, 0)) return false;
+
+        while (length < 128) {
+            if (!checkPiece(STRUCTURE_PIECE_LAYER, 3, 6, -length)) {
+                if (!checkPiece(STRUCTURE_PIECE_END, 3, 6, -length)) {
+                    return false;
+                }
+                break;
+            }
+            length += 2;
+        }
+
+        length += 9;
+
+        return this.mInputBeamline.size() == 1 && this.mOutputBeamline.size() == 1
+            && this.mEnergyHatches.size() <= 2
+            && this.glassTier >= VoltageIndex.LuV;
+    }
+
+    @Override
+    public void construct(ItemStack stackSize, boolean hintsOnly) {
+        buildPiece(STRUCTURE_PIECE_BASE, stackSize, hintsOnly, 3, 6, 0);
+
+        int lLength = Math.max(stackSize.stackSize + 7, 8); // !!
+        if (!(lLength % 2 == 0)) {
+            lLength++; // Otherwise you get gaps at the end
+        }
+
+        for (int i = -8; i > -lLength - 1; i -= 2) {
+            buildPiece(STRUCTURE_PIECE_LAYER, stackSize, hintsOnly, 3, 6, i);
+        }
+
+        buildPiece(STRUCTURE_PIECE_END, stackSize, hintsOnly, 3, 6, -(lLength + 2));
+
+        StructureLib.addClientSideChatMessages("Length: " + (11 + lLength) + " blocks.");
+    }
+
+    @Override
+    public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
+        elementBudget = 200;
+
+        if (this.mMachine) return -1;
+
+        int build = survivialBuildPiece(STRUCTURE_PIECE_BASE, stackSize, 3, 6, 0, elementBudget, env, false, true);
+        if (build >= 0) return build; // Incomplete
+
+        int lLength = Math.max(stackSize.stackSize + 7, 8); // !!
+        if (!(lLength % 2 == 0)) {
+            lLength++; // Otherwise you get gaps at the end
+        }
+
+        for (int i = -8; i > -lLength - 1; i -= 2) {
+            build = survivialBuildPiece(STRUCTURE_PIECE_LAYER, stackSize, 3, 6, i, elementBudget, env, false, true);
+            if (build >= 0) return build;
+        }
+
+        return survivialBuildPiece(
+            STRUCTURE_PIECE_END,
+            stackSize,
+            3,
+            6,
+            -(lLength + 2),
+            elementBudget,
+            env,
+            false,
+            true);
+    }
+
+    @Override
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
+        int aColorIndex, boolean active, boolean aRedstone) {
+
+        // Placeholder
+        if (side == facing) {
+            if (active) return new ITexture[] { casingTexturePages[0][47], TextureFactory.builder()
+                .addIcon(OVERLAY_FRONT_OIL_CRACKER_ACTIVE)
+                .extFacing()
+                .build(),
+                TextureFactory.builder()
+                    .addIcon(OVERLAY_FRONT_OIL_CRACKER_ACTIVE_GLOW)
+                    .extFacing()
+                    .glow()
+                    .build() };
+            return new ITexture[] { casingTexturePages[0][47], TextureFactory.builder()
+                .addIcon(OVERLAY_FRONT_OIL_CRACKER)
+                .extFacing()
+                .build(),
+                TextureFactory.builder()
+                    .addIcon(OVERLAY_FRONT_OIL_CRACKER_GLOW)
+                    .extFacing()
+                    .glow()
+                    .build() };
+        }
+        return new ITexture[] { casingTexturePages[0][47] };
+    }
+
+    @Override
+    public String[] getStructureDescription(ItemStack arg0) {
+        return DescTextLocalization.addText("LINAC.hint", 11);
     }
 
     @Override
     public String[] getInfoData() {
-
         long storedEnergy = 0;
         long maxEnergy = 0;
         for (MTEHatchEnergy tHatch : mEnergyHatches) {
@@ -435,12 +468,12 @@ public class MTELINAC extends MTEEnhancedMultiBlockBase<MTELINAC> implements ISu
         }
 
         BeamInformation information = this.getInputInformation();
-
         if (information == null) {
             information = new BeamInformation(0, 0, 0, 0);
         }
 
         return new String[] {
+            // from super()
             /* 1 */ StatCollector.translateToLocal("GT5U.multiblock.Progress") + ": "
                 + EnumChatFormatting.GREEN
                 + GTUtility.formatNumbers(mProgresstime / 20)
@@ -487,31 +520,26 @@ public class MTELINAC extends MTEEnhancedMultiBlockBase<MTELINAC> implements ISu
                 + mEfficiency / 100.0F
                 + EnumChatFormatting.RESET
                 + " %",
-
-            /* 7 */ EnumChatFormatting.BOLD + StatCollector.translateToLocal("beamline.info")
-                + ": "
-                + EnumChatFormatting.RESET,
-
+            /* 6 Pollution not included */
+            // Beamline-specific
+            EnumChatFormatting.BOLD + StatCollector.translateToLocal("beamline.info") + ": " + EnumChatFormatting.RESET,
             StatCollector.translateToLocal("beamline.temperature") + ": " // Temperature:
                 + EnumChatFormatting.DARK_RED
                 + machineTemp
                 + EnumChatFormatting.RESET
                 + " K", // e.g. "137 K"
-
             StatCollector.translateToLocal("beamline.coolusage") + ": " // Coolant usage:
                 + EnumChatFormatting.AQUA
-                + (length + 1)
+                + (length)
                 + EnumChatFormatting.RESET
                 + " kL/s", // e.g. "24 kL/s
-
-            /* 8 */ EnumChatFormatting.BOLD + StatCollector.translateToLocal("beamline.in_pre")
+            EnumChatFormatting.BOLD + StatCollector.translateToLocal("beamline.in_pre")
                 + ": "
                 + EnumChatFormatting.RESET,
             StatCollector.translateToLocal("beamline.particle") + ": " // "Multiblock Beamline Input:"
                 + EnumChatFormatting.GOLD
                 + Particle.getParticleFromId(information.getParticleId())
-                    .getLocalisedName() // e.g. "Electron
-                                        // (e-)"
+                    .getLocalisedName() // e.g. "Electron (e-)"
                 + " "
                 + EnumChatFormatting.RESET,
             StatCollector.translateToLocal("beamline.energy") + ": " // "Energy:"
@@ -527,174 +555,29 @@ public class MTELINAC extends MTEEnhancedMultiBlockBase<MTELINAC> implements ISu
             StatCollector.translateToLocal("beamline.amount") + ": " // "Amount:"
                 + EnumChatFormatting.LIGHT_PURPLE
                 + information.getRate(),
-            EnumChatFormatting.BOLD + StatCollector.translateToLocal("beamline.out_pre") // "Multiblock Beamline
-                                                                                         // Output:"
+
+            EnumChatFormatting.BOLD + StatCollector.translateToLocal("beamline.out_pre")
                 + ": "
                 + EnumChatFormatting.RESET,
-            StatCollector.translateToLocal("beamline.particle") + ": "
+            StatCollector.translateToLocal("beamline.particle") + ": " // "Multiblock Beamline Output:"
                 + EnumChatFormatting.GOLD
-                + Particle.getParticleFromId(this.outputParticle)
+                + Particle.getParticleFromId(this.outputParticleID)
                     .getLocalisedName()
                 + " "
                 + EnumChatFormatting.RESET,
-            StatCollector.translateToLocal("beamline.energy") + ": "
+            StatCollector.translateToLocal("beamline.energy") + ": " // "Energy:"
                 + EnumChatFormatting.DARK_RED
                 + this.outputEnergy
                 + EnumChatFormatting.RESET
                 + " keV",
-            StatCollector.translateToLocal(
-                "beamline.focus") + ": " + EnumChatFormatting.BLUE + this.outputFocus + " " + EnumChatFormatting.RESET,
-            StatCollector.translateToLocal("beamline.amount") + ": "
+            StatCollector.translateToLocal("beamline.focus") + ": " // "Focus:"
+                + EnumChatFormatting.BLUE
+                + this.outputFocus
+                + " "
+                + EnumChatFormatting.RESET,
+            StatCollector.translateToLocal("beamline.amount") + ": " // "Amount:"
                 + EnumChatFormatting.LIGHT_PURPLE
-                + this.outputRate, };
-    }
-
-    private BeamInformation getInputInformation() {
-
-        for (MTEHatchInputBeamline in : this.mInputBeamline) { // Easy way to find the desired input. Efficient? No.
-                                                               // Will it matter? No :boubs_glasses:
-
-            if (in.q == null) return new BeamInformation(0, 0, 0, 0);
-
-            return in.q.getContent();
-        }
-        return null;
-    }
-
-    private static float calculateTemperatureFactor(int fluidTemp) {
-        return (float) Math.pow(1.1, 0.2 * fluidTemp);
-    }
-
-    @Override
-    public String[] getStructureDescription(ItemStack arg0) {
-        return DescTextLocalization.addText("LINAC.hint", 11);
-    }
-
-    @Override
-    public boolean checkMachine(IGregTechTileEntity mte, ItemStack stack) {
-
-        mInputBeamline.clear();
-        mOutputBeamline.clear();
-
-        this.outputEnergy = 0;
-        this.outputRate = 0;
-        this.outputParticle = 0;
-        this.outputFocus = 0;
-
-        this.glassTier = 0;
-
-        this.onEndInnerLayer = false;
-
-        length = 8; // Base piece length
-
-        if (!checkPiece(STRUCTURE_PIECE_BASE, 3, 6, 0)) return false;
-
-        while (length < 128) {
-
-            if (!checkPiece(STRUCTURE_PIECE_LAYER, 3, 6, -length)) {
-                if (!checkPiece(STRUCTURE_PIECE_END, 3, 6, -length)) {
-                    return false;
-                }
-                break;
-            }
-
-            length += 2;
-        }
-
-        // Likely off by one or two, not visible to player however so doesn't particularly matter
-        length += 8;
-
-        return this.mInputBeamline.size() == 1 && this.mOutputBeamline.size() == 1
-            && this.mMaintenanceHatches.size() == 1
-            && this.mEnergyHatches.size() <= 2
-            && this.glassTier >= MIN_GLASS_TIER;
-    }
-
-    @Override
-    public void construct(ItemStack stackSize, boolean hintsOnly) {
-
-        buildPiece(STRUCTURE_PIECE_BASE, stackSize, hintsOnly, 3, 6, 0);
-
-        int lLength = Math.max(stackSize.stackSize + 7, 8); // !!
-
-        if (!(lLength % 2 == 0)) {
-            lLength++; // Otherwise you get gaps at the end
-        }
-
-        for (int i = -8; i > -lLength - 1; i -= 2) {
-            buildPiece(STRUCTURE_PIECE_LAYER, stackSize, hintsOnly, 3, 6, i);
-        }
-
-        buildPiece(STRUCTURE_PIECE_END, stackSize, hintsOnly, 3, 6, -(lLength + 2));
-
-        StructureLib.addClientSideChatMessages("Length: " + (11 + lLength) + " blocks.");
-    }
-
-    @Override
-    public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
-
-        elementBudget = 200; // Maybe make a config
-
-        if (mMachine) return -1;
-
-        int build = 0;
-
-        build = survivialBuildPiece(STRUCTURE_PIECE_BASE, stackSize, 3, 6, 0, elementBudget, env, false, true);
-
-        if (build >= 0) return build; // Incomplete
-
-        int lLength = Math.max(stackSize.stackSize + 7, 8); // !!
-
-        if (!(lLength % 2 == 0)) {
-            lLength++; // Otherwise you get gaps at the end
-        }
-
-        for (int i = -8; i > -lLength - 1; i -= 2) {
-
-            build = survivialBuildPiece(STRUCTURE_PIECE_LAYER, stackSize, 3, 6, i, elementBudget, env, false, true);
-
-            if (build >= 0) return build;
-
-        }
-
-        return survivialBuildPiece(
-            STRUCTURE_PIECE_END,
-            stackSize,
-            3,
-            6,
-            -(lLength + 2),
-            elementBudget,
-            env,
-            false,
-            true);
-    }
-
-    @Override
-    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
-        int aColorIndex, boolean active, boolean aRedstone) {
-
-        // Placeholder
-        if (side == facing) {
-            if (active) return new ITexture[] { casingTexturePages[0][47], TextureFactory.builder()
-                .addIcon(OVERLAY_FRONT_OIL_CRACKER_ACTIVE)
-                .extFacing()
-                .build(),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_OIL_CRACKER_ACTIVE_GLOW)
-                    .extFacing()
-                    .glow()
-                    .build() };
-            return new ITexture[] { casingTexturePages[0][47], TextureFactory.builder()
-                .addIcon(OVERLAY_FRONT_OIL_CRACKER)
-                .extFacing()
-                .build(),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_OIL_CRACKER_GLOW)
-                    .extFacing()
-                    .glow()
-                    .build() };
-        }
-        return new ITexture[] { casingTexturePages[0][47] };
+                + this.outputRate };
     }
 
     @Override
@@ -703,8 +586,12 @@ public class MTELINAC extends MTEEnhancedMultiBlockBase<MTELINAC> implements ISu
     }
 
     public boolean addInputHatchToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
-        this.onEndInnerLayer = true;
         return super.addInputHatchToMachineList(aTileEntity, aBaseCasingIndex);
+    }
+
+    @Override
+    public boolean supportsPowerPanel() {
+        return false;
     }
 
     @Override

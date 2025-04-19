@@ -6,6 +6,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
@@ -277,8 +278,11 @@ public class MTETesseractTerminal extends MTEBasicTank {
             .isAllowedToWork()) && (tTileEntity.isSendingInformation())) {
             return tTileEntity.getInfoData();
         }
-        return new String[] { "Tesseract Generator", "Freqency:", "" + this.mFrequency,
-            this.getTesseract(this.mFrequency, false) != null ? "Active" : "Inactive" };
+        return new String[] { StatCollector.translateToLocal("gtpp.infodata.tesseract_generator.name"),
+            StatCollector.translateToLocalFormatted("gtpp.infodata.tesseract_generator.frequency", this.mFrequency),
+            this.getTesseract(this.mFrequency, false) != null
+                ? StatCollector.translateToLocal("gtpp.infodata.tesseract_generator.status.active")
+                : StatCollector.translateToLocal("gtpp.infodata.tesseract_generator.status.inactive") };
     }
 
     @Override

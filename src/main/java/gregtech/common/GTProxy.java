@@ -5,30 +5,17 @@ import static gregtech.api.enums.FluidState.GAS;
 import static gregtech.api.enums.FluidState.LIQUID;
 import static gregtech.api.enums.FluidState.MOLTEN;
 import static gregtech.api.enums.FluidState.PLASMA;
-import static gregtech.api.enums.GTValues.W;
 import static gregtech.api.enums.GTValues.debugEntityCramming;
-import static gregtech.api.enums.Mods.AdvancedSolarPanel;
 import static gregtech.api.enums.Mods.AppliedEnergistics2;
-import static gregtech.api.enums.Mods.Avaritia;
 import static gregtech.api.enums.Mods.BetterLoadingScreen;
-import static gregtech.api.enums.Mods.DraconicEvolution;
-import static gregtech.api.enums.Mods.ElectroMagicTools;
-import static gregtech.api.enums.Mods.EnderIO;
 import static gregtech.api.enums.Mods.Forestry;
-import static gregtech.api.enums.Mods.GTPlusPlus;
 import static gregtech.api.enums.Mods.GalacticraftCore;
-import static gregtech.api.enums.Mods.GalaxySpace;
-import static gregtech.api.enums.Mods.GraviSuite;
 import static gregtech.api.enums.Mods.GregTech;
 import static gregtech.api.enums.Mods.IguanaTweaksTinkerConstruct;
 import static gregtech.api.enums.Mods.Railcraft;
-import static gregtech.api.enums.Mods.TaintedMagic;
 import static gregtech.api.enums.Mods.Thaumcraft;
-import static gregtech.api.enums.Mods.ThaumicBoots;
-import static gregtech.api.enums.Mods.ThaumicTinkerer;
 import static gregtech.api.enums.Mods.TinkerConstruct;
 import static gregtech.api.enums.Mods.TwilightForest;
-import static gregtech.api.enums.Mods.WitchingGadgets;
 import static gregtech.api.recipe.RecipeMaps.crackingRecipes;
 import static gregtech.api.recipe.RecipeMaps.cutterRecipes;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
@@ -46,6 +33,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.TreeSet;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
@@ -126,6 +114,9 @@ import gregtech.api.enums.TCAspects.TC_AspectStack;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.ToolDictNames;
 import gregtech.api.fluid.GTFluidFactory;
+import gregtech.api.hazards.Hazard;
+import gregtech.api.hazards.HazardProtection;
+import gregtech.api.hazards.HazardProtectionTooltip;
 import gregtech.api.interfaces.IBlockOnWalkOver;
 import gregtech.api.interfaces.IProjectileItem;
 import gregtech.api.interfaces.IToolStats;
@@ -135,7 +126,6 @@ import gregtech.api.items.MetaGeneratedItem;
 import gregtech.api.items.MetaGeneratedTool;
 import gregtech.api.net.GTPacketMusicSystemData;
 import gregtech.api.objects.GTChunkManager;
-import gregtech.api.objects.GTItemStack;
 import gregtech.api.objects.GTUODimensionList;
 import gregtech.api.objects.ItemData;
 import gregtech.api.recipe.RecipeMaps;
@@ -686,6 +676,12 @@ public abstract class GTProxy implements IGTMod, IFuelHandler {
     public int tooltipFinisherStyle = 1;
 
     /**
+     * Enables scrolling up while hovering the ghost circuit of a machine UI to increment the circuit number instead of
+     * decrement
+     */
+    public boolean invertCircuitScrollDirection = false;
+
+    /**
      * Whether to show seconds or ticks on NEI
      */
     public boolean mNEIRecipeSecondMode = true;
@@ -1083,119 +1079,6 @@ public abstract class GTProxy implements IGTMod, IFuelHandler {
             .bus()
             .register(new GTWorldgenerator.OregenPatternSavedData(""));
 
-        // IC2 Hazmat
-        addFullHazmatToIC2Item("hazmatHelmet");
-        addFullHazmatToIC2Item("hazmatChestplate");
-        addFullHazmatToIC2Item("hazmatLeggings");
-        addFullHazmatToIC2Item("hazmatBoots");
-        addFullHazmatToIC2Item("nanoHelmet");
-        addFullHazmatToIC2Item("nanoBoots");
-        addFullHazmatToIC2Item("nanoLeggings");
-        addFullHazmatToIC2Item("nanoBodyarmor");
-        addFullHazmatToIC2Item("quantumHelmet");
-        addFullHazmatToIC2Item("quantumBodyarmor");
-        addFullHazmatToIC2Item("quantumLeggings");
-        addFullHazmatToIC2Item("quantumBoots");
-
-        // GT++ Hazmat
-        addFullHazmatToGeneralItem(GTPlusPlus.ID, "itemArmorHazmatHelmetEx", 1);
-        addFullHazmatToGeneralItem(GTPlusPlus.ID, "itemArmorHazmatChestplateEx", 1);
-        addFullHazmatToGeneralItem(GTPlusPlus.ID, "itemArmorHazmatLeggingsEx", 1);
-        addFullHazmatToGeneralItem(GTPlusPlus.ID, "itemArmorRubBootsEx", 1);
-
-        // GraviSuite Hazmat
-        addFullHazmatToGeneralItem(GraviSuite.ID, "graviChestPlate", 1L);
-        addFullHazmatToGeneralItem(GraviSuite.ID, "advNanoChestPlate", 1L);
-
-        // EMT Hazmat
-        addFullHazmatToGeneralItem(ElectroMagicTools.ID, "itemArmorQuantumChestplate", 1L);
-        addFullHazmatToGeneralItem(ElectroMagicTools.ID, "NanoBootsTraveller", 1L);
-        addFullHazmatToGeneralItem(ElectroMagicTools.ID, "NanosuitGogglesRevealing", 1L);
-        addFullHazmatToGeneralItem(ElectroMagicTools.ID, "QuantumBootsTraveller", 1L);
-        addFullHazmatToGeneralItem(ElectroMagicTools.ID, "QuantumGogglesRevealing", 1L);
-        addFullHazmatToGeneralItem(ElectroMagicTools.ID, "SolarHelmetRevealing", 1L);
-        addFullHazmatToGeneralItem(ElectroMagicTools.ID, "NanosuitWing", 1L);
-        addFullHazmatToGeneralItem(ElectroMagicTools.ID, "QuantumWing", 1L);
-
-        // Thaumic Boots Hazmat
-        addFullHazmatToGeneralItem(ThaumicBoots.ID, "item.ItemQuantumVoid", 1L);
-        addFullHazmatToGeneralItem(ThaumicBoots.ID, "item.ItemQuantumMeteor", 1L);
-        addFullHazmatToGeneralItem(ThaumicBoots.ID, "item.ItemQuantumComet", 1L);
-        addFullHazmatToGeneralItem(ThaumicBoots.ID, "item.ItemNanoVoid", 1L);
-        addFullHazmatToGeneralItem(ThaumicBoots.ID, "item.ItemNanoMeteor", 1L);
-        addFullHazmatToGeneralItem(ThaumicBoots.ID, "item.ItemNanoComet", 1L);
-        addFullHazmatToGeneralItem(ThaumicBoots.ID, "item.ItemElectricVoid", 1L);
-        addFullHazmatToGeneralItem(ThaumicBoots.ID, "item.ItemVoidMeteor", 1L);
-        addFullHazmatToGeneralItem(ThaumicBoots.ID, "item.ItemVoidComet", 1L);
-
-        // DraconicEvolution Hazmat
-        addFullHazmatToGeneralItem(DraconicEvolution.ID, "draconicBoots", 1L, 0);
-        addFullHazmatToGeneralItem(DraconicEvolution.ID, "draconicHelm", 1L, 0);
-        addFullHazmatToGeneralItem(DraconicEvolution.ID, "draconicLeggs", 1L, 0);
-        addFullHazmatToGeneralItem(DraconicEvolution.ID, "draconicChest", 1L, 0);
-        addFullHazmatToGeneralItem(DraconicEvolution.ID, "wyvernBoots", 1L, 0);
-        addFullHazmatToGeneralItem(DraconicEvolution.ID, "wyvernHelm", 1L, 0);
-        addFullHazmatToGeneralItem(DraconicEvolution.ID, "wyvernLeggs", 1L, 0);
-        addFullHazmatToGeneralItem(DraconicEvolution.ID, "wyvernChest", 1L, 0);
-
-        // AdvancedSolarPanel
-        addFullHazmatToGeneralItem(AdvancedSolarPanel.ID, "advanced_solar_helmet", 1L);
-        addFullHazmatToGeneralItem(AdvancedSolarPanel.ID, "hybrid_solar_helmet", 1L);
-        addFullHazmatToGeneralItem(AdvancedSolarPanel.ID, "ultimate_solar_helmet", 1L);
-
-        // TaintedMagic Hazmat
-        addFullHazmatToGeneralItem(TaintedMagic.ID, "ItemVoidwalkerBoots", 1L);
-        addFullHazmatToGeneralItem(TaintedMagic.ID, "ItemShadowFortressHelmet", 1L);
-        addFullHazmatToGeneralItem(TaintedMagic.ID, "ItemShadowFortressChestplate", 1L);
-        addFullHazmatToGeneralItem(TaintedMagic.ID, "ItemShadowFortressLeggings", 1L);
-        addFullHazmatToGeneralItem(TaintedMagic.ID, "ItemVoidFortressHelmet", 1L);
-        addFullHazmatToGeneralItem(TaintedMagic.ID, "ItemVoidFortressChestplate", 1L);
-        addFullHazmatToGeneralItem(TaintedMagic.ID, "ItemVoidFortressLeggings", 1L);
-        addFullHazmatToGeneralItem(TaintedMagic.ID, "ItemVoidmetalGoggles", 1L);
-
-        // WitchingGadgets Hazmat
-        addFullHazmatToGeneralItem(WitchingGadgets.ID, "item.WG_PrimordialHelm", 1L);
-        addFullHazmatToGeneralItem(WitchingGadgets.ID, "item.WG_PrimordialChest", 1L);
-        addFullHazmatToGeneralItem(WitchingGadgets.ID, "item.WG_PrimordialLegs", 1L);
-        addFullHazmatToGeneralItem(WitchingGadgets.ID, "item.WG_PrimordialBoots", 1L);
-
-        // ThaumicTinkerer Hazmat
-        addFullHazmatToGeneralItem(ThaumicTinkerer.ID, "ichorclothChestGem", 1L);
-        addFullHazmatToGeneralItem(ThaumicTinkerer.ID, "ichorclothBootsGem", 1L);
-        addFullHazmatToGeneralItem(ThaumicTinkerer.ID, "ichorclothHelmGem", 1L);
-        addFullHazmatToGeneralItem(ThaumicTinkerer.ID, "ichorclothLegsGem", 1L);
-
-        // GalaxySpace Hazmat
-        addFullHazmatToGeneralItem(GalaxySpace.ID, "item.spacesuit_helmet", 1L);
-        addFullHazmatToGeneralItem(GalaxySpace.ID, "item.spacesuit_helmetglasses", 1L);
-        addFullHazmatToGeneralItem(GalaxySpace.ID, "item.spacesuit_plate", 1L);
-        addFullHazmatToGeneralItem(GalaxySpace.ID, "item.spacesuit_jetplate", 1L);
-        addFullHazmatToGeneralItem(GalaxySpace.ID, "item.spacesuit_leg", 1L);
-        addFullHazmatToGeneralItem(GalaxySpace.ID, "item.spacesuit_boots", 1L);
-        addFullHazmatToGeneralItem(GalaxySpace.ID, "item.spacesuit_gravityboots", 1L);
-
-        // Extra Hazmat
-        GregTechAPI.sElectroHazmatList.add(new ItemStack(Items.chainmail_helmet, 1, W));
-        GregTechAPI.sElectroHazmatList.add(new ItemStack(Items.chainmail_chestplate, 1, W));
-        GregTechAPI.sElectroHazmatList.add(new ItemStack(Items.chainmail_leggings, 1, W));
-        GregTechAPI.sElectroHazmatList.add(new ItemStack(Items.chainmail_boots, 1, W));
-
-        // Infinity Hazmat
-        addFullHazmatToGeneralItem(Avaritia.ID, "Infinity_Helm", 1L);
-        addFullHazmatToGeneralItem(Avaritia.ID, "Infinity_Chest", 1L);
-        addFullHazmatToGeneralItem(Avaritia.ID, "Infinity_Pants", 1L);
-        addFullHazmatToGeneralItem(Avaritia.ID, "Infinity_Shoes", 1L);
-
-        // EnderIO Hazmat
-        addFullHazmatToGeneralItem(EnderIO.ID, "item.endSteel_helmet", 1L);
-        addFullHazmatToGeneralItem(EnderIO.ID, "item.endSteel_chestplate", 1L);
-        addFullHazmatToGeneralItem(EnderIO.ID, "item.endSteel_leggings", 1L);
-        addFullHazmatToGeneralItem(EnderIO.ID, "item.endSteel_boots", 1L);
-        addFullHazmatToGeneralItem(EnderIO.ID, "item.stellar_helmet", 1L);
-        addFullHazmatToGeneralItem(EnderIO.ID, "item.stellar_chestplate", 1L);
-        addFullHazmatToGeneralItem(EnderIO.ID, "item.stellar_leggings", 1L);
-        addFullHazmatToGeneralItem(EnderIO.ID, "item.stellar_boots", 1L);
-
         GregTechAPI.sLoadStarted = true;
         for (FluidContainerRegistry.FluidContainerData tData : FluidContainerRegistry
             .getRegisteredFluidContainerData()) {
@@ -1340,7 +1223,6 @@ public abstract class GTProxy implements IGTMod, IFuelHandler {
     }
 
     public void onServerStarted() {
-        GregTechAPI.sWirelessRedstone.clear();
         MTEDroneCentre.getCentreMap()
             .clear();
         GTLog.out.println(
@@ -1370,6 +1252,7 @@ public abstract class GTProxy implements IGTMod, IFuelHandler {
         GTMusicSystem.ServerSystem.reset();
         File tSaveDirectory = getSaveDirectory();
         GregTechAPI.sWirelessRedstone.clear();
+        GregTechAPI.sAdvancedWirelessRedstone.clear();
         if (tSaveDirectory != null) {
             for (int i = 1; i < GregTechAPI.METATILEENTITIES.length; i++) {
                 if (GregTechAPI.METATILEENTITIES[i] != null) {
@@ -2657,53 +2540,35 @@ public abstract class GTProxy implements IGTMod, IFuelHandler {
             .equals("blockAlloyGlass")) GregTechAPI.causeMachineUpdate(event.world, event.x, event.y, event.z);
     }
 
-    public static void addFullHazmatToGeneralItem(String aModID, String aItem, long aAmount, int aMeta) {
-        ItemStack item = GTModHandler.getModItem(aModID, aItem, aAmount, aMeta);
-        addItemToHazmatLists(item);
-    }
-
-    public static void addFullHazmatToGeneralItem(String aModID, String aItem, long aAmount) {
-        ItemStack item = GTModHandler.getModItem(aModID, aItem, aAmount, W);
-        addItemToHazmatLists(item);
-    }
-
-    public static void addFullHazmatToIC2Item(String aItem) {
-        ItemStack item = GTModHandler.getIC2Item(aItem, 1L, W);
-        addItemToHazmatLists(item);
-    }
-
-    private static void addItemToHazmatLists(ItemStack item) {
-        GregTechAPI.sGasHazmatList.add(item);
-        GregTechAPI.sBioHazmatList.add(item);
-        GregTechAPI.sFrostHazmatList.add(item);
-        GregTechAPI.sHeatHazmatList.add(item);
-        GregTechAPI.sRadioHazmatList.add(item);
-        GregTechAPI.sElectroHazmatList.add(item);
-    }
-
-    public static boolean providesProtection(ItemStack aStack) {
-
-        if (GTUtility.hasHazmatEnchant(aStack)) return true;
-
-        boolean isGas = GTUtility.isStackInList(aStack, GregTechAPI.sGasHazmatList);
-        boolean isBio = GTUtility.isStackInList(aStack, GregTechAPI.sBioHazmatList);
-        boolean isFrost = GTUtility.isStackInList(aStack, GregTechAPI.sFrostHazmatList);
-        boolean isHeat = GTUtility.isStackInList(aStack, GregTechAPI.sHeatHazmatList);
-        boolean isRadio = GTUtility.isStackInList(aStack, GregTechAPI.sRadioHazmatList);
-        boolean isElectro = GTUtility.isStackInList(aStack, GregTechAPI.sElectroHazmatList);
-        return isGas && isBio && isFrost && isHeat && isRadio && isElectro;
+    private void addHazmatTooltip(ItemTooltipEvent event, String translationKey) {
+        event.toolTip.add(EnumChatFormatting.LIGHT_PURPLE + StatCollector.translateToLocal(translationKey));
     }
 
     @SubscribeEvent
     public void onItemTooltip(ItemTooltipEvent event) {
-        if (event.itemStack != null) {
-            ItemStack aStackTemp = event.itemStack;
-            GTItemStack aStack = new GTItemStack(aStackTemp);
-            if (providesProtection(aStackTemp)) {
-                event.toolTip.add(
-                    EnumChatFormatting.LIGHT_PURPLE
-                        + StatCollector.translateToLocal("GT5U.providesfullhazmatprotection"));
+        if (HazardProtection.providesFullHazmatProtection(event.itemStack)) {
+            addHazmatTooltip(event, HazardProtectionTooltip.FULL_PROTECTION_TRANSLATION_KEY);
+            return;
+        }
+
+        // TreeSet so it's always the same order
+        TreeSet<Hazard> protections = new TreeSet<Hazard>();
+        for (Hazard hazard : Hazard.values()) {
+            if (HazardProtection.protectsAgainstHazard(event.itemStack, hazard)) {
+                protections.add(hazard);
             }
+        }
+        if (protections.containsAll(HazardProtectionTooltip.CBRN_HAZARDS)) {
+            protections.removeAll(HazardProtectionTooltip.CBRN_HAZARDS);
+            addHazmatTooltip(event, HazardProtectionTooltip.CBRN_TRANSLATION_KEY);
+        } ;
+
+        if (protections.containsAll(HazardProtectionTooltip.TEMPERATURE_HAZARDS)) {
+            protections.removeAll(HazardProtectionTooltip.TEMPERATURE_HAZARDS);
+            addHazmatTooltip(event, HazardProtectionTooltip.EXTREME_TEMP_TRANSLATION_KEY);
+        } ;
+        for (Hazard hazard : protections) {
+            addHazmatTooltip(event, HazardProtectionTooltip.singleHazardTranslationKey(hazard));
         }
     }
 

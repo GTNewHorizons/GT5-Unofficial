@@ -27,14 +27,9 @@ import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.LoaderState;
 
 /**
- * API for bartworks borosilicate glass.
- * <p>
- * You might have noticed this API does not expose any Block instance, but only IStructureElements. This is in case we
- * add more glass blocks later, and we run out of meta id for only one block.
- * <p>
- * IStructureElements returned from this class <b>SHOULD NOT</b> have its methods called before post init, or else you
- * might end up with wrong autoplace hints.
+ * @deprecated use gregtech.api.util.GlassTier
  */
+@Deprecated
 public class BorosilicateGlass {
 
     private static List<Pair<Block, Integer>> representatives;
@@ -140,6 +135,7 @@ public class BorosilicateGlass {
      * <p>
      * Use this if you just want boroglass here and doesn't care what tier it is.
      */
+    @Deprecated
     public static <T> IStructureElement<T> ofBoroGlass(int tier) {
         if (!hasGlassInTier(tier)) throw new IllegalArgumentException();
         return lazy(t -> {
@@ -154,6 +150,7 @@ public class BorosilicateGlass {
      * <p>
      * Use this if you just want boroglass here and doesn't care what tier it is.
      */
+    @Deprecated
     public static <T> IStructureElement<T> ofBoroGlassAnyTier() {
         return lazy(t -> ofBlockAnyMeta(getGlassBlock()));
     }
@@ -169,6 +166,7 @@ public class BorosilicateGlass {
      *
      * @param initialValue the value set before structure check started
      */
+    @Deprecated
     public static <T> IStructureElement<T> ofBoroGlass(byte initialValue, BiConsumer<T, Byte> setter,
         Function<T, Byte> getter) {
         return lazy(

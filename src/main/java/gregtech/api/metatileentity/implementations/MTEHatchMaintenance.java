@@ -13,6 +13,7 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -376,7 +377,8 @@ public class MTEHatchMaintenance extends MTEHatch implements IAddUIWidgets, IAli
                     .setBackground(GTUITextures.TRANSPARENT)
                     .setPos(79, 34))
                 .widget(
-                    new TextWidget("Click with Tool to repair.").setDefaultColor(COLOR_TEXT_GRAY.get())
+                    new TextWidget(StatCollector.translateToLocal("GT5U.gui.text.repair_tip"))
+                        .setDefaultColor(COLOR_TEXT_GRAY.get())
                         .setPos(8, 12));
         }
     }

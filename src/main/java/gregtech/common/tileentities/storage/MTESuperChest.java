@@ -1,5 +1,7 @@
 package gregtech.common.tileentities.storage;
 
+import net.minecraft.util.StatCollector;
+
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
@@ -15,8 +17,8 @@ public class MTESuperChest extends MTEQuantumChest {
     }
 
     @Override
-    protected String chestName() {
-        return "Super Chest";
+    protected String localizedChestName() {
+        return StatCollector.translateToLocal("GT5U.infodata.super_chest.name");
     }
 
     @Override

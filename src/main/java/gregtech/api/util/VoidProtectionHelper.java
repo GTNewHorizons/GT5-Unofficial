@@ -58,10 +58,6 @@ public class VoidProtectionHelper {
      */
     private boolean built;
     /**
-     * Multiplier by which the output will be multiplied
-     */
-    private int outputMultiplier = 1;
-    /**
      * Multiplier that is applied on the output chances
      */
     private double chanceMultiplier = 1;
@@ -102,11 +98,6 @@ public class VoidProtectionHelper {
      */
     public VoidProtectionHelper setMaxParallel(int maxParallel) {
         this.maxParallel = maxParallel;
-        return this;
-    }
-
-    public VoidProtectionHelper setOutputMultiplier(int outputMultiplier) {
-        this.outputMultiplier = outputMultiplier;
         return this;
     }
 
@@ -302,7 +293,7 @@ public class VoidProtectionHelper {
         for (ItemStack tItem : itemOutputs) {
             // GTRecipeBuilder doesn't handle null item output
             if (tItem == null) continue;
-            int itemStackSize = (int) (tItem.stackSize * outputMultiplier
+            int itemStackSize = (int) (tItem.stackSize
                 * Math.ceil(chanceMultiplier * chanceGetter.apply(index++) / 10000));
             if (itemStackSize <= 0) continue;
             tItemOutputMap.merge(tItem, itemStackSize, Integer::sum);

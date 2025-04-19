@@ -1,13 +1,16 @@
 package gregtech.common.blocks;
 
+import java.util.List;
+
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
+import net.minecraft.util.StatCollector;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Textures;
-import gregtech.api.util.GTLanguageManager;
 
 /**
  * The casings are split into separate files because they are registered as regular blocks, and a regular block can have
@@ -16,24 +19,16 @@ import gregtech.api.util.GTLanguageManager;
 public class BlockCasings11 extends BlockCasingsAbstract {
 
     public BlockCasings11() {
-        super(ItemCasings11.class, "gt.blockcasings11", MaterialCasings.INSTANCE, 16);
-        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".0.name", "Tin Item Pipe Casing");
-        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".1.name", "Brass Item Pipe Casing");
-        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".2.name", "Electrum Item Pipe Casing");
-        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".3.name", "Platinum Item Pipe Casing");
-        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".4.name", "Osmium Item Pipe Casing");
-        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".5.name", "Quantium Item Pipe Casing");
-        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".6.name", "Fluxed Electrum Item Pipe Casing");
-        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".7.name", "Black Plutonium Item Pipe Casing");
+        super(ItemCasings.class, "gt.blockcasings11", MaterialCasings.INSTANCE, 16);
 
-        ItemList.Casing_Item_Pipe_Tin.set(new ItemStack(this, 1, 0));
-        ItemList.Casing_Item_Pipe_Brass.set(new ItemStack(this, 1, 1));
-        ItemList.Casing_Item_Pipe_Electrum.set(new ItemStack(this, 1, 2));
-        ItemList.Casing_Item_Pipe_Platinum.set(new ItemStack(this, 1, 3));
-        ItemList.Casing_Item_Pipe_Osmium.set(new ItemStack(this, 1, 4));
-        ItemList.Casing_Item_Pipe_Quantium.set(new ItemStack(this, 1, 5));
-        ItemList.Casing_Item_Pipe_Fluxed_Electrum.set(new ItemStack(this, 1, 6));
-        ItemList.Casing_Item_Pipe_Black_Plutonium.set(new ItemStack(this, 1, 7));
+        register(0, ItemList.Casing_Item_Pipe_Tin, "Tin Item Pipe Casing");
+        register(1, ItemList.Casing_Item_Pipe_Brass, "Brass Item Pipe Casing");
+        register(2, ItemList.Casing_Item_Pipe_Electrum, "Electrum Item Pipe Casing");
+        register(3, ItemList.Casing_Item_Pipe_Platinum, "Platinum Item Pipe Casing");
+        register(4, ItemList.Casing_Item_Pipe_Osmium, "Osmium Item Pipe Casing");
+        register(5, ItemList.Casing_Item_Pipe_Quantium, "Quantium Item Pipe Casing");
+        register(6, ItemList.Casing_Item_Pipe_Fluxed_Electrum, "Fluxed Electrum Item Pipe Casing");
+        register(7, ItemList.Casing_Item_Pipe_Black_Plutonium, "Black Plutonium Item Pipe Casing");
     }
 
     @Override
@@ -54,5 +49,14 @@ public class BlockCasings11 extends BlockCasingsAbstract {
             case 7 -> Textures.BlockIcons.MACHINE_CASING_ITEM_PIPE_BLACK_PLUTONIUM.getIcon();
             default -> Textures.BlockIcons.MACHINE_CASING_ITEM_PIPE_TIN.getIcon();
         };
+    }
+
+    @Override
+    public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean advancedTooltips) {
+        super.addInformation(stack, player, tooltip, advancedTooltips);
+
+        tooltip.add(
+            StatCollector
+                .translateToLocalFormatted("GT5U.tooltip.channelvalue", stack.getItemDamage() + 1, "item_pipe"));
     }
 }

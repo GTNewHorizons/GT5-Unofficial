@@ -25,6 +25,7 @@ import java.util.List;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -459,10 +460,10 @@ public class MTEPurificationUnitFlocculation extends MTEPurificationUnitBase<MTE
     public String[] getInfoData() {
         ArrayList<String> infoData = new ArrayList<>(Arrays.asList(super.getInfoData()));
         infoData.add(
-            INPUT_CHEMICAL.mLocalizedName + " consumed this cycle: "
-                + EnumChatFormatting.RED
-                + inputFluidConsumed
-                + "L");
+            StatCollector.translateToLocalFormatted(
+                "GT5U.infodata.purification_unit_flocculation.consumed",
+                INPUT_CHEMICAL.mLocalizedName,
+                "" + EnumChatFormatting.RED + inputFluidConsumed));
         return infoData.toArray(new String[] {});
     }
 
