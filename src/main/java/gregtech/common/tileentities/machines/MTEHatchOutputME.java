@@ -25,6 +25,7 @@ import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidContainerRegistry;
+import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidContainerItem;
 
@@ -68,6 +69,7 @@ import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchOutput;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
+import gregtech.common.items.ItemFluidDisplay;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
@@ -214,6 +216,8 @@ public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelSta
 
                         if (tFluid == null && stack.getItem() instanceof IFluidContainerItem)
                             tFluid = ((IFluidContainerItem) stack.getItem()).getFluid(stack);
+                        if (tFluid == null && stack.getItem() instanceof ItemFluidDisplay)
+                            tFluid = new FluidStack(FluidRegistry.getFluid(stack.getItemDamage()), 1);
 
                         if (tFluid != null) {
                             hadFilters = true;

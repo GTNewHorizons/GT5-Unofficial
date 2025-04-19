@@ -73,7 +73,8 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
         "GT5U.interface.coverTabs.west", "GT5U.interface.coverTabs.east" };
 
     // New Cover Information
-    protected final Cover[] covers = new Cover[] { null, null, null, null, null, null };
+    protected final Cover[] covers = new Cover[] { CoverRegistry.NO_COVER, CoverRegistry.NO_COVER,
+        CoverRegistry.NO_COVER, CoverRegistry.NO_COVER, CoverRegistry.NO_COVER, CoverRegistry.NO_COVER };
     private byte validCoversMask;
 
     protected byte[] mSidedRedstone = new byte[] { 15, 15, 15, 15, 15, 15 };
@@ -121,14 +122,14 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
         applyCovers(readCoversNBT(aNBT, this));
     }
 
-    private void applyCovers(List<Cover> storedCovers) {
+    private void applyCovers(@NotNull List<Cover> storedCovers) {
         for (Cover cover : storedCovers) {
             this.applyCover(cover, cover.getSide());
             if (cover.isDataNeededOnClient()) issueCoverUpdate(cover.getSide());
         }
     }
 
-    public static List<Cover> readCoversNBT(NBTTagCompound aNBT, CoverableTileEntity coverableTileEntity) {
+    public static @NotNull List<Cover> readCoversNBT(NBTTagCompound aNBT, CoverableTileEntity coverableTileEntity) {
         if (aNBT != null && aNBT.hasKey(GTValues.NBT.COVERS)) {
             final NBTTagList tList = aNBT.getTagList(GTValues.NBT.COVERS, TAG_COMPOUND);
             List<Cover> storedCovers = new ArrayList<>();
@@ -228,7 +229,7 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
     }
 
     @Override
-    public void attachCover(Cover cover) {
+    public void attachCover(@NotNull Cover cover) {
         final ForgeDirection side = cover.getSide();
         if (side == ForgeDirection.UNKNOWN) return;
         final Cover oldCover = getCoverAtSide(side);
@@ -245,7 +246,7 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
      * @param cover the cover to synchronize. Not guaranteed to have a side.
      * @param side  the side to apply the cover to.
      */
-    private void synchronizeCover(Cover cover, ForgeDirection side) {
+    private void synchronizeCover(@NotNull Cover cover, ForgeDirection side) {
         applyCover(cover, side);
         issueCoverUpdate(side);
         issueBlockUpdate();
@@ -260,7 +261,7 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
      * @param cover the cover to apply. Not guaranteed to have a side.
      * @param side  the side to apply the cover to.
      */
-    private void applyCover(Cover cover, ForgeDirection side) {
+    private void applyCover(@NotNull Cover cover, ForgeDirection side) {
         if (side != ForgeDirection.UNKNOWN) {
             covers[side.ordinal()] = cover;
 
@@ -278,10 +279,7 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
     @Override
     public final @NotNull Cover getCoverAtSide(ForgeDirection side) {
         if (side != ForgeDirection.UNKNOWN) {
-            final int ordinalSide = side.ordinal();
-            Cover cover = covers[ordinalSide];
-            if (cover == null) cover = (covers[ordinalSide] = CoverRegistry.NO_COVER);
-            return cover;
+            return covers[side.ordinal()];
         }
         return CoverRegistry.NO_COVER;
     }
@@ -460,7 +458,7 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
         final ForgeDirection currentFacing = accessor.getSide();
 
         for (final Cover cover : covers) {
-            if (cover == null || !cover.isValid()) continue;
+            if (!cover.isValid()) continue;
 
             final ItemStack coverStack = cover.asItemStack();
             if (coverStack != null) {
