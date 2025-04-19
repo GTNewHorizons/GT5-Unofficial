@@ -213,13 +213,6 @@ public class AchievementHandler {
             ItemUtils.getSimpleStack(ModItems.dustRadium226),
             "multi.cyclo",
             false);
-        this.registerAchievement(
-            "decay.molybdenum99",
-            13,
-            8,
-            ItemUtils.getSimpleStack(ModItems.dustMolybdenum99),
-            "multi.cyclo",
-            false);
 
         AchievementPage.registerAchievementPage(
             new AchievementPage(

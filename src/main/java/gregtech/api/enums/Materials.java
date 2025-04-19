@@ -978,6 +978,10 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials RadoxGas;
     public static Materials RadoxPolymer;
 
+    // Misc GT Magic Materials
+    public static Materials ComplexityCatalyst;
+    public static Materials EntropicCatalyst;
+
 
     // spotless:on
 

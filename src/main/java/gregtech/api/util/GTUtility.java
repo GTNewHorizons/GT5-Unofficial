@@ -116,6 +116,7 @@ import net.minecraftforge.fluids.IFluidContainerItem;
 import net.minecraftforge.fluids.IFluidHandler;
 import net.minecraftforge.oredict.OreDictionary;
 
+import org.jetbrains.annotations.Contract;
 import org.joml.Vector3i;
 
 import com.google.auto.value.AutoValue;
@@ -2772,8 +2773,8 @@ public class GTUtility {
         return null;
     }
 
-    @Nullable
-    public static ItemStack copyOrNull(@Nullable ItemStack stack) {
+    @Contract("null -> null")
+    public static ItemStack copyOrNull(ItemStack stack) {
         if (isStackValid(stack)) return stack.copy();
         return null;
     }
@@ -2904,6 +2905,35 @@ public class GTUtility {
         aStack.writeToNBT(t);
         if (aStack.stackSize > Byte.MAX_VALUE) t.setInteger("Count", aStack.stackSize);
         return t;
+    }
+
+    public static NBTTagList saveItemList(List<ItemStack> stacks) {
+        NBTTagList list = new NBTTagList();
+
+        if (stacks != null) {
+            for (ItemStack stack : stacks) {
+                if (isStackInvalid(stack)) continue;
+
+                list.appendTag(stack.writeToNBT(new NBTTagCompound()));
+            }
+        }
+
+        return list;
+    }
+
+    @SuppressWarnings("unchecked")
+    public static ArrayList<ItemStack> loadItemList(NBTTagList list) {
+        ArrayList<ItemStack> stacks = new ArrayList<>();
+
+        for (NBTTagCompound tag : (List<NBTTagCompound>) list.tagList) {
+            ItemStack stack = ItemStack.loadItemStackFromNBT(tag);
+
+            if (isStackInvalid(stack)) continue;
+
+            stacks.add(stack);
+        }
+
+        return stacks;
     }
 
     /**

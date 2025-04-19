@@ -4,9 +4,11 @@ import java.util.Locale;
 
 import net.minecraft.util.ResourceLocation;
 
+import com.gtnewhorizon.gtnhlib.util.data.IMod;
+
 import cpw.mods.fml.common.Loader;
 
-public enum Mods {
+public enum Mods implements IMod {
 
     AE2FluidCraft(Names.A_E2_FLUID_CRAFT),
     AE2Stuff(Names.AE2STUFF),
@@ -381,11 +383,22 @@ public enum Mods {
         this.resourceDomain = ID.toLowerCase(Locale.ENGLISH);
     }
 
+    @Override
     public boolean isModLoaded() {
         if (this.modLoaded == null) {
             this.modLoaded = Loader.isModLoaded(ID);
         }
         return this.modLoaded;
+    }
+
+    @Override
+    public String getID() {
+        return ID;
+    }
+
+    @Override
+    public String getResourceLocation() {
+        return resourceDomain;
     }
 
     public String getResourcePath(String... path) {
