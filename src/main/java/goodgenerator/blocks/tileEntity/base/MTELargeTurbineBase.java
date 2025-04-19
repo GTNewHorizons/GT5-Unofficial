@@ -240,7 +240,7 @@ public abstract class MTELargeTurbineBase extends MTEEnhancedMultiBlockBase<MTEL
                 || this.getBaseMetaTileEntity()
                     .hasInventoryBeenModified()) {
                 counter = 0;
-                baseEff = (int) turbine.getEfficiency();
+                baseEff = (int) turbine.getBaseEfficiency();
                 optFlow = (int) turbine.getOptimalFlow();
 
                 overflowMultiplier = turbine.getOverflowEfficiency();
