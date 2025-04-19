@@ -467,7 +467,7 @@ public class PowerGogglesHudHandler {
         return toCustom(EU, false, 3);
     }
 
-    private static String toCustom(BigInteger EU, boolean useSuffix, int baseDigits) {
+    private static String toCustom(BigInteger EU, boolean useSI, int baseDigits) {
         String[] suffixes = { "", "K", "M", "G", "T", "P", "E", "Z", "Y", "R", "Q" };
         if (EU.abs()
             .compareTo(BigInteger.valueOf(1)) < 0) {
@@ -484,9 +484,9 @@ public class PowerGogglesHudHandler {
         int negative = EU.compareTo(BigInteger.valueOf(1)) < 0 ? 1 : 0;
         String base = euString.substring(0, remainder + 1 + negative);
         String decimal = euString.substring(remainder + 1 + negative, Math.min(exponent, remainder + 4));
-        int E = exponent - remainder; // Round down to nearest 10^3k
+        int E = exponent - remainder;
 
-        if (useSuffix) return String.format("%s.%s%s", base, decimal, suffixes[E / 3]);
+        if (useSI) return String.format("%s.%s%s", base, decimal, suffixes[E / 3]);
         return String.format("%s.%sE%d", base, decimal, E);
     }
 
@@ -506,6 +506,9 @@ public class PowerGogglesHudHandler {
         measurements.clear();
         highest = BigInteger.valueOf(0);
         capacity = 0;
+        change5mDiff = 0;
+        change1hDiff = 0;
+        updateColors();
     }
 
     public static void updateColors() {
