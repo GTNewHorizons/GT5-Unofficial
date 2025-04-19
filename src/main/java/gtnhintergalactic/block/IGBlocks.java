@@ -2,10 +2,9 @@ package gtnhintergalactic.block;
 
 import net.minecraft.block.Block;
 
-import com.gtnewhorizons.gtnhintergalactic.item.ItemBlockSpaceElevatorCable;
-import com.gtnewhorizons.gtnhintergalactic.item.ItemCasingDysonSwarm;
-
 import cpw.mods.fml.common.registry.GameRegistry;
+import gtnhintergalactic.item.ItemBlockSpaceElevatorCable;
+import gtnhintergalactic.item.ItemCasingDysonSwarm;
 
 /**
  * List of all blocks of this mod

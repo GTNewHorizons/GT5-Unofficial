@@ -8,9 +8,9 @@ import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
 import com.gtnewhorizon.gtnhlib.config.Config;
-import com.gtnewhorizons.gtnhintergalactic.GTNHIntergalactic;
 
 import gregtech.api.enums.Mods;
+import gtnhintergalactic.GTNHIntergalactic;
 
 @Config(modid = Mods.Names.G_T_N_H_INTERGALACTIC, filename = "gtnhintergalactic")
 public class IGConfig {

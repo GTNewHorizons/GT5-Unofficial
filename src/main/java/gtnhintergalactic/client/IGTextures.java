@@ -1,12 +1,11 @@
 package gtnhintergalactic.client;
 
-import com.gtnewhorizons.gtnhintergalactic.block.IGBlocks;
-
 import gregtech.api.enums.Textures.BlockIcons;
 import gregtech.api.enums.Textures.BlockIcons.CustomIcon;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.render.TextureFactory;
+import gtnhintergalactic.block.IGBlocks;
 
 /**
  * Textures used for MTEs are defined here

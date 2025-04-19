@@ -8,10 +8,9 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 
-import com.gtnewhorizons.gtnhintergalactic.GTNHIntergalactic;
-
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.MaterialsUEVplus;
+import gtnhintergalactic.GTNHIntergalactic;
 
 /**
  * Drones used for the Space Mining module of the Space Elevator

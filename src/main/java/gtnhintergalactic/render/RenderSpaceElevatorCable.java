@@ -25,12 +25,12 @@ import org.lwjgl.opengl.GL15;
 import org.lwjgl.opengl.GL20;
 
 import com.gtnewhorizon.gtnhlib.client.renderer.shader.ShaderProgram;
-import com.gtnewhorizons.gtnhintergalactic.GTNHIntergalactic;
-import com.gtnewhorizons.gtnhintergalactic.block.BlockSpaceElevatorCable;
-import com.gtnewhorizons.gtnhintergalactic.config.IGConfig;
-import com.gtnewhorizons.gtnhintergalactic.tile.TileEntitySpaceElevatorCable;
 
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
+import gtnhintergalactic.GTNHIntergalactic;
+import gtnhintergalactic.block.BlockSpaceElevatorCable;
+import gtnhintergalactic.config.IGConfig;
+import gtnhintergalactic.tile.TileEntitySpaceElevatorCable;
 
 /**
  * Renderer for the elevator cable

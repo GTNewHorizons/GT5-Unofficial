@@ -15,17 +15,16 @@ import static gregtech.api.enums.MetaTileEntityIDs.SpaceElevatorModulePumpT2;
 import static gregtech.api.enums.MetaTileEntityIDs.SpaceElevatorModulePumpT3;
 import static gregtech.api.enums.MetaTileEntityIDs.SpaceElevatorModuleResearch;
 
-import com.gtnewhorizons.gtnhintergalactic.item.IGItems;
-import com.gtnewhorizons.gtnhintergalactic.tile.multi.TileEntityDysonSwarm;
-import com.gtnewhorizons.gtnhintergalactic.tile.multi.TileEntityPlanetaryGasSiphon;
-import com.gtnewhorizons.gtnhintergalactic.tile.multi.elevator.TileEntitySpaceElevator;
-import com.gtnewhorizons.gtnhintergalactic.tile.multi.elevatormodules.TileEntityModuleAssembler;
-import com.gtnewhorizons.gtnhintergalactic.tile.multi.elevatormodules.TileEntityModuleManager;
-import com.gtnewhorizons.gtnhintergalactic.tile.multi.elevatormodules.TileEntityModuleMiner;
-import com.gtnewhorizons.gtnhintergalactic.tile.multi.elevatormodules.TileEntityModulePump;
-import com.gtnewhorizons.gtnhintergalactic.tile.multi.elevatormodules.TileEntityModuleResearch;
-
 import gregtech.api.enums.ItemList;
+import gtnhintergalactic.item.IGItems;
+import gtnhintergalactic.tile.multi.TileEntityDysonSwarm;
+import gtnhintergalactic.tile.multi.TileEntityPlanetaryGasSiphon;
+import gtnhintergalactic.tile.multi.elevator.TileEntitySpaceElevator;
+import gtnhintergalactic.tile.multi.elevatormodules.TileEntityModuleAssembler;
+import gtnhintergalactic.tile.multi.elevatormodules.TileEntityModuleManager;
+import gtnhintergalactic.tile.multi.elevatormodules.TileEntityModuleMiner;
+import gtnhintergalactic.tile.multi.elevatormodules.TileEntityModulePump;
+import gtnhintergalactic.tile.multi.elevatormodules.TileEntityModuleResearch;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 
 /**

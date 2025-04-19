@@ -10,8 +10,6 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 
-import com.gtnewhorizons.gtnhintergalactic.gui.IG_UITextures;
-import com.gtnewhorizons.gtnhintergalactic.recipe.GasSiphonRecipes;
 import com.gtnewhorizons.modularui.api.GlStateManager;
 import com.gtnewhorizons.modularui.api.UIInfos;
 import com.gtnewhorizons.modularui.api.drawable.IDrawable;
@@ -25,6 +23,8 @@ import codechicken.nei.PositionedStack;
 import codechicken.nei.recipe.TemplateRecipeHandler;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.util.GTUtility;
+import gtnhintergalactic.gui.IG_UITextures;
+import gtnhintergalactic.recipe.GasSiphonRecipes;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 
 /**

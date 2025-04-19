@@ -7,9 +7,8 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 
-import com.gtnewhorizons.gtnhintergalactic.tile.multi.elevator.ElevatorUtil;
-
 import gregtech.common.blocks.ItemCasings;
+import gtnhintergalactic.tile.multi.elevator.ElevatorUtil;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 
 /**

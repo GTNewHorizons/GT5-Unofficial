@@ -2,17 +2,16 @@ package gtnhintergalactic.recipe;
 
 import java.util.Comparator;
 
-import com.gtnewhorizons.gtnhintergalactic.gui.IG_UITextures;
-import com.gtnewhorizons.gtnhintergalactic.recipe.maps.SpaceAssemblerFrontend;
-import com.gtnewhorizons.gtnhintergalactic.recipe.maps.SpaceMiningFrontend;
-import com.gtnewhorizons.gtnhintergalactic.recipe.maps.SpaceResearchFrontend;
-
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMapBackend;
 import gregtech.api.recipe.RecipeMapBuilder;
 import gregtech.api.recipe.RecipeMetadataKey;
 import gregtech.api.recipe.metadata.SimpleRecipeMetadataKey;
 import gregtech.api.util.GTRecipe;
+import gtnhintergalactic.gui.IG_UITextures;
+import gtnhintergalactic.recipe.maps.SpaceAssemblerFrontend;
+import gtnhintergalactic.recipe.maps.SpaceMiningFrontend;
+import gtnhintergalactic.recipe.maps.SpaceResearchFrontend;
 
 public class IGRecipeMaps {
 

@@ -7,7 +7,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 
-import com.gtnewhorizons.gtnhintergalactic.block.BlockCasingDysonSwarm;
+import gtnhintergalactic.block.BlockCasingDysonSwarm;
 
 public class ItemCasingDysonSwarm extends ItemBlock {
 

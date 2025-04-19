@@ -23,14 +23,14 @@ import com.gtnewhorizon.structurelib.structure.IItemSource;
 import com.gtnewhorizon.structurelib.structure.IStructureElement;
 import com.gtnewhorizon.structurelib.structure.ITierConverter;
 import com.gtnewhorizon.structurelib.structure.StructureUtility;
-import com.gtnewhorizons.gtnhintergalactic.block.IGBlocks;
-import gtnhintergalactic.tile.multi.elevatormodules.TileEntityModuleBase;
 
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.util.IGTHatchAdder;
 import gregtech.common.misc.spaceprojects.SpaceProjectManager;
 import gregtech.common.misc.spaceprojects.interfaces.ISpaceProject;
+import gtnhintergalactic.block.IGBlocks;
+import gtnhintergalactic.tile.multi.elevatormodules.TileEntityModuleBase;
 
 /**
  * Utility functions of the Space Elevator

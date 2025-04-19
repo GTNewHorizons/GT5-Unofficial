@@ -6,7 +6,6 @@ import java.util.List;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 
-import gtnhintergalactic.recipe.IGRecipeMaps;
 import com.gtnewhorizons.modularui.api.math.Pos2d;
 
 import gregtech.api.recipe.BasicUIPropertiesBuilder;
@@ -17,6 +16,7 @@ import gregtech.common.gui.modularui.UIHelper;
 import gregtech.common.misc.spaceprojects.SpaceProjectManager;
 import gregtech.nei.RecipeDisplayInfo;
 import gregtech.nei.formatter.INEISpecialInfoFormatter;
+import gtnhintergalactic.recipe.IGRecipeMaps;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 
 @ParametersAreNonnullByDefault

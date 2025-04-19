@@ -12,8 +12,6 @@ import net.minecraftforge.fluids.FluidStack;
 
 import org.apache.commons.lang3.tuple.Pair;
 
-import com.gtnewhorizons.gtnhintergalactic.gui.IG_UITextures;
-import com.gtnewhorizons.gtnhintergalactic.recipe.SpacePumpingRecipes;
 import com.gtnewhorizons.modularui.api.GlStateManager;
 import com.gtnewhorizons.modularui.api.UIInfos;
 import com.gtnewhorizons.modularui.api.drawable.IDrawable;
@@ -27,6 +25,8 @@ import codechicken.nei.PositionedStack;
 import codechicken.nei.recipe.TemplateRecipeHandler;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.util.GTUtility;
+import gtnhintergalactic.gui.IG_UITextures;
+import gtnhintergalactic.recipe.SpacePumpingRecipes;
 
 /**
  * Recipe handler for the space pumping recipes

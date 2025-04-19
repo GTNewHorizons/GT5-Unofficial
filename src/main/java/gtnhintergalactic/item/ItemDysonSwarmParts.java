@@ -8,7 +8,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 
-import com.gtnewhorizons.gtnhintergalactic.GTNHIntergalactic;
+import gtnhintergalactic.GTNHIntergalactic;
 
 public class ItemDysonSwarmParts extends Item {
 

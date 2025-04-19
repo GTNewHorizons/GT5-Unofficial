@@ -6,10 +6,6 @@ import net.minecraft.util.EnumChatFormatting;
 
 import org.jetbrains.annotations.NotNull;
 
-import com.gtnewhorizons.gtnhintergalactic.recipe.IGRecipeMaps;
-import com.gtnewhorizons.gtnhintergalactic.recipe.ResultNoSpaceProject;
-import com.gtnewhorizons.gtnhintergalactic.tile.multi.elevator.ElevatorUtil;
-
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
@@ -18,6 +14,9 @@ import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gtnhintergalactic.recipe.IGRecipeMaps;
+import gtnhintergalactic.recipe.ResultNoSpaceProject;
+import gtnhintergalactic.tile.multi.elevator.ElevatorUtil;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 
 /**

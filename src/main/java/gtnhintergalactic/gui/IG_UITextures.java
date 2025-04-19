@@ -1,6 +1,6 @@
 package gtnhintergalactic.gui;
 
-import static com.gtnewhorizons.gtnhintergalactic.GTNHIntergalactic.ASSET_PREFIX;
+import static gtnhintergalactic.GTNHIntergalactic.ASSET_PREFIX;
 
 import com.gtnewhorizons.modularui.api.drawable.UITexture;
 

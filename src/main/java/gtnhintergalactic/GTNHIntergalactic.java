@@ -8,10 +8,6 @@ import org.apache.logging.log4j.Logger;
 
 import com.gtnewhorizon.gtnhlib.config.ConfigException;
 import com.gtnewhorizon.gtnhlib.config.ConfigurationManager;
-import com.gtnewhorizons.gtnhintergalactic.block.IGBlocks;
-import com.gtnewhorizons.gtnhintergalactic.config.IGConfig;
-import com.gtnewhorizons.gtnhintergalactic.item.IGItems;
-import com.gtnewhorizons.gtnhintergalactic.proxy.CommonProxy;
 
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.SidedProxy;
@@ -19,10 +15,16 @@ import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLMissingMappingsEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
+import gregtech.GT_Version;
+import gregtech.api.enums.Mods;
+import gtnhintergalactic.block.IGBlocks;
+import gtnhintergalactic.config.IGConfig;
+import gtnhintergalactic.item.IGItems;
+import gtnhintergalactic.proxy.CommonProxy;
 
 @Mod(
     modid = GTNHIntergalactic.MODID,
-    version = Tags.VERSION,
+    version = GT_Version.VERSION,
     name = GTNHIntergalactic.MODNAME,
     acceptedMinecraftVersions = "[1.7.10]",
     dependencies = "required-after:GalacticraftCore@[3.0.36,);" + "required-after:GalacticraftMars;"
@@ -47,18 +49,16 @@ public class GTNHIntergalactic {
         }
     }
 
-    public static final String MODID = "gtnhintergalactic";
+    public static final String MODID = Mods.Names.G_T_N_H_INTERGALACTIC;
     public static final String MODNAME = "GTNH-Intergalactic";
     /** Logger used by this mod */
     public static final Logger LOG = LogManager.getLogger(MODID);
     /** Prefix for assets */
-    public static final String ASSET_PREFIX = "gtnhintergalactic";
+    public static final String ASSET_PREFIX = MODID;
     /** Creative tab for mod items */
     public static CreativeTabs tab;
     /** Proxy used for loading */
-    @SidedProxy(
-        clientSide = "com.gtnewhorizons.gtnhintergalactic.proxy.ClientProxy",
-        serverSide = "com.gtnewhorizons.gtnhintergalactic.proxy.CommonProxy")
+    @SidedProxy(clientSide = "gtnhintergalactic.proxy.ClientProxy", serverSide = "gtnhintergalactic.proxy.CommonProxy")
     public static CommonProxy proxy;
 
     @Mod.EventHandler

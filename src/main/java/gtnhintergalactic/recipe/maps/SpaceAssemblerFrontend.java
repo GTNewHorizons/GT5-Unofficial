@@ -7,7 +7,6 @@ import java.util.function.Supplier;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 
-import gtnhintergalactic.recipe.IGRecipeMaps;
 import com.gtnewhorizons.modularui.api.math.Pos2d;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.common.widget.ProgressBar;
@@ -21,6 +20,7 @@ import gregtech.common.gui.modularui.UIHelper;
 import gregtech.common.misc.spaceprojects.SpaceProjectManager;
 import gregtech.nei.RecipeDisplayInfo;
 import gregtech.nei.formatter.INEISpecialInfoFormatter;
+import gtnhintergalactic.recipe.IGRecipeMaps;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 
 @ParametersAreNonnullByDefault

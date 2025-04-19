@@ -5,9 +5,8 @@ import java.util.List;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
 
-import com.gtnewhorizons.gtnhintergalactic.config.IGConfig;
-
 import cpw.mods.fml.relauncher.Side;
+import gtnhintergalactic.config.IGConfig;
 import io.netty.buffer.ByteBuf;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityAdvanced;
 import micdoodle8.mods.galacticraft.core.util.Annotations;

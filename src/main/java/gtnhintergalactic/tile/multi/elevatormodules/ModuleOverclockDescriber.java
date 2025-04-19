@@ -5,12 +5,11 @@ import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.util.EnumChatFormatting;
 
-import com.gtnewhorizons.gtnhintergalactic.recipe.IGRecipeMaps;
-
 import gregtech.api.enums.GTValues;
 import gregtech.api.objects.overclockdescriber.EUNoOverclockDescriber;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.MethodsReturnNonnullByDefault;
+import gtnhintergalactic.recipe.IGRecipeMaps;
 
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault

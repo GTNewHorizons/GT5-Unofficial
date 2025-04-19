@@ -9,10 +9,6 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
-import com.gtnewhorizons.gtnhintergalactic.block.IGBlocks;
-import com.gtnewhorizons.gtnhintergalactic.gui.IG_UITextures;
-import com.gtnewhorizons.gtnhintergalactic.spaceprojects.ProjectAsteroidOutpost;
-
 import bartworks.common.loaders.ItemRegistry;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.TierEU;
@@ -22,6 +18,9 @@ import gregtech.common.misc.spaceprojects.base.SPUpgrade;
 import gregtech.common.misc.spaceprojects.base.SpaceProject;
 import gregtech.common.misc.spaceprojects.enums.SolarSystem;
 import gregtech.common.misc.spaceprojects.interfaces.ISpaceProject;
+import gtnhintergalactic.block.IGBlocks;
+import gtnhintergalactic.gui.IG_UITextures;
+import gtnhintergalactic.spaceprojects.ProjectAsteroidOutpost;
 import tectech.thing.CustomItemList;
 
 /**

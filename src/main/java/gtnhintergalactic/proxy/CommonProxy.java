@@ -1,21 +1,20 @@
 package gtnhintergalactic.proxy;
 
-import com.gtnewhorizons.gtnhintergalactic.block.IGBlocks;
-import com.gtnewhorizons.gtnhintergalactic.item.IGItems;
-import com.gtnewhorizons.gtnhintergalactic.loader.MachineLoader;
-import com.gtnewhorizons.gtnhintergalactic.loader.RecipeLoader;
-import com.gtnewhorizons.gtnhintergalactic.recipe.IG_RecipeAdder;
-import com.gtnewhorizons.gtnhintergalactic.recipe.MachineRecipes;
-import com.gtnewhorizons.gtnhintergalactic.recipe.ResultNoSpaceProject;
-import com.gtnewhorizons.gtnhintergalactic.recipe.SpaceProjectRegistration;
-import com.gtnewhorizons.gtnhintergalactic.tile.TileEntitySpaceElevatorCable;
-
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
+import gtnhintergalactic.block.IGBlocks;
+import gtnhintergalactic.item.IGItems;
+import gtnhintergalactic.loader.MachineLoader;
+import gtnhintergalactic.loader.RecipeLoader;
+import gtnhintergalactic.recipe.IG_RecipeAdder;
+import gtnhintergalactic.recipe.MachineRecipes;
+import gtnhintergalactic.recipe.ResultNoSpaceProject;
+import gtnhintergalactic.recipe.SpaceProjectRegistration;
+import gtnhintergalactic.tile.TileEntitySpaceElevatorCable;
 
 /**
  * Proxy used by both, the server and the client to load stuff

@@ -1,8 +1,8 @@
 package gtnhintergalactic.loader;
 
-import com.gtnewhorizons.gtnhintergalactic.recipe.GasSiphonRecipes;
-import com.gtnewhorizons.gtnhintergalactic.recipe.SpaceMiningRecipes;
-import com.gtnewhorizons.gtnhintergalactic.recipe.SpacePumpingRecipes;
+import gtnhintergalactic.recipe.GasSiphonRecipes;
+import gtnhintergalactic.recipe.SpaceMiningRecipes;
+import gtnhintergalactic.recipe.SpacePumpingRecipes;
 
 /**
  * Loader for all recipes

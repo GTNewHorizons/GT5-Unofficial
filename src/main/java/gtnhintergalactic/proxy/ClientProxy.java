@@ -2,17 +2,16 @@ package gtnhintergalactic.proxy;
 
 import net.minecraftforge.common.MinecraftForge;
 
-import com.gtnewhorizons.gtnhintergalactic.block.BlockSpaceElevatorCable;
-import com.gtnewhorizons.gtnhintergalactic.client.IGTextures;
-import com.gtnewhorizons.gtnhintergalactic.client.TooltipUtil;
-import com.gtnewhorizons.gtnhintergalactic.nei.NEI_IG_Config;
-import com.gtnewhorizons.gtnhintergalactic.render.RenderSpaceElevatorCable;
-import com.gtnewhorizons.gtnhintergalactic.tile.TileEntitySpaceElevatorCable;
-
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
+import gtnhintergalactic.block.BlockSpaceElevatorCable;
+import gtnhintergalactic.client.IGTextures;
+import gtnhintergalactic.client.TooltipUtil;
+import gtnhintergalactic.nei.NEI_IG_Config;
+import gtnhintergalactic.render.RenderSpaceElevatorCable;
+import gtnhintergalactic.tile.TileEntitySpaceElevatorCable;
 
 /**
  * Proxy used by the client to load stuff

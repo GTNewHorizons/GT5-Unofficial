@@ -24,14 +24,6 @@ import net.minecraftforge.fluids.FluidStack;
 
 import org.jetbrains.annotations.NotNull;
 
-import com.gtnewhorizons.gtnhintergalactic.gui.IG_UITextures;
-import com.gtnewhorizons.gtnhintergalactic.item.ItemMiningDrones;
-import com.gtnewhorizons.gtnhintergalactic.recipe.IGRecipeMaps;
-import com.gtnewhorizons.gtnhintergalactic.recipe.SpaceMiningData;
-import com.gtnewhorizons.gtnhintergalactic.recipe.SpaceMiningRecipes;
-import com.gtnewhorizons.gtnhintergalactic.recipe.SpaceMiningRecipes.WeightedAsteroidList;
-import com.gtnewhorizons.gtnhintergalactic.spaceprojects.ProjectAsteroidOutpost;
-import com.gtnewhorizons.gtnhintergalactic.tile.multi.elevator.TileEntitySpaceElevator;
 import com.gtnewhorizons.modularui.api.drawable.IDrawable;
 import com.gtnewhorizons.modularui.api.drawable.UITexture;
 import com.gtnewhorizons.modularui.api.forge.ItemStackHandler;
@@ -72,6 +64,14 @@ import gregtech.common.misc.spaceprojects.enums.SolarSystem;
 import gregtech.common.misc.spaceprojects.interfaces.ISpaceProject;
 import gregtech.common.tileentities.machines.MTEHatchInputBusME;
 import gtPlusPlus.core.material.MaterialsElements;
+import gtnhintergalactic.gui.IG_UITextures;
+import gtnhintergalactic.item.ItemMiningDrones;
+import gtnhintergalactic.recipe.IGRecipeMaps;
+import gtnhintergalactic.recipe.SpaceMiningData;
+import gtnhintergalactic.recipe.SpaceMiningRecipes;
+import gtnhintergalactic.recipe.SpaceMiningRecipes.WeightedAsteroidList;
+import gtnhintergalactic.spaceprojects.ProjectAsteroidOutpost;
+import gtnhintergalactic.tile.multi.elevator.TileEntitySpaceElevator;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import tectech.TecTech;
 import tectech.thing.gui.TecTechUITextures;
@@ -79,7 +79,6 @@ import tectech.thing.metaTileEntity.multi.base.INameFunction;
 import tectech.thing.metaTileEntity.multi.base.IStatusFunction;
 import tectech.thing.metaTileEntity.multi.base.LedStatus;
 import tectech.thing.metaTileEntity.multi.base.Parameters;
-import tectech.thing.metaTileEntity.multi.base.TTMultiblockBase;
 import tectech.thing.metaTileEntity.multi.base.render.TTRenderedExtendedFacingTexture;
 
 /**

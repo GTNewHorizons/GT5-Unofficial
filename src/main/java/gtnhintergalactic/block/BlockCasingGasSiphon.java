@@ -4,9 +4,8 @@ import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.world.World;
 
-import com.gtnewhorizons.gtnhintergalactic.GTNHIntergalactic;
-
 import gregtech.api.GregTechAPI;
+import gtnhintergalactic.GTNHIntergalactic;
 import micdoodle8.mods.galacticraft.api.block.ITerraformableBlock;
 
 public class BlockCasingGasSiphon extends Block implements ITerraformableBlock {

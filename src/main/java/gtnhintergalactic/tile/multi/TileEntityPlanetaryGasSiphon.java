@@ -32,10 +32,6 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureUtility;
-import com.gtnewhorizons.gtnhintergalactic.block.IGBlocks;
-import com.gtnewhorizons.gtnhintergalactic.client.IGTextures;
-import com.gtnewhorizons.gtnhintergalactic.client.TooltipUtil;
-import com.gtnewhorizons.gtnhintergalactic.recipe.GasSiphonRecipes;
 
 import bartworks.system.material.WerkstoffLoader;
 import gregtech.api.enums.ItemList;
@@ -56,6 +52,10 @@ import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTStructureUtility;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gtnhintergalactic.block.IGBlocks;
+import gtnhintergalactic.client.IGTextures;
+import gtnhintergalactic.client.TooltipUtil;
+import gtnhintergalactic.recipe.GasSiphonRecipes;
 import micdoodle8.mods.galacticraft.api.world.IOrbitDimension;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 
