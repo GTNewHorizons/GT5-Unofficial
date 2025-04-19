@@ -85,7 +85,7 @@ public class ForgeOfGodsUI {
             })
             .setPos(174, 148)
             .setSize(16, 16);
-        button.addTooltip("Power Switch")
+        button.addTooltip(StatCollector.translateToLocal("tt.gui.tooltip.power_switch"))
             .setTooltipShowUpDelay(TOOLTIP_DELAY);
         return (ButtonWidget) button;
     }

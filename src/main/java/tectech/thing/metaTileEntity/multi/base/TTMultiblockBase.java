@@ -2362,7 +2362,7 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
             .setPos(174, doesBindPlayerInventory() ? 116 : 140)
             .setSize(16, 16);
         if (isPowerPassButtonEnabled()) {
-            button.addTooltip("Power Pass")
+            button.addTooltip(StatCollector.translateToLocal("tt.gui.tooltip.power_pass"))
                 .setTooltipShowUpDelay(TOOLTIP_DELAY);
         }
         return (ButtonWidget) button;
@@ -2393,7 +2393,7 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
             .setPos(174, doesBindPlayerInventory() ? 132 : 156)
             .setSize(16, 16);
         if (isSafeVoidButtonEnabled()) {
-            button.addTooltip("Safe Void")
+            button.addTooltip(StatCollector.translateToLocal("tt.gui.tooltip.safe_void"))
                 .setTooltipShowUpDelay(TOOLTIP_DELAY);
         }
         return (ButtonWidget) button;
@@ -2428,7 +2428,7 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
             .setPos(174, doesBindPlayerInventory() ? 148 : 172)
             .setSize(16, 16);
         if (isAllowedToWorkButtonEnabled()) {
-            button.addTooltip("Power Switch")
+            button.addTooltip(StatCollector.translateToLocal("tt.gui.tooltip.power_switch"))
                 .setTooltipShowUpDelay(TOOLTIP_DELAY);
         }
         return (ButtonWidget) button;
