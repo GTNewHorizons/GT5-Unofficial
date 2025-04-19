@@ -137,7 +137,7 @@ public class MTELargeFusionComputer2 extends MTELargeFusionComputer {
 
     @Override
     public int extraPara(long startEnergy) {
-        return startEnergy < 160000000 ? 2 : 1;
+        return startEnergy < 160000000L ? 2 : 1;
     }
 
     @Override
