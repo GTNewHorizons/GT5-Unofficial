@@ -668,6 +668,7 @@ public class Textures {
         OVERLAY_QTANK_GLOW,
         OVERLAY_QCHEST,
         OVERLAY_QCHEST_GLOW,
+        OVERLAY_SCREEN_GLASS,
         OVERLAY_SHUTTER,
 
         OVERLAY_CLOSET,
