@@ -462,7 +462,11 @@ public class MTERadioHatch extends MTEHatch implements RecipeMapWorkable, IAddGr
                     .setTextColor(com.cleanroommc.modularui.utils.Color.WHITE.darker(1))
                     .setTextAlignment(com.cleanroommc.modularui.utils.Alignment.CenterLeft)
                     .pos(86, 27)
-                    .size(30, 12));
+                    .size(30, 12))
+            .child(
+                IKey.str("%")
+                    .asWidget()
+                    .pos(118, 31));
     }
 
     private IWidget createDurationMeterContainer(PanelSyncManager syncManager) {
