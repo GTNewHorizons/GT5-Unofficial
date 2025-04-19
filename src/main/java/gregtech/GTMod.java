@@ -256,7 +256,7 @@ public class GTMod implements IGTMod {
             aEvent.getModConfigurationDirectory()
                 .getParentFile());
 
-        PowerGogglesConfigHandler.init(new File(aEvent.getModConfigurationDirectory() + "/Gregtech/Goggles.cfg"));
+        PowerGogglesConfigHandler.init(new File(aEvent.getModConfigurationDirectory() + "/GregTech/Goggles.cfg"));
 
         gregtechproxy.onPreLoad();
 
