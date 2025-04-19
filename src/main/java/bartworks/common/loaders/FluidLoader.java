@@ -75,7 +75,7 @@ public class FluidLoader {
 
         MetaGeneratedItem98.FluidCell[] fluidCells = { MetaGeneratedItem98.FluidCell.FLUORESCENT_DNA,
             MetaGeneratedItem98.FluidCell.ENZYME_SOLUTION, MetaGeneratedItem98.FluidCell.PENICILLIN,
-            MetaGeneratedItem98.FluidCell.POLYMERASE, };
+            MetaGeneratedItem98.FluidCell.POLYMERASE };
         for (int i = 0; i < fluidCells.length; i++) {
             BioLabFluidCells[i] = fluidCells[i].get();
         }
