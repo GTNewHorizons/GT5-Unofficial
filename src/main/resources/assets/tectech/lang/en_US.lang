@@ -2006,3 +2006,18 @@ tt.gui.tooltip.plasma_module.debug_window=Debug Window
 tt.gui.tooltip.plasma_module.debug_window.multi_step=multi-step
 tt.gui.tooltip.plasma_module.debug_window.fusion_tier=fusion tier
 tt.gui.tooltip.plasma_module.debug_window.parallel=parallel
+
+tt.gui.text.debug.eut=EUT
+tt.gui.text.debug.amp=AMP
+tt.gui.text.debug.sum=SUM
+tt.gui.text.debug.tier=TIER
+
+tt.gui.text.debug_pollutor.pollution=Pollution
+
+tt.gui.text.debug_structure_writer.structure_size=Structure size
+tt.gui.text.debug_structure_writer.my_position=My position
+tt.gui.text.debug_structure_writer.changing_scan_size=(Changing scan size)
+tt.gui.text.debug_structure_writer.moving_origin=(Moving origin)
+
+tt.gui.text.hatch.uncertainty.status.ok=Status: OK
+tt.gui.text.hatch.uncertainty.status.ng=Status: NG
