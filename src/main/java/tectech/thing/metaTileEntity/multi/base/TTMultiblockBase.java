@@ -315,26 +315,19 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
     public ArrayList<String> getFullLedDescriptionIn(int hatchNo, int paramID) {
         ArrayList<String> list = new ArrayList<>();
         list.add(
-            EnumChatFormatting.WHITE + "ID: "
-                + EnumChatFormatting.AQUA
-                + hatchNo
-                + EnumChatFormatting.YELLOW
-                + ":"
-                + EnumChatFormatting.AQUA
-                + paramID
-                + EnumChatFormatting.YELLOW
-                + ":"
-                + EnumChatFormatting.AQUA
-                + "I  "
-                + parametrization.getStatusIn(hatchNo, paramID).name.get());
+            EnumChatFormatting.WHITE + StatCollector.translateToLocalFormatted(
+                "tt.gui.tooltip.full_led_desc.in.id",
+                "" + EnumChatFormatting.AQUA + hatchNo + EnumChatFormatting.YELLOW,
+                "" + EnumChatFormatting.AQUA + paramID + EnumChatFormatting.YELLOW,
+                parametrization.getStatusIn(hatchNo, paramID).name.get()));
         list.add(
-            EnumChatFormatting.WHITE + "Value: "
-                + EnumChatFormatting.AQUA
-                + numberFormat.format(parametrization.getIn(hatchNo, paramID)));
+            EnumChatFormatting.WHITE + StatCollector.translateToLocalFormatted(
+                "tt.gui.tooltip.full_led_desc.value",
+                EnumChatFormatting.AQUA + numberFormat.format(parametrization.getIn(hatchNo, paramID))));
         try {
             list.add(parametrization.groups[hatchNo].parameterIn[paramID].getBrief());
         } catch (NullPointerException | IndexOutOfBoundsException e) {
-            list.add("Unused");
+            list.add(StatCollector.translateToFallback("tt.gui.tooltip.full_led_desc.unused"));
         }
         return list;
     }
@@ -342,26 +335,19 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
     public ArrayList<String> getFullLedDescriptionOut(int hatchNo, int paramID) {
         ArrayList<String> list = new ArrayList<>();
         list.add(
-            EnumChatFormatting.WHITE + "ID: "
-                + EnumChatFormatting.AQUA
-                + hatchNo
-                + EnumChatFormatting.YELLOW
-                + ":"
-                + EnumChatFormatting.AQUA
-                + paramID
-                + EnumChatFormatting.YELLOW
-                + ":"
-                + EnumChatFormatting.AQUA
-                + "O "
-                + parametrization.getStatusOut(hatchNo, paramID).name.get());
+            EnumChatFormatting.WHITE + StatCollector.translateToLocalFormatted(
+                "tt.gui.tooltip.full_led_desc.out.id",
+                "" + EnumChatFormatting.AQUA + hatchNo + EnumChatFormatting.YELLOW,
+                "" + EnumChatFormatting.AQUA + paramID + EnumChatFormatting.YELLOW,
+                parametrization.getStatusOut(hatchNo, paramID).name.get()));
         list.add(
-            EnumChatFormatting.WHITE + "Value: "
-                + EnumChatFormatting.AQUA
-                + numberFormat.format(parametrization.getOut(hatchNo, paramID)));
+            EnumChatFormatting.WHITE + StatCollector.translateToLocalFormatted(
+                "tt.gui.tooltip.full_led_desc.value",
+                EnumChatFormatting.AQUA + numberFormat.format(parametrization.getOut(hatchNo, paramID))));
         try {
             list.add(parametrization.groups[hatchNo].parameterOut[paramID].getBrief());
         } catch (NullPointerException | IndexOutOfBoundsException e) {
-            list.add("Unused");
+            list.add(StatCollector.translateToLocal("tt.gui.tooltip.full_led_desc.unused"));
         }
         return list;
     }
