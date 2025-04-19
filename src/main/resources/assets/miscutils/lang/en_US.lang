@@ -4067,4 +4067,11 @@ gtpp.infodata.energy_buffer.eu_capacity=%s EU capacity
 gtpp.infodata.tiered_chest.name=Super Storage Chest
 gtpp.infodata.tiered_tank.name=%s Fluid Tank
 
+# GUI
+gtpp.gui.text.time_since_built=Total Time Since Built
+gtpp.gui.text.stock=Stock
+gtpp.gui.text.active=Active
+gtpp.gui.text.in=In
+gtpp.gui.text.out=Out
 
+gtpp.gui.text.power_sub_station.stored=Stored:

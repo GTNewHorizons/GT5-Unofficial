@@ -1476,7 +1476,8 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
                     .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setEnabled(widget -> mMachine))
             .widget(
-                new TextWidget("Total Time Since Built: ").setTextAlignment(Alignment.CenterLeft)
+                new TextWidget(StatCollector.translateToLocal("gtpp.gui.text.time_since_built") + ": ")
+                    .setTextAlignment(Alignment.CenterLeft)
                     .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setEnabled(widget -> mMachine))
             .widget(

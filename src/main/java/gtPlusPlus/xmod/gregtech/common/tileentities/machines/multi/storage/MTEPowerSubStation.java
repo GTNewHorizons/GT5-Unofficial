@@ -26,6 +26,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants.NBT;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -896,10 +897,12 @@ public class MTEPowerSubStation extends GTPPMultiBlockBase<MTEPowerSubStation> i
                     val -> getBaseMetaTileEntity().setActive(val)))
             .widget(new FakeSyncWidget.IntegerSyncer(this::getErrorDisplayID, this::setErrorDisplayID))
             .widget(
-                new TextWidget("In").setDefaultColor(COLOR_TEXT_WHITE.get())
+                new TextWidget(StatCollector.translateToLocal("gtpp.gui.text.in"))
+                    .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setPos(178, 10))
             .widget(
-                new TextWidget("Out").setDefaultColor(COLOR_TEXT_WHITE.get())
+                new TextWidget(StatCollector.translateToLocal("gtpp.gui.text.out"))
+                    .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setPos(176, 28))
             .widget(new FakeSyncWidget.LongSyncer(this::getAverageEuAdded, val -> clientEUIn = val))
             .widget(
@@ -932,7 +935,8 @@ public class MTEPowerSubStation extends GTPPMultiBlockBase<MTEPowerSubStation> i
                     .setPos(5, 156)
                     .setSize(147, 5))
             .widget(
-                new TextWidget("Stored:").setDefaultColor(COLOR_TEXT_WHITE.get())
+                new TextWidget(StatCollector.translateToLocal("gtpp.gui.text.power_sub_station.stored"))
+                    .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setTextAlignment(Alignment.CenterLeft)
                     .setPos(10, 132))
             .widget(
