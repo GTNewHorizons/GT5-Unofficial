@@ -836,11 +836,26 @@ GT5U.gui.config.worldgen.general=General
 
 GT5U.gui.text.cannot_change_when_running=Can't change configuration when running !
 GT5U.gui.text.pcb_factory.trace_size=Trace Size
-GT5U.gui.text.pcb_factory.trace_size.tooltip=Set the trace size. Smaller traces allow material savings but take longer to fabricate. Larger traces waste material but are fast. 50-200 μm.
+GT5U.gui.tooltip.pcb_factory.trace_size=Set the trace size. Smaller traces allow material savings but take longer to fabricate. Larger traces waste material but are fast. 50-200 μm.
 GT5U.gui.text.pcb_factory.bio_upgrade_offsets=Bio Upgrade Offsets
 GT5U.gui.text.pcb_factory.cooler_tier1_offsets=Cooler Tier 1 Offsets
 GT5U.gui.text.pcb_factory.cooler_tier2_offsets=Cooler Tier 2 Offsets
+GT5U.gui.tooltip.pcb_factory.configuration_menu=Configuration Menu
+GT5U.gui.tooltip.pcb_factory.tier=PCB Factory Tier
+GT5U.gui.tooltip.pcb_factory.bio_upgrade=Enables nanites to construct organic circuitry. Required for Bioware and Wetware boards.
+GT5U.gui.tooltip.pcb_factory.bio_rotate=Rotates the biochamber by 90 degrees.
+GT5U.gui.tooltip.pcb_factory.oc_tier1=Allows for overclocking. Requires 10 L/s of distilled water. Cooling upgrades are mutually exclusive.
+GT5U.gui.tooltip.pcb_factory.oc_tier2=Enables perfect overclocking by allowing nanites to work with extreme speed and efficiency. Uses 10 L/s of Super Coolant.
+GT5U.gui.tooltip.pcb_factory.offset.x=X Offset
+GT5U.gui.tooltip.pcb_factory.offset.z=Z Offset
 
+GT5U.gui.tooltip.purification_plant.debug_mode=Toggle debug mode.
+
+GT5U.gui.tooltip.redstone_circuit.toggle_output=Toggle EU Output
+GT5U.gui.tooltip.redstone_circuit.toggle_active=Toggle Active State
+GT5U.gui.tooltip.redstone_circuit.change=Change Redstone Circuit
+
+GT5U.gui.title.unknown=Unknown
 
 # Note to translators: this translation entry is supposed to be a number indicating how many taunts you define here
 # Game will randomly display one of them

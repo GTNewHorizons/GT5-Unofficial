@@ -756,7 +756,7 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
                     return ret.toArray(new IDrawable[0]);
                 })
                 .attachSyncer(new FakeSyncWidget.BooleanSyncer(() -> debugMode, b -> debugMode = b), builder)
-                .addTooltip("Toggle debug mode.")
+                .addTooltip(StatCollector.translateToLocal("GT5U.gui.tooltip.purification_plant.debug_mode"))
                 .setTooltipShowUpDelay(TOOLTIP_DELAY)
                 .setPos(174, 112)
                 .setSize(16, 16));
