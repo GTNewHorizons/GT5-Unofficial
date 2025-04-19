@@ -152,7 +152,8 @@ public class MTEHatchTurbineProvider extends MTEHatchInputBus {
     }
 
     @Override
-    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
+        ItemStack aTool) {
         if (aPlayer != null) {
             if (KeyboardUtils.isCtrlKeyDown()) {
                 mDescending = !mDescending;

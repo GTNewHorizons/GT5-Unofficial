@@ -769,7 +769,8 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
     }
 
     @Override
-    public final void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+    public final void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
+        ItemStack aTool) {
         if (isRendererDisabled) {
             isRendererDisabled = false;
             // let the renderer automatically rebuild itself as needed through normal logic

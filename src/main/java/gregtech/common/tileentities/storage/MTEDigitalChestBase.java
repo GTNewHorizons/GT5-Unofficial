@@ -213,7 +213,8 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
     }
 
     @Override
-    public final void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+    public final void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
+        ItemStack aTool) {
         mVoidOverflow = !mVoidOverflow;
         GTUtility.sendChatToPlayer(
             aPlayer,
@@ -224,8 +225,7 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
 
     @Override
     public boolean onSolderingToolRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
-        float aX, float aY, float aZ) {
-        if (super.onSolderingToolRightClick(side, wrenchingSide, aPlayer, aX, aY, aZ)) return true;
+        float aX, float aY, float aZ, ItemStack aTool) {
         mDisableFilter = !mDisableFilter;
         GTUtility.sendChatToPlayer(
             aPlayer,

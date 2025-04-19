@@ -144,8 +144,9 @@ public abstract class MTEOilDrillBase extends MTEDrillerBase implements IMetrics
     protected abstract int getRangeInChunks();
 
     @Override
-    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        super.onScrewdriverRightClick(side, aPlayer, aX, aY, aZ);
+    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
+        ItemStack aTool) {
+        super.onScrewdriverRightClick(side, aPlayer, aX, aY, aZ, aTool);
         int oldChunkRange = chunkRangeConfig;
         if (aPlayer.isSneaking()) {
             if (chunkRangeConfig > 0) {

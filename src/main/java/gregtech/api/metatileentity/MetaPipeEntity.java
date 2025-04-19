@@ -190,51 +190,26 @@ public abstract class MetaPipeEntity extends CommonMetaTileEntity implements ICo
         return tCovered;
     }
 
-    @Deprecated
-    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        /* Do nothing */
-    }
-
-    @Deprecated
-    public boolean onWrenchRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer entityPlayer,
-        float aX, float aY, float aZ) {
-        return false;
-    }
-
-    @Deprecated
-    public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
-        float aX, float aY, float aZ) {
-        return false;
-    }
-
-    @Deprecated
-    public boolean onSolderingToolRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
-        float aX, float aY, float aZ) {
-        return false;
-    }
-
     @Override
     public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
-        ItemStack aTool) {
-        onScrewdriverRightClick(side, aPlayer, aX, aY, aZ);
-    }
+        ItemStack aTool) {}
 
     @Override
     public boolean onWrenchRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer, float aX,
         float aY, float aZ, ItemStack aTool) {
-        return onWrenchRightClick(side, wrenchingSide, aPlayer, aX, aY, aZ);
+        return false;
     }
 
     @Override
     public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
         float aX, float aY, float aZ, ItemStack aTool) {
-        return onWireCutterRightClick(side, wrenchingSide, aPlayer, aX, aY, aZ);
+        return false;
     }
 
     @Override
     public boolean onSolderingToolRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
         float aX, float aY, float aZ, ItemStack aTool) {
-        return onSolderingToolRightClick(side, wrenchingSide, aPlayer, aX, aY, aZ);
+        return false;
     }
 
     @Override

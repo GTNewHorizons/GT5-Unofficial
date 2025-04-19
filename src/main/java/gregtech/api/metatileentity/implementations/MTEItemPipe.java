@@ -221,7 +221,7 @@ public class MTEItemPipe extends MetaPipeEntity implements IMetaTileEntityItemPi
 
     @Override
     public boolean onWrenchRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer entityPlayer,
-        float aX, float aY, float aZ) {
+        float aX, float aY, float aZ, ItemStack aTool) {
         if (GTMod.gregtechproxy.gt6Pipe) {
             final ForgeDirection tSide = GTUtility.determineWrenchingSide(side, aX, aY, aZ);
             if (isConnectedAtSide(tSide)) {

@@ -140,8 +140,9 @@ public abstract class MTEOreDrillingPlantBase extends MTEDrillerBase implements 
     }
 
     @Override
-    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        super.onScrewdriverRightClick(side, aPlayer, aX, aY, aZ);
+    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
+        ItemStack aTool) {
+        super.onScrewdriverRightClick(side, aPlayer, aX, aY, aZ, aTool);
 
         if (getBaseMetaTileEntity().isActive()) {
             GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("GT5U.machines.workarea_fail"));
@@ -158,7 +159,7 @@ public abstract class MTEOreDrillingPlantBase extends MTEDrillerBase implements 
 
     @Override
     public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
-        float aX, float aY, float aZ) {
+        float aX, float aY, float aZ, ItemStack aTool) {
         replaceWithCobblestone = !replaceWithCobblestone;
         GTUtility.sendChatToPlayer(aPlayer, "Replace with cobblestone " + replaceWithCobblestone);
         return true;
