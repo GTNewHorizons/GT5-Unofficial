@@ -1,5 +1,7 @@
 package gregtech.common.redstonecircuits;
 
+import net.minecraft.util.StatCollector;
+
 import gregtech.api.interfaces.IRedstoneCircuitBlock;
 import gregtech.api.util.CircuitryBehavior;
 
@@ -55,18 +57,18 @@ public class CircuitRepeater extends CircuitryBehavior {
 
     @Override
     public String getName() {
-        return "Repeater";
+        return StatCollector.translateToLocal("GT5U.gui.circuit.repeater.name");
     }
 
     @Override
     public String getDescription() {
-        return "Delays RS-Signal";
+        return StatCollector.translateToLocal("GT5U.gui.circuit.repeater.description");
     }
 
     @Override
     public String getDataDescription(int[] aCircuitData, int aCircuitDataIndex) {
         if (aCircuitDataIndex == 0) {
-            return "Delay";
+            return StatCollector.translateToLocal("GT5U.gui.circuit.data_description.delay");
         }
         return "";
     }
