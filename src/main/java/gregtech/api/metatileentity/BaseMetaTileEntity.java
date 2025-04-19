@@ -171,9 +171,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
             if (aID > 0) mID = aID;
             else mID = mID > 0 ? mID : 0;
             if (mID != 0) createNewMetatileEntity(mID);
-            mSidedRedstone = (hasValidMetaTileEntity() && mMetaTileEntity.hasSidedRedstoneOutputBehavior()
-                ? new byte[] { 0, 0, 0, 0, 0, 0 }
-                : new byte[] { 15, 15, 15, 15, 15, 15 });
+            mSidedRedstone = new byte[] { 0, 0, 0, 0, 0, 0 };
         } else {
             if (aID <= 0) mID = (short) aNBT.getInteger("mID");
             else mID = aID;
@@ -212,9 +210,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
         }
 
         if (mSidedRedstone.length != 6)
-            if (hasValidMetaTileEntity() && mMetaTileEntity.hasSidedRedstoneOutputBehavior())
-                mSidedRedstone = new byte[] { 0, 0, 0, 0, 0, 0 };
-            else mSidedRedstone = new byte[] { 15, 15, 15, 15, 15, 15 };
+            mSidedRedstone = new byte[] { 0, 0, 0, 0, 0, 0 };
     }
 
     /**
@@ -1741,15 +1737,6 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
         long rEU = 0;
         for (int i = 0; i < mAverageEUOutput.length; ++i) if (i != mAverageEUOutputIndex) rEU += mAverageEUOutput[i];
         return rEU / (mAverageEUOutput.length - 1);
-    }
-
-    @Override
-    protected void updateOutputRedstoneSignal(ForgeDirection side) {
-        if (mMetaTileEntity.hasSidedRedstoneOutputBehavior()) {
-            setOutputRedstoneSignal(side, (byte) 0);
-        } else {
-            setOutputRedstoneSignal(side, (byte) 15);
-        }
     }
 
     @Override

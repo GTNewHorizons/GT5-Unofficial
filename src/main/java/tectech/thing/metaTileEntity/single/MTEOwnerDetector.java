@@ -215,11 +215,6 @@ public class MTEOwnerDetector extends MTETieredMachineBlock {
     }
 
     @Override
-    public boolean hasSidedRedstoneOutputBehavior() {
-        return true;
-    }
-
-    @Override
     public boolean allowGeneralRedstoneOutput() {
         return true;
     }
