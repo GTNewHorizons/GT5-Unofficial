@@ -782,7 +782,7 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
                         .openSyncedWindow(CONFIGURATION_WINDOW_ID);
                 })
                 .setBackground(GTUITextures.BUTTON_STANDARD, GTUITextures.OVERLAY_BUTTON_CYCLIC)
-                .addTooltip(StatCollector.translateToLocal("kubatech.gui.tooltip.configuration"))
+                .addTooltip(StatCollector.translateToLocal("kubatech.gui.text.configuration"))
                 .setSize(16, 16));
     }
 
@@ -793,7 +793,7 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
             new DrawableWidget().setDrawable(GTUITextures.OVERLAY_BUTTON_CYCLIC)
                 .setPos(5, 5)
                 .setSize(16, 16))
-            .widget(new TextWidget("Configuration").setPos(25, 9))
+            .widget(new TextWidget(StatCollector.translateToLocal("kubatech.gui.text.configuration")).setPos(25, 9))
             .widget(
                 ButtonWidget.closeWindowButton(true)
                     .setPos(185, 3))

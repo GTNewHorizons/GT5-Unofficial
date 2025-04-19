@@ -37,7 +37,7 @@ GT5U.gui.text.EIG_seedOverflow=Too many seeds inside!
 GT5U.gui.text.EIG_missingwater=No water!
 GT5U.gui.text.EIG_ic2glass=Insufficient glass tier!
 
-kubatech.gui.tooltip.configuration=Configuration
+kubatech.gui.text.configuration=Configuration
 
 kubatech.gui.text.tee_ultimate.status=STATUS
 kubatech.gui.text.tee_ultimate.tea=Tea
