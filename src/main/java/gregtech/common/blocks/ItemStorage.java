@@ -10,9 +10,10 @@ import net.minecraft.item.ItemStack;
 import cpw.mods.fml.common.Optional;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.Mods;
 import mods.railcraft.common.items.firestone.IItemFirestoneBurning;
 
-@Optional.Interface(iface = "mods.railcraft.common.items.firestone.IItemFirestoneBurning", modid = "Railcraft")
+@Optional.Interface(iface = "mods.railcraft.common.items.firestone.IItemFirestoneBurning", modid = Mods.Names.RAILCRAFT)
 public class ItemStorage extends ItemBlock implements IItemFirestoneBurning {
 
     public ItemStorage(Block block) {
@@ -50,7 +51,7 @@ public class ItemStorage extends ItemBlock implements IItemFirestoneBurning {
     }
 
     @Override
-    @Optional.Method(modid = "Railcraft")
+    @Optional.Method(modid = Mods.Names.RAILCRAFT)
     public boolean shouldBurn(ItemStack itemStack) {
         if (this.field_150939_a instanceof BlockMetal metal) {
             int damage = itemStack.getItemDamage();

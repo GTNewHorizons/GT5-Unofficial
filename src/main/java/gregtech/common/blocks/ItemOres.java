@@ -14,9 +14,10 @@ import org.apache.commons.lang3.StringUtils;
 import cpw.mods.fml.common.Optional;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.Mods;
 import mods.railcraft.common.items.firestone.IItemFirestoneBurning;
 
-@Optional.Interface(iface = "mods.railcraft.common.items.firestone.IItemFirestoneBurning", modid = "Railcraft")
+@Optional.Interface(iface = "mods.railcraft.common.items.firestone.IItemFirestoneBurning", modid = Mods.Names.RAILCRAFT)
 public class ItemOres extends ItemBlock implements IItemFirestoneBurning {
 
     public ItemOres(Block block) {
@@ -83,7 +84,7 @@ public class ItemOres extends ItemBlock implements IItemFirestoneBurning {
     }
 
     @Override
-    @Optional.Method(modid = "Railcraft")
+    @Optional.Method(modid = Mods.Names.RAILCRAFT)
     public boolean shouldBurn(ItemStack itemStack) {
         if (this.field_150939_a instanceof BlockOres) {
             int damage = itemStack.getItemDamage();

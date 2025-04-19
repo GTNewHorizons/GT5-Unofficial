@@ -48,6 +48,7 @@ import forestry.api.recipes.RecipeManagers;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.interfaces.IGT_ItemWithMaterialRenderer;
 import gregtech.api.util.GTModHandler;
@@ -58,7 +59,7 @@ import gregtech.common.render.items.GeneratedMaterialRenderer;
 import gregtech.loaders.misc.GTBees;
 import mods.railcraft.common.items.firestone.IItemFirestoneBurning;
 
-@Optional.Interface(iface = "mods.railcraft.common.items.firestone.IItemFirestoneBurning", modid = "Railcraft")
+@Optional.Interface(iface = "mods.railcraft.common.items.firestone.IItemFirestoneBurning", modid = Mods.Names.RAILCRAFT)
 public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer, IItemFirestoneBurning {
 
     @SideOnly(Side.CLIENT)
@@ -1260,7 +1261,7 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer, IIte
     }
 
     @Override
-    @Optional.Method(modid = "Railcraft")
+    @Optional.Method(modid = Mods.Names.RAILCRAFT)
     public boolean shouldBurn(ItemStack itemStack) {
         return itemStack.isItemEqual(getStackForType(CombType.FIRESTONE));
     }

@@ -483,6 +483,7 @@ import gregtech.api.enums.Dyes;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.Mods;
 import gregtech.api.enums.OreDictNames;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SubTag;
@@ -544,7 +545,7 @@ import gregtech.common.items.behaviors.BehaviourWrittenBook;
 import gregtech.common.tileentities.machines.multi.MTEIndustrialElectromagneticSeparator.MagnetTiers;
 import mods.railcraft.common.items.firestone.IItemFirestoneBurning;
 
-@Optional.Interface(iface = "mods.railcraft.common.items.firestone.IItemFirestoneBurning", modid = "Railcraft")
+@Optional.Interface(iface = "mods.railcraft.common.items.firestone.IItemFirestoneBurning", modid = Mods.Names.RAILCRAFT)
 public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFirestoneBurning {
 
     public static MetaGeneratedItem01 INSTANCE;
@@ -4716,7 +4717,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
     }
 
     @Override
-    @Optional.Method(modid = "Railcraft")
+    @Optional.Method(modid = Mods.Names.RAILCRAFT)
     public boolean shouldBurn(ItemStack itemStack) {
         ItemData data = GTOreDictUnificator.getAssociation(itemStack);
         if (data == null || data.mMaterial == null

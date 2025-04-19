@@ -262,6 +262,7 @@ import gregtech.api.covers.CoverRegistry;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SubTag;
 import gregtech.api.enums.TCAspects;
@@ -273,7 +274,7 @@ import gregtech.common.covers.CoverMetricsTransmitter;
 import gregtech.common.covers.CoverSolarPanel;
 import mods.railcraft.common.items.firestone.IItemFirestoneBurning;
 
-@Optional.Interface(iface = "mods.railcraft.common.items.firestone.IItemFirestoneBurning", modid = "Railcraft")
+@Optional.Interface(iface = "mods.railcraft.common.items.firestone.IItemFirestoneBurning", modid = Mods.Names.RAILCRAFT)
 public class MetaGeneratedItem03 extends MetaGeneratedItemX32 implements IItemFirestoneBurning {
 
     public static MetaGeneratedItem03 INSTANCE;
@@ -1540,7 +1541,7 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 implements IItemFi
     }
 
     @Override
-    @Optional.Method(modid = "Railcraft")
+    @Optional.Method(modid = Mods.Names.RAILCRAFT)
     public boolean shouldBurn(ItemStack itemStack) {
         ItemData data = GTOreDictUnificator.getAssociation(itemStack);
         if (data == null || data.mMaterial == null || data.mPrefix == null) {
