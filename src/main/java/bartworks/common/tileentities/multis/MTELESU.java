@@ -526,17 +526,24 @@ public class MTELESU extends MTEMultiBlockBase {
         screenElements.setSpace(0)
             .setPos(11, 8);
 
-        screenElements.widget(
-            new TextWidget().setStringSupplier(() -> "EU: " + numberFormat.format(this.clientEU))
-                .setTextAlignment(Alignment.CenterLeft)
-                .setDefaultColor(this.COLOR_TEXT_WHITE.get()))
+        screenElements
+            .widget(
+                new TextWidget()
+                    .setStringSupplier(
+                        () -> StatCollector
+                            .translateToLocalFormatted("BW.gui.text.lesu.eu", numberFormat.format(this.clientEU)))
+                    .setTextAlignment(Alignment.CenterLeft)
+                    .setDefaultColor(this.COLOR_TEXT_WHITE.get()))
             .widget(
                 new FakeSyncWidget.LongSyncer(
                     () -> this.getBaseMetaTileEntity()
                         .getStoredEU(),
                     val -> clientEU = val))
             .widget(
-                new TextWidget().setStringSupplier(() -> "MAX: " + numberFormat.format(clientMaxEU))
+                new TextWidget()
+                    .setStringSupplier(
+                        () -> StatCollector
+                            .translateToLocalFormatted("BW.gui.text.lesu.max", numberFormat.format(clientMaxEU)))
                     .setTextAlignment(Alignment.CenterLeft)
                     .setDefaultColor(this.COLOR_TEXT_WHITE.get()))
             .widget(
@@ -548,7 +555,10 @@ public class MTELESU extends MTEMultiBlockBase {
                             : 0,
                     val -> clientMaxEU = val))
             .widget(
-                new TextWidget().setStringSupplier(() -> "MAX EU/t IN: " + numberFormat.format(clientMaxIn))
+                new TextWidget()
+                    .setStringSupplier(
+                        () -> StatCollector
+                            .translateToLocalFormatted("BW.gui.text.lesu.max_in", numberFormat.format(clientMaxIn)))
                     .setTextAlignment(Alignment.CenterLeft)
                     .setDefaultColor(this.COLOR_TEXT_WHITE.get()))
             .widget(
@@ -557,7 +567,10 @@ public class MTELESU extends MTEMultiBlockBase {
                         .getInputVoltage(),
                     val -> clientMaxIn = val))
             .widget(
-                new TextWidget().setStringSupplier(() -> "EU/t OUT: " + numberFormat.format(clientMaxOut))
+                new TextWidget()
+                    .setStringSupplier(
+                        () -> StatCollector
+                            .translateToLocalFormatted("BW.gui.text.lesu.eu_out", numberFormat.format(clientMaxOut)))
                     .setTextAlignment(Alignment.CenterLeft)
                     .setDefaultColor(this.COLOR_TEXT_WHITE.get()))
             .widget(
@@ -566,7 +579,10 @@ public class MTELESU extends MTEMultiBlockBase {
                         .getOutputVoltage(),
                     val -> clientMaxOut = val))
             .widget(
-                new TextWidget().setStringSupplier(() -> "AMP/t IN/OUT: " + numberFormat.format(clientAmps))
+                new TextWidget()
+                    .setStringSupplier(
+                        () -> StatCollector
+                            .translateToLocalFormatted("BW.gui.text.lesu.amp_io", numberFormat.format(clientAmps)))
                     .setTextAlignment(Alignment.CenterLeft)
                     .setDefaultColor(this.COLOR_TEXT_WHITE.get()))
             .widget(
