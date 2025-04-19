@@ -15,6 +15,7 @@ import static gregtech.api.util.GTUtility.validMTEList;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Optional;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
@@ -347,9 +348,12 @@ public class MTEElementalDuplicator extends GTPPMultiBlockBase<MTEElementalDupli
     }
 
     @Override
-    public ArrayList<ItemStack> getStoredInputs() {
-        ArrayList<ItemStack> tItems = super.getStoredInputs();
+    public ArrayList<ItemStack> getStoredInputsForColor(Optional<Byte> color) {
+        ArrayList<ItemStack> tItems = super.getStoredInputsForColor(Optional.empty());
         for (MTEHatchElementalDataOrbHolder tHatch : validMTEList(mReplicatorDataOrbHatches)) {
+            byte busColor = tHatch.getBaseMetaTileEntity()
+                .getColorization();
+            if (color.isPresent() && busColor != -1 && busColor != color.get()) continue;
             tItems.add(tHatch.getOrbByCircuit());
         }
         tItems.removeAll(Collections.singleton(null));
