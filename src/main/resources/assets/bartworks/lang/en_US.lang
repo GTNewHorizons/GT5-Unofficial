@@ -278,3 +278,7 @@ tooltip.cal.imprintedWith=Imprinted with:
 chat.cal.mode.0=Circuit Assembly Line Mode
 chat.cal.mode.1=Circuit Assembler Mode
 #Liquids
+
+# gui
+BW.gui.text.radio_hatch.tooltip.radiation_shutter=Radiation Shutter
+
