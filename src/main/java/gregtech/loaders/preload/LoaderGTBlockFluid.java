@@ -31,22 +31,9 @@ import cpw.mods.fml.common.event.FMLInterModComms;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
-import gregtech.api.enums.Dyes;
-import gregtech.api.enums.GTValues;
-import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
-import gregtech.api.enums.MaterialsKevlar;
-import gregtech.api.enums.MaterialsUEVplus;
-import gregtech.api.enums.Mods;
-import gregtech.api.enums.OrePrefixes;
-import gregtech.api.enums.SubTag;
-import gregtech.api.enums.TierEU;
+import gregtech.api.enums.*;
 import gregtech.api.fluid.GTFluidFactory;
-import gregtech.api.items.BlockLongDistancePipe;
-import gregtech.api.items.GTGenericItem;
-import gregtech.api.items.ItemBreederCell;
-import gregtech.api.items.ItemCoolantCellIC;
-import gregtech.api.items.ItemRadioactiveCellIC;
+import gregtech.api.items.*;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.metatileentity.BaseMetaTileEntity;
 import gregtech.api.util.GTLog;
@@ -171,6 +158,7 @@ public class LoaderGTBlockFluid implements Runnable {
         new MetaGeneratedTool01();
         new ItemFluidDisplay();
         new ItemWirelessHeadphones();
+        new CircuitComponentFakeItem();
 
         // Tiered recipe materials actually appear to be set in MTEBasicMachineWithRecipe, making these
         // unused
