@@ -281,4 +281,4 @@ chat.cal.mode.1=Circuit Assembler Mode
 
 # gui
 BW.gui.text.radio_hatch.tooltip.radiation_shutter=Radiation Shutter
-
+BW.gui.text.radio_hatch.tooltip.radiation_shutter_control=Radiation Shutter Control

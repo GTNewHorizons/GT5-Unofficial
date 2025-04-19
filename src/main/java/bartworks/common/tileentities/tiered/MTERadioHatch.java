@@ -439,7 +439,8 @@ public class MTERadioHatch extends MTEHatch implements RecipeMapWorkable, IAddGr
         builder.setGuiTint(this.getGUIColorization());
 
         builder.widget(
-            new TextWidget("Radiation Shutter Control").setDefaultColor(this.COLOR_TITLE.get())
+            new TextWidget(StatCollector.translateToLocal("BW.gui.text.radio_hatch.tooltip.radiation_shutter_control"))
+                .setDefaultColor(this.COLOR_TITLE.get())
                 .setPos(10, 9))
             .widget(
                 new DrawableWidget().setDrawable(BWUITextures.PICTURE_RADIATION_SHUTTER_FRAME)
