@@ -2,6 +2,8 @@ package gregtech.common.gui.mui1.cover;
 
 import java.util.Collections;
 
+import net.minecraft.util.StatCollector;
+
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
@@ -39,13 +41,13 @@ public class PumpUIFactory extends CoverLegacyDataUIFactory {
                         0,
                         CoverDataFollowerToggleButtonWidget.ofDisableable(),
                         widget -> widget.setStaticTexture(GTUITextures.OVERLAY_BUTTON_EXPORT)
-                            .addTooltip(GTUtility.trans("006", "Export"))
+                            .addTooltip(StatCollector.translateToLocal("gt.interact.desc.o"))
                             .setPos(spaceX * 0, spaceY * 0))
                     .addToggleButton(
                         1,
                         CoverDataFollowerToggleButtonWidget.ofDisableable(),
                         widget -> widget.setStaticTexture(GTUITextures.OVERLAY_BUTTON_IMPORT)
-                            .addTooltip(GTUtility.trans("007", "Import"))
+                            .addTooltip(StatCollector.translateToLocal("gt.interact.desc.i"))
                             .setPos(spaceX * 1, spaceY * 0))
                     .addToggleButton(
                         2,

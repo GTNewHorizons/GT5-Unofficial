@@ -897,8 +897,8 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
                 mAllowInputFromOutputSide = !mAllowInputFromOutputSide;
                 GTUtility.sendChatToPlayer(
                     aPlayer,
-                    mAllowInputFromOutputSide ? GTUtility.trans("095", "Input from Output Side allowed")
-                        : GTUtility.trans("096", "Input from Output Side forbidden"));
+                    mAllowInputFromOutputSide ? StatCollector.translateToLocal("gt.interact.desc.i2o_on")
+                        : StatCollector.translateToLocal("gt.interact.desc.i2o_off"));
             }
         }
     }
