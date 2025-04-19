@@ -1041,6 +1041,18 @@ public class MaterialsInit1 {
             Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.HUMANUS, 2))).setHasCorrespondingGas(true)
             .setGasTemperature(12406);
 
+        Materials.ComplexityCatalyst = new MaterialBuilder(897, TextureSet.SET_DULL, "Complexity Catalyst")
+            .setRGB(0x8b93a9)
+            .addFluid()
+            .addCell()
+            .constructMaterial();
+
+        Materials.EntropicCatalyst = new MaterialBuilder(899, TextureSet.SET_DULL, "Entropic Catalyst")
+            .setRGB(0xa99da5)
+            .addFluid()
+            .addCell()
+            .constructMaterial();
+
         // spotless:on
     }
 }
