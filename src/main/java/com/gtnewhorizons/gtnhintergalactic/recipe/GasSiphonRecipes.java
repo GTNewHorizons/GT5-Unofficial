@@ -6,7 +6,6 @@ import java.util.Map;
 import net.minecraftforge.fluids.FluidStack;
 
 import bartworks.system.material.WerkstoffLoader;
-import cpw.mods.fml.common.Loader;
 import gregtech.api.enums.Materials;
 
 /**
@@ -39,19 +38,16 @@ public class GasSiphonRecipes {
         // T5 (-> 0.5 to 2A of LuV)
         Map<Integer, FluidStack> uranusRecipes = new HashMap<>();
         uranusRecipes.put(1, Materials.Deuterium.getGas(5000));
+        uranusRecipes.put(2, WerkstoffLoader.Neon.getFluidOrGas(450));
         uranusRecipes.put(3, Materials.Argon.getGas(250));
+        uranusRecipes.put(4, WerkstoffLoader.Krypton.getFluidOrGas(100));
 
         // T6 (-> 0.5 to 2A of ZPM)
         Map<Integer, FluidStack> neptuneRecipes = new HashMap<>();
         neptuneRecipes.put(1, Materials.Tritium.getGas(3000));
         neptuneRecipes.put(2, Materials.Helium_3.getGas(500));
         neptuneRecipes.put(3, Materials.Ammonia.getGas(400));
-
-        if (Loader.isModLoaded("bartworks")) {
-            uranusRecipes.put(2, WerkstoffLoader.Neon.getFluidOrGas(450));
-            uranusRecipes.put(4, WerkstoffLoader.Krypton.getFluidOrGas(100));
-            neptuneRecipes.put(4, WerkstoffLoader.Xenon.getFluidOrGas(350));
-        }
+        neptuneRecipes.put(4, WerkstoffLoader.Xenon.getFluidOrGas(350));
 
         RECIPES.put("planet.jupiter", jupiterRecipes);
         RECIPES.put("planet.saturn", saturnRecipes);

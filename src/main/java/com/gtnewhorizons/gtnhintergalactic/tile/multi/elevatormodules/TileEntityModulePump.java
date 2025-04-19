@@ -59,31 +59,31 @@ public abstract class TileEntityModulePump extends TileEntityModuleBase {
 
     /** Name of the planet type setting */
     private static final INameFunction<TileEntityModulePump> PLANET_TYPE_SETTING_NAME = (base,
-            p) -> GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.pump.cfgi.0") + " "
-                    + (p.hatchId() / 2 + 1); // Planet Type
+        p) -> GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.pump.cfgi.0") + " "
+            + (p.hatchId() / 2 + 1); // Planet Type
     /** Status of the planet type setting */
     private static final IStatusFunction<TileEntityModulePump> PLANET_TYPE_STATUS = (base, p) -> LedStatus
-            .fromLimitsInclusiveOuterBoundary(p.get(), 1, 0, 100, 100);
+        .fromLimitsInclusiveOuterBoundary(p.get(), 1, 0, 100, 100);
     /** Name of the gas type setting */
     private static final INameFunction<TileEntityModulePump> GAS_TYPE_SETTING_NAME = (base,
-            p) -> GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.pump.cfgi.1") + " "
-                    + (p.hatchId() / 2 + 1); // Gas Type
+        p) -> GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.pump.cfgi.1") + " "
+            + (p.hatchId() / 2 + 1); // Gas Type
     /** Status of the gas type setting */
     private static final IStatusFunction<TileEntityModulePump> GAS_TYPE_STATUS = (base, p) -> LedStatus
-            .fromLimitsInclusiveOuterBoundary(p.get(), 1, 0, 100, 100);
+        .fromLimitsInclusiveOuterBoundary(p.get(), 1, 0, 100, 100);
     /** Name of the parallel setting */
     private static final INameFunction<TileEntityModulePump> PARALLEL_SETTING_NAME = (base,
-            p) -> GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.pump.cfgi.2") + " "
-                    + (p.hatchId() / 2 + 1); // Parallels
+        p) -> GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.pump.cfgi.2") + " "
+            + (p.hatchId() / 2 + 1); // Parallels
     /** Status of the parallel setting */
     private static final IStatusFunction<TileEntityModulePump> PARALLEL_STATUS = (base, p) -> LedStatus
-            .fromLimitsInclusiveOuterBoundary(p.get(), 0, 1, 100, base.getParallels());
+        .fromLimitsInclusiveOuterBoundary(p.get(), 0, 1, 100, base.getParallels());
     /** Name of the batch setting */
     private static final INameFunction<TileEntityModulePump> BATCH_SETTING_NAME = (base, p) -> GCCoreUtil
-            .translate("gt.blockmachines.multimachine.project.ig.pump.cfgi.3"); // Batch size
+        .translate("gt.blockmachines.multimachine.project.ig.pump.cfgi.3"); // Batch size
     /** Status of the batch setting */
     private static final IStatusFunction<TileEntityModulePump> BATCH_STATUS = (base, p) -> LedStatus
-            .fromLimitsInclusiveOuterBoundary(p.get(), 1, 0, 32, 128);
+        .fromLimitsInclusiveOuterBoundary(p.get(), 1, 0, 32, 128);
 
     /** Flag if this machine has an ME output hatch, will be updated in the structure check */
     protected boolean hasMeOutputHatch = false;
@@ -99,7 +99,7 @@ public abstract class TileEntityModulePump extends TileEntityModuleBase {
      * @param tMinMotorTier Minimum needed motor tier
      */
     public TileEntityModulePump(int aID, String aName, String aNameRegional, int tTier, int tModuleTier,
-            int tMinMotorTier) {
+        int tMinMotorTier) {
         super(aID, aName, aNameRegional, tTier, tModuleTier, tMinMotorTier);
     }
 
@@ -124,7 +124,7 @@ public abstract class TileEntityModulePump extends TileEntityModuleBase {
     public @NotNull CheckRecipeResult checkProcessing_EM() {
         if (ENERGY_CONSUMPTION * getParallelRecipes() * getParallels() > getEUVar()) {
             return CheckRecipeResultRegistry
-                    .insufficientPower(ENERGY_CONSUMPTION * getParallelRecipes() * getParallels());
+                .insufficientPower(ENERGY_CONSUMPTION * getParallelRecipes() * getParallels());
         }
 
         ArrayList<FluidStack> outputs = new ArrayList<>();
@@ -133,16 +133,20 @@ public abstract class TileEntityModulePump extends TileEntityModuleBase {
         int maxBatchSize = (int) Math.min(Math.max(batchSetting.get(), 1.0D), 128.0D);
         for (int i = 0; i < getParallelRecipes(); i++) {
             FluidStack fluid = SpacePumpingRecipes.RECIPES
-                    .get(Pair.of((int) planetTypeSettings[i].get(), (int) gasTypeSettings[i].get()));
+                .get(Pair.of((int) planetTypeSettings[i].get(), (int) gasTypeSettings[i].get()));
             if (fluid != null) {
                 int batchSize = (int) Math.min(Math.max(batchSetting.get(), 1.0D), 128.0D);
                 MTEHatchOutput targetOutput = null;
                 if (!hasMeOutputHatch && !eSafeVoid) {
                     for (MTEHatchOutput output : mOutputHatches) {
                         if (output.mFluid != null && output.mFluid.getFluid() != null
-                                && output.getLockedFluidName() != null
-                                && output.getLockedFluidName().equals(fluid.getFluid().getName())
-                                && output.mFluid.getFluid().equals(fluid.getFluid())) {
+                            && output.getLockedFluidName() != null
+                            && output.getLockedFluidName()
+                                .equals(
+                                    fluid.getFluid()
+                                        .getName())
+                            && output.mFluid.getFluid()
+                                .equals(fluid.getFluid())) {
                             targetOutput = output;
                             break;
                         }
@@ -224,13 +228,14 @@ public abstract class TileEntityModulePump extends TileEntityModuleBase {
         parallelSettings = new Parameters.Group.ParameterIn[parallels];
         for (int i = 0; i < getParallelRecipes(); i++) {
             planetTypeSettings[i] = parametrization.getGroup(i * 2, false)
-                    .makeInParameter(0, 1, PLANET_TYPE_SETTING_NAME, PLANET_TYPE_STATUS);
+                .makeInParameter(0, 1, PLANET_TYPE_SETTING_NAME, PLANET_TYPE_STATUS);
             gasTypeSettings[i] = parametrization.getGroup(i * 2, false)
-                    .makeInParameter(1, 1, GAS_TYPE_SETTING_NAME, GAS_TYPE_STATUS);
+                .makeInParameter(1, 1, GAS_TYPE_SETTING_NAME, GAS_TYPE_STATUS);
             parallelSettings[i] = parametrization.getGroup(i * 2 + 1, false)
-                    .makeInParameter(0, getParallels(), PARALLEL_SETTING_NAME, PARALLEL_STATUS);
+                .makeInParameter(0, getParallels(), PARALLEL_SETTING_NAME, PARALLEL_STATUS);
         }
-        batchSetting = parametrization.getGroup(9, false).makeInParameter(1, 1, BATCH_SETTING_NAME, BATCH_STATUS);
+        batchSetting = parametrization.getGroup(9, false)
+            .makeInParameter(1, 1, BATCH_SETTING_NAME, BATCH_STATUS);
     }
 
     /**
@@ -244,8 +249,9 @@ public abstract class TileEntityModulePump extends TileEntityModuleBase {
         super.drawTexts(screenElements, inventorySlot);
 
         screenElements.widget(
-                new TextWidget(StatCollector.translateToLocal("gt.blockmachines.multimachine.ig.elevator.gui.config"))
-                        .setDefaultColor(COLOR_TEXT_WHITE.get()).setEnabled(widget -> mMachine));
+            new TextWidget(StatCollector.translateToLocal("gt.blockmachines.multimachine.ig.elevator.gui.config"))
+                .setDefaultColor(COLOR_TEXT_WHITE.get())
+                .setEnabled(widget -> mMachine));
 
         for (int i = 0; i < getParallelRecipes(); i++) {
             final int fluidIndex = i;
@@ -255,22 +261,24 @@ public abstract class TileEntityModulePump extends TileEntityModuleBase {
                     return " - " + fluidName;
                 }
                 return "";
-            }).setSynced(false).setDefaultColor(COLOR_TEXT_WHITE.get())
-                    .setEnabled(widget -> mMachine && getPumpedFluid(fluidIndex) != null))
-                    .widget(
-                            new FakeSyncWidget.IntegerSyncer(
-                                    () -> (int) planetTypeSettings[fluidIndex].get(),
-                                    val -> parametrization.trySetParameters(
-                                            planetTypeSettings[fluidIndex].id % 10,
-                                            planetTypeSettings[fluidIndex].id / 10,
-                                            planetTypeSettings[fluidIndex].get())))
-                    .widget(
-                            new FakeSyncWidget.IntegerSyncer(
-                                    () -> (int) planetTypeSettings[fluidIndex].get(),
-                                    val -> parametrization.trySetParameters(
-                                            gasTypeSettings[fluidIndex].id % 10,
-                                            gasTypeSettings[fluidIndex].id / 10,
-                                            gasTypeSettings[fluidIndex].get())));
+            })
+                .setSynced(false)
+                .setDefaultColor(COLOR_TEXT_WHITE.get())
+                .setEnabled(widget -> mMachine && getPumpedFluid(fluidIndex) != null))
+                .widget(
+                    new FakeSyncWidget.IntegerSyncer(
+                        () -> (int) planetTypeSettings[fluidIndex].get(),
+                        val -> parametrization.trySetParameters(
+                            planetTypeSettings[fluidIndex].id % 10,
+                            planetTypeSettings[fluidIndex].id / 10,
+                            planetTypeSettings[fluidIndex].get())))
+                .widget(
+                    new FakeSyncWidget.IntegerSyncer(
+                        () -> (int) planetTypeSettings[fluidIndex].get(),
+                        val -> parametrization.trySetParameters(
+                            gasTypeSettings[fluidIndex].id % 10,
+                            gasTypeSettings[fluidIndex].id / 10,
+                            gasTypeSettings[fluidIndex].get())));
         }
     }
 
@@ -290,16 +298,15 @@ public abstract class TileEntityModulePump extends TileEntityModuleBase {
      */
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
-            int colorIndex, boolean aActive, boolean aRedstone) {
+        int colorIndex, boolean aActive, boolean aRedstone) {
         if (side == facing) {
             return new ITexture[] {
-                    Textures.BlockIcons.getCasingTextureForId(TileEntitySpaceElevator.CASING_INDEX_BASE),
-                    new TTRenderedExtendedFacingTexture(
-                            aActive ? TTMultiblockBase.ScreenON : TTMultiblockBase.ScreenOFF) };
+                Textures.BlockIcons.getCasingTextureForId(TileEntitySpaceElevator.CASING_INDEX_BASE),
+                new TTRenderedExtendedFacingTexture(aActive ? TTMultiblockBase.ScreenON : TTMultiblockBase.ScreenOFF) };
         } else if (facing.getRotation(ForgeDirection.UP) == side || facing.getRotation(ForgeDirection.DOWN) == side) {
             return new ITexture[] {
-                    Textures.BlockIcons.getCasingTextureForId(TileEntitySpaceElevator.CASING_INDEX_BASE),
-                    new TTRenderedExtendedFacingTexture(engraving) };
+                Textures.BlockIcons.getCasingTextureForId(TileEntitySpaceElevator.CASING_INDEX_BASE),
+                new TTRenderedExtendedFacingTexture(engraving) };
         }
         return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(TileEntitySpaceElevator.CASING_INDEX_BASE) };
     }
@@ -322,7 +329,7 @@ public abstract class TileEntityModulePump extends TileEntityModuleBase {
             return null;
         }
         FluidStack fluid = SpacePumpingRecipes.RECIPES
-                .get(Pair.of((int) planetTypeSettings[index].get(), (int) gasTypeSettings[index].get()));
+            .get(Pair.of((int) planetTypeSettings[index].get(), (int) gasTypeSettings[index].get()));
         if (fluid == null) {
             return null;
         }
@@ -400,20 +407,20 @@ public abstract class TileEntityModulePump extends TileEntityModuleBase {
         protected MultiblockTooltipBuilder createTooltip() {
             final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
             tt.addMachineType(GCCoreUtil.translate("gt.blockmachines.module.name"))
-                    .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.pump.desc0"))
-                    .addInfo(
-                            EnumChatFormatting.LIGHT_PURPLE.toString() + EnumChatFormatting.BOLD
-                                    + GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.pump.t1.desc1"))
-                    .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.desc2"))
-                    .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.pump.desc3"))
-                    .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.pump.desc4"))
+                .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.pump.desc0"))
+                .addInfo(
+                    EnumChatFormatting.LIGHT_PURPLE.toString() + EnumChatFormatting.BOLD
+                        + GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.pump.t1.desc1"))
+                .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.desc2"))
+                .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.pump.desc3"))
+                .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.pump.desc4"))
 
-                    .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.pump.t1.desc5"))
-                    .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.motorT2"))
-                    .beginStructureBlock(1, 5, 2, false)
-                    .addCasingInfoRange(GCCoreUtil.translate("gt.blockcasings.ig.0.name"), 0, 9, false)
-                    .addOutputHatch(GCCoreUtil.translate("ig.elevator.structure.AnyBaseCasingWith1Dot"), 1)
-                    .toolTipFinisher();
+                .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.pump.t1.desc5"))
+                .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.motorT2"))
+                .beginStructureBlock(1, 5, 2, false)
+                .addCasingInfoRange(GCCoreUtil.translate("gt.blockcasings.ig.0.name"), 0, 9, false)
+                .addOutputHatch(GCCoreUtil.translate("ig.elevator.structure.AnyBaseCasingWith1Dot"), 1)
+                .toolTipFinisher();
             return tt;
         }
     }
@@ -489,21 +496,21 @@ public abstract class TileEntityModulePump extends TileEntityModuleBase {
         protected MultiblockTooltipBuilder createTooltip() {
             final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
             tt.addMachineType(GCCoreUtil.translate("gt.blockmachines.module.name"))
-                    .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.pump.desc0"))
-                    .addInfo(
-                            EnumChatFormatting.LIGHT_PURPLE.toString() + EnumChatFormatting.BOLD
-                                    + GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.pump.t2.desc1"))
-                    .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.desc2"))
-                    .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.pump.desc3"))
+                .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.pump.desc0"))
+                .addInfo(
+                    EnumChatFormatting.LIGHT_PURPLE.toString() + EnumChatFormatting.BOLD
+                        + GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.pump.t2.desc1"))
+                .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.desc2"))
+                .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.pump.desc3"))
 
-                    .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.pump.desc4"))
-                    .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.pump.t2.desc5"))
-                    .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.pump.t2.desc6"))
-                    .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.motorT3"))
-                    .beginStructureBlock(1, 5, 2, false)
-                    .addCasingInfoRange(GCCoreUtil.translate("gt.blockcasings.ig.0.name"), 0, 9, false)
-                    .addOutputHatch(GCCoreUtil.translate("ig.elevator.structure.AnyBaseCasingWith1Dot"), 1)
-                    .toolTipFinisher();
+                .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.pump.desc4"))
+                .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.pump.t2.desc5"))
+                .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.pump.t2.desc6"))
+                .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.motorT3"))
+                .beginStructureBlock(1, 5, 2, false)
+                .addCasingInfoRange(GCCoreUtil.translate("gt.blockcasings.ig.0.name"), 0, 9, false)
+                .addOutputHatch(GCCoreUtil.translate("ig.elevator.structure.AnyBaseCasingWith1Dot"), 1)
+                .toolTipFinisher();
             return tt;
         }
     }
@@ -579,21 +586,21 @@ public abstract class TileEntityModulePump extends TileEntityModuleBase {
         protected MultiblockTooltipBuilder createTooltip() {
             final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
             tt.addMachineType(GCCoreUtil.translate("gt.blockmachines.module.name"))
-                    .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.pump.desc0"))
-                    .addInfo(
-                            EnumChatFormatting.LIGHT_PURPLE.toString() + EnumChatFormatting.BOLD
-                                    + GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.pump.t3.desc1"))
-                    .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.desc2"))
-                    .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.pump.desc3"))
+                .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.pump.desc0"))
+                .addInfo(
+                    EnumChatFormatting.LIGHT_PURPLE.toString() + EnumChatFormatting.BOLD
+                        + GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.pump.t3.desc1"))
+                .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.desc2"))
+                .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.pump.desc3"))
 
-                    .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.pump.desc4"))
-                    .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.pump.t3.desc5"))
-                    .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.pump.t2.desc6"))
-                    .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.motorT4"))
-                    .beginStructureBlock(1, 5, 2, false)
-                    .addCasingInfoRange(GCCoreUtil.translate("gt.blockcasings.ig.0.name"), 0, 9, false)
-                    .addOutputHatch(GCCoreUtil.translate("ig.elevator.structure.AnyBaseCasingWith1Dot"), 1)
-                    .toolTipFinisher();
+                .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.pump.desc4"))
+                .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.pump.t3.desc5"))
+                .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.pump.t2.desc6"))
+                .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.motorT4"))
+                .beginStructureBlock(1, 5, 2, false)
+                .addCasingInfoRange(GCCoreUtil.translate("gt.blockcasings.ig.0.name"), 0, 9, false)
+                .addOutputHatch(GCCoreUtil.translate("ig.elevator.structure.AnyBaseCasingWith1Dot"), 1)
+                .toolTipFinisher();
             return tt;
         }
     }

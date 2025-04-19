@@ -50,7 +50,7 @@ public class ItemBlockSpaceElevatorCable extends ItemBlock {
     public void addInformation(ItemStack stack, EntityPlayer player, List tooltip, boolean f3_h) {
         tooltip.add(GCCoreUtil.translate("gt.blockcasings.ig.cable.desc0"));
         tooltip.add(
-                EnumChatFormatting.LIGHT_PURPLE.toString() + EnumChatFormatting.BOLD
-                        + GCCoreUtil.translate("gt.blockcasings.ig.cable.desc1"));
+            EnumChatFormatting.LIGHT_PURPLE.toString() + EnumChatFormatting.BOLD
+                + GCCoreUtil.translate("gt.blockcasings.ig.cable.desc1"));
     }
 }

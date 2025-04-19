@@ -19,7 +19,7 @@ public class ItemCasingDysonSwarm extends ItemBlock {
     @Override
     public String getUnlocalizedName(ItemStack stack) {
         return "tile.DysonSwarm"
-                + BlockCasingDysonSwarm.names[stack.getItemDamage() % BlockCasingDysonSwarm.names.length];
+            + BlockCasingDysonSwarm.names[stack.getItemDamage() % BlockCasingDysonSwarm.names.length];
     }
 
     @SuppressWarnings({ "rawtypes", "unchecked" })

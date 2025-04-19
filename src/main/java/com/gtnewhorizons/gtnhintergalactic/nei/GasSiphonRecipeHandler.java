@@ -58,11 +58,13 @@ public class GasSiphonRecipeHandler extends TemplateRecipeHandler {
      * Initialize the handler for gas siphons recipes
      */
     public GasSiphonRecipeHandler() {
-        modularWindow = ModularWindow.builder(170, 82).setBackground(GTUITextures.BACKGROUND_NEI_SINGLE_RECIPE)
-                .widget(
-                        new DrawableWidget().setDrawable(IG_UITextures.PICTURE_ELEVATOR_LOGO).setSize(17, 17)
-                                .setPos(new Pos2d(147, 52)))
-                .build();
+        modularWindow = ModularWindow.builder(170, 82)
+            .setBackground(GTUITextures.BACKGROUND_NEI_SINGLE_RECIPE)
+            .widget(
+                new DrawableWidget().setDrawable(IG_UITextures.PICTURE_ELEVATOR_LOGO)
+                    .setSize(17, 17)
+                    .setPos(new Pos2d(147, 52)))
+            .build();
         UIInfos.initializeWindow(Minecraft.getMinecraft().thePlayer, modularWindow);
     }
 
@@ -93,9 +95,9 @@ public class GasSiphonRecipeHandler extends TemplateRecipeHandler {
     public void loadTransferRects() {
         int stringLength = GuiDraw.getStringWidth(I18n.format(SEE_ALL));
         transferRects.add(
-                new RecipeTransferRect(
-                        new Rectangle(getGuiWidth() - stringLength - 3, 10 + 16, stringLength, 9),
-                        getOutputId()));
+            new RecipeTransferRect(
+                new Rectangle(getGuiWidth() - stringLength - 3, 10 + 16, stringLength, 9),
+                getOutputId()));
     }
 
     /**
@@ -117,13 +119,15 @@ public class GasSiphonRecipeHandler extends TemplateRecipeHandler {
     public void loadCraftingRecipes(String outputId, Object... results) {
         if (outputId.equals(getOutputId())) {
             for (Map.Entry<String, Map<Integer, FluidStack>> entry : GasSiphonRecipes.RECIPES.entrySet()) {
-                for (Map.Entry<Integer, FluidStack> innerEntry : entry.getValue().entrySet()) {
+                for (Map.Entry<Integer, FluidStack> innerEntry : entry.getValue()
+                    .entrySet()) {
                     arecipes.add(
-                            new CachedSiphonRecipe(
-                                    entry.getKey(),
-                                    innerEntry.getKey(),
-                                    innerEntry.getValue().getFluid(),
-                                    innerEntry.getValue().amount));
+                        new CachedSiphonRecipe(
+                            entry.getKey(),
+                            innerEntry.getKey(),
+                            innerEntry.getValue()
+                                .getFluid(),
+                            innerEntry.getValue().amount));
                 }
             }
         } else {
@@ -179,14 +183,16 @@ public class GasSiphonRecipeHandler extends TemplateRecipeHandler {
         if (fluid == null) return;
 
         for (Map.Entry<String, Map<Integer, FluidStack>> entry : GasSiphonRecipes.RECIPES.entrySet()) {
-            for (Map.Entry<Integer, FluidStack> innerEntry : entry.getValue().entrySet()) {
-                if (innerEntry.getValue().isFluidEqual(new FluidStack(fluid, 0))) {
+            for (Map.Entry<Integer, FluidStack> innerEntry : entry.getValue()
+                .entrySet()) {
+                if (innerEntry.getValue()
+                    .isFluidEqual(new FluidStack(fluid, 0))) {
                     arecipes.add(
-                            new CachedSiphonRecipe(
-                                    entry.getKey(),
-                                    innerEntry.getKey(),
-                                    fluid,
-                                    innerEntry.getValue().amount));
+                        new CachedSiphonRecipe(
+                            entry.getKey(),
+                            innerEntry.getKey(),
+                            fluid,
+                            innerEntry.getValue().amount));
                 }
             }
         }
@@ -199,19 +205,15 @@ public class GasSiphonRecipeHandler extends TemplateRecipeHandler {
      */
     @Override
     public void drawExtras(int recipeIndex) {
-        GuiDraw.drawStringC(
-                I18n.format("ig.nei.siphon.planet") + ":",
-                CATEGORY_TITLE_X,
-                PLANET_TYPE_Y,
-                TEXT_COLOR,
-                false);
+        GuiDraw
+            .drawStringC(I18n.format("ig.nei.siphon.planet") + ":", CATEGORY_TITLE_X, PLANET_TYPE_Y, TEXT_COLOR, false);
         GuiDraw.drawStringC(I18n.format("ig.nei.siphon.depth") + ":", CATEGORY_TITLE_X, GAS_TYPE_Y, TEXT_COLOR, false);
         GuiDraw.drawStringC(
-                I18n.format("ig.nei.elevatorpump.amount") + ":",
-                CATEGORY_TITLE_X,
-                OUT_AMOUNT_Y,
-                TEXT_COLOR,
-                false);
+            I18n.format("ig.nei.elevatorpump.amount") + ":",
+            CATEGORY_TITLE_X,
+            OUT_AMOUNT_Y,
+            TEXT_COLOR,
+            false);
 
         CachedSiphonRecipe recipe = (CachedSiphonRecipe) this.arecipes.get(recipeIndex);
         GuiDraw.drawStringC(GCCoreUtil.translate(recipe.planet), CATEGORY_VALUE_X, PLANET_TYPE_Y, TEXT_COLOR, false);
@@ -219,11 +221,11 @@ public class GasSiphonRecipeHandler extends TemplateRecipeHandler {
         GuiDraw.drawStringC(GTUtility.formatNumbers(recipe.amount), CATEGORY_VALUE_X, OUT_AMOUNT_Y, TEXT_COLOR, false);
 
         GuiDraw.drawStringR(
-                EnumChatFormatting.BOLD + I18n.format(SEE_ALL),
-                getGuiWidth() - 3,
-                OUT_AMOUNT_Y,
-                TEXT_COLOR,
-                false);
+            EnumChatFormatting.BOLD + I18n.format(SEE_ALL),
+            getGuiWidth() - 3,
+            OUT_AMOUNT_Y,
+            TEXT_COLOR,
+            false);
     }
 
     /**

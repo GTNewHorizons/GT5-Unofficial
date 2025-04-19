@@ -21,22 +21,22 @@ import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 @Mod(
-        modid = GTNHIntergalactic.MODID,
-        version = Tags.VERSION,
-        name = GTNHIntergalactic.MODNAME,
-        acceptedMinecraftVersions = "[1.7.10]",
-        dependencies = "required-after:GalacticraftCore@[3.0.36,);" + "required-after:GalacticraftMars;"
-                + "required-after:gregtech;"
-                + "required-after:gtnhlib@[0.5.21,);"
-                + "required-after:tectech;"
-                + "required-after:structurelib;"
-                + "after:GalaxySpace;"
-                + "after:bartworks;"
-                + "after:GoodGenerator;"
-                + "after:miscutils;"
-                + "after:dreamcraft;"
-                + "after:openmodularturrets;"
-                + "after:IronChest;")
+    modid = GTNHIntergalactic.MODID,
+    version = Tags.VERSION,
+    name = GTNHIntergalactic.MODNAME,
+    acceptedMinecraftVersions = "[1.7.10]",
+    dependencies = "required-after:GalacticraftCore@[3.0.36,);" + "required-after:GalacticraftMars;"
+        + "required-after:gregtech;"
+        + "required-after:gtnhlib@[0.5.21,);"
+        + "required-after:tectech;"
+        + "required-after:structurelib;"
+        + "after:GalaxySpace;"
+        + "after:bartworks;"
+        + "after:GoodGenerator;"
+        + "after:miscutils;"
+        + "after:dreamcraft;"
+        + "after:openmodularturrets;"
+        + "after:IronChest;")
 public class GTNHIntergalactic {
 
     static {
@@ -57,8 +57,8 @@ public class GTNHIntergalactic {
     public static CreativeTabs tab;
     /** Proxy used for loading */
     @SidedProxy(
-            clientSide = "com.gtnewhorizons.gtnhintergalactic.proxy.ClientProxy",
-            serverSide = "com.gtnewhorizons.gtnhintergalactic.proxy.CommonProxy")
+        clientSide = "com.gtnewhorizons.gtnhintergalactic.proxy.ClientProxy",
+        serverSide = "com.gtnewhorizons.gtnhintergalactic.proxy.CommonProxy")
     public static CommonProxy proxy;
 
     @Mod.EventHandler
@@ -97,13 +97,13 @@ public class GTNHIntergalactic {
             } else if (mapping.type == GameRegistry.Type.ITEM) {
                 switch (mapping.name) {
                     case "GalaxySpace:spaceelevatorparts" -> mapping
-                            .remap(Item.getItemFromBlock(IGBlocks.SpaceElevatorCasing));
+                        .remap(Item.getItemFromBlock(IGBlocks.SpaceElevatorCasing));
                     case "GalaxySpace:spaceelevatormotors" -> mapping
-                            .remap(Item.getItemFromBlock(IGBlocks.SpaceElevatorMotor));
+                        .remap(Item.getItemFromBlock(IGBlocks.SpaceElevatorMotor));
                     case "GalaxySpace:spaceelevatorcable" -> mapping
-                            .remap(Item.getItemFromBlock(IGBlocks.SpaceElevatorCable));
+                        .remap(Item.getItemFromBlock(IGBlocks.SpaceElevatorCable));
                     case "GalaxySpace:dysonswarmparts" -> mapping
-                            .remap(Item.getItemFromBlock(IGBlocks.DysonSwarmCasing));
+                        .remap(Item.getItemFromBlock(IGBlocks.DysonSwarmCasing));
                     case "GalaxySpace:machineframes" -> mapping.remap(Item.getItemFromBlock(IGBlocks.GasSiphonCasing));
                     case "GalaxySpace:item.SpaceElevatorParts" -> mapping.remap(IGItems.SpaceElevatorItems);
                     case "GalaxySpace:item.MiningDrone" -> mapping.remap(IGItems.MiningDrones);

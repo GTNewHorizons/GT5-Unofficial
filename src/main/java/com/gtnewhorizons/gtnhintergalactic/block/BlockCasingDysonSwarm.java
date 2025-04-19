@@ -18,8 +18,8 @@ public class BlockCasingDysonSwarm extends Block {
 
     private IIcon[][] textures;
     public static final String[] names = { "ReceiverCasing", "ReceiverDish", "DeploymentUnitCasing",
-            "DeploymentUnitCore", "DeploymentUnitMagnet", "ControlCasing", "ControlPrimary", "ControlSecondary",
-            "ControlToroid", "Floor" };
+        "DeploymentUnitCore", "DeploymentUnitMagnet", "ControlCasing", "ControlPrimary", "ControlSecondary",
+        "ControlToroid", "Floor" };
 
     public BlockCasingDysonSwarm() {
         super(Material.iron);
@@ -33,7 +33,7 @@ public class BlockCasingDysonSwarm extends Block {
         textures = new IIcon[names.length][2];
         for (int i = 0; i < names.length; i++) {
             textures[i][0] = register
-                    .registerIcon(GTNHIntergalactic.ASSET_PREFIX + ":dysonSwarm/" + names[i] + "_Side");
+                .registerIcon(GTNHIntergalactic.ASSET_PREFIX + ":dysonSwarm/" + names[i] + "_Side");
             textures[i][1] = register.registerIcon(GTNHIntergalactic.ASSET_PREFIX + ":dysonSwarm/" + names[i]);
         }
     }
@@ -52,7 +52,7 @@ public class BlockCasingDysonSwarm extends Block {
 
     @Override
     public float getExplosionResistance(Entity entity, World world, int x, int y, int z, double explosionX,
-            double explosionY, double explosionZ) {
+        double explosionY, double explosionZ) {
         if (world.getBlockMetadata(x, y, z) == 9) {
             return 1500.0f;
         }

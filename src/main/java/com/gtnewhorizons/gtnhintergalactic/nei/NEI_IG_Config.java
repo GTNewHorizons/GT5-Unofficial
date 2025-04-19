@@ -26,14 +26,14 @@ public class NEI_IG_Config implements IConfigureNEI {
         API.registerUsageHandler(new GasSiphonRecipeHandler());
 
         for (ItemStack pump : Arrays.asList(
-                IGItems.SpaceElevatorModulePumpT1,
-                IGItems.SpaceElevatorModulePumpT2,
-                IGItems.SpaceElevatorModulePumpT3)) {
+            IGItems.SpaceElevatorModulePumpT1,
+            IGItems.SpaceElevatorModulePumpT2,
+            IGItems.SpaceElevatorModulePumpT3)) {
             API.addRecipeCatalyst(pump, "com.gtnewhorizons.gtnhintergalactic.nei.SpacePumpModuleRecipeHandler");
         }
         API.addRecipeCatalyst(
-                IGItems.PlanetaryGasSiphon,
-                "com.gtnewhorizons.gtnhintergalactic.nei.GasSiphonRecipeHandler");
+            IGItems.PlanetaryGasSiphon,
+            "com.gtnewhorizons.gtnhintergalactic.nei.GasSiphonRecipeHandler");
 
         executed = true;
     }
@@ -41,17 +41,25 @@ public class NEI_IG_Config implements IConfigureNEI {
     @SubscribeEvent
     public void registerHandlerInfo(NEIRegisterHandlerInfosEvent event) {
         event.registerHandlerInfo(
-                new HandlerInfo.Builder(
-                        "com.gtnewhorizons.gtnhintergalactic.nei.SpacePumpModuleRecipeHandler",
-                        GTNHIntergalactic.MODNAME,
-                        GTNHIntergalactic.MODID).setDisplayStack(IGItems.SpaceElevatorModulePumpT1).setShiftY(6)
-                                .setWidth(160).setHeight(90).setMaxRecipesPerPage(3).build());
+            new HandlerInfo.Builder(
+                "com.gtnewhorizons.gtnhintergalactic.nei.SpacePumpModuleRecipeHandler",
+                GTNHIntergalactic.MODNAME,
+                GTNHIntergalactic.MODID).setDisplayStack(IGItems.SpaceElevatorModulePumpT1)
+                    .setShiftY(6)
+                    .setWidth(160)
+                    .setHeight(90)
+                    .setMaxRecipesPerPage(3)
+                    .build());
         event.registerHandlerInfo(
-                new HandlerInfo.Builder(
-                        "com.gtnewhorizons.gtnhintergalactic.nei.GasSiphonRecipeHandler",
-                        GTNHIntergalactic.MODNAME,
-                        GTNHIntergalactic.MODID).setDisplayStack(IGItems.PlanetaryGasSiphon).setShiftY(6).setWidth(160)
-                                .setHeight(90).setMaxRecipesPerPage(3).build());
+            new HandlerInfo.Builder(
+                "com.gtnewhorizons.gtnhintergalactic.nei.GasSiphonRecipeHandler",
+                GTNHIntergalactic.MODNAME,
+                GTNHIntergalactic.MODID).setDisplayStack(IGItems.PlanetaryGasSiphon)
+                    .setShiftY(6)
+                    .setWidth(160)
+                    .setHeight(90)
+                    .setMaxRecipesPerPage(3)
+                    .build());
     }
 
     @Override

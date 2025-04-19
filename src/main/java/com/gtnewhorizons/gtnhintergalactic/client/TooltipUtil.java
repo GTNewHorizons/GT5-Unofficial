@@ -28,32 +28,32 @@ public class TooltipUtil {
      */
     public static void postInit() {
         Supplier<String> AUTHOR_GLOWREDMAN = chain(
-                translatedText("ig.structure.author"),
-                text(": "),
-                animatedText(
-                        "glowredman",
-                        1,
-                        300,
-                        DARK_BLUE,
-                        DARK_BLUE,
-                        DARK_BLUE,
-                        DARK_BLUE,
-                        DARK_BLUE,
-                        DARK_BLUE,
-                        DARK_BLUE,
-                        DARK_BLUE,
-                        DARK_BLUE,
-                        DARK_BLUE,
-                        DARK_BLUE,
-                        DARK_BLUE,
-                        DARK_BLUE,
-                        DARK_BLUE,
-                        DARK_BLUE,
-                        DARK_BLUE,
-                        DARK_BLUE,
-                        DARK_BLUE,
-                        DARK_BLUE,
-                        DARK_BLUE + OBFUSCATED));
+            translatedText("ig.structure.author"),
+            text(": "),
+            animatedText(
+                "glowredman",
+                1,
+                300,
+                DARK_BLUE,
+                DARK_BLUE,
+                DARK_BLUE,
+                DARK_BLUE,
+                DARK_BLUE,
+                DARK_BLUE,
+                DARK_BLUE,
+                DARK_BLUE,
+                DARK_BLUE,
+                DARK_BLUE,
+                DARK_BLUE,
+                DARK_BLUE,
+                DARK_BLUE,
+                DARK_BLUE,
+                DARK_BLUE,
+                DARK_BLUE,
+                DARK_BLUE,
+                DARK_BLUE,
+                DARK_BLUE,
+                DARK_BLUE + OBFUSCATED));
 
         addItemTooltip(IGItems.PlanetaryGasSiphon, AUTHOR_GLOWREDMAN);
         addItemTooltip(IGItems.DysonSwarmController, AUTHOR_GLOWREDMAN);

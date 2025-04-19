@@ -22,8 +22,8 @@ public class ItemMiningDrones extends Item {
 
     /** Names of the mining drones */
     private static final String[] NAMES = new String[] { "MiningDroneLV", "MiningDroneMV", "MiningDroneHV",
-            "MiningDroneEV", "MiningDroneIV", "MiningDroneLuV", "MiningDroneZPM", "MiningDroneUV", "MiningDroneUHV",
-            "MiningDroneUEV", "MiningDroneUIV", "MiningDroneUMV", "MiningDroneUXV", "MiningDroneMAX" };
+        "MiningDroneEV", "MiningDroneIV", "MiningDroneLuV", "MiningDroneZPM", "MiningDroneUV", "MiningDroneUHV",
+        "MiningDroneUEV", "MiningDroneUIV", "MiningDroneUMV", "MiningDroneUXV", "MiningDroneMAX" };
     /** Icons of the mining drones */
     private static final IIcon[] ICONS = new IIcon[NAMES.length];
 
