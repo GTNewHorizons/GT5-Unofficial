@@ -855,6 +855,10 @@ GT5U.gui.tooltip.redstone_circuit.toggle_output=Toggle EU Output
 GT5U.gui.tooltip.redstone_circuit.toggle_active=Toggle Active State
 GT5U.gui.tooltip.redstone_circuit.change=Change Redstone Circuit
 
+GT5U.gui.tooltip.redstone_receiver.analog=ANALOG Mode\nOnly use this mode with ONE transmitter in total,\nno logic involved
+GT5U.gui.tooltip.hatch.crafting_input_me.place_manual_items=Place manual items
+GT5U.gui.tooltip.hatch.crafting_input_me.export=Return all internally stored items back to AE
+
 GT5U.gui.title.unknown=Unknown
 
 # Note to translators: this translation entry is supposed to be a number indicating how many taunts you define here
