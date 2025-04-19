@@ -46,6 +46,7 @@ dependencies {
     api("com.github.GTNewHorizons:AE2FluidCraft-Rework:1.4.46-gtnh:dev")
     api('com.github.GTNewHorizons:Yamcl:0.7.0:dev')
     api("com.github.GTNewHorizons:Postea:1.0.13:dev")
+    api("com.github.GTNewHorizons:Galacticraft:3.3.5-GTNH:dev") { transitive = false }
 
     compileOnlyApi('com.github.GTNewHorizons:ThaumicTinkerer:2.11.8:dev')
     compileOnlyApi("com.github.GTNewHorizons:Mobs-Info:0.5.2-GTNH:dev")
@@ -72,7 +73,6 @@ dependencies {
     compileOnly('com.github.GTNewHorizons:VisualProspecting:1.4.2:dev') { transitive = false }
     compileOnly("com.github.GTNewHorizons:Galaxy-Space-GTNH:1.1.111-GTNH:dev") { transitive = false }
 
-    compileOnlyApi("com.github.GTNewHorizons:Galacticraft:3.3.5-GTNH:dev") { transitive = false }
     implementation("com.github.GTNewHorizons:TinkersConstruct:1.13.18-GTNH:dev")
 
     compileOnly("com.github.GTNewHorizons:Chisel:2.16.2-GTNH:dev") { transitive = false }
