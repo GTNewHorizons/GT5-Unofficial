@@ -4073,5 +4073,17 @@ gtpp.gui.text.stock=Stock
 gtpp.gui.text.active=Active
 gtpp.gui.text.in=In
 gtpp.gui.text.out=Out
+gtpp.gui.text.on=On
+gtpp.gui.text.off=Off
+gtpp.gui.text.time.week=%s Weeks,
+gtpp.gui.text.time.days=%s Days,
+gtpp.gui.text.time.hours=%s Hours,
+gtpp.gui.text.time.minutes=%s Minutes,
+gtpp.gui.text.time.seconds=%s Seconds
 
 gtpp.gui.text.power_sub_station.stored=Stored:
+gtpp.gui.text.power_sub_station.avg_in=Avg In: %s EU
+gtpp.gui.text.power_sub_station.avg_out=Avg Out: %s EU
+gtpp.gui.text.power_sub_station.power_loss=Powerloss: %s EU per tick
+gtpp.gui.text.power_sub_station.running_perfectly=Running perfectly
+gtpp.gui.text.power_sub_station.turn_on_with_mallet=Turn on with Mallet
