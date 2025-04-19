@@ -367,7 +367,7 @@ public abstract class CommonMetaTileEntity implements IMetaTileEntity {
             ItemStack stackInSlot = getStackInSlot(index);
             if (stackInSlot != null) {
                 return stackInSlot;
-            } ;
+            }
         }
         return null;
     }
