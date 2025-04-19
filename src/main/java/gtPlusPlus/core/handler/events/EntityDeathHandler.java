@@ -17,13 +17,14 @@ import com.kuba6000.mobsinfo.api.MobRecipe;
 
 import cpw.mods.fml.common.Optional;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import gregtech.api.enums.Mods;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
 
-@Optional.Interface(iface = "com.kuba6000.mobsinfo.api.IMobExtraInfoProvider", modid = "mobsinfo")
+@Optional.Interface(iface = "com.kuba6000.mobsinfo.api.IMobExtraInfoProvider", modid = Mods.Names.MOBS_INFO)
 public class EntityDeathHandler implements IMobExtraInfoProvider {
 
     private static final HashMap<Class<?>, ArrayList<Triple<ItemStack, Integer, Integer>>> mMobDropMap = new HashMap<>();
@@ -131,7 +132,7 @@ public class EntityDeathHandler implements IMobExtraInfoProvider {
         }
     }
 
-    @Optional.Method(modid = "mobsinfo")
+    @Optional.Method(modid = Mods.Names.MOBS_INFO)
     @Override
     public void provideExtraDropsInformation(@NotNull String entityString, @NotNull ArrayList<MobDrop> drops,
         @NotNull MobRecipe recipe) {
