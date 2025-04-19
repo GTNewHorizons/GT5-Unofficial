@@ -422,6 +422,10 @@ public class GTUITextures {
     public static final UITexture OVERLAY_BUTTON_X2 = UITexture.fullImage(GregTech.ID, "gui/overlay_button/x2");
     public static final UITexture OVERLAY_BUTTON_POWER_PANEL = UITexture
         .fullImage(GregTech.ID, "gui/overlay_button/power_panel");
+    public static final UITexture OVERLAY_BUTTON_LMA_ANIMATION_ON = UITexture
+        .fullImage(GregTech.ID, "gui/overlay_button/lma_animation_on");
+    public static final UITexture OVERLAY_BUTTON_LMA_ANIMATION_OFF = UITexture
+        .fullImage(GregTech.ID, "gui/overlay_button/lma_animation_off");
 
     public static final UITexture OVERLAY_BUTTON_LIQUIDMODE = UITexture
         .fullImage(GregTech.ID, "gui/overlay_button/LiquidMode");
