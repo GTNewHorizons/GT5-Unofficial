@@ -295,7 +295,7 @@ public class TileEntityBase extends TileEntity
     protected int[] mAverageEUInput = new int[11], mAverageEUOutput = new int[11];
     private final boolean[] mActiveEUInputs = new boolean[] { false, false, false, false, false, false };
     private final boolean[] mActiveEUOutputs = new boolean[] { false, false, false, false, false, false };
-    private final byte[] mSidedRedstone = new byte[] { 15, 15, 15, 15, 15, 15 };
+    private final byte[] mSidedRedstone = new byte[] { 0, 0, 0, 0, 0, 0 };
     private final int[] mTimeStatistics = new int[GregTechAPI.TICKS_FOR_LAG_AVERAGING];
     private boolean mHasEnoughEnergy = true;
     protected boolean mRunningThroughTick = false;
@@ -900,10 +900,6 @@ public class TileEntityBase extends TileEntity
             if (i != mAverageEUOutputIndex) rEU += mAverageEUOutput[i];
         }
         return rEU / (mAverageEUOutput.length - 1);
-    }
-
-    public boolean hasSidedRedstoneOutputBehavior() {
-        return false;
     }
 
     public String getOwnerName() {

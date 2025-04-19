@@ -487,13 +487,4 @@ public class MTEPollutionDetector extends MTETieredMachineBlock {
     public void onMachineBlockUpdate() {
         super.onMachineBlockUpdate();
     }
-
-    @Override
-    public boolean hasSidedRedstoneOutputBehavior() {
-        if (this.getCurrentChunkPollution() >= this.mRedstoneLevel) {
-            this.markDirty();
-            return true;
-        }
-        return false;
-    }
 }

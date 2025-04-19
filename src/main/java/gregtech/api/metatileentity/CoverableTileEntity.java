@@ -77,7 +77,7 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
         CoverRegistry.NO_COVER, CoverRegistry.NO_COVER, CoverRegistry.NO_COVER, CoverRegistry.NO_COVER };
     private byte validCoversMask;
 
-    protected byte[] mSidedRedstone = new byte[] { 15, 15, 15, 15, 15, 15 };
+    protected final byte[] mSidedRedstone = new byte[] { 0, 0, 0, 0, 0, 0 };
     protected boolean mRedstone = false;
     protected byte mStrongRedstone = 0;
 
@@ -115,10 +115,12 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
 
     protected void readCoverNBT(NBTTagCompound aNBT) {
         mRedstone = aNBT.getBoolean("mRedstone");
-        mSidedRedstone = aNBT.hasKey("mRedstoneSided") ? aNBT.getByteArray("mRedstoneSided")
-            : new byte[] { 15, 15, 15, 15, 15, 15 };
         mStrongRedstone = aNBT.getByte("mStrongRedstone");
 
+        if (aNBT.hasKey("mRedstoneSided")) {
+            byte[] readArray = aNBT.getByteArray("mRedstoneSided");
+            System.arraycopy(readArray, 0, mSidedRedstone, 0, Math.min(mSidedRedstone.length, readArray.length));
+        }
         applyCovers(readCoversNBT(aNBT, this));
     }
 
