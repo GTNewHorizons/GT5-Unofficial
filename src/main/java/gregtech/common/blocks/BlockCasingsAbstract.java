@@ -191,8 +191,4 @@ public abstract class BlockCasingsAbstract extends GTGenericBlock
             }
         }
     }
-
-    public static Supplier<String> channelTooltip(String channel, int value) {
-        return translatedText("GT5U.tooltip.channelvalue", Integer.toString(value), channel);
-    }
 }

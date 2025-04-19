@@ -58,6 +58,7 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
 import gregtech.api.util.ParallelHelper;
 import gregtech.api.util.recipe.SolarFactoryRecipeData;
+import gregtech.common.misc.GTStructureChannels;
 
 public class MTESolarFactory extends MTEExtendedPowerMultiBlockBase<MTESolarFactory>
     implements IConstructable, ISurvivalConstructable {
@@ -169,8 +170,7 @@ public class MTESolarFactory extends MTEExtendedPowerMultiBlockBase<MTESolarFact
         // P for Precise Electronic Unit Casing ^-^
         .addElement(
             'P',
-            withChannel(
-                "unit casing",
+            GTStructureChannels.PRASS_UNIT_CASING.use(
                 ofBlocksTiered(
                     (block, meta) -> block == Loaders.preciseUnitCasing ? meta : null,
                     ImmutableList.of(
@@ -413,6 +413,7 @@ public class MTESolarFactory extends MTEExtendedPowerMultiBlockBase<MTESolarFact
             .addOutputBus("Any Machine Casing")
             .addEnergyHatch("Any Machine Casing")
             .addMaintenanceHatch("Any Machine Casing")
+            .addSubChannelUsage(GTStructureChannels.PRASS_UNIT_CASING)
             .toolTipFinisher(GTValues.AuthorPureBluez);
         return tt;
     }

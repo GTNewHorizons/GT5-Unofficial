@@ -37,6 +37,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import goodgenerator.loader.Loaders;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.VoltageIndex;
+import gregtech.common.misc.GTStructureChannels;
 import tectech.thing.block.BlockGodforgeGlass;
 import tectech.thing.block.BlockQuantumGlass;
 
@@ -111,17 +112,22 @@ public class GlassTier {
             for (Pair<Block, Integer> glass : mainGlass) {
                 glassList.add(glass);
                 glassToTierAndIndex.put(glass, Pair.of(getGlassBlockTier(glass.getLeft(), glass.getRight()), ctr++));
+                GTStructureChannels.BOROGLASS
+                    .registerAsIndicator(new ItemStack(glass.getLeft(), 1, glass.getRight()), ctr);
             }
             for (Map.Entry<Pair<Integer, Integer>, Pair<Block, Integer>> entry : tierToGlass.entrySet()) {
                 if (entry.getKey()
                     .getRight() == 0) continue;
-                glassList.add(entry.getValue());
+                Pair<Block, Integer> glass = entry.getValue();
+                glassList.add(glass);
                 glassToTierAndIndex.put(
-                    entry.getValue(),
+                    glass,
                     Pair.of(
                         entry.getKey()
                             .getLeft(),
                         ctr++));
+                GTStructureChannels.BOROGLASS
+                    .registerAsIndicator(new ItemStack(glass.getLeft(), 1, glass.getRight()), ctr);
             }
             glassList.add(mainGlass.get(mainGlass.size() - 1));
         }
@@ -231,14 +237,10 @@ public class GlassTier {
 
             Integer tier = getGlassBlockTier(block, meta);
             if (tier == null) return;
-            int channelIdx = getGlassChannelValue(block, meta);
 
             event.toolTip.add(
                 StatCollector.translateToLocal("tooltip.glass_tier.0.name") + " "
                     + getColoredTierNameFromTier(tier.byteValue()));
-            event.toolTip
-                .add(StatCollector.translateToLocalFormatted("GT5U.tooltip.channelvalue", channelIdx, "glass"));
-
         }
     }
 }

@@ -62,6 +62,7 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTOreDictUnificator;
+import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.tileentities.generators.MTEDieselGenerator;
 import kekztech.common.blocks.BlockTFFTStorageField;
 
@@ -456,6 +457,12 @@ public class Loaders {
         GameRegistry.registerItem(huiCircuit, "huiCircuit", GoodGenerator.MOD_ID);
         GameRegistry.registerItem(circuitWrap, "circuitWrap", GoodGenerator.MOD_ID);
         GameRegistry.registerTileEntity(TileAntimatter.class, "AntimatterRender");
+
+        GTStructureChannels.PRASS_UNIT_CASING.registerAsIndicator(new ItemStack(impreciseUnitCasing), 1);
+        for (int i = 1; i < 6; i++) {
+            GTStructureChannels.PRASS_UNIT_CASING
+                .registerAsIndicator(new ItemStack(preciseUnitCasing, 1, i - 1), i + 1);
+        }
     }
 
     public static void compactMod() {

@@ -27,7 +27,6 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.gtnewhorizon.structurelib.StructureLibAPI;
-import com.gtnewhorizon.structurelib.alignment.constructable.ChannelDataAccessor;
 import com.gtnewhorizon.structurelib.structure.AutoPlaceEnvironment;
 import com.gtnewhorizon.structurelib.structure.IItemSource;
 import com.gtnewhorizon.structurelib.structure.IStructureElement;
@@ -42,6 +41,7 @@ import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.common.blocks.ItemMachines;
+import gregtech.common.misc.GTStructureChannels;
 
 public class HatchElementBuilder<T> {
 
@@ -498,7 +498,7 @@ public class HatchElementBuilder<T> {
                 if (!StructureLibAPI.isBlockTriviallyReplaceable(world, x, y, z, env.getActor()))
                     return PlaceResult.REJECT;
                 if (mReject != null && mReject.test(t)) return PlaceResult.REJECT;
-                if (ChannelDataAccessor.hasSubChannel(trigger, "gt_no_hatch") && !mExclusive) {
+                if (GTStructureChannels.NO_HATCH.hasValue(trigger) && !mExclusive) {
                     String type = getHint();
                     env.getChatter()
                         .accept(new ChatComponentTranslation("GT5U.autoplace.error.no_hatch", type));
