@@ -189,6 +189,7 @@ public class GTUITextures {
     public static final UITexture PROGRESSBAR_EXTRUDE = UITexture.fullImage(GregTech.ID, "gui/progressbar/extrude");
     public static final SteamTexture PROGRESSBAR_FUEL_STEAM = SteamTexture
         .fullImage(GregTech.ID, "gui/progressbar/fuel_%s");
+    public static final UITexture PROGRESSBAR_FISHING = UITexture.fullImage(GregTech.ID, "gui/progressbar/fishing");
     public static final UITexture PROGRESSBAR_HAMMER = UITexture.fullImage(GregTech.ID, "gui/progressbar/hammer");
     public static final UITexture PROGRESSBAR_HAMMER_BASE = UITexture
         .fullImage(GregTech.ID, "gui/progressbar/hammer_base");

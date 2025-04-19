@@ -24,11 +24,6 @@ public abstract class CoverRedstoneWirelessBase extends CoverLegacyData {
     }
 
     @Override
-    public void onCoverRemoval() {
-        GregTechAPI.sWirelessRedstone.put(coverData, (byte) 0);
-    }
-
-    @Override
     public boolean onCoverRightClick(EntityPlayer aPlayer, float aX, float aY, float aZ) {
         if (((aX > 0.375D) && (aX < 0.625D)) || ((coverSide.offsetX != 0) && ((aY > 0.375D) && (aY < 0.625D)))) {
             GregTechAPI.sWirelessRedstone.put(coverData, (byte) 0);
