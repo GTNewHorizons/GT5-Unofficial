@@ -515,11 +515,18 @@ public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge> i
                 mSpecialTier = 3;
             }
         } else if (aStack != null && aStack.isItemEqual(MaterialsUEVplus.Eternity.getNanite(1))) {
-            if (checkPiece(STRUCTURE_PIECE_TIER4_BASE, 20, 12, 0)
-                && (checkPiece(STRUCTURE_PIECE_TIER4_RENDER, 20, 49, 0)
-                    || checkPiece(STRUCTURE_PIECE_TIER4_AIR_RENDER, 20, 49, 0))) {
-                mSpecialTier = 4;
-            }
+            if (renderActive) {
+                if (checkPiece(STRUCTURE_PIECE_TIER4_AIR_RENDER, 20, 49, 0)
+                    && checkPiece(STRUCTURE_PIECE_TIER4_BASE, 20, 12, 0)) {
+                    mSpecialTier = 4;
+                } else {
+                    renderActive = false;
+                    buildRenderStruct();
+                }
+            } else if (checkPiece(STRUCTURE_PIECE_TIER4_RENDER, 20, 49, 0)
+                && checkPiece(STRUCTURE_PIECE_TIER4_BASE, 20, 12, 0)) {
+                    mSpecialTier = 4;
+                }
         }
 
         if (mMaintenanceHatches.size() != 1) {
@@ -743,6 +750,14 @@ public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge> i
             GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOff"));
         }
         return true;
+    }
+
+    @Override
+    public void onBlockDestroyed() {
+        super.onBlockDestroyed();
+        if (renderActive) {
+            buildRenderStruct();
+        }
     }
 
     @Override
