@@ -902,10 +902,6 @@ public class TileEntityBase extends TileEntity
         return rEU / (mAverageEUOutput.length - 1);
     }
 
-    public boolean hasSidedRedstoneOutputBehavior() {
-        return false;
-    }
-
     public String getOwnerName() {
         if (GTUtility.isStringInvalid(mOwnerName)) return "Player";
         return mOwnerName;

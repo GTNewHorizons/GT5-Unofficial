@@ -344,12 +344,6 @@ public abstract class MTEBuffer extends MTETieredMachineBlock implements IAddUIW
         }
     }
 
-    @Override
-    public void onFirstTick(IGregTechTileEntity aBaseMetaTileEntity) {
-        for (ForgeDirection side : ForgeDirection.VALID_DIRECTIONS)
-            aBaseMetaTileEntity.setInternalOutputRedstoneSignal(side, (byte) 0);
-    }
-
     protected void moveItems(IGregTechTileEntity aBaseMetaTileEntity, long aTimer) {
         moveItems(aBaseMetaTileEntity, aTimer, 1);
     }
