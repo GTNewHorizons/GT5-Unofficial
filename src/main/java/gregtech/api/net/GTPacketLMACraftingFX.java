@@ -3,8 +3,6 @@ package gregtech.api.net;
 import java.io.IOException;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.network.INetHandler;
-import net.minecraft.network.NetHandlerPlayServer;
 import net.minecraft.world.IBlockAccess;
 
 import com.google.common.io.ByteArrayDataInput;
@@ -25,7 +23,6 @@ public class GTPacketLMACraftingFX extends GTPacket {
     private int z;
     private int age;
     private IAEItemStack itemStack;
-    private Side side;
 
     public GTPacketLMACraftingFX() {
         super();
@@ -85,13 +82,8 @@ public class GTPacketLMACraftingFX extends GTPacket {
     }
 
     @Override
-    public void setINetHandler(INetHandler handler) {
-        this.side = handler instanceof NetHandlerPlayServer ? Side.SERVER : Side.CLIENT;
-    }
-
-    @Override
     public void process(IBlockAccess world) {
-        if (side == Side.CLIENT) {
+        if (world != null) {
             spawnFX();
         }
     }
