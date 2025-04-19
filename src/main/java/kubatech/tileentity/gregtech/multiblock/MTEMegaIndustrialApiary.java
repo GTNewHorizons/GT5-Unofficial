@@ -782,7 +782,7 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
                         .openSyncedWindow(CONFIGURATION_WINDOW_ID);
                 })
                 .setBackground(GTUITextures.BUTTON_STANDARD, GTUITextures.OVERLAY_BUTTON_CYCLIC)
-                .addTooltip("Configuration")
+                .addTooltip(StatCollector.translateToLocal("kubatech.gui.tooltip.configuration"))
                 .setSize(16, 16));
     }
 
@@ -891,12 +891,17 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
                                 ModularUITextures.VANILLA_BACKGROUND,
                                 GTUITextures.OVERLAY_BUTTON_CYCLIC.withFixedSize(18, 18))
                             .setSize(70, 18)
-                            .addTooltip("Secondary mode"))
+                            .addTooltip(StatCollector.translateToLocal("kubatech.gui.text.mia.secondary_mode")))
                     .setEnabled(widget -> !getBaseMetaTileEntity().isActive())
                     .setPos(10, 30))
             .widget(
-                new Column().widget(new TextWidget("Primary mode").setSize(100, 18))
-                    .widget(new TextWidget("Secondary mode").setSize(100, 18))
+                new Column()
+                    .widget(
+                        new TextWidget(StatCollector.translateToLocal("kubatech.gui.text.mia.primary_mode"))
+                            .setSize(100, 18))
+                    .widget(
+                        new TextWidget(StatCollector.translateToLocal("kubatech.gui.text.mia.secondary_mode"))
+                            .setSize(100, 18))
                     .setEnabled(widget -> !getBaseMetaTileEntity().isActive())
                     .setPos(80, 30))
             .widget(

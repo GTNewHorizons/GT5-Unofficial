@@ -952,7 +952,7 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
                         .openSyncedWindow(CONFIGURATION_WINDOW_ID);
                 })
                 .setBackground(GTUITextures.BUTTON_STANDARD, GTUITextures.OVERLAY_BUTTON_CYCLIC)
-                .addTooltip("Configuration")
+                .addTooltip(StatCollector.translateToLocal("kubatech.gui.tooltip.configuration"))
                 .setSize(16, 16));
     }
 

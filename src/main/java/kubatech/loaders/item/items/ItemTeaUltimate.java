@@ -168,7 +168,9 @@ public class ItemTeaUltimate extends ItemTeaCollection implements IItemProxyGUI 
                             player.entityDropItem(ItemList.TeaAcceptorResearchNote.get(1), 0.5f);
                         })
                             .setBackground(new ItemDrawable().setItem(ItemList.TeaAcceptorResearchNote.get(1)))
-                            .addTooltip("Tea Acceptor Research Note")
+                            .addTooltip(
+                                StatCollector
+                                    .translateToLocal("kubatech.gui.tooltip.tee_ultimate.tea_acceptor_research_note"))
                             .addTooltip(
                                 new Text(
                                     StatCollector.translateToLocalFormatted(

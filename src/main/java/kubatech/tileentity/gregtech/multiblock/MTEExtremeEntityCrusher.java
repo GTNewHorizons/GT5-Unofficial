@@ -714,7 +714,7 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
             .setTextureGetter(toggleButtonTextureGetter)
             .setVariableBackgroundGetter(toggleButtonBackgroundGetter)
             .setSize(16, 16)
-            .addTooltip("Ritual mode")
+            .addTooltip(StatCollector.translateToLocal("kubatech.gui.tooltip.eec.ritual_mode"))
             .setTooltipShowUpDelay(TOOLTIP_DELAY));
         configurationElements.widget(new CycleButtonWidget().setToggle(() -> mIsProducingInfernalDrops, v -> {
             if (this.mMaxProgresstime > 0) {
