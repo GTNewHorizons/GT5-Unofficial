@@ -602,7 +602,20 @@ public abstract class GTProxy implements IGTMod, IFuelHandler {
         Item
     }
 
+    public enum TemperatureUnitSystem {
+        Kelvin,
+        Celsius,
+        Fahrenheit,
+        Rankine,
+        Delisle,
+        Newton,
+        Reaumur,
+        Romer
+    }
+
     public OreDropSystem oreDropSystem = OreDropSystem.FortuneItem;
+
+    public TemperatureUnitSystem temperatureUnitSystem = TemperatureUnitSystem.Kelvin;
 
     /**
      * This enables ambient-occlusion smooth lighting on tiles
