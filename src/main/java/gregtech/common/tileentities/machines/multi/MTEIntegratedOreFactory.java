@@ -280,11 +280,7 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
             .setDuration(getTime(sMode))
             .setParallel(originalMaxParallel);
 
-        double tickTimeAfterOC = calculator.calculateDurationUnderOneTick();
-
-        if (tickTimeAfterOC < 1) {
-            maxParallel = GTUtility.safeInt((long) (maxParallel / tickTimeAfterOC), 0);
-        }
+        maxParallel = GTUtility.safeInt((long) (maxParallel * calculator.calculateMultiplierUnderOneTick()), 0);
 
         int maxParallelBeforeBatchMode = maxParallel;
         if (isBatchModeEnabled()) {
