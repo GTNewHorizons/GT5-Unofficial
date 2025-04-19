@@ -301,19 +301,10 @@ public class MTELargeEssentiaSmeltery extends MTETooltipMultiBlockBaseEM
             .widget(
                 new TextWidget()
                     .setStringSupplier(
-                        () -> EnumChatFormatting.WHITE + "Requires "
-                            + EnumChatFormatting.YELLOW
-                            + numberFormat.format(nodePowerDisplay)
-                            + EnumChatFormatting.WHITE
-                            + " total "
-                            + EnumChatFormatting.AQUA
-                            + "Aqua"
-                            + EnumChatFormatting.WHITE
-                            + " and "
-                            + EnumChatFormatting.RED
-                            + "Ignis "
-                            + EnumChatFormatting.WHITE
-                            + "centivis to function.")
+                        () -> EnumChatFormatting.WHITE + StatCollector.translateToLocalFormatted(
+                            "gg.gui.text.large_essentia_smeltery.requires",
+                            EnumChatFormatting.YELLOW + numberFormat.format(nodePowerDisplay)
+                                + EnumChatFormatting.WHITE))
                     .setTextAlignment((Alignment.CenterLeft)))
             .widget(new FakeSyncWidget.IntegerSyncer(this::expectedPower, val -> nodePowerDisplay = val));
     }
