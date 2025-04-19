@@ -48,7 +48,7 @@ public class MetaGeneratedItem98 extends MetaGeneratedItem {
      * leave a comment mentioning the old ID, so that we don't re-use it for a new fluid.
      */
     public enum FluidCell {
-        // Next unused ID: 37
+        // Next unused ID: 40
 
         // GregTech
         DRILLING_FLUID(5, "liquid_drillingfluid", CellType.REGULAR),
@@ -84,6 +84,9 @@ public class MetaGeneratedItem98 extends MetaGeneratedItem {
         PENICILLIN(12, "penicillin", CellType.REGULAR),
         FLUORESCENT_DNA(13, "fluorecentddna", CellType.REGULAR),
         POLYMERASE(17, "polymerase", CellType.REGULAR),
+        FULVIC_ACID(37, "fulvic acid", CellType.REGULAR),
+        HEATED_FULVIC_ACID(38, "heated fulvic acid", CellType.REGULAR),
+        KEROGEN(39, "kerogen", CellType.REGULAR),
 
         // Good Generator
         COMBUSTION_PROMOTER(14, "combustionpromotor", CellType.REGULAR),
