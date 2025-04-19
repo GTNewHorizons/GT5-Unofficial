@@ -922,6 +922,7 @@ GT5U.multiblock.speed=Speed
 GT5U.multiblock.fluidPipeTier=Fluid Pipe Tier
 GT5U.multiblock.itemPipeTier=Item Pipe Tier
 GT5U.multiblock.coilLevel=Heating Coil Level
+GT5U.multiblock.preciseassemblercasing=Voltage limited by casing tier: %s
 
 # NEI recipe handlers
 GT5U.nei.heat_capacity=Heat Capacity: %s K (%s)
