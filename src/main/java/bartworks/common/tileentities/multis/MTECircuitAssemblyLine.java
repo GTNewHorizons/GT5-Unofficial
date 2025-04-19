@@ -383,7 +383,7 @@ public class MTECircuitAssemblyLine extends MTEEnhancedMultiBlockBase<MTECircuit
             return rList;
         }
 
-        return super.getStoredInputs();
+        return super.getStoredInputsForColor(color);
     }
 
     @Override
