@@ -1938,6 +1938,11 @@ tt.godforge.casings.7.Tooltip.1=Gravity Central
 tt.godforge.casings.8.Tooltip.0=Transfers and stores extreme amounts of heat without any loss
 tt.godforge.casings.8.Tooltip.1=<<<Thermal<<<
 tt.godforge.casings.8.Tooltip.2=>>>Wave>>>
+tt.godforge.star_color.preset.default=Default
+tt.godforge.star_color.preset.rainbow=Rainbow
+tt.godforge.star_color.preset.clouds_pick=Cloud's Pick
+tt.godforge.star_color.preset.mayas_pick=Maya's Pick
+
 
 tt.eoh.stability.tooltip=§b§lIncreases stability of spacetime field.
 tt.eoh.time_dilation.standard.tooltip=§b§lTime dilation in a box.
