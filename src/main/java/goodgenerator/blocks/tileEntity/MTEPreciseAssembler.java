@@ -353,7 +353,6 @@ public class MTEPreciseAssembler extends MTEExtendedPowerMultiBlockBase<MTEPreci
             .addInfo("Use screwdriver to change mode.")
             .addInfo("Machine Casing and Energy Hatch limits the voltage tier the machine can work on.")
             .addInfo("UHV Machine Casing will unlock all voltage, but you still need good Energy Hatch.")
-            .addInfo("Precise Electronic Unit Casing won't limit recipe in Normal Mode.")
             .addInfo("But gives more parallel with more advanced one.")
             .addInfo("It is 100% faster in Normal Mode.")
             .addInfo("Imprecise (MK-0) = 16x, MK-I = 32x, MK-II = 64x, MK-III = 128x, MK-IV = 256x")
