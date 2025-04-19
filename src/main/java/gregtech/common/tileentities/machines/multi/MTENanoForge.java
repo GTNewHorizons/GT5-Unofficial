@@ -452,6 +452,8 @@ public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge> i
         logic.setAmperageOC(false);
     }
 
+    private int timer = 0;
+
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         super.onPostTick(aBaseMetaTileEntity, aTick);
@@ -462,8 +464,34 @@ public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge> i
             if (renderActive && !renderDisabled) {
                 TileEntityNanoForgeRenderer tile = getRenderer();
                 if (tile != null) {
-                    tile.setRunning(true);
-                    if (mMaxProgresstime > 0) {} else {}
+                    // Manually calculating deltaT for server - annoying minecraft
+                    long systemTime = System.currentTimeMillis();
+                    long diff = systemTime - tile.getLastSystemTime();
+                    tile.setLastSystemTime(systemTime);
+                    float deltaT = diff / 1000.0f;
+                    // Making sure the first frame doesn't freak out
+                    if (deltaT > 1) {
+                        deltaT = 0;
+                    }
+                    timer++;
+                    if (mMaxProgresstime > 0) {
+                        tile.setRunning(true);
+                        tile.setTimer(tile.getTimer() + deltaT);
+                        if (timer >= 10) {
+                            tile.setTimerServer(tile.getTimer());
+                            timer = 0;
+                        }
+                    } else {
+                        tile.setRunning(false);
+                        tile.setTimer(tile.getTimer() - deltaT);
+                        if (tile.getTimer() < 0) {
+                            tile.setTimer(0);
+                        }
+                        if (timer >= 10) {
+                            tile.setTimerServer(tile.getTimer());
+                            timer = 0;
+                        }
+                    }
                 }
             }
         }

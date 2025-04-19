@@ -30,7 +30,7 @@ public class TileEntityNanoForgeRenderer extends TileEntity {
     }
 
     public void setRunning(boolean running) {
-        if (!worldObj.isRemote) {
+        if (!worldObj.isRemote && this.running != running) {
             this.running = running;
             updateToClient();
         }
@@ -42,6 +42,13 @@ public class TileEntityNanoForgeRenderer extends TileEntity {
 
     public void setTimer(float timer) {
         this.timer = timer;
+    }
+
+    public void setTimerServer(float timer) {
+        if (!worldObj.isRemote) {
+            this.timer = timer;
+            updateToClient();
+        }
     }
 
     public float getTimer() {
@@ -62,11 +69,6 @@ public class TileEntityNanoForgeRenderer extends TileEntity {
         super.writeToNBT(compound);
     }
 
-    public void writeToNBTData(NBTTagCompound compound) {
-        compound.setBoolean(RUNNING_NBT_TAG, running);
-        super.writeToNBT(compound);
-    }
-
     @Override
     public void readFromNBT(NBTTagCompound compound) {
         running = compound.getBoolean(RUNNING_NBT_TAG);
@@ -74,22 +76,17 @@ public class TileEntityNanoForgeRenderer extends TileEntity {
         super.readFromNBT(compound);
     }
 
-    public void readFromNBTData(NBTTagCompound compound) {
-        running = compound.getBoolean(RUNNING_NBT_TAG);
-        super.readFromNBT(compound);
-    }
-
     @Override
     public Packet getDescriptionPacket() {
         NBTTagCompound nbttagcompound = new NBTTagCompound();
-        writeToNBTData(nbttagcompound);
+        writeToNBT(nbttagcompound);
 
         return new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, 0, nbttagcompound);
     }
 
     @Override
     public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt) {
-        readFromNBTData(pkt.func_148857_g());
+        readFromNBT(pkt.func_148857_g());
     }
 
     public void updateToClient() {

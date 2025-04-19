@@ -28,6 +28,12 @@ public class NanoForgeRenderer extends TileEntitySpecialRenderer {
     private static IModelCustomExt nanoforgeRingThreeModel;
     private static ResourceLocation ringTexture;
 
+    private static final float WARM_UP_TIME = 25.0f;
+    private static final float FULL_CHAOS_TIME = 75.0f;
+    private static final float SPEED_MULTIPLIER = 10.0f;
+    private static final float CHAOS_SPEED_MULTIPLIER = 90.0f;
+    private static final float SINUS_DIVIDER = 100.0f;
+
     public NanoForgeRenderer() {
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityNanoForgeRenderer.class, this);
     }
@@ -58,11 +64,7 @@ public class NanoForgeRenderer extends TileEntitySpecialRenderer {
             timer += deltaT;
         }
 
-        if (timer > 36_000_000.0f) {
-            timer = 0;
-        }
-
-        if (timer < -36_000_000.0f) {
+        if (timer < 0) {
             timer = 0;
         }
 
@@ -79,7 +81,7 @@ public class NanoForgeRenderer extends TileEntitySpecialRenderer {
     }
 
     private void renderCore(double x, double y, double z, float timer) {
-        float chaos = Math.min(Math.max((timer - 25.0f), 0) / 80.0f, 1);
+        float chaos = Math.min(Math.max((timer - WARM_UP_TIME), 0) / FULL_CHAOS_TIME, 1);
         chaos = Math.max(chaos, 0.05f);
         GL11.glPushAttrib(GL11.GL_ALL_ATTRIB_BITS);
         GL11.glPushMatrix();
@@ -87,10 +89,13 @@ public class NanoForgeRenderer extends TileEntitySpecialRenderer {
         GL11.glTranslated(x + .5f, y + .5f, z + .5f);
         GL11.glScalef(chaos, chaos, chaos);
         GL11.glRotatef(
-            timer * 4 + timer * 36 * chaos,
-            (float) (0.3 * sin(timer / 700.0) + sin(timer / 700.0 * 0.5) + 0.5 * sin(timer / 700.0 * 3)),
-            (float) (1 * sin(timer / 700.0 * 0.3) + 3 * sin(timer / 700.0) + 0.3 * sin(timer / 700.0 * 3)),
-            (float) (2 * sin(timer / 700.0 * 0.4) + sin(timer / 700.0 * 1.5) + 1.2 * sin(timer / 700.0 * 1)));
+            timer * SPEED_MULTIPLIER + timer * CHAOS_SPEED_MULTIPLIER * chaos,
+            (float) (0.3 * sin(timer / SINUS_DIVIDER) + sin(timer / SINUS_DIVIDER * 0.5)
+                + 0.5 * sin(timer / SINUS_DIVIDER * 3)),
+            (float) (1 * sin(timer / SINUS_DIVIDER * 0.3) + 3 * sin(timer / SINUS_DIVIDER)
+                + 0.3 * sin(timer / SINUS_DIVIDER * 3)),
+            (float) (2 * sin(timer / SINUS_DIVIDER * 0.4) + sin(timer / SINUS_DIVIDER * 1.5)
+                + 1.2 * sin(timer / SINUS_DIVIDER * 1)));
         nanoforgeCoreModel.renderAllVBO();
 
         GL11.glPopMatrix();
@@ -98,17 +103,19 @@ public class NanoForgeRenderer extends TileEntitySpecialRenderer {
     }
 
     private void renderRingOne(double x, double y, double z, float timer) {
-        float chaos = Math.min(Math.max((timer - 25.0f), 0) / 80.0f, 1);
+        float chaos = Math.min(Math.max((timer - WARM_UP_TIME), 0) / FULL_CHAOS_TIME, 1);
         GL11.glPushAttrib(GL11.GL_ALL_ATTRIB_BITS);
         GL11.glPushMatrix();
 
         GL11.glTranslated(x + .5f, y + .5f, z + .5f);
         GL11.glRotatef(
-            timer * 4 + timer * 36 * chaos,
-            (float) (chaos * (2 * sin(timer / 700.0) + 0.5 * sin(timer / 700.0) + 2.5 * sin(timer / 700.0 * 0.2))),
-            (float) (0.5 + chaos * (2 * sin(timer / 700.0 * 0.3) + sin(timer / 700.0) + 0.5 * sin(timer / 700.0 * 3))),
-            (float) (chaos
-                * (0.5 * sin(timer / 700.0 * 0.4) + 0.2 * sin(timer / 700.0 * 1.5) + 0.4 * sin(timer / 700.0 * 1))));
+            timer * SPEED_MULTIPLIER + timer * CHAOS_SPEED_MULTIPLIER * chaos,
+            (float) (chaos * (2 * sin(timer / SINUS_DIVIDER) + 0.5 * sin(timer / SINUS_DIVIDER)
+                + 2.5 * sin(timer / SINUS_DIVIDER * 0.2))),
+            (float) (0.5 + chaos * (2 * sin(timer / SINUS_DIVIDER * 0.3) + sin(timer / SINUS_DIVIDER)
+                + 0.5 * sin(timer / SINUS_DIVIDER * 3))),
+            (float) (chaos * (0.5 * sin(timer / SINUS_DIVIDER * 0.4) + 0.2 * sin(timer / SINUS_DIVIDER * 1.5)
+                + 0.4 * sin(timer / SINUS_DIVIDER * 1))));
         nanoforgeRingOneModel.renderAllVBO();
 
         GL11.glPopMatrix();
@@ -116,19 +123,19 @@ public class NanoForgeRenderer extends TileEntitySpecialRenderer {
     }
 
     private void renderRingTwo(double x, double y, double z, float timer) {
-        float chaos = Math.min(Math.max((timer - 25.0f), 0) / 80.0f, 1);
+        float chaos = Math.min(Math.max((timer - WARM_UP_TIME), 0) / FULL_CHAOS_TIME, 1);
         GL11.glPushAttrib(GL11.GL_ALL_ATTRIB_BITS);
         GL11.glPushMatrix();
 
         GL11.glTranslated(x + .5f, y + .5f, z + .5f);
         GL11.glRotatef(
-            timer * 4 + timer * 36 * chaos,
-            (float) (0.5
-                + chaos * (2 * sin(timer / 700.0 * 0.5) + sin(timer / 700.0) + 1.5 * sin(timer / 700.0 * 0.3))),
-            (float) (chaos
-                * (1.3 * sin(timer / 700.0 * 1.2) + 0.4 * sin(timer / 700.0) + 1.1 * sin(timer / 700.0 * 1.5))),
-            (float) (chaos
-                * (0.5 * sin(timer / 700.0 * 0.4) + 0.2 * sin(timer / 700.0 * 1.5) + 0.4 * sin(timer / 700.0 * 1))));
+            timer * SPEED_MULTIPLIER + timer * CHAOS_SPEED_MULTIPLIER * chaos,
+            (float) (0.5 + chaos * (2 * sin(timer / SINUS_DIVIDER * 0.5) + sin(timer / SINUS_DIVIDER)
+                + 1.5 * sin(timer / SINUS_DIVIDER * 0.3))),
+            (float) (chaos * (1.3 * sin(timer / SINUS_DIVIDER * 1.2) + 0.4 * sin(timer / SINUS_DIVIDER)
+                + 1.1 * sin(timer / SINUS_DIVIDER * 1.5))),
+            (float) (chaos * (0.5 * sin(timer / SINUS_DIVIDER * 0.4) + 0.2 * sin(timer / SINUS_DIVIDER * 1.5)
+                + 0.4 * sin(timer / SINUS_DIVIDER * 1))));
         nanoforgeRingTwoModel.renderAllVBO();
 
         GL11.glPopMatrix();
@@ -136,18 +143,19 @@ public class NanoForgeRenderer extends TileEntitySpecialRenderer {
     }
 
     private void renderRingThree(double x, double y, double z, float timer) {
-        float chaos = Math.min(Math.max((timer - 25.0f), 0) / 80.0f, 1);
+        float chaos = Math.min(Math.max((timer - WARM_UP_TIME), 0) / FULL_CHAOS_TIME, 1);
         GL11.glPushAttrib(GL11.GL_ALL_ATTRIB_BITS);
         GL11.glPushMatrix();
 
         GL11.glTranslated(x + .5f, y + .5f, z + .5f);
         GL11.glRotatef(
-            timer * 4 + timer * 36 * chaos,
-            (float) (chaos * (2 * sin(timer / 700.0 * 0.5) + sin(timer / 700.0) + 1.5 * sin(timer / 700.0 * 0.3))),
-            (float) (chaos
-                * (1.3 * sin(timer / 700.0 * 1.2) + 0.4 * sin(timer / 700.0) + 1.1 * sin(timer / 700.0 * 1.5))),
-            (float) (0.5
-                + chaos * (2.2 * sin(timer / 700.0) + 0.4 * sin(timer / 700.0 * 3) + 1.2 * sin(timer / 700.0 * 0.5))));
+            timer * SPEED_MULTIPLIER + timer * CHAOS_SPEED_MULTIPLIER * chaos,
+            (float) (chaos * (2 * sin(timer / SINUS_DIVIDER * 0.5) + sin(timer / SINUS_DIVIDER)
+                + 1.5 * sin(timer / SINUS_DIVIDER * 0.3))),
+            (float) (chaos * (1.3 * sin(timer / SINUS_DIVIDER * 1.2) + 0.4 * sin(timer / SINUS_DIVIDER)
+                + 1.1 * sin(timer / SINUS_DIVIDER * 1.5))),
+            (float) (0.5 + chaos * (2.2 * sin(timer / SINUS_DIVIDER) + 0.4 * sin(timer / SINUS_DIVIDER * 3)
+                + 1.2 * sin(timer / SINUS_DIVIDER * 0.5))));
         nanoforgeRingThreeModel.renderAllVBO();
 
         GL11.glPopMatrix();
@@ -155,7 +163,7 @@ public class NanoForgeRenderer extends TileEntitySpecialRenderer {
     }
 
     private void renderShield(double x, double y, double z, float timer) {
-        float chaos = Math.min(Math.max((timer - 25.0f), 0) / 80.0f, 1);
+        float chaos = Math.min(Math.max((timer - WARM_UP_TIME), 0) / FULL_CHAOS_TIME, 1);
         GL11.glPushAttrib(GL11.GL_ALL_ATTRIB_BITS);
         GL11.glPushMatrix();
 
@@ -166,10 +174,13 @@ public class NanoForgeRenderer extends TileEntitySpecialRenderer {
         GL11.glDepthMask(false); // Disable depth writing for transparency
         GL11.glColor4f(1f, 1f, 1f, 0.4f);
         GL11.glRotatef(
-            timer * 4 + timer * 36 * chaos,
-            (float) (2 * sin(timer / 700.0) + sin(timer / 700.0 * 0.5) + 0.5 * sin(timer / 700.0 * 3)),
-            (float) (1 * sin(timer / 700.0 * 0.3) + 3 * sin(timer / 700.0) + 0.3 * sin(timer / 700.0 * 3)),
-            (float) (0.5 * sin(timer / 700.0 * 0.4) + sin(timer / 700.0 * 1.5) + 1.2 * sin(timer / 700.0 * 1)));
+            timer * SPEED_MULTIPLIER + timer * CHAOS_SPEED_MULTIPLIER * chaos,
+            (float) (2 * sin(timer / SINUS_DIVIDER) + sin(timer / SINUS_DIVIDER * 0.5)
+                + 0.5 * sin(timer / SINUS_DIVIDER * 3)),
+            (float) (1 * sin(timer / SINUS_DIVIDER * 0.3) + 3 * sin(timer / SINUS_DIVIDER)
+                + 0.3 * sin(timer / SINUS_DIVIDER * 3)),
+            (float) (0.5 * sin(timer / SINUS_DIVIDER * 0.4) + sin(timer / SINUS_DIVIDER * 1.5)
+                + 1.2 * sin(timer / SINUS_DIVIDER * 1)));
         nanoforgeShieldModel.renderAllVBO();
 
         GL11.glPopMatrix();
