@@ -209,8 +209,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
             loadMetaTileNBT(aNBT);
         }
 
-        if (mSidedRedstone.length != 6)
-            mSidedRedstone = new byte[] { 0, 0, 0, 0, 0, 0 };
+        if (mSidedRedstone.length != 6) mSidedRedstone = new byte[] { 0, 0, 0, 0, 0, 0 };
     }
 
     /**
