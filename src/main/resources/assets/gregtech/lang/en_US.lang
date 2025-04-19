@@ -840,7 +840,7 @@ GT5U.gui.tooltip.pcb_factory.trace_size=Set the trace size. Smaller traces allow
 GT5U.gui.text.pcb_factory.bio_upgrade_offsets=Bio Upgrade Offsets
 GT5U.gui.text.pcb_factory.cooler_tier1_offsets=Cooler Tier 1 Offsets
 GT5U.gui.text.pcb_factory.cooler_tier2_offsets=Cooler Tier 2 Offsets
-GT5U.gui.tooltip.pcb_factory.configuration_menu=Configuration Menu
+GT5U.gui.text.pcb_factory.configuration_menu=Configuration Menu
 GT5U.gui.tooltip.pcb_factory.tier=PCB Factory Tier
 GT5U.gui.tooltip.pcb_factory.bio_upgrade=Enables nanites to construct organic circuitry. Required for Bioware and Wetware boards.
 GT5U.gui.tooltip.pcb_factory.bio_rotate=Rotates the biochamber by 90 degrees.
@@ -848,8 +848,15 @@ GT5U.gui.tooltip.pcb_factory.oc_tier1=Allows for overclocking. Requires 10 L/s o
 GT5U.gui.tooltip.pcb_factory.oc_tier2=Enables perfect overclocking by allowing nanites to work with extreme speed and efficiency. Uses 10 L/s of Super Coolant.
 GT5U.gui.tooltip.pcb_factory.offset.x=X Offset
 GT5U.gui.tooltip.pcb_factory.offset.z=Z Offset
+GT5U.gui.text.pcb_factory.biochamber=Biochamber
+GT5U.gui.text.pcb_factory.bio_rotation=Bio Rotation
+GT5U.gui.text.pcb_factory.liquid_cooling=Liquid Cooling
+GT5U.gui.text.pcb_factory.thermosink=Thermosink
 
 GT5U.gui.tooltip.purification_plant.debug_mode=Toggle debug mode.
+GT5U.gui.tooltip.purification_plant.status=Status
+GT5U.gui.text.purification_plant.hit_to_start=Hit with Soft Mallet to start.
+GT5U.gui.text.purification_plant.unit_status=Purification Unit Status
 
 GT5U.gui.tooltip.redstone_circuit.toggle_output=Toggle EU Output
 GT5U.gui.tooltip.redstone_circuit.toggle_active=Toggle Active State
@@ -858,8 +865,24 @@ GT5U.gui.tooltip.redstone_circuit.change=Change Redstone Circuit
 GT5U.gui.tooltip.redstone_receiver.analog=ANALOG Mode\nOnly use this mode with ONE transmitter in total,\nno logic involved
 GT5U.gui.tooltip.hatch.crafting_input_me.place_manual_items=Place manual items
 GT5U.gui.tooltip.hatch.crafting_input_me.export=Return all internally stored items back to AE
+GT5U.gui.text.fluid_limiter.threshold=Percent threshold
+GT5U.gui.text.volumetric_flask.capacity=Capacity
+GT5U.gui.text.volumetric_flask.confirm=Confirm
+
+GT5U.gui.text.wireless_maintenance_detector.extra.no_issues=No Issues
+GT5U.gui.text.wireless_maintenance_detector.extra.ge1_issues=>= 1 Issue
+GT5U.gui.text.wireless_maintenance_detector.extra.ge2_issues=>= 2 Issues
+GT5U.gui.text.wireless_maintenance_detector.extra.ge3_issues=>= 3 Issues
+GT5U.gui.text.wireless_maintenance_detector.extra.ge4_issues=>= 4 Issues
+GT5U.gui.text.wireless_maintenance_detector.extra.ge5_issues=>= 5 Issues
+GT5U.gui.text.wireless_maintenance_detector.extra.rotor_lt20=Rotor < 20%
+GT5U.gui.text.wireless_maintenance_detector.extra.rotor_0=Rotor ≈ 0%
+
+GT5U.gui.text.fusion_computer.hit_to_start=Hit with Soft Mallet to (re-)start the Machine if it doesn't start.
+GT5U.gui.text.fusion_computer.running_perfectly=Running perfectly.
 
 GT5U.gui.title.unknown=Unknown
+GT5U.gui.text.item_amount=Item Amount
 
 # Note to translators: this translation entry is supposed to be a number indicating how many taunts you define here
 # Game will randomly display one of them

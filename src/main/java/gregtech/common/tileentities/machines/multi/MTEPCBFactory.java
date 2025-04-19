@@ -1074,7 +1074,7 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
                     ret.add(GTUITextures.OVERLAY_BUTTON_CYCLIC);
                     return ret.toArray(new IDrawable[0]);
                 })
-                .addTooltip(StatCollector.translateToLocal("GT5U.gui.tooltip.pcb_factory.configuration_menu"))
+                .addTooltip(StatCollector.translateToLocal("GT5U.gui.text.pcb_factory.configuration_menu"))
                 .setPos(174, 130))
             .widget(
                 new TextWidget(new Text(StatCollector.translateToLocal("GTPP.machines.tier")))
@@ -1102,7 +1102,9 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
             new DrawableWidget().setDrawable(GTUITextures.OVERLAY_BUTTON_CYCLIC)
                 .setPos(5, 5)
                 .setSize(16, 16))
-            .widget(new TextWidget("Configuration Menu").setPos(25, 9))
+            .widget(
+                new TextWidget(StatCollector.translateToLocal("GT5U.gui.text.pcb_factory.configuration_menu"))
+                    .setPos(25, 9))
             .widget(
                 ButtonWidget.closeWindowButton(true)
                     .setPos(185, 3))
@@ -1126,7 +1128,8 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
                                 new DrawableWidget().setDrawable(GTUITextures.OVERLAY_BUTTON_CYCLIC)
                                     .setSize(18, 18))
                             .addChild(
-                                new TextWidget("Biochamber").setTextAlignment(Alignment.Center)
+                                new TextWidget(StatCollector.translateToLocal("GT5U.gui.text.pcb_factory.biochamber"))
+                                    .setTextAlignment(Alignment.Center)
                                     .setPos(23, 5))
                             .setEnabled(widget -> !getBaseMetaTileEntity().isActive()))
                     .widget(new MultiChildWidget().addChild(new CycleButtonWidget().setToggle(() -> mBioRotate, val -> {
@@ -1144,7 +1147,8 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
                             new DrawableWidget().setDrawable(GTUITextures.OVERLAY_BUTTON_CYCLIC)
                                 .setSize(18, 18))
                         .addChild(
-                            new TextWidget("Bio Rotation").setTextAlignment(Alignment.Center)
+                            new TextWidget(StatCollector.translateToLocal("GT5U.gui.text.pcb_factory.bio_rotation"))
+                                .setTextAlignment(Alignment.Center)
                                 .setPos(23, 5))
                         .setEnabled(widget -> !getBaseMetaTileEntity().isActive()))
                     .widget(new MultiChildWidget().addChild(new CycleButtonWidget().setToggle(() -> mOCTier1, val -> {
@@ -1163,7 +1167,8 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
                             new DrawableWidget().setDrawable(GTUITextures.OVERLAY_BUTTON_CYCLIC)
                                 .setSize(18, 18))
                         .addChild(
-                            new TextWidget("Liquid Cooling").setTextAlignment(Alignment.Center)
+                            new TextWidget(StatCollector.translateToLocal("GT5U.gui.text.pcb_factory.liquid_cooling"))
+                                .setTextAlignment(Alignment.Center)
                                 .setPos(20, 5))
                         .setEnabled(widget -> !getBaseMetaTileEntity().isActive()))
                     .widget(new MultiChildWidget().addChild(new CycleButtonWidget().setToggle(() -> mOCTier2, val -> {
@@ -1182,7 +1187,8 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
                             new DrawableWidget().setDrawable(GTUITextures.OVERLAY_BUTTON_CYCLIC)
                                 .setSize(18, 18))
                         .addChild(
-                            new TextWidget("Thermosink").setTextAlignment(Alignment.Center)
+                            new TextWidget(StatCollector.translateToLocal("GT5U.gui.text.pcb_factory.thermosink"))
+                                .setTextAlignment(Alignment.Center)
                                 .setPos(20, 5))
                         .setEnabled(widget -> !getBaseMetaTileEntity().isActive()))
                     .widget(
