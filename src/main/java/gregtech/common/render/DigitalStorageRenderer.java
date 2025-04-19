@@ -6,8 +6,6 @@ import static net.minecraftforge.common.util.ForgeDirection.*;
 import java.util.Arrays;
 import java.util.EnumMap;
 
-import gregtech.api.metatileentity.CoverableTileEntity;
-import gregtech.api.util.GTUtility;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
@@ -35,7 +33,9 @@ import codechicken.lib.vec.Translation;
 import cofh.lib.util.helpers.MathHelper;
 import gregtech.api.enums.Dyes;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.metatileentity.CoverableTileEntity;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GTUtility;
 import gregtech.api.util.GTUtilityClient;
 import gregtech.common.tileentities.storage.MTEDigitalChestBase;
 
@@ -51,7 +51,7 @@ public class DigitalStorageRenderer {
      */
     private static final double coverDif = 0.001d;
 
-    //spotless: off
+    // spotless:off
     static {
         boxFacingMap
             .put(ForgeDirection.UP, new Cuboid6(0 / 16.0, 14 / 16.0, 0 / 16.0, 16 / 16.0, 16 / 16.0, 16 / 16.0).expand(-coverDif));
@@ -66,10 +66,10 @@ public class DigitalStorageRenderer {
         boxFacingMap
             .put(ForgeDirection.NORTH, new Cuboid6(0 / 16.0, 0 / 16.0, 0 / 16.0, 16 / 16.0, 16 / 16.0, 2 / 16.0).expand(-coverDif));
     }
-    //spotless: on
+    // spotless:on
 
-    public void renderMachineInventory(MTEDigitalChestBase mte, @Nullable IBlockAccess aWorld, int aX, int aY,
-        int aZ, Block aBlock, RenderBlocks aRenderer) {
+    public void renderMachineInventory(MTEDigitalChestBase mte, @Nullable IBlockAccess aWorld, int aX, int aY, int aZ,
+        Block aBlock, RenderBlocks aRenderer) {
         renderMachine(mte, aWorld, aX, aY, aZ, aBlock, aRenderer);
     }
 
@@ -77,6 +77,7 @@ public class DigitalStorageRenderer {
         Block aBlock, RenderBlocks aRenderer) {
         ForgeDirection displayFacing = mte.mMainFacing;
         IIcon casingIcon = MACHINECASINGS_SIDE[mte.mTier].getIcon();
+        aRenderer.enableAO = false;
 
         boolean isDrawing = false;
         if (aRenderer.useInventoryTint && !GTUtilityClient.isDrawing(Tessellator.instance)) {
@@ -124,9 +125,10 @@ public class DigitalStorageRenderer {
             renderFace(state, displayFacing, boxFacingMap.get(facing.getOpposite()), aWorld, aX, aY, aZ, aBlock, aRenderer, mte, casingIcon);
         }
         //spotless:on
-        state.resetInstance(); //model corruption will happen without it
+        state.resetInstance(); // model corruption will happen without it
 
-        ForgeDirection frontFacing = mte.getBaseMetaTileEntity().getFrontFacing();
+        ForgeDirection frontFacing = mte.getBaseMetaTileEntity()
+            .getFrontFacing();
         if (aRenderer.useInventoryTint && isDrawing) {
             // Draw if we initiated the drawing
             isDrawing = false;
@@ -135,38 +137,38 @@ public class DigitalStorageRenderer {
             frontFacing = EAST;
         }
 
-        //BaseMetatileEntity#getTexture
+        // BaseMetatileEntity#getTexture
         ITexture[][] textureArray = new ITexture[6][];
-        if(displayFacing != UP && frontFacing != UP) {
-            textureArray[UP.ordinal()] = new ITexture[] { TextureFactory.of(OVERLAY_SCHEST),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_SCHEST_GLOW)
-                    .glow()
-                    .build() };
+        if (displayFacing != UP && frontFacing != UP) {
+            textureArray[UP.ordinal()] = new ITexture[] { TextureFactory.of(OVERLAY_SCHEST), TextureFactory.builder()
+                .addIcon(OVERLAY_SCHEST_GLOW)
+                .glow()
+                .build() };
         }
         for (int i = 0; i < 6; i++) {
-            final ITexture coverTexture = ((CoverableTileEntity) mte.getBaseMetaTileEntity()).getCoverTexture(ForgeDirection.getOrientation(i));
+            final ITexture coverTexture = ((CoverableTileEntity) mte.getBaseMetaTileEntity())
+                .getCoverTexture(ForgeDirection.getOrientation(i));
             final ITexture[] textureCovered;
             if (coverTexture != null) {
-                if(textureArray[i] != null) {
+                if (textureArray[i] != null) {
                     textureCovered = Arrays.copyOf(textureArray[i], textureArray[i].length + 1);
                     textureCovered[textureArray[i].length] = coverTexture;
                     textureArray[i] = textureCovered;
-                }
-                else {
-                    textureArray[i] = new ITexture[]{ coverTexture };
+                } else {
+                    textureArray[i] = new ITexture[] { coverTexture };
                 }
 
             }
         }
-        int outputFacing = mte.getBaseMetaTileEntity().getFrontFacing().ordinal();
+        int outputFacing = mte.getBaseMetaTileEntity()
+            .getFrontFacing()
+            .ordinal();
         textureArray[outputFacing] = new ITexture[] { TextureFactory.of(OVERLAY_PIPE_OUT) };
         new GTRendererBlock().renderStandardBlock(aWorld, aX, aY, aZ, aBlock, aRenderer, textureArray);
     }
 
-    private void renderFace(CCRenderState state, ForgeDirection face, Cuboid6 bounds,
-                                   @Nullable IBlockAccess aWorld, int aX, int aY, int aZ, Block aBlock, RenderBlocks aRenderer,
-                                   MTEDigitalChestBase mte, IIcon icon) {
+    private void renderFace(CCRenderState state, ForgeDirection face, Cuboid6 bounds, @Nullable IBlockAccess aWorld,
+        int aX, int aY, int aZ, Block aBlock, RenderBlocks aRenderer, MTEDigitalChestBase mte, IIcon icon) {
         int aColor = mte.getBaseMetaTileEntity()
             .getColorization();
         short[] rgba = Dyes.getModulation(aColor, Dyes.MACHINE_METAL.mRGBa);
@@ -174,27 +176,18 @@ public class DigitalStorageRenderer {
         state.baseColour = new ColourRGBA(rgba[0], rgba[1], rgba[2], 255).rgba();
 
         CCRenderState.IVertexOperation[] ops;
-        if(aWorld != null) {
+        if (aWorld != null) {
             state.lightMatrix.locate(aWorld, aX, aY, aZ);
-            state.setBrightnessInstance(aWorld, aX, aY, aZ);
-            ops = new CCRenderState.IVertexOperation[]{
-                new Translation(aX, aY, aZ),
-                new IconTransformation(icon),
-                state.lightMatrix
-            };
-        }
-        else {
+            ops = new CCRenderState.IVertexOperation[] { new Translation(aX, aY, aZ), new IconTransformation(icon),
+                state.lightMatrix };
+        } else {
             state.setDynamicInstance();
-            ops = new CCRenderState.IVertexOperation[]{
-                new Translation(aX, aY, aZ),
-                new IconTransformation(icon)
-            };
+            ops = new CCRenderState.IVertexOperation[] { new Translation(aX, aY, aZ), new IconTransformation(icon) };
         }
 
         BlockRenderer.BlockFace blockFace = new BlockRenderer.BlockFace();
         state.setModelInstance(blockFace);
         blockFace.loadCuboidFace(bounds, face.ordinal());
-        blockFace.computeLightCoords();
         state.setPipelineInstance(ops);
         state.renderInstance();
     }
@@ -216,11 +209,11 @@ public class DigitalStorageRenderer {
 
     public static void renderChestStack(MTEDigitalChestBase mte, double x, double y, double z,
         float timeSinceLastTick) {
-         ItemStack content = mte.displayItem;
-         if(content == null) {
+        ItemStack content = mte.displayItem;
+        if (content == null) {
             return;
-         }
-         content.stackSize = 1;
+        }
+        content.stackSize = 1;
         // TODO: config fancyrenderer
 
         float lastBrightnessX = OpenGlHelper.lastBrightnessX;
@@ -245,20 +238,21 @@ public class DigitalStorageRenderer {
             GlStateManager.popMatrix();
         }
 
-         OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 240, 240);
-         renderAmountText(x, y, z, mte.displayItemCount, mte.mMainFacing);
-         OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, lastBrightnessX, lastBrightnessY);
+        OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 240, 240);
+        renderAmountText(x, y, z, mte.displayItemCount, mte.mMainFacing);
+        OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, lastBrightnessX, lastBrightnessY);
     }
 
     public static void renderAmountText(double x, double y, double z, long amount, ForgeDirection frontFacing) {
-        if (!canRender(x, y, z, 64))
-            return;
+        if (!canRender(x, y, z, 64)) return;
 
         GlStateManager.pushMatrix();
         GlStateManager.translate(x, y, z);
-        GlStateManager.translate(frontFacing.offsetX * -1 / 16f, frontFacing.offsetY * -1 / 16f,
-            frontFacing.offsetZ * -1 / 16f);
-        GlStateManager.translate(0.5 + frontFacing.offsetX * 0.5, 0.5 + frontFacing.offsetY * 0.5,
+        GlStateManager
+            .translate(frontFacing.offsetX * -1 / 16f, frontFacing.offsetY * -1 / 16f, frontFacing.offsetZ * -1 / 16f);
+        GlStateManager.translate(
+            0.5 + frontFacing.offsetX * 0.5,
+            0.5 + frontFacing.offsetY * 0.5,
             0.5 + frontFacing.offsetZ * 0.5);
         if (frontFacing == UP || frontFacing == DOWN) {
             rotateToFace(frontFacing, ForgeDirection.SOUTH);
@@ -269,7 +263,7 @@ public class DigitalStorageRenderer {
         GlStateManager.scale(1f / 64, 1f / 64, 0);
         GlStateManager.translate(-32, -32, 0);
         GlStateManager.disableLighting();
-        fontRenderer.drawString(amountText, 32 - fontRenderer.getStringWidth(amountText) / 2, 40, 0xFFFFFF,false);
+        fontRenderer.drawString(amountText, 32 - fontRenderer.getStringWidth(amountText) / 2, 40, 0xFFFFFF, false);
         GlStateManager.enableLighting();
         GlStateManager.popMatrix();
     }
@@ -290,7 +284,8 @@ public class DigitalStorageRenderer {
     }
 
     public static void rotateToFace(ForgeDirection face, @Nullable ForgeDirection spin) {
-        int angle = spin == ForgeDirection.EAST ? 90 : spin == ForgeDirection.SOUTH ? 180 : spin == ForgeDirection.WEST ? -90 : 0;
+        int angle = spin == ForgeDirection.EAST ? 90
+            : spin == ForgeDirection.SOUTH ? 180 : spin == ForgeDirection.WEST ? -90 : 0;
         switch (face) {
             case UP:
                 GlStateManager.scale(1.0f, -1.0f, 1.0f);
@@ -300,8 +295,12 @@ public class DigitalStorageRenderer {
             case DOWN:
                 GlStateManager.scale(1.0f, -1.0f, 1.0f);
                 GlStateManager.rotate(-90.0f, 1.0f, 0.0f, 0.0f);
-                GlStateManager.rotate(spin == ForgeDirection.EAST ? 90 :
-                    spin == ForgeDirection.NORTH ? 180 : spin == ForgeDirection.WEST ? -90 : 0, 0, 0, 1);
+                GlStateManager.rotate(
+                    spin == ForgeDirection.EAST ? 90
+                        : spin == ForgeDirection.NORTH ? 180 : spin == ForgeDirection.WEST ? -90 : 0,
+                    0,
+                    0,
+                    1);
                 break;
             case EAST:
                 GlStateManager.scale(-1.0f, -1.0f, -1.0f);
