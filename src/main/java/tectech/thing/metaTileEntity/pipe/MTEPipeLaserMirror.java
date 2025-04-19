@@ -128,12 +128,23 @@ public class MTEPipeLaserMirror extends MTEPipeLaser {
 
     public ForgeDirection getBendDirection(ForgeDirection dir) {
         if (dir == null) return null;
-        for (ForgeDirection bendDir : connectedSides) {
-            if (bendDir != null && bendDir != dir) {
-                chainedFrontFacing = bendDir.getOpposite();
-                return bendDir;
-            }
+
+        if (connectionCount < 2) {
+            return null;
         }
+
+        ForgeDirection a = connectedSides[0];
+        ForgeDirection b = connectedSides[1];
+        if (dir == a) {
+            chainedFrontFacing = b.getOpposite();
+            return b;
+        }
+        if (dir == b) {
+            chainedFrontFacing = a.getOpposite();
+            return a;
+        }
+
+        // the input direction is not connected to this mirror
         return null;
     }
 
