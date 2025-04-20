@@ -551,14 +551,6 @@ public abstract class MetaTileEntity extends CommonMetaTileEntity implements ICr
     }
 
     /**
-     * If this TileEntity makes use of Sided Redstone behaviors. Determines only, if the Output Redstone Array is
-     * getting filled with 0 for true, or 15 for false.
-     */
-    public boolean hasSidedRedstoneOutputBehavior() {
-        return false;
-    }
-
-    /**
      * When the Facing gets changed.
      */
     public void onFacingChange() {
