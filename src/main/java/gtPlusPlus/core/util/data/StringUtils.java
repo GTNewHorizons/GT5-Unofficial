@@ -2,27 +2,28 @@ package gtPlusPlus.core.util.data;
 
 import java.util.ArrayList;
 
+import gregtech.api.util.CustomGlyphs;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.util.Utils;
 
 public class StringUtils {
 
     public static String superscript(String str) {
-        str = str.replaceAll("0", "\u2070");
-        str = str.replaceAll("1", "\u00B9");
-        str = str.replaceAll("2", "\u00B2");
-        str = str.replaceAll("3", "\u00B3");
-        str = str.replaceAll("4", "\u2074");
-        str = str.replaceAll("5", "\u2075");
-        str = str.replaceAll("6", "\u2076");
-        str = str.replaceAll("7", "\u2077");
-        str = str.replaceAll("8", "\u2078");
-        str = str.replaceAll("9", "\u2079");
+        str = str.replaceAll("0", CustomGlyphs.SUPERSCRIPT0);
+        str = str.replaceAll("1", CustomGlyphs.SUPERSCRIPT1);
+        str = str.replaceAll("2", CustomGlyphs.SUPERSCRIPT2);
+        str = str.replaceAll("3", CustomGlyphs.SUPERSCRIPT3);
+        str = str.replaceAll("4", CustomGlyphs.SUPERSCRIPT4);
+        str = str.replaceAll("5", CustomGlyphs.SUPERSCRIPT5);
+        str = str.replaceAll("6", CustomGlyphs.SUPERSCRIPT6);
+        str = str.replaceAll("7", CustomGlyphs.SUPERSCRIPT7);
+        str = str.replaceAll("8", CustomGlyphs.SUPERSCRIPT8);
+        str = str.replaceAll("9", CustomGlyphs.SUPERSCRIPT9);
         return str;
     }
 
     public static String subscript(String str) {
-        str = str.replaceAll("0", "\u2080");
+        str = str.replaceAll("0", CustomGlyphs.SUBSCRIPT0);
         str = str.replaceAll("1", "\u2081");
         str = str.replaceAll("2", "\u2082");
         str = str.replaceAll("3", "\u2083");
