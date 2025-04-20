@@ -500,6 +500,12 @@ public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge> i
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         mSpecialTier = 0;
+
+        if (renderDisabled && renderActive) {
+            buildRenderStruct();
+            renderActive = false;
+        }
+
         if (checkPiece(STRUCTURE_PIECE_MAIN, 4, 37, 1) && aStack != null) {
             if (aStack.isItemEqual(Materials.Carbon.getNanite(1))) {
                 mSpecialTier = 1;
@@ -734,10 +740,10 @@ public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge> i
 
     @Override
     public final void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        inputSeparation = !inputSeparation;
+        renderDisabled = !renderDisabled;
         GTUtility.sendChatToPlayer(
             aPlayer,
-            StatCollector.translateToLocal("GT5U.machines.separatebus") + " " + inputSeparation);
+            StatCollector.translateToLocal("GT5U.machines.animations." + (renderDisabled ? "disabled" : "enabled")));
     }
 
     @Override
