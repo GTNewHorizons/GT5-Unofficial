@@ -153,8 +153,6 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
             mColor = aNBT.getByte("mColor");
             mWorks = !aNBT.getBoolean("mWorks");
 
-            if (mSidedRedstone.length != 6) mSidedRedstone = new byte[] { 0, 0, 0, 0, 0, 0 };
-
             readCoverNBT(aNBT);
             loadMetaTileNBT(aNBT);
         }
@@ -250,6 +248,11 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
                     updateNeighbours(mStrongRedstone, oStrongRedstone);
                     oStrongRedstone = mStrongRedstone;
                     mNeedsBlockUpdate = false;
+                }
+
+                if (mNeedsTileUpdate) {
+                    worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+                    mNeedsTileUpdate = false;
                 }
             }
         }
