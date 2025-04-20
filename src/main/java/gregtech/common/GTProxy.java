@@ -210,7 +210,6 @@ public abstract class GTProxy implements IGTMod, IFuelHandler {
             "itemPotash",
             "itemCompressedCarbon",
             "itemBitumen",
-            "itemBioFuel",
             "itemCokeSugar",
             "itemCokeCactus",
             "itemCharcoalSugar",
