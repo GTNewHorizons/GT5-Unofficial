@@ -715,7 +715,7 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
             .setTextureGetter(toggleButtonTextureGetter)
             .setVariableBackgroundGetter(toggleButtonBackgroundGetter)
             .setSize(16, 16)
-            .addTooltip("Ritual mode")
+            .addTooltip(StatCollector.translateToLocal("kubatech.gui.tooltip.eec.ritual_mode"))
             .setTooltipShowUpDelay(TOOLTIP_DELAY));
         configurationElements.widget(new CycleButtonWidget().setToggle(() -> mIsProducingInfernalDrops, v -> {
             if (this.mMaxProgresstime > 0) {
@@ -733,8 +733,10 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
             .setTextureGetter(toggleButtonTextureGetter)
             .setVariableBackgroundGetter(toggleButtonBackgroundGetter)
             .setSize(16, 16)
-            .addTooltip("Is allowed to spawn infernal mobs")
-            .addTooltip(new Text("Does not affect mobs that are always infernal !").color(Color.GRAY.normal))
+            .addTooltip(StatCollector.translateToLocal("kubatech.gui.text.eec.infernal_drop"))
+            .addTooltip(
+                new Text(StatCollector.translateToLocal("kubatech.gui.text.eec.infernal_drop.always"))
+                    .color(Color.GRAY.normal))
             .setTooltipShowUpDelay(TOOLTIP_DELAY));
         configurationElements.widget(new CycleButtonWidget().setToggle(() -> voidAllDamagedAndEnchantedItems, v -> {
             if (this.mMaxProgresstime > 0) {
@@ -751,9 +753,9 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
             .setTextureGetter(toggleButtonTextureGetter)
             .setVariableBackgroundGetter(toggleButtonBackgroundGetter)
             .setSize(16, 16)
-            .addTooltip("Void all damaged and enchanted items")
+            .addTooltip(StatCollector.translateToLocal("kubatech.gui.text.eec.void_all_damaged"))
             .addTooltip(
-                new Text("Does not affect infernal drops and some special drops like Sticky Sword!")
+                new Text(StatCollector.translateToLocal("kubatech.gui.text.eec.void_all_damaged.always"))
                     .color(Color.GRAY.normal))
             .setTooltipShowUpDelay(TOOLTIP_DELAY));
     }

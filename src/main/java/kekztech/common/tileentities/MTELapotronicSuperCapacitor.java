@@ -1111,33 +1111,42 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
                 new FakeSyncWidget.BooleanSyncer(
                     () -> getBaseMetaTileEntity().wasShutdown(),
                     wasShutDown -> getBaseMetaTileEntity().setShutdownStatus(wasShutDown)));
-        screenElements.widget(
-            new TextWidget().setStringSupplier(
-                () -> "Total Capacity: " + EnumChatFormatting.BLUE + capacityCache + EnumChatFormatting.WHITE + " EU")
-                .setTextAlignment(Alignment.CenterLeft)
-                .setDefaultColor(COLOR_TEXT_WHITE.get())
-                .setEnabled(widget -> isActiveCache))
+        screenElements
+            .widget(
+                new TextWidget()
+                    .setStringSupplier(
+                        () -> StatCollector.translateToLocalFormatted(
+                            "kekztech.infodata.lapotronic_super_capacitor.total_capacity",
+                            EnumChatFormatting.BLUE + capacityCache + EnumChatFormatting.WHITE))
+                    .setTextAlignment(Alignment.CenterLeft)
+                    .setDefaultColor(COLOR_TEXT_WHITE.get())
+                    .setEnabled(widget -> isActiveCache))
             .widget(new FakeSyncWidget.StringSyncer(this::getCapacityCache, val -> capacityCache = val))
             .widget(
                 new TextWidget()
                     .setStringSupplier(
-                        () -> "Stored: " + EnumChatFormatting.RED + storedEUCache + EnumChatFormatting.WHITE + " EU")
+                        () -> StatCollector.translateToLocalFormatted(
+                            "kekztech.gui.lapotronic_super_capacitor.text.stored",
+                            EnumChatFormatting.RED + storedEUCache + EnumChatFormatting.WHITE))
                     .setTextAlignment(Alignment.CenterLeft)
                     .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setEnabled(widget -> isActiveCache))
             .widget(new FakeSyncWidget.StringSyncer(this::getStoredCache, val -> storedEUCache = val))
             .widget(
-                new TextWidget().setStringSupplier(() -> "Used capacity: " + EnumChatFormatting.RED + usedPercentCache)
+                new TextWidget()
+                    .setStringSupplier(
+                        () -> StatCollector.translateToLocalFormatted(
+                            "kekztech.infodata.lapotronic_super_capacitor.used_capacity",
+                            EnumChatFormatting.RED + usedPercentCache))
                     .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setEnabled(widget -> isActiveCache))
             .widget(new FakeSyncWidget.StringSyncer(this::getUsedPercentCache, val -> usedPercentCache = val))
             .widget(
                 new TextWidget()
                     .setStringSupplier(
-                        () -> "Passive Loss: " + EnumChatFormatting.RED
-                            + passiveDischargeAmountCache
-                            + EnumChatFormatting.WHITE
-                            + " EU/t")
+                        () -> StatCollector.translateToLocalFormatted(
+                            "kekztech.infodata.lapotronic_super_capacitor.passive_loss",
+                            EnumChatFormatting.RED + passiveDischargeAmountCache + EnumChatFormatting.WHITE))
                     .setTextAlignment(Alignment.CenterLeft)
                     .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setEnabled(widget -> isActiveCache))
@@ -1146,25 +1155,21 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
                     this::getPassiveDischargeAmountCache,
                     val -> passiveDischargeAmountCache = val))
             .widget(
-                new TextWidget()
-                    .setStringSupplier(
-                        () -> "Avg EU IN: " + EnumChatFormatting.GREEN
-                            + (avgInCache > 100_000_000_000L ? standardFormat.format(avgInCache)
-                                : numberFormat.format(avgInCache))
-                            + EnumChatFormatting.WHITE
-                            + " last 5s")
+                new TextWidget().setStringSupplier(
+                    () -> StatCollector.translateToLocalFormatted(
+                        "kekztech.gui.lapotronic_super_capacitor.text.avg_eu_in",
+                        EnumChatFormatting.GREEN + (avgInCache > 100_000_000_000L ? standardFormat.format(avgInCache)
+                            : numberFormat.format(avgInCache)) + EnumChatFormatting.WHITE))
                     .setTextAlignment(Alignment.CenterLeft)
                     .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setEnabled(widget -> isActiveCache))
             .widget(new FakeSyncWidget.LongSyncer(energyInputValues::avgLong, val -> avgInCache = val))
             .widget(
-                new TextWidget()
-                    .setStringSupplier(
-                        () -> "Avg EU OUT: " + EnumChatFormatting.RED
-                            + (avgOutCache > 100_000_000_000L ? standardFormat.format(avgOutCache)
-                                : numberFormat.format(avgOutCache))
-                            + EnumChatFormatting.WHITE
-                            + " last 5s")
+                new TextWidget().setStringSupplier(
+                    () -> StatCollector.translateToLocalFormatted(
+                        "kekztech.gui.lapotronic_super_capacitor.text.avg_eu_out",
+                        EnumChatFormatting.RED + (avgOutCache > 100_000_000_000L ? standardFormat.format(avgOutCache)
+                            : numberFormat.format(avgOutCache)) + EnumChatFormatting.WHITE))
                     .setTextAlignment(Alignment.CenterLeft)
                     .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setEnabled(widget -> isActiveCache))
@@ -1177,10 +1182,9 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
             .widget(
                 new TextWidget()
                     .setStringSupplier(
-                        () -> "Total wireless EU: " + EnumChatFormatting.BLUE
-                            + wirelessStoreCache
-                            + EnumChatFormatting.WHITE
-                            + " EU")
+                        () -> StatCollector.translateToLocalFormatted(
+                            "kekztech.infodata.lapotronic_super_capacitor.wireless_eu",
+                            EnumChatFormatting.BLUE + wirelessStoreCache + EnumChatFormatting.WHITE))
                     .setTextAlignment(Alignment.CenterLeft)
                     .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setEnabled(widget -> isActiveCache))

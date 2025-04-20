@@ -583,10 +583,12 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
                     .setEnabled(widget -> !mMachine))
             .widget(new FakeSyncWidget.BooleanSyncer(() -> mMachine, val -> mMachine = val));
 
-        screenElements.widget(
-            new TextWidget("Hit with Soft Mallet to start.").setTextAlignment(Alignment.CenterLeft)
-                .setDefaultColor(EnumChatFormatting.BLACK)
-                .setEnabled(widget -> getErrorDisplayID() == 0 && !getBaseMetaTileEntity().isActive()))
+        screenElements
+            .widget(
+                new TextWidget(StatCollector.translateToLocal("GT5U.gui.text.purification_plant.hit_to_start"))
+                    .setTextAlignment(Alignment.CenterLeft)
+                    .setDefaultColor(EnumChatFormatting.BLACK)
+                    .setEnabled(widget -> getErrorDisplayID() == 0 && !getBaseMetaTileEntity().isActive()))
             .widget(new FakeSyncWidget.IntegerSyncer(this::getErrorDisplayID, this::setErrorDisplayID))
             .widget(
                 new FakeSyncWidget.BooleanSyncer(
@@ -641,10 +643,12 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
 
         // Title widget
         builder.widget(
-            new TextWidget(StatCollector.translateToLocal("GT5U.infodata.purification_plant.status_title"))
-                .setTextAlignment(Alignment.Center)
-                .setPos(5, 10)
-                .setSize(windowWidth, 8));
+            new TextWidget(
+                EnumChatFormatting.BOLD
+                    + StatCollector.translateToLocal("GT5U.gui.text.purification_plant.unit_status"))
+                        .setTextAlignment(Alignment.Center)
+                        .setPos(5, 10)
+                        .setSize(windowWidth, 8));
 
         int currentYPosition = 20;
         Scrollable mainDisp = new Scrollable().setVerticalScroll()
@@ -663,7 +667,7 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
 
     private Widget makeStatusWindowButton() {
         TextButtonWidget widget = (TextButtonWidget) new TextButtonWidget(
-            StatCollector.translateToLocal("GT5U.infodata.purification_plant.status_button")).setLeftMargin(4)
+            StatCollector.translateToLocal("GT5U.gui.tooltip.purification_plant.status")).setLeftMargin(4)
                 .setSize(40, 16)
                 .setPos(10, 40);
         widget.button()
@@ -761,7 +765,7 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
                     return ret.toArray(new IDrawable[0]);
                 })
                 .attachSyncer(new FakeSyncWidget.BooleanSyncer(() -> debugMode, b -> debugMode = b), builder)
-                .addTooltip("Toggle debug mode.")
+                .addTooltip(StatCollector.translateToLocal("GT5U.gui.tooltip.purification_plant.debug_mode"))
                 .setTooltipShowUpDelay(TOOLTIP_DELAY)
                 .setPos(174, 112)
                 .setSize(16, 16));
