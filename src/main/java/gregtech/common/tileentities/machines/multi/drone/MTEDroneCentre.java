@@ -335,11 +335,11 @@ public class MTEDroneCentre extends MTEExtendedPowerMultiBlockBase<MTEDroneCentr
         IWailaConfigHandler config) {
         NBTTagCompound tag = accessor.getNBTData();
         currenttip.add(
-            EnumChatFormatting.AQUA + StatCollector.translateToLocal("GT5U.waila.drone_downlink.droneLevel")+ " "
-                + tag.getInteger("droneLevel"));
+            EnumChatFormatting.AQUA + StatCollector.translateToLocalFormatted("GT5U.waila.drone_downlink.droneLevel",
+                tag.getInteger("droneLevel")));
         currenttip.add(
-            StatCollector.translateToLocal("GT5U.waila.drone_downlink.connectionCount")+ " "
-                + tag.getInteger("connectionCount"));
+            StatCollector.translateToLocalFormatted("GT5U.waila.drone_downlink.connectionCount",
+                tag.getInteger("connectionCount")));
         super.getWailaBody(itemStack, currenttip, accessor, config);
     }
 
