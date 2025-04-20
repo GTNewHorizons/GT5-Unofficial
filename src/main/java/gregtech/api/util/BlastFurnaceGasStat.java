@@ -10,7 +10,8 @@ import gregtech.api.enums.Materials;
 
 public enum BlastFurnaceGasStat {
 
-    Nitrogen(Materials.Nitrogen.getGas(1L), 0.95, 1.0),
+    // No gas, recipe Time Multiplier = 1.25
+    Nitrogen(Materials.Nitrogen.getGas(1L), 1.0, 1.0),
     Helium(Materials.Helium.getGas(1L), 0.9, 1.0),
     Argon(Materials.Argon.getGas(1L), 0.8, 0.85),
     Radon(Materials.Radon.getGas(1L), 0.7, 0.7),

@@ -462,7 +462,7 @@ public class BlastFurnaceRecipes implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.SuperconductorUEVBase, 1),
                 GTUtility.getIntegratedCircuit(11))
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.ingotHot, Materials.SuperconductorUEVBase, 1))
-            .duration(16 * MINUTES + 23 * SECONDS)
+            .duration(13 * MINUTES + 6 * SECONDS)
             .eut((int) TierEU.RECIPE_UV)
             .metadata(COIL_HEAT, 11800)
             .metadata(ADDITIVE_AMOUNT, 1000)
@@ -475,7 +475,7 @@ public class BlastFurnaceRecipes implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.SuperconductorUIVBase, 1),
                 GTUtility.getIntegratedCircuit(11))
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.ingotHot, Materials.SuperconductorUIVBase, 1))
-            .duration(16 * MINUTES + 23 * SECONDS)
+            .duration(13 * MINUTES + 6 * SECONDS)
             .eut((int) TierEU.RECIPE_UHV)
             .metadata(COIL_HEAT, 12700)
             .metadata(ADDITIVE_AMOUNT, 1000)
@@ -488,13 +488,13 @@ public class BlastFurnaceRecipes implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.SuperconductorUMVBase, 1),
                 GTUtility.getIntegratedCircuit(11))
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.ingotHot, Materials.SuperconductorUMVBase, 1))
-            .duration(16 * MINUTES + 23 * SECONDS)
+            .duration(13 * MINUTES + 6 * SECONDS)
             .eut((int) TierEU.RECIPE_UEV)
             .metadata(COIL_HEAT, 13600)
             .metadata(ADDITIVE_AMOUNT, 1000)
             .metadata(NO_GAS, true)
             .metadata(NO_GAS_CIRCUIT_CONFIG, 1)
-            .addTo(blastFurnaceRecipes);
+            .addTo(BlastFurnaceWithGas);
 
         // CaO + 3C = CaC2 + CO
 

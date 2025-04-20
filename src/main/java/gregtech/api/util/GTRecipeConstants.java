@@ -596,7 +596,8 @@ public class GTRecipeConstants {
      * Add Electric Blast Furnace recipes that use gasses to reduce recipe time. Keep circuit config.
      * <p>
      * Use {@link GTRecipeConstants#COIL_HEAT} as heat level. Use {@link #ADDITIVE_AMOUNT} metadata as base gas consumed
-     * amount, and {@link #NO_GAS} metadata to generate recipe that is without gas.<br>
+     * amount, and {@link #NO_GAS} metadata to generate recipe that is without gas. Recipe time will be 1.25x without
+     * gas.<br>
      * Use {@link #NO_GAS_CIRCUIT_CONFIG} metadata as circuit config used in non-gas recipe if {@link #NO_GAS} is set to
      * true.
      */
@@ -632,7 +633,7 @@ public class GTRecipeConstants {
                     builder.copy()
                         .itemInputs(items.toArray(new ItemStack[0]))
                         .fluidInputs()
-                        .duration((int) Math.max(baseDuration, 1))
+                        .duration((int) Math.max(baseDuration * 1.25, 1))
                         .addTo(RecipeMaps.blastFurnaceRecipes));
             } else {
                 items.add(GTUtility.getIntegratedCircuit(circuitConfig));
@@ -640,7 +641,7 @@ public class GTRecipeConstants {
                     builder.copy()
                         .itemInputs(items.toArray(new ItemStack[0]))
                         .fluidInputs()
-                        .duration((int) Math.max(baseDuration, 1))
+                        .duration((int) Math.max(baseDuration * 1.25, 1))
                         .addTo(RecipeMaps.blastFurnaceRecipes));
             }
         }
