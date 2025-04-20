@@ -147,6 +147,38 @@ GTPP.algae.tooltip.generation=Generation: %d
 # Power Goggles
 GT5U.power_goggles.open_config_gui=Open Goggles Config
 GT5U.power_goggles.toggle_power_chart=Toggle Power Chart
+# Power Goggles config GUI
+GT5U.power_goggles_config.notation_scientific=SCIENTIFIC
+GT5U.power_goggles_config.notation_engineering=ENGINEERING
+GT5U.power_goggles_config.notation_si=SI
+GT5U.power_goggles_config.reading_both=BOTH
+GT5U.power_goggles_config.reading_total=TOTAL
+GT5U.power_goggles_config.reading_eut=EUT
+GT5U.power_goggles_config.settings_general=General Settings
+GT5U.power_goggles_config.settings_scale=Scale settings
+GT5U.power_goggles_config.settings_color_gradient=Color Scheme: Gradient
+GT5U.power_goggles_config.settings_color_text=Color Scheme: Text
+
+GT5U.power_goggles_config.toggle_notation=Toggle Notation: %s
+GT5U.power_goggles_config.toggle_reading=Toggle Reading Type: %s
+GT5U.power_goggles_config.toggle_hud_with_chat=Toggle HUD with chat open: %s
+GT5U.power_goggles_config.main_text_scale=Storage Text Scale
+GT5U.power_goggles_config.sub_text_scale=Sub Text Scale
+GT5U.power_goggles_config.hud_scale=HUD Scale
+
+GT5U.power_goggles_config.gradient_bad=Bad Gradient RGB
+GT5U.power_goggles_config.gradient_bad_tooltip=Affects what color the power rectangle's gradient approaches as EU change goes lower
+GT5U.power_goggles_config.gradient_ok=OK Gradient RGB
+GT5U.power_goggles_config.gradient_ok_tooltip=Affects what color the power rectangle's gradient approaches as EU change approaches 0
+GT5U.power_goggles_config.gradient_good=Good Gradient RGB
+GT5U.power_goggles_config.gradient_good_tooltip=Affects what color the power rectangle's gradient approaches as EU change goes higher
+
+GT5U.power_goggles_config.text_bad=Bad Text RGB
+GT5U.power_goggles_config.text_bad_tooltip=Affects Text and Power Chart color when EU change is negative
+GT5U.power_goggles_config.text_ok=OK Text RGB
+GT5U.power_goggles_config.text_ok_tooltip=Affects Text color when EU change is 0
+GT5U.power_goggles_config.text_good=Good Text RGB
+GT5U.power_goggles_config.text_good_tooltip=Affects Text and Power Chart color when EU change is positive
 
 GT5U.autoplace.error.no_hatch=§cSuggested to place hatch §4%s§c but none was found
 GT5U.autoplace.error.no_mte.id=§cSuggested to place machine with meta ID §4%s§c but none was found
