@@ -75,6 +75,7 @@ import gregtech.common.blocks.BlockGranites;
 import gregtech.common.blocks.BlockLaser;
 import gregtech.common.blocks.BlockMachines;
 import gregtech.common.blocks.BlockMetal;
+import gregtech.common.blocks.BlockNanoForgeRenderer;
 import gregtech.common.blocks.BlockOres;
 import gregtech.common.blocks.BlockReinforced;
 import gregtech.common.blocks.BlockStones;
@@ -99,6 +100,7 @@ import gregtech.common.items.MetaGeneratedTool01;
 import gregtech.common.tileentities.render.TileEntityBlackhole;
 import gregtech.common.tileentities.render.TileEntityDrone;
 import gregtech.common.tileentities.render.TileEntityLaser;
+import gregtech.common.tileentities.render.TileEntityNanoForgeRenderer;
 import gregtech.common.tileentities.render.TileEntityWormhole;
 
 public class LoaderGTBlockFluid implements Runnable {
@@ -560,6 +562,7 @@ public class LoaderGTBlockFluid implements Runnable {
         GregTechAPI.sLaserRender = new BlockLaser();
         GregTechAPI.sWormholeRender = new BlockWormholeRender();
         GregTechAPI.sBlackholeRender = new BlockBlackholeRenderer();
+        GregTechAPI.nanoForgeRender = new BlockNanoForgeRenderer();
 
         // meta ID order, DO NOT CHANGE ORDER
 
@@ -695,6 +698,9 @@ public class LoaderGTBlockFluid implements Runnable {
 
         GTLog.out.println("GTMod: Registering the BlackholeRender.");
         GameRegistry.registerTileEntity(TileEntityBlackhole.class, "BlackholeRender");
+
+        GTLog.out.println("GTMod: Registering the NanoForgeRender.");
+        GameRegistry.registerTileEntity(TileEntityNanoForgeRenderer.class, "NanoForgeRender");
 
         GTLog.out.println("GTMod: Registering the BaseMetaPipeEntity.");
         GameRegistry.registerTileEntity(BaseMetaPipeEntity.class, "BaseMetaPipeEntity");
