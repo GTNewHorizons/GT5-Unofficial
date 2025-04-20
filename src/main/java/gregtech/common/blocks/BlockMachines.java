@@ -9,6 +9,7 @@ import java.util.Random;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
+import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
@@ -18,6 +19,7 @@ import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -64,7 +66,11 @@ public class BlockMachines extends GTGenericBlock implements IDebugableBlock, IT
     private boolean renderAsNormalBlock;
 
     public BlockMachines() {
-        super(ItemMachines.class, "gt.blockmachines", new MaterialMachines());
+        this(ItemMachines.class, "gt.blockmachines", new MaterialMachines());
+    }
+
+    protected BlockMachines(Class<? extends ItemBlock> aItemClass, String aName, Material aMaterial) {
+        super(aItemClass, aName, aMaterial);
         GregTechAPI.registerMachineBlock(this, -1);
         setHardness(1.0F);
         setResistance(10.0F);
