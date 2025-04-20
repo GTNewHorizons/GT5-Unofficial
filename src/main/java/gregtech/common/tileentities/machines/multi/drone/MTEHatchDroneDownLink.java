@@ -311,10 +311,11 @@ public class MTEHatchDroneDownLink extends MTEHatchMaintenance {
         } else {
             currenttip.add(
                 EnumChatFormatting.AQUA + StatCollector.translateToLocal("GT5U.waila.drone_downlink.connection")
+                    + " x:"
                     + tag.getInteger("x")
-                    + " "
+                    + " y:"
                     + tag.getInteger("y")
-                    + " "
+                    + " z:"
                     + tag.getInteger("z"));
             currenttip.add(EnumChatFormatting.YELLOW + tag.getString("name"));
         }
