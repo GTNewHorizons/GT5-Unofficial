@@ -145,7 +145,7 @@ public class MTETeslaCoil extends MTEBasicBatteryBuffer implements ITeslaConnect
         PlayerChatHelper.SendInfo(
             aPlayer,
             translateToLocalFormatted("tt.keyphrase.Tesla_radius_set_to", clientLocale) + " " + transferRadius + "m");
-        return true;
+        return false;
     }
 
     // Cheeky skrub stuff to get machine to switch powerPass on soft mallet
