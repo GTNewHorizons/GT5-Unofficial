@@ -6,6 +6,7 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.StatCollector;
 
 import gregtech.api.util.GTLanguageManager;
 
@@ -19,10 +20,6 @@ public abstract class GregtechMetaItemCasingsAbstract extends ItemBlock {
         .addStringLocalization("mu.coil01tooltip", "Base Heating Capacity = 1350 Kelvin");
     protected final String mCasing_CokeCoil2 = GTLanguageManager
         .addStringLocalization("mu.coil02tooltip", "Base Heating Capacity = 2275 Kelvin");
-    protected final String mNoMobsToolTip = GTLanguageManager
-        .addStringLocalization("gt.nomobspawnsonthisblock", "Mobs cannot Spawn on this Block");
-    protected final String mNoTileEntityToolTip = GTLanguageManager
-        .addStringLocalization("gt.notileentityinthisblock", "This is NOT a TileEntity!");
 
     public GregtechMetaItemCasingsAbstract(final Block par1) {
         super(par1);
@@ -61,7 +58,7 @@ public abstract class GregtechMetaItemCasingsAbstract extends ItemBlock {
             default:
                 break;
         }
-        aList.add(this.mNoMobsToolTip);
-        aList.add(this.mNoTileEntityToolTip);
+        aList.add(StatCollector.translateToLocal("gt.casing.no-mob-spawning"));
+        aList.add(StatCollector.translateToLocal("gt.casing.not-tile-entity"));
     }
 }
