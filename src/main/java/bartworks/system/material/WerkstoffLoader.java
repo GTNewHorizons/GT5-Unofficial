@@ -142,7 +142,14 @@ public class WerkstoffLoader {
 
     public static final SubTag NOBLE_GAS = SubTag.getNewSubTag("NobleGas");
     public static final SubTag ANAEROBE_GAS = SubTag.getNewSubTag("AnaerobeGas");
+    /**
+     * Was used to add Nitrogen, Krypton and Oganesson to blast furnace smelting recipe. Now it just adds all types of
+     * gasses.
+     */
     public static final SubTag ANAEROBE_SMELTING = SubTag.getNewSubTag("AnaerobeSmelting");
+    /**
+     * Was used to add noble gasses to blast furnace smelting recipe. Now it just adds all types of gasses.
+     */
     public static final SubTag NOBLE_GAS_SMELTING = SubTag.getNewSubTag("NobleGasSmelting");
     public static final SubTag NO_BLAST = SubTag.getNewSubTag("NoBlast");
 
