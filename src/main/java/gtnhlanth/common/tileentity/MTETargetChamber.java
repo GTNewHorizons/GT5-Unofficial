@@ -50,16 +50,14 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
-import gtnhlanth.api.recipe.LanthanidesRecipeMaps;
 import gregtech.common.misc.GTStructureChannels;
+import gtnhlanth.api.recipe.LanthanidesRecipeMaps;
 import gtnhlanth.common.beamline.BeamInformation;
 import gtnhlanth.common.beamline.Particle;
 import gtnhlanth.common.hatch.MTEBusInputFocus;
 import gtnhlanth.common.hatch.MTEHatchInputBeamline;
 import gtnhlanth.common.register.LanthItemList;
 import gtnhlanth.common.tileentity.recipe.beamline.TargetChamberMetadata;
-import gtnhlanth.common.tileentity.recipe.beamline.BeamlineRecipeAdder2;
-import gtnhlanth.common.tileentity.recipe.beamline.RecipeTC;
 import gtnhlanth.util.DescTextLocalization;
 
 public class MTETargetChamber extends MTEEnhancedMultiBlockBase<MTETargetChamber> implements ISurvivalConstructable {
