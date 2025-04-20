@@ -830,6 +830,11 @@ public class GTRecipe implements Comparable<GTRecipe> {
         return this;
     }
 
+    public GTRecipe setChances(int... aChances) {
+        this.mChances = aChances;
+        return this;
+    }
+
     public GTRecipe setDuration(int aDuration) {
         this.mDuration = aDuration;
         return this;
