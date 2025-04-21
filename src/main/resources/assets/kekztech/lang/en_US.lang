@@ -115,3 +115,46 @@ gui.kekztech_lapotronicenergyunit.wireless=Wireless mode
 gui.kekztech_lapotronicenergyunit.wireless_rebalance=Rebalance Wireless (One Time Use)
 gui.kekztech_lapotronicenergyunit.warning.header=Warning!
 gui.kekztech_lapotronicenergyunit.warning.text=Make sure to carefully read and understand the tooltip before activating wireless mode, it can potentially brick your base. This warning won't appear again.
+
+# -------- Tooltips
+tooltip.kekztech.crafting_component=Crafting component for KekzTech things
+tooltip.kekztech.lapotronic_energy_unit.capacity=Capacity: §c%s§7 EU
+tooltip.kekztech.lapotronic_energy_unit.wire_less_transfer=Supports up to §c%s§7 EU/t of wireless transfer per %s§7 capacitor.
+tooltip.kekztech.lapotronic_energy_unit.capacity.none=Capacity: None
+tooltip.kekztech.tfft.capacity=Capacity: §9%s§7 L
+tooltip.kekztech.tfft.capacity.per_fluid=Per Fluid Capacity: §9%s§7 L
+tooltip.kekztech.tfft.power_draw=Power Draw: §9%d§7 EU/t
+tooltip.kekztech.wrong=REMINDER: KekzTech recipes are only tested to work in GTNH!\nPlaceholder item in case something went wrong\nIf this item shows up in GTNH, you may report it to:\nhttps://github.com/kekzdealer/KekzTech
+
+# -------- InfoData
+kekztech.infodata.operational_data=Operational Data:
+kekztech.infodata.multi.maintenance_status=Maintenance Status: %s
+kekztech.infodata.multi.maintenance_status.ok=Working perfectly
+kekztech.infodata.multi.maintenance_status.bad=Has Problems
+kekztech.infodata.lapotronic_super_capacitor.eu_stored=EU Stored: %s EU
+kekztech.infodata.lapotronic_super_capacitor.used_capacity=Used Capacity: %s
+kekztech.infodata.lapotronic_super_capacitor.total_capacity=Total Capacity: %s EU
+kekztech.infodata.lapotronic_super_capacitor.passive_loss=Passive Loss: %s EU/t
+kekztech.infodata.lapotronic_super_capacitor.eu_in=EU IN: %s EU/t
+kekztech.infodata.lapotronic_super_capacitor.eu_out=EU OUT: %s EU/t
+kekztech.infodata.lapotronic_super_capacitor.avg_eu_in.sec=Avg EU IN: %s (last %d seconds)
+kekztech.infodata.lapotronic_super_capacitor.avg_eu_out.sec=Avg EU OUT: %s (last %d seconds)
+kekztech.infodata.lapotronic_super_capacitor.avg_eu_in.min5=Avg EU IN: %s (last 5 minutes)
+kekztech.infodata.lapotronic_super_capacitor.avg_eu_out.min5=Avg EU OUT: %s (last 5 minutes)
+kekztech.infodata.lapotronic_super_capacitor.avg_eu_in.hour1=Avg EU IN: %s (last 1 hour)
+kekztech.infodata.lapotronic_super_capacitor.avg_eu_out.hour1=Avg EU OUT: %s (last 1 hour)
+kekztech.infodata.lapotronic_super_capacitor.time_to.full=Time to Full: %s
+kekztech.infodata.lapotronic_super_capacitor.time_to.sth=Time to Something: Infinity years
+kekztech.infodata.lapotronic_super_capacitor.time_to.empty=Time to Empty: %s
+kekztech.infodata.lapotronic_super_capacitor.wireless_mode=Wireless mode: %s
+kekztech.infodata.lapotronic_super_capacitor.wireless_mode.enabled=enabled
+kekztech.infodata.lapotronic_super_capacitor.wireless_mode.disabled=disabled
+kekztech.infodata.lapotronic_super_capacitor.capacitors=%s Capacitors detected: %d
+kekztech.infodata.lapotronic_super_capacitor.wireless_eu=Total wireless EU: %s EU
+kekztech.infodata.tank.tfft.stored_fluids=Stored Fluids:
+kekztech.infodata.tank.tfft.stored_fluids.null=NULL
+kekztech.infodata.tank.tfft.used=Used Capacity: %sL
+kekztech.infodata.tank.tfft.total=Total Capacity: %sL
+kekztech.infodata.tank.tfft.per_fluid_capacity=Per-Fluid Capacity: %sL
+kekztech.infodata.tank.tfft.running_cost=Running Cost: %dEU/t
+kekztech.infodata.tank.tfft.auto_voiding=Auto-voiding: %b

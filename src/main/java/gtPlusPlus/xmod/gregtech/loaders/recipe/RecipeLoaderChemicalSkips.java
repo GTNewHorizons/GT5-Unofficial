@@ -122,7 +122,7 @@ public class RecipeLoaderChemicalSkips {
                 WerkstoffLoader.LuVTierMaterial.get(OrePrefixes.dust, 64))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_UV)
-            .metadata(QFT_CATALYST, GregtechItemList.PlasticPolymerCatalyst.get(0))
+            .metadata(QFT_CATALYST, GregtechItemList.PlatinumGroupCatalyst.get(0))
             .metadata(QFT_FOCUS_TIER, 1)
             .addTo(quantumForceTransformerRecipes);
         GTValues.RA.stdBuilder()
@@ -409,7 +409,7 @@ public class RecipeLoaderChemicalSkips {
             .fluidOutputs(new FluidStack(MaterialsElements.getInstance().NEPTUNIUM.getPlasma(), 100))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_UHV)
-            .metadata(FUSION_THRESHOLD, 1_000_000_000)
+            .metadata(FUSION_THRESHOLD, 1_000_000_000L)
             .addTo(fusionRecipes);
 
         GTValues.RA.stdBuilder()
@@ -417,7 +417,7 @@ public class RecipeLoaderChemicalSkips {
             .fluidOutputs(new FluidStack(MaterialsElements.getInstance().FERMIUM.getPlasma(), 100))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_UHV)
-            .metadata(FUSION_THRESHOLD, 1_000_000_000)
+            .metadata(FUSION_THRESHOLD, 1_000_000_000L)
             .addTo(fusionRecipes);
 
         // MK5 versions
@@ -428,7 +428,7 @@ public class RecipeLoaderChemicalSkips {
             .fluidOutputs(new FluidStack(MaterialsElements.getInstance().NEPTUNIUM.getPlasma(), 288))
             .duration(1 * SECONDS + 12 * TICKS)
             .eut(TierEU.RECIPE_UEV)
-            .metadata(FUSION_THRESHOLD, 1_000_000_000)
+            .metadata(FUSION_THRESHOLD, 1_000_000_000L)
             .addTo(fusionRecipes);
 
         GTValues.RA.stdBuilder()
@@ -438,7 +438,7 @@ public class RecipeLoaderChemicalSkips {
             .fluidOutputs(new FluidStack(MaterialsElements.getInstance().FERMIUM.getPlasma(), 288))
             .duration(1 * SECONDS + 12 * TICKS)
             .eut(TierEU.RECIPE_UEV)
-            .metadata(FUSION_THRESHOLD, 1_000_000_000)
+            .metadata(FUSION_THRESHOLD, 1_000_000_000L)
             .addTo(fusionRecipes);
     }
 

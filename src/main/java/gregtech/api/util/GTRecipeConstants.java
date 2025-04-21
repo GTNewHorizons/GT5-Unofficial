@@ -59,8 +59,8 @@ public class GTRecipeConstants {
     /**
      * Used for fusion reactor. Denotes ignition threshold.
      */
-    public static final RecipeMetadataKey<Integer> FUSION_THRESHOLD = SimpleRecipeMetadataKey
-        .create(Integer.class, "fusion_threshold");
+    public static final RecipeMetadataKey<Long> FUSION_THRESHOLD = SimpleRecipeMetadataKey
+        .create(Long.class, "fusion_threshold");
 
     /**
      * Scanning data used for scanner for assembly line recipes (time and voltage).
@@ -724,7 +724,6 @@ public class GTRecipeConstants {
 
     static {
         GTRecipeMapUtil.SPECIAL_VALUE_ALIASES.add(COIL_HEAT);
-        GTRecipeMapUtil.SPECIAL_VALUE_ALIASES.add(FUSION_THRESHOLD);
         GTRecipeMapUtil.SPECIAL_VALUE_ALIASES.add(FUEL_VALUE);
         GTRecipeMapUtil.SPECIAL_VALUE_ALIASES.add(NANO_FORGE_TIER);
         GTRecipeMapUtil.SPECIAL_VALUE_ALIASES.add(FOG_EXOTIC_TIER);

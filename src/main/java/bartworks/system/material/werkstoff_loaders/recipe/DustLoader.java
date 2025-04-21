@@ -36,10 +36,11 @@ import java.util.List;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
+import org.apache.commons.lang3.tuple.Pair;
+
 import bartworks.system.material.Werkstoff;
 import bartworks.system.material.WerkstoffLoader;
 import bartworks.system.material.werkstoff_loaders.IWerkstoffRunnable;
-import bartworks.util.Pair;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
@@ -93,7 +94,7 @@ public class DustLoader implements IWerkstoffRunnable {
                                 if (flOutputs.size() > 1) {
                                     if (!tracker.containsKey(key)) {
                                         stOutputs.add(materialKey.getCells(value));
-                                        tracker.put(key, new Pair<>(value, stOutputs.size() - 1));
+                                        tracker.put(key, Pair.of(value, stOutputs.size() - 1));
                                     } else {
                                         stOutputs.add(
                                             materialKey.getCells(
@@ -118,7 +119,7 @@ public class DustLoader implements IWerkstoffRunnable {
                                     if (flOutputs.size() > 1) {
                                         if (!tracker.containsKey(key)) {
                                             stOutputs.add(materialKey.getCells(value));
-                                            tracker.put(key, new Pair<>(value, stOutputs.size() - 1));
+                                            tracker.put(key, Pair.of(value, stOutputs.size() - 1));
                                         } else {
                                             stOutputs.add(
                                                 materialKey.getCells(
@@ -133,7 +134,7 @@ public class DustLoader implements IWerkstoffRunnable {
                                 }
                                 if (!tracker.containsKey(key)) {
                                     stOutputs.add(materialKey.getDust(value));
-                                    tracker.put(key, new Pair<>(value, stOutputs.size() - 1));
+                                    tracker.put(key, Pair.of(value, stOutputs.size() - 1));
                                 } else {
                                     stOutputs.add(
                                         materialKey.getDust(
@@ -155,7 +156,7 @@ public class DustLoader implements IWerkstoffRunnable {
                                 if (flOutputs.size() > 1) {
                                     if (!tracker.containsKey(key)) {
                                         stOutputs.add(werkstoffKey.get(cell, value));
-                                        tracker.put(key, new Pair<>(value, stOutputs.size() - 1));
+                                        tracker.put(key, Pair.of(value, stOutputs.size() - 1));
                                     } else {
                                         stOutputs.add(
                                             werkstoffKey.get(
@@ -172,7 +173,7 @@ public class DustLoader implements IWerkstoffRunnable {
                                 if (!werkstoffKey.hasItemType(dust)) continue;
                                 if (!tracker.containsKey(key)) {
                                     stOutputs.add(werkstoffKey.get(dust, value));
-                                    tracker.put(key, new Pair<>(value, stOutputs.size() - 1));
+                                    tracker.put(key, Pair.of(value, stOutputs.size() - 1));
                                 } else {
                                     stOutputs.add(
                                         werkstoffKey.get(

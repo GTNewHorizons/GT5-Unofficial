@@ -555,6 +555,7 @@ public class GTLanguageManager {
         addStringLocalization("Interaction_DESCRIPTION_Index_507", "Safe Mode");
         addStringLocalization("Interaction_DESCRIPTION_Index_508", "Requires Stabilized Black Hole");
         addStringLocalization("Interaction_DESCRIPTION_Index_509", "Requires HIP Unit");
+        addStringLocalization("Interaction_DESCRIPTION_Index_510", "Multi Tier required: ");
         addStringLocalization("Interaction_DESCRIPTION_Index_602", "Use Private Frequency");
         addStringLocalization("Interaction_DESCRIPTION_Index_756", "Connectable: ");
         addStringLocalization("Interaction_DESCRIPTION_Index_ALL", "All");

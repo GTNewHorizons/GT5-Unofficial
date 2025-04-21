@@ -1804,7 +1804,7 @@ public class RecipeLoader2 {
             .fluidOutputs(GGMaterial.metastableOganesson.getMolten(36))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_UV)
-            .metadata(FUSION_THRESHOLD, 1_000_000_000)
+            .metadata(FUSION_THRESHOLD, 1_000_000_000L)
             .addTo(fusionRecipes);
 
         // Mk5 recipe
@@ -1813,7 +1813,7 @@ public class RecipeLoader2 {
             .fluidOutputs(GGMaterial.metastableOganesson.getMolten(288))
             .eut(TierEU.RECIPE_UEV)
             .duration(5 * SECONDS)
-            .metadata(FUSION_THRESHOLD, 1_000_000_000)
+            .metadata(FUSION_THRESHOLD, 1_000_000_000L)
             .addTo(fusionRecipes);
 
         GTValues.RA.stdBuilder()

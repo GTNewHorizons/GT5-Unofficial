@@ -15,6 +15,7 @@ import javax.annotation.Nonnull;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.EnumChatFormatting;
@@ -22,11 +23,13 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
 
-import com.gtnewhorizon.structurelib.alignment.constructable.IConstructable;
+import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
+import com.gtnewhorizon.structurelib.structure.IItemSource;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.util.Vec3Impl;
 
 import gregtech.api.enums.Textures;
+import gregtech.api.hazards.HazardProtection;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -34,7 +37,6 @@ import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.util.GTRecipe;
-import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReason;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
@@ -51,7 +53,7 @@ import tectech.thing.metaTileEntity.multi.base.render.TTRenderedExtendedFacingTe
 /**
  * Created by danie_000 on 17.12.2016.
  */
-public class MTEMicrowave extends TTMultiblockBase implements IConstructable {
+public class MTEMicrowave extends TTMultiblockBase implements ISurvivalConstructable {
 
     // region variables
     private boolean hasBeenPausedThisCycle = false;
@@ -189,7 +191,7 @@ public class MTEMicrowave extends TTMultiblockBase implements IConstructable {
                         ((EntityItem) entity).delayBeforeCanPickup = 2;
                         entity.setDead();
                     } else if (entity instanceof EntityLivingBase) {
-                        if (!GTUtility.isWearingFullElectroHazmat((EntityLivingBase) entity)) {
+                        if (!HazardProtection.isWearingFullElectroHazmat((EntityLivingBase) entity)) {
                             entity.attackEntityFrom(MainLoader.microwaving, damagingFactor);
                         }
                     }
@@ -304,6 +306,12 @@ public class MTEMicrowave extends TTMultiblockBase implements IConstructable {
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
         structureBuild_EM("main", 2, 2, 0, stackSize, hintsOnly);
+    }
+
+    @Override
+    public int survivalConstruct(ItemStack stackSize, int elementBudget, IItemSource source, EntityPlayerMP actor) {
+        if (mMachine) return -1;
+        return survivialBuildPiece("main", stackSize, 2, 2, 0, elementBudget, source, actor, false, true);
     }
 
     @Override

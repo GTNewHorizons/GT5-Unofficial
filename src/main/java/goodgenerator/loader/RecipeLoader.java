@@ -181,7 +181,7 @@ public class RecipeLoader {
             .fluidOutputs(GGMaterial.uraniumBasedLiquidFuelExcited.getFluidOrGas(10))
             .duration(2 * SECONDS)
             .eut(TierEU.RECIPE_IV)
-            .metadata(FUSION_THRESHOLD, 200000000)
+            .metadata(FUSION_THRESHOLD, 200000000L)
             .addTo(fusionRecipes);
 
         // Thorium Liquid Process Line
@@ -277,7 +277,7 @@ public class RecipeLoader {
             .fluidOutputs(GGMaterial.plutoniumBasedLiquidFuelExcited.getFluidOrGas(20))
             .duration(1 * SECONDS)
             .eut(TierEU.RECIPE_LuV / 2)
-            .metadata(FUSION_THRESHOLD, 220000000)
+            .metadata(FUSION_THRESHOLD, 220000000L)
             .addTo(fusionRecipes);
 
         // Th-232
@@ -622,7 +622,7 @@ public class RecipeLoader {
             .fluidOutputs(GGMaterial.naquadahBasedFuelMkI.getFluidOrGas(100))
             .duration(25 * SECONDS)
             .eut(TierEU.RECIPE_LuV)
-            .metadata(FUSION_THRESHOLD, 320000000)
+            .metadata(FUSION_THRESHOLD, 320000000L)
             .addTo(fusionRecipes);
 
         GTValues.RA.stdBuilder()

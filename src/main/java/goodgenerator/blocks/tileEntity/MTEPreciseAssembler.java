@@ -1,9 +1,9 @@
 package goodgenerator.blocks.tileEntity;
 
-import static bartworks.util.BWUtil.ofGlassTieredMixed;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static gregtech.api.enums.HatchElement.*;
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
+import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 import static gregtech.api.util.GTUtility.validMTEList;
 
@@ -16,7 +16,9 @@ import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
+import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
@@ -36,9 +38,14 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureUtility;
+import com.gtnewhorizons.modularui.api.math.Alignment;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.gtnewhorizons.modularui.common.widget.CycleButtonWidget;
+import com.gtnewhorizons.modularui.common.widget.DynamicPositionedColumn;
+import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
+import com.gtnewhorizons.modularui.common.widget.SlotWidget;
+import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -51,6 +58,7 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
+import gregtech.api.enums.VoltageIndex;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
@@ -101,6 +109,7 @@ public class MTEPreciseAssembler extends MTEExtendedPowerMultiBlockBase<MTEPreci
     protected int mode;
     protected int energyHatchTier;
     private static final int CASING_INDEX = 1541;
+    private int glassTier = -1;
 
     public MTEPreciseAssembler(String name) {
         super(name);
@@ -125,7 +134,7 @@ public class MTEPreciseAssembler extends MTEExtendedPowerMultiBlockBase<MTEPreci
                 .addElement(
                     'C',
                     withChannel(
-                        "unit casing",
+                        "unit_casing",
                         HatchElementBuilder.<MTEPreciseAssembler>builder()
                             .atLeast(
                                 InputBus,
@@ -142,8 +151,7 @@ public class MTEPreciseAssembler extends MTEExtendedPowerMultiBlockBase<MTEPreci
                                 onElementPass(
                                     x -> x.casingAmount++,
                                     StructureUtility.ofBlocksTiered(
-                                        (block, meta) -> block == Loaders.impreciseUnitCasing ? -1
-                                            : block == Loaders.preciseUnitCasing ? meta : -2,
+                                        MTEPreciseAssembler::getCasingBlockTier,
                                         ImmutableList.of(
                                             Pair.of(Loaders.impreciseUnitCasing, 0),
                                             Pair.of(Loaders.preciseUnitCasing, 0),
@@ -154,30 +162,17 @@ public class MTEPreciseAssembler extends MTEExtendedPowerMultiBlockBase<MTEPreci
                                         MTEPreciseAssembler::setCasingTier,
                                         MTEPreciseAssembler::getCasingTier)))))
                 .addElement('F', ofFrame(Materials.TungstenSteel))
-                .addElement('G', withChannel("glass", ofGlassTieredMixed((byte) 4, (byte) 127, 2)))
+                .addElement('G', chainAllGlasses(-1, (te, t) -> te.glassTier = t, te -> te.glassTier))
                 .addElement(
                     'M',
                     withChannel(
-                        "machine casing",
+                        "machine_casing",
                         StructureUtility.ofBlocksTiered(
-                            (block,
-                                meta) -> (block == GregTechAPI.sBlockCasings1 && meta >= 0
-                                    && meta <= checkEnergyHatchTier())
-                                    || (block == GregTechAPI.sBlockCasingsNH && meta >= 10
-                                        && meta <= checkEnergyHatchTier()) ? meta : -2,
-                            Stream.concat(
-                                IntStream.range(0, 10)
-                                    .mapToObj(
-                                        meta -> org.apache.commons.lang3.tuple.Pair
-                                            .of(GregTechAPI.sBlockCasings1, meta))
-                                    .collect(Collectors.toList())
-                                    .stream(),
-                                IntStream.range(10, 15)
-                                    .mapToObj(
-                                        meta -> org.apache.commons.lang3.tuple.Pair
-                                            .of(GregTechAPI.sBlockCasingsNH, meta))
-                                    .collect(Collectors.toList())
-                                    .stream())
+                            (block, meta) -> (block == GregTechAPI.sBlockCasings1 && meta >= 0 && meta <= 9) ? meta
+                                : null,
+                            IntStream.range(0, 10)
+                                .mapToObj(
+                                    meta -> org.apache.commons.lang3.tuple.Pair.of(GregTechAPI.sBlockCasings1, meta))
                                 .collect(Collectors.toList()),
                             -1,
                             MTEPreciseAssembler::setMachineTier,
@@ -253,12 +248,13 @@ public class MTEPreciseAssembler extends MTEExtendedPowerMultiBlockBase<MTEPreci
     }
 
     @Override
-    public final void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+    public final void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
+        ItemStack aTool) {
         if (getBaseMetaTileEntity().isServerSide()) {
             this.mode = (this.mode + 1) % 2;
             GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("preciseassembler.chat." + this.mode));
         }
-        super.onScrewdriverRightClick(side, aPlayer, aX, aY, aZ);
+        super.onScrewdriverRightClick(side, aPlayer, aX, aY, aZ, aTool);
     }
 
     @Override
@@ -282,7 +278,7 @@ public class MTEPreciseAssembler extends MTEExtendedPowerMultiBlockBase<MTEPreci
             @Nonnull
             @Override
             protected OverclockCalculator createOverclockCalculator(@Nonnull GTRecipe recipe) {
-                return super.createOverclockCalculator(recipe).setSpeedBoost(mode == 0 ? 1 : 0.5);
+                return super.createOverclockCalculator(recipe).setDurationModifier(mode == 0 ? 1 : 0.5);
             }
         }.setMaxParallelSupplier(this::getTrueParallel);
     }
@@ -339,6 +335,7 @@ public class MTEPreciseAssembler extends MTEExtendedPowerMultiBlockBase<MTEPreci
         this.machineTier = -1;
         this.casingAmount = 0;
         this.casingTier = -3;
+        this.glassTier = -1;
         this.energyHatchTier = 0;
         if (checkPiece(mName, 4, 4, 0)) {
             energyHatchTier = checkEnergyHatchTier();
@@ -346,9 +343,8 @@ public class MTEPreciseAssembler extends MTEExtendedPowerMultiBlockBase<MTEPreci
                 reUpdate(CASING_INDEX + casingTier);
             }
             getBaseMetaTileEntity().sendBlockEvent(GregTechTileClientEvents.CHANGE_CUSTOM_DATA, getUpdateData());
-            return casingAmount >= 42 && machineTier >= 0
-                && casingTier >= -1
-                && mMaintenanceHatches.size() == 1
+            return casingAmount >= 42 && mMaintenanceHatches.size() == 1
+                && glassTier >= VoltageIndex.EV
                 && !mMufflerHatches.isEmpty();
         }
         return false;
@@ -359,21 +355,20 @@ public class MTEPreciseAssembler extends MTEExtendedPowerMultiBlockBase<MTEPreci
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Precise Assembler, Assembler, PrAss")
             .addInfo("The error is no more than 7nm.")
-            .addInfo("Can assemble precise component in Precise Mode.")
+            .addInfo("Can assemble precise components in Precise Mode.")
             .addInfo("Can work like a normal assembler in Normal Mode.")
-            .addInfo("Use screwdriver to change mode.")
+            .addInfo("Use a screwdriver to change the mode.")
             .addInfo("Machine Casing and Energy Hatch limits the voltage tier the machine can work on.")
-            .addInfo("UHV Machine Casing will unlock all voltage, but you still need good Energy Hatch.")
-            .addInfo("Precise Electronic Unit Casing won't limit recipe in Normal Mode.")
-            .addInfo("But gives more parallel with more advanced one.")
-            .addInfo("It is 100% faster in Normal Mode.")
+            .addInfo("UHV Machine Casing unlocks all recipe voltages, but Energy Hatch limits still apply.")
+            .addInfo("It is 100% faster than single block assemblers in Normal Mode.")
+            .addInfo("More advanced Electronic Unit Casings increase maximum parallel in Normal Mode.")
             .addInfo("Imprecise (MK-0) = 16x, MK-I = 32x, MK-II = 64x, MK-III = 128x, MK-IV = 256x")
             .addTecTechHatchInfo()
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(9, 5, 5, true)
             .addController("Front bottom")
             .addCasingInfoExactly("Machine Casing", 21, true)
-            .addCasingInfoExactly("Glass (EV+)", 42, false)
+            .addCasingInfoExactly("Any Tiered Glass (EV+)", 42, false)
             .addCasingInfoRange("Precise Electronic Unit Casing", 42, 86, true)
             .addInputHatch("Any Casing")
             .addInputBus("Any Casing")
@@ -382,6 +377,9 @@ public class MTEPreciseAssembler extends MTEExtendedPowerMultiBlockBase<MTEPreci
             .addEnergyHatch("Any Casing")
             .addMufflerHatch("Any Casing")
             .addMaintenanceHatch("Any Casing")
+            .addSubChannelUsage("glass", "Glass Tier")
+            .addSubChannelUsage("unit_casing", "Precise Electronic Unit Casing Tier")
+            .addSubChannelUsage("machine_casing", "Machine Casing Tier")
             .toolTipFinisher();
         return tt;
     }
@@ -438,6 +436,13 @@ public class MTEPreciseAssembler extends MTEExtendedPowerMultiBlockBase<MTEPreci
         machineTier = i;
     }
 
+    @Nullable
+    public static Integer getCasingBlockTier(Block block, int meta) {
+        if (block == Loaders.impreciseUnitCasing) return -1;
+        else if (block == Loaders.preciseUnitCasing) return meta;
+        else return null;
+    }
+
     public void reUpdate(int texture) {
         for (IDualInputHatch hatch : mDualInputHatches) {
             if (((MetaTileEntity) hatch).isValid()) {
@@ -489,13 +494,23 @@ public class MTEPreciseAssembler extends MTEExtendedPowerMultiBlockBase<MTEPreci
         int t = Math.max(getCasingTier(), -1);
         if (side == facing) {
             if (aActive) return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX + t),
-                TextureFactory.of(textureFontOn), TextureFactory.builder()
+                TextureFactory.builder()
+                    .addIcon(textureFontOn)
+                    .extFacing()
+                    .build(),
+                TextureFactory.builder()
                     .addIcon(textureFontOn_Glow)
+                    .extFacing()
                     .glow()
                     .build() };
             else return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX + t),
-                TextureFactory.of(textureFontOff), TextureFactory.builder()
+                TextureFactory.builder()
+                    .addIcon(textureFontOff)
+                    .extFacing()
+                    .build(),
+                TextureFactory.builder()
                     .addIcon(textureFontOff_Glow)
+                    .extFacing()
                     .glow()
                     .build() };
         } else return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX + t) };
@@ -560,7 +575,7 @@ public class MTEPreciseAssembler extends MTEExtendedPowerMultiBlockBase<MTEPreci
 
     @Override
     public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
-        float aX, float aY, float aZ) {
+        float aX, float aY, float aZ, ItemStack aTool) {
         batchMode = !batchMode;
         if (batchMode) {
             GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOn"));
@@ -568,5 +583,21 @@ public class MTEPreciseAssembler extends MTEExtendedPowerMultiBlockBase<MTEPreci
             GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOff"));
         }
         return true;
+    }
+
+    @Override
+    protected void drawTexts(DynamicPositionedColumn screenElements, SlotWidget inventorySlot) {
+        screenElements
+            .widget(
+                new TextWidget()
+                    .setStringSupplier(
+                        () -> (machineTier > 0 && machineTier < 9) ? StatCollector.translateToLocalFormatted(
+                            "GT5U.multiblock.preciseassemblercasing",
+                            GTUtility.getColoredTierNameFromVoltage(GTValues.V[machineTier])) : "")
+                    .setTextAlignment(Alignment.CenterLeft)
+                    .setDefaultColor(COLOR_TEXT_WHITE.get())
+                    .setEnabled(ignored -> machineTier > 0 && machineTier < 9))
+            .widget(new FakeSyncWidget.IntegerSyncer(() -> machineTier, tier -> machineTier = tier));
+        super.drawTexts(screenElements, inventorySlot);
     }
 }

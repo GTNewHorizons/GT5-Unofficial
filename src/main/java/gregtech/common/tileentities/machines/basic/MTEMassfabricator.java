@@ -205,8 +205,7 @@ public class MTEMassfabricator extends MTEBasicMachine {
         public OverclockCalculator createCalculator(OverclockCalculator template, GTRecipe recipe) {
             return super.createCalculator(template, recipe).setEUt(Ints.saturatedCast(V[tier] * amperage))
                 .setEUtIncreasePerOC(2.0)
-                .limitOverclockCount(tier - 1)
-                .setOneTickDiscount(false);
+                .setMaxOverclocks(tier - 1);
         }
 
         @Override

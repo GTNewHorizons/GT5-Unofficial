@@ -146,9 +146,12 @@ public class MTEPowerSubStation extends GTPPMultiBlockBase<MTEPowerSubStation> i
         final ForgeDirection facing, final int aColorIndex, final boolean aActive, final boolean aRedstone) {
         if (side == facing) {
             return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(TAE.GTPP_INDEX(24)),
-                TextureFactory.of(
-                    aActive ? Textures.BlockIcons.OVERLAY_FRONT_DISASSEMBLER_ACTIVE
-                        : Textures.BlockIcons.OVERLAY_FRONT_DISASSEMBLER) };
+                TextureFactory.builder()
+                    .addIcon(
+                        aActive ? Textures.BlockIcons.OVERLAY_FRONT_DISASSEMBLER_ACTIVE
+                            : Textures.BlockIcons.OVERLAY_FRONT_DISASSEMBLER)
+                    .extFacing()
+                    .build() };
         }
         if (side == this.getBaseMetaTileEntity()
             .getBackFacing()) {

@@ -1,6 +1,12 @@
 package gregtech.common.blocks;
 
+import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.translatedText;
+
 import java.util.List;
+import java.util.function.Supplier;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -8,6 +14,7 @@ import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EnumCreatureType;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
@@ -16,13 +23,17 @@ import net.minecraft.util.StatCollector;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
+import com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Textures;
+import gregtech.api.interfaces.IItemContainer;
 import gregtech.api.items.GTGenericBlock;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTLanguageManager;
+import gregtech.common.render.GTRendererCasing;
 
 /**
  * The base class for casings. Casings are the blocks that are mainly used to build multiblocks.
@@ -30,10 +41,14 @@ import gregtech.api.util.GTLanguageManager;
 public abstract class BlockCasingsAbstract extends GTGenericBlock
     implements gregtech.api.interfaces.IHasIndexedTexture {
 
+    public static final Supplier<String> NO_MOB_SPAWNING = translatedText("gt.casing.no-mob-spawning");
+    public static final Supplier<String> NOT_TILE_ENTITY = translatedText("gt.casing.not-tile-entity");
+    public static final Supplier<String> BLAST_PROOF = translatedText("gt.casing.blast-proof");
+
     public BlockCasingsAbstract(Class<? extends ItemBlock> aItemClass, String aName, Material aMaterial) {
         super(aItemClass, aName, aMaterial);
         setStepSound(soundTypeMetal);
-        setCreativeTab(GregTechAPI.TAB_GREGTECH);
+        setCreativeTab(GregTechAPI.TAG_GREGTECH_CASINGS);
         GregTechAPI.registerMachineBlock(this, -1);
         GTLanguageManager.addStringLocalization(getUnlocalizedName() + "." + 32767 + ".name", "Any Sub Block of this");
     }
@@ -43,6 +58,11 @@ public abstract class BlockCasingsAbstract extends GTGenericBlock
         for (int i = 0; i < aMaxMeta; i++) {
             Textures.BlockIcons.setCasingTextureForId(getTextureIndex(i), TextureFactory.of(this, i));
         }
+    }
+
+    @Override
+    public int getRenderType() {
+        return GTRendererCasing.mRenderID;
     }
 
     @Override
@@ -139,5 +159,40 @@ public abstract class BlockCasingsAbstract extends GTGenericBlock
     @Override
     public int getTextureIndex(int aMeta) {
         return Textures.BlockIcons.ERROR_TEXTURE_INDEX;
+    }
+
+    @Override
+    public int colorMultiplier(IBlockAccess aWorld, int aX, int aY, int aZ) {
+        return gregtech.api.enums.Dyes.MACHINE_METAL.toInt();
+    }
+
+    public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean advancedTooltips) {
+        // add whatever dynamic info you need in the subclass
+    }
+
+    protected void register(int meta, @Nullable IItemContainer container, @Nonnull String defaultLocalName) {
+        register(meta, container, defaultLocalName, (Supplier<String>) null);
+    }
+
+    @SafeVarargs
+    protected final void register(int meta, @Nullable IItemContainer container, @Nonnull String defaultLocalName,
+        @Nullable Supplier<String>... tooltips) {
+        ItemStack stack = new ItemStack(this, 1, meta);
+
+        GTLanguageManager.addStringLocalization(getUnlocalizedName() + "." + meta + ".name", defaultLocalName);
+
+        if (container != null) {
+            container.set(stack.copy());
+        }
+
+        if (tooltips != null) {
+            for (Supplier<String> tooltip : tooltips) {
+                AnimatedTooltipHandler.addItemTooltip(stack, tooltip);
+            }
+        }
+    }
+
+    public static Supplier<String> channelTooltip(String channel, int value) {
+        return translatedText("GT5U.tooltip.channelvalue", Integer.toString(value), channel);
     }
 }

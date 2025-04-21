@@ -121,9 +121,6 @@ public abstract class MTELargerTurbineBase extends GTPPMultiBlockBase<MTELargerT
     protected boolean looseFit = false;
     protected float[] flowMultipliers = new float[] { 1, 1, 1 };
 
-    public ITexture frontFace = TextureFactory.of(TexturesGtBlock.Overlay_Machine_Controller_Advanced);
-    public ITexture frontFaceActive = TextureFactory.of(TexturesGtBlock.Overlay_Machine_Controller_Advanced_Active);
-
     public ArrayList<MTEHatchTurbine> mTurbineRotorHatches = new ArrayList<>();
 
     public MTELargerTurbineBase(int aID, String aName, String aNameRegional) {
@@ -464,7 +461,7 @@ public abstract class MTELargerTurbineBase extends GTPPMultiBlockBase<MTELargerT
                     float aTotalBaseEff = 0;
                     float aTotalOptimalFlow = 0;
 
-                    aTotalBaseEff += turbine.getEfficiency() * 100;
+                    aTotalBaseEff += turbine.getBaseEfficiency() * 100;
                     aTotalOptimalFlow += GTUtility
                         .safeInt((long) Math.max(Float.MIN_NORMAL, getSpeedMultiplier() * turbine.getOptimalFlow()));
                     baseEff = MathUtils.roundToClosestInt(aTotalBaseEff);
@@ -696,9 +693,15 @@ public abstract class MTELargerTurbineBase extends GTPPMultiBlockBase<MTELargerT
 
     protected ITexture getFrontFacingTurbineTexture(boolean isActive) {
         if (isActive) {
-            return frontFaceActive;
+            return TextureFactory.builder()
+                .addIcon(TexturesGtBlock.Overlay_Machine_Controller_Advanced_Active)
+                .extFacing()
+                .build();
         }
-        return frontFace;
+        return TextureFactory.builder()
+            .addIcon(TexturesGtBlock.Overlay_Machine_Controller_Advanced)
+            .extFacing()
+            .build();
     }
 
     @Override

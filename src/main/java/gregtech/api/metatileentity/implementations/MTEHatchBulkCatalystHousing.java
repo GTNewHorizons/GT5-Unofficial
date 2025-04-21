@@ -25,7 +25,7 @@ public class MTEHatchBulkCatalystHousing extends MTEHatchNonConsumableBase {
     }
 
     @Override
-    protected int getItemCapacity() {
+    public int getItemCapacity() {
         return catalystCapacity;
     }
 
@@ -35,7 +35,7 @@ public class MTEHatchBulkCatalystHousing extends MTEHatchNonConsumableBase {
     }
 
     @Override
-    protected boolean isValidItem(ItemStack item) {
+    public boolean isValidItem(ItemStack item) {
         return ItemUtils.isCatalyst(item);
     }
 

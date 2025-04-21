@@ -35,7 +35,6 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.CircuitryBehavior;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTUtility;
-import gregtech.api.util.ISerializableObject;
 import gregtech.common.covers.Cover;
 import gtPlusPlus.xmod.gregtech.api.gui.GTPPUITextures;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
@@ -58,11 +57,6 @@ public class MTERedstoneCircuitBlock extends MTERedstoneBase implements IRedston
     @Override
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new MTERedstoneCircuitBlock(this.mName, mDescriptionArray, this.mTextures);
-    }
-
-    @Override
-    public boolean hasSidedRedstoneOutputBehavior() {
-        return true;
     }
 
     @Override
@@ -383,12 +377,6 @@ public class MTERedstoneCircuitBlock extends MTERedstoneBase implements IRedston
     }
 
     @Override
-    public ISerializableObject getCoverData(ForgeDirection side) {
-        return getBaseMetaTileEntity().getCoverAtSide(side)
-            .getCoverData();
-    }
-
-    @Override
     public ICoverable getOwnTileEntity() {
         return getBaseMetaTileEntity();
     }
@@ -583,7 +571,7 @@ public class MTERedstoneCircuitBlock extends MTERedstoneBase implements IRedston
                 CircuitryBehavior tCircuit = GregTechAPI.sCircuitryBehaviors.get(mGate);
                 if (tCircuit != null) {
                     String tString = tCircuit.getDataDisplay(mGateData, 0);
-                    return tString == null ? GTUtility.parseNumberToString(mGateData[0]) : tString;
+                    return tString == null ? GTUtility.formatNumbers(mGateData[0]) : tString;
                 }
                 return "";
             })
@@ -594,7 +582,7 @@ public class MTERedstoneCircuitBlock extends MTERedstoneBase implements IRedston
                 CircuitryBehavior tCircuit = GregTechAPI.sCircuitryBehaviors.get(mGate);
                 if (tCircuit != null) {
                     String tString = tCircuit.getDataDisplay(mGateData, 1);
-                    return tString == null ? GTUtility.parseNumberToString(mGateData[1]) : tString;
+                    return tString == null ? GTUtility.formatNumbers(mGateData[1]) : tString;
                 }
                 return "";
             })
@@ -605,7 +593,7 @@ public class MTERedstoneCircuitBlock extends MTERedstoneBase implements IRedston
                 CircuitryBehavior tCircuit = GregTechAPI.sCircuitryBehaviors.get(mGate);
                 if (tCircuit != null) {
                     String tString = tCircuit.getDataDisplay(mGateData, 2);
-                    return tString == null ? GTUtility.parseNumberToString(mGateData[2]) : tString;
+                    return tString == null ? GTUtility.formatNumbers(mGateData[2]) : tString;
                 }
                 return "";
             })
@@ -616,7 +604,7 @@ public class MTERedstoneCircuitBlock extends MTERedstoneBase implements IRedston
                 CircuitryBehavior tCircuit = GregTechAPI.sCircuitryBehaviors.get(mGate);
                 if (tCircuit != null) {
                     String tString = tCircuit.getDataDisplay(mGateData, 3);
-                    return tString == null ? GTUtility.parseNumberToString(mGateData[3]) : tString;
+                    return tString == null ? GTUtility.formatNumbers(mGateData[3]) : tString;
                 }
                 return "";
             })

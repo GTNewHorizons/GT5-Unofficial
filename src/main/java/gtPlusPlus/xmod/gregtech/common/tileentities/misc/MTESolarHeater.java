@@ -3,6 +3,7 @@ package gtPlusPlus.xmod.gregtech.common.tileentities.misc;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.apache.commons.lang3.ArrayUtils;
@@ -131,7 +132,8 @@ public class MTESolarHeater extends MTETieredMachineBlock {
 
     @Override
     public String[] getInfoData() {
-        return new String[] { this.getLocalName(), "Testificate" };
+        return new String[] { this.getLocalName(),
+            StatCollector.translateToLocal("gtpp.infodata.solar_heater.testificate") };
     }
 
     @Override

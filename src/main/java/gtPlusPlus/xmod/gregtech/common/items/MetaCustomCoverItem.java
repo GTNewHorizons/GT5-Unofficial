@@ -11,6 +11,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
 import org.apache.commons.lang3.StringUtils;
@@ -178,9 +179,11 @@ public class MetaCustomCoverItem extends Item {
 
     @Override
     public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean bool) {
-        boolean cons = getCoverConnections(stack);
-        list.add(EnumChatFormatting.GRAY + "Allows Connections: " + cons);
-        list.add(EnumChatFormatting.GRAY + "Shift Rmb to change state before applying");
+        list.add(
+            EnumChatFormatting.GRAY + (getCoverConnections(stack)
+                ? StatCollector.translateToLocal("gtpp.tooltip.cover_item.connection.allow")
+                : StatCollector.translateToLocal("gtpp.tooltip.cover_item.connection.deny")));
+        list.add(EnumChatFormatting.GRAY + StatCollector.translateToLocal("gtpp.tooltip.cover_item.change_state"));
         super.addInformation(stack, player, list, bool);
     }
 

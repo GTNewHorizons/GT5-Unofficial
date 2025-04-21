@@ -12,6 +12,7 @@ import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
+import net.minecraft.util.StatCollector;
 
 import gtPlusPlus.core.item.base.misc.BaseItemParticle;
 import gtPlusPlus.core.material.Particle;
@@ -129,11 +130,11 @@ public class StandardBaseParticles extends BaseItemParticle {
                             .contains("meson")) {
                                 aColour = EnumChatFormatting.WHITE;
                             }
-            String aFirstLet = aGroup.substring(0, 1)
-                .toUpperCase();
-            aGroup = aGroup.replaceFirst(aGroup.substring(0, 1), aFirstLet);
-            String aState = aColour + aGroup + EnumChatFormatting.RESET;
-            list.add(EnumChatFormatting.GRAY + "Type: " + aState);
+            String aGroupKey = "gtpp.tooltip.base_particles.type." + aGroup;
+            String aState = aColour + StatCollector.translateToLocal(aGroupKey) + EnumChatFormatting.RESET;
+            list.add(
+                EnumChatFormatting.GRAY
+                    + StatCollector.translateToLocalFormatted("gtpp.tooltip.base_particles.type", aState));
         }
         super.addInformation(stack, player, list, bool);
     }

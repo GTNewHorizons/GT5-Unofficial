@@ -51,7 +51,7 @@ public class AssemblyLineUtils {
     /**
      * Finds a GTRecipe_AssemblyLine based on the expected output ItemStack.
      *
-     * @param aOutput - The Output of a GTRecipe_AssemblyLine.
+     * @param output - The Output of a GTRecipe_AssemblyLine.
      * @return First found GTRecipe_AssemblyLine with matching output.
      */
     public static Collection<RecipeAssemblyLine> findALRecipeByOutput(ItemStack output) {

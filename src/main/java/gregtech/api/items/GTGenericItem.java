@@ -18,6 +18,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.IIcon;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -91,7 +92,8 @@ public class GTGenericItem extends Item implements IProjectileItem {
         if (getMaxDamage() > 0 && !getHasSubtypes())
             aList.add((aStack.getMaxDamage() - getDamage(aStack)) + " / " + aStack.getMaxDamage());
         if (mTooltip != null) aList.add(GTLanguageManager.getTranslation(mTooltip));
-        if (GTModHandler.isElectricItem(aStack)) aList.add("Tier: " + getTier(aStack));
+        if (GTModHandler.isElectricItem(aStack))
+            aList.add(StatCollector.translateToLocalFormatted("GT5U.tooltip.electric.tier", getTier(aStack)));
         addAdditionalToolTips(aList, aStack, aPlayer);
     }
 

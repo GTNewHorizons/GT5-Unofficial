@@ -5,6 +5,7 @@ import static gregtech.api.enums.GTValues.VN;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_ME_INPUT_FLUID_HATCH;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_ME_INPUT_FLUID_HATCH_ACTIVE;
 
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.EnumSet;
@@ -145,15 +146,28 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
 
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTimer) {
-        if (getBaseMetaTileEntity().isServerSide()) {
+        if (aBaseMetaTileEntity.isServerSide()) {
             if (aTimer % autoPullRefreshTime == 0 && autoPullFluidList) {
                 refreshFluidList();
             }
             if (aTimer % 20 == 0) {
-                getBaseMetaTileEntity().setActive(isActive());
+                aBaseMetaTileEntity.setActive(isActive());
             }
         }
         super.onPostTick(aBaseMetaTileEntity, aTimer);
+    }
+
+    protected boolean isAllowedToWork() {
+        IGregTechTileEntity igte = getBaseMetaTileEntity();
+
+        return igte != null && igte.isAllowedToWork();
+    }
+
+    @Override
+    public void onEnableWorking() {
+        if (expediteRecipeCheck) {
+            justHadNewFluids = true;
+        }
     }
 
     private void refreshFluidList() {
@@ -223,7 +237,7 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
 
     @Override
     public boolean justUpdated() {
-        if (expediteRecipeCheck) {
+        if (expediteRecipeCheck && isAllowedToWork()) {
             boolean ret = justHadNewFluids;
             justHadNewFluids = false;
             return ret;
@@ -321,7 +335,7 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
 
     @Override
     public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
-        float aX, float aY, float aZ) {
+        float aX, float aY, float aZ, ItemStack aTool) {
         additionalConnection = !additionalConnection;
         updateValidGridProxySides();
         aPlayer.addChatComponentMessage(
@@ -410,6 +424,11 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
             return;
         }
 
+        if (!isAllowedToWork()) {
+            storedInformationFluids[index] = null;
+            return;
+        }
+
         try {
             IMEMonitor<IAEFluidStack> sg = proxy.getStorage()
                 .getFluidInventory();
@@ -470,6 +489,45 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
         }
 
         return shadowStoredFluids[index];
+    }
+
+    /**
+     * Gets the first non-null shadow fluid stack.
+     *
+     * @return The first shadow fluid stack, or null if this doesn't exist.
+     */
+    public FluidStack getFirstShadowFluidStack() {
+        return getFirstShadowFluidStack(false);
+    }
+
+    /**
+     * Gets the first non-null shadow fluid stack.
+     * 
+     * @param hasToMatchGhost Whether the first fluid stack returned has to match the first non-null ghost stack
+     * @return The first shadow fluid stack, or null if this doesn't exist.
+     */
+    public FluidStack getFirstShadowFluidStack(boolean hasToMatchGhost) {
+        FluidStack fluidStack;
+        FluidStack lockedSlot = null;
+        if (hasToMatchGhost) {
+            byte slotToCheck = 0;
+            do {
+                lockedSlot = storedFluids[slotToCheck];
+                slotToCheck++;
+            } while (lockedSlot == null && slotToCheck < storedFluids.length);
+            if (lockedSlot == null) return null;
+        }
+        byte slotToCheck = 0;
+        do {
+            fluidStack = getShadowFluidStack(slotToCheck);
+            slotToCheck++;
+        } while ((fluidStack == null || !(hasToMatchGhost && lockedSlot.getFluid() == fluidStack.getFluid()))
+            && slotToCheck < getShadowStoredFluidsSize());
+        return fluidStack;
+    }
+
+    public int getShadowStoredFluidsSize() {
+        return shadowStoredFluids.length;
     }
 
     public int getFluidSlot(FluidStack fluidStack) {
@@ -562,7 +620,8 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
     }
 
     @Override
-    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
+        ItemStack aTool) {
         if (!autoPullAvailable) {
             return;
         }
@@ -815,13 +874,23 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
                 boolean isActive = isActive();
                 boolean isPowered = isPowered();
                 boolean isBooting = isBooting();
-                EnumChatFormatting color = (isActive && isPowered) ? EnumChatFormatting.GREEN
-                    : EnumChatFormatting.DARK_RED;
-                return color + WailaText.getPowerState(isActive, isPowered, isBooting);
+
+                String state = WailaText.getPowerState(isActive, isPowered, isBooting);
+
+                if (isActive && isPowered) {
+                    return MessageFormat.format(
+                        "{0}{1}§f ({2})",
+                        EnumChatFormatting.GREEN,
+                        state,
+                        StatCollector
+                            .translateToLocal(isAllowedToWork() ? "GT5U.gui.text.enabled" : "GT5U.gui.text.disabled"));
+                } else {
+                    return EnumChatFormatting.DARK_RED + state;
+                }
             })
                 .setTextAlignment(Alignment.Center)
-                .setSize(90, 9)
-                .setPos(43, 84));
+                .setSize(130, 9)
+                .setPos(23, 84));
     }
 
     private FluidStackTank createTankForFluidStack(FluidStack[] fluidStacks, int slotIndex, int capacity) {

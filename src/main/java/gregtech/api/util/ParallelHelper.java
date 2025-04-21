@@ -3,7 +3,6 @@ package gregtech.api.util;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Objects;
-import java.util.Random;
 import java.util.function.Function;
 
 import javax.annotation.Nonnull;
@@ -109,10 +108,6 @@ public class ParallelHelper {
      */
     private double chanceMultiplier = 1;
     /**
-     * Multiplier by which the output will be multiplied
-     */
-    private int outputMultiplier = 1;
-    /**
      * Method for calculating max parallel from given inputs.
      */
     private MaxParallelCalculator maxParallelCalculator = GTRecipe::maxParallelCalculatedByInputs;
@@ -212,15 +207,6 @@ public class ParallelHelper {
     @Nonnull
     public ParallelHelper setChanceMultiplier(double chanceMultiplier) {
         this.chanceMultiplier = chanceMultiplier;
-        return this;
-    }
-
-    /**
-     * Sets the item/fluid output multiplier. 1 does nothing. 2 doubles the item and fluid outputs.
-     */
-    @Nonnull
-    public ParallelHelper setOutputMultiplier(int outputMultiplier) {
-        this.outputMultiplier = outputMultiplier;
         return this;
     }
 
@@ -407,7 +393,9 @@ public class ParallelHelper {
                 .setEUtDiscount(eutModifier);
         }
 
-        final int tRecipeEUt = (int) Math.ceil(recipe.mEUt * eutModifier);
+        double heatDiscountMultiplier = calculator.calculateHeatDiscountMultiplier();
+
+        final int tRecipeEUt = (int) Math.ceil(recipe.mEUt * eutModifier * heatDiscountMultiplier);
         if (availableEUt < tRecipeEUt) {
             result = CheckRecipeResultRegistry.insufficientPower(tRecipeEUt);
             return;
@@ -458,7 +446,6 @@ public class ParallelHelper {
                 .setItemOutputs(truncatedItemOutputs)
                 .setFluidOutputs(truncatedFluidOutputs)
                 .setChangeGetter(recipe::getOutputChance)
-                .setOutputMultiplier(outputMultiplier)
                 .setChanceMultiplier(chanceMultiplier)
                 .setMaxParallel(maxParallel)
                 .build();
@@ -558,10 +545,10 @@ public class ParallelHelper {
             ItemStack origin = recipe.getOutput(i)
                 .copy();
             final long itemStackSize = origin.stackSize;
-            double chancedOutputMultiplier = calculateChancedOutputMultiplier(
+            long chancedOutputMultiplier = calculateIntegralChancedOutputMultiplier(
                 (int) (recipe.getOutputChance(i) * chanceMultiplier),
                 currentParallel);
-            long items = (long) Math.ceil(itemStackSize * chancedOutputMultiplier * outputMultiplier);
+            long items = itemStackSize * chancedOutputMultiplier;
             addItemsLong(itemOutputsList, origin, items);
         }
         itemOutputs = itemOutputsList.toArray(new ItemStack[0]);
@@ -578,14 +565,12 @@ public class ParallelHelper {
             if (recipe.getFluidOutput(i) == null) continue;
             FluidStack origin = recipe.getFluidOutput(i)
                 .copy();
-            long fluids = (long) this.outputMultiplier * origin.amount * currentParallel;
+            long fluids = (long) origin.amount * currentParallel;
 
             addFluidsLong(fluidOutputsList, origin, fluids);
         }
         fluidOutputs = fluidOutputsList.toArray(new FluidStack[0]);
     }
-
-    private static final Random rand = new Random();
 
     public static double calculateChancedOutputMultiplier(int chanceInt, int parallel) {
         // Multiply the integer part of the chance directly with parallel
@@ -601,7 +586,7 @@ public class ParallelHelper {
         boolean isSuitableForFittingWithNormalDistribution = mean - 3 * stdDev >= 0 && mean + 3 * stdDev <= parallel;
         if (isSuitableForFittingWithNormalDistribution) {
             // Use Normal Distribution to fit Binomial Distribution
-            double tMultiplier = stdDev * rand.nextGaussian() + mean;
+            double tMultiplier = stdDev * XSTR.XSTR_INSTANCE.nextGaussian() + mean;
             multiplier += Math.max(Math.min(tMultiplier, parallel), 0);
         } else {
             // Do Binomial Distribution by loop
@@ -614,31 +599,32 @@ public class ParallelHelper {
         return multiplier;
     }
 
+    public static long calculateIntegralChancedOutputMultiplier(int chanceInt, int parallel) {
+        double multiplier = calculateChancedOutputMultiplier(chanceInt, parallel);
+        if (multiplier != Math.floor(multiplier)
+            && multiplier - Math.floor(multiplier) > XSTR.XSTR_INSTANCE.nextDouble()) {
+            return (long) multiplier + 1;
+        }
+        return (long) multiplier;
+    }
+
     public static void addItemsLong(ArrayList<ItemStack> itemList, ItemStack origin, long amount) {
         if (amount > 0) {
             while (amount > Integer.MAX_VALUE) {
-                ItemStack item = origin.copy();
-                item.stackSize = Integer.MAX_VALUE;
-                itemList.add(item);
+                itemList.add(GTUtility.copyAmountUnsafe(Integer.MAX_VALUE, origin));
                 amount -= Integer.MAX_VALUE;
             }
-            ItemStack item = origin.copy();
-            item.stackSize = (int) amount;
-            itemList.add(item);
+            itemList.add(GTUtility.copyAmountUnsafe((int) amount, origin));
         }
     }
 
     public static void addFluidsLong(ArrayList<FluidStack> fluidList, FluidStack origin, long amount) {
         if (amount > 0) {
             while (amount > Integer.MAX_VALUE) {
-                FluidStack fluid = origin.copy();
-                fluid.amount = Integer.MAX_VALUE;
-                fluidList.add(fluid);
+                fluidList.add(GTUtility.copyAmount(Integer.MAX_VALUE, origin));
                 amount -= Integer.MAX_VALUE;
             }
-            FluidStack fluid = origin.copy();
-            fluid.amount = (int) amount;
-            fluidList.add(fluid);
+            fluidList.add(GTUtility.copyAmount((int) amount, origin));
         }
     }
 

@@ -8,6 +8,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -131,11 +132,20 @@ public class MTETieredTank extends MTEBasicTank {
     public String[] getInfoData() {
 
         if (this.mFluid == null) {
-            return new String[] { GTValues.VOLTAGE_NAMES[this.mTier] + " Fluid Tank", "Stored Fluid:", "No Fluid",
-                0 + "L", this.getCapacity() + "L" };
+            return new String[] {
+                StatCollector.translateToLocalFormatted(
+                    "gtpp.infodata.tiered_tank.name",
+                    GTValues.getLocalizedLongVoltageName(this.mTier)),
+                StatCollector.translateToLocal("GT5U.infodata.digital_tank.stored_fluid"),
+                StatCollector.translateToLocal("GT5U.infodata.digital_tank.stored_fluid.empty"), 0 + "L",
+                this.getCapacity() + "L" };
         }
-        return new String[] { GTValues.VOLTAGE_NAMES[this.mTier] + " Fluid Tank", "Stored Fluid:",
-            this.mFluid.getLocalizedName(), this.mFluid.amount + "L", this.getCapacity() + "L" };
+        return new String[] {
+            StatCollector.translateToLocalFormatted(
+                "gtpp.infodata.tiered_tank.name",
+                GTValues.getLocalizedLongVoltageName(this.mTier)),
+            StatCollector.translateToLocal("GT5U.infodata.digital_tank.stored_fluid"), this.mFluid.getLocalizedName(),
+            this.mFluid.amount + "L", this.getCapacity() + "L" };
     }
 
     @Override

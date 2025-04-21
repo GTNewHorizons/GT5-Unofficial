@@ -94,7 +94,6 @@ import gregtech.common.misc.spaceprojects.commands.SpaceProjectCommand;
 import gregtech.crossmod.ae2.AE2Compat;
 import gregtech.crossmod.holoinventory.HoloInventory;
 import gregtech.crossmod.waila.Waila;
-import gregtech.loaders.load.CoverBehaviorLoader;
 import gregtech.loaders.load.FuelLoader;
 import gregtech.loaders.load.GTItemIterator;
 import gregtech.loaders.load.MTERecipeLoader;
@@ -120,6 +119,7 @@ import gregtech.loaders.preload.LoaderCircuitBehaviors;
 import gregtech.loaders.preload.LoaderGTBlockFluid;
 import gregtech.loaders.preload.LoaderGTItemData;
 import gregtech.loaders.preload.LoaderGTOreDictionary;
+import gregtech.loaders.preload.LoaderMetaPipeEntities;
 import gregtech.loaders.preload.LoaderMetaTileEntities;
 import gregtech.loaders.preload.LoaderOreProcessing;
 import ic2.api.recipe.IRecipeInput;
@@ -286,9 +286,9 @@ public class GTMod implements IGTMod {
         new LoaderGTItemData().run();
         new LoaderGTBlockFluid().run();
         new LoaderMetaTileEntities().run();
+        new LoaderMetaPipeEntities().run();
 
         new LoaderCircuitBehaviors().run();
-        new CoverBehaviorLoader().run();
         new GTSpawnEventHandler();
 
         // populate itemstack instance for NBT check in GTRecipe

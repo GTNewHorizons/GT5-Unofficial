@@ -10,6 +10,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemWritableBook;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -62,15 +63,24 @@ public class ItemBaseBook extends ItemWritableBook {
     public void addInformation(ItemStack tItem, EntityPlayer player, List list, boolean bool) {
         // TODO Auto-generated method stub
         if (NBTUtils.hasKey(tItem, "author")) {
-            list.add(EnumChatFormatting.GRAY + "Author: " + NBTUtils.getString(tItem, "author"));
+            list.add(
+                EnumChatFormatting.GRAY + StatCollector
+                    .translateToLocalFormatted("gtpp.tooltip.book.author", NBTUtils.getString(tItem, "author")));
         } else if (BookHandler.mBookMap.get(tItem.getItemDamage()).mAuthor != null) {
-            list.add(EnumChatFormatting.WHITE + "Author: " + BookHandler.mBookMap.get(tItem.getItemDamage()).mAuthor);
+            list.add(
+                EnumChatFormatting.WHITE + StatCollector.translateToLocalFormatted(
+                    "gtpp.tooltip.book.author",
+                    BookHandler.mBookMap.get(tItem.getItemDamage()).mAuthor));
         }
         if (NBTUtils.hasKey(tItem, "title")) {
-            list.add(EnumChatFormatting.GRAY + "Pages: " + NBTUtils.getString(tItem, "pages"));
+            list.add(
+                EnumChatFormatting.GRAY + StatCollector
+                    .translateToLocalFormatted("gtpp.tooltip.book.pages.s", NBTUtils.getString(tItem, "pages")));
         } else if (BookHandler.mBookMap.get(tItem.getItemDamage()).mPages != null) {
             list.add(
-                EnumChatFormatting.WHITE + "Pages: " + BookHandler.mBookMap.get(tItem.getItemDamage()).mPages.length);
+                EnumChatFormatting.WHITE + StatCollector.translateToLocalFormatted(
+                    "gtpp.tooltip.book.pages.d",
+                    BookHandler.mBookMap.get(tItem.getItemDamage()).mPages.length));
         }
         // super.addInformation(p_77624_1_, p_77624_2_, p_77624_3_, p_77624_4_);
     }

@@ -17,10 +17,11 @@ import java.util.HashSet;
 
 import net.minecraft.world.IBlockAccess;
 
+import org.apache.commons.lang3.tuple.Pair;
+
 import com.google.common.io.ByteArrayDataInput;
 
 import bartworks.system.oredict.OreDictHandler;
-import bartworks.util.Pair;
 import gregtech.api.net.GTPacket;
 import io.netty.buffer.ByteBuf;
 
@@ -56,7 +57,7 @@ public class PacketOreDictCache extends GTPacket {
     public GTPacket decode(ByteArrayDataInput byteArrayDataInput) {
         int size = byteArrayDataInput.readInt();
         for (int i = 0; i < size; i++) {
-            this.hashSet.add(new Pair<>(byteArrayDataInput.readInt(), byteArrayDataInput.readShort()));
+            this.hashSet.add(Pair.of(byteArrayDataInput.readInt(), byteArrayDataInput.readShort()));
         }
         return new PacketOreDictCache(this.hashSet);
     }

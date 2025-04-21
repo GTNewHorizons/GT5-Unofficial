@@ -15,6 +15,7 @@ public enum Mods {
     AdvancedSolarPanel(Names.ADVANCED_SOLAR_PANEL),
     AdventureBackpack(Names.ADVENTURE_BACKPACK),
     AkashicTome(Names.AKASHIC_TOME),
+    Angelica(Names.ANGELICA),
     AppleCore(Names.APPLE_CORE),
     AppliedEnergistics2(Names.APPLIED_ENERGISTICS2),
     ArchitectureCraft(Names.ARCHITECTURE_CRAFT),
@@ -101,6 +102,7 @@ public enum Mods {
     IronChests(Names.IRON_CHESTS),
     IronChestsMinecarts(Names.IRON_CHESTS_MINECARTS),
     IronTanks(Names.IRON_TANKS),
+    IronTanksMinecarts(Names.IRON_TANKS_MINECARTS),
     JABBA(Names.J_A_B_B_A),
     KekzTech(Names.KEKZ_TECH),
     KubaTech(Names.KUBA_TECH),
@@ -196,6 +198,7 @@ public enum Mods {
         public static final String ADVANCED_SOLAR_PANEL = "AdvancedSolarPanel";
         public static final String ADVENTURE_BACKPACK = "adventurebackpack";
         public static final String AKASHIC_TOME = "akashictome";
+        public static final String ANGELICA = "angelica";
         public static final String APPLE_CORE = "AppleCore";
         public static final String APPLIED_ENERGISTICS2 = "appliedenergistics2";
         public static final String ARCHITECTURE_CRAFT = "ArchitectureCraft";
@@ -282,6 +285,7 @@ public enum Mods {
         public static final String IRON_CHESTS = "IronChest";
         public static final String IRON_CHESTS_MINECARTS = "ironchestminecarts";
         public static final String IRON_TANKS = "irontank";
+        public static final String IRON_TANKS_MINECARTS = "irontankminecarts";
         public static final String J_A_B_B_A = "JABBA";
         public static final String KEKZ_TECH = "kekztech";
         public static final String KUBA_TECH = "kubatech";

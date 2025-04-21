@@ -140,6 +140,14 @@ tooltip.bw.tier.name=Tier:
 tooltip.bw.empty.name=Empty
 tooltip.bw.mb_via.name=%s§7 via §2BartWorks
 
+tooltip.bw.high_temp_gas_cooled_reactor.material=Material for High Temperature Gas-cooled Reactor
+
+tooltip.bw.item.circuit.tagged=a circuit
+tooltip.bw.item.circuit.tagged.imprint=An imprint for: %s
+tooltip.bw.item.circuit.tagged.sliced=A sliced %s
+tooltip.bw.item.circuit.imprint=An imprint for a Circuit
+tooltip.bw.item.circuit.sliced=A sliced Circuit
+
 tooltip.teslastaff.0.name=No warranty!
 tooltip.labmodule.0.name=A Module used to change the BioLab's working Mode
 tooltip.labparts.0.name=An empty Sterilized Petri Dish.
@@ -231,8 +239,33 @@ solarsystem.Ross128System=Ross128-System
 
 itemGroup.bw.MetaItems.0=BartWorks Circuit Overhaul Items
 
+# info data
 BW.infoData.BioVat.expectedProduction=Expected Production
 BW.infoData.BioVat.production=Production
+
+BW.infoData.htr.helium_level=Helium-Level: %sL / %sL
+BW.infoData.htr.problems=Problems: %s
+
+BW.infoData.htgr.mode=Mode: %s
+BW.infoData.htgr.mode.emptying=Emptying
+BW.infoData.htgr.mode.normal=Normal
+BW.infoData.htgr.progress=Progress: %ss / %ss
+BW.infoData.htgr.fuel_type=Fuel type: %s
+BW.infoData.htgr.fuel_type.none=NONE
+BW.infoData.htgr.fuel_type.triso=TRISO (%s)
+BW.infoData.htgr.fuel_amount=Fuel amount: %s pcs.
+BW.infoData.htgr.coolant=Coolant: %sL/s
+
+BW.infoData.thtr.progress=Progress: %ssecs / %ssecs
+BW.infoData.thtr.triso_pebbles=TRISO-Pebbles: %spcs. / %spcs.
+BW.infoData.thtr.coolant=Coolant/t: %sL/t
+
+BW.infoData.wind_mill.progress=Progress: %d Grindings of %d needed Grindings
+BW.infoData.wind_mill.grind_power=GrindPower: %dKU/t
+
+BW.infoData.mega_vacuum_freezer.tier=Tier: %d
+BW.infoData.mega_vacuum_freezer.subspace_cooling.active=Subspace cooling: §aActive (%s)
+BW.infoData.mega_vacuum_freezer.subspace_cooling.inactive=Subspace cooling: §cInactive
 
 BW.NEI.display.radhatch.0=Sievert: %s Sv
 BW.NEI.display.radhatch.1=Mass: %s kg

@@ -14,6 +14,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -61,11 +62,18 @@ public class ItemAlgaeBase extends Item implements IAlgalItem {
         return EnumChatFormatting.UNDERLINE + super.getItemStackDisplayName(aStack);
     }
 
+    private String boolLoc(Boolean bool) {
+        return StatCollector.translateToLocal(bool ? "GT5U.generic.true" : "GT5U.generic.false");
+    }
+
     @Override
     public void addInformation(ItemStack aStack, EntityPlayer p_77624_2_, List aList, boolean p_77624_4_) {
         int aDam = aStack.getItemDamage();
         try {
-            aList.add(AlgaeDefinition.getByIndex(aDam).mSimpleName);
+            aList.add(
+                StatCollector.translateToLocal(
+                    "GTPP.algae." + AlgaeDefinition.getByIndex(aDam).mSimpleName.replace(" ", "_")
+                        .toLowerCase() + ".name"));
             if (!aStack.hasTagCompound() || aStack.getTagCompound()
                 .hasNoTags()) {
                 aStack = initNBT(aStack);
@@ -80,14 +88,15 @@ public class ItemAlgaeBase extends Item implements IAlgalItem {
                 byte mLifespan = aNBT.getByte("mLifespan");
                 int mGeneration = aNBT.getInteger("mGeneration");
 
-                aList.add("Requires Light: " + mRequiresLight);
-                aList.add("Salt Water: " + mSaltWater);
-                aList.add("Fresh Water: " + mFreshWater);
-                aList.add("Temp Tolerance: " + mTempTolerance);
-                aList.add("Growth: " + mFertility);
-                aList.add("Production: " + mProductionSpeed);
-                aList.add("Lifespan in days: " + mLifespan);
-                aList.add("Generation: " + mGeneration);
+                aList.add(
+                    StatCollector.translateToLocalFormatted("GTPP.tooltip.requires_light", boolLoc(mRequiresLight)));
+                aList.add(StatCollector.translateToLocalFormatted("GTPP.tooltip.salt_water", boolLoc(mSaltWater)));
+                aList.add(StatCollector.translateToLocalFormatted("GTPP.tooltip.fresh_water", boolLoc(mFreshWater)));
+                aList.add(StatCollector.translateToLocalFormatted("GTPP.tooltip.temp_tolerance", mTempTolerance));
+                aList.add(StatCollector.translateToLocalFormatted("GTPP.tooltip.growth", mFertility));
+                aList.add(StatCollector.translateToLocalFormatted("GTPP.tooltip.production", mProductionSpeed));
+                aList.add(StatCollector.translateToLocalFormatted("GTPP.tooltip.lifespan", mLifespan));
+                aList.add(StatCollector.translateToLocalFormatted("GTPP.tooltip.generation", mGeneration));
             }
         } catch (Exception e) {
             e.printStackTrace(GTLog.err);

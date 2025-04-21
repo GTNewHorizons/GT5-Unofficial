@@ -14,6 +14,7 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_OIL_CRACKER_A
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_OIL_CRACKER_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_OIL_CRACKER_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.casingTexturePages;
+import static gregtech.api.util.GTStructureUtility.activeCoils;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.ofCoil;
 
@@ -70,7 +71,7 @@ public class MTEDigester extends MTEEnhancedMultiBlockBase<MTEDigester> implemen
                 .buildAndChain(GregTechAPI.sBlockCasings4, 0))
         .addElement('h', ofBlock(GregTechAPI.sBlockCasings1, 11))
         .addElement('s', ofBlock(GregTechAPI.sBlockCasings4, 1))
-        .addElement('c', ofCoil(MTEDigester::setCoilLevel, MTEDigester::getCoilLevel))
+        .addElement('c', activeCoils(ofCoil(MTEDigester::setCoilLevel, MTEDigester::getCoilLevel)))
         .build();
 
     public MTEDigester(String name) {

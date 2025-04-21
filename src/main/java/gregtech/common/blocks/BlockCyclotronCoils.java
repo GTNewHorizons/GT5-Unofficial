@@ -1,41 +1,31 @@
 package gregtech.common.blocks;
 
+import java.util.List;
+
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
-import net.minecraft.world.IBlockAccess;
+import net.minecraft.util.StatCollector;
 
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Textures;
-import gregtech.api.util.GTLanguageManager;
 
 public class BlockCyclotronCoils extends BlockCasingsAbstract {
 
     public BlockCyclotronCoils() {
-        super(ItemCyclotronCasings.class, "gt.blockcasings.cyclotron_coils", MaterialCasings.INSTANCE, 16);
+        super(ItemCasings.class, "gt.blockcasings.cyclotron_coils", MaterialCasings.INSTANCE, 16);
 
-        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".0.name", "MV Solenoid Superconductor Coil");
-        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".1.name", "HV Solenoid Superconductor Coil");
-        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".2.name", "EV Solenoid Superconductor Coil");
-        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".3.name", "IV Solenoid Superconductor Coil");
-        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".4.name", "LuV Solenoid Superconductor Coil");
-        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".5.name", "ZPM Solenoid Superconductor Coil");
-        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".6.name", "UV Solenoid Superconductor Coil");
-        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".7.name", "UHV Solenoid Superconductor Coil");
-        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".8.name", "UEV Solenoid Superconductor Coil");
-        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".9.name", "UIV Solenoid Superconductor Coil");
-        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".10.name", "UMV Solenoid Superconductor Coil");
-
-        ItemList.Superconducting_Magnet_Solenoid_MV.set(new ItemStack(this, 1, 0));
-        ItemList.Superconducting_Magnet_Solenoid_HV.set(new ItemStack(this, 1, 1));
-        ItemList.Superconducting_Magnet_Solenoid_EV.set(new ItemStack(this, 1, 2));
-        ItemList.Superconducting_Magnet_Solenoid_IV.set(new ItemStack(this, 1, 3));
-        ItemList.Superconducting_Magnet_Solenoid_LuV.set(new ItemStack(this, 1, 4));
-        ItemList.Superconducting_Magnet_Solenoid_ZPM.set(new ItemStack(this, 1, 5));
-        ItemList.Superconducting_Magnet_Solenoid_UV.set(new ItemStack(this, 1, 6));
-        ItemList.Superconducting_Magnet_Solenoid_UHV.set(new ItemStack(this, 1, 7));
-        ItemList.Superconducting_Magnet_Solenoid_UEV.set(new ItemStack(this, 1, 8));
-        ItemList.Superconducting_Magnet_Solenoid_UIV.set(new ItemStack(this, 1, 9));
-        ItemList.Superconducting_Magnet_Solenoid_UMV.set(new ItemStack(this, 1, 10));
+        register(0, ItemList.Superconducting_Magnet_Solenoid_MV, "MV Solenoid Superconductor Coil");
+        register(1, ItemList.Superconducting_Magnet_Solenoid_HV, "HV Solenoid Superconductor Coil");
+        register(2, ItemList.Superconducting_Magnet_Solenoid_EV, "EV Solenoid Superconductor Coil");
+        register(3, ItemList.Superconducting_Magnet_Solenoid_IV, "IV Solenoid Superconductor Coil");
+        register(4, ItemList.Superconducting_Magnet_Solenoid_LuV, "LuV Solenoid Superconductor Coil");
+        register(5, ItemList.Superconducting_Magnet_Solenoid_ZPM, "ZPM Solenoid Superconductor Coil");
+        register(6, ItemList.Superconducting_Magnet_Solenoid_UV, "UV Solenoid Superconductor Coil");
+        register(7, ItemList.Superconducting_Magnet_Solenoid_UHV, "UHV Solenoid Superconductor Coil");
+        register(8, ItemList.Superconducting_Magnet_Solenoid_UEV, "UEV Solenoid Superconductor Coil");
+        register(9, ItemList.Superconducting_Magnet_Solenoid_UIV, "UIV Solenoid Superconductor Coil");
+        register(10, ItemList.Superconducting_Magnet_Solenoid_UMV, "UMV Solenoid Superconductor Coil");
     }
 
     @Override
@@ -123,9 +113,11 @@ public class BlockCyclotronCoils extends BlockCasingsAbstract {
     }
 
     @Override
-    public int colorMultiplier(IBlockAccess aWorld, int aX, int aY, int aZ) {
-        return aWorld.getBlockMetadata(aX, aY, aZ) > 9 ? super.colorMultiplier(aWorld, aX, aY, aZ)
-            : gregtech.api.enums.Dyes.MACHINE_METAL.mRGBa[0] << 16 | gregtech.api.enums.Dyes.MACHINE_METAL.mRGBa[1] << 8
-                | gregtech.api.enums.Dyes.MACHINE_METAL.mRGBa[2];
+    public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean advancedTooltips) {
+        super.addInformation(stack, player, tooltip, advancedTooltips);
+
+        tooltip.add(
+            StatCollector
+                .translateToLocalFormatted("GT5U.tooltip.channelvalue", stack.getItemDamage() + 1, "solenoid"));
     }
 }

@@ -127,6 +127,18 @@ public class Client {
         @Config.Comment("if true, input filter will initially be on when machines are placed in the world.")
         @Config.DefaultBoolean(false)
         public boolean singleBlockInitialFilter;
+
+        @Config.Comment("If true, scrolling up while hovering a ghost circuit in a machine UI will increment the circuit number.")
+        @Config.DefaultBoolean(false)
+        public boolean invertCircuitScrollDirection;
+
+        @Config.Comment({
+            "Overrides the MC total playable sounds limit. MC's default is 28, which causes problems with many machine sounds at once",
+            "If sounds are causing large amounts of lag, try lowering this.",
+            "If sounds are not working at all, try setting this to the lowest value (28).", "Default: 512" })
+        @Config.RangeInt(min = 28, max = 2048)
+        @Config.RequiresMcRestart
+        public int maxNumSounds = 512;
     }
 
     @Config.LangKey("GT5U.gui.config.client.render")
@@ -167,6 +179,11 @@ public class Client {
         @Config.Comment("enables BaseMetaTileEntity block updates handled by BlockUpdateHandler.")
         @Config.DefaultBoolean(false)
         public boolean useBlockUpdateHandler;
+
+        @Config.Comment("Disables coil lighting. Requires world reload (f3 + a or relog).")
+        @Config.DefaultBoolean(false)
+        @Config.Name("Use Old Coil Textures")
+        public boolean useOldCoils;
     }
 
     @Config.LangKey("GT5U.gui.config.client.waila")

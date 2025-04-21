@@ -6,6 +6,7 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.IBlockAccess;
 
 import cpw.mods.fml.relauncher.Side;
@@ -36,7 +37,10 @@ public class GregtechMetaCasingBlocks3 extends GregtechMetaCasingBlocksAbstract 
             int tier = MTEPowerSubStation.getCellTier(field_150939_a, meta);
             if (tier > 0) {
                 long capacity = MTEPowerSubStation.getCapacityFromCellTier(tier);
-                aList.add("Energy Storage: " + GTUtility.formatNumbers(capacity));
+                aList.add(
+                    StatCollector.translateToLocalFormatted(
+                        "gtpp.tooltip.meta_casing.energy_storage",
+                        GTUtility.formatNumbers(capacity)));
             }
             super.addInformation(aStack, aPlayer, aList, aF3_H);
         }

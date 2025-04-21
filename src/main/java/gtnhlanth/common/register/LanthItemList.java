@@ -8,6 +8,8 @@ import net.minecraft.item.ItemStack;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.Textures;
+import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTOreDictUnificator;
 import gtnhlanth.common.beamline.MTEBeamlinePipe;
@@ -132,6 +134,8 @@ public final class LanthItemList {
         GameRegistry.registerItem(PARTICLE_ITEM, "particle");
 
         GameRegistry.registerBlock(SHIELDED_ACCELERATOR_CASING, SHIELDED_ACCELERATOR_CASING.getUnlocalizedName());
+        // Steal a texture page index from good generator, this desperately needs a refactor
+        Textures.BlockIcons.casingTexturePages[12][126] = TextureFactory.of(SHIELDED_ACCELERATOR_CASING);
 
         GameRegistry.registerBlock(ELECTRODE_CASING, ELECTRODE_CASING.getUnlocalizedName());
 

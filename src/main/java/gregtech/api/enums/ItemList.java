@@ -571,6 +571,7 @@ public enum ItemList implements IItemContainer {
     Upgrade_Muffler,
     Upgrade_SteamEngine,
     Upgrade_Lock,
+    Item_Redstone_Sniffer,
     Cover_FluidLimiter,
     Cover_Controller,
     Cover_ActivityDetector,
@@ -1785,6 +1786,7 @@ public enum ItemList implements IItemContainer {
     OreDrill4,
     PyrolyseOven,
     OilCracker,
+    SolarFactory,
     NanoForge,
     Crop_Drop_UUMBerry,
     Crop_Drop_UUABerry,
@@ -2101,7 +2103,6 @@ public enum ItemList implements IItemContainer {
     TierdDrone2,
     Hatch_DroneDownLink,
     ElectronicsLump,
-    Casing_Shielded_Accelerator,
     WormholeGenerator,
     Hatch_pHSensor,
     Hatch_LensHousing,
@@ -2587,6 +2588,7 @@ public enum ItemList implements IItemContainer {
     Thermal_Superconductor,
     Relativistic_Heat_Capacitor,
     Phononic_Seed_Crystal,
+    Harmonic_Compound,
     ResearchCompleter,
     SpaceElevatorController, // Populated in GTNH-Intergalactic
     Spray_Color_Infinite,
@@ -2603,6 +2605,7 @@ public enum ItemList implements IItemContainer {
     Machine_Multi_AirFilterT1,
     Machine_Multi_AirFilterT2,
     Machine_Multi_AirFilterT3,
+    LargeMolecularAssembler,
 
     // semicolon after the comment to reduce merge conflicts
     ;
