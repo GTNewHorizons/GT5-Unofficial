@@ -79,6 +79,7 @@ public enum Mods {
     GTNHLanthanides(Names.G_T_N_H_LANTHANIDES),
     GTPlusPlus(Names.G_T_PLUS_PLUS),
     GTPlusPlusEverglades(Names.G_T_PLUS_PLUS_EVERGLADES),
+    GTRailways(Names.G_T_RAILWAYS),
     Gadomancy(Names.GADOMANCY),
     GalactiGreg(Names.GALACTI_GREG),
     GalacticraftAmunRa(Names.GALACTICRAFT_AMUN_RA),
@@ -262,6 +263,7 @@ public enum Mods {
         public static final String G_T_N_H_LANTHANIDES = "gtnhlanth";
         public static final String G_T_PLUS_PLUS = "miscutils";
         public static final String G_T_PLUS_PLUS_EVERGLADES = "ToxicEverglades";
+        public static final String G_T_RAILWAYS = "gtrailways";
         public static final String GADOMANCY = "gadomancy";
         public static final String GALACTI_GREG = "galacticgreg";
         public static final String GALACTICRAFT_AMUN_RA = "GalacticraftAmunRa";
