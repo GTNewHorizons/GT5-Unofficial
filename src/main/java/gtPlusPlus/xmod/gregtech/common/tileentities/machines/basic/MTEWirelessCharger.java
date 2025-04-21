@@ -157,7 +157,8 @@ public class MTEWirelessCharger extends MTETieredMachineBlock {
     }
 
     @Override
-    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
+        ItemStack aTool) {
 
         if (aPlayer.isSneaking()) {
             mLocked = !mLocked;
@@ -190,7 +191,7 @@ public class MTEWirelessCharger extends MTETieredMachineBlock {
         } else {
             PlayerUtils.messagePlayer(aPlayer, "Now in Mixed Charge Mode.");
         }
-        super.onScrewdriverRightClick(side, aPlayer, aX, aY, aZ);
+        super.onScrewdriverRightClick(side, aPlayer, aX, aY, aZ, aTool);
     }
 
     @Override
