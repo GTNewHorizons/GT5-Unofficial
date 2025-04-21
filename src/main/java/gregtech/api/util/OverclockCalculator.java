@@ -286,6 +286,14 @@ public class OverclockCalculator {
         return overclocks;
     }
 
+    public boolean hasDurationUnderOneTickSupplier() {
+        return durationUnderOneTickSupplier != null;
+    }
+
+    public double getDurationUnderOneTickSupplier() {
+        return durationUnderOneTickSupplier.get();
+    }
+
     /** Call this when all values have been put it. */
     @Nonnull
     public OverclockCalculator calculate() {
