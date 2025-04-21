@@ -681,13 +681,12 @@ public class RecipeLoader {
             .metadata(RESEARCH_ITEM, ItemRefer.Radiation_Protection_Plate.get(1))
             .metadata(SCANNING, new Scanning(40 * SECONDS, TierEU.RECIPE_IV))
             .itemInputs(
-                ItemRefer.Radiation_Protection_Plate.get(1),
+                ItemRefer.Radiation_Protection_Plate.get(2),
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.ElectrumFlux, 4),
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.Trinium, 4),
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.NaquadahAlloy, 4),
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.Osmiridium, 4),
-                GTOreDictUnificator.get(OrePrefixes.plate, Materials.VibrantAlloy, 4),
-                ItemRefer.Radiation_Protection_Plate.get(1))
+                GTOreDictUnificator.get(OrePrefixes.plate, Materials.VibrantAlloy, 4))
             .fluidInputs(new FluidStack(solderIndalloy, 1152))
             .itemOutputs(ItemRefer.Advanced_Radiation_Protection_Plate.get(1))
             .eut(TierEU.RECIPE_ZPM / 2)
@@ -703,10 +702,8 @@ public class RecipeLoader {
                 ItemRefer.Advanced_Radiation_Protection_Plate.get(6),
                 ItemList.Field_Generator_IV.get(2),
                 GTOreDictUnificator.get(OrePrefixes.pipeTiny, Materials.Naquadah, 16),
-                GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.NaquadahAlloy, 32),
-                GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.NaquadahAlloy, 32),
-                GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.Manyullyn, 32),
-                GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.Manyullyn, 32),
+                GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.NaquadahAlloy, 64),
+                GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.Manyullyn, 64),
                 GGMaterial.orundum.get(OrePrefixes.plate, 4))
             .fluidInputs(Materials.TungstenSteel.getMolten(1152), new FluidStack(solderIndalloy, 2304))
             .itemOutputs(ItemRefer.Naquadah_Fuel_Refinery_Casing.get(1))
@@ -977,7 +974,6 @@ public class RecipeLoader {
             .duration(2 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .metadata(PRECISE_ASSEMBLER_CASING_TIER, 1)
-            .noOptimize()
             .addTo(GoodGeneratorRecipeMaps.preciseAssemblerRecipes);
 
         GTValues.RA.stdBuilder()
@@ -1014,7 +1010,6 @@ public class RecipeLoader {
             .duration(2 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .metadata(PRECISE_ASSEMBLER_CASING_TIER, 1)
-            .noOptimize()
             .addTo(GoodGeneratorRecipeMaps.preciseAssemblerRecipes);
 
         for (Materials tMat : solderingMats) {
@@ -1302,7 +1297,6 @@ public class RecipeLoader {
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_IV)
             .metadata(PRECISE_ASSEMBLER_CASING_TIER, 1)
-            .noOptimize()
             .addTo(GoodGeneratorRecipeMaps.preciseAssemblerRecipes);
     }
 

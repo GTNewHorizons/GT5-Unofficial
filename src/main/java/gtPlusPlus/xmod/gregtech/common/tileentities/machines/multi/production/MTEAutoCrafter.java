@@ -173,7 +173,7 @@ public class MTEAutoCrafter extends GTPPMultiBlockBase<MTEAutoCrafter> implement
     @Override
     protected ProcessingLogic createProcessingLogic() {
         return new ProcessingLogic().setSpeedBonus(1F / 3F)
-            .setMaxParallelSupplier(this::getMaxParallelRecipes);
+            .setMaxParallelSupplier(this::getTrueParallel);
     }
 
     @Override

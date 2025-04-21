@@ -22,7 +22,6 @@ import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 import tectech.thing.metaTileEntity.hatch.MTEBaseFactoryHatch;
 import tectech.util.CommonValues;
-import tectech.util.TTUtility;
 
 public class TestFactoryHatch extends MTEBaseFactoryHatch implements TestFactoryElement {
 
@@ -36,7 +35,6 @@ public class TestFactoryHatch extends MTEBaseFactoryHatch implements TestFactory
                 StatCollector.translateToLocal("gt.blockmachines.hatch.datain.desc.0"),
                 StatCollector.translateToLocal("gt.blockmachines.hatch.datain.desc.1"),
                 EnumChatFormatting.AQUA + StatCollector.translateToLocal("gt.blockmachines.hatch.datain.desc.2") });
-        TTUtility.setTier(aTier, this);
     }
 
     protected TestFactoryHatch(TestFactoryHatch prototype) {

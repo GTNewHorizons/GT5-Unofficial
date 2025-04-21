@@ -35,13 +35,11 @@ import appeng.api.storage.data.IItemList;
 import appeng.util.item.AEItemStack;
 import appeng.util.item.ItemList;
 import gregtech.api.enums.GTValues;
-import gregtech.api.gui.modularui.GTUIInfos;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTETieredMachineBlock;
-import gregtech.api.objects.AE2DigitalChestHandler;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTUtility;
@@ -82,10 +80,6 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
         };
     }
 
-    public MTEDigitalChestBase(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {
-        super(aName, aTier, 3, aDescription, aTextures);
-    }
-
     public MTEDigitalChestBase(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, 3, aDescription, aTextures);
     }
@@ -109,13 +103,6 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
                         + EnumChatFormatting.GRAY);
             }
         }
-    }
-
-    public static void registerAEIntegration() {
-        appeng.api.AEApi.instance()
-            .registries()
-            .externalStorage()
-            .addExternalStorageInterface(new AE2DigitalChestHandler());
     }
 
     @Override
@@ -345,7 +332,7 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
 
     @Override
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
-        GTUIInfos.openGTTileEntityUI(aBaseMetaTileEntity, aPlayer);
+        openGui(aPlayer);
         return true;
     }
 
@@ -362,11 +349,6 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
     @Override
     public boolean isValidSlot(int aIndex) {
         return aIndex != 2;
-    }
-
-    @Override
-    public boolean isSimpleMachine() {
-        return true;
     }
 
     @Override

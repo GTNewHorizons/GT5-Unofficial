@@ -202,7 +202,10 @@ public class MTEMultiLathe extends MTEExtendedPowerMultiBlockBase<MTEMultiLathe>
             .addOutputBus("Any Solid Steel Casing", 1)
             .addEnergyHatch("Any Solid Steel Casing", 1)
             .addMaintenanceHatch("Any Solid Steel Casing", 1)
-            .addOtherStructurePart("4 Item Pipe Casings", "Center of the glass", 4)
+            .addOtherStructurePart(
+                StatCollector.translateToLocal("GT5U.tooltip.structure.four_item_pipe_casings"),
+                "Center of the glass",
+                4)
             .toolTipFinisher(AuthorVolence);
         return tt;
     }
@@ -252,9 +255,10 @@ public class MTEMultiLathe extends MTEExtendedPowerMultiBlockBase<MTEMultiLathe>
     protected ProcessingLogic createProcessingLogic() {
         return new ProcessingLogic().setSpeedBonus(1F / 4F)
             .setEuModifier(0.8F)
-            .setMaxParallelSupplier(this::getMaxParallelRecipes);
+            .setMaxParallelSupplier(this::getTrueParallel);
     }
 
+    @Override
     public int getMaxParallelRecipes() {
         return (getPipeTier() * 8);
     }

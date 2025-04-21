@@ -34,19 +34,32 @@ public class RenderDecayChest extends TileEntitySpecialRenderer {
         Logger.INFO("Registered Lead Lined Chest Renderer.");
     }
 
-    public void renderTileEntityAt(TileEntityDecayablesChest p_147500_1_, double p_147500_2_, double p_147500_4_,
-        double p_147500_6_, float p_147500_8_) {
+    public void renderTileEntityAt(TileEntityDecayablesChest tile, double xPos, double yPos, double zPos,
+        float partialTick) {
+        int facing = 3;
+        if (tile.hasWorldObj()) {
+            facing = tile.getFacing();
+        }
         this.bindTexture(mChestTexture);
         GL11.glPushMatrix();
         GL11.glEnable(GL12.GL_RESCALE_NORMAL);
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-        GL11.glTranslatef((float) p_147500_2_, (float) p_147500_4_ + 1.0F, (float) p_147500_6_ + 1.0F);
+        GL11.glTranslatef((float) xPos, (float) yPos + 1.0F, (float) zPos + 1.0F);
         GL11.glScalef(1.0F, -1.0F, -1.0F);
         GL11.glTranslatef(0.5F, 0.5F, 0.5F);
-        GL11.glRotatef(0.0f, 0.0F, 1.0F, 0.0F);
-        GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
-        float f1 = p_147500_1_.prevLidAngle + (p_147500_1_.lidAngle - p_147500_1_.prevLidAngle) * p_147500_8_;
 
+        float f1 = tile.prevLidAngle + (tile.lidAngle - tile.prevLidAngle) * partialTick;
+
+        int k = 0;
+        if (facing == 2) {
+            k = 180;
+        } else if (facing == 4) {
+            k = 90;
+        } else if (facing == 5) {
+            k = -90;
+        }
+        GL11.glRotatef(k, 0.0F, 1.0F, 0.0F);
+        GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
         f1 = 1.0F - f1;
         f1 = 1.0F - f1 * f1 * f1;
         mChestModel.chestLid.rotateAngleX = -(f1 * GTPPCore.PI / 2.0F);

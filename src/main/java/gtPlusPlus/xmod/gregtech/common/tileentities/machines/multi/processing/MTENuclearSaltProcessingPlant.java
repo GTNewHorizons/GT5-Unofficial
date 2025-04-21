@@ -199,7 +199,7 @@ public class MTENuclearSaltProcessingPlant extends GTPPMultiBlockBase<MTENuclear
     @Override
     protected ProcessingLogic createProcessingLogic() {
         return new ProcessingLogic().setSpeedBonus(1F / 2.5F)
-            .setMaxParallelSupplier(this::getMaxParallelRecipes);
+            .setMaxParallelSupplier(this::getTrueParallel);
     }
 
     @Override

@@ -352,7 +352,7 @@ public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge> i
                 new TextWidget(StatCollector.translateToLocal("GT5U.gui.button.tier") + " " + mSpecialTier)
                     .setTextAlignment(Alignment.CenterLeft)
                     .setDefaultColor(COLOR_TEXT_WHITE.get())
-                    .setEnabled(widget -> getBaseMetaTileEntity().getErrorDisplayID() == 0))
+                    .setEnabled(widget -> getErrorDisplayID() == 0))
             .widget(
                 new FakeSyncWidget.IntegerSyncer(
                     () -> (int) mSpecialTier,

@@ -130,6 +130,11 @@ public abstract class MTEAirFilterBase extends MTEEnhancedMultiBlockBase<MTEAirF
             && mMaintenanceHatches.size() == 1;
     }
 
+    @Override
+    public boolean supportsPowerPanel() {
+        return false;
+    }
+
     public MTEAirFilterBase(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
     }

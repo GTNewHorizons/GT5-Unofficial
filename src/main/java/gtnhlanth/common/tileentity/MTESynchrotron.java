@@ -105,7 +105,7 @@ public class MTESynchrotron extends MTEExtendedPowerMultiBlockBase<MTESynchrotro
     // TODO: E > 1200eV for x-ray lithography
     // spotless:off
     static {
-    	
+
     	allowedAntennas.put(LanthItemList.ANTENNA_CASING_T1, 0);
     	allowedAntennas.put(LanthItemList.ANTENNA_CASING_T2, 0);
 
@@ -463,7 +463,7 @@ public class MTESynchrotron extends MTEExtendedPowerMultiBlockBase<MTESynchrotro
                 .addElement('e', buildHatchAdder(MTESynchrotron.class).atLeast(ImmutableMap.of(Energy.or(ExoticEnergy), 4)).adder(MTESynchrotron::addEnergyInputToMachineList).dot(6).casingIndex(CASING_INDEX).build())
                 .addElement('n', ofBlock(LanthItemList.NIOBIUM_CAVITY_CASING, 0))
                 .addElement('a', withChannel("antenna", StructureUtility.ofBlocksTiered(
-                		(Block block, int meta) -> (block == LanthItemList.ANTENNA_CASING_T1 ? 1 : block == LanthItemList.ANTENNA_CASING_T2 ? 2 : -1), 
+                		(Block block, int meta) -> (block == LanthItemList.ANTENNA_CASING_T1 ? 1 : block == LanthItemList.ANTENNA_CASING_T2 ? 2 : -1),
                 		ImmutableList.of(
                 				Pair.of(LanthItemList.ANTENNA_CASING_T1, 0),
                 				Pair.of(LanthItemList.ANTENNA_CASING_T2, 0)),
@@ -478,7 +478,7 @@ public class MTESynchrotron extends MTEExtendedPowerMultiBlockBase<MTESynchrotro
                 .addElement('j',
                 		buildHatchAdder(MTESynchrotron.class).atLeast(Maintenance).dot(3).casingIndex(CASING_INDEX)
                 		.buildAndChain(LanthItemList.SHIELDED_ACCELERATOR_CASING, 0))
-	
+
                 .build();
 
 
@@ -508,6 +508,11 @@ public class MTESynchrotron extends MTEExtendedPowerMultiBlockBase<MTESynchrotro
 
     public MTESynchrotron(int id, String name, String nameRegional) {
         super(id, name, nameRegional);
+    }
+
+    @Override
+    public boolean supportsPowerPanel() {
+        return false;
     }
 
     @Override

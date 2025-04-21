@@ -210,7 +210,12 @@ public class MTENeutroniumCompressor extends MTEExtendedPowerMultiBlockBase<MTEN
                 }
                 return super.validateRecipe(recipe);
             }
-        }.setMaxParallel(8);
+        }.setMaxParallelSupplier(this::getTrueParallel);
+    }
+
+    @Override
+    public int getMaxParallelRecipes() {
+        return 8;
     }
 
     @Override

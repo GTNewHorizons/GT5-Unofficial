@@ -189,9 +189,10 @@ public class MTEMultiCanner extends MTEExtendedPowerMultiBlockBase<MTEMultiCanne
     @Override
     protected ProcessingLogic createProcessingLogic() {
         return new ProcessingLogic().setSpeedBonus(1F / 2F)
-            .setMaxParallelSupplier(this::getMaxParallelRecipes);
+            .setMaxParallelSupplier(this::getTrueParallel);
     }
 
+    @Override
     public int getMaxParallelRecipes() {
         return (8 * GTUtility.getTier(this.getMaxInputVoltage()));
     }

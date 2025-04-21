@@ -170,6 +170,12 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
         }
     }
 
+    // Not GPL
+    @Override
+    public boolean supportsPowerPanel() {
+        return false;
+    }
+
     public MTEIntegratedOreFactory(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
     }

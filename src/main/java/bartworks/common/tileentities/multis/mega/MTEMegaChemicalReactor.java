@@ -175,7 +175,12 @@ public class MTEMegaChemicalReactor extends MegaMultiBlockBase<MTEMegaChemicalRe
     @Override
     protected ProcessingLogic createProcessingLogic() {
         return new ProcessingLogic().enablePerfectOverclock()
-            .setMaxParallel(Configuration.Multiblocks.megaMachinesMax);
+            .setMaxParallelSupplier(this::getTrueParallel);
+    }
+
+    @Override
+    public int getMaxParallelRecipes() {
+        return Configuration.Multiblocks.megaMachinesMax;
     }
 
     @Override

@@ -126,6 +126,8 @@ public class ProcessingLogic {
         setInputItems(inputs.inputItems);
         setInputFluids(inputs.inputFluid);
         Set<GTRecipe> recipes = findRecipeMatches(getCurrentRecipeMap()).collect(Collectors.toSet());
+        setInputItems();
+        setInputFluids();
         if (!recipes.isEmpty()) {
             craftingPatternRecipeCache.put(slot, recipes);
             craftingPattern = slot;

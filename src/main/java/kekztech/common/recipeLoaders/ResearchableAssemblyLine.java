@@ -27,6 +27,27 @@ public class ResearchableAssemblyLine implements Runnable {
             ? FluidRegistry.getFluid("molten.mutatedlivingsolder")
             : FluidRegistry.getFluid("molten.solderingalloy");
 
+        // Ultimate Capacitor (UHV)
+        TTRecipeAdder.addResearchableAssemblylineRecipe(
+            new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 4),
+            12000,
+            16,
+            300000,
+            3,
+            new Object[] { GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.CosmicNeutronium, 4),
+                GTOreDictUnificator.get(OrePrefixes.screw, Materials.CosmicNeutronium, 24),
+                GTOreDictUnificator.get(OrePrefixes.plateDouble, Materials.Neutronium, 64L),
+                new Object[] { OrePrefixes.circuit.get(Materials.UEV), 4 }, ItemList.ZPM2.get(8L),
+                ItemList.Field_Generator_UHV.get(4), ItemList.Circuit_Wafer_UHPIC.get(64),
+                ItemList.Circuit_Wafer_UHPIC.get(64), ItemList.Circuit_Wafer_SoC2.get(32),
+                ItemList.Circuit_Parts_DiodeASMD.get(64),
+                GTOreDictUnificator.get(OrePrefixes.wireGt02, Materials.SuperconductorUHV, 64) },
+            new FluidStack[] { new FluidStack(solderUEV, 4608), Materials.Naquadria.getMolten(9216),
+                new FluidStack(FluidRegistry.getFluid("ic2coolant"), 32000) },
+            new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 5),
+            4000,
+            1600000);
+
         // Extremely Ultimate Capacitor (UEV)
         TTRecipeAdder.addResearchableAssemblylineRecipe(
             new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 5),
@@ -36,12 +57,8 @@ public class ResearchableAssemblyLine implements Runnable {
             16,
             new Object[] { GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Infinity, 4),
                 GTOreDictUnificator.get(OrePrefixes.screw, Materials.Infinity, 24),
-                GTOreDictUnificator.get(OrePrefixes.plateDouble, Materials.InfinityCatalyst, 32L),
-                GTOreDictUnificator.get(OrePrefixes.plateDouble, Materials.InfinityCatalyst, 32L),
-                new Object[] { OrePrefixes.circuit.get(Materials.UIV), 1 },
-                new Object[] { OrePrefixes.circuit.get(Materials.UIV), 1 },
-                new Object[] { OrePrefixes.circuit.get(Materials.UIV), 1 },
-                new Object[] { OrePrefixes.circuit.get(Materials.UIV), 1 }, ItemList.ZPM3.get(8L),
+                GTOreDictUnificator.get(OrePrefixes.plateDouble, Materials.InfinityCatalyst, 64L),
+                new Object[] { OrePrefixes.circuit.get(Materials.UIV), 4 }, ItemList.ZPM3.get(8L),
                 ItemList.Field_Generator_UEV.get(4), ItemList.Circuit_Wafer_PPIC.get(64),
                 ItemList.Circuit_Wafer_PPIC.get(64), ItemList.Circuit_Wafer_SoC2.get(64),
                 ItemList.Circuit_Parts_DiodeXSMD.get(64),
@@ -61,12 +78,8 @@ public class ResearchableAssemblyLine implements Runnable {
             32,
             new Object[] { GTOreDictUnificator.get(OrePrefixes.frameGt, MaterialsUEVplus.TranscendentMetal, 4),
                 GTOreDictUnificator.get(OrePrefixes.screw, MaterialsUEVplus.TranscendentMetal, 24),
-                HYPOGEN.getPlateDouble(32), HYPOGEN.getPlateDouble(32),
-                new Object[] { OrePrefixes.circuit.get(Materials.UMV), 1 },
-                new Object[] { OrePrefixes.circuit.get(Materials.UMV), 1 },
-                new Object[] { OrePrefixes.circuit.get(Materials.UMV), 1 },
-                new Object[] { OrePrefixes.circuit.get(Materials.UMV), 1 }, ItemList.ZPM4.get(8L),
-                ItemList.Field_Generator_UIV.get(4), ItemList.Circuit_Wafer_QPIC.get(64),
+                HYPOGEN.getPlateDouble(64), new Object[] { OrePrefixes.circuit.get(Materials.UMV), 4 },
+                ItemList.ZPM4.get(8L), ItemList.Field_Generator_UIV.get(4), ItemList.Circuit_Wafer_QPIC.get(64),
                 ItemList.Circuit_Wafer_QPIC.get(64),
                 GTModHandler.getModItem(NewHorizonsCoreMod.ID, "item.RawPicoWafer", 64),
                 ItemList.Circuit_Parts_DiodeXSMD.get(64), ItemList.Circuit_Parts_InductorXSMD.get(32),
@@ -87,12 +100,8 @@ public class ResearchableAssemblyLine implements Runnable {
             64,
             new Object[] { GTOreDictUnificator.get(OrePrefixes.frameGt, MaterialsUEVplus.SpaceTime, 4),
                 GTOreDictUnificator.get(OrePrefixes.screw, MaterialsUEVplus.SpaceTime, 24),
-                DRAGON_METAL.getPlateDouble(32), DRAGON_METAL.getPlateDouble(32),
-                new Object[] { OrePrefixes.circuit.get(Materials.UXV), 1 },
-                new Object[] { OrePrefixes.circuit.get(Materials.UXV), 1 },
-                new Object[] { OrePrefixes.circuit.get(Materials.UXV), 1 },
-                new Object[] { OrePrefixes.circuit.get(Materials.UXV), 1 }, ItemList.ZPM5.get(8L),
-                ItemList.Field_Generator_UMV.get(4), ItemList.Circuit_Wafer_QPIC.get(64),
+                DRAGON_METAL.getPlateDouble(64), new Object[] { OrePrefixes.circuit.get(Materials.UXV), 4 },
+                ItemList.ZPM5.get(8L), ItemList.Field_Generator_UMV.get(4), ItemList.Circuit_Wafer_QPIC.get(64),
                 ItemList.Circuit_Wafer_QPIC.get(64),
                 GTModHandler.getModItem(NewHorizonsCoreMod.ID, "item.PicoWafer", 64),
                 ItemList.Circuit_Parts_DiodeXSMD.get(64), ItemList.Circuit_Parts_InductorXSMD.get(64),
@@ -105,29 +114,5 @@ public class ResearchableAssemblyLine implements Runnable {
             350 * 20,
             (int) TierEU.RECIPE_UMV);
 
-        // Ultimate Capacitor (UHV)
-        TTRecipeAdder.addResearchableAssemblylineRecipe(
-            new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 4),
-            12000,
-            16,
-            300000,
-            3,
-            new Object[] { GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.CosmicNeutronium, 4),
-                GTOreDictUnificator.get(OrePrefixes.screw, Materials.CosmicNeutronium, 24),
-                GTOreDictUnificator.get(OrePrefixes.plateDouble, Materials.Neutronium, 32L),
-                GTOreDictUnificator.get(OrePrefixes.plateDouble, Materials.Neutronium, 32L),
-                new Object[] { OrePrefixes.circuit.get(Materials.UEV), 1 },
-                new Object[] { OrePrefixes.circuit.get(Materials.UEV), 1 },
-                new Object[] { OrePrefixes.circuit.get(Materials.UEV), 1 },
-                new Object[] { OrePrefixes.circuit.get(Materials.UEV), 1 }, ItemList.ZPM2.get(8L),
-                ItemList.Field_Generator_UHV.get(4), ItemList.Circuit_Wafer_UHPIC.get(64),
-                ItemList.Circuit_Wafer_UHPIC.get(64), ItemList.Circuit_Wafer_SoC2.get(32),
-                ItemList.Circuit_Parts_DiodeASMD.get(64),
-                GTOreDictUnificator.get(OrePrefixes.wireGt02, Materials.SuperconductorUHV, 64) },
-            new FluidStack[] { new FluidStack(solderUEV, 4608), Materials.Naquadria.getMolten(9216),
-                new FluidStack(FluidRegistry.getFluid("ic2coolant"), 32000) },
-            new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 5),
-            4000,
-            1600000);
     }
 }

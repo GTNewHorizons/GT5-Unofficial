@@ -92,11 +92,11 @@ public class GTPPUITextures {
     public static final UITexture OVERLAY_BUTTON_AUTOMATION = UITexture
         .fullImage(GTPlusPlus.ID, "gui/overlay_button/automation");
     public static final UITexture OVERLAY_BUTTON_LOCK = UITexture.fullImage(GTPlusPlus.ID, "gui/overlay_button/lock");
-    public static final UITexture[] OVERLAY_BUTTON_THROUGHPUT = IntStream.range(0, 4) // GT_MetaTileEntity_ElectricAutoWorkbench#MAX_THROUGHPUT
+    public static final UITexture[] OVERLAY_BUTTON_THROUGHPUT = IntStream.range(0, 4) // MTEElectricAutoWorkbench#MAX_THROUGHPUT
         .mapToObj(i -> UITexture.fullImage(GTPlusPlus.ID, "gui/overlay_button/throughput_" + i))
         .collect(Collectors.toList())
         .toArray(new UITexture[0]);
-    public static final UITexture[] OVERLAY_BUTTON_MODE = IntStream.range(0, 10) // GT_MetaTileEntity_ElectricAutoWorkbench#MAX_MODES
+    public static final UITexture[] OVERLAY_BUTTON_MODE = IntStream.range(0, 10) // MTEElectricAutoWorkbench#MAX_MODES
         .mapToObj(i -> UITexture.fullImage(GTPlusPlus.ID, "gui/overlay_button/mode_" + i))
         .collect(Collectors.toList())
         .toArray(new UITexture[0]);

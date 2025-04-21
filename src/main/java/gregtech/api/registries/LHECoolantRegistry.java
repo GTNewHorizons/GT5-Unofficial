@@ -43,7 +43,7 @@ public class LHECoolantRegistry {
 
     public static void registerBaseCoolants() {
         // I have no idea where these constants originally came from, but I've preserved the comments from
-        // GT_MetaTileEntity_HeatExchanger
+        // MTEHeatExchanger
 
         registerCoolant(
             "ic2pahoehoelava",

@@ -58,10 +58,9 @@ import com.gtnewhorizons.modularui.common.widget.ProgressBar;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 
 import gregtech.GTMod;
-import gregtech.api.GregTechAPI;
+import gregtech.api.covers.CoverRegistry;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.SteamVariant;
-import gregtech.api.gui.modularui.GTUIInfos;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.gui.modularui.SteamTexture;
 import gregtech.api.interfaces.ICleanroom;
@@ -72,14 +71,12 @@ import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.IOverclockDescriptionProvider;
 import gregtech.api.interfaces.tileentity.RecipeMapWorkable;
-import gregtech.api.objects.GTItemStack;
 import gregtech.api.objects.overclockdescriber.EUOverclockDescriber;
 import gregtech.api.objects.overclockdescriber.OverclockDescriber;
 import gregtech.api.recipe.BasicUIProperties;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.metadata.CompressionTierKey;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.CoverBehaviorBase;
 import gregtech.api.util.GTClientPreference;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTOreDictUnificator;
@@ -112,6 +109,7 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
     public final int mInputSlotCount, mAmperage;
     public boolean mAllowInputFromOutputSide = false, mFluidTransfer = false, mItemTransfer = false,
         mHasBeenUpdated = false, mStuttering = false, mCharge = false, mDecharge = false;
+    private int errorDisplayID;
     public boolean mDisableFilter = true;
     public boolean mDisableMultiStack = true;
     public int mProgresstime = 0, mMaxProgresstime = 0, mEUt = 0, mOutputBlocked = 0;
@@ -290,21 +288,6 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
     }
 
     @Override
-    public boolean isSimpleMachine() {
-        return false;
-    }
-
-    @Override
-    public boolean isOverclockerUpgradable() {
-        return false;
-    }
-
-    @Override
-    public boolean isTransformerUpgradable() {
-        return false;
-    }
-
-    @Override
     public boolean isElectric() {
         return true;
     }
@@ -468,16 +451,6 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
     }
 
     @Override
-    public boolean displaysItemStack() {
-        return true;
-    }
-
-    @Override
-    public boolean displaysStackSize() {
-        return true;
-    }
-
-    @Override
     public FluidStack getDrainableStack() {
         return mFluidOut;
     }
@@ -498,12 +471,12 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
         if (aBaseMetaTileEntity.isClientSide()) return true;
         if (!GTMod.gregtechproxy.mForceFreeFace) {
-            GTUIInfos.openGTTileEntityUI(aBaseMetaTileEntity, aPlayer);
+            openGui(aPlayer);
             return true;
         }
         for (final ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
             if (aBaseMetaTileEntity.getAirAtSide(side)) {
-                GTUIInfos.openGTTileEntityUI(aBaseMetaTileEntity, aPlayer);
+                openGui(aPlayer);
                 return true;
             }
         }
@@ -561,6 +534,20 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
         mFluidOut = FluidStack.loadFluidStackFromNBT(aNBT.getCompoundTag("mFluidOut"));
 
         for (int i = 0; i < mOutputItems.length; i++) mOutputItems[i] = GTUtility.loadItem(aNBT, "mOutputItem" + i);
+    }
+
+    /**
+     * Returns the error ID displayed on the GUI.
+     */
+    public int getErrorDisplayID() {
+        return errorDisplayID;
+    }
+
+    /**
+     * Sets the error ID displayed on the GUI.
+     */
+    public void setErrorDisplayID(int errorID) {
+        this.errorDisplayID = errorID;
     }
 
     @Override
@@ -693,10 +680,10 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
         // Only using mNeedsSteamVenting right now and assigning it to 64 to space in the range for more single block
         // machine problems.
         // Value | Class | Field
-        // 1 | GT_MetaTileEntity_BasicMachine | mStuttering
-        // 64 | GT_MetaTileEntity_BasicMachine_Bronze | mNeedsSteamVenting
-        aBaseMetaTileEntity.setErrorDisplayID((aBaseMetaTileEntity.getErrorDisplayID() & ~127)); // | (mStuttering ? 1 :
-                                                                                                 // 0));
+        // 1 | MTEBasicMachine | mStuttering
+        // 64 | MTEBasicMachineBronze | mNeedsSteamVenting
+        setErrorDisplayID((getErrorDisplayID() & ~127)); // | (mStuttering ? 1 :
+                                                         // 0));
     }
 
     protected void doDisplayThings() {
@@ -941,14 +928,10 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
     }
 
     @Override
-    public boolean allowCoverOnSide(ForgeDirection side, GTItemStack aCoverID) {
+    public boolean allowCoverOnSide(ForgeDirection side, ItemStack coverItem) {
         if (side != mMainFacing) return true;
-        CoverBehaviorBase<?> tBehavior = GregTechAPI.getCoverBehaviorNew(aCoverID.toStack());
-        return tBehavior.isGUIClickable(
-            side,
-            GTUtility.stackToInt(aCoverID.toStack()),
-            tBehavior.createDataObject(),
-            getBaseMetaTileEntity());
+        return CoverRegistry.getCoverPlacer(coverItem)
+            .isGuiClickable();
     }
 
     @Override
@@ -999,16 +982,6 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
     @Override
     public int getCircuitSlot() {
         return 4;
-    }
-
-    @Override
-    public int getCircuitGUISlot() {
-        return 3;
-    }
-
-    @Override
-    public List<ItemStack> getConfigurationCircuits() {
-        return GregTechAPI.getConfigurationCircuitList(mTier);
     }
 
     @Override
@@ -1091,7 +1064,7 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
             mOutputBlocked++;
             return FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS;
         }
-        ICleanroom cleanroom = getCleanroom();
+        ICleanroom cleanroom = cleanroomReference.getCleanroom();
         if (tRecipe.mSpecialValue == -200 || tRecipe.mSpecialValue == -300) {
             if (cleanroom == null || !cleanroom.isValidCleanroom() || cleanroom.getCleanness() == 0) {
                 return FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS;
@@ -1232,16 +1205,14 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
         }
 
         currenttip.add(
-            String.format(
-                "Machine Facing: %s",
-                ForgeDirection.getOrientation(tag.getInteger("mainFacingSingleBlock"))
-                    .name()));
+            StatCollector.translateToLocalFormatted(
+                "GT5U.waila.machine_facing",
+                getFacingNameLocalized(tag.getInteger("mainFacingSingleBlock"))));
 
         currenttip.add(
-            String.format(
-                "Output Facing: %s",
-                ForgeDirection.getOrientation(tag.getInteger("outputFacingSingleBlock"))
-                    .name()));
+            StatCollector.translateToLocalFormatted(
+                "GT5U.waila.output_facing",
+                getFacingNameLocalized(tag.getInteger("outputFacingSingleBlock"))));
     }
 
     private static @NotNull String getWailaStutteringLine(NBTTagCompound tag) {
@@ -1553,9 +1524,7 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
                 builder,
                 (widget, val) -> widget.notifyTooltipChange())
             .attachSyncer(
-                new FakeSyncWidget.IntegerSyncer(
-                    () -> getBaseMetaTileEntity().getErrorDisplayID(),
-                    val -> getBaseMetaTileEntity().setErrorDisplayID(val)),
+                new FakeSyncWidget.IntegerSyncer(this::getErrorDisplayID, this::setErrorDisplayID),
                 builder,
                 (widget, val) -> widget.notifyTooltipChange());
     }
@@ -1585,7 +1554,7 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
     }
 
     private boolean cannotVentSteam() {
-        return (getBaseMetaTileEntity().getErrorDisplayID() & 64) != 0;
+        return (getErrorDisplayID() & 64) != 0;
     }
 
     protected static int getCapacityForTier(int tier) {

@@ -604,7 +604,6 @@ public class MTEHighTempGasCooledReactor extends MTEEnhancedMultiBlockBase<MTEHi
                     .duration(1 * HOURS)
                     .eut(powerUsage)
                     .ignoreCollision()
-                    .noOptimize()
                     .fake()
                     .addTo(htgrFakeRecipes);
 

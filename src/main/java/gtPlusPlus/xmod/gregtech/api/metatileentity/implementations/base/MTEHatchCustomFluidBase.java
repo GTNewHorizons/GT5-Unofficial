@@ -13,7 +13,6 @@ import net.minecraftforge.fluids.FluidStack;
 import com.gtnewhorizons.modularui.common.widget.FluidSlotWidget;
 
 import gregtech.GTMod;
-import gregtech.api.gui.modularui.GTUIInfos;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
@@ -45,7 +44,7 @@ public class MTEHatchCustomFluidBase extends MTEHatch {
 
     public MTEHatchCustomFluidBase(Fluid aFluid, int aAmount, final String aName, final int aTier,
         final String[] aDescription, final ITexture[][][] aTextures) {
-        super(aName, aTier, 3, aDescription[0], aTextures);
+        super(aName, aTier, 3, aDescription, aTextures);
         this.mLockedFluid = aFluid;
         this.mFluidCapacity = aAmount;
     }
@@ -82,11 +81,6 @@ public class MTEHatchCustomFluidBase extends MTEHatch {
     }
 
     @Override
-    public boolean isSimpleMachine() {
-        return true;
-    }
-
-    @Override
     public boolean isFacingValid(ForgeDirection facing) {
         return true;
     }
@@ -98,7 +92,7 @@ public class MTEHatchCustomFluidBase extends MTEHatch {
 
     @Override
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
-        GTUIInfos.openGTTileEntityUI(aBaseMetaTileEntity, aPlayer);
+        openGui(aPlayer);
         return true;
     }
 
@@ -123,24 +117,9 @@ public class MTEHatchCustomFluidBase extends MTEHatch {
         return true;
     }
 
-    @Override
-    public boolean displaysItemStack() {
-        return true;
-    }
-
-    @Override
-    public boolean displaysStackSize() {
-        return false;
-    }
-
     public void updateSlots() {
         if (mInventory[getInputSlot()] != null && mInventory[getInputSlot()].stackSize <= 0)
             mInventory[getInputSlot()] = null;
-    }
-
-    @Override
-    public int getTankPressure() {
-        return -100;
     }
 
     @Override

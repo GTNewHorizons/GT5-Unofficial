@@ -34,6 +34,8 @@ import gregtech.common.gui.modularui.uifactory.SelectItemUIFactory;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 
+// TODO Remove after 2.8
+@Deprecated
 public class GTPPIntegratedCircuitItem extends Item implements INetworkUpdatableItem {
 
     private final List<ItemStack> ALL_VARIANTS = new ArrayList<>();

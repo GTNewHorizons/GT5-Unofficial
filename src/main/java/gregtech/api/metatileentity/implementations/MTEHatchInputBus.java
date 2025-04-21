@@ -23,7 +23,6 @@ import com.gtnewhorizons.modularui.api.widget.Widget;
 import com.gtnewhorizons.modularui.common.widget.CycleButtonWidget;
 
 import gregtech.GTMod;
-import gregtech.api.gui.modularui.GTUIInfos;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.IConfigurationCircuitSupport;
 import gregtech.api.interfaces.ITexture;
@@ -94,11 +93,6 @@ public class MTEHatchInputBus extends MTEHatch implements IConfigurationCircuitS
     }
 
     @Override
-    public boolean isSimpleMachine() {
-        return true;
-    }
-
-    @Override
     public boolean isFacingValid(ForgeDirection facing) {
         return true;
     }
@@ -120,7 +114,7 @@ public class MTEHatchInputBus extends MTEHatch implements IConfigurationCircuitS
 
     @Override
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
-        GTUIInfos.openGTTileEntityUI(aBaseMetaTileEntity, aPlayer);
+        openGui(aPlayer);
         return true;
     }
 
@@ -211,7 +205,7 @@ public class MTEHatchInputBus extends MTEHatch implements IConfigurationCircuitS
 
     @Override
     public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        if (!getBaseMetaTileEntity().getCoverInfoAtSide(side)
+        if (!getBaseMetaTileEntity().getCoverAtSide(side)
             .isGUIClickable()) return;
         if (aPlayer.isSneaking()) {
             if (disableSort) {

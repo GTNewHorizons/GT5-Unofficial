@@ -20,7 +20,6 @@ import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 
 import gregtech.GTMod;
 import gregtech.api.enums.ItemList;
-import gregtech.api.gui.modularui.GTUIInfos;
 import gregtech.api.gui.widgets.PhantomItemButton;
 import gregtech.api.interfaces.IDataCopyable;
 import gregtech.api.interfaces.ITexture;
@@ -89,11 +88,6 @@ public class MTEHatchOutputBus extends MTEHatch implements IAddUIWidgets, IItemL
     }
 
     @Override
-    public boolean isSimpleMachine() {
-        return true;
-    }
-
-    @Override
     public boolean isFacingValid(ForgeDirection facing) {
         return true;
     }
@@ -116,13 +110,13 @@ public class MTEHatchOutputBus extends MTEHatch implements IAddUIWidgets, IItemL
     @Override
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
         if (!acceptsItemLock() || !(aPlayer instanceof EntityPlayerMP)) {
-            GTUIInfos.openGTTileEntityUI(aBaseMetaTileEntity, aPlayer);
+            openGui(aPlayer);
             return true;
         }
 
         final ItemStack dataStick = aPlayer.inventory.getCurrentItem();
         if (!ItemList.Tool_DataStick.isStackEqual(dataStick, false, true)) {
-            GTUIInfos.openGTTileEntityUI(aBaseMetaTileEntity, aPlayer);
+            openGui(aPlayer);
             return true;
         }
 

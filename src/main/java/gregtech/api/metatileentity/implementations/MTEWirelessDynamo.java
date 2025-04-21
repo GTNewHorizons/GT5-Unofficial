@@ -4,6 +4,8 @@ import static gregtech.api.enums.GTValues.AuthorColen;
 import static gregtech.api.enums.GTValues.V;
 import static gregtech.common.misc.WirelessNetworkManager.addEUToGlobalEnergyMap;
 import static gregtech.common.misc.WirelessNetworkManager.strongCheckOrAddUser;
+import static gregtech.common.misc.WirelessNetworkManager.ticks_between_energy_addition;
+import static gregtech.common.misc.WirelessNetworkManager.totalStorage;
 
 import java.util.UUID;
 
@@ -15,10 +17,9 @@ import net.minecraftforge.common.util.ForgeDirection;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.interfaces.tileentity.IWirelessEnergyHatchInformation;
 import gregtech.api.metatileentity.MetaTileEntity;
 
-public class MTEWirelessDynamo extends MTEHatchDynamo implements IWirelessEnergyHatchInformation {
+public class MTEWirelessDynamo extends MTEHatchDynamo {
 
     private UUID owner_uuid;
 
@@ -38,11 +39,6 @@ public class MTEWirelessDynamo extends MTEHatchDynamo implements IWirelessEnergy
     @Override
     public ITexture[] getTexturesInactive(ITexture aBaseTexture) {
         return new ITexture[] { aBaseTexture, Textures.BlockIcons.OVERLAYS_ENERGY_IN_MULTI_WIRELESS_ON[mTier] };
-    }
-
-    @Override
-    public boolean isSimpleMachine() {
-        return true;
     }
 
     @Override

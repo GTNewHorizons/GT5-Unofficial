@@ -537,7 +537,6 @@ public class PlatinumSludgeOverHaul {
             .fluidOutputs(HotRutheniumTetroxideSollution.getFluidOrGas(2000))
             .duration(15 * SECONDS)
             .eut(TierEU.RECIPE_HV)
-            .noOptimize()
             .addTo(fluidHeaterRecipes);
 
         GTValues.RA.stdBuilder()
@@ -558,11 +557,11 @@ public class PlatinumSludgeOverHaul {
 
         // Os
         GTValues.RA.stdBuilder()
-            .itemInputs(IrOsLeachResidue.get(dust, 4), GTUtility.getIntegratedCircuit(11))
-            .itemOutputs(IrLeachResidue.get(dust, 2))
-            .fluidInputs(Materials.HydrochloricAcid.getFluid(1000))
-            .fluidOutputs(AcidicOsmiumSolution.getFluidOrGas(2000))
-            .duration(10 * SECONDS)
+            .itemInputs(IrOsLeachResidue.get(dust, 2), GTUtility.getIntegratedCircuit(11))
+            .itemOutputs(IrLeachResidue.get(dust, 1))
+            .fluidInputs(Materials.HydrochloricAcid.getFluid(500))
+            .fluidOutputs(AcidicOsmiumSolution.getFluidOrGas(1000))
+            .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .metadata(COIL_HEAT, 775)
             .addTo(blastFurnaceRecipes);
@@ -652,10 +651,10 @@ public class PlatinumSludgeOverHaul {
             .addTo(blastFurnaceRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(RHSalt.get(dust, 10))
-            .fluidInputs(Materials.Water.getFluid(2000))
-            .fluidOutputs(RHSaltSolution.getFluidOrGas(2000))
-            .duration(15 * SECONDS)
+            .itemInputs(RHSalt.get(dust, 1))
+            .fluidInputs(Materials.Water.getFluid(200))
+            .fluidOutputs(RHSaltSolution.getFluidOrGas(200))
+            .duration(1 * SECONDS + 10 * TICKS)
             .eut(TierEU.RECIPE_LV)
             .addTo(mixerRecipes);
 

@@ -13,10 +13,11 @@ import java.util.Set;
 
 import net.minecraft.item.ItemStack;
 
+import org.apache.commons.lang3.tuple.Pair;
+
 import gregtech.api.enums.GTValues;
 import gtPlusPlus.api.interfaces.RunnableWithInfo;
 import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.api.objects.data.Pair;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.material.MaterialGenerator;
 import gtPlusPlus.core.material.MaterialStack;
@@ -66,7 +67,7 @@ public class RecipeGenMaterialProcessing extends RecipeGenBase {
             int alnsnfds = 0;
             for (MaterialStack r : material.getComposites()) {
                 if (r != null) {
-                    componentMap.add(new Pair<>(partSizes[alnsnfds], r.getStackMaterial()));
+                    componentMap.add(Pair.of(partSizes[alnsnfds], r.getStackMaterial()));
                 }
                 alnsnfds++;
             }

@@ -28,7 +28,6 @@ import tectech.util.TTUtility;
 
 public class MTERTGenerator extends MTEBasicGenerator {
 
-    public int mEfficiency;
     private long mTicksToBurnFor;
     private int mVoltage = 0;
     private GTRecipe mCurrentRecipe;
@@ -213,7 +212,7 @@ public class MTERTGenerator extends MTEBasicGenerator {
 
     @Override
     public int getEfficiency() {
-        return this.mEfficiency = 100;
+        return 100;
     }
 
     @Override
@@ -239,7 +238,7 @@ public class MTERTGenerator extends MTEBasicGenerator {
     @Override
     public ITexture[] getSides(byte aColor) {
         return new ITexture[] { TextureFactory.of(Textures.BlockIcons.OVERLAY_SIDE_RTG),
-            gregtech.api.enums.Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI[getTier()] };
+            Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI[getTier()] };
     }
 
     @Override
@@ -279,7 +278,7 @@ public class MTERTGenerator extends MTEBasicGenerator {
         return new ITexture[] { TextureFactory.of(Textures.BlockIcons.OVERLAY_SIDE_RTG_ACTIVE), TextureFactory.builder()
             .addIcon(Textures.BlockIcons.OVERLAY_SIDE_RTG_ACTIVE_GLOW)
             .glow()
-            .build(), gregtech.api.enums.Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI[getTier()] };
+            .build(), Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI[getTier()] };
     }
 
     @Override

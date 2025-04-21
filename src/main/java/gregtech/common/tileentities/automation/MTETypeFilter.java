@@ -58,10 +58,6 @@ public class MTETypeFilter extends MTESpecialFilter {
             new String[] { "Filters 1 Item Type", "Use Screwdriver to regulate output stack size" });
     }
 
-    public MTETypeFilter(String aName, int aTier, int aInvSlotCount, String aDescription, ITexture[][][] aTextures) {
-        super(aName, aTier, aInvSlotCount, aDescription, aTextures);
-    }
-
     public MTETypeFilter(String aName, int aTier, int aInvSlotCount, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, aInvSlotCount, aDescription, aTextures);
     }

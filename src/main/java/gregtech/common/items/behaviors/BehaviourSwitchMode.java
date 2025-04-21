@@ -5,6 +5,7 @@ import java.util.List;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
 import gregtech.api.enums.GTValues;
@@ -42,7 +43,7 @@ public class BehaviourSwitchMode extends BehaviourNone {
         if ((aItem instanceof MetaGeneratedTool itemTool)) {
             final int maxMode = itemTool.getToolMaxMode(aStack);
             if (maxMode > 1) {
-                aList.add("Shift+Rclick to change mode");
+                aList.add(StatCollector.translateToLocal("gt.behaviour.switch_mode.tooltip"));
             }
         }
 

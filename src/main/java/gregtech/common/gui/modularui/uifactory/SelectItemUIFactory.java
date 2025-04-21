@@ -173,6 +173,10 @@ public class SelectItemUIFactory {
                     setSelected(UNSELECTED, widget);
                 }
                 selectedCallback.accept(getCandidate(getSelected()));
+                if (clickData.shift) {
+                    widget.getWindow()
+                        .tryClose();
+                }
             })
                 .setSynced(false, false)
                 .dynamicTooltip(() -> getItemTooltips(index))

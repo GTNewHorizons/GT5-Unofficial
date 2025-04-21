@@ -137,7 +137,7 @@ public class MTEDEFusionCrafter extends KubaTechGTMultiBlockBase<MTEDEFusionCraf
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Fusion Crafter")
+        tt.addMachineType("Fusion Crafter, DEFC")
             .addInfo("Machine can be overclocked by using casings above the recipe tier:")
             .addInfo("Recipe time is divided by number of tiers above the recipe")
             .addInfo("Normal EU OC still applies !")

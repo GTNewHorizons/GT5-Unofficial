@@ -14,12 +14,11 @@ import net.minecraftforge.fluids.FluidStack;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Textures;
-import gregtech.api.gui.modularui.GTUIInfos;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEBasicTank;
-import gregtech.api.objects.GTRenderedTexture;
+import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTUtility;
 import gtPlusPlus.api.objects.Logger;
@@ -63,9 +62,9 @@ public class MTETieredTank extends MTEBasicTank {
         final ForgeDirection facing, final int aColorIndex, final boolean aActive, final boolean aRedstone) {
         return side == ForgeDirection.UP
             ? new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColorIndex + 1],
-                new GTRenderedTexture(Textures.BlockIcons.OVERLAY_TOP_FLUIDTANK) }
+                TextureFactory.of(Textures.BlockIcons.OVERLAY_TOP_FLUIDTANK) }
             : new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColorIndex + 1],
-                new GTRenderedTexture(Textures.BlockIcons.OVERLAY_SIDE_FLUIDTANK) };
+                TextureFactory.of(Textures.BlockIcons.OVERLAY_SIDE_FLUIDTANK) };
     }
 
     @Override
@@ -91,11 +90,6 @@ public class MTETieredTank extends MTEBasicTank {
                         + EnumChatFormatting.GRAY);
             }
         }
-    }
-
-    @Override
-    public boolean isSimpleMachine() {
-        return true;
     }
 
     @Override
@@ -155,24 +149,9 @@ public class MTETieredTank extends MTEBasicTank {
     }
 
     @Override
-    public int getTankPressure() {
-        return 100;
-    }
-
-    @Override
     public boolean onRightclick(final IGregTechTileEntity aBaseMetaTileEntity, final EntityPlayer aPlayer) {
-        GTUIInfos.openGTTileEntityUI(aBaseMetaTileEntity, aPlayer);
+        openGui(aPlayer);
         return true;
-    }
-
-    @Override
-    public boolean displaysItemStack() {
-        return true;
-    }
-
-    @Override
-    public boolean displaysStackSize() {
-        return false;
     }
 
     @Override

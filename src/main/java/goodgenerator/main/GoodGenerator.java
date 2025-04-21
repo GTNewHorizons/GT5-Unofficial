@@ -9,8 +9,6 @@ import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLLoadCompleteEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
-import cpw.mods.fml.common.network.NetworkRegistry;
-import cpw.mods.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import goodgenerator.common.CommonProxy;
 import goodgenerator.crossmod.thaumcraft.Research;
 import goodgenerator.items.GGMaterial;
@@ -40,8 +38,6 @@ public final class GoodGenerator {
 
     @SidedProxy(clientSide = "goodgenerator.client.ClientProxy", serverSide = "goodgenerator.common.CommonProxy")
     public static CommonProxy proxy;
-
-    public static SimpleNetworkWrapper CHANNEL = NetworkRegistry.INSTANCE.newSimpleChannel(MOD_ID);
 
     static {}
 

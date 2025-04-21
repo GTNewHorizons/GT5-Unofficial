@@ -30,8 +30,7 @@ public class GGFabRecipeMaps {
         .minInputs(1, 1)
         .progressBar(GTUITextures.PROGRESSBAR_ARROW, ProgressBar.Direction.RIGHT)
         .recipeEmitter(b -> {
-            Optional<GTRecipe> rr = b.noOptimize()
-                .validateNoInput()
+            Optional<GTRecipe> rr = b.validateNoInput()
                 .validateInputFluidCount(0, 1)
                 .validateNoOutput()
                 .validateNoOutputFluid()

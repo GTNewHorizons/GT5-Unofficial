@@ -553,7 +553,6 @@ public class RecipeLoader {
             .itemOutputs(Materials.Empty.getCells(2))
             .duration(20 * GTRecipeBuilder.SECONDS)
             .eut(7680)
-            .noOptimize()
             .addTo(mixerRecipes);
 
         // NB: http://www.smfl.rit.edu/pdf/process/process_nitride_etch_paper.pdf
@@ -1226,7 +1225,6 @@ public class RecipeLoader {
             .eut(TierEU.RECIPE_HV)
             .duration(900)
             .metadata(DISSOLUTION_TANK_RATIO, 10)
-            .noOptimize()
             .addTo(dissolutionTankRecipes);
 
         GTValues.RA.stdBuilder()
@@ -1242,7 +1240,6 @@ public class RecipeLoader {
             .eut(TierEU.RECIPE_HV)
             .duration(8100)
             .metadata(DISSOLUTION_TANK_RATIO, 10)
-            .noOptimize()
             .addTo(dissolutionTankRecipes);
 
         GTValues.RA.stdBuilder()
@@ -1256,7 +1253,6 @@ public class RecipeLoader {
             .outputChances(90_00, 75_00, 20_00, 5_00, 20_00)
             .duration(20 * SECONDS)
             .eut(240)
-            .noOptimize()
             .addTo(sifterRecipes);
 
         GTValues.RA.stdBuilder()
@@ -1391,7 +1387,6 @@ public class RecipeLoader {
             .fluidOutputs(WerkstoffMaterialPool.NitricMonaziteLeachedConcentrate.getFluidOrGas(1000))
             .duration(20 * SECONDS)
             .eut(240)
-            .noOptimize()
             .addTo(sifterRecipes);
 
         // BEGIN Cerium
@@ -1434,7 +1429,6 @@ public class RecipeLoader {
             .fluidInputs(WerkstoffMaterialPool.NitricMonaziteLeachedConcentrate.getFluidOrGas(1000))
             .duration(5 * SECONDS)
             .eut(240)
-            .noOptimize()
             .addTo(vacuumFreezerRecipes);
 
         GTValues.RA.stdBuilder()
@@ -1504,18 +1498,18 @@ public class RecipeLoader {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GTUtility.getIntegratedCircuit(4),
-                WerkstoffMaterialPool.SaturatedMonaziteRareEarthMixture.get(OrePrefixes.dust, 8))
-            .itemOutputs(WerkstoffMaterialPool.SamaricResidue.get(OrePrefixes.dust, 6))
-            .fluidOutputs(Materials.Chloromethane.getGas(800))
+                WerkstoffMaterialPool.SaturatedMonaziteRareEarthMixture.get(OrePrefixes.dust, 4))
+            .itemOutputs(WerkstoffMaterialPool.SamaricResidue.get(OrePrefixes.dust, 3))
+            .fluidOutputs(Materials.Chloromethane.getGas(400))
             .eut(TierEU.RECIPE_EV)
-            .duration(5 * MINUTES + 15 * SECONDS)
+            .duration(2 * MINUTES + 37 * SECONDS + 10 * TICKS)
             .addTo(centrifugeRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(WerkstoffMaterialPool.SamaricResidue.get(OrePrefixes.dust, 9))
-            .itemOutputs(Materials.Samarium.getDust(6), Materials.Gadolinium.getDust(3))
+            .itemInputs(WerkstoffMaterialPool.SamaricResidue.get(OrePrefixes.dust, 3))
+            .itemOutputs(Materials.Samarium.getDust(2), Materials.Gadolinium.getDust(1))
             .outputChances(10000, 10000)
-            .duration(20 * SECONDS)
+            .duration(6 * SECONDS + 13 * TICKS)
             .eut(TierEU.RECIPE_EV)
             .addTo(sifterRecipes);
 
@@ -1561,7 +1555,6 @@ public class RecipeLoader {
             .eut(TierEU.RECIPE_EV)
             .duration(1000)
             .metadata(DISSOLUTION_TANK_RATIO, 10)
-            .noOptimize()
             .addTo(dissolutionTankRecipes);
 
         GTValues.RA.stdBuilder()
@@ -1575,7 +1568,6 @@ public class RecipeLoader {
             .fluidOutputs(WerkstoffMaterialPool.FilteredBastnasiteMud.getFluidOrGas(400))
             .eut(240)
             .duration(20 * SECONDS)
-            .noOptimize()
             .addTo(sifterRecipes);
 
         GTValues.RA.stdBuilder()
@@ -2417,7 +2409,6 @@ public class RecipeLoader {
             .fluidOutputs(Materials.Chlorine.getGas(3000))
             .eut(TierEU.RECIPE_ZPM)
             .duration(5 * SECONDS)
-            .noOptimize()
             .addTo(electrolyzerRecipes);
 
         // Pr
@@ -2430,7 +2421,6 @@ public class RecipeLoader {
             .fluidOutputs(Materials.Chlorine.getGas(3000))
             .eut(TierEU.RECIPE_ZPM)
             .duration(5 * SECONDS)
-            .noOptimize()
             .addTo(electrolyzerRecipes);
 
         // Ce
@@ -2443,7 +2433,6 @@ public class RecipeLoader {
             .fluidOutputs(Materials.Chlorine.getGas(3000))
             .eut(TierEU.RECIPE_ZPM)
             .duration(5 * SECONDS)
-            .noOptimize()
             .addTo(electrolyzerRecipes);
 
         // Nd
@@ -2456,7 +2445,6 @@ public class RecipeLoader {
             .fluidOutputs(Materials.Chlorine.getGas(3000))
             .eut(TierEU.RECIPE_ZPM)
             .duration(5 * SECONDS)
-            .noOptimize()
             .addTo(electrolyzerRecipes);
 
         // Po
@@ -2469,7 +2457,6 @@ public class RecipeLoader {
             .fluidOutputs(Materials.Chlorine.getGas(3000))
             .eut(TierEU.RECIPE_ZPM)
             .duration(5 * SECONDS)
-            .noOptimize()
             .addTo(electrolyzerRecipes);
 
         // Sm
@@ -2482,7 +2469,6 @@ public class RecipeLoader {
             .fluidOutputs(Materials.Chlorine.getGas(3000))
             .eut(TierEU.RECIPE_ZPM)
             .duration(5 * SECONDS)
-            .noOptimize()
             .addTo(electrolyzerRecipes);
 
         // Eu
@@ -2495,7 +2481,6 @@ public class RecipeLoader {
             .fluidOutputs(Materials.Chlorine.getGas(3000))
             .eut(TierEU.RECIPE_ZPM)
             .duration(5 * SECONDS)
-            .noOptimize()
             .addTo(electrolyzerRecipes);
 
         // Ga
@@ -2508,7 +2493,6 @@ public class RecipeLoader {
             .fluidOutputs(Materials.Chlorine.getGas(3000))
             .eut(TierEU.RECIPE_ZPM)
             .duration(5 * SECONDS)
-            .noOptimize()
             .addTo(electrolyzerRecipes);
 
         // Tb
@@ -2521,7 +2505,6 @@ public class RecipeLoader {
             .fluidOutputs(Materials.Chlorine.getGas(3000))
             .eut(TierEU.RECIPE_ZPM)
             .duration(5 * SECONDS)
-            .noOptimize()
             .addTo(electrolyzerRecipes);
 
         // Dy
@@ -2534,7 +2517,6 @@ public class RecipeLoader {
             .fluidOutputs(Materials.Chlorine.getGas(3000))
             .eut(TierEU.RECIPE_ZPM)
             .duration(5 * SECONDS)
-            .noOptimize()
             .addTo(electrolyzerRecipes);
 
         // Ho
@@ -2547,7 +2529,6 @@ public class RecipeLoader {
             .fluidOutputs(Materials.Chlorine.getGas(3000))
             .eut(TierEU.RECIPE_ZPM)
             .duration(5 * SECONDS)
-            .noOptimize()
             .addTo(electrolyzerRecipes);
 
         // Er
@@ -2560,7 +2541,6 @@ public class RecipeLoader {
             .fluidOutputs(Materials.Chlorine.getGas(3000))
             .eut(TierEU.RECIPE_ZPM)
             .duration(5 * SECONDS)
-            .noOptimize()
             .addTo(electrolyzerRecipes);
 
         // Tm
@@ -2573,7 +2553,6 @@ public class RecipeLoader {
             .fluidOutputs(Materials.Chlorine.getGas(3000))
             .eut(TierEU.RECIPE_ZPM)
             .duration(5 * SECONDS)
-            .noOptimize()
             .addTo(electrolyzerRecipes);
 
         // Yb
@@ -2586,7 +2565,6 @@ public class RecipeLoader {
             .fluidOutputs(Materials.Chlorine.getGas(3000))
             .eut(TierEU.RECIPE_ZPM)
             .duration(5 * SECONDS)
-            .noOptimize()
             .addTo(electrolyzerRecipes);
 
         // Lu
@@ -2599,7 +2577,6 @@ public class RecipeLoader {
             .fluidOutputs(Materials.Chlorine.getGas(3000))
             .eut(TierEU.RECIPE_ZPM)
             .duration(5 * SECONDS)
-            .noOptimize()
             .addTo(electrolyzerRecipes);
 
         // TODO ChlorinitedRareEarthConcentrate process with every 15 Rare Earth Extracting Nano Resin
@@ -3117,7 +3094,6 @@ public class RecipeLoader {
             .fluidOutputs(SamariumRareEarthMud.getFluidOrGas(2000))
             .metadata(DISSOLUTION_TANK_RATIO, 1)
             .outputChances(8000, 6000)
-            .noOptimize()
             .eut(TierEU.RECIPE_EV)
             .duration(10 * SECONDS)
             .addTo(dissolutionTankRecipes);
@@ -3128,7 +3104,6 @@ public class RecipeLoader {
             .fluidOutputs(SamariumRareEarthMud.getFluidOrGas(18000))
             .metadata(DISSOLUTION_TANK_RATIO, 1)
             .outputChances(8000, 6000)
-            .noOptimize()
             .eut(TierEU.RECIPE_IV)
             .duration(300)
             .addTo(dissolutionTankRecipes);
@@ -3154,7 +3129,6 @@ public class RecipeLoader {
             .fluidOutputs(DilutedSamariumRareEarthSolution.getFluidOrGas(10000))
             .metadata(DISSOLUTION_TANK_RATIO, 9)
             .outputChances(9000, 6000)
-            .noOptimize()
             .eut(TierEU.RECIPE_EV)
             .duration(600)
             .addTo(dissolutionTankRecipes);
@@ -3167,7 +3141,6 @@ public class RecipeLoader {
             .fluidOutputs(DilutedSamariumRareEarthSolution.getFluidOrGas(90000))
             .metadata(DISSOLUTION_TANK_RATIO, 9)
             .outputChances(9000, 6000)
-            .noOptimize()
             .eut(TierEU.RECIPE_IV)
             .duration(900)
             .addTo(dissolutionTankRecipes);
@@ -3253,7 +3226,6 @@ public class RecipeLoader {
             .fluidOutputs(Materials.Samarium.getMolten(2304))
             .eut(TierEU.RECIPE_ZPM)
             .duration(5 * SECONDS)
-            .noOptimize()
             .addTo(distillationTowerRecipes);
 
         // Centrifuge ImpureLanthanumChlorideDust
@@ -3420,9 +3392,9 @@ public class RecipeLoader {
             .addTo(assemblerRecipes);
 
         GTValues.RA.stdBuilder()
-            .fluidInputs(WerkstoffMaterialPool.DilutedAcetone.getFluidOrGas(250))
-            .fluidOutputs(Materials.Acetone.getFluid(150))
-            .duration(6 * SECONDS)
+            .fluidInputs(WerkstoffMaterialPool.DilutedAcetone.getFluidOrGas(50))
+            .fluidOutputs(Materials.Acetone.getFluid(30))
+            .duration(1 * SECONDS + 4 * TICKS)
             .eut(TierEU.RECIPE_MV)
             .addTo(fluidHeaterRecipes);
 
@@ -3482,7 +3454,6 @@ public class RecipeLoader {
                 CeriumDopedLutetiumAluminiumOxygenBlend.get(OrePrefixes.dust, 17))
             .eut(TierEU.RECIPE_UV)
             .duration(45 * SECONDS)
-            .noOptimize()
             .addTo(mixerRecipes);
         GTValues.RA.stdBuilder()
             .itemInputs(
@@ -3495,7 +3466,6 @@ public class RecipeLoader {
                 CeriumDopedLutetiumAluminiumOxygenBlend.get(OrePrefixes.dust, 17))
             .eut(TierEU.RECIPE_UV)
             .duration(45 * SECONDS)
-            .noOptimize()
             .addTo(mixerRecipes);
         GTValues.RA.stdBuilder()
             .itemInputs(
@@ -3508,7 +3478,6 @@ public class RecipeLoader {
                 CeriumDopedLutetiumAluminiumOxygenBlend.get(OrePrefixes.dust, 17))
             .eut(TierEU.RECIPE_UV)
             .duration(45 * SECONDS)
-            .noOptimize()
             .addTo(mixerRecipes);
 
         // Get LuAG Crystal seed

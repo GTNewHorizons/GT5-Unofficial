@@ -2,6 +2,7 @@ package goodgenerator.blocks.tileEntity.GTMetaTileEntity;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -15,13 +16,14 @@ import net.minecraftforge.fluids.FluidTankInfo;
 import appeng.api.config.AccessRestriction;
 import appeng.api.config.Actionable;
 import appeng.api.networking.GridFlags;
-import appeng.api.networking.IGrid;
 import appeng.api.networking.IGridNode;
 import appeng.api.networking.events.MENetworkCellArrayUpdate;
-import appeng.api.networking.events.MENetworkStorageEvent;
+import appeng.api.networking.events.MENetworkChannelsChanged;
+import appeng.api.networking.events.MENetworkEventSubscribe;
+import appeng.api.networking.events.MENetworkPowerStatusChange;
 import appeng.api.networking.security.BaseActionSource;
 import appeng.api.networking.security.IActionHost;
-import appeng.api.networking.storage.IStorageGrid;
+import appeng.api.networking.security.MachineSource;
 import appeng.api.storage.ICellContainer;
 import appeng.api.storage.IMEInventory;
 import appeng.api.storage.IMEInventoryHandler;
@@ -30,8 +32,10 @@ import appeng.api.storage.data.IAEFluidStack;
 import appeng.api.storage.data.IItemList;
 import appeng.api.util.AECableType;
 import appeng.api.util.DimensionalCoord;
+import appeng.me.GridAccessException;
 import appeng.me.helpers.AENetworkProxy;
 import appeng.me.helpers.IGridProxyable;
+import appeng.util.item.AEFluidStack;
 import goodgenerator.blocks.tileEntity.MTEYottaFluidTank;
 import goodgenerator.loader.Loaders;
 import goodgenerator.util.StackUtils;
@@ -48,6 +52,8 @@ public class MTEYOTTAHatch extends MTEHatch implements IGridProxyable, IActionHo
     IMEInventory<IAEFluidStack>, IMEInventoryHandler<IAEFluidStack> {
 
     private static final IIconContainer textureFont = new Textures.BlockIcons.CustomIcon("icons/YOTTAHatch");
+    private static final BigInteger LONG_MAX = BigInteger.valueOf(Long.MAX_VALUE);
+    private static final BigInteger LONG_MIN = BigInteger.valueOf(Long.MIN_VALUE);
 
     private MTEYottaFluidTank host;
     private AENetworkProxy gridProxy = null;
@@ -58,6 +64,7 @@ public class MTEYOTTAHatch extends MTEHatch implements IGridProxyable, IActionHo
     private AccessRestriction readMode = AccessRestriction.READ_WRITE;
     private final AccessRestriction[] AEModes = new AccessRestriction[] { AccessRestriction.NO_ACCESS,
         AccessRestriction.READ, AccessRestriction.WRITE, AccessRestriction.READ_WRITE };
+    private final BaseActionSource mySrc = new MachineSource(this);
 
     private static final BigInteger MAX_LONG_BIGINT = BigInteger.valueOf(Long.MAX_VALUE);
 
@@ -77,7 +84,10 @@ public class MTEYOTTAHatch extends MTEHatch implements IGridProxyable, IActionHo
     }
 
     public void setTank(MTEYottaFluidTank te) {
-        this.host = te;
+        if (host != te) {
+            this.host = te;
+            this.postStorageUpdateToAE2();
+        }
     }
 
     @Override
@@ -109,6 +119,15 @@ public class MTEYOTTAHatch extends MTEHatch implements IGridProxyable, IActionHo
         ItemStack toolStack) {
         if (aPlayer.isSneaking()) this.priority -= 10;
         else this.priority += 10;
+        try {
+            AENetworkProxy proxy = getProxy();
+            if (proxy != null && proxy.isActive()) {
+                proxy.getGrid()
+                    .postEvent(new MENetworkCellArrayUpdate());
+            }
+        } catch (GridAccessException e) {
+            // :P
+        }
         GTUtility
             .sendChatToPlayer(aPlayer, String.format(StatCollector.translateToLocal("yothatch.chat.0"), this.priority));
     }
@@ -146,6 +165,33 @@ public class MTEYOTTAHatch extends MTEHatch implements IGridProxyable, IActionHo
         return this.gridProxy;
     }
 
+    // not sure if needed
+    @MENetworkEventSubscribe
+    public void powerRender(final MENetworkPowerStatusChange c) {
+        try {
+            AENetworkProxy proxy = getProxy();
+            if (proxy != null && proxy.isActive()) {
+                proxy.getGrid()
+                    .postEvent(new MENetworkCellArrayUpdate());
+            }
+        } catch (GridAccessException e) {
+            // :P
+        }
+    }
+
+    @MENetworkEventSubscribe
+    public void channelRender(final MENetworkChannelsChanged c) {
+        try {
+            AENetworkProxy proxy = getProxy();
+            if (proxy != null && proxy.isActive()) {
+                proxy.getGrid()
+                    .postEvent(new MENetworkCellArrayUpdate());
+            }
+        } catch (GridAccessException e) {
+            // :P
+        }
+    }
+
     @Override
     public DimensionalCoord getLocation() {
         IGregTechTileEntity gtm = this.getBaseMetaTileEntity();
@@ -170,6 +216,10 @@ public class MTEYOTTAHatch extends MTEHatch implements IGridProxyable, IActionHo
     @Override
     public IAEFluidStack injectItems(IAEFluidStack input, Actionable type, BaseActionSource src) {
         long amt = fill(null, input, type.equals(Actionable.MODULATE));
+        if (type.equals(Actionable.MODULATE)) {
+            // prevent unnecessary network updates
+            update();
+        }
         if (amt == 0) {
             return input;
         }
@@ -183,7 +233,11 @@ public class MTEYOTTAHatch extends MTEHatch implements IGridProxyable, IActionHo
     public IAEFluidStack extractItems(IAEFluidStack request, Actionable mode, BaseActionSource src) {
         IAEFluidStack ready = drain(null, request, false);
         if (ready != null) {
-            if (mode.equals(Actionable.MODULATE)) drain(null, ready, true);
+            if (mode.equals(Actionable.MODULATE)) {
+                drain(null, ready, true);
+                // prevent unnecessary network updates
+                update();
+            }
             return ready;
         } else return null;
     }
@@ -199,30 +253,53 @@ public class MTEYOTTAHatch extends MTEHatch implements IGridProxyable, IActionHo
         getProxy();
     }
 
+    private void postUpdate(AENetworkProxy proxy, FluidStack fluid, BigInteger amt) {
+        try {
+            proxy.getStorage()
+                .postAlterationOfStoredItems(
+                    StorageChannel.FLUIDS,
+                    Collections.singletonList(
+                        AEFluidStack.create(fluid)
+                            .setStackSize(
+                                amt.min(LONG_MAX)
+                                    .max(LONG_MIN)
+                                    .longValue())),
+                    this.mySrc);
+        } catch (GridAccessException e) {
+            // :P
+        }
+    }
+
+    private void postStorageUpdateToAE2() {
+        AENetworkProxy proxy = getProxy();
+        if (proxy != null && proxy.isActive()) {
+            if (this.lastFluid != null && this.host.mFluid != null) {
+                if (this.lastFluid != this.host.mFluid) {
+                    // post removal of last fluid
+                    postUpdate(proxy, this.lastFluid, this.lastAmt.negate());
+                    // post new fluid
+                    postUpdate(proxy, this.host.mFluid, this.host.mStorageCurrent);
+                } else {
+                    // post difference
+                    postUpdate(proxy, this.host.mFluid, this.host.mStorageCurrent.subtract(this.lastAmt));
+                }
+            } else if (this.lastFluid != null) {
+                // post removal of last fluid
+                postUpdate(proxy, this.lastFluid, this.lastAmt.negate());
+            } else if (this.host.mFluid != null) {
+                // post new fluid
+                postUpdate(proxy, this.host.mFluid, this.host.mStorageCurrent);
+            }
+        }
+        update();
+    }
+
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         if (shouldTick(aTick)) {
             if (isChanged()) {
-                IGridNode node = getGridNode(null);
-                if (node != null) {
-                    IGrid grid = node.getGrid();
-                    if (grid != null) {
-                        grid.postEvent(new MENetworkCellArrayUpdate());
-                        IStorageGrid storageGrid = grid.getCache(IStorageGrid.class);
-                        if (storageGrid == null) {
-                            node.getGrid()
-                                .postEvent(new MENetworkStorageEvent(null, StorageChannel.FLUIDS));
-                        } else {
-                            node.getGrid()
-                                .postEvent(
-                                    new MENetworkStorageEvent(storageGrid.getFluidInventory(), StorageChannel.FLUIDS));
-                        }
-                        node.getGrid()
-                            .postEvent(new MENetworkCellArrayUpdate());
-                    }
-                }
+                postStorageUpdateToAE2();
                 faster();
-                update();
             } else {
                 slower();
             }

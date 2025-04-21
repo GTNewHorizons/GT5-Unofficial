@@ -8,6 +8,8 @@ import static gregtech.api.enums.GTValues.AuthorColen;
 import static gregtech.api.enums.GTValues.V;
 import static gregtech.common.misc.WirelessNetworkManager.addEUToGlobalEnergyMap;
 import static gregtech.common.misc.WirelessNetworkManager.strongCheckOrAddUser;
+import static gregtech.common.misc.WirelessNetworkManager.ticks_between_energy_addition;
+import static gregtech.common.misc.WirelessNetworkManager.totalStorage;
 import static java.lang.Long.min;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
@@ -27,17 +29,14 @@ import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 import com.gtnewhorizons.modularui.common.widget.textfield.NumericWidget;
 
-import gregtech.api.gui.modularui.GTUIInfos;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.interfaces.tileentity.IWirelessEnergyHatchInformation;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.util.GTUtility;
 import tectech.thing.metaTileEntity.Textures;
-import tectech.util.TTUtility;
 
-public class MTEHatchWirelessMulti extends MTEHatchEnergyMulti implements IWirelessEnergyHatchInformation {
+public class MTEHatchWirelessMulti extends MTEHatchEnergyMulti {
 
     private final long precisionMultiplier = LongMath.pow(10, 15);
     private final BigInteger eu_transferred_per_operation = BigInteger.valueOf(Amperes * V[mTier])
@@ -74,7 +73,12 @@ public class MTEHatchWirelessMulti extends MTEHatchEnergyMulti implements IWirel
                     + GRAY
                     + " EU/t" },
             aAmp);
-        TTUtility.setTier(aTier, this);
+    }
+
+    @Override
+    public int getHatchType() {
+        // If amperage is > 64, this is a "wireless laser" and should not be usable on multi-amp only machines
+        return maxAmperes <= 64 ? 1 : 2;
     }
 
     public MTEHatchWirelessMulti(String aName, int aTier, int aAmp, String[] aDescription, ITexture[][][] aTextures) {
@@ -129,43 +133,13 @@ public class MTEHatchWirelessMulti extends MTEHatchEnergyMulti implements IWirel
     }
 
     @Override
-    public boolean isSimpleMachine() {
-        return true;
-    }
-
-    @Override
-    public boolean isFacingValid(ForgeDirection facing) {
-        return true;
-    }
-
-    @Override
-    public boolean isAccessAllowed(EntityPlayer aPlayer) {
-        return true;
-    }
-
-    @Override
     public boolean isEnetInput() {
-        return false;
-    }
-
-    @Override
-    public boolean isInputFacing(ForgeDirection side) {
-        return side == getBaseMetaTileEntity().getFrontFacing();
-    }
-
-    @Override
-    public boolean isValidSlot(int aIndex) {
         return false;
     }
 
     @Override
     public long getMinimumStoredEU() {
         return Amperes * V[mTier];
-    }
-
-    @Override
-    public long maxEUInput() {
-        return V[mTier];
     }
 
     @Override
@@ -179,25 +153,8 @@ public class MTEHatchWirelessMulti extends MTEHatchEnergyMulti implements IWirel
     }
 
     @Override
-    public long maxWorkingAmperesIn() {
-        return Amperes;
-    }
-
-    @Override
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new MTEHatchWirelessMulti(mName, mTier, Amperes, mDescriptionArray, mTextures);
-    }
-
-    @Override
-    public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
-        ItemStack aStack) {
-        return false;
-    }
-
-    @Override
-    public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
-        ItemStack aStack) {
-        return false;
     }
 
     @Override
@@ -267,7 +224,7 @@ public class MTEHatchWirelessMulti extends MTEHatchEnergyMulti implements IWirel
     @Override
     public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
         ItemStack aTool) {
-        GTUIInfos.openGTTileEntityUI(this.getBaseMetaTileEntity(), aPlayer);
+        openGui(aPlayer);
         super.onScrewdriverRightClick(side, aPlayer, aX, aY, aZ, aTool);
     }
 

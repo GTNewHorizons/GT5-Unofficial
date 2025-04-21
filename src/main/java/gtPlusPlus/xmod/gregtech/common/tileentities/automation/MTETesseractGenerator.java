@@ -28,7 +28,7 @@ import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEBasicTank;
-import gregtech.api.objects.GTRenderedTexture;
+import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.GTPPCore;
@@ -58,21 +58,6 @@ public class MTETesseractGenerator extends MTEBasicTank {
     @Override
     public MetaTileEntity newMetaEntity(final IGregTechTileEntity aTileEntity) {
         return new MTETesseractGenerator(this.mName, this.mTier, this.mDescriptionArray, this.mTextures);
-    }
-
-    @Override
-    public boolean isTransformerUpgradable() {
-        return true;
-    }
-
-    @Override
-    public boolean isOverclockerUpgradable() {
-        return false;
-    }
-
-    @Override
-    public boolean isSimpleMachine() {
-        return false;
     }
 
     @Override
@@ -748,10 +733,10 @@ public class MTETesseractGenerator extends MTEBasicTank {
     public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final ForgeDirection side,
         final ForgeDirection facing, final int aColorIndex, final boolean aActive, final boolean aRedstone) {
         return side == facing
-            ? new ITexture[] { new GTRenderedTexture(TexturesGtBlock.Casing_Machine_Dimensional),
-                new GTRenderedTexture(TexturesGtBlock.Casing_Machine_Screen_Frequency) }
-            : new ITexture[] { new GTRenderedTexture(TexturesGtBlock.Casing_Machine_Dimensional),
-                new GTRenderedTexture(Textures.BlockIcons.VOID) };
+            ? new ITexture[] { TextureFactory.of(TexturesGtBlock.Casing_Machine_Dimensional),
+                TextureFactory.of(TexturesGtBlock.Casing_Machine_Screen_Frequency) }
+            : new ITexture[] { TextureFactory.of(TexturesGtBlock.Casing_Machine_Dimensional),
+                TextureFactory.of(Textures.BlockIcons.VOID) };
     }
 
     // To-Do?
@@ -772,16 +757,6 @@ public class MTETesseractGenerator extends MTEBasicTank {
 
     @Override
     public boolean canTankBeEmptied() {
-        return false;
-    }
-
-    @Override
-    public boolean displaysItemStack() {
-        return false;
-    }
-
-    @Override
-    public boolean displaysStackSize() {
         return false;
     }
 

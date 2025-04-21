@@ -20,14 +20,12 @@ import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.SoundResource;
-import gregtech.api.gui.modularui.GTUIInfos;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.items.MetaGeneratedTool;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatch;
-import gregtech.api.objects.GTItemStack;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
@@ -41,7 +39,6 @@ import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.turbines.MTELargerTurbineBase;
 
-@SuppressWarnings("deprecation")
 public class MTEHatchTurbine extends MTEHatch {
 
     public boolean mHasController = false;
@@ -56,12 +53,8 @@ public class MTEHatchTurbine extends MTEHatch {
         super(aID, aName, aNameRegional, aTier, 16, "Turbine Rotor holder for XL Turbines");
     }
 
-    public MTEHatchTurbine(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {
-        super(aName, aTier, 1, aDescription, aTextures);
-    }
-
     public MTEHatchTurbine(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
-        super(aName, aTier, 1, aDescription[0], aTextures);
+        super(aName, aTier, 1, aDescription, aTextures);
     }
 
     @Override
@@ -93,11 +86,6 @@ public class MTEHatchTurbine extends MTEHatch {
 
     public void setEU(int aEU) {
         this.mEUt = aEU;
-    }
-
-    @Override
-    public boolean isSimpleMachine() {
-        return true;
     }
 
     @Override
@@ -150,7 +138,7 @@ public class MTEHatchTurbine extends MTEHatch {
 
     @Override
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
-        GTUIInfos.openGTTileEntityUI(aBaseMetaTileEntity, aPlayer);
+        openGui(aPlayer);
         return true;
     }
 
@@ -342,7 +330,7 @@ public class MTEHatchTurbine extends MTEHatch {
     }
 
     @Override
-    public boolean allowCoverOnSide(ForgeDirection side, GTItemStack aStack) {
+    public boolean allowCoverOnSide(ForgeDirection side, ItemStack coverItem) {
         return false;
     }
 

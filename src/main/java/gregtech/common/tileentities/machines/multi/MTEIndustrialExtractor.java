@@ -210,10 +210,11 @@ public class MTEIndustrialExtractor extends MTEExtendedPowerMultiBlockBase<MTEIn
     @Override
     protected ProcessingLogic createProcessingLogic() {
         return new ProcessingLogic().setSpeedBonus(1F / 3F)
-            .setMaxParallelSupplier(this::getMaxParallelRecipes)
+            .setMaxParallelSupplier(this::getTrueParallel)
             .setEuModifier(0.85F);
     }
 
+    @Override
     public int getMaxParallelRecipes() {
         // Max call to prevent seeing -16 parallels in waila for unformed multi
         return Math.max(8 * itemPipeTier, 0);

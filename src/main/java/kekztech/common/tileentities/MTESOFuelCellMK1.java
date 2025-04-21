@@ -59,6 +59,11 @@ public class MTESOFuelCellMK1 extends MTEEnhancedMultiBlockBase<MTESOFuelCellMK1
         return new MTESOFuelCellMK1(super.mName);
     }
 
+    @Override
+    public boolean supportsPowerPanel() {
+        return false;
+    }
+
     private int mCasing = 0;
 
     private static final int CASING_TEXTURE_ID = 49;

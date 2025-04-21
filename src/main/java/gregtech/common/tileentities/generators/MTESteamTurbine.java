@@ -35,8 +35,6 @@ import gregtech.api.util.GTModHandler;
 
 public class MTESteamTurbine extends MTEBasicGenerator {
 
-    public int mEfficiency;
-
     public MTESteamTurbine(int aID, String aName, String aNameRegional, int aTier) {
         super(
             aID,
@@ -44,17 +42,10 @@ public class MTESteamTurbine extends MTEBasicGenerator {
             aNameRegional,
             aTier,
             new String[] { "Converts Steam into EU", "Base rate: 2L of Steam -> 1 EU" });
-        this.mEfficiency = 6 + this.mTier;
-    }
-
-    public MTESteamTurbine(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {
-        super(aName, aTier, aDescription, aTextures);
-        this.mEfficiency = 6 + this.mTier;
     }
 
     public MTESteamTurbine(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, aDescription, aTextures);
-        this.mEfficiency = 6 + this.mTier;
     }
 
     @Override
@@ -90,7 +81,7 @@ public class MTESteamTurbine extends MTEBasicGenerator {
 
     @Override
     public int getEfficiency() {
-        return this.mEfficiency;
+        return 6 + this.mTier;
     }
 
     @Override
@@ -106,7 +97,7 @@ public class MTESteamTurbine extends MTEBasicGenerator {
 
     @Override
     public int consumedFluidPerOperation(FluidStack aLiquid) {
-        return this.mEfficiency;
+        return this.getEfficiency();
     }
 
     @Override

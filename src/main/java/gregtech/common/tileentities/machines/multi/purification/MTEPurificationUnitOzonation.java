@@ -17,6 +17,7 @@ import static gregtech.api.util.GTStructureUtility.ofFrame;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -243,7 +244,10 @@ public class MTEPurificationUnitOzonation extends MTEPurificationUnitBase<MTEPur
             .addOutputBus(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + "+", 1)
             .addInputHatch(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + "+", 1)
             .addOutputHatch(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + "+", 1)
-            .addOtherStructurePart("Input Hatch (Ozone)", EnumChatFormatting.GOLD + "1", 2)
+            .addOtherStructurePart(
+                StatCollector.translateToLocal("GT5U.tooltip.structure.input_hatch_ozone"),
+                EnumChatFormatting.GOLD + "1",
+                2)
             .toolTipFinisher(AuthorNotAPenguin);
         return tt;
     }

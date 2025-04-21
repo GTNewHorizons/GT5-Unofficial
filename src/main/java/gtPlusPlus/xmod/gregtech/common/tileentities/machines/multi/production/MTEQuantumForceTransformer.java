@@ -399,7 +399,7 @@ public class MTEQuantumForceTransformer extends MTEExtendedPowerMultiBlockBase<M
                 doNeptunium = false;
 
                 if (recipe.getMetadataOrDefault(GTRecipeConstants.QFT_FOCUS_TIER, 1) <= getFocusingTier()) {
-                    List<FluidStack> fluids = getStoredFluids();
+                    FluidStack[] fluids = inputFluids;
                     for (FluidStack fluid : fluids) {
                         if (fluid.getFluid()
                             .equals(mNeptunium)) {
@@ -523,6 +523,7 @@ public class MTEQuantumForceTransformer extends MTEExtendedPowerMultiBlockBase<M
                 * Math.sqrt(Math.min(mMaxParallel, processingLogic.getCurrentParallels())));
 
             if (doNeptunium || doFermium) {
+                startRecipeProcessing();
                 List<FluidStack> fluids = getStoredFluids();
                 for (FluidStack fluid : fluids) {
                     if (fluid == null) continue;
@@ -549,6 +550,7 @@ public class MTEQuantumForceTransformer extends MTEExtendedPowerMultiBlockBase<M
                         }
                     }
                 }
+                endRecipeProcessing();
             }
 
             runningTick = 1;

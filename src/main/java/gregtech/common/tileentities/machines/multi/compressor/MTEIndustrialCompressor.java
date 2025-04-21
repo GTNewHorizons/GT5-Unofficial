@@ -201,10 +201,11 @@ public class MTEIndustrialCompressor extends MTEExtendedPowerMultiBlockBase<MTEI
                 return super.validateRecipe(recipe);
             }
         }.setSpeedBonus(1F / 2F)
-            .setMaxParallelSupplier(this::getMaxParallelRecipes)
+            .setMaxParallelSupplier(this::getTrueParallel)
             .setEuModifier(0.9F);
     }
 
+    @Override
     public int getMaxParallelRecipes() {
         return (2 * GTUtility.getTier(this.getMaxInputVoltage()));
     }

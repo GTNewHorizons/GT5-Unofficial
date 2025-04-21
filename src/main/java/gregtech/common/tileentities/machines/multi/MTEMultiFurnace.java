@@ -144,6 +144,12 @@ public class MTEMultiFurnace extends MTEAbstractMultiFurnace<MTEMultiFurnace> im
         return GTMod.gregtechproxy.mPollutionMultiSmelterPerSecond;
     }
 
+    // Not GPL
+    @Override
+    public boolean supportsPowerPanel() {
+        return false;
+    }
+
     @Override
     @NotNull
     public CheckRecipeResult checkProcessing() {
@@ -205,7 +211,7 @@ public class MTEMultiFurnace extends MTEAbstractMultiFurnace<MTEMultiFurnace> im
         int remainingCost = finalParallel;
         for (ItemStack item : tInputList) {
             ItemStack smeltedOutput = GTModHandler.getSmeltingOutput(item, false, null);
-            if (smeltedOutput != null) {
+            if (smeltedOutput != null && remainingCost > 0) {
                 if (remainingCost >= item.stackSize) {
                     remainingCost -= item.stackSize;
                     smeltedOutput.stackSize *= item.stackSize;

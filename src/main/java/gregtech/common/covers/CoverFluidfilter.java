@@ -5,7 +5,6 @@ import static gregtech.api.enums.GTValues.E;
 import javax.annotation.Nonnull;
 
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
@@ -21,11 +20,11 @@ import com.gtnewhorizons.modularui.api.forge.ItemStackHandler;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
+import gregtech.api.covers.CoverContext;
 import gregtech.api.gui.modularui.CoverUIBuildContext;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
-import gregtech.api.util.CoverBehaviorBase;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.ISerializableObject;
 import gregtech.common.gui.modularui.widget.CoverDataControllerWidget;
@@ -45,41 +44,23 @@ public class CoverFluidfilter extends CoverBehaviorBase<CoverFluidfilter.FluidFi
     private final int ANY_INPUT_FILTER_OUTPUT = 6; // 110
     private final int ANY_INPUT_INVERT_OUTPUT = 7; // 111
 
-    public CoverFluidfilter(ITexture coverTexture) {
-        super(FluidFilterData.class, coverTexture);
+    public CoverFluidfilter(CoverContext context, ITexture coverTexture) {
+        super(context, FluidFilterData.class, coverTexture);
     }
 
     @Override
-    public FluidFilterData createDataObject() {
-        return new FluidFilterData(-1, 0);
+    protected FluidFilterData initializeData() {
+        return new CoverFluidfilter.FluidFilterData(-1, 0);
     }
 
     @Override
-    public FluidFilterData createDataObject(int aLegacyData) {
-        return new FluidFilterData(aLegacyData >>> 3, aLegacyData & 0x7);
-    }
-
-    @Override
-    protected String getDescriptionImpl(ForgeDirection side, int aCoverID, FluidFilterData aCoverVariable,
-        ICoverable aTileEntity) {
-        final Fluid fluid = FluidRegistry.getFluid(aCoverVariable.mFluidID);
+    public String getDescription() {
+        final Fluid fluid = FluidRegistry.getFluid(coverData.mFluidID);
         if (fluid == null) return E;
 
         final FluidStack sFluid = new FluidStack(fluid, 1000);
         return (String
-            .format("Filtering Fluid: %s - %s", sFluid.getLocalizedName(), getFilterMode(aCoverVariable.mFilterMode)));
-    }
-
-    @Override
-    protected boolean isRedstoneSensitiveImpl(ForgeDirection side, int aCoverID, FluidFilterData aCoverVariable,
-        ICoverable aTileEntity, long aTimer) {
-        return false;
-    }
-
-    @Override
-    protected FluidFilterData doCoverThingsImpl(ForgeDirection side, byte aInputRedstone, int aCoverID,
-        FluidFilterData aCoverVariable, ICoverable aTileEntity, long aTimer) {
-        return aCoverVariable;
+            .format("Filtering Fluid: %s - %s", sFluid.getLocalizedName(), getFilterMode(coverData.mFilterMode)));
     }
 
     public String getFilterMode(int aFilterMode) {
@@ -97,33 +78,32 @@ public class CoverFluidfilter extends CoverBehaviorBase<CoverFluidfilter.FluidFi
     }
 
     @Override
-    protected FluidFilterData onCoverScrewdriverClickImpl(ForgeDirection side, int aCoverID,
-        FluidFilterData aCoverVariable, ICoverable aTileEntity, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        aCoverVariable.mFilterMode = (aCoverVariable.mFilterMode + (aPlayer.isSneaking() ? -1 : 1)) % 8;
-        if (aCoverVariable.mFilterMode < 0) {
-            aCoverVariable.mFilterMode = 7;
+    public FluidFilterData onCoverScrewdriverClick(EntityPlayer aPlayer, float aX, float aY, float aZ) {
+        coverData.mFilterMode = (coverData.mFilterMode + (aPlayer.isSneaking() ? -1 : 1)) % 8;
+        if (coverData.mFilterMode < 0) {
+            coverData.mFilterMode = 7;
         }
 
-        GTUtility.sendChatToPlayer(aPlayer, getFilterMode(aCoverVariable.mFilterMode));
+        GTUtility.sendChatToPlayer(aPlayer, getFilterMode(coverData.mFilterMode));
 
-        return aCoverVariable;
+        return coverData;
     }
 
     @Override
-    protected boolean onCoverRightClickImpl(ForgeDirection side, int aCoverID, FluidFilterData aCoverVariable,
-        ICoverable aTileEntity, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        if (side == ForgeDirection.UNKNOWN) return false;
-        if (((aX > 0.375D) && (aX < 0.625D)) || ((side.offsetX != 0) && ((aY > 0.375D) && (aY < 0.625D)))
-            || (side.flag & (ForgeDirection.UP.flag | ForgeDirection.DOWN.flag)) != 0 && aZ > 0.375D && aZ < 0.625D
-            || (side.offsetZ != 0)) {
+    public boolean onCoverRightClick(EntityPlayer aPlayer, float aX, float aY, float aZ) {
+        ICoverable coverable = coveredTile.get();
+        if (coverSide == ForgeDirection.UNKNOWN || coverable == null) return false;
+        if (((aX > 0.375D) && (aX < 0.625D)) || ((coverSide.offsetX != 0) && ((aY > 0.375D) && (aY < 0.625D)))
+            || (coverSide.flag & (ForgeDirection.UP.flag | ForgeDirection.DOWN.flag)) != 0 && aZ > 0.375D && aZ < 0.625D
+            || (coverSide.offsetZ != 0)) {
             final ItemStack tStack = aPlayer.inventory.getCurrentItem();
             if (tStack == null) return true;
 
             final FluidStack tFluid = GTUtility.getFluidForFilledItem(tStack, true);
             if (tFluid != null) {
                 final int aFluid = tFluid.getFluidID();
-                aCoverVariable.mFluidID = aFluid;
-                aTileEntity.setCoverDataAtSide(side, aCoverVariable);
+                coverData.mFluidID = aFluid;
+                coverable.setCoverDataAtSide(coverSide, coverData);
                 final FluidStack sFluid = new FluidStack(FluidRegistry.getFluid(aFluid), 1000);
                 GTUtility
                     .sendChatToPlayer(aPlayer, GTUtility.trans("047", "Filter Fluid: ") + sFluid.getLocalizedName());
@@ -134,48 +114,41 @@ public class CoverFluidfilter extends CoverBehaviorBase<CoverFluidfilter.FluidFi
     }
 
     @Override
-    protected boolean letsRedstoneGoInImpl(ForgeDirection side, int aCoverID, FluidFilterData aCoverVariable,
-        ICoverable aTileEntity) {
+    public boolean letsRedstoneGoIn() {
         return true;
     }
 
     @Override
-    protected boolean letsRedstoneGoOutImpl(ForgeDirection side, int aCoverID, FluidFilterData aCoverVariable,
-        ICoverable aTileEntity) {
+    public boolean letsRedstoneGoOut() {
         return true;
     }
 
     @Override
-    protected boolean letsEnergyInImpl(ForgeDirection side, int aCoverID, FluidFilterData aCoverVariable,
-        ICoverable aTileEntity) {
+    public boolean letsEnergyIn() {
         return true;
     }
 
     @Override
-    protected boolean letsEnergyOutImpl(ForgeDirection side, int aCoverID, FluidFilterData aCoverVariable,
-        ICoverable aTileEntity) {
+    public boolean letsEnergyOut() {
         return true;
     }
 
     @Override
-    public boolean letsItemsInImpl(ForgeDirection side, int aCoverID, FluidFilterData aCoverVariable, int aSlot,
-        ICoverable aTileEntity) {
+    public boolean letsItemsIn(int aSlot) {
         return true;
     }
 
     @Override
-    public boolean letsItemsOutImpl(ForgeDirection side, int aCoverID, FluidFilterData aCoverVariable, int aSlot,
-        ICoverable aTileEntity) {
+    public boolean letsItemsOut(int aSlot) {
         return true;
     }
 
     @Override
-    protected boolean letsFluidInImpl(ForgeDirection side, int aCoverID, FluidFilterData aCoverVariable, Fluid aFluid,
-        ICoverable aTileEntity) {
+    public boolean letsFluidIn(Fluid aFluid) {
         if (aFluid == null) return true;
 
-        int aFilterMode = aCoverVariable.mFilterMode;
-        int aFilterFluid = aCoverVariable.mFluidID;
+        int aFilterMode = coverData.mFilterMode;
+        int aFilterFluid = coverData.mFluidID;
 
         if (aFilterMode == DENY_INPUT_FILTER_OUTPUT || aFilterMode == DENY_INPUT_INVERT_OUTPUT) return false;
         else if (aFilterMode == ANY_INPUT_FILTER_OUTPUT || aFilterMode == ANY_INPUT_INVERT_OUTPUT) return true;
@@ -185,12 +158,11 @@ public class CoverFluidfilter extends CoverBehaviorBase<CoverFluidfilter.FluidFi
     }
 
     @Override
-    protected boolean letsFluidOutImpl(ForgeDirection side, int aCoverID, FluidFilterData aCoverVariable, Fluid aFluid,
-        ICoverable aTileEntity) {
+    public boolean letsFluidOut(Fluid aFluid) {
         if (aFluid == null) return true;
 
-        int aFilterMode = aCoverVariable.mFilterMode;
-        int aFilterFluid = aCoverVariable.mFluidID;
+        int aFilterMode = coverData.mFilterMode;
+        int aFilterFluid = coverData.mFluidID;
 
         if (aFilterMode == FILTER_INPUT_DENY_OUTPUT || aFilterMode == INVERT_INPUT_DENY_OUTPUT) return false;
         else if (aFilterMode == FILTER_INPUT_ANY_OUTPUT || aFilterMode == INVERT_INPUT_ANY_OUTPUT) return true;
@@ -200,15 +172,8 @@ public class CoverFluidfilter extends CoverBehaviorBase<CoverFluidfilter.FluidFi
     }
 
     @Override
-    protected boolean alwaysLookConnectedImpl(ForgeDirection side, int aCoverID, FluidFilterData aCoverVariable,
-        ICoverable aTileEntity) {
+    public boolean alwaysLookConnected() {
         return true;
-    }
-
-    @Override
-    protected int getTickRateImpl(ForgeDirection side, int aCoverID, FluidFilterData aCoverVariable,
-        ICoverable aTileEntity) {
-        return 0;
     }
 
     // GUI stuff
@@ -241,7 +206,7 @@ public class CoverFluidfilter extends CoverBehaviorBase<CoverFluidfilter.FluidFi
                 new CoverDataControllerWidget.CoverDataIndexedControllerWidget_ToggleButtons<>(
                     this::getCoverData,
                     this::setCoverData,
-                    CoverFluidfilter.this,
+                    CoverFluidfilter.this::loadFromNbt,
                     (id, coverData) -> !getClickable(id, coverData),
                     (id, coverData) -> {
                         coverData.mFilterMode = getNewFilterMode(id, coverData);
@@ -404,11 +369,9 @@ public class CoverFluidfilter extends CoverBehaviorBase<CoverFluidfilter.FluidFi
         }
 
         @Override
-        @Nonnull
-        public ISerializableObject readFromPacket(ByteArrayDataInput aBuf, EntityPlayerMP aPlayer) {
+        public void readFromPacket(ByteArrayDataInput aBuf) {
             mFilterMode = aBuf.readByte();
             mFluidID = aBuf.readInt();
-            return this;
         }
     }
 }

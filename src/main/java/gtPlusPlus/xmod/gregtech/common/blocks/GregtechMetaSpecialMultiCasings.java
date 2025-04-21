@@ -13,10 +13,10 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.TAE;
 import gregtech.api.enums.Textures;
+import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.common.blocks.MaterialCasings;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
-import gtPlusPlus.xmod.gregtech.api.objects.GTPPCopiedBlockTexture;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.turbine.LargeTurbineTextureHandler;
 
@@ -57,7 +57,7 @@ public class GregtechMetaSpecialMultiCasings extends GregtechMetaCasingBlocksAbs
         GTLanguageManager
             .addStringLocalization(this.getUnlocalizedName() + ".14.name", "Reinforced Heat Exchanger Casing");
         GTLanguageManager.addStringLocalization(this.getUnlocalizedName() + ".15.name", "Reinforced SC Turbine Casing");
-        TAE.registerTexture(1, 12, new GTPPCopiedBlockTexture(this, 6, 14));
+        TAE.registerTexture(1, 12, TextureFactory.of(this, 14));
 
         GregtechItemList.Casing_Turbine_Shaft.set(new ItemStack(this, 1, 0));
         GregtechItemList.Casing_Turbine_LP.set(new ItemStack(this, 1, 1));

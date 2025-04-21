@@ -101,7 +101,7 @@ public class GTPacketSetConfigurationCircuit extends GTPacket {
         final IConfigurationCircuitSupport machine = ((BaseTileEntity) tile).getConfigurationCircuitSupport();
         if (machine == null) return;
         if (!machine.allowSelectCircuit()) return;
-        machine.getConfigurationCircuits()
+        GTUtility.getAllIntegratedCircuits()
             .stream()
             .filter(stack -> GTUtility.areStacksEqual(stack, circuit))
             .findFirst()

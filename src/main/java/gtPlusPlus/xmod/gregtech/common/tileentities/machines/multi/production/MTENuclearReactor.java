@@ -37,7 +37,6 @@ import gregtech.api.metatileentity.implementations.MTEHatchInput;
 import gregtech.api.metatileentity.implementations.MTEHatchMaintenance;
 import gregtech.api.metatileentity.implementations.MTEHatchMuffler;
 import gregtech.api.metatileentity.implementations.MTEHatchOutput;
-import gregtech.api.objects.GTItemStack;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
@@ -85,6 +84,11 @@ public class MTENuclearReactor extends GTPPMultiBlockBase<MTENuclearReactor> imp
     }
 
     @Override
+    public boolean supportsPowerPanel() {
+        return false;
+    }
+
+    @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
@@ -125,7 +129,7 @@ public class MTENuclearReactor extends GTPPMultiBlockBase<MTENuclearReactor> imp
     }
 
     @Override
-    public boolean allowCoverOnSide(final ForgeDirection side, final GTItemStack aStack) {
+    public boolean allowCoverOnSide(final ForgeDirection side, ItemStack coverItem) {
         return side != this.getBaseMetaTileEntity()
             .getFrontFacing();
     }

@@ -33,14 +33,11 @@ import gregtech.api.render.TextureFactory;
 
 public class MTENaquadahReactor extends MTEBasicGenerator {
 
-    private final int mEfficiency;
-
     public MTENaquadahReactor(int aID, String aName, String[] aDescription, String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional, aTier, aDescription);
         if (aTier > 8 || aTier < 4) {
             new Exception("Tier without Recipe Map!").printStackTrace();
         }
-        mEfficiency = getBaseEff();
     }
 
     public MTENaquadahReactor(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
@@ -48,7 +45,6 @@ public class MTENaquadahReactor extends MTEBasicGenerator {
         if (aTier > 8 || aTier < 4) {
             new Exception("Tier without Recipe Map!").printStackTrace();
         }
-        mEfficiency = getBaseEff();
     }
 
     @Override
@@ -86,10 +82,6 @@ public class MTENaquadahReactor extends MTEBasicGenerator {
 
     @Override
     public int getEfficiency() {
-        return mEfficiency;
-    }
-
-    private int getBaseEff() {
         return mTier == 4 ? 80 : 100 + (50 * (mTier - 5));
     }
 

@@ -16,11 +16,6 @@ public class MTEBoilerSolarSteel extends MTEBoilerSolar {
         initBoilerStats();
     }
 
-    public MTEBoilerSolarSteel(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {
-        super(aName, aTier, aDescription, aTextures);
-        initBoilerStats();
-    }
-
     public MTEBoilerSolarSteel(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, aDescription, aTextures);
         initBoilerStats();

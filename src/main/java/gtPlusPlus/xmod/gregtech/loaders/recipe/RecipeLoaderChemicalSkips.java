@@ -32,14 +32,12 @@ import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gregtech.common.items.CombType;
 import gregtech.loaders.misc.GTBees;
-import gtPlusPlus.core.item.chemistry.GenericChem;
 import gtPlusPlus.core.material.MaterialMisc;
 import gtPlusPlus.core.material.MaterialsAlloy;
 import gtPlusPlus.core.material.MaterialsElements;
 import gtPlusPlus.core.material.Particle;
 import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
-import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtnhlanth.common.register.WerkstoffMaterialPool;
 import tectech.recipe.TTRecipeAdder;
@@ -81,7 +79,7 @@ public class RecipeLoaderChemicalSkips {
                 WerkstoffLoader.Ruthenium.get(OrePrefixes.dust, 64))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_UV)
-            .metadata(QFT_CATALYST, GTUtility.copyAmount(0, GenericChem.mPlatinumGroupCatalyst))
+            .metadata(QFT_CATALYST, GregtechItemList.PlatinumGroupCatalyst.get(0))
             .metadata(QFT_FOCUS_TIER, 1)
             .addTo(quantumForceTransformerRecipes);
         // Partial platline (from Pd, Os, Ir, Rh and leach)
@@ -93,7 +91,7 @@ public class RecipeLoaderChemicalSkips {
                 WerkstoffLoader.LuVTierMaterial.get(OrePrefixes.dust, 64))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_UV)
-            .metadata(QFT_CATALYST, GTUtility.copyAmount(0, GenericChem.mPlatinumGroupCatalyst))
+            .metadata(QFT_CATALYST, GregtechItemList.PlatinumGroupCatalyst.get(0))
             .metadata(QFT_FOCUS_TIER, 1)
             .addTo(quantumForceTransformerRecipes);
         GTValues.RA.stdBuilder()
@@ -104,7 +102,7 @@ public class RecipeLoaderChemicalSkips {
                 Materials.Osmiridium.getDust(64))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_UV)
-            .metadata(QFT_CATALYST, GTUtility.copyAmount(0, GenericChem.mPlatinumGroupCatalyst))
+            .metadata(QFT_CATALYST, GregtechItemList.PlatinumGroupCatalyst.get(0))
             .metadata(QFT_FOCUS_TIER, 1)
             .addTo(quantumForceTransformerRecipes);
         GTValues.RA.stdBuilder()
@@ -112,7 +110,7 @@ public class RecipeLoaderChemicalSkips {
             .itemOutputs(Materials.Osmium.getDust(64), Materials.Iridium.getDust(64), Materials.Osmiridium.getDust(64))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_UV)
-            .metadata(QFT_CATALYST, GTUtility.copyAmount(0, GenericChem.mPlatinumGroupCatalyst))
+            .metadata(QFT_CATALYST, GregtechItemList.PlatinumGroupCatalyst.get(0))
             .metadata(QFT_FOCUS_TIER, 1)
             .addTo(quantumForceTransformerRecipes);
         GTValues.RA.stdBuilder()
@@ -124,7 +122,7 @@ public class RecipeLoaderChemicalSkips {
                 WerkstoffLoader.LuVTierMaterial.get(OrePrefixes.dust, 64))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_UV)
-            .metadata(QFT_CATALYST, GTUtility.copyAmount(0, GenericChem.mPlatinumGroupCatalyst))
+            .metadata(QFT_CATALYST, GregtechItemList.PlasticPolymerCatalyst.get(0))
             .metadata(QFT_FOCUS_TIER, 1)
             .addTo(quantumForceTransformerRecipes);
         GTValues.RA.stdBuilder()
@@ -136,7 +134,7 @@ public class RecipeLoaderChemicalSkips {
                 WerkstoffLoader.Ruthenium.get(OrePrefixes.dust, 64))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_UV)
-            .metadata(QFT_CATALYST, GTUtility.copyAmount(0, GenericChem.mPlatinumGroupCatalyst))
+            .metadata(QFT_CATALYST, GregtechItemList.PlatinumGroupCatalyst.get(0))
             .metadata(QFT_FOCUS_TIER, 1)
             .addTo(quantumForceTransformerRecipes);
         // Early Plastics
@@ -156,7 +154,7 @@ public class RecipeLoaderChemicalSkips {
                 Materials.Polybenzimidazole.getMolten(144 * 64))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_ZPM)
-            .metadata(QFT_CATALYST, GTUtility.copyAmount(0, GenericChem.mPlasticPolymerCatalyst))
+            .metadata(QFT_CATALYST, GregtechItemList.PlasticPolymerCatalyst.get(0))
             .metadata(QFT_FOCUS_TIER, 1)
             .addTo(quantumForceTransformerRecipes);
         // Early Rubbers/Cable Materials
@@ -173,7 +171,7 @@ public class RecipeLoaderChemicalSkips {
                 Materials.Rubber.getMolten(144 * 256))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_ZPM)
-            .metadata(QFT_CATALYST, GTUtility.copyAmount(0, GenericChem.mRubberPolymerCatalyst))
+            .metadata(QFT_CATALYST, GregtechItemList.RubberPolymerCatalyst.get(0))
             .metadata(QFT_FOCUS_TIER, 1)
             .noBuffer()
             .addTo(quantumForceTransformerRecipes);
@@ -189,7 +187,7 @@ public class RecipeLoaderChemicalSkips {
                 Materials.SolderingAlloy.getMolten(144 * 128))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_UV)
-            .metadata(QFT_CATALYST, GTUtility.copyAmount(0, GenericChem.mAdhesionPromoterCatalyst))
+            .metadata(QFT_CATALYST, GregtechItemList.AdhesionPromoterCatalyst.get(0))
             .metadata(QFT_FOCUS_TIER, 1)
             .addTo(quantumForceTransformerRecipes);
         // Titanium, Tungsten, Indium
@@ -202,7 +200,7 @@ public class RecipeLoaderChemicalSkips {
                 Materials.Indium.getDust(64))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_UV)
-            .metadata(QFT_CATALYST, GTUtility.copyAmount(0, GenericChem.mTitaTungstenIndiumCatalyst))
+            .metadata(QFT_CATALYST, GregtechItemList.TitaTungstenIndiumCatalyst.get(0))
             .metadata(QFT_FOCUS_TIER, 1)
             .addTo(quantumForceTransformerRecipes);
         GTValues.RA.stdBuilder()
@@ -216,7 +214,7 @@ public class RecipeLoaderChemicalSkips {
                 MaterialsElements.getInstance().HAFNIUM.getDust(64))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_UV)
-            .metadata(QFT_CATALYST, GTUtility.copyAmount(0, GenericChem.mTitaTungstenIndiumCatalyst))
+            .metadata(QFT_CATALYST, GregtechItemList.TitaTungstenIndiumCatalyst.get(0))
             .metadata(QFT_FOCUS_TIER, 1)
             .addTo(quantumForceTransformerRecipes);
         // Thorium, Uranium, Plutonium
@@ -231,7 +229,7 @@ public class RecipeLoaderChemicalSkips {
                 Materials.Plutonium241.getDust(64))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_UV)
-            .metadata(QFT_CATALYST, GTUtility.copyAmount(0, GenericChem.mRadioactivityCatalyst))
+            .metadata(QFT_CATALYST, GregtechItemList.RadioactivityCatalyst.get(0))
             .metadata(QFT_FOCUS_TIER, 1)
             .addTo(quantumForceTransformerRecipes);
         // Monaline
@@ -246,7 +244,7 @@ public class RecipeLoaderChemicalSkips {
                 ItemList.SuperconductorComposite.get(1))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_UHV)
-            .metadata(QFT_CATALYST, GTUtility.copyAmount(0, GenericChem.mRareEarthGroupCatalyst))
+            .metadata(QFT_CATALYST, GregtechItemList.RareEarthGroupCatalyst.get(0))
             .metadata(QFT_FOCUS_TIER, 2)
             .addTo(quantumForceTransformerRecipes);
         // Bastline
@@ -260,7 +258,7 @@ public class RecipeLoaderChemicalSkips {
                 Materials.Lanthanum.getDust(64))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_UHV)
-            .metadata(QFT_CATALYST, GTUtility.copyAmount(0, GenericChem.mRareEarthGroupCatalyst))
+            .metadata(QFT_CATALYST, GregtechItemList.RareEarthGroupCatalyst.get(0))
             .metadata(QFT_FOCUS_TIER, 2)
             .addTo(quantumForceTransformerRecipes);
         // Bastline from Cerium-rich mixture
@@ -274,7 +272,7 @@ public class RecipeLoaderChemicalSkips {
                 Materials.Lanthanum.getDust(64))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_UHV)
-            .metadata(QFT_CATALYST, GTUtility.copyAmount(0, GenericChem.mRareEarthGroupCatalyst))
+            .metadata(QFT_CATALYST, GregtechItemList.RareEarthGroupCatalyst.get(0))
             .metadata(QFT_FOCUS_TIER, 2)
             .addTo(quantumForceTransformerRecipes);
         // Stem Cells
@@ -289,7 +287,7 @@ public class RecipeLoaderChemicalSkips {
                 Materials.GrowthMediumSterilized.getFluid(1000 * 512))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_UEV)
-            .metadata(QFT_CATALYST, GTUtility.copyAmount(0, GenericChem.mRawIntelligenceCatalyst))
+            .metadata(QFT_CATALYST, GregtechItemList.RawIntelligenceCatalyst.get(0))
             .metadata(QFT_FOCUS_TIER, 3)
             .addTo(quantumForceTransformerRecipes);
         // Unknown Particles
@@ -303,7 +301,7 @@ public class RecipeLoaderChemicalSkips {
             .fluidOutputs(FluidUtils.getFluidStack("plasma.hydrogen", 1000))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_UEV)
-            .metadata(QFT_CATALYST, GTUtility.copyAmount(0, GenericChem.mParticleAccelerationCatalyst))
+            .metadata(QFT_CATALYST, GregtechItemList.ParticleAccelerationCatalyst.get(0))
             .metadata(QFT_FOCUS_TIER, 3)
             .addTo(quantumForceTransformerRecipes);
         // Lategame Plastics (Missing Radox Polymer and Heavy Radox)
@@ -317,7 +315,7 @@ public class RecipeLoaderChemicalSkips {
                 MaterialsKevlar.Kevlar.getMolten(144 * 64))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_UIV)
-            .metadata(QFT_CATALYST, GTUtility.copyAmount(0, GenericChem.mUltimatePlasticCatalyst))
+            .metadata(QFT_CATALYST, GregtechItemList.UltimatePlasticCatalyst.get(0))
             .metadata(QFT_FOCUS_TIER, 4)
             .addTo(quantumForceTransformerRecipes);
         if (Mods.Forestry.isModLoaded()) {
@@ -331,7 +329,7 @@ public class RecipeLoaderChemicalSkips {
                     MaterialsKevlar.Kevlar.getMolten(144 * 64))
                 .duration(20 * SECONDS)
                 .eut(TierEU.RECIPE_UIV)
-                .metadata(QFT_CATALYST, GTUtility.copyAmount(0, GenericChem.mUltimatePlasticCatalyst))
+                .metadata(QFT_CATALYST, GregtechItemList.UltimatePlasticCatalyst.get(0))
                 .metadata(QFT_FOCUS_TIER, 4)
                 .addTo(quantumForceTransformerRecipes);
             // Platline skip using Platline Combs (Palladium, Osmium, Iridium, Platinum)
@@ -348,7 +346,7 @@ public class RecipeLoaderChemicalSkips {
                     Materials.Platinum.getMolten(144 * 256))
                 .duration(20 * SECONDS)
                 .eut(TierEU.RECIPE_UV)
-                .metadata(QFT_CATALYST, GTUtility.copyAmount(0, GenericChem.mPlatinumGroupCatalyst))
+                .metadata(QFT_CATALYST, GregtechItemList.PlatinumGroupCatalyst.get(0))
                 .metadata(QFT_FOCUS_TIER, 1)
                 .addTo(quantumForceTransformerRecipes);
         }
@@ -362,7 +360,7 @@ public class RecipeLoaderChemicalSkips {
                 Materials.BioMediumRaw.getFluid(1000 * 512))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_UIV)
-            .metadata(QFT_CATALYST, GTUtility.copyAmount(0, GenericChem.mBiologicalIntelligenceCatalyst))
+            .metadata(QFT_CATALYST, GregtechItemList.BiologicalIntelligenceCatalyst.get(0))
             .metadata(QFT_FOCUS_TIER, 4)
             .addTo(quantumForceTransformerRecipes);
         // Rare Particles
@@ -381,7 +379,7 @@ public class RecipeLoaderChemicalSkips {
                 new FluidStack(MaterialsElements.STANDALONE.CELESTIAL_TUNGSTEN.getPlasma(), 30000))
             .duration(3 * MINUTES + 20 * SECONDS)
             .eut(TierEU.RECIPE_UIV)
-            .metadata(QFT_CATALYST, GTUtility.copyAmount(0, GenericChem.mSynchrotronCapableCatalyst))
+            .metadata(QFT_CATALYST, GregtechItemList.SynchrotronCapableCatalyst.get(0))
             .metadata(QFT_FOCUS_TIER, 4)
             .addTo(quantumForceTransformerRecipes);
 
@@ -398,7 +396,7 @@ public class RecipeLoaderChemicalSkips {
                     FluidUtils.getFluidStack("iodine", 64_000))
                 .duration(20 * SECONDS)
                 .eut(TierEU.RECIPE_UIV)
-                .metadata(QFT_CATALYST, GTUtility.copyAmount(0, GenericChem.mAlgagenicGrowthPromoterCatalyst))
+                .metadata(QFT_CATALYST, GregtechItemList.AlgagenicGrowthPromoterCatalyst.get(0))
                 .metadata(QFT_FOCUS_TIER, 4)
                 .addTo(quantumForceTransformerRecipes);
 
@@ -452,7 +450,7 @@ public class RecipeLoaderChemicalSkips {
                 new ItemStack(WerkstoffLoader.items.get(OrePrefixes.dust), 64, 88),
                 Materials.Osmiridium.getDust(64),
                 Materials.Carbon.getNanite(64))
-            .itemOutputs(ItemUtils.getSimpleStack(GenericChem.mPlatinumGroupCatalyst, 1))
+            .itemOutputs(GregtechItemList.PlatinumGroupCatalyst.get(1))
             .fluidInputs(MaterialsElements.STANDALONE.HYPOGEN.getFluidStack(360))
             .duration(60 * SECONDS)
             .eut(TierEU.RECIPE_UEV)
@@ -464,7 +462,7 @@ public class RecipeLoaderChemicalSkips {
                 Materials.Polybenzimidazole.getDust(64),
                 Materials.Polytetrafluoroethylene.getDust(64),
                 Materials.Carbon.getNanite(64))
-            .itemOutputs(ItemUtils.getSimpleStack(GenericChem.mPlasticPolymerCatalyst, 1))
+            .itemOutputs(GregtechItemList.PlasticPolymerCatalyst.get(1))
             .fluidInputs(MaterialsElements.STANDALONE.HYPOGEN.getFluidStack(360))
             .duration(60 * SECONDS)
             .eut(TierEU.RECIPE_UEV)
@@ -476,7 +474,7 @@ public class RecipeLoaderChemicalSkips {
                 Materials.Silicone.getDust(64),
                 Materials.StyreneButadieneRubber.getDust(64),
                 Materials.Carbon.getNanite(64))
-            .itemOutputs(ItemUtils.getSimpleStack(GenericChem.mRubberPolymerCatalyst, 1))
+            .itemOutputs(GregtechItemList.RubberPolymerCatalyst.get(1))
             .fluidInputs(MaterialsElements.STANDALONE.HYPOGEN.getFluidStack(360))
             .duration(60 * SECONDS)
             .eut(TierEU.RECIPE_UEV)
@@ -488,7 +486,7 @@ public class RecipeLoaderChemicalSkips {
                 MaterialsAlloy.INDALLOY_140.getDust(64),
                 MaterialMisc.ETHYL_CYANOACRYLATE.getCell(64),
                 Materials.Carbon.getNanite(64))
-            .itemOutputs(ItemUtils.getSimpleStack(GenericChem.mAdhesionPromoterCatalyst, 1))
+            .itemOutputs(GregtechItemList.AdhesionPromoterCatalyst.get(1))
             .fluidInputs(MaterialsElements.STANDALONE.HYPOGEN.getFluidStack(360))
             .duration(60 * SECONDS)
             .eut(TierEU.RECIPE_UHV)
@@ -500,7 +498,7 @@ public class RecipeLoaderChemicalSkips {
                 Materials.TungstenSteel.getDust(64),
                 Materials.Indium.getDust(64),
                 Materials.Carbon.getNanite(64))
-            .itemOutputs(ItemUtils.getSimpleStack(GenericChem.mTitaTungstenIndiumCatalyst, 1))
+            .itemOutputs(GregtechItemList.TitaTungstenIndiumCatalyst.get(1))
             .fluidInputs(MaterialsElements.STANDALONE.HYPOGEN.getFluidStack(360))
             .duration(60 * SECONDS)
             .eut(TierEU.RECIPE_UHV)
@@ -512,7 +510,7 @@ public class RecipeLoaderChemicalSkips {
                 MaterialsElements.getInstance().URANIUM235.getDust(64),
                 MaterialsElements.getInstance().PLUTONIUM241.getDust(64),
                 Materials.Carbon.getNanite(64))
-            .itemOutputs(ItemUtils.getSimpleStack(GenericChem.mRadioactivityCatalyst, 1))
+            .itemOutputs(GregtechItemList.RadioactivityCatalyst.get(1))
             .fluidInputs(MaterialsElements.STANDALONE.HYPOGEN.getFluidStack(360))
             .duration(60 * SECONDS)
             .eut(TierEU.RECIPE_UHV)
@@ -524,7 +522,7 @@ public class RecipeLoaderChemicalSkips {
                 Materials.Samarium.getDust(64),
                 Materials.Gadolinium.getDust(64),
                 Materials.Silver.getNanite(1))
-            .itemOutputs(ItemUtils.getSimpleStack(GenericChem.mRareEarthGroupCatalyst, 1))
+            .itemOutputs(GregtechItemList.RareEarthGroupCatalyst.get(1))
             .fluidInputs(MaterialsElements.STANDALONE.HYPOGEN.getFluidStack(9216))
             .duration(60 * SECONDS)
             .eut(TierEU.RECIPE_UEV)
@@ -536,7 +534,7 @@ public class RecipeLoaderChemicalSkips {
                 Materials.Naquadah.getDust(64),
                 Materials.Adamantium.getDust(64),
                 Materials.Silver.getNanite(1))
-            .itemOutputs(ItemUtils.getSimpleStack(GenericChem.mSimpleNaquadahCatalyst, 1))
+            .itemOutputs(GregtechItemList.SimpleNaquadahCatalyst.get(1))
             .fluidInputs(MaterialsElements.STANDALONE.HYPOGEN.getFluidStack(9216))
             .duration(60 * SECONDS)
             .eut(TierEU.RECIPE_UEV)
@@ -548,7 +546,7 @@ public class RecipeLoaderChemicalSkips {
                 Materials.Naquadria.getDust(64),
                 Materials.Trinium.getDust(64),
                 Materials.Gold.getNanite(1))
-            .itemOutputs(ItemUtils.getSimpleStack(GenericChem.mAdvancedNaquadahCatalyst, 1))
+            .itemOutputs(GregtechItemList.AdvancedNaquadahCatalyst.get(1))
             .fluidInputs(MaterialsUEVplus.SpaceTime.getMolten(9216L))
             .duration(60 * SECONDS)
             .eut(TierEU.RECIPE_UIV)
@@ -559,7 +557,7 @@ public class RecipeLoaderChemicalSkips {
                 CI.getEmptyCatalyst(1),
                 ItemList.Circuit_Chip_Stemcell.get(64),
                 Materials.Gold.getNanite(1))
-            .itemOutputs(ItemUtils.getSimpleStack(GenericChem.mRawIntelligenceCatalyst, 1))
+            .itemOutputs(GregtechItemList.RawIntelligenceCatalyst.get(1))
             .fluidInputs(MaterialsUEVplus.SpaceTime.getMolten(9216L))
             .duration(60 * SECONDS)
             .eut(TierEU.RECIPE_UIV)
@@ -570,7 +568,7 @@ public class RecipeLoaderChemicalSkips {
                 CI.getEmptyCatalyst(1),
                 GregtechItemList.Laser_Lens_Special.get(64),
                 GTModHandler.getModItem(EternalSingularity.ID, "eternal_singularity", 10))
-            .itemOutputs(ItemUtils.getSimpleStack(GenericChem.mParticleAccelerationCatalyst, 1))
+            .itemOutputs(GregtechItemList.ParticleAccelerationCatalyst.get(1))
             .fluidInputs(MaterialsUEVplus.SpaceTime.getMolten(9216L))
             .duration(60 * SECONDS)
             .eut(TierEU.RECIPE_UIV)
@@ -581,7 +579,7 @@ public class RecipeLoaderChemicalSkips {
                 CI.getEmptyCatalyst(1),
                 MaterialsKevlar.Kevlar.getDust(64),
                 MaterialsUEVplus.TranscendentMetal.getNanite(1))
-            .itemOutputs(ItemUtils.getSimpleStack(GenericChem.mUltimatePlasticCatalyst, 1))
+            .itemOutputs(GregtechItemList.UltimatePlasticCatalyst.get(1))
             .fluidInputs(FluidUtils.getFluidStack("molten.shirabon", 92160))
             .duration(60 * SECONDS)
             .eut(TierEU.RECIPE_UMV)
@@ -592,7 +590,7 @@ public class RecipeLoaderChemicalSkips {
                 CI.getEmptyCatalyst(1),
                 ItemList.Circuit_Chip_Biocell.get(64),
                 MaterialsUEVplus.TranscendentMetal.getNanite(1))
-            .itemOutputs(ItemUtils.getSimpleStack(GenericChem.mBiologicalIntelligenceCatalyst, 1))
+            .itemOutputs(GregtechItemList.BiologicalIntelligenceCatalyst.get(1))
             .fluidInputs(FluidUtils.getFluidStack("molten.shirabon", 92160))
             .duration(60 * SECONDS)
             .eut(TierEU.RECIPE_UMV)
@@ -605,7 +603,7 @@ public class RecipeLoaderChemicalSkips {
                 Particle.getIon("Helium", 0),
                 Particle.getIon("Hydrogen", 0),
                 MaterialsUEVplus.Eternity.getNanite(16))
-            .itemOutputs(ItemUtils.getSimpleStack(GenericChem.mSynchrotronCapableCatalyst, 1))
+            .itemOutputs(GregtechItemList.SynchrotronCapableCatalyst.get(1))
             .fluidInputs(FluidUtils.getFluidStack("molten.shirabon", 92160))
             .duration(60 * SECONDS)
             .eut(TierEU.RECIPE_UMV)
@@ -617,7 +615,7 @@ public class RecipeLoaderChemicalSkips {
                 GTOreDictUnificator.get("blockShirabon", 16),
                 MaterialsUEVplus.Universium.getNanite(1),
                 ItemList.Timepiece.get(1))
-            .itemOutputs(ItemUtils.getSimpleStack(GenericChem.TemporalHarmonyCatalyst, 1))
+            .itemOutputs(GregtechItemList.TemporalHarmonyCatalyst.get(1))
             .fluidInputs(Materials.DarkIron.getMolten(92160))
             .duration(60 * SECONDS)
             .eut(TierEU.RECIPE_UXV)
@@ -630,7 +628,7 @@ public class RecipeLoaderChemicalSkips {
                 getModItem(NewHorizonsCoreMod.ID, "item.TCetiESeaweedExtract", 64),
                 GTOreDictUnificator.get("dustIodine", 64),
                 MaterialsUEVplus.TranscendentMetal.getNanite(1))
-            .itemOutputs(ItemUtils.getSimpleStack(GenericChem.mAlgagenicGrowthPromoterCatalyst, 1))
+            .itemOutputs(GregtechItemList.AlgagenicGrowthPromoterCatalyst.get(1))
             .fluidInputs(FluidUtils.getFluidStack("molten.shirabon", 92_160))
             .duration(60 * SECONDS)
             .eut(TierEU.RECIPE_UMV)

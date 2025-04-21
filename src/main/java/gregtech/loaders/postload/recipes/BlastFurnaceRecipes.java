@@ -677,7 +677,6 @@ public class BlastFurnaceRecipes implements Runnable {
             .duration(200 * SECONDS)
             .eut((int) TierEU.RECIPE_UXV)
             .metadata(COIL_HEAT, 50000)
-            .noOptimize()
             .addTo(blastFurnaceRecipes);
 
         GTValues.RA.stdBuilder()

@@ -15,6 +15,8 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 
+import org.apache.commons.lang3.tuple.Pair;
+
 import baubles.api.BaublesApi;
 import cofh.api.energy.IEnergyContainerItem;
 import cpw.mods.fml.common.eventhandler.EventPriority;
@@ -26,7 +28,6 @@ import gregtech.common.items.MetaGeneratedItem01;
 import gregtech.common.items.MetaGeneratedItem02;
 import gregtech.common.items.MetaGeneratedItem03;
 import gregtech.common.items.MetaGeneratedTool01;
-import gtPlusPlus.api.objects.data.Pair;
 import gtPlusPlus.api.objects.minecraft.BlockPos;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.math.MathUtils;
@@ -161,7 +162,7 @@ public class ChargingHelper {
         if (mValidPlayers.containsKey(mPlayer.getDisplayName())) {
             return false;
         } else {
-            Pair<MTEWirelessCharger, Byte> mEntry = new Pair<>(mEntity, (byte) mEntity.getMode());
+            Pair<MTEWirelessCharger, Byte> mEntry = Pair.of(mEntity, (byte) mEntity.getMode());
             return mValidPlayers.put(mPlayer.getDisplayName(), mEntry) == null;
         }
     }
@@ -171,7 +172,7 @@ public class ChargingHelper {
             return false;
         }
         if (mValidPlayers.containsKey(mPlayer.getDisplayName())) {
-            Pair<MTEWirelessCharger, Byte> mEntry = new Pair<>(mEntity, (byte) mEntity.getMode());
+            Pair<MTEWirelessCharger, Byte> mEntry = Pair.of(mEntity, (byte) mEntity.getMode());
             return mValidPlayers.remove(mPlayer.getDisplayName(), mEntry);
         } else {
             return false;

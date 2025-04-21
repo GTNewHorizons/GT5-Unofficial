@@ -580,12 +580,8 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
         screenElements.widget(
             new TextWidget("Hit with Soft Mallet to start.").setTextAlignment(Alignment.CenterLeft)
                 .setDefaultColor(EnumChatFormatting.BLACK)
-                .setEnabled(
-                    widget -> getBaseMetaTileEntity().getErrorDisplayID() == 0 && !getBaseMetaTileEntity().isActive()))
-            .widget(
-                new FakeSyncWidget.IntegerSyncer(
-                    () -> getBaseMetaTileEntity().getErrorDisplayID(),
-                    val -> getBaseMetaTileEntity().setErrorDisplayID(val)))
+                .setEnabled(widget -> getErrorDisplayID() == 0 && !getBaseMetaTileEntity().isActive()))
+            .widget(new FakeSyncWidget.IntegerSyncer(this::getErrorDisplayID, this::setErrorDisplayID))
             .widget(
                 new FakeSyncWidget.BooleanSyncer(
                     () -> getBaseMetaTileEntity().isActive(),
@@ -593,8 +589,7 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
         screenElements.widget(
             new TextWidget(GTUtility.trans("142", "Running perfectly.")).setTextAlignment(Alignment.CenterLeft)
                 .setDefaultColor(EnumChatFormatting.GREEN)
-                .setEnabled(
-                    widget -> getBaseMetaTileEntity().getErrorDisplayID() == 0 && getBaseMetaTileEntity().isActive()));
+                .setEnabled(widget -> getErrorDisplayID() == 0 && getBaseMetaTileEntity().isActive()));
         screenElements.widget(
             TextWidget.dynamicString(
                 () -> getBaseMetaTileEntity().getLastShutDownReason()

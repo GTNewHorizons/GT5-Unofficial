@@ -1,33 +1,23 @@
 package gtPlusPlus.xmod.gregtech.api.items;
 
-import static gregtech.api.enums.GTValues.D1;
 import static gregtech.api.enums.GTValues.V;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
-import net.minecraft.dispenser.IBlockSource;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.inventory.Container;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidContainerItem;
 
-import gregtech.api.enums.SubTag;
 import gregtech.api.util.GTLanguageManager;
-import gregtech.api.util.GTLog;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
 import gtPlusPlus.core.util.Utils;
-import gtPlusPlus.xmod.gregtech.api.interfaces.internal.IItemBehaviour;
 import ic2.api.item.ElectricItem;
 import ic2.api.item.IElectricItem;
 import ic2.api.item.IElectricItemManager;
@@ -35,9 +25,6 @@ import ic2.api.item.ISpecialElectricItem;
 
 public abstract class GTMetaItemBase extends GTGenericItem
     implements ISpecialElectricItem, IElectricItemManager, IFluidContainerItem {
-
-    /* ---------- CONSTRUCTOR AND MEMBER VARIABLES ---------- */
-    private final HashMap<Short, ArrayList<IItemBehaviour<GTMetaItemBase>>> mItemBehaviors = new HashMap<>();
 
     /**
      * Creates the Item using these Parameters.
@@ -51,204 +38,9 @@ public abstract class GTMetaItemBase extends GTGenericItem
         this.setMaxDamage(0);
     }
 
-    /**
-     * Adds a special Item Behaviour to the Item.
-     * <p/>
-     * Note: the boolean Behaviours sometimes won't be executed if another boolean Behaviour returned true before.
-     *
-     * @param aMetaValue the Meta Value of the Item you want to add it to. [0 - 32765]
-     * @param aBehavior  the Click Behavior you want to add.
-     * @return the Item itself for convenience in constructing.
-     */
-    public final GTMetaItemBase addItemBehavior(final int aMetaValue, final IItemBehaviour<GTMetaItemBase> aBehavior) {
-        if ((aMetaValue < 0) || (aMetaValue >= 32766) || (aBehavior == null)) {
-            return this;
-        }
-        ArrayList<IItemBehaviour<GTMetaItemBase>> tList = this.mItemBehaviors
-            .computeIfAbsent((short) aMetaValue, k -> new ArrayList<>(1));
-        tList.add(aBehavior);
-        return this;
-    }
-
     public abstract Long[] getElectricStats(ItemStack aStack);
 
     public abstract Long[] getFluidContainerStats(ItemStack aStack);
-
-    @Override
-    public boolean hasProjectile(final SubTag aProjectileType, final ItemStack aStack) {
-        final ArrayList<IItemBehaviour<GTMetaItemBase>> tList = this.mItemBehaviors.get((short) this.getDamage(aStack));
-        if (tList != null) {
-            for (final IItemBehaviour<GTMetaItemBase> tBehavior : tList) {
-                if (tBehavior.hasProjectile(this, aProjectileType, aStack)) {
-                    return true;
-                }
-            }
-        }
-        return super.hasProjectile(aProjectileType, aStack);
-    }
-
-    @Override
-    public EntityArrow getProjectile(final SubTag aProjectileType, final ItemStack aStack, final World aWorld,
-        final double aX, final double aY, final double aZ) {
-        final ArrayList<IItemBehaviour<GTMetaItemBase>> tList = this.mItemBehaviors.get((short) this.getDamage(aStack));
-        if (tList != null) {
-            for (final IItemBehaviour<GTMetaItemBase> tBehavior : tList) {
-                final EntityArrow rArrow = tBehavior.getProjectile(this, aProjectileType, aStack, aWorld, aX, aY, aZ);
-                if (rArrow != null) {
-                    return rArrow;
-                }
-            }
-        }
-        return super.getProjectile(aProjectileType, aStack, aWorld, aX, aY, aZ);
-    }
-
-    @Override
-    public EntityArrow getProjectile(final SubTag aProjectileType, final ItemStack aStack, final World aWorld,
-        final EntityLivingBase aEntity, final float aSpeed) {
-        final ArrayList<IItemBehaviour<GTMetaItemBase>> tList = this.mItemBehaviors.get((short) this.getDamage(aStack));
-        if (tList != null) {
-            for (final IItemBehaviour<GTMetaItemBase> tBehavior : tList) {
-                final EntityArrow rArrow = tBehavior
-                    .getProjectile(this, aProjectileType, aStack, aWorld, aEntity, aSpeed);
-                if (rArrow != null) {
-                    return rArrow;
-                }
-            }
-        }
-        return super.getProjectile(aProjectileType, aStack, aWorld, aEntity, aSpeed);
-    }
-
-    @Override
-    public ItemStack onDispense(final IBlockSource aSource, final ItemStack aStack) {
-        final ArrayList<IItemBehaviour<GTMetaItemBase>> tList = this.mItemBehaviors.get((short) this.getDamage(aStack));
-        if (tList != null) {
-            for (final IItemBehaviour<GTMetaItemBase> tBehavior : tList) {
-                if (tBehavior.canDispense(this, aSource, aStack)) {
-                    return tBehavior.onDispense(this, aSource, aStack);
-                }
-            }
-        }
-        return super.onDispense(aSource, aStack);
-    }
-
-    @Override
-    public boolean isItemStackUsable(final ItemStack aStack) {
-        final ArrayList<IItemBehaviour<GTMetaItemBase>> tList = this.mItemBehaviors.get((short) this.getDamage(aStack));
-        if (tList != null) {
-            for (final IItemBehaviour<GTMetaItemBase> tBehavior : tList) {
-                if (!tBehavior.isItemStackUsable(this, aStack)) {
-                    return false;
-                }
-            }
-        }
-        return super.isItemStackUsable(aStack);
-    }
-
-    @Override
-    public boolean onLeftClickEntity(final ItemStack aStack, final EntityPlayer aPlayer, final Entity aEntity) {
-        this.use(aStack, 0, aPlayer);
-        this.isItemStackUsable(aStack);
-        final ArrayList<IItemBehaviour<GTMetaItemBase>> tList = this.mItemBehaviors.get((short) this.getDamage(aStack));
-        if (tList != null) {
-            for (final IItemBehaviour<GTMetaItemBase> tBehavior : tList) {
-                try {
-                    if (tBehavior.onLeftClickEntity(this, aStack, aPlayer, aEntity)) {
-                        if (aStack.stackSize <= 0) {
-                            aPlayer.destroyCurrentEquippedItem();
-                        }
-                        return true;
-                    }
-                    if (aStack.stackSize <= 0) {
-                        aPlayer.destroyCurrentEquippedItem();
-                        return false;
-                    }
-                } catch (final Throwable e) {
-                    if (D1) {
-                        e.printStackTrace(GTLog.err);
-                    }
-                }
-            }
-        }
-        return false;
-    }
-
-    @Override
-    public boolean onItemUse(final ItemStack aStack, final EntityPlayer aPlayer, final World aWorld, final int aX,
-        final int aY, final int aZ, final int ordinalSide, final float hitX, final float hitY, final float hitZ) {
-        this.use(aStack, 0, aPlayer);
-        this.isItemStackUsable(aStack);
-        final ArrayList<IItemBehaviour<GTMetaItemBase>> tList = this.mItemBehaviors.get((short) this.getDamage(aStack));
-        if (tList != null) {
-            for (final IItemBehaviour<GTMetaItemBase> tBehavior : tList) {
-                try {
-                    if (tBehavior.onItemUse(this, aStack, aPlayer, aWorld, aX, aY, aZ, ordinalSide, hitX, hitY, hitZ)) {
-                        if (aStack.stackSize <= 0) {
-                            aPlayer.destroyCurrentEquippedItem();
-                        }
-                        return true;
-                    }
-                    if (aStack.stackSize <= 0) {
-                        aPlayer.destroyCurrentEquippedItem();
-                        return false;
-                    }
-                } catch (final Throwable e) {
-                    if (D1) {
-                        e.printStackTrace(GTLog.err);
-                    }
-                }
-            }
-        }
-        return false;
-    }
-
-    @Override
-    public boolean onItemUseFirst(final ItemStack aStack, final EntityPlayer aPlayer, final World aWorld, final int aX,
-        final int aY, final int aZ, final int ordinalSide, final float hitX, final float hitY, final float hitZ) {
-        this.use(aStack, 0, aPlayer);
-        this.isItemStackUsable(aStack);
-        final ArrayList<IItemBehaviour<GTMetaItemBase>> tList = this.mItemBehaviors.get((short) this.getDamage(aStack));
-        if (tList != null) {
-            for (final IItemBehaviour<GTMetaItemBase> tBehavior : tList) {
-                try {
-                    if (tBehavior
-                        .onItemUseFirst(this, aStack, aPlayer, aWorld, aX, aY, aZ, ordinalSide, hitX, hitY, hitZ)) {
-                        if (aStack.stackSize <= 0) {
-                            aPlayer.destroyCurrentEquippedItem();
-                        }
-                        return true;
-                    }
-                    if (aStack.stackSize <= 0) {
-                        aPlayer.destroyCurrentEquippedItem();
-                        return false;
-                    }
-                } catch (final Throwable e) {
-                    if (D1) {
-                        e.printStackTrace(GTLog.err);
-                    }
-                }
-            }
-        }
-        return false;
-    }
-
-    @Override
-    public ItemStack onItemRightClick(ItemStack aStack, final World aWorld, final EntityPlayer aPlayer) {
-        this.use(aStack, 0, aPlayer);
-        this.isItemStackUsable(aStack);
-        final ArrayList<IItemBehaviour<GTMetaItemBase>> tList = this.mItemBehaviors.get((short) this.getDamage(aStack));
-        if (tList != null) {
-            for (final IItemBehaviour<GTMetaItemBase> tBehavior : tList) {
-                try {
-                    aStack = tBehavior.onItemRightClick(this, aStack, aWorld, aPlayer);
-                } catch (final Throwable e) {
-                    if (D1) {
-                        e.printStackTrace(GTLog.err);
-                    }
-                }
-            }
-        }
-        return aStack;
-    }
 
     @Override
     public final void addInformation(final ItemStack aStack, final EntityPlayer aPlayer, List aList,
@@ -301,25 +93,7 @@ public abstract class GTMetaItemBase extends GTGenericItem
                     + EnumChatFormatting.GRAY);
         }
 
-        final ArrayList<IItemBehaviour<GTMetaItemBase>> tList = this.mItemBehaviors.get((short) this.getDamage(aStack));
-        if (tList != null) {
-            for (final IItemBehaviour<GTMetaItemBase> tBehavior : tList) {
-                aList = tBehavior.getAdditionalToolTips(this, aList, aStack);
-            }
-        }
-
         this.addAdditionalToolTips(aList, aStack);
-    }
-
-    @Override
-    public void onUpdate(final ItemStack aStack, final World aWorld, final Entity aPlayer, final int aTimer,
-        final boolean aIsInHand) {
-        final ArrayList<IItemBehaviour<GTMetaItemBase>> tList = this.mItemBehaviors.get((short) this.getDamage(aStack));
-        if (tList != null) {
-            for (final IItemBehaviour<GTMetaItemBase> tBehavior : tList) {
-                tBehavior.onUpdate(this, aStack, aWorld, aPlayer, aTimer, aIsInHand);
-            }
-        }
     }
 
     @Override

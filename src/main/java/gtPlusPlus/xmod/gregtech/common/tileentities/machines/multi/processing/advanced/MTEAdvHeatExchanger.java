@@ -142,6 +142,11 @@ public class MTEAdvHeatExchanger extends GTPPMultiBlockBase<MTEAdvHeatExchanger>
     }
 
     @Override
+    public boolean supportsPowerPanel() {
+        return false;
+    }
+
+    @Override
     protected IIconContainer getActiveOverlay() {
         return TexturesGtBlock.oMCAAdvancedHeatExchangerActive;
     }

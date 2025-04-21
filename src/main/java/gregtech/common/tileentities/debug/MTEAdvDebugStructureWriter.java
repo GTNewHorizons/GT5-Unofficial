@@ -33,7 +33,6 @@ import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Textures;
-import gregtech.api.gui.modularui.GTUIInfos;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.gui.modularui.GUITextureSet;
 import gregtech.api.interfaces.ITexture;
@@ -57,13 +56,13 @@ public class MTEAdvDebugStructureWriter extends MTETieredMachineBlock implements
         super(aID, aName, aNameRegional, aTier, 0, "");
     }
 
-    public MTEAdvDebugStructureWriter(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {
+    public MTEAdvDebugStructureWriter(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, 0, aDescription, aTextures);
     }
 
     @Override
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new MTEAdvDebugStructureWriter(mName, mTier, "", mTextures);
+        return new MTEAdvDebugStructureWriter(mName, mTier, mDescriptionArray, mTextures);
     }
 
     @Override
@@ -116,11 +115,6 @@ public class MTEAdvDebugStructureWriter extends MTETieredMachineBlock implements
         }
         transpose = aNBT.getBoolean("Transpose");
         showHighlightBox = aNBT.getBoolean("HighlightBox");
-    }
-
-    @Override
-    public boolean isSimpleMachine() {
-        return false;
     }
 
     @Override
@@ -193,7 +187,7 @@ public class MTEAdvDebugStructureWriter extends MTETieredMachineBlock implements
 
     @Override
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
-        GTUIInfos.openGTTileEntityUI(aBaseMetaTileEntity, aPlayer);
+        openGui(aPlayer);
         return true;
     }
 

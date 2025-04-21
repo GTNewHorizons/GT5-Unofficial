@@ -68,9 +68,6 @@ import kubatech.Tags;
 public abstract class KubaTechGTMultiBlockBase<T extends MTEExtendedPowerMultiBlockBase<T>>
     extends MTEExtendedPowerMultiBlockBase<T> {
 
-    @Deprecated
-    public final int mEUt = 0;
-
     @SuppressWarnings("unchecked")
     protected static <K extends KubaTechGTMultiBlockBase<?>> UIInfo<?, ?> createKTMetaTileEntityUI(
         KTContainerConstructor<K> containerConstructor) {
@@ -131,12 +128,6 @@ public abstract class KubaTechGTMultiBlockBase<T extends MTEExtendedPowerMultiBl
      */
     protected int getOverclockTimeLimit() {
         return 1;
-    }
-
-    @Override
-    protected void calculateOverclockedNessMultiInternal(long aEUt, int aDuration, int mAmperage, long maxInputVoltage,
-        boolean perfectOC) {
-        calculateOverclock(aEUt, aDuration, getMaxInputEu(), perfectOC);
     }
 
     /**

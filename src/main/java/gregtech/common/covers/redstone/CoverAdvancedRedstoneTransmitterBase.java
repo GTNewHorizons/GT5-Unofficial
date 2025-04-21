@@ -6,15 +6,14 @@ import java.util.UUID;
 import javax.annotation.Nonnull;
 
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.common.util.ForgeDirection;
 
 import com.google.common.io.ByteArrayDataInput;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
+import gregtech.api.covers.CoverContext;
 import gregtech.api.gui.modularui.CoverUIBuildContext;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
@@ -27,45 +26,43 @@ import io.netty.buffer.ByteBuf;
 public abstract class CoverAdvancedRedstoneTransmitterBase<T extends CoverAdvancedRedstoneTransmitterBase.TransmitterData>
     extends CoverAdvancedWirelessRedstoneBase<T> {
 
-    public CoverAdvancedRedstoneTransmitterBase(Class<T> typeToken, ITexture coverTexture) {
-        super(typeToken, coverTexture);
+    public CoverAdvancedRedstoneTransmitterBase(CoverContext context, Class<T> typeToken, ITexture coverTexture) {
+        super(context, typeToken, coverTexture);
     }
 
-    private static void unregisterSignal(ForgeDirection side, TransmitterData aCoverVariable, ICoverable aTileEntity) {
-        final long hash = hashCoverCoords(aTileEntity, side);
-        removeSignalAt(aCoverVariable.uuid, aCoverVariable.frequency, hash);
-    }
-
-    @Override
-    public boolean onCoverRemovalImpl(ForgeDirection side, int aCoverID, TransmitterData aCoverVariable,
-        ICoverable aTileEntity, boolean aForced) {
-        unregisterSignal(side, aCoverVariable, aTileEntity);
-        return true;
+    private void unregisterSignal() {
+        ICoverable coverable = coveredTile.get();
+        if (coverable == null) return;
+        final long hash = hashCoverCoords(coverable, coverSide);
+        removeSignalAt(coverData.uuid, coverData.frequency, hash);
     }
 
     @Override
-    protected void onBaseTEDestroyedImpl(ForgeDirection side, int aCoverID, TransmitterData aCoverVariable,
-        ICoverable aTileEntity) {
-        unregisterSignal(side, aCoverVariable, aTileEntity);
+    public void onCoverRemoval() {
+        unregisterSignal();
     }
 
     @Override
-    protected T onCoverScrewdriverClickImpl(ForgeDirection side, int aCoverID, T aCoverVariable, ICoverable aTileEntity,
-        EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        aCoverVariable.invert = !aCoverVariable.invert;
+    public void onBaseTEDestroyed() {
+        unregisterSignal();
+    }
+
+    @Override
+    public T onCoverScrewdriverClick(EntityPlayer aPlayer, float aX, float aY, float aZ) {
+        coverData.invert = !coverData.invert;
         GTUtility.sendChatToPlayer(
             aPlayer,
-            aCoverVariable.invert ? GTUtility.trans("054", "Inverted") : GTUtility.trans("055", "Normal"));
+            coverData.invert ? GTUtility.trans("054", "Inverted") : GTUtility.trans("055", "Normal"));
 
-        return aCoverVariable;
+        return coverData;
     }
 
     @Override
-    protected void preDataChangedImpl(ForgeDirection side, int aCoverID, int aNewCoverId, T aCoverVariable,
-        T aNewCoverVariable, ICoverable aTileEntity) {
-        if (aCoverVariable.frequency != aNewCoverVariable.frequency
-            || !Objects.equals(aCoverVariable.uuid, aNewCoverVariable.uuid)) {
-            unregisterSignal(side, aCoverVariable, aTileEntity);
+    public void preDataChanged(int newCoverId, ISerializableObject newCoverVariable) {
+        if (newCoverVariable instanceof TransmitterData newTransmitterData
+            && (coverData.frequency != newTransmitterData.frequency
+                || !Objects.equals(coverData.uuid, newTransmitterData.uuid))) {
+            unregisterSignal();
         }
     }
 
@@ -115,13 +112,10 @@ public abstract class CoverAdvancedRedstoneTransmitterBase<T extends CoverAdvanc
             invert = tag.getBoolean("invert");
         }
 
-        @Nonnull
         @Override
-        public ISerializableObject readFromPacket(ByteArrayDataInput aBuf, EntityPlayerMP aPlayer) {
-            super.readFromPacket(aBuf, aPlayer);
+        public void readFromPacket(ByteArrayDataInput aBuf) {
+            super.readFromPacket(aBuf);
             invert = aBuf.readBoolean();
-
-            return this;
         }
     }
 

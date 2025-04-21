@@ -36,10 +36,6 @@ public class MTEFilter extends MTEFilterBase {
             new String[] { "Filters up to 9 different Items", "Use Screwdriver to regulate output stack size" });
     }
 
-    public MTEFilter(String aName, int aTier, int aInvSlotCount, String aDescription, ITexture[][][] aTextures) {
-        super(aName, aTier, aInvSlotCount, aDescription, aTextures);
-    }
-
     public MTEFilter(String aName, int aTier, int aInvSlotCount, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, aInvSlotCount, aDescription, aTextures);
     }

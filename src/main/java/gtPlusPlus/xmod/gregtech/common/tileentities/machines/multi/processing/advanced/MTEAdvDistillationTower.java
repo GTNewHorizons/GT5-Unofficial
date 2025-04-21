@@ -385,7 +385,7 @@ public class MTEAdvDistillationTower extends GTPPMultiBlockBase<MTEAdvDistillati
 
     @Override
     protected ProcessingLogic createProcessingLogic() {
-        return new ProcessingLogic().setMaxParallelSupplier(this::getMaxParallelRecipes);
+        return new ProcessingLogic().setMaxParallelSupplier(this::getTrueParallel);
     }
 
     @Override
@@ -453,7 +453,7 @@ public class MTEAdvDistillationTower extends GTPPMultiBlockBase<MTEAdvDistillati
         return this.mOutputHatchesByLayer.stream()
             .allMatch(
                 tLayerOutputHatches -> tLayerOutputHatches.stream()
-                    .anyMatch(tHatch -> (tHatch instanceof MTEHatchOutputME tMEHatch) && (tMEHatch.canAcceptFluid())));
+                    .anyMatch(tHatch -> (tHatch instanceof MTEHatchOutputME tMEHatch) && (tMEHatch.canFillFluid())));
     }
 
     @Override

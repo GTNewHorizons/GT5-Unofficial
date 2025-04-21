@@ -105,6 +105,7 @@ public enum Mods {
     KekzTech(Names.KEKZ_TECH),
     KubaTech(Names.KUBA_TECH),
     LogisticsPipes(Names.LOGISTICS_PIPES),
+    MatterManipulator(Names.MATTER_MANIPULATOR),
     MCFrames(Names.MC_FRAMES),
     MagicBees(Names.MAGIC_BEES),
     MalisisDoors(Names.MALISIS_DOORS),
@@ -285,6 +286,7 @@ public enum Mods {
         public static final String KEKZ_TECH = "kekztech";
         public static final String KUBA_TECH = "kubatech";
         public static final String LOGISTICS_PIPES = "LogisticsPipes";
+        public static final String MATTER_MANIPULATOR = "matter-manipulator";
         public static final String MC_FRAMES = "MCFrames";
         public static final String MAGIC_BEES = "MagicBees";
         public static final String MALISIS_DOORS = "malisisdoors";

@@ -171,7 +171,6 @@ public class ArtificialMicaLine {
             .fluidInputs(WerkstoffLoader.HotFluorophlogopite.getFluidOrGas(144))
             .duration(10 * TICKS)
             .eut(TierEU.RECIPE_MV)
-            .noOptimize()
             .addTo(vacuumFreezerRecipes);
 
         // Fluorophlogopite = 4Insulator Foil

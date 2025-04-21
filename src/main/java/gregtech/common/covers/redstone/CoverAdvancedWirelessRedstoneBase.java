@@ -6,7 +6,6 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import javax.annotation.Nonnull;
 
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -17,12 +16,13 @@ import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
 import gregtech.api.GregTechAPI;
+import gregtech.api.covers.CoverContext;
 import gregtech.api.gui.modularui.CoverUIBuildContext;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
-import gregtech.api.util.CoverBehaviorBase;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.ISerializableObject;
+import gregtech.common.covers.CoverBehaviorBase;
 import gregtech.common.gui.modularui.widget.CoverDataControllerWidget;
 import gregtech.common.gui.modularui.widget.CoverDataFollowerNumericWidget;
 import gregtech.common.gui.modularui.widget.CoverDataFollowerToggleButtonWidget;
@@ -31,8 +31,8 @@ import io.netty.buffer.ByteBuf;
 public abstract class CoverAdvancedWirelessRedstoneBase<T extends CoverAdvancedWirelessRedstoneBase.WirelessData>
     extends CoverBehaviorBase<T> {
 
-    public CoverAdvancedWirelessRedstoneBase(Class<T> typeToken, ITexture coverTexture) {
-        super(typeToken, coverTexture);
+    public CoverAdvancedWirelessRedstoneBase(CoverContext context, Class<T> typeToken, ITexture coverTexture) {
+        super(context, typeToken, coverTexture);
     }
 
     public static Byte getSignalAt(UUID uuid, int frequency, CoverAdvancedRedstoneReceiverBase.GateMode mode) {
@@ -108,53 +108,49 @@ public abstract class CoverAdvancedWirelessRedstoneBase<T extends CoverAdvancedW
     }
 
     @Override
-    public boolean letsEnergyInImpl(ForgeDirection side, int aCoverID, T aCoverVariable, ICoverable aTileEntity) {
+    public boolean letsEnergyIn() {
         return true;
     }
 
     @Override
-    public boolean letsEnergyOutImpl(ForgeDirection side, int aCoverID, T aCoverVariable, ICoverable aTileEntity) {
+    public boolean letsEnergyOut() {
         return true;
     }
 
     @Override
-    public boolean letsFluidInImpl(ForgeDirection side, int aCoverID, T aCoverVariable, Fluid aFluid,
-        ICoverable aTileEntity) {
+    public boolean letsFluidIn(Fluid aFluid) {
         return true;
     }
 
     @Override
-    public boolean letsFluidOutImpl(ForgeDirection side, int aCoverID, T aCoverVariable, Fluid aFluid,
-        ICoverable aTileEntity) {
+    public boolean letsFluidOut(Fluid aFluid) {
         return true;
     }
 
     @Override
-    public boolean letsItemsInImpl(ForgeDirection side, int aCoverID, T aCoverVariable, int aSlot,
-        ICoverable aTileEntity) {
+    public boolean letsItemsIn(int aSlot) {
         return true;
     }
 
     @Override
-    public boolean letsItemsOutImpl(ForgeDirection side, int aCoverID, T aCoverVariable, int aSlot,
-        ICoverable aTileEntity) {
+    public boolean letsItemsOut(int aSlot) {
         return true;
     }
 
     @Override
-    public String getDescriptionImpl(ForgeDirection side, int aCoverID, T aCoverVariable, ICoverable aTileEntity) {
-        return GTUtility.trans("081", "Frequency: ") + aCoverVariable.frequency
+    public String getDescription() {
+        return GTUtility.trans("081", "Frequency: ") + coverData.frequency
             + ", Transmission: "
-            + (aCoverVariable.uuid == null ? "Public" : "Private");
+            + (coverData.uuid == null ? "Public" : "Private");
     }
 
     @Override
-    public int getTickRateImpl(ForgeDirection side, int aCoverID, T aCoverVariable, ICoverable aTileEntity) {
+    public int getMinimumTickRate() {
         return 1;
     }
 
     @Override
-    protected int getDefaultTickRateImpl(ForgeDirection side, int aCoverID, T aCoverVariable, ICoverable aTileEntity) {
+    public int getDefaultTickRate() {
         return 5;
     }
 
@@ -211,15 +207,12 @@ public abstract class CoverAdvancedWirelessRedstoneBase<T extends CoverAdvancedW
             }
         }
 
-        @Nonnull
         @Override
-        public ISerializableObject readFromPacket(ByteArrayDataInput aBuf, EntityPlayerMP aPlayer) {
+        public void readFromPacket(ByteArrayDataInput aBuf) {
             frequency = aBuf.readInt();
             if (aBuf.readBoolean()) {
                 uuid = new UUID(aBuf.readLong(), aBuf.readLong());
             }
-
-            return this;
         }
     }
 
@@ -253,7 +246,7 @@ public abstract class CoverAdvancedWirelessRedstoneBase<T extends CoverAdvancedW
             CoverDataControllerWidget<T> dataController = new CoverDataControllerWidget<>(
                 this::getCoverData,
                 this::setCoverData,
-                CoverAdvancedWirelessRedstoneBase.this);
+                CoverAdvancedWirelessRedstoneBase.this::loadFromNbt);
             dataController.setPos(startX, startY);
             addUIForDataController(dataController);
 

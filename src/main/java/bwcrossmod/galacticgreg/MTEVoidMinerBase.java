@@ -24,7 +24,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -53,14 +52,6 @@ public abstract class MTEVoidMinerBase extends MTEDrillerBase {
     protected final byte TIER_MULTIPLIER;
 
     private boolean mBlacklist = false;
-
-    /**
-     * @Deprecated Use {@link VoidMinerUtility#addBlockToDimensionList}
-     */
-    @Deprecated
-    public static void addBlockToDimensionList(int dimId, Block block, int meta, float weight) {
-        VoidMinerUtility.addBlockToDimensionList(dimId, block, meta, weight);
-    }
 
     public MTEVoidMinerBase(int aID, String aName, String aNameRegional, int tier) {
         super(aID, aName, aNameRegional);

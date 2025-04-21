@@ -27,10 +27,6 @@ public class MTEBoilerSteel extends MTEBoilerBronze {
                 "Causes " + GTMod.gregtechproxy.mPollutionHighPressureCoalBoilerPerSecond + " Pollution per second" });
     }
 
-    public MTEBoilerSteel(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {
-        super(aName, aTier, aDescription, aTextures);
-    }
-
     public MTEBoilerSteel(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, aDescription, aTextures);
     }

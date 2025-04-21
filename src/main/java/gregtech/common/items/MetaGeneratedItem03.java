@@ -253,7 +253,7 @@ import static gregtech.common.items.IDMetaItem03.White_Dwarf_Shape_Extruder_Wire
 import static gregtech.common.items.IDMetaItem03.WovenKevlar;
 import static gregtech.common.items.IDMetaItem03.ZPM_Coil;
 
-import gregtech.api.GregTechAPI;
+import gregtech.api.covers.CoverRegistry;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
@@ -264,6 +264,7 @@ import gregtech.api.items.MetaGeneratedItemX32;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.common.covers.CoverMetricsTransmitter;
+import gregtech.common.covers.CoverMetricsTransmitterPlacer;
 import gregtech.common.covers.CoverSolarPanel;
 
 public class MetaGeneratedItem03 extends MetaGeneratedItemX32 {
@@ -546,7 +547,7 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 {
         ItemList.Circuit_Nanoprocessor.set(
             addItem(
                 Circuit_Nanoprocessor.ID,
-                "Nanoprocessor",
+                "Nano Processor",
                 "An Advanced Circuit",
                 OrePrefixes.circuit.get(Materials.HV),
                 SubTag.NO_UNIFICATION));
@@ -554,7 +555,7 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 {
         ItemList.Circuit_Nanocomputer.set(
             addItem(
                 Circuit_Nanocomputer.ID,
-                "Nanoprocessor Assembly",
+                "Nano Assembly",
                 "An Extreme Circuit",
                 OrePrefixes.circuit.get(Materials.EV),
                 SubTag.NO_UNIFICATION));
@@ -562,7 +563,7 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 {
         ItemList.Circuit_Elitenanocomputer.set(
             addItem(
                 Circuit_Elitenanocomputer.ID,
-                "Elite Nanocomputer",
+                "Nano Supercomputer",
                 "An Elite Circuit",
                 OrePrefixes.circuit.get(Materials.IV),
                 SubTag.NO_UNIFICATION));
@@ -571,7 +572,7 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 {
         ItemList.Circuit_Quantumprocessor.set(
             addItem(
                 Circuit_Quantumprocessor.ID,
-                "Quantumprocessor",
+                "Quantum Processor",
                 "An Extreme Circuit",
                 OrePrefixes.circuit.get(Materials.EV),
                 SubTag.NO_UNIFICATION));
@@ -579,7 +580,7 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 {
         ItemList.Circuit_Quantumcomputer.set(
             addItem(
                 Circuit_Quantumcomputer.ID,
-                "Quantumprocessor Assembly",
+                "Quantum Assembly",
                 "An Elite Circuit",
                 OrePrefixes.circuit.get(Materials.IV),
                 SubTag.NO_UNIFICATION));
@@ -587,7 +588,7 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 {
         ItemList.Circuit_Masterquantumcomputer.set(
             addItem(
                 Circuit_Masterquantumcomputer.ID,
-                "Master Quantumcomputer",
+                "Quantum Supercomputer",
                 "A Master Circuit",
                 OrePrefixes.circuit.get(Materials.LuV),
                 SubTag.NO_UNIFICATION));
@@ -595,7 +596,7 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 {
         ItemList.Circuit_Quantummainframe.set(
             addItem(
                 Circuit_Quantummainframe.ID,
-                "Quantumprocessor Mainframe",
+                "Quantum Mainframe",
                 "An Ultimate Circuit",
                 OrePrefixes.circuit.get(Materials.ZPM),
                 SubTag.NO_UNIFICATION));
@@ -604,7 +605,7 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 {
         ItemList.Circuit_Crystalprocessor.set(
             addItem(
                 Circuit_Crystalprocessor.ID,
-                "Crystalprocessor",
+                "Crystal Processor",
                 "An Elite Circuit",
                 OrePrefixes.circuit.get(Materials.IV),
                 SubTag.NO_UNIFICATION));
@@ -612,7 +613,7 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 {
         ItemList.Circuit_Crystalcomputer.set(
             addItem(
                 Circuit_Crystalcomputer.ID,
-                "Crystalprocessor Assembly",
+                "Crystal Assembly",
                 "A Master Circuit",
                 OrePrefixes.circuit.get(Materials.LuV),
                 SubTag.NO_UNIFICATION));
@@ -620,7 +621,7 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 {
         ItemList.Circuit_Ultimatecrystalcomputer.set(
             addItem(
                 Circuit_Ultimatecrystalcomputer.ID,
-                "Ultimate Crystalcomputer",
+                "Crystal Supercomputer",
                 "An Ultimate Circuit",
                 OrePrefixes.circuit.get(Materials.ZPM),
                 SubTag.NO_UNIFICATION));
@@ -628,19 +629,16 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 {
         ItemList.Circuit_Crystalmainframe.set(
             addItem(
                 Circuit_Crystalmainframe.ID,
-                "Crystalprocessor Mainframe",
+                "Crystal Mainframe",
                 "A Super Circuit",
                 OrePrefixes.circuit.get(Materials.UV),
                 SubTag.NO_UNIFICATION));
-
-        // ???? Scared to remove.
-        ItemList.Circuit_Ultimate.set(ItemList.Circuit_Ultimatecrystalcomputer.get(1L)); // maybe should be removed
 
         // Wetware circuits
         ItemList.Circuit_Neuroprocessor.set(
             addItem(
                 Circuit_Neuroprocessor.ID,
-                "Wetwareprocessor",
+                "Wetware Processor",
                 "A Master Circuit",
                 OrePrefixes.circuit.get(Materials.LuV),
                 SubTag.NO_UNIFICATION));
@@ -648,7 +646,7 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 {
         ItemList.Circuit_Wetwarecomputer.set(
             addItem(
                 Circuit_Wetwarecomputer.ID,
-                "Wetwareprocessor Assembly",
+                "Wetware Assembly",
                 "An Ultimate Circuit",
                 OrePrefixes.circuit.get(Materials.ZPM),
                 SubTag.NO_UNIFICATION));
@@ -673,7 +671,7 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 {
         ItemList.Circuit_Bioprocessor.set(
             addItem(
                 Circuit_Bioprocessor.ID,
-                "Bioprocessor",
+                "Bioware Processor",
                 "An Ultimate Circuit",
                 OrePrefixes.circuit.get(Materials.ZPM),
                 SubTag.NO_UNIFICATION));
@@ -681,7 +679,7 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 {
         ItemList.Circuit_Biowarecomputer.set(
             addItem(
                 Circuit_Biowarecomputer.ID,
-                "Biowareprocessor Assembly",
+                "Bioware Assembly",
                 "A Super Circuit",
                 OrePrefixes.circuit.get(Materials.UV),
                 SubTag.NO_UNIFICATION));
@@ -697,7 +695,7 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 {
         ItemList.Circuit_Biomainframe.set(
             addItem(
                 Circuit_Biomainframe.ID,
-                "Bio Mainframe",
+                "Bioware Mainframe",
                 "A Bio Circuit",
                 OrePrefixes.circuit.get(Materials.UEV),
                 SubTag.NO_UNIFICATION));
@@ -749,7 +747,7 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 {
         ItemList.Circuit_OpticalComputer.set(
             addItem(
                 Circuit_OpticalComputer.ID,
-                "Optical Computer",
+                "Optical Supercomputer",
                 "An Optical Circuit",
                 OrePrefixes.circuit.get(Materials.UEV),
                 SubTag.NO_UNIFICATION));
@@ -782,7 +780,7 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 {
         ItemList.Circuit_ExoticComputer.set(
             addItem(
                 Circuit_ExoticComputer.ID,
-                "Exotic Computer",
+                "Exotic Supercomputer",
                 "An Exotic Circuit",
                 OrePrefixes.circuit.get(Materials.UIV),
                 SubTag.NO_UNIFICATION));
@@ -815,7 +813,7 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 {
         ItemList.Circuit_CosmicComputer.set(
             addItem(
                 Circuit_CosmicComputer.ID,
-                "Cosmic Computer",
+                "Cosmic Supercomputer",
                 "A Cosmic Circuit",
                 OrePrefixes.circuit.get(Materials.UMV),
                 SubTag.NO_UNIFICATION));
@@ -848,7 +846,7 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 {
         ItemList.Circuit_TranscendentComputer.set(
             addItem(
                 Circuit_TranscendentComputer.ID,
-                "Temporally Transcendent Computer",
+                "Temporally Transcendent Supercomputer",
                 "A circuit operating outside of known spacetime",
                 OrePrefixes.circuit.get(Materials.UXV),
                 SubTag.NO_UNIFICATION));
@@ -1463,22 +1461,26 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 {
     }
 
     private void registerCovers() {
-        GregTechAPI.registerCover(
+        CoverRegistry.registerCover(
             ItemList.Cover_Metrics_Transmitter.get(1L),
             TextureFactory.of(MACHINE_CASINGS[2][0], TextureFactory.of(OVERLAY_METRICS_TRANSMITTER)),
-            new CoverMetricsTransmitter(TextureFactory.of(OVERLAY_METRICS_TRANSMITTER)));
-        GregTechAPI.registerCover(
+            context -> new CoverMetricsTransmitter(context, TextureFactory.of(OVERLAY_METRICS_TRANSMITTER)),
+            new CoverMetricsTransmitterPlacer());
+        CoverRegistry.registerCover(
             ItemList.Cover_SolarPanel_UHV.get(1L),
             TextureFactory.of(SOLARPANEL_UHV),
-            new CoverSolarPanel(2097152));
-        GregTechAPI.registerCover(
+            context -> new CoverSolarPanel(context, 2097152),
+            CoverRegistry.INTERCEPTS_RIGHT_CLICK_COVER_PLACER);
+        CoverRegistry.registerCover(
             ItemList.Cover_SolarPanel_UEV.get(1L),
             TextureFactory.of(SOLARPANEL_UEV),
-            new CoverSolarPanel(8388608));
-        GregTechAPI.registerCover(
+            context -> new CoverSolarPanel(context, 8388608),
+            CoverRegistry.INTERCEPTS_RIGHT_CLICK_COVER_PLACER);
+        CoverRegistry.registerCover(
             ItemList.Cover_SolarPanel_UIV.get(1L),
             TextureFactory.of(SOLARPANEL_UIV),
-            new CoverSolarPanel(33554432));
+            context -> new CoverSolarPanel(context, 33554432),
+            CoverRegistry.INTERCEPTS_RIGHT_CLICK_COVER_PLACER);
     }
 
     @Override

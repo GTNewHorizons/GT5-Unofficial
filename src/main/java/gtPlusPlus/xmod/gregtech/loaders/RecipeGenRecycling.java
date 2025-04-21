@@ -13,13 +13,14 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
 
+import org.apache.commons.lang3.tuple.Pair;
+
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.api.objects.data.Pair;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.material.state.MaterialState;
 import gtPlusPlus.core.util.Utils;
@@ -71,7 +72,7 @@ public class RecipeGenRecycling implements Runnable {
                 mValidPrefixesAsString[r].name() + Utils.sanitizeString(material.getLocalizedName()),
                 1);
             if (temp != null) {
-                mValidPairs[mSlotIndex++] = new Pair<>(mValidPrefixesAsString[r], temp.copy());
+                mValidPairs[mSlotIndex++] = Pair.of(mValidPrefixesAsString[r], temp.copy());
             }
         }
 
@@ -183,7 +184,7 @@ public class RecipeGenRecycling implements Runnable {
 
         if (mPrefix != null && mDust != null) {
             Logger.WARNING("Built valid dust pair.");
-            return new Pair<>(mPrefix, mDust);
+            return Pair.of(mPrefix, mDust);
         } else {
             Logger.WARNING("mPrefix: " + (mPrefix != null));
             Logger.WARNING("mDust: " + (mDust != null));

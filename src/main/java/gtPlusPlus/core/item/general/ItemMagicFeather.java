@@ -28,8 +28,8 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.creative.AddToCreativeTab;
-import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.item.base.CoreItem;
+import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 
 public class ItemMagicFeather extends CoreItem {
 
@@ -160,7 +160,7 @@ public class ItemMagicFeather extends CoreItem {
                 }
             }
         }
-        boolean hasItem = hasItem(player, ModItems.itemMagicFeather);
+        boolean hasItem = hasItem(player, GregtechItemList.MagicFeather.getItem());
         if (!hasItem) {
             ItemMagicFeather.sPlayerData.remove(player);
         }
@@ -207,7 +207,7 @@ public class ItemMagicFeather extends CoreItem {
             EntityPlayer player = this.player.get();
             if (player == null) return;
             try {
-                boolean hasItem = hasItem(player, ModItems.itemMagicFeather);
+                boolean hasItem = hasItem(player, GregtechItemList.MagicFeather.getItem());
                 if (hasItem != this.hasItem) {
                     if (hasItem) {
                         this.onAdd();

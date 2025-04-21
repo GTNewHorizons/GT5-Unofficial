@@ -229,6 +229,25 @@ GT5U.multiblock.problems=问题
 GT5U.multiblock.mei=最大输入
 GT5U.multiblock.usage=大概功率
 
+
+# NEI recipe handlers
+
+GT5U.nei.large_boiler.burn_time=燃烧时间（秒）:
+GT5U.nei.large_boiler.bronze_boiler=青铜锅炉: %.4f
+GT5U.nei.large_boiler.steel_boiler=钢锅炉: %.4f
+GT5U.nei.large_boiler.steel_boiler.ban=钢锅炉: 不允许
+GT5U.nei.large_boiler.titanium_boiler=钛锅炉: %.4f
+GT5U.nei.large_boiler.titanium_boiler.ban=钛锅炉: 不允许
+GT5U.nei.large_boiler.tungstensteel_boiler=钨钢锅炉: %.4f
+GT5U.nei.large_boiler.tungstensteel_boiler.ban=钨钢锅炉: 不允许
+GT5U.nei.nuclear.model.mox=MOX模式
+GT5U.nei.nuclear.model.uranium=铀模式
+GT5U.nei.nuclear.neutron_pulse=中子脉冲: %d
+GT5U.nei.nuclear.heat.0=热量: %.1f * n1 * (n1 + 1)
+GT5U.nei.nuclear.heat.1=热量: %.1f * (%d + n1) * (%d + n1)
+GT5U.nei.nuclear.energy=能量: %.1f + n2 * %.1f EU/t
+
+
 GT5U.config.colormodulation=颜色调制器
 GT5U.config.colormodulation.cable_insulation=线缆绝缘材料
 GT5U.config.colormodulation.cable_insulation.B=蓝色
@@ -283,6 +302,21 @@ GT5U.interface.coverTabs.north=北
 GT5U.interface.coverTabs.south=南
 GT5U.interface.coverTabs.west=西
 GT5U.interface.coverTabs.east=东
+
+# Waila
+GT5U.waila.machine.working_disabled=工作停止
+GT5U.waila.machine.idle=空闲
+GT5U.waila.machine.in_progress=运行中: %,.1fs / %,.1fs (%,.1f%%)
+GT5U.waila.machine_facing=机器朝向: %s
+GT5U.waila.output_facing=输出方向: %s
+GT5U.waila.facing=方向: %s
+GT5U.waila.facing.down=下
+GT5U.waila.facing.up=上
+GT5U.waila.facing.north=北
+GT5U.waila.facing.south=南
+GT5U.waila.facing.west=西
+GT5U.waila.facing.east=东
+GT5U.waila.facing.unknown=未知
 
 achievement.flintpick=第一把工具
 achievement.flintpick.desc=制造一把燧石镐
@@ -1145,6 +1179,11 @@ GTPP.MBTT.SteamOutputBus=输出总线(蒸汽)
 
 
 
+GT5U.tooltip.fluid.amount=数量: %s L
+GT5U.tooltip.fluid.temperature=温度: %s K
+GT5U.tooltip.fluid.stat=状态: %s
+GT5U.tooltip.fluid.stat.gas=气体
+GT5U.tooltip.fluid.stat.liquid=液体
 
 
 # Achievements

@@ -125,7 +125,7 @@ public class MTESmeltingModule extends MTEBaseModule {
             @NotNull
             @Override
             protected OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
-                return super.createOverclockCalculator(recipe).setEUt(getProcessingVoltage())
+                return super.createOverclockCalculator(recipe).setEUt(getSafeProcessingVoltage())
                     .setRecipeHeat(recipe.mSpecialValue)
                     .setHeatOC(true)
                     .setHeatDiscount(true)

@@ -23,7 +23,6 @@ import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.util.ExoticEnergyInputHelper;
 import gregtech.api.util.GTUtility;
-import gregtech.api.util.OverclockCalculator;
 import gregtech.api.util.shutdown.ShutDownReason;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 
@@ -54,18 +53,6 @@ public abstract class MTEExtendedPowerMultiBlockBase<T extends MTEEnhancedMultiB
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
         aNBT.setLong("mEUt", this.lEUt);
-    }
-
-    @Override
-    protected void calculateOverclockedNessMultiInternal(long aEUt, int aDuration, int mAmperage, long maxInputVoltage,
-        boolean perfectOC) {
-        OverclockCalculator calculator = new OverclockCalculator().setRecipeEUt(aEUt)
-            .setEUt(maxInputVoltage * mAmperage)
-            .setDuration(aDuration)
-            .setDurationDecreasePerOC(perfectOC ? 4.0 : 2.0)
-            .calculate();
-        lEUt = calculator.getConsumption();
-        mMaxProgresstime = calculator.getDuration();
     }
 
     @Override

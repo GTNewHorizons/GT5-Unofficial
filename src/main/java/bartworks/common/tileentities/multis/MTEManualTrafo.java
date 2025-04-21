@@ -160,6 +160,11 @@ public class MTEManualTrafo extends MTEEnhancedMultiBlockBase<MTEManualTrafo> {
     }
 
     @Override
+    public boolean supportsPowerPanel() {
+        return false;
+    }
+
+    @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         if (!this.getBaseMetaTileEntity()
             .isAllowedToWork()) this.stopMachine(ShutDownReasonRegistry.CRITICAL_NONE);

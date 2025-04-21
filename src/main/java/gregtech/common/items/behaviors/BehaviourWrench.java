@@ -23,6 +23,7 @@ import gregtech.api.items.MetaGeneratedTool;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTUtility;
 import ic2.api.tile.IWrenchable;
+import ic2.core.block.BlockRubWood;
 
 public class BehaviourWrench extends BehaviourNone {
 
@@ -174,8 +175,11 @@ public class BehaviourWrench extends BehaviourNone {
             final int logWoodId = OreDictionary.getOreID("logWood");
             if (Arrays.stream(OreDictionary.getOreIDs(new ItemStack(block)))
                 .anyMatch(id -> id == logWoodId)) {
-                // The meta just work
-                return setBlockMeta(costs, (meta + 4) % 12);
+                // IC2 rubber logs carry more info than just side in the meta
+                if (!(block instanceof BlockRubWood)) {
+                    // The meta just work
+                    return setBlockMeta(costs, (meta + 4) % 12);
+                }
             }
 
             // vanilla block rotate logic

@@ -426,7 +426,12 @@ public class MTEMegaVacuumFreezer extends MegaMultiBlockBase<MTEMegaVacuumFreeze
                     .setHeatOC(true)
                     .setHeatDiscount(false);
             }
-        }.setMaxParallel(Configuration.Multiblocks.megaMachinesMax);
+        }.setMaxParallelSupplier(this::getTrueParallel);
+    }
+
+    @Override
+    public int getMaxParallelRecipes() {
+        return Configuration.Multiblocks.megaMachinesMax;
     }
 
     @Override

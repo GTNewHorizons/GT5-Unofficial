@@ -26,6 +26,7 @@ import gregtech.api.recipe.RecipeCategories;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.RecipeMetadataKey;
 import gregtech.api.recipe.metadata.SimpleRecipeMetadataKey;
+import gregtech.api.util.recipe.QuantumComputerRecipeData;
 import gregtech.api.util.recipe.Scanning;
 import gregtech.api.util.recipe.Sievert;
 import gregtech.common.items.IDMetaItem03;
@@ -110,6 +111,12 @@ public class GTRecipeConstants {
      * For Microwave.
      */
     public static final RecipeMetadataKey<Boolean> ON_FIRE = SimpleRecipeMetadataKey.create(Boolean.class, "on_fire");
+
+    /**
+     * Values of items used in quantum computer, used to show NEI recipes
+     */
+    public static final RecipeMetadataKey<QuantumComputerRecipeData> QUANTUM_COMPUTER_DATA = SimpleRecipeMetadataKey
+        .create(QuantumComputerRecipeData.class, "quantum_computer_data");
 
     /**
      * Nano Forge Tier.
@@ -553,7 +560,6 @@ public class GTRecipeConstants {
             r.mOreDictAlt);
         tRecipe.setPersistentHash(tPersistentHash);
         GTRecipe.RecipeAssemblyLine.sAssemblylineRecipes.add(tRecipe);
-        AssemblyLineUtils.addRecipeToCache(tRecipe);
 
         Collection<GTRecipe> ret = new ArrayList<>(3);
         ret.addAll(
@@ -564,7 +570,6 @@ public class GTRecipeConstants {
                 .duration(scanningData.time)
                 .eut(scanningData.voltage)
                 .specialValue(-201) // means it's scanned
-                .noOptimize()
                 .ignoreCollision()
                 .fake()
                 .addTo(scannerFakeRecipes));

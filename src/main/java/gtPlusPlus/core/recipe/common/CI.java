@@ -13,8 +13,6 @@ import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.core.item.chemistry.AgriculturalChem;
-import gtPlusPlus.core.item.chemistry.GenericChem;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.material.MaterialsAlloy;
 import gtPlusPlus.core.material.MaterialsElements;
@@ -932,14 +930,6 @@ public class CI {
         return ItemUtils.simpleMetaStack(GregTechAPI.sBlockCasings5, i, 1);
     }
 
-    public static ItemStack getNumberedBioCircuit(int i) {
-        return ItemUtils.simpleMetaStack(AgriculturalChem.mBioCircuit, i, 0);
-    }
-
-    public static ItemStack getNumberedAdvancedCircuit(int i) {
-        return ItemUtils.simpleMetaStack(GenericChem.mAdvancedCircuit, i, 0);
-    }
-
     public static ItemStack getTieredGTPPMachineCasing(int aTier, int aAmount) {
         GregtechItemList[] aHulls = new GregtechItemList[] { GregtechItemList.GTPP_Casing_ULV,
             GregtechItemList.GTPP_Casing_LV, GregtechItemList.GTPP_Casing_MV, GregtechItemList.GTPP_Casing_HV,
@@ -962,7 +952,7 @@ public class CI {
     }
 
     public static ItemStack getEmptyCatalyst(int aAmount) {
-        return ItemUtils.simpleMetaStack(AgriculturalChem.mAgrichemItem1, 13, aAmount);
+        return GregtechItemList.EmptyCatalystCarrier.get(aAmount);
     }
 
     /**
@@ -972,7 +962,7 @@ public class CI {
      * @return - A Catalyst stack of given size
      */
     public static ItemStack getGreenCatalyst(int aAmount) {
-        return ItemUtils.simpleMetaStack(AgriculturalChem.mAgrichemItem1, 14, aAmount);
+        return GregtechItemList.GreenMetalCatalyst.get(aAmount);
     }
 
     /**
@@ -982,7 +972,7 @@ public class CI {
      * @return - A Catalyst stack of given size
      */
     public static ItemStack getPurpleCatalyst(int aAmount) {
-        return ItemUtils.simpleMetaStack(GenericChem.mGenericChemItem1, 4, aAmount);
+        return GregtechItemList.PurpleMetalCatalyst.get(aAmount);
     }
 
     /**
@@ -992,6 +982,6 @@ public class CI {
      * @return - A Catalyst stack of given size
      */
     public static ItemStack getPinkCatalyst(int aAmount) {
-        return ItemUtils.simpleMetaStack(GenericChem.mGenericChemItem1, 6, aAmount);
+        return GregtechItemList.PinkMetalCatalyst.get(aAmount);
     }
 }

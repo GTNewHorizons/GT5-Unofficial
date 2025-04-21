@@ -240,7 +240,7 @@ public class MTEIndustrialWashPlant extends GTPPMultiBlockBase<MTEIndustrialWash
                 return SimpleCheckRecipeResult.ofFailure("no_water");
             }
         }.setSpeedBonus(1F / 5F)
-            .setMaxParallelSupplier(this::getMaxParallelRecipes);
+            .setMaxParallelSupplier(this::getTrueParallel);
     }
 
     @Override

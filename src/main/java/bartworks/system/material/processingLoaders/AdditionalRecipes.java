@@ -343,9 +343,9 @@ public class AdditionalRecipes {
 
         // Prasiolite
         GTValues.RA.stdBuilder()
-            .itemInputs(GTOreDictUnificator.get(dust, Materials.Quartzite, 40L), Materials.Amethyst.getDust(10))
-            .itemOutputs(WerkstoffLoader.Prasiolite.get(OrePrefixes.gemFlawed, 20))
-            .duration(40 * SECONDS)
+            .itemInputs(GTOreDictUnificator.get(dust, Materials.Quartzite, 4L), Materials.Amethyst.getDust(1))
+            .itemOutputs(WerkstoffLoader.Prasiolite.get(OrePrefixes.gemFlawed, 2))
+            .duration(4 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .metadata(COIL_HEAT, 500)
             .addTo(blastFurnaceRecipes);
@@ -376,14 +376,13 @@ public class AdditionalRecipes {
             .duration(48 * MINUTES)
             .eut(TierEU.RECIPE_HV)
             .metadata(COIL_HEAT, 2953)
-            .noOptimize()
             .addTo(blastFurnaceRecipes);
 
         // Tellurium
         GTValues.RA.stdBuilder()
-            .itemInputs(GTOreDictUnificator.get(crushed, Materials.Lead, 10L), GTUtility.getIntegratedCircuit(17))
-            .itemOutputs(Materials.Lead.getIngots(10), Materials.Tellurium.getNuggets(20))
-            .duration(40 * SECONDS)
+            .itemInputs(GTOreDictUnificator.get(crushed, Materials.Lead, 1L), GTUtility.getIntegratedCircuit(17))
+            .itemOutputs(Materials.Lead.getIngots(1), Materials.Tellurium.getNuggets(2))
+            .duration(4 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .metadata(COIL_HEAT, 722)
             .addTo(blastFurnaceRecipes);

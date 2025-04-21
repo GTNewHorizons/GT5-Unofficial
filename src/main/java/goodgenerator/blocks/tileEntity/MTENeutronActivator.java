@@ -478,12 +478,12 @@ public class MTENeutronActivator extends MTETooltipMultiBlockBaseEM implements I
                 new TextWidget(StatCollector.translateToLocal("gui.NeutronActivator.0"))
                     .setTextAlignment(Alignment.CenterLeft)
                     .setDefaultColor(COLOR_TEXT_WHITE.get())
-                    .setEnabled(widget -> getBaseMetaTileEntity().getErrorDisplayID() == 0))
+                    .setEnabled(widget -> getErrorDisplayID() == 0))
             .widget(
                 new TextWidget().setStringSupplier(() -> numberFormat.format(eV / 1_000_000d) + " MeV")
                     .setTextAlignment(Alignment.CenterLeft)
                     .setDefaultColor(COLOR_TEXT_WHITE.get())
-                    .setEnabled(widget -> getBaseMetaTileEntity().getErrorDisplayID() == 0))
+                    .setEnabled(widget -> getErrorDisplayID() == 0))
             .widget(new FakeSyncWidget.IntegerSyncer(() -> eV, val -> eV = val));
     }
 

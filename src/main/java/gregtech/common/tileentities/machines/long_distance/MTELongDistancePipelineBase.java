@@ -75,7 +75,7 @@ public abstract class MTELongDistancePipelineBase extends MTEBasicHullNonElectri
         super(aID, aName, aNameRegional, aTier, aDescription);
     }
 
-    public MTELongDistancePipelineBase(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {
+    public MTELongDistancePipelineBase(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, aDescription, aTextures);
     }
 

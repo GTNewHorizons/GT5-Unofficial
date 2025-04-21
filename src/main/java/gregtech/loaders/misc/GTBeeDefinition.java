@@ -1377,7 +1377,7 @@ public enum GTBeeDefinition implements IBeeDefinition {
         }, dis -> {
             IMutationCustom tMutation = dis.registerMutation(LUTETIUM, CHROME, 5, 4)
                 .setIsSecret();
-            GregTechAPI.sGTCompleteLoad.add(() -> tMutation.requireResource(GregTechAPI.sBlockMachines, 32020));
+            tMutation.requireResource(GregTechAPI.sBlockMetal1, 2);
         }),
     NEUTRONIUM(GTBranchDefinition.RADIOACTIVE, "Neutronium", false, new Color(0xFFF0F0), new Color(0xFAFAFA),
         beeSpecies -> {
@@ -2537,8 +2537,7 @@ public enum GTBeeDefinition implements IBeeDefinition {
         AlleleHelper.instance.set(template, LIFESPAN, Lifespan.LONGEST);
     }, dis -> {
         IBeeMutationCustom tMutation = dis.registerMutation(NEODYMIUM, HYDROGEN, 5, 4);
-        // Compact fusion reactor mark 1 controller
-        GregTechAPI.sGTCompleteLoad.add(() -> tMutation.requireResource(GregTechAPI.sBlockMachines, 32019));
+        tMutation.requireResource(GregTechAPI.sBlockMetal3, 3);
     }),
     // infused Shards line
     AIR(GTBranchDefinition.INFUSEDSHARD, "Air", false, new Color(0xFFFF7E), new Color(0x60602F), beeSpecies -> {

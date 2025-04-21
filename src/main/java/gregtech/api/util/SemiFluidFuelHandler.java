@@ -9,10 +9,11 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
+import org.apache.commons.lang3.tuple.Pair;
+
 import gregtech.api.enums.GTValues;
 import gregtech.api.recipe.RecipeMaps;
 import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.api.objects.data.Pair;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 
 public class SemiFluidFuelHandler {
@@ -31,7 +32,7 @@ public class SemiFluidFuelHandler {
                 for (ItemStack i : g.mInputs) {
                     FluidStack f = FluidContainerRegistry.getFluidForFilledItem(i);
                     if (f != null) {
-                        Pair<FluidStack, Integer> aData = new Pair<>(f, g.mSpecialValue);
+                        Pair<FluidStack, Integer> aData = Pair.of(f, g.mSpecialValue);
                         aFoundFluidsFromItems.put(aData.hashCode(), aData);
                     }
                 }

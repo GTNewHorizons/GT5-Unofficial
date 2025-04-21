@@ -38,7 +38,6 @@ public class GregtechSolarTower {
             .fluidOutputs(MaterialMisc.SOLAR_SALT_HOT.getFluidStack(1000))
             .duration(0)
             .eut(0)
-            .noOptimize()
             .addTo(GTPPRecipeMaps.solarTowerRecipes);
     }
 }

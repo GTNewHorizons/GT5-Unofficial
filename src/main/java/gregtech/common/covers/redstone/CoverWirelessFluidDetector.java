@@ -5,7 +5,6 @@ import java.util.UUID;
 
 import javax.annotation.Nonnull;
 
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.StatCollector;
@@ -18,6 +17,7 @@ import com.gtnewhorizons.modularui.api.math.Alignment;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
+import gregtech.api.covers.CoverContext;
 import gregtech.api.gui.modularui.CoverUIBuildContext;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
@@ -32,46 +32,42 @@ import io.netty.buffer.ByteBuf;
 public class CoverWirelessFluidDetector
     extends CoverAdvancedRedstoneTransmitterBase<CoverWirelessFluidDetector.FluidTransmitterData> {
 
-    public CoverWirelessFluidDetector(ITexture coverTexture) {
-        super(FluidTransmitterData.class, coverTexture);
+    public CoverWirelessFluidDetector(CoverContext context, ITexture coverTexture) {
+        super(context, FluidTransmitterData.class, coverTexture);
     }
 
     @Override
-    public FluidTransmitterData createDataObject() {
-        return new FluidTransmitterData();
+    protected FluidTransmitterData initializeData() {
+        return new CoverWirelessFluidDetector.FluidTransmitterData();
     }
 
     @Override
-    public FluidTransmitterData createDataObject(int aLegacyData) {
-        return createDataObject();
-    }
-
-    @Override
-    public FluidTransmitterData doCoverThingsImpl(ForgeDirection side, byte aInputRedstone, int aCoverID,
-        FluidTransmitterData aCoverVariable, ICoverable aTileEntity, long aTimer) {
+    public FluidTransmitterData doCoverThings(byte aInputRedstone, long aTimer) {
+        ICoverable coverable = coveredTile.get();
+        if (coverable == null) {
+            return coverData;
+        }
         final byte signal = CoverLiquidMeter
-            .computeSignalBasedOnFluid(aTileEntity, aCoverVariable.invert, aCoverVariable.threshold);
-        final long hash = hashCoverCoords(aTileEntity, side);
-        setSignalAt(aCoverVariable.getUuid(), aCoverVariable.getFrequency(), hash, signal);
+            .computeSignalBasedOnFluid(coverable, coverData.invert, coverData.threshold);
+        final long hash = hashCoverCoords(coverable, coverSide);
+        setSignalAt(coverData.getUuid(), coverData.getFrequency(), hash, signal);
 
-        if (aCoverVariable.physical) {
-            aTileEntity.setOutputRedstoneSignal(side, signal);
+        if (coverData.physical) {
+            coverable.setOutputRedstoneSignal(coverSide, signal);
         } else {
-            aTileEntity.setOutputRedstoneSignal(side, (byte) 0);
+            coverable.setOutputRedstoneSignal(coverSide, (byte) 0);
         }
 
-        return aCoverVariable;
+        return coverData;
     }
 
     @Override
-    public boolean letsRedstoneGoOutImpl(ForgeDirection side, int aCoverID, FluidTransmitterData aCoverVariable,
-        ICoverable aTileEntity) {
+    public boolean letsRedstoneGoOut() {
         return true;
     }
 
     @Override
-    protected boolean manipulatesSidedRedstoneOutputImpl(ForgeDirection side, int aCoverID,
-        FluidTransmitterData aCoverVariable, ICoverable aTileEntity) {
+    public boolean manipulatesSidedRedstoneOutput() {
         return true;
     }
 
@@ -130,14 +126,11 @@ public class CoverWirelessFluidDetector
             }
         }
 
-        @Nonnull
         @Override
-        public ISerializableObject readFromPacket(ByteArrayDataInput aBuf, EntityPlayerMP aPlayer) {
-            super.readFromPacket(aBuf, aPlayer);
+        public void readFromPacket(ByteArrayDataInput aBuf) {
+            super.readFromPacket(aBuf);
             threshold = aBuf.readInt();
             physical = aBuf.readBoolean();
-
-            return this;
         }
     }
 
@@ -159,16 +152,6 @@ public class CoverWirelessFluidDetector
         @Override
         protected int getGUIHeight() {
             return 123;
-        }
-
-        @Override
-        protected int getFrequencyRow() {
-            return 0;
-        }
-
-        @Override
-        protected int getButtonRow() {
-            return 1;
         }
 
         @Override

@@ -7,10 +7,10 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
-import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.inventories.InventoryFishTrap;
 import gtPlusPlus.core.slots.SlotNoInput;
 import gtPlusPlus.core.tileentities.general.TileEntityFishTrap;
+import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 
 public class ContainerFishTrap extends Container {
 
@@ -85,7 +85,7 @@ public class ContainerFishTrap extends Container {
 
     @Override
     public boolean canInteractWith(final EntityPlayer par1EntityPlayer) {
-        if (this.worldObj.getBlock(this.posX, this.posY, this.posZ) != ModBlocks.blockFishTrap) {
+        if (this.worldObj.getBlock(this.posX, this.posY, this.posZ) != GregtechItemList.FishTrap.getBlock()) {
             return false;
         }
 

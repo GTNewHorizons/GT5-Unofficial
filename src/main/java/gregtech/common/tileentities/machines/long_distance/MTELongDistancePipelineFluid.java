@@ -45,7 +45,7 @@ public class MTELongDistancePipelineFluid extends MTELongDistancePipelineBase {
         super(aID, aName, aNameRegional, aTier, "Sends fluids over long distances");
     }
 
-    public MTELongDistancePipelineFluid(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {
+    public MTELongDistancePipelineFluid(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, aDescription, aTextures);
     }
 
@@ -98,7 +98,7 @@ public class MTELongDistancePipelineFluid extends MTELongDistancePipelineBase {
 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new MTELongDistancePipelineFluid(mName, mTier, getDescription()[0], mTextures);
+        return new MTELongDistancePipelineFluid(mName, mTier, mDescriptionArray, mTextures);
     }
 
     @Override

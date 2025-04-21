@@ -32,7 +32,6 @@ public class GTForestryCompat {
                 .fluidInputs(Materials.Honey.getFluid(100L))
                 .duration(25 * SECONDS)
                 .eut(2)
-                .noOptimize()
                 .ignoreCollision()
                 .fake()
                 .addTo(scannerFakeRecipes);
@@ -44,7 +43,6 @@ public class GTForestryCompat {
                 .fluidInputs(Materials.Honey.getFluid(100L))
                 .duration(25 * SECONDS)
                 .eut(2)
-                .noOptimize()
                 .ignoreCollision()
                 .fake()
                 .addTo(scannerFakeRecipes);
@@ -56,7 +54,6 @@ public class GTForestryCompat {
                 .fluidInputs(Materials.Honey.getFluid(100L))
                 .duration(25 * SECONDS)
                 .eut(2)
-                .noOptimize()
                 .ignoreCollision()
                 .fake()
                 .addTo(scannerFakeRecipes);
@@ -68,7 +65,6 @@ public class GTForestryCompat {
                 .fluidInputs(Materials.Honey.getFluid(100L))
                 .duration(25 * SECONDS)
                 .eut(2)
-                .noOptimize()
                 .ignoreCollision()
                 .fake()
                 .addTo(scannerFakeRecipes);
@@ -80,7 +76,6 @@ public class GTForestryCompat {
                 .fluidInputs(Materials.Honey.getFluid(100L))
                 .duration(25 * SECONDS)
                 .eut(2)
-                .noOptimize()
                 .ignoreCollision()
                 .fake()
                 .addTo(scannerFakeRecipes);
@@ -92,7 +87,6 @@ public class GTForestryCompat {
                 .fluidInputs(Materials.Honey.getFluid(100L))
                 .duration(25 * SECONDS)
                 .eut(2)
-                .noOptimize()
                 .ignoreCollision()
                 .fake()
                 .addTo(scannerFakeRecipes);
@@ -104,7 +98,6 @@ public class GTForestryCompat {
                 .fluidInputs(Materials.Honey.getFluid(100L))
                 .duration(25 * SECONDS)
                 .eut(2)
-                .noOptimize()
                 .ignoreCollision()
                 .fake()
                 .addTo(scannerFakeRecipes);
@@ -116,7 +109,6 @@ public class GTForestryCompat {
                 .fluidInputs(Materials.Honey.getFluid(100L))
                 .duration(25 * SECONDS)
                 .eut(2)
-                .noOptimize()
                 .ignoreCollision()
                 .fake()
                 .addTo(scannerFakeRecipes);
@@ -128,7 +120,6 @@ public class GTForestryCompat {
                 .fluidInputs(Materials.Honey.getFluid(100L))
                 .duration(25 * SECONDS)
                 .eut(2)
-                .noOptimize()
                 .ignoreCollision()
                 .fake()
                 .addTo(scannerFakeRecipes);

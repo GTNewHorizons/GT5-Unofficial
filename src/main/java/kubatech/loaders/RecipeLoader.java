@@ -153,10 +153,7 @@ public class RecipeLoader {
                     gregtech.api.enums.ItemList.IndustrialApiary_Upgrade_Acceleration_8_Upgraded.get(64L),
                     gregtech.api.enums.ItemList.IndustrialApiary_Upgrade_STABILIZER.get(64L),
                     gregtech.api.enums.ItemList.Robot_Arm_UV.get(16L),
-                    new Object[] { OrePrefixes.circuit.get(Materials.UV), 4L },
-                    new Object[] { OrePrefixes.circuit.get(Materials.UV), 4L },
-                    new Object[] { OrePrefixes.circuit.get(Materials.UV), 4L },
-                    new Object[] { OrePrefixes.circuit.get(Materials.UV), 4L })
+                    new Object[] { OrePrefixes.circuit.get(Materials.UV), 16L })
                 .fluidInputs(
                     FluidRegistry.getFluidStack("molten.indalloy140", 28800),
                     FluidRegistry.getFluidStack("for.honey", 20000))
@@ -305,7 +302,7 @@ public class RecipeLoader {
             GTValues.RA.stdBuilder()
                 .itemInputs(BlackTea.get(1))
                 .itemOutputs(LemonTea.get(1))
-                .fluidInputs(FluidRegistry.getFluidStack("potion.lemonjuice", 1000))
+                .fluidInputs(FluidRegistry.getFluidStack("potion.lemonjuice", 10))
                 .eut(TierEU.RECIPE_LV)
                 .duration(5 * SECONDS)
                 .addTo(mixerRecipes);
@@ -313,7 +310,7 @@ public class RecipeLoader {
             GTValues.RA.stdBuilder()
                 .itemInputs(BlackTea.get(1))
                 .itemOutputs(MilkTea.get(1))
-                .fluidInputs(FluidRegistry.getFluidStack("milk", 1000))
+                .fluidInputs(FluidRegistry.getFluidStack("milk", 100))
                 .eut(TierEU.RECIPE_LV)
                 .duration(5 * SECONDS)
                 .addTo(mixerRecipes);
@@ -342,10 +339,7 @@ public class RecipeLoader {
                     gregtech.api.enums.ItemList.Machine_Multi_NeutroniumCompressor.get(1),
                     gregtech.api.enums.ItemList.Quantum_Tank_EV.get(1),
                     FluidExtractorUHV.get(10),
-                    new Object[] { OrePrefixes.circuit.get(Materials.UV), 4L },
-                    new Object[] { OrePrefixes.circuit.get(Materials.UV), 4L },
-                    new Object[] { OrePrefixes.circuit.get(Materials.UV), 4L },
-                    new Object[] { OrePrefixes.circuit.get(Materials.UV), 4L })
+                    new Object[] { OrePrefixes.circuit.get(Materials.UV), 16L })
                 .fluidInputs(FluidRegistry.getFluidStack("molten.indalloy140", 28800))
                 .itemOutputs(TeaAcceptor.get(1))
                 .eut(TierEU.RECIPE_UHV)

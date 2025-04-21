@@ -15,7 +15,7 @@ import net.minecraft.world.IBlockAccess;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Textures;
-import gregtech.api.objects.GTCopiedBlockTexture;
+import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.common.blocks.BlockCasingsAbstract;
 import gregtech.common.blocks.MaterialCasings;
@@ -41,7 +41,7 @@ public class TimeAccelerationFieldCasing extends BlockCasingsAbstract {
     public TimeAccelerationFieldCasing() {
         super(ItemCasingsTimeAcceleration.class, "gt.time_acceleration_field_generator", MaterialCasings.INSTANCE);
         for (byte b = 0; b < 16; b = (byte) (b + 1)) {
-            Textures.BlockIcons.casingTexturePages[7][b + START_INDEX] = new GTCopiedBlockTexture(this, 6, b);
+            Textures.BlockIcons.casingTexturePages[7][b + START_INDEX] = TextureFactory.of(this, b);
         }
 
         for (int i = 0; i < MAX_BLOCK_TIER; i++) {

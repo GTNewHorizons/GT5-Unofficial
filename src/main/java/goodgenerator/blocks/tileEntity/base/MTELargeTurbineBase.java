@@ -1,4 +1,4 @@
-// copied from gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_LargeTurbine
+// copied from gregtech.common.tileentities.machines.multi.MTELargeTurbine
 // The origin one in gt made the abstract method private so i can't imp it.
 package goodgenerator.blocks.tileEntity.base;
 
@@ -101,6 +101,11 @@ public abstract class MTELargeTurbineBase extends MTEEnhancedMultiBlockBase<MTEL
     @Override
     public boolean isCorrectMachinePart(ItemStack aStack) {
         return getMaxEfficiency(aStack) > 0;
+    }
+
+    @Override
+    public boolean supportsPowerPanel() {
+        return false;
     }
 
     @Override

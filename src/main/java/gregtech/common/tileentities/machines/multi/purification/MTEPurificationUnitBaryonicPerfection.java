@@ -467,6 +467,7 @@ public class MTEPurificationUnitBaryonicPerfection
         super.runMachine(aBaseMetaTileEntity, aTick);
         // Every 20 ticks, add all catalysts from the input bus to the internal inventory.
         if (mMaxProgresstime > 0 && aTick % 20 == 0) {
+            startRecipeProcessing();
             ArrayList<ItemStack> storedInputs = getStoredInputs();
             // For each stack in the input, check if it is a valid catalyst item and if so consume it
             for (ItemStack stack : storedInputs) {
@@ -487,6 +488,7 @@ public class MTEPurificationUnitBaryonicPerfection
                     // If we could not drain, stop the machine
                     if (!drained) {
                         stopMachine(ShutDownReasonRegistry.outOfFluid(inputCost));
+                        endRecipeProcessing();
                         return;
                     }
                     // Now add the catalysts to the list, one by one since there may be multiples and we want to
@@ -499,6 +501,7 @@ public class MTEPurificationUnitBaryonicPerfection
                     this.depleteInput(stack);
                 }
             }
+            endRecipeProcessing();
 
             // Only do this check if we didn't find a correct combination yet
             if (correctStartIndex != -1) return;

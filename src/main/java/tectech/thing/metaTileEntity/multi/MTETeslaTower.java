@@ -72,7 +72,6 @@ import tectech.thing.casing.TTCasingsContainer;
 import tectech.thing.metaTileEntity.hatch.MTEHatchCapacitor;
 import tectech.thing.metaTileEntity.hatch.MTEHatchDynamoMulti;
 import tectech.thing.metaTileEntity.hatch.MTEHatchEnergyMulti;
-import tectech.thing.metaTileEntity.hatch.MTEHatchParam;
 import tectech.thing.metaTileEntity.multi.base.INameFunction;
 import tectech.thing.metaTileEntity.multi.base.IStatusFunction;
 import tectech.thing.metaTileEntity.multi.base.LedStatus;
@@ -180,7 +179,6 @@ public class MTETeslaTower extends TTMultiblockBase implements ISurvivalConstruc
                     Dynamo,
                     InputHatch,
                     OutputHatch,
-                    HatchElement.Param,
                     Maintenance)
                 .dot(1)
                 .casingIndex(BlockGTCasingsTT.textureOffset + 16 + 6)
@@ -506,7 +504,7 @@ public class MTETeslaTower extends TTMultiblockBase implements ISurvivalConstruc
             outputVoltageMax = 0;
             return SimpleCheckRecipeResult.ofSuccess("routing");
         } else if (vTier > mTier && getEUVar() > 0) {
-            explodeMultiblock();
+            return SimpleCheckRecipeResult.ofFailure("invalid_primary_winding");
         }
 
         outputVoltageMax = V[vTier + 1];
@@ -805,10 +803,6 @@ public class MTETeslaTower extends TTMultiblockBase implements ISurvivalConstruc
         if (aMetaTileEntity instanceof MTEHatchDynamoMulti) {
             ((MTEHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
             return eDynamoMulti.add((MTEHatchDynamoMulti) aMetaTileEntity);
-        }
-        if (aMetaTileEntity instanceof MTEHatchParam) {
-            ((MTEHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
-            return eParamHatches.add((MTEHatchParam) aMetaTileEntity);
         }
         if (aMetaTileEntity instanceof MTEHatchInput) {
             ((MTEHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);

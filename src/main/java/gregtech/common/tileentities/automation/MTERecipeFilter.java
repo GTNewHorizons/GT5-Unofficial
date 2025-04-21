@@ -57,10 +57,6 @@ public class MTERecipeFilter extends MTESpecialFilter {
             new String[] { "Filters 1 Recipe Type", "Use Screwdriver to regulate output stack size" });
     }
 
-    public MTERecipeFilter(String aName, int aTier, int aInvSlotCount, String aDescription, ITexture[][][] aTextures) {
-        super(aName, aTier, aInvSlotCount, aDescription, aTextures);
-    }
-
     public MTERecipeFilter(String aName, int aTier, int aInvSlotCount, String[] aDescription,
         ITexture[][][] aTextures) {
         super(aName, aTier, aInvSlotCount, aDescription, aTextures);

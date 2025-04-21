@@ -370,6 +370,7 @@ public class MTEHatchInputBusME extends MTEHatchInputBus
             if (nbt.hasKey("refreshTime")) {
                 autoPullRefreshTime = nbt.getInteger("refreshTime");
             }
+            expediteRecipeCheck = nbt.getBoolean("expediteRecipeCheck");
         }
 
         additionalConnection = nbt.getBoolean("additionalConnection");
@@ -391,6 +392,7 @@ public class MTEHatchInputBusME extends MTEHatchInputBus
         tag.setBoolean("autoPull", autoPullItemList);
         tag.setInteger("minStackSize", minAutoPullStackSize);
         tag.setInteger("refreshTime", autoPullRefreshTime);
+        tag.setBoolean("expediteRecipeCheck", expediteRecipeCheck);
         tag.setBoolean("additionalConnection", additionalConnection);
         tag.setTag("circuit", GTUtility.saveItem(getStackInSlot(getCircuitSlot())));
 

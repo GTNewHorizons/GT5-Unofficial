@@ -6,9 +6,10 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 
+import org.apache.commons.lang3.tuple.Pair;
+
 import gregtech.mixin.interfaces.accessors.IRecipeMutableAccess;
 import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.api.objects.data.Pair;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 
 public class ShapedRecipe implements IRecipeMutableAccess {
@@ -89,7 +90,7 @@ public class ShapedRecipe implements IRecipeMutableAccess {
                             }
                             mInfo = ((ItemStack) stack).getDisplayName();
                         }
-                        aRecipePairs.add(new Pair<>(CHARS.charAt(aCharSlot), stack));
+                        aRecipePairs.add(Pair.of(CHARS.charAt(aCharSlot), stack));
                         Logger.RECIPE(
                             "Storing '" + CHARS.charAt(aCharSlot)
                                 + "' with an object of type "
@@ -101,7 +102,7 @@ public class ShapedRecipe implements IRecipeMutableAccess {
                         aCharSlot++;
                         aLoggingInfo[aInfoSlot++] = mInfo;
                     } else {
-                        aRecipePairs.add(new Pair<>(' ', null));
+                        aRecipePairs.add(Pair.of(' ', null));
                         Logger.RECIPE("Storing ' ' with an object of type null");
                         aChar[aMemSlot++] = ' ';
                         aLoggingInfo[aInfoSlot++] = "Empty";
@@ -153,7 +154,7 @@ public class ShapedRecipe implements IRecipeMutableAccess {
                                 }
                                 mInfo = ((ItemStack) stack).getDisplayName();
                             }
-                            aRecipePairs.add(new Pair<>(CHARS.charAt(aCharSlot), stack));
+                            aRecipePairs.add(Pair.of(CHARS.charAt(aCharSlot), stack));
                             Logger.RECIPE(
                                 "Registering Pair of '" + CHARS.charAt(aCharSlot)
                                     + "' and a "

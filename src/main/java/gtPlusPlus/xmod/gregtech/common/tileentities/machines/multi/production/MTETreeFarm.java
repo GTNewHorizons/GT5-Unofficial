@@ -685,6 +685,10 @@ public class MTETreeFarm extends GTPPMultiBlockBase<MTETreeFarm> implements ISur
      */
     public static void registerTreeProducts(ItemStack saplingIn, ItemStack log, ItemStack saplingOut, ItemStack leaves,
         ItemStack fruit) {
+        if (saplingIn == null) {
+            Logger.ERROR("Null sapling passed for registerTreeProducts()");
+            return;
+        }
         String key = Item.itemRegistry.getNameForObject(saplingIn.getItem()) + ":" + saplingIn.getItemDamage();
         EnumMap<Mode, ItemStack> map = new EnumMap<>(Mode.class);
         if (log != null) map.put(Mode.LOG, log);

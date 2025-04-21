@@ -13,10 +13,6 @@ public class MTESuperTank extends MTEDigitalTankBase {
         super(aID, aName, aNameRegional, aTier);
     }
 
-    public MTESuperTank(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {
-        super(aName, aTier, aDescription, aTextures);
-    }
-
     public MTESuperTank(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, aDescription, aTextures);
     }

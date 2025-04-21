@@ -35,7 +35,6 @@ import com.gtnewhorizons.modularui.api.widget.Widget;
 import com.gtnewhorizons.modularui.common.widget.CycleButtonWidget;
 import com.gtnewhorizons.modularui.common.widget.SlotGroup;
 
-import gregtech.api.gui.modularui.GTUIInfos;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.modularui.IAddUIWidgets;
@@ -67,16 +66,8 @@ public abstract class MTEBuffer extends MTETieredMachineBlock implements IAddUIW
     public int mSuccess = 0, mTargetStackSize = 0;
     private int uiButtonCount = 0;
 
-    public MTEBuffer(int aID, String aName, String aNameRegional, int aTier, int aInvSlotCount, String aDescription) {
-        super(aID, aName, aNameRegional, aTier, aInvSlotCount, aDescription);
-    }
-
     public MTEBuffer(int aID, String aName, String aNameRegional, int aTier, int aInvSlotCount, String[] aDescription) {
         super(aID, aName, aNameRegional, aTier, aInvSlotCount, aDescription);
-    }
-
-    public MTEBuffer(String aName, int aTier, int aInvSlotCount, String aDescription, ITexture[][][] aTextures) {
-        super(aName, aTier, aInvSlotCount, aDescription, aTextures);
     }
 
     public MTEBuffer(String aName, int aTier, int aInvSlotCount, String[] aDescription, ITexture[][][] aTextures) {
@@ -192,11 +183,6 @@ public abstract class MTEBuffer extends MTETieredMachineBlock implements IAddUIW
     }
 
     @Override
-    public boolean isSimpleMachine() {
-        return false;
-    }
-
-    @Override
     public boolean isValidSlot(int aIndex) {
         return aIndex < mInventory.length - 1;
     }
@@ -271,7 +257,7 @@ public abstract class MTEBuffer extends MTETieredMachineBlock implements IAddUIW
 
     @Override
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
-        GTUIInfos.openGTTileEntityUI(aBaseMetaTileEntity, aPlayer);
+        openGui(aPlayer);
         return true;
     }
 

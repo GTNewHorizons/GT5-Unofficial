@@ -35,7 +35,6 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Textures;
-import gregtech.api.gui.modularui.GTUIInfos;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
@@ -139,7 +138,7 @@ public class MTEHatchDroneDownLink extends MTEHatchMaintenance {
                 aPlayer.addChatComponentMessage(new ChatComponentTranslation("GT5U.machines.dronecentre.noconnection"));
                 return false;
             }
-            GTUIInfos.openGTTileEntityUI(aBaseMetaTileEntity, aPlayer);
+            openGui(aPlayer);
             return true;
         }
         return false;

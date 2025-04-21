@@ -11,10 +11,11 @@ import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidHandler;
 
+import gregtech.api.covers.CoverContext;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IMachineProgress;
-import gregtech.api.util.CoverBehavior;
 import gregtech.api.util.GTUtility;
+import gregtech.api.util.ISerializableObject.LegacyCoverData;
 
 public class CoverVent extends CoverBehavior {
 
@@ -22,64 +23,63 @@ public class CoverVent extends CoverBehavior {
     private final Fluid IC2_HOT_COOLANT = FluidRegistry.getFluid("ic2hotcoolant");
     private final Fluid IC2_COOLANT = FluidRegistry.getFluid("ic2coolant");
 
-    public CoverVent(int aEfficiency) {
+    public CoverVent(CoverContext context, int aEfficiency) {
+        super(context);
         this.mEfficiency = aEfficiency;
     }
 
-    @Override
-    public boolean isRedstoneSensitive(ForgeDirection side, int aCoverID, int aCoverVariable, ICoverable aTileEntity,
-        long aTimer) {
+    public boolean isRedstoneSensitive(long aTimer) {
         return false;
     }
 
     @Override
-    public int doCoverThings(ForgeDirection side, byte aInputRedstone, int aCoverID, int aCoverVariable,
-        ICoverable aTileEntity, long aTimer) {
-        if (side == ForgeDirection.UNKNOWN) return 0;
+    public LegacyCoverData doCoverThings(byte aInputRedstone, long aTimer) {
+        ICoverable coverable = coveredTile.get();
+        if (coverSide == ForgeDirection.UNKNOWN) return LegacyCoverData.of(0);
         int ret = 0;
-        if (aTileEntity instanceof IFluidHandler) {
-            ret = doCoolFluid(side, aTileEntity);
+        if (coverable instanceof IFluidHandler) {
+            ret = doCoolFluid(coverSide, coverable);
         }
-        if ((aTileEntity instanceof IMachineProgress)) {
-            ret = doProgressEfficiency(side, (IMachineProgress) aTileEntity, aCoverID);
+        if ((coverable instanceof IMachineProgress machine)) {
+            ret = doProgressEfficiency(coverSide, machine, coverID);
         }
-        return ret;
+        return LegacyCoverData.of(ret);
     }
 
     @Override
-    public boolean alwaysLookConnected(ForgeDirection side, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
+    public boolean alwaysLookConnected() {
         return true;
     }
 
     @Override
-    public int getTickRate(ForgeDirection side, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
+    public int getMinimumTickRate() {
         return 100;
     }
 
-    protected int doProgressEfficiency(final ForgeDirection side, final IMachineProgress aTileEntity,
-        final int aCoverVariable) {
-        final int offsetX = aTileEntity.getOffsetX(side, 1);
-        final int offsetY = aTileEntity.getOffsetY(side, 1);
-        final int offsetZ = aTileEntity.getOffsetZ(side, 1);
-        final World world = aTileEntity.getWorld();
-        if (aTileEntity.hasThingsToDo() && aCoverVariable != aTileEntity.getProgress()
+    protected int doProgressEfficiency(final ForgeDirection coverSide, final IMachineProgress coverable,
+        final int coverData) {
+        final int offsetX = coverable.getOffsetX(coverSide, 1);
+        final int offsetY = coverable.getOffsetY(coverSide, 1);
+        final int offsetZ = coverable.getOffsetZ(coverSide, 1);
+        final World world = coverable.getWorld();
+        if (coverable.hasThingsToDo() && coverData != coverable.getProgress()
             && !GTUtility.hasBlockHitBox(world, offsetX, offsetY, offsetZ)) {
-            aTileEntity.increaseProgress(this.mEfficiency);
+            coverable.increaseProgress(this.mEfficiency);
         }
-        return aTileEntity.getProgress();
+        return coverable.getProgress();
     }
 
-    protected int doCoolFluid(final ForgeDirection side, final ICoverable aTileEntity) {
-        final int offsetX = aTileEntity.getOffsetX(side, 1);
-        final int offsetY = aTileEntity.getOffsetY(side, 1);
-        final int offsetZ = aTileEntity.getOffsetZ(side, 1);
-        final World world = aTileEntity.getWorld();
-        final IFluidHandler fluidHandler = (IFluidHandler) aTileEntity;
+    protected int doCoolFluid(final ForgeDirection coverSide, final ICoverable coverable) {
+        final int offsetX = coverable.getOffsetX(coverSide, 1);
+        final int offsetY = coverable.getOffsetY(coverSide, 1);
+        final int offsetZ = coverable.getOffsetZ(coverSide, 1);
+        final World world = coverable.getWorld();
+        final IFluidHandler fluidHandler = (IFluidHandler) coverable;
         if (!fluidHandler.canDrain(ForgeDirection.UNKNOWN, IC2_HOT_COOLANT)) {
             return 0;
         }
         final int chances; // 10000 = 100%
-        final Block blockAtSide = aTileEntity.getBlockAtSide(side);
+        final Block blockAtSide = coverable.getBlockAtSide(coverSide);
         if (blockAtSide == null) {
             return 0;
         }

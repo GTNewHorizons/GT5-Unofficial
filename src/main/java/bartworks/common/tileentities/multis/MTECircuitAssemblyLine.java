@@ -191,7 +191,11 @@ public class MTECircuitAssemblyLine extends MTEEnhancedMultiBlockBase<MTECircuit
             .addInputHatch("Any layer 1 casing", 2)
             .addInputBus("As specified on layer 1", 3, 4)
             .addOutputBus("As specified in final slice on layer 1", 4)
-            .addOtherStructurePart(getColoredTierNameFromTier((byte) 4) + "+ Tier Glass", "As specified on layer 2", 5)
+            .addOtherStructurePart(
+                StatCollector
+                    .translateToLocalFormatted("tooltip.bw.structure.tier_glass", getColoredTierNameFromTier((byte) 4)),
+                "As specified on layer 2",
+                5)
             .addMaintenanceHatch("Any layer 1 casing", 2)
             .toolTipFinisher();
         return tt;

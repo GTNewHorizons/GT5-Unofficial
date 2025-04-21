@@ -4,7 +4,6 @@ import static gregtech.api.util.GTRecipeMapUtil.SPECIAL_VALUE_ALIASES;
 import static gregtech.api.util.GTUtility.copyFluidArray;
 import static gregtech.api.util.GTUtility.copyItemArray;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
@@ -107,7 +106,6 @@ public class GTRecipeBuilder {
     protected boolean nbtSensitive = false;
     protected String[] neiDesc;
     protected RecipeCategory recipeCategory;
-    protected boolean optimize = true;
     @Nullable
     protected IRecipeMetadataStorage metadataStorage;
     protected boolean checkForCollision = true;
@@ -123,8 +121,7 @@ public class GTRecipeBuilder {
         FluidStack[] fluidInputs, FluidStack[] fluidOutputs, int[] chances, Object special, int duration, int eut,
         int specialValue, boolean enabled, boolean hidden, boolean fakeRecipe, boolean mCanBeBuffered,
         boolean mNeedsEmptyOutput, boolean nbtSensitive, String[] neiDesc, RecipeCategory recipeCategory,
-        boolean optimize, @Nullable IRecipeMetadataStorage metadataStorage, boolean checkForCollision, boolean skip,
-        boolean valid) {
+        @Nullable IRecipeMetadataStorage metadataStorage, boolean checkForCollision, boolean skip, boolean valid) {
         this.inputsBasic = inputsBasic;
         this.inputsOreDict = inputsOreDict;
         this.outputs = outputs;
@@ -144,7 +141,6 @@ public class GTRecipeBuilder {
         this.nbtSensitive = nbtSensitive;
         this.neiDesc = neiDesc;
         this.recipeCategory = recipeCategory;
-        this.optimize = optimize;
         this.metadataStorage = metadataStorage;
         if (this.metadataStorage != null) {
             this.metadataStorage = this.metadataStorage.copy();
@@ -325,8 +321,7 @@ public class GTRecipeBuilder {
         inputsBasic = Arrays.stream(alts)
             .map(ss -> ss.length > 0 ? ss[0] : null)
             .toArray(ItemStack[]::new);
-        // optimize cannot handle recipes with alts
-        return noOptimize();
+        return this;
     }
 
     public GTRecipeBuilder itemOutputs(ItemStack... outputs) {
@@ -463,14 +458,6 @@ public class GTRecipeBuilder {
     }
 
     /**
-     * Prevent the resulting recipe from optimizing recipe, which is a process that reduce recipe batch size.
-     */
-    public GTRecipeBuilder noOptimize() {
-        this.optimize = false;
-        return this;
-    }
-
-    /**
      * Prevents checking collision with existing recipes when adding the built recipe.
      */
     public GTRecipeBuilder ignoreCollision() {
@@ -575,7 +562,6 @@ public class GTRecipeBuilder {
             nbtSensitive,
             copy(neiDesc),
             recipeCategory,
-            optimize,
             metadataStorage,
             checkForCollision,
             skip,
@@ -606,7 +592,6 @@ public class GTRecipeBuilder {
             nbtSensitive,
             copy(neiDesc),
             recipeCategory,
-            optimize,
             null,
             checkForCollision,
             skip,
@@ -669,10 +654,6 @@ public class GTRecipeBuilder {
 
     public RecipeCategory getRecipeCategory() {
         return recipeCategory;
-    }
-
-    public boolean isOptimize() {
-        return optimize;
     }
 
     public boolean isCheckForCollision() {
@@ -820,7 +801,6 @@ public class GTRecipeBuilder {
             return Optional.empty();
         }
         preBuildChecks();
-        optimize();
         return Optional.of(
             decorate(
                 new GTRecipe(
@@ -861,7 +841,6 @@ public class GTRecipeBuilder {
             return Optional.empty();
         }
         preBuildChecks();
-        // no optimize.
         return Optional.of(
             decorate(
                 new GTRecipe.GTRecipe_WithAlt(
@@ -889,34 +868,6 @@ public class GTRecipeBuilder {
     private void preBuildChecks() {
         if (duration == -1) throw new IllegalStateException("no duration");
         if (eut == -1) throw new IllegalStateException("no eut");
-    }
-
-    private void optimize() {
-        if (optimize) {
-            ArrayList<ItemStack> l = new ArrayList<>();
-            l.addAll(Arrays.asList(inputsBasic));
-            l.addAll(Arrays.asList(outputs));
-            for (int i = 0; i < l.size(); i++) if (l.get(i) == null) l.remove(i--);
-
-            outer: for (byte i = (byte) Math.min(64, duration / 16); i > 1; i--) {
-                if (duration / i >= 16) {
-                    for (ItemStack stack : l) {
-                        if (stack.stackSize % i != 0) continue outer;
-                    }
-                    for (FluidStack fluidInput : fluidInputs) {
-                        if (fluidInput.amount % i != 0) continue outer;
-                    }
-                    for (FluidStack fluidOutput : fluidOutputs) {
-                        if (fluidOutput.amount % i != 0) continue outer;
-                    }
-                    for (ItemStack itemStack : l) itemStack.stackSize /= i;
-                    for (FluidStack fluidInput : fluidInputs) fluidInput.amount /= i;
-                    for (FluidStack fluidOutput : fluidOutputs) fluidOutput.amount /= i;
-                    duration /= i;
-                }
-            }
-            optimize = false;
-        }
     }
 
     private <T extends GTRecipe> T decorate(T r) {
@@ -972,7 +923,6 @@ public class GTRecipeBuilder {
         nbtSensitive = false;
         neiDesc = null;
         recipeCategory = null;
-        optimize = true;
         outputs = null;
         special = null;
         specialValue = 0;

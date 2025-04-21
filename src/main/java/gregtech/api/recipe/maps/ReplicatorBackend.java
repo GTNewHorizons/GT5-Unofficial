@@ -88,7 +88,6 @@ public class ReplicatorBackend extends RecipeMapBackend {
                     .duration(GTUtility.safeInt(uum * 512L, 1))
                     .eut(TierEU.RECIPE_LV)
                     .ignoreCollision()
-                    .noOptimize()
                     .build())
             .map(Collections::singletonList)
             .orElse(Collections.emptyList());

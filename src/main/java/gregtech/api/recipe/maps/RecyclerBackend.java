@@ -43,7 +43,6 @@ public class RecyclerBackend extends NonGTBackend {
         }
         return builder.duration(45)
             .eut(1)
-            .noOptimize()
             .build()
             .orElse(null);
     }

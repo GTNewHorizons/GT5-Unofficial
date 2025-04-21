@@ -77,11 +77,10 @@ public class TTRecipeAdder extends RecipeAdder {
         GTValues.RA.stdBuilder()
             .itemInputs(aResearchItem)
             .itemOutputs(aOutput)
-            .special(recipeTT.newDataStickForNEI("Writes Research result"))
+            .special(recipeGT.newDataStickForNEI("Writes Research result"))
             .duration(totalComputationRequired)
             .eut(researchEUt)
             .metadata(RESEARCH_STATION_DATA, researchAmperage | computationRequiredPerSec << 16)
-            .noOptimize()
             .ignoreCollision()
             .fake()
             .addTo(researchStationFakeRecipes);
@@ -90,7 +89,7 @@ public class TTRecipeAdder extends RecipeAdder {
             .itemInputs(aInputs)
             .itemOutputs(aOutput)
             .fluidInputs(aFluidInputs)
-            .special(recipeTT.newDataStickForNEI("Reads Research result"))
+            .special(recipeGT.newDataStickForNEI("Reads Research result"))
             .duration(assDuration)
             .eut(assEUt)
             .ignoreCollision()
@@ -219,11 +218,10 @@ public class TTRecipeAdder extends RecipeAdder {
         GTValues.RA.stdBuilder()
             .itemInputs(aResearchItem)
             .itemOutputs(aOutput)
-            .special(recipeTT.newDataStickForNEI("Writes Research result"))
+            .special(recipeGT.newDataStickForNEI("Writes Research result"))
             .duration(totalComputationRequired)
             .eut(researchEUt)
             .metadata(RESEARCH_STATION_DATA, researchAmperage | computationRequiredPerSec << 16)
-            .noOptimize()
             .ignoreCollision()
             .fake()
             .addTo(researchStationFakeRecipes);
@@ -232,7 +230,7 @@ public class TTRecipeAdder extends RecipeAdder {
             false,
             tInputs,
             new ItemStack[] { aOutput },
-            new ItemStack[] { recipeTT.newDataStickForNEI("Reads Research result") },
+            new ItemStack[] { recipeGT.newDataStickForNEI("Reads Research result") },
             aFluidInputs,
             null,
             assDuration,

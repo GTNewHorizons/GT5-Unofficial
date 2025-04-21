@@ -15,34 +15,11 @@ import gtPlusPlus.core.material.MaterialsElements;
 import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.minecraft.MaterialUtils;
 import gtPlusPlus.core.util.minecraft.RecipeUtils;
-import gtPlusPlus.xmod.gregtech.api.enums.GregtechOrePrefixes;
-import gtPlusPlus.xmod.gregtech.api.enums.GregtechOrePrefixes.GT_Materials;
-import gtPlusPlus.xmod.gregtech.api.interfaces.internal.IOreRecipeRegistrator;
 import gtPlusPlus.xmod.gregtech.common.items.MetaGeneratedGregtechTools;
 
-public class ProcessingElectricSnips implements IOreRecipeRegistrator, Runnable {
+public class ProcessingElectricSnips implements Runnable {
 
-    public ProcessingElectricSnips() {
-        GregtechOrePrefixes.toolElectricSnips.add(this);
-    }
-
-    @Override
-    public void registerOre(final GregtechOrePrefixes aPrefix, final Materials aMaterial, final String aOreDictName,
-        final String aModName, final ItemStack aStack) {
-        if ((aMaterial != Materials.Stone) && (aMaterial != Materials.Flint)) {
-            if (aMaterial != Materials.Rubber) {
-                if ((!aMaterial.contains(SubTag.WOOD)) && (!aMaterial.contains(SubTag.BOUNCY))
-                    && (!aMaterial.contains(SubTag.NO_SMASHING))) {}
-            }
-        }
-    }
-
-    @Override
-    public void registerOre(final GregtechOrePrefixes aPrefix, final GT_Materials aMaterial, final String aOreDictName,
-        final String aModName, final ItemStack aStack) {
-        // TODO Auto-generated method stub
-
-    }
+    public ProcessingElectricSnips() {}
 
     public void materialsLoops() {
         final Materials[] i = Materials.values();

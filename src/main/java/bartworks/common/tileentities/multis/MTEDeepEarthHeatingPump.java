@@ -65,6 +65,11 @@ public class MTEDeepEarthHeatingPump extends MTEDrillerBase {
     }
 
     @Override
+    public boolean supportsPowerPanel() {
+        return false;
+    }
+
+    @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity iGregTechTileEntity) {
         return new MTEDeepEarthHeatingPump(this.mName);
     }

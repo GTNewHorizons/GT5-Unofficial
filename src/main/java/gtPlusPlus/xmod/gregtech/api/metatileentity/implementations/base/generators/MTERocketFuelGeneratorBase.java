@@ -13,7 +13,6 @@ import net.minecraftforge.fluids.FluidStack;
 import org.apache.commons.lang3.ArrayUtils;
 
 import gregtech.api.enums.Textures;
-import gregtech.api.gui.modularui.GTUIInfos;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.RecipeMapWorkable;
@@ -86,7 +85,7 @@ public abstract class MTERocketFuelGeneratorBase extends MTEBasicTank implements
 
     @Override
     public boolean onRightclick(final IGregTechTileEntity aBaseMetaTileEntity, final EntityPlayer aPlayer) {
-        GTUIInfos.openGTTileEntityUI(aBaseMetaTileEntity, aPlayer);
+        openGui(aPlayer);
         return true;
     }
 
@@ -133,11 +132,6 @@ public abstract class MTERocketFuelGeneratorBase extends MTEBasicTank implements
     @Override
     public boolean isFacingValid(final ForgeDirection side) {
         return side.offsetY == 0;
-    }
-
-    @Override
-    public boolean isSimpleMachine() {
-        return false;
     }
 
     @Override
@@ -188,16 +182,6 @@ public abstract class MTERocketFuelGeneratorBase extends MTEBasicTank implements
 
     @Override
     public boolean canTankBeEmptied() {
-        return false;
-    }
-
-    @Override
-    public boolean displaysItemStack() {
-        return true;
-    }
-
-    @Override
-    public boolean displaysStackSize() {
         return false;
     }
 
@@ -331,8 +315,4 @@ public abstract class MTERocketFuelGeneratorBase extends MTEBasicTank implements
         return 32000;
     }
 
-    @Override
-    public int getTankPressure() {
-        return -100;
-    }
 }

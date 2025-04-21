@@ -20,7 +20,6 @@ import com.google.common.collect.MultimapBuilder;
 import com.gtnewhorizon.structurelib.util.Vec3Impl;
 
 import eu.usrv.yamcore.auxiliary.PlayerChatHelper;
-import gregtech.api.gui.modularui.GTUIInfos;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
@@ -34,7 +33,6 @@ import tectech.mechanics.tesla.ITeslaConnectable;
 import tectech.mechanics.tesla.ITeslaConnectableSimple;
 import tectech.thing.metaTileEntity.Textures;
 import tectech.util.CommonValues;
-import tectech.util.TTUtility;
 
 public class MTETeslaCoil extends MTEBasicBatteryBuffer implements ITeslaConnectable {
 
@@ -67,7 +65,6 @@ public class MTETeslaCoil extends MTEBasicBatteryBuffer implements ITeslaConnect
 
     public MTETeslaCoil(int aID, String aName, String aNameRegional, int aTier, int aSlotCount) {
         super(aID, aName, aNameRegional, aTier, "", aSlotCount);
-        TTUtility.setTier(aTier, this);
     }
 
     public MTETeslaCoil(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures, int aSlotCount) {
@@ -284,7 +281,7 @@ public class MTETeslaCoil extends MTEBasicBatteryBuffer implements ITeslaConnect
             if (aPlayer instanceof EntityPlayerMPAccessor) {
                 clientLocale = ((EntityPlayerMPAccessor) aPlayer).gt5u$getTranslator();
             }
-            GTUIInfos.openGTTileEntityUI(aBaseMetaTileEntity, aPlayer);
+            openGui(aPlayer);
         }
         return true;
     }

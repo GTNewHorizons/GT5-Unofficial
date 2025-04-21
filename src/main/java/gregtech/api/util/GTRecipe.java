@@ -28,7 +28,6 @@ import gregtech.api.enums.Materials;
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
 import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
 import gregtech.api.metatileentity.implementations.MTEHatchMultiInput;
-import gregtech.api.objects.GTItemStack;
 import gregtech.api.objects.ItemData;
 import gregtech.api.recipe.RecipeCategory;
 import gregtech.api.recipe.RecipeMap;
@@ -924,79 +923,6 @@ public class GTRecipe implements Comparable<GTRecipe> {
             mDuration = aDuration;
             mEUt = aEUt;
             mOreDictAlt = aAlt;
-        }
-
-        @Override
-        public int hashCode() {
-            final int prime = 31;
-            int result = 1;
-            GTItemStack[] thisInputs = new GTItemStack[this.mInputs.length];
-            int totalInputStackSize = 0;
-            for (int i = 0; i < this.mInputs.length; i++) {
-                thisInputs[i] = new GTItemStack(this.mInputs[i]);
-                totalInputStackSize += thisInputs[i].mStackSize;
-            }
-            int inputHash = Arrays.deepHashCode(thisInputs);
-            int inputFluidHash = Arrays.deepHashCode(this.mFluidInputs);
-            GTItemStack thisOutput = new GTItemStack(mOutput);
-            GTItemStack thisResearch = new GTItemStack(mResearchItem);
-            int miscRecipeDataHash = Arrays.deepHashCode(
-                new Object[] { totalInputStackSize, mDuration, mEUt, thisOutput, thisResearch, mResearchTime,
-                    mResearchVoltage });
-            result = prime * result + inputFluidHash;
-            result = prime * result + inputHash;
-            result = prime * result + miscRecipeDataHash;
-            return result;
-        }
-
-        @Override
-        public boolean equals(Object obj) {
-            if (this == obj) {
-                return true;
-            }
-            if (!(obj instanceof RecipeAssemblyLine other)) {
-                return false;
-            }
-            if (this.mInputs.length != other.mInputs.length) {
-                return false;
-            }
-            if (this.mFluidInputs.length != other.mFluidInputs.length) {
-                return false;
-            }
-            // Check Outputs Match
-            GTItemStack output1 = new GTItemStack(this.mOutput);
-            GTItemStack output2 = new GTItemStack(other.mOutput);
-            if (!output1.equals(output2)) {
-                return false;
-            }
-            // Check Scanned Item Match
-            GTItemStack scan1 = new GTItemStack(this.mResearchItem);
-            GTItemStack scan2 = new GTItemStack(other.mResearchItem);
-            if (!scan1.equals(scan2)) {
-                return false;
-            }
-            // Check Items Match
-            GTItemStack[] thisInputs = new GTItemStack[this.mInputs.length];
-            GTItemStack[] otherInputs = new GTItemStack[other.mInputs.length];
-            for (int i = 0; i < thisInputs.length; i++) {
-                thisInputs[i] = new GTItemStack(this.mInputs[i]);
-                otherInputs[i] = new GTItemStack(other.mInputs[i]);
-            }
-            for (int i = 0; i < thisInputs.length; i++) {
-                if (!thisInputs[i].equals(otherInputs[i]) || thisInputs[i].mStackSize != otherInputs[i].mStackSize) {
-                    return false;
-                }
-            }
-            // Check Fluids Match
-            for (int i = 0; i < this.mFluidInputs.length; i++) {
-                if (!this.mFluidInputs[i].isFluidStackIdentical(other.mFluidInputs[i])) {
-                    return false;
-                }
-            }
-
-            return this.mDuration == other.mDuration && this.mEUt == other.mEUt
-                && this.mResearchTime == other.mResearchTime
-                && this.mResearchVoltage == other.mResearchVoltage;
         }
 
         public int getPersistentHash() {

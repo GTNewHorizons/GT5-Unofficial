@@ -10,10 +10,6 @@ public class MTESuperChest extends MTEQuantumChest {
         super(aID, aName, aNameRegional, aTier);
     }
 
-    public MTESuperChest(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {
-        super(aName, aTier, aDescription, aTextures);
-    }
-
     public MTESuperChest(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, aDescription, aTextures);
     }

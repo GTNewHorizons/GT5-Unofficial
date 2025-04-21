@@ -12,7 +12,7 @@ import net.minecraft.world.IBlockAccess;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Textures;
-import gregtech.api.objects.GTCopiedBlockTexture;
+import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.common.blocks.BlockCasingsAbstract;
 import gregtech.common.blocks.MaterialCasings;
@@ -44,8 +44,8 @@ public class BlockGTCasingsBA0 extends BlockCasingsAbstract {
     public BlockGTCasingsBA0() {
         super(ItemCasingsBA0.class, "gt.blockcasingsBA0", MaterialCasings.INSTANCE);
         for (byte b = 0; b < 16; b = (byte) (b + 1)) {
-            Textures.BlockIcons.casingTexturePages[BlockGTCasingsTT.texturePage][b
-                + START_INDEX] = new GTCopiedBlockTexture(this, 6, b);
+            Textures.BlockIcons.casingTexturePages[BlockGTCasingsTT.texturePage][b + START_INDEX] = TextureFactory
+                .of(this, b);
             /* IMPORTANT for block recoloring **/
         }
 

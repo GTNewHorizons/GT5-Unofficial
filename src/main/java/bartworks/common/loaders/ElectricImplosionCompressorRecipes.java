@@ -46,7 +46,6 @@ public class ElectricImplosionCompressorRecipes implements Runnable {
                     .itemOutputs(ItemList.Circuit_Chip_Optical.get(16L))
                     .duration(5 * SECONDS)
                     .eut(TierEU.RECIPE_UMV)
-                    .noOptimize()
                     .addTo(electricImplosionCompressorRecipes);
             }
         }
@@ -59,7 +58,6 @@ public class ElectricImplosionCompressorRecipes implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.DarkAsh, 12L))
             .duration(1 * TICKS)
             .eut(TierEU.RECIPE_UEV)
-            .noOptimize()
             .addTo(electricImplosionCompressorRecipes);
 
         GTValues.RA.stdBuilder()
@@ -68,7 +66,6 @@ public class ElectricImplosionCompressorRecipes implements Runnable {
             .fluidInputs(Materials.Neutronium.getMolten(72L))
             .duration(1)
             .eut(TierEU.RECIPE_UEV)
-            .noOptimize()
             .addTo(electricImplosionCompressorRecipes);
 
         GTValues.RA.stdBuilder()
@@ -77,7 +74,6 @@ public class ElectricImplosionCompressorRecipes implements Runnable {
             .fluidInputs(Materials.Neutronium.getMolten(72L))
             .duration(1)
             .eut(TierEU.RECIPE_UEV)
-            .noOptimize()
             .addTo(electricImplosionCompressorRecipes);
 
         GTValues.RA.stdBuilder()
@@ -86,7 +82,6 @@ public class ElectricImplosionCompressorRecipes implements Runnable {
             .fluidInputs(Materials.Neutronium.getMolten(72L))
             .duration(1)
             .eut(TierEU.RECIPE_UEV)
-            .noOptimize()
             .addTo(electricImplosionCompressorRecipes);
 
         // Magneto material recipe for base fluid.
@@ -99,7 +94,6 @@ public class ElectricImplosionCompressorRecipes implements Runnable {
             .fluidOutputs(MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter.getMolten(16 * 144L))
             .duration(4 * SECONDS)
             .eut(TierEU.RECIPE_UXV)
-            .noOptimize()
             .addTo(electricImplosionCompressorRecipes);
 
         // Infinity Catalyst
@@ -108,7 +102,6 @@ public class ElectricImplosionCompressorRecipes implements Runnable {
             .itemOutputs(getModItem(Avaritia.ID, "Resource", 1L, 5))
             .duration(1)
             .eut(TierEU.RECIPE_UIV)
-            .noOptimize()
             .addTo(electricImplosionCompressorRecipes);
 
         // MHDCSM V2
@@ -118,7 +111,6 @@ public class ElectricImplosionCompressorRecipes implements Runnable {
             .fluidOutputs(MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter.getMolten(32 * 144L))
             .duration(4 * SECONDS)
             .eut(TierEU.RECIPE_MAX)
-            .noOptimize()
             .addTo(electricImplosionCompressorRecipes);
 
         this.addMagnetohydrodynamicallyConstrainedStarMatterPartRecipes();
@@ -166,7 +158,6 @@ public class ElectricImplosionCompressorRecipes implements Runnable {
                     .getMolten((long) partFraction * multiplier))
             .duration((int) (multiplier * (20 * partFraction / 144.0)))
             .eut(TierEU.RECIPE_UXV)
-            .noOptimize()
             .addTo(electricImplosionCompressorRecipes);
     }
 }

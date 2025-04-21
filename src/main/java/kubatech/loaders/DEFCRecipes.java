@@ -286,7 +286,6 @@ public class DEFCRecipes {
             .eut(TierEU.RECIPE_UHV)
             .duration(4200)
             .metadata(DEFC_CASING_TIER, 3)
-            .noOptimize()
             .addTo(fusionCraftingRecipes);
 
         if (Witchery.isModLoaded()) {
@@ -300,7 +299,6 @@ public class DEFCRecipes {
                 .eut(TierEU.RECIPE_UHV)
                 .duration(3600)
                 .metadata(DEFC_CASING_TIER, 3)
-                .noOptimize()
                 .addTo(fusionCraftingRecipes);
         }
 
@@ -314,7 +312,6 @@ public class DEFCRecipes {
             .eut(TierEU.RECIPE_UHV)
             .duration(2800)
             .metadata(DEFC_CASING_TIER, 3)
-            .noOptimize()
             .addTo(fusionCraftingRecipes);
 
         if (Witchery.isModLoaded()) {
@@ -328,7 +325,6 @@ public class DEFCRecipes {
                 .eut(TierEU.RECIPE_UHV)
                 .duration(2400)
                 .metadata(DEFC_CASING_TIER, 3)
-                .noOptimize()
                 .addTo(fusionCraftingRecipes);
         }
     }

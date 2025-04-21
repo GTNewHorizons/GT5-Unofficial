@@ -13,7 +13,6 @@ import net.minecraft.tileentity.TileEntity;
 
 import gregtech.api.util.GTUtility;
 import gtPlusPlus.core.inventories.InventoryCircuitProgrammer;
-import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.slots.SlotIntegratedCircuit;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
 
@@ -78,8 +77,7 @@ public class TileEntityCircuitProgrammer extends TileEntity implements ISidedInv
             ItemStack g = this.getStackInSlot(e);
             int aSize = 0;
             ItemStack aInputStack = null;
-            int aTypeInSlot = SlotIntegratedCircuit.isRegularProgrammableCircuit(g);
-            if (aTypeInSlot >= 0 && g != null) {
+            if (SlotIntegratedCircuit.isRegularProgrammableCircuit(g) && g != null) {
                 // No Existing Output
                 if (!hasOutput) {
                     aSize = g.stackSize;
@@ -88,9 +86,7 @@ public class TileEntityCircuitProgrammer extends TileEntity implements ISidedInv
                 // Existing Output
                 else {
                     ItemStack f = this.getStackInSlot(25);
-                    int aTypeInCheckedSlot = SlotIntegratedCircuit.isRegularProgrammableCircuit(f);
-                    // Check that the Circuit in the Output slot is not null and the same type as the circuit input.
-                    if (aTypeInCheckedSlot >= 0 && (aTypeInSlot == aTypeInCheckedSlot) && f != null) {
+                    if (SlotIntegratedCircuit.isRegularProgrammableCircuit(f) && f != null) {
                         if (g.getItem() == f.getItem() && f.getItemDamage() == e) {
                             aSize = f.stackSize + g.stackSize;
                             if (aSize > 64) {
@@ -102,24 +98,11 @@ public class TileEntityCircuitProgrammer extends TileEntity implements ISidedInv
                     }
                 }
                 if (doAdd) {
-                    // Check Circuit Type
-                    ItemStack aOutput;
-                    if (aTypeInSlot == 0) {
-                        aOutput = GTUtility.getIntegratedCircuit(e);
-                    } else if (aTypeInSlot == 1) {
-                        aOutput = CI.getNumberedBioCircuit(e);
-                    } else if (aTypeInSlot == 2) {
-                        aOutput = CI.getNumberedAdvancedCircuit(e);
-                    } else {
-                        aOutput = null;
-                    }
-
-                    if (aOutput != null) {
-                        aOutput.stackSize = aSize;
-                        this.setInventorySlotContents(e, aInputStack);
-                        this.setInventorySlotContents(25, aOutput);
-                        return true;
-                    }
+                    ItemStack aOutput = GTUtility.getIntegratedCircuit(e);
+                    aOutput.stackSize = aSize;
+                    this.setInventorySlotContents(e, aInputStack);
+                    this.setInventorySlotContents(25, aOutput);
+                    return true;
                 }
             }
         }

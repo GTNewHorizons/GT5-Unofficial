@@ -10,7 +10,6 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 
 import gregtech.api.enums.GTValues;
-import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GTModHandler;
@@ -40,30 +39,6 @@ public class ProcessingPlank implements gregtech.api.interfaces.IOreRecipeRegist
                 .duration(10 * TICKS)
                 .eut(8)
                 .addTo(latheRecipes);
-            GTValues.RA.stdBuilder()
-                .itemInputs(
-                    GTUtility.copyAmount(1, aStack),
-                    GTOreDictUnificator.get(OrePrefixes.screw, Materials.Iron, 1L))
-                .itemOutputs(ItemList.Crate_Empty.get(1L))
-                .duration(10 * SECONDS)
-                .eut(1)
-                .addTo(assemblerRecipes);
-            GTValues.RA.stdBuilder()
-                .itemInputs(
-                    GTUtility.copyAmount(1, aStack),
-                    GTOreDictUnificator.get(OrePrefixes.screw, Materials.WroughtIron, 1L))
-                .itemOutputs(ItemList.Crate_Empty.get(1L))
-                .duration(10 * SECONDS)
-                .eut(1)
-                .addTo(assemblerRecipes);
-            GTValues.RA.stdBuilder()
-                .itemInputs(
-                    GTUtility.copyAmount(1, aStack),
-                    GTOreDictUnificator.get(OrePrefixes.screw, Materials.Steel, 1L))
-                .itemOutputs(ItemList.Crate_Empty.get(1L))
-                .duration(10 * SECONDS)
-                .eut(1)
-                .addTo(assemblerRecipes);
             GTValues.RA.stdBuilder()
                 .itemInputs(GTUtility.copyAmount(8, aStack), GTUtility.getIntegratedCircuit(8))
                 .itemOutputs(new ItemStack(Blocks.chest, 1))

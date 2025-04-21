@@ -32,7 +32,6 @@ import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gtPlusPlus.core.creative.AddToCreativeTab;
-import gtPlusPlus.xmod.gregtech.api.interfaces.internal.IItemBehaviour;
 
 public abstract class GTMetaItem extends GTMetaItemBase {
 
@@ -114,10 +113,6 @@ public abstract class GTMetaItem extends GTMetaItemBase {
                 if (tRandomData != null) {
                     boolean tUseOreDict = true;
 
-                    if (tRandomData instanceof IItemBehaviour) {
-                        this.addItemBehavior(this.mOffset + aID, (IItemBehaviour<GTMetaItemBase>) tRandomData);
-                        tUseOreDict = false;
-                    }
                     if (tRandomData instanceof IItemContainer) {
                         ((IItemContainer) tRandomData).set(rStack);
                         tUseOreDict = false;
@@ -245,11 +240,6 @@ public abstract class GTMetaItem extends GTMetaItemBase {
     }
 
     /* ---------- INTERNAL OVERRIDES ---------- */
-
-    @Override
-    public ItemStack onItemRightClick(final ItemStack aStack, final World aWorld, final EntityPlayer aPlayer) {
-        return super.onItemRightClick(aStack, aWorld, aPlayer);
-    }
 
     @Override
     public int getMaxItemUseDuration(final ItemStack aStack) {

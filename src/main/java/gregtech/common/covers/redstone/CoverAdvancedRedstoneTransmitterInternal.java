@@ -1,50 +1,45 @@
 package gregtech.common.covers.redstone;
 
-import net.minecraftforge.common.util.ForgeDirection;
-
+import gregtech.api.covers.CoverContext;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
 
 public class CoverAdvancedRedstoneTransmitterInternal
     extends CoverAdvancedRedstoneTransmitterBase<CoverAdvancedRedstoneTransmitterBase.TransmitterData> {
 
-    public CoverAdvancedRedstoneTransmitterInternal(ITexture coverTexture) {
-        super(TransmitterData.class, coverTexture);
+    public CoverAdvancedRedstoneTransmitterInternal(CoverContext context, ITexture coverTexture) {
+        super(context, TransmitterData.class, coverTexture);
     }
 
     @Override
-    public TransmitterData createDataObject() {
-        return new TransmitterData();
+    protected TransmitterData initializeData() {
+        return new CoverAdvancedRedstoneTransmitterBase.TransmitterData();
     }
 
     @Override
-    public TransmitterData createDataObject(int aLegacyData) {
-        return createDataObject();
-    }
-
-    @Override
-    public TransmitterData doCoverThingsImpl(ForgeDirection side, byte aInputRedstone, int aCoverID,
-        TransmitterData aCoverVariable, ICoverable aTileEntity, long aTimer) {
-        byte outputRedstone = aTileEntity.getOutputRedstoneSignal(side);
-        if (aCoverVariable.isInvert()) {
+    public TransmitterData doCoverThings(byte aInputRedstone, long aTimer) {
+        ICoverable coverable = coveredTile.get();
+        if (coverable == null) {
+            return coverData;
+        }
+        byte outputRedstone = coverable.getOutputRedstoneSignal(coverSide);
+        if (coverData.isInvert()) {
             if (outputRedstone > 0) outputRedstone = 0;
             else outputRedstone = 15;
         }
 
-        final long hash = hashCoverCoords(aTileEntity, side);
-        setSignalAt(aCoverVariable.getUuid(), aCoverVariable.getFrequency(), hash, outputRedstone);
-        return aCoverVariable;
+        final long hash = hashCoverCoords(coverable, coverSide);
+        setSignalAt(coverData.getUuid(), coverData.getFrequency(), hash, outputRedstone);
+        return coverData;
     }
 
     @Override
-    public boolean letsRedstoneGoOutImpl(ForgeDirection side, int aCoverID, TransmitterData aCoverVariable,
-        ICoverable aTileEntity) {
+    public boolean letsRedstoneGoOut() {
         return true;
     }
 
     @Override
-    protected boolean manipulatesSidedRedstoneOutputImpl(ForgeDirection side, int aCoverID,
-        TransmitterData aCoverVariable, ICoverable aTileEntity) {
+    public boolean manipulatesSidedRedstoneOutput() {
         return true;
     }
 }
