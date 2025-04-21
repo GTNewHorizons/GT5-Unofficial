@@ -150,7 +150,9 @@ public class MTEWirelessCharger extends MTETieredMachineBlock implements IWirele
     }
 
     @Override
-    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer player, float x, float y, float z) {
+    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer player, float x, float y, float z,
+        ItemStack tool) {
+
         if (player.isSneaking()) {
             locked = !locked;
             GTUtility.sendChatToPlayer(player, translateChat(locked ? "lock" : "unlock"));
