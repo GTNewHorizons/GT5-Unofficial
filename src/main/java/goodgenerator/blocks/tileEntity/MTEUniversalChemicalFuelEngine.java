@@ -158,16 +158,16 @@ public class MTEUniversalChemicalFuelEngine extends MTETooltipMultiBlockBaseEM
             .addInfo("Energy output to the dynamo will be distributed over the next second.")
             .addInfo("If the Dynamo Hatch's buffer fills up, the machine will stop.")
             .addInfo(
-                    "If the amount of energy to be produced is higher "
-                            + "than the hatch can handle then all produced energy will void.")
+                "If the amount of energy to be produced is higher "
+                    + "than the dynamo hatch can handle then all produced energy will void.")
             .addInfo("When turned on, there is a 10-second period where the machine will not stop.")
             .addInfo("Even if it doesn't stop, all the fuel in the hatch will be consumed.")
             .addInfo("The efficiency is determined by the proportion of Combustion Promoter to fuel.")
             .addInfo(
-                    "The higher the amount of promoter, the higher the efficiency. "
-                            + "It follows an exponential curve exp(-C/x)*1.5 "
-                            + "where x is the amount of fuel in liters and C depends on the fuel type. "
-                            + "Diesel: C=0.04; Gas: C=0.04; Rocket fuel: C=0.005")
+                "The higher the amount of promoter, the higher the efficiency. "
+                    + "It follows an exponential curve exp(-C/x)*1.5 "
+                    + "where x is the amount of fuel in liters and C depends on the fuel type. "
+                    + "Diesel: C=0.04; Gas: C=0.04; Rocket fuel: C=0.005")
             .addInfo("It creates sqrt(Current Output Power) pollution every second")
             .addInfo(
                 "If you forget to supply Combustion Promoter, this engine will swallow all the fuel "
