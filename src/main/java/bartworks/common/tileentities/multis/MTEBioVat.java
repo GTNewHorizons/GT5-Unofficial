@@ -324,7 +324,8 @@ public class MTEBioVat extends MTEEnhancedMultiBlockBase<MTEBioVat> implements I
 
         return this.mCasing >= 19 && this.mRadHatches.size() <= 1
             && !this.mEnergyHatches.isEmpty()
-            && this.mMaintenanceHatches.size() == 1;
+            && this.mMaintenanceHatches.size() == 1
+            && this.mOutputHatches.size() == 1;
     }
 
     @Override
