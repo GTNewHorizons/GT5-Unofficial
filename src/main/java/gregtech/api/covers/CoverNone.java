@@ -1,21 +1,27 @@
-package gregtech.common.covers;
+package gregtech.api.covers;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 
-import gregtech.api.covers.CoverContext;
 import gregtech.api.gui.modularui.CoverUIBuildContext;
+import gregtech.common.covers.Cover;
 
-public class CoverNone extends Cover {
+public final class CoverNone extends Cover {
 
     /**
-     * This is the Dummy, if there is no Cover
+     * Explicitly package-private so the reference is held in CoverRegistry
      */
-    public CoverNone(CoverContext context) {
-        super(context, null);
+    static CoverNone instance = new CoverNone();
+
+    /**
+     * This is the Dummy, if there is no Cover.
+     */
+    private CoverNone() {
+        super(new CoverContext(null, ForgeDirection.UNKNOWN, null), null);
     }
 
     @Override

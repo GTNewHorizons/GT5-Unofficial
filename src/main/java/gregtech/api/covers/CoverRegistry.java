@@ -18,7 +18,6 @@ import gregtech.api.objects.GTItemStack;
 import gregtech.api.util.GTUtility;
 import gregtech.common.covers.Cover;
 import gregtech.common.covers.CoverDecorative;
-import gregtech.common.covers.CoverNone;
 
 public final class CoverRegistry {
 
@@ -35,9 +34,9 @@ public final class CoverRegistry {
      * The List of Cover Registrations for the Covers containing cover factories, placement conditions and base textures
      */
     private static final Map<GTItemStack, CoverRegistration> covers = new ConcurrentHashMap<>();
-    public static final Cover NO_COVER = new CoverNone(new CoverContext(null, ForgeDirection.UNKNOWN, null));
+    public static final Cover NO_COVER = CoverNone.instance;
     private static final CoverRegistration coverNone = new CoverRegistration(
-        CoverNone::new,
+        context -> NO_COVER,
         PRIMITIVE_COVER_PLACER,
         null);
 
@@ -139,11 +138,19 @@ public final class CoverRegistry {
      * @param east      cover id
      */
     public static void cover(ICoverable coverable, int down, int up, int north, int south, int west, int east) {
-        coverable.attachCover(buildCover(GTUtility.intToStack(down), ForgeDirection.DOWN, coverable));
-        coverable.attachCover(buildCover(GTUtility.intToStack(up), ForgeDirection.UP, coverable));
-        coverable.attachCover(buildCover(GTUtility.intToStack(north), ForgeDirection.NORTH, coverable));
-        coverable.attachCover(buildCover(GTUtility.intToStack(south), ForgeDirection.SOUTH, coverable));
-        coverable.attachCover(buildCover(GTUtility.intToStack(west), ForgeDirection.WEST, coverable));
-        coverable.attachCover(buildCover(GTUtility.intToStack(east), ForgeDirection.EAST, coverable));
+        applyCoverAction(down, ForgeDirection.DOWN, coverable);
+        applyCoverAction(up, ForgeDirection.UP, coverable);
+        applyCoverAction(north, ForgeDirection.NORTH, coverable);
+        applyCoverAction(south, ForgeDirection.SOUTH, coverable);
+        applyCoverAction(west, ForgeDirection.WEST, coverable);
+        applyCoverAction(east, ForgeDirection.EAST, coverable);
+    }
+
+    private static void applyCoverAction(int coverId, ForgeDirection side, ICoverable coverable) {
+        if (coverId == NO_COVER.getCoverID()) {
+            coverable.detachCover(side);
+        } else {
+            coverable.attachCover(buildCover(GTUtility.intToStack(coverId), side, coverable));
+        }
     }
 }
