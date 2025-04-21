@@ -1,25 +1,52 @@
 package gregtech.common.tileentities.machines.multi.nanochip.modules;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
+import static gregtech.api.modularui2.GTGuis.createPopUpPanel;
+import static gregtech.api.modularui2.GTGuis.mteTemplatePanelBuilder;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
+import net.minecraft.nbt.NBTTagString;
+import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.EnumChatFormatting;
 
 import org.jetbrains.annotations.NotNull;
 
+import com.cleanroommc.modularui.api.IPanelHandler;
+import com.cleanroommc.modularui.api.drawable.IIcon;
+import com.cleanroommc.modularui.api.drawable.IKey;
+import com.cleanroommc.modularui.api.widget.IWidget;
+import com.cleanroommc.modularui.drawable.GuiTextures;
+import com.cleanroommc.modularui.factory.PosGuiData;
+import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.screen.RichTooltip;
+import com.cleanroommc.modularui.utils.Alignment;
+import com.cleanroommc.modularui.utils.serialization.IByteBufAdapter;
+import com.cleanroommc.modularui.value.sync.GenericSyncValue;
+import com.cleanroommc.modularui.value.sync.PanelSyncManager;
+import com.cleanroommc.modularui.widget.ParentWidget;
+import com.cleanroommc.modularui.widget.WidgetTree;
+import com.cleanroommc.modularui.widgets.ButtonWidget;
+import com.cleanroommc.modularui.widgets.CategoryList;
+import com.cleanroommc.modularui.widgets.ListWidget;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 
 import gregtech.api.GregTechAPI;
+import gregtech.api.enums.Dyes;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.common.modularui2.widget.ColorGridWidget;
 import gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyModuleBase;
 import gregtech.common.tileentities.machines.multi.nanochip.hatches.MTEHatchVacuumConveyorInput;
 import gregtech.common.tileentities.machines.multi.nanochip.hatches.MTEHatchVacuumConveyorOutput;
@@ -34,6 +61,9 @@ public class Splitter extends MTENanochipAssemblyModuleBase<Splitter> {
     protected static final String STRUCTURE_PIECE_MAIN = "main";
     private static final String[][] structure = new String[][] { { "  AAA  ", "  AAA  ", "  AAA  " },
         { "  AAA  ", "  A A  ", "  AAA  " }, { "  AAA  ", "  AAA  ", "  AAA  " } };
+
+    // Maps an input color to an output color
+    public Map<Dyes, Dyes> colorMap = createEmptyRulesList();
 
     public static final IStructureDefinition<Splitter> STRUCTURE_DEFINITION = ModuleStructureDefinition
         .<Splitter>builder()
@@ -145,7 +175,11 @@ public class Splitter extends MTENanochipAssemblyModuleBase<Splitter> {
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
-        return new MultiblockTooltipBuilder().toolTipFinisher("GregTech");
+        final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+        tt.addMachineType("Imagine the factorio splitter but big")
+            .addInfo("Can split")
+            .toolTipFinisher();
+        return tt;
     }
 
     @Override
@@ -167,4 +201,197 @@ public class Splitter extends MTENanochipAssemblyModuleBase<Splitter> {
         mMaxProgresstime = 0;
         return CheckRecipeResultRegistry.NO_RECIPE;
     }
+
+    @Override
+    public void saveNBTData(NBTTagCompound aNBT) {
+        super.saveNBTData(aNBT);
+        aNBT.setTag("rules", createRulesTagList());
+    }
+
+    @Override
+    public void loadNBTData(NBTTagCompound aNBT) {
+        super.loadNBTData(aNBT);
+        // Type "8" is NBTTagString
+        colorMap = loadRulesTagList(aNBT.getTagList("rules", 8));
+    }
+
+    public Map<Dyes, Dyes> createEmptyRulesList() {
+        HashMap<Dyes, Dyes> rulesMap = new HashMap<>();
+        for (Dyes dye : Dyes.VALUES) {
+            rulesMap.put(dye, dye);
+        }
+        return rulesMap;
+    }
+
+    public NBTTagList createRulesTagList() {
+        NBTTagList list = new NBTTagList();
+        for (Map.Entry<Dyes, Dyes> entry : colorMap.entrySet()) {
+            Dyes key = entry.getKey();
+            Dyes value = entry.getValue();
+            list.appendTag(new NBTTagString(key.name() + ":" + value.name()));
+        }
+        return list;
+    }
+
+    public Map<Dyes, Dyes> loadRulesTagList(NBTTagList tagList) {
+        HashMap<Dyes, Dyes> rulesMap = new HashMap<>();
+        for (Object a : tagList.tagList) {
+            if (!(a instanceof NBTTagString tag)) continue;
+            // Obfuscated method returns the stored string
+            String[] data = tag.func_150285_a_()
+                .split(":");
+            rulesMap.put(Dyes.get(data[0]), Dyes.get(data[1]));
+        }
+
+        return rulesMap;
+    }
+
+    @Override
+    protected boolean useMui2() {
+        return true;
+    }
+
+    @Override
+    public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager) {
+        ModularPanel ui = mteTemplatePanelBuilder(this, data, syncManager).build();
+        IPanelHandler popupPanel = syncManager.panel("popup", (m, h) -> createRuleManagerPanel(syncManager), true);
+        syncManager.syncValue(
+            "map",
+            0,
+            new GenericSyncValue<>(() -> colorMap, map -> { colorMap = map; }, new ColorMapAdapter()));
+
+        return ui.child(new ButtonWidget<>().onMousePressed(mouseButton -> {
+            popupPanel.openPanel();
+            return popupPanel.isPanelOpen();
+        })
+            .background(GTGuiTextures.BUTTON_STANDARD)
+            .tooltip(tooltip -> tooltip.add("Add Rule"))
+            .pos(153, 5)
+            .size(18, 18));
+    }
+
+    public ModularPanel createRuleManagerPanel(PanelSyncManager syncManager) {
+        ModularPanel ui = createPopUpPanel("gt:splitter:rules_manager", false, false);
+
+        ListWidget<IWidget, CategoryList.Root> list = new ListWidget<>();
+        list.childSeparator(IIcon.EMPTY_2PX);
+        list.size(168, 138);
+        list.pos(4, 21);
+
+        // Add existing rules
+        for (Map.Entry<Dyes, Dyes> entry : colorMap.entrySet()) {
+            Dyes key = entry.getKey();
+            Dyes value = entry.getValue();
+            if (key == value) continue;
+            list.child(createColorManager(syncManager, key.mIndex, value.mIndex));
+        }
+
+        return ui.child(list)
+            .child(new ButtonWidget<>().onMousePressed(mouseButton -> {
+                list.child(createColorManager(syncManager, -1, -1));
+                WidgetTree.resize(ui);
+                return true;
+            })
+                .pos(80, 4)
+                .size(16, 16)
+                .overlay(GuiTextures.ADD)
+                .tooltip(tooltip -> tooltip.add("Add new Rule")))
+            .child(
+                GuiTextures.EXCLAMATION.asWidget()
+                    .background(GTGuiTextures.BUTTON_STANDARD)
+                    .tooltip(this::getRulesInfo)
+                    .pos(144, 4)
+                    .size(16, 16))
+            .pos(588, 187);
+    }
+
+    private void getRulesInfo(RichTooltip t) {
+        t.pos(RichTooltip.Pos.ABOVE)
+            .add("This is the rules manager\n")
+            .add(
+                "Here you can set a color of Vacuum Conveyor Input to always route to another color of Vacuum Conveyor Output.\n")
+            .newLine()
+            .add("Check out this awesome icon: ")
+            .add(GTGuiTextures.PICTURE_GT_LOGO_STANDARD);
+    }
+
+    public IWidget createColorManager(PanelSyncManager syncManager, int inputSelected, int outputSelected) {
+        ColorGridWidget inputGrid = new ColorGridWidget(inputSelected).build();
+        ColorGridWidget outputGrid = new ColorGridWidget(outputSelected).build();
+
+        GenericSyncValue<Map<Dyes, Dyes>> map = (GenericSyncValue<Map<Dyes, Dyes>>) syncManager.getSyncHandler("map:0");
+
+        return new ParentWidget<>()
+            // Arrow icon
+            .child(
+                GTGuiTextures.PROGRESSBAR_ARROW_STANDARD.getSubArea(0F, 0F, 1F, 0.5F)
+                    .asWidget()
+                    .size(20, 18)
+                    .posRel(0.5F, 0.5F))
+            .child(inputGrid.pos(5, 13))
+            .child(outputGrid.pos(121, 13))
+            // Input grid color display
+            .child(
+                IKey.dynamic(inputGrid::getName)
+                    .asWidget()
+                    .scale(0.8F)
+                    .alignment(Alignment.Center)
+                    .size(42, 8)
+                    .pos(4, 5))
+            // Output grid color display
+            .child(
+                IKey.dynamic(outputGrid::getName)
+                    .asWidget()
+                    .scale(0.8F)
+                    .alignment(Alignment.Center)
+                    .size(42, 8)
+                    .pos(120, 5))
+            // Save button
+            .child(
+                new ButtonWidget<>()
+                    .onMousePressed(ignore -> saveColorData(inputGrid.getDye(), outputGrid.getDye(), map))
+                    .tooltip(tooltip -> tooltip.add("Save"))
+                    .overlay(GTGuiTextures.OVERLAY_BUTTON_CHECKMARK)
+                    .posRel(0.5F, 0.1F)
+                    .size(8, 8))
+            .size(166, 58)
+            .background(GTGuiTextures.BACKGROUND_POPUP_STANDARD);
+    }
+
+    private boolean saveColorData(Dyes input, Dyes output, GenericSyncValue<Map<Dyes, Dyes>> map) {
+        if (input == null || output == null) return false;
+        colorMap.put(input, output);
+        map.setValue(colorMap);
+        return true;
+    }
+
+    private static class ColorMapAdapter implements IByteBufAdapter<Map<Dyes, Dyes>> {
+
+        @Override
+        public Map<Dyes, Dyes> deserialize(PacketBuffer buffer) {
+            Map<Dyes, Dyes> rulesMap = new HashMap<>();
+            for (int i = 0; i < 15; i++) {
+                Dyes key = Dyes.get(buffer.readInt());
+                Dyes value = Dyes.get(buffer.readInt());
+                rulesMap.put(key, value);
+            }
+            return rulesMap;
+        }
+
+        @Override
+        public void serialize(PacketBuffer buffer, Map<Dyes, Dyes> map) {
+            for (Map.Entry<Dyes, Dyes> entry : map.entrySet()) {
+                Dyes key = entry.getKey();
+                Dyes value = entry.getValue();
+                buffer.writeInt(key.mIndex);
+                buffer.writeInt(value.mIndex);
+            }
+        }
+
+        @Override
+        public boolean areEqual(@NotNull Map<Dyes, Dyes> t1, @NotNull Map<Dyes, Dyes> t2) {
+            return t1.equals(t2);
+        }
+    }
+
 }

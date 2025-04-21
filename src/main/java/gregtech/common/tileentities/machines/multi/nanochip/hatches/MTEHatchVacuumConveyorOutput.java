@@ -34,7 +34,6 @@ public class MTEHatchVacuumConveyorOutput extends MTEHatchVacuumConveyor {
         return false;
     }
 
-
     @Override
     public boolean isComponentsInputFacing(ForgeDirection side) {
         return isInputFacing(side);
