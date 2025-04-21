@@ -571,6 +571,7 @@ public enum ItemList implements IItemContainer {
     Upgrade_Muffler,
     Upgrade_SteamEngine,
     Upgrade_Lock,
+    Item_Redstone_Sniffer,
     Cover_FluidLimiter,
     Cover_Controller,
     Cover_ActivityDetector,
@@ -2604,6 +2605,7 @@ public enum ItemList implements IItemContainer {
     Machine_Multi_AirFilterT1,
     Machine_Multi_AirFilterT2,
     Machine_Multi_AirFilterT3,
+    LargeMolecularAssembler,
 
     // semicolon after the comment to reduce merge conflicts
     ;
