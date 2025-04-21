@@ -1366,6 +1366,15 @@ public class LoaderGTBlockFluid implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.cellPlasma, Materials.Ichorium, 1L),
                 ItemList.Cell_Empty.get(1L));
 
+        GTFluidFactory.builder("molten.ichorium")
+            .withLocalizedName("Molten Ichorium")
+            .withStateAndTemperature(MOLTEN, 9000)
+            .buildAndRegister()
+            .configureMaterials(Materials.Ichorium)
+            .registerBContainers(
+                GTOreDictUnificator.get(OrePrefixes.cellMolten, Materials.Ichorium, 1L),
+                ItemList.Cell_Empty.get(1L));
+
         GTFluidFactory.builder("fieryblood")
             .withLocalizedName("Fiery Blood")
             .withStateAndTemperature(LIQUID, 6400)
