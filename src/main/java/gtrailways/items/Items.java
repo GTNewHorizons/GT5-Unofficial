@@ -45,21 +45,15 @@ public class Items {
             GTModHandler.addCraftingRecipe(
                 safetyOveralls,
                 0,
-                new Object[] {"SPS", "SrS", " H ",
-                    'S', new ItemStack(net.minecraft.init.Items.string),
-                    'P', railcraftPants,
-                    'H', new ItemStack(GameRegistry.findItem(IndustrialCraft2.ID, "itemArmorHazmatLeggings"))
-                }
-            );
+                new Object[] { "SPS", "SrS", " H ", 'S', new ItemStack(net.minecraft.init.Items.string), 'P',
+                    railcraftPants, 'H',
+                    new ItemStack(GameRegistry.findItem(IndustrialCraft2.ID, "itemArmorHazmatLeggings")) });
         } else {
             GTModHandler.addCraftingRecipe(
                 safetyOveralls,
                 0,
-                new Object[] {"RPR", "RrR", "R R",
-                    'R', GTOreDictUnificator.get(OrePrefixes.plate, Materials.Rubber, 1L),
-                    'P', railcraftPants
-                }
-            );
+                new Object[] { "RPR", "RrR", "R R", 'R',
+                    GTOreDictUnificator.get(OrePrefixes.plate, Materials.Rubber, 1L), 'P', railcraftPants });
         }
     }
 }

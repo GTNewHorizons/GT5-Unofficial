@@ -1,17 +1,20 @@
 package gtrailways.items;
 
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.EnumHelper;
+
 import gregtech.api.hazards.Hazard;
 import gregtech.api.hazards.IHazardProtector;
+import gtrailways.GTRailways;
 import mods.railcraft.api.core.items.ISafetyPants;
 
 public class SafetyOveralls extends ItemArmor implements IHazardProtector, ISafetyPants {
 
     public SafetyOveralls() {
-        super(EnumHelper.addArmorMaterial("SAFETY_OVERALLS", 6, new int[] { 1, 3, 2, 1}, 15), 0, 2);
+        super(EnumHelper.addArmorMaterial("SAFETY_OVERALLS", 6, new int[] { 1, 3, 2, 1 }, 15), 0, 2);
         this.setMaxDamage(256);
     }
 
@@ -30,6 +33,11 @@ public class SafetyOveralls extends ItemArmor implements IHazardProtector, ISafe
     public boolean lowersLocomotiveDamage(ItemStack pants) {
         return true;
     };
+
+    @Override
+    public String getArmorTexture(ItemStack stack, Entity entity, int slot, String type) {
+        return GTRailways.MODID + ":textures/entities/armor/overalls.png";
+    }
 
     public void onHitLocomotive(ItemStack pants, EntityPlayer player) {};
 }
