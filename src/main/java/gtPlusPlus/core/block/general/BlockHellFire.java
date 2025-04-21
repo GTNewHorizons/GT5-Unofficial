@@ -419,7 +419,7 @@ public class BlockHellFire extends BlockFire {
     }
 
     @Override
-    public MapColor getMapColor(final int p_149728_1_) {
+    public MapColor getMapColor(final int meta) {
         return MapColor.snowColor;
     }
 

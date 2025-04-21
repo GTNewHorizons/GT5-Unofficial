@@ -43,13 +43,13 @@ public class KubaItemBlock extends ItemBlock {
     }
 
     @Override
-    public void registerIcons(IIconRegister p_94581_1_) {
-        super.registerIcons(p_94581_1_);
+    public void registerIcons(IIconRegister register) {
+        super.registerIcons(register);
     }
 
     @Override
-    public String getUnlocalizedName(ItemStack p_77667_1_) {
-        return KubaBlock.blocks.get(p_77667_1_.getItemDamage())
+    public String getUnlocalizedName(ItemStack stack) {
+        return KubaBlock.blocks.get(stack.getItemDamage())
             .getUnlocalizedName();
     }
 

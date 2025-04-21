@@ -38,7 +38,7 @@ public class SlotCrafting extends Slot {
      * Check if the stack is a valid item for this slot. Always true beside for the armor slots.
      */
     @Override
-    public boolean isItemValid(final ItemStack p_75214_1_) {
+    public boolean isItemValid(final ItemStack stack) {
         return false;
     }
 

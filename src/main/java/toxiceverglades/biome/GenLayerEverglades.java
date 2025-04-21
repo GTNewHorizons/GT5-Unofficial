@@ -26,7 +26,7 @@ public class GenLayerEverglades extends GenLayer {
     }
 
     @Override
-    public int[] getInts(int p_75904_1_, int p_75904_2_, int p_75904_3_, int p_75904_4_) {
+    public int[] getInts(int areaX, int areaY, int areaWidth, int areaHeight) {
         return new int[] {};
     }
 }

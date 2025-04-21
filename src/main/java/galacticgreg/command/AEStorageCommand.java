@@ -165,12 +165,12 @@ public class AEStorageCommand implements ICommand {
 
     @SuppressWarnings("rawtypes")
     @Override
-    public List addTabCompletionOptions(ICommandSender p_71516_1_, String[] p_71516_2_) {
+    public List addTabCompletionOptions(ICommandSender sender, String[] args) {
         return null;
     }
 
     @Override
-    public boolean isUsernameIndex(String[] p_82358_1_, int p_82358_2_) {
+    public boolean isUsernameIndex(String[] args, int index) {
         return false;
     }
 }

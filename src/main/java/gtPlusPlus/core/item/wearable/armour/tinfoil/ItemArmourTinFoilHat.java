@@ -100,9 +100,8 @@ public class ItemArmourTinFoilHat extends BaseArmourHelm {
     }
 
     @Override
-    public boolean itemInteractionForEntity(ItemStack p_111207_1_, EntityPlayer p_111207_2_,
-        EntityLivingBase p_111207_3_) {
-        return super.itemInteractionForEntity(p_111207_1_, p_111207_2_, p_111207_3_);
+    public boolean itemInteractionForEntity(ItemStack stack, EntityPlayer player, EntityLivingBase target) {
+        return super.itemInteractionForEntity(stack, player, target);
     }
 
     @Override

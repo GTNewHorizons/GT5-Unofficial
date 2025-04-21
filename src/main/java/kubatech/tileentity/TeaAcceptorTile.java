@@ -107,25 +107,25 @@ public class TeaAcceptorTile extends TileEntity
     }
 
     @Override
-    public ItemStack getStackInSlot(int p_70301_1_) {
+    public ItemStack getStackInSlot(int slotIn) {
         return null;
     }
 
     @Override
-    public ItemStack decrStackSize(int p_70298_1_, int p_70298_2_) {
+    public ItemStack decrStackSize(int index, int count) {
         return null;
     }
 
     @Override
-    public ItemStack getStackInSlotOnClosing(int p_70304_1_) {
+    public ItemStack getStackInSlotOnClosing(int index) {
         return null;
     }
 
     @Override
-    public void setInventorySlotContents(int p_70299_1_, ItemStack p_70299_2_) {
+    public void setInventorySlotContents(int index, ItemStack stack) {
         if (teaNetwork != null) {
-            inAmount += p_70299_2_.stackSize;
-            teaNetwork.addTea(p_70299_2_.stackSize);
+            inAmount += stack.stackSize;
+            teaNetwork.addTea(stack.stackSize);
         }
     }
 
@@ -145,8 +145,8 @@ public class TeaAcceptorTile extends TileEntity
     }
 
     @Override
-    public boolean isUseableByPlayer(EntityPlayer p_70300_1_) {
-        return p_70300_1_.getPersistentID()
+    public boolean isUseableByPlayer(EntityPlayer player) {
+        return player.getPersistentID()
             .equals(tileOwner);
     }
 
@@ -162,11 +162,11 @@ public class TeaAcceptorTile extends TileEntity
         .getItemDamage();
 
     @Override
-    public boolean isItemValidForSlot(int p_94041_1_, ItemStack p_94041_2_) {
+    public boolean isItemValidForSlot(int index, ItemStack stack) {
         if (teaNetwork == null) return false;
-        if (!teaNetwork.canAdd(p_94041_2_.stackSize)) return false;
-        return p_94041_2_.getItem() == ItemLoader.kubaitems && p_94041_2_.getItemDamage() >= minDamage
-            && p_94041_2_.getItemDamage() <= maxDamage;
+        if (!teaNetwork.canAdd(stack.stackSize)) return false;
+        return stack.getItem() == ItemLoader.kubaitems && stack.getItemDamage() >= minDamage
+            && stack.getItemDamage() <= maxDamage;
     }
 
     private static final UIInfo<?, ?> UI = KubaBlock.TileEntityUIFactory.apply(ModularUIContainer::new);

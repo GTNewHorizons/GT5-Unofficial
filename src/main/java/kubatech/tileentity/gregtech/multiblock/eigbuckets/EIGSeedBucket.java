@@ -213,8 +213,8 @@ public class EIGSeedBucket extends EIGBucket {
         }
 
         @Override
-        public ItemStack getStackInSlot(int p_70301_1_) {
-            if (p_70301_1_ == 0) return this.recipeInput.copy();
+        public ItemStack getStackInSlot(int slotIn) {
+            if (slotIn == 0) return this.recipeInput.copy();
             return null;
         }
 

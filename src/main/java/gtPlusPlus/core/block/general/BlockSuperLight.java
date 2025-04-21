@@ -46,15 +46,15 @@ public class BlockSuperLight extends BlockContainer {
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void registerBlockIcons(final IIconRegister p_149651_1_) {
-        this.blockIcon = p_149651_1_.registerIcon(GTPlusPlus.ID + ":SwirlBigBlue");
+    public void registerBlockIcons(final IIconRegister reg) {
+        this.blockIcon = reg.registerIcon(GTPlusPlus.ID + ":SwirlBigBlue");
     }
 
     /**
      * Returns a new instance of a block's tile entity class. Called on placing the block.
      */
     @Override
-    public TileEntity createNewTileEntity(World aWorld, int p_149915_2_) {
+    public TileEntity createNewTileEntity(World aWorld, int meta) {
         return new TileEntitySuperLight();
     }
 

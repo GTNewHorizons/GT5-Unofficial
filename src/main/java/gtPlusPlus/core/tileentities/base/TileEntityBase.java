@@ -218,13 +218,13 @@ public class TileEntityBase extends TileEntity
     }
 
     @Override
-    public ItemStack getStackInSlotOnClosing(int p_70304_1_) {
-        return this.mInventory.getStackInSlotOnClosing(p_70304_1_);
+    public ItemStack getStackInSlotOnClosing(int index) {
+        return this.mInventory.getStackInSlotOnClosing(index);
     }
 
     @Override
-    public void setInventorySlotContents(int p_70299_1_, ItemStack p_70299_2_) {
-        this.mInventory.setInventorySlotContents(p_70299_1_, p_70299_2_);
+    public void setInventorySlotContents(int index, ItemStack stack) {
+        this.mInventory.setInventorySlotContents(index, stack);
     }
 
     @Override
@@ -233,8 +233,8 @@ public class TileEntityBase extends TileEntity
     }
 
     @Override
-    public boolean isUseableByPlayer(EntityPlayer p_70300_1_) {
-        return this.mInventory.isUseableByPlayer(p_70300_1_);
+    public boolean isUseableByPlayer(EntityPlayer player) {
+        return this.mInventory.isUseableByPlayer(player);
     }
 
     @Override

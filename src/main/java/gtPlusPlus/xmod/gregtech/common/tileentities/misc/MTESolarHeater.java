@@ -142,7 +142,7 @@ public class MTESolarHeater extends MTETieredMachineBlock {
     }
 
     @Override
-    public boolean isUseableByPlayer(final EntityPlayer p_70300_1_) {
+    public boolean isUseableByPlayer(final EntityPlayer player) {
         return false;
     }
 
@@ -161,7 +161,7 @@ public class MTESolarHeater extends MTETieredMachineBlock {
     }
 
     @Override
-    public ItemStack getStackInSlot(final int p_70301_1_) {
+    public ItemStack getStackInSlot(final int slotIn) {
         return null;
     }
 

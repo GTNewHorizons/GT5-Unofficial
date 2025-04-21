@@ -53,11 +53,11 @@ public class BlockFluidTankInfinite extends BlockContainer {
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void registerBlockIcons(final IIconRegister p_149651_1_) {
-        this.blockIcon = p_149651_1_.registerIcon(GTPlusPlus.ID + ":TileEntities/Generic_Creative_Texture");
-        this.textureTop = p_149651_1_.registerIcon(GTPlusPlus.ID + ":TileEntities/Generic_Creative_Texture");
-        this.textureBottom = p_149651_1_.registerIcon(GTPlusPlus.ID + ":TileEntities/Generic_Creative_Texture");
-        this.textureFront = p_149651_1_.registerIcon(GTPlusPlus.ID + ":TileEntities/Generic_Creative_Texture");
+    public void registerBlockIcons(final IIconRegister reg) {
+        this.blockIcon = reg.registerIcon(GTPlusPlus.ID + ":TileEntities/Generic_Creative_Texture");
+        this.textureTop = reg.registerIcon(GTPlusPlus.ID + ":TileEntities/Generic_Creative_Texture");
+        this.textureBottom = reg.registerIcon(GTPlusPlus.ID + ":TileEntities/Generic_Creative_Texture");
+        this.textureFront = reg.registerIcon(GTPlusPlus.ID + ":TileEntities/Generic_Creative_Texture");
     }
 
     /**
@@ -135,7 +135,7 @@ public class BlockFluidTankInfinite extends BlockContainer {
     }
 
     @Override
-    public TileEntity createNewTileEntity(final World world, final int p_149915_2_) {
+    public TileEntity createNewTileEntity(final World world, final int meta) {
         return new TileEntityInfiniteFluid();
     }
 

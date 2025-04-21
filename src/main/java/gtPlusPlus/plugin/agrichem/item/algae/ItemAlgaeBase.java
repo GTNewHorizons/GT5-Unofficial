@@ -48,13 +48,12 @@ public class ItemAlgaeBase extends Item implements IAlgalItem {
     }
 
     @Override
-    public void onUpdate(ItemStack p_77663_1_, World p_77663_2_, Entity p_77663_3_, int p_77663_4_,
-        boolean p_77663_5_) {
-        if (!p_77663_1_.hasTagCompound() || p_77663_1_.getTagCompound()
+    public void onUpdate(ItemStack stack, World worldIn, Entity entityIn, int p_77663_4_, boolean p_77663_5_) {
+        if (!stack.hasTagCompound() || stack.getTagCompound()
             .hasNoTags()) {
-            p_77663_1_ = initNBT(p_77663_1_);
+            stack = initNBT(stack);
         }
-        super.onUpdate(p_77663_1_, p_77663_2_, p_77663_3_, p_77663_4_, p_77663_5_);
+        super.onUpdate(stack, worldIn, entityIn, p_77663_4_, p_77663_5_);
     }
 
     @Override

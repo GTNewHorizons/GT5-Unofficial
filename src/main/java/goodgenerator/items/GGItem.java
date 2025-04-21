@@ -92,11 +92,11 @@ public class GGItem extends Item {
     }
 
     @Override
-    public String getUnlocalizedName(ItemStack p_77667_1_) {
+    public String getUnlocalizedName(ItemStack stack) {
         if (this.textureNames == null || this.textureNames.length < 1) {
             return "item." + this.Name;
         } else {
-            return "item." + this.Name + "." + p_77667_1_.getItemDamage();
+            return "item." + this.Name + "." + stack.getItemDamage();
         }
     }
 

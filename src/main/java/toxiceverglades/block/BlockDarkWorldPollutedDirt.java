@@ -33,7 +33,7 @@ public class BlockDarkWorldPollutedDirt extends BlockDirt implements ITileToolti
      */
     @Override
     @SideOnly(Side.CLIENT)
-    public int getRenderColor(int p_149741_1_) {
+    public int getRenderColor(int meta) {
         return this.getBlockColor();
     }
 
@@ -43,15 +43,15 @@ public class BlockDarkWorldPollutedDirt extends BlockDirt implements ITileToolti
      */
     @Override
     @SideOnly(Side.CLIENT)
-    public int colorMultiplier(IBlockAccess p_149720_1_, int p_149720_2_, int p_149720_3_, int p_149720_4_) {
+    public int colorMultiplier(IBlockAccess worldIn, int x, int y, int z) {
         int l = 0;
         int i1 = 0;
         int j1 = 0;
 
         for (int k1 = -1; k1 <= 1; ++k1) {
             for (int l1 = -1; l1 <= 1; ++l1) {
-                int i2 = p_149720_1_.getBiomeGenForCoords(p_149720_2_ + l1, p_149720_4_ + k1)
-                    .getBiomeGrassColor(p_149720_2_ + l1, p_149720_3_, p_149720_4_ + k1);
+                int i2 = worldIn.getBiomeGenForCoords(x + l1, z + k1)
+                    .getBiomeGrassColor(x + l1, y, z + k1);
                 l += (i2 & 16711680) >> 16;
                 i1 += (i2 & 65280) >> 8;
                 j1 += i2 & 255;

@@ -67,13 +67,11 @@ public class BlockPestKiller extends BlockContainer implements ITileTooltip {
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void registerBlockIcons(final IIconRegister p_149651_1_) {
-        this.blockIcon = p_149651_1_
-            .registerIcon(GTPlusPlus.ID + ":TileEntities/MACHINE_CASING_FARM_MANAGER_STRUCTURAL");
-        this.textureTop = p_149651_1_.registerIcon(GTPlusPlus.ID + ":TileEntities/MACHINE_PESTKILLER_TOP");
-        this.textureBottom = p_149651_1_.registerIcon("planks_acacia");
-        this.textureFront = p_149651_1_
-            .registerIcon(GTPlusPlus.ID + ":TileEntities/MACHINE_CASING_FARM_MANAGER_STRUCTURAL");
+    public void registerBlockIcons(final IIconRegister reg) {
+        this.blockIcon = reg.registerIcon(GTPlusPlus.ID + ":TileEntities/MACHINE_CASING_FARM_MANAGER_STRUCTURAL");
+        this.textureTop = reg.registerIcon(GTPlusPlus.ID + ":TileEntities/MACHINE_PESTKILLER_TOP");
+        this.textureBottom = reg.registerIcon("planks_acacia");
+        this.textureFront = reg.registerIcon(GTPlusPlus.ID + ":TileEntities/MACHINE_CASING_FARM_MANAGER_STRUCTURAL");
     }
 
     /**
@@ -105,7 +103,7 @@ public class BlockPestKiller extends BlockContainer implements ITileTooltip {
     }
 
     @Override
-    public TileEntity createNewTileEntity(final World world, final int p_149915_2_) {
+    public TileEntity createNewTileEntity(final World world, final int meta) {
         return new TileEntityPestKiller();
     }
 

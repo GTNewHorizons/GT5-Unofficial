@@ -57,11 +57,11 @@ public class BlockFishTrap extends BlockContainer implements ITileTooltip {
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void registerBlockIcons(final IIconRegister p_149651_1_) {
-        this.blockIcon = p_149651_1_.registerIcon(GTPlusPlus.ID + ":TileEntities/fishtrap");
-        p_149651_1_.registerIcon(GTPlusPlus.ID + ":TileEntities/fishtrap");
-        p_149651_1_.registerIcon(GTPlusPlus.ID + ":TileEntities/fishtrap");
-        p_149651_1_.registerIcon(GTPlusPlus.ID + ":TileEntities/fishtrap");
+    public void registerBlockIcons(final IIconRegister reg) {
+        this.blockIcon = reg.registerIcon(GTPlusPlus.ID + ":TileEntities/fishtrap");
+        reg.registerIcon(GTPlusPlus.ID + ":TileEntities/fishtrap");
+        reg.registerIcon(GTPlusPlus.ID + ":TileEntities/fishtrap");
+        reg.registerIcon(GTPlusPlus.ID + ":TileEntities/fishtrap");
     }
 
     /**
@@ -93,7 +93,7 @@ public class BlockFishTrap extends BlockContainer implements ITileTooltip {
     }
 
     @Override
-    public TileEntity createNewTileEntity(final World world, final int p_149915_2_) {
+    public TileEntity createNewTileEntity(final World world, final int meta) {
         return new TileEntityFishTrap();
     }
 

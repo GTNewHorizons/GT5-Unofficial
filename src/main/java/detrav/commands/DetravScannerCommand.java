@@ -134,7 +134,7 @@ public class DetravScannerCommand implements ICommand {
     }
 
     @Override
-    public boolean canCommandSenderUseCommand(ICommandSender p_71519_1_) {
+    public boolean canCommandSenderUseCommand(ICommandSender sender) {
         return true;
     }
 
@@ -151,7 +151,7 @@ public class DetravScannerCommand implements ICommand {
     }
 
     @Override
-    public boolean isUsernameIndex(String[] p_82358_1_, int p_82358_2_) {
+    public boolean isUsernameIndex(String[] args, int index) {
         return false;
     }
 

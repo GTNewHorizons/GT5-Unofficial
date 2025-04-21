@@ -42,8 +42,8 @@ public final class FlaskRenderer implements net.minecraftforge.client.IItemRende
 
         int aType = cell.getMaxCapacity() == 8000 ? 0 : 1;
         IIcon icon = item.getIconIndex();
-        GL11.glEnable(3042);
-        GL11.glEnable(3008);
+        GL11.glEnable(GL11.GL_BLEND);
+        GL11.glEnable(GL11.GL_ALPHA_TEST);
         if (type.equals(ItemRenderType.ENTITY)) {
             GL11.glRotated(180.0D, 0.0D, 0.0D, 1.0D);
             GL11.glRotated(90.0D, 0.0D, 1.0D, 0.0D);
@@ -64,7 +64,7 @@ public final class FlaskRenderer implements net.minecraftforge.client.IItemRende
             int fluidColor = fs.getFluid()
                 .getColor(fs);
             Minecraft.getMinecraft().renderEngine.bindTexture(TextureMap.locationItemsTexture);
-            GL11.glBlendFunc(0, 1);
+            GL11.glBlendFunc(GL11.GL_ZERO, GL11.GL_ONE);
             if (type.equals(ItemRenderType.INVENTORY)) {
                 DrawUtil.renderIcon(iconWindow, 16.0D, 0.0D, 0.0F, 0.0F, -1.0F);
             } else {
@@ -73,8 +73,8 @@ public final class FlaskRenderer implements net.minecraftforge.client.IItemRende
             }
 
             Minecraft.getMinecraft().renderEngine.bindTexture(TextureMap.locationBlocksTexture);
-            GL11.glBlendFunc(770, 771);
-            GL11.glDepthFunc(514);
+            GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+            GL11.glDepthFunc(GL11.GL_EQUAL);
             GL11.glColor3ub((byte) (fluidColor >> 16), (byte) (fluidColor >> 8), (byte) fluidColor);
             if (type.equals(ItemRenderType.INVENTORY)) {
                 DrawUtil.renderIcon(fluidicon, 16.0D, 0.0D, 0.0F, 0.0F, -1.0F);
@@ -84,11 +84,11 @@ public final class FlaskRenderer implements net.minecraftforge.client.IItemRende
             }
 
             GL11.glColor3ub((byte) -1, (byte) -1, (byte) -1);
-            GL11.glDepthFunc(515);
+            GL11.glDepthFunc(GL11.GL_LEQUAL);
         }
 
         Minecraft.getMinecraft().renderEngine.bindTexture(TextureMap.locationItemsTexture);
-        GL11.glBlendFunc(770, 771);
+        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
         if (type.equals(ItemRenderType.INVENTORY)) {
             DrawUtil.renderIcon(icon, 16.0D, 0.001D, 0.0F, 0.0F, -1.0F);
         } else {
@@ -102,7 +102,7 @@ public final class FlaskRenderer implements net.minecraftforge.client.IItemRende
                 icon.getIconHeight(),
                 0.0625F);
         }
-        GL11.glDisable(3008);
-        GL11.glDisable(3042);
+        GL11.glDisable(GL11.GL_ALPHA_TEST);
+        GL11.glDisable(GL11.GL_BLEND);
     }
 }

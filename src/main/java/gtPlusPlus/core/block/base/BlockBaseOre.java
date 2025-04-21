@@ -119,7 +119,7 @@ public class BlockBaseOre extends BasicBlock implements ITexturedBlock {
     }
 
     @Override
-    public void registerBlockIcons(IIconRegister p_149651_1_) {}
+    public void registerBlockIcons(IIconRegister reg) {}
 
     @Override
     public void harvestBlock(World worldIn, EntityPlayer player, int x, int y, int z, int meta) {

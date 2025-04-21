@@ -67,11 +67,11 @@ public class BlockProjectTable extends BlockContainer implements ITileTooltip {
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void registerBlockIcons(final IIconRegister p_149651_1_) {
-        this.blockIcon = p_149651_1_.registerIcon(GTPlusPlus.ID + ":TileEntities/machine_top");
-        this.textureTop = p_149651_1_.registerIcon(GTPlusPlus.ID + ":TileEntities/cover_crafting");
-        this.textureBottom = p_149651_1_.registerIcon(GTPlusPlus.ID + ":TileEntities/machine_top");
-        this.textureFront = p_149651_1_.registerIcon(GTPlusPlus.ID + ":TileEntities/machine_top");
+    public void registerBlockIcons(final IIconRegister reg) {
+        this.blockIcon = reg.registerIcon(GTPlusPlus.ID + ":TileEntities/machine_top");
+        this.textureTop = reg.registerIcon(GTPlusPlus.ID + ":TileEntities/cover_crafting");
+        this.textureBottom = reg.registerIcon(GTPlusPlus.ID + ":TileEntities/machine_top");
+        this.textureFront = reg.registerIcon(GTPlusPlus.ID + ":TileEntities/machine_top");
     }
 
     /**
@@ -108,7 +108,7 @@ public class BlockProjectTable extends BlockContainer implements ITileTooltip {
     }
 
     @Override
-    public TileEntity createNewTileEntity(final World world, final int p_149915_2_) {
+    public TileEntity createNewTileEntity(final World world, final int meta) {
         return new TileEntityProjectTable();
     }
 

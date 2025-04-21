@@ -72,8 +72,8 @@ public class ItemGregtechPump extends Item implements ISpecialElectricItem, IEle
     }
 
     @Override
-    public ItemStack onItemRightClick(ItemStack p_77659_1_, World p_77659_2_, EntityPlayer p_77659_3_) {
-        return p_77659_1_;
+    public ItemStack onItemRightClick(ItemStack itemStackIn, World worldIn, EntityPlayer player) {
+        return itemStackIn;
     }
 
     /**

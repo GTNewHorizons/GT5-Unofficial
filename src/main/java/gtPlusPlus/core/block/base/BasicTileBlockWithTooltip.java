@@ -250,7 +250,7 @@ public abstract class BasicTileBlockWithTooltip extends BlockContainer implement
     public final void registerBlockIcons(final IIconRegister aRegisterer) {}
 
     @Override
-    public abstract TileEntity createNewTileEntity(final World world, final int p_149915_2_);
+    public abstract TileEntity createNewTileEntity(final World world, final int meta);
 
     /**
      * Called when {@link #breakBlock}() is called, but before {@link InventoryUtils#dropInventoryItems} and the super
@@ -268,7 +268,7 @@ public abstract class BasicTileBlockWithTooltip extends BlockContainer implement
 
     @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
-    public final void getSubBlocks(Item aItem, CreativeTabs p_149666_2_, List aList) {
+    public final void getSubBlocks(Item aItem, CreativeTabs tab, List aList) {
         if (hasMeta()) {
             for (int i = 0; i < getMetaCount(); i++) {
                 aList.add(ItemUtils.simpleMetaStack(aItem, i, 1));
@@ -293,7 +293,7 @@ public abstract class BasicTileBlockWithTooltip extends BlockContainer implement
     }
 
     @Override
-    public Item getItemDropped(int meta, Random rand, int p_149650_3_) {
+    public Item getItemDropped(int meta, Random rand, int fortune) {
         return ItemUtils.getSimpleStack(this, 1)
             .getItem();
     }

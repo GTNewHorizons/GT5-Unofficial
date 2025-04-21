@@ -54,9 +54,8 @@ public class ItemAgrichemBase extends Item {
     }
 
     @Override
-    public void onUpdate(ItemStack p_77663_1_, World p_77663_2_, Entity p_77663_3_, int p_77663_4_,
-        boolean p_77663_5_) {
-        super.onUpdate(p_77663_1_, p_77663_2_, p_77663_3_, p_77663_4_, p_77663_5_);
+    public void onUpdate(ItemStack stack, World worldIn, Entity entityIn, int p_77663_4_, boolean p_77663_5_) {
+        super.onUpdate(stack, worldIn, entityIn, p_77663_4_, p_77663_5_);
     }
 
     @Override

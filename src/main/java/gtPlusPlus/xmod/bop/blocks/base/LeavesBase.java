@@ -41,8 +41,8 @@ public class LeavesBase extends BlockLeaves {
     }
 
     @Override
-    public int quantityDropped(Random p_149745_1_) {
-        return p_149745_1_.nextInt(20) == 0 ? 1 : 0;
+    public int quantityDropped(Random random) {
+        return random.nextInt(20) == 0 ? 1 : 0;
     }
 
     @Override // Drops when Leaf is broken

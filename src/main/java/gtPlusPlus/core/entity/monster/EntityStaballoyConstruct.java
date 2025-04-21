@@ -114,12 +114,12 @@ public class EntityStaballoyConstruct extends EntityIronGolem {
     }
 
     @Override
-    public void setFire(int p_70015_1_) {
+    public void setFire(int seconds) {
         extinguish();
     }
 
     @Override
-    protected void dealFireDamage(int p_70081_1_) {}
+    protected void dealFireDamage(int amount) {}
 
     @Override
     public boolean canRenderOnFire() {

@@ -348,12 +348,12 @@ public class RenderForgeOfGods extends TileEntitySpecialRenderer {
         GL20.glEnableVertexAttribArray(a_VertexID);
         GL11.glEnableClientState(GL11.GL_VERTEX_ARRAY);
 
-        GL11.glDrawArrays(GL11.GL_TRIANGLES, 0, maxSegments * beamSegmentQuads * 6);
+        GL11.glDrawArrays(GL11.GL_TRIANGLES, 0, maxSegments * beamSegmentQuads * GL11.GL_TRIANGLE_FAN);
 
         GL20.glUniform3f(u_BeamColor, 1, 1, 1);
         GL20.glUniform1f(u_BeamIntensity, 4);
         bufferIntenseBeam(tile);
-        GL11.glDrawArrays(GL11.GL_TRIANGLES, 0, maxSegments * beamSegmentQuads * 6);
+        GL11.glDrawArrays(GL11.GL_TRIANGLES, 0, maxSegments * beamSegmentQuads * GL11.GL_TRIANGLE_FAN);
 
         GL20.glDisableVertexAttribArray(a_VertexID);
         GL11.glDisableClientState(GL11.GL_VERTEX_ARRAY);

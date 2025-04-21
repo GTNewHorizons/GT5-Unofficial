@@ -67,11 +67,11 @@ public class BlockPooCollector extends BlockContainer {
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void registerBlockIcons(final IIconRegister p_149651_1_) {
-        this.textureTop = p_149651_1_.registerIcon(GTPlusPlus.ID + ":" + "TileEntities/" + "sewer_top");
-        this.textureTop2 = p_149651_1_.registerIcon(GTPlusPlus.ID + ":" + "TileEntities/" + "sewer_adv_top");
-        this.textureSide = p_149651_1_.registerIcon(GTPlusPlus.ID + ":" + "TileEntities/" + "sewer_sides");
-        this.textureSide2 = p_149651_1_.registerIcon(GTPlusPlus.ID + ":" + "TileEntities/" + "sewer_adv_sides");
+    public void registerBlockIcons(final IIconRegister reg) {
+        this.textureTop = reg.registerIcon(GTPlusPlus.ID + ":" + "TileEntities/" + "sewer_top");
+        this.textureTop2 = reg.registerIcon(GTPlusPlus.ID + ":" + "TileEntities/" + "sewer_adv_top");
+        this.textureSide = reg.registerIcon(GTPlusPlus.ID + ":" + "TileEntities/" + "sewer_sides");
+        this.textureSide2 = reg.registerIcon(GTPlusPlus.ID + ":" + "TileEntities/" + "sewer_adv_sides");
     }
 
     /**

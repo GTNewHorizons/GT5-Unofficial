@@ -68,7 +68,7 @@ public class BWItemRenderer implements IItemRenderer {
             short aMetaData = (short) aStack.getItemDamage();
             if (aMetaData >= 0) {
                 BWMetaItems.BW_GT_MetaGen_Item_Hook aItem = (BWMetaItems.BW_GT_MetaGen_Item_Hook) aStack.getItem();
-                GL11.glEnable(3042);
+                GL11.glEnable(GL11.GL_BLEND);
                 if (type == IItemRenderer.ItemRenderType.ENTITY) {
                     if (RenderItem.renderInFrame) {
                         GL11.glScalef(0.85F, 0.85F, 0.85F);
@@ -81,7 +81,7 @@ public class BWItemRenderer implements IItemRenderer {
                 IIcon tIcon = (IIcon) BWUtil.get2DCoordFrom1DArray(aMetaData, 0, 2, aItem.mIconList);
 
                 Minecraft.getMinecraft().renderEngine.bindTexture(TextureMap.locationItemsTexture);
-                GL11.glBlendFunc(770, 771);
+                GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
                 if (IItemRenderer.ItemRenderType.INVENTORY.equals(type)) {
                     if (aMetaData < CircuitImprintLoader.reverseIDs)
                         GTRenderUtil.renderItemIcon(tIcon, 16.0D, 0.001D, 0.0F, 0.0F, -1.0F);
@@ -113,7 +113,7 @@ public class BWItemRenderer implements IItemRenderer {
                 GL11.glColor3f(1.0F, 1.0F, 1.0F);
                 if (tOverlay != null) {
                     Minecraft.getMinecraft().renderEngine.bindTexture(TextureMap.locationItemsTexture);
-                    GL11.glBlendFunc(770, 771);
+                    GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
                     if (IItemRenderer.ItemRenderType.INVENTORY.equals(type)) {
                         GTRenderUtil.renderItemIcon(tOverlay, 16.0D, 0.001D, 0.0F, 0.0F, -1.0F);
                     } else {
@@ -130,7 +130,7 @@ public class BWItemRenderer implements IItemRenderer {
                 }
             }
 
-            GL11.glDisable(3042);
+            GL11.glDisable(GL11.GL_BLEND);
         }
     }
 }

@@ -139,27 +139,18 @@ public class BlockSuperJukebox extends BlockJukebox {
     }
 
     @Override
-    public void breakBlock(World p_149749_1_, int p_149749_2_, int p_149749_3_, int p_149749_4_, Block p_149749_5_,
-        int p_149749_6_) {
-        this.func_149925_e(p_149749_1_, p_149749_2_, p_149749_3_, p_149749_4_);
-        super.breakBlock(p_149749_1_, p_149749_2_, p_149749_3_, p_149749_4_, p_149749_5_, p_149749_6_);
+    public void breakBlock(World worldIn, int x, int y, int z, Block blockBroken, int meta) {
+        this.func_149925_e(worldIn, x, y, z);
+        super.breakBlock(worldIn, x, y, z, blockBroken, meta);
     }
 
     /**
      * Drops the block items with a specified chance of dropping the specified items
      */
     @Override
-    public void dropBlockAsItemWithChance(World p_149690_1_, int p_149690_2_, int p_149690_3_, int p_149690_4_,
-        int p_149690_5_, float p_149690_6_, int p_149690_7_) {
-        if (!p_149690_1_.isRemote) {
-            super.dropBlockAsItemWithChance(
-                p_149690_1_,
-                p_149690_2_,
-                p_149690_3_,
-                p_149690_4_,
-                p_149690_5_,
-                p_149690_6_,
-                0);
+    public void dropBlockAsItemWithChance(World worldIn, int x, int y, int z, int meta, float chance, int fortune) {
+        if (!worldIn.isRemote) {
+            super.dropBlockAsItemWithChance(worldIn, x, y, z, meta, chance, 0);
         }
     }
 
@@ -167,15 +158,15 @@ public class BlockSuperJukebox extends BlockJukebox {
      * Returns a new instance of a block's tile entity class. Called on placing the block.
      */
     @Override
-    public TileEntity createNewTileEntity(World p_149915_1_, int p_149915_2_) {
+    public TileEntity createNewTileEntity(World worldIn, int meta) {
         return new TileEntitySuperJukebox();
     }
 
     @SideOnly(Side.CLIENT)
     @Override
-    public void registerBlockIcons(IIconRegister p_149651_1_) {
-        this.blockIcon = p_149651_1_.registerIcon(this.getTextureName() + "_side");
-        this.mIcon = p_149651_1_.registerIcon(this.getTextureName() + "_top");
+    public void registerBlockIcons(IIconRegister reg) {
+        this.blockIcon = reg.registerIcon(this.getTextureName() + "_side");
+        this.mIcon = reg.registerIcon(this.getTextureName() + "_top");
     }
 
     public static class TileEntitySuperJukebox extends TileEntityJukebox implements ISidedInventory {

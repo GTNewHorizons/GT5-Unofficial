@@ -59,9 +59,9 @@ public class ProcessingElectricSnips implements Runnable {
                     // GTModHandler.addCraftingRecipe(,
                     // GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS |
                     // GTModHandler.RecipeBits.BUFFERED, new Object[]{"P H", "PIP", " I ",
-                    // Character.valueOf('I'), OrePrefixes.ingot.get(aMaterial),
-                    // Character.valueOf('P'), OrePrefixes.plate.get(aMaterial),
-                    // Character.valueOf('H'), OrePrefixes.toolHeadHammer.get(aMaterial)});
+                    // 'I', OrePrefixes.ingot.get(aMaterial),
+                    // 'P', OrePrefixes.plate.get(aMaterial),
+                    // 'H', OrePrefixes.toolHeadHammer.get(aMaterial)});
                 } else {
                     Logger.MATERIALS(
                         "Unable to generate Electric Snips from " + MaterialUtils.getMaterialName(aMaterial));

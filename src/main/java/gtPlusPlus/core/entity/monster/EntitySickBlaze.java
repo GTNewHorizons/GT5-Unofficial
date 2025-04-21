@@ -179,7 +179,7 @@ public class EntitySickBlaze extends EntityMob {
      * Called when the mob is falling. Calculates and applies fall damage.
      */
     @Override
-    protected void fall(float p_70069_1_) {}
+    protected void fall(float distance) {}
 
     @Override
     protected Item getDropItem() {
