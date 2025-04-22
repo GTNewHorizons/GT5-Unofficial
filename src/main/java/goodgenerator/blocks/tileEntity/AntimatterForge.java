@@ -194,7 +194,7 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
                     + EnumChatFormatting.DARK_PURPLE
                     + "G"
                     + EnumChatFormatting.GRAY
-                    + ") EU per operation to produce antimatter")
+                    + ") EU per cycle to produce antimatter")
             .addSeparator()
             .addInfo("Every cycle, the lowest amount of antimatter in the 16 antimatter hatches is recorded")
             .addInfo(
@@ -202,9 +202,9 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
                     + "lose half the difference!"
                     + EnumChatFormatting.GRAY)
             .addInfo(
-                EnumChatFormatting.RED + "Void 10% of antimatter "
+                EnumChatFormatting.RED + "Voids 10% of antimatter "
                     + EnumChatFormatting.GRAY
-                    + "if running out of energy/protomatter during a cycle")
+                    + "if it runs out of energy/protomatter during a cycle")
             .addInfo(
                 "Each hatch produces individually (" + EnumChatFormatting.DARK_AQUA
                     + "Antimatter"
@@ -222,8 +222,7 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
                     + "A"
                     + EnumChatFormatting.GRAY
                     + ", 1) of antimatter per cycle")
-            .addInfo("Consumes equal amounts of Protomatter")
-            .addInfo("The duration of a cycle is 1 second")
+            .addInfo("Each cycle lasts a second")
             .addInfo("The total change can be negative!")
             .addSeparator()
             .addInfo("Can be supplied with stabilization fluids to improve antimatter generation")
@@ -258,7 +257,7 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
                     + EnumChatFormatting.DARK_AQUA
                     + "Antimatter"
                     + EnumChatFormatting.GRAY
-                    + "^(2/7) per operation)")
+                    + "^(2/7) per cycle)")
             .addInfo("1. Molten Shirabon - C = " + EnumChatFormatting.GOLD + "0.05" + EnumChatFormatting.GRAY)
             .addInfo("2. Molten MHDCSM - C = " + EnumChatFormatting.GOLD + "0.10" + EnumChatFormatting.GRAY)
             .addInfo(
@@ -268,7 +267,7 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
                     + EnumChatFormatting.DARK_AQUA
                     + "Antimatter"
                     + EnumChatFormatting.GRAY
-                    + "^(1/3) per operation)")
+                    + "^(1/3) per cycle)")
             .addInfo(
                 "1. Depleted Naquadah Fuel Mk V - A = " + EnumChatFormatting.AQUA + "0.05" + EnumChatFormatting.GRAY)
             .addInfo(
@@ -581,7 +580,7 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
         return value;
     }
 
-    // How much energy is consumed when machine does one operation
+    // How much energy is consumed when machine does one cycle
     // Base formula: (Antimatter * 10000) ^ (1.5)
     private long calculateEnergyCost(long antimatterAmount) {
         long value = (long) Math.pow(antimatterAmount * activeBaseMult, activeBaseExp + modifiers[GRAVITY_ID]);
