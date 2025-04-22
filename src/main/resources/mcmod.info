@@ -23,7 +23,7 @@
       ]
     },
     {
-      "modid": "gregtechNH",
+      "modid": "gregtech_nh",
       "name": "GregTech GTNH",
       "description": "",
       "mcversion": "${minecraftVersion}",
