@@ -169,7 +169,7 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
             .addInfo(EnumChatFormatting.LIGHT_PURPLE + "Dimensions not included!" + EnumChatFormatting.GRAY)
             .addInfo("Converts protomatter into antimatter")
             .addInfo(
-                "Consumes 10 000 000 + (" + EnumChatFormatting.DARK_AQUA
+                "Passively consumes 10 000 000 + (" + EnumChatFormatting.DARK_AQUA
                     + "Antimatter"
                     + EnumChatFormatting.GRAY
                     + " * "
@@ -178,9 +178,10 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
                     + EnumChatFormatting.GREEN
                     + passiveBaseExp
                     + EnumChatFormatting.GRAY
-                    + " EU/t passively. The consumption decays by 0.5% every tick when empty")
+                    + " EU/t")
+            .addInfo("The consumption decays by 0.5% every tick when empty")
             .addInfo(
-                "Uses (" + EnumChatFormatting.DARK_AQUA
+                "Actively uses (" + EnumChatFormatting.DARK_AQUA
                     + "Antimatter"
                     + EnumChatFormatting.GRAY
                     + " * "
@@ -192,17 +193,16 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
                     + " EU per operation to produce antimatter")
             .addSeparator()
             .addInfo("Every cycle, the lowest amount of antimatter in the 16 antimatter hatches is recorded")
-            .addInfo("Cycles every second")
             .addInfo(
                 "All hatches with more than the lowest amount will " + EnumChatFormatting.RED
                     + "lose half the difference!"
                     + EnumChatFormatting.GRAY)
             .addInfo(
-                "If the machine runs out of energy or protomatter during a cycle, " + EnumChatFormatting.RED
-                    + "10% of antimatter will be voided!"
-                    + EnumChatFormatting.GRAY)
+                EnumChatFormatting.RED + "Void 10% of antimatter "
+                    + EnumChatFormatting.GRAY
+                    + "if running out of energy/protomatter during a cycle")
             .addInfo(
-                "Produces (" + EnumChatFormatting.DARK_AQUA
+                "Each hatch produces individually (" + EnumChatFormatting.DARK_AQUA
                     + "Antimatter"
                     + EnumChatFormatting.GRAY
                     + "^"
@@ -213,14 +213,9 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
                     + EnumChatFormatting.AQUA
                     + baseSkew
                     + EnumChatFormatting.GRAY
-                    + ", 0.25) of antimatter per cycle, consuming equal amounts of Protomatter")
-            .addInfo(
-                "The change is split between the 16 Antimatter Hatches, sampled from N(" + EnumChatFormatting.AQUA
-                    + baseSkew
-                    + EnumChatFormatting.GRAY
-                    + ", 1) (Gaussian distribution with mean of "
-                    + baseSkew
-                    + ")")
+                    + ", 1) of antimatter per cycle")
+            .addInfo("Consumes equal amounts of Protomatter")
+            .addInfo("The duration of a cycle is 1 second")
             .addInfo("The total change can be negative!")
             .addSeparator()
             .addInfo("Can be supplied with stabilization fluids to improve antimatter generation")
@@ -283,11 +278,11 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
                     + EnumChatFormatting.GRAY
                     + "^(1/3) per operation)")
             .addInfo(
-                "1. Depleted Naquadah Fuel Mk V - Distribution skew " + EnumChatFormatting.AQUA
+                "1. Depleted Naquadah Fuel Mk V - Mean distribution shift " + EnumChatFormatting.AQUA
                     + "+0.05"
                     + EnumChatFormatting.GRAY)
             .addInfo(
-                "2. Depleted Naquadah Fuel Mk VI - Distribution skew " + EnumChatFormatting.AQUA
+                "2. Depleted Naquadah Fuel Mk VI - Mean distribution shift " + EnumChatFormatting.AQUA
                     + "+0.10"
                     + EnumChatFormatting.GRAY)
             .addInfo("Each stabilization can only use one of the fluids at a time")
