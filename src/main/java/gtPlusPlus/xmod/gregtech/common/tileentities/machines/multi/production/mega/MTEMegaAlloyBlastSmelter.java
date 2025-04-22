@@ -63,7 +63,7 @@ public class MTEMegaAlloyBlastSmelter extends MTEExtendedPowerMultiBlockBase<MTE
     private int glassTier = -1;
     private double speedBonus = 1;
     private double energyDiscount = 1;
-    private CoilType coilType;
+    private CoilType coilType = CoilType.Unknown;
 
     private static final IStructureDefinition<MTEMegaAlloyBlastSmelter> STRUCTURE_DEFINITION = StructureDefinition
         .<MTEMegaAlloyBlastSmelter>builder()
