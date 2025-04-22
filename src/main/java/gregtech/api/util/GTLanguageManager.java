@@ -444,14 +444,6 @@ public class GTLanguageManager {
         addStringLocalization("Interaction_DESCRIPTION_Index_336", "PCB Factory Tier: ");
         addStringLocalization("Interaction_DESCRIPTION_Index_337", "Upgrade Required: ");
         addStringLocalization("Interaction_DESCRIPTION_Index_338", "Bio");
-        addStringLocalization("Interaction_DESCRIPTION_Index_339", "Biochamber Upgrade Enabled");
-        addStringLocalization("Interaction_DESCRIPTION_Index_339.1", "Biochamber Upgrade Disabled");
-        addStringLocalization("Interaction_DESCRIPTION_Index_340", "Rotated biochamber enabled");
-        addStringLocalization("Interaction_DESCRIPTION_Index_340.1", "Rotated biochamber disabled");
-        addStringLocalization("Interaction_DESCRIPTION_Index_341", "Tier 1 cooling enabled");
-        addStringLocalization("Interaction_DESCRIPTION_Index_341.1", "Tier 1 cooling disabled");
-        addStringLocalization("Interaction_DESCRIPTION_Index_342", "Tier 2 cooling enabled");
-        addStringLocalization("Interaction_DESCRIPTION_Index_342.1", "Tier 2 cooling disabled");
         addStringLocalization("Interaction_DESCRIPTION_Index_343", "Use Machine Processing State");
         addStringLocalization("Interaction_DESCRIPTION_Index_343.1", "Use Inverted Machine Processing State");
         addStringLocalization("Interaction_DESCRIPTION_Index_344", "Input Blocking");
