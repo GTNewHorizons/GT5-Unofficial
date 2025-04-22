@@ -223,27 +223,28 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
                     + EnumChatFormatting.GRAY
                     + ", 1) of antimatter per cycle")
             .addInfo("Each cycle lasts a second")
-            .addInfo("The total change can be negative!")
+            .addInfo("N(0.2, 1) refers to a normal distribution with a mean of 0.2 an a variance of 1")
+            .addInfo("The total gain of antimatter can be negative!")
             .addSeparator()
             .addInfo("Can be supplied with stabilization fluids to improve antimatter generation")
             .addInfo(
                 EnumChatFormatting.GREEN + "Magnetic Stabilization"
                     + EnumChatFormatting.GRAY
-                    + " (Uses "
+                    + " (Consumes "
                     + EnumChatFormatting.DARK_AQUA
                     + "Antimatter"
                     + EnumChatFormatting.GRAY
-                    + "^0.5 per cycle)")
+                    + "^0.5 L of fluid per cycle)")
             .addInfo("1. Molten Purified Tengam - M = " + EnumChatFormatting.GREEN + "0.15" + EnumChatFormatting.GRAY)
             .addInfo("2. Tachyon Rich Fluid - M = " + EnumChatFormatting.GREEN + "0.3" + EnumChatFormatting.GRAY)
             .addInfo(
                 EnumChatFormatting.DARK_PURPLE + "Gravity Stabilization"
                     + EnumChatFormatting.GRAY
-                    + " (Uses "
+                    + " (Consumes "
                     + EnumChatFormatting.DARK_AQUA
                     + "Antimatter"
                     + EnumChatFormatting.GRAY
-                    + "^0.5 per cycle)")
+                    + "^0.5 L of fluid per cycle)")
             .addInfo("1. Molten Spacetime - G = " + EnumChatFormatting.DARK_PURPLE + "0.05" + EnumChatFormatting.GRAY)
             .addInfo(
                 "2. Spatially Enlarged Fluid - G = " + EnumChatFormatting.DARK_PURPLE
@@ -253,21 +254,21 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
             .addInfo(
                 EnumChatFormatting.GOLD + "Containment Stabilization"
                     + EnumChatFormatting.GRAY
-                    + " (Uses "
+                    + " (Consumes "
                     + EnumChatFormatting.DARK_AQUA
                     + "Antimatter"
                     + EnumChatFormatting.GRAY
-                    + "^(2/7) per cycle)")
+                    + "^(2/7) L of fluid per cycle)")
             .addInfo("1. Molten Shirabon - C = " + EnumChatFormatting.GOLD + "0.05" + EnumChatFormatting.GRAY)
             .addInfo("2. Molten MHDCSM - C = " + EnumChatFormatting.GOLD + "0.10" + EnumChatFormatting.GRAY)
             .addInfo(
                 EnumChatFormatting.AQUA + "Activation Stabilization"
                     + EnumChatFormatting.GRAY
-                    + " (Uses "
+                    + " (Consumes "
                     + EnumChatFormatting.DARK_AQUA
                     + "Antimatter"
                     + EnumChatFormatting.GRAY
-                    + "^(1/3) per cycle)")
+                    + "^(1/3) L of fluid per cycle)")
             .addInfo(
                 "1. Depleted Naquadah Fuel Mk V - A = " + EnumChatFormatting.AQUA + "0.05" + EnumChatFormatting.GRAY)
             .addInfo(
