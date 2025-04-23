@@ -608,6 +608,10 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
         double coeff = Math.pow((totalAntimatterAmount), 0.5 + modifiers[CONTAINMENT_ID]);
         int difference = 0;
 
+        // a pull per hatch instead of a global one distributed randomly to increase the odds of pulling a outlier
+        // in one of the hatches. It changes nothing when the automation is done successfully, but punishes more the
+        // player when the automation is improperly done.
+
         for (AntimatterOutputHatch hatch : hatches) {
             // Skewed normal distribution multiplied by coefficient from antimatter amount
             // We round up so you are guaranteed to be antimatter positive on the first run (reduces startup RNG)
