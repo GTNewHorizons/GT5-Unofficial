@@ -23,6 +23,13 @@
       ]
     },
     {
+      "modid": "gregtech_nh",
+      "name": "GregTech GTNH",
+      "description": "",
+      "mcversion": "${minecraftVersion}",
+      "version": "${modVersion}"
+    },
+    {
       "modid": "ggfab",
       "name": "GigaGramFab",
       "description": "Production at scale",
