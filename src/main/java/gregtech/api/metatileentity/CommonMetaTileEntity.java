@@ -357,6 +357,21 @@ public abstract class CommonMetaTileEntity implements IMetaTileEntity {
         return null;
     }
 
+    /**
+     * Gets the first ItemStack in the bus, reading from the top left to bottom right
+     * 
+     * @return the first ItemStack in the bus
+     */
+    public ItemStack getFirstStack() {
+        for (int index = 0; index < mInventory.length; index++) {
+            ItemStack stackInSlot = getStackInSlot(index);
+            if (stackInSlot != null) {
+                return stackInSlot;
+            }
+        }
+        return null;
+    }
+
     @Override
     public void setInventorySlotContents(int index, ItemStack itemStack) {
         if (index >= 0 && index < mInventory.length) {
