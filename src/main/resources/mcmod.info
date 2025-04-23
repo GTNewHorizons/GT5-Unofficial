@@ -335,6 +335,20 @@
       "logoFile": "",
       "screenshots": [],
       "dependencies": []
+    },
+    {
+      "modid": "gtnhintergalactic",
+      "name": "GTNH-Intergalactic",
+      "description": "A mod designed to be used in GTNH, to expand space exploration even more.",
+      "version": "${modVersion}",
+      "mcversion": "${minecraftVersion}",
+      "url": "https://github.com/GTNewHorizons/GTNH-Intergalactic",
+      "updateUrl": "",
+      "authorList": ["GTNH-Team"],
+      "credits": "",
+      "logoFile": "assets/gtnhintergalactic/textures/gui/picture/space_elevator_logo.png",
+      "screenshots": [],
+      "parent": ""
     }
     ]
 }
