@@ -42,10 +42,10 @@ public abstract class EntityToxinball extends EntityFireball {
      */
     @Override
     @SideOnly(Side.CLIENT)
-    public boolean isInRangeToRenderDist(double distance) {
+    public boolean isInRangeToRenderDist(double p_70112_1_) {
         double d1 = this.boundingBox.getAverageEdgeLength() * 4.0D;
         d1 *= 64.0D;
-        return distance < d1 * d1;
+        return p_70112_1_ < d1 * d1;
     }
 
     public EntityToxinball(World world, double x, double y, double z, double f1, double f2, double f3) {
@@ -280,7 +280,7 @@ public abstract class EntityToxinball extends EntityFireball {
      * Called when the entity is attacked.
      */
     @Override
-    public boolean attackEntityFrom(DamageSource damage, float amount) {
+    public boolean attackEntityFrom(DamageSource damage, float p_70097_2_) {
         if (this.isEntityInvulnerable()) {
             return false;
         } else {

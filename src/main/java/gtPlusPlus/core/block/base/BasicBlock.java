@@ -58,7 +58,7 @@ public class BasicBlock extends BlockContainer {
     }
 
     @Override
-    public TileEntity createNewTileEntity(final World worldIn, final int meta) {
+    public TileEntity createNewTileEntity(final World p_149915_1_, final int p_149915_2_) {
         return null;
     }
 

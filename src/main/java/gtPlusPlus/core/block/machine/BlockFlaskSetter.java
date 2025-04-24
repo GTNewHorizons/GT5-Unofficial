@@ -92,7 +92,7 @@ public class BlockFlaskSetter extends BasicTileBlockWithTooltip {
     }
 
     @Override
-    public TileEntity createNewTileEntity(final World world, final int meta) {
+    public TileEntity createNewTileEntity(final World world, final int p_149915_2_) {
         return new TileEntityVolumetricFlaskSetter();
     }
 

@@ -77,13 +77,13 @@ public class KubaItems extends Item {
     }
 
     @Override
-    public EnumAction getItemUseAction(ItemStack stack) {
-        return getItem(stack).getItemUseAction(stack);
+    public EnumAction getItemUseAction(ItemStack p_77661_1_) {
+        return getItem(p_77661_1_).getItemUseAction(p_77661_1_);
     }
 
     @Override
-    public ItemStack onItemRightClick(ItemStack itemStackIn, World worldIn, EntityPlayer player) {
-        return getItem(itemStackIn).onItemRightClick(itemStackIn, worldIn, player);
+    public ItemStack onItemRightClick(ItemStack p_77659_1_, World p_77659_2_, EntityPlayer p_77659_3_) {
+        return getItem(p_77659_1_).onItemRightClick(p_77659_1_, p_77659_2_, p_77659_3_);
     }
 
     @Override
@@ -108,8 +108,8 @@ public class KubaItems extends Item {
     }
 
     @Override
-    public String getUnlocalizedName(ItemStack stack) {
-        return getItem(stack).getUnlocalizedName();
+    public String getUnlocalizedName(ItemStack p_77667_1_) {
+        return getItem(p_77667_1_).getUnlocalizedName();
     }
 
     @Override
@@ -119,9 +119,9 @@ public class KubaItems extends Item {
 
     @SideOnly(Side.CLIENT)
     @Override
-    public void registerIcons(IIconRegister register) {
+    public void registerIcons(IIconRegister p_94581_1_) {
         items.values()
-            .forEach(t -> t.registerIcon(register));
+            .forEach(t -> t.registerIcon(p_94581_1_));
     }
 
     @SideOnly(Side.CLIENT)
@@ -137,7 +137,8 @@ public class KubaItems extends Item {
     }
 
     @Override
-    public void onUpdate(ItemStack stack, World worldIn, Entity entityIn, int p_77663_4_, boolean p_77663_5_) {
-        getItem(stack).onUpdate(stack, worldIn, entityIn, p_77663_4_, p_77663_5_);
+    public void onUpdate(ItemStack p_77663_1_, World p_77663_2_, Entity p_77663_3_, int p_77663_4_,
+        boolean p_77663_5_) {
+        getItem(p_77663_1_).onUpdate(p_77663_1_, p_77663_2_, p_77663_3_, p_77663_4_, p_77663_5_);
     }
 }

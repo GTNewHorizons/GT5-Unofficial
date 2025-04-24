@@ -341,22 +341,22 @@ public class MTEPollutionCreator extends MTETieredMachineBlock {
     }
 
     @Override
-    public ItemStack getStackInSlot(final int slotIn) {
+    public ItemStack getStackInSlot(final int p_70301_1_) {
         return null;
     }
 
     @Override
-    public ItemStack decrStackSize(final int index, final int count) {
+    public ItemStack decrStackSize(final int p_70298_1_, final int p_70298_2_) {
         return null;
     }
 
     @Override
-    public ItemStack getStackInSlotOnClosing(final int index) {
+    public ItemStack getStackInSlotOnClosing(final int p_70304_1_) {
         return null;
     }
 
     @Override
-    public void setInventorySlotContents(final int index, final ItemStack stack) {}
+    public void setInventorySlotContents(final int p_70299_1_, final ItemStack p_70299_2_) {}
 
     @Override
     public String getInventoryName() {
@@ -374,7 +374,7 @@ public class MTEPollutionCreator extends MTETieredMachineBlock {
     }
 
     @Override
-    public boolean isUseableByPlayer(final EntityPlayer player) {
+    public boolean isUseableByPlayer(final EntityPlayer p_70300_1_) {
         return false;
     }
 
@@ -385,7 +385,7 @@ public class MTEPollutionCreator extends MTETieredMachineBlock {
     public void closeInventory() {}
 
     @Override
-    public boolean isItemValidForSlot(final int index, final ItemStack stack) {
+    public boolean isItemValidForSlot(final int p_94041_1_, final ItemStack p_94041_2_) {
         return false;
     }
 

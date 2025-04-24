@@ -57,11 +57,11 @@ public class BlockWitherProof extends Block {
     }
 
     @Override
-    public void onBlockDestroyedByExplosion(final World worldIn, final int x, final int y, final int z,
-        final Explosion explosionIn) {}
+    public void onBlockDestroyedByExplosion(final World p_149723_1_, final int p_149723_2_, final int p_149723_3_,
+        final int p_149723_4_, final Explosion p_149723_5_) {}
 
     @Override
-    public boolean canDropFromExplosion(final Explosion explosionIn) {
+    public boolean canDropFromExplosion(final Explosion p_149659_1_) {
         return false;
     }
 
@@ -98,12 +98,14 @@ public class BlockWitherProof extends Block {
     }
 
     @Override
-    public void breakBlock(World worldIn, int x, int y, int z, Block blockBroken, int meta) {
-        super.breakBlock(worldIn, x, y, z, blockBroken, meta);
+    public void breakBlock(World p_149749_1_, int p_149749_2_, int p_149749_3_, int p_149749_4_, Block p_149749_5_,
+        int p_149749_6_) {
+        super.breakBlock(p_149749_1_, p_149749_2_, p_149749_3_, p_149749_4_, p_149749_5_, p_149749_6_);
     }
 
     @Override
-    public float getPlayerRelativeBlockHardness(EntityPlayer aPlayer, World worldIn, int x, int y, int z) {
+    public float getPlayerRelativeBlockHardness(EntityPlayer aPlayer, World p_149737_2_, int p_149737_3_,
+        int p_149737_4_, int p_149737_5_) {
         if (aPlayer instanceof EntityPlayerMP) {
             return 1f;
         }
@@ -111,13 +113,14 @@ public class BlockWitherProof extends Block {
     }
 
     @Override
-    public float getExplosionResistance(Entity exploder) {
+    public float getExplosionResistance(Entity p_149638_1_) {
         return Float.MAX_VALUE;
     }
 
     @Override
-    public void onBlockClicked(World worldIn, int x, int y, int z, EntityPlayer player) {
-        super.onBlockClicked(worldIn, x, y, z, player);
+    public void onBlockClicked(World p_149699_1_, int p_149699_2_, int p_149699_3_, int p_149699_4_,
+        EntityPlayer p_149699_5_) {
+        super.onBlockClicked(p_149699_1_, p_149699_2_, p_149699_3_, p_149699_4_, p_149699_5_);
     }
 
     @Override
@@ -131,8 +134,9 @@ public class BlockWitherProof extends Block {
     }
 
     @Override
-    public void harvestBlock(World worldIn, EntityPlayer player, int x, int y, int z, int meta) {
-        super.harvestBlock(worldIn, player, x, y, z, meta);
+    public void harvestBlock(World p_149636_1_, EntityPlayer p_149636_2_, int p_149636_3_, int p_149636_4_,
+        int p_149636_5_, int p_149636_6_) {
+        super.harvestBlock(p_149636_1_, p_149636_2_, p_149636_3_, p_149636_4_, p_149636_5_, p_149636_6_);
     }
 
     @Override

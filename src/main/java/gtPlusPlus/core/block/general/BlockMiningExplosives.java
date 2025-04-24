@@ -119,7 +119,8 @@ public class BlockMiningExplosives extends BlockTNT {
      */
     @Override
     public boolean onBlockActivated(final World world, final int x, final int y, final int z,
-        final EntityPlayer clickingPlayer, final int side, final float subX, final float subY, final float subZ) {
+        final EntityPlayer clickingPlayer, final int p_149727_6_, final float p_149727_7_, final float p_149727_8_,
+        final float p_149727_9_) {
         if ((clickingPlayer.getCurrentEquippedItem() != null) && (clickingPlayer.getCurrentEquippedItem()
             .getItem() == Items.flint_and_steel)) {
             this.func_150114_a(world, x, y, z, 1, clickingPlayer);
@@ -128,7 +129,16 @@ public class BlockMiningExplosives extends BlockTNT {
                 .damageItem(1, clickingPlayer);
             return true;
         } else {
-            return super.onBlockActivated(world, x, y, z, clickingPlayer, side, subX, subY, subZ);
+            return super.onBlockActivated(
+                world,
+                x,
+                y,
+                z,
+                clickingPlayer,
+                p_149727_6_,
+                p_149727_7_,
+                p_149727_8_,
+                p_149727_9_);
         }
     }
 

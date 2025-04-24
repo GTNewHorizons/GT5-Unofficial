@@ -117,42 +117,6 @@ public class RecipeLoaderCoalTar {
             .eut(TierEU.RECIPE_MV)
             .addTo(pyrolyseRecipes);
 
-        // Cactus Charcoal
-        GTValues.RA.stdBuilder()
-            .itemInputs(GTUtility.getIntegratedCircuit(8), GregtechItemList.CactusCharcoal.get(32))
-            .itemOutputs(ItemUtils.getItemStackOfAmountFromOreDict("dustSmallDirt", 2))
-            .fluidOutputs(new FluidStack(GTPPFluids.CoalTar, 800))
-            .duration(18 * SECONDS)
-            .eut(TierEU.RECIPE_MV)
-            .addTo(pyrolyseRecipes);
-
-        // Sugar Charcoal
-        GTValues.RA.stdBuilder()
-            .itemInputs(GTUtility.getIntegratedCircuit(8), GregtechItemList.SugarCharcoal.get(32))
-            .itemOutputs(ItemUtils.getItemStackOfAmountFromOreDict("dustSmallDirt", 2))
-            .fluidOutputs(new FluidStack(GTPPFluids.CoalTar, 800))
-            .duration(18 * SECONDS)
-            .eut(TierEU.RECIPE_MV)
-            .addTo(pyrolyseRecipes);
-
-        // Cactus coke
-        GTValues.RA.stdBuilder()
-            .itemInputs(GTUtility.getIntegratedCircuit(8), GregtechItemList.CactusCoke.get(16))
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dustSmall, Materials.Ash, 2))
-            .fluidOutputs(new FluidStack(GTPPFluids.CoalTar, 1600))
-            .duration(18 * SECONDS)
-            .eut(TierEU.RECIPE_MV)
-            .addTo(pyrolyseRecipes);
-
-        // Sugar coke
-        GTValues.RA.stdBuilder()
-            .itemInputs(GTUtility.getIntegratedCircuit(8), GregtechItemList.SugarCoke.get(16))
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dustSmall, Materials.Ash, 2))
-            .fluidOutputs(new FluidStack(GTPPFluids.CoalTar, 1600))
-            .duration(18 * SECONDS)
-            .eut(TierEU.RECIPE_MV)
-            .addTo(pyrolyseRecipes);
-
         // Lignite
         GTValues.RA.stdBuilder()
             .itemInputs(
