@@ -208,7 +208,7 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
                     + EnumChatFormatting.GRAY
                     + ") EU per cycle to produce antimatter")
             .addSeparator()
-            .addInfo("cycles every second")
+            .addInfo("Cycles every second")
             .addInfo("Every cycle, the lowest amount of antimatter in the 16 antimatter hatches is recorded")
             .addInfo(
                 "All hatches with more than the lowest amount will " + EnumChatFormatting.RED
