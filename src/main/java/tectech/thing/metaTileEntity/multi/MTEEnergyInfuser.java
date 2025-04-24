@@ -73,13 +73,11 @@ public class MTEEnergyInfuser extends TTMultiblockBase implements ISurvivalConst
 
     public MTEEnergyInfuser(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
-        minRepairStatus = (byte) getIdealStatus();
         eDismantleBoom = true;
     }
 
     public MTEEnergyInfuser(String aName) {
         super(aName);
-        minRepairStatus = (byte) getIdealStatus();
         eDismantleBoom = true;
     }
 

@@ -152,6 +152,14 @@ GT5U.autoplace.error.no_hatch=§cSuggested to place hatch §4%s§c but none was 
 GT5U.autoplace.error.no_mte.id=§cSuggested to place machine with meta ID §4%s§c but none was found
 GT5U.autoplace.error.no_mte.class_name=§cSuggested to place machine with class name §4%d§c but none was found
 GT5U.providesfullhazmatprotection=Provides full hazmat protection.
+GT5U.providesCBRNprotection=Provides CBRN protection.
+GT5U.providesextremetemperatureprotection=Provides thermal protection.
+GT5U.providesbiologicalhazmatprotection=Provides biological hazard protection.
+GT5U.providesfrosthazmatprotection=Provides frost protection.
+GT5U.providesheathazmatprotection=Provides heat protection.
+GT5U.providesradiohazmatprotection=Provides radiation protection.
+GT5U.provideselectricalhazmatprotection=Provides electrical protection.
+GT5U.providesgashazmatprotection=Provides gas protection.
 
 # Multiblock Tooltip Builder Keywords
 # Context can be found in the class gregtech.api.util.MultiblockTooltipBuilder
@@ -744,6 +752,7 @@ GT5U.gui.text.not_enough_energy=§7Not enough energy
 GT5U.gui.text.power_overflow=§7Power overflowed
 GT5U.gui.text.duration_overflow=§7Processing time overflowed
 GT5U.gui.text.insufficient_power=§7Recipe needs more power to start. Required: %s EU/t (%s§7)
+GT5U.gui.text.insufficient_voltage=§7Recipe needs a higher voltage to start. Required: %s EU/t (%s§7)
 GT5U.gui.text.insufficient_heat=§7Recipe needs more heat to start. Required: %s K (%s§7)
 GT5U.gui.text.insufficient_machine_tier=§7Recipe needs higher structure tier. Required: %s
 GT5U.gui.text.insufficient_startup_power=§7Recipe needs higher startup power. Required: %s
@@ -791,8 +800,8 @@ GT5U.gui.text.too_uncertain=Too Uncertain.
 GT5U.gui.text.invalid_parameters=Invalid Parameters.
 GT5U.gui.text.enabled=§aEnabled§f
 GT5U.gui.text.disabled=§cDisabled§f
+GT5U.gui.text.lma_craftingfx=Show Crafting Effects
 GT5U.gui.text.repair_tip=Click with Tool to repair.
-
 
 GT5U.gui.config.client=Client
 GT5U.gui.config.client.color_modulation=Color Modulation
@@ -854,7 +863,7 @@ GT5U.item.pipe.empty=Empty
 GT5U.item.pipe.swap=Pipe Swapped:
 
 gt.behaviour.paintspray.infinite.gui.header=Select a Color
-gt.behaviour.paintspray.infinite.gui.lock_error=§eSpray can is §clocked§e! §bSneak middle-click to unlock.
+gt.behaviour.paintspray.infinite.gui.lock_error=§eSpray can is §clocked§e! §bCtrl middle-click to unlock.
 gt.behaviour.paintspray.infinite.gui.solvent=Solvent
 gt.behaviour.paintspray.infinite.gui.shake_toggle=Allow/disallow color iteration
 
@@ -865,9 +874,9 @@ gt.behaviour.paintspray.infinite.tooltip.preventing_shake=Left click action disa
 
 gt.behaviour.paintspray.infinite.tooltip.switch=Left Click: Change color (sneak to reverse direction)
 gt.behaviour.paintspray.infinite.tooltip.pick=Middle Click block: Copy color to spray can
-gt.behaviour.paintspray.infinite.tooltip.lock=Sneak Middle Click: Lock or unlock spray can
+gt.behaviour.paintspray.infinite.tooltip.lock=%s Middle Click: Lock or unlock spray can
 gt.behaviour.paintspray.infinite.tooltip.gui=Middle Click: Open color choice GUI
-gt.behaviour.paintspray.infinite.tooltip.prevent_shake=%s-Middle Click: Allow/prevent left click action
+gt.behaviour.paintspray.infinite.tooltip.prevent_shake=Shift Middle Click: Allow/prevent left click action
 gt.behaviour.paintspray.infinite.tooltip.ctrl_pc=Ctrl
 gt.behaviour.paintspray.infinite.tooltip.ctrl_mac=Command
 
@@ -913,6 +922,7 @@ GT5U.multiblock.speed=Speed
 GT5U.multiblock.fluidPipeTier=Fluid Pipe Tier
 GT5U.multiblock.itemPipeTier=Item Pipe Tier
 GT5U.multiblock.coilLevel=Heating Coil Level
+GT5U.multiblock.preciseassemblercasing=Voltage limited by casing tier: %s
 
 # NEI recipe handlers
 GT5U.nei.heat_capacity=Heat Capacity: %s K (%s)
@@ -1054,9 +1064,9 @@ GT5U.waila.stocking_bus.auto_pull.disabled=Auto-Pull from ME: Disabled
 GT5U.waila.stocking_bus.min_stack_size=Minimum Stack Size: %s
 GT5U.waila.stocking_hatch.min_amount=Minimum Amount: %s
 GT5U.waila.drone_downlink.noConnection=Not connected
-GT5U.waila.drone_downlink.connection=Connect to centre:
-GT5U.waila.drone_downlink.connectionCount=Connection Count:
-GT5U.waila.drone_downlink.droneLevel=Drone Level:
+GT5U.waila.drone_downlink.connection=Connect to centre: x:%s y:%s z:%s
+GT5U.waila.drone_downlink.connectionCount=Connection Count: %s
+GT5U.waila.drone_downlink.droneLevel=Drone Level: %s
 GT5U.waila.producing=Producing:
 GT5U.waila.producing.andmore=  And %d More...
 GT5U.waila.generating.on=Generating Energy
@@ -1084,8 +1094,8 @@ GT5U.waila.multiblock.status.running_fine=Running Fine
 GT5U.waila.multiblock.status.cpu_load=Average CPU load of ~%s ns
 GT5U.waila.multiblock.status.locked_recipe=Locked Recipe:
 
-achievement.flintpick=First Tools
-achievement.flintpick.desc=Craft a flint pick
+achievement.gettingstartedwithgt=Getting Started with GT
+achievement.gettingstartedwithgt.desc=Craft a wooden pickaxe
 achievement.crops=Farming
 achievement.crops.desc=Craft Crops
 achievement.havestlead=Harvest Lead
@@ -1116,8 +1126,6 @@ achievement.hammertime=Hammertime
 achievement.hammertime.desc=Craft a Jackhammer
 achievement.repair=Repairs
 achievement.repair.desc=Craft a Disassembler
-achievement.unitool=Universal Tool
-achievement.unitool.desc=Craft a Universal Spade
 achievement.recycling=Recycling
 achievement.recycling.desc=Craft an Arc Furnace
 achievement.crushed=Crushed
@@ -1936,6 +1944,19 @@ gt.item.adv_sensor_card.tooltip.frequency=Frequency: §b%s
 gt.item.adv_sensor_card.error.deconstructed.1=-ERROR- Machine Deconstructed
 gt.item.adv_sensor_card.error.deconstructed.2=Place machine again to re-enable
 gt.item.adv_sensor_card.error.no_data=No data found
+gt.item.redstone_sniffer.regular_wireless=Regular Wireless
+gt.item.redstone_sniffer.advanced_wireless=Advanced Wireless
+gt.item.redstone_sniffer.frequency=Frequency
+gt.item.redstone_sniffer.frequency_filter=Frequency:
+gt.item.redstone_sniffer.owner=Owner
+gt.item.redstone_sniffer.owner_filter=Owner:
+gt.item.redstone_sniffer.private=Private
+gt.item.redstone_sniffer.dimension=Dimension
+gt.item.redstone_sniffer.action=Action
+gt.item.redstone_sniffer.locate=Locate
+gt.item.redstone_sniffer.teleport=Teleport
+gt.item.redstone_sniffer.highlight_message=Highlighting cover at %d,%d,%d
+gt.item.redstone_sniffer.wrong_dim_message=Cannot highlight because you're not in the same dimension!
 
 gt.cover.info.format.tick_rate=§b%s§r %s
 gt.cover.info.chat.tick_rate=Cover tick rate set to %s

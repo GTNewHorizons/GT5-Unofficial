@@ -468,6 +468,10 @@ public class BlockMachines extends GTGenericBlock implements IDebugableBlock, IT
     public ArrayList<ItemStack> getDrops(World aWorld, int aX, int aY, int aZ, int aMeta, int aFortune) {
         final TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
         if (tTileEntity instanceof IGregTechTileEntity gtTE) {
+            IMetaTileEntity gtMTE = gtTE.getMetaTileEntity();
+            if (gtMTE != null && gtMTE.getDroppedItem() != null) {
+                return gtMTE.getDroppedItem();
+            }
             return gtTE.getDrops();
         }
         final IGregTechTileEntity tGregTechTileEntity = mTemporaryTileEntity.get();

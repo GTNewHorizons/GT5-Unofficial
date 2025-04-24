@@ -253,6 +253,11 @@ public abstract class CommonMetaTileEntity implements IMetaTileEntity {
         return list;
     }
 
+    @Override
+    public ArrayList<ItemStack> getDroppedItem() {
+        return null;
+    }
+
     /**
      * Returns the fluid this block contains.
      */
@@ -348,6 +353,21 @@ public abstract class CommonMetaTileEntity implements IMetaTileEntity {
     public ItemStack getStackInSlot(int index) {
         if (index >= 0 && index < mInventory.length) {
             return mInventory[index];
+        }
+        return null;
+    }
+
+    /**
+     * Gets the first ItemStack in the bus, reading from the top left to bottom right
+     * 
+     * @return the first ItemStack in the bus
+     */
+    public ItemStack getFirstStack() {
+        for (int index = 0; index < mInventory.length; index++) {
+            ItemStack stackInSlot = getStackInSlot(index);
+            if (stackInSlot != null) {
+                return stackInSlot;
+            }
         }
         return null;
     }

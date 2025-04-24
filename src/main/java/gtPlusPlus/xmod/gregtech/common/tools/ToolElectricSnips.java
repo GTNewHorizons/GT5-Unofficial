@@ -79,7 +79,6 @@ public class ToolElectricSnips extends ToolWireCutter {
         aPlayer.triggerAchievement(AchievementList.buildSword);
         try {
             GTMod.achievements.issueAchievement(aPlayer, "tools");
-            GTMod.achievements.issueAchievement(aPlayer, "unitool");
         } catch (final Exception e) {}
     }
 
