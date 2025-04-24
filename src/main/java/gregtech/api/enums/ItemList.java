@@ -2618,10 +2618,30 @@ public enum ItemList implements IItemContainer {
     SpaceElevatorModulePumpT3,
     SpaceElevatorModuleManager,
     SpaceElevatorModuleResearch,
+    SpaceElevatorMotorT1,
+    SpaceElevatorMotorT2,
+    SpaceElevatorMotorT3,
+    SpaceElevatorMotorT4,
+    SpaceElevatorMotorT5,
+    SpaceElevatorCable,
+    SpaceElevatorBaseCasing,
+    SpaceElevatorSupportStructure,
+    SpaceElevatorInternalStructure,
 
     DysonSwarmController,
+    DysonSwarmReceiverCasing,
+    DysonSwarmReceiverDish,
+    DysonSwarmDeploymentUnitCasing,
+    DysonSwarmDeploymentUnitCore,
+    DysonSwarmDeploymentUnitMagnet,
+    DysonSwarmControlCasing,
+    DysonSwarmControlPrimary,
+    DysonSwarmControlSecondary,
+    DysonSwarmControlToroid,
+    UltraHighStrengthConcrete,
 
     PlanetaryGasSiphonController,
+    PlanetaryGasSiphonCasing,
 
     // semicolon after the comment to reduce merge conflicts
     ;

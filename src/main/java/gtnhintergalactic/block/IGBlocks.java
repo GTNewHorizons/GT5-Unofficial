@@ -1,8 +1,7 @@
 package gtnhintergalactic.block;
 
-import net.minecraft.block.Block;
-
 import cpw.mods.fml.common.registry.GameRegistry;
+import gregtech.api.GregTechAPI;
 import gtnhintergalactic.item.ItemBlockSpaceElevatorCable;
 import gtnhintergalactic.item.ItemCasingDysonSwarm;
 
@@ -11,23 +10,21 @@ import gtnhintergalactic.item.ItemCasingDysonSwarm;
  */
 public class IGBlocks {
 
-    public static Block SpaceElevatorCable;
-    public static BlockCasingSpaceElevator SpaceElevatorCasing;
-    public static BlockCasingSpaceElevatorMotor SpaceElevatorMotor;
-    public static BlockCasingDysonSwarm DysonSwarmCasing;
-    public static BlockCasingGasSiphon GasSiphonCasing;
-
     /**
      * Initialize the blocks of this mod
      */
     public static void init() {
-        SpaceElevatorCable = new BlockSpaceElevatorCable();
-        GameRegistry.registerBlock(SpaceElevatorCable, ItemBlockSpaceElevatorCable.class, "spaceelevatorcable");
-        SpaceElevatorCasing = new BlockCasingSpaceElevator();
-        SpaceElevatorMotor = new BlockCasingSpaceElevatorMotor();
-        DysonSwarmCasing = new BlockCasingDysonSwarm();
-        GameRegistry.registerBlock(DysonSwarmCasing, ItemCasingDysonSwarm.class, "dysonswarmparts");
-        GasSiphonCasing = new BlockCasingGasSiphon();
-        GameRegistry.registerBlock(GasSiphonCasing, "gassiphoncasing");
+        GregTechAPI.sSpaceElevatorCable = new BlockSpaceElevatorCable();
+        GameRegistry
+            .registerBlock(GregTechAPI.sSpaceElevatorCable, ItemBlockSpaceElevatorCable.class, "spaceelevatorcable");
+
+        GregTechAPI.sBlockCasingsSE = new BlockCasingSpaceElevator();
+        GregTechAPI.sBlockCasingsSEMotor = new BlockCasingSpaceElevatorMotor();
+
+        GregTechAPI.sBlockCasingsDyson = new BlockCasingDysonSwarm();
+        GameRegistry.registerBlock(GregTechAPI.sBlockCasingsDyson, ItemCasingDysonSwarm.class, "dysonswarmparts");
+
+        GregTechAPI.sBlockCasingsSiphon = new BlockCasingGasSiphon();
+        GameRegistry.registerBlock(GregTechAPI.sBlockCasingsSiphon, "gassiphoncasing");
     }
 }

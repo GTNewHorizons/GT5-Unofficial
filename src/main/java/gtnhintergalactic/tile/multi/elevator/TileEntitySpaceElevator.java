@@ -44,6 +44,7 @@ import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
+import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.SoundResource;
@@ -59,7 +60,6 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.HatchElementBuilder;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.misc.spaceprojects.SpaceProjectManager;
-import gtnhintergalactic.block.IGBlocks;
 import gtnhintergalactic.client.TooltipUtil;
 import gtnhintergalactic.config.IGConfig;
 import gtnhintergalactic.gui.IG_UITextures;
@@ -214,13 +214,13 @@ public class TileEntitySpaceElevator extends TTMultiblockBase implements ISurviv
                 {"                                               ", "                                               ", "                                               ", "                    FFFFFFF                    ", "                    AAAAAAA                    "}
             })
             .addElement(
-                'E', StructureUtility.ofBlock(IGBlocks.SpaceElevatorCasing, 1)) // Support Structure
-            .addElement('B', ElevatorUtil.ofBlockAdder(TileEntitySpaceElevator::addCable, IGBlocks.SpaceElevatorCable, 0))
+                'E', StructureUtility.ofBlock(GregTechAPI.sBlockCasingsSE, 1)) // Support Structure
+            .addElement('B', ElevatorUtil.ofBlockAdder(TileEntitySpaceElevator::addCable, GregTechAPI.sSpaceElevatorCable, 0))
             .addElement(
                 'X',
-                classicHatches(CASING_INDEX_BASE, 1, IGBlocks.SpaceElevatorCasing, 0))
+                classicHatches(CASING_INDEX_BASE, 1, GregTechAPI.sBlockCasingsSE, 0))
             .addElement('H', GTStructureUtility.ofFrame(Materials.Neutronium)) // Neutronium frame boxes
-            .addElement('F', StructureUtility.ofBlock(IGBlocks.SpaceElevatorCasing, 2)) // Internal Structure
+            .addElement('F', StructureUtility.ofBlock(GregTechAPI.sBlockCasingsSE, 2)) // Internal Structure
             .addElement(
                 'C',
                 withChannel(
@@ -231,15 +231,15 @@ public class TileEntitySpaceElevator extends TTMultiblockBase implements ISurviv
                         0,
                         TileEntitySpaceElevator::setMotorTier,
                         TileEntitySpaceElevator::getMotorTier))) // Motors
-            .addElement('A', StructureUtility.ofBlock(IGBlocks.DysonSwarmCasing, 9)) // Concrete
-            .addElement('D', StructureUtility.ofBlock(IGBlocks.SpaceElevatorCasing, 0)) // Base Casing
+            .addElement('A', StructureUtility.ofBlock(GregTechAPI.sBlockCasingsDyson, 9)) // Concrete
+            .addElement('D', StructureUtility.ofBlock(GregTechAPI.sBlockCasingsSE, 0)) // Base Casing
             .addElement(
                 'I',
                 HatchElementBuilder.<TileEntitySpaceElevator>builder()
                     .atLeast(ElevatorUtil.ProjectModuleElement.ProjectModule)
                     .casingIndex(CASING_INDEX_BASE)
                     .dot(2)
-                    .buildAndChain(IGBlocks.SpaceElevatorCasing, 0)) // Base Casing or project module
+                    .buildAndChain(GregTechAPI.sBlockCasingsSE, 0)) // Base Casing or project module
             .build();
     // spotless:on
 
@@ -501,7 +501,7 @@ public class TileEntitySpaceElevator extends TTMultiblockBase implements ISurviv
      */
     public boolean addCable(Block block, int aBaseCasingIndex, World world, int x, int y, int z) {
         // Check if the cable block is valid and can see the sky
-        if (block != IGBlocks.SpaceElevatorCable || world == null) {
+        if (block != GregTechAPI.sSpaceElevatorCable || world == null) {
             return false;
         }
         if (!world.canBlockSeeTheSky(x, y + 1, z)) {

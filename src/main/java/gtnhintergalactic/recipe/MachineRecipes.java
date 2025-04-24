@@ -25,7 +25,6 @@ import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gtPlusPlus.core.material.MaterialsElements;
-import gtnhintergalactic.block.IGBlocks;
 import gtnhintergalactic.item.IGItems;
 import gtnhintergalactic.item.ItemMiningDrones;
 import micdoodle8.mods.galacticraft.core.items.GCItems;
@@ -86,7 +85,7 @@ public class MachineRecipes implements Runnable {
                 GTModHandler.getModItem(NewHorizonsCoreMod.ID, "item.HeavyDutyPlateTier7", 32),
                 ItemList.Circuit_Chip_PPIC.get(64),
                 GTOreDictUnificator.get(OrePrefixes.screw, Materials.CosmicNeutronium, 64),
-                ItemList.Electric_Motor_UV.get(32), new ItemStack(IGBlocks.SpaceElevatorCasing, 8) },
+                ItemList.Electric_Motor_UV.get(32), ItemList.SpaceElevatorBaseCasing.get(8) },
             new FluidStack[] { new FluidStack(solderLuV, 5760), Materials.UUMatter.getFluid(16000),
                 Materials.Lubricant.getFluid(32000), Materials.Neutronium.getMolten(1440) },
             ItemList.SpaceElevatorController.get(1),
@@ -113,7 +112,7 @@ public class MachineRecipes implements Runnable {
                 new ItemStack(IGItems.SpaceElevatorItems, 64, 0),
                 GTOreDictUnificator.get(OrePrefixes.circuit, Materials.UHV, 4))
             .fluidInputs(FluidRegistry.getFluidStack("molten.ethylcyanoacrylatesuperglue", 8000))
-            .itemOutputs(new ItemStack(IGBlocks.SpaceElevatorCable))
+            .itemOutputs(ItemList.SpaceElevatorCable.get(1))
             .duration(2 * MINUTE)
             .eut(TierEU.RECIPE_UHV)
             .addTo(assemblerRecipes);
@@ -132,7 +131,7 @@ public class MachineRecipes implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.ring, Materials.CosmicNeutronium, 8), },
             new FluidStack[] { new FluidStack(solderLuV, 5760), Materials.UUMatter.getFluid(2000),
                 Materials.Iridium.getMolten(1152) },
-            new ItemStack(IGBlocks.SpaceElevatorCasing, 8, 0),
+            ItemList.SpaceElevatorBaseCasing.get(8),
             1 * MINUTE,
             (int) TierEU.RECIPE_UV);
 
@@ -149,7 +148,7 @@ public class MachineRecipes implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.plateDouble, Materials.Osmiridium, 8), },
             new FluidStack[] { new FluidStack(solderLuV, 5760), Materials.UUMatter.getFluid(1000),
                 Materials.Iridium.getMolten(1440) },
-            new ItemStack(IGBlocks.SpaceElevatorCasing, 8, 1),
+            ItemList.SpaceElevatorSupportStructure.get(8),
             1 * MINUTE,
             (int) TierEU.RECIPE_UV);
 
@@ -165,18 +164,18 @@ public class MachineRecipes implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.plateDouble, Materials.Neutronium, 8), },
             new FluidStack[] { new FluidStack(solderLuV, 5760), Materials.UUMatter.getFluid(8000),
                 Materials.Concrete.getMolten(1440) },
-            new ItemStack(IGBlocks.SpaceElevatorCasing, 8, 2),
+            ItemList.SpaceElevatorInternalStructure.get(8),
             1 * MINUTE,
             (int) TierEU.RECIPE_UV);
 
         // Space Elevator Motor MK-I
         TTRecipeAdder.addResearchableAssemblylineRecipe(
-            new ItemStack(IGBlocks.SpaceElevatorCasing, 1, 0),
+            ItemList.SpaceElevatorBaseCasing.get(1),
             64000,
             128,
             (int) TierEU.RECIPE_UV,
             2,
-            new Object[] { new ItemStack(IGBlocks.SpaceElevatorCasing, 1, 0), ItemList.Electric_Motor_UV.get(4),
+            new Object[] { ItemList.SpaceElevatorBaseCasing.get(1), ItemList.Electric_Motor_UV.get(4),
                 GTOreDictUnificator.get(OrePrefixes.ring, Materials.Neutronium, 8),
                 GTOreDictUnificator.get(OrePrefixes.stick, Materials.Neutronium, 4),
                 new Object[] { OrePrefixes.circuit.get(Materials.UV), 1 },
@@ -184,18 +183,18 @@ public class MachineRecipes implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.Osmiridium, 16), },
             new FluidStack[] { new FluidStack(solderLuV, 5760), Materials.UUMatter.getFluid(8000),
                 Materials.Naquadria.getMolten(1440), Materials.Lubricant.getFluid(16000) },
-            new ItemStack(IGBlocks.SpaceElevatorMotor, 1, 0),
+            ItemList.SpaceElevatorMotorT1.get(1),
             1 * MINUTE,
             (int) TierEU.RECIPE_UV);
 
         // Space Elevator Motor MK-II
         TTRecipeAdder.addResearchableAssemblylineRecipe(
-            new ItemStack(IGBlocks.SpaceElevatorMotor, 1, 0),
+            ItemList.SpaceElevatorMotorT1.get(1),
             128000,
             256,
             (int) TierEU.RECIPE_UHV,
             2,
-            new Object[] { new ItemStack(IGBlocks.SpaceElevatorCasing, 1, 0), ItemList.Electric_Motor_UHV.get(4),
+            new Object[] { ItemList.SpaceElevatorBaseCasing.get(1), ItemList.Electric_Motor_UHV.get(4),
                 GTOreDictUnificator.get(OrePrefixes.ring, Materials.CosmicNeutronium, 8),
                 GTOreDictUnificator.get(OrePrefixes.stick, Materials.CosmicNeutronium, 4),
                 new Object[] { OrePrefixes.circuit.get(Materials.UHV), 1 },
@@ -203,18 +202,18 @@ public class MachineRecipes implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.Osmiridium, 16), },
             new FluidStack[] { new FluidStack(solderLuV, 5760), Materials.UUMatter.getFluid(8000),
                 Materials.Naquadria.getMolten(1440), Materials.Lubricant.getFluid(16000) },
-            new ItemStack(IGBlocks.SpaceElevatorMotor, 1, 1),
+            ItemList.SpaceElevatorMotorT2.get(1),
             1 * MINUTE,
             (int) TierEU.RECIPE_UHV);
 
         // Space Elevator Motor MK-III
         TTRecipeAdder.addResearchableAssemblylineRecipe(
-            new ItemStack(IGBlocks.SpaceElevatorMotor, 1, 1),
+            ItemList.SpaceElevatorMotorT2.get(1),
             128000,
             256,
             (int) TierEU.RECIPE_UHV,
             2,
-            new Object[] { new ItemStack(IGBlocks.SpaceElevatorCasing, 1, 0), ItemList.Electric_Motor_UEV.get(4),
+            new Object[] { ItemList.SpaceElevatorBaseCasing.get(1), ItemList.Electric_Motor_UEV.get(4),
                 GTOreDictUnificator.get(OrePrefixes.ring, Materials.Infinity, 8),
                 GTOreDictUnificator.get(OrePrefixes.stick, Materials.Infinity, 4),
                 new Object[] { OrePrefixes.circuit.get(Materials.UEV), 1 },
@@ -222,18 +221,18 @@ public class MachineRecipes implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.Osmiridium, 16), },
             new FluidStack[] { new FluidStack(solderUEV, 2880), Materials.UUMatter.getFluid(8000),
                 Materials.Naquadria.getMolten(1440), MaterialsUEVplus.DimensionallyShiftedSuperfluid.getFluid(24000) },
-            new ItemStack(IGBlocks.SpaceElevatorMotor, 1, 2),
+            ItemList.SpaceElevatorMotorT3.get(1),
             1 * MINUTE,
             (int) TierEU.RECIPE_UEV);
 
         // Space Elevator Motor MK-IV
         TTRecipeAdder.addResearchableAssemblylineRecipe(
-            new ItemStack(IGBlocks.SpaceElevatorMotor, 1, 2),
+            ItemList.SpaceElevatorMotorT3.get(1),
             128000,
             256,
             (int) TierEU.RECIPE_UHV,
             2,
-            new Object[] { new ItemStack(IGBlocks.SpaceElevatorCasing, 1, 0), ItemList.Electric_Motor_UIV.get(4),
+            new Object[] { ItemList.SpaceElevatorBaseCasing.get(1), ItemList.Electric_Motor_UIV.get(4),
                 GTOreDictUnificator.get(OrePrefixes.ring, MaterialsUEVplus.TranscendentMetal, 8),
                 GTOreDictUnificator.get(OrePrefixes.stick, MaterialsUEVplus.TranscendentMetal, 4),
                 new Object[] { OrePrefixes.circuit.get(Materials.UIV), 1 },
@@ -241,18 +240,18 @@ public class MachineRecipes implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.plate, MaterialsUEVplus.ProtoHalkonite, 16), },
             new FluidStack[] { new FluidStack(solderUEV, 2880), Materials.UUMatter.getFluid(8000),
                 Materials.Naquadria.getMolten(1440), MaterialsUEVplus.DimensionallyShiftedSuperfluid.getFluid(24000) },
-            new ItemStack(IGBlocks.SpaceElevatorMotor, 1, 3),
+            ItemList.SpaceElevatorMotorT4.get(1),
             1 * MINUTE,
             (int) TierEU.RECIPE_UIV);
 
         // Space Elevator Motor MK-V
         TTRecipeAdder.addResearchableAssemblylineRecipe(
-            new ItemStack(IGBlocks.SpaceElevatorMotor, 1, 3),
+            ItemList.SpaceElevatorMotorT4.get(1),
             128000,
             256,
             (int) TierEU.RECIPE_UHV,
             2,
-            new Object[] { new ItemStack(IGBlocks.SpaceElevatorCasing, 1, 0), ItemList.Electric_Motor_UMV.get(4),
+            new Object[] { ItemList.SpaceElevatorBaseCasing.get(1), ItemList.Electric_Motor_UMV.get(4),
                 GTOreDictUnificator.get(OrePrefixes.ring, MaterialsUEVplus.SpaceTime, 8),
                 GTOreDictUnificator.get(OrePrefixes.stick, MaterialsUEVplus.SpaceTime, 4),
                 new Object[] { OrePrefixes.circuit.get(Materials.UMV), 1L },
@@ -260,7 +259,7 @@ public class MachineRecipes implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.Osmiridium, 16), },
             new FluidStack[] { new FluidStack(solderUEV, 2880), Materials.UUMatter.getFluid(8000),
                 Materials.Naquadria.getMolten(1440), MaterialsUEVplus.DimensionallyShiftedSuperfluid.getFluid(24000) },
-            new ItemStack(IGBlocks.SpaceElevatorMotor, 1, 4),
+            ItemList.SpaceElevatorMotorT5.get(1),
             1 * MINUTE,
             (int) TierEU.RECIPE_UIV);
 
@@ -359,7 +358,7 @@ public class MachineRecipes implements Runnable {
             256,
             4000000,
             4,
-            new Object[] { new ItemStack(IGBlocks.SpaceElevatorCasing, 1, 0),
+            new Object[] { ItemList.SpaceElevatorBaseCasing.get(1),
                 new ItemStack(GameRegistry.findItem("gregtech", "gt.blockmachines"), 4, 10782),
                 new ItemStack(GameRegistry.findItem("gregtech", "gt.blockmachines"), 4, 1187),
                 GTOreDictUnificator.get(OrePrefixes.gearGt, Materials.CosmicNeutronium, 8),
@@ -381,7 +380,7 @@ public class MachineRecipes implements Runnable {
             2048,
             64000000,
             4,
-            new Object[] { new ItemStack(IGBlocks.SpaceElevatorCasing, 1, 0),
+            new Object[] { ItemList.SpaceElevatorBaseCasing.get(1),
                 new ItemStack(GameRegistry.findItem("gregtech", "gt.blockmachines"), 4, 10784),
                 new ItemStack(GameRegistry.findItem("gregtech", "gt.blockmachines"), 4, 12091),
                 GTOreDictUnificator.get(OrePrefixes.gearGt, MaterialsUEVplus.TranscendentMetal, 8),
@@ -401,7 +400,7 @@ public class MachineRecipes implements Runnable {
             4096,
             256000000,
             4,
-            new Object[] { new ItemStack(IGBlocks.SpaceElevatorCasing, 1, 0),
+            new Object[] { ItemList.SpaceElevatorBaseCasing.get(1),
                 new ItemStack(GameRegistry.findItem("gregtech", "gt.blockmachines"), 4, 10786),
                 new ItemStack(GameRegistry.findItem("gregtech", "gt.blockmachines"), 4, 12093),
                 GTOreDictUnificator

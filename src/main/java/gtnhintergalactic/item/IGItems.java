@@ -1,7 +1,6 @@
 package gtnhintergalactic.item;
 
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 
@@ -15,14 +14,6 @@ public class IGItems {
     public static Item SpaceElevatorItems;
     public static Item DysonSwarmItems;
     public static Item MiningDrones;
-    public static ItemStack SpaceElevatorCasing0;
-    public static ItemStack SpaceElevatorCasing1;
-    public static ItemStack SpaceElevatorCasing2;
-    public static ItemStack SpaceElevatorMotorT1;
-    public static ItemStack SpaceElevatorMotorT2;
-    public static ItemStack SpaceElevatorMotorT3;
-    public static ItemStack SpaceElevatorMotorT4;
-    public static ItemStack SpaceElevatorMotorT5;
 
     /**
      * Initialize the items of this mod
