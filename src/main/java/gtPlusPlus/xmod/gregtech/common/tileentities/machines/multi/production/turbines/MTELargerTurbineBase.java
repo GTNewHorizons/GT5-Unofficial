@@ -74,7 +74,7 @@ public abstract class MTELargerTurbineBase extends GTPPMultiBlockBase<MTELargerT
                 // m = muffler
                 .addShape(
                     STRUCTURE_PIECE_MAIN,
-                    (new String[][] { { "ccchccc", "ccccccc", "ccmmmcc", "ccm~mcc", "ccmmmcc", "ccccccc", "ccchccc" },
+                    (new String[][] { { "ccchccc", "ccccccc", "ccmcmcc", "ccc~ccc", "ccmcmcc", "ccccccc", "ccchccc" },
                         { "ctchctc", "cscccsc", "cscccsc", "cscccsc", "cscccsc", "cscccsc", "ctchctc" },
                         { "ccchccc", "ccccccc", "ccccccc", "ccccccc", "ccccccc", "ccccccc", "ccchccc" },
                         { "ccchccc", "ccccccc", "ccccccc", "ccccccc", "ccccccc", "ccccccc", "ccchccc" },
