@@ -19,8 +19,6 @@ public class GTTeam {
 
     public GTTeam(String teamName) {
         this.teamName = teamName;
-        GTTeamManager.TEAMS.add(this);
-        TeamWorldSavedData.markForSaving();
     }
 
     public String getTeamName() {
@@ -41,7 +39,7 @@ public class GTTeam {
     }
 
     public void addMember(UUID uuid) {
-        members.add(uuid);
+        if (!members.contains(uuid)) members.add(uuid);
         TeamWorldSavedData.markForSaving();
     }
 
@@ -60,9 +58,9 @@ public class GTTeam {
     }
 
     public void addOwner(UUID uuid) {
-        owners.add(uuid);
+        if (!members.contains(uuid)) owners.add(uuid);
         // owners are also always members
-        members.add(uuid);
+        if (!members.contains(uuid)) members.add(uuid);
         TeamWorldSavedData.markForSaving();
     }
 
