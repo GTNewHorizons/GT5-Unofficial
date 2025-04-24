@@ -2,6 +2,8 @@ package tectech.thing.metaTileEntity.multi.base;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 import tectech.thing.metaTileEntity.multi.base.Parameters.Group.ParameterIn;
 
