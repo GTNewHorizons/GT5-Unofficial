@@ -414,18 +414,14 @@ public class MTENeutronActivator extends MTETooltipMultiBlockBaseEM implements I
             }
         }
         if (!anyWorking) currentNKEInput = -72000;
-        return new String[] { "Progress:",
-            EnumChatFormatting.GREEN + Integer.toString(this.mProgresstime / 20)
-                + EnumChatFormatting.RESET
-                + " s / "
-                + EnumChatFormatting.YELLOW
-                + this.mMaxProgresstime / 20
-                + EnumChatFormatting.RESET
-                + " s",
-            "Current Neutron Kinetic Energy Input: " + EnumChatFormatting.GREEN
-                + GTUtility.formatNumbers(currentNKEInput)
-                + EnumChatFormatting.RESET
-                + "eV",
+        return new String[] {
+            StatCollector.translateToLocalFormatted(
+                "gg.scanner.info.neutron_activator.progress",
+                EnumChatFormatting.GREEN + Integer.toString(this.mProgresstime / 20) + EnumChatFormatting.RESET,
+                EnumChatFormatting.YELLOW + Integer.toString(this.mMaxProgresstime / 20) + EnumChatFormatting.RESET),
+            StatCollector.translateToLocalFormatted(
+                "gg.scanner.info.neutron_activator.input",
+                EnumChatFormatting.GREEN + GTUtility.formatNumbers(currentNKEInput) + EnumChatFormatting.RESET),
             StatCollector.translateToLocal("scanner.info.NA") + " "
                 + EnumChatFormatting.LIGHT_PURPLE
                 + GTUtility.formatNumbers(getCurrentNeutronKineticEnergy())

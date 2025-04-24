@@ -213,7 +213,8 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
     }
 
     @Override
-    public final void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+    public final void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
+        ItemStack aTool) {
         mVoidOverflow = !mVoidOverflow;
         GTUtility.sendChatToPlayer(
             aPlayer,
@@ -224,8 +225,7 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
 
     @Override
     public boolean onSolderingToolRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
-        float aX, float aY, float aZ) {
-        if (super.onSolderingToolRightClick(side, wrenchingSide, aPlayer, aX, aY, aZ)) return true;
+        float aX, float aY, float aZ, ItemStack aTool) {
         mDisableFilter = !mDisableFilter;
         GTUtility.sendChatToPlayer(
             aPlayer,
@@ -323,8 +323,11 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
     public String[] getInfoData() {
 
         if (getItemStack() == null) {
-            return new String[] { EnumChatFormatting.BLUE + chestName() + EnumChatFormatting.RESET, "Stored Items:",
-                EnumChatFormatting.GOLD + "No Items" + EnumChatFormatting.RESET,
+            return new String[] { EnumChatFormatting.BLUE + localizedChestName() + EnumChatFormatting.RESET,
+                StatCollector.translateToLocal("GT5U.infodata.digital_chest.stored_items"),
+                EnumChatFormatting.GOLD
+                    + StatCollector.translateToLocal("GT5U.infodata.digital_chest.stored_items.empty")
+                    + EnumChatFormatting.RESET,
                 EnumChatFormatting.GREEN + "0"
                     + EnumChatFormatting.RESET
                     + " "
@@ -332,7 +335,8 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
                     + GTUtility.formatNumbers(getMaxItemCount())
                     + EnumChatFormatting.RESET };
         }
-        return new String[] { EnumChatFormatting.BLUE + chestName() + EnumChatFormatting.RESET, "Stored Items:",
+        return new String[] { EnumChatFormatting.BLUE + localizedChestName() + EnumChatFormatting.RESET,
+            StatCollector.translateToLocal("GT5U.infodata.digital_chest.stored_items"),
             EnumChatFormatting.GOLD + getItemStack().getDisplayName() + EnumChatFormatting.RESET,
             EnumChatFormatting.GREEN + GTUtility.formatNumbers(getItemCount())
                 + EnumChatFormatting.RESET
@@ -347,7 +351,7 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
         return mInventory;
     }
 
-    protected abstract String chestName();
+    protected abstract String localizedChestName();
 
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {

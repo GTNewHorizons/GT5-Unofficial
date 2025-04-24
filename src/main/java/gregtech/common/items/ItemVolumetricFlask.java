@@ -20,6 +20,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.MovingObjectPosition.MovingObjectType;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -215,9 +216,13 @@ public class ItemVolumetricFlask extends GTGenericItem implements IFluidContaine
         if (fs != null) {
             info.add(String.format("< %s, %s mB >", GTUtility.getFluidName(fs, true), formatNumbers(fs.amount)));
         } else {
-            info.add(String.format("< Empty, %s mB >", formatNumbers(getCapacity(stack))));
+            info.add(
+                String.format(
+                    "< %s, %s mB >",
+                    StatCollector.translateToLocal("GT5U.tooltip.volumetric_flask.empty"),
+                    formatNumbers(getCapacity(stack))));
         }
-        info.add("Rightclick on air to set volume (only while empty)");
+        info.add(StatCollector.translateToLocal("GT5U.tooltip.volumetric_flask.set_volume"));
     }
 
     @Override

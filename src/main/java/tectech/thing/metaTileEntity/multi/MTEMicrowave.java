@@ -29,6 +29,7 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.util.Vec3Impl;
 
 import gregtech.api.enums.Textures;
+import gregtech.api.hazards.HazardProtection;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -36,7 +37,6 @@ import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.util.GTRecipe;
-import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReason;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
@@ -191,7 +191,7 @@ public class MTEMicrowave extends TTMultiblockBase implements ISurvivalConstruct
                         ((EntityItem) entity).delayBeforeCanPickup = 2;
                         entity.setDead();
                     } else if (entity instanceof EntityLivingBase) {
-                        if (!GTUtility.isWearingFullElectroHazmat((EntityLivingBase) entity)) {
+                        if (!HazardProtection.isWearingFullElectroHazmat((EntityLivingBase) entity)) {
                             entity.attackEntityFrom(MainLoader.microwaving, damagingFactor);
                         }
                     }

@@ -40,7 +40,6 @@ import gregtech.api.items.GTGenericItem;
 import gregtech.api.net.GTPacketUpdateItem;
 import gregtech.api.objects.XSTR;
 import gregtech.api.util.GTConfig;
-import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTModHandler;
 import gregtech.common.gui.modularui.uifactory.SelectItemUIFactory;
@@ -194,14 +193,11 @@ public class ItemIntegratedCircuit extends GTGenericItem implements INetworkUpda
     public void addAdditionalToolTips(List<String> aList, ItemStack aStack, EntityPlayer aPlayer) {
         super.addAdditionalToolTips(aList, aStack, aPlayer);
         aList.add(
-            GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".configuration", "Configuration: ")
-                + getConfigurationString(getDamage(aStack)));
-        aList.add(
-            GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".tooltip.0", "Right click to reconfigure"));
-        aList.add(
-            GTLanguageManager.addStringLocalization(
-                getUnlocalizedName() + ".tooltip.1",
-                "Needs a screwdriver or circuit programming tool"));
+            StatCollector.translateToLocalFormatted(
+                "GT5U.item.programmed_circuit.tooltip.0",
+                getConfigurationString(getDamage(aStack))));
+        aList.add(StatCollector.translateToLocal("GT5U.item.programmed_circuit.tooltip.1"));
+        aList.add(StatCollector.translateToLocal("GT5U.item.programmed_circuit.tooltip.2"));
     }
 
     @Override

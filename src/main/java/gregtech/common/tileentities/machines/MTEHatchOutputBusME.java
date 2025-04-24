@@ -219,14 +219,15 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus implements IPowerChan
     }
 
     @Override
-    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
+        ItemStack aTool) {
         if (!getBaseMetaTileEntity().getCoverAtSide(side)
             .isGUIClickable()) return;
     }
 
     @Override
     public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
-        float aX, float aY, float aZ) {
+        float aX, float aY, float aZ, ItemStack aTool) {
         additionalConnection = !additionalConnection;
         updateValidGridProxySides();
         aPlayer.addChatComponentMessage(
@@ -295,6 +296,17 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus implements IPowerChan
     @Override
     public boolean isActive() {
         return getProxy() != null && getProxy().isActive();
+    }
+
+    @Override
+    public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
+        ItemStack aStack) {
+        return false;
+    }
+
+    @Override
+    public boolean pushOutputInventory() {
+        return false;
     }
 
     @Override
@@ -563,16 +575,21 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus implements IPowerChan
     public String[] getInfoData() {
         List<String> ss = new ArrayList<>();
         ss.add(
-            "The bus is " + ((getProxy() != null && getProxy().isActive()) ? EnumChatFormatting.GREEN + "online"
-                : EnumChatFormatting.RED + "offline" + getAEDiagnostics()) + EnumChatFormatting.RESET);
+            (getProxy() != null && getProxy().isActive())
+                ? StatCollector.translateToLocal("GT5U.infodata.hatch.crafting_input_me.bus.online")
+                : StatCollector.translateToLocalFormatted(
+                    "GT5U.infodata.hatch.crafting_input_me.bus.offline",
+                    getAEDiagnostics()));
         ss.add(
-            "Item cache capacity: " + EnumChatFormatting.GOLD
-                + GTUtility.formatNumbers(getCacheCapacity())
-                + EnumChatFormatting.RESET);
+            StatCollector.translateToLocalFormatted(
+                "GT5U.infodata.hatch.output_bus_me.cache_capacity",
+                EnumChatFormatting.GOLD + GTUtility.formatNumbers(getCacheCapacity()) + EnumChatFormatting.RESET));
         if (itemCache.isEmpty()) {
-            ss.add("The bus has no cached items");
+            ss.add(StatCollector.translateToLocal("GT5U.infodata.hatch.output_bus_me.empty"));
         } else {
-            ss.add(String.format("The bus contains %d cached stacks: ", itemCache.size()));
+            ss.add(
+                StatCollector
+                    .translateToLocalFormatted("GT5U.infodata.hatch.output_bus_me.contains", itemCache.size()));
             int counter = 0;
             for (IAEItemStack s : itemCache) {
                 ss.add(

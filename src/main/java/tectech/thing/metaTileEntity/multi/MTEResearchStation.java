@@ -540,8 +540,9 @@ public class MTEResearchStation extends TTMultiblockBase implements ISurvivalCon
     }
 
     @Override
-    public final void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        super.onScrewdriverRightClick(side, aPlayer, aX, aY, aZ);
+    public final void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
+        ItemStack aTool) {
+        super.onScrewdriverRightClick(side, aPlayer, aX, aY, aZ, aTool);
         switch (machineType) {
             case scanner -> machineType = assembly;
             case assembly -> machineType = scanner;

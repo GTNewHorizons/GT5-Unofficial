@@ -12,13 +12,13 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_TOWER_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_TOWER_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_TOWER_GLOW;
+import static gregtech.api.util.GTStructureUtility.ofAnyWater;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
-import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -111,7 +111,7 @@ public class MTEPurificationUnitClarifier extends MTEPurificationUnitBase<MTEPur
         .addElement('B', ofBlock(GregTechAPI.sBlockCasings8, 1))
         .addElement('C', ofFrame(Materials.Iridium))
         .addElement('D', ofFrame(Materials.DamascusSteel))
-        .addElement('W', ofChain(ofBlock(Blocks.water, 0)))
+        .addElement('W', ofAnyWater(false))
         // Filter machine casing
         .addElement('F', ofBlock(GregTechAPI.sBlockCasings3, 11))
         .build();

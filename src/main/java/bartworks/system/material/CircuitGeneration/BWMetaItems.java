@@ -29,6 +29,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.IIcon;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.FluidStack;
 
 import bartworks.MainMod;
@@ -164,18 +165,20 @@ public class BWMetaItems {
                 ItemStack tagStack = CircuitImprintLoader.getStackFromTag(aStack.getTagCompound());
                 String itemName = tagStack != null
                     ? GTLanguageManager.getTranslation(GTLanguageManager.getTranslateableItemStackName(tagStack))
-                    : "a circuit";
+                    : StatCollector.translateToLocal("tooltip.bw.item.circuit.tagged");
 
                 if (aStack.getItemDamage() == 0) {
-                    aList.add("An imprint for: " + itemName);
+                    aList.add(
+                        StatCollector.translateToLocalFormatted("tooltip.bw.item.circuit.tagged.imprint", itemName));
                 } else if (aStack.getItemDamage() == 1) {
-                    aList.add("A sliced " + itemName);
+                    aList.add(
+                        StatCollector.translateToLocalFormatted("tooltip.bw.item.circuit.tagged.sliced", itemName));
                 }
             } else {
                 if (aStack.getItemDamage() == 0) {
-                    aList.add("An imprint for a Circuit");
+                    aList.add(StatCollector.translateToLocal("tooltip.bw.item.circuit.imprint"));
                 } else if (aStack.getItemDamage() == 1) {
-                    aList.add("A sliced Circuit");
+                    aList.add(StatCollector.translateToLocal("tooltip.bw.item.circuit.sliced"));
                 }
             }
 

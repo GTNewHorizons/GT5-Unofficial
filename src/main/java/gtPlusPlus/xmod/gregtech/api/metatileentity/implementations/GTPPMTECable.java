@@ -94,7 +94,7 @@ public class GTPPMTECable extends MTECable implements IMetaTileEntityCable {
         if (!mInsulated) return new ITexture[] { TextureFactory
             .of(wireMaterial.mIconSet.mTextures[TextureSet.INDEX_wire], Dyes.getModulation(aColorIndex, vRGB)) };
         if (aConnected) {
-            float tThickNess = getThickNess();
+            float tThickNess = getThickness();
             if (tThickNess < 0.124F) return new ITexture[] { TextureFactory.of(
                 Textures.BlockIcons.INSULATION_FULL,
                 Dyes.getModulation(aColorIndex, Dyes.CABLE_INSULATION.mRGBa)) };

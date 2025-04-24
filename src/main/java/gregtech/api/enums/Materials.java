@@ -32,6 +32,7 @@ import gregtech.api.interfaces.IColorModulationContainer;
 import gregtech.api.interfaces.IMaterialHandler;
 import gregtech.api.interfaces.ISubTagContainer;
 import gregtech.api.objects.MaterialStack;
+import gregtech.api.util.CustomGlyphs;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gregtech.common.config.Gregtech;
@@ -420,7 +421,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials Antimatter;
     public static Materials Protomatter;
     public static Materials AdvancedGlue;
-    public static Materials BioFuel;
     public static Materials Biomass;
     public static Materials CharcoalByproducts;
     public static Materials Cheese;
@@ -1043,7 +1043,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         setByProducts();
         setColors();
 
-        overrideChemicalFormulars();
+        overrideChemicalFormulas();
     }
 
     public final short[] mRGBa = new short[] { 255, 255, 255, 0 }, mMoltenRGBa = new short[] { 255, 255, 255, 0 };
@@ -1921,7 +1921,11 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         Naquadria.mMoltenRGBa[3] = 0;
     }
 
-    private static void overrideChemicalFormulars() {
+    private static void overrideChemicalFormulas() {
+        InfusedAir.mChemicalFormula = CustomGlyphs.AIR;
+        InfusedEarth.mChemicalFormula = CustomGlyphs.EARTH;
+        InfusedFire.mChemicalFormula = CustomGlyphs.FIRE;
+        InfusedWater.mChemicalFormula = CustomGlyphs.WATER;
         Glue.mChemicalFormula = "No Horses were harmed for the Production";
         AdvancedGlue.mChemicalFormula = "A chemically approved glue!";
         UUAmplifier.mChemicalFormula = "Accelerates the Mass Fabricator";

@@ -2,10 +2,12 @@ package gregtech.common.modularui2.panel;
 
 import org.jetbrains.annotations.NotNull;
 
+import com.cleanroommc.modularui.api.ITheme;
 import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.theme.WidgetTheme;
 import com.cleanroommc.modularui.widgets.ButtonWidget;
 
-import gregtech.api.modularui2.GTGuiTextures;
+import gregtech.api.modularui2.GTWidgetThemes;
 
 /**
  * GT themed popup panel.
@@ -19,8 +21,12 @@ public class GTPopUpPanel extends ModularPanel {
         super(name);
         this.disablePanelsBelow = disablePanelsBelow;
         this.closeOnOutOfBoundsClick = closeOnOutOfBoundsClick;
-        background(GTGuiTextures.BACKGROUND_POPUP);
         child(ButtonWidget.panelCloseButton());
+    }
+
+    @Override
+    public WidgetTheme getWidgetThemeInternal(ITheme theme) {
+        return theme.getWidgetTheme(GTWidgetThemes.BACKGROUND_POPUP);
     }
 
     @Override
