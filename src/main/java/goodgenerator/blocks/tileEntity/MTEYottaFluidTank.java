@@ -2,6 +2,7 @@ package goodgenerator.blocks.tileEntity;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static goodgenerator.util.CharExchanger.formatNumber;
+import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 import static gregtech.api.util.GTStructureUtility.*;
 import static java.lang.String.valueOf;
 import static net.minecraft.util.StatCollector.translateToLocal;
@@ -31,7 +32,10 @@ import com.gtnewhorizon.structurelib.structure.IStructureElement;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.gtnewhorizons.modularui.api.NumberFormatMUI;
+import com.gtnewhorizons.modularui.api.drawable.IDrawable;
+import com.gtnewhorizons.modularui.api.drawable.UITexture;
 import com.gtnewhorizons.modularui.api.math.Alignment;
+import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
 import com.gtnewhorizons.modularui.common.widget.DynamicPositionedColumn;
 import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
@@ -39,6 +43,7 @@ import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
 import goodgenerator.blocks.tileEntity.GTMetaTileEntity.MTEYOTTAHatch;
 import goodgenerator.blocks.tileEntity.base.MTETooltipMultiBlockBaseEM;
+import goodgenerator.client.GUI.GGUITextures;
 import goodgenerator.loader.Loaders;
 import goodgenerator.util.DescTextLocalization;
 import gregtech.api.enums.Materials;
@@ -55,6 +60,8 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.LongRunningAverage;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import tectech.TecTech;
+import tectech.thing.gui.TecTechUITextures;
 import tectech.thing.metaTileEntity.multi.base.INameFunction;
 import tectech.thing.metaTileEntity.multi.base.IStatusFunction;
 import tectech.thing.metaTileEntity.multi.base.LedStatus;
@@ -722,48 +729,53 @@ public class MTEYottaFluidTank extends MTETooltipMultiBlockBaseEM implements ICo
             .widget(new FakeSyncWidget.BooleanSyncer(() -> isFluidLocked, val -> isFluidLocked = val))
             .widget(new FakeSyncWidget.BooleanSyncer(() -> voidExcessEnabled, val -> voidExcessEnabled = val));
     }
-    //
-    // @Override
-    // protected ButtonWidget createSafeVoidButton() {
-    // return (ButtonWidget) new ButtonWidget().setOnClick((clickData, widget) -> {
-    // TecTech.proxy.playSound(getBaseMetaTileEntity(), "fx_click");
-    // voidExcessEnabled = !voidExcessEnabled;
-    // })
-    // .setPlayClickSound(false)
-    // .setBackground(() -> {
-    // List<UITexture> ret = new ArrayList<>();
-    // ret.add(TecTechUITextures.BUTTON_STANDARD_16x16);
-    // ret.add(
-    // voidExcessEnabled ? TecTechUITextures.OVERLAY_BUTTON_SAFE_VOID_ON
-    // : TecTechUITextures.OVERLAY_BUTTON_SAFE_VOID_OFF);
-    // return ret.toArray(new IDrawable[0]);
-    // })
-    // .setPos(174, doesBindPlayerInventory() ? 132 : 156)
-    // .setSize(16, 16)
-    // .addTooltip(StatCollector.translateToLocal("gui.YOTTank.button.void"))
-    // .setTooltipShowUpDelay(TOOLTIP_DELAY);
-    // }
-    //
-    // @Override
-    // protected ButtonWidget createPowerPassButton() {
-    // return (ButtonWidget) new ButtonWidget().setOnClick((clickData, widget) -> {
-    // TecTech.proxy.playSound(getBaseMetaTileEntity(), "fx_click");
-    // isFluidLocked = !isFluidLocked;
-    // if (!widget.getContext()
-    // .isClient()) mLockedFluid = isFluidLocked ? mFluid : null;
-    // })
-    // .setPlayClickSound(false)
-    // .setBackground(() -> {
-    // List<UITexture> ret = new ArrayList<>();
-    // ret.add(TecTechUITextures.BUTTON_STANDARD_16x16);
-    // ret.add(isFluidLocked ? GGUITextures.OVERLAY_BUTTON_LOCK_ON : GGUITextures.OVERLAY_BUTTON_LOCK_OFF);
-    // return ret.toArray(new IDrawable[0]);
-    // })
-    // .setPos(174, doesBindPlayerInventory() ? 116 : 140)
-    // .setSize(16, 16)
-    // .addTooltip(StatCollector.translateToLocal("gui.YOTTank.button.locking"))
-    // .setTooltipShowUpDelay(TOOLTIP_DELAY);
-    // }
+
+    @Override
+    protected ButtonWidget createSafeVoidButton() {
+        return (ButtonWidget) new ButtonWidget().setOnClick((clickData, widget) -> {
+            TecTech.proxy.playSound(getBaseMetaTileEntity(), "fx_click");
+            voidExcessEnabled = !voidExcessEnabled;
+        })
+            .setPlayClickSound(false)
+            .setBackground(() -> {
+                List<UITexture> ret = new ArrayList<>();
+                ret.add(TecTechUITextures.BUTTON_STANDARD_16x16);
+                ret.add(
+                    voidExcessEnabled ? TecTechUITextures.OVERLAY_BUTTON_SAFE_VOID_ON
+                        : TecTechUITextures.OVERLAY_BUTTON_SAFE_VOID_OFF);
+                return ret.toArray(new IDrawable[0]);
+            })
+            .setPos(174, doesBindPlayerInventory() ? 132 : 156)
+            .setSize(16, 16)
+            .addTooltip(StatCollector.translateToLocal("gui.YOTTank.button.void"))
+            .setTooltipShowUpDelay(TOOLTIP_DELAY);
+    }
+
+    @Override
+    protected ButtonWidget createPowerPassButton() {
+        return (ButtonWidget) new ButtonWidget().setOnClick((clickData, widget) -> {
+            TecTech.proxy.playSound(getBaseMetaTileEntity(), "fx_click");
+            isFluidLocked = !isFluidLocked;
+            if (!widget.getContext()
+                .isClient()) mLockedFluid = isFluidLocked ? mFluid : null;
+        })
+            .setPlayClickSound(false)
+            .setBackground(() -> {
+                List<UITexture> ret = new ArrayList<>();
+                ret.add(TecTechUITextures.BUTTON_STANDARD_16x16);
+                ret.add(isFluidLocked ? GGUITextures.OVERLAY_BUTTON_LOCK_ON : GGUITextures.OVERLAY_BUTTON_LOCK_OFF);
+                return ret.toArray(new IDrawable[0]);
+            })
+            .setPos(174, doesBindPlayerInventory() ? 116 : 140)
+            .setSize(16, 16)
+            .addTooltip(StatCollector.translateToLocal("gui.YOTTank.button.locking"))
+            .setTooltipShowUpDelay(TOOLTIP_DELAY);
+    }
+
+    @Override
+    public boolean forceUseMui2() {
+        return true;
+    }
 
     @Override
     public boolean getDefaultHasMaintenanceChecks() {

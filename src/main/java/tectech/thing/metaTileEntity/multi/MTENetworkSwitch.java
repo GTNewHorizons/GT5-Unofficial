@@ -289,4 +289,9 @@ public class MTENetworkSwitch extends TTMultiblockBase implements ISurvivalConst
     public String[] getStructureDescription(ItemStack stackSize) {
         return description;
     }
+
+    @Override
+    public boolean forceUseMui2() {
+        return true;
+    }
 }

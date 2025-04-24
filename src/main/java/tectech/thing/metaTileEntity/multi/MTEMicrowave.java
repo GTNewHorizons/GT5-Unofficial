@@ -328,4 +328,9 @@ public class MTEMicrowave extends TTMultiblockBase implements ISurvivalConstruct
     public boolean isSafeVoidButtonEnabled() {
         return false;
     }
+
+    @Override
+    public boolean forceUseMui2() {
+        return true;
+    }
 }

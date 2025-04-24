@@ -9,6 +9,7 @@ import static gregtech.api.enums.HatchElement.Muffler;
 import static gregtech.api.enums.HatchElement.OutputBus;
 import static gregtech.api.enums.HatchElement.OutputHatch;
 import static gregtech.api.enums.Mods.GregTech;
+import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 import static gregtech.api.util.GTUtility.filterValidMTEs;
 import static gregtech.api.util.GTUtility.validMTEList;
 import static java.lang.Math.min;
@@ -42,6 +43,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
 import org.jetbrains.annotations.NotNull;
+import org.lwjgl.opengl.GL11;
 
 import com.cleanroommc.modularui.api.IGuiHolder;
 import com.cleanroommc.modularui.api.IPanelHandler;
@@ -81,11 +83,20 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.IStructureElement;
 import com.gtnewhorizon.structurelib.util.Vec3Impl;
 import com.gtnewhorizons.modularui.api.NumberFormatMUI;
+import com.gtnewhorizons.modularui.api.drawable.IDrawable;
+import com.gtnewhorizons.modularui.api.math.Color;
 import com.gtnewhorizons.modularui.api.math.Pos2d;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
+import com.gtnewhorizons.modularui.api.widget.Widget;
 import com.gtnewhorizons.modularui.common.internal.network.NetworkUtils;
+import com.gtnewhorizons.modularui.common.internal.wrapper.BaseSlot;
 import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
+import com.gtnewhorizons.modularui.common.widget.DynamicPositionedColumn;
+import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
+import com.gtnewhorizons.modularui.common.widget.Scrollable;
+import com.gtnewhorizons.modularui.common.widget.SlotWidget;
+import com.gtnewhorizons.modularui.common.widget.textfield.NumericWidget;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -94,9 +105,11 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.StructureError;
 import gregtech.api.enums.Textures;
+import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.modularui.IBindPlayerInventoryUI;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.BaseTileEntity;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
@@ -135,7 +148,7 @@ import tectech.util.CommonValues;
  * Created by danie_000 on 27.10.2016.
  */
 public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TTMultiblockBase>
-    implements IAlignment, IGuiHolder<PosGuiData> {
+    implements IAlignment, IGuiHolder<PosGuiData>, IBindPlayerInventoryUI {
     // region Client side variables (static - one per class)
 
     // Front icon holders - static so it is default one for my blocks
@@ -2228,20 +2241,7 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
         return true;
     }
 
-    @Override
-    public void addGregTechLogo(ModularWindow.Builder builder) {
-        builder.widget(
-            new DrawableWidget().setDrawable(TecTechUITextures.PICTURE_TECTECH_LOGO_DARK)
-                .setSize(18, 18)
-                .setPos(173, 74));
-    }
-
     private static byte LEDCounter = 0;
-
-    @Override
-    public boolean forceUseMui2() {
-        return true;
-    }
 
     @Override
     public ModularPanel buildUI(PosGuiData guiData, PanelSyncManager syncManager) {
@@ -2442,7 +2442,15 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
         powerSwitchButton.pos(173, doesBindPlayerInventory() ? 109 + 18 * 2 : 133 + 18 * 2)
             .size(18, 18);
         panel.child(powerSwitchButton);
+        addGregtechLogo(panel);
         return panel;
+    }
+
+    private void addGregtechLogo(ModularPanel panel) {
+        panel.child(
+            new SingleChildWidget<>().overlay(UITexture.fullImage(MODID, "gui/picture/tectech_logo_dark"))
+                .size(18, 18)
+                .pos(190 - 18 - 2, doesBindPlayerInventory() ? 91 - 18 - 2 : 171 - 18 - 2));
     }
 
     private ModularPanel getParameterPanel(ModularPanel parent) {
@@ -2784,6 +2792,405 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
         @Override
         public boolean areEqual(@NotNull CheckRecipeResult t1, @NotNull CheckRecipeResult t2) {
             return false;
+        }
+    }
+
+    @Override
+    public void addGregTechLogo(ModularWindow.Builder builder) {
+        builder.widget(
+            new DrawableWidget().setDrawable(TecTechUITextures.PICTURE_TECTECH_LOGO_DARK)
+                .setSize(18, 18)
+                .setPos(173, 74));
+    }
+
+    @Override
+    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
+        if (doesBindPlayerInventory()) {
+            builder.widget(
+                new DrawableWidget().setDrawable(TecTechUITextures.BACKGROUND_SCREEN_BLUE)
+                    .setPos(4, 4)
+                    .setSize(190, 91));
+        } else {
+            builder.widget(
+                new DrawableWidget().setDrawable(TecTechUITextures.BACKGROUND_SCREEN_BLUE_NO_INVENTORY)
+                    .setPos(4, 4)
+                    .setSize(190, 171));
+        }
+        final SlotWidget inventorySlot = new SlotWidget(new BaseSlot(inventoryHandler, 1) {
+
+            @Override
+            public int getSlotStackLimit() {
+                return getInventoryStackLimit();
+            }
+        });
+        if (doesBindPlayerInventory()) {
+            builder
+                .widget(
+                    inventorySlot.setBackground(getGUITextureSet().getItemSlot(), TecTechUITextures.OVERLAY_SLOT_MESH)
+                        .setPos(173, 167))
+                .widget(
+                    new DrawableWidget().setDrawable(TecTechUITextures.PICTURE_HEAT_SINK_SMALL)
+                        .setPos(173, 185)
+                        .setSize(18, 6));
+        }
+
+        final DynamicPositionedColumn screenElements = new DynamicPositionedColumn();
+        drawTexts(screenElements, inventorySlot);
+        builder.widget(
+            new Scrollable().setVerticalScroll()
+                .widget(screenElements)
+                .setPos(10, 7)
+                .setSize(182, doesBindPlayerInventory() ? 79 : 165));
+
+        Widget powerPassButton = createPowerPassButton();
+        builder.widget(powerPassButton)
+            .widget(new FakeSyncWidget.BooleanSyncer(() -> ePowerPass, val -> ePowerPass = val))
+            .widget(new FakeSyncWidget.BooleanSyncer(() -> ePowerPassCover, val -> ePowerPassCover = val));
+        Widget safeVoidButton = createSafeVoidButton();
+        builder.widget(safeVoidButton)
+            .widget(new FakeSyncWidget.BooleanSyncer(() -> eSafeVoid, val -> eSafeVoid = val));
+        Widget powerSwitchButton = createPowerSwitchButton();
+        builder.widget(powerSwitchButton)
+            .widget(new FakeSyncWidget.BooleanSyncer(() -> getBaseMetaTileEntity().isAllowedToWork(), val -> {
+                if (val) getBaseMetaTileEntity().enableWorking();
+                else getBaseMetaTileEntity().disableWorking();
+            }));
+
+        builder.widget(new DrawableWidget() {
+
+            @Override
+            public void draw(float partialTicks) {
+                super.draw(partialTicks);
+                LEDCounter = (byte) ((1 + LEDCounter) % 6);
+            }
+        }.setDrawable(TecTechUITextures.PICTURE_PARAMETER_BLANK)
+            .setPos(5, doesBindPlayerInventory() ? 96 : 176)
+            .setSize(166, 12));
+        for (int hatch = 0; hatch < 10; hatch++) {
+            for (int param = 0; param < 2; param++) {
+                int ledID = hatch + param * 10;
+                buildContext
+                    .addSyncedWindow(LED_WINDOW_BASE_ID + ledID, (player) -> createLEDConfigurationWindow(ledID));
+                addParameterLED(builder, hatch, param, true);
+                addParameterLED(builder, hatch, param, false);
+            }
+        }
+
+        if (doesBindPlayerInventory()) {
+            builder.widget(
+                new DrawableWidget().setDrawable(TecTechUITextures.PICTURE_UNCERTAINTY_MONITOR_MULTIMACHINE)
+                    .setPos(173, 96)
+                    .setSize(18, 18));
+            for (int i = 0; i < 9; i++) {
+                final int index = i;
+                builder.widget(new DrawableWidget().setDrawable(() -> {
+                    com.gtnewhorizons.modularui.api.drawable.UITexture valid = TecTechUITextures.PICTURE_UNCERTAINTY_VALID[index];
+                    com.gtnewhorizons.modularui.api.drawable.UITexture invalid = TecTechUITextures.PICTURE_UNCERTAINTY_INVALID[index];
+                    switch (eCertainMode) {
+                        case 1: // ooo oxo ooo
+                            if (index == 4) return eCertainStatus == 0 ? valid : invalid;
+                            break;
+                        case 2: // ooo xox ooo
+                            if (index == 3) return (eCertainStatus & 1) == 0 ? valid : invalid;
+                            if (index == 5) return (eCertainStatus & 2) == 0 ? valid : invalid;
+                            break;
+                        case 3: // oxo xox oxo
+                            if (index == 1) return (eCertainStatus & 1) == 0 ? valid : invalid;
+                            if (index == 3) return (eCertainStatus & 2) == 0 ? valid : invalid;
+                            if (index == 5) return (eCertainStatus & 4) == 0 ? valid : invalid;
+                            if (index == 7) return (eCertainStatus & 8) == 0 ? valid : invalid;
+                            break;
+                        case 4: // xox ooo xox
+                            if (index == 0) return (eCertainStatus & 1) == 0 ? valid : invalid;
+                            if (index == 2) return (eCertainStatus & 2) == 0 ? valid : invalid;
+                            if (index == 6) return (eCertainStatus & 4) == 0 ? valid : invalid;
+                            if (index == 8) return (eCertainStatus & 8) == 0 ? valid : invalid;
+                            break;
+                        case 5: // xox oxo xox
+                            if (index == 0) return (eCertainStatus & 1) == 0 ? valid : invalid;
+                            if (index == 2) return (eCertainStatus & 2) == 0 ? valid : invalid;
+                            if (index == 4) return (eCertainStatus & 4) == 0 ? valid : invalid;
+                            if (index == 6) return (eCertainStatus & 8) == 0 ? valid : invalid;
+                            if (index == 8) return (eCertainStatus & 16) == 0 ? valid : invalid;
+                            break;
+                    }
+                    return null;
+                })
+                    .setPos(174 + (index % 3) * 6, 97 + (index / 3) * 6)
+                    .setSize(4, 4));
+            }
+            builder.widget(new FakeSyncWidget.ByteSyncer(() -> eCertainMode, val -> eCertainMode = val))
+                .widget(new FakeSyncWidget.ByteSyncer(() -> eCertainStatus, val -> eCertainStatus = val));
+        }
+    }
+
+    protected com.gtnewhorizons.modularui.common.widget.ButtonWidget createPowerPassButton() {
+        Widget button = new com.gtnewhorizons.modularui.common.widget.ButtonWidget().setOnClick((clickData, widget) -> {
+            if (isPowerPassButtonEnabled() || ePowerPassCover) {
+                TecTech.proxy.playSound(getBaseMetaTileEntity(), "fx_click");
+                ePowerPass = !ePowerPass;
+                if (!isAllowedToWorkButtonEnabled()) { // TRANSFORMER HACK
+                    if (ePowerPass) {
+                        getBaseMetaTileEntity().enableWorking();
+                    } else {
+                        getBaseMetaTileEntity().disableWorking();
+                    }
+                }
+            }
+        })
+            .setPlayClickSound(false)
+            .setBackground(() -> {
+                List<com.gtnewhorizons.modularui.api.drawable.UITexture> ret = new ArrayList<>();
+                ret.add(TecTechUITextures.BUTTON_STANDARD_16x16);
+                if (!isPowerPassButtonEnabled() && !ePowerPassCover) {
+                    ret.add(TecTechUITextures.OVERLAY_BUTTON_POWER_PASS_DISABLED);
+                } else {
+                    if (ePowerPass) {
+                        ret.add(TecTechUITextures.OVERLAY_BUTTON_POWER_PASS_ON);
+                    } else {
+                        ret.add(TecTechUITextures.OVERLAY_BUTTON_POWER_PASS_OFF);
+                    }
+                }
+                return ret.toArray(new IDrawable[0]);
+            })
+            .setPos(174, doesBindPlayerInventory() ? 116 : 140)
+            .setSize(16, 16);
+        if (isPowerPassButtonEnabled()) {
+            button.addTooltip("Power Pass")
+                .setTooltipShowUpDelay(TOOLTIP_DELAY);
+        }
+        return (com.gtnewhorizons.modularui.common.widget.ButtonWidget) button;
+    }
+
+    protected com.gtnewhorizons.modularui.common.widget.ButtonWidget createSafeVoidButton() {
+        Widget button = new com.gtnewhorizons.modularui.common.widget.ButtonWidget().setOnClick((clickData, widget) -> {
+            if (isSafeVoidButtonEnabled()) {
+                TecTech.proxy.playSound(getBaseMetaTileEntity(), "fx_click");
+                eSafeVoid = !eSafeVoid;
+            }
+        })
+            .setPlayClickSound(false)
+            .setBackground(() -> {
+                List<com.gtnewhorizons.modularui.api.drawable.UITexture> ret = new ArrayList<>();
+                ret.add(TecTechUITextures.BUTTON_STANDARD_16x16);
+                if (!isSafeVoidButtonEnabled()) {
+                    ret.add(TecTechUITextures.OVERLAY_BUTTON_SAFE_VOID_DISABLED);
+                } else {
+                    if (eSafeVoid) {
+                        ret.add(TecTechUITextures.OVERLAY_BUTTON_SAFE_VOID_ON);
+                    } else {
+                        ret.add(TecTechUITextures.OVERLAY_BUTTON_SAFE_VOID_OFF);
+                    }
+                }
+                return ret.toArray(new IDrawable[0]);
+            })
+            .setPos(174, doesBindPlayerInventory() ? 132 : 156)
+            .setSize(16, 16);
+        if (isSafeVoidButtonEnabled()) {
+            button.addTooltip("Safe Void")
+                .setTooltipShowUpDelay(TOOLTIP_DELAY);
+        }
+        return (com.gtnewhorizons.modularui.common.widget.ButtonWidget) button;
+    }
+
+    protected com.gtnewhorizons.modularui.common.widget.ButtonWidget createPowerSwitchButton() {
+        Widget button = new com.gtnewhorizons.modularui.common.widget.ButtonWidget().setOnClick((clickData, widget) -> {
+            if (isAllowedToWorkButtonEnabled()) {
+                TecTech.proxy.playSound(getBaseMetaTileEntity(), "fx_click");
+                if (getBaseMetaTileEntity().isAllowedToWork()) {
+                    getBaseMetaTileEntity().disableWorking();
+                } else {
+                    getBaseMetaTileEntity().enableWorking();
+                }
+            }
+        })
+            .setPlayClickSound(false)
+            .setBackground(() -> {
+                List<com.gtnewhorizons.modularui.api.drawable.UITexture> ret = new ArrayList<>();
+                ret.add(TecTechUITextures.BUTTON_STANDARD_16x16);
+                if (!isAllowedToWorkButtonEnabled()) {
+                    ret.add(TecTechUITextures.OVERLAY_BUTTON_POWER_SWITCH_DISABLED);
+                } else {
+                    if (getBaseMetaTileEntity().isAllowedToWork()) {
+                        ret.add(TecTechUITextures.OVERLAY_BUTTON_POWER_SWITCH_ON);
+                    } else {
+                        ret.add(TecTechUITextures.OVERLAY_BUTTON_POWER_SWITCH_OFF);
+                    }
+                }
+                return ret.toArray(new IDrawable[0]);
+            })
+            .setPos(174, doesBindPlayerInventory() ? 148 : 172)
+            .setSize(16, 16);
+        if (isAllowedToWorkButtonEnabled()) {
+            button.addTooltip("Power Switch")
+                .setTooltipShowUpDelay(TOOLTIP_DELAY);
+        }
+        return (com.gtnewhorizons.modularui.common.widget.ButtonWidget) button;
+    }
+
+    private ModularWindow createLEDConfigurationWindow(int ledID) {
+        return ModularWindow.builder(100, 40)
+            .setBackground(TecTechUITextures.BACKGROUND_SCREEN_BLUE)
+            .setPos(
+                (screenSize, mainWindow) -> new Pos2d(
+                    (screenSize.width / 2 - mainWindow.getSize().width / 2) - 110,
+                    (screenSize.height / 2 - mainWindow.getSize().height / 2)))
+            .widget(
+                com.gtnewhorizons.modularui.common.widget.ButtonWidget.closeWindowButton(true)
+                    .setPos(85, 3))
+            .widget(
+                new NumericWidget().setGetter(() -> parametrization.iParamsIn[ledID])
+                    .setSetter(val -> parametrization.iParamsIn[ledID] = val)
+                    .setIntegerOnly(false)
+                    .modifyNumberFormat(format -> format.setMaximumFractionDigits(8))
+                    .setTextColor(Color.LIGHT_BLUE.normal)
+                    .setTextAlignment(com.gtnewhorizons.modularui.api.math.Alignment.CenterLeft)
+                    .setFocusOnGuiOpen(true)
+                    .setBackground(GTUITextures.BACKGROUND_TEXT_FIELD)
+                    .setPos(5, 20)
+                    .setSize(90, 15))
+            .widget(
+                new com.gtnewhorizons.modularui.common.widget.TextWidget((ledID % 10) + ":" + (ledID / 10) + ":I")
+                    .setDefaultColor(Color.WHITE.normal)
+                    .setTextAlignment(com.gtnewhorizons.modularui.api.math.Alignment.Center)
+                    .setPos(5, 5))
+            .build();
+    }
+
+    private void addParameterLED(ModularWindow.Builder builder, int hatch, int param, boolean input) {
+        final int parameterIndex = hatch + param * 10;
+        final int posIndex = hatch * 2 + param;
+        com.gtnewhorizons.modularui.common.widget.ButtonWidget ledWidget = new com.gtnewhorizons.modularui.common.widget.ButtonWidget() {
+
+            @Override
+            public void draw(float partialTicks) {
+                IDrawable texture = null;
+                final LedStatus status = input ? parametrization.eParamsInStatus[parameterIndex]
+                    : parametrization.eParamsOutStatus[parameterIndex];
+                switch (status) {
+                    case STATUS_WTF: {
+                        int c = LEDCounter;
+                        if (c > 4) {
+                            c = TecTech.RANDOM.nextInt(5);
+                        }
+                        switch (c) {
+                            case 0:
+                                texture = TecTechUITextures.PICTURE_PARAMETER_BLUE[posIndex];
+                                break;
+                            case 1:
+                                texture = TecTechUITextures.PICTURE_PARAMETER_CYAN[posIndex];
+                                break;
+                            case 2:
+                                texture = TecTechUITextures.PICTURE_PARAMETER_GREEN[posIndex];
+                                break;
+                            case 3:
+                                texture = TecTechUITextures.PICTURE_PARAMETER_ORANGE[posIndex];
+                                break;
+                            case 4:
+                                texture = TecTechUITextures.PICTURE_PARAMETER_RED[posIndex];
+                                break;
+                        }
+                        break;
+                    }
+                    case STATUS_WRONG: // fallthrough
+                        if (LEDCounter < 2) {
+                            texture = TecTechUITextures.PICTURE_PARAMETER_BLUE[posIndex];
+                            break;
+                        } else if (LEDCounter < 4) {
+                            texture = TecTechUITextures.PICTURE_PARAMETER_RED[posIndex];
+                            break;
+                        }
+                    case STATUS_OK: // ok
+                        texture = TecTechUITextures.PICTURE_PARAMETER_GREEN[posIndex];
+                        break;
+                    case STATUS_TOO_LOW: // too low blink
+                        if (LEDCounter < 3) {
+                            texture = TecTechUITextures.PICTURE_PARAMETER_BLUE[posIndex];
+                            break;
+                        }
+                    case STATUS_LOW: // too low
+                        texture = TecTechUITextures.PICTURE_PARAMETER_CYAN[posIndex];
+                        break;
+                    case STATUS_TOO_HIGH: // too high blink
+                        if (LEDCounter < 3) {
+                            texture = TecTechUITextures.PICTURE_PARAMETER_RED[posIndex];
+                            break;
+                        }
+                    case STATUS_HIGH: // too high
+                        texture = TecTechUITextures.PICTURE_PARAMETER_ORANGE[posIndex];
+                        break;
+                    case STATUS_NEUTRAL:
+                        if (LEDCounter < 3) {
+                            GL11.glColor4f(.85f, .9f, .95f, .5F);
+                        } else {
+                            GL11.glColor4f(.8f, .9f, 1f, .5F);
+                        }
+                        texture = TecTechUITextures.PICTURE_PARAMETER_GRAY;
+                        break;
+                    case STATUS_UNDEFINED:
+                        if (LEDCounter < 3) {
+                            GL11.glColor4f(.5f, .1f, .15f, .5F);
+                        } else {
+                            GL11.glColor4f(0f, .1f, .2f, .5F);
+                        }
+                        texture = TecTechUITextures.PICTURE_PARAMETER_GRAY;
+                        break;
+                    case STATUS_UNUSED:
+                    default:
+                        // no-op
+                        break;
+                }
+                setBackground(texture);
+                GL11.glColor4f(1f, 1f, 1f, 1f);
+            }
+        }.setOnClick((clickData, widget) -> {
+            if (!widget.isClient() && input
+                && parametrization.eParamsInStatus[parameterIndex] != LedStatus.STATUS_UNUSED) {
+                // We don't use CloseAllButMain here in case MB implementation adds their own window
+                for (int i = 0; i < parametrization.eParamsInStatus.length; i++) {
+                    if (widget.getContext()
+                        .isWindowOpen(LED_WINDOW_BASE_ID + i)) {
+                        widget.getContext()
+                            .closeWindow(LED_WINDOW_BASE_ID + i);
+                    }
+                }
+                widget.getContext()
+                    .openSyncedWindow(LED_WINDOW_BASE_ID + parameterIndex);
+            }
+        });
+        builder.widget(ledWidget.dynamicTooltip(() -> {
+            if (input) {
+                return getFullLedDescriptionIn(hatch, param);
+            } else {
+                return getFullLedDescriptionOut(hatch, param);
+            }
+        })
+            .setPos(12 + posIndex * 8, (doesBindPlayerInventory() ? 97 : 177) + (input ? 0 : 1) * 6)
+            .setSize(6, 4));
+        if (input) {
+            builder
+                .widget(
+                    new FakeSyncWidget.ByteSyncer(
+                        () -> parametrization.eParamsInStatus[parameterIndex].getOrdinalByte(),
+                        val -> parametrization.eParamsInStatus[parameterIndex] = LedStatus.getStatus(val))
+                            .setOnClientUpdate(val -> ledWidget.notifyTooltipChange()))
+                .widget(
+                    new FakeSyncWidget.DoubleSyncer(
+                        () -> parametrization.iParamsIn[parameterIndex],
+                        val -> parametrization.iParamsIn[parameterIndex] = val)
+                            .setOnClientUpdate(val -> ledWidget.notifyTooltipChange()));
+        } else {
+            builder
+                .widget(
+                    new FakeSyncWidget.ByteSyncer(
+                        () -> parametrization.eParamsOutStatus[parameterIndex].getOrdinalByte(),
+                        val -> parametrization.eParamsOutStatus[parameterIndex] = LedStatus.getStatus(val))
+                            .setOnClientUpdate(val -> ledWidget.notifyTooltipChange()))
+                .widget(
+                    new FakeSyncWidget.DoubleSyncer(
+                        () -> parametrization.iParamsOut[parameterIndex],
+                        val -> parametrization.iParamsOut[parameterIndex] = val)
+                            .setOnClientUpdate(val -> ledWidget.notifyTooltipChange()));
         }
     }
 

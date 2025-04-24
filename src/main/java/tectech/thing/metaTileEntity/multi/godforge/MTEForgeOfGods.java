@@ -834,6 +834,11 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
     }
 
     @Override
+    public boolean forceUseMui2() {
+        return false;
+    }
+
+    @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
         buildContext.addSyncedWindow(UPGRADE_TREE_WINDOW_ID, this::createUpgradeTreeWindow);
         buildContext.addSyncedWindow(INDIVIDUAL_UPGRADE_WINDOW_ID, this::createIndividualUpgradeWindow);
