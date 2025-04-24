@@ -68,6 +68,7 @@ import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.value.sync.StringSyncValue;
 import com.cleanroommc.modularui.value.sync.SyncHandlers;
 import com.cleanroommc.modularui.widget.SingleChildWidget;
+import com.cleanroommc.modularui.widget.WidgetTree;
 import com.cleanroommc.modularui.widget.sizer.Area;
 import com.cleanroommc.modularui.widgets.ButtonWidget;
 import com.cleanroommc.modularui.widgets.ItemSlot;
@@ -562,6 +563,8 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
      * instantiate parameters in CONSTRUCTOR! CALLED ONCE on creation, don't call it in your classes
      */
     protected void parametersInstantiation_EM() {}
+
+    protected void initParameters() {}
 
     /**
      * It is automatically called OFTEN update status of parameters in guis (and "machine state" if u wish) Called
@@ -2314,6 +2317,9 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
         syncManager
             .syncValue("maxProgressTime", new IntSyncValue(() -> mMaxProgresstime, val -> mMaxProgresstime = val));
 
+        StringSyncValue recipeInfoSyncer = new StringSyncValue(this::generateCurrentRecipeInfoString);
+        syncManager.syncValue("recipeInfo", recipeInfoSyncer);
+
         ListWidget<IWidget, ?> machineInfo = new ListWidget<>().size(178, 85)
             .pos(6, 3);
 
@@ -2637,14 +2643,25 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
         if (showRecipeTextInGUI()) {
             // Display current recipe
             com.cleanroommc.modularui.widgets.TextWidget recipeInfoWidget = IKey
-                .dynamic(this::generateCurrentRecipeInfoString)
+                .dynamic(() -> ((StringSyncValue) syncManager.getSyncHandler("recipeInfo:0")).getValue())
                 .asWidget();
             machineInfo.child(
                 recipeInfoWidget.marginBottom(2)
                     .setEnabledIf(
-                        widget -> (mOutputFluids != null && mOutputFluids.length > 0)
-                            || (mOutputItems != null && mOutputItems.length > 0)));
+                        widget -> (((GenericListSyncHandler<?>) syncManager.getSyncHandler("itemOutput:0")).getValue()
+                            != null
+                            && !((GenericListSyncHandler<?>) syncManager.getSyncHandler("itemOutput:0")).getValue()
+                                .isEmpty())
+                            || ((GenericListSyncHandler<?>) syncManager.getSyncHandler("fluidOutput:0")).getValue()
+                                != null
+                                && !((GenericListSyncHandler<?>) syncManager.getSyncHandler("fluidOutput:0")).getValue()
+                                    .isEmpty()));
         }
+        machineInfo.onUpdateListener((bla) -> {
+            if (NetworkUtils.isClient()) {
+                WidgetTree.resize(machineInfo);
+            }
+        });
     }
 
     protected void addTitleTextStyle(ModularPanel panel, String title) {

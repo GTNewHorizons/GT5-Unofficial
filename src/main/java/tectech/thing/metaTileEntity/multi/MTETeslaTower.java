@@ -201,7 +201,8 @@ public class MTETeslaTower extends TTMultiblockBase implements ISurvivalConstruc
         initParameters();
     }
 
-    private void initParameters() {
+    @Override
+    public void initParameters() {
         parameterMap.put(
             "hysteresisLow",
             new Parameter.DoubleParameter(

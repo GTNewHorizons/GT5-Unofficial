@@ -24,6 +24,12 @@ import net.minecraftforge.fluids.FluidStack;
 
 import org.jetbrains.annotations.NotNull;
 
+import com.cleanroommc.modularui.api.drawable.IKey;
+import com.cleanroommc.modularui.api.widget.IWidget;
+import com.cleanroommc.modularui.utils.item.ItemStackHandler;
+import com.cleanroommc.modularui.value.sync.LongSyncValue;
+import com.cleanroommc.modularui.value.sync.PanelSyncManager;
+import com.cleanroommc.modularui.widgets.ListWidget;
 import com.gtnewhorizon.structurelib.alignment.constructable.IConstructable;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
@@ -71,6 +77,7 @@ import tectech.thing.metaTileEntity.hatch.MTEHatchEnergyMulti;
 import tectech.thing.metaTileEntity.multi.base.INameFunction;
 import tectech.thing.metaTileEntity.multi.base.IStatusFunction;
 import tectech.thing.metaTileEntity.multi.base.LedStatus;
+import tectech.thing.metaTileEntity.multi.base.Parameter;
 import tectech.thing.metaTileEntity.multi.base.Parameters;
 
 public abstract class MTELargeFusionComputer extends MTETooltipMultiBlockBaseEM
@@ -153,6 +160,12 @@ public abstract class MTELargeFusionComputer extends MTETooltipMultiBlockBaseEM
         super(name);
         useLongPower = true;
         this.overclockDescriber = createOverclockDescriber();
+        initParameters();
+    }
+
+    @Override
+    protected void initParameters() {
+        parameterMap.put("batchSize", new Parameter.IntegerParameter(128, 1, 128, "batch_mode.cfgi.0"));
     }
 
     public MTELargeFusionComputer(int id, String name, String nameRegional) {
@@ -235,11 +248,16 @@ public abstract class MTELargeFusionComputer extends MTETooltipMultiBlockBaseEM
     @Override
     public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
         float aX, float aY, float aZ, ItemStack aTool) {
+        Parameter.IntegerParameter batchSizeParameter = (Parameter.IntegerParameter) parameterMap.get("batchSize");
+
         if (getMaxBatchSize() == 1) {
-            parametrization.trySetParameters(batchSetting.hatchId(), batchSetting.parameterId(), 128);
+            batchSizeParameter.setValue(batchSizeParameter.getMaxValue());
+
+            parametrization.trySetParameters(batchSetting.hatchId(), batchSetting.parameterId(), 128); // REMOVE
             GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOn"));
         } else {
-            parametrization.trySetParameters(batchSetting.hatchId(), batchSetting.parameterId(), 1);
+            batchSizeParameter.setValue(batchSizeParameter.getMinValue());
+            parametrization.trySetParameters(batchSetting.hatchId(), batchSetting.parameterId(), 1); // REMOVE
             GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOff"));
         }
         return true;
@@ -584,6 +602,41 @@ public abstract class MTELargeFusionComputer extends MTETooltipMultiBlockBaseEM
     }
 
     @Override
+    public void insertTexts(ListWidget<IWidget, ?> machineInfo, ItemStackHandler invSlot,
+        PanelSyncManager syncManager) {
+        super.insertTexts(machineInfo, invSlot, syncManager);
+
+        LongSyncValue storedEnergySyncer = new LongSyncValue(this::getEUVar, this::setEUVar);
+        LongSyncValue energyCapacitySyncer = new LongSyncValue(this::maxEUStore);
+        syncManager.syncValue("storedEnergy", storedEnergySyncer);
+        syncManager.syncValue("energyCapacity", energyCapacitySyncer);
+
+        machineInfo.child(
+            IKey.dynamic(
+                () -> StatCollector.translateToLocal("gui.LargeFusion.0") + " "
+                    + numberFormat.format(storedEnergySyncer.getValue())
+                    + " EU")
+                .asWidget()
+                .alignment(com.cleanroommc.modularui.utils.Alignment.CenterLeft)
+                .color(COLOR_TEXT_WHITE.get())
+                .widthRel(1)
+                .marginBottom(2)
+                .setEnabledIf(w -> getErrorDisplayID() == 0));
+
+        machineInfo.child(
+            IKey.dynamic(
+                () -> StatCollector.translateToLocal("gui.LargeFusion.1") + " "
+                    + numberFormat.format(energyCapacitySyncer.getValue())
+                    + " EU")
+                .asWidget()
+                .alignment(com.cleanroommc.modularui.utils.Alignment.CenterLeft)
+                .color(COLOR_TEXT_WHITE.get())
+                .widthRel(1)
+                .marginBottom(2)
+                .setEnabledIf(w -> getErrorDisplayID() == 0));
+    }
+
+    @Override
     protected void parametersInstantiation_EM() {
         batchSetting = parametrization.getGroup(9, false)
             .makeInParameter(1, 1, BATCH_SETTING_NAME, BATCH_STATUS);
@@ -592,7 +645,7 @@ public abstract class MTELargeFusionComputer extends MTETooltipMultiBlockBaseEM
     @Override
     protected int getMaxBatchSize() {
         // Batch size 1~128
-        return (int) Math.min(Math.max(batchSetting.get(), 1.0D), 128.0D);
+        return ((Parameter.IntegerParameter) parameterMap.get("batchSize")).getValue();
     }
 
     @Override
