@@ -60,11 +60,6 @@ public class MTERedstoneCircuitBlock extends MTERedstoneBase implements IRedston
     }
 
     @Override
-    public boolean hasSidedRedstoneOutputBehavior() {
-        return true;
-    }
-
-    @Override
     public boolean isEnetInput() {
         return true;
     }

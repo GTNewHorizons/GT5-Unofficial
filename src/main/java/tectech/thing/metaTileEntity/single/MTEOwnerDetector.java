@@ -125,7 +125,8 @@ public class MTEOwnerDetector extends MTETieredMachineBlock {
     }
 
     @Override
-    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
+        ItemStack aTool) {
         final String clientLocale;
         if (aPlayer instanceof EntityPlayerMPAccessor) {
             clientLocale = ((EntityPlayerMPAccessor) aPlayer).gt5u$getTranslator();
@@ -212,11 +213,6 @@ public class MTEOwnerDetector extends MTETieredMachineBlock {
     @Override
     public int maxProgresstime() {
         return 1;
-    }
-
-    @Override
-    public boolean hasSidedRedstoneOutputBehavior() {
-        return true;
     }
 
     @Override
