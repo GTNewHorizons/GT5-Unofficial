@@ -9,8 +9,8 @@ import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
 import gregtech.api.enums.GTValues;
+import gregtech.api.hazards.HazardProtection;
 import gregtech.api.recipe.RecipeMaps;
-import gregtech.api.util.GTUtility;
 import ic2.api.reactor.IReactor;
 import ic2.api.reactor.IReactorComponent;
 import ic2.core.IC2Potion;
@@ -200,7 +200,7 @@ public class ItemRadioactiveCellIC extends ItemRadioactiveCell implements IReact
     @Override
     public void onUpdate(ItemStack stack, World world, Entity entity, int slotIndex, boolean isCurrentItem) {
         if (this.sRadiation > 0 && (entity instanceof EntityLivingBase entityLiving)) {
-            if (!GTUtility.isWearingFullRadioHazmat(entityLiving)) {
+            if (!HazardProtection.isWearingFullRadioHazmat(entityLiving)) {
                 IC2Potion.radiation.applyTo(entityLiving, sRadiation * 20, sRadiation * 10);
             }
         }

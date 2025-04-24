@@ -475,12 +475,15 @@ import net.minecraft.potion.Potion;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.MathHelper;
 
+import cpw.mods.fml.common.Optional;
 import gregtech.api.GregTechAPI;
+import gregtech.api.covers.CoverPlacer;
 import gregtech.api.covers.CoverRegistry;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.Mods;
 import gregtech.api.enums.OreDictNames;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SubTag;
@@ -504,7 +507,6 @@ import gregtech.common.config.Other;
 import gregtech.common.covers.CoverArm;
 import gregtech.common.covers.CoverChest;
 import gregtech.common.covers.CoverControlsWork;
-import gregtech.common.covers.CoverControlsWorkPlacer;
 import gregtech.common.covers.CoverConveyor;
 import gregtech.common.covers.CoverCrafting;
 import gregtech.common.covers.CoverDoesWork;
@@ -525,7 +527,6 @@ import gregtech.common.covers.CoverRedstoneReceiverExternal;
 import gregtech.common.covers.CoverRedstoneReceiverInternal;
 import gregtech.common.covers.CoverRedstoneTransmitterExternal;
 import gregtech.common.covers.CoverRedstoneTransmitterInternal;
-import gregtech.common.covers.CoverScreen;
 import gregtech.common.covers.CoverShutter;
 import gregtech.common.covers.CoverSolarPanel;
 import gregtech.common.covers.CoverSteamRegulator;
@@ -542,8 +543,10 @@ import gregtech.common.items.behaviors.BehaviourSprayColorInfinite;
 import gregtech.common.items.behaviors.BehaviourSprayColorRemover;
 import gregtech.common.items.behaviors.BehaviourWrittenBook;
 import gregtech.common.tileentities.machines.multi.MTEIndustrialElectromagneticSeparator.MagnetTiers;
+import mods.railcraft.common.items.firestone.IItemFirestoneBurning;
 
-public class MetaGeneratedItem01 extends MetaGeneratedItemX32 {
+@Optional.Interface(iface = "mods.railcraft.common.items.firestone.IItemFirestoneBurning", modid = Mods.Names.RAILCRAFT)
+public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFirestoneBurning {
 
     public static MetaGeneratedItem01 INSTANCE;
     private final String mToolTipPurify = GTLanguageManager
@@ -3833,7 +3836,9 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 {
             ItemList.Cover_Controller.get(1L),
             TextureFactory.of(MACHINE_CASINGS[2][0], TextureFactory.of(OVERLAY_CONTROLLER)),
             context -> new CoverControlsWork(context, TextureFactory.of(OVERLAY_CONTROLLER)),
-            new CoverControlsWorkPlacer());
+            CoverPlacer.builder()
+                .onlyPlaceIf(CoverControlsWork::isCoverPlaceable)
+                .build());
 
         CoverRegistry.registerCover(
             ItemList.Cover_Chest_Basic.get(1L),
@@ -3876,10 +3881,9 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 {
             TextureFactory.of(OVERLAY_FLUID_STORAGE_MONITOR0),
             CoverFluidStorageMonitor::new);
 
-        CoverRegistry.registerCover(
+        CoverRegistry.registerDecorativeCover(
             ItemList.Cover_Screen.get(1L),
-            TextureFactory.of(MACHINE_CASINGS[2][0], screenCoverTexture),
-            context -> new CoverScreen(context, screenCoverTexture));
+            TextureFactory.of(MACHINE_CASINGS[2][0], screenCoverTexture));
         CoverRegistry.registerCover(
             ItemList.Cover_Crafting.get(1L),
             TextureFactory.of(MACHINE_CASINGS[1][0], TextureFactory.of(OVERLAY_CRAFTING)),
@@ -4710,5 +4714,25 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 {
         registerTieredTooltip(ItemList.BatteryHull_UMV_Full.get(1), UMV);
         registerTieredTooltip(ItemList.BatteryHull_UxV_Full.get(1), UXV);
 
+    }
+
+    @Override
+    @Optional.Method(modid = Mods.Names.RAILCRAFT)
+    public boolean shouldBurn(ItemStack itemStack) {
+        ItemData data = GTOreDictUnificator.getAssociation(itemStack);
+        if (data == null || data.mMaterial == null
+            || data.mMaterial.mMaterial != Materials.Firestone
+            || data.mPrefix == null) {
+            return false;
+        }
+        return data.mPrefix == OrePrefixes.dustTiny || data.mPrefix == OrePrefixes.dustSmall
+            || data.mPrefix == OrePrefixes.dust
+            || data.mPrefix == OrePrefixes.dustImpure
+            || data.mPrefix == OrePrefixes.dustRefined
+            || data.mPrefix == OrePrefixes.dustPure
+            || data.mPrefix == OrePrefixes.crushed
+            || data.mPrefix == OrePrefixes.crushedPurified
+            || data.mPrefix == OrePrefixes.crushedCentrifuged
+            || data.mPrefix == OrePrefixes.gem;
     }
 }

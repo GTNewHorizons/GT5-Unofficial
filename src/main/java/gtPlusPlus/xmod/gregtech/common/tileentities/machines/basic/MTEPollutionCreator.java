@@ -3,6 +3,7 @@ package gtPlusPlus.xmod.gregtech.common.tileentities.machines.basic;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -121,14 +122,15 @@ public class MTEPollutionCreator extends MTETieredMachineBlock {
     }
 
     @Override
-    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
+        ItemStack aTool) {
         if (pollutionMultiplier > 99) {
             pollutionMultiplier = 1;
         } else {
             pollutionMultiplier++;
         }
         PlayerUtils.messagePlayer(aPlayer, "Pollution Mutliplier is now " + pollutionMultiplier + ".");
-        super.onScrewdriverRightClick(side, aPlayer, aX, aY, aZ);
+        super.onScrewdriverRightClick(side, aPlayer, aX, aY, aZ, aTool);
     }
 
     @Override
@@ -305,8 +307,12 @@ public class MTEPollutionCreator extends MTETieredMachineBlock {
 
     @Override
     public String[] getInfoData() {
-        return new String[] { this.getLocalName(), "Current Pollution: " + this.mCurrentPollution,
-            "Average/10 minutes:" + getAveragePollutionOverLastTen() };
+        return new String[] { this.getLocalName(),
+            StatCollector
+                .translateToLocalFormatted("gtpp.infodata.pollution_creator.pollution", this.mCurrentPollution),
+            StatCollector.translateToLocalFormatted(
+                "gtpp.infodata.pollution_creator.pollution.avg",
+                getAveragePollutionOverLastTen()) };
     }
 
     @Override

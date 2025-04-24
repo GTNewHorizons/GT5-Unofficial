@@ -1,6 +1,5 @@
 package gregtech.common.blocks;
 
-import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
@@ -11,7 +10,6 @@ import gregtech.GTMod;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTRenderingWorld;
 import gregtech.common.tileentities.machines.multi.MTELargeTurbine;
 
@@ -45,38 +43,22 @@ public class BlockCasings4 extends BlockCasingsAbstract {
     public static boolean mConnectedMachineTextures = true;
 
     public BlockCasings4() {
-        super(ItemCasings4.class, "gt.blockcasings4", MaterialCasings.INSTANCE, 16);
-        GTLanguageManager
-            .addStringLocalization(getUnlocalizedName() + ".0.name", "Robust Tungstensteel Machine Casing");
-        GTLanguageManager
-            .addStringLocalization(getUnlocalizedName() + ".1.name", "Clean Stainless Steel Machine Casing");
-        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".2.name", "Stable Titanium Machine Casing");
-        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".3.name", "Titanium Firebox Casing");
-        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".6.name", "Fusion Machine Casing");
-        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".7.name", "Fusion Coil Block");
-        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".8.name", "Fusion Machine Casing MK II");
-        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".9.name", "Turbine Casing");
-        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".10.name", "Stainless Steel Turbine Casing");
-        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".11.name", "Titanium Turbine Casing");
-        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".12.name", "Tungstensteel Turbine Casing");
-        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".13.name", "Engine Intake Casing");
-        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".14.name", "Mining Osmiridium Casing");
-        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".15.name", "Firebricks");
+        super(ItemCasings.class, "gt.blockcasings4", MaterialCasings.INSTANCE, 16);
 
-        ItemList.Casing_RobustTungstenSteel.set(new ItemStack(this, 1, 0));
-        ItemList.Casing_CleanStainlessSteel.set(new ItemStack(this, 1, 1));
-        ItemList.Casing_StableTitanium.set(new ItemStack(this, 1, 2));
-        ItemList.Casing_Firebox_Titanium.set(new ItemStack(this, 1, 3));
-        ItemList.Casing_Fusion.set(new ItemStack(this, 1, 6));
-        ItemList.Casing_Fusion_Coil.set(new ItemStack(this, 1, 7));
-        ItemList.Casing_Fusion2.set(new ItemStack(this, 1, 8));
-        ItemList.Casing_Turbine.set(new ItemStack(this, 1, 9));
-        ItemList.Casing_Turbine1.set(new ItemStack(this, 1, 10));
-        ItemList.Casing_Turbine2.set(new ItemStack(this, 1, 11));
-        ItemList.Casing_Turbine3.set(new ItemStack(this, 1, 12));
-        ItemList.Casing_EngineIntake.set(new ItemStack(this, 1, 13));
-        ItemList.Casing_MiningOsmiridium.set(new ItemStack(this, 1, 14));
-        ItemList.Casing_Firebricks.set(new ItemStack(this, 1, 15));
+        register(0, ItemList.Casing_RobustTungstenSteel, "Robust Tungstensteel Machine Casing");
+        register(1, ItemList.Casing_CleanStainlessSteel, "Clean Stainless Steel Machine Casing");
+        register(2, ItemList.Casing_StableTitanium, "Stable Titanium Machine Casing");
+        register(3, ItemList.Casing_Firebox_Titanium, "Titanium Firebox Casing");
+        register(6, ItemList.Casing_Fusion, "Fusion Machine Casing");
+        register(7, ItemList.Casing_Fusion_Coil, "Fusion Coil Block");
+        register(8, ItemList.Casing_Fusion2, "Fusion Machine Casing MK II");
+        register(9, ItemList.Casing_Turbine, "Turbine Casing");
+        register(10, ItemList.Casing_Turbine1, "Stainless Steel Turbine Casing");
+        register(11, ItemList.Casing_Turbine2, "Titanium Turbine Casing");
+        register(12, ItemList.Casing_Turbine3, "Tungstensteel Turbine Casing");
+        register(13, ItemList.Casing_EngineIntake, "Engine Intake Casing");
+        register(14, ItemList.Casing_MiningOsmiridium, "Mining Osmiridium Casing");
+        register(15, ItemList.Casing_Firebricks, "Firebricks");
 
         GTMod.gregtechproxy.mCTMBlockCache.put(this, (byte) 6, true);
         GTMod.gregtechproxy.mCTMBlockCache.put(this, (byte) 8, true);

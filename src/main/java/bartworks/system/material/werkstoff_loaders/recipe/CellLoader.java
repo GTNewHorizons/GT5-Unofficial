@@ -30,10 +30,11 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
+import org.apache.commons.lang3.tuple.Pair;
+
 import bartworks.system.material.Werkstoff;
 import bartworks.system.material.WerkstoffLoader;
 import bartworks.system.material.werkstoff_loaders.IWerkstoffRunnable;
-import bartworks.util.Pair;
 import gregtech.api.enums.Element;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
@@ -87,9 +88,8 @@ public class CellLoader implements IWerkstoffRunnable {
                             if (flOutputs.size() > 1) {
                                 if (!tracker.containsKey(container.getKey())) {
                                     stOutputs.add(((Materials) container.getKey()).getCells(container.getValue()));
-                                    tracker.put(
-                                        container.getKey(),
-                                        new Pair<>(container.getValue(), stOutputs.size() - 1));
+                                    tracker
+                                        .put(container.getKey(), Pair.of(container.getValue(), stOutputs.size() - 1));
                                 } else {
                                     stOutputs.add(
                                         ((Materials) container.getKey()).getCells(
@@ -105,7 +105,7 @@ public class CellLoader implements IWerkstoffRunnable {
                             if (((Materials) container.getKey()).getDust(container.getValue()) == null) continue;
                             if (!tracker.containsKey(container.getKey())) {
                                 stOutputs.add(((Materials) container.getKey()).getDust(container.getValue()));
-                                tracker.put(container.getKey(), new Pair<>(container.getValue(), stOutputs.size() - 1));
+                                tracker.put(container.getKey(), Pair.of(container.getValue(), stOutputs.size() - 1));
                             } else {
                                 stOutputs.add(
                                     ((Materials) container.getKey()).getDust(
@@ -128,9 +128,8 @@ public class CellLoader implements IWerkstoffRunnable {
                             if (flOutputs.size() > 1) {
                                 if (!tracker.containsKey(container.getKey())) {
                                     stOutputs.add(((Werkstoff) container.getKey()).get(cell, container.getValue()));
-                                    tracker.put(
-                                        container.getKey(),
-                                        new Pair<>(container.getValue(), stOutputs.size() - 1));
+                                    tracker
+                                        .put(container.getKey(), Pair.of(container.getValue(), stOutputs.size() - 1));
                                 } else {
                                     stOutputs.add(
                                         ((Werkstoff) container.getKey()).get(
@@ -147,7 +146,7 @@ public class CellLoader implements IWerkstoffRunnable {
                             if (!((Werkstoff) container.getKey()).hasItemType(dust)) continue;
                             if (!tracker.containsKey(container.getKey())) {
                                 stOutputs.add(((Werkstoff) container.getKey()).get(dust, container.getValue()));
-                                tracker.put(container.getKey(), new Pair<>(container.getValue(), stOutputs.size() - 1));
+                                tracker.put(container.getKey(), Pair.of(container.getValue(), stOutputs.size() - 1));
                             } else {
                                 stOutputs.add(
                                     ((Werkstoff) container.getKey()).get(

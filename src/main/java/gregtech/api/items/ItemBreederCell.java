@@ -15,6 +15,7 @@ import net.minecraft.world.World;
 
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTValues;
+import gregtech.api.hazards.HazardProtection;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.util.GTUtility;
 import ic2.api.reactor.IReactor;
@@ -81,7 +82,7 @@ public class ItemBreederCell extends GTGenericItem implements IReactorComponent 
     @Override
     public void onUpdate(ItemStack stack, World world, Entity entity, int slotIndex, boolean isCurrentItem) {
         if ((entity instanceof EntityLivingBase entityLiving)) {
-            if (!GTUtility.isWearingFullRadioHazmat(entityLiving)) {
+            if (!HazardProtection.isWearingFullRadioHazmat(entityLiving)) {
                 IC2Potion.radiation.applyTo(entityLiving, 20, 1);
             }
         }

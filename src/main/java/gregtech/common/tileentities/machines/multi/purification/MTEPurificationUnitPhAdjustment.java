@@ -567,7 +567,10 @@ public class MTEPurificationUnitPhAdjustment extends MTEPurificationUnitBase<MTE
     @Override
     public String[] getInfoData() {
         ArrayList<String> infoData = new ArrayList<>(Arrays.asList(super.getInfoData()));
-        infoData.add("Current pH Value: " + EnumChatFormatting.YELLOW + currentpHValue + " pH");
+        infoData.add(
+            StatCollector.translateToLocalFormatted(
+                "GT5U.infodata.purification_unit_ph_adjustment.ph",
+                "" + EnumChatFormatting.YELLOW + currentpHValue));
         return infoData.toArray(new String[] {});
     }
 

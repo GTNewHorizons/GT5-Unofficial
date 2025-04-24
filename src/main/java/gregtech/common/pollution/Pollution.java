@@ -39,6 +39,7 @@ import cpw.mods.fml.common.gameevent.TickEvent;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import gregtech.GTMod;
 import gregtech.api.enums.GTValues;
+import gregtech.api.hazards.HazardProtection;
 import gregtech.api.interfaces.ICleanroom;
 import gregtech.api.interfaces.ICleanroomReceiver;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -180,7 +181,7 @@ public class Pollution {
                     for (EntityLivingBase tEnt : tEntitys) {
                         if (tEnt instanceof EntityPlayerMP && ((EntityPlayerMP) tEnt).capabilities.isCreativeMode)
                             continue;
-                        if (!(GTUtility.isWearingFullGasHazmat(tEnt))) {
+                        if (!(HazardProtection.isWearingFullGasHazmat(tEnt))) {
                             switch (XSTR_INSTANCE.nextInt(3)) {
                                 default:
                                     tEnt.addPotionEffect(
@@ -209,7 +210,7 @@ public class Pollution {
                         for (EntityLivingBase tEnt : tEntitys) {
                             if (tEnt instanceof EntityPlayerMP && ((EntityPlayerMP) tEnt).capabilities.isCreativeMode)
                                 continue;
-                            if (!GTUtility.isWearingFullGasHazmat(tEnt)) {
+                            if (!HazardProtection.isWearingFullGasHazmat(tEnt)) {
                                 switch (XSTR_INSTANCE.nextInt(4)) {
                                     default:
                                         tEnt.addPotionEffect(new PotionEffect(Potion.hunger.id, tPollution / 500000));

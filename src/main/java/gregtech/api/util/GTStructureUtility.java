@@ -4,14 +4,10 @@ import static com.gtnewhorizon.structurelib.structure.IStructureElement.PlaceRes
 import static com.gtnewhorizon.structurelib.structure.IStructureElement.PlaceResult.ACCEPT_STOP;
 import static com.gtnewhorizon.structurelib.structure.IStructureElement.PlaceResult.REJECT;
 import static com.gtnewhorizon.structurelib.structure.IStructureElement.PlaceResult.SKIP;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlockAnyMeta;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlockUnlocalizedName;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.lazy;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlocksTiered;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.withChannel;
 import static com.gtnewhorizon.structurelib.util.ItemStackPredicate.NBTMode.EXACT;
-import static gregtech.api.enums.Mods.BartWorks;
-import static gregtech.api.enums.Mods.Botania;
-import static gregtech.api.enums.Mods.IndustrialCraft2;
-import static gregtech.api.enums.Mods.Thaumcraft;
 
 import java.util.Arrays;
 import java.util.List;
@@ -37,11 +33,13 @@ import net.minecraft.util.IChatComponent;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 
+import org.jetbrains.annotations.Nullable;
+
+import com.gtnewhorizon.gtnhlib.util.CoordinatePacker;
 import com.gtnewhorizon.structurelib.StructureLibAPI;
 import com.gtnewhorizon.structurelib.structure.AutoPlaceEnvironment;
 import com.gtnewhorizon.structurelib.structure.IItemSource;
 import com.gtnewhorizon.structurelib.structure.IStructureElement;
-import com.gtnewhorizon.structurelib.structure.IStructureElementChain;
 import com.gtnewhorizon.structurelib.structure.IStructureElementNoPlacement;
 import com.gtnewhorizon.structurelib.util.ItemStackPredicate;
 
@@ -56,6 +54,7 @@ import gregtech.api.interfaces.IHeatingCoil;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatch;
+import gregtech.api.metatileentity.implementations.MTEMultiBlockBase;
 import gregtech.api.metatileentity.implementations.MTETieredMachineBlock;
 import gregtech.common.blocks.BlockCasings5;
 import gregtech.common.blocks.BlockCyclotronCoils;
@@ -483,6 +482,20 @@ public class GTStructureUtility {
         }, aHeatingCoilGetter);
     }
 
+    public static <T extends MTEMultiBlockBase> IStructureElement<T> activeCoils(IStructureElement<T> element) {
+        return new ProxyStructureElement<>(element) {
+
+            @Override
+            public boolean check(T t, World world, int x, int y, int z) {
+                if (!element.check(t, world, x, y, z)) return false;
+
+                t.mCoils.add(CoordinatePacker.pack(x, y, z));
+
+                return true;
+            }
+        };
+    }
+
     /**
      * Heating coil structure element.
      *
@@ -501,9 +514,12 @@ public class GTStructureUtility {
             @Override
             public boolean check(T t, World world, int x, int y, int z) {
                 Block block = world.getBlock(x, y, z);
-                if (!(block instanceof IHeatingCoil)) return false;
-                HeatingCoilLevel existingLevel = aHeatingCoilGetter.apply(t),
-                    newLevel = ((IHeatingCoil) block).getCoilHeat(world.getBlockMetadata(x, y, z));
+
+                if (!(block instanceof IHeatingCoil coil)) return false;
+
+                HeatingCoilLevel existingLevel = aHeatingCoilGetter.apply(t);
+                HeatingCoilLevel newLevel = coil.getCoilHeat(world.getBlockMetadata(x, y, z));
+
                 if (existingLevel == null || existingLevel == HeatingCoilLevel.None) {
                     return aHeatingCoilSetter.test(t, newLevel);
                 } else {
@@ -720,24 +736,107 @@ public class GTStructureUtility {
         };
     }
 
+    public static <T> IStructureElement<T> chainAllGlasses() {
+        return chainAllGlasses(-1, (te, t) -> {}, te -> -1);
+    }
+
     /** support all Bart, Botania, Ic2, Thaumcraft glasses for multiblock structure **/
-    public static <T> IStructureElementChain<T> chainAllGlasses() {
-        return ofChain(
-            // IndustrialCraft2 glass
-            ofBlockUnlocalizedName(IndustrialCraft2.ID, "blockAlloyGlass", 0, true),
+    public static <T> IStructureElement<T> chainAllGlasses(int notSet, BiConsumer<T, Integer> setter,
+        Function<T, Integer> getter) {
+        return withChannel(
+            "glass",
+            lazy(t -> ofBlocksTiered(GlassTier::getGlassBlockTier, GlassTier.getGlassList(), notSet, setter, getter)));
+    }
 
-            // Botania glass
-            ofBlockUnlocalizedName(Botania.ID, "manaGlass", 0, false),
-            ofBlockUnlocalizedName(Botania.ID, "elfGlass", 0, false),
+    /**
+     * Just a structure element that proxies its operations to another one. Useful for overriding or hooking into
+     * specific operations while keeping the rest unchanged.
+     */
+    public static class ProxyStructureElement<T, E extends IStructureElement<T>> implements IStructureElement<T> {
 
-            // BartWorks glass
-            ofBlockUnlocalizedName(BartWorks.ID, "BW_GlasBlocks", 0, true),
-            ofBlockUnlocalizedName(BartWorks.ID, "BW_GlasBlocks2", 0, true),
+        public final E proxiedElement;
 
-            // Tinted Industrial Glass
-            ofBlockAnyMeta(GregTechAPI.sBlockTintedGlass, 0),
+        public ProxyStructureElement(E proxiedElement) {
+            this.proxiedElement = proxiedElement;
+        }
 
-            // warded glass
-            ofBlockUnlocalizedName(Thaumcraft.ID, "blockCosmeticOpaque", 2, false));
+        @Override
+        public boolean check(T t, World world, int x, int y, int z) {
+            return proxiedElement.check(t, world, x, y, z);
+        }
+
+        @Override
+        public boolean couldBeValid(T t, World world, int x, int y, int z, ItemStack trigger) {
+            return proxiedElement.couldBeValid(t, world, x, y, z, trigger);
+        }
+
+        @Override
+        public boolean spawnHint(T t, World world, int x, int y, int z, ItemStack trigger) {
+            return proxiedElement.spawnHint(t, world, x, y, z, trigger);
+        }
+
+        @Override
+        public boolean placeBlock(T t, World world, int x, int y, int z, ItemStack trigger) {
+            return proxiedElement.placeBlock(t, world, x, y, z, trigger);
+        }
+
+        @SuppressWarnings("deprecation")
+        @Override
+        public PlaceResult survivalPlaceBlock(T t, World world, int x, int y, int z, ItemStack trigger, IItemSource s,
+            EntityPlayerMP actor, Consumer<IChatComponent> chatter) {
+            return proxiedElement.survivalPlaceBlock(t, world, x, y, z, trigger, s, actor, chatter);
+        }
+
+        @Override
+        public @Nullable BlocksToPlace getBlocksToPlace(T t, World world, int x, int y, int z, ItemStack trigger,
+            AutoPlaceEnvironment env) {
+            return proxiedElement.getBlocksToPlace(t, world, x, y, z, trigger, env);
+        }
+
+        @Override
+        public PlaceResult survivalPlaceBlock(T t, World world, int x, int y, int z, ItemStack trigger,
+            AutoPlaceEnvironment env) {
+            return proxiedElement.survivalPlaceBlock(t, world, x, y, z, trigger, env);
+        }
+
+        @Override
+        public IStructureElementNoPlacement<T> noPlacement() {
+            return proxiedElement.noPlacement();
+        }
+
+        @Override
+        public int getStepA() {
+            return proxiedElement.getStepA();
+        }
+
+        @Override
+        public int getStepB() {
+            return proxiedElement.getStepB();
+        }
+
+        @Override
+        public int getStepC() {
+            return proxiedElement.getStepC();
+        }
+
+        @Override
+        public boolean resetA() {
+            return proxiedElement.resetA();
+        }
+
+        @Override
+        public boolean resetB() {
+            return proxiedElement.resetB();
+        }
+
+        @Override
+        public boolean resetC() {
+            return proxiedElement.resetC();
+        }
+
+        @Override
+        public boolean isNavigating() {
+            return proxiedElement.isNavigating();
+        }
     }
 }
