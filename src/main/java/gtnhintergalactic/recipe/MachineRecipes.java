@@ -67,7 +67,7 @@ public class MachineRecipes implements Runnable {
 
         // Planetary Gas Siphon Controller
         RecipeUtil.addRecipe(
-            IGItems.PlanetaryGasSiphon,
+            ItemList.PlanetaryGasSiphonController.get(1),
             new Object[] { "MPM", "CTC", "HTH", 'M', ItemList.Electric_Motor_IV.get(1), 'P',
                 ItemList.Electric_Pump_IV.get(1), 'C', "circuitElite", 'T',
                 GTOreDictUnificator.get(OrePrefixes.pipeMedium, Materials.TungstenSteel, 1), 'H',
@@ -89,7 +89,7 @@ public class MachineRecipes implements Runnable {
                 ItemList.Electric_Motor_UV.get(32), new ItemStack(IGBlocks.SpaceElevatorCasing, 8) },
             new FluidStack[] { new FluidStack(solderLuV, 5760), Materials.UUMatter.getFluid(16000),
                 Materials.Lubricant.getFluid(32000), Materials.Neutronium.getMolten(1440) },
-            IGItems.SpaceElevatorController,
+            ItemList.SpaceElevatorController.get(1),
             5 * MINUTE,
             (int) TierEU.RECIPE_UHV);
 
@@ -268,51 +268,51 @@ public class MachineRecipes implements Runnable {
 
         // Pump Module MK-I
         TTRecipeAdder.addResearchableAssemblylineRecipe(
-            IGItems.PlanetaryGasSiphon,
+            ItemList.PlanetaryGasSiphonController.get(1),
             16777216,
             2048,
             (int) TierEU.RECIPE_UHV,
             4,
-            new Object[] { ItemList.OilDrillInfinite.get(1), IGItems.PlanetaryGasSiphon,
+            new Object[] { ItemList.OilDrillInfinite.get(1), ItemList.PlanetaryGasSiphonController.get(1),
                 CustomItemList.enderLinkFluidCover.get(2),
                 GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Infinity, 4),
                 new Object[] { OrePrefixes.circuit.get(Materials.UEV), 4 }, ItemList.Electric_Pump_UEV.get(2),
                 GTOreDictUnificator.get(OrePrefixes.gearGt, Materials.Infinity, 4),
                 GTOreDictUnificator.get(OrePrefixes.screw, Materials.CosmicNeutronium, 32), },
             new FluidStack[] { new FluidStack(solderUEV, 1296), Materials.Infinity.getMolten(576) },
-            IGItems.SpaceElevatorModulePumpT1,
+            ItemList.SpaceElevatorModulePumpT1.get(1),
             2 * MINUTE,
             (int) TierEU.RECIPE_UEV);
 
         // Pump Module MK-II
         TTRecipeAdder.addResearchableAssemblylineRecipe(
-            IGItems.SpaceElevatorModulePumpT1,
+            ItemList.SpaceElevatorModulePumpT1.get(1),
             33554432,
             8192,
             64000000,
             4,
-            new Object[] { ItemList.OilDrillInfinite.get(4), GTUtility.copyAmount(4, IGItems.PlanetaryGasSiphon),
+            new Object[] { ItemList.OilDrillInfinite.get(4), ItemList.PlanetaryGasSiphonController.get(4),
                 CustomItemList.enderLinkFluidCover.get(8),
                 GTOreDictUnificator.get(OrePrefixes.frameGt, MaterialsUEVplus.SpaceTime, 4),
                 new Object[] { OrePrefixes.circuit.get(Materials.UIV), 16 }, ItemList.Electric_Pump_UIV.get(8),
                 GTOreDictUnificator.get(OrePrefixes.gearGt, MaterialsUEVplus.SpaceTime, 4), metaStableOgScrew_64, },
             new FluidStack[] { new FluidStack(solderUEV, 4608),
                 MaterialsUEVplus.MoltenProtoHalkoniteBase.getFluid(2304) },
-            IGItems.SpaceElevatorModulePumpT2,
+            ItemList.SpaceElevatorModulePumpT2.get(1),
             2 * MINUTE,
             (int) TierEU.RECIPE_UIV);
 
         // Pump Module MK-II - Assembler alt
         RA.stdBuilder()
             .itemInputs(
-                GTUtility.copyAmount(4, IGItems.SpaceElevatorModulePumpT1),
+                ItemList.SpaceElevatorModulePumpT1.get(4),
                 GTOreDictUnificator.get(OrePrefixes.frameGt, MaterialsUEVplus.SpaceTime, 8),
                 GTOreDictUnificator.get(OrePrefixes.circuit, Materials.UIV, 16),
                 ItemList.Electric_Pump_UIV.get(8),
                 GTOreDictUnificator.get(OrePrefixes.gearGt, MaterialsUEVplus.SpaceTime, 8),
                 metaStableOgScrew_64,
                 GTOreDictUnificator.get(OrePrefixes.plateDouble, MaterialsUEVplus.ProtoHalkonite, 16))
-            .itemOutputs(IGItems.SpaceElevatorModulePumpT2)
+            .itemOutputs(ItemList.SpaceElevatorModulePumpT2.get(1))
             .fluidInputs(new FluidStack(solderUEV, 4608))
             .duration(2 * MINUTE)
             .eut(TierEU.RECIPE_UIV)
@@ -320,33 +320,33 @@ public class MachineRecipes implements Runnable {
 
         // Pump Module MK-III
         TTRecipeAdder.addResearchableAssemblylineRecipe(
-            IGItems.SpaceElevatorModulePumpT2,
+            ItemList.SpaceElevatorModulePumpT2.get(1),
             67108864,
             32767,
             256000000,
             4,
-            new Object[] { ItemList.OilDrillInfinite.get(16), GTUtility.copyAmount(16, IGItems.PlanetaryGasSiphon),
+            new Object[] { ItemList.OilDrillInfinite.get(16), ItemList.PlanetaryGasSiphonController.get(16),
                 CustomItemList.enderLinkFluidCover.get(32),
                 GTOreDictUnificator.get(OrePrefixes.frameGt, MaterialsUEVplus.BlackDwarfMatter, 4),
                 new Object[] { OrePrefixes.circuit.get(Materials.UMV), 16 }, ItemList.Electric_Pump_UMV.get(8),
                 GTOreDictUnificator.get(OrePrefixes.gearGt, MaterialsUEVplus.BlackDwarfMatter, 4),
                 GTOreDictUnificator.get(OrePrefixes.screw, MaterialsUEVplus.WhiteDwarfMatter, 64) },
             new FluidStack[] { new FluidStack(solderUEV, 9216), MaterialsUEVplus.Eternity.getMolten(2304) },
-            IGItems.SpaceElevatorModulePumpT3,
+            ItemList.SpaceElevatorModulePumpT3.get(1),
             2 * MINUTE,
             (int) TierEU.RECIPE_UMV);
 
         // Pump Module MK-III - Assembler alt
         RA.stdBuilder()
             .itemInputs(
-                GTUtility.copyAmount(4, IGItems.SpaceElevatorModulePumpT2),
+                ItemList.SpaceElevatorModulePumpT2.get(4),
                 GTOreDictUnificator.get(OrePrefixes.frameGt, MaterialsUEVplus.BlackDwarfMatter, 8),
                 GTOreDictUnificator.get(OrePrefixes.circuit, Materials.UMV, 16),
                 ItemList.Electric_Pump_UMV.get(8),
                 GTOreDictUnificator.get(OrePrefixes.gearGt, MaterialsUEVplus.BlackDwarfMatter, 8),
                 GTOreDictUnificator.get(OrePrefixes.screw, MaterialsUEVplus.WhiteDwarfMatter, 64),
                 GTOreDictUnificator.get(OrePrefixes.plateDouble, MaterialsUEVplus.Eternity, 16))
-            .itemOutputs(IGItems.SpaceElevatorModulePumpT3)
+            .itemOutputs(ItemList.SpaceElevatorModulePumpT3.get(1))
             .fluidInputs(new FluidStack(solderUEV, 9216))
             .duration(2 * MINUTE)
             .eut(TierEU.RECIPE_UIV)
@@ -370,13 +370,13 @@ public class MachineRecipes implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.screw, Materials.Neutronium, 32) },
             new FluidStack[] { new FluidStack(solderLuV, 1296), Materials.Naquadria.getMolten(1296),
                 Materials.Lubricant.getFluid(16000) },
-            IGItems.SpaceElevatorModuleAssemblerT1,
+            ItemList.SpaceElevatorModuleAssemblerT1.get(1),
             2 * MINUTE,
             (int) TierEU.RECIPE_UEV);
 
         // Assembler Module MK-II
         TTRecipeAdder.addResearchableAssemblylineRecipe(
-            IGItems.SpaceElevatorModuleAssemblerT1,
+            ItemList.SpaceElevatorModuleAssemblerT1.get(1),
             2048000,
             2048,
             64000000,
@@ -390,13 +390,13 @@ public class MachineRecipes implements Runnable {
                 new Object[] { OrePrefixes.circuit.get(Materials.UIV), 16 }, hypogenFrameBox_8, hypogenScrew_32 },
             new FluidStack[] { new FluidStack(solderUEV, 1296), Materials.Infinity.getMolten(1296),
                 Materials.UUMatter.getFluid(16000) },
-            IGItems.SpaceElevatorModuleAssemblerT2,
+            ItemList.SpaceElevatorModuleAssemblerT2.get(1),
             2 * MINUTE,
             (int) TierEU.RECIPE_UIV);
 
         // Assembler Module MK-III
         TTRecipeAdder.addResearchableAssemblylineRecipe(
-            IGItems.SpaceElevatorModuleAssemblerT2,
+            ItemList.SpaceElevatorModuleAssemblerT2.get(1),
             32768000,
             4096,
             256000000,
@@ -416,7 +416,7 @@ public class MachineRecipes implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.screw, MaterialsUEVplus.Universium, 32) },
             new FluidStack[] { new FluidStack(solderUEV, 5184), MaterialsUEVplus.BlackDwarfMatter.getMolten(1296),
                 MaterialsUEVplus.WhiteDwarfMatter.getMolten(1296), MaterialsUEVplus.SpaceTime.getMolten(1296) },
-            IGItems.SpaceElevatorModuleAssemblerT3,
+            ItemList.SpaceElevatorModuleAssemblerT3.get(1),
             2 * MINUTE,
             (int) TierEU.RECIPE_UXV);
 
@@ -436,7 +436,7 @@ public class MachineRecipes implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials.SuperconductorUHV, 32) },
             new FluidStack[] { new FluidStack(solderLuV, 4608), Materials.Infinity.getMolten(2304),
                 Materials.UUMatter.getFluid(8000), Materials.SuperCoolant.getFluid(4000) },
-            IGItems.SpaceElevatorModuleResearch,
+            ItemList.SpaceElevatorModuleResearch.get(1),
             2 * MINUTE,
             (int) TierEU.RECIPE_UEV);
 
@@ -456,7 +456,7 @@ public class MachineRecipes implements Runnable {
                 titaniumBetaCScrew_64, },
             new FluidStack[] { new FluidStack(solderLuV, 4608), Materials.Iridium.getMolten(2304),
                 Materials.UUMatter.getFluid(2000) },
-            IGItems.SpaceElevatorModuleManager,
+            ItemList.SpaceElevatorModuleManager.get(1),
             2 * MINUTE,
             (int) TierEU.RECIPE_UHV);
 
@@ -473,41 +473,41 @@ public class MachineRecipes implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Neutronium, 16) },
             new FluidStack[] { new FluidStack(solderLuV, 2880), Materials.Naquadria.getMolten(1440),
                 Materials.Lubricant.getFluid(8000) },
-            IGItems.SpaceElevatorModuleMinerT1,
+            ItemList.SpaceElevatorModuleMinerT1.get(1),
             2 * MINUTE,
             (int) TierEU.RECIPE_UHV);
         // Miner Module MK-II
         TTRecipeAdder.addResearchableAssemblylineRecipe(
-            IGItems.SpaceElevatorModuleMinerT1,
+            ItemList.SpaceElevatorModuleMinerT1.get(1),
             3000000,
             1024,
             3000000,
             12,
-            new Object[] { IGItems.SpaceElevatorModuleMinerT1, ItemList.Robot_Arm_UHV.get(8),
+            new Object[] { ItemList.SpaceElevatorModuleMinerT1.get(1), ItemList.Robot_Arm_UHV.get(8),
                 ItemList.Field_Generator_UHV.get(4), new Object[] { OrePrefixes.circuit.get(Materials.UHV), 16 },
                 ItemList.Sensor_UHV.get(16),
                 GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials.SuperconductorUHV, 32),
                 GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.CosmicNeutronium, 16) },
             new FluidStack[] { new FluidStack(solderLuV, 2880), Materials.Naquadria.getMolten(2880),
                 Materials.Lubricant.getFluid(16000) },
-            IGItems.SpaceElevatorModuleMinerT2,
+            ItemList.SpaceElevatorModuleMinerT2.get(1),
             2 * MINUTE,
             (int) TierEU.RECIPE_UEV);
         // Miner Module MK-III
         TTRecipeAdder.addResearchableAssemblylineRecipe(
-            IGItems.SpaceElevatorModuleMinerT2,
+            ItemList.SpaceElevatorModuleMinerT2.get(1),
             4000000,
             2048,
             4000000,
             16,
-            new Object[] { IGItems.SpaceElevatorModuleMinerT2, ItemList.Robot_Arm_UEV.get(8),
+            new Object[] { ItemList.SpaceElevatorModuleMinerT2.get(1), ItemList.Robot_Arm_UEV.get(8),
                 ItemList.Field_Generator_UEV.get(4), new Object[] { OrePrefixes.circuit.get(Materials.UEV), 16 },
                 ItemList.Sensor_UEV.get(16),
                 GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials.SuperconductorUEV, 32),
                 GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Infinity, 16) },
             new FluidStack[] { new FluidStack(solderUEV, 2880), MaterialsUEVplus.TranscendentMetal.getMolten(1440),
                 Materials.UUMatter.getFluid(2000) },
-            IGItems.SpaceElevatorModuleMinerT3,
+            ItemList.SpaceElevatorModuleMinerT3.get(1),
             2 * MINUTE,
             (int) TierEU.RECIPE_UIV);
 

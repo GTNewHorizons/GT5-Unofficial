@@ -2590,7 +2590,6 @@ public enum ItemList implements IItemContainer {
     Phononic_Seed_Crystal,
     Harmonic_Compound,
     ResearchCompleter,
-    SpaceElevatorController, // Populated in GTNH-Intergalactic
     Spray_Color_Infinite,
     Casing_AirFilter_Turbine_T1,
     Casing_AirFilter_Vent_T1,
@@ -2606,6 +2605,23 @@ public enum ItemList implements IItemContainer {
     Machine_Multi_AirFilterT2,
     Machine_Multi_AirFilterT3,
     LargeMolecularAssembler,
+
+    SpaceElevatorController,
+    SpaceElevatorModuleAssemblerT1,
+    SpaceElevatorModuleAssemblerT2,
+    SpaceElevatorModuleAssemblerT3,
+    SpaceElevatorModuleMinerT1,
+    SpaceElevatorModuleMinerT2,
+    SpaceElevatorModuleMinerT3,
+    SpaceElevatorModulePumpT1,
+    SpaceElevatorModulePumpT2,
+    SpaceElevatorModulePumpT3,
+    SpaceElevatorModuleManager,
+    SpaceElevatorModuleResearch,
+
+    DysonSwarmController,
+
+    PlanetaryGasSiphonController,
 
     // semicolon after the comment to reduce merge conflicts
     ;

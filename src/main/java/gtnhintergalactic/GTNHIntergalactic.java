@@ -16,6 +16,7 @@ import cpw.mods.fml.common.event.FMLMissingMappingsEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.GT_Version;
+import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Mods;
 import gtnhintergalactic.block.IGBlocks;
 import gtnhintergalactic.config.IGConfig;
@@ -67,12 +68,13 @@ public class GTNHIntergalactic {
 
             @Override
             public Item getTabIconItem() {
-                return IGItems.SpaceElevatorController.getItem();
+                return ItemList.SpaceElevatorController.getItem();
             }
 
             @Override
             public int func_151243_f() {
-                return IGItems.SpaceElevatorController.getItemDamage();
+                return ItemList.SpaceElevatorController.get(1)
+                    .getItemDamage();
             }
         };
         proxy.init(event);

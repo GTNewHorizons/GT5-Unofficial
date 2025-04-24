@@ -676,7 +676,7 @@ public class Godforge implements Runnable {
         magmatterItemsForNEI.addAll(exoticModuleMagmatterItemMap.keySet());
 
         // Godforge upgrade materials
-        if (EternalSingularity.isModLoaded() && GTNHIntergalactic.isModLoaded()) {
+        if (EternalSingularity.isModLoaded()) {
             ForgeOfGodsUpgrade.START.addExtraCost(
                 GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.SuperconductorUIVBase, 64),
                 ItemList.SuperconductorComposite.get(32),
