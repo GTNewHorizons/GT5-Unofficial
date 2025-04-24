@@ -7,7 +7,7 @@ public interface IWirelessCharger {
 
     IGregTechTileEntity getChargerTE();
 
-    boolean canChargeItems(EntityPlayer player);
+    boolean canChargePlayerItems(EntityPlayer player);
 
-    void chargeItems(ItemStack[] stack, EntityPlayer player);
+    void chargePlayerItems(ItemStack[] stack, EntityPlayer player);
 }

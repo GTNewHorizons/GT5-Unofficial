@@ -85,8 +85,8 @@ public class WirelessChargerManager {
             .toArray(ItemStack[]::new);
 
         for (IWirelessCharger charger : CHARGER_MAP.values()) {
-            if (!charger.canChargeItems(player)) continue;
-            charger.chargeItems(stacks, player);
+            if (!charger.canChargePlayerItems(player)) continue;
+            charger.chargePlayerItems(stacks, player);
         }
     }
 }

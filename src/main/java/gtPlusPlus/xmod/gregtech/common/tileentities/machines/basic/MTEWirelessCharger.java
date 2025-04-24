@@ -580,7 +580,7 @@ public class MTEWirelessCharger extends MTETieredMachineBlock implements IWirele
     }
 
     @Override
-    public boolean canChargeItems(EntityPlayer player) {
+    public boolean canChargePlayerItems(EntityPlayer player) {
         if (!this.getBaseMetaTileEntity()
             .isAllowedToWork() || player.getEntityWorld().provider.dimensionId
                 != this.getBaseMetaTileEntity()
@@ -599,7 +599,7 @@ public class MTEWirelessCharger extends MTETieredMachineBlock implements IWirele
     }
 
     @Override
-    public void chargeItems(ItemStack[] stacks, EntityPlayer player) {
+    public void chargePlayerItems(ItemStack[] stacks, EntityPlayer player) {
         final int amp;
         if (localRangeMap.containsKey(player.getDisplayName())) {
             amp = 2;
