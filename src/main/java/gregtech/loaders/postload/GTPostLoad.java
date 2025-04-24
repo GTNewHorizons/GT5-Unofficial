@@ -340,6 +340,14 @@ public class GTPostLoad {
                 .outputItem(new ItemStack(Blocks.obsidian, 1))
                 .duration(6 * SECONDS + 8 * TICKS));
 
+        MTERockBreaker.addRockBreakerRecipe(
+            b -> b.sideBlocks(Blocks.water)
+                .anywhereBlocks(Blocks.lava)
+                .inputItem(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Glowstone, 1L), true)
+                .circuit(6)
+                .outputItem(new ItemStack(Blocks.netherrack, 1))
+                .duration(16 * TICKS));
+
         if (Mods.EtFuturumRequiem.isModLoaded()) {
             MTERockBreaker.addRockBreakerRecipe(
                 b -> b.sideBlocks(Blocks.lava)
