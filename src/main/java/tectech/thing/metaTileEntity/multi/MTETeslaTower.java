@@ -782,14 +782,22 @@ public class MTETeslaTower extends TTMultiblockBase implements ISurvivalConstruc
         syncManager.syncValue("usedAmps", usedAmpsSyncer);
         super.insertTexts(machineInfo, invSlot, syncManager);
         machineInfo.child(
-            IKey.dynamic(() -> "Output Voltage: " + outputVoltageSyncer.getValue())
+            IKey.dynamic(
+                () -> EnumChatFormatting.WHITE + "Output Voltage: "
+                    + EnumChatFormatting.BLUE
+                    + outputVoltageSyncer.getValue())
                 .asWidget()
                 .setEnabledIf(w -> getBaseMetaTileEntity().isActive())
                 .color(COLOR_TEXT_WHITE.get())
                 .widthRel(1)
                 .marginBottom(2));
         machineInfo.child(
-            IKey.dynamic(() -> "Used Amperage: " + usedAmpsSyncer.getValue() + "/" + outputCurrentSyncer.getValue())
+            IKey.dynamic(
+                () -> EnumChatFormatting.WHITE + "Used Amperage: "
+                    + EnumChatFormatting.GREEN
+                    + usedAmpsSyncer.getValue()
+                    + "/"
+                    + outputCurrentSyncer.getValue())
                 .asWidget()
                 .setEnabledIf(w -> getBaseMetaTileEntity().isActive())
                 .color(COLOR_TEXT_WHITE.get())
