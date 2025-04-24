@@ -48,7 +48,7 @@ dependencies {
     api("com.github.GTNewHorizons:Postea:1.0.13:dev")
     api("com.github.GTNewHorizons:Galacticraft:3.3.5-GTNH:dev") { transitive = false }
 
-    compileOnlyApi('com.github.GTNewHorizons:ThaumicTinkerer:2.11.9:dev')
+    compileOnlyApi('com.github.GTNewHorizons:ThaumicTinkerer:2.11.10:dev')
     compileOnlyApi("com.github.GTNewHorizons:Mobs-Info:0.5.2-GTNH:dev")
     compileOnlyApi("com.github.GTNewHorizons:Navigator:1.0.15:dev")
     implementation('com.github.GTNewHorizons:Baubles:1.0.4:dev') {transitive=false}
@@ -65,7 +65,7 @@ dependencies {
     compileOnlyApi("com.github.GTNewHorizons:EnderIO:2.9.7:dev") { transitive = false }
     compileOnlyApi("com.github.GTNewHorizons:ForestryMC:4.10.7:dev") { transitive = false }
     compileOnlyApi("com.github.GTNewHorizons:ProjectRed:4.11.4-GTNH:dev") { transitive = false }
-    compileOnlyApi("com.github.GTNewHorizons:Railcraft:9.16.20:dev") { transitive = false }
+    compileOnlyApi("com.github.GTNewHorizons:Railcraft:9.16.21:dev") { transitive = false }
 
     compileOnly("TGregworks:TGregworks:1.7.10-GTNH-1.0.27:deobf") {transitive = false}
     compileOnly("com.github.GTNewHorizons:ThaumicBases:1.8.7:dev") { transitive = false }
