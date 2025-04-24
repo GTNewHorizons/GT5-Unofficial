@@ -236,7 +236,7 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
                     + EnumChatFormatting.GRAY
                     + ")) of antimatter each cycle")
             .addInfo(
-                "Each hatch will pull a random number from " + "N("
+                "Each hatch will multiply the base production per hatch with a random number pulled from " + "N("
                     + baseSkew
                     + " + "
                     + EnumChatFormatting.AQUA
@@ -248,7 +248,7 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
                     + EnumChatFormatting.RESET
                     + ""
                     + EnumChatFormatting.GRAY
-                    + ", 1) and multiply the base production per hatch with it")
+                    + ", 1)")
             .addInfo("N(0.2, 1) refers to a normal distribution with a mean of 0.2 an a variance of 1")
             .addInfo("The total gain of antimatter can be negative!")
             .addSeparator()
