@@ -101,7 +101,11 @@ public abstract class MTELargerTurbineBase extends GTPPMultiBlockBase<MTELargerT
                             .casingIndex(t.getCasingTextureIndex())
                             .dot(4)
                             .buildAndChain(t.getCasingBlock(), t.getCasingMeta())))
-                .addElement('m', lazy(t -> Muffler.newAny(t.getCasingTextureIndex(), 7)))
+                .addElement(
+                    'm',
+                    lazy(
+                        t -> t.requiresMufflers() ? Muffler.newAny(t.getCasingTextureIndex(), 7)
+                            : ofBlock(t.getCasingBlock(), t.getCasingMeta())))
                 .build();
         }
     };
