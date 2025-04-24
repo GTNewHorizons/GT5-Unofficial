@@ -1023,4 +1023,8 @@ public class MTETeslaTower extends TTMultiblockBase implements ISurvivalConstruc
         }
     }
 
+    @Override
+    public boolean forceUseMui2() {
+        return true;
+    }
 }

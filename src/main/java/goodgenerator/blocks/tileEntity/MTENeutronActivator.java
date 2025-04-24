@@ -486,6 +486,11 @@ public class MTENeutronActivator extends MTETooltipMultiBlockBaseEM implements I
             .widget(new FakeSyncWidget.IntegerSyncer(() -> eV, val -> eV = val));
     }
 
+    @Override
+    public boolean forceUseMui2() {
+        return true;
+    }
+
     private enum NeutronHatchElement implements IHatchElement<MTENeutronActivator> {
 
         NeutronSensor(MTENeutronActivator::addAcceleratorAndSensor, MTENeutronSensor.class) {

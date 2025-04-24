@@ -574,6 +574,11 @@ public class MTEQuantumComputer extends TTMultiblockBase implements ISurvivalCon
         return data.toArray(new String[] {});
     }
 
+    @Override
+    public boolean forceUseMui2() {
+        return true;
+    }
+
     private enum RackHatchElement implements IHatchElement<MTEQuantumComputer> {
 
         INSTANCE;

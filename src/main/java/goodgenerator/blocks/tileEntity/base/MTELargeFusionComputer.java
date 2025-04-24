@@ -709,4 +709,9 @@ public abstract class MTELargeFusionComputer extends MTETooltipMultiBlockBaseEM
         "           CHHHHHHHCC     CCHHHHHHHC           ", "            CCHHHHHHHHHHHHHHHHHHHCC            ",
         "              CCHHHHHHHHHHHHHHHCC              ", "                CCCHHHHHHHHHCCC                ",
         "                   CC     CC                   ", "                    FCIBICF                    ", };
+
+    @Override
+    public boolean forceUseMui2() {
+        return true;
+    }
 }
