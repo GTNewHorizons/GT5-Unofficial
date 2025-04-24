@@ -434,7 +434,6 @@ public class MTEEvolutionChamber extends MTEExtendedPowerMultiBlockBase<MTEEvolu
         for (MTEHatchAOOutput hatch : bioHatches) hatch.setSpecies(currentSpecies);
     }
 
-    // TODO: consider whether this should be disabled. for now, since i've overwritten the gui, it is less confusing
     @Override
     public boolean shouldCheckMaintenance() {
         return false;
@@ -546,7 +545,7 @@ public class MTEEvolutionChamber extends MTEExtendedPowerMultiBlockBase<MTEEvolu
             .pos(132, 86)
             .child(list);
 
-        // Iterate through all the traits to generate a ui for each one within the list
+        // Iterate through all the traits to generate a ui for each one
         for (Trait t : ArtificialOrganism.Trait.values()) {
             ItemStack fakeItem = t.cultureItem;
 
@@ -703,14 +702,17 @@ public class MTEEvolutionChamber extends MTEExtendedPowerMultiBlockBase<MTEEvolu
             .imageSize(32, 16)
             .build();
 
-        // Sentience progressbar
-        panel.child(
+
+        panel
+            // AO count progressbar
+            .child(
             new ProgressWidget().value(new DoubleSyncValue(() -> (double) currentSpecies.getCount() / maxAOs))
                 .texture(countProgressBar, 16)
                 .direction(ProgressWidget.Direction.UP)
                 .size(16, 64)
                 .pos(100, 14))
 
+            // Sentience progressbar
             .child(
                 new ProgressWidget().value(new DoubleSyncValue(() -> (double) currentSpecies.getSentience() / 100))
                     .texture(sentienceProgressBar, 32)
@@ -729,6 +731,7 @@ public class MTEEvolutionChamber extends MTEExtendedPowerMultiBlockBase<MTEEvolu
                             .filter(this::isValidCulture))
                     .setEnabledIf(ignored -> canAddTrait())
                     .size(16, 16))
+
             // This is the "insert item" button
             .child(
                 new ButtonWidget<>().pos(27, 61)
@@ -763,6 +766,7 @@ public class MTEEvolutionChamber extends MTEExtendedPowerMultiBlockBase<MTEEvolu
                     .addTooltipLine(StatCollector.translateToLocal("GT5U.artificialorganisms.button.addculture"))
                     .size(16, 16)
                     .setEnabledIf(ignored -> canAddTrait()))
+
             // This button finalizes the aos, preventing further modification and allowing user to add primordial soup
             .child(
                 new ButtonWidget<>().pos(45, 61)
@@ -771,6 +775,7 @@ public class MTEEvolutionChamber extends MTEExtendedPowerMultiBlockBase<MTEEvolu
                     .addTooltipLine(StatCollector.translateToLocal("GT5U.artificialorganisms.button.finalize"))
                     .size(16, 16)
                     .setEnabledIf(ignored -> !currentSpecies.getFinalized()))
+
             // Opens the trait list popup
             .child(
                 new ButtonWidget<>().pos(-20, 61)
