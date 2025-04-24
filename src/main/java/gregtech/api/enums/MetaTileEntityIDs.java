@@ -1737,6 +1737,7 @@ public enum MetaTileEntityIDs {
     MicrowaveGrinder(15312),
     DataBank(15313),
     TeslaTower(15314),
+    NetworkSwitchAdv(15315),
     Researchstation(15331),
     EnergyInfuser(15350),
     EyeofHarmony(15410),
