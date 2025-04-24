@@ -20,7 +20,6 @@ import gregtech.api.GregTechAPI;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Mods;
 import gtnhintergalactic.config.IGConfig;
-import gtnhintergalactic.item.IGItems;
 import gtnhintergalactic.proxy.CommonProxy;
 
 @Mod(
@@ -108,9 +107,9 @@ public class GTNHIntergalactic {
                         .remap(Item.getItemFromBlock(GregTechAPI.sBlockCasingsDyson));
                     case "GalaxySpace:machineframes" -> mapping
                         .remap(Item.getItemFromBlock(GregTechAPI.sBlockCasingsSiphon));
-                    case "GalaxySpace:item.SpaceElevatorParts" -> mapping.remap(IGItems.SpaceElevatorItems);
-                    case "GalaxySpace:item.MiningDrone" -> mapping.remap(IGItems.MiningDrones);
-                    case "GalaxySpace:item.DysonSwarmParts" -> mapping.remap(IGItems.DysonSwarmItems);
+                    case "GalaxySpace:item.SpaceElevatorParts" -> mapping.remap(ItemList.NanotubeSpool.getItem());
+                    case "GalaxySpace:item.MiningDrone" -> mapping.remap(ItemList.MiningDroneLV.getItem());
+                    case "GalaxySpace:item.DysonSwarmParts" -> mapping.remap(ItemList.DysonSwarmModule.getItem());
                 }
             }
         }

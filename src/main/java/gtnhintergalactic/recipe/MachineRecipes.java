@@ -25,8 +25,6 @@ import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gtPlusPlus.core.material.MaterialsElements;
-import gtnhintergalactic.item.IGItems;
-import gtnhintergalactic.item.ItemMiningDrones;
 import micdoodle8.mods.galacticraft.core.items.GCItems;
 import micdoodle8.mods.galacticraft.core.util.RecipeUtil;
 import micdoodle8.mods.galacticraft.planets.asteroids.items.AsteroidsItems;
@@ -99,7 +97,7 @@ public class MachineRecipes implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.wireGt16, Materials.Graphene, 64),
                 GTOreDictUnificator.get(OrePrefixes.wireGt16, Materials.Graphene, 64),
                 GTOreDictUnificator.get(OrePrefixes.wireGt16, Materials.Graphene, 64))
-            .itemOutputs(new ItemStack(IGItems.SpaceElevatorItems, 1, 0))
+            .itemOutputs(ItemList.NanotubeSpool.get(1))
             .fluidInputs(Materials.AdvancedGlue.getFluid(720))
             .duration(1 * MINUTE)
             .eut(TierEU.RECIPE_ZPM)
@@ -108,9 +106,7 @@ public class MachineRecipes implements Runnable {
 
         // Space Elevator Cable
         RA.stdBuilder()
-            .itemInputs(
-                new ItemStack(IGItems.SpaceElevatorItems, 64, 0),
-                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.UHV, 4))
+            .itemInputs(ItemList.NanotubeSpool.get(64), GTOreDictUnificator.get(OrePrefixes.circuit, Materials.UHV, 4))
             .fluidInputs(FluidRegistry.getFluidStack("molten.ethylcyanoacrylatesuperglue", 8000))
             .itemOutputs(ItemList.SpaceElevatorCable.get(1))
             .duration(2 * MINUTE)
@@ -522,7 +518,7 @@ public class MachineRecipes implements Runnable {
                 new ItemStack(GCItems.heavyPlatingTier1, 16),
                 new ItemStack(GCItems.rocketEngine, 2),
                 ItemList.Sensor_LV.get(8))
-            .itemOutputs(new ItemStack(IGItems.MiningDrones, 1, ItemMiningDrones.DroneTiers.LV.ordinal()))
+            .itemOutputs(ItemList.MiningDroneLV.get(1))
             .fluidInputs(Materials.SolderingAlloy.getMolten(720))
             .duration(1 * MINUTE)
             .eut(TierEU.RECIPE_LV)
@@ -538,7 +534,7 @@ public class MachineRecipes implements Runnable {
                 new ItemStack(GCItems.heavyPlatingTier1, 32),
                 new ItemStack(GCItems.rocketEngine, 4),
                 ItemList.Sensor_MV.get(8))
-            .itemOutputs(new ItemStack(IGItems.MiningDrones, 1, ItemMiningDrones.DroneTiers.MV.ordinal()))
+            .itemOutputs(ItemList.MiningDroneMV.get(1))
             .fluidInputs(Materials.SolderingAlloy.getMolten(1440))
             .duration(1 * MINUTE)
             .eut(TierEU.RECIPE_MV)
@@ -554,7 +550,7 @@ public class MachineRecipes implements Runnable {
                 new ItemStack(MarsItems.marsItemBasic, 32, 3),
                 new ItemStack(GCItems.rocketEngine, 4),
                 ItemList.Sensor_HV.get(8))
-            .itemOutputs(new ItemStack(IGItems.MiningDrones, 1, ItemMiningDrones.DroneTiers.HV.ordinal()))
+            .itemOutputs(ItemList.MiningDroneHV.get(1))
             .fluidInputs(Materials.SolderingAlloy.getMolten(1440))
             .duration(1 * MINUTE)
             .eut(TierEU.RECIPE_HV)
@@ -562,7 +558,7 @@ public class MachineRecipes implements Runnable {
 
         // EV
         TTRecipeAdder.addResearchableAssemblylineRecipe(
-            new ItemStack(IGItems.MiningDrones, 1, ItemMiningDrones.DroneTiers.HV.ordinal()),
+            ItemList.MiningDroneHV.get(1),
             50000,
             128,
             1000000,
@@ -574,13 +570,13 @@ public class MachineRecipes implements Runnable {
                 ItemList.Sensor_EV.get(8) },
             new FluidStack[] { new FluidStack(solderLuV, 720), Materials.Iridium.getMolten(720),
                 new FluidStack(FluidRegistry.getFluid("liquid_drillingfluid"), 16000) },
-            new ItemStack(IGItems.MiningDrones, 1, ItemMiningDrones.DroneTiers.EV.ordinal()),
+            ItemList.MiningDroneEV.get(1),
             1 * MINUTE,
             (int) TierEU.RECIPE_EV);
 
         // IV
         TTRecipeAdder.addResearchableAssemblylineRecipe(
-            new ItemStack(IGItems.MiningDrones, 1, ItemMiningDrones.DroneTiers.EV.ordinal()),
+            ItemList.MiningDroneEV.get(1),
             75000,
             128,
             1000000,
@@ -592,13 +588,13 @@ public class MachineRecipes implements Runnable {
                 new ItemStack(AsteroidsItems.basicItem, 4, 1), ItemList.Sensor_IV.get(8) },
             new FluidStack[] { new FluidStack(solderLuV, 1440), Materials.Iridium.getMolten(1440),
                 new FluidStack(FluidRegistry.getFluid("liquid_drillingfluid"), 32000) },
-            new ItemStack(IGItems.MiningDrones, 1, ItemMiningDrones.DroneTiers.IV.ordinal()),
+            ItemList.MiningDroneIV.get(1),
             1 * MINUTE,
             (int) TierEU.RECIPE_IV);
 
         // LuV
         TTRecipeAdder.addResearchableAssemblylineRecipe(
-            new ItemStack(IGItems.MiningDrones, 1, ItemMiningDrones.DroneTiers.IV.ordinal()),
+            ItemList.MiningDroneIV.get(1),
             100000,
             256,
             (int) TierEU.RECIPE_UHV,
@@ -611,13 +607,13 @@ public class MachineRecipes implements Runnable {
                 ItemList.Sensor_LuV.get(8) },
             new FluidStack[] { new FluidStack(solderLuV, 2880), Materials.Osmiridium.getMolten(1440),
                 new FluidStack(FluidRegistry.getFluid("liquid_drillingfluid"), 64000) },
-            new ItemStack(IGItems.MiningDrones, 1, ItemMiningDrones.DroneTiers.LuV.ordinal()),
+            ItemList.MiningDroneLuV.get(1),
             1 * MINUTE,
             (int) TierEU.RECIPE_LuV);
 
         // ZPM
         TTRecipeAdder.addResearchableAssemblylineRecipe(
-            new ItemStack(IGItems.MiningDrones, 1, ItemMiningDrones.DroneTiers.LuV.ordinal()),
+            ItemList.MiningDroneLuV.get(1),
             125000,
             256,
             (int) TierEU.RECIPE_UHV,
@@ -630,13 +626,13 @@ public class MachineRecipes implements Runnable {
                 ItemList.Sensor_ZPM.get(8) },
             new FluidStack[] { new FluidStack(solderLuV, 2880), Materials.Osmiridium.getMolten(1440),
                 new FluidStack(FluidRegistry.getFluid("liquid_drillingfluid"), 128000) },
-            new ItemStack(IGItems.MiningDrones, 1, ItemMiningDrones.DroneTiers.ZPM.ordinal()),
+            ItemList.MiningDroneZPM.get(1),
             1 * MINUTE,
             (int) TierEU.RECIPE_ZPM);
 
         // UV
         TTRecipeAdder.addResearchableAssemblylineRecipe(
-            new ItemStack(IGItems.MiningDrones, 1, ItemMiningDrones.DroneTiers.ZPM.ordinal()),
+            ItemList.MiningDroneZPM.get(1),
             150000,
             512,
             4000000,
@@ -649,13 +645,13 @@ public class MachineRecipes implements Runnable {
                 ItemList.Sensor_UV.get(8) },
             new FluidStack[] { new FluidStack(solderLuV, 2880), Materials.Naquadria.getMolten(1440),
                 new FluidStack(FluidRegistry.getFluid("liquid_drillingfluid"), 256000) },
-            new ItemStack(IGItems.MiningDrones, 1, ItemMiningDrones.DroneTiers.UV.ordinal()),
+            ItemList.MiningDroneUV.get(1),
             1 * MINUTE,
             (int) TierEU.RECIPE_UV);
 
         // UHV
         TTRecipeAdder.addResearchableAssemblylineRecipe(
-            new ItemStack(IGItems.MiningDrones, 1, ItemMiningDrones.DroneTiers.UV.ordinal()),
+            ItemList.MiningDroneUV.get(1),
             175000,
             512,
             4000000,
@@ -668,7 +664,7 @@ public class MachineRecipes implements Runnable {
                 ItemList.Sensor_UHV.get(8) },
             new FluidStack[] { new FluidStack(solderUEV, 2880), Materials.Neutronium.getMolten(1440),
                 new FluidStack(FluidRegistry.getFluid("liquid_drillingfluid"), 512000) },
-            new ItemStack(IGItems.MiningDrones, 1, ItemMiningDrones.DroneTiers.UHV.ordinal()),
+            ItemList.MiningDroneUHV.get(1),
             1 * MINUTE,
             (int) TierEU.RECIPE_UHV);
 
@@ -676,7 +672,7 @@ public class MachineRecipes implements Runnable {
 
         // UEV
         TTRecipeAdder.addResearchableAssemblylineRecipe(
-            new ItemStack(IGItems.MiningDrones, 1, ItemMiningDrones.DroneTiers.UHV.ordinal()),
+            ItemList.MiningDroneUHV.get(1),
             200000,
             512,
             4000000,
@@ -688,13 +684,13 @@ public class MachineRecipes implements Runnable {
                 ItemList.Sensor_UEV.get(8) },
             new FluidStack[] { new FluidStack(solderUEV, 2880), Materials.Quantium.getMolten(1440),
                 new FluidStack(FluidRegistry.getFluid("liquid_drillingfluid"), 512000) },
-            new ItemStack(IGItems.MiningDrones, 1, ItemMiningDrones.DroneTiers.UEV.ordinal()),
+            ItemList.MiningDroneUEV.get(1),
             1 * MINUTE,
             (int) TierEU.RECIPE_UEV);
 
         // UIV
         TTRecipeAdder.addResearchableAssemblylineRecipe(
-            new ItemStack(IGItems.MiningDrones, 1, ItemMiningDrones.DroneTiers.UEV.ordinal()),
+            ItemList.MiningDroneUEV.get(1),
             225000,
             512,
             (int) TierEU.RECIPE_UEV,
@@ -706,13 +702,13 @@ public class MachineRecipes implements Runnable {
                 ItemList.Sensor_UIV.get(8) },
             new FluidStack[] { new FluidStack(solderUEV, 5760), Materials.Quantium.getMolten(2880),
                 new FluidStack(FluidRegistry.getFluid("liquid_drillingfluid"), 512000) },
-            new ItemStack(IGItems.MiningDrones, 1, ItemMiningDrones.DroneTiers.UIV.ordinal()),
+            ItemList.MiningDroneUIV.get(1),
             1 * MINUTE,
             (int) TierEU.RECIPE_UIV);
 
         // UMV
         TTRecipeAdder.addResearchableAssemblylineRecipe(
-            new ItemStack(IGItems.MiningDrones, 1, ItemMiningDrones.DroneTiers.UIV.ordinal()),
+            ItemList.MiningDroneUIV.get(1),
             250000,
             512,
             (int) TierEU.RECIPE_UEV,
@@ -725,13 +721,13 @@ public class MachineRecipes implements Runnable {
                 ItemList.Sensor_UMV.get(8) },
             new FluidStack[] { new FluidStack(hypogenFluid, 576), new FluidStack(celestialTungstenFluid, 576),
                 new FluidStack(FluidRegistry.getFluid("liquid_drillingfluid"), 512000) },
-            new ItemStack(IGItems.MiningDrones, 1, ItemMiningDrones.DroneTiers.UMV.ordinal()),
+            ItemList.MiningDroneUMV.get(1),
             1 * MINUTE,
             (int) TierEU.RECIPE_UMV);
 
         // UXV
         TTRecipeAdder.addResearchableAssemblylineRecipe(
-            new ItemStack(IGItems.MiningDrones, 1, ItemMiningDrones.DroneTiers.UMV.ordinal()),
+            ItemList.MiningDroneUMV.get(1),
             275000,
             512,
             16000000,
@@ -744,7 +740,7 @@ public class MachineRecipes implements Runnable {
                 ItemList.Sensor_UXV.get(8) },
             new FluidStack[] { MaterialsUEVplus.Space.getMolten(576), MaterialsUEVplus.Universium.getMolten(576),
                 new FluidStack(FluidRegistry.getFluid("liquid_drillingfluid"), 512000) },
-            new ItemStack(IGItems.MiningDrones, 1, ItemMiningDrones.DroneTiers.UXV.ordinal()),
+            ItemList.MiningDroneUXV.get(1),
             1 * MINUTE,
             (int) TierEU.RECIPE_UXV);
     }

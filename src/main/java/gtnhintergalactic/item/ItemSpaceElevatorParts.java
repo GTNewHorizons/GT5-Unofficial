@@ -5,6 +5,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 
+import gregtech.api.enums.ItemList;
 import gtnhintergalactic.GTNHIntergalactic;
 
 /**
@@ -27,6 +28,7 @@ public class ItemSpaceElevatorParts extends Item {
         setCreativeTab(GTNHIntergalactic.tab);
         setHasSubtypes(true);
         setUnlocalizedName("SpaceElevatorParts");
+        ItemList.NanotubeSpool.set(new ItemStack(this, 1, 0));
     }
 
     /**

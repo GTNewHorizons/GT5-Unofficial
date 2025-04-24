@@ -35,6 +35,7 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureUtility;
 
 import gregtech.api.GregTechAPI;
+import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
@@ -50,7 +51,6 @@ import gregtech.common.items.MetaGeneratedTool01;
 import gtnhintergalactic.client.IGTextures;
 import gtnhintergalactic.client.TooltipUtil;
 import gtnhintergalactic.config.IGConfig;
-import gtnhintergalactic.item.IGItems;
 import micdoodle8.mods.galacticraft.api.world.IOrbitDimension;
 import tectech.thing.metaTileEntity.hatch.MTEHatchDynamoMulti;
 import tectech.thing.metaTileEntity.multi.base.TTMultiblockBase;
@@ -259,7 +259,7 @@ public class TileEntityDysonSwarm extends TTMultiblockBase implements ISurvivalC
                 .getSizeInventory(); i++) {
                 ItemStack stack = bus.getBaseMetaTileEntity()
                     .getStackInSlot(i);
-                if (stack != null && stack.getItem() == IGItems.DysonSwarmItems
+                if (stack != null && stack.getItem() == ItemList.DysonSwarmModule.getItem()
                     && stack.getItemDamage() == 0
                     && moduleCount < IGConfig.dysonSwarm.maxModules + 1) {
                     int usedStackSize = Math.min(stack.stackSize, IGConfig.dysonSwarm.maxModules - moduleCount);
@@ -374,7 +374,7 @@ public class TileEntityDysonSwarm extends TTMultiblockBase implements ISurvivalC
         int maxReduction = (int) Math.min(
             this.moduleCount,
             MetaGeneratedTool01.getToolMaxDamage(heldItem) - MetaGeneratedTool01.getToolDamage(heldItem));
-        ItemStack modules = new ItemStack(IGItems.DysonSwarmItems, maxReduction);
+        ItemStack modules = ItemList.DysonSwarmModule.get(maxReduction);
 
         // Fill player inventory
         aPlayer.inventory.addItemStackToInventory(modules);

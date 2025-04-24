@@ -11,20 +11,13 @@ import cpw.mods.fml.common.registry.GameRegistry;
  */
 public class IGItems {
 
-    public static Item SpaceElevatorItems;
-    public static Item DysonSwarmItems;
-    public static Item MiningDrones;
-
     /**
      * Initialize the items of this mod
      */
     public static void init() {
-        SpaceElevatorItems = new ItemSpaceElevatorParts();
-        MiningDrones = new ItemMiningDrones();
-        DysonSwarmItems = new ItemDysonSwarmParts();
-        registerItem(SpaceElevatorItems);
-        registerItem(MiningDrones);
-        registerItem(DysonSwarmItems);
+        registerItem(new ItemSpaceElevatorParts());
+        registerItem(new ItemMiningDrones());
+        registerItem(new ItemDysonSwarmParts());
     }
 
     /**
