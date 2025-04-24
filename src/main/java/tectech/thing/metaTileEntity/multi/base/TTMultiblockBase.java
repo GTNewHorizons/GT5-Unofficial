@@ -745,6 +745,10 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
         aNBT.setInteger("eOutputStackCount", 0);
         aNBT.removeTag("outputEM");
 
+        NBTTagCompound parameterMapTag = new NBTTagCompound();
+        for (Map.Entry<String, Parameter<?>> entry : parameterMap.entrySet()) {
+
+        }
         NBTTagCompound paramI = new NBTTagCompound();
         for (int i = 0; i < parametrization.iParamsIn.length; i++) {
             paramI.setDouble(Integer.toString(i), parametrization.iParamsIn[i]);
@@ -2294,9 +2298,7 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
         BooleanSyncValue wasShutDown = new BooleanSyncValue(
             () -> getBaseMetaTileEntity().wasShutdown(),
             val -> getBaseMetaTileEntity().setShutdownStatus(val));
-        syncManager.syncValue(
-            "wasShutdown",
-            wasShutDown);
+        syncManager.syncValue("wasShutdown", wasShutDown);
         syncManager.syncValue(
             "shutdownReason",
             new GenericSyncValue<ShutDownReason>(
@@ -2370,7 +2372,7 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
                     .overlay(heatSinkSmall));
         }
 
-        insertTexts(machineInfo, invSlot);
+        insertTexts(machineInfo, invSlot, syncManager);
         addTitleTextStyle(panel, this.getLocalName());
 
         com.cleanroommc.modularui.drawable.UITexture powerPassOn = com.cleanroommc.modularui.drawable.UITexture
@@ -2384,7 +2386,7 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
         powerPassButton.overlay(
             !isPowerPassButtonEnabled() && !ePowerPassCover ? powerPassDisabled
                 : ePowerPass ? powerPassOn : powerPassOff);
-        powerPassButton.tooltip(new RichTooltip(powerPassButton).add("Safe Void"));
+        powerPassButton.tooltip(new RichTooltip(powerPassButton).add("Power Pass"));
         powerPassButton.syncHandler(new InteractionSyncHandler().setOnMousePressed(mouseData -> {
             TecTech.proxy.playSound(getBaseMetaTileEntity(), "fx_click");
             ePowerPass = !ePowerPass;
@@ -2425,7 +2427,7 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
         powerSwitchButton.overlay(
             !isAllowedToWorkButtonEnabled() ? powerSwitchDisabled
                 : getBaseMetaTileEntity().isAllowedToWork() ? powerSwitchOn : powerSwitchOff);
-        //Needed so the texture changes to powerSwitchOff when trying to turn on an unformed multi
+        // Needed so the texture changes to powerSwitchOff when trying to turn on an unformed multi
         wasShutDown.setChangeListener(() -> {
             powerSwitchButton.overlay(
                 !isAllowedToWorkButtonEnabled() ? powerSwitchDisabled
@@ -2442,7 +2444,7 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
                     getBaseMetaTileEntity().enableWorking();
                 }
             }
-            //Needed so the texture is instantly updated when turning the multi off
+            // Needed so the texture is instantly updated when turning the multi off
             powerSwitchButton.overlay(
                 !isAllowedToWorkButtonEnabled() ? powerSwitchDisabled
                     : getBaseMetaTileEntity().isAllowedToWork() ? powerSwitchOn : powerSwitchOff);
@@ -2519,7 +2521,8 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
         return panel;
     }
 
-    private void insertTexts(ListWidget<IWidget, ?> machineInfo, ItemStackHandler invSlot) {
+    public void insertTexts(ListWidget<IWidget, ?> machineInfo, ItemStackHandler invSlot,
+        PanelSyncManager syncManager) {
         machineInfo.child(
             new com.cleanroommc.modularui.widgets.TextWidget(GTUtility.trans("132", "Pipe is loose. (Wrench)"))
                 .color(COLOR_TEXT_WHITE.get())
