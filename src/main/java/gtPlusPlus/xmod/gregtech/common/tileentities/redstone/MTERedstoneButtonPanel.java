@@ -1,6 +1,7 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.redstone;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -134,7 +135,8 @@ public class MTERedstoneButtonPanel extends MTERedstoneBase {
     }
 
     @Override
-    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
+        ItemStack aTool) {
         if (side == getBaseMetaTileEntity().getFrontFacing()) mType = (byte) ((mType + 1) % 3);
     }
 
