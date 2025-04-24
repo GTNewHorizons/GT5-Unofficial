@@ -282,7 +282,7 @@ public class GTRecipeRegistrator {
 
         if (!aData.hasValidMaterialData()) return;
 
-        if (aData.mMaterial.mMaterial.mSubTags.contains(SubTag.NO_RECYCLING)) return;
+        if (aData.mMaterial.mMaterial.mSubTags.contains(SubTag.NO_RECYCLING_RECIPES)) return;
 
         boolean isRecycle = true;
 
