@@ -192,7 +192,8 @@ public class MTEIndustrialLaserEngraver extends MTEExtendedPowerMultiBlockBase<M
     private boolean stopAllRendering = false;
 
     @Override
-    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
+        ItemStack aTool) {
         stopAllRendering = !stopAllRendering;
         if (stopAllRendering) {
             PlayerUtils.messagePlayer(aPlayer, "Rendering off");
@@ -353,10 +354,8 @@ public class MTEIndustrialLaserEngraver extends MTEExtendedPowerMultiBlockBase<M
             @NotNull
             @Override
             protected OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
-                // Limit ocs up to hatch tier + 1
-                int ocs = (laserSource.mTier + 1) - GTUtility.getTier(recipe.mEUt);
-                if (ocs < 0) ocs = 0;
-                return super.createOverclockCalculator(recipe).limitOverclockCount(ocs);
+                return super.createOverclockCalculator(recipe)
+                    .setMaxOverclocks((laserSource.mTier + 1) - GTUtility.getTier(recipe.mEUt));
             }
 
             @Override

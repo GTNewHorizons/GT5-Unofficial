@@ -85,13 +85,12 @@ public abstract class CoverFacadeBase extends Cover {
         this.mStack = stack;
         ICoverable coverable = coveredTile.get();
         if (coverable != null && coverable.isClientSide()) {
-            GTRenderingWorld.getInstance()
-                .register(
-                    coverable.getXCoord(),
-                    coverable.getYCoord(),
-                    coverable.getZCoord(),
-                    getTargetBlock(mStack),
-                    getTargetMeta(mStack));
+            GTRenderingWorld.register(
+                coverable.getXCoord(),
+                coverable.getYCoord(),
+                coverable.getZCoord(),
+                getTargetBlock(mStack),
+                getTargetMeta(mStack));
         }
         return this;
     }
@@ -186,13 +185,12 @@ public abstract class CoverFacadeBase extends Cover {
     @Override
     public void onPlayerAttach(EntityPlayer player, ItemStack coverItem) {
         ICoverable coverable = coveredTile.get();
-        if (coverable != null && coverable.isClientSide()) GTRenderingWorld.getInstance()
-            .register(
-                coverable.getXCoord(),
-                coverable.getYCoord(),
-                coverable.getZCoord(),
-                getTargetBlock(coverItem),
-                getTargetMeta(coverItem));
+        if (coverable != null && coverable.isClientSide()) GTRenderingWorld.register(
+            coverable.getXCoord(),
+            coverable.getYCoord(),
+            coverable.getZCoord(),
+            getTargetBlock(coverItem),
+            getTargetMeta(coverItem));
     }
 
     @Override
@@ -251,13 +249,12 @@ public abstract class CoverFacadeBase extends Cover {
             }
             if (mStack != null)
                 // mStack == null -> cover removed before data reach client
-                GTRenderingWorld.getInstance()
-                    .unregister(
-                        coverable.getXCoord(),
-                        coverable.getYCoord(),
-                        coverable.getZCoord(),
-                        getTargetBlock(mStack),
-                        getTargetMeta(mStack));
+                GTRenderingWorld.unregister(
+                    coverable.getXCoord(),
+                    coverable.getYCoord(),
+                    coverable.getZCoord(),
+                    getTargetBlock(mStack),
+                    getTargetMeta(mStack));
         }
     }
 
