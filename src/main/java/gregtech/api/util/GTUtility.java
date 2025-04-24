@@ -12,7 +12,6 @@ import static gregtech.api.enums.GTValues.V;
 import static gregtech.api.enums.GTValues.W;
 import static gregtech.api.enums.Materials.FLUID_MAP;
 import static gregtech.api.enums.Mods.Translocator;
-import static gregtech.api.items.armor.ArmorHelper.HAZMAT_PROTECTION_KEY;
 import static gregtech.common.UndergroundOil.undergroundOilReadInformation;
 import static net.minecraftforge.common.util.ForgeDirection.DOWN;
 import static net.minecraftforge.common.util.ForgeDirection.EAST;

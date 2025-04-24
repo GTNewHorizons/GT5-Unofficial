@@ -372,6 +372,13 @@ public class LoaderGTBlockFluid implements Runnable {
                 "Restore's the user's air if they run out underwater",
                 Collections.singletonList(MechArmorLoader.MechArmorHelmet),
                 Collections.singletonList(WaterBreathingBehavior.INSTANCE)));
+        ItemList.Augment_Teleporter.set(
+            new ItemAugmentBase(
+                "augmentteleporter",
+                "Augment: Personal Teleporter",
+                "Allows the user to teleport to set locations",
+                Collections.singletonList(MechArmorLoader.MechArmorLeggings),
+                Collections.singletonList(TeleporterBehavior.INSTANCE)));
 
         ItemList.Neutron_Reflector.set(new ItemNeutronReflector("neutronreflector", "Iridium Neutron Reflector", 0));
         ItemList.Reactor_Coolant_He_1
