@@ -12,11 +12,8 @@ import com.gtnewhorizon.gtnhlib.config.ConfigurationManager;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
-import cpw.mods.fml.common.event.FMLMissingMappingsEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
-import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.GT_Version;
-import gregtech.api.GregTechAPI;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Mods;
 import gtnhintergalactic.config.IGConfig;
@@ -82,36 +79,5 @@ public class GTNHIntergalactic {
     @Mod.EventHandler
     public void postInit(FMLPostInitializationEvent event) {
         proxy.postInit(event);
-    }
-
-    @Mod.EventHandler
-    public void onMissingMapping(FMLMissingMappingsEvent event) {
-        for (FMLMissingMappingsEvent.MissingMapping mapping : event.getAll()) {
-            if (mapping.type == GameRegistry.Type.BLOCK) {
-                switch (mapping.name) {
-                    case "GalaxySpace:spaceelevatorparts" -> mapping.remap(GregTechAPI.sBlockCasingsSE);
-                    case "GalaxySpace:spaceelevatormotors" -> mapping.remap(GregTechAPI.sBlockCasingsSEMotor);
-                    case "GalaxySpace:spaceelevatorcable" -> mapping.remap(GregTechAPI.sSpaceElevatorCable);
-                    case "GalaxySpace:dysonswarmparts" -> mapping.remap(GregTechAPI.sBlockCasingsDyson);
-                    case "GalaxySpace:machineframes" -> mapping.remap(GregTechAPI.sBlockCasingsSiphon);
-                }
-            } else if (mapping.type == GameRegistry.Type.ITEM) {
-                switch (mapping.name) {
-                    case "GalaxySpace:spaceelevatorparts" -> mapping
-                        .remap(Item.getItemFromBlock(GregTechAPI.sBlockCasingsSE));
-                    case "GalaxySpace:spaceelevatormotors" -> mapping
-                        .remap(Item.getItemFromBlock(GregTechAPI.sBlockCasingsSEMotor));
-                    case "GalaxySpace:spaceelevatorcable" -> mapping
-                        .remap(Item.getItemFromBlock(GregTechAPI.sSpaceElevatorCable));
-                    case "GalaxySpace:dysonswarmparts" -> mapping
-                        .remap(Item.getItemFromBlock(GregTechAPI.sBlockCasingsDyson));
-                    case "GalaxySpace:machineframes" -> mapping
-                        .remap(Item.getItemFromBlock(GregTechAPI.sBlockCasingsSiphon));
-                    case "GalaxySpace:item.SpaceElevatorParts" -> mapping.remap(ItemList.NanotubeSpool.getItem());
-                    case "GalaxySpace:item.MiningDrone" -> mapping.remap(ItemList.MiningDroneLV.getItem());
-                    case "GalaxySpace:item.DysonSwarmParts" -> mapping.remap(ItemList.DysonSwarmModule.getItem());
-                }
-            }
-        }
     }
 }
