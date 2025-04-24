@@ -421,7 +421,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials Antimatter;
     public static Materials Protomatter;
     public static Materials AdvancedGlue;
-    public static Materials BioFuel;
     public static Materials Biomass;
     public static Materials CharcoalByproducts;
     public static Materials Cheese;

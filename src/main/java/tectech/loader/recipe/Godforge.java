@@ -1,7 +1,6 @@
 package tectech.loader.recipe;
 
 import static gregtech.api.enums.Mods.EternalSingularity;
-import static gregtech.api.enums.Mods.GTNHIntergalactic;
 import static gregtech.api.util.GTModHandler.getModItem;
 import static gregtech.api.util.GTRecipeBuilder.BUCKETS;
 import static gregtech.api.util.GTRecipeBuilder.INGOTS;
@@ -676,7 +675,7 @@ public class Godforge implements Runnable {
         magmatterItemsForNEI.addAll(exoticModuleMagmatterItemMap.keySet());
 
         // Godforge upgrade materials
-        if (EternalSingularity.isModLoaded() && GTNHIntergalactic.isModLoaded()) {
+        if (EternalSingularity.isModLoaded()) {
             ForgeOfGodsUpgrade.START.addExtraCost(
                 GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.SuperconductorUIVBase, 64),
                 ItemList.SuperconductorComposite.get(32),
@@ -698,7 +697,7 @@ public class Godforge implements Runnable {
                 CustomItemList.Godforge_StellarEnergySiphonCasing.get(8),
                 GregtechItemList.FusionComputer_UV3.get(8),
                 GregtechItemList.Casing_Fusion_Internal2.get(64),
-                getModItem(GTNHIntergalactic.ID, "item.DysonSwarmParts", 64, 3),
+                ItemList.UHTResistantMesh.get(64),
                 MaterialsAlloy.QUANTUM.getPlateDense(48),
                 MaterialsElements.STANDALONE.RHUGNOR.getGear(32),
                 getModItem(EternalSingularity.ID, "eternal_singularity", 16L),
