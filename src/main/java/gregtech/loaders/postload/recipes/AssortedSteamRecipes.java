@@ -844,10 +844,10 @@ public class AssortedSteamRecipes implements Runnable {
 
         RA.stdBuilder()
             .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Bronze, 1),
-                GTOreDictUnificator.get(OrePrefixes.gearGt, Materials.Bronze, 2),
-                GTOreDictUnificator.get(OrePrefixes.plate, Materials.Bronze, 4))
-            .itemOutputs(ItemUtils.simpleMetaStack(GregTechAPI.sBlockCasings2, 2, 1))
+                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Steel, 1),
+                GTOreDictUnificator.get(OrePrefixes.gearGt, Materials.Steel, 2),
+                GTOreDictUnificator.get(OrePrefixes.plate, Materials.Steel, 4))
+            .itemOutputs(ItemUtils.simpleMetaStack(GregTechAPI.sBlockCasings2, 3, 1))
             .duration(2 * SECONDS)
             .eut(16)
             .addTo(steamManufacturerRecipes);
