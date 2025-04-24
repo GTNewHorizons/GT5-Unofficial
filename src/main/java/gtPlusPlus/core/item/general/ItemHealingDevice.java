@@ -27,7 +27,6 @@ import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import gtPlusPlus.core.util.sys.KeyboardUtils;
-import gtPlusPlus.xmod.gregtech.common.helpers.ChargingHelper;
 import ic2.api.item.ElectricItem;
 import ic2.api.item.IElectricItem;
 import ic2.api.item.IElectricItemManager;
@@ -261,32 +260,27 @@ public class ItemHealingDevice extends Item implements IElectricItem, IElectricI
                     break;
                 }
 
-                if (aInvStack != null) {
-                    if (ChargingHelper.isItemValid(aInvStack)) {
+                if (aInvStack != null && aInvStack.getItem() instanceof IElectricItem electricItem) {
 
-                        double aTransferRate;
-                        double aCurrentChargeForThisBauble;
-                        int mTier;
-                        final IElectricItem electricItem = (IElectricItem) aInvStack.getItem();
+                    double aTransferRate;
+                    double aCurrentChargeForThisBauble;
+                    int mTier;
 
-                        if (electricItem != null) {
+                    aTransferRate = electricItem.getTransferLimit(aInvStack);
+                    mTier = electricItem.getTier(aInvStack);
+                    aCurrentChargeForThisBauble = ElectricItem.manager.getCharge(baubleStack);
 
-                            aTransferRate = electricItem.getTransferLimit(aInvStack);
-                            mTier = electricItem.getTier(aInvStack);
-                            aCurrentChargeForThisBauble = ElectricItem.manager.getCharge(baubleStack);
-
-                            if (aCurrentChargeForThisBauble < maxValueEU) {
-                                if ((ElectricItem.manager.getCharge(aInvStack) >= aTransferRate)) {
-                                    if (electricItem.canProvideEnergy(aInvStack)) {
-                                        double d = ElectricItem.manager
-                                            .discharge(aInvStack, aTransferRate, mTier, false, true, false);
-                                        // Logger.INFO("Charging from "+aInvStack.getDisplayName() +" | "+d);
-                                        ElectricItem.manager.charge(baubleStack, d, mTier, true, false);
-                                    }
-                                }
+                    if (aCurrentChargeForThisBauble < maxValueEU) {
+                        if ((ElectricItem.manager.getCharge(aInvStack) >= aTransferRate)) {
+                            if (electricItem.canProvideEnergy(aInvStack)) {
+                                double d = ElectricItem.manager
+                                    .discharge(aInvStack, aTransferRate, mTier, false, true, false);
+                                // Logger.INFO("Charging from "+aInvStack.getDisplayName() +" | "+d);
+                                ElectricItem.manager.charge(baubleStack, d, mTier, true, false);
                             }
                         }
                     }
+
                 }
                 if (!(this.getCharge(baubleStack)
                     <= (this.getMaxCharge(baubleStack) - getTransferLimit(baubleStack)))) {
