@@ -24,12 +24,12 @@ import com.gtnewhorizon.structurelib.structure.IStructureElement;
 import com.gtnewhorizon.structurelib.structure.ITierConverter;
 import com.gtnewhorizon.structurelib.structure.StructureUtility;
 
+import gregtech.api.GregTechAPI;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.util.IGTHatchAdder;
 import gregtech.common.misc.spaceprojects.SpaceProjectManager;
 import gregtech.common.misc.spaceprojects.interfaces.ISpaceProject;
-import gtnhintergalactic.block.IGBlocks;
 import gtnhintergalactic.tile.multi.elevatormodules.TileEntityModuleBase;
 
 /**
@@ -241,11 +241,11 @@ public class ElevatorUtil {
      */
     public static List<Pair<Block, Integer>> getMotorTiers() {
         return ImmutableList.of(
-            Pair.of(IGBlocks.SpaceElevatorMotor, 0),
-            Pair.of(IGBlocks.SpaceElevatorMotor, 1),
-            Pair.of(IGBlocks.SpaceElevatorMotor, 2),
-            Pair.of(IGBlocks.SpaceElevatorMotor, 3),
-            Pair.of(IGBlocks.SpaceElevatorMotor, 4));
+            Pair.of(GregTechAPI.sBlockCasingsSEMotor, 0),
+            Pair.of(GregTechAPI.sBlockCasingsSEMotor, 1),
+            Pair.of(GregTechAPI.sBlockCasingsSEMotor, 2),
+            Pair.of(GregTechAPI.sBlockCasingsSEMotor, 3),
+            Pair.of(GregTechAPI.sBlockCasingsSEMotor, 4));
     }
 
     /**
@@ -257,7 +257,7 @@ public class ElevatorUtil {
         return (block, meta) -> {
             if (block == null) {
                 return -1;
-            } else if (block == IGBlocks.SpaceElevatorMotor) {
+            } else if (block == GregTechAPI.sBlockCasingsSEMotor) {
                 return meta + 1;
             }
             return -1;

@@ -34,6 +34,7 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureUtility;
 
 import bartworks.system.material.WerkstoffLoader;
+import gregtech.api.GregTechAPI;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
@@ -52,7 +53,6 @@ import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTStructureUtility;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
-import gtnhintergalactic.block.IGBlocks;
 import gtnhintergalactic.client.IGTextures;
 import gtnhintergalactic.client.TooltipUtil;
 import gtnhintergalactic.recipe.GasSiphonRecipes;
@@ -90,7 +90,7 @@ public class TileEntityPlanetaryGasSiphon extends MTEEnhancedMultiBlockBase<Tile
                 .atLeast(Maintenance, InputBus, OutputHatch, Energy)
                 .dot(1)
                 .casingIndex(IGTextures.CASING_INDEX_SIPHON)
-                .buildAndChain(IGBlocks.GasSiphonCasing, 0))
+                .buildAndChain(GregTechAPI.sBlockCasingsSiphon, 0))
         .build();
 
     /**

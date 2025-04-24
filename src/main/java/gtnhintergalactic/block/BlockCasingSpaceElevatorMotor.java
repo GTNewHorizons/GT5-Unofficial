@@ -11,13 +11,13 @@ import net.minecraft.world.IBlockAccess;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Textures;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.common.blocks.BlockCasingsAbstract;
 import gregtech.common.blocks.MaterialCasings;
 import gtnhintergalactic.GTNHIntergalactic;
-import gtnhintergalactic.item.IGItems;
 import gtnhintergalactic.item.ItemCasingSpaceElevatorMotor;
 
 /**
@@ -50,11 +50,11 @@ public class BlockCasingSpaceElevatorMotor extends BlockCasingsAbstract {
         GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".3.name", "Space Elevator Motor MK-IV");
         GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".4.name", "Space Elevator Motor MK-V");
 
-        IGItems.SpaceElevatorMotorT1 = new ItemStack(this, 1, 0);
-        IGItems.SpaceElevatorMotorT2 = new ItemStack(this, 1, 1);
-        IGItems.SpaceElevatorMotorT3 = new ItemStack(this, 1, 2);
-        IGItems.SpaceElevatorMotorT4 = new ItemStack(this, 1, 3);
-        IGItems.SpaceElevatorMotorT5 = new ItemStack(this, 1, 4);
+        ItemList.SpaceElevatorMotorT1.set(new ItemStack(this, 1, 0));
+        ItemList.SpaceElevatorMotorT2.set(new ItemStack(this, 1, 1));
+        ItemList.SpaceElevatorMotorT3.set(new ItemStack(this, 1, 2));
+        ItemList.SpaceElevatorMotorT4.set(new ItemStack(this, 1, 3));
+        ItemList.SpaceElevatorMotorT5.set(new ItemStack(this, 1, 4));
     }
 
     /**

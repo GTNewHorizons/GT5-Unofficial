@@ -2,9 +2,11 @@ package gtnhintergalactic.block;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
 import gregtech.api.GregTechAPI;
+import gregtech.api.enums.ItemList;
 import gtnhintergalactic.GTNHIntergalactic;
 import micdoodle8.mods.galacticraft.api.block.ITerraformableBlock;
 
@@ -19,6 +21,7 @@ public class BlockCasingGasSiphon extends Block implements ITerraformableBlock {
         this.setCreativeTab(GTNHIntergalactic.tab);
         this.setBlockTextureName(GTNHIntergalactic.MODID + ":gasSiphon/SiphonCasing");
         GregTechAPI.registerMachineBlock(this, -1);
+        ItemList.PlanetaryGasSiphonCasing.set(new ItemStack(this));
     }
 
     @Override

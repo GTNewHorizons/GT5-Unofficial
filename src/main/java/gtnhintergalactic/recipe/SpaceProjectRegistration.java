@@ -18,7 +18,6 @@ import gregtech.common.misc.spaceprojects.base.SPUpgrade;
 import gregtech.common.misc.spaceprojects.base.SpaceProject;
 import gregtech.common.misc.spaceprojects.enums.SolarSystem;
 import gregtech.common.misc.spaceprojects.interfaces.ISpaceProject;
-import gtnhintergalactic.block.IGBlocks;
 import gtnhintergalactic.gui.IG_UITextures;
 import gtnhintergalactic.spaceprojects.ProjectAsteroidOutpost;
 import tectech.thing.CustomItemList;
@@ -91,8 +90,7 @@ public class SpaceProjectRegistration implements Runnable {
             .setProjectItemsCost(
                 // Osmium Borosilicate Glass
                 new ItemStack(ItemRegistry.bw_realglas, 16, 5),
-                // Ultra High Strength Concrete
-                new ItemStack(IGBlocks.DysonSwarmCasing, 32, 9),
+                ItemList.UltraHighStrengthConcrete.get(32),
                 ItemList.Machine_LuV_SolarPanel.get(1),
                 ItemList.Block_NeutroniumPlate.get(16),
                 ItemList.Sensor_UV.get(1),
