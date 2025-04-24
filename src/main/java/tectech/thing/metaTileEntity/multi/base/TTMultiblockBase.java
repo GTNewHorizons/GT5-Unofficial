@@ -2291,11 +2291,12 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
         syncManager.syncValue("totalRunTime", new LongSyncValue(() -> mTotalRunTime, time -> mTotalRunTime = time));
         syncManager
             .syncValue("lastWorkingTick", new LongSyncValue(() -> mLastWorkingTick, time -> mLastWorkingTick = time));
+        BooleanSyncValue wasShutDown = new BooleanSyncValue(
+            () -> getBaseMetaTileEntity().wasShutdown(),
+            val -> getBaseMetaTileEntity().setShutdownStatus(val));
         syncManager.syncValue(
             "wasShutdown",
-            new BooleanSyncValue(
-                () -> getBaseMetaTileEntity().wasShutdown(),
-                val -> getBaseMetaTileEntity().setShutdownStatus(val)));
+            wasShutDown);
         syncManager.syncValue(
             "shutdownReason",
             new GenericSyncValue<ShutDownReason>(
@@ -2421,10 +2422,16 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
         com.cleanroommc.modularui.drawable.UITexture powerSwitchDisabled = com.cleanroommc.modularui.drawable.UITexture
             .fullImage(MODID, "gui/overlay_button/power_switch_disabled");
         com.cleanroommc.modularui.widgets.ButtonWidget powerSwitchButton = new com.cleanroommc.modularui.widgets.ButtonWidget();
-
         powerSwitchButton.overlay(
             !isAllowedToWorkButtonEnabled() ? powerSwitchDisabled
                 : getBaseMetaTileEntity().isAllowedToWork() ? powerSwitchOn : powerSwitchOff);
+        //Needed so the texture changes to powerSwitchOff when trying to turn on an unformed multi
+        wasShutDown.setChangeListener(() -> {
+            powerSwitchButton.overlay(
+                !isAllowedToWorkButtonEnabled() ? powerSwitchDisabled
+                    : getBaseMetaTileEntity().wasShutdown() ? powerSwitchOff : powerSwitchOn);
+        });
+
         powerSwitchButton.tooltip(new RichTooltip(powerSwitchButton).add("Power Switch"));
         powerSwitchButton.syncHandler(new InteractionSyncHandler().setOnMousePressed(mouseData -> {
             if (isAllowedToWorkButtonEnabled()) {
@@ -2435,6 +2442,7 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
                     getBaseMetaTileEntity().enableWorking();
                 }
             }
+            //Needed so the texture is instantly updated when turning the multi off
             powerSwitchButton.overlay(
                 !isAllowedToWorkButtonEnabled() ? powerSwitchDisabled
                     : getBaseMetaTileEntity().isAllowedToWork() ? powerSwitchOn : powerSwitchOff);
