@@ -179,14 +179,6 @@ public class NetheriteRecipes {
             .metadata(COIL_HEAT, 7500)
             .addTo(blastFurnaceRecipes);
 
-        // GTValues.RA.stdBuilder() TODO add whenever this has a proper use and recipe thought out
-        // .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Netherite, 1))
-        // .fluidOutputs(Materials.ActivatedNetherite.getFluid(144))
-        // .duration(400 * SECONDS)
-        // .eut(TierEU.RECIPE_MAX)
-        // .metadata(COIL_HEAT, 45700)
-        // .addTo(TecTechRecipeMaps.godforgeMoltenRecipes);
-
         NetheriteRecipes.addNetheriteParts();
     }
 
