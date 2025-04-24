@@ -47,6 +47,7 @@ import org.apache.commons.lang3.tuple.Pair;
 import org.jetbrains.annotations.NotNull;
 
 import com.cleanroommc.modularui.api.IGuiHolder;
+import com.cleanroommc.modularui.api.IPanelHandler;
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.api.widget.IWidget;
 import com.cleanroommc.modularui.drawable.UITexture;
@@ -1027,6 +1028,7 @@ public class MTETeslaTower extends TTMultiblockBase
             .canApplyTheme(true)
             .build();
         ModularPanel panel = new ModularPanel("tesla_tower");
+        panel.size(198, 191);
 
         syncManager.syncValue(
             "errors",
@@ -1098,8 +1100,6 @@ public class MTETeslaTower extends TTMultiblockBase
         syncManager
             .syncValue("maxProgressTime", new IntSyncValue(() -> mMaxProgresstime, val -> mMaxProgresstime = val));
 
-        panel.size(198, 191);
-
         ListWidget<IWidget, ?> machineInfo = new ListWidget<>().size(178, 85)
             .pos(6, 3);
 
@@ -1162,12 +1162,14 @@ public class MTETeslaTower extends TTMultiblockBase
             .size(18, 18);
         panel.child(powerPassButton);
 
+        IPanelHandler infoPanel = syncManager.panel("info_panel", (p_syncManager, syncHandler) -> getInfoPopup(), true);
         ButtonWidget editParametersButton = new ButtonWidget();
         editParametersButton.overlay(UITexture.fullImage(MODID, "gui/overlay_button/edit_parameters"));
         editParametersButton.tooltip(new RichTooltip(editParametersButton).add("Edit Parameters"));
         editParametersButton.pos(173, doesBindPlayerInventory() ? 109 + 18 : 133 + 18)
             .size(18, 18);
-        editParametersButton.syncHandler(new InteractionSyncHandler().setOnMousePressed(mouseData -> {}));
+        editParametersButton
+            .syncHandler(new InteractionSyncHandler().setOnMousePressed(mouseData -> { infoPanel.openPanel(); }));
         panel.child(editParametersButton);
 
         UITexture powerSwitchOn = UITexture.fullImage(MODID, "gui/overlay_button/power_switch_on");
@@ -1194,9 +1196,15 @@ public class MTETeslaTower extends TTMultiblockBase
         }));
         powerSwitchButton.pos(173, doesBindPlayerInventory() ? 109 + 18 * 2 : 133 + 18 * 2)
             .size(18, 18);
-
         panel.child(powerSwitchButton);
 
+        return panel;
+    }
+
+    private ModularPanel getInfoPopup() {
+
+        ModularPanel panel = new ModularPanel("parameters").size(90, 191)
+            .pos(339, 31);
         return panel;
     }
 
