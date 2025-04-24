@@ -7,15 +7,24 @@ import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.InputBus;
 import static gregtech.api.enums.HatchElement.InputHatch;
 import static gregtech.api.enums.HatchElement.Maintenance;
+import static gregtech.api.enums.Materials.NutrientBroth;
+import static gregtech.api.enums.Materials.PrimordialSoup;
 import static gregtech.api.enums.Mods.GregTech;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_BIOVAT_EMPTY;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_BIOVAT_EMPTY_GLOW;
+import static gregtech.api.modularui2.GTGuiTextures.AO_PROGRESS_COUNT;
+import static gregtech.api.modularui2.GTGuiTextures.AO_PROGRESS_INT;
+import static gregtech.api.modularui2.GTGuiTextures.AO_PROGRESS_NUTRIENTS;
+import static gregtech.api.modularui2.GTGuiTextures.AO_PROGRESS_REP;
+import static gregtech.api.modularui2.GTGuiTextures.AO_PROGRESS_SENTIENCE;
+import static gregtech.api.modularui2.GTGuiTextures.AO_PROGRESS_STR;
 import static gregtech.api.modularui2.GTGuiTextures.OVERLAY_BUTTON_ADDITION;
 import static gregtech.api.modularui2.GTGuiTextures.OVERLAY_BUTTON_CHECKMARK;
 import static gregtech.api.modularui2.GTGuiTextures.OVERLAY_BUTTON_EXPORT;
 import static gregtech.api.modularui2.GTGuiTextures.OVERLAY_BUTTON_INFO;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
+import static gregtech.api.util.GTUtility.validMTEList;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -172,6 +181,8 @@ public class MTEEvolutionChamber extends MTEExtendedPowerMultiBlockBase<MTEEvolu
 
     private int status = 0;
 
+    private final int INTERNAL_FLUID_TANK_SIZE = 64000;
+
     public MTEEvolutionChamber(final int aID, final String aName, final String aNameRegional) {
         super(aID, aName, aNameRegional);
     }
@@ -217,6 +228,22 @@ public class MTEEvolutionChamber extends MTEExtendedPowerMultiBlockBase<MTEEvolu
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new MTEEvolutionChamber(this.mName);
+    }
+
+    // Returns the fill level of either nutrient broth or primordial soup
+    public int getFillLevel() {
+        int fill = 0;
+
+        for (MTEHatchInput tHatch : validMTEList(mInputHatches)) {
+            FluidStack f = tHatch.getFluid();
+            if (currentSpecies.getFinalized()) {
+                if (f.getFluid() == PrimordialSoup.mFluid) fill += f.amount;
+            } else {
+                if (f.getFluid() == NutrientBroth.mFluid) fill += f.amount;
+            }
+        }
+
+        return fill;
     }
 
     @Override
@@ -656,6 +683,7 @@ public class MTEEvolutionChamber extends MTEExtendedPowerMultiBlockBase<MTEEvolu
             ao -> { currentSpecies = ao; },
             new ArtificialOrganismAdapter());
         syncManager.syncValue("ao", organismSyncer);
+
         // This row displays the currently active traits
         Row traitRow = new Row();
         traitRow.pos(5, 41)
@@ -671,56 +699,37 @@ public class MTEEvolutionChamber extends MTEExtendedPowerMultiBlockBase<MTEEvolu
         // Inventory slot handler
         syncManager.registerSlotGroup("culture_slot", 1);
 
-        // Defining a bunch of textures. TODO: define this in GTUITextures!
-        UITexture countProgressBar = UITexture.builder()
-            .location(GregTech.ID, "gui/progressbar/aos_count_progress")
-            .adaptable(1)
-            .imageSize(16, 128)
-            .build();
-
-        UITexture sentienceProgressBar = UITexture.builder()
-            .location(GregTech.ID, "gui/progressbar/aos_sentience_progress")
-            .adaptable(1)
-            .imageSize(32, 64)
-            .build();
-
-        UITexture intProgressBar = UITexture.builder()
-            .location(GregTech.ID, "gui/progressbar/aos_intelligence_bar")
-            .adaptable(1)
-            .imageSize(32, 16)
-            .build();
-
-        UITexture strProgressBar = UITexture.builder()
-            .location(GregTech.ID, "gui/progressbar/aos_strength_bar")
-            .adaptable(1)
-            .imageSize(32, 16)
-            .build();
-
-        UITexture repProgressBar = UITexture.builder()
-            .location(GregTech.ID, "gui/progressbar/aos_reproduction_bar")
-            .adaptable(1)
-            .imageSize(32, 16)
-            .build();
-
-
         panel
             // AO count progressbar
             .child(
             new ProgressWidget().value(new DoubleSyncValue(() -> (double) currentSpecies.getCount() / maxAOs))
-                .texture(countProgressBar, 16)
+                .texture(AO_PROGRESS_COUNT, 16)
                 .direction(ProgressWidget.Direction.UP)
                 .size(16, 64)
-                .pos(100, 14))
+                .pos(100, 14)
+                .tooltipDynamic(tt -> tt.add(StatCollector.translateToLocalFormatted("GT5U.artificialorganisms.progress.count", organismSyncer.getValue().getCount(), new IntSyncValue(() -> maxAOs).getIntValue()))))
+
+            // Nutrient progressbar
+            .child(
+                new ProgressWidget().value(new DoubleSyncValue(() -> (double) getFillLevel() / INTERNAL_FLUID_TANK_SIZE))
+                    .texture(AO_PROGRESS_NUTRIENTS, 16)
+                    .direction(ProgressWidget.Direction.UP)
+                    .size(16, 64)
+                    .pos(117, 14)
+                    .tooltipDynamic(tt -> tt.add(StatCollector.translateToLocalFormatted(organismSyncer.getValue().getFinalized() ? "GT5U.artificialorganisms.progress.nutrients" : "GT5U.artificialorganisms.progress.soup", getFillLevel(), INTERNAL_FLUID_TANK_SIZE))))
 
             // Sentience progressbar
             .child(
                 new ProgressWidget().value(new DoubleSyncValue(() -> (double) currentSpecies.getSentience() / 100))
-                    .texture(sentienceProgressBar, 32)
+                //new ProgressWidget().value(new DoubleSyncValue(() -> (double) currentSpecies.getSentience() / 100))
+                    .texture(AO_PROGRESS_SENTIENCE, 32)
                     .direction(ProgressWidget.Direction.UP)
                     .size(32, 32)
                     .pos(125, 14)
-                    .tooltipDynamic(tt -> tt.add(StatCollector.translateToLocalFormatted("GT5U.artificialorganisms.sentience", new IntSyncValue(() -> currentSpecies.getSentience()).getValue()))))
-
+                    .tooltipBuilder(tt -> {
+                        tt.add(StatCollector.translateToLocalFormatted("GT5U.artificialorganisms.progress.sentience", organismSyncer.getValue().getSentience()));
+                        tt.markDirty();
+                        }))
 
             // The actual itemslot for inserting cultures
             .child(
@@ -795,7 +804,7 @@ public class MTEEvolutionChamber extends MTEExtendedPowerMultiBlockBase<MTEEvolu
                 new ProgressWidget()
                     .value(
                         new DoubleSyncValue(() -> ((double) currentSpecies.getIntelligence() / 32) + ((double) 1 / 32)))
-                    .texture(intProgressBar, 16)
+                    .texture(AO_PROGRESS_INT, 16)
                     .direction(ProgressWidget.Direction.RIGHT)
                     .hoverOverlay(
                         IKey.dynamic(
@@ -813,7 +822,7 @@ public class MTEEvolutionChamber extends MTEExtendedPowerMultiBlockBase<MTEEvolu
             .child(
                 new ProgressWidget()
                     .value(new DoubleSyncValue(() -> ((double) currentSpecies.getStrength() / 32) + ((double) 1 / 32)))
-                    .texture(strProgressBar, 16)
+                    .texture(AO_PROGRESS_STR, 16)
                     .direction(ProgressWidget.Direction.RIGHT)
                     .hoverOverlay(
                         IKey.dynamic(
@@ -833,7 +842,7 @@ public class MTEEvolutionChamber extends MTEExtendedPowerMultiBlockBase<MTEEvolu
                         new DoubleSyncValue(
                             () -> ((double) currentSpecies.getReproduction() / 32) + ((double) 1 / 32),
                             ignored -> {}))
-                    .texture(repProgressBar, 16)
+                    .texture(AO_PROGRESS_REP, 16)
                     .direction(ProgressWidget.Direction.RIGHT)
                     .hoverOverlay(
                         IKey.dynamic(

@@ -1153,7 +1153,10 @@ GT5U.artificialorganisms.strengthdesc=Allows AOs to perform most recipes quicker
 GT5U.artificialorganisms.reproduction=Reproduction
 GT5U.artificialorganisms.reproductiondesc=Controls how quickly the HMC will fill with AOs.
 
-GT5U.artificialorganisms.sentience=Sentience: %d%%
+GT5U.artificialorganisms.progress.sentience=Sentience: %d%%
+GT5U.artificialorganisms.progress.soup=Primordial Soup: %d/%d
+GT5U.artificialorganisms.progress.nutrients=Nutrient Broth: %d/%d
+GT5U.artificialorganisms.progress.count=Count: %d/%d
 
 achievement.gettingstartedwithgt=Getting Started with GT
 achievement.gettingstartedwithgt.desc=Craft a wooden pickaxe

@@ -278,6 +278,36 @@ public final class GTGuiTextures {
         .canApplyTheme()
         .name(GTTextureIds.PROGRESSBAR_FUEL_BRONZE, GTTextureIds.PROGRESSBAR_FUEL_STEEL, null)
         .build();
+    public static final UITexture AO_PROGRESS_COUNT = UITexture.builder()
+        .location(GregTech.ID, "gui/progressbar/aos_count_progress")
+        .adaptable(1)
+        .imageSize(16, 128)
+        .build();
+    public static final UITexture AO_PROGRESS_NUTRIENTS = UITexture.builder()
+        .location(GregTech.ID, "gui/progressbar/aos_nutrient_progress")
+        .adaptable(1)
+        .imageSize(16, 128)
+        .build();
+    public static final UITexture AO_PROGRESS_SENTIENCE = UITexture.builder()
+        .location(GregTech.ID, "gui/progressbar/aos_sentience_progress")
+        .adaptable(1)
+        .imageSize(32, 64)
+        .build();
+    public static final UITexture AO_PROGRESS_INT = UITexture.builder()
+        .location(GregTech.ID, "gui/progressbar/aos_intelligence_bar")
+        .adaptable(1)
+        .imageSize(32, 16)
+        .build();
+    public static final UITexture AO_PROGRESS_STR = UITexture.builder()
+        .location(GregTech.ID, "gui/progressbar/aos_strength_bar")
+        .adaptable(1)
+        .imageSize(32, 16)
+        .build();
+    public static final UITexture AO_PROGRESS_REP = UITexture.builder()
+        .location(GregTech.ID, "gui/progressbar/aos_reproduction_bar")
+        .adaptable(1)
+        .imageSize(32, 16)
+        .build();
 
     // endregion progressbar
 
