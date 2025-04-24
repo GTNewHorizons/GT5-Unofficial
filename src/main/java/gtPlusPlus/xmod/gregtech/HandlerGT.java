@@ -5,12 +5,9 @@ import java.util.List;
 
 import cpw.mods.fml.common.event.FMLLoadCompleteEvent;
 import gregtech.api.items.MetaGeneratedTool;
-import gregtech.api.util.GTConfig;
 import gtPlusPlus.core.handler.CompatHandler;
 import gtPlusPlus.recipes.CokeAndPyrolyseOven;
-import gtPlusPlus.xmod.gregtech.api.enums.GregtechOrePrefixes.GT_Materials;
 import gtPlusPlus.xmod.gregtech.common.MetaGTProxy;
-import gtPlusPlus.xmod.gregtech.common.blocks.fluid.GregtechFluidHandler;
 import gtPlusPlus.xmod.gregtech.common.items.MetaGeneratedGregtechTools;
 import gtPlusPlus.xmod.gregtech.loaders.GTPPBlocks;
 import gtPlusPlus.xmod.gregtech.loaders.ProcessingAngleGrinder;
@@ -24,18 +21,8 @@ import toxiceverglades.gen.WorldGenEverglades;
 
 public class HandlerGT {
 
-    public static GTConfig mMaterialProperties = null;
     public static final List<WorldGenEverglades> sWorldgenListEverglades = new ArrayList<>();
     public static MetaGeneratedTool sMetaGeneratedToolInstance;
-
-    public static void preInit() {
-
-        if (mMaterialProperties != null) {
-            GT_Materials.init(mMaterialProperties);
-        }
-
-        GregtechFluidHandler.run();
-    }
 
     public static void init() {
 

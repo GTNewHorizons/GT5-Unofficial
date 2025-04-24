@@ -9,6 +9,7 @@ import java.util.Collections;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -740,8 +741,9 @@ public class MTEAtmosphericReconditioner extends MTEBasicMachine {
     }
 
     @Override
-    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        super.onScrewdriverRightClick(side, aPlayer, aX, aY, aZ);
+    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
+        ItemStack aTool) {
+        super.onScrewdriverRightClick(side, aPlayer, aX, aY, aZ, aTool);
     }
 
     @Override
@@ -767,11 +769,18 @@ public class MTEAtmosphericReconditioner extends MTEBasicMachine {
                 * Math.max((tTier - 2), 1);
             reduction = MathUtils.safeInt(((long) reduction / 100) * this.mOptimalAirFlow);
 
-            aTooltipSuper.add("Maximum pollution removed per second: " + reduction);
+            aTooltipSuper.add(
+                StatCollector.translateToLocalFormatted(
+                    "gtpp.infodata.atmospheric_reconditioner.maximum_pollution_removed",
+                    reduction));
         } catch (Throwable t) {
-            aTooltipSuper.add("Maximum pollution removed per second: " + mPollutionReduction);
+            aTooltipSuper.add(
+                StatCollector.translateToLocalFormatted(
+                    "gtpp.infodata.atmospheric_reconditioner.maximum_pollution_removed",
+                    mPollutionReduction));
         }
-        aTooltipSuper.add("Air Sides: " + mAirSides);
+        aTooltipSuper.add(
+            StatCollector.translateToLocalFormatted("gtpp.infodata.atmospheric_reconditioner.air_sides", mAirSides));
 
         String[] mBuiltOutput = new String[aTooltipSuper.size()];
         int aIndex = 0;

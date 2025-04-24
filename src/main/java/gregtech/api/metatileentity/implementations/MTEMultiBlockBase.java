@@ -19,7 +19,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.EnumSet;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -234,7 +233,8 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
     }
 
     @Override
-    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
+        ItemStack aTool) {
         if (supportsSingleRecipeLocking()) {
             mLockedToSingleRecipe = !mLockedToSingleRecipe;
             if (mLockedToSingleRecipe) {
@@ -726,6 +726,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
                         addFluidOutputs(mOutputFluids);
                         mOutputFluids = null;
                     }
+                    outputAfterRecipe();
                     mEfficiency = Math.max(
                         0,
                         Math.min(
@@ -751,9 +752,13 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
                         markDirty();
                     }
                 }
-                if (mMaxProgresstime <= 0) mEfficiency = Math.max(0, mEfficiency - 1000);
             }
+            if (mMaxProgresstime <= 0) mEfficiency = Math.max(0, mEfficiency - 1000);
         }
+    }
+
+    protected void outputAfterRecipe() {
+
     }
 
     public boolean polluteEnvironment(int aPollutionLevel) {
@@ -1682,18 +1687,8 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
 
         if (supportsCraftingMEBuffer()) {
             for (IDualInputHatch dualInputHatch : mDualInputHatches) {
-                Iterator<? extends IDualInputInventory> inventoryIterator = dualInputHatch.inventories();
-                while (inventoryIterator.hasNext()) {
-                    ItemStack[] items = inventoryIterator.next()
-                        .getItemInputs();
-                    if (items == null) {
-                        continue;
-                    }
-                    for (ItemStack item : items) {
-                        if (item != null) {
-                            rList.add(item);
-                        }
-                    }
+                for (ItemStack item : dualInputHatch.getAllItems()) {
+                    rList.add(item);
                 }
             }
         }
@@ -2137,6 +2132,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         }
 
         boolean isActive = tag.getBoolean("isActive");
+
         if (isActive) {
             long energyTier = tag.getLong("energyTier");
             long actualEnergyUsage = tag.getLong("energyUsage");
@@ -2171,23 +2167,28 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
                             GTUtility.getColoredTierNameFromVoltage(-actualEnergyUsage)));
                 }
             }
+        }
 
+        boolean isLockedToRecipe = tag.getBoolean("isLockedToRecipe");
+        String lockedRecipe = tag.getString("lockedRecipeName");
+
+        if (!isActive && isLockedToRecipe && !lockedRecipe.isEmpty()) {
+            // Display locked recipe when the machine is idle
+            currentTip.add(StatCollector.translateToLocal("GT5U.waila.multiblock.status.locked_recipe"));
+            String[] lines = lockedRecipe.split("\n");
+            for (String line : lines) {
+                currentTip.add(line);
+            }
+        } else if (isActive) {
             int outputItemLength = tag.getInteger("outputItemLength");
             int outputFluidLength = tag.getInteger("outputFluidLength");
             int totalOutputs = outputItemLength + outputFluidLength;
 
-            if (tag.getBoolean("isLockedToRecipe")) {
-                String lockedRecipe = tag.getString("lockedRecipeName");
-                if (!lockedRecipe.isEmpty()) {
-                    currentTip.add(StatCollector.translateToLocal("GT5U.waila.multiblock.status.locked_recipe"));
-                    String[] lines = lockedRecipe.split("\n");
-                    for (String line : lines) {
-                        currentTip.add(line);
-                    }
-                }
-            } else if (totalOutputs > 0) {
-                // If not locked, show "Producing"
+            if (totalOutputs > 0) {
                 currentTip.add(StatCollector.translateToLocal("GT5U.waila.producing"));
+                if (isLockedToRecipe) {
+                    currentTip.add(StatCollector.translateToLocal("GT5U.waila.multiblock.status.locked_recipe"));
+                }
                 for (int i = 0; i < min(3, outputItemLength); i++) {
                     currentTip.add(
                         "  " + tag.getString("outputItem" + i)
@@ -2831,7 +2832,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         return builder.build();
     }
 
-    private ButtonWidget createMaxParallelCheckBox(NumericWidget textField) {
+    public ButtonWidget createMaxParallelCheckBox(NumericWidget textField) {
         Widget button = new ButtonWidget().setOnClick((clickData, widget) -> {
             textField.notifyTooltipChange();
             if (getBaseMetaTileEntity().isClientSide()) return;
@@ -2987,42 +2988,42 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
             .widget(
                 new TextWidget(GTUtility.trans("132", "Pipe is loose. (Wrench)")).setTextAlignment(Alignment.CenterLeft)
                     .setDefaultColor(COLOR_TEXT_WHITE.get())
-                    .setEnabled(widget -> !mWrench))
+                    .setEnabled(widget -> !mWrench && mMachine))
             .widget(new FakeSyncWidget.BooleanSyncer(() -> mWrench, val -> mWrench = val));
         screenElements
             .widget(
                 new TextWidget(GTUtility.trans("133", "Screws are loose. (Screwdriver)"))
                     .setTextAlignment(Alignment.CenterLeft)
                     .setDefaultColor(COLOR_TEXT_WHITE.get())
-                    .setEnabled(widget -> !mScrewdriver))
+                    .setEnabled(widget -> !mScrewdriver && mMachine))
             .widget(new FakeSyncWidget.BooleanSyncer(() -> mScrewdriver, val -> mScrewdriver = val));
         screenElements
             .widget(
                 new TextWidget(GTUtility.trans("134", "Something is stuck. (Soft Mallet)"))
                     .setTextAlignment(Alignment.CenterLeft)
                     .setDefaultColor(COLOR_TEXT_WHITE.get())
-                    .setEnabled(widget -> !mSoftHammer))
+                    .setEnabled(widget -> !mSoftHammer && mMachine))
             .widget(new FakeSyncWidget.BooleanSyncer(() -> mSoftHammer, val -> mSoftHammer = val));
         screenElements
             .widget(
                 new TextWidget(GTUtility.trans("135", "Platings are dented. (Hammer)"))
                     .setTextAlignment(Alignment.CenterLeft)
                     .setDefaultColor(COLOR_TEXT_WHITE.get())
-                    .setEnabled(widget -> !mHardHammer))
+                    .setEnabled(widget -> !mHardHammer && mMachine))
             .widget(new FakeSyncWidget.BooleanSyncer(() -> mHardHammer, val -> mHardHammer = val));
         screenElements
             .widget(
                 new TextWidget(GTUtility.trans("136", "Circuitry burned out. (Soldering)"))
                     .setTextAlignment(Alignment.CenterLeft)
                     .setDefaultColor(COLOR_TEXT_WHITE.get())
-                    .setEnabled(widget -> !mSolderingTool))
+                    .setEnabled(widget -> !mSolderingTool && mMachine))
             .widget(new FakeSyncWidget.BooleanSyncer(() -> mSolderingTool, val -> mSolderingTool = val));
         screenElements
             .widget(
                 new TextWidget(GTUtility.trans("137", "That doesn't belong there. (Crowbar)"))
                     .setTextAlignment(Alignment.CenterLeft)
                     .setDefaultColor(COLOR_TEXT_WHITE.get())
-                    .setEnabled(widget -> !mCrowbar))
+                    .setEnabled(widget -> !mCrowbar && mMachine))
             .widget(new FakeSyncWidget.BooleanSyncer(() -> mCrowbar, val -> mCrowbar = val));
         screenElements
             .widget(

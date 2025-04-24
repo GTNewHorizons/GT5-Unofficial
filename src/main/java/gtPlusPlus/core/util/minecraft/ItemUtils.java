@@ -24,6 +24,9 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
 
 import org.apache.commons.lang3.tuple.Pair;
+import org.jetbrains.annotations.NotNull;
+
+import com.google.common.collect.Lists;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.GameRegistry.UniqueIdentifier;
@@ -860,6 +863,12 @@ public class ItemUtils {
         return false;
     }
 
+    private static final List<ItemStack> additionalCatalysts = Lists.newArrayList();
+
+    public static void registerCatalyst(@NotNull ItemStack stack) {
+        additionalCatalysts.add(stack);
+    }
+
     public static boolean isCatalyst(ItemStack aStack) {
         if (GTUtility.areStacksEqual(aStack, GregtechItemList.BlueMetalCatalyst.get(1), true)) {
             return true;
@@ -939,13 +948,27 @@ public class ItemUtils {
         if (GTUtility.areStacksEqual(aStack, GregtechItemList.SynchrotronCapableCatalyst.get(1), true)) {
             return true;
         }
-        return GTUtility.areStacksEqual(aStack, GregtechItemList.AlgagenicGrowthPromoterCatalyst.get(1), true);
+        if (GTUtility.areStacksEqual(aStack, GregtechItemList.AlgagenicGrowthPromoterCatalyst.get(1), true)) {
+            return true;
+        }
+        return additionalCatalysts.stream()
+            .anyMatch(it -> GTUtility.areStacksEqual(aStack, it, true));
+    }
+
+    private static final List<ItemStack> additionalMillingBalls = Lists.newArrayList();
+
+    public static void registerMillingBall(@NotNull ItemStack stack) {
+        additionalMillingBalls.add(stack);
     }
 
     public static boolean isMillingBall(ItemStack aStack) {
         if (GTUtility.areStacksEqual(aStack, GregtechItemList.Milling_Ball_Alumina.get(1), true)) {
             return true;
         }
-        return GTUtility.areStacksEqual(aStack, GregtechItemList.Milling_Ball_Soapstone.get(1), true);
+        if (GTUtility.areStacksEqual(aStack, GregtechItemList.Milling_Ball_Soapstone.get(1), true)) {
+            return true;
+        }
+        return additionalMillingBalls.stream()
+            .anyMatch(it -> GTUtility.areStacksEqual(aStack, it, true));
     }
 }

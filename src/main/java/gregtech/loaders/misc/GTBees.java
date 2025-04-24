@@ -10,6 +10,7 @@ import net.minecraft.world.biome.BiomeGenBase;
 
 import forestry.api.apiculture.EnumBeeChromosome;
 import forestry.api.apiculture.IAlleleBeeEffect;
+import forestry.api.apiculture.IBeeHousing;
 import forestry.api.core.IClimateProvider;
 import forestry.api.genetics.AlleleManager;
 import forestry.api.genetics.IAllele;
@@ -214,8 +215,15 @@ public class GTBees {
         @Override
         public float getChance(World world, int x, int y, int z, IAllele allele0, IAllele allele1, IGenome genome0,
             IGenome genome1, IClimateProvider climate) {
-            TileEntity tileEntity = world.getTileEntity(x, y - 1, z);
-            if (tileEntity instanceof BaseMetaTileEntity machine) {
+            TileEntity tile;
+            int depth = 0;
+            // Checks for the first non BeeHousing block below the given location, necessary for multiblocks
+            do {
+                ++depth;
+                tile = world.getTileEntity(x, y - depth, z);
+            } while (tile instanceof IBeeHousing);
+
+            if (tile instanceof BaseMetaTileEntity machine) {
                 if (machine.isActive()) {
                     return 1;
                 }

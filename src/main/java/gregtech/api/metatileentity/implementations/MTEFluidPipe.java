@@ -59,7 +59,6 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.WorldSpawnedEventBuilder.ParticleEventBuilder;
-import gregtech.common.GTClient;
 import gregtech.common.blocks.ItemMachines;
 import gregtech.common.config.Other;
 import gregtech.common.covers.Cover;
@@ -157,7 +156,7 @@ public class MTEFluidPipe extends MetaPipeEntity {
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, int aConnections,
         int colorIndex, boolean aConnected, boolean redstoneLevel) {
         if (side == ForgeDirection.UNKNOWN) return Textures.BlockIcons.ERROR_RENDERING;
-        final float tThickNess = getThickNess();
+        final float tThickNess = getThickness();
         if (mDisableInput == 0)
             return new ITexture[] { aConnected ? getBaseTexture(tThickNess, mPipeAmount, mMaterial, colorIndex)
                 : TextureFactory.of(
@@ -935,8 +934,7 @@ public class MTEFluidPipe extends MetaPipeEntity {
     }
 
     @Override
-    public float getThickNess() {
-        if (GTMod.instance.isClientSide() && (GTClient.hideValue & 0x1) != 0) return 0.0625F;
+    public float getCollisionThickness() {
         return mThickNess;
     }
 

@@ -15,6 +15,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -106,7 +107,8 @@ public class MTESteamMixer extends MTESteamMultiBase<MTESteamMixer> implements I
 
     private int tierMachine = 1;
 
-    public int getTierMachineCasing(Block block, int meta) {
+    @Nullable
+    public Integer getTierMachineCasing(Block block, int meta) {
         if (block == sBlockCasings1 && 10 == meta) {
             tCountCasing++;
             return 1;
@@ -115,19 +117,21 @@ public class MTESteamMixer extends MTESteamMultiBase<MTESteamMixer> implements I
             tCountCasing++;
             return 2;
         }
-        return 0;
+        return null;
     }
 
-    public static int getTierGearBoxCasing(Block block, int meta) {
+    @Nullable
+    public static Integer getTierGearBoxCasing(Block block, int meta) {
         if (block == sBlockCasings2 && 2 == meta) return 1;
         if (block == sBlockCasings2 && 3 == meta) return 2;
-        return 0;
+        return null;
     }
 
-    public static int getTierPipeCasing(Block block, int meta) {
+    @Nullable
+    public static Integer getTierPipeCasing(Block block, int meta) {
         if (block == sBlockCasings2 && 12 == meta) return 1;
         if (block == sBlockCasings2 && 13 == meta) return 2;
-        return 0;
+        return null;
     }
 
     protected void updateHatchTexture() {
@@ -266,7 +270,6 @@ public class MTESteamMixer extends MTESteamMultiBase<MTESteamMixer> implements I
         tierMachineCasing = -1;
         tCountCasing = 0;
         if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET)) return false;
-        if (tierGearBoxCasing < 0 && tierPipeCasing < 0 && tierMachineCasing < 0) return false;
         if (tierGearBoxCasing == 1 && tierPipeCasing == 1
             && tierMachineCasing == 1
             && tCountCasing >= 90
@@ -363,8 +366,14 @@ public class MTESteamMixer extends MTESteamMultiBase<MTESteamMixer> implements I
     @Override
     public String[] getInfoData() {
         ArrayList<String> info = new ArrayList<>(Arrays.asList(super.getInfoData()));
-        info.add("Machine Tier: " + EnumChatFormatting.YELLOW + tierMachine);
-        info.add("Parallel: " + EnumChatFormatting.YELLOW + getMaxParallelRecipes());
+        info.add(
+            StatCollector.translateToLocalFormatted(
+                "gtpp.infodata.multi.steam.tier",
+                "" + EnumChatFormatting.YELLOW + tierMachine));
+        info.add(
+            StatCollector.translateToLocalFormatted(
+                "gtpp.infodata.multi.steam.parallel",
+                "" + EnumChatFormatting.YELLOW + getMaxParallelRecipes()));
         return info.toArray(new String[0]);
     }
 
