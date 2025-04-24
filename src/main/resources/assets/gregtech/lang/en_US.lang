@@ -242,7 +242,6 @@ GT5U.MBTT.BoroGlassAny=Borosilicate Glass (any, mixed)
 GT5U.MBTT.BoroGlassTiered=Borosilicate Glass (any)
 
 GT5U.MBTT.subchannel=Uses sub channel §6%s§r§7 for §6%s
-GT5U.tooltip.channelvalue=Use value §6%d§r§7 for sub channel §6%s
 
 GT5U.cracker.io_side=Input/Output Hatches must be on opposite sides!
 
@@ -692,6 +691,27 @@ GT5U.recipe_filter.representation_slot.tooltip=§7Click to clear
 GT5U.type_filter.representation_slot.tooltip=§7Left click to cycle forward
 GT5U.type_filter.representation_slot.tooltip.1=§7Right click to cycle back
 GT5U.type_filter.representation_slot.tooltip.2=§7Click with an item to set filter
+
+channels.gregtech.manipulator=Decides the tier of QFT manipulator blocks. Starts at §6Neutron Pulse Manipulator§r at value 1 and ends at §6SpaceTime Continuum Ripper§r at value 4.
+channels.gregtech.shielding=Decides the tier of QFT shielding blocks. Starts at §6Neutron Shielding Core§r at value 1 and ends at §6SpaceTime Bending Core§r at value 4.
+channels.gregtech.coil=Decides the tier of heating coil. Starts at §6Cupronickel Coil§r at value 1 and ends at §6Eternal Coil§r at value 14.
+channels.gregtech.glass=Decides the tier of glass. This has many tiers and many substitutes for various tiers. Please refer to the tooltip of individual glass blocks.
+channels.gregtech.casing=Decides the tier of metallic machine casing.
+channels.gregtech.unit_casing=Decides the tier of Electronic Unit casing. Starts at §6Imprecise Electronic Unit Casing§r at value 1 and ends at §6MkIV§r at value 5.
+channels.gregtech.machine_casing=Decides the tier of Machine Casing. Starts at §6ULV machine casing§r at value 1 and ends at §6UHV machine casing§r at value 10.
+channels.gregtech.solenoid=Decides the tier of Solenoid Superconductor Coil. Starts at §6MV§r at value 1 and ends at §6UMV§r at value 11.
+channels.gregtech.capacitor=Decides the tier of Lapotronic Capacitor. Starts at §6Empty§r at value 1 and ends at §6UMV§r at value 10.
+channels.gregtech.height=Decides the height of repeatable slices. Valid range varies from multi to multi.
+channels.gregtech.length=Decides the length of repeatable slices. Valid range varies from multi to multi.
+channels.gregtech.pipe=Decides the tier of Pipe Casing. Starts at §6Bronze Pipe Casing§r at value 1 and ends at §6Tungsten Steel Pipe Casing§r at value 4.
+channels.gregtech.item_pipe=Decides the tier of Item Pipe Casing. Starts at §6Tin Item Pipe Casing§r at value 1 and ends at §6Black Plutonium Item Pipe Casing§r at value 8.
+channels.gregtech.cell=Decides the tier of Vanadium Redox Power Cell. Starts at §6EV§r at value 1 and ends at §6UHV§r at value 6.
+channels.gregtech.antenna=Decides the of Antenna Casing. Starts at §6T1§r at value 1 and ends at §6T2§r at value 2.
+channels.gregtech.spacetime_compression=Decides the tier of Spacetime Compression Field Generator. Starts at §6Crude Spacetime Compression Field Generator§r at value 1 and ends at §6Gallifreyan Spacetime Compression Field Generator§r at value 9.
+channels.gregtech.stabilisation=Decides the tier of Stabilisation Field Generator. Starts at §6Crude Stabilisation Field Generator§r at value 1 and ends at §6Gallifreyan Stabilisation Field Generator§r at value 9.
+channels.gregtech.time_dilation=Decides the tier of Time Dilation Field Generator. Starts at §6Crude Time Dilation Field Generator§r at value 1 and ends at §6Gallifreyan Time Dilation Field Generator§r at value 9.
+channels.gregtech.gt_no_hatch=When set, disable automatic hatch placement
+channels.gregtech.field=Decides the tier of T.F.F.T. Storage Field.
 
 GT5U.gui.select.current=Current:
 GT5U.gui.button.liquid_filling_OFF=§7Liquid Filling: §4OFF
