@@ -9,89 +9,42 @@ import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.InputHatch;
 import static gregtech.api.enums.HatchElement.Maintenance;
 import static gregtech.api.enums.HatchElement.OutputHatch;
-import static gregtech.api.enums.Mods.GregTech;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 import static gregtech.api.util.GTUtility.validMTEList;
 import static java.lang.Math.min;
 import static net.minecraft.util.StatCollector.translateToLocal;
-import static tectech.Reference.MODID;
 
-import java.io.IOException;
-import java.time.Duration;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.BitSet;
 import java.util.Collections;
-import java.util.EnumSet;
 import java.util.HashSet;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import javax.annotation.Nonnull;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
 import org.apache.commons.lang3.tuple.Pair;
 import org.jetbrains.annotations.NotNull;
 
-import com.cleanroommc.modularui.api.IGuiHolder;
-import com.cleanroommc.modularui.api.IPanelHandler;
-import com.cleanroommc.modularui.api.drawable.IKey;
-import com.cleanroommc.modularui.api.widget.IWidget;
-import com.cleanroommc.modularui.drawable.GuiTextures;
-import com.cleanroommc.modularui.drawable.UITexture;
-import com.cleanroommc.modularui.factory.PosGuiData;
-import com.cleanroommc.modularui.screen.ModularPanel;
-import com.cleanroommc.modularui.screen.RichTooltip;
-import com.cleanroommc.modularui.utils.Alignment;
-import com.cleanroommc.modularui.utils.item.ItemStackHandler;
-import com.cleanroommc.modularui.utils.serialization.IByteBufAdapter;
-import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
-import com.cleanroommc.modularui.value.sync.DoubleSyncValue;
-import com.cleanroommc.modularui.value.sync.GenericListSyncHandler;
-import com.cleanroommc.modularui.value.sync.GenericSyncValue;
-import com.cleanroommc.modularui.value.sync.IntSyncValue;
-import com.cleanroommc.modularui.value.sync.InteractionSyncHandler;
-import com.cleanroommc.modularui.value.sync.LongSyncValue;
-import com.cleanroommc.modularui.value.sync.PanelSyncManager;
-import com.cleanroommc.modularui.value.sync.StringSyncValue;
-import com.cleanroommc.modularui.value.sync.SyncHandlers;
-import com.cleanroommc.modularui.widget.SingleChildWidget;
-import com.cleanroommc.modularui.widget.sizer.Area;
-import com.cleanroommc.modularui.widgets.ButtonWidget;
-import com.cleanroommc.modularui.widgets.ItemSlot;
-import com.cleanroommc.modularui.widgets.ListWidget;
-import com.cleanroommc.modularui.widgets.SlotGroupWidget;
-import com.cleanroommc.modularui.widgets.TextWidget;
-import com.cleanroommc.modularui.widgets.layout.Column;
-import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
 import com.google.common.collect.Multimap;
 import com.google.common.collect.MultimapBuilder;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IItemSource;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.util.Vec3Impl;
-import com.gtnewhorizons.modularui.common.internal.network.NetworkUtils;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.GTMod;
 import gregtech.api.enums.Materials;
-import gregtech.api.enums.StructureError;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
@@ -104,14 +57,10 @@ import gregtech.api.metatileentity.implementations.MTEHatchInput;
 import gregtech.api.metatileentity.implementations.MTEHatchMaintenance;
 import gregtech.api.metatileentity.implementations.MTEHatchOutput;
 import gregtech.api.recipe.check.CheckRecipeResult;
-import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
-import gregtech.api.util.GTUtility;
 import gregtech.api.util.IGTHatchAdder;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReason;
-import gregtech.api.util.shutdown.ShutDownReasonRegistry;
-import tectech.TecTech;
 import tectech.loader.ConfigHandler;
 import tectech.loader.NetworkDispatcher;
 import tectech.mechanics.spark.RendererMessage;
@@ -131,8 +80,7 @@ import tectech.thing.metaTileEntity.multi.base.Parameters;
 import tectech.thing.metaTileEntity.multi.base.TTMultiblockBase;
 import tectech.thing.metaTileEntity.multi.base.render.TTRenderedExtendedFacingTexture;
 
-public class MTETeslaTower extends TTMultiblockBase
-    implements ISurvivalConstructable, ITeslaConnectable, IGuiHolder<PosGuiData> {
+public class MTETeslaTower extends TTMultiblockBase implements ISurvivalConstructable, ITeslaConnectable {
 
     // Interface fields
     private final Multimap<Integer, ITeslaConnectableSimple> teslaNodeMap = MultimapBuilder.treeKeys()
@@ -402,7 +350,6 @@ public class MTETeslaTower extends TTMultiblockBase
         }
     };
     // endregion
-    private Map<String, Parameter<?>> parameterMap = new LinkedHashMap<>();
 
     public MTETeslaTower(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -1073,544 +1020,6 @@ public class MTETeslaTower extends TTMultiblockBase
         @Override
         public long count(MTETeslaTower MTETeslaTower) {
             return MTETeslaTower.eCapacitorHatches.size();
-        }
-    }
-
-    @Override
-    public boolean forceUseMui2() {
-        return true;
-    }
-
-    @Override
-    public ModularPanel buildUI(PosGuiData guiData, PanelSyncManager syncManager) {
-        UITexture bg = UITexture.builder()
-            .location(MODID, "gui/background/screen_blue")
-            .adaptable(2)
-            .imageSize(90, 72)
-            .canApplyTheme(true)
-            .build();
-        UITexture bgNoInv = UITexture.builder()
-            .location(MODID, "gui/background/screen_blue_no_inventory")
-            .canApplyTheme(true)
-            .build();
-        UITexture mesh = UITexture.builder()
-            .location(MODID, "gui/overlay_slot/mesh")
-            .canApplyTheme(true)
-            .build();
-        UITexture heatSinkSmall = UITexture.builder()
-            .location(MODID, "gui/picture/heat_sink_small")
-            .canApplyTheme(true)
-            .build();
-        ModularPanel panel = new ModularPanel("tesla_tower");
-        panel.size(198, 191);
-
-        syncManager.syncValue(
-            "errors",
-            new GenericSyncValue<EnumSet<StructureError>>(
-                () -> structureErrors,
-                val -> { structureErrors = val; },
-                new StructureErrorAdapter()));
-        syncManager.syncValue("errorID", new IntSyncValue(this::getErrorDisplayID, this::setErrorDisplayID));
-        syncManager.syncValue(
-            "machineActive",
-            new BooleanSyncValue(
-                () -> getBaseMetaTileEntity().isActive(),
-                val -> getBaseMetaTileEntity().setActive(val)));
-
-        syncManager.syncValue("wrench", new BooleanSyncValue(() -> mWrench, val -> mWrench = val));
-        syncManager.syncValue("screwdriver", new BooleanSyncValue(() -> mScrewdriver, val -> mScrewdriver = val));
-        syncManager.syncValue("softHammer", new BooleanSyncValue(() -> mSoftHammer, val -> mSoftHammer = val));
-        syncManager.syncValue("hardHammer", new BooleanSyncValue(() -> mHardHammer, val -> mHardHammer = val));
-        syncManager.syncValue("solderingTool", new BooleanSyncValue(() -> mSolderingTool, val -> mSolderingTool = val));
-        syncManager.syncValue("crowbar", new BooleanSyncValue(() -> mCrowbar, val -> mCrowbar = val));
-        syncManager.syncValue("machine", new BooleanSyncValue(() -> mMachine, val -> mMachine = val));
-
-        syncManager.syncValue("totalRunTime", new LongSyncValue(() -> mTotalRunTime, time -> mTotalRunTime = time));
-        syncManager
-            .syncValue("lastWorkingTick", new LongSyncValue(() -> mLastWorkingTick, time -> mLastWorkingTick = time));
-        syncManager.syncValue(
-            "wasShutdown",
-            new BooleanSyncValue(
-                () -> getBaseMetaTileEntity().wasShutdown(),
-                val -> getBaseMetaTileEntity().setShutdownStatus(val)));
-        syncManager.syncValue(
-            "shutdownReason",
-            new GenericSyncValue<ShutDownReason>(
-                () -> getBaseMetaTileEntity().getLastShutDownReason(),
-                reason -> { getBaseMetaTileEntity().setShutDownReason(reason); },
-                new ShutdownReasonAdapter()));
-        syncManager.syncValue(
-            "checkRecipeResult",
-            new GenericSyncValue<CheckRecipeResult>(
-                () -> checkRecipeResult,
-                result -> { checkRecipeResult = result; },
-                new CheckRecipeResultAdapter()));
-        syncManager.syncValue(
-            "fluidOutput",
-            new GenericListSyncHandler<FluidStack>(
-                () -> mOutputFluids != null ? Arrays.stream(mOutputFluids)
-                    .map(fluidStack -> {
-                        if (fluidStack == null) return null;
-                        return new FluidStack(fluidStack, fluidStack.amount) {
-
-                            @Override
-                            public boolean isFluidEqual(FluidStack other) {
-                                return super.isFluidEqual(other) && amount == other.amount;
-                            }
-                        };
-                    })
-                    .collect(Collectors.toList()) : Collections.emptyList(),
-                val -> mOutputFluids = val.toArray(new FluidStack[0]),
-                NetworkUtils::readFluidStack,
-                NetworkUtils::writeFluidStack));
-        syncManager.syncValue(
-            "itemOutput",
-            new GenericListSyncHandler<ItemStack>(
-                () -> mOutputItems != null ? Arrays.asList(mOutputItems) : Collections.emptyList(),
-                val -> mOutputItems = val.toArray(new ItemStack[0]),
-                NetworkUtils::readItemStack,
-                NetworkUtils::writeItemStack));
-        syncManager.syncValue("progressTime", new IntSyncValue(() -> mProgresstime, val -> mProgresstime = val));
-        syncManager
-            .syncValue("maxProgressTime", new IntSyncValue(() -> mMaxProgresstime, val -> mMaxProgresstime = val));
-
-        ListWidget<IWidget, ?> machineInfo = new ListWidget<>().size(178, 85)
-            .pos(6, 3);
-
-        if (doesBindPlayerInventory()) {
-            panel.child(
-                new SingleChildWidget<>().pos(4, 4)
-                    .size(190, 91)
-                    .overlay(bg)
-                    .child(machineInfo));
-        } else {
-            panel.child(
-                new SingleChildWidget<>().pos(4, 4)
-                    .size(190, 171)
-                    .overlay(bgNoInv));
-        }
-        final ItemStackHandler invSlot = new ItemStackHandler(1);
-        if (doesBindPlayerInventory()) {
-            panel.child(
-                SlotGroupWidget.playerInventory()
-                    .pos(7, 95 + 12 + 2));
-            panel.child(
-                new ItemSlot().slot(
-                    SyncHandlers.itemSlot(invSlot, 0)
-                        .singletonSlotGroup())
-                    .pos(173, 167)
-                    .overlay(mesh));
-            panel.child(
-                new SingleChildWidget<>().pos(173, 185)
-                    .size(18, 6)
-                    .overlay(heatSinkSmall));
-        }
-
-        insertTexts(machineInfo, invSlot);
-        addTitleTextStyle(panel, "Tesla Tower");
-
-        UITexture powerPassOn = UITexture.fullImage(MODID, "gui/overlay_button/power_pass_on");
-        UITexture powerPassOff = UITexture.fullImage(MODID, "gui/overlay_button/power_pass_off");
-        UITexture powerPassDisabled = UITexture.fullImage(MODID, "gui/overlay_button/power_pass_disabled");
-        ButtonWidget powerPassButton = new ButtonWidget();
-
-        powerPassButton.overlay(
-            !isPowerPassButtonEnabled() && !ePowerPassCover ? powerPassDisabled
-                : ePowerPass ? powerPassOn : powerPassOff);
-        powerPassButton.tooltip(new RichTooltip(powerPassButton).add("Safe Void"));
-        powerPassButton.syncHandler(new InteractionSyncHandler().setOnMousePressed(mouseData -> {
-            TecTech.proxy.playSound(getBaseMetaTileEntity(), "fx_click");
-            ePowerPass = !ePowerPass;
-            if (!isAllowedToWorkButtonEnabled()) { // TRANSFORMER HACK
-                if (ePowerPass) {
-                    getBaseMetaTileEntity().enableWorking();
-                } else {
-                    getBaseMetaTileEntity().disableWorking();
-                }
-            }
-            powerPassButton.overlay(
-                !isPowerPassButtonEnabled() && !ePowerPassCover ? powerPassDisabled
-                    : ePowerPass ? powerPassOn : powerPassOff);
-        }));
-        powerPassButton.pos(173, doesBindPlayerInventory() ? 109 : 133)
-            .size(18, 18);
-        panel.child(powerPassButton);
-
-        IPanelHandler infoPanel = syncManager
-            .panel("info_panel", (p_syncManager, syncHandler) -> getInfoPopup(panel), true);
-        ButtonWidget editParametersButton = new ButtonWidget();
-        editParametersButton.overlay(UITexture.fullImage(MODID, "gui/overlay_button/edit_parameters"));
-        editParametersButton.tooltip(new RichTooltip(editParametersButton).add("Edit Parameters"));
-        editParametersButton.pos(173, doesBindPlayerInventory() ? 109 + 18 : 133 + 18)
-            .size(18, 18);
-        editParametersButton
-            .syncHandler(new InteractionSyncHandler().setOnMousePressed(mouseData -> { infoPanel.openPanel(); }));
-        panel.child(editParametersButton);
-
-        UITexture powerSwitchOn = UITexture.fullImage(MODID, "gui/overlay_button/power_switch_on");
-        UITexture powerSwitchOff = UITexture.fullImage(MODID, "gui/overlay_button/power_switch_off");
-        UITexture powerSwitchDisabled = UITexture.fullImage(MODID, "gui/overlay_button/power_switch_disabled");
-        ButtonWidget powerSwitchButton = new ButtonWidget();
-
-        powerSwitchButton.overlay(
-            !isAllowedToWorkButtonEnabled() ? powerSwitchDisabled
-                : getBaseMetaTileEntity().isAllowedToWork() ? powerSwitchOn : powerSwitchOff);
-        powerSwitchButton.tooltip(new RichTooltip(powerSwitchButton).add("Power Switch"));
-        powerSwitchButton.syncHandler(new InteractionSyncHandler().setOnMousePressed(mouseData -> {
-            if (isAllowedToWorkButtonEnabled()) {
-                TecTech.proxy.playSound(getBaseMetaTileEntity(), "fx_click");
-                if (getBaseMetaTileEntity().isAllowedToWork()) {
-                    getBaseMetaTileEntity().disableWorking();
-                } else {
-                    getBaseMetaTileEntity().enableWorking();
-                }
-            }
-            powerSwitchButton.overlay(
-                !isAllowedToWorkButtonEnabled() ? powerSwitchDisabled
-                    : getBaseMetaTileEntity().isAllowedToWork() ? powerSwitchOn : powerSwitchOff);
-        }));
-        powerSwitchButton.pos(173, doesBindPlayerInventory() ? 109 + 18 * 2 : 133 + 18 * 2)
-            .size(18, 18);
-        panel.child(powerSwitchButton);
-        return panel;
-    }
-
-    private ModularPanel getInfoPopup(ModularPanel parent) {
-        Area parentArea = parent.getArea();
-        ModularPanel panel = new ModularPanel("parameters").size(125, 191)
-            .pos(parentArea.x + parentArea.width, parentArea.y);
-        ListWidget parameterListWidget = new ListWidget();
-        parameterListWidget.sizeRel(1)
-            .margin(2);
-        for (Map.Entry<String, Parameter<?>> entry : parameterMap.entrySet()) {
-            Parameter<?> parameter = entry.getValue();
-            TextFieldWidget parameterField = new TextFieldWidget();
-
-            if (parameter instanceof Parameter.IntegerParameter intParameter) {
-                parameterField.value(new IntSyncValue(intParameter::getValue, intParameter::setValue))
-                    .setNumbers(intParameter::getMinValue, intParameter::getMaxValue);
-            } else if (parameter instanceof Parameter.DoubleParameter doubleParameter) {
-                parameterField.value(new DoubleSyncValue(doubleParameter::getValue, doubleParameter::setValue))
-                    .setNumbersDouble(
-                        val -> Math.max(doubleParameter.getMinValue(), Math.min(doubleParameter.getMaxValue(), val)));
-            } else if (parameter instanceof Parameter.StringParameter stringParameter) {
-                parameterField.value(new StringSyncValue(stringParameter::getValue, stringParameter::setValue));
-            }
-            parameterField.setText(parameter.getValueString());
-            parameterField.sizeRel(0.9f, 0.5f)
-                .align(Alignment.Center);
-
-            ButtonWidget parameterButton = new ButtonWidget<>();
-            if (parameter instanceof Parameter.BooleanParameter booleanParameter) {
-                parameterButton.syncHandler(new InteractionSyncHandler().setOnMousePressed(mouseData -> {
-                    booleanParameter.invert();
-                    parameterButton.overlay(booleanParameter.getValue() ? GuiTextures.CHECK_BOX : GuiTextures.CROSS);
-                }))
-                    .overlay(booleanParameter.getValue() ? GuiTextures.CHECK_BOX : GuiTextures.CROSS)
-                    .align(Alignment.Center)
-                    .size(18, 18);
-            }
-
-            parameterListWidget.child(
-                new Column().heightRel(0.2f)
-                    .child(
-                        IKey.str(parameter.getLocalizedName())
-                            .asWidget()
-                            .alignment(Alignment.Center)
-                            .sizeRel(1, 0.5f))
-                    .child(
-                        new SingleChildWidget<>().sizeRel(1, 0.5f)
-                            .child(parameter instanceof Parameter.BooleanParameter ? parameterButton : parameterField))
-                    .marginBottom(2));
-        }
-        panel.child(parameterListWidget);
-        return panel;
-    }
-
-    private void insertTexts(ListWidget<IWidget, ?> machineInfo, ItemStackHandler invSlot) {
-        machineInfo.child(
-            new TextWidget(GTUtility.trans("132", "Pipe is loose. (Wrench)")).color(COLOR_TEXT_WHITE.get())
-                .setEnabledIf(widget -> !mWrench)
-                .marginBottom(2)
-
-        );
-
-        machineInfo.child(
-            new TextWidget(GTUtility.trans("133", "Screws are loose. (Screwdriver)")).color(COLOR_TEXT_WHITE.get())
-                .setEnabledIf(widget -> !mScrewdriver)
-                .marginBottom(2)
-
-        );
-
-        machineInfo.child(
-
-            new TextWidget(GTUtility.trans("134", "Something is stuck. (Soft Mallet)")).color(COLOR_TEXT_WHITE.get())
-                .setEnabledIf(widget -> !mSoftHammer)
-                .marginBottom(2)
-
-        );
-        machineInfo.child(
-
-            new TextWidget(GTUtility.trans("135", "Platings are dented. (Hammer)")).color(COLOR_TEXT_WHITE.get())
-                .setEnabledIf(widget -> !mHardHammer)
-                .marginBottom(2)
-
-        );
-
-        machineInfo.child(
-
-            new TextWidget(GTUtility.trans("136", "Circuitry burned out. (Soldering)")).color(COLOR_TEXT_WHITE.get())
-                .setEnabledIf(widget -> !mSolderingTool)
-                .marginBottom(2)
-
-        );
-
-        machineInfo.child(
-
-            new TextWidget(GTUtility.trans("137", "That doesn't belong there. (Crowbar)")).color(COLOR_TEXT_WHITE.get())
-                .setEnabledIf(widget -> !mCrowbar)
-                .marginBottom(2)
-
-        );
-
-        machineInfo.child(
-            new TextWidget(GTUtility.trans("138", "Incomplete Structure.")).color(COLOR_TEXT_WHITE.get())
-                .setEnabledIf(widget -> !mMachine)
-                .marginBottom(2)
-
-        );
-
-        machineInfo.child(
-            new TextWidget(StatCollector.translateToLocal("GT5U.gui.text.too_uncertain")).color(COLOR_TEXT_WHITE.get())
-                .setEnabledIf(widget -> (getErrorDisplayID() & 128) != 0)
-                .marginBottom(2)
-
-        );
-
-        machineInfo.child(
-            new TextWidget(StatCollector.translateToLocal("GT5U.gui.text.invalid_parameters"))
-                .color(COLOR_TEXT_WHITE.get())
-                .setEnabledIf(widget -> (getErrorDisplayID() & 256) != 0)
-                .marginBottom(2)
-
-        );
-
-        machineInfo.child(
-            new TextWidget(
-                GTUtility.trans("139", "Hit with Soft Mallet") + "\n"
-                    + GTUtility.trans("140", "to (re-)start the Machine")
-                    + "\n"
-                    + GTUtility.trans("141", "if it doesn't start.")).color(COLOR_TEXT_WHITE.get())
-                        .setEnabledIf(widget -> getErrorDisplayID() == 0 && !getBaseMetaTileEntity().isActive())
-                        .marginBottom(2)
-
-        );
-
-        machineInfo.child(
-            new TextWidget(GTUtility.trans("142", "Running perfectly.")).color(COLOR_TEXT_WHITE.get())
-                .setEnabledIf(widget -> getErrorDisplayID() == 0 && getBaseMetaTileEntity().isActive())
-                .marginBottom(2)
-
-        );
-
-        TextWidget shutdownDuration = IKey.dynamic(() -> {
-            Duration time = Duration.ofSeconds((mTotalRunTime - mLastWorkingTick) / 20);
-            return StatCollector.translateToLocalFormatted(
-                "GT5U.gui.text.shutdown_duration",
-                time.toHours(),
-                time.toMinutes() % 60,
-                time.getSeconds() % 60);
-        })
-            .asWidget();
-
-        machineInfo.child(
-            shutdownDuration.marginBottom(2)
-                .setEnabledIf(
-                    widget -> shouldDisplayShutDownReason() && !getBaseMetaTileEntity().isActive()
-                        && getBaseMetaTileEntity().wasShutdown()));
-
-        TextWidget shutdownReason = IKey.dynamic(
-            () -> getBaseMetaTileEntity().getLastShutDownReason()
-                .getDisplayString())
-            .asWidget();
-
-        machineInfo.child(
-            shutdownReason.setEnabledIf(
-                widget -> shouldDisplayShutDownReason() && !getBaseMetaTileEntity().isActive()
-                    && GTUtility.isStringValid(
-                        getBaseMetaTileEntity().getLastShutDownReason()
-                            .getDisplayString())
-                    && getBaseMetaTileEntity().wasShutdown()
-
-            ));
-
-        TextWidget checkRecipeResultWidget = IKey.dynamic(() -> this.checkRecipeResult.getDisplayString())
-            .asWidget();
-        machineInfo.child(
-            checkRecipeResultWidget.marginBottom(2)
-                .setEnabledIf(
-                    widget -> shouldDisplayCheckRecipeResult()
-                        && GTUtility.isStringValid(checkRecipeResult.getDisplayString())
-                        && (isAllowedToWork() || getBaseMetaTileEntity().isActive()
-                            || checkRecipeResult.persistsOnShutdown())));
-
-        if (showRecipeTextInGUI()) {
-            // Display current recipe
-            TextWidget recipeInfoWidget = IKey.dynamic(this::generateCurrentRecipeInfoString)
-                .asWidget();
-            machineInfo.child(
-                recipeInfoWidget.marginBottom(2)
-                    .setEnabledIf(
-                        widget -> (mOutputFluids != null && mOutputFluids.length > 0)
-                            || (mOutputItems != null && mOutputItems.length > 0)));
-        }
-
-        machineInfo.child(
-            new TextWidget(GTUtility.trans("144", "Missing Turbine Rotor")).color(COLOR_TEXT_WHITE.get())
-                .setEnabledIf(widget -> {
-                    if (getBaseMetaTileEntity().isAllowedToWork()) return false;
-                    // if (getErrorDisplayID() == 0 && this instanceof MTELargeTurbine) {
-                    // final ItemStack tItem = inventorySlot.getMcSlot()
-                    // .getStack();
-                    // return tItem == null
-                    // || !(tItem.getItem() == MetaGeneratedTool01.INSTANCE && tItem.getItemDamage() >= 170
-                    // && tItem.getItemDamage() <= 177);
-                    // }
-                    return false;
-                })
-                .marginBottom(2));
-    }
-
-    protected void addTitleTextStyle(ModularPanel panel, String title) {
-        final int TAB_PADDING = 3;
-        final int TITLE_PADDING = 2;
-        int titleWidth = 0, titleHeight = 0;
-        if (NetworkUtils.isClient()) {
-            final FontRenderer fontRenderer = Minecraft.getMinecraft().fontRenderer;
-            final List<String> titleLines = fontRenderer
-                .listFormattedStringToWidth(title, getGUIWidth() - (TAB_PADDING + TITLE_PADDING) * 2);
-            titleWidth = titleLines.size() > 1 ? getGUIWidth() - (TAB_PADDING + TITLE_PADDING) * 2
-                : fontRenderer.getStringWidth(title);
-            // noinspection PointlessArithmeticExpression
-            titleHeight = titleLines.size() * fontRenderer.FONT_HEIGHT + (titleLines.size() - 1) * 1;
-        }
-
-        final SingleChildWidget<?> tab = new SingleChildWidget<>();
-        final TextWidget text = new TextWidget(title).color(0x404040)
-            .alignment(Alignment.CenterLeft)
-            .width(titleWidth);
-
-        UITexture angular = UITexture.builder()
-            .location(GregTech.ID, "gui/tab/title_angular_%s")
-            .adaptable(4)
-            .imageSize(18, 18)
-            .canApplyTheme(true)
-            .build();
-        UITexture dark = UITexture.builder()
-            .location(GregTech.ID, "gui/tab/title_dark")
-            .adaptable(4)
-            .imageSize(28, 28)
-            .canApplyTheme(true)
-            .build();
-        if (GTMod.gregtechproxy.mTitleTabStyle == 1) {
-            panel.child(
-                angular.asWidget()
-                    .pos(0, -(titleHeight + TAB_PADDING) + 1)
-                    .size(getGUIWidth(), titleHeight + TAB_PADDING * 2));
-            text.pos(TAB_PADDING + TITLE_PADDING, -titleHeight + TAB_PADDING);
-        } else {
-            panel.child(
-                dark.asWidget()
-                    .pos(0, -(titleHeight + TAB_PADDING * 2) + 1)
-                    .size(titleWidth + (TAB_PADDING + TITLE_PADDING) * 2, titleHeight + TAB_PADDING * 2 - 1));
-            text.pos(TAB_PADDING + TITLE_PADDING, -titleHeight);
-        }
-        panel.child(text);
-    }
-
-    private class StructureErrorAdapter implements IByteBufAdapter<EnumSet<StructureError>> {
-
-        @Override
-        public EnumSet<StructureError> deserialize(PacketBuffer buffer) {
-            byte[] data = new byte[buffer.readVarIntFromBuffer()];
-            buffer.readBytes(data);
-
-            BitSet bits = BitSet.valueOf(data);
-
-            EnumSet<StructureError> out = EnumSet.noneOf(StructureError.class);
-
-            for (StructureError error : StructureError.values()) {
-                if (bits.get(error.ordinal())) {
-                    out.add(error);
-                }
-            }
-
-            return out;
-        }
-
-        @Override
-        public void serialize(PacketBuffer buffer, EnumSet<StructureError> errors) {
-            BitSet bits = new BitSet();
-
-            for (StructureError error : errors) {
-                bits.set(error.ordinal());
-            }
-
-            byte[] data = bits.toByteArray();
-
-            buffer.writeVarIntToBuffer(data.length);
-            buffer.writeBytes(data);
-        }
-
-        @Override
-        public boolean areEqual(@NotNull EnumSet<StructureError> t1, @NotNull EnumSet<StructureError> t2) {
-            return false;
-        }
-    }
-
-    private class ShutdownReasonAdapter implements IByteBufAdapter<ShutDownReason> {
-
-        @Override
-        public ShutDownReason deserialize(PacketBuffer buffer) throws IOException {
-            String id = NetworkUtils.readStringSafe(buffer);
-            ShutDownReason result = ShutDownReasonRegistry.getSampleFromRegistry(id)
-                .newInstance();
-            result.decode(buffer);
-            return result;
-        }
-
-        @Override
-        public void serialize(PacketBuffer buffer, ShutDownReason result) throws IOException {
-            NetworkUtils.writeStringSafe(buffer, result.getID());
-            result.encode(buffer);
-        }
-
-        @Override
-        public boolean areEqual(@NotNull ShutDownReason t1, @NotNull ShutDownReason t2) {
-            return false;
-        }
-    }
-
-    private class CheckRecipeResultAdapter implements IByteBufAdapter<CheckRecipeResult> {
-
-        @Override
-        public CheckRecipeResult deserialize(PacketBuffer buffer) throws IOException {
-            String id = NetworkUtils.readStringSafe(buffer);
-            CheckRecipeResult result = CheckRecipeResultRegistry.getSampleFromRegistry(id)
-                .newInstance();
-            result.decode(buffer);
-            return result;
-        }
-
-        @Override
-        public void serialize(PacketBuffer buffer, CheckRecipeResult result) throws IOException {
-            NetworkUtils.writeStringSafe(buffer, result.getID());
-            result.encode(buffer);
-        }
-
-        @Override
-        public boolean areEqual(@NotNull CheckRecipeResult t1, @NotNull CheckRecipeResult t2) {
-            return false;
         }
     }
 
