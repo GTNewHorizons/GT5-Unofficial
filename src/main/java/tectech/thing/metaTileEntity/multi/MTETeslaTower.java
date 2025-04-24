@@ -25,7 +25,9 @@ import java.util.BitSet;
 import java.util.Collections;
 import java.util.EnumSet;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -50,6 +52,7 @@ import com.cleanroommc.modularui.api.IGuiHolder;
 import com.cleanroommc.modularui.api.IPanelHandler;
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.api.widget.IWidget;
+import com.cleanroommc.modularui.drawable.GuiTextures;
 import com.cleanroommc.modularui.drawable.UITexture;
 import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
@@ -58,19 +61,24 @@ import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.utils.item.ItemStackHandler;
 import com.cleanroommc.modularui.utils.serialization.IByteBufAdapter;
 import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
+import com.cleanroommc.modularui.value.sync.DoubleSyncValue;
 import com.cleanroommc.modularui.value.sync.GenericListSyncHandler;
 import com.cleanroommc.modularui.value.sync.GenericSyncValue;
 import com.cleanroommc.modularui.value.sync.IntSyncValue;
 import com.cleanroommc.modularui.value.sync.InteractionSyncHandler;
 import com.cleanroommc.modularui.value.sync.LongSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
+import com.cleanroommc.modularui.value.sync.StringSyncValue;
 import com.cleanroommc.modularui.value.sync.SyncHandlers;
 import com.cleanroommc.modularui.widget.SingleChildWidget;
+import com.cleanroommc.modularui.widget.sizer.Area;
 import com.cleanroommc.modularui.widgets.ButtonWidget;
 import com.cleanroommc.modularui.widgets.ItemSlot;
 import com.cleanroommc.modularui.widgets.ListWidget;
 import com.cleanroommc.modularui.widgets.SlotGroupWidget;
 import com.cleanroommc.modularui.widgets.TextWidget;
+import com.cleanroommc.modularui.widgets.layout.Column;
+import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
 import com.google.common.collect.Multimap;
 import com.google.common.collect.MultimapBuilder;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
@@ -118,6 +126,7 @@ import tectech.thing.metaTileEntity.hatch.MTEHatchEnergyMulti;
 import tectech.thing.metaTileEntity.multi.base.INameFunction;
 import tectech.thing.metaTileEntity.multi.base.IStatusFunction;
 import tectech.thing.metaTileEntity.multi.base.LedStatus;
+import tectech.thing.metaTileEntity.multi.base.Parameter;
 import tectech.thing.metaTileEntity.multi.base.Parameters;
 import tectech.thing.metaTileEntity.multi.base.TTMultiblockBase;
 import tectech.thing.metaTileEntity.multi.base.render.TTRenderedExtendedFacingTexture;
@@ -393,13 +402,78 @@ public class MTETeslaTower extends TTMultiblockBase
         }
     };
     // endregion
+    private Map<String, Parameter<?>> parameterMap = new LinkedHashMap<>();
 
     public MTETeslaTower(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
+        initParameters();
     }
 
     public MTETeslaTower(String aName) {
         super(aName);
+        initParameters();
+    }
+
+    private void initParameters() {
+        parameterMap.put(
+            "hysteresisLow",
+            new Parameter.DoubleParameter(
+                0.25,
+                0.05,
+                0.75,
+                "gt.blockmachines.multimachine.tm.teslaCoil.hysteresisLow"));
+        parameterMap.put(
+            "hysteresisHigh",
+            new Parameter.DoubleParameter(
+                0.75,
+                0.25,
+                0.95,
+                "gt.blockmachines.multimachine.tm.teslaCoil.hysteresisHigh"));
+        parameterMap.put(
+            "transferRadius",
+            new Parameter.IntegerParameter(
+                ConfigHandler.TeslaTweaks.TESLA_MULTI_RANGE_TOWER,
+                0,
+                ConfigHandler.TeslaTweaks.TESLA_MULTI_RANGE_TOWER,
+                "gt.blockmachines.multimachine.tm.teslaCoil.transferRadius"));
+        parameterMap.put(
+            "transceiverRadius",
+            new Parameter.IntegerParameter(
+                ConfigHandler.TeslaTweaks.TESLA_MULTI_RANGE_TRANSCEIVER,
+                0,
+                ConfigHandler.TeslaTweaks.TESLA_MULTI_RANGE_TRANSCEIVER,
+                "gt.blockmachines.multimachine.tm.teslaCoil.transceiverRadius"));
+        parameterMap.put(
+            "ultimateCoverTransferRadius",
+            new Parameter.IntegerParameter(
+                ConfigHandler.TeslaTweaks.TESLA_MULTI_RANGE_COVER,
+                0,
+                ConfigHandler.TeslaTweaks.TESLA_MULTI_RANGE_COVER,
+                "gt.blockmachines.multimachine.tm.teslaCoil.ultimateCoverTransferRadius"));
+        parameterMap.put(
+            "outputVoltage",
+            new Parameter.IntegerParameter(
+                -1,
+                -1,
+                Integer.MAX_VALUE,
+                "gt.blockmachines.multimachine.tm.teslaCoil.outputVoltage"));
+        parameterMap.put(
+            "outputCurrent",
+            new Parameter.IntegerParameter(
+                -1,
+                -1,
+                Integer.MAX_VALUE,
+                "gt.blockmachines.multimachine.tm.teslaCoil.outputCurrent"));
+        parameterMap.put(
+            "scanTime",
+            new Parameter.IntegerParameter(
+                100,
+                100,
+                Integer.MAX_VALUE,
+                "gt.blockmachines.multimachine.tm.teslaCoil.scanTime"));
+        parameterMap.put(
+            "overdrive",
+            new Parameter.BooleanParameter(false, "gt.blockmachines.multimachine.tm.teslaCoil.overdrive"));
     }
 
     private float getRangeMulti(int mTier, int vTier) {
@@ -1162,7 +1236,8 @@ public class MTETeslaTower extends TTMultiblockBase
             .size(18, 18);
         panel.child(powerPassButton);
 
-        IPanelHandler infoPanel = syncManager.panel("info_panel", (p_syncManager, syncHandler) -> getInfoPopup(), true);
+        IPanelHandler infoPanel = syncManager
+            .panel("info_panel", (p_syncManager, syncHandler) -> getInfoPopup(panel), true);
         ButtonWidget editParametersButton = new ButtonWidget();
         editParametersButton.overlay(UITexture.fullImage(MODID, "gui/overlay_button/edit_parameters"));
         editParametersButton.tooltip(new RichTooltip(editParametersButton).add("Edit Parameters"));
@@ -1197,14 +1272,58 @@ public class MTETeslaTower extends TTMultiblockBase
         powerSwitchButton.pos(173, doesBindPlayerInventory() ? 109 + 18 * 2 : 133 + 18 * 2)
             .size(18, 18);
         panel.child(powerSwitchButton);
-
         return panel;
     }
 
-    private ModularPanel getInfoPopup() {
+    private ModularPanel getInfoPopup(ModularPanel parent) {
+        Area parentArea = parent.getArea();
+        ModularPanel panel = new ModularPanel("parameters").size(125, 191)
+            .pos(parentArea.x + parentArea.width, parentArea.y);
+        ListWidget parameterListWidget = new ListWidget();
+        parameterListWidget.sizeRel(1)
+            .margin(2);
+        for (Map.Entry<String, Parameter<?>> entry : parameterMap.entrySet()) {
+            Parameter<?> parameter = entry.getValue();
+            TextFieldWidget parameterField = new TextFieldWidget();
 
-        ModularPanel panel = new ModularPanel("parameters").size(90, 191)
-            .pos(339, 31);
+            if (parameter instanceof Parameter.IntegerParameter intParameter) {
+                parameterField.value(new IntSyncValue(intParameter::getValue, intParameter::setValue))
+                    .setNumbers(intParameter::getMinValue, intParameter::getMaxValue);
+            } else if (parameter instanceof Parameter.DoubleParameter doubleParameter) {
+                parameterField.value(new DoubleSyncValue(doubleParameter::getValue, doubleParameter::setValue))
+                    .setNumbersDouble(
+                        val -> Math.max(doubleParameter.getMinValue(), Math.min(doubleParameter.getMaxValue(), val)));
+            } else if (parameter instanceof Parameter.StringParameter stringParameter) {
+                parameterField.value(new StringSyncValue(stringParameter::getValue, stringParameter::setValue));
+            }
+            parameterField.setText(parameter.getValueString());
+            parameterField.sizeRel(0.9f, 0.5f)
+                .align(Alignment.Center);
+
+            ButtonWidget parameterButton = new ButtonWidget<>();
+            if (parameter instanceof Parameter.BooleanParameter booleanParameter) {
+                parameterButton.syncHandler(new InteractionSyncHandler().setOnMousePressed(mouseData -> {
+                    booleanParameter.invert();
+                    parameterButton.overlay(booleanParameter.getValue() ? GuiTextures.CHECK_BOX : GuiTextures.CROSS);
+                }))
+                    .overlay(booleanParameter.getValue() ? GuiTextures.CHECK_BOX : GuiTextures.CROSS)
+                    .align(Alignment.Center)
+                    .size(18, 18);
+            }
+
+            parameterListWidget.child(
+                new Column().heightRel(0.2f)
+                    .child(
+                        IKey.str(parameter.getLocalizedName())
+                            .asWidget()
+                            .alignment(Alignment.Center)
+                            .sizeRel(1, 0.5f))
+                    .child(
+                        new SingleChildWidget<>().sizeRel(1, 0.5f)
+                            .child(parameter instanceof Parameter.BooleanParameter ? parameterButton : parameterField))
+                    .marginBottom(2));
+        }
+        panel.child(parameterListWidget);
         return panel;
     }
 
