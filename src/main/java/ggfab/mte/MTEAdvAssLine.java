@@ -756,10 +756,7 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
 
             // Disabled to disable overclocking under one tick.
             /*
-             * double tickTimeAfterOC = calculator.calculateDurationUnderOneTick();
-             * if (tickTimeAfterOC < 1) {
-             * maxParallel = GTUtility.safeInt((long) (maxParallel / tickTimeAfterOC), 0);
-             * }
+             * maxParallel = GTUtility.safeInt((long) (maxParallel * calculator.calculateMultiplierUnderOneTick()), 0);
              */
 
             int maxParallelBeforeBatchMode = maxParallel;
