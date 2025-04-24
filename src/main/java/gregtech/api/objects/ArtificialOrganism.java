@@ -26,6 +26,8 @@ public class ArtificialOrganism {
     private int count;
     private int sentience;
 
+    private int maxAOs;
+
     private boolean finalized = false;
 
     public final ArrayList<Trait> traits = new ArrayList<>();
@@ -66,6 +68,7 @@ public class ArtificialOrganism {
      * operation should fail.
      */
     public int replenishAOs(int number) {
+        number = Math.min(maxAOs - count, number);
         count += number;
         return number;
     }
@@ -140,6 +143,10 @@ public class ArtificialOrganism {
 
     public void setReproduction(int reproduction) {
         this.reproduction = reproduction;
+    }
+
+    public void setMaxAOs(int maxAOs) {
+        this.maxAOs = maxAOs;
     }
 
     public void setCount(int count) {

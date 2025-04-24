@@ -334,14 +334,19 @@ public class MTEEvolutionChamber extends MTEExtendedPowerMultiBlockBase<MTEEvolu
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         super.onPostTick(aBaseMetaTileEntity, aTick);
 
-        if (!aBaseMetaTileEntity.isServerSide() || aTick % 20 != 0 || currentSpecies == null || !finalizedSpecies)
+        if (!aBaseMetaTileEntity.isServerSide() || aTick % 5 != 0 || currentSpecies == null || !finalizedSpecies)
             return;
 
         if (status == 1) {
-
             return;
         }
 
+        currentSpecies.setMaxAOs(maxAOs);
+        // TODO: REMOVE THIS
+        currentSpecies.doReproduction();
+        currentSpecies.increaseSentience(1);
+        return;
+        /*
         if (currentSpecies.photosynthetic) {
             if (!aBaseMetaTileEntity.getSkyAtSideAndDistance(ForgeDirection.UP, 5)) {
                 triggerElectricityLoss();
@@ -356,6 +361,8 @@ public class MTEEvolutionChamber extends MTEExtendedPowerMultiBlockBase<MTEEvolu
         if (!useNutrients(nutrientUsage)) {
             triggerNutrientLoss();
         } else if (currentSpecies.getCount() < maxAOs) currentSpecies.doReproduction();
+
+         */
     }
 
     @Override
@@ -666,37 +673,52 @@ public class MTEEvolutionChamber extends MTEExtendedPowerMultiBlockBase<MTEEvolu
         syncManager.registerSlotGroup("culture_slot", 1);
 
         // Defining a bunch of textures. TODO: define this in GTUITextures!
-        UITexture progressBar = UITexture.builder()
-            .location(GregTech.ID, "gui/progressbar/sentience_progress")
+        UITexture countProgressBar = UITexture.builder()
+            .location(GregTech.ID, "gui/progressbar/aos_count_progress")
             .adaptable(1)
             .imageSize(16, 128)
             .build();
 
+        UITexture sentienceProgressBar = UITexture.builder()
+            .location(GregTech.ID, "gui/progressbar/aos_sentience_progress")
+            .adaptable(1)
+            .imageSize(32, 64)
+            .build();
+
         UITexture intProgressBar = UITexture.builder()
-            .location(GregTech.ID, "gui/progressbar/intelligence_bar")
+            .location(GregTech.ID, "gui/progressbar/aos_intelligence_bar")
             .adaptable(1)
             .imageSize(32, 16)
             .build();
 
         UITexture strProgressBar = UITexture.builder()
-            .location(GregTech.ID, "gui/progressbar/strength_bar")
+            .location(GregTech.ID, "gui/progressbar/aos_strength_bar")
             .adaptable(1)
             .imageSize(32, 16)
             .build();
 
         UITexture repProgressBar = UITexture.builder()
-            .location(GregTech.ID, "gui/progressbar/reproduction_bar")
+            .location(GregTech.ID, "gui/progressbar/aos_reproduction_bar")
             .adaptable(1)
             .imageSize(32, 16)
             .build();
 
         // Sentience progressbar
         panel.child(
-            new ProgressWidget().value(new DoubleSyncValue(() -> (double) currentSpecies.getSentience() / 100))
-                .texture(progressBar, 16)
+            new ProgressWidget().value(new DoubleSyncValue(() -> (double) currentSpecies.getCount() / maxAOs))
+                .texture(countProgressBar, 16)
                 .direction(ProgressWidget.Direction.UP)
                 .size(16, 64)
-                .pos(100, 0))
+                .pos(100, 14))
+
+            .child(
+                new ProgressWidget().value(new DoubleSyncValue(() -> (double) currentSpecies.getSentience() / 100))
+                    .texture(sentienceProgressBar, 32)
+                    .direction(ProgressWidget.Direction.UP)
+                    .size(32, 32)
+                    .pos(125, 14)
+                    .tooltipDynamic(tt -> tt.add(StatCollector.translateToLocalFormatted("GT5U.artificialorganisms.sentience", new IntSyncValue(() -> currentSpecies.getSentience()).getValue()))))
+
 
             // The actual itemslot for inserting cultures
             .child(
