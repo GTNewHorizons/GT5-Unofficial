@@ -121,15 +121,7 @@ import gregtech.common.gui.modularui.widget.CheckRecipeResultSyncer;
 import gregtech.common.gui.modularui.widget.ShutDownReasonSyncer;
 import gregtech.common.items.MetaGeneratedTool01;
 import gregtech.common.pollution.Pollution;
-import gregtech.common.tileentities.machines.IDualInputHatch;
-import gregtech.common.tileentities.machines.IDualInputInventory;
-import gregtech.common.tileentities.machines.IRecipeProcessingAwareHatch;
-import gregtech.common.tileentities.machines.ISmartInputHatch;
-import gregtech.common.tileentities.machines.MTEHatchCraftingInputME;
-import gregtech.common.tileentities.machines.MTEHatchInputBusME;
-import gregtech.common.tileentities.machines.MTEHatchInputME;
-import gregtech.common.tileentities.machines.MTEHatchOutputBusME;
-import gregtech.common.tileentities.machines.MTEHatchOutputME;
+import gregtech.common.tileentities.machines.*;
 import gregtech.common.tileentities.machines.multi.MTELargeTurbine;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchSteamBusInput;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.MTESteamMultiBase;
@@ -1021,7 +1013,15 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
             for (var it = dualInputHatch.inventories(); it.hasNext();) {
                 IDualInputInventory slot = it.next();
 
-                if (!slot.isEmpty() && processingLogic.craftingPatternHandler(slot)) {
+                if (!slot.isEmpty()) {
+                    // try to cache the possible recipes from pattern
+                    if (slot instanceof IDualInputInventoryWithPattern withPattern) {
+                        if (!processingLogic.tryCachePossibleRecipesFromPattern(withPattern)) {
+                            // move on to next slots if it returns false, which means there is no possible recipes with
+                            // given pattern.
+                            continue;
+                        }
+                    }
 
                     processingLogic.setInputItems(ArrayUtils.addAll(sharedItems, slot.getItemInputs()));
                     processingLogic.setInputFluids(slot.getFluidInputs());
@@ -1877,7 +1877,9 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         }
         if (aMetaTileEntity instanceof IDualInputHatch hatch) {
             hatch.updateCraftingIcon(this.getMachineCraftingIcon());
-            hatch.setProcessingLogic(processingLogic);
+            if (hatch instanceof IDualInputHatchWithPattern withPattern) {
+                withPattern.setProcessingLogic(processingLogic);
+            }
             return mDualInputHatches.add(hatch);
         }
         if (aMetaTileEntity instanceof ISmartInputHatch hatch) {
