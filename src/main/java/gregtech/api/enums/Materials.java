@@ -2120,18 +2120,18 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
             .addTo(Magnetite, VanadiumMagnetite, BasalticMineralSand, GraniticMineralSand);
 
         SubTag.NO_RECIPES.addTo(MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter);
-        SubTag.NO_RECYCLING.addTo(MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter);
+        SubTag.NO_RECYCLING_RECIPES.addTo(MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter);
         SubTag.NO_RECIPES.addTo(MaterialsUEVplus.HotProtoHalkonite);
-        SubTag.NO_RECYCLING.addTo(MaterialsUEVplus.HotProtoHalkonite);
+        SubTag.NO_RECYCLING_RECIPES.addTo(MaterialsUEVplus.HotProtoHalkonite);
         SubTag.NO_RECIPES.addTo(MaterialsUEVplus.ProtoHalkonite);
-        SubTag.NO_RECYCLING.addTo(MaterialsUEVplus.ProtoHalkonite);
+        SubTag.NO_RECYCLING_RECIPES.addTo(MaterialsUEVplus.ProtoHalkonite);
         MaterialsUEVplus.HotProtoHalkonite.remove(SubTag.SMELTING_TO_FLUID);
         MaterialsUEVplus.ProtoHalkonite.remove(SubTag.SMELTING_TO_FLUID);
 
         SubTag.NO_RECIPES.addTo(MaterialsUEVplus.HotExoHalkonite);
         SubTag.NO_RECIPES.addTo(MaterialsUEVplus.ExoHalkonite);
-        SubTag.NO_RECYCLING.addTo(MaterialsUEVplus.HotExoHalkonite);
-        SubTag.NO_RECYCLING.addTo(MaterialsUEVplus.ExoHalkonite);
+        SubTag.NO_RECYCLING_RECIPES.addTo(MaterialsUEVplus.HotExoHalkonite);
+        SubTag.NO_RECYCLING_RECIPES.addTo(MaterialsUEVplus.ExoHalkonite);
         MaterialsUEVplus.HotExoHalkonite.remove(SubTag.SMELTING_TO_FLUID);
         MaterialsUEVplus.ExoHalkonite.remove(SubTag.SMELTING_TO_FLUID);
 

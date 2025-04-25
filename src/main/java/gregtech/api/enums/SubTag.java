@@ -91,8 +91,6 @@ public final class SubTag implements ICondition<ISubTagContainer> {
      * This Material will have no associated recipes in any format.
      */
     public static final SubTag NO_RECIPES = getNewSubTag("NO_RECIPES");
-
-    // public static final SubTag NO_RECYCLING = getNewSubTag("ONLY_RECYCLING");
     /**
      * This Material cannot be unificated
      */
@@ -101,6 +99,10 @@ public final class SubTag implements ICondition<ISubTagContainer> {
      * This Material cannot be used in any Recycler. Already listed are: Stone, Glass, Water
      */
     public static final SubTag NO_RECYCLING = getNewSubTag("NO_RECYCLING");
+    /**
+     * This Material won't auto generate recycling recipes.
+     */
+    public static final SubTag NO_RECYCLING_RECIPES = getNewSubTag("NO_RECYCLING_RECIPES");
     /**
      * This Material cannot be used in any Furnace alike Structure. Already listed are: Paper, Wood, Gunpowder, Stone
      */
