@@ -2604,6 +2604,12 @@ public enum ItemList implements IItemContainer {
     Machine_Multi_AirFilterT1,
     Machine_Multi_AirFilterT2,
     Machine_Multi_AirFilterT3,
+    Heavy_Hellish_Mud,
+    Netherite_Scrap_Seed,
+    Brittle_Netherite_Scrap,
+    Netherite_Nanoparticles,
+    Intensely_Bonded_Netherite_Nanoparticles,
+    Hot_Netherite_Scrap,
     LargeMolecularAssembler,
 
     SpaceElevatorController,
