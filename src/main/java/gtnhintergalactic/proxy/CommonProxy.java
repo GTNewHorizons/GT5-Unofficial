@@ -14,8 +14,6 @@ import gtnhintergalactic.block.BlockCasingGasSiphon;
 import gtnhintergalactic.block.BlockCasingSpaceElevator;
 import gtnhintergalactic.block.BlockCasingSpaceElevatorMotor;
 import gtnhintergalactic.block.BlockSpaceElevatorCable;
-import gtnhintergalactic.item.ItemBlockSpaceElevatorCable;
-import gtnhintergalactic.item.ItemCasingDysonSwarm;
 import gtnhintergalactic.item.ItemDysonSwarmParts;
 import gtnhintergalactic.item.ItemMiningDrones;
 import gtnhintergalactic.item.ItemSpaceElevatorParts;
@@ -46,17 +44,10 @@ public class CommonProxy {
 
         // Blocks
         GregTechAPI.sSpaceElevatorCable = new BlockSpaceElevatorCable();
-        GameRegistry
-            .registerBlock(GregTechAPI.sSpaceElevatorCable, ItemBlockSpaceElevatorCable.class, "spaceelevatorcable");
-
         GregTechAPI.sBlockCasingsSE = new BlockCasingSpaceElevator();
         GregTechAPI.sBlockCasingsSEMotor = new BlockCasingSpaceElevatorMotor();
-
         GregTechAPI.sBlockCasingsDyson = new BlockCasingDysonSwarm();
-        GameRegistry.registerBlock(GregTechAPI.sBlockCasingsDyson, ItemCasingDysonSwarm.class, "dysonswarmparts");
-
         GregTechAPI.sBlockCasingsSiphon = new BlockCasingGasSiphon();
-        GameRegistry.registerBlock(GregTechAPI.sBlockCasingsSiphon, "gassiphoncasing");
 
         new MachineLoader().run();
         IG_RecipeAdder.init();
