@@ -23,7 +23,7 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.items.ItemAugmentBase;
+import gregtech.api.items.ItemAugmentAbstract;
 import gregtech.api.items.ItemAugmentCore;
 import gregtech.api.items.armor.ArmorHelper;
 import gregtech.api.items.armor.behaviors.IArmorBehavior;
@@ -51,7 +51,7 @@ public class MTEModificationTable extends MTEBasicMachine implements IAddUIWidge
         NBTTagCompound tag = getOrCreateNbtCompound(armorItem);
 
         // Sanity check, filter on the item slots should already verify this
-        if (!(modItem.getItem() instanceof ItemAugmentBase augment
+        if (!(modItem.getItem() instanceof ItemAugmentAbstract augment
             && armorItem.getItem() instanceof MechArmorBase armor)) {
             return;
         }
@@ -91,7 +91,7 @@ public class MTEModificationTable extends MTEBasicMachine implements IAddUIWidge
     @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
         builder.widget(
-            new SlotWidget(inputHandler, 0).setFilter((x) -> x.getItem() instanceof ItemAugmentBase)
+            new SlotWidget(inputHandler, 0).setFilter((x) -> x.getItem() instanceof ItemAugmentAbstract)
                 .setAccess(true, true)
                 .setPos(79, 34))
             .widget(

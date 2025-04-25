@@ -10,6 +10,9 @@ import static gregtech.api.enums.Mods.PamsHarvestCraft;
 import static gregtech.api.enums.Mods.Railcraft;
 import static gregtech.api.enums.Mods.Thaumcraft;
 import static gregtech.api.enums.Mods.TwilightForest;
+import static gregtech.api.items.ItemAugment.CATEGORY_MOVEMENT;
+import static gregtech.api.items.ItemAugment.CATEGORY_PROTECTION;
+import static gregtech.api.items.ItemAugment.CATEGORY_UTILITY;
 import static gregtech.api.recipe.RecipeMaps.centrifugeRecipes;
 import static gregtech.api.recipe.RecipeMaps.fluidCannerRecipes;
 import static gregtech.api.recipe.RecipeMaps.maceratorRecipes;
@@ -45,7 +48,7 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.fluid.GTFluidFactory;
 import gregtech.api.items.BlockLongDistancePipe;
 import gregtech.api.items.GTGenericItem;
-import gregtech.api.items.ItemAugmentBase;
+import gregtech.api.items.ItemAugment;
 import gregtech.api.items.ItemAugmentCore;
 import gregtech.api.items.ItemBreederCell;
 import gregtech.api.items.ItemCoolantCellIC;
@@ -229,156 +232,189 @@ public class LoaderGTBlockFluid implements Runnable {
                 Collections.singletonList(InfiniteEnergyBehavior.INSTANCE),
                 4));
         ItemList.Augment_NightVision.set(
-            new ItemAugmentBase(
+            new ItemAugment.AugmentBuilder(
                 "augmentnightvision",
                 "Augment: Optical Brightness Adjuster",
-                "Allows user to see clearly at night and in the dark",
-                Collections.singletonList(MechArmorLoader.MechArmorHelmet),
-                Collections.singletonList(NightVisionBehavior.INSTANCE)));
+                "Allows user to see clearly at night and in the dark")
+                    .validArmors(Collections.singletonList(MechArmorLoader.MechArmorHelmet))
+                    .attachedBehaviors(Collections.singletonList(NightVisionBehavior.INSTANCE))
+                    .category(CATEGORY_UTILITY)
+                    .build());
         ItemList.Augment_CreativeFlight.set(
-            new ItemAugmentBase(
+            new ItemAugment.AugmentBuilder(
                 "augmentcreativeflight",
                 "Augment: Gravitational Control Module",
-                "Allows user to fly",
-                Collections.singletonList(MechArmorLoader.MechArmorChestplate),
-                Collections.singletonList(CreativeFlightBehavior.INSTANCE),
-                Collections.emptyList(),
-                Collections.singletonList(JetpackBehavior.INSTANCE)));
+                "Allows user to fly").validArmors(Collections.singletonList(MechArmorLoader.MechArmorChestplate))
+                    .attachedBehaviors(Collections.singletonList(CreativeFlightBehavior.INSTANCE))
+                    .incompatibleBehaviors(Collections.singletonList(JetpackBehavior.INSTANCE))
+                    .category(CATEGORY_MOVEMENT)
+                    .build());
         ItemList.Augment_Jetpack.set(
-            new ItemAugmentBase(
+            new ItemAugment.AugmentBuilder(
                 "augmentjetpack",
                 "Augment: Electric Jetpack",
-                "Allows user to jet upwards and hover in midair",
-                Collections.singletonList(MechArmorLoader.MechArmorChestplate),
-                Collections.singletonList(JetpackBehavior.INSTANCE),
-                Collections.emptyList(),
-                Collections.singletonList(CreativeFlightBehavior.INSTANCE)));
+                "Allows user to jet upwards and hover in midair")
+                    .validArmors(Collections.singletonList(MechArmorLoader.MechArmorChestplate))
+                    .attachedBehaviors(Collections.singletonList(JetpackBehavior.INSTANCE))
+                    .incompatibleBehaviors(Collections.singletonList(CreativeFlightBehavior.INSTANCE))
+                    .category(CATEGORY_MOVEMENT)
+                    .build());
         ItemList.Augment_Jetpack_PerfectHover.set(
-            new ItemAugmentBase(
+            new ItemAugment.AugmentBuilder(
                 "augmentjetpackperfecthover",
                 "Augment: Adaptive Jetpack Stabilizers",
-                "Prevents user from slowly descending while in hover mode",
-                Collections.singletonList(MechArmorLoader.MechArmorChestplate),
-                Collections.singletonList(JetpackPerfectHoverBehavior.INSTANCE),
-                Collections.singletonList(JetpackBehavior.INSTANCE),
-                Collections.emptyList()));
+                "Prevents user from slowly descending while in hover mode")
+                    .validArmors(Collections.singletonList(MechArmorLoader.MechArmorChestplate))
+                    .attachedBehaviors(Collections.singletonList(JetpackPerfectHoverBehavior.INSTANCE))
+                    .requiredBehaviors(Collections.singletonList(JetpackBehavior.INSTANCE))
+                    .category(CATEGORY_MOVEMENT)
+                    .build());
         ItemList.Augment_FireImmunity.set(
-            new ItemAugmentBase(
+            new ItemAugment.AugmentBuilder(
                 "augmentfireimmunity",
                 "Augment: Heat Dispersion System",
-                "Renders user entirely immune to fire and lava",
-                Collections.singletonList(MechArmorLoader.MechArmorLeggings),
-                Collections.singletonList(FireImmunityBehavior.INSTANCE)));
+                "Renders user entirely immune to fire and lava")
+                    .validArmors(Collections.singletonList(MechArmorLoader.MechArmorLeggings))
+                    .attachedBehaviors(Collections.singletonList(FireImmunityBehavior.INSTANCE))
+                    .category(CATEGORY_PROTECTION)
+                    .build());
         ItemList.Augment_StepAssist.set(
-            new ItemAugmentBase(
+            new ItemAugment.AugmentBuilder(
                 "augmentstepassist",
                 "Augment: Elevation Calibrators",
-                "Allows user to walk up a single block effortlessly",
-                Collections.singletonList(MechArmorLoader.MechArmorBoots),
-                Collections.singletonList(StepAssistBehavior.INSTANCE)));
+                "Allows user to walk up a single block effortlessly")
+                    .validArmors(Collections.singletonList(MechArmorLoader.MechArmorBoots))
+                    .attachedBehaviors(Collections.singletonList(StepAssistBehavior.INSTANCE))
+                    .category(CATEGORY_MOVEMENT)
+                    .build());
         ItemList.Augment_GogglesOfRevealing.set(
-            new ItemAugmentBase(
+            new ItemAugment.AugmentBuilder(
                 "augmentgogglesofrevealing",
                 "Augment: Integrated Revealing Lens",
-                "Allows user to see elements of the arcane, such as aura nodes",
-                Collections.singletonList(MechArmorLoader.MechArmorHelmet),
-                Collections.singletonList(GogglesOfRevealingBehavior.INSTANCE),
-                7));
+                "Allows user to see elements of the arcane, such as aura nodes")
+                    .validArmors(Collections.singletonList(MechArmorLoader.MechArmorHelmet))
+                    .attachedBehaviors(Collections.singletonList(GogglesOfRevealingBehavior.INSTANCE))
+                    .visDiscount(7)
+                    .category(CATEGORY_UTILITY)
+                    .build());
         ItemList.Augment_InertiaCanceling.set(
-            new ItemAugmentBase(
+            new ItemAugment.AugmentBuilder(
                 "augmentinertiacanceling",
                 "Augment: Inertial Dampeners",
-                "Prevents momentum from acting on the user while flying",
-                Collections.singletonList(MechArmorLoader.MechArmorChestplate),
-                Collections.singletonList(InertiaCancelingBehavior.INSTANCE),
-                Collections.singletonList(CreativeFlightBehavior.INSTANCE),
-                Collections.emptyList()));
+                "Prevents momentum from acting on the user while flying")
+                    .validArmors(Collections.singletonList(MechArmorLoader.MechArmorChestplate))
+                    .attachedBehaviors(Collections.singletonList(InertiaCancelingBehavior.INSTANCE))
+                    .requiredBehaviors(Collections.singletonList(CreativeFlightBehavior.INSTANCE))
+                    .category(CATEGORY_MOVEMENT)
+                    .build());
         ItemList.Augment_Hazmat.set(
-            new ItemAugmentBase(
+            new ItemAugment.AugmentBuilder(
                 "augmenthazmat",
                 "Augment: Protective Lining",
-                "Grants the user hazmat protection. Must be applied to all four armor pieces",
-                MechArmorLoader.AllMechArmor,
-                Collections.singletonList(HazmatBehavior.INSTANCE)));
+                "Grants the user hazmat protection. Must be applied to all four armor pieces")
+                    .validArmors(MechArmorLoader.AllMechArmor)
+                    .attachedBehaviors(Collections.singletonList(HazmatBehavior.INSTANCE))
+                    .category(CATEGORY_PROTECTION)
+                    .build());
         ItemList.Augment_Apiarist.set(
-            new ItemAugmentBase(
+            new ItemAugment.AugmentBuilder(
                 "augmentapiarist",
                 "Augment: Bee Pacifier",
-                "Prevents negative bee effects, as if the user were wearing Apiarist's armor",
-                Collections.singletonList(MechArmorLoader.MechArmorLeggings),
-                Collections.singletonList(ApiaristBehavior.INSTANCE)));
+                "Prevents negative bee effects, as if the user were wearing Apiarist's armor")
+                    .validArmors(Collections.singletonList(MechArmorLoader.MechArmorLeggings))
+                    .attachedBehaviors(Collections.singletonList(ApiaristBehavior.INSTANCE))
+                    .category(CATEGORY_UTILITY)
+                    .build());
         ItemList.Augment_SwimSpeed.set(
-            new ItemAugmentBase(
+            new ItemAugment.AugmentBuilder(
                 "augmentswimspeed",
                 "Augment: Aquatic Jets",
-                "Improves the user's speed in water",
-                Collections.singletonList(MechArmorLoader.MechArmorBoots),
-                Collections.singletonList(SwimSpeedBehavior.INSTANCE)));
+                "Improves the user's speed in water")
+                    .validArmors(Collections.singletonList(MechArmorLoader.MechArmorBoots))
+                    .attachedBehaviors(Collections.singletonList(SwimSpeedBehavior.INSTANCE))
+                    .category(CATEGORY_MOVEMENT)
+                    .build());
         ItemList.Augment_KnockbackResistance.set(
-            new ItemAugmentBase(
+            new ItemAugment.AugmentBuilder(
                 "augmentknockbackresistance",
                 "Augment: Shock Absorbers",
-                "Protects the user from knockback effects",
-                Collections.singletonList(MechArmorLoader.MechArmorLeggings),
-                Collections.singletonList(KnockbackResistBehavior.INSTANCE)));
+                "Protects the user from knockback effects")
+                    .validArmors(Collections.singletonList(MechArmorLoader.MechArmorLeggings))
+                    .attachedBehaviors(Collections.singletonList(KnockbackResistBehavior.INSTANCE))
+                    .category(CATEGORY_PROTECTION)
+                    .build());
         ItemList.Augment_SpeedBoost.set(
-            new ItemAugmentBase(
+            new ItemAugment.AugmentBuilder(
                 "augmentspeedboost",
                 "Augment: Sprint Boosters",
-                "Allows the user to move faster. Can be applied multiple times",
-                Collections.singletonList(MechArmorLoader.MechArmorBoots),
-                Collections.singletonList(SpeedBoostBehavior.MECH_ARMOR_INSTANCE)));
+                "Allows the user to move faster. Can be applied multiple times")
+                    .validArmors(Collections.singletonList(MechArmorLoader.MechArmorBoots))
+                    .attachedBehaviors(Collections.singletonList(SpeedBoostBehavior.MECH_ARMOR_INSTANCE))
+                    .category(CATEGORY_MOVEMENT)
+                    .build());
         ItemList.Augment_JumpBoost.set(
-            new ItemAugmentBase(
+            new ItemAugment.AugmentBuilder(
                 "augmentjumpboost",
                 "Augment: Pneumatic Jump Assist",
-                "Allows the user to jump higher",
-                Collections.singletonList(MechArmorLoader.MechArmorBoots),
-                Collections.singletonList(JumpBoostBehavior.MECH_ARMOR_INSTANCE)));
+                "Allows the user to jump higher").validArmors(Collections.singletonList(MechArmorLoader.MechArmorBoots))
+                    .attachedBehaviors(Collections.singletonList(JumpBoostBehavior.MECH_ARMOR_INSTANCE))
+                    .category(CATEGORY_MOVEMENT)
+                    .build());
         ItemList.Augment_FallProtection.set(
-            new ItemAugmentBase(
+            new ItemAugment.AugmentBuilder(
                 "augmentfallprotection",
                 "Augment: Landing Gear",
-                "Converts the user's fall damage into EU usage",
-                Collections.singletonList(MechArmorLoader.MechArmorBoots),
-                Collections.singletonList(FallProtectionBehavior.INSTANCE)));
+                "Converts the user's fall damage into EU usage")
+                    .validArmors(Collections.singletonList(MechArmorLoader.MechArmorBoots))
+                    .attachedBehaviors(Collections.singletonList(FallProtectionBehavior.INSTANCE))
+                    .category(CATEGORY_PROTECTION)
+                    .build());
         ItemList.Augment_SpaceSuit.set(
-            new ItemAugmentBase(
+            new ItemAugment.AugmentBuilder(
                 "augmentspacesuit",
                 "Augment: Astronaut's Equipment",
-                "Adds Spacesuit capability. Must be applied to all four armor pieces",
-                MechArmorLoader.AllMechArmor,
-                Collections.singletonList(SpaceSuitBehavior.INSTANCE)));
+                "Adds Spacesuit capability. Must be applied to all four armor pieces")
+                    .validArmors(MechArmorLoader.AllMechArmor)
+                    .attachedBehaviors(Collections.singletonList(SpaceSuitBehavior.INSTANCE))
+                    .category(CATEGORY_PROTECTION)
+                    .build());
         ItemList.Augment_ForceField.set(
-            new ItemAugmentBase(
+            new ItemAugment.AugmentBuilder(
                 "augmentforcefield",
                 "Augment: Energy Grid Defense",
-                "Allows user to deploy a powerful forcefield which /n will block any damage for huge amounts of eu",
-                Collections.singletonList(MechArmorLoader.MechArmorChestplate),
-                Collections.singletonList(ForceFieldBehavior.INSTANCE)));
+                "Allows user to deploy a powerful forcefield which will block any damage for huge amounts of eu")
+                    .validArmors(Collections.singletonList(MechArmorLoader.MechArmorChestplate))
+                    .attachedBehaviors(Collections.singletonList(ForceFieldBehavior.INSTANCE))
+                    .category(CATEGORY_PROTECTION)
+                    .build());
         ItemList.Augment_OmniMovement.set(
-            new ItemAugmentBase(
+            new ItemAugment.AugmentBuilder(
                 "augmentomnimovement",
                 "Augment: Rotational Movement Adjusters",
-                "Allows user to walk at increased speed in all directions",
-                Collections.singletonList(MechArmorLoader.MechArmorBoots),
-                Collections.singletonList(OmniMovementBehavior.INSTANCE),
-                Collections.singletonList(SpeedBoostBehavior.MECH_ARMOR_INSTANCE),
-                Collections.emptyList()));
+                "Allows user to walk at increased speed in all directions")
+                    .validArmors(Collections.singletonList(MechArmorLoader.MechArmorBoots))
+                    .attachedBehaviors(Collections.singletonList(OmniMovementBehavior.INSTANCE))
+                    .requiredBehaviors(Collections.singletonList(SpeedBoostBehavior.MECH_ARMOR_INSTANCE))
+                    .category(CATEGORY_MOVEMENT)
+                    .build());
         ItemList.Augment_WaterBreathing.set(
-            new ItemAugmentBase(
+            new ItemAugment.AugmentBuilder(
                 "augmentwaterbreathing",
                 "Augment: Rebreather",
-                "Restore's the user's air if they run out underwater",
-                Collections.singletonList(MechArmorLoader.MechArmorHelmet),
-                Collections.singletonList(WaterBreathingBehavior.INSTANCE)));
+                "Restore's the user's air if they run out underwater")
+                    .validArmors(Collections.singletonList(MechArmorLoader.MechArmorHelmet))
+                    .attachedBehaviors(Collections.singletonList(WaterBreathingBehavior.INSTANCE))
+                    .category(CATEGORY_UTILITY)
+                    .build());
         ItemList.Augment_Teleporter.set(
-            new ItemAugmentBase(
+            new ItemAugment.AugmentBuilder(
                 "augmentteleporter",
                 "Augment: Personal Teleporter",
-                "Allows the user to teleport to set locations",
-                Collections.singletonList(MechArmorLoader.MechArmorLeggings),
-                Collections.singletonList(TeleporterBehavior.INSTANCE)));
+                "Allows the user to teleport to set locations")
+                    .validArmors(Collections.singletonList(MechArmorLoader.MechArmorLeggings))
+                    .attachedBehaviors(Collections.singletonList(TeleporterBehavior.INSTANCE))
+                    .category(CATEGORY_UTILITY)
+                    .build());
 
         ItemList.Neutron_Reflector.set(new ItemNeutronReflector("neutronreflector", "Iridium Neutron Reflector", 0));
         ItemList.Reactor_Coolant_He_1
