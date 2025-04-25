@@ -596,7 +596,7 @@ public class WerkstoffMaterialPool implements Runnable {
     public static final Werkstoff MuddyRareEarthBastnasiteSolution = new Werkstoff(
         new short[] { 205, 133, 63 },
         "Muddy Bastnasite Rare Earth Solution",
-        subscriptNumbers("????LaCeSm????"),
+        subscriptNumbers("??SmTiSi??"),
         new Werkstoff.Stats(),
         Werkstoff.Types.MIXTURE,
         new Werkstoff.GenerationFeatures().disable()
@@ -622,7 +622,7 @@ public class WerkstoffMaterialPool implements Runnable {
     public static final Werkstoff SteamCrackedBasnasiteSolution = new Werkstoff(
         new short[] { 205, 133, 63 },
         "Steam-Cracked Bastnasite Mud",
-        subscriptNumbers("????LaCeSm????"),
+        subscriptNumbers("??SmTiSi??"),
         new Werkstoff.Stats(),
         Werkstoff.Types.MIXTURE,
         new Werkstoff.GenerationFeatures().disable()
@@ -633,7 +633,7 @@ public class WerkstoffMaterialPool implements Runnable {
     public static final Werkstoff ConditionedBastnasiteMud = new Werkstoff(
         new short[] { 205, 133, 63 },
         "Conditioned Bastnasite Mud",
-        subscriptNumbers("????LaCeSm????"),
+        subscriptNumbers("??SmTiSi??"),
         new Werkstoff.Stats(),
         Werkstoff.Types.MIXTURE,
         new Werkstoff.GenerationFeatures().disable()
@@ -644,7 +644,7 @@ public class WerkstoffMaterialPool implements Runnable {
     public static final Werkstoff DiltedRareEarthBastnasiteMud = new Werkstoff(
         new short[] { 205, 133, 63 },
         "Diluted Bastnasite Mud",
-        subscriptNumbers("???LaCeSm???"),
+        subscriptNumbers("??SmTiSi??"),
         new Werkstoff.Stats(),
         Werkstoff.Types.MIXTURE,
         new Werkstoff.GenerationFeatures().disable()
@@ -655,7 +655,7 @@ public class WerkstoffMaterialPool implements Runnable {
     public static final Werkstoff FilteredBastnasiteMud = new Werkstoff(
         new short[] { 205, 133, 63 },
         "Filtered Bastnasite Mud",
-        subscriptNumbers("??LaCeSm??"),
+        subscriptNumbers("??SmLaCe??"),
         new Werkstoff.Stats(),
         Werkstoff.Types.MIXTURE,
         new Werkstoff.GenerationFeatures().disable()
@@ -666,7 +666,7 @@ public class WerkstoffMaterialPool implements Runnable {
     public static final Werkstoff BastnasiteRareEarthOxidePowder = new Werkstoff(
         new short[] { 205, 133, 63 },
         "Bastnasite Rare Earth Oxides",
-        subscriptNumbers("??LaCeSm??"),
+        subscriptNumbers("??SmLaCe??"),
         new Werkstoff.Stats(),
         Werkstoff.Types.MIXTURE,
         new Werkstoff.GenerationFeatures().disable()
@@ -677,7 +677,7 @@ public class WerkstoffMaterialPool implements Runnable {
     public static final Werkstoff LeachedBastnasiteRareEarthOxides = new Werkstoff(
         new short[] { 205, 133, 63 },
         "Acid-Leached Bastnasite Rare Earth Oxides",
-        subscriptNumbers("??LaCeSm??"),
+        subscriptNumbers("??SmLaCe??"),
         new Werkstoff.Stats(),
         Werkstoff.Types.MIXTURE,
         new Werkstoff.GenerationFeatures().disable()
@@ -702,7 +702,7 @@ public class WerkstoffMaterialPool implements Runnable {
     public static final Werkstoff RoastedRareEarthOxides = new Werkstoff(
         new short[] { 160, 82, 45 },
         "Roasted Rare Earth Oxides",
-        subscriptNumbers("??LaCeSm??"),
+        subscriptNumbers("??SmLaCe??"),
         new Werkstoff.Stats(),
         Werkstoff.Types.MIXTURE,
         new Werkstoff.GenerationFeatures().disable()
@@ -713,7 +713,7 @@ public class WerkstoffMaterialPool implements Runnable {
     public static final Werkstoff WetRareEarthOxides = new Werkstoff(
         new short[] { 160, 82, 49 },
         "Wet Rare Earth Oxides",
-        subscriptNumbers("??LaCeSm??"),
+        subscriptNumbers("??SmLaCe??"),
         new Werkstoff.Stats(),
         Werkstoff.Types.MIXTURE,
         new Werkstoff.GenerationFeatures().disable()
@@ -724,7 +724,7 @@ public class WerkstoffMaterialPool implements Runnable {
     public static final Werkstoff CeriumOxidisedRareEarthOxides = new Werkstoff(
         new short[] { 160, 82, 49 },
         "Cerium-Oxidised Rare Earth Oxides",
-        subscriptNumbers("??LaCeSm??"),
+        subscriptNumbers("??SmLaCe??"),
         new Werkstoff.Stats(),
         Werkstoff.Types.MIXTURE,
         new Werkstoff.GenerationFeatures().disable()
@@ -735,7 +735,7 @@ public class WerkstoffMaterialPool implements Runnable {
     public static final Werkstoff BastnasiteRarerEarthOxides = new Werkstoff(
         new short[] { 160, 82, 49 },
         "Bastnasite Rarer Earth Oxides",
-        subscriptNumbers("??LaSm??"),
+        subscriptNumbers("??SmLa??"),
         new Werkstoff.Stats(),
         Werkstoff.Types.MIXTURE,
         new Werkstoff.GenerationFeatures().disable()
@@ -746,7 +746,7 @@ public class WerkstoffMaterialPool implements Runnable {
     public static final Werkstoff NitratedBastnasiteRarerEarthOxides = new Werkstoff(
         new short[] { 160, 90, 60 },
         "Nitrogenated Bastnasite Rarer Earth Oxides",
-        subscriptNumbers("??LaSm??"),
+        subscriptNumbers("??SmLa??"),
         new Werkstoff.Stats(),
         Werkstoff.Types.MIXTURE,
         new Werkstoff.GenerationFeatures().disable()
@@ -757,7 +757,7 @@ public class WerkstoffMaterialPool implements Runnable {
     public static final Werkstoff SaturatedBastnasiteRarerEarthOxides = new Werkstoff(
         new short[] { 170, 90, 60 },
         "Bastnasite Rarer Earth Oxide Suspension",
-        subscriptNumbers("??LaSm??"),
+        subscriptNumbers("??SmLa??"),
         new Werkstoff.Stats(),
         Werkstoff.Types.MIXTURE,
         new Werkstoff.GenerationFeatures().disable()
