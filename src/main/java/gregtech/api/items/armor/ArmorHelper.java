@@ -7,6 +7,11 @@ import ic2.api.item.IElectricItem;
 
 public class ArmorHelper {
 
+    public static final String PROTECTION_SLOTS_KEY = "ProtectionSlots";
+    public static final String MOVEMENT_SLOTS_KEY = "MovementSlots";
+    public static final String UTILITY_SLOTS_KEY = "UtilitySlots";
+    public static final String PRISMATIC_SLOTS_KEY = "PrismaticSlots";
+
     public static final String NIGHT_VISION_KEY = "NightVision";
     public static final String CREATIVE_FLIGHT_KEY = "Flight";
     public static final String INERTIA_CANCELING_KEY = "InertiaCanceling";

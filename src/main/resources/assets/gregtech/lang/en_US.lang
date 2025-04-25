@@ -900,9 +900,11 @@ GT5U.armor.tooltip.requires=Requires Effect:
 GT5U.armor.tooltip.incompatible=Incompatible With:
 GT5U.armor.tooltip.stackable= (Stackable)
 GT5U.armor.tooltip.category=Category: %s
-GT5U.armor.tooltip.protection=Protection
-GT5U.armor.tooltip.movement=Movement
-GT5U.armor.tooltip.utility=Utility
+GT5U.armor.tooltip.slots=Armor Slots:
+GT5U.armor.tooltip.protection=§6Protection§r
+GT5U.armor.tooltip.movement=§aMovement§r
+GT5U.armor.tooltip.utility=§dUtility§r
+GT5U.armor.tooltip.prismatic=§6Pri§asma§dtic§r
 
 gt.behaviour.paintspray.infinite.gui.header=Select a Color
 gt.behaviour.paintspray.infinite.gui.lock_error=§eSpray can is §clocked§e! §bCtrl middle-click to unlock.

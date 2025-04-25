@@ -18,7 +18,7 @@ public class ItemAugment extends ItemAugmentAbstract {
     public static final int CATEGORY_MOVEMENT = 2;
     public static final int CATEGORY_UTILITY = 3;
 
-    private final int category;
+    public final int category;
 
     public ItemAugment(AugmentBuilder builder) {
         super(
@@ -35,13 +35,13 @@ public class ItemAugment extends ItemAugmentAbstract {
 
     @Override
     protected void addAdditionalToolTips(List<String> aList, ItemStack aStack, EntityPlayer aPlayer) {
+        aList.add(getCategoryText(category));
         if (!validArmors.isEmpty()) {
             aList.add(EnumChatFormatting.WHITE + StatCollector.translateToLocal("GT5U.armor.tooltip.applicable"));
             for (MechArmorBase armor : validArmors)
                 aList.add("-" + StatCollector.translateToLocal(armor.getUnlocalizedName() + ".name"));
         }
         super.addAdditionalToolTips(aList, aStack, aPlayer);
-        aList.add(getCategoryText(category));
     }
 
     private static String getCategoryText(int c) {
@@ -49,17 +49,17 @@ public class ItemAugment extends ItemAugmentAbstract {
             case CATEGORY_PROTECTION -> {
                 return StatCollector.translateToLocalFormatted(
                     "GT5U.armor.tooltip.category",
-                    EnumChatFormatting.GOLD + StatCollector.translateToLocal("GT5U.armor.tooltip.protection"));
+                    StatCollector.translateToLocal("GT5U.armor.tooltip.protection"));
             }
             case CATEGORY_MOVEMENT -> {
                 return StatCollector.translateToLocalFormatted(
                     "GT5U.armor.tooltip.category",
-                    EnumChatFormatting.BLUE + StatCollector.translateToLocal("GT5U.armor.tooltip.movement"));
+                    StatCollector.translateToLocal("GT5U.armor.tooltip.movement"));
             }
             case CATEGORY_UTILITY -> {
                 return StatCollector.translateToLocalFormatted(
                     "GT5U.armor.tooltip.category",
-                    EnumChatFormatting.LIGHT_PURPLE + StatCollector.translateToLocal("GT5U.armor.tooltip.utility"));
+                    StatCollector.translateToLocal("GT5U.armor.tooltip.utility"));
             }
             default -> {
                 return "";

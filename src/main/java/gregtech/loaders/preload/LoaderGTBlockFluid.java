@@ -50,9 +50,11 @@ import gregtech.api.items.BlockLongDistancePipe;
 import gregtech.api.items.GTGenericItem;
 import gregtech.api.items.ItemAugment;
 import gregtech.api.items.ItemAugmentCore;
+import gregtech.api.items.ItemAugmentFrame;
 import gregtech.api.items.ItemBreederCell;
 import gregtech.api.items.ItemCoolantCellIC;
 import gregtech.api.items.ItemRadioactiveCellIC;
+import gregtech.api.items.armor.MechArmorAugmentRegistries;
 import gregtech.api.items.armor.behaviors.*;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.metatileentity.BaseMetaTileEntity;
@@ -415,6 +417,36 @@ public class LoaderGTBlockFluid implements Runnable {
                     .attachedBehaviors(Collections.singletonList(TeleporterBehavior.INSTANCE))
                     .category(CATEGORY_UTILITY)
                     .build());
+
+        // Mechanical Armor Frames
+        ItemList.Armor_Frame_Iron.set(
+            new ItemAugmentFrame(
+                "armorframeiron",
+                "Armor Frame: Iron",
+                "",
+                Collections.emptyList(),
+                MechArmorAugmentRegistries.Frames.Iron));
+        ItemList.Armor_Frame_Titanium.set(
+            new ItemAugmentFrame(
+                "armorframetitanium",
+                "Armor Frame: Titanium",
+                "",
+                Collections.emptyList(),
+                MechArmorAugmentRegistries.Frames.Titanium));
+        ItemList.Armor_Frame_Infinity.set(
+            new ItemAugmentFrame(
+                "armorframeinfinity",
+                "Armor Frame: Infinity",
+                "",
+                Collections.emptyList(),
+                MechArmorAugmentRegistries.Frames.Infinity));
+        ItemList.Armor_Frame_Gold.set(
+            new ItemAugmentFrame(
+                "armorframegold",
+                "Armor Frame: Gold",
+                "",
+                Collections.emptyList(),
+                MechArmorAugmentRegistries.Frames.Gold));
 
         ItemList.Neutron_Reflector.set(new ItemNeutronReflector("neutronreflector", "Iridium Neutron Reflector", 0));
         ItemList.Reactor_Coolant_He_1

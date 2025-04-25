@@ -2669,10 +2669,17 @@ public enum ItemList implements IItemContainer {
     Mechanical_Leggings,
     Mechanical_Boots,
     ModificationTable,
+
     Armor_Core_T1,
     Armor_Core_T2,
     Armor_Core_T3,
     Armor_Core_T4,
+
+    Armor_Frame_Iron,
+    Armor_Frame_Titanium,
+    Armor_Frame_Infinity,
+    Armor_Frame_Gold,
+
     Augment_NightVision,
     Augment_CreativeFlight,
     Augment_Jetpack,

@@ -5,6 +5,7 @@ import static gregtech.api.enums.Dyes.dyeLightBlue;
 import static gregtech.api.enums.Dyes.dyeMagenta;
 import static gregtech.api.enums.Dyes.dyeRed;
 import static gregtech.api.enums.Dyes.dyeWhite;
+import static gregtech.api.items.armor.MechArmorAugmentRegistries.framesMap;
 import static gregtech.api.util.GTUtility.getOrCreateNbtCompound;
 
 import net.minecraft.client.Minecraft;
@@ -58,16 +59,12 @@ public class MechanicalArmorRenderer implements IItemRenderer {
         }
 
         int coreTier = 0;
-        String frame = "None";
+        int frame = 0;
         short frameR = -1, frameG = -1, frameB = -1;
 
         NBTTagCompound tag = getOrCreateNbtCompound(item);
         coreTier = tag.getInteger("core");
-        frame = tag.getString("frame");
-
-        frameR = tag.getShort("frameR");
-        frameG = tag.getShort("frameG");
-        frameB = tag.getShort("frameB");
+        frame = tag.getInteger("frame");
 
         GL11.glEnable(GL11.GL_BLEND);
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
@@ -75,8 +72,10 @@ public class MechanicalArmorRenderer implements IItemRenderer {
 
         GTRenderUtil.renderItem(type, baseLayer);
 
-        if (!frame.equals("None")) {
-            GL11.glColor4f(frameR / 255.0F, frameG / 255.0F, frameB / 255.0F, 1);
+        if (frame != 0) {
+            short[] frameColor = framesMap.get(frame).color;
+
+            GL11.glColor4f(frameColor[0] / 255.0F, frameColor[1] / 255.0F, frameColor[2] / 255.0F, 1);
             GTRenderUtil.renderItem(type, frameLayer);
         }
 
