@@ -101,7 +101,7 @@ public class MTEModificationTable extends MTEBasicMachine implements IAddUIWidge
 
         if (baseAugment instanceof ItemAugmentFrame frame) {
             armorItem.getTagCompound()
-                .setInteger("frame", frame.frameData.id);
+                .setString("frame", frame.frameData.id);
         }
 
         if (baseAugment instanceof ItemAugmentCore core) {
@@ -193,12 +193,11 @@ public class MTEModificationTable extends MTEBasicMachine implements IAddUIWidge
 
                             list.setEnabled(true);
 
-                            int frame = itemStack.getTagCompound()
-                                .getInteger("frame");
+                            String frame = itemStack.getTagCompound().getString("frame");
 
                             for (ItemSlot augSlot : augSlots) augSlot.setEnabled(false);
 
-                            if (frame != 0) {
+                            if (!frame.isEmpty()) {
                                 Frames frameData = framesMap.get(frame);
                                 for (int i = 0; i < frameData.protectionSlots; i++) augSlots[i].setEnabled(true);
                                 for (int i = 0; i < frameData.movementSlots; i++)

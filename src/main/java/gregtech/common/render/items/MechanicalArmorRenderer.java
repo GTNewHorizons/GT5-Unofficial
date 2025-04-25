@@ -59,12 +59,12 @@ public class MechanicalArmorRenderer implements IItemRenderer {
         }
 
         int coreTier = 0;
-        int frame = 0;
+        String frame;
         short frameR = -1, frameG = -1, frameB = -1;
 
         NBTTagCompound tag = getOrCreateNbtCompound(item);
         coreTier = tag.getInteger("core");
-        frame = tag.getInteger("frame");
+        frame = tag.getString("frame");
 
         GL11.glEnable(GL11.GL_BLEND);
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
@@ -72,9 +72,8 @@ public class MechanicalArmorRenderer implements IItemRenderer {
 
         GTRenderUtil.renderItem(type, baseLayer);
 
-        if (frame != 0) {
+        if (!frame.isEmpty() && framesMap.containsKey(frame)) {
             short[] frameColor = framesMap.get(frame).color;
-
             GL11.glColor4f(frameColor[0] / 255.0F, frameColor[1] / 255.0F, frameColor[2] / 255.0F, 1);
             GTRenderUtil.renderItem(type, frameLayer);
         }
