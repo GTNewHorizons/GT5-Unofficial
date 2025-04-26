@@ -176,11 +176,11 @@ public class MechArmorBase extends ItemArmor implements IKeyPressedListener, ISp
     public void addInformation(ItemStack aStack, EntityPlayer aPlayer, List<String> aList, boolean aF3_H) {
         NBTTagCompound tag = aStack.getTagCompound();
         if (tag != null) {
-            if (tag.hasKey(MECH_CORE_KEY)) {
-                aList.add("Installed Core: " + tag.getString(MECH_CORE_KEY));
-            }
             if (tag.hasKey(MECH_FRAME_KEY)) {
-                aList.add("Frame: " + tag.getString(MECH_FRAME_KEY));
+                aList.add("Armor Frame: " + tag.getString(MECH_FRAME_KEY));
+            }
+            if (tag.hasKey(MECH_CORE_KEY)) {
+                aList.add("Energy Core: " + tag.getString(MECH_CORE_KEY));
             }
             // todo armor toughness tooltip
             for (IArmorBehavior behavior : behaviors) {

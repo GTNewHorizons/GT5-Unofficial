@@ -194,7 +194,7 @@ public class MTEModificationTable extends MTEBasicMachine {
                 if (oldItem instanceof ItemAugmentAbstract augmentItem) {
                     categoryTag.removeTag(Integer.toString(column));
                     augmentItem.getAttachedBehaviors()
-                        .forEach(behavior -> armorTag.removeTag(behavior.getMainNBTTag()));
+                        .forEach(behavior -> behavior.removeBehaviorNBT(armorTag));
                 }
             }
         }

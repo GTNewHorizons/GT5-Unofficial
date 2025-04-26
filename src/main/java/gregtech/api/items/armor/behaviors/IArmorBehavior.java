@@ -72,6 +72,13 @@ public interface IArmorBehavior {
     default void addBehaviorNBT(@NotNull NBTTagCompound tag) {}
 
     /**
+     * Called when removing this behavior's NBT tag from an NBTTagCompound
+     */
+    default void removeBehaviorNBT(@NotNull NBTTagCompound tag) {
+        tag.removeTag(getMainNBTTag());
+    }
+
+    /**
      * Return the primary NBT tag associated with this behavior
      */
     default String getMainNBTTag() {
