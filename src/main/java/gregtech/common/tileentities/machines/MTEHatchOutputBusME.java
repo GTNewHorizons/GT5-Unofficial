@@ -123,9 +123,37 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus implements IPowerChan
     }
 
     @Override
-    public boolean storeAll(ItemStack aStack) {
-        aStack.stackSize = store(aStack);
-        return aStack.stackSize == 0;
+    public boolean storePartial(ItemStack stack, boolean simulate) {
+        if (!lockedItems.isEmpty()) {
+            boolean isOk = false;
+
+            for (ItemStack lockedItem : lockedItems) {
+                if (lockedItem.isItemEqual(stack)) {
+                    isOk = true;
+
+                    break;
+                }
+            }
+
+            if (!isOk) {
+                return false;
+            }
+        }
+
+        // Always allow insertion on the same tick so we can output the entire recipe
+        if (canAcceptItem() || (lastInputTick == tickCounter)) {
+            if (!simulate) {
+                itemCache.add(
+                    AEApi.instance()
+                        .storage()
+                        .createItemStack(stack));
+                lastInputTick = tickCounter;
+            }
+            stack.stackSize = 0;
+            return true;
+        }
+
+        return false;
     }
 
     protected long getCachedAmount() {
@@ -149,41 +177,6 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus implements IPowerChan
      */
     public boolean canAcceptItem() {
         return getCachedAmount() < getCacheCapacity();
-    }
-
-    /**
-     * Attempt to store items in connected ME network. Returns how many items did not fit (if the network was down e.g.)
-     *
-     * @param stack input stack
-     * @return amount of items left over
-     */
-    public int store(final ItemStack stack) {
-        if (!lockedItems.isEmpty()) {
-            boolean isOk = false;
-
-            for (ItemStack lockedItem : lockedItems) {
-                if (lockedItem.isItemEqual(stack)) {
-                    isOk = true;
-
-                    break;
-                }
-            }
-
-            if (!isOk) {
-                return stack.stackSize;
-            }
-        }
-
-        // Always allow insertion on the same tick so we can output the entire recipe
-        if (canAcceptItem() || (lastInputTick == tickCounter)) {
-            itemCache.add(
-                AEApi.instance()
-                    .storage()
-                    .createItemStack(stack));
-            lastInputTick = tickCounter;
-            return 0;
-        }
-        return stack.stackSize;
     }
 
     protected BaseActionSource getRequest() {
@@ -219,14 +212,15 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus implements IPowerChan
     }
 
     @Override
-    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
+        ItemStack aTool) {
         if (!getBaseMetaTileEntity().getCoverAtSide(side)
             .isGUIClickable()) return;
     }
 
     @Override
     public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
-        float aX, float aY, float aZ) {
+        float aX, float aY, float aZ, ItemStack aTool) {
         additionalConnection = !additionalConnection;
         updateValidGridProxySides();
         aPlayer.addChatComponentMessage(
