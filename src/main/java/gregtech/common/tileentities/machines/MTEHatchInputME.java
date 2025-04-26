@@ -335,7 +335,7 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
 
     @Override
     public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
-        float aX, float aY, float aZ) {
+        float aX, float aY, float aZ, ItemStack aTool) {
         additionalConnection = !additionalConnection;
         updateValidGridProxySides();
         aPlayer.addChatComponentMessage(
@@ -491,6 +491,45 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
         return shadowStoredFluids[index];
     }
 
+    /**
+     * Gets the first non-null shadow fluid stack.
+     *
+     * @return The first shadow fluid stack, or null if this doesn't exist.
+     */
+    public FluidStack getFirstShadowFluidStack() {
+        return getFirstShadowFluidStack(false);
+    }
+
+    /**
+     * Gets the first non-null shadow fluid stack.
+     * 
+     * @param hasToMatchGhost Whether the first fluid stack returned has to match the first non-null ghost stack
+     * @return The first shadow fluid stack, or null if this doesn't exist.
+     */
+    public FluidStack getFirstShadowFluidStack(boolean hasToMatchGhost) {
+        FluidStack fluidStack;
+        FluidStack lockedSlot = null;
+        if (hasToMatchGhost) {
+            byte slotToCheck = 0;
+            do {
+                lockedSlot = storedFluids[slotToCheck];
+                slotToCheck++;
+            } while (lockedSlot == null && slotToCheck < storedFluids.length);
+            if (lockedSlot == null) return null;
+        }
+        byte slotToCheck = 0;
+        do {
+            fluidStack = getShadowFluidStack(slotToCheck);
+            slotToCheck++;
+        } while ((fluidStack == null || !(hasToMatchGhost && lockedSlot.getFluid() == fluidStack.getFluid()))
+            && slotToCheck < getShadowStoredFluidsSize());
+        return fluidStack;
+    }
+
+    public int getShadowStoredFluidsSize() {
+        return shadowStoredFluids.length;
+    }
+
     public int getFluidSlot(FluidStack fluidStack) {
         if (fluidStack == null) return -1;
 
@@ -581,7 +620,8 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
     }
 
     @Override
-    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
+        ItemStack aTool) {
         if (!autoPullAvailable) {
             return;
         }
