@@ -1,36 +1,40 @@
 package gregtech.common.tileentities.machines.basic;
 
-import static gregtech.api.items.ItemAugment.CATEGORY_MOVEMENT;
-import static gregtech.api.items.ItemAugment.CATEGORY_PROTECTION;
-import static gregtech.api.items.ItemAugment.CATEGORY_UTILITY;
+import static gregtech.api.items.ItemAugment.*;
 import static gregtech.api.items.armor.MechArmorAugmentRegistries.LARGEST_FRAME;
 import static gregtech.api.items.armor.MechArmorAugmentRegistries.framesMap;
 import static gregtech.api.modularui2.GTGuiTextures.OVERLAY_BUTTON_CHECKMARK;
 import static gregtech.api.util.GTUtility.getOrCreateNbtCompound;
 
+import java.util.Map;
+import java.util.function.Function;
+import java.util.function.Predicate;
+
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 
-import com.cleanroommc.modularui.api.widget.IWidget;
+import org.jetbrains.annotations.NotNull;
+
+import com.cleanroommc.modularui.api.drawable.IDrawable;
 import com.cleanroommc.modularui.drawable.ItemDrawable;
 import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.utils.item.IItemHandler;
 import com.cleanroommc.modularui.utils.item.IItemHandlerModifiable;
 import com.cleanroommc.modularui.utils.item.ItemStackHandler;
+import com.cleanroommc.modularui.value.sync.EnumSyncValue;
 import com.cleanroommc.modularui.value.sync.InteractionSyncHandler;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
-import com.cleanroommc.modularui.widget.WidgetTree;
+import com.cleanroommc.modularui.widget.ParentWidget;
 import com.cleanroommc.modularui.widgets.ButtonWidget;
-import com.cleanroommc.modularui.widgets.CategoryList;
 import com.cleanroommc.modularui.widgets.ItemSlot;
-import com.cleanroommc.modularui.widgets.ListWidget;
 import com.cleanroommc.modularui.widgets.slot.ModularSlot;
+import com.google.common.collect.ImmutableMap;
 
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
-import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.items.ItemAugment;
 import gregtech.api.items.ItemAugmentAbstract;
@@ -40,10 +44,53 @@ import gregtech.api.items.armor.ArmorHelper;
 import gregtech.api.items.armor.MechArmorAugmentRegistries.Frames;
 import gregtech.api.items.armor.behaviors.IArmorBehavior;
 import gregtech.api.metatileentity.implementations.MTEBasicMachine;
+import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.modularui2.GTGuis;
 import gregtech.common.items.armor.MechArmorBase;
 
-public class MTEModificationTable extends MTEBasicMachine implements IAddUIWidgets {
+public class MTEModificationTable extends MTEBasicMachine {
+
+    private static final int AUGMENT_SLOTS_COUNT = LARGEST_FRAME * 4;
+    private static final Map<Integer, IDrawable> CATEGORY_SLOT_TEXTURES = ImmutableMap.of(
+        CATEGORY_PROTECTION,
+        new ItemDrawable(new ItemStack(Items.iron_chestplate)),
+        CATEGORY_MOVEMENT,
+        new ItemDrawable(new ItemStack(Items.sugar)),
+        CATEGORY_UTILITY,
+        new ItemDrawable(new ItemStack(Items.wheat_seeds)),
+        CATEGORY_PRISMATIC,
+        new ItemDrawable(new ItemStack(Items.nether_star)));
+    private static final Map<Integer, Function<Frames, Integer>> CATEGORY_SLOT_COUNTS = ImmutableMap.of(
+        CATEGORY_PROTECTION,
+        Frames::getProtectionSlots,
+        CATEGORY_MOVEMENT,
+        Frames::getMovementSlots,
+        CATEGORY_UTILITY,
+        Frames::getUtilitySlots,
+        CATEGORY_PRISMATIC,
+        Frames::getPrismaticSlots);
+
+    private @NotNull Frames frame = Frames.None;
+
+    @Override
+    public void saveNBTData(NBTTagCompound aNBT) {
+        super.saveNBTData(aNBT);
+        ItemStack armorStack = armorSlotHandler.getStackInSlot(0);
+        if (armorStack != null) {
+            aNBT.setTag("armor", armorStack.writeToNBT(new NBTTagCompound()));
+        }
+    }
+
+    @Override
+    public void loadNBTData(NBTTagCompound aNBT) {
+        super.loadNBTData(aNBT);
+        if (aNBT.hasKey("armor")) {
+            NBTBase armorNbt = aNBT.getTag("armor");
+            if (armorNbt instanceof NBTTagCompound armorTag) {
+                armorSlotHandler.setStackInSlot(0, ItemStack.loadItemStackFromNBT(armorTag));
+            }
+        }
+    }
 
     public MTEModificationTable(int aID, String aName, String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional, aTier, 1, "", 1, 1);
@@ -53,17 +100,41 @@ public class MTEModificationTable extends MTEBasicMachine implements IAddUIWidge
         super(aName, aTier, 1, aDescription, aTextures, 2, 0);
     }
 
+    public @NotNull Frames getFrame() {
+        return frame;
+    }
+
+    public void setFrame(@NotNull Frames frame) {
+        this.frame = frame;
+    }
+
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new MTEModificationTable(mName, mTier, mDescriptionArray, mTextures);
     }
 
-    private ItemStackHandler inputHandler = new ItemStackHandler(2);
-
-    private void updateAugmentSlot(ItemStack newItem, int category) {
+    private void updateAugmentSlot(ItemStack newItem, int category, int column) {
         ItemStack armorItem = armorSlotHandler.getStackInSlot(0);
-        if (armorItem == null || newItem == null) return;
-
+        if (armorItem == null) return;
+        ItemStack updatedArmorItem = armorItem.copy();
+        NBTTagCompound armorTag = getOrCreateNbtCompound(armorItem);
+        if (!armorTag.hasKey("augments")) {
+            NBTTagCompound augmentsTag = new NBTTagCompound();
+            augmentsTag.setTag("1", new NBTTagCompound());
+            augmentsTag.setTag("2", new NBTTagCompound());
+            augmentsTag.setTag("3", new NBTTagCompound());
+            augmentsTag.setTag("4", new NBTTagCompound());
+            armorTag.setTag("augments", augmentsTag);
+        }
+        NBTTagCompound categoryTag = armorTag.getCompoundTag("augments")
+            .getCompoundTag(Integer.toString(category));
+        if (newItem != null) {
+            categoryTag.setTag(Integer.toString(column), newItem.writeToNBT(new NBTTagCompound()));
+        } else {
+            categoryTag.removeTag(Integer.toString(column));
+        }
+        updatedArmorItem.setTagCompound(armorTag);
+        armorSlotHandler.setStackInSlot(0, updatedArmorItem);
     }
 
     private boolean applyAugment(ItemStack armorItem, ItemStack modItem) {
@@ -118,7 +189,7 @@ public class MTEModificationTable extends MTEBasicMachine implements IAddUIWidge
     LimitingItemStackHandler armorSlotHandler = new LimitingItemStackHandler(1, 1);
 
     // Arbitrary slot number, could be raised
-    LimitingItemStackHandler augmentsSlotHandler = new LimitingItemStackHandler(21, 1);
+    LimitingItemStackHandler augmentsSlotHandler = new LimitingItemStackHandler(AUGMENT_SLOTS_COUNT, 1);
 
     @Override
     protected boolean forceUseMui2() {
@@ -127,92 +198,38 @@ public class MTEModificationTable extends MTEBasicMachine implements IAddUIWidge
 
     @Override
     public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager) {
+        EnumSyncValue<Frames> frameSyncHandler = new EnumSyncValue<>(Frames.class, this::getFrame, this::setFrame);
+        syncManager.syncValue("frame", frameSyncHandler);
+
         ModularPanel panel = GTGuis.mteTemplatePanelBuilder(this, data, syncManager)
             .build();
 
         syncManager.registerSlotGroup("armor", 1);
         syncManager.registerSlotGroup("augments", LARGEST_FRAME);
 
-        ListWidget<IWidget, CategoryList.Root> list = new ListWidget<>();
-
-        list.pos(50, 0);
-        list.size(70, 70);
-
-        ItemSlot[] augSlots = new ItemSlot[LARGEST_FRAME * 4];
+        ParentWidget<?> slots = new ParentWidget<>().pos(50, 4)
+            .size(18, 18);
 
         for (int i = 0; i < LARGEST_FRAME; i++) {
-
-            ItemSlot protectionSlot = new ItemSlot().slot(
-                new ModularSlot(augmentsSlotHandler, i).slotGroup("augments")
-                    .filter(
-                        (x) -> x.getItem() instanceof ItemAugment augment && augment.category == CATEGORY_PROTECTION)
-                    .changeListener((stack, i1, i2, i3) -> updateAugmentSlot(stack, CATEGORY_PROTECTION)))
-                .background(new ItemDrawable(new ItemStack(Items.iron_chestplate)));
-
-            ItemSlot movementSlot = new ItemSlot().slot(
-                new ModularSlot(augmentsSlotHandler, i + LARGEST_FRAME).slotGroup("augments")
-                    .filter((x) -> x.getItem() instanceof ItemAugment augment && augment.category == CATEGORY_MOVEMENT))
-                .background(new ItemDrawable(new ItemStack(Items.sugar)));
-
-            ItemSlot utilitySlot = new ItemSlot().slot(
-                new ModularSlot(augmentsSlotHandler, i + (LARGEST_FRAME * 2)).slotGroup("augments")
-                    .filter((x) -> x.getItem() instanceof ItemAugment augment && augment.category == CATEGORY_UTILITY))
-                .background(new ItemDrawable(new ItemStack(Items.wheat_seeds)));
-
-            ItemSlot prismaticSlot = new ItemSlot()
-                .slot(
-                    new ModularSlot(augmentsSlotHandler, i + (LARGEST_FRAME * 3)).slotGroup("augments")
-                        .filter((x) -> x.getItem() instanceof ItemAugment))
-                .background(new ItemDrawable(new ItemStack(Items.nether_star)));
-
-            protectionSlot.setEnabled(false);
-            movementSlot.setEnabled(false);
-            utilitySlot.setEnabled(false);
-            prismaticSlot.setEnabled(false);
-
-            augSlots[i] = protectionSlot;
-            augSlots[i + LARGEST_FRAME] = movementSlot;
-            augSlots[i + (LARGEST_FRAME * 2)] = utilitySlot;
-            augSlots[i + (LARGEST_FRAME * 3)] = prismaticSlot;
-
-            list.child(protectionSlot);
-            list.child(movementSlot);
-            list.child(utilitySlot);
-            list.child(prismaticSlot);
+            slots.child(buildAugmentSlot(i, CATEGORY_PROTECTION));
+            slots.child(buildAugmentSlot(i, CATEGORY_MOVEMENT));
+            slots.child(buildAugmentSlot(i, CATEGORY_UTILITY));
+            slots.child(buildAugmentSlot(i, CATEGORY_PRISMATIC));
         }
+
         panel.child(
             new ItemSlot().slot(
                 new ModularSlot(armorSlotHandler, 0).slotGroup("armor")
                     .filter((x) -> x.getItem() instanceof MechArmorBase)
-                    .changeListener((itemStack, i2, i3, i4) -> {
-                        if (syncManager.isClient()) {
-                            if (itemStack == null) {
-                                list.setEnabled(false);
-                                return;
-                            }
-
-                            list.setEnabled(true);
-
-                            String frame = itemStack.getTagCompound().getString("frame");
-
-                            for (ItemSlot augSlot : augSlots) augSlot.setEnabled(false);
-
-                            if (!frame.isEmpty()) {
-                                Frames frameData = framesMap.get(frame);
-                                for (int i = 0; i < frameData.protectionSlots; i++) augSlots[i].setEnabled(true);
-                                for (int i = 0; i < frameData.movementSlots; i++)
-                                    augSlots[i + LARGEST_FRAME].setEnabled(true);
-                                for (int i = 0; i < frameData.utilitySlots; i++)
-                                    augSlots[i + (LARGEST_FRAME * 2)].setEnabled(true);
-                                for (int i = 0; i < frameData.prismaticSlots; i++)
-                                    augSlots[i + (LARGEST_FRAME * 3)].setEnabled(true);
-                            }
-
-                            WidgetTree.resize(list);
+                    .changeListener((newItem, onlyAmountChanged, client, init) -> {
+                        Frames newFrame = getFrameFromItemStack(newItem);
+                        if ((!client || init) && newFrame != getFrame()) {
+                            displayInstalledAugments();
                         }
+                        setFrame(newFrame);
                     }))
                 .pos(4, 21)
-                .background(new ItemDrawable(new ItemStack(Items.iron_helmet))));
+                .background(GTGuiTextures.SLOT_ITEM_STANDARD, new ItemDrawable(new ItemStack(Items.iron_helmet))));
 
         panel.child(
             new ButtonWidget<>().pos(-20, 61)
@@ -224,9 +241,76 @@ public class MTEModificationTable extends MTEBasicMachine implements IAddUIWidge
                 .overlay(OVERLAY_BUTTON_CHECKMARK)
                 .size(16, 16)
                 .addTooltipLine("Submit"));
-        panel.child(list);
+        panel.child(slots);
 
         return panel;
+    }
+
+    private ItemSlot buildAugmentSlot(int column, int category) {
+        int row = category - 1;
+        Function<Frames, Integer> categorySlotCount = CATEGORY_SLOT_COUNTS.get(category);
+        return new ItemSlot().slot(
+            new ModularSlot(augmentsSlotHandler, column + LARGEST_FRAME * row).slotGroup("augments")
+                .filter(isAugmentOfCategory(category))
+                .changeListener((newItem, onlyAmountChanged, client, init) -> {
+                    if ((!client || init)) {
+                        updateAugmentSlot(newItem, category, column);
+                    }
+                }))
+            .setEnabledIf(slot -> categorySlotCount.apply(frame) >= column + 1)
+            .background(GTGuiTextures.SLOT_ITEM_STANDARD, CATEGORY_SLOT_TEXTURES.get(category))
+            .posRel(column, row);
+    }
+
+    private Frames getFrameFromItemStack(ItemStack itemStack) {
+        if (itemStack == null) {
+            return Frames.None;
+        }
+        String frameId = itemStack.getTagCompound()
+            .getString("frame");
+        Frames frames = framesMap.get(frameId);
+        if (frames == null) {
+            return Frames.None;
+        }
+        return frames;
+    }
+
+    private static @NotNull Predicate<ItemStack> isAugmentOfCategory(int category) {
+        return (x) -> x.getItem() instanceof ItemAugment augment && augment.category == category
+            || category == CATEGORY_PRISMATIC;
+    }
+
+    private void displayInstalledAugments() {
+        ItemStack armorStack = armorSlotHandler.getStackInSlot(0);
+        for (int i = 0; i < AUGMENT_SLOTS_COUNT; i++) {
+            augmentsSlotHandler.setStackInSlot(
+                i,
+                getAugmentStackInCategoryAndColumn(armorStack, (i / LARGEST_FRAME) + 1, i % LARGEST_FRAME));
+        }
+    }
+
+    private ItemStack getAugmentStackInCategoryAndColumn(ItemStack armorStack, int category, int column) {
+        if (armorStack == null) {
+            return null;
+        }
+        NBTTagCompound armorTag = armorStack.getTagCompound();
+        if (armorTag == null) {
+            return null;
+        }
+        NBTTagCompound augmentTag = armorStack.getTagCompound()
+            .getCompoundTag("augments");
+        if (augmentTag == null) {
+            return null;
+        }
+        NBTTagCompound categoryTag = augmentTag.getCompoundTag(Integer.toString(category));
+        if (categoryTag == null) {
+            return null;
+        }
+        NBTTagCompound columnTag = categoryTag.getCompoundTag(Integer.toString(column));
+        if (columnTag == null) {
+            return null;
+        }
+        return ItemStack.loadItemStackFromNBT(columnTag);
     }
 
     private static class LimitingItemStackHandler extends ItemStackHandler

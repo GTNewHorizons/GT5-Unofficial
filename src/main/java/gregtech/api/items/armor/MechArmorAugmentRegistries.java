@@ -12,6 +12,7 @@ public class MechArmorAugmentRegistries {
 
     public enum Frames {
 
+        None(0, 0, 0, 0, null, new short[] { 0, 0, 0, 0 }),
         Iron(2, 0, 1, 0, "Iron", Materials.Iron.mRGBa),
         Titanium(3, 0, 0, 0, "Titanium", Materials.Titanium.mRGBa),
         Infinity(0, 0, 0, 5, "Infinity", Materials.Infinity.mRGBa),
@@ -33,6 +34,22 @@ public class MechArmorAugmentRegistries {
             this.prismaticSlots = prismaticSlots;
             this.id = id;
             this.color = color;
+        }
+
+        public static int getProtectionSlots(Frames frame) {
+            return frame.protectionSlots;
+        }
+
+        public static int getMovementSlots(Frames frame) {
+            return frame.movementSlots;
+        }
+
+        public static int getUtilitySlots(Frames frame) {
+            return frame.utilitySlots;
+        }
+
+        public static int getPrismaticSlots(Frames frame) {
+            return frame.prismaticSlots;
         }
 
         static {

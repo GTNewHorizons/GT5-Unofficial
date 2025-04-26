@@ -17,6 +17,7 @@ public class ItemAugment extends ItemAugmentAbstract {
     public static final int CATEGORY_PROTECTION = 1;
     public static final int CATEGORY_MOVEMENT = 2;
     public static final int CATEGORY_UTILITY = 3;
+    public static final int CATEGORY_PRISMATIC = 4;
 
     public final int category;
 
@@ -60,6 +61,11 @@ public class ItemAugment extends ItemAugmentAbstract {
                 return StatCollector.translateToLocalFormatted(
                     "GT5U.armor.tooltip.category",
                     StatCollector.translateToLocal("GT5U.armor.tooltip.utility"));
+            }
+            case CATEGORY_PRISMATIC -> {
+                return StatCollector.translateToLocalFormatted(
+                    "GT5U.armor.tooltip.category",
+                    StatCollector.translateToLocal("GT5U.armor.tooltip.prismatic"));
             }
             default -> {
                 return "";
