@@ -3128,7 +3128,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
             addItem(
                 Cover_RedstoneTransmitterInternal.ID,
                 "Redstone Transmitter (Internal)",
-                "Transfers Redstone signals wireless/n§cDEPRECATED! This will be removed in the next major update.",
+                "Transfers Redstone signals wireless/n §cDEPRECATED! This will be removed in the next major update.",
                 new TCAspects.TC_AspectStack(TCAspects.ORDO, 2L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 1L)));
         ItemList.Cover_RedstoneReceiver.set(

@@ -2326,7 +2326,7 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
             addItem(
                 Cover_AdvancedRedstoneTransmitterInternal.ID,
                 "Advanced Redstone Transmitter (Internal)",
-                "Transfers Redstone signals wirelessly/n Can only connect with advanced wireless covers/n§cDEPRECATED! This will be removed in the next major update.",
+                "Transfers Redstone signals wirelessly/n Can only connect with advanced wireless covers/n §cDEPRECATED! This will be removed in the next major update.",
                 new TCAspects.TC_AspectStack(TCAspects.ORDO, 2L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 2L)));
         ItemList.Cover_AdvancedRedstoneReceiver.set(
