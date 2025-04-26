@@ -18,7 +18,7 @@ public class MechArmorAugmentRegistries {
         None(0, 0, 0, 0, null, new short[] { 0, 0, 0, 0 }),
         Iron(2, 0, 1, 0, "Iron", Materials.Iron.mRGBa),
         Titanium(3, 0, 0, 0, "Titanium", Materials.Titanium.mRGBa),
-        Infinity(0, 0, 0, 5, "Infinity", Materials.Infinity.mRGBa),
+        Infinity(5, 5, 5, 5, "Infinity", Materials.Infinity.mRGBa),
         Gold(0, 2, 1, 0, "Gold", Materials.Gold.mRGBa),;
 
         public final int protectionSlots;
@@ -65,6 +65,7 @@ public class MechArmorAugmentRegistries {
     }
 
     public enum Augments {
+
         NightVision("NightVision", ItemList.Augment_NightVision),
         CreativeFlight("CreativeFlight", ItemList.Augment_CreativeFlight),
         Jetpack("Jetpack", ItemList.Augment_Jetpack),

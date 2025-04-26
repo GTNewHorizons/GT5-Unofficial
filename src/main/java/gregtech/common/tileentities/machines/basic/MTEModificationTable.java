@@ -4,14 +4,12 @@ import static gregtech.api.items.ItemAugment.*;
 import static gregtech.api.items.armor.MechArmorAugmentRegistries.LARGEST_FRAME;
 import static gregtech.api.items.armor.MechArmorAugmentRegistries.augmentsMap;
 import static gregtech.api.items.armor.MechArmorAugmentRegistries.framesMap;
-import static gregtech.api.modularui2.GTGuiTextures.OVERLAY_BUTTON_CHECKMARK;
 import static gregtech.api.util.GTUtility.getOrCreateNbtCompound;
 
 import java.util.Map;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
-import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTBase;
@@ -20,17 +18,14 @@ import net.minecraft.nbt.NBTTagCompound;
 import org.jetbrains.annotations.NotNull;
 
 import com.cleanroommc.modularui.api.drawable.IDrawable;
-import com.cleanroommc.modularui.drawable.ItemDrawable;
 import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.utils.item.IItemHandler;
 import com.cleanroommc.modularui.utils.item.IItemHandlerModifiable;
 import com.cleanroommc.modularui.utils.item.ItemStackHandler;
 import com.cleanroommc.modularui.value.sync.EnumSyncValue;
-import com.cleanroommc.modularui.value.sync.InteractionSyncHandler;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widget.ParentWidget;
-import com.cleanroommc.modularui.widgets.ButtonWidget;
 import com.cleanroommc.modularui.widgets.ItemSlot;
 import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 import com.google.common.collect.ImmutableMap;
@@ -55,13 +50,13 @@ public class MTEModificationTable extends MTEBasicMachine {
     private static final int AUGMENT_SLOTS_COUNT = LARGEST_FRAME * 4;
     private static final Map<Integer, IDrawable> CATEGORY_SLOT_TEXTURES = ImmutableMap.of(
         CATEGORY_PROTECTION,
-        new ItemDrawable(new ItemStack(Items.iron_chestplate)),
+        GTGuiTextures.SLOT_ITEM_GOLD,
         CATEGORY_MOVEMENT,
-        new ItemDrawable(new ItemStack(Items.sugar)),
+        GTGuiTextures.SLOT_ITEM_GREEN,
         CATEGORY_UTILITY,
-        new ItemDrawable(new ItemStack(Items.wheat_seeds)),
+        GTGuiTextures.SLOT_ITEM_PURPLE,
         CATEGORY_PRISMATIC,
-        new ItemDrawable(new ItemStack(Items.nether_star)));
+        GTGuiTextures.SLOT_ITEM_PRISMATIC);
     private static final Map<Integer, Function<Frames, Integer>> CATEGORY_SLOT_COUNTS = ImmutableMap.of(
         CATEGORY_PROTECTION,
         Frames::getProtectionSlots,
@@ -141,7 +136,8 @@ public class MTEModificationTable extends MTEBasicMachine {
                 Item oldItem = augmentsMap.get(oldAugmentID).item.getItem();
                 if (oldItem instanceof ItemAugmentAbstract augmentItem) {
                     categoryTag.removeTag(Integer.toString(column));
-                    augmentItem.getAttachedBehaviors().forEach(behavior -> armorTag.removeTag(behavior.getMainNBTTag()));
+                    augmentItem.getAttachedBehaviors()
+                        .forEach(behavior -> armorTag.removeTag(behavior.getMainNBTTag()));
                 }
             }
         }
@@ -149,33 +145,22 @@ public class MTEModificationTable extends MTEBasicMachine {
         armorSlotHandler.setStackInSlot(0, updatedArmorItem);
     }
 
-    private boolean applyAugmentToTag(NBTTagCompound armorTag, ItemStack modItem) {
-        if (armorTag == null || modItem == null) return false;
+    private void applyAugmentToTag(NBTTagCompound armorTag, ItemStack modItem) {
+        if (armorTag == null || modItem == null) return;
 
         // Sanity check, filter on the item slots should already verify this
         if (!(modItem.getItem() instanceof ItemAugmentAbstract baseAugment)) {
-            return false;
+            return;
         }
 
         // Verify behaviors meet requirements
 
-        //TODO: This check belongs on the filter
-        // These checks are only needed for non frame/core augments
-        /*
-        if (baseAugment instanceof ItemAugment augment) {
-            // Check augment is available for this armor
-            if (!augment.getValidArmors()
-                .contains(armor)) return false;
-        }
-
-         */
-
         // Check armor against required and incompatible lists
         for (IArmorBehavior requiredBehavior : baseAugment.getRequiredBehaviors()) {
-            if (!armorTag.hasKey(requiredBehavior.getMainNBTTag())) return false;
+            if (!armorTag.hasKey(requiredBehavior.getMainNBTTag())) return;
         }
         for (IArmorBehavior incompatibleBehavior : baseAugment.getIncompatibleBehaviors()) {
-            if (armorTag.hasKey(incompatibleBehavior.getMainNBTTag())) return false;
+            if (armorTag.hasKey(incompatibleBehavior.getMainNBTTag())) return;
         }
 
         // At this point the modification should be successful, verification has passed
@@ -183,8 +168,8 @@ public class MTEModificationTable extends MTEBasicMachine {
             ArmorHelper.VIS_DISCOUNT_KEY,
             armorTag.getInteger(ArmorHelper.VIS_DISCOUNT_KEY) + baseAugment.getVisDiscount());
 
-        if (baseAugment instanceof ItemAugmentFrame frame) {
-            armorTag.setString("frame", frame.frameData.id);
+        if (baseAugment instanceof ItemAugmentFrame f) {
+            armorTag.setString("frame", f.frameData.id);
         }
 
         if (baseAugment instanceof ItemAugmentCore core) {
@@ -194,7 +179,6 @@ public class MTEModificationTable extends MTEBasicMachine {
         baseAugment.getAttachedBehaviors()
             .forEach(behavior -> behavior.addBehaviorNBT(armorTag));
 
-        return true;
     }
 
     LimitingItemStackHandler armorSlotHandler = new LimitingItemStackHandler(1, 1);
@@ -240,7 +224,7 @@ public class MTEModificationTable extends MTEBasicMachine {
                         setFrame(newFrame);
                     }))
                 .pos(4, 21)
-                .background(GTGuiTextures.SLOT_ITEM_STANDARD, new ItemDrawable(new ItemStack(Items.iron_helmet))));
+                .background(GTGuiTextures.SLOT_ITEM_STANDARD, GTGuiTextures.OVERLAY_SLOT_ARMOR));
 
         panel.child(slots);
 
@@ -252,14 +236,14 @@ public class MTEModificationTable extends MTEBasicMachine {
         Function<Frames, Integer> categorySlotCount = CATEGORY_SLOT_COUNTS.get(category);
         return new ItemSlot().slot(
             new ModularSlot(augmentsSlotHandler, column + LARGEST_FRAME * row).slotGroup("augments")
-                .filter(isAugmentOfCategory(category))
+                .filter(isAugmentOfCategory(category).and(isValidForArmor()))
                 .changeListener((newItem, onlyAmountChanged, client, init) -> {
                     if ((!client || init)) {
                         updateAugmentSlot(newItem, category, column);
                     }
                 }))
             .setEnabledIf(slot -> categorySlotCount.apply(frame) >= column + 1)
-            .background(GTGuiTextures.SLOT_ITEM_STANDARD, CATEGORY_SLOT_TEXTURES.get(category))
+            .background(CATEGORY_SLOT_TEXTURES.get(category))
             .posRel(column, row);
     }
 
@@ -279,6 +263,15 @@ public class MTEModificationTable extends MTEBasicMachine {
     private static @NotNull Predicate<ItemStack> isAugmentOfCategory(int category) {
         return (x) -> x.getItem() instanceof ItemAugment augment && augment.category == category
             || category == CATEGORY_PRISMATIC;
+    }
+
+    private @NotNull Predicate<ItemStack> isValidForArmor() {
+        return (x) -> {
+            ItemStack armorStack = armorSlotHandler.getStackInSlot(0);
+            if (armorStack == null || !(armorStack.getItem() instanceof MechArmorBase armorItem)) return false;
+            return x.getItem() instanceof ItemAugment augment && augment.getValidArmors()
+                .contains(armorItem);
+        };
     }
 
     private void displayInstalledAugments() {

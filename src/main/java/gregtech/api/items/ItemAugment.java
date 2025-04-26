@@ -4,12 +4,12 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
-import gregtech.api.items.armor.MechArmorAugmentRegistries.Augments;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 
+import gregtech.api.items.armor.MechArmorAugmentRegistries.Augments;
 import gregtech.api.items.armor.behaviors.IArmorBehavior;
 import gregtech.common.items.armor.MechArmorBase;
 
