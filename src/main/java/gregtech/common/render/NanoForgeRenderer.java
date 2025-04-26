@@ -81,7 +81,7 @@ public class NanoForgeRenderer extends TileEntitySpecialRenderer {
         tile.setTimer(timer);
 
         bindTexture(coreTexture);
-        renderCore(x, y, z, timer);
+        renderCore(x, y, z, timer, tile.getRed(), tile.getGreen(), tile.getBlue());
         bindTexture(ringTexture);
         renderRingOne(x, y, z, timer);
         renderRingTwo(x, y, z, timer);
@@ -90,7 +90,7 @@ public class NanoForgeRenderer extends TileEntitySpecialRenderer {
         renderShield(x, y, z, timer);
     }
 
-    private void renderCore(double x, double y, double z, float timer) {
+    private void renderCore(double x, double y, double z, float timer, float r, float g, float b) {
         float chaos = Math.min(Math.max((timer - WARM_UP_TIME), 0) / FULL_CHAOS_TIME, MAX_CHAOS_SPEED_UP);
         float chaosScale = Math.min(Math.max(chaos, 0.05f), 1);
         GL11.glPushAttrib(GL11.GL_ALL_ATTRIB_BITS);
@@ -98,6 +98,7 @@ public class NanoForgeRenderer extends TileEntitySpecialRenderer {
 
         GL11.glTranslated(x + .5f, y + .5f, z + .5f);
         GL11.glScalef(chaosScale, chaosScale, chaosScale);
+        GL11.glColor3f(r, g, b);
         GL11.glRotatef(
             timer * SPEED_MULTIPLIER + timer * CHAOS_SPEED_MULTIPLIER * chaos,
             (float) (0.3 * sin(timer / SINUS_DIVIDER) + sin(timer / SINUS_DIVIDER * 0.5)
@@ -107,6 +108,7 @@ public class NanoForgeRenderer extends TileEntitySpecialRenderer {
             (float) (2 * sin(timer / SINUS_DIVIDER * 0.4) + sin(timer / SINUS_DIVIDER * 1.5)
                 + 1.2 * sin(timer / SINUS_DIVIDER * 1)));
         nanoforgeCoreModel.renderAllVBO();
+        GL11.glColor3f(1.0f, 1.0f, 1.0f);
 
         GL11.glPopMatrix();
         GL11.glPopAttrib();

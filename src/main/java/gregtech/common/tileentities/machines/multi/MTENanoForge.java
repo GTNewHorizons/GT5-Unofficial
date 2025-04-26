@@ -54,11 +54,13 @@ import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
 import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
+import gregtech.api.objects.ItemData;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
@@ -283,7 +285,7 @@ public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge> i
                 .dot(1)
                 .casingIndex(((BlockCasings8) GregTechAPI.sBlockCasings8).getTextureIndex(10))
                 .buildAndChain(GregTechAPI.sBlockCasings8, 10))
-        .addElement('H', ofBlock(GregTechAPI.sBlockCasings8, 7)) // TODO: CHANGE
+        .addElement('H', lazy(t -> ofBlock(BlockQuantumGlass.INSTANCE, 0)))
         .addElement('S', lazy(t -> ofBlock(BlockQuantumGlass.INSTANCE, 0)))
         .addElement('J', ofBlock(GregTechAPI.sBlockCasings8, 7))
         .addElement('X', ofBlock(GregTechAPI.nanoForgeRender, 0))
@@ -379,6 +381,7 @@ public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge> i
                 if (mSpecialTier == 4) {
                     boolean foundNanite = false;
                     ItemStack inputNanite = recipe.mOutputs[0];
+
                     int busWithNaniteIndex = 0;
                     int slotWithNaniteIndex = 0;
 
@@ -408,6 +411,15 @@ public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge> i
                     }
 
                     if (foundNanite) {
+                        TileEntityNanoForgeRenderer tile = getRenderer();
+                        ItemData data = GTOreDictUnificator.getAssociation(inputNanite);
+                        if (data != null) {
+                            Materials mat = data.mMaterial.mMaterial;
+                            short[] color = mat.mRGBa;
+                            tile.setColor(color[0] / 255.0f, color[1] / 255.0f, color[2] / 255.0f);
+                        } else {
+                            tile.setColor(1, 1, 1);
+                        }
                         for (MTEHatchInput hatch : filterValidMTEs(mInputHatches)) {
                             FluidStack drained = hatch.drain(
                                 ForgeDirection.UNKNOWN,

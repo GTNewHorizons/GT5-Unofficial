@@ -14,11 +14,15 @@ public class TileEntityNanoForgeRenderer extends TileEntity {
     private float timer = 0;
     private long lastSystemTime = 0;
     private boolean running = false;
+    private float r = 0.0f, g = 0.0f, b = 0.0f;
 
     private static final String NBT_TAG = "NANOFORGE_";
 
     private static final String TIMER_NBT_TAG = NBT_TAG + "TIMER";
     private static final String RUNNING_NBT_TAG = NBT_TAG + "RUNNING";
+    private static final String RED_NBT_TAG = NBT_TAG + "RED";
+    private static final String GREEN_NBT_TAG = NBT_TAG + "GREEN";
+    private static final String BLUE_NBT_TAG = NBT_TAG + "BLUE";
 
     @Override
     public AxisAlignedBB getRenderBoundingBox() {
@@ -55,6 +59,27 @@ public class TileEntityNanoForgeRenderer extends TileEntity {
         return timer;
     }
 
+    public void setColor(float r, float g, float b) {
+        if (!worldObj.isRemote) {
+            this.r = r;
+            this.g = g;
+            this.b = b;
+            updateToClient();
+        }
+    }
+
+    public float getRed() {
+        return r;
+    }
+
+    public float getGreen() {
+        return g;
+    }
+
+    public float getBlue() {
+        return b;
+    }
+
     public void setLastSystemTime(long lastSystemTime) {
         this.lastSystemTime = lastSystemTime;
     }
@@ -66,6 +91,9 @@ public class TileEntityNanoForgeRenderer extends TileEntity {
     public void writeToNBT(NBTTagCompound compound) {
         compound.setBoolean(RUNNING_NBT_TAG, running);
         compound.setFloat(TIMER_NBT_TAG, timer);
+        compound.setFloat(RED_NBT_TAG, r);
+        compound.setFloat(GREEN_NBT_TAG, g);
+        compound.setFloat(BLUE_NBT_TAG, b);
         super.writeToNBT(compound);
     }
 
@@ -73,6 +101,9 @@ public class TileEntityNanoForgeRenderer extends TileEntity {
     public void readFromNBT(NBTTagCompound compound) {
         running = compound.getBoolean(RUNNING_NBT_TAG);
         timer = compound.getFloat(TIMER_NBT_TAG);
+        r = compound.getFloat(RED_NBT_TAG);
+        g = compound.getFloat(GREEN_NBT_TAG);
+        b = compound.getFloat(BLUE_NBT_TAG);
         super.readFromNBT(compound);
     }
 
