@@ -424,24 +424,34 @@ public class LoaderGTBlockFluid implements Runnable {
                     .build());
 
         // Mechanical Armor Frames
-        ItemList.Armor_Frame_Iron
-            .set(new ItemAugmentFrame("armorframeiron", "Armor Frame: Iron", "", Collections.emptyList(), Frames.Iron));
-        ItemList.Armor_Frame_Titanium.set(
+        ItemList.Armor_Frame_Light.set(
             new ItemAugmentFrame(
-                "armorframetitanium",
-                "Armor Frame: Titanium",
+                "armorframelight",
+                "Light Mechanical Armor Frame",
                 "",
                 Collections.emptyList(),
-                Frames.Titanium));
+                Frames.Light));
+        ItemList.Armor_Frame_Medium.set(
+            new ItemAugmentFrame(
+                "armorframemedium",
+                "Medium Mechanical Armor Frame",
+                "",
+                Collections.emptyList(),
+                Frames.Medium));
+        ItemList.Armor_Frame_Heavy.set(
+            new ItemAugmentFrame(
+                "armorframeheavy",
+                "Heavy Mechanical Armor Frame",
+                "",
+                Collections.emptyList(),
+                Frames.Heavy));
         ItemList.Armor_Frame_Infinity.set(
             new ItemAugmentFrame(
                 "armorframeinfinity",
-                "Armor Frame: Infinity",
+                "Infinitely Adaptive Armor Frame",
                 "",
                 Collections.emptyList(),
                 Frames.Infinity));
-        ItemList.Armor_Frame_Gold
-            .set(new ItemAugmentFrame("armorframegold", "Armor Frame: Gold", "", Collections.emptyList(), Frames.Gold));
 
         ItemList.Neutron_Reflector.set(new ItemNeutronReflector("neutronreflector", "Iridium Neutron Reflector", 0));
         ItemList.Reactor_Coolant_He_1

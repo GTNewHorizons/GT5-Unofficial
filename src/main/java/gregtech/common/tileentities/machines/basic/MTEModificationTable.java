@@ -287,9 +287,8 @@ public class MTEModificationTable extends MTEBasicMachine {
                     .filter((x) -> x.getItem() instanceof ItemAugmentFrame)
                     .changeListener((newItem, onlyAmountChanged, client, init) -> { updateFrameSlot(newItem); }))
                 .pos(16, 22)
-
                 .setEnabledIf((slot) -> armorSlotHandler.getStackInSlot(0) != null)
-                .background(GTGuiTextures.SLOT_ITEM_STANDARD, GTGuiTextures.OVERLAY_SLOT_ARMOR));
+                .background(GTGuiTextures.SLOT_ITEM_STANDARD, GTGuiTextures.OVERLAY_SLOT_ARMOR_FRAME));
         panel.child(
             new ItemSlot().slot(
                 new ModularSlot(armorSlotHandler, 2).slotGroup("armor")

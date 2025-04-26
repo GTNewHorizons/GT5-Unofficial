@@ -17,10 +17,10 @@ public class MechArmorAugmentRegistries {
     public enum Frames {
 
         None(0, 0, 0, 0, null, null, new short[] { 0, 0, 0, 0 }),
-        Iron(2, 0, 1, 0, "Iron", ItemList.Armor_Frame_Iron, Materials.Iron.mRGBa),
-        Titanium(3, 0, 0, 0, "Titanium", ItemList.Armor_Frame_Titanium, Materials.Titanium.mRGBa),
-        Infinity(5, 5, 5, 5, "Infinity", ItemList.Armor_Frame_Infinity, Materials.Infinity.mRGBa),
-        Gold(0, 2, 1, 0, "Gold", ItemList.Armor_Frame_Gold, Materials.Gold.mRGBa),;
+        Light(0, 2, 1, 0, "Light", ItemList.Armor_Frame_Light, Materials.Steel.mRGBa),
+        Medium(1, 1, 1, 0, "Medium", ItemList.Armor_Frame_Medium, Materials.Titanium.mRGBa),
+        Heavy(3, 0, 0, 0, "Heavy", ItemList.Armor_Frame_Heavy, Materials.TungstenSteel.mRGBa),
+        Infinity(5, 5, 5, 5, "Infinity", ItemList.Armor_Frame_Infinity, Materials.Infinity.mRGBa);
 
         public final int protectionSlots;
         public final int movementSlots;

@@ -2675,10 +2675,10 @@ public enum ItemList implements IItemContainer {
     Armor_Core_T3,
     Armor_Core_T4,
 
-    Armor_Frame_Iron,
-    Armor_Frame_Titanium,
+    Armor_Frame_Light,
+    Armor_Frame_Medium,
+    Armor_Frame_Heavy,
     Armor_Frame_Infinity,
-    Armor_Frame_Gold,
 
     Augment_NightVision,
     Augment_CreativeFlight,
