@@ -3,8 +3,11 @@ package gregtech.common.tileentities.machines.basic;
 import static gregtech.api.items.ItemAugment.*;
 import static gregtech.api.items.armor.MechArmorAugmentRegistries.LARGEST_FRAME;
 import static gregtech.api.items.armor.MechArmorAugmentRegistries.augmentsMap;
+import static gregtech.api.items.armor.MechArmorAugmentRegistries.coresMap;
 import static gregtech.api.items.armor.MechArmorAugmentRegistries.framesMap;
 import static gregtech.api.util.GTUtility.getOrCreateNbtCompound;
+import static gregtech.common.items.armor.MechArmorBase.MECH_CORE_KEY;
+import static gregtech.common.items.armor.MechArmorBase.MECH_FRAME_KEY;
 
 import java.util.Map;
 import java.util.function.Function;
@@ -110,6 +113,60 @@ public class MTEModificationTable extends MTEBasicMachine {
         return new MTEModificationTable(mName, mTier, mDescriptionArray, mTextures);
     }
 
+    private void updateFrameSlot(ItemStack newItem) {
+        ItemStack armorItem = armorSlotHandler.getStackInSlot(0);
+        if (armorItem == null) return;
+        ItemStack updatedArmorItem = armorItem.copy();
+        NBTTagCompound armorTag = getOrCreateNbtCompound(armorItem);
+        if (!armorTag.hasKey(MECH_FRAME_KEY)) armorTag.setString(MECH_FRAME_KEY, "None");
+
+        if (newItem != null) {
+            if (newItem.getItem() instanceof ItemAugmentFrame itemAugment) {
+                armorTag.setString(MECH_FRAME_KEY, itemAugment.frameData.id);
+                applyAugmentToTag(armorTag, newItem);
+            }
+        } else {
+            String oldFrameID = armorTag.getString(MECH_FRAME_KEY);
+            if (!oldFrameID.equals("None")) {
+                Item oldItem = framesMap.get(oldFrameID).item.getItem();
+                if (oldItem instanceof ItemAugmentFrame frameItem) {
+                    armorTag.setString(MECH_FRAME_KEY, "None");
+                    frameItem.getAttachedBehaviors()
+                        .forEach(behavior -> armorTag.removeTag(behavior.getMainNBTTag()));
+                }
+            }
+        }
+        updatedArmorItem.setTagCompound(armorTag);
+        armorSlotHandler.setStackInSlot(0, updatedArmorItem);
+    }
+
+    private void updateCoreSlot(ItemStack newItem) {
+        ItemStack armorItem = armorSlotHandler.getStackInSlot(0);
+        if (armorItem == null) return;
+        ItemStack updatedArmorItem = armorItem.copy();
+        NBTTagCompound armorTag = getOrCreateNbtCompound(armorItem);
+        if (!armorTag.hasKey(MECH_CORE_KEY)) armorTag.setString(MECH_CORE_KEY, "None");
+
+        if (newItem != null) {
+            if (newItem.getItem() instanceof ItemAugmentCore itemAugment) {
+                armorTag.setString(MECH_CORE_KEY, itemAugment.coreData.id);
+                applyAugmentToTag(armorTag, newItem);
+            }
+        } else {
+            String oldCoreID = armorTag.getString(MECH_CORE_KEY);
+            if (!oldCoreID.equals("None")) {
+                Item oldItem = coresMap.get(oldCoreID).item.getItem();
+                if (oldItem instanceof ItemAugmentCore coreItem) {
+                    armorTag.setString(MECH_CORE_KEY, "None");
+                    coreItem.getAttachedBehaviors()
+                        .forEach(behavior -> armorTag.removeTag(behavior.getMainNBTTag()));
+                }
+            }
+        }
+        updatedArmorItem.setTagCompound(armorTag);
+        armorSlotHandler.setStackInSlot(0, updatedArmorItem);
+    }
+
     private void updateAugmentSlot(ItemStack newItem, int category, int column) {
         ItemStack armorItem = armorSlotHandler.getStackInSlot(0);
         if (armorItem == null) return;
@@ -173,7 +230,7 @@ public class MTEModificationTable extends MTEBasicMachine {
         }
 
         if (baseAugment instanceof ItemAugmentCore core) {
-            armorTag.setInteger("core", core.getCoreid());
+            armorTag.setString("core", core.coreData.id);
         }
 
         baseAugment.getAttachedBehaviors()
@@ -181,9 +238,8 @@ public class MTEModificationTable extends MTEBasicMachine {
 
     }
 
-    LimitingItemStackHandler armorSlotHandler = new LimitingItemStackHandler(1, 1);
+    LimitingItemStackHandler armorSlotHandler = new LimitingItemStackHandler(3, 1);
 
-    // Arbitrary slot number, could be raised
     LimitingItemStackHandler augmentsSlotHandler = new LimitingItemStackHandler(AUGMENT_SLOTS_COUNT, 1);
 
     @Override
@@ -218,13 +274,31 @@ public class MTEModificationTable extends MTEBasicMachine {
                     .filter((x) -> x.getItem() instanceof MechArmorBase)
                     .changeListener((newItem, onlyAmountChanged, client, init) -> {
                         Frames newFrame = getFrameFromItemStack(newItem);
-                        if ((!client || init) && newFrame != getFrame()) {
+                        if (newFrame != getFrame()) {
                             displayInstalledAugments();
                         }
                         setFrame(newFrame);
                     }))
-                .pos(4, 21)
+                .pos(16, 4)
                 .background(GTGuiTextures.SLOT_ITEM_STANDARD, GTGuiTextures.OVERLAY_SLOT_ARMOR));
+        panel.child(
+            new ItemSlot().slot(
+                new ModularSlot(armorSlotHandler, 1).slotGroup("armor")
+                    .filter((x) -> x.getItem() instanceof ItemAugmentFrame)
+                    .changeListener((newItem, onlyAmountChanged, client, init) -> { updateFrameSlot(newItem); }))
+                .pos(16, 22)
+
+                .setEnabledIf((slot) -> armorSlotHandler.getStackInSlot(0) != null)
+                .background(GTGuiTextures.SLOT_ITEM_STANDARD, GTGuiTextures.OVERLAY_SLOT_ARMOR));
+        panel.child(
+            new ItemSlot().slot(
+                new ModularSlot(armorSlotHandler, 2).slotGroup("armor")
+                    .filter((x) -> x.getItem() instanceof ItemAugmentCore)
+                    .changeListener((newItem, onlyAmountChanged, client, init) -> { updateCoreSlot(newItem); }))
+                .setEnabledIf(
+                    (slot) -> armorSlotHandler.getStackInSlot(0) != null && armorSlotHandler.getStackInSlot(1) != null)
+                .pos(16, 40)
+                .background(GTGuiTextures.SLOT_ITEM_STANDARD, GTGuiTextures.OVERLAY_SLOT_ARMOR_CORE));
 
         panel.child(slots);
 
@@ -237,11 +311,8 @@ public class MTEModificationTable extends MTEBasicMachine {
         return new ItemSlot().slot(
             new ModularSlot(augmentsSlotHandler, column + LARGEST_FRAME * row).slotGroup("augments")
                 .filter(isAugmentOfCategory(category).and(isValidForArmor()))
-                .changeListener((newItem, onlyAmountChanged, client, init) -> {
-                    if ((!client || init)) {
-                        updateAugmentSlot(newItem, category, column);
-                    }
-                }))
+                .changeListener(
+                    (newItem, onlyAmountChanged, client, init) -> { updateAugmentSlot(newItem, category, column); }))
             .setEnabledIf(slot -> categorySlotCount.apply(frame) >= column + 1)
             .background(CATEGORY_SLOT_TEXTURES.get(category))
             .posRel(column, row);
@@ -281,6 +352,26 @@ public class MTEModificationTable extends MTEBasicMachine {
                 i,
                 getAugmentStackInCategoryAndColumn(armorStack, (i / LARGEST_FRAME) + 1, i % LARGEST_FRAME));
         }
+        armorSlotHandler.setStackInSlot(1, getFrameStack(armorStack));
+        armorSlotHandler.setStackInSlot(2, getCoreStack(armorStack));
+    }
+
+    private ItemStack getFrameStack(ItemStack armorStack) {
+        if (armorStack == null) return null;
+        NBTTagCompound armorTag = armorStack.getTagCompound();
+        if (armorTag == null) return null;
+        String frame = armorTag.getString(MECH_FRAME_KEY);
+        if (frame.equals("None")) return null;
+        return framesMap.get(frame).item.get(1);
+    }
+
+    private ItemStack getCoreStack(ItemStack armorStack) {
+        if (armorStack == null) return null;
+        NBTTagCompound armorTag = armorStack.getTagCompound();
+        if (armorTag == null) return null;
+        String core = armorTag.getString(MECH_CORE_KEY);
+        if (core.equals("None")) return null;
+        return coresMap.get(core).item.get(1);
     }
 
     private ItemStack getAugmentStackInCategoryAndColumn(ItemStack armorStack, int category, int column) {

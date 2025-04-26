@@ -3,15 +3,16 @@ package gregtech.api.items;
 import java.util.Collection;
 import java.util.Collections;
 
+import gregtech.api.items.armor.MechArmorAugmentRegistries.Cores;
 import gregtech.api.items.armor.behaviors.IArmorBehavior;
 import gregtech.common.items.armor.MechArmorLoader;
 
 public class ItemAugmentCore extends ItemAugmentAbstract {
 
-    private int coreid;
+    public final Cores coreData;
 
     public ItemAugmentCore(String aUnlocalized, String aEnglish, String aEnglishTooltip,
-        Collection<IArmorBehavior> behaviors, int coreid) {
+        Collection<IArmorBehavior> behaviors, Cores coredata) {
         super(
             aUnlocalized,
             aEnglish,
@@ -21,10 +22,6 @@ public class ItemAugmentCore extends ItemAugmentAbstract {
             Collections.emptyList(),
             Collections.emptyList(),
             0);
-        this.coreid = coreid;
-    }
-
-    public int getCoreid() {
-        return coreid;
+        this.coreData = coredata;
     }
 }

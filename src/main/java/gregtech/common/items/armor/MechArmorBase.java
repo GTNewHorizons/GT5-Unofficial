@@ -8,6 +8,7 @@ import static gregtech.api.items.armor.ArmorHelper.GOGGLES_OF_REVEALING_KEY;
 import static gregtech.api.items.armor.ArmorHelper.JETPACK_KEY;
 import static gregtech.api.items.armor.ArmorHelper.VIS_DISCOUNT_KEY;
 import static gregtech.api.items.armor.ArmorHelper.drainArmor;
+import static gregtech.api.items.armor.MechArmorAugmentRegistries.coresMap;
 import static gregtech.api.util.GTUtility.getOrCreateNbtCompound;
 
 import java.util.ArrayList;
@@ -96,7 +97,7 @@ public class MechArmorBase extends ItemArmor implements IKeyPressedListener, ISp
 
         // Set behaviors
         NBTTagCompound tag = getOrCreateNbtCompound(stack);
-        tag.setInteger(MECH_CORE_KEY, 0);
+        tag.setString(MECH_CORE_KEY, "None");
         tag.setString(MECH_FRAME_KEY, "None");
         return stack;
     }
@@ -176,7 +177,7 @@ public class MechArmorBase extends ItemArmor implements IKeyPressedListener, ISp
         NBTTagCompound tag = aStack.getTagCompound();
         if (tag != null) {
             if (tag.hasKey(MECH_CORE_KEY)) {
-                aList.add("Installed Core: " + tag.getInteger(MECH_CORE_KEY));
+                aList.add("Installed Core: " + tag.getString(MECH_CORE_KEY));
             }
             if (tag.hasKey(MECH_FRAME_KEY)) {
                 aList.add("Frame: " + tag.getString(MECH_FRAME_KEY));
@@ -234,10 +235,10 @@ public class MechArmorBase extends ItemArmor implements IKeyPressedListener, ISp
     }
 
     protected int getCore(ItemStack stack) {
-        if (stack.getTagCompound()
-            .hasKey(MECH_CORE_KEY)) {
-            return (stack.getTagCompound()
-                .getInteger(MECH_CORE_KEY));
+        String core = stack.getTagCompound()
+            .getString(MECH_CORE_KEY);
+        if (coresMap.containsKey(core)) {
+            return (coresMap.get(core).tier);
         }
         return 0;
     }

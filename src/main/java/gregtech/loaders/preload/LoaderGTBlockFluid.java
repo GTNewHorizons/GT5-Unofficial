@@ -55,6 +55,7 @@ import gregtech.api.items.ItemBreederCell;
 import gregtech.api.items.ItemCoolantCellIC;
 import gregtech.api.items.ItemRadioactiveCellIC;
 import gregtech.api.items.armor.MechArmorAugmentRegistries.Augments;
+import gregtech.api.items.armor.MechArmorAugmentRegistries.Cores;
 import gregtech.api.items.armor.MechArmorAugmentRegistries.Frames;
 import gregtech.api.items.armor.behaviors.*;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
@@ -212,28 +213,28 @@ public class LoaderGTBlockFluid implements Runnable {
                 "Armor Core (Nano)",
                 "Basic core for Mechanical Armor",
                 Collections.emptyList(),
-                1));
+                Cores.Nano));
         ItemList.Armor_Core_T2.set(
             new ItemAugmentCore(
                 "armorcore2",
                 "Armor Core (Quantum)",
                 "Advanced core for Mechanical Armor",
                 Collections.emptyList(),
-                2));
+                Cores.Quantum));
         ItemList.Armor_Core_T3.set(
             new ItemAugmentCore(
                 "armorcore3",
                 "Armor Core (Living)",
                 "Supreme core for Mechanical Armor",
                 Collections.emptyList(),
-                3));
+                Cores.Living));
         ItemList.Armor_Core_T4.set(
             new ItemAugmentCore(
                 "armorcore4",
-                "Armor Core (Prismatic)",
+                "Armor Core (Singularity)",
                 "Perfected core for Mechanical Armor",
                 Collections.singletonList(InfiniteEnergyBehavior.INSTANCE),
-                4));
+                Cores.Singularity));
         ItemList.Augment_NightVision.set(
             new ItemAugment.AugmentBuilder(
                 "augmentnightvision",

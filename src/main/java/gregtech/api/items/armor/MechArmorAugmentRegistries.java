@@ -8,6 +8,7 @@ import gregtech.api.enums.Materials;
 public class MechArmorAugmentRegistries {
 
     public static final HashMap<String, Frames> framesMap = new HashMap<>();
+    public static final HashMap<String, Cores> coresMap = new HashMap<>();
     public static final HashMap<String, Augments> augmentsMap = new HashMap<>();
 
     // Update this integer if you add a frame with more slots in a single category than the previous highest
@@ -15,11 +16,11 @@ public class MechArmorAugmentRegistries {
 
     public enum Frames {
 
-        None(0, 0, 0, 0, null, new short[] { 0, 0, 0, 0 }),
-        Iron(2, 0, 1, 0, "Iron", Materials.Iron.mRGBa),
-        Titanium(3, 0, 0, 0, "Titanium", Materials.Titanium.mRGBa),
-        Infinity(5, 5, 5, 5, "Infinity", Materials.Infinity.mRGBa),
-        Gold(0, 2, 1, 0, "Gold", Materials.Gold.mRGBa),;
+        None(0, 0, 0, 0, null, null, new short[] { 0, 0, 0, 0 }),
+        Iron(2, 0, 1, 0, "Iron", ItemList.Armor_Frame_Iron, Materials.Iron.mRGBa),
+        Titanium(3, 0, 0, 0, "Titanium", ItemList.Armor_Frame_Titanium, Materials.Titanium.mRGBa),
+        Infinity(5, 5, 5, 5, "Infinity", ItemList.Armor_Frame_Infinity, Materials.Infinity.mRGBa),
+        Gold(0, 2, 1, 0, "Gold", ItemList.Armor_Frame_Gold, Materials.Gold.mRGBa),;
 
         public final int protectionSlots;
         public final int movementSlots;
@@ -27,15 +28,18 @@ public class MechArmorAugmentRegistries {
         public final int prismaticSlots;
 
         public final String id;
+        public final ItemList item;
 
         public final short[] color;
 
-        Frames(int protectionSlots, int movementSlots, int utilitySlots, int prismaticSlots, String id, short[] color) {
+        Frames(int protectionSlots, int movementSlots, int utilitySlots, int prismaticSlots, String id, ItemList item,
+            short[] color) {
             this.protectionSlots = protectionSlots;
             this.movementSlots = movementSlots;
             this.utilitySlots = utilitySlots;
             this.prismaticSlots = prismaticSlots;
             this.id = id;
+            this.item = item;
             this.color = color;
         }
 
@@ -62,6 +66,24 @@ public class MechArmorAugmentRegistries {
 
     public enum Cores {
 
+        Nano("Nano", 1, ItemList.Armor_Core_T1),
+        Quantum("Quantum", 2, ItemList.Armor_Core_T2),
+        Living("Living", 3, ItemList.Armor_Core_T3),
+        Singularity("Singularity", 4, ItemList.Armor_Core_T4);
+
+        public final String id;
+        public final int tier;
+        public final ItemList item;
+
+        Cores(String id, int tier, ItemList item) {
+            this.id = id;
+            this.tier = tier;
+            this.item = item;
+        }
+
+        static {
+            for (Cores c : Cores.values()) coresMap.put(c.id, c);
+        }
     }
 
     public enum Augments {

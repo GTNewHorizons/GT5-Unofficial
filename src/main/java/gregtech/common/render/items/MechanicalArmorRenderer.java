@@ -5,6 +5,7 @@ import static gregtech.api.enums.Dyes.dyeLightBlue;
 import static gregtech.api.enums.Dyes.dyeMagenta;
 import static gregtech.api.enums.Dyes.dyeRed;
 import static gregtech.api.enums.Dyes.dyeWhite;
+import static gregtech.api.items.armor.MechArmorAugmentRegistries.coresMap;
 import static gregtech.api.items.armor.MechArmorAugmentRegistries.framesMap;
 import static gregtech.api.util.GTUtility.getOrCreateNbtCompound;
 
@@ -58,12 +59,12 @@ public class MechanicalArmorRenderer implements IItemRenderer {
             return;
         }
 
-        int coreTier = 0;
+        String core;
         String frame;
         short frameR = -1, frameG = -1, frameB = -1;
 
         NBTTagCompound tag = getOrCreateNbtCompound(item);
-        coreTier = tag.getInteger("core");
+        core = tag.getString("core");
         frame = tag.getString("frame");
 
         GL11.glEnable(GL11.GL_BLEND);
@@ -79,11 +80,11 @@ public class MechanicalArmorRenderer implements IItemRenderer {
             GTRenderUtil.renderItem(type, frameLayer);
         }
 
-        if (coreTier != 0) {
+        if (!core.isEmpty() && coresMap.containsKey(core)) {
             short[] modulation = dyeWhite.getRGBA();
-            switch (coreTier) {
-                case 1 -> modulation = dyeGreen.getRGBA();
-                case 2 -> modulation = dyeLightBlue.getRGBA();
+            switch (coresMap.get(core).tier) {
+                case 1 -> modulation = dyeLightBlue.getRGBA();
+                case 2 -> modulation = dyeGreen.getRGBA();
                 case 3 -> modulation = dyeRed.getRGBA();
                 case 4 -> modulation = dyeMagenta.getRGBA();
             }
