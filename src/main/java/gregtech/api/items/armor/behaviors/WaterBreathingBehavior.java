@@ -33,7 +33,7 @@ public class WaterBreathingBehavior implements IArmorBehavior {
     }
 
     @Override
-    public void addBehaviorNBT(@NotNull ItemStack stack, @NotNull NBTTagCompound tag) {
+    public void addBehaviorNBT(@NotNull NBTTagCompound tag) {
         tag.setBoolean(ArmorHelper.WATER_BREATHING_KEY, true);
     }
 

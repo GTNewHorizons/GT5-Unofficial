@@ -23,7 +23,7 @@ public class OmniMovementBehavior implements IArmorBehavior {
     public static OmniMovementBehavior INSTANCE = new OmniMovementBehavior();
 
     @Override
-    public void addBehaviorNBT(@NotNull ItemStack stack, @NotNull NBTTagCompound tag) {
+    public void addBehaviorNBT(@NotNull NBTTagCompound tag) {
         tag.setBoolean(ArmorHelper.OMNI_MOVEMENT_KEY, true);
     }
 

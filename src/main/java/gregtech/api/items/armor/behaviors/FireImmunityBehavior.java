@@ -32,7 +32,7 @@ public class FireImmunityBehavior implements IArmorBehavior {
     }
 
     @Override
-    public void addBehaviorNBT(@NotNull ItemStack stack, @NotNull NBTTagCompound tag) {
+    public void addBehaviorNBT(@NotNull NBTTagCompound tag) {
         tag.setBoolean(ArmorHelper.FIRE_IMMUNITY_KEY, true);
     }
 

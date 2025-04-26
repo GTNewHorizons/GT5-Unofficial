@@ -2,11 +2,14 @@ package gregtech.api.items.armor;
 
 import java.util.HashMap;
 
+import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 
 public class MechArmorAugmentRegistries {
 
     public static final HashMap<String, Frames> framesMap = new HashMap<>();
+    public static final HashMap<String, Augments> augmentsMap = new HashMap<>();
+
     // Update this integer if you add a frame with more slots in a single category than the previous highest
     public static final int LARGEST_FRAME = 5;
 
@@ -62,6 +65,37 @@ public class MechArmorAugmentRegistries {
     }
 
     public enum Augments {
+        NightVision("NightVision", ItemList.Augment_NightVision),
+        CreativeFlight("CreativeFlight", ItemList.Augment_CreativeFlight),
+        Jetpack("Jetpack", ItemList.Augment_Jetpack),
+        JetpackPerfectHover("JetpackPerfectHover", ItemList.Augment_Jetpack_PerfectHover),
+        FireImmunity("FireImmunity", ItemList.Augment_FireImmunity),
+        StepAssist("StepAssist", ItemList.Augment_StepAssist),
+        GogglesOfRevealing("GogglesOfRevealing", ItemList.Augment_GogglesOfRevealing),
+        InertiaCanceling("InertiaCanceling", ItemList.Augment_InertiaCanceling),
+        Hazmat("Hazmat", ItemList.Augment_Hazmat),
+        Apiarist("Apiarist", ItemList.Augment_Apiarist),
+        SwimSpeed("SwimSpeed", ItemList.Augment_SwimSpeed),
+        KnockbackResistance("KnockbackResistance", ItemList.Augment_KnockbackResistance),
+        SpeedBoost("SpeedBoost", ItemList.Augment_SpeedBoost),
+        JumpBoost("JumpBoost", ItemList.Augment_JumpBoost),
+        FallProtection("FallProtection", ItemList.Augment_FallProtection),
+        SpaceSuit("SpaceSuit", ItemList.Augment_SpaceSuit),
+        ForceField("ForceField", ItemList.Augment_ForceField),
+        OmniMovement("OmniMovement", ItemList.Augment_OmniMovement),
+        WaterBreathing("WaterBreathing", ItemList.Augment_WaterBreathing),
+        Teleporter("Teleporter", ItemList.Augment_Teleporter);
 
+        public final String id;
+        public final ItemList item;
+
+        Augments(String id, ItemList item) {
+            this.id = id;
+            this.item = item;
+        }
+
+        static {
+            for (Augments a : Augments.values()) augmentsMap.put(a.id, a);
+        }
     }
 }

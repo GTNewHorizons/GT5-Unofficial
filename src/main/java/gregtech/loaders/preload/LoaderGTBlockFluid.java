@@ -26,6 +26,7 @@ import java.util.Locale;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -54,7 +55,8 @@ import gregtech.api.items.ItemAugmentFrame;
 import gregtech.api.items.ItemBreederCell;
 import gregtech.api.items.ItemCoolantCellIC;
 import gregtech.api.items.ItemRadioactiveCellIC;
-import gregtech.api.items.armor.MechArmorAugmentRegistries;
+import gregtech.api.items.armor.MechArmorAugmentRegistries.Frames;
+import gregtech.api.items.armor.MechArmorAugmentRegistries.Augments;
 import gregtech.api.items.armor.behaviors.*;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.metatileentity.BaseMetaTileEntity;
@@ -237,7 +239,8 @@ public class LoaderGTBlockFluid implements Runnable {
             new ItemAugment.AugmentBuilder(
                 "augmentnightvision",
                 "Augment: Optical Brightness Adjuster",
-                "Allows user to see clearly at night and in the dark")
+                "Allows user to see clearly at night and in the dark",
+                Augments.NightVision)
                     .validArmors(Collections.singletonList(MechArmorLoader.MechArmorHelmet))
                     .attachedBehaviors(Collections.singletonList(NightVisionBehavior.INSTANCE))
                     .category(CATEGORY_UTILITY)
@@ -246,7 +249,9 @@ public class LoaderGTBlockFluid implements Runnable {
             new ItemAugment.AugmentBuilder(
                 "augmentcreativeflight",
                 "Augment: Gravitational Control Module",
-                "Allows user to fly").validArmors(Collections.singletonList(MechArmorLoader.MechArmorChestplate))
+                "Allows user to fly",
+                Augments.CreativeFlight)
+                    .validArmors(Collections.singletonList(MechArmorLoader.MechArmorChestplate))
                     .attachedBehaviors(Collections.singletonList(CreativeFlightBehavior.INSTANCE))
                     .incompatibleBehaviors(Collections.singletonList(JetpackBehavior.INSTANCE))
                     .category(CATEGORY_MOVEMENT)
@@ -255,7 +260,8 @@ public class LoaderGTBlockFluid implements Runnable {
             new ItemAugment.AugmentBuilder(
                 "augmentjetpack",
                 "Augment: Electric Jetpack",
-                "Allows user to jet upwards and hover in midair")
+                "Allows user to jet upwards and hover in midair",
+                Augments.Jetpack)
                     .validArmors(Collections.singletonList(MechArmorLoader.MechArmorChestplate))
                     .attachedBehaviors(Collections.singletonList(JetpackBehavior.INSTANCE))
                     .incompatibleBehaviors(Collections.singletonList(CreativeFlightBehavior.INSTANCE))
@@ -265,7 +271,8 @@ public class LoaderGTBlockFluid implements Runnable {
             new ItemAugment.AugmentBuilder(
                 "augmentjetpackperfecthover",
                 "Augment: Adaptive Jetpack Stabilizers",
-                "Prevents user from slowly descending while in hover mode")
+                "Prevents user from slowly descending while in hover mode",
+                Augments.JetpackPerfectHover)
                     .validArmors(Collections.singletonList(MechArmorLoader.MechArmorChestplate))
                     .attachedBehaviors(Collections.singletonList(JetpackPerfectHoverBehavior.INSTANCE))
                     .requiredBehaviors(Collections.singletonList(JetpackBehavior.INSTANCE))
@@ -275,7 +282,8 @@ public class LoaderGTBlockFluid implements Runnable {
             new ItemAugment.AugmentBuilder(
                 "augmentfireimmunity",
                 "Augment: Heat Dispersion System",
-                "Renders user entirely immune to fire and lava")
+                "Renders user entirely immune to fire and lava",
+                Augments.FireImmunity)
                     .validArmors(Collections.singletonList(MechArmorLoader.MechArmorLeggings))
                     .attachedBehaviors(Collections.singletonList(FireImmunityBehavior.INSTANCE))
                     .category(CATEGORY_PROTECTION)
@@ -284,7 +292,8 @@ public class LoaderGTBlockFluid implements Runnable {
             new ItemAugment.AugmentBuilder(
                 "augmentstepassist",
                 "Augment: Elevation Calibrators",
-                "Allows user to walk up a single block effortlessly")
+                "Allows user to walk up a single block effortlessly",
+                Augments.StepAssist)
                     .validArmors(Collections.singletonList(MechArmorLoader.MechArmorBoots))
                     .attachedBehaviors(Collections.singletonList(StepAssistBehavior.INSTANCE))
                     .category(CATEGORY_MOVEMENT)
@@ -293,7 +302,8 @@ public class LoaderGTBlockFluid implements Runnable {
             new ItemAugment.AugmentBuilder(
                 "augmentgogglesofrevealing",
                 "Augment: Integrated Revealing Lens",
-                "Allows user to see elements of the arcane, such as aura nodes")
+                "Allows user to see elements of the arcane, such as aura nodes",
+                Augments.GogglesOfRevealing)
                     .validArmors(Collections.singletonList(MechArmorLoader.MechArmorHelmet))
                     .attachedBehaviors(Collections.singletonList(GogglesOfRevealingBehavior.INSTANCE))
                     .visDiscount(7)
@@ -303,7 +313,8 @@ public class LoaderGTBlockFluid implements Runnable {
             new ItemAugment.AugmentBuilder(
                 "augmentinertiacanceling",
                 "Augment: Inertial Dampeners",
-                "Prevents momentum from acting on the user while flying")
+                "Prevents momentum from acting on the user while flying",
+                Augments.InertiaCanceling)
                     .validArmors(Collections.singletonList(MechArmorLoader.MechArmorChestplate))
                     .attachedBehaviors(Collections.singletonList(InertiaCancelingBehavior.INSTANCE))
                     .requiredBehaviors(Collections.singletonList(CreativeFlightBehavior.INSTANCE))
@@ -313,7 +324,8 @@ public class LoaderGTBlockFluid implements Runnable {
             new ItemAugment.AugmentBuilder(
                 "augmenthazmat",
                 "Augment: Protective Lining",
-                "Grants the user hazmat protection. Must be applied to all four armor pieces")
+                "Grants the user hazmat protection. Must be applied to all four armor pieces",
+                Augments.Hazmat)
                     .validArmors(MechArmorLoader.AllMechArmor)
                     .attachedBehaviors(Collections.singletonList(HazmatBehavior.INSTANCE))
                     .category(CATEGORY_PROTECTION)
@@ -322,7 +334,8 @@ public class LoaderGTBlockFluid implements Runnable {
             new ItemAugment.AugmentBuilder(
                 "augmentapiarist",
                 "Augment: Bee Pacifier",
-                "Prevents negative bee effects, as if the user were wearing Apiarist's armor")
+                "Prevents negative bee effects, as if the user were wearing Apiarist's armor",
+                Augments.Apiarist)
                     .validArmors(Collections.singletonList(MechArmorLoader.MechArmorLeggings))
                     .attachedBehaviors(Collections.singletonList(ApiaristBehavior.INSTANCE))
                     .category(CATEGORY_UTILITY)
@@ -331,7 +344,8 @@ public class LoaderGTBlockFluid implements Runnable {
             new ItemAugment.AugmentBuilder(
                 "augmentswimspeed",
                 "Augment: Aquatic Jets",
-                "Improves the user's speed in water")
+                "Improves the user's speed in water",
+                Augments.SwimSpeed)
                     .validArmors(Collections.singletonList(MechArmorLoader.MechArmorBoots))
                     .attachedBehaviors(Collections.singletonList(SwimSpeedBehavior.INSTANCE))
                     .category(CATEGORY_MOVEMENT)
@@ -340,7 +354,8 @@ public class LoaderGTBlockFluid implements Runnable {
             new ItemAugment.AugmentBuilder(
                 "augmentknockbackresistance",
                 "Augment: Shock Absorbers",
-                "Protects the user from knockback effects")
+                "Protects the user from knockback effects",
+                Augments.KnockbackResistance)
                     .validArmors(Collections.singletonList(MechArmorLoader.MechArmorLeggings))
                     .attachedBehaviors(Collections.singletonList(KnockbackResistBehavior.INSTANCE))
                     .category(CATEGORY_PROTECTION)
@@ -349,7 +364,8 @@ public class LoaderGTBlockFluid implements Runnable {
             new ItemAugment.AugmentBuilder(
                 "augmentspeedboost",
                 "Augment: Sprint Boosters",
-                "Allows the user to move faster. Can be applied multiple times")
+                "Allows the user to move faster. Can be applied multiple times",
+                Augments.SpeedBoost)
                     .validArmors(Collections.singletonList(MechArmorLoader.MechArmorBoots))
                     .attachedBehaviors(Collections.singletonList(SpeedBoostBehavior.MECH_ARMOR_INSTANCE))
                     .category(CATEGORY_MOVEMENT)
@@ -358,7 +374,9 @@ public class LoaderGTBlockFluid implements Runnable {
             new ItemAugment.AugmentBuilder(
                 "augmentjumpboost",
                 "Augment: Pneumatic Jump Assist",
-                "Allows the user to jump higher").validArmors(Collections.singletonList(MechArmorLoader.MechArmorBoots))
+                "Allows the user to jump higher",
+                Augments.JumpBoost)
+                    .validArmors(Collections.singletonList(MechArmorLoader.MechArmorBoots))
                     .attachedBehaviors(Collections.singletonList(JumpBoostBehavior.MECH_ARMOR_INSTANCE))
                     .category(CATEGORY_MOVEMENT)
                     .build());
@@ -366,7 +384,8 @@ public class LoaderGTBlockFluid implements Runnable {
             new ItemAugment.AugmentBuilder(
                 "augmentfallprotection",
                 "Augment: Landing Gear",
-                "Converts the user's fall damage into EU usage")
+                "Converts the user's fall damage into EU usage",
+                Augments.FallProtection)
                     .validArmors(Collections.singletonList(MechArmorLoader.MechArmorBoots))
                     .attachedBehaviors(Collections.singletonList(FallProtectionBehavior.INSTANCE))
                     .category(CATEGORY_PROTECTION)
@@ -375,7 +394,8 @@ public class LoaderGTBlockFluid implements Runnable {
             new ItemAugment.AugmentBuilder(
                 "augmentspacesuit",
                 "Augment: Astronaut's Equipment",
-                "Adds Spacesuit capability. Must be applied to all four armor pieces")
+                "Adds Spacesuit capability. Must be applied to all four armor pieces",
+                Augments.SpaceSuit)
                     .validArmors(MechArmorLoader.AllMechArmor)
                     .attachedBehaviors(Collections.singletonList(SpaceSuitBehavior.INSTANCE))
                     .category(CATEGORY_PROTECTION)
@@ -384,7 +404,8 @@ public class LoaderGTBlockFluid implements Runnable {
             new ItemAugment.AugmentBuilder(
                 "augmentforcefield",
                 "Augment: Energy Grid Defense",
-                "Allows user to deploy a powerful forcefield which will block any damage for huge amounts of eu")
+                "Allows user to deploy a powerful forcefield which will block any damage for huge amounts of eu",
+                Augments.ForceField)
                     .validArmors(Collections.singletonList(MechArmorLoader.MechArmorChestplate))
                     .attachedBehaviors(Collections.singletonList(ForceFieldBehavior.INSTANCE))
                     .category(CATEGORY_PROTECTION)
@@ -393,7 +414,8 @@ public class LoaderGTBlockFluid implements Runnable {
             new ItemAugment.AugmentBuilder(
                 "augmentomnimovement",
                 "Augment: Rotational Movement Adjusters",
-                "Allows user to walk at increased speed in all directions")
+                "Allows user to walk at increased speed in all directions",
+                Augments.OmniMovement)
                     .validArmors(Collections.singletonList(MechArmorLoader.MechArmorBoots))
                     .attachedBehaviors(Collections.singletonList(OmniMovementBehavior.INSTANCE))
                     .requiredBehaviors(Collections.singletonList(SpeedBoostBehavior.MECH_ARMOR_INSTANCE))
@@ -403,7 +425,8 @@ public class LoaderGTBlockFluid implements Runnable {
             new ItemAugment.AugmentBuilder(
                 "augmentwaterbreathing",
                 "Augment: Rebreather",
-                "Restore's the user's air if they run out underwater")
+                "Restore's the user's air if they run out underwater",
+                Augments.WaterBreathing)
                     .validArmors(Collections.singletonList(MechArmorLoader.MechArmorHelmet))
                     .attachedBehaviors(Collections.singletonList(WaterBreathingBehavior.INSTANCE))
                     .category(CATEGORY_UTILITY)
@@ -412,7 +435,8 @@ public class LoaderGTBlockFluid implements Runnable {
             new ItemAugment.AugmentBuilder(
                 "augmentteleporter",
                 "Augment: Personal Teleporter",
-                "Allows the user to teleport to set locations")
+                "Allows the user to teleport to set locations",
+                Augments.Teleporter)
                     .validArmors(Collections.singletonList(MechArmorLoader.MechArmorLeggings))
                     .attachedBehaviors(Collections.singletonList(TeleporterBehavior.INSTANCE))
                     .category(CATEGORY_UTILITY)
@@ -425,28 +449,28 @@ public class LoaderGTBlockFluid implements Runnable {
                 "Armor Frame: Iron",
                 "",
                 Collections.emptyList(),
-                MechArmorAugmentRegistries.Frames.Iron));
+                Frames.Iron));
         ItemList.Armor_Frame_Titanium.set(
             new ItemAugmentFrame(
                 "armorframetitanium",
                 "Armor Frame: Titanium",
                 "",
                 Collections.emptyList(),
-                MechArmorAugmentRegistries.Frames.Titanium));
+                Frames.Titanium));
         ItemList.Armor_Frame_Infinity.set(
             new ItemAugmentFrame(
                 "armorframeinfinity",
                 "Armor Frame: Infinity",
                 "",
                 Collections.emptyList(),
-                MechArmorAugmentRegistries.Frames.Infinity));
+                Frames.Infinity));
         ItemList.Armor_Frame_Gold.set(
             new ItemAugmentFrame(
                 "armorframegold",
                 "Armor Frame: Gold",
                 "",
                 Collections.emptyList(),
-                MechArmorAugmentRegistries.Frames.Gold));
+                Frames.Gold));
 
         ItemList.Neutron_Reflector.set(new ItemNeutronReflector("neutronreflector", "Iridium Neutron Reflector", 0));
         ItemList.Reactor_Coolant_He_1

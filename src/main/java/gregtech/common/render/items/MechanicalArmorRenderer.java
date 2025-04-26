@@ -72,6 +72,7 @@ public class MechanicalArmorRenderer implements IItemRenderer {
 
         GTRenderUtil.renderItem(type, baseLayer);
 
+        //TODO: remove unnecessary second check thats just here to make my test world not crash
         if (!frame.isEmpty() && framesMap.containsKey(frame)) {
             short[] frameColor = framesMap.get(frame).color;
             GL11.glColor4f(frameColor[0] / 255.0F, frameColor[1] / 255.0F, frameColor[2] / 255.0F, 1);

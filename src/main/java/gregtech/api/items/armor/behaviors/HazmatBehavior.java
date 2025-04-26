@@ -1,6 +1,5 @@
 package gregtech.api.items.armor.behaviors;
 
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.StatCollector;
 
@@ -16,7 +15,7 @@ public class HazmatBehavior implements IArmorBehavior {
 
     // This tag will treat the armor as if it has the Hazmat Protection Enchantment
     @Override
-    public void addBehaviorNBT(@NotNull ItemStack stack, @NotNull NBTTagCompound tag) {
+    public void addBehaviorNBT(@NotNull NBTTagCompound tag) {
         tag.setBoolean(ArmorHelper.HAZMAT_PROTECTION_KEY, true);
     }
 

@@ -50,7 +50,7 @@ public class CreativeFlightBehavior implements IArmorBehavior {
     }
 
     @Override
-    public void addBehaviorNBT(@NotNull ItemStack stack, @NotNull NBTTagCompound tag) {
+    public void addBehaviorNBT(@NotNull NBTTagCompound tag) {
         tag.setBoolean(ArmorHelper.CREATIVE_FLIGHT_KEY, true);
     }
 

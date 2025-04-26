@@ -67,9 +67,9 @@ public interface IArmorBehavior {
     default void onKeyPressed(@NotNull ItemStack stack, @NotNull EntityPlayer player, SyncedKeybind keyPressed) {}
 
     /**
-     * Called when attaching this behavior's NBT tag to an item
+     * Called when attaching this behavior's NBT tag to an NBTTagCompound
      */
-    default void addBehaviorNBT(@NotNull ItemStack stack, @NotNull NBTTagCompound tag) {}
+    default void addBehaviorNBT(@NotNull NBTTagCompound tag) {}
 
     /**
      * Return the primary NBT tag associated with this behavior

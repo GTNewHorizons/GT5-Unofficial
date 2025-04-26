@@ -2,6 +2,7 @@ package gregtech.common.tileentities.machines.basic;
 
 import static gregtech.api.items.ItemAugment.*;
 import static gregtech.api.items.armor.MechArmorAugmentRegistries.LARGEST_FRAME;
+import static gregtech.api.items.armor.MechArmorAugmentRegistries.augmentsMap;
 import static gregtech.api.items.armor.MechArmorAugmentRegistries.framesMap;
 import static gregtech.api.modularui2.GTGuiTextures.OVERLAY_BUTTON_CHECKMARK;
 import static gregtech.api.util.GTUtility.getOrCreateNbtCompound;
@@ -11,6 +12,7 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 
 import net.minecraft.init.Items;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
@@ -129,59 +131,68 @@ public class MTEModificationTable extends MTEBasicMachine {
         NBTTagCompound categoryTag = armorTag.getCompoundTag("augments")
             .getCompoundTag(Integer.toString(category));
         if (newItem != null) {
-            categoryTag.setTag(Integer.toString(column), newItem.writeToNBT(new NBTTagCompound()));
+            if (newItem.getItem() instanceof ItemAugment itemAugment) {
+                categoryTag.setString(Integer.toString(column), itemAugment.augmentData.id);
+                applyAugmentToTag(armorTag, newItem);
+            }
         } else {
-            categoryTag.removeTag(Integer.toString(column));
+            String oldAugmentID = categoryTag.getString(Integer.toString(column));
+            if (!oldAugmentID.isEmpty()) {
+                Item oldItem = augmentsMap.get(oldAugmentID).item.getItem();
+                if (oldItem instanceof ItemAugmentAbstract augmentItem) {
+                    categoryTag.removeTag(Integer.toString(column));
+                    augmentItem.getAttachedBehaviors().forEach(behavior -> armorTag.removeTag(behavior.getMainNBTTag()));
+                }
+            }
         }
         updatedArmorItem.setTagCompound(armorTag);
         armorSlotHandler.setStackInSlot(0, updatedArmorItem);
     }
 
-    private boolean applyAugment(ItemStack armorItem, ItemStack modItem) {
-        if (armorItem == null || modItem == null) return false;
-
-        NBTTagCompound tag = getOrCreateNbtCompound(armorItem);
+    private boolean applyAugmentToTag(NBTTagCompound armorTag, ItemStack modItem) {
+        if (armorTag == null || modItem == null) return false;
 
         // Sanity check, filter on the item slots should already verify this
-        if (!(modItem.getItem() instanceof ItemAugmentAbstract baseAugment
-            && armorItem.getItem() instanceof MechArmorBase armor)) {
+        if (!(modItem.getItem() instanceof ItemAugmentAbstract baseAugment)) {
             return false;
         }
 
         // Verify behaviors meet requirements
 
+        //TODO: This check belongs on the filter
         // These checks are only needed for non frame/core augments
+        /*
         if (baseAugment instanceof ItemAugment augment) {
             // Check augment is available for this armor
             if (!augment.getValidArmors()
                 .contains(armor)) return false;
         }
 
+         */
+
         // Check armor against required and incompatible lists
         for (IArmorBehavior requiredBehavior : baseAugment.getRequiredBehaviors()) {
-            if (!tag.hasKey(requiredBehavior.getMainNBTTag())) return false;
+            if (!armorTag.hasKey(requiredBehavior.getMainNBTTag())) return false;
         }
         for (IArmorBehavior incompatibleBehavior : baseAugment.getIncompatibleBehaviors()) {
-            if (tag.hasKey(incompatibleBehavior.getMainNBTTag())) return false;
+            if (armorTag.hasKey(incompatibleBehavior.getMainNBTTag())) return false;
         }
 
         // At this point the modification should be successful, verification has passed
-        tag.setInteger(
+        armorTag.setInteger(
             ArmorHelper.VIS_DISCOUNT_KEY,
-            tag.getInteger(ArmorHelper.VIS_DISCOUNT_KEY) + baseAugment.getVisDiscount());
+            armorTag.getInteger(ArmorHelper.VIS_DISCOUNT_KEY) + baseAugment.getVisDiscount());
 
         if (baseAugment instanceof ItemAugmentFrame frame) {
-            armorItem.getTagCompound()
-                .setString("frame", frame.frameData.id);
+            armorTag.setString("frame", frame.frameData.id);
         }
 
         if (baseAugment instanceof ItemAugmentCore core) {
-            armorItem.getTagCompound()
-                .setInteger("core", core.getCoreid());
+            armorTag.setInteger("core", core.getCoreid());
         }
 
         baseAugment.getAttachedBehaviors()
-            .forEach(behavior -> behavior.addBehaviorNBT(armorItem, tag));
+            .forEach(behavior -> behavior.addBehaviorNBT(armorTag));
 
         return true;
     }
@@ -231,16 +242,6 @@ public class MTEModificationTable extends MTEBasicMachine {
                 .pos(4, 21)
                 .background(GTGuiTextures.SLOT_ITEM_STANDARD, new ItemDrawable(new ItemStack(Items.iron_helmet))));
 
-        panel.child(
-            new ButtonWidget<>().pos(-20, 61)
-                .syncHandler(new InteractionSyncHandler().setOnMousePressed(ignored -> {
-                    for (ItemStack stack : augmentsSlotHandler.getStacks()) {
-                        if (stack != null) applyAugment(armorSlotHandler.getStackInSlot(0), stack);
-                    }
-                }))
-                .overlay(OVERLAY_BUTTON_CHECKMARK)
-                .size(16, 16)
-                .addTooltipLine("Submit"));
         panel.child(slots);
 
         return panel;
@@ -306,11 +307,11 @@ public class MTEModificationTable extends MTEBasicMachine {
         if (categoryTag == null) {
             return null;
         }
-        NBTTagCompound columnTag = categoryTag.getCompoundTag(Integer.toString(column));
-        if (columnTag == null) {
+        String columnTag = categoryTag.getString(Integer.toString(column));
+        if (columnTag.isEmpty()) {
             return null;
         }
-        return ItemStack.loadItemStackFromNBT(columnTag);
+        return augmentsMap.get(columnTag).item.get(1);
     }
 
     private static class LimitingItemStackHandler extends ItemStackHandler

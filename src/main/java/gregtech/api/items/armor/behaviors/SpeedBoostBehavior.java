@@ -92,7 +92,7 @@ public class SpeedBoostBehavior implements IArmorBehavior {
     }
 
     @Override
-    public void addBehaviorNBT(@NotNull ItemStack stack, @NotNull NBTTagCompound tag) {
+    public void addBehaviorNBT(@NotNull NBTTagCompound tag) {
         float increaseMax = speedup;
         if (tag.hasKey(ArmorHelper.SPEED_BOOST_MAX_KEY)) {
             increaseMax += tag.getFloat(ArmorHelper.SPEED_BOOST_MAX_KEY);

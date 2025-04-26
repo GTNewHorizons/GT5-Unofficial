@@ -1,6 +1,5 @@
 package gregtech.api.items.armor.behaviors;
 
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.StatCollector;
 
@@ -15,7 +14,7 @@ public class StepAssistBehavior implements IArmorBehavior {
     protected StepAssistBehavior() {/**/}
 
     @Override
-    public void addBehaviorNBT(@NotNull ItemStack stack, @NotNull NBTTagCompound tag) {
+    public void addBehaviorNBT(@NotNull NBTTagCompound tag) {
         tag.setBoolean(ArmorHelper.STEP_ASSIST_KEY, true);
     }
 

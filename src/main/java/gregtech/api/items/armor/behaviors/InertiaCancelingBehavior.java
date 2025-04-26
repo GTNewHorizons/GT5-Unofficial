@@ -24,7 +24,7 @@ public class InertiaCancelingBehavior implements IArmorBehavior {
     public static InertiaCancelingBehavior INSTANCE = new InertiaCancelingBehavior();
 
     @Override
-    public void addBehaviorNBT(@NotNull ItemStack stack, @NotNull NBTTagCompound tag) {
+    public void addBehaviorNBT(@NotNull NBTTagCompound tag) {
         tag.setBoolean(ArmorHelper.INERTIA_CANCELING_KEY, true);
     }
 

@@ -1,6 +1,5 @@
 package gregtech.api.items.armor.behaviors;
 
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.StatCollector;
 
@@ -19,7 +18,7 @@ public class JumpBoostBehavior implements IArmorBehavior {
     }
 
     @Override
-    public void addBehaviorNBT(@NotNull ItemStack stack, @NotNull NBTTagCompound tag) {
+    public void addBehaviorNBT(@NotNull NBTTagCompound tag) {
         tag.setFloat(ArmorHelper.JUMP_BOOST_KEY, boost);
     }
 

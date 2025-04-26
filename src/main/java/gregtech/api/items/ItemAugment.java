@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
+import gregtech.api.items.armor.MechArmorAugmentRegistries.Augments;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
@@ -21,6 +22,8 @@ public class ItemAugment extends ItemAugmentAbstract {
 
     public final int category;
 
+    public final Augments augmentData;
+
     public ItemAugment(AugmentBuilder builder) {
         super(
             builder.aUnlocalized,
@@ -31,6 +34,7 @@ public class ItemAugment extends ItemAugmentAbstract {
             builder.requiredBehaviors,
             builder.incompatibleBehaviors,
             builder.visDiscount);
+        this.augmentData = builder.augmentData;
         this.category = builder.category;
     }
 
@@ -76,6 +80,7 @@ public class ItemAugment extends ItemAugmentAbstract {
     public static class AugmentBuilder {
 
         private final String aUnlocalized, aEnglish, aEnglishTooltip;
+        private final Augments augmentData;
 
         private Collection<MechArmorBase> validArmors;
         private Collection<IArmorBehavior> attachedBehaviors = Collections.emptyList();
@@ -84,10 +89,11 @@ public class ItemAugment extends ItemAugmentAbstract {
         private int visDiscount = 0;
         private int category = CATEGORY_PROTECTION;
 
-        public AugmentBuilder(String aUnlocalized, String aEnglish, String aEnglishTooltip) {
+        public AugmentBuilder(String aUnlocalized, String aEnglish, String aEnglishTooltip, Augments augmentData) {
             this.aUnlocalized = aUnlocalized;
             this.aEnglish = aEnglish;
             this.aEnglishTooltip = aEnglishTooltip;
+            this.augmentData = augmentData;
         }
 
         public AugmentBuilder validArmors(Collection<MechArmorBase> validArmors) {

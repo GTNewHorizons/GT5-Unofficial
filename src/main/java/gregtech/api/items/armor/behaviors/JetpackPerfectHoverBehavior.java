@@ -1,6 +1,5 @@
 package gregtech.api.items.armor.behaviors;
 
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.StatCollector;
 
@@ -13,7 +12,7 @@ public class JetpackPerfectHoverBehavior implements IArmorBehavior {
     public static JetpackPerfectHoverBehavior INSTANCE = new JetpackPerfectHoverBehavior();
 
     @Override
-    public void addBehaviorNBT(@NotNull ItemStack stack, @NotNull NBTTagCompound tag) {
+    public void addBehaviorNBT(@NotNull NBTTagCompound tag) {
         tag.setBoolean(ArmorHelper.JETPACK_PERFECT_HOVER_KEY, true);
     }
 

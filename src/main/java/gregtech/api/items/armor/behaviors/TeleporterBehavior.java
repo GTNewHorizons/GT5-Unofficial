@@ -46,7 +46,7 @@ public class TeleporterBehavior implements IArmorBehavior, IGuiHolder<ItemStackG
     private final ItemStackGuiFactory GUIFactory = new ItemStackGuiFactory("gtarmor:teleportgui", this);
 
     @Override
-    public void addBehaviorNBT(@NotNull ItemStack stack, @NotNull NBTTagCompound tag) {
+    public void addBehaviorNBT(@NotNull NBTTagCompound tag) {
         tag.setBoolean(ArmorHelper.TELEPORTER_KEY, true);
     }
 

@@ -97,7 +97,7 @@ public class MechArmorBase extends ItemArmor implements IKeyPressedListener, ISp
         // Set behaviors
         NBTTagCompound tag = getOrCreateNbtCompound(stack);
         tag.setInteger(MECH_CORE_KEY, 0);
-        tag.setInteger(MECH_FRAME_KEY, 0);
+        tag.setString(MECH_FRAME_KEY, "None");
         return stack;
     }
 
