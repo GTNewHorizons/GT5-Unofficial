@@ -32,6 +32,7 @@ import gregtech.api.interfaces.IColorModulationContainer;
 import gregtech.api.interfaces.IMaterialHandler;
 import gregtech.api.interfaces.ISubTagContainer;
 import gregtech.api.objects.MaterialStack;
+import gregtech.api.util.CustomGlyphs;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gregtech.common.config.Gregtech;
@@ -420,7 +421,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials Antimatter;
     public static Materials Protomatter;
     public static Materials AdvancedGlue;
-    public static Materials BioFuel;
     public static Materials Biomass;
     public static Materials CharcoalByproducts;
     public static Materials Cheese;
@@ -977,6 +977,15 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials RadoxGas;
     public static Materials RadoxPolymer;
 
+    public static Materials NetherAir;
+    public static Materials NetherSemiFluid;
+    public static Materials NefariousGas;
+    public static Materials NefariousOil;
+    public static Materials PoorNetherWaste;
+    public static Materials RichNetherWaste;
+    public static Materials HellishMetal;
+    public static Materials Netherite;
+    public static Materials ActivatedNetherite;
 
     // spotless:on
 
@@ -1034,7 +1043,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         setByProducts();
         setColors();
 
-        overrideChemicalFormulars();
+        overrideChemicalFormulas();
     }
 
     public final short[] mRGBa = new short[] { 255, 255, 255, 0 }, mMoltenRGBa = new short[] { 255, 255, 255, 0 };
@@ -1912,7 +1921,11 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         Naquadria.mMoltenRGBa[3] = 0;
     }
 
-    private static void overrideChemicalFormulars() {
+    private static void overrideChemicalFormulas() {
+        InfusedAir.mChemicalFormula = CustomGlyphs.AIR;
+        InfusedEarth.mChemicalFormula = CustomGlyphs.EARTH;
+        InfusedFire.mChemicalFormula = CustomGlyphs.FIRE;
+        InfusedWater.mChemicalFormula = CustomGlyphs.WATER;
         Glue.mChemicalFormula = "No Horses were harmed for the Production";
         AdvancedGlue.mChemicalFormula = "A chemically approved glue!";
         UUAmplifier.mChemicalFormula = "Accelerates the Mass Fabricator";
@@ -2016,6 +2029,8 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
             + "If*";
         MaterialsUEVplus.HotProtoHalkonite.mChemicalFormula = MaterialsUEVplus.MoltenProtoHalkoniteBase.mChemicalFormula;
         MaterialsUEVplus.ProtoHalkonite.mChemicalFormula = MaterialsUEVplus.MoltenProtoHalkoniteBase.mChemicalFormula;
+        Materials.HellishMetal.mChemicalFormula = "RhMa";
+        Materials.Netherite.mChemicalFormula = "NhAuMa*";
     }
 
     private static void initSubTags() {
@@ -2025,15 +2040,23 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
             .addTo(Magnetite, VanadiumMagnetite, BasalticMineralSand, GraniticMineralSand);
 
         SubTag.NO_RECIPES.addTo(MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter);
+        SubTag.NO_RECYCLING_RECIPES.addTo(MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter);
         SubTag.NO_RECIPES.addTo(MaterialsUEVplus.HotProtoHalkonite);
+        SubTag.NO_RECYCLING_RECIPES.addTo(MaterialsUEVplus.HotProtoHalkonite);
         SubTag.NO_RECIPES.addTo(MaterialsUEVplus.ProtoHalkonite);
+        SubTag.NO_RECYCLING_RECIPES.addTo(MaterialsUEVplus.ProtoHalkonite);
         MaterialsUEVplus.HotProtoHalkonite.remove(SubTag.SMELTING_TO_FLUID);
         MaterialsUEVplus.ProtoHalkonite.remove(SubTag.SMELTING_TO_FLUID);
 
         SubTag.NO_RECIPES.addTo(MaterialsUEVplus.HotExoHalkonite);
         SubTag.NO_RECIPES.addTo(MaterialsUEVplus.ExoHalkonite);
+        SubTag.NO_RECYCLING_RECIPES.addTo(MaterialsUEVplus.HotExoHalkonite);
+        SubTag.NO_RECYCLING_RECIPES.addTo(MaterialsUEVplus.ExoHalkonite);
         MaterialsUEVplus.HotExoHalkonite.remove(SubTag.SMELTING_TO_FLUID);
         MaterialsUEVplus.ExoHalkonite.remove(SubTag.SMELTING_TO_FLUID);
+
+        SubTag.NO_RECIPES.addTo(Materials.Netherite);
+        Materials.Netherite.remove(SubTag.SMELTING_TO_FLUID);
 
         SubTag.ELECTROMAGNETIC_SEPERATION_IRON.addTo(
             YellowLimonite,

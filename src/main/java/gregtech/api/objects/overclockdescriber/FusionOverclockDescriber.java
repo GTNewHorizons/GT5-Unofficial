@@ -25,7 +25,7 @@ public class FusionOverclockDescriber extends EUOverclockDescriber {
     @Override
     public OverclockCalculator createCalculator(OverclockCalculator template, GTRecipe recipe) {
         return super.createCalculator(template, recipe)
-            .limitOverclockCount(overclock(recipe.mSpecialValue, recipe.mEUt))
+            .setMaxOverclocks(maxOverclocks(recipe.mSpecialValue, recipe.mEUt))
             .setEUtIncreasePerOC(getEUtIncreasePerOC())
             .setDurationDecreasePerOC(getDurationDecreasePerOC());
     }
@@ -52,9 +52,9 @@ public class FusionOverclockDescriber extends EUOverclockDescriber {
         return this.capableStartup >= recipe.mSpecialValue;
     }
 
-    protected int overclock(long startEnergy, long voltage) {
+    protected int maxOverclocks(long startEnergy, long voltage) {
         // Fusion Computer tier - recipe tier
-        return Math.max(getFusionTier() - FusionSpecialValueFormatter.getFusionTier(startEnergy, voltage), 0);
+        return getFusionTier() - FusionSpecialValueFormatter.getFusionTier(startEnergy, voltage);
     }
 
     protected int getFusionTier() {

@@ -1920,6 +1920,33 @@ tt.eoh.fancy_names.tipler=Tipler
 tt.eoh.fancy_names.gallifreyan=Gallifreyan
 tt.eoh.fancy_names.unknown=Unknown
 
+tt.godforge.casings.Error.Tooltip=Error, report to GTNH team
+tt.godforge.casings.0.Tooltip.0=Shielded by the event horizon of a singularity
+tt.godforge.casings.0.Tooltip.1=Don't get too close...
+tt.godforge.casings.1.Tooltip.0=Designed to route stellar matter using spacetime distortion
+tt.godforge.casings.1.Tooltip.1=Reality Distortion
+tt.godforge.casings.2.Tooltip.0=Unaffected by gravitational forces
+tt.godforge.casings.2.Tooltip.1=Not even a black hole could tear it apart.
+tt.godforge.casings.3.Tooltip.0=Creates enormous magnetic fields capable of constraining entire stars
+tt.godforge.casings.3.Tooltip.1=It's super effective!
+tt.godforge.casings.4.Tooltip.0=Taps into streams of stellar matter to harness their heat energy
+tt.godforge.casings.4.Tooltip.1=Turn up the heat!
+tt.godforge.casings.5.Tooltip.0=Controls the flow of gravitons to manipulate gravity
+tt.godforge.casings.5.Tooltip.1=Exponential scaling past 800 Galaxies
+tt.godforge.casings.6.Tooltip.0=Controls the flow of gravitons to manipulate gravity
+tt.godforge.casings.6.Tooltip.1=Getting closer...
+tt.godforge.casings.7.Tooltip.0=Controls the flow of gravitons to manipulate gravity
+tt.godforge.casings.7.Tooltip.1=Gravity Central
+tt.godforge.casings.8.Tooltip.0=Transfers and stores extreme amounts of heat without any loss
+tt.godforge.casings.8.Tooltip.1=<<<Thermal<<<
+tt.godforge.casings.8.Tooltip.2=>>>Wave>>>
+
+tt.eoh.stability.tooltip=§b§lIncreases stability of spacetime field.
+tt.eoh.time_dilation.standard.tooltip=§b§lTime dilation in a box.
+tt.eoh.time_dilation.error.tooltip=§c§lError, report to GTNH team
+tt.eoh.spacetime.standard.tooltip.0=Supports an internal spacetime volume of up to %d km³.
+tt.eoh.spacetime.standard.tooltip.1=§b§lCapable of running recipes up to tier %d
+
 # Info data
 
 tt.infodata.multi.energy_hatches=Energy Hatches: %s EU / %s EU
