@@ -190,78 +190,88 @@ public class MTETeslaTower extends TTMultiblockBase implements ISurvivalConstruc
         .addElement('F', ofFrame(Materials.Titanium))
         .build();
     // endregion
+    // region parameters
+    Parameter.DoubleParameter hysteresisLowParameter;
+    Parameter.DoubleParameter hysteresisHighParameter;
+    Parameter.IntegerParameter transferRadiusParameter;
+    Parameter.IntegerParameter transceiverRadiusParameter;
+    Parameter.IntegerParameter ultimateCoverTransferRadiusParameter;
+    Parameter.IntegerParameter outputVoltageParameter;
+    Parameter.IntegerParameter outputCurrentParameter;
+    Parameter.IntegerParameter scanTimeParameter;
+    Parameter.BooleanParameter overdriveParameter;
 
+    // endregion
     public MTETeslaTower(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
-        initParameters();
     }
 
     public MTETeslaTower(String aName) {
         super(aName);
-        initParameters();
     }
 
     @Override
     public void initParameters() {
-        parameterMap.put(
-            "hysteresisLow",
-            new Parameter.DoubleParameter(
-                0.25,
-                0.05,
-                0.75,
-                "gt.blockmachines.multimachine.tm.teslaCoil.hysteresisLow"));
-        parameterMap.put(
-            "hysteresisHigh",
-            new Parameter.DoubleParameter(
-                0.75,
-                0.25,
-                0.95,
-                "gt.blockmachines.multimachine.tm.teslaCoil.hysteresisHigh"));
-        parameterMap.put(
-            "transferRadius",
-            new Parameter.IntegerParameter(
-                ConfigHandler.TeslaTweaks.TESLA_MULTI_RANGE_TOWER,
-                0,
-                Integer.MAX_VALUE,
-                "gt.blockmachines.multimachine.tm.teslaCoil.transferRadius"));
-        parameterMap.put(
-            "transceiverRadius",
-            new Parameter.IntegerParameter(
-                ConfigHandler.TeslaTweaks.TESLA_MULTI_RANGE_TRANSCEIVER,
-                0,
-                Integer.MAX_VALUE,
-                "gt.blockmachines.multimachine.tm.teslaCoil.transceiverRadius"));
-        parameterMap.put(
-            "ultimateCoverTransferRadius",
-            new Parameter.IntegerParameter(
-                ConfigHandler.TeslaTweaks.TESLA_MULTI_RANGE_COVER,
-                0,
-                Integer.MAX_VALUE,
-                "gt.blockmachines.multimachine.tm.teslaCoil.ultimateCoverTransferRadius"));
-        parameterMap.put(
-            "outputVoltage",
-            new Parameter.IntegerParameter(
-                -1,
-                -1,
-                Integer.MAX_VALUE,
-                "gt.blockmachines.multimachine.tm.teslaCoil.outputVoltage"));
-        parameterMap.put(
-            "outputCurrent",
-            new Parameter.IntegerParameter(
-                -1,
-                -1,
-                Integer.MAX_VALUE,
-                "gt.blockmachines.multimachine.tm.teslaCoil.outputCurrent"));
-        parameterMap.put(
-            "scanTime",
-            new Parameter.IntegerParameter(
-                100,
-                100,
-                Integer.MAX_VALUE,
-                "gt.blockmachines.multimachine.tm.teslaCoil.scanTime"));
-        parameterMap.put(
-            "overdrive",
-            new Parameter.BooleanParameter(false, "gt.blockmachines.multimachine.tm.teslaCoil.overdrive"));
+        hysteresisLowParameter = new Parameter.DoubleParameter(
+            0.25,
+            0.05,
+            0.75,
+            "gt.blockmachines.multimachine.tm.teslaCoil.hysteresisLow");
+
+        hysteresisHighParameter = new Parameter.DoubleParameter(
+            0.75,
+            0.25,
+            0.95,
+            "gt.blockmachines.multimachine.tm.teslaCoil.hysteresisHigh");
+
+        transferRadiusParameter = new Parameter.IntegerParameter(
+            ConfigHandler.TeslaTweaks.TESLA_MULTI_RANGE_TOWER,
+            0,
+            Integer.MAX_VALUE,
+            "gt.blockmachines.multimachine.tm.teslaCoil.transferRadius");
+
+        transceiverRadiusParameter = new Parameter.IntegerParameter(
+            ConfigHandler.TeslaTweaks.TESLA_MULTI_RANGE_TRANSCEIVER,
+            0,
+            Integer.MAX_VALUE,
+            "gt.blockmachines.multimachine.tm.teslaCoil.transceiverRadius");
+
+        ultimateCoverTransferRadiusParameter = new Parameter.IntegerParameter(
+            ConfigHandler.TeslaTweaks.TESLA_MULTI_RANGE_COVER,
+            0,
+            Integer.MAX_VALUE,
+            "gt.blockmachines.multimachine.tm.teslaCoil.ultimateCoverTransferRadius");
+
+        outputVoltageParameter = new Parameter.IntegerParameter(
+            -1,
+            -1,
+            Integer.MAX_VALUE,
+            "gt.blockmachines.multimachine.tm.teslaCoil.outputVoltage");
+
+        outputCurrentParameter = new Parameter.IntegerParameter(
+            -1,
+            -1,
+            Integer.MAX_VALUE,
+            "gt.blockmachines.multimachine.tm.teslaCoil.outputCurrent");
+
+        scanTimeParameter = new Parameter.IntegerParameter(
+            100,
+            100,
+            Integer.MAX_VALUE,
+            "gt.blockmachines.multimachine.tm.teslaCoil.scanTime");
+
+        overdriveParameter = new Parameter.BooleanParameter(
+            false,
+            "gt.blockmachines.multimachine.tm.teslaCoil.overdrive");
+        parameterList.add(hysteresisLowParameter);
+        parameterList.add(hysteresisHighParameter);
+        parameterList.add(transferRadiusParameter);
+        parameterList.add(transceiverRadiusParameter);
+        parameterList.add(ultimateCoverTransferRadiusParameter);
+        parameterList.add(outputVoltageParameter);
+        parameterList.add(outputCurrentParameter);
+        parameterList.add(scanTimeParameter);
+        parameterList.add(overdriveParameter);
     }
 
     private float getRangeMulti(int mTier, int vTier) {
@@ -524,24 +534,21 @@ public class MTETeslaTower extends TTMultiblockBase implements ISurvivalConstruc
         // Hysteresis based ePowerPass setting
         float energyFrac = (float) getEUVar() / energyCapacity;
 
-        if (!ePowerPass && energyFrac > ((Parameter.DoubleParameter) parameterMap.get("hysteresisHigh")).getValue()) {
+        if (!ePowerPass && energyFrac > hysteresisHighParameter.getValue()) {
             ePowerPass = true;
-        } else
-            if (ePowerPass && energyFrac < ((Parameter.DoubleParameter) parameterMap.get("hysteresisLow")).getValue()) {
-                ePowerPass = false;
-            }
+        } else if (ePowerPass && energyFrac < hysteresisLowParameter.getValue()) {
+            ePowerPass = false;
+        }
 
         // Power Limit Settings
-        int outputVoltageParameter = ((Parameter.IntegerParameter) parameterMap.get("outputVoltage")).getValue();
-        if (outputVoltageParameter > 0) {
-            outputVoltage = min(outputVoltageMax, outputVoltageParameter);
+        if (outputVoltageParameter.getValue() > 0) {
+            outputVoltage = min(outputVoltageMax, outputVoltageParameter.getValue());
         } else {
             outputVoltage = outputVoltageMax;
         }
 
-        int outputCurrentParameter = ((Parameter.IntegerParameter) parameterMap.get("outputCurrent")).getValue();
-        if (outputCurrentParameter > 0) {
-            outputCurrent = min(outputCurrentMax, outputCurrentParameter);
+        if (outputCurrentParameter.getValue() > 0) {
+            outputCurrent = min(outputCurrentMax, outputCurrentParameter.getValue());
         } else {
             outputCurrent = outputCurrentMax;
         }
@@ -672,12 +679,12 @@ public class MTETeslaTower extends TTMultiblockBase implements ISurvivalConstruc
 
     @Override
     public int getTeslaTransmissionRange() {
-        return ((Parameter.IntegerParameter) parameterMap.get("transferRadius")).getValue();
+        return transferRadiusParameter.getValue();
     }
 
     @Override
     public boolean isOverdriveEnabled() {
-        return ((Parameter.BooleanParameter) parameterMap.get("overdrive")).getValue();
+        return overdriveParameter.getValue();
     }
 
     @Override
