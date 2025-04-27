@@ -73,7 +73,7 @@ import tectech.thing.metaTileEntity.multi.base.Parameter;
 public abstract class MTELargeFusionComputer extends MTETooltipMultiBlockBaseEM
     implements IConstructable, ISurvivalConstructable, IOverclockDescriptionProvider {
 
-    Parameter.IntegerParameter batchSizeParameter;
+    public Parameter.IntegerParameter batchSizeParameter;
 
     public static final String MAIN_NAME = "largeFusion";
     public static final int M = 1_000_000;
