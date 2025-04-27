@@ -276,11 +276,13 @@ public class GTRenderedTexture extends GTTextureBase implements ITexture, IColor
         ExtendedFacing extendedFacing) {
 
         aRenderer.uvRotateEast = getRotation(extendedFacing);
+        aRenderer.field_152631_f = true;
         icon = getFlipped(extendedFacing, icon);
 
         aRenderer.renderFaceZNeg(Blocks.air, x, y, z, icon);
 
         aRenderer.uvRotateEast = 0;
+        aRenderer.field_152631_f = false;
     }
 
     /**
@@ -318,11 +320,13 @@ public class GTRenderedTexture extends GTTextureBase implements ITexture, IColor
         ExtendedFacing extendedFacing) {
 
         aRenderer.uvRotateSouth = getRotation(extendedFacing);
+        aRenderer.field_152631_f = true;
         icon = getFlipped(extendedFacing, icon);
 
         aRenderer.renderFaceXPos(Blocks.air, x, y, z, icon);
 
         aRenderer.uvRotateSouth = 0;
+        aRenderer.field_152631_f = false;
     }
 
     private static final int NORMAL = 0;
