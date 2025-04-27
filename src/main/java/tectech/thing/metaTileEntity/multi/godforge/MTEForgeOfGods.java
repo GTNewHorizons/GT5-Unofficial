@@ -26,6 +26,7 @@ import static tectech.thing.metaTileEntity.multi.godforge.util.GodforgeMath.calc
 import static tectech.thing.metaTileEntity.multi.godforge.util.GodforgeMath.calculateProcessingVoltageForModules;
 import static tectech.thing.metaTileEntity.multi.godforge.util.GodforgeMath.calculateSpeedBonusForModules;
 import static tectech.thing.metaTileEntity.multi.godforge.util.GodforgeMath.calculateStartupFuelConsumption;
+import static tectech.thing.metaTileEntity.multi.godforge.util.GodforgeMath.factorChangeDuringRecipeAntiCheese;
 import static tectech.thing.metaTileEntity.multi.godforge.util.GodforgeMath.queryMilestoneStats;
 import static tectech.thing.metaTileEntity.multi.godforge.util.GodforgeMath.setMiscModuleParameters;
 
@@ -566,6 +567,9 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
                             queryMilestoneStats(module, this);
                             if (!isUpgradeActive(TBF)) {
                                 calculateProcessingVoltageForModules(module, this);
+                            }
+                            if (factorChangeDuringRecipeAntiCheese(module)) {
+                                module.disconnect();
                             }
                         } else {
                             module.disconnect();
