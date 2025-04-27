@@ -154,8 +154,8 @@ public class MTEFluidPipe extends MetaPipeEntity {
     }
 
     @Override
-    public ITexture[] getTexture(IGregTechTileEntity base, ForgeDirection side, int connections,
-        int colorIndex, boolean connected, boolean redstoneLevel) {
+    public ITexture[] getTexture(IGregTechTileEntity base, ForgeDirection side, int connections, int colorIndex,
+        boolean connected, boolean redstoneLevel) {
         List<ITexture> textures = new ArrayList<>();
 
         textures.add(getBaseTexture(connected, colorIndex));
@@ -177,7 +177,8 @@ public class MTEFluidPipe extends MetaPipeEntity {
         return getBaseTexture(mThickNess, mPipeAmount, mMaterial.mIconSet, mMaterial.mRGBa, connected, colorIndex);
     }
 
-    protected static ITexture getBaseTexture(float aThickNess, int aPipeAmount, TextureSet textureSet, short[] rgba, boolean connected, int colorIndex) {
+    protected static ITexture getBaseTexture(float aThickNess, int aPipeAmount, TextureSet textureSet, short[] rgba,
+        boolean connected, int colorIndex) {
         IIconContainer texture = textureSet.mTextures[OrePrefixes.pipeHuge.mTextureIndex];
 
         if (!connected) {
