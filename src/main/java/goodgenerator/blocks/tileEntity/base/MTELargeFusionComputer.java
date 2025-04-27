@@ -6,7 +6,6 @@ import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.filterByMTETier;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 import static gregtech.api.util.GTUtility.validMTEList;
-import static net.minecraft.util.StatCollector.translateToLocal;
 
 import java.math.BigInteger;
 import java.util.List;
@@ -36,11 +35,6 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.gtnewhorizons.modularui.api.NumberFormatMUI;
-import com.gtnewhorizons.modularui.api.math.Alignment;
-import com.gtnewhorizons.modularui.common.widget.DynamicPositionedColumn;
-import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
-import com.gtnewhorizons.modularui.common.widget.SlotWidget;
-import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -74,23 +68,12 @@ import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.common.tileentities.machines.IDualInputHatch;
 import gregtech.common.tileentities.machines.multi.drone.MTEHatchDroneDownLink;
 import tectech.thing.metaTileEntity.hatch.MTEHatchEnergyMulti;
-import tectech.thing.metaTileEntity.multi.base.INameFunction;
-import tectech.thing.metaTileEntity.multi.base.IStatusFunction;
-import tectech.thing.metaTileEntity.multi.base.LedStatus;
 import tectech.thing.metaTileEntity.multi.base.Parameter;
-import tectech.thing.metaTileEntity.multi.base.Parameters;
 
 public abstract class MTELargeFusionComputer extends MTETooltipMultiBlockBaseEM
     implements IConstructable, ISurvivalConstructable, IOverclockDescriptionProvider {
 
-    public Parameters.Group.ParameterIn batchSetting;
     Parameter.IntegerParameter batchSizeParameter;
-    /** Name of the batch setting */
-    public static final INameFunction<MTELargeFusionComputer> BATCH_SETTING_NAME = (base,
-        p) -> translateToLocal("batch_mode.cfgi.0"); // Batch size
-    /** Status of the batch setting */
-    public static final IStatusFunction<MTELargeFusionComputer> BATCH_STATUS = (base, p) -> LedStatus
-        .fromLimitsInclusiveOuterBoundary(p.get(), 1, 0, 32, 128);
 
     public static final String MAIN_NAME = "largeFusion";
     public static final int M = 1_000_000;
@@ -251,12 +234,9 @@ public abstract class MTELargeFusionComputer extends MTETooltipMultiBlockBaseEM
 
         if (getMaxBatchSize() == 1) {
             batchSizeParameter.setValue(batchSizeParameter.getMaxValue());
-
-            parametrization.trySetParameters(batchSetting.hatchId(), batchSetting.parameterId(), 128); // REMOVE
             GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOn"));
         } else {
             batchSizeParameter.setValue(batchSizeParameter.getMinValue());
-            parametrization.trySetParameters(batchSetting.hatchId(), batchSetting.parameterId(), 1); // REMOVE
             GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOff"));
         }
         return true;
@@ -594,74 +574,6 @@ public abstract class MTELargeFusionComputer extends MTETooltipMultiBlockBaseEM
     protected static final NumberFormatMUI numberFormat = new NumberFormatMUI();
 
     @Override
-    protected void drawTexts(DynamicPositionedColumn screenElements, SlotWidget inventorySlot) {
-        super.drawTexts(screenElements, inventorySlot);
-
-        screenElements
-            .widget(
-                new TextWidget()
-                    .setStringSupplier(
-                        () -> StatCollector.translateToLocal("gui.LargeFusion.0") + " "
-                            + numberFormat.format(energyStorageCache)
-                            + " EU")
-                    .setTextAlignment(Alignment.CenterLeft)
-                    .setDefaultColor(COLOR_TEXT_WHITE.get())
-                    .setEnabled(widget -> getErrorDisplayID() == 0))
-            .widget(new FakeSyncWidget.LongSyncer(this::maxEUStore, val -> energyStorageCache = val))
-            .widget(
-                new TextWidget()
-                    .setStringSupplier(
-                        () -> StatCollector.translateToLocal("gui.LargeFusion.1") + " "
-                            + numberFormat.format(getEUVar())
-                            + " EU")
-                    .setTextAlignment(Alignment.CenterLeft)
-                    .setDefaultColor(COLOR_TEXT_WHITE.get())
-                    .setEnabled(widget -> getErrorDisplayID() == 0))
-            .widget(new FakeSyncWidget.LongSyncer(this::getEUVar, this::setEUVar));
-    }
-
-    @Override
-    public void insertTexts(ListWidget<IWidget, ?> machineInfo, ItemStackHandler invSlot,
-        PanelSyncManager syncManager) {
-        super.insertTexts(machineInfo, invSlot, syncManager);
-
-        LongSyncValue storedEnergySyncer = new LongSyncValue(this::getEUVar, this::setEUVar);
-        LongSyncValue energyCapacitySyncer = new LongSyncValue(this::maxEUStore);
-        syncManager.syncValue("storedEnergy", storedEnergySyncer);
-        syncManager.syncValue("energyCapacity", energyCapacitySyncer);
-
-        machineInfo.child(
-            IKey.dynamic(
-                () -> StatCollector.translateToLocal("gui.LargeFusion.0") + " "
-                    + numberFormat.format(storedEnergySyncer.getValue())
-                    + " EU")
-                .asWidget()
-                .alignment(com.cleanroommc.modularui.utils.Alignment.CenterLeft)
-                .color(COLOR_TEXT_WHITE.get())
-                .widthRel(1)
-                .marginBottom(2)
-                .setEnabledIf(w -> getErrorDisplayID() == 0));
-
-        machineInfo.child(
-            IKey.dynamic(
-                () -> StatCollector.translateToLocal("gui.LargeFusion.1") + " "
-                    + numberFormat.format(energyCapacitySyncer.getValue())
-                    + " EU")
-                .asWidget()
-                .alignment(com.cleanroommc.modularui.utils.Alignment.CenterLeft)
-                .color(COLOR_TEXT_WHITE.get())
-                .widthRel(1)
-                .marginBottom(2)
-                .setEnabledIf(w -> getErrorDisplayID() == 0));
-    }
-
-    @Override
-    protected void parametersInstantiation_EM() {
-        batchSetting = parametrization.getGroup(9, false)
-            .makeInParameter(1, 1, BATCH_SETTING_NAME, BATCH_STATUS);
-    }
-
-    @Override
     protected int getMaxBatchSize() {
         // Batch size 1~128
         return batchSizeParameter.getValue();
@@ -785,5 +697,40 @@ public abstract class MTELargeFusionComputer extends MTETooltipMultiBlockBaseEM
     @Override
     public boolean forceUseMui2() {
         return true;
+    }
+
+    @Override
+    public void insertTexts(ListWidget<IWidget, ?> machineInfo, ItemStackHandler invSlot,
+        PanelSyncManager syncManager) {
+        super.insertTexts(machineInfo, invSlot, syncManager);
+
+        LongSyncValue storedEnergySyncer = new LongSyncValue(this::getEUVar, this::setEUVar);
+        LongSyncValue energyCapacitySyncer = new LongSyncValue(this::maxEUStore);
+        syncManager.syncValue("storedEnergy", storedEnergySyncer);
+        syncManager.syncValue("energyCapacity", energyCapacitySyncer);
+
+        machineInfo.child(
+            IKey.dynamic(
+                () -> StatCollector.translateToLocal("gui.LargeFusion.0") + " "
+                    + numberFormat.format(storedEnergySyncer.getValue())
+                    + " EU")
+                .asWidget()
+                .alignment(com.cleanroommc.modularui.utils.Alignment.CenterLeft)
+                .color(COLOR_TEXT_WHITE.get())
+                .widthRel(1)
+                .marginBottom(2)
+                .setEnabledIf(w -> getErrorDisplayID() == 0));
+
+        machineInfo.child(
+            IKey.dynamic(
+                () -> StatCollector.translateToLocal("gui.LargeFusion.1") + " "
+                    + numberFormat.format(energyCapacitySyncer.getValue())
+                    + " EU")
+                .asWidget()
+                .alignment(com.cleanroommc.modularui.utils.Alignment.CenterLeft)
+                .color(COLOR_TEXT_WHITE.get())
+                .widthRel(1)
+                .marginBottom(2)
+                .setEnabledIf(w -> getErrorDisplayID() == 0));
     }
 }
