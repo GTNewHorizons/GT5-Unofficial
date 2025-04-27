@@ -38,7 +38,6 @@ import gregtech.api.gui.modularui.GTUIInfos;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.modularui2.CoverGuiData;
-import gregtech.api.modularui2.GTGuiFactories;
 import gregtech.api.modularui2.GTGuiTheme;
 import gregtech.api.modularui2.GTGuiThemes;
 import gregtech.api.modularui2.GTModularScreen;
@@ -430,7 +429,7 @@ public class Cover implements IGuiHolder<CoverGuiData> {
         ICoverable coverable = coveredTile.get();
         if (coverable != null && hasCoverGUI() && aPlayer instanceof EntityPlayerMP) {
             if (USE_MODULAR_UI_2) {
-                GTGuiFactories.cover()
+                gregtech.api.modularui2.CoverUIFactory.INSTANCE
                     .open((EntityPlayerMP) aPlayer, coverID, coverable, coverSide, false);
             } else {
                 GTUIInfos.openCoverUI(coverable, aPlayer, coverSide);

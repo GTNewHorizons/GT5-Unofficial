@@ -21,7 +21,7 @@ import gregtech.common.covers.Cover;
  */
 public class CoverUIFactory extends AbstractUIFactory<CoverGuiData> {
 
-    static final CoverUIFactory INSTANCE = new CoverUIFactory();
+    public static final CoverUIFactory INSTANCE = new CoverUIFactory();
 
     private CoverUIFactory() {
         super("gregtech:cover");

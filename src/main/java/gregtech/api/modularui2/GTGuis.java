@@ -54,6 +54,6 @@ public final class GTGuis {
     @ApiStatus.Internal
     public static void registerFactories() {
         GuiManager.registerFactory(MetaTileEntityGuiHandler.INSTANCE);
-        GuiManager.registerFactory(GTGuiFactories.cover());
+        GuiManager.registerFactory(CoverUIFactory.INSTANCE);
     }
 }
