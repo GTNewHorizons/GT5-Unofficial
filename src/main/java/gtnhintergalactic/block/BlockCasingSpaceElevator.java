@@ -11,13 +11,13 @@ import net.minecraft.world.IBlockAccess;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Textures;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.common.blocks.BlockCasingsAbstract;
 import gregtech.common.blocks.MaterialCasings;
 import gtnhintergalactic.GTNHIntergalactic;
-import gtnhintergalactic.item.IGItems;
 import gtnhintergalactic.item.ItemCasingSpaceElevator;
 
 /**
@@ -50,9 +50,9 @@ public class BlockCasingSpaceElevator extends BlockCasingsAbstract {
         GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".1.name", "Space Elevator Support Structure");
         GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".2.name", "Space Elevator Internal Structure");
 
-        IGItems.SpaceElevatorCasing0 = new ItemStack(this, 1, 0);
-        IGItems.SpaceElevatorCasing1 = new ItemStack(this, 1, 1);
-        IGItems.SpaceElevatorCasing2 = new ItemStack(this, 1, 2);
+        ItemList.SpaceElevatorBaseCasing.set(new ItemStack(this, 1, 0));
+        ItemList.SpaceElevatorSupportStructure.set(new ItemStack(this, 1, 1));
+        ItemList.SpaceElevatorInternalStructure.set(new ItemStack(this, 1, 2));
     }
 
     /**

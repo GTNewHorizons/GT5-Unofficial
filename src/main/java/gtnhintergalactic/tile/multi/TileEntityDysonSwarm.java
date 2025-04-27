@@ -35,6 +35,7 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureUtility;
 
 import gregtech.api.GregTechAPI;
+import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
@@ -47,11 +48,9 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.items.IDMetaTool01;
 import gregtech.common.items.MetaGeneratedTool01;
-import gtnhintergalactic.block.IGBlocks;
 import gtnhintergalactic.client.IGTextures;
 import gtnhintergalactic.client.TooltipUtil;
 import gtnhintergalactic.config.IGConfig;
-import gtnhintergalactic.item.IGItems;
 import micdoodle8.mods.galacticraft.api.world.IOrbitDimension;
 import tectech.thing.metaTileEntity.hatch.MTEHatchDynamoMulti;
 import tectech.thing.metaTileEntity.multi.base.TTMultiblockBase;
@@ -149,15 +148,15 @@ public class TileEntityDysonSwarm extends TTMultiblockBase implements ISurvivalC
                         "bbbbbbbbbbbbbbbb", "bbbbbbbbbbbbbbbb", "bbbbbbbbbbbbbbbb", "bbbbbbbbbbbbbbbb",
                         "bbbbbbbnbbbbbbbb", "bbbbbbbbbbbbbbbb", "bbbbbbbbbbbbbbbb", "bbbbbbbbbbbbbbbb",
                         "bbbbbbbbbbbbbbbb", "bbbbbbbbbbbbbbbb", "bbbbbbbbbbbbbbbb", "bbbbbbbbbbbbbbbb" } }))
-        .addElement('b', ofBlock(IGBlocks.DysonSwarmCasing, 9)) // Dyson Swarm Ground Unit Ultra High Strength Concrete Floor
+        .addElement('b', ofBlock(GregTechAPI.sBlockCasingsDyson, 9)) // Ultra High Strength Concrete Floor
         .addElement('c', ofBlock(GregTechAPI.sBlockCasings5, 8)) // Awakened Draconium Coil Block
-        .addElement('d', ofBlock(IGBlocks.DysonSwarmCasing, 1)) // Dyson Swarm Energy Receiver Dish Block
+        .addElement('d', ofBlock(GregTechAPI.sBlockCasingsDyson, 1)) // Receiver Dish Block
         .addElement(
             'e',
             buildHatchAdder(TileEntityDysonSwarm.class).atLeast(Dynamo, DynamoMulti)
                 .casingIndex(IGTextures.CASING_INDEX_RECEIVER)
                 .dot(1)
-                .buildAndChain(ofBlock(IGBlocks.DysonSwarmCasing, 0))) // Dyson Swarm Energy Receiver Base Casing
+                .buildAndChain(ofBlock(GregTechAPI.sBlockCasingsDyson, 0))) // Receiver Base Casing
         .addElement('f', ofFrame(Materials.HSSS))
         .addElement('g', ofFrame(Materials.Titanium))
         .addElement('h', ofBlock(GregTechAPI.sBlockCasings6, 10)) // Hermetic Casing X
@@ -167,30 +166,30 @@ public class TileEntityDysonSwarm extends TTMultiblockBase implements ISurvivalC
                 .atLeast(InputBus, InputHatch)
                 .casingIndex(IGTextures.CASING_INDEX_LAUNCH)
                 .dot(2)
-                .buildAndChain(ofBlock(IGBlocks.DysonSwarmCasing, 2))) // Dyson Swarm Module Deployment Unit Base Casing
-        .addElement('j', ofBlock(IGBlocks.DysonSwarmCasing, 3)) // Dyson Swarm Module Deployment Unit Core
+                .buildAndChain(ofBlock(GregTechAPI.sBlockCasingsDyson, 2))) // Deployment Unit Base Casing
+        .addElement('j', ofBlock(GregTechAPI.sBlockCasingsDyson, 3)) // Deployment Unit Core
         .addElement('k', ofFrame(Materials.Longasssuperconductornameforuhvwire))
-        .addElement('m', ofBlock(IGBlocks.DysonSwarmCasing, 4)) // Dyson Swarm Module Deployment Unit Superconducting Magnet
+        .addElement('m', ofBlock(GregTechAPI.sBlockCasingsDyson, 4)) // Deployment Unit Superconducting Magnet
         .addElement(
             'n',
             buildHatchAdder(TileEntityDysonSwarm.class)
                 .anyOf(Maintenance)
                 .casingIndex(IGTextures.CASING_INDEX_FLOOR)
                 .dot(3)
-                .build()) // Dyson Swarm Ground Unit Ultra High Strength Concrete Floor
+                .build()) // Ultra High Strength Concrete Floor
         .addElement(
             'o',
             buildHatchAdder(TileEntityDysonSwarm.class)
                 .atLeast(InputData)
                 .casingIndex(IGTextures.CASING_INDEX_COMMAND)
                 .dot(4)
-                .buildAndChain(ofBlock(IGBlocks.DysonSwarmCasing, 5))) // Dyson Swarm Command Center Base Casing
-        .addElement('p', ofBlock(IGBlocks.DysonSwarmCasing, 6)) // Dyson Swarm Command Center Primary Windings
-        .addElement('s', ofBlock(IGBlocks.DysonSwarmCasing, 7)) // Dyson Swarm Command Center Secondary Windings
-        .addElement('t', ofBlock(IGBlocks.DysonSwarmCasing, 8)) // Dyson Swarm Command Center Toroid Casing
-        .addElement('x', ofBlock(IGBlocks.DysonSwarmCasing, 0)) // Dyson Swarm Energy Receiver Base Casing
-        .addElement('y', ofBlock(IGBlocks.DysonSwarmCasing, 5)) // Dyson Swarm Command Center Base Casing
-        .addElement('z', ofBlock(IGBlocks.DysonSwarmCasing, 2)) // Dyson Swarm Module Deployment Unit Base Casing
+                .buildAndChain(ofBlock(GregTechAPI.sBlockCasingsDyson, 5))) // Command Center Base Casing
+        .addElement('p', ofBlock(GregTechAPI.sBlockCasingsDyson, 6)) // Command Center Primary Windings
+        .addElement('s', ofBlock(GregTechAPI.sBlockCasingsDyson, 7)) // Command Center Secondary Windings
+        .addElement('t', ofBlock(GregTechAPI.sBlockCasingsDyson, 8)) // Command Center Toroid Casing
+        .addElement('x', ofBlock(GregTechAPI.sBlockCasingsDyson, 0)) // Receiver Base Casing
+        .addElement('y', ofBlock(GregTechAPI.sBlockCasingsDyson, 5)) // Command Center Base Casing
+        .addElement('z', ofBlock(GregTechAPI.sBlockCasingsDyson, 2)) // Deployment Unit Base Casing
         .build();
 
     // spotless:on
@@ -260,7 +259,7 @@ public class TileEntityDysonSwarm extends TTMultiblockBase implements ISurvivalC
                 .getSizeInventory(); i++) {
                 ItemStack stack = bus.getBaseMetaTileEntity()
                     .getStackInSlot(i);
-                if (stack != null && stack.getItem() == IGItems.DysonSwarmItems
+                if (stack != null && stack.getItem() == ItemList.DysonSwarmModule.getItem()
                     && stack.getItemDamage() == 0
                     && moduleCount < IGConfig.dysonSwarm.maxModules + 1) {
                     int usedStackSize = Math.min(stack.stackSize, IGConfig.dysonSwarm.maxModules - moduleCount);
@@ -375,7 +374,7 @@ public class TileEntityDysonSwarm extends TTMultiblockBase implements ISurvivalC
         int maxReduction = (int) Math.min(
             this.moduleCount,
             MetaGeneratedTool01.getToolMaxDamage(heldItem) - MetaGeneratedTool01.getToolDamage(heldItem));
-        ItemStack modules = new ItemStack(IGItems.DysonSwarmItems, maxReduction);
+        ItemStack modules = ItemList.DysonSwarmModule.get(maxReduction);
 
         // Fill player inventory
         aPlayer.inventory.addItemStackToInventory(modules);

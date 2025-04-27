@@ -12,7 +12,10 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 
+import cpw.mods.fml.common.registry.GameRegistry;
+import gregtech.api.enums.ItemList;
 import gtnhintergalactic.GTNHIntergalactic;
+import gtnhintergalactic.item.ItemCasingDysonSwarm;
 
 public class BlockCasingDysonSwarm extends Block {
 
@@ -26,6 +29,19 @@ public class BlockCasingDysonSwarm extends Block {
         setBlockName("DysonSwarmPart");
         setCreativeTab(GTNHIntergalactic.tab);
         setHarvestLevel("pickaxe", 2);
+
+        GameRegistry.registerBlock(this, ItemCasingDysonSwarm.class, "dysonswarmparts");
+
+        ItemList.DysonSwarmReceiverCasing.set(new ItemStack(this, 1, 0));
+        ItemList.DysonSwarmReceiverDish.set(new ItemStack(this, 1, 1));
+        ItemList.DysonSwarmDeploymentUnitCasing.set(new ItemStack(this, 1, 2));
+        ItemList.DysonSwarmDeploymentUnitCore.set(new ItemStack(this, 1, 3));
+        ItemList.DysonSwarmDeploymentUnitMagnet.set(new ItemStack(this, 1, 4));
+        ItemList.DysonSwarmControlCasing.set(new ItemStack(this, 1, 5));
+        ItemList.DysonSwarmControlPrimary.set(new ItemStack(this, 1, 6));
+        ItemList.DysonSwarmControlSecondary.set(new ItemStack(this, 1, 7));
+        ItemList.DysonSwarmControlToroid.set(new ItemStack(this, 1, 8));
+        ItemList.UltraHighStrengthConcrete.set(new ItemStack(this, 1, 9));
     }
 
     @Override

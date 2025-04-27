@@ -14,13 +14,13 @@ import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
+import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.util.GTStructureUtility;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
-import gtnhintergalactic.block.IGBlocks;
 import gtnhintergalactic.gui.IG_UITextures;
 import gtnhintergalactic.tile.multi.elevator.TileEntitySpaceElevator;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
@@ -81,7 +81,7 @@ public abstract class TileEntityModuleBase extends TTMultiblockBase {
                 TileEntityModuleBase::addClassicToMachineList,
                 TileEntitySpaceElevator.CASING_INDEX_BASE,
                 1,
-                IGBlocks.SpaceElevatorCasing,
+                GregTechAPI.sBlockCasingsSE,
                 0))
         .build();
 
