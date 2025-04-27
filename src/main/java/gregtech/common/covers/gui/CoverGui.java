@@ -1,4 +1,4 @@
-package gregtech.common.gui.modularui2.cover;
+package gregtech.common.covers.gui;
 
 import net.minecraft.item.ItemStack;
 

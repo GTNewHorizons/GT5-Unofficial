@@ -13,10 +13,10 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IMachineProgress;
 import gregtech.api.util.GTUtility;
+import gregtech.common.covers.gui.CoverDoesWorkGui;
+import gregtech.common.covers.gui.CoverGui;
 import gregtech.common.covers.modes.DetectionMode;
 import gregtech.common.covers.modes.RedstoneMode;
-import gregtech.common.gui.modularui2.cover.CoverDoesWorkGui;
-import gregtech.common.gui.modularui2.cover.CoverGui;
 import gregtech.common.gui.mui1.cover.DoesWorkUIFactory;
 
 public class CoverDoesWork extends CoverLegacyData {

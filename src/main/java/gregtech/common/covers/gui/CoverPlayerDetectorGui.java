@@ -1,4 +1,4 @@
-package gregtech.common.gui.modularui2.cover;
+package gregtech.common.covers.gui;
 
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.utils.Alignment;
@@ -10,25 +10,25 @@ import com.cleanroommc.modularui.widgets.layout.Grid;
 import gregtech.api.modularui2.CoverGuiData;
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.util.GTUtility;
-import gregtech.common.covers.CoverShutter;
-import gregtech.common.covers.modes.ShutterMode;
+import gregtech.common.covers.CoverPlayerDetector;
+import gregtech.common.covers.modes.PlayerDetectionMode;
 import gregtech.common.gui.modularui2.LinkedBoolValue;
 import gregtech.common.gui.modularui2.widgets.SelectButton;
 
-public class CoverShutterGui extends CoverGui<CoverShutter> {
+public class CoverPlayerDetectorGui extends CoverGui<CoverPlayerDetector> {
 
     @Override
     protected String getGuiId() {
-        return "cover.shutter";
+        return "cover.player_detector";
     }
 
     @Override
     public void addUIWidgets(CoverGuiData guiData, PanelSyncManager syncManager, Flow column) {
-        CoverShutter cover = getCover(guiData);
-        EnumSyncValue<ShutterMode> modeSyncValue = new EnumSyncValue<>(
-            ShutterMode.class,
-            cover::getShutterMode,
-            cover::setShutterMode);
+        CoverPlayerDetector cover = getCover(guiData);
+        EnumSyncValue<PlayerDetectionMode> modeSyncValue = new EnumSyncValue<>(
+            PlayerDetectionMode.class,
+            cover::getPlayerDetectionMode,
+            cover::setPlayerDetectionMode);
         syncManager.syncValue("mode", modeSyncValue);
 
         column.child(
@@ -40,29 +40,25 @@ public class CoverShutterGui extends CoverGui<CoverShutter> {
                 .minElementMarginLeft(0)
                 .alignment(Alignment.CenterLeft)
                 .row(
-                    new SelectButton().value(LinkedBoolValue.of(modeSyncValue, ShutterMode.OPEN_IF_ENABLED))
+                    new SelectButton().value(LinkedBoolValue.of(modeSyncValue, PlayerDetectionMode.ANY_PLAYER))
                         .overlay(true, GTGuiTextures.OVERLAY_BUTTON_CHECKMARK)
+                        .addTooltipLine(IKey.str(GTUtility.trans("068.1", "Emit if any Player is close")))
                         .size(16),
-                    IKey.str(GTUtility.trans("082", "Open if work enabled"))
+                    IKey.str(GTUtility.trans("319", "Any player"))
                         .asWidget())
                 .row(
-                    new SelectButton().value(LinkedBoolValue.of(modeSyncValue, ShutterMode.OPEN_IF_DISABLED))
+                    new SelectButton().value(LinkedBoolValue.of(modeSyncValue, PlayerDetectionMode.OTHER_PLAYERS))
                         .overlay(true, GTGuiTextures.OVERLAY_BUTTON_CHECKMARK)
+                        .addTooltipLine(IKey.str(GTUtility.trans("069.1", "Emit if other Player is close")))
                         .size(16),
-                    IKey.str(GTUtility.trans("083", "Open if work disabled"))
+                    IKey.str(GTUtility.trans("320", "Other players"))
                         .asWidget())
                 .row(
-                    new SelectButton().value(LinkedBoolValue.of(modeSyncValue, ShutterMode.ONLY_OUTPUT))
+                    new SelectButton().value(LinkedBoolValue.of(modeSyncValue, PlayerDetectionMode.ONLY_OWNER))
                         .overlay(true, GTGuiTextures.OVERLAY_BUTTON_CHECKMARK)
+                        .addTooltipLine(IKey.str(GTUtility.trans("070", "Emit if you are close")))
                         .size(16),
-                    IKey.str(GTUtility.trans("084", "Only Output allowed"))
-                        .asWidget())
-                .row(
-                    new SelectButton().value(LinkedBoolValue.of(modeSyncValue, ShutterMode.ONLY_INPUT))
-                        .overlay(true, GTGuiTextures.OVERLAY_BUTTON_CHECKMARK)
-                        .size(16),
-                    IKey.str(GTUtility.trans("085", "Only Input allowed"))
+                    IKey.str(GTUtility.trans("321", "Only owner"))
                         .asWidget()));
     }
-
 }

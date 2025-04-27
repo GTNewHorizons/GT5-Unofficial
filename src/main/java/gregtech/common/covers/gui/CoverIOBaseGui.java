@@ -1,4 +1,4 @@
-package gregtech.common.gui.modularui2.cover;
+package gregtech.common.covers.gui;
 
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.api.widget.IWidget;

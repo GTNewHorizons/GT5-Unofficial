@@ -21,11 +21,11 @@ import gregtech.api.covers.CoverContext;
 import gregtech.api.gui.modularui.CoverUIBuildContext;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.util.GTUtility;
+import gregtech.common.covers.gui.CoverFluidfilterGui;
+import gregtech.common.covers.gui.CoverGui;
 import gregtech.common.covers.modes.BlockMode;
 import gregtech.common.covers.modes.FilterDirectionMode;
 import gregtech.common.covers.modes.FilterType;
-import gregtech.common.gui.modularui2.cover.CoverFluidfilterGui;
-import gregtech.common.gui.modularui2.cover.CoverGui;
 import gregtech.common.gui.mui1.cover.FluidFilterUIFactory;
 import io.netty.buffer.ByteBuf;
 

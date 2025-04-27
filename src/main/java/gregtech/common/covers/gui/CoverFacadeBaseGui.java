@@ -1,6 +1,4 @@
-package gregtech.common.gui.modularui2.cover;
-
-import static gregtech.common.gui.modularui2.cover.CoverGui.WIDGET_MARGIN;
+package gregtech.common.covers.gui;
 
 import net.minecraft.item.ItemStack;
 

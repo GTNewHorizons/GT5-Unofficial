@@ -18,9 +18,9 @@ import gregtech.api.items.MetaGeneratedTool;
 import gregtech.api.metatileentity.implementations.MTEMultiBlockBase;
 import gregtech.api.util.GTUtility;
 import gregtech.common.covers.conditions.MaintenanceAlertCondition;
+import gregtech.common.covers.gui.CoverGui;
+import gregtech.common.covers.gui.CoverNeedMaintenanceGui;
 import gregtech.common.covers.modes.RedstoneMode;
-import gregtech.common.gui.modularui2.cover.CoverGui;
-import gregtech.common.gui.modularui2.cover.CoverNeedMaintenanceGui;
 import gregtech.common.gui.mui1.cover.NeedMaintainanceUIFactory;
 
 public class CoverNeedMaintainance extends CoverLegacyData {

@@ -27,9 +27,9 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.util.GTByteBuffer;
 import gregtech.api.util.GTUtility;
+import gregtech.common.covers.gui.CoverGui;
+import gregtech.common.covers.gui.CoverItemFilterGui;
 import gregtech.common.covers.modes.FilterType;
-import gregtech.common.gui.modularui2.cover.CoverGui;
-import gregtech.common.gui.modularui2.cover.CoverItemFilterGui;
 import gregtech.common.gui.mui1.cover.ItemFilterUIFactory;
 import io.netty.buffer.ByteBuf;
 

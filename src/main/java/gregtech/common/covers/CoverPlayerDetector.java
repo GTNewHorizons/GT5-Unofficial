@@ -14,9 +14,9 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.util.GTUtility;
+import gregtech.common.covers.gui.CoverGui;
+import gregtech.common.covers.gui.CoverPlayerDetectorGui;
 import gregtech.common.covers.modes.PlayerDetectionMode;
-import gregtech.common.gui.modularui2.cover.CoverGui;
-import gregtech.common.gui.modularui2.cover.CoverPlayerDetectorGui;
 import gregtech.common.gui.mui1.cover.PlayerDetectorUIFactory;
 
 public class CoverPlayerDetector extends CoverLegacyData {

@@ -1,4 +1,4 @@
-package gregtech.common.gui.modularui2.cover;
+package gregtech.common.covers.gui;
 
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;

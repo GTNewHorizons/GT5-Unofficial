@@ -13,9 +13,9 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IMachineProgress;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.util.GTUtility;
+import gregtech.common.covers.gui.CoverGui;
+import gregtech.common.covers.gui.CoverShutterGui;
 import gregtech.common.covers.modes.ShutterMode;
-import gregtech.common.gui.modularui2.cover.CoverGui;
-import gregtech.common.gui.modularui2.cover.CoverShutterGui;
 import gregtech.common.gui.mui1.cover.ShutterUIFactory;
 
 public class CoverShutter extends CoverLegacyData {

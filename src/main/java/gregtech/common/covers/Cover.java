@@ -43,7 +43,7 @@ import gregtech.api.modularui2.GTGuiThemes;
 import gregtech.api.modularui2.GTGuis;
 import gregtech.api.modularui2.GTModularScreen;
 import gregtech.api.util.GTUtility;
-import gregtech.common.gui.modularui2.cover.CoverGui;
+import gregtech.common.covers.gui.CoverGui;
 import gregtech.common.gui.mui1.cover.CoverUIFactory;
 import gregtech.common.text.ClientTickRateFormatter;
 import io.netty.buffer.ByteBuf;
