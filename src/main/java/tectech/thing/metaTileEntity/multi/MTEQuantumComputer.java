@@ -28,6 +28,13 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
 
+import com.cleanroommc.modularui.api.drawable.IKey;
+import com.cleanroommc.modularui.api.widget.IWidget;
+import com.cleanroommc.modularui.utils.item.ItemStackHandler;
+import com.cleanroommc.modularui.value.sync.DoubleSyncValue;
+import com.cleanroommc.modularui.value.sync.LongSyncValue;
+import com.cleanroommc.modularui.value.sync.PanelSyncManager;
+import com.cleanroommc.modularui.widgets.ListWidget;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IItemSource;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
@@ -59,10 +66,7 @@ import tectech.thing.metaTileEntity.hatch.MTEHatchDataInput;
 import tectech.thing.metaTileEntity.hatch.MTEHatchDataOutput;
 import tectech.thing.metaTileEntity.hatch.MTEHatchRack;
 import tectech.thing.metaTileEntity.hatch.MTEHatchWirelessComputationOutput;
-import tectech.thing.metaTileEntity.multi.base.INameFunction;
-import tectech.thing.metaTileEntity.multi.base.IStatusFunction;
-import tectech.thing.metaTileEntity.multi.base.LedStatus;
-import tectech.thing.metaTileEntity.multi.base.Parameters;
+import tectech.thing.metaTileEntity.multi.base.Parameter;
 import tectech.thing.metaTileEntity.multi.base.TTMultiblockBase;
 import tectech.thing.metaTileEntity.multi.base.render.TTRenderedExtendedFacingTexture;
 import tectech.util.CommonValues;
@@ -79,6 +83,8 @@ public class MTEQuantumComputer extends TTMultiblockBase implements ISurvivalCon
 
     private static Textures.BlockIcons.CustomIcon ScreenOFF;
     private static Textures.BlockIcons.CustomIcon ScreenON;
+    private double currentTemp;
+    private long computation;
     // endregion
 
     // region structure
@@ -120,34 +126,9 @@ public class MTEQuantumComputer extends TTMultiblockBase implements ISurvivalCon
     // endregion
 
     // region parameters
-    protected Parameters.Group.ParameterIn overclock, overvolt;
-    protected Parameters.Group.ParameterOut maxCurrentTemp, availableData;
+    Parameter.DoubleParameter overclockParameter, overvoltParameter;
 
     private boolean wirelessModeEnabled = false;
-
-    private static final INameFunction<MTEQuantumComputer> OC_NAME = (base,
-        p) -> translateToLocal("gt.blockmachines.multimachine.em.computer.cfgi.0"); // Overclock ratio
-    private static final INameFunction<MTEQuantumComputer> OV_NAME = (base,
-        p) -> translateToLocal("gt.blockmachines.multimachine.em.computer.cfgi.1"); // Overvoltage ratio
-    private static final INameFunction<MTEQuantumComputer> MAX_TEMP_NAME = (base,
-        p) -> translateToLocal("gt.blockmachines.multimachine.em.computer.cfgo.0"); // Current max. heat
-    private static final INameFunction<MTEQuantumComputer> COMPUTE_NAME = (base,
-        p) -> translateToLocal("gt.blockmachines.multimachine.em.computer.cfgo.1"); // Produced computation
-    private static final IStatusFunction<MTEQuantumComputer> OC_STATUS = (base, p) -> LedStatus
-        .fromLimitsInclusiveOuterBoundary(p.get(), 0, 1, 3, 5);
-    private static final IStatusFunction<MTEQuantumComputer> OV_STATUS = (base, p) -> LedStatus
-        .fromLimitsInclusiveOuterBoundary(p.get(), 0, 1, 3, 5);
-    private static final IStatusFunction<MTEQuantumComputer> MAX_TEMP_STATUS = (base, p) -> LedStatus
-        .fromLimitsInclusiveOuterBoundary(p.get(), 0, 2000, 8000, 10000);
-    private static final IStatusFunction<MTEQuantumComputer> COMPUTE_STATUS = (base, p) -> {
-        if (base.eAvailableData < 0) {
-            return LedStatus.STATUS_TOO_LOW;
-        }
-        if (base.eAvailableData == 0) {
-            return LedStatus.STATUS_NEUTRAL;
-        }
-        return LedStatus.STATUS_OK;
-    };
     // endregion
 
     public MTEQuantumComputer(int aID, String aName, String aNameRegional) {
@@ -173,12 +154,20 @@ public class MTEQuantumComputer extends TTMultiblockBase implements ISurvivalCon
     }
 
     @Override
-    protected void parametersInstantiation_EM() {
-        Parameters.Group hatch_0 = parametrization.getGroup(0);
-        overclock = hatch_0.makeInParameter(0, 1, OC_NAME, OC_STATUS);
-        overvolt = hatch_0.makeInParameter(1, 1, OV_NAME, OV_STATUS);
-        maxCurrentTemp = hatch_0.makeOutParameter(0, 0, MAX_TEMP_NAME, MAX_TEMP_STATUS);
-        availableData = hatch_0.makeOutParameter(1, 0, COMPUTE_NAME, COMPUTE_STATUS);
+    protected void initParameters() {
+        super.initParameters();
+        overclockParameter = new Parameter.DoubleParameter(
+            1.0,
+            0.0,
+            5.0,
+            "gt.blockmachines.multimachine.em.computer.cfgi.0");
+        overvoltParameter = new Parameter.DoubleParameter(
+            1.0,
+            0.0,
+            5.0,
+            "gt.blockmachines.multimachine.em.computer.cfgi.1");
+        parameterList.add(overclockParameter);
+        parameterList.add(overvoltParameter);
     }
 
     @Override
@@ -222,17 +211,17 @@ public class MTEQuantumComputer extends TTMultiblockBase implements ISurvivalCon
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
-        aNBT.setDouble("computation", availableData.get());
+        aNBT.setLong("computation", computation);
         aNBT.setBoolean("wirelessModeEnabled", wirelessModeEnabled);
     }
 
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
-        if (availableData != null) {
-            availableData.set(aNBT.getDouble("computation"));
-            eAvailableData = (long) availableData.get();
-        }
+
+        computation = aNBT.getLong("computation");
+        eAvailableData = computation;
+
         if (aNBT.hasKey("wirelessModeEnabled")) {
             wirelessModeEnabled = aNBT.getBoolean("wirelessModeEnabled");
             if (wirelessModeEnabled) {
@@ -255,7 +244,7 @@ public class MTEQuantumComputer extends TTMultiblockBase implements ISurvivalCon
                     maxTemp = rack.heat;
                 }
             }
-            maxCurrentTemp.set(maxTemp);
+            currentTemp = maxTemp;
         }
     }
 
@@ -265,62 +254,59 @@ public class MTEQuantumComputer extends TTMultiblockBase implements ISurvivalCon
         parametrization.setToDefaults(false, true);
         eAvailableData = 0;
         double maxTemp = 0;
-        double overClockRatio = overclock.get();
-        double overVoltageRatio = overvolt.get();
+        double overClockRatio = overclockParameter.getValue();
+        double overVoltageRatio = overvoltParameter.getValue();
         if (Double.isNaN(overClockRatio) || Double.isNaN(overVoltageRatio)) {
             return SimpleCheckRecipeResult.ofFailure("no_computing");
         }
-        if (overclock.getStatus(true).isOk && overvolt.getStatus(true).isOk) {
-            float eut = Math.max(V[6], V[7] * (float) overClockRatio * (float) overVoltageRatio);
-            if (eut < Integer.MAX_VALUE - 7) {
-                mEUt = -(int) eut;
-            } else {
-                mEUt = -(int) V[7];
-                return CheckRecipeResultRegistry.POWER_OVERFLOW;
-            }
-            short thingsActive = 0;
-            int rackComputation;
+        float eut = Math.max(V[6], V[7] * (float) overClockRatio * (float) overVoltageRatio);
+        if (eut < Integer.MAX_VALUE - 7) {
+            mEUt = -(int) eut;
+        } else {
+            mEUt = -(int) V[7];
+            return CheckRecipeResultRegistry.POWER_OVERFLOW;
+        }
+        short thingsActive = 0;
+        int rackComputation;
 
-            for (MTEHatchRack rack : validMTEList(eRacks)) {
-                if (rack.heat > maxTemp) {
-                    maxTemp = rack.heat;
-                }
-                rackComputation = rack.tickComponents((float) overClockRatio, (float) overVoltageRatio);
-                if (rackComputation > 0) {
-                    eAvailableData += rackComputation;
-                    thingsActive += 4;
-                }
-                rack.getBaseMetaTileEntity()
-                    .setActive(true);
+        for (MTEHatchRack rack : validMTEList(eRacks)) {
+            if (rack.heat > maxTemp) {
+                maxTemp = rack.heat;
             }
-
-            for (MTEHatchDataInput di : eInputData) {
-                if (di.q != null) // ok for power losses
-                {
-                    thingsActive++;
-                }
+            rackComputation = rack.tickComponents((float) overClockRatio, (float) overVoltageRatio);
+            if (rackComputation > 0) {
+                eAvailableData += rackComputation;
+                thingsActive += 4;
             }
+            rack.getBaseMetaTileEntity()
+                .setActive(true);
+        }
 
-            if (thingsActive > 0 && eCertainStatus == 0) {
-                thingsActive += eOutputData.size();
-                eAmpereFlow = 1 + (thingsActive >> 2);
-                mMaxProgresstime = 20;
-                mEfficiencyIncrease = 10000;
-                maxCurrentTemp.set(maxTemp);
-                availableData.set(eAvailableData);
-                return SimpleCheckRecipeResult.ofSuccess("computing");
-            } else {
-                eAvailableData = 0;
-                mEUt = -(int) V[7];
-                eAmpereFlow = 1;
-                mMaxProgresstime = 20;
-                mEfficiencyIncrease = 10000;
-                maxCurrentTemp.set(maxTemp);
-                availableData.set(eAvailableData);
-                return SimpleCheckRecipeResult.ofSuccess("no_computing");
+        for (MTEHatchDataInput di : eInputData) {
+            if (di.q != null) // ok for power losses
+            {
+                thingsActive++;
             }
         }
-        return SimpleCheckRecipeResult.ofFailure("no_computing");
+
+        if (thingsActive > 0 && eCertainStatus == 0) {
+            thingsActive += eOutputData.size();
+            eAmpereFlow = 1 + (thingsActive >> 2);
+            mMaxProgresstime = 20;
+            mEfficiencyIncrease = 10000;
+            currentTemp = maxTemp;
+            computation = eAvailableData;
+            return SimpleCheckRecipeResult.ofSuccess("computing");
+        } else {
+            eAvailableData = 0;
+            mEUt = -(int) V[7];
+            eAmpereFlow = 1;
+            mMaxProgresstime = 20;
+            mEfficiencyIncrease = 10000;
+            currentTemp = maxTemp;
+            computation = eAvailableData;
+            return SimpleCheckRecipeResult.ofSuccess("no_computing");
+        }
     }
 
     @Override
@@ -577,6 +563,36 @@ public class MTEQuantumComputer extends TTMultiblockBase implements ISurvivalCon
     @Override
     public boolean forceUseMui2() {
         return true;
+    }
+
+    @Override
+    public void insertTexts(ListWidget<IWidget, ?> machineInfo, ItemStackHandler invSlot,
+        PanelSyncManager syncManager) {
+        super.insertTexts(machineInfo, invSlot, syncManager);
+        DoubleSyncValue tempSyncer = new DoubleSyncValue(() -> currentTemp);
+        LongSyncValue computationSyncer = new LongSyncValue(() -> computation);
+        syncManager.syncValue("temp", tempSyncer);
+        syncManager.syncValue("computation", computationSyncer);
+
+        machineInfo.child(
+            IKey.dynamic(
+                () -> EnumChatFormatting.WHITE + "Current temperature: "
+                    + EnumChatFormatting.YELLOW
+                    + tempSyncer.getValue())
+                .asWidget()
+                .widthRel(1)
+                .marginBottom(2)
+                .setEnabledIf(w -> getErrorDisplayID() == 0 && getBaseMetaTileEntity().isActive()));
+
+        machineInfo.child(
+            IKey.dynamic(
+                () -> EnumChatFormatting.WHITE + "Computation: "
+                    + EnumChatFormatting.GREEN
+                    + computationSyncer.getValue())
+                .asWidget()
+                .widthRel(1)
+                .marginBottom(2)
+                .setEnabledIf(w -> getErrorDisplayID() == 0 && getBaseMetaTileEntity().isActive()));
     }
 
     private enum RackHatchElement implements IHatchElement<MTEQuantumComputer> {
