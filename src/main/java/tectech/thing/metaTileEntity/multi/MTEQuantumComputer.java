@@ -586,7 +586,7 @@ public class MTEQuantumComputer extends TTMultiblockBase implements ISurvivalCon
 
         machineInfo.child(
             IKey.dynamic(
-                () -> EnumChatFormatting.WHITE + "Computation: "
+                () -> EnumChatFormatting.WHITE + "Computation/s: "
                     + EnumChatFormatting.GREEN
                     + computationSyncer.getValue())
                 .asWidget()
