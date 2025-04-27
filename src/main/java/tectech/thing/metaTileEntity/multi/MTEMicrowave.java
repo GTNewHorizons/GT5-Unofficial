@@ -34,6 +34,7 @@ import com.gtnewhorizon.structurelib.structure.IItemSource;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.util.Vec3Impl;
 
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Textures;
 import gregtech.api.hazards.HazardProtection;
 import gregtech.api.interfaces.ITexture;
@@ -62,7 +63,7 @@ public class MTEMicrowave extends TTMultiblockBase implements ISurvivalConstruct
     private boolean hasBeenPausedThisCycle = false;
     private int currentTime;
     private int remainingTime;
-    private int dps;
+    private int maxDamagePerSecond;
     // endregion
 
     // region structure
@@ -107,7 +108,7 @@ public class MTEMicrowave extends TTMultiblockBase implements ISurvivalConstruct
     protected void initParameters() {
         powerParameter = new Parameter.IntegerParameter(
             1000,
-            300,
+            128,
             Integer.MAX_VALUE,
             "gt.blockmachines.multimachine.tm.microwave.power");
         timerParameter = new Parameter.IntegerParameter(
@@ -137,7 +138,7 @@ public class MTEMicrowave extends TTMultiblockBase implements ISurvivalConstruct
             remainingTime = timerParameter.getValue();
             currentTime = 0;
         }
-        mEUt = -(powerParameter.getValue() >> 1);
+        mEUt = -powerParameter.getValue();
         eAmpereFlow = 1;
         mMaxProgresstime = 20;
         mEfficiencyIncrease = 10000;
@@ -162,10 +163,10 @@ public class MTEMicrowave extends TTMultiblockBase implements ISurvivalConstruct
         Vec3Impl xyzExpansion = getExtendedFacing().getWorldOffset(new Vec3Impl(1, 0, 1))
             .abs();
         int power = powerParameter.getValue();
-        int damagingFactor = Math.min(power >> 6, 8) + Math.min(power >> 8, 24)
-            + Math.min(power >> 12, 48)
-            + (power >> 18);
-        dps = damagingFactor;
+        int damagingFactor = (int) (Math.min(power / GTValues.V[1], 8) + Math.min(power / GTValues.V[2], 24)
+            + Math.min(power / GTValues.V[4], 48)
+            + (power / GTValues.V[7]));
+        maxDamagePerSecond = damagingFactor;
 
         ArrayList<ItemStack> itemsToOutput = new ArrayList<>();
         HashSet<Entity> tickedStuff = new HashSet<>();
@@ -331,16 +332,18 @@ public class MTEMicrowave extends TTMultiblockBase implements ISurvivalConstruct
         PanelSyncManager syncManager) {
         super.insertTexts(machineInfo, invSlot, syncManager);
 
-        IntSyncValue damageFactorSyncer = new IntSyncValue(() -> dps);
+        IntSyncValue damageFactorSyncer = new IntSyncValue(() -> maxDamagePerSecond);
         IntSyncValue remainingTimeSyncer = new IntSyncValue(() -> remainingTime);
         syncManager.syncValue("damageFactor", damageFactorSyncer);
         syncManager.syncValue("remainingTime", remainingTimeSyncer);
 
         machineInfo.child(
             IKey.dynamic(
-                () -> EnumChatFormatting.WHITE + "Damage per second: "
+                () -> EnumChatFormatting.WHITE + "Up to "
                     + EnumChatFormatting.RED
-                    + damageFactorSyncer.getValue())
+                    + damageFactorSyncer.getValue()
+                    + EnumChatFormatting.WHITE
+                    + " damage per second")
                 .asWidget()
                 .setEnabledIf(widget -> getErrorDisplayID() == 0 && getBaseMetaTileEntity().isActive())
                 .widthRel(1)
