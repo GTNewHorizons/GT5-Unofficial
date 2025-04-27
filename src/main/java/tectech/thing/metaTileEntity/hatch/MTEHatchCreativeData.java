@@ -53,6 +53,18 @@ public class MTEHatchCreativeData extends MTEHatchDataConnector<QuantumDataPacke
     }
 
     @Override
+    public void saveNBTData(NBTTagCompound aNBT) {
+        super.saveNBTData(aNBT);
+        aNBT.setLong("computation", production);
+    }
+
+    @Override
+    public void loadNBTData(NBTTagCompound aNBT) {
+        super.loadNBTData(aNBT);
+        production = aNBT.getLong("computation");
+    }
+
+    @Override
     public boolean isOutputFacing(ForgeDirection side) {
         return side == getBaseMetaTileEntity().getFrontFacing();
     }
