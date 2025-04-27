@@ -37,10 +37,22 @@ public class NanoForgeRenderer extends TileEntitySpecialRenderer {
     private static final float SINUS_DIVIDER = 50.0f;
     private static final float MAX_CHAOS_SPEED_UP = 2.0f;
     private static final float RING_ROTATION_NORMAL = 1.0f;
-    private static final Function<Float, Float> RING_ROTATION_MAJOR = (
+    private static final Function<Float, Float> FIRST_RING_ROTATION_MAJOR = (
         t) -> (float) (Math.sin(t / SINUS_DIVIDER) + 1.5 * Math.sin(t / SINUS_DIVIDER * 0.5)
             + 0.5 * Math.sin(t / SINUS_DIVIDER * 0.1));
-    private static final Function<Float, Float> RING_ROTATION_MINOR = (
+    private static final Function<Float, Float> FIRST_RING_ROTATION_MINOR = (
+        t) -> (float) (Math.sin(t / SINUS_DIVIDER) + 1.5 * Math.sin(t / SINUS_DIVIDER * 0.2)
+            + 0.5 * Math.sin(t / SINUS_DIVIDER * 0.1));
+    private static final Function<Float, Float> SECOND_RING_ROTATION_MAJOR = (
+        t) -> (float) (Math.sin(t / SINUS_DIVIDER) + 1.5 * Math.sin(t / SINUS_DIVIDER * 0.5)
+            + 0.5 * Math.sin(t / SINUS_DIVIDER * 0.1));
+    private static final Function<Float, Float> SECOND_RING_ROTATION_MINOR = (
+        t) -> (float) (Math.sin(t / SINUS_DIVIDER) + 1.5 * Math.sin(t / SINUS_DIVIDER * 0.2)
+            + 0.5 * Math.sin(t / SINUS_DIVIDER * 0.1));
+    private static final Function<Float, Float> THIRD_RING_ROTATION_MAJOR = (
+        t) -> (float) (Math.sin(t / SINUS_DIVIDER) + 1.5 * Math.sin(t / SINUS_DIVIDER * 0.5)
+            + 0.5 * Math.sin(t / SINUS_DIVIDER * 0.1));
+    private static final Function<Float, Float> THIRD_RING_ROTATION_MINOR = (
         t) -> (float) (Math.sin(t / SINUS_DIVIDER) + 1.5 * Math.sin(t / SINUS_DIVIDER * 0.2)
             + 0.5 * Math.sin(t / SINUS_DIVIDER * 0.1));
 
@@ -122,9 +134,11 @@ public class NanoForgeRenderer extends TileEntitySpecialRenderer {
         GL11.glTranslated(x + .5f, y + .5f, z + .5f);
         GL11.glRotatef(
             timer * SPEED_MULTIPLIER + timer * CHAOS_SPEED_MULTIPLIER * chaos,
-            RING_ROTATION_MAJOR.apply(timer) * chaos,
+            0f,
             0.5f + RING_ROTATION_NORMAL * chaos,
-            RING_ROTATION_MINOR.apply(timer) * chaos);
+            0f);
+        GL11.glRotatef(timer * CHAOS_SPEED_MULTIPLIER * chaos, FIRST_RING_ROTATION_MAJOR.apply(timer), 0f, 0f);
+        GL11.glRotatef(timer * CHAOS_SPEED_MULTIPLIER * chaos, 0f, 0f, FIRST_RING_ROTATION_MINOR.apply(timer));
         nanoforgeRingOneModel.renderAllVBO();
 
         GL11.glPopMatrix();
@@ -140,8 +154,10 @@ public class NanoForgeRenderer extends TileEntitySpecialRenderer {
         GL11.glRotatef(
             timer * SPEED_MULTIPLIER + timer * CHAOS_SPEED_MULTIPLIER * chaos,
             0.5f + RING_ROTATION_NORMAL * chaos,
-            RING_ROTATION_MINOR.apply(timer) * chaos,
-            RING_ROTATION_MAJOR.apply(timer) * chaos);
+            0f,
+            0f);
+        GL11.glRotatef(timer * CHAOS_SPEED_MULTIPLIER * chaos, 0f, 0f, SECOND_RING_ROTATION_MAJOR.apply(timer));
+        GL11.glRotatef(timer * CHAOS_SPEED_MULTIPLIER * chaos, 0f, SECOND_RING_ROTATION_MINOR.apply(timer), 0f);
         nanoforgeRingTwoModel.renderAllVBO();
 
         GL11.glPopMatrix();
@@ -156,9 +172,11 @@ public class NanoForgeRenderer extends TileEntitySpecialRenderer {
         GL11.glTranslated(x + .5f, y + .5f, z + .5f);
         GL11.glRotatef(
             timer * SPEED_MULTIPLIER + timer * CHAOS_SPEED_MULTIPLIER * chaos,
-            RING_ROTATION_MAJOR.apply(timer) * chaos,
-            RING_ROTATION_MINOR.apply(timer) * chaos,
+            0f,
+            0f,
             0.5f + RING_ROTATION_NORMAL * chaos);
+        GL11.glRotatef(timer * CHAOS_SPEED_MULTIPLIER * chaos, 0f, THIRD_RING_ROTATION_MAJOR.apply(timer), 0f);
+        GL11.glRotatef(timer * CHAOS_SPEED_MULTIPLIER * chaos, THIRD_RING_ROTATION_MINOR.apply(timer), 0f, 0f);
         nanoforgeRingThreeModel.renderAllVBO();
 
         GL11.glPopMatrix();
