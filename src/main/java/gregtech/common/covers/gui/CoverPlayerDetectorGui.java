@@ -12,7 +12,7 @@ import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.util.GTUtility;
 import gregtech.common.covers.CoverPlayerDetector;
 import gregtech.common.covers.modes.PlayerDetectionMode;
-import gregtech.common.gui.modularui2.LinkedBoolValue;
+import gregtech.common.modularui2.sync.LinkedBoolValue;
 import gregtech.common.modularui2.widget.SelectButton;
 
 public class CoverPlayerDetectorGui extends CoverGui<CoverPlayerDetector> {

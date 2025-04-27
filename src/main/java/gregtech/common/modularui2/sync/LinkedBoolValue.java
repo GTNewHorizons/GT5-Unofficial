@@ -1,4 +1,4 @@
-package gregtech.common.gui.modularui2;
+package gregtech.common.modularui2.sync;
 
 import com.cleanroommc.modularui.api.value.IValue;
 import com.cleanroommc.modularui.value.BoolValue;

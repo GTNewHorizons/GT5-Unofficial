@@ -1,4 +1,4 @@
-package gregtech.common.gui.modularui2;
+package gregtech.common.modularui2.util;
 
 import com.cleanroommc.modularui.network.NetworkUtils;
 import com.cleanroommc.modularui.widget.WidgetTree;

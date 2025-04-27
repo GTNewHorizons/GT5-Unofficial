@@ -16,8 +16,8 @@ import gregtech.common.covers.CoverIOBase;
 import gregtech.common.covers.modes.BlockMode;
 import gregtech.common.covers.modes.MachineProcessingCondition;
 import gregtech.common.covers.modes.TransferMode;
-import gregtech.common.gui.modularui2.EnumRowBuilder;
-import gregtech.common.gui.modularui2.FlowActions;
+import gregtech.common.modularui2.util.FlowActions;
+import gregtech.common.modularui2.widget.builder.EnumRowBuilder;
 
 public class CoverIOBaseGui extends CoverGui<CoverIOBase> {
 

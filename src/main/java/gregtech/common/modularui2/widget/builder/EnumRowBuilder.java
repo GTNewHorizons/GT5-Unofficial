@@ -1,4 +1,4 @@
-package gregtech.common.gui.modularui2;
+package gregtech.common.modularui2.widget.builder;
 
 import java.util.Objects;
 
@@ -11,6 +11,7 @@ import com.cleanroommc.modularui.widgets.ToggleButton;
 import com.cleanroommc.modularui.widgets.layout.Flow;
 
 import gregtech.api.interfaces.modularui.KeyProvider;
+import gregtech.common.modularui2.sync.LinkedBoolValue;
 import gregtech.common.modularui2.widget.SelectButton;
 
 /**
