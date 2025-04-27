@@ -273,7 +273,9 @@ public class MTENetworkSwitchAdv extends TTMultiblockBase
             .addInfo("Computation output is configured by right clicking transmission connectors with a screwdriver.")
             .addInfo("Transmission connectors must be part of the structure for them to be configurable.")
             .addInfo("Computation output for a hatch is directly controlled by the hatch's setting.")
-            .addInfo("For weighted computation distribution, use the §6" + Machine_Multi_Switch.get(1).getDisplayName() + "§r.")
+            .addInfo(
+                "For weighted computation distribution, use the §6" + Machine_Multi_Switch.get(1)
+                    .getDisplayName() + "§r.")
             .addSeparator();
 
         tt.beginStructureBlock();

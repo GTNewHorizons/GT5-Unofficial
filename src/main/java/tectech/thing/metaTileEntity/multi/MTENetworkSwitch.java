@@ -20,6 +20,7 @@ import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructa
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.util.Vec3Impl;
+
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
@@ -48,8 +49,8 @@ import tectech.thing.metaTileEntity.multi.base.render.TTRenderedExtendedFacingTe
 /**
  * Created by danie_000 on 17.12.2016.
  */
-public class MTENetworkSwitch extends TTMultiblockBase implements ISurvivalConstructable,
-    IStructureProvider<MTENetworkSwitch> {
+public class MTENetworkSwitch extends TTMultiblockBase
+    implements ISurvivalConstructable, IStructureProvider<MTENetworkSwitch> {
 
     protected final StructureWrapper<MTENetworkSwitch> structure;
     protected final StructureWrapperInstanceInfo<MTENetworkSwitch> structureInstanceInfo;
@@ -86,11 +87,13 @@ public class MTENetworkSwitch extends TTMultiblockBase implements ISurvivalConst
 
     @Override
     public String[][] getDefinition() {
+        // spotless:off
         return transpose(new String[][] {
             { "BBB", "BAB", "BBB" },
             { "B~B", "AAA", "BAB" },
             { "BBB", "BAB", "BBB" }
         });
+        // spotless:on
     }
 
     @Override
@@ -155,7 +158,7 @@ public class MTENetworkSwitch extends TTMultiblockBase implements ISurvivalConst
         tt.addHatch(Casings.AdvancedComputerCasing, InputData, 1);
         tt.addHatch(Casings.ComputerCasing, OutputData, 1, 2);
         tt.addHatch(Casings.ComputerCasing, Energy, 1, 2);
-        tt.addHatch(Casings.ComputerCasing, Maintenance,  1, 2);
+        tt.addHatch(Casings.ComputerCasing, Maintenance, 1, 2);
 
         tt.toolTipFinisher();
 
