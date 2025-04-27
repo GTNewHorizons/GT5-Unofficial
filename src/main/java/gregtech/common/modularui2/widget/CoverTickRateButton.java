@@ -1,4 +1,4 @@
-package gregtech.common.gui.modularui2.widgets;
+package gregtech.common.modularui2.widget;
 
 import net.minecraft.util.StatCollector;
 

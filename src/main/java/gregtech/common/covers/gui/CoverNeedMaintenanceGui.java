@@ -16,7 +16,7 @@ import gregtech.common.covers.conditions.MaintenanceAlertCondition;
 import gregtech.common.covers.modes.RedstoneMode;
 import gregtech.common.gui.modularui2.FlowActions;
 import gregtech.common.gui.modularui2.LinkedBoolValue;
-import gregtech.common.gui.modularui2.widgets.SelectButton;
+import gregtech.common.modularui2.widget.SelectButton;
 
 public class CoverNeedMaintenanceGui extends CoverGui<CoverNeedMaintainance> {
 

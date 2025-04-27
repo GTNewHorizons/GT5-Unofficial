@@ -11,7 +11,7 @@ import com.cleanroommc.modularui.widgets.ToggleButton;
 import com.cleanroommc.modularui.widgets.layout.Flow;
 
 import gregtech.api.interfaces.modularui.KeyProvider;
-import gregtech.common.gui.modularui2.widgets.SelectButton;
+import gregtech.common.modularui2.widget.SelectButton;
 
 /**
  * Creates a row wrapping a series of buttons that are bound to the enum.

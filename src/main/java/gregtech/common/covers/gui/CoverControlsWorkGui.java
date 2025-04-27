@@ -14,7 +14,7 @@ import gregtech.api.util.GTUtility;
 import gregtech.common.covers.CoverControlsWork;
 import gregtech.common.covers.conditions.RedstoneCondition;
 import gregtech.common.gui.modularui2.LinkedBoolValue;
-import gregtech.common.gui.modularui2.widgets.SelectButton;
+import gregtech.common.modularui2.widget.SelectButton;
 
 public class CoverControlsWorkGui extends CoverGui<CoverControlsWork> {
 

@@ -12,6 +12,7 @@ import gregtech.api.modularui2.CoverGuiData;
 import gregtech.api.modularui2.GTWidgetThemes;
 import gregtech.api.util.GTUtility;
 import gregtech.common.covers.Cover;
+import gregtech.common.modularui2.widget.CoverTickRateButton;
 
 public class CoverGui<T extends Cover> {
 
@@ -71,7 +72,7 @@ public class CoverGui<T extends Cover> {
             .getCoverAtSide(guiData.getSide());
         if (cover.getMinimumTickRate() > 0 && cover.allowsTickRateAddition()) {
             panel.child(
-                new gregtech.common.gui.modularui2.widgets.CoverTickRateButton(cover, syncManager).right(4)
+                new CoverTickRateButton(cover, syncManager).right(4)
                     .bottom(4));
         }
 

@@ -13,7 +13,7 @@ import gregtech.api.util.GTUtility;
 import gregtech.common.covers.CoverShutter;
 import gregtech.common.covers.modes.ShutterMode;
 import gregtech.common.gui.modularui2.LinkedBoolValue;
-import gregtech.common.gui.modularui2.widgets.SelectButton;
+import gregtech.common.modularui2.widget.SelectButton;
 
 public class CoverShutterGui extends CoverGui<CoverShutter> {
 
