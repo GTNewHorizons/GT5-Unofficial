@@ -40,6 +40,7 @@ import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.modularui2.CoverGuiData;
 import gregtech.api.modularui2.GTGuiTheme;
 import gregtech.api.modularui2.GTGuiThemes;
+import gregtech.api.modularui2.GTGuis;
 import gregtech.api.modularui2.GTModularScreen;
 import gregtech.api.util.GTUtility;
 import gregtech.common.gui.modularui2.cover.CoverGui;
@@ -48,12 +49,6 @@ import gregtech.common.text.ClientTickRateFormatter;
 import io.netty.buffer.ByteBuf;
 
 public class Cover implements IGuiHolder<CoverGuiData> {
-
-    /**
-     * Set to true to test MUI2 functionality. This eventually will be removed and everything will switch to MUI2.
-     */
-    @SuppressWarnings({ "FieldMayBeFinal", "FieldCanBeLocal" })
-    private static boolean USE_MODULAR_UI_2 = true;
 
     // One minute
     public static final int MAX_TICK_RATE_ADDITION = 1200;
@@ -428,7 +423,7 @@ public class Cover implements IGuiHolder<CoverGuiData> {
     public boolean onCoverShiftRightClick(EntityPlayer aPlayer) {
         ICoverable coverable = coveredTile.get();
         if (coverable != null && hasCoverGUI() && aPlayer instanceof EntityPlayerMP) {
-            if (USE_MODULAR_UI_2) {
+            if (GTGuis.GLOBAL_SWITCH_MUI2) {
                 gregtech.api.modularui2.CoverUIFactory.INSTANCE
                     .open((EntityPlayerMP) aPlayer, coverID, coverable, coverSide, false);
             } else {
