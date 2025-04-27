@@ -378,7 +378,7 @@ public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge> i
 
             @Override
             protected @Nonnull CheckRecipeResult validateRecipe(@Nonnull GTRecipe recipe) {
-                if (mSpecialTier == 4) {
+                if (mSpecialTier >= 4) {
                     boolean foundNanite = false;
                     ItemStack inputNanite = recipe.mOutputs[0];
 
@@ -410,16 +410,17 @@ public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge> i
                         }
                     }
 
+                    TileEntityNanoForgeRenderer tile = getRenderer();
+                    ItemData data = GTOreDictUnificator.getAssociation(inputNanite);
+                    if (data != null) {
+                        Materials mat = data.mMaterial.mMaterial;
+                        short[] color = mat.mRGBa;
+                        tile.setColor(color[0] / 255.0f, color[1] / 255.0f, color[2] / 255.0f);
+                    } else {
+                        tile.setColor(1, 1, 1);
+                    }
+
                     if (foundNanite) {
-                        TileEntityNanoForgeRenderer tile = getRenderer();
-                        ItemData data = GTOreDictUnificator.getAssociation(inputNanite);
-                        if (data != null) {
-                            Materials mat = data.mMaterial.mMaterial;
-                            short[] color = mat.mRGBa;
-                            tile.setColor(color[0] / 255.0f, color[1] / 255.0f, color[2] / 255.0f);
-                        } else {
-                            tile.setColor(1, 1, 1);
-                        }
                         for (MTEHatchInput hatch : filterValidMTEs(mInputHatches)) {
                             FluidStack drained = hatch.drain(
                                 ForgeDirection.UNKNOWN,
