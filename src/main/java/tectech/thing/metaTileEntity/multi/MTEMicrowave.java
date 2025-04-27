@@ -23,6 +23,12 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
 
+import com.cleanroommc.modularui.api.drawable.IKey;
+import com.cleanroommc.modularui.api.widget.IWidget;
+import com.cleanroommc.modularui.utils.item.ItemStackHandler;
+import com.cleanroommc.modularui.value.sync.IntSyncValue;
+import com.cleanroommc.modularui.value.sync.PanelSyncManager;
+import com.cleanroommc.modularui.widgets.ListWidget;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IItemSource;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
@@ -43,10 +49,7 @@ import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import tectech.Reference;
 import tectech.loader.MainLoader;
 import tectech.recipe.TTRecipeAdder;
-import tectech.thing.metaTileEntity.multi.base.INameFunction;
-import tectech.thing.metaTileEntity.multi.base.IStatusFunction;
-import tectech.thing.metaTileEntity.multi.base.LedStatus;
-import tectech.thing.metaTileEntity.multi.base.Parameters;
+import tectech.thing.metaTileEntity.multi.base.Parameter;
 import tectech.thing.metaTileEntity.multi.base.TTMultiblockBase;
 import tectech.thing.metaTileEntity.multi.base.render.TTRenderedExtendedFacingTexture;
 
@@ -57,6 +60,9 @@ public class MTEMicrowave extends TTMultiblockBase implements ISurvivalConstruct
 
     // region variables
     private boolean hasBeenPausedThisCycle = false;
+    private int currentTime;
+    private int remainingTime;
+    private int dps;
     // endregion
 
     // region structure
@@ -85,27 +91,8 @@ public class MTEMicrowave extends TTMultiblockBase implements ISurvivalConstruct
     // endregion
 
     // region parameters
-    protected Parameters.Group.ParameterIn powerSetting, timerSetting;
-    protected Parameters.Group.ParameterOut timerValue, remainingTime;
-    private static final INameFunction<MTEMicrowave> POWER_SETTING_NAME = (base,
-        p) -> translateToLocal("gt.blockmachines.multimachine.tm.microwave.cfgi.0"); // Power setting
-    private static final INameFunction<MTEMicrowave> TIMER_SETTING_NAME = (base,
-        p) -> translateToLocal("gt.blockmachines.multimachine.tm.microwave.cfgi.1"); // Timer setting
-
-    private static final INameFunction<MTEMicrowave> TIMER_VALUE_NAME = (base,
-        p) -> translateToLocal("gt.blockmachines.multimachine.tm.microwave.cfgo.0"); // Timer value
-    private static final INameFunction<MTEMicrowave> TIMER_REMAINING_NAME = (base,
-        p) -> translateToLocal("gt.blockmachines.multimachine.tm.microwave.cfgo.1"); // Timer remaining
-    private static final IStatusFunction<MTEMicrowave> POWER_STATUS = (base, p) -> LedStatus
-        .fromLimitsInclusiveOuterBoundary(p.get(), 300, 1000, 1000, Double.POSITIVE_INFINITY);
-    private static final IStatusFunction<MTEMicrowave> TIMER_STATUS = (base, p) -> {
-        double value = p.get();
-        if (Double.isNaN(value)) return LedStatus.STATUS_WRONG;
-        value = (int) value;
-        if (value <= 0) return LedStatus.STATUS_TOO_LOW;
-        if (value > 3000) return LedStatus.STATUS_TOO_HIGH;
-        return LedStatus.STATUS_OK;
-    };
+    Parameter.IntegerParameter powerParameter;
+    Parameter.IntegerParameter timerParameter;
     // endregion
 
     public MTEMicrowave(int aID, String aName, String aNameRegional) {
@@ -114,6 +101,22 @@ public class MTEMicrowave extends TTMultiblockBase implements ISurvivalConstruct
 
     public MTEMicrowave(String aName) {
         super(aName);
+    }
+
+    @Override
+    protected void initParameters() {
+        powerParameter = new Parameter.IntegerParameter(
+            1000,
+            300,
+            Integer.MAX_VALUE,
+            "gt.blockmachines.multimachine.tm.microwave.power");
+        timerParameter = new Parameter.IntegerParameter(
+            360,
+            1,
+            3000,
+            "gt.blockmachines.multimachine.tm.microwave.timer");
+        parameterList.add(powerParameter);
+        parameterList.add(timerParameter);
     }
 
     @Override
@@ -130,14 +133,11 @@ public class MTEMicrowave extends TTMultiblockBase implements ISurvivalConstruct
     @NotNull
     public CheckRecipeResult checkProcessing_EM() {
         hasBeenPausedThisCycle = false;
-        if ((int) powerSetting.get() < 300 || timerSetting.get() <= 0 || timerSetting.get() > 3000) {
-            return SimpleCheckRecipeResult.ofFailure("invalid_timer");
+        if (remainingTime <= 0) {
+            remainingTime = timerParameter.getValue();
+            currentTime = 0;
         }
-        if (remainingTime.get() <= 0) {
-            remainingTime.set(timerSetting.get());
-            timerValue.set(0);
-        }
-        mEUt = -((int) powerSetting.get() >> 1);
+        mEUt = -(powerParameter.getValue() >> 1);
         eAmpereFlow = 1;
         mMaxProgresstime = 20;
         mEfficiencyIncrease = 10000;
@@ -146,11 +146,12 @@ public class MTEMicrowave extends TTMultiblockBase implements ISurvivalConstruct
 
     @Override
     public void outputAfterRecipe_EM() {
+
         if (hasBeenPausedThisCycle) {
             return; // skip timer and actions if paused
         }
-        timerValue.set(timerValue.get() + 1);
-        remainingTime.set(timerSetting.get() - timerValue.get());
+        currentTime++;
+        remainingTime = (timerParameter.getValue() - currentTime);
         IGregTechTileEntity mte = getBaseMetaTileEntity();
         Vec3Impl xyzOffsets = getExtendedFacing().getWorldOffset(new Vec3Impl(0, -1, 2));
         double xPos = mte.getXCoord() + 0.5f + xyzOffsets.get0();
@@ -160,10 +161,11 @@ public class MTEMicrowave extends TTMultiblockBase implements ISurvivalConstruct
         xyzOffsets = getExtendedFacing().getWorldOffset(new Vec3Impl(0, -4, 0));
         Vec3Impl xyzExpansion = getExtendedFacing().getWorldOffset(new Vec3Impl(1, 0, 1))
             .abs();
-        int power = (int) powerSetting.get();
+        int power = powerParameter.getValue();
         int damagingFactor = Math.min(power >> 6, 8) + Math.min(power >> 8, 24)
             + Math.min(power >> 12, 48)
             + (power >> 18);
+        dps = damagingFactor;
 
         ArrayList<ItemStack> itemsToOutput = new ArrayList<>();
         HashSet<Entity> tickedStuff = new HashSet<>();
@@ -206,7 +208,7 @@ public class MTEMicrowave extends TTMultiblockBase implements ISurvivalConstruct
 
         mOutputItems = itemsToOutput.toArray(TTRecipeAdder.nullItem);
 
-        if (remainingTime.get() <= 0) {
+        if (remainingTime <= 0) {
             mte.getWorld()
                 .playSoundEffect(xPos, yPos, zPos, Reference.MODID + ":microwave_ding", 1, 1);
             stopMachine(ShutDownReasonRegistry.NONE);
@@ -273,20 +275,10 @@ public class MTEMicrowave extends TTMultiblockBase implements ISurvivalConstruct
     }
 
     @Override
-    protected void parametersInstantiation_EM() {
-        Parameters.Group hatch_0 = parametrization.getGroup(0, true);
-        powerSetting = hatch_0.makeInParameter(0, 1000, POWER_SETTING_NAME, POWER_STATUS);
-        timerSetting = hatch_0.makeInParameter(1, 360, TIMER_SETTING_NAME, TIMER_STATUS);
-
-        timerValue = hatch_0.makeOutParameter(0, 0, TIMER_VALUE_NAME, TIMER_STATUS);
-        remainingTime = hatch_0.makeOutParameter(1, 360, TIMER_REMAINING_NAME, TIMER_STATUS);
-    }
-
-    @Override
     public void stopMachine(@Nonnull ShutDownReason reason) {
         super.stopMachine(reason);
-        remainingTime.set(timerSetting.get());
-        timerValue.set(0);
+        remainingTime = timerParameter.getValue();
+        currentTime = 0;
     }
 
     @Override
@@ -332,5 +324,37 @@ public class MTEMicrowave extends TTMultiblockBase implements ISurvivalConstruct
     @Override
     public boolean forceUseMui2() {
         return true;
+    }
+
+    @Override
+    public void insertTexts(ListWidget<IWidget, ?> machineInfo, ItemStackHandler invSlot,
+        PanelSyncManager syncManager) {
+        super.insertTexts(machineInfo, invSlot, syncManager);
+
+        IntSyncValue damageFactorSyncer = new IntSyncValue(() -> dps);
+        IntSyncValue remainingTimeSyncer = new IntSyncValue(() -> remainingTime);
+        syncManager.syncValue("damageFactor", damageFactorSyncer);
+        syncManager.syncValue("remainingTime", remainingTimeSyncer);
+
+        machineInfo.child(
+            IKey.dynamic(
+                () -> EnumChatFormatting.WHITE + "Damage per second: "
+                    + EnumChatFormatting.RED
+                    + damageFactorSyncer.getValue())
+                .asWidget()
+                .setEnabledIf(widget -> getErrorDisplayID() == 0 && getBaseMetaTileEntity().isActive())
+                .widthRel(1)
+                .marginBottom(2));
+
+        machineInfo.child(
+            IKey.dynamic(
+                () -> EnumChatFormatting.WHITE + "Remaining time: "
+                    + EnumChatFormatting.GREEN
+                    + remainingTimeSyncer.getValue())
+                .asWidget()
+                .setEnabledIf(widget -> getErrorDisplayID() == 0 && getBaseMetaTileEntity().isActive())
+                .widthRel(1)
+                .marginBottom(2));
+
     }
 }

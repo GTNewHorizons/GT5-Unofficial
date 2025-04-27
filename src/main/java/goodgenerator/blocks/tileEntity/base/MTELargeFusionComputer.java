@@ -84,7 +84,7 @@ public abstract class MTELargeFusionComputer extends MTETooltipMultiBlockBaseEM
     implements IConstructable, ISurvivalConstructable, IOverclockDescriptionProvider {
 
     public Parameters.Group.ParameterIn batchSetting;
-
+    Parameter.IntegerParameter batchSizeParameter;
     /** Name of the batch setting */
     public static final INameFunction<MTELargeFusionComputer> BATCH_SETTING_NAME = (base,
         p) -> translateToLocal("batch_mode.cfgi.0"); // Batch size
@@ -160,12 +160,12 @@ public abstract class MTELargeFusionComputer extends MTETooltipMultiBlockBaseEM
         super(name);
         useLongPower = true;
         this.overclockDescriber = createOverclockDescriber();
-        initParameters();
     }
 
     @Override
     protected void initParameters() {
-        parameterMap.put("batchSize", new Parameter.IntegerParameter(128, 1, 128, "batch_mode.cfgi.0"));
+        batchSizeParameter = new Parameter.IntegerParameter(128, 1, 128, "batch_mode.cfgi.0");
+        parameterList.add(batchSizeParameter);
     }
 
     public MTELargeFusionComputer(int id, String name, String nameRegional) {
@@ -248,7 +248,6 @@ public abstract class MTELargeFusionComputer extends MTETooltipMultiBlockBaseEM
     @Override
     public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
         float aX, float aY, float aZ, ItemStack aTool) {
-        Parameter.IntegerParameter batchSizeParameter = (Parameter.IntegerParameter) parameterMap.get("batchSize");
 
         if (getMaxBatchSize() == 1) {
             batchSizeParameter.setValue(batchSizeParameter.getMaxValue());
@@ -665,7 +664,7 @@ public abstract class MTELargeFusionComputer extends MTETooltipMultiBlockBaseEM
     @Override
     protected int getMaxBatchSize() {
         // Batch size 1~128
-        return ((Parameter.IntegerParameter) parameterMap.get("batchSize")).getValue();
+        return batchSizeParameter.getValue();
     }
 
     @Override

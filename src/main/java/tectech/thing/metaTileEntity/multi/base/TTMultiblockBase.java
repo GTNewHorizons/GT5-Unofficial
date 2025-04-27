@@ -23,9 +23,7 @@ import java.util.Arrays;
 import java.util.BitSet;
 import java.util.Collections;
 import java.util.EnumSet;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 import javax.annotation.Nonnull;
@@ -224,7 +222,7 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
 
     // read only unless you are making computation generator - read computer class
     protected long eAvailableData = 0; // data being available
-    public final Map<String, Parameter<?>> parameterMap = new LinkedHashMap<>();
+    public final List<Parameter<?>> parameterList = new ArrayList<>();
 
     /** Flag if the new long power variable should be used */
     protected boolean useLongPower = false;
@@ -240,6 +238,7 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
 
     protected TTMultiblockBase(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
+        initParameters();
         parametrization = new Parameters(this);
         parametersInstantiation_EM();
         parametrization.setToDefaults(true, true);
@@ -247,6 +246,7 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
 
     protected TTMultiblockBase(String aName) {
         super(aName);
+        initParameters();
         parametrization = new Parameters(this);
         parametersInstantiation_EM();
         parametrization.setToDefaults(true, true);
@@ -749,7 +749,7 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
         aNBT.removeTag("outputEM");
 
         NBTTagCompound parameterMapTag = new NBTTagCompound();
-        for (Map.Entry<String, Parameter<?>> entry : parameterMap.entrySet()) {
+        for (Parameter<?> parameter : parameterList) {
 
         }
         NBTTagCompound paramI = new NBTTagCompound();
@@ -2479,13 +2479,11 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
             }
         }.size(125, 191)
             .pos(parentArea.x + parentArea.width, parentArea.y);
-        ListWidget parameterListWidget = new ListWidget();
+        ListWidget<IWidget, ?> parameterListWidget = new ListWidget<>();
         parameterListWidget.sizeRel(1)
             .margin(2);
-        for (Map.Entry<String, Parameter<?>> entry : parameterMap.entrySet()) {
-            Parameter<?> parameter = entry.getValue();
+        for (Parameter<?> parameter : parameterList) {
             TextFieldWidget parameterField = new TextFieldWidget();
-
             if (parameter instanceof Parameter.IntegerParameter intParameter) {
                 parameterField.value(new IntSyncValue(intParameter::getValue, intParameter::setValue))
                     .setNumbers(intParameter::getMinValue, intParameter::getMaxValue);
@@ -2500,7 +2498,7 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
             parameterField.sizeRel(0.9f, 0.5f)
                 .align(com.cleanroommc.modularui.utils.Alignment.Center);
 
-            com.cleanroommc.modularui.widgets.ButtonWidget parameterButton = new ButtonWidget<>();
+            com.cleanroommc.modularui.widgets.ButtonWidget<?> parameterButton = new ButtonWidget<>();
             if (parameter instanceof Parameter.BooleanParameter booleanParameter) {
                 parameterButton.syncHandler(new InteractionSyncHandler().setOnMousePressed(mouseData -> {
                     booleanParameter.invert();
@@ -2534,6 +2532,7 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
                 .color(COLOR_TEXT_WHITE.get())
                 .setEnabledIf(widget -> !mWrench)
                 .marginBottom(2)
+                .widthRel(1)
 
         );
 
@@ -2542,6 +2541,7 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
                 .color(COLOR_TEXT_WHITE.get())
                 .setEnabledIf(widget -> !mScrewdriver)
                 .marginBottom(2)
+                .widthRel(1)
 
         );
 
@@ -2551,6 +2551,7 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
                 GTUtility.trans("134", "Something is stuck. (Soft Mallet)")).color(COLOR_TEXT_WHITE.get())
                     .setEnabledIf(widget -> !mSoftHammer)
                     .marginBottom(2)
+                    .widthRel(1)
 
         );
         machineInfo.child(
@@ -2559,6 +2560,7 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
                 .color(COLOR_TEXT_WHITE.get())
                 .setEnabledIf(widget -> !mHardHammer)
                 .marginBottom(2)
+                .widthRel(1)
 
         );
 
@@ -2568,6 +2570,7 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
                 GTUtility.trans("136", "Circuitry burned out. (Soldering)")).color(COLOR_TEXT_WHITE.get())
                     .setEnabledIf(widget -> !mSolderingTool)
                     .marginBottom(2)
+                    .widthRel(1)
 
         );
 
@@ -2577,6 +2580,7 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
                 GTUtility.trans("137", "That doesn't belong there. (Crowbar)")).color(COLOR_TEXT_WHITE.get())
                     .setEnabledIf(widget -> !mCrowbar)
                     .marginBottom(2)
+                    .widthRel(1)
 
         );
 
@@ -2585,6 +2589,7 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
                 .color(COLOR_TEXT_WHITE.get())
                 .setEnabledIf(widget -> !mMachine)
                 .marginBottom(2)
+                .widthRel(1)
 
         );
 
@@ -2593,6 +2598,7 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
                 StatCollector.translateToLocal("GT5U.gui.text.too_uncertain")).color(COLOR_TEXT_WHITE.get())
                     .setEnabledIf(widget -> (getErrorDisplayID() & 128) != 0)
                     .marginBottom(2)
+                    .widthRel(1)
 
         );
 
@@ -2601,6 +2607,7 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
                 StatCollector.translateToLocal("GT5U.gui.text.invalid_parameters")).color(COLOR_TEXT_WHITE.get())
                     .setEnabledIf(widget -> (getErrorDisplayID() & 256) != 0)
                     .marginBottom(2)
+                    .widthRel(1)
 
         );
 
@@ -2612,6 +2619,7 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
                     + GTUtility.trans("141", "if it doesn't start.")).color(COLOR_TEXT_WHITE.get())
                         .setEnabledIf(widget -> getErrorDisplayID() == 0 && !getBaseMetaTileEntity().isActive())
                         .marginBottom(2)
+                        .widthRel(1)
 
         );
 
@@ -2620,6 +2628,7 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
                 .color(COLOR_TEXT_WHITE.get())
                 .setEnabledIf(widget -> getErrorDisplayID() == 0 && getBaseMetaTileEntity().isActive())
                 .marginBottom(2)
+                .widthRel(1)
 
         );
 
@@ -2631,57 +2640,59 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
                 time.toMinutes() % 60,
                 time.getSeconds() % 60);
         })
-            .asWidget();
+            .asWidget()
+            .marginBottom(2)
+            .widthRel(1)
+            .setEnabledIf(
+                widget -> shouldDisplayShutDownReason() && !getBaseMetaTileEntity().isActive()
+                    && getBaseMetaTileEntity().wasShutdown());
 
-        machineInfo.child(
-            shutdownDuration.marginBottom(2)
-                .setEnabledIf(
-                    widget -> shouldDisplayShutDownReason() && !getBaseMetaTileEntity().isActive()
-                        && getBaseMetaTileEntity().wasShutdown()));
+        machineInfo.child(shutdownDuration);
 
         com.cleanroommc.modularui.widgets.TextWidget shutdownReason = IKey
             .dynamic(
                 () -> getBaseMetaTileEntity().getLastShutDownReason()
                     .getDisplayString())
-            .asWidget();
-
-        machineInfo.child(
-            shutdownReason.setEnabledIf(
+            .asWidget()
+            .marginBottom(2)
+            .widthRel(1)
+            .setEnabledIf(
                 widget -> shouldDisplayShutDownReason() && !getBaseMetaTileEntity().isActive()
                     && GTUtility.isStringValid(
                         getBaseMetaTileEntity().getLastShutDownReason()
                             .getDisplayString())
-                    && getBaseMetaTileEntity().wasShutdown()
+                    && getBaseMetaTileEntity().wasShutdown());
 
-            ));
+        machineInfo.child(shutdownReason);
 
         com.cleanroommc.modularui.widgets.TextWidget checkRecipeResultWidget = IKey
             .dynamic(() -> this.checkRecipeResult.getDisplayString())
-            .asWidget();
-        machineInfo.child(
-            checkRecipeResultWidget.marginBottom(2)
-                .setEnabledIf(
-                    widget -> shouldDisplayCheckRecipeResult()
-                        && GTUtility.isStringValid(checkRecipeResult.getDisplayString())
-                        && (isAllowedToWork() || getBaseMetaTileEntity().isActive()
-                            || checkRecipeResult.persistsOnShutdown())));
+            .asWidget()
+            .marginBottom(2)
+            .widthRel(1)
+            .setEnabledIf(
+                widget -> shouldDisplayCheckRecipeResult()
+                    && GTUtility.isStringValid(checkRecipeResult.getDisplayString())
+                    && (isAllowedToWork() || getBaseMetaTileEntity().isActive()
+                        || checkRecipeResult.persistsOnShutdown()));
+        machineInfo.child(checkRecipeResultWidget);
 
         if (showRecipeTextInGUI()) {
             // Display current recipe
             com.cleanroommc.modularui.widgets.TextWidget recipeInfoWidget = IKey
                 .dynamic(() -> ((StringSyncValue) syncManager.getSyncHandler("recipeInfo:0")).getValue())
-                .asWidget();
-            machineInfo.child(
-                recipeInfoWidget.marginBottom(2)
-                    .setEnabledIf(
-                        widget -> (((GenericListSyncHandler<?>) syncManager.getSyncHandler("itemOutput:0")).getValue()
-                            != null
-                            && !((GenericListSyncHandler<?>) syncManager.getSyncHandler("itemOutput:0")).getValue()
-                                .isEmpty())
-                            || ((GenericListSyncHandler<?>) syncManager.getSyncHandler("fluidOutput:0")).getValue()
-                                != null
-                                && !((GenericListSyncHandler<?>) syncManager.getSyncHandler("fluidOutput:0")).getValue()
-                                    .isEmpty()));
+                .asWidget()
+                .marginBottom(2)
+                .widthRel(1)
+                .setEnabledIf(
+                    widget -> (((GenericListSyncHandler<?>) syncManager.getSyncHandler("itemOutput:0")).getValue()
+                        != null
+                        && !((GenericListSyncHandler<?>) syncManager.getSyncHandler("itemOutput:0")).getValue()
+                            .isEmpty())
+                        || ((GenericListSyncHandler<?>) syncManager.getSyncHandler("fluidOutput:0")).getValue() != null
+                            && !((GenericListSyncHandler<?>) syncManager.getSyncHandler("fluidOutput:0")).getValue()
+                                .isEmpty());
+            machineInfo.child(recipeInfoWidget);
         }
         machineInfo.onUpdateListener((bla) -> {
             if (NetworkUtils.isClient()) {
