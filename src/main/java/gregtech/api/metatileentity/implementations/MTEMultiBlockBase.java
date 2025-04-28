@@ -1550,7 +1550,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
 
     /**
      * Outputs a stack to the multi's output busses. Does not add items to output hatches.
-     * 
+     *
      * @param stack    The stack to output. Any rejected items will remain in the stack.
      * @param simulate When true the method will behave the same but the busses will not be updated
      * @return True when all items were output, false otherwise
@@ -3098,8 +3098,8 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         ret.append(EnumChatFormatting.GRAY);
         ret.append("(");
         ret.append(EnumChatFormatting.WHITE);
-        numberFormat.setMinimumFractionDigits((mMaxProgresstime / 20) > 1 ? 0 : 2);
-        numberFormat.setMaximumFractionDigits((mMaxProgresstime / 20) > 1 ? 0 : 2);
+        numberFormat.setMinimumFractionDigits((mMaxProgresstime / 20) > 1_000 ? 0 : 2);
+        numberFormat.setMaximumFractionDigits((mMaxProgresstime / 20) > 1_000 ? 0 : 2);
         numberFormat.format((double) mProgresstime / 20, ret);
         ret.append("s");
         ret.append(EnumChatFormatting.GRAY);
