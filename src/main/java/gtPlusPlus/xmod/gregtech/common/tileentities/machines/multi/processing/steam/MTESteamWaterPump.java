@@ -101,13 +101,22 @@ public class MTESteamWaterPump extends MTESteamMultiBase<MTESteamWaterPump> impl
 
     private int mCountCasing;
 
+    private boolean isAllowedDim() {
+        return (getBaseMetaTileEntity().getWorld().provider.getDimensionName()
+            .equals("Ross128b")
+            || getBaseMetaTileEntity().getWorld().provider.getDimensionName()
+                .equals("Ross128ba")
+            || getBaseMetaTileEntity().getWorld().provider.getDimensionName()
+                .equals("Overworld"));
+    }
+
     private float getHumidity() {
         return this.getBaseMetaTileEntity()
             .getBiome().rainfall;
     }
 
     private int calculateFinalWaterOutput() {
-        return (int) ((250 + currentHumidity * BASE_WATER_PER_SECOND) * mSetTier);
+        return (int) ((((isAllowedDim() ? 1 : 0) * 250) + currentHumidity * BASE_WATER_PER_SECOND) * mSetTier);
     }
 
     @Override
