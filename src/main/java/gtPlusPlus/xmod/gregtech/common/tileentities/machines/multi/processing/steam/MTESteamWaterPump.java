@@ -96,7 +96,9 @@ public class MTESteamWaterPump extends MTESteamMultiBase<MTESteamWaterPump> impl
     private static final Fluid water = FluidRegistry.getFluid("water");
 
     private FluidStack[] getWater() {
-        return new FluidStack[] { new FluidStack(water, (calculateFinalWaterOutput() <= 250 && isAllowedDim() ? 250 : calculateFinalWaterOutput())) };
+        return new FluidStack[] { new FluidStack(
+            water,
+            (calculateFinalWaterOutput() <= 250 && isAllowedDim() ? 250 : calculateFinalWaterOutput())) };
     }
 
     private int mCountCasing;
