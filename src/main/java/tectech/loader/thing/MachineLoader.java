@@ -2216,10 +2216,10 @@ public class MachineLoader implements Runnable {
         Machine_Multi_TeslaCoil
             .set(new MTETeslaTower(TeslaTower.ID, "multimachine.tm.teslaCoil", "Tesla Tower").getStackForm(1L));
         Machine_Multi_Switch.set(
-            new MTENetworkSwitch(NetworkSwitchWithQoS.ID, "multimachine.em.switch", "Network Switch With QoS")
+            new MTENetworkSwitch(NetworkSwitchWithQoS.ID, "multimachine.em.switch", "Weighted Network Switch With QoS")
                 .getStackForm(1L));
         Machine_Multi_Switch_Adv.set(
-            new MTENetworkSwitchAdv(NetworkSwitchAdv.ID, "multimachine.em.switch.adv", "Network Switch With QoS")
+            new MTENetworkSwitchAdv(NetworkSwitchAdv.ID, "multimachine.em.switch.adv", "Static Network Switch With QoS")
                 .getStackForm(1L));
         Machine_Multi_Computer.set(
             new MTEQuantumComputer(QuantumComputer.ID, "multimachine.em.computer", "Quantum Computer")

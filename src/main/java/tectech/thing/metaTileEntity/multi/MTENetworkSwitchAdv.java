@@ -3,6 +3,7 @@ package tectech.thing.metaTileEntity.multi;
 import static gregtech.api.enums.HatchElement.Dynamo;
 import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.util.GTUtility.validMTEList;
+import static tectech.thing.CustomItemList.Machine_Multi_Switch;
 import static tectech.thing.metaTileEntity.multi.base.TTMultiblockBase.HatchElement.DynamoMulti;
 import static tectech.thing.metaTileEntity.multi.base.TTMultiblockBase.HatchElement.EnergyMulti;
 import static tectech.thing.metaTileEntity.multi.base.TTMultiblockBase.HatchElement.InputData;
@@ -264,13 +265,17 @@ public class MTENetworkSwitchAdv extends TTMultiblockBase
     protected MultiblockTooltipBuilder createTooltip() {
         StructureWrapperTooltipBuilder<MTENetworkSwitchAdv> tt = new StructureWrapperTooltipBuilder<>(structure);
 
-        tt.addMachineType("Network Switch With QoS")
-            .addInfo("Variable-length version of the standard Network Switch.")
+        tt.addMachineType("Static Network Switch With QoS")
+            .addInfo("Variable-length version of the Weighted Network Switch.")
             .addSeparator()
             .addInfo("Consumes §b524,288§7 EU/t per middle slice while active.")
             .addSeparator()
             .addInfo("Computation output is configured by right clicking transmission connectors with a screwdriver.")
             .addInfo("Transmission connectors must be part of the structure for them to be configurable.")
+            .addInfo("Computation output for a hatch is directly controlled by the hatch's setting.")
+            .addInfo(
+                "For weighted computation distribution, use the §6" + Machine_Multi_Switch.get(1)
+                    .getDisplayName() + "§r.")
             .addSeparator();
 
         tt.beginStructureBlock();
