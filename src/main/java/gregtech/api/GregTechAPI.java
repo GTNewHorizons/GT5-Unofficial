@@ -192,7 +192,6 @@ public class GregTechAPI {
     public static Block sLaserRender;
     public static Block sWormholeRender;
     public static Block sBlackholeRender;
-    public static Block nanoForgeRender;
     /**
      * Getting assigned by the Config
      */
