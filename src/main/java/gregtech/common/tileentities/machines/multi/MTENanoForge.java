@@ -453,7 +453,7 @@ public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge> i
             protected OverclockCalculator createOverclockCalculator(@Nonnull GTRecipe recipe) {
                 return super.createOverclockCalculator(recipe)
                     .setDurationDecreasePerOC(mSpecialTier > recipe.mSpecialValue ? 4.0 : 2.0)
-                    .setDurationModifier(Math.pow(0.9999, maxParallel));
+                    .setDurationModifier(mSpecialTier >= 4 ? Math.pow(0.9999, maxParallel) : 1);
             }
         };
     }
