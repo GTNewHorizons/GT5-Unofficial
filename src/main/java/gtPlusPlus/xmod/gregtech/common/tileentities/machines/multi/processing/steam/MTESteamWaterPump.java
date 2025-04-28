@@ -96,10 +96,21 @@ public class MTESteamWaterPump extends MTESteamMultiBase<MTESteamWaterPump> impl
     private static final Fluid water = FluidRegistry.getFluid("water");
 
     private FluidStack[] getWater() {
-        return new FluidStack[] { new FluidStack(water, calculateFinalWaterOutput()) };
+        return new FluidStack[] { new FluidStack(
+            water,
+            (calculateFinalWaterOutput() <= 250 && isAllowedDim() ? 250 : calculateFinalWaterOutput())) };
     }
 
     private int mCountCasing;
+
+    private boolean isAllowedDim() {
+        return (getBaseMetaTileEntity().getWorld().provider.getDimensionName()
+            .equals("Ross128b")
+            || getBaseMetaTileEntity().getWorld().provider.getDimensionName()
+                .equals("Ross128ba")
+            || getBaseMetaTileEntity().getWorld().provider.getDimensionName()
+                .equals("Overworld"));
+    }
 
     private float getHumidity() {
         return this.getBaseMetaTileEntity()
@@ -107,7 +118,7 @@ public class MTESteamWaterPump extends MTESteamMultiBase<MTESteamWaterPump> impl
     }
 
     private int calculateFinalWaterOutput() {
-        return (int) (currentHumidity * BASE_WATER_PER_SECOND * mSetTier);
+        return (int) ((currentHumidity * BASE_WATER_PER_SECOND) * mSetTier);
     }
 
     @Override
@@ -233,11 +244,11 @@ public class MTESteamWaterPump extends MTESteamMultiBase<MTESteamWaterPump> impl
             .addInfo(
                 EnumChatFormatting.AQUA + "Generates: "
                     + EnumChatFormatting.WHITE
-                    + " humidity * tier * "
+                    + "tier * humidity * "
                     + BASE_WATER_PER_SECOND
                     + " L/s"
                     + EnumChatFormatting.AQUA
-                    + " of Water."
+                    + " of Water, to a minimum of 250L/s."
                     + EnumChatFormatting.RESET)
             .addInfo(
                 EnumChatFormatting.RED + "Consumes: "
