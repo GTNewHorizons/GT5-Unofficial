@@ -240,7 +240,7 @@ public abstract class MTELargeTurbineBase extends MTEEnhancedMultiBlockBase<MTEL
                 || this.getBaseMetaTileEntity()
                     .hasInventoryBeenModified()) {
                 counter = 0;
-                baseEff = (int) turbine.getEfficiency();
+                baseEff = (int) turbine.getBaseEfficiency();
                 optFlow = (int) turbine.getOptimalFlow();
 
                 overflowMultiplier = turbine.getOverflowEfficiency();
@@ -395,7 +395,8 @@ public abstract class MTELargeTurbineBase extends MTEEnhancedMultiBlockBase<MTEL
     }
 
     @Override
-    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
+        ItemStack aTool) {
         if (side == getBaseMetaTileEntity().getFrontFacing()) {
             looseFit ^= true;
             GTUtility.sendChatToPlayer(
