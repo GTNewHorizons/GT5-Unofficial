@@ -55,6 +55,7 @@ import gregtech.api.enums.HeatingCoilLevel;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.IHeatingCoil;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -858,6 +859,44 @@ public class GTStructureUtility {
         @Override
         public boolean isNavigating() {
             return proxiedElement.isNavigating();
+        }
+    }
+
+    /**
+     * Just a hatch element that proxies its operations to another one. Useful for overriding or hooking into
+     * specific operations while keeping the rest unchanged.
+     */
+    public static class ProxyHatchElement<T> implements IHatchElement<T> {
+
+        public final IHatchElement<? super T> proxiedHatch;
+
+        public ProxyHatchElement(IHatchElement<? super T> proxiedHatch) {
+            this.proxiedHatch = proxiedHatch;
+        }
+
+        @Override
+        public List<? extends Class<? extends IMetaTileEntity>> mteClasses() {
+            return proxiedHatch.mteClasses();
+        }
+
+        @Override
+        public IGTHatchAdder<? super T> adder() {
+            return proxiedHatch.adder();
+        }
+
+        @Override
+        public String name() {
+            return proxiedHatch.name();
+        }
+
+        @Override
+        public String getDisplayName() {
+            return proxiedHatch.getDisplayName();
+        }
+
+        @Override
+        public long count(T t) {
+            return proxiedHatch.count(t);
         }
     }
 }
