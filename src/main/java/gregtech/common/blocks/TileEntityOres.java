@@ -335,7 +335,7 @@ public class TileEntityOres extends TileEntity implements IAllSidedTexturedTileE
                         // if not shouldFortune and isNatural then get normal drops
                         // if shouldFortune and not isNatural then get normal drops
                         if (shouldFortune && this.mNatural && aFortune > 0) {
-                            int aMinAmount = 1;
+                            int aMinAmount = tIsRich ? 2 : 1;
                             // Max applicable fortune
                             if (aFortune > 3) aFortune = 3;
                             int amount = aMinAmount

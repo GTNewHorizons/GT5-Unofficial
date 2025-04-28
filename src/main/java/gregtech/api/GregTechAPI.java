@@ -183,7 +183,7 @@ public class GregTechAPI {
     public static Block sBlockGranites, sBlockConcretes, sBlockStones;
     public static Block sBlockCasings1, sBlockCasings2, sBlockCasings3, sBlockCasings4, sBlockCasings5, sBlockCasings6,
         sBlockCasings8, sBlockCasings9, sBlockCasings10, sBlockCasings11, sBlockCasings12, sSolenoidCoilCasings,
-        sBlockCasingsNH;
+        sBlockCasingsNH, sBlockCasingsSE, sBlockCasingsSEMotor, sBlockCasingsDyson, sBlockCasingsSiphon;
     public static Block sBlockLongDistancePipes;
     public static Block sDroneRender;
     public static Block sBlockFrames;
@@ -192,6 +192,7 @@ public class GregTechAPI {
     public static Block sLaserRender;
     public static Block sWormholeRender;
     public static Block sBlackholeRender;
+    public static Block sSpaceElevatorCable;
     /**
      * Getting assigned by the Config
      */

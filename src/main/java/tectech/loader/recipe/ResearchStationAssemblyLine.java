@@ -9,7 +9,6 @@ import static gregtech.api.enums.Mods.BloodMagic;
 import static gregtech.api.enums.Mods.DraconicEvolution;
 import static gregtech.api.enums.Mods.EternalSingularity;
 import static gregtech.api.enums.Mods.ExtraUtilities;
-import static gregtech.api.enums.Mods.GTNHIntergalactic;
 import static gregtech.api.enums.Mods.GalacticraftAmunRa;
 import static gregtech.api.enums.Mods.GraviSuite;
 import static gregtech.api.enums.Mods.IndustrialCraft2;
@@ -2395,8 +2394,7 @@ public class ResearchStationAssemblyLine implements Runnable {
         // EOH Spatial Individual Casing
         {
             TTRecipeAdder.addResearchableAssemblylineRecipe(
-                // Dyson Swarm Module Deployment Unit Base Casing
-                getModItem(GTNHIntergalactic.ID, "dysonswarmparts", 1, 2),
+                ItemList.DysonSwarmDeploymentUnitCasing.get(1),
                 256_000_000, // total comp
                 16_384, // comp/s
                 (int) TierEU.RECIPE_MAX, // eu/t
@@ -2750,11 +2748,8 @@ public class ResearchStationAssemblyLine implements Runnable {
                         // Blue Spectral Component
                         spectralComponents[(absoluteTier + 2) % spectralComponents.length],
 
-                        plateList[absoluteTier],
-                        // Dyson Swarm Module Deployment Unit Base Casing
-                        getModItem(GTNHIntergalactic.ID, "dysonswarmparts", (absoluteTier + 1) * 4, 2),
-                        // Dyson Swarm Energy Receiver Dish Block
-                        getModItem(GTNHIntergalactic.ID, "dysonswarmparts", (absoluteTier + 1) * 4, 1),
+                        plateList[absoluteTier], ItemList.DysonSwarmDeploymentUnitCasing.get((absoluteTier + 1) * 4),
+                        ItemList.DysonSwarmReceiverDish.get((absoluteTier + 1) * 4),
                         ItemList.AcceleratorUV.get((absoluteTier + 1) * 4),
 
                         ItemList.Energy_Module.get(absoluteTier + 1), GTOreDictUnificator
@@ -2831,8 +2826,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                                 timeCasings[absoluteTier],
                                 spatialCasings[absoluteTier],
                                 baseCasing,
-                                // Dyson Swarm Module.
-                                getModItem(GTNHIntergalactic.ID, "item.DysonSwarmParts", 4 * (absoluteTier + 1), 0),
+                                ItemList.DysonSwarmModule.get(4 * (absoluteTier + 1)),
 
                                 GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.SuperconductorUMVBase, 4 * (absoluteTier + 1)),
                                 GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.SuperconductorUIVBase, 4 * (absoluteTier + 1)),
@@ -3512,9 +3506,8 @@ public class ResearchStationAssemblyLine implements Runnable {
                 researchEuPerTick * 4,
                 researchAmperage * 16,
                 new Object[] { laserTargets_UXV[i], new ItemStack(compactFusionCoil, 1, 4),
-                    // Dyson Swarm Module Deployment Unit Superconducting Magnet
-                    getModItem(GTNHIntergalactic.ID, "dysonswarmparts", 1, 4),
-                    CustomItemList.Machine_Multi_Transformer.get(1), CustomItemList.eM_Power.get(64),
+                    ItemList.DysonSwarmDeploymentUnitMagnet.get(1), CustomItemList.Machine_Multi_Transformer.get(1),
+                    CustomItemList.eM_Power.get(64),
                     GTOreDictUnificator.get(OrePrefixes.wireGt16, MaterialsUEVplus.SpaceTime, 64),
                     GTOreDictUnificator.get(OrePrefixes.plateDense, MaterialsUEVplus.Eternity, 32),
                     GTOreDictUnificator
