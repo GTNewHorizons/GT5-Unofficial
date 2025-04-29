@@ -3661,19 +3661,11 @@ public class GTUtility {
     }
 
     /**
-     * @deprecated Use standard translation with {@link StatCollector}.
+     * @deprecated Use {@link StatCollector}
      */
     @Deprecated
     public static String trans(String aKey, String aEnglish) {
         return GTLanguageManager.addStringLocalization("Interaction_DESCRIPTION_Index_" + aKey, aEnglish);
-    }
-
-    /**
-     * @deprecated Use standard translation with {@link StatCollector}.
-     */
-    @Deprecated
-    public static String getTrans(String aKey) {
-        return GTLanguageManager.getTranslation("Interaction_DESCRIPTION_Index_" + aKey);
     }
 
     /**
@@ -4284,6 +4276,9 @@ public class GTUtility {
         "bartworks.system.material.BWMetaGeneratedOres",
         "bartworks.system.material.BWMetaGeneratedSmallOres",
         "gtPlusPlus.core.block.base.BlockBaseOre");
+
+    public static final String LOC_SEPARATOR = "\u001F";
+    public static final String YAP_SEPARATOR = "[BR]";
 
     public static boolean isOre(Block aBlock, int aMeta) {
         return (aBlock instanceof BlockOresAbstract) || isOre(new ItemStack(aBlock, 1, aMeta))
