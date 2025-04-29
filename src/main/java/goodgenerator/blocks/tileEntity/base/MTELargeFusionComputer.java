@@ -147,7 +147,7 @@ public abstract class MTELargeFusionComputer extends MTETooltipMultiBlockBaseEM
 
     @Override
     protected void initParameters() {
-        batchSizeParameter = new Parameter.IntegerParameter(128, 1, 128, "batch_mode.cfgi.0");
+        batchSizeParameter = new Parameter.IntegerParameter(128, () -> 1, () -> 128, "batch_mode.cfgi.0");
         parameterList.add(batchSizeParameter);
     }
 
@@ -279,7 +279,8 @@ public abstract class MTELargeFusionComputer extends MTETooltipMultiBlockBaseEM
                     if (aBaseMetaTileEntity.getStoredEU() <= 0 && mMaxProgresstime > 0) {
                         stopMachine(ShutDownReasonRegistry.POWER_LOSS);
                     }
-                    if(!aBaseMetaTileEntity.isAllowedToWork() && mMaxProgresstime == 0 && !aBaseMetaTileEntity.wasShutdown()){
+                    if (!aBaseMetaTileEntity.isAllowedToWork() && mMaxProgresstime == 0
+                        && !aBaseMetaTileEntity.wasShutdown()) {
                         notAllowedToWork_stopMachine_EM();
                     }
                     long energyLimit = getSingleHatchPower();

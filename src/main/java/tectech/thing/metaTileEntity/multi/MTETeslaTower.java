@@ -214,50 +214,50 @@ public class MTETeslaTower extends TTMultiblockBase implements ISurvivalConstruc
     public void initParameters() {
         hysteresisLowParameter = new Parameter.DoubleParameter(
             0.25,
-            0.05,
-            0.75,
+            () -> 0.05,
+            () -> hysteresisHighParameter.getValue() - 0.05,
             "gt.blockmachines.multimachine.tm.teslaCoil.hysteresisLow");
 
         hysteresisHighParameter = new Parameter.DoubleParameter(
             0.75,
-            0.25,
-            0.95,
+            () -> hysteresisLowParameter.getValue() + 0.05,
+            () -> 0.95,
             "gt.blockmachines.multimachine.tm.teslaCoil.hysteresisHigh");
 
         transferRadiusParameter = new Parameter.IntegerParameter(
             ConfigHandler.TeslaTweaks.TESLA_MULTI_RANGE_TOWER,
-            0,
-            Integer.MAX_VALUE,
+            () -> 0,
+            () -> Integer.MAX_VALUE,
             "gt.blockmachines.multimachine.tm.teslaCoil.transferRadius");
 
         transceiverRadiusParameter = new Parameter.IntegerParameter(
             ConfigHandler.TeslaTweaks.TESLA_MULTI_RANGE_TRANSCEIVER,
-            0,
-            Integer.MAX_VALUE,
+            () -> 0,
+            () -> Integer.MAX_VALUE,
             "gt.blockmachines.multimachine.tm.teslaCoil.transceiverRadius");
 
         ultimateCoverTransferRadiusParameter = new Parameter.IntegerParameter(
             ConfigHandler.TeslaTweaks.TESLA_MULTI_RANGE_COVER,
-            0,
-            Integer.MAX_VALUE,
+            () -> 0,
+            () -> Integer.MAX_VALUE,
             "gt.blockmachines.multimachine.tm.teslaCoil.ultimateCoverTransferRadius");
 
         outputVoltageParameter = new Parameter.IntegerParameter(
             -1,
-            -1,
-            Integer.MAX_VALUE,
+            () -> -1,
+            () -> Integer.MAX_VALUE,
             "gt.blockmachines.multimachine.tm.teslaCoil.outputVoltage");
 
         outputCurrentParameter = new Parameter.IntegerParameter(
             -1,
-            -1,
-            Integer.MAX_VALUE,
+            () -> -1,
+            () -> Integer.MAX_VALUE,
             "gt.blockmachines.multimachine.tm.teslaCoil.outputCurrent");
 
         scanTimeParameter = new Parameter.IntegerParameter(
             100,
-            100,
-            Integer.MAX_VALUE,
+            () -> 100,
+            () -> Integer.MAX_VALUE,
             "gt.blockmachines.multimachine.tm.teslaCoil.scanTime");
 
         overdriveParameter = new Parameter.BooleanParameter(

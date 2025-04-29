@@ -1,20 +1,22 @@
 package tectech.thing.metaTileEntity.multi.base;
 
+import java.util.function.Supplier;
+
 import net.minecraft.util.StatCollector;
 
 public abstract class Parameter<T> {
 
     private String localizedName;
     protected T currentValue;
-    private T minValue = null;
-    private T maxValue = null;
+    private Supplier<T> minValue = null;
+    private Supplier<T> maxValue = null;
 
     public Parameter(T value, String key) {
         this.currentValue = value;
         this.localizedName = StatCollector.translateToLocal(key);
     }
 
-    public Parameter(T value, T minValue, T maxValue, String key) {
+    public Parameter(T value, Supplier<T> minValue, Supplier<T> maxValue, String key) {
         this(value, key);
         this.minValue = minValue;
         this.maxValue = maxValue;
@@ -25,11 +27,11 @@ public abstract class Parameter<T> {
     }
 
     public T getMinValue() {
-        return minValue;
+        return minValue.get();
     }
 
     public T getMaxValue() {
-        return maxValue;
+        return maxValue.get();
     }
 
     public String getValueString() {
@@ -50,7 +52,7 @@ public abstract class Parameter<T> {
             super(value, key);
         }
 
-        public IntegerParameter(Integer value, Integer minValue, Integer maxValue, String key) {
+        public IntegerParameter(Integer value, Supplier<Integer> minValue, Supplier<Integer> maxValue, String key) {
             super(value, minValue, maxValue, key);
         }
     }
@@ -61,7 +63,7 @@ public abstract class Parameter<T> {
             super(value, key);
         }
 
-        public DoubleParameter(Double value, Double minValue, Double maxValue, String key) {
+        public DoubleParameter(Double value, Supplier<Double> minValue, Supplier<Double> maxValue, String key) {
             super(value, minValue, maxValue, key);
         }
     }
