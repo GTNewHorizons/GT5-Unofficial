@@ -48,7 +48,6 @@ import com.cleanroommc.modularui.api.IPanelHandler;
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.api.widget.IWidget;
 import com.cleanroommc.modularui.drawable.DynamicDrawable;
-import com.cleanroommc.modularui.drawable.GuiTextures;
 import com.cleanroommc.modularui.drawable.UITexture;
 import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
@@ -61,7 +60,6 @@ import com.cleanroommc.modularui.value.sync.DoubleSyncValue;
 import com.cleanroommc.modularui.value.sync.GenericListSyncHandler;
 import com.cleanroommc.modularui.value.sync.GenericSyncValue;
 import com.cleanroommc.modularui.value.sync.IntSyncValue;
-import com.cleanroommc.modularui.value.sync.InteractionSyncHandler;
 import com.cleanroommc.modularui.value.sync.LongSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.value.sync.StringSyncValue;
@@ -69,7 +67,6 @@ import com.cleanroommc.modularui.value.sync.SyncHandlers;
 import com.cleanroommc.modularui.widget.SingleChildWidget;
 import com.cleanroommc.modularui.widget.WidgetTree;
 import com.cleanroommc.modularui.widget.sizer.Area;
-import com.cleanroommc.modularui.widgets.ButtonWidget;
 import com.cleanroommc.modularui.widgets.ItemSlot;
 import com.cleanroommc.modularui.widgets.ListWidget;
 import com.cleanroommc.modularui.widgets.SlotGroupWidget;
@@ -2462,13 +2459,22 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
             parameterField.sizeRel(0.9f, 0.5f)
                 .align(com.cleanroommc.modularui.utils.Alignment.Center);
 
-            com.cleanroommc.modularui.widgets.ButtonWidget<?> parameterButton = new ButtonWidget<>();
+            ToggleButton parameterButton = new ToggleButton();
             if (parameter instanceof Parameter.BooleanParameter booleanParameter) {
-                parameterButton.syncHandler(new InteractionSyncHandler().setOnMousePressed(mouseData -> {
-                    booleanParameter.invert();
-                    parameterButton.overlay(booleanParameter.getValue() ? GuiTextures.CHECK_BOX : GuiTextures.CROSS);
-                }))
-                    .overlay(booleanParameter.getValue() ? GuiTextures.CHECK_BOX : GuiTextures.CROSS)
+                parameterButton
+                    .value(new BooleanSyncValue(booleanParameter::getValue, bool -> booleanParameter.invert()))
+                    .overlay(
+                        false,
+                        UITexture.builder()
+                            .location(GregTech.ID, "gui/overlay_button/cross.png")
+                            .imageSize(18, 18)
+                            .build())
+                    .overlay(
+                        true,
+                        UITexture.builder()
+                            .location(GregTech.ID, "gui/overlay_button/checkmark.png")
+                            .imageSize(18, 18)
+                            .build())
                     .align(com.cleanroommc.modularui.utils.Alignment.Center)
                     .size(18, 18);
             }
