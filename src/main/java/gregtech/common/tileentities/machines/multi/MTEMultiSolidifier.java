@@ -25,7 +25,6 @@ import java.util.stream.Collectors;
 
 import javax.annotation.Nonnull;
 
-import gregtech.common.misc.GTStructureChannels;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
@@ -65,6 +64,7 @@ import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.blocks.BlockCasings10;
+import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.tileentities.machines.IDualInputInventoryWithPattern;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchSolidifier;
 import mcp.mobius.waila.api.IWailaConfigHandler;
