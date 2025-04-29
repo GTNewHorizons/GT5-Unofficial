@@ -229,6 +229,7 @@ import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GTOreDictUnificator;
 import ic2.api.item.IKineticRotor;
+import kubatech.tileentity.gregtech.multiblock.MTEHighTempGasCooledReactor;
 
 public class ItemRegistry {
 
