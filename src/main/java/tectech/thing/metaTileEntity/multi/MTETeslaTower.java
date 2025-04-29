@@ -194,8 +194,6 @@ public class MTETeslaTower extends TTMultiblockBase implements ISurvivalConstruc
     Parameter.DoubleParameter hysteresisLowParameter;
     Parameter.DoubleParameter hysteresisHighParameter;
     Parameter.IntegerParameter transferRadiusParameter;
-    Parameter.IntegerParameter transceiverRadiusParameter;
-    Parameter.IntegerParameter ultimateCoverTransferRadiusParameter;
     Parameter.IntegerParameter outputVoltageParameter;
     Parameter.IntegerParameter outputCurrentParameter;
     Parameter.IntegerParameter scanTimeParameter;
@@ -230,18 +228,6 @@ public class MTETeslaTower extends TTMultiblockBase implements ISurvivalConstruc
             () -> Integer.MAX_VALUE,
             "gt.blockmachines.multimachine.tm.teslaCoil.transferRadius");
 
-        transceiverRadiusParameter = new Parameter.IntegerParameter(
-            ConfigHandler.TeslaTweaks.TESLA_MULTI_RANGE_TRANSCEIVER,
-            () -> 0,
-            () -> Integer.MAX_VALUE,
-            "gt.blockmachines.multimachine.tm.teslaCoil.transceiverRadius");
-
-        ultimateCoverTransferRadiusParameter = new Parameter.IntegerParameter(
-            ConfigHandler.TeslaTweaks.TESLA_MULTI_RANGE_COVER,
-            () -> 0,
-            () -> Integer.MAX_VALUE,
-            "gt.blockmachines.multimachine.tm.teslaCoil.ultimateCoverTransferRadius");
-
         outputVoltageParameter = new Parameter.IntegerParameter(
             -1,
             () -> -1,
@@ -266,8 +252,6 @@ public class MTETeslaTower extends TTMultiblockBase implements ISurvivalConstruc
         parameterList.add(hysteresisLowParameter);
         parameterList.add(hysteresisHighParameter);
         parameterList.add(transferRadiusParameter);
-        parameterList.add(transceiverRadiusParameter);
-        parameterList.add(ultimateCoverTransferRadiusParameter);
         parameterList.add(outputVoltageParameter);
         parameterList.add(outputCurrentParameter);
         parameterList.add(scanTimeParameter);
