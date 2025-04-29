@@ -1092,6 +1092,9 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
                         dischargeController_EM(aBaseMetaTileEntity);
                         chargeController_EM(aBaseMetaTileEntity);
 
+                        if(!aBaseMetaTileEntity.isAllowedToWork() && mMaxProgresstime == 0 && !aBaseMetaTileEntity.wasShutdown()){
+                            notAllowedToWork_stopMachine_EM();
+                        }
                         if (mMaxProgresstime > 0 && doRandomMaintenanceDamage()) { // Start
                             if (onRunningTick(mInventory[1])) { // Compute EU
                                 if (!polluteEnvironment(getPollutionPerTick(mInventory[1]))) {
@@ -1124,8 +1127,6 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
                                             afterRecipeCheckFailed();
                                         }
                                         updateSlots();
-                                    } else {
-                                        notAllowedToWork_stopMachine_EM();
                                     }
                                 }
                             } // else {//failed to consume power/resources - inside on running tick

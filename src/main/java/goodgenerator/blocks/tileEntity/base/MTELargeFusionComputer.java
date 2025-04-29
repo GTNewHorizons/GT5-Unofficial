@@ -279,7 +279,9 @@ public abstract class MTELargeFusionComputer extends MTETooltipMultiBlockBaseEM
                     if (aBaseMetaTileEntity.getStoredEU() <= 0 && mMaxProgresstime > 0) {
                         stopMachine(ShutDownReasonRegistry.POWER_LOSS);
                     }
-
+                    if(!aBaseMetaTileEntity.isAllowedToWork() && mMaxProgresstime == 0 && !aBaseMetaTileEntity.wasShutdown()){
+                        notAllowedToWork_stopMachine_EM();
+                    }
                     long energyLimit = getSingleHatchPower();
                     List<MTEHatch> hatches = getExoticAndNormalEnergyHatchList();
                     for (MTEHatch hatch : validMTEList(hatches)) {
