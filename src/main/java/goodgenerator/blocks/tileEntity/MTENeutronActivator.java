@@ -487,7 +487,7 @@ public class MTENeutronActivator extends MTETooltipMultiBlockBaseEM implements I
                 .color(COLOR_TEXT_WHITE.get())
                 .widthRel(1)
                 .marginBottom(2)
-                .setEnabledIf(w -> getErrorDisplayID() == 0 && getBaseMetaTileEntity().isAllowedToWork()));
+                .setEnabledIf(w -> getErrorDisplayID() == 0 && (getBaseMetaTileEntity().isAllowedToWork() || getBaseMetaTileEntity().isActive())));
 
         machineInfo.child(
             IKey.dynamic(() -> numberFormat.format(eV / 1_000_000d) + " MeV")
@@ -495,7 +495,7 @@ public class MTENeutronActivator extends MTETooltipMultiBlockBaseEM implements I
                 .color(COLOR_TEXT_WHITE.get())
                 .widthRel(1)
                 .marginBottom(2)
-                .setEnabledIf(w -> getErrorDisplayID() == 0 && getBaseMetaTileEntity().isAllowedToWork()));
+                .setEnabledIf(w -> getErrorDisplayID() == 0 && (getBaseMetaTileEntity().isAllowedToWork() || getBaseMetaTileEntity().isActive())));
     }
 
     @Override
