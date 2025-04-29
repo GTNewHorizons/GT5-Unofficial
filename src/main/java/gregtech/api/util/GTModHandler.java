@@ -1834,13 +1834,13 @@ public class GTModHandler {
      * Is this an electric Item?
      */
     public static boolean isElectricItem(ItemStack aStack) {
-        return aStack != null && aStack.getItem() instanceof ic2.api.item.IElectricItem
-            && ((IElectricItem) aStack.getItem()).getTier(aStack) < Integer.MAX_VALUE;
+        return aStack != null && aStack.getItem() instanceof ic2.api.item.IElectricItem electricItem
+            && electricItem.getTier(aStack) < Integer.MAX_VALUE;
     }
 
     public static boolean isElectricItem(ItemStack aStack, byte aTier) {
-        return aStack != null && aStack.getItem() instanceof ic2.api.item.IElectricItem
-            && ((IElectricItem) aStack.getItem()).getTier(aStack) == aTier;
+        return aStack != null && aStack.getItem() instanceof ic2.api.item.IElectricItem electricItem
+            && electricItem.getTier(aStack) == aTier;
     }
 
     /**

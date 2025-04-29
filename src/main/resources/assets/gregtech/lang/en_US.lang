@@ -800,8 +800,8 @@ GT5U.gui.text.too_uncertain=Too Uncertain.
 GT5U.gui.text.invalid_parameters=Invalid Parameters.
 GT5U.gui.text.enabled=§aEnabled§f
 GT5U.gui.text.disabled=§cDisabled§f
+GT5U.gui.text.lma_craftingfx=Show Crafting Effects
 GT5U.gui.text.repair_tip=Click with Tool to repair.
-
 
 GT5U.gui.config.client=Client
 GT5U.gui.config.client.color_modulation=Color Modulation
@@ -863,7 +863,7 @@ GT5U.item.pipe.empty=Empty
 GT5U.item.pipe.swap=Pipe Swapped:
 
 gt.behaviour.paintspray.infinite.gui.header=Select a Color
-gt.behaviour.paintspray.infinite.gui.lock_error=§eSpray can is §clocked§e! §bSneak middle-click to unlock.
+gt.behaviour.paintspray.infinite.gui.lock_error=§eSpray can is §clocked§e! §bCtrl middle-click to unlock.
 gt.behaviour.paintspray.infinite.gui.solvent=Solvent
 gt.behaviour.paintspray.infinite.gui.shake_toggle=Allow/disallow color iteration
 
@@ -874,9 +874,9 @@ gt.behaviour.paintspray.infinite.tooltip.preventing_shake=Left click action disa
 
 gt.behaviour.paintspray.infinite.tooltip.switch=Left Click: Change color (sneak to reverse direction)
 gt.behaviour.paintspray.infinite.tooltip.pick=Middle Click block: Copy color to spray can
-gt.behaviour.paintspray.infinite.tooltip.lock=Sneak Middle Click: Lock or unlock spray can
+gt.behaviour.paintspray.infinite.tooltip.lock=%s Middle Click: Lock or unlock spray can
 gt.behaviour.paintspray.infinite.tooltip.gui=Middle Click: Open color choice GUI
-gt.behaviour.paintspray.infinite.tooltip.prevent_shake=%s-Middle Click: Allow/prevent left click action
+gt.behaviour.paintspray.infinite.tooltip.prevent_shake=Shift Middle Click: Allow/prevent left click action
 gt.behaviour.paintspray.infinite.tooltip.ctrl_pc=Ctrl
 gt.behaviour.paintspray.infinite.tooltip.ctrl_mac=Command
 
@@ -1064,9 +1064,9 @@ GT5U.waila.stocking_bus.auto_pull.disabled=Auto-Pull from ME: Disabled
 GT5U.waila.stocking_bus.min_stack_size=Minimum Stack Size: %s
 GT5U.waila.stocking_hatch.min_amount=Minimum Amount: %s
 GT5U.waila.drone_downlink.noConnection=Not connected
-GT5U.waila.drone_downlink.connection=Connect to centre:
-GT5U.waila.drone_downlink.connectionCount=Connection Count:
-GT5U.waila.drone_downlink.droneLevel=Drone Level:
+GT5U.waila.drone_downlink.connection=Connect to centre: x:%s y:%s z:%s
+GT5U.waila.drone_downlink.connectionCount=Connection Count: %s
+GT5U.waila.drone_downlink.droneLevel=Drone Level: %s
 GT5U.waila.producing=Producing:
 GT5U.waila.producing.andmore=  And %d More...
 GT5U.waila.generating.on=Generating Energy
