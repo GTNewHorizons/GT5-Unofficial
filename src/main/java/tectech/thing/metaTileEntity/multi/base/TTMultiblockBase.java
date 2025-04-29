@@ -28,8 +28,6 @@ import java.util.stream.Collectors;
 
 import javax.annotation.Nonnull;
 
-import com.cleanroommc.modularui.drawable.DynamicDrawable;
-import com.cleanroommc.modularui.widgets.ToggleButton;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
@@ -49,6 +47,7 @@ import com.cleanroommc.modularui.api.IGuiHolder;
 import com.cleanroommc.modularui.api.IPanelHandler;
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.api.widget.IWidget;
+import com.cleanroommc.modularui.drawable.DynamicDrawable;
 import com.cleanroommc.modularui.drawable.GuiTextures;
 import com.cleanroommc.modularui.drawable.UITexture;
 import com.cleanroommc.modularui.factory.PosGuiData;
@@ -75,6 +74,7 @@ import com.cleanroommc.modularui.widgets.ItemSlot;
 import com.cleanroommc.modularui.widgets.ListWidget;
 import com.cleanroommc.modularui.widgets.SlotGroupWidget;
 import com.cleanroommc.modularui.widgets.TextWidget;
+import com.cleanroommc.modularui.widgets.ToggleButton;
 import com.cleanroommc.modularui.widgets.layout.Column;
 import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
 import com.gtnewhorizon.structurelib.StructureLibAPI;
@@ -1092,7 +1092,8 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
                         dischargeController_EM(aBaseMetaTileEntity);
                         chargeController_EM(aBaseMetaTileEntity);
 
-                        if(!aBaseMetaTileEntity.isAllowedToWork() && mMaxProgresstime == 0 && !aBaseMetaTileEntity.wasShutdown()){
+                        if (!aBaseMetaTileEntity.isAllowedToWork() && mMaxProgresstime == 0
+                            && !aBaseMetaTileEntity.wasShutdown()) {
                             notAllowedToWork_stopMachine_EM();
                         }
                         if (mMaxProgresstime > 0 && doRandomMaintenanceDamage()) { // Start
@@ -2366,22 +2367,23 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
             .fullImage(MODID, "gui/overlay_button/power_pass_disabled");
 
         panel.child(new ToggleButton().value(new BooleanSyncValue(() -> ePowerPass, bool -> {
-                    if (!isAllowedToWorkButtonEnabled()) return;
-                    ePowerPass = bool;
-                    if (!isAllowedToWorkButtonEnabled()) { // TRANSFORMER HACK
-                        if (ePowerPass) {
-                            getBaseMetaTileEntity().enableWorking();
-                        } else {
-                            getBaseMetaTileEntity().disableWorking();
-                        }
-                    }
-                }))
-                .tooltip(tooltip -> tooltip.add("Power Switch"))
-                .pos(173, doesBindPlayerInventory() ? 109 : 133)
-                .size(18, 18)
-                .overlay(new DynamicDrawable(() -> !isAllowedToWorkButtonEnabled() ? powerPassDisabled
-                    : ePowerPass ? powerPassOn : powerPassOff))
-        );
+            if (!isAllowedToWorkButtonEnabled()) return;
+            ePowerPass = bool;
+            if (!isAllowedToWorkButtonEnabled()) { // TRANSFORMER HACK
+                if (ePowerPass) {
+                    getBaseMetaTileEntity().enableWorking();
+                } else {
+                    getBaseMetaTileEntity().disableWorking();
+                }
+            }
+        }))
+            .tooltip(tooltip -> tooltip.add("Power Switch"))
+            .pos(173, doesBindPlayerInventory() ? 109 : 133)
+            .size(18, 18)
+            .overlay(
+                new DynamicDrawable(
+                    () -> !isAllowedToWorkButtonEnabled() ? powerPassDisabled
+                        : ePowerPass ? powerPassOn : powerPassOff)));
 
         IPanelHandler infoPanel = syncManager
             .panel("info_panel", (p_syncManager, syncHandler) -> getParameterPanel(panel), true);
@@ -2392,7 +2394,7 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
         editParametersButton.pos(173, doesBindPlayerInventory() ? 109 + 18 : 133 + 18)
             .size(18, 18);
         editParametersButton.onMousePressed(mouseData -> {
-            if (!infoPanel.isPanelOpen()){
+            if (!infoPanel.isPanelOpen()) {
                 infoPanel.openPanel();
             } else {
                 infoPanel.closePanel();
@@ -2409,16 +2411,17 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
             .fullImage(MODID, "gui/overlay_button/power_switch_disabled");
 
         panel.child(new ToggleButton().value(new BooleanSyncValue(this::isAllowedToWork, bool -> {
-                if (!isAllowedToWorkButtonEnabled()) return;
-                if (bool) enableWorking();
-                else disableWorking();
-            }))
+            if (!isAllowedToWorkButtonEnabled()) return;
+            if (bool) enableWorking();
+            else disableWorking();
+        }))
             .tooltip(tooltip -> tooltip.add("Power Switch"))
             .pos(173, doesBindPlayerInventory() ? 109 + 18 * 2 : 133 + 18 * 2)
             .size(18, 18)
-            .overlay(new DynamicDrawable(() -> !isAllowedToWorkButtonEnabled() ? powerSwitchDisabled
-                : getBaseMetaTileEntity().isAllowedToWork() ? powerSwitchOn : powerSwitchOff))
-        );
+            .overlay(
+                new DynamicDrawable(
+                    () -> !isAllowedToWorkButtonEnabled() ? powerSwitchDisabled
+                        : getBaseMetaTileEntity().isAllowedToWork() ? powerSwitchOn : powerSwitchOff)));
         addGregtechLogo(panel);
         return panel;
     }
@@ -2570,7 +2573,6 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
                     .marginBottom(2)
                     .widthRel(1)
 
-
         );
 
         machineInfo.child(
@@ -2579,7 +2581,9 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
                     + GTUtility.trans("140", "to (re-)start the Machine")
                     + "\n"
                     + GTUtility.trans("141", "if it doesn't start.")).color(COLOR_TEXT_WHITE.get())
-                        .setEnabledIf(widget -> getErrorDisplayID() == 0 && !getBaseMetaTileEntity().isActive() && !getBaseMetaTileEntity().isAllowedToWork())
+                        .setEnabledIf(
+                            widget -> getErrorDisplayID() == 0 && !getBaseMetaTileEntity().isActive()
+                                && !getBaseMetaTileEntity().isAllowedToWork())
                         .marginBottom(2)
                         .widthRel(1)
 
@@ -2606,7 +2610,8 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
             .marginBottom(2)
             .widthRel(1)
             .setEnabledIf(
-                widget -> shouldDisplayShutDownReason() && !getBaseMetaTileEntity().isActive() && !getBaseMetaTileEntity().isAllowedToWork());
+                widget -> shouldDisplayShutDownReason() && !getBaseMetaTileEntity().isActive()
+                    && !getBaseMetaTileEntity().isAllowedToWork());
 
         machineInfo.child(shutdownDuration);
 
@@ -2618,7 +2623,8 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
             .marginBottom(2)
             .widthRel(1)
             .setEnabledIf(
-                widget -> shouldDisplayShutDownReason() && !getBaseMetaTileEntity().isActive() && !getBaseMetaTileEntity().isAllowedToWork()
+                widget -> shouldDisplayShutDownReason() && !getBaseMetaTileEntity().isActive()
+                    && !getBaseMetaTileEntity().isAllowedToWork()
                     && GTUtility.isStringValid(
                         getBaseMetaTileEntity().getLastShutDownReason()
                             .getDisplayString()));

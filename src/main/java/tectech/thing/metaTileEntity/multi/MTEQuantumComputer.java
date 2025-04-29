@@ -158,13 +158,13 @@ public class MTEQuantumComputer extends TTMultiblockBase implements ISurvivalCon
         super.initParameters();
         overclockParameter = new Parameter.DoubleParameter(
             1.0,
-            0.0,
-            5.0,
+            () -> 0.0,
+            () -> 5.0,
             "gt.blockmachines.multimachine.em.computer.cfgi.0");
         overvoltParameter = new Parameter.DoubleParameter(
             1.0,
-            0.0,
-            5.0,
+            () -> 0.0,
+            () -> 5.0,
             "gt.blockmachines.multimachine.em.computer.cfgi.1");
         parameterList.add(overclockParameter);
         parameterList.add(overvoltParameter);

@@ -304,7 +304,7 @@ public class MTENeutronActivator extends MTETooltipMultiBlockBaseEM implements I
 
     @Override
     protected void initParameters() {
-        batchSizeParameter = new Parameter.IntegerParameter(128, 1, 128, "batch_mode.cfgi.0");
+        batchSizeParameter = new Parameter.IntegerParameter(128, () -> 1, () -> 128, "batch_mode.cfgi.0");
         parameterList.add(batchSizeParameter);
     }
 
@@ -482,7 +482,9 @@ public class MTENeutronActivator extends MTETooltipMultiBlockBaseEM implements I
                 .color(COLOR_TEXT_WHITE.get())
                 .widthRel(1)
                 .marginBottom(2)
-                .setEnabledIf(w -> getErrorDisplayID() == 0 && (getBaseMetaTileEntity().isAllowedToWork() || getBaseMetaTileEntity().isActive())));
+                .setEnabledIf(
+                    w -> getErrorDisplayID() == 0
+                        && (getBaseMetaTileEntity().isAllowedToWork() || getBaseMetaTileEntity().isActive())));
 
         machineInfo.child(
             IKey.dynamic(() -> numberFormat.format(eV / 1_000_000d) + " MeV")
@@ -490,7 +492,9 @@ public class MTENeutronActivator extends MTETooltipMultiBlockBaseEM implements I
                 .color(COLOR_TEXT_WHITE.get())
                 .widthRel(1)
                 .marginBottom(2)
-                .setEnabledIf(w -> getErrorDisplayID() == 0 && (getBaseMetaTileEntity().isAllowedToWork() || getBaseMetaTileEntity().isActive())));
+                .setEnabledIf(
+                    w -> getErrorDisplayID() == 0
+                        && (getBaseMetaTileEntity().isAllowedToWork() || getBaseMetaTileEntity().isActive())));
     }
 
     @Override
