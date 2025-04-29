@@ -2384,13 +2384,22 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
 
         IPanelHandler infoPanel = syncManager
             .panel("info_panel", (p_syncManager, syncHandler) -> getParameterPanel(panel), true);
+
+        UITexture editParametersEnabled = UITexture.fullImage(MODID, "gui/overlay_button/edit_parameters");
+        UITexture editParametersDisabled = UITexture.fullImage(MODID, "gui/overlay_button/edit_parameters_disabled");
         com.cleanroommc.modularui.widgets.ButtonWidget editParametersButton = new com.cleanroommc.modularui.widgets.ButtonWidget();
-        editParametersButton.overlay(
-            com.cleanroommc.modularui.drawable.UITexture.fullImage(MODID, "gui/overlay_button/edit_parameters"));
+        editParametersButton.overlay(new DynamicDrawable(() -> {
+            if(parameterList.isEmpty()){
+                return editParametersDisabled;
+            } else{
+                return editParametersEnabled;
+            }
+        }));
         editParametersButton.tooltip(new RichTooltip(editParametersButton).add("Edit Parameters"));
         editParametersButton.pos(173, doesBindPlayerInventory() ? 109 + 18 : 133 + 18)
             .size(18, 18);
         editParametersButton.onMousePressed(mouseData -> {
+            if(parameterList.isEmpty()) return false;
             if (!infoPanel.isPanelOpen()) {
                 infoPanel.openPanel();
             } else {
@@ -2423,7 +2432,7 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
         return panel;
     }
 
-    private void addGregtechLogo(ModularPanel panel) {
+    public void addGregtechLogo(ModularPanel panel) {
         panel.child(
             new SingleChildWidget<>().overlay(UITexture.fullImage(MODID, "gui/picture/tectech_logo_dark"))
                 .size(18, 18)

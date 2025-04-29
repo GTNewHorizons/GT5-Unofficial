@@ -335,6 +335,11 @@ public abstract class TileEntityModulePump extends TileEntityModuleBase {
         return fluid.getLocalizedName();
     }
 
+    @Override
+    protected boolean forceUseMui2() {
+        return false;
+    }
+
     public static class TileEntityModulePumpT1 extends TileEntityModulePump {
 
         /** Voltage tier of this module */

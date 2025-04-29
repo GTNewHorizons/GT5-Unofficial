@@ -1005,6 +1005,11 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
         return true;
     }
 
+    @Override
+    protected boolean forceUseMui2() {
+        return false;
+    }
+
     /**
      * Space Miner project module T1 of the Space Elevator
      *
