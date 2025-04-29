@@ -47,6 +47,7 @@ import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
+import gregtech.common.misc.GTStructureChannels;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
 public class MTEEntropicProcessor extends MTEExtendedPowerMultiBlockBase<MTEEntropicProcessor>
@@ -135,11 +136,11 @@ public class MTEEntropicProcessor extends MTEExtendedPowerMultiBlockBase<MTEEntr
 
         structure.addCasing('B', AlchemicalCasing)
             .withHatches(1, 32, Arrays.asList(InputHatch, OutputHatch, InputBus, OutputBus, Maintenance, Energy))
-            .withChannel("casing");
+            .withChannel(GTStructureChannels.ALCHEMICAL_CASING);
 
         if (Mods.Thaumcraft.isModLoaded()) {
             structure.addCasing('C', AlchemicalConstructTiered)
-                .withChannel("construct");
+                .withChannel(GTStructureChannels.ALCHEMICAL_CONSTRUCT);
         } else {
             structure.addCasing('C', AlchemicalCasing);
         }
