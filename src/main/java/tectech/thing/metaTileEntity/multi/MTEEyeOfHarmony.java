@@ -1533,12 +1533,12 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements IConstructable,
         while (amount >= Integer.MAX_VALUE) {
             ItemStack tmpItem = item.copy();
             tmpItem.stackSize = Integer.MAX_VALUE;
-            ((MTEHatchOutputBusME) mOutputBusses.get(0)).store(tmpItem);
+            ((MTEHatchOutputBusME) mOutputBusses.get(0)).storePartial(tmpItem);
             amount -= Integer.MAX_VALUE;
         }
         ItemStack tmpItem = item.copy();
         tmpItem.stackSize = (int) amount;
-        ((MTEHatchOutputBusME) mOutputBusses.get(0)).store(tmpItem);
+        ((MTEHatchOutputBusME) mOutputBusses.get(0)).storePartial(tmpItem);
     }
 
     private void outputFluidToAENetwork(FluidStack fluid, long amount) {
