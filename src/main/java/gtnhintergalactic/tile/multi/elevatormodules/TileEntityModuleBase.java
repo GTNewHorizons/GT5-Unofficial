@@ -1,5 +1,10 @@
 package gtnhintergalactic.tile.multi.elevatormodules;
 
+import static gtnhintergalactic.GTNHIntergalactic.ASSET_PREFIX;
+
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.common.util.ForgeDirection;
+
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.api.widget.IWidget;
 import com.cleanroommc.modularui.drawable.UITexture;
@@ -9,26 +14,17 @@ import com.cleanroommc.modularui.value.sync.LongSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widget.SingleChildWidget;
 import com.cleanroommc.modularui.widgets.ListWidget;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.StatCollector;
-import net.minecraftforge.common.util.ForgeDirection;
-
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureUtility;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
-import com.gtnewhorizons.modularui.common.widget.DynamicPositionedColumn;
-import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
-import com.gtnewhorizons.modularui.common.widget.SlotWidget;
-import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.util.GTStructureUtility;
-import gregtech.api.util.GTUtility;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gtnhintergalactic.gui.IG_UITextures;
 import gtnhintergalactic.tile.multi.elevator.TileEntitySpaceElevator;
@@ -36,13 +32,8 @@ import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import tectech.thing.metaTileEntity.multi.base.INameFunction;
 import tectech.thing.metaTileEntity.multi.base.IStatusFunction;
 import tectech.thing.metaTileEntity.multi.base.LedStatus;
-import tectech.thing.metaTileEntity.multi.base.Parameter;
-import tectech.thing.metaTileEntity.multi.base.Parameters;
 import tectech.thing.metaTileEntity.multi.base.TTMultiblockBase;
 import tectech.thing.metaTileEntity.multi.base.render.TTRenderedExtendedFacingTexture;
-
-import static gtnhintergalactic.GTNHIntergalactic.ASSET_PREFIX;
-import static tectech.Reference.MODID;
 
 /**
  * Base class for modules of the Space Elevator
@@ -378,22 +369,25 @@ public abstract class TileEntityModuleBase extends TTMultiblockBase {
     @Override
     public void addGregtechLogo(ModularPanel panel) {
         panel.child(
-            new SingleChildWidget<>().overlay(UITexture.fullImage(ASSET_PREFIX, "gui/picture/space_elevator_logo_dark.png"))
+            new SingleChildWidget<>()
+                .overlay(UITexture.fullImage(ASSET_PREFIX, "gui/picture/space_elevator_logo_dark.png"))
                 .size(18, 18)
                 .pos(190 - 18 - 2, doesBindPlayerInventory() ? 91 - 18 - 2 : 171 - 18 - 2));
     }
 
     @Override
-    public void insertTexts(ListWidget<IWidget, ?> machineInfo, ItemStackHandler invSlot, PanelSyncManager syncManager) {
+    public void insertTexts(ListWidget<IWidget, ?> machineInfo, ItemStackHandler invSlot, PanelSyncManager syncManager,
+        ModularPanel parentPanel) {
         LongSyncValue euVarSyncer = new LongSyncValue(this::getEUVar);
         syncManager.syncValue("euVar", euVarSyncer);
-        super.insertTexts(machineInfo, invSlot, syncManager);
-        machineInfo.child(IKey.dynamic(() -> "Stored Energy: " + numberFormat.format(euVarSyncer.getValue()) + " EU")
-            .asWidget()
-            .setEnabledIf(w -> getBaseMetaTileEntity().isAllowedToWork() || getBaseMetaTileEntity().isActive())
-            .color(COLOR_TEXT_WHITE.get())
-            .widthRel(1)
-            .marginBottom(2));
+        super.insertTexts(machineInfo, invSlot, syncManager, parentPanel);
+        machineInfo.child(
+            IKey.dynamic(() -> "Stored Energy: " + numberFormat.format(euVarSyncer.getValue()) + " EU")
+                .asWidget()
+                .setEnabledIf(w -> getBaseMetaTileEntity().isAllowedToWork() || getBaseMetaTileEntity().isActive())
+                .color(COLOR_TEXT_WHITE.get())
+                .widthRel(1)
+                .marginBottom(2));
 
     }
 

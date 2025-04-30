@@ -22,6 +22,7 @@ import org.jetbrains.annotations.NotNull;
 
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.api.widget.IWidget;
+import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.utils.item.ItemStackHandler;
 import com.cleanroommc.modularui.value.sync.IntSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
@@ -470,9 +471,9 @@ public class MTENeutronActivator extends MTETooltipMultiBlockBaseEM implements I
     }
 
     @Override
-    public void insertTexts(ListWidget<IWidget, ?> machineInfo, ItemStackHandler invSlot,
-        PanelSyncManager syncManager) {
-        super.insertTexts(machineInfo, invSlot, syncManager);
+    public void insertTexts(ListWidget<IWidget, ?> machineInfo, ItemStackHandler invSlot, PanelSyncManager syncManager,
+        ModularPanel parentPanel) {
+        super.insertTexts(machineInfo, invSlot, syncManager, parentPanel);
         IntSyncValue evSyncer = new IntSyncValue(() -> eV, val -> eV = val);
         syncManager.syncValue("ev", evSyncer);
 

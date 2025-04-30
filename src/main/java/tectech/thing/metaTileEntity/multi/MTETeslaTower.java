@@ -37,6 +37,7 @@ import org.jetbrains.annotations.NotNull;
 
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.api.widget.IWidget;
+import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.utils.item.ItemStackHandler;
 import com.cleanroommc.modularui.value.sync.IntSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
@@ -764,15 +765,15 @@ public class MTETeslaTower extends TTMultiblockBase implements ISurvivalConstruc
     }
 
     @Override
-    public void insertTexts(ListWidget<IWidget, ?> machineInfo, ItemStackHandler invSlot,
-        PanelSyncManager syncManager) {
+    public void insertTexts(ListWidget<IWidget, ?> machineInfo, ItemStackHandler invSlot, PanelSyncManager syncManager,
+        ModularPanel parentPanel) {
         IntSyncValue outputVoltageSyncer = new IntSyncValue(() -> 0, () -> (int) outputVoltage);
         IntSyncValue outputCurrentSyncer = new IntSyncValue(() -> 0, () -> (int) outputCurrent);
         IntSyncValue usedAmpsSyncer = new IntSyncValue(() -> 0, () -> (int) usedAmps);
         syncManager.syncValue("outputVoltage", outputVoltageSyncer);
         syncManager.syncValue("outputCurrent", outputCurrentSyncer);
         syncManager.syncValue("usedAmps", usedAmpsSyncer);
-        super.insertTexts(machineInfo, invSlot, syncManager);
+        super.insertTexts(machineInfo, invSlot, syncManager, parentPanel);
         machineInfo.child(
             IKey.dynamic(
                 () -> EnumChatFormatting.WHITE + "Output Voltage: "
