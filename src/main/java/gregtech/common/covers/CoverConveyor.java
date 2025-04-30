@@ -1,8 +1,6 @@
 package gregtech.common.covers;
 
 import static gregtech.api.util.GTUtility.moveMultipleItemStacks;
-import static gregtech.api.util.GTUtility.sendChatToPlayer;
-import static net.minecraft.util.StatCollector.translateToLocal;
 
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -16,11 +14,9 @@ import gregtech.api.covers.CoverContext;
 import gregtech.api.gui.modularui.CoverUIBuildContext;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
-import gregtech.api.interfaces.tileentity.IMachineProgress;
-import gregtech.api.util.GTUtility;
-import gregtech.common.gui.mui1.cover.ConveyorUIFactory;
 import gregtech.common.covers.gui.CoverGui;
 import gregtech.common.covers.gui.CoverIOBaseGui;
+import gregtech.common.gui.mui1.cover.ConveyorUIFactory;
 
 public class CoverConveyor extends CoverIOBase {
 
