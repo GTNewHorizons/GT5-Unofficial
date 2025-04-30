@@ -1,7 +1,6 @@
 package gregtech.api.structure;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.withChannel;
 
 import java.util.Arrays;
 import java.util.List;
@@ -328,7 +327,7 @@ public class StructureWrapper<MTE extends MTEMultiBlockBase & IAlignment & IStru
         }
 
         if (casing.channel != null) {
-            element = withChannel(casing.channel, element);
+            element = casing.channel.use(element);
         }
 
         if (casing.elementWrapper != null) {
@@ -442,7 +441,7 @@ public class StructureWrapper<MTE extends MTEMultiBlockBase & IAlignment & IStru
             return this;
         }
 
-        public CasingBuilder withChannel(String channel) {
+        public CasingBuilder withChannel(IStructureChannels channel) {
             casingInfo.channel = channel;
 
             return this;
