@@ -42,6 +42,15 @@ public class RecipeLoaderIndustrialRockBreaker {
             .eut(TierEU.RECIPE_LV)
             .addTo(multiblockRockBreakerRecipes);
 
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                GTUtility.getIntegratedCircuit(6),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Glowstone, 1L))
+            .itemOutputs(new ItemStack(Blocks.netherrack, 1))
+            .duration(16 * TICKS)
+            .eut(TierEU.RECIPE_LV)
+            .addTo(multiblockRockBreakerRecipes);
+
         if (Mods.EtFuturumRequiem.isModLoaded()) {
             GTValues.RA.stdBuilder()
                 .itemInputs(

@@ -23,7 +23,6 @@ import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.GTValues;
 import gregtech.common.config.OPStuff;
 import gtPlusPlus.core.creative.AddToCreativeTab;
-import gtPlusPlus.xmod.gregtech.common.helpers.ChargingHelper;
 import ic2.api.item.ElectricItem;
 import ic2.api.item.IElectricItem;
 
@@ -136,26 +135,21 @@ public class BatteryPackBaseBauble extends ElectricBaseBauble {
         for (int i = 0; i < endIndex && i < inventory.length; i++) {
             ItemStack aInvStack = inventory[i];
             if (aInvStack != null && aInvStack != aBaubleStack) {
-                Item aItem = aInvStack.getItem();
-
-                if (ChargingHelper.isItemValid(aInvStack)) {
+                if (aInvStack.getItem() instanceof IElectricItem electricItem) {
                     // IElectricItem (EU)
-                    final IElectricItem electricItem = (IElectricItem) aItem;
-                    if (electricItem != null) {
-                        double aTransferRate = electricItem.getTransferLimit(aInvStack);
-                        double aItemCharge = ElectricItem.manager.getCharge(aInvStack);
-                        if (aItemCharge >= 0 && aItemCharge != electricItem.getMaxCharge(aInvStack)) {
-                            if (aItemCharge <= (electricItem.getMaxCharge(aInvStack) - aTransferRate)) {
-                                if (ElectricItem.manager.getCharge(aBaubleStack) >= aTransferRate) {
-                                    if (ElectricItem.manager.getCharge(aInvStack)
-                                        <= (electricItem.getMaxCharge(aInvStack) - aTransferRate)) {
-                                        double d = ElectricItem.manager
-                                            .charge(aInvStack, aTransferRate * 16, mTier, false, true);
-                                        if (d > 0) {
-                                            d = ElectricItem.manager
-                                                .charge(aInvStack, aTransferRate * 16, mTier, false, false);
-                                            ElectricItem.manager.discharge(aBaubleStack, d, mTier, false, true, false);
-                                        }
+                    double aTransferRate = electricItem.getTransferLimit(aInvStack);
+                    double aItemCharge = ElectricItem.manager.getCharge(aInvStack);
+                    if (aItemCharge >= 0 && aItemCharge != electricItem.getMaxCharge(aInvStack)) {
+                        if (aItemCharge <= (electricItem.getMaxCharge(aInvStack) - aTransferRate)) {
+                            if (ElectricItem.manager.getCharge(aBaubleStack) >= aTransferRate) {
+                                if (ElectricItem.manager.getCharge(aInvStack)
+                                    <= (electricItem.getMaxCharge(aInvStack) - aTransferRate)) {
+                                    double d = ElectricItem.manager
+                                        .charge(aInvStack, aTransferRate * 16, mTier, false, true);
+                                    if (d > 0) {
+                                        d = ElectricItem.manager
+                                            .charge(aInvStack, aTransferRate * 16, mTier, false, false);
+                                        ElectricItem.manager.discharge(aBaubleStack, d, mTier, false, true, false);
                                     }
                                 }
                             }
@@ -163,7 +157,7 @@ public class BatteryPackBaseBauble extends ElectricBaseBauble {
                     }
                 } else if (OPStuff.outputRF) {
                     // IEnergyContainerItem (RF)
-                    if (aItem instanceof IEnergyContainerItem energyItem) {
+                    if (aInvStack.getItem() instanceof IEnergyContainerItem energyItem) {
                         int aItemCharge = energyItem.getEnergyStored(aInvStack);
                         int aItemMaxCharge = energyItem.getMaxEnergyStored(aInvStack);
                         double aBaubleCharge = ElectricItem.manager.getCharge(aBaubleStack);

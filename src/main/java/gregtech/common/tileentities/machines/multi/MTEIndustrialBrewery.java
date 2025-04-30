@@ -39,6 +39,7 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.blocks.BlockCasings10;
+import gregtech.common.misc.GTStructureChannels;
 
 public class MTEIndustrialBrewery extends MTEExtendedPowerMultiBlockBase<MTEIndustrialBrewery>
     implements ISurvivalConstructable {
@@ -160,7 +161,7 @@ public class MTEIndustrialBrewery extends MTEExtendedPowerMultiBlockBase<MTEIndu
             .addOutputHatch("Any Wooden Casing", 1)
             .addEnergyHatch("Any Wooden Casing", 1)
             .addMaintenanceHatch("Any Wooden Casing", 1)
-            .addSubChannelUsage("glass", "Glass Tier")
+            .addSubChannelUsage(GTStructureChannels.BOROGLASS)
             .toolTipFinisher(AuthorFourIsTheNumber);
         return tt;
     }
