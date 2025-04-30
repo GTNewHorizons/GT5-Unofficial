@@ -38,6 +38,7 @@ import com.cleanroommc.modularui.value.sync.FluidSlotSyncHandler;
 import com.cleanroommc.modularui.value.sync.IntSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.value.sync.StringSyncValue;
+import com.cleanroommc.modularui.value.sync.SyncHandlers;
 import com.cleanroommc.modularui.widget.SingleChildWidget;
 import com.cleanroommc.modularui.widget.sizer.Area;
 import com.cleanroommc.modularui.widgets.ButtonWidget;
@@ -89,6 +90,10 @@ public abstract class TileEntityModulePump extends TileEntityModuleBase {
     public static final long ENERGY_CONSUMPTION = (int) GTValues.VP[9];
 
     /** Input parameters */
+    List<SpacePumpData> spacePumpData = new ArrayList<>();
+    FluidTank[] fluids = new FluidTank[] { new FluidTank(Integer.MAX_VALUE), new FluidTank(Integer.MAX_VALUE),
+        new FluidTank(Integer.MAX_VALUE), new FluidTank(Integer.MAX_VALUE) };
+    int[] recipes = new int[4];
     Parameter.IntegerParameter fluidIndexParameter;
     Parameters.Group.ParameterIn[] parallelSettings;
 
@@ -152,6 +157,10 @@ public abstract class TileEntityModulePump extends TileEntityModuleBase {
      */
     public TileEntityModulePump(String aName, int tTier, int tModuleTier, int tMinMotorTier) {
         super(aName, tTier, tModuleTier, tMinMotorTier);
+        for (int i = 0; i < getParallelRecipes(); i++) {
+            spacePumpData.add(new SpacePumpData(new FluidTank(Integer.MAX_VALUE), getParallels()));
+            recipes[i] = -1;
+        }
     }
 
     /**
@@ -283,39 +292,51 @@ public abstract class TileEntityModulePump extends TileEntityModuleBase {
     @Override
     public void insertTexts(ListWidget<IWidget, ?> machineInfo, ItemStackHandler invSlot, PanelSyncManager syncManager,
         ModularPanel parentPanel) {
-        super.insertTexts(machineInfo, invSlot, syncManager, parentPanel);
         Flow row = new Row().coverChildrenWidth()
             .height(24);
         for (int i = 0; i < this.getParallelRecipes(); i++) {
             int finalI1 = i;
+            syncManager
+                .syncValue("recipes" + i, new IntSyncValue(() -> recipes[finalI1], val -> recipes[finalI1] = val));
             IPanelHandler fluidSelectorPanel = syncManager.panel(
                 "fluid_selector_panel_slot" + i,
                 (p_syncManager, syncHandler) -> getFluidSelectorPanel(parentPanel, p_syncManager, syncHandler, finalI1),
                 true);
-            syncManager.syncValue("recipeFluid" + i, new FluidSlotSyncHandler(new FluidTank(Integer.MAX_VALUE)));
+            FluidSlotSyncHandler fluidSyncer = SyncHandlers.fluidSlot(fluids[i]);
+            syncManager.syncValue("recipeFluid" + i, fluidSyncer);
+
+            FluidSlot bla = new FluidSlot() {
+
+                @NotNull
+                @Override
+                public Result onMouseTapped(int mouseButton) {
+                    fluidSelectorPanel.openPanel();
+                    return Result.SUCCESS;
+                }
+            }.syncHandler("recipeFluid" + i);
+            if (recipes[i] >= 0 && fluidSyncer.getFluidTank()
+                .getFluidAmount() == 0) fluidSyncer.getFluidTank()
+                    .fill(
+                        RECIPES.get(recipes[i] / 128)
+                            .get(recipes[i] % 128),
+                        true);
+
             row.child(
                 new Row().coverChildrenWidth()
                     .height(24)
                     .child(
                         IKey.str(EnumChatFormatting.WHITE + "Fluid " + (i + 1) + ": ")
                             .asWidget())
-                    .child(new FluidSlot() {
-
-                        @NotNull
-                        @Override
-                        public Result onMouseTapped(int mouseButton) {
-                            fluidSelectorPanel.openPanel();
-                            return Result.SUCCESS;
-                        }
-                    }.syncHandler("recipeFluid" + i)
-                        .size(24, 24)
-                        .marginRight(10)));
+                    .child(
+                        bla.size(24, 24)
+                            .marginRight(10)));
             if ((i + 1) % 2 == 0 || i == this.getParallelRecipes() - 1) {
-                machineInfo.child(row);
+                machineInfo.child(row.marginBottom(5));
                 row = new Row().coverChildrenWidth()
                     .height(24);
             }
         }
+        super.insertTexts(machineInfo, invSlot, syncManager, parentPanel);
     }
 
     @Override
@@ -410,14 +431,19 @@ public abstract class TileEntityModulePump extends TileEntityModuleBase {
                 .size(); j++) {
                 FluidTank displayFluid = new FluidTank(Integer.MAX_VALUE);
                 FluidSlotSyncHandler displayFluidSyncer = new FluidSlotSyncHandler(displayFluid);
+                int finalI1 = i;
+                int finalJ1 = j;
                 FluidSlot bla = new FluidSlot() {
 
                     @NotNull
                     @Override
                     public Result onMousePressed(int mouseButton) {
-                        ((FluidSlotSyncHandler) syncManager.getModularSyncManager()
-                            .getPanelSyncManager("tt_multiblock")
-                            .getSyncHandler("recipeFluid" + slot + ":0")).setValue(displayFluidSyncer.getValue());
+                        PanelSyncManager manager = syncManager.getModularSyncManager()
+                            .getPanelSyncManager("tt_multiblock");
+                        ((FluidSlotSyncHandler) manager.getSyncHandler("recipeFluid" + slot + ":0"))
+                            .setValue(displayFluidSyncer.getValue());
+                        ((IntSyncValue) manager.getSyncHandler("recipes" + slot + ":0"))
+                            .setValue(finalI1 * 128 + finalJ1);
                         thisPanel.closePanel();
                         return Result.SUCCESS;
                     }
@@ -867,6 +893,33 @@ public abstract class TileEntityModulePump extends TileEntityModuleBase {
                 .addOutputHatch(GCCoreUtil.translate("ig.elevator.structure.AnyBaseCasingWith1Dot"), 1)
                 .toolTipFinisher();
             return tt;
+        }
+    }
+
+    private static class SpacePumpData {
+
+        private FluidTank fluidTank;
+        private int parallels;
+
+        public SpacePumpData(FluidTank fluidTank, int parallels) {
+            this.fluidTank = fluidTank;
+            this.parallels = parallels;
+        }
+
+        public FluidTank getFluidTank() {
+            return fluidTank;
+        }
+
+        public void setFluidStack(FluidStack fluidStack) {
+            this.fluidTank.setFluid(fluidStack);
+        }
+
+        public int getParallels() {
+            return parallels;
+        }
+
+        public void setParallels(int parallels) {
+            this.parallels = parallels;
         }
     }
 }
