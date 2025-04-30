@@ -54,16 +54,13 @@ public class PowerGogglesEventHandler {
     private void doClientStuff(TickEvent.PlayerTickEvent event) {
         if (firstClientTick) {
             InventoryBaubles baubles = PlayerHandler.getPlayerBaubles(event.player);
-            boolean linked = false;
             for (ItemStack bauble : baubles.stackList) {
                 if (bauble == null) continue;
                 if (bauble.getUnlocalizedName()
                     .equals("gt.Power_Goggles")) {
                     setLink(bauble);
-                    linked = true;
                 }
             }
-            if (!linked) setLink(null);
             firstClientTick = false;
         }
         if (forceUpdate || PowerGogglesHudHandler.updateClient) PowerGogglesHudHandler.drawTick();
@@ -136,10 +133,8 @@ public class PowerGogglesEventHandler {
     }
 
     private void setLink(ItemStack item) {
-        if (item == null || !item.hasTagCompound()
-            || item.getTagCompound()
-                .hasNoTags())
-            NW.sendToServer(new GTPacketLinkPowerGoggles());
+        if (!item.hasTagCompound() || item.getTagCompound()
+            .hasNoTags()) NW.sendToServer(new GTPacketLinkPowerGoggles());
         else {
             NBTTagCompound tag = item.getTagCompound();
             DimensionalCoord coords = new DimensionalCoord(
