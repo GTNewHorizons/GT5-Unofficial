@@ -15,7 +15,7 @@ public class CasingInfo<MTE> implements ICasing.CasingElementContext<MTE> {
     public int dot;
     public ICasing casing;
     public IHatchElement<? super MTE>[] hatches;
-    public String channel;
+    public IStructureChannels channel;
     public ICasingGroup casingGroup;
 
     public Function<ICasingGroup, IStructureElement<MTE>> elementOverride;
