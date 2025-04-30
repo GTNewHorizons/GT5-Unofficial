@@ -486,7 +486,7 @@ public class PowerGogglesHudHandler {
         String decimal = euString.substring(remainder + 1 + negative, Math.min(exponent, remainder + 4));
         int E = exponent - remainder;
 
-        if (useSI) return String.format("%s.%s%s", base, decimal, suffixes[E / 3]);
+        if (useSI && (E / 3) <= suffixes.length - 1) return String.format("%s.%s%s", base, decimal, suffixes[E / 3]);
         return String.format("%s.%sE%d", base, decimal, E);
     }
 
@@ -504,6 +504,8 @@ public class PowerGogglesHudHandler {
 
     public static void clear() {
         measurements.clear();
+        currentEU = BigInteger.valueOf(0);
+        measurement = BigInteger.valueOf(0);
         highest = BigInteger.valueOf(0);
         capacity = 0;
         change5mDiff = 0;

@@ -59,12 +59,8 @@ public class GTPacketLinkPowerGoggles extends GTPacket {
 
     @Override
     public void process(IBlockAccess world) {
-        DimensionalCoord current = PowerGogglesEventHandler.getLscLink(player.getUniqueID());
-        if ((this.coords != null && current == null) || (this.coords == null && current != null)
-            || (current != null && !current.isEqual(this.coords))) {
-            PowerGogglesEventHandler.setLscLink(player, this.coords);
-            PowerGogglesEventHandler.forceUpdate = true;
-            PowerGogglesEventHandler.forceRefresh = true;
-        }
+        PowerGogglesEventHandler.setLscLink(player, this.coords);
+        PowerGogglesEventHandler.forceUpdate = true;
+        PowerGogglesEventHandler.forceRefresh = true;
     }
 }

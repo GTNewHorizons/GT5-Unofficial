@@ -64,6 +64,7 @@ public class PowerGogglesEventHandler {
             firstClientTick = false;
         }
         if (forceUpdate || PowerGogglesHudHandler.updateClient) PowerGogglesHudHandler.drawTick();
+        forceUpdate = false;
     }
 
     private void doServerStuff(TickEvent.PlayerTickEvent event) {
@@ -71,7 +72,6 @@ public class PowerGogglesEventHandler {
         ticks %= PowerGogglesHudHandler.ticksBetweenMeasurements;
         if (forceUpdate) ticks = 1;
         if (ticks != 1) return;
-
         EntityPlayerMP player = (EntityPlayerMP) event.player;
         if (isValidLink(player, lscLinkMap.get(player.getUniqueID()))) {
             MTELapotronicSuperCapacitor lsc = getLsc(player);
