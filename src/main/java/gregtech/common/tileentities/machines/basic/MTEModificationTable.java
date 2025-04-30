@@ -41,6 +41,7 @@ import gregtech.api.items.ItemAugmentAbstract;
 import gregtech.api.items.ItemAugmentCore;
 import gregtech.api.items.ItemAugmentFrame;
 import gregtech.api.items.armor.ArmorHelper;
+import gregtech.api.items.armor.MechArmorAugmentRegistries.Cores;
 import gregtech.api.items.armor.MechArmorAugmentRegistries.Frames;
 import gregtech.api.items.armor.behaviors.IArmorBehavior;
 import gregtech.api.metatileentity.implementations.MTEBasicMachine;
@@ -210,16 +211,6 @@ public class MTEModificationTable extends MTEBasicMachine {
             return;
         }
 
-        // Verify behaviors meet requirements
-
-        // Check armor against required and incompatible lists
-        for (IArmorBehavior requiredBehavior : baseAugment.getRequiredBehaviors()) {
-            if (!armorTag.hasKey(requiredBehavior.getMainNBTTag())) return;
-        }
-        for (IArmorBehavior incompatibleBehavior : baseAugment.getIncompatibleBehaviors()) {
-            if (armorTag.hasKey(incompatibleBehavior.getMainNBTTag())) return;
-        }
-
         // At this point the modification should be successful, verification has passed
         armorTag.setInteger(
             ArmorHelper.VIS_DISCOUNT_KEY,
@@ -338,9 +329,27 @@ public class MTEModificationTable extends MTEBasicMachine {
     private @NotNull Predicate<ItemStack> isValidForArmor() {
         return (x) -> {
             ItemStack armorStack = armorSlotHandler.getStackInSlot(0);
-            if (armorStack == null || !(armorStack.getItem() instanceof MechArmorBase armorItem)) return false;
-            return x.getItem() instanceof ItemAugment augment && augment.getValidArmors()
-                .contains(armorItem);
+            if (armorStack == null || !(armorStack.getItem() instanceof MechArmorBase armorItem)
+                || !(x.getItem() instanceof ItemAugment augmentItem)) return false;
+
+            NBTTagCompound armorTag = getOrCreateNbtCompound(armorStack);
+
+            String core = armorTag.getString(MECH_CORE_KEY);
+
+            if (core.equals("None")) return false;
+            Cores coredata = coresMap.get(core);
+
+            // Check armor against required and incompatible lists
+            for (IArmorBehavior requiredBehavior : augmentItem.getRequiredBehaviors()) {
+                if (!armorTag.hasKey(requiredBehavior.getMainNBTTag())) return false;
+            }
+            for (IArmorBehavior incompatibleBehavior : augmentItem.getIncompatibleBehaviors()) {
+                if (armorTag.hasKey(incompatibleBehavior.getMainNBTTag())) return false;
+            }
+
+            // Check armor slot is valid, check installed core is high enough tier
+            return augmentItem.getValidArmors()
+                .contains(armorItem) && coredata.tier >= augmentItem.minimumCore;
         };
     }
 

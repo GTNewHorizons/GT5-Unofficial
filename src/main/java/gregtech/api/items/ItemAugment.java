@@ -21,6 +21,7 @@ public class ItemAugment extends ItemAugmentAbstract {
     public static final int CATEGORY_PRISMATIC = 4;
 
     public final int category;
+    public final int minimumCore;
 
     public final Augments augmentData;
 
@@ -36,11 +37,13 @@ public class ItemAugment extends ItemAugmentAbstract {
             builder.visDiscount);
         this.augmentData = builder.augmentData;
         this.category = builder.category;
+        this.minimumCore = builder.minimumCore;
     }
 
     @Override
     protected void addAdditionalToolTips(List<String> aList, ItemStack aStack, EntityPlayer aPlayer) {
         aList.add(getCategoryText(category));
+        aList.add(StatCollector.translateToLocalFormatted("GT5U.armor.tooltip.energycoreminimum", minimumCore));
         if (!validArmors.isEmpty()) {
             aList.add(EnumChatFormatting.WHITE + StatCollector.translateToLocal("GT5U.armor.tooltip.applicable"));
             for (MechArmorBase armor : validArmors)
@@ -88,6 +91,7 @@ public class ItemAugment extends ItemAugmentAbstract {
         private Collection<IArmorBehavior> incompatibleBehaviors = Collections.emptyList();
         private int visDiscount = 0;
         private int category = CATEGORY_PROTECTION;
+        private int minimumCore = 1;
 
         public AugmentBuilder(String aUnlocalized, String aEnglish, String aEnglishTooltip, Augments augmentData) {
             this.aUnlocalized = aUnlocalized;
@@ -123,6 +127,11 @@ public class ItemAugment extends ItemAugmentAbstract {
 
         public AugmentBuilder category(int category) {
             this.category = category;
+            return this;
+        }
+
+        public AugmentBuilder minimumCore(int minimumCore) {
+            this.minimumCore = minimumCore;
             return this;
         }
 

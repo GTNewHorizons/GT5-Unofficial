@@ -398,7 +398,7 @@ public class LoaderGTBlockFluid implements Runnable {
             new ItemAugment.AugmentBuilder(
                 "augmentomnimovement",
                 "Augment: Rotational Movement Adjusters",
-                "Allows user to walk at increased speed in all directions",
+                "Allows user to move at increased speed in all directions",
                 Augments.OmniMovement).validArmors(Collections.singletonList(MechArmorLoader.MechArmorBoots))
                     .attachedBehaviors(Collections.singletonList(OmniMovementBehavior.INSTANCE))
                     .requiredBehaviors(Collections.singletonList(SpeedBoostBehavior.MECH_ARMOR_INSTANCE))

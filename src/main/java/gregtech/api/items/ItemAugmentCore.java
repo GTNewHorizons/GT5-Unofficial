@@ -2,6 +2,11 @@ package gregtech.api.items;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
+
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.StatCollector;
 
 import gregtech.api.items.armor.MechArmorAugmentRegistries.Cores;
 import gregtech.api.items.armor.behaviors.IArmorBehavior;
@@ -23,5 +28,11 @@ public class ItemAugmentCore extends ItemAugmentAbstract {
             Collections.emptyList(),
             0);
         this.coreData = coredata;
+    }
+
+    @Override
+    protected void addAdditionalToolTips(List<String> aList, ItemStack aStack, EntityPlayer aPlayer) {
+        aList.add(StatCollector.translateToLocalFormatted("GT5U.armor.tooltip.energycore", coreData.tier));
+        super.addAdditionalToolTips(aList, aStack, aPlayer);
     }
 }
