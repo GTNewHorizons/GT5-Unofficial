@@ -1057,7 +1057,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
                     for (MTEHatchInputBus bus : mInputBusses) {
                         if (bus instanceof MTEHatchCraftingInputME) continue;
                         byte busColor = bus.getColor();
-                        if (doColorChecking && busColor != -1 && busColor != color) continue;
+                        if (busColor != -1 && busColor != color) continue;
                         List<ItemStack> inputItems = new ArrayList<>();
                         for (int i = bus.getSizeInventory() - 1; i >= 0; i--) {
                             ItemStack stored = bus.getStackInSlot(i);
