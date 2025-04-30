@@ -153,8 +153,6 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
             mColor = aNBT.getByte("mColor");
             mWorks = !aNBT.getBoolean("mWorks");
 
-            if (mSidedRedstone.length != 6) mSidedRedstone = new byte[] { 0, 0, 0, 0, 0, 0 };
-
             readCoverNBT(aNBT);
             loadMetaTileNBT(aNBT);
         }

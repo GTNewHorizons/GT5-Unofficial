@@ -13,6 +13,7 @@ import net.minecraft.item.Item;
 import cpw.mods.fml.common.event.FMLMissingMappingsEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.GregTechAPI;
+import gregtech.api.enums.ItemList;
 import kubatech.loaders.BlockLoader;
 
 public class MissingMappingsHandler {
@@ -25,6 +26,11 @@ public class MissingMappingsHandler {
         .remapBlock("miscutils:oreCryolite", GameRegistry.findBlock(GTPlusPlus.ID, "oreCryoliteF"))
         .remapBlock("miscutils:oreFluorite", GameRegistry.findBlock(GTPlusPlus.ID, "oreFluoriteF"))
         .remapBlock("EMT:EMT_GTBLOCK_CASEING", BlockLoader.defcCasingBlock)
+        .remapBlock("GalaxySpace:spaceelevatorparts", GregTechAPI.sBlockCasingsSE)
+        .remapBlock("GalaxySpace:spaceelevatormotors", GregTechAPI.sBlockCasingsSEMotor)
+        .remapBlock("GalaxySpace:spaceelevatorcable", GregTechAPI.sSpaceElevatorCable)
+        .remapBlock("GalaxySpace:dysonswarmparts", GregTechAPI.sBlockCasingsDyson)
+        .remapBlock("GalaxySpace:machineframes", GregTechAPI.sBlockCasingsSiphon)
 
         // Item remappings
         .remapItem("miscutils:Ammonium", GameRegistry.findItem(GTPlusPlus.ID, "itemCellAmmonium"))
@@ -52,6 +58,10 @@ public class MissingMappingsHandler {
         .remapItem("miscutils:crushedFluorite", GameRegistry.findItem(GTPlusPlus.ID, "crushedFluoriteF"))
         .remapItem("miscutils:crushedPurifiedFluorite", GameRegistry.findItem(GTPlusPlus.ID, "crushedPurifiedFluoriteF"))
         .remapItem("miscutils:crushedCentrifugedFluorite", GameRegistry.findItem(GTPlusPlus.ID, "crushedCentrifugedFluoriteF"))
+
+        .remapItem("GalaxySpace:item.SpaceElevatorParts", ItemList.NanotubeSpool.getItem())
+        .remapItem("GalaxySpace:item.MiningDrone", ItemList.MiningDroneLV.getItem())
+        .remapItem("GalaxySpace:item.DysonSwarmParts", ItemList.DysonSwarmModule.getItem())
 
         // Ignores
         .ignore("kekztech:kekztech_tfftcasingblock_block")

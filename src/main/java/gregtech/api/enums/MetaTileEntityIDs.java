@@ -1502,6 +1502,7 @@ public enum MetaTileEntityIDs {
     SpaceElevatorModuleManager(14012),
     SpaceElevatorModuleResearch(14013),
     SpaceElevatorModulePumpT3(14014),
+    LargeMolecularAssembler(14101),
     ExtremeEntityCrusherController(14201),
     ExtremeIndustrialApiaryController(14202),
     BETTER_JUKEBOX_LV(14301),
@@ -1957,7 +1958,8 @@ public enum MetaTileEntityIDs {
     NeutronAcceleratorUHV(32761),
     NeutronAcceleratorUEV(32762),
     NeutronAcceleratorUIV(32763),
-    NeutronAcceleratorUMV(32764),;
+    NeutronAcceleratorUMV(32764),
+    Hatch_Air_Intake_Atmospheric(32765);
 
     public final int ID;
 
