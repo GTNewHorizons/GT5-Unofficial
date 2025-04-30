@@ -89,7 +89,8 @@ public class MTESupercriticalFluidTurbine extends MTELargeTurbineBase {
     }
 
     @Override
-    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
+        ItemStack aTool) {
         if (side == getBaseMetaTileEntity().getFrontFacing()) {
             looseFit ^= true;
             GTUtility.sendChatToPlayer(

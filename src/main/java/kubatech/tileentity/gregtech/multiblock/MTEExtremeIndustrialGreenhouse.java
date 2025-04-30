@@ -687,7 +687,7 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
         for (MTEHatchOutputBus tHatch : validMTEList(mOutputBusses)) {
             if (!(tHatch instanceof MTEHatchOutputBusME)) continue;
             for (ItemStack stack : bucket.tryRemoveSeed(bucket.getSeedCount(), false)) {
-                ((MTEHatchOutputBusME) tHatch).store(stack);
+                ((MTEHatchOutputBusME) tHatch).storePartial(stack);
             }
             return true;
         }
@@ -701,7 +701,7 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
         if (helper.getMaxParallel() > 0) {
             for (ItemStack toOutput : bucket.tryRemoveSeed(helper.getMaxParallel(), false)) {
                 for (MTEHatchOutputBus tHatch : validMTEList(mOutputBusses)) {
-                    if (tHatch.storeAll(toOutput)) break;
+                    if (tHatch.storePartial(toOutput)) break;
                 }
             }
         }

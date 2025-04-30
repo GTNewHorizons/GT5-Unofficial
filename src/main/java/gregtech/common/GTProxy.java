@@ -148,6 +148,7 @@ import gregtech.common.config.OPStuff;
 import gregtech.common.items.MetaGeneratedItem98;
 import gregtech.common.misc.GlobalEnergyWorldSavedData;
 import gregtech.common.misc.GlobalMetricsCoverDatabase;
+import gregtech.common.misc.WirelessChargerManager;
 import gregtech.common.misc.spaceprojects.SpaceProjectWorldSavedData;
 import gregtech.common.pollution.Pollution;
 import gregtech.common.tileentities.machines.multi.drone.MTEDroneCentre;
@@ -208,7 +209,6 @@ public abstract class GTProxy implements IGTMod, IFuelHandler {
             "itemPotash",
             "itemCompressedCarbon",
             "itemBitumen",
-            "itemBioFuel",
             "itemCokeSugar",
             "itemCokeCactus",
             "itemCharcoalSugar",
@@ -1078,6 +1078,9 @@ public abstract class GTProxy implements IGTMod, IFuelHandler {
         FMLCommonHandler.instance()
             .bus()
             .register(new GTWorldgenerator.OregenPatternSavedData(""));
+        FMLCommonHandler.instance()
+            .bus()
+            .register(new WirelessChargerManager());
 
         GregTechAPI.sLoadStarted = true;
         for (FluidContainerRegistry.FluidContainerData tData : FluidContainerRegistry
@@ -1223,7 +1226,6 @@ public abstract class GTProxy implements IGTMod, IFuelHandler {
     }
 
     public void onServerStarted() {
-        GregTechAPI.sWirelessRedstone.clear();
         MTEDroneCentre.getCentreMap()
             .clear();
         GTLog.out.println(
@@ -1253,6 +1255,7 @@ public abstract class GTProxy implements IGTMod, IFuelHandler {
         GTMusicSystem.ServerSystem.reset();
         File tSaveDirectory = getSaveDirectory();
         GregTechAPI.sWirelessRedstone.clear();
+        GregTechAPI.sAdvancedWirelessRedstone.clear();
         if (tSaveDirectory != null) {
             for (int i = 1; i < GregTechAPI.METATILEENTITIES.length; i++) {
                 if (GregTechAPI.METATILEENTITIES[i] != null) {

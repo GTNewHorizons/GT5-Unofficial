@@ -37,9 +37,14 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureUtility;
+import com.gtnewhorizons.modularui.api.math.Alignment;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.gtnewhorizons.modularui.common.widget.CycleButtonWidget;
+import com.gtnewhorizons.modularui.common.widget.DynamicPositionedColumn;
+import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
+import com.gtnewhorizons.modularui.common.widget.SlotWidget;
+import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -241,12 +246,13 @@ public class MTEPreciseAssembler extends MTEExtendedPowerMultiBlockBase<MTEPreci
     }
 
     @Override
-    public final void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+    public final void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
+        ItemStack aTool) {
         if (getBaseMetaTileEntity().isServerSide()) {
             this.mode = (this.mode + 1) % 2;
             GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("preciseassembler.chat." + this.mode));
         }
-        super.onScrewdriverRightClick(side, aPlayer, aX, aY, aZ);
+        super.onScrewdriverRightClick(side, aPlayer, aX, aY, aZ, aTool);
     }
 
     @Override
@@ -347,14 +353,13 @@ public class MTEPreciseAssembler extends MTEExtendedPowerMultiBlockBase<MTEPreci
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Precise Assembler, Assembler, PrAss")
             .addInfo("The error is no more than 7nm.")
-            .addInfo("Can assemble precise component in Precise Mode.")
+            .addInfo("Can assemble precise components in Precise Mode.")
             .addInfo("Can work like a normal assembler in Normal Mode.")
-            .addInfo("Use screwdriver to change mode.")
+            .addInfo("Use a screwdriver to change the mode.")
             .addInfo("Machine Casing and Energy Hatch limits the voltage tier the machine can work on.")
-            .addInfo("UHV Machine Casing will unlock all voltage, but you still need good Energy Hatch.")
-            .addInfo("Precise Electronic Unit Casing won't limit recipe in Normal Mode.")
-            .addInfo("But gives more parallel with more advanced one.")
-            .addInfo("It is 100% faster in Normal Mode.")
+            .addInfo("UHV Machine Casing unlocks all recipe voltages, but Energy Hatch limits still apply.")
+            .addInfo("It is 100% faster than single block assemblers in Normal Mode.")
+            .addInfo("More advanced Electronic Unit Casings increase maximum parallel in Normal Mode.")
             .addInfo("Imprecise (MK-0) = 16x, MK-I = 32x, MK-II = 64x, MK-III = 128x, MK-IV = 256x")
             .addTecTechHatchInfo()
             .addPollutionAmount(getPollutionPerSecond(null))
@@ -568,7 +573,7 @@ public class MTEPreciseAssembler extends MTEExtendedPowerMultiBlockBase<MTEPreci
 
     @Override
     public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
-        float aX, float aY, float aZ) {
+        float aX, float aY, float aZ, ItemStack aTool) {
         batchMode = !batchMode;
         if (batchMode) {
             GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOn"));
@@ -576,5 +581,21 @@ public class MTEPreciseAssembler extends MTEExtendedPowerMultiBlockBase<MTEPreci
             GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOff"));
         }
         return true;
+    }
+
+    @Override
+    protected void drawTexts(DynamicPositionedColumn screenElements, SlotWidget inventorySlot) {
+        screenElements
+            .widget(
+                new TextWidget()
+                    .setStringSupplier(
+                        () -> (machineTier > 0 && machineTier < 9) ? StatCollector.translateToLocalFormatted(
+                            "GT5U.multiblock.preciseassemblercasing",
+                            GTUtility.getColoredTierNameFromVoltage(GTValues.V[machineTier])) : "")
+                    .setTextAlignment(Alignment.CenterLeft)
+                    .setDefaultColor(COLOR_TEXT_WHITE.get())
+                    .setEnabled(ignored -> machineTier > 0 && machineTier < 9))
+            .widget(new FakeSyncWidget.IntegerSyncer(() -> machineTier, tier -> machineTier = tier));
+        super.drawTexts(screenElements, inventorySlot);
     }
 }

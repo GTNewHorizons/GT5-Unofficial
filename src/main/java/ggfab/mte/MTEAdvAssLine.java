@@ -640,13 +640,13 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
         MTEHatchInputBus inputBus = mInputBusses.get(index);
         if (!inputBus.isValid()) return null;
         if (inputBus instanceof MTEHatchInputBusME meBus) {
-            ItemStack item = meBus.getShadowItemStack(0);
+            ItemStack item = meBus.getFirstShadowItemStack(true);
             if (item == null) return null;
             GTUtility.ItemId id = GTUtility.ItemId.createNoCopy(item);
             if (!curBatchItemsFromME.containsKey(id)) return null;
             return curBatchItemsFromME.get(id);
         }
-        return inputBus.getStackInSlot(0);
+        return inputBus.getFirstStack();
 
     }
 
@@ -655,13 +655,13 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
         MTEHatchInput inputHatch = mInputHatches.get(index);
         if (!inputHatch.isValid()) return null;
         if (inputHatch instanceof MTEHatchInputME meHatch) {
-            FluidStack fluid = meHatch.getShadowFluidStack(0);
+            FluidStack fluid = meHatch.getFirstShadowFluidStack(true);
             if (fluid == null) return null;
             if (!curBatchFluidsFromME.containsKey(fluid.getFluid())) return null;
             return curBatchFluidsFromME.get(fluid.getFluid());
         }
         if (inputHatch instanceof MTEHatchMultiInput multiHatch) {
-            return multiHatch.getFluid(0);
+            return multiHatch.getFluid();
         }
         return inputHatch.getFillableStack();
     }
@@ -756,10 +756,6 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
                 .setEUt(inputEUt / recipe.mInputs.length)
                 .setLaserOC(true)
                 .setMaxRegularOverclocks(getTier(inputVoltage) - getTier(recipe.mEUt));
-
-            double fractionalDuration = calculator.calculateFractionalDuration();
-            double fractionalMultiplier = Math.ceil(fractionalDuration) / fractionalDuration;
-            maxParallel = (int) Math.floor(maxParallel * fractionalMultiplier);
 
             // Disabled to disable overclocking under one tick.
             /*

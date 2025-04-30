@@ -12,6 +12,7 @@ import net.minecraft.item.ItemStack;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.items.MetaGeneratedItem;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
@@ -45,6 +46,14 @@ public class ProcessingPlank implements gregtech.api.interfaces.IOreRecipeRegist
                 .duration(40 * SECONDS)
                 .eut(4)
                 .addTo(assemblerRecipes);
+
+            if (aStack.getItem() instanceof MetaGeneratedItem) {
+                // https://github.com/GTNewHorizons/GT-New-Horizons-Modpack/issues/19273
+                // "plankWood" from GT are also having other recipes in cutters, which causing recipe conflicts.
+                // And I don't think people would use this kind of plankWood to make wooden products, so just skipping
+                // these recipes to temporary fix this error.
+                return;
+            }
 
             if (aStack.getItemDamage() == 32767) {
                 for (byte i = 0; i < 64; i = (byte) (i + 1)) {

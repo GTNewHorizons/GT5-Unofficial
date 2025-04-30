@@ -886,7 +886,8 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
     }
 
     @Override
-    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
+        ItemStack aTool) {
         if (side == getBaseMetaTileEntity().getFrontFacing() || side == mMainFacing) {
             if (aPlayer.isSneaking()) {
                 mDisableFilter = !mDisableFilter;
@@ -905,11 +906,9 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
 
     @Override
     public boolean onSolderingToolRightClick(ForgeDirection side, ForgeDirection wrenchingSide,
-        EntityPlayer entityPlayer, float aX, float aY, float aZ) {
-        if (!entityPlayer.isSneaking()) return false;
-        final boolean click = super.onSolderingToolRightClick(side, wrenchingSide, entityPlayer, aX, aY, aZ);
-        if (click) return true;
-        if (wrenchingSide != mMainFacing) return false;
+        EntityPlayer entityPlayer, float aX, float aY, float aZ, ItemStack aTool) {
+        if (!entityPlayer.isSneaking() || wrenchingSide != mMainFacing)
+            return super.onSolderingToolRightClick(side, wrenchingSide, entityPlayer, aX, aY, aZ, aTool);
         mDisableMultiStack = !mDisableMultiStack;
         GTUtility.sendChatToPlayer(
             entityPlayer,

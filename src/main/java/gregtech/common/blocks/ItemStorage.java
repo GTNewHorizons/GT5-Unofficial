@@ -7,9 +7,14 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 
+import cpw.mods.fml.common.Optional;
 import gregtech.api.GregTechAPI;
+import gregtech.api.enums.Materials;
+import gregtech.api.enums.Mods;
+import mods.railcraft.common.items.firestone.IItemFirestoneBurning;
 
-public class ItemStorage extends ItemBlock {
+@Optional.Interface(iface = "mods.railcraft.common.items.firestone.IItemFirestoneBurning", modid = Mods.Names.RAILCRAFT)
+public class ItemStorage extends ItemBlock implements IItemFirestoneBurning {
 
     public ItemStorage(Block block) {
         super(block);
@@ -43,5 +48,15 @@ public class ItemStorage extends ItemBlock {
     @Override
     public void addInformation(ItemStack aStack, EntityPlayer aPlayer, List<String> aList, boolean aF3_H) {
         super.addInformation(aStack, aPlayer, aList, aF3_H);
+    }
+
+    @Override
+    @Optional.Method(modid = Mods.Names.RAILCRAFT)
+    public boolean shouldBurn(ItemStack itemStack) {
+        if (this.field_150939_a instanceof BlockMetal metal) {
+            int damage = itemStack.getItemDamage();
+            return (damage >= 0 && damage < metal.mMats.length && metal.mMats[damage] == Materials.Firestone);
+        }
+        return false;
     }
 }
