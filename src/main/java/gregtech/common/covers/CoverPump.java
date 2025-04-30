@@ -8,6 +8,8 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidHandler;
 
+import org.jetbrains.annotations.NotNull;
+
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 
 import gregtech.api.covers.CoverContext;
@@ -16,9 +18,11 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IMachineProgress;
 import gregtech.api.util.GTUtility;
+import gregtech.common.covers.gui.CoverGui;
+import gregtech.common.covers.gui.CoverIOBaseGui;
 import gregtech.common.gui.mui1.cover.PumpUIFactory;
 
-public class CoverPump extends CoverLegacyData {
+public class CoverPump extends CoverIOBase {
 
     public final int mTransferRate;
 
@@ -32,17 +36,7 @@ public class CoverPump extends CoverLegacyData {
     }
 
     @Override
-    public void doCoverThings(byte aInputRedstone, long aTimer) {
-        ICoverable coverable = coveredTile.get();
-        if (coverable == null) {
-            return;
-        }
-        if ((this.coverData % 6 > 1) && ((coverable instanceof IMachineProgress machine))) {
-            if (machine.isAllowedToWork() != this.coverData % 6 < 4) {
-                return;
-            }
-        }
-
+    protected void doTransfer(ICoverable coverable) {
         if (coverable instanceof IFluidHandler current) {
             final IFluidHandler toAccess = coverable.getITankContainerAtSide(coverSide);
             if (toAccess == null) return;
@@ -61,28 +55,6 @@ public class CoverPump extends CoverLegacyData {
 
     protected boolean canTransferFluid(FluidStack fluid) {
         return true;
-    }
-
-    @Override
-    public void onCoverScrewdriverClick(EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        coverData = (coverData + (aPlayer.isSneaking() ? -1 : 1)) % 12;
-        if (coverData < 0) {
-            coverData = 11;
-        }
-        switch (coverData) {
-            case 0 -> GTUtility.sendChatToPlayer(aPlayer, translateToLocal("gt.interact.desc.o"));
-            case 1 -> GTUtility.sendChatToPlayer(aPlayer, translateToLocal("gt.interact.desc.i"));
-            case 2 -> GTUtility.sendChatToPlayer(aPlayer, translateToLocal("gt.interact.desc.o_c"));
-            case 3 -> GTUtility.sendChatToPlayer(aPlayer, translateToLocal("gt.interact.desc.i_c"));
-            case 4 -> GTUtility.sendChatToPlayer(aPlayer, translateToLocal("gt.interact.desc.o_c_i"));
-            case 5 -> GTUtility.sendChatToPlayer(aPlayer, translateToLocal("gt.interact.desc.i_c_i"));
-            case 6 -> GTUtility.sendChatToPlayer(aPlayer, translateToLocal("gt.interact.desc.i2o"));
-            case 7 -> GTUtility.sendChatToPlayer(aPlayer, translateToLocal("gt.interact.desc.o2i"));
-            case 8 -> GTUtility.sendChatToPlayer(aPlayer, translateToLocal("gt.interact.desc.i2o_c"));
-            case 9 -> GTUtility.sendChatToPlayer(aPlayer, translateToLocal("gt.interact.desc.o2i_c"));
-            case 10 -> GTUtility.sendChatToPlayer(aPlayer, translateToLocal("gt.interact.desc.i2o_c_i"));
-            case 11 -> GTUtility.sendChatToPlayer(aPlayer, translateToLocal("gt.interact.desc.o2i_c_i"));
-        }
     }
 
     @Override
@@ -148,6 +120,11 @@ public class CoverPump extends CoverLegacyData {
     }
 
     // GUI stuff
+
+    @Override
+    protected @NotNull CoverGui<?> getCoverGui() {
+        return new CoverIOBaseGui("cover.pump");
+    }
 
     @Override
     public boolean hasCoverGUI() {

@@ -48,7 +48,7 @@ public enum GTStructureChannels implements IStructureChannels {
     NO_HATCH("gt_no_hatch", ""),
     TFFT_FIELD("field", "Storage Field Tier"),
     ALCHEMICAL_CASING("casing", "Alchemical Casing"),
-    ALCHEMICAL_CONSTRUCT("construct", "Alchemical Construct"),
+    ALCHEMICAL_CONSTRUCT("construct", "Alchemical Construct")
     //
     ;
 
