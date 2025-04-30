@@ -2,6 +2,7 @@ package gregtech.api.items.armor.behaviors;
 
 import static gregtech.api.items.armor.ArmorKeybinds.FORCE_FIELD_KEYBIND;
 import static gregtech.api.util.GTUtility.getOrCreateNbtCompound;
+import static gregtech.loaders.ExtraIcons.forceFieldAugment;
 
 import java.util.Collections;
 import java.util.Set;
@@ -9,6 +10,7 @@ import java.util.Set;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.IIcon;
 import net.minecraft.util.StatCollector;
 
 import org.jetbrains.annotations.NotNull;
@@ -21,6 +23,11 @@ import gtPlusPlus.core.util.minecraft.PlayerUtils;
 public class ForceFieldBehavior implements IArmorBehavior {
 
     public static ForceFieldBehavior INSTANCE = new ForceFieldBehavior();
+
+    @Override
+    public IIcon getModularArmorTexture() {
+        return forceFieldAugment;
+    }
 
     @Override
     public void addBehaviorNBT(@NotNull NBTTagCompound tag) {

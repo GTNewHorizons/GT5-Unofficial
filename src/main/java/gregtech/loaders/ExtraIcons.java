@@ -23,6 +23,8 @@ public class ExtraIcons {
 
     // Modular Augments
     public static IIcon nightVisionAugment;
+    public static IIcon creativeFlightAugment;
+    public static IIcon forceFieldAugment;
 
     @SubscribeEvent
     public void regIcons(TextureStitchEvent.Pre event) {
@@ -46,6 +48,10 @@ public class ExtraIcons {
                 .registerIcon(GregTech.getResourcePath(LARGE_FLUID_CELL_CUSTOM, "neutronium_inner"));
             nightVisionAugment = reg
                 .registerIcon(GregTech.getResourcePath("mech_armor/helmet/helmet_augment_nightvision"));
+            creativeFlightAugment = reg
+                .registerIcon(GregTech.getResourcePath("mech_armor/chestplate/chestplate_augment_creativeflight"));
+            forceFieldAugment = reg
+                .registerIcon(GregTech.getResourcePath("mech_armor/chestplate/chestplate_augment_forcefield"));
         }
     }
 }

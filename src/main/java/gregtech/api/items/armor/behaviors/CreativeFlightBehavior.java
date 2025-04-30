@@ -1,10 +1,12 @@
 package gregtech.api.items.armor.behaviors;
 
 import static gregtech.api.util.GTUtility.getOrCreateNbtCompound;
+import static gregtech.loaders.ExtraIcons.creativeFlightAugment;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.IIcon;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
@@ -17,6 +19,11 @@ public class CreativeFlightBehavior implements IArmorBehavior {
     public static final CreativeFlightBehavior INSTANCE = new CreativeFlightBehavior();
 
     protected CreativeFlightBehavior() {/**/}
+
+    @Override
+    public IIcon getModularArmorTexture() {
+        return creativeFlightAugment;
+    }
 
     @Override
     public void onArmorTick(@NotNull World world, @NotNull EntityPlayer player, @NotNull ItemStack stack) {
