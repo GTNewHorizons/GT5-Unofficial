@@ -75,7 +75,7 @@ public class GTStructureUtility {
     }
 
     public static <T> IStructureElementNoPlacement<T> ofHatchAdder(IGTHatchAdder<T> aHatchAdder, int aTextureIndex,
-                                                                   int aDots) {
+        int aDots) {
         return ofHatchAdder(aHatchAdder, aTextureIndex, StructureLibAPI.getBlockHint(), aDots - 1);
     }
 
@@ -114,7 +114,7 @@ public class GTStructureUtility {
 
             @Override
             public IStructureElement.BlocksToPlace getBlocksToPlace(T t, World world, int x, int y, int z,
-                                                                    ItemStack trigger, AutoPlaceEnvironment env) {
+                ItemStack trigger, AutoPlaceEnvironment env) {
                 return IStructureElement.BlocksToPlace.create(Blocks.water, 0);
             }
         };
@@ -167,7 +167,7 @@ public class GTStructureUtility {
 
             @Override
             public BlocksToPlace getBlocksToPlace(T t, World world, int x, int y, int z, ItemStack trigger,
-                                                  AutoPlaceEnvironment env) {
+                AutoPlaceEnvironment env) {
                 ItemStack tFrameStack = getFrameStack();
                 if (!GTUtility.isStackValid(tFrameStack) || !(tFrameStack.getItem() instanceof ItemBlock))
                     return BlocksToPlace.errored;
@@ -176,7 +176,7 @@ public class GTStructureUtility {
 
             @Override
             public PlaceResult survivalPlaceBlock(T t, World world, int x, int y, int z, ItemStack trigger,
-                                                  IItemSource s, EntityPlayerMP actor, Consumer<IChatComponent> chatter) {
+                IItemSource s, EntityPlayerMP actor, Consumer<IChatComponent> chatter) {
                 return survivalPlaceBlock(
                     t,
                     world,
@@ -189,7 +189,7 @@ public class GTStructureUtility {
 
             @Override
             public PlaceResult survivalPlaceBlock(T t, World world, int x, int y, int z, ItemStack trigger,
-                                                  AutoPlaceEnvironment env) {
+                AutoPlaceEnvironment env) {
                 if (check(t, world, x, y, z)) return SKIP;
                 ItemStack tFrameStack = getFrameStack();
                 if (!GTUtility.isStackValid(tFrameStack) || !(tFrameStack.getItem() instanceof ItemBlock))
@@ -223,7 +223,7 @@ public class GTStructureUtility {
     }
 
     public static <T> IStructureElementNoPlacement<T> ofHatchAdder(IGTHatchAdder<T> aHatchAdder, int aTextureIndex,
-                                                                   Block aHintBlock, int aHintMeta) {
+        Block aHintBlock, int aHintMeta) {
         if (aHatchAdder == null || aHintBlock == null) {
             throw new IllegalArgumentException();
         }
@@ -245,8 +245,8 @@ public class GTStructureUtility {
     }
 
     public static <T> IStructureElement<T> ofHatchAdder(IGTHatchAdder<T> aHatchAdder, int aTextureIndex,
-                                                        Block aHintBlock, int aHintMeta, BiPredicate<T, IGregTechTileEntity> shouldSkip,
-                                                        Function<T, Class<? extends IMetaTileEntity>> aMetaId, final IStructureElement.PlaceResult acceptType) {
+        Block aHintBlock, int aHintMeta, BiPredicate<T, IGregTechTileEntity> shouldSkip,
+        Function<T, Class<? extends IMetaTileEntity>> aMetaId, final IStructureElement.PlaceResult acceptType) {
         if (aHatchAdder == null) {
             throw new IllegalArgumentException();
         }
@@ -279,7 +279,7 @@ public class GTStructureUtility {
 
             @Override
             public BlocksToPlace getBlocksToPlace(T t, World world, int x, int y, int z, ItemStack trigger,
-                                                  AutoPlaceEnvironment env) {
+                AutoPlaceEnvironment env) {
                 Class<? extends IMetaTileEntity> clazz = aMetaId.apply(t);
                 if (clazz == null) return BlocksToPlace.createEmpty();
                 return BlocksToPlace.create(is -> clazz.isInstance(ItemMachines.getMetaTileEntity(is)));
@@ -287,7 +287,7 @@ public class GTStructureUtility {
 
             @Override
             public PlaceResult survivalPlaceBlock(T t, World world, int x, int y, int z, ItemStack trigger,
-                                                  IItemSource s, EntityPlayerMP actor, Consumer<IChatComponent> chatter) {
+                IItemSource s, EntityPlayerMP actor, Consumer<IChatComponent> chatter) {
                 return survivalPlaceBlock(
                     t,
                     world,
@@ -300,7 +300,7 @@ public class GTStructureUtility {
 
             @Override
             public PlaceResult survivalPlaceBlock(T t, World world, int x, int y, int z, ItemStack trigger,
-                                                  AutoPlaceEnvironment env) {
+                AutoPlaceEnvironment env) {
                 if (shouldSkip != null) {
                     TileEntity tileEntity = world.getTileEntity(x, y, z);
                     if (tileEntity instanceof IGregTechTileEntity
@@ -328,7 +328,7 @@ public class GTStructureUtility {
     }
 
     public static <T> IStructureElement<T> ofHatchAdder(IGTHatchAdder<T> aHatchAdder, int aTextureIndex,
-                                                        Block aHintBlock, int aHintMeta, BiPredicate<T, IGregTechTileEntity> shouldSkip, ToIntFunction<T> aMetaId) {
+        Block aHintBlock, int aHintMeta, BiPredicate<T, IGregTechTileEntity> shouldSkip, ToIntFunction<T> aMetaId) {
         if (aHatchAdder == null) {
             throw new IllegalArgumentException();
         }
@@ -361,7 +361,7 @@ public class GTStructureUtility {
 
             @Override
             public BlocksToPlace getBlocksToPlace(T t, World world, int x, int y, int z, ItemStack trigger,
-                                                  AutoPlaceEnvironment env) {
+                AutoPlaceEnvironment env) {
                 ItemMachines item = (ItemMachines) Item.getItemFromBlock(GregTechAPI.sBlockMachines);
                 int meta = aMetaId.applyAsInt(t);
                 if (meta < 0) return BlocksToPlace.createEmpty();
@@ -372,7 +372,7 @@ public class GTStructureUtility {
 
             @Override
             public PlaceResult survivalPlaceBlock(T t, World world, int x, int y, int z, ItemStack trigger,
-                                                  IItemSource s, EntityPlayerMP actor, Consumer<IChatComponent> chatter) {
+                IItemSource s, EntityPlayerMP actor, Consumer<IChatComponent> chatter) {
                 return survivalPlaceBlock(
                     t,
                     world,
@@ -385,7 +385,7 @@ public class GTStructureUtility {
 
             @Override
             public PlaceResult survivalPlaceBlock(T t, World world, int x, int y, int z, ItemStack trigger,
-                                                  AutoPlaceEnvironment env) {
+                AutoPlaceEnvironment env) {
                 if (shouldSkip != null) {
                     TileEntity tileEntity = world.getTileEntity(x, y, z);
                     if (tileEntity instanceof IGregTechTileEntity
@@ -413,7 +413,7 @@ public class GTStructureUtility {
     }
 
     public static <T> IStructureElement<T> ofHatchAdderOptional(IGTHatchAdder<T> aHatchAdder, int textureIndex,
-                                                                int dots, Block placeCasing, int placeCasingMeta) {
+        int dots, Block placeCasing, int placeCasingMeta) {
         return ofHatchAdderOptional(
             aHatchAdder,
             textureIndex,
@@ -424,7 +424,7 @@ public class GTStructureUtility {
     }
 
     public static <T> IStructureElement<T> ofHatchAdderOptional(IGTHatchAdder<T> aHatchAdder, int aTextureIndex,
-                                                                Block aHintBlock, int hintMeta, Block placeCasing, int placeCasingMeta) {
+        Block aHintBlock, int hintMeta, Block placeCasing, int placeCasingMeta) {
         if (aHatchAdder == null || aHintBlock == null) {
             throw new IllegalArgumentException();
         }
@@ -461,7 +461,7 @@ public class GTStructureUtility {
 
             @Override
             public PlaceResult survivalPlaceBlock(T t, World world, int x, int y, int z, ItemStack trigger,
-                                                  IItemSource s, EntityPlayerMP actor, Consumer<IChatComponent> chatter) {
+                IItemSource s, EntityPlayerMP actor, Consumer<IChatComponent> chatter) {
                 if (check(t, world, x, y, z)) return SKIP;
                 return com.gtnewhorizon.structurelib.structure.StructureUtility
                     .survivalPlaceBlock(placeCasing, placeCasingMeta, world, x, y, z, s, actor, chatter);
@@ -475,7 +475,7 @@ public class GTStructureUtility {
      * @see #ofCoil(BiPredicate, Function)
      */
     public static <T> IStructureElement<T> ofCoil(BiConsumer<T, HeatingCoilLevel> aHeatingCoilSetter,
-                                                  Function<T, HeatingCoilLevel> aHeatingCoilGetter) {
+        Function<T, HeatingCoilLevel> aHeatingCoilGetter) {
         return ofCoil((t, l) -> {
             aHeatingCoilSetter.accept(t, l);
             return true;
@@ -505,7 +505,7 @@ public class GTStructureUtility {
      * @param aHeatingCoilGetter Get the current heating level. Null means no coil recorded yet.
      */
     public static <T> IStructureElement<T> ofCoil(BiPredicate<T, HeatingCoilLevel> aHeatingCoilSetter,
-                                                  Function<T, HeatingCoilLevel> aHeatingCoilGetter) {
+        Function<T, HeatingCoilLevel> aHeatingCoilGetter) {
         if (aHeatingCoilSetter == null || aHeatingCoilGetter == null) {
             throw new IllegalArgumentException();
         }
@@ -558,13 +558,13 @@ public class GTStructureUtility {
 
             @Override
             public BlocksToPlace getBlocksToPlace(T t, World world, int x, int y, int z, ItemStack trigger,
-                                                  AutoPlaceEnvironment env) {
+                AutoPlaceEnvironment env) {
                 return BlocksToPlace.create(GregTechAPI.sBlockCasings5, getMetaFromHint(trigger));
             }
 
             @Override
             public PlaceResult survivalPlaceBlock(T t, World world, int x, int y, int z, ItemStack trigger,
-                                                  IItemSource s, EntityPlayerMP actor, Consumer<IChatComponent> chatter) {
+                IItemSource s, EntityPlayerMP actor, Consumer<IChatComponent> chatter) {
                 return survivalPlaceBlock(
                     t,
                     world,
@@ -577,7 +577,7 @@ public class GTStructureUtility {
 
             @Override
             public PlaceResult survivalPlaceBlock(T t, World world, int x, int y, int z, ItemStack trigger,
-                                                  AutoPlaceEnvironment env) {
+                AutoPlaceEnvironment env) {
                 Block block = world.getBlock(x, y, z);
                 boolean isCoil = block instanceof IHeatingCoil
                     && ((IHeatingCoil) block).getCoilHeat(world.getBlockMetadata(x, y, z)) == getHeatFromHint(trigger);
@@ -602,7 +602,7 @@ public class GTStructureUtility {
      * @see #ofSolenoidCoil(BiPredicate, Function)
      */
     public static <T> IStructureElement<T> ofSolenoidCoil(BiConsumer<T, Byte> aSolenoidTierSetter,
-                                                          Function<T, Byte> aSolenoidTierGetter) {
+        Function<T, Byte> aSolenoidTierGetter) {
         return ofSolenoidCoil((t, l) -> {
             aSolenoidTierSetter.accept(t, l);
             return true;
@@ -619,7 +619,7 @@ public class GTStructureUtility {
      * @param aSolenoidTierGetter Get the solenoid voltage tier. Null means no tier recorded yet.
      */
     public static <T> IStructureElement<T> ofSolenoidCoil(BiPredicate<T, Byte> aSolenoidTierSetter,
-                                                          Function<T, Byte> aSolenoidTierGetter) {
+        Function<T, Byte> aSolenoidTierGetter) {
         if (aSolenoidTierSetter == null || aSolenoidTierGetter == null) {
             throw new IllegalArgumentException();
         }
@@ -672,13 +672,13 @@ public class GTStructureUtility {
 
             @Override
             public BlocksToPlace getBlocksToPlace(T t, World world, int x, int y, int z, ItemStack trigger,
-                                                  AutoPlaceEnvironment env) {
+                AutoPlaceEnvironment env) {
                 return BlocksToPlace.create(GregTechAPI.sSolenoidCoilCasings, getMetaFromHint(trigger));
             }
 
             @Override
             public PlaceResult survivalPlaceBlock(T t, World world, int x, int y, int z, ItemStack trigger,
-                                                  IItemSource s, EntityPlayerMP actor, Consumer<IChatComponent> chatter) {
+                IItemSource s, EntityPlayerMP actor, Consumer<IChatComponent> chatter) {
                 return survivalPlaceBlock(
                     t,
                     world,
@@ -691,7 +691,7 @@ public class GTStructureUtility {
 
             @Override
             public PlaceResult survivalPlaceBlock(T t, World world, int x, int y, int z, ItemStack trigger,
-                                                  AutoPlaceEnvironment env) {
+                AutoPlaceEnvironment env) {
                 Block block = world.getBlock(x, y, z);
 
                 boolean isCoil = block == GregTechAPI.sSolenoidCoilCasings
@@ -742,7 +742,7 @@ public class GTStructureUtility {
 
     /** support all Bart, Botania, Ic2, Thaumcraft glasses for multiblock structure **/
     public static <T> IStructureElement<T> chainAllGlasses(int notSet, BiConsumer<T, Integer> setter,
-                                                           Function<T, Integer> getter) {
+        Function<T, Integer> getter) {
         return GTStructureChannels.BOROGLASS.use(
             lazy(t -> ofBlocksTiered(GlassTier::getGlassBlockTier, GlassTier.getGlassList(), notSet, setter, getter)));
     }
@@ -782,19 +782,19 @@ public class GTStructureUtility {
         @SuppressWarnings("deprecation")
         @Override
         public PlaceResult survivalPlaceBlock(T t, World world, int x, int y, int z, ItemStack trigger, IItemSource s,
-                                              EntityPlayerMP actor, Consumer<IChatComponent> chatter) {
+            EntityPlayerMP actor, Consumer<IChatComponent> chatter) {
             return proxiedElement.survivalPlaceBlock(t, world, x, y, z, trigger, s, actor, chatter);
         }
 
         @Override
         public @Nullable BlocksToPlace getBlocksToPlace(T t, World world, int x, int y, int z, ItemStack trigger,
-                                                        AutoPlaceEnvironment env) {
+            AutoPlaceEnvironment env) {
             return proxiedElement.getBlocksToPlace(t, world, x, y, z, trigger, env);
         }
 
         @Override
         public PlaceResult survivalPlaceBlock(T t, World world, int x, int y, int z, ItemStack trigger,
-                                              AutoPlaceEnvironment env) {
+            AutoPlaceEnvironment env) {
             return proxiedElement.survivalPlaceBlock(t, world, x, y, z, trigger, env);
         }
 
