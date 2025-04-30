@@ -19,6 +19,7 @@ import java.util.Set;
 import java.util.function.Supplier;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.launchwrapper.Launch;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
@@ -447,6 +448,14 @@ public class GTValues {
     public static final IIconContainer[] emptyIconContainerArray = new IIconContainer[3];
 
     /**
+     * Detects if we're in a deobfuscated environment, meaning that additional sanity checks should be ran.
+     * If the blackboard is null, we're in a unit test that hasn't set its env up properly and also want those checks to
+     * be ran.
+     */
+    public static boolean DEVENV = Launch.blackboard == null ? true
+        : (boolean) Launch.blackboard.get("fml.deobfuscatedEnvironment");
+
+    /**
      * Pretty formatting for author names.
      */
     public static final String Colen = "" + EnumChatFormatting.DARK_RED
@@ -585,6 +594,18 @@ public class GTValues {
         + "APenguin";
 
     public static final String AuthorPineapple = "Author: " + EnumChatFormatting.BLUE + "Recursive Pineapple";
+
+    public static final Supplier<String> AuthorNoc = chain(
+        text("Author: "),
+        animatedText(
+            "Noc",
+            0,
+            500,
+            EnumChatFormatting.GOLD + BOLD,
+            EnumChatFormatting.DARK_GREEN + BOLD,
+            EnumChatFormatting.GOLD + BOLD,
+            EnumChatFormatting.DARK_GREEN + BOLD,
+            EnumChatFormatting.DARK_GREEN + OBFUSCATED + BOLD));
 
     public static final String TecTechHatches = "Supports " + TT + " laser and multi-amp hatches";
 

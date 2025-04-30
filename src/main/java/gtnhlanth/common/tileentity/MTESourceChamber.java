@@ -216,7 +216,7 @@ public class MTESourceChamber extends MTEEnhancedMultiBlockBase<MTESourceChamber
         this.mOutputItems = tRecipe.mOutputs;
         this.updateSlots();
 
-        outputAfterRecipe();
+        outputPacketAfterRecipe();
         return CheckRecipeResultRegistry.SUCCESSFUL;
     }
 
@@ -225,7 +225,7 @@ public class MTESourceChamber extends MTEEnhancedMultiBlockBase<MTESourceChamber
         return DescTextLocalization.addText("SourceChamber.hint", 7);
     }
 
-    private void outputAfterRecipe() {
+    private void outputPacketAfterRecipe() {
         if (!mOutputBeamline.isEmpty()) {
             BeamLinePacket packet = new BeamLinePacket(
                 new BeamInformation(outputEnergy, outputRate, outputParticle, outputFocus));

@@ -7,9 +7,8 @@ import java.util.List;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 
-import gregtech.api.util.GTLanguageManager;
 import gregtech.common.blocks.ItemCasings;
 
 public class ItemCasingsTimeAcceleration extends ItemCasings {
@@ -30,16 +29,10 @@ public class ItemCasingsTimeAcceleration extends ItemCasings {
             case 6:
             case 7:
             case 8:
-                tooltip.add(
-                    EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD
-                        + GTLanguageManager
-                            .addStringLocalization("EOH.TimeDilation.Standard.Tooltip", "Time dilation in a box."));
+                tooltip.add(StatCollector.translateToLocal("tt.eoh.time_dilation.standard.tooltip"));
                 break;
             default:
-                tooltip.add(
-                    EnumChatFormatting.RED.toString() + EnumChatFormatting.BOLD
-                        + GTLanguageManager
-                            .addStringLocalization("EOH.TimeDilation.Error.Tooltip", "Error, report to GTNH team"));
+                tooltip.add(StatCollector.translateToLocal("tt.eoh.time_dilation.error.tooltip"));
         }
         tooltip.add(AuthorColen);
     }
