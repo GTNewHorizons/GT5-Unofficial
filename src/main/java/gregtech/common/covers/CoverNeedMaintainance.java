@@ -20,7 +20,6 @@ import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.items.MetaGeneratedTool;
 import gregtech.api.metatileentity.implementations.MTEMultiBlockBase;
-import gregtech.api.util.GTUtility;
 import gregtech.common.covers.conditions.MaintenanceAlertCondition;
 import gregtech.common.covers.gui.CoverGui;
 import gregtech.common.covers.gui.CoverNeedMaintenanceGui;

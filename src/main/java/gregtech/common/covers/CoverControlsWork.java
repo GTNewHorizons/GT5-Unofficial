@@ -21,7 +21,6 @@ import gregtech.api.gui.modularui.GTUIInfos;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IMachineProgress;
-import gregtech.api.util.GTUtility;
 import gregtech.common.covers.conditions.RedstoneCondition;
 import gregtech.common.covers.gui.CoverControlsWorkGui;
 import gregtech.common.covers.gui.CoverGui;
