@@ -1,17 +1,54 @@
 package gtnhintergalactic.tile.multi.elevatormodules;
 
+import static gtnhintergalactic.recipe.SpacePumpingRecipes.RECIPES;
+import static tectech.Reference.MODID;
+
 import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
 
 import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidTank;
 
 import org.apache.commons.lang3.tuple.Pair;
 import org.jetbrains.annotations.NotNull;
 
+import com.cleanroommc.modularui.api.GuiAxis;
+import com.cleanroommc.modularui.api.IPanelHandler;
+import com.cleanroommc.modularui.api.drawable.IKey;
+import com.cleanroommc.modularui.api.widget.IWidget;
+import com.cleanroommc.modularui.drawable.DrawableArray;
+import com.cleanroommc.modularui.drawable.DynamicDrawable;
+import com.cleanroommc.modularui.drawable.ItemDrawable;
+import com.cleanroommc.modularui.drawable.Rectangle;
+import com.cleanroommc.modularui.drawable.TabTexture;
+import com.cleanroommc.modularui.drawable.UITexture;
+import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.screen.RichTooltip;
+import com.cleanroommc.modularui.utils.Alignment;
+import com.cleanroommc.modularui.utils.Color;
+import com.cleanroommc.modularui.utils.item.ItemStackHandler;
+import com.cleanroommc.modularui.value.sync.FluidSlotSyncHandler;
+import com.cleanroommc.modularui.value.sync.IntSyncValue;
+import com.cleanroommc.modularui.value.sync.PanelSyncManager;
+import com.cleanroommc.modularui.value.sync.StringSyncValue;
+import com.cleanroommc.modularui.widget.SingleChildWidget;
+import com.cleanroommc.modularui.widget.sizer.Area;
+import com.cleanroommc.modularui.widgets.ButtonWidget;
+import com.cleanroommc.modularui.widgets.FluidSlot;
+import com.cleanroommc.modularui.widgets.ListWidget;
+import com.cleanroommc.modularui.widgets.PageButton;
+import com.cleanroommc.modularui.widgets.PagedWidget;
+import com.cleanroommc.modularui.widgets.layout.Column;
+import com.cleanroommc.modularui.widgets.layout.Flow;
+import com.cleanroommc.modularui.widgets.layout.Row;
+import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
 import com.gtnewhorizons.modularui.common.widget.DynamicPositionedColumn;
 import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
@@ -30,12 +67,14 @@ import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.ParallelHelper;
 import gregtech.common.tileentities.machines.MTEHatchOutputME;
+import gtneioreplugin.plugin.block.ModBlocks;
 import gtnhintergalactic.recipe.SpacePumpingRecipes;
 import gtnhintergalactic.tile.multi.elevator.TileEntitySpaceElevator;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import tectech.thing.metaTileEntity.multi.base.INameFunction;
 import tectech.thing.metaTileEntity.multi.base.IStatusFunction;
 import tectech.thing.metaTileEntity.multi.base.LedStatus;
+import tectech.thing.metaTileEntity.multi.base.Parameter;
 import tectech.thing.metaTileEntity.multi.base.Parameters;
 import tectech.thing.metaTileEntity.multi.base.render.TTRenderedExtendedFacingTexture;
 
@@ -50,6 +89,7 @@ public abstract class TileEntityModulePump extends TileEntityModuleBase {
     public static final long ENERGY_CONSUMPTION = (int) GTValues.VP[9];
 
     /** Input parameters */
+    Parameter.IntegerParameter fluidIndexParameter;
     Parameters.Group.ParameterIn[] parallelSettings;
 
     Parameters.Group.ParameterIn[] gasTypeSettings;
@@ -131,7 +171,7 @@ public abstract class TileEntityModulePump extends TileEntityModuleBase {
         // We store the highest batch size as time multiplier
         int maxBatchSize = (int) Math.min(Math.max(batchSetting.get(), 1.0D), 128.0D);
         for (int i = 0; i < getParallelRecipes(); i++) {
-            FluidStack fluid = SpacePumpingRecipes.RECIPES
+            FluidStack fluid = SpacePumpingRecipes.RECIPES_OLD
                 .get(Pair.of((int) planetTypeSettings[i].get(), (int) gasTypeSettings[i].get()));
             if (fluid != null) {
                 int batchSize = (int) Math.min(Math.max(batchSetting.get(), 1.0D), 128.0D);
@@ -237,6 +277,227 @@ public abstract class TileEntityModulePump extends TileEntityModuleBase {
             .makeInParameter(1, 1, BATCH_SETTING_NAME, BATCH_STATUS);
     }
 
+    @Override
+    protected void initParameters() {}
+
+    @Override
+    public void insertTexts(ListWidget<IWidget, ?> machineInfo, ItemStackHandler invSlot, PanelSyncManager syncManager,
+        ModularPanel parentPanel) {
+        super.insertTexts(machineInfo, invSlot, syncManager, parentPanel);
+        Flow row = new Row().coverChildrenWidth()
+            .height(24);
+        for (int i = 0; i < this.getParallelRecipes(); i++) {
+            int finalI1 = i;
+            IPanelHandler fluidSelectorPanel = syncManager.panel(
+                "fluid_selector_panel_slot" + i,
+                (p_syncManager, syncHandler) -> getFluidSelectorPanel(parentPanel, p_syncManager, syncHandler, finalI1),
+                true);
+            syncManager.syncValue("recipeFluid" + i, new FluidSlotSyncHandler(new FluidTank(Integer.MAX_VALUE)));
+            row.child(
+                new Row().coverChildrenWidth()
+                    .height(24)
+                    .child(
+                        IKey.str(EnumChatFormatting.WHITE + "Fluid " + (i + 1) + ": ")
+                            .asWidget())
+                    .child(new FluidSlot() {
+
+                        @NotNull
+                        @Override
+                        public Result onMouseTapped(int mouseButton) {
+                            fluidSelectorPanel.openPanel();
+                            return Result.SUCCESS;
+                        }
+                    }.syncHandler("recipeFluid" + i)
+                        .size(24, 24)
+                        .marginRight(10)));
+            if ((i + 1) % 2 == 0 || i == this.getParallelRecipes() - 1) {
+                machineInfo.child(row);
+                row = new Row().coverChildrenWidth()
+                    .height(24);
+            }
+        }
+    }
+
+    @Override
+    public boolean hasCustomButtons() {
+        return true;
+    }
+
+    @Override
+    public boolean shouldMakeEditParametersButtonEnabled() {
+        return false;
+    }
+
+    @Override
+    public void addCustomButtons(ModularPanel panel, PanelSyncManager syncManager) {
+        UITexture fluidSelectorTexture = UITexture.fullImage(MODID, "gui/overlay_button/edit_parameters");
+        ButtonWidget fluidSelector = new ButtonWidget();
+        fluidSelector.tooltip(new RichTooltip(fluidSelector).add("Configure Fluids"))
+            .overlay(fluidSelectorTexture);
+        fluidSelector.pos(173, doesBindPlayerInventory() ? 109 + 18 : 133 + 18)
+            .size(18, 18);
+
+        IPanelHandler fluidSelectorPanel = syncManager.panel(
+            "fluid_selector_panel",
+            (p_syncManager, syncHandler) -> getFluidSelectorPanel(panel, p_syncManager, syncHandler, 0),
+            true);
+        fluidSelector.onMousePressed(mouseData -> {
+            if (!fluidSelectorPanel.isPanelOpen()) {
+                fluidSelectorPanel.openPanel();
+            } else {
+                fluidSelectorPanel.closePanel();
+            }
+            return true;
+        });
+        panel.child(fluidSelector);
+    }
+
+    private ModularPanel getFluidSelectorPanel(ModularPanel parent, PanelSyncManager syncManager,
+        IPanelHandler thisPanel, int slot) {
+        String[] planetTiers = new String[] { "De", "As", "Io", "En", "Pr", "Ha", "BC" }; // for tab icons
+
+        Area parentArea = parent.getArea();
+        ModularPanel panel = new ModularPanel("fluid_selector_panel" + slot);
+        panel.size(planetTiers.length * 24, 90);
+        panel.pos(parentArea.x, parentArea.y + 30);
+
+        AtomicReference<String> search = new AtomicReference<>(EnumChatFormatting.GRAY + "Search...");
+        StringSyncValue textFieldSyncer = new StringSyncValue(search::get, search::set);
+
+        PagedWidget.Controller tabController = new PagedWidget.Controller();
+        Flow row = new Row().topRel(0, 4, 1)
+            .coverChildren();
+        PagedWidget<?> pagedWidget = new PagedWidget<>().controller(tabController);
+        syncManager.syncValue(
+            "pageSwitcher",
+            new IntSyncValue(
+                () -> firstTierWithFluid(
+                    textFieldSyncer.getStringValue()
+                        .toLowerCase()),
+                val -> { if (val >= 0) pagedWidget.setPage(val); }));
+        for (int i = 0; i < planetTiers.length; i++) {
+
+            TabTexture TAB_TOP = TabTexture
+                .of(UITexture.fullImage("modularui2", "gui/tab/tabs_top", true), GuiAxis.Y, false, 24, 24, 4);
+            Item planetItem = ModBlocks.blocks.get(planetTiers[i])
+                .getItemDropped(0, null, 0);
+            int finalI = i;
+            row.child(
+                new PageButton(i, tabController).size(18, 18)
+                    .alignY(1)
+                    .tab(TAB_TOP, 0)
+                    .overlay(new DynamicDrawable(() -> {
+                        if (tierContainsFluid(
+                            finalI,
+                            textFieldSyncer.getStringValue()
+                                .toLowerCase())) {
+                            return new DrawableArray(
+                                new Rectangle().setColor(Color.rgb(0, 255, 0))
+                                    .asIcon()
+                                    .size(16, 16),
+                                new ItemDrawable(new ItemStack(planetItem)).asIcon());
+                        } else {
+                            return new ItemDrawable(new ItemStack(planetItem)).asIcon();
+                        }
+                    })));
+            Flow fluidColumn = new Column().sizeRel(1)
+                .marginTop(10)
+                .marginLeft(5);
+            Flow tempRow = new Row().widthRel(1)
+                .height(24);
+
+            for (int j = 0; j < RECIPES.get(i)
+                .size(); j++) {
+                FluidTank displayFluid = new FluidTank(Integer.MAX_VALUE);
+                FluidSlotSyncHandler displayFluidSyncer = new FluidSlotSyncHandler(displayFluid);
+                FluidSlot bla = new FluidSlot() {
+
+                    @NotNull
+                    @Override
+                    public Result onMousePressed(int mouseButton) {
+                        ((FluidSlotSyncHandler) syncManager.getModularSyncManager()
+                            .getPanelSyncManager("tt_multiblock")
+                            .getSyncHandler("recipeFluid" + slot + ":0")).setValue(displayFluidSyncer.getValue());
+                        thisPanel.closePanel();
+                        return Result.SUCCESS;
+                    }
+                }.syncHandler(displayFluidSyncer);
+                bla.getFluidTank()
+                    .fill(
+                        RECIPES.get(i)
+                            .get(j),
+                        true);
+                int finalJ = j;
+                tempRow.child(
+                    new SingleChildWidget<>().size(24, 24)
+                        .background(new DynamicDrawable(() -> {
+                            if (fluidMatchesSearchString(
+                                finalI,
+                                finalJ,
+                                textFieldSyncer.getStringValue()
+                                    .toLowerCase()))
+                                return new Rectangle().setColor(Color.rgb(0, 255, 0));
+                            else return null;
+                        }))
+                        .child(
+                            bla.size(22, 22)
+                                .align(Alignment.Center)));
+                if ((j + 1) % 6 == 0 || j == RECIPES.get(i)
+                    .size() - 1) {
+                    fluidColumn.child(tempRow);
+                    tempRow = new Row().widthRel(1)
+                        .height(24);
+                }
+
+            }
+            pagedWidget.addPage(fluidColumn);
+        }
+        panel.child(row)
+            .child(
+                new Column().sizeRel(1)
+                    .child(pagedWidget.sizeRel(1, 0.6f))
+                    .child(
+                        new TextFieldWidget().size(80, 9)
+                            .bottomRel(0, 9 + 4, 0)
+                            .left(4)
+                            .value(textFieldSyncer)));
+        return panel;
+    }
+
+    private boolean fluidMatchesSearchString(int i, int j, String stringValue) {
+        if (stringValue.isEmpty()) return false;
+        FluidStack fluid = RECIPES.get(i)
+            .get(j);
+        return fluid.getLocalizedName()
+            .toLowerCase()
+            .contains(stringValue);
+    }
+
+    private boolean tierContainsFluid(int index, String target) {
+        if (target.isEmpty()) return false;
+        return RECIPES.get(index)
+            .stream()
+            .anyMatch(
+                fluidStack -> fluidStack.getLocalizedName()
+                    .toLowerCase()
+                    .contains(target));
+    }
+
+    private int firstTierWithFluid(String target) {
+        if (target.isEmpty()) return -1;
+        for (int i = 0; i < RECIPES.size(); i++) {
+            List<FluidStack> tierRecipes = RECIPES.get(i);
+            if (tierRecipes.stream()
+                .anyMatch(
+                    fluid -> fluid.getLocalizedName()
+                        .toLowerCase()
+                        .contains(target))) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
     /**
      * Draw texts on the project module GUI
      *
@@ -327,7 +588,7 @@ public abstract class TileEntityModulePump extends TileEntityModuleBase {
         if (index < 0 || index >= getParallelRecipes()) {
             return null;
         }
-        FluidStack fluid = SpacePumpingRecipes.RECIPES
+        FluidStack fluid = SpacePumpingRecipes.RECIPES_OLD
             .get(Pair.of((int) planetTypeSettings[index].get(), (int) gasTypeSettings[index].get()));
         if (fluid == null) {
             return null;
@@ -337,7 +598,7 @@ public abstract class TileEntityModulePump extends TileEntityModuleBase {
 
     @Override
     protected boolean forceUseMui2() {
-        return false;
+        return true;
     }
 
     public static class TileEntityModulePumpT1 extends TileEntityModulePump {
