@@ -20,7 +20,6 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
 
-import com.gtnewhorizon.structurelib.alignment.constructable.ChannelDataAccessor;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
@@ -45,6 +44,7 @@ import gregtech.api.structure.StructureWrapperInstanceInfo;
 import gregtech.api.structure.StructureWrapperTooltipBuilder;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.common.misc.GTStructureChannels;
 import it.unimi.dsi.fastutil.Pair;
 import tectech.mechanics.dataTransport.QuantumDataPacket;
 import tectech.thing.metaTileEntity.hatch.MTEHatchDataInput;
@@ -141,7 +141,7 @@ public class MTENetworkSwitchAdv extends TTMultiblockBase
 
     @Override
     public void construct(ItemStack trigger, boolean hintsOnly) {
-        int length = GTUtility.clamp(ChannelDataAccessor.getChannelData(trigger, "length"), 1, MAX_LENGTH);
+        int length = GTStructureChannels.STRUCTURE_LENGTH.getValueClamped(trigger, 1, MAX_LENGTH);
 
         Vec3Impl offset = new Vec3Impl(0, 0, 0);
         Vec3Impl inc = new Vec3Impl(0, 0, -1);
@@ -161,7 +161,7 @@ public class MTENetworkSwitchAdv extends TTMultiblockBase
 
     @Override
     public int survivalConstruct(ItemStack trigger, int elementBudget, ISurvivalBuildEnvironment env) {
-        int length = GTUtility.clamp(ChannelDataAccessor.getChannelData(trigger, "length"), 1, MAX_LENGTH);
+        int length = GTStructureChannels.STRUCTURE_LENGTH.getValueClamped(trigger, 1, MAX_LENGTH);
 
         Vec3Impl offset = new Vec3Impl(0, 0, 0);
         Vec3Impl inc = new Vec3Impl(0, 0, -1);
@@ -281,7 +281,7 @@ public class MTENetworkSwitchAdv extends TTMultiblockBase
         tt.beginStructureBlock();
         tt.addAllCasingInfo();
 
-        tt.addSubChannelUsage("length", "middle slice count");
+        tt.addSubChannelUsage(GTStructureChannels.STRUCTURE_LENGTH, "middle slice count");
 
         tt.toolTipFinisher();
 
