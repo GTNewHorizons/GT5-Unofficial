@@ -2278,7 +2278,7 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
             .location(MODID, "gui/picture/heat_sink_small")
             .canApplyTheme(true)
             .build();
-        ModularPanel panel = new ModularPanel("tesla_tower");
+        ModularPanel panel = new ModularPanel("tt_multiblock");
         panel.size(198, 191);
 
         registerMachineSyncers(syncManager);
@@ -2294,7 +2294,9 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
 
         IntSyncValue dropdownIndexSyncer = new IntSyncValue(() -> currentDropdownIndex, val -> {
             currentDropdownIndex = val;
-            fluidSlotSyncer.setValue(RECIPES.get(val));
+            fluidSlotSyncer.setValue(
+                RECIPES.get(val)
+                    .get(0));
         });
         syncManager.syncValue("dropdownIndex", dropdownIndexSyncer);
 
@@ -2330,7 +2332,7 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
                     .overlay(heatSinkSmall));
         }
 
-        insertTexts(machineInfo, invSlot, syncManager);
+        insertTexts(machineInfo, invSlot, syncManager, panel);
         addTitleTextStyle(panel, this.getLocalName());
 
         if (shouldMakePowerPassButton()) addPowerPassButton(panel);
@@ -2592,8 +2594,8 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
         return panel;
     }
 
-    public void insertTexts(ListWidget<IWidget, ?> machineInfo, ItemStackHandler invSlot,
-        PanelSyncManager syncManager) {
+    public void insertTexts(ListWidget<IWidget, ?> machineInfo, ItemStackHandler invSlot, PanelSyncManager syncManager,
+        ModularPanel parentPanel) {
         machineInfo.child(
             new com.cleanroommc.modularui.widgets.TextWidget(GTUtility.trans("132", "Pipe is loose. (Wrench)"))
                 .color(COLOR_TEXT_WHITE.get())
