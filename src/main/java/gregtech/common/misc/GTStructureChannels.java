@@ -47,8 +47,8 @@ public enum GTStructureChannels implements IStructureChannels {
     EOH_DILATION("time_dilation", "Time Dilation Field Generator Tier"),
     NO_HATCH("gt_no_hatch", ""),
     TFFT_FIELD("field", "Storage Field Tier"),
-    ALCHEMICAL_CASING("casing", "Alchemical Casing"),
-    ALCHEMICAL_CONSTRUCT("construct", "Alchemical Construct"),
+    ALCHEMICAL_CASING("casing", "Alchemical Casing Tier"),
+    ALCHEMICAL_CONSTRUCT("construct", "Alchemical Construct Tier"),
     //
     ;
 

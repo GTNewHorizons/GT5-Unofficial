@@ -223,8 +223,8 @@ public class MTEEntropicProcessor extends MTEExtendedPowerMultiBlockBase<MTEEntr
         tt.beginStructureBlock(true)
             .addAllCasingInfo();
 
-        tt.addSubChannelUsage("casing", "Casing Tier");
-        tt.addSubChannelUsage("construct", "Alchemical Construct Tier");
+        tt.addSubChannelUsage(GTStructureChannels.ALCHEMICAL_CASING);
+        tt.addSubChannelUsage(GTStructureChannels.ALCHEMICAL_CONSTRUCT);
 
         tt.toolTipFinisher();
 
