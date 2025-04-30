@@ -12,6 +12,7 @@ import static gregtech.api.enums.Mods.GregTech;
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 import static gregtech.api.util.GTUtility.filterValidMTEs;
 import static gregtech.api.util.GTUtility.validMTEList;
+import static gtnhintergalactic.recipe.SpacePumpingRecipes.RECIPES;
 import static java.lang.Math.min;
 import static tectech.Reference.MODID;
 import static tectech.thing.casing.BlockGTCasingsTT.texturePage;
@@ -39,6 +40,7 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidTank;
 
 import org.jetbrains.annotations.NotNull;
 import org.lwjgl.opengl.GL11;
@@ -53,10 +55,12 @@ import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.RichTooltip;
 import com.cleanroommc.modularui.utils.Alignment;
+import com.cleanroommc.modularui.utils.MouseData;
 import com.cleanroommc.modularui.utils.item.ItemStackHandler;
 import com.cleanroommc.modularui.utils.serialization.IByteBufAdapter;
 import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
 import com.cleanroommc.modularui.value.sync.DoubleSyncValue;
+import com.cleanroommc.modularui.value.sync.FluidSlotSyncHandler;
 import com.cleanroommc.modularui.value.sync.GenericListSyncHandler;
 import com.cleanroommc.modularui.value.sync.GenericSyncValue;
 import com.cleanroommc.modularui.value.sync.IntSyncValue;
@@ -225,7 +229,9 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
 
     /** Flag if the new long power variable should be used */
     protected boolean useLongPower = false;
-
+    // GUI stuff
+    public int currentDropdownIndex = 0;
+    public final FluidTank fluidTankPhantom = new FluidTank(Integer.MAX_VALUE);
     // Locale-aware formatting of numbers.
     protected static NumberFormatMUI numberFormat;
     static {
@@ -2249,6 +2255,68 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
         ModularPanel panel = new ModularPanel("tesla_tower");
         panel.size(198, 191);
 
+        registerMachineSyncers(syncManager);
+
+        FluidSlotSyncHandler fluidSlotSyncer = new FluidSlotSyncHandler(this.fluidTankPhantom) {
+
+            @Override
+            public void tryScrollPhantom(MouseData mouseData) {
+                return;
+            }
+        }.phantom(true);
+        syncManager.syncValue("fluidSlot", fluidSlotSyncer);
+
+        IntSyncValue dropdownIndexSyncer = new IntSyncValue(() -> currentDropdownIndex, val -> {
+            currentDropdownIndex = val;
+            fluidSlotSyncer.setValue(RECIPES.get(val));
+        });
+        syncManager.syncValue("dropdownIndex", dropdownIndexSyncer);
+
+        ListWidget<IWidget, ?> machineInfo = new ListWidget<>().size(178, 85)
+            .pos(6, 3);
+
+        if (doesBindPlayerInventory()) {
+            panel.child(
+                new SingleChildWidget<>().pos(4, 4)
+                    .size(190, 91)
+                    .overlay(bg)
+                    .child(machineInfo));
+        } else {
+            panel.child(
+                new SingleChildWidget<>().pos(4, 4)
+                    .size(190, 171)
+                    .overlay(bgNoInv));
+        }
+        final ItemStackHandler invSlot = new ItemStackHandler(1);
+        if (doesBindPlayerInventory()) {
+            panel.child(
+                SlotGroupWidget.playerInventory()
+                    .pos(7, 95 + 12 + 2));
+            panel.child(
+                new ItemSlot().slot(
+                    SyncHandlers.itemSlot(invSlot, 0)
+                        .singletonSlotGroup())
+                    .pos(173, 167)
+                    .overlay(mesh));
+            panel.child(
+                new SingleChildWidget<>().pos(173, 185)
+                    .size(18, 6)
+                    .overlay(heatSinkSmall));
+        }
+
+        insertTexts(machineInfo, invSlot, syncManager);
+        addTitleTextStyle(panel, this.getLocalName());
+
+        if (shouldMakePowerPassButton()) addPowerPassButton(panel);
+        if (shouldMakeEditParametersButtonEnabled())
+            addEditParametersButton(panel, syncManager, fluidSlotSyncer, dropdownIndexSyncer);
+        if (shouldMakePowerSwitchButtonEnabled()) addPowerSwitchButtton(panel);
+        if (hasCustomButtons()) addCustomButtons(panel, syncManager);
+        addGregtechLogo(panel);
+        return panel;
+    }
+
+    private void registerMachineSyncers(PanelSyncManager syncManager) {
         syncManager.syncValue(
             "errors",
             new GenericSyncValue<EnumSet<StructureError>>(
@@ -2321,41 +2389,9 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
         StringSyncValue recipeInfoSyncer = new StringSyncValue(this::generateCurrentRecipeInfoString);
         syncManager.syncValue("recipeInfo", recipeInfoSyncer);
 
-        ListWidget<IWidget, ?> machineInfo = new ListWidget<>().size(178, 85)
-            .pos(6, 3);
+    }
 
-        if (doesBindPlayerInventory()) {
-            panel.child(
-                new SingleChildWidget<>().pos(4, 4)
-                    .size(190, 91)
-                    .overlay(bg)
-                    .child(machineInfo));
-        } else {
-            panel.child(
-                new SingleChildWidget<>().pos(4, 4)
-                    .size(190, 171)
-                    .overlay(bgNoInv));
-        }
-        final ItemStackHandler invSlot = new ItemStackHandler(1);
-        if (doesBindPlayerInventory()) {
-            panel.child(
-                SlotGroupWidget.playerInventory()
-                    .pos(7, 95 + 12 + 2));
-            panel.child(
-                new ItemSlot().slot(
-                    SyncHandlers.itemSlot(invSlot, 0)
-                        .singletonSlotGroup())
-                    .pos(173, 167)
-                    .overlay(mesh));
-            panel.child(
-                new SingleChildWidget<>().pos(173, 185)
-                    .size(18, 6)
-                    .overlay(heatSinkSmall));
-        }
-
-        insertTexts(machineInfo, invSlot, syncManager);
-        addTitleTextStyle(panel, this.getLocalName());
-
+    public void addPowerPassButton(ModularPanel panel) {
         com.cleanroommc.modularui.drawable.UITexture powerPassOn = com.cleanroommc.modularui.drawable.UITexture
             .fullImage(MODID, "gui/overlay_button/power_pass_on");
         com.cleanroommc.modularui.drawable.UITexture powerPassOff = com.cleanroommc.modularui.drawable.UITexture
@@ -2382,16 +2418,22 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
                     () -> !isAllowedToWorkButtonEnabled() ? powerPassDisabled
                         : ePowerPass ? powerPassOn : powerPassOff)));
 
-        IPanelHandler infoPanel = syncManager
-            .panel("info_panel", (p_syncManager, syncHandler) -> getParameterPanel(panel), true);
+    }
 
+    public void addEditParametersButton(ModularPanel panel, PanelSyncManager syncManager,
+        FluidSlotSyncHandler fluidSlotSyncer, IntSyncValue dropdownIndexSyncer) {
+        IPanelHandler infoPanel = syncManager.panel(
+            "info_panel",
+            (p_syncManager,
+                syncHandler) -> getParameterPanel(panel, p_syncManager, fluidSlotSyncer, dropdownIndexSyncer),
+            true);
         UITexture editParametersEnabled = UITexture.fullImage(MODID, "gui/overlay_button/edit_parameters");
         UITexture editParametersDisabled = UITexture.fullImage(MODID, "gui/overlay_button/edit_parameters_disabled");
         com.cleanroommc.modularui.widgets.ButtonWidget editParametersButton = new com.cleanroommc.modularui.widgets.ButtonWidget();
         editParametersButton.overlay(new DynamicDrawable(() -> {
-            if(parameterList.isEmpty()){
+            if (parameterList.isEmpty()) {
                 return editParametersDisabled;
-            } else{
+            } else {
                 return editParametersEnabled;
             }
         }));
@@ -2399,7 +2441,7 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
         editParametersButton.pos(173, doesBindPlayerInventory() ? 109 + 18 : 133 + 18)
             .size(18, 18);
         editParametersButton.onMousePressed(mouseData -> {
-            if(parameterList.isEmpty()) return false;
+            if (parameterList.isEmpty()) return false;
             if (!infoPanel.isPanelOpen()) {
                 infoPanel.openPanel();
             } else {
@@ -2408,7 +2450,11 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
             return true;
         });
         panel.child(editParametersButton);
+    }
 
+    public void addCustomButtons(ModularPanel panel, PanelSyncManager syncManager) {}
+
+    public void addPowerSwitchButtton(ModularPanel panel) {
         com.cleanroommc.modularui.drawable.UITexture powerSwitchOn = com.cleanroommc.modularui.drawable.UITexture
             .fullImage(MODID, "gui/overlay_button/power_switch_on");
         com.cleanroommc.modularui.drawable.UITexture powerSwitchOff = com.cleanroommc.modularui.drawable.UITexture
@@ -2428,8 +2474,22 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
                 new DynamicDrawable(
                     () -> !isAllowedToWorkButtonEnabled() ? powerSwitchDisabled
                         : getBaseMetaTileEntity().isAllowedToWork() ? powerSwitchOn : powerSwitchOff)));
-        addGregtechLogo(panel);
-        return panel;
+    }
+
+    public boolean shouldMakePowerSwitchButtonEnabled() {
+        return true;
+    }
+
+    public boolean shouldMakeEditParametersButtonEnabled() {
+        return true;
+    }
+
+    public boolean shouldMakePowerPassButton() {
+        return true;
+    }
+
+    public boolean hasCustomButtons() {
+        return false;
     }
 
     public void addGregtechLogo(ModularPanel panel) {
@@ -2439,7 +2499,8 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
                 .pos(190 - 18 - 2, doesBindPlayerInventory() ? 91 - 18 - 2 : 171 - 18 - 2));
     }
 
-    private ModularPanel getParameterPanel(ModularPanel parent) {
+    private ModularPanel getParameterPanel(ModularPanel parent, PanelSyncManager syncManager,
+        FluidSlotSyncHandler fluidSlotSyncer, IntSyncValue dropdownIndexSyncer) {
         Area parentArea = parent.getArea();
         ModularPanel panel = new ModularPanel("parameters") {
 
@@ -2501,6 +2562,7 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
                     .marginBottom(2));
         }
         panel.child(parameterListWidget);
+
         return panel;
     }
 
