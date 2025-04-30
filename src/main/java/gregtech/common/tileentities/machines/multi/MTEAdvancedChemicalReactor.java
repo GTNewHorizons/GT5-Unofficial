@@ -6,6 +6,9 @@
     import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
     import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
     import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+    import goodgenerator.blocks.tileEntity.GTMetaTileEntity.MTENeutronAccelerator;
+    import goodgenerator.blocks.tileEntity.GTMetaTileEntity.MTENeutronSensor;
+    import goodgenerator.util.ItemRefer;
     import gregtech.api.GregTechAPI;
     import gregtech.api.enums.HeatingCoilLevel;
     import gregtech.api.enums.Materials;
@@ -28,6 +31,8 @@
     import net.minecraftforge.common.util.ForgeDirection;
     import net.minecraftforge.fluids.FluidStack;
     import org.apache.commons.lang3.tuple.Pair;
+    import org.apache.logging.log4j.LogManager;
+    import org.apache.logging.log4j.Logger;
     import tectech.util.FluidStackLong;
     import tectech.util.ItemStackLong;
 
@@ -44,24 +49,21 @@
     public class MTEAdvancedChemicalReactor extends MTEExtendedPowerMultiBlockBase<MTEAdvancedChemicalReactor>
         implements ISurvivalConstructable {
 
+
+        private static final Logger log = LogManager.getLogger(MTEAdvancedChemicalReactor.class);
+
         @Nullable
         private static Integer getFluidTierFromMeta(Block block, Integer metaID) {
             if (block != GregTechAPI.sBlockCasings2) return null;
             if (metaID < 12 || metaID > 15) return null;
             return metaID - 11;
         }
-        private int leftModule = 0;
-        private int rightModule = 0;
-        private static final int MODULE_NONE = 0;
-        private static final int MODULE_TEMP = 1;
-        private static final int MODULE_PRESSURE = 2;
 
         private int glassTier = -1;
 
         private static final String STRUCTURE_PIECE_MAIN = "main";
         private static final String TEMPERATURE_MODULE_L = "temperatureL";
         private static final String TEMPERATURE_MODULE_R = "temperatureR";
-
 
         private static boolean isTempModule = false;
         private static boolean isPressureModule = false;
@@ -292,6 +294,11 @@
         }
 
         @Override
+        protected ProcessingLogic createProcessingLogic() {
+            return new ProcessingLogic().enablePerfectOverclock();
+        }
+
+        @Override
         protected void setProcessingLogicPower(ProcessingLogic logic) {
             logic.setAvailableVoltage(GTUtility.roundUpVoltage(this.getMaxInputVoltage()));
             logic.setAvailableAmperage(1L);
@@ -299,7 +306,7 @@
 
         @Override
         protected ProcessingLogic createProcessingLogic() {
-            return new ProcessingLogic().setSpeedBonus(1F / 1.5F)
+            return new ProcessingLogic().setSpeedBonus(1F)
                 .setMaxParallelSupplier(this::getTrueParallel);
         }
 
@@ -348,4 +355,13 @@
             return true;
         }
 
+        @Override
+        public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
+            super.onPostTick(aBaseMetaTileEntity, aTick);
+            boolean anyWorking = false;
+        }
+        @Override
+        protected boolean useMui2() {
+            return true;
+        }
     }
