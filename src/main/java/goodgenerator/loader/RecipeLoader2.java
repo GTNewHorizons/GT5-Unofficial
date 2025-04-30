@@ -20,6 +20,7 @@ import static gregtech.api.recipe.RecipeMaps.fluidSolidifierRecipes;
 import static gregtech.api.recipe.RecipeMaps.fusionRecipes;
 import static gregtech.api.recipe.RecipeMaps.mixerRecipes;
 import static gregtech.api.recipe.RecipeMaps.multiblockChemicalReactorRecipes;
+import static gregtech.api.recipe.RecipeMaps.multiblockECCFRecipes;
 import static gregtech.api.recipe.RecipeMaps.plasmaForgeRecipes;
 import static gregtech.api.recipe.RecipeMaps.unpackagerRecipes;
 import static gregtech.api.recipe.RecipeMaps.vacuumFreezerRecipes;
@@ -28,6 +29,8 @@ import static gregtech.api.util.GTRecipeBuilder.MINUTES;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeConstants.AssemblyLine;
 import static gregtech.api.util.GTRecipeConstants.COIL_HEAT;
+import static gregtech.api.util.GTRecipeConstants.ECCF_PRESSURE;
+import static gregtech.api.util.GTRecipeConstants.ECCF_TEMPERATURE;
 import static gregtech.api.util.GTRecipeConstants.FUSION_THRESHOLD;
 import static gregtech.api.util.GTRecipeConstants.NKE_RANGE;
 import static gregtech.api.util.GTRecipeConstants.PRECISE_ASSEMBLER_CASING_TIER;
@@ -840,6 +843,25 @@ public class RecipeLoader2 {
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_EV)
             .addTo(chemicalBathRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(Materials.Firestone.getGems(1))
+            .fluidInputs(GGMaterial.lightNaquadahFuel.getFluidOrGas(144))
+            .itemOutputs(WerkstoffLoader.Tiberium.get(OrePrefixes.gem, 1))
+            .duration(20 * SECONDS)
+            .eut(TierEU.RECIPE_EV)
+            .metadata(ECCF_PRESSURE, 110300)
+            .metadata(ECCF_TEMPERATURE, 280)
+            .addTo(multiblockECCFRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(Materials.Stone.getDust(1))
+            .itemOutputs(Materials.Stone.getDust(1))
+            .duration(100 * SECONDS)
+            .eut(TierEU.RECIPE_ZPM)
+            .metadata(ECCF_PRESSURE, 10230)
+            .metadata(ECCF_TEMPERATURE, 400)
+            .addTo(multiblockECCFRecipes);
 
         GTValues.RA.stdBuilder()
             .itemInputs(Materials.Diamond.getGems(1))

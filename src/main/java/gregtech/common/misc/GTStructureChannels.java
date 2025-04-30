@@ -47,6 +47,10 @@ public enum GTStructureChannels implements IStructureChannels {
     EOH_DILATION("time_dilation", "Time Dilation Field Generator Tier"),
     NO_HATCH("gt_no_hatch", ""),
     TFFT_FIELD("field", "Storage Field Tier"),
+    ACR_HEAT_PIPE("heat_pipe", "Heat Pipe Tier"),
+    ACR_COOL_PIPE("cool_pipe", "Cool Pipe Tier"),
+    ACR_VACUUM_PIPE("vacuum_pipe", "Vacuum Tier"),
+    ACR_COMPRESS_PIPE("compress_pipe", "Compressor Tier"),
     //
     ;
 

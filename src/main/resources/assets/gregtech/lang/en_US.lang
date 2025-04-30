@@ -283,6 +283,13 @@ GT5U.fusion.plasma=Plasma Output
 
 GT5U.tpm.parallelwindow=Open Parallel Configuration Window
 
+GT5U.ECCF.pressure=Current pressure
+GT5U.ECCF.temperature=Current temperature
+GT5U.ECCF.pressure.threshold=Pressure threshold
+GT5U.ECCF.temperature.threshold=Temperature threshold
+GT5U.ECCF.pressure.required=Pressure required
+GT5U.ECCF.temperature.required=Temperature required
+
 GT5U.EBF.heat=Heat capacity
 GT5U.coil.None=None
 GT5U.coil.ULV=None
@@ -455,6 +462,7 @@ gt.recipe.purificationplantuvtreatment=High Energy Laser Treatment
 gt.recipe.purificationplantdegasifier=Degassing
 gt.recipe.purificationplantquarkextractor=Baryonic Perfection
 gt.recipe.quantumcomputer=QC Components
+gt.recipe.eccf=Environmentally Controlled Chemical Facility
 
 # Recipe categories
 gt.recipe.category.arc_furnace_recycling=Arc Furnace Recycling
@@ -715,6 +723,10 @@ channels.gregtech.stabilisation=Decides the tier of Stabilisation Field Generato
 channels.gregtech.time_dilation=Decides the tier of Time Dilation Field Generator. Starts at §6Crude Time Dilation Field Generator§r at value 1 and ends at §6Gallifreyan Time Dilation Field Generator§r at value 9.
 channels.gregtech.gt_no_hatch=When set, disable automatic hatch placement
 channels.gregtech.field=Decides the tier of T.F.F.T. Storage Field.
+channels.gregtech.heat_pipe=Decides the tier of §6ACR heating module§r. Starts at value 1 and ends at value 4.
+channels.gregtech.cool_pipe=Decides the tier of §6ACR cooling module§r. Starts at value 1 and ends at value 4.
+channels.gregtech.vacuum_pipe=Decides the tier of §6ACR compressor module§r. Starts at value 1 and ends at value 4.
+channels.gregtech.compress_pipe=Decides the tier of §6ACR vacuum pump module§r. Starts at value 1 and ends at value 4.
 
 GT5U.gui.select.current=Current:
 GT5U.gui.button.liquid_filling_OFF=§7Liquid Filling: §4OFF
@@ -864,6 +876,7 @@ GT5U.gui.text.enabled=§aEnabled§f
 GT5U.gui.text.disabled=§cDisabled§f
 GT5U.gui.text.lma_craftingfx=Show Crafting Effects
 GT5U.gui.text.repair_tip=Click with Tool to repair.
+GT5U.gui.text.conditions.out.of.range=§4Out of recipe conditions
 
 GT5U.gui.config.client=Client
 GT5U.gui.config.client.color_modulation=Color Modulation
@@ -1015,6 +1028,8 @@ GT5U.nei.nuclear.breeder.neutron_reflecting=Neutron reflecting Breeder
 GT5U.nei.nuclear.breeder.heat_neutral=Heat neutral Breeder
 GT5U.nei.nuclear.breeder.reactor_hull_heat=Every %d reactor hull heat\nincrease speed by %d00%%
 GT5U.nei.nuclear.breeder.required_pulse=Required pulses: %d
+GT5U.nei.temperature=Temperature: %s K
+GT5U.nei.pressure=Pressure: %s
 
 
 GT5U.config.colormodulation=Color Modulator
