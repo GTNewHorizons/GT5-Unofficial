@@ -35,7 +35,7 @@ import ic2.api.item.IElectricItem;
 
 public class ToolVajra extends ItemTool implements IElectricItem {
 
-    public int maxCharge = (int) 1e7;
+    public int maxCharge = (int) 1e8;
     public int baseCost = 3333;
     public int tier = 5;
     public double transferLimit = V[tier];
