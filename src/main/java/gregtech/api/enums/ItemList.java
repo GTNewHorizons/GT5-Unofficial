@@ -1525,6 +1525,14 @@ public enum ItemList implements IItemContainer {
     Machine_Multi_IndustrialBrewery,
 
     Machine_Multi_AdvancedChemicalReactor,
+    AdvancedChemicalReactor_cooling_block_0,
+    AdvancedChemicalReactor_cooling_block_1,
+    AdvancedChemicalReactor_cooling_block_2,
+    AdvancedChemicalReactor_cooling_block_3,
+    AdvancedChemicalReactor_heating_block_0,
+    AdvancedChemicalReactor_heating_block_1,
+    AdvancedChemicalReactor_heating_block_2,
+    AdvancedChemicalReactor_heating_block_3,
 
     Machine_Multi_IndustrialLaserEngraver,
     Laser_Plate,

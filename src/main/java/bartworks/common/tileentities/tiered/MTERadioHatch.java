@@ -364,7 +364,7 @@ public class MTERadioHatch extends MTEHatch implements RecipeMapWorkable, IAddGr
     }
 
     @Override
-    public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager) {
+    public ModularPanel     buildUI(PosGuiData data, PanelSyncManager syncManager) {
         IPanelHandler popupPanel = syncManager.panel("popup", (manager, handler) -> createShutterUI(syncManager), true);
         syncManager.registerSlotGroup("item_inv", 1);
         syncManager.syncValue("mass", new IntSyncValue(() -> mass, value -> mass = (byte) value));
