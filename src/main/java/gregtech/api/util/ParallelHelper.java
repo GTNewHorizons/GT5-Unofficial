@@ -21,111 +21,111 @@ import gregtech.api.recipe.check.SingleRecipeCheck;
 @SuppressWarnings({ "unused", "UnusedReturnValue" })
 public class ParallelHelper {
 
-    private static final double MAX_BATCH_MODE_TICK_TIME = 128;
+    protected static final double MAX_BATCH_MODE_TICK_TIME = 128;
     /**
      * Machine used for calculation
      */
-    private IVoidable machine;
+    protected IVoidable machine;
     /**
      * Machine used for single recipe locking calculation
      */
-    private IRecipeLockable singleRecipeMachine;
+    protected IRecipeLockable singleRecipeMachine;
     /**
      * Is locked to a single recipe?
      */
-    private boolean isRecipeLocked;
+    protected boolean isRecipeLocked;
     /**
      * Recipe used when trying to calculate parallels
      */
-    private GTRecipe recipe;
+    protected GTRecipe recipe;
     /**
      * EUt available to the multiblock (This should be the total eut available)
      */
-    private long availableEUt;
+    protected long availableEUt;
     /**
      * The current parallel possible for the multiblock
      */
-    private int currentParallel = 0;
+    protected int currentParallel = 0;
     /**
      * The maximum possible parallel possible for the multiblock
      */
-    private int maxParallel = 1;
+    protected int maxParallel = 1;
     /**
      * The Batch Modifier applied when batch mode is enabled. 1 does nothing. 2 doubles max possible
      * parallel, but also duration
      */
-    private int batchModifier = 1;
+    protected int batchModifier = 1;
     /**
      * The inputs of the multiblock for the current recipe check
      */
-    private ItemStack[] itemInputs;
+    protected ItemStack[] itemInputs;
     /**
      * The outputs of the recipe with the applied parallel
      */
-    private ItemStack[] itemOutputs;
+    protected ItemStack[] itemOutputs;
     /**
      * The inputs of the multiblock for the current recipe check
      */
-    private FluidStack[] fluidInputs;
+    protected FluidStack[] fluidInputs;
     /**
      * The outputs of the recipe with the applied parallel
      */
-    private FluidStack[] fluidOutputs;
+    protected FluidStack[] fluidOutputs;
     /**
      * Does the multi have void protection enabled for items
      */
-    private boolean protectExcessItem;
+    protected boolean protectExcessItem;
     /**
      * Does the multi have void protection enabled for fluids
      */
-    private boolean protectExcessFluid;
+    protected boolean protectExcessFluid;
     /**
      * Should the Parallel Helper automatically consume for the multi
      */
-    private boolean consume;
+    protected boolean consume;
     /**
      * Is batch mode turned on?
      */
-    private boolean batchMode;
+    protected boolean batchMode;
     /**
      * Should the Parallel Helper automatically calculate the outputs of the recipe with current parallel?
      */
-    private boolean calculateOutputs;
+    protected boolean calculateOutputs;
     /**
      * Has the Parallel Helper been built?
      */
-    private boolean built;
+    protected boolean built;
     /**
      * What is the duration multiplier with batch mode enabled
      */
-    private double durationMultiplier;
+    protected double durationMultiplier;
     /**
      * Modifier which is applied on the recipe eut. Useful for GT++ machines
      */
-    private double eutModifier = 1;
+    protected double eutModifier = 1;
     /**
      * Multiplier that is applied on the output chances
      */
-    private double chanceMultiplier = 1;
+    protected double chanceMultiplier = 1;
     /**
      * Method for calculating max parallel from given inputs.
      */
-    private MaxParallelCalculator maxParallelCalculator = GTRecipe::maxParallelCalculatedByInputs;
+    protected MaxParallelCalculator maxParallelCalculator = GTRecipe::maxParallelCalculatedByInputs;
     /**
      * Method for consuming inputs after determining how many parallels it can execute.
      */
-    private InputConsumer inputConsumer = GTRecipe::consumeInput;
+    protected InputConsumer inputConsumer = GTRecipe::consumeInput;
 
     /**
      * Calculator to use for overclocking
      */
-    private OverclockCalculator calculator;
+    protected OverclockCalculator calculator;
     @Nonnull
-    private CheckRecipeResult result = CheckRecipeResultRegistry.NONE;
+    protected CheckRecipeResult result = CheckRecipeResultRegistry.NONE;
 
-    private Function<Integer, ItemStack[]> customItemOutputCalculation;
+    protected Function<Integer, ItemStack[]> customItemOutputCalculation;
 
-    private Function<Integer, FluidStack[]> customFluidOutputCalculation;
+    protected Function<Integer, FluidStack[]> customFluidOutputCalculation;
 
     public ParallelHelper() {}
 
@@ -533,7 +533,7 @@ public class ParallelHelper {
         fluidInputs = fluidInputsToUse;
     }
 
-    private void calculateItemOutputs(ItemStack[] truncatedItemOutputs) {
+    protected void calculateItemOutputs(ItemStack[] truncatedItemOutputs) {
         if (customItemOutputCalculation != null) {
             itemOutputs = customItemOutputCalculation.apply(currentParallel);
             return;
@@ -554,7 +554,7 @@ public class ParallelHelper {
         itemOutputs = itemOutputsList.toArray(new ItemStack[0]);
     }
 
-    private void calculateFluidOutputs(FluidStack[] truncatedFluidOutputs) {
+    protected void calculateFluidOutputs(FluidStack[] truncatedFluidOutputs) {
         if (customFluidOutputCalculation != null) {
             fluidOutputs = customFluidOutputCalculation.apply(currentParallel);
             return;
