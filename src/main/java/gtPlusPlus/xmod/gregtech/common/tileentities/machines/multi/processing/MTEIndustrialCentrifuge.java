@@ -16,6 +16,7 @@ import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.gtnewhorizon.structurelib.alignment.enumerable.ExtendedFacing;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -158,6 +159,15 @@ public class MTEIndustrialCentrifuge extends GTPPMultiBlockBase<MTEIndustrialCen
     public void onFirstTick(IGregTechTileEntity aBaseMetaTileEntity) {
         super.onFirstTick(aBaseMetaTileEntity);
         setTurbineOverlay();
+    }
+
+    @Override
+    public void setExtendedFacing(ExtendedFacing newExtendedFacing) {
+        boolean extendedFacingChanged = newExtendedFacing != getExtendedFacing();
+        super.setExtendedFacing(newExtendedFacing);
+        if (extendedFacingChanged) {
+            setTurbineOverlay();
+        }
     }
 
     protected void setTurbineOverlay() {
