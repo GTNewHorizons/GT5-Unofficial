@@ -1,6 +1,7 @@
 package gregtech.common.tools;
 
 import static gregtech.api.enums.GTValues.V;
+import static gregtech.api.enums.GTValues.VN;
 
 import java.util.List;
 
@@ -15,7 +16,9 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
 import bartworks.system.material.BWMetaGeneratedOres;
@@ -75,7 +78,12 @@ public class ToolVajra extends ItemTool implements IElectricItem {
     }
 
     @Override
-    public boolean hitEntity(ItemStack itemstack, EntityLivingBase entityliving, EntityLivingBase entityliving1) {
+    public boolean hitEntity(ItemStack itemstack, EntityLivingBase target, EntityLivingBase source) {
+        if(source instanceof EntityPlayer player){
+            target.attackEntityFrom(DamageSource.causePlayerDamage(player), this.attackDamage);
+        } else {
+            target.attackEntityFrom(DamageSource.causeMobDamage(source), this.attackDamage);
+        }
         return true;
     }
 
@@ -89,11 +97,14 @@ public class ToolVajra extends ItemTool implements IElectricItem {
         return false;
     }
 
-    // @Override
-    // public void addInformation(ItemStack stack, EntityPlayer par2EntityPlayer, List<String> list, boolean par4) {
-    // list.add(this.tooltip);
-    // list.add("Can be charged in any " + VN[tier] + " machine");
-    // }
+
+
+    @Override
+    public void addInformation(ItemStack stack, EntityPlayer par2EntityPlayer, List<String> list, boolean par4) {
+        list.add(EnumChatFormatting.WHITE + StatCollector.translateToLocal("gt.vajra.tooltip.flavor"));
+        list.add(EnumChatFormatting.WHITE + StatCollector.translateToLocalFormatted("gt.vajra.tooltip.charge", VN[tier]));
+        list.add(EnumChatFormatting.YELLOW + StatCollector.translateToLocal("gt.vajra.tooltip.silk_touch"));
+    }
 
     @Override
     public boolean canProvideEnergy(ItemStack itemStack) {
@@ -161,7 +172,6 @@ public class ToolVajra extends ItemTool implements IElectricItem {
     public ItemStack onItemRightClick(ItemStack itemStackIn, World worldIn, EntityPlayer player) {
         NBTTagCompound tag = itemStackIn.hasTagCompound() ? itemStackIn.getTagCompound() : new NBTTagCompound();
         if (!worldIn.isRemote && !itemStackIn.hasTagCompound()) {
-            tag.setBoolean("silk", false);
             itemStackIn.setTagCompound(tag);
         }
         if (tag.getBoolean("harvested")) {

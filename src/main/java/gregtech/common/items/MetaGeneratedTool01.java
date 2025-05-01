@@ -525,7 +525,7 @@ public class MetaGeneratedTool01 extends MetaGeneratedTool {
             new TCAspects.TC_AspectStack(TCAspects.SENSUS, 4),
             new TCAspects.TC_AspectStack(TCAspects.PERDITIO, 2));
         ItemList.Tool_Vajra
-            .set(new ToolVajra("Tool_Vajra", "Vajra", "Your friendly instant block breaker", 100, 20, true));
+            .set(new ToolVajra("Tool_Vajra", "Vajra", "", 0, 20, true));
 
         initCraftingShapedRecipes();
         initCraftingShapelessRecipes();

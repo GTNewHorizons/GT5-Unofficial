@@ -8,7 +8,7 @@ import gregtech.api.util.GTModHandler;
  * This is just a basic Tool, which has normal durability and could break Blocks.
  */
 public class ItemTool extends GTGenericItem {
-
+    protected int attackDamage;
     public ItemTool(String aUnlocalized, String aEnglish, String aTooltip, int aMaxDamage, int aEntityDamage,
         boolean aSwingIfUsed) {
         this(aUnlocalized, aEnglish, aTooltip, aMaxDamage, aEntityDamage, aSwingIfUsed, -1, -1);
@@ -36,6 +36,7 @@ public class ItemTool extends GTGenericItem {
         setMaxStackSize(1);
         setNoRepair();
         setFull3D();
+        attackDamage = aEntityDamage;
         GTModHandler.registerBoxableItemToToolBox(new ItemStack(this));
     }
 }
