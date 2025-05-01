@@ -574,24 +574,24 @@ public class CraftingRecipes implements Runnable {
             OrePrefixes.lens.get(Materials.Ruby),
             ItemList.Magnetron.get(1),
             OrePrefixes.lens.get(Materials.Ruby),
-            null,
+            craftingToolHardHammer,
             ItemList.Vajra_Core.get(1),
-            null,
+            craftingToolScrewdriver,
             OrePrefixes.plateDense.get(Materials.Electrum),
             OrePrefixes.battery.get(Materials.IV),
             OrePrefixes.plateDense.get(Materials.Electrum),
             ItemList.Tool_Vajra.get(1));
 
         RecipeUtils.addShapedRecipe(
-            OrePrefixes.plate.get(Materials.Electrum),
+            OrePrefixes.plateDense.get(Materials.NeodymiumMagnetic),
+            ItemList.HV_Coil.get(1),
             OrePrefixes.plateDense.get(Materials.NeodymiumMagnetic),
             OrePrefixes.plate.get(Materials.Electrum),
-            OrePrefixes.plateDense.get(Materials.NeodymiumMagnetic),
             OrePrefixes.wireGt12.get(Materials.SuperconductorIV),
-            OrePrefixes.plateDense.get(Materials.NeodymiumMagnetic),
             OrePrefixes.plate.get(Materials.Electrum),
             OrePrefixes.plateDense.get(Materials.NeodymiumMagnetic),
-            OrePrefixes.plate.get(Materials.Electrum),
+            ItemList.HV_Coil.get(1),
+            OrePrefixes.plateDense.get(Materials.NeodymiumMagnetic),
             ItemList.Magnetron.get(1));
 
         RecipeUtils.addShapedRecipe(
