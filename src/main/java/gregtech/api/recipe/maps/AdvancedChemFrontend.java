@@ -1,6 +1,6 @@
 package gregtech.api.recipe.maps;
 
-import static gregtech.api.util.GTRecipeConstants.EU_MULTIPLIER;
+import static gregtech.api.util.GTRecipeConstants.*;
 import static gregtech.api.util.GTUtility.formatNumbers;
 
 import java.util.List;
@@ -16,6 +16,7 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.MethodsReturnNonnullByDefault;
 import gregtech.common.gui.modularui.UIHelper;
 import gregtech.nei.RecipeDisplayInfo;
+import net.minecraft.util.StatCollector;
 
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
@@ -47,13 +48,11 @@ public class AdvancedChemFrontend extends RecipeMapFrontend {
     }
 
     @Override
-    protected void drawEnergyInfo(RecipeDisplayInfo recipeInfo) {
-        // These look odd because recipeInfo.recipe.mEUt is actually the EU per litre of fluid processed, not
-        // the EU/t.
-        long multiplier = recipeInfo.recipe.getMetadataOrDefault();
-        recipeInfo.drawText(
-            GTUtility.trans("152", "Pressure: ")
-                + formatNumbers(multiplier * recipeInfo.recipe.mDuration * recipeInfo.recipe.mEUt)
-                + " EU");
+    protected void drawDurationInfo(RecipeDisplayInfo recipeInfo) {
+        long pressure = recipeInfo.recipe.getMetadataOrDefault(ACR_PRESSURE, 101000);
+        long temperature = recipeInfo.recipe.getMetadataOrDefault(ACR_TEMPERATURE, 300);
+        if (pressure < 1000) {recipeInfo.drawText(StatCollector.translateToLocalFormatted("GT5U.nei.pressure", formatNumbers(pressure) + " Pa"));}
+        else {recipeInfo.drawText(StatCollector.translateToLocalFormatted("GT5U.nei.pressure", formatNumbers(pressure/1000) + " kPa"));}
+        recipeInfo.drawText(StatCollector.translateToLocalFormatted("GT5U.nei.temperature", formatNumbers(temperature)));
     }
 }

@@ -328,7 +328,7 @@ public class MTEAdvancedChemicalReactor extends MTEExtendedPowerMultiBlockBase<M
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         super.onPostTick(aBaseMetaTileEntity, aTick);
-        if (isbuilt) {
+        if (isbuilt && (aTick%20==0)) {
             if (isTempModule) {
                 CurrentTemp += 1.0;
                 CurrentTemp = CurrentTemp / 1.05;

@@ -219,6 +219,13 @@ public class GTRecipeConstants {
     public static final RecipeMetadataKey<Integer> PRECISE_ASSEMBLER_CASING_TIER = SimpleRecipeMetadataKey
         .create(Integer.class, "precise_assembler_casing_tier");
     /**
+     * Advanced Chemical Reactor parameters
+     */
+    public static final RecipeMetadataKey<Integer> ACR_PRESSURE = SimpleRecipeMetadataKey
+        .create(Integer.class, "ACR_PRESSURE");
+    public static final RecipeMetadataKey<Integer> ACR_TEMPERATURE = SimpleRecipeMetadataKey
+        .create(Integer.class, "ACR_TEMPERATURE");
+    /**
      * CoAL casing tier.
      */
     public static final RecipeMetadataKey<Integer> COAL_CASING_TIER = SimpleRecipeMetadataKey
