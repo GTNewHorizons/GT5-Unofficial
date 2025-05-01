@@ -1957,6 +1957,35 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
             .setBackground(GTUITextures.BACKGROUND_TEXT_FIELD);
         builder.widget(spinWidget);
 
+        // Animations Textbox
+        builder.widget(
+            TextWidget.localised("fog.cosmetics.animations")
+                .setDefaultColor(EnumChatFormatting.GOLD)
+                .setTextAlignment(Alignment.CenterLeft)
+                .setPos(120, 85)
+                .setSize(60, 18));
+
+        Widget animationToggle = new ButtonWidget().setOnClick((clickData, widget) -> {
+            TecTech.proxy.playSound(getBaseMetaTileEntity(), "fx_click");
+            if (isRendererDisabled) {
+                isRendererDisabled = false;
+                // let the renderer automatically rebuild itself as needed through normal logic
+            } else {
+                isRendererDisabled = true;
+                if (isRenderActive) destroyRenderer();
+            }
+        })
+            .setBackground(
+                () -> new UITexture[] { TecTechUITextures.BUTTON_CELESTIAL_32x32,
+                    isRendererDisabled ? TecTechUITextures.OVERLAY_BUTTON_POWER_SWITCH_DISABLED
+                        : TecTechUITextures.OVERLAY_BUTTON_POWER_SWITCH_ON })
+            .attachSyncer(
+                new FakeSyncWidget.BooleanSyncer(() -> isRendererDisabled, val -> isRendererDisabled = val),
+                builder)
+            .setPos(174, 86)
+            .setSize(16, 16);
+        builder.widget(animationToggle);
+
         return builder.build();
     }
 
