@@ -24,6 +24,7 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.GlassTier;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.blocks.BlockCasings8;
+import gregtech.common.misc.GTStructureChannels;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -247,8 +248,12 @@ public class MTEAdvancedChemicalReactor extends MTEExtendedPowerMultiBlockBase<M
             }}
         )
 
-        .addElement('D', chainAllGlasses(-1, (te, t) -> te.glassTier = t, te -> te.glassTier))
-        .addElement('P', ofBlock(GregTechAPI.sBlockCasings8, 1))
+        .addElement('D', ofBlock(GregTechAPI.sBlockCasings8, 1))
+        .addElement('P', buildHatchAdder(MTEAdvancedChemicalReactor.class)
+            .atLeast(InputHatch, OutputHatch)
+            .casingIndex(((BlockCasings8) GregTechAPI.sBlockCasings8).getTextureIndex(1))
+            .dot(2)
+            .buildAndChain(GregTechAPI.sBlockCasings8, 1))
         .addElement(
             'H',
             withChannel(
@@ -463,8 +468,5 @@ public class MTEAdvancedChemicalReactor extends MTEExtendedPowerMultiBlockBase<M
             else CurrentPressure = 101;
             System.out.println(CurrentTemp);
         }
-        System.out.println(HeatCoilTier);
-        System.out.println(isRightModule);
-        System.out.println(isLeftModule);
     }
 }
