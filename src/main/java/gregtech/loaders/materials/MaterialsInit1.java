@@ -1132,11 +1132,11 @@ public class MaterialsInit1 {
             .constructMaterial()
             .setHasCorrespondingFluid(true);
 
-        Materials.PrismarineContaminatedHydrofluoricAcid = new MaterialBuilder( 136, TextureSet.SET_METALLIC, "Prismarine-Contaminated Hydrofluoric Acid")
+        Materials.PrismarineContaminatedHydrogenPeroxide = new MaterialBuilder( 136, TextureSet.SET_METALLIC, "Prismarine-Contaminated Hydrogen Peroxide")
             .addFluid()
             .addCell()
             .setRGB(68, 95, 89)
-            .setName("prismarinecontaminatedhydrofluoricacid")
+            .setName("prismarinecontaminatedhydrogenperoxide")
             .setColor(Dyes._NULL)
             .constructMaterial()
             .setHasCorrespondingFluid(true);
@@ -1174,6 +1174,26 @@ public class MaterialsInit1 {
             .setRGBA(255, 255, 255, 0)
             .setTransparent(true)
             .setName("prismaticacid")
+            .setColor(Dyes._NULL)
+            .constructMaterial()
+            .setHasCorrespondingFluid(true);
+
+        Materials.PrismaticNaquadah = new MaterialBuilder(
+            163,
+            TextureSet.SET_METALLIC,
+            "Prismatic Naquadah").setName("prismaticnaquadah")
+            .setTypes(1 | 2)
+            .setRGBA(55, 55, 55, 0)
+            .setTransparent(false)
+            .constructMaterial()
+            .setProcessingMaterialTierEU(TierEU.RECIPE_ZPM);
+
+        Materials.PrismaticNaquadahCompositeSlurry = new MaterialBuilder(164,  TextureSet.SET_FLUID, "Prismatic Naquadah Composite Slurry")
+            .addFluid()
+            .addCell()
+            .setRGBA(75, 75, 75, 0)
+            .setTransparent(true)
+            .setName("prismaticnaquadahcompositeslurry")
             .setColor(Dyes._NULL)
             .constructMaterial()
             .setHasCorrespondingFluid(true);

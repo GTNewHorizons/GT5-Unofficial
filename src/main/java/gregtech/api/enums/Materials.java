@@ -41,6 +41,7 @@ import gregtech.common.render.items.GaiaSpiritRenderer;
 import gregtech.common.render.items.GeneratedMaterialRenderer;
 import gregtech.common.render.items.GlitchEffectRenderer;
 import gregtech.common.render.items.InfinityRenderer;
+import gregtech.common.render.items.RainbowOverlayRenderer;
 import gregtech.common.render.items.TranscendentMetalRenderer;
 import gregtech.common.render.items.UniversiumRenderer;
 import gregtech.loaders.materialprocessing.ProcessingConfig;
@@ -987,11 +988,13 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials Netherite;
     public static Materials ActivatedNetherite;
     public static Materials PrismarineSolution;
-    public static Materials PrismarineContaminatedHydrofluoricAcid;
+    public static Materials PrismarineContaminatedHydrogenPeroxide;
     public static Materials PrismarineRichNitrobenzeneSolution;
     public static Materials PrismarineContaminatedNitrobenzeSolution;
     public static Materials PrismaticGas;
     public static Materials PrismaticAcid;
+    public static Materials PrismaticNaquadah;
+    public static Materials PrismaticNaquadahCompositeSlurry;
 
     // spotless:on
 
@@ -2763,6 +2766,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         MaterialsUEVplus.GravitonShard.renderer = new InfinityRenderer();
         MaterialsUEVplus.ExoHalkonite.renderer = new InfinityRenderer();
         MaterialsUEVplus.HotExoHalkonite.renderer = new InfinityRenderer();
+        Materials.PrismaticNaquadah.renderer = new RainbowOverlayRenderer(Materials.PrismaticNaquadah.getRGBA());
     }
 
     private static void fillGeneratedMaterialsMap() {

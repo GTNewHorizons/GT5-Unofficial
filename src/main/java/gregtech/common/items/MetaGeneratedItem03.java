@@ -205,6 +205,7 @@ import static gregtech.common.items.IDMetaItem03.LV_Coil;
 import static gregtech.common.items.IDMetaItem03.LuV_Coil;
 import static gregtech.common.items.IDMetaItem03.MV_Coil;
 import static gregtech.common.items.IDMetaItem03.NandChip;
+import static gregtech.common.items.IDMetaItem03.Naquarite_Universal_Insulator_Foil;
 import static gregtech.common.items.IDMetaItem03.Netherite_Nanoparticles;
 import static gregtech.common.items.IDMetaItem03.Netherite_Scrap_Seed;
 import static gregtech.common.items.IDMetaItem03.NuclearStar;
@@ -222,6 +223,7 @@ import static gregtech.common.items.IDMetaItem03.Quark_Creation_Catalyst_Strange
 import static gregtech.common.items.IDMetaItem03.Quark_Creation_Catalyst_Top;
 import static gregtech.common.items.IDMetaItem03.Quark_Creation_Catalyst_Unaligned;
 import static gregtech.common.items.IDMetaItem03.Quark_Creation_Catalyst_Up;
+import static gregtech.common.items.IDMetaItem03.Radiation_Proof_Prismatic_Naquadah_Composite_Sheet;
 import static gregtech.common.items.IDMetaItem03.Relativistic_Heat_Capacitor;
 import static gregtech.common.items.IDMetaItem03.Spinneret;
 import static gregtech.common.items.IDMetaItem03.Thermal_Superconductor;
@@ -1258,7 +1260,16 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 implements IItemFi
         ItemList.Hot_Netherite_Scrap.set(addItem(Hot_Netherite_Scrap.ID, "Hot Netherite Scrap", "Activated?"));
         ItemList.Prismarine_Precipitate.set(addItem(Prismarine_Precipitate.ID, "Prismarine Precipitate", ""));
         ItemList.Prismatic_Crystal.set(addItem(Prismatic_Crystal.ID, "Prismatic Crystal", ""));
-
+        ItemList.Radiation_Proof_Prismatic_Naquadah_Composite_Sheet.set(
+            addItem(
+                Radiation_Proof_Prismatic_Naquadah_Composite_Sheet.ID,
+                "Radiation-Proof Prismatic Naquadah Composite Sheet",
+                "Attenuates all forms of radiation almost perfectly"));
+        ItemList.Naquarite_Universal_Insulator_Foil.set(
+            addItem(
+                Naquarite_Universal_Insulator_Foil.ID,
+                "Naquarite Universal Insulator Foil",
+                String.join("/n ", "The Perfect Insulator!", "Absorbs all heat, radiation and electricity.")));
 
         ItemList.White_Dwarf_Shape_Extruder_Plate.set(
             addItem(

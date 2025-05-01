@@ -306,7 +306,7 @@ public final class RecipeMaps {
         .build();
     public static final RecipeMap<FormingPressBackend> formingPressRecipes = RecipeMapBuilder
         .of("gt.recipe.press", FormingPressBackend::new)
-        .maxIO(6, 1, 0, 0)
+        .maxIO(6, 1, 1, 0)
         .minInputs(2, 0)
         .slotOverlays((index, isFluid, isOutput, isSpecial) -> {
             if (isOutput) {
