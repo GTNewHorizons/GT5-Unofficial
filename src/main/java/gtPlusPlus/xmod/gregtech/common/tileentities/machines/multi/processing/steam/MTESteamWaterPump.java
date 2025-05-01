@@ -98,18 +98,22 @@ public class MTESteamWaterPump extends MTESteamMultiBase<MTESteamWaterPump> impl
     private FluidStack[] getWater() {
         return new FluidStack[] { new FluidStack(
             water,
-            (calculateFinalWaterOutput() <= 250 && isAllowedDim() ? 250 : calculateFinalWaterOutput())) };
+            (calculateFinalWaterOutput() <= 250 && isMinWaterAllowedDim() ? 250 : calculateFinalWaterOutput())) };
     }
 
     private int mCountCasing;
 
-    private boolean isAllowedDim() {
-        return (getBaseMetaTileEntity().getWorld().provider.getDimensionName()
-            .equals("Ross128b")
+    private boolean isMinWaterAllowedDim() {
+        return !(getBaseMetaTileEntity().getWorld().provider.getDimensionName()
+            .equals("Venus")
             || getBaseMetaTileEntity().getWorld().provider.getDimensionName()
-                .equals("Ross128ba")
+                .equals("Mercury")
             || getBaseMetaTileEntity().getWorld().provider.getDimensionName()
-                .equals("Overworld"));
+                .equals("Mars")
+            || getBaseMetaTileEntity().getWorld().provider.getDimensionName()
+                .equals("Moon")
+            || getBaseMetaTileEntity().getWorld().provider.getDimensionName()
+                .equals("Nether"));
     }
 
     private float getHumidity() {
