@@ -111,12 +111,12 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
         mOutputDisabled = false, mMuffler = false, mLockUpgrade = false;
     private boolean mActive = false, mWorkUpdate = false, mSteamConverter = false, mWorks = true;
     private boolean oRedstone = false;
-    private byte mColor = 0, oColor = 0, oStrongRedstone = 0, oRedstoneData = 63, oTextureData = 0, oUpdateData = 0,
-        oTexturePage = 0;
-    private byte oLightValueClient = 0, oLightValue = -1, mLightValue = 0, mOtherUpgrades = 0;
-    private ForgeDirection mFacing = ForgeDirection.DOWN, oFacing = ForgeDirection.DOWN;
-    private int oX = 0, oY = 0, oZ = 0;
-    private long oOutput = 0, mAcceptedAmperes = Long.MAX_VALUE;
+    private byte mColor = 0, oldColor = 0, oldStrongRedstone = 0, oldRedstoneData = 63, oldTextureData = 0,
+        oldUpdateData = 0;
+    private byte oldLightValueClient = 0, oldLightValue = -1, mLightValue = 0, mOtherUpgrades = 0;
+    private ForgeDirection mFacing = ForgeDirection.DOWN, oldFacing = ForgeDirection.DOWN;
+    private int oldX = 0, oldY = 0, oldZ = 0;
+    private long oldOutput = 0, mAcceptedAmperes = Long.MAX_VALUE;
     private long mLastCheckTick = 0;
     private String mOwnerName = "";
     private UUID mOwnerUuid = GTUtility.defaultUuid;
@@ -177,7 +177,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
             mStoredEnergy = aNBT.getLong("mStoredEnergy");
             mColor = aNBT.getByte("mColor");
             mLightValue = aNBT.getByte("mLightValue");
-            mFacing = oFacing = ForgeDirection.getOrientation(aNBT.getShort("mFacing"));
+            mFacing = oldFacing = ForgeDirection.getOrientation(aNBT.getShort("mFacing"));
             mOwnerName = aNBT.getString("mOwnerName");
             setShutdownStatus(aNBT.getBoolean("mWasShutdown"));
             String shutDownReasonID = aNBT.getString("shutDownReasonID");
@@ -283,9 +283,9 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
         final boolean isServerSide = isServerSide();
         if (hasValidMetaTileEntity()) {
             if (mTickTimer++ == 0) {
-                oX = xCoord;
-                oY = yCoord;
-                oZ = zCoord;
+                oldX = xCoord;
+                oldY = yCoord;
+                oldZ = zCoord;
                 if (isServerSide) {
                     checkDropCover();
                 } else {
@@ -299,12 +299,12 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
                 }
             }
             if (isClientSide()) {
-                if (mColor != oColor) {
-                    mMetaTileEntity.onColorChangeClient(oColor = mColor);
+                if (mColor != oldColor) {
+                    mMetaTileEntity.onColorChangeClient(oldColor = mColor);
                     issueTextureUpdate();
                 }
 
-                if (mLightValue != oLightValueClient) {
+                if (mLightValue != oldLightValueClient) {
                     worldObj.setLightValue(EnumSkyBlock.Block, xCoord, yCoord, zCoord, mLightValue);
                     worldObj.updateLightByType(EnumSkyBlock.Block, xCoord, yCoord, zCoord);
                     worldObj.updateLightByType(EnumSkyBlock.Block, xCoord + 1, yCoord, zCoord);
@@ -313,7 +313,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
                     worldObj.updateLightByType(EnumSkyBlock.Block, xCoord, yCoord - 1, zCoord);
                     worldObj.updateLightByType(EnumSkyBlock.Block, xCoord, yCoord, zCoord + 1);
                     worldObj.updateLightByType(EnumSkyBlock.Block, xCoord, yCoord, zCoord - 1);
-                    oLightValueClient = mLightValue;
+                    oldLightValueClient = mLightValue;
                     issueTextureUpdate();
                 }
 
@@ -353,16 +353,16 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
                 }
                 if (mTickTimer == 10) joinEnet();
 
-                if (xCoord != oX || yCoord != oY || zCoord != oZ) {
-                    oX = xCoord;
-                    oY = yCoord;
-                    oZ = zCoord;
+                if (xCoord != oldX || yCoord != oldY || zCoord != oldZ) {
+                    oldX = xCoord;
+                    oldY = yCoord;
+                    oldZ = zCoord;
                     issueClientUpdate();
                     clearTileEntityBuffer();
                 }
 
-                if (mFacing != oFacing) {
-                    oFacing = mFacing;
+                if (mFacing != oldFacing) {
+                    oldFacing = mFacing;
                     checkDropCover();
                     issueBlockUpdate();
                 }
@@ -375,8 +375,8 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
                 if (mTickTimer > 20 && mMetaTileEntity.isElectric()) {
                     mAcceptedAmperes = 0;
 
-                    if (getOutputVoltage() != oOutput) {
-                        oOutput = getOutputVoltage();
+                    if (getOutputVoltage() != oldOutput) {
+                        oldOutput = getOutputVoltage();
                     }
 
                     if (mMetaTileEntity.isEnetOutput() || mMetaTileEntity.isEnetInput()) {
@@ -393,14 +393,15 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
                         }
                     }
 
-                    if (mMetaTileEntity.isEnetOutput() && oOutput > 0) {
+                    if (mMetaTileEntity.isEnetOutput() && oldOutput > 0) {
                         final long tOutputVoltage = Math
-                            .max(oOutput, oOutput + (1L << Math.max(0, GTUtility.getTier(oOutput) - 1)));
+                            .max(oldOutput, oldOutput + (1L << Math.max(0, GTUtility.getTier(oldOutput) - 1)));
                         final long tUsableAmperage = Math.min(
                             getOutputAmperage(),
                             (getStoredEU() - mMetaTileEntity.getMinimumStoredEU()) / tOutputVoltage);
                         if (tUsableAmperage > 0) {
-                            final long tEU = tOutputVoltage * Util.emitEnergyToNetwork(oOutput, tUsableAmperage, this);
+                            final long tEU = tOutputVoltage
+                                * Util.emitEnergyToNetwork(oldOutput, tUsableAmperage, this);
                             mAverageEUOutput[mAverageEUOutputIndex] += tEU;
                             decreaseStoredEU(tEU, true);
                         }
@@ -556,31 +557,31 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
                         | (mWorks ? 64 : 0)
                         | (mMuffler ? 128 : 0));
 
-                    if (textureData != oTextureData) {
-                        oTextureData = textureData;
-                        sendBlockEvent(GregTechTileClientEvents.CHANGE_COMMON_DATA, oTextureData);
+                    if (textureData != oldTextureData) {
+                        oldTextureData = textureData;
+                        sendBlockEvent(GregTechTileClientEvents.CHANGE_COMMON_DATA, oldTextureData);
                     }
 
                     byte updateData = mMetaTileEntity.getUpdateData();
 
-                    if (updateData != oUpdateData) {
-                        oUpdateData = updateData;
-                        sendBlockEvent(GregTechTileClientEvents.CHANGE_CUSTOM_DATA, oUpdateData);
+                    if (updateData != oldUpdateData) {
+                        oldUpdateData = updateData;
+                        sendBlockEvent(GregTechTileClientEvents.CHANGE_CUSTOM_DATA, oldUpdateData);
                     }
 
-                    if (mColor != oColor) {
-                        oColor = mColor;
-                        sendBlockEvent(GregTechTileClientEvents.CHANGE_COLOR, oColor);
+                    if (mColor != oldColor) {
+                        oldColor = mColor;
+                        sendBlockEvent(GregTechTileClientEvents.CHANGE_COLOR, oldColor);
                     }
 
                     byte redstone = getSidedRedstoneMask();
 
-                    if (redstone != oRedstoneData) {
-                        oRedstoneData = redstone;
-                        sendBlockEvent(GregTechTileClientEvents.CHANGE_REDSTONE_OUTPUT, oRedstoneData);
+                    if (redstone != oldRedstoneData) {
+                        oldRedstoneData = redstone;
+                        sendBlockEvent(GregTechTileClientEvents.CHANGE_REDSTONE_OUTPUT, oldRedstoneData);
                     }
 
-                    if (mLightValue != oLightValue) {
+                    if (mLightValue != oldLightValue) {
                         worldObj.setLightValue(EnumSkyBlock.Block, xCoord, yCoord, zCoord, mLightValue);
                         worldObj.updateLightByType(EnumSkyBlock.Block, xCoord, yCoord, zCoord);
                         worldObj.updateLightByType(EnumSkyBlock.Block, xCoord + 1, yCoord, zCoord);
@@ -590,13 +591,13 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
                         worldObj.updateLightByType(EnumSkyBlock.Block, xCoord, yCoord, zCoord + 1);
                         worldObj.updateLightByType(EnumSkyBlock.Block, xCoord, yCoord, zCoord - 1);
                         issueTextureUpdate();
-                        sendBlockEvent(GregTechTileClientEvents.CHANGE_LIGHT, oLightValue = mLightValue);
+                        sendBlockEvent(GregTechTileClientEvents.CHANGE_LIGHT, oldLightValue = mLightValue);
                     }
                 }
 
                 if (mNeedsBlockUpdate) {
-                    updateNeighbours(mStrongRedstone, oStrongRedstone);
-                    oStrongRedstone = mStrongRedstone;
+                    updateNeighbours(mStrongRedstone, oldStrongRedstone);
+                    oldStrongRedstone = mStrongRedstone;
                     mNeedsBlockUpdate = false;
                 }
             }
@@ -630,16 +631,16 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
 
     private void sendClientData() {
         if (mSendClientData) {
-            oTextureData = (byte) ((mFacing.ordinal() & 7) | (mActive ? 8 : 0)
+            oldTextureData = (byte) ((mFacing.ordinal() & 7) | (mActive ? 8 : 0)
                 | (mRedstone ? 16 : 0)
                 | (mLockUpgrade ? 32 : 0)
                 | (mWorks ? 64 : 0));
 
-            oUpdateData = hasValidMetaTileEntity() ? mMetaTileEntity.getUpdateData() : 0;
+            oldUpdateData = hasValidMetaTileEntity() ? mMetaTileEntity.getUpdateData() : 0;
 
-            oRedstoneData = getSidedRedstoneMask();
+            oldRedstoneData = getSidedRedstoneMask();
 
-            oColor = mColor;
+            oldColor = mColor;
 
             NW.sendPacketToAllPlayersInRange(
                 worldObj,
@@ -654,10 +655,10 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
                     getCoverAtSide(ForgeDirection.SOUTH).getCoverID(),
                     getCoverAtSide(ForgeDirection.WEST).getCoverID(),
                     getCoverAtSide(ForgeDirection.EAST).getCoverID(),
-                    oTextureData,
-                    oUpdateData,
-                    oRedstoneData,
-                    oColor),
+                    oldTextureData,
+                    oldUpdateData,
+                    oldRedstoneData,
+                    oldColor),
                 xCoord,
                 zCoord);
             mSendClientData = false;
@@ -1268,7 +1269,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
                     + "Capacity of the Machine!");
 
             doExplosion(
-                oOutput * (getUniversalEnergyStored() >= getUniversalEnergyCapacity() ? 4
+                oldOutput * (getUniversalEnergyStored() >= getUniversalEnergyCapacity() ? 4
                     : getUniversalEnergyStored() >= getUniversalEnergyCapacity() / 2 ? 2 : 1));
             GTMod.achievements.issueAchievement(
                 this.getWorldObj()
@@ -1874,7 +1875,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
     }
 
     public double getOutputEnergyUnitsPerTick() {
-        return oOutput;
+        return oldOutput;
     }
 
     public boolean isTeleporterCompatible(ForgeDirection side) {
@@ -1899,8 +1900,8 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
     }
 
     public double getOfferedEnergy() {
-        return (canAccessData() && getStoredEU() - mMetaTileEntity.getMinimumStoredEU() >= oOutput)
-            ? Math.max(0, oOutput)
+        return (canAccessData() && getStoredEU() - mMetaTileEntity.getMinimumStoredEU() >= oldOutput)
+            ? Math.max(0, oldOutput)
             : 0;
     }
 
@@ -1955,7 +1956,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
     }
 
     public int getOutput() {
-        return (int) Math.min(Integer.MAX_VALUE, oOutput);
+        return (int) Math.min(Integer.MAX_VALUE, oldOutput);
     }
 
     public int injectEnergy(Direction aDirection, int aAmount) {

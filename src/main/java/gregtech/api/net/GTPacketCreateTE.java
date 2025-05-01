@@ -17,7 +17,11 @@ public class GTPacketCreateTE extends GTPacket {
 
     private int mX, mZ, mC0, mC1, mC2, mC3, mC4, mC5;
     private short mY, mID;
-    private byte mCommon, mUpdate, mRedstone, mColor, mType;
+    /** A generic data byte. Used by machines to sync their texture data. Used by pipes to sync their connections. */
+    private byte mCommon;
+    /** A generic data byte provided by the MTE. */
+    private byte mUpdate;
+    private byte mRedstone, mColor, mType;
 
     public static final byte TYPE_META_TILE = 0;
     public static final byte TYPE_META_PIPE = 1;
