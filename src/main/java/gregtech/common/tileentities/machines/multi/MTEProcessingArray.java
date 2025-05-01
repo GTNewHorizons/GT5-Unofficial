@@ -349,10 +349,11 @@ public class MTEProcessingArray extends MTEExtendedPowerMultiBlockBase<MTEProces
     }
 
     @Override
-    public final void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+    public final void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
+        ItemStack aTool) {
         if (aPlayer.isSneaking()) {
             // Lock to single recipe
-            super.onScrewdriverRightClick(side, aPlayer, aX, aY, aZ);
+            super.onScrewdriverRightClick(side, aPlayer, aX, aY, aZ, aTool);
         } else {
             inputSeparation = !inputSeparation;
             GTUtility.sendChatToPlayer(
@@ -363,7 +364,7 @@ public class MTEProcessingArray extends MTEExtendedPowerMultiBlockBase<MTEProces
 
     @Override
     public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
-        float aX, float aY, float aZ) {
+        float aX, float aY, float aZ, ItemStack aTool) {
         if (aPlayer.isSneaking()) {
             batchMode = !batchMode;
             if (batchMode) {

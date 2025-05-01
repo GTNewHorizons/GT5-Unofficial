@@ -77,7 +77,7 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
         CoverRegistry.NO_COVER, CoverRegistry.NO_COVER, CoverRegistry.NO_COVER, CoverRegistry.NO_COVER };
     private byte validCoversMask;
 
-    protected byte[] mSidedRedstone = new byte[] { 15, 15, 15, 15, 15, 15 };
+    protected final byte[] mSidedRedstone = new byte[] { 0, 0, 0, 0, 0, 0 };
     protected boolean mRedstone = false;
     protected byte mStrongRedstone = 0;
 
@@ -115,10 +115,12 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
 
     protected void readCoverNBT(NBTTagCompound aNBT) {
         mRedstone = aNBT.getBoolean("mRedstone");
-        mSidedRedstone = aNBT.hasKey("mRedstoneSided") ? aNBT.getByteArray("mRedstoneSided")
-            : new byte[] { 15, 15, 15, 15, 15, 15 };
         mStrongRedstone = aNBT.getByte("mStrongRedstone");
 
+        if (aNBT.hasKey("mRedstoneSided")) {
+            byte[] readArray = aNBT.getByteArray("mRedstoneSided");
+            System.arraycopy(readArray, 0, mSidedRedstone, 0, Math.min(mSidedRedstone.length, readArray.length));
+        }
         applyCovers(readCoversNBT(aNBT, this));
     }
 
@@ -325,6 +327,18 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
         mSidedRedstone[3] = (byte) ((packedRedstoneValue & 8) == 8 ? 15 : 0);
         mSidedRedstone[4] = (byte) ((packedRedstoneValue & 16) == 16 ? 15 : 0);
         mSidedRedstone[5] = (byte) ((packedRedstoneValue & 32) == 32 ? 15 : 0);
+    }
+
+    public byte getSidedRedstoneMask() {
+        byte redstone = 0;
+
+        for (int i = 0; i < 6; i++) {
+            if (mSidedRedstone[i] > 0) {
+                redstone |= (byte) (0b1 << i);
+            }
+        }
+
+        return redstone;
     }
 
     @Override

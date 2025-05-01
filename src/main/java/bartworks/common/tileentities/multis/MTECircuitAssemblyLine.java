@@ -296,12 +296,13 @@ public class MTECircuitAssemblyLine extends MTEEnhancedMultiBlockBase<MTECircuit
     }
 
     @Override
-    public final void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+    public final void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
+        ItemStack aTool) {
         if (getBaseMetaTileEntity().isServerSide()) {
             this.mode = (this.mode + 1) % 2;
             GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("chat.cal.mode." + this.mode));
         }
-        super.onScrewdriverRightClick(side, aPlayer, aX, aY, aZ);
+        super.onScrewdriverRightClick(side, aPlayer, aX, aY, aZ, aTool);
     }
 
     @Override
