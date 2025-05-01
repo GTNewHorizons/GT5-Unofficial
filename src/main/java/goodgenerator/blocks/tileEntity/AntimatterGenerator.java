@@ -324,22 +324,72 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase
                     + "all inputs"
                     + EnumChatFormatting.GRAY
                     + " every processing cycle")
+            .addInfo(EnumChatFormatting.RED + "Voids any invalid fluid!")
+            .addInfo("A cycle lasts 1 tick")
             .addInfo(
                 "Imbalance between antimatter and matter " + EnumChatFormatting.RED
-                    + "will waste energy!"
+                    + "will decrease efficiency!"
                     + EnumChatFormatting.GRAY)
+            .addInfo("Efficiency formula: Min(antimatter/matter, matter/antimatter))")
             .addInfo(
                 "Any EU that does not fit in laser hatches will be " + EnumChatFormatting.RED
                     + "voided"
                     + EnumChatFormatting.GRAY)
             .addSeparator()
-            .addInfo("Antimatter base energy value: " + GTUtility.formatNumbers(ANTIMATTER_FUEL_VALUE) + " EU/L")
-            .addInfo("Cannot produce more than 9.2e18 EU per cycle")
-            .addInfo("Energy production is exponentially increased depending on the matter used:")
-            .addInfo("Molten Copper: 1.00")
-            .addInfo("Molten SC UIV Base: 1.02")
-            .addInfo("Molten SC UMV Base: 1.03")
-            .addInfo("Molten Black Dwarf Matter: 1.04")
+            .addInfo(
+                "Energy production formula: " + EnumChatFormatting.GREEN
+                    + ""
+                    + EnumChatFormatting.BOLD
+                    + ""
+                    + EnumChatFormatting.UNDERLINE
+                    + "A"
+                    + EnumChatFormatting.RESET
+                    + "*("
+                    + EnumChatFormatting.DARK_AQUA
+                    + "Antimatter"
+                    + EnumChatFormatting.GRAY
+                    + ")^"
+                    + EnumChatFormatting.GOLD
+                    + ""
+                    + EnumChatFormatting.BOLD
+                    + ""
+                    + EnumChatFormatting.UNDERLINE
+                    + "E"
+                    + EnumChatFormatting.RESET
+                    + " EU/Cycle")
+            .addInfo("Cannot produce more than " + GTUtility.formatNumbers(9.2e18) + " EU per cycle")
+            .addInfo(
+                EnumChatFormatting.GREEN + ""
+                    + EnumChatFormatting.BOLD
+                    + ""
+                    + EnumChatFormatting.UNDERLINE
+                    + "A"
+                    + EnumChatFormatting.RESET
+                    + ""
+                    + EnumChatFormatting.GREEN
+                    + "ntimatter base energy"
+                    + EnumChatFormatting.GRAY
+                    + " value : "
+                    + EnumChatFormatting.GREEN
+                    + GTUtility.formatNumbers(ANTIMATTER_FUEL_VALUE)
+                    + EnumChatFormatting.GRAY
+                    + " EU/L")
+            .addInfo(
+                EnumChatFormatting.GOLD + ""
+                    + EnumChatFormatting.BOLD
+                    + ""
+                    + EnumChatFormatting.UNDERLINE
+                    + "E"
+                    + EnumChatFormatting.RESET
+                    + ""
+                    + EnumChatFormatting.GOLD
+                    + "nergy production boost"
+                    + EnumChatFormatting.RESET
+                    + ":")
+            .addInfo("1. Molten Copper: " + EnumChatFormatting.GOLD + "1.00")
+            .addInfo("2. Molten SC UIV Base: " + EnumChatFormatting.GOLD + "1.02")
+            .addInfo("3. Molten SC UMV Base: " + EnumChatFormatting.GOLD + "1.03")
+            .addInfo("4. Molten Black Dwarf Matter: " + EnumChatFormatting.GOLD + "1.04")
             .addSeparator()
             .addInfo("Enable wireless EU mode with screwdriver")
             .addInfo("Wireless mode requires SC UMV Base or better")
