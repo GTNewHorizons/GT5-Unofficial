@@ -253,6 +253,7 @@ public class LoaderGTBlockFluid implements Runnable {
                     .attachedBehaviors(Collections.singletonList(CreativeFlightBehavior.INSTANCE))
                     .incompatibleBehaviors(Collections.singletonList(JetpackBehavior.INSTANCE))
                     .category(CATEGORY_MOVEMENT)
+                    .minimumCore(3)
                     .build());
         ItemList.Augment_Jetpack.set(
             new ItemAugment.AugmentBuilder(
@@ -274,6 +275,7 @@ public class LoaderGTBlockFluid implements Runnable {
                     .attachedBehaviors(Collections.singletonList(JetpackPerfectHoverBehavior.INSTANCE))
                     .requiredBehaviors(Collections.singletonList(JetpackBehavior.INSTANCE))
                     .category(CATEGORY_MOVEMENT)
+                    .minimumCore(2)
                     .build());
         ItemList.Augment_FireImmunity.set(
             new ItemAugment.AugmentBuilder(
@@ -283,6 +285,7 @@ public class LoaderGTBlockFluid implements Runnable {
                 Augments.FireImmunity).validArmors(Collections.singletonList(MechArmorLoader.MechArmorLeggings))
                     .attachedBehaviors(Collections.singletonList(FireImmunityBehavior.INSTANCE))
                     .category(CATEGORY_PROTECTION)
+                    .minimumCore(2)
                     .build());
         ItemList.Augment_StepAssist.set(
             new ItemAugment.AugmentBuilder(
@@ -292,6 +295,7 @@ public class LoaderGTBlockFluid implements Runnable {
                 Augments.StepAssist).validArmors(Collections.singletonList(MechArmorLoader.MechArmorBoots))
                     .attachedBehaviors(Collections.singletonList(StepAssistBehavior.INSTANCE))
                     .category(CATEGORY_MOVEMENT)
+                    .minimumCore(2)
                     .build());
         ItemList.Augment_GogglesOfRevealing.set(
             new ItemAugment.AugmentBuilder(
@@ -312,6 +316,7 @@ public class LoaderGTBlockFluid implements Runnable {
                     .attachedBehaviors(Collections.singletonList(InertiaCancelingBehavior.INSTANCE))
                     .requiredBehaviors(Collections.singletonList(CreativeFlightBehavior.INSTANCE))
                     .category(CATEGORY_MOVEMENT)
+                    .minimumCore(3)
                     .build());
         ItemList.Augment_Hazmat.set(
             new ItemAugment.AugmentBuilder(
@@ -348,6 +353,7 @@ public class LoaderGTBlockFluid implements Runnable {
                 Augments.KnockbackResistance).validArmors(Collections.singletonList(MechArmorLoader.MechArmorLeggings))
                     .attachedBehaviors(Collections.singletonList(KnockbackResistBehavior.INSTANCE))
                     .category(CATEGORY_PROTECTION)
+                    .minimumCore(2)
                     .build());
         ItemList.Augment_SpeedBoost.set(
             new ItemAugment.AugmentBuilder(
@@ -393,6 +399,7 @@ public class LoaderGTBlockFluid implements Runnable {
                 Augments.ForceField).validArmors(Collections.singletonList(MechArmorLoader.MechArmorChestplate))
                     .attachedBehaviors(Collections.singletonList(ForceFieldBehavior.INSTANCE))
                     .category(CATEGORY_PROTECTION)
+                    .minimumCore(3)
                     .build());
         ItemList.Augment_OmniMovement.set(
             new ItemAugment.AugmentBuilder(
@@ -421,6 +428,7 @@ public class LoaderGTBlockFluid implements Runnable {
                 Augments.Teleporter).validArmors(Collections.singletonList(MechArmorLoader.MechArmorLeggings))
                     .attachedBehaviors(Collections.singletonList(TeleporterBehavior.INSTANCE))
                     .category(CATEGORY_UTILITY)
+                    .minimumCore(3)
                     .build());
 
         // Mechanical Armor Frames

@@ -1,12 +1,14 @@
 package gregtech.api.items.armor.behaviors;
 
 import static gregtech.api.util.GTUtility.getOrCreateNbtCompound;
+import static gregtech.loaders.ExtraIcons.jetpackAugment;
 
 import java.util.Set;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.IIcon;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
@@ -27,6 +29,11 @@ public class JetpackBehavior implements IArmorBehavior {
 
     protected JetpackBehavior(JetpackStats stats) {
         jetpackStats = stats;
+    }
+
+    @Override
+    public IIcon getModularArmorTexture() {
+        return jetpackAugment;
     }
 
     @Override
