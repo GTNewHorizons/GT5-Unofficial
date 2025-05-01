@@ -1,18 +1,27 @@
 package gregtech.loaders.postload.chains;
 
 import static bartworks.API.recipe.BartWorksRecipeMaps.electricImplosionCompressorRecipes;
+import static gregtech.api.enums.Mods.AppliedEnergistics2;
 import static gregtech.api.enums.Mods.EtFuturumRequiem;
 import static gregtech.api.enums.Mods.ThaumicTinkerer;
 import static gregtech.api.recipe.RecipeMaps.*;
 import static gregtech.api.util.GTModHandler.getModItem;
 import static gregtech.api.util.GTRecipeBuilder.*;
 import static gregtech.api.util.GTRecipeConstants.COIL_HEAT;
+import static gregtech.api.util.GTRecipeConstants.DISSOLUTION_TANK_RATIO;
 import static gregtech.api.util.GTRecipeConstants.FUEL_TYPE;
 import static gregtech.api.util.GTRecipeConstants.FUEL_VALUE;
 import static gtPlusPlus.api.recipe.GTPPRecipeMaps.centrifugeNonCellRecipes;
+import static gtPlusPlus.api.recipe.GTPPRecipeMaps.chemicalPlantRecipes;
 import static gtPlusPlus.api.recipe.GTPPRecipeMaps.semiFluidFuels;
+import static gtPlusPlus.api.recipe.GTPPRecipeMaps.vacuumFurnaceRecipes;
+import static gtnhlanth.api.recipe.LanthanidesRecipeMaps.dissolutionTankRecipes;
 
+import gregtech.api.enums.MaterialsGTNH;
+import gtPlusPlus.core.material.MaterialMisc;
+import gtPlusPlus.core.material.MaterialsElements;
 import net.minecraft.init.Blocks;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
 import bartworks.system.material.WerkstoffLoader;
@@ -27,12 +36,111 @@ import gregtech.api.util.GTRecipeConstants;
 import gregtech.api.util.GTUtility;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
+import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.FluidStack;
 
 public class NetheriteRecipes {
 
     static ItemStack missing = new ItemStack(Blocks.fire);
 
     public static void run() {
+
+        // Prismatic Acid
+        {
+            GTValues.RA.stdBuilder() //Leaching
+                .itemInputs(GTOreDictUnificator.get(OrePrefixes.shard, MaterialsGTNH.Prismarine, 8))
+                .fluidInputs(Materials.HydrofluoricAcid.getFluid(4000), //Hydrofluoric Acid
+                    FluidUtils.getHydrofluoricAcid(4000)) //Industrial Strength Hydrofluoric Acid
+                .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.NetherQuartz, 4))
+                .fluidOutputs(
+                    Materials.PrismarineSolution.getFluid(8000))
+                .duration(20 * SECONDS)
+                .eut(TierEU.RECIPE_IV)
+                .metadata(DISSOLUTION_TANK_RATIO, 1)
+                .addTo(dissolutionTankRecipes);
+
+            GTValues.RA.stdBuilder() //Looped Leaching
+                .itemInputs(GTOreDictUnificator.get(OrePrefixes.shard, MaterialsGTNH.Prismarine, 2))
+                .fluidInputs(Materials.PrismarineContaminatedHydrofluoricAcid.getFluid(6000),
+                    FluidUtils.getHydrofluoricAcid(2000)) //Industrial Strength Hydrofluoric Acid
+                .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.NetherQuartz, 1))
+                .fluidOutputs(
+                    Materials.PrismarineSolution.getFluid(8000))
+                .duration(20 * SECONDS)
+                .eut(TierEU.RECIPE_IV)
+                .metadata(DISSOLUTION_TANK_RATIO, 3)
+                .addTo(dissolutionTankRecipes);
+
+            GTValues.RA.stdBuilder() //Extraction
+                .itemInputs(GTUtility.getIntegratedCircuit(1))
+                .fluidInputs(Materials.PrismarineSolution.getFluid(1000),
+                    new FluidStack(FluidRegistry.getFluid("nitrobenzene"), 2000))
+                .fluidOutputs(
+                    Materials.PrismarineContaminatedHydrofluoricAcid.getFluid(1000),
+                    Materials.PrismarineRichNitrobenzeneSolution.getFluid(2000))
+                .duration(15 * SECONDS)
+                .eut(TierEU.RECIPE_EV)
+                .addTo(chemicalBathRecipes);
+
+            GTValues.RA.stdBuilder() //Looped Extraction
+                .itemInputs(GTUtility.getIntegratedCircuit(1))
+                .fluidInputs(Materials.PrismarineSolution.getFluid(1000),
+                    Materials.PrismarineContaminatedNitrobenzeSolution.getFluid(3000))
+                .fluidOutputs(
+                    Materials.PrismarineContaminatedHydrofluoricAcid.getFluid(1000),
+                    Materials.PrismarineRichNitrobenzeneSolution.getFluid(2000))
+                .duration(30 * SECONDS)
+                .eut(TierEU.RECIPE_IV)
+                .addTo(chemicalBathRecipes);
+
+            GTValues.RA.stdBuilder() //Strontium Hydroxide
+                .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Strontium, 1))
+                .itemOutputs(MaterialMisc.STRONTIUM_HYDROXIDE.getDust(3))
+                .fluidInputs(Materials.Oxygen.getGas(1000), Materials.Hydrogen.getGas(1000))
+                .duration(10 * SECONDS)
+                .eut(TierEU.RECIPE_MV)
+                .addTo(multiblockChemicalReactorRecipes);
+
+            GTValues.RA.stdBuilder() //Precipitation
+                .itemInputs(MaterialMisc.STRONTIUM_HYDROXIDE.getDust(42))
+                .itemOutputs(ItemList.Prismarine_Precipitate.get(8))
+                .fluidInputs(Materials.PrismarineRichNitrobenzeneSolution.getFluid(16000))
+                .fluidOutputs(
+                    Materials.PrismarineContaminatedNitrobenzeSolution.getFluid(12000),
+                    new FluidStack(FluidRegistry.getFluid("nitrobenzene"), 4000))
+                .duration(40 * SECONDS)
+                .eut(TierEU.RECIPE_LuV)
+                .addTo(chemicalPlantRecipes);
+
+            GTValues.RA.stdBuilder() //Crystallization
+                .itemInputs(ItemList.Prismarine_Precipitate.get(1),
+                    WerkstoffLoader.MagnetoResonaticDust.get(OrePrefixes.lens, 0))
+                .itemOutputs(ItemList.Prismatic_Crystal.get(1))
+                .fluidInputs(Materials.CrystallineAlloy.getMolten(72))
+                .fluidOutputs(
+                    Materials.Strontium.getMolten(288))
+                .duration(10 * SECONDS)
+                .eut(TierEU.RECIPE_LuV)
+                .addTo(laserEngraverRecipes);
+
+            GTValues.RA.stdBuilder() //Gasification
+                .itemInputs(ItemList.Prismatic_Crystal.get(1))
+                .fluidInputs(Materials.Boron.getPlasma(100))
+                .fluidOutputs(Materials.PrismaticGas.getFluid(1000))
+                .duration(80 * SECONDS)
+                .eut(TierEU.RECIPE_LuV)
+                .metadata(COIL_HEAT, 7200)
+                .addTo(vacuumFurnaceRecipes);
+
+            GTValues.RA.stdBuilder() //Reaction
+                .fluidInputs(
+                    Materials.PrismaticGas.getFluid(4000),
+                    Materials.LiquidNitrogen.getGas(12000))
+                .fluidOutputs(Materials.PrismaticAcid.getFluid(16000))
+                .duration(25 * SECONDS)
+                .eut(TierEU.RECIPE_ZPM)
+                .addTo(vacuumFreezerRecipes);
+        }
 
         GTValues.RA.stdBuilder()
             .fluidInputs(Materials.NetherAir.getFluid(10000))

@@ -212,6 +212,8 @@ import static gregtech.common.items.IDMetaItem03.Optical_Cpu_Containment_Housing
 import static gregtech.common.items.IDMetaItem03.Optically_Compatible_Memory;
 import static gregtech.common.items.IDMetaItem03.Optically_Perfected_CPU;
 import static gregtech.common.items.IDMetaItem03.Phononic_Seed_Crystal;
+import static gregtech.common.items.IDMetaItem03.Prismarine_Precipitate;
+import static gregtech.common.items.IDMetaItem03.Prismatic_Crystal;
 import static gregtech.common.items.IDMetaItem03.Quark_Catalyst_Housing;
 import static gregtech.common.items.IDMetaItem03.Quark_Creation_Catalyst_Bottom;
 import static gregtech.common.items.IDMetaItem03.Quark_Creation_Catalyst_Charm;
@@ -1254,6 +1256,9 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 implements IItemFi
         ItemList.Intensely_Bonded_Netherite_Nanoparticles
             .set(addItem(Intensely_Bonded_Netherite_Nanoparticles.ID, "Intensely Bonded Netherite Nanoparticles", ""));
         ItemList.Hot_Netherite_Scrap.set(addItem(Hot_Netherite_Scrap.ID, "Hot Netherite Scrap", "Activated?"));
+        ItemList.Prismarine_Precipitate.set(addItem(Prismarine_Precipitate.ID, "Prismarine Precipitate", ""));
+        ItemList.Prismatic_Crystal.set(addItem(Prismatic_Crystal.ID, "Prismatic Crystal", ""));
+
 
         ItemList.White_Dwarf_Shape_Extruder_Plate.set(
             addItem(

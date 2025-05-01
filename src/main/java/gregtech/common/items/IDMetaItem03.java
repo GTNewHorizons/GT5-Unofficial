@@ -198,6 +198,8 @@ public enum IDMetaItem03 {
     Netherite_Nanoparticles(245),
     Intensely_Bonded_Netherite_Nanoparticles(246),
     Hot_Netherite_Scrap(247),
+    Prismarine_Precipitate(248),
+    Prismatic_Crystal(249),
     Circuit_Silicon_Ingot6(721),
     Circuit_Silicon_Wafer6(722),
     Circuit_Silicon_Wafer7(723),

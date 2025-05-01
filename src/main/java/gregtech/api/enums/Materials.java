@@ -986,6 +986,12 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials HellishMetal;
     public static Materials Netherite;
     public static Materials ActivatedNetherite;
+    public static Materials PrismarineSolution;
+    public static Materials PrismarineContaminatedHydrofluoricAcid;
+    public static Materials PrismarineRichNitrobenzeneSolution;
+    public static Materials PrismarineContaminatedNitrobenzeSolution;
+    public static Materials PrismaticGas;
+    public static Materials PrismaticAcid;
 
     // spotless:on
 
