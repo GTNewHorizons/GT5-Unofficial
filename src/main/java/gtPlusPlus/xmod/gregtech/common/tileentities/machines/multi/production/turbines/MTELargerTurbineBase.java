@@ -74,7 +74,7 @@ public abstract class MTELargerTurbineBase extends GTPPMultiBlockBase<MTELargerT
                 // m = muffler
                 .addShape(
                     STRUCTURE_PIECE_MAIN,
-                    (new String[][] { { "ccchccc", "ccccccc", "ccmmmcc", "ccm~mcc", "ccmmmcc", "ccccccc", "ccchccc" },
+                    (new String[][] { { "ccchccc", "ccccccc", "ccmcmcc", "ccc~ccc", "ccmcmcc", "ccccccc", "ccchccc" },
                         { "ctchctc", "cscccsc", "cscccsc", "cscccsc", "cscccsc", "cscccsc", "ctchctc" },
                         { "ccchccc", "ccccccc", "ccccccc", "ccccccc", "ccccccc", "ccccccc", "ccchccc" },
                         { "ccchccc", "ccccccc", "ccccccc", "ccccccc", "ccccccc", "ccccccc", "ccchccc" },
@@ -104,10 +104,8 @@ public abstract class MTELargerTurbineBase extends GTPPMultiBlockBase<MTELargerT
                 .addElement(
                     'm',
                     lazy(
-                        t -> buildHatchAdder(MTELargerTurbineBase.class).atLeast(Muffler)
-                            .casingIndex(t.getCasingTextureIndex())
-                            .dot(7)
-                            .buildAndChain(t.getCasingBlock(), t.getCasingMeta())))
+                        t -> t.requiresMufflers() ? Muffler.newAny(t.getCasingTextureIndex(), 7)
+                            : ofBlock(t.getCasingBlock(), t.getCasingMeta())))
                 .build();
         }
     };
@@ -461,7 +459,7 @@ public abstract class MTELargerTurbineBase extends GTPPMultiBlockBase<MTELargerT
                     float aTotalBaseEff = 0;
                     float aTotalOptimalFlow = 0;
 
-                    aTotalBaseEff += turbine.getEfficiency() * 100;
+                    aTotalBaseEff += turbine.getBaseEfficiency() * 100;
                     aTotalOptimalFlow += GTUtility
                         .safeInt((long) Math.max(Float.MIN_NORMAL, getSpeedMultiplier() * turbine.getOptimalFlow()));
                     baseEff = MathUtils.roundToClosestInt(aTotalBaseEff);
