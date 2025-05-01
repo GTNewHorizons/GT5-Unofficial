@@ -170,14 +170,12 @@ public class ToolVajra extends ItemTool implements IElectricItem {
         }
 
         if (!worldIn.isRemote && player.isSneaking()) {
-            if (itemStackIn.getTagCompound()
-                .getBoolean("silk")) {
+            if (itemStackIn.getTagCompound().hasKey("ench")) {
                 tag.removeTag("ench");
-                tag.setBoolean("silk", false);
                 player.addChatMessage(new ChatComponentText(EnumChatFormatting.RED + "Disabled silk touch"));
             } else {
+                // Adds the "ench" tag to the tool
                 itemStackIn.addEnchantment(Enchantment.silkTouch, 1);
-                tag.setBoolean("silk", true);
                 player.addChatMessage(new ChatComponentText(EnumChatFormatting.GREEN + "Enabled silk touch"));
             }
         }
