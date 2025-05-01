@@ -72,6 +72,7 @@ import gregtech.api.recipe.maps.ReplicatorBackend;
 import gregtech.api.recipe.maps.SpaceProjectFrontend;
 import gregtech.api.recipe.maps.TranscendentPlasmaMixerFrontend;
 import gregtech.api.recipe.maps.UnpackagerBackend;
+import gregtech.api.recipe.maps.AdvancedChemFrontend;
 import gregtech.api.recipe.metadata.CompressionTierKey;
 import gregtech.api.recipe.metadata.PCBFactoryTierKey;
 import gregtech.api.recipe.metadata.PurificationPlantBaseChanceKey;
@@ -805,6 +806,15 @@ public final class RecipeMaps {
         .maxIO(6, 6, 6, 6)
         .progressBar(GTUITextures.PROGRESSBAR_ARROW_MULTIPLE)
         .frontend(LargeNEIFrontend::new)
+        .build();
+    public static final RecipeMap<RecipeMapBackend> multiblockAdvancedChemicalReactorRecipes = RecipeMapBuilder
+        .of("gt.recipe.advancedchemicalreactor")
+        .maxIO(8, 8, 8, 8)
+        .slotOverlays((index, isFluid, isOutput, isSpecial) -> isSpecial ? GTUITextures.OVERLAY_SLOT_DATA_ORB : null)
+        .neiTransferRect(88, 8, 18*3, 18)
+        .neiTransferRect(124, 8, 18, 72)
+        .progressBar(GTUITextures.PROGRESSBAR_ARROW_MULTIPLE)
+        .frontend(AdvancedChemFrontend::new)
         .build();
     public static final RecipeMap<RecipeMapBackend> distillationTowerRecipes = RecipeMapBuilder
         .of("gt.recipe.distillationtower")

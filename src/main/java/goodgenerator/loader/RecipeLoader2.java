@@ -6,23 +6,7 @@ import static goodgenerator.util.MyRecipeAdder.computeRangeNKE;
 import static gregtech.api.enums.Mods.AppliedEnergistics2;
 import static gregtech.api.enums.Mods.GalacticraftMars;
 import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
-import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
-import static gregtech.api.recipe.RecipeMaps.autoclaveRecipes;
-import static gregtech.api.recipe.RecipeMaps.blastFurnaceRecipes;
-import static gregtech.api.recipe.RecipeMaps.cannerRecipes;
-import static gregtech.api.recipe.RecipeMaps.centrifugeRecipes;
-import static gregtech.api.recipe.RecipeMaps.chemicalBathRecipes;
-import static gregtech.api.recipe.RecipeMaps.distillationTowerRecipes;
-import static gregtech.api.recipe.RecipeMaps.distilleryRecipes;
-import static gregtech.api.recipe.RecipeMaps.fluidCannerRecipes;
-import static gregtech.api.recipe.RecipeMaps.fluidExtractionRecipes;
-import static gregtech.api.recipe.RecipeMaps.fluidSolidifierRecipes;
-import static gregtech.api.recipe.RecipeMaps.fusionRecipes;
-import static gregtech.api.recipe.RecipeMaps.mixerRecipes;
-import static gregtech.api.recipe.RecipeMaps.multiblockChemicalReactorRecipes;
-import static gregtech.api.recipe.RecipeMaps.plasmaForgeRecipes;
-import static gregtech.api.recipe.RecipeMaps.unpackagerRecipes;
-import static gregtech.api.recipe.RecipeMaps.vacuumFreezerRecipes;
+import static gregtech.api.recipe.RecipeMaps.*;
 import static gregtech.api.util.GTRecipeBuilder.MINUTES;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeConstants.AssemblyLine;
@@ -839,6 +823,14 @@ public class RecipeLoader2 {
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_EV)
             .addTo(chemicalBathRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(Materials.Firestone.getGems(1))
+            .fluidInputs(GGMaterial.lightNaquadahFuel.getFluidOrGas(144))
+            .itemOutputs(WerkstoffLoader.Tiberium.get(OrePrefixes.gem, 1))
+            .duration(20 * SECONDS)
+            .eut(TierEU.RECIPE_EV)
+            .addTo(multiblockAdvancedChemicalReactorRecipes);
 
         GTValues.RA.stdBuilder()
             .itemInputs(Materials.Diamond.getGems(1))

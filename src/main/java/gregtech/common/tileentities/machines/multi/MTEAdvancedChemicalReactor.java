@@ -176,10 +176,10 @@ public class MTEAdvancedChemicalReactor extends MTEExtendedPowerMultiBlockBase<M
         .addElement('H', withChannel("heating", ofBlock(GregTechAPI.sBlockCoilACR, 0)))
         .addElement('C', withChannel("cooling", ofBlock(GregTechAPI.sBlockCoilACR, 4)))
         .addElement('A', buildHatchAdder(MTEAdvancedChemicalReactor.class)
-                .atLeast(InputHatch, OutputHatch, InputBus, OutputBus, Maintenance, Energy.or(ExoticEnergy))
-                .casingIndex(((BlockCasings8) GregTechAPI.sBlockCasings8).getTextureIndex(0))
-                .dot(1)
-                .buildAndChain(GregTechAPI.sBlockCasings8, 0))
+            .atLeast(InputHatch, OutputHatch, InputBus, OutputBus, Maintenance, Energy.or(ExoticEnergy))
+            .casingIndex(((BlockCasings8) GregTechAPI.sBlockCasings8).getTextureIndex(0))
+            .dot(1)
+            .buildAndChain(GregTechAPI.sBlockCasings8, 0))
         .build();
     public void setCoilLevel(HeatingCoilLevel aCoilLevel) {
         this.mCoilLevel = aCoilLevel;
@@ -309,44 +309,21 @@ public class MTEAdvancedChemicalReactor extends MTEExtendedPowerMultiBlockBase<M
     }
 
     @Override
-    public RecipeMap<?> getRecipeMap() {
-        return RecipeMaps.multiblockChemicalReactorRecipes;
-    }
-
+    public RecipeMap<?> getRecipeMap() {return RecipeMaps.multiblockAdvancedChemicalReactorRecipes;}
     @Override
-    public int getMaxEfficiency(ItemStack aStack) {
-        return 10000;
-    }
-
+    public int getMaxEfficiency(ItemStack aStack) {return 10000;}
     @Override
-    public int getDamageToComponent(ItemStack aStack) {
-        return 0;
-    }
-
+    public int getDamageToComponent(ItemStack aStack) {return 0;}
     @Override
-    public boolean explodesOnComponentBreak(ItemStack aStack) {
-        return false;
-    }
-
+    public boolean explodesOnComponentBreak(ItemStack aStack) {return false;}
     @Override
-    public boolean supportsVoidProtection() {
-        return true;
-    }
-
+    public boolean supportsVoidProtection() {return true;}
     @Override
-    public boolean supportsBatchMode() {
-        return true;
-    }
-
+    public boolean supportsBatchMode() {return true;}
     @Override
-    public boolean supportsInputSeparation() {
-        return true;
-    }
-
+    public boolean supportsInputSeparation() {return true;}
     @Override
-    public boolean supportsSingleRecipeLocking() {
-        return true;
-    }
+    public boolean supportsSingleRecipeLocking() {return true;}
 
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
@@ -359,9 +336,5 @@ public class MTEAdvancedChemicalReactor extends MTEExtendedPowerMultiBlockBase<M
                 System.out.println(CurrentTemp);
             }
         }
-    }
-    @Override
-    protected boolean useMui2() {
-        return true;
     }
 }
