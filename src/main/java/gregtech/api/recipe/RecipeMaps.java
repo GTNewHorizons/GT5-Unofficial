@@ -810,9 +810,6 @@ public final class RecipeMaps {
     public static final RecipeMap<RecipeMapBackend> multiblockAdvancedChemicalReactorRecipes = RecipeMapBuilder
         .of("gt.recipe.advancedchemicalreactor")
         .maxIO(8, 8, 8, 8)
-        .slotOverlays((index, isFluid, isOutput, isSpecial) -> isSpecial ? GTUITextures.OVERLAY_SLOT_DATA_ORB : null)
-        .neiTransferRect(88, 8, 18*3, 18)
-        .neiTransferRect(124, 8, 18, 72)
         .progressBar(GTUITextures.PROGRESSBAR_ARROW_MULTIPLE)
         .frontend(AdvancedChemFrontend::new)
         .build();

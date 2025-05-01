@@ -832,7 +832,7 @@ public class RecipeLoader2 {
             .itemOutputs(WerkstoffLoader.Tiberium.get(OrePrefixes.gem, 1))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_EV)
-            .metadata(ACR_PRESSURE, 102)
+            .metadata(ACR_PRESSURE, 110300)
             .metadata(ACR_TEMPERATURE, 280)
             .addTo(multiblockAdvancedChemicalReactorRecipes);
 
