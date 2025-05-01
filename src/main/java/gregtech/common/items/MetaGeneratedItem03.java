@@ -23,6 +23,7 @@ import static gregtech.client.GTTooltipHandler.Tier.UXV;
 import static gregtech.client.GTTooltipHandler.Tier.ZPM;
 import static gregtech.client.GTTooltipHandler.registerTieredTooltip;
 import static gregtech.common.items.IDMetaItem03.Activated_Carbon_Filter_Mesh;
+import static gregtech.common.items.IDMetaItem03.Brittle_Netherite_Scrap;
 import static gregtech.common.items.IDMetaItem03.Circuit_Biomainframe;
 import static gregtech.common.items.IDMetaItem03.Circuit_Bioprocessor;
 import static gregtech.common.items.IDMetaItem03.Circuit_Biowarecomputer;
@@ -163,6 +164,8 @@ import static gregtech.common.items.IDMetaItem03.GalliumArsenideCrystal;
 import static gregtech.common.items.IDMetaItem03.GalliumArsenideCrystalSmallPart;
 import static gregtech.common.items.IDMetaItem03.HV_Coil;
 import static gregtech.common.items.IDMetaItem03.Harmonic_Compound;
+import static gregtech.common.items.IDMetaItem03.Heavy_Hellish_Mud;
+import static gregtech.common.items.IDMetaItem03.Hot_Netherite_Scrap;
 import static gregtech.common.items.IDMetaItem03.IV_Coil;
 import static gregtech.common.items.IDMetaItem03.IndustrialApiary_Upgrade_AUTOMATION;
 import static gregtech.common.items.IDMetaItem03.IndustrialApiary_Upgrade_Acceleration_1;
@@ -196,11 +199,14 @@ import static gregtech.common.items.IDMetaItem03.IndustrialApiary_Upgrade_STABIL
 import static gregtech.common.items.IDMetaItem03.IndustrialApiary_Upgrade_TERRITORY;
 import static gregtech.common.items.IDMetaItem03.IndustrialApiary_Upgrade_UNLIGHT;
 import static gregtech.common.items.IDMetaItem03.IndustrialApiary_Upgrade_WINTER;
+import static gregtech.common.items.IDMetaItem03.Intensely_Bonded_Netherite_Nanoparticles;
 import static gregtech.common.items.IDMetaItem03.KevlarFiber;
 import static gregtech.common.items.IDMetaItem03.LV_Coil;
 import static gregtech.common.items.IDMetaItem03.LuV_Coil;
 import static gregtech.common.items.IDMetaItem03.MV_Coil;
 import static gregtech.common.items.IDMetaItem03.NandChip;
+import static gregtech.common.items.IDMetaItem03.Netherite_Nanoparticles;
+import static gregtech.common.items.IDMetaItem03.Netherite_Scrap_Seed;
 import static gregtech.common.items.IDMetaItem03.NuclearStar;
 import static gregtech.common.items.IDMetaItem03.Optical_Cpu_Containment_Housing;
 import static gregtech.common.items.IDMetaItem03.Optically_Compatible_Memory;
@@ -1240,6 +1246,14 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 implements IItemFi
             .set(addItem(Phononic_Seed_Crystal.ID, "Phononic Seed Crystal", "Perfect Thermal Conductance", o));
         ItemList.Harmonic_Compound.set(
             addItem(Harmonic_Compound.ID, "Harmonic Compound", "Toxic violet with a red haze", "ingotHotHarmonic"));
+
+        ItemList.Heavy_Hellish_Mud.set(addItem(Heavy_Hellish_Mud.ID, "Heavy Hellish Mud", "God wouldn't touch this"));
+        ItemList.Netherite_Scrap_Seed.set(addItem(Netherite_Scrap_Seed.ID, "Netherite Scrap Seed", ""));
+        ItemList.Brittle_Netherite_Scrap.set(addItem(Brittle_Netherite_Scrap.ID, "Brittle Netherite Scrap", ""));
+        ItemList.Netherite_Nanoparticles.set(addItem(Netherite_Nanoparticles.ID, "Netherite Nanoparticles", ""));
+        ItemList.Intensely_Bonded_Netherite_Nanoparticles
+            .set(addItem(Intensely_Bonded_Netherite_Nanoparticles.ID, "Intensely Bonded Netherite Nanoparticles", ""));
+        ItemList.Hot_Netherite_Scrap.set(addItem(Hot_Netherite_Scrap.ID, "Hot Netherite Scrap", "Activated?"));
 
         ItemList.White_Dwarf_Shape_Extruder_Plate.set(
             addItem(
