@@ -147,7 +147,7 @@ public class ToolVajra extends ItemTool implements IElectricItem {
 
         if (target.blockHardness < 0)
             return super.onItemUseFirst(stack, player, world, x, y, z, side, hitX, hitY, hitZ);
-        if (!ElectricItem.manager.canUse(stack, baseCost * target.blockHardness))
+        if (!ElectricItem.manager.canUse(stack, baseCost))
             return super.onItemUseFirst(stack, player, world, x, y, z, side, hitX, hitY, hitZ);
         if (target instanceof ITileEntityProvider && !isHarvestableTE(target, tileEntity) && !player.isSneaking())
             return super.onItemUseFirst(stack, player, world, x, y, z, side, hitX, hitY, hitZ);
@@ -164,7 +164,7 @@ public class ToolVajra extends ItemTool implements IElectricItem {
         }
         stack.getTagCompound()
             .setBoolean("harvested", true); // prevent onItemRightClick from going through
-        ElectricItem.manager.use(stack, baseCost * target.blockHardness, player);
+        ElectricItem.manager.use(stack, baseCost, player);
         return super.onItemUseFirst(stack, player, world, x, y, z, side, hitX, hitY, hitZ);
     }
 
