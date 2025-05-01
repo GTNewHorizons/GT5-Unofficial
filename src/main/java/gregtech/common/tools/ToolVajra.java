@@ -15,6 +15,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumChatFormatting;
@@ -25,6 +26,8 @@ import bartworks.system.material.BWMetaGeneratedOres;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.items.ItemTool;
+import gregtech.api.metatileentity.BaseMetaPipeEntity;
+import gregtech.common.blocks.BlockFrameBox;
 import gregtech.common.blocks.BlockOres;
 import gtPlusPlus.core.block.base.BlockBaseOre;
 import ic2.api.item.ElectricItem;
@@ -79,7 +82,7 @@ public class ToolVajra extends ItemTool implements IElectricItem {
 
     @Override
     public boolean hitEntity(ItemStack itemstack, EntityLivingBase target, EntityLivingBase source) {
-        if(source instanceof EntityPlayer player){
+        if (source instanceof EntityPlayer player) {
             target.attackEntityFrom(DamageSource.causePlayerDamage(player), this.attackDamage);
         } else {
             target.attackEntityFrom(DamageSource.causeMobDamage(source), this.attackDamage);
@@ -97,12 +100,11 @@ public class ToolVajra extends ItemTool implements IElectricItem {
         return false;
     }
 
-
-
     @Override
     public void addInformation(ItemStack stack, EntityPlayer par2EntityPlayer, List<String> list, boolean par4) {
         list.add(EnumChatFormatting.WHITE + StatCollector.translateToLocal("gt.vajra.tooltip.flavor"));
-        list.add(EnumChatFormatting.WHITE + StatCollector.translateToLocalFormatted("gt.vajra.tooltip.charge", VN[tier]));
+        list.add(
+            EnumChatFormatting.WHITE + StatCollector.translateToLocalFormatted("gt.vajra.tooltip.charge", VN[tier]));
         list.add(EnumChatFormatting.YELLOW + StatCollector.translateToLocal("gt.vajra.tooltip.silk_touch"));
     }
 
@@ -140,17 +142,19 @@ public class ToolVajra extends ItemTool implements IElectricItem {
     public boolean onItemUseFirst(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side,
         float hitX, float hitY, float hitZ) {
         Block target = world.getBlock(x, y, z);
+        TileEntity tileEntity = world.getTileEntity(x, y, z);
         int metaData = world.getBlockMetadata(x, y, z);
 
         if (target.blockHardness < 0)
             return super.onItemUseFirst(stack, player, world, x, y, z, side, hitX, hitY, hitZ);
         if (!ElectricItem.manager.canUse(stack, baseCost * target.blockHardness))
             return super.onItemUseFirst(stack, player, world, x, y, z, side, hitX, hitY, hitZ);
-        if (target instanceof ITileEntityProvider && !isTileEntityOre(target) && !player.isSneaking())
+        if (target instanceof ITileEntityProvider && !isHarvestableTE(target, tileEntity) && !player.isSneaking())
             return super.onItemUseFirst(stack, player, world, x, y, z, side, hitX, hitY, hitZ);
 
         if (world.isRemote) {
             Minecraft.getMinecraft().playerController.onPlayerDestroyBlock(x, y, z, side);
+            player.swingItem();
         } else {
             target.onBlockHarvested(world, x, y, z, metaData, player);
             if (target.removedByPlayer(world, player, x, y, z, true)) {
@@ -164,8 +168,14 @@ public class ToolVajra extends ItemTool implements IElectricItem {
         return super.onItemUseFirst(stack, player, world, x, y, z, side, hitX, hitY, hitZ);
     }
 
-    private boolean isTileEntityOre(Block target) {
-        return target instanceof BlockOres || target instanceof BWMetaGeneratedOres || target instanceof BlockBaseOre;
+    private boolean isHarvestableTE(Block target, TileEntity tileEntity) {
+        if (target instanceof BlockFrameBox) return tileEntity == null;
+
+        if (target instanceof BlockOres || target instanceof BWMetaGeneratedOres || target instanceof BlockBaseOre)
+            return true;
+        // Cables extend BaseMetaPipeEntity (???)
+        if (tileEntity instanceof BaseMetaPipeEntity) return true;
+        return false;
     }
 
     @Override
@@ -180,7 +190,8 @@ public class ToolVajra extends ItemTool implements IElectricItem {
         }
 
         if (!worldIn.isRemote && player.isSneaking()) {
-            if (itemStackIn.getTagCompound().hasKey("ench")) {
+            if (itemStackIn.getTagCompound()
+                .hasKey("ench")) {
                 tag.removeTag("ench");
                 player.addChatMessage(new ChatComponentText(EnumChatFormatting.RED + "Disabled silk touch"));
             } else {
