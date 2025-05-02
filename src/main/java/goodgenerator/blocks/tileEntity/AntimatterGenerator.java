@@ -313,10 +313,10 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Antimatter Generator")
-            .addInfo("Annihilating antimatter like it's 2205!")
+            .addInfo("Annihilating Antimatter like it's 2205!")
             .addSeparator()
-            .addInfo("Generates energy by reacting Semi-Stable Antimatter with matter")
-            .addInfo("Annihilation uses an equal amount of antimatter and matter")
+            .addInfo("Generates energy by reacting "+EnumChatFormatting.DARK_AQUA+"Semi-Stable Antimatter"+EnumChatFormatting.GRAY+" with "+EnumChatFormatting.GOLD+"Matter")
+            .addInfo("Annihilation uses an equal amount of "+EnumChatFormatting.DARK_AQUA+"Antimatter"+EnumChatFormatting.GRAY+" and "+EnumChatFormatting.GOLD+"Matter")
             .addInfo(
                 "Consumes " + EnumChatFormatting.GOLD
                     + "all inputs"
@@ -325,10 +325,10 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase
             .addInfo(EnumChatFormatting.RED + "Voids any invalid fluid!")
             .addInfo("A cycle lasts 1 tick")
             .addInfo(
-                "Imbalance between antimatter and matter " + EnumChatFormatting.RED
-                    + "will decrease efficiency!"
+                "Imbalance between "+EnumChatFormatting.DARK_AQUA+"Antimatter"+EnumChatFormatting.GRAY+" and "+EnumChatFormatting.GOLD+"Matter" + EnumChatFormatting.RED
+                    + " will decrease efficiency!"
                     + EnumChatFormatting.GRAY)
-            .addInfo("Efficiency formula: Min(antimatter/matter, matter/antimatter))")
+            .addInfo("Efficiency formula: Min("+EnumChatFormatting.DARK_AQUA+"Antimatter"+EnumChatFormatting.GRAY+"/"+EnumChatFormatting.GOLD+"Matter"+EnumChatFormatting.GRAY+", "+EnumChatFormatting.GOLD+"Matter"+EnumChatFormatting.GRAY+"/"+EnumChatFormatting.DARK_AQUA+"Antimatter"+EnumChatFormatting.GRAY+")")
             .addInfo(
                 "Any excess EU generated will be " + EnumChatFormatting.RED
                     + "voided"
