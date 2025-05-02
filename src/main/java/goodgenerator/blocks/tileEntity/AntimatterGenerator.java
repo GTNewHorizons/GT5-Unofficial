@@ -315,8 +315,20 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase
         tt.addMachineType("Antimatter Generator")
             .addInfo("Annihilating Antimatter like it's 2205!")
             .addSeparator()
-            .addInfo("Generates energy by reacting "+EnumChatFormatting.DARK_AQUA+"Semi-Stable Antimatter"+EnumChatFormatting.GRAY+" with "+EnumChatFormatting.GOLD+"Matter")
-            .addInfo("Annihilation uses an equal amount of "+EnumChatFormatting.DARK_AQUA+"Antimatter"+EnumChatFormatting.GRAY+" and "+EnumChatFormatting.GOLD+"Matter")
+            .addInfo(
+                "Generates energy by reacting " + EnumChatFormatting.DARK_AQUA
+                    + "Semi-Stable Antimatter"
+                    + EnumChatFormatting.GRAY
+                    + " with "
+                    + EnumChatFormatting.GOLD
+                    + "Matter")
+            .addInfo(
+                "Annihilation uses an equal amount of " + EnumChatFormatting.DARK_AQUA
+                    + "Antimatter"
+                    + EnumChatFormatting.GRAY
+                    + " and "
+                    + EnumChatFormatting.GOLD
+                    + "Matter")
             .addInfo(
                 "Consumes " + EnumChatFormatting.GOLD
                     + "all inputs"
@@ -325,14 +337,33 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase
             .addInfo(EnumChatFormatting.RED + "Voids any invalid fluid!")
             .addInfo("A cycle lasts 1 tick")
             .addInfo(
-                "Imbalance between "+EnumChatFormatting.DARK_AQUA+"Antimatter"+EnumChatFormatting.GRAY+" and "+EnumChatFormatting.GOLD+"Matter" + EnumChatFormatting.RED
+                "Imbalance between " + EnumChatFormatting.DARK_AQUA
+                    + "Antimatter"
+                    + EnumChatFormatting.GRAY
+                    + " and "
+                    + EnumChatFormatting.GOLD
+                    + "Matter"
+                    + EnumChatFormatting.RED
                     + " will decrease efficiency!"
                     + EnumChatFormatting.GRAY)
-            .addInfo("Efficiency formula: Min("+EnumChatFormatting.DARK_AQUA+"Antimatter"+EnumChatFormatting.GRAY+"/"+EnumChatFormatting.GOLD+"Matter"+EnumChatFormatting.GRAY+", "+EnumChatFormatting.GOLD+"Matter"+EnumChatFormatting.GRAY+"/"+EnumChatFormatting.DARK_AQUA+"Antimatter"+EnumChatFormatting.GRAY+")")
             .addInfo(
-                "Any excess EU generated will be " + EnumChatFormatting.RED
-                    + "voided"
-                    + EnumChatFormatting.GRAY)
+                "Efficiency formula: Min(" + EnumChatFormatting.DARK_AQUA
+                    + "Antimatter"
+                    + EnumChatFormatting.GRAY
+                    + "/"
+                    + EnumChatFormatting.GOLD
+                    + "Matter"
+                    + EnumChatFormatting.GRAY
+                    + ", "
+                    + EnumChatFormatting.GOLD
+                    + "Matter"
+                    + EnumChatFormatting.GRAY
+                    + "/"
+                    + EnumChatFormatting.DARK_AQUA
+                    + "Antimatter"
+                    + EnumChatFormatting.GRAY
+                    + ")")
+            .addInfo("Any excess EU generated will be " + EnumChatFormatting.RED + "voided" + EnumChatFormatting.GRAY)
             .addSeparator()
             .addInfo(
                 "Energy production formula: " + EnumChatFormatting.GREEN
@@ -353,7 +384,9 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase
                     + ""
                     + EnumChatFormatting.UNDERLINE
                     + "E"
-                    + EnumChatFormatting.RESET + "" + EnumChatFormatting.GRAY
+                    + EnumChatFormatting.RESET
+                    + ""
+                    + EnumChatFormatting.GRAY
                     + " EU/Cycle")
             .addInfo("Cannot produce more than " + GTUtility.formatNumbers(9.2e18) + " EU per cycle")
             .addInfo(
@@ -365,9 +398,9 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase
                     + EnumChatFormatting.RESET
                     + ""
                     + EnumChatFormatting.GREEN
-                    + "ntimatter base energy"
+                    + "ntimatter energy"
                     + EnumChatFormatting.GRAY
-                    + " value : "
+                    + " base value : "
                     + EnumChatFormatting.GREEN
                     + GTUtility.formatNumbers(ANTIMATTER_FUEL_VALUE)
                     + EnumChatFormatting.GRAY
