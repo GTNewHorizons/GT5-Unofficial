@@ -189,8 +189,6 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase
             modifier = 1.02F;
         } else if (catalyst.isFluidEqual(Materials.SuperconductorUMVBase.getMolten(1L))) {
             modifier = 1.03F;
-        } else if (catalyst.isFluidEqual(MaterialsUEVplus.BlackDwarfMatter.getMolten(1L))) {
-            modifier = 1.04F;
         }
         long catalystCount = catalyst.amount;
         long generatedEU = 0;
