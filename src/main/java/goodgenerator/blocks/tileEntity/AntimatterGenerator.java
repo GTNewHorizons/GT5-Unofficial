@@ -330,7 +330,7 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase
                     + EnumChatFormatting.GRAY)
             .addInfo("Efficiency formula: Min(antimatter/matter, matter/antimatter))")
             .addInfo(
-                "Any EU that does not fit in laser hatches will be " + EnumChatFormatting.RED
+                "Any excess EU generated will be " + EnumChatFormatting.RED
                     + "voided"
                     + EnumChatFormatting.GRAY)
             .addSeparator()
