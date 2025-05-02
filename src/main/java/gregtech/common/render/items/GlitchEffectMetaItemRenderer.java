@@ -1,19 +1,17 @@
 package gregtech.common.render.items;
 
-import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Textures;
-import gregtech.api.items.MetaGeneratedItem;
-import gregtech.api.util.GTUtility;
-import gregtech.common.render.GTRenderUtil;
+import java.util.Random;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraftforge.client.IItemRenderer;
-import net.minecraftforge.fluids.FluidStack;
+
 import org.lwjgl.opengl.GL11;
 
-import java.util.Random;
+import gregtech.api.items.MetaGeneratedItem;
+import gregtech.common.render.GTRenderUtil;
 
 public class GlitchEffectMetaItemRenderer implements IItemRenderer {
 
@@ -28,10 +26,6 @@ public class GlitchEffectMetaItemRenderer implements IItemRenderer {
 
     double offsetRed = 0;
     double offsetCyan = 0;
-
-    public GlitchEffectMetaItemRenderer() {
-        addRender(ItemList.Phononic_Seed_Crystal);
-    }
 
     @Override
     public boolean handleRenderType(final ItemStack item, final ItemRenderType type) {
@@ -85,8 +79,7 @@ public class GlitchEffectMetaItemRenderer implements IItemRenderer {
         GL11.glPopMatrix();
     }
 
-    private void applyGlitchEffect(ItemRenderType type, double offset, int[] color,
-                                   IIcon... icons) {
+    private void applyGlitchEffect(ItemRenderType type, double offset, int[] color, IIcon... icons) {
         for (IIcon icon : icons) {
             if (icon == null) continue;
             Tessellator t = Tessellator.instance;
@@ -101,10 +94,6 @@ public class GlitchEffectMetaItemRenderer implements IItemRenderer {
                 t.draw();
             }
         }
-    }
-
-    private void addRender(ItemList item) {
-        MetaGeneratedItemRenderer.registerSpecialRenderer(item, this);
     }
 
 }

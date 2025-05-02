@@ -1,34 +1,24 @@
 package gregtech.common.render.items;
 
-import com.gtnewhorizons.modularui.api.math.Pos2d;
-import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Textures;
-import gregtech.api.items.MetaGeneratedItem;
-import gregtech.common.render.GTRenderUtil;
+import java.util.Random;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraftforge.client.IItemRenderer;
+
 import org.lwjgl.opengl.GL11;
 
-import java.util.Random;
+import com.gtnewhorizons.modularui.api.math.Pos2d;
+
+import gregtech.api.enums.Textures;
+import gregtech.api.items.MetaGeneratedItem;
+import gregtech.common.render.GTRenderUtil;
 
 public class CosmicNeutroniumMetaItemRenderer implements IItemRenderer {
 
     public Random rand = new Random();
-
-    public CosmicNeutroniumMetaItemRenderer() {
-        addRender(ItemList.Electric_Motor_UHV);
-        addRender(ItemList.Electric_Piston_UHV);
-        addRender(ItemList.Robot_Arm_UHV);
-        addRender(ItemList.Electric_Pump_UHV);
-        addRender(ItemList.Conveyor_Module_UHV);
-        addRender(ItemList.FluidRegulator_UHV);
-        addRender(ItemList.Emitter_UHV);
-        addRender(ItemList.Sensor_UHV);
-        addRender(ItemList.Field_Generator_UHV);
-    }
 
     // spotless:off
     private static final Pos2d point0 = new Pos2d(0  - 10, 0  - 10);
@@ -92,7 +82,6 @@ public class CosmicNeutroniumMetaItemRenderer implements IItemRenderer {
 
         GL11.glPushMatrix();
 
-
         int haloColour = 0x4DFFFFFF;
         float ca = (float) (haloColour >> 24 & 255) / 255.0F;
         float cr = (float) (0x99FFFFFF >> 16 & 255) / 255.0F;
@@ -112,10 +101,6 @@ public class CosmicNeutroniumMetaItemRenderer implements IItemRenderer {
         }
 
         GL11.glPopMatrix();
-    }
-
-    private void addRender(ItemList item) {
-        MetaGeneratedItemRenderer.registerSpecialRenderer(item, this);
     }
 
 }

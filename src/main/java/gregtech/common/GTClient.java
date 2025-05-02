@@ -20,8 +20,6 @@ import java.util.Map;
 import java.util.Scanner;
 import java.util.function.Function;
 
-import gregtech.common.render.items.CosmicNeutroniumMetaItemRenderer;
-import gregtech.common.render.items.GlitchEffectMetaItemRenderer;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GLAllocation;
@@ -104,9 +102,7 @@ import gregtech.common.render.MetaGeneratedToolRenderer;
 import gregtech.common.render.WormholeRenderer;
 import gregtech.common.render.items.DataStickRenderer;
 import gregtech.common.render.items.InfiniteSprayCanRenderer;
-import gregtech.common.render.items.InfinityMetaItemRenderer;
 import gregtech.common.render.items.MetaGeneratedItemRenderer;
-import gregtech.common.render.items.TranscendentalMetaItemRenderer;
 import gregtech.common.tileentities.debug.MTEAdvDebugStructureWriter;
 import gregtech.loaders.ExtraIcons;
 import gregtech.loaders.misc.GTBees;
@@ -652,10 +648,6 @@ public class GTClient extends GTProxy implements Runnable {
         new FluidDisplayStackRenderer();
         new DataStickRenderer();
         new InfiniteSprayCanRenderer();
-        new InfinityMetaItemRenderer();
-        new TranscendentalMetaItemRenderer();
-        new CosmicNeutroniumMetaItemRenderer();
-        new GlitchEffectMetaItemRenderer();
         MinecraftForge.EVENT_BUS.register(new NEIGTConfig());
         MinecraftForge.EVENT_BUS.register(new GTMouseEventHandler());
     }

@@ -13,25 +13,11 @@ import net.minecraftforge.client.IItemRenderer;
 import org.lwjgl.opengl.GL11;
 
 import gregtech.GTMod;
-import gregtech.api.enums.ItemList;
 import gregtech.api.items.MetaGeneratedItem;
 
 public class TranscendentalMetaItemRenderer implements IItemRenderer {
 
     public Random rand = new Random();
-
-    public TranscendentalMetaItemRenderer() {
-        addRender(ItemList.Electric_Motor_UIV);
-        addRender(ItemList.Electric_Piston_UIV);
-        addRender(ItemList.Robot_Arm_UIV);
-        addRender(ItemList.Electric_Pump_UIV);
-        addRender(ItemList.Conveyor_Module_UIV);
-        addRender(ItemList.FluidRegulator_UIV);
-        addRender(ItemList.Emitter_UIV);
-        addRender(ItemList.Sensor_UIV);
-        addRender(ItemList.Field_Generator_UIV);
-        addRender(ItemList.Timepiece);
-    }
 
     @Override
     public boolean handleRenderType(final ItemStack item, final ItemRenderType type) {
@@ -123,10 +109,6 @@ public class TranscendentalMetaItemRenderer implements IItemRenderer {
 
         GL11.glColor4f(1f, 1f, 1f, 255);
 
-    }
-
-    private void addRender(ItemList item) {
-        MetaGeneratedItemRenderer.registerSpecialRenderer(item, this);
     }
 
 }

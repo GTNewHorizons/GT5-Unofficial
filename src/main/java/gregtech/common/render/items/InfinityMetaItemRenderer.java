@@ -4,14 +4,12 @@ import java.util.Random;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraftforge.client.IItemRenderer;
 
 import org.lwjgl.opengl.GL11;
 
-import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Textures;
 import gregtech.api.items.MetaGeneratedItem;
 import gregtech.common.render.GTRenderUtil;
@@ -19,21 +17,6 @@ import gregtech.common.render.GTRenderUtil;
 public class InfinityMetaItemRenderer implements IItemRenderer {
 
     public Random rand = new Random();
-
-    public InfinityMetaItemRenderer() {
-        addRender(ItemList.Electric_Motor_UEV);
-        addRender(ItemList.Electric_Piston_UEV);
-        addRender(ItemList.Robot_Arm_UEV);
-        addRender(ItemList.Electric_Pump_UEV);
-        addRender(ItemList.Conveyor_Module_UEV);
-        addRender(ItemList.FluidRegulator_UEV);
-        addRender(ItemList.Emitter_UEV);
-        addRender(ItemList.Sensor_UEV);
-        addRender(ItemList.Field_Generator_UEV);
-        addRender(ItemList.Field_Generator_UEV);
-        addRender(ItemList.NuclearStar);
-        addRender(ItemList.Harmonic_Compound);
-    }
 
     @Override
     public boolean handleRenderType(final ItemStack item, final ItemRenderType type) {
@@ -60,7 +43,6 @@ public class InfinityMetaItemRenderer implements IItemRenderer {
             if (icons != null && icons.length > 0 && icons[0] != null) {
 
                 if (type == ItemRenderType.INVENTORY) {
-
                     renderHalo();
                     renderPulse(icons[0], icons[0]);
                 }
@@ -131,10 +113,6 @@ public class InfinityMetaItemRenderer implements IItemRenderer {
 
             GL11.glPopMatrix();
         }
-    }
-
-    private void addRender(ItemList item) {
-        MetaGeneratedItemRenderer.registerSpecialRenderer(item, this);
     }
 
 }
