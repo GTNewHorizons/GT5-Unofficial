@@ -30,6 +30,7 @@ public class TranscendentalMetaItemRenderer implements IItemRenderer {
         addRender(ItemList.Emitter_UIV);
         addRender(ItemList.Sensor_UIV);
         addRender(ItemList.Field_Generator_UIV);
+        addRender(ItemList.Timepiece);
     }
 
     @Override

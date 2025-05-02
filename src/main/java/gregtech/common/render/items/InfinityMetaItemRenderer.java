@@ -31,6 +31,8 @@ public class InfinityMetaItemRenderer implements IItemRenderer {
         addRender(ItemList.Sensor_UEV);
         addRender(ItemList.Field_Generator_UEV);
         addRender(ItemList.Field_Generator_UEV);
+        addRender(ItemList.NuclearStar);
+        addRender(ItemList.Harmonic_Compound);
     }
 
     @Override
