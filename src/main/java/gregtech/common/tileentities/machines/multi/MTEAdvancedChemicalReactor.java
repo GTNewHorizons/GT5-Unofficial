@@ -1,17 +1,11 @@
 package gregtech.common.tileentities.machines.multi;
 
-import bartworks.common.tileentities.multis.mega.MTEMegaBlastFurnace;
 import com.google.common.collect.ImmutableList;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
-import goodgenerator.blocks.tileEntity.GTMetaTileEntity.MTENeutronAccelerator;
-import goodgenerator.blocks.tileEntity.GTMetaTileEntity.MTENeutronSensor;
-import goodgenerator.util.ItemRefer;
 import gregtech.api.GregTechAPI;
-import gregtech.api.enums.HeatingCoilLevel;
-import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -21,27 +15,20 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
-import gregtech.api.util.GlassTier;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.blocks.BlockCasings8;
 import gregtech.common.misc.GTStructureChannels;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.FluidStack;
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import tectech.util.FluidStackLong;
-import tectech.util.ItemStackLong;
 
 import javax.annotation.Nullable;
-import java.math.BigInteger;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.lazy;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlocksTiered;
 import static gregtech.api.enums.HatchElement.*;
 import static gregtech.api.enums.Textures.BlockIcons.*;
@@ -51,9 +38,6 @@ public class MTEAdvancedChemicalReactor extends MTEExtendedPowerMultiBlockBase<M
     implements ISurvivalConstructable {
 
     private static final Logger log = LogManager.getLogger(MTEAdvancedChemicalReactor.class);
-    private boolean isRightModule = false;
-    private boolean isLeftModule = false;
-    private int glassTier = -1;
 
     private int MODULE_LEFT = 0;
     private int MODULE_RIGHT = 0;
@@ -63,8 +47,10 @@ public class MTEAdvancedChemicalReactor extends MTEExtendedPowerMultiBlockBase<M
     private static final String TEMP_HEAT_MODULE_R = "tempHeatR";
     private static final String TEMP_COOL_MODULE_L = "tempCoolL";
     private static final String TEMP_COOL_MODULE_R = "tempCoolR";
-    private static final String PRESSURE_MODULE_L = "PressureL";
-    private static final String PRESSURE_MODULE_R = "PressureR";
+    private static final String VACUUM_MODULE_L = "VacuumL";
+    private static final String VACUUM_MODULE_R = "VacuumR";
+    private static final String COMPRESSION_MODULE_L = "PressureL";
+    private static final String COMPRESSION_MODULE_R = "PressureR";
 
     private boolean isbuilt = false;
     private static boolean isTempModule = false;
@@ -74,18 +60,30 @@ public class MTEAdvancedChemicalReactor extends MTEExtendedPowerMultiBlockBase<M
     private double CurrentPressure = 0;
 
     protected int CoolCoilTier = 0;
+    protected int VacuumCoilTier = 0;
     protected int HeatCoilTier = 0;
+    protected int CompressCoilTier = 0;
     private int getHeatCoilTier() {
         return HeatCoilTier;
     }
     private int getCoolCoilTier() {
-        return HeatCoilTier;
+        return CoolCoilTier;
+    }
+    private int getVacuumCoilTier() {
+        return VacuumCoilTier;
+    }
+    private int getCompressCoilTier() {
+        return CompressCoilTier;
     }
     private void setHeatCoilTier(int tier) {
         HeatCoilTier = tier;
     }
-    private void setCoolCoilTier(int tier) {
-        CoolCoilTier = tier;
+    private void setCoolCoilTier(int tier) {CoolCoilTier = tier;}
+    private void setVacuumCoilTier(int tier) {
+        VacuumCoilTier = tier;
+    }
+    private void setCompressCoilTier(int tier) {
+        CompressCoilTier = tier;
     }
 
     private static final IStructureDefinition<MTEAdvancedChemicalReactor> STRUCTURE_DEFINITION = StructureDefinition
@@ -247,13 +245,142 @@ public class MTEAdvancedChemicalReactor extends MTEExtendedPowerMultiBlockBase<M
                 "AAA"
             }}
         )
-
-        .addElement('D', ofBlock(GregTechAPI.sBlockCasings8, 1))
-        .addElement('P', buildHatchAdder(MTEAdvancedChemicalReactor.class)
+        .addShape(
+            VACUUM_MODULE_L,
+            new String[][]{{
+                "   ",
+                "   ",
+                "   ",
+                "AAA"
+            },{
+                " VV",
+                " V ",
+                " V ",
+                "ADA"
+            },{
+                "   ",
+                "   ",
+                "   ",
+                "AAA"
+            },{
+                " VV",
+                " V ",
+                " V ",
+                "ADA"
+            },{
+                "   ",
+                "   ",
+                "   ",
+                "AAA"
+            }}
+        )
+        .addShape(
+            VACUUM_MODULE_R,
+            new String[][]{{
+                "   ",
+                "   ",
+                "   ",
+                "AAA"
+            },{
+                "VV ",
+                " V ",
+                " V ",
+                "ADA"
+            },{
+                "   ",
+                "   ",
+                "   ",
+                "AAA"
+            },{
+                "VV ",
+                " V ",
+                " V ",
+                "ADA"
+            },{
+                "   ",
+                "   ",
+                "   ",
+                "AAA"
+            }}
+        )
+        .addShape(
+            COMPRESSION_MODULE_R,
+            new String[][]{{
+                "   ",
+                "   ",
+                "   ",
+                "AAA"
+            },{
+                "KK ",
+                " K ",
+                " K ",
+                "ADA"
+            },{
+                "   ",
+                "   ",
+                "   ",
+                "AAA"
+            },{
+                "KK ",
+                " K ",
+                " K ",
+                "ADA"
+            },{
+                "   ",
+                "   ",
+                "   ",
+                "AAA"
+            }}
+        )
+        .addShape(
+            COMPRESSION_MODULE_L,
+            new String[][]{{
+                "   ",
+                "   ",
+                "   ",
+                "AAA"
+            },{
+                " KK",
+                " K ",
+                " K ",
+                "ADA"
+            },{
+                "   ",
+                "   ",
+                "   ",
+                "AAA"
+            },{
+                " KK",
+                " K ",
+                " K ",
+                "ADA"
+            },{
+                "   ",
+                "   ",
+                "   ",
+                "AAA"
+            }}
+        )
+        .addElement('P', ofBlock(GregTechAPI.sBlockCasings8, 1))
+        .addElement('D', buildHatchAdder(MTEAdvancedChemicalReactor.class)
             .atLeast(InputHatch, OutputHatch)
             .casingIndex(((BlockCasings8) GregTechAPI.sBlockCasings8).getTextureIndex(1))
             .dot(2)
             .buildAndChain(GregTechAPI.sBlockCasings8, 1))
+        .addElement(
+            'C',
+            withChannel(
+                "cool_pipe",
+                ofBlocksTiered(
+                    MTEAdvancedChemicalReactor::getCoolCoilMeta,
+                    ImmutableList.of(
+                        Pair.of(GregTechAPI.sBlockCoilACR, 0),
+                        Pair.of(GregTechAPI.sBlockCoilACR, 1),
+                        Pair.of(GregTechAPI.sBlockCoilACR, 2),
+                        Pair.of(GregTechAPI.sBlockCoilACR, 3)),
+                    -1,
+                    MTEAdvancedChemicalReactor::setCoolCoilTier,
+                    MTEAdvancedChemicalReactor::getCoolCoilTier)))
         .addElement(
             'H',
             withChannel(
@@ -269,19 +396,33 @@ public class MTEAdvancedChemicalReactor extends MTEExtendedPowerMultiBlockBase<M
                     MTEAdvancedChemicalReactor::setHeatCoilTier,
                     MTEAdvancedChemicalReactor::getHeatCoilTier)))
         .addElement(
-            'C',
+            'K',
             withChannel(
-                "cool_pipe",
+                "compress_pipe",
                 ofBlocksTiered(
-                    MTEAdvancedChemicalReactor::getCoolCoilMeta,
+                    MTEAdvancedChemicalReactor::getCompressCoilMeta,
                     ImmutableList.of(
-                        Pair.of(GregTechAPI.sBlockCoilACR, 0),
-                        Pair.of(GregTechAPI.sBlockCoilACR, 1),
-                        Pair.of(GregTechAPI.sBlockCoilACR, 2),
-                        Pair.of(GregTechAPI.sBlockCoilACR, 3)),
+                        Pair.of(GregTechAPI.sBlockCoilACR, 8),
+                        Pair.of(GregTechAPI.sBlockCoilACR, 9),
+                        Pair.of(GregTechAPI.sBlockCoilACR, 10),
+                        Pair.of(GregTechAPI.sBlockCoilACR, 11)),
                     -1,
-                    MTEAdvancedChemicalReactor::setHeatCoilTier,
-                    MTEAdvancedChemicalReactor::getHeatCoilTier)))
+                    MTEAdvancedChemicalReactor::setCompressCoilTier,
+                    MTEAdvancedChemicalReactor::getCompressCoilTier)))
+        .addElement(
+            'V',
+            withChannel(
+                "vacuum_pipe",
+                ofBlocksTiered(
+                    MTEAdvancedChemicalReactor::getVacuumCoilMeta,
+                    ImmutableList.of(
+                        Pair.of(GregTechAPI.sBlockCoilACR, 12),
+                        Pair.of(GregTechAPI.sBlockCoilACR, 13),
+                        Pair.of(GregTechAPI.sBlockCoilACR, 14),
+                        Pair.of(GregTechAPI.sBlockCoilACR, 15)),
+                    -1,
+                    MTEAdvancedChemicalReactor::setVacuumCoilTier,
+                    MTEAdvancedChemicalReactor::getVacuumCoilTier)))
         .addElement('A', buildHatchAdder(MTEAdvancedChemicalReactor.class)
             .atLeast(InputHatch, OutputHatch, InputBus, OutputBus, Maintenance, Energy.or(ExoticEnergy))
             .casingIndex(((BlockCasings8) GregTechAPI.sBlockCasings8).getTextureIndex(0))
@@ -341,7 +482,7 @@ public class MTEAdvancedChemicalReactor extends MTEExtendedPowerMultiBlockBase<M
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Advanced Chemical Reactor")
+        tt.addMachineType("Advanced Chemical Reactor, ACR")
             .addInfo("I have no idea what to type here")
             .beginStructureBlock(3, 5, 3, true)
             .addController("Front Center")
@@ -354,7 +495,6 @@ public class MTEAdvancedChemicalReactor extends MTEExtendedPowerMultiBlockBase<M
             .addOutputHatch("Any Chemically Inert Casing", 1)
             .addEnergyHatch("Any Chemically Inert Casing", 1)
             .addMaintenanceHatch("Any Chemically Inert Casing", 1)
-            .addSubChannelUsage("glass", "Glass Tier")
             .toolTipFinisher(EnumChatFormatting.BLUE + "VorTex");
         return tt;
     }
@@ -372,23 +512,36 @@ public class MTEAdvancedChemicalReactor extends MTEExtendedPowerMultiBlockBase<M
          */
         MODULE_LEFT = 0;
         MODULE_RIGHT = 0;
-        isLeftModule = false;
-        if (HeatCoilTier > 0 && !isLeftModule) {MODULE_LEFT = 1; isLeftModule = true;}
-        if (CoolCoilTier > 0 && !isLeftModule) {MODULE_LEFT = 2; isLeftModule = true;}
-        isRightModule = false;
-        if (HeatCoilTier > 0 && !isRightModule) {MODULE_RIGHT = 1; isRightModule = true;}
-        if (CoolCoilTier > 0 && !isRightModule) {MODULE_RIGHT = 2; isRightModule = true;}
+        boolean HEAT_PIPE = stackSize.getTagCompound().getCompoundTag("channels").getInteger("heat_pipe") > 0;
+        boolean COOL_PIPE = stackSize.getTagCompound().getCompoundTag("channels").getInteger("cool_pipe") > 0;
+        boolean COMPR_PIPE = stackSize.getTagCompound().getCompoundTag("channels").getInteger("compress_pipe") > 0;
+        boolean VACUUM_PIPE = stackSize.getTagCompound().getCompoundTag("channels").getInteger("vacuum_pipe") > 0;
+        //right
+        if (HEAT_PIPE && (MODULE_LEFT == 0)) MODULE_LEFT = 1;
+        if (COOL_PIPE && (MODULE_LEFT == 0)) MODULE_LEFT = 2;
+        if (COMPR_PIPE && (MODULE_LEFT == 0)) MODULE_LEFT = 3;
+        if (VACUUM_PIPE && (MODULE_LEFT == 0)) MODULE_LEFT = 4;
+        if (MODULE_LEFT != 0) {
+            MODULE_RIGHT = MODULE_LEFT;
+            MODULE_LEFT = 0;
+        }
+        //left
+        if (HEAT_PIPE && (MODULE_LEFT == 0) && !(MODULE_RIGHT == 1)) MODULE_LEFT = 1;
+        if (COOL_PIPE && (MODULE_LEFT == 0) && !(MODULE_RIGHT == 2)) MODULE_LEFT = 2;
+        if (COMPR_PIPE && (MODULE_LEFT == 0) && !(MODULE_RIGHT == 3)) MODULE_LEFT = 3;
+        if (VACUUM_PIPE && (MODULE_LEFT == 0) && !(MODULE_RIGHT == 4)) MODULE_LEFT = 4;
         switch (MODULE_LEFT) {
             case 1 -> buildPiece(TEMP_HEAT_MODULE_L, stackSize, hintsOnly, 5, 3, 0);
             case 2 -> buildPiece(TEMP_COOL_MODULE_L, stackSize, hintsOnly, 5, 3, 0);
-            default -> isLeftModule = false; //this line does nothing
+            case 4 -> buildPiece(VACUUM_MODULE_L, stackSize, hintsOnly, 5, 3, 0);
+            default -> MODULE_LEFT = 0; //this line does nothing
         }
         switch (MODULE_RIGHT) {
-            case 1 -> buildPiece(TEMP_HEAT_MODULE_R, stackSize, hintsOnly, 5, 3, 0);
-            case 2 -> buildPiece(TEMP_COOL_MODULE_R, stackSize, hintsOnly, 5, 3, 0);
-            default -> isRightModule = false; //this line does nothing
+            case 1 -> buildPiece(TEMP_HEAT_MODULE_R, stackSize, hintsOnly, -3, 3, 0);
+            case 2 -> buildPiece(TEMP_COOL_MODULE_R, stackSize, hintsOnly, -3, 3, 0);
+            case 4 -> buildPiece(VACUUM_MODULE_R, stackSize, hintsOnly, -3, 3, 0);
+            default -> MODULE_LEFT = 0; //this line does nothing
         }
-
     }
 
     @Override
@@ -421,23 +574,56 @@ public class MTEAdvancedChemicalReactor extends MTEExtendedPowerMultiBlockBase<M
     }
 
     @Override
-    public int getMaxParallelRecipes() {return (4*GTUtility.getTier(this.getMaxInputVoltage()));}
+    public int getMaxParallelRecipes() {
+        return (4*GTUtility.getTier(this.getMaxInputVoltage()));
+    }
+
     @Override
-    public RecipeMap<?> getRecipeMap() {return RecipeMaps.multiblockAdvancedChemicalReactorRecipes;}
+    public RecipeMap<?> getRecipeMap() {
+        return RecipeMaps.multiblockAdvancedChemicalReactorRecipes;
+    }
+
     @Override
-    public int getMaxEfficiency(ItemStack aStack) {return 10000;}
+    public int getMaxEfficiency(ItemStack aStack) {
+        return 10000;
+    }
+
     @Override
-    public int getDamageToComponent(ItemStack aStack) {return 0;}
+    public int getDamageToComponent(ItemStack aStack) {
+        return 0;
+    }
+
     @Override
-    public boolean explodesOnComponentBreak(ItemStack aStack) {return false;}
+    public boolean explodesOnComponentBreak(ItemStack aStack) {
+        return false;
+    }
+
     @Override
-    public boolean supportsVoidProtection() {return true;}
+    public boolean supportsVoidProtection() {
+        return true;
+    }
+
     @Override
-    public boolean supportsBatchMode() {return true;}
+    public boolean supportsBatchMode() {
+        return true;
+    }
+
     @Override
-    public boolean supportsInputSeparation() {return true;}
+    public boolean supportsInputSeparation() {
+        return true;
+    }
+
     @Override
-    public boolean supportsSingleRecipeLocking() {return true;}
+    public boolean supportsSingleRecipeLocking() {
+        return true;
+    }
+
+    @Nullable
+    private static Integer getCoolCoilMeta(Block block, Integer metaID) {
+        if (block != GregTechAPI.sBlockCoilACR) return null;
+        if (metaID > 3) return null;
+        return metaID + 1;
+    }
 
     @Nullable
     private static Integer getHeatCoilMeta(Block block, Integer metaID) {
@@ -445,11 +631,19 @@ public class MTEAdvancedChemicalReactor extends MTEExtendedPowerMultiBlockBase<M
         if (metaID < 4 || metaID > 7) return null;
         return metaID - 3;
     }
+
     @Nullable
-    private static Integer getCoolCoilMeta(Block block, Integer metaID) {
+    private static Integer getCompressCoilMeta(Block block, Integer metaID) {
         if (block != GregTechAPI.sBlockCoilACR) return null;
-        if (metaID > 3) return null;
-        return metaID + 1;
+        if (metaID < 8 || metaID > 11) return null;
+        return metaID - 7;
+    }
+
+    @Nullable
+    private static Integer getVacuumCoilMeta(Block block, Integer metaID) {
+        if (block != GregTechAPI.sBlockCoilACR) return null;
+        if (metaID < 12) return null;
+        return metaID - 11;
     }
 
     @Override
