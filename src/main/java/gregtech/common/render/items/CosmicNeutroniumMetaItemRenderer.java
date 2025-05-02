@@ -19,15 +19,15 @@ public class CosmicNeutroniumMetaItemRenderer implements IItemRenderer {
     public Random rand = new Random();
 
     public CosmicNeutroniumMetaItemRenderer() {
-        MetaGeneratedItemRenderer.registerSpecialRenderer(ItemList.Electric_Motor_UHV, this);
-        MetaGeneratedItemRenderer.registerSpecialRenderer(ItemList.Electric_Piston_UHV, this);
-        MetaGeneratedItemRenderer.registerSpecialRenderer(ItemList.Robot_Arm_UHV, this);
-        MetaGeneratedItemRenderer.registerSpecialRenderer(ItemList.Electric_Pump_UHV, this);
-        MetaGeneratedItemRenderer.registerSpecialRenderer(ItemList.Conveyor_Module_UHV, this);
-        MetaGeneratedItemRenderer.registerSpecialRenderer(ItemList.FluidRegulator_UHV, this);
-        MetaGeneratedItemRenderer.registerSpecialRenderer(ItemList.Emitter_UHV, this);
-        MetaGeneratedItemRenderer.registerSpecialRenderer(ItemList.Sensor_UHV, this);
-        MetaGeneratedItemRenderer.registerSpecialRenderer(ItemList.Field_Generator_UHV, this);
+        addRender(ItemList.Electric_Motor_UHV);
+        addRender(ItemList.Electric_Piston_UHV);
+        addRender(ItemList.Robot_Arm_UHV);
+        addRender(ItemList.Electric_Pump_UHV);
+        addRender(ItemList.Conveyor_Module_UHV);
+        addRender(ItemList.FluidRegulator_UHV);
+        addRender(ItemList.Emitter_UHV);
+        addRender(ItemList.Sensor_UHV);
+        addRender(ItemList.Field_Generator_UHV);
     }
 
     // spotless:off
@@ -112,6 +112,10 @@ public class CosmicNeutroniumMetaItemRenderer implements IItemRenderer {
         }
 
         GL11.glPopMatrix();
+    }
+
+    private void addRender(ItemList item) {
+        MetaGeneratedItemRenderer.registerSpecialRenderer(item, this);
     }
 
 }

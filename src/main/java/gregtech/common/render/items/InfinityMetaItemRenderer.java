@@ -4,6 +4,7 @@ import java.util.Random;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraftforge.client.IItemRenderer;
@@ -20,15 +21,16 @@ public class InfinityMetaItemRenderer implements IItemRenderer {
     public Random rand = new Random();
 
     public InfinityMetaItemRenderer() {
-        MetaGeneratedItemRenderer.registerSpecialRenderer(ItemList.Electric_Motor_UEV, this);
-        MetaGeneratedItemRenderer.registerSpecialRenderer(ItemList.Electric_Piston_UEV, this);
-        MetaGeneratedItemRenderer.registerSpecialRenderer(ItemList.Robot_Arm_UEV, this);
-        MetaGeneratedItemRenderer.registerSpecialRenderer(ItemList.Electric_Pump_UEV, this);
-        MetaGeneratedItemRenderer.registerSpecialRenderer(ItemList.Conveyor_Module_UEV, this);
-        MetaGeneratedItemRenderer.registerSpecialRenderer(ItemList.FluidRegulator_UEV, this);
-        MetaGeneratedItemRenderer.registerSpecialRenderer(ItemList.Emitter_UEV, this);
-        MetaGeneratedItemRenderer.registerSpecialRenderer(ItemList.Sensor_UEV, this);
-        MetaGeneratedItemRenderer.registerSpecialRenderer(ItemList.Field_Generator_UEV, this);
+        addRender(ItemList.Electric_Motor_UEV);
+        addRender(ItemList.Electric_Piston_UEV);
+        addRender(ItemList.Robot_Arm_UEV);
+        addRender(ItemList.Electric_Pump_UEV);
+        addRender(ItemList.Conveyor_Module_UEV);
+        addRender(ItemList.FluidRegulator_UEV);
+        addRender(ItemList.Emitter_UEV);
+        addRender(ItemList.Sensor_UEV);
+        addRender(ItemList.Field_Generator_UEV);
+        addRender(ItemList.Field_Generator_UEV);
     }
 
     @Override
@@ -127,6 +129,10 @@ public class InfinityMetaItemRenderer implements IItemRenderer {
 
             GL11.glPopMatrix();
         }
+    }
+
+    private void addRender(ItemList item) {
+        MetaGeneratedItemRenderer.registerSpecialRenderer(item, this);
     }
 
 }

@@ -21,15 +21,15 @@ public class TranscendentalMetaItemRenderer implements IItemRenderer {
     public Random rand = new Random();
 
     public TranscendentalMetaItemRenderer() {
-        MetaGeneratedItemRenderer.registerSpecialRenderer(ItemList.Electric_Motor_UIV, this);
-        MetaGeneratedItemRenderer.registerSpecialRenderer(ItemList.Electric_Piston_UIV, this);
-        MetaGeneratedItemRenderer.registerSpecialRenderer(ItemList.Robot_Arm_UIV, this);
-        MetaGeneratedItemRenderer.registerSpecialRenderer(ItemList.Electric_Pump_UIV, this);
-        MetaGeneratedItemRenderer.registerSpecialRenderer(ItemList.Conveyor_Module_UIV, this);
-        MetaGeneratedItemRenderer.registerSpecialRenderer(ItemList.FluidRegulator_UIV, this);
-        MetaGeneratedItemRenderer.registerSpecialRenderer(ItemList.Emitter_UIV, this);
-        MetaGeneratedItemRenderer.registerSpecialRenderer(ItemList.Sensor_UIV, this);
-        MetaGeneratedItemRenderer.registerSpecialRenderer(ItemList.Field_Generator_UIV, this);
+        addRender(ItemList.Electric_Motor_UIV);
+        addRender(ItemList.Electric_Piston_UIV);
+        addRender(ItemList.Robot_Arm_UIV);
+        addRender(ItemList.Electric_Pump_UIV);
+        addRender(ItemList.Conveyor_Module_UIV);
+        addRender(ItemList.FluidRegulator_UIV);
+        addRender(ItemList.Emitter_UIV);
+        addRender(ItemList.Sensor_UIV);
+        addRender(ItemList.Field_Generator_UIV);
     }
 
     @Override
@@ -122,6 +122,10 @@ public class TranscendentalMetaItemRenderer implements IItemRenderer {
 
         GL11.glColor4f(1f, 1f, 1f, 255);
 
+    }
+
+    private void addRender(ItemList item) {
+        MetaGeneratedItemRenderer.registerSpecialRenderer(item, this);
     }
 
 }

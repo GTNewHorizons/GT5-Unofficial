@@ -30,7 +30,7 @@ public class GlitchEffectMetaItemRenderer implements IItemRenderer {
     double offsetCyan = 0;
 
     public GlitchEffectMetaItemRenderer() {
-
+        addRender(ItemList.Phononic_Seed_Crystal);
     }
 
     @Override
@@ -102,4 +102,9 @@ public class GlitchEffectMetaItemRenderer implements IItemRenderer {
             }
         }
     }
+
+    private void addRender(ItemList item) {
+        MetaGeneratedItemRenderer.registerSpecialRenderer(item, this);
+    }
+
 }
