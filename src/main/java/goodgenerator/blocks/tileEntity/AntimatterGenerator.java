@@ -387,7 +387,6 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase
             .addInfo("1. Molten Copper: " + EnumChatFormatting.GOLD + "1.00")
             .addInfo("2. Molten SC UIV Base: " + EnumChatFormatting.GOLD + "1.02")
             .addInfo("3. Molten SC UMV Base: " + EnumChatFormatting.GOLD + "1.03")
-            .addInfo("4. Molten Black Dwarf Matter: " + EnumChatFormatting.GOLD + "1.04")
             .addSeparator()
             .addInfo("Enable wireless EU mode with screwdriver")
             .addInfo("Wireless mode requires SC UMV Base or better")

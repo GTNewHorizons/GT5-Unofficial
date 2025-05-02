@@ -269,8 +269,9 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
                     + "Antimatter"
                     + EnumChatFormatting.GRAY
                     + "^0.5 L of fluid per cycle)")
-            .addInfo("1. Molten Purified Tengam = " + EnumChatFormatting.GREEN + "0.15" + EnumChatFormatting.GRAY)
-            .addInfo("2. Tachyon Rich Fluid = " + EnumChatFormatting.GREEN + "0.3" + EnumChatFormatting.GRAY)
+            .addInfo("1. Molten Purified Tengam = " + EnumChatFormatting.GREEN + "0.1" + EnumChatFormatting.GRAY)
+            .addInfo("2. Tachyon Rich Fluid = " + EnumChatFormatting.GREEN + "0.2" + EnumChatFormatting.GRAY)
+            .addInfo("3. Molten MagMatter = " + EnumChatFormatting.GREEN + "0.3" + EnumChatFormatting.GRAY)
             .addInfo(
                 EnumChatFormatting.DARK_PURPLE + ""
                     + EnumChatFormatting.BOLD
