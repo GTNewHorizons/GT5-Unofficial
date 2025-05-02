@@ -247,7 +247,7 @@ public class MTESteamWaterPump extends MTESteamMultiBase<MTESteamWaterPump> impl
                     + EnumChatFormatting.RED
                     + " of Steam."
                     + EnumChatFormatting.RESET)
-            .beginStructureBlock(3, 3, 5, false)
+            .beginStructureBlock(3, 3, 4, false)
             .addOutputHatch(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + " Any casing", 1)
             .addStructureInfo(
                 EnumChatFormatting.WHITE + "Steam Input Hatch "
