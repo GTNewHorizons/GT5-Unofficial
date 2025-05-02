@@ -312,7 +312,7 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Antimatter Generator")
+        tt.addMachineType("Antimatter Generator, SLAM")
             .addInfo("Annihilating Antimatter like it's 2205!")
             .addSeparator()
             .addInfo(
