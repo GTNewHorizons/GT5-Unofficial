@@ -363,7 +363,7 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase
                     + "Antimatter"
                     + EnumChatFormatting.GRAY
                     + ")")
-            .addInfo("Any excess EU generated will be " + EnumChatFormatting.RED + "voided" + EnumChatFormatting.GRAY)
+            .addInfo("Any excess EU generated will be " + EnumChatFormatting.RED + "voided!" + EnumChatFormatting.GRAY)
             .addSeparator()
             .addInfo(
                 "Energy production formula: " + EnumChatFormatting.GREEN
