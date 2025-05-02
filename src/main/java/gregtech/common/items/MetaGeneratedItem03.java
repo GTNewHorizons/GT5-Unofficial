@@ -1233,7 +1233,7 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 implements IItemFi
             .set(addItem(Optically_Compatible_Memory.ID, "Optically Compatible Memory", "Its in the name!", o));
 
         ItemList.Timepiece.set(addItem(Timepiece.ID, "Timepiece", "Beware of the kid with the hat", o))
-            .setRender(new TranscendentalMetaItemRenderer());
+            .setRender(new GlitchEffectMetaItemRenderer());
         ItemList.Transdimensional_Alignment_Matrix.set(
             addItem(
                 Transdimensional_Alignment_Matrix.ID,
