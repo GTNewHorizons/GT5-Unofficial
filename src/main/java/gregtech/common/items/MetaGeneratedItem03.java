@@ -280,7 +280,6 @@ import gregtech.common.covers.CoverMetricsTransmitter;
 import gregtech.common.covers.CoverSolarPanel;
 import gregtech.common.render.items.GlitchEffectMetaItemRenderer;
 import gregtech.common.render.items.InfinityMetaItemRenderer;
-import gregtech.common.render.items.TranscendentalMetaItemRenderer;
 import mods.railcraft.common.items.firestone.IItemFirestoneBurning;
 
 @Optional.Interface(iface = "mods.railcraft.common.items.firestone.IItemFirestoneBurning", modid = Mods.Names.RAILCRAFT)
