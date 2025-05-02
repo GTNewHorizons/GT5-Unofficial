@@ -67,7 +67,7 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
     implements ISurvivalConstructable, IOverclockDescriptionProvider {
 
     private static final FluidStack[] magneticUpgrades = { Materials.TengamPurified.getMolten(1L),
-        MaterialsUEVplus.Time.getMolten(1L) };
+        MaterialsUEVplus.Time.getMolten(1L), MaterialsUEVplus.MagMatter.getMolten(1L) };
     private static final FluidStack[] gravityUpgrades = { MaterialsUEVplus.SpaceTime.getMolten(1L),
         MaterialsUEVplus.Space.getMolten(1L), MaterialsUEVplus.Eternity.getMolten(1L) };
     private static final FluidStack[] containmentUpgrades = { GGMaterial.shirabon.getMolten(1),
@@ -520,7 +520,7 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
 
         List<FluidStack> inputFluids = getStoredFluids();
         for (FluidStack inputFluid : inputFluids) {
-            setModifiers(inputFluid, -0.15f, magneticUpgrades, MAGNETIC_ID);
+            setModifiers(inputFluid, -0.1f, magneticUpgrades, MAGNETIC_ID);
             setModifiers(inputFluid, -0.05f, gravityUpgrades, GRAVITY_ID);
             setModifiers(inputFluid, 0.05f, containmentUpgrades, CONTAINMENT_ID);
             setModifiers(inputFluid, 0.05f, activationUpgrades, ACTIVATION_ID);
