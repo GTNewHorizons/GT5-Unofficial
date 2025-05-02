@@ -373,6 +373,7 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase
                     + EnumChatFormatting.UNDERLINE
                     + "A"
                     + EnumChatFormatting.RESET
+                    + EnumChatFormatting.GRAY
                     + "*("
                     + EnumChatFormatting.DARK_AQUA
                     + "Antimatter"
@@ -416,6 +417,7 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase
                     + EnumChatFormatting.GOLD
                     + "nergy production boost"
                     + EnumChatFormatting.RESET
+                    + EnumChatFormatting.GRAY
                     + ":")
             .addInfo("1. Molten Copper: " + EnumChatFormatting.GOLD + "1.00")
             .addInfo("2. Molten Superconductor Base UIV: " + EnumChatFormatting.GOLD + "1.02")
