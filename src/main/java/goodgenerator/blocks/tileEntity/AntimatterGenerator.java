@@ -367,9 +367,7 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase
             .addSeparator()
             .addInfo(
                 "Energy production formula: " + EnumChatFormatting.GREEN
-                    + ""
                     + EnumChatFormatting.BOLD
-                    + ""
                     + EnumChatFormatting.UNDERLINE
                     + "A"
                     + EnumChatFormatting.RESET
@@ -380,24 +378,19 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase
                     + EnumChatFormatting.GRAY
                     + ")^"
                     + EnumChatFormatting.GOLD
-                    + ""
                     + EnumChatFormatting.BOLD
-                    + ""
                     + EnumChatFormatting.UNDERLINE
                     + "E"
                     + EnumChatFormatting.RESET
-                    + ""
                     + EnumChatFormatting.GRAY
                     + " EU/Cycle")
             .addInfo("Cannot produce more than " + GTUtility.formatNumbers(9.2e18) + " EU per cycle")
             .addInfo(
-                EnumChatFormatting.GREEN + ""
+                "" + EnumChatFormatting.GREEN
                     + EnumChatFormatting.BOLD
-                    + ""
                     + EnumChatFormatting.UNDERLINE
                     + "A"
                     + EnumChatFormatting.RESET
-                    + ""
                     + EnumChatFormatting.GREEN
                     + "ntimatter energy"
                     + EnumChatFormatting.GRAY
@@ -407,13 +400,11 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase
                     + EnumChatFormatting.GRAY
                     + " EU/L")
             .addInfo(
-                EnumChatFormatting.GOLD + ""
+                "" + EnumChatFormatting.GOLD
                     + EnumChatFormatting.BOLD
-                    + ""
                     + EnumChatFormatting.UNDERLINE
                     + "E"
                     + EnumChatFormatting.RESET
-                    + ""
                     + EnumChatFormatting.GOLD
                     + "nergy production boost"
                     + EnumChatFormatting.RESET

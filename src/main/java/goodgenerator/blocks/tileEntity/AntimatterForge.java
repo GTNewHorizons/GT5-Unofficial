@@ -169,7 +169,9 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
             .addInfo(EnumChatFormatting.LIGHT_PURPLE + "Dimensions not included!" + EnumChatFormatting.GRAY)
             .addInfo("Converts protomatter into antimatter")
             .addInfo(
-                "Passively consumes "+GTUtility.formatNumbers(10_000_000)+" + (" + EnumChatFormatting.DARK_AQUA
+                "Passively consumes " + GTUtility.formatNumbers(10_000_000)
+                    + " + ("
+                    + EnumChatFormatting.DARK_AQUA
                     + "Antimatter"
                     + EnumChatFormatting.GRAY
                     + " * "
@@ -178,13 +180,10 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
                     + passiveBaseExp
                     + " - "
                     + EnumChatFormatting.GREEN
-                    + ""
                     + EnumChatFormatting.BOLD
-                    + ""
                     + EnumChatFormatting.UNDERLINE
                     + "M"
                     + EnumChatFormatting.RESET
-                    + ""
                     + EnumChatFormatting.GRAY
                     + ") EU/t")
             .addInfo("The consumption decays by 0.5% every tick when empty")
@@ -198,13 +197,10 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
                     + activeBaseExp
                     + " - "
                     + EnumChatFormatting.DARK_PURPLE
-                    + ""
                     + EnumChatFormatting.BOLD
-                    + ""
                     + EnumChatFormatting.UNDERLINE
                     + "G"
                     + EnumChatFormatting.RESET
-                    + ""
                     + EnumChatFormatting.GRAY
                     + ") EU per cycle to produce antimatter")
             .addSeparator()
@@ -226,13 +222,10 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
                     + coefficientBaseExp
                     + " + "
                     + EnumChatFormatting.GOLD
-                    + ""
                     + EnumChatFormatting.BOLD
-                    + ""
                     + EnumChatFormatting.UNDERLINE
                     + "C"
                     + EnumChatFormatting.RESET
-                    + ""
                     + EnumChatFormatting.GRAY
                     + ")) of antimatter each cycle")
             .addInfo(
@@ -240,13 +233,10 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
                     + baseSkew
                     + " + "
                     + EnumChatFormatting.AQUA
-                    + ""
                     + EnumChatFormatting.BOLD
-                    + ""
                     + EnumChatFormatting.UNDERLINE
                     + "A"
                     + EnumChatFormatting.RESET
-                    + ""
                     + EnumChatFormatting.GRAY
                     + ", 1)")
             .addInfo("N(0.2, 1) refers to a normal distribution with a mean of 0.2 and a variance of 1")
@@ -254,13 +244,11 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
             .addSeparator()
             .addInfo("Can be supplied with stabilization fluids to improve antimatter generation")
             .addInfo(
-                EnumChatFormatting.GREEN + ""
+                "" + EnumChatFormatting.GREEN
                     + EnumChatFormatting.BOLD
-                    + ""
                     + EnumChatFormatting.UNDERLINE
                     + "M"
                     + EnumChatFormatting.RESET
-                    + ""
                     + EnumChatFormatting.GREEN
                     + "agnetic Stabilization"
                     + EnumChatFormatting.GRAY
@@ -273,13 +261,11 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
             .addInfo("2. Tachyon Rich Fluid = " + EnumChatFormatting.GREEN + "0.2" + EnumChatFormatting.GRAY)
             .addInfo("3. Molten MagMatter = " + EnumChatFormatting.GREEN + "0.3" + EnumChatFormatting.GRAY)
             .addInfo(
-                EnumChatFormatting.DARK_PURPLE + ""
+                "" + EnumChatFormatting.DARK_PURPLE
                     + EnumChatFormatting.BOLD
-                    + ""
                     + EnumChatFormatting.UNDERLINE
                     + "G"
                     + EnumChatFormatting.RESET
-                    + ""
                     + EnumChatFormatting.DARK_PURPLE
                     + "ravity Stabilization"
                     + EnumChatFormatting.GRAY
@@ -293,13 +279,11 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
                 "2. Spatially Enlarged Fluid = " + EnumChatFormatting.DARK_PURPLE + "0.10" + EnumChatFormatting.GRAY)
             .addInfo("3. Molten Eternity = " + EnumChatFormatting.DARK_PURPLE + "0.15" + EnumChatFormatting.GRAY)
             .addInfo(
-                EnumChatFormatting.GOLD + ""
+                "" + EnumChatFormatting.GOLD
                     + EnumChatFormatting.BOLD
-                    + ""
                     + EnumChatFormatting.UNDERLINE
                     + "C"
                     + EnumChatFormatting.RESET
-                    + ""
                     + EnumChatFormatting.GOLD
                     + "ontainment Stabilization"
                     + EnumChatFormatting.GRAY
@@ -311,13 +295,11 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
             .addInfo("1. Molten Shirabon = " + EnumChatFormatting.GOLD + "0.05" + EnumChatFormatting.GRAY)
             .addInfo("2. Molten MHDCSM = " + EnumChatFormatting.GOLD + "0.10" + EnumChatFormatting.GRAY)
             .addInfo(
-                EnumChatFormatting.AQUA + ""
+                "" + EnumChatFormatting.AQUA
                     + EnumChatFormatting.BOLD
-                    + ""
                     + EnumChatFormatting.UNDERLINE
                     + "A"
                     + EnumChatFormatting.RESET
-                    + ""
                     + EnumChatFormatting.AQUA
                     + "ctivation Stabilization"
                     + EnumChatFormatting.GRAY
