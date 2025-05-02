@@ -20,6 +20,7 @@ import java.util.Map;
 import java.util.Scanner;
 import java.util.function.Function;
 
+import gregtech.common.render.items.CosmicNeutroniumMetaItemRenderer;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GLAllocation;
@@ -652,6 +653,7 @@ public class GTClient extends GTProxy implements Runnable {
         new InfiniteSprayCanRenderer();
         new InfinityMetaItemRenderer();
         new TranscendentalMetaItemRenderer();
+        new CosmicNeutroniumMetaItemRenderer();
         MinecraftForge.EVENT_BUS.register(new NEIGTConfig());
         MinecraftForge.EVENT_BUS.register(new GTMouseEventHandler());
     }
