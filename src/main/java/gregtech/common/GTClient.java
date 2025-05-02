@@ -104,6 +104,7 @@ import gregtech.common.render.items.DataStickRenderer;
 import gregtech.common.render.items.InfiniteSprayCanRenderer;
 import gregtech.common.render.items.InfinityMetaItemRenderer;
 import gregtech.common.render.items.MetaGeneratedItemRenderer;
+import gregtech.common.render.items.TranscendentalMetaItemRenderer;
 import gregtech.common.tileentities.debug.MTEAdvDebugStructureWriter;
 import gregtech.loaders.ExtraIcons;
 import gregtech.loaders.misc.GTBees;
@@ -650,6 +651,7 @@ public class GTClient extends GTProxy implements Runnable {
         new DataStickRenderer();
         new InfiniteSprayCanRenderer();
         new InfinityMetaItemRenderer();
+        new TranscendentalMetaItemRenderer();
         MinecraftForge.EVENT_BUS.register(new NEIGTConfig());
         MinecraftForge.EVENT_BUS.register(new GTMouseEventHandler());
     }
