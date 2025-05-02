@@ -388,7 +388,7 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase
             .addInfo("2. Molten Superconductor Base UIV: " + EnumChatFormatting.GOLD + "1.02")
             .addInfo("3. Molten Superconductor Base UMV: " + EnumChatFormatting.GOLD + "1.03")
             .addSeparator()
-            .addInfo("Enable wireless EU mode with screwdriver")
+            .addInfo("Switch the power destination to your wireless network with a screwdriver")
             .addInfo("Wireless mode requires Superconductor Base UMV to work")
             .addInfo("Wireless mode uses hatch capacity limit")
             .beginStructureBlock(35, 43, 35, false)
