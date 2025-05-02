@@ -88,6 +88,7 @@ import gregtech.common.config.OPStuff;
 import gregtech.common.config.Other;
 import gregtech.common.config.Worldgen;
 import gregtech.common.misc.GTCommand;
+import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.misc.spaceprojects.commands.SPCommand;
 import gregtech.common.misc.spaceprojects.commands.SPMCommand;
 import gregtech.common.misc.spaceprojects.commands.SpaceProjectCommand;
@@ -343,6 +344,8 @@ public class GTMod implements IGTMod {
         if (Mods.HoloInventory.isModLoaded()) {
             HoloInventory.init();
         }
+
+        GTStructureChannels.register();
 
         LHECoolantRegistry.registerBaseCoolants();
 
