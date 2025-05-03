@@ -1110,6 +1110,16 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
             .height(18)
             .marginBottom(4);
         List<IPanelHandler> asteroidPanels = new ArrayList<>();
+        IPanelHandler droneSelectorPanel = syncManager.panel(
+            "droneSelectorPanel",
+            (p_syncManager,
+                syncHandler) -> opendroneSelectorPanel(p_syncManager, syncHandler, droneSyncer, "asteroidInfo", panel),
+            true);
+        IPanelHandler minerCalculator = syncManager.panel(
+            "spaceMinerCalculator",
+            (p_syncManager,
+                syncHandler) -> openSpaceMinerCalculator(p_syncManager, syncHandler, parent, asteroidPanels),
+            true);
         for (int i = 0; i < uniqueAsteroidList.size(); i++) {
             int finalI = i;
             AsteroidData data = SpaceMiningRecipes.uniqueAsteroidList.get(i);
@@ -1123,6 +1133,9 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
                 : GTOreDictUnificator.get(data.orePrefixes, data.output[0], 1);
             ButtonWidget asteroidButton = new ButtonWidget<>().size(18, 18)
                 .overlay(new DynamicDrawable(() -> {
+                    // Temporary solution for jank item rendering TODO: REMOVE THIS WHEN IT'S FIXED!
+                    if (asteroidPanels.stream()
+                        .anyMatch(IPanelHandler::isPanelOpen) || minerCalculator.isPanelOpen()) return null;
                     if (matchesFilters(
                         data,
                         textFieldSyncer.getValue(),
@@ -1160,16 +1173,6 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
                     .marginBottom(4);
             } ;
         }
-        IPanelHandler droneSelectorPanel = syncManager.panel(
-            "droneSelectorPanel",
-            (p_syncManager,
-                syncHandler) -> opendroneSelectorPanel(p_syncManager, syncHandler, droneSyncer, "asteroidInfo", panel),
-            true);
-        IPanelHandler minerCalculator = syncManager.panel(
-            "spaceMinerCalculator",
-            (p_syncManager,
-                syncHandler) -> openSpaceMinerCalculator(p_syncManager, syncHandler, parent, asteroidPanels),
-            true);
         asteroidColumn.child(
             new Column().widthRel(1)
                 .height(18 * 4)
@@ -1427,9 +1430,13 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
             GTRecipe asteroid = asteroidPair.second();
             SpaceMiningData data = asteroid.getMetadata(IGRecipeMaps.SPACE_MINING_DATA);
             ButtonWidget asteroidButton = new ButtonWidget<>().size(18, 18)
-                .overlay(
-                    new ItemDrawable(asteroid.mOutputs[0]).asIcon()
-                        .size(16, 16))
+                .overlay(new DynamicDrawable(() -> {
+                    // Temporary solution for jank item rendering TODO: REMOVE THIS WHEN IT'S FIXED!
+                    if (asteroidPanels.stream()
+                        .anyMatch(IPanelHandler::isPanelOpen)) return null;
+                    return new ItemDrawable(asteroid.mOutputs[0]).asIcon()
+                        .size(16, 16);
+                }))
                 .tooltipBuilder(
                     t -> t.addLine(IKey.str(EnumChatFormatting.DARK_RED + data.getAsteroidNameLocalized()))
                         .addLine(IKey.str("Click me to get more info!")))
@@ -1500,7 +1507,7 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
 
             @Override
             public boolean isDraggable() {
-                return false;
+                return true;
             }
         };
         AsteroidData data = SpaceMiningRecipes.uniqueAsteroidList.get(asteroidIndex);
