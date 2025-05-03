@@ -41,7 +41,7 @@ import gtnhintergalactic.item.ItemMiningDrones;
  */
 public class SpaceMiningRecipes {
 
-    // Asteroids for drone tier -> Asteroids at given distance
+    // Asteroids for drone tier -> Asteroids at given distance (and their index on the unique asteroid list)
     public static final List<Map<Integer, List<Pair<Integer, GTRecipe>>>> asteroidDistanceMap = new ArrayList<>();
     public static final List<AsteroidData> uniqueAsteroidList = new ArrayList<>();
     /** List of mining drones to be used in recipe creation */

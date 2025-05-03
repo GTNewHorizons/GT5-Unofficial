@@ -1175,6 +1175,7 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
         asteroidColumn.child(
             new Column().widthRel(1)
                 .height(18 * 4)
+                // Text fields
                 .child(
                     new TextFieldWidgetWithOverlay(
                         () -> !search.get()
@@ -1199,6 +1200,7 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
                         .value(moduleTierSyncer)
                         .setDefaultNumber(0)
                         .setNumbers(0, 3))
+                // Drone selection button
                 .child(
                     new Row().widthRel(1)
                         .height(18)
@@ -1217,6 +1219,7 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
                                         return true;
                                     })
                                     .align(Alignment.CenterLeft))
+                        // Calculator Button
                         .child(
                             new ButtonWidget<>().size(18, 18)
                                 .overlay(calculatorTexture)
