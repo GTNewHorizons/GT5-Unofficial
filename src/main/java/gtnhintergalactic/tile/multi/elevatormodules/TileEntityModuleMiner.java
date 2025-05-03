@@ -1,8 +1,12 @@
 package gtnhintergalactic.tile.multi.elevatormodules;
 
 import static gregtech.api.enums.GTValues.V;
-import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 import static gregtech.api.util.GTUtility.validMTEList;
+import static gtnhintergalactic.recipe.IGRecipeMaps.spaceMiningRecipes;
+import static gtnhintergalactic.recipe.SpaceMiningRecipes.MINING_DRILLS;
+import static gtnhintergalactic.recipe.SpaceMiningRecipes.MINING_DRONES;
+import static gtnhintergalactic.recipe.SpaceMiningRecipes.MINING_RODS;
+import static tectech.Reference.MODID;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -13,30 +17,35 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
 import org.jetbrains.annotations.NotNull;
 
-import com.gtnewhorizons.modularui.api.drawable.IDrawable;
-import com.gtnewhorizons.modularui.api.drawable.UITexture;
-import com.gtnewhorizons.modularui.api.forge.ItemStackHandler;
-import com.gtnewhorizons.modularui.api.math.Alignment;
-import com.gtnewhorizons.modularui.api.screen.ModularWindow;
-import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
-import com.gtnewhorizons.modularui.api.widget.Widget;
-import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
-import com.gtnewhorizons.modularui.common.widget.DynamicPositionedColumn;
-import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
-import com.gtnewhorizons.modularui.common.widget.SlotGroup;
-import com.gtnewhorizons.modularui.common.widget.SlotWidget;
-import com.gtnewhorizons.modularui.common.widget.TextWidget;
+import com.cleanroommc.modularui.api.IPanelHandler;
+import com.cleanroommc.modularui.api.drawable.IKey;
+import com.cleanroommc.modularui.api.widget.IWidget;
+import com.cleanroommc.modularui.drawable.ItemDrawable;
+import com.cleanroommc.modularui.drawable.UITexture;
+import com.cleanroommc.modularui.network.NetworkUtils;
+import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.screen.RichTooltip;
+import com.cleanroommc.modularui.utils.Alignment;
+import com.cleanroommc.modularui.utils.item.ItemStackHandler;
+import com.cleanroommc.modularui.value.sync.PanelSyncManager;
+import com.cleanroommc.modularui.widget.SingleChildWidget;
+import com.cleanroommc.modularui.widget.sizer.Area;
+import com.cleanroommc.modularui.widgets.ButtonWidget;
+import com.cleanroommc.modularui.widgets.ListWidget;
+import com.cleanroommc.modularui.widgets.layout.Column;
+import com.cleanroommc.modularui.widgets.layout.Flow;
+import com.cleanroommc.modularui.widgets.layout.Row;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -55,6 +64,7 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
+import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
@@ -64,8 +74,8 @@ import gregtech.common.misc.spaceprojects.enums.SolarSystem;
 import gregtech.common.misc.spaceprojects.interfaces.ISpaceProject;
 import gregtech.common.tileentities.machines.MTEHatchInputBusME;
 import gtPlusPlus.core.material.MaterialsElements;
-import gtnhintergalactic.gui.IG_UITextures;
 import gtnhintergalactic.item.ItemMiningDrones;
+import gtnhintergalactic.recipe.AsteroidData;
 import gtnhintergalactic.recipe.IGRecipeMaps;
 import gtnhintergalactic.recipe.SpaceMiningData;
 import gtnhintergalactic.recipe.SpaceMiningRecipes;
@@ -73,8 +83,6 @@ import gtnhintergalactic.recipe.SpaceMiningRecipes.WeightedAsteroidList;
 import gtnhintergalactic.spaceprojects.ProjectAsteroidOutpost;
 import gtnhintergalactic.tile.multi.elevator.TileEntitySpaceElevator;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
-import tectech.TecTech;
-import tectech.thing.gui.TecTechUITextures;
 import tectech.thing.metaTileEntity.multi.base.INameFunction;
 import tectech.thing.metaTileEntity.multi.base.IStatusFunction;
 import tectech.thing.metaTileEntity.multi.base.LedStatus;
@@ -181,7 +189,7 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
     /** List for ore generation. Can either be a white- or blacklist */
     protected HashSet<String> configuredOres;
     /** Handler that holds the visual whitelist */
-    protected ItemStackHandler whiteListHandler = new ItemStackHandler(WHITELIST_SIZE);
+    // protected ItemStackHandler whiteListHandler = new ItemStackHandler(WHITELIST_SIZE);
     /** The distance when prevRecipes was computed */
     protected int prevDistance = 0;
     /** Bitmask of tiers for which a drone, drills, and rods were present when prevRecipes was computed */
@@ -235,9 +243,9 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
         isWhitelisted = aNBT.getBoolean(IS_WHITELISTED_NBT_TAG);
-        if (whiteListHandler != null) {
-            whiteListHandler.deserializeNBT(aNBT.getCompoundTag(WHITELIST_NBT_TAG));
-        }
+        // if (whiteListHandler != null) {
+        // whiteListHandler.deserializeNBT(aNBT.getCompoundTag(WHITELIST_NBT_TAG));
+        // }
         generateOreConfigurationList();
     }
 
@@ -250,14 +258,14 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
         aNBT.setBoolean(IS_WHITELISTED_NBT_TAG, isWhitelisted);
-        if (whiteListHandler != null) {
-            aNBT.setTag(WHITELIST_NBT_TAG, whiteListHandler.serializeNBT());
-        }
+        // if (whiteListHandler != null) {
+        // aNBT.setTag(WHITELIST_NBT_TAG, whiteListHandler.serializeNBT());
+        // }
     }
 
     @Override
     public RecipeMap<?> getRecipeMap() {
-        return IGRecipeMaps.spaceMiningRecipes;
+        return spaceMiningRecipes;
     }
 
     /**
@@ -370,7 +378,7 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
             recipes = prevRecipes;
         } else {
             recipes = new WeightedAsteroidList(
-                IGRecipeMaps.spaceMiningRecipes.findRecipeQuery()
+                spaceMiningRecipes.findRecipeQuery()
                     .items(inputs)
                     .fluids(fluidInputs)
                     .voltage(tVoltage)
@@ -603,11 +611,11 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
         } else {
             configuredOres.clear();
         }
-        if (whiteListHandler != null) {
-            for (ItemStack item : whiteListHandler.getStacks()) {
-                configuredOres.add(getOreString(item));
-            }
-        }
+        // if (whiteListHandler != null) {
+        // for (ItemStack item : whiteListHandler.getStacks()) {
+        // configuredOres.add(getOreString(item));
+        // }
+        // }
     }
 
     /**
@@ -755,124 +763,124 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
         stepSetting = hatch_3.makeInParameter(0, 0, STEP_SETTING_NAME, STEP_STATUS);
         distanceDisplay = hatch_0.makeOutParameter(1, 1, DISTANCE_SETTING_NAME, DISTANCE_STATUS);
     }
+    //
+    // /**
+    // * @return Button that will be generated in place of the safe void button
+    // */
+    // @Override
+    // protected ButtonWidget createSafeVoidButton() {
+    // Widget button = new ButtonWidget().setOnClick((clickData, widget) -> {
+    // TecTech.proxy.playSound(getBaseMetaTileEntity(), "fx_click");
+    // if (!widget.isClient()) {
+    // widget.getContext()
+    // .openSyncedWindow(WHITELIST_WINDOW_ID);
+    // }
+    // })
+    // .setPlayClickSound(false)
+    // .setBackground(TecTechUITextures.BUTTON_STANDARD_16x16, IG_UITextures.OVERLAY_BUTTON_OPTIONS)
+    // .setPos(174, 132)
+    // .setSize(16, 16);
+    // button.addTooltip("Configure Filter")
+    // .setTooltipShowUpDelay(TOOLTIP_DELAY);
+    // return (ButtonWidget) button;
+    // }
 
-    /**
-     * @return Button that will be generated in place of the safe void button
-     */
-    @Override
-    protected ButtonWidget createSafeVoidButton() {
-        Widget button = new ButtonWidget().setOnClick((clickData, widget) -> {
-            TecTech.proxy.playSound(getBaseMetaTileEntity(), "fx_click");
-            if (!widget.isClient()) {
-                widget.getContext()
-                    .openSyncedWindow(WHITELIST_WINDOW_ID);
-            }
-        })
-            .setPlayClickSound(false)
-            .setBackground(TecTechUITextures.BUTTON_STANDARD_16x16, IG_UITextures.OVERLAY_BUTTON_OPTIONS)
-            .setPos(174, 132)
-            .setSize(16, 16);
-        button.addTooltip("Configure Filter")
-            .setTooltipShowUpDelay(TOOLTIP_DELAY);
-        return (ButtonWidget) button;
-    }
+    // /**
+    // * Add widgets to the GUI
+    // *
+    // * @param builder Used window builder
+    // * @param buildContext Context of the GUI
+    // */
+    // @Override
+    // public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
+    // super.addUIWidgets(builder, buildContext);
+    // builder.widget(new FakeSyncWidget.BooleanSyncer(() -> isWhitelisted, val -> isWhitelisted = val));
+    // buildContext.addSyncedWindow(WHITELIST_WINDOW_ID, this::createWhitelistConfigWindow);
+    // }
 
-    /**
-     * Add widgets to the GUI
-     *
-     * @param builder      Used window builder
-     * @param buildContext Context of the GUI
-     */
-    @Override
-    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
-        super.addUIWidgets(builder, buildContext);
-        builder.widget(new FakeSyncWidget.BooleanSyncer(() -> isWhitelisted, val -> isWhitelisted = val));
-        buildContext.addSyncedWindow(WHITELIST_WINDOW_ID, this::createWhitelistConfigWindow);
-    }
-
-    /**
-     * Create the window that is used to configure the module white-/blacklist
-     *
-     * @param player Player that opened the window
-     * @return Window object
-     */
-    protected ModularWindow createWhitelistConfigWindow(final EntityPlayer player) {
-        return ModularWindow.builder(158, 180)
-            .setBackground(TecTechUITextures.BACKGROUND_SCREEN_BLUE)
-            .setGuiTint(getGUIColorization())
-            // Toggle white-/blacklist
-            .widget(new ButtonWidget().setOnClick((clickData, widget) -> {
-                TecTech.proxy.playSound(getBaseMetaTileEntity(), "fx_click");
-                isWhitelisted = !isWhitelisted;
-                wasFilterModified = true;
-            })
-                .setPlayClickSound(false)
-                .setBackground(() -> {
-                    List<UITexture> ret = new ArrayList<>();
-                    ret.add(TecTechUITextures.BUTTON_STANDARD_16x16);
-                    if (isWhitelisted) {
-                        ret.add(IG_UITextures.OVERLAY_BUTTON_WHITELIST);
-                    } else {
-                        ret.add(IG_UITextures.OVERLAY_BUTTON_BLACKLIST);
-                    }
-                    return ret.toArray(new IDrawable[0]);
-                })
-                .setPos(7, 9)
-                .setSize(16, 16)
-                .addTooltip("Mode")
-                .setTooltipShowUpDelay(TOOLTIP_DELAY))
-            // Clear list
-            .widget(new ButtonWidget().setOnClick((clickData, widget) -> {
-                TecTech.proxy.playSound(getBaseMetaTileEntity(), "fx_click");
-                wasFilterModified = true;
-                if (!widget.isClient()) {
-                    if (whiteListHandler != null) {
-                        for (int i = 0; i < whiteListHandler.getSlots(); i++) {
-                            whiteListHandler.setStackInSlot(i, null);
-                        }
-                    }
-                }
-            })
-                .setPlayClickSound(false)
-                .setBackground(TecTechUITextures.BUTTON_STANDARD_16x16, IG_UITextures.OVERLAY_BUTTON_CROSS)
-                .setPos(25, 9)
-                .setSize(16, 16)
-                .addTooltip("Clear")
-                .setTooltipShowUpDelay(TOOLTIP_DELAY))
-            // Configure from bus
-            .widget(new ButtonWidget().setOnClick((clickData, widget) -> {
-                TecTech.proxy.playSound(getBaseMetaTileEntity(), "fx_click");
-                wasFilterModified = true;
-                if (!widget.isClient()) {
-                    int i = 0;
-                    for (ItemStack itemStack : getStoredInputs()) {
-                        if (i < WHITELIST_SIZE) {
-                            ItemStack copy = itemStack.copy();
-                            copy.stackSize = 1;
-                            whiteListHandler.setStackInSlot(i++, copy);
-                        }
-                    }
-
-                }
-            })
-                .setPlayClickSound(false)
-                .setBackground(TecTechUITextures.BUTTON_STANDARD_16x16, IG_UITextures.OVERLAY_BUTTON_CONFIGURE)
-                .setPos(43, 9)
-                .setSize(16, 16)
-                .addTooltip("Load from Bus")
-                .setTooltipShowUpDelay(TOOLTIP_DELAY))
-            // List
-            .widget(
-                SlotGroup.ofItemHandler(whiteListHandler, 8)
-                    .startFromSlot(0)
-                    .endAtSlot(WHITELIST_SIZE - 1)
-                    .applyForWidget(slotWidget -> slotWidget.setChangeListener(() -> wasFilterModified = true))
-                    .phantom(true)
-                    .background(getGUITextureSet().getItemSlot())
-                    .build()
-                    .setPos(7, 27))
-            .build();
-    }
+    // /**
+    // * Create the window that is used to configure the module white-/blacklist
+    // *
+    // * @param player Player that opened the window
+    // * @return Window object
+    // */
+    // protected ModularWindow createWhitelistConfigWindow(final EntityPlayer player) {
+    // return ModularWindow.builder(158, 180)
+    // .setBackground(TecTechUITextures.BACKGROUND_SCREEN_BLUE)
+    // .setGuiTint(getGUIColorization())
+    // // Toggle white-/blacklist
+    // .widget(new ButtonWidget().setOnClick((clickData, widget) -> {
+    // TecTech.proxy.playSound(getBaseMetaTileEntity(), "fx_click");
+    // isWhitelisted = !isWhitelisted;
+    // wasFilterModified = true;
+    // })
+    // .setPlayClickSound(false)
+    // .setBackground(() -> {
+    // List<UITexture> ret = new ArrayList<>();
+    // ret.add(TecTechUITextures.BUTTON_STANDARD_16x16);
+    // if (isWhitelisted) {
+    // ret.add(IG_UITextures.OVERLAY_BUTTON_WHITELIST);
+    // } else {
+    // ret.add(IG_UITextures.OVERLAY_BUTTON_BLACKLIST);
+    // }
+    // return ret.toArray(new IDrawable[0]);
+    // })
+    // .setPos(7, 9)
+    // .setSize(16, 16)
+    // .addTooltip("Mode")
+    // .setTooltipShowUpDelay(TOOLTIP_DELAY))
+    // // Clear list
+    // .widget(new ButtonWidget().setOnClick((clickData, widget) -> {
+    // TecTech.proxy.playSound(getBaseMetaTileEntity(), "fx_click");
+    // wasFilterModified = true;
+    // if (!widget.isClient()) {
+    // if (whiteListHandler != null) {
+    // for (int i = 0; i < whiteListHandler.getSlots(); i++) {
+    // whiteListHandler.setStackInSlot(i, null);
+    // }
+    // }
+    // }
+    // })
+    // .setPlayClickSound(false)
+    // .setBackground(TecTechUITextures.BUTTON_STANDARD_16x16, IG_UITextures.OVERLAY_BUTTON_CROSS)
+    // .setPos(25, 9)
+    // .setSize(16, 16)
+    // .addTooltip("Clear")
+    // .setTooltipShowUpDelay(TOOLTIP_DELAY))
+    // // Configure from bus
+    // .widget(new ButtonWidget().setOnClick((clickData, widget) -> {
+    // TecTech.proxy.playSound(getBaseMetaTileEntity(), "fx_click");
+    // wasFilterModified = true;
+    // if (!widget.isClient()) {
+    // int i = 0;
+    // for (ItemStack itemStack : getStoredInputs()) {
+    // if (i < WHITELIST_SIZE) {
+    // ItemStack copy = itemStack.copy();
+    // copy.stackSize = 1;
+    // whiteListHandler.setStackInSlot(i++, copy);
+    // }
+    // }
+    //
+    // }
+    // })
+    // .setPlayClickSound(false)
+    // .setBackground(TecTechUITextures.BUTTON_STANDARD_16x16, IG_UITextures.OVERLAY_BUTTON_CONFIGURE)
+    // .setPos(43, 9)
+    // .setSize(16, 16)
+    // .addTooltip("Load from Bus")
+    // .setTooltipShowUpDelay(TOOLTIP_DELAY))
+    // // List
+    // .widget(
+    // SlotGroup.ofItemHandler(whiteListHandler, 8)
+    // .startFromSlot(0)
+    // .endAtSlot(WHITELIST_SIZE - 1)
+    // .applyForWidget(slotWidget -> slotWidget.setChangeListener(() -> wasFilterModified = true))
+    // .phantom(true)
+    // .background(getGUITextureSet().getItemSlot())
+    // .build()
+    // .setPos(7, 27))
+    // .build();
+    // }
 
     /**
      * Draw texts on the project module GUI
@@ -880,75 +888,75 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
      * @param screenElements Column that holds all screen elements
      * @param inventorySlot  Inventory slot of the controller
      */
-    @Override
-    protected void drawTexts(DynamicPositionedColumn screenElements, SlotWidget inventorySlot) {
-        super.drawTexts(screenElements, inventorySlot);
-
-        screenElements.widget(TextWidget.dynamicString(() -> {
-            StringBuilder res = new StringBuilder();
-            res.append(StatCollector.translateToLocal("gt.blockmachines.multimachine.project.ig.miner.cfgi.4"));
-            res.append(": ");
-            res.append(
-                StatCollector.translateToLocal(
-                    (int) modeSetting.get() == 0 ? "gt.blockmachines.multimachine.project.ig.miner.cfgi.4.1"
-                        : "gt.blockmachines.multimachine.project.ig.miner.cfgi.4.2"));
-            res.append('\n');
-            if (prevRecipes != null) {
-                res.append(
-                    StatCollector.translateToLocal("gt.blockmachines.multimachine.project.ig.miner.activedronetiers"));
-                res.append(": ");
-                boolean found = false;
-                for (ItemMiningDrones.DroneTiers tier : ItemMiningDrones.DroneTiers.values()) {
-                    if (((1 << tier.ordinal()) & prevAvailDroneMask) != 0) {
-                        if (found) {
-                            res.append(", ");
-                        }
-                        res.append(tier.toString());
-                        found = true;
-                    }
-                }
-                if (!found) {
-                    res.append(" None");
-                }
-                res.append('\n');
-                res.append(
-                    StatCollector
-                        .translateToLocal("gt.blockmachines.multimachine.project.ig.miner.asteroidsummaries.0"));
-                res.append(":\n");
-                float effectiveComp = getAvailableData_EM()
-                    / (asteroidOutpost == null ? 1f : 1f - asteroidOutpost.getComputationDiscount());
-                for (AsteroidSummary summ : getAsteroidSummaries(
-                    Math.min(getMaxParallels(), (int) parallelSetting.get()),
-                    effectiveComp)) {
-                    res.append(StatCollector.translateToLocal("ig.asteroid." + summ.name));
-                    res.append(
-                        String.format(
-                            ": %.3f%% / %s, %.3f%% / %s, %s %dx",
-                            summ.chance * 100f,
-                            StatCollector
-                                .translateToLocal("gt.blockmachines.multimachine.project.ig.miner.asteroidchance"),
-                            summ.timeDensity * 100f,
-                            StatCollector
-                                .translateToLocal("gt.blockmachines.multimachine.project.ig.miner.asteroidtimedensity"),
-                            StatCollector.translateToLocal(
-                                "gt.blockmachines.multimachine.project.ig.miner.asteroidmaxparallels"),
-                            summ.maxParallels));
-                    res.append('\n');
-                }
-            }
-            return res.toString();
-        })
-            .setSynced(true)
-            .setTextAlignment(Alignment.TopLeft)
-            .setScale(0.5f)
-            .setDefaultColor(COLOR_TEXT_WHITE.get())
-            .setEnabled(widget -> mMachine))
-            .widget(
-                new FakeSyncWidget.IntegerSyncer(
-                    () -> (int) modeSetting.get(),
-                    val -> parametrization
-                        .trySetParameters(modeSetting.id % 10, modeSetting.id / 10, modeSetting.get())));
-    }
+    // @Override
+    // protected void drawTexts(DynamicPositionedColumn screenElements, SlotWidget inventorySlot) {
+    // super.drawTexts(screenElements, inventorySlot);
+    //
+    // screenElements.widget(TextWidget.dynamicString(() -> {
+    // StringBuilder res = new StringBuilder();
+    // res.append(StatCollector.translateToLocal("gt.blockmachines.multimachine.project.ig.miner.cfgi.4"));
+    // res.append(": ");
+    // res.append(
+    // StatCollector.translateToLocal(
+    // (int) modeSetting.get() == 0 ? "gt.blockmachines.multimachine.project.ig.miner.cfgi.4.1"
+    // : "gt.blockmachines.multimachine.project.ig.miner.cfgi.4.2"));
+    // res.append('\n');
+    // if (prevRecipes != null) {
+    // res.append(
+    // StatCollector.translateToLocal("gt.blockmachines.multimachine.project.ig.miner.activedronetiers"));
+    // res.append(": ");
+    // boolean found = false;
+    // for (ItemMiningDrones.DroneTiers tier : ItemMiningDrones.DroneTiers.values()) {
+    // if (((1 << tier.ordinal()) & prevAvailDroneMask) != 0) {
+    // if (found) {
+    // res.append(", ");
+    // }
+    // res.append(tier.toString());
+    // found = true;
+    // }
+    // }
+    // if (!found) {
+    // res.append(" None");
+    // }
+    // res.append('\n');
+    // res.append(
+    // StatCollector
+    // .translateToLocal("gt.blockmachines.multimachine.project.ig.miner.asteroidsummaries.0"));
+    // res.append(":\n");
+    // float effectiveComp = getAvailableData_EM()
+    // / (asteroidOutpost == null ? 1f : 1f - asteroidOutpost.getComputationDiscount());
+    // for (AsteroidSummary summ : getAsteroidSummaries(
+    // Math.min(getMaxParallels(), (int) parallelSetting.get()),
+    // effectiveComp)) {
+    // res.append(StatCollector.translateToLocal("ig.asteroid." + summ.name));
+    // res.append(
+    // String.format(
+    // ": %.3f%% / %s, %.3f%% / %s, %s %dx",
+    // summ.chance * 100f,
+    // StatCollector
+    // .translateToLocal("gt.blockmachines.multimachine.project.ig.miner.asteroidchance"),
+    // summ.timeDensity * 100f,
+    // StatCollector
+    // .translateToLocal("gt.blockmachines.multimachine.project.ig.miner.asteroidtimedensity"),
+    // StatCollector.translateToLocal(
+    // "gt.blockmachines.multimachine.project.ig.miner.asteroidmaxparallels"),
+    // summ.maxParallels));
+    // res.append('\n');
+    // }
+    // }
+    // return res.toString();
+    // })
+    // .setSynced(true)
+    // .setTextAlignment(Alignment.TopLeft)
+    // .setScale(0.5f)
+    // .setDefaultColor(COLOR_TEXT_WHITE.get())
+    // .setEnabled(widget -> mMachine))
+    // .widget(
+    // new FakeSyncWidget.IntegerSyncer(
+    // () -> (int) modeSetting.get(),
+    // val -> parametrization
+    // .trySetParameters(modeSetting.id % 10, modeSetting.id / 10, modeSetting.get())));
+    // }
 
     /** Texture that will be displayed on the side of the module */
     protected static Textures.BlockIcons.CustomIcon engraving;
@@ -1007,7 +1015,221 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
 
     @Override
     protected boolean forceUseMui2() {
+        return true;
+    }
+
+    @Override
+    public boolean hasCustomButtons() {
+        return true;
+    }
+
+    @Override
+    public boolean shouldMakeEditParametersButtonEnabled() {
         return false;
+    }
+
+    @Override
+    public void insertTexts(ListWidget<IWidget, ?> machineInfo, ItemStackHandler invSlot, PanelSyncManager syncManager,
+        ModularPanel parentPanel) {
+        super.insertTexts(machineInfo, invSlot, syncManager, parentPanel);
+    }
+
+    @Override
+    public void addCustomButtons(ModularPanel panel, PanelSyncManager syncManager) {
+
+        UITexture spaceMinerConfigTexture = UITexture.fullImage(MODID, "gui/overlay_button/edit_parameters");
+        ButtonWidget spaceMinerConfig = new ButtonWidget();
+        spaceMinerConfig.tooltip(new RichTooltip(spaceMinerConfig).add("Get Asteroid Info"))
+            .overlay(spaceMinerConfigTexture);
+        spaceMinerConfig.pos(173, doesBindPlayerInventory() ? 109 + 18 : 133 + 18)
+            .size(18, 18);
+
+        IPanelHandler spaceMinerConfigPanel = syncManager.panel(
+            "asteroidList",
+            (p_syncManager, syncHandler) -> getSpaceMinerConfigPanel(panel, p_syncManager, syncHandler),
+            true);
+        spaceMinerConfig.onMousePressed(mouseData -> {
+            if (!spaceMinerConfigPanel.isPanelOpen()) {
+                spaceMinerConfigPanel.openPanel();
+            } else {
+                spaceMinerConfigPanel.closePanel();
+            }
+            return true;
+        });
+        panel.child(spaceMinerConfig);
+    }
+
+    private ModularPanel getSpaceMinerConfigPanel(ModularPanel parent, PanelSyncManager syncManager,
+        IPanelHandler thisPanel) {
+        String[] planetTiers = new String[] { "De", "As", "Io", "En", "Pr", "Ha", "BC" }; // for tab icons
+        FontRenderer fontRenderer = NetworkUtils.isClient() ? Minecraft.getMinecraft().fontRenderer : null;
+
+        Area parentArea = parent.getArea();
+        ModularPanel panel = new ModularPanel("asteroidList") {
+
+            @Override
+            public boolean isDraggable() {
+                return false;
+            }
+        };
+        panel.size(planetTiers.length * 24, 90)
+            .pos(parentArea.x, parentArea.y + 30)
+            .padding(5);
+        IPanelHandler asteroidInfo = syncManager.panel(
+            "asteroidInfo",
+            (p_syncManager, syncHandler) -> getAsteroidPanel(p_syncManager, syncHandler, 0),
+            true);
+        AsteroidData first = SpaceMiningRecipes.uniqueAsteroidList.get(0);
+        panel.child(
+            new Column().widthRel(1)
+                .height(18)
+                .child(
+                    new ButtonWidget<>().size(18, 18)
+                        .align(Alignment.CenterLeft)
+                        .overlay(
+                            new ItemDrawable(GTOreDictUnificator.get(first.orePrefixes, first.output[0], 1)).asIcon()
+                                .size(16, 16))
+                        .tooltipBuilder(
+                            t -> t.addLine(IKey.str(EnumChatFormatting.RED + first.asteroidName))
+                                .addLine(IKey.str("Click me to get more info!")))
+                        .onMousePressed(mouseData -> {
+                            if (!asteroidInfo.isPanelOpen()) {
+                                asteroidInfo.openPanel();
+                            } else {
+                                asteroidInfo.closePanel();
+                            }
+                            return true;
+                        })));
+        return panel;
+    }
+
+    private ModularPanel getAsteroidPanel(PanelSyncManager pSyncManager, IPanelHandler syncHandler, int asteroidIndex) {
+        ModularPanel panel = new ModularPanel("asteroidInformationPanelyay") {
+
+            @Override
+            public boolean isDraggable() {
+                return false;
+            }
+        };
+        panel.size(240, 110)
+            .pos(140, 30)
+            .padding(5);
+        AsteroidData data = SpaceMiningRecipes.uniqueAsteroidList.get(asteroidIndex);
+        Flow column = new Column().sizeRel(1);
+
+        ItemStack minDroneTierItem = MINING_DRONES[data.minDroneTier];
+        ItemStack minDroneTierRod = MINING_RODS[data.minDroneTier];
+        ItemStack minDroneTierDrill = MINING_DRILLS[data.minDroneTier];
+
+        ItemStack maxDroneTierItem = MINING_DRONES[data.maxDroneTier];
+        ItemStack maxDroneTierRod = MINING_RODS[data.maxDroneTier];
+        ItemStack maxDroneTierDrill = MINING_DRILLS[data.maxDroneTier];
+
+        // Ore Icon, Asteroid Name
+        column.child(
+            new Row().widthRel(1)
+                .height(18)
+                .child(
+                    new ItemDrawable(GTOreDictUnificator.get(data.orePrefixes, data.output[asteroidIndex], 1))
+                        .asWidget()
+                        .marginRight(5))
+                .child(
+                    IKey.str(EnumChatFormatting.DARK_RED + data.asteroidName)
+                        .asWidget())
+                .marginBottom(4))
+            // Can be mined by: X-Y Mining Drones
+            .child(
+                new Row().widthRel(1)
+                    .height(18)
+                    .child(
+                        IKey.str("Can be mined by: ")
+                            .asWidget())
+                    .child(
+                        new ItemDrawable(minDroneTierItem).asWidget()
+                            .tooltipBuilder(
+                                t -> t.addLine(IKey.str(minDroneTierItem.getDisplayName()))
+                                    .add(IKey.str("Uses 4 "))
+                                    .add(new ItemDrawable(minDroneTierRod))
+                                    .add(IKey.str(" And 4"))
+                                    .add(new ItemDrawable(minDroneTierDrill))
+                                    .add(IKey.str(" Per parallel\n"))
+                                    .addLine(
+                                        IKey.str(
+                                            "Asteroid size with this drone: " + data.minSize + "-" + data.maxSize))))
+                    .child(
+                        IKey.str("-")
+                            .asWidget())
+                    .child(
+                        new ItemDrawable(maxDroneTierItem).asWidget()
+                            .tooltipBuilder(
+                                t -> t.addLine(IKey.str(maxDroneTierItem.getDisplayName()))
+                                    .add(IKey.str("Uses 4 "))
+                                    .add(new ItemDrawable(maxDroneTierRod))
+                                    .add(IKey.str(" And 4"))
+                                    .add(new ItemDrawable(maxDroneTierDrill))
+                                    .add(IKey.str(" Per parallel\n"))
+                                    .addLine(
+                                        IKey.str(
+                                            "Asteroid size with this drone: "
+                                                + (data.minSize + Math.pow(2, data.maxDroneTier - data.minDroneTier)
+                                                    - 1)
+                                                + "-"
+                                                + (data.maxSize + Math.pow(2, data.maxDroneTier - data.minDroneTier)
+                                                    - 1))))
+                            .marginBottom(4)))
+            // Distance Information
+            .child(
+                new SingleChildWidget<>().widthRel(1)
+                    .height(9)
+                    .child(
+                        IKey.str(
+                            "Found at: " + EnumChatFormatting.GREEN
+                                + data.minDistance
+                                + "-"
+                                + data.maxDistance
+                                + EnumChatFormatting.RESET
+                                + " distance")
+                            .asWidget())
+                    .marginBottom(4))
+            // Computation
+            .child(
+                new SingleChildWidget<>().widthRel(1)
+                    .height(9)
+                    .child(
+                        IKey.str(
+                            "Requires " + EnumChatFormatting.BLUE + data.computation + " computation/s per parallel")
+                            .asWidget())
+                    .marginBottom(4))
+            // Module tier
+            .child(
+                new SingleChildWidget<>().widthRel(1)
+                    .height(9)
+                    .child(
+                        IKey.str("Requires at least tier " + data.requiredModuleTier + " Space Mining module")
+                            .asWidget())
+                    .marginBottom(4));
+
+        // Drops
+        Flow row = new Row().widthRel(1)
+            .height(18)
+            .marginBottom(4);
+        row.child(
+            IKey.str("Drops: ")
+                .asWidget());
+        int totalWeight = Arrays.stream(data.chances)
+            .sum();
+        for (int i = 0; i < data.output.length; i++) {
+            ItemStack ore = GTOreDictUnificator.get(data.orePrefixes, data.output[i], 1);
+            int finalI = i;
+            row.child(
+                new ItemDrawable(ore).asWidget()
+                    .tooltipBuilder(
+                        t -> t.addLine(IKey.str(ore.getDisplayName()))
+                            .addLine(IKey.str(((double) data.chances[finalI] / totalWeight) * 100 + "% chance")))
+                    .marginRight(5));
+        }
+        column.child(row);
+        return panel.child(column);
     }
 
     /**

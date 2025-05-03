@@ -3,12 +3,14 @@ package gtnhintergalactic.recipe;
 import static gregtech.api.enums.Mods.DraconicEvolution;
 import static gregtech.api.enums.Mods.HardcoreEnderExpansion;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
+import static gtnhintergalactic.recipe.IGRecipeMaps.spaceMiningRecipes;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.TreeMap;
 import java.util.stream.Stream;
 
 import net.minecraft.init.Blocks;
@@ -38,12 +40,15 @@ import gtnhintergalactic.item.ItemMiningDrones;
  */
 public class SpaceMiningRecipes {
 
+    // Asteroids for drone tier -> Asteroids at given distance
+    public static final List<Map<Integer, List<GTRecipe>>> asteroidDistanceMap = new ArrayList<>();
+    public static final List<AsteroidData> uniqueAsteroidList = new ArrayList<>();
     /** List of mining drones to be used in recipe creation */
-    private static final ItemStack[] MINING_DRONES = new ItemStack[ItemMiningDrones.DroneTiers.values().length];
+    public static final ItemStack[] MINING_DRONES = new ItemStack[ItemMiningDrones.DroneTiers.values().length];
     /** Drills used for recipe creation */
-    private static final ItemStack[] MINING_DRILLS = new ItemStack[ItemMiningDrones.DroneMaterials.values().length];
+    public static final ItemStack[] MINING_DRILLS = new ItemStack[ItemMiningDrones.DroneMaterials.values().length];
     /** Rods used for recipe creation */
-    private static final ItemStack[] MINING_RODS = new ItemStack[ItemMiningDrones.DroneMaterials.values().length];
+    public static final ItemStack[] MINING_RODS = new ItemStack[ItemMiningDrones.DroneMaterials.values().length];
     /** Map from mining drones back to tiers */
     private static final Map<GTUtility.ItemId, Integer> DRONE_TIERS = new HashMap<>();
 
@@ -907,6 +912,34 @@ public class SpaceMiningRecipes {
                 ItemMiningDrones.DroneTiers.UIV.ordinal(),
                 1);
         }
+
+        // Get all asteroids
+        WeightedAsteroidList asteroids = new WeightedAsteroidList(
+            spaceMiningRecipes.getAllRecipes()
+                .stream());
+        // Find max distance
+        int maxDistance = 0;
+        for (GTRecipe recipe : asteroids.recipes) {
+            maxDistance = Math.max(maxDistance, recipe.getMetadata(IGRecipeMaps.SPACE_MINING_DATA).maxDistance);
+        }
+        for (int i = 0; i < MINING_DRONES.length; i++) {
+            asteroidDistanceMap.add(new TreeMap<>());
+            for (int j = 0; j < maxDistance; j++) {
+                asteroidDistanceMap.get(i)
+                    .put(j, new ArrayList<>());
+            }
+        }
+        // Map every asteroid to a distance range
+        for (GTRecipe recipe : asteroids.recipes) {
+            int droneTier = recipe.mInputs[0].getItemDamage();
+            SpaceMiningData meta = recipe.getMetadata(IGRecipeMaps.SPACE_MINING_DATA);
+            assert meta != null;
+            for (int i = meta.minDistance - 1; i < meta.maxDistance; i++) {
+                asteroidDistanceMap.get(droneTier)
+                    .get(i)
+                    .add(recipe);
+            }
+        }
     }
 
     /**
@@ -965,6 +998,21 @@ public class SpaceMiningRecipes {
             tItemInputs = new ItemStack[aItemInputs.length + 3];
             System.arraycopy(aItemInputs, 0, tItemInputs, 3, aItemInputs.length);
         }
+        uniqueAsteroidList.add(
+            new AsteroidData(
+                asteroidName,
+                minDistance,
+                maxDistance,
+                minSize,
+                maxSize,
+                computationRequiredPerSec,
+                recipeWeight,
+                startDroneTier,
+                endDroneTier,
+                ores,
+                orePrefixes,
+                aChances,
+                minModuleTier));
         for (int i = startDroneTier; i <= endDroneTier; i++) {
             tItemInputs[0] = MINING_DRONES[i];
             tItemInputs[1] = MINING_DRILLS[i];

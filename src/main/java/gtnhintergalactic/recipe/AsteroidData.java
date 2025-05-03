@@ -4,7 +4,10 @@ import java.util.Objects;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
-public class SpaceMiningData {
+import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
+
+public class AsteroidData {
 
     public final String asteroidName;
     public final int minDistance;
@@ -13,9 +16,16 @@ public class SpaceMiningData {
     public final int maxSize;
     public final int computation;
     public final int recipeWeight;
+    public final int minDroneTier;
+    public final int maxDroneTier;
+    public final Materials[] output;
+    public final OrePrefixes orePrefixes;
+    public final int[] chances;
+    public final int requiredModuleTier;
 
-    public SpaceMiningData(String asteroidName, int minDistance, int maxDistance, int minSize, int maxSize,
-        int computation, int recipeWeight) {
+    public AsteroidData(String asteroidName, int minDistance, int maxDistance, int minSize, int maxSize,
+        int computation, int recipeWeight, int minDroneTier, int maxDroneTier, Materials[] output,
+        OrePrefixes orePrefixes, int[] chances, int requiredModuleTier) {
         this.asteroidName = asteroidName;
         this.minDistance = minDistance;
         this.maxDistance = maxDistance;
@@ -23,6 +33,12 @@ public class SpaceMiningData {
         this.maxSize = maxSize;
         this.computation = computation;
         this.recipeWeight = recipeWeight;
+        this.minDroneTier = minDroneTier;
+        this.maxDroneTier = maxDroneTier;
+        this.output = output;
+        this.orePrefixes = orePrefixes;
+        this.chances = chances;
+        this.requiredModuleTier = requiredModuleTier;
     }
 
     @Override
