@@ -55,6 +55,7 @@ import gregtech.api.enums.HeatingCoilLevel;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.IHeatingCoil;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -763,6 +764,23 @@ public class GTStructureUtility {
             lazy(t -> ofBlocksTiered(GlassTier::getGlassBlockTier, GlassTier.getGlassList(), notSet, setter, getter)));
     }
 
+    public static <T> IStructureElement<T> noSurvivalAutoplace(IStructureElement<T> element) {
+        return new ProxyStructureElement<>(element) {
+
+            @Override
+            public PlaceResult survivalPlaceBlock(T multi, World world, int x, int y, int z, ItemStack trigger,
+                AutoPlaceEnvironment env) {
+                return PlaceResult.SKIP;
+            }
+
+            @Override
+            public PlaceResult survivalPlaceBlock(T multi, World world, int x, int y, int z, ItemStack trigger,
+                IItemSource s, EntityPlayerMP actor, Consumer<IChatComponent> chatter) {
+                return PlaceResult.SKIP;
+            }
+        };
+    }
+
     /**
      * Just a structure element that proxies its operations to another one. Useful for overriding or hooking into
      * specific operations while keeping the rest unchanged.
@@ -852,6 +870,44 @@ public class GTStructureUtility {
         @Override
         public boolean isNavigating() {
             return proxiedElement.isNavigating();
+        }
+    }
+
+    /**
+     * Just a hatch element that proxies its operations to another one. Useful for overriding or hooking into
+     * specific operations while keeping the rest unchanged.
+     */
+    public static class ProxyHatchElement<T> implements IHatchElement<T> {
+
+        public final IHatchElement<? super T> proxiedHatch;
+
+        public ProxyHatchElement(IHatchElement<? super T> proxiedHatch) {
+            this.proxiedHatch = proxiedHatch;
+        }
+
+        @Override
+        public List<? extends Class<? extends IMetaTileEntity>> mteClasses() {
+            return proxiedHatch.mteClasses();
+        }
+
+        @Override
+        public IGTHatchAdder<? super T> adder() {
+            return proxiedHatch.adder();
+        }
+
+        @Override
+        public String name() {
+            return proxiedHatch.name();
+        }
+
+        @Override
+        public String getDisplayName() {
+            return proxiedHatch.getDisplayName();
+        }
+
+        @Override
+        public long count(T t) {
+            return proxiedHatch.count(t);
         }
     }
 }
