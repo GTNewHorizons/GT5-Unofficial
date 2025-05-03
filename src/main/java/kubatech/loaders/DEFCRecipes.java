@@ -34,6 +34,7 @@ import gregtech.api.recipe.RecipeMapBuilder;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
+import gregtech.api.util.GTRecipeBuilder;
 import gregtech.api.util.GTUtility;
 import gregtech.nei.formatter.SimpleSpecialValueFormatter;
 import gtPlusPlus.xmod.forestry.bees.handler.GTPPCombType;
@@ -75,7 +76,7 @@ public class DEFCRecipes {
             .fluidInputs(Materials.Void.getMolten(1152L))
             .itemOutputs(kubatech.api.enums.ItemList.DEFCCasingBase.get(1))
             .eut(TierEU.RECIPE_UV)
-            .duration(24000)
+            .duration(30 * GTRecipeBuilder.SECONDS)
             .addTo(assemblerRecipes);
         GTValues.RA.stdBuilder()
             .itemInputs(
@@ -84,7 +85,7 @@ public class DEFCRecipes {
             .fluidInputs(Materials.Void.getMolten(1152L))
             .itemOutputs(kubatech.api.enums.ItemList.DEFCCasingT1.get(1))
             .eut(TierEU.RECIPE_UV)
-            .duration(24000)
+            .duration(30 * GTRecipeBuilder.SECONDS)
             .addTo(assemblerRecipes);
         GTValues.RA.stdBuilder()
             .itemInputs(
@@ -94,7 +95,7 @@ public class DEFCRecipes {
             .fluidInputs(Materials.Void.getMolten(2304L))
             .itemOutputs(kubatech.api.enums.ItemList.DEFCCasingT2.get(1))
             .eut(TierEU.RECIPE_UV)
-            .duration(24000)
+            .duration(30 * GTRecipeBuilder.SECONDS)
             .addTo(assemblerRecipes);
         GTValues.RA.stdBuilder()
             .itemInputs(
@@ -104,7 +105,7 @@ public class DEFCRecipes {
             .fluidInputs(Materials.Void.getMolten(4608L))
             .itemOutputs(kubatech.api.enums.ItemList.DEFCCasingT3.get(1))
             .eut(TierEU.RECIPE_UHV)
-            .duration(12000)
+            .duration(30 * GTRecipeBuilder.SECONDS)
             .addTo(assemblerRecipes);
         GTValues.RA.stdBuilder()
             .itemInputs(
@@ -114,7 +115,7 @@ public class DEFCRecipes {
             .fluidInputs(Materials.Void.getMolten(9216L))
             .itemOutputs(kubatech.api.enums.ItemList.DEFCCasingT4.get(1))
             .eut(TierEU.RECIPE_UEV)
-            .duration(12000)
+            .duration(30 * GTRecipeBuilder.SECONDS)
             .addTo(assemblerRecipes);
         GTValues.RA.stdBuilder()
             .itemInputs(
@@ -124,7 +125,7 @@ public class DEFCRecipes {
             .fluidInputs(Materials.Void.getMolten(18432L))
             .itemOutputs(kubatech.api.enums.ItemList.DEFCCasingT5.get(1))
             .eut(TierEU.RECIPE_UIV)
-            .duration(12000)
+            .duration(30 * GTRecipeBuilder.SECONDS)
             .addTo(assemblerRecipes);
 
         fusionRecipes();
