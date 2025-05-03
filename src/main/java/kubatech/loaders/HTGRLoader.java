@@ -8,12 +8,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 
-import kubatech.api.gui.HighTemperatureGasCooledReactorRecipeMapFrontend;
 import net.minecraft.item.ItemStack;
 
 import org.apache.commons.lang3.tuple.Pair;
-
-import com.gtnewhorizons.modularui.api.drawable.UITexture;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.enums.GTValues;
@@ -25,7 +22,7 @@ import gregtech.api.recipe.RecipeMapBuilder;
 import gregtech.api.recipe.RecipeMetadataKey;
 import gregtech.api.recipe.metadata.SimpleRecipeMetadataKey;
 import gregtech.api.util.GTOreDictUnificator;
-import kubatech.Tags;
+import kubatech.api.gui.HighTemperatureGasCooledReactorRecipeMapFrontend;
 import kubatech.loaders.item.htgritem.HTGRItem;
 
 public class HTGRLoader {
@@ -43,9 +40,9 @@ public class HTGRLoader {
         .minInputs(1, 0)
         .frontend(HighTemperatureGasCooledReactorRecipeMapFrontend::new)
         // .neiSpecialInfoFormatter(new SimpleSpecialValueFormatter("kubatech.defusioncrafter.tier"))
-//        .slotOverlays(
-//            (index, isFluid, isOutput,
-//                isSpecial) -> !isFluid && !isOutput ? UITexture.fullImage(Tags.MODID, "gui/slot/fusion_crafter") : null)
+        // .slotOverlays(
+        // (index, isFluid, isOutput,
+        // isSpecial) -> !isFluid && !isOutput ? UITexture.fullImage(Tags.MODID, "gui/slot/fusion_crafter") : null)
         .builderTransformer(builder -> {
             ItemStack[] inputs = builder.getItemInputsBasic();
             Materials material = GTOreDictUnificator.getAssociation(inputs[0]).mMaterial.mMaterial;
@@ -127,10 +124,10 @@ public class HTGRLoader {
         GameRegistry.registerItem(HTGR_ITEM, "htgr_item");
 
         /*
-            .inputs(Silver, 2)
-            .outputs(Silver, 1, Indium, 1)
-            .fuel(Uranium 235, 2, 1, Plutonium, 241, 3, 2)
-            .TRISO(Inner Layer, Middle Layer, Outer layer)
+         * .inputs(Silver, 2)
+         * .outputs(Silver, 1, Indium, 1)
+         * .fuel(Uranium 235, 2, 1, Plutonium, 241, 3, 2)
+         * .TRISO(Inner Layer, Middle Layer, Outer layer)
          */
 
         GTValues.RA.stdBuilder()
@@ -152,10 +149,10 @@ public class HTGRLoader {
             .addTo(HTGRRecipes);
 
         /*
-            .inputs(Uranium 235, 1)
-            .outputs(Plutonium 239, 3, Uranium 238,  2)
-            .fuel(Uranium 238, 5)
-            .TRISO(Inner Layer, Middle Layer, Outer layer)
+         * .inputs(Uranium 235, 1)
+         * .outputs(Plutonium 239, 3, Uranium 238, 2)
+         * .fuel(Uranium 238, 5)
+         * .TRISO(Inner Layer, Middle Layer, Outer layer)
          */
 
         GTValues.RA.stdBuilder()
@@ -176,10 +173,10 @@ public class HTGRLoader {
             .addTo(HTGRRecipes);
 
         /*
-            .inputs(Plutonium 239, 1)
-            .outputs(Plutonium 239, 3, Uranium 238,  2)
-            .fuel(Uranium 238, 5)
-            .TRISO(Inner Layer, Middle Layer, Outer layer)
+         * .inputs(Plutonium 239, 1)
+         * .outputs(Plutonium 239, 3, Uranium 238, 2)
+         * .fuel(Uranium 238, 5)
+         * .TRISO(Inner Layer, Middle Layer, Outer layer)
          */
 
         GTValues.RA.stdBuilder()

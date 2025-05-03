@@ -293,7 +293,7 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
     @Override
     public RecipeMap<?> getRecipeMap() {
         // Only for visual
-        return htgrFakeRecipes;
+        return HTGRLoader.HTGRRecipes;
     }
 
     @Override
@@ -495,16 +495,28 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
         StringBuilder sb = new StringBuilder();
         sb.append("Stored Fuel: ");
         for (Map.Entry<Materials, Double> entry : mStoredFuels.entrySet()) {
-            sb.append(entry.getKey().getLocalizedNameForItem("- %material")).append(": ")
-                .append(GTUtility.formatNumbers(entry.getValue())).append("\n");
+            sb.append(
+                entry.getKey()
+                    .getLocalizedNameForItem("- %material"))
+                .append(": ")
+                .append(GTUtility.formatNumbers(entry.getValue()))
+                .append("\n");
         }
         sb.append("Burned Fuel: ");
         for (Map.Entry<Materials, Double> entry : mStoredBurnedFuels.entrySet()) {
-            sb.append(entry.getKey().getLocalizedNameForItem("- %material")).append(": ")
-                .append(GTUtility.formatNumbers(entry.getValue())).append("\n");
+            sb.append(
+                entry.getKey()
+                    .getLocalizedNameForItem("- %material"))
+                .append(": ")
+                .append(GTUtility.formatNumbers(entry.getValue()))
+                .append("\n");
         }
-        sb.append("Helium Supply: ").append(GTUtility.formatNumbers(this.HeliumSupply)).append("\n");
-        sb.append("Coolant Taking: ").append(GTUtility.formatNumbers(this.coolanttaking)).append("\n");
+        sb.append("Helium Supply: ")
+            .append(GTUtility.formatNumbers(this.HeliumSupply))
+            .append("\n");
+        sb.append("Coolant Taking: ")
+            .append(GTUtility.formatNumbers(this.coolanttaking))
+            .append("\n");
 
         return sb.toString();
     }

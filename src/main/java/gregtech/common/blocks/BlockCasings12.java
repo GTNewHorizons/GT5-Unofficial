@@ -1,5 +1,6 @@
 package gregtech.common.blocks;
 
+import gregtech.api.enums.ItemList;
 import net.minecraft.util.IIcon;
 
 import cpw.mods.fml.relauncher.Side;
@@ -14,6 +15,7 @@ public class BlockCasings12 extends BlockCasingsAbstract {
 
     public BlockCasings12() {
         super(ItemCasings.class, "gt.blockcasings12", MaterialCasings.INSTANCE, 16);
+        register(0, ItemList.Casing_Cable, "Cable Casing");
     }
 
     @Override
@@ -25,7 +27,7 @@ public class BlockCasings12 extends BlockCasingsAbstract {
     @SideOnly(Side.CLIENT)
     public IIcon getIcon(int ordinalSide, int aMeta) {
         return switch (aMeta) {
-            default -> Textures.BlockIcons.MACHINE_CASING_ROBUST_TUNGSTENSTEEL.getIcon();
+            default -> Textures.BlockIcons.MACHINE_CASING_CABLE.getIcon();
         };
     }
 }

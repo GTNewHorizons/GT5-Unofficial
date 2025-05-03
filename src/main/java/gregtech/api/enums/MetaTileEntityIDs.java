@@ -1474,7 +1474,7 @@ public enum MetaTileEntityIDs {
     LowPowerLaserSourceHatch128A_IV(12788),
     LowPowerLaserSourceHatch128A_LuV(12789),
     LowPowerLaserSourceHatch128A_ZPM(12790),
-    HighTemperatureGasCooledReactor(12791),
+    HighTemperatureGasCooledReactorController(12791),
     ExtremeIndustrialGreenhouseController(12792),
     AcidGeneratorLV(12793),
     HumongousInputHatch(12799),
