@@ -708,11 +708,12 @@ gt.blockmachines.multimachine.tm.teslaCoil.cfgo.7=Energy Fraction display
 gt.blockmachines.multimachine.tm.teslaCoil.cfgo.8=Scan time display
 gt.blockmachines.multimachine.tm.teslaCoil.cfgo.9=Output max display
 
-gt.blockmachines.multimachine.em.switch.name=Network Switch With QoS
-gt.blockmachines.multimachine.em.switch.hint.0=1 - Data Input/Output Hatches or Advanced computer casing
-gt.blockmachines.multimachine.em.switch.hint.1=2 - Data Output Hatches or Computer casing
-gt.blockmachines.multimachine.em.switch.desc.0=Controller block of the Network Switch With QoS
-gt.blockmachines.multimachine.em.switch.desc.1=Routes and distributes computation
+gt.blockmachines.multimachine.em.switch.desc.0=Distributes computation to transmission connectors based on weights.
+gt.blockmachines.multimachine.em.switch.desc.1=Transmission connectors are assigned an ID.
+gt.blockmachines.multimachine.em.switch.desc.2=Scan connectors with a Portable Scanner to determine their ID.
+gt.blockmachines.multimachine.em.switch.desc.3=Computation output is configured via TecTech parameters.
+gt.blockmachines.multimachine.em.switch.desc.4=The first parameter in each group controls the hatch ID.
+gt.blockmachines.multimachine.em.switch.desc.5=The second parameter in each group controls the hatch weight.
 
 gt.blockmachines.multimachine.em.computer.name=Quantum Computer
 gt.blockmachines.multimachine.em.computer.machinetype=Quantum Computer, QC
@@ -1448,8 +1449,8 @@ tt.keyphrase.Hint_Details=Hint Details
 
 #debug boom
 tt.keyword.BOOM=BOOM!
-tt.keyword.Destination=Destination
-tt.keyword.Weight=Weight
+tt.keyword.Destination=Output Hatch ID
+tt.keyword.Weight=Output Hatch Weight
 tt.keyword.Source=Source
 tt.keyword.Progress=Progress
 tt.keyword.Computation=Computation
@@ -1484,6 +1485,8 @@ tt.keyphrase.Computation_Available=Computation Available
 tt.keyphrase.Computation_Remaining=Computation Remaining
 tt.keyphrase.AL_Recipe_Providing=Providing §6%s§7 Assembly Line Recipes
 tt.keyphrase.AL_Recipe_Receiving=Receiving §6%s§7 Assembly Line Recipes
+tt.keyphrase.Computation_Receiving=Receiving §6%s§7 Computation per Second
+tt.keyphrase.Computation_Transmitting=Transmitting §6%s§7 Computation per Second
 tt.keyphrase.AL_Recipe_Transmitting=Transmitting §6%s§7 Assembly Line Recipes
 tt.keyphrase.AL_Recipe_Header=§7Assembly Line Recipes:
 tt.keyphrase.AL_Recipe_Desc=§7- §a%s§7
