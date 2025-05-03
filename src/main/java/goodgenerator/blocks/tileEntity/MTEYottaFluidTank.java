@@ -740,7 +740,6 @@ public class MTEYottaFluidTank extends MTETooltipMultiBlockBaseEM implements ICo
     @Override
     public void insertTexts(ListWidget<IWidget, ?> machineInfo, ItemStackHandler invSlot, PanelSyncManager syncManager,
         ModularPanel parentPanel) {
-        super.insertTexts(machineInfo, invSlot, syncManager, parentPanel);
 
         BigIntegerSyncValue maxStorageSyncer = new BigIntegerSyncValue(() -> mStorage);
         syncManager.syncValue("maxStorage", maxStorageSyncer);
@@ -778,7 +777,7 @@ public class MTEYottaFluidTank extends MTETooltipMultiBlockBaseEM implements ICo
             @Override
             public Result onMouseTapped(int mouseButton) {
                 isFluidLocked = !isFluidLocked;
-                if (!syncManager.isClient()) mLockedFluid = isFluidLocked ? mFluid : null;
+                lockedFluid.setValue(isFluidLocked ? storedFluid.getValue() : null);
                 return Result.SUCCESS;
             }
         }.syncHandler("lockedFluid");
@@ -813,6 +812,8 @@ public class MTEYottaFluidTank extends MTETooltipMultiBlockBaseEM implements ICo
         machineInfo.child(
             lockedFluidSlot.size(20, 20)
                 .marginLeft(94));
+
+        super.insertTexts(machineInfo, invSlot, syncManager, parentPanel);
     }
 
     @Override
