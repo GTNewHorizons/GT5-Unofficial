@@ -1288,7 +1288,7 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
 
             @Override
             public boolean isDraggable() {
-                return true;
+                return false;
             }
         }.size(200, 164)
             .pos(parentArea.x, parentArea.y)
@@ -1466,7 +1466,7 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
 
             @Override
             public boolean isDraggable() {
-                return true;
+                return false;
             }
         }.size(18 * 5 + 6, 6 + 18 * (MINING_DRONES.length / 5 + 1))
             .pos(parentArea.x + 2, parentArea.y + parentArea.height - 36 - (6 + 18 * (MINING_DRONES.length / 5 + 1)))
