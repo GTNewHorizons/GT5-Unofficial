@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 
+import kubatech.api.gui.HighTemperatureGasCooledReactorRecipeMapFrontend;
 import net.minecraft.item.ItemStack;
 
 import org.apache.commons.lang3.tuple.Pair;
@@ -40,10 +41,11 @@ public class HTGRLoader {
     public static final RecipeMap<RecipeMapBackend> HTGRRecipes = RecipeMapBuilder.of("kubatech.htgrrecipes")
         .maxIO(9, 3, 1, 1)
         .minInputs(1, 0)
+        .frontend(HighTemperatureGasCooledReactorRecipeMapFrontend::new)
         // .neiSpecialInfoFormatter(new SimpleSpecialValueFormatter("kubatech.defusioncrafter.tier"))
-        .slotOverlays(
-            (index, isFluid, isOutput,
-                isSpecial) -> !isFluid && !isOutput ? UITexture.fullImage(Tags.MODID, "gui/slot/fusion_crafter") : null)
+//        .slotOverlays(
+//            (index, isFluid, isOutput,
+//                isSpecial) -> !isFluid && !isOutput ? UITexture.fullImage(Tags.MODID, "gui/slot/fusion_crafter") : null)
         .builderTransformer(builder -> {
             ItemStack[] inputs = builder.getItemInputsBasic();
             Materials material = GTOreDictUnificator.getAssociation(inputs[0]).mMaterial.mMaterial;
