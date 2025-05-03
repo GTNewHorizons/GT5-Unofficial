@@ -5,6 +5,7 @@ import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.common.util.ForgeDirection;
+
 import com.prupe.mcpatcher.ctm.CTMUtils;
 
 import gregtech.api.interfaces.IBlockContainer;
@@ -31,7 +32,8 @@ public class GTCopiedBlockTextureRender extends GTTextureBase implements ITextur
     }
 
     private IIcon getIcon(int ordinalSide, IBlockAccess access, int x, int y, int z) {
-        if (mSide == 6) return CTMUtils.getBlockIcon(mBlock.getIcon(ordinalSide, mMeta), mBlock, access, x, y, z, ordinalSide);
+        if (mSide == 6)
+            return CTMUtils.getBlockIcon(mBlock.getIcon(ordinalSide, mMeta), mBlock, access, x, y, z, ordinalSide);
         return CTMUtils.getBlockIcon(mBlock.getIcon(mSide, mMeta), mBlock, access, x, y, z, ordinalSide);
     }
 
