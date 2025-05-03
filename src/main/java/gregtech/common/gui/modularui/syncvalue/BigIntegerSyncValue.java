@@ -1,20 +1,23 @@
 package gregtech.common.gui.modularui.syncvalue;
 
-import com.cleanroommc.modularui.api.value.sync.IIntSyncValue;
-import com.cleanroommc.modularui.api.value.sync.IStringSyncValue;
-import com.cleanroommc.modularui.network.NetworkUtils;
-import com.cleanroommc.modularui.value.sync.ValueSyncHandler;
-import net.minecraft.network.PacketBuffer;
-import org.jetbrains.annotations.Contract;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-
 import java.math.BigInteger;
 import java.util.Objects;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
-public class BigIntegerSyncValue extends ValueSyncHandler<BigInteger> implements IBigIntegerSyncValue<BigInteger>, IIntSyncValue<BigInteger>, IStringSyncValue<BigInteger> {
+import net.minecraft.network.PacketBuffer;
+
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
+import com.cleanroommc.modularui.api.value.sync.IIntSyncValue;
+import com.cleanroommc.modularui.api.value.sync.IStringSyncValue;
+import com.cleanroommc.modularui.network.NetworkUtils;
+import com.cleanroommc.modularui.value.sync.ValueSyncHandler;
+
+public class BigIntegerSyncValue extends ValueSyncHandler<BigInteger>
+    implements IBigIntegerSyncValue<BigInteger>, IIntSyncValue<BigInteger>, IStringSyncValue<BigInteger> {
 
     private final Supplier<BigInteger> getter;
     private final Consumer<BigInteger> setter;
@@ -32,13 +35,13 @@ public class BigIntegerSyncValue extends ValueSyncHandler<BigInteger> implements
 
     @Contract("null, null -> fail")
     public BigIntegerSyncValue(@Nullable Supplier<BigInteger> clientGetter,
-                         @Nullable Supplier<BigInteger> serverGetter) {
+        @Nullable Supplier<BigInteger> serverGetter) {
         this(clientGetter, null, serverGetter, null);
     }
 
     @Contract("null, _, null, _ -> fail")
     public BigIntegerSyncValue(@Nullable Supplier<BigInteger> clientGetter, @Nullable Consumer<BigInteger> clientSetter,
-                         @Nullable Supplier<BigInteger> serverGetter, @Nullable Consumer<BigInteger> serverSetter) {
+        @Nullable Supplier<BigInteger> serverGetter, @Nullable Consumer<BigInteger> serverSetter) {
         if (clientGetter == null && serverGetter == null) {
             throw new NullPointerException("Client or server getter must not be null!");
         }
@@ -96,10 +99,10 @@ public class BigIntegerSyncValue extends ValueSyncHandler<BigInteger> implements
 
     @Override
     public void read(PacketBuffer buffer) {
-        int length = buffer.readInt();          // read length
+        int length = buffer.readInt(); // read length
         byte[] bytes = new byte[length];
-        buffer.readBytes(bytes);                // read the bytes
-        setValue(new BigInteger(bytes));        // reconstruct BigInteger
+        buffer.readBytes(bytes); // read the bytes
+        setValue(new BigInteger(bytes)); // reconstruct BigInteger
     }
 
     @Override
