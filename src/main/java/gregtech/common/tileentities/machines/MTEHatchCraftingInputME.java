@@ -111,7 +111,8 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
     IGridProxyable, IDualInputHatchWithPattern, ICustomNameObject, IInterfaceViewable, IMEConnectable {
 
     // Each pattern slot in the crafting input hatch has its own internal inventory
-    public static class PatternSlot<P extends IMetaTileEntity & IDualInputHatch> implements IDualInputInventoryWithPattern {
+    public static class PatternSlot<P extends IMetaTileEntity & IDualInputHatch>
+        implements IDualInputInventoryWithPattern {
 
         protected final P parentMTE;
         protected final ItemStack pattern;
