@@ -214,7 +214,7 @@ public class MTEAdvancedChemicalReactor extends MTEExtendedPowerMultiBlockBase<M
                         Pair.of(GregTechAPI.sBlockCoilACR, 5),
                         Pair.of(GregTechAPI.sBlockCoilACR, 6),
                         Pair.of(GregTechAPI.sBlockCoilACR, 7)),
-                    -1,
+                    -2,
                     MTEAdvancedChemicalReactor::setHeatCoilTier,
                     MTEAdvancedChemicalReactor::getHeatCoilTier)))
         .addElement(
@@ -228,7 +228,7 @@ public class MTEAdvancedChemicalReactor extends MTEExtendedPowerMultiBlockBase<M
                         Pair.of(GregTechAPI.sBlockCoilACR, 9),
                         Pair.of(GregTechAPI.sBlockCoilACR, 10),
                         Pair.of(GregTechAPI.sBlockCoilACR, 11)),
-                    -1,
+                    -3,
                     MTEAdvancedChemicalReactor::setCompressCoilTier,
                     MTEAdvancedChemicalReactor::getCompressCoilTier)))
         .addElement(
@@ -242,7 +242,7 @@ public class MTEAdvancedChemicalReactor extends MTEExtendedPowerMultiBlockBase<M
                         Pair.of(GregTechAPI.sBlockCoilACR, 13),
                         Pair.of(GregTechAPI.sBlockCoilACR, 14),
                         Pair.of(GregTechAPI.sBlockCoilACR, 15)),
-                    -1,
+                    -4,
                     MTEAdvancedChemicalReactor::setVacuumCoilTier,
                     MTEAdvancedChemicalReactor::getVacuumCoilTier)))
         .addElement(
