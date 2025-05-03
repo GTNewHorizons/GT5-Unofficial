@@ -3,6 +3,7 @@ package gtnhintergalactic.recipe;
 import java.util.Objects;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.StatCollector;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
@@ -62,6 +63,11 @@ public class AsteroidData {
         this.requiredModuleTier = requiredModuleTier;
         this.orePrefixes = null;
         this.output = null;
+    }
+
+    public String getAsteroidNameLocalized() {
+        return StatCollector.translateToLocal("ig.asteroid." + asteroidName) + " "
+            + StatCollector.translateToLocal("ig.asteroid");
     }
 
     @Override

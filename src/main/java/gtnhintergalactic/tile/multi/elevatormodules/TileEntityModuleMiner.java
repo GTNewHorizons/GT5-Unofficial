@@ -753,7 +753,7 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
                 SpaceMiningData data = r.getMetadata(IGRecipeMaps.SPACE_MINING_DATA);
                 if (data == null) throw new IllegalStateException("Illegal space miner recipe found");
                 return new AsteroidSummary(
-                    data.asteroidName,
+                    data.getAsteroidNameLocalized(),
                     data.recipeWeight / totalWeight,
                     data.recipeWeight * r.mDuration / totalTimedensity,
                     Math.min(maxParallels, Math.min((int) (effectiveComp / data.computation), (int) (power / r.mEUt))));
@@ -1141,7 +1141,7 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
                     }
                 }))
                 .tooltipBuilder(
-                    t -> t.addLine(IKey.str(EnumChatFormatting.RED + data.asteroidName))
+                    t -> t.addLine(IKey.str(EnumChatFormatting.RED + data.getAsteroidNameLocalized()))
                         .addLine(IKey.str("Click me to get more info!")))
                 .onMousePressed(mouseData -> {
                     if (!asteroidInfo.isPanelOpen()) {
@@ -1431,7 +1431,7 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
                     new ItemDrawable(asteroid.mOutputs[0]).asIcon()
                         .size(16, 16))
                 .tooltipBuilder(
-                    t -> t.addLine(IKey.str(EnumChatFormatting.DARK_RED + data.asteroidName))
+                    t -> t.addLine(IKey.str(EnumChatFormatting.DARK_RED + data.getAsteroidNameLocalized()))
                         .addLine(IKey.str("Click me to get more info!")))
                 .onMousePressed(mouseData -> {
                     asteroidPanels.get(asteroidPair.first())
@@ -1506,7 +1506,7 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
         AsteroidData data = SpaceMiningRecipes.uniqueAsteroidList.get(asteroidIndex);
 
         int outputLength = data.output != null ? data.output.length : data.outputItems.length;
-        panel.size(240, 100 + 22 * (((outputLength - 1) / 9) + ((data.maxDroneTier - data.minDroneTier - 1) / 10) + 1))
+        panel.size(250, 100 + 22 * (((outputLength - 1) / 9) + ((data.maxDroneTier - data.minDroneTier - 1) / 10) + 1))
             .pos(140, 30)
             .padding(5);
         Flow column = new Column().sizeRel(1);
@@ -1521,7 +1521,7 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
                     new ItemDrawable(oreItem).asWidget()
                         .marginRight(5))
                 .child(
-                    IKey.str(EnumChatFormatting.DARK_RED + data.asteroidName)
+                    IKey.str(EnumChatFormatting.DARK_RED + data.getAsteroidNameLocalized())
                         .asWidget())
                 .marginBottom(4));
         // Can be mined by: X-Y Mining Drones
@@ -1615,8 +1615,8 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
         int totalWeight = Arrays.stream(data.chances)
             .sum();
         for (int i = 0; i < outputLength; i++) {
-            ItemStack ore = data.outputItems != null ? data.outputItems[0]
-                : GTOreDictUnificator.get(data.orePrefixes, data.output[0], 1);
+            ItemStack ore = data.outputItems != null ? data.outputItems[i]
+                : GTOreDictUnificator.get(data.orePrefixes, data.output[i], 1);
             int finalI = i;
             dropRow.child(
                 new SlotLikeButtonWidget(ore).tooltipBuilder(
@@ -1660,7 +1660,7 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
                     new ItemDrawable(asteroid.mOutputs[0]).asWidget()
                         .marginRight(5))
                 .child(
-                    IKey.str(EnumChatFormatting.DARK_RED + data.asteroidName)
+                    IKey.str(EnumChatFormatting.DARK_RED + data.getAsteroidNameLocalized())
                         .asWidget())
                 .marginBottom(4));
         // Size data for this drone
