@@ -12,7 +12,6 @@ import static gregtech.api.util.GTRecipeConstants.DEFC_CASING_TIER;
 
 import java.util.Arrays;
 
-import gregtech.api.util.GTRecipeBuilder;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -35,6 +34,7 @@ import gregtech.api.recipe.RecipeMapBuilder;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
+import gregtech.api.util.GTRecipeBuilder;
 import gregtech.api.util.GTUtility;
 import gregtech.nei.formatter.SimpleSpecialValueFormatter;
 import gtPlusPlus.xmod.forestry.bees.handler.GTPPCombType;
