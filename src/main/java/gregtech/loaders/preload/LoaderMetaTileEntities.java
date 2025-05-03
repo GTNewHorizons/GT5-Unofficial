@@ -12365,7 +12365,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
 
     private static void registerModificationTable() {
         ItemList.ModificationTable.set(
-            new MTEModificationTable(MODIFICATION_TABLE.ID, "modificationtable", "Modification Table", 0)
+            new MTEModificationTable(MODIFICATION_TABLE.ID, "modificationtable", "Modification Table")
                 .getStackForm(1L));
     }
 

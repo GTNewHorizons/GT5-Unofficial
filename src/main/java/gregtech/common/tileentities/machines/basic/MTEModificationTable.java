@@ -19,6 +19,8 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -35,6 +37,7 @@ import com.cleanroommc.modularui.widgets.ItemSlot;
 import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 import com.google.common.collect.ImmutableMap;
 
+import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -46,12 +49,13 @@ import gregtech.api.items.armor.ArmorHelper;
 import gregtech.api.items.armor.MechArmorAugmentRegistries.Cores;
 import gregtech.api.items.armor.MechArmorAugmentRegistries.Frames;
 import gregtech.api.items.armor.behaviors.IArmorBehavior;
-import gregtech.api.metatileentity.implementations.MTEBasicMachine;
+import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.modularui2.GTGuis;
+import gregtech.api.render.TextureFactory;
 import gregtech.common.items.armor.MechArmorBase;
 
-public class MTEModificationTable extends MTEBasicMachine {
+public class MTEModificationTable extends MetaTileEntity {
 
     private static final int AUGMENT_SLOTS_COUNT = LARGEST_FRAME * 4;
     private static final Map<Integer, IDrawable> CATEGORY_SLOT_TEXTURES = ImmutableMap.of(
@@ -78,7 +82,6 @@ public class MTEModificationTable extends MTEBasicMachine {
 
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
-        super.saveNBTData(aNBT);
         ItemStack armorStack = armorSlotHandler.getStackInSlot(0);
         if (armorStack != null) {
             aNBT.setTag("armor", armorStack.writeToNBT(new NBTTagCompound()));
@@ -87,7 +90,6 @@ public class MTEModificationTable extends MTEBasicMachine {
 
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
-        super.loadNBTData(aNBT);
         if (aNBT.hasKey("armor")) {
             NBTBase armorNbt = aNBT.getTag("armor");
             if (armorNbt instanceof NBTTagCompound armorTag) {
@@ -96,12 +98,39 @@ public class MTEModificationTable extends MTEBasicMachine {
         }
     }
 
-    public MTEModificationTable(int aID, String aName, String aNameRegional, int aTier) {
-        super(aID, aName, aNameRegional, aTier, 1, "", 1, 1);
+    @Override
+    public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
+        ItemStack aStack) {
+        return false;
     }
 
-    public MTEModificationTable(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
-        super(aName, aTier, 1, aDescription, aTextures, 2, 0);
+    @Override
+    public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
+        ItemStack aStack) {
+        return false;
+    }
+
+    @Override
+    public String[] getDescription() {
+        return new String[] { EnumChatFormatting.AQUA + "Modifies Modular Mechanisms",
+            "Can be used to alter Mechanical Armor", "Insert armor, then frame, then energy core, then augments",
+            "Remove all augments before removing frame or core" };
+    }
+
+    @Override
+    public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
+        int colorIndex, boolean active, boolean redstoneLevel) {
+        if (side == ForgeDirection.UP)
+            return new ITexture[] { TextureFactory.of(Textures.BlockIcons.MODIFICATIONTABLE_TOP) };
+        return new ITexture[] { TextureFactory.of(Textures.BlockIcons.MODIFICATIONTABLE_SIDE) };
+    }
+
+    public MTEModificationTable(int aID, String aName, String aNameRegional) {
+        super(aID, aName, aNameRegional, 3 + (LARGEST_FRAME * 4));
+    }
+
+    public MTEModificationTable(String aName) {
+        super(aName, 3 + (LARGEST_FRAME * 4));
     }
 
     public @NotNull Frames getFrame() {
@@ -113,8 +142,13 @@ public class MTEModificationTable extends MTEBasicMachine {
     }
 
     @Override
+    public byte getTileEntityBaseType() {
+        return 2;
+    }
+
+    @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new MTEModificationTable(mName, mTier, mDescriptionArray, mTextures);
+        return new MTEModificationTable(mName);
     }
 
     private void updateFrameSlot(ItemStack newItem) {
@@ -240,6 +274,12 @@ public class MTEModificationTable extends MTEBasicMachine {
 
     @Override
     protected boolean forceUseMui2() {
+        return true;
+    }
+
+    @Override
+    public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
+        openGui(aPlayer);
         return true;
     }
 
