@@ -3535,7 +3535,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.wireGt16, Materials.Quantium, 32) },
             new FluidStack[] { new FluidStack(solderUEV, 1_296 * 64 * 4) },
             CustomItemList.eM_energyTunnel8_UMV.get(1),
-            53 * MINUTES + 20 * SECONDS,
+            100 * SECONDS,
             (int) TierEU.RECIPE_UMV);
 
         // 4M UXV Target
@@ -3551,7 +3551,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.wireGt16, Materials.BlackPlutonium, 32) },
             new FluidStack[] { new FluidStack(solderUEV, 1_296 * 64 * 4) },
             CustomItemList.eM_energyTunnel8_UXV.get(1),
-            106 * MINUTES + 40 * SECONDS,
+            100 * SECONDS,
             (int) TierEU.RECIPE_UXV);
 
         // 16M UXV Target
@@ -3571,7 +3571,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.wireGt16, Materials.BlackPlutonium, 64) },
             new FluidStack[] { new FluidStack(solderUEV, 1_296 * 128 * 4) },
             CustomItemList.eM_energyTunnel9_UXV.get(1),
-            213 * MINUTES + 20 * SECONDS,
+            110 * SECONDS,
             (int) TierEU.RECIPE_UXV);
 
         // 4M UMV Source
@@ -3587,7 +3587,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.wireGt16, Materials.Quantium, 32) },
             new FluidStack[] { new FluidStack(solderUEV, 1_296 * 64 * 4) },
             CustomItemList.eM_dynamoTunnel8_UMV.get(1),
-            53 * MINUTES + 20 * SECONDS,
+            100 * SECONDS,
             (int) TierEU.RECIPE_UMV);
 
         // 4M UXV Source
@@ -3603,7 +3603,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.wireGt16, Materials.BlackPlutonium, 32) },
             new FluidStack[] { new FluidStack(solderUEV, 1_296 * 64 * 4) },
             CustomItemList.eM_dynamoTunnel8_UXV.get(1),
-            106 * MINUTES + 40 * SECONDS,
+            100 * SECONDS,
             (int) TierEU.RECIPE_UXV);
 
         // 16M UXV Source
@@ -3623,7 +3623,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.wireGt16, Materials.BlackPlutonium, 64) },
             new FluidStack[] { new FluidStack(solderUEV, 1_296 * 128 * 4) },
             CustomItemList.eM_dynamoTunnel9_UXV.get(1),
-            213 * MINUTES + 20 * SECONDS,
+            110 * SECONDS,
             (int) TierEU.RECIPE_UXV);
 
         // ------------------------ Wireless EU dynamos ------------------------
