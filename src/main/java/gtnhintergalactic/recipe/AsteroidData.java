@@ -26,10 +26,11 @@ public class AsteroidData {
     public final OrePrefixes orePrefixes;
     public final int[] chances;
     public final int requiredModuleTier;
+    public final int duration;
 
     public AsteroidData(String asteroidName, int minDistance, int maxDistance, int minSize, int maxSize,
         int computation, int recipeWeight, int minDroneTier, int maxDroneTier, Materials[] output,
-        OrePrefixes orePrefixes, int[] chances, int requiredModuleTier) {
+        OrePrefixes orePrefixes, int[] chances, int requiredModuleTier, int duration) {
         this.asteroidName = asteroidName;
         this.minDistance = minDistance;
         this.maxDistance = maxDistance;
@@ -44,11 +45,12 @@ public class AsteroidData {
         this.chances = chances;
         this.requiredModuleTier = requiredModuleTier;
         this.outputItems = null;
+        this.duration = duration;
     }
 
     public AsteroidData(String asteroidName, int minDistance, int maxDistance, int minSize, int maxSize,
         int computation, int recipeWeight, int minDroneTier, int maxDroneTier, ItemStack[] outputItems, int[] chances,
-        int requiredModuleTier) {
+        int requiredModuleTier, int duration) {
         this.asteroidName = asteroidName;
         this.minDistance = minDistance;
         this.maxDistance = maxDistance;
@@ -63,6 +65,7 @@ public class AsteroidData {
         this.requiredModuleTier = requiredModuleTier;
         this.orePrefixes = null;
         this.output = null;
+        this.duration = duration;
     }
 
     public String getAsteroidNameLocalized() {

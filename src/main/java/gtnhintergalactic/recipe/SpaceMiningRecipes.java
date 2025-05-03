@@ -1007,7 +1007,8 @@ public class SpaceMiningRecipes {
                 endDroneTier,
                 aItemOutputs,
                 aChances,
-                minModuleTier));
+                minModuleTier,
+                duration));
     }
 
     private static void addRecipesToDrones(String asteroidName, ItemStack[] aItemInputs, FluidStack[] aFluidInputs,
@@ -1062,7 +1063,8 @@ public class SpaceMiningRecipes {
                 ores,
                 orePrefixes,
                 aChances,
-                minModuleTier));
+                minModuleTier,
+                duration));
     }
 
     /**
