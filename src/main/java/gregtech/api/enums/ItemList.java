@@ -100,6 +100,7 @@ public enum ItemList implements IItemContainer {
     IC2_AdvBattery,
     IC2_EnergyCrystal,
     IC2_LapotronCrystal,
+    Item_Power_Goggles,
     Tool_Vajra,
     Vajra_Core,
     Magnetron,
