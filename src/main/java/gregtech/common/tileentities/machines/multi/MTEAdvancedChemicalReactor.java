@@ -8,16 +8,11 @@ import static gregtech.api.util.GTStructureUtility.*;
 
 import javax.annotation.Nullable;
 
-import gregtech.api.metatileentity.implementations.MTEHatch;
-import gregtech.api.metatileentity.implementations.MTEHatchInput;
-import gregtech.api.util.GTModHandler;
-import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import net.minecraftforge.fluids.FluidStack;
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -45,9 +40,6 @@ public class MTEAdvancedChemicalReactor extends MTEExtendedPowerMultiBlockBase<M
     implements ISurvivalConstructable {
 
     private static final Logger log = LogManager.getLogger(MTEAdvancedChemicalReactor.class);
-
-    private int MODULE_LEFT = 0;
-    private int MODULE_RIGHT = 0;
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final String TEMP_HEAT_MODULE_L = "tempHeatL";
@@ -253,10 +245,10 @@ public class MTEAdvancedChemicalReactor extends MTEExtendedPowerMultiBlockBase<M
         .addElement(
             'A',
             buildHatchAdder(MTEAdvancedChemicalReactor.class)
-                .atLeast(InputHatch, OutputHatch, InputBus, OutputBus, Maintenance, Energy.or(ExoticEnergy))
+                .atLeast(OutputHatch, InputHatch, InputBus, OutputBus, Maintenance, Energy.or(ExoticEnergy))
                 .casingIndex(((BlockCasings8) GregTechAPI.sBlockCasings8).getTextureIndex(0))
                 .dot(1)
-                .buildAndChain(GregTechAPI.sBlockCasings8, 0))
+                .buildAndChain(ofBlock(GregTechAPI.sBlockCasings8, 0)))
         .build();
 
     public MTEAdvancedChemicalReactor(final int aID, final String aName, final String aNameRegional) {
@@ -331,6 +323,118 @@ public class MTEAdvancedChemicalReactor extends MTEExtendedPowerMultiBlockBase<M
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
         buildPiece(STRUCTURE_PIECE_MAIN, stackSize, hintsOnly, 2, 5, 0);
+        Pair<Integer, Integer> modules = create_modules(stackSize);
+        int MODULE_LEFT = modules.getLeft();
+        int MODULE_RIGHT = modules.getRight();
+
+        switch (MODULE_LEFT) {
+            case 1 -> buildPiece(TEMP_HEAT_MODULE_L, stackSize, hintsOnly, 5, 3, 0);
+            case 2 -> buildPiece(TEMP_COOL_MODULE_L, stackSize, hintsOnly, 5, 3, 0);
+            case 3 -> buildPiece(COMPRESSION_MODULE_L, stackSize, hintsOnly, 5, 3, 0);
+            case 4 -> buildPiece(VACUUM_MODULE_L, stackSize, hintsOnly, 5, 3, 0);
+        }
+        switch (MODULE_RIGHT) {
+            case 1 -> buildPiece(TEMP_HEAT_MODULE_R, stackSize, hintsOnly, -3, 3, 0);
+            case 2 -> buildPiece(TEMP_COOL_MODULE_R, stackSize, hintsOnly, -3, 3, 0);
+            case 3 -> buildPiece(COMPRESSION_MODULE_R, stackSize, hintsOnly, -3, 3, 0);
+            case 4 -> buildPiece(VACUUM_MODULE_R, stackSize, hintsOnly, -3, 3, 0);
+        }
+    }
+
+    @Override
+    public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
+        if (mMachine && (create_modules(stackSize).getLeft() == 0) && (create_modules(stackSize).getRight() == 0))
+            return -1;
+        int built = survivialBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 2, 5, 0, elementBudget, env, false, true);
+        Pair<Integer, Integer> modules = create_modules(stackSize);
+        switch (modules.getLeft()) {
+            case 1 -> built += survivialBuildPiece(
+                TEMP_HEAT_MODULE_L,
+                stackSize,
+                5,
+                3,
+                0,
+                elementBudget,
+                env,
+                false,
+                true);
+            case 2 -> built += survivialBuildPiece(
+                TEMP_COOL_MODULE_L,
+                stackSize,
+                5,
+                3,
+                0,
+                elementBudget,
+                env,
+                false,
+                true);
+            case 3 -> built += survivialBuildPiece(
+                COMPRESSION_MODULE_L,
+                stackSize,
+                5,
+                3,
+                0,
+                elementBudget,
+                env,
+                false,
+                true);
+            case 4 -> built += survivialBuildPiece(
+                VACUUM_MODULE_L,
+                stackSize,
+                5,
+                3,
+                0,
+                elementBudget,
+                env,
+                false,
+                true);
+        }
+        switch (modules.getRight()) {
+            case 1 -> built += survivialBuildPiece(
+                TEMP_HEAT_MODULE_R,
+                stackSize,
+                -3,
+                3,
+                0,
+                elementBudget,
+                env,
+                false,
+                true);
+            case 2 -> built += survivialBuildPiece(
+                TEMP_COOL_MODULE_R,
+                stackSize,
+                -3,
+                3,
+                0,
+                elementBudget,
+                env,
+                false,
+                true);
+            case 3 -> built += survivialBuildPiece(
+                COMPRESSION_MODULE_R,
+                stackSize,
+                -3,
+                3,
+                0,
+                elementBudget,
+                env,
+                false,
+                true);
+            case 4 -> built += survivialBuildPiece(
+                VACUUM_MODULE_R,
+                stackSize,
+                -3,
+                3,
+                0,
+                elementBudget,
+                env,
+                false,
+                true);
+        }
+        return built;
+    }
+
+    public Pair<Integer, Integer> create_modules(ItemStack stackSize) {
         /*
          * 0 - none
          * 1 - heat
@@ -338,8 +442,8 @@ public class MTEAdvancedChemicalReactor extends MTEExtendedPowerMultiBlockBase<M
          * 3 - compress
          * 4 - pump
          */
-        MODULE_LEFT = 0;
-        MODULE_RIGHT = 0;
+        int MODULE_LEFT = 0;
+        int MODULE_RIGHT = 0;
         boolean COOL_PIPE = false;
         boolean HEAT_PIPE = false;
         boolean VACUUM_PIPE = false;
@@ -362,7 +466,7 @@ public class MTEAdvancedChemicalReactor extends MTEExtendedPowerMultiBlockBase<M
             }
         }
         // right
-        if (HEAT_PIPE && (MODULE_LEFT == 0)) MODULE_LEFT = 1;
+        if (HEAT_PIPE) MODULE_LEFT = 1;
         if (COOL_PIPE && (MODULE_LEFT == 0)) MODULE_LEFT = 2;
         if (COMPRESS_PIPE && (MODULE_LEFT == 0)) MODULE_LEFT = 3;
         if (VACUUM_PIPE && (MODULE_LEFT == 0)) MODULE_LEFT = 4;
@@ -371,40 +475,38 @@ public class MTEAdvancedChemicalReactor extends MTEExtendedPowerMultiBlockBase<M
             MODULE_LEFT = 0;
         }
         // left
-        if (HEAT_PIPE && (MODULE_LEFT == 0) && !(MODULE_RIGHT == 1)) MODULE_LEFT = 1;
+        if (HEAT_PIPE && !(MODULE_RIGHT == 1)) MODULE_LEFT = 1;
         if (COOL_PIPE && (MODULE_LEFT == 0) && !(MODULE_RIGHT == 2)) MODULE_LEFT = 2;
         if (COMPRESS_PIPE && (MODULE_LEFT == 0) && !(MODULE_RIGHT == 3)) MODULE_LEFT = 3;
         if (VACUUM_PIPE && (MODULE_LEFT == 0) && !(MODULE_RIGHT == 4)) MODULE_LEFT = 4;
-        switch (MODULE_LEFT) {
-            case 1 -> buildPiece(TEMP_HEAT_MODULE_L, stackSize, hintsOnly, 5, 3, 0);
-            case 2 -> buildPiece(TEMP_COOL_MODULE_L, stackSize, hintsOnly, 5, 3, 0);
-            case 3 -> buildPiece(COMPRESSION_MODULE_L, stackSize, hintsOnly, 5, 3, 0);
-            case 4 -> buildPiece(VACUUM_MODULE_L, stackSize, hintsOnly, 5, 3, 0);
-            default -> MODULE_LEFT = 0; // this line does nothing
-        }
-        switch (MODULE_RIGHT) {
-            case 1 -> buildPiece(TEMP_HEAT_MODULE_R, stackSize, hintsOnly, -3, 3, 0);
-            case 2 -> buildPiece(TEMP_COOL_MODULE_R, stackSize, hintsOnly, -3, 3, 0);
-            case 3 -> buildPiece(COMPRESSION_MODULE_R, stackSize, hintsOnly, -3, 3, 0);
-            case 4 -> buildPiece(VACUUM_MODULE_R, stackSize, hintsOnly, -3, 3, 0);
-            default -> MODULE_LEFT = 0; // this line does nothing
-        }
-    }
-
-    @Override
-    public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
-        if (mMachine) return -1;
-        return survivialBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 2, 5, 0, elementBudget, env, false, true);
+        return Pair.of(MODULE_LEFT, MODULE_RIGHT);
     }
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+
+        if (!mExoticEnergyHatches.isEmpty()) {
+            if (!mEnergyHatches.isEmpty()) return false;
+            return (mExoticEnergyHatches.size() == 1);
+        }
+
         if (!checkPiece(STRUCTURE_PIECE_MAIN, 2, 5, 0)) {
             isbuilt = false;
             return false;
         }
         isbuilt = true;
-        isTempModule = checkPiece(TEMP_HEAT_MODULE_R, -3, 3, 0) || checkPiece(TEMP_HEAT_MODULE_L, 5, 3, 0);
+        // spotless:off
+        isTempModule =
+            checkPiece(TEMP_HEAT_MODULE_R, -3, 3, 0)
+            || checkPiece(TEMP_HEAT_MODULE_L, 5, 3, 0)
+            || checkPiece(TEMP_COOL_MODULE_R, -3, 3, 0)
+            || checkPiece(TEMP_COOL_MODULE_L, 5, 3, 0);
+        isPressureModule =
+            checkPiece(VACUUM_MODULE_R, -3, 3, 0)
+            || checkPiece(VACUUM_MODULE_L, 5, 3, 0)
+            || checkPiece(COMPRESSION_MODULE_R, -3, 3, 0)
+            || checkPiece(COMPRESSION_MODULE_L, 5, 3, 0);
+        //spotless:on
         return true;
     }
 
@@ -498,13 +600,11 @@ public class MTEAdvancedChemicalReactor extends MTEExtendedPowerMultiBlockBase<M
         if (isbuilt && (aTick % 20 == 0)) {
             if (isTempModule) {
                 CurrentTemp = 0;
-            }
-            else CurrentTemp = 300;
+            } else CurrentTemp = 300;
 
             if (isPressureModule) {
                 CurrentPressure = 0;
-            }
-            else CurrentPressure = 101;
+            } else CurrentPressure = 101;
             System.out.println(CurrentPressure);
             System.out.println(CurrentTemp);
         }
