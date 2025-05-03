@@ -169,7 +169,7 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
             .addInfo(EnumChatFormatting.LIGHT_PURPLE + "Dimensions not included!" + EnumChatFormatting.GRAY)
             .addInfo("Converts protomatter into antimatter")
             .addInfo(
-                "Passively consumes " + GTUtility.formatNumbers(10_000_000)
+                "Passively consumes " + GTUtility.formatNumbers(BASE_CONSUMPTION)
                     + " + ("
                     + EnumChatFormatting.DARK_AQUA
                     + "Antimatter"
