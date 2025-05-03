@@ -409,6 +409,7 @@ public class LoaderGTBlockFluid implements Runnable {
                 "Adds Spacesuit capability. Must be applied to all four armor pieces",
                 Augments.SpaceSuit).validArmors(MechArmorLoader.AllMechArmor)
                     .attachedBehaviors(Collections.singletonList(SpaceSuitBehavior.INSTANCE))
+                    .minimumCore(2)
                     .category(CATEGORY_PROTECTION)
                     .build());
         ItemList.Augment_ForceField.set(
