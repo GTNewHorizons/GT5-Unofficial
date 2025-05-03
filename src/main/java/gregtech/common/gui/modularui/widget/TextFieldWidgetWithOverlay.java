@@ -2,7 +2,6 @@ package gregtech.common.gui.modularui.widget;
 
 import java.util.ArrayList;
 import java.util.function.BooleanSupplier;
-import java.util.function.Function;
 
 import com.cleanroommc.modularui.screen.viewport.ModularGuiContext;
 import com.cleanroommc.modularui.theme.WidgetTheme;
@@ -19,6 +18,7 @@ public class TextFieldWidgetWithOverlay extends TextFieldWidget {
 
     @Override
     public void drawText(ModularGuiContext context) {
+
         this.renderer.setSimulate(false);
         this.renderer.setPos(
             this.getArea()
@@ -26,20 +26,16 @@ public class TextFieldWidgetWithOverlay extends TextFieldWidget {
             0);
         this.renderer.setScale(this.scale);
         this.renderer.setAlignment(this.textAlignment, -1.0F, (float) this.getArea().height);
-        this.renderer.draw(allowedToRenderText.getAsBoolean() ? this.handler.getText() : new ArrayList<>());
+        this.renderer.draw(
+            allowedToRenderText.getAsBoolean() || this.getMathFailMessage() != null ? this.handler.getText()
+                : new ArrayList<>());
         this.getScrollData()
             .setScrollSize(Math.max(0, (int) this.renderer.getLastWidth()));
     }
 
     @Override
-    public TextFieldWidget setNumbers(Function<Integer, Integer> validator) {
-        this.intNums = true;
-        return super.setNumbers(validator);
-    }
-
-    @Override
     public void drawOverlay(ModularGuiContext context, WidgetTheme widgetTheme) {
-        if (allowedToRenderText.getAsBoolean()) return;
+        if (allowedToRenderText.getAsBoolean() || this.getMathFailMessage() != null) return;
         super.drawOverlay(context, widgetTheme);
     }
 }

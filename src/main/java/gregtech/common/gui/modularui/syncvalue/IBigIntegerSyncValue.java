@@ -1,8 +1,8 @@
 package gregtech.common.gui.modularui.syncvalue;
 
-import com.cleanroommc.modularui.api.value.sync.IValueSyncHandler;
-
 import java.math.BigInteger;
+
+import com.cleanroommc.modularui.api.value.sync.IValueSyncHandler;
 
 /**
  * A helper interface for sync values which can be turned into an integer.
