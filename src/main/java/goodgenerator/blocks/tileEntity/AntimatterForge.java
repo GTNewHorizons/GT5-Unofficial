@@ -169,7 +169,7 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
             .addInfo(EnumChatFormatting.LIGHT_PURPLE + "Dimensions not included!" + EnumChatFormatting.GRAY)
             .addInfo("Converts protomatter into antimatter")
             .addInfo(
-                "Passively consumes " + GTUtility.formatNumbers(10_000_000)
+                "Passively consumes " + GTUtility.formatNumbers(BASE_CONSUMPTION)
                     + " + ("
                     + EnumChatFormatting.DARK_AQUA
                     + "Antimatter"
@@ -228,9 +228,9 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
                     + EnumChatFormatting.RESET
                     + EnumChatFormatting.GRAY
                     + ")) of antimatter each cycle")
+            .addInfo("Each hatch will multiply the base production per hatch with a random number pulled from")
             .addInfo(
-                "Each hatch will multiply the base production per hatch with a random number pulled from " + "N("
-                    + baseSkew
+                "a normal distribution with a mean of " + baseSkew
                     + " + "
                     + EnumChatFormatting.AQUA
                     + EnumChatFormatting.BOLD
@@ -238,8 +238,7 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
                     + "A"
                     + EnumChatFormatting.RESET
                     + EnumChatFormatting.GRAY
-                    + ", 1)")
-            .addInfo("N(0.2, 1) refers to a normal distribution with a mean of 0.2 and a variance of 1")
+                    + " and a variance of 1")
             .addInfo("The total gain of antimatter can be negative!")
             .addSeparator()
             .addInfo("Can be supplied with stabilization fluids to improve antimatter generation")
