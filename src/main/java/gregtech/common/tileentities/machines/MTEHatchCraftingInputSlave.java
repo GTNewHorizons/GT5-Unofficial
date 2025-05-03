@@ -152,7 +152,7 @@ public class MTEHatchCraftingInputSlave extends MTEHatchInputBus implements IDua
     }
 
     @Override
-    public Iterator<MTEHatchCraftingInputME.PatternSlot> inventories() {
+    public Iterator<MTEHatchCraftingInputME.PatternSlot<MTEHatchCraftingInputME>> inventories() {
         return getMaster() != null ? getMaster().inventories() : Collections.emptyIterator();
     }
 
