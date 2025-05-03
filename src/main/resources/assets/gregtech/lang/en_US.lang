@@ -248,6 +248,9 @@ GT5U.fusion.plasma=Plasma Output
 
 GT5U.tpm.parallelwindow=Open Parallel Configuration Window
 
+GT5U.ACR.pressure=Current pressure
+GT5U.ACR.temperature=Current temperature
+
 GT5U.EBF.heat=Heat capacity
 GT5U.coil.None=None
 GT5U.coil.ULV=None

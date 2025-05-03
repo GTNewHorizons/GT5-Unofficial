@@ -9,8 +9,10 @@ import static gregtech.api.util.GTStructureUtility.*;
 import javax.annotation.Nullable;
 
 import net.minecraft.block.Block;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.apache.commons.lang3.tuple.Pair;
@@ -484,35 +486,26 @@ public class MTEAdvancedChemicalReactor extends MTEExtendedPowerMultiBlockBase<M
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-
-        if (!mExoticEnergyHatches.isEmpty()) {
-            if (!mEnergyHatches.isEmpty()) return false;
-            return (mExoticEnergyHatches.size() == 1);
-        }
-
         if (!checkPiece(STRUCTURE_PIECE_MAIN, 2, 5, 0)) {
-            isbuilt = false;
             return false;
         }
-        isbuilt = true;
-        // spotless:off
         isTempModule =
             checkPiece(TEMP_HEAT_MODULE_R, -3, 3, 0)
-            || checkPiece(TEMP_HEAT_MODULE_L, 5, 3, 0)
-            || checkPiece(TEMP_COOL_MODULE_R, -3, 3, 0)
-            || checkPiece(TEMP_COOL_MODULE_L, 5, 3, 0);
+                || checkPiece(TEMP_HEAT_MODULE_L, 5, 3, 0)
+                || checkPiece(TEMP_COOL_MODULE_R, -3, 3, 0)
+                || checkPiece(TEMP_COOL_MODULE_L, 5, 3, 0);
         isPressureModule =
             checkPiece(VACUUM_MODULE_R, -3, 3, 0)
-            || checkPiece(VACUUM_MODULE_L, 5, 3, 0)
-            || checkPiece(COMPRESSION_MODULE_R, -3, 3, 0)
-            || checkPiece(COMPRESSION_MODULE_L, 5, 3, 0);
-        //spotless:on
+                || checkPiece(VACUUM_MODULE_L, 5, 3, 0)
+                || checkPiece(COMPRESSION_MODULE_R, -3, 3, 0)
+                || checkPiece(COMPRESSION_MODULE_L, 5, 3, 0);
         return true;
     }
 
     @Override
     protected ProcessingLogic createProcessingLogic() {
-        return new ProcessingLogic().enablePerfectOverclock();
+        return new ProcessingLogic().enablePerfectOverclock()
+            .setMaxParallelSupplier(this::getTrueParallel);
     }
 
     @Override
@@ -594,10 +587,39 @@ public class MTEAdvancedChemicalReactor extends MTEExtendedPowerMultiBlockBase<M
         return metaID - 11;
     }
 
+    protected String[] getExtendedInfoData() {
+        return new String[] {
+            StatCollector.translateToLocal("GT5U.ACR.pressure") + ": "
+                + EnumChatFormatting.GREEN
+                + GTUtility.formatNumbers(this.CurrentPressure)
+                + EnumChatFormatting.RESET
+                + " kPa",
+            StatCollector.translateToLocal("GT5U.ACR.temperature") + ": "
+                + EnumChatFormatting.GREEN
+                + GTUtility.formatNumbers(this.CurrentTemp)
+                + EnumChatFormatting.RESET
+                + " K" };
+    }
+
+    @Override
+    public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
+        float aX, float aY, float aZ, ItemStack aTool) {
+        if (aPlayer.isSneaking()) {
+            this.batchMode = !this.batchMode;
+            if (this.batchMode) {
+                GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOn"));
+            } else {
+                GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOff"));
+            }
+            return true;
+        }
+        return false;
+    }
+
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         super.onPostTick(aBaseMetaTileEntity, aTick);
-        if (isbuilt && (aTick % 20 == 0)) {
+        if (mMachine && (aTick % 20 == 0)) {
             if (isTempModule) {
                 CurrentTemp = 0;
             } else CurrentTemp = 300;
@@ -605,8 +627,6 @@ public class MTEAdvancedChemicalReactor extends MTEExtendedPowerMultiBlockBase<M
             if (isPressureModule) {
                 CurrentPressure = 0;
             } else CurrentPressure = 101;
-            System.out.println(CurrentPressure);
-            System.out.println(CurrentTemp);
         }
     }
 }
