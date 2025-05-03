@@ -14,9 +14,11 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_LINE
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_LINE_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_LINE_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_LINE_GLOW;
+import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 import static gregtech.api.util.GTUtility.filterValidMTEs;
+import static net.minecraft.util.StatCollector.translateToLocal;
 
 import javax.annotation.Nonnull;
 
@@ -37,9 +39,14 @@ import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructa
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+import com.gtnewhorizons.modularui.api.ModularUITextures;
 import com.gtnewhorizons.modularui.api.math.Alignment;
+import com.gtnewhorizons.modularui.api.screen.ModularWindow;
+import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
+import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
 import com.gtnewhorizons.modularui.common.widget.DynamicPositionedColumn;
 import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
+import com.gtnewhorizons.modularui.common.widget.Scrollable;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
@@ -71,6 +78,7 @@ import gregtech.common.tileentities.machines.MTEHatchInputBusME;
 import gregtech.common.tileentities.render.TileEntityNanoForgeRenderer;
 import gtPlusPlus.core.block.ModBlocks;
 import tectech.thing.block.BlockQuantumGlass;
+import tectech.thing.gui.TecTechUITextures;
 
 public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge> implements ISurvivalConstructable {
 
@@ -294,6 +302,7 @@ public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge> i
     private byte mSpecialTier = 0;
     private boolean renderActive = false;
     private boolean renderDisabled = false;
+    private static final int INFO_WINDOW_ID = 10;
 
     public MTENanoForge(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -678,11 +687,12 @@ public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge> i
             .addInfo("Requires insane amounts of power to create nanites. Each tier")
             .addInfo("the multi gains a new building next to it. The nanite in the")
             .addInfo("controller slot controls the tier.")
+            .addInfo("Tier 4 has additional mechanics, check the controller.")
             .addSeparator()
             .addInfo("Requires a Carbon Nanite to use tier " + EnumChatFormatting.DARK_PURPLE + 1)
             .addInfo("Requires a Neutronium Nanite to use tier " + EnumChatFormatting.DARK_PURPLE + 2)
             .addInfo("Requires a Transcendent Metal Nanite to use tier " + EnumChatFormatting.DARK_PURPLE + 3)
-            .addInfo("Requires a Eternity Nanite to use tier " + EnumChatFormatting.DARK_PURPLE + 4)
+            .addInfo("Requires an Eternity Nanite to use tier " + EnumChatFormatting.DARK_PURPLE + 4)
             .addSeparator()
             .addInfo("If a recipe's tier is lower than the tier of the Nano Forge")
             .addInfo("it gains " + EnumChatFormatting.RED + "perfect overclock" + EnumChatFormatting.GRAY + ".")
@@ -749,6 +759,84 @@ public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge> i
                     + " output buses.")
             .toolTipFinisher(AuthorBlueWeabo);
         return tt;
+    }
+
+    @Override
+    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
+        buildContext.addSyncedWindow(INFO_WINDOW_ID, this::createT4InfoWindow);
+        builder.widget(new ButtonWidget().setOnClick((clickData, widget) -> {
+            if (!widget.isClient()) {
+                widget.getContext()
+                    .openSyncedWindow(INFO_WINDOW_ID);
+            }
+        })
+            .setPlayClickSound(true)
+            .setBackground(ModularUITextures.ICON_INFO)
+            .addTooltip(translateToLocal("GT5U.machines.nano_forge.t4_info_tooltip"))
+            .setTooltipShowUpDelay(TOOLTIP_DELAY)
+            .setPos(174, 111)
+            .setSize(16, 16));
+        super.addUIWidgets(builder, buildContext);
+    }
+
+    protected ModularWindow createT4InfoWindow(final EntityPlayer player) {
+        final int WIDTH = 250;
+        final int HEIGHT = 250;
+        final Scrollable scrollable = new Scrollable().setVerticalScroll();
+        ModularWindow.Builder builder = ModularWindow.builder(WIDTH, HEIGHT);
+        builder.setBackground(TecTechUITextures.BACKGROUND_SCREEN_BLUE);
+        builder.setGuiTint(getGUIColorization());
+        builder.setDraggable(true);
+        scrollable
+            .widget(
+                new TextWidget(EnumChatFormatting.BOLD + translateToLocal("GT5U.machines.nano_forge.t4_info_header"))
+                    .setDefaultColor(EnumChatFormatting.GOLD)
+                    .setTextAlignment(Alignment.Center)
+                    .setPos(0, 0)
+                    .setSize(244, 20))
+            .widget(
+                TextWidget.localised("GT5U.machines.nano_forge.t4_info_text.1")
+                    .setDefaultColor(EnumChatFormatting.GOLD)
+                    .setTextAlignment(Alignment.CenterLeft)
+                    .setPos(0, 20)
+                    .setSize(244, 60))
+            .widget(
+                TextWidget.localised("GT5U.machines.nano_forge.t4_info_text.2")
+                    .setDefaultColor(EnumChatFormatting.GOLD)
+                    .setTextAlignment(Alignment.CenterLeft)
+                    .setPos(0, 80)
+                    .setSize(244, 60))
+            .widget(
+                TextWidget.localised("GT5U.machines.nano_forge.t4_info_text.3")
+                    .setDefaultColor(EnumChatFormatting.GREEN)
+                    .setTextAlignment(Alignment.CenterLeft)
+                    .setPos(0, 140)
+                    .setSize(244, 20))
+            .widget(
+                TextWidget.localised("GT5U.machines.nano_forge.t4_info_text.4")
+                    .setDefaultColor(EnumChatFormatting.GOLD)
+                    .setTextAlignment(Alignment.CenterLeft)
+                    .setPos(0, 160)
+                    .setSize(244, 40))
+            .widget(
+                TextWidget.localised("GT5U.machines.nano_forge.t4_info_text.5")
+                    .setDefaultColor(EnumChatFormatting.GOLD)
+                    .setTextAlignment(Alignment.CenterLeft)
+                    .setPos(0, 200)
+                    .setSize(244, 30))
+            .widget(
+                TextWidget.localised("GT5U.machines.nano_forge.t4_info_text.6")
+                    .setDefaultColor(EnumChatFormatting.GREEN)
+                    .setTextAlignment(Alignment.CenterLeft)
+                    .setPos(0, 230)
+                    .setSize(244, 20));
+        builder.widget(
+            scrollable.setSize(244, 244)
+                .setPos(3, 3))
+            .widget(
+                ButtonWidget.closeWindowButton(true)
+                    .setPos(233, 4));
+        return builder.build();
     }
 
     @Override
