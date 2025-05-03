@@ -2,6 +2,8 @@ package gtnhintergalactic.recipe;
 
 import java.util.Objects;
 
+import net.minecraft.item.ItemStack;
+
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import gregtech.api.enums.Materials;
@@ -18,6 +20,7 @@ public class AsteroidData {
     public final int recipeWeight;
     public final int minDroneTier;
     public final int maxDroneTier;
+    public final ItemStack[] outputItems;
     public final Materials[] output;
     public final OrePrefixes orePrefixes;
     public final int[] chances;
@@ -39,6 +42,26 @@ public class AsteroidData {
         this.orePrefixes = orePrefixes;
         this.chances = chances;
         this.requiredModuleTier = requiredModuleTier;
+        this.outputItems = null;
+    }
+
+    public AsteroidData(String asteroidName, int minDistance, int maxDistance, int minSize, int maxSize,
+        int computation, int recipeWeight, int minDroneTier, int maxDroneTier, ItemStack[] outputItems, int[] chances,
+        int requiredModuleTier) {
+        this.asteroidName = asteroidName;
+        this.minDistance = minDistance;
+        this.maxDistance = maxDistance;
+        this.minSize = minSize;
+        this.maxSize = maxSize;
+        this.computation = computation;
+        this.recipeWeight = recipeWeight;
+        this.minDroneTier = minDroneTier;
+        this.maxDroneTier = maxDroneTier;
+        this.outputItems = outputItems;
+        this.chances = chances;
+        this.requiredModuleTier = requiredModuleTier;
+        this.orePrefixes = null;
+        this.output = null;
     }
 
     @Override

@@ -59,6 +59,7 @@ import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.cleanroommc.modularui.widgets.layout.Grid;
 import com.cleanroommc.modularui.widgets.layout.Row;
 
+import akka.japi.Pair;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import ggfab.mte.MTELinkedInputBus;
@@ -1108,6 +1109,7 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
         Flow asteroidRow = new Row().widthRel(1)
             .height(18)
             .marginBottom(4);
+        List<IPanelHandler> asteroidPanels = new ArrayList<>();
         for (int i = 0; i < uniqueAsteroidList.size(); i++) {
             int finalI = i;
             AsteroidData data = SpaceMiningRecipes.uniqueAsteroidList.get(i);
@@ -1115,7 +1117,10 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
                 "asteroidInfo" + finalI,
                 (p_syncManager, syncHandler) -> getAsteroidPanel(p_syncManager, syncHandler, finalI),
                 true);
+            asteroidPanels.add(asteroidInfo);
 
+            ItemStack oreItem = data.outputItems != null ? data.outputItems[0]
+                : GTOreDictUnificator.get(data.orePrefixes, data.output[0], 1);
             ButtonWidget asteroidButton = new ButtonWidget<>().size(18, 18)
                 .overlay(new DynamicDrawable(() -> {
                     if (matchesFilters(
@@ -1128,10 +1133,10 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
                             new Rectangle().setColor(Color.rgb(0, 255, 0))
                                 .asIcon()
                                 .size(16, 16),
-                            new ItemDrawable(GTOreDictUnificator.get(data.orePrefixes, data.output[0], 1)).asIcon()
+                            new ItemDrawable(oreItem).asIcon()
                                 .size(16, 16));
                     } else {
-                        return new ItemDrawable(GTOreDictUnificator.get(data.orePrefixes, data.output[0], 1)).asIcon()
+                        return new ItemDrawable(oreItem).asIcon()
                             .size(16, 16);
                     }
                 }))
@@ -1162,7 +1167,8 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
             true);
         IPanelHandler minerCalculator = syncManager.panel(
             "spaceMinerCalculator",
-            (p_syncManager, syncHandler) -> openSpaceMinerCalculator(p_syncManager, syncHandler, parent),
+            (p_syncManager,
+                syncHandler) -> openSpaceMinerCalculator(p_syncManager, syncHandler, parent, asteroidPanels),
             true);
         asteroidColumn.child(
             new Column().widthRel(1)
@@ -1217,7 +1223,6 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
                                 .onMousePressed(mouseData -> {
                                     if (!minerCalculator.isPanelOpen()) {
                                         minerCalculator.openPanel();
-                                        thisPanel.closePanel();
                                     } else {
                                         minerCalculator.closePanel();
                                     }
@@ -1274,7 +1279,7 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
     }
 
     private ModularPanel openSpaceMinerCalculator(PanelSyncManager syncManager, IPanelHandler panelSyncHandler,
-        ModularPanel parent) {
+        ModularPanel parent, List<IPanelHandler> asteroidPanels) {
         Area parentArea = parent.getArea();
         ModularPanel panel = new ModularPanel("spaceMinerCalculator") {
 
@@ -1381,7 +1386,7 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
                                         distanceSyncer.getValue(),
                                         moduleTierSyncer.getValue(),
                                         droneSyncer.getValue(),
-                                        syncManager);
+                                        asteroidPanels);
                                     outputListWidget.getChildren()
                                         .clear();
                                     outputListWidget.children(output);
@@ -1392,33 +1397,34 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
     }
 
     private List<IWidget> calculateOutput(Integer distance, Integer moduleTier, Integer droneTier,
-        PanelSyncManager syncManager) {
+        List<IPanelHandler> asteroidPanels) {
         List<IWidget> listResult = new ArrayList<>();
 
-        List<GTRecipe> asteroids = SpaceMiningRecipes.asteroidDistanceMap.get(droneTier)
+        List<Pair<Integer, GTRecipe>> asteroids = SpaceMiningRecipes.asteroidDistanceMap.get(droneTier)
             .computeIfAbsent(distance, w -> new ArrayList<>())
             .stream()
-            .filter(recipe -> {
+            .filter(pair -> {
+                GTRecipe recipe = pair.second();
                 Integer requiredModuleTier = recipe.getMetadata(IGRecipeMaps.MODULE_TIER);
                 assert requiredModuleTier != null;
                 if (moduleTier < requiredModuleTier) return false;
                 return true;
             })
             .sorted(
-                (a, b) -> b.getMetadata(IGRecipeMaps.SPACE_MINING_DATA).recipeWeight
-                    - a.getMetadata(IGRecipeMaps.SPACE_MINING_DATA).recipeWeight)
+                (a, b) -> b.second()
+                    .getMetadata(IGRecipeMaps.SPACE_MINING_DATA).recipeWeight
+                    - a.second()
+                        .getMetadata(IGRecipeMaps.SPACE_MINING_DATA).recipeWeight)
             .collect(toList());
 
         AtomicInteger weightSum = new AtomicInteger();
         asteroids.forEach(
-            asteroid -> weightSum.addAndGet(asteroid.getMetadata(IGRecipeMaps.SPACE_MINING_DATA).recipeWeight));
+            asteroid -> weightSum.addAndGet(
+                asteroid.second()
+                    .getMetadata(IGRecipeMaps.SPACE_MINING_DATA).recipeWeight));
 
-        for (GTRecipe asteroid : asteroids) {
-            IPanelHandler asteroidInfoPanel = syncManager.panel(
-                "asteroidFromRecipe" + asteroid.hashCode(),
-                (p_syncManager,
-                    syncHandler) -> getAsteroidPanelFromRecipe(p_syncManager, syncHandler, asteroid, droneTier),
-                true);
+        for (Pair<Integer, GTRecipe> asteroidPair : asteroids) {
+            GTRecipe asteroid = asteroidPair.second();
             SpaceMiningData data = asteroid.getMetadata(IGRecipeMaps.SPACE_MINING_DATA);
             ButtonWidget asteroidButton = new ButtonWidget<>().size(18, 18)
                 .overlay(
@@ -1428,11 +1434,8 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
                     t -> t.addLine(IKey.str(EnumChatFormatting.DARK_RED + data.asteroidName))
                         .addLine(IKey.str("Click me to get more info!")))
                 .onMousePressed(mouseData -> {
-                    if (!asteroidInfoPanel.isPanelOpen()) {
-                        asteroidInfoPanel.openPanel();
-                    } else {
-                        asteroidInfoPanel.closePanel();
-                    }
+                    asteroidPanels.get(asteroidPair.first())
+                        .openPanel();
                     return true;
                 });
             listResult.add(
@@ -1502,20 +1505,20 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
         };
         AsteroidData data = SpaceMiningRecipes.uniqueAsteroidList.get(asteroidIndex);
 
-        panel
-            .size(
-                240,
-                100 + 22 * (((data.output.length - 1) / 9) + ((data.maxDroneTier - data.minDroneTier - 1) / 10) + 1))
+        int outputLength = data.output != null ? data.output.length : data.outputItems.length;
+        panel.size(240, 100 + 22 * (((outputLength - 1) / 9) + ((data.maxDroneTier - data.minDroneTier - 1) / 10) + 1))
             .pos(140, 30)
             .padding(5);
         Flow column = new Column().sizeRel(1);
 
         // Ore Icon, Asteroid Name
+        ItemStack oreItem = data.outputItems != null ? data.outputItems[0]
+            : GTOreDictUnificator.get(data.orePrefixes, data.output[0], 1);
         column.child(
             new Row().widthRel(1)
                 .height(18)
                 .child(
-                    new ItemDrawable(GTOreDictUnificator.get(data.orePrefixes, data.output[0], 1)).asWidget()
+                    new ItemDrawable(oreItem).asWidget()
                         .marginRight(5))
                 .child(
                     IKey.str(EnumChatFormatting.DARK_RED + data.asteroidName)
@@ -1611,8 +1614,9 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
                 .asWidget());
         int totalWeight = Arrays.stream(data.chances)
             .sum();
-        for (int i = 0; i < data.output.length; i++) {
-            ItemStack ore = GTOreDictUnificator.get(data.orePrefixes, data.output[i], 1);
+        for (int i = 0; i < outputLength; i++) {
+            ItemStack ore = data.outputItems != null ? data.outputItems[0]
+                : GTOreDictUnificator.get(data.orePrefixes, data.output[0], 1);
             int finalI = i;
             dropRow.child(
                 new SlotLikeButtonWidget(ore).tooltipBuilder(
@@ -1620,7 +1624,7 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
                         .addLine(IKey.str(((double) data.chances[finalI] / totalWeight) * 100 + "% chance")))
                     .marginRight(5));
 
-            if ((i + 1) % 9 == 0 || i == data.output.length - 1) {
+            if ((i + 1) % 9 == 0 || i == outputLength - 1) {
                 dropsColumns.child(dropRow);
                 dropRow = new Row().widthRel(1)
                     .height(18)
