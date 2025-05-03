@@ -780,7 +780,7 @@ public abstract class MetaTileEntity extends CommonMetaTileEntity implements ICr
         return colorOverride.getTextColorOrDefault(textType, defaultColor);
     }
 
-    public byte getColor() {
+    final public byte getColor() {
         return getBaseMetaTileEntity().getColorization();
     }
 
