@@ -10,9 +10,11 @@ import static gregtech.common.items.armor.MechArmorBase.MECH_CORE_KEY;
 import static gregtech.common.items.armor.MechArmorBase.MECH_FRAME_KEY;
 
 import java.util.Map;
+import java.util.function.BooleanSupplier;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTBase;
@@ -72,6 +74,7 @@ public class MTEModificationTable extends MTEBasicMachine {
         Frames::getPrismaticSlots);
 
     private @NotNull Frames frame = Frames.None;
+    private int installedAugments = 0;
 
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
@@ -187,6 +190,7 @@ public class MTEModificationTable extends MTEBasicMachine {
             if (newItem.getItem() instanceof ItemAugment itemAugment) {
                 categoryTag.setString(Integer.toString(column), itemAugment.augmentData.id);
                 applyAugmentToTag(armorTag, newItem);
+                installedAugments++;
             }
         } else {
             String oldAugmentID = categoryTag.getString(Integer.toString(column));
@@ -196,6 +200,7 @@ public class MTEModificationTable extends MTEBasicMachine {
                     categoryTag.removeTag(Integer.toString(column));
                     augmentItem.getAttachedBehaviors()
                         .forEach(behavior -> behavior.removeBehaviorNBT(armorTag));
+                    installedAugments--;
                 }
             }
         }
@@ -259,37 +264,42 @@ public class MTEModificationTable extends MTEBasicMachine {
             slots.child(buildAugmentSlot(i, CATEGORY_PRISMATIC));
         }
 
-        panel.child(
-            new ItemSlot().slot(
-                new ModularSlot(armorSlotHandler, 0).slotGroup("armor")
-                    .filter((x) -> x.getItem() instanceof MechArmorBase)
-                    .changeListener((newItem, onlyAmountChanged, client, init) -> {
-                        Frames newFrame = getFrameFromItemStack(newItem);
-                        if (newFrame != getFrame()) {
-                            displayInstalledAugments();
-                        }
-                        setFrame(newFrame);
-                    }))
-                .pos(16, 4)
-                .background(GTGuiTextures.SLOT_ITEM_STANDARD, GTGuiTextures.OVERLAY_SLOT_ARMOR));
-        panel.child(
-            new ItemSlot().slot(
-                new ModularSlot(armorSlotHandler, 1).slotGroup("armor")
+        ItemSlot armorSlot = new ItemSlot().slot(
+            new ModularSlot(armorSlotHandler, 0).slotGroup("armor")
+                .filter((x) -> x.getItem() instanceof MechArmorBase)
+                .changeListener((newItem, onlyAmountChanged, client, init) -> {
+                    Frames newFrame = getFrameFromItemStack(newItem);
+                    if (newFrame != getFrame()) {
+                        displayInstalledAugments();
+                    }
+                    setFrame(newFrame);
+                }))
+            .pos(16, 4)
+            .background(GTGuiTextures.SLOT_ITEM_STANDARD, GTGuiTextures.OVERLAY_SLOT_ARMOR);
+        ItemSlot frameSlot = new ItemSlot()
+            .slot(
+                new AccessModifiableModularSlot(armorSlotHandler, 1)
+                    .setCanTake(() -> installedAugments == 0 && armorSlotHandler.getStackInSlot(2) == null)
+                    .slotGroup("armor")
                     .filter((x) -> x.getItem() instanceof ItemAugmentFrame)
                     .changeListener((newItem, onlyAmountChanged, client, init) -> { updateFrameSlot(newItem); }))
-                .pos(16, 22)
-                .setEnabledIf((slot) -> armorSlotHandler.getStackInSlot(0) != null)
-                .background(GTGuiTextures.SLOT_ITEM_STANDARD, GTGuiTextures.OVERLAY_SLOT_ARMOR_FRAME));
-        panel.child(
-            new ItemSlot().slot(
-                new ModularSlot(armorSlotHandler, 2).slotGroup("armor")
+            .pos(16, 22)
+            .setEnabledIf((slot) -> armorSlotHandler.getStackInSlot(0) != null)
+            .background(GTGuiTextures.SLOT_ITEM_STANDARD, GTGuiTextures.OVERLAY_SLOT_ARMOR_FRAME);
+        ItemSlot coreSlot = new ItemSlot()
+            .slot(
+                new AccessModifiableModularSlot(armorSlotHandler, 2).setCanTake(() -> installedAugments == 0)
+                    .slotGroup("armor")
                     .filter((x) -> x.getItem() instanceof ItemAugmentCore)
                     .changeListener((newItem, onlyAmountChanged, client, init) -> { updateCoreSlot(newItem); }))
-                .setEnabledIf(
-                    (slot) -> armorSlotHandler.getStackInSlot(0) != null && armorSlotHandler.getStackInSlot(1) != null)
-                .pos(16, 40)
-                .background(GTGuiTextures.SLOT_ITEM_STANDARD, GTGuiTextures.OVERLAY_SLOT_ARMOR_CORE));
+            .setEnabledIf(
+                (slot) -> armorSlotHandler.getStackInSlot(0) != null && armorSlotHandler.getStackInSlot(1) != null)
+            .pos(16, 40)
+            .background(GTGuiTextures.SLOT_ITEM_STANDARD, GTGuiTextures.OVERLAY_SLOT_ARMOR_CORE);
 
+        panel.child(armorSlot);
+        panel.child(frameSlot);
+        panel.child(coreSlot);
         panel.child(slots);
 
         return panel;
@@ -354,14 +364,19 @@ public class MTEModificationTable extends MTEBasicMachine {
     }
 
     private void displayInstalledAugments() {
+        installedAugments = 0;
         ItemStack armorStack = armorSlotHandler.getStackInSlot(0);
         for (int i = 0; i < AUGMENT_SLOTS_COUNT; i++) {
-            augmentsSlotHandler.setStackInSlot(
-                i,
-                getAugmentStackInCategoryAndColumn(armorStack, (i / LARGEST_FRAME) + 1, i % LARGEST_FRAME));
+            ItemStack augmentStack = getAugmentStackInCategoryAndColumn(
+                armorStack,
+                (i / LARGEST_FRAME) + 1,
+                i % LARGEST_FRAME);
+            // if (augmentStack != null) installedAugments++;
+            augmentsSlotHandler.setStackInSlot(i, augmentStack);
         }
         armorSlotHandler.setStackInSlot(1, getFrameStack(armorStack));
         armorSlotHandler.setStackInSlot(2, getCoreStack(armorStack));
+
     }
 
     private ItemStack getFrameStack(ItemStack armorStack) {
@@ -419,6 +434,25 @@ public class MTEModificationTable extends MTEBasicMachine {
         @Override
         public int getSlotLimit(int slot) {
             return slotLimit;
+        }
+    }
+
+    private static class AccessModifiableModularSlot extends ModularSlot {
+
+        public AccessModifiableModularSlot(IItemHandler itemHandler, int index) {
+            super(itemHandler, index);
+        }
+
+        private BooleanSupplier canTake;
+
+        public AccessModifiableModularSlot setCanTake(BooleanSupplier canTake) {
+            this.canTake = canTake;
+            return this;
+        }
+
+        @Override
+        public boolean canTakeStack(EntityPlayer playerIn) {
+            return canTake.getAsBoolean();
         }
     }
 }
