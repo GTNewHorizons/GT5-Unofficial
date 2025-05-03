@@ -6,6 +6,7 @@ import static gtnhintergalactic.recipe.IGRecipeMaps.spaceMiningRecipes;
 import static gtnhintergalactic.recipe.SpaceMiningRecipes.MINING_DRILLS;
 import static gtnhintergalactic.recipe.SpaceMiningRecipes.MINING_DRONES;
 import static gtnhintergalactic.recipe.SpaceMiningRecipes.MINING_RODS;
+import static gtnhintergalactic.recipe.SpaceMiningRecipes.uniqueAsteroidList;
 import static tectech.Reference.MODID;
 
 import java.util.ArrayList;
@@ -36,7 +37,6 @@ import com.cleanroommc.modularui.drawable.UITexture;
 import com.cleanroommc.modularui.network.NetworkUtils;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.RichTooltip;
-import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.utils.item.ItemStackHandler;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widget.SingleChildWidget;
@@ -1072,125 +1072,134 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
                 return false;
             }
         };
-        panel.size(planetTiers.length * 24, 90)
+        panel.size(175, ((uniqueAsteroidList.size() / 8) + 1) * 22 + 30)
             .pos(parentArea.x, parentArea.y + 30)
             .padding(5);
-        IPanelHandler asteroidInfo = syncManager.panel(
-            "asteroidInfo",
-            (p_syncManager, syncHandler) -> getAsteroidPanel(p_syncManager, syncHandler, 0),
-            true);
-        AsteroidData first = SpaceMiningRecipes.uniqueAsteroidList.get(0);
-        panel.child(
-            new Column().widthRel(1)
-                .height(18)
-                .child(
-                    new ButtonWidget<>().size(18, 18)
-                        .align(Alignment.CenterLeft)
-                        .overlay(
-                            new ItemDrawable(GTOreDictUnificator.get(first.orePrefixes, first.output[0], 1)).asIcon()
-                                .size(16, 16))
-                        .tooltipBuilder(
-                            t -> t.addLine(IKey.str(EnumChatFormatting.RED + first.asteroidName))
-                                .addLine(IKey.str("Click me to get more info!")))
-                        .onMousePressed(mouseData -> {
-                            if (!asteroidInfo.isPanelOpen()) {
-                                asteroidInfo.openPanel();
-                            } else {
-                                asteroidInfo.closePanel();
-                            }
-                            return true;
-                        })));
-        return panel;
+
+        Flow asteroidColumn = new Column().sizeRel(1);
+        Flow asteroidRow = new Row().widthRel(1)
+            .height(18)
+            .marginBottom(4);
+        for (int i = 0; i < uniqueAsteroidList.size(); i++) {
+            int finalI = i;
+            AsteroidData data = SpaceMiningRecipes.uniqueAsteroidList.get(i);
+            IPanelHandler asteroidInfo = syncManager.panel(
+                "asteroidInfo" + finalI,
+                (p_syncManager, syncHandler) -> getAsteroidPanel(p_syncManager, syncHandler, finalI),
+                true);
+
+            ButtonWidget asteroidButton = new ButtonWidget<>().size(18, 18)
+                .overlay(
+                    new ItemDrawable(GTOreDictUnificator.get(data.orePrefixes, data.output[0], 1)).asIcon()
+                        .size(16, 16))
+                .tooltipBuilder(
+                    t -> t.addLine(IKey.str(EnumChatFormatting.RED + data.asteroidName))
+                        .addLine(IKey.str("Click me to get more info!")))
+                .onMousePressed(mouseData -> {
+                    if (!asteroidInfo.isPanelOpen()) {
+                        asteroidInfo.openPanel();
+                    } else {
+                        asteroidInfo.closePanel();
+                    }
+                    return true;
+                });
+            asteroidButton.marginRight(2);
+            asteroidRow.child(asteroidButton);
+            if ((i + 1) % 8 == 0 || i == uniqueAsteroidList.size() - 1) {
+                asteroidColumn.child(asteroidRow);
+                asteroidRow = new Row().widthRel(1)
+                    .height(18)
+                    .marginBottom(4);
+            } ;
+        }
+        return panel.child(asteroidColumn);
     }
 
     private ModularPanel getAsteroidPanel(PanelSyncManager pSyncManager, IPanelHandler syncHandler, int asteroidIndex) {
-        ModularPanel panel = new ModularPanel("asteroidInformationPanelyay") {
+        ModularPanel panel = new ModularPanel("asteroidInformationPanel" + asteroidIndex) {
 
             @Override
             public boolean isDraggable() {
                 return false;
             }
         };
-        panel.size(240, 110)
+        AsteroidData data = SpaceMiningRecipes.uniqueAsteroidList.get(asteroidIndex);
+
+        panel
+            .size(
+                240,
+                100 + 22 * (((data.output.length - 1) / 9) + ((data.maxDroneTier - data.minDroneTier - 1) / 10) + 1))
             .pos(140, 30)
             .padding(5);
-        AsteroidData data = SpaceMiningRecipes.uniqueAsteroidList.get(asteroidIndex);
         Flow column = new Column().sizeRel(1);
-
-        ItemStack minDroneTierItem = MINING_DRONES[data.minDroneTier];
-        ItemStack minDroneTierRod = MINING_RODS[data.minDroneTier];
-        ItemStack minDroneTierDrill = MINING_DRILLS[data.minDroneTier];
-
-        ItemStack maxDroneTierItem = MINING_DRONES[data.maxDroneTier];
-        ItemStack maxDroneTierRod = MINING_RODS[data.maxDroneTier];
-        ItemStack maxDroneTierDrill = MINING_DRILLS[data.maxDroneTier];
 
         // Ore Icon, Asteroid Name
         column.child(
             new Row().widthRel(1)
                 .height(18)
                 .child(
-                    new ItemDrawable(GTOreDictUnificator.get(data.orePrefixes, data.output[asteroidIndex], 1))
-                        .asWidget()
+                    new ItemDrawable(GTOreDictUnificator.get(data.orePrefixes, data.output[0], 1)).asWidget()
                         .marginRight(5))
                 .child(
                     IKey.str(EnumChatFormatting.DARK_RED + data.asteroidName)
                         .asWidget())
-                .marginBottom(4))
-            // Can be mined by: X-Y Mining Drones
-            .child(
-                new Row().widthRel(1)
+                .marginBottom(4));
+        // Can be mined by: X-Y Mining Drones
+        Flow miningDroneRow = new Row().widthRel(1)
+            .coverChildrenHeight();
+        miningDroneRow.child(
+            IKey.str("Can be mined by: ")
+                .asWidget()
+                .topRel(0, 9, 0));
+
+        Flow droneDrawables = new Column().coverChildren()
+            .marginBottom(4);
+
+        Flow droneRow = new Row().widthRel(1)
+            .height(18)
+            .marginBottom(4);
+        for (int i = data.minDroneTier; i < data.maxDroneTier; i++) {
+            ItemStack droneItem = MINING_DRONES[i];
+            ItemStack droneRodItem = MINING_RODS[i];
+            ItemStack droneDrillItem = MINING_DRILLS[i];
+            droneRow.child(
+                new ItemDrawable(droneItem).asWidget()
+                    .tooltipBuilder(
+                        t -> t.addLine(IKey.str(droneItem.getDisplayName()))
+                            .add(IKey.str("Uses 4 "))
+                            .add(new ItemDrawable(droneRodItem))
+                            .add(IKey.str(" And 4"))
+                            .add(new ItemDrawable(droneDrillItem))
+                            .add(IKey.str(" Per parallel\n"))
+                            .addLine(
+                                IKey.str(
+                                    "Asteroid size with this drone: "
+                                        + (data.minSize + Math.pow(2, data.maxDroneTier - data.minDroneTier) - 1)
+                                        + "-"
+                                        + (data.maxSize + Math.pow(2, data.maxDroneTier - data.minDroneTier) - 1)))));
+            if ((i - data.minDroneTier + 1) % 10 == 0 || i == data.maxDroneTier - 1) {
+                droneDrawables.child(droneRow);
+                droneRow = new Row().widthRel(1)
                     .height(18)
-                    .child(
-                        IKey.str("Can be mined by: ")
-                            .asWidget())
-                    .child(
-                        new ItemDrawable(minDroneTierItem).asWidget()
-                            .tooltipBuilder(
-                                t -> t.addLine(IKey.str(minDroneTierItem.getDisplayName()))
-                                    .add(IKey.str("Uses 4 "))
-                                    .add(new ItemDrawable(minDroneTierRod))
-                                    .add(IKey.str(" And 4"))
-                                    .add(new ItemDrawable(minDroneTierDrill))
-                                    .add(IKey.str(" Per parallel\n"))
-                                    .addLine(
-                                        IKey.str(
-                                            "Asteroid size with this drone: " + data.minSize + "-" + data.maxSize))))
-                    .child(
-                        IKey.str("-")
-                            .asWidget())
-                    .child(
-                        new ItemDrawable(maxDroneTierItem).asWidget()
-                            .tooltipBuilder(
-                                t -> t.addLine(IKey.str(maxDroneTierItem.getDisplayName()))
-                                    .add(IKey.str("Uses 4 "))
-                                    .add(new ItemDrawable(maxDroneTierRod))
-                                    .add(IKey.str(" And 4"))
-                                    .add(new ItemDrawable(maxDroneTierDrill))
-                                    .add(IKey.str(" Per parallel\n"))
-                                    .addLine(
-                                        IKey.str(
-                                            "Asteroid size with this drone: "
-                                                + (data.minSize + Math.pow(2, data.maxDroneTier - data.minDroneTier)
-                                                    - 1)
-                                                + "-"
-                                                + (data.maxSize + Math.pow(2, data.maxDroneTier - data.minDroneTier)
-                                                    - 1))))
-                            .marginBottom(4)))
-            // Distance Information
-            .child(
-                new SingleChildWidget<>().widthRel(1)
-                    .height(9)
-                    .child(
-                        IKey.str(
-                            "Found at: " + EnumChatFormatting.GREEN
-                                + data.minDistance
-                                + "-"
-                                + data.maxDistance
-                                + EnumChatFormatting.RESET
-                                + " distance")
-                            .asWidget())
-                    .marginBottom(4))
+                    .marginBottom(4);
+            }
+        }
+        miningDroneRow.child(droneDrawables);
+        column.child(miningDroneRow);
+        // Distance Information
+        column.child(
+            new SingleChildWidget<>().widthRel(1)
+                .height(9)
+                .child(
+                    IKey.str(
+                        "Found at: " + EnumChatFormatting.GREEN
+                            + data.minDistance
+                            + "-"
+                            + data.maxDistance
+                            + EnumChatFormatting.RESET
+                            + " distance")
+                        .asWidget())
+                .marginBottom(4))
             // Computation
             .child(
                 new SingleChildWidget<>().widthRel(1)
@@ -1210,10 +1219,16 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
                     .marginBottom(4));
 
         // Drops
-        Flow row = new Row().widthRel(1)
+        Flow drops = new Row().coverChildrenHeight();
+
+        Flow dropsColumns = new Column().widthRel(1)
             .height(18)
             .marginBottom(4);
-        row.child(
+
+        Flow dropRow = new Row().widthRel(1)
+            .height(18)
+            .marginBottom(4);
+        drops.child(
             IKey.str("Drops: ")
                 .asWidget());
         int totalWeight = Arrays.stream(data.chances)
@@ -1221,14 +1236,22 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
         for (int i = 0; i < data.output.length; i++) {
             ItemStack ore = GTOreDictUnificator.get(data.orePrefixes, data.output[i], 1);
             int finalI = i;
-            row.child(
+            dropRow.child(
                 new ItemDrawable(ore).asWidget()
                     .tooltipBuilder(
                         t -> t.addLine(IKey.str(ore.getDisplayName()))
                             .addLine(IKey.str(((double) data.chances[finalI] / totalWeight) * 100 + "% chance")))
                     .marginRight(5));
+
+            if ((i + 1) % 9 == 0 || i == data.output.length - 1) {
+                dropsColumns.child(dropRow);
+                dropRow = new Row().widthRel(1)
+                    .height(18)
+                    .marginBottom(4);
+            }
         }
-        column.child(row);
+        drops.child(dropsColumns);
+        column.child(drops);
         return panel.child(column);
     }
 
