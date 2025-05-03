@@ -46,6 +46,7 @@ dependencies {
     api("com.github.GTNewHorizons:AE2FluidCraft-Rework:1.4.46-gtnh:dev")
     api('com.github.GTNewHorizons:Yamcl:0.7.0:dev')
     api("com.github.GTNewHorizons:Postea:1.0.13:dev")
+    api('com.github.GTNewHorizons:CodeChickenCore:1.4.2:dev')
 
     compileOnlyApi('com.github.GTNewHorizons:ThaumicTinkerer:2.11.8:dev')
     compileOnlyApi("com.github.GTNewHorizons:Mobs-Info:0.5.2-GTNH:dev")
@@ -58,6 +59,7 @@ dependencies {
 
     compileOnlyApi("com.github.GTNewHorizons:Avaritia:1.62:dev")
 
+//    runtimeOnlyNonPublishable('com.github.GTNewHorizons:Angelica:1.0.0-beta41') // Testing
     compileOnlyApi('com.github.GTNewHorizons:Angelica:1.0.0-beta40:api') { transitive = false }
     compileOnlyApi("com.github.GTNewHorizons:AppleCore:3.3.4:dev") { transitive = false }
     compileOnlyApi("com.github.GTNewHorizons:BuildCraft:7.1.42:dev") { transitive = false }

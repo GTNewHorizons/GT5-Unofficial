@@ -164,8 +164,11 @@ public class DigitalStorageRenderer {
             .getFrontFacing()
             .ordinal();
         textureArray[outputFacing] = new ITexture[] { TextureFactory.of(OVERLAY_PIPE_OUT) };
-        new GTRendererBlock().renderStandardBlock(aWorld, aX, aY, aZ, aBlock, aRenderer, textureArray);
+        gtRendererBlock.get()
+            .renderStandardBlock(aWorld, aX, aY, aZ, aBlock, aRenderer, textureArray);
     }
+
+    ThreadLocal<GTRendererBlock> gtRendererBlock = ThreadLocal.withInitial(GTRendererBlock::new);
 
     private void renderFace(CCRenderState state, ForgeDirection face, Cuboid6 bounds, @Nullable IBlockAccess aWorld,
         int aX, int aY, int aZ, Block aBlock, RenderBlocks aRenderer, MTEDigitalChestBase mte, IIcon icon) {
