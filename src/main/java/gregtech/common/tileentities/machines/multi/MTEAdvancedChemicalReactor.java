@@ -8,11 +8,16 @@ import static gregtech.api.util.GTStructureUtility.*;
 
 import javax.annotation.Nullable;
 
+import gregtech.api.metatileentity.implementations.MTEHatch;
+import gregtech.api.metatileentity.implementations.MTEHatchInput;
+import gregtech.api.util.GTModHandler;
+import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import net.minecraftforge.fluids.FluidStack;
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -103,276 +108,85 @@ public class MTEAdvancedChemicalReactor extends MTEExtendedPowerMultiBlockBase<M
         .addShape(
             STRUCTURE_PIECE_MAIN,
             // spotless:off
-            new String[][]{{
-                " AAA ",
-                " AAA ",
-                " AAA ",
-                " AAA ",
-                " AAA ",
-                "AA~AA"
-            },{
-                "AAAAA",
-                "A   A",
-                "P   P",
-                "A   A",
-                "A   A",
-                "AAAAA"
-            },{
-                "AAAAA",
-                "A   A",
-                "A   A",
-                "A   A",
-                "A   A",
-                "AAAAA"
-            },{
-                "AAAAA",
-                "A   A",
-                "P   P",
-                "A   A",
-                "A   A",
-                "AAAAA"
-            },{
-                " AAA ",
-                " AAA ",
-                " AAA ",
-                " AAA ",
-                " AAA ",
-                "AAAAA"
-            }}
+            new String[][]{
+                {" AAA ", " AAA ", " AAA ", " AAA ", " AAA ", "AA~AA"},
+                {"AAAAA", "A   A", "P   P", "A   A", "A   A", "AAAAA"},
+                {"AAAAA", "A   A", "A   A", "A   A", "A   A", "AAAAA"},
+                {"AAAAA", "A   A", "P   P", "A   A", "A   A", "AAAAA"},
+                {" AAA ", " AAA ", " AAA ", " AAA ", " AAA ", "AAAAA"}}
         )
         .addShape(
             TEMP_HEAT_MODULE_L,
-            new String[][]{{
-                "   ",
-                "   ",
-                "   ",
-                "AAA"
-            },{
-                " HH",
-                " H ",
-                " H ",
-                "ADA"
-            },{
-                "   ",
-                "   ",
-                "   ",
-                "AAA"
-            },{
-                " HH",
-                " H ",
-                " H ",
-                "ADA"
-            },{
-                "   ",
-                "   ",
-                "   ",
-                "AAA"
-            }}
+            new String[][]{
+                {"   ", "   ", "   ", "AAA"},
+                {" HH", " H ", " H ", "ADA"},
+                {"   ", "   ", "   ", "AAA"},
+                {" HH", " H ", " H ", "ADA"},
+                {"   ", "   ", "   ", "AAA"}}
         )
         .addShape(
             TEMP_HEAT_MODULE_R,
-            new String[][]{{
-                "   ",
-                "   ",
-                "   ",
-                "AAA"
-            },{
-                "HH ",
-                " H ",
-                " H ",
-                "AAA"
-            },{
-                "   ",
-                "   ",
-                "   ",
-                "AAA"
-            },{
-                "HH ",
-                " H ",
-                " H ",
-                "AAA"
-            },{
-                "   ",
-                "   ",
-                "   ",
-                "AAA"
-            }}
+            new String[][]{
+                {"   ", "   ", "   ", "AAA"},
+                {"HH ", " H ", " H ", "AAA"},
+                {"   ", "   ", "   ", "AAA"},
+                {"HH ", " H ", " H ", "AAA"},
+                {"   ", "   ", "   ", "AAA"}}
         )
         .addShape(
             TEMP_COOL_MODULE_L,
-            new String[][]{{
-                "   ",
-                "   ",
-                "   ",
-                "AAA"
-            },{
-                " CC",
-                " C ",
-                " C ",
-                "ADA"
-            },{
-                "   ",
-                "   ",
-                "   ",
-                "AAA"
-            },{
-                " CC",
-                " C ",
-                " C ",
-                "ADA"
-            },{
-                "   ",
-                "   ",
-                "   ",
-                "AAA"
-            }}
+            new String[][]{
+                {"   ", "   ", "   ", "AAA"},
+                {" CC", " C ", " C ", "ADA"},
+                {"   ", "   ", "   ", "AAA"},
+                {" CC", " C ", " C ", "ADA"},
+                {"   ", "   ", "   ", "AAA"}}
         )
         .addShape(
             TEMP_COOL_MODULE_R,
-            new String[][]{{
-                "   ",
-                "   ",
-                "   ",
-                "AAA"
-            },{
-                "CC ",
-                " C ",
-                " C ",
-                "ADA"
-            },{
-                "   ",
-                "   ",
-                "   ",
-                "AAA"
-            },{
-                "CC ",
-                " C ",
-                " C ",
-                "ADA"
-            },{
-                "   ",
-                "   ",
-                "   ",
-                "AAA"
-            }}
+            new String[][]{
+                {"   ", "   ", "   ", "AAA"},
+                {"CC ", " C ", " C ", "ADA"},
+                {"   ", "   ", "   ", "AAA"},
+                {"CC ", " C ", " C ", "ADA"},
+                {"   ", "   ", "   ", "AAA"}}
         )
         .addShape(
             VACUUM_MODULE_L,
-            new String[][]{{
-                "   ",
-                "   ",
-                "   ",
-                "AAA"
-            },{
-                " VV",
-                " V ",
-                " V ",
-                "ADA"
-            },{
-                "   ",
-                "   ",
-                "   ",
-                "AAA"
-            },{
-                " VV",
-                " V ",
-                " V ",
-                "ADA"
-            },{
-                "   ",
-                "   ",
-                "   ",
-                "AAA"
-            }}
+            new String[][]{
+                {"   ", "   ", "   ", "AAA"},
+                {" VV", " V ", " V ", "ADA"},
+                {"   ", "   ", "   ", "AAA"},
+                {" VV", " V ", " V ", "ADA"},
+                {"   ", "   ", "   ", "AAA"}}
         )
         .addShape(
             VACUUM_MODULE_R,
-            new String[][]{{
-                "   ",
-                "   ",
-                "   ",
-                "AAA"
-            },{
-                "VV ",
-                " V ",
-                " V ",
-                "ADA"
-            },{
-                "   ",
-                "   ",
-                "   ",
-                "AAA"
-            },{
-                "VV ",
-                " V ",
-                " V ",
-                "ADA"
-            },{
-                "   ",
-                "   ",
-                "   ",
-                "AAA"
-            }}
+            new String[][]{
+                {"   ", "   ", "   ", "AAA"},
+                {"VV ", " V ", " V ", "ADA"},
+                {"   ", "   ", "   ", "AAA"},
+                {"VV ", " V ", " V ", "ADA"},
+                {"   ", "   ", "   ", "AAA"}}
         )
         .addShape(
             COMPRESSION_MODULE_R,
-            new String[][]{{
-                "   ",
-                "   ",
-                "   ",
-                "AAA"
-            },{
-                "KK ",
-                " K ",
-                " K ",
-                "ADA"
-            },{
-                "   ",
-                "   ",
-                "   ",
-                "AAA"
-            },{
-                "KK ",
-                " K ",
-                " K ",
-                "ADA"
-            },{
-                "   ",
-                "   ",
-                "   ",
-                "AAA"
-            }}
+            new String[][]{
+                {"   ", "   ", "   ", "AAA"},
+                {"KK ", " K ", " K ", "ADA"},
+                {"   ", "   ", "   ", "AAA"},
+                {"KK ", " K ", " K ", "ADA"},
+                {"   ", "   ", "   ", "AAA"}}
         )
         .addShape(
             COMPRESSION_MODULE_L,
-            new String[][]{{
-                "   ",
-                "   ",
-                "   ",
-                "AAA"
-            },{
-                " KK",
-                " K ",
-                " K ",
-                "ADA"
-            },{
-                "   ",
-                "   ",
-                "   ",
-                "AAA"
-            },{
-                " KK",
-                " K ",
-                " K ",
-                "ADA"
-            },{
-                "   ",
-                "   ",
-                "   ",
-                "AAA"
-            }}
-            // spotless:on
-        )
+            new String[][]{
+                {"   ", "   ", "   ", "AAA"},
+                {" KK", " K ", " K ", "ADA"},
+                {"   ", "   ", "   ", "AAA"},
+                {" KK", " K ", " K ", "ADA"},
+                {"   ", "   ", "   ", "AAA"}}
+        )// spotless:on
         .addElement('P', ofBlock(GregTechAPI.sBlockCasings8, 1))
         .addElement(
             'D',
@@ -683,13 +497,15 @@ public class MTEAdvancedChemicalReactor extends MTEExtendedPowerMultiBlockBase<M
         super.onPostTick(aBaseMetaTileEntity, aTick);
         if (isbuilt && (aTick % 20 == 0)) {
             if (isTempModule) {
-                CurrentTemp += 1.0;
-                CurrentTemp = CurrentTemp / 1.05;
-                CurrentTemp = Math.max(0, CurrentTemp);
-            } else CurrentTemp = 300;
+                CurrentTemp = 0;
+            }
+            else CurrentTemp = 300;
+
             if (isPressureModule) {
-                CurrentPressure = Math.max(0, CurrentPressure);
-            } else CurrentPressure = 101;
+                CurrentPressure = 0;
+            }
+            else CurrentPressure = 101;
+            System.out.println(CurrentPressure);
             System.out.println(CurrentTemp);
         }
     }

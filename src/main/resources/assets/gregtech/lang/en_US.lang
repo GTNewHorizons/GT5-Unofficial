@@ -679,6 +679,10 @@ channels.gregtech.stabilisation=Decides the tier of Stabilisation Field Generato
 channels.gregtech.time_dilation=Decides the tier of Time Dilation Field Generator. Starts at §6Crude Time Dilation Field Generator§r at value 1 and ends at §6Gallifreyan Time Dilation Field Generator§r at value 9.
 channels.gregtech.gt_no_hatch=When set, disable automatic hatch placement
 channels.gregtech.field=Decides the tier of T.F.F.T. Storage Field.
+channels.gregtech.heat_pipe=Decides the tier of §6ACR heating module§r. Starts at value 1 and ends at value 4.
+channels.gregtech.cool_pipe=Decides the tier of §6ACR cooling module§r. Starts at value 1 and ends at value 4.
+channels.gregtech.vacuum_pipe=Decides the tier of §6ACR compressor module§r. Starts at value 1 and ends at value 4.
+channels.gregtech.compress_pipe=Decides the tier of §6ACR vacuum pump module§r. Starts at value 1 and ends at value 4.
 
 GT5U.gui.select.current=Current:
 GT5U.gui.button.liquid_filling_OFF=§7Liquid Filling: §4OFF
