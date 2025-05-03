@@ -2,6 +2,8 @@ package gtnhintergalactic.recipe;
 
 import java.util.Objects;
 
+import net.minecraft.util.StatCollector;
+
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 public class SpaceMiningData {
@@ -44,6 +46,11 @@ public class SpaceMiningData {
         if (computation != that.computation) return false;
         if (recipeWeight != that.recipeWeight) return false;
         return asteroidName.equals(that.asteroidName);
+    }
+
+    public String getAsteroidNameLocalized() {
+        return StatCollector.translateToLocal("ig.asteroid." + asteroidName) + " "
+            + StatCollector.translateToLocal("ig.asteroid");
     }
 
     @Override
