@@ -1042,7 +1042,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         // Use hatch colors if any; fallback to color 1 otherwise.
         short hatchColors = getHatchColors();
         boolean doColorChecking = hatchColors != 0;
-        hatchColors = doColorChecking ? hatchColors : 1;
+        if (!doColorChecking) hatchColors = 0b1;
 
         for (byte color = 0; color < (doColorChecking ? 16 : 1); color++) {
             if (isColorAbsent(hatchColors, color)) continue;
