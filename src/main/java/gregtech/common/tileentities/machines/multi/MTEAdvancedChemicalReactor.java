@@ -53,10 +53,6 @@ public class MTEAdvancedChemicalReactor extends MTEExtendedPowerMultiBlockBase<M
     private static final String COMPRESSION_MODULE_L = "PressureL";
     private static final String COMPRESSION_MODULE_R = "PressureR";
 
-    private boolean isbuilt = false;
-    private static boolean isTempModule = false;
-    private static boolean isPressureModule = false;
-
     private double CurrentTemp = 0;
     private double CurrentPressure = 0;
 
@@ -64,6 +60,11 @@ public class MTEAdvancedChemicalReactor extends MTEExtendedPowerMultiBlockBase<M
     protected int VacuumCoilTier = 0;
     protected int HeatCoilTier = 0;
     protected int CompressCoilTier = 0;
+
+    private boolean isHeatModule;
+    private boolean isCoolModule;
+    private boolean isVacuumModule;
+    private boolean isCompressModule;
 
     private int getHeatCoilTier() {
         return HeatCoilTier;
@@ -122,9 +123,9 @@ public class MTEAdvancedChemicalReactor extends MTEExtendedPowerMultiBlockBase<M
             TEMP_HEAT_MODULE_R,
             new String[][]{
                 {"   ", "   ", "   ", "AAA"},
-                {"HH ", " H ", " H ", "AAA"},
+                {"HH ", " H ", " H ", "ADA"},
                 {"   ", "   ", "   ", "AAA"},
-                {"HH ", " H ", " H ", "AAA"},
+                {"HH ", " H ", " H ", "ADA"},
                 {"   ", "   ", "   ", "AAA"}}
         )
         .addShape(
@@ -185,9 +186,9 @@ public class MTEAdvancedChemicalReactor extends MTEExtendedPowerMultiBlockBase<M
         .addElement(
             'D',
             buildHatchAdder(MTEAdvancedChemicalReactor.class).atLeast(InputHatch, OutputHatch)
-                .casingIndex(((BlockCasings8) GregTechAPI.sBlockCasings8).getTextureIndex(1))
+                .casingIndex(((BlockCasings8) GregTechAPI.sBlockCasings8).getTextureIndex(0))
                 .dot(2)
-                .buildAndChain(GregTechAPI.sBlockCasings8, 1))
+                .buildAndChain(GregTechAPI.sBlockCasings8, 0))
         .addElement(
             'C',
             withChannel(
@@ -486,26 +487,16 @@ public class MTEAdvancedChemicalReactor extends MTEExtendedPowerMultiBlockBase<M
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        if (!checkPiece(STRUCTURE_PIECE_MAIN, 2, 5, 0)) {
-            return false;
-        }
-        isTempModule =
-            checkPiece(TEMP_HEAT_MODULE_R, -3, 3, 0)
-                || checkPiece(TEMP_HEAT_MODULE_L, 5, 3, 0)
-                || checkPiece(TEMP_COOL_MODULE_R, -3, 3, 0)
-                || checkPiece(TEMP_COOL_MODULE_L, 5, 3, 0);
-        isPressureModule =
-            checkPiece(VACUUM_MODULE_R, -3, 3, 0)
-                || checkPiece(VACUUM_MODULE_L, 5, 3, 0)
-                || checkPiece(COMPRESSION_MODULE_R, -3, 3, 0)
-                || checkPiece(COMPRESSION_MODULE_L, 5, 3, 0);
-        return true;
+        isHeatModule = checkPiece(TEMP_HEAT_MODULE_R, -3, 3, 0) || checkPiece(TEMP_HEAT_MODULE_L, 5, 3, 0);
+        isCoolModule = checkPiece(TEMP_COOL_MODULE_R, -3, 3, 0) || checkPiece(TEMP_COOL_MODULE_L, 5, 3, 0);
+        isVacuumModule = checkPiece(VACUUM_MODULE_R, -3, 3, 0) || checkPiece(VACUUM_MODULE_L, 5, 3, 0);
+        isCompressModule = checkPiece(COMPRESSION_MODULE_R, -3, 3, 0)  || checkPiece(COMPRESSION_MODULE_L, 5, 3, 0);
+        return checkPiece(STRUCTURE_PIECE_MAIN, 2, 5, 0);
     }
 
     @Override
     protected ProcessingLogic createProcessingLogic() {
-        return new ProcessingLogic().enablePerfectOverclock()
-            .setMaxParallelSupplier(this::getTrueParallel);
+        return new ProcessingLogic().enablePerfectOverclock();
     }
 
     @Override
@@ -620,13 +611,13 @@ public class MTEAdvancedChemicalReactor extends MTEExtendedPowerMultiBlockBase<M
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         super.onPostTick(aBaseMetaTileEntity, aTick);
         if (mMachine && (aTick % 20 == 0)) {
-            if (isTempModule) {
+            if (isHeatModule) {
                 CurrentTemp = 0;
             } else CurrentTemp = 300;
 
-            if (isPressureModule) {
+            if (isCompressModule) {
                 CurrentPressure = 0;
-            } else CurrentPressure = 101;
+            } else CurrentPressure = 101000;
         }
     }
 }

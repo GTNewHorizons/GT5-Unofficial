@@ -20,6 +20,7 @@ import static gregtech.api.util.GTRecipeConstants.RESEARCH_ITEM;
 import static gregtech.api.util.GTRecipeConstants.SCANNING;
 import static gregtech.api.util.GTRecipeConstants.UniversalChemical;
 
+import net.minecraft.item.Item;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
@@ -834,6 +835,15 @@ public class RecipeLoader2 {
             .eut(TierEU.RECIPE_EV)
             .metadata(ACR_PRESSURE, 110300)
             .metadata(ACR_TEMPERATURE, 280)
+            .addTo(multiblockAdvancedChemicalReactorRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(Materials.Stone.getDust(1))
+            .itemOutputs(Materials.Stone.getDust(1))
+            .duration(100 * SECONDS)
+            .eut(TierEU.RECIPE_ZPM)
+            .metadata(ACR_PRESSURE, 10230)
+            .metadata(ACR_TEMPERATURE, 400)
             .addTo(multiblockAdvancedChemicalReactorRecipes);
 
         GTValues.RA.stdBuilder()
