@@ -56,7 +56,9 @@ import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.gtnewhorizon.structurelib.structure.IStructureElement;
 import com.gtnewhorizons.modularui.api.NumberFormatMUI;
+import com.gtnewhorizons.modularui.api.drawable.FluidDrawable;
 import com.gtnewhorizons.modularui.api.drawable.IDrawable;
+import com.gtnewhorizons.modularui.api.drawable.ItemDrawable;
 import com.gtnewhorizons.modularui.api.drawable.UITexture;
 import com.gtnewhorizons.modularui.api.math.Alignment;
 import com.gtnewhorizons.modularui.api.math.Color;
@@ -71,6 +73,7 @@ import com.gtnewhorizons.modularui.common.widget.ChangeableWidget;
 import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
 import com.gtnewhorizons.modularui.common.widget.DynamicPositionedColumn;
 import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
+import com.gtnewhorizons.modularui.common.widget.MultiChildWidget;
 import com.gtnewhorizons.modularui.common.widget.Scrollable;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
@@ -2896,23 +2899,24 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         final DynamicPositionedColumn processingDetails = new DynamicPositionedColumn();
 
         if (mOutputItems != null) {
-            final Map<String, Long> nameToAmount = new HashMap<>();
+            final Map<ItemStack, Long> nameToAmount = new HashMap<>();
 
             for (ItemStack item : mOutputItems) {
                 if (item == null || item.stackSize <= 0) continue;
-                nameToAmount.merge(item.getDisplayName(), (long) item.stackSize, Long::sum);
+                nameToAmount.merge(item, (long) item.stackSize, Long::sum);
             }
 
-            final List<Map.Entry<String, Long>> sortedMap = nameToAmount.entrySet()
+            final List<Map.Entry<ItemStack, Long>> sortedMap = nameToAmount.entrySet()
                 .stream()
                 .sorted(
-                    Map.Entry.<String, Long>comparingByValue()
+                    Map.Entry.<ItemStack, Long>comparingByValue()
                         .reversed())
                 .collect(Collectors.toList());
 
-            for (Map.Entry<String, Long> entry : sortedMap) {
+            for (Map.Entry<ItemStack, Long> entry : sortedMap) {
                 Long itemCount = entry.getValue();
-                String itemName = entry.getKey();
+                String itemName = entry.getKey()
+                    .getDisplayName();
                 String itemAmountString = EnumChatFormatting.WHITE + " x "
                     + EnumChatFormatting.GOLD
                     + formatShortenedLong(itemCount)
@@ -2923,28 +2927,37 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
                 String lineTooltip = EnumChatFormatting.AQUA + itemName + "\n" + appendRate(false, itemCount, false);
 
                 processingDetails.widget(
-                    new TextWidget(lineText).setTextAlignment(Alignment.CenterLeft)
-                        .addTooltip(lineTooltip));
+                    new MultiChildWidget().addChild(
+                        new ItemDrawable(
+                            entry.getKey()
+                                .copy()).asWidget()
+                                    .setSize(8, 8)
+                                    .setPos(0, 0))
+                        .addChild(
+                            new TextWidget(lineText).setTextAlignment(Alignment.CenterLeft)
+                                .addTooltip(lineTooltip)
+                                .setPos(10, 1)));
             }
         }
         if (mOutputFluids != null) {
-            final Map<String, Long> nameToAmount = new HashMap<>();
+            final Map<FluidStack, Long> nameToAmount = new HashMap<>();
 
             for (FluidStack fluid : mOutputFluids) {
                 if (fluid == null || fluid.amount <= 0) continue;
-                nameToAmount.merge(fluid.getLocalizedName(), (long) fluid.amount, Long::sum);
+                nameToAmount.merge(fluid, (long) fluid.amount, Long::sum);
             }
 
-            final List<Map.Entry<String, Long>> sortedMap = nameToAmount.entrySet()
+            final List<Map.Entry<FluidStack, Long>> sortedMap = nameToAmount.entrySet()
                 .stream()
                 .sorted(
-                    Map.Entry.<String, Long>comparingByValue()
+                    Map.Entry.<FluidStack, Long>comparingByValue()
                         .reversed())
                 .collect(Collectors.toList());
 
-            for (Map.Entry<String, Long> entry : sortedMap) {
+            for (Map.Entry<FluidStack, Long> entry : sortedMap) {
                 Long itemCount = entry.getValue();
-                String itemName = entry.getKey();
+                String itemName = entry.getKey()
+                    .getLocalizedName();
                 String itemAmountString = EnumChatFormatting.WHITE + " x "
                     + EnumChatFormatting.GOLD
                     + formatShortenedLong(itemCount)
@@ -2956,8 +2969,18 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
                 String lineTooltip = EnumChatFormatting.AQUA + itemName + "\n" + appendRate(true, itemCount, false);
 
                 processingDetails.widget(
-                    new TextWidget(lineText).setTextAlignment(Alignment.CenterLeft)
-                        .addTooltip(lineTooltip));
+                    new MultiChildWidget().addChild(
+                        new FluidDrawable().setFluid(
+                            entry.getKey()
+                                .getFluid())
+                            .asWidget()
+                            .setSize(8, 8)
+                            .setPos(0, 0))
+                        .addChild(
+                            new TextWidget(lineText).setTextAlignment(Alignment.CenterLeft)
+                                .addTooltip(lineTooltip)
+                                .setPos(10, 1)));
+
             }
         }
         return processingDetails;
