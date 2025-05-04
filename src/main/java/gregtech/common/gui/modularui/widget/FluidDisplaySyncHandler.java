@@ -1,5 +1,6 @@
 package gregtech.common.gui.modularui.widget;
 
+import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 import net.minecraft.network.PacketBuffer;
@@ -24,10 +25,16 @@ public class FluidDisplaySyncHandler extends ValueSyncHandler<FluidStack> {
     @Nullable
     private FluidStack cache;
     public Supplier<FluidStack> getter;
+    public Consumer<FluidStack> setter;
     private boolean controlsAmount;
 
     public FluidDisplaySyncHandler(Supplier<FluidStack> getter) {
         this.getter = getter;
+    }
+
+    public FluidDisplaySyncHandler(Supplier<FluidStack> getter, Consumer<FluidStack> setter) {
+        this.getter = getter;
+        this.setter = setter;
     }
 
     public FluidDisplaySyncHandler controlsAmount(boolean controlsAmount) {
@@ -48,6 +55,9 @@ public class FluidDisplaySyncHandler extends ValueSyncHandler<FluidStack> {
     @Override
     public void setValue(@Nullable FluidStack value, boolean setSource, boolean sync) {
         this.cache = copyFluid(value);
+        if (setSource && this.setter != null) {
+            this.setter.accept(copyFluid(value));
+        }
         if (sync) {
             if (NetworkUtils.isClient()) {
                 syncToServer(0, this::write);
