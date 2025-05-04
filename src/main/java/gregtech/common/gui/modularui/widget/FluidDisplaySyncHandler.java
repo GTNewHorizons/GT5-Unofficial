@@ -30,6 +30,7 @@ public class FluidDisplaySyncHandler extends ValueSyncHandler<FluidStack> {
 
     public FluidDisplaySyncHandler(Supplier<FluidStack> getter) {
         this.getter = getter;
+        this.setter = null;
     }
 
     public FluidDisplaySyncHandler(Supplier<FluidStack> getter, Consumer<FluidStack> setter) {

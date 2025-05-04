@@ -48,7 +48,9 @@ import com.cleanroommc.modularui.api.IGuiHolder;
 import com.cleanroommc.modularui.api.IPanelHandler;
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.api.widget.IWidget;
+import com.cleanroommc.modularui.drawable.DrawableArray;
 import com.cleanroommc.modularui.drawable.DynamicDrawable;
+import com.cleanroommc.modularui.drawable.GuiTextures;
 import com.cleanroommc.modularui.drawable.UITexture;
 import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
@@ -2278,7 +2280,7 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
             .canApplyTheme(true)
             .build();
         ModularPanel panel = new ModularPanel("tt_multiblock");
-        int textBoxToInventoryGap = 18;
+        int textBoxToInventoryGap = 26;
         panel.size(198, 181 + textBoxToInventoryGap)
             .padding(4);
 
@@ -2299,22 +2301,22 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
                     .overlay(bgNoInv));
         }
         final ItemStackHandler invSlot = new ItemStackHandler(1);
-        Flow inventoryRow = new Row().size(186, 90)
+        Flow inventoryRow = new Row().widthRel(1)
+            .height(90)
             .alignX(0);
         Flow buttonColumn = new Column().width(18)
-            .alignX(1)
-            .marginTop(4);
+            .leftRel(1, -2, 1);
         if (doesBindPlayerInventory()) {
             inventoryRow.child(
                 SlotGroupWidget.playerInventory(0)
                     .leftRel(0)
-                    .marginTop(4)
                     .marginLeft(4));
         }
 
         Flow panelGap = new Row().widthRel(1)
+            .paddingRight(6)
             .height(textBoxToInventoryGap);
-        insertThingsInGap(panelGap);
+        insertThingsInGap(panelGap, syncManager, panel);
         panelColumn.child(panelGap);
 
         insertTexts(machineInfo, invSlot, syncManager, panel);
@@ -2331,7 +2333,7 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
                     SyncHandlers.itemSlot(invSlot, 0)
                         .singletonSlotGroup())
                     .marginTop(4)
-                    .overlay(mesh));
+                    .background(new DrawableArray(GuiTextures.SLOT_ITEM, mesh)));
             buttonColumn.child(
                 new SingleChildWidget<>().size(18, 6)
                     .overlay(heatSinkSmall));
@@ -2342,7 +2344,7 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
         return panel.child(panelColumn);
     }
 
-    private void insertThingsInGap(Flow panelGap) {}
+    public void insertThingsInGap(Flow panelGap, PanelSyncManager syncManager, ModularPanel parent) {}
 
     private void registerMachineSyncers(PanelSyncManager syncManager) {
         syncManager.syncValue(
@@ -2455,9 +2457,11 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
         com.cleanroommc.modularui.widgets.ButtonWidget editParametersButton = new com.cleanroommc.modularui.widgets.ButtonWidget();
         editParametersButton.overlay(new DynamicDrawable(() -> {
             if (parameterList.isEmpty()) {
-                return editParametersDisabled;
+                return editParametersDisabled.asIcon()
+                    .size(16, 16);
             } else {
-                return editParametersEnabled;
+                return editParametersEnabled.asIcon()
+                    .size(16, 16);
             }
         }));
         editParametersButton.tooltip(new RichTooltip(editParametersButton).add("Edit Parameters"));
