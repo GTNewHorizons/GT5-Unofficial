@@ -34,6 +34,14 @@ public class TextFieldWidgetWithOverlay extends TextFieldWidget {
     }
 
     @Override
+    public void onUpdate() {
+        super.onUpdate();
+        if (!getText().equals(this.stringValue.getStringValue())) {
+            this.stringValue.setStringValue(this.validator.apply(getText()));
+        }
+    }
+
+    @Override
     public void drawOverlay(ModularGuiContext context, WidgetTheme widgetTheme) {
         if (allowedToRenderText.getAsBoolean() || this.getMathFailMessage() != null) return;
         super.drawOverlay(context, widgetTheme);
