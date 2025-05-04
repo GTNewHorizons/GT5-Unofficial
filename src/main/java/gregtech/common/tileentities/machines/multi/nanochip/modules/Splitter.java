@@ -3,13 +3,13 @@ package gregtech.common.tileentities.machines.multi.nanochip.modules;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static gregtech.api.modularui2.GTGuis.createPopUpPanel;
 import static gregtech.api.modularui2.GTGuis.mteTemplatePanelBuilder;
-import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import gregtech.api.util.GTUtility;
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.utils.Alignment;
 import net.minecraft.item.ItemStack;
@@ -64,7 +64,7 @@ public class Splitter extends MTENanochipAssemblyModuleBase<Splitter> {
     private static final String[][] structure = new String[][] { { "  AAA  ", "  AAA  ", "  AAA  " },
         { "  AAA  ", "  A A  ", "  AAA  " }, { "  AAA  ", "  AAA  ", "  AAA  " } };
 
-    // Maps an input color to an output color
+    // Maps an input color to a list of output colors
     public Map<Byte, List<Byte>> colorMap = new HashMap<>();
 
     public static final IStructureDefinition<Splitter> STRUCTURE_DEFINITION = ModuleStructureDefinition
@@ -189,19 +189,74 @@ public class Splitter extends MTENanochipAssemblyModuleBase<Splitter> {
         return new Splitter(this.mName);
     }
 
+    @NotNull
     @Override
-    public @NotNull CheckRecipeResult checkProcessing() {
-        // Always keep the machine running, it doesn't run recipes directly.
-        if (isAllowedToWork()) {
-            mEfficiencyIncrease = 10000;
-            mMaxProgresstime = 1 * SECONDS;
+    public CheckRecipeResult checkProcessing() {
 
-            return CheckRecipeResultRegistry.SUCCESSFUL;
+        // Note, during this checkProcessing() we set the outputs ourselves.
+        // The mOutputItems doesn't work for our use-case of splitting itemStacks.
+        if (!isConnected()) {
+            return CheckRecipeResultRegistry.NO_RECIPE;
         }
 
-        mEfficiencyIncrease = 0;
-        mMaxProgresstime = 0;
-        return CheckRecipeResultRegistry.NO_RECIPE;
+        // First step in recipe checking is finding all inputs we have to deal with.
+        // As a result of this process, we also get the colors of the hatch each item is found in, which
+        // we will use for routing the outputs
+        ItemInputInformation inputInfo = refreshInputItems();
+
+        Map<GTUtility.ItemId, Byte> colors = inputInfo.colors;
+        Map<GTUtility.ItemId, ItemStack> inputs = inputInfo.inputs;
+
+        for(Map.Entry<GTUtility.ItemId, Byte> color : colors.entrySet()){
+            Byte currentDye = color.getValue();
+            ItemStack stack = inputs.get(color.getKey());
+            if (currentDye == -1) continue;
+
+            List<Byte> outputDyes = colorMap.get(currentDye);
+            if (outputDyes == null) continue;
+
+            // Find output hatches that have the color of the dye
+            List<List<MTEHatchVacuumConveyorOutput>> availableOutputHatches = new ArrayList<>();
+            for (Byte potentialDye : outputDyes){
+                List<MTEHatchVacuumConveyorOutput> outputHatchesForDye = this.vacuumConveyorOutputs.findColoredHatches(potentialDye);
+                if (outputHatchesForDye != null && !outputHatchesForDye.isEmpty()) {
+                    availableOutputHatches.add(outputHatchesForDye);
+                }
+            }
+
+            // Distribute the stack amongst the available output hatches.
+            // TODO: Add randomness to even out the busses / groups?
+            int numberOfGroups = availableOutputHatches.size();
+            if (numberOfGroups == 0) continue;
+
+            // First, split between groups.
+            int itemsPerGroup = stack.stackSize / numberOfGroups;
+
+            // How many groups should get 1 extra item, to split the remainder.
+            int groupRemainder = stack.stackSize % numberOfGroups;
+
+            // For each group
+            for (int groupIndex = 0; groupIndex < numberOfGroups; groupIndex++) {
+                List<MTEHatchVacuumConveyorOutput> group = availableOutputHatches.get(groupIndex);
+
+                // Calculate items for this group (including remainder distribution)
+                int itemsForThisGroup = itemsPerGroup + (groupIndex < groupRemainder ? 1 : 0);
+
+                // Now split within the group
+                int hatchesInGroup = group.size();
+                int itemsPerBus = itemsForThisGroup / hatchesInGroup;
+                // How many hatches should get 1 extra item, to split the remainder.
+                int busRemainder = itemsForThisGroup % hatchesInGroup;
+
+                // Distribute to each bus in the group
+                for (int busIndex = 0; busIndex < hatchesInGroup; busIndex++) {
+                    int itemsForThisBus = itemsPerBus + (busIndex < busRemainder ? 1 : 0);
+                    // We can just output, we don't have to worry about packet size or anything.
+                    this.addOutput(new ItemStack(stack.getItem(), itemsForThisBus), group.get(busIndex));
+                }
+            }
+        }
+        return CheckRecipeResultRegistry.SUCCESSFUL;
     }
 
     @Override
