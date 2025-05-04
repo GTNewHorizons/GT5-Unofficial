@@ -1923,6 +1923,12 @@ GT5U.gui.config.general.features=Features
 GT5U.gui.config.general.teslatweaks=Tesla Tweaks
 GT5U.gui.config.general.visual=Visual
 
+tt.spacepump.noFluidTooltip=No fluid set! Click to open configuration panel!
+tt.spacepump.parallelTooltip=per parallel
+tt.spacepump.fluid=Fluid %d:
+tt.multiblock.batchSize=Batch Size
+tt.multiblock.parallel=Fluid %d Parallels
+
 tt.eoh.fancy_names.crude=Crude
 tt.eoh.fancy_names.primitive=Primitive
 tt.eoh.fancy_names.stable=Stable
