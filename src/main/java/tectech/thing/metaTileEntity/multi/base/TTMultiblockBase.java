@@ -12,7 +12,6 @@ import static gregtech.api.enums.Mods.GregTech;
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 import static gregtech.api.util.GTUtility.filterValidMTEs;
 import static gregtech.api.util.GTUtility.validMTEList;
-import static gtnhintergalactic.recipe.SpacePumpingRecipes.RECIPES;
 import static java.lang.Math.min;
 import static tectech.Reference.MODID;
 import static tectech.thing.casing.BlockGTCasingsTT.texturePage;
@@ -55,12 +54,10 @@ import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.RichTooltip;
 import com.cleanroommc.modularui.utils.Alignment;
-import com.cleanroommc.modularui.utils.MouseData;
 import com.cleanroommc.modularui.utils.item.ItemStackHandler;
 import com.cleanroommc.modularui.utils.serialization.IByteBufAdapter;
 import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
 import com.cleanroommc.modularui.value.sync.DoubleSyncValue;
-import com.cleanroommc.modularui.value.sync.FluidSlotSyncHandler;
 import com.cleanroommc.modularui.value.sync.GenericListSyncHandler;
 import com.cleanroommc.modularui.value.sync.GenericSyncValue;
 import com.cleanroommc.modularui.value.sync.IntSyncValue;
@@ -77,6 +74,8 @@ import com.cleanroommc.modularui.widgets.SlotGroupWidget;
 import com.cleanroommc.modularui.widgets.TextWidget;
 import com.cleanroommc.modularui.widgets.ToggleButton;
 import com.cleanroommc.modularui.widgets.layout.Column;
+import com.cleanroommc.modularui.widgets.layout.Flow;
+import com.cleanroommc.modularui.widgets.layout.Row;
 import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
 import com.gtnewhorizon.structurelib.StructureLibAPI;
 import com.gtnewhorizon.structurelib.alignment.IAlignment;
@@ -2279,70 +2278,84 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
             .canApplyTheme(true)
             .build();
         ModularPanel panel = new ModularPanel("tt_multiblock");
-        panel.size(198, 191);
+        int textBoxToInventoryGap = 18;
+        panel.size(198, 181 + textBoxToInventoryGap)
+            .padding(4);
 
         registerMachineSyncers(syncManager);
-
-        FluidSlotSyncHandler fluidSlotSyncer = new FluidSlotSyncHandler(this.fluidTankPhantom) {
-
-            @Override
-            public void tryScrollPhantom(MouseData mouseData) {
-                return;
-            }
-        }.phantom(true);
-        syncManager.syncValue("fluidSlot", fluidSlotSyncer);
-
-        IntSyncValue dropdownIndexSyncer = new IntSyncValue(() -> currentDropdownIndex, val -> {
-            currentDropdownIndex = val;
-            fluidSlotSyncer.setValue(
-                RECIPES.get(val)
-                    .get(0));
-        });
-        syncManager.syncValue("dropdownIndex", dropdownIndexSyncer);
 
         ListWidget<IWidget, ?> machineInfo = new ListWidget<>().size(178, 85)
             .pos(6, 3);
 
+        Flow panelColumn = new Column().sizeRel(1);
         if (doesBindPlayerInventory()) {
-            panel.child(
-                new SingleChildWidget<>().pos(4, 4)
-                    .size(190, 91)
+            panelColumn.child(
+                new SingleChildWidget<>().size(190, 91)
                     .overlay(bg)
                     .child(machineInfo));
+            // panel.child(
+            // new SingleChildWidget<>().pos(4, 4)
+            // .size(190, 91)
+            // .overlay(bg)
+            // .child(machineInfo));
         } else {
-            panel.child(
-                new SingleChildWidget<>().pos(4, 4)
-                    .size(190, 171)
+            panelColumn.child(
+                new SingleChildWidget<>().size(190, 171)
                     .overlay(bgNoInv));
+            // panel.child(
+            // new SingleChildWidget<>().pos(4, 4)
+            // .size(190, 171)
+            // .overlay(bgNoInv));
         }
         final ItemStackHandler invSlot = new ItemStackHandler(1);
+        Flow inventoryRow = new Row().size(186, 90)
+            .alignX(0);
+        Flow buttonColumn = new Column().width(18)
+            .alignX(1)
+            .marginTop(4);
         if (doesBindPlayerInventory()) {
-            panel.child(
-                SlotGroupWidget.playerInventory()
-                    .pos(7, 95 + 12 + 2));
-            panel.child(
-                new ItemSlot().slot(
-                    SyncHandlers.itemSlot(invSlot, 0)
-                        .singletonSlotGroup())
-                    .pos(173, 167)
-                    .overlay(mesh));
-            panel.child(
-                new SingleChildWidget<>().pos(173, 185)
-                    .size(18, 6)
-                    .overlay(heatSinkSmall));
+            inventoryRow.child(
+                SlotGroupWidget.playerInventory(0)
+                    .leftRel(0)
+                    .marginTop(4)
+                    .marginLeft(4));
+
+            // panel.child(
+            // SlotGroupWidget.playerInventory()
+            // .pos(7, 95 + textBoxToInventoryGap));
         }
+
+        Flow panelGap = new Row().widthRel(1)
+            .height(textBoxToInventoryGap);
+        insertThingsInGap(panelGap);
+        panelColumn.child(panelGap);
 
         insertTexts(machineInfo, invSlot, syncManager, panel);
         addTitleTextStyle(panel, this.getLocalName());
 
-        if (shouldMakePowerPassButton()) addPowerPassButton(panel);
-        if (shouldMakeEditParametersButtonEnabled())
-            addEditParametersButton(panel, syncManager, fluidSlotSyncer, dropdownIndexSyncer);
-        if (shouldMakePowerSwitchButtonEnabled()) addPowerSwitchButtton(panel);
-        if (hasCustomButtons()) addCustomButtons(panel, syncManager);
+        if (shouldMakePowerPassButton()) addPowerPassButton(buttonColumn, textBoxToInventoryGap);
+        if (shouldMakeEditParametersButtonEnabled()) addEditParametersButton(panel, syncManager, buttonColumn);
+        if (shouldMakePowerSwitchButtonEnabled()) addPowerSwitchButtton(buttonColumn);
         addGregtechLogo(panel);
-        return panel;
+
+        if (doesBindPlayerInventory()) {
+            buttonColumn.child(
+                new ItemSlot().slot(
+                    SyncHandlers.itemSlot(invSlot, 0)
+                        .singletonSlotGroup())
+                    .marginTop(4)
+                    .overlay(mesh));
+            buttonColumn.child(
+                new SingleChildWidget<>().size(18, 6)
+                    .overlay(heatSinkSmall));
+        }
+        inventoryRow.child(buttonColumn);
+        panelColumn.child(inventoryRow);
+
+        return panel.child(panelColumn);
     }
+
+    private void insertThingsInGap(Flow panelGap) {}
 
     private void registerMachineSyncers(PanelSyncManager syncManager) {
         syncManager.syncValue(
@@ -2419,7 +2432,7 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
 
     }
 
-    public void addPowerPassButton(ModularPanel panel) {
+    public void addPowerPassButton(Flow buttonColumn, int yGap) {
         com.cleanroommc.modularui.drawable.UITexture powerPassOn = com.cleanroommc.modularui.drawable.UITexture
             .fullImage(MODID, "gui/overlay_button/power_pass_on");
         com.cleanroommc.modularui.drawable.UITexture powerPassOff = com.cleanroommc.modularui.drawable.UITexture
@@ -2427,7 +2440,7 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
         com.cleanroommc.modularui.drawable.UITexture powerPassDisabled = com.cleanroommc.modularui.drawable.UITexture
             .fullImage(MODID, "gui/overlay_button/power_pass_disabled");
 
-        panel.child(new ToggleButton().value(new BooleanSyncValue(() -> ePowerPass, bool -> {
+        buttonColumn.child(new ToggleButton().value(new BooleanSyncValue(() -> ePowerPass, bool -> {
             if (!isAllowedToWorkButtonEnabled()) return;
             ePowerPass = bool;
             if (!isAllowedToWorkButtonEnabled()) { // TRANSFORMER HACK
@@ -2439,7 +2452,6 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
             }
         }))
             .tooltip(tooltip -> tooltip.add("Power Switch"))
-            .pos(173, doesBindPlayerInventory() ? 109 : 133)
             .size(18, 18)
             .overlay(
                 new DynamicDrawable(
@@ -2448,13 +2460,9 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
 
     }
 
-    public void addEditParametersButton(ModularPanel panel, PanelSyncManager syncManager,
-        FluidSlotSyncHandler fluidSlotSyncer, IntSyncValue dropdownIndexSyncer) {
-        IPanelHandler infoPanel = syncManager.panel(
-            "info_panel",
-            (p_syncManager,
-                syncHandler) -> getParameterPanel(panel, p_syncManager, fluidSlotSyncer, dropdownIndexSyncer),
-            true);
+    public void addEditParametersButton(ModularPanel panel, PanelSyncManager syncManager, Flow buttonColumn) {
+        IPanelHandler infoPanel = syncManager
+            .panel("info_panel", (p_syncManager, syncHandler) -> getParameterPanel(panel, p_syncManager), true);
         UITexture editParametersEnabled = UITexture.fullImage(MODID, "gui/overlay_button/edit_parameters");
         UITexture editParametersDisabled = UITexture.fullImage(MODID, "gui/overlay_button/edit_parameters_disabled");
         com.cleanroommc.modularui.widgets.ButtonWidget editParametersButton = new com.cleanroommc.modularui.widgets.ButtonWidget();
@@ -2466,8 +2474,7 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
             }
         }));
         editParametersButton.tooltip(new RichTooltip(editParametersButton).add("Edit Parameters"));
-        editParametersButton.pos(173, doesBindPlayerInventory() ? 109 + 18 : 133 + 18)
-            .size(18, 18);
+        editParametersButton.size(18, 18);
         editParametersButton.onMousePressed(mouseData -> {
             if (parameterList.isEmpty()) return false;
             if (!infoPanel.isPanelOpen()) {
@@ -2477,12 +2484,10 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
             }
             return true;
         });
-        panel.child(editParametersButton);
+        buttonColumn.child(editParametersButton);
     }
 
-    public void addCustomButtons(ModularPanel panel, PanelSyncManager syncManager) {}
-
-    public void addPowerSwitchButtton(ModularPanel panel) {
+    public void addPowerSwitchButtton(Flow buttonColumn) {
         com.cleanroommc.modularui.drawable.UITexture powerSwitchOn = com.cleanroommc.modularui.drawable.UITexture
             .fullImage(MODID, "gui/overlay_button/power_switch_on");
         com.cleanroommc.modularui.drawable.UITexture powerSwitchOff = com.cleanroommc.modularui.drawable.UITexture
@@ -2490,13 +2495,12 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
         com.cleanroommc.modularui.drawable.UITexture powerSwitchDisabled = com.cleanroommc.modularui.drawable.UITexture
             .fullImage(MODID, "gui/overlay_button/power_switch_disabled");
 
-        panel.child(new ToggleButton().value(new BooleanSyncValue(this::isAllowedToWork, bool -> {
+        buttonColumn.child(new ToggleButton().value(new BooleanSyncValue(this::isAllowedToWork, bool -> {
             if (!isAllowedToWorkButtonEnabled()) return;
             if (bool) enableWorking();
             else disableWorking();
         }))
             .tooltip(tooltip -> tooltip.add("Power Switch"))
-            .pos(173, doesBindPlayerInventory() ? 109 + 18 * 2 : 133 + 18 * 2)
             .size(18, 18)
             .overlay(
                 new DynamicDrawable(
@@ -2516,10 +2520,6 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
         return true;
     }
 
-    public boolean hasCustomButtons() {
-        return false;
-    }
-
     public void addGregtechLogo(ModularPanel panel) {
         panel.child(
             new SingleChildWidget<>().overlay(UITexture.fullImage(MODID, "gui/picture/tectech_logo_dark"))
@@ -2527,8 +2527,7 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
                 .pos(190 - 18 - 2, doesBindPlayerInventory() ? 91 - 18 - 2 : 171 - 18 - 2));
     }
 
-    private ModularPanel getParameterPanel(ModularPanel parent, PanelSyncManager syncManager,
-        FluidSlotSyncHandler fluidSlotSyncer, IntSyncValue dropdownIndexSyncer) {
+    private ModularPanel getParameterPanel(ModularPanel parent, PanelSyncManager syncManager) {
         Area parentArea = parent.getArea();
         ModularPanel panel = new ModularPanel("parameters") {
 

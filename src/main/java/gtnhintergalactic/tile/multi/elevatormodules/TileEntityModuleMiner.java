@@ -1043,16 +1043,6 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
     }
 
     @Override
-    public boolean hasCustomButtons() {
-        return true;
-    }
-
-    @Override
-    public boolean shouldMakeEditParametersButtonEnabled() {
-        return false;
-    }
-
-    @Override
     public void insertTexts(ListWidget<IWidget, ?> machineInfo, ItemStackHandler invSlot, PanelSyncManager syncManager,
         ModularPanel parentPanel) {
         super.insertTexts(machineInfo, invSlot, syncManager, parentPanel);
@@ -1063,15 +1053,14 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
     }
 
     @Override
-    public void addCustomButtons(ModularPanel panel, PanelSyncManager syncManager) {
+    public void addEditParametersButton(ModularPanel panel, PanelSyncManager syncManager, Flow buttonColumn) {
 
         UITexture spaceMinerConfigTexture = UITexture.fullImage(MODID, "gui/overlay_button/edit_parameters");
         ButtonWidget spaceMinerConfig = new ButtonWidget();
         spaceMinerConfig
             .tooltip(new RichTooltip(spaceMinerConfig).add(IKey.lang("tt.spaceminer.asteroidInfoButtonTooltip")))
             .overlay(spaceMinerConfigTexture);
-        spaceMinerConfig.pos(173, doesBindPlayerInventory() ? 109 + 18 : 133 + 18)
-            .size(18, 18);
+        spaceMinerConfig.size(18, 18);
 
         IPanelHandler spaceMinerConfigPanel = syncManager.panel(
             "asteroidList",
@@ -1085,7 +1074,7 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
             }
             return true;
         });
-        panel.child(spaceMinerConfig);
+        buttonColumn.child(spaceMinerConfig);
     }
 
     private ModularPanel getAsteroidInfoPanel(ModularPanel parent, PanelSyncManager syncManager,
