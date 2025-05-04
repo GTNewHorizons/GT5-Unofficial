@@ -216,6 +216,10 @@ public class MTELargerTurbinePlasma extends MTELargerTurbineBase {
             FluidStack firstFuelType = new FluidStack(aFluids.get(0), 0); // Identify a SINGLE type of fluid to process.
             // Doesn't matter which one. Ignore the rest!
             int fuelValue = getFuelValue(firstFuelType);
+            if (fuelValue <= 0) {
+                return 0;
+            }
+
             actualOptimalFlow = GTUtility.safeInt(
                 (long) ((getSpeedMultiplier()
                     * (isLooseMode() ? turbine.getOptimalLoosePlasmaFlow() : turbine.getOptimalPlasmaFlow())

@@ -39,6 +39,7 @@ import net.minecraftforge.fluids.FluidStack;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableMap.Builder;
 
+import cpw.mods.fml.common.Optional;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -47,6 +48,7 @@ import forestry.api.recipes.RecipeManagers;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.interfaces.IGT_ItemWithMaterialRenderer;
 import gregtech.api.util.GTModHandler;
@@ -55,8 +57,10 @@ import gregtech.api.util.GTRecipeBuilder;
 import gregtech.api.util.GTUtility;
 import gregtech.common.render.items.GeneratedMaterialRenderer;
 import gregtech.loaders.misc.GTBees;
+import mods.railcraft.common.items.firestone.IItemFirestoneBurning;
 
-public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer {
+@Optional.Interface(iface = "mods.railcraft.common.items.firestone.IItemFirestoneBurning", modid = Mods.Names.RAILCRAFT)
+public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer, IItemFirestoneBurning {
 
     @SideOnly(Side.CLIENT)
     private IIcon secondIcon;
@@ -1254,5 +1258,11 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer {
                 return (this.getVoltage() / 16) * 15;
             }
         }
+    }
+
+    @Override
+    @Optional.Method(modid = Mods.Names.RAILCRAFT)
+    public boolean shouldBurn(ItemStack itemStack) {
+        return itemStack.isItemEqual(getStackForType(CombType.FIRESTONE));
     }
 }
