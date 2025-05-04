@@ -34,33 +34,40 @@ public class RecipeHandlers {
     // Adds a simple processing recipe for circuit components in a module. The recipe map used for processing is
     // inferred from the map stored by the input component.
     private static void addSimpleProcessingRecipe(CircuitComponent input, CircuitComponent output,
-        ModuleRecipeInfo info, long eut) {
+                                                  ModuleRecipeInfo info, long eut) {
         RecipeMap<?> recipeMap = input.processingMap;
         if (recipeMap == null) {
             throw new IllegalArgumentException(
-                "Tried to add component processing recipe for a component without an associated recipemap");
+                    "Tried to add component processing recipe for a component without an associated recipemap");
         }
         GTValues.RA.stdBuilder()
-            .metadata(NanochipAssemblyRecipeInfo.INSTANCE, info)
-            .itemInputs(input.getFakeStack(info.getBaseParallel()))
-            .itemOutputs(output.getFakeStack(info.getBaseParallel()))
-            .duration(ModuleRecipeInfo.MODULE_RECIPE_TIME)
-            .eut(eut)
-            .addTo(recipeMap);
+                .metadata(NanochipAssemblyRecipeInfo.INSTANCE, info)
+                .itemInputs(input.getFakeStack(info.getBaseParallel()))
+                .itemOutputs(output.getFakeStack(info.getBaseParallel()))
+                .duration(ModuleRecipeInfo.MODULE_RECIPE_TIME)
+                .eut(eut)
+                .addTo(recipeMap);
     }
 
-
-    private static void addCuttingChamberRecipe(CircuitComponent input, FluidStack inputFluid, CircuitComponent output, long eut) {
-        ModuleRecipeInfo info = ModuleRecipeInfo.Medium;
+    // Adds a simple processing recipe with a fluid for circuit components in a module. The recipe map
+    // used for processing is inferred from the map stored by the input component.
+    private static void addSimpleProcessingRecipe(CircuitComponent input, FluidStack inputStack, CircuitComponent output,
+                                                  ModuleRecipeInfo info, long eut) {
+        RecipeMap<?> recipeMap = input.processingMap;
+        if (recipeMap == null) {
+            throw new IllegalArgumentException(
+                    "Tried to add component processing recipe for a component without an associated recipemap");
+        }
         GTValues.RA.stdBuilder()
-            .metadata(NanochipAssemblyRecipeInfo.INSTANCE, info)
-            .itemInputs(input.getFakeStack(info.getBaseParallel()))
-            .itemOutputs(output.getFakeStack(info.getBaseParallel()))
-            .fluidInputs(inputFluid)
-            .duration(ModuleRecipeInfo.MODULE_RECIPE_TIME)
-            .eut(eut)
-            .addTo(RecipeMaps.nanochipCuttingChamber);
+                .metadata(NanochipAssemblyRecipeInfo.INSTANCE, info)
+                .itemInputs(input.getFakeStack(info.getBaseParallel()))
+                .fluidInputs(inputStack)
+                .itemOutputs(output.getFakeStack(info.getBaseParallel()))
+                .duration(ModuleRecipeInfo.MODULE_RECIPE_TIME)
+                .eut(eut)
+                .addTo(recipeMap);
     }
+
 
     private static void addAssemblyMatrixRecipe(List<CircuitComponentStack> input, CircuitComponent output,
         ModuleRecipeInfo info, long eut) {
@@ -234,6 +241,7 @@ public class RecipeHandlers {
         // Board processing recipes
         addSimpleProcessingRecipe(
             CircuitComponent.BoardMultifiberglassElite,
+            Materials.IronIIIChloride.getFluid(1000),
             CircuitComponent.ProcessedBoardMultifiberglassElite,
             ModuleRecipeInfo.Fast,
             TierEU.RECIPE_LV);
@@ -245,26 +253,30 @@ public class RecipeHandlers {
             TierEU.RECIPE_LV);
         // Wafer cutting processing recipes
         // TODO: Which waters do we want for every wafer?
-        addCuttingChamberRecipe(
-            CircuitComponent.WaferNanoCPU,
-            Materials.Grade1PurifiedWater.getFluid(1000),
-            CircuitComponent.ProcessedChipNanoCPU,
-            TierEU.RECIPE_LV);
-        addCuttingChamberRecipe(
-            CircuitComponent.WaferRAM,
-            Materials.Grade1PurifiedWater.getFluid(1000),
-            CircuitComponent.ProcessedChipRAM,
-            TierEU.RECIPE_LV);
-        addCuttingChamberRecipe(
-            CircuitComponent.WaferNOR,
-            Materials.Grade1PurifiedWater.getFluid(1000),
-            CircuitComponent.ProcessedChipNOR,
-            TierEU.RECIPE_LV);
-        addCuttingChamberRecipe(
-            CircuitComponent.WaferNAND,
-            Materials.Grade1PurifiedWater.getFluid(1000),
-            CircuitComponent.ProcessedChipNAND,
-            TierEU.RECIPE_LV);
+        addSimpleProcessingRecipe(
+                CircuitComponent.WaferNanoCPU,
+                Materials.Grade1PurifiedWater.getFluid(1000),
+                CircuitComponent.ProcessedChipNanoCPU,
+                ModuleRecipeInfo.Medium,
+                TierEU.RECIPE_LV);
+        addSimpleProcessingRecipe(
+                CircuitComponent.WaferRAM,
+                Materials.Grade1PurifiedWater.getFluid(1000),
+                CircuitComponent.ProcessedChipRAM,
+                ModuleRecipeInfo.Medium,
+                TierEU.RECIPE_LV);
+        addSimpleProcessingRecipe(
+                CircuitComponent.WaferNOR,
+                Materials.Grade1PurifiedWater.getFluid(1000),
+                CircuitComponent.ProcessedChipNOR,
+                ModuleRecipeInfo.Medium,
+                TierEU.RECIPE_LV);
+        addSimpleProcessingRecipe(
+                CircuitComponent.WaferNAND,
+                Materials.Grade1PurifiedWater.getFluid(1000),
+                CircuitComponent.ProcessedChipNAND,
+                ModuleRecipeInfo.Medium,
+                TierEU.RECIPE_LV);
         // Superconductor processing recipes
         addSimpleProcessingRecipe(
             CircuitComponent.SuperconductorLuV,
