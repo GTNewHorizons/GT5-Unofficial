@@ -45,6 +45,7 @@ dependencies {
     api("com.github.GTNewHorizons:Applied-Energistics-2-Unofficial:rv3-beta-586-GTNH:dev")
     api("com.github.GTNewHorizons:AE2FluidCraft-Rework:1.4.53-gtnh:dev")
     api('com.github.GTNewHorizons:Yamcl:0.7.0:dev')
+    api('com.github.GTNewHorizons:CodeChickenCore:1.4.2:dev')
     api("com.github.GTNewHorizons:Postea:1.0.14:dev")
     api("com.github.GTNewHorizons:Galacticraft:3.3.5-GTNH:dev") { transitive = false }
 
