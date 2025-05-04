@@ -395,6 +395,7 @@ public class GTMod {
         // recipe map for the assembly matrix relies on doing recipe lookups here.
         // I really hope I can put this here without breaking something
         RecipeHandlers.populateCircuitComponentRecipeMaps();
+        RecipeHandlers.populateFinishedCircuitRecipeMaps();
 
         GregTechAPI.sLoadFinished = true;
         GTLog.out.println("GTMod: Load-Phase finished!");

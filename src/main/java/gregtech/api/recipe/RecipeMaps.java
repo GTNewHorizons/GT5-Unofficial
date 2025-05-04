@@ -6,13 +6,11 @@ import static gregtech.api.enums.Mods.NEICustomDiagrams;
 import static gregtech.api.enums.Mods.Railcraft;
 import static gregtech.api.enums.TickTime.TICK;
 import static gregtech.api.util.GTModHandler.getModItem;
-import static gregtech.api.util.GTRecipeConstants.*;
 import static gregtech.api.util.GTRecipeConstants.ADDITIVE_AMOUNT;
 import static gregtech.api.util.GTRecipeConstants.FUEL_VALUE;
 import static gregtech.api.util.GTRecipeConstants.GLASS;
 import static gregtech.api.util.GTRecipeConstants.NANO_FORGE_TIER;
 import static gregtech.api.util.GTRecipeConstants.PCB_NANITE_MATERIAL;
-import static gregtech.api.util.GTRecipeMapUtil.GTRecipeTemplate;
 import static gregtech.api.util.GTRecipeMapUtil.asTemplate;
 import static gregtech.api.util.GTRecipeMapUtil.buildOrEmpty;
 import static gregtech.api.util.GTUtility.clamp;
@@ -1214,7 +1212,6 @@ public final class RecipeMaps {
         .progressBar(GTUITextures.PROGRESSBAR_CIRCUIT_ASSEMBLER)
         .progressBarMUI2(GTGuiTextures.PROGRESSBAR_CIRCUIT_ASSEMBLER)
         .unificateOutputNEI(!NEICustomDiagrams.isModLoaded())
-        .builderTransformer(assemblyMatrixRecipeTransformer::doAdd)
         .build();
     public static final RecipeMap<FluidCannerBackend> cannerRecipes = RecipeMapBuilder
         .of("gt.recipe.canner", FluidCannerBackend::new)
@@ -1743,9 +1740,4 @@ public final class RecipeMaps {
         .maxIO(2, 1, 2, 0)
         .minInputs(0, 0)
         .build();
-
-    static {
-        // Add transformer from circuit assembler recipes to nanochip assembly matrix recipe
-        RecipeMaps.circuitAssemblerRecipes.addDownstream(assemblyMatrixRecipeTransformer);
-    }
 }
