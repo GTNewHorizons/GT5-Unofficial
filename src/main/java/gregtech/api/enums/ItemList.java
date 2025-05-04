@@ -2671,6 +2671,7 @@ public enum ItemList implements IItemContainer {
     PlanetaryGasSiphonCasing,
 
     CZPuller,
+    Silicon_Seed_Crystal
 
     // semicolon after the comment to reduce merge conflicts
     ;

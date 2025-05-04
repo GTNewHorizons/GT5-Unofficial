@@ -221,6 +221,7 @@ import static gregtech.common.items.IDMetaItem03.Quark_Creation_Catalyst_Top;
 import static gregtech.common.items.IDMetaItem03.Quark_Creation_Catalyst_Unaligned;
 import static gregtech.common.items.IDMetaItem03.Quark_Creation_Catalyst_Up;
 import static gregtech.common.items.IDMetaItem03.Relativistic_Heat_Capacitor;
+import static gregtech.common.items.IDMetaItem03.Silicon_Seed_Crystal;
 import static gregtech.common.items.IDMetaItem03.Spinneret;
 import static gregtech.common.items.IDMetaItem03.Thermal_Superconductor;
 import static gregtech.common.items.IDMetaItem03.Timepiece;
@@ -1254,6 +1255,8 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 implements IItemFi
         ItemList.Intensely_Bonded_Netherite_Nanoparticles
             .set(addItem(Intensely_Bonded_Netherite_Nanoparticles.ID, "Intensely Bonded Netherite Nanoparticles", ""));
         ItemList.Hot_Netherite_Scrap.set(addItem(Hot_Netherite_Scrap.ID, "Hot Netherite Scrap", "Activated?"));
+
+        ItemList.Silicon_Seed_Crystal.set(addItem(Silicon_Seed_Crystal.ID,"Something to begin with",""));
 
         ItemList.White_Dwarf_Shape_Extruder_Plate.set(
             addItem(

@@ -157,7 +157,7 @@ public class MTECZPuller extends MTEEnhancedMultiBlockBase<MTECZPuller> implemen
 
     @Override
     public RecipeMap<?> getRecipeMap() {
-        return RecipeMaps.czpullerRecipes;
+        return RecipeMaps.czRecipes;
     }
 
     @Override
