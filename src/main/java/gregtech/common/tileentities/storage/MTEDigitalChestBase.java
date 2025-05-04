@@ -57,8 +57,6 @@ import appeng.api.storage.IMEMonitorHandlerReceiver;
 import appeng.api.storage.StorageChannel;
 import appeng.api.storage.data.IAEItemStack;
 import appeng.api.storage.data.IItemList;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.GTValues;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
@@ -96,9 +94,7 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
     /**
      * Note this value may have incorrect item count.
      */
-    @SideOnly(Side.CLIENT)
     public ItemStack displayItem = null;
-    @SideOnly(Side.CLIENT)
     public int displayItemCount = 0;
 
     private final IntSyncValue itemCountSyncHandler = new IntSyncValue(
