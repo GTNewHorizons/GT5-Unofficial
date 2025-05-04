@@ -140,6 +140,8 @@ dependencies {
 
     // Speeds up mod identification and loading in dev
     runtimeOnlyNonPublishable(rfg.deobf("com.github.GTNewHorizons:CoreTweaks:0.3.3.8-GTNH"))
+
+    runtimeOnlyNonPublishable("com.github.GTNewHorizons:PersonalSpace:1.0.32")
 }
 
 afterEvaluate {
