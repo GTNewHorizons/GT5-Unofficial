@@ -68,6 +68,9 @@ import kubatech.Tags;
 public abstract class KubaTechGTMultiBlockBase<T extends MTEExtendedPowerMultiBlockBase<T>>
     extends MTEExtendedPowerMultiBlockBase<T> {
 
+    @Deprecated
+    public int mEUt;
+
     @SuppressWarnings("unchecked")
     protected static <K extends KubaTechGTMultiBlockBase<?>> UIInfo<?, ?> createKTMetaTileEntityUI(
         KTContainerConstructor<K> containerConstructor) {
