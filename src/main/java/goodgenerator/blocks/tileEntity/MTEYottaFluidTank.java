@@ -752,12 +752,35 @@ public class MTEYottaFluidTank extends MTETooltipMultiBlockBaseEM implements ICo
         StringSyncValue percentageSyncer = new StringSyncValue(this::getPercent);
         syncManager.syncValue("percentage", percentageSyncer);
 
-        FluidDisplaySyncHandler storedFluid = new FluidDisplaySyncHandler(() -> mFluid);
+        FluidDisplaySyncHandler storedFluid = new FluidDisplaySyncHandler(() -> mFluid, aFluid -> mFluid = aFluid);
         syncManager.syncValue("storedFluid", storedFluid);
+
+        FluidDisplaySyncHandler lockedFluid = new FluidDisplaySyncHandler(
+            () -> mLockedFluid,
+            aFluid -> mLockedFluid = aFluid);
+        syncManager.syncValue("lockedFluid", lockedFluid);
 
         BooleanSyncValue locked = new BooleanSyncValue(() -> isFluidLocked, bool -> isFluidLocked = bool);
         syncManager.syncValue("isLocked", locked);
-        FluidSlotDisplayOnly fluidDisplay = new FluidSlotDisplayOnly().syncHandler("storedFluid")
+
+        FluidSlotDisplayOnly fluidDisplay = new FluidSlotDisplayOnly() {
+
+            @NotNull
+            @Override
+            public Result onMousePressed(int mouseButton) {
+                if (!locked.getBoolValue()) {
+                    if (mFluid != null) {
+                        lockedFluid.setValue(storedFluid.getValue());
+                    }
+                    locked.setBoolValue(true);
+                } else {
+                    lockedFluid.setValue(null);
+                    locked.setBoolValue(false);
+                }
+                return Result.SUCCESS;
+            }
+
+        }.syncHandler("storedFluid")
             .tooltipBuilder(t -> {
                 FluidStack fluidStack = storedFluid.getValue();
                 if (fluidStack == null) {
@@ -798,6 +821,15 @@ public class MTEYottaFluidTank extends MTETooltipMultiBlockBaseEM implements ICo
                     + "%"
                     + EnumChatFormatting.RESET
                     + ")")
+                .asWidget()
+                .alignment(com.cleanroommc.modularui.utils.Alignment.CenterLeft)
+                .color(COLOR_TEXT_WHITE.get())
+                .widthRel(1)
+                .marginBottom(2)
+                .setEnabledIf(w -> getErrorDisplayID() == 0));
+
+        machineInfo.child(
+            IKey.dynamic(() -> "Locked: " + locked.getBoolValue())
                 .asWidget()
                 .alignment(com.cleanroommc.modularui.utils.Alignment.CenterLeft)
                 .color(COLOR_TEXT_WHITE.get())
