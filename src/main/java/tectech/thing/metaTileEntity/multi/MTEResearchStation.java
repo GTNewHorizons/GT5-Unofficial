@@ -297,14 +297,6 @@ public class MTEResearchStation extends TTMultiblockBase implements ISurvivalCon
 
     @Override
     public void outputAfterRecipe_EM() {
-        if (!eHolders.isEmpty()) {
-            if (tRecipe != null && ItemList.Tool_DataStick.isStackEqual(mInventory[1], false, true)) {
-                eHolders.get(0)
-                    .getBaseMetaTileEntity()
-                    .setActive(false);
-                eHolders.get(0).mInventory[0] = null;
-                makeStick();
-            }
         if (!eHolders.isEmpty() && tRecipe != null) {
             eHolders.get(0)
                 .getBaseMetaTileEntity()
