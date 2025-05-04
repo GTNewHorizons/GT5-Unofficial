@@ -58,7 +58,7 @@ public class HighTemperatureGasCooledReactorRecipeMapFrontend extends RecipeMapF
         builder.widget(
             new ProgressBar().setTexture(uiProperties.progressBarTexture.get(), 170)
                 .setDirection(uiProperties.progressBarDirection)
-                .setProgress(progressSupplier)
+                .setProgress(() -> (0.31f + progressSupplier.get() * 0.26f)) // start 76 = 0.31 end 138 = 0.57 d = 0.26
                 .setSynced(false, false)
                 .setPos(uiProperties.progressBarPos.add(windowOffset))
                 .setSize(new Size(170, 245)));
