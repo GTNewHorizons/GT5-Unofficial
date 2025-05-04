@@ -62,7 +62,6 @@ import akka.japi.Pair;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import ggfab.mte.MTELinkedInputBus;
-import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
@@ -101,6 +100,7 @@ import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import tectech.thing.metaTileEntity.multi.base.INameFunction;
 import tectech.thing.metaTileEntity.multi.base.IStatusFunction;
 import tectech.thing.metaTileEntity.multi.base.LedStatus;
+import tectech.thing.metaTileEntity.multi.base.Parameter;
 import tectech.thing.metaTileEntity.multi.base.Parameters;
 import tectech.thing.metaTileEntity.multi.base.render.TTRenderedExtendedFacingTexture;
 
@@ -116,7 +116,6 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
 
     /** Minimal factor used to calculate the recipe time */
     protected static final double MIN_RECIPE_TIME_MODIFIER = 0.5D;
-
     /** Max distance a mining drone can travel */
     protected static final double MAX_DISTANCE = 300D;
 
@@ -153,7 +152,7 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
         stepSetting;
 
     Parameters.Group.ParameterOut distanceDisplay;
-
+    Parameter.IntegerParameter distanceParameter;
     /** Name of the distance setting */
     private static final INameFunction<TileEntityModuleMiner> DISTANCE_SETTING_NAME = (base, p) -> GCCoreUtil
         .translate("gt.blockmachines.multimachine.project.ig.miner.cfgi.0"); // Distance
@@ -281,6 +280,10 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
     @Override
     public RecipeMap<?> getRecipeMap() {
         return spaceMiningRecipes;
+    }
+
+    public int getModuleTier() {
+        return 0;
     }
 
     /**
@@ -459,7 +462,7 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
             .setRecipe(tRecipe)
             .setFluidInputs(fluidInputs)
             .setItemInputs(inputs)
-            .setAvailableEUt(GTValues.V[tTier])
+            .setAvailableEUt(V[tTier])
             .setMachine(this, false, false)
             .setConsumption(true)
             .build();
@@ -741,7 +744,7 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
      * @author hacatu
      */
     protected List<AsteroidSummary> getAsteroidSummaries(int maxParallels, float effectiveComp) {
-        long power = GTValues.V[tTier];
+        long power = V[tTier];
         if (prevRecipes == null) {
             return Collections.<AsteroidSummary>emptyList();
         }
@@ -758,6 +761,11 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
                     Math.min(maxParallels, Math.min((int) (effectiveComp / data.computation), (int) (power / r.mEUt))));
             })
             .collect(toList());
+    }
+
+    @Override
+    protected void initParameters() {
+        distanceParameter = new Parameter.IntegerParameter(0, () -> 0, () -> Integer.MAX_VALUE, "Distance");
     }
 
     /**
@@ -1047,6 +1055,10 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
     public void insertTexts(ListWidget<IWidget, ?> machineInfo, ItemStackHandler invSlot, PanelSyncManager syncManager,
         ModularPanel parentPanel) {
         super.insertTexts(machineInfo, invSlot, syncManager, parentPanel);
+        machineInfo.child(
+            IKey.dynamic(
+                () -> EnumChatFormatting.WHITE + "Distance: " + EnumChatFormatting.GREEN + distanceParameter.getValue())
+                .asWidget());
     }
 
     @Override
@@ -1108,6 +1120,10 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
         IntSyncValue targetDroneTierSyncer = new IntSyncValue(targetDroneTier::get, targetDroneTier::set);
         syncManager.syncValue("droneTarget", targetDroneTierSyncer);
 
+        AtomicInteger selectedAsteroid = new AtomicInteger(0);
+        IntSyncValue selectedAsteroidSyncer = new IntSyncValue(selectedAsteroid::get, selectedAsteroid::set);
+        syncManager.syncValue("selectedAsteroid", selectedAsteroidSyncer);
+
         Flow asteroidColumn = new Column().sizeRel(1);
         Flow asteroidRow = new Row().widthRel(1)
             .height(18)
@@ -1122,7 +1138,8 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
                 syncHandler,
                 droneFilterSyncer,
                 "asteroidInfo",
-                panel),
+                panel,
+                selectedAsteroidSyncer),
             true);
 
         IPanelHandler droneSelectorPanelTarget = syncManager.panel(
@@ -1132,18 +1149,23 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
                 syncHandler,
                 targetDroneTierSyncer,
                 "asteroidTarget",
-                panel),
+                panel,
+                selectedAsteroidSyncer),
             true);
 
         IPanelHandler minerCalculator = syncManager.panel(
             "spaceMinerCalculator",
-            (p_syncManager,
-                syncHandler) -> openSpaceMinerCalculator(p_syncManager, syncHandler, parent, asteroidPanels),
+            (p_syncManager, syncHandler) -> openSpaceMinerCalculator(
+                p_syncManager,
+                syncHandler,
+                parent,
+                asteroidPanels,
+                selectedAsteroidSyncer),
             true);
         for (int i = 0; i < uniqueAsteroidList.size(); i++) {
             int finalI = i;
 
-            AsteroidData data = SpaceMiningRecipes.uniqueAsteroidList.get(i);
+            AsteroidData data = uniqueAsteroidList.get(i);
             IPanelHandler asteroidInfo = syncManager.panel(
                 "asteroidInfo" + finalI,
                 (p_syncManager,
@@ -1180,6 +1202,7 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
                         .addLine(IKey.str("Click me to get more info!")))
                 .onMousePressed(mouseData -> {
                     if (!asteroidInfo.isPanelOpen()) {
+                        selectedAsteroidSyncer.setValue(finalI);
                         asteroidInfo.openPanel();
                     } else {
                         asteroidInfo.closePanel();
@@ -1297,12 +1320,21 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
 
     private boolean asteroidContainsOre(AsteroidData data, String stringValue) {
         if (stringValue.isEmpty()) return false;
-        for (Materials output : data.output) {
-            ItemStack itemOutput = GTOreDictUnificator.get(data.orePrefixes, output, 1);
-            if (itemOutput.getDisplayName()
-                .toLowerCase()
-                .contains(stringValue.toLowerCase())) return true;
+        if (data.output != null) {
+            for (Materials output : data.output) {
+                ItemStack itemOutput = GTOreDictUnificator.get(data.orePrefixes, output, 1);
+                if (itemOutput.getDisplayName()
+                    .toLowerCase()
+                    .contains(stringValue.toLowerCase())) return true;
+            }
+        } else {
+            for (ItemStack itemOutput : data.outputItems) {
+                if (itemOutput.getDisplayName()
+                    .toLowerCase()
+                    .contains(stringValue.toLowerCase())) return true;
+            }
         }
+
         return false;
     }
 
@@ -1315,7 +1347,7 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
                 return false;
             }
         };
-        AsteroidData data = SpaceMiningRecipes.uniqueAsteroidList.get(asteroidIndex);
+        AsteroidData data = uniqueAsteroidList.get(asteroidIndex);
         UITexture targetAsteroidTexture = UITexture.builder()
             .location(MODID, "gui/overlay_button/target_asteroid")
             .imageSize(16, 16)
@@ -1355,7 +1387,7 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
         Flow droneRow = new Row().widthRel(1)
             .height(18)
             .marginBottom(4);
-        for (int i = data.minDroneTier; i < data.maxDroneTier; i++) {
+        for (int i = data.minDroneTier; i <= data.maxDroneTier; i++) {
             ItemStack droneItem = MINING_DRONES[i];
             ItemStack droneRodItem = MINING_RODS[i];
             ItemStack droneDrillItem = MINING_DRILLS[i];
@@ -1374,8 +1406,13 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
                                     "Asteroid size with this drone: "
                                         + (data.minSize + Math.pow(2, finalI - data.minDroneTier) - 1)
                                         + "-"
-                                        + (data.maxSize + Math.pow(2, finalI - data.minDroneTier) - 1)))));
-            if ((i - data.minDroneTier + 1) % 10 == 0 || i == data.maxDroneTier - 1) {
+                                        + (data.maxSize + Math.pow(2, finalI - data.minDroneTier) - 1)))
+                            .addLine(
+                                IKey.str(
+                                    "Mining operation with this drone: " + String.format(
+                                        "%.2fs",
+                                        data.duration / (20 * Math.sqrt(finalI - data.minDroneTier + 1)))))));
+            if ((i - data.minDroneTier + 1) % 10 == 0 || i == data.maxDroneTier) {
                 droneDrawables.child(droneRow);
                 droneRow = new Row().widthRel(1)
                     .height(18)
@@ -1452,16 +1489,6 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
         drops.child(dropsColumns);
         column.child(drops);
         column.child(
-            new SingleChildWidget<>().widthRel(1)
-                .height(9)
-                .child(
-                    IKey.str(
-                        "Each mining operation takes " + EnumChatFormatting.DARK_PURPLE
-                            + String.format("%.2f", (double) data.duration / 20)
-                            + " seconds")
-                        .asWidget())
-                .marginBottom(4));
-        column.child(
             new ButtonWidget<>().size(18, 18)
                 .marginBottom(4)
                 .alignX(0)
@@ -1477,7 +1504,7 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
     }
 
     private ModularPanel opendroneSelectorPanel(PanelSyncManager syncManager, IPanelHandler syncHandler,
-        IntSyncValue syncer, String suffix, ModularPanel parent) {
+        IntSyncValue syncer, String suffix, ModularPanel parent, IntSyncValue asteroidSyncer) {
         Area parentArea = parent.getArea();
         ModularPanel panel = new ModularPanel("droneSelectorPanel" + suffix) {
 
@@ -1498,8 +1525,10 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
         drones.get(0)
             .add(new SlotLikeButtonWidget(() -> null).onMousePressed(mouseData -> {
                 syncer.setValue(-1);
-                if (suffix.equals("asteroidTarget")) parent.closeIfOpen(false);
-                else syncHandler.closePanel();
+                if (suffix.equals("asteroidTarget")) {
+                    distanceParameter.setValue(0);
+                    parent.closeIfOpen(false);
+                } else syncHandler.closePanel();
                 return true;
             }));
 
@@ -1510,8 +1539,10 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
             drones.get(row)
                 .add(new SlotLikeButtonWidget(drone).onMousePressed(mouseData -> {
                     syncer.setValue(finalI);
-                    if (suffix.equals("asteroidTarget")) parent.closeIfOpen(false);
-                    else syncHandler.closePanel();
+                    if (suffix.equals("asteroidTarget")) {
+                        distanceParameter.setValue(optimizeDistance(asteroidSyncer.getValue(), finalI));
+                        parent.closeIfOpen(false);
+                    } else syncHandler.closePanel();
                     return true;
                 }));
             if (drones.get(row)
@@ -1525,8 +1556,60 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
         return panel.child(grid.sizeRel(1));
     }
 
+    private Integer optimizeDistance(int asteroidIndex, int droneTier) {
+
+        AsteroidData targetAsteroid = uniqueAsteroidList.get(asteroidIndex);
+        Map<Integer, List<Pair<Integer, GTRecipe>>> asteroids = SpaceMiningRecipes.asteroidDistanceMap.get(droneTier);
+
+        int bestDistance = 0;
+        double bestScore = 0;
+
+        for (Map.Entry<Integer, List<Pair<Integer, GTRecipe>>> asteroidList : asteroids.entrySet()) {
+            int distance = asteroidList.getKey();
+            double totalWeight = 0;
+            double totalTime = 0;
+            List<Pair<Integer, GTRecipe>> asteroidsAtDistance = asteroidList.getValue();
+
+            int thisAsteroidIndex = -1;
+            int size = asteroidList.getValue()
+                .size();
+            // gather total weight, try to find target asteroid
+            for (int i = 0; i < size; i++) {
+                int recipeAsteroidIndex = asteroidsAtDistance.get(i)
+                    .first();
+                GTRecipe recipe = asteroidsAtDistance.get(i)
+                    .second();
+                SpaceMiningData data = recipe.getMetadata(IGRecipeMaps.SPACE_MINING_DATA);
+                if (recipe.getMetadata(IGRecipeMaps.MODULE_TIER) > tModuleTier) continue;
+                totalWeight += data.recipeWeight;
+                if (recipeAsteroidIndex == asteroidIndex) thisAsteroidIndex = recipeAsteroidIndex;
+            }
+
+            for (int i = 0; i < size; i++) {
+                int recipeAsteroidIndex = asteroidsAtDistance.get(i)
+                    .first();
+                AsteroidData recipeAsteroid = uniqueAsteroidList.get(recipeAsteroidIndex);
+                GTRecipe recipe = asteroidsAtDistance.get(i)
+                    .second();
+                SpaceMiningData data = recipe.getMetadata(IGRecipeMaps.SPACE_MINING_DATA);
+                if (recipe.getMetadata(IGRecipeMaps.MODULE_TIER) > tModuleTier) continue;
+                totalTime += recipe.mDuration * (data.recipeWeight / totalWeight);
+            }
+            if (thisAsteroidIndex < 0) continue;
+            double score = ((targetAsteroid.duration / Math.sqrt(droneTier - targetAsteroid.minDroneTier + 1))
+                * (targetAsteroid.recipeWeight / totalWeight)) / totalTime;
+
+            if (score > bestScore) {
+                bestScore = score;
+                bestDistance = distance;
+            }
+
+        }
+        return bestDistance;
+    }
+
     private ModularPanel openSpaceMinerCalculator(PanelSyncManager syncManager, IPanelHandler panelSyncHandler,
-        ModularPanel parent, List<IPanelHandler> asteroidPanels) {
+        ModularPanel parent, List<IPanelHandler> asteroidPanels, IntSyncValue selectedAsteroidSyncer) {
         Area parentArea = parent.getArea();
         ModularPanel panel = new ModularPanel("spaceMinerCalculator") {
 
@@ -1553,8 +1636,13 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
 
         IPanelHandler droneSelectorPanel = syncManager.panel(
             "droneSelectorPanelSpaceMiner",
-            (p_syncManager,
-                syncHandler) -> opendroneSelectorPanel(p_syncManager, syncHandler, droneSyncer, "calculator", panel),
+            (p_syncManager, syncHandler) -> opendroneSelectorPanel(
+                p_syncManager,
+                syncHandler,
+                droneSyncer,
+                "calculator",
+                panel,
+                selectedAsteroidSyncer),
             true);
 
         Flow column = new Column().sizeRel(1);
@@ -1633,7 +1721,8 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
                                         distanceSyncer.getValue(),
                                         moduleTierSyncer.getValue(),
                                         droneSyncer.getValue(),
-                                        asteroidPanels);
+                                        asteroidPanels,
+                                        selectedAsteroidSyncer);
                                     outputListWidget.getChildren()
                                         .clear();
                                     outputListWidget.children(output);
@@ -1644,7 +1733,7 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
     }
 
     private List<IWidget> calculateOutput(Integer distance, Integer moduleTier, Integer droneTier,
-        List<IPanelHandler> asteroidPanels) {
+        List<IPanelHandler> asteroidPanels, IntSyncValue selectedAsteroidSyncer) {
         List<IWidget> listResult = new ArrayList<>();
 
         List<Pair<Integer, GTRecipe>> asteroids = SpaceMiningRecipes.asteroidDistanceMap.get(droneTier)
@@ -1685,6 +1774,7 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
                     t -> t.addLine(IKey.str(EnumChatFormatting.DARK_RED + data.getAsteroidNameLocalized()))
                         .addLine(IKey.str("Click me to get more info!")))
                 .onMousePressed(mouseData -> {
+                    selectedAsteroidSyncer.setValue(asteroidPair.first());
                     asteroidPanels.get(asteroidPair.first())
                         .openPanel();
                     return true;
@@ -1713,6 +1803,7 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
         /** Voltage tier of this module */
         protected static final int MODULE_VOLTAGE_TIER = 8;
         /** Tier of this module */
+        int bla = 0;
         protected static final int MODULE_TIER = 1;
         /** Minimum motor tier that is needed for this module */
         protected static final int MINIMUM_MOTOR_TIER = 1;
