@@ -9,6 +9,7 @@ import static gregtech.api.util.GTStructureUtility.*;
 
 import javax.annotation.Nullable;
 
+import cpw.mods.fml.common.Mod;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -40,16 +41,12 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.blocks.BlockCasings8;
 
 /*
-The problem in this code is that variables
-tierCool, tierHeat, tierCompress, tierVacuum
-are static, so these will be messed up when there
-are a lot of ACRs, and because of this problem when
-there are two modules, both of them become 0 tier
-
-and  also the modules are not checked for some reason
-so hatches on them won't be considered a part of the structure
+ * The problem in this code is that variables
+ * tierCool, tierHeat, tierCompress, tierVacuum
+ * are static, so these will be messed up when there
+ * are a lot of ACRs, and because of this problem when
+ * there are two modules, both of them become 0 for some reason
  */
-
 
 public class MTEAdvancedChemicalReactor extends MTEExtendedPowerMultiBlockBase<MTEAdvancedChemicalReactor>
     implements ISurvivalConstructable {
@@ -58,12 +55,8 @@ public class MTEAdvancedChemicalReactor extends MTEExtendedPowerMultiBlockBase<M
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final String HEAT_MODULE_L = "tempHeatL";
-    private static final String HEAT_MODULE_R = "tempHeatR";
     private static final String COOL_MODULE_L = "tempCoolL";
-    private static final String COOL_MODULE_R = "tempCoolR";
-    private static final String VACUUM_MODULE_L = "VacuumL";
     private static final String VACUUM_MODULE_R = "VacuumR";
-    private static final String COMPRESSION_MODULE_L = "PressureL";
     private static final String COMPRESSION_MODULE_R = "PressureR";
 
     private double CurrentTemp = 0;
@@ -85,86 +78,50 @@ public class MTEAdvancedChemicalReactor extends MTEExtendedPowerMultiBlockBase<M
             STRUCTURE_PIECE_MAIN,
             // spotless:off
             new String[][]{
-                {" AAA ", " AAA ", " AAA ", " AAA ", " AAA ", "AA~AA"},
-                {"AAAAA", "A   A", "P   P", "A   A", "A   A", "AAAAA"},
-                {"AAAAA", "A   A", "A   A", "A   A", "A   A", "AAAAA"},
-                {"AAAAA", "A   A", "P   P", "A   A", "A   A", "AAAAA"},
-                {" AAA ", " AAA ", " AAA ", " AAA ", " AAA ", "AAAAA"}}
+                {"     "," AAA "," AAA "," AAA "," A~A "," AAA "},
+                {" AAA ","AJJJA","PJJJP","AJJJA","AJJJA","AAAAA"},
+                {" AAA ","AJJJA","AJ JA","AJ JA","AJJJA","AAAAA"},
+                {" AAA ","AJJJA","PJJJP","AJJJA","AJJJA","AAAAA"},
+                {"     "," AAA "," AAA "," AAA "," AAA "," AAA "}}
         )
         .addShape(
             HEAT_MODULE_L,
             new String[][]{
-                {"   ", "   ", "   ", "BBB"},
-                {" HH", " H ", " H ", "BDB"},
-                {"   ", "   ", "   ", "BBB"},
-                {" HH", " H ", " H ", "BDB"},
-                {"   ", "   ", "   ", "BBB"}}
-        )
-        .addShape(
-            HEAT_MODULE_R,
-            new String[][]{
-                {"   ", "   ", "   ", "BBB"},
-                {"HH ", " H ", " H ", "BDB"},
-                {"   ", "   ", "   ", "BBB"},
-                {"HH ", " H ", " H ", "BDB"},
-                {"   ", "   ", "   ", "BBB"}}
+                {"  ","  ","  ","  "},
+                {"HH","H ","H ","AA"},
+                {"  ","  ","  ","AA"},
+                {"HH","H ","H ","AA"},
+                {"  ","  ","  ","  "}}
         )
         .addShape(
             COOL_MODULE_L,
             new String[][]{
-                {"   ", "   ", "   ", "BBB"},
-                {" CC", " C ", " C ", "BDB"},
-                {"   ", "   ", "   ", "BBB"},
-                {" CC", " C ", " C ", "BDB"},
-                {"   ", "   ", "   ", "BBB"}}
-        )
-        .addShape(
-            COOL_MODULE_R,
-            new String[][]{
-                {"   ", "   ", "   ", "BBB"},
-                {"CC ", " C ", " C ", "BDB"},
-                {"   ", "   ", "   ", "BBB"},
-                {"CC ", " C ", " C ", "BDB"},
-                {"   ", "   ", "   ", "BBB"}}
-        )
-        .addShape(
-            VACUUM_MODULE_L,
-            new String[][]{
-                {"   ", "   ", "   ", "BBB"},
-                {" VV", " V ", " V ", "BDB"},
-                {"   ", "   ", "   ", "BBB"},
-                {" VV", " V ", " V ", "BDB"},
-                {"   ", "   ", "   ", "BBB"}}
+                {"  ","  ","  ","  "},
+                {"CC","C ","C ","AA"},
+                {"  ","  ","  ","AA"},
+                {"CC","C ","C ","AA"},
+                {"  ","  ","  ","  "}}
         )
         .addShape(
             VACUUM_MODULE_R,
             new String[][]{
-                {"   ", "   ", "   ", "BBB"},
-                {"VV ", " V ", " V ", "BDB"},
-                {"   ", "   ", "   ", "BBB"},
-                {"VV ", " V ", " V ", "BDB"},
-                {"   ", "   ", "   ", "BBB"}}
+                {"  ","  ","  ","  "},
+                {"VV"," V"," V","AA"},
+                {"  ","  ","  ","AA"},
+                {"VV"," V"," V","AA"},
+                {"  ","  ","  ","  "}}
         )
         .addShape(
             COMPRESSION_MODULE_R,
             new String[][]{
-                {"   ", "   ", "   ", "BBB"},
-                {"KK ", " K ", " K ", "BDB"},
-                {"   ", "   ", "   ", "BBB"},
-                {"KK ", " K ", " K ", "BDB"},
-                {"   ", "   ", "   ", "BBB"}}
-        )
-        .addShape(
-            COMPRESSION_MODULE_L,
-            new String[][]{
-                {"   ", "   ", "   ", "BBB"},
-                {" KK", " K ", " K ", "BDB"},
-                {"   ", "   ", "   ", "BBB"},
-                {" KK", " K ", " K ", "BDB"},
-                {"   ", "   ", "   ", "BBB"}}
+                {"  ","  ","  ","  "},
+                {"KK"," K"," K","AA"},
+                {"  ","  ","  ","AA"},
+                {"KK"," K"," K","AA"},
+                {"  ","  ","  ","  "}}
         )// spotless:on
         .addElement('P', ofBlock(GregTechAPI.sBlockCasings8, 1))
-        .addElement('B', ofBlock(GregTechAPI.sBlockCasings8, 0))
+        .addElement('J', ofBlock(GregTechAPI.sBlockCasings8, 0)) // fo;uvhweprivh2pe9rvhpwerhvpiwfsh[fuvh
         .addElement(
             'D',
             buildHatchAdder(MTEAdvancedChemicalReactor.class).atLeast(InputHatch, OutputHatch)
@@ -234,6 +191,8 @@ public class MTEAdvancedChemicalReactor extends MTEExtendedPowerMultiBlockBase<M
                 .casingIndex(((BlockCasings8) GregTechAPI.sBlockCasings8).getTextureIndex(0))
                 .dot(1)
                 .buildAndChain(ofBlock(GregTechAPI.sBlockCasings8, 0)))
+        .addElement('S',ofBlock(GregTechAPI.sBlockCasings2, 0))
+        .addElement('Q',ofBlock(GregTechAPI.sBlockCasings2, 10))
         .build();
 
     public MTEAdvancedChemicalReactor(final int aID, final String aName, final String aNameRegional) {
@@ -307,7 +266,7 @@ public class MTEAdvancedChemicalReactor extends MTEExtendedPowerMultiBlockBase<M
 
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
-        buildPiece(STRUCTURE_PIECE_MAIN, stackSize, hintsOnly, 2, 5, 0);
+        buildPiece(STRUCTURE_PIECE_MAIN, stackSize, hintsOnly, 2, 4, 0);
         Pair<Integer, Integer> modules = create_modules(stackSize);
         int MODULE_LEFT = modules.getLeft();
         int MODULE_RIGHT = modules.getRight();
@@ -315,12 +274,8 @@ public class MTEAdvancedChemicalReactor extends MTEExtendedPowerMultiBlockBase<M
         switch (MODULE_LEFT) {
             case 1 -> buildPiece(HEAT_MODULE_L, stackSize, hintsOnly, L_module_offset, V_module_offset, 0);
             case 2 -> buildPiece(COOL_MODULE_L, stackSize, hintsOnly, L_module_offset, V_module_offset, 0);
-            case 3 -> buildPiece(COMPRESSION_MODULE_L, stackSize, hintsOnly, L_module_offset, V_module_offset, 0);
-            case 4 -> buildPiece(VACUUM_MODULE_L, stackSize, hintsOnly, L_module_offset, V_module_offset, 0);
         }
         switch (MODULE_RIGHT) {
-            case 1 -> buildPiece(HEAT_MODULE_R, stackSize, hintsOnly, R_module_offset, V_module_offset, 0);
-            case 2 -> buildPiece(COOL_MODULE_R, stackSize, hintsOnly, R_module_offset, V_module_offset, 0);
             case 3 -> buildPiece(COMPRESSION_MODULE_R, stackSize, hintsOnly, R_module_offset, V_module_offset, 0);
             case 4 -> buildPiece(VACUUM_MODULE_R, stackSize, hintsOnly, R_module_offset, V_module_offset, 0);
         }
@@ -330,7 +285,7 @@ public class MTEAdvancedChemicalReactor extends MTEExtendedPowerMultiBlockBase<M
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine && (create_modules(stackSize).getLeft() == 0) && (create_modules(stackSize).getRight() == 0))
             return -1;
-        int built = survivialBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 2, 5, 0, elementBudget, env, false, true);
+        int built = survivialBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 2, 4, 0, elementBudget, env, false, true);
         Pair<Integer, Integer> modules = create_modules(stackSize);
         switch (modules.getLeft()) {
             case 1 -> built += survivialBuildPiece(
@@ -353,48 +308,8 @@ public class MTEAdvancedChemicalReactor extends MTEExtendedPowerMultiBlockBase<M
                 env,
                 false,
                 true);
-            case 3 -> built += survivialBuildPiece(
-                COMPRESSION_MODULE_L,
-                stackSize,
-                L_module_offset,
-                V_module_offset,
-                0,
-                elementBudget,
-                env,
-                false,
-                true);
-            case 4 -> built += survivialBuildPiece(
-                VACUUM_MODULE_L,
-                stackSize,
-                L_module_offset,
-                V_module_offset,
-                0,
-                elementBudget,
-                env,
-                false,
-                true);
         }
         switch (modules.getRight()) {
-            case 1 -> built += survivialBuildPiece(
-                HEAT_MODULE_R,
-                stackSize,
-                R_module_offset,
-                V_module_offset,
-                0,
-                elementBudget,
-                env,
-                false,
-                true);
-            case 2 -> built += survivialBuildPiece(
-                COOL_MODULE_R,
-                stackSize,
-                R_module_offset,
-                V_module_offset,
-                0,
-                elementBudget,
-                env,
-                false,
-                true);
             case 3 -> built += survivialBuildPiece(
                 COMPRESSION_MODULE_R,
                 stackSize,
@@ -452,23 +367,15 @@ public class MTEAdvancedChemicalReactor extends MTEExtendedPowerMultiBlockBase<M
         }
         // right
         if (HEAT_PIPE) MODULE_LEFT = 1;
-        if (COOL_PIPE && (MODULE_LEFT == 0)) MODULE_LEFT = 2;
-        if (COMPRESS_PIPE && (MODULE_LEFT == 0)) MODULE_LEFT = 3;
-        if (VACUUM_PIPE && (MODULE_LEFT == 0)) MODULE_LEFT = 4;
-        if (MODULE_LEFT != 0) {
-            MODULE_RIGHT = MODULE_LEFT;
-            MODULE_LEFT = 0;
-        }
+        if (COOL_PIPE) MODULE_LEFT = 2;
         // left
-        if (HEAT_PIPE && !(MODULE_RIGHT == 1)) MODULE_LEFT = 1;
-        if (COOL_PIPE && (MODULE_LEFT == 0) && !(MODULE_RIGHT == 2)) MODULE_LEFT = 2;
-        if (COMPRESS_PIPE && (MODULE_LEFT == 0) && !(MODULE_RIGHT == 3)) MODULE_LEFT = 3;
-        if (VACUUM_PIPE && (MODULE_LEFT == 0) && !(MODULE_RIGHT == 4)) MODULE_LEFT = 4;
+        if (COMPRESS_PIPE) MODULE_RIGHT = 3;
+        if (VACUUM_PIPE) MODULE_RIGHT = 4;
         return Pair.of(MODULE_LEFT, MODULE_RIGHT);
     }
 
-    int V_module_offset = 3;
-    int L_module_offset = 5;
+    int V_module_offset = 2;
+    int L_module_offset = 4;
     int R_module_offset = -3;
 
     @Override
@@ -477,17 +384,16 @@ public class MTEAdvancedChemicalReactor extends MTEExtendedPowerMultiBlockBase<M
         isCoolModule = false;
         isVacuumModule = false;
         isCompressModule = false;
-
-        isHeatModule = checkPiece(HEAT_MODULE_R, R_module_offset, V_module_offset, 0) || checkPiece(HEAT_MODULE_L, L_module_offset, V_module_offset, 0);
-        isCoolModule = checkPiece(COOL_MODULE_R, R_module_offset, V_module_offset, 0) || checkPiece(COOL_MODULE_L, L_module_offset, V_module_offset, 0);
-        isVacuumModule = checkPiece(VACUUM_MODULE_R, R_module_offset, V_module_offset, 0) || checkPiece(VACUUM_MODULE_L, L_module_offset, V_module_offset, 0);
-        isCompressModule = checkPiece(COMPRESSION_MODULE_R, R_module_offset, V_module_offset, 0) || checkPiece(COMPRESSION_MODULE_L, L_module_offset, V_module_offset, 0);
+        isHeatModule = !checkPiece(HEAT_MODULE_L, L_module_offset, V_module_offset, 0);
+        isCoolModule = !checkPiece(COOL_MODULE_L, L_module_offset, V_module_offset, 0);
+        isVacuumModule = !checkPiece(VACUUM_MODULE_R, R_module_offset, V_module_offset, 0);
+        isCompressModule = !checkPiece(COMPRESSION_MODULE_R, R_module_offset, V_module_offset, 0);
         int moduleCount = 0;
         if (isHeatModule) moduleCount++;
         if (isCoolModule) moduleCount++;
         if (isVacuumModule) moduleCount++;
         if (isCompressModule) moduleCount++;
-        boolean mainStructureValid = checkPiece(STRUCTURE_PIECE_MAIN, 2, 5, 0);
+        boolean mainStructureValid = checkPiece(STRUCTURE_PIECE_MAIN, 2, 4, 0);
         if (moduleCount == 0) {
             return mainStructureValid;
         } else if (moduleCount == 1) {
@@ -555,11 +461,21 @@ public class MTEAdvancedChemicalReactor extends MTEExtendedPowerMultiBlockBase<M
     public static Integer getCoolCoilMeta(Block block, int meta) {
         if (block == sBlockCoilACR) {
             switch (meta) {
-                case 0: return 1;
-                case 1: return 2;
-                case 2: return 3;
-                case 3: return 4;
-                default: return 0;
+                case 0 -> {
+                    return 1;
+                }
+                case 1 -> {
+                    return 2;
+                }
+                case 2 -> {
+                    return 3;
+                }
+                case 3 -> {
+                    return 4;
+                }
+                default -> {
+                    return 0;
+                }
             }
         }
         return null;
@@ -569,11 +485,21 @@ public class MTEAdvancedChemicalReactor extends MTEExtendedPowerMultiBlockBase<M
     public static Integer getHeatCoilMeta(Block block, int meta) {
         if (block == sBlockCoilACR) {
             switch (meta) {
-                case 4: return 1;
-                case 5: return 2;
-                case 6: return 3;
-                case 7: return 4;
-                default: return 0;
+                case 4 -> {
+                    return 1;
+                }
+                case 5 -> {
+                    return 2;
+                }
+                case 6 -> {
+                    return 3;
+                }
+                case 7 -> {
+                    return 4;
+                }
+                default -> {
+                    return 0;
+                }
             }
         }
         return null;
@@ -583,11 +509,21 @@ public class MTEAdvancedChemicalReactor extends MTEExtendedPowerMultiBlockBase<M
     public static Integer getCompressCoilMeta(Block block, int meta) {
         if (block == sBlockCoilACR) {
             switch (meta) {
-                case 8: return 1;
-                case 9: return 2;
-                case 10: return 3;
-                case 11: return 4;
-                default: return 0;
+                case 8 -> {
+                    return 1;
+                }
+                case 9 -> {
+                    return 2;
+                }
+                case 10 -> {
+                    return 3;
+                }
+                case 11 -> {
+                    return 4;
+                }
+                default -> {
+                    return 0;
+                }
             }
         }
         return null;
@@ -597,11 +533,21 @@ public class MTEAdvancedChemicalReactor extends MTEExtendedPowerMultiBlockBase<M
     public static Integer getVacuumCoilMeta(Block block, int meta) {
         if (block == sBlockCoilACR) {
             switch (meta) {
-                case 12: return 1;
-                case 13: return 2;
-                case 14: return 3;
-                case 15: return 4;
-                default: return 0;
+                case 12 -> {
+                    return 1;
+                }
+                case 13 -> {
+                    return 2;
+                }
+                case 14 -> {
+                    return 3;
+                }
+                case 15 -> {
+                    return 4;
+                }
+                default -> {
+                    return 0;
+                }
             }
         }
         return null;
@@ -640,12 +586,17 @@ public class MTEAdvancedChemicalReactor extends MTEExtendedPowerMultiBlockBase<M
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         super.onPostTick(aBaseMetaTileEntity, aTick);
         if (mMachine && (aTick % 20 == 0)) {
-            if (isHeatModule) {
-                CurrentTemp = 0;
+            double initialTemp = 300;
+            double k_temp = 0.95;
+            double initialPressure = 101000;
+            double k_pressure = 0.95;
+
+            if ((this.HeatCoilTier != 0) || (this.CoolCoilTier != 0)) {
+                CurrentTemp = (CurrentTemp - initialTemp) * k_temp + initialTemp; // returns values to atmosphere conditions
             } else CurrentTemp = 300;
 
-            if (isCompressModule) {
-                CurrentPressure = 0;
+            if ((this.CompressCoilTier != 0) || (this.VacuumCoilTier != 0)) {
+                CurrentPressure = (CurrentPressure - initialPressure) * k_pressure + initialPressure; // returns values to atmosphere conditions
             } else CurrentPressure = 101000;
         }
     }
