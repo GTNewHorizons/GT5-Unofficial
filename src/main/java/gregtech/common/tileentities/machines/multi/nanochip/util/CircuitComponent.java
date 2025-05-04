@@ -87,12 +87,36 @@ public enum CircuitComponent {
     // into a physical circuit item
     CrystalProcessor("gt.circuitcomponent.crystalprocessor", RecipeMaps.nanochipAssemblyMatrixRecipes,
         ItemList.Circuit_Crystalprocessor.get(1)),
-    CrystalAssembly("gt.circuitcomponent.crystassembly", RecipeMaps.nanochipAssemblyMatrixRecipes,
+    CrystalAssembly("gt.circuitcomponent.crystalasssembly", RecipeMaps.nanochipAssemblyMatrixRecipes,
         ItemList.Circuit_Crystalcomputer.get(1)),
     CrystalComputer("gt.circuitcomponent.crystalcomputer", RecipeMaps.nanochipAssemblyMatrixRecipes,
         ItemList.Circuit_Ultimatecrystalcomputer.get(1)),
     CrystalMainframe("gt.circuitcomponent.crystalmainframe", RecipeMaps.nanochipAssemblyMatrixRecipes,
-        ItemList.Circuit_Crystalmainframe.get(1)),;
+        ItemList.Circuit_Crystalmainframe.get(1)),
+    WetwareProcessor("gt.circuitcomponent.wetwareprocessor", RecipeMaps.nanochipAssemblyMatrixRecipes,
+        ItemList.Circuit_Master.get(1)),
+    WetwareAssembly("gt.circuitcomponent.wetwareassembly", RecipeMaps.nanochipAssemblyMatrixRecipes,
+        ItemList.Circuit_Wetwarecomputer.get(1)),
+    WetwareComputer("gt.circuitcomponent.wetwarecomputer", RecipeMaps.nanochipAssemblyMatrixRecipes,
+        ItemList.Circuit_Wetwaresupercomputer.get(1)),
+    WetwareMainframe("gt.circuitcomponent.wetwaremainframe", RecipeMaps.nanochipAssemblyMatrixRecipes,
+        ItemList.Circuit_Wetwaremainframe.get(1)),
+    BiowareProcessor("gt.circuitcomponent.biowareprocessor", RecipeMaps.nanochipAssemblyMatrixRecipes,
+        ItemList.Circuit_Bioprocessor.get(1)),
+    BiowareAssembly("gt.circuitcomponent.biowareassembly", RecipeMaps.nanochipAssemblyMatrixRecipes,
+        ItemList.Circuit_Biowarecomputer.get(1)),
+    BiowareComputer("gt.circuitcomponent.biowarecomputer", RecipeMaps.nanochipAssemblyMatrixRecipes,
+        ItemList.Circuit_Biowaresupercomputer.get(1)),
+    BiowareMainframe("gt.circuitcomponent.biowaremainframe", RecipeMaps.nanochipAssemblyMatrixRecipes,
+        ItemList.Circuit_Biomainframe.get(1)),
+    OpticalProcessor("gt.circuitcomponent.opticalprocessor", RecipeMaps.nanochipAssemblyMatrixRecipes,
+        ItemList.Circuit_OpticalProcessor.get(1)),
+    OpticalAssembly("gt.circuitcomponent.opticalassembly", RecipeMaps.nanochipAssemblyMatrixRecipes,
+        ItemList.Circuit_OpticalAssembly.get(1)),
+    OpticalComputer("gt.circuitcomponent.opticalcomputer", RecipeMaps.nanochipAssemblyMatrixRecipes,
+        ItemList.Circuit_OpticalComputer.get(1)),
+    OpticalMainframe("gt.circuitcomponent.opticalmainframe", RecipeMaps.nanochipAssemblyMatrixRecipes,
+        ItemList.Circuit_OpticalMainframe.get(1)),;
 
     public final String unlocalizedName;
     public String fallbackLocalizedName = null;

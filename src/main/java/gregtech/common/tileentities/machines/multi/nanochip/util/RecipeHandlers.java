@@ -291,6 +291,7 @@ public class RecipeHandlers {
     }
 
     public static void populateFinishedCircuitRecipeMaps() {
+        // Circuit assembly line replacements
         addAssemblyMatrixRecipe(
             Arrays.asList(
                 new CircuitComponentStack(CircuitComponent.ProcessedBoardMultifiberglassElite, 1),
