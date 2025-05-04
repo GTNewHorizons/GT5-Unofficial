@@ -2,23 +2,26 @@ package tectech.thing.metaTileEntity.multi.base;
 
 import java.util.function.Supplier;
 
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.StatCollector;
 
 public abstract class Parameter<T> {
 
-    private String localizedName;
+    protected String key;
+    Object[] args;
     protected T currentValue;
     private Supplier<T> minValue = null;
     private Supplier<T> maxValue = null;
 
     public Parameter(T value, String key) {
         this.currentValue = value;
-        this.localizedName = StatCollector.translateToLocal(key);
+        this.key = key;
     }
 
     public Parameter(T value, String key, Object... args) {
         this.currentValue = value;
-        this.localizedName = StatCollector.translateToLocalFormatted(key, args);
+        this.key = key;
+        this.args = args;
     }
 
     public Parameter(T value, Supplier<T> minValue, Supplier<T> maxValue, String key) {
@@ -32,6 +35,10 @@ public abstract class Parameter<T> {
         this.minValue = minValue;
         this.maxValue = maxValue;
     }
+
+    public void saveNBT(NBTTagCompound tag, int i) {}
+
+    public void loadNBT(NBTTagCompound tag, int i) {}
 
     public T getValue() {
         return currentValue;
@@ -50,7 +57,7 @@ public abstract class Parameter<T> {
     }
 
     public String getLocalizedName() {
-        return localizedName;
+        return StatCollector.translateToLocalFormatted(key, args);
     }
 
     public void setValue(T value) {
@@ -58,6 +65,16 @@ public abstract class Parameter<T> {
     }
 
     public static class IntegerParameter extends Parameter<Integer> {
+
+        @Override
+        public void saveNBT(NBTTagCompound tag, int i) {
+            tag.setInteger(String.valueOf(i), this.getValue());
+        }
+
+        @Override
+        public void loadNBT(NBTTagCompound tag, int i) {
+            this.setValue(tag.getInteger(String.valueOf(i)));
+        }
 
         public IntegerParameter(Integer value, String key) {
             super(value, key);
@@ -75,6 +92,16 @@ public abstract class Parameter<T> {
 
     public static class DoubleParameter extends Parameter<Double> {
 
+        @Override
+        public void saveNBT(NBTTagCompound tag, int i) {
+            tag.setDouble(String.valueOf(i), this.getValue());
+        }
+
+        @Override
+        public void loadNBT(NBTTagCompound tag, int i) {
+            this.setValue(tag.getDouble(String.valueOf(i)));
+        }
+
         public DoubleParameter(Double value, String key) {
             super(value, key);
         }
@@ -91,12 +118,32 @@ public abstract class Parameter<T> {
 
     public static class StringParameter extends Parameter<String> {
 
+        @Override
+        public void saveNBT(NBTTagCompound tag, int i) {
+            tag.setString(String.valueOf(i), this.getValue());
+        }
+
+        @Override
+        public void loadNBT(NBTTagCompound tag, int i) {
+            this.setValue(tag.getString(String.valueOf(i)));
+        }
+
         public StringParameter(String value, String key) {
             super(value, key);
         }
     }
 
     public static class BooleanParameter extends Parameter<Boolean> {
+
+        @Override
+        public void saveNBT(NBTTagCompound tag, int i) {
+            tag.setBoolean(String.valueOf(i), this.getValue());
+        }
+
+        @Override
+        public void loadNBT(NBTTagCompound tag, int i) {
+            this.setValue(tag.getBoolean(String.valueOf(i)));
+        }
 
         public BooleanParameter(Boolean value, String key) {
             super(value, key);
