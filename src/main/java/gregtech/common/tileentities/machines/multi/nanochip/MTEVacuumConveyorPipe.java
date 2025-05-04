@@ -209,27 +209,33 @@ public class MTEVacuumConveyorPipe extends MetaPipeEntity implements IConnectsTo
         float tSide4 = tSpace;
         float tSide5 = 1f - tSpace;
 
-        if (getBaseMetaTileEntity().getCoverIDAtSide(ForgeDirection.DOWN) != 0) {
+        if (getBaseMetaTileEntity().getCoverAtSide(ForgeDirection.DOWN)
+            .getCoverID() != 0) {
             tSide0 = tSide2 = tSide4 = 0;
             tSide3 = tSide5 = 1;
         }
-        if (getBaseMetaTileEntity().getCoverIDAtSide(ForgeDirection.UP) != 0) {
+        if (getBaseMetaTileEntity().getCoverAtSide(ForgeDirection.UP)
+            .getCoverID() != 0) {
             tSide2 = tSide4 = 0;
             tSide1 = tSide3 = tSide5 = 1;
         }
-        if (getBaseMetaTileEntity().getCoverIDAtSide(ForgeDirection.NORTH) != 0) {
+        if (getBaseMetaTileEntity().getCoverAtSide(ForgeDirection.NORTH)
+            .getCoverID() != 0) {
             tSide0 = tSide2 = tSide4 = 0;
             tSide1 = tSide5 = 1;
         }
-        if (getBaseMetaTileEntity().getCoverIDAtSide(ForgeDirection.SOUTH) != 0) {
+        if (getBaseMetaTileEntity().getCoverAtSide(ForgeDirection.SOUTH)
+            .getCoverID() != 0) {
             tSide0 = tSide4 = 0;
             tSide1 = tSide3 = tSide5 = 1;
         }
-        if (getBaseMetaTileEntity().getCoverIDAtSide(ForgeDirection.WEST) != 0) {
+        if (getBaseMetaTileEntity().getCoverAtSide(ForgeDirection.WEST)
+            .getCoverID() != 0) {
             tSide0 = tSide2 = tSide4 = 0;
             tSide1 = tSide3 = 1;
         }
-        if (getBaseMetaTileEntity().getCoverIDAtSide(ForgeDirection.EAST) != 0) {
+        if (getBaseMetaTileEntity().getCoverAtSide(ForgeDirection.EAST)
+            .getCoverID() != 0) {
             tSide0 = tSide2 = 0;
             tSide1 = tSide3 = tSide5 = 1;
         }
@@ -259,8 +265,8 @@ public class MTEVacuumConveyorPipe extends MetaPipeEntity implements IConnectsTo
     }
 
     @Override
-    public float getThickNess() {
-        if (GTMod.instance.isClientSide() && GTClient.hideValue == 1) {
+    public float getCollisionThickness() {
+        if (GTMod.instance.isClientSide() && GTClient.shouldHideThings()) {
             return 0.0625F;
         }
         return 0.375f;

@@ -391,13 +391,13 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
                 if (hatch instanceof MTEHatchVacuumConveyorInput) {
                     // Skip empty hatches
                     if (hatch.contents == null) continue;
-                    Map<CircuitComponent, Integer> contents = hatch.contents.getComponents();
-                    for (Map.Entry<CircuitComponent, Integer> entry : contents.entrySet()) {
+                    Map<CircuitComponent, Long> contents = hatch.contents.getComponents();
+                    for (Map.Entry<CircuitComponent, Long> entry : contents.entrySet()) {
                         CircuitComponent component = entry.getKey();
-                        Integer amount = entry.getValue();
+                        Long amount = entry.getValue();
                         // If this entry has a real circuit, we have produced a circuit using the NAC!
                         if (component.realCircuit != null) {
-                            ItemStack toOutput = GTUtility.copyAmount(amount, component.realCircuit);
+                            ItemStack toOutput = GTUtility.copyAmount((int)Math.min(Integer.MAX_VALUE, amount), component.realCircuit);
                             // Add output and deplete from hatch
                             addOutput(toOutput);
                             contents.remove(component);
@@ -413,10 +413,10 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
         if (hatch == null) return;
 
         long eut = this.getMaxInputEu();
-        long euToAdd = Math.min(eut, hatch.getEUVar());
+        long euToAdd = Math.min(eut, hatch.getBaseMetaTileEntity().getStoredEU());
         if (hatch.getBaseMetaTileEntity()
             .decreaseStoredEnergyUnits(euToAdd, false)) {
-            setEUVar(getEUVar() + euToAdd);
+            setEUVar(getBaseMetaTileEntity().getStoredEU() + euToAdd);
         }
     }
 
