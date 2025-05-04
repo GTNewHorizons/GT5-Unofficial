@@ -36,6 +36,7 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_TOWER_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_TOWER_GLOW;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
+import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 import static gregtech.api.util.GTStructureUtility.ofAnyWater;
 import static gregtech.api.util.GTUtility.formatShortenedLong;
 import static gregtech.api.util.GTUtility.truncateText;
@@ -78,6 +79,7 @@ import com.gtnewhorizon.structurelib.structure.IStructureElementNoPlacement;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.gtnewhorizons.modularui.api.ModularUITextures;
+import com.gtnewhorizons.modularui.api.drawable.ItemDrawable;
 import com.gtnewhorizons.modularui.api.drawable.Text;
 import com.gtnewhorizons.modularui.api.drawable.shapes.Rectangle;
 import com.gtnewhorizons.modularui.api.math.Alignment;
@@ -96,11 +98,11 @@ import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
 import com.gtnewhorizons.modularui.common.widget.DynamicPositionedColumn;
 import com.gtnewhorizons.modularui.common.widget.DynamicPositionedRow;
 import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
+import com.gtnewhorizons.modularui.common.widget.MultiChildWidget;
 import com.gtnewhorizons.modularui.common.widget.Scrollable;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
-import bartworks.API.BorosilicateGlass;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import forestry.api.apiculture.EnumBeeType;
@@ -118,6 +120,7 @@ import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
+import gregtech.api.enums.VoltageIndex;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -131,6 +134,8 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.GTUtility.ItemId;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.misc.GTStructureChannels;
+import ic2.core.init.BlocksItems;
+import ic2.core.init.InternalName;
 import kubatech.api.DynamicInventory;
 import kubatech.api.implementations.KubaTechGTMultiBlockBase;
 import kubatech.client.effect.MegaApiaryBeesRenderer;
@@ -138,7 +143,7 @@ import kubatech.client.effect.MegaApiaryBeesRenderer;
 public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaIndustrialApiary>
     implements ISurvivalConstructable {
 
-    private byte mGlassTier = 0;
+    private int glassTier = -1;
     private int mCasing = 0;
     private int mMaxSlots = 0;
     private int mPrimaryMode = 0;
@@ -186,7 +191,7 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
                                 .replaceAll("F", " "))
                         .toArray(String[]::new))
                 .toArray(String[][]::new))
-        .addElement('A', BorosilicateGlass.ofBoroGlass((byte) 0, (t, v) -> t.mGlassTier = v, t -> t.mGlassTier))
+        .addElement('A', chainAllGlasses(-1, (te, t) -> te.glassTier = t, te -> te.glassTier))
         .addElement('B', ofChain(ofBlockAnyMeta(Blocks.dirt, 0), ofBlock(Blocks.grass, 0)))
         .addElement(
             'G',
@@ -331,7 +336,7 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
             .beginStructureBlock(15, 17, 15, false)
             .addController("Front Bottom Center")
             .addCasingInfoMin("Bronze Plated Bricks", 190, false)
-            .addOtherStructurePart("Borosilicate Glass", "Look at the hologram")
+            .addCasingInfoExactly("Any Tiered Glass", 121, false)
             .addStructureInfo("The glass tier limits the Energy Input tier")
             .addStructureInfo("Regular water and IC2 Distilled Water are accepted")
             .addOtherStructurePart(
@@ -342,7 +347,6 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
             .addOutputBus("Any casing", 1)
             .addEnergyHatch("Any casing", 1)
             .addMaintenanceHatch("Any casing", 1)
-            .addSubChannelUsage(GTStructureChannels.BOROGLASS)
             .toolTipFinisher(GTValues.AuthorKuba, "Runakai");
         return tt;
     }
@@ -350,7 +354,6 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
-        aNBT.setByte("mGlassTier", mGlassTier);
         aNBT.setInteger("mPrimaryMode", mPrimaryMode);
         aNBT.setInteger("mSecondaryMode", mSecondaryMode);
         aNBT.setInteger("mStorageSize", mStorage.size());
@@ -364,7 +367,6 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
-        mGlassTier = aNBT.getByte("mGlassTier");
         mPrimaryMode = aNBT.getInteger("mPrimaryMode");
         mSecondaryMode = aNBT.getInteger("mSecondaryMode");
         for (int i = 0, isize = aNBT.getInteger("mStorageSize"); i < isize; i++)
@@ -584,7 +586,7 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        mGlassTier = 0;
+        glassTier = -1;
         mCasing = 0;
         if (isCacheDirty) {
             flowersCache.clear();
@@ -595,9 +597,8 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
         flowersCheck.clear();
         flowersCheck.addAll(flowersCache.keySet());
         if (!checkPiece(STRUCTURE_PIECE_MAIN, 7, 8, 0)) return false;
-        if (this.mGlassTier < 10 && !this.mEnergyHatches.isEmpty())
-            for (MTEHatchEnergy hatchEnergy : this.mEnergyHatches)
-                if (this.mGlassTier < hatchEnergy.mTier) return false;
+        if (this.glassTier < VoltageIndex.UEV && !this.mEnergyHatches.isEmpty())
+            for (MTEHatchEnergy hatchEnergy : this.mEnergyHatches) if (this.glassTier < hatchEnergy.mTier) return false;
         boolean valid = this.mMaintenanceHatches.size() == 1 && !this.mEnergyHatches.isEmpty() && this.mCasing >= 190;
         flowersError = valid && !this.flowersCheck.isEmpty();
         if (valid) updateMaxSlots();
@@ -933,8 +934,16 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
                 String lineTooltip = EnumChatFormatting.AQUA + itemName + "\n" + appendRate(false, itemCount, false);
 
                 processingDetails.widget(
-                    new TextWidget(lineText).setTextAlignment(Alignment.CenterLeft)
-                        .addTooltip(lineTooltip));
+                    new MultiChildWidget().addChild(
+                        new ItemDrawable(
+                            drop.getKey()
+                                .copy()).asWidget()
+                                    .setSize(8, 8)
+                                    .setPos(0, 0))
+                        .addChild(
+                            new TextWidget(lineText).setTextAlignment(Alignment.CenterLeft)
+                                .addTooltip(lineTooltip)
+                                .setPos(10, 1)));
             }
         }
         return processingDetails;

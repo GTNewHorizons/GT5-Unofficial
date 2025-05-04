@@ -75,6 +75,7 @@ import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.gtnewhorizons.modularui.api.ModularUITextures;
+import com.gtnewhorizons.modularui.api.drawable.ItemDrawable;
 import com.gtnewhorizons.modularui.api.drawable.Text;
 import com.gtnewhorizons.modularui.api.math.Alignment;
 import com.gtnewhorizons.modularui.api.math.Color;
@@ -92,6 +93,7 @@ import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
 import com.gtnewhorizons.modularui.common.widget.DynamicPositionedColumn;
 import com.gtnewhorizons.modularui.common.widget.DynamicPositionedRow;
 import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
+import com.gtnewhorizons.modularui.common.widget.MultiChildWidget;
 import com.gtnewhorizons.modularui.common.widget.Scrollable;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
@@ -1169,8 +1171,16 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
                 String lineTooltip = EnumChatFormatting.AQUA + itemName + "\n" + appendRate(false, itemCount, false);
 
                 processingDetails.widget(
-                    new TextWidget(lineText).setTextAlignment(Alignment.CenterLeft)
-                        .addTooltip(lineTooltip));
+                    new MultiChildWidget().addChild(
+                        new ItemDrawable(
+                            drop.getKey()
+                                .copy()).asWidget()
+                                    .setSize(8, 8)
+                                    .setPos(0, 0))
+                        .addChild(
+                            new TextWidget(lineText).setTextAlignment(Alignment.CenterLeft)
+                                .addTooltip(lineTooltip)
+                                .setPos(10, 1)));
             }
         }
         return processingDetails;
