@@ -2,29 +2,27 @@ package gregtech.common.tileentities.machines.multi.nanochip.modules;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 
-import gregtech.api.enums.Materials;
-import gregtech.api.metatileentity.implementations.MTEHatch;
-import gregtech.api.metatileentity.implementations.MTEHatchInput;
-import gregtech.api.util.GTModHandler;
-import gregtech.api.util.GTRecipe;
-import gregtech.api.util.shutdown.ShutDownReasonRegistry;
+import java.util.ArrayList;
+
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.FluidStack;
 
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 
 import gregtech.api.GregTechAPI;
+import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.metatileentity.implementations.MTEHatchInput;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
+import gregtech.api.util.GTRecipe;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyModuleBase;
 import gregtech.common.tileentities.machines.multi.nanochip.util.CircuitComponent;
 import gregtech.common.tileentities.machines.multi.nanochip.util.ModuleStructureDefinition;
-import net.minecraftforge.fluids.FluidStack;
-
-import java.util.ArrayList;
 
 public class SuperconductorSplitter extends MTENanochipAssemblyModuleBase<SuperconductorSplitter> {
 
@@ -52,7 +50,6 @@ public class SuperconductorSplitter extends MTENanochipAssemblyModuleBase<Superc
     protected SuperconductorSplitter(String aName) {
         super(aName);
     }
-
 
     @Override
     public IStructureDefinition<SuperconductorSplitter> getStructureDefinition() {
@@ -96,15 +93,14 @@ public class SuperconductorSplitter extends MTENanochipAssemblyModuleBase<Superc
         return checkPiece(STRUCTURE_PIECE_MAIN, STRUCTURE_OFFSET_X, STRUCTURE_OFFSET_Y, STRUCTURE_OFFSET_Z);
     }
 
-    private boolean findCoolantHatch(){
-        if(!mInputHatches.isEmpty()){
+    private boolean findCoolantHatch() {
+        if (!mInputHatches.isEmpty()) {
             coolantInputHatch = mInputHatches.get(0);
             return true;
         }
         return false;
 
     }
-
 
     private int ticker = 0;
 
