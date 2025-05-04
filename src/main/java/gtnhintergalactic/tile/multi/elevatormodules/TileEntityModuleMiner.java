@@ -1059,6 +1059,8 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
     @Override
     public void insertTexts(ListWidget<IWidget, ?> machineInfo, ItemStackHandler invSlot, PanelSyncManager syncManager,
         ModularPanel parentPanel) {
+        IntSyncValue distanceSyncer = new IntSyncValue(distanceParameter::getValue, distanceParameter::setValue);
+        syncManager.syncValue("distanceDisplay", distanceSyncer);
         machineInfo.child(
             IKey.dynamic(
                 () -> EnumChatFormatting.WHITE + "Distance: " + EnumChatFormatting.GREEN + distanceParameter.getValue())
@@ -1079,6 +1081,9 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
             .build();
         panelGap.height(26);
         panelGap.mainAxisAlignment(Alignment.MainAxis.END);
+
+        BooleanSyncValue whitelistSyncer = new BooleanSyncValue(() -> isWhitelisted, val -> isWhitelisted = val);
+        syncManager.syncValue("whitelistDisplay", whitelistSyncer);
         IPanelHandler whitelistPanel = syncManager
             .panel("whiteList", (p_syncManager, syncHandler) -> openWhitelistPanel(p_syncManager, syncHandler), true);
         panelGap.child(
