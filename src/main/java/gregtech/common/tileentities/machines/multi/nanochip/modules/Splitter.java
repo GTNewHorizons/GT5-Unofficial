@@ -9,20 +9,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 import gregtech.api.util.GTUtility;
-=======
-=======
->>>>>>> e508b0784005dfab2be3f5317b4a571b15d88021
-import gregtech.api.util.GTRecipe;
-import gregtech.api.util.GTUtility;
-import gregtech.api.util.ParallelHelper;
-import gregtech.common.tileentities.machines.multi.nanochip.util.CCInputConsumer;
-<<<<<<< HEAD
->>>>>>> e508b0784005dfab2be3f5317b4a571b15d88021
-=======
->>>>>>> e508b0784005dfab2be3f5317b4a571b15d88021
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.utils.Alignment;
 import net.minecraft.item.ItemStack;
