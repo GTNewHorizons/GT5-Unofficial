@@ -243,11 +243,6 @@ public class MTEResearchStation extends TTMultiblockBase implements ISurvivalCon
                                 && (tData.mMaterial.mMaterial != Materials.Magic)
                                 && (tData.mMaterial.mMaterial.getMass() > 0L)) {
 
-                                // BehaviourDataOrb.setDataTitle(controllerStack, "Elemental-Scan");
-                                // BehaviourDataOrb.setDataName(controllerStack,
-                                // tData.mMaterial.mMaterial.mElement.name());
-                                // calculateOverclockedNess(30, GTUtility.safeInt(tData.mMaterial.mMaterial.getMass() *
-                                // 8192L));
                                 this.tRecipe = new GTRecipe.RecipeAssemblyLine(
                                     holdItem.copy(),
                                     (int) (tData.mMaterial.mMaterial.getMass() * 8192L),
@@ -259,7 +254,7 @@ public class MTEResearchStation extends TTMultiblockBase implements ISurvivalCon
                                     30); // make fake recipe
                                 // Set property
                                 computationRequired = computationRemaining = GTUtility
-                                    .safeInt(tData.mMaterial.mMaterial.getMass() * 8192L);
+                                    .safeInt(tData.mMaterial.mMaterial.getMass() * 8192L); // value get from MTEScanner class
                                 mMaxProgresstime = 20;
                                 mEfficiencyIncrease = 10000;
                                 eRequiredData = 1;
