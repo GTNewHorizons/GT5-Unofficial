@@ -34,6 +34,7 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fluids.FluidStack;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -46,9 +47,7 @@ import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
-import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Textures;
-import gregtech.api.enums.TierEU;
+import gregtech.api.enums.*;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -56,16 +55,14 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.metatileentity.implementations.MTEHatchEnergy;
+import gregtech.api.objects.ItemData;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
-import gregtech.api.util.AssemblyLineUtils;
-import gregtech.api.util.GTRecipe;
-import gregtech.api.util.GTUtility;
-import gregtech.api.util.IGTHatchAdder;
-import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.api.util.*;
 import gregtech.api.util.shutdown.ShutDownReason;
+import gregtech.common.items.behaviors.BehaviourDataOrb;
 import gregtech.mixin.interfaces.accessors.EntityPlayerMPAccessor;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
@@ -205,30 +202,69 @@ public class MTEResearchStation extends TTMultiblockBase implements ISurvivalCon
         tRecipe = null;
         if (!eHolders.isEmpty() && eHolders.get(0).mInventory[0] != null) {
             holdItem = eHolders.get(0).mInventory[0].copy();
-            if (ItemList.Tool_DataStick.isStackEqual(controllerStack, false, true)) {
+            if (ItemList.Tool_DataStick.isStackEqual(controllerStack, false, true)
+                || ItemList.Tool_DataOrb.isStackEqual(controllerStack, false, true)) {
                 switch (machineType) {
                     case scanner -> {
-                        for (GTRecipe.RecipeAssemblyLine assRecipe : GTRecipe.RecipeAssemblyLine.sAssemblylineRecipes) {
-                            if (GTUtility.areStacksEqual(assRecipe.mResearchItem, holdItem, true)) {
-                                boolean failScanner = true;
-                                for (GTRecipe scannerRecipe : scannerFakeRecipes.getAllRecipes()) {
-                                    if (GTUtility.areStacksEqual(scannerRecipe.mInputs[0], holdItem, true)) {
-                                        failScanner = false;
-                                        break;
+                        if (ItemList.Tool_DataStick.isStackEqual(controllerStack, false, true)) {
+                            for (GTRecipe.RecipeAssemblyLine assRecipe : GTRecipe.RecipeAssemblyLine.sAssemblylineRecipes) {
+                                if (GTUtility.areStacksEqual(assRecipe.mResearchItem, holdItem, true)) {
+                                    boolean failScanner = true;
+                                    for (GTRecipe scannerRecipe : scannerFakeRecipes.getAllRecipes()) {
+                                        if (GTUtility.areStacksEqual(scannerRecipe.mInputs[0], holdItem, true)) {
+                                            failScanner = false;
+                                            break;
+                                        }
                                     }
+                                    if (failScanner) {
+                                        return SimpleCheckRecipeResult.ofFailure("wrongRequirements");
+                                    }
+                                    this.tRecipe = assRecipe;
+                                    // Set property
+                                    computationRequired = computationRemaining = (long) (assRecipe.mResearchTime
+                                        * Math.pow(2, getTier(assRecipe.mResearchVoltage) - 1));
+                                    mMaxProgresstime = 20;
+                                    mEfficiencyIncrease = 10000;
+                                    eRequiredData = 1;
+                                    eAmpereFlow = 1;
+                                    mEUt = -Math.max(assRecipe.mResearchVoltage, (int) TierEU.RECIPE_UV);
+                                    eHolders.get(0)
+                                        .getBaseMetaTileEntity()
+                                        .setActive(true);
+                                    return SimpleCheckRecipeResult.ofSuccess("scanning");
                                 }
-                                if (failScanner) {
-                                    return SimpleCheckRecipeResult.ofFailure("wrongRequirements");
-                                }
-                                this.tRecipe = assRecipe;
+                            }
+                        } else if (ItemList.Tool_DataOrb.isStackEqual(controllerStack, false, true)) {
+                            ItemData tData = GTOreDictUnificator.getAssociation(holdItem);
+                            if ((tData != null)
+                                && ((tData.mPrefix == OrePrefixes.dust) || (tData.mPrefix == OrePrefixes.cell))
+                                && (tData.mMaterial.mMaterial.mElement != null)
+                                && (!tData.mMaterial.mMaterial.mElement.mIsIsotope)
+                                && (tData.mMaterial.mMaterial != Materials.Magic)
+                                && (tData.mMaterial.mMaterial.getMass() > 0L)) {
+
+                                // BehaviourDataOrb.setDataTitle(controllerStack, "Elemental-Scan");
+                                // BehaviourDataOrb.setDataName(controllerStack,
+                                // tData.mMaterial.mMaterial.mElement.name());
+                                // calculateOverclockedNess(30, GTUtility.safeInt(tData.mMaterial.mMaterial.getMass() *
+                                // 8192L));
+                                this.tRecipe = new GTRecipe.RecipeAssemblyLine(
+                                    holdItem.copy(),
+                                    (int) (tData.mMaterial.mMaterial.getMass() * 8192L),
+                                    (int) TierEU.RECIPE_UV,
+                                    new ItemStack[0],
+                                    new FluidStack[0],
+                                    holdItem.copy(),
+                                    1,
+                                    30); // make fake recipe
                                 // Set property
-                                computationRequired = computationRemaining = (long) (assRecipe.mResearchTime
-                                    * Math.pow(2, getTier(assRecipe.mResearchVoltage) - 1));
+                                computationRequired = computationRemaining = GTUtility
+                                    .safeInt(tData.mMaterial.mMaterial.getMass() * 8192L);
                                 mMaxProgresstime = 20;
                                 mEfficiencyIncrease = 10000;
                                 eRequiredData = 1;
                                 eAmpereFlow = 1;
-                                mEUt = -Math.max(assRecipe.mResearchVoltage, (int) TierEU.RECIPE_UV);
+                                mEUt = -Math.max(30, (int) TierEU.RECIPE_UV);
                                 eHolders.get(0)
                                     .getBaseMetaTileEntity()
                                     .setActive(true);
@@ -269,6 +305,19 @@ public class MTEResearchStation extends TTMultiblockBase implements ISurvivalCon
                 eHolders.get(0).mInventory[0] = null;
                 makeStick();
             }
+        if (!eHolders.isEmpty() && tRecipe != null) {
+            eHolders.get(0)
+                .getBaseMetaTileEntity()
+                .setActive(false);
+            if (ItemList.Tool_DataStick.isStackEqual(mInventory[1], false, true)) {
+                makeStick();
+            } else if (ItemList.Tool_DataOrb.isStackEqual(mInventory[1], false, true)) {
+                BehaviourDataOrb.setDataTitle(mInventory[1], "Elemental-Scan");
+                ItemData tData = GTOreDictUnificator.getAssociation(holdItem);
+                assert tData != null;
+                BehaviourDataOrb.setDataName(mInventory[1], tData.mMaterial.mMaterial.mElement.name());
+            }
+            eHolders.get(0).mInventory[0] = null;
         }
         computationRequired = computationRemaining = 0;
         tRecipe = null;
