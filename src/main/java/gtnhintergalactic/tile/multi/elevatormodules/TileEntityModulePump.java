@@ -316,7 +316,7 @@ public abstract class TileEntityModulePump extends TileEntityModuleBase {
 
             machineInfo.child(
                 new Row().coverChildren()
-                    .child(new TextWidget(IKey.lang("tt.spacepump.fluid", i)).marginRight(5))
+                    .child(new TextWidget(IKey.lang("tt.spacepump.fluid", i + 1)).marginRight(5))
                     .child(
                         recipeFluidSlot.size(16, 16)
                             .marginRight(5))
