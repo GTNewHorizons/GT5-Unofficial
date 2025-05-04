@@ -298,13 +298,14 @@ public class MTEResearchStation extends TTMultiblockBase implements ISurvivalCon
                 .setActive(false);
             if (ItemList.Tool_DataStick.isStackEqual(mInventory[1], false, true)) {
                 makeStick();
+                eHolders.get(0).mInventory[0] = null;
             } else if (ItemList.Tool_DataOrb.isStackEqual(mInventory[1], false, true)) {
                 BehaviourDataOrb.setDataTitle(mInventory[1], "Elemental-Scan");
                 ItemData tData = GTOreDictUnificator.getAssociation(holdItem);
                 assert tData != null;
                 BehaviourDataOrb.setDataName(mInventory[1], tData.mMaterial.mMaterial.mElement.name());
+                eHolders.get(0).mInventory[0] = null;
             }
-            eHolders.get(0).mInventory[0] = null;
         }
         computationRequired = computationRemaining = 0;
         tRecipe = null;
