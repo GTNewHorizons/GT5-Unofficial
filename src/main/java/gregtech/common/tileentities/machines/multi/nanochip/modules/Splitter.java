@@ -314,7 +314,7 @@ public class Splitter extends MTENanochipAssemblyModuleBase<Splitter> {
                     .tooltip(this::getRulesInfo)
                     .pos(144, 4)
                     .size(16, 16))
-            .posRel(0.7F, 0.5F);
+            .posRel(0.75F, 0.5F);
     }
 
     private void getRulesInfo(RichTooltip t) {
