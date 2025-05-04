@@ -3,7 +3,6 @@ package gregtech.common.modularui2.widget;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.google.common.collect.ImmutableList;
 import net.minecraft.util.EnumChatFormatting;
 
 import org.jetbrains.annotations.NotNull;
@@ -15,6 +14,7 @@ import com.cleanroommc.modularui.utils.Color;
 import com.cleanroommc.modularui.widget.sizer.Area;
 import com.cleanroommc.modularui.widgets.ToggleButton;
 import com.cleanroommc.modularui.widgets.layout.Grid;
+import com.google.common.collect.ImmutableList;
 
 import gregtech.api.enums.Dyes;
 
@@ -158,12 +158,9 @@ public class ColorGridWidget extends Grid {
         });
     }
 
+    // TODO this method really sucks. maybe figure out a better implementation for this crap
     public void onToggled(int index) {
         List<IWidget> children = this.getChildren();
-
-        if (!selected.contains((byte) index)) {
-            selected.add((byte) index);
-        }
 
         for (IWidget child : children) {
             if (!(child instanceof ColorGridButton button)) continue;
@@ -171,6 +168,18 @@ public class ColorGridWidget extends Grid {
                 button.setState(0, true);
             }
         }
+
+        if (!selected.contains((byte) index)) {
+            selected.add((byte) index);
+        } else {
+            IWidget child = children.get(index);
+            if (!(child instanceof  ColorGridButton button)) return;
+            if (button.isValueSelected()) {
+                // Silly cast
+                selected.remove((Byte) ((byte) index));
+            }
+        }
+
 
         if (this.selected.size() > this.maxSelected) {
             IWidget targetChild = children.get(selected.get(0));
@@ -182,9 +191,10 @@ public class ColorGridWidget extends Grid {
     }
 
     /**
-     * @return The name of the current selected color.
+     * @return The name of the current selected color at i.
      */
     public String getName(int i) {
+        if (i >= getAmountSelected()) return "None";
         int select = selected.get(i);
         return select >= 0 && select < 16 ? getDye(i).getLocalizedDyeName() : "None";
     }
@@ -210,6 +220,13 @@ public class ColorGridWidget extends Grid {
      */
     public List<Byte> getSelected() {
         return this.selected;
+    }
+
+    /**
+     * @return The amount of buttons currently selected
+     */
+    public int getAmountSelected() {
+        return getSelected().size();
     }
 
     public static class ColorGridButton extends ToggleButton {

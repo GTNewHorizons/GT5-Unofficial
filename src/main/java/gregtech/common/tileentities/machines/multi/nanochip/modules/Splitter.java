@@ -6,11 +6,12 @@ import static gregtech.api.modularui2.GTGuis.mteTemplatePanelBuilder;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.cleanroommc.modularui.api.drawable.IKey;
+import com.cleanroommc.modularui.utils.Alignment;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -352,23 +353,22 @@ public class Splitter extends MTENanochipAssemblyModuleBase<Splitter> {
                     .setMaxSelected(16)
                     .build()
                     .pos(121, 13))
-            // TODO: figure out what to do with these
             // Input grid color display
-            // .child(
-            // IKey.dynamic(inputGrid::getName)
-            // .asWidget()
-            // .scale(0.8F)
-            // .alignment(Alignment.Center)
-            // .size(42, 8)
-            // .pos(4, 5))
+             .child(
+             IKey.dynamic(() -> inputGrid.getName(0))
+             .asWidget()
+             .scale(0.8F)
+             .alignment(Alignment.Center)
+             .size(42, 8)
+             .pos(4, 5))
             // Output grid color display
-            // .child(
-            // IKey.dynamic(outputGrid::getName)
-            // .asWidget()
-            // .scale(0.8F)
-            // .alignment(Alignment.Center)
-            // .size(42, 8)
-            // .pos(120, 5))
+             .child(
+             IKey.str("[Hover]")
+             .asWidget().tooltipBuilder(t -> getOutputInfo(t, outputGrid))
+             .scale(0.8F)
+             .alignment(Alignment.Center)
+             .size(42, 8)
+             .pos(120, 5))
             // Save button
             .child(
                 new ButtonWidget<>()
@@ -381,17 +381,25 @@ public class Splitter extends MTENanochipAssemblyModuleBase<Splitter> {
             .background(GTGuiTextures.BACKGROUND_POPUP_STANDARD);
     }
 
+    public RichTooltip getOutputInfo(RichTooltip t, ColorGridWidget grid) {
+        List<Byte> selected = grid.getSelected();
+        int amount = selected.size();
+        if (amount == 0) return t.add("None selected");
+        t.pos(RichTooltip.Pos.ABOVE).add("Currently selected:\n");
+        for (int i = 0; i < amount; i++) {
+            boolean shouldNewLine = ((i % 3) == 0);
+            Dyes color = Dyes.get(selected.get(i));
+            t.add(color.getLocalizedDyeName() + (shouldNewLine ? "\n" : ", "));
+        }
+        return t;
+    }
+
     private boolean saveColorData(List<Byte> input, List<Byte> output, GenericSyncValue<Map<Byte, List<Byte>>> map) {
         if (input.isEmpty() || output.isEmpty()) return false;
         for (Byte inputColor : input) {
-            for (Byte outputColor : output) {
-                List<Byte> newOutputs = new ArrayList<>();
-                if (colorMap.get(inputColor) != null) newOutputs = colorMap.get(inputColor);
-                if (newOutputs.contains(outputColor)) continue;
-                newOutputs.add(outputColor);
-                colorMap.put(inputColor, newOutputs);
-                map.setValue(colorMap);
-            }
+            List<Byte> newOutputs = new ArrayList<>(output);
+            colorMap.put(inputColor, newOutputs);
+            map.setValue(colorMap);
         }
         return true;
     }
