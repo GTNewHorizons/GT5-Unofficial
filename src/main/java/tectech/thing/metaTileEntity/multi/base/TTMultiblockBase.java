@@ -2267,19 +2267,10 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
                 new SingleChildWidget<>().size(190, 91)
                     .overlay(bg)
                     .child(machineInfo));
-            // panel.child(
-            // new SingleChildWidget<>().pos(4, 4)
-            // .size(190, 91)
-            // .overlay(bg)
-            // .child(machineInfo));
         } else {
             panelColumn.child(
                 new SingleChildWidget<>().size(190, 171)
                     .overlay(bgNoInv));
-            // panel.child(
-            // new SingleChildWidget<>().pos(4, 4)
-            // .size(190, 171)
-            // .overlay(bgNoInv));
         }
         final ItemStackHandler invSlot = new ItemStackHandler(1);
         Flow inventoryRow = new Row().size(186, 90)
@@ -2293,10 +2284,6 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
                     .leftRel(0)
                     .marginTop(4)
                     .marginLeft(4));
-
-            // panel.child(
-            // SlotGroupWidget.playerInventory()
-            // .pos(7, 95 + textBoxToInventoryGap));
         }
 
         Flow panelGap = new Row().widthRel(1)
