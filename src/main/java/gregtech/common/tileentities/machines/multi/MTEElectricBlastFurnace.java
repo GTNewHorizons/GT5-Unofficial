@@ -53,6 +53,7 @@ import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
+import gregtech.common.misc.GTStructureChannels;
 
 public class MTEElectricBlastFurnace extends MTEAbstractMultiFurnace<MTEElectricBlastFurnace>
     implements ISurvivalConstructable {
@@ -121,6 +122,7 @@ public class MTEElectricBlastFurnace extends MTEAbstractMultiFurnace<MTEElectric
             .addInputHatch("Any bottom layer casing", 1)
             .addOutputBus("Any bottom layer casing", 1)
             .addOutputHatch("Any Heat Proof Machine Casing", 3)
+            .addSubChannelUsage(GTStructureChannels.HEATING_COIL)
             .toolTipFinisher();
         return tt;
     }
@@ -283,7 +285,8 @@ public class MTEElectricBlastFurnace extends MTEAbstractMultiFurnace<MTEElectric
     }
 
     @Override
-    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
+        ItemStack aTool) {
         inputSeparation = !inputSeparation;
         GTUtility.sendChatToPlayer(
             aPlayer,

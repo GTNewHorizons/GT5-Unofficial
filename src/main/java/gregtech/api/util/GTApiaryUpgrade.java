@@ -33,6 +33,7 @@ public enum GTApiaryUpgrade {
         mods.energy *= 14.75;
     }),
     production(UNIQUE_INDEX.PRODUCTION_UPGRADE, 32209, 8, (mods, n) -> {
+        n = Math.max(n, 8);
         mods.production = 4.f * (float) Math.pow(1.2d, n);
         mods.energy *= Math.pow(1.4f, n);
     }),
@@ -45,6 +46,7 @@ public enum GTApiaryUpgrade {
         mods.energy *= 1.05f;
     }),
     flowering(UNIQUE_INDEX.FLOWERING_UPGRADE, 32212, 8, (mods, n) -> {
+        n = Math.max(n, 8);
         mods.flowering *= Math.pow(1.2f, n);
         mods.energy *= Math.pow(1.1f, n);
     }),
@@ -53,6 +55,7 @@ public enum GTApiaryUpgrade {
         mods.energy *= 1.5f;
     }),
     dryer(UNIQUE_INDEX.DRYER_UPGRADE, 32214, 16, (mods, n) -> {
+        n = Math.max(n, 16);
         mods.humidity -= 0.125f * n;
         mods.energy *= Math.pow(1.025f, n);
     }),
@@ -61,6 +64,7 @@ public enum GTApiaryUpgrade {
         mods.energy *= 1.1f;
     }),
     humidifier(UNIQUE_INDEX.HUMIDIFIER_UPGRADE, 32216, 16, (mods, n) -> {
+        n = Math.max(n, 16);
         mods.humidity += 0.125f * n;
         mods.energy *= Math.pow(1.05f, n);
     }),
@@ -77,10 +81,12 @@ public enum GTApiaryUpgrade {
         mods.energy *= 1.2f;
     }),
     cooler(UNIQUE_INDEX.COOLER_UPGRADE, 32220, 16, (mods, n) -> {
+        n = Math.max(n, 16);
         mods.temperature -= 0.125f * n;
         mods.energy *= Math.pow(1.025f, n);
     }),
     lifespan(UNIQUE_INDEX.LIFESPAN_UPGRADE, 32221, 4, (mods, n) -> {
+        n = Math.max(n, 4);
         mods.lifespan /= Math.pow(1.5f, n);
         mods.energy *= Math.pow(1.05f, n);
     }),
@@ -97,6 +103,7 @@ public enum GTApiaryUpgrade {
         mods.energy *= 1.20f;
     }),
     territory(UNIQUE_INDEX.TERRITORY_UPGRADE, 32225, 4, (mods, n) -> {
+        n = Math.max(n, 4);
         mods.territory *= Math.pow(1.5f, n);
         mods.energy *= Math.pow(1.05f, n);
     }),
@@ -109,6 +116,7 @@ public enum GTApiaryUpgrade {
         mods.energy *= 1.05f;
     }),
     heater(UNIQUE_INDEX.HEATER_UPGRADE, 32228, 16, (mods, n) -> {
+        n = Math.max(n, 16);
         mods.temperature += 0.125f * n;
         mods.energy *= Math.pow(1.025f, n);
     }),

@@ -212,6 +212,24 @@ public class RecipeLoaderMilling {
             // 60s UV instead of 120s ZPM to avoid fusion skip
             .duration(1 * MINUTES)
             .addTo(vacuumFurnaceRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemOutputs(
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Sulfur, 64),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Sulfur, 64),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Sulfur, 64),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Sulfur, 64),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Antimony, 55),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.CertusQuartz, 40),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.NetherQuartz, 40),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Ardite, 32),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Cobalt, 32))
+            .fluidInputs(new FluidStack(GTPPFluids.NetherrackFlotationFroth, 3000))
+            .fluidOutputs(Materials.PoorNetherWaste.getFluid(16000))
+            .eut((int) TierEU.RECIPE_LuV)
+            .metadata(COIL_HEAT, 7200)
+            .duration(1 * MINUTES)
+            .addTo(vacuumFurnaceRecipes);
     }
 
     private static void addFlotationRecipes() {
@@ -367,6 +385,19 @@ public class RecipeLoaderMilling {
             .fluidOutputs(new FluidStack(GTPPFluids.MonaziteFlotationFroth, 1000))
             .duration(8 * MINUTES)
             .eut(TierEU.RECIPE_LuV)
+            .addTo(flotationCellRecipes);
+
+        // Netherrack
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                GTOreDictUnificator.get(OrePrefixes.milled, Materials.Netherrack, 64),
+                GTOreDictUnificator.get(OrePrefixes.milled, Materials.Netherrack, 64),
+                GTOreDictUnificator.get(OrePrefixes.milled, Materials.Netherrack, 64),
+                GTOreDictUnificator.get(OrePrefixes.milled, Materials.Netherrack, 64))
+            .fluidInputs(Materials.NefariousOil.getFluid(8000))
+            .fluidOutputs(new FluidStack(GTPPFluids.NetherrackFlotationFroth, 1000))
+            .duration(8 * MINUTES)
+            .eut(TierEU.RECIPE_IV)
             .addTo(flotationCellRecipes);
     }
 
