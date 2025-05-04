@@ -10,46 +10,46 @@ import net.minecraft.nbt.NBTTagCompound;
 
 public class CircuitComponentPacket {
 
-    private final Map<CircuitComponent, Integer> components = new HashMap<>();
+    private final Map<CircuitComponent, Long> components = new HashMap<>();
 
-    public CircuitComponentPacket(CircuitComponent component, int amount) {
+    public CircuitComponentPacket(CircuitComponent component, long amount) {
         components.put(component, amount);
     }
 
     public CircuitComponentPacket(NBTTagCompound nbt) {
         for (String key : nbt.func_150296_c()) {
             CircuitComponent component = CircuitComponent.valueOf(key);
-            int amount = nbt.getInteger(key);
+            long amount = nbt.getLong(key);
             components.put(component, amount);
         }
     }
 
     // Accept more circuit components from a new packet
     public void unifyWith(CircuitComponentPacket other) {
-        for (Map.Entry<CircuitComponent, Integer> entry : other.components.entrySet()) {
-            components.merge(entry.getKey(), entry.getValue(), Integer::sum);
+        for (Map.Entry<CircuitComponent, Long> entry : other.components.entrySet()) {
+            components.merge(entry.getKey(), entry.getValue(), Long::sum);
         }
     }
 
     public NBTTagCompound writeToNBT() {
         NBTTagCompound tag = new NBTTagCompound();
-        for (Map.Entry<CircuitComponent, Integer> entry : components.entrySet()) {
+        for (Map.Entry<CircuitComponent, Long> entry : components.entrySet()) {
             String key = entry.getKey()
                 .name();
-            tag.setInteger(key, entry.getValue());
+            tag.setLong(key, entry.getValue());
         }
         return tag;
     }
 
-    public Map<CircuitComponent, Integer> getComponents() {
+    public Map<CircuitComponent, Long> getComponents() {
         return components;
     }
 
     public List<ItemStack> getItemRepresentations() {
         ArrayList<ItemStack> stacks = new ArrayList<>();
-        for (Map.Entry<CircuitComponent, Integer> entry : components.entrySet()) {
+        for (Map.Entry<CircuitComponent, Long> entry : components.entrySet()) {
             ItemStack componentStack = entry.getKey()
-                .getFakeStack(entry.getValue());
+                .getFakeStack((int) Math.min(Integer.MAX_VALUE, entry.getValue()));
             stacks.add(componentStack);
         }
         return stacks;
