@@ -20,8 +20,6 @@ import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -39,7 +37,6 @@ import com.cleanroommc.modularui.drawable.DynamicDrawable;
 import com.cleanroommc.modularui.drawable.ItemDrawable;
 import com.cleanroommc.modularui.drawable.Rectangle;
 import com.cleanroommc.modularui.drawable.UITexture;
-import com.cleanroommc.modularui.network.NetworkUtils;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.RichTooltip;
 import com.cleanroommc.modularui.utils.Alignment;
@@ -80,7 +77,7 @@ import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.ParallelHelper;
-import gregtech.common.gui.modularui.widget.StringKeyCustom;
+import gregtech.common.gui.modularui.widget.LangKeyCustom;
 import gregtech.common.gui.modularui.widget.TextFieldWidgetWithOverlay;
 import gregtech.common.misc.spaceprojects.SpaceProjectManager;
 import gregtech.common.misc.spaceprojects.enums.SolarSystem;
@@ -765,7 +762,11 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
 
     @Override
     protected void initParameters() {
-        distanceParameter = new Parameter.IntegerParameter(0, () -> 0, () -> Integer.MAX_VALUE, "Distance");
+        distanceParameter = new Parameter.IntegerParameter(
+            0,
+            () -> 0,
+            () -> Integer.MAX_VALUE,
+            "tt.spaceminer.distance");
     }
 
     /**
@@ -1066,7 +1067,8 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
 
         UITexture spaceMinerConfigTexture = UITexture.fullImage(MODID, "gui/overlay_button/edit_parameters");
         ButtonWidget spaceMinerConfig = new ButtonWidget();
-        spaceMinerConfig.tooltip(new RichTooltip(spaceMinerConfig).add("Get Asteroid Info"))
+        spaceMinerConfig
+            .tooltip(new RichTooltip(spaceMinerConfig).add(IKey.lang("tt.spaceminer.asteroidInfoButtonTooltip")))
             .overlay(spaceMinerConfigTexture);
         spaceMinerConfig.pos(173, doesBindPlayerInventory() ? 109 + 18 : 133 + 18)
             .size(18, 18);
@@ -1088,8 +1090,6 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
 
     private ModularPanel getAsteroidInfoPanel(ModularPanel parent, PanelSyncManager syncManager,
         IPanelHandler thisPanel) {
-        String[] planetTiers = new String[] { "De", "As", "Io", "En", "Pr", "Ha", "BC" }; // for tab icons
-        FontRenderer fontRenderer = NetworkUtils.isClient() ? Minecraft.getMinecraft().fontRenderer : null;
         UITexture calculatorTexture = UITexture.fullImage(MODID, "gui/overlay_button/calculator");
 
         Area parentArea = parent.getArea();
@@ -1199,7 +1199,7 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
                 }))
                 .tooltipBuilder(
                     t -> t.addLine(IKey.str(EnumChatFormatting.RED + data.getAsteroidNameLocalized()))
-                        .addLine(IKey.str("Click me to get more info!")))
+                        .addLine(IKey.lang("tt.spaceminer.asteroidButtonTooltipInfo")))
                 .onMousePressed(mouseData -> {
                     if (!asteroidInfo.isPanelOpen()) {
                         selectedAsteroidSyncer.setValue(finalI);
@@ -1229,12 +1229,12 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
                                 .marginBottom(4)
                                 .alignX(0)
                                 .value(textFieldSyncer)
-                                .overlay(new StringKeyCustom("Ore...")))
+                                .overlay(new LangKeyCustom("tt.spaceminer.textFieldOre")))
                 .child(
                     new TextFieldWidgetWithOverlay(() -> distanceFilter.get() > 0).size(60, 9)
                         .marginBottom(4)
                         .alignX(0)
-                        .overlay(new StringKeyCustom("Distance..."))
+                        .overlay(new LangKeyCustom("tt.spaceminer.textFieldDistance"))
                         .value(distanceSyncer)
                         .setDefaultNumber(0)
                         .setNumbers(0, Integer.MAX_VALUE))
@@ -1242,7 +1242,7 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
                     new TextFieldWidgetWithOverlay(() -> moduleTierFilter.get() > 0).size(60, 9)
                         .marginBottom(4)
                         .alignX(0)
-                        .overlay(new StringKeyCustom("Tier..."))
+                        .overlay(new LangKeyCustom("tt.spaceminer.textFieldTier"))
                         .value(moduleTierFilterSyncer)
                         .setDefaultNumber(0)
                         .setNumbers(0, 3))
@@ -1270,7 +1270,7 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
                             new ButtonWidget<>().size(18, 18)
                                 .overlay(calculatorTexture)
                                 .align(Alignment.CenterRight)
-                                .tooltipBuilder(t -> t.addLine(IKey.str("Open Space Miner Calculator")))
+                                .tooltipBuilder(t -> t.addLine(IKey.lang("tt.spaceminer.calculatorButtonTooltip")))
                                 .onMousePressed(mouseData -> {
                                     if (!minerCalculator.isPanelOpen()) {
                                         minerCalculator.openPanel();
@@ -1377,7 +1377,7 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
         Flow miningDroneRow = new Row().widthRel(1)
             .coverChildrenHeight();
         miningDroneRow.child(
-            IKey.str("Can be mined by: ")
+            IKey.lang("tt.spaceminer.asteroidinfo.miningDrones")
                 .asWidget()
                 .topRel(0, 9, 0));
 
@@ -1396,21 +1396,23 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
                 new ItemDrawable(droneItem).asWidget()
                     .tooltipBuilder(
                         t -> t.addLine(IKey.str(droneItem.getDisplayName()))
-                            .add(IKey.str("Uses 4 "))
+                            .add(IKey.lang("tt.spaceminer.asteroidinfo.uses"))
+                            .add(IKey.str(" 4"))
                             .add(new ItemDrawable(droneRodItem))
-                            .add(IKey.str(" And 4"))
+                            .add(IKey.lang("tt.spaceminer.asteroidinfo.and"))
+                            .add(IKey.str(" 4"))
                             .add(new ItemDrawable(droneDrillItem))
-                            .add(IKey.str(" Per parallel\n"))
+                            .addLine(IKey.lang("tt.spaceminer.asteroidinfo.parallelInfo"))
                             .addLine(
-                                IKey.str(
-                                    "Asteroid size with this drone: "
-                                        + (data.minSize + Math.pow(2, finalI - data.minDroneTier) - 1)
-                                        + "-"
-                                        + (data.maxSize + Math.pow(2, finalI - data.minDroneTier) - 1)))
+                                IKey.lang(
+                                    "tt.spaceminer.asteroidinfo.sizeForDrone",
+                                    (int) (data.minSize + Math.pow(2, finalI - data.minDroneTier) - 1),
+                                    (int) (data.maxSize + Math.pow(2, finalI - data.minDroneTier) - 1)))
                             .addLine(
-                                IKey.str(
-                                    "Mining operation with this drone: " + String.format(
-                                        "%.2fs",
+                                IKey.lang(
+                                    "tt.spaceminer.asteroidinfo.miningTime",
+                                    String.format(
+                                        "%.2f",
                                         data.duration / (20 * Math.sqrt(finalI - data.minDroneTier + 1)))))));
             if ((i - data.minDroneTier + 1) % 10 == 0 || i == data.maxDroneTier) {
                 droneDrawables.child(droneRow);
@@ -1426,13 +1428,12 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
             new SingleChildWidget<>().widthRel(1)
                 .height(9)
                 .child(
-                    IKey.str(
-                        "Found at: " + EnumChatFormatting.GREEN
-                            + data.minDistance
-                            + "-"
-                            + data.maxDistance
-                            + EnumChatFormatting.RESET
-                            + " distance")
+                    IKey.lang(
+                        "tt.spaceminer.asteroidinfo.distanceRange",
+                        EnumChatFormatting.GREEN,
+                        data.minDistance,
+                        data.maxDistance,
+                        EnumChatFormatting.RESET)
                         .asWidget())
                 .marginBottom(4))
             // Computation
@@ -1440,8 +1441,7 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
                 new SingleChildWidget<>().widthRel(1)
                     .height(9)
                     .child(
-                        IKey.str(
-                            "Requires " + EnumChatFormatting.BLUE + data.computation + " computation/s per parallel")
+                        IKey.lang("tt.spaceminer.asteroidinfo.computation", EnumChatFormatting.BLUE, data.computation)
                             .asWidget())
                     .marginBottom(4))
             // Module tier
@@ -1449,7 +1449,7 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
                 new SingleChildWidget<>().widthRel(1)
                     .height(9)
                     .child(
-                        IKey.str("Requires at least tier " + data.requiredModuleTier + " Space Mining module")
+                        IKey.lang("tt.spaceminer.asteroidinfo.moduleTier", data.requiredModuleTier)
                             .asWidget())
                     .marginBottom(4));
 
@@ -1464,7 +1464,7 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
             .height(18)
             .marginBottom(4);
         drops.child(
-            IKey.str("Drops: ")
+            IKey.lang("tt.spaceminer.asteroidinfo.drops")
                 .asWidget());
         int totalWeight = Arrays.stream(data.chances)
             .sum();
@@ -1475,7 +1475,7 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
             dropRow.child(
                 new SlotLikeButtonWidget(ore).tooltipBuilder(
                     t -> t.addLine(IKey.str(ore.getDisplayName()))
-                        .addLine(IKey.str(((double) data.chances[finalI] / totalWeight) * 100 + "% chance")))
+                        .addLine(IKey.str(((double) data.chances[finalI] / totalWeight) * 100 + "%")))
                     .marginRight(5));
 
             if ((i + 1) % 9 == 0 || i == outputLength - 1) {
@@ -1495,7 +1495,7 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
                 .overlay(
                     targetAsteroidTexture.asIcon()
                         .size(16, 16))
-                .tooltipBuilder(t -> t.addLine(IKey.str("Target this asteroid")))
+                .tooltipBuilder(t -> t.addLine(IKey.lang("tt.spaceminer.asteroidinfo.targetAsteroidButtonTooltip")))
                 .onMousePressed(mouseData -> {
                     droneSelectorPanel.openPanel();
                     return true;
@@ -1654,19 +1654,19 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
             .child(
                 new Column().widthRel(1)
                     .child(
-                        IKey.str("Missing distance setting!")
+                        IKey.lang("tt.spaceminer.calculator.missing.distance")
                             .asWidget()
                             .setEnabledIf(w -> distance.get() <= 0)
                             .alignX(0)
                             .marginBottom(4))
                     .child(
-                        IKey.str("Missing module tier!")
+                        IKey.lang("tt.spaceminer.calculator.missing.moduleTier")
                             .asWidget()
                             .setEnabledIf(w -> moduleTier.get() <= 0)
                             .alignX(0)
                             .marginBottom(4))
                     .child(
-                        IKey.str("Missing drone!")
+                        IKey.lang("tt.spaceminer.calculator.missing.drone")
                             .asWidget()
                             .setEnabledIf(w -> droneFilter.get() <= 0)
                             .alignX(0)
@@ -1679,7 +1679,7 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
                     new TextFieldWidgetWithOverlay(() -> distance.get() > 0).size(60, 9)
                         .marginBottom(4)
                         .alignX(0)
-                        .overlay(new StringKeyCustom("Distance..."))
+                        .overlay(new LangKeyCustom("tt.spaceminer.textFieldDistance"))
                         .value(distanceSyncer)
                         .setDefaultNumber(0)
                         .setNumbers(0, Integer.MAX_VALUE))
@@ -1687,7 +1687,7 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
                     new TextFieldWidgetWithOverlay(() -> moduleTier.get() > 0).size(60, 9)
                         .marginBottom(4)
                         .alignX(0)
-                        .overlay(new StringKeyCustom("Tier..."))
+                        .overlay(new LangKeyCustom("tt.spaceminer.textFieldTier"))
                         .value(moduleTierSyncer)
                         .setDefaultNumber(0)
                         .setNumbers(0, 3))
@@ -1714,7 +1714,7 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
                                 .overlay(
                                     nerdTexture.asIcon()
                                         .size(16, 16))
-                                .tooltipBuilder(t -> t.addLine(IKey.str("Calculate")))
+                                .tooltipBuilder(t -> t.addLine(IKey.lang("tt.spaceminer.calculator.calculate")))
                                 .align(Alignment.CenterRight)
                                 .onMousePressed(mouseData -> {
                                     List<IWidget> output = calculateOutput(
@@ -1772,7 +1772,7 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
                 }))
                 .tooltipBuilder(
                     t -> t.addLine(IKey.str(EnumChatFormatting.DARK_RED + data.getAsteroidNameLocalized()))
-                        .addLine(IKey.str("Click me to get more info!")))
+                        .addLine(IKey.lang("tt.spaceminer.asteroidButtonTooltipInfo")))
                 .onMousePressed(mouseData -> {
                     selectedAsteroidSyncer.setValue(asteroidPair.first());
                     asteroidPanels.get(asteroidPair.first())
@@ -1783,9 +1783,9 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
                 new Row().widthRel(1)
                     .height(18)
                     .child(
-                        IKey.str(
-                            String.format("%.3f", ((double) data.recipeWeight / weightSum.get() * 100))
-                                + "% Chance for: ")
+                        IKey.lang(
+                            "tt.spaceminer.calculator.asteroidChance",
+                            String.format("%.3f%%", ((double) data.recipeWeight / weightSum.get() * 100)))
                             .asWidget()
                             .marginRight(4))
                     .child(asteroidButton));

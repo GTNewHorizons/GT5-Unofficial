@@ -1922,8 +1922,37 @@ GT5U.gui.config.general.visual=Visual
 tt.spacepump.noFluidTooltip=No fluid set! Click to open configuration panel!
 tt.spacepump.parallelTooltip=per parallel
 tt.spacepump.fluid=Fluid %d:
+
+
 tt.multiblock.batchSize=Batch Size
 tt.multiblock.parallel=Fluid %d Parallels
+
+
+tt.spaceminer.distance=Distance
+tt.spaceminer.asteroidInfoButtonTooltip=Get Asteroid Info
+tt.spaceminer.asteroidButtonTooltipInfo=Click me to get more info!
+tt.spaceminer.textFieldOre=Ore...
+tt.spaceminer.textFieldDistance=Distance...
+tt.spaceminer.textFieldTier=Tier...
+tt.spaceminer.calculatorButtonTooltip=Open Space Miner Calculator
+tt.spaceminer.asteroidinfo.miningDrones=Can be mined by:
+tt.spaceminer.asteroidinfo.uses=Uses
+tt.spaceminer.asteroidinfo.and=And
+tt.spaceminer.asteroidinfo.parallelInfo=Per parallel
+tt.spaceminer.asteroidinfo.sizeForDrone=Asteroid size with this drone: %d-%d
+tt.spaceminer.asteroidinfo.miningTime=Mining operation time with this drone: %ss
+tt.spaceminer.asteroidinfo.distanceRange=Found at: %s%d-%d%s distance
+tt.spaceminer.asteroidinfo.computation=Requires %s%d computation/s per parallel
+tt.spaceminer.asteroidinfo.moduleTier=Requires at least tier %d Space Mining module
+tt.spaceminer.asteroidinfo.drops=Drops:
+tt.spaceminer.asteroidinfo.targetAsteroidButtonTooltip=Target this asteroid
+tt.spaceminer.calculator.missing.distance=Missing distance setting!
+tt.spaceminer.calculator.missing.moduleTier=Missing module tier!
+tt.spaceminer.calculator.missing.drone=Missing drone!
+tt.spaceminer.calculator.calculate=Calculate
+tt.spaceminer.calculator.asteroidChance= %s Chance for:
+
+
 
 tt.eoh.fancy_names.crude=Crude
 tt.eoh.fancy_names.primitive=Primitive
