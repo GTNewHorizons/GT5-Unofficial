@@ -42,11 +42,6 @@ public class MTEHatchVacuumConveyorInput extends MTEHatchVacuumConveyor implemen
     }
 
     @Override
-    public boolean isSimpleMachine() {
-        return true;
-    }
-
-    @Override
     public boolean canConnect(ForgeDirection side) {
         return isInputFacing(side);
     }
@@ -63,12 +58,12 @@ public class MTEHatchVacuumConveyorInput extends MTEHatchVacuumConveyor implemen
     public int tryConsume(ItemStack stack) {
         if (contents == null) return 0;
         CircuitComponent component = CircuitComponent.getFromFakeStackUnsafe(stack);
-        Map<CircuitComponent, Integer> inventory = contents.getComponents();
+        Map<CircuitComponent, Long> inventory = contents.getComponents();
         // Find this component in the inventory
-        Integer amount = inventory.get(component);
+        Long amount = inventory.get(component);
         if (amount != null) {
             // If found, consume as much as possible
-            int toConsume = Math.min(amount, stack.stackSize);
+            int toConsume = Math.min((int)Math.min(Integer.MAX_VALUE, amount), stack.stackSize);
             amount -= toConsume;
             if (amount > 0) {
                 inventory.put(component, amount);
