@@ -209,6 +209,9 @@ import gregtech.common.tileentities.machines.multi.pcb.MTEPCBBioChamber;
 import gregtech.common.tileentities.machines.multi.pcb.MTEPCBCoolingTower;
 import gregtech.common.tileentities.machines.multi.pcb.MTEPCBFactory;
 import gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex;
+import gregtech.common.tileentities.machines.multi.nanochip.MTEVacuumConveyorPipe;
+import gregtech.common.tileentities.machines.multi.nanochip.hatches.MTEHatchVacuumConveyorInput;
+import gregtech.common.tileentities.machines.multi.nanochip.hatches.MTEHatchVacuumConveyorOutput;
 import gregtech.common.tileentities.machines.multi.nanochip.modules.*;
 import gregtech.common.tileentities.machines.multi.purification.MTEHatchDegasifierControl;
 import gregtech.common.tileentities.machines.multi.purification.MTEHatchLensHousing;
@@ -10708,6 +10711,23 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
 
     }
 
+    private static void registerVacuumComponents() {
+        ItemList.Hatch_VacuumConveyor_Input.set(
+            new MTEHatchVacuumConveyorInput(
+                HATCH_VACUUM_CONVEYOR_INPUT.ID,
+                "vacuum.hatch.input",
+                "Vacuum Conveyor Input",
+                1).getStackForm(1L));
+        ItemList.Hatch_VacuumConveyor_Output.set(
+            new MTEHatchVacuumConveyorOutput(
+                HATCH_VACUUM_CONVEYOR_OUTPUT.ID,
+                "vacuum.hatch.output",
+                "Vacuum Conveyor Output",
+                1).getStackForm(1L));
+        ItemList.VacuumConveyorPipe.set(
+            new MTEVacuumConveyorPipe(VACUUM_CONVEYOR_PIPE.ID, "vacuum.pipe", "Vacuum Conveyor Pipe").getStackForm(1L));
+    }
+
     @Override
     public void run() {
         GTLog.out.println("GTMod: Registering MetaTileEntities.");
@@ -10822,6 +10842,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
         registerNameRemover();
         registerAirFilters();
         registerDrawerFramer();
+        registerVacuumComponents();
 
         ItemList.AdvDebugStructureWriter.set(
             new MTEAdvDebugStructureWriter(
