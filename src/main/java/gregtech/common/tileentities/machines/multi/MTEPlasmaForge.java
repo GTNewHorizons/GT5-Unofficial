@@ -1006,11 +1006,8 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
             StatCollector.translateToLocalFormatted(
                 "GT5U.infodata.plasma_forge.ticks_run_fuel_discount",
                 EnumChatFormatting.GREEN + GTUtility.formatNumbers(running_time) + EnumChatFormatting.RESET,
-                EnumChatFormatting.RED + GTUtility.formatNumbers(100 * (1 - discount))
-                    + EnumChatFormatting.RESET
-                    + "%",
-                extraCatalystNeeded
-            ),
+                EnumChatFormatting.RED + GTUtility.formatNumbers(100 * (1 - discount)) + EnumChatFormatting.RESET + "%",
+                extraCatalystNeeded),
             StatCollector.translateToLocalFormatted(
                 "GT5U.infodata.plasma_forge.convergence",
                 (convergence
@@ -1019,11 +1016,13 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
                         + EnumChatFormatting.RESET
                         + (discount == maximum_discount
                             ? StatCollector.translateToLocal("GT5U.infodata.plasma_forge.convergence.achieved")
-                            : StatCollector.translateToLocalFormatted("GT5U.infodata.plasma_forge.convergence.progress", GTUtility.formatNumbers((max_efficiency_time_in_ticks-running_time)/(20*60))))
+                            : StatCollector.translateToLocalFormatted(
+                                "GT5U.infodata.plasma_forge.convergence.progress",
+                                GTUtility.formatNumbers((max_efficiency_time_in_ticks - running_time) / (20 * 60))))
 
                     : EnumChatFormatting.RED
-                    + StatCollector.translateToLocal("GT5U.infodata.plasma_forge.convergence.inactive"))),
-            EnumChatFormatting.STRIKETHROUGH + "-----------------------------------------"};
+                        + StatCollector.translateToLocal("GT5U.infodata.plasma_forge.convergence.inactive"))),
+            EnumChatFormatting.STRIKETHROUGH + "-----------------------------------------" };
     }
 
     private void recalculateDiscount() {
@@ -1037,6 +1036,7 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
     private int catalystTypeForRecipesWithoutCatalyst = 1;
 
     private int extraCatalystNeeded = 0;
+
     private void calculateCatalystIncrease(GTRecipe recipe, FluidStack[] inputFluids, int fuelIndex) {
         FluidStack validFuelStack = recipe.mFluidInputs[fuelIndex];
         Fluid validFuel = validFuelStack.getFluid();
