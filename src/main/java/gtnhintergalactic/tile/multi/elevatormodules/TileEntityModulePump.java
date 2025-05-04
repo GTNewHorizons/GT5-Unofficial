@@ -43,6 +43,7 @@ import com.cleanroommc.modularui.widget.sizer.Area;
 import com.cleanroommc.modularui.widgets.ListWidget;
 import com.cleanroommc.modularui.widgets.PageButton;
 import com.cleanroommc.modularui.widgets.PagedWidget;
+import com.cleanroommc.modularui.widgets.TextWidget;
 import com.cleanroommc.modularui.widgets.layout.Column;
 import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.cleanroommc.modularui.widgets.layout.Row;
@@ -82,8 +83,8 @@ public abstract class TileEntityModulePump extends TileEntityModuleBase {
 
     /** Input parameters */
     int[][] recipes = new int[4][2]; // index 0 = tier, index 1 = fluid
-    int[] recipeParallels = new int[4];
     Parameter.IntegerParameter batchSizeParameter;
+    Parameter.IntegerParameter[] recipeParallelParameters;
 
     /** Flag if this machine has an ME output hatch, will be updated in the structure check */
     protected boolean hasMeOutputHatch = false;
@@ -115,7 +116,6 @@ public abstract class TileEntityModulePump extends TileEntityModuleBase {
         super(aName, tTier, tModuleTier, tMinMotorTier);
         for (int i = 0; i < getParallelRecipes(); i++) {
             recipes[i] = new int[] { -1, -1 };
-            recipeParallels[i] = getRecipeParallels();
         }
     }
 
@@ -126,7 +126,6 @@ public abstract class TileEntityModulePump extends TileEntityModuleBase {
             NBTTagCompound recipe = new NBTTagCompound();
             recipe.setInteger("tier", recipes[i][0]);
             recipe.setInteger("fluid", recipes[i][1]);
-            recipe.setInteger("parallels", recipeParallels[i]);
             tag.setTag("recipe" + i, recipe);
         }
     }
@@ -138,7 +137,6 @@ public abstract class TileEntityModulePump extends TileEntityModuleBase {
             NBTTagCompound recipe = tag.getCompoundTag("recipe" + i);
             recipes[i][0] = recipe.getInteger("tier");
             recipes[i][1] = recipe.getInteger("fluid");
-            recipeParallels[i] = recipe.getInteger("parallels");
         }
     }
 
@@ -181,7 +179,7 @@ public abstract class TileEntityModulePump extends TileEntityModuleBase {
                         }
                     }
                 }
-                int parallels = Math.min(recipeParallels[i], getRecipeParallels());
+                int parallels = Math.min(recipeParallelParameters[i].getValue(), getRecipeParallels());
                 if (targetOutput != null) {
                     int outputSpace = targetOutput.getCapacity() - targetOutput.getFluidAmount();
                     if (outputSpace < fluid.amount) {
@@ -247,8 +245,19 @@ public abstract class TileEntityModulePump extends TileEntityModuleBase {
 
     @Override
     protected void initParameters() {
-        batchSizeParameter = new Parameter.IntegerParameter(1, () -> 1, () -> 128, "BatchSize");
+        recipeParallelParameters = new Parameter.IntegerParameter[getParallelRecipes()];
+        batchSizeParameter = new Parameter.IntegerParameter(1, () -> 1, () -> 128, "tt.multiblock.batchSize");
         parameterList.add(batchSizeParameter);
+        for (int i = 0; i < getParallelRecipes(); i++) {
+            recipeParallelParameters[i] = new Parameter.IntegerParameter(
+                getRecipeParallels(),
+                () -> 1,
+                this::getRecipeParallels,
+                "tt.multiblock.parallel",
+                i + 1);
+            parameterList.add(recipeParallelParameters[i]);
+
+        }
     }
 
     @Override
@@ -263,8 +272,8 @@ public abstract class TileEntityModulePump extends TileEntityModuleBase {
                 () -> recipes[finalI1][1],
                 val -> recipes[finalI1][1] = val);
             IntSyncValue recipeParallelSyncer = new IntSyncValue(
-                () -> recipeParallels[finalI1],
-                val -> recipeParallels[finalI1] = val);
+                () -> recipeParallelParameters[finalI1].getValue(),
+                val -> recipeParallelParameters[finalI1].setValue(val));
             syncManager.syncValue("recipeTier" + i, recipeTierSyncer);
             syncManager.syncValue("recipeFluid" + i, recipeFluidSyncer);
             syncManager.syncValue("recipeParallel" + i, recipeParallelSyncer);
@@ -292,24 +301,22 @@ public abstract class TileEntityModulePump extends TileEntityModuleBase {
                     FluidStack fluidStack = fluidDisplaySyncer.getValue();
                     if (fluidStack == null) {
                         t.clearText()
-                            .addLine(IKey.str("No fluid set! Click to open configuration panel!"));
+                            .addLine(IKey.lang("tt.spacepump.noFluidTooltip"));
                     } else {
                         t.clearText()
                             .addLine(IKey.str(fluidStack.getLocalizedName()))
-                            .addLine(
+                            .add(
                                 IKey.str(
                                     EnumChatFormatting.GREEN + NumberFormat.formatWithMaxDigits(fluidStack.amount, 4)
-                                        + "L/s"
-                                        + EnumChatFormatting.WHITE
-                                        + " per parallel"));
+                                        + "L/s "
+                                        + EnumChatFormatting.WHITE))
+                            .add(IKey.lang("tt.spacepump.parallelTooltip"));
                     }
                 });
 
             machineInfo.child(
                 new Row().coverChildren()
-                    .child(
-                        IKey.str(EnumChatFormatting.WHITE + "Fluid " + (i + 1) + ": ")
-                            .asWidget())
+                    .child(new TextWidget(IKey.lang("tt.spacepump.fluid", i)).marginRight(5))
                     .child(
                         recipeFluidSlot.size(16, 16)
                             .marginRight(5))

@@ -16,8 +16,19 @@ public abstract class Parameter<T> {
         this.localizedName = StatCollector.translateToLocal(key);
     }
 
+    public Parameter(T value, String key, Object... args) {
+        this.currentValue = value;
+        this.localizedName = StatCollector.translateToLocalFormatted(key, args);
+    }
+
     public Parameter(T value, Supplier<T> minValue, Supplier<T> maxValue, String key) {
         this(value, key);
+        this.minValue = minValue;
+        this.maxValue = maxValue;
+    }
+
+    public Parameter(T value, Supplier<T> minValue, Supplier<T> maxValue, String key, Object... args) {
+        this(value, key, args);
         this.minValue = minValue;
         this.maxValue = maxValue;
     }
@@ -55,6 +66,11 @@ public abstract class Parameter<T> {
         public IntegerParameter(Integer value, Supplier<Integer> minValue, Supplier<Integer> maxValue, String key) {
             super(value, minValue, maxValue, key);
         }
+
+        public IntegerParameter(Integer value, Supplier<Integer> minValue, Supplier<Integer> maxValue, String key,
+            Object... args) {
+            super(value, minValue, maxValue, key, args);
+        }
     }
 
     public static class DoubleParameter extends Parameter<Double> {
@@ -65,6 +81,11 @@ public abstract class Parameter<T> {
 
         public DoubleParameter(Double value, Supplier<Double> minValue, Supplier<Double> maxValue, String key) {
             super(value, minValue, maxValue, key);
+        }
+
+        public DoubleParameter(Double value, Supplier<Double> minValue, Supplier<Double> maxValue, String key,
+            Object... args) {
+            super(value, minValue, maxValue, key, args);
         }
     }
 
