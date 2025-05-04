@@ -2,9 +2,7 @@ package gregtech.common.tileentities.machines.multi.nanochip.util;
 
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
+import java.util.*;
 
 import net.minecraft.item.ItemStack;
 
@@ -13,13 +11,12 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
-import gregtech.api.interfaces.IRecipeMap;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.metadata.NanochipAssemblyRecipeInfo;
 import gregtech.api.util.GTOreDictUnificator;
-import gregtech.api.util.GTRecipe;
-import gregtech.api.util.GTUtility;
+import gregtech.api.util.GTRecipeBuilder;
+import gregtech.common.tileentities.machines.multi.nanochip.util.CircuitComponent.CircuitComponentStack;
 
 public class RecipeHandlers {
 
@@ -50,6 +47,49 @@ public class RecipeHandlers {
             .duration(ModuleRecipeInfo.MODULE_RECIPE_TIME)
             .eut(eut)
             .addTo(recipeMap);
+    }
+
+    private static void addAssemblyMatrixRecipe(List<CircuitComponentStack> input, CircuitComponent output,
+        ModuleRecipeInfo info, long eut) {
+        if (!output.processingMap.equals(RecipeMaps.nanochipAssemblyMatrixRecipes)) {
+            throw new IllegalArgumentException("Invalid RecipeMap passed to addAssemblyMatrixRecipe!");
+        } else if (output.realCircuit == null) {
+            throw new IllegalArgumentException("No real circuit was defined for given output!");
+        }
+        ItemStack realOutput = output.realCircuit.copy();
+        realOutput.stackSize = info.getBaseParallel();
+        ItemStack[] inputsWithRealCircuits = input.stream()
+            .map(c -> {
+                if (c.getCircuitComponent().realCircuit != null) {
+                    ItemStack realCircuit = c.getCircuitComponent().realCircuit.copy();
+                    realCircuit.stackSize = info.getBaseParallel() * c.getSize();
+                    return realCircuit;
+                }
+                return c.getCircuitComponent()
+                    .getFakeStack(info.getBaseParallel() * c.getSize());
+            })
+            .toArray(ItemStack[]::new);
+        ItemStack[] inputsWithFakeCircuits = input.stream()
+            .map(
+                c -> c.getCircuitComponent()
+                    .getFakeStack(info.getBaseParallel() * c.getSize()))
+            .toArray(ItemStack[]::new);
+        GTRecipeBuilder builder = GTValues.RA.stdBuilder()
+            .metadata(NanochipAssemblyRecipeInfo.INSTANCE, info)
+            .itemOutputs(output.getFakeStack(info.getBaseParallel()))
+            .duration(ModuleRecipeInfo.MODULE_RECIPE_TIME)
+            .eut(eut);
+        // Add real recipe that will actually be utilized in recipe checks
+        builder.copy()
+            .hidden()
+            .itemInputs(inputsWithFakeCircuits)
+            .addTo(output.processingMap);
+        // Add fake recipe that the user can see in NEI but will never actually be used for recipe checks
+        builder.copy()
+            .fake()
+            .itemInputs(inputsWithRealCircuits)
+            .itemOutputs(realOutput)
+            .addTo(output.processingMap);
     }
 
     public static void populateCircuitComponentRecipeMaps() {
@@ -225,106 +265,28 @@ public class RecipeHandlers {
             TierEU.RECIPE_LV);
     }
 
-    private static GTRecipe findRecipeUsingStack(ItemStack input, RecipeMap<?> map) {
-        return map.findRecipeQuery()
-            .dontCheckStackSizes(true)
-            .items(input)
-            .find();
+    public static void populateFinishedCircuitRecipeMaps() {
+        addAssemblyMatrixRecipe(
+            Arrays.asList(
+                new CircuitComponentStack(CircuitComponent.ProcessedBoardMultifiberglassElite, 1),
+                new CircuitComponentStack(CircuitComponent.ProcessedChipCrystalCPU, 1),
+                new CircuitComponentStack(CircuitComponent.ProcessedChipNanoCPU, 2),
+                new CircuitComponentStack(CircuitComponent.ProcessedAdvSMDCapacitor, 6),
+                new CircuitComponentStack(CircuitComponent.ProcessedAdvSMDTransistor, 6),
+                new CircuitComponentStack(CircuitComponent.ProcessedWireNiobiumTitanium, 8)),
+            CircuitComponent.CrystalProcessor,
+            ModuleRecipeInfo.Fast,
+            32768);
+        addAssemblyMatrixRecipe(
+            Arrays.asList(
+                new CircuitComponentStack(CircuitComponent.ProcessedBoardMultifiberglassElite, 1),
+                new CircuitComponentStack(CircuitComponent.CrystalProcessor, 2),
+                new CircuitComponentStack(CircuitComponent.ProcessedAdvSMDInductor, 6),
+                new CircuitComponentStack(CircuitComponent.ProcessedAdvSMDCapacitor, 8),
+                new CircuitComponentStack(CircuitComponent.ProcessedChipRAM, 24),
+                new CircuitComponentStack(CircuitComponent.ProcessedWireNiobiumTitanium, 16)),
+            CircuitComponent.CrystalAssembly,
+            ModuleRecipeInfo.Fast,
+            32768);
     }
-
-    private static ItemStack findResultingStack(ItemStack input, RecipeMap<?> map) {
-        GTRecipe recipe = findRecipeUsingStack(input, map);
-        if (recipe == null) return null;
-        return recipe.mOutputs[0];
-    }
-
-    private static ItemStack traverseCircuitRecipes(ItemStack input, RecipeMap<?> inputProcessingMap) {
-        // TODO: In this algorithm, we might still need to keep track of amount ratios (1 SMD = N Processed SMD = 1/N
-        // Circuits or something)
-
-        // Special case: if this item is a finished circuit item, we already know the component to use and we don't do
-        // this full iteration
-        CircuitComponent circuitComponent = CircuitComponent.realCircuitToComponent
-            .get(GTUtility.ItemId.createNoCopy(input));
-        if (circuitComponent != null) return circuitComponent.getFakeStack(input.stackSize);
-        // If the recipe map is null, we have a finalized CC (probably, this could also be a bug or missing mappings)
-        if (inputProcessingMap == null) return input;
-        // If this map is the nanochip assembly matrix map, return the input as we have finished the process
-        if (inputProcessingMap.unlocalizedName.equals(RecipeMaps.nanochipAssemblyMatrixRecipes.unlocalizedName)) {
-            return input;
-        }
-        // Find the result of applying the recipe map to this input
-        ItemStack result = findResultingStack(input, inputProcessingMap);
-        // If this is null, we cannot process this stack into a finalized circuit (probably some mappings for items are
-        // missing).
-        if (result == null) return null;
-        // This resulting item is a fake stack, so find the circuit component that corresponds to it
-        CircuitComponent component = CircuitComponent.getFromFakeStackUnsafe(result);
-        // Process this component further in the next recipe map
-        return traverseCircuitRecipes(result, component.processingMap);
-    }
-
-    public static final IRecipeMap assemblyMatrixRecipeTransformer = IRecipeMap.newRecipeMap(builder -> {
-        // This RecipeMap is added as a downstream of the circuit assembler recipe map. This means that any
-        // circuit assembler recipe will also be added to this map, so we can process it further.
-        // One note is that BW also modifies this recipe map, to make the recipes that should go in the CAL 6x more
-        // expensive and to add its own recipes to the CAL. However, this happens after the recipe map is built already.
-        // Also, when re-adding recipes, it uses the (deprecated) RecipeMap::add, which bypasses the backend method to
-        // also
-        // add recipes to the downstream maps, so this transformer won't be called for the modified recipes.
-        // This is a good thing, it means we can deal with unmodified circuit assembler recipes here and don't have to
-        // worry about the CAL recipe transformation code at all.
-
-        // Before we do anything, find the output item, so we can check if this recipe should be touched at all
-        ItemStack realOutput = builder.getItemOutput(0);
-        GTUtility.ItemId id = GTUtility.ItemId.createNoCopy(realOutput);
-        CircuitComponent outputComponent = CircuitComponent.realCircuitToComponent.get(id);
-        if (outputComponent == null) {
-            // Not a nanochip assembly recipe because it has no matching fake circuit, return empty list
-            return Collections.emptyList();
-        }
-
-        // Grab a copy of the item input list
-        ArrayList<ItemStack> itemInputs = new ArrayList<>(Arrays.asList(builder.getItemInputsBasic()));
-
-        // For each input, we follow the following procedure
-        // 1. Find the circuit component produced by this item
-        // 2. Follow the recipe map processing this circuit component given by CircuitComponent#processingMap to find
-        // the next step in the process. This gives us a new circuit component in the chain.
-        // 3. Keep following this chain of circuit components until we arrive at a component that is an input in the
-        // assembly matrix.
-        // 4. Use this component as the input of the assembly step.
-        // Note that this process will only work for the basic circuits, the advanced processing lines using
-        // the nanochip assembly complex will not be autogenerated by this process.
-        for (int i = 0; i < itemInputs.size(); ++i) {
-            ItemStack input = itemInputs.get(i);
-            // Traverse the recipe map to find the final input needed in the assembly matrix
-            ItemStack processedFakeInput = traverseCircuitRecipes(input, RecipeMaps.nanochipConversionRecipes);
-            // If none was found, we simply keep this unchanged in the assembly matrix. Likely some mappings are
-            // missing,
-            // so the recipe will be incorrectly generated in this case, but for debugging purposes this is fine.
-            if (processedFakeInput == null) continue;
-            // Get the input component, so we can construct a new fake input stack with the correct stack size easily.
-            // Note that this *is* a roundabout way to copying the processedFakeInput ItemStack, but whatever, this
-            // does logically make sense and is a bit more explicit. As a bonus, this verifies that processedFakeInput
-            // is in fact a circuit component, so this is another sanity check that can catch bugs in
-            // traverseCircuitRecipes.
-            CircuitComponent componentInput = CircuitComponent.getFromFakeStackUnsafe(processedFakeInput);
-            ItemStack fakeInputStack = componentInput.getFakeStack(input.stackSize);
-            itemInputs.set(i, fakeInputStack);
-        }
-
-        ItemStack fakeOutput = outputComponent.getFakeStack(realOutput.stackSize);
-        // Add two recipes: A hidden one that outputs the fake circuit CC, and a fake, visible one that outputs the real
-        // circuit.
-        // This is done so we can more easily look them up in NEI
-        builder = builder.itemInputs(itemInputs.toArray(new ItemStack[] {}));
-        return GTUtility.concat(
-            builder.copy()
-                .itemOutputs(fakeOutput)
-                .hidden()
-                .addTo(RecipeMaps.nanochipAssemblyMatrixRecipes),
-            builder.fake()
-                .addTo(RecipeMaps.nanochipAssemblyMatrixRecipes));
-    });
 }
