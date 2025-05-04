@@ -9,10 +9,22 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+import gregtech.api.util.GTUtility;
+=======
+=======
+>>>>>>> e508b0784005dfab2be3f5317b4a571b15d88021
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.ParallelHelper;
 import gregtech.common.tileentities.machines.multi.nanochip.util.CCInputConsumer;
+<<<<<<< HEAD
+>>>>>>> e508b0784005dfab2be3f5317b4a571b15d88021
+=======
+>>>>>>> e508b0784005dfab2be3f5317b4a571b15d88021
+import com.cleanroommc.modularui.api.drawable.IKey;
+import com.cleanroommc.modularui.utils.Alignment;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -24,13 +36,11 @@ import org.jetbrains.annotations.NotNull;
 
 import com.cleanroommc.modularui.api.IPanelHandler;
 import com.cleanroommc.modularui.api.drawable.IIcon;
-import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.api.widget.IWidget;
 import com.cleanroommc.modularui.drawable.GuiTextures;
 import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.RichTooltip;
-import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.utils.serialization.IByteBufAdapter;
 import com.cleanroommc.modularui.value.sync.GenericSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
@@ -39,6 +49,7 @@ import com.cleanroommc.modularui.widget.WidgetTree;
 import com.cleanroommc.modularui.widgets.ButtonWidget;
 import com.cleanroommc.modularui.widgets.CategoryList;
 import com.cleanroommc.modularui.widgets.ListWidget;
+import com.google.common.collect.ImmutableList;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 
@@ -66,10 +77,8 @@ public class Splitter extends MTENanochipAssemblyModuleBase<Splitter> {
     private static final String[][] structure = new String[][] { { "  AAA  ", "  AAA  ", "  AAA  " },
         { "  AAA  ", "  A A  ", "  AAA  " }, { "  AAA  ", "  AAA  ", "  AAA  " } };
 
-    // Maps an input color to an output color
-    public Map<Dyes, Dyes> colorMap = createEmptyRulesList();
-    public Map<Byte, List<Byte>> newColorMap = new HashMap<>();
-
+    // Maps an input color to a list of output colors
+    public Map<Byte, List<Byte>> colorMap = new HashMap<>();
 
     public static final IStructureDefinition<Splitter> STRUCTURE_DEFINITION = ModuleStructureDefinition
         .<Splitter>builder()
@@ -216,7 +225,7 @@ public class Splitter extends MTENanochipAssemblyModuleBase<Splitter> {
             ItemStack stack = inputs.get(color.getKey());
             if (currentDye == -1) continue;
 
-            List<Byte> outputDyes = newColorMap.get(currentDye);
+            List<Byte> outputDyes = colorMap.get(currentDye);
             if (outputDyes == null) continue;
 
             // Find output hatches that have the color of the dye
@@ -276,32 +285,42 @@ public class Splitter extends MTENanochipAssemblyModuleBase<Splitter> {
         colorMap = loadRulesTagList(aNBT.getTagList("rules", 8));
     }
 
-    public Map<Dyes, Dyes> createEmptyRulesList() {
-        HashMap<Dyes, Dyes> rulesMap = new HashMap<>();
+    public Map<Byte, List<Byte>> createEmptyRulesList() {
+        Map<Byte, List<Byte>> rulesMap = new HashMap<>();
         for (Dyes dye : Dyes.VALUES) {
-            rulesMap.put(dye, dye);
+            rulesMap.put(dye.mIndex, ImmutableList.of(dye.mIndex));
         }
         return rulesMap;
     }
 
     public NBTTagList createRulesTagList() {
         NBTTagList list = new NBTTagList();
-        for (Map.Entry<Dyes, Dyes> entry : colorMap.entrySet()) {
-            Dyes key = entry.getKey();
-            Dyes value = entry.getValue();
-            list.appendTag(new NBTTagString(key.name() + ":" + value.name()));
+        for (Map.Entry<Byte, List<Byte>> entry : colorMap.entrySet()) {
+            Byte key = entry.getKey();
+            List<Byte> value = entry.getValue();
+            String outputsString = "";
+            for (Byte color : value) {
+                outputsString = outputsString + color + "+";
+            }
+            list.appendTag(new NBTTagString(key + "->" + outputsString));
         }
         return list;
     }
 
-    public Map<Dyes, Dyes> loadRulesTagList(NBTTagList tagList) {
-        HashMap<Dyes, Dyes> rulesMap = new HashMap<>();
+    public Map<Byte, List<Byte>> loadRulesTagList(NBTTagList tagList) {
+        Map<Byte, List<Byte>> rulesMap = new HashMap<>();
         for (Object a : tagList.tagList) {
             if (!(a instanceof NBTTagString tag)) continue;
             // Obfuscated method returns the stored string
             String[] data = tag.func_150285_a_()
-                .split(":");
-            rulesMap.put(Dyes.get(data[0]), Dyes.get(data[1]));
+                .split("->");
+            String[] outputData = data[1].split("\\+");
+            List<Byte> outputs = new ArrayList<>();
+            for (String string : outputData) {
+                if (string.isEmpty()) break;
+                outputs.add(Byte.valueOf(string));
+            }
+            rulesMap.put(Byte.valueOf(data[0]), outputs);
         }
 
         return rulesMap;
@@ -340,16 +359,17 @@ public class Splitter extends MTENanochipAssemblyModuleBase<Splitter> {
         list.pos(4, 21);
 
         // Add existing rules
-        for (Map.Entry<Dyes, Dyes> entry : colorMap.entrySet()) {
-            Dyes key = entry.getKey();
-            Dyes value = entry.getValue();
-            if (key == value) continue;
-            list.child(createColorManager(syncManager, key.mIndex, value.mIndex));
+        for (Map.Entry<Byte, List<Byte>> entry : colorMap.entrySet()) {
+            Byte input = entry.getKey();
+            List<Byte> outputs = entry.getValue();
+            // Skip if the rule is empty
+            if (outputs.contains(input) && outputs.size() == 1) continue;
+            list.child(createColorManager(syncManager, ImmutableList.of(input), outputs));
         }
 
         return ui.child(list)
             .child(new ButtonWidget<>().onMousePressed(mouseButton -> {
-                list.child(createColorManager(syncManager, -1, -1));
+                list.child(createColorManager(syncManager, null, null));
                 WidgetTree.resize(ui);
                 return true;
             })
@@ -363,7 +383,7 @@ public class Splitter extends MTENanochipAssemblyModuleBase<Splitter> {
                     .tooltip(this::getRulesInfo)
                     .pos(144, 4)
                     .size(16, 16))
-            .pos(588, 187);
+            .posRel(0.75F, 0.5F);
     }
 
     private void getRulesInfo(RichTooltip t) {
@@ -376,11 +396,13 @@ public class Splitter extends MTENanochipAssemblyModuleBase<Splitter> {
             .add(GTGuiTextures.PICTURE_GT_LOGO_STANDARD);
     }
 
-    public IWidget createColorManager(PanelSyncManager syncManager, int inputSelected, int outputSelected) {
-        ColorGridWidget inputGrid = new ColorGridWidget(inputSelected).build();
-        ColorGridWidget outputGrid = new ColorGridWidget(outputSelected).build();
+    public IWidget createColorManager(PanelSyncManager syncManager, List<Byte> inputSelected,
+        List<Byte> outputSelected) {
+        ColorGridWidget inputGrid = new ColorGridWidget();
+        ColorGridWidget outputGrid = new ColorGridWidget();
 
-        GenericSyncValue<Map<Dyes, Dyes>> map = (GenericSyncValue<Map<Dyes, Dyes>>) syncManager.getSyncHandler("map:0");
+        GenericSyncValue<Map<Byte, List<Byte>>> map = (GenericSyncValue<Map<Byte, List<Byte>>>) syncManager
+            .getSyncHandler("map:0");
 
         return new ParentWidget<>()
             // Arrow icon
@@ -389,28 +411,36 @@ public class Splitter extends MTENanochipAssemblyModuleBase<Splitter> {
                     .asWidget()
                     .size(20, 18)
                     .posRel(0.5F, 0.5F))
-            .child(inputGrid.pos(5, 13))
-            .child(outputGrid.pos(121, 13))
+            .child(
+                inputGrid.setInitialSelected(inputSelected)
+                    .setMaxSelected(1)
+                    .build()
+                    .pos(5, 13))
+            .child(
+                outputGrid.setInitialSelected(outputSelected)
+                    .setMaxSelected(16)
+                    .build()
+                    .pos(121, 13))
             // Input grid color display
-            .child(
-                IKey.dynamic(inputGrid::getName)
-                    .asWidget()
-                    .scale(0.8F)
-                    .alignment(Alignment.Center)
-                    .size(42, 8)
-                    .pos(4, 5))
+             .child(
+             IKey.dynamic(() -> inputGrid.getName(0))
+             .asWidget()
+             .scale(0.8F)
+             .alignment(Alignment.Center)
+             .size(42, 8)
+             .pos(4, 5))
             // Output grid color display
-            .child(
-                IKey.dynamic(outputGrid::getName)
-                    .asWidget()
-                    .scale(0.8F)
-                    .alignment(Alignment.Center)
-                    .size(42, 8)
-                    .pos(120, 5))
+             .child(
+             IKey.str("[Hover]")
+             .asWidget().tooltipBuilder(t -> getOutputInfo(t, outputGrid))
+             .scale(0.8F)
+             .alignment(Alignment.Center)
+             .size(42, 8)
+             .pos(120, 5))
             // Save button
             .child(
                 new ButtonWidget<>()
-                    .onMousePressed(ignore -> saveColorData(inputGrid.getDye(), outputGrid.getDye(), map))
+                    .onMousePressed(a -> saveColorData(inputGrid.getSelected(), outputGrid.getSelected(), map))
                     .tooltip(tooltip -> tooltip.add("Save"))
                     .overlay(GTGuiTextures.OVERLAY_BUTTON_CHECKMARK)
                     .posRel(0.5F, 0.1F)
@@ -419,40 +449,64 @@ public class Splitter extends MTENanochipAssemblyModuleBase<Splitter> {
             .background(GTGuiTextures.BACKGROUND_POPUP_STANDARD);
     }
 
-    private boolean saveColorData(Dyes input, Dyes output, GenericSyncValue<Map<Dyes, Dyes>> map) {
-        if (input == null || output == null) return false;
-        colorMap.put(input, output);
-        map.setValue(colorMap);
+    public RichTooltip getOutputInfo(RichTooltip t, ColorGridWidget grid) {
+        List<Byte> selected = grid.getSelected();
+        int amount = selected.size();
+        if (amount == 0) return t.add("None selected");
+        t.pos(RichTooltip.Pos.ABOVE).add("Currently selected:\n");
+        for (int i = 0; i < amount; i++) {
+            boolean shouldNewLine = ((i % 3) == 0);
+            Dyes color = Dyes.get(selected.get(i));
+            t.add(color.getLocalizedDyeName() + (shouldNewLine ? "\n" : ", "));
+        }
+        return t;
+    }
+
+    private boolean saveColorData(List<Byte> input, List<Byte> output, GenericSyncValue<Map<Byte, List<Byte>>> map) {
+        if (input.isEmpty() || output.isEmpty()) return false;
+        for (Byte inputColor : input) {
+            List<Byte> newOutputs = new ArrayList<>(output);
+            colorMap.put(inputColor, newOutputs);
+            map.setValue(colorMap);
+        }
         return true;
     }
 
-    private static class ColorMapAdapter implements IByteBufAdapter<Map<Dyes, Dyes>> {
+    private static class ColorMapAdapter implements IByteBufAdapter<Map<Byte, List<Byte>>> {
 
         @Override
-        public Map<Dyes, Dyes> deserialize(PacketBuffer buffer) {
-            Map<Dyes, Dyes> rulesMap = new HashMap<>();
-            for (int i = 0; i < 15; i++) {
-                Dyes key = Dyes.get(buffer.readInt());
-                Dyes value = Dyes.get(buffer.readInt());
+        public Map<Byte, List<Byte>> deserialize(PacketBuffer buffer) {
+            Map<Byte, List<Byte>> rulesMap = new HashMap<>();
+            int size = buffer.readInt();
+            for (int i = 0; i < size; i++) {
+                Byte key = buffer.readByte();
+                List<Byte> value = new ArrayList<>();
+                int ruleCount = buffer.readInt();
+                for (int j = 0; j < ruleCount; j++) {
+                    value.add(buffer.readByte());
+                }
                 rulesMap.put(key, value);
             }
             return rulesMap;
         }
 
         @Override
-        public void serialize(PacketBuffer buffer, Map<Dyes, Dyes> map) {
-            for (Map.Entry<Dyes, Dyes> entry : map.entrySet()) {
-                Dyes key = entry.getKey();
-                Dyes value = entry.getValue();
-                buffer.writeInt(key.mIndex);
-                buffer.writeInt(value.mIndex);
+        public void serialize(PacketBuffer buffer, Map<Byte, List<Byte>> map) {
+            buffer.writeInt(map.size());
+            for (Map.Entry<Byte, List<Byte>> entry : map.entrySet()) {
+                Byte key = entry.getKey();
+                List<Byte> value = entry.getValue();
+                buffer.writeByte(key);
+                buffer.writeInt(value.size());
+                for (Byte dye : value) {
+                    buffer.writeByte(dye);
+                }
             }
         }
 
         @Override
-        public boolean areEqual(@NotNull Map<Dyes, Dyes> t1, @NotNull Map<Dyes, Dyes> t2) {
+        public boolean areEqual(@NotNull Map<Byte, List<Byte>> t1, @NotNull Map<Byte, List<Byte>> t2) {
             return t1.equals(t2);
         }
     }
-
 }
