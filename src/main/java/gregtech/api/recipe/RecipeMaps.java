@@ -1274,7 +1274,7 @@ public final class RecipeMaps {
     public static final RecipeMap<RecipeMapBackend> nanochipCuttingChamber = RecipeMapBuilder
         .of("gt.recipe.nanochip.cuttingchamber")
         .maxIO(2, 1, 2, 0)
-        .minInputs(0, 0)
+        .minInputs(0, 1)
         .recipeTransformer(recipe -> {
             CircuitComponent output = CircuitComponent.getFromFakeStackUnsafe(recipe.mOutputs[0]);
             CircuitComponent input = CircuitComponent.getFromFakeStackUnsafe(recipe.mInputs[0]);
