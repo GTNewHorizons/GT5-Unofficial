@@ -120,6 +120,9 @@ public class RecipeHandlers {
         addConversionRecipe(
             CircuitComponent.WireNiobiumTitanium,
             GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.NiobiumTitanium, 1));
+        addConversionRecipe(
+            CircuitComponent.WireYttriumBariumCuprate,
+            GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.YttriumBariumCuprate, 1));
         // SMDs
         addConversionRecipe(CircuitComponent.SMDTransistor, ItemList.Circuit_Parts_TransistorSMD.get(1));
         addConversionRecipe(CircuitComponent.SMDInductor, ItemList.Circuit_Parts_InductorSMD.get(1));
@@ -140,6 +143,7 @@ public class RecipeHandlers {
         addConversionRecipe(
             CircuitComponent.BoardMultifiberglassElite,
             ItemList.Circuit_Board_Multifiberglass_Elite.get(1));
+        addConversionRecipe(CircuitComponent.BoardWetwareLifesupport, ItemList.Circuit_Board_Wetware_Extreme.get(1));
         // CPUs
         addConversionRecipe(CircuitComponent.ChipCrystalCPU, ItemList.Circuit_Chip_CrystalCPU.get(1));
         // Cut wafers
@@ -151,14 +155,25 @@ public class RecipeHandlers {
         addConversionRecipe(
             CircuitComponent.SuperconductorLuV,
             GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorLuV, 1));
+        addConversionRecipe(
+            CircuitComponent.SuperconductorZPM,
+            GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorZPM, 1));
         // Frame boxes
         addConversionRecipe(
             CircuitComponent.FrameboxAluminium,
             GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Aluminium, 1));
+        addConversionRecipe(
+            CircuitComponent.FrameboxTritanium,
+            GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Tritanium, 1));
         // Wire processing recipes
         addSimpleProcessingRecipe(
             CircuitComponent.WireNiobiumTitanium,
             CircuitComponent.ProcessedWireNiobiumTitanium,
+            ModuleRecipeInfo.Fast,
+            TierEU.RECIPE_LV);
+        addSimpleProcessingRecipe(
+            CircuitComponent.WireYttriumBariumCuprate,
+            CircuitComponent.ProcessedWireYttriumBariumCuprate,
             ModuleRecipeInfo.Fast,
             TierEU.RECIPE_LV);
         // SMD processing recipes
@@ -244,6 +259,12 @@ public class RecipeHandlers {
             CircuitComponent.ProcessedBoardMultifiberglassElite,
             ModuleRecipeInfo.Fast,
             TierEU.RECIPE_LV);
+        addSimpleProcessingRecipe(
+            CircuitComponent.BoardWetwareLifesupport,
+            Materials.IronIIIChloride.getFluid(1000),
+            CircuitComponent.ProcessedBoardWetwareLifesupport,
+            ModuleRecipeInfo.Fast,
+            TierEU.RECIPE_LV);
         // CPU processing recipes
         addSimpleProcessingRecipe(
             CircuitComponent.ChipCrystalCPU,
@@ -282,10 +303,20 @@ public class RecipeHandlers {
             CircuitComponent.ProcessedSuperconductorLuV,
             ModuleRecipeInfo.Medium,
             TierEU.RECIPE_LV);
+        addSimpleProcessingRecipe(
+            CircuitComponent.SuperconductorZPM,
+            CircuitComponent.ProcessedSuperconductorZPM,
+            ModuleRecipeInfo.Medium,
+            TierEU.RECIPE_LV);
         // Frame box processing recipes
         addSimpleProcessingRecipe(
             CircuitComponent.FrameboxAluminium,
             CircuitComponent.ProcessedFrameboxAluminium,
+            ModuleRecipeInfo.Medium,
+            TierEU.RECIPE_LV);
+        addSimpleProcessingRecipe(
+            CircuitComponent.FrameboxTritanium,
+            CircuitComponent.ProcessedFrameboxTritanium,
             ModuleRecipeInfo.Medium,
             TierEU.RECIPE_LV);
     }
@@ -312,6 +343,76 @@ public class RecipeHandlers {
                 new CircuitComponentStack(CircuitComponent.ProcessedChipRAM, 24),
                 new CircuitComponentStack(CircuitComponent.ProcessedWireNiobiumTitanium, 16)),
             CircuitComponent.CrystalAssembly,
+            ModuleRecipeInfo.Fast,
+            32768);
+        addAssemblyMatrixRecipe(
+            Arrays.asList(
+                new CircuitComponentStack(CircuitComponent.ProcessedBoardMultifiberglassElite, 1),
+                new CircuitComponentStack(CircuitComponent.CrystalAssembly, 2),
+                new CircuitComponentStack(CircuitComponent.ProcessedChipRAM, 6),
+                new CircuitComponentStack(CircuitComponent.ProcessedChipNOR, 32),
+                new CircuitComponentStack(CircuitComponent.ProcessedChipNAND, 64),
+                new CircuitComponentStack(CircuitComponent.ProcessedWireNiobiumTitanium, 32)),
+            CircuitComponent.CrystalComputer,
+            ModuleRecipeInfo.Fast,
+            32768);
+        addAssemblyMatrixRecipe(
+            Arrays.asList(
+                new CircuitComponentStack(CircuitComponent.ProcessedFrameboxAluminium, 2),
+                new CircuitComponentStack(CircuitComponent.CrystalComputer, 2),
+                new CircuitComponentStack(CircuitComponent.ProcessedAdvSMDInductor, 8),
+                new CircuitComponentStack(CircuitComponent.ProcessedAdvSMDCapacitor, 16),
+                new CircuitComponentStack(CircuitComponent.ProcessedChipRAM, 32),
+                new CircuitComponentStack(CircuitComponent.ProcessedSuperconductorLuV, 16)),
+            CircuitComponent.CrystalMainframe,
+            ModuleRecipeInfo.Fast,
+            32768);
+        addAssemblyMatrixRecipe(
+            Arrays.asList(
+                new CircuitComponentStack(CircuitComponent.Neuroprocessor, 1),
+                new CircuitComponentStack(CircuitComponent.ProcessedChipCrystalCPU, 1),
+                new CircuitComponentStack(CircuitComponent.ProcessedChipNanoCPU, 1),
+                new CircuitComponentStack(CircuitComponent.ProcessedAdvSMDCapacitor, 8),
+                new CircuitComponentStack(CircuitComponent.ProcessedAdvSMDTransistor, 8),
+                new CircuitComponentStack(CircuitComponent.ProcessedWireYttriumBariumCuprate, 8)),
+            CircuitComponent.WetwareProcessor,
+            ModuleRecipeInfo.Fast,
+            32768);
+        addAssemblyMatrixRecipe(
+            Arrays.asList(
+                new CircuitComponentStack(CircuitComponent.ProcessedBoardWetwareLifesupport, 1),
+                new CircuitComponentStack(CircuitComponent.WetwareProcessor, 2),
+                new CircuitComponentStack(CircuitComponent.ProcessedAdvSMDInductor, 8),
+                new CircuitComponentStack(CircuitComponent.ProcessedAdvSMDCapacitor, 12),
+                new CircuitComponentStack(CircuitComponent.ProcessedChipRAM, 24),
+                new CircuitComponentStack(CircuitComponent.ProcessedWireYttriumBariumCuprate, 16)),
+            CircuitComponent.WetwareAssembly,
+            ModuleRecipeInfo.Fast,
+            32768);
+        addAssemblyMatrixRecipe(
+            Arrays.asList(
+                new CircuitComponentStack(CircuitComponent.ProcessedBoardWetwareLifesupport, 2),
+                new CircuitComponentStack(CircuitComponent.WetwareAssembly, 2),
+                new CircuitComponentStack(CircuitComponent.ProcessedAdvSMDDiode, 8),
+                new CircuitComponentStack(CircuitComponent.ProcessedChipNOR, 16),
+                new CircuitComponentStack(CircuitComponent.ProcessedChipRAM, 64),
+                new CircuitComponentStack(CircuitComponent.ProcessedWireYttriumBariumCuprate, 24)),
+            CircuitComponent.WetwareComputer,
+            ModuleRecipeInfo.Fast,
+            32768);
+        addAssemblyMatrixRecipe(
+            Arrays.asList(
+                new CircuitComponentStack(CircuitComponent.ProcessedFrameboxTritanium, 2),
+                new CircuitComponentStack(CircuitComponent.WetwareComputer, 2),
+                new CircuitComponentStack(CircuitComponent.ProcessedAdvSMDInductor, 16),
+                new CircuitComponentStack(CircuitComponent.ProcessedAdvSMDCapacitor, 16),
+                new CircuitComponentStack(CircuitComponent.ProcessedAdvSMDResistor, 16),
+                new CircuitComponentStack(CircuitComponent.ProcessedAdvSMDTransistor, 16),
+                new CircuitComponentStack(CircuitComponent.ProcessedAdvSMDDiode, 16),
+                new CircuitComponentStack(CircuitComponent.ProcessedChipRAM, 48),
+                new CircuitComponentStack(CircuitComponent.ProcessedSuperconductorZPM, 64),
+                new CircuitComponentStack(CircuitComponent.SheetSiliconeRubber, 64)),
+            CircuitComponent.WetwareComputer,
             ModuleRecipeInfo.Fast,
             32768);
     }
