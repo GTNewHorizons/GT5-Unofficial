@@ -68,11 +68,6 @@ public class DigitalStorageRenderer {
     }
     // spotless:on
 
-    public void renderMachineInventory(MTEDigitalChestBase mte, @Nullable IBlockAccess aWorld, int aX, int aY, int aZ,
-        Block aBlock, RenderBlocks aRenderer) {
-        renderMachine(mte, aWorld, aX, aY, aZ, aBlock, aRenderer);
-    }
-
     public void renderMachine(MTEDigitalChestBase mte, @Nullable IBlockAccess aWorld, int aX, int aY, int aZ,
         Block aBlock, RenderBlocks aRenderer) {
         ForgeDirection displayFacing = mte.mMainFacing;
@@ -90,39 +85,39 @@ public class DigitalStorageRenderer {
         CCRenderState state = CCRenderState.instance();
 
         // spotless:off
-        renderFace(state, displayFacing, glassBox, aWorld, aX, aY, aZ, aBlock, aRenderer, mte, OVERLAY_SCREEN_GLASS.getIcon());
+        renderFace(state, displayFacing, glassBox, aWorld, aX, aY, aZ, mte, OVERLAY_SCREEN_GLASS.getIcon());
         // front frame
         for (var boxFacing : boxFacingMap.keySet()) {
             // do not render the box at the front face when "facing" is "frontFacing"
             if (boxFacing == displayFacing) continue;
 
             // render when the box face matches facing
-            renderFace(state, boxFacing, boxFacingMap.get(boxFacing), aWorld, aX, aY, aZ, aBlock, aRenderer, mte, casingIcon);
+            renderFace(state, boxFacing, boxFacingMap.get(boxFacing), aWorld, aX, aY, aZ, mte, casingIcon);
 
             // render when the box face is opposite of facing
-            renderFace(state, boxFacing.getOpposite(), boxFacingMap.get(boxFacing), aWorld, aX, aY, aZ, aBlock, aRenderer, mte, casingIcon);
+            renderFace(state, boxFacing.getOpposite(), boxFacingMap.get(boxFacing), aWorld, aX, aY, aZ, mte, casingIcon);
         }
 
         // render the sides of the box that face the front face
         if (displayFacing == UP) {
-            renderFace(state, displayFacing, boxFacingMap.get(ForgeDirection.NORTH), aWorld, aX, aY, aZ, aBlock, aRenderer, mte, casingIcon);
-            renderFace(state, displayFacing, boxFacingMap.get(ForgeDirection.SOUTH), aWorld, aX, aY, aZ, aBlock, aRenderer, mte, casingIcon);
-            renderFace(state, displayFacing, boxFacingMap.get(ForgeDirection.EAST), aWorld, aX, aY, aZ, aBlock, aRenderer, mte, casingIcon);
-            renderFace(state, displayFacing, boxFacingMap.get(ForgeDirection.WEST), aWorld, aX, aY, aZ, aBlock, aRenderer, mte, casingIcon);
-            renderFace(state, displayFacing, boxFacingMap.get(ForgeDirection.DOWN), aWorld, aX, aY, aZ, aBlock, aRenderer, mte, casingIcon);
+            renderFace(state, displayFacing, boxFacingMap.get(ForgeDirection.NORTH), aWorld, aX, aY, aZ, mte, casingIcon);
+            renderFace(state, displayFacing, boxFacingMap.get(ForgeDirection.SOUTH), aWorld, aX, aY, aZ, mte, casingIcon);
+            renderFace(state, displayFacing, boxFacingMap.get(ForgeDirection.EAST), aWorld, aX, aY, aZ, mte, casingIcon);
+            renderFace(state, displayFacing, boxFacingMap.get(ForgeDirection.WEST), aWorld, aX, aY, aZ, mte, casingIcon);
+            renderFace(state, displayFacing, boxFacingMap.get(ForgeDirection.DOWN), aWorld, aX, aY, aZ, mte, casingIcon);
         } else if (displayFacing == DOWN) {
-            renderFace(state, displayFacing, boxFacingMap.get(ForgeDirection.NORTH), aWorld, aX, aY, aZ, aBlock, aRenderer, mte, casingIcon);
-            renderFace(state, displayFacing, boxFacingMap.get(ForgeDirection.SOUTH), aWorld, aX, aY, aZ, aBlock, aRenderer, mte, casingIcon);
-            renderFace(state, displayFacing, boxFacingMap.get(ForgeDirection.EAST), aWorld, aX, aY, aZ, aBlock, aRenderer, mte, casingIcon);
-            renderFace(state, displayFacing, boxFacingMap.get(ForgeDirection.WEST), aWorld, aX, aY, aZ, aBlock, aRenderer, mte, casingIcon);
-            renderFace(state, displayFacing, boxFacingMap.get(ForgeDirection.UP), aWorld, aX, aY, aZ, aBlock, aRenderer, mte, casingIcon);
+            renderFace(state, displayFacing, boxFacingMap.get(ForgeDirection.NORTH), aWorld, aX, aY, aZ, mte, casingIcon);
+            renderFace(state, displayFacing, boxFacingMap.get(ForgeDirection.SOUTH), aWorld, aX, aY, aZ, mte, casingIcon);
+            renderFace(state, displayFacing, boxFacingMap.get(ForgeDirection.EAST), aWorld, aX, aY, aZ, mte, casingIcon);
+            renderFace(state, displayFacing, boxFacingMap.get(ForgeDirection.WEST), aWorld, aX, aY, aZ, mte, casingIcon);
+            renderFace(state, displayFacing, boxFacingMap.get(ForgeDirection.UP), aWorld, aX, aY, aZ, mte, casingIcon);
         } else {
-            renderFace(state, displayFacing, boxFacingMap.get(ForgeDirection.DOWN), aWorld, aX, aY, aZ, aBlock, aRenderer, mte, casingIcon);
-            renderFace(state, displayFacing, boxFacingMap.get(ForgeDirection.UP), aWorld, aX, aY, aZ, aBlock, aRenderer, mte, casingIcon);
+            renderFace(state, displayFacing, boxFacingMap.get(ForgeDirection.DOWN), aWorld, aX, aY, aZ, mte, casingIcon);
+            renderFace(state, displayFacing, boxFacingMap.get(ForgeDirection.UP), aWorld, aX, aY, aZ, mte, casingIcon);
 
             ForgeDirection facing = rotateYCCW(displayFacing);
-            renderFace(state, displayFacing, boxFacingMap.get(facing), aWorld, aX, aY, aZ, aBlock, aRenderer, mte, casingIcon);
-            renderFace(state, displayFacing, boxFacingMap.get(facing.getOpposite()), aWorld, aX, aY, aZ, aBlock, aRenderer, mte, casingIcon);
+            renderFace(state, displayFacing, boxFacingMap.get(facing), aWorld, aX, aY, aZ, mte, casingIcon);
+            renderFace(state, displayFacing, boxFacingMap.get(facing.getOpposite()), aWorld, aX, aY, aZ, mte, casingIcon);
         }
         //spotless:on
         state.resetInstance(); // model corruption will happen without it
@@ -171,7 +166,7 @@ public class DigitalStorageRenderer {
     ThreadLocal<GTRendererBlock> gtRendererBlock = ThreadLocal.withInitial(GTRendererBlock::new);
 
     private void renderFace(CCRenderState state, ForgeDirection face, Cuboid6 bounds, @Nullable IBlockAccess aWorld,
-        int aX, int aY, int aZ, Block aBlock, RenderBlocks aRenderer, MTEDigitalChestBase mte, IIcon icon) {
+        int aX, int aY, int aZ, MTEDigitalChestBase mte, IIcon icon) {
         int aColor = mte.getBaseMetaTileEntity()
             .getColorization();
         short[] rgba = Dyes.getModulation(aColor, Dyes.MACHINE_METAL.mRGBa);
