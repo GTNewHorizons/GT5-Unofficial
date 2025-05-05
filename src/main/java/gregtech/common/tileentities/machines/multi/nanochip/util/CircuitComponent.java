@@ -139,7 +139,7 @@ public enum CircuitComponent {
     CrystalMainframe("gt.circuitcomponent.crystalmainframe", RecipeMaps.nanochipAssemblyMatrixRecipes,
         ItemList.Circuit_Crystalmainframe.get(1)),
     WetwareProcessor("gt.circuitcomponent.wetwareprocessor", RecipeMaps.nanochipAssemblyMatrixRecipes,
-        ItemList.Circuit_Master.get(1)),
+        ItemList.Circuit_Neuroprocessor.get(1)),
     WetwareAssembly("gt.circuitcomponent.wetwareassembly", RecipeMaps.nanochipAssemblyMatrixRecipes,
         ItemList.Circuit_Wetwarecomputer.get(1)),
     WetwareComputer("gt.circuitcomponent.wetwarecomputer", RecipeMaps.nanochipAssemblyMatrixRecipes,

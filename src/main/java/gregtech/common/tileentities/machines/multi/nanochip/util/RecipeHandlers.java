@@ -1,5 +1,7 @@
 package gregtech.common.tileentities.machines.multi.nanochip.util;
 
+import static cpw.mods.fml.common.Loader.isModLoaded;
+import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
 import static tectech.thing.CustomItemList.DATApipe;
 
@@ -499,7 +501,7 @@ public class RecipeHandlers {
                 new CircuitComponentStack(CircuitComponent.ProcessedChipRAM, 48),
                 new CircuitComponentStack(CircuitComponent.ProcessedSuperconductorZPM, 64),
                 new CircuitComponentStack(CircuitComponent.FoilSiliconeRubber, 64)),
-            CircuitComponent.WetwareComputer,
+            CircuitComponent.WetwareMainframe,
             ModuleRecipeInfo.Fast,
             32768);
         addAssemblyMatrixRecipe(
@@ -614,6 +616,5 @@ public class RecipeHandlers {
             CircuitComponent.OpticalMainframe,
             ModuleRecipeInfo.Fast,
             32768);
-
     }
 }
