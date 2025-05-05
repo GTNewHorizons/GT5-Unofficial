@@ -6,6 +6,7 @@ import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 import static gregtech.api.util.GTStructureUtility.*;
 import static java.lang.String.valueOf;
 import static net.minecraft.util.StatCollector.translateToLocal;
+import static tectech.Reference.MODID;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
@@ -34,6 +35,7 @@ import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
 import com.cleanroommc.modularui.value.sync.DoubleSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.value.sync.StringSyncValue;
+import com.cleanroommc.modularui.widget.SingleChildWidget;
 import com.cleanroommc.modularui.widget.WidgetTree;
 import com.cleanroommc.modularui.widgets.ListWidget;
 import com.gtnewhorizon.structurelib.alignment.constructable.IConstructable;
@@ -739,6 +741,20 @@ public class MTEYottaFluidTank extends MTETooltipMultiBlockBaseEM implements ICo
     }
 
     @Override
+    protected int[] mainTerminalSize() {
+        return new int[] { 140, 91 };
+    }
+
+    @Override
+    public void addGregtechLogo(ModularPanel panel) {
+        panel.child(
+            new SingleChildWidget<>()
+                .overlay(com.cleanroommc.modularui.drawable.UITexture.fullImage(MODID, "gui/picture/tectech_logo_dark"))
+                .size(18, 18)
+                .pos(140 - 18 - 2, doesBindPlayerInventory() ? 91 - 18 - 2 : 171 - 18 - 2));
+    }
+
+    @Override
     public void insertTexts(ListWidget<IWidget, ?> machineInfo, ItemStackHandler invSlot, PanelSyncManager syncManager,
         ModularPanel parentPanel) {
         super.insertTexts(machineInfo, invSlot, syncManager, parentPanel);
@@ -752,7 +768,7 @@ public class MTEYottaFluidTank extends MTETooltipMultiBlockBaseEM implements ICo
         StringSyncValue percentageSyncer = new StringSyncValue(this::getPercent);
         syncManager.syncValue("percentage", percentageSyncer);
 
-        FluidDisplaySyncHandler storedFluid = new FluidDisplaySyncHandler(() -> mFluid, aFluid -> mFluid = aFluid);
+        FluidDisplaySyncHandler storedFluid = new FluidDisplaySyncHandler(() -> mFluid);
         syncManager.syncValue("storedFluid", storedFluid);
 
         FluidDisplaySyncHandler lockedFluid = new FluidDisplaySyncHandler(
@@ -769,7 +785,7 @@ public class MTEYottaFluidTank extends MTETooltipMultiBlockBaseEM implements ICo
             @Override
             public Result onMousePressed(int mouseButton) {
                 if (!locked.getBoolValue()) {
-                    if (mFluid != null) {
+                    if (storedFluid.getValue() != null) {
                         lockedFluid.setValue(storedFluid.getValue());
                     }
                     locked.setBoolValue(true);
@@ -783,21 +799,38 @@ public class MTEYottaFluidTank extends MTETooltipMultiBlockBaseEM implements ICo
         }.syncHandler("storedFluid")
             .tooltipBuilder(t -> {
                 FluidStack fluidStack = storedFluid.getValue();
-                if (fluidStack == null) {
+                FluidStack lockedStack = lockedFluid.getValue();
+                if (locked.getBoolValue() && fluidStack == null && lockedStack != null) {
+                    t.clearText();
+                    t.add(
+                        lockedStack.getFluid()
+                            .getLocalizedName())
+                        .newLine()
+                        .add(
+                            EnumChatFormatting.BLUE
+                                + (currentStorageSyncer.getValue() == 0 ? "0"
+                                    : NumberFormat.formatWithMaxDigits(currentStorageSyncer.getValue(), 3))
+                                + "/"
+                                + NumberFormat.formatWithMaxDigits(maxStorageSyncer.getValue(), 3));
+                } else if (fluidStack == null) {
                     t.clearText();
                     t.add("Empty");
                 } else {
                     t.clearText();
                     t.add(
                         fluidStack.getFluid()
-                            .getName())
+                            .getLocalizedName())
                         .newLine()
                         .add(
                             EnumChatFormatting.BLUE
-                                + NumberFormat.formatWithMaxDigits(currentStorageSyncer.getDoubleValue(), 3)
+                                + NumberFormat.formatWithMaxDigits(currentStorageSyncer.getValue(), 3)
                                 + "/"
-                                + NumberFormat.formatWithMaxDigits(maxStorageSyncer.getDoubleValue(), 3));
+                                + NumberFormat.formatWithMaxDigits(maxStorageSyncer.getValue(), 3));
                 }
+                if (locked.getBoolValue()) t.newLine()
+                    .add("" + EnumChatFormatting.RED + EnumChatFormatting.ITALIC + "Locked");
+                else t.newLine()
+                    .add("" + EnumChatFormatting.DARK_GRAY + EnumChatFormatting.ITALIC + "Click to Lock Fluid!");
             });
 
         machineInfo.child(
@@ -814,7 +847,8 @@ public class MTEYottaFluidTank extends MTETooltipMultiBlockBaseEM implements ICo
         machineInfo.child(
             IKey.dynamic(
                 () -> StatCollector.translateToLocal("gui.YOTTank.2") + " "
-                    + NumberFormat.formatWithMaxDigits(currentStorageSyncer.getDoubleValue(), 3)
+                    + (currentStorageSyncer.getValue() == 0 ? "0"
+                        : NumberFormat.formatWithMaxDigits(currentStorageSyncer.getValue(), 3))
                     + " ("
                     + EnumChatFormatting.GREEN
                     + percentageSyncer.getStringValue()
@@ -839,8 +873,8 @@ public class MTEYottaFluidTank extends MTETooltipMultiBlockBaseEM implements ICo
 
         machineInfo.child(fluidDisplay.marginLeft(70));
         percentageSyncer.setChangeListener(() -> {
-            fluidDisplay.size(36, (18 + Math.round(24 * Float.parseFloat(percentageSyncer.getStringValue()) / 100)))
-                .pos(70, 30 + Math.round(24 * ((100 - Float.parseFloat(percentageSyncer.getStringValue())) / 100)));
+            fluidDisplay.size(34, (20 + Math.round(62 * Float.parseFloat(percentageSyncer.getStringValue()) / 100)))
+                .pos(143, 1 + Math.round(62 * ((100 - Float.parseFloat(percentageSyncer.getStringValue())) / 100)));
             WidgetTree.resize(machineInfo);
         });
     }
