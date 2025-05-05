@@ -807,8 +807,8 @@ public final class RecipeMaps {
         .progressBar(GTUITextures.PROGRESSBAR_ARROW_MULTIPLE)
         .frontend(LargeNEIFrontend::new)
         .build();
-    public static final RecipeMap<RecipeMapBackend> multiblockAdvancedChemicalReactorRecipes = RecipeMapBuilder
-        .of("gt.recipe.advancedchemicalreactor")
+    public static final RecipeMap<RecipeMapBackend> multiblockECCFRecipes = RecipeMapBuilder
+        .of("gt.recipe.eccf")
         .maxIO(8, 8, 8, 8)
         .progressBar(GTUITextures.PROGRESSBAR_ARROW_MULTIPLE)
         .frontend(AdvancedChemFrontend::new)

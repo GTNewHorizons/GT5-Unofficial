@@ -9,8 +9,8 @@ import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
 import static gregtech.api.recipe.RecipeMaps.*;
 import static gregtech.api.util.GTRecipeBuilder.MINUTES;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
-import static gregtech.api.util.GTRecipeConstants.ACR_PRESSURE;
-import static gregtech.api.util.GTRecipeConstants.ACR_TEMPERATURE;
+import static gregtech.api.util.GTRecipeConstants.ECCF_PRESSURE;
+import static gregtech.api.util.GTRecipeConstants.ECCF_TEMPERATURE;
 import static gregtech.api.util.GTRecipeConstants.AssemblyLine;
 import static gregtech.api.util.GTRecipeConstants.COIL_HEAT;
 import static gregtech.api.util.GTRecipeConstants.FUSION_THRESHOLD;
@@ -20,7 +20,6 @@ import static gregtech.api.util.GTRecipeConstants.RESEARCH_ITEM;
 import static gregtech.api.util.GTRecipeConstants.SCANNING;
 import static gregtech.api.util.GTRecipeConstants.UniversalChemical;
 
-import net.minecraft.item.Item;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
@@ -833,18 +832,18 @@ public class RecipeLoader2 {
             .itemOutputs(WerkstoffLoader.Tiberium.get(OrePrefixes.gem, 1))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_EV)
-            .metadata(ACR_PRESSURE, 110300)
-            .metadata(ACR_TEMPERATURE, 280)
-            .addTo(multiblockAdvancedChemicalReactorRecipes);
+            .metadata(ECCF_PRESSURE, 110300)
+            .metadata(ECCF_TEMPERATURE, 280)
+            .addTo(multiblockECCFRecipes);
 
         GTValues.RA.stdBuilder()
             .itemInputs(Materials.Stone.getDust(1))
             .itemOutputs(Materials.Stone.getDust(1))
             .duration(100 * SECONDS)
             .eut(TierEU.RECIPE_ZPM)
-            .metadata(ACR_PRESSURE, 10230)
-            .metadata(ACR_TEMPERATURE, 400)
-            .addTo(multiblockAdvancedChemicalReactorRecipes);
+            .metadata(ECCF_PRESSURE, 10230)
+            .metadata(ECCF_TEMPERATURE, 400)
+            .addTo(multiblockECCFRecipes);
 
         GTValues.RA.stdBuilder()
             .itemInputs(Materials.Diamond.getGems(1))

@@ -1006,7 +1006,7 @@ import gregtech.common.tileentities.machines.basic.MTETurboCharger;
 import gregtech.common.tileentities.machines.basic.MTEWorldAccelerator;
 import gregtech.common.tileentities.machines.long_distance.MTELongDistancePipelineFluid;
 import gregtech.common.tileentities.machines.long_distance.MTELongDistancePipelineItem;
-import gregtech.common.tileentities.machines.multi.MTEAdvancedChemicalReactor;
+import gregtech.common.tileentities.machines.multi.MTEEnvironmentallyControllerChemicalFacility;
 import gregtech.common.tileentities.machines.multi.MTEAirFilter1;
 import gregtech.common.tileentities.machines.multi.MTEAirFilter2;
 import gregtech.common.tileentities.machines.multi.MTEAirFilter3;
@@ -1616,11 +1616,11 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
         ItemList.Machine_Multi_IndustrialBrewery.set(
             new MTEIndustrialBrewery(INDUSTRIAL_BREWERY_CONTROLLER.ID, "multimachine.brewery", "Big Barrel Brewery")
                 .getStackForm(1));
-        ItemList.Machine_Multi_AdvancedChemicalReactor.set(
-            new MTEAdvancedChemicalReactor(
-                ADVANCED_CHEMICAL_REACTOR_CONTROLLER.ID,
-                "multimachine.advchemicalreactor",
-                "Advanced Chemical Reactor").getStackForm(1));
+        ItemList.Machine_Multi_ECCF.set(
+            new MTEEnvironmentallyControllerChemicalFacility(
+                ENVIRONMENTALLY_CONTROLLED_CHEM_FACILITY_CONTROLLER.ID,
+                "multimachine.eccf",
+                "Environmentally controlled chemical facility").getStackForm(1));
 
         ItemList.Machine_Multi_Autoclave.set(
             new MTEMultiAutoclave(MULTI_AUTOCLAVE_CONTROLLER.ID, "multimachine.autoclave", "Industrial Autoclave")

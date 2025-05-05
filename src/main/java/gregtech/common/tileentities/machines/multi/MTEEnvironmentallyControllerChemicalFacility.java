@@ -1,32 +1,11 @@
 package gregtech.common.tileentities.machines.multi;
 
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlocksTiered;
-import static gregtech.api.GregTechAPI.sBlockCoilACR;
-import static gregtech.api.enums.HatchElement.*;
-import static gregtech.api.enums.Textures.BlockIcons.*;
-import static gregtech.api.util.GTStructureUtility.*;
-
-import javax.annotation.Nullable;
-
-import cpw.mods.fml.common.Mod;
-import net.minecraft.block.Block;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
-import net.minecraftforge.common.util.ForgeDirection;
-
-import org.apache.commons.lang3.tuple.Pair;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import com.google.common.collect.ImmutableList;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
-
 import gregtech.api.GregTechAPI;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -39,19 +18,45 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.blocks.BlockCasings8;
+import net.minecraft.block.Block;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
+import net.minecraftforge.common.util.ForgeDirection;
+import org.apache.commons.lang3.tuple.Pair;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import javax.annotation.Nullable;
+
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlocksTiered;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.withChannel;
+import static gregtech.api.GregTechAPI.sBlockCoilECCF;
+import static gregtech.api.enums.HatchElement.Energy;
+import static gregtech.api.enums.HatchElement.ExoticEnergy;
+import static gregtech.api.enums.HatchElement.InputBus;
+import static gregtech.api.enums.HatchElement.InputHatch;
+import static gregtech.api.enums.HatchElement.Maintenance;
+import static gregtech.api.enums.HatchElement.OutputBus;
+import static gregtech.api.enums.HatchElement.OutputHatch;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_ACTIVE;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_ACTIVE_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.casingTexturePages;
+import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 
 /*
- * The problem in this code is that variables
- * tierCool, tierHeat, tierCompress, tierVacuum
- * are static, so these will be messed up when there
- * are a lot of ACRs, and because of this problem when
- * there are two modules, both of them become 0 for some reason
+ * The problem in this code is that for some reason it cant detect tier of the module blocks
  */
 
-public class MTEAdvancedChemicalReactor extends MTEExtendedPowerMultiBlockBase<MTEAdvancedChemicalReactor>
+public class MTEEnvironmentallyControllerChemicalFacility extends MTEExtendedPowerMultiBlockBase<MTEEnvironmentallyControllerChemicalFacility>
     implements ISurvivalConstructable {
 
-    private static final Logger log = LogManager.getLogger(MTEAdvancedChemicalReactor.class);
+    private static final Logger log = LogManager.getLogger(MTEEnvironmentallyControllerChemicalFacility.class);
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final String HEAT_MODULE_L = "tempHeatL";
@@ -72,8 +77,8 @@ public class MTEAdvancedChemicalReactor extends MTEExtendedPowerMultiBlockBase<M
     private boolean isVacuumModule;
     private boolean isCompressModule;
 
-    private static final IStructureDefinition<MTEAdvancedChemicalReactor> STRUCTURE_DEFINITION = StructureDefinition
-        .<MTEAdvancedChemicalReactor>builder()
+    private static final IStructureDefinition<MTEEnvironmentallyControllerChemicalFacility> STRUCTURE_DEFINITION = StructureDefinition
+        .<MTEEnvironmentallyControllerChemicalFacility>builder()
         .addShape(
             STRUCTURE_PIECE_MAIN,
             // spotless:off
@@ -121,10 +126,10 @@ public class MTEAdvancedChemicalReactor extends MTEExtendedPowerMultiBlockBase<M
                 {"  ","  ","  ","  "}}
         )// spotless:on
         .addElement('P', ofBlock(GregTechAPI.sBlockCasings8, 1))
-        .addElement('J', ofBlock(GregTechAPI.sBlockCasings8, 0)) // fo;uvhweprivh2pe9rvhpwerhvpiwfsh[fuvh
+        .addElement('J', ofBlock(GregTechAPI.sBlockCasings2, 15))
         .addElement(
             'D',
-            buildHatchAdder(MTEAdvancedChemicalReactor.class).atLeast(InputHatch, OutputHatch)
+            buildHatchAdder(MTEEnvironmentallyControllerChemicalFacility.class).atLeast(InputHatch, OutputHatch)
                 .casingIndex(((BlockCasings8) GregTechAPI.sBlockCasings8).getTextureIndex(0))
                 .dot(2)
                 .buildAndChain(GregTechAPI.sBlockCasings8, 0))
@@ -133,12 +138,12 @@ public class MTEAdvancedChemicalReactor extends MTEExtendedPowerMultiBlockBase<M
             withChannel(
                 "cool_pipe",
                 ofBlocksTiered(
-                    MTEAdvancedChemicalReactor::getCoolCoilMeta,
+                    MTEEnvironmentallyControllerChemicalFacility::getCoolCoilMeta,
                     ImmutableList.of(
-                        Pair.of(sBlockCoilACR, 0),
-                        Pair.of(sBlockCoilACR, 1),
-                        Pair.of(sBlockCoilACR, 2),
-                        Pair.of(sBlockCoilACR, 3)),
+                        Pair.of(sBlockCoilECCF, 0),
+                        Pair.of(sBlockCoilECCF, 1),
+                        Pair.of(sBlockCoilECCF, 2),
+                        Pair.of(sBlockCoilECCF, 3)),
                     -1,
                     (t, m) -> t.CoolCoilTier = m,
                     t -> t.CoolCoilTier)))
@@ -147,12 +152,12 @@ public class MTEAdvancedChemicalReactor extends MTEExtendedPowerMultiBlockBase<M
             withChannel(
                 "heat_pipe",
                 ofBlocksTiered(
-                    MTEAdvancedChemicalReactor::getHeatCoilMeta,
+                    MTEEnvironmentallyControllerChemicalFacility::getHeatCoilMeta,
                     ImmutableList.of(
-                        Pair.of(sBlockCoilACR, 4),
-                        Pair.of(sBlockCoilACR, 5),
-                        Pair.of(sBlockCoilACR, 6),
-                        Pair.of(sBlockCoilACR, 7)),
+                        Pair.of(sBlockCoilECCF, 4),
+                        Pair.of(sBlockCoilECCF, 5),
+                        Pair.of(sBlockCoilECCF, 6),
+                        Pair.of(sBlockCoilECCF, 7)),
                     -1,
                     (t, m) -> t.HeatCoilTier = m,
                     t -> t.HeatCoilTier)))
@@ -161,12 +166,12 @@ public class MTEAdvancedChemicalReactor extends MTEExtendedPowerMultiBlockBase<M
             withChannel(
                 "compress_pipe",
                 ofBlocksTiered(
-                    MTEAdvancedChemicalReactor::getCompressCoilMeta,
+                    MTEEnvironmentallyControllerChemicalFacility::getCompressCoilMeta,
                     ImmutableList.of(
-                        Pair.of(sBlockCoilACR, 8),
-                        Pair.of(sBlockCoilACR, 9),
-                        Pair.of(sBlockCoilACR, 10),
-                        Pair.of(sBlockCoilACR, 11)),
+                        Pair.of(sBlockCoilECCF, 8),
+                        Pair.of(sBlockCoilECCF, 9),
+                        Pair.of(sBlockCoilECCF, 10),
+                        Pair.of(sBlockCoilECCF, 11)),
                     -1,
                     (t, m) -> t.CompressCoilTier = m,
                     t -> t.CompressCoilTier)))
@@ -175,18 +180,18 @@ public class MTEAdvancedChemicalReactor extends MTEExtendedPowerMultiBlockBase<M
             withChannel(
                 "vacuum_pipe",
                 ofBlocksTiered(
-                    MTEAdvancedChemicalReactor::getVacuumCoilMeta,
+                    MTEEnvironmentallyControllerChemicalFacility::getVacuumCoilMeta,
                     ImmutableList.of(
-                        Pair.of(sBlockCoilACR, 12),
-                        Pair.of(sBlockCoilACR, 13),
-                        Pair.of(sBlockCoilACR, 14),
-                        Pair.of(sBlockCoilACR, 15)),
+                        Pair.of(sBlockCoilECCF, 12),
+                        Pair.of(sBlockCoilECCF, 13),
+                        Pair.of(sBlockCoilECCF, 14),
+                        Pair.of(sBlockCoilECCF, 15)),
                     -1,
                     (t, m) -> t.VacuumCoilTier = m,
                     t -> t.VacuumCoilTier)))
         .addElement(
             'A',
-            buildHatchAdder(MTEAdvancedChemicalReactor.class)
+            buildHatchAdder(MTEEnvironmentallyControllerChemicalFacility.class)
                 .atLeast(OutputHatch, InputHatch, InputBus, OutputBus, Maintenance, Energy.or(ExoticEnergy))
                 .casingIndex(((BlockCasings8) GregTechAPI.sBlockCasings8).getTextureIndex(0))
                 .dot(1)
@@ -195,16 +200,16 @@ public class MTEAdvancedChemicalReactor extends MTEExtendedPowerMultiBlockBase<M
         .addElement('Q',ofBlock(GregTechAPI.sBlockCasings2, 10))
         .build();
 
-    public MTEAdvancedChemicalReactor(final int aID, final String aName, final String aNameRegional) {
+    public MTEEnvironmentallyControllerChemicalFacility(final int aID, final String aName, final String aNameRegional) {
         super(aID, aName, aNameRegional);
     }
 
-    public MTEAdvancedChemicalReactor(String aName) {
+    public MTEEnvironmentallyControllerChemicalFacility(String aName) {
         super(aName);
     }
 
     @Override
-    public IStructureDefinition<MTEAdvancedChemicalReactor> getStructureDefinition() {
+    public IStructureDefinition<MTEEnvironmentallyControllerChemicalFacility> getStructureDefinition() {
         return STRUCTURE_DEFINITION;
     }
 
@@ -215,7 +220,7 @@ public class MTEAdvancedChemicalReactor extends MTEExtendedPowerMultiBlockBase<M
 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new MTEAdvancedChemicalReactor(this.mName);
+        return new MTEEnvironmentallyControllerChemicalFacility(this.mName);
     }
 
     @Override
@@ -247,7 +252,7 @@ public class MTEAdvancedChemicalReactor extends MTEExtendedPowerMultiBlockBase<M
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Advanced Chemical Reactor, ACR")
+        tt.addMachineType("Environmentally controlled chemical facility, ECCF")
             .addInfo("I have no idea what to type here")
             .beginStructureBlock(3, 5, 3, true)
             .addController("Front Center")
@@ -419,7 +424,7 @@ public class MTEAdvancedChemicalReactor extends MTEExtendedPowerMultiBlockBase<M
 
     @Override
     public RecipeMap<?> getRecipeMap() {
-        return RecipeMaps.multiblockAdvancedChemicalReactorRecipes;
+        return RecipeMaps.multiblockECCFRecipes;
     }
 
     @Override
@@ -459,7 +464,7 @@ public class MTEAdvancedChemicalReactor extends MTEExtendedPowerMultiBlockBase<M
 
     @Nullable
     public static Integer getCoolCoilMeta(Block block, int meta) {
-        if (block == sBlockCoilACR) {
+        if (block == sBlockCoilECCF) {
             switch (meta) {
                 case 0 -> {
                     return 1;
@@ -483,7 +488,7 @@ public class MTEAdvancedChemicalReactor extends MTEExtendedPowerMultiBlockBase<M
 
     @Nullable
     public static Integer getHeatCoilMeta(Block block, int meta) {
-        if (block == sBlockCoilACR) {
+        if (block == sBlockCoilECCF) {
             switch (meta) {
                 case 4 -> {
                     return 1;
@@ -507,7 +512,7 @@ public class MTEAdvancedChemicalReactor extends MTEExtendedPowerMultiBlockBase<M
 
     @Nullable
     public static Integer getCompressCoilMeta(Block block, int meta) {
-        if (block == sBlockCoilACR) {
+        if (block == sBlockCoilECCF) {
             switch (meta) {
                 case 8 -> {
                     return 1;
@@ -531,7 +536,7 @@ public class MTEAdvancedChemicalReactor extends MTEExtendedPowerMultiBlockBase<M
 
     @Nullable
     public static Integer getVacuumCoilMeta(Block block, int meta) {
-        if (block == sBlockCoilACR) {
+        if (block == sBlockCoilECCF) {
             switch (meta) {
                 case 12 -> {
                     return 1;
@@ -555,12 +560,12 @@ public class MTEAdvancedChemicalReactor extends MTEExtendedPowerMultiBlockBase<M
 
     public String[] getInfoData() {
         return new String[] {
-            StatCollector.translateToLocal("GT5U.ACR.pressure") + ": "
+            StatCollector.translateToLocal("GT5U.ECCF.pressure") + ": "
                 + EnumChatFormatting.GREEN
                 + GTUtility.formatNumbers(this.CurrentPressure)
                 + EnumChatFormatting.RESET
                 + " kPa",
-            StatCollector.translateToLocal("GT5U.ACR.temperature") + ": "
+            StatCollector.translateToLocal("GT5U.ECCF.temperature") + ": "
                 + EnumChatFormatting.GREEN
                 + GTUtility.formatNumbers(this.CurrentTemp)
                 + EnumChatFormatting.RESET
@@ -582,6 +587,24 @@ public class MTEAdvancedChemicalReactor extends MTEExtendedPowerMultiBlockBase<M
         return false;
     }
 
+    private static final String ECCFPressureNBTTag = "ECCFPressure";
+    private static final String ECCFTempNBTtag = "ECCFTemperature";
+
+    @Override
+    public void saveNBTData(NBTTagCompound aNBT) {
+        aNBT.setDouble(ECCFPressureNBTTag, CurrentPressure);
+        aNBT.setDouble(ECCFTempNBTtag, CurrentTemp);
+        super.saveNBTData(aNBT);
+    }
+
+    @Override
+    public void loadNBTData(final NBTTagCompound aNBT) {
+        CurrentPressure = aNBT.getDouble(ECCFPressureNBTTag);
+        CurrentTemp = aNBT.getDouble(ECCFTempNBTtag);
+        super.loadNBTData(aNBT);
+    }
+
+
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         super.onPostTick(aBaseMetaTileEntity, aTick);
@@ -591,11 +614,11 @@ public class MTEAdvancedChemicalReactor extends MTEExtendedPowerMultiBlockBase<M
             double initialPressure = 101000;
             double k_pressure = 0.95;
 
-            if ((this.HeatCoilTier != 0) || (this.CoolCoilTier != 0)) {
+            if (isCoolModule || isHeatModule) {
                 CurrentTemp = (CurrentTemp - initialTemp) * k_temp + initialTemp; // returns values to atmosphere conditions
             } else CurrentTemp = 300;
 
-            if ((this.CompressCoilTier != 0) || (this.VacuumCoilTier != 0)) {
+            if (isCompressModule || isVacuumModule) {
                 CurrentPressure = (CurrentPressure - initialPressure) * k_pressure + initialPressure; // returns values to atmosphere conditions
             } else CurrentPressure = 101000;
         }

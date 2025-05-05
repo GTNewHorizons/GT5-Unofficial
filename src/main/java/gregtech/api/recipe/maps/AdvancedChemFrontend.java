@@ -49,8 +49,8 @@ public class AdvancedChemFrontend extends RecipeMapFrontend {
 
     @Override
     protected void drawDurationInfo(RecipeDisplayInfo recipeInfo) {
-        long pressure = recipeInfo.recipe.getMetadataOrDefault(ACR_PRESSURE, 101000);
-        long temperature = recipeInfo.recipe.getMetadataOrDefault(ACR_TEMPERATURE, 300);
+        long pressure = recipeInfo.recipe.getMetadataOrDefault(ECCF_PRESSURE, 101000);
+        long temperature = recipeInfo.recipe.getMetadataOrDefault(ECCF_TEMPERATURE, 300);
         if (pressure < 1000) {
             recipeInfo.drawText(
                 StatCollector.translateToLocalFormatted("GT5U.nei.pressure", formatNumbers(pressure) + " Pa"));

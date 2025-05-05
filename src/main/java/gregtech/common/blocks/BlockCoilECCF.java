@@ -13,49 +13,49 @@ import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Textures;
 
-public class BlockCoilACR extends BlockCasingsAbstract {
+public class BlockCoilECCF extends BlockCasingsAbstract {
 
-    public BlockCoilACR() {
-        super(ItemCasings.class, "gt.blockACR", MaterialCasings.INSTANCE, 8);
+    public BlockCoilECCF() {
+        super(ItemCasings.class, "gt.blockECCF", MaterialCasings.INSTANCE, 8);
 
-        register(0, ItemList.AdvancedChemicalReactor_cooling_block_0, "ACR Freezer Tier 1");
-        register(1, ItemList.AdvancedChemicalReactor_cooling_block_1, "ACR Freezer Tier 2");
-        register(2, ItemList.AdvancedChemicalReactor_cooling_block_2, "ACR Freezer Tier 3");
-        register(3, ItemList.AdvancedChemicalReactor_cooling_block_3, "ACR Freezer Tier 4");
-        register(4, ItemList.AdvancedChemicalReactor_heating_block_0, "ACR Heater Tier 1");
-        register(5, ItemList.AdvancedChemicalReactor_heating_block_1, "ACR Heater Tier 2");
-        register(6, ItemList.AdvancedChemicalReactor_heating_block_2, "ACR Heater Tier 3");
-        register(7, ItemList.AdvancedChemicalReactor_heating_block_3, "ACR Heater Tier 4");
-        register(8, ItemList.AdvancedChemicalReactor_pressure_block_0, "ACR Compressor Tier 1");
-        register(9, ItemList.AdvancedChemicalReactor_pressure_block_1, "ACR Compressor Tier 2");
-        register(10, ItemList.AdvancedChemicalReactor_pressure_block_2, "ACR Compressor Tier 3");
-        register(11, ItemList.AdvancedChemicalReactor_pressure_block_3, "ACR Compressor Tier 4");
-        register(12, ItemList.AdvancedChemicalReactor_vacuum_block_0, "ACR Vacuum Pump Tier 1");
-        register(13, ItemList.AdvancedChemicalReactor_vacuum_block_1, "ACR Vacuum Pump Tier 2");
-        register(14, ItemList.AdvancedChemicalReactor_vacuum_block_2, "ACR Vacuum Pump Tier 3");
-        register(15, ItemList.AdvancedChemicalReactor_vacuum_block_3, "ACR Vacuum Pump Tier 4");
+        register(0, ItemList.ECCF_cooling_block_0, "ECCF Freezer Tier 1");
+        register(1, ItemList.ECCF_cooling_block_1, "ECCF Freezer Tier 2");
+        register(2, ItemList.ECCF_cooling_block_2, "ECCF Freezer Tier 3");
+        register(3, ItemList.ECCF_cooling_block_3, "ECCF Freezer Tier 4");
+        register(4, ItemList.ECCF_heating_block_0, "ECCF Heater Tier 1");
+        register(5, ItemList.ECCF_heating_block_1, "ECCF Heater Tier 2");
+        register(6, ItemList.ECCF_heating_block_2, "ECCF Heater Tier 3");
+        register(7, ItemList.ECCF_heating_block_3, "ECCF Heater Tier 4");
+        register(8, ItemList.ECCF_pressure_block_0, "ECCF Compressor Tier 1");
+        register(9, ItemList.ECCF_pressure_block_1, "ECCF Compressor Tier 2");
+        register(10, ItemList.ECCF_pressure_block_2, "ECCF Compressor Tier 3");
+        register(11, ItemList.ECCF_pressure_block_3, "ECCF Compressor Tier 4");
+        register(12, ItemList.ECCF_vacuum_block_0, "ECCF Vacuum Pump Tier 1");
+        register(13, ItemList.ECCF_vacuum_block_1, "ECCF Vacuum Pump Tier 2");
+        register(14, ItemList.ECCF_vacuum_block_2, "ECCF Vacuum Pump Tier 3");
+        register(15, ItemList.ECCF_vacuum_block_3, "ECCF Vacuum Pump Tier 4");
     }
 
     @Override
     @SideOnly(Side.CLIENT)
     public IIcon getIcon(int ordinalSide, int aMeta) {
         return switch (aMeta) {
-            case 0 -> Textures.BlockIcons.ADVANCED_CHEMICAL_REACTOR_COOLING_BLOCK_0.getIcon();
-            case 1 -> Textures.BlockIcons.ADVANCED_CHEMICAL_REACTOR_COOLING_BLOCK_1.getIcon();
-            case 2 -> Textures.BlockIcons.ADVANCED_CHEMICAL_REACTOR_COOLING_BLOCK_2.getIcon();
-            case 3 -> Textures.BlockIcons.ADVANCED_CHEMICAL_REACTOR_COOLING_BLOCK_3.getIcon();
-            case 4 -> Textures.BlockIcons.ADVANCED_CHEMICAL_REACTOR_HEATING_BLOCK_0.getIcon();
-            case 5 -> Textures.BlockIcons.ADVANCED_CHEMICAL_REACTOR_HEATING_BLOCK_1.getIcon();
-            case 6 -> Textures.BlockIcons.ADVANCED_CHEMICAL_REACTOR_HEATING_BLOCK_2.getIcon();
-            case 7 -> Textures.BlockIcons.ADVANCED_CHEMICAL_REACTOR_HEATING_BLOCK_3.getIcon();
-            case 8 -> Textures.BlockIcons.ADVANCED_CHEMICAL_REACTOR_PRESSURE_BLOCK_0.getIcon();
-            case 9 -> Textures.BlockIcons.ADVANCED_CHEMICAL_REACTOR_PRESSURE_BLOCK_1.getIcon();
-            case 10 -> Textures.BlockIcons.ADVANCED_CHEMICAL_REACTOR_PRESSURE_BLOCK_2.getIcon();
-            case 11 -> Textures.BlockIcons.ADVANCED_CHEMICAL_REACTOR_PRESSURE_BLOCK_3.getIcon();
-            case 12 -> Textures.BlockIcons.ADVANCED_CHEMICAL_REACTOR_VACUUM_BLOCK_0.getIcon();
-            case 13 -> Textures.BlockIcons.ADVANCED_CHEMICAL_REACTOR_VACUUM_BLOCK_1.getIcon();
-            case 14 -> Textures.BlockIcons.ADVANCED_CHEMICAL_REACTOR_VACUUM_BLOCK_2.getIcon();
-            default -> Textures.BlockIcons.ADVANCED_CHEMICAL_REACTOR_VACUUM_BLOCK_3.getIcon();
+            case 0 -> Textures.BlockIcons.ECCF_COOLING_BLOCK_0.getIcon();
+            case 1 -> Textures.BlockIcons.ECCF_COOLING_BLOCK_1.getIcon();
+            case 2 -> Textures.BlockIcons.ECCF_COOLING_BLOCK_2.getIcon();
+            case 3 -> Textures.BlockIcons.ECCF_COOLING_BLOCK_3.getIcon();
+            case 4 -> Textures.BlockIcons.ECCF_HEATING_BLOCK_0.getIcon();
+            case 5 -> Textures.BlockIcons.ECCF_HEATING_BLOCK_1.getIcon();
+            case 6 -> Textures.BlockIcons.ECCF_HEATING_BLOCK_2.getIcon();
+            case 7 -> Textures.BlockIcons.ECCF_HEATING_BLOCK_3.getIcon();
+            case 8 -> Textures.BlockIcons.ECCF_PRESSURE_BLOCK_0.getIcon();
+            case 9 -> Textures.BlockIcons.ECCF_PRESSURE_BLOCK_1.getIcon();
+            case 10 -> Textures.BlockIcons.ECCF_PRESSURE_BLOCK_2.getIcon();
+            case 11 -> Textures.BlockIcons.ECCF_PRESSURE_BLOCK_3.getIcon();
+            case 12 -> Textures.BlockIcons.ECCF_VACUUM_BLOCK_0.getIcon();
+            case 13 -> Textures.BlockIcons.ECCF_VACUUM_BLOCK_1.getIcon();
+            case 14 -> Textures.BlockIcons.ECCF_VACUUM_BLOCK_2.getIcon();
+            default -> Textures.BlockIcons.ECCF_VACUUM_BLOCK_3.getIcon();
         };
     }
 
