@@ -2341,7 +2341,6 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
         return new int[] { 190, 91 };
     }
 
-
     public void insertThingsInGap(Flow panelGap, PanelSyncManager syncManager, ModularPanel parent) {
         UITexture crowbarFalse = UITexture.builder()
             .location(GregTech.ID, "gui/icons/crowbarFalse")
@@ -2371,6 +2370,10 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
             .location(GregTech.ID, "gui/icons/noMaint")
             .imageSize(16, 16)
             .build();
+        UITexture checkmark = UITexture.builder()
+            .location(GregTech.ID, "gui/overlay_button/checkmark")
+            .imageSize(16, 16)
+            .build();
 
         AtomicInteger maintIssues = new AtomicInteger(0);
         IntSyncValue maintSyncer = new IntSyncValue(() -> {
@@ -2384,6 +2387,11 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
             return maintIsuses;
         }, val -> maintIssues.set(val));
         syncManager.syncValue("maintCount", maintSyncer);
+
+        LongSyncValue euVarSyncer = new LongSyncValue(() -> getEUVar());
+        BooleanSyncValue wasShutdownSyncer = new BooleanSyncValue(() -> getBaseMetaTileEntity().wasShutdown());
+        syncManager.syncValue("storedEU", euVarSyncer);
+        syncManager.syncValue("wasShutdownThingsGap", wasShutdownSyncer);
         panelGap.child(
             new HoverableIcon(
                 new DynamicDrawable(
@@ -2421,138 +2429,84 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
                                     .add(" ");
                             })
                             .background(GuiTextures.SLOT_ITEM)
-                            .marginLeft(4));
-        // panelGap.child(crowbarFalse
-        // .asWidget()
-        // .setEnabledIf(w -> mCrowbar)
-        // .size(16,16));
-        // panelGap.child(hardhammerFalse
-        // .asWidget()
-        // .setEnabledIf(w -> mHardHammer)
-        // .size(16,16));
-        // panelGap.child(screwdriverFalse
-        // .asWidget()
-        // .setEnabledIf(w -> mScrewdriver)
-        // .size(16,16));
-        // panelGap.child(softhammerFalse
-        // .asWidget()
-        // .setEnabledIf(w -> mSoftHammer)
-        // .size(16,16));
-        // panelGap.child(solderingFalse
-        // .asWidget()
-        // .setEnabledIf(w -> mSolderingTool)
-        // .size(16,16));
-        // panelGap.child(wrenchFalse
-        // .asWidget()
-        // .setEnabledIf(w -> mWrench)
-        // .size(16,16));
-
+                            .marginLeft(4))
+            .child(new HoverableIcon(new DynamicDrawable(() -> {
+                if (wasShutdownSyncer.getValue() || euVarSyncer.getValue() == 0)
+                    return getTextureForShutdownReason(getBaseMetaTileEntity(), euVarSyncer.getValue());
+                return checkmark;
+            }).asIcon()).asWidget()
+                .tooltipBuilder(t -> {
+                    if (wasShutdownSyncer.getValue() || euVarSyncer.getValue() == 0) t.addLine(
+                        getTooltipForShutdownReason(
+                            getBaseMetaTileEntity().getLastShutDownReason(),
+                            euVarSyncer.getValue()));
+                    else t.addLine(IKey.str(EnumChatFormatting.GREEN + "Running fine."));
+                }));
     }
-    public void insertThingsInGap(Flow panelGap, PanelSyncManager syncManager, ModularPanel parent) {
-        UITexture crowbarFalse = UITexture.builder()
-            .location(GregTech.ID, "gui/icons/crowbarFalse")
-            .imageSize(16, 16)
-            .build();
-        UITexture hardhammerFalse = UITexture.builder()
-            .location(GregTech.ID, "gui/icons/hardhammerFalse")
-            .imageSize(16, 16)
-            .build();
-        UITexture screwdriverFalse = UITexture.builder()
-            .location(GregTech.ID, "gui/icons/screwdriverFalse")
-            .imageSize(16, 16)
-            .build();
-        UITexture softhammerFalse = UITexture.builder()
-            .location(GregTech.ID, "gui/icons/softhammerFalse")
-            .imageSize(16, 16)
-            .build();
-        UITexture solderingFalse = UITexture.builder()
-            .location(GregTech.ID, "gui/icons/solderingFalse")
-            .imageSize(16, 16)
-            .build();
-        UITexture wrenchFalse = UITexture.builder()
+
+    private com.cleanroommc.modularui.api.drawable.IDrawable getTooltipForShutdownReason(
+        ShutDownReason lastShutDownReason, long eu) {
+        if (lastShutDownReason.getKey()
+            .equals(ShutDownReasonRegistry.STRUCTURE_INCOMPLETE.getKey())) {
+            return IKey.str("Structure incomplete.");
+        } else if (eu == 0) {
+            return IKey.str(EnumChatFormatting.DARK_RED + "I don't have power!");
+        } else if (lastShutDownReason.getKey()
+            .equals(ShutDownReasonRegistry.POWER_LOSS.getKey())) {
+                return IKey.str("Lost Power!");
+            } else if (lastShutDownReason.getKey()
+                .equals(ShutDownReasonRegistry.NO_REPAIR.getKey())) {
+                    return IKey.str("Machine too damaged!");
+                } else if (lastShutDownReason.getKey()
+                    .equals(ShutDownReasonRegistry.NONE.getKey())) {
+                        return IKey.str("Manual shutdown (get it?)");
+                    }
+        return IKey.str("WTF?");
+    }
+
+    private com.cleanroommc.modularui.api.drawable.IDrawable getTextureForShutdownReason(IGregTechTileEntity tileEntity,
+        long eu) {
+        UITexture noRepairTexture = UITexture.builder()
             .location(GregTech.ID, "gui/icons/wrenchFalse")
             .imageSize(16, 16)
             .build();
-        UITexture noMaint = UITexture.builder()
-            .location(GregTech.ID, "gui/icons/noMaint")
+
+        UITexture powerLossTexture = UITexture.builder()
+            .location(GregTech.ID, "gui/picture/stalled_electricity")
             .imageSize(16, 16)
             .build();
 
-        AtomicInteger maintIssues = new AtomicInteger(0);
-        IntSyncValue maintSyncer = new IntSyncValue(() -> {
-            int maintIsuses = 0;
-            maintIsuses += mCrowbar ? 0 : 1;
-            maintIsuses += mHardHammer ? 0 : 1;
-            maintIsuses += mScrewdriver ? 0 : 1;
-            maintIsuses += mSoftHammer ? 0 : 1;
-            maintIsuses += mSolderingTool ? 0 : 1;
-            maintIsuses += mWrench ? 0 : 1;
-            return maintIsuses;
-        }, val -> maintIssues.set(val));
-        syncManager.syncValue("maintCount", maintSyncer);
-        panelGap.child(
-            new HoverableIcon(
-                new DynamicDrawable(
-                    () -> maintSyncer.getValue() == 0 ? noMaint
-                        : IKey.str(EnumChatFormatting.DARK_RED + String.valueOf(maintSyncer.getValue()))).asIcon())
-                            .asWidget()
-                            .tooltipBuilder(t -> {
-                                if (maintSyncer.getValue() == 0) {
-                                    t.addLine(IKey.str(EnumChatFormatting.GREEN + "No maintenance issues!"));
-                                    return;
-                                }
-                                if (!mCrowbar) t.add(
-                                    crowbarFalse.asIcon()
-                                        .size(16, 16))
-                                    .add(" ");
-                                if (!mHardHammer) t.add(
-                                    hardhammerFalse.asIcon()
-                                        .size(16, 16))
-                                    .add(" ");
-                                if (!mScrewdriver) t.add(
-                                    screwdriverFalse.asIcon()
-                                        .size(16, 16))
-                                    .add(" ");
-                                if (!mSoftHammer) t.add(
-                                    softhammerFalse.asIcon()
-                                        .size(16, 16))
-                                    .add(" ");
-                                if (!mSolderingTool) t.add(
-                                    solderingFalse.asIcon()
-                                        .size(16, 16))
-                                    .add(" ");
-                                if (!mWrench) t.add(
-                                    wrenchFalse.asIcon()
-                                        .size(16, 16))
-                                    .add(" ");
-                            })
-                            .background(GuiTextures.SLOT_ITEM)
-                            .marginLeft(4));
-        // panelGap.child(crowbarFalse
-        // .asWidget()
-        // .setEnabledIf(w -> mCrowbar)
-        // .size(16,16));
-        // panelGap.child(hardhammerFalse
-        // .asWidget()
-        // .setEnabledIf(w -> mHardHammer)
-        // .size(16,16));
-        // panelGap.child(screwdriverFalse
-        // .asWidget()
-        // .setEnabledIf(w -> mScrewdriver)
-        // .size(16,16));
-        // panelGap.child(softhammerFalse
-        // .asWidget()
-        // .setEnabledIf(w -> mSoftHammer)
-        // .size(16,16));
-        // panelGap.child(solderingFalse
-        // .asWidget()
-        // .setEnabledIf(w -> mSolderingTool)
-        // .size(16,16));
-        // panelGap.child(wrenchFalse
-        // .asWidget()
-        // .setEnabledIf(w -> mWrench)
-        // .size(16,16));
+        UITexture structureIncompleteTexture = UITexture.builder()
+            .location(GregTech.ID, "gui/icons/structureIncomplete")
+            .imageSize(16, 16)
+            .build();
 
+        UITexture manualShutdown = UITexture.builder()
+            .location(GregTech.ID, "gui/icons/manualShutdown")
+            .imageSize(16, 16)
+            .build();
+        UITexture unpowered = UITexture.builder()
+            .location(GregTech.ID, "gui/icons/unpowered")
+            .imageSize(16, 16)
+            .build();
+
+        ShutDownReason lastShutDownReason = tileEntity.getLastShutDownReason();
+        if (lastShutDownReason.getKey()
+            .equals(ShutDownReasonRegistry.STRUCTURE_INCOMPLETE.getKey())) {
+            return structureIncompleteTexture;
+        } else if (eu == 0) {
+            return unpowered;
+        } else if (lastShutDownReason.getKey()
+            .equals(ShutDownReasonRegistry.POWER_LOSS.getKey())) {
+                return powerLossTexture;
+            } else if (lastShutDownReason.getKey()
+                .equals(ShutDownReasonRegistry.NO_REPAIR.getKey())) {
+                    return noRepairTexture;
+                } else if (lastShutDownReason.getKey()
+                    .equals(ShutDownReasonRegistry.NONE.getKey())) {
+                        return manualShutdown;
+                    }
+        return null;
     }
 
     private void registerMachineSyncers(PanelSyncManager syncManager) {
