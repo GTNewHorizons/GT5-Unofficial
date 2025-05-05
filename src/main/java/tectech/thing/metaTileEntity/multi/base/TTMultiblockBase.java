@@ -24,6 +24,7 @@ import java.util.BitSet;
 import java.util.Collections;
 import java.util.EnumSet;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 import javax.annotation.Nonnull;
@@ -51,6 +52,7 @@ import com.cleanroommc.modularui.api.widget.IWidget;
 import com.cleanroommc.modularui.drawable.DrawableArray;
 import com.cleanroommc.modularui.drawable.DynamicDrawable;
 import com.cleanroommc.modularui.drawable.GuiTextures;
+import com.cleanroommc.modularui.drawable.HoverableIcon;
 import com.cleanroommc.modularui.drawable.UITexture;
 import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
@@ -755,9 +757,11 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
         aNBT.removeTag("outputEM");
 
         NBTTagCompound parameterMapTag = new NBTTagCompound();
-        for (Parameter<?> parameter : parameterList) {
-
+        for (int i = 0; i < parameterList.size(); i++) {
+            Parameter<?> parameter = parameterList.get(i);
+            parameter.saveNBT(parameterMapTag, i);
         }
+        aNBT.setTag("parameters", parameterMapTag);
         NBTTagCompound paramI = new NBTTagCompound();
         for (int i = 0; i < parametrization.iParamsIn.length; i++) {
             paramI.setDouble(Integer.toString(i), parametrization.iParamsIn[i]);
@@ -825,6 +829,16 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
             }
         }
 
+        if (aNBT.hasKey("parameters")) {
+            NBTTagCompound parameters = aNBT.getCompoundTag("parameters");
+            if (parameters.tagMap != null && !parameters.tagMap.isEmpty()) {
+                for (int i = 0; i < parameterList.size(); i++) {
+                    parameterList.get(i)
+                        .loadNBT(parameters, i);
+                }
+            }
+
+        }
         if (aNBT.hasKey("eParamsIn") && aNBT.hasKey("eParamsOut") && aNBT.hasKey("eParamsB")) {
             NBTTagCompound paramI = aNBT.getCompoundTag("eParamsIn");
             NBTTagCompound paramO = aNBT.getCompoundTag("eParamsOut");
@@ -2311,7 +2325,6 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
             inventoryRow.child(
                 SlotGroupWidget.playerInventory(0)
                     .leftRel(0)
-                    .marginTop(4)
                     .marginLeft(4));
         }
 
@@ -2354,8 +2367,113 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
         return new int[] { 190, 91 };
     }
 
-    private void insertThingsInGap(Flow panelGap) {}
-    public void insertThingsInGap(Flow panelGap, PanelSyncManager syncManager, ModularPanel parent) {}
+
+    public void insertThingsInGap(Flow panelGap, PanelSyncManager syncManager, ModularPanel parent) {
+        UITexture crowbarFalse = UITexture.builder()
+            .location(GregTech.ID, "gui/icons/crowbarFalse")
+            .imageSize(16, 16)
+            .build();
+        UITexture hardhammerFalse = UITexture.builder()
+            .location(GregTech.ID, "gui/icons/hardhammerFalse")
+            .imageSize(16, 16)
+            .build();
+        UITexture screwdriverFalse = UITexture.builder()
+            .location(GregTech.ID, "gui/icons/screwdriverFalse")
+            .imageSize(16, 16)
+            .build();
+        UITexture softhammerFalse = UITexture.builder()
+            .location(GregTech.ID, "gui/icons/softhammerFalse")
+            .imageSize(16, 16)
+            .build();
+        UITexture solderingFalse = UITexture.builder()
+            .location(GregTech.ID, "gui/icons/solderingFalse")
+            .imageSize(16, 16)
+            .build();
+        UITexture wrenchFalse = UITexture.builder()
+            .location(GregTech.ID, "gui/icons/wrenchFalse")
+            .imageSize(16, 16)
+            .build();
+        UITexture noMaint = UITexture.builder()
+            .location(GregTech.ID, "gui/icons/noMaint")
+            .imageSize(16, 16)
+            .build();
+
+        AtomicInteger maintIssues = new AtomicInteger(0);
+        IntSyncValue maintSyncer = new IntSyncValue(() -> {
+            int maintIsuses = 0;
+            maintIsuses += mCrowbar ? 0 : 1;
+            maintIsuses += mHardHammer ? 0 : 1;
+            maintIsuses += mScrewdriver ? 0 : 1;
+            maintIsuses += mSoftHammer ? 0 : 1;
+            maintIsuses += mSolderingTool ? 0 : 1;
+            maintIsuses += mWrench ? 0 : 1;
+            return maintIsuses;
+        }, val -> maintIssues.set(val));
+        syncManager.syncValue("maintCount", maintSyncer);
+        panelGap.child(
+            new HoverableIcon(
+                new DynamicDrawable(
+                    () -> maintSyncer.getValue() == 0 ? noMaint
+                        : IKey.str(EnumChatFormatting.DARK_RED + String.valueOf(maintSyncer.getValue()))).asIcon())
+                            .asWidget()
+                            .tooltipBuilder(t -> {
+                                if (maintSyncer.getValue() == 0) {
+                                    t.addLine(IKey.str(EnumChatFormatting.GREEN + "No maintenance issues!"));
+                                    return;
+                                }
+                                if (!mCrowbar) t.add(
+                                    crowbarFalse.asIcon()
+                                        .size(16, 16))
+                                    .add(" ");
+                                if (!mHardHammer) t.add(
+                                    hardhammerFalse.asIcon()
+                                        .size(16, 16))
+                                    .add(" ");
+                                if (!mScrewdriver) t.add(
+                                    screwdriverFalse.asIcon()
+                                        .size(16, 16))
+                                    .add(" ");
+                                if (!mSoftHammer) t.add(
+                                    softhammerFalse.asIcon()
+                                        .size(16, 16))
+                                    .add(" ");
+                                if (!mSolderingTool) t.add(
+                                    solderingFalse.asIcon()
+                                        .size(16, 16))
+                                    .add(" ");
+                                if (!mWrench) t.add(
+                                    wrenchFalse.asIcon()
+                                        .size(16, 16))
+                                    .add(" ");
+                            })
+                            .background(GuiTextures.SLOT_ITEM)
+                            .marginLeft(4));
+        // panelGap.child(crowbarFalse
+        // .asWidget()
+        // .setEnabledIf(w -> mCrowbar)
+        // .size(16,16));
+        // panelGap.child(hardhammerFalse
+        // .asWidget()
+        // .setEnabledIf(w -> mHardHammer)
+        // .size(16,16));
+        // panelGap.child(screwdriverFalse
+        // .asWidget()
+        // .setEnabledIf(w -> mScrewdriver)
+        // .size(16,16));
+        // panelGap.child(softhammerFalse
+        // .asWidget()
+        // .setEnabledIf(w -> mSoftHammer)
+        // .size(16,16));
+        // panelGap.child(solderingFalse
+        // .asWidget()
+        // .setEnabledIf(w -> mSolderingTool)
+        // .size(16,16));
+        // panelGap.child(wrenchFalse
+        // .asWidget()
+        // .setEnabledIf(w -> mWrench)
+        // .size(16,16));
+
+    }
 
     private void registerMachineSyncers(PanelSyncManager syncManager) {
         syncManager.syncValue(
