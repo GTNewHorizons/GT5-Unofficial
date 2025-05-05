@@ -1,9 +1,10 @@
 package gregtech.common.tileentities.machines.multi.nanochip.util;
 
-import static cpw.mods.fml.common.Loader.isModLoaded;
-import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
 import static tectech.thing.CustomItemList.DATApipe;
+
+import java.util.Arrays;
+import java.util.List;
 
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
@@ -20,9 +21,6 @@ import gregtech.api.recipe.metadata.NanochipAssemblyRecipeInfo;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipeBuilder;
 import gregtech.common.tileentities.machines.multi.nanochip.util.CircuitComponent.CircuitComponentStack;
-
-import java.util.Arrays;
-import java.util.List;
 
 public class RecipeHandlers {
 
@@ -74,7 +72,7 @@ public class RecipeHandlers {
     }
 
     private static void addAssemblyMatrixRecipe(List<CircuitComponentStack> input, CircuitComponent output,
-                                                ModuleRecipeInfo info, long eut) {
+        ModuleRecipeInfo info, long eut) {
         if (!output.processingMap.equals(RecipeMaps.nanochipAssemblyMatrixRecipes)) {
             throw new IllegalArgumentException("Invalid RecipeMap passed to addAssemblyMatrixRecipe!");
         } else if (output.realCircuit == null) {
@@ -295,6 +293,7 @@ public class RecipeHandlers {
             ModuleRecipeInfo.Fast,
             TierEU.RECIPE_LV);
         // Board processing recipes
+        // TODO: Different processing fluids for board tiers?
         addSimpleProcessingRecipe(
             CircuitComponent.BoardMultifiberglassElite,
             Materials.IronIIIChloride.getFluid(1000),
@@ -422,7 +421,7 @@ public class RecipeHandlers {
                 new CircuitComponentStack(CircuitComponent.ProcessedWireNiobiumTitanium, 8)),
             CircuitComponent.CrystalProcessor,
             ModuleRecipeInfo.Fast,
-            32768);
+            TierEU.LuV);
         addAssemblyMatrixRecipe(
             Arrays.asList(
                 new CircuitComponentStack(CircuitComponent.ProcessedBoardMultifiberglassElite, 1),
@@ -433,7 +432,7 @@ public class RecipeHandlers {
                 new CircuitComponentStack(CircuitComponent.ProcessedWireNiobiumTitanium, 16)),
             CircuitComponent.CrystalAssembly,
             ModuleRecipeInfo.Fast,
-            32768);
+            TierEU.LuV);
         addAssemblyMatrixRecipe(
             Arrays.asList(
                 new CircuitComponentStack(CircuitComponent.ProcessedBoardMultifiberglassElite, 1),
@@ -444,7 +443,7 @@ public class RecipeHandlers {
                 new CircuitComponentStack(CircuitComponent.ProcessedWireNiobiumTitanium, 32)),
             CircuitComponent.CrystalComputer,
             ModuleRecipeInfo.Fast,
-            32768);
+            TierEU.LuV);
         addAssemblyMatrixRecipe(
             Arrays.asList(
                 new CircuitComponentStack(CircuitComponent.ProcessedFrameboxAluminium, 2),
@@ -455,7 +454,7 @@ public class RecipeHandlers {
                 new CircuitComponentStack(CircuitComponent.ProcessedSuperconductorLuV, 16)),
             CircuitComponent.CrystalMainframe,
             ModuleRecipeInfo.Fast,
-            32768);
+            TierEU.LuV);
         addAssemblyMatrixRecipe(
             Arrays.asList(
                 new CircuitComponentStack(CircuitComponent.Neuroprocessor, 1),
@@ -466,7 +465,7 @@ public class RecipeHandlers {
                 new CircuitComponentStack(CircuitComponent.ProcessedWireYttriumBariumCuprate, 8)),
             CircuitComponent.WetwareProcessor,
             ModuleRecipeInfo.Fast,
-            32768);
+            TierEU.LuV);
         addAssemblyMatrixRecipe(
             Arrays.asList(
                 new CircuitComponentStack(CircuitComponent.ProcessedBoardWetwareLifesupport, 1),
@@ -477,7 +476,7 @@ public class RecipeHandlers {
                 new CircuitComponentStack(CircuitComponent.ProcessedWireYttriumBariumCuprate, 16)),
             CircuitComponent.WetwareAssembly,
             ModuleRecipeInfo.Fast,
-            32768);
+            TierEU.LuV);
         addAssemblyMatrixRecipe(
             Arrays.asList(
                 new CircuitComponentStack(CircuitComponent.ProcessedBoardWetwareLifesupport, 2),
@@ -488,7 +487,7 @@ public class RecipeHandlers {
                 new CircuitComponentStack(CircuitComponent.ProcessedWireYttriumBariumCuprate, 24)),
             CircuitComponent.WetwareComputer,
             ModuleRecipeInfo.Fast,
-            32768);
+            TierEU.LuV);
         addAssemblyMatrixRecipe(
             Arrays.asList(
                 new CircuitComponentStack(CircuitComponent.ProcessedFrameboxTritanium, 2),
@@ -503,7 +502,7 @@ public class RecipeHandlers {
                 new CircuitComponentStack(CircuitComponent.FoilSiliconeRubber, 64)),
             CircuitComponent.WetwareMainframe,
             ModuleRecipeInfo.Fast,
-            32768);
+            TierEU.LuV);
         addAssemblyMatrixRecipe(
             Arrays.asList(
                 new CircuitComponentStack(CircuitComponent.Bioprocessor, 1),
@@ -514,7 +513,7 @@ public class RecipeHandlers {
                 new CircuitComponentStack(CircuitComponent.ProcessedWireNiobiumTitanium, 16)),
             CircuitComponent.BiowareProcessor,
             ModuleRecipeInfo.Fast,
-            32768);
+            TierEU.LuV);
         addAssemblyMatrixRecipe(
             Arrays.asList(
                 new CircuitComponentStack(CircuitComponent.ProcessedBoardBioMutated, 1),
@@ -525,7 +524,7 @@ public class RecipeHandlers {
                 new CircuitComponentStack(CircuitComponent.ProcessedWireYttriumBariumCuprate, 24)),
             CircuitComponent.BiowareAssembly,
             ModuleRecipeInfo.Fast,
-            32768);
+            TierEU.LuV);
         addAssemblyMatrixRecipe(
             Arrays.asList(
                 new CircuitComponentStack(CircuitComponent.ProcessedBoardBioMutated, 2),
@@ -540,7 +539,7 @@ public class RecipeHandlers {
                 new CircuitComponentStack(CircuitComponent.FoilSiliconeRubber, 64)),
             CircuitComponent.BiowareComputer,
             ModuleRecipeInfo.Fast,
-            32768);
+            TierEU.LuV);
         addAssemblyMatrixRecipe(
             Arrays.asList(
                 new CircuitComponentStack(CircuitComponent.ProcessedFrameboxTritanium, 4),
@@ -556,7 +555,7 @@ public class RecipeHandlers {
                 new CircuitComponentStack(CircuitComponent.FoilSiliconeRubber, 64)),
             CircuitComponent.BiowareMainframe,
             ModuleRecipeInfo.Fast,
-            32768);
+            TierEU.LuV);
         addAssemblyMatrixRecipe(
             Arrays.asList(
                 new CircuitComponentStack(CircuitComponent.ProcessedChipOpticalCPU, 1),
@@ -567,7 +566,7 @@ public class RecipeHandlers {
                 new CircuitComponentStack(CircuitComponent.BoltEnrichedHolmium, 16)),
             CircuitComponent.OpticalProcessor,
             ModuleRecipeInfo.Fast,
-            32768);
+            TierEU.LuV);
         addAssemblyMatrixRecipe(
             Arrays.asList(
                 new CircuitComponentStack(CircuitComponent.ProcessedBoardOptical, 1),
@@ -581,7 +580,7 @@ public class RecipeHandlers {
                 new CircuitComponentStack(CircuitComponent.FoilSiliconeRubber, 64)),
             CircuitComponent.OpticalAssembly,
             ModuleRecipeInfo.Fast,
-            32768);
+            TierEU.LuV);
         addAssemblyMatrixRecipe(
             Arrays.asList(
                 new CircuitComponentStack(CircuitComponent.ProcessedBoardOptical, 2),
@@ -597,7 +596,7 @@ public class RecipeHandlers {
                 new CircuitComponentStack(CircuitComponent.FoilPolybenzimidazole, 64)),
             CircuitComponent.OpticalComputer,
             ModuleRecipeInfo.Fast,
-            32768);
+            TierEU.LuV);
         addAssemblyMatrixRecipe(
             Arrays.asList(
                 new CircuitComponentStack(CircuitComponent.ProcessedFrameboxTritanium, 8),
@@ -615,6 +614,6 @@ public class RecipeHandlers {
                 new CircuitComponentStack(CircuitComponent.FoilPolybenzimidazole, 64)),
             CircuitComponent.OpticalMainframe,
             ModuleRecipeInfo.Fast,
-            32768);
+            TierEU.LuV);
     }
 }

@@ -92,7 +92,7 @@ public class OpticalOrganizer extends MTENanochipAssemblyModuleBase<OpticalOrgan
     }
 
     public static void registerLocalName(String unprocessedName, CircuitComponent component) {
-        component.fallbackLocalizedName = "Traced " + unprocessedName;
+        component.fallbackLocalizedName = "Optimized " + unprocessedName;
     }
 
     @Override
