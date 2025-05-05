@@ -8,10 +8,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
-import gregtech.api.util.GTUtility;
-import com.cleanroommc.modularui.api.drawable.IKey;
-import com.cleanroommc.modularui.utils.Alignment;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -23,11 +22,13 @@ import org.jetbrains.annotations.NotNull;
 
 import com.cleanroommc.modularui.api.IPanelHandler;
 import com.cleanroommc.modularui.api.drawable.IIcon;
+import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.api.widget.IWidget;
 import com.cleanroommc.modularui.drawable.GuiTextures;
 import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.RichTooltip;
+import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.utils.serialization.IByteBufAdapter;
 import com.cleanroommc.modularui.value.sync.GenericSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
@@ -47,6 +48,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
+import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.modularui2.widget.ColorGridWidget;
 import gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyModuleBase;
@@ -207,7 +209,7 @@ public class Splitter extends MTENanochipAssemblyModuleBase<Splitter> {
         Map<GTUtility.ItemId, Byte> colors = inputInfo.colors;
         Map<GTUtility.ItemId, ItemStack> inputs = inputInfo.inputs;
 
-        for(Map.Entry<GTUtility.ItemId, Byte> color : colors.entrySet()){
+        for (Map.Entry<GTUtility.ItemId, Byte> color : colors.entrySet()) {
             Byte currentDye = color.getValue();
             ItemStack stack = inputs.get(color.getKey());
             if (currentDye == -1) continue;
@@ -217,8 +219,9 @@ public class Splitter extends MTENanochipAssemblyModuleBase<Splitter> {
 
             // Find output hatches that have the color of the dye
             List<List<MTEHatchVacuumConveyorOutput>> availableOutputHatches = new ArrayList<>();
-            for (Byte potentialDye : outputDyes){
-                List<MTEHatchVacuumConveyorOutput> outputHatchesForDye = this.vacuumConveyorOutputs.findColoredHatches(potentialDye);
+            for (Byte potentialDye : outputDyes) {
+                List<MTEHatchVacuumConveyorOutput> outputHatchesForDye = this.vacuumConveyorOutputs
+                    .findColoredHatches(potentialDye);
                 if (outputHatchesForDye != null && !outputHatchesForDye.isEmpty()) {
                     availableOutputHatches.add(outputHatchesForDye);
                 }
@@ -283,13 +286,11 @@ public class Splitter extends MTENanochipAssemblyModuleBase<Splitter> {
     public NBTTagList createRulesTagList() {
         NBTTagList list = new NBTTagList();
         for (Map.Entry<Byte, List<Byte>> entry : colorMap.entrySet()) {
-            Byte key = entry.getKey();
-            List<Byte> value = entry.getValue();
             String outputsString = "";
-            for (Byte color : value) {
+            for (Byte color : entry.getValue()) {
                 outputsString = outputsString + color + "+";
             }
-            list.appendTag(new NBTTagString(key + "->" + outputsString));
+            list.appendTag(new NBTTagString(entry.getKey() + "->" + outputsString));
         }
         return list;
     }
@@ -301,9 +302,8 @@ public class Splitter extends MTENanochipAssemblyModuleBase<Splitter> {
             // Obfuscated method returns the stored string
             String[] data = tag.func_150285_a_()
                 .split("->");
-            String[] outputData = data[1].split("\\+");
             List<Byte> outputs = new ArrayList<>();
-            for (String string : outputData) {
+            for (String string : data[1].split("\\+")) {
                 if (string.isEmpty()) break;
                 outputs.add(Byte.valueOf(string));
             }
@@ -351,7 +351,9 @@ public class Splitter extends MTENanochipAssemblyModuleBase<Splitter> {
             List<Byte> outputs = entry.getValue();
             // Skip if the rule is empty
             if (outputs.contains(input) && outputs.size() == 1) continue;
-            list.child(createColorManager(syncManager, ImmutableList.of(input), outputs));
+            // spotless:off
+            list.child(createColorManager(syncManager, Stream.of(input).collect(Collectors.toList()), outputs));
+            // spotless:on
         }
 
         return ui.child(list)
@@ -409,40 +411,59 @@ public class Splitter extends MTENanochipAssemblyModuleBase<Splitter> {
                     .build()
                     .pos(121, 13))
             // Input grid color display
-             .child(
-             IKey.dynamic(() -> inputGrid.getName(0))
-             .asWidget()
-             .scale(0.8F)
-             .alignment(Alignment.Center)
-             .size(42, 8)
-             .pos(4, 5))
+            .child(
+                IKey.dynamic(() -> inputGrid.getName(0))
+                    .asWidget()
+                    .scale(0.8F)
+                    .alignment(Alignment.Center)
+                    .size(42, 8)
+                    .pos(4, 5))
             // Output grid color display
-             .child(
-             IKey.str("[Hover]")
-             .asWidget().tooltipBuilder(t -> getOutputInfo(t, outputGrid))
-             .scale(0.8F)
-             .alignment(Alignment.Center)
-             .size(42, 8)
-             .pos(120, 5))
+            .child(
+                // spotless makes this look vile and disgusting and abominable and atrocious and yucky and horrid and
+                // offensive to the eyes and nasty and foul and repugnant and abhorrent and deplorable and nauseating
+                // and Dirty
+                // spotless:off
+                IKey.dynamic(() -> switch (outputGrid.getAmountSelected()) {
+                        case 0: yield "None";
+                        case 1: yield outputGrid.getName(0);
+                        default: yield "[Hover]";
+                    })
+                // spotless:on
+                    .asWidget()
+                    .tooltipAutoUpdate(true)
+                    .tooltipBuilder(t -> getInfo(t, outputGrid))
+                    .scale(0.8F)
+                    .alignment(Alignment.Center)
+                    .size(42, 8)
+                    .pos(120, 5))
             // Save button
             .child(
                 new ButtonWidget<>()
                     .onMousePressed(a -> saveColorData(inputGrid.getSelected(), outputGrid.getSelected(), map))
-                    .tooltip(tooltip -> tooltip.add("Save"))
+                    .tooltip(t -> t.add("Save"))
                     .overlay(GTGuiTextures.OVERLAY_BUTTON_CHECKMARK)
-                    .posRel(0.5F, 0.1F)
+                    .pos(85, 5)
+                    .size(8, 8))
+            // Delete button
+            .child(
+                new ButtonWidget<>().tooltip(t -> t.add("Delete"))
+                    .onMousePressed(a -> removeColorData(inputGrid.getSelected(), outputGrid.getSelected(), map))
+                    .overlay(GTGuiTextures.OVERLAY_BUTTON_CROSS)
+                    .pos(73, 5)
                     .size(8, 8))
             .size(166, 58)
             .background(GTGuiTextures.BACKGROUND_POPUP_STANDARD);
     }
 
-    public RichTooltip getOutputInfo(RichTooltip t, ColorGridWidget grid) {
+    public RichTooltip getInfo(RichTooltip t, ColorGridWidget grid) {
         List<Byte> selected = grid.getSelected();
         int amount = selected.size();
         if (amount == 0) return t.add("None selected");
-        t.pos(RichTooltip.Pos.ABOVE).add("Currently selected:\n");
+        t.pos(RichTooltip.Pos.ABOVE)
+            .add("Currently selected:\n");
         for (int i = 0; i < amount; i++) {
-            boolean shouldNewLine = ((i % 3) == 0);
+            boolean shouldNewLine = (((i - 2) % 3) == 0);
             Dyes color = Dyes.get(selected.get(i));
             t.add(color.getLocalizedDyeName() + (shouldNewLine ? "\n" : ", "));
         }
@@ -456,6 +477,16 @@ public class Splitter extends MTENanochipAssemblyModuleBase<Splitter> {
             colorMap.put(inputColor, newOutputs);
             map.setValue(colorMap);
         }
+        return true;
+    }
+
+    // TODO: figure out how to actually remove the ParentWidget from the ui
+    private boolean removeColorData(List<Byte> input, List<Byte> output, GenericSyncValue<Map<Byte, List<Byte>>> map) {
+        if (input.isEmpty() || output.isEmpty()) return false;
+        for (Byte inputColor : input) {
+            colorMap.remove(inputColor);
+        }
+        map.setValue(colorMap);
         return true;
     }
 

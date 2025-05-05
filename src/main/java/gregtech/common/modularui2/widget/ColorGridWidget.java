@@ -24,6 +24,7 @@ import gregtech.api.enums.Dyes;
  */
 public class ColorGridWidget extends Grid {
 
+    // TODO: consider changing this to Set
     public List<Byte> selected = new ArrayList<>();
     public int maxSelected = 16;
     public int buttonSize = 9;
@@ -40,7 +41,7 @@ public class ColorGridWidget extends Grid {
      */
     public ColorGridWidget setInitialSelected(byte value) {
         if (value >= 0 && value < 16) {
-            this.selected = ImmutableList.of(value);
+            selected = ImmutableList.of(value);
         }
         return this;
     }
@@ -52,7 +53,7 @@ public class ColorGridWidget extends Grid {
      */
     public ColorGridWidget setInitialSelected(List<Byte> value) {
         if (value == null) return this;
-        this.selected = value;
+        selected = value;
         return this;
     }
 
@@ -61,7 +62,7 @@ public class ColorGridWidget extends Grid {
      * @return this
      */
     public ColorGridWidget setMaxSelected(int value) {
-        this.maxSelected = value;
+        maxSelected = value;
         return this;
     }
 
@@ -70,7 +71,7 @@ public class ColorGridWidget extends Grid {
      * @return this
      */
     public ColorGridWidget setButtonSize(int value) {
-        this.buttonSize = value;
+        buttonSize = value;
         return this;
     }
 
@@ -79,7 +80,7 @@ public class ColorGridWidget extends Grid {
      * @return this
      */
     public ColorGridWidget setButtonPadding(int value) {
-        this.buttonPadding = value;
+        buttonPadding = value;
         return this;
     }
 
@@ -88,7 +89,7 @@ public class ColorGridWidget extends Grid {
      * @return this
      */
     public ColorGridWidget setBorderSize(int value) {
-        this.borderSize = value;
+        borderSize = value;
         return this;
     }
 
@@ -127,14 +128,15 @@ public class ColorGridWidget extends Grid {
             public void onInit() {
                 super.onInit();
                 if (selected.contains((byte) index) && maxSelected >= selected.size()) {
-                    this.setState(1, true);
+                    setStateWithoutSelecting(1, true);
                 }
             }
 
             @Override
             public @NotNull Result onMousePressed(int mouseButton) {
-                onToggled(index);
-                return super.onMousePressed(mouseButton);
+                Result result = super.onMousePressed(mouseButton);
+                onToggled();
+                return result;
             }
         }.background(false, drawButton(Color.multiply(color, 0.5F, false)))
             .background(true, drawButton(color))
@@ -158,38 +160,17 @@ public class ColorGridWidget extends Grid {
         });
     }
 
-    // TODO this method really sucks. maybe figure out a better implementation for this crap
-    public void onToggled(int index) {
-        List<IWidget> children = this.getChildren();
-
-        for (IWidget child : children) {
-            if (!(child instanceof ColorGridButton button)) continue;
-            if (!selected.contains((byte) button.index)) {
-                button.setState(0, true);
-            }
-        }
-
-        if (!selected.contains((byte) index)) {
-            selected.add((byte) index);
-        } else {
-            IWidget child = children.get(index);
-            if (!(child instanceof  ColorGridButton button)) return;
-            if (button.isValueSelected()) {
-                // Silly cast
-                selected.remove((Byte) ((byte) index));
-            }
-        }
-
-
-        if (this.selected.size() > this.maxSelected) {
+    public void onToggled() {
+        List<IWidget> children = getChildren();
+        if (selected.size() > maxSelected) {
             IWidget targetChild = children.get(selected.get(0));
             if (!(targetChild instanceof ColorGridButton button)) return;
             // target locked; disable the child
-            selected.remove(0);
             button.setState(0, true);
         }
     }
 
+    // TODO: figure out how to word what the i represents in these. i got no clue what to put down
     /**
      * @return The name of the current selected color at i.
      */
@@ -219,7 +200,7 @@ public class ColorGridWidget extends Grid {
      * @return The list of selected button's indexes
      */
     public List<Byte> getSelected() {
-        return this.selected;
+        return selected;
     }
 
     /**
@@ -229,13 +210,28 @@ public class ColorGridWidget extends Grid {
         return getSelected().size();
     }
 
-    public static class ColorGridButton extends ToggleButton {
+    public class ColorGridButton extends ToggleButton {
 
         int index;
 
         public ColorGridButton(int value) {
             super();
-            this.index = value;
+            index = value;
+        }
+
+        @Override
+        public void setState(int state, boolean setSource) {
+            super.setState(state, setSource);
+            if (state == 0) {
+                selected.remove((Byte) ((byte) index));
+            } else {
+                selected.add((byte) index);
+            }
+        }
+
+        // Workaround for calling double super in the anonymous class ColorGridWidget uses
+        public void setStateWithoutSelecting(int state, boolean setSource) {
+            super.setState(state, setSource);
         }
     }
 
