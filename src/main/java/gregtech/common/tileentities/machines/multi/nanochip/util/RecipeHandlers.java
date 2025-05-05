@@ -151,7 +151,8 @@ public class RecipeHandlers {
             CircuitComponent.BoardMultifiberglassElite,
             ItemList.Circuit_Board_Multifiberglass_Elite.get(1));
         addConversionRecipe(CircuitComponent.BoardWetwareLifesupport, ItemList.Circuit_Board_Wetware_Extreme.get(1));
-        addConversionRecipe(CircuitComponent.BoardBioMutated, ItemList.Circuit_Board_Bio.get(1));
+        addConversionRecipe(CircuitComponent.BoardBioMutated, ItemList.Circuit_Board_Bio_Ultra.get(1));
+        addConversionRecipe(CircuitComponent.BoardOptical, ItemList.Circuit_Board_Optical.get(1));
         // CPUs
         addConversionRecipe(CircuitComponent.ChipCrystalCPU, ItemList.Circuit_Chip_CrystalCPU.get(1));
         addConversionRecipe(CircuitComponent.ChipAdvCrystalCPU, ItemList.Circuit_Chip_CrystalSoC.get(1));
@@ -332,6 +333,12 @@ public class RecipeHandlers {
             CircuitComponent.ProcessedChipOpticalCPU,
             ModuleRecipeInfo.Slow,
             TierEU.RECIPE_LV);
+        // RAM processing recipes
+        addSimpleProcessingRecipe(
+            CircuitComponent.OpticalRAM,
+            CircuitComponent.ProcessedOpticalRAM,
+            ModuleRecipeInfo.Slow,
+            TierEU.RECIPE_LV);
         // Wafer cutting processing recipes
         // TODO: Which waters do we want for every wafer?
         addSimpleProcessingRecipe(
@@ -388,11 +395,13 @@ public class RecipeHandlers {
         // Frame box processing recipes
         addSimpleProcessingRecipe(
             CircuitComponent.FrameboxAluminium,
+            Materials.Grade1PurifiedWater.getFluid(1000),
             CircuitComponent.ProcessedFrameboxAluminium,
             ModuleRecipeInfo.Medium,
             TierEU.RECIPE_LV);
         addSimpleProcessingRecipe(
             CircuitComponent.FrameboxTritanium,
+            Materials.Grade1PurifiedWater.getFluid(1000),
             CircuitComponent.ProcessedFrameboxTritanium,
             ModuleRecipeInfo.Medium,
             TierEU.RECIPE_LV);
