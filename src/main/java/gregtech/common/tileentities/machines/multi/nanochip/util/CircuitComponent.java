@@ -3,6 +3,8 @@ package gregtech.common.tileentities.machines.multi.nanochip.util;
 import java.util.HashMap;
 import java.util.Map;
 
+import gregtech.api.enums.OrePrefixes;
+import gregtech.api.util.GTOreDictUnificator;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.StatCollector;
@@ -13,6 +15,8 @@ import gregtech.api.items.CircuitComponentFakeItem;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.util.GTUtility;
+
+import static gregtech.api.enums.Mods.GregTech;
 
 public enum CircuitComponent {
 
@@ -25,13 +29,13 @@ public enum CircuitComponent {
 
     // When adding to this list, PLEASE only add to the end! The ordinals are used as item ids for the fake items, so
     // adding in the middle will break saved state!
-    WireNiobiumTitanium("gt.circuitcomponent.wirenbti", RecipeMaps.nanochipWireTracer, Materials.NiobiumTitanium),
+    WireNiobiumTitanium("gt.circuitcomponent.wirenbti", RecipeMaps.nanochipWireTracer, Materials.NiobiumTitanium, "wireniobiumtitanium"),
     WireYttriumBariumCuprate("gt.circuitcomponent.wireybc", RecipeMaps.nanochipWireTracer,
         Materials.YttriumBariumCuprate),
     // Lumiium is a werkstoff, not a material, can't insert yet
     WireLumiium("gt.circuitcomponent.wirelumiium", RecipeMaps.nanochipWireTracer),
     ProcessedWireNiobiumTitanium("gt.circuitcomponent.processed.wirenbti", RecipeMaps.nanochipAssemblyMatrixRecipes,
-        Materials.NiobiumTitanium),
+        Materials.NiobiumTitanium, "processedwireniobiumtitanium"),
     ProcessedWireYttriumBariumCuprate("gt.circuitcomponent.processed.wireybc", RecipeMaps.nanochipAssemblyMatrixRecipes,
         Materials.YttriumBariumCuprate),
     ProcessedWireLumiium("gt.circuitcomponent.processed.wirelumiium", RecipeMaps.nanochipAssemblyMatrixRecipes),
@@ -165,10 +169,8 @@ public enum CircuitComponent {
 
     public final String unlocalizedName;
     public String fallbackLocalizedName = null;
-    // If this component is a direct conversion of some other item in the NAC main controller, this is the item used for
-    // that.
-    // Otherwise, this is null
-    public IIcon icon = null;
+
+    public String iconString = "";
     public final Materials material;
     // This is the recipe map that this component is used in as an input item
     public final RecipeMap<?> processingMap;
@@ -178,20 +180,32 @@ public enum CircuitComponent {
     // since we won't need to match outputs of recipes
     public static final Map<GTUtility.ItemId, CircuitComponent> realCircuitToComponent = new HashMap<>();
 
+    CircuitComponent(String unlocalizedName, RecipeMap<?> processingMap, String iconString) {
+        this(unlocalizedName, processingMap, null, null, iconString);
+    }
     CircuitComponent(String unlocalizedName, RecipeMap<?> processingMap) {
-        this(unlocalizedName, processingMap, null, null);
+        this(unlocalizedName, processingMap, null, null, null);
+    }
+
+
+    CircuitComponent(String unlocalizedName, RecipeMap<?> processingMap, ItemStack realCircuit, String iconString) {
+        this(unlocalizedName, processingMap, realCircuit, null, iconString);
     }
 
     CircuitComponent(String unlocalizedName, RecipeMap<?> processingMap, ItemStack realCircuit) {
-        this(unlocalizedName, processingMap, realCircuit, null);
+        this(unlocalizedName, processingMap, realCircuit, null, null);
     }
 
+    CircuitComponent(String unlocalizedName, RecipeMap<?> processingMap, Materials material, String iconString) {
+        this(unlocalizedName, processingMap, null, material, iconString);
+    }
     CircuitComponent(String unlocalizedName, RecipeMap<?> processingMap, Materials material) {
-        this(unlocalizedName, processingMap, null, material);
+        this(unlocalizedName, processingMap, null, material, null);
     }
 
-    CircuitComponent(String unlocalizedName, RecipeMap<?> processingMap, ItemStack realCircuit, Materials material) {
+    CircuitComponent(String unlocalizedName, RecipeMap<?> processingMap, ItemStack realCircuit, Materials material, String iconString) {
         this.unlocalizedName = unlocalizedName;
+        this.iconString = iconString;
         // Hide the fake stack in NEI
         codechicken.nei.api.API.hideItem(getFakeStack(1));
         this.material = material;
@@ -225,7 +239,6 @@ public enum CircuitComponent {
     public static CircuitComponent getFromMetaDataUnsafe(int metadata) {
         return CircuitComponent.values()[metadata];
     }
-
     public static class CircuitComponentStack {
 
         private final CircuitComponent mCircuitComponent;
