@@ -1,90 +1,95 @@
 package gregtech.common.tileentities.machines.multi;
 
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static gregtech.api.enums.HatchElement.Energy;
+import static gregtech.api.enums.HatchElement.ExoticEnergy;
 import static gregtech.api.enums.HatchElement.InputBus;
 import static gregtech.api.enums.HatchElement.InputHatch;
 import static gregtech.api.enums.HatchElement.Maintenance;
 import static gregtech.api.enums.HatchElement.OutputBus;
-import static gregtech.api.enums.HatchElement.OutputHatch;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_ACTIVE;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_ACTIVE_GLOW;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_GLOW;
-import static gregtech.api.enums.Textures.BlockIcons.casingTexturePages;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ENGRAVER;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ENGRAVER_ACTIVE;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ENGRAVER_ACTIVE_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ENGRAVER_GLOW;
 import static gregtech.api.util.GTStructureUtility.activeCoils;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
+import static gregtech.api.util.GTStructureUtility.ofCoil;
+import static gregtech.api.util.GTStructureUtility.ofFrame;
 
-import java.util.function.Consumer;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
+import java.util.ArrayList;
 
-import net.minecraft.block.Block;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
+import javax.annotation.Nullable;
+
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.IChatComponent;
-import net.minecraft.util.StatCollector;
-import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import com.gtnewhorizon.structurelib.StructureLibAPI;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
-import com.gtnewhorizon.structurelib.structure.AutoPlaceEnvironment;
-import com.gtnewhorizon.structurelib.structure.IItemSource;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
-import com.gtnewhorizon.structurelib.structure.IStructureElement;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
-import com.gtnewhorizon.structurelib.structure.StructureUtility;
-import com.gtnewhorizon.structurelib.util.ItemStackPredicate;
 
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.HeatingCoilLevel;
-import gregtech.api.interfaces.IHeatingCoil;
+import gregtech.api.enums.Materials;
+import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEEnhancedMultiBlockBase;
+import gregtech.api.metatileentity.implementations.MTEHatchEnergy;
+import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.common.blocks.BlockCasings2;
+import gregtech.common.misc.GTStructureChannels;
 
 public class MTECZPuller extends MTEEnhancedMultiBlockBase<MTECZPuller> implements ISurvivalConstructable {
 
-    private static final int CASING_INDEX = 176;
-    private static final String STRUCTURE_PIECE_MAIN = "main";
+    private int mHeatingCapacity = 0;
+    private static final int CASING_INDEX = GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings2, 0);
+    private HeatingCoilLevel mCoilLevel = null;
+    @Nullable
+    private static final String tier1 = "tier1";
+    private static final String tier2 = "tier2";
     private static final IStructureDefinition<MTECZPuller> STRUCTURE_DEFINITION = StructureDefinition
         .<MTECZPuller>builder()
+        // spotless:off
         .addShape(
-            STRUCTURE_PIECE_MAIN,
-            transpose(new String[][] { { "ccc", "cxc", "ccc" }, { "c~c", "xPx", "cxc" }, { "ccc", "cxc", "ccc" }, }))
-        .addElement('P', ofBlock(GregTechAPI.sBlockCasings8, 1))
+            tier1,
+            transpose(
+                new String[][] {
+                    { "     ", "     ", "  E  ", "     ", "     " },
+                    { "     ", "     ", "  E  ", "     ", "     " },
+                    { "     ", "  E  ", " EBE ", "  E  ", "     " },
+                    { "     ", "  E  ", " E E ", "  E  ", "     " },
+                    { "  A  ", " AAA ", "AA AA", " AAA ", "  A  " },
+                    { " DAD ", "DCCCD", "AC CA", "DCCCD", " DAD " },
+                    { " DAD ", "DCCCD", "AC CA", "DCCCD", " DAD " },
+                    { " DAD ", "DCCCD", "AC CA", "DCCCD", " DAD " },
+                    { " A~A ", "AAAAA", "AAAAA", "AAAAA", " AAA " } }))
         .addElement(
-            'c',
+            'A',
             buildHatchAdder(MTECZPuller.class)
-                .atLeast(InputHatch, OutputHatch, InputBus, OutputBus, Maintenance, Energy)
-                .casingIndex(CASING_INDEX)
+                .atLeast(InputHatch, OutputBus, InputBus, Maintenance, Energy.or(ExoticEnergy))
                 .dot(1)
-                .buildAndChain(onElementPass(MTECZPuller::onCasingAdded, ofBlock(GregTechAPI.sBlockCasings8, 0))))
+                .casingIndex(((BlockCasings2) GregTechAPI.sBlockCasings2).getTextureIndex(0))
+                .buildAndChain(onElementPass(MTECZPuller::onCasingAdded, ofBlock(GregTechAPI.sBlockCasings2, 0))))
+        .addElement('B', ofBlock(GregTechAPI.sBlockCasings2, 3))
         .addElement(
-            'x',
-            buildHatchAdder(MTECZPuller.class)
-                .atLeast(InputHatch, OutputHatch, InputBus, OutputBus, Maintenance, Energy)
-                .casingIndex(CASING_INDEX)
-                .dot(1)
-                .buildAndChain(
-                    activeCoils(CoilStructureElement.INSTANCE),
-                    onElementPass(MTECZPuller::onCasingAdded, ofBlock(GregTechAPI.sBlockCasings8, 0))))
+            'C',
+            GTStructureChannels.HEATING_COIL
+                .use(activeCoils(ofCoil(MTECZPuller::setCoilLevel, MTECZPuller::getCoilLevel))))
+        .addElement('D', ofFrame(Materials.Steel))
+        .addElement('E',
+            buildHatchAdder(MTECZPuller.class).atLeast(InputBus)
+                .casingIndex(((BlockCasings2)GregTechAPI.sBlockCasings2).getTextureIndex(0))
+                .dot(2)
+                .buildAndChain(ofBlock(GregTechAPI.sBlockCasings2,0)))
         .build();
-
-    private int mCasingAmount;
-    private int mCoilAmount;
 
     public MTECZPuller(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -94,99 +99,77 @@ public class MTECZPuller extends MTEEnhancedMultiBlockBase<MTECZPuller> implemen
         super(aName);
     }
 
+    private final ArrayList<MTEHatchInputBus> seedBus = new ArrayList<>();
+
+    private boolean addSeedBus(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
+        if (aTileEntity != null) {
+            if (aTileEntity.getMetaTileEntity() instanceof MTEHatchInputBus bus) {
+                bus.updateTexture(aBaseCasingIndex);
+                seedBus.add(bus);
+                return true;
+            }
+        }
+        return false;
+    }
+
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new MTECZPuller(this.mName);
     }
 
     @Override
-    public MultiblockTooltipBuilder createTooltip() {
-        final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Czochralski Puller, CZ Puller")
-            .addInfo("Does not lose efficiency when overclocked")
-            .addInfo("Accepts fluids instead of fluid cells")
-            .beginStructureBlock(3, 3, 3, false)
-            .addController("Front center")
-            .addCasingInfoRange("Chemically Inert Machine Casing", 8, 22, false)
-            .addOtherStructurePart("PTFE Pipe Machine Casing", "Center")
-            .addOtherStructurePart(
-                StatCollector.translateToLocal("GT5U.tooltip.structure.heating_coil"),
-                "Adjacent to the PTFE Pipe Machine Casing",
-                1)
-            .addEnergyHatch("Any casing", 1, 2)
-            .addMaintenanceHatch("Any casing", 1, 2)
-            .addInputBus("Any casing", 1, 2)
-            .addInputHatch("Any casing", 1, 2)
-            .addOutputBus("Any casing", 1, 2)
-            .addOutputHatch("Any casing", 1, 2)
-            .addStructureInfo("You can have multiple hatches/buses")
-            .toolTipFinisher();
+    protected MultiblockTooltipBuilder createTooltip() {
+        MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+        tt.addMachineType("CZ Puller")
+            .addInfo("Growing your monocrystals")
+            .addStructureInfo("")
+            .toolTipFinisher("");
         return tt;
     }
 
     @Override
-    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
+    public boolean addToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
+        boolean exotic = addExoticEnergyInputToMachineList(aTileEntity, aBaseCasingIndex);
+        return super.addToMachineList(aTileEntity, aBaseCasingIndex) || exotic;
+    }
+
+    @Override
+    public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
         int colorIndex, boolean aActive, boolean redstoneLevel) {
+        ITexture[] rTexture;
         if (side == aFacing) {
-            if (aActive) return new ITexture[] { casingTexturePages[1][48], TextureFactory.builder()
-                .addIcon(OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_ACTIVE)
-                .extFacing()
-                .build(),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_ACTIVE_GLOW)
-                    .extFacing()
-                    .glow()
-                    .build() };
-            return new ITexture[] { casingTexturePages[1][48], TextureFactory.builder()
-                .addIcon(OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR)
-                .extFacing()
-                .build(),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_GLOW)
-                    .extFacing()
-                    .glow()
-                    .build() };
+            if (aActive) {
+                rTexture = new ITexture[] {
+                    Textures.BlockIcons
+                        .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings2, 0)),
+                    TextureFactory.builder()
+                        .addIcon(OVERLAY_FRONT_ENGRAVER_ACTIVE)
+                        .extFacing()
+                        .build(),
+                    TextureFactory.builder()
+                        .addIcon(OVERLAY_FRONT_ENGRAVER_ACTIVE_GLOW)
+                        .extFacing()
+                        .glow()
+                        .build() };
+            } else {
+                rTexture = new ITexture[] {
+                    Textures.BlockIcons
+                        .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings2, 0)),
+                    TextureFactory.builder()
+                        .addIcon(OVERLAY_FRONT_ENGRAVER)
+                        .extFacing()
+                        .build(),
+                    TextureFactory.builder()
+                        .addIcon(OVERLAY_FRONT_ENGRAVER_GLOW)
+                        .extFacing()
+                        .glow()
+                        .build() };
+            }
+        } else {
+            rTexture = new ITexture[] { Textures.BlockIcons
+                .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings2, 0)) };
         }
-        return new ITexture[] { casingTexturePages[1][48] };
-    }
-
-    @Override
-    public boolean isCorrectMachinePart(ItemStack aStack) {
-        return true;
-    }
-
-    @Override
-    public RecipeMap<?> getRecipeMap() {
-        return RecipeMaps.czRecipes;
-    }
-
-    @Override
-    protected ProcessingLogic createProcessingLogic() {
-        return new ProcessingLogic().enablePerfectOverclock();
-    }
-
-    @Override
-    public IStructureDefinition<MTECZPuller> getStructureDefinition() {
-        return STRUCTURE_DEFINITION;
-    }
-
-    private void onCasingAdded() {
-        mCasingAmount++;
-    }
-
-    @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        mCasingAmount = 0;
-        mCoilAmount = 0;
-        return checkPiece(STRUCTURE_PIECE_MAIN, 1, 1, 0) && mCasingAmount >= 8
-            && mCoilAmount == 1
-            && !mEnergyHatches.isEmpty()
-            && mMaintenanceHatches.size() == 1;
-    }
-
-    @Override
-    public int getMaxEfficiency(ItemStack aStack) {
-        return 10000;
+        return rTexture;
     }
 
     @Override
@@ -200,98 +183,91 @@ public class MTECZPuller extends MTEEnhancedMultiBlockBase<MTECZPuller> implemen
     }
 
     @Override
+    public RecipeMap<?> getRecipeMap() {
+        return RecipeMaps.czRecipes;
+    }
+
+    @Override
+    public boolean isCorrectMachinePart(ItemStack aStack) {
+        return true;
+    }
+
+    @Override
+    public IStructureDefinition<MTECZPuller> getStructureDefinition() {
+        return STRUCTURE_DEFINITION;
+    }
+
+    @Override
+    protected ProcessingLogic createProcessingLogic() {
+        return new ProcessingLogic().enablePerfectOverclock();
+    }
+
+    private int mCasingAmount;
+
+    private void onCasingAdded() {
+        mCasingAmount++;
+    }
+
+    @Override
+    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+        mCasingAmount = 0;
+        mHeatingCapacity = 0;
+        mEnergyHatches.clear();
+        mExoticEnergyHatches.clear();
+
+        setCoilLevel(HeatingCoilLevel.None);
+        if (!checkPiece(tier1, 2, 8, 0)) return false;
+
+        if (getCoilLevel() == HeatingCoilLevel.None) return false;
+
+        if (!mExoticEnergyHatches.isEmpty()) {
+            if (!mEnergyHatches.isEmpty()) return false;
+            if (mExoticEnergyHatches.size() > 1) return false;
+        }
+        if (!mEnergyHatches.isEmpty()) {
+            if (mEnergyHatches.size() > 2) return false;
+
+            byte tier_of_hatch = mEnergyHatches.get(0).mTier;
+            for (MTEHatchEnergy energyHatch : mEnergyHatches) {
+                if (energyHatch.mTier != tier_of_hatch) {
+                    return false;
+                }
+            }
+        }
+        if (mMaintenanceHatches.size() > 1) return false;
+
+        mHeatingCapacity = (int) getCoilLevel().getHeat();
+
+        return true;
+    }
+
+    @Override
+    public int getMaxEfficiency(ItemStack aStack) {
+        return 10000;
+    }
+
+    public HeatingCoilLevel getCoilLevel() {
+        return mCoilLevel;
+    }
+
+    public void setCoilLevel(HeatingCoilLevel level) {
+        mCoilLevel = level;
+    }
+
+    @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
-        mCoilAmount = 0;
-        buildPiece(STRUCTURE_PIECE_MAIN, stackSize, hintsOnly, 1, 1, 0);
+        buildPiece(tier1, stackSize, hintsOnly, 2, 8, 0);
     }
 
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
-        mCoilAmount = 0;
-        return survivialBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 1, 1, 0, elementBudget, env, false, true);
+        return survivialBuildPiece(tier1, stackSize, 2, 8, 0, elementBudget, env, false, true);
     }
 
     @Override
     public boolean supportsVoidProtection() {
         return true;
-    }
-
-    private enum CoilStructureElement implements IStructureElement<MTECZPuller> {
-
-        INSTANCE;
-
-        @Override
-        public boolean check(MTECZPuller t, World world, int x, int y, int z) {
-            Block block = world.getBlock(x, y, z);
-            if (block instanceof IHeatingCoil
-                && ((IHeatingCoil) block).getCoilHeat(world.getBlockMetadata(x, y, z)) != HeatingCoilLevel.None) {
-                return t.mCoilAmount++ == 0;
-            } else {
-                return false;
-            }
-        }
-
-        @Override
-        public boolean couldBeValid(MTECZPuller t, World world, int x, int y, int z, ItemStack trigger) {
-            Block block = world.getBlock(x, y, z);
-            return block instanceof IHeatingCoil
-                && ((IHeatingCoil) block).getCoilHeat(world.getBlockMetadata(x, y, z)) != HeatingCoilLevel.None;
-        }
-
-        @Override
-        public boolean spawnHint(MTECZPuller t, World world, int x, int y, int z, ItemStack trigger) {
-            StructureLibAPI.hintParticle(world, x, y, z, GregTechAPI.sBlockCasings5, 0);
-            return true;
-        }
-
-        @Override
-        public boolean placeBlock(MTECZPuller t, World world, int x, int y, int z, ItemStack trigger) {
-            if (t.mCoilAmount > 0) return false;
-            boolean b = world.setBlock(x, y, z, GregTechAPI.sBlockCasings5, 0, 3);
-            if (b) t.mCoilAmount++;
-            return b;
-        }
-
-        @Override
-        public PlaceResult survivalPlaceBlock(MTECZPuller t, World world, int x, int y, int z, ItemStack trigger,
-            IItemSource s, EntityPlayerMP actor, Consumer<IChatComponent> chatter) {
-            return survivalPlaceBlock(t, world, x, y, z, trigger, AutoPlaceEnvironment.fromLegacy(s, actor, chatter));
-        }
-
-        @Override
-        public BlocksToPlace getBlocksToPlace(MTECZPuller largeChemicalReactor, World world, int x, int y, int z,
-            ItemStack trigger, AutoPlaceEnvironment env) {
-            return BlocksToPlace.create(
-                IntStream.range(0, 8)
-                    .mapToObj(i -> new ItemStack(GregTechAPI.sBlockCasings5, 1, i))
-                    .collect(Collectors.toList()));
-        }
-
-        @Override
-        public PlaceResult survivalPlaceBlock(MTECZPuller t, World world, int x, int y, int z, ItemStack trigger,
-            AutoPlaceEnvironment env) {
-            if (t.mCoilAmount > 0) return PlaceResult.SKIP;
-            if (check(t, world, x, y, z)) return PlaceResult.SKIP;
-            if (!StructureLibAPI.isBlockTriviallyReplaceable(world, x, y, z, env.getActor())) return PlaceResult.REJECT;
-            ItemStack result = env.getSource()
-                .takeOne(ItemStackPredicate.from(GregTechAPI.sBlockCasings5), true);
-            if (result == null) return PlaceResult.REJECT;
-            PlaceResult ret = StructureUtility.survivalPlaceBlock(
-                result,
-                ItemStackPredicate.NBTMode.EXACT,
-                null,
-                true,
-                world,
-                x,
-                y,
-                z,
-                env.getSource(),
-                env.getActor(),
-                env.getChatter());
-            if (ret == PlaceResult.ACCEPT) t.mCoilAmount++;
-            return ret;
-        }
     }
 
     @Override
@@ -300,14 +276,7 @@ public class MTECZPuller extends MTEEnhancedMultiBlockBase<MTECZPuller> implemen
     }
 
     @Override
-    public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
-        float aX, float aY, float aZ, ItemStack aTool) {
-        batchMode = !batchMode;
-        if (batchMode) {
-            GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOn"));
-        } else {
-            GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOff"));
-        }
-        return true;
+    public boolean getDefaultHasMaintenanceChecks() {
+        return false;
     }
 }

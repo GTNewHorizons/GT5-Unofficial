@@ -1256,7 +1256,8 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 implements IItemFi
             .set(addItem(Intensely_Bonded_Netherite_Nanoparticles.ID, "Intensely Bonded Netherite Nanoparticles", ""));
         ItemList.Hot_Netherite_Scrap.set(addItem(Hot_Netherite_Scrap.ID, "Hot Netherite Scrap", "Activated?"));
 
-        ItemList.Silicon_Seed_Crystal.set(addItem(Silicon_Seed_Crystal.ID,"Something to begin with",""));
+        ItemList.Silicon_Seed_Crystal
+            .set(addItem(Silicon_Seed_Crystal.ID, "Silicon Seed Crystal", "Something to begin with"));
 
         ItemList.White_Dwarf_Shape_Extruder_Plate.set(
             addItem(
