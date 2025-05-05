@@ -42,6 +42,7 @@ import gregtech.api.structure.IStructureProvider;
 import gregtech.api.structure.StructureWrapper;
 import gregtech.api.structure.StructureWrapperInstanceInfo;
 import gregtech.api.structure.StructureWrapperTooltipBuilder;
+import gregtech.api.util.GTDataUtils;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.misc.GTStructureChannels;
@@ -242,6 +243,17 @@ public class MTENetworkSwitchAdv extends TTMultiblockBase
         for (MTEHatchDataOutput output : validMTEList(eOutputData)) {
             output.allowComputationConfiguring = true;
         }
+
+        // Hack to prevent hatch duplication
+        // The while-loop may add hatches several times since structure check hatch adding is not atomic.
+        // If a check for a piece fails (e.g. the middle), hatches will still have been added, and there's no way to
+        // roll back the hatch lists automatically when this happens.
+        GTDataUtils.dedupList(mExoticEnergyHatches);
+        GTDataUtils.dedupList(mEnergyHatches);
+        GTDataUtils.dedupList(eEnergyMulti);
+        GTDataUtils.dedupList(eDynamoMulti);
+        GTDataUtils.dedupList(eInputData);
+        GTDataUtils.dedupList(eOutputData);
 
         return true;
     }
