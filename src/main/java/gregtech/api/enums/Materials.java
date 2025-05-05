@@ -1963,7 +1963,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         DamascusSteel.mChemicalFormula = "(Fe\u2085" + CustomGlyphs.SUBSCRIPT0 + "C)\u2089Mn\u2084Cr\u2084CSiV";
         Dilithium.mChemicalFormula = "\u2233Li\u2233Li\u2233";
         NetherStar.mChemicalFormula = "(Nh\u2082Ma)\u2083" + CustomGlyphs.CIRCLE_CROSS + "C\u2086";
-        Unstable.mChemicalFormula = "\u2308Fe/C\u230B";
+        Unstable.mChemicalFormula = CustomGlyphs.FIXED_JAPANESE_OPENING_QUOTE + "Fe/C\u230B";
         RoastedAntimony.mChemicalFormula = "Sb?";
         RoastedArsenic.mChemicalFormula = "As?";
         RoastedCobalt.mChemicalFormula = "Co?";

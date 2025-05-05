@@ -31,4 +31,5 @@ public class CustomGlyphs {
     public static final String SUBSCRIPT0 = "\uE01A";
     public static final String ALEPH = "\uE01B";
     public static final String OMEGA = "\uE01C";
+    public static final String FIXED_JAPANESE_OPENING_QUOTE = "\uE01D";
 }
