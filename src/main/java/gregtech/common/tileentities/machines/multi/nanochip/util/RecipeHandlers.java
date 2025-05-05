@@ -3,12 +3,10 @@ package gregtech.common.tileentities.machines.multi.nanochip.util;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
 import static tectech.thing.CustomItemList.DATApipe;
 
-import java.util.*;
-
-import bartworks.system.material.WerkstoffLoader;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
+import bartworks.system.material.WerkstoffLoader;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
@@ -20,6 +18,9 @@ import gregtech.api.recipe.metadata.NanochipAssemblyRecipeInfo;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipeBuilder;
 import gregtech.common.tileentities.machines.multi.nanochip.util.CircuitComponent.CircuitComponentStack;
+
+import java.util.Arrays;
+import java.util.List;
 
 public class RecipeHandlers {
 
@@ -71,7 +72,7 @@ public class RecipeHandlers {
     }
 
     private static void addAssemblyMatrixRecipe(List<CircuitComponentStack> input, CircuitComponent output,
-        ModuleRecipeInfo info, long eut) {
+                                                ModuleRecipeInfo info, long eut) {
         if (!output.processingMap.equals(RecipeMaps.nanochipAssemblyMatrixRecipes)) {
             throw new IllegalArgumentException("Invalid RecipeMap passed to addAssemblyMatrixRecipe!");
         } else if (output.realCircuit == null) {
