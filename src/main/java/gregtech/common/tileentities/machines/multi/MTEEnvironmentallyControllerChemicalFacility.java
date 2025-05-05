@@ -1,36 +1,5 @@
 package gregtech.common.tileentities.machines.multi;
 
-
-import com.google.common.collect.ImmutableList;
-import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
-import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
-import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
-import com.gtnewhorizon.structurelib.structure.StructureDefinition;
-import gregtech.api.GregTechAPI;
-import gregtech.api.interfaces.ITexture;
-import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
-import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.logic.ProcessingLogic;
-import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
-import gregtech.api.recipe.RecipeMap;
-import gregtech.api.recipe.RecipeMaps;
-import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GTUtility;
-import gregtech.api.util.MultiblockTooltipBuilder;
-import gregtech.common.blocks.BlockCasings8;
-import net.minecraft.block.Block;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
-import net.minecraftforge.common.util.ForgeDirection;
-import org.apache.commons.lang3.tuple.Pair;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
-import javax.annotation.Nullable;
-
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlocksTiered;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.withChannel;
@@ -49,12 +18,46 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LARGE_CHEMICA
 import static gregtech.api.enums.Textures.BlockIcons.casingTexturePages;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 
+import javax.annotation.Nullable;
+
+import net.minecraft.block.Block;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
+import net.minecraft.world.WorldProvider;
+import net.minecraftforge.common.util.ForgeDirection;
+
+import org.apache.commons.lang3.tuple.Pair;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import com.google.common.collect.ImmutableList;
+import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
+import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
+import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
+import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+
+import gregtech.api.GregTechAPI;
+import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.logic.ProcessingLogic;
+import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
+import gregtech.api.recipe.RecipeMap;
+import gregtech.api.recipe.RecipeMaps;
+import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GTUtility;
+import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.common.blocks.BlockCasings8;
+
 /*
  * The problem in this code is that for some reason it cant detect tier of the module blocks
  */
 
-public class MTEEnvironmentallyControllerChemicalFacility extends MTEExtendedPowerMultiBlockBase<MTEEnvironmentallyControllerChemicalFacility>
-    implements ISurvivalConstructable {
+public class MTEEnvironmentallyControllerChemicalFacility extends
+    MTEExtendedPowerMultiBlockBase<MTEEnvironmentallyControllerChemicalFacility> implements ISurvivalConstructable {
 
     private static final Logger log = LogManager.getLogger(MTEEnvironmentallyControllerChemicalFacility.class);
 
@@ -76,6 +79,12 @@ public class MTEEnvironmentallyControllerChemicalFacility extends MTEExtendedPow
     private boolean isCoolModule;
     private boolean isVacuumModule;
     private boolean isCompressModule;
+
+    public static double k_temp = 0.95;
+    public static double k_pressure = 0.95;
+
+    double initialPressure = 0;
+    double initialTemp = 0;
 
     private static final IStructureDefinition<MTEEnvironmentallyControllerChemicalFacility> STRUCTURE_DEFINITION = StructureDefinition
         .<MTEEnvironmentallyControllerChemicalFacility>builder()
@@ -196,8 +205,8 @@ public class MTEEnvironmentallyControllerChemicalFacility extends MTEExtendedPow
                 .casingIndex(((BlockCasings8) GregTechAPI.sBlockCasings8).getTextureIndex(0))
                 .dot(1)
                 .buildAndChain(ofBlock(GregTechAPI.sBlockCasings8, 0)))
-        .addElement('S',ofBlock(GregTechAPI.sBlockCasings2, 0))
-        .addElement('Q',ofBlock(GregTechAPI.sBlockCasings2, 10))
+        .addElement('S', ofBlock(GregTechAPI.sBlockCasings2, 0))
+        .addElement('Q', ofBlock(GregTechAPI.sBlockCasings2, 10))
         .build();
 
     public MTEEnvironmentallyControllerChemicalFacility(final int aID, final String aName, final String aNameRegional) {
@@ -399,6 +408,7 @@ public class MTEEnvironmentallyControllerChemicalFacility extends MTEExtendedPow
         if (isVacuumModule) moduleCount++;
         if (isCompressModule) moduleCount++;
         boolean mainStructureValid = checkPiece(STRUCTURE_PIECE_MAIN, 2, 4, 0);
+        getDimConditions();
         if (moduleCount == 0) {
             return mainStructureValid;
         } else if (moduleCount == 1) {
@@ -604,16 +614,179 @@ public class MTEEnvironmentallyControllerChemicalFacility extends MTEExtendedPow
         super.loadNBTData(aNBT);
     }
 
+    public void getDimConditions() {
+        WorldProvider provider = this.getBaseMetaTileEntity()
+            .getWorld().provider;
+        String DimName = provider.getDimensionName();
+        switch (DimName) {
+            case "End": {
+                initialTemp = 300;
+                initialPressure = 10000;
+            }
+            case "Nether": {
+                initialTemp = 300;
+                initialPressure = 10000;
+            }
+            case "Mercury": {
+                initialTemp = 300;
+                initialPressure = 10000;
+            }
+            case "Venus": {
+                initialTemp = 300;
+                initialPressure = 10000;
+            }
+            case "Overworld": {
+                initialTemp = 300;
+                initialPressure = 101000;
+            }
+            case "Moon": {
+                initialTemp = 300;
+                initialPressure = 10000;
+            }
+            case "Mars": {
+                initialTemp = 300;
+                initialPressure = 10000;
+            }
+            case "Phobos": {
+                initialTemp = 300;
+                initialPressure = 10000;
+            }
+            case "Deimos": {
+                initialTemp = 300;
+                initialPressure = 10000;
+            }
+            case "Asteroids": {
+                initialTemp = 300;
+                initialPressure = 10000;
+            }
+            case "Jupiter": {
+                initialTemp = 300;
+                initialPressure = 10000;
+            }
+            case "Io": {
+                initialTemp = 300;
+                initialPressure = 10000;
+            }
+            case "Europa": {
+                initialTemp = 300;
+                initialPressure = 10000;
+            }
+            case "Callisto": {
+                initialTemp = 300;
+                initialPressure = 10000;
+            }
+            case "Ganymede": {
+                initialTemp = 300;
+                initialPressure = 10000;
+            }
+            case "Titan": {
+                initialTemp = 300;
+                initialPressure = 10000;
+            }
+            case "Oberon": {
+                initialTemp = 300;
+                initialPressure = 10000;
+            }
+            case "Proteus": {
+                initialTemp = 300;
+                initialPressure = 10000;
+            }
+            case "Pluto": {
+                initialTemp = 300;
+                initialPressure = 10000;
+            }
+            case "Triton": {
+                initialTemp = 300;
+                initialPressure = 10000;
+            }
+            case "Makemake": {
+                initialTemp = 300;
+                initialPressure = 10000;
+            }
+            case "Ceres": {
+                initialTemp = 300;
+                initialPressure = 10000;
+            }
+            case "Haumea": {
+                initialTemp = 300;
+                initialPressure = 10000;
+            }
+            case "Miranda": {
+                initialTemp = 300;
+                initialPressure = 10000;
+            }
+            case "CentauriA": {
+                initialTemp = 300;
+                initialPressure = 10000;
+            }
+            case "VegaB": {
+                initialTemp = 300;
+                initialPressure = 10000;
+            }
+            case "BarnardC": {
+                initialTemp = 300;
+                initialPressure = 10000;
+            }
+            case "BarnardE": {
+                initialTemp = 300;
+                initialPressure = 10000;
+            }
+            case "BarnardF": {
+                initialTemp = 300;
+                initialPressure = 10000;
+            }
+            case "TCetiE": {
+                initialTemp = 300;
+                initialPressure = 10000;
+            }
+            case "Ross128b": {
+                initialTemp = 300;
+                initialPressure = 10000;
+            }
+            case "Ross128ba": {
+                initialTemp = 300;
+                initialPressure = 10000;
+            }
+            case "Kuiperbelt": {
+                initialTemp = 300;
+                initialPressure = 10000;
+            }
+            case "Neper": {
+                initialTemp = 300;
+                initialPressure = 10000;
+            }
+            case "Maahes": {
+                initialTemp = 300;
+                initialPressure = 10000;
+            }
+            case "Anubis": {
+                initialTemp = 300;
+                initialPressure = 10000;
+            }
+            case "Horus": {
+                initialTemp = 300;
+                initialPressure = 10000;
+            }
+            case "Seth": {
+                initialTemp = 300;
+                initialPressure = 10000;
+            }
+            case "MehenBelt": {
+                initialTemp = 300;
+                initialPressure = 10000;
+            }
+            case "Underdark": {
+                initialTemp = 300;
+                initialPressure = 10000;
+            }
+        }
+    }
+
 
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         super.onPostTick(aBaseMetaTileEntity, aTick);
         if (mMachine && (aTick % 20 == 0)) {
-            double initialTemp = 300;
-            double k_temp = 0.95;
-            double initialPressure = 101000;
-            double k_pressure = 0.95;
-
             if (isCoolModule || isHeatModule) {
                 CurrentTemp = (CurrentTemp - initialTemp) * k_temp + initialTemp; // returns values to atmosphere conditions
             } else CurrentTemp = 300;
