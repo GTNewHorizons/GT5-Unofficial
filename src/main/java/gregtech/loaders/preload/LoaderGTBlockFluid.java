@@ -230,14 +230,14 @@ public class LoaderGTBlockFluid implements Runnable {
         ItemList.Armor_Core_T1.set(
             new ItemAugmentCore(
                 "armorcore1",
-                "Armor Core (Nano)",
+                "Armor Core (Energy)",
                 "Basic core for Mechanical Armor",
                 Collections.emptyList(),
                 Cores.Nano));
         ItemList.Armor_Core_T2.set(
             new ItemAugmentCore(
                 "armorcore2",
-                "Armor Core (Quantum)",
+                "Armor Core (Nano)",
                 "Advanced core for Mechanical Armor",
                 Collections.emptyList(),
                 Cores.Quantum));
