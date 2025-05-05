@@ -79,6 +79,13 @@ public final class GTGuiTextures {
     // endregion overlay
     // region slot
 
+    public static final UITexture SLOT_EMPTY = UITexture.builder()
+        .location(GregTech.ID, "gui/slot/empty")
+        .imageSize(18, 18)
+        .adaptable(1)
+        .canApplyTheme()
+        .name(GTTextureIds.SLOT_EMPTY)
+        .build();
     public static final UITexture SLOT_ITEM_STANDARD = UITexture.builder()
         .location(GregTech.ID, "gui/slot/item_standard")
         .imageSize(18, 18)

@@ -146,4 +146,8 @@ public final class GTGuiThemes {
         .themedButton(GTWidgetThemes.BUTTON_COVER_TAB_DISABLED, GTTextureIds.BUTTON_COVER_TAB_DISABLED_PRIMITIVE)
         .themedTexture(GTWidgetThemes.PICTURE_LOGO, GTTextureIds.PICTURE_GT_LOGO_PRIMITIVE)
         .build();
+    public static final GTGuiTheme TRANSPARENT_FLUID_SLOT = GTGuiTheme.builder("gregtech:transparentFluidSlot")
+        .parent(STANDARD)
+        .fluidSlot(GTTextureIds.SLOT_EMPTY)
+        .build();
 }

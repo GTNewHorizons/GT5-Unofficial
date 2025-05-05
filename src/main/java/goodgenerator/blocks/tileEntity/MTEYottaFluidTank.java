@@ -67,6 +67,8 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.metatileentity.implementations.MTEHatchOutput;
+import gregtech.api.modularui2.GTGuiTheme;
+import gregtech.api.modularui2.GTGuiThemes;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.render.TextureFactory;
@@ -753,6 +755,11 @@ public class MTEYottaFluidTank extends MTETooltipMultiBlockBaseEM implements ICo
                 .overlay(com.cleanroommc.modularui.drawable.UITexture.fullImage(MODID, "gui/picture/tectech_logo_dark"))
                 .size(18, 18)
                 .pos(140 - 18 - 2, doesBindPlayerInventory() ? 91 - 18 - 2 : 171 - 18 - 2));
+    }
+
+    @Override
+    protected GTGuiTheme getGuiTheme() {
+        return GTGuiThemes.TRANSPARENT_FLUID_SLOT;
     }
 
     @Override
