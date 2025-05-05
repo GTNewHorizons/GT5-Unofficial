@@ -389,13 +389,12 @@ public class Godforge implements Runnable {
                     Materials.Mercury.getPlasma(500) };
 
                 for (int i = 0; i < fluids_t0_1step.length; i++) {
-                    boolean multistep = false;
                     GTValues.RA.stdBuilder()
                         .fluidInputs(fluids_t0_1step[i])
                         .fluidOutputs(fluid_plasmas_t0_1step[i])
                         .duration(1 * SECONDS)
                         .eut(TierEU.RECIPE_MAX)
-                        .special(multistep)
+                        .metadata(FOG_PLASMA_MULTISTEP, false)
                         .metadata(FOG_PLASMA_TIER, 0)
                         .addTo(godforgePlasmaRecipes);
                 }
@@ -411,13 +410,12 @@ public class Godforge implements Runnable {
                     new FluidStack(MaterialsElements.getInstance().XENON.getPlasma(), 500) };
 
                 for (int i = 0; i < fluids_t0_xstep.length; i++) {
-                    boolean multistep = true;
                     GTValues.RA.stdBuilder()
                         .fluidInputs(fluids_t0_xstep[i])
                         .fluidOutputs(fluid_plasmas_t0_xstep[i])
                         .duration(3 * SECONDS)
                         .eut(TierEU.RECIPE_MAX)
-                        .special(multistep)
+                        .metadata(FOG_PLASMA_MULTISTEP, true)
                         .metadata(FOG_PLASMA_TIER, 0)
                         .addTo(godforgePlasmaRecipes);
                 }
