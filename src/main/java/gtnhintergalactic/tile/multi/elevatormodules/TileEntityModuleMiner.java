@@ -1,11 +1,13 @@
 package gtnhintergalactic.tile.multi.elevatormodules;
 
 import static gregtech.api.enums.GTValues.V;
+import static gregtech.api.enums.Mods.GregTech;
 import static gregtech.api.util.GTUtility.validMTEList;
 import static gtnhintergalactic.recipe.IGRecipeMaps.spaceMiningRecipes;
 import static gtnhintergalactic.recipe.SpaceMiningRecipes.MINING_DRILLS;
 import static gtnhintergalactic.recipe.SpaceMiningRecipes.MINING_DRONES;
 import static gtnhintergalactic.recipe.SpaceMiningRecipes.MINING_RODS;
+import static gtnhintergalactic.recipe.SpaceMiningRecipes.asteroidDistanceMap;
 import static gtnhintergalactic.recipe.SpaceMiningRecipes.uniqueAsteroidList;
 import static java.util.stream.Collectors.toList;
 import static tectech.Reference.MODID;
@@ -34,9 +36,11 @@ import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.api.widget.IWidget;
 import com.cleanroommc.modularui.drawable.DrawableArray;
 import com.cleanroommc.modularui.drawable.DynamicDrawable;
+import com.cleanroommc.modularui.drawable.GuiTextures;
 import com.cleanroommc.modularui.drawable.ItemDrawable;
 import com.cleanroommc.modularui.drawable.Rectangle;
 import com.cleanroommc.modularui.drawable.UITexture;
+import com.cleanroommc.modularui.network.NetworkUtils;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.RichTooltip;
 import com.cleanroommc.modularui.utils.Alignment;
@@ -145,7 +149,10 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
     protected static String FILTER_NBT_TAG = "filter";
     /** Flag if the user modified the filter */
     protected boolean wasFilterModified;
-    private ItemStackHandler filterInventory = new LimitingItemStackHandler(81, 1);
+    private ItemStackHandler filterInventory = new LimitingItemStackHandler(64, 1);
+    private ItemSlot[] filterSlots = new ItemSlot[64];
+    private ModularSlot[] filterModularSlots = new ModularSlot[64];
+    private int filterStacksUsed;
     protected static final ISpaceProject ASTEROID_OUTPOST = SpaceProjectManager.getProject("AsteroidOutput");
 
     // region Parameters
@@ -212,11 +219,16 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
     protected int prevDistance = 0;
     /** Bitmask of tiers for which a drone, drills, and rods were present when prevRecipes was computed */
     protected int prevAvailDroneMask = 0;
+    protected int currentDroneMask = 0;
     /**
      * The last computed list of possible recipes. Can be reused if distance etc don't change, and used to display stats
      * to the user
      */
     protected WeightedAsteroidList prevRecipes = null;
+
+    // GUI STUFF
+    private int selectedAsteroid;
+    private List<IPanelHandler> asteroidPanels = new ArrayList<>(uniqueAsteroidList.size());
 
     /**
      * Create new Space Mining module
@@ -232,6 +244,16 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
         int tMinMotorTier) {
         super(aID, aName, aNameRegional, tTier, tModuleTier, tMinMotorTier);
         overclockDescriber = new ModuleOverclockDescriber((byte) tTier, tModuleTier);
+        for (int i = 0; i < 64; i++) {
+            filterModularSlots[i] = new ModularSlot(this.filterInventory, i, true) {
+
+                @Override
+                public void onSlotChanged() {
+                    generateOreConfigurationList();
+                }
+            };
+            filterSlots[i] = new ItemSlot().slot(filterModularSlots[i]);
+        }
     }
 
     /**
@@ -245,6 +267,16 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
     public TileEntityModuleMiner(String aName, int tTier, int tModuleTier, int tMinMotorTier) {
         super(aName, tTier, tModuleTier, tMinMotorTier);
         overclockDescriber = new ModuleOverclockDescriber((byte) tTier, tModuleTier);
+        for (int i = 0; i < 64; i++) {
+            filterModularSlots[i] = new ModularSlot(this.filterInventory, i, true) {
+
+                @Override
+                public void onSlotChanged() {
+                    generateOreConfigurationList();
+                }
+            };
+            filterSlots[i] = new ItemSlot().slot(filterModularSlots[i]);
+        }
     }
 
     @Override
@@ -394,6 +426,7 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
         long tVoltage = getMaxInputVoltage();
         int distance = distanceParameter.getValue();
         int availDroneMask = getAvailDroneMask(inputs);
+        currentDroneMask = availDroneMask;
         WeightedAsteroidList recipes = null;
         // Try to use the cached recipe list if the distance and available drones are the same as when it was computed
         if (prevRecipes != null && prevDistance == distance && prevAvailDroneMask == availDroneMask) {
@@ -1085,7 +1118,7 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
         BooleanSyncValue whitelistSyncer = new BooleanSyncValue(() -> isWhitelisted, val -> isWhitelisted = val);
         syncManager.syncValue("whitelistDisplay", whitelistSyncer);
         IPanelHandler whitelistPanel = syncManager
-            .panel("whiteList", (p_syncManager, syncHandler) -> openWhitelistPanel(p_syncManager, syncHandler), true);
+            .panel("whiteList", (p_syncManager, syncHandler) -> openFilterPanel(p_syncManager, syncHandler), true);
         panelGap.child(
             new ButtonWidget<>().size(18, 18)
                 .marginRight(4)
@@ -1121,7 +1154,7 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
 
         IPanelHandler spaceMinerConfigPanel = syncManager.panel(
             "asteroidList",
-            (p_syncManager, syncHandler) -> getAsteroidutilitypanelPanel(panel, p_syncManager, syncHandler),
+            (p_syncManager, syncHandler) -> getAsteroidUtilityPanel(panel, p_syncManager, syncHandler),
             true);
         spaceMinerConfig.onMousePressed(mouseData -> {
             if (!spaceMinerConfigPanel.isPanelOpen()) {
@@ -1134,7 +1167,36 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
         panelGap.child(spaceMinerConfig);
     }
 
-    private ModularPanel openWhitelistPanel(PanelSyncManager syncManager, IPanelHandler syncHandler) {
+    private ModularPanel openFilterPanel(PanelSyncManager syncManager, IPanelHandler syncHandler) {
+
+        ModularPanel panel = new ModularPanel("whitelist") {
+
+            @Override
+            public boolean isDraggable() {
+                return false;
+            }
+        };
+        IntSyncValue distanceParameterSyncer = new IntSyncValue(
+            distanceParameter::getValue,
+            distanceParameter::setValue);
+        syncManager.syncValue("distanceParamerter", distanceParameterSyncer);
+        IntSyncValue droneTierSyncer = new IntSyncValue(
+            () -> currentDroneMask <= 0 ? -1 : (int) Math.round((Math.log(currentDroneMask) / Math.log(2))));
+        syncManager.syncValue("droneTier", droneTierSyncer);
+
+        panel.size(18 * 9 + 14 + 185, 18 * 8 + 6)
+            .top(30)
+            .left(10);
+
+        Flow panelRow = new Row().sizeRel(1);
+        createFilterSlotsAndButtons(panelRow, syncManager, distanceParameterSyncer, droneTierSyncer);
+        createFilterConfiguration(panelRow, syncManager, panel, distanceParameterSyncer, droneTierSyncer);
+
+        return panel.child(panelRow);
+    }
+
+    private void createFilterSlotsAndButtons(Flow panelRow, PanelSyncManager syncManager,
+        IntSyncValue distanceParameterSyncer, IntSyncValue droneTierSyncer) {
         UITexture whitelist = UITexture.builder()
             .location(GTNHIntergalactic.MODID, "gui/overlay_button/whitelist")
             .imageSize(16, 16)
@@ -1143,18 +1205,10 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
             .location(GTNHIntergalactic.MODID, "gui/overlay_button/blacklist")
             .imageSize(16, 16)
             .build();
-        ModularPanel panel = new ModularPanel("whitelist") {
 
-            @Override
-            public boolean isDraggable() {
-                return false;
-            }
-        };
         BooleanSyncValue isWhiteListedSyncer = new BooleanSyncValue(() -> isWhitelisted, val -> isWhitelisted = val);
         syncManager.syncValue("isWhiteListed", isWhiteListedSyncer);
-        panel.size(18 * 8 + 18 + 14, 18 * 8 + 6)
-            .top(30)
-            .leftRel(0.5f, -18 * 7, 0);
+
         StringBuilder bla;
         String[] matrix = new String[8];
         for (int i = 0; i < 8; i++) {
@@ -1164,44 +1218,213 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
             }
             matrix[i] = bla.toString();
         }
-        panel.child(
-            new Row().sizeRel(1)
-                .child(
-                    SlotGroupWidget.builder()
-                        .matrix(matrix)
-                        .key('S', index -> new ItemSlot().slot(new ModularSlot(this.filterInventory, index, true) {
 
-                            @Override
-                            public void onSlotChanged() {
-                                generateOreConfigurationList();
-                            }
-                        }))
-                        .build()
-                        .marginLeft(3)
-                        .marginRight(4))
-                .child(
-                    new Column().heightRel(1)
-                        .width(18)
-                        .child(
-                            new ButtonWidget<>().size(18, 18)
-                                .marginTop(3)
-                                .marginRight(4)
-                                .overlay(new DynamicDrawable(() -> {
-                                    if (isWhiteListedSyncer.getValue()) {
-                                        return whitelist;
-                                    } else {
-                                        return blacklist;
-                                    }
-                                }))
-                                .tooltipBuilder(t -> t.addLine(IKey.lang("tt.spaceminer.togglefilter")))
-                                .onMousePressed(mouseData -> {
-                                    isWhiteListedSyncer.setValue(!isWhiteListedSyncer.getBoolValue());
-                                    return true;
-                                }))));
-        return panel;
+        SlotGroupWidget slotGroup = SlotGroupWidget.builder()
+            .matrix(matrix)
+            .key('S', index -> filterSlots[index].background(new DynamicDrawable(() -> {
+                if (filterModularSlots[index].getStack() != null
+                    && filterContainsOre(filterModularSlots[index].getStack())
+                    && currentOresContainThis(
+                        filterModularSlots[index].getStack(),
+                        distanceParameterSyncer.getValue(),
+                        droneTierSyncer.getValue())) {
+                    return new DrawableArray(
+                        GuiTextures.SLOT_ITEM,
+                        new Rectangle().setColor(isWhitelisted ? Color.rgb(0, 255, 0) : Color.rgb(255, 0, 0))
+                            .asIcon()
+                            .size(16, 16));
+                } else {
+                    return GuiTextures.SLOT_ITEM;
+                }
+            })))
+            .build();
+        panelRow.child(
+            slotGroup.marginLeft(3)
+                .marginRight(4))
+            .child(
+                new Column().heightRel(1)
+                    .width(18)
+                    .child(
+                        new ButtonWidget<>().size(18, 18)
+                            .marginTop(3)
+                            .marginRight(4)
+                            .marginBottom(4)
+                            .overlay(new DynamicDrawable(() -> {
+                                if (isWhiteListedSyncer.getValue()) {
+                                    return whitelist;
+                                } else {
+                                    return blacklist;
+                                }
+                            }))
+                            .tooltipBuilder(t -> t.addLine(IKey.lang("tt.spaceminer.togglefilter")))
+                            .onMousePressed(mouseData -> {
+                                isWhiteListedSyncer.setValue(!isWhiteListedSyncer.getBoolValue());
+                                return true;
+                            }))
+                    .child(
+                        new ButtonWidget<>().size(18, 18)
+                            .marginBottom(4)
+                            .overlay(IKey.str("C"))
+                            .onMousePressed(mouseData -> {
+                                for (int i = 0; i < 64; i++) {
+                                    filterModularSlots[i].putStack(null);
+                                    filterSlots[i].getSyncHandler()
+                                        .updateFromClient(null, 0);
+                                }
+                                return true;
+                            })));
     }
 
-    private ModularPanel getAsteroidutilitypanelPanel(ModularPanel parent, PanelSyncManager syncManager,
+    private boolean currentOresContainThis(ItemStack stack, int distance, int droneTier) {
+        if (distance < 0 || droneTier < 0) return false;
+        List<Pair<Integer, GTRecipe>> asteroids = asteroidDistanceMap.get(droneTier)
+            .get(distance)
+            .stream()
+            .filter(
+                asteroid -> asteroid.second()
+                    .getMetadata(IGRecipeMaps.MODULE_TIER) <= tModuleTier)
+            .collect(toList());
+        for (Pair<Integer, GTRecipe> asteroid : asteroids) {
+            int index = asteroid.first();
+            GTRecipe recipe = asteroid.second();
+            for (ItemStack output : recipe.mOutputs) {
+                if (stack.getDisplayName()
+                    .equals(output.getDisplayName())) return true;
+            }
+        }
+        return false;
+    }
+
+    private void createFilterConfiguration(Flow panelRow, PanelSyncManager syncManager, ModularPanel panel,
+        IntSyncValue distanceParameterSyncer, IntSyncValue droneTierSyncer) {
+        UITexture disabled = UITexture.builder()
+            .location(GregTech.ID, "gui/overlay_button/disable")
+            .imageSize(16, 16)
+            .build();
+
+        Flow resultColumn = new Column().heightRel(1)
+            .width(185)
+            .padding(4);
+        resultColumn.child(
+            new Row().widthRel(1)
+                .coverChildrenHeight()
+                .marginBottom(4)
+                .child(
+                    IKey.str("Currently minable asteroids for ")
+                        .asWidget())
+                .child(new DynamicDrawable(() -> {
+                    if (droneTierSyncer.getValue() < 0) return disabled;
+                    return new ItemDrawable(MINING_DRONES[droneTierSyncer.getValue()]);
+                }).asWidget()
+                    .tooltipBuilder(t -> {
+                        if (droneTierSyncer.getValue() < 0) t.addLine(IKey.str("No valid inputs!"));
+                        else t.addFromItem(MINING_DRONES[droneTierSyncer.getValue()]);
+                    })));
+
+        Flow bla = new Column().widthRel(1)
+            .height(36)
+            .marginTop(4);
+        resultColumn.child(bla);
+        panelRow.child(resultColumn);
+
+        droneTierSyncer.setChangeListener(() -> {
+            bla.getChildren()
+                .clear();
+            generateAsteroidButtons(bla, droneTierSyncer.getValue(), distanceParameterSyncer.getValue(), syncManager);
+            if (NetworkUtils.isClient()) {
+                WidgetTree.resize(panelRow);
+            }
+        });
+    }
+
+    private void generateAsteroidButtons(Flow resultColumn, int droneTier, int distance, PanelSyncManager syncManager) {
+        if (droneTier < 0) return;
+
+        List<Pair<Integer, GTRecipe>> asteroids = asteroidDistanceMap.get(droneTier)
+            .get(distance)
+            .stream()
+            .filter(
+                asteroid -> asteroid.second()
+                    .getMetadata(IGRecipeMaps.MODULE_TIER) <= tModuleTier)
+            .collect(toList());
+
+        Flow asteroidRow = new Row().widthRel(1)
+            .height(18);
+
+        int cnt = 0;
+        for (Pair<Integer, GTRecipe> asteroid : asteroids) {
+            int i = asteroid.first();
+            AsteroidData data = uniqueAsteroidList.get(i);
+
+            IPanelHandler asteroidInfoPanel = (IPanelHandler) syncManager.getModularSyncManager()
+                .getPanelSyncManager("tt_multiblock")
+                .getSyncHandler("asteroidInfoPanel" + i);
+
+            ItemStack oreItem = data.outputItems != null ? data.outputItems[0]
+                : GTOreDictUnificator.get(data.orePrefixes, data.output[0], 1);
+            ButtonWidget asteroidButton = new ButtonWidget<>().size(18, 18)
+                .background(new DynamicDrawable(() -> {
+                    if (filterContainsAsteroidOre(data)) {
+                        return new DrawableArray(
+                            GuiTextures.BUTTON_CLEAN,
+                            new Rectangle().setColor(isWhitelisted ? Color.rgb(0, 255, 0) : Color.rgb(255, 0, 0))
+                                .asIcon()
+                                .size(16, 16));
+                    } else {
+                        return GuiTextures.BUTTON_CLEAN;
+                    }
+                }))
+                .overlay(
+                    new ItemDrawable(oreItem).asIcon()
+                        .size(16, 16))
+                .tooltipBuilder(
+                    t -> t.addLine(IKey.str(EnumChatFormatting.RED + data.getAsteroidNameLocalized()))
+                        .addLine(IKey.lang("tt.spaceminer.asteroidButtonTooltipInfo"))
+                        .addLine(
+                            IKey.lang("tt.spaceminer.asteroidButtonFilter")
+                                .color(Color.rgb(180, 10, 10))))
+                .onMousePressed(mouseData -> {
+                    if (mouseData == 1) {
+                        addAsteroidToFiler(data);
+                        return true;
+                    }
+                    if (!asteroidInfoPanel.isPanelOpen()) {
+                        asteroidInfoPanel.openPanel();
+                    } else {
+                        asteroidInfoPanel.closePanel();
+                    }
+                    return true;
+                });
+            asteroidButton.marginRight(2);
+            asteroidRow.child(asteroidButton);
+            if ((cnt + 1) % 8 == 0 || cnt == uniqueAsteroidList.size() - 1) {
+                resultColumn.child(asteroidRow);
+                asteroidRow = new Row().widthRel(1)
+                    .height(18)
+                    .marginBottom(4);
+            }
+            cnt++;
+        } ;
+    }
+
+    private void addAsteroidToFiler(AsteroidData data) {
+        int size = data.outputItems != null ? data.outputItems.length : data.output.length;
+        List<Integer> visited = new ArrayList<>();
+
+        for (int i = 0; i < size; i++) {
+            ItemStack ore = data.outputItems != null ? data.outputItems[i]
+                : GTOreDictUnificator.get(data.orePrefixes, data.output[i], 1);
+            if (!filterContainsOre(ore)) {
+                int j = findFirstEmptySlot(visited);
+                filterModularSlots[j].putStack(ore);
+                filterSlots[j].getSyncHandler()
+                    .updateFromClient(ore, 0);
+                visited.add(j);
+            }
+        }
+    }
+
+    private ModularPanel getAsteroidUtilityPanel(ModularPanel parent, PanelSyncManager syncManager,
         IPanelHandler thisPanel) {
         UITexture calculatorTexture = UITexture.fullImage(MODID, "gui/overlay_button/calculator");
 
@@ -1225,7 +1448,7 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
         IntSyncValue distanceParameterSyncer = new IntSyncValue(
             distanceParameter::getValue,
             distanceParameter::setValue);
-        syncManager.syncValue("distanceparamerter", distanceParameterSyncer);
+        syncManager.syncValue("distanceParamerter", distanceParameterSyncer);
 
         AtomicInteger moduleTierFilter = new AtomicInteger(0);
         IntSyncValue moduleTierFilterSyncer = new IntSyncValue(moduleTierFilter::get, moduleTierFilter::set);
@@ -1475,7 +1698,11 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
             .build();
 
         int outputLength = data.output != null ? data.output.length : data.outputItems.length;
-        panel.size(250, 130 + 22 * (((outputLength - 1) / 9) + ((data.maxDroneTier - data.minDroneTier - 1) / 10) + 1))
+        panel
+            .size(
+                250,
+                130 - (droneSelectorPanel == null ? 24 : 0)
+                    + 22 * (((outputLength - 1) / 9) + ((data.maxDroneTier - data.minDroneTier - 1) / 10) + 1))
             .pos(140, 30)
             .padding(5);
 
@@ -1596,11 +1823,34 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
             ItemStack ore = data.outputItems != null ? data.outputItems[i]
                 : GTOreDictUnificator.get(data.orePrefixes, data.output[i], 1);
             int finalI = i;
-            dropRow.child(
-                new SlotLikeButtonWidget(ore).tooltipBuilder(
-                    t -> t.addLine(IKey.str(ore.getDisplayName()))
-                        .addLine(IKey.str(((double) data.chances[finalI] / totalWeight) * 100 + "%")))
-                    .marginRight(5));
+            dropRow.child(new SlotLikeButtonWidget(ore).tooltipBuilder(t -> {
+                t.addLine(IKey.str(ore.getDisplayName()))
+                    .addLine(IKey.str(((double) data.chances[finalI] / totalWeight) * 100 + "%"));
+                if (droneSelectorPanel == null)
+                    t.addLine(IKey.str(EnumChatFormatting.DARK_GREEN + "Click to add this ore to the filter"));
+            })
+                .onMousePressed(mouseData -> {
+                    if (droneSelectorPanel != null) return true;
+                    if (filterContainsOre(ore)) return true;
+                    int j = findFirstEmptySlot();
+                    filterModularSlots[j].putStack(ore);
+                    filterSlots[j].getSyncHandler()
+                        .updateFromClient(ore, 0);
+                    return true;
+                })
+                .background(new DynamicDrawable(() -> {
+                    if (droneSelectorPanel != null) return GuiTextures.SLOT_ITEM;
+                    if (filterContainsOre(ore)) {
+                        return new DrawableArray(
+                            GuiTextures.SLOT_ITEM,
+                            new Rectangle().setColor(isWhitelisted ? Color.rgb(0, 255, 0) : Color.rgb(255, 0, 0))
+                                .asIcon()
+                                .size(16, 16));
+                    } else {
+                        return GuiTextures.SLOT_ITEM;
+                    }
+                }))
+                .marginRight(5));
 
             if ((i + 1) % 9 == 0 || i == outputLength - 1) {
                 dropsColumns.child(dropRow);
@@ -1613,7 +1863,8 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
         drops.child(dropsColumns);
         column.child(drops);
         column.child(
-            new ButtonWidget<>().size(18, 18)
+            new ButtonWidget<>().setEnabledIf(w -> droneSelectorPanel != null)
+                .size(18, 18)
                 .marginBottom(4)
                 .alignX(0)
                 .overlay(
@@ -1626,6 +1877,44 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
                     return true;
                 }));
         return panel.child(column);
+    }
+
+    private boolean filterContainsAsteroidOre(AsteroidData data) {
+        int size = data.outputItems != null ? data.outputItems.length : data.output.length;
+        for (int i = 0; i < size; i++) {
+            ItemStack ore = data.outputItems != null ? data.outputItems[i]
+                : GTOreDictUnificator.get(data.orePrefixes, data.output[i], 1);
+            if (filterContainsOre(ore)) return true;
+        }
+        return false;
+
+    }
+
+    private boolean filterContainsOre(ItemStack ore) {
+        for (int i = 0; i < 64; i++) {
+            if (filterInventory.getStackInSlot(i) != null && filterInventory.getStackInSlot(i)
+                .getDisplayName()
+                .equals(ore.getDisplayName())) return true;
+        }
+        return false;
+    }
+
+    private int findFirstEmptySlot() {
+        for (int i = 0; i < 64; i++) {
+            if (filterInventory.getStackInSlot(i) == null) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    private int findFirstEmptySlot(List<Integer> visited) {
+        for (int i = 0; i < 64; i++) {
+            if (filterInventory.getStackInSlot(i) == null && !visited.contains(i)) {
+                return i;
+            }
+        }
+        return -1;
     }
 
     private ModularPanel opendroneSelectorPanel(PanelSyncManager syncManager, IPanelHandler syncHandler,
@@ -1919,6 +2208,19 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
                     .child(asteroidButton));
         }
         return listResult;
+    }
+
+    @Override
+    public void registerSyncValues(ModularPanel panel, PanelSyncManager syncManager) {
+        super.registerSyncValues(panel, syncManager);
+        for (int i = 0; i < uniqueAsteroidList.size(); i++) {
+            int finalI = i;
+            IPanelHandler asteroidInfoPanel = syncManager.panel(
+                "asteroidInfoPanel" + finalI,
+                (p_syncManager, syncHandler) -> getAsteroidPanel(p_syncManager, syncHandler, finalI, null),
+                true);
+            asteroidPanels.add(asteroidInfoPanel);
+        }
     }
 
     /**

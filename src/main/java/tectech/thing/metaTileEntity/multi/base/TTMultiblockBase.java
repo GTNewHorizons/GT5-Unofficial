@@ -2298,7 +2298,7 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
         panel.size(198, 181 + textBoxToInventoryGap)
             .padding(4);
 
-        registerMachineSyncers(syncManager);
+        registerSyncValues(panel, syncManager);
 
         ListWidget<IWidget, ?> machineInfo = new ListWidget<>().size(machineInfoSize()[0], machineInfoSize()[1])
             .pos(6, 3);
@@ -2535,7 +2535,7 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
         return null;
     }
 
-    private void registerMachineSyncers(PanelSyncManager syncManager) {
+    public void registerSyncValues(ModularPanel panel, PanelSyncManager syncManager) {
         syncManager.syncValue(
             "errors",
             new GenericSyncValue<EnumSet<StructureError>>(
