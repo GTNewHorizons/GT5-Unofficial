@@ -5,6 +5,7 @@ import static tectech.thing.CustomItemList.DATApipe;
 
 import java.util.*;
 
+import bartworks.system.material.WerkstoffLoader;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -128,7 +129,7 @@ public class RecipeHandlers {
             GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.YttriumBariumCuprate, 1));
         addConversionRecipe(
             CircuitComponent.WireLumiium,
-            GTOreDictUnificator.get(OrePrefixes.wireFine, GGMaterial.lumiium, 1));
+            new ItemStack(WerkstoffLoader.items.get(OrePrefixes.wireFine), 1, 10101));
         // SMDs
         addConversionRecipe(CircuitComponent.SMDTransistor, ItemList.Circuit_Parts_TransistorSMD.get(1));
         addConversionRecipe(CircuitComponent.SMDInductor, ItemList.Circuit_Parts_InductorSMD.get(1));

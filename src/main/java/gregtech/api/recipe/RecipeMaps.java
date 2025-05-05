@@ -1229,7 +1229,7 @@ public final class RecipeMaps {
 
     public static final RecipeMap<RecipeMapBackend> nanochipAssemblyMatrixRecipes = RecipeMapBuilder
         .of("gt.recipe.nanochip.assemblymatrix")
-        .maxIO(9, 1, 4, 0)
+        .maxIO(16, 1, 4, 0)
         .minInputs(0, 0)
         .recipeTransformer(recipe -> {
             CircuitComponent output = CircuitComponent.tryGetFromFakeStack(recipe.mOutputs[0]);
