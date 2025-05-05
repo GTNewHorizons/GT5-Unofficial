@@ -2367,7 +2367,6 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
         return new int[] { 190, 91 };
     }
 
-
     public void insertThingsInGap(Flow panelGap, PanelSyncManager syncManager, ModularPanel parent) {
         UITexture crowbarFalse = UITexture.builder()
             .location(GregTech.ID, "gui/icons/crowbarFalse")
