@@ -739,11 +739,9 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
         aNBT.removeTag("outputEM");
 
         NBTTagCompound parameterMapTag = new NBTTagCompound();
-        for (int i = 0; i < parameterList.size(); i++) {
-            Parameter<?> parameter = parameterList.get(i);
-            parameter.saveNBT(parameterMapTag, i);
+        for (Parameter<?> parameter : parameterList) {
+
         }
-        aNBT.setTag("parameters", parameterMapTag);
         NBTTagCompound paramI = new NBTTagCompound();
         for (int i = 0; i < parametrization.iParamsIn.length; i++) {
             paramI.setDouble(Integer.toString(i), parametrization.iParamsIn[i]);
@@ -811,16 +809,6 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
             }
         }
 
-        if (aNBT.hasKey("parameters")) {
-            NBTTagCompound parameters = aNBT.getCompoundTag("parameters");
-            if (parameters.tagMap != null && !parameters.tagMap.isEmpty()) {
-                for (int i = 0; i < parameterList.size(); i++) {
-                    parameterList.get(i)
-                        .loadNBT(parameters, i);
-                }
-            }
-
-        }
         if (aNBT.hasKey("eParamsIn") && aNBT.hasKey("eParamsOut") && aNBT.hasKey("eParamsB")) {
             NBTTagCompound paramI = aNBT.getCompoundTag("eParamsIn");
             NBTTagCompound paramO = aNBT.getCompoundTag("eParamsOut");
@@ -2272,15 +2260,16 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
 
         registerMachineSyncers(syncManager);
 
-        ListWidget<IWidget, ?> machineInfo = new ListWidget<>().size(178, 85)
+        ListWidget<IWidget, ?> machineInfo = new ListWidget<>().size(machineInfoSize()[0], machineInfoSize()[1])
             .pos(6, 3);
 
         Flow panelColumn = new Column().sizeRel(1);
         if (doesBindPlayerInventory()) {
             panelColumn.child(
-                new SingleChildWidget<>().size(190, 91)
+                new SingleChildWidget<>().size(mainTerminalSize()[0], mainTerminalSize()[1])
                     .overlay(bg)
-                    .child(machineInfo));
+                    .child(machineInfo)
+                    .alignX(0));
         } else {
             panelColumn.child(
                 new SingleChildWidget<>().size(190, 171)
@@ -2296,6 +2285,7 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
             inventoryRow.child(
                 SlotGroupWidget.playerInventory(0)
                     .leftRel(0)
+                    .marginTop(4)
                     .marginLeft(4));
         }
 
@@ -2330,6 +2320,15 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
         return panel.child(panelColumn);
     }
 
+    protected int[] machineInfoSize() {
+        return new int[] { 178, 85 };
+    }
+
+    protected int[] mainTerminalSize() {
+        return new int[] { 190, 91 };
+    }
+
+    private void insertThingsInGap(Flow panelGap) {}
     public void insertThingsInGap(Flow panelGap, PanelSyncManager syncManager, ModularPanel parent) {}
 
     private void registerMachineSyncers(PanelSyncManager syncManager) {
