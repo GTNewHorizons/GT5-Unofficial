@@ -1673,7 +1673,7 @@ public final class RecipeMaps {
 
     public static final RecipeMap<RecipeMapBackend> nanochipAssemblyMatrixRecipes = RecipeMapBuilder
         .of("gt.recipe.nanochip.assemblymatrix")
-        .maxIO(9, 1, 4, 0)
+        .maxIO(16, 1, 4, 0)
         .minInputs(0, 0)
         .recipeTransformer(recipe -> {
             CircuitComponent output = CircuitComponent.tryGetFromFakeStack(recipe.mOutputs[0]);
@@ -1687,8 +1687,8 @@ public final class RecipeMaps {
 
     public static final RecipeMap<RecipeMapBackend> nanochipSMDProcessorRecipes = RecipeMapBuilder
         .of("gt.recipe.nanochip.smdprocessor")
-        .maxIO(2, 1, 2, 0)
-        .minInputs(0, 0)
+        .maxIO(1, 1, 0, 0)
+        .minInputs(1, 0)
         .recipeTransformer(recipe -> {
             CircuitComponent output = CircuitComponent.getFromFakeStackUnsafe(recipe.mOutputs[0]);
             CircuitComponent input = CircuitComponent.getFromFakeStackUnsafe(recipe.mInputs[0]);
@@ -1697,8 +1697,8 @@ public final class RecipeMaps {
         .build();
     public static final RecipeMap<RecipeMapBackend> nanochipBoardProcessorRecipes = RecipeMapBuilder
         .of("gt.recipe.nanochip.boardprocessor")
-        .maxIO(2, 1, 2, 0)
-        .minInputs(0, 0)
+        .maxIO(1, 1, 1, 0)
+        .minInputs(1, 1)
         .recipeTransformer(recipe -> {
             CircuitComponent output = CircuitComponent.getFromFakeStackUnsafe(recipe.mOutputs[0]);
             CircuitComponent input = CircuitComponent.getFromFakeStackUnsafe(recipe.mInputs[0]);
@@ -1717,8 +1717,8 @@ public final class RecipeMaps {
         .build();
     public static final RecipeMap<RecipeMapBackend> nanochipCuttingChamber = RecipeMapBuilder
         .of("gt.recipe.nanochip.cuttingchamber")
-        .maxIO(2, 1, 2, 0)
-        .minInputs(0, 0)
+        .maxIO(1, 1, 1, 0)
+        .minInputs(1, 1)
         .recipeTransformer(recipe -> {
             CircuitComponent output = CircuitComponent.getFromFakeStackUnsafe(recipe.mOutputs[0]);
             CircuitComponent input = CircuitComponent.getFromFakeStackUnsafe(recipe.mInputs[0]);
@@ -1727,8 +1727,8 @@ public final class RecipeMaps {
         .build();
     public static final RecipeMap<RecipeMapBackend> nanochipWireTracer = RecipeMapBuilder
         .of("gt.recipe.nanochip.wiretracer")
-        .maxIO(2, 1, 2, 0)
-        .minInputs(0, 0)
+        .maxIO(1, 1, 0, 0)
+        .minInputs(1, 0)
         .recipeTransformer(recipe -> {
             CircuitComponent output = CircuitComponent.getFromFakeStackUnsafe(recipe.mOutputs[0]);
             CircuitComponent input = CircuitComponent.getFromFakeStackUnsafe(recipe.mInputs[0]);
@@ -1737,7 +1737,12 @@ public final class RecipeMaps {
         .build();
     public static final RecipeMap<RecipeMapBackend> nanochipSuperconductorSplitter = RecipeMapBuilder
         .of("gt.recipe.nanochip.superconductorsplitter")
-        .maxIO(2, 1, 2, 0)
-        .minInputs(0, 0)
+        .maxIO(1, 1, 0, 0)
+        .minInputs(1, 0)
+        .build();
+    public static final RecipeMap<RecipeMapBackend> nanochipOpticalOrganizer = RecipeMapBuilder
+        .of("gt.recipe.nanochip.opticalorganizer")
+        .maxIO(1, 1, 0, 0)
+        .minInputs(1, 0)
         .build();
 }
