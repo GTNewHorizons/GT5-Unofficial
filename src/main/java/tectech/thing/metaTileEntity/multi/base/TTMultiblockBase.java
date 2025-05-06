@@ -9,6 +9,7 @@ import static gregtech.api.enums.HatchElement.Muffler;
 import static gregtech.api.enums.HatchElement.OutputBus;
 import static gregtech.api.enums.HatchElement.OutputHatch;
 import static gregtech.api.enums.Mods.GregTech;
+import static gregtech.api.metatileentity.BaseTileEntity.BUTTON_FORBIDDEN_TOOLTIP;
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 import static gregtech.api.util.GTUtility.filterValidMTEs;
 import static gregtech.api.util.GTUtility.validMTEList;
@@ -24,6 +25,7 @@ import java.util.BitSet;
 import java.util.Collections;
 import java.util.EnumSet;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
@@ -72,6 +74,7 @@ import com.cleanroommc.modularui.value.sync.SyncHandlers;
 import com.cleanroommc.modularui.widget.SingleChildWidget;
 import com.cleanroommc.modularui.widget.WidgetTree;
 import com.cleanroommc.modularui.widget.sizer.Area;
+import com.cleanroommc.modularui.widgets.ButtonWidget;
 import com.cleanroommc.modularui.widgets.ItemSlot;
 import com.cleanroommc.modularui.widgets.ListWidget;
 import com.cleanroommc.modularui.widgets.SlotGroupWidget;
@@ -110,6 +113,7 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.StructureError;
 import gregtech.api.enums.Textures;
+import gregtech.api.enums.VoidingMode;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
@@ -2330,6 +2334,7 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
 
         Flow panelGap = new Row().widthRel(1)
             .paddingRight(6)
+            .paddingLeft(4)
             .height(textBoxToInventoryGap);
         insertThingsInGap(panelGap, syncManager, panel);
         panelColumn.child(panelGap);
@@ -2401,6 +2406,14 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
             .imageSize(16, 16)
             .build();
 
+        panelGap.child(createVoidExcessButton());
+        panelGap.child(createInputSeparationButton());
+        if (supportsMachineModeSwitch()) panelGap.child(createModeSwitchButton());
+        panelGap.child(createBatchModeButton());
+        panelGap.child(createLockToSingleRecipeButton());
+        panelGap.child(createStructureUpdateButton());
+        if (supportsPowerPanel()) panelGap.child(createPowerPanel());
+
         AtomicInteger maintIssues = new AtomicInteger(0);
         IntSyncValue maintSyncer = new IntSyncValue(() -> {
             int maintIsuses = 0;
@@ -2454,8 +2467,7 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
                                         .size(16, 16))
                                     .add(" ");
                             })
-                            .background(GuiTextures.SLOT_ITEM)
-                            .marginLeft(4))
+                            .background(GuiTextures.SLOT_ITEM))
             .child(new HoverableIcon(new DynamicDrawable(() -> {
                 if (wasShutdownSyncer.getValue() || euVarSyncer.getValue() == 0)
                     return getTextureForShutdownReason(getBaseMetaTileEntity(), euVarSyncer.getValue());
@@ -2468,6 +2480,154 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
                             euVarSyncer.getValue()));
                     else t.addLine(IKey.str(EnumChatFormatting.GREEN + "Running fine."));
                 }));
+    }
+
+    public IWidget createPowerPanel() {
+        return null;
+    }
+
+    public IWidget createStructureUpdateButton() {
+        ToggleButton structureUpdateButton = new ToggleButton().size(18, 18)
+            .value(
+                new BooleanSyncValue(
+                    () -> getStructureUpdateTime() > -20,
+                    val -> { if (getStructureUpdateTime() <= -20) setStructureUpdateTime(1); }))
+            .overlay(GTUITextures.OVERLAY_BUTTON_STRUCTURE_UPDATE_NEW)
+            .tooltipBuilder(t -> { t.addLine(IKey.lang("GT5U.gui.button.structure_update")); });
+
+        return structureUpdateButton;
+    }
+
+    public IWidget createLockToSingleRecipeButton() {
+        ToggleButton lockToSingleRecipeButton = new ToggleButton().size(18, 18)
+            .value(new BooleanSyncValue(() -> isRecipeLockingEnabled() || !supportsSingleRecipeLocking(), bool -> {
+                if (supportsSingleRecipeLocking()) {
+                    setRecipeLocking(!isRecipeLockingEnabled());
+                }
+            }))
+            .overlay(new DynamicDrawable(() -> {
+                UITexture forbidden = GTUITextures.OVERLAY_BUTTON_FORBIDDEN_NEW;
+                if (isRecipeLockingEnabled()) {
+                    if (supportsSingleRecipeLocking()) {
+                        return GTUITextures.OVERLAY_BUTTON_RECIPE_LOCKED_NEW;
+                    } else {
+                        return new DrawableArray(GTUITextures.OVERLAY_BUTTON_RECIPE_LOCKED_DISABLED_NEW);
+                    }
+                } else {
+
+                    if (supportsSingleRecipeLocking()) {
+                        return GTUITextures.OVERLAY_BUTTON_RECIPE_LOCKED_NEW;
+                    } else {
+                        return new DrawableArray(GTUITextures.OVERLAY_BUTTON_RECIPE_LOCKED_DISABLED_NEW, forbidden);
+                    }
+                }
+            }))
+            .tooltipBuilder(t -> {
+                t.addLine(IKey.lang("GT5U.gui.button.lock_recipe"));
+                if (!supportsSingleRecipeLocking()) t.addLine(IKey.lang(BUTTON_FORBIDDEN_TOOLTIP));
+            });
+
+        return lockToSingleRecipeButton;
+    }
+
+    public IWidget createBatchModeButton() {
+        ToggleButton batchModeButton = new ToggleButton().size(18, 18)
+            .value(new BooleanSyncValue(() -> isBatchModeEnabled() || !supportsBatchMode(), bool -> {
+                if (supportsBatchMode()) {
+                    setBatchMode(!isBatchModeEnabled());
+                }
+            }))
+            .overlay(new DynamicDrawable(() -> {
+                UITexture forbidden = GTUITextures.OVERLAY_BUTTON_FORBIDDEN_NEW;
+                if (isBatchModeEnabled()) {
+                    if (supportsBatchMode()) {
+                        return GTUITextures.OVERLAY_BUTTON_BATCH_MODE_ON_NEW;
+                    } else {
+                        return new DrawableArray(GTUITextures.OVERLAY_BUTTON_BATCH_MODE_ON_DISABLED_NEW);
+                    }
+                } else {
+
+                    if (supportsBatchMode()) {
+                        return GTUITextures.OVERLAY_BUTTON_BATCH_MODE_OFF_NEW;
+                    } else {
+                        return new DrawableArray(GTUITextures.OVERLAY_BUTTON_BATCH_MODE_OFF_DISABLED_NEW, forbidden);
+                    }
+                }
+            }))
+            .tooltipBuilder(t -> {
+                t.addLine(IKey.lang("GT5U.gui.button.batch_mode"));
+                if (!supportsBatchMode()) t.addLine(IKey.lang(BUTTON_FORBIDDEN_TOOLTIP));
+            });
+
+        return batchModeButton;
+    }
+
+    public IWidget createModeSwitchButton() {
+        return null;
+    }
+
+    public IWidget createInputSeparationButton() {
+        ToggleButton inputSeparationButton = new ToggleButton().size(18, 18)
+            .value(new BooleanSyncValue(() -> isInputSeparationEnabled() || !supportsInputSeparation(), bool -> {
+                if (supportsInputSeparation()) {
+                    setInputSeparation(!isInputSeparationEnabled());
+                }
+            }))
+            .overlay(new DynamicDrawable(() -> {
+                UITexture forbidden = GTUITextures.OVERLAY_BUTTON_FORBIDDEN_NEW;
+                if (isInputSeparationEnabled()) {
+                    if (supportsInputSeparation()) {
+                        return GTUITextures.OVERLAY_BUTTON_INPUT_SEPARATION_ON_NEW;
+                    } else {
+                        return new DrawableArray(GTUITextures.OVERLAY_BUTTON_INPUT_SEPARATION_ON_DISABLED_NEW);
+                    }
+                } else {
+
+                    if (supportsInputSeparation()) {
+                        return GTUITextures.OVERLAY_BUTTON_INPUT_SEPARATION_OFF_NEW;
+                    } else {
+                        return new DrawableArray(
+                            GTUITextures.OVERLAY_BUTTON_INPUT_SEPARATION_OFF_DISABLED_NEW,
+                            forbidden);
+                    }
+                }
+            }))
+            .tooltipBuilder(t -> {
+                t.addLine(IKey.lang("GT5U.gui.button.input_separation"));
+                if (!supportsInputSeparation()) t.addLine(IKey.lang(BUTTON_FORBIDDEN_TOOLTIP));
+            });
+
+        return inputSeparationButton;
+    }
+
+    public IWidget createVoidExcessButton() {
+        ButtonWidget<?> voidExcessButton = new ButtonWidget<>().size(18, 18)
+            .onMousePressed(mouseData -> {
+                if (supportsVoidProtection()) {
+                    Set<VoidingMode> allowed = getAllowedVoidingModes();
+                    switch (mouseData) {
+                        case 0 -> setVoidingMode(getVoidingMode().nextInCollection(allowed));
+                        case 1 -> setVoidingMode(getVoidingMode().previousInCollection(allowed));
+                    }
+                }
+                return true;
+            })
+            .playClickSound(supportsVoidProtection())
+            .background(new DynamicDrawable(() -> getVoidingMode().buttonTextureNew))
+            .overlay(
+                new DynamicDrawable(
+                    () -> new DrawableArray(
+                        getVoidingMode().buttonOverlayNew,
+                        supportsVoidProtection() ? null : GTUITextures.OVERLAY_BUTTON_FORBIDDEN_NEW)))
+            .tooltipBuilder(t -> {
+                t.addLine(IKey.lang("GT5U.gui.button.voiding_mode"))
+                    .addLine(IKey.lang(getVoidingMode().getTransKey()));
+                if (!supportsVoidProtection()) {
+                    t.addLine(IKey.lang(BUTTON_FORBIDDEN_TOOLTIP));
+                }
+            });
+
+        return voidExcessButton;
     }
 
     private com.cleanroommc.modularui.api.drawable.IDrawable getTooltipForShutdownReason(
@@ -2488,6 +2648,11 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
                         return IKey.str("Manual shutdown (get it?)");
                     }
         return IKey.str("WTF?");
+    }
+
+    @Override
+    public boolean supportsPowerPanel() {
+        return false;
     }
 
     private com.cleanroommc.modularui.api.drawable.IDrawable getTextureForShutdownReason(IGregTechTileEntity tileEntity,
@@ -2608,6 +2773,18 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
         StringSyncValue recipeInfoSyncer = new StringSyncValue(this::generateCurrentRecipeInfoString);
         syncManager.syncValue("recipeInfo", recipeInfoSyncer);
 
+        syncManager.syncValue(
+            "voidExcess",
+            new IntSyncValue(() -> getVoidingMode().ordinal(), val -> setVoidingMode(VoidingMode.fromOrdinal(val))));
+
+        syncManager.syncValue(
+            "inputSeparation",
+            new BooleanSyncValue(this::isInputSeparationEnabled, this::setInputSeparation));
+        syncManager.syncValue("batchMode", new BooleanSyncValue(this::isBatchModeEnabled, this::setBatchMode));
+        syncManager.syncValue("recipeLock", new BooleanSyncValue(this::isRecipeLockingEnabled, this::setRecipeLocking));
+        syncManager.syncValue(
+            "structureUpdateTime",
+            new IntSyncValue(this::getStructureUpdateTime, this::setStructureUpdateTime));
     }
 
     public void addPowerPassButton(Flow buttonColumn, int yGap) {
@@ -2997,6 +3174,11 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
             text.pos(TAB_PADDING + TITLE_PADDING, -titleHeight);
         }
         panel.child(text);
+    }
+
+    @Override
+    protected boolean forceUseMui2() {
+        return true;
     }
 
     private class StructureErrorAdapter implements IByteBufAdapter<EnumSet<StructureError>> {
