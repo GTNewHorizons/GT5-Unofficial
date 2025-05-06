@@ -17,7 +17,7 @@ public class CasingInfo<MTE extends MTEMultiBlockBase & IAlignment & IStructureP
     public int dot;
     public ICasing casing;
     public IHatchElement<? super MTE>[] hatches;
-    public String channel;
+    public IStructureChannels channel;
     public ICasingGroup casingGroup;
 
     public Function<ICasingGroup, IStructureElement<MTE>> elementOverride;
