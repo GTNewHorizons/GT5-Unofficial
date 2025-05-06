@@ -1,6 +1,5 @@
 package gregtech.mixin.mixins.late.ic2;
 
-import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
@@ -16,9 +15,6 @@ public class MixinIc2ReinforcedGlass extends BlockMetaData {
 
     public MixinIc2ReinforcedGlass(InternalName internalName1) {
         super(internalName1, Material.glass);
-        this.setHardness(5.0F);
-        this.setResistance(180.0F);
-        this.setStepSound(Block.soundTypeGlass);
     }
 
     @Override
