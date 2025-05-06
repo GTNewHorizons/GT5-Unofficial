@@ -1934,6 +1934,9 @@ tt.multiblock.parallel=Fluid %d Parallels
 
 tt.spaceminer.distance=Distance
 tt.spaceminer.parallel=Parallels
+tt.spaceminer.cycle=Cycle Distance
+tt.spaceminer.range=Cycle Range
+tt.spaceminer.step=Cycle Step
 tt.spaceminer.filterButtonTooltip=Open Filter
 tt.spaceminer.togglefilter=Toggle Filter
 tt.spaceminer.asteroidutilitypanelButtonTooltip=Open Space Miner Utility Panel

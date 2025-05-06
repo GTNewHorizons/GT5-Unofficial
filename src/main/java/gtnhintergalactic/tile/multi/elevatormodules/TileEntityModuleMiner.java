@@ -192,6 +192,14 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
     private int selectedAsteroid;
     private List<IPanelHandler> asteroidPanels = new ArrayList<>(uniqueAsteroidList.size());
 
+    private int distanceCache;
+    private int startCache;
+    private int endCache;
+    private boolean cycleCache;
+    private int droneCache;
+    private boolean filterCache[] = new boolean[64];
+    private boolean checked[] = new boolean[64];
+
     /**
      * Create new Space Mining module
      *
@@ -1182,7 +1190,9 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
                     && currentOresContainThis(
                         filterModularSlots[index].getStack(),
                         distanceParameterSyncer.getValue(),
-                        droneTierSyncer.getValue())) {
+                        droneTierSyncer.getValue(),
+                        syncManager,
+                        index)) {
                     return new DrawableArray(
                         GuiTextures.SLOT_ITEM,
                         new Rectangle().setColor(isWhitelisted ? Color.rgb(0, 255, 0) : Color.rgb(255, 0, 0))
@@ -1230,23 +1240,55 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
                             })));
     }
 
-    private boolean currentOresContainThis(ItemStack stack, int distance, int droneTier) {
+    private boolean currentOresContainThis(ItemStack stack, int distance, int droneTier, PanelSyncManager syncManager,
+        int index) {
         if (distance < 0 || droneTier < 0) return false;
-        List<Pair<Integer, GTRecipe>> asteroids = asteroidDistanceMap.get(droneTier)
-            .get(distance)
-            .stream()
-            .filter(
-                asteroid -> asteroid.second()
-                    .getMetadata(IGRecipeMaps.MODULE_TIER) <= tModuleTier)
-            .collect(toList());
-        for (Pair<Integer, GTRecipe> asteroid : asteroids) {
-            int index = asteroid.first();
-            GTRecipe recipe = asteroid.second();
-            for (ItemStack output : recipe.mOutputs) {
-                if (stack.getDisplayName()
-                    .equals(output.getDisplayName())) return true;
+        Map<Integer, List<Pair<Integer, GTRecipe>>> asteroids = asteroidDistanceMap.get(droneTier);
+
+        PanelSyncManager rootManager = syncManager.getModularSyncManager()
+            .getPanelSyncManager("tt_multiblock");
+        IntSyncValue rangeSyncer = (IntSyncValue) rootManager.getSyncHandler("rangeParameter:0");
+        BooleanSyncValue cycleSyncer = (BooleanSyncValue) rootManager.getSyncHandler("cycleParameter:0");
+
+        // results cached as this is a pretty expensive search
+
+        int start = distance - (cycleSyncer.getValue() ? rangeSyncer.getValue() : 0);
+        int end = distance + (cycleSyncer.getValue() ? rangeSyncer.getValue() : 0);
+
+        if (checked[index] && droneCache == droneTier
+            && cycleCache == cycleSyncer.getValue()
+            && startCache == start
+            && endCache == end) {
+            return filterCache[index];
+        }
+        checked[index] = true;
+        startCache = start;
+        endCache = end;
+        droneCache = droneTier;
+        cycleCache = cycleSyncer.getValue();
+
+        Set<Integer> visited = new HashSet();
+        for (int i = start; i <= end; i++) {
+            List<Pair<Integer, GTRecipe>> asteroidsAtDistance = asteroids.get(i)
+                .stream()
+                .filter(
+                    asteroid -> asteroid.second()
+                        .getMetadata(IGRecipeMaps.MODULE_TIER) <= tModuleTier)
+                .collect(toList());
+            for (Pair<Integer, GTRecipe> asteroid : asteroidsAtDistance) {
+                if (visited.contains(asteroid.first())) continue;
+                if (Arrays.stream(asteroid.second().mOutputs)
+                    .anyMatch(
+                        output -> output.getDisplayName()
+                            .equals(stack.getDisplayName()))) {
+                    filterCache[index] = true;
+                    return true;
+                }
+                visited.add(asteroid.first());
             }
         }
+
+        filterCache[index] = false;
         return false;
     }
 
@@ -1310,7 +1352,8 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
         int end = distanceSyncer.getValue() + (cycleSyncer.getValue() ? rangeSyncer.getValue() : 0);
 
         Flow asteroidRow = new Row().widthRel(1)
-            .height(18);
+            .height(18)
+            .marginBottom(4);
 
         int cnt = 0;
 
@@ -2207,9 +2250,11 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
             new IntSyncValue(cycleDistanceParameter::getValue, cycleDistanceParameter::setValue));
         syncManager.syncValue("rangeParameter", new IntSyncValue(rangeParameter::getValue, rangeParameter::setValue));
         syncManager.syncValue("stepParameter", new IntSyncValue(stepParameter::getValue, stepParameter::setValue));
-        syncManager
-            .syncValue("cycleParameter", new BooleanSyncValue(cycleParameter::getValue, cycleParameter::setValue));
 
+        syncManager.syncValue("cycleParameter", new BooleanSyncValue(cycleParameter::getValue, val -> {
+            cycleParameter.setValue(val);
+            checked = new boolean[64];
+        }));
     }
 
     /**
