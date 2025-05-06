@@ -648,6 +648,11 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 NANOCHIP_MODULE_WIRE_TRACER.ID,
                 "multimachine.nanochipmodule.wiretracer",
                 "Nanoprecision Wire Tracer").getStackForm(1));
+        ItemList.NanoChipModule_SuperconductorSplitter.set(
+            new SuperconductorSplitter(
+                NANOCHIP_MODULE_SUPERCONDUCTOR_SPLITTER.ID,
+                "multimachine.nanochipmodule.superconductorsplitter",
+                "Superconductive Strand Splitter").getStackForm(1));
         ItemList.NanoChipModule_Splitter.set(
             new Splitter(NANOCHIP_MODULE_SPLITTER.ID, "multimachine.nanochipmodule.splitter", "Nanopart Splitter")
                 .getStackForm(1));
