@@ -3064,7 +3064,7 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
         builder.widget(
             new DrawableWidget().setDrawable(TecTechUITextures.PICTURE_TECTECH_LOGO_DARK)
                 .setSize(18, 18)
-                .setPos(173, 74));
+                .setPos(173, 68));
     }
 
     @Override
@@ -3073,12 +3073,12 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
             builder.widget(
                 new DrawableWidget().setDrawable(TecTechUITextures.BACKGROUND_SCREEN_BLUE)
                     .setPos(4, 4)
-                    .setSize(190, 91));
+                    .setSize(190, 85));
         } else {
             builder.widget(
                 new DrawableWidget().setDrawable(TecTechUITextures.BACKGROUND_SCREEN_BLUE_NO_INVENTORY)
                     .setPos(4, 4)
-                    .setSize(190, 171));
+                    .setSize(190, 165));
         }
         final SlotWidget inventorySlot = new SlotWidget(new BaseSlot(inventoryHandler, 1) {
 
@@ -3110,9 +3110,6 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
         builder.widget(powerPassButton)
             .widget(new FakeSyncWidget.BooleanSyncer(() -> ePowerPass, val -> ePowerPass = val))
             .widget(new FakeSyncWidget.BooleanSyncer(() -> ePowerPassCover, val -> ePowerPassCover = val));
-        Widget safeVoidButton = createSafeVoidButton();
-        builder.widget(safeVoidButton)
-            .widget(new FakeSyncWidget.BooleanSyncer(() -> eSafeVoid, val -> eSafeVoid = val));
         Widget powerSwitchButton = createPowerSwitchButton();
         builder.widget(powerSwitchButton)
             .widget(new FakeSyncWidget.BooleanSyncer(() -> getBaseMetaTileEntity().isAllowedToWork(), val -> {
@@ -3120,72 +3117,22 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
                 else getBaseMetaTileEntity().disableWorking();
             }));
 
-        builder.widget(new DrawableWidget() {
-
-            @Override
-            public void draw(float partialTicks) {
-                super.draw(partialTicks);
-                LEDCounter = (byte) ((1 + LEDCounter) % 6);
-            }
-        }.setDrawable(TecTechUITextures.PICTURE_PARAMETER_BLANK)
-            .setPos(5, doesBindPlayerInventory() ? 96 : 176)
-            .setSize(166, 12));
-        for (int hatch = 0; hatch < 10; hatch++) {
-            for (int param = 0; param < 2; param++) {
-                int ledID = hatch + param * 10;
-                buildContext
-                    .addSyncedWindow(LED_WINDOW_BASE_ID + ledID, (player) -> createLEDConfigurationWindow(ledID));
-                addParameterLED(builder, hatch, param, true);
-                addParameterLED(builder, hatch, param, false);
-            }
+        builder.widget(createPowerSwitchButton(builder))
+            .widget(createVoidExcessButton(builder))
+            .widget(createInputSeparationButton(builder))
+            .widget(createModeSwitchButton(builder))
+            .widget(createBatchModeButton(builder))
+            .widget(createLockToSingleRecipeButton(builder))
+            .widget(createStructureUpdateButton(builder));
+        if (supportsPowerPanel()) {
+            builder.widget(createPowerPanelButton(builder));
+            buildContext.addSyncedWindow(POWER_PANEL_WINDOW_ID, this::createPowerPanel);
         }
+    }
 
-        if (doesBindPlayerInventory()) {
-            builder.widget(
-                new DrawableWidget().setDrawable(TecTechUITextures.PICTURE_UNCERTAINTY_MONITOR_MULTIMACHINE)
-                    .setPos(173, 96)
-                    .setSize(18, 18));
-            for (int i = 0; i < 9; i++) {
-                final int index = i;
-                builder.widget(new DrawableWidget().setDrawable(() -> {
-                    com.gtnewhorizons.modularui.api.drawable.UITexture valid = TecTechUITextures.PICTURE_UNCERTAINTY_VALID[index];
-                    com.gtnewhorizons.modularui.api.drawable.UITexture invalid = TecTechUITextures.PICTURE_UNCERTAINTY_INVALID[index];
-                    switch (eCertainMode) {
-                        case 1: // ooo oxo ooo
-                            if (index == 4) return eCertainStatus == 0 ? valid : invalid;
-                            break;
-                        case 2: // ooo xox ooo
-                            if (index == 3) return (eCertainStatus & 1) == 0 ? valid : invalid;
-                            if (index == 5) return (eCertainStatus & 2) == 0 ? valid : invalid;
-                            break;
-                        case 3: // oxo xox oxo
-                            if (index == 1) return (eCertainStatus & 1) == 0 ? valid : invalid;
-                            if (index == 3) return (eCertainStatus & 2) == 0 ? valid : invalid;
-                            if (index == 5) return (eCertainStatus & 4) == 0 ? valid : invalid;
-                            if (index == 7) return (eCertainStatus & 8) == 0 ? valid : invalid;
-                            break;
-                        case 4: // xox ooo xox
-                            if (index == 0) return (eCertainStatus & 1) == 0 ? valid : invalid;
-                            if (index == 2) return (eCertainStatus & 2) == 0 ? valid : invalid;
-                            if (index == 6) return (eCertainStatus & 4) == 0 ? valid : invalid;
-                            if (index == 8) return (eCertainStatus & 8) == 0 ? valid : invalid;
-                            break;
-                        case 5: // xox oxo xox
-                            if (index == 0) return (eCertainStatus & 1) == 0 ? valid : invalid;
-                            if (index == 2) return (eCertainStatus & 2) == 0 ? valid : invalid;
-                            if (index == 4) return (eCertainStatus & 4) == 0 ? valid : invalid;
-                            if (index == 6) return (eCertainStatus & 8) == 0 ? valid : invalid;
-                            if (index == 8) return (eCertainStatus & 16) == 0 ? valid : invalid;
-                            break;
-                    }
-                    return null;
-                })
-                    .setPos(174 + (index % 3) * 6, 97 + (index / 3) * 6)
-                    .setSize(4, 4));
-            }
-            builder.widget(new FakeSyncWidget.ByteSyncer(() -> eCertainMode, val -> eCertainMode = val))
-                .widget(new FakeSyncWidget.ByteSyncer(() -> eCertainStatus, val -> eCertainStatus = val));
-        }
+    @Override
+    public Pos2d getStructureUpdateButtonPos() {
+        return new Pos2d(174, 132);
     }
 
     protected com.gtnewhorizons.modularui.common.widget.ButtonWidget createPowerPassButton() {
@@ -3221,37 +3168,6 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
             .setSize(16, 16);
         if (isPowerPassButtonEnabled()) {
             button.addTooltip("Power Pass")
-                .setTooltipShowUpDelay(TOOLTIP_DELAY);
-        }
-        return (com.gtnewhorizons.modularui.common.widget.ButtonWidget) button;
-    }
-
-    protected com.gtnewhorizons.modularui.common.widget.ButtonWidget createSafeVoidButton() {
-        Widget button = new com.gtnewhorizons.modularui.common.widget.ButtonWidget().setOnClick((clickData, widget) -> {
-            if (isSafeVoidButtonEnabled()) {
-                TecTech.proxy.playSound(getBaseMetaTileEntity(), "fx_click");
-                eSafeVoid = !eSafeVoid;
-            }
-        })
-            .setPlayClickSound(false)
-            .setBackground(() -> {
-                List<com.gtnewhorizons.modularui.api.drawable.UITexture> ret = new ArrayList<>();
-                ret.add(TecTechUITextures.BUTTON_STANDARD_16x16);
-                if (!isSafeVoidButtonEnabled()) {
-                    ret.add(TecTechUITextures.OVERLAY_BUTTON_SAFE_VOID_DISABLED);
-                } else {
-                    if (eSafeVoid) {
-                        ret.add(TecTechUITextures.OVERLAY_BUTTON_SAFE_VOID_ON);
-                    } else {
-                        ret.add(TecTechUITextures.OVERLAY_BUTTON_SAFE_VOID_OFF);
-                    }
-                }
-                return ret.toArray(new IDrawable[0]);
-            })
-            .setPos(174, doesBindPlayerInventory() ? 132 : 156)
-            .setSize(16, 16);
-        if (isSafeVoidButtonEnabled()) {
-            button.addTooltip("Safe Void")
                 .setTooltipShowUpDelay(TOOLTIP_DELAY);
         }
         return (com.gtnewhorizons.modularui.common.widget.ButtonWidget) button;
