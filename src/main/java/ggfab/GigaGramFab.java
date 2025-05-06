@@ -14,6 +14,7 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import ggfab.api.GGFabRecipeMaps;
 import ggfab.api.GigaGramFabAPI;
 import ggfab.items.GGMetaItemDumbItems;
+import ggfab.items.SingleUseTool;
 import ggfab.mte.MTEAdvAssLine;
 import ggfab.mte.MTELinkedInputBus;
 import ggfab.util.GGUtils;
@@ -153,18 +154,13 @@ public class GigaGramFab {
         int idShape = 30;
         final int budget = idShape;
 
-        for (GGItemList tool : GGItemList.SINGLE_USE_TOOLS) {
-            GGItemList mold = GGItemList.TOOL_TO_MOLD_MAP.get(tool);
-
+        for (SingleUseTool singleUseTool : SingleUseTool.values()) {
+            GGItemList tool = singleUseTool.tool;
             tool.set(i1.addItem(id++, GGUtils.processSentence(tool.name(), ' ', true, true), null, tool, tool.name()));
 
-            mold.set(
-                i1.addItem(
-                    idShape++,
-                    "Mold (" + GGUtils.processSentence(tool.name() + ")", ' ', true, true),
-                    null,
-                    mold,
-                    mold.name()));
+            GGItemList mold = singleUseTool.mold;
+            String moldLabel = "Mold (" + GGUtils.processSentence(tool.name() + ")", ' ', true, true);
+            mold.set(i1.addItem(idShape++, moldLabel, null, mold, mold.name()));
         }
 
         if (id >= budget || idShape >= 2 * budget || idShape - id != budget) throw new AssertionError();

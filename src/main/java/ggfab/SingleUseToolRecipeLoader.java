@@ -1,7 +1,5 @@
 package ggfab;
 
-import static gregtech.api.enums.ToolDictNames.HARD_TOOLS;
-import static gregtech.api.enums.ToolDictNames.SOFT_TOOLS;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 
 import java.util.ArrayList;
@@ -11,11 +9,11 @@ import net.minecraft.item.ItemStack;
 
 import ggfab.api.GGFabRecipeMaps;
 import ggfab.api.GigaGramFabAPI;
+import ggfab.items.SingleUseTool;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.TierEU;
-import gregtech.api.enums.ToolDictNames;
 import gregtech.api.interfaces.IToolStats;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
@@ -29,23 +27,22 @@ class SingleUseToolRecipeLoader implements Runnable {
     @Override
     public void run() {
         // Hard tool recipes
-        addSingleUseToolRecipes(Materials.Steel, HARD_TOOLS);
-        addSingleUseToolRecipes(Materials.Silver, HARD_TOOLS);
-        addSingleUseToolRecipes(Materials.VanadiumSteel, HARD_TOOLS);
-        addSingleUseToolRecipes(Materials.TungstenSteel, HARD_TOOLS);
-        addSingleUseToolRecipes(Materials.HSSG, HARD_TOOLS);
+        addSingleUseToolRecipes(Materials.Steel, SingleUseTool.HARD_TOOLS);
+        addSingleUseToolRecipes(Materials.Silver, SingleUseTool.HARD_TOOLS);
+        addSingleUseToolRecipes(Materials.VanadiumSteel, SingleUseTool.HARD_TOOLS);
+        addSingleUseToolRecipes(Materials.TungstenSteel, SingleUseTool.HARD_TOOLS);
+        addSingleUseToolRecipes(Materials.HSSG, SingleUseTool.HARD_TOOLS);
 
         // Soft tool recipes
-        addSingleUseToolRecipes(Materials.Rubber, SOFT_TOOLS);
-        addSingleUseToolRecipes(Materials.StyreneButadieneRubber, SOFT_TOOLS);
-        addSingleUseToolRecipes(Materials.Silicone, SOFT_TOOLS);
+        addSingleUseToolRecipes(Materials.Rubber, SingleUseTool.SOFT_TOOLS);
+        addSingleUseToolRecipes(Materials.StyreneButadieneRubber, SingleUseTool.SOFT_TOOLS);
+        addSingleUseToolRecipes(Materials.Silicone, SingleUseTool.SOFT_TOOLS);
 
         // Mold recipes
-        for (GGItemList tool : GGItemList.SINGLE_USE_TOOLS) {
-            ToolDictNames type = GGItemList.TOOL_TO_TYPE_MAP.get(tool);
-            GGItemList mold = GGItemList.TOOL_TO_MOLD_MAP.get(tool);
-            GTModHandler
-                .addCraftingRecipe(mold.get(1L), new Object[] { "h", "P", "I", 'P', ItemList.Shape_Empty, 'I', type });
+        for (SingleUseTool singleUseTool : SingleUseTool.values()) {
+            GTModHandler.addCraftingRecipe(
+                singleUseTool.mold.get(1L),
+                new Object[] { "h", "P", "I", 'P', ItemList.Shape_Empty, 'I', singleUseTool.toolDictName });
         }
     }
 
@@ -58,17 +55,17 @@ class SingleUseToolRecipeLoader implements Runnable {
         return (double) outputQuantity / (long) OUTPUT_QUANTITY_MAX;
     }
 
-    private void addSingleUseToolRecipes(Materials material, List<ToolDictNames> types) {
+    private void addSingleUseToolRecipes(Materials material, List<SingleUseTool> singleUseTools) {
         if (material.mStandardMoltenFluid == null) {
             throw new IllegalArgumentException("material does not have molten fluid form");
         }
 
-        for (ToolDictNames type : types) {
-            IToolStats toolStats = GigaGramFabAPI.SINGLE_USE_TOOLS.get(type);
-            Long toolCost = GigaGramFabAPI.COST_SINGLE_USE_TOOLS.get(type);
+        for (SingleUseTool singleUseTool : singleUseTools) {
+            IToolStats toolStats = GigaGramFabAPI.SINGLE_USE_TOOLS.get(singleUseTool.toolDictName);
+            Long toolCost = GigaGramFabAPI.COST_SINGLE_USE_TOOLS.get(singleUseTool.toolDictName);
 
             if (toolStats == null || toolCost == null) {
-                throw new IllegalArgumentException(type + " not registered");
+                throw new IllegalArgumentException(singleUseTool + " not registered");
             }
 
             float durabilityMultiplier = toolStats.getMaxDurabilityMultiplier();
@@ -92,12 +89,8 @@ class SingleUseToolRecipeLoader implements Runnable {
                 outputQuantity *= multiplier;
             }
 
-            GGItemList tool = GGItemList.TOOL_TO_TYPE_MAP.inverse()
-                .get(type);
-            GGItemList mold = GGItemList.TOOL_TO_MOLD_MAP.get(tool);
-
             // Split into stacks
-            ItemStack output = tool.get(0L);
+            ItemStack output = singleUseTool.tool.get(0L);
             output.stackSize = (int) outputQuantity; // This is a safe cast since it is between 128 and 256
             List<ItemStack> outputs = new ArrayList<>();
             int maxStackSize = output.getMaxStackSize();
@@ -106,7 +99,7 @@ class SingleUseToolRecipeLoader implements Runnable {
 
             GTValues.RA.stdBuilder()
                 .fluidInputs(material.getMolten(fluidPerCraft))
-                .itemInputs(mold.get(0L))
+                .itemInputs(singleUseTool.mold.get(0L))
                 .itemOutputs(outputs.toArray(new ItemStack[0]))
                 .eut(TierEU.RECIPE_MV)
                 .duration(recipeDuration)

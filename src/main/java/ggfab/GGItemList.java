@@ -1,26 +1,11 @@
 package ggfab;
 
 import static gregtech.api.enums.GTValues.W;
-import static gregtech.api.enums.ToolDictNames.craftingToolCrowbar;
-import static gregtech.api.enums.ToolDictNames.craftingToolFile;
-import static gregtech.api.enums.ToolDictNames.craftingToolHardHammer;
-import static gregtech.api.enums.ToolDictNames.craftingToolSaw;
-import static gregtech.api.enums.ToolDictNames.craftingToolScrewdriver;
-import static gregtech.api.enums.ToolDictNames.craftingToolSoftHammer;
-import static gregtech.api.enums.ToolDictNames.craftingToolWireCutter;
-import static gregtech.api.enums.ToolDictNames.craftingToolWrench;
-
-import java.util.List;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
-import com.google.common.collect.BiMap;
-import com.google.common.collect.ImmutableBiMap;
-import com.google.common.collect.ImmutableList;
-
-import gregtech.api.enums.ToolDictNames;
 import gregtech.api.interfaces.IItemContainer;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
@@ -58,50 +43,6 @@ public enum GGItemList implements IItemContainer {
     // endregion
     //
     ;
-
-    public static final List<GGItemList> SINGLE_USE_TOOLS = ImmutableList.of(
-        SingleUseFile,
-        SingleUseWrench,
-        SingleUseCrowbar,
-        SingleUseWireCutter,
-        SingleUseHardHammer,
-        SingleUseSoftHammer,
-        SingleUseScrewdriver,
-        SingleUseSaw);
-
-    public static final List<GGItemList> SINGLE_USE_TOOL_MOLDS = ImmutableList.of(
-        SingleUseFileMold,
-        SingleUseWrenchMold,
-        SingleUseCrowbarMold,
-        SingleUseWireCutterMold,
-        SingleUseHardHammerMold,
-        SingleUseSoftHammerMold,
-        SingleUseScrewdriverMold,
-        SingleUseSawMold);
-
-    public static final BiMap<GGItemList, GGItemList> TOOL_TO_MOLD_MAP = ImmutableBiMap
-        .<GGItemList, GGItemList>builder()
-        .put(SingleUseFile, SingleUseFileMold)
-        .put(SingleUseWrench, SingleUseWrenchMold)
-        .put(SingleUseCrowbar, SingleUseCrowbarMold)
-        .put(SingleUseWireCutter, SingleUseWireCutterMold)
-        .put(SingleUseHardHammer, SingleUseHardHammerMold)
-        .put(SingleUseSoftHammer, SingleUseSoftHammerMold)
-        .put(SingleUseScrewdriver, SingleUseScrewdriverMold)
-        .put(SingleUseSaw, SingleUseSawMold)
-        .build();
-
-    public static final BiMap<GGItemList, ToolDictNames> TOOL_TO_TYPE_MAP = ImmutableBiMap
-        .<GGItemList, ToolDictNames>builder()
-        .put(SingleUseFile, craftingToolFile)
-        .put(SingleUseWrench, craftingToolWrench)
-        .put(SingleUseCrowbar, craftingToolCrowbar)
-        .put(SingleUseWireCutter, craftingToolWireCutter)
-        .put(SingleUseHardHammer, craftingToolHardHammer)
-        .put(SingleUseSoftHammer, craftingToolSoftHammer)
-        .put(SingleUseScrewdriver, craftingToolScrewdriver)
-        .put(SingleUseSaw, craftingToolSaw)
-        .build();
 
     private ItemStack mStack;
     private boolean mHasNotBeenSet = true;

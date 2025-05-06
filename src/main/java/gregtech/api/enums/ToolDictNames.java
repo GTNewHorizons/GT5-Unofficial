@@ -1,9 +1,5 @@
 package gregtech.api.enums;
 
-import java.util.List;
-
-import com.google.common.collect.ImmutableList;
-
 public enum ToolDictNames {
 
     craftingToolSaw,
@@ -50,15 +46,4 @@ public enum ToolDictNames {
         }
         return false;
     }
-
-    public static final List<ToolDictNames> HARD_TOOLS = ImmutableList.of(
-        craftingToolHardHammer,
-        craftingToolScrewdriver,
-        craftingToolWrench,
-        craftingToolCrowbar,
-        craftingToolWireCutter,
-        craftingToolFile,
-        craftingToolSaw);
-
-    public static final List<ToolDictNames> SOFT_TOOLS = ImmutableList.of(craftingToolSoftHammer);
 }
