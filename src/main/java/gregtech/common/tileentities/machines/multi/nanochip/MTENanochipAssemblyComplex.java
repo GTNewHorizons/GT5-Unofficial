@@ -397,7 +397,8 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
                         Long amount = entry.getValue();
                         // If this entry has a real circuit, we have produced a circuit using the NAC!
                         if (component.realCircuit != null) {
-                            ItemStack toOutput = GTUtility.copyAmount((int)Math.min(Integer.MAX_VALUE, amount), component.realCircuit);
+                            ItemStack toOutput = GTUtility
+                                .copyAmount((int) Math.min(Integer.MAX_VALUE, amount), component.realCircuit);
                             // Add output and deplete from hatch
                             addOutput(toOutput);
                             contents.remove(component);
@@ -413,7 +414,10 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
         if (hatch == null) return;
 
         long eut = this.getMaxInputEu();
-        long euToAdd = Math.min(eut, hatch.getBaseMetaTileEntity().getStoredEU());
+        long euToAdd = Math.min(
+            eut,
+            hatch.getBaseMetaTileEntity()
+                .getStoredEU());
         if (hatch.getBaseMetaTileEntity()
             .decreaseStoredEnergyUnits(euToAdd, false)) {
             setEUVar(getBaseMetaTileEntity().getStoredEU() + euToAdd);

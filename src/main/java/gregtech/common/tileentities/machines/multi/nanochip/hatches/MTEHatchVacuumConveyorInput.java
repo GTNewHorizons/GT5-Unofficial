@@ -63,7 +63,7 @@ public class MTEHatchVacuumConveyorInput extends MTEHatchVacuumConveyor implemen
         Long amount = inventory.get(component);
         if (amount != null) {
             // If found, consume as much as possible
-            int toConsume = Math.min((int)Math.min(Integer.MAX_VALUE, amount), stack.stackSize);
+            int toConsume = Math.min((int) Math.min(Integer.MAX_VALUE, amount), stack.stackSize);
             amount -= toConsume;
             if (amount > 0) {
                 inventory.put(component, amount);
