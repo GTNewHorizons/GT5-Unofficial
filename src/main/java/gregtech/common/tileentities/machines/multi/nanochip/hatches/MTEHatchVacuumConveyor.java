@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Map;
 
-import gregtech.api.util.GTUtility;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -20,6 +19,7 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GTUtility;
 import gregtech.common.tileentities.machines.multi.nanochip.util.CircuitComponent;
 import gregtech.common.tileentities.machines.multi.nanochip.util.CircuitComponentPacket;
 import gregtech.common.tileentities.machines.multi.nanochip.util.IConnectsToVacuumConveyor;
@@ -154,7 +154,10 @@ public abstract class MTEHatchVacuumConveyor extends MTEHatch implements IConnec
             for (Map.Entry<CircuitComponent, Long> component : components.entrySet()) {
                 info.add(
                     EnumChatFormatting.YELLOW + component.getKey()
-                        .getLocalizedName() + ": " + EnumChatFormatting.WHITE + GTUtility.formatNumbers(component.getValue()));
+                        .getLocalizedName()
+                        + ": "
+                        + EnumChatFormatting.WHITE
+                        + GTUtility.formatNumbers(component.getValue()));
             }
         }
         return info.toArray(new String[] {});
