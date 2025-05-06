@@ -33,6 +33,7 @@ public class StringUtils {
         str = str.replaceAll("7", "\u2087");
         str = str.replaceAll("8", "\u2088");
         str = str.replaceAll("9", "\u2089");
+        str = str.replaceAll("\\?", CustomGlyphs.SUBSCRIPT_QUESTION_MARK);
         return str;
     }
 

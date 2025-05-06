@@ -660,7 +660,7 @@ public class GGMaterial implements Runnable {
     public static final Werkstoff naquadahEarth = new Werkstoff(
         new short[] { 0x4c, 0x4c, 0x4c },
         "Naquadah Oxide Mixture",
-        subscriptNumbers("??NqTiGaAd??"),
+        subscriptNumbers("Nq?Ti?Ga?Ad?"),
         new Werkstoff.Stats(),
         Werkstoff.Types.MIXTURE,
         new Werkstoff.GenerationFeatures(),
@@ -683,7 +683,7 @@ public class GGMaterial implements Runnable {
     public static final Werkstoff lowQualityNaquadahEmulsion = new Werkstoff(
         new short[] { 0x4c, 0x4c, 0x4c },
         "Low Quality Naquadah Emulsion",
-        subscriptNumbers("??NqGaAd??"),
+        subscriptNumbers("Nq?Ga?Ad?"),
         new Werkstoff.Stats(),
         Werkstoff.Types.MIXTURE,
         new Werkstoff.GenerationFeatures().disable()
@@ -708,7 +708,7 @@ public class GGMaterial implements Runnable {
     public static final Werkstoff lowQualityNaquadahSolution = new Werkstoff(
         new short[] { 0x71, 0x62, 0x62 },
         "Low Quality Naquadah Solution",
-        subscriptNumbers("~??NqAd??~"),
+        subscriptNumbers("~Nq?Ad?~"),
         new Werkstoff.Stats(),
         Werkstoff.Types.MIXTURE,
         new Werkstoff.GenerationFeatures().disable()
@@ -759,7 +759,7 @@ public class GGMaterial implements Runnable {
     public static final Werkstoff naquadahRichSolution = new Werkstoff(
         new short[] { 0x33, 0x33, 0x33 },
         "Naquadah-Rich Solution",
-        subscriptNumbers("~?Nq?~"),
+        subscriptNumbers("~Nq?~"),
         new Werkstoff.Stats(),
         Werkstoff.Types.MIXTURE,
         new Werkstoff.GenerationFeatures().disable()
@@ -818,7 +818,7 @@ public class GGMaterial implements Runnable {
     public static final Werkstoff enrichedNaquadahEarth = new Werkstoff(
         new short[] { 0x82, 0x68, 0x68 },
         "Enriched-Naquadah Oxide Mixture",
-        subscriptNumbers("??KeNq") + CharExchanger.shifter(8314) + "??",
+        subscriptNumbers("Ke?Nq") + CharExchanger.shifter(8314) + subscriptNumbers("?"),
         new Werkstoff.Stats().setRadioactive(true),
         Werkstoff.Types.MIXTURE,
         new Werkstoff.GenerationFeatures(),
@@ -842,7 +842,7 @@ public class GGMaterial implements Runnable {
     public static final Werkstoff enrichedNaquadahRichSolution = new Werkstoff(
         new short[] { 0x52, 0x39, 0x39 },
         "Enriched-Naquadah-Rich Solution",
-        subscriptNumbers("~?Nq") + CharExchanger.shifter(8314) + "?~",
+        subscriptNumbers("~Nq") + CharExchanger.shifter(8314) + subscriptNumbers("?~"),
         new Werkstoff.Stats().setRadioactive(true),
         Werkstoff.Types.MIXTURE,
         new Werkstoff.GenerationFeatures().disable()
@@ -853,7 +853,7 @@ public class GGMaterial implements Runnable {
     public static final Werkstoff concentratedEnrichedNaquadahSludge = new Werkstoff(
         new short[] { 0x52, 0x39, 0x39 },
         "Concentrated Enriched-Naquadah Sludge",
-        subscriptNumbers("?Nq") + CharExchanger.shifter(8314) + "?",
+        subscriptNumbers("Nq") + CharExchanger.shifter(8314) + subscriptNumbers("?"),
         new Werkstoff.Stats().setRadioactive(true),
         Werkstoff.Types.MIXTURE,
         new Werkstoff.GenerationFeatures().disable()
@@ -879,7 +879,7 @@ public class GGMaterial implements Runnable {
     public static final Werkstoff naquadriaEarth = new Werkstoff(
         new short[] { 0x4d, 0x4d, 0x55 },
         "Naquadria Oxide Mixture",
-        subscriptNumbers("??Nq*BaIn??"),
+        subscriptNumbers("Nq*?Ba?In?"),
         new Werkstoff.Stats().setRadioactive(true)
             .setToxic(true),
         Werkstoff.Types.MIXTURE,
@@ -905,7 +905,7 @@ public class GGMaterial implements Runnable {
     public static final Werkstoff lowQualityNaquadriaPhosphate = new Werkstoff(
         new short[] { 0x4d, 0x4d, 0x55 },
         "Low Quality Naquadria Phosphate",
-        subscriptNumbers("??Nq*3(PO4)4??"),
+        "??" + subscriptNumbers("Nq*3(PO4)4") + "??",
         new Werkstoff.Stats().setRadioactive(true)
             .setToxic(true),
         Werkstoff.Types.MIXTURE,
@@ -917,7 +917,7 @@ public class GGMaterial implements Runnable {
     public static final Werkstoff naquadriaRichSolution = new Werkstoff(
         new short[] { 0x1f, 0x1e, 0x33 },
         "Naquadria-Rich Solution",
-        subscriptNumbers("~?Nq*?~"),
+        subscriptNumbers("~Nq*?~"),
         new Werkstoff.Stats().setRadioactive(true)
             .setToxic(true),
         Werkstoff.Types.MIXTURE,
@@ -929,7 +929,7 @@ public class GGMaterial implements Runnable {
     public static final Werkstoff lowQualityNaquadriaSulphate = new Werkstoff(
         new short[] { 0x73, 0x72, 0x84 },
         "Low Quality Naquadria Sulphate",
-        subscriptNumbers("??Nq*(SO4)2??"),
+        "??" + subscriptNumbers("Nq*(SO4)2") + "??",
         new Werkstoff.Stats().setRadioactive(true)
             .setToxic(true),
         Werkstoff.Types.COMPOUND,
@@ -941,7 +941,7 @@ public class GGMaterial implements Runnable {
     public static final Werkstoff lowQualityNaquadriaSolution = new Werkstoff(
         new short[] { 0x73, 0x72, 0x84 },
         "Low Quality Naquadria Sulphate",
-        subscriptNumbers("~??Nq*??~"),
+        subscriptNumbers("~Nq*?~"),
         new Werkstoff.Stats().setRadioactive(true)
             .setToxic(true),
         Werkstoff.Types.MIXTURE,
@@ -969,7 +969,7 @@ public class GGMaterial implements Runnable {
     public static final Werkstoff naquadahGoo = new Werkstoff(
         new short[] { 0x4c, 0x4c, 0x4c },
         "Naquadah Goo",
-        subscriptNumbers("??NqTiGaAd??"),
+        subscriptNumbers("Nq?Ti?Ga?Ad?"),
         new Werkstoff.Stats(),
         Werkstoff.Types.MIXTURE,
         new Werkstoff.GenerationFeatures().disable()
@@ -980,7 +980,7 @@ public class GGMaterial implements Runnable {
     public static final Werkstoff enrichedNaquadahGoo = new Werkstoff(
         new short[] { 0x82, 0x68, 0x68 },
         "Enriched Naquadah Goo",
-        subscriptNumbers("??KeNq") + CharExchanger.shifter(8314) + "??",
+        subscriptNumbers("Ke?Nq") + CharExchanger.shifter(8314) + subscriptNumbers("?"),
         new Werkstoff.Stats().setRadioactive(true),
         Werkstoff.Types.MIXTURE,
         new Werkstoff.GenerationFeatures().disable()
@@ -991,7 +991,7 @@ public class GGMaterial implements Runnable {
     public static final Werkstoff naquadriaGoo = new Werkstoff(
         new short[] { 0x4d, 0x4d, 0x55 },
         "Naquadria Goo",
-        subscriptNumbers("??Nq*BaIn??"),
+        subscriptNumbers("Nq*?Ba?In?"),
         new Werkstoff.Stats().setRadioactive(true)
             .setToxic(true),
         Werkstoff.Types.MIXTURE,
@@ -1288,7 +1288,7 @@ public class GGMaterial implements Runnable {
     public static final Werkstoff lumiinessence = new Werkstoff(
         new short[] { 0xe8, 0xf2, 0x24 },
         "Lumiinessence",
-        subscriptNumbers("(Al??)2(PO4)4"),
+        "(Al??)" + subscriptNumbers("2(PO4)4"),
         new Werkstoff.Stats(),
         Werkstoff.Types.MIXTURE,
         new Werkstoff.GenerationFeatures().onlyDust(),

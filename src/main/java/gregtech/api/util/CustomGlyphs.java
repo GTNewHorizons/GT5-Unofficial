@@ -6,8 +6,8 @@ public class CustomGlyphs {
     public static final String EARTH = "\uE001";
     public static final String FIRE = "\uE002";
     public static final String WATER = "\uE003";
-    public static final String BRIMSTONE = "\uE004";
-    public static final String CIRCLE_CROSS = "\uE005";
+    public static final String CHAOS = "\uE004";
+    public static final String ORDER = "\uE005";
     public static final String CIRCLE_STAR = "\uE006";
     public static final String PICKAXE = "\uE007";
     public static final String ARROW_CORNER_SOUTH_EAST = "\uE008";
@@ -32,4 +32,7 @@ public class CustomGlyphs {
     public static final String ALEPH = "\uE01B";
     public static final String OMEGA = "\uE01C";
     public static final String FIXED_JAPANESE_OPENING_QUOTE = "\uE01D";
+    public static final String BRIMSTONE = "\uE01E";
+    public static final String CIRCLE_CROSS = "\uE01F";
+    public static final String SUBSCRIPT_QUESTION_MARK = "\uE020";
 }

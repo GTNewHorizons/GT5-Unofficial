@@ -4276,6 +4276,7 @@ public class GTUtility {
                 case '7' -> '\u2087';
                 case '8' -> '\u2088';
                 case '9' -> '\u2089';
+                case '?' -> CustomGlyphs.SUBSCRIPT_QUESTION_MARK.charAt(0);
                 default -> chars[i];
             };
         }

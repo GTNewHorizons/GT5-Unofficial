@@ -89,7 +89,7 @@ public class BWUtil {
         char[] nu = new char[chars.length];
         for (int i = 0; i < chars.length; i++) {
             nu[i] = switch (chars[i]) {
-                case '0' -> '\u2080';
+                case '0' -> CustomGlyphs.SUBSCRIPT0.charAt(0);
                 case '1' -> '\u2081';
                 case '2' -> '\u2082';
                 case '3' -> '\u2083';
@@ -99,6 +99,7 @@ public class BWUtil {
                 case '7' -> '\u2087';
                 case '8' -> '\u2088';
                 case '9' -> '\u2089';
+                case '?' -> CustomGlyphs.SUBSCRIPT_QUESTION_MARK.charAt(0);
                 default -> chars[i];
             };
         }
@@ -121,6 +122,7 @@ public class BWUtil {
                 case '7' -> '\u2087';
                 case '8' -> '\u2088';
                 case '9' -> '\u2089';
+                case '?' -> CustomGlyphs.SUBSCRIPT_QUESTION_MARK.charAt(0);
                 default -> chars[i];
             };
         }
