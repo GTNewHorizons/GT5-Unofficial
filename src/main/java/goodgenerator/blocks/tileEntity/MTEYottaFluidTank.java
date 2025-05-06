@@ -696,27 +696,6 @@ public class MTEYottaFluidTank extends MTETooltipMultiBlockBaseEM implements ICo
     }
 
     @Override
-    protected ButtonWidget createSafeVoidButton() {
-        return (ButtonWidget) new ButtonWidget().setOnClick((clickData, widget) -> {
-            TecTech.proxy.playSound(getBaseMetaTileEntity(), "fx_click");
-            voidExcessEnabled = !voidExcessEnabled;
-        })
-            .setPlayClickSound(false)
-            .setBackground(() -> {
-                List<UITexture> ret = new ArrayList<>();
-                ret.add(TecTechUITextures.BUTTON_STANDARD_16x16);
-                ret.add(
-                    voidExcessEnabled ? TecTechUITextures.OVERLAY_BUTTON_SAFE_VOID_ON
-                        : TecTechUITextures.OVERLAY_BUTTON_SAFE_VOID_OFF);
-                return ret.toArray(new IDrawable[0]);
-            })
-            .setPos(174, doesBindPlayerInventory() ? 132 : 156)
-            .setSize(16, 16)
-            .addTooltip(StatCollector.translateToLocal("gui.YOTTank.button.void"))
-            .setTooltipShowUpDelay(TOOLTIP_DELAY);
-    }
-
-    @Override
     protected ButtonWidget createPowerPassButton() {
         return (ButtonWidget) new ButtonWidget().setOnClick((clickData, widget) -> {
             TecTech.proxy.playSound(getBaseMetaTileEntity(), "fx_click");

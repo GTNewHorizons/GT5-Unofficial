@@ -292,6 +292,6 @@ public class MTENetworkSwitch extends TTMultiblockBase implements ISurvivalConst
 
     @Override
     public boolean forceUseMui2() {
-        return true;
+        return false;
     }
 }
