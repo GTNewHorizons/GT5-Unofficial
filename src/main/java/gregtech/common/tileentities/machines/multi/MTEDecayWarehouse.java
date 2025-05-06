@@ -1,6 +1,11 @@
 package gregtech.common.tileentities.machines.multi;
 
-import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.*;
+import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.BLUE;
+import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.GRAY;
+import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.GREEN;
+import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.RED;
+import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.UNDERLINE;
+import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.YELLOW;
 import static gregtech.api.casing.Casings.RadiationProofMachineCasing;
 import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.InputBus;
@@ -12,7 +17,6 @@ import static gregtech.api.util.GTUtility.formatNumbers;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -37,13 +41,14 @@ import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
+import gregtech.api.casing.Casings;
 import gregtech.api.casing.ICasing;
+import gregtech.api.casing.ICasingGroup;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.StructureError;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.VoidingMode;
 import gregtech.api.gui.modularui.GTUITextures;
-import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -56,6 +61,7 @@ import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.structure.IStructureInstance;
 import gregtech.api.structure.IStructureProvider;
+import gregtech.api.structure.ISuperChestAcceptor;
 import gregtech.api.structure.StructureWrapper;
 import gregtech.api.structure.StructureWrapperInstanceInfo;
 import gregtech.api.structure.StructureWrapperTooltipBuilder;
@@ -63,12 +69,12 @@ import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTRecipeConstants;
 import gregtech.api.util.GTStructureUtility;
 import gregtech.api.util.GTUtility;
-import gregtech.api.util.IGTHatchAdder;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.tileentities.storage.MTEDigitalChestBase;
 
 public class MTEDecayWarehouse extends MTEExtendedPowerMultiBlockBase<MTEDecayWarehouse>
-    implements ISurvivalConstructable, IStructureProvider<MTEDecayWarehouse> {
+    implements ISurvivalConstructable, IStructureProvider<MTEDecayWarehouse>, ISuperChestAcceptor {
 
     private static final int MODE_NORMAL = 0, MODE_EXPORT = 1;
     public static final double EPSILON = 0.00001;
@@ -136,9 +142,8 @@ public class MTEDecayWarehouse extends MTEExtendedPowerMultiBlockBase<MTEDecayWa
 
     @Override
     public IStructureDefinition<MTEDecayWarehouse> compile(String[][] def) {
-        structure.addCasing('A', RadiationProofMachineCasing)
-            .withHatches(2, 1, Arrays.asList(SuperChestHatchElement.INSTANCE))
-            .wrapElement(GTStructureUtility::noSurvivalAutoplace);
+        structure.addCasing('A', Casings.SuperChest)
+            .withChannel(GTStructureChannels.SUPER_CHEST);
         structure.addCasing('B', RadiationProofMachineCasing)
             .withHatches(1, 8, Arrays.asList(Maintenance, Energy, InputBus, OutputBus));
         structure.addCasing('C', ICasing.ofBlock(new BlockMeta(Blocks.water, 0)))
@@ -147,36 +152,11 @@ public class MTEDecayWarehouse extends MTEExtendedPowerMultiBlockBase<MTEDecayWa
         return structure.buildStructure(def);
     }
 
-    private enum SuperChestHatchElement implements IHatchElement<MTEDecayWarehouse> {
+    @Override
+    public boolean onSuperChestAdded(ICasingGroup group, MTEDigitalChestBase chest, int tier) {
+        superChest = chest;
 
-        INSTANCE;
-
-        @Override
-        public List<? extends Class<? extends IMetaTileEntity>> mteClasses() {
-            return Collections.singletonList(MTEDigitalChestBase.class);
-        }
-
-        @Override
-        public IGTHatchAdder<MTEDecayWarehouse> adder() {
-            return (o, iGregTechTileEntity, aShort) -> {
-                if (iGregTechTileEntity.getMetaTileEntity() instanceof MTEDigitalChestBase chest) {
-                    o.superChest = chest;
-                    return true;
-                }
-
-                return false;
-            };
-        }
-
-        @Override
-        public String getDisplayName() {
-            return "Any Superchest";
-        }
-
-        @Override
-        public long count(MTEDecayWarehouse o) {
-            return o.superChest != null ? 1 : 0;
-        }
+        return true;
     }
 
     @Override
@@ -224,7 +204,7 @@ public class MTEDecayWarehouse extends MTEExtendedPowerMultiBlockBase<MTEDecayWa
         if (built == -1) {
             GTUtility.sendChatToPlayer(
                 env.getActor(),
-                EnumChatFormatting.GREEN + "Auto placing done! Now go place the water & superchest yourself!");
+                EnumChatFormatting.GREEN + "Auto placing done! Now go place the water yourself!");
         }
 
         return built;
@@ -261,7 +241,7 @@ public class MTEDecayWarehouse extends MTEExtendedPowerMultiBlockBase<MTEDecayWa
                     + GRAY
                     + " when the controller is broken.");
 
-        tt.addHatchLocationOverride(SuperChestHatchElement.INSTANCE, "The bottom center block under the water");
+        tt.addSubChannelUsage(GTStructureChannels.SUPER_CHEST);
 
         tt.beginStructureBlock(true)
             .addAllCasingInfo();

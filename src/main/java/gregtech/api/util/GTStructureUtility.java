@@ -8,6 +8,7 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.lazy;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlocksTiered;
 import static com.gtnewhorizon.structurelib.util.ItemStackPredicate.NBTMode.EXACT;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.BiConsumer;
@@ -31,6 +32,7 @@ import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.IChatComponent;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.Nullable;
 
@@ -40,6 +42,7 @@ import com.gtnewhorizon.structurelib.structure.AutoPlaceEnvironment;
 import com.gtnewhorizon.structurelib.structure.IItemSource;
 import com.gtnewhorizon.structurelib.structure.IStructureElement;
 import com.gtnewhorizon.structurelib.structure.IStructureElementNoPlacement;
+import com.gtnewhorizon.structurelib.structure.StructureUtility;
 import com.gtnewhorizon.structurelib.util.ItemStackPredicate;
 
 import cofh.asmhooks.block.BlockTickingWater;
@@ -63,6 +66,7 @@ import gregtech.common.blocks.ItemMachines;
 import gregtech.common.misc.GTStructureChannels;
 import ic2.core.init.BlocksItems;
 import ic2.core.init.InternalName;
+import it.unimi.dsi.fastutil.ints.Int2IntOpenHashMap;
 
 public class GTStructureUtility {
 
@@ -765,6 +769,149 @@ public class GTStructureUtility {
         };
     }
 
+    public static <TMTE extends IMetaTileEntity> List<TMTE> extractMTEs(Class<TMTE> mteClass, ItemStack... stacks) {
+        List<TMTE> mtes = new ArrayList<>();
+
+        for (ItemStack stack : stacks) {
+            IMetaTileEntity mte = ItemMachines.getMetaTileEntity(stack);
+
+            assert mte != null;
+            if (!mteClass.isAssignableFrom(mte.getClass()))
+                throw new IllegalArgumentException(stack.getDisplayName() + " is not a " + mteClass);
+
+            mtes.add(mteClass.cast(mte));
+        }
+
+        return mtes;
+    }
+
+    public interface MTEAdder<T, TMTE extends IMetaTileEntity> {
+
+        boolean check(T t, TMTE mte, int tier);
+    }
+
+    @SuppressWarnings("SpellCheckingInspection")
+    public static <T, TMTE extends IMetaTileEntity> IStructureElement<T> ofGenericMTETiered(Class<TMTE> mteClass,
+        MTEAdder<T, TMTE> adder, List<TMTE> tiers) {
+        Int2IntOpenHashMap tierMap = new Int2IntOpenHashMap();
+
+        int i = 1;
+        for (TMTE mte : tiers) {
+            tierMap.put(
+                mte.getBaseMetaTileEntity()
+                    .getMetaTileID(),
+                i++);
+        }
+
+        return new IStructureElement<>() {
+
+            private TMTE getMTE(World world, int x, int y, int z) {
+                if (!(world.getTileEntity(x, y, z) instanceof IGregTechTileEntity igte)) return null;
+
+                IMetaTileEntity imte = igte.getMetaTileEntity();
+
+                if (!(mteClass.isAssignableFrom(imte.getClass()))) return null;
+
+                return mteClass.cast(imte);
+            }
+
+            private TMTE getPlaceable(ItemStack trigger) {
+                int index = GTUtility.clamp(trigger.stackSize, 1, tiers.size());
+
+                return GTDataUtils.getIndexSafe(tiers, index - 1);
+            }
+
+            @Override
+            public boolean check(T t, World world, int x, int y, int z) {
+                TMTE mte = getMTE(world, x, y, z);
+
+                if (mte == null) return false;
+
+                int tier = tierMap.getOrDefault(
+                    mte.getBaseMetaTileEntity()
+                        .getMetaTileID(),
+                    -1);
+
+                if (tier == -1) return false;
+
+                return adder.check(t, mte, tier);
+            }
+
+            @Override
+            public boolean couldBeValid(T t, World world, int x, int y, int z, ItemStack trigger) {
+                TMTE wanted = getPlaceable(trigger);
+                TMTE actual = getMTE(world, x, y, z);
+
+                if (actual == null) return false;
+
+                int tier = tierMap.getOrDefault(
+                    actual.getBaseMetaTileEntity()
+                        .getMetaTileID(),
+                    -1);
+
+                if (tier == -1) return false;
+
+                return tiers.get(tier) != wanted;
+            }
+
+            @Override
+            public boolean spawnHint(T t, World world, int x, int y, int z, ItemStack trigger) {
+                StructureLibAPI.hintParticle(world, x, y, z, GregTechAPI.sBlockMachines, 0);
+                return true;
+            }
+
+            @Override
+            public boolean placeBlock(T t, World world, int x, int y, int z, ItemStack trigger) {
+                TMTE mte = getPlaceable(trigger);
+
+                ItemStack stack = mte.getStackForm(1);
+
+                if (!(stack.getItem() instanceof ItemMachines itemMachines)) return false;
+
+                return itemMachines
+                    .placeBlockAt(stack, null, world, x, y, z, ForgeDirection.UP.ordinal(), 0.5f, 0.5f, 0.5f, 0);
+            }
+
+            @Override
+            public BlocksToPlace getBlocksToPlace(T t, World world, int x, int y, int z, ItemStack trigger,
+                AutoPlaceEnvironment env) {
+
+                int index = GTUtility.clamp(trigger.stackSize, 0, tiers.size() - 1);
+                TMTE mte = GTDataUtils.getIndexSafe(tiers, index);
+
+                return BlocksToPlace.create(mte.getStackForm(1));
+            }
+
+            @Override
+            public PlaceResult survivalPlaceBlock(T t, World world, int x, int y, int z, ItemStack trigger,
+                AutoPlaceEnvironment env) {
+
+                TMTE wanted = getPlaceable(trigger);
+                TMTE actual = getMTE(world, x, y, z);
+
+                if (actual == wanted) return PlaceResult.SKIP;
+
+                if (!StructureLibAPI.isBlockTriviallyReplaceable(world, x, y, z, env.getActor()))
+                    return PlaceResult.REJECT;
+
+                ItemStack stack = wanted.getStackForm(1);
+
+                return StructureUtility.survivalPlaceBlock(
+                    stack,
+                    EXACT,
+                    null,
+                    false,
+                    world,
+                    x,
+                    y,
+                    z,
+                    env.getSource(),
+                    env.getActor(),
+                    env.getChatter());
+            }
+        };
+    }
+
     /**
      * Just a structure element that proxies its operations to another one. Useful for overriding or hooking into
      * specific operations while keeping the rest unchanged.
@@ -797,7 +944,6 @@ public class GTStructureUtility {
             return proxiedElement.placeBlock(t, world, x, y, z, trigger);
         }
 
-        @SuppressWarnings("deprecation")
         @Override
         public PlaceResult survivalPlaceBlock(T t, World world, int x, int y, int z, ItemStack trigger, IItemSource s,
             EntityPlayerMP actor, Consumer<IChatComponent> chatter) {
