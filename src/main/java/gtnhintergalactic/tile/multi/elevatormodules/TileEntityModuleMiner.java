@@ -19,6 +19,8 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -104,9 +106,6 @@ import gtnhintergalactic.recipe.SpaceMiningRecipes.WeightedAsteroidList;
 import gtnhintergalactic.spaceprojects.ProjectAsteroidOutpost;
 import gtnhintergalactic.tile.multi.elevator.TileEntitySpaceElevator;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
-import tectech.thing.metaTileEntity.multi.base.INameFunction;
-import tectech.thing.metaTileEntity.multi.base.IStatusFunction;
-import tectech.thing.metaTileEntity.multi.base.LedStatus;
 import tectech.thing.metaTileEntity.multi.base.Parameter;
 import tectech.thing.metaTileEntity.multi.base.Parameters;
 import tectech.thing.metaTileEntity.multi.base.render.TTRenderedExtendedFacingTexture;
@@ -156,51 +155,14 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
     protected static final ISpaceProject ASTEROID_OUTPOST = SpaceProjectManager.getProject("AsteroidOutput");
 
     // region Parameters
-
-    /** Input parameters */
-    Parameters.Group.ParameterIn distanceSetting, parallelSetting, overdriveSetting, modeSetting, rangeSetting,
-        stepSetting;
-
     Parameters.Group.ParameterOut distanceDisplay;
     Parameter.IntegerParameter distanceParameter;
     Parameter.IntegerParameter parallelParameter;
-    /** Name of the distance setting */
-    private static final INameFunction<TileEntityModuleMiner> DISTANCE_SETTING_NAME = (base, p) -> GCCoreUtil
-        .translate("gt.blockmachines.multimachine.project.ig.miner.cfgi.0"); // Distance
-    /** Status of the distance setting */
-    private static final IStatusFunction<TileEntityModuleMiner> DISTANCE_STATUS = (base, p) -> LedStatus
-        .fromLimitsInclusiveOuterBoundary(p.get(), 1, 0, 200, MAX_DISTANCE);
-    /** Name of the parallel setting */
-    private static final INameFunction<TileEntityModuleMiner> PARALLEL_SETTING_NAME = (base, p) -> GCCoreUtil
-        .translate("gt.blockmachines.multimachine.project.ig.miner.cfgi.1"); // Max parallels
-    /** Status of the parallel setting */
-    private static final IStatusFunction<TileEntityModuleMiner> PARALLEL_STATUS = (base, p) -> LedStatus
-        .fromLimitsInclusiveOuterBoundary(p.get(), 0, 1, 100, base.getMaxParallels());
-    /** Name of the overdrive setting */
-    private static final INameFunction<TileEntityModuleMiner> OVERDRIVE_SETTING_NAME = (base, p) -> GCCoreUtil
-        .translate("gt.blockmachines.multimachine.project.ig.miner.cfgi.2"); // Overdrive
-    /** Status of the overdrive setting */
-    private static final IStatusFunction<TileEntityModuleMiner> OVERDRIVE_STATUS = (base, p) -> LedStatus
-        .fromLimitsInclusiveOuterBoundary(p.get(), 0, 1, 1.5, 2);
-    /** Name of the mode setting */
-    private static final INameFunction<TileEntityModuleMiner> MODE_SETTING_NAME = (base, p) -> GCCoreUtil
-        .translate("gt.blockmachines.multimachine.project.ig.miner.cfgi.4"); // Mode
-    /** Status of the mode setting */
-    private static final IStatusFunction<TileEntityModuleMiner> MODE_STATUS = (base, p) -> LedStatus
-        .fromLimitsInclusiveOuterBoundary(p.get(), 0, 0, 1.1, 1.1);
-    /** Name of the mode setting */
-    private static final INameFunction<TileEntityModuleMiner> RANGE_SETTING_NAME = (base, p) -> GCCoreUtil
-        .translate("gt.blockmachines.multimachine.project.ig.miner.cfgi.5"); // Range
-    /** Status of the mode setting */
-    private static final IStatusFunction<TileEntityModuleMiner> RANGE_STATUS = (base, p) -> LedStatus
-        .fromLimitsInclusiveOuterBoundary(p.get(), 0, 0, 50, 150);
-    /** Name of the step setting */
-    private static final INameFunction<TileEntityModuleMiner> STEP_SETTING_NAME = (base, p) -> GCCoreUtil
-        .translate("gt.blockmachines.multimachine.project.ig.miner.cfgi.6"); // Step
-    /** Status of the step setting */
-    private static final IStatusFunction<TileEntityModuleMiner> STEP_STATUS = (base, p) -> LedStatus
-        .fromLimitsInclusiveOuterBoundary(p.get(), 0, 0, 10, 20);
 
+    Parameter.BooleanParameter cycleParameter;
+    Parameter.IntegerParameter cycleDistanceParameter;
+    Parameter.IntegerParameter rangeParameter;
+    Parameter.IntegerParameter stepParameter;
     // endregion
 
     /** Power object used for displaying in NEI */
@@ -329,9 +291,8 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
      */
     @Override
     public @NotNull CheckRecipeResult checkProcessing_EM() {
-        if (!overdriveSetting.getStatus(false).isOk) return SimpleCheckRecipeResult.ofFailure("invalid_overdrive");
-        if (V[tTier] * (long) parallelSetting.get() > getEUVar()) {
-            return CheckRecipeResultRegistry.insufficientPower(V[tTier] * (long) parallelSetting.get());
+        if (V[tTier] * (long) parallelParameter.getValue() > getEUVar()) {
+            return CheckRecipeResultRegistry.insufficientPower(V[tTier] * (long) parallelParameter.getValue());
         }
 
         lEUt = 0;
@@ -652,9 +613,7 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
         // T4: 0.296
         // T5: 0.578
         // The whole chance is multiplied by 2 - overdrive setting
-        return Math.min(
-            (int) ((Math.pow((double) plasmaTier / 6, 3) * 10000) * (2.0D - overdriveSetting.get())),
-            BONUS_STACK_MAX_CHANCE);
+        return Math.min((int) (Math.pow((double) plasmaTier / 6, 3) * 10000), BONUS_STACK_MAX_CHANCE);
     }
 
     /**
@@ -716,7 +675,7 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
         }
         float plasmaModifier = asteroidOutpost != null ? 1f - asteroidOutpost.getPlasmaDiscount() : 1f;
         return Math.min(
-            (int) Math.min(getMaxParallels(), parallelSetting.get()),
+            (int) Math.min(getMaxParallels(), parallelParameter.getValue()),
             (int) (plasma.amount / (plasmaUsage * plasmaModifier)));
     }
 
@@ -729,8 +688,7 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
     protected int getRecipeTime(int unboostedTime, int plasmaTier) {
         // Reduce recipe time by 10% for every plasma tier above T1 and divide recipe time by the overdrive value
         return plasmaTier > 0
-            ? (int) ((double) unboostedTime
-                * Math.max((1D - 0.1D * (plasmaTier - 1)) / overdriveSetting.get(), MIN_RECIPE_TIME_MODIFIER))
+            ? (int) ((double) unboostedTime * Math.max((1D - 0.1D * (plasmaTier - 1)), MIN_RECIPE_TIME_MODIFIER))
             : unboostedTime;
     }
 
@@ -738,17 +696,17 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
      * Cycle the current distance according to parameters
      */
     protected void cycleDistance() {
-        if (((int) modeSetting.get()) != 0) {
+        if (cycleParameter.getValue()) {
             // cycle distanceDisplay from (distance - range)
             // to (distance + range) in increments of step.
-            if (distanceDisplay.get() + stepSetting.get()
-                <= Math.min(MAX_DISTANCE, distanceSetting.get() + rangeSetting.get())) {
-                distanceDisplay.set(distanceDisplay.get() + stepSetting.get());
+            if (cycleDistanceParameter.getValue() + stepParameter.getValue()
+                <= Math.min(MAX_DISTANCE, distanceParameter.getValue() + rangeParameter.getValue())) {
+                cycleDistanceParameter.setValue(cycleDistanceParameter.getValue() + stepParameter.getValue());
             } else {
-                distanceDisplay.set(Math.max(0, distanceSetting.get() - rangeSetting.get()));
+                cycleDistanceParameter.setValue(Math.max(0, distanceParameter.getValue() - rangeParameter.getValue()));
             }
         } else {
-            distanceDisplay.set(Math.min(MAX_DISTANCE, Math.max(0, distanceSetting.get())));
+            cycleDistanceParameter.setValue((int) Math.min(MAX_DISTANCE, Math.max(0, distanceParameter.getValue())));
         }
     }
 
@@ -805,34 +763,27 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
         distanceParameter = new Parameter.IntegerParameter(
             0,
             () -> 0,
-            () -> Integer.MAX_VALUE,
+            () -> (int) MAX_DISTANCE,
             "tt.spaceminer.distance");
         parallelParameter = new Parameter.IntegerParameter(
             getMaxParallels(),
             () -> 0,
             () -> getMaxParallels(),
             "tt.spaceminer.parallel");
+        cycleParameter = new Parameter.BooleanParameter(false, "tt.spaceminer.cycle");
+        rangeParameter = new Parameter.IntegerParameter(0, () -> 0, () -> Integer.MAX_VALUE, "tt.spaceminer.range");
+        stepParameter = new Parameter.IntegerParameter(0, () -> 0, () -> Integer.MAX_VALUE, "tt.spaceminer.step");
+        cycleDistanceParameter = new Parameter.IntegerParameter(
+            distanceParameter.getValue(),
+            () -> distanceParameter.getValue() - rangeParameter.getValue(),
+            () -> distanceParameter.getValue() + rangeParameter.getValue(),
+            "").dontShow();
+
         parameterList.add(distanceParameter);
         parameterList.add(parallelParameter);
-    }
-
-    /**
-     * Instantiate parameters of the controller
-     */
-    @Override
-    protected void parametersInstantiation_EM() {
-        super.parametersInstantiation_EM();
-        Parameters.Group hatch_0 = parametrization.getGroup(0, false);
-        Parameters.Group hatch_1 = parametrization.getGroup(1, false);
-        Parameters.Group hatch_2 = parametrization.getGroup(2, false);
-        Parameters.Group hatch_3 = parametrization.getGroup(3, false);
-        distanceSetting = hatch_0.makeInParameter(0, 1, DISTANCE_SETTING_NAME, DISTANCE_STATUS);
-        parallelSetting = hatch_0.makeInParameter(1, getMaxParallels(), PARALLEL_SETTING_NAME, PARALLEL_STATUS);
-        overdriveSetting = hatch_1.makeInParameter(0, 1, OVERDRIVE_SETTING_NAME, OVERDRIVE_STATUS);
-        modeSetting = hatch_2.makeInParameter(0, 0, MODE_SETTING_NAME, MODE_STATUS);
-        rangeSetting = hatch_2.makeInParameter(1, 0, RANGE_SETTING_NAME, RANGE_STATUS);
-        stepSetting = hatch_3.makeInParameter(0, 0, STEP_SETTING_NAME, STEP_STATUS);
-        distanceDisplay = hatch_0.makeOutParameter(1, 1, DISTANCE_SETTING_NAME, DISTANCE_STATUS);
+        parameterList.add(cycleParameter);
+        parameterList.add(rangeParameter);
+        parameterList.add(stepParameter);
     }
     //
     // /**
@@ -1092,11 +1043,15 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
     @Override
     public void insertTexts(ListWidget<IWidget, ?> machineInfo, ItemStackHandler invSlot, PanelSyncManager syncManager,
         ModularPanel parentPanel) {
-        IntSyncValue distanceSyncer = new IntSyncValue(distanceParameter::getValue, distanceParameter::setValue);
-        syncManager.syncValue("distanceDisplay", distanceSyncer);
+        IntSyncValue distanceSyncer = (IntSyncValue) syncManager.getSyncHandler("distanceParameter:0");
+        IntSyncValue cycleDistanceSyncer = (IntSyncValue) syncManager.getSyncHandler("cycleDistanceParameter:0");
+        BooleanSyncValue cycleSyncer = (BooleanSyncValue) syncManager.getSyncHandler("cycleParameter:0");
+
         machineInfo.child(
             IKey.dynamic(
-                () -> EnumChatFormatting.WHITE + "Distance: " + EnumChatFormatting.GREEN + distanceParameter.getValue())
+                () -> EnumChatFormatting.WHITE + "Distance: "
+                    + EnumChatFormatting.GREEN
+                    + (cycleSyncer.getValue() ? cycleDistanceSyncer.getValue() : distanceSyncer.getValue()))
                 .asWidget());
         super.insertTexts(machineInfo, invSlot, syncManager, parentPanel);
 
@@ -1321,16 +1276,19 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
                         else t.addFromItem(MINING_DRONES[droneTierSyncer.getValue()]);
                     })));
 
-        Flow bla = new Column().widthRel(1)
-            .height(36)
+        Flow asteroidButtonColumn = new Column().widthRel(1)
             .marginTop(4);
-        resultColumn.child(bla);
+        resultColumn.child(asteroidButtonColumn);
         panelRow.child(resultColumn);
 
         droneTierSyncer.setChangeListener(() -> {
-            bla.getChildren()
+            asteroidButtonColumn.getChildren()
                 .clear();
-            generateAsteroidButtons(bla, droneTierSyncer.getValue(), distanceParameterSyncer.getValue(), syncManager);
+            generateAsteroidButtons(
+                asteroidButtonColumn,
+                droneTierSyncer.getValue(),
+                distanceParameterSyncer.getValue(),
+                syncManager);
             if (NetworkUtils.isClient()) {
                 WidgetTree.resize(panelRow);
             }
@@ -1340,71 +1298,88 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
     private void generateAsteroidButtons(Flow resultColumn, int droneTier, int distance, PanelSyncManager syncManager) {
         if (droneTier < 0) return;
 
-        List<Pair<Integer, GTRecipe>> asteroids = asteroidDistanceMap.get(droneTier)
-            .get(distance)
-            .stream()
-            .filter(
-                asteroid -> asteroid.second()
-                    .getMetadata(IGRecipeMaps.MODULE_TIER) <= tModuleTier)
-            .collect(toList());
+        Map<Integer, List<Pair<Integer, GTRecipe>>> asteroids = asteroidDistanceMap.get(droneTier);
+
+        PanelSyncManager rootManager = syncManager.getModularSyncManager()
+            .getPanelSyncManager("tt_multiblock");
+        IntSyncValue distanceSyncer = (IntSyncValue) rootManager.getSyncHandler("distanceParameter:0");
+        IntSyncValue rangeSyncer = (IntSyncValue) rootManager.getSyncHandler("rangeParameter:0");
+        BooleanSyncValue cycleSyncer = (BooleanSyncValue) rootManager.getSyncHandler("cycleParameter:0");
+
+        int start = distanceSyncer.getValue() - (cycleSyncer.getValue() ? rangeSyncer.getValue() : 0);
+        int end = distanceSyncer.getValue() + (cycleSyncer.getValue() ? rangeSyncer.getValue() : 0);
 
         Flow asteroidRow = new Row().widthRel(1)
             .height(18);
 
         int cnt = 0;
-        for (Pair<Integer, GTRecipe> asteroid : asteroids) {
-            int i = asteroid.first();
-            AsteroidData data = uniqueAsteroidList.get(i);
 
-            IPanelHandler asteroidInfoPanel = (IPanelHandler) syncManager.getModularSyncManager()
-                .getPanelSyncManager("tt_multiblock")
-                .getSyncHandler("asteroidInfoPanel" + i);
+        Set<Integer> visited = new HashSet();
+        for (int i = start; i <= end; i++) {
+            List<Pair<Integer, GTRecipe>> asteroidsAtDistance = asteroids.get(i)
+                .stream()
+                .filter(
+                    asteroid -> asteroid.second()
+                        .getMetadata(IGRecipeMaps.MODULE_TIER) <= tModuleTier)
+                .collect(toList());
 
-            ItemStack oreItem = data.outputItems != null ? data.outputItems[0]
-                : GTOreDictUnificator.get(data.orePrefixes, data.output[0], 1);
-            ButtonWidget asteroidButton = new ButtonWidget<>().size(18, 18)
-                .background(new DynamicDrawable(() -> {
-                    if (filterContainsAsteroidOre(data)) {
-                        return new DrawableArray(
-                            GuiTextures.BUTTON_CLEAN,
-                            new Rectangle().setColor(isWhitelisted ? Color.rgb(0, 255, 0) : Color.rgb(255, 0, 0))
-                                .asIcon()
-                                .size(16, 16));
-                    } else {
-                        return GuiTextures.BUTTON_CLEAN;
-                    }
-                }))
-                .overlay(
-                    new ItemDrawable(oreItem).asIcon()
-                        .size(16, 16))
-                .tooltipBuilder(
-                    t -> t.addLine(IKey.str(EnumChatFormatting.RED + data.getAsteroidNameLocalized()))
-                        .addLine(IKey.lang("tt.spaceminer.asteroidButtonTooltipInfo"))
-                        .addLine(
-                            IKey.lang("tt.spaceminer.asteroidButtonFilter")
-                                .color(Color.rgb(180, 10, 10))))
-                .onMousePressed(mouseData -> {
-                    if (mouseData == 1) {
-                        addAsteroidToFiler(data);
+            for (Pair<Integer, GTRecipe> asteroid : asteroidsAtDistance) {
+                int index = asteroid.first();
+                if (visited.contains(index)) continue;
+                visited.add(index);
+                AsteroidData data = uniqueAsteroidList.get(index);
+
+                IPanelHandler asteroidInfoPanel = (IPanelHandler) syncManager.getModularSyncManager()
+                    .getPanelSyncManager("tt_multiblock")
+                    .getSyncHandler("asteroidInfoPanel" + index);
+
+                ItemStack oreItem = data.outputItems != null ? data.outputItems[0]
+                    : GTOreDictUnificator.get(data.orePrefixes, data.output[0], 1);
+                ButtonWidget asteroidButton = new ButtonWidget<>().size(18, 18)
+                    .background(new DynamicDrawable(() -> {
+                        if (filterContainsAsteroidOre(data)) {
+                            return new DrawableArray(
+                                GuiTextures.BUTTON_CLEAN,
+                                new Rectangle().setColor(isWhitelisted ? Color.rgb(0, 255, 0) : Color.rgb(255, 0, 0))
+                                    .asIcon()
+                                    .size(16, 16));
+                        } else {
+                            return GuiTextures.BUTTON_CLEAN;
+                        }
+                    }))
+                    .overlay(
+                        new ItemDrawable(oreItem).asIcon()
+                            .size(16, 16))
+                    .tooltipBuilder(
+                        t -> t.addLine(IKey.str(EnumChatFormatting.RED + data.getAsteroidNameLocalized()))
+                            .addLine(IKey.lang("tt.spaceminer.asteroidButtonTooltipInfo"))
+                            .addLine(
+                                IKey.lang("tt.spaceminer.asteroidButtonFilter")
+                                    .color(Color.rgb(180, 10, 10))))
+                    .onMousePressed(mouseData -> {
+                        if (mouseData == 1) {
+                            addAsteroidToFiler(data);
+                            return true;
+                        }
+                        if (!asteroidInfoPanel.isPanelOpen()) {
+                            asteroidInfoPanel.openPanel();
+                        } else {
+                            asteroidInfoPanel.closePanel();
+                        }
                         return true;
-                    }
-                    if (!asteroidInfoPanel.isPanelOpen()) {
-                        asteroidInfoPanel.openPanel();
-                    } else {
-                        asteroidInfoPanel.closePanel();
-                    }
-                    return true;
-                });
-            asteroidButton.marginRight(2);
-            asteroidRow.child(asteroidButton);
-            if ((cnt + 1) % 8 == 0 || cnt == uniqueAsteroidList.size() - 1) {
-                resultColumn.child(asteroidRow);
-                asteroidRow = new Row().widthRel(1)
-                    .height(18)
-                    .marginBottom(4);
-            }
-            cnt++;
-        } ;
+                    });
+                asteroidButton.marginRight(2);
+                asteroidRow.child(asteroidButton);
+                if ((cnt + 1) % 8 == 0 || cnt == uniqueAsteroidList.size() - 1) {
+                    resultColumn.child(asteroidRow);
+                    asteroidRow = new Row().widthRel(1)
+                        .height(18)
+                        .marginBottom(4);
+                }
+                cnt++;
+            } ;
+        }
+
     }
 
     private void addAsteroidToFiler(AsteroidData data) {
@@ -2164,17 +2139,20 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
                 return true;
             })
             .sorted(
-                (a, b) -> b.second()
-                    .getMetadata(IGRecipeMaps.SPACE_MINING_DATA).recipeWeight
-                    - a.second()
-                        .getMetadata(IGRecipeMaps.SPACE_MINING_DATA).recipeWeight)
+                (a, b) -> Objects.requireNonNull(
+                    b.second()
+                        .getMetadata(IGRecipeMaps.SPACE_MINING_DATA)).recipeWeight
+                    - Objects.requireNonNull(
+                        a.second()
+                            .getMetadata(IGRecipeMaps.SPACE_MINING_DATA)).recipeWeight)
             .collect(toList());
 
         AtomicInteger weightSum = new AtomicInteger();
         asteroids.forEach(
             asteroid -> weightSum.addAndGet(
-                asteroid.second()
-                    .getMetadata(IGRecipeMaps.SPACE_MINING_DATA).recipeWeight));
+                Objects.requireNonNull(
+                    asteroid.second()
+                        .getMetadata(IGRecipeMaps.SPACE_MINING_DATA)).recipeWeight));
 
         for (Pair<Integer, GTRecipe> asteroidPair : asteroids) {
             GTRecipe asteroid = asteroidPair.second();
@@ -2221,6 +2199,17 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
                 true);
             asteroidPanels.add(asteroidInfoPanel);
         }
+
+        syncManager
+            .syncValue("distanceParameter", new IntSyncValue(distanceParameter::getValue, distanceParameter::setValue));
+        syncManager.syncValue(
+            "cycleDistanceParameter",
+            new IntSyncValue(cycleDistanceParameter::getValue, cycleDistanceParameter::setValue));
+        syncManager.syncValue("rangeParameter", new IntSyncValue(rangeParameter::getValue, rangeParameter::setValue));
+        syncManager.syncValue("stepParameter", new IntSyncValue(stepParameter::getValue, stepParameter::setValue));
+        syncManager
+            .syncValue("cycleParameter", new BooleanSyncValue(cycleParameter::getValue, cycleParameter::setValue));
+
     }
 
     /**

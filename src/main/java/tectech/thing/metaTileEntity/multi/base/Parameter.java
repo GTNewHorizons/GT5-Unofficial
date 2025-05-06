@@ -12,6 +12,7 @@ public abstract class Parameter<T> {
     protected T currentValue;
     private Supplier<T> minValue = null;
     private Supplier<T> maxValue = null;
+    public boolean show = true;
 
     public Parameter(T value, String key) {
         this.currentValue = value;
@@ -64,6 +65,11 @@ public abstract class Parameter<T> {
         this.currentValue = value;
     }
 
+    public Parameter<T> dontShow() {
+        this.show = false;
+        return this;
+    }
+
     public static class IntegerParameter extends Parameter<Integer> {
 
         @Override
@@ -87,6 +93,12 @@ public abstract class Parameter<T> {
         public IntegerParameter(Integer value, Supplier<Integer> minValue, Supplier<Integer> maxValue, String key,
             Object... args) {
             super(value, minValue, maxValue, key, args);
+        }
+
+        @Override
+        public IntegerParameter dontShow() {
+            super.dontShow();
+            return this;
         }
     }
 
@@ -114,6 +126,12 @@ public abstract class Parameter<T> {
             Object... args) {
             super(value, minValue, maxValue, key, args);
         }
+
+        @Override
+        public DoubleParameter dontShow() {
+            super.dontShow();
+            return this;
+        }
     }
 
     public static class StringParameter extends Parameter<String> {
@@ -130,6 +148,12 @@ public abstract class Parameter<T> {
 
         public StringParameter(String value, String key) {
             super(value, key);
+        }
+
+        @Override
+        public StringParameter dontShow() {
+            super.dontShow();
+            return this;
         }
     }
 
@@ -151,6 +175,12 @@ public abstract class Parameter<T> {
 
         public void invert() {
             this.currentValue = !this.currentValue;
+        }
+
+        @Override
+        public BooleanParameter dontShow() {
+            super.dontShow();
+            return this;
         }
     }
 
