@@ -2695,6 +2695,7 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
         parameterListWidget.sizeRel(1)
             .margin(2);
         for (Parameter<?> parameter : parameterList) {
+            if (!parameter.show) continue;
             TextFieldWidget parameterField = new TextFieldWidget();
             if (parameter instanceof Parameter.IntegerParameter intParameter) {
                 parameterField.value(new IntSyncValue(intParameter::getValue, intParameter::setValue))
