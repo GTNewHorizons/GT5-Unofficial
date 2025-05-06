@@ -5,12 +5,12 @@ import java.util.List;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
-import net.minecraft.util.StatCollector;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Textures;
+import gregtech.common.misc.GTStructureChannels;
 
 /**
  * The casings are split into separate files because they are registered as regular blocks, and a regular block can have
@@ -29,6 +29,10 @@ public class BlockCasings11 extends BlockCasingsAbstract {
         register(5, ItemList.Casing_Item_Pipe_Quantium, "Quantium Item Pipe Casing");
         register(6, ItemList.Casing_Item_Pipe_Fluxed_Electrum, "Fluxed Electrum Item Pipe Casing");
         register(7, ItemList.Casing_Item_Pipe_Black_Plutonium, "Black Plutonium Item Pipe Casing");
+
+        for (int i = 0; i < 8; i++) {
+            GTStructureChannels.ITEM_PIPE_CASING.registerAsIndicator(new ItemStack(this, 1, i), i + 1);
+        }
     }
 
     @Override
@@ -54,9 +58,5 @@ public class BlockCasings11 extends BlockCasingsAbstract {
     @Override
     public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean advancedTooltips) {
         super.addInformation(stack, player, tooltip, advancedTooltips);
-
-        tooltip.add(
-            StatCollector
-                .translateToLocalFormatted("GT5U.tooltip.channelvalue", stack.getItemDamage() + 1, "item_pipe"));
     }
 }

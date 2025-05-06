@@ -40,8 +40,15 @@ public class METHatchAirIntake extends MTEHatchFluidGenerator {
 
     @Override
     public Fluid getFluidToGenerate() {
-        return FluidUtils.getAir(1)
-            .getFluid();
+        int id = this.getBaseMetaTileEntity()
+            .getWorld().provider.dimensionId;
+
+        if (id == -1) {
+            return Materials.NetherAir.mFluid;
+        } else {
+            return FluidUtils.getAir(1)
+                .getFluid();
+        }
     }
 
     @Override
