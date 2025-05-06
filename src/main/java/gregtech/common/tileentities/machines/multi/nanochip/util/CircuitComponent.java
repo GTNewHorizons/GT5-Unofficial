@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.IIcon;
 import net.minecraft.util.StatCollector;
 
 import gregtech.api.enums.ItemList;
@@ -25,81 +24,182 @@ public enum CircuitComponent {
 
     // When adding to this list, PLEASE only add to the end! The ordinals are used as item ids for the fake items, so
     // adding in the middle will break saved state!
-    WireNiobiumTitanium("gt.circuitcomponent.wirenbti", RecipeMaps.nanochipWireTracer, Materials.NiobiumTitanium),
+    WireNiobiumTitanium("gt.circuitcomponent.wirenbti", RecipeMaps.nanochipWireTracer, Materials.NiobiumTitanium,
+        "wireniobiumtitanium"),
+    WireYttriumBariumCuprate("gt.circuitcomponent.wireybc", RecipeMaps.nanochipWireTracer,
+        Materials.YttriumBariumCuprate, "wireyttriumbariumcuprate"),
+    // Lumiium is a werkstoff, not a material, can't insert yet
+    WireLumiium("gt.circuitcomponent.wirelumiium", RecipeMaps.nanochipWireTracer, "wirelumiium"),
     ProcessedWireNiobiumTitanium("gt.circuitcomponent.processed.wirenbti", RecipeMaps.nanochipAssemblyMatrixRecipes,
-        Materials.NiobiumTitanium),
-    SMDResistor("gt.circuitcomponent.smd.resistor", RecipeMaps.nanochipSMDProcessorRecipes),
-    SMDTransistor("gt.circuitcomponent.smd.transistor", RecipeMaps.nanochipSMDProcessorRecipes),
-    SMDInductor("gt.circuitcomponent.smd.inductor", RecipeMaps.nanochipSMDProcessorRecipes),
-    SMDCapacitor("gt.circuitcomponent.smd.capacitor", RecipeMaps.nanochipSMDProcessorRecipes),
-    SMDDiode("gt.circuitcomponent.smd.diode", RecipeMaps.nanochipSMDProcessorRecipes),
-    AdvSMDResistor("gt.circuitcomponent.asmd.resistor", RecipeMaps.nanochipSMDProcessorRecipes),
-    AdvSMDTransistor("gt.circuitcomponent.asmd.transistor", RecipeMaps.nanochipSMDProcessorRecipes),
-    AdvSMDInductor("gt.circuitcomponent.asmd.inductor", RecipeMaps.nanochipSMDProcessorRecipes),
-    AdvSMDCapacitor("gt.circuitcomponent.asmd.capacitor", RecipeMaps.nanochipSMDProcessorRecipes),
-    AdvSMDDiode("gt.circuitcomponent.asmd.diode", RecipeMaps.nanochipSMDProcessorRecipes),
-    OpticalSMDResistor("gt.circuitcomponent.xsmd.resistor", RecipeMaps.nanochipSMDProcessorRecipes),
-    OpticalSMDTransistor("gt.circuitcomponent.xsmd.transistor", RecipeMaps.nanochipSMDProcessorRecipes),
-    OpticalSMDInductor("gt.circuitcomponent.xsmd.inductor", RecipeMaps.nanochipSMDProcessorRecipes),
-    OpticalSMDCapacitor("gt.circuitcomponent.xsmd.capacitor", RecipeMaps.nanochipSMDProcessorRecipes),
-    OpticalSMDDiode("gt.circuitcomponent.xsmd.diode", RecipeMaps.nanochipSMDProcessorRecipes),
-    ProcessedSMDResistor("gt.circuitcomponent.processed.smd.resistor", RecipeMaps.nanochipAssemblyMatrixRecipes),
-    ProcessedSMDTransistor("gt.circuitcomponent.processed.smd.transistor", RecipeMaps.nanochipAssemblyMatrixRecipes),
-    ProcessedSMDInductor("gt.circuitcomponent.processed.smd.inductor", RecipeMaps.nanochipAssemblyMatrixRecipes),
-    ProcessedSMDCapacitor("gt.circuitcomponent.processed.smd.capacitor", RecipeMaps.nanochipAssemblyMatrixRecipes),
-    ProcessedSMDDiode("gt.circuitcomponent.processed.smd.diode", RecipeMaps.nanochipAssemblyMatrixRecipes),
-    ProcessedAdvSMDResistor("gt.circuitcomponent.processed.asmd.resistor", RecipeMaps.nanochipAssemblyMatrixRecipes),
-    ProcessedAdvSMDTransistor("gt.circuitcomponent.processed.asmd.transistor",
-        RecipeMaps.nanochipAssemblyMatrixRecipes),
-    ProcessedAdvSMDInductor("gt.circuitcomponent.processed.asmd.inductor", RecipeMaps.nanochipAssemblyMatrixRecipes),
-    ProcessedAdvSMDCapacitor("gt.circuitcomponent.processed.asmd.capacitor", RecipeMaps.nanochipAssemblyMatrixRecipes),
-    ProcessedAdvSMDDiode("gt.circuitcomponent.processed.asmd.diode", RecipeMaps.nanochipAssemblyMatrixRecipes),
-    ProcessedOpticalSMDResistor("gt.circuitcomponent.processed.xsmd.resistor",
-        RecipeMaps.nanochipAssemblyMatrixRecipes),
+        Materials.NiobiumTitanium, "processedwireniobiumtitanium"),
+    ProcessedWireYttriumBariumCuprate("gt.circuitcomponent.processed.wireybc", RecipeMaps.nanochipAssemblyMatrixRecipes,
+        Materials.YttriumBariumCuprate, "processedwireyttriumbariumcuprate"),
+    ProcessedWireLumiium("gt.circuitcomponent.processed.wirelumiium", RecipeMaps.nanochipAssemblyMatrixRecipes,
+        "processedwirelumiium"),
+    SMDResistor("gt.circuitcomponent.smd.resistor", RecipeMaps.nanochipSMDProcessorRecipes, "smdresistor"),
+    SMDTransistor("gt.circuitcomponent.smd.transistor", RecipeMaps.nanochipSMDProcessorRecipes, "smdtransistor"),
+    SMDInductor("gt.circuitcomponent.smd.inductor", RecipeMaps.nanochipSMDProcessorRecipes, "smdinductor"),
+    SMDCapacitor("gt.circuitcomponent.smd.capacitor", RecipeMaps.nanochipSMDProcessorRecipes, "smdcapacitor"),
+    SMDDiode("gt.circuitcomponent.smd.diode", RecipeMaps.nanochipSMDProcessorRecipes, "smddiode"),
+    AdvSMDResistor("gt.circuitcomponent.asmd.resistor", RecipeMaps.nanochipSMDProcessorRecipes, "advsmdresistor"),
+    AdvSMDTransistor("gt.circuitcomponent.asmd.transistor", RecipeMaps.nanochipSMDProcessorRecipes, "advsmdtransistor"),
+    AdvSMDInductor("gt.circuitcomponent.asmd.inductor", RecipeMaps.nanochipSMDProcessorRecipes, "advsmdinductor"),
+    AdvSMDCapacitor("gt.circuitcomponent.asmd.capacitor", RecipeMaps.nanochipSMDProcessorRecipes, "advsmdcapacitor"),
+    AdvSMDDiode("gt.circuitcomponent.asmd.diode", RecipeMaps.nanochipSMDProcessorRecipes, "advsmddiode"),
+    OpticalSMDResistor("gt.circuitcomponent.xsmd.resistor", RecipeMaps.nanochipSMDProcessorRecipes,
+        "opticalsmdresistor"),
+    OpticalSMDTransistor("gt.circuitcomponent.xsmd.transistor", RecipeMaps.nanochipSMDProcessorRecipes,
+        "opticalsmdtransistor"),
+    OpticalSMDInductor("gt.circuitcomponent.xsmd.inductor", RecipeMaps.nanochipSMDProcessorRecipes,
+        "opticalsmdinductor"),
+    OpticalSMDCapacitor("gt.circuitcomponent.xsmd.capacitor", RecipeMaps.nanochipSMDProcessorRecipes,
+        "opticalsmdcapacitor"),
+    OpticalSMDDiode("gt.circuitcomponent.xsmd.diode", RecipeMaps.nanochipSMDProcessorRecipes, "opticalsmddiode"),
+    ProcessedSMDResistor("gt.circuitcomponent.processed.smd.resistor", RecipeMaps.nanochipAssemblyMatrixRecipes,
+        "processedsmdresistor"),
+    ProcessedSMDTransistor("gt.circuitcomponent.processed.smd.transistor", RecipeMaps.nanochipAssemblyMatrixRecipes,
+        "processedsmdtransistor"),
+    ProcessedSMDInductor("gt.circuitcomponent.processed.smd.inductor", RecipeMaps.nanochipAssemblyMatrixRecipes,
+        "processedsmdinductor"),
+    ProcessedSMDCapacitor("gt.circuitcomponent.processed.smd.capacitor", RecipeMaps.nanochipAssemblyMatrixRecipes,
+        "processedsmdcapacitor"),
+    ProcessedSMDDiode("gt.circuitcomponent.processed.smd.diode", RecipeMaps.nanochipAssemblyMatrixRecipes,
+        "processedsmddiode"),
+    ProcessedAdvSMDResistor("gt.circuitcomponent.processed.asmd.resistor", RecipeMaps.nanochipAssemblyMatrixRecipes,
+        "processedadvsmdresistor"),
+    ProcessedAdvSMDTransistor("gt.circuitcomponent.processed.asmd.transistor", RecipeMaps.nanochipAssemblyMatrixRecipes,
+        "processedadvsmdtransistor"),
+    ProcessedAdvSMDInductor("gt.circuitcomponent.processed.asmd.inductor", RecipeMaps.nanochipAssemblyMatrixRecipes,
+        "processedadvsmdinductor"),
+    ProcessedAdvSMDCapacitor("gt.circuitcomponent.processed.asmd.capacitor", RecipeMaps.nanochipAssemblyMatrixRecipes,
+        "processedadvsmdcapacitor"),
+    ProcessedAdvSMDDiode("gt.circuitcomponent.processed.asmd.diode", RecipeMaps.nanochipAssemblyMatrixRecipes,
+        "processedadvsmddiode"),
+    ProcessedOpticalSMDResistor("gt.circuitcomponent.processed.xsmd.resistor", RecipeMaps.nanochipAssemblyMatrixRecipes,
+        "processedopticalsmdresistor"),
     ProcessedOpticalSMDTransistor("gt.circuitcomponent.processed.xsmd.transistor",
-        RecipeMaps.nanochipAssemblyMatrixRecipes),
-    ProcessedOpticalSMDInductor("gt.circuitcomponent.processed.xsmd.inductor",
-        RecipeMaps.nanochipAssemblyMatrixRecipes),
+        RecipeMaps.nanochipAssemblyMatrixRecipes, "processedopticalsmdtransistor"),
+    ProcessedOpticalSMDInductor("gt.circuitcomponent.processed.xsmd.inductor", RecipeMaps.nanochipAssemblyMatrixRecipes,
+        "processedopticalsmdinductor"),
     ProcessedOpticalSMDCapacitor("gt.circuitcomponent.processed.xsmd.capacitor",
-        RecipeMaps.nanochipAssemblyMatrixRecipes),
-    ProcessedOpticalSMDDiode("gt.circuitcomponent.processed.xsmd.diode", RecipeMaps.nanochipAssemblyMatrixRecipes),
-    BoardMultifiberglassElite("gt.circuitcomponent.boardmultifiberelite", RecipeMaps.nanochipBoardProcessorRecipes),
-    ProcessedBoardMultifiberglassElite("gt.circuitcomponent.processed.boardmultifiberelite",
-        RecipeMaps.nanochipAssemblyMatrixRecipes),
-    ChipNanoCPU("gt.circuitcomponent.chipnanocpu", RecipeMaps.nanochipCuttingChamber),
-    ChipRAM("gt.circuitcomponent.chipram", RecipeMaps.nanochipCuttingChamber),
-    ChipNOR("gt.circuitcomponent.chipnor", RecipeMaps.nanochipCuttingChamber),
-    ChipNAND("gt.circuitcomponent.chipnand", RecipeMaps.nanochipCuttingChamber),
-    ChipCrystalCPU("gt.circuitcomponent.chipcrystalcpu", RecipeMaps.nanochipEtchingArray),
-    ProcessedChipNanoCPU("gt.circuitcomponent.processed.chipnanocpu", RecipeMaps.nanochipAssemblyMatrixRecipes),
-    ProcessedChipCrystalCPU("gt.circuitcomponent.processed.chipcrystalcpu", RecipeMaps.nanochipAssemblyMatrixRecipes),
-    ProcessedChipRAM("gt.circuitcomponent.processed.chipram", RecipeMaps.nanochipAssemblyMatrixRecipes),
-    ProcessedChipNOR("gt.circuitcomponent.processed.chipnor", RecipeMaps.nanochipAssemblyMatrixRecipes),
-    ProcessedChipNAND("gt.circuitcomponent.processed.chipnand", RecipeMaps.nanochipAssemblyMatrixRecipes),
+        RecipeMaps.nanochipAssemblyMatrixRecipes, "processedopticalsmdcapacitor"),
+    ProcessedOpticalSMDDiode("gt.circuitcomponent.processed.xsmd.diode", RecipeMaps.nanochipAssemblyMatrixRecipes,
+        "processedopticalsmddiode"),
+    BoardMultifiberglassElite("gt.circuitcomponent.board.multifiberelite", RecipeMaps.nanochipBoardProcessorRecipes,
+        "boardmultifiberglasselite"),
+    BoardWetwareLifesupport("gt.circuitcomponent.board.wetwarelifesupport", RecipeMaps.nanochipBoardProcessorRecipes,
+        "boardwetwarelifesupport"),
+    BoardBioMutated("gt.circuitcomponent.board.biomutated", RecipeMaps.nanochipBoardProcessorRecipes,
+        "boardbiomutated"),
+    BoardOptical("gt.circuitcomponent.board.optical", RecipeMaps.nanochipBoardProcessorRecipes, "boardoptical"),
+    Neuroprocessor("gt.circuitcomponent.neuroprocessor", RecipeMaps.nanochipAssemblyMatrixRecipes, "neuroprocessor"),
+    Bioprocessor("gt.circuitcomponent.neuroprocessor", RecipeMaps.nanochipAssemblyMatrixRecipes, "bioprocessor"),
+    ProcessedBoardMultifiberglassElite("gt.circuitcomponent.processed.board.multifiberelite",
+        RecipeMaps.nanochipAssemblyMatrixRecipes, "processedboardmultifiberglasselite"),
+    ProcessedBoardWetwareLifesupport("gt.circuitcomponent.processed.board.wetwarelifesupport",
+        RecipeMaps.nanochipAssemblyMatrixRecipes, "processedboardwetwarelifesupport"),
+    ProcessedBoardBioMutated("gt.circuitcomponent.processed.board.biomutated", RecipeMaps.nanochipAssemblyMatrixRecipes,
+        "processedboardbiomutated"),
+    ProcessedBoardOptical("gt.circuitcomponent.processed.board.optical", RecipeMaps.nanochipAssemblyMatrixRecipes,
+        "processedboardoptical"),
+    WaferNanoCPU("gt.circuitcomponent.waferNanoCPU", RecipeMaps.nanochipCuttingChamber, "wafernanocpu"),
+    WaferRAM("gt.circuitcomponent.waferram", RecipeMaps.nanochipCuttingChamber, "waferram"),
+    WaferNOR("gt.circuitcomponent.wafernor", RecipeMaps.nanochipCuttingChamber, "wafernor"),
+    WaferNAND("gt.circuitcomponent.wafernand", RecipeMaps.nanochipCuttingChamber, "wafernand"),
+    WaferASOC("gt.circuitcomponent.waferasoc", RecipeMaps.nanochipCuttingChamber, "waferasoc"),
+    ProcessedChipNanoCPU("gt.circuitcomponent.processed.chipnanocpu", RecipeMaps.nanochipAssemblyMatrixRecipes,
+        "processedchipnanocpu"),
+    ProcessedChipRAM("gt.circuitcomponent.processed.chipram", RecipeMaps.nanochipAssemblyMatrixRecipes,
+        "processedchipram"),
+    ProcessedChipNOR("gt.circuitcomponent.processed.chipnor", RecipeMaps.nanochipAssemblyMatrixRecipes,
+        "processedchipnor"),
+    ProcessedChipNAND("gt.circuitcomponent.processed.chipnand", RecipeMaps.nanochipAssemblyMatrixRecipes,
+        "processedchipnand"),
+    ProcessedChipASOC("gt.circuitcomponent.processed.chipasoc", RecipeMaps.nanochipAssemblyMatrixRecipes,
+        "processedchipasoc"),
+    ChipCrystalCPU("gt.circuitcomponent.chipcrystalcpu", RecipeMaps.nanochipEtchingArray, "chipcrystalcpu"),
+    ChipAdvCrystalCPU("gt.circuitcomponent.chipadvcrystalcpu", RecipeMaps.nanochipEtchingArray, "chipadvcrystalcpu"),
+    ChipOpticalCPU("gt.circuitcomponent.opticalcpu", RecipeMaps.nanochipOpticalOrganizer, "chipopticalcpu"),
+    ProcessedChipCrystalCPU("gt.circuitcomponent.processed.chipcrystalcpu", RecipeMaps.nanochipAssemblyMatrixRecipes,
+        "processedchipcrystalcpu"),
+    ProcessedChipAdvCrystalCPU("gt.circuitcomponent.processed.chipadvcrystalcpu",
+        RecipeMaps.nanochipAssemblyMatrixRecipes, "processedchipadvcrystalcpu"),
+    ProcessedChipOpticalCPU("gt.circuitcomponent.processed.opticalcpu", RecipeMaps.nanochipAssemblyMatrixRecipes,
+        "processedchipopticalcpu"),
+    OpticalRAM("gt.circuitcomponent.opticalram", RecipeMaps.nanochipOpticalOrganizer, "opticalram"),
+    ProcessedOpticalRAM("gt.circuitcomponent.processed.opticalram", RecipeMaps.nanochipAssemblyMatrixRecipes,
+        "processedopticalram"),
     SuperconductorLuV("gt.circuitcomponent.superconductorluv", RecipeMaps.nanochipSuperconductorSplitter,
-        Materials.SuperconductorLuV),
+        Materials.SuperconductorLuV, "superconductorluv"),
+    SuperconductorZPM("gt.circuitcomponent.superconductorzpm", RecipeMaps.nanochipSuperconductorSplitter,
+        Materials.SuperconductorZPM, "superconductorzpm"),
+    SuperconductorUHV("gt.circuitcomponent.superconductoruhv", RecipeMaps.nanochipSuperconductorSplitter,
+        Materials.SuperconductorUHV, "superconductoruhv"),
+    SuperconductorUEV("gt.circuitcomponent.superconductoruev", RecipeMaps.nanochipSuperconductorSplitter,
+        Materials.SuperconductorUEV, "superconductoruev"),
     ProcessedSuperconductorLuV("gt.circuitcomponent.processed.superconductorluv",
-        RecipeMaps.nanochipAssemblyMatrixRecipes, Materials.SuperconductorLuV),
-    FrameboxAluminium("gt.circuitcomponent.frame.aluminium", RecipeMaps.nanochipCuttingChamber, Materials.Aluminium),
+        RecipeMaps.nanochipAssemblyMatrixRecipes, Materials.SuperconductorLuV, "processedsuperconductorluv"),
+    ProcessedSuperconductorZPM("gt.circuitcomponent.processed.superconductorzpm",
+        RecipeMaps.nanochipAssemblyMatrixRecipes, Materials.SuperconductorZPM, "processedsuperconductorzpm"),
+    ProcessedSuperconductorUHV("gt.circuitcomponent.processed.superconductoruhv",
+        RecipeMaps.nanochipAssemblyMatrixRecipes, Materials.SuperconductorUHV, "processedsuperconductoruhv"),
+    ProcessedSuperconductorUEV("gt.circuitcomponent.processed.superconductoruev",
+        RecipeMaps.nanochipAssemblyMatrixRecipes, Materials.SuperconductorUEV, "processedsuperconductoruev"),
+    FrameboxAluminium("gt.circuitcomponent.frame.aluminium", RecipeMaps.nanochipCuttingChamber, Materials.Aluminium,
+        "frameboxaluminium"),
+    FrameboxTritanium("gt.circuitcomponent.frame.tritanium", RecipeMaps.nanochipCuttingChamber, Materials.Tritanium,
+        "frameboxtritanium"),
     ProcessedFrameboxAluminium("gt.circuitcomponent.processed.frame.aluminium",
-        RecipeMaps.nanochipAssemblyMatrixRecipes),
+        RecipeMaps.nanochipAssemblyMatrixRecipes, "processedframeboxaluminium"),
+    ProcessedFrameboxTritanium("gt.circuitcomponent.processed.frame.tritanium",
+        RecipeMaps.nanochipAssemblyMatrixRecipes, "processedframeboxtritanium"),
+    FoilSiliconeRubber("gt.circuitcomponent.sheet.siliconerubber", RecipeMaps.nanochipAssemblyMatrixRecipes,
+        "foilsiliconerubber"),
+    FoilPolybenzimidazole("gt.circuitcomponent.sheet.polybenzimidazole", RecipeMaps.nanochipAssemblyMatrixRecipes,
+        "foilpolybenzimidazole"),
+    CableOpticalFiber("gt.circuitcomponent.cable.opticalfiber", RecipeMaps.nanochipAssemblyMatrixRecipes,
+        "cableopticalfiber"),
+    BoltEnrichedHolmium("gt.circuitcomponent.bolt.enrichedholmium", RecipeMaps.nanochipAssemblyMatrixRecipes,
+        "boltenrichedholmium"),
     // The first three circuits in a line can be recursively used in the assembly matrix, and all of them can be turned
     // into a physical circuit item
     CrystalProcessor("gt.circuitcomponent.crystalprocessor", RecipeMaps.nanochipAssemblyMatrixRecipes,
         ItemList.Circuit_Crystalprocessor.get(1)),
-    CrystalAssembly("gt.circuitcomponent.crystassembly", RecipeMaps.nanochipAssemblyMatrixRecipes,
+    CrystalAssembly("gt.circuitcomponent.crystalasssembly", RecipeMaps.nanochipAssemblyMatrixRecipes,
         ItemList.Circuit_Crystalcomputer.get(1)),
     CrystalComputer("gt.circuitcomponent.crystalcomputer", RecipeMaps.nanochipAssemblyMatrixRecipes,
         ItemList.Circuit_Ultimatecrystalcomputer.get(1)),
     CrystalMainframe("gt.circuitcomponent.crystalmainframe", RecipeMaps.nanochipAssemblyMatrixRecipes,
-        ItemList.Circuit_Crystalmainframe.get(1)),;
+        ItemList.Circuit_Crystalmainframe.get(1)),
+    WetwareProcessor("gt.circuitcomponent.wetwareprocessor", RecipeMaps.nanochipAssemblyMatrixRecipes,
+        ItemList.Circuit_Neuroprocessor.get(1)),
+    WetwareAssembly("gt.circuitcomponent.wetwareassembly", RecipeMaps.nanochipAssemblyMatrixRecipes,
+        ItemList.Circuit_Wetwarecomputer.get(1)),
+    WetwareComputer("gt.circuitcomponent.wetwarecomputer", RecipeMaps.nanochipAssemblyMatrixRecipes,
+        ItemList.Circuit_Wetwaresupercomputer.get(1)),
+    WetwareMainframe("gt.circuitcomponent.wetwaremainframe", RecipeMaps.nanochipAssemblyMatrixRecipes,
+        ItemList.Circuit_Wetwaremainframe.get(1)),
+    BiowareProcessor("gt.circuitcomponent.biowareprocessor", RecipeMaps.nanochipAssemblyMatrixRecipes,
+        ItemList.Circuit_Bioprocessor.get(1)),
+    BiowareAssembly("gt.circuitcomponent.biowareassembly", RecipeMaps.nanochipAssemblyMatrixRecipes,
+        ItemList.Circuit_Biowarecomputer.get(1)),
+    BiowareComputer("gt.circuitcomponent.biowarecomputer", RecipeMaps.nanochipAssemblyMatrixRecipes,
+        ItemList.Circuit_Biowaresupercomputer.get(1)),
+    BiowareMainframe("gt.circuitcomponent.biowaremainframe", RecipeMaps.nanochipAssemblyMatrixRecipes,
+        ItemList.Circuit_Biomainframe.get(1)),
+    OpticalProcessor("gt.circuitcomponent.opticalprocessor", RecipeMaps.nanochipAssemblyMatrixRecipes,
+        ItemList.Circuit_OpticalProcessor.get(1)),
+    OpticalAssembly("gt.circuitcomponent.opticalassembly", RecipeMaps.nanochipAssemblyMatrixRecipes,
+        ItemList.Circuit_OpticalAssembly.get(1)),
+    OpticalComputer("gt.circuitcomponent.opticalcomputer", RecipeMaps.nanochipAssemblyMatrixRecipes,
+        ItemList.Circuit_OpticalComputer.get(1)),
+    OpticalMainframe("gt.circuitcomponent.opticalmainframe", RecipeMaps.nanochipAssemblyMatrixRecipes,
+        ItemList.Circuit_OpticalMainframe.get(1)),;
 
     public final String unlocalizedName;
     public String fallbackLocalizedName = null;
-    // If this component is a direct conversion of some other item in the NAC main controller, this is the item used for
-    // that.
-    // Otherwise, this is null
-    public IIcon icon = null;
+
+    public String iconString = "";
     public final Materials material;
     // This is the recipe map that this component is used in as an input item
     public final RecipeMap<?> processingMap;
@@ -109,20 +209,34 @@ public enum CircuitComponent {
     // since we won't need to match outputs of recipes
     public static final Map<GTUtility.ItemId, CircuitComponent> realCircuitToComponent = new HashMap<>();
 
+    CircuitComponent(String unlocalizedName, RecipeMap<?> processingMap, String iconString) {
+        this(unlocalizedName, processingMap, null, null, iconString);
+    }
+
     CircuitComponent(String unlocalizedName, RecipeMap<?> processingMap) {
-        this(unlocalizedName, processingMap, null, null);
+        this(unlocalizedName, processingMap, null, null, null);
+    }
+
+    CircuitComponent(String unlocalizedName, RecipeMap<?> processingMap, ItemStack realCircuit, String iconString) {
+        this(unlocalizedName, processingMap, realCircuit, null, iconString);
     }
 
     CircuitComponent(String unlocalizedName, RecipeMap<?> processingMap, ItemStack realCircuit) {
-        this(unlocalizedName, processingMap, realCircuit, null);
+        this(unlocalizedName, processingMap, realCircuit, null, null);
+    }
+
+    CircuitComponent(String unlocalizedName, RecipeMap<?> processingMap, Materials material, String iconString) {
+        this(unlocalizedName, processingMap, null, material, iconString);
     }
 
     CircuitComponent(String unlocalizedName, RecipeMap<?> processingMap, Materials material) {
-        this(unlocalizedName, processingMap, null, material);
+        this(unlocalizedName, processingMap, null, material, null);
     }
 
-    CircuitComponent(String unlocalizedName, RecipeMap<?> processingMap, ItemStack realCircuit, Materials material) {
+    CircuitComponent(String unlocalizedName, RecipeMap<?> processingMap, ItemStack realCircuit, Materials material,
+        String iconString) {
         this.unlocalizedName = unlocalizedName;
+        this.iconString = iconString;
         // Hide the fake stack in NEI
         codechicken.nei.api.API.hideItem(getFakeStack(1));
         this.material = material;
