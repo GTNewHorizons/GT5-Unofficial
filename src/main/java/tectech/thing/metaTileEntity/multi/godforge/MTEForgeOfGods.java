@@ -26,6 +26,7 @@ import static tectech.thing.metaTileEntity.multi.godforge.util.GodforgeMath.calc
 import static tectech.thing.metaTileEntity.multi.godforge.util.GodforgeMath.calculateProcessingVoltageForModules;
 import static tectech.thing.metaTileEntity.multi.godforge.util.GodforgeMath.calculateSpeedBonusForModules;
 import static tectech.thing.metaTileEntity.multi.godforge.util.GodforgeMath.calculateStartupFuelConsumption;
+import static tectech.thing.metaTileEntity.multi.godforge.util.GodforgeMath.factorChangeDuringRecipeAntiCheese;
 import static tectech.thing.metaTileEntity.multi.godforge.util.GodforgeMath.queryMilestoneStats;
 import static tectech.thing.metaTileEntity.multi.godforge.util.GodforgeMath.setMiscModuleParameters;
 
@@ -481,6 +482,9 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         super.onPostTick(aBaseMetaTileEntity, aTick);
         if (aBaseMetaTileEntity.isServerSide()) {
+            if (aTick == 1) {
+                updateRenderer();
+            }
             ticker++;
             // Check and drain fuel
             if (ticker % (5 * SECONDS) == 0) {
@@ -563,6 +567,9 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
                             queryMilestoneStats(module, this);
                             if (!isUpgradeActive(TBF)) {
                                 calculateProcessingVoltageForModules(module, this);
+                            }
+                            if (factorChangeDuringRecipeAntiCheese(module)) {
+                                module.disconnect();
                             }
                         } else {
                             module.disconnect();
@@ -1949,6 +1956,35 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
             .setTooltipShowUpDelay(TOOLTIP_DELAY)
             .setBackground(GTUITextures.BACKGROUND_TEXT_FIELD);
         builder.widget(spinWidget);
+
+        // Animations Textbox
+        builder.widget(
+            TextWidget.localised("fog.cosmetics.animations")
+                .setDefaultColor(EnumChatFormatting.GOLD)
+                .setTextAlignment(Alignment.CenterLeft)
+                .setPos(120, 85)
+                .setSize(60, 18));
+
+        Widget animationToggle = new ButtonWidget().setOnClick((clickData, widget) -> {
+            TecTech.proxy.playSound(getBaseMetaTileEntity(), "fx_click");
+            if (isRendererDisabled) {
+                isRendererDisabled = false;
+                // let the renderer automatically rebuild itself as needed through normal logic
+            } else {
+                isRendererDisabled = true;
+                if (isRenderActive) destroyRenderer();
+            }
+        })
+            .setBackground(
+                () -> new UITexture[] { TecTechUITextures.BUTTON_CELESTIAL_32x32,
+                    isRendererDisabled ? TecTechUITextures.OVERLAY_BUTTON_POWER_SWITCH_DISABLED
+                        : TecTechUITextures.OVERLAY_BUTTON_POWER_SWITCH_ON })
+            .attachSyncer(
+                new FakeSyncWidget.BooleanSyncer(() -> isRendererDisabled, val -> isRendererDisabled = val),
+                builder)
+            .setPos(174, 86)
+            .setSize(16, 16);
+        builder.widget(animationToggle);
 
         return builder.build();
     }
