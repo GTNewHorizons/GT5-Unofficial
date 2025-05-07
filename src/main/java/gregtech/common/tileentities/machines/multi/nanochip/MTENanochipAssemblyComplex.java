@@ -438,8 +438,16 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
                 // conditions such as energy tier.
                 if (aTick % MODULE_CONNECT_INTERVAL == 0) {
                     if (!modules.isEmpty()) {
-                        long eutPerModule = this.getMaxInputEu() / modules.size();
-                        long euToCharge = eutPerModule * MODULE_CONNECT_INTERVAL;
+                        // Calculate the max power to be shared to the modules
+                        // to not powerfail or distribute un-evenly.
+                        long totalEU = (long) (getEUVar() * 0.9);
+                        long totalEUPerModule = totalEU / modules.size();
+                        long euToCharge = this.getMaxInputEu() / modules.size() * MODULE_CONNECT_INTERVAL;
+                        euToCharge = Math.min(euToCharge, totalEUPerModule);
+
+                        long eutPerModule = euToCharge / MODULE_CONNECT_INTERVAL;
+
+
                         for (MTENanochipAssemblyModuleBase<?> module : modules) {
                             module.connect();
                             // Set available EU/t for this module, which is the total EU/t divided by the amount of
