@@ -142,7 +142,12 @@ public final class GTGuiThemes {
         .themedTexture(GTWidgetThemes.PICTURE_LOGO, GTTextureIds.PICTURE_GT_LOGO_PRIMITIVE)
         .build();
     public static final GTGuiTheme TRANSPARENT_FLUID_SLOT = GTGuiTheme.builder("gregtech:transparentFluidSlot")
-        .parent(STANDARD)
+        .parent(STEEL)
         .fluidSlot(GTTextureIds.SLOT_EMPTY)
+        .button(GTTextureIds.BUTTON_STANDARD)
+        .simpleToggleButton(
+            GTTextureIds.BUTTON_STANDARD,
+            GTTextureIds.BUTTON_STANDARD_PRESSED,
+            Dyes.MACHINE_METAL.toInt())
         .build();
 }
