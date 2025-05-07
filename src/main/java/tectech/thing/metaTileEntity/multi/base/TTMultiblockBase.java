@@ -24,7 +24,6 @@ import java.util.BitSet;
 import java.util.Collections;
 import java.util.EnumSet;
 import java.util.List;
-import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
@@ -72,7 +71,7 @@ import com.cleanroommc.modularui.value.sync.SyncHandlers;
 import com.cleanroommc.modularui.widget.SingleChildWidget;
 import com.cleanroommc.modularui.widget.WidgetTree;
 import com.cleanroommc.modularui.widget.sizer.Area;
-import com.cleanroommc.modularui.widgets.ButtonWidget;
+import com.cleanroommc.modularui.widgets.CycleButtonWidget;
 import com.cleanroommc.modularui.widgets.ItemSlot;
 import com.cleanroommc.modularui.widgets.ListWidget;
 import com.cleanroommc.modularui.widgets.SlotGroupWidget;
@@ -2403,13 +2402,13 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
             .imageSize(16, 16)
             .build();
 
-        panelGap.child(createVoidExcessButton());
-        panelGap.child(createInputSeparationButton());
-        if (supportsMachineModeSwitch()) panelGap.child(createModeSwitchButton());
-        panelGap.child(createBatchModeButton());
-        panelGap.child(createLockToSingleRecipeButton());
-        panelGap.child(createStructureUpdateButton());
-        if (supportsPowerPanel()) panelGap.child(createPowerPanel());
+        panelGap.child(createVoidExcessButton(syncManager));
+        panelGap.child(createInputSeparationButton(syncManager));
+        if (supportsMachineModeSwitch()) panelGap.child(createModeSwitchButton(syncManager));
+        panelGap.child(createBatchModeButton(syncManager));
+        panelGap.child(createLockToSingleRecipeButton(syncManager));
+        panelGap.child(createStructureUpdateButton(syncManager));
+        if (supportsPowerPanel()) panelGap.child(createPowerPanel(syncManager));
 
         AtomicInteger maintIssues = new AtomicInteger(0);
         IntSyncValue maintSyncer = new IntSyncValue(() -> {
@@ -2472,9 +2471,10 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
             }).asIcon()).asWidget()
                 .tooltipBuilder(t -> {
                     if (wasShutdownSyncer.getValue() || euVarSyncer.getValue() == 0) t.addLine(
-                        getTooltipForShutdownReason(
-                            getBaseMetaTileEntity().getLastShutDownReason(),
-                            euVarSyncer.getValue()));
+                        IKey.dynamic(
+                            () -> getTooltipForShutdownReason(
+                                getBaseMetaTileEntity().getLastShutDownReason(),
+                                euVarSyncer.getValue())));
                     else t.addLine(IKey.str(EnumChatFormatting.GREEN + "Running fine."));
                 }));
     }
@@ -2483,28 +2483,40 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
         return null;
     }
 
-    public IWidget createStructureUpdateButton() {
+    public IWidget createStructureUpdateButton(PanelSyncManager syncManager) {
+        IntSyncValue structureUpdateSyncer = new IntSyncValue(
+            this::getStructureUpdateTime,
+            this::setStructureUpdateTime);
+        syncManager.syncValue("structureUpdate", structureUpdateSyncer);
+
         ToggleButton structureUpdateButton = new ToggleButton().size(18, 18)
             .value(
                 new BooleanSyncValue(
-                    () -> getStructureUpdateTime() > -20,
-                    val -> { if (getStructureUpdateTime() <= -20) setStructureUpdateTime(1); }))
+                    () -> structureUpdateSyncer.getValue() > -20,
+                    val -> { if (val) structureUpdateSyncer.setValue(1); }))
             .overlay(GTUITextures.OVERLAY_BUTTON_STRUCTURE_UPDATE_NEW)
             .tooltipBuilder(t -> { t.addLine(IKey.lang("GT5U.gui.button.structure_update")); });
 
         return structureUpdateButton;
     }
 
-    public IWidget createLockToSingleRecipeButton() {
+    public IWidget createPowerPanel(PanelSyncManager syncManager) {
+        return null;
+    }
+
+    public IWidget createLockToSingleRecipeButton(PanelSyncManager syncManager) {
+        BooleanSyncValue recipeLockSyncer = new BooleanSyncValue(this::isRecipeLockingEnabled, this::setRecipeLocking);
+        syncManager.syncValue("recipeLock", recipeLockSyncer);
+
         ToggleButton lockToSingleRecipeButton = new ToggleButton().size(18, 18)
-            .value(new BooleanSyncValue(() -> isRecipeLockingEnabled() || !supportsSingleRecipeLocking(), bool -> {
+            .value(new BooleanSyncValue(() -> recipeLockSyncer.getValue() || !supportsSingleRecipeLocking(), bool -> {
                 if (supportsSingleRecipeLocking()) {
-                    setRecipeLocking(!isRecipeLockingEnabled());
+                    recipeLockSyncer.setValue(!recipeLockSyncer.getValue());
                 }
             }))
             .overlay(new DynamicDrawable(() -> {
                 UITexture forbidden = GTUITextures.OVERLAY_BUTTON_FORBIDDEN_NEW;
-                if (isRecipeLockingEnabled()) {
+                if (recipeLockSyncer.getValue()) {
                     if (supportsSingleRecipeLocking()) {
                         return GTUITextures.OVERLAY_BUTTON_RECIPE_LOCKED_NEW;
                     } else {
@@ -2527,16 +2539,19 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
         return lockToSingleRecipeButton;
     }
 
-    public IWidget createBatchModeButton() {
+    public IWidget createBatchModeButton(PanelSyncManager syncManager) {
+        BooleanSyncValue batchModeSyncer = new BooleanSyncValue(this::isBatchModeEnabled, this::setBatchMode);
+        syncManager.syncValue("batchMode", batchModeSyncer);
+
         ToggleButton batchModeButton = new ToggleButton().size(18, 18)
-            .value(new BooleanSyncValue(() -> isBatchModeEnabled() || !supportsBatchMode(), bool -> {
+            .value(new BooleanSyncValue(() -> batchModeSyncer.getValue() || !supportsBatchMode(), bool -> {
                 if (supportsBatchMode()) {
-                    setBatchMode(!isBatchModeEnabled());
+                    batchModeSyncer.setValue(bool);
                 }
             }))
             .overlay(new DynamicDrawable(() -> {
                 UITexture forbidden = GTUITextures.OVERLAY_BUTTON_FORBIDDEN_NEW;
-                if (isBatchModeEnabled()) {
+                if (batchModeSyncer.getValue()) {
                     if (supportsBatchMode()) {
                         return GTUITextures.OVERLAY_BUTTON_BATCH_MODE_ON_NEW;
                     } else {
@@ -2559,20 +2574,26 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
         return batchModeButton;
     }
 
-    public IWidget createModeSwitchButton() {
+    public IWidget createModeSwitchButton(PanelSyncManager syncManager) {
         return null;
     }
 
-    public IWidget createInputSeparationButton() {
+    public IWidget createInputSeparationButton(PanelSyncManager syncManager) {
+
+        BooleanSyncValue inputSeparationSyncer = new BooleanSyncValue(
+            this::isInputSeparationEnabled,
+            this::setInputSeparation);
+        syncManager.syncValue("inputSeparation", inputSeparationSyncer);
+
         ToggleButton inputSeparationButton = new ToggleButton().size(18, 18)
-            .value(new BooleanSyncValue(() -> isInputSeparationEnabled() || !supportsInputSeparation(), bool -> {
+            .value(new BooleanSyncValue(() -> inputSeparationSyncer.getValue() || !supportsInputSeparation(), bool -> {
                 if (supportsInputSeparation()) {
-                    setInputSeparation(!isInputSeparationEnabled());
+                    inputSeparationSyncer.setValue(!inputSeparationSyncer.getValue());
                 }
             }))
             .overlay(new DynamicDrawable(() -> {
                 UITexture forbidden = GTUITextures.OVERLAY_BUTTON_FORBIDDEN_NEW;
-                if (isInputSeparationEnabled()) {
+                if (inputSeparationSyncer.getValue()) {
                     if (supportsInputSeparation()) {
                         return GTUITextures.OVERLAY_BUTTON_INPUT_SEPARATION_ON_NEW;
                     } else {
@@ -2597,19 +2618,16 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
         return inputSeparationButton;
     }
 
-    public IWidget createVoidExcessButton() {
-        ButtonWidget<?> voidExcessButton = new ButtonWidget<>().size(18, 18)
-            .onMousePressed(mouseData -> {
-                if (supportsVoidProtection()) {
-                    Set<VoidingMode> allowed = getAllowedVoidingModes();
-                    switch (mouseData) {
-                        case 0 -> setVoidingMode(getVoidingMode().nextInCollection(allowed));
-                        case 1 -> setVoidingMode(getVoidingMode().previousInCollection(allowed));
-                    }
-                }
-                return true;
-            })
-            .playClickSound(supportsVoidProtection())
+    public IWidget createVoidExcessButton(PanelSyncManager syncManager) {
+
+        IntSyncValue voidExcessSyncer = new IntSyncValue(
+            () -> getVoidingMode().ordinal(),
+            val -> setVoidingMode(VoidingMode.fromOrdinal(val)));
+        syncManager.syncValue("voidExcess", voidExcessSyncer);
+
+        CycleButtonWidget voidExcessButton = new CycleButtonWidget().size(18, 18)
+            .value(new IntSyncValue(voidExcessSyncer::getValue, voidExcessSyncer::setValue))
+            .length(getAllowedVoidingModes().size())
             .background(new DynamicDrawable(() -> getVoidingMode().buttonTextureNew))
             .overlay(
                 new DynamicDrawable(
@@ -2618,34 +2636,32 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
                             getVoidingMode().buttonOverlayNew,
                             GTUITextures.OVERLAY_BUTTON_FORBIDDEN_NEW)))
             .tooltipBuilder(t -> {
-                t.addLine(IKey.lang("GT5U.gui.button.voiding_mode"))
-                    .addLine(IKey.lang(getVoidingMode().getTransKey()));
+                t.addLine(IKey.dynamic(() -> StatCollector.translateToLocal("GT5U.gui.button.voiding_mode")))
+                    .addLine(IKey.dynamic(() -> StatCollector.translateToLocal(getVoidingMode().getTransKey())));
                 if (!supportsVoidProtection()) {
                     t.addLine(IKey.lang(BUTTON_FORBIDDEN_TOOLTIP));
                 }
             });
-
         return voidExcessButton;
     }
 
-    private com.cleanroommc.modularui.api.drawable.IDrawable getTooltipForShutdownReason(
-        ShutDownReason lastShutDownReason, long eu) {
+    private String getTooltipForShutdownReason(ShutDownReason lastShutDownReason, long eu) {
         if (lastShutDownReason.getKey()
             .equals(ShutDownReasonRegistry.STRUCTURE_INCOMPLETE.getKey())) {
-            return IKey.str("Structure incomplete.");
+            return "Structure incomplete.";
         } else if (eu == 0) {
-            return IKey.str(EnumChatFormatting.DARK_RED + "I don't have power!");
+            return EnumChatFormatting.DARK_RED + "I don't have power!";
         } else if (lastShutDownReason.getKey()
             .equals(ShutDownReasonRegistry.POWER_LOSS.getKey())) {
-                return IKey.str("Lost Power!");
+                return "Lost Power!";
             } else if (lastShutDownReason.getKey()
                 .equals(ShutDownReasonRegistry.NO_REPAIR.getKey())) {
-                    return IKey.str("Machine too damaged!");
+                    return "Machine too damaged!";
                 } else if (lastShutDownReason.getKey()
                     .equals(ShutDownReasonRegistry.NONE.getKey())) {
-                        return IKey.str("Manual shutdown (get it?)");
+                        return "Manual shutdown (get it?)";
                     }
-        return IKey.str("WTF?");
+        return "WTF?";
     }
 
     @Override
@@ -2770,19 +2786,6 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
 
         StringSyncValue recipeInfoSyncer = new StringSyncValue(this::generateCurrentRecipeInfoString);
         syncManager.syncValue("recipeInfo", recipeInfoSyncer);
-
-        syncManager.syncValue(
-            "voidExcess",
-            new IntSyncValue(() -> getVoidingMode().ordinal(), val -> setVoidingMode(VoidingMode.fromOrdinal(val))));
-
-        syncManager.syncValue(
-            "inputSeparation",
-            new BooleanSyncValue(this::isInputSeparationEnabled, this::setInputSeparation));
-        syncManager.syncValue("batchMode", new BooleanSyncValue(this::isBatchModeEnabled, this::setBatchMode));
-        syncManager.syncValue("recipeLock", new BooleanSyncValue(this::isRecipeLockingEnabled, this::setRecipeLocking));
-        syncManager.syncValue(
-            "structureUpdateTime",
-            new IntSyncValue(this::getStructureUpdateTime, this::setStructureUpdateTime));
     }
 
     public void addPowerPassButton(Flow buttonColumn, int yGap) {
