@@ -707,27 +707,6 @@ public class MTEYottaFluidTank extends MTETooltipMultiBlockBaseEM implements ICo
     }
 
     @Override
-    protected ButtonWidget createPowerPassButton() {
-        return (ButtonWidget) new ButtonWidget().setOnClick((clickData, widget) -> {
-            TecTech.proxy.playSound(getBaseMetaTileEntity(), "fx_click");
-            isFluidLocked = !isFluidLocked;
-            if (!widget.getContext()
-                .isClient()) mLockedFluid = isFluidLocked ? mFluid : null;
-        })
-            .setPlayClickSound(false)
-            .setBackground(() -> {
-                List<UITexture> ret = new ArrayList<>();
-                ret.add(TecTechUITextures.BUTTON_STANDARD_16x16);
-                ret.add(isFluidLocked ? GGUITextures.OVERLAY_BUTTON_LOCK_ON : GGUITextures.OVERLAY_BUTTON_LOCK_OFF);
-                return ret.toArray(new IDrawable[0]);
-            })
-            .setPos(174, doesBindPlayerInventory() ? 116 : 140)
-            .setSize(16, 16)
-            .addTooltip(StatCollector.translateToLocal("gui.YOTTank.button.locking"))
-            .setTooltipShowUpDelay(TOOLTIP_DELAY);
-    }
-
-    @Override
     public boolean forceUseMui2() {
         return true;
     }
@@ -994,54 +973,6 @@ public class MTEYottaFluidTank extends MTETooltipMultiBlockBaseEM implements ICo
 
     @Override
     public void insertThingsInGap(Flow panelGap, PanelSyncManager syncManager, ModularPanel parent) {}
-
-    @Override
-    protected void drawTexts(DynamicPositionedColumn screenElements, SlotWidget inventorySlot) {
-        super.drawTexts(screenElements, inventorySlot);
-
-        screenElements
-            .widget(
-                new TextWidget().setStringSupplier(
-                    () -> StatCollector.translateToLocal("gui.YOTTank.0") + " " + numberFormat.format(mStorage) + " L")
-                    .setTextAlignment(Alignment.CenterLeft)
-                    .setDefaultColor(COLOR_TEXT_WHITE.get())
-                    .setEnabled(widget -> getErrorDisplayID() == 0))
-            .widget(new FakeSyncWidget.BigIntegerSyncer(() -> mStorage, val -> mStorage = val))
-            .widget(
-                new TextWidget()
-                    .setStringSupplier(() -> StatCollector.translateToLocal("gui.YOTTank.1") + " " + getFluidName())
-                    .setTextAlignment(Alignment.CenterLeft)
-                    .setDefaultColor(COLOR_TEXT_WHITE.get())
-                    .setEnabled(widget -> getErrorDisplayID() == 0))
-            .widget(new FakeSyncWidget.FluidStackSyncer(() -> mFluid, val -> mFluid = val))
-            .widget(
-                new TextWidget()
-                    .setStringSupplier(
-                        () -> StatCollector.translateToLocal("gui.YOTTank.2") + " "
-                            + numberFormat.format(mStorageCurrent)
-                            + EnumChatFormatting.RESET
-                            + " L"
-                            + " ("
-                            + EnumChatFormatting.GREEN
-                            + getPercent()
-                            + "%"
-                            + EnumChatFormatting.RESET
-                            + ")")
-                    .setTextAlignment(Alignment.CenterLeft)
-                    .setDefaultColor(COLOR_TEXT_WHITE.get())
-                    .setEnabled(widget -> getErrorDisplayID() == 0))
-            .widget(new FakeSyncWidget.BigIntegerSyncer(() -> mStorageCurrent, val -> mStorageCurrent = val))
-            .widget(
-                new TextWidget()
-                    .setStringSupplier(
-                        () -> StatCollector.translateToLocal("gui.YOTTank.3") + " " + getLockedFluidName())
-                    .setDefaultColor(COLOR_TEXT_WHITE.get())
-                    .setTextAlignment(Alignment.CenterLeft)
-                    .setEnabled(widget -> getErrorDisplayID() == 0))
-            .widget(new FakeSyncWidget.FluidStackSyncer(() -> mLockedFluid, val -> mLockedFluid = val))
-            .widget(new FakeSyncWidget.BooleanSyncer(() -> isFluidLocked, val -> isFluidLocked = val))
-            .widget(new FakeSyncWidget.BooleanSyncer(() -> voidExcessEnabled, val -> voidExcessEnabled = val));
-    }
 
     @Override
     public boolean getDefaultHasMaintenanceChecks() {
