@@ -252,7 +252,6 @@ public class MTEQuantumComputer extends TTMultiblockBase implements ISurvivalCon
     @Override
     @NotNull
     protected CheckRecipeResult checkProcessing_EM() {
-        parametrization.setToDefaults(false, true);
         eAvailableData = 0;
         double maxTemp = 0;
         double overClockRatio = overclockParameter.getValue();

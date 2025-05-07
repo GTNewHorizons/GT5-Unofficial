@@ -2767,6 +2767,10 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
         else return 0;
     }
 
+    public int machineModes() {
+        return 2;
+    }
+
     @Override
     public Pos2d getMachineModeSwitchButtonPos() {
         return new Pos2d(80, 91);

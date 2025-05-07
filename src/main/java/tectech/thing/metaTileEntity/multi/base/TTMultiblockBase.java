@@ -225,7 +225,7 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
     // GUI stuff
     public int currentDropdownIndex = 0;
     public final FluidTank fluidTankPhantom = new FluidTank(Integer.MAX_VALUE);
-    private final ItemStackHandler invSlot = new ItemStackHandler(1);
+    protected final ItemStackHandler invSlot = new ItemStackHandler(1);
 
     // Locale-aware formatting of numbers.
     protected static NumberFormatMUI numberFormat;
@@ -2549,7 +2549,31 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
     }
 
     public IWidget createModeSwitchButton(PanelSyncManager syncManager) {
-        return null;
+        IntSyncValue machineModeSyncer = new IntSyncValue(this::getMachineMode, this::setMachineMode);
+        syncManager.syncValue("machineMode", machineModeSyncer);
+
+        CycleButtonWidget machineModeButton = new CycleButtonWidget().size(18, 18)
+            .value(
+                new IntSyncValue(
+                    machineModeSyncer::getValue,
+                    val -> { if (supportsMachineModeSwitch()) machineModeSyncer.setValue(val); }))
+            .length(machineModes())
+            .overlay(new DynamicDrawable(() -> {
+                com.gtnewhorizons.modularui.api.drawable.UITexture bla = getMachineModeIcon(
+                    machineModeSyncer.getValue());
+                return UITexture.builder()
+                    .location(bla.location)
+                    .imageSize(18, 18)
+                    .build();
+            }))
+            .tooltipBuilder(t -> {
+                t.addLine(IKey.dynamic(() -> StatCollector.translateToLocal("GT5U.gui.button.mode_switch")))
+                    .addLine(IKey.dynamic(() -> StatCollector.translateToLocal(getVoidingMode().getTransKey())));
+                if (!supportsVoidProtection()) {
+                    t.addLine(IKey.lang(BUTTON_FORBIDDEN_TOOLTIP));
+                }
+            });
+        return machineModeButton;
     }
 
     public IWidget createInputSeparationButton(PanelSyncManager syncManager) {

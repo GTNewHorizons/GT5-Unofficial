@@ -36,9 +36,9 @@ public class TextFieldWidgetWithOverlay extends TextFieldWidget {
     @Override
     public void onUpdate() {
         super.onUpdate();
-        if (!getText().equals(this.stringValue.getStringValue())) {
-            this.stringValue.setStringValue(this.validator.apply(getText()));
-        }
+        // if (!getText().equals(this.stringValue.getStringValue())) {
+        // this.stringValue.setStringValue(this.validator.apply(getText()));
+        // }
     }
 
     @Override
