@@ -226,6 +226,8 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
     // GUI stuff
     public int currentDropdownIndex = 0;
     public final FluidTank fluidTankPhantom = new FluidTank(Integer.MAX_VALUE);
+    private final ItemStackHandler invSlot = new ItemStackHandler(1);
+
     // Locale-aware formatting of numbers.
     protected static NumberFormatMUI numberFormat;
     static {
@@ -757,6 +759,8 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
         for (int i = 0; i < parametrization.iParamsIn.length; i++) {
             paramI.setDouble(Integer.toString(i), parametrization.iParamsIn[i]);
         }
+
+        aNBT.setTag("invSlot", this.invSlot.serializeNBT());
         aNBT.setTag("eParamsInD", paramI);
 
         NBTTagCompound paramO = new NBTTagCompound();
@@ -830,6 +834,8 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
             }
 
         }
+
+        this.invSlot.deserializeNBT(aNBT.getCompoundTag("invSlot"));
         if (aNBT.hasKey("eParamsIn") && aNBT.hasKey("eParamsOut") && aNBT.hasKey("eParamsB")) {
             NBTTagCompound paramI = aNBT.getCompoundTag("eParamsIn");
             NBTTagCompound paramO = aNBT.getCompoundTag("eParamsOut");
@@ -2306,7 +2312,6 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
                 new SingleChildWidget<>().size(190, 171)
                     .overlay(bgNoInv));
         }
-        final ItemStackHandler invSlot = new ItemStackHandler(1);
         Flow inventoryRow = new Row().widthRel(1)
             .height(90)
             .alignX(0);
