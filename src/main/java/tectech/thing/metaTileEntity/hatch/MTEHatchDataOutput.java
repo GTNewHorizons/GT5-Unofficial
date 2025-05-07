@@ -10,6 +10,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -17,6 +18,7 @@ import com.gtnewhorizons.modularui.api.math.Alignment;
 import com.gtnewhorizons.modularui.api.math.Color;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
+import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 import com.gtnewhorizons.modularui.common.widget.textfield.NumericWidget;
 
@@ -42,6 +44,8 @@ public class MTEHatchDataOutput extends MTEHatchDataConnector<QuantumDataPacket>
 
     public long requestedComputation;
     public boolean allowComputationConfiguring;
+    public boolean useWeight = false;
+    public long weight;
 
     public MTEHatchDataOutput(int aID, String aName, String aNameRegional, int aTier) {
         super(
@@ -189,19 +193,28 @@ public class MTEHatchDataOutput extends MTEHatchDataConnector<QuantumDataPacket>
         builder.setGuiTint(getGUIColorization());
         final int x = getGUIWidth() / 2 - 37;
         final int y = getGUIHeight() / 5 - 7;
-        builder.widget(
-            TextWidget.localised("GT5U.machines.computation_hatch.computation")
-                .setPos(x, y)
-                .setSize(74, 14))
-            .widget(
-                new NumericWidget().setSetter(val -> requestedComputation = (long) val)
-                    .setGetter(() -> requestedComputation)
-                    .setBounds(1, Long.MAX_VALUE)
-                    .setScrollValues(1, 4, 64)
-                    .setTextAlignment(Alignment.Center)
-                    .setTextColor(Color.WHITE.normal)
-                    .setSize(70, 18)
-                    .setPos(x, y + 16)
-                    .setBackground(GTUITextures.BACKGROUND_TEXT_FIELD));
+        builder.widget(new FakeSyncWidget.BooleanSyncer(() -> useWeight, val -> useWeight = val));
+
+        builder.widget(TextWidget.dynamicString(() -> {
+            if (!useWeight) return StatCollector.translateToLocal("GT5U.machines.computation_hatch.computation");
+            return StatCollector.translateToLocal("GT5U.machines.computation_hatch.weightedComputation");
+        })
+            .setPos(x, y)
+            .setSize(74, 14))
+            .widget(new NumericWidget().setSetter(val -> {
+                if (useWeight) {
+                    weight = (long) val;
+                } else {
+                    requestedComputation = (long) val;
+                }
+            })
+                .setGetter(() -> useWeight ? weight : requestedComputation)
+                .setBounds(1, Long.MAX_VALUE)
+                .setScrollValues(1, 4, 64)
+                .setTextAlignment(Alignment.Center)
+                .setTextColor(Color.WHITE.normal)
+                .setSize(70, 18)
+                .setPos(x, y + 16)
+                .setBackground(GTUITextures.BACKGROUND_TEXT_FIELD));
     }
 }

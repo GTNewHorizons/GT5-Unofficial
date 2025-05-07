@@ -108,15 +108,16 @@ public class FluidSlotDisplayOnly extends Widget<FluidSlotDisplayOnly>
     public void draw(ModularGuiContext context, WidgetTheme widgetTheme) {
         FluidStack content = getFluidStack();
         if (content != null) {
-            float y = this.contentOffsetY + getArea().height *
-                (1 - (float) (this.capacityPercentSupplier == null ? 1 : this.capacityPercentSupplier.get()));
-            float height = getArea().height * (float) (this.capacityPercentSupplier == null ? 1 : this.capacityPercentSupplier.get());
+            float y = this.contentOffsetY + getArea().height
+                * (1 - (float) (this.capacityPercentSupplier == null ? 1 : this.capacityPercentSupplier.get()));
+            float height = getArea().height
+                * (float) (this.capacityPercentSupplier == null ? 1 : this.capacityPercentSupplier.get());
             GuiDraw.drawFluidTexture(
                 content,
                 this.contentOffsetX,
                 y,
                 getArea().width - this.contentOffsetX * 2,
-                height - this.contentOffsetY*2,
+                height - this.contentOffsetY * 2,
                 0);
         }
         if (this.overlayTexture != null) {

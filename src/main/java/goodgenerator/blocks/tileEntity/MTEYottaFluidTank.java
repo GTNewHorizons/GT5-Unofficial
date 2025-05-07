@@ -40,7 +40,6 @@ import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.value.sync.StringSyncValue;
 import com.cleanroommc.modularui.value.sync.SyncHandlers;
 import com.cleanroommc.modularui.widget.SingleChildWidget;
-import com.cleanroommc.modularui.widget.WidgetTree;
 import com.cleanroommc.modularui.widgets.ItemSlot;
 import com.cleanroommc.modularui.widgets.ListWidget;
 import com.cleanroommc.modularui.widgets.SlotGroupWidget;
@@ -77,6 +76,7 @@ import gregtech.api.util.LongRunningAverage;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.gui.modularui.widget.FluidDisplaySyncHandler;
 import gregtech.common.gui.modularui.widget.FluidSlotDisplayOnly;
+import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.modularui2.widget.TransparentSingleChildWidget;
 import tectech.thing.metaTileEntity.multi.base.Parameter;
 
@@ -846,7 +846,8 @@ public class MTEYottaFluidTank extends MTETooltipMultiBlockBaseEM implements ICo
         insertThingsInGap(panelGap, syncManager, panel);
         panelColumn.child(panelGap);
 
-        FluidSlotDisplayOnly fluidDisplay = new FluidSlotDisplayOnly(() -> Double.parseDouble(percentageSyncer.getStringValue()) / 100) {
+        FluidSlotDisplayOnly fluidDisplay = new FluidSlotDisplayOnly(
+            () -> Double.parseDouble(percentageSyncer.getStringValue()) / 100) {
 
             @NotNull
             @Override
@@ -914,7 +915,9 @@ public class MTEYottaFluidTank extends MTETooltipMultiBlockBaseEM implements ICo
                 .size(48, 88)
                 .pos(139, 1));
 
-        panelTopRow.child(fluidDisplay.pos(146,8).size(34, 72));
+        panelTopRow.child(
+            fluidDisplay.pos(146, 8)
+                .size(34, 72));
 
         panelTopRow.child(
             new TransparentSingleChildWidget()

@@ -4,6 +4,7 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose
 import static gregtech.api.enums.GTValues.V;
 import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.Maintenance;
+import static gregtech.api.util.GTUtility.validMTEList;
 import static net.minecraft.util.StatCollector.translateToLocal;
 import static tectech.thing.metaTileEntity.multi.base.TTMultiblockBase.HatchElement.EnergyMulti;
 import static tectech.thing.metaTileEntity.multi.base.TTMultiblockBase.HatchElement.InputData;
@@ -118,7 +119,12 @@ public class MTENetworkSwitch extends TTMultiblockBase
 
     @Override
     public boolean checkMachine_EM(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack) {
-        return structure.checkStructure(this);
+        if (!structure.checkStructure(this)) return false;
+        for (MTEHatchDataOutput output : validMTEList(eOutputData)) {
+            output.allowComputationConfiguring = true;
+            output.useWeight = true;
+        }
+        return true;
     }
 
     @Override
@@ -245,10 +251,10 @@ public class MTENetworkSwitch extends TTMultiblockBase
         if (!eOutputData.isEmpty()) {
             double total = 0;
             double weight;
-            for (int i = 0; i < 10; i++) { // each param pair
-                weight = this.weight[i].get();
-                if (weight > 0 && dst[i].get() >= 0) {
-                    total += weight; // Total weighted div
+            for (MTEHatchDataOutput output : validMTEList(eOutputData)) {
+                weight = output.weight;
+                if (weight > 0) {
+                    total += output.weight;
                 }
             }
 
@@ -273,19 +279,12 @@ public class MTENetworkSwitch extends TTMultiblockBase
 
             long remaining = pack.getContent();
 
-            double dest;
-            for (int i = 0; i < 10; i++) {
-                dest = dst[i].get();
-                weight = this.weight[i].get();
-                if (weight > 0 && dest >= 0) {
-                    int outIndex = (int) dest - 1;
-                    if (outIndex < 0 || outIndex >= eOutputData.size()) {
-                        continue;
-                    }
-                    MTEHatchDataOutput out = eOutputData.get(outIndex);
+            for (MTEHatchDataOutput output : validMTEList(eOutputData)) {
+                weight = output.weight;
+                if (weight > 0) {
                     if (Double.isInfinite(total)) {
                         if (Double.isInfinite(weight)) {
-                            out.q = new QuantumDataPacket(remaining).unifyTraceWith(pack);
+                            output.q = new QuantumDataPacket(remaining).unifyTraceWith(pack);
                             break;
                         }
                     } else {
@@ -293,9 +292,9 @@ public class MTENetworkSwitch extends TTMultiblockBase
                         if (part > 0) {
                             remaining -= part;
                             if (remaining > 0) {
-                                out.q = new QuantumDataPacket(part).unifyTraceWith(pack);
+                                output.q = new QuantumDataPacket(part).unifyTraceWith(pack);
                             } else if (part + remaining > 0) {
-                                out.q = new QuantumDataPacket(part + remaining).unifyTraceWith(pack);
+                                output.q = new QuantumDataPacket(part + remaining).unifyTraceWith(pack);
                                 break;
                             } else {
                                 break;
@@ -308,85 +307,8 @@ public class MTENetworkSwitch extends TTMultiblockBase
     }
 
     @Override
-    public MultiblockTooltipBuilder createTooltip() {
-        final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType(translateToLocal("gt.blockmachines.multimachine.em.switch.name")) // Machine Type: Network
-                                                                                            // Switch With QoS
-            .addInfo(translateToLocal("gt.blockmachines.multimachine.em.switch.desc.0")) // Controller block of the
-                                                                                         // Network
-            // Switch With QoS
-            .addInfo(translateToLocal("gt.blockmachines.multimachine.em.switch.desc.1")) // Used to route and
-                                                                                         // distribute computation
-            .addTecTechHatchInfo()
-
-            .beginStructureBlock(3, 3, 3, false)
-            .addController(translateToLocal("tt.keyword.Structure.FrontCenter")) // Controller: Front center
-            .addOtherStructurePart(
-                translateToLocal("tt.keyword.Structure.DataInput"), // Data Input Hatch: Any Advanced Computer Casing
-                translateToLocal("tt.keyword.Structure.AnyAdvComputerCasing"),
-                1)
-            .addOtherStructurePart(
-                translateToLocal("tt.keyword.Structure.DataOutput"), // Data Output Hatch: Any Computer Casing
-                translateToLocal("tt.keyword.Structure.AnyComputerCasing"),
-                2)
-            .addEnergyHatch(translateToLocal("tt.keyword.Structure.AnyComputerCasing"), 2) // Energy Hatch: Any
-                                                                                           // Computer Casing
-            .addMaintenanceHatch(translateToLocal("tt.keyword.Structure.AnyComputerCasing"), 2) // Maintenance
-                                                                                                // Hatch: Any
-                                                                                                // Computer Casing
-            .toolTipFinisher();
-        return tt;
-    }
-
-    @Override
-    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
-        int colorIndex, boolean aActive, boolean aRedstone) {
-        if (side == facing) {
-            return new ITexture[] { Textures.BlockIcons.casingTexturePages[BlockGTCasingsTT.texturePage][1],
-                new TTRenderedExtendedFacingTexture(aActive ? TTMultiblockBase.ScreenON : TTMultiblockBase.ScreenOFF) };
-        }
-        return new ITexture[] { Textures.BlockIcons.casingTexturePages[BlockGTCasingsTT.texturePage][1] };
-    }
-
-    @Override
-    protected SoundResource getActivitySoundLoop() {
-        return SoundResource.TECTECH_MACHINES_FX_HIGH_FREQ;
-    }
-
-    @Override
-    protected void parametersInstantiation_EM() {
-        dst = new Parameters.Group.ParameterIn[10];
-        weight = new Parameters.Group.ParameterIn[10];
-        for (int i = 0; i < 10; i++) {
-            Parameters.Group hatch = parametrization.getGroup(i);
-            dst[i] = hatch.makeInParameter(0, i, ROUTE_NAME, DST_STATUS);
-            weight[i] = hatch.makeInParameter(1, 0, ROUTE_NAME, WEI_STATUS);
-        }
-    }
-
-    @Override
-    public void construct(ItemStack stackSize, boolean hintsOnly) {
-        structureBuild_EM("main", 1, 1, 0, stackSize, hintsOnly);
-    }
-
-    @Override
-    public int survivalConstruct(ItemStack stackSize, int elementBudget, IItemSource source, EntityPlayerMP actor) {
-        if (mMachine) return -1;
-        return survivialBuildPiece("main", stackSize, 1, 1, 0, elementBudget, source, actor, false, true);
-    }
-
-    @Override
-    public IStructureDefinition<MTENetworkSwitch> getStructure_EM() {
-        return STRUCTURE_DEFINITION;
-    }
-
-    @Override
-    public String[] getStructureDescription(ItemStack stackSize) {
-        return description;
-    }
-
-    @Override
     protected boolean forceUseMui2() {
         return true;
     }
+
 }
