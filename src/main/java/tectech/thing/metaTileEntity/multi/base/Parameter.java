@@ -7,7 +7,7 @@ import net.minecraft.util.StatCollector;
 
 public abstract class Parameter<T> {
 
-    protected String key;
+    public String key;
     Object[] args;
     protected T currentValue;
     private Supplier<T> minValue = null;
@@ -40,6 +40,10 @@ public abstract class Parameter<T> {
     public void saveNBT(NBTTagCompound tag, int i) {}
 
     public void loadNBT(NBTTagCompound tag, int i) {}
+
+    public void saveToParameterCard(NBTTagCompound tag) {}
+
+    public void loadFromParameterCard(NBTTagCompound tag) {}
 
     public T getValue() {
         return currentValue;
@@ -82,6 +86,18 @@ public abstract class Parameter<T> {
             this.setValue(tag.getInteger(String.valueOf(i)));
         }
 
+        @Override
+        public void saveToParameterCard(NBTTagCompound tag) {
+            tag.setString("key", this.key);
+            tag.setString("type", "integer");
+            tag.setInteger("value", this.getValue());
+        }
+
+        @Override
+        public void loadFromParameterCard(NBTTagCompound tag) {
+            this.setValue(tag.getInteger("value"));
+        }
+
         public IntegerParameter(Integer value, String key) {
             super(value, key);
         }
@@ -112,6 +128,18 @@ public abstract class Parameter<T> {
         @Override
         public void loadNBT(NBTTagCompound tag, int i) {
             this.setValue(tag.getDouble(String.valueOf(i)));
+        }
+
+        @Override
+        public void saveToParameterCard(NBTTagCompound tag) {
+            tag.setString("key", this.key);
+            tag.setString("type", "double");
+            tag.setDouble("value", this.getValue());
+        }
+
+        @Override
+        public void loadFromParameterCard(NBTTagCompound tag) {
+            this.setValue(tag.getDouble("value"));
         }
 
         public DoubleParameter(Double value, String key) {
@@ -146,6 +174,18 @@ public abstract class Parameter<T> {
             this.setValue(tag.getString(String.valueOf(i)));
         }
 
+        @Override
+        public void saveToParameterCard(NBTTagCompound tag) {
+            tag.setString("key", this.key);
+            tag.setString("type", "string");
+            tag.setString("value", this.getValue());
+        }
+
+        @Override
+        public void loadFromParameterCard(NBTTagCompound tag) {
+            this.setValue(tag.getString("value"));
+        }
+
         public StringParameter(String value, String key) {
             super(value, key);
         }
@@ -167,6 +207,18 @@ public abstract class Parameter<T> {
         @Override
         public void loadNBT(NBTTagCompound tag, int i) {
             this.setValue(tag.getBoolean(String.valueOf(i)));
+        }
+
+        @Override
+        public void saveToParameterCard(NBTTagCompound tag) {
+            tag.setString("key", this.key);
+            tag.setString("type", "boolean");
+            tag.setBoolean("value", this.getValue());
+        }
+
+        @Override
+        public void loadFromParameterCard(NBTTagCompound tag) {
+            this.setValue(tag.getBoolean("value"));
         }
 
         public BooleanParameter(Boolean value, String key) {
