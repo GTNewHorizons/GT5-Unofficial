@@ -82,8 +82,7 @@ public class MTEAlloyBlastSmelter extends GTPPMultiBlockBase<MTEAlloyBlastSmelte
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
             .addInfo("Allows Complex alloys to be created")
-            .addInfo("Accepts only one Energy Hatch")
-            .addInfo("Circuit for recipe goes in the Input Bus or GUI slot")
+            .addInfo("Recipe tier is limited to hatch tier")
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(3, 4, 3, true)
             .addController("Bottom Center")
