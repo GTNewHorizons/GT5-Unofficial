@@ -2626,7 +2626,10 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
         syncManager.syncValue("voidExcess", voidExcessSyncer);
 
         CycleButtonWidget voidExcessButton = new CycleButtonWidget().size(18, 18)
-            .value(new IntSyncValue(voidExcessSyncer::getValue, voidExcessSyncer::setValue))
+            .value(
+                new IntSyncValue(
+                    voidExcessSyncer::getValue,
+                    val -> { if (supportsVoidProtection()) voidExcessSyncer.setValue(val); }))
             .length(getAllowedVoidingModes().size())
             .background(new DynamicDrawable(() -> getVoidingMode().buttonTextureNew))
             .overlay(
