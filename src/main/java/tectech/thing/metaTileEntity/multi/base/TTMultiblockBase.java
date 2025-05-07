@@ -2443,14 +2443,15 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
                     return getTextureForShutdownReason(getBaseMetaTileEntity(), euVarSyncer.getValue());
                 return checkmark;
             }).asIcon()).asWidget()
-                .tooltipBuilder(t -> {
-                    if (wasShutdownSyncer.getValue() || euVarSyncer.getValue() == 0) t.addLine(
-                        IKey.dynamic(
-                            () -> getTooltipForShutdownReason(
-                                getBaseMetaTileEntity().getLastShutDownReason(),
-                                euVarSyncer.getValue())));
-                    else t.addLine(IKey.str(EnumChatFormatting.GREEN + "Running fine."));
-                }));
+                .tooltipBuilder(t -> t.addLine(IKey.dynamic(() -> {
+                    if (wasShutdownSyncer.getValue() || euVarSyncer.getValue() == 0) {
+                        return getTooltipForShutdownReason(
+                            getBaseMetaTileEntity().getLastShutDownReason(),
+                            euVarSyncer.getValue());
+                    } else {
+                        return EnumChatFormatting.GREEN + "Running fine.";
+                    }
+                }))));
     }
 
     public IWidget createPowerPanel() {
