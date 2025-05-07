@@ -52,11 +52,17 @@ public class FluidSlotDisplayOnly extends Widget<FluidSlotDisplayOnly>
     private boolean alwaysShowFull = true;
     @Nullable
     private IDrawable overlayTexture = null;
+    private Supplier<Double> capacityPercentSupplier = null;
 
     public FluidSlotDisplayOnly() {
         size(DEFAULT_SIZE);
         tooltip().setAutoUpdate(true);// .setHasTitleMargin(true);
         tooltipBuilder(this::addToolTip);
+    }
+
+    public FluidSlotDisplayOnly(Supplier<Double> capacitySupplier) {
+        this();
+        this.capacityPercentSupplier = capacitySupplier;
     }
 
     protected void addToolTip(RichTooltip tooltip) {
@@ -102,14 +108,15 @@ public class FluidSlotDisplayOnly extends Widget<FluidSlotDisplayOnly>
     public void draw(ModularGuiContext context, WidgetTheme widgetTheme) {
         FluidStack content = getFluidStack();
         if (content != null) {
-            float y = this.contentOffsetY;
-            float height = getArea().height - y * 2;
+            float y = this.contentOffsetY + getArea().height *
+                (1 - (float) (this.capacityPercentSupplier == null ? 1 : this.capacityPercentSupplier.get()));
+            float height = getArea().height * (float) (this.capacityPercentSupplier == null ? 1 : this.capacityPercentSupplier.get());
             GuiDraw.drawFluidTexture(
                 content,
                 this.contentOffsetX,
                 y,
                 getArea().width - this.contentOffsetX * 2,
-                height,
+                height - this.contentOffsetY*2,
                 0);
         }
         if (this.overlayTexture != null) {
