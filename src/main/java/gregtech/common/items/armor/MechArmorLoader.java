@@ -1,6 +1,14 @@
 package gregtech.common.items.armor;
 
 import static gregtech.api.enums.Mods.GregTech;
+import static gregtech.api.items.armor.ArmorHelper.REGISTER_BOOTS;
+import static gregtech.api.items.armor.ArmorHelper.REGISTER_CHEST;
+import static gregtech.api.items.armor.ArmorHelper.REGISTER_HELMET;
+import static gregtech.api.items.armor.ArmorHelper.REGISTER_LEGS;
+import static gregtech.api.items.armor.ArmorHelper.SLOT_BOOTS;
+import static gregtech.api.items.armor.ArmorHelper.SLOT_CHEST;
+import static gregtech.api.items.armor.ArmorHelper.SLOT_HELMET;
+import static gregtech.api.items.armor.ArmorHelper.SLOT_LEGS;
 
 import java.util.List;
 
@@ -19,10 +27,15 @@ public class MechArmorLoader {
     public static List<MechArmorBase> AllMechArmor;
 
     public static void run() {
-        MechArmorHelmet = (MechArmorBase) new MechHelmet().setUnlocalizedName("itemHelmetMech");
-        MechArmorChestplate = (MechArmorBase) new MechChestplate().setUnlocalizedName("itemChestplateMech");
-        MechArmorLeggings = (MechArmorBase) new MechLeggings().setUnlocalizedName("itemLeggingsMech");
-        MechArmorBoots = (MechArmorBase) new MechBoots().setUnlocalizedName("itemBootsMech");
+        MechArmorHelmet = new MechArmorBase(SLOT_HELMET, "helmet", REGISTER_HELMET);
+        MechArmorChestplate = new MechArmorBase(SLOT_CHEST, "chestplate", REGISTER_CHEST);
+        MechArmorLeggings = new MechArmorBase(SLOT_LEGS, "leggings", REGISTER_LEGS);
+        MechArmorBoots = new MechArmorBase(SLOT_BOOTS, "boots", REGISTER_BOOTS);
+
+        MechArmorHelmet.setUnlocalizedName("itemHelmetMech");
+        MechArmorChestplate.setUnlocalizedName("itemChestplateMech");
+        MechArmorLeggings.setUnlocalizedName("itemLeggingsMech");
+        MechArmorBoots.setUnlocalizedName("itemBootsMech");
 
         GameRegistry.registerItem(MechArmorHelmet, "itemHelmetMech", GregTech.ID);
         GameRegistry.registerItem(MechArmorChestplate, "itemChestplateMech", GregTech.ID);

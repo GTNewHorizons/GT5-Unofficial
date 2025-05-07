@@ -6,6 +6,8 @@ import static gregtech.api.items.armor.ArmorHelper.APIARIST_KEY;
 import static gregtech.api.items.armor.ArmorHelper.FORCE_FIELD_KEY;
 import static gregtech.api.items.armor.ArmorHelper.GOGGLES_OF_REVEALING_KEY;
 import static gregtech.api.items.armor.ArmorHelper.JETPACK_KEY;
+import static gregtech.api.items.armor.ArmorHelper.SLOT_CHEST;
+import static gregtech.api.items.armor.ArmorHelper.SLOT_LEGS;
 import static gregtech.api.items.armor.ArmorHelper.VIS_DISCOUNT_KEY;
 import static gregtech.api.items.armor.ArmorHelper.drainArmor;
 import static gregtech.api.items.armor.MechArmorAugmentRegistries.coresMap;
@@ -62,16 +64,6 @@ public class MechArmorBase extends ItemArmor implements IKeyPressedListener, ISp
     protected IIcon coreIcon;
     protected IIcon frameIcon;
 
-    static final int REGISTER_HELMET = 0;
-    static final int REGISTER_CHEST = 1;
-    static final int REGISTER_LEGS = 2;
-    static final int REGISTER_BOOTS = 3;
-
-    static final int SLOT_HELMET = 3;
-    static final int SLOT_CHEST = 2;
-    static final int SLOT_LEGS = 1;
-    static final int SLOT_BOOTS = 0;
-
     protected String type;
 
     public static final String MECH_FRAME_KEY = "frame";
@@ -79,8 +71,12 @@ public class MechArmorBase extends ItemArmor implements IKeyPressedListener, ISp
 
     protected List<IArmorBehavior> behaviors = new ArrayList<>();
 
-    public MechArmorBase(int slot) {
-        super(ArmorMaterial.IRON, 2, slot);
+    private int slot;
+
+    public MechArmorBase(int slot, String type, int register) {
+        super(ArmorMaterial.IRON, 2, register);
+        this.slot = slot;
+        this.type = type;
     }
 
     public void addBehavior(IArmorBehavior behavior) {
@@ -140,13 +136,9 @@ public class MechArmorBase extends ItemArmor implements IKeyPressedListener, ISp
         for (IArmorBehavior behavior : behaviors) {
             if (behavior.getListenedKeys()
                 .contains(keyPressed)) {
-                behavior.onKeyPressed(player.getCurrentArmor(getEquipmentSlot()), player, keyPressed);
+                behavior.onKeyPressed(player.getCurrentArmor(slot), player, keyPressed);
             }
         }
-    }
-
-    protected int getEquipmentSlot() {
-        return -1;
     }
 
     public IIcon getCoreIcon() {
@@ -224,8 +216,8 @@ public class MechArmorBase extends ItemArmor implements IKeyPressedListener, ISp
         model.bipedLeftLeg.showModel = (armorType == 2 || armorType == 3);
         model.bipedRightLeg.showModel = (armorType == 2 || armorType == 3);
 
-        model.jettank1.showModel = (itemStack.getTagCompound()
-            .hasKey(JETPACK_KEY));
+        model.jettank1.showModel = (armorSlot == SLOT_CHEST && itemStack.getTagCompound().hasKey(JETPACK_KEY));
+
         switch (getCore(itemStack)) {
             case 1 -> model.core1.showModel = true;
             case 2 -> model.core2.showModel = true;

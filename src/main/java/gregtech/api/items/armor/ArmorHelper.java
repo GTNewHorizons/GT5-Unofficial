@@ -56,9 +56,13 @@ public class ArmorHelper {
         return (ElectricItem.manager.discharge(stack, amount, Integer.MAX_VALUE, true, false, false) > 0);
     }
 
-    static final int HELMET_SLOT_ID = 3;
-    static final int CHESTPLATE_SLOT_ID = 2;
-    static final int LEGGINGS_SLOT_ID = 1;
-    static final int BOOTS_SLOT_ID = 0;
+    public static final int REGISTER_HELMET = 0;
+    public static final int REGISTER_CHEST = 1;
+    public static final int REGISTER_LEGS = 2;
+    public static final int REGISTER_BOOTS = 3;
 
+    public static final int SLOT_HELMET = 3;
+    public static final int SLOT_CHEST = 2;
+    public static final int SLOT_LEGS = 1;
+    public static final int SLOT_BOOTS = 0;
 }
