@@ -1,11 +1,11 @@
 package gtnhintergalactic.client;
 
+import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Textures.BlockIcons;
 import gregtech.api.enums.Textures.BlockIcons.CustomIcon;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.render.TextureFactory;
-import gtnhintergalactic.block.IGBlocks;
 
 /**
  * Textures used for MTEs are defined here
@@ -43,10 +43,10 @@ public class IGTextures implements Runnable {
         DYSON_OVERLAY_FRONT_GLOW = new CustomIcon("iconsets/OVERLAY_FRONT_DYSONSPHERE_GLOW");
         DYSON_OVERLAY_FRONT_ACTIVE_GLOW = new CustomIcon("iconsets/OVERLAY_FRONT_DYSONSPHERE_ACTIVE_GLOW");
 
-        BlockIcons.setCasingTextureForId(CASING_INDEX_RECEIVER, TextureFactory.of(IGBlocks.DysonSwarmCasing, 0));
-        BlockIcons.setCasingTextureForId(CASING_INDEX_LAUNCH, TextureFactory.of(IGBlocks.DysonSwarmCasing, 2));
-        BlockIcons.setCasingTextureForId(CASING_INDEX_COMMAND, TextureFactory.of(IGBlocks.DysonSwarmCasing, 5));
-        BlockIcons.setCasingTextureForId(CASING_INDEX_FLOOR, TextureFactory.of(IGBlocks.DysonSwarmCasing, 9));
-        BlockIcons.setCasingTextureForId(CASING_INDEX_SIPHON, TextureFactory.of(IGBlocks.GasSiphonCasing));
+        BlockIcons.setCasingTextureForId(CASING_INDEX_RECEIVER, TextureFactory.of(GregTechAPI.sBlockCasingsDyson, 0));
+        BlockIcons.setCasingTextureForId(CASING_INDEX_LAUNCH, TextureFactory.of(GregTechAPI.sBlockCasingsDyson, 2));
+        BlockIcons.setCasingTextureForId(CASING_INDEX_COMMAND, TextureFactory.of(GregTechAPI.sBlockCasingsDyson, 5));
+        BlockIcons.setCasingTextureForId(CASING_INDEX_FLOOR, TextureFactory.of(GregTechAPI.sBlockCasingsDyson, 9));
+        BlockIcons.setCasingTextureForId(CASING_INDEX_SIPHON, TextureFactory.of(GregTechAPI.sBlockCasingsSiphon));
     }
 }

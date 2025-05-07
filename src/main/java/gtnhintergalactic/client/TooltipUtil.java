@@ -6,7 +6,7 @@ import java.util.function.Supplier;
 
 import com.gtnewhorizon.gtnhlib.client.tooltip.LoreHolder;
 
-import gtnhintergalactic.item.IGItems;
+import gregtech.api.enums.ItemList;
 
 /**
  * Utility functions for tooltips
@@ -56,7 +56,7 @@ public class TooltipUtil {
                 DARK_BLUE,
                 DARK_BLUE + OBFUSCATED));
 
-        addItemTooltip(IGItems.PlanetaryGasSiphon, AUTHOR_GLOWREDMAN);
-        addItemTooltip(IGItems.DysonSwarmController, AUTHOR_GLOWREDMAN);
+        addItemTooltip(ItemList.PlanetaryGasSiphonController.get(1), AUTHOR_GLOWREDMAN);
+        addItemTooltip(ItemList.DysonSwarmController.get(1), AUTHOR_GLOWREDMAN);
     }
 }

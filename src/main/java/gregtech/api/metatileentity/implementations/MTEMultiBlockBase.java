@@ -126,6 +126,7 @@ import gregtech.common.tileentities.machines.MTEHatchOutputBusME;
 import gregtech.common.tileentities.machines.MTEHatchOutputME;
 import gregtech.common.tileentities.machines.multi.MTELargeTurbine;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchSteamBusInput;
+import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.MTESteamMultiBase;
 import it.unimi.dsi.fastutil.longs.LongArrayList;
 import it.unimi.dsi.fastutil.objects.Object2ReferenceOpenHashMap;
 import it.unimi.dsi.fastutil.objects.Reference2ReferenceOpenHashMap;
@@ -1039,60 +1040,84 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
             return result;
         }
 
-        processingLogic.setInputFluids(getStoredFluids());
+        // Use hatch colors if any; fallback to color 1 otherwise.
+        short hatchColors = getHatchColors();
+        boolean doColorChecking = hatchColors != 0;
+        if (!doColorChecking) hatchColors = 0b1;
 
-        if (isInputSeparationEnabled()) {
-            if (mInputBusses.isEmpty()) {
-                CheckRecipeResult foundResult = processingLogic.process();
-                if (foundResult.wasSuccessful()) {
-                    return foundResult;
-                }
-                if (foundResult != CheckRecipeResultRegistry.NO_RECIPE) {
+        for (byte color = 0; color < (doColorChecking ? 16 : 1); color++) {
+            if (isColorAbsent(hatchColors, color)) continue;
+            processingLogic.setInputFluids(getStoredFluidsForColor(Optional.of(color)));
+            if (isInputSeparationEnabled()) {
+                if (mInputBusses.isEmpty()) {
+                    CheckRecipeResult foundResult = processingLogic.process();
+                    if (foundResult.wasSuccessful()) return foundResult;
                     // Recipe failed in interesting way, so remember that and continue searching
-                    result = foundResult;
+                    if (foundResult != CheckRecipeResultRegistry.NO_RECIPE) result = foundResult;
+                } else {
+                    for (MTEHatchInputBus bus : mInputBusses) {
+                        if (bus instanceof MTEHatchCraftingInputME) continue;
+                        byte busColor = bus.getColor();
+                        if (busColor != -1 && busColor != color) continue;
+                        List<ItemStack> inputItems = new ArrayList<>();
+                        for (int i = bus.getSizeInventory() - 1; i >= 0; i--) {
+                            ItemStack stored = bus.getStackInSlot(i);
+                            if (stored != null) inputItems.add(stored);
+                        }
+                        if (canUseControllerSlotForRecipe() && getControllerSlot() != null) {
+                            inputItems.add(getControllerSlot());
+                        }
+                        processingLogic.setInputItems(inputItems);
+                        CheckRecipeResult foundResult = processingLogic.process();
+                        if (foundResult.wasSuccessful()) return foundResult;
+                        // Recipe failed in interesting way, so remember that and continue searching
+                        if (foundResult != CheckRecipeResultRegistry.NO_RECIPE) result = foundResult;
+                    }
                 }
             } else {
-                for (MTEHatchInputBus bus : mInputBusses) {
-                    if (bus instanceof MTEHatchCraftingInputME) {
-                        continue;
-                    }
-                    List<ItemStack> inputItems = new ArrayList<>();
-                    for (int i = bus.getSizeInventory() - 1; i >= 0; i--) {
-                        ItemStack stored = bus.getStackInSlot(i);
-                        if (stored != null) {
-                            inputItems.add(stored);
-                        }
-                    }
-                    if (canUseControllerSlotForRecipe() && getControllerSlot() != null) {
-                        inputItems.add(getControllerSlot());
-                    }
-                    processingLogic.setInputItems(inputItems);
-                    CheckRecipeResult foundResult = processingLogic.process();
-                    if (foundResult.wasSuccessful()) {
-                        return foundResult;
-                    }
-                    if (foundResult != CheckRecipeResultRegistry.NO_RECIPE) {
-                        // Recipe failed in interesting way, so remember that and continue searching
-                        result = foundResult;
-                    }
+                List<ItemStack> inputItems = getStoredInputsForColor(Optional.of(color));
+                if (canUseControllerSlotForRecipe() && getControllerSlot() != null) {
+                    inputItems.add(getControllerSlot());
                 }
-            }
-        } else {
-            List<ItemStack> inputItems = getStoredInputs();
-            if (canUseControllerSlotForRecipe() && getControllerSlot() != null) {
-                inputItems.add(getControllerSlot());
-            }
-            processingLogic.setInputItems(inputItems);
-            CheckRecipeResult foundResult = processingLogic.process();
-            if (foundResult.wasSuccessful()) {
-                return foundResult;
-            }
-            if (foundResult != CheckRecipeResultRegistry.NO_RECIPE) {
+                processingLogic.setInputItems(inputItems);
+                CheckRecipeResult foundResult = processingLogic.process();
+                if (foundResult.wasSuccessful()) return foundResult;
                 // Recipe failed in interesting way, so remember that
-                result = foundResult;
+                if (foundResult != CheckRecipeResultRegistry.NO_RECIPE) result = foundResult;
             }
         }
         return result;
+    }
+
+    /**
+     * Returns whether the given color is absent in the hatch color bitmask.
+     *
+     * @param hatchColors bitmask of present colors (one bit per color index).
+     * @param color       color index to check (0–15).
+     * @return {@code true} if the color is absent, {@code false} if present.
+     */
+    private static boolean isColorAbsent(short hatchColors, byte color) {
+        return (hatchColors & (1 << color)) == 0;
+    }
+
+    /**
+     * Builds a bitmask of all input bus and hatch colors.
+     * Each set bit in the result marks a present color index.
+     *
+     * @return bitmask of used color indices.
+     */
+    private short getHatchColors() {
+        short hatchColors = 0;
+
+        for (var bus : mInputBusses) hatchColors |= (short) (1 << bus.getColor());
+        for (var hatch : mInputHatches) hatchColors |= (short) (1 << hatch.getColor());
+
+        if (this instanceof MTESteamMultiBase<?>steamMultiBase) {
+            for (var bus : steamMultiBase.mSteamInputs) hatchColors |= (short) (1 << bus.getColor());
+            for (var hatch : steamMultiBase.mSteamInputFluids) hatchColors |= (short) (1 << hatch.getColor());
+        }
+
+        return hatchColors;
     }
 
     /**
@@ -1496,10 +1521,9 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         if (GTUtility.isStackInvalid(aStack)) return false;
         aStack = GTUtility.copyOrNull(aStack);
 
-        final List<MTEHatchOutputBus> filteredBuses = filterValidMTEs(mOutputBusses);
-        if (dumpItem(filteredBuses, aStack, true) || dumpItem(filteredBuses, aStack, false)) {
-            return true;
-        }
+        final List<MTEHatchOutputBus> validBusses = filterValidMTEs(mOutputBusses);
+        if (dumpItem(validBusses, aStack, true, false)) return true;
+        if (dumpItem(validBusses, aStack, false, false)) return true;
 
         boolean outputSuccess = true;
         final List<MTEHatchOutput> filteredHatches = filterValidMTEs(mOutputHatches);
@@ -1522,13 +1546,32 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         }
     }
 
-    private boolean dumpItem(List<MTEHatchOutputBus> outputBuses, ItemStack itemStack, boolean restrictiveBusesOnly) {
+    /**
+     * Outputs a stack to the multi's output busses. Does not add items to output hatches.
+     *
+     * @param stack    The stack to output. Any rejected items will remain in the stack.
+     * @param simulate When true the method will behave the same but the busses will not be updated
+     * @return True when all items were output, false otherwise
+     */
+    public boolean addOutputPartial(ItemStack stack, boolean simulate) {
+        if (GTUtility.isStackInvalid(stack)) return false;
+
+        final List<MTEHatchOutputBus> validBusses = filterValidMTEs(mOutputBusses);
+
+        if (dumpItem(validBusses, stack, true, simulate)) return true;
+        if (dumpItem(validBusses, stack, false, simulate)) return true;
+
+        return false;
+    }
+
+    private boolean dumpItem(List<MTEHatchOutputBus> outputBuses, ItemStack itemStack, boolean restrictiveBusesOnly,
+        boolean simulate) {
         for (MTEHatchOutputBus outputBus : outputBuses) {
             if (restrictiveBusesOnly && !outputBus.isLocked()) {
                 continue;
             }
 
-            if (outputBus.storeAll(itemStack)) {
+            if (outputBus.storePartial(itemStack, simulate)) {
                 return true;
             }
         }
@@ -1579,9 +1622,15 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
     }
 
     public ArrayList<FluidStack> getStoredFluids() {
+        return getStoredFluidsForColor(Optional.empty());
+    }
+
+    public ArrayList<FluidStack> getStoredFluidsForColor(Optional<Byte> color) {
         ArrayList<FluidStack> rList = new ArrayList<>();
         Map<Fluid, FluidStack> inputsFromME = new HashMap<>();
         for (MTEHatchInput tHatch : validMTEList(mInputHatches)) {
+            byte hatchColor = tHatch.getColor();
+            if (color.isPresent() && hatchColor != -1 && hatchColor != color.get()) continue;
             setHatchRecipeMap(tHatch);
             if (tHatch instanceof MTEHatchMultiInput multiInputHatch) {
                 for (FluidStack tFluid : multiInputHatch.getStoredFluid()) {
@@ -1648,12 +1697,18 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
     }
 
     public ArrayList<ItemStack> getStoredInputs() {
+        return getStoredInputsForColor(Optional.empty());
+    }
+
+    public ArrayList<ItemStack> getStoredInputsForColor(Optional<Byte> color) {
         ArrayList<ItemStack> rList = new ArrayList<>();
         Map<GTUtility.ItemId, ItemStack> inputsFromME = new HashMap<>();
         for (MTEHatchInputBus tHatch : validMTEList(mInputBusses)) {
             if (tHatch instanceof MTEHatchCraftingInputME) {
                 continue;
             }
+            byte busColor = tHatch.getColor();
+            if (color.isPresent() && busColor != -1 && busColor != color.get()) continue;
             tHatch.mRecipeMap = getRecipeMap();
             IGregTechTileEntity tileEntity = tHatch.getBaseMetaTileEntity();
             boolean isMEBus = tHatch instanceof MTEHatchInputBusME;
@@ -1677,6 +1732,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
             rList.addAll(inputsFromME.values());
         }
         return rList;
+
     }
 
     /**

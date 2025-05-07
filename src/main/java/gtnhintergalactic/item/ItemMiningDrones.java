@@ -8,6 +8,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 
+import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.MaterialsUEVplus;
 import gtnhintergalactic.GTNHIntergalactic;
@@ -33,26 +34,45 @@ public class ItemMiningDrones extends Item {
         setCreativeTab(GTNHIntergalactic.tab);
         setHasSubtypes(true);
         setUnlocalizedName("MiningDrone");
+
+        for (DroneTiers tier : DroneTiers.values()) {
+            tier.set(this);
+        }
     }
 
     /**
      * Enumeration for the available drone tiers
      */
     public enum DroneTiers {
-        LV,
-        MV,
-        HV,
-        EV,
-        IV,
-        LuV,
-        ZPM,
-        UV,
-        UHV,
-        UEV,
-        UIV,
-        UMV,
-        UXV,
-        MAX
+
+        LV(ItemList.MiningDroneLV),
+        MV(ItemList.MiningDroneMV),
+        HV(ItemList.MiningDroneHV),
+        EV(ItemList.MiningDroneEV),
+        IV(ItemList.MiningDroneIV),
+        LuV(ItemList.MiningDroneLuV),
+        ZPM(ItemList.MiningDroneZPM),
+        UV(ItemList.MiningDroneUV),
+        UHV(ItemList.MiningDroneUHV),
+        UEV(ItemList.MiningDroneUEV),
+        UIV(ItemList.MiningDroneUIV),
+        UMV(ItemList.MiningDroneUMV),
+        UXV(ItemList.MiningDroneUXV),
+        MAX(ItemList.MiningDroneMAX);
+
+        private final ItemList listEntry;
+
+        DroneTiers(ItemList listEntry) {
+            this.listEntry = listEntry;
+        }
+
+        public void set(Item item) {
+            listEntry.set(new ItemStack(item, 1, ordinal()));
+        }
+
+        public ItemStack get(int amount) {
+            return listEntry.get(amount);
+        }
     }
 
     /**

@@ -468,7 +468,7 @@ public class MTEYottaFluidTank extends MTETooltipMultiBlockBaseEM implements ICo
             .addCasingInfoRange("YOTTank Casing", 25, 43, false)
             .addInputHatch("Hint block with dot 1")
             .addOutputHatch("Hint block with dot 3")
-            .addSubChannelUsage("glass", "Glass Tier")
+            .addSubChannelUsage(GTStructureChannels.BOROGLASS)
             .toolTipFinisher();
         return tt;
     }

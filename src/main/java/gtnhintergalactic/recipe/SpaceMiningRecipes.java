@@ -31,7 +31,6 @@ import gregtech.api.util.GTUtility;
 import gtPlusPlus.core.material.MaterialMisc;
 import gtPlusPlus.core.material.MaterialsAlloy;
 import gtPlusPlus.core.material.MaterialsOres;
-import gtnhintergalactic.item.IGItems;
 import gtnhintergalactic.item.ItemMiningDrones;
 
 /**
@@ -56,7 +55,7 @@ public class SpaceMiningRecipes {
     static {
         for (ItemMiningDrones.DroneTiers droneTier : ItemMiningDrones.DroneTiers.values()) {
             int i = droneTier.ordinal();
-            ItemStack drone = new ItemStack(IGItems.MiningDrones, 0, i);
+            ItemStack drone = droneTier.get(0);
             MINING_DRONES[i] = drone;
             DRONE_TIERS.put(GTUtility.ItemId.createWithoutNBT(drone), i);
         }

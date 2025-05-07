@@ -8,6 +8,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 
+import gregtech.api.enums.ItemList;
 import gtnhintergalactic.GTNHIntergalactic;
 
 public class ItemDysonSwarmParts extends Item {
@@ -20,6 +21,13 @@ public class ItemDysonSwarmParts extends Item {
         setCreativeTab(GTNHIntergalactic.tab);
         setHasSubtypes(true);
         setUnlocalizedName("DysonSwarmParts");
+
+        ItemList.DysonSwarmModule.set(new ItemStack(this, 1, 0));
+        ItemList.TaHfCNanofibers.set(new ItemStack(this, 1, 1));
+        ItemList.NtNanofibers.set(new ItemStack(this, 1, 2));
+        ItemList.UHTResistantMesh.set(new ItemStack(this, 1, 3));
+        ItemList.TaHfNanoparticles.set(new ItemStack(this, 1, 4));
+        ItemList.NtNanoparticles.set(new ItemStack(this, 1, 5));
     }
 
     @Override

@@ -5,11 +5,15 @@ import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.Entity;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 
+import cpw.mods.fml.common.registry.GameRegistry;
+import gregtech.api.enums.ItemList;
 import gtnhintergalactic.GTNHIntergalactic;
+import gtnhintergalactic.item.ItemBlockSpaceElevatorCable;
 import gtnhintergalactic.tile.TileEntitySpaceElevatorCable;
 
 /**
@@ -36,6 +40,10 @@ public class BlockSpaceElevatorCable extends Block implements ITileEntityProvide
         setBlockName("SpaceElevatorCable");
         setCreativeTab(GTNHIntergalactic.tab);
         setHarvestLevel("pickaxe", 2);
+
+        GameRegistry.registerBlock(this, ItemBlockSpaceElevatorCable.class, "spaceelevatorcable");
+
+        ItemList.SpaceElevatorCable.set(new ItemStack(this));
     }
 
     /**

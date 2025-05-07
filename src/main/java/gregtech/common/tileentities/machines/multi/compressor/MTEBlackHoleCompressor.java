@@ -644,7 +644,7 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
 
                 // Cap recipes to energy hatch + 1
                 if (GTUtility.getTier(getAverageInputVoltage()) < GTUtility.getTier(recipe.mEUt) - 1)
-                    return CheckRecipeResultRegistry.insufficientPower(recipe.mEUt);
+                    return CheckRecipeResultRegistry.insufficientVoltage(recipe.mEUt);
                 return super.validateRecipe(recipe);
             }
         }.setMaxParallelSupplier(this::getTrueParallel)
