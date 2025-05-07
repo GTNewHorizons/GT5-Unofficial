@@ -13,7 +13,8 @@ import com.cleanroommc.modularui.drawable.Rectangle;
 import com.cleanroommc.modularui.utils.Color;
 import com.cleanroommc.modularui.widget.sizer.Area;
 import com.cleanroommc.modularui.widgets.ToggleButton;
-import com.cleanroommc.modularui.widgets.layout.Grid;
+import com.cleanroommc.modularui.widgets.layout.Column;
+import com.cleanroommc.modularui.widgets.layout.Row;
 import com.google.common.collect.ImmutableList;
 
 import gregtech.api.enums.Dyes;
@@ -22,7 +23,7 @@ import gregtech.api.enums.Dyes;
  * A Grid containing 16 ToggleButtons arranged in a 4x4 pattern. Each button represents a different minecraft dye
  * color.
  */
-public class ColorGridWidget extends Grid {
+public class ColorGridWidget extends Column {
 
     // TODO: consider changing this to Set
     public List<Byte> selected = new ArrayList<>();
@@ -99,26 +100,21 @@ public class ColorGridWidget extends Grid {
      * @return this
      */
     public ColorGridWidget build() {
-        int size = (buttonSize * 4) + (buttonPadding * 4);
-        this.matrix(createButtonMatrix())
-            .size(size, size)
-            .minColWidth(buttonSize + buttonPadding)
-            .minRowHeight(buttonSize + buttonPadding);
+        createButtonRows();
+        coverChildren().childPadding(buttonSize);
         return this;
     }
 
-    public List<List<IWidget>> createButtonMatrix() {
-        List<List<IWidget>> widgets = new ArrayList<>();
+    public void createButtonRows() {
         for (int i = 0; i < 4; i++) {
-            List<IWidget> row = new ArrayList<>();
+            Row row = new Row();
             for (int j = 0; j < 4; j++) {
                 Dyes dye = Dyes.VALUES[(i * 4) + j];
                 short[] colors = dye.getRGBA();
-                row.add(createToggleButton(Color.argb(colors[0], colors[1], colors[2], 255), ((i * 4) + j)));
+                row.child(createToggleButton(Color.argb(colors[0], colors[1], colors[2], 255), ((i * 4) + j)));
             }
-            widgets.add(row);
+            this.child(row.childPadding(buttonPadding));
         }
-        return widgets;
     }
 
     public ToggleButton createToggleButton(int color, int index) {
@@ -161,9 +157,11 @@ public class ColorGridWidget extends Grid {
     }
 
     public void onToggled() {
-        List<IWidget> children = getChildren();
         if (selected.size() > maxSelected) {
-            IWidget targetChild = children.get(selected.get(0));
+            int target = selected.get(0);
+            IWidget targetChild = getChildren().get(target / 4)
+                .getChildren()
+                .get(target % 4);
             if (!(targetChild instanceof ColorGridButton button)) return;
             // target locked; disable the child
             button.setState(0, true);
@@ -201,6 +199,10 @@ public class ColorGridWidget extends Grid {
      */
     public List<Byte> getSelected() {
         return selected;
+    }
+
+    public Byte getSelected(int i) {
+        return selected.get(i);
     }
 
     /**

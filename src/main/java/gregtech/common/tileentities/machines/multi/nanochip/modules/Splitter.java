@@ -5,6 +5,7 @@ import static gregtech.api.modularui2.GTGuis.createPopUpPanel;
 import static gregtech.api.modularui2.GTGuis.mteTemplatePanelBuilder;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -35,9 +36,7 @@ import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widget.ParentWidget;
 import com.cleanroommc.modularui.widget.WidgetTree;
 import com.cleanroommc.modularui.widgets.ButtonWidget;
-import com.cleanroommc.modularui.widgets.CategoryList;
 import com.cleanroommc.modularui.widgets.ListWidget;
-import com.google.common.collect.ImmutableList;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 
@@ -180,8 +179,8 @@ public class Splitter extends MTENanochipAssemblyModuleBase<Splitter> {
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Imagine the factorio splitter but big")
-            .addInfo("Can split")
+        tt.addMachineType("Splitter")
+            .addInfo("Splits inputs of the same color evenly into their respective outputs")
             .toolTipFinisher();
         return tt;
     }
@@ -275,14 +274,6 @@ public class Splitter extends MTENanochipAssemblyModuleBase<Splitter> {
         colorMap = loadRulesTagList(aNBT.getTagList("rules", 8));
     }
 
-    public Map<Byte, List<Byte>> createEmptyRulesList() {
-        Map<Byte, List<Byte>> rulesMap = new HashMap<>();
-        for (Dyes dye : Dyes.VALUES) {
-            rulesMap.put(dye.mIndex, ImmutableList.of(dye.mIndex));
-        }
-        return rulesMap;
-    }
-
     public NBTTagList createRulesTagList() {
         NBTTagList list = new NBTTagList();
         for (Map.Entry<Byte, List<Byte>> entry : colorMap.entrySet()) {
@@ -340,7 +331,7 @@ public class Splitter extends MTENanochipAssemblyModuleBase<Splitter> {
     public ModularPanel createRuleManagerPanel(PanelSyncManager syncManager) {
         ModularPanel ui = createPopUpPanel("gt:splitter:rules_manager", false, false);
 
-        ListWidget<IWidget, CategoryList.Root> list = new ListWidget<>();
+        ListWidget<IWidget, ?> list = new ListWidget<>();
         list.childSeparator(IIcon.EMPTY_2PX);
         list.size(168, 138);
         list.pos(4, 21);
@@ -389,27 +380,25 @@ public class Splitter extends MTENanochipAssemblyModuleBase<Splitter> {
         List<Byte> outputSelected) {
         ColorGridWidget inputGrid = new ColorGridWidget();
         ColorGridWidget outputGrid = new ColorGridWidget();
+        ColorGridSelector selector = new ColorGridSelector(syncManager);
 
-        GenericSyncValue<Map<Byte, List<Byte>>> map = (GenericSyncValue<Map<Byte, List<Byte>>>) syncManager
-            .getSyncHandler("map:0");
-
-        return new ParentWidget<>()
+        return selector
             // Arrow icon
             .child(
                 GTGuiTextures.PROGRESSBAR_ARROW_STANDARD.getSubArea(0F, 0F, 1F, 0.5F)
                     .asWidget()
                     .size(20, 18)
                     .posRel(0.5F, 0.5F))
-            .child(
-                inputGrid.setInitialSelected(inputSelected)
+            .setInputGrid(
+                (ColorGridWidget) inputGrid.setInitialSelected(inputSelected)
                     .setMaxSelected(1)
                     .build()
-                    .pos(5, 13))
-            .child(
-                outputGrid.setInitialSelected(outputSelected)
+                    .pos(5, 17))
+            .setOutputGrid(
+                (ColorGridWidget) outputGrid.setInitialSelected(outputSelected)
                     .setMaxSelected(16)
                     .build()
-                    .pos(121, 13))
+                    .pos(121, 17))
             // Input grid color display
             .child(
                 IKey.dynamic(() -> inputGrid.getName(0))
@@ -439,8 +428,7 @@ public class Splitter extends MTENanochipAssemblyModuleBase<Splitter> {
                     .pos(120, 5))
             // Save button
             .child(
-                new ButtonWidget<>()
-                    .onMousePressed(a -> saveColorData(inputGrid.getSelected(), outputGrid.getSelected(), map))
+                new ButtonWidget<>().onMousePressed(a -> selector.saveColorData())
                     .tooltip(t -> t.add("Save"))
                     .overlay(GTGuiTextures.OVERLAY_BUTTON_CHECKMARK)
                     .pos(85, 5)
@@ -448,7 +436,11 @@ public class Splitter extends MTENanochipAssemblyModuleBase<Splitter> {
             // Delete button
             .child(
                 new ButtonWidget<>().tooltip(t -> t.add("Delete"))
-                    .onMousePressed(a -> removeColorData(inputGrid.getSelected(), outputGrid.getSelected(), map))
+                    .onMousePressed(a -> {
+                        selector.removeColorData(true);
+                        WidgetTree.resize(selector.getParent());
+                        return true;
+                    })
                     .overlay(GTGuiTextures.OVERLAY_BUTTON_CROSS)
                     .pos(73, 5)
                     .size(8, 8))
@@ -456,38 +448,89 @@ public class Splitter extends MTENanochipAssemblyModuleBase<Splitter> {
             .background(GTGuiTextures.BACKGROUND_POPUP_STANDARD);
     }
 
-    public RichTooltip getInfo(RichTooltip t, ColorGridWidget grid) {
+    public void getInfo(RichTooltip t, ColorGridWidget grid) {
         List<Byte> selected = grid.getSelected();
         int amount = selected.size();
-        if (amount == 0) return t.add("None selected");
+        if (amount < 2) return;
         t.pos(RichTooltip.Pos.ABOVE)
             .add("Currently selected:\n");
         for (int i = 0; i < amount; i++) {
             boolean shouldNewLine = (((i - 2) % 3) == 0);
             Dyes color = Dyes.get(selected.get(i));
-            t.add(color.getLocalizedDyeName() + (shouldNewLine ? "\n" : ", "));
+            String name = color.getLocalizedDyeName();
+            if (color == Dyes.dyeBlack) color = Dyes.dyeGray;
+            t.add(color.formatting + name + IKey.RESET + (shouldNewLine ? "\n" : ", "));
         }
-        return t;
     }
 
-    private boolean saveColorData(List<Byte> input, List<Byte> output, GenericSyncValue<Map<Byte, List<Byte>>> map) {
-        if (input.isEmpty() || output.isEmpty()) return false;
-        for (Byte inputColor : input) {
+    private class ColorGridSelector extends ParentWidget<ColorGridSelector> {
+
+        ColorGridWidget inputGrid;
+        ColorGridWidget outputGrid;
+        Byte lastInputSelected = null;
+        List<Byte> lastOutputSelected = null;
+        GenericSyncValue<Map<Byte, List<Byte>>> colorMapSyncer;
+
+        public ColorGridSelector(PanelSyncManager syncManager) {
+            super();
+            colorMapSyncer = (GenericSyncValue<Map<Byte, List<Byte>>>) syncManager.getSyncHandler("map:0");
+        }
+
+        public void removeSelector() {
+            IWidget widget = getParent();
+            if (!(widget instanceof ListWidget list)) return;
+            list.getChildren()
+                .remove(this);
+        }
+
+        public ColorGridSelector setInputGrid(ColorGridWidget widget) {
+            inputGrid = widget;
+            if (widget.getAmountSelected() == 1) {
+                lastInputSelected = widget.getSelected(0);
+            }
+            return this.child(widget);
+        }
+
+        public ColorGridSelector setOutputGrid(ColorGridWidget widget) {
+            outputGrid = widget;
+            lastOutputSelected = widget.getSelected();
+            return this.child(widget);
+        }
+
+        private boolean saveColorData() {
+            List<Byte> input = inputGrid.getSelected();
+            List<Byte> output = outputGrid.getSelected();
+            if (input.isEmpty() || output.isEmpty()) return false;
+
+            if (lastInputSelected == null) {
+                lastInputSelected = input.get(0);
+            } else {
+                if (lastOutputSelected == colorMap.get(lastInputSelected)) {
+                    removeColorData(false, lastInputSelected);
+                }
+                lastInputSelected = input.get(0);
+            }
+
             List<Byte> newOutputs = new ArrayList<>(output);
-            colorMap.put(inputColor, newOutputs);
-            map.setValue(colorMap);
-        }
-        return true;
-    }
+            colorMap.put(input.get(0), newOutputs);
+            colorMapSyncer.setValue(colorMap);
 
-    // TODO: figure out how to actually remove the ParentWidget from the ui
-    private boolean removeColorData(List<Byte> input, List<Byte> output, GenericSyncValue<Map<Byte, List<Byte>>> map) {
-        if (input.isEmpty() || output.isEmpty()) return false;
-        for (Byte inputColor : input) {
-            colorMap.remove(inputColor);
+            lastOutputSelected = output;
+            return true;
         }
-        map.setValue(colorMap);
-        return true;
+
+        private boolean removeColorData(boolean removeParent, Byte... inputOverride) {
+            if (removeParent) removeSelector();
+            List<Byte> input = inputOverride.length == 0 ? inputGrid.getSelected() : Arrays.asList(inputOverride);
+            List<Byte> output = outputGrid.getSelected();
+            if (input.isEmpty() || output.isEmpty()) return false;
+            for (Byte inputColor : input) {
+                colorMap.remove(inputColor);
+            }
+            colorMapSyncer.setValue(colorMap);
+            return true;
+        }
+
     }
 
     private static class ColorMapAdapter implements IByteBufAdapter<Map<Byte, List<Byte>>> {
