@@ -3,6 +3,7 @@ package gregtech.common.render.items;
 import static gregtech.api.enums.Dyes.dyeGreen;
 import static gregtech.api.enums.Dyes.dyeLightBlue;
 import static gregtech.api.enums.Dyes.dyeMagenta;
+import static gregtech.api.enums.Dyes.dyeOrange;
 import static gregtech.api.enums.Dyes.dyeRed;
 import static gregtech.api.enums.Dyes.dyeWhite;
 import static gregtech.api.items.armor.MechArmorAugmentRegistries.coresMap;
@@ -83,10 +84,10 @@ public class MechanicalArmorRenderer implements IItemRenderer {
         if (!core.isEmpty() && coresMap.containsKey(core)) {
             short[] modulation = dyeWhite.getRGBA();
             switch (coresMap.get(core).tier) {
-                case 1 -> modulation = dyeLightBlue.getRGBA();
+                case 1 -> modulation = dyeRed.getRGBA();
                 case 2 -> modulation = dyeGreen.getRGBA();
-                case 3 -> modulation = dyeRed.getRGBA();
-                case 4 -> modulation = dyeMagenta.getRGBA();
+                case 3 -> modulation = dyeLightBlue.getRGBA();
+                case 4 -> modulation = dyeOrange.getRGBA();
             }
             GL11.glColor4f(modulation[0] / 255.0F, modulation[1] / 255.0F, modulation[2] / 255.0F, 1);
             GTRenderUtil.renderItem(type, coreLayer);

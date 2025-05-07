@@ -16,6 +16,7 @@ public class ModelMechArmor extends ModelBiped {
     ModelRenderer core1;
     ModelRenderer core2;
     ModelRenderer core3;
+    ModelRenderer core4;
 
     public ModelMechArmor(float s) {
         super(s, 0, 64, 128);
@@ -43,6 +44,14 @@ public class ModelMechArmor extends ModelBiped {
         core3.mirror = true;
         setRotation(core3, 0F, 0F, 0F);
         core3.showModel = false;
+
+        core4 = new ModelRenderer(this, 42, 0);
+        core4.addBox(-2F, 3F, -3F, 4, 4, 1);
+        core4.setRotationPoint(0F, 0F, 0F);
+        core4.setTextureSize(64, 32);
+        core4.mirror = true;
+        setRotation(core4, 0F, 0F, 0F);
+        core4.showModel = false;
 
         jettank2 = new ModelRenderer(this, 52, 0);
         jettank2.addBox(-4F, 2F, 2F, 3, 5, 3);
@@ -91,6 +100,7 @@ public class ModelMechArmor extends ModelBiped {
         bipedBody.addChild(core1);
         bipedBody.addChild(core2);
         bipedBody.addChild(core3);
+        bipedBody.addChild(core4);
 
         jettank1.addChild(jettank2);
 

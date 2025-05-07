@@ -221,7 +221,8 @@ public class MechArmorBase extends ItemArmor implements IKeyPressedListener, ISp
         switch (getCore(itemStack)) {
             case 1 -> model.core1.showModel = true;
             case 2 -> model.core2.showModel = true;
-            case 3, 4 -> model.core3.showModel = true;
+            case 3 -> model.core3.showModel = true;
+            case 4 -> model.core4.showModel = true;
         }
         return model;
     }
