@@ -65,6 +65,7 @@ import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.cleanroommc.modularui.widgets.layout.Grid;
 import com.cleanroommc.modularui.widgets.layout.Row;
 import com.cleanroommc.modularui.widgets.slot.ModularSlot;
+import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
 
 import akka.japi.Pair;
 import cpw.mods.fml.relauncher.Side;
@@ -88,8 +89,6 @@ import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.ParallelHelper;
-import gregtech.common.gui.modularui.widget.LangKeyCustom;
-import gregtech.common.gui.modularui.widget.TextFieldWidgetWithOverlay;
 import gregtech.common.misc.spaceprojects.SpaceProjectManager;
 import gregtech.common.misc.spaceprojects.enums.SolarSystem;
 import gregtech.common.misc.spaceprojects.interfaces.ISpaceProject;
@@ -1384,29 +1383,48 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
                 .height(18 * 4)
                 // Text fields
                 .child(
-                    new TextFieldWidgetWithOverlay(
-                        () -> !search.get()
-                            .isEmpty()).size(60, 9)
+                    new Row().widthRel(1)
+                        .coverChildrenHeight()
+                        .child(
+                            IKey.lang("tt.spaceminer.textFieldOre")
+                                .asWidget()
                                 .marginBottom(4)
-                                .alignX(0)
-                                .value(textFieldSyncer)
-                                .overlay(new LangKeyCustom("tt.spaceminer.textFieldOre")))
+                                .width(50)
+                                .color(Color.WHITE.main))
+                        .child(
+                            new TextFieldWidget().size(60, 9)
+                                .marginBottom(4)
+                                .value(textFieldSyncer)))
                 .child(
-                    new TextFieldWidgetWithOverlay(() -> distanceFilter.get() > 0).size(60, 9)
-                        .marginBottom(4)
-                        .alignX(0)
-                        .overlay(new LangKeyCustom("tt.spaceminer.textFieldDistance"))
-                        .value(distanceSyncer)
-                        .setDefaultNumber(0)
-                        .setNumbers(0, Integer.MAX_VALUE))
+                    new Row().widthRel(1)
+                        .coverChildrenHeight()
+                        .child(
+                            IKey.lang("tt.spaceminer.textFieldDistance")
+                                .asWidget()
+                                .marginBottom(4)
+                                .width(50)
+                                .color(Color.WHITE.main))
+                        .child(
+                            new TextFieldWidget().size(60, 9)
+                                .marginBottom(4)
+                                .value(distanceSyncer)
+                                .setDefaultNumber(0)
+                                .setNumbers(0, Integer.MAX_VALUE)))
                 .child(
-                    new TextFieldWidgetWithOverlay(() -> moduleTierFilter.get() > 0).size(60, 9)
-                        .marginBottom(4)
-                        .alignX(0)
-                        .overlay(new LangKeyCustom("tt.spaceminer.textFieldTier"))
-                        .value(moduleTierFilterSyncer)
-                        .setDefaultNumber(0)
-                        .setNumbers(0, 3))
+                    new Row().widthRel(1)
+                        .coverChildrenHeight()
+                        .child(
+                            IKey.lang("tt.spaceminer.textFieldTier")
+                                .asWidget()
+                                .marginBottom(4)
+                                .width(50)
+                                .color(Color.WHITE.main))
+                        .child(
+                            new TextFieldWidget().size(60, 9)
+                                .marginBottom(4)
+                                .value(moduleTierFilterSyncer)
+                                .setDefaultNumber(0)
+                                .setNumbers(0, 3)))
                 // Drone selection button
                 .child(
                     new Row().widthRel(1)
@@ -1910,21 +1928,34 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
             new Column().widthRel(1)
                 .height(18 * 4)
                 .child(
-                    new TextFieldWidgetWithOverlay(() -> distance.get() > 0).size(60, 9)
-                        .marginBottom(4)
-                        .alignX(0)
-                        .overlay(new LangKeyCustom("tt.spaceminer.textFieldDistance"))
-                        .value(distanceSyncer)
-                        .setDefaultNumber(0)
-                        .setNumbers(0, Integer.MAX_VALUE))
+                    new Row().widthRel(1)
+                        .coverChildrenHeight()
+                        .child(
+                            IKey.lang("tt.spaceminer.textFieldDistance")
+                                .asWidget()
+                                .marginBottom(4)
+                                .width(50)
+                                .color(Color.WHITE.main))
+                        .child(
+                            new TextFieldWidget().marginBottom(4)
+                                .size(60, 9)
+                                .value(distanceSyncer)
+                                .setDefaultNumber(0)
+                                .setNumbers(0, Integer.MAX_VALUE)))
                 .child(
-                    new TextFieldWidgetWithOverlay(() -> moduleTier.get() > 0).size(60, 9)
-                        .marginBottom(4)
-                        .alignX(0)
-                        .overlay(new LangKeyCustom("tt.spaceminer.textFieldTier"))
-                        .value(moduleTierSyncer)
-                        .setDefaultNumber(0)
-                        .setNumbers(0, 3))
+                    new Row().widthRel(1)
+                        .coverChildrenHeight()
+                        .child(
+                            IKey.lang("tt.spaceminer.textFieldTier")
+                                .asWidget()
+                                .marginBottom(4)
+                                .width(50)
+                                .color(Color.WHITE.main))
+                        .child(
+                            new TextFieldWidget().size(60, 9)
+                                .value(moduleTierSyncer)
+                                .setDefaultNumber(0)
+                                .setNumbers(0, 3)))
                 .child(
                     new Row().widthRel(1)
                         .height(18)
