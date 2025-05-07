@@ -72,6 +72,7 @@ public class MTEHatchDataOutput extends MTEHatchDataConnector<QuantumDataPacket>
         super.saveNBTData(aNBT);
 
         aNBT.setLong("comp", requestedComputation);
+        aNBT.setLong("weight", weight);
     }
 
     @Override
@@ -79,6 +80,7 @@ public class MTEHatchDataOutput extends MTEHatchDataConnector<QuantumDataPacket>
         super.loadNBTData(aNBT);
 
         requestedComputation = aNBT.getLong("comp");
+        weight = aNBT.getLong("weight");
     }
 
     @Override

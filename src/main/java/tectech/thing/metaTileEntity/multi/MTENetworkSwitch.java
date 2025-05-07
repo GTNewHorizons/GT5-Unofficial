@@ -56,15 +56,6 @@ public class MTENetworkSwitch extends TTMultiblockBase
     protected final StructureWrapper<MTENetworkSwitch> structure;
     protected final StructureWrapperInstanceInfo<MTENetworkSwitch> structureInstanceInfo;
 
-    private static final INameFunction<MTENetworkSwitch> DEST_NAME = MTENetworkSwitch::getDestName;
-    private static final IStatusFunction<MTENetworkSwitch> DEST_STATUS = MTENetworkSwitch::getDestStatus;
-
-    private static final INameFunction<MTENetworkSwitch> WEIGHT_NAME = MTENetworkSwitch::getWeightName;
-    private static final IStatusFunction<MTENetworkSwitch> WEIGHT_STATUS = MTENetworkSwitch::getWeightStatus;
-
-    protected Parameters.Group.ParameterIn[] dst;
-    protected Parameters.Group.ParameterIn[] weight;
-
     public MTENetworkSwitch(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
 
@@ -184,45 +175,6 @@ public class MTENetworkSwitch extends TTMultiblockBase
     @Override
     protected SoundResource getActivitySoundLoop() {
         return SoundResource.TECTECH_MACHINES_FX_HIGH_FREQ;
-    }
-
-    private static String getDestName(MTENetworkSwitch base, Parameters.IParameter p) {
-        return translateToLocal("tt.keyword.Destination") + " " + (p.hatchId() + 1);
-    }
-
-    private static LedStatus getDestStatus(MTENetworkSwitch base, Parameters.IParameter p) {
-        if (base.weight[p.hatchId()].getStatus(false).isOk) {
-            double v = p.get();
-            if (Double.isNaN(v)) return LedStatus.STATUS_WRONG;
-            v = (int) v;
-            if (v <= 0) return LedStatus.STATUS_TOO_LOW;
-            return LedStatus.STATUS_OK;
-        }
-        return LedStatus.STATUS_NEUTRAL;
-    }
-
-    private static String getWeightName(MTENetworkSwitch base, Parameters.IParameter p) {
-        return translateToLocal("tt.keyword.Weight") + " " + (p.hatchId() + 1);
-    }
-
-    private static LedStatus getWeightStatus(MTENetworkSwitch base, Parameters.IParameter p) {
-        double v = p.get();
-        if (Double.isNaN(v)) return LedStatus.STATUS_WRONG;
-        if (v < 0) return LedStatus.STATUS_TOO_LOW;
-        if (v == 0) return LedStatus.STATUS_LOW;
-        if (Double.isInfinite(v)) return LedStatus.STATUS_HIGH;
-        return LedStatus.STATUS_OK;
-    }
-
-    @Override
-    protected void parametersInstantiation_EM() {
-        dst = new Parameters.Group.ParameterIn[10];
-        weight = new Parameters.Group.ParameterIn[10];
-        for (int i = 0; i < 10; i++) {
-            Parameters.Group hatch = parametrization.getGroup(i);
-            dst[i] = hatch.makeInParameter(0, i + 1, DEST_NAME, DEST_STATUS);
-            weight[i] = hatch.makeInParameter(1, 0, WEIGHT_NAME, WEIGHT_STATUS);
-        }
     }
 
     @Override
