@@ -24,27 +24,6 @@ import static gregtech.api.util.GTRecipeBuilder.WILDCARD;
 import java.util.Collections;
 import java.util.Locale;
 
-import gregtech.api.items.armor.behaviors.ApiaristBehavior;
-import gregtech.api.items.armor.behaviors.CreativeFlightBehavior;
-import gregtech.api.items.armor.behaviors.FallProtectionBehavior;
-import gregtech.api.items.armor.behaviors.FireImmunityBehavior;
-import gregtech.api.items.armor.behaviors.ForceFieldBehavior;
-import gregtech.api.items.armor.behaviors.GogglesOfRevealingBehavior;
-import gregtech.api.items.armor.behaviors.HazmatBehavior;
-import gregtech.api.items.armor.behaviors.InertiaCancelingBehavior;
-import gregtech.api.items.armor.behaviors.InfiniteEnergyBehavior;
-import gregtech.api.items.armor.behaviors.JetpackBehavior;
-import gregtech.api.items.armor.behaviors.JetpackPerfectHoverBehavior;
-import gregtech.api.items.armor.behaviors.JumpBoostBehavior;
-import gregtech.api.items.armor.behaviors.KnockbackResistBehavior;
-import gregtech.api.items.armor.behaviors.NightVisionBehavior;
-import gregtech.api.items.armor.behaviors.OmniMovementBehavior;
-import gregtech.api.items.armor.behaviors.SpaceSuitBehavior;
-import gregtech.api.items.armor.behaviors.SpeedBoostBehavior;
-import gregtech.api.items.armor.behaviors.StepAssistBehavior;
-import gregtech.api.items.armor.behaviors.SwimSpeedBehavior;
-import gregtech.api.items.armor.behaviors.TeleporterBehavior;
-import gregtech.api.items.armor.behaviors.WaterBreathingBehavior;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -78,6 +57,27 @@ import gregtech.api.items.ItemRadioactiveCellIC;
 import gregtech.api.items.armor.MechArmorAugmentRegistries.Augments;
 import gregtech.api.items.armor.MechArmorAugmentRegistries.Cores;
 import gregtech.api.items.armor.MechArmorAugmentRegistries.Frames;
+import gregtech.api.items.armor.behaviors.ApiaristBehavior;
+import gregtech.api.items.armor.behaviors.CreativeFlightBehavior;
+import gregtech.api.items.armor.behaviors.FallProtectionBehavior;
+import gregtech.api.items.armor.behaviors.FireImmunityBehavior;
+import gregtech.api.items.armor.behaviors.ForceFieldBehavior;
+import gregtech.api.items.armor.behaviors.GogglesOfRevealingBehavior;
+import gregtech.api.items.armor.behaviors.HazmatBehavior;
+import gregtech.api.items.armor.behaviors.InertiaCancelingBehavior;
+import gregtech.api.items.armor.behaviors.InfiniteEnergyBehavior;
+import gregtech.api.items.armor.behaviors.JetpackBehavior;
+import gregtech.api.items.armor.behaviors.JetpackPerfectHoverBehavior;
+import gregtech.api.items.armor.behaviors.JumpBoostBehavior;
+import gregtech.api.items.armor.behaviors.KnockbackResistBehavior;
+import gregtech.api.items.armor.behaviors.NightVisionBehavior;
+import gregtech.api.items.armor.behaviors.OmniMovementBehavior;
+import gregtech.api.items.armor.behaviors.SpaceSuitBehavior;
+import gregtech.api.items.armor.behaviors.SpeedBoostBehavior;
+import gregtech.api.items.armor.behaviors.StepAssistBehavior;
+import gregtech.api.items.armor.behaviors.SwimSpeedBehavior;
+import gregtech.api.items.armor.behaviors.TeleporterBehavior;
+import gregtech.api.items.armor.behaviors.WaterBreathingBehavior;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.metatileentity.BaseMetaTileEntity;
 import gregtech.api.util.GTLog;
@@ -474,6 +474,48 @@ public class LoaderGTBlockFluid implements Runnable {
                 "",
                 Collections.emptyList(),
                 Frames.Heavy));
+        ItemList.Armor_Frame_Nimble.set(
+            new ItemAugmentFrame(
+                "armorframenimble",
+                "Nimble Mechanical Armor Frame",
+                "",
+                Collections.emptyList(),
+                Frames.Nimble));
+        ItemList.Armor_Frame_Adaptive.set(
+            new ItemAugmentFrame(
+                "armorframeadaptive",
+                "Adaptive Mechanical Armor Frame",
+                "",
+                Collections.emptyList(),
+                Frames.Adaptive));
+        ItemList.Armor_Frame_Tough.set(
+            new ItemAugmentFrame(
+                "armorframetough",
+                "Tough Mechanical Armor Frame",
+                "",
+                Collections.emptyList(),
+                Frames.Tough));
+        ItemList.Armor_Frame_Lightning.set(
+            new ItemAugmentFrame(
+                "armorframelightning",
+                "Lightning Mechanical Armor Frame",
+                "",
+                Collections.emptyList(),
+                Frames.Lightning));
+        ItemList.Armor_Frame_Morphic.set(
+            new ItemAugmentFrame(
+                "armorframemorphic",
+                "Morphic Mechanical Armor Frame",
+                "",
+                Collections.emptyList(),
+                Frames.Morphic));
+        ItemList.Armor_Frame_Bulwark.set(
+            new ItemAugmentFrame(
+                "armorframebulwark",
+                "Bulwark Mechanical Armor Frame",
+                "",
+                Collections.emptyList(),
+                Frames.Bulwark));
         ItemList.Armor_Frame_Infinity.set(
             new ItemAugmentFrame(
                 "armorframeinfinity",
