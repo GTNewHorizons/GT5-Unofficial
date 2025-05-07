@@ -20,17 +20,19 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
 
+import com.cleanroommc.modularui.api.drawable.IKey;
+import com.cleanroommc.modularui.api.widget.IWidget;
+import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.utils.item.ItemStackHandler;
+import com.cleanroommc.modularui.value.sync.IntSyncValue;
+import com.cleanroommc.modularui.value.sync.PanelSyncManager;
+import com.cleanroommc.modularui.widgets.ListWidget;
 import com.gtnewhorizon.structurelib.alignment.constructable.IConstructable;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.gtnewhorizons.modularui.api.NumberFormatMUI;
-import com.gtnewhorizons.modularui.api.math.Alignment;
-import com.gtnewhorizons.modularui.common.widget.DynamicPositionedColumn;
-import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
-import com.gtnewhorizons.modularui.common.widget.SlotWidget;
-import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
 import goodgenerator.api.recipe.GoodGeneratorRecipeMaps;
 import goodgenerator.blocks.tileEntity.GTMetaTileEntity.MTENeutronAccelerator;
@@ -463,21 +465,31 @@ public class MTENeutronActivator extends MTETooltipMultiBlockBaseEM implements I
     }
 
     @Override
-    protected void drawTexts(DynamicPositionedColumn screenElements, SlotWidget inventorySlot) {
-        super.drawTexts(screenElements, inventorySlot);
+    public void insertTexts(ListWidget<IWidget, ?> machineInfo, ItemStackHandler invSlot, PanelSyncManager syncManager,
+        ModularPanel parentPanel) {
+        super.insertTexts(machineInfo, invSlot, syncManager, parentPanel);
+        IntSyncValue evSyncer = new IntSyncValue(() -> eV, val -> eV = val);
+        syncManager.syncValue("ev", evSyncer);
 
-        screenElements
-            .widget(
-                new TextWidget(StatCollector.translateToLocal("gui.NeutronActivator.0"))
-                    .setTextAlignment(Alignment.CenterLeft)
-                    .setDefaultColor(COLOR_TEXT_WHITE.get())
-                    .setEnabled(widget -> getErrorDisplayID() == 0))
-            .widget(
-                new TextWidget().setStringSupplier(() -> numberFormat.format(eV / 1_000_000d) + " MeV")
-                    .setTextAlignment(Alignment.CenterLeft)
-                    .setDefaultColor(COLOR_TEXT_WHITE.get())
-                    .setEnabled(widget -> getErrorDisplayID() == 0))
-            .widget(new FakeSyncWidget.IntegerSyncer(() -> eV, val -> eV = val));
+        machineInfo.child(
+            new com.cleanroommc.modularui.widgets.TextWidget(StatCollector.translateToLocal("gui.NeutronActivator.0"))
+                .alignment(com.cleanroommc.modularui.utils.Alignment.CenterLeft)
+                .color(COLOR_TEXT_WHITE.get())
+                .widthRel(1)
+                .marginBottom(2)
+                .setEnabledIf(
+                    w -> getErrorDisplayID() == 0
+                        && (getBaseMetaTileEntity().isAllowedToWork() || getBaseMetaTileEntity().isActive())));
+
+        machineInfo.child(
+            IKey.dynamic(() -> numberFormat.format(eV / 1_000_000d) + " MeV")
+                .asWidget()
+                .color(COLOR_TEXT_WHITE.get())
+                .widthRel(1)
+                .marginBottom(2)
+                .setEnabledIf(
+                    w -> getErrorDisplayID() == 0
+                        && (getBaseMetaTileEntity().isAllowedToWork() || getBaseMetaTileEntity().isActive())));
     }
 
     private enum NeutronHatchElement implements IHatchElement<MTENeutronActivator> {
@@ -515,4 +527,10 @@ public class MTENeutronActivator extends MTETooltipMultiBlockBaseEM implements I
             return adder;
         }
     }
+
+    @Override
+    protected boolean forceUseMui2() {
+        return true;
+    }
+
 }
