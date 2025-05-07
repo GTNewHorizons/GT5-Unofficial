@@ -859,7 +859,7 @@ public class MTEYottaFluidTank extends MTETooltipMultiBlockBaseEM implements ICo
         insertThingsInGap(panelGap, syncManager, panel);
         panelColumn.child(panelGap);
 
-        FluidSlotDisplayOnly fluidDisplay = new FluidSlotDisplayOnly() {
+        FluidSlotDisplayOnly fluidDisplay = new FluidSlotDisplayOnly(() -> Double.parseDouble(percentageSyncer.getStringValue()) / 100) {
 
             @NotNull
             @Override
@@ -927,12 +927,7 @@ public class MTEYottaFluidTank extends MTETooltipMultiBlockBaseEM implements ICo
                 .size(48, 88)
                 .pos(139, 1));
 
-        panelTopRow.child(fluidDisplay);
-        percentageSyncer.setChangeListener(() -> {
-            fluidDisplay.size(34, (10 + Math.round(64 * (Float.parseFloat(percentageSyncer.getStringValue()) / 100))))
-                .pos(146, 8 + Math.round(64 * ((100 - Float.parseFloat(percentageSyncer.getStringValue())) / 100)));
-            WidgetTree.resize(panel);
-        });
+        panelTopRow.child(fluidDisplay.pos(146,8).size(34, 72));
 
         panelTopRow.child(
             new TransparentSingleChildWidget()
