@@ -2544,7 +2544,6 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
                 t.addLine(IKey.lang("GT5U.gui.button.batch_mode"));
                 if (!supportsBatchMode()) t.addLine(IKey.lang(BUTTON_FORBIDDEN_TOOLTIP));
             });
-
         return batchModeButton;
     }
 

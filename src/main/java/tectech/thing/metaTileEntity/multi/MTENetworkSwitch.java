@@ -4,6 +4,7 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose
 import static gregtech.api.enums.GTValues.V;
 import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.Maintenance;
+import static gregtech.api.util.GTUtility.validMTEList;
 import static net.minecraft.util.StatCollector.translateToLocal;
 import static tectech.thing.metaTileEntity.multi.base.TTMultiblockBase.HatchElement.EnergyMulti;
 import static tectech.thing.metaTileEntity.multi.base.TTMultiblockBase.HatchElement.InputData;
@@ -118,7 +119,12 @@ public class MTENetworkSwitch extends TTMultiblockBase
 
     @Override
     public boolean checkMachine_EM(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack) {
-        return structure.checkStructure(this);
+        if (!structure.checkStructure(this)) return false;
+        for (MTEHatchDataOutput output : validMTEList(eOutputData)) {
+            output.allowComputationConfiguring = true;
+            output.useWeight = true;
+        }
+        return true;
     }
 
     @Override
@@ -245,10 +251,10 @@ public class MTENetworkSwitch extends TTMultiblockBase
         if (!eOutputData.isEmpty()) {
             double total = 0;
             double weight;
-            for (int i = 0; i < 10; i++) { // each param pair
-                weight = this.weight[i].get();
-                if (weight > 0 && dst[i].get() >= 0) {
-                    total += weight; // Total weighted div
+            for (MTEHatchDataOutput output : validMTEList(eOutputData)) {
+                weight = output.weight;
+                if (weight > 0) {
+                    total += output.weight;
                 }
             }
 
@@ -273,19 +279,12 @@ public class MTENetworkSwitch extends TTMultiblockBase
 
             long remaining = pack.getContent();
 
-            double dest;
-            for (int i = 0; i < 10; i++) {
-                dest = dst[i].get();
-                weight = this.weight[i].get();
-                if (weight > 0 && dest >= 0) {
-                    int outIndex = (int) dest - 1;
-                    if (outIndex < 0 || outIndex >= eOutputData.size()) {
-                        continue;
-                    }
-                    MTEHatchDataOutput out = eOutputData.get(outIndex);
+            for (MTEHatchDataOutput output : validMTEList(eOutputData)) {
+                weight = output.weight;
+                if (weight > 0) {
                     if (Double.isInfinite(total)) {
                         if (Double.isInfinite(weight)) {
-                            out.q = new QuantumDataPacket(remaining).unifyTraceWith(pack);
+                            output.q = new QuantumDataPacket(remaining).unifyTraceWith(pack);
                             break;
                         }
                     } else {
@@ -293,9 +292,9 @@ public class MTENetworkSwitch extends TTMultiblockBase
                         if (part > 0) {
                             remaining -= part;
                             if (remaining > 0) {
-                                out.q = new QuantumDataPacket(part).unifyTraceWith(pack);
+                                output.q = new QuantumDataPacket(part).unifyTraceWith(pack);
                             } else if (part + remaining > 0) {
-                                out.q = new QuantumDataPacket(part + remaining).unifyTraceWith(pack);
+                                output.q = new QuantumDataPacket(part + remaining).unifyTraceWith(pack);
                                 break;
                             } else {
                                 break;
@@ -306,4 +305,10 @@ public class MTENetworkSwitch extends TTMultiblockBase
             }
         }
     }
+
+    @Override
+    protected boolean forceUseMui2() {
+        return true;
+    }
+
 }
