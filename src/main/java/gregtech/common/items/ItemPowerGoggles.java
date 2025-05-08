@@ -52,9 +52,10 @@ public class ItemPowerGoggles extends GTGenericItem implements IBauble, INetwork
             } else {
                 player.addChatMessage(new ChatComponentText("That's not an LSC..."));
             }
-            return true;
+        } else {
+            player.addChatMessage(new ChatComponentText("That's not an LSC..."));
         }
-        return super.onItemUseFirst(stack, player, world, x, y, z, ordinalSide, hitX, hitY, hitZ);
+        return true;
     }
 
     @Override
