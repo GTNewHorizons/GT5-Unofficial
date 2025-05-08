@@ -61,7 +61,17 @@ public class PowerGogglesGuiHudConfig extends GuiScreen {
             dragCenterY - dragHeight / 2,
             dragCenterX + dragWidth / 2,
             dragCenterY + dragHeight / 2,
-            Color.argb(40, 24, 163, 255 * 0.75f));
+            Color.rgb(255, 50, 50));
+        drawHorizontalLine(
+            dragCenterX - dragWidth / 2,
+            dragCenterX + dragWidth / 2 - 1,
+            dragCenterY,
+            Color.rgb(255, 255, 255));
+        drawVerticalLine(
+            dragCenterX,
+            dragCenterY + dragHeight / 2,
+            dragCenterY - dragHeight / 2,
+            Color.rgb(255, 255, 255));
         super.drawScreen(x, y, partial);
     }
 

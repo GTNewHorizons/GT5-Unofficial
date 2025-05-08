@@ -82,9 +82,9 @@ public class PowerGogglesGuiOverlay {
                     .set(PowerGogglesConfigHandler.formatIndex);
                 PowerGogglesConfigHandler.config.save();
                 notationButton.overlay(
-                    IKey.str(
-                        "Toggle Notation: "
-                            + StatCollector.translateToLocal(gui.formatTypes[PowerGogglesConfigHandler.formatIndex])));
+                    IKey.lang(
+                        "GT5U.power_goggles_config.toggle_notation",
+                        StatCollector.translateToLocal(gui.formatTypes[PowerGogglesConfigHandler.formatIndex])));
                 return true;
             });
 
@@ -268,7 +268,7 @@ public class PowerGogglesGuiOverlay {
                                         PowerGogglesConfigHandler.config.save();
                                     })))));
             IPanelHandler colorPickerBad = IPanelHandler
-                .simple(overlayPanel, (bla, blab) -> new ColorPickerDialog("badG", val -> {
+                .simple(overlayPanel, (bla, blab) -> new ColorPickerDialog("badGT", val -> {
                     PowerGogglesConfigHandler.gradientBadColor = val;
                     PowerGogglesConfigHandler.config.getCategory(Configuration.CATEGORY_GENERAL)
                         .get("Bad Gradient")
@@ -277,7 +277,7 @@ public class PowerGogglesGuiOverlay {
                 }, PowerGogglesConfigHandler.gradientBadColor, true).size(200, 100), true);
 
             IPanelHandler colorPickerOk = IPanelHandler
-                .simple(overlayPanel, (bla, blab) -> new ColorPickerDialog("okG", val -> {
+                .simple(overlayPanel, (bla, blab) -> new ColorPickerDialog("okGT", val -> {
                     PowerGogglesConfigHandler.gradientOkColor = val;
                     PowerGogglesConfigHandler.config.getCategory(Configuration.CATEGORY_GENERAL)
                         .get("Ok Gradient")
@@ -286,7 +286,7 @@ public class PowerGogglesGuiOverlay {
                 }, PowerGogglesConfigHandler.gradientOkColor, true).size(200, 100), true);
 
             IPanelHandler colorPickerGood = IPanelHandler
-                .simple(overlayPanel, (bla, blab) -> new ColorPickerDialog("goodG", val -> {
+                .simple(overlayPanel, (bla, blab) -> new ColorPickerDialog("goodGT", val -> {
                     PowerGogglesConfigHandler.gradientGoodColor = val;
                     PowerGogglesConfigHandler.config.getCategory(Configuration.CATEGORY_GENERAL)
                         .get("Good Gradient")
@@ -295,7 +295,7 @@ public class PowerGogglesGuiOverlay {
                 }, PowerGogglesConfigHandler.gradientGoodColor, true).size(200, 100), true);
 
             IPanelHandler colorPickerBadText = IPanelHandler
-                .simple(overlayPanel, (bla, blab) -> new ColorPickerDialog("badG", val -> {
+                .simple(overlayPanel, (bla, blab) -> new ColorPickerDialog("badGT", val -> {
                     PowerGogglesConfigHandler.textBadColor = val;
                     PowerGogglesConfigHandler.config.getCategory(Configuration.CATEGORY_GENERAL)
                         .get("Bad Text")
@@ -304,7 +304,7 @@ public class PowerGogglesGuiOverlay {
                 }, PowerGogglesConfigHandler.textBadColor, true).size(200, 100), true);
 
             IPanelHandler colorPickerOkText = IPanelHandler
-                .simple(overlayPanel, (bla, blab) -> new ColorPickerDialog("okG", val -> {
+                .simple(overlayPanel, (bla, blab) -> new ColorPickerDialog("okGT", val -> {
                     PowerGogglesConfigHandler.textOkColor = val;
                     PowerGogglesConfigHandler.config.getCategory(Configuration.CATEGORY_GENERAL)
                         .get("Ok Text")
@@ -313,7 +313,7 @@ public class PowerGogglesGuiOverlay {
                 }, PowerGogglesConfigHandler.textOkColor, true).size(200, 100), true);
 
             IPanelHandler colorPickerGoodText = IPanelHandler
-                .simple(overlayPanel, (bla, blab) -> new ColorPickerDialog("goodG", val -> {
+                .simple(overlayPanel, (bla, blab) -> new ColorPickerDialog("goodGT", val -> {
                     PowerGogglesConfigHandler.textGoodColor = val;
                     PowerGogglesConfigHandler.config.getCategory(Configuration.CATEGORY_GENERAL)
                         .get("Good Text")
