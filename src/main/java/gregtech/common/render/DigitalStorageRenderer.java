@@ -37,6 +37,7 @@ import gregtech.api.metatileentity.CoverableTileEntity;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.GTUtilityClient;
+import gregtech.common.config.Client;
 import gregtech.common.tileentities.storage.MTEDigitalChestBase;
 
 // Backported from GTCEu
@@ -208,11 +209,10 @@ public class DigitalStorageRenderer {
     public static void renderChestStack(MTEDigitalChestBase mte, double x, double y, double z,
         float timeSinceLastTick) {
         ItemStack content = mte.displayItem;
-        if (content == null) {
+        if (content == null || !Client.render.renderDigitalChestItem) {
             return;
         }
         content.stackSize = 1;
-        // TODO: config fancyrenderer
 
         float lastBrightnessX = OpenGlHelper.lastBrightnessX;
         float lastBrightnessY = OpenGlHelper.lastBrightnessY;
