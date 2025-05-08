@@ -23,8 +23,10 @@ import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
 import bartworks.system.material.BWMetaGeneratedOres;
+import cpw.mods.fml.common.Optional;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.enums.Mods;
 import gregtech.api.items.ItemTool;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.metatileentity.BaseTileEntity;
@@ -33,6 +35,7 @@ import gregtech.common.blocks.BlockOres;
 import gtPlusPlus.core.block.base.BlockBaseOre;
 import ic2.api.item.ElectricItem;
 import ic2.api.item.IElectricItem;
+import mods.railcraft.common.blocks.machine.TileMultiBlock;
 
 public class ToolVajra extends ItemTool implements IElectricItem {
 
@@ -170,10 +173,16 @@ public class ToolVajra extends ItemTool implements IElectricItem {
     }
 
     private boolean isHarvestableTileEntity(TileEntity tileEntity, Block target, EntityPlayer player) {
+        if (Mods.Railcraft.isModLoaded() && isUnformedRCMulti(tileEntity)) return true;
         if (tileEntity instanceof IInventory inv && inv.getSizeInventory() > 0) return false;
         if (isHarvestableGTSpecial(target, tileEntity) && !player.isSneaking()) return true;
         if (tileEntity instanceof BaseTileEntity bte && bte.useModularUI()) return false;
         return true;
+    }
+
+    @Optional.Method(modid = Mods.Names.RAILCRAFT)
+    private boolean isUnformedRCMulti(TileEntity tileEntity) {
+        return tileEntity instanceof TileMultiBlock tmb && !tmb.isStructureValid();
     }
 
     private boolean isHarvestableGTSpecial(Block target, TileEntity tileEntity) {
