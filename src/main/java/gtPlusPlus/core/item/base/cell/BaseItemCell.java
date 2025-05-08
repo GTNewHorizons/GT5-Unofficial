@@ -2,6 +2,7 @@ package gtPlusPlus.core.item.base.cell;
 
 import static gregtech.api.enums.Mods.GTPlusPlus;
 import static gregtech.api.enums.Mods.GregTech;
+import static gregtech.api.util.GTRecipeBuilder.BUCKETS;
 
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.item.ItemStack;
@@ -29,7 +30,7 @@ public class BaseItemCell extends BaseItemComponent {
     public BaseItemCell(final String unlocalName, final String localName, final short[] RGBa) {
         super(unlocalName, localName, RGBa);
         this.fluidColour = RGBa;
-        FluidStack aFluid = FluidUtils.getFluidStack(unlocalName.toLowerCase(), 1000);
+        FluidStack aFluid = FluidUtils.getFluidStack(unlocalName.toLowerCase(), 1 * BUCKETS);
         if (aFluid != null) {
             FluidContainerRegistry
                 .registerFluidContainer(aFluid, ItemUtils.getSimpleStack(this), ItemList.Cell_Empty.get(1));
@@ -40,7 +41,7 @@ public class BaseItemCell extends BaseItemComponent {
         super(unlocalName, localName, RGBa);
         this.fluidColour = RGBa;
         FluidContainerRegistry.registerFluidContainer(
-            FluidUtils.getFluidStack(cellFluid, 1000),
+            FluidUtils.getFluidStack(cellFluid, 1 * BUCKETS),
             ItemUtils.getSimpleStack(this),
             ItemList.Cell_Empty.get(1));
     }
@@ -55,7 +56,7 @@ public class BaseItemCell extends BaseItemComponent {
             this.base = i.registerIcon(GTPlusPlus.ID + ":" + "item" + this.Cell.getComponent());
             this.overlay = i.registerIcon(GTPlusPlus.ID + ":" + "item" + this.Cell.getComponent() + "_Overlay");
         }
-        // this.overlay = cellMaterial.getFluid(1000).getFluid().get
+        // this.overlay = cellMaterial.getFluid(1 * BUCKETS).getFluid().get
     }
 
     private final short[] fluidColour;

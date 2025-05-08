@@ -5,6 +5,7 @@ import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
 import static gregtech.api.enums.Mods.Railcraft;
 import static gregtech.api.recipe.RecipeMaps.circuitAssemblerRecipes;
 import static gregtech.api.util.GTModHandler.getModItem;
+import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.loaders.postload.MachineRecipeLoader.solderingMats;
 
@@ -45,7 +46,7 @@ public class CircuitAssemblerRecipes implements Runnable {
                     GTOreDictUnificator.get(OrePrefixes.circuit, Materials.LV, 1),
                     ItemList.Cover_Controller.get(1))
                 .itemOutputs(getModItem(Railcraft.ID, "part.circuit", 4L, 0))
-                .fluidInputs(tMat.getMolten(144L * tMultiplier / 2))
+                .fluidInputs(tMat.getMolten(tMultiplier * INGOTS / 2))
                 .duration(15 * SECONDS)
                 .eut((int) TierEU.RECIPE_LV)
                 .addTo(circuitAssemblerRecipes);
@@ -56,7 +57,7 @@ public class CircuitAssemblerRecipes implements Runnable {
                     GTOreDictUnificator.get(OrePrefixes.circuit, Materials.LV, 1),
                     ItemList.Sensor_LV.get(1))
                 .itemOutputs(getModItem(Railcraft.ID, "part.circuit", 4L, 1))
-                .fluidInputs(tMat.getMolten(144L * tMultiplier / 2))
+                .fluidInputs(tMat.getMolten(tMultiplier * INGOTS / 2))
                 .duration(15 * SECONDS)
                 .eut((int) TierEU.RECIPE_LV)
                 .addTo(circuitAssemblerRecipes);
@@ -67,7 +68,7 @@ public class CircuitAssemblerRecipes implements Runnable {
                     GTOreDictUnificator.get(OrePrefixes.circuit, Materials.LV, 1),
                     getModItem(Railcraft.ID, "part.signal.lamp", 1L, 0))
                 .itemOutputs(getModItem(Railcraft.ID, "part.circuit", 4L, 2))
-                .fluidInputs(tMat.getMolten(144L * tMultiplier / 2))
+                .fluidInputs(tMat.getMolten(tMultiplier * INGOTS / 2))
                 .duration(15 * SECONDS)
                 .eut((int) TierEU.RECIPE_LV)
                 .addTo(circuitAssemblerRecipes);
@@ -78,7 +79,7 @@ public class CircuitAssemblerRecipes implements Runnable {
                     GTOreDictUnificator.get(OrePrefixes.circuit, Materials.MV, 1),
                     ItemList.Cover_Controller.get(1))
                 .itemOutputs(getModItem(Railcraft.ID, "part.circuit", 8L, 0))
-                .fluidInputs(tMat.getMolten(144L * tMultiplier / 2))
+                .fluidInputs(tMat.getMolten(tMultiplier * INGOTS / 2))
                 .duration(20 * SECONDS)
                 .eut((int) TierEU.RECIPE_LV)
                 .addTo(circuitAssemblerRecipes);
@@ -89,7 +90,7 @@ public class CircuitAssemblerRecipes implements Runnable {
                     GTOreDictUnificator.get(OrePrefixes.circuit, Materials.MV, 1),
                     ItemList.Sensor_LV.get(1))
                 .itemOutputs(getModItem(Railcraft.ID, "part.circuit", 8L, 1))
-                .fluidInputs(tMat.getMolten(144L * tMultiplier / 2))
+                .fluidInputs(tMat.getMolten(tMultiplier * INGOTS / 2))
                 .duration(20 * SECONDS)
                 .eut((int) TierEU.RECIPE_LV)
                 .addTo(circuitAssemblerRecipes);
@@ -100,7 +101,7 @@ public class CircuitAssemblerRecipes implements Runnable {
                     GTOreDictUnificator.get(OrePrefixes.circuit, Materials.MV, 1),
                     getModItem(Railcraft.ID, "part.signal.lamp", 1L, 0))
                 .itemOutputs(getModItem(Railcraft.ID, "part.circuit", 8L, 2))
-                .fluidInputs(tMat.getMolten(144L * tMultiplier / 2))
+                .fluidInputs(tMat.getMolten(tMultiplier * INGOTS / 2))
                 .duration(20 * SECONDS)
                 .eut((int) TierEU.RECIPE_LV)
                 .addTo(circuitAssemblerRecipes);
@@ -111,7 +112,7 @@ public class CircuitAssemblerRecipes implements Runnable {
                     GTOreDictUnificator.get(OrePrefixes.circuit, Materials.HV, 1),
                     ItemList.Cover_Controller.get(1))
                 .itemOutputs(getModItem(Railcraft.ID, "part.circuit", 16L, 0))
-                .fluidInputs(tMat.getMolten(144L * tMultiplier / 2))
+                .fluidInputs(tMat.getMolten(tMultiplier * INGOTS / 2))
                 .duration(25 * SECONDS)
                 .eut((int) TierEU.RECIPE_LV)
                 .addTo(circuitAssemblerRecipes);
@@ -122,7 +123,7 @@ public class CircuitAssemblerRecipes implements Runnable {
                     GTOreDictUnificator.get(OrePrefixes.circuit, Materials.HV, 1),
                     ItemList.Sensor_LV.get(1))
                 .itemOutputs(getModItem(Railcraft.ID, "part.circuit", 16L, 1))
-                .fluidInputs(tMat.getMolten(144L * tMultiplier / 2))
+                .fluidInputs(tMat.getMolten(tMultiplier * INGOTS / 2))
                 .duration(25 * SECONDS)
                 .eut((int) TierEU.RECIPE_LV)
                 .addTo(circuitAssemblerRecipes);
@@ -133,7 +134,7 @@ public class CircuitAssemblerRecipes implements Runnable {
                     GTOreDictUnificator.get(OrePrefixes.circuit, Materials.HV, 1),
                     getModItem(Railcraft.ID, "part.signal.lamp", 1L, 0))
                 .itemOutputs(getModItem(Railcraft.ID, "part.circuit", 16L, 2))
-                .fluidInputs(tMat.getMolten(144L * tMultiplier / 2))
+                .fluidInputs(tMat.getMolten(tMultiplier * INGOTS / 2))
                 .duration(25 * SECONDS)
                 .eut((int) TierEU.RECIPE_LV)
                 .addTo(circuitAssemblerRecipes);
@@ -154,7 +155,7 @@ public class CircuitAssemblerRecipes implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.Copper, 2),
                 GTOreDictUnificator.get(OrePrefixes.stickLong, Materials.AnnealedCopper, 2))
             .itemOutputs(getModItem(Forestry.ID, "thermionicTubes", 4L, 0))
-            .fluidInputs(Materials.Glass.getMolten(576))
+            .fluidInputs(Materials.Glass.getMolten(4 * INGOTS))
             .duration(10 * SECONDS)
             .eut((int) TierEU.RECIPE_LV)
             .addTo(circuitAssemblerRecipes);
@@ -168,7 +169,7 @@ public class CircuitAssemblerRecipes implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.Copper, 2),
                 GTOreDictUnificator.get(OrePrefixes.stickLong, Materials.WroughtIron, 2))
             .itemOutputs(getModItem(Forestry.ID, "thermionicTubes", 4L, 3))
-            .fluidInputs(Materials.Glass.getMolten(576))
+            .fluidInputs(Materials.Glass.getMolten(4 * INGOTS))
             .duration(10 * SECONDS)
             .eut((int) TierEU.RECIPE_LV)
             .addTo(circuitAssemblerRecipes);
@@ -197,7 +198,7 @@ public class CircuitAssemblerRecipes implements Runnable {
                     GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.Copper, 2),
                     rodMaterials[metaid])
                 .itemOutputs(getModItem(Forestry.ID, "thermionicTubes", 4L, metaid))
-                .fluidInputs(Materials.Glass.getMolten(576))
+                .fluidInputs(Materials.Glass.getMolten(4 * INGOTS))
                 .duration(10 * SECONDS)
                 .eut((int) TierEU.RECIPE_LV)
                 .addTo(circuitAssemblerRecipes);

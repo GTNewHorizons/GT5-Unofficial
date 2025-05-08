@@ -8,7 +8,13 @@ import static gregtech.api.enums.Mods.ThaumicTinkerer;
 import static gregtech.api.enums.Mods.TwilightForest;
 import static gregtech.api.recipe.RecipeMaps.centrifugeRecipes;
 import static gregtech.api.util.GTModHandler.getModItem;
+import static gregtech.api.util.GTRecipeBuilder.BUCKETS;
+import static gregtech.api.util.GTRecipeBuilder.EIGHTH_INGOTS;
+import static gregtech.api.util.GTRecipeBuilder.HALF_BUCKETS;
+import static gregtech.api.util.GTRecipeBuilder.HALF_INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.MINUTES;
+import static gregtech.api.util.GTRecipeBuilder.NUGGETS;
+import static gregtech.api.util.GTRecipeBuilder.QUARTER_INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
 import static gregtech.loaders.misc.GTBees.combs;
@@ -48,7 +54,7 @@ public class CentrifugeRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Cell_Empty.get(1))
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.cell, Materials.Oxygen, 1))
-            .fluidInputs(Materials.Air.getGas(10000))
+            .fluidInputs(Materials.Air.getGas(10 * BUCKETS))
             .fluidOutputs(Materials.Nitrogen.getGas(3900))
             .duration(1 * MINUTES + 20 * SECONDS)
             .eut(8)
@@ -77,8 +83,8 @@ public class CentrifugeRecipes implements Runnable {
                 Materials.Nickel.getDust(1),
                 Materials.Antimony.getDust(1))
             .outputChances(10000, 4000, 2000, 2000, 2000, 2000)
-            .fluidInputs(MaterialsOreAlum.SluiceJuice.getFluid(1000))
-            .fluidOutputs(Materials.Water.getFluid(500))
+            .fluidInputs(MaterialsOreAlum.SluiceJuice.getFluid(1 * BUCKETS))
+            .fluidOutputs(Materials.Water.getFluid(1 * HALF_BUCKETS))
             .duration(2 * SECONDS)
             .eut((int) TierEU.RECIPE_MV)
             .addTo(centrifugeRecipes);
@@ -120,14 +126,14 @@ public class CentrifugeRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(new ItemStack(Items.mushroom_stew, 1, 0), GTUtility.getIntegratedCircuit(1))
             .itemOutputs(new ItemStack(Items.bowl, 1, 0))
-            .fluidOutputs(Materials.Methane.getGas(36))
+            .fluidOutputs(Materials.Methane.getGas(1 * QUARTER_INGOTS))
             .duration(14 * SECONDS + 8 * TICKS)
             .eut(5)
             .addTo(centrifugeRecipes);
 
         GTValues.RA.stdBuilder()
             .itemInputs(new ItemStack(Items.apple, 1, 0), GTUtility.getIntegratedCircuit(1))
-            .fluidOutputs(Materials.Methane.getGas(18))
+            .fluidOutputs(Materials.Methane.getGas(1 * EIGHTH_INGOTS))
             .duration(7 * SECONDS + 4 * TICKS)
             .eut(5)
             .addTo(centrifugeRecipes);
@@ -141,56 +147,56 @@ public class CentrifugeRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(new ItemStack(Items.porkchop, 1, 0), GTUtility.getIntegratedCircuit(1))
-            .fluidOutputs(Materials.Methane.getGas(48))
+            .fluidOutputs(Materials.Methane.getGas(3 * NUGGETS))
             .duration(19 * SECONDS + 4 * TICKS)
             .eut(5)
             .addTo(centrifugeRecipes);
 
         GTValues.RA.stdBuilder()
             .itemInputs(new ItemStack(Items.cooked_porkchop, 1, 0), GTUtility.getIntegratedCircuit(1))
-            .fluidOutputs(Materials.Methane.getGas(36))
+            .fluidOutputs(Materials.Methane.getGas(1 * QUARTER_INGOTS))
             .duration(14 * SECONDS + 8 * TICKS)
             .eut(5)
             .addTo(centrifugeRecipes);
 
         GTValues.RA.stdBuilder()
             .itemInputs(new ItemStack(Items.beef, 1, 0), GTUtility.getIntegratedCircuit(1))
-            .fluidOutputs(Materials.Methane.getGas(48))
+            .fluidOutputs(Materials.Methane.getGas(3 * NUGGETS))
             .duration(19 * SECONDS + 4 * TICKS)
             .eut(5)
             .addTo(centrifugeRecipes);
 
         GTValues.RA.stdBuilder()
             .itemInputs(new ItemStack(Items.cooked_beef, 1, 0), GTUtility.getIntegratedCircuit(1))
-            .fluidOutputs(Materials.Methane.getGas(36))
+            .fluidOutputs(Materials.Methane.getGas(1 * QUARTER_INGOTS))
             .duration(14 * SECONDS + 8 * TICKS)
             .eut(5)
             .addTo(centrifugeRecipes);
 
         GTValues.RA.stdBuilder()
             .itemInputs(new ItemStack(Items.fish, 1, 32767), GTUtility.getIntegratedCircuit(1))
-            .fluidOutputs(Materials.Methane.getGas(48))
+            .fluidOutputs(Materials.Methane.getGas(3 * NUGGETS))
             .duration(19 * SECONDS + 4 * TICKS)
             .eut(5)
             .addTo(centrifugeRecipes);
 
         GTValues.RA.stdBuilder()
             .itemInputs(new ItemStack(Items.cooked_fished, 1, 32767), GTUtility.getIntegratedCircuit(1))
-            .fluidOutputs(Materials.Methane.getGas(36))
+            .fluidOutputs(Materials.Methane.getGas(1 * QUARTER_INGOTS))
             .duration(14 * SECONDS + 8 * TICKS)
             .eut(5)
             .addTo(centrifugeRecipes);
 
         GTValues.RA.stdBuilder()
             .itemInputs(new ItemStack(Items.chicken, 1, 0), GTUtility.getIntegratedCircuit(1))
-            .fluidOutputs(Materials.Methane.getGas(48))
+            .fluidOutputs(Materials.Methane.getGas(3 * NUGGETS))
             .duration(19 * SECONDS + 4 * TICKS)
             .eut(5)
             .addTo(centrifugeRecipes);
 
         GTValues.RA.stdBuilder()
             .itemInputs(new ItemStack(Items.cooked_chicken, 1, 0), GTUtility.getIntegratedCircuit(1))
-            .fluidOutputs(Materials.Methane.getGas(36))
+            .fluidOutputs(Materials.Methane.getGas(1 * QUARTER_INGOTS))
             .duration(14 * SECONDS + 8 * TICKS)
             .eut(5)
             .addTo(centrifugeRecipes);
@@ -204,42 +210,42 @@ public class CentrifugeRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(new ItemStack(Blocks.pumpkin, 1, 0), GTUtility.getIntegratedCircuit(1))
-            .fluidOutputs(Materials.Methane.getGas(36))
+            .fluidOutputs(Materials.Methane.getGas(1 * QUARTER_INGOTS))
             .duration(14 * SECONDS + 8 * TICKS)
             .eut(5)
             .addTo(centrifugeRecipes);
 
         GTValues.RA.stdBuilder()
             .itemInputs(new ItemStack(Items.rotten_flesh, 1, 0), GTUtility.getIntegratedCircuit(1))
-            .fluidOutputs(Materials.Methane.getGas(36))
+            .fluidOutputs(Materials.Methane.getGas(1 * QUARTER_INGOTS))
             .duration(14 * SECONDS + 8 * TICKS)
             .eut(5)
             .addTo(centrifugeRecipes);
 
         GTValues.RA.stdBuilder()
             .itemInputs(new ItemStack(Items.spider_eye, 1, 0), GTUtility.getIntegratedCircuit(1))
-            .fluidOutputs(Materials.Methane.getGas(18))
+            .fluidOutputs(Materials.Methane.getGas(1 * EIGHTH_INGOTS))
             .duration(7 * SECONDS + 4 * TICKS)
             .eut(5)
             .addTo(centrifugeRecipes);
 
         GTValues.RA.stdBuilder()
             .itemInputs(new ItemStack(Items.carrot, 1, 0), GTUtility.getIntegratedCircuit(1))
-            .fluidOutputs(Materials.Methane.getGas(36))
+            .fluidOutputs(Materials.Methane.getGas(1 * QUARTER_INGOTS))
             .duration(14 * SECONDS + 8 * TICKS)
             .eut(5)
             .addTo(centrifugeRecipes);
 
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Food_Raw_Potato.get(1), GTUtility.getIntegratedCircuit(1))
-            .fluidOutputs(Materials.Methane.getGas(36))
+            .fluidOutputs(Materials.Methane.getGas(1 * QUARTER_INGOTS))
             .duration(14 * SECONDS + 8 * TICKS)
             .eut(5)
             .addTo(centrifugeRecipes);
 
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Food_Poisonous_Potato.get(1), GTUtility.getIntegratedCircuit(1))
-            .fluidOutputs(Materials.Methane.getGas(48))
+            .fluidOutputs(Materials.Methane.getGas(3 * NUGGETS))
             .duration(19 * SECONDS + 4 * TICKS)
             .eut(5)
             .addTo(centrifugeRecipes);
@@ -260,70 +266,70 @@ public class CentrifugeRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(new ItemStack(Items.cake, 1, 0), GTUtility.getIntegratedCircuit(1))
-            .fluidOutputs(Materials.Methane.getGas(72))
+            .fluidOutputs(Materials.Methane.getGas(1 * HALF_INGOTS))
             .duration(28 * SECONDS + 16 * TICKS)
             .eut(5)
             .addTo(centrifugeRecipes);
 
         GTValues.RA.stdBuilder()
             .itemInputs(new ItemStack(Blocks.brown_mushroom_block, 1, 32767), GTUtility.getIntegratedCircuit(1))
-            .fluidOutputs(Materials.Methane.getGas(48))
+            .fluidOutputs(Materials.Methane.getGas(3 * NUGGETS))
             .duration(19 * SECONDS + 4 * TICKS)
             .eut(5)
             .addTo(centrifugeRecipes);
 
         GTValues.RA.stdBuilder()
             .itemInputs(new ItemStack(Blocks.red_mushroom_block, 1, 32767), GTUtility.getIntegratedCircuit(1))
-            .fluidOutputs(Materials.Methane.getGas(48))
+            .fluidOutputs(Materials.Methane.getGas(3 * NUGGETS))
             .duration(19 * SECONDS + 4 * TICKS)
             .eut(5)
             .addTo(centrifugeRecipes);
 
         GTValues.RA.stdBuilder()
             .itemInputs(new ItemStack(Blocks.brown_mushroom, 1, 32767), GTUtility.getIntegratedCircuit(1))
-            .fluidOutputs(Materials.Methane.getGas(18))
+            .fluidOutputs(Materials.Methane.getGas(1 * EIGHTH_INGOTS))
             .duration(7 * SECONDS + 4 * TICKS)
             .eut(5)
             .addTo(centrifugeRecipes);
 
         GTValues.RA.stdBuilder()
             .itemInputs(new ItemStack(Blocks.red_mushroom, 1, 32767), GTUtility.getIntegratedCircuit(1))
-            .fluidOutputs(Materials.Methane.getGas(18))
+            .fluidOutputs(Materials.Methane.getGas(1 * EIGHTH_INGOTS))
             .duration(7 * SECONDS + 4 * TICKS)
             .eut(5)
             .addTo(centrifugeRecipes);
 
         GTValues.RA.stdBuilder()
             .itemInputs(new ItemStack(Items.nether_wart, 1, 32767), GTUtility.getIntegratedCircuit(1))
-            .fluidOutputs(Materials.Methane.getGas(18))
+            .fluidOutputs(Materials.Methane.getGas(1 * EIGHTH_INGOTS))
             .duration(7 * SECONDS + 4 * TICKS)
             .eut(5)
             .addTo(centrifugeRecipes);
 
         GTValues.RA.stdBuilder()
             .itemInputs(GTModHandler.getIC2Item("terraWart", 1), GTUtility.getIntegratedCircuit(1))
-            .fluidOutputs(Materials.Methane.getGas(36))
+            .fluidOutputs(Materials.Methane.getGas(1 * QUARTER_INGOTS))
             .duration(14 * SECONDS + 8 * TICKS)
             .eut(5)
             .addTo(centrifugeRecipes);
 
         GTValues.RA.stdBuilder()
             .itemInputs(getModItem(TwilightForest.ID, "item.meefRaw", 1L, 32767), GTUtility.getIntegratedCircuit(1))
-            .fluidOutputs(Materials.Methane.getGas(48))
+            .fluidOutputs(Materials.Methane.getGas(3 * NUGGETS))
             .duration(19 * SECONDS + 4 * TICKS)
             .eut(5)
             .addTo(centrifugeRecipes);
 
         GTValues.RA.stdBuilder()
             .itemInputs(getModItem(TwilightForest.ID, "item.meefSteak", 1L, 32767), GTUtility.getIntegratedCircuit(1))
-            .fluidOutputs(Materials.Methane.getGas(36))
+            .fluidOutputs(Materials.Methane.getGas(1 * QUARTER_INGOTS))
             .duration(14 * SECONDS + 8 * TICKS)
             .eut(5)
             .addTo(centrifugeRecipes);
 
         GTValues.RA.stdBuilder()
             .itemInputs(getModItem(TwilightForest.ID, "item.venisonRaw", 1L, 32767), GTUtility.getIntegratedCircuit(1))
-            .fluidOutputs(Materials.Methane.getGas(48))
+            .fluidOutputs(Materials.Methane.getGas(3 * NUGGETS))
             .duration(19 * SECONDS + 4 * TICKS)
             .eut(5)
             .addTo(centrifugeRecipes);
@@ -332,7 +338,7 @@ public class CentrifugeRecipes implements Runnable {
             .itemInputs(
                 getModItem(TwilightForest.ID, "item.venisonCooked", 1L, 32767),
                 GTUtility.getIntegratedCircuit(1))
-            .fluidOutputs(Materials.Methane.getGas(36))
+            .fluidOutputs(Materials.Methane.getGas(1 * QUARTER_INGOTS))
             .duration(14 * SECONDS + 8 * TICKS)
             .eut(5)
             .addTo(centrifugeRecipes);
@@ -411,7 +417,7 @@ public class CentrifugeRecipes implements Runnable {
             .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Uranium, 1))
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Uranium235, 1))
             .outputChances(10000)
-            .fluidInputs(Materials.Fluorine.getGas(4000))
+            .fluidInputs(Materials.Fluorine.getGas(4 * BUCKETS))
             .duration(3 * MINUTES + 20 * SECONDS)
             .eut((int) TierEU.RECIPE_EV)
             .addTo(centrifugeRecipes);

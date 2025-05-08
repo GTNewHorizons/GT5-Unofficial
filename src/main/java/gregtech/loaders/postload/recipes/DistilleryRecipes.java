@@ -3,7 +3,11 @@ package gregtech.loaders.postload.recipes;
 import static gregtech.api.enums.Mods.TinkerConstruct;
 import static gregtech.api.recipe.RecipeMaps.distillationTowerRecipes;
 import static gregtech.api.recipe.RecipeMaps.distilleryRecipes;
+import static gregtech.api.util.GTRecipeBuilder.BUCKETS;
+import static gregtech.api.util.GTRecipeBuilder.EIGHT_BUCKETS;
+import static gregtech.api.util.GTRecipeBuilder.HALF_BUCKETS;
 import static gregtech.api.util.GTRecipeBuilder.MINUTES;
+import static gregtech.api.util.GTRecipeBuilder.QUARTER_BUCKETS;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
 import static net.minecraftforge.fluids.FluidRegistry.getFluidStack;
@@ -123,8 +127,8 @@ public class DistilleryRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(1))
             .itemOutputs(MaterialsOreAlum.SluiceSand.getDust(1))
-            .fluidInputs(MaterialsOreAlum.SluiceJuice.getFluid(1000))
-            .fluidOutputs(Materials.Water.getFluid(500))
+            .fluidInputs(MaterialsOreAlum.SluiceJuice.getFluid(1 * BUCKETS))
+            .fluidOutputs(Materials.Water.getFluid(1 * HALF_BUCKETS))
             .duration(5 * SECONDS)
             .eut(16)
             .addTo(distilleryRecipes);
@@ -165,7 +169,7 @@ public class DistilleryRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(1))
             .itemOutputs(Materials.Salt.getDust(2))
-            .fluidInputs(Materials.SaltWater.getFluid(1000))
+            .fluidInputs(Materials.SaltWater.getFluid(1 * BUCKETS))
             .fluidOutputs(GTModHandler.getDistilledWater(1000))
             .duration(1 * MINUTES + 20 * SECONDS)
             .eut(30)
@@ -174,7 +178,7 @@ public class DistilleryRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(1))
             .itemOutputs(ItemList.IC2_Fertilizer.get(1))
-            .fluidInputs(Materials.FermentedBiomass.getFluid(1000))
+            .fluidInputs(Materials.FermentedBiomass.getFluid(1 * BUCKETS))
             .fluidOutputs(Materials.AceticAcid.getFluid(25))
             .duration(1 * MINUTES + 15 * SECONDS)
             .eut(8)
@@ -183,7 +187,7 @@ public class DistilleryRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(2))
             .itemOutputs(ItemList.IC2_Fertilizer.get(1))
-            .fluidInputs(Materials.FermentedBiomass.getFluid(1000))
+            .fluidInputs(Materials.FermentedBiomass.getFluid(1 * BUCKETS))
             .fluidOutputs(Materials.Water.getFluid(375))
             .duration(1 * MINUTES + 15 * SECONDS)
             .eut(8)
@@ -192,7 +196,7 @@ public class DistilleryRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(3))
             .itemOutputs(ItemList.IC2_Fertilizer.get(1))
-            .fluidInputs(Materials.FermentedBiomass.getFluid(1000))
+            .fluidInputs(Materials.FermentedBiomass.getFluid(1 * BUCKETS))
             .fluidOutputs(Materials.Ethanol.getFluid(150))
             .duration(1 * MINUTES + 15 * SECONDS)
             .eut(8)
@@ -201,7 +205,7 @@ public class DistilleryRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(4))
             .itemOutputs(ItemList.IC2_Fertilizer.get(1))
-            .fluidInputs(Materials.FermentedBiomass.getFluid(1000))
+            .fluidInputs(Materials.FermentedBiomass.getFluid(1 * BUCKETS))
             .fluidOutputs(Materials.Methanol.getFluid(150))
             .duration(1 * MINUTES + 15 * SECONDS)
             .eut(8)
@@ -210,7 +214,7 @@ public class DistilleryRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(5))
             .itemOutputs(ItemList.IC2_Fertilizer.get(1))
-            .fluidInputs(Materials.FermentedBiomass.getFluid(1000))
+            .fluidInputs(Materials.FermentedBiomass.getFluid(1 * BUCKETS))
             .fluidOutputs(Materials.Ammonia.getGas(100))
             .duration(1 * MINUTES + 15 * SECONDS)
             .eut(8)
@@ -219,7 +223,7 @@ public class DistilleryRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(6))
             .itemOutputs(ItemList.IC2_Fertilizer.get(1))
-            .fluidInputs(Materials.FermentedBiomass.getFluid(1000))
+            .fluidInputs(Materials.FermentedBiomass.getFluid(1 * BUCKETS))
             .fluidOutputs(Materials.CarbonDioxide.getGas(400))
             .duration(1 * MINUTES + 15 * SECONDS)
             .eut(8)
@@ -228,7 +232,7 @@ public class DistilleryRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(7))
             .itemOutputs(ItemList.IC2_Fertilizer.get(1))
-            .fluidInputs(Materials.FermentedBiomass.getFluid(1000))
+            .fluidInputs(Materials.FermentedBiomass.getFluid(1 * BUCKETS))
             .fluidOutputs(Materials.Methane.getGas(600))
             .duration(1 * MINUTES + 15 * SECONDS)
             .eut(8)
@@ -237,7 +241,7 @@ public class DistilleryRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(17))
             .itemOutputs(ItemList.IC2_Fertilizer.get(1))
-            .fluidInputs(Materials.FermentedBiomass.getFluid(1000))
+            .fluidInputs(Materials.FermentedBiomass.getFluid(1 * BUCKETS))
             .fluidOutputs(new FluidStack(FluidRegistry.getFluid("ic2biogas"), 1800))
             .duration(1 * MINUTES + 20 * SECONDS)
             .eut(8)
@@ -348,8 +352,8 @@ public class DistilleryRecipes implements Runnable {
     public void distillationTowerRecipes() {
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(2))
-            .fluidInputs(Materials.Creosote.getFluid(1000L))
-            .fluidOutputs(Materials.Lubricant.getFluid(500L))
+            .fluidInputs(Materials.Creosote.getFluid(1 * BUCKETS))
+            .fluidOutputs(Materials.Lubricant.getFluid(1 * HALF_BUCKETS))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(distillationTowerRecipes);
@@ -357,7 +361,7 @@ public class DistilleryRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(2))
             .fluidInputs(Materials.SeedOil.getFluid(1400L))
-            .fluidOutputs(Materials.Lubricant.getFluid(500L))
+            .fluidOutputs(Materials.Lubricant.getFluid(1 * HALF_BUCKETS))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(distillationTowerRecipes);
@@ -365,21 +369,21 @@ public class DistilleryRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(2))
             .fluidInputs(Materials.FishOil.getFluid(1200L))
-            .fluidOutputs(Materials.Lubricant.getFluid(500L))
+            .fluidOutputs(Materials.Lubricant.getFluid(1 * HALF_BUCKETS))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(distillationTowerRecipes);
 
         GTValues.RA.stdBuilder()
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dustSmall, Materials.Wood, 2L))
-            .fluidInputs(Materials.Biomass.getFluid(1000L))
+            .fluidInputs(Materials.Biomass.getFluid(1 * BUCKETS))
             .fluidOutputs(Materials.Ethanol.getFluid(600L), Materials.Water.getFluid(300L))
             .duration(1 * SECONDS + 12 * TICKS)
             .eut(400)
             .addTo(distillationTowerRecipes);
 
         GTValues.RA.stdBuilder()
-            .fluidInputs(Materials.Water.getFluid(1000L))
+            .fluidInputs(Materials.Water.getFluid(1 * BUCKETS))
             .fluidOutputs(GTModHandler.getDistilledWater(1000L))
             .duration(1 * SECONDS + 12 * TICKS)
             .eut(TierEU.RECIPE_MV)
@@ -387,23 +391,23 @@ public class DistilleryRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(2))
-            .fluidInputs(Materials.OilLight.getFluid(1000L))
-            .fluidOutputs(Materials.Lubricant.getFluid(250L))
+            .fluidInputs(Materials.OilLight.getFluid(1 * BUCKETS))
+            .fluidOutputs(Materials.Lubricant.getFluid(1 * QUARTER_BUCKETS))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(distillationTowerRecipes);
 
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(2))
-            .fluidInputs(Materials.OilMedium.getFluid(1000L))
-            .fluidOutputs(Materials.Lubricant.getFluid(500L))
+            .fluidInputs(Materials.OilMedium.getFluid(1 * BUCKETS))
+            .fluidOutputs(Materials.Lubricant.getFluid(1 * HALF_BUCKETS))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(distillationTowerRecipes);
 
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(2))
-            .fluidInputs(Materials.OilHeavy.getFluid(1000L))
+            .fluidInputs(Materials.OilHeavy.getFluid(1 * BUCKETS))
             .fluidOutputs(Materials.Lubricant.getFluid(750L))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_MV)
@@ -412,8 +416,8 @@ public class DistilleryRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, MaterialsKevlar.DiphenylmethaneDiisocyanate, 29L))
-            .fluidInputs(MaterialsKevlar.DiphenylmethaneDiisocyanateMixture.getFluid(1000L))
-            .fluidOutputs(Materials.HydrochloricAcid.getFluid(5000L))
+            .fluidInputs(MaterialsKevlar.DiphenylmethaneDiisocyanateMixture.getFluid(1 * BUCKETS))
+            .fluidOutputs(Materials.HydrochloricAcid.getFluid(5 * BUCKETS))
             .duration(2 * MINUTES + 5 * SECONDS)
             .eut(TierEU.RECIPE_EV)
             .addTo(distillationTowerRecipes);
@@ -421,11 +425,11 @@ public class DistilleryRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(2))
             .itemOutputs(Materials.Charcoal.getDustSmall(1))
-            .fluidInputs(Materials.CharcoalByproducts.getGas(1000))
+            .fluidInputs(Materials.CharcoalByproducts.getGas(1 * BUCKETS))
             .fluidOutputs(
-                Materials.WoodTar.getFluid(250),
+                Materials.WoodTar.getFluid(1 * QUARTER_BUCKETS),
                 Materials.WoodVinegar.getFluid(400),
-                Materials.WoodGas.getGas(250),
+                Materials.WoodGas.getGas(1 * QUARTER_BUCKETS),
                 MaterialsKevlar.IIIDimethylbenzene.getFluid(100))
             .duration(2 * SECONDS)
             .eut(256)
@@ -433,9 +437,9 @@ public class DistilleryRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(2))
-            .fluidInputs(Materials.WoodTar.getFluid(1000))
+            .fluidInputs(Materials.WoodTar.getFluid(1 * BUCKETS))
             .fluidOutputs(
-                Materials.Creosote.getFluid(250),
+                Materials.Creosote.getFluid(1 * QUARTER_BUCKETS),
                 Materials.Phenol.getFluid(100),
                 Materials.Benzene.getFluid(400),
                 Materials.Toluene.getFluid(100),
@@ -446,9 +450,9 @@ public class DistilleryRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(3))
-            .fluidInputs(Materials.WoodTar.getFluid(1000))
+            .fluidInputs(Materials.WoodTar.getFluid(1 * BUCKETS))
             .fluidOutputs(
-                Materials.Creosote.getFluid(250),
+                Materials.Creosote.getFluid(1 * QUARTER_BUCKETS),
                 Materials.Phenol.getFluid(100),
                 Materials.Benzene.getFluid(400),
                 Materials.Toluene.getFluid(100),
@@ -460,11 +464,11 @@ public class DistilleryRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(3))
             .itemOutputs(Materials.Charcoal.getDustSmall(1))
-            .fluidInputs(Materials.CharcoalByproducts.getGas(1000))
+            .fluidInputs(Materials.CharcoalByproducts.getGas(1 * BUCKETS))
             .fluidOutputs(
-                Materials.WoodTar.getFluid(250),
+                Materials.WoodTar.getFluid(1 * QUARTER_BUCKETS),
                 Materials.WoodVinegar.getFluid(400),
-                Materials.WoodGas.getGas(250),
+                Materials.WoodGas.getGas(1 * QUARTER_BUCKETS),
                 MaterialsKevlar.IVDimethylbenzene.getFluid(100))
             .duration(2 * SECONDS)
             .eut(256)
@@ -473,11 +477,11 @@ public class DistilleryRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(4))
             .itemOutputs(Materials.Charcoal.getDustSmall(1))
-            .fluidInputs(Materials.CharcoalByproducts.getGas(1000))
+            .fluidInputs(Materials.CharcoalByproducts.getGas(1 * BUCKETS))
             .fluidOutputs(
-                Materials.WoodTar.getFluid(250),
+                Materials.WoodTar.getFluid(1 * QUARTER_BUCKETS),
                 Materials.WoodVinegar.getFluid(400),
-                Materials.WoodGas.getGas(250),
+                Materials.WoodGas.getGas(1 * QUARTER_BUCKETS),
                 Materials.Dimethylbenzene.getFluid(20),
                 MaterialsKevlar.IIIDimethylbenzene.getFluid(60),
                 MaterialsKevlar.IVDimethylbenzene.getFluid(20))
@@ -487,9 +491,9 @@ public class DistilleryRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(4))
-            .fluidInputs(Materials.WoodTar.getFluid(1000))
+            .fluidInputs(Materials.WoodTar.getFluid(1 * BUCKETS))
             .fluidOutputs(
-                Materials.Creosote.getFluid(250),
+                Materials.Creosote.getFluid(1 * QUARTER_BUCKETS),
                 Materials.Phenol.getFluid(100),
                 Materials.Benzene.getFluid(400),
                 Materials.Toluene.getFluid(100),
@@ -502,7 +506,7 @@ public class DistilleryRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(9))
-            .fluidInputs(Materials.OilLight.getFluid(1000))
+            .fluidInputs(Materials.OilLight.getFluid(1 * BUCKETS))
             .fluidOutputs(
                 Materials.SulfuricHeavyFuel.getFluid(70),
                 Materials.SulfuricLightFuel.getFluid(130),
@@ -515,10 +519,10 @@ public class DistilleryRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(9))
-            .fluidInputs(Materials.OilMedium.getFluid(1000))
+            .fluidInputs(Materials.OilMedium.getFluid(1 * BUCKETS))
             .fluidOutputs(
                 Materials.SulfuricHeavyFuel.getFluid(100),
-                Materials.SulfuricLightFuel.getFluid(500),
+                Materials.SulfuricLightFuel.getFluid(1 * HALF_BUCKETS),
                 Materials.SulfuricNaphtha.getFluid(1500),
                 MaterialsKevlar.NaphthenicAcid.getFluid(25),
                 Materials.SulfuricGas.getGas(600))
@@ -528,10 +532,10 @@ public class DistilleryRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(9))
-            .fluidInputs(Materials.Oil.getFluid(1000L))
+            .fluidInputs(Materials.Oil.getFluid(1 * BUCKETS))
             .fluidOutputs(
                 Materials.SulfuricHeavyFuel.getFluid(300),
-                Materials.SulfuricLightFuel.getFluid(1000),
+                Materials.SulfuricLightFuel.getFluid(1 * BUCKETS),
                 Materials.SulfuricNaphtha.getFluid(400),
                 MaterialsKevlar.NaphthenicAcid.getFluid(50),
                 Materials.SulfuricGas.getGas(1200))
@@ -541,9 +545,9 @@ public class DistilleryRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(9))
-            .fluidInputs(Materials.OilHeavy.getFluid(1000))
+            .fluidInputs(Materials.OilHeavy.getFluid(1 * BUCKETS))
             .fluidOutputs(
-                Materials.SulfuricHeavyFuel.getFluid(1000),
+                Materials.SulfuricHeavyFuel.getFluid(1 * BUCKETS),
                 Materials.SulfuricLightFuel.getFluid(450),
                 Materials.SulfuricNaphtha.getFluid(150),
                 MaterialsKevlar.NaphthenicAcid.getFluid(50),
@@ -557,7 +561,7 @@ public class DistilleryRecipes implements Runnable {
             .fluidInputs(Materials.MTBEMixture.getGas(900L))
             .fluidOutputs(
                 Materials.AntiKnock.getFluid(400L),
-                Materials.Methanol.getFluid(500L),
+                Materials.Methanol.getFluid(1 * HALF_BUCKETS),
                 Materials.Butene.getGas(400L))
             .duration(2 * SECONDS)
             .eut(TierEU.RECIPE_MV)
@@ -567,7 +571,7 @@ public class DistilleryRecipes implements Runnable {
             .fluidInputs(Materials.MTBEMixtureAlt.getGas(900L))
             .fluidOutputs(
                 Materials.AntiKnock.getFluid(400L),
-                Materials.Methanol.getFluid(500L),
+                Materials.Methanol.getFluid(1 * HALF_BUCKETS),
                 Materials.Butane.getGas(400L))
             .duration(2 * SECONDS)
             .eut(TierEU.RECIPE_MV)
@@ -575,7 +579,7 @@ public class DistilleryRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemOutputs(ItemList.IC2_Fertilizer.get(1))
-            .fluidInputs(Materials.FermentedBiomass.getFluid(1000))
+            .fluidInputs(Materials.FermentedBiomass.getFluid(1 * BUCKETS))
             .fluidOutputs(
                 Materials.AceticAcid.getFluid(25),
                 Materials.Water.getFluid(375),
@@ -591,7 +595,9 @@ public class DistilleryRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemOutputs(ItemList.IC2_Fertilizer.get(1))
             .fluidInputs(new FluidStack(FluidRegistry.getFluid("ic2biomass"), 3000))
-            .fluidOutputs(new FluidStack(FluidRegistry.getFluid("ic2biogas"), 8000), Materials.Water.getFluid(125L))
+            .fluidOutputs(
+                new FluidStack(FluidRegistry.getFluid("ic2biogas"), 8000),
+                Materials.Water.getFluid(1 * EIGHT_BUCKETS))
             .duration(12 * SECONDS + 10 * TICKS)
             .eut(TierEU.RECIPE_HV)
             .addTo(distillationTowerRecipes);
@@ -605,16 +611,16 @@ public class DistilleryRecipes implements Runnable {
 
     public void universalDistillationTowerRecipes() {
         addUniversalDistillationRecipewithCircuit(
-            Materials.CharcoalByproducts.getGas(1000),
+            Materials.CharcoalByproducts.getGas(1 * BUCKETS),
             new ItemStack[] { GTUtility.getIntegratedCircuit(1) },
-            new FluidStack[] { Materials.WoodTar.getFluid(250), Materials.WoodVinegar.getFluid(400),
-                Materials.WoodGas.getGas(250), Materials.Dimethylbenzene.getFluid(100) },
+            new FluidStack[] { Materials.WoodTar.getFluid(1 * QUARTER_BUCKETS), Materials.WoodVinegar.getFluid(400),
+                Materials.WoodGas.getGas(1 * QUARTER_BUCKETS), Materials.Dimethylbenzene.getFluid(100) },
             Materials.Charcoal.getDustSmall(1),
             40,
             256);
 
         addUniversalDistillationRecipewithCircuit(
-            Materials.WoodGas.getGas(1000),
+            Materials.WoodGas.getGas(1 * BUCKETS),
             new ItemStack[] { GTUtility.getIntegratedCircuit(1) },
             new FluidStack[] { Materials.CarbonDioxide.getGas(390), Materials.Ethylene.getGas(120),
                 Materials.Methane.getGas(130), Materials.CarbonMonoxide.getGas(240), Materials.Hydrogen.getGas(120) },
@@ -622,18 +628,18 @@ public class DistilleryRecipes implements Runnable {
             40,
             256);
         addUniversalDistillationRecipewithCircuit(
-            Materials.WoodVinegar.getFluid(1000),
+            Materials.WoodVinegar.getFluid(1 * BUCKETS),
             new ItemStack[] { GTUtility.getIntegratedCircuit(1) },
-            new FluidStack[] { Materials.AceticAcid.getFluid(100), Materials.Water.getFluid(500),
+            new FluidStack[] { Materials.AceticAcid.getFluid(100), Materials.Water.getFluid(1 * HALF_BUCKETS),
                 Materials.Ethanol.getFluid(10), Materials.Methanol.getFluid(300), Materials.Acetone.getFluid(50),
                 Materials.MethylAcetate.getFluid(10) },
             GTValues.NI,
             40,
             256);
         addUniversalDistillationRecipewithCircuit(
-            Materials.WoodTar.getFluid(1000),
+            Materials.WoodTar.getFluid(1 * BUCKETS),
             new ItemStack[] { GTUtility.getIntegratedCircuit(1) },
-            new FluidStack[] { Materials.Creosote.getFluid(250), Materials.Phenol.getFluid(100),
+            new FluidStack[] { Materials.Creosote.getFluid(1 * QUARTER_BUCKETS), Materials.Phenol.getFluid(100),
                 Materials.Benzene.getFluid(400), Materials.Toluene.getFluid(100),
                 Materials.Dimethylbenzene.getFluid(150) },
             GTValues.NI,
@@ -675,8 +681,9 @@ public class DistilleryRecipes implements Runnable {
 
         // 2 0.5HCl(Diluted) = HCl + H2O
         addUniversalDistillationRecipe(
-            Materials.DilutedHydrochloricAcid.getFluid(2000),
-            new FluidStack[] { Materials.Water.getFluid(1000), Materials.HydrochloricAcid.getFluid(1000) },
+            Materials.DilutedHydrochloricAcid.getFluid(2 * BUCKETS),
+            new FluidStack[] { Materials.Water.getFluid(1 * BUCKETS),
+                Materials.HydrochloricAcid.getFluid(1 * BUCKETS) },
             GTValues.NI,
             600,
             64);
@@ -689,29 +696,29 @@ public class DistilleryRecipes implements Runnable {
             64);
 
         addUniversalDistillationRecipe(
-            Materials.CalciumAcetateSolution.getFluid(1000),
-            new FluidStack[] { Materials.Acetone.getFluid(1000), Materials.CarbonDioxide.getGas(1000) },
+            Materials.CalciumAcetateSolution.getFluid(1 * BUCKETS),
+            new FluidStack[] { Materials.Acetone.getFluid(1 * BUCKETS), Materials.CarbonDioxide.getGas(1 * BUCKETS) },
             Materials.Quicklime.getDust(2),
             80,
             480);
 
         addUniversalDistillationRecipe(
-            Materials.DilutedSulfuricAcid.getFluid(3000),
-            new FluidStack[] { Materials.SulfuricAcid.getFluid(2000), Materials.Water.getFluid(1000) },
+            Materials.DilutedSulfuricAcid.getFluid(3 * BUCKETS),
+            new FluidStack[] { Materials.SulfuricAcid.getFluid(2 * BUCKETS), Materials.Water.getFluid(1 * BUCKETS) },
             GTValues.NI,
             600,
             120);
 
         // C3H6O = C2H2O + CH4
         addUniversalDistillationRecipe(
-            Materials.Acetone.getFluid(1000),
-            new FluidStack[] { Materials.Ethenone.getGas(1000), Materials.Methane.getGas(1000) },
+            Materials.Acetone.getFluid(1 * BUCKETS),
+            new FluidStack[] { Materials.Ethenone.getGas(1 * BUCKETS), Materials.Methane.getGas(1 * BUCKETS) },
             GTValues.NI,
             80,
             640);
 
         addUniversalDistillationRecipe(
-            Materials.Gas.getGas(1000),
+            Materials.Gas.getGas(1 * BUCKETS),
             new FluidStack[] { Materials.Butane.getGas(60), Materials.Propane.getGas(70), Materials.Ethane.getGas(100),
                 Materials.Methane.getGas(750), Materials.Helium.getGas(20) },
             GTValues.NI,
@@ -720,68 +727,68 @@ public class DistilleryRecipes implements Runnable {
 
         addUniversalDistillationRecipe(
             Materials.Ethylene.getLightlyHydroCracked(1000),
-            new FluidStack[] { Materials.Ethane.getGas(1000) },
+            new FluidStack[] { Materials.Ethane.getGas(1 * BUCKETS) },
             GTValues.NI,
             120,
             120);
         addUniversalDistillationRecipe(
             Materials.Ethylene.getModeratelyHydroCracked(1000),
-            new FluidStack[] { Materials.Methane.getGas(2000) },
+            new FluidStack[] { Materials.Methane.getGas(2 * BUCKETS) },
             null,
             120,
             120);
         addUniversalDistillationRecipe(
             Materials.Ethylene.getSeverelyHydroCracked(1000),
-            new FluidStack[] { Materials.Methane.getGas(2000), Materials.Hydrogen.getGas(2000) },
+            new FluidStack[] { Materials.Methane.getGas(2 * BUCKETS), Materials.Hydrogen.getGas(2 * BUCKETS) },
             GTValues.NI,
             120,
             120);
         addUniversalDistillationRecipe(
             Materials.Ethylene.getLightlySteamCracked(1000),
-            new FluidStack[] { Materials.Methane.getGas(1000) },
+            new FluidStack[] { Materials.Methane.getGas(1 * BUCKETS) },
             Materials.Carbon.getDust(1),
             120,
             120);
         addUniversalDistillationRecipe(
             Materials.Ethylene.getModeratelySteamCracked(1000),
-            new FluidStack[] { Materials.Methane.getGas(1000) },
+            new FluidStack[] { Materials.Methane.getGas(1 * BUCKETS) },
             Materials.Carbon.getDust(1),
             120,
             120);
         addUniversalDistillationRecipe(
             Materials.Ethylene.getSeverelySteamCracked(1000),
-            new FluidStack[] { Materials.Methane.getGas(1000) },
+            new FluidStack[] { Materials.Methane.getGas(1 * BUCKETS) },
             Materials.Carbon.getDust(1),
             120,
             120);
 
         addUniversalDistillationRecipe(
             Materials.Ethane.getLightlyHydroCracked(1000),
-            new FluidStack[] { Materials.Methane.getGas(2000) },
+            new FluidStack[] { Materials.Methane.getGas(2 * BUCKETS) },
             GTValues.NI,
             120,
             120);
         addUniversalDistillationRecipe(
             Materials.Ethane.getModeratelyHydroCracked(1000),
-            new FluidStack[] { Materials.Methane.getGas(2000), Materials.Hydrogen.getGas(2000) },
+            new FluidStack[] { Materials.Methane.getGas(2 * BUCKETS), Materials.Hydrogen.getGas(2 * BUCKETS) },
             GTValues.NI,
             120,
             120);
         addUniversalDistillationRecipe(
             Materials.Ethane.getSeverelyHydroCracked(1000),
-            new FluidStack[] { Materials.Methane.getGas(2000), Materials.Hydrogen.getGas(4000) },
+            new FluidStack[] { Materials.Methane.getGas(2 * BUCKETS), Materials.Hydrogen.getGas(4 * BUCKETS) },
             GTValues.NI,
             120,
             120);
         addUniversalDistillationRecipe(
             Materials.Ethane.getLightlySteamCracked(1000),
-            new FluidStack[] { Materials.Ethylene.getGas(250), Materials.Methane.getGas(1250) },
+            new FluidStack[] { Materials.Ethylene.getGas(1 * QUARTER_BUCKETS), Materials.Methane.getGas(1250) },
             Materials.Carbon.getDustSmall(1),
             120,
             120);
         addUniversalDistillationRecipe(
             Materials.Ethane.getModeratelySteamCracked(1000),
-            new FluidStack[] { Materials.Ethylene.getGas(125), Materials.Methane.getGas(1375) },
+            new FluidStack[] { Materials.Ethylene.getGas(1 * EIGHT_BUCKETS), Materials.Methane.getGas(1375) },
             Materials.Carbon.getDustTiny(6),
             120,
             120);
@@ -794,26 +801,26 @@ public class DistilleryRecipes implements Runnable {
 
         addUniversalDistillationRecipe(
             Materials.Propene.getLightlyHydroCracked(1000),
-            new FluidStack[] { Materials.Propane.getGas(500), Materials.Ethylene.getGas(500),
-                Materials.Methane.getGas(500) },
+            new FluidStack[] { Materials.Propane.getGas(1 * HALF_BUCKETS), Materials.Ethylene.getGas(1 * HALF_BUCKETS),
+                Materials.Methane.getGas(1 * HALF_BUCKETS) },
             GTValues.NI,
             120,
             120);
         addUniversalDistillationRecipe(
             Materials.Propene.getModeratelyHydroCracked(1000),
-            new FluidStack[] { Materials.Ethane.getGas(1000), Materials.Methane.getGas(1000) },
+            new FluidStack[] { Materials.Ethane.getGas(1 * BUCKETS), Materials.Methane.getGas(1 * BUCKETS) },
             GTValues.NI,
             120,
             120);
         addUniversalDistillationRecipe(
             Materials.Propene.getSeverelyHydroCracked(1000),
-            new FluidStack[] { Materials.Methane.getGas(3000) },
+            new FluidStack[] { Materials.Methane.getGas(3 * BUCKETS) },
             GTValues.NI,
             120,
             120);
         addUniversalDistillationRecipe(
             Materials.Propene.getLightlySteamCracked(1000),
-            new FluidStack[] { Materials.Ethylene.getGas(1000), Materials.Methane.getGas(500) },
+            new FluidStack[] { Materials.Ethylene.getGas(1 * BUCKETS), Materials.Methane.getGas(1 * HALF_BUCKETS) },
             Materials.Carbon.getDustSmall(2),
             120,
             120);
@@ -832,19 +839,19 @@ public class DistilleryRecipes implements Runnable {
 
         addUniversalDistillationRecipe(
             Materials.Propane.getLightlyHydroCracked(1000),
-            new FluidStack[] { Materials.Ethane.getGas(1000), Materials.Methane.getGas(1000) },
+            new FluidStack[] { Materials.Ethane.getGas(1 * BUCKETS), Materials.Methane.getGas(1 * BUCKETS) },
             GTValues.NI,
             120,
             120);
         addUniversalDistillationRecipe(
             Materials.Propane.getModeratelyHydroCracked(1000),
-            new FluidStack[] { Materials.Methane.getGas(3000) },
+            new FluidStack[] { Materials.Methane.getGas(3 * BUCKETS) },
             GTValues.NI,
             120,
             120);
         addUniversalDistillationRecipe(
             Materials.Propane.getSeverelyHydroCracked(1000),
-            new FluidStack[] { Materials.Methane.getGas(3000), Materials.Hydrogen.getGas(2000) },
+            new FluidStack[] { Materials.Methane.getGas(3 * BUCKETS), Materials.Hydrogen.getGas(2 * BUCKETS) },
             GTValues.NI,
             120,
             120);
@@ -856,13 +863,13 @@ public class DistilleryRecipes implements Runnable {
             120);
         addUniversalDistillationRecipe(
             Materials.Propane.getModeratelySteamCracked(1000),
-            new FluidStack[] { Materials.Ethylene.getGas(500), Materials.Methane.getGas(1500) },
+            new FluidStack[] { Materials.Ethylene.getGas(1 * HALF_BUCKETS), Materials.Methane.getGas(1500) },
             Materials.Carbon.getDustSmall(1),
             120,
             120);
         addUniversalDistillationRecipe(
             Materials.Propane.getSeverelySteamCracked(1000),
-            new FluidStack[] { Materials.Ethylene.getGas(250), Materials.Methane.getGas(1750) },
+            new FluidStack[] { Materials.Ethylene.getGas(1 * QUARTER_BUCKETS), Materials.Methane.getGas(1750) },
             Materials.Carbon.getDustTiny(4),
             120,
             120);
@@ -896,14 +903,14 @@ public class DistilleryRecipes implements Runnable {
             120);
         addUniversalDistillationRecipe(
             Materials.Butadiene.getModeratelySteamCracked(1000),
-            new FluidStack[] { Materials.Propene.getGas(125), Materials.Ethylene.getGas(1125),
+            new FluidStack[] { Materials.Propene.getGas(1 * EIGHT_BUCKETS), Materials.Ethylene.getGas(1125),
                 Materials.Methane.getGas(188) },
             Materials.Carbon.getDustSmall(3),
             120,
             120);
         addUniversalDistillationRecipe(
             Materials.Butadiene.getSeverelySteamCracked(1000),
-            new FluidStack[] { Materials.Propene.getGas(125), Materials.Ethylene.getGas(188),
+            new FluidStack[] { Materials.Propene.getGas(1 * EIGHT_BUCKETS), Materials.Ethylene.getGas(188),
                 Materials.Methane.getGas(1125) },
             Materials.Carbon.getDust(1),
             120,
@@ -925,14 +932,14 @@ public class DistilleryRecipes implements Runnable {
             120);
         addUniversalDistillationRecipe(
             Materials.Butene.getSeverelyHydroCracked(1000),
-            new FluidStack[] { Materials.Ethane.getGas(1000), Materials.Methane.getGas(2000) },
+            new FluidStack[] { Materials.Ethane.getGas(1 * BUCKETS), Materials.Methane.getGas(2 * BUCKETS) },
             GTValues.NI,
             120,
             120);
         addUniversalDistillationRecipe(
             Materials.Butene.getLightlySteamCracked(1000),
-            new FluidStack[] { Materials.Propene.getGas(750), Materials.Ethylene.getGas(500),
-                Materials.Methane.getGas(250) },
+            new FluidStack[] { Materials.Propene.getGas(750), Materials.Ethylene.getGas(1 * HALF_BUCKETS),
+                Materials.Methane.getGas(1 * QUARTER_BUCKETS) },
             Materials.Carbon.getDustSmall(1),
             120,
             120);
@@ -945,7 +952,7 @@ public class DistilleryRecipes implements Runnable {
             120);
         addUniversalDistillationRecipe(
             Materials.Butene.getSeverelySteamCracked(1000),
-            new FluidStack[] { Materials.Propene.getGas(125), Materials.Ethylene.getGas(313),
+            new FluidStack[] { Materials.Propene.getGas(1 * EIGHT_BUCKETS), Materials.Ethylene.getGas(313),
                 Materials.Methane.getGas(1500) },
             Materials.Carbon.getDustSmall(6),
             120,
@@ -960,34 +967,34 @@ public class DistilleryRecipes implements Runnable {
             120);
         addUniversalDistillationRecipe(
             Materials.Butane.getModeratelyHydroCracked(1000),
-            new FluidStack[] { Materials.Ethane.getGas(1000), Materials.Methane.getGas(2000) },
+            new FluidStack[] { Materials.Ethane.getGas(1 * BUCKETS), Materials.Methane.getGas(2 * BUCKETS) },
             GTValues.NI,
             120,
             120);
         addUniversalDistillationRecipe(
             Materials.Butane.getSeverelyHydroCracked(1000),
-            new FluidStack[] { Materials.Methane.getGas(1000) },
+            new FluidStack[] { Materials.Methane.getGas(1 * BUCKETS) },
             GTValues.NI,
             120,
             120);
         addUniversalDistillationRecipe(
             Materials.Butane.getLightlySteamCracked(1000),
-            new FluidStack[] { Materials.Propane.getGas(750), Materials.Ethane.getGas(125),
-                Materials.Ethylene.getGas(125), Materials.Methane.getGas(1063) },
+            new FluidStack[] { Materials.Propane.getGas(750), Materials.Ethane.getGas(1 * EIGHT_BUCKETS),
+                Materials.Ethylene.getGas(1 * EIGHT_BUCKETS), Materials.Methane.getGas(1063) },
             Materials.Carbon.getDustTiny(2),
             120,
             120);
         addUniversalDistillationRecipe(
             Materials.Butane.getModeratelySteamCracked(1000),
-            new FluidStack[] { Materials.Propane.getGas(125), Materials.Ethane.getGas(750),
+            new FluidStack[] { Materials.Propane.getGas(1 * EIGHT_BUCKETS), Materials.Ethane.getGas(750),
                 Materials.Ethylene.getGas(750), Materials.Methane.getGas(438) },
             Materials.Carbon.getDustTiny(2),
             120,
             120);
         addUniversalDistillationRecipe(
             Materials.Butane.getSeverelySteamCracked(1000),
-            new FluidStack[] { Materials.Propane.getGas(125), Materials.Ethane.getGas(125),
-                Materials.Ethylene.getGas(125), Materials.Methane.getGas(2000) },
+            new FluidStack[] { Materials.Propane.getGas(1 * EIGHT_BUCKETS), Materials.Ethane.getGas(1 * EIGHT_BUCKETS),
+                Materials.Ethylene.getGas(1 * EIGHT_BUCKETS), Materials.Methane.getGas(2 * BUCKETS) },
             Materials.Carbon.getDustTiny(11),
             120,
             120);
@@ -1001,14 +1008,14 @@ public class DistilleryRecipes implements Runnable {
             120);
         addUniversalDistillationRecipe(
             Materials.Gas.getModeratelyHydroCracked(1000),
-            new FluidStack[] { Materials.Methane.getGas(1400), Materials.Hydrogen.getGas(3000),
+            new FluidStack[] { Materials.Methane.getGas(1400), Materials.Hydrogen.getGas(3 * BUCKETS),
                 Materials.Helium.getGas(150) },
             GTValues.NI,
             120,
             120);
         addUniversalDistillationRecipe(
             Materials.Gas.getSeverelyHydroCracked(1000),
-            new FluidStack[] { Materials.Methane.getGas(1500), Materials.Hydrogen.getGas(4000),
+            new FluidStack[] { Materials.Methane.getGas(1500), Materials.Hydrogen.getGas(4 * BUCKETS),
                 Materials.Helium.getGas(200) },
             GTValues.NI,
             120,
@@ -1016,7 +1023,8 @@ public class DistilleryRecipes implements Runnable {
         addUniversalDistillationRecipe(
             Materials.Gas.getLightlySteamCracked(1000),
             new FluidStack[] { Materials.Propene.getGas(50), Materials.Ethane.getGas(10),
-                Materials.Ethylene.getGas(100), Materials.Methane.getGas(500), Materials.Helium.getGas(50) },
+                Materials.Ethylene.getGas(100), Materials.Methane.getGas(1 * HALF_BUCKETS),
+                Materials.Helium.getGas(50) },
             Materials.Carbon.getDustTiny(1),
             120,
             120);
@@ -1038,7 +1046,7 @@ public class DistilleryRecipes implements Runnable {
         addUniversalDistillationRecipe(
             Materials.Naphtha.getLightlyHydroCracked(1000),
             new FluidStack[] { Materials.Butane.getGas(800), Materials.Propane.getGas(300),
-                Materials.Ethane.getGas(250), Materials.Methane.getGas(250) },
+                Materials.Ethane.getGas(1 * QUARTER_BUCKETS), Materials.Methane.getGas(1 * QUARTER_BUCKETS) },
             GTValues.NI,
             120,
             120);
@@ -1051,7 +1059,7 @@ public class DistilleryRecipes implements Runnable {
             120);
         addUniversalDistillationRecipe(
             Materials.Naphtha.getSeverelyHydroCracked(1000),
-            new FluidStack[] { Materials.Butane.getGas(125), Materials.Propane.getGas(125),
+            new FluidStack[] { Materials.Butane.getGas(1 * EIGHT_BUCKETS), Materials.Propane.getGas(1 * EIGHT_BUCKETS),
                 Materials.Ethane.getGas(1500), Materials.Methane.getGas(1500) },
             GTValues.NI,
             120,
@@ -1068,9 +1076,10 @@ public class DistilleryRecipes implements Runnable {
         addUniversalDistillationRecipe(
             Materials.Naphtha.getModeratelySteamCracked(1000),
             new FluidStack[] { Materials.HeavyFuel.getFluid(50), Materials.LightFuel.getFluid(100),
-                Materials.Toluene.getFluid(30), Materials.Benzene.getFluid(125), Materials.Butene.getGas(65),
-                Materials.Butadiene.getGas(100), Materials.Propane.getGas(30), Materials.Propene.getGas(400),
-                Materials.Ethane.getGas(50), Materials.Ethylene.getGas(350), Materials.Methane.getGas(350) },
+                Materials.Toluene.getFluid(30), Materials.Benzene.getFluid(1 * EIGHT_BUCKETS),
+                Materials.Butene.getGas(65), Materials.Butadiene.getGas(100), Materials.Propane.getGas(30),
+                Materials.Propene.getGas(400), Materials.Ethane.getGas(50), Materials.Ethylene.getGas(350),
+                Materials.Methane.getGas(350) },
             Materials.Carbon.getDustTiny(2),
             120,
             120);
@@ -1079,7 +1088,8 @@ public class DistilleryRecipes implements Runnable {
             new FluidStack[] { Materials.HeavyFuel.getFluid(25), Materials.LightFuel.getFluid(50),
                 Materials.Toluene.getFluid(20), Materials.Benzene.getFluid(100), Materials.Butene.getGas(50),
                 Materials.Butadiene.getGas(50), Materials.Propane.getGas(15), Materials.Propene.getGas(300),
-                Materials.Ethane.getGas(65), Materials.Ethylene.getGas(500), Materials.Methane.getGas(500) },
+                Materials.Ethane.getGas(65), Materials.Ethylene.getGas(1 * HALF_BUCKETS),
+                Materials.Methane.getGas(1 * HALF_BUCKETS) },
             Materials.Carbon.getDustTiny(3),
             120,
             120);
@@ -1087,14 +1097,14 @@ public class DistilleryRecipes implements Runnable {
         addUniversalDistillationRecipe(
             Materials.LightFuel.getLightlyHydroCracked(1000),
             new FluidStack[] { Materials.Naphtha.getFluid(800), Materials.Octane.getFluid(100),
-                Materials.Butane.getGas(150), Materials.Propane.getGas(200), Materials.Ethane.getGas(125),
-                Materials.Methane.getGas(125) },
+                Materials.Butane.getGas(150), Materials.Propane.getGas(200), Materials.Ethane.getGas(1 * EIGHT_BUCKETS),
+                Materials.Methane.getGas(1 * EIGHT_BUCKETS) },
             GTValues.NI,
             120,
             120);
         addUniversalDistillationRecipe(
             Materials.LightFuel.getModeratelyHydroCracked(1000),
-            new FluidStack[] { Materials.Naphtha.getFluid(500), Materials.Octane.getFluid(50),
+            new FluidStack[] { Materials.Naphtha.getFluid(1 * HALF_BUCKETS), Materials.Octane.getFluid(50),
                 Materials.Butane.getGas(200), Materials.Propane.getGas(1100), Materials.Ethane.getGas(400),
                 Materials.Methane.getGas(400) },
             GTValues.NI,
@@ -1103,8 +1113,8 @@ public class DistilleryRecipes implements Runnable {
         addUniversalDistillationRecipe(
             Materials.LightFuel.getSeverelyHydroCracked(1000),
             new FluidStack[] { Materials.Naphtha.getFluid(200), Materials.Octane.getFluid(20),
-                Materials.Butane.getGas(125), Materials.Propane.getGas(125), Materials.Ethane.getGas(1500),
-                Materials.Methane.getGas(1500) },
+                Materials.Butane.getGas(1 * EIGHT_BUCKETS), Materials.Propane.getGas(1 * EIGHT_BUCKETS),
+                Materials.Ethane.getGas(1500), Materials.Methane.getGas(1500) },
             GTValues.NI,
             120,
             120);
@@ -1119,7 +1129,7 @@ public class DistilleryRecipes implements Runnable {
             120);
         addUniversalDistillationRecipe(
             Materials.LightFuel.getModeratelySteamCracked(1000),
-            new FluidStack[] { Materials.HeavyFuel.getFluid(100), Materials.Naphtha.getFluid(250),
+            new FluidStack[] { Materials.HeavyFuel.getFluid(100), Materials.Naphtha.getFluid(1 * QUARTER_BUCKETS),
                 Materials.Toluene.getFluid(50), Materials.Benzene.getFluid(300), Materials.Butene.getGas(90),
                 Materials.Butadiene.getGas(75), Materials.Propane.getGas(35), Materials.Propene.getGas(200),
                 Materials.Ethane.getGas(30), Materials.Ethylene.getGas(150), Materials.Methane.getGas(150) },
@@ -1130,8 +1140,9 @@ public class DistilleryRecipes implements Runnable {
             Materials.LightFuel.getSeverelySteamCracked(1000),
             new FluidStack[] { Materials.HeavyFuel.getFluid(50), Materials.Naphtha.getFluid(100),
                 Materials.Toluene.getFluid(30), Materials.Benzene.getFluid(150), Materials.Butene.getGas(65),
-                Materials.Butadiene.getGas(50), Materials.Propane.getGas(50), Materials.Propene.getGas(250),
-                Materials.Ethane.getGas(50), Materials.Ethylene.getGas(250), Materials.Methane.getGas(250) },
+                Materials.Butadiene.getGas(50), Materials.Propane.getGas(50),
+                Materials.Propene.getGas(1 * QUARTER_BUCKETS), Materials.Ethane.getGas(50),
+                Materials.Ethylene.getGas(1 * QUARTER_BUCKETS), Materials.Methane.getGas(1 * QUARTER_BUCKETS) },
             Materials.Carbon.getDustTiny(3),
             120,
             120);
@@ -1154,7 +1165,7 @@ public class DistilleryRecipes implements Runnable {
             120);
         addUniversalDistillationRecipe(
             Materials.HeavyFuel.getSeverelyHydroCracked(1000),
-            new FluidStack[] { Materials.LightFuel.getFluid(200), Materials.Naphtha.getFluid(250),
+            new FluidStack[] { Materials.LightFuel.getFluid(200), Materials.Naphtha.getFluid(1 * QUARTER_BUCKETS),
                 Materials.Butane.getGas(300), Materials.Propane.getGas(300), Materials.Ethane.getGas(175),
                 Materials.Methane.getGas(175) },
             GTValues.NI,
@@ -1163,9 +1174,10 @@ public class DistilleryRecipes implements Runnable {
         addUniversalDistillationRecipe(
             Materials.HeavyFuel.getLightlySteamCracked(1000),
             new FluidStack[] { Materials.LightFuel.getFluid(300), Materials.Naphtha.getFluid(50),
-                Materials.Toluene.getFluid(25), Materials.Benzene.getFluid(125), Materials.Butene.getGas(25),
-                Materials.Butadiene.getGas(15), Materials.Propane.getGas(3), Materials.Propene.getGas(30),
-                Materials.Ethane.getGas(5), Materials.Ethylene.getGas(50), Materials.Methane.getGas(50) },
+                Materials.Toluene.getFluid(25), Materials.Benzene.getFluid(1 * EIGHT_BUCKETS),
+                Materials.Butene.getGas(25), Materials.Butadiene.getGas(15), Materials.Propane.getGas(3),
+                Materials.Propene.getGas(30), Materials.Ethane.getGas(5), Materials.Ethylene.getGas(50),
+                Materials.Methane.getGas(50) },
             Materials.Carbon.getDustTiny(1),
             120,
             120);
@@ -1180,7 +1192,7 @@ public class DistilleryRecipes implements Runnable {
             120);
         addUniversalDistillationRecipe(
             Materials.HeavyFuel.getSeverelySteamCracked(1000),
-            new FluidStack[] { Materials.LightFuel.getFluid(100), Materials.Naphtha.getFluid(125),
+            new FluidStack[] { Materials.LightFuel.getFluid(100), Materials.Naphtha.getFluid(1 * EIGHT_BUCKETS),
                 Materials.Toluene.getFluid(80), Materials.Benzene.getFluid(400), Materials.Butene.getGas(80),
                 Materials.Butadiene.getGas(50), Materials.Propane.getGas(10), Materials.Propene.getGas(100),
                 Materials.Ethane.getGas(15), Materials.Ethylene.getGas(150), Materials.Methane.getGas(150) },

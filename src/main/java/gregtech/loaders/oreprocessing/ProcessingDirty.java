@@ -6,6 +6,7 @@ import static gregtech.api.recipe.RecipeMaps.hammerRecipes;
 import static gregtech.api.recipe.RecipeMaps.maceratorRecipes;
 import static gregtech.api.recipe.RecipeMaps.oreWasherRecipes;
 import static gregtech.api.recipe.RecipeMaps.thermalCentrifugeRecipes;
+import static gregtech.api.util.GTRecipeBuilder.BUCKETS;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 
 import net.minecraft.item.ItemStack;
@@ -136,7 +137,7 @@ public class ProcessingDirty implements gregtech.api.interfaces.IOreRecipeRegist
                     GTOreDictUnificator.get(OrePrefixes.dust, byproduct.mMacerateInto, 1L),
                     GTOreDictUnificator.get(OrePrefixes.dust, Materials.Stone, 1L))
                 .outputChances(10000, 7000, 4000)
-                .fluidInputs(Materials.Mercury.getFluid(1000L))
+                .fluidInputs(Materials.Mercury.getFluid(1 * BUCKETS))
                 .duration(40 * SECONDS)
                 .eut(8)
                 .addTo(chemicalBathRecipes);
@@ -151,7 +152,7 @@ public class ProcessingDirty implements gregtech.api.interfaces.IOreRecipeRegist
                     GTOreDictUnificator.get(OrePrefixes.dust, byproduct.mMacerateInto, 1L),
                     GTOreDictUnificator.get(OrePrefixes.dust, Materials.Stone, 1L))
                 .outputChances(10000, 9900, 4000)
-                .fluidInputs(Materials.Mercury.getFluid(1000L))
+                .fluidInputs(Materials.Mercury.getFluid(1 * BUCKETS))
                 .duration(40 * SECONDS)
                 .eut(8)
                 .addTo(chemicalBathRecipes);

@@ -4,6 +4,7 @@ import static goodgenerator.loader.Loaders.huiCircuit;
 import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
 import static gregtech.api.recipe.RecipeMaps.nanoForgeRecipes;
 import static gregtech.api.util.GTModHandler.getModItem;
+import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.MINUTES;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeConstants.AssemblyLine;
@@ -56,8 +57,8 @@ public class NaniteChain {
                 GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.NaquadahAlloy, 4))
             .fluidInputs(
                 new FluidStack(solderIndalloy, 144 * 32),
-                Materials.HSSS.getMolten(144L * 32),
-                Materials.Osmiridium.getMolten(144L * 16))
+                Materials.HSSS.getMolten(32 * INGOTS),
+                Materials.Osmiridium.getMolten(16 * INGOTS))
             .itemOutputs(ItemList.NanoForge.get(1))
             .eut(TierEU.RECIPE_ZPM)
             .duration(5 * MINUTES)
@@ -195,7 +196,7 @@ public class NaniteChain {
             .fluidInputs(
                 Materials.UUMatter.getFluid(500_000),
                 MaterialsUEVplus.RawStarMatter.getFluid(50_000),
-                MaterialsUEVplus.Space.getMolten(720))
+                MaterialsUEVplus.Space.getMolten(5 * INGOTS))
             .metadata(NANO_FORGE_TIER, 3)
             .duration(12 * MINUTES + 30 * SECONDS)
             .eut(2_000_000_000)
@@ -216,7 +217,7 @@ public class NaniteChain {
             .fluidInputs(
                 Materials.UUMatter.getFluid(500_000),
                 MaterialsUEVplus.RawStarMatter.getFluid(50_000),
-                MaterialsUEVplus.Time.getMolten(720))
+                MaterialsUEVplus.Time.getMolten(5 * INGOTS))
             .metadata(NANO_FORGE_TIER, 3)
             .duration(12 * MINUTES + 30 * SECONDS)
             .eut(2_000_000_000)
@@ -235,8 +236,8 @@ public class NaniteChain {
             )
             .itemOutputs(MaterialsUEVplus.Universium.getNanite(2))
             .fluidInputs(
-                MaterialsUEVplus.SpaceTime.getMolten(144),
-                Materials.Infinity.getMolten(576),
+                MaterialsUEVplus.SpaceTime.getMolten(1 * INGOTS),
+                Materials.Infinity.getMolten(4 * INGOTS),
                 MaterialsUEVplus.PrimordialMatter.getFluid(64_000))
             .metadata(NANO_FORGE_TIER, 3)
             .duration(12 * MINUTES + 30 * SECONDS)
@@ -255,7 +256,7 @@ public class NaniteChain {
                 ItemList.Timepiece.get(4))
             .itemOutputs(MaterialsUEVplus.Eternity.getNanite(4))
             .fluidInputs(
-                MaterialsUEVplus.Space.getMolten(1152),
+                MaterialsUEVplus.Space.getMolten(8 * INGOTS),
                 MaterialsUEVplus.ExcitedDTSC.getFluid(50_000),
                 MaterialsUEVplus.PrimordialMatter.getFluid(64_000))
             .metadata(NANO_FORGE_TIER, 3)

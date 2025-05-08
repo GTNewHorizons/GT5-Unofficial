@@ -1,5 +1,6 @@
 package gregtech.test;
 
+import static gregtech.api.util.GTRecipeBuilder.BUCKETS;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -33,7 +34,7 @@ public class GTParallelHelperTest {
             null,
             new int[] { 10000, 6667 },
             null,
-            new FluidStack[] { Materials.Rubber.getMolten(1000) },
+            new FluidStack[] { Materials.Rubber.getMolten(1 * BUCKETS) },
             1,
             1,
             0);

@@ -13,6 +13,9 @@
 
 package bartworks.system.material;
 
+import static gregtech.api.util.GTRecipeBuilder.BUCKETS;
+import static gregtech.api.util.GTRecipeBuilder.INGOTS;
+
 import java.util.List;
 
 import net.minecraft.block.Block;
@@ -245,8 +248,11 @@ public class BWMetaGeneratedItems extends MetaGeneratedItem implements IRadMater
     @Override
     public int getCapacity(ItemStack aStack) {
         return this.orePrefixes == OrePrefixes.capsule || this.orePrefixes == OrePrefixes.cell
-            || this.orePrefixes == OrePrefixes.cellPlasma ? 1000
-                : this.orePrefixes == OrePrefixes.cellMolten || this.orePrefixes == OrePrefixes.capsuleMolten ? 144 : 0;
+            || this.orePrefixes == OrePrefixes.cellPlasma
+                ? 1 * BUCKETS
+                : this.orePrefixes == OrePrefixes.cellMolten || this.orePrefixes == OrePrefixes.capsuleMolten
+                    ? 1 * INGOTS
+                    : 0;
     }
 
     @Override

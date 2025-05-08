@@ -1,5 +1,6 @@
 package tectech.recipe;
 
+import static gregtech.api.util.GTRecipeBuilder.BUCKETS;
 import static gregtech.api.util.GTUtility.trans;
 import static tectech.loader.recipe.Godforge.magmatterItemsForNEI;
 import static tectech.loader.recipe.Godforge.magmatterSpaceFluidItemsForNEI;
@@ -46,7 +47,7 @@ public class GodforgeExoticFrontend extends RecipeMapFrontend {
 
     @Override
     public void drawNEIOverlays(GTNEIDefaultHandler.CachedDefaultRecipe neiCachedRecipe) {
-        if (neiCachedRecipe.mRecipe.mFluidOutputs[0].equals(MaterialsUEVplus.QuarkGluonPlasma.getFluid(1000))) {
+        if (neiCachedRecipe.mRecipe.mFluidOutputs[0].equals(MaterialsUEVplus.QuarkGluonPlasma.getFluid(1 * BUCKETS))) {
             neiCachedRecipe.mInputs.set(0, new PositionedStack(quarkGluonItemsForNEI, 48, 23, true));
             neiCachedRecipe.mInputs.set(1, new PositionedStack(quarkGluonFluidItemsForNEI, 48, 52, true));
         } else {

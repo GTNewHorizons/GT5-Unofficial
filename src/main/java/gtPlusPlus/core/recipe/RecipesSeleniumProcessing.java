@@ -1,5 +1,6 @@
 package gtPlusPlus.core.recipe;
 
+import static gregtech.api.util.GTRecipeBuilder.BUCKETS;
 import static gregtech.api.util.GTRecipeBuilder.MINUTES;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gtPlusPlus.api.recipe.GTPPRecipeMaps.*;
@@ -45,7 +46,7 @@ public class RecipesSeleniumProcessing {
         // Make Selenium
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(14), MaterialsElements.getInstance().CARBON.getDust(16))
-            .fluidInputs(MaterialMisc.SELENIOUS_ACID.getFluidStack(750), Materials.SulfuricAcid.getFluid(8000))
+            .fluidInputs(MaterialMisc.SELENIOUS_ACID.getFluidStack(750), Materials.SulfuricAcid.getFluid(8 * BUCKETS))
             .fluidOutputs(
                 MaterialsElements.getInstance().SELENIUM.getFluidStack(144 * 2 + 36),
                 Materials.DilutedSulfuricAcid.getFluid(12000))

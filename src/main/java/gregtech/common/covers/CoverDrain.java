@@ -1,5 +1,7 @@
 package gregtech.common.covers;
 
+import static gregtech.api.util.GTRecipeBuilder.BUCKETS;
+
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -60,10 +62,10 @@ public class CoverDrain extends CoverLegacyData {
                 if (tBlock != null) {
                     if (((tBlock == Blocks.water) || (tBlock == Blocks.flowing_water))
                         && (coverable.getMetaIDAtSide(coverSide) == 0)) {
-                        tLiquid = Materials.Water.getFluid(1000L);
+                        tLiquid = Materials.Water.getFluid(1 * BUCKETS);
                     } else if (((tBlock == Blocks.lava) || (tBlock == Blocks.flowing_lava))
                         && (coverable.getMetaIDAtSide(coverSide) == 0)) {
-                            tLiquid = Materials.Lava.getFluid(1000L);
+                            tLiquid = Materials.Lava.getFluid(1 * BUCKETS);
                         } else if ((tBlock instanceof IFluidBlock)) {
                             tLiquid = ((IFluidBlock) tBlock).drain(
                                 coverable.getWorld(),

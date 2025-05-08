@@ -11,6 +11,7 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LARGE_CHEMICA
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_GLOW;
+import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 
 import java.util.ArrayList;
@@ -136,7 +137,7 @@ public class MTEPurificationUnitDegasser extends MTEPurificationUnitBase<MTEPuri
         new SuperconductorMaterial(Materials.SuperconductorUIVBase.getMolten(SUPERCON_FLUID_AMOUNT), 1.75f),
         new SuperconductorMaterial(Materials.SuperconductorUMVBase.getMolten(SUPERCON_FLUID_AMOUNT), 2.0f), };
 
-    private static final FluidStack CATALYST_FLUID = Materials.Neutronium.getMolten(4608L);
+    private static final FluidStack CATALYST_FLUID = Materials.Neutronium.getMolten(32 * INGOTS);
     private static final FluidStack COOLANT_FLUID = Materials.SuperCoolant.getFluid(10000L);
 
     private static final long CONSUME_INTERVAL = 20;

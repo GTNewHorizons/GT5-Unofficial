@@ -1,5 +1,6 @@
 package gtPlusPlus.xmod.gregtech.loaders.recipe;
 
+import static gregtech.api.util.GTRecipeBuilder.BUCKETS;
 import static gregtech.api.util.GTRecipeBuilder.MINUTES;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeConstants.LFTR_OUTPUT_POWER;
@@ -108,7 +109,7 @@ public class RecipeLoaderLFTR {
         // Sparging Recipes
         // For no randomization, set metadata to 0 with key SPARGE_MAX_BYPRODUCT.
         GTValues.RA.stdBuilder()
-            .fluidInputs(Materials.Helium.getGas(1000), MaterialsNuclides.LiFBeF2UF4FP.getFluidStack(50))
+            .fluidInputs(Materials.Helium.getGas(1 * BUCKETS), MaterialsNuclides.LiFBeF2UF4FP.getFluidStack(50))
             .fluidOutputs(
                 MaterialsNuclides.Sparged_LiFBeF2UF4FP.getFluidStack(50),
                 Materials.Helium.getGas(0),

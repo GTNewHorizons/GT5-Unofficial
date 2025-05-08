@@ -3,6 +3,8 @@ package gregtech.loaders.oreprocessing;
 import static gregtech.api.enums.Mods.Railcraft;
 import static gregtech.api.recipe.RecipeMaps.*;
 import static gregtech.api.recipe.RecipeMaps.pyrolyseRecipes;
+import static gregtech.api.util.GTRecipeBuilder.BUCKETS;
+import static gregtech.api.util.GTRecipeBuilder.QUARTER_BUCKETS;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
 
@@ -100,7 +102,7 @@ public class ProcessingLog implements gregtech.api.interfaces.IOreRecipeRegistra
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.copyAmount(8, aStack), GTUtility.getIntegratedCircuit(8))
             .itemOutputs(ItemList.FR_Casing_Impregnated.get(1L))
-            .fluidInputs(Materials.SeedOil.getFluid(250L))
+            .fluidInputs(Materials.SeedOil.getFluid(1 * QUARTER_BUCKETS))
             .duration(3 * SECONDS + 4 * TICKS)
             .eut(16)
             .addTo(assemblerRecipes);
@@ -253,30 +255,30 @@ public class ProcessingLog implements gregtech.api.interfaces.IOreRecipeRegistra
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.copyAmount(16, logStack), GTUtility.getIntegratedCircuit(1))
             .itemOutputs(Materials.Charcoal.getGems(20))
-            .fluidOutputs(Materials.Creosote.getFluid(4000))
+            .fluidOutputs(Materials.Creosote.getFluid(4 * BUCKETS))
             .duration(32 * SECONDS)
             .eut(64)
             .addTo(pyrolyseRecipes);
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.copyAmount(16, logStack), GTUtility.getIntegratedCircuit(2))
             .itemOutputs(Materials.Charcoal.getGems(20))
-            .fluidInputs(Materials.Nitrogen.getGas(1000))
-            .fluidOutputs(Materials.Creosote.getFluid(4000))
+            .fluidInputs(Materials.Nitrogen.getGas(1 * BUCKETS))
+            .fluidOutputs(Materials.Creosote.getFluid(4 * BUCKETS))
             .duration(16 * SECONDS)
             .eut(96)
             .addTo(pyrolyseRecipes);
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.copyAmount(16, logStack), GTUtility.getIntegratedCircuit(3))
             .itemOutputs(Materials.Charcoal.getGems(20))
-            .fluidOutputs(Materials.CharcoalByproducts.getGas(4000))
+            .fluidOutputs(Materials.CharcoalByproducts.getGas(4 * BUCKETS))
             .duration(32 * SECONDS)
             .eut(64)
             .addTo(pyrolyseRecipes);
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.copyAmount(16, logStack), GTUtility.getIntegratedCircuit(4))
             .itemOutputs(Materials.Charcoal.getGems(20))
-            .fluidInputs(Materials.Nitrogen.getGas(1000))
-            .fluidOutputs(Materials.CharcoalByproducts.getGas(4000))
+            .fluidInputs(Materials.Nitrogen.getGas(1 * BUCKETS))
+            .fluidOutputs(Materials.CharcoalByproducts.getGas(4 * BUCKETS))
             .duration(16 * SECONDS)
             .eut(96)
             .addTo(pyrolyseRecipes);
@@ -290,7 +292,7 @@ public class ProcessingLog implements gregtech.api.interfaces.IOreRecipeRegistra
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.copyAmount(16, logStack), GTUtility.getIntegratedCircuit(6))
             .itemOutputs(Materials.Charcoal.getGems(20))
-            .fluidInputs(Materials.Nitrogen.getGas(1000))
+            .fluidInputs(Materials.Nitrogen.getGas(1 * BUCKETS))
             .fluidOutputs(Materials.WoodGas.getGas(1500))
             .duration(16 * SECONDS)
             .eut(96)
@@ -298,15 +300,15 @@ public class ProcessingLog implements gregtech.api.interfaces.IOreRecipeRegistra
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.copyAmount(16, logStack), GTUtility.getIntegratedCircuit(7))
             .itemOutputs(Materials.Charcoal.getGems(20))
-            .fluidOutputs(Materials.WoodVinegar.getFluid(3000))
+            .fluidOutputs(Materials.WoodVinegar.getFluid(3 * BUCKETS))
             .duration(32 * SECONDS)
             .eut(64)
             .addTo(pyrolyseRecipes);
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.copyAmount(16, logStack), GTUtility.getIntegratedCircuit(8))
             .itemOutputs(Materials.Charcoal.getGems(20))
-            .fluidInputs(Materials.Nitrogen.getGas(1000))
-            .fluidOutputs(Materials.WoodVinegar.getFluid(3000))
+            .fluidInputs(Materials.Nitrogen.getGas(1 * BUCKETS))
+            .fluidOutputs(Materials.WoodVinegar.getFluid(3 * BUCKETS))
             .duration(16 * SECONDS)
             .eut(96)
             .addTo(pyrolyseRecipes);
@@ -320,7 +322,7 @@ public class ProcessingLog implements gregtech.api.interfaces.IOreRecipeRegistra
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.copyAmount(16, logStack), GTUtility.getIntegratedCircuit(10))
             .itemOutputs(Materials.Charcoal.getGems(20))
-            .fluidInputs(Materials.Nitrogen.getGas(1000))
+            .fluidInputs(Materials.Nitrogen.getGas(1 * BUCKETS))
             .fluidOutputs(Materials.WoodTar.getFluid(1500))
             .duration(16 * SECONDS)
             .eut(96)

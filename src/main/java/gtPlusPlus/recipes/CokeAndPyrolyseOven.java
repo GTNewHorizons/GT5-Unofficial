@@ -1,6 +1,7 @@
 package gtPlusPlus.recipes;
 
 import static gregtech.api.recipe.RecipeMaps.pyrolyseRecipes;
+import static gregtech.api.util.GTRecipeBuilder.BUCKETS;
 import static gregtech.api.util.GTRecipeBuilder.MINUTES;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
@@ -90,7 +91,7 @@ public class CokeAndPyrolyseOven {
         GTValues.RA.stdBuilder()
             .itemInputs(plant, GTUtility.getIntegratedCircuit(3))
             .itemOutputs(charcoal)
-            .fluidOutputs(Materials.Creosote.getFluid(2000))
+            .fluidOutputs(Materials.Creosote.getFluid(2 * BUCKETS))
             .eut(16)
             .duration(25 * SECONDS)
             .addTo(pyrolyseRecipes);
@@ -98,8 +99,8 @@ public class CokeAndPyrolyseOven {
         GTValues.RA.stdBuilder()
             .itemInputs(plant, GTUtility.getIntegratedCircuit(4))
             .itemOutputs(charcoal)
-            .fluidInputs(Materials.Nitrogen.getGas(2000))
-            .fluidOutputs(Materials.CharcoalByproducts.getGas(4000))
+            .fluidInputs(Materials.Nitrogen.getGas(2 * BUCKETS))
+            .fluidOutputs(Materials.CharcoalByproducts.getGas(4 * BUCKETS))
             .eut(16)
             .duration(250 * TICKS)
             .addTo(pyrolyseRecipes);
@@ -108,7 +109,7 @@ public class CokeAndPyrolyseOven {
         GTValues.RA.stdBuilder()
             .itemInputs(charcoal, GTUtility.getIntegratedCircuit(3))
             .itemOutputs(coke)
-            .fluidOutputs(Materials.Creosote.getFluid(4000))
+            .fluidOutputs(Materials.Creosote.getFluid(4 * BUCKETS))
             .eut(16)
             .duration(50 * SECONDS)
             .addTo(pyrolyseRecipes);
@@ -116,8 +117,8 @@ public class CokeAndPyrolyseOven {
         GTValues.RA.stdBuilder()
             .itemInputs(charcoal, GTUtility.getIntegratedCircuit(4))
             .itemOutputs(coke)
-            .fluidInputs(Materials.Nitrogen.getGas(1000))
-            .fluidOutputs(Materials.CharcoalByproducts.getGas(2000))
+            .fluidInputs(Materials.Nitrogen.getGas(1 * BUCKETS))
+            .fluidOutputs(Materials.CharcoalByproducts.getGas(2 * BUCKETS))
             .eut(16)
             .duration(25 * SECONDS)
             .addTo(pyrolyseRecipes);
@@ -127,7 +128,7 @@ public class CokeAndPyrolyseOven {
             .itemInputs(coke, GTUtility.getIntegratedCircuit(5))
             .itemOutputs(Materials.Ash.getDust(5))
             .fluidInputs(GTModHandler.getSteam(2000))
-            .fluidOutputs(Materials.WoodTar.getFluid(4000))
+            .fluidOutputs(Materials.WoodTar.getFluid(4 * BUCKETS))
             .eut(240)
             .duration(75 * SECONDS)
             .addTo(pyrolyseRecipes);
@@ -136,7 +137,7 @@ public class CokeAndPyrolyseOven {
             .itemInputs(coke, GTUtility.getIntegratedCircuit(6))
             .itemOutputs(Materials.Ash.getDust(5))
             .fluidInputs(GTModHandler.getSteam(2000))
-            .fluidOutputs(Materials.WoodGas.getGas(6000))
+            .fluidOutputs(Materials.WoodGas.getGas(6 * BUCKETS))
             .eut(240)
             .duration(75 * SECONDS)
             .addTo(pyrolyseRecipes);

@@ -1,6 +1,7 @@
 package bartworks.common.loaders.recipes;
 
 import static gregtech.api.recipe.RecipeMaps.pyrolyseRecipes;
+import static gregtech.api.util.GTRecipeBuilder.BUCKETS;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
 
@@ -19,7 +20,7 @@ public class PyrolyseOven implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(10), Materials.Wood.getDust(10))
             .fluidInputs(new FluidStack(FluidLoader.Kerogen, 1000))
-            .fluidOutputs(Materials.Oil.getFluid(1000))
+            .fluidOutputs(Materials.Oil.getFluid(1 * BUCKETS))
             .duration(5 * SECONDS + 5 * TICKS)
             .eut(TierEU.RECIPE_HV)
             .addTo(pyrolyseRecipes);

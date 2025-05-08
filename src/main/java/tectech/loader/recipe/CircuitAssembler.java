@@ -1,6 +1,7 @@
 package tectech.loader.recipe;
 
 import static gregtech.api.recipe.RecipeMaps.circuitAssemblerRecipes;
+import static gregtech.api.util.GTRecipeBuilder.HALF_INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 
 import net.minecraftforge.fluids.Fluid;
@@ -45,7 +46,7 @@ public class CircuitAssembler implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.circuit, Materials.LV, 2),
                 GTOreDictUnificator.get(OrePrefixes.foil, Materials.Gold, 4))
             .itemOutputs(CustomItemList.parametrizerMemory.get(1))
-            .fluidInputs(Materials.Plastic.getMolten(72))
+            .fluidInputs(Materials.Plastic.getMolten(1 * HALF_INGOTS))
             .requiresCleanRoom()
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_HV)

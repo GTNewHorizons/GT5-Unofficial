@@ -4,6 +4,7 @@ import static gregtech.api.recipe.RecipeMaps.blastFurnaceRecipes;
 import static gregtech.api.recipe.RecipeMaps.centrifugeRecipes;
 import static gregtech.api.recipe.RecipeMaps.hammerRecipes;
 import static gregtech.api.recipe.RecipeMaps.maceratorRecipes;
+import static gregtech.api.util.GTRecipeBuilder.BUCKETS;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeConstants.COIL_HEAT;
 
@@ -39,7 +40,7 @@ public class ProcessingRawOre implements gregtech.api.interfaces.IOreRecipeRegis
                 .itemInputs(GTUtility.copyAmount(1, aStack))
                 .itemOutputs(new ItemStack(net.minecraft.init.Blocks.sand, 1, 0))
                 .outputChances(4000)
-                .fluidOutputs(Materials.OilHeavy.getFluid(2000L))
+                .fluidOutputs(Materials.OilHeavy.getFluid(2 * BUCKETS))
                 .duration(15 * SECONDS)
                 .eut(TierEU.RECIPE_LV)
                 .addTo(centrifugeRecipes);

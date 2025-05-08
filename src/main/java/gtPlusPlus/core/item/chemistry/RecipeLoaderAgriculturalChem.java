@@ -3,6 +3,9 @@ package gtPlusPlus.core.item.chemistry;
 import static gregtech.api.recipe.RecipeMaps.centrifugeRecipes;
 import static gregtech.api.recipe.RecipeMaps.compressorRecipes;
 import static gregtech.api.recipe.RecipeMaps.mixerRecipes;
+import static gregtech.api.util.GTRecipeBuilder.BUCKETS;
+import static gregtech.api.util.GTRecipeBuilder.HALF_BUCKETS;
+import static gregtech.api.util.GTRecipeBuilder.QUARTER_BUCKETS;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeConstants.CHEMPLANT_CASING_TIER;
 import static gregtech.api.util.GTRecipeConstants.FUEL_VALUE;
@@ -340,8 +343,8 @@ public class RecipeLoaderAgriculturalChem {
             .fluidInputs(new FluidStack(GTPPFluids.FermentationBase, 48000))
             .fluidOutputs(
                 new FluidStack(GTPPFluids.Butanol, 18000),
-                Materials.Acetone.getFluid(9000),
-                Materials.Ethanol.getFluid(3000))
+                Materials.Acetone.getFluid(9 * BUCKETS),
+                Materials.Ethanol.getFluid(3 * BUCKETS))
             .duration(100 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .metadata(CHEMPLANT_CASING_TIER, 1)
@@ -387,7 +390,7 @@ public class RecipeLoaderAgriculturalChem {
                 GregtechItemList.DriedEarthDust.get(1),
                 ItemUtils.getItemStackOfAmountFromOreDict("dustTinyAmmoniumNitrate", 1))
             .outputChances(2500, 2500, 750, 1000, 5000, 250)
-            .fluidInputs(Materials.SulfuricAcid.getFluid(250))
+            .fluidInputs(Materials.SulfuricAcid.getFluid(1 * QUARTER_BUCKETS))
             .fluidOutputs(FluidUtils.getFluidStack("sulfuricapatite", 50))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_MV / 2)
@@ -427,7 +430,7 @@ public class RecipeLoaderAgriculturalChem {
                 GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.Lead, 1))
             .outputChances(3000, 3000, 2000, 2000, 1000, 1000)
             .fluidInputs(new FluidStack(GTPPFluids.RedMud, 1000))
-            .fluidOutputs(Materials.Water.getFluid(500))
+            .fluidOutputs(Materials.Water.getFluid(1 * HALF_BUCKETS))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(centrifugeRecipes);

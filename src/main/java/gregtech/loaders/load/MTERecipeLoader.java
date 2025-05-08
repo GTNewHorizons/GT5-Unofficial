@@ -8,6 +8,7 @@ import static gregtech.api.enums.Mods.IndustrialCraft2;
 import static gregtech.api.enums.Mods.NotEnoughItems;
 import static gregtech.api.enums.Mods.Thaumcraft;
 import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
+import static gregtech.api.util.GTRecipeBuilder.BUCKETS;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 
 import net.minecraft.init.Blocks;
@@ -3736,7 +3737,7 @@ public class MTERecipeLoader implements Runnable {
                 GalacticraftCore.isModLoaded() ? GTModHandler.getModItem(GalacticraftCore.ID, "item.basicItem", 1, 19)
                     : ItemList.Sensor_EV.get(4))
             .itemOutputs(ItemList.Machine_Multi_DroneCentre.get(1L))
-            .fluidInputs(Materials.AdvancedGlue.getFluid(8000L))
+            .fluidInputs(Materials.AdvancedGlue.getFluid(8 * BUCKETS))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_IV)
             .addTo(assemblerRecipes);

@@ -2,6 +2,7 @@ package goodgenerator.blocks.tileEntity;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static goodgenerator.main.GGConfigLoader.*;
+import static gregtech.api.util.GTRecipeBuilder.BUCKETS;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 
 import java.util.ArrayList;
@@ -76,7 +77,7 @@ public class MTEMultiNqGenerator extends MTETooltipMultiBlockBaseEM implements I
         coolant = Arrays.asList(
             Pair.of(MaterialsUEVplus.Time.getMolten(20L), CoolantEfficiency[0]),
             Pair.of(FluidRegistry.getFluidStack("cryotheum", 1000), CoolantEfficiency[1]),
-            Pair.of(Materials.SuperCoolant.getFluid(1000L), CoolantEfficiency[2]),
+            Pair.of(Materials.SuperCoolant.getFluid(1 * BUCKETS), CoolantEfficiency[2]),
             Pair.of(FluidRegistry.getFluidStack("ic2coolant", 1000), CoolantEfficiency[3]));
     }
 

@@ -13,6 +13,8 @@ import static gregtech.api.recipe.RecipeMaps.maceratorRecipes;
 import static gregtech.api.recipe.RecipeMaps.mixerRecipes;
 import static gregtech.api.recipe.RecipeMaps.multiblockChemicalReactorRecipes;
 import static gregtech.api.recipe.RecipeMaps.sifterRecipes;
+import static gregtech.api.util.GTRecipeBuilder.BUCKETS;
+import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.MINUTES;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
@@ -414,7 +416,7 @@ public class RecipeLoaderNuclear {
             .itemInputs(MaterialsFluorides.BERYLLIUM_HYDROXIDE.getDust(3))
             .fluidInputs(MaterialsFluorides.AMMONIUM_BIFLUORIDE.getFluidStack(1152))
             .fluidOutputs(
-                Materials.Water.getFluid(2000L),
+                Materials.Water.getFluid(2 * BUCKETS),
                 MaterialsFluorides.AMMONIUM_TETRAFLUOROBERYLLATE.getFluidStack(1000))
             .eut(TierEU.RECIPE_MV)
             .duration(5 * MINUTES)
@@ -543,7 +545,7 @@ public class RecipeLoaderNuclear {
     private static void fusionChainRecipes() {
         // Mk1
         GTValues.RA.stdBuilder()
-            .fluidInputs(Materials.Boron.getPlasma(144), Materials.Calcium.getPlasma(16))
+            .fluidInputs(Materials.Boron.getPlasma(1 * INGOTS), Materials.Calcium.getPlasma(16))
             .fluidOutputs(new FluidStack(MaterialsElements.getInstance().NEON.getPlasma(), 1000))
             .duration(3 * SECONDS + 4 * TICKS)
             .eut(TierEU.RECIPE_LuV)
@@ -562,8 +564,8 @@ public class RecipeLoaderNuclear {
 
         // Mk2
         GTValues.RA.stdBuilder()
-            .fluidInputs(Materials.Niobium.getPlasma(144), Materials.Zinc.getPlasma(144))
-            .fluidOutputs(new FluidStack(MaterialsElements.getInstance().KRYPTON.getPlasma(), 144))
+            .fluidInputs(Materials.Niobium.getPlasma(1 * INGOTS), Materials.Zinc.getPlasma(1 * INGOTS))
+            .fluidOutputs(new FluidStack(MaterialsElements.getInstance().KRYPTON.getPlasma(), 1 * INGOTS))
             .duration(32 * TICKS)
             .eut(TierEU.RECIPE_ZPM)
             .metadata(FUSION_THRESHOLD, 300_000_000L)
@@ -581,7 +583,7 @@ public class RecipeLoaderNuclear {
 
         GTValues.RA.stdBuilder()
             .fluidInputs(
-                new FluidStack(MaterialsElements.STANDALONE.ASTRAL_TITANIUM.getPlasma(), 144),
+                new FluidStack(MaterialsElements.STANDALONE.ASTRAL_TITANIUM.getPlasma(), 1 * INGOTS),
                 new FluidStack(MaterialsAlloy.TITANSTEEL.getFluid(), 2))
             .fluidOutputs(new FluidStack(MaterialsElements.STANDALONE.RUNITE.getPlasma(), 1000))
             .duration(32 * TICKS)
@@ -591,8 +593,10 @@ public class RecipeLoaderNuclear {
 
         // Mk3
         GTValues.RA.stdBuilder()
-            .fluidInputs(MaterialsElements.getInstance().CURIUM.getFluidStack(144), Materials.Americium.getPlasma(144))
-            .fluidOutputs(new FluidStack(MaterialsElements.getInstance().XENON.getPlasma(), 144))
+            .fluidInputs(
+                MaterialsElements.getInstance().CURIUM.getFluidStack(1 * INGOTS),
+                Materials.Americium.getPlasma(1 * INGOTS))
+            .fluidOutputs(new FluidStack(MaterialsElements.getInstance().XENON.getPlasma(), 1 * INGOTS))
             .duration(16 * TICKS)
             .eut(TierEU.RECIPE_UV)
             .metadata(FUSION_THRESHOLD, 500_000_000L)
@@ -600,7 +604,7 @@ public class RecipeLoaderNuclear {
 
         GTValues.RA.stdBuilder()
             .fluidInputs(
-                new FluidStack(MaterialsElements.getInstance().XENON.getPlasma(), 144),
+                new FluidStack(MaterialsElements.getInstance().XENON.getPlasma(), 1 * INGOTS),
                 new FluidStack(MaterialsElements.STANDALONE.RUNITE.getPlasma(), 1000))
             .fluidOutputs(new FluidStack(MaterialsElements.STANDALONE.ADVANCED_NITINOL.getPlasma(), 1000))
             .duration(16 * TICKS)

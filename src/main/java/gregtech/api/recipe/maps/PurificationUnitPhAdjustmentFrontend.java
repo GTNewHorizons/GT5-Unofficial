@@ -1,5 +1,7 @@
 package gregtech.api.recipe.maps;
 
+import static gregtech.api.util.GTRecipeBuilder.BUCKETS;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -58,8 +60,8 @@ public class PurificationUnitPhAdjustmentFrontend extends PurificationUnitRecipe
         // Add pH adjustment values
         if (stack.isItemEqual(Materials.SodiumHydroxide.getDust(1))) {
             currentTip.add("+" + MTEPurificationUnitPhAdjustment.PH_PER_ALKALINE_DUST * 64 + " pH/stack");
-        } else
-            if (stack.isItemEqual(GTUtility.getFluidDisplayStack(Materials.HydrochloricAcid.getFluid(1000L), false))) {
+        } else if (stack
+            .isItemEqual(GTUtility.getFluidDisplayStack(Materials.HydrochloricAcid.getFluid(1 * BUCKETS), false))) {
                 currentTip.add(MTEPurificationUnitPhAdjustment.PH_PER_10_ACID_LITER * 100 + " pH/1000L");
             }
         return super.handleNEIItemTooltip(stack, currentTip, neiCachedRecipe);
@@ -71,7 +73,7 @@ public class PurificationUnitPhAdjustmentFrontend extends PurificationUnitRecipe
             neiCachedRecipe.mInputs.add(new PositionedStack(Materials.SodiumHydroxide.getDust(64), 3, 1, false));
             neiCachedRecipe.mInputs.add(
                 new PositionedStack(
-                    GTUtility.getFluidDisplayStack(Materials.HydrochloricAcid.getFluid(1000L), true),
+                    GTUtility.getFluidDisplayStack(Materials.HydrochloricAcid.getFluid(1 * BUCKETS), true),
                     147,
                     1,
                     false));

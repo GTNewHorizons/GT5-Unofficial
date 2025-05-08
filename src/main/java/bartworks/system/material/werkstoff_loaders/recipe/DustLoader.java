@@ -25,6 +25,7 @@ import static gregtech.api.recipe.RecipeMaps.maceratorRecipes;
 import static gregtech.api.recipe.RecipeMaps.packagerRecipes;
 import static gregtech.api.recipe.RecipeMaps.primitiveBlastRecipes;
 import static gregtech.api.recipe.RecipeMaps.vacuumFreezerRecipes;
+import static gregtech.api.util.GTRecipeBuilder.BUCKETS;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeConstants.ADDITIVE_AMOUNT;
 import static gregtech.api.util.GTRecipeConstants.COIL_HEAT;
@@ -350,7 +351,7 @@ public class DustLoader implements IWerkstoffRunnable {
                             .itemOutputs(
                                 werkstoffStats.getMeltingPoint() < 1750 ? werkstoff.get(ingot)
                                     : werkstoff.get(ingotHot))
-                            .fluidInputs(Materials.Nitrogen.getGas(1000))
+                            .fluidInputs(Materials.Nitrogen.getGas(1 * BUCKETS))
                             .duration(Math.max(werkstoffStats.getMass() / 40L, 1L) * werkstoffStats.getMeltingPoint())
                             .eut(werkstoffStats.getMeltingVoltage())
                             .metadata(COIL_HEAT, werkstoffStats.getMeltingPoint())
@@ -362,7 +363,7 @@ public class DustLoader implements IWerkstoffRunnable {
                             .itemOutputs(
                                 werkstoffStats.getMeltingPoint() < 1750 ? werkstoff.get(ingot)
                                     : werkstoff.get(ingotHot))
-                            .fluidInputs(Materials.Argon.getGas(1000))
+                            .fluidInputs(Materials.Argon.getGas(1 * BUCKETS))
                             .duration(Math.max(werkstoffStats.getMass() / 40L, 1L) * werkstoffStats.getMeltingPoint())
                             .eut(werkstoffStats.getMeltingVoltage())
                             .metadata(COIL_HEAT, werkstoffStats.getMeltingPoint())

@@ -1,5 +1,6 @@
 package bartworks.common.loaders.recipes;
 
+import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.MINUTES;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeConstants.AssemblyLine;
@@ -40,7 +41,7 @@ public class AssemblyLine implements Runnable {
                 ItemList.Sensor_LuV.get(9L),
                 ItemList.Field_Generator_LuV.get(9L),
                 GTOreDictUnificator.get(OrePrefixes.screw, Materials.Europium, 36L))
-            .fluidInputs(new FluidStack(solderIndalloy, 1440), WerkstoffLoader.Neon.getFluidOrGas(20000))
+            .fluidInputs(new FluidStack(solderIndalloy, 10 * INGOTS), WerkstoffLoader.Neon.getFluidOrGas(20000))
             .itemOutputs(ItemRegistry.voidminer[0].copy())
             .eut(TierEU.RECIPE_LuV)
             .duration(5 * MINUTES)
@@ -58,7 +59,7 @@ public class AssemblyLine implements Runnable {
                 ItemList.Emitter_LuV.get(1L),
                 ItemList.Sensor_LuV.get(1L),
                 WerkstoffLoader.LuVTierMaterial.get(OrePrefixes.plate, 8))
-            .fluidInputs(new FluidStack(solderIndalloy, 1440))
+            .fluidInputs(new FluidStack(solderIndalloy, 10 * INGOTS))
             .itemOutputs(ItemRegistry.cal.copy())
             .eut(TierEU.RECIPE_ZPM)
             .duration(60 * SECONDS)

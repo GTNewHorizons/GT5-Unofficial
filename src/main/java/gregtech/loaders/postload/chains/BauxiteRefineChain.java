@@ -5,6 +5,7 @@ import static gregtech.api.recipe.RecipeMaps.chemicalBathRecipes;
 import static gregtech.api.recipe.RecipeMaps.fluidHeaterRecipes;
 import static gregtech.api.recipe.RecipeMaps.mixerRecipes;
 import static gregtech.api.recipe.RecipeMaps.multiblockChemicalReactorRecipes;
+import static gregtech.api.util.GTRecipeBuilder.BUCKETS;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
 
@@ -29,8 +30,8 @@ public class BauxiteRefineChain {
                 Materials.SodiumHydroxide.getDust(9),
                 Materials.Quicklime.getDust(4),
                 GTUtility.getIntegratedCircuit(8))
-            .fluidInputs(Materials.Water.getFluid(5000))
-            .fluidOutputs(MaterialsOreAlum.BauxiteSlurry.getFluid(8000))
+            .fluidInputs(Materials.Water.getFluid(5 * BUCKETS))
+            .fluidOutputs(MaterialsOreAlum.BauxiteSlurry.getFluid(8 * BUCKETS))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(mixerRecipes);
@@ -41,16 +42,16 @@ public class BauxiteRefineChain {
                 Materials.SodiumHydroxide.getDust(9),
                 Materials.Quicklime.getDust(4),
                 GTUtility.getIntegratedCircuit(8))
-            .fluidInputs(Materials.Water.getFluid(5000))
-            .fluidOutputs(MaterialsOreAlum.BauxiteSlurry.getFluid(8000))
+            .fluidInputs(Materials.Water.getFluid(5 * BUCKETS))
+            .fluidOutputs(MaterialsOreAlum.BauxiteSlurry.getFluid(8 * BUCKETS))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(mixerRecipes);
 
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(1))
-            .fluidInputs(MaterialsOreAlum.BauxiteSlurry.getFluid(2000))
-            .fluidOutputs(MaterialsOreAlum.HeatedBauxiteSlurry.getFluid(2000))
+            .fluidInputs(MaterialsOreAlum.BauxiteSlurry.getFluid(2 * BUCKETS))
+            .fluidOutputs(MaterialsOreAlum.HeatedBauxiteSlurry.getFluid(2 * BUCKETS))
             .duration(2 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(fluidHeaterRecipes);
@@ -63,8 +64,10 @@ public class BauxiteRefineChain {
                 Materials.SodiumCarbonate.getDust(9),
                 Materials.Calcite.getDust(10),
                 MaterialsOreAlum.BauxiteSlag.getDust(16))
-            .fluidInputs(Materials.CarbonDioxide.getGas(5000), MaterialsOreAlum.HeatedBauxiteSlurry.getFluid(8000))
-            .fluidOutputs(MaterialsOreAlum.SluiceJuice.getFluid(5000))
+            .fluidInputs(
+                Materials.CarbonDioxide.getGas(5 * BUCKETS),
+                MaterialsOreAlum.HeatedBauxiteSlurry.getFluid(8 * BUCKETS))
+            .fluidOutputs(MaterialsOreAlum.SluiceJuice.getFluid(5 * BUCKETS))
             .duration(15 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(multiblockChemicalReactorRecipes);
@@ -86,7 +89,7 @@ public class BauxiteRefineChain {
             .itemInputs(GTOreDictUnificator.get(OrePrefixes.crushedPurified, Materials.Ilmenite, 1))
             .itemOutputs(Materials.Rutile.getDust(2), MaterialsOreAlum.IlmeniteSlag.getDust(1))
             .outputChances(10000, 3000)
-            .fluidInputs(Materials.SulfuricAcid.getFluid(1000))
+            .fluidInputs(Materials.SulfuricAcid.getFluid(1 * BUCKETS))
             .fluidOutputs(new FluidStack(ItemList.sGreenVitriol, 2000))
             .duration(21 * SECONDS)
             .eut(1000)
@@ -96,7 +99,7 @@ public class BauxiteRefineChain {
             .itemInputs(GTOreDictUnificator.get(OrePrefixes.crushed, Materials.Ilmenite, 1))
             .itemOutputs(Materials.Rutile.getDust(2), MaterialsOreAlum.IlmeniteSlag.getDust(1))
             .outputChances(10000, 6000)
-            .fluidInputs(Materials.SulfuricAcid.getFluid(1000))
+            .fluidInputs(Materials.SulfuricAcid.getFluid(1 * BUCKETS))
             .fluidOutputs(new FluidStack(ItemList.sGreenVitriol, 2000))
             .duration(21 * SECONDS)
             .eut(1000)
@@ -124,8 +127,8 @@ public class BauxiteRefineChain {
                     GTOreDictUnificator.get(ore, Materials.Sapphire, 1),
                     GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.SodiumHydroxide, 1),
                     GTUtility.getIntegratedCircuit(1))
-                .fluidInputs(Materials.HydrochloricAcid.getFluid(1000))
-                .fluidOutputs(MaterialsOreAlum.SapphireJuice.getFluid(1000))
+                .fluidInputs(Materials.HydrochloricAcid.getFluid(1 * BUCKETS))
+                .fluidOutputs(MaterialsOreAlum.SapphireJuice.getFluid(1 * BUCKETS))
                 .duration(2 * SECONDS)
                 .eut(100)
                 .addTo(mixerRecipes);
@@ -135,8 +138,8 @@ public class BauxiteRefineChain {
                     GTOreDictUnificator.get(ore, Materials.GreenSapphire, 1),
                     GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.SodiumHydroxide, 1),
                     GTUtility.getIntegratedCircuit(1))
-                .fluidInputs(Materials.HydrochloricAcid.getFluid(1000))
-                .fluidOutputs(MaterialsOreAlum.GreenSapphireJuice.getFluid(1000))
+                .fluidInputs(Materials.HydrochloricAcid.getFluid(1 * BUCKETS))
+                .fluidOutputs(MaterialsOreAlum.GreenSapphireJuice.getFluid(1 * BUCKETS))
                 .duration(2 * SECONDS)
                 .eut(100)
                 .addTo(mixerRecipes);
@@ -146,8 +149,8 @@ public class BauxiteRefineChain {
                     GTOreDictUnificator.get(ore, Materials.Ruby, 1),
                     GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.SodiumHydroxide, 1),
                     GTUtility.getIntegratedCircuit(1))
-                .fluidInputs(Materials.HydrochloricAcid.getFluid(1000))
-                .fluidOutputs(MaterialsOreAlum.RubyJuice.getFluid(1000))
+                .fluidInputs(Materials.HydrochloricAcid.getFluid(1 * BUCKETS))
+                .fluidOutputs(MaterialsOreAlum.RubyJuice.getFluid(1 * BUCKETS))
                 .duration(2 * SECONDS)
                 .eut(100)
                 .addTo(mixerRecipes);
@@ -161,8 +164,8 @@ public class BauxiteRefineChain {
                 Materials.Vanadium.getDust(1),
                 Materials.Magnesium.getDust(1))
             .outputChances(10000, 300, 200, 200)
-            .fluidInputs(MaterialsOreAlum.SapphireJuice.getFluid(1000))
-            .fluidOutputs(Materials.HydrochloricAcid.getFluid(1000))
+            .fluidInputs(MaterialsOreAlum.SapphireJuice.getFluid(1 * BUCKETS))
+            .fluidOutputs(Materials.HydrochloricAcid.getFluid(1 * BUCKETS))
             .duration(2 * SECONDS + 5 * TICKS)
             .eut(100)
             .addTo(centrifugeRecipes);
@@ -176,8 +179,8 @@ public class BauxiteRefineChain {
                 Materials.Manganese.getDust(1),
                 Materials.Beryllium.getDust(1))
             .outputChances(10000, 300, 200, 200, 200)
-            .fluidInputs(MaterialsOreAlum.GreenSapphireJuice.getFluid(1000))
-            .fluidOutputs(Materials.HydrochloricAcid.getFluid(1000))
+            .fluidInputs(MaterialsOreAlum.GreenSapphireJuice.getFluid(1 * BUCKETS))
+            .fluidOutputs(Materials.HydrochloricAcid.getFluid(1 * BUCKETS))
             .duration(2 * SECONDS + 5 * TICKS)
             .eut(100)
             .addTo(centrifugeRecipes);
@@ -191,8 +194,8 @@ public class BauxiteRefineChain {
                 Materials.Vanadium.getDust(1),
                 Materials.Magnesium.getDust(1))
             .outputChances(10000, 5000, 300, 200, 200)
-            .fluidInputs(MaterialsOreAlum.RubyJuice.getFluid(1000))
-            .fluidOutputs(Materials.HydrochloricAcid.getFluid(1000))
+            .fluidInputs(MaterialsOreAlum.RubyJuice.getFluid(1 * BUCKETS))
+            .fluidOutputs(Materials.HydrochloricAcid.getFluid(1 * BUCKETS))
             .duration(2 * SECONDS + 5 * TICKS)
             .eut(100)
             .addTo(centrifugeRecipes);

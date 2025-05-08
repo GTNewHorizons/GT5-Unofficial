@@ -5,6 +5,7 @@ import static gregtech.api.enums.Mods.EnderIO;
 import static gregtech.api.enums.Mods.EternalSingularity;
 import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
 import static gregtech.api.enums.Mods.UniversalSingularities;
+import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.MINUTES;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeConstants.AssemblyLine;
@@ -53,7 +54,7 @@ public class AssemblyLine implements Runnable {
                 ItemList.Field_Generator_EV.get(8),
                 ItemList.FluidRegulator_LuV.get(1),
                 GTModHandler.getModItem(NewHorizonsCoreMod.ID, "item.EngineeringProcessorFluidEmeraldCore", 4))
-            .fluidInputs(Materials.Enderium.getMolten(1440), Materials.Polybenzimidazole.getMolten(1584))
+            .fluidInputs(Materials.Enderium.getMolten(10 * INGOTS), Materials.Polybenzimidazole.getMolten(1584))
             .itemOutputs(new ItemStack(Blocks.tfftStorageField, 1, 6))
             .eut(TierEU.RECIPE_LuV)
             .duration(30 * SECONDS)
@@ -73,7 +74,7 @@ public class AssemblyLine implements Runnable {
                 ItemList.Field_Generator_LuV.get(4),
                 ItemList.FluidRegulator_UV.get(1),
                 GTModHandler.getModItem(NewHorizonsCoreMod.ID, "item.EngineeringProcessorFluidEmeraldCore", 16))
-            .fluidInputs(Materials.CrystallineAlloy.getMolten(2880), Materials.Polybenzimidazole.getMolten(2016))
+            .fluidInputs(Materials.CrystallineAlloy.getMolten(20 * INGOTS), Materials.Polybenzimidazole.getMolten(2016))
             .itemOutputs(new ItemStack(Blocks.tfftStorageField, 1, 7))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_UV)

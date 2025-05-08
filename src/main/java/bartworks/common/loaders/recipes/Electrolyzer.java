@@ -1,6 +1,7 @@
 package bartworks.common.loaders.recipes;
 
 import static gregtech.api.recipe.RecipeMaps.electrolyzerRecipes;
+import static gregtech.api.util.GTRecipeBuilder.BUCKETS;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
 
@@ -129,7 +130,7 @@ public class Electrolyzer implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.SiliconDioxide, 6),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Boron, 3),
                 GTOreDictUnificator.get(OrePrefixes.cell, Materials.Fluorine, 3))
-            .fluidOutputs(Materials.Oxygen.getGas(6000L))
+            .fluidOutputs(Materials.Oxygen.getGas(6 * BUCKETS))
             .duration(36 * SECONDS + 10 * TICKS)
             .eut(TierEU.RECIPE_MV)
             .addTo(electrolyzerRecipes);
@@ -142,7 +143,7 @@ public class Electrolyzer implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.SiliconDioxide, 6L),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Boron, 3),
                 GTOreDictUnificator.get(OrePrefixes.cell, Materials.Hydrogen, 1))
-            .fluidOutputs(Materials.Oxygen.getGas(1000L))
+            .fluidOutputs(Materials.Oxygen.getGas(1 * BUCKETS))
             .duration(39 * SECONDS + 10 * TICKS)
             .eut(TierEU.RECIPE_MV)
             .addTo(electrolyzerRecipes);

@@ -3,6 +3,7 @@ package gtPlusPlus.core.item.chemistry;
 import static bartworks.system.material.WerkstoffLoader.PTMetallicPowder;
 import static gregtech.api.enums.Mods.BiomesOPlenty;
 import static gregtech.api.enums.Mods.Forestry;
+import static gregtech.api.util.GTRecipeBuilder.BUCKETS;
 import static gregtech.api.util.GTRecipeBuilder.MINUTES;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeConstants.CHEMPLANT_CASING_TIER;
@@ -394,7 +395,7 @@ public class RecipeLoaderMilling {
                 GTOreDictUnificator.get(OrePrefixes.milled, Materials.Netherrack, 64),
                 GTOreDictUnificator.get(OrePrefixes.milled, Materials.Netherrack, 64),
                 GTOreDictUnificator.get(OrePrefixes.milled, Materials.Netherrack, 64))
-            .fluidInputs(Materials.NefariousOil.getFluid(8000))
+            .fluidInputs(Materials.NefariousOil.getFluid(8 * BUCKETS))
             .fluidOutputs(new FluidStack(GTPPFluids.NetherrackFlotationFroth, 1000))
             .duration(8 * MINUTES)
             .eut(TierEU.RECIPE_IV)
