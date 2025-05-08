@@ -1,7 +1,5 @@
 package gregtech.common.gui;
 
-import java.util.function.Supplier;
-
 import net.minecraft.client.gui.GuiMainMenu;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.config.Configuration;
@@ -11,7 +9,7 @@ import org.jetbrains.annotations.NotNull;
 import com.cleanroommc.modularui.api.IPanelHandler;
 import com.cleanroommc.modularui.api.drawable.IDrawable;
 import com.cleanroommc.modularui.api.drawable.IKey;
-import com.cleanroommc.modularui.api.widget.IWidget;
+import com.cleanroommc.modularui.drawable.DynamicDrawable;
 import com.cleanroommc.modularui.drawable.Rectangle;
 import com.cleanroommc.modularui.overlay.OverlayHandler;
 import com.cleanroommc.modularui.overlay.OverlayManager;
@@ -20,8 +18,6 @@ import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.ModularScreen;
 import com.cleanroommc.modularui.screen.viewport.ModularGuiContext;
 import com.cleanroommc.modularui.utils.Alignment;
-import com.cleanroommc.modularui.utils.Color;
-import com.cleanroommc.modularui.value.StringValue;
 import com.cleanroommc.modularui.widget.SingleChildWidget;
 import com.cleanroommc.modularui.widgets.ButtonWidget;
 import com.cleanroommc.modularui.widgets.ColorPickerDialog;
@@ -29,18 +25,14 @@ import com.cleanroommc.modularui.widgets.PagedWidget;
 import com.cleanroommc.modularui.widgets.SliderWidget;
 import com.cleanroommc.modularui.widgets.layout.Column;
 import com.cleanroommc.modularui.widgets.layout.Row;
-import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
 
 import gregtech.common.gui.modularui.NoSyncDouble;
-import gregtech.common.gui.modularui.widget.ColorPickerWidget;
 import gregtech.common.handlers.PowerGogglesConfigHandler;
-import gregtech.common.handlers.PowerGogglesHudHandler;
 
 public class PowerGogglesGuiOverlay {
 
-    private static String[] settings = { StatCollector.translateToLocal("GT5U.power_goggles_config.settings_general"),
-        StatCollector.translateToLocal("GT5U.power_goggles_config.settings_color_gradient"),
-        StatCollector.translateToLocal("GT5U.power_goggles_config.settings_color_text") };
+    private static String[] settings = { "GT5U.power_goggles_config.settings_general",
+        "GT5U.power_goggles_config.settings_color" };
     private static int settingsPage = 0;
 
     public static void init() {
@@ -56,7 +48,7 @@ public class PowerGogglesGuiOverlay {
                 .defaultPanel("power_goggles_overlay", gui.displayWidth, gui.displayHeight)
                 .background(IDrawable.EMPTY)
                 .size(600, 200)
-                .pos(20, 0);
+                .pos(20, 10);
 
             PagedWidget<?> pagedWidget = new PagedWidget() {
 
@@ -66,18 +58,18 @@ public class PowerGogglesGuiOverlay {
                 }
             }.controller(controller);
 
-            ButtonWidget<?> pagedWidgetButton = new ButtonWidget<>().overlay(IKey.str(settings[settingsPage]));
+            ButtonWidget<?> pagedWidgetButton = new ButtonWidget<>().overlay(IKey.lang(settings[settingsPage]));
             pagedWidgetButton.onMousePressed(mouseButton -> {
                 settingsPage = ++settingsPage % settings.length;
                 controller.setPage(settingsPage);
-                pagedWidgetButton.overlay(IKey.str(settings[settingsPage]));
+                pagedWidgetButton.overlay(IKey.lang(settings[settingsPage]));
                 return true;
             });
 
             ButtonWidget<?> notationButton = new ButtonWidget<>().overlay(
                 IKey.lang(
                     "GT5U.power_goggles_config.toggle_notation",
-                    gui.formatTypes[PowerGogglesConfigHandler.formatIndex]));
+                    StatCollector.translateToLocal(gui.formatTypes[PowerGogglesConfigHandler.formatIndex])));
             notationButton.onMousePressed(mouseButton -> {
                 PowerGogglesConfigHandler.formatIndex = (PowerGogglesConfigHandler.formatIndex + 1)
                     % gui.formatTypes.length;
@@ -85,15 +77,17 @@ public class PowerGogglesGuiOverlay {
                     .get("Format Index")
                     .set(PowerGogglesConfigHandler.formatIndex);
                 PowerGogglesConfigHandler.config.save();
-                notationButton
-                    .overlay(IKey.str("Toggle Notation: " + gui.formatTypes[PowerGogglesConfigHandler.formatIndex]));
+                notationButton.overlay(
+                    IKey.str(
+                        "Toggle Notation: "
+                            + StatCollector.translateToLocal(gui.formatTypes[PowerGogglesConfigHandler.formatIndex])));
                 return true;
             });
 
             ButtonWidget<?> readingButton = new ButtonWidget<>().overlay(
                 IKey.lang(
                     "GT5U.power_goggles_config.toggle_reading",
-                    gui.readingTypes[PowerGogglesConfigHandler.readingIndex]));
+                    StatCollector.translateToLocal(gui.readingTypes[PowerGogglesConfigHandler.readingIndex])));
             readingButton.onMousePressed(mouseButton -> {
                 PowerGogglesConfigHandler.readingIndex = (PowerGogglesConfigHandler.readingIndex + 1)
                     % gui.formatTypes.length;
@@ -104,7 +98,7 @@ public class PowerGogglesGuiOverlay {
                 readingButton.overlay(
                     IKey.lang(
                         "GT5U.power_goggles_config.toggle_reading",
-                        gui.readingTypes[PowerGogglesConfigHandler.readingIndex]));
+                        StatCollector.translateToLocal(gui.readingTypes[PowerGogglesConfigHandler.readingIndex])));
                 return true;
             });
 
@@ -238,47 +232,154 @@ public class PowerGogglesGuiOverlay {
                                 hudScaleDownButton.size(110, 18)
                                     .align(Alignment.CenterRight))));
             ModularPanel what = new ModularPanel("badPicker");
-            ColorPickerWidget colorPickerBad = new ColorPickerWidget(val -> {
-                PowerGogglesConfigHandler.gradientBadColor = val;
-                PowerGogglesConfigHandler.config.getCategory(Configuration.CATEGORY_GENERAL)
-                    .get("Bad Gradient")
-                    .set(val);
-                PowerGogglesConfigHandler.config.save();
-            }, PowerGogglesConfigHandler.gradientBadColor, true).size(200, 100);
+            IPanelHandler colorPickerBad = IPanelHandler
+                .simple(overlayPanel, (bla, blab) -> new ColorPickerDialog("badG", val -> {
+                    PowerGogglesConfigHandler.gradientBadColor = val;
+                    PowerGogglesConfigHandler.config.getCategory(Configuration.CATEGORY_GENERAL)
+                        .get("Bad Gradient")
+                        .set(val);
+                    PowerGogglesConfigHandler.config.save();
+                }, PowerGogglesConfigHandler.gradientBadColor, true).size(200, 100), true);
 
-            ColorPickerWidget colorPickerOk = new ColorPickerWidget(val -> {
-                PowerGogglesConfigHandler.gradientOkColor = val;
-                PowerGogglesConfigHandler.config.getCategory(Configuration.CATEGORY_GENERAL)
-                    .get("Ok Gradient")
-                    .set(val);
-                PowerGogglesConfigHandler.config.save();
-            }, PowerGogglesConfigHandler.gradientOkColor, true).size(200, 100);
+            IPanelHandler colorPickerOk = IPanelHandler
+                .simple(overlayPanel, (bla, blab) -> new ColorPickerDialog("okG", val -> {
+                    PowerGogglesConfigHandler.gradientOkColor = val;
+                    PowerGogglesConfigHandler.config.getCategory(Configuration.CATEGORY_GENERAL)
+                        .get("Ok Gradient")
+                        .set(val);
+                    PowerGogglesConfigHandler.config.save();
+                }, PowerGogglesConfigHandler.gradientOkColor, true).size(200, 100), true);
 
-            ColorPickerWidget colorPickerGood = new ColorPickerWidget(val -> {
-                PowerGogglesConfigHandler.gradientGoodColor = val;
-                PowerGogglesConfigHandler.config.getCategory(Configuration.CATEGORY_GENERAL)
-                    .get("Good Gradient")
-                    .set(val);
-                PowerGogglesConfigHandler.config.save();
-            }, PowerGogglesConfigHandler.gradientGoodColor, true).size(200, 100);
+            IPanelHandler colorPickerGood = IPanelHandler
+                .simple(overlayPanel, (bla, blab) -> new ColorPickerDialog("goodG", val -> {
+                    PowerGogglesConfigHandler.gradientGoodColor = val;
+                    PowerGogglesConfigHandler.config.getCategory(Configuration.CATEGORY_GENERAL)
+                        .get("Good Gradient")
+                        .set(val);
+                    PowerGogglesConfigHandler.config.save();
+                }, PowerGogglesConfigHandler.gradientGoodColor, true).size(200, 100), true);
+
+            IPanelHandler colorPickerBadText = IPanelHandler
+                .simple(overlayPanel, (bla, blab) -> new ColorPickerDialog("badG", val -> {
+                    PowerGogglesConfigHandler.textBadColor = val;
+                    PowerGogglesConfigHandler.config.getCategory(Configuration.CATEGORY_GENERAL)
+                        .get("Bad Text")
+                        .set(val);
+                    PowerGogglesConfigHandler.config.save();
+                }, PowerGogglesConfigHandler.textBadColor, true).size(200, 100), true);
+
+            IPanelHandler colorPickerOkText = IPanelHandler
+                .simple(overlayPanel, (bla, blab) -> new ColorPickerDialog("okG", val -> {
+                    PowerGogglesConfigHandler.textOkColor = val;
+                    PowerGogglesConfigHandler.config.getCategory(Configuration.CATEGORY_GENERAL)
+                        .get("Ok Text")
+                        .set(val);
+                    PowerGogglesConfigHandler.config.save();
+                }, PowerGogglesConfigHandler.textOkColor, true).size(200, 100), true);
+
+            IPanelHandler colorPickerGoodText = IPanelHandler
+                .simple(overlayPanel, (bla, blab) -> new ColorPickerDialog("goodG", val -> {
+                    PowerGogglesConfigHandler.textGoodColor = val;
+                    PowerGogglesConfigHandler.config.getCategory(Configuration.CATEGORY_GENERAL)
+                        .get("Good Text")
+                        .set(val);
+                    PowerGogglesConfigHandler.config.save();
+                }, PowerGogglesConfigHandler.textGoodColor, true).size(200, 100), true);
 
             pagedWidget.addPage(
-                new Row().sizeRel(1)
-                    .child(colorPickerBad)
-                    .child(colorPickerOk)
-                    .child(colorPickerGood)
-            // .child(createColorPicker(overlayPanel, () -> PowerGogglesConfigHandler.gradientBadColor,
-            // Configuration.CATEGORY_GENERAL, "Bad Gradient", "Bad Gradient RGB"))
-            // .child(createColorPicker(overlayPanel, () -> PowerGogglesConfigHandler.gradientBadColor,
-            // Configuration.CATEGORY_GENERAL, "OK Gradient", "OK Gradient RGB"))
-            // .child(createColorPicker(overlayPanel, () -> PowerGogglesConfigHandler.gradientBadColor,
-            // Configuration.CATEGORY_GENERAL, "Good Gradient", "GOOD Gradient RGB"))
-            );
-            pagedWidget.addPage(
-                new Column().sizeRel(1)
-                    .child(createBadTextConfig())
-                    .child(createOkTextConfig())
-                    .child(createGoodTextConfig()));
+                new Column().size(230, 18 * 3)
+                    .align(Alignment.TopCenter)
+                    .child(
+                        new ButtonWidget<>().size(230, 18)
+                            .overlay(
+                                new DynamicDrawable(
+                                    () -> IKey.str("Bad Gradient Color")
+                                        .color(PowerGogglesConfigHandler.gradientBadColor)))
+                            .marginBottom(4)
+                            .tooltipBuilder(
+                                t -> t.addLine(IKey.lang(("GT5U.power_goggles_config.gradient_bad_tooltip"))))
+                            .onMousePressed(d -> {
+                                colorPickerBad.openPanel();
+                                return true;
+                            }))
+                    .child(
+                        new ButtonWidget<>().size(230, 18)
+                            .overlay(
+                                new DynamicDrawable(
+                                    () -> IKey.str("Ok Gradient Color")
+                                        .color(PowerGogglesConfigHandler.gradientOkColor)))
+                            .tooltipBuilder(
+                                t -> t.addLine(IKey.lang(("GT5U.power_goggles_config.gradient_ok_tooltip"))))
+                            .marginBottom(4)
+                            .onMousePressed(d -> {
+                                colorPickerOk.openPanel();
+                                return true;
+                            }))
+                    .child(
+                        new ButtonWidget<>().size(230, 18)
+                            .overlay(
+                                new DynamicDrawable(
+                                    () -> IKey.str("Good Gradient Color")
+                                        .color(PowerGogglesConfigHandler.gradientGoodColor)))
+                            .tooltipBuilder(
+                                t -> t.addLine(IKey.lang(("GT5U.power_goggles_config.gradient_good_tooltip"))))
+                            .marginBottom(4)
+                            .onMousePressed(d -> {
+                                colorPickerGood.openPanel();
+                                return true;
+                            }))
+                    .child(
+                        new Row().size(230, 18)
+                            .marginBottom(4)
+                            .child(
+                                new DynamicDrawable(
+                                    () -> new Rectangle().setHorizontalGradient(
+                                        PowerGogglesConfigHandler.gradientBadColor,
+                                        PowerGogglesConfigHandler.gradientOkColor)).asWidget()
+                                            .size(115, 18))
+                            .child(
+                                new DynamicDrawable(
+                                    () -> new Rectangle().setHorizontalGradient(
+                                        PowerGogglesConfigHandler.gradientOkColor,
+                                        PowerGogglesConfigHandler.gradientGoodColor)).asWidget()
+                                            .size(115, 18)))
+                    .child(
+                        new ButtonWidget<>().size(230, 18)
+                            .overlay(
+                                new DynamicDrawable(
+                                    () -> IKey.str("Bad Text Color")
+                                        .color(PowerGogglesConfigHandler.textBadColor)))
+                            .tooltipBuilder(t -> t.addLine(IKey.lang(("GT5U.power_goggles_config.text_bad_tooltip"))))
+                            .marginBottom(4)
+                            .onMousePressed(d -> {
+                                colorPickerBadText.openPanel();
+                                return true;
+                            }))
+                    .child(
+                        new ButtonWidget<>().size(230, 18)
+                            .overlay(
+                                new DynamicDrawable(
+                                    () -> IKey.str("Ok Text Color")
+                                        .color(PowerGogglesConfigHandler.textOkColor)))
+                            .tooltipBuilder(t -> t.addLine(IKey.lang(("GT5U.power_goggles_config.text_ok_tooltip"))))
+                            .marginBottom(4)
+                            .onMousePressed(d -> {
+                                colorPickerOkText.openPanel();
+                                return true;
+                            }))
+                    .child(
+                        new ButtonWidget<>().size(230, 18)
+                            .overlay(
+                                new DynamicDrawable(
+                                    () -> new DynamicDrawable(
+                                        () -> IKey.str("Good Text Color")
+                                            .color(PowerGogglesConfigHandler.textGoodColor))))
+                            .tooltipBuilder(t -> t.addLine(IKey.lang(("GT5U.power_goggles_config.text_good_tooltip"))))
+                            .marginBottom(4)
+                            .onMousePressed(d -> {
+                                colorPickerGoodText.openPanel();
+                                return true;
+                            })));
 
             return new CustomModularScreen() {
 
@@ -287,9 +388,11 @@ public class PowerGogglesGuiOverlay {
                     return overlayPanel.child(
                         new Column().sizeRel(1)
                             .child(
-                                new SingleChildWidget<>().widthRel(1).height(18).marginBottom(4)
+                                new SingleChildWidget<>().widthRel(1)
+                                    .height(18)
+                                    .marginBottom(4)
                                     .child(
-                                        pagedWidgetButton.size(263, 18)
+                                        pagedWidgetButton.size(230, 18)
                                             .align(Alignment.Center)))
                             .child(
                                 new SingleChildWidget<>().sizeRel(1, 0.8f)
@@ -302,391 +405,4 @@ public class PowerGogglesGuiOverlay {
         OverlayManager.register(
             new OverlayHandler(screen -> screen instanceof GuiMainMenu, screen -> new ModularScreen(hackPanel)));
     }
-
-    private static IWidget createColorPicker(ModularPanel parent, Supplier<Integer> supplier, String category,
-        String key, String buttonText) {
-        return new ButtonWidget<>().size(120, 18)
-            .overlay(IKey.str(buttonText))
-            .onMousePressed(d -> { return true; });
-    }
-
-    private static IWidget createBadRgbConfig(ModularPanel parent) {
-        IPanelHandler colorPicker = IPanelHandler.simple(parent, (a, b) -> new ColorPickerDialog(val -> {
-            PowerGogglesConfigHandler.gradientBadColor = val;
-            PowerGogglesConfigHandler.config.getCategory(Configuration.CATEGORY_GENERAL)
-                .get("OK Gradient Red")
-                .set(Color.getRed(PowerGogglesConfigHandler.gradientBadColor));
-            PowerGogglesConfigHandler.config.save();
-        }, PowerGogglesConfigHandler.gradientBadColor, true).size(200, 120), true);
-        return new ButtonWidget<>().size(120, 18)
-            .overlay(IKey.str("Bad Gradient Color"))
-            .onMousePressed(d -> {
-                colorPicker.openPanel();
-                return true;
-            });
-    }
-    // private static IWidget createBadRgbConfig() {
-    // return new Column().sizeRel(1, 0.3f)
-    // .child(
-    // IKey.lang("GT5U.power_goggles_config.gradient_bad")
-    // .asWidget()
-    // .tooltip(
-    // t -> t.add(StatCollector.translateToLocal("GT5U.power_goggles_config.gradient_bad_tooltip")))
-    // .color(Color.WHITE.main)
-    // .background(new Rectangle().setColor(Color.argb(11, 22, 145, (int) (255 * 0.65f))))
-    // .sizeRel(1, 0.5f)
-    // .alignment(Alignment.Center))
-    // .child(
-    // new Row().sizeRel(1, 0.5f)
-    // .child(
-    // new TextFieldWidget().sizeRel(0.33f, 0.5f)
-    // .setNumbers(0, 255)
-    // .value(
-    // new StringValue.Dynamic(
-    // () -> String.valueOf(Color.getRed(PowerGogglesConfigHandler.gradientBadColor)),
-    // (red -> {
-    // PowerGogglesConfigHandler.gradientBadColor = Color
-    // .withRed(PowerGogglesConfigHandler.gradientBadColor, Integer.parseInt(red));
-    // PowerGogglesConfigHandler.config.getCategory(Configuration.CATEGORY_GENERAL)
-    // .get("Bad Gradient Red")
-    // .set(Color.getRed(PowerGogglesConfigHandler.gradientBadColor));
-    // PowerGogglesConfigHandler.config.save();
-    // }))))
-    // .child(
-    // new TextFieldWidget().sizeRel(0.33f, 0.5f)
-    // .setNumbers(0, 255)
-    // .value(
-    // new StringValue.Dynamic(
-    // () -> String.valueOf(Color.getGreen(PowerGogglesConfigHandler.gradientBadColor)),
-    // (green -> {
-    // PowerGogglesConfigHandler.gradientBadColor = Color.withGreen(
-    // PowerGogglesConfigHandler.gradientBadColor,
-    // Integer.parseInt(green));
-    // PowerGogglesConfigHandler.config.getCategory(Configuration.CATEGORY_GENERAL)
-    // .get("Bad Gradient Green")
-    // .set(Color.getGreen(PowerGogglesConfigHandler.gradientBadColor));
-    // PowerGogglesConfigHandler.config.save();
-    // }))))
-    // .child(
-    // new TextFieldWidget().sizeRel(0.33f, 0.5f)
-    // .setNumbers(0, 255)
-    // .value(
-    // new StringValue.Dynamic(
-    // () -> String.valueOf(Color.getBlue(PowerGogglesConfigHandler.gradientBadColor)),
-    // (blue -> {
-    // PowerGogglesConfigHandler.gradientBadColor = Color.withBlue(
-    // PowerGogglesConfigHandler.gradientBadColor,
-    // Integer.parseInt(blue));
-    // PowerGogglesConfigHandler.config.getCategory(Configuration.CATEGORY_GENERAL)
-    // .get("Bad Gradient Blue")
-    // .set(Color.getBlue(PowerGogglesConfigHandler.gradientBadColor));
-    // PowerGogglesConfigHandler.config.save();
-    // })))));
-    // }
-
-    private static IWidget createOkRgbConfig() {
-        return new Column().sizeRel(1, 0.3f)
-            .child(
-                IKey.lang("GT5U.power_goggles_config.gradient_ok")
-                    .asWidget()
-                    .tooltip(
-                        t -> t.add(StatCollector.translateToLocal("GT5U.power_goggles_config.gradient_ok_tooltip")))
-                    .color(Color.WHITE.main)
-                    .background(new Rectangle().setColor(Color.argb(11, 22, 145, (int) (255 * 0.65f))))
-                    .sizeRel(1, 0.5f)
-                    .alignment(Alignment.Center))
-            .child(
-                new Row().sizeRel(1, 0.5f)
-                    .child(
-                        new TextFieldWidget().sizeRel(0.33f, 0.5f)
-                            .setNumbers(0, 255)
-                            .value(
-                                new StringValue.Dynamic(
-                                    () -> String.valueOf(Color.getRed(PowerGogglesConfigHandler.gradientOkColor)),
-                                    (red -> {
-                                        PowerGogglesConfigHandler.gradientOkColor = Color
-                                            .withRed(PowerGogglesConfigHandler.gradientOkColor, Integer.parseInt(red));
-                                        PowerGogglesConfigHandler.config.getCategory(Configuration.CATEGORY_GENERAL)
-                                            .get("OK Gradient Red")
-                                            .set(Color.getRed(PowerGogglesConfigHandler.gradientOkColor));
-                                        PowerGogglesConfigHandler.config.save();
-                                    }))))
-                    .child(
-                        new TextFieldWidget().sizeRel(0.33f, 0.5f)
-                            .setNumbers(0, 255)
-                            .value(
-                                new StringValue.Dynamic(
-                                    () -> String.valueOf(Color.getGreen(PowerGogglesConfigHandler.gradientOkColor)),
-                                    (green -> {
-                                        PowerGogglesConfigHandler.gradientOkColor = Color.withGreen(
-                                            PowerGogglesConfigHandler.gradientOkColor,
-                                            Integer.parseInt(green));
-                                        PowerGogglesConfigHandler.config.getCategory(Configuration.CATEGORY_GENERAL)
-                                            .get("OK Gradient Green")
-                                            .set(Color.getGreen(PowerGogglesConfigHandler.gradientOkColor));
-                                        PowerGogglesConfigHandler.config.save();
-                                    }))))
-                    .child(
-                        new TextFieldWidget().sizeRel(0.33f, 0.5f)
-                            .setNumbers(0, 255)
-                            .value(
-                                new StringValue.Dynamic(
-                                    () -> String.valueOf(Color.getBlue(PowerGogglesConfigHandler.gradientOkColor)),
-                                    (blue -> {
-                                        PowerGogglesConfigHandler.gradientOkColor = Color.withBlue(
-                                            PowerGogglesConfigHandler.gradientOkColor,
-                                            Integer.parseInt(blue));
-                                        PowerGogglesConfigHandler.config.getCategory(Configuration.CATEGORY_GENERAL)
-                                            .get("OK Gradient Blue")
-                                            .set(Color.getBlue(PowerGogglesConfigHandler.gradientOkColor));
-                                        PowerGogglesConfigHandler.config.save();
-                                    })))));
-    }
-
-    private static IWidget createGoodRgbConfig() {
-        return new Column().sizeRel(1, 0.3f)
-            .child(
-                IKey.lang("GT5U.power_goggles_config.gradient_good")
-                    .asWidget()
-                    .tooltip(
-                        t -> t.add(StatCollector.translateToLocal("GT5U.power_goggles_config.gradient_good_tooltip")))
-                    .color(Color.WHITE.main)
-                    .background(new Rectangle().setColor(Color.argb(11, 22, 145, (int) (255 * 0.65f))))
-                    .sizeRel(1, 0.5f)
-                    .alignment(Alignment.Center))
-            .child(
-                new Row().sizeRel(1, 0.5f)
-                    .child(
-                        new TextFieldWidget().sizeRel(0.33f, 0.5f)
-                            .setNumbers(0, 255)
-                            .value(
-                                new StringValue.Dynamic(
-                                    () -> String.valueOf(Color.getRed(PowerGogglesConfigHandler.gradientGoodColor)),
-                                    (red -> {
-                                        PowerGogglesConfigHandler.gradientGoodColor = Color.withRed(
-                                            PowerGogglesConfigHandler.gradientGoodColor,
-                                            Integer.parseInt(red));
-                                        PowerGogglesConfigHandler.config.getCategory(Configuration.CATEGORY_GENERAL)
-                                            .get("Good Gradient Red")
-                                            .set(Color.getRed(PowerGogglesConfigHandler.gradientGoodColor));
-                                        PowerGogglesConfigHandler.config.save();
-                                    }))))
-                    .child(
-                        new TextFieldWidget().sizeRel(0.33f, 0.5f)
-                            .setNumbers(0, 255)
-                            .value(
-                                new StringValue.Dynamic(
-                                    () -> String.valueOf(Color.getGreen(PowerGogglesConfigHandler.gradientGoodColor)),
-                                    (green -> {
-                                        PowerGogglesConfigHandler.gradientGoodColor = Color.withGreen(
-                                            PowerGogglesConfigHandler.gradientGoodColor,
-                                            Integer.parseInt(green));
-                                        PowerGogglesConfigHandler.config.getCategory(Configuration.CATEGORY_GENERAL)
-                                            .get("Good Gradient Green")
-                                            .set(Color.getGreen(PowerGogglesConfigHandler.gradientGoodColor));
-                                        PowerGogglesConfigHandler.config.save();
-                                    }))))
-                    .child(
-                        new TextFieldWidget().sizeRel(0.33f, 0.5f)
-                            .setNumbers(0, 255)
-                            .value(
-                                new StringValue.Dynamic(
-                                    () -> String.valueOf(Color.getBlue(PowerGogglesConfigHandler.gradientGoodColor)),
-                                    (blue -> {
-                                        PowerGogglesConfigHandler.gradientGoodColor = Color.withBlue(
-                                            PowerGogglesConfigHandler.gradientGoodColor,
-                                            Integer.parseInt(blue));
-                                        PowerGogglesConfigHandler.config.getCategory(Configuration.CATEGORY_GENERAL)
-                                            .get("Good Gradient Blue")
-                                            .set(Color.getBlue(PowerGogglesConfigHandler.gradientGoodColor));
-                                        PowerGogglesConfigHandler.config.save();
-                                    })))));
-    }
-
-    private static IWidget createBadTextConfig() {
-        return new Column().sizeRel(1, 0.3f)
-            .child(
-                IKey.lang("GT5U.power_goggles_config.text_bad")
-                    .asWidget()
-                    .tooltip(t -> t.add(StatCollector.translateToLocal("GT5U.power_goggles_config.text_bad_tooltip")))
-                    .color(Color.WHITE.main)
-                    .background(new Rectangle().setColor(Color.argb(11, 22, 145, (int) (255 * 0.65f))))
-                    .sizeRel(1, 0.5f)
-                    .alignment(Alignment.Center))
-            .child(
-                new Row().sizeRel(1, 0.5f)
-                    .child(
-                        new TextFieldWidget().sizeRel(0.33f, 0.5f)
-                            .setNumbers(0, 255)
-                            .value(
-                                new StringValue.Dynamic(
-                                    () -> String.valueOf(Color.getRed(PowerGogglesConfigHandler.textBadColor)),
-                                    (red -> {
-                                        PowerGogglesConfigHandler.textBadColor = Color
-                                            .withRed(PowerGogglesConfigHandler.textBadColor, Integer.parseInt(red));
-                                        PowerGogglesConfigHandler.config.getCategory(Configuration.CATEGORY_GENERAL)
-                                            .get("Bad Text Red")
-                                            .set(Color.getRed(PowerGogglesConfigHandler.textBadColor));
-                                        PowerGogglesConfigHandler.config.save();
-                                        PowerGogglesHudHandler.updateColors();
-                                    }))))
-                    .child(
-                        new TextFieldWidget().sizeRel(0.33f, 0.5f)
-                            .setNumbers(0, 255)
-                            .value(
-                                new StringValue.Dynamic(
-                                    () -> String.valueOf(Color.getGreen(PowerGogglesConfigHandler.textBadColor)),
-                                    (green -> {
-                                        PowerGogglesConfigHandler.textBadColor = Color
-                                            .withGreen(PowerGogglesConfigHandler.textBadColor, Integer.parseInt(green));
-                                        PowerGogglesConfigHandler.config.getCategory(Configuration.CATEGORY_GENERAL)
-                                            .get("Bad Text Green")
-                                            .set(Color.getGreen(PowerGogglesConfigHandler.textBadColor));
-                                        PowerGogglesConfigHandler.config.save();
-                                        PowerGogglesHudHandler.updateColors();
-
-                                    }))))
-                    .child(
-                        new TextFieldWidget().sizeRel(0.33f, 0.5f)
-                            .setNumbers(0, 255)
-                            .value(
-                                new StringValue.Dynamic(
-                                    () -> String.valueOf(Color.getBlue(PowerGogglesConfigHandler.textBadColor)),
-                                    (blue -> {
-                                        PowerGogglesConfigHandler.textBadColor = Color
-                                            .withBlue(PowerGogglesConfigHandler.textBadColor, Integer.parseInt(blue));
-                                        PowerGogglesConfigHandler.config.getCategory(Configuration.CATEGORY_GENERAL)
-                                            .get("Bad Text Blue")
-                                            .set(Color.getBlue(PowerGogglesConfigHandler.textBadColor));
-                                        PowerGogglesConfigHandler.config.save();
-                                        PowerGogglesHudHandler.updateColors();
-
-                                    })))));
-    }
-
-    private static IWidget createOkTextConfig() {
-        return new Column().sizeRel(1, 0.3f)
-            .child(
-                IKey.lang("GT5U.power_goggles_config.text_ok")
-                    .asWidget()
-                    .tooltip(t -> t.add(StatCollector.translateToLocal("GT5U.power_goggles_config.text_ok_tooltip")))
-                    .color(Color.WHITE.main)
-                    .background(new Rectangle().setColor(Color.argb(11, 22, 145, (int) (255 * 0.65f))))
-                    .sizeRel(1, 0.5f)
-                    .alignment(Alignment.Center))
-            .child(
-                new Row().sizeRel(1, 0.5f)
-                    .child(
-                        new TextFieldWidget().sizeRel(0.33f, 0.5f)
-                            .setNumbers(0, 255)
-                            .value(
-                                new StringValue.Dynamic(
-                                    () -> String.valueOf(Color.getRed(PowerGogglesConfigHandler.textOkColor)),
-                                    (red -> {
-                                        PowerGogglesConfigHandler.textOkColor = Color
-                                            .withRed(PowerGogglesConfigHandler.textOkColor, Integer.parseInt(red));
-                                        PowerGogglesConfigHandler.config.getCategory(Configuration.CATEGORY_GENERAL)
-                                            .get("OK Text Red")
-                                            .set(Color.getRed(PowerGogglesConfigHandler.textOkColor));
-                                        PowerGogglesConfigHandler.config.save();
-                                        PowerGogglesHudHandler.updateColors();
-
-                                    }))))
-                    .child(
-                        new TextFieldWidget().sizeRel(0.33f, 0.5f)
-                            .setNumbers(0, 255)
-                            .value(
-                                new StringValue.Dynamic(
-                                    () -> String.valueOf(Color.getGreen(PowerGogglesConfigHandler.textOkColor)),
-                                    (green -> {
-                                        PowerGogglesConfigHandler.textOkColor = Color
-                                            .withGreen(PowerGogglesConfigHandler.textOkColor, Integer.parseInt(green));
-                                        PowerGogglesConfigHandler.config.getCategory(Configuration.CATEGORY_GENERAL)
-                                            .get("OK Color Green")
-                                            .set(Color.getGreen(PowerGogglesConfigHandler.textOkColor));
-                                        PowerGogglesConfigHandler.config.save();
-                                        PowerGogglesHudHandler.updateColors();
-
-                                    }))))
-                    .child(
-                        new TextFieldWidget().sizeRel(0.33f, 0.5f)
-                            .setNumbers(0, 255)
-                            .value(
-                                new StringValue.Dynamic(
-                                    () -> String.valueOf(Color.getBlue(PowerGogglesConfigHandler.textOkColor)),
-                                    (blue -> {
-                                        PowerGogglesConfigHandler.textOkColor = Color
-                                            .withBlue(PowerGogglesConfigHandler.textOkColor, Integer.parseInt(blue));
-                                        PowerGogglesConfigHandler.config.getCategory(Configuration.CATEGORY_GENERAL)
-                                            .get("OK Color Blue")
-                                            .set(Color.getBlue(PowerGogglesConfigHandler.textOkColor));
-                                        PowerGogglesConfigHandler.config.save();
-                                        PowerGogglesHudHandler.updateColors();
-
-                                    })))));
-    }
-
-    private static IWidget createGoodTextConfig() {
-        return new Column().sizeRel(1, 0.3f)
-            .child(
-                IKey.lang("GT5U.power_goggles_config.text_good")
-                    .asWidget()
-                    .tooltip(t -> t.add(StatCollector.translateToLocal("GT5U.power_goggles_config.text_good_tooltip")))
-                    .color(Color.WHITE.main)
-                    .background(new Rectangle().setColor(Color.argb(11, 22, 145, (int) (255 * 0.65f))))
-                    .sizeRel(1, 0.5f)
-                    .alignment(Alignment.Center))
-            .child(
-                new Row().sizeRel(1, 0.5f)
-                    .child(
-                        new TextFieldWidget().sizeRel(0.33f, 0.5f)
-                            .setNumbers(0, 255)
-                            .value(
-                                new StringValue.Dynamic(
-                                    () -> String.valueOf(Color.getRed(PowerGogglesConfigHandler.textGoodColor)),
-                                    (red -> {
-                                        PowerGogglesConfigHandler.textGoodColor = Color
-                                            .withRed(PowerGogglesConfigHandler.textGoodColor, Integer.parseInt(red));
-                                        PowerGogglesConfigHandler.config.getCategory(Configuration.CATEGORY_GENERAL)
-                                            .get("Good Text Red")
-                                            .set(Color.getRed(PowerGogglesConfigHandler.textGoodColor));
-                                        PowerGogglesConfigHandler.config.save();
-                                        PowerGogglesHudHandler.updateColors();
-
-                                    }))))
-                    .child(
-                        new TextFieldWidget().sizeRel(0.33f, 0.5f)
-                            .setNumbers(0, 255)
-                            .value(
-                                new StringValue.Dynamic(
-                                    () -> String.valueOf(Color.getGreen(PowerGogglesConfigHandler.textGoodColor)),
-                                    (green -> {
-                                        PowerGogglesConfigHandler.textGoodColor = Color.withGreen(
-                                            PowerGogglesConfigHandler.textGoodColor,
-                                            Integer.parseInt(green));
-                                        PowerGogglesConfigHandler.config.getCategory(Configuration.CATEGORY_GENERAL)
-                                            .get("Good Text Green")
-                                            .set(Color.getGreen(PowerGogglesConfigHandler.textGoodColor));
-                                        PowerGogglesConfigHandler.config.save();
-                                        PowerGogglesHudHandler.updateColors();
-
-                                    }))))
-                    .child(
-                        new TextFieldWidget().sizeRel(0.33f, 0.5f)
-                            .setNumbers(0, 255)
-                            .value(
-                                new StringValue.Dynamic(
-                                    () -> String.valueOf(Color.getBlue(PowerGogglesConfigHandler.textGoodColor)),
-                                    (blue -> {
-                                        PowerGogglesConfigHandler.textGoodColor = Color
-                                            .withBlue(PowerGogglesConfigHandler.textGoodColor, Integer.parseInt(blue));
-                                        PowerGogglesConfigHandler.config.getCategory(Configuration.CATEGORY_GENERAL)
-                                            .get("Good Text Blue")
-                                            .set(Color.getBlue(PowerGogglesConfigHandler.textGoodColor));
-                                        PowerGogglesConfigHandler.config.save();
-                                        PowerGogglesHudHandler.updateColors();
-
-                                    })))));
-    }
-
 }

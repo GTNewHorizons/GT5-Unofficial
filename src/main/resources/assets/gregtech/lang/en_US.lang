@@ -156,8 +156,7 @@ GT5U.power_goggles_config.reading_total=TOTAL
 GT5U.power_goggles_config.reading_eut=EUT
 GT5U.power_goggles_config.settings_general=General Settings
 GT5U.power_goggles_config.settings_scale=Scale settings
-GT5U.power_goggles_config.settings_color_gradient=Color Scheme: Gradient
-GT5U.power_goggles_config.settings_color_text=Color Scheme: Text
+GT5U.power_goggles_config.settings_color=Color Scheme
 
 GT5U.power_goggles_config.toggle_notation=Toggle Notation: %s
 GT5U.power_goggles_config.toggle_reading=Toggle Reading Type: %s
