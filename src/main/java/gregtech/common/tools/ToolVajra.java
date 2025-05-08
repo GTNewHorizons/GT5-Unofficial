@@ -6,12 +6,12 @@ import static gregtech.api.enums.GTValues.VN;
 import java.util.List;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.client.Minecraft;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -27,6 +27,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.items.ItemTool;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
+import gregtech.api.metatileentity.BaseTileEntity;
 import gregtech.common.blocks.BlockFrameBox;
 import gregtech.common.blocks.BlockOres;
 import gtPlusPlus.core.block.base.BlockBaseOre;
@@ -149,7 +150,7 @@ public class ToolVajra extends ItemTool implements IElectricItem {
             return super.onItemUseFirst(stack, player, world, x, y, z, side, hitX, hitY, hitZ);
         if (!ElectricItem.manager.canUse(stack, baseCost))
             return super.onItemUseFirst(stack, player, world, x, y, z, side, hitX, hitY, hitZ);
-        if (target instanceof ITileEntityProvider && !isHarvestableTE(target, tileEntity) && !player.isSneaking())
+        if (!isHarvestableTileEntity(tileEntity, target, player) && !player.isSneaking())
             return super.onItemUseFirst(stack, player, world, x, y, z, side, hitX, hitY, hitZ);
 
         if (world.isRemote) {
@@ -168,7 +169,14 @@ public class ToolVajra extends ItemTool implements IElectricItem {
         return super.onItemUseFirst(stack, player, world, x, y, z, side, hitX, hitY, hitZ);
     }
 
-    private boolean isHarvestableTE(Block target, TileEntity tileEntity) {
+    private boolean isHarvestableTileEntity(TileEntity tileEntity, Block target, EntityPlayer player) {
+        if (tileEntity instanceof IInventory inv && inv.getSizeInventory() > 0) return false;
+        if (isHarvestableGTSpecial(target, tileEntity) && !player.isSneaking()) return true;
+        if (tileEntity instanceof BaseTileEntity bte && bte.useModularUI()) return false;
+        return true;
+    }
+
+    private boolean isHarvestableGTSpecial(Block target, TileEntity tileEntity) {
         if (target instanceof BlockFrameBox) return tileEntity == null;
 
         if (target instanceof BlockOres || target instanceof BWMetaGeneratedOres || target instanceof BlockBaseOre)
