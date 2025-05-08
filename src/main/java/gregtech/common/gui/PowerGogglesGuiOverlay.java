@@ -10,6 +10,7 @@ import com.cleanroommc.modularui.api.IPanelHandler;
 import com.cleanroommc.modularui.api.drawable.IDrawable;
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.drawable.DynamicDrawable;
+import com.cleanroommc.modularui.drawable.GuiTextures;
 import com.cleanroommc.modularui.drawable.Rectangle;
 import com.cleanroommc.modularui.overlay.OverlayHandler;
 import com.cleanroommc.modularui.overlay.OverlayManager;
@@ -194,16 +195,68 @@ public class PowerGogglesGuiOverlay {
                         chatHidesHudButton.size(230, 18)
                             .marginBottom(4))
                     .child(
-                        new SliderWidget().width(130)
-                            .bounds(0, 2)
-                            .stopper(0.1)
-                            .value(new NoSyncDouble(() -> PowerGogglesConfigHandler.hudScale, val -> {
-                                PowerGogglesConfigHandler.hudScale = val;
-                                PowerGogglesConfigHandler.config.getCategory(Configuration.CATEGORY_GENERAL)
-                                    .get("HUD Scale")
-                                    .set(PowerGogglesConfigHandler.hudScale);
-                                PowerGogglesConfigHandler.config.save();
-                            })))
+                        new Row().size(230, 18)
+                            .marginBottom(4)
+                            .child(
+                                IKey.lang("GT5U.power_goggles_config.main_text_scale")
+                                    .asWidget()
+                                    .paddingLeft(3)
+                                    .width(120))
+                            .child(
+                                new SliderWidget().size(110, 18)
+                                    .background(GuiTextures.MC_BUTTON)
+                                    .bounds(0, 2)
+                                    .stopper(0.1)
+                                    .value(new NoSyncDouble(() -> PowerGogglesConfigHandler.mainTextScaling, val -> {
+                                        PowerGogglesConfigHandler.mainTextScaling = val;
+                                        PowerGogglesConfigHandler.config.getCategory(Configuration.CATEGORY_GENERAL)
+                                            .get("Storage Text Scale")
+                                            .set(PowerGogglesConfigHandler.mainTextScaling);
+                                        PowerGogglesConfigHandler.config.save();
+                                    }))))
+                    .child(
+                        new Row().size(230, 18)
+                            .marginBottom(4)
+                            .child(
+                                IKey.lang("GT5U.power_goggles_config.sub_text_scale")
+                                    .asWidget()
+                                    .alignX(1)
+                                    .paddingLeft(3)
+                                    .width(120))
+                            .child(
+                                new SliderWidget().size(110, 18)
+                                    .background(GuiTextures.MC_BUTTON)
+                                    .bounds(0, 2)
+                                    .stopper(0.1)
+                                    .value(new NoSyncDouble(() -> PowerGogglesConfigHandler.subTextScaling, val -> {
+                                        PowerGogglesConfigHandler.subTextScaling = val;
+                                        PowerGogglesConfigHandler.config.getCategory(Configuration.CATEGORY_GENERAL)
+                                            .get("Timed Reading Text Scale")
+                                            .set(PowerGogglesConfigHandler.subTextScaling);
+                                        PowerGogglesConfigHandler.config.save();
+                                    }))))
+                    .child(
+                        new Row().size(230, 18)
+                            .marginBottom(4)
+                            .child(
+                                IKey.lang("GT5U.power_goggles_config.hud_scale")
+                                    .asWidget()
+                                    .alignX(1)
+                                    .paddingLeft(3)
+                                    .width(120))
+                            .child(
+                                new SliderWidget().size(110, 18)
+                                    .background(GuiTextures.MC_BUTTON)
+                                    .bounds(0, 2)
+                                    .stopper(0.1)
+                                    .value(new NoSyncDouble(() -> PowerGogglesConfigHandler.hudScale, val -> {
+                                        PowerGogglesConfigHandler.hudScale = val;
+                                        PowerGogglesConfigHandler.config.getCategory(Configuration.CATEGORY_GENERAL)
+                                            .get("HUD Scale")
+                                            .set(PowerGogglesConfigHandler.hudScale);
+                                        PowerGogglesConfigHandler.config.save();
+                                    }))))
+
                     .child(
                         new Row().size(230, 18)
                             .marginBottom(4)
@@ -231,7 +284,6 @@ public class PowerGogglesGuiOverlay {
                             .child(
                                 hudScaleDownButton.size(110, 18)
                                     .align(Alignment.CenterRight))));
-            ModularPanel what = new ModularPanel("badPicker");
             IPanelHandler colorPickerBad = IPanelHandler
                 .simple(overlayPanel, (bla, blab) -> new ColorPickerDialog("badG", val -> {
                     PowerGogglesConfigHandler.gradientBadColor = val;
