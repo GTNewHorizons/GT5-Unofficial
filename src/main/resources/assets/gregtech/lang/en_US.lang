@@ -160,7 +160,7 @@ GT5U.power_goggles_config.settings_color=Color Scheme
 
 GT5U.power_goggles_config.toggle_notation=Toggle Notation: %s
 GT5U.power_goggles_config.toggle_reading=Toggle Reading Type: %s
-GT5U.power_goggles_config.toggle_hud_with_chat=Toggle HUD with chat open: %s
+GT5U.power_goggles_config.toggle_hud_with_chat=Hide HUD when chat open: %s
 GT5U.power_goggles_config.main_text_scale=Storage Text Scale
 GT5U.power_goggles_config.sub_text_scale=Sub Text Scale
 GT5U.power_goggles_config.hud_scale=HUD Scale
