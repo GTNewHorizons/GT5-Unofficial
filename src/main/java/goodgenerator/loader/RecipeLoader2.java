@@ -147,7 +147,7 @@ public class RecipeLoader2 {
             .addTo(assemblerRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(ItemRefer.Advanced_Fuel_Rod.get(1), ItemRefer.High_Density_Uranium.get(1))
+            .itemInputs(ItemRefer.Advanced_Fuel_Rod.get(1), ItemRefer.High_Density_Uranium_Nugget.get(1))
             .itemOutputs(ItemRefer.Fuel_Rod_U_1.get(1))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_MV)
@@ -184,7 +184,7 @@ public class RecipeLoader2 {
             .addTo(assemblerRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(ItemRefer.Advanced_Fuel_Rod.get(1), ItemRefer.High_Density_Plutonium.get(1))
+            .itemInputs(ItemRefer.Advanced_Fuel_Rod.get(1), ItemRefer.High_Density_Plutonium_Nugget.get(1))
             .itemOutputs(ItemRefer.Fuel_Rod_Pu_1.get(1))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_MV)
@@ -1622,12 +1622,12 @@ public class RecipeLoader2 {
             .itemInputs(ItemRefer.Fuel_Rod_U_Depleted_1.get(1))
             .itemOutputs(
                 ItemRefer.Advanced_Fuel_Rod.get(1),
-                Materials.Uranium.getDust(8),
-                Materials.Plutonium.getDust(2),
-                Materials.Graphite.getDust(8),
+                Materials.Uranium.getDust(2),
+                Materials.Plutonium.getDust(1),
+                Materials.Graphite.getDust(2),
                 Materials.Uranium235.getDust(1),
                 Materials.Plutonium241.getDust(1))
-            .outputChances(10000, 10000, 10000, 9000, 5000, 3000)
+            .outputChances(10000, 5000, 10000, 9000, 1250, 750)
             .fluidOutputs(WerkstoffLoader.Neon.getFluidOrGas(32))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_EV)
@@ -1637,12 +1637,12 @@ public class RecipeLoader2 {
             .itemInputs(ItemRefer.Fuel_Rod_U_Depleted_2.get(1))
             .itemOutputs(
                 ItemRefer.Advanced_Fuel_Rod.get(2),
-                Materials.Uranium.getDust(16),
-                Materials.Plutonium.getDust(4),
-                Materials.Graphite.getDust(16),
-                Materials.Uranium235.getDust(2),
-                Materials.Plutonium241.getDust(2))
-            .outputChances(10000, 10000, 10000, 9000, 5000, 3000)
+                Materials.Uranium.getDust(4),
+                Materials.Plutonium.getDust(1),
+                Materials.Graphite.getDust(4),
+                Materials.Uranium235.getDust(1),
+                Materials.Plutonium241.getDust(1))
+            .outputChances(10000, 10000, 10000, 9000, 2500, 1500)
             .fluidOutputs(WerkstoffLoader.Neon.getFluidOrGas(64))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_EV)
@@ -1652,11 +1652,11 @@ public class RecipeLoader2 {
             .itemInputs(ItemRefer.Fuel_Rod_U_Depleted_4.get(1))
             .itemOutputs(
                 ItemRefer.Advanced_Fuel_Rod.get(4),
-                Materials.Uranium.getDust(32),
-                Materials.Plutonium.getDust(8),
-                Materials.Graphite.getDust(32),
-                Materials.Uranium235.getDust(4),
-                Materials.Plutonium241.getDust(4))
+                Materials.Uranium.getDust(8),
+                Materials.Plutonium.getDust(2),
+                Materials.Graphite.getDust(8),
+                Materials.Uranium235.getDust(1),
+                Materials.Plutonium241.getDust(1))
             .outputChances(10000, 10000, 10000, 9000, 5000, 3000)
             .fluidOutputs(WerkstoffLoader.Neon.getFluidOrGas(128))
             .duration(10 * SECONDS)
