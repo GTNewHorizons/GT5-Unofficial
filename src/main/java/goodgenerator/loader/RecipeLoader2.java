@@ -23,6 +23,7 @@ import static gregtech.api.recipe.RecipeMaps.multiblockChemicalReactorRecipes;
 import static gregtech.api.recipe.RecipeMaps.plasmaForgeRecipes;
 import static gregtech.api.recipe.RecipeMaps.unpackagerRecipes;
 import static gregtech.api.recipe.RecipeMaps.vacuumFreezerRecipes;
+import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.MINUTES;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeConstants.AssemblyLine;
@@ -1628,7 +1629,7 @@ public class RecipeLoader2 {
                 Materials.Uranium235.getDust(1),
                 Materials.Plutonium241.getDust(1))
             .outputChances(10000, 5000, 10000, 9000, 1250, 750)
-            .fluidOutputs(WerkstoffLoader.Neon.getFluidOrGas(32))
+            .fluidOutputs(WerkstoffLoader.Neon.getFluidOrGas(32), Materials.TungstenCarbide.getMolten(1 * INGOTS))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_EV)
             .addTo(centrifugeRecipes);
@@ -1643,7 +1644,7 @@ public class RecipeLoader2 {
                 Materials.Uranium235.getDust(1),
                 Materials.Plutonium241.getDust(1))
             .outputChances(10000, 10000, 10000, 9000, 2500, 1500)
-            .fluidOutputs(WerkstoffLoader.Neon.getFluidOrGas(64))
+            .fluidOutputs(WerkstoffLoader.Neon.getFluidOrGas(64), Materials.TungstenCarbide.getMolten(2 * INGOTS))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_EV)
             .addTo(centrifugeRecipes);
@@ -1658,7 +1659,7 @@ public class RecipeLoader2 {
                 Materials.Uranium235.getDust(1),
                 Materials.Plutonium241.getDust(1))
             .outputChances(10000, 10000, 10000, 9000, 5000, 3000)
-            .fluidOutputs(WerkstoffLoader.Neon.getFluidOrGas(128))
+            .fluidOutputs(WerkstoffLoader.Neon.getFluidOrGas(128), Materials.TungstenCarbide.getMolten(4 * INGOTS))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_EV)
             .addTo(centrifugeRecipes);
@@ -1673,7 +1674,7 @@ public class RecipeLoader2 {
                 Materials.Uranium.getDust(1),
                 Materials.Uranium235.getDust(1))
             .outputChances(10000, 10000, 10000, 9000, 5000, 3000)
-            .fluidOutputs(Materials.Argon.getGas(32))
+            .fluidOutputs(Materials.Argon.getGas(32), Materials.HSSS.getMolten(1 * INGOTS))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_EV)
             .addTo(centrifugeRecipes);
@@ -1688,7 +1689,7 @@ public class RecipeLoader2 {
                 Materials.Uranium.getDust(2),
                 Materials.Uranium235.getDust(2))
             .outputChances(10000, 10000, 10000, 9000, 5000, 3000)
-            .fluidOutputs(Materials.Argon.getGas(64))
+            .fluidOutputs(Materials.Argon.getGas(64), Materials.HSSS.getMolten(2 * INGOTS))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_EV)
             .addTo(centrifugeRecipes);
@@ -1703,7 +1704,7 @@ public class RecipeLoader2 {
                 Materials.Uranium.getDust(4),
                 Materials.Uranium235.getDust(4))
             .outputChances(10000, 10000, 10000, 9000, 5000, 3000)
-            .fluidOutputs(Materials.Argon.getGas(128))
+            .fluidOutputs(Materials.Argon.getGas(128), Materials.HSSS.getMolten(4 * INGOTS))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_EV)
             .addTo(centrifugeRecipes);
