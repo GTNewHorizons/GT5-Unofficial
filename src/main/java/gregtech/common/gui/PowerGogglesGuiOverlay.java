@@ -19,6 +19,7 @@ import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.ModularScreen;
 import com.cleanroommc.modularui.screen.viewport.ModularGuiContext;
 import com.cleanroommc.modularui.utils.Alignment;
+import com.cleanroommc.modularui.utils.Color;
 import com.cleanroommc.modularui.widget.SingleChildWidget;
 import com.cleanroommc.modularui.widgets.ButtonWidget;
 import com.cleanroommc.modularui.widgets.ColorPickerDialog;
@@ -44,12 +45,14 @@ public class PowerGogglesGuiOverlay {
         OverlayManager.register(new OverlayHandler(screen -> screen instanceof PowerGogglesGuiHudConfig, screen -> {
             PowerGogglesGuiHudConfig gui = (PowerGogglesGuiHudConfig) screen;
             PagedWidget.Controller controller = new PagedWidget.Controller();
-
+            int height = 217;
+            IDrawable background = new Rectangle().setColor(Color.argb(0, 0, 0, 100));
             ModularPanel overlayPanel = ModularPanel
                 .defaultPanel("power_goggles_overlay", gui.displayWidth, gui.displayHeight)
+                .size(230 + 2, height)
                 .background(IDrawable.EMPTY)
-                .size(600, 200)
-                .pos(20, 10);
+                .leftRel(0.5f)
+                .top(10);
 
             PagedWidget<?> pagedWidget = new PagedWidget() {
 
@@ -91,7 +94,7 @@ public class PowerGogglesGuiOverlay {
                     StatCollector.translateToLocal(gui.readingTypes[PowerGogglesConfigHandler.readingIndex])));
             readingButton.onMousePressed(mouseButton -> {
                 PowerGogglesConfigHandler.readingIndex = (PowerGogglesConfigHandler.readingIndex + 1)
-                    % gui.formatTypes.length;
+                    % gui.readingTypes.length;
                 PowerGogglesConfigHandler.config.getCategory(Configuration.CATEGORY_GENERAL)
                     .get("Reading Index")
                     .set(PowerGogglesConfigHandler.readingIndex);
@@ -184,7 +187,8 @@ public class PowerGogglesGuiOverlay {
             });
 
             pagedWidget.addPage(
-                new Column().sizeRel(1f)
+                new Column().coverChildren()
+                    .background(background)
                     .child(
                         notationButton.size(230, 18)
                             .marginBottom(4))
@@ -199,9 +203,12 @@ public class PowerGogglesGuiOverlay {
                             .marginBottom(4)
                             .child(
                                 IKey.lang("GT5U.power_goggles_config.main_text_scale")
+                                    .color(Color.WHITE.main)
                                     .asWidget()
                                     .paddingLeft(3)
-                                    .width(120))
+                                    .width(106)
+                                    .marginRight(14)
+                                    .alignment(Alignment.CenterRight))
                             .child(
                                 new SliderWidget().size(110, 18)
                                     .background(GuiTextures.MC_BUTTON)
@@ -219,10 +226,12 @@ public class PowerGogglesGuiOverlay {
                             .marginBottom(4)
                             .child(
                                 IKey.lang("GT5U.power_goggles_config.sub_text_scale")
+                                    .color(Color.WHITE.main)
                                     .asWidget()
-                                    .alignX(1)
                                     .paddingLeft(3)
-                                    .width(120))
+                                    .width(106)
+                                    .marginRight(14)
+                                    .alignment(Alignment.CenterRight))
                             .child(
                                 new SliderWidget().size(110, 18)
                                     .background(GuiTextures.MC_BUTTON)
@@ -240,10 +249,12 @@ public class PowerGogglesGuiOverlay {
                             .marginBottom(4)
                             .child(
                                 IKey.lang("GT5U.power_goggles_config.hud_scale")
+                                    .color(Color.WHITE.main)
                                     .asWidget()
-                                    .alignX(1)
                                     .paddingLeft(3)
-                                    .width(120))
+                                    .width(106)
+                                    .marginRight(14)
+                                    .alignment(Alignment.CenterRight))
                             .child(
                                 new SliderWidget().size(110, 18)
                                     .background(GuiTextures.MC_BUTTON)
@@ -255,35 +266,7 @@ public class PowerGogglesGuiOverlay {
                                             .get("HUD Scale")
                                             .set(PowerGogglesConfigHandler.hudScale);
                                         PowerGogglesConfigHandler.config.save();
-                                    }))))
-
-                    .child(
-                        new Row().size(230, 18)
-                            .marginBottom(4)
-                            .child(
-                                mainTextScaleUpButton.size(110, 18)
-                                    .align(Alignment.CenterLeft))
-                            .child(
-                                mainTextScaleDownButton.size(110, 18)
-                                    .align(Alignment.CenterRight)))
-                    .child(
-                        new Row().size(230, 18)
-                            .marginBottom(4)
-                            .child(
-                                subTextScaleUpButton.size(110, 18)
-                                    .align(Alignment.CenterLeft))
-                            .child(
-                                subTextScaleDownButton.size(110, 18)
-                                    .align(Alignment.CenterRight)))
-                    .child(
-                        new Row().size(230, 18)
-                            .marginBottom(4)
-                            .child(
-                                hudScaleUpButton.size(110, 18)
-                                    .align(Alignment.CenterLeft))
-                            .child(
-                                hudScaleDownButton.size(110, 18)
-                                    .align(Alignment.CenterRight))));
+                                    })))));
             IPanelHandler colorPickerBad = IPanelHandler
                 .simple(overlayPanel, (bla, blab) -> new ColorPickerDialog("badG", val -> {
                     PowerGogglesConfigHandler.gradientBadColor = val;
@@ -339,7 +322,8 @@ public class PowerGogglesGuiOverlay {
                 }, PowerGogglesConfigHandler.textGoodColor, true).size(200, 100), true);
 
             pagedWidget.addPage(
-                new Column().size(230, 18 * 3)
+                new Column().coverChildren()
+                    .background(background)
                     .align(Alignment.TopCenter)
                     .child(
                         new ButtonWidget<>().size(230, 18)
@@ -381,20 +365,20 @@ public class PowerGogglesGuiOverlay {
                                 return true;
                             }))
                     .child(
-                        new Row().size(230, 18)
+                        new Row().size(228, 18)
                             .marginBottom(4)
                             .child(
                                 new DynamicDrawable(
                                     () -> new Rectangle().setHorizontalGradient(
                                         PowerGogglesConfigHandler.gradientBadColor,
                                         PowerGogglesConfigHandler.gradientOkColor)).asWidget()
-                                            .size(115, 18))
+                                            .size(114, 18))
                             .child(
                                 new DynamicDrawable(
                                     () -> new Rectangle().setHorizontalGradient(
                                         PowerGogglesConfigHandler.gradientOkColor,
                                         PowerGogglesConfigHandler.gradientGoodColor)).asWidget()
-                                            .size(115, 18)))
+                                            .size(114, 18)))
                     .child(
                         new ButtonWidget<>().size(230, 18)
                             .overlay(
@@ -427,7 +411,6 @@ public class PowerGogglesGuiOverlay {
                                         () -> IKey.str("Good Text Color")
                                             .color(PowerGogglesConfigHandler.textGoodColor))))
                             .tooltipBuilder(t -> t.addLine(IKey.lang(("GT5U.power_goggles_config.text_good_tooltip"))))
-                            .marginBottom(4)
                             .onMousePressed(d -> {
                                 colorPickerGoodText.openPanel();
                                 return true;
@@ -440,14 +423,15 @@ public class PowerGogglesGuiOverlay {
                     return overlayPanel.child(
                         new Column().sizeRel(1)
                             .child(
-                                new SingleChildWidget<>().widthRel(1)
-                                    .height(18)
-                                    .marginBottom(4)
+                                new SingleChildWidget<>().size(230, 22)
+                                    .background(background)
+                                    .height(22)
+                                    .paddingBottom(4)
                                     .child(
-                                        pagedWidgetButton.size(230, 18)
+                                        pagedWidgetButton.sizeRel(1)
                                             .align(Alignment.Center)))
                             .child(
-                                new SingleChildWidget<>().sizeRel(1, 0.8f)
+                                new SingleChildWidget<>().size(230, height - 22)
                                     .child(pagedWidget.sizeRel(1))));
                 }
             };

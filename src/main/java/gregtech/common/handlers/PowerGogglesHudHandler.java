@@ -234,7 +234,7 @@ public class PowerGogglesHudHandler {
         drawScaledString(
             fontRenderer,
             percentage,
-            xOffset + (int) ((h - fontRenderer.getStringWidth(percentage)) * PowerGogglesConfigHandler.hudScale),
+            xOffset + (int) ((h - fontRenderer.getStringWidth(percentage) * PowerGogglesConfigHandler.mainTextScaling)),
             screenHeight - yOffset - w - gapBetweenLines - (int) (fontRenderer.FONT_HEIGHT * mainScale),
             change5mColor,
             mainScale);
