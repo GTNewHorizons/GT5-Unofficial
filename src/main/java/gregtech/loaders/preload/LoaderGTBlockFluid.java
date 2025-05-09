@@ -667,7 +667,7 @@ public class LoaderGTBlockFluid implements Runnable {
                 MaterialsUEVplus.SpaceTime, MaterialsUEVplus.TranscendentMetal, Materials.Oriharukon,
                 MaterialsUEVplus.WhiteDwarfMatter, MaterialsUEVplus.BlackDwarfMatter, MaterialsUEVplus.Universium,
                 MaterialsUEVplus.Eternity, MaterialsUEVplus.MagMatter, MaterialsUEVplus.SixPhasedCopper,
-                Materials.HellishMetal },
+                Materials.HellishMetal, MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter },
             OrePrefixes.block,
             gregtech.api.enums.Textures.BlockIcons.STORAGE_BLOCKS12);
 
