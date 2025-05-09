@@ -110,7 +110,8 @@ dependencies {
 
     testImplementation(platform('org.junit:junit-bom:5.9.2'))
     testImplementation('org.junit.jupiter:junit-jupiter')
-    testImplementation("org.mockito:mockito-core:3.+")
+    testImplementation("org.mockito:mockito-core:5.+")
+    testImplementation("com.github.GTNewHorizons:Chisel:2.16.2-GTNH:dev") { transitive = false }
 
     functionalTestImplementation(platform('org.junit:junit-bom:5.9.2'))
     functionalTestImplementation('org.junit.jupiter:junit-jupiter')
