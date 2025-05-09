@@ -316,7 +316,9 @@ public abstract class TileEntityModulePump extends TileEntityModuleBase {
 
             machineInfo.child(
                 new Row().coverChildren()
-                    .child(new TextWidget(IKey.lang("tt.spacepump.fluid", i + 1)).marginRight(5))
+                    .child(
+                        new TextWidget(IKey.lang("tt.spacepump.fluid", i + 1)).marginRight(5)
+                            .color(Color.WHITE.main))
                     .child(
                         recipeFluidSlot.size(16, 16)
                             .marginRight(5))
@@ -534,11 +536,6 @@ public abstract class TileEntityModulePump extends TileEntityModuleBase {
     public void registerIcons(IIconRegister aBlockIconRegister) {
         engraving = new Textures.BlockIcons.CustomIcon("iconsets/OVERLAY_SIDE_PUMP_MODULE");
         super.registerIcons(aBlockIconRegister);
-    }
-
-    @Override
-    protected boolean forceUseMui2() {
-        return true;
     }
 
     public static class TileEntityModulePumpT1 extends TileEntityModulePump {
