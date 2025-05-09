@@ -7,6 +7,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
 import bartworks.system.material.WerkstoffLoader;
@@ -21,6 +22,7 @@ import gregtech.api.recipe.metadata.NanochipAssemblyRecipeInfo;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipeBuilder;
 import gregtech.common.tileentities.machines.multi.nanochip.util.CircuitComponent.CircuitComponentStack;
+import gtPlusPlus.core.material.MaterialMisc;
 
 public class RecipeHandlers {
 
@@ -70,8 +72,8 @@ public class RecipeHandlers {
             .addTo(recipeMap);
     }
 
-    private static void addAssemblyMatrixRecipe(List<CircuitComponentStack> input, CircuitComponent output,
-        ModuleRecipeInfo info, long eut) {
+    private static void addAssemblyMatrixRecipe(List<CircuitComponentStack> input, List<FluidStack> fluidInputs,
+        CircuitComponent output, ModuleRecipeInfo info, long eut) {
         if (!output.processingMap.equals(RecipeMaps.nanochipAssemblyMatrixRecipes)) {
             throw new IllegalArgumentException("Invalid RecipeMap passed to addAssemblyMatrixRecipe!");
         } else if (output.realCircuit == null) {
@@ -97,6 +99,7 @@ public class RecipeHandlers {
             .toArray(ItemStack[]::new);
         GTRecipeBuilder builder = GTValues.RA.stdBuilder()
             .metadata(NanochipAssemblyRecipeInfo.INSTANCE, info)
+            .fluidInputs(fluidInputs.toArray(new FluidStack[]{}))
             .itemOutputs(output.getFakeStack(info.getBaseParallel()))
             .duration(ModuleRecipeInfo.MODULE_RECIPE_TIME)
             .eut(eut);
@@ -416,6 +419,7 @@ public class RecipeHandlers {
                 new CircuitComponentStack(CircuitComponent.ProcessedAdvSMDCapacitor, 6),
                 new CircuitComponentStack(CircuitComponent.ProcessedAdvSMDTransistor, 6),
                 new CircuitComponentStack(CircuitComponent.ProcessedWireNiobiumTitanium, 8)),
+            Arrays.asList(FluidRegistry.getFluidStack("molten.indalloy140", 72)),
             CircuitComponent.CrystalProcessor,
             ModuleRecipeInfo.Fast,
             TierEU.RECIPE_LuV);
@@ -427,6 +431,7 @@ public class RecipeHandlers {
                 new CircuitComponentStack(CircuitComponent.ProcessedAdvSMDCapacitor, 8),
                 new CircuitComponentStack(CircuitComponent.ProcessedChipRAM, 24),
                 new CircuitComponentStack(CircuitComponent.ProcessedWireNiobiumTitanium, 16)),
+            Arrays.asList(FluidRegistry.getFluidStack("molten.indalloy140", 144)),
             CircuitComponent.CrystalAssembly,
             ModuleRecipeInfo.Fast,
             TierEU.RECIPE_LuV);
@@ -438,6 +443,7 @@ public class RecipeHandlers {
                 new CircuitComponentStack(CircuitComponent.ProcessedChipNOR, 32),
                 new CircuitComponentStack(CircuitComponent.ProcessedChipNAND, 64),
                 new CircuitComponentStack(CircuitComponent.ProcessedWireNiobiumTitanium, 32)),
+            Arrays.asList(FluidRegistry.getFluidStack("molten.indalloy140", 75)),
             CircuitComponent.CrystalComputer,
             ModuleRecipeInfo.Fast,
             TierEU.RECIPE_LuV);
@@ -449,6 +455,7 @@ public class RecipeHandlers {
                 new CircuitComponentStack(CircuitComponent.ProcessedAdvSMDCapacitor, 16),
                 new CircuitComponentStack(CircuitComponent.ProcessedChipRAM, 32),
                 new CircuitComponentStack(CircuitComponent.ProcessedSuperconductorLuV, 16)),
+            Arrays.asList(FluidRegistry.getFluidStack("molten.indalloy140", 288)),
             CircuitComponent.CrystalMainframe,
             ModuleRecipeInfo.Fast,
             TierEU.RECIPE_LuV);
@@ -460,6 +467,7 @@ public class RecipeHandlers {
                 new CircuitComponentStack(CircuitComponent.ProcessedAdvSMDCapacitor, 8),
                 new CircuitComponentStack(CircuitComponent.ProcessedAdvSMDTransistor, 8),
                 new CircuitComponentStack(CircuitComponent.ProcessedWireYttriumBariumCuprate, 8)),
+            Arrays.asList(FluidRegistry.getFluidStack("molten.indalloy140", 72)),
             CircuitComponent.WetwareProcessor,
             ModuleRecipeInfo.Fast,
             TierEU.RECIPE_LuV);
@@ -471,6 +479,7 @@ public class RecipeHandlers {
                 new CircuitComponentStack(CircuitComponent.ProcessedAdvSMDCapacitor, 12),
                 new CircuitComponentStack(CircuitComponent.ProcessedChipRAM, 24),
                 new CircuitComponentStack(CircuitComponent.ProcessedWireYttriumBariumCuprate, 16)),
+            Arrays.asList(FluidRegistry.getFluidStack("molten.indalloy140", 144)),
             CircuitComponent.WetwareAssembly,
             ModuleRecipeInfo.Fast,
             TierEU.RECIPE_LuV);
@@ -482,6 +491,7 @@ public class RecipeHandlers {
                 new CircuitComponentStack(CircuitComponent.ProcessedChipNOR, 16),
                 new CircuitComponentStack(CircuitComponent.ProcessedChipRAM, 64),
                 new CircuitComponentStack(CircuitComponent.ProcessedWireYttriumBariumCuprate, 24)),
+            Arrays.asList(FluidRegistry.getFluidStack("molten.indalloy140", 144)),
             CircuitComponent.WetwareComputer,
             ModuleRecipeInfo.Fast,
             TierEU.RECIPE_LuV);
@@ -497,6 +507,10 @@ public class RecipeHandlers {
                 new CircuitComponentStack(CircuitComponent.ProcessedChipRAM, 48),
                 new CircuitComponentStack(CircuitComponent.ProcessedSuperconductorZPM, 64),
                 new CircuitComponentStack(CircuitComponent.FoilSiliconeRubber, 64)),
+            Arrays.asList(
+                FluidRegistry.getFluidStack("molten.indalloy140", 2880),
+                FluidRegistry.getFluidStack("ic2coolant", 10000),
+                Materials.Radon.getFluid(2500)),
             CircuitComponent.WetwareMainframe,
             ModuleRecipeInfo.Fast,
             TierEU.RECIPE_LuV);
@@ -508,6 +522,7 @@ public class RecipeHandlers {
                 new CircuitComponentStack(CircuitComponent.ProcessedAdvSMDCapacitor, 12),
                 new CircuitComponentStack(CircuitComponent.ProcessedAdvSMDTransistor, 12),
                 new CircuitComponentStack(CircuitComponent.ProcessedWireNiobiumTitanium, 16)),
+            Arrays.asList(FluidRegistry.getFluidStack("molten.indalloy140", 72)),
             CircuitComponent.BiowareProcessor,
             ModuleRecipeInfo.Fast,
             TierEU.RECIPE_LuV);
@@ -519,6 +534,7 @@ public class RecipeHandlers {
                 new CircuitComponentStack(CircuitComponent.ProcessedAdvSMDCapacitor, 16),
                 new CircuitComponentStack(CircuitComponent.ProcessedChipRAM, 32),
                 new CircuitComponentStack(CircuitComponent.ProcessedWireYttriumBariumCuprate, 24)),
+            Arrays.asList(FluidRegistry.getFluidStack("molten.indalloy140", 144)),
             CircuitComponent.BiowareAssembly,
             ModuleRecipeInfo.Fast,
             TierEU.RECIPE_LuV);
@@ -534,6 +550,10 @@ public class RecipeHandlers {
                 new CircuitComponentStack(CircuitComponent.ProcessedChipRAM, 64),
                 new CircuitComponentStack(CircuitComponent.ProcessedWireNiobiumTitanium, 32),
                 new CircuitComponentStack(CircuitComponent.FoilSiliconeRubber, 64)),
+            Arrays.asList(
+                MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack(1440),
+                Materials.BioMediumSterilized.getFluid(1440),
+                Materials.SuperCoolant.getFluid(10000)),
             CircuitComponent.BiowareComputer,
             ModuleRecipeInfo.Fast,
             TierEU.RECIPE_LuV);
@@ -550,6 +570,10 @@ public class RecipeHandlers {
                 new CircuitComponentStack(CircuitComponent.ProcessedSuperconductorUHV, 64),
                 new CircuitComponentStack(CircuitComponent.FoilSiliconeRubber, 64),
                 new CircuitComponentStack(CircuitComponent.FoilSiliconeRubber, 64)),
+            Arrays.asList(
+                MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack(2880),
+                Materials.BioMediumSterilized.getFluid(2880),
+                Materials.SuperCoolant.getFluid(20000)),
             CircuitComponent.BiowareMainframe,
             ModuleRecipeInfo.Fast,
             TierEU.RECIPE_LuV);
@@ -561,6 +585,7 @@ public class RecipeHandlers {
                 new CircuitComponentStack(CircuitComponent.ProcessedOpticalSMDDiode, 16),
                 new CircuitComponentStack(CircuitComponent.CableOpticalFiber, 4),
                 new CircuitComponentStack(CircuitComponent.BoltEnrichedHolmium, 16)),
+            Arrays.asList(MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack(288)),
             CircuitComponent.OpticalProcessor,
             ModuleRecipeInfo.Fast,
             TierEU.RECIPE_LuV);
@@ -575,6 +600,11 @@ public class RecipeHandlers {
                 new CircuitComponentStack(CircuitComponent.ProcessedChipRAM, 64),
                 new CircuitComponentStack(CircuitComponent.ProcessedWireLumiium, 24),
                 new CircuitComponentStack(CircuitComponent.FoilSiliconeRubber, 64)),
+            Arrays.asList(
+                MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack(1440),
+                Materials.Radon.getFluid(1440),
+                Materials.SuperCoolant.getFluid(10000),
+                FluidRegistry.getFluidStack("oganesson", 500)),
             CircuitComponent.OpticalAssembly,
             ModuleRecipeInfo.Fast,
             TierEU.RECIPE_LuV);
@@ -591,6 +621,11 @@ public class RecipeHandlers {
                 new CircuitComponentStack(CircuitComponent.ProcessedWireLumiium, 32),
                 new CircuitComponentStack(CircuitComponent.FoilSiliconeRubber, 64),
                 new CircuitComponentStack(CircuitComponent.FoilPolybenzimidazole, 64)),
+            Arrays.asList(
+                MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack(2880),
+                Materials.Radon.getFluid(2880),
+                Materials.SuperCoolant.getFluid(20000),
+                FluidRegistry.getFluidStack("oganesson", 1000)),
             CircuitComponent.OpticalComputer,
             ModuleRecipeInfo.Fast,
             TierEU.RECIPE_LuV);
@@ -609,6 +644,11 @@ public class RecipeHandlers {
                 new CircuitComponentStack(CircuitComponent.FoilSiliconeRubber, 64),
                 new CircuitComponentStack(CircuitComponent.FoilPolybenzimidazole, 64),
                 new CircuitComponentStack(CircuitComponent.FoilPolybenzimidazole, 64)),
+            Arrays.asList(
+                MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack(5760),
+                Materials.Radon.getFluid(5760),
+                Materials.SuperCoolant.getFluid(40000),
+                FluidRegistry.getFluidStack("oganesson", 2000)),
             CircuitComponent.OpticalMainframe,
             ModuleRecipeInfo.Fast,
             TierEU.RECIPE_LuV);
