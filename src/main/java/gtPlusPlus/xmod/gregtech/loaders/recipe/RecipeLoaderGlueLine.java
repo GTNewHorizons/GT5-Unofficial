@@ -278,7 +278,7 @@ public class RecipeLoaderGlueLine {
                 ItemList.Circuit_Silicon_Wafer2.get(8L),
                 GTUtility.getIntegratedCircuit(2))
             .itemOutputs(ItemUtils.getItemStackOfAmountFromOreDict("dustGraphene", 64))
-            .fluidInputs(MaterialMisc.ETHYL_CYANOACRYLATE.getFluidStack(750))
+            .fluidInputs(MaterialMisc.ETHYL_CYANOACRYLATE.getFluidStack(1000))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_IV)
             .addTo(assemblerRecipes);
@@ -288,17 +288,17 @@ public class RecipeLoaderGlueLine {
                 ItemList.Circuit_Silicon_Wafer3.get(2L),
                 GTUtility.getIntegratedCircuit(2))
             .itemOutputs(ItemUtils.getItemStackOfAmountFromOreDict("dustGraphene", 64))
-            .fluidInputs(MaterialMisc.ETHYL_CYANOACRYLATE.getFluidStack(1000))
+            .fluidInputs(MaterialMisc.ETHYL_CYANOACRYLATE.getFluidStack(750))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_LuV)
             .addTo(assemblerRecipes);
         GTValues.RA.stdBuilder()
             .itemInputs(
                 ItemUtils.getItemStackOfAmountFromOreDict("dustGraphite", 64),
-                ItemUtils.getItemStackOfAmountFromOreDict("dustGraphite", 32),
-                ItemList.Circuit_Silicon_Wafer4.get(2L),
+                ItemUtils.getItemStackOfAmountFromOreDict("dustGraphite", 64),
+                ItemList.Circuit_Silicon_Wafer4.get(1L),
                 GTUtility.getIntegratedCircuit(2))
-            .itemOutputs(ItemUtils.getItemStackOfAmountFromOreDict("dustGraphene", 96))
+            .itemOutputs(ItemUtils.getItemStackOfAmountFromOreDict("dustGraphene", 128))
             .fluidInputs(MaterialMisc.ETHYL_CYANOACRYLATE.getFluidStack(500))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_LuV)
@@ -307,9 +307,14 @@ public class RecipeLoaderGlueLine {
             .itemInputs(
                 ItemUtils.getItemStackOfAmountFromOreDict("dustGraphite", 64),
                 ItemUtils.getItemStackOfAmountFromOreDict("dustGraphite", 64),
+                ItemUtils.getItemStackOfAmountFromOreDict("dustGraphite", 64),
+                ItemUtils.getItemStackOfAmountFromOreDict("dustGraphite", 64),
                 ItemList.Circuit_Silicon_Wafer5.get(1L),
-                GTUtility.getIntegratedCircuit(2))
-            .itemOutputs(ItemUtils.getItemStackOfAmountFromOreDict("dustGraphene", 128))
+                ItemUtils.getItemStackOfAmountFromOreDict("dustGraphite", 64),
+                ItemUtils.getItemStackOfAmountFromOreDict("dustGraphite", 64),
+                ItemUtils.getItemStackOfAmountFromOreDict("dustGraphite", 64),
+                ItemUtils.getItemStackOfAmountFromOreDict("dustGraphite", 64))
+            .itemOutputs(ItemUtils.getItemStackOfAmountFromOreDict("dustGraphene", 512))
             .fluidInputs(MaterialMisc.ETHYL_CYANOACRYLATE.getFluidStack(250))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_ZPM)
