@@ -1,5 +1,6 @@
 package tectech.loader.recipe;
 
+import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.MINUTES;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeConstants.AssemblyLine;
@@ -52,8 +53,8 @@ public class AssemblyLine implements Runnable {
                     .get(OrePrefixes.screw, BaseRecipeLoader.getOrDefault("Quantium", Materials.Europium), 16))
             .fluidInputs(
                 BaseRecipeLoader.getOrDefault("Trinium", Materials.Osmium)
-                    .getMolten(1296),
-                Materials.Osmium.getMolten(1296),
+                    .getMolten(9 * INGOTS),
+                Materials.Osmium.getMolten(9 * INGOTS),
                 new FluidStack(FluidRegistry.getFluid("ic2coolant"), 2000),
                 Materials.Argon.getGas(1000))
             .itemOutputs(CustomItemList.eM_Hollow.get(2))
@@ -72,11 +73,11 @@ public class AssemblyLine implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.Europium, 64),
                 GTOreDictUnificator.get(OrePrefixes.foil, Materials.Europium, 64))
             .fluidInputs(
-                Materials.Glass.getMolten(2304),
+                Materials.Glass.getMolten(16 * INGOTS),
                 Materials.Silicone.getMolten(1872),
                 new FluidStack(FluidRegistry.getFluid("ic2coolant"), 2000),
                 BaseRecipeLoader.getOrDefault("Trinium", Materials.Osmium)
-                    .getMolten(1296))
+                    .getMolten(9 * INGOTS))
             .itemOutputs(CustomItemList.eM_Coil.get(4))
             .eut(200_000)
             .duration(40 * SECONDS)
@@ -98,7 +99,7 @@ public class AssemblyLine implements Runnable {
                 CustomItemList.DATApipe.get(2))
             .fluidInputs(
                 Materials.UUMatter.getFluid(500),
-                Materials.Iridium.getMolten(1296),
+                Materials.Iridium.getMolten(9 * INGOTS),
                 new FluidStack(FluidRegistry.getFluid("ic2coolant"), 1000))
             .itemOutputs(CustomItemList.holder_Hatch.get(1))
             .eut(100_000)
@@ -120,7 +121,7 @@ public class AssemblyLine implements Runnable {
                     GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.Polybenzimidazole, 2) })
             .fluidInputs(
                 Materials.UUMatter.getFluid(1000),
-                Materials.Iridium.getMolten(1296),
+                Materials.Iridium.getMolten(9 * INGOTS),
                 new FluidStack(FluidRegistry.getFluid("ic2coolant"), 2000),
                 Materials.Hydrogen.getGas(1000))
             .itemOutputs(CustomItemList.Machine_Multi_Computer.get(1))
@@ -143,9 +144,9 @@ public class AssemblyLine implements Runnable {
                 CustomItemList.DATApipe.get(16))
             .fluidInputs(
                 Materials.UUMatter.getFluid(1000),
-                Materials.Iridium.getMolten(1296),
+                Materials.Iridium.getMolten(9 * INGOTS),
                 new FluidStack(FluidRegistry.getFluid("ic2coolant"), 2000),
-                Materials.Osmium.getMolten(1296))
+                Materials.Osmium.getMolten(9 * INGOTS))
             .itemOutputs(CustomItemList.Machine_Multi_Research.get(1))
             .eut(100_000)
             .duration(10 * MINUTES)

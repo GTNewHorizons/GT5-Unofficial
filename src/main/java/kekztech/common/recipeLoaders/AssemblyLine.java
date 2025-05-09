@@ -5,6 +5,7 @@ import static gregtech.api.enums.Mods.EnderIO;
 import static gregtech.api.enums.Mods.EternalSingularity;
 import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
 import static gregtech.api.enums.Mods.UniversalSingularities;
+import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.MINUTES;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeConstants.AssemblyLine;
@@ -53,7 +54,7 @@ public class AssemblyLine implements Runnable {
                 ItemList.Field_Generator_EV.get(8),
                 ItemList.FluidRegulator_LuV.get(1),
                 GTModHandler.getModItem(NewHorizonsCoreMod.ID, "item.EngineeringProcessorFluidEmeraldCore", 4))
-            .fluidInputs(Materials.Enderium.getMolten(1440), Materials.Polybenzimidazole.getMolten(1584))
+            .fluidInputs(Materials.Enderium.getMolten(10 * INGOTS), Materials.Polybenzimidazole.getMolten(1584))
             .itemOutputs(new ItemStack(Blocks.tfftStorageField, 1, 6))
             .eut(TierEU.RECIPE_LuV)
             .duration(30 * SECONDS)
@@ -73,7 +74,7 @@ public class AssemblyLine implements Runnable {
                 ItemList.Field_Generator_LuV.get(4),
                 ItemList.FluidRegulator_UV.get(1),
                 GTModHandler.getModItem(NewHorizonsCoreMod.ID, "item.EngineeringProcessorFluidEmeraldCore", 16))
-            .fluidInputs(Materials.CrystallineAlloy.getMolten(2880), Materials.Polybenzimidazole.getMolten(2016))
+            .fluidInputs(Materials.CrystallineAlloy.getMolten(20 * INGOTS), Materials.Polybenzimidazole.getMolten(2016))
             .itemOutputs(new ItemStack(Blocks.tfftStorageField, 1, 7))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_UV)
@@ -94,7 +95,7 @@ public class AssemblyLine implements Runnable {
                 ItemList.Field_Generator_UV.get(4),
                 new ItemStack(huiCircuit, 4, 2),
                 GTModHandler.getModItem(UniversalSingularities.ID, "universal.tinkersConstruct.singularity", 1, 4))
-            .fluidInputs(Materials.CrystallinePinkSlime.getMolten(4320), new FluidStack(radoxPoly, 2880))
+            .fluidInputs(Materials.CrystallinePinkSlime.getMolten(4320), new FluidStack(radoxPoly, 20 * INGOTS))
             .itemOutputs(new ItemStack(Blocks.tfftStorageField, 1, 8))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_UEV)
@@ -138,7 +139,7 @@ public class AssemblyLine implements Runnable {
                 new ItemStack(huiCircuit, 8, 4),
                 GTModHandler.getModItem(EnderIO.ID, "itemBasicCapacitor", 64, 6),
                 GTModHandler.getModItem(EternalSingularity.ID, "eternal_singularity", 1))
-            .fluidInputs(Materials.StellarAlloy.getMolten(7200), new FluidStack(radoxPoly, 4608))
+            .fluidInputs(Materials.StellarAlloy.getMolten(7200), new FluidStack(radoxPoly, 32 * INGOTS))
             .itemOutputs(new ItemStack(Blocks.tfftStorageField, 1, 10))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_UXV)
@@ -187,7 +188,7 @@ public class AssemblyLine implements Runnable {
                 ItemList.Circuit_Parts_DiodeASMD.get(8),
                 GTOreDictUnificator.get(OrePrefixes.cableGt01, Materials.Naquadah, 32))
             .fluidInputs(
-                new FluidStack(solderIndalloy, 2880),
+                new FluidStack(solderIndalloy, 20 * INGOTS),
                 new FluidStack(FluidRegistry.getFluid("ic2coolant"), 16000))
             .itemOutputs(new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 3))
             .duration(1 * MINUTES + 40 * SECONDS)
@@ -213,7 +214,7 @@ public class AssemblyLine implements Runnable {
                 ItemList.Circuit_Parts_DiodeASMD.get(16),
                 GTOreDictUnificator.get(OrePrefixes.cableGt01, Materials.NaquadahAlloy, 32))
             .fluidInputs(
-                new FluidStack(solderIndalloy, 2880),
+                new FluidStack(solderIndalloy, 20 * INGOTS),
                 new FluidStack(FluidRegistry.getFluid("ic2coolant"), 16000))
             .itemOutputs(new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 4))
             .eut(200_000)

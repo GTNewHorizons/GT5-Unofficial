@@ -11,6 +11,7 @@ import static gregtech.api.recipe.RecipeMaps.fluidExtractionRecipes;
 import static gregtech.api.recipe.RecipeMaps.latheRecipes;
 import static gregtech.api.recipe.RecipeMaps.maceratorRecipes;
 import static gregtech.api.recipe.RecipeMaps.multiblockChemicalReactorRecipes;
+import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.MINUTES;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
@@ -685,7 +686,7 @@ public class BioRecipes {
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(3), GregtechItemList.CellulosePulp.get(8))
             .itemOutputs(GTUtility.copyAmount(32, Ic2Items.resin))
-            .fluidInputs(new FluidStack(GTPPFluids.LiquidResin, 144))
+            .fluidInputs(new FluidStack(GTPPFluids.LiquidResin, 1 * INGOTS))
             .duration(60 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .metadata(CHEMPLANT_CASING_TIER, 1)

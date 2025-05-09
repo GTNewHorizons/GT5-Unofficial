@@ -33,7 +33,7 @@ public class TranscendentPlasmaMixerRecipes implements Runnable {
                 Materials.Iron.getPlasma(1000),
                 Materials.Calcium.getPlasma(1000),
                 Materials.Niobium.getPlasma(1000))
-            .fluidOutputs(MaterialsUEVplus.ExcitedDTCC.getFluid(1000L))
+            .fluidOutputs(MaterialsUEVplus.ExcitedDTCC.getFluid(1000))
             .duration(100)
             .eut(CRUDE_EU_PER_L)
             .addTo(transcendentPlasmaMixerRecipes);
@@ -49,7 +49,7 @@ public class TranscendentPlasmaMixerRecipes implements Runnable {
                 Materials.Nickel.getPlasma(1000),
                 Materials.Boron.getPlasma(1000),
                 Materials.Sulfur.getPlasma(1000))
-            .fluidOutputs(MaterialsUEVplus.ExcitedDTPC.getFluid(1000L))
+            .fluidOutputs(MaterialsUEVplus.ExcitedDTPC.getFluid(1000))
             .duration(100)
             .eut(PROSAIC_EU_PER_L)
             .addTo(transcendentPlasmaMixerRecipes);
@@ -69,7 +69,7 @@ public class TranscendentPlasmaMixerRecipes implements Runnable {
                 Materials.Zinc.getPlasma(1000),
                 Materials.Silver.getPlasma(1000),
                 Materials.Titanium.getPlasma(1000))
-            .fluidOutputs(MaterialsUEVplus.ExcitedDTRC.getFluid(1000L))
+            .fluidOutputs(MaterialsUEVplus.ExcitedDTRC.getFluid(1000))
             .duration(100)
             .eut(RESPLENDENT_EU_PER_L)
             .addTo(transcendentPlasmaMixerRecipes);
@@ -93,7 +93,7 @@ public class TranscendentPlasmaMixerRecipes implements Runnable {
                 Materials.Bismuth.getPlasma(1000),
                 Materials.Oxygen.getPlasma(1000),
                 Materials.Tin.getPlasma(1000))
-            .fluidOutputs(MaterialsUEVplus.ExcitedDTEC.getFluid(1000L))
+            .fluidOutputs(MaterialsUEVplus.ExcitedDTEC.getFluid(1000))
             .duration(100)
             .eut(EXOTIC_EU_PER_L)
             .addTo(transcendentPlasmaMixerRecipes);
@@ -121,7 +121,7 @@ public class TranscendentPlasmaMixerRecipes implements Runnable {
                 Materials.Thorium.getPlasma(1000),
                 Materials.Naquadria.getPlasma(100L),
                 MaterialsUEVplus.RawStarMatter.getFluid(25L))
-            .fluidOutputs(MaterialsUEVplus.ExcitedDTSC.getFluid(1000L))
+            .fluidOutputs(MaterialsUEVplus.ExcitedDTSC.getFluid(1000))
             .duration(100)
             .eut(STELLAR_EU_PER_HALF_L)
             .metadata(GTRecipeConstants.EU_MULTIPLIER, 20)
@@ -130,11 +130,11 @@ public class TranscendentPlasmaMixerRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(24))
             .fluidInputs(
-                MaterialsUEVplus.RawStarMatter.getFluid(1000L),
-                MaterialsUEVplus.SpaceTime.getMolten(1000L),
-                MaterialsUEVplus.Space.getMolten(1000L),
-                MaterialsUEVplus.DimensionallyTranscendentResidue.getFluid(1000L))
-            .fluidOutputs(MaterialsUEVplus.PrimordialMatter.getFluid(1000L))
+                MaterialsUEVplus.RawStarMatter.getFluid(1000),
+                MaterialsUEVplus.SpaceTime.getMolten(1000),
+                MaterialsUEVplus.Space.getMolten(1000),
+                MaterialsUEVplus.DimensionallyTranscendentResidue.getFluid(1000))
+            .fluidOutputs(MaterialsUEVplus.PrimordialMatter.getFluid(1000))
             .duration(100)
             .eut(PRIMORDIAL_MATTER)
             .addTo(transcendentPlasmaMixerRecipes);
@@ -143,11 +143,11 @@ public class TranscendentPlasmaMixerRecipes implements Runnable {
             .itemInputs(GTUtility.getIntegratedCircuit(24))
             .fluidInputs(
                 new FluidStack(MaterialsElements.getInstance().FERMIUM.getPlasma(), 1000),
-                Materials.Thorium.getPlasma(1000L),
+                Materials.Thorium.getPlasma(1000),
                 new FluidStack(MaterialsElements.STANDALONE.CELESTIAL_TUNGSTEN.getPlasma(), 1000),
-                Materials.Calcium.getPlasma(1000L),
-                MaterialsUEVplus.DimensionallyTranscendentResidue.getFluid(1000L))
-            .fluidOutputs(MaterialsUEVplus.Creon.getPlasma(5000L))
+                Materials.Calcium.getPlasma(1000),
+                MaterialsUEVplus.DimensionallyTranscendentResidue.getFluid(1000))
+            .fluidOutputs(MaterialsUEVplus.Creon.getPlasma(5000))
             .duration(100)
             .eut(TierEU.RECIPE_UMV)
             .addTo(transcendentPlasmaMixerRecipes);
@@ -175,7 +175,7 @@ public class TranscendentPlasmaMixerRecipes implements Runnable {
                 MaterialsUEVplus.ExcitedDTRC.getFluid(1000),
                 MaterialsUEVplus.ExcitedDTEC.getFluid(1000),
                 MaterialsUEVplus.ExcitedDTSC.getFluid(1000))
-            .fluidOutputs(MaterialsUEVplus.StargateCrystalSlurry.getFluid(1000L))
+            .fluidOutputs(MaterialsUEVplus.StargateCrystalSlurry.getFluid(1000))
             .duration(100 * GTRecipeBuilder.TICKS)
             // 1 Trillion EU/t
             .metadata(GTRecipeConstants.EU_MULTIPLIER, 1000)

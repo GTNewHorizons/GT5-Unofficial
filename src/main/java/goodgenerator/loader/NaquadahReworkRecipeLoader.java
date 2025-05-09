@@ -44,6 +44,8 @@ import static gregtech.api.recipe.RecipeMaps.maceratorRecipes;
 import static gregtech.api.recipe.RecipeMaps.mixerRecipes;
 import static gregtech.api.recipe.RecipeMaps.multiblockChemicalReactorRecipes;
 import static gregtech.api.recipe.RecipeMaps.vacuumFreezerRecipes;
+import static gregtech.api.util.GTRecipeBuilder.HALF_INGOTS;
+import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.MINUTES;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
@@ -147,8 +149,8 @@ public class NaquadahReworkRecipeLoader {
         GTValues.RA.stdBuilder()
             .itemInputs(inertNaquadah.get(OrePrefixes.dust, 64), inertNaquadah.get(OrePrefixes.dust, 32))
             .itemOutputs(Materials.Nickel.getDust(16))
-            .fluidInputs(Materials.Nickel.getPlasma(144 * 16))
-            .fluidOutputs(Materials.Naquadah.getMolten(144 * 9216))
+            .fluidInputs(Materials.Nickel.getPlasma(16 * INGOTS))
+            .fluidOutputs(Materials.Naquadah.getMolten(9216 * INGOTS))
             .duration(1 * MINUTES + 40 * SECONDS)
             .eut(0)
             .metadata(NKE_RANGE, computeRangeNKE(600, 500))
@@ -158,8 +160,8 @@ public class NaquadahReworkRecipeLoader {
                 inertEnrichedNaquadah.get(OrePrefixes.dust, 64),
                 inertEnrichedNaquadah.get(OrePrefixes.dust, 32))
             .itemOutputs(Materials.Titanium.getDust(16))
-            .fluidInputs(Materials.Titanium.getPlasma(16 * 144))
-            .fluidOutputs(Materials.NaquadahEnriched.getMolten(144 * 9216))
+            .fluidInputs(Materials.Titanium.getPlasma(16 * INGOTS))
+            .fluidOutputs(Materials.NaquadahEnriched.getMolten(9216 * INGOTS))
             .duration(1 * MINUTES + 40 * SECONDS)
             .eut(0)
             .metadata(NKE_RANGE, computeRangeNKE(900, 850))
@@ -167,8 +169,8 @@ public class NaquadahReworkRecipeLoader {
         GTValues.RA.stdBuilder()
             .itemInputs(inertNaquadria.get(OrePrefixes.dust, 64), inertNaquadria.get(OrePrefixes.dust, 32))
             .itemOutputs(Materials.Americium.getDust(16))
-            .fluidInputs(Materials.Americium.getPlasma(144 * 16))
-            .fluidOutputs(Materials.Naquadria.getMolten(144 * 9216))
+            .fluidInputs(Materials.Americium.getPlasma(16 * INGOTS))
+            .fluidOutputs(Materials.Naquadria.getMolten(9216 * INGOTS))
             .duration(1 * MINUTES + 40 * SECONDS)
             .eut(0)
             .metadata(NKE_RANGE, computeRangeNKE(1100, 1080))
@@ -462,7 +464,7 @@ public class NaquadahReworkRecipeLoader {
 
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Shape_Mold_Ball.get(0))
-            .fluidInputs(naquadahGoo.getFluidOrGas(72))
+            .fluidInputs(naquadahGoo.getFluidOrGas(1 * HALF_INGOTS))
             .itemOutputs(ItemRefer.Naquadah_Mass.get(1))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_LV)
@@ -470,7 +472,7 @@ public class NaquadahReworkRecipeLoader {
 
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Shape_Mold_Ball.get(0))
-            .fluidInputs(enrichedNaquadahGoo.getFluidOrGas(72))
+            .fluidInputs(enrichedNaquadahGoo.getFluidOrGas(1 * HALF_INGOTS))
             .itemOutputs(ItemRefer.Enriched_Naquadah_Mass.get(1))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_LV)
@@ -478,7 +480,7 @@ public class NaquadahReworkRecipeLoader {
 
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Shape_Mold_Ball.get(0))
-            .fluidInputs(naquadriaGoo.getFluidOrGas(72))
+            .fluidInputs(naquadriaGoo.getFluidOrGas(1 * HALF_INGOTS))
             .itemOutputs(ItemRefer.Naquadria_Mass.get(1))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_LV)

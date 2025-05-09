@@ -2,6 +2,7 @@ package gregtech.loaders.postload.chains;
 
 import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
 import static gregtech.api.recipe.metadata.PCBFactoryUpgrade.BIO;
+import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.MINUTES;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeConstants.AssemblyLine;
@@ -56,7 +57,7 @@ public class PCBFactoryRecipes {
                 ItemList.Machine_ZPM_CircuitAssembler.get(4),
                 new Object[] { OrePrefixes.circuit.get(Materials.LuV), 16 },
                 ItemList.Robot_Arm_ZPM.get(8))
-            .fluidInputs(new FluidStack(solderLuV, 144 * 36), Materials.Naquadah.getMolten(144 * 18))
+            .fluidInputs(new FluidStack(solderLuV, 36 * INGOTS), Materials.Naquadah.getMolten(18 * INGOTS))
             .itemOutputs(ItemList.PCBFactory.get(1))
             .eut(TierEU.RECIPE_UV)
             .duration(5 * MINUTES)
@@ -91,7 +92,7 @@ public class PCBFactoryRecipes {
                 GTOreDictUnificator.get(OrePrefixes.rotor, Materials.Infinity, 2),
                 Materials.Thulium.getPlates(6))
             .itemOutputs(ItemList.InfinityCooledCasing.get(1))
-            .fluidInputs(MaterialsUEVplus.SpaceTime.getMolten(8 * 144))
+            .fluidInputs(MaterialsUEVplus.SpaceTime.getMolten(8 * INGOTS))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_UMV)
             .addTo(assemblerRecipes);
@@ -614,7 +615,7 @@ public class PCBFactoryRecipes {
                 .fluidInputs(
                     Materials.SulfuricAcid.getFluid((long) (500 * (Math.sqrt(tier - 6)))),
                     Materials.IronIIIChloride.getFluid((long) (12500 * (Math.sqrt(tier - 6)))),
-                    Materials.MysteriousCrystal.getMolten((long) (2880 * (Math.sqrt(tier - 6)))))
+                    Materials.MysteriousCrystal.getMolten((long) (20 * INGOTS * (Math.sqrt(tier - 6)))))
                 .itemOutputs(aBoards.toArray(new ItemStack[0]))
                 .duration((int) Math.ceil(600 / Math.sqrt(Math.pow(1.5, tier - 5.5))))
                 .eut((int) GTValues.VP[tier] * 3 / 4)
@@ -644,7 +645,7 @@ public class PCBFactoryRecipes {
                 .fluidInputs(
                     Materials.SulfuricAcid.getFluid((long) (500 * (Math.sqrt(tier - 6)))),
                     Materials.IronIIIChloride.getFluid((long) (12500 * (Math.sqrt(tier - 6)))),
-                    Materials.MysteriousCrystal.getMolten((long) (2880 * (Math.sqrt(tier - 6)))))
+                    Materials.MysteriousCrystal.getMolten((long) (20 * INGOTS * (Math.sqrt(tier - 6)))))
                 .itemOutputs(aBoards.toArray(new ItemStack[0]))
                 .duration((int) Math.ceil(500 / Math.sqrt(Math.pow(1.5, tier - 6.5))))
                 .eut((int) GTValues.VP[tier + 1] * 3 / 4)
@@ -675,7 +676,7 @@ public class PCBFactoryRecipes {
                 .fluidInputs(
                     Materials.SulfuricAcid.getFluid((long) (500 * (Math.sqrt(tier - 6)))),
                     Materials.IronIIIChloride.getFluid((long) (12500 * (Math.sqrt(tier - 6)))),
-                    Materials.MysteriousCrystal.getMolten((long) (2880 * (Math.sqrt(tier - 6)))))
+                    Materials.MysteriousCrystal.getMolten((long) (20 * INGOTS * (Math.sqrt(tier - 6)))))
                 .itemOutputs(aBoards.toArray(new ItemStack[0]))
                 .duration((int) Math.ceil(400 / Math.sqrt(Math.pow(1.5, tier - 6.5))))
                 .eut((int) GTValues.VP[tier + 1] * 3 / 4)

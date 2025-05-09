@@ -4,6 +4,7 @@ import static goodgenerator.api.recipe.GoodGeneratorRecipeMaps.naquadahFuelRefin
 import static goodgenerator.api.recipe.GoodGeneratorRecipeMaps.naquadahReactorFuels;
 import static goodgenerator.main.GGConfigLoader.NaquadahFuelTime;
 import static goodgenerator.main.GGConfigLoader.NaquadahFuelVoltage;
+import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
 import static gregtech.api.util.GTRecipeConstants.LNG_BASIC_OUTPUT;
@@ -92,7 +93,9 @@ public class FuelRecipeLoader {
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.NetherStar, 64),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.DraconiumAwakened, 64),
                 GGMaterial.orundum.get(OrePrefixes.dust, 32))
-            .fluidInputs(GGMaterial.naquadahBasedFuelMkIII.getFluidOrGas(2000), Materials.Praseodymium.getMolten(9216L))
+            .fluidInputs(
+                GGMaterial.naquadahBasedFuelMkIII.getFluidOrGas(2000),
+                Materials.Praseodymium.getMolten(64 * INGOTS))
             .fluidOutputs(GGMaterial.naquadahBasedFuelMkIV.getFluidOrGas(250))
             .duration(8 * SECONDS)
             .eut(46_000_000)
@@ -155,8 +158,8 @@ public class FuelRecipeLoader {
             .fluidInputs(
                 GGMaterial.naquadahBasedFuelMkIV.getFluidOrGas(2000),
                 FluidRegistry.getFluidStack("heavyradox", 250),
-                MaterialsUEVplus.Mellion.getMolten(288L),
-                MaterialsUEVplus.Creon.getMolten(288L))
+                MaterialsUEVplus.Mellion.getMolten(2 * INGOTS),
+                MaterialsUEVplus.Creon.getMolten(2 * INGOTS))
             .fluidOutputs(GGMaterial.naquadahBasedFuelMkV.getFluidOrGas(750))
             .duration(2 * SECONDS + 10 * TICKS)
             .eut(300_000_000)

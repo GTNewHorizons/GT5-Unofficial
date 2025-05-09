@@ -8,6 +8,7 @@ import static gregtech.api.recipe.RecipeMaps.distillationTowerRecipes;
 import static gregtech.api.recipe.RecipeMaps.fluidHeaterRecipes;
 import static gregtech.api.recipe.RecipeMaps.mixerRecipes;
 import static gregtech.api.recipe.RecipeMaps.multiblockChemicalReactorRecipes;
+import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.MINUTES;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
@@ -167,7 +168,7 @@ public class RecipeLoaderGlueLine {
         GTValues.RA.stdBuilder()
             .itemInputs(ItemUtils.getSimpleStack(ModItems.dustCalciumCarbonate, 5), GTUtility.getIntegratedCircuit(8))
             .itemOutputs(ItemUtils.getItemStackFromFQRN("bartworks:gt.bwMetaGenerateddust:63", 3))
-            .fluidInputs(Materials.HydrochloricAcid.getFluid(2000L))
+            .fluidInputs(Materials.HydrochloricAcid.getFluid(2000))
             .fluidOutputs(Materials.CarbonDioxide.getGas(1000))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_LV)
@@ -367,7 +368,7 @@ public class RecipeLoaderGlueLine {
                 GTOreDictUnificator.get(OrePrefixes.cableGt04, Materials.ElectrumFlux, 2),
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.NaquadahEnriched, 36))
             .itemOutputs(ItemUtils.getItemStackFromFQRN("gregtech:gt.metaitem.01:32562", 1))
-            .fluidInputs(MaterialMisc.ETHYL_CYANOACRYLATE.getFluidStack(2304))
+            .fluidInputs(MaterialMisc.ETHYL_CYANOACRYLATE.getFluidStack(16 * INGOTS))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_UHV)
             .addTo(assemblerRecipes);
@@ -376,7 +377,7 @@ public class RecipeLoaderGlueLine {
                 GTOreDictUnificator.get(OrePrefixes.cableGt08, Materials.ElectrumFlux, 2),
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.NaquadahAlloy, 48))
             .itemOutputs(ItemUtils.getItemStackFromFQRN("gregtech:gt.metaitem.01:32563", 1))
-            .fluidInputs(MaterialMisc.ETHYL_CYANOACRYLATE.getFluidStack(4608))
+            .fluidInputs(MaterialMisc.ETHYL_CYANOACRYLATE.getFluidStack(32 * INGOTS))
             .duration(15 * SECONDS)
             .eut(TierEU.RECIPE_UHV)
             .addTo(assemblerRecipes);
@@ -385,7 +386,7 @@ public class RecipeLoaderGlueLine {
                 GTOreDictUnificator.get(OrePrefixes.wireGt16, Materials.SuperconductorUHV, 2),
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.Neutronium, 56))
             .itemOutputs(ItemUtils.getItemStackFromFQRN("gregtech:gt.metaitem.01:32564", 1))
-            .fluidInputs(MaterialMisc.ETHYL_CYANOACRYLATE.getFluidStack(9216))
+            .fluidInputs(MaterialMisc.ETHYL_CYANOACRYLATE.getFluidStack(64 * INGOTS))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_UHV)
             .addTo(assemblerRecipes);

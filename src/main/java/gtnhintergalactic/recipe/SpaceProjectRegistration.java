@@ -3,6 +3,7 @@ package gtnhintergalactic.recipe;
 import static gregtech.api.enums.Mods.OpenComputers;
 import static gregtech.api.enums.Mods.SuperSolarPanels;
 import static gregtech.api.util.GTModHandler.getModItem;
+import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
@@ -63,7 +64,7 @@ public class SpaceProjectRegistration implements Runnable {
                 CustomItemList.Machine_Multi_Computer.get(1),
                 ItemList.Sensor_UHV.get(1),
                 ItemList.Emitter_UHV.get(1))
-            .setUpgradeFluidsCost(new FluidStack(solderLuV, 144 * 30));
+            .setUpgradeFluidsCost(new FluidStack(solderLuV, 30 * INGOTS));
         ISpaceProject.ISP_Upgrade improvedComputation = new SPUpgrade().setUpgradeName("ImprovedComputation")
             .setUpgradeUnlocalizedName("ig.sp.upgrade.improvedcomputation")
             .setUpgradeTotalStages(20)
@@ -78,7 +79,7 @@ public class SpaceProjectRegistration implements Runnable {
                 CustomItemList.Machine_Multi_Computer.get(16),
                 ItemList.Sensor_UEV.get(1),
                 ItemList.Emitter_UEV.get(1))
-            .setUpgradeFluidsCost(new FluidStack(solderUEV, 144 * 10));
+            .setUpgradeFluidsCost(new FluidStack(solderUEV, 10 * INGOTS));
         ISpaceProject asteroidOutpost = new ProjectAsteroidOutpost().setProjectName("AsteroidOutpost")
             .setProjectUnlocalizedName("ig.spaceproject.asteroidoutpost")
             .setProjectUpgrades(reinforcedStructure, improvedComputation)
@@ -95,7 +96,7 @@ public class SpaceProjectRegistration implements Runnable {
                 ItemList.Block_NeutroniumPlate.get(16),
                 ItemList.Sensor_UV.get(1),
                 ItemList.Emitter_UV.get(1))
-            .setProjectFluidsCost(new FluidStack(solderLuV, 144 * 20));
+            .setProjectFluidsCost(new FluidStack(solderLuV, 20 * INGOTS));
 
         SpaceProjectManager.addProject(asteroidOutpost);
     }
@@ -116,7 +117,7 @@ public class SpaceProjectRegistration implements Runnable {
                 ItemList.Block_NeutroniumPlate.get(4),
                 ItemList.Sensor_UV.get(2),
                 ItemList.Emitter_UV.get(2))
-            .setProjectFluidsCost(new FluidStack(solderLuV, 144 * 20));
+            .setProjectFluidsCost(new FluidStack(solderLuV, 20 * INGOTS));
 
         SpaceProjectManager.addProject(planetScan);
     }

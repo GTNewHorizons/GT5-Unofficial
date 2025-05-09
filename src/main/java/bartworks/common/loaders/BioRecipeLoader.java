@@ -43,7 +43,7 @@ public class BioRecipeLoader {
     }
 
     public static void registerWaterBasedBioLabIncubations() {
-        FluidStack[] easyFluids = { Materials.Water.getFluid(1000L),
+        FluidStack[] easyFluids = { Materials.Water.getFluid(1000),
             FluidRegistry.getFluidStack("ic2distilledwater", 1000) };
         for (FluidStack fluidStack : easyFluids) {
 
@@ -122,7 +122,7 @@ public class BioRecipeLoader {
     }
 
     public static void registerWaterBasedBacterialVatRecipes() {
-        FluidStack[] easyFluids = { Materials.Water.getFluid(1000L),
+        FluidStack[] easyFluids = { Materials.Water.getFluid(1000),
             FluidRegistry.getFluidStack("ic2distilledwater", 1000) };
         for (FluidStack fluidStack : easyFluids) {
             if (CropsPlusPlus.isModLoaded()) {

@@ -1,6 +1,7 @@
 package kekztech.common.recipeLoaders;
 
 import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
+import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gtPlusPlus.core.material.MaterialsElements.STANDALONE.DRAGON_METAL;
 import static gtPlusPlus.core.material.MaterialsElements.STANDALONE.HYPOGEN;
 
@@ -42,7 +43,7 @@ public class ResearchableAssemblyLine implements Runnable {
                 ItemList.Circuit_Wafer_UHPIC.get(64), ItemList.Circuit_Wafer_SoC2.get(32),
                 ItemList.Circuit_Parts_DiodeASMD.get(64),
                 GTOreDictUnificator.get(OrePrefixes.wireGt02, Materials.SuperconductorUHV, 64) },
-            new FluidStack[] { new FluidStack(solderUEV, 4608), Materials.Naquadria.getMolten(9216),
+            new FluidStack[] { new FluidStack(solderUEV, 32 * INGOTS), Materials.Naquadria.getMolten(64 * INGOTS),
                 new FluidStack(FluidRegistry.getFluid("ic2coolant"), 32000) },
             new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 5),
             4000,
@@ -63,7 +64,7 @@ public class ResearchableAssemblyLine implements Runnable {
                 ItemList.Circuit_Wafer_PPIC.get(64), ItemList.Circuit_Wafer_SoC2.get(64),
                 ItemList.Circuit_Parts_DiodeXSMD.get(64),
                 GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials.SuperconductorUEV, 64) },
-            new FluidStack[] { new FluidStack(solderUEV, 9216), Materials.Quantium.getMolten(18432),
+            new FluidStack[] { new FluidStack(solderUEV, 64 * INGOTS), Materials.Quantium.getMolten(18432),
                 Materials.Naquadria.getMolten(18432), Materials.SuperCoolant.getFluid(64000) },
             new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 8),
             250 * 20,

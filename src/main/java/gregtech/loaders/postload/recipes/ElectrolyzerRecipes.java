@@ -27,7 +27,7 @@ public class ElectrolyzerRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(1), ItemList.Cell_Empty.get(1L))
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.cell, Materials.Oxygen, 1L))
-            .fluidInputs(Materials.Water.getFluid(1000L))
+            .fluidInputs(Materials.Water.getFluid(1000))
             .fluidOutputs(Materials.Hydrogen.getGas(2000L))
             .duration(1 * MINUTES + 40 * SECONDS)
             .eut(30)
@@ -45,8 +45,8 @@ public class ElectrolyzerRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(3), ItemList.Cell_Empty.get(2L))
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.cell, Materials.Hydrogen, 2L))
-            .fluidInputs(Materials.Water.getFluid(1000L))
-            .fluidOutputs(Materials.Oxygen.getGas(1000L))
+            .fluidInputs(Materials.Water.getFluid(1000))
+            .fluidOutputs(Materials.Oxygen.getGas(1000))
             .duration(1 * MINUTES + 40 * SECONDS)
             .eut(30)
             .addTo(electrolyzerRecipes);
@@ -54,8 +54,8 @@ public class ElectrolyzerRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(4), ItemList.Cell_Empty.get(2L))
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.cell, Materials.Hydrogen, 2L))
-            .fluidInputs(GTModHandler.getDistilledWater(1000L))
-            .fluidOutputs(Materials.Oxygen.getGas(1000L))
+            .fluidInputs(GTModHandler.getDistilledWater(1000))
+            .fluidOutputs(Materials.Oxygen.getGas(1000))
             .duration(1 * MINUTES + 40 * SECONDS)
             .eut(30)
             .addTo(electrolyzerRecipes);
@@ -130,7 +130,7 @@ public class ElectrolyzerRecipes implements Runnable {
             .itemOutputs(
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Calcite, 1L),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Carbon, 1L))
-            .fluidOutputs(Materials.Water.getFluid(1000L))
+            .fluidOutputs(Materials.Water.getFluid(1000))
             .duration(5 * SECONDS)
             .eut(30)
             .addTo(electrolyzerRecipes);

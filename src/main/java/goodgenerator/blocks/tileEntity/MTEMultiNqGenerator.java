@@ -76,7 +76,7 @@ public class MTEMultiNqGenerator extends MTETooltipMultiBlockBaseEM implements I
         coolant = Arrays.asList(
             Pair.of(MaterialsUEVplus.Time.getMolten(20L), CoolantEfficiency[0]),
             Pair.of(FluidRegistry.getFluidStack("cryotheum", 1000), CoolantEfficiency[1]),
-            Pair.of(Materials.SuperCoolant.getFluid(1000L), CoolantEfficiency[2]),
+            Pair.of(Materials.SuperCoolant.getFluid(1000), CoolantEfficiency[2]),
             Pair.of(FluidRegistry.getFluidStack("ic2coolant", 1000), CoolantEfficiency[3]));
     }
 

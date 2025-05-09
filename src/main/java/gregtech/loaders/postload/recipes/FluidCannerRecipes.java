@@ -1,6 +1,7 @@
 package gregtech.loaders.postload.recipes;
 
 import static gregtech.api.recipe.RecipeMaps.fluidCannerRecipes;
+import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
@@ -13,7 +14,7 @@ public class FluidCannerRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Battery_Hull_LV.get(1))
             .itemOutputs(ItemList.IC2_ReBattery.get(1))
-            .fluidInputs(Materials.Redstone.getMolten(288))
+            .fluidInputs(Materials.Redstone.getMolten(2 * INGOTS))
             .duration(4)
             .eut(1)
             .addTo(fluidCannerRecipes);

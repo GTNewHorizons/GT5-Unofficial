@@ -41,7 +41,9 @@ import static gregtech.api.recipe.RecipeMaps.primitiveBlastRecipes;
 import static gregtech.api.recipe.RecipeMaps.sifterRecipes;
 import static gregtech.api.recipe.RecipeMaps.smallNaquadahReactorFuels;
 import static gregtech.api.recipe.RecipeMaps.ultraHugeNaquadahReactorFuels;
+import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.MINUTES;
+import static gregtech.api.util.GTRecipeBuilder.NUGGETS;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
 import static gregtech.api.util.GTRecipeConstants.ADDITIVE_AMOUNT;
@@ -90,7 +92,7 @@ public class AdditionalRecipes {
     private static void runBWRecipes() {
 
         FluidStack[] dnaFluid = { Gendustry.isModLoaded() ? FluidRegistry.getFluidStack("liquiddna", 1000)
-            : Materials.Biomass.getFluid(1000L) };
+            : Materials.Biomass.getFluid(1000) };
 
         for (ItemStack stack : BioItemList.getAllPetriDishes()) {
             BioData DNA = BioData.getBioDataFromNBTTag(
@@ -221,7 +223,7 @@ public class AdditionalRecipes {
             .fake()
             .addTo(bioLabRecipes);
 
-        FluidStack[] easyFluids = { Materials.Water.getFluid(1000L),
+        FluidStack[] easyFluids = { Materials.Water.getFluid(1000),
             FluidRegistry.getFluidStack("ic2distilledwater", 1000) };
         for (FluidStack fluidStack : easyFluids) {
             for (BioCulture bioCulture : BioCulture.BIO_CULTURE_ARRAY_LIST) {
@@ -239,7 +241,7 @@ public class AdditionalRecipes {
                     GTValues.RA.stdBuilder()
                         .itemInputs(
                             BioItemList.getPetriDish(null),
-                            fluidStack.equals(Materials.Water.getFluid(1000L)) ? Materials.Water.getCells(1)
+                            fluidStack.equals(Materials.Water.getFluid(1000)) ? Materials.Water.getCells(1)
                                 : GTUtility.getContainersFromFluid(GTModHandler.getDistilledWater(1000))
                                     .get(0))
                         .itemOutputs(BioItemList.getPetriDish(bioCulture), Materials.Empty.getCells(1))
@@ -295,7 +297,7 @@ public class AdditionalRecipes {
         GTValues.RA.stdBuilder()
             .itemInputs(WerkstoffLoader.YttriumOxide.get(dustSmall, 2), WerkstoffLoader.Thorianit.get(dustSmall, 2))
             .itemOutputs(new ItemStack(ItemRegistry.bw_glasses[0], 1, 12))
-            .fluidInputs(Materials.Glass.getMolten(144))
+            .fluidInputs(Materials.Glass.getMolten(1 * INGOTS))
             .duration(40 * SECONDS)
             .eut(TierEU.RECIPE_IV)
             .metadata(COIL_HEAT, 3663)
@@ -336,7 +338,7 @@ public class AdditionalRecipes {
             .itemInputs(WerkstoffLoader.Thorianit.get(crushed), ItemList.Crop_Drop_Thorium.get(9))
             .itemOutputs(WerkstoffLoader.Thorianit.get(crushedPurified, 4))
             .fluidInputs(Materials.Water.getFluid(1000))
-            .fluidOutputs(Materials.Thorium.getMolten(144))
+            .fluidOutputs(Materials.Thorium.getMolten(1 * INGOTS))
             .duration(4 * SECONDS + 16 * TICKS)
             .eut(24)
             .addTo(UniversalChemical);
@@ -388,15 +390,17 @@ public class AdditionalRecipes {
             .addTo(blastFurnaceRecipes);
 
         GTValues.RA.stdBuilder()
-            .fluidInputs(Materials.Plutonium.getMolten(48), Materials.Beryllium.getMolten(48))
-            .fluidOutputs(WerkstoffLoader.Californium.getMolten(48))
+            .fluidInputs(Materials.Plutonium.getMolten(3 * NUGGETS), Materials.Beryllium.getMolten(3 * NUGGETS))
+            .fluidOutputs(WerkstoffLoader.Californium.getMolten(3 * NUGGETS))
             .duration(12 * SECONDS)
             .eut(49152)
             .metadata(FUSION_THRESHOLD, 480_000_000L)
             .addTo(fusionRecipes);
 
         GTValues.RA.stdBuilder()
-            .fluidInputs(WerkstoffLoader.Californium.getMolten(32), WerkstoffLoader.Calcium.getMolten(720))
+            .fluidInputs(
+                WerkstoffLoader.Californium.getMolten(2 * NUGGETS),
+                WerkstoffLoader.Calcium.getMolten(5 * INGOTS))
             .fluidOutputs(WerkstoffLoader.Oganesson.getFluidOrGas(720))
             .duration(24 * SECONDS)
             .eut(49152)
@@ -404,7 +408,7 @@ public class AdditionalRecipes {
             .addTo(fusionRecipes);
 
         GTValues.RA.stdBuilder()
-            .fluidInputs(Materials.LiquidAir.getFluid(100000000))
+            .fluidInputs(Materials.LiquidAir.getFluid(100_000_000))
             .fluidOutputs(
                 Materials.Nitrogen.getGas(78084000),
                 Materials.Oxygen.getGas(20946000),

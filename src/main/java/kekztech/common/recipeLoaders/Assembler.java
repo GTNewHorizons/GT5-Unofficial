@@ -1,6 +1,7 @@
 package kekztech.common.recipeLoaders;
 
 import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
+import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.MINUTES;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 
@@ -35,7 +36,7 @@ public class Assembler implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.DarkSteel, 3),
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.EnderPearl, 3))
             .itemOutputs(new ItemStack(Blocks.tfftStorageField, 1))
-            .fluidInputs(Materials.Polytetrafluoroethylene.getMolten(144))
+            .fluidInputs(Materials.Polytetrafluoroethylene.getMolten(1 * INGOTS))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(assemblerRecipes);
@@ -48,7 +49,7 @@ public class Assembler implements Runnable {
                 ItemList.Field_Generator_LV.get(4),
                 GTOreDictUnificator.get(OrePrefixes.pipeTiny, Materials.Polytetrafluoroethylene, 25))
             .itemOutputs(TileEntities.tfftHatch.getStackForm(1))
-            .fluidInputs(Materials.Plastic.getMolten(432))
+            .fluidInputs(Materials.Plastic.getMolten(3 * INGOTS))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(assemblerRecipes);
@@ -62,7 +63,7 @@ public class Assembler implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.pipeNonuple, Materials.Steel, 3),
                 ItemList.FluidRegulator_LV.get(1))
             .itemOutputs(new ItemStack(Blocks.tfftStorageField, 1, 1))
-            .fluidInputs(Materials.Glass.getMolten(144))
+            .fluidInputs(Materials.Glass.getMolten(1 * INGOTS))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(assemblerRecipes);
@@ -76,7 +77,7 @@ public class Assembler implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.pipeNonuple, Materials.Plastic, 3),
                 ItemList.FluidRegulator_MV.get(1))
             .itemOutputs(new ItemStack(Blocks.tfftStorageField, 1, 2))
-            .fluidInputs(Materials.Plastic.getMolten(288))
+            .fluidInputs(Materials.Plastic.getMolten(2 * INGOTS))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(assemblerRecipes);
@@ -91,7 +92,7 @@ public class Assembler implements Runnable {
                 ItemList.Field_Generator_LV.get(1),
                 ItemList.FluidRegulator_HV.get(1))
             .itemOutputs(new ItemStack(Blocks.tfftStorageField, 1, 3))
-            .fluidInputs(Materials.Plastic.getMolten(432))
+            .fluidInputs(Materials.Plastic.getMolten(3 * INGOTS))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(assemblerRecipes);
@@ -106,7 +107,7 @@ public class Assembler implements Runnable {
                 ItemList.Field_Generator_MV.get(2),
                 ItemList.FluidRegulator_EV.get(1))
             .itemOutputs(new ItemStack(Blocks.tfftStorageField, 1, 4))
-            .fluidInputs(Materials.Epoxid.getMolten(864))
+            .fluidInputs(Materials.Epoxid.getMolten(6 * INGOTS))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_EV)
             .addTo(assemblerRecipes);
@@ -121,7 +122,7 @@ public class Assembler implements Runnable {
                 ItemList.Field_Generator_HV.get(4),
                 ItemList.FluidRegulator_IV.get(1))
             .itemOutputs(new ItemStack(Blocks.tfftStorageField, 1, 5))
-            .fluidInputs(Materials.Epoxid.getMolten(1152))
+            .fluidInputs(Materials.Epoxid.getMolten(8 * INGOTS))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_IV)
             .addTo(assemblerRecipes);

@@ -2,6 +2,7 @@ package gregtech.loaders.postload.recipes;
 
 import static gregtech.api.recipe.RecipeMaps.blastFurnaceRecipes;
 import static gregtech.api.recipe.RecipeMaps.primitiveBlastRecipes;
+import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.MINUTES;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
@@ -633,7 +634,7 @@ public class BlastFurnaceRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(MaterialsUEVplus.TranscendentMetal.getDust(1), GTUtility.getIntegratedCircuit(1))
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.ingotHot, MaterialsUEVplus.TranscendentMetal, 1))
-            .fluidInputs(Materials.Tungsten.getMolten(144))
+            .fluidInputs(Materials.Tungsten.getMolten(1 * INGOTS))
             .fluidOutputs(new FluidStack(FluidRegistry.getFluid("molten.celestialtungsten"), 72))
             .duration(3 * MINUTES)
             .eut(TierEU.RECIPE_UIV)
@@ -659,7 +660,7 @@ public class BlastFurnaceRecipes implements Runnable {
                 MaterialsUEVplus.SixPhasedCopper.getNanite(1),
                 Materials.Dilithium.getDust(16),
                 GTUtility.getIntegratedCircuit(2))
-            .fluidInputs(MaterialsUEVplus.Mellion.getMolten(48 * 144L))
+            .fluidInputs(MaterialsUEVplus.Mellion.getMolten(48 * INGOTS))
             .fluidOutputs(MaterialsUEVplus.PhononCrystalSolution.getFluid(1000))
             .duration(300 * SECONDS)
             .eut((int) TierEU.RECIPE_UIV)
@@ -682,7 +683,7 @@ public class BlastFurnaceRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(MaterialsUEVplus.Mellion.getDust(1), GTUtility.getIntegratedCircuit(11))
             .itemOutputs(ItemList.Harmonic_Compound.get(2))
-            .fluidInputs(MaterialsUEVplus.Creon.getPlasma(144))
+            .fluidInputs(MaterialsUEVplus.Creon.getPlasma(1 * INGOTS))
             .duration(30 * SECONDS)
             .eut((int) TierEU.RECIPE_UMV)
             .metadata(COIL_HEAT, 14000)

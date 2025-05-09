@@ -348,8 +348,8 @@ public class DistilleryRecipes implements Runnable {
     public void distillationTowerRecipes() {
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(2))
-            .fluidInputs(Materials.Creosote.getFluid(1000L))
-            .fluidOutputs(Materials.Lubricant.getFluid(500L))
+            .fluidInputs(Materials.Creosote.getFluid(1000))
+            .fluidOutputs(Materials.Lubricant.getFluid(500))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(distillationTowerRecipes);
@@ -357,7 +357,7 @@ public class DistilleryRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(2))
             .fluidInputs(Materials.SeedOil.getFluid(1400L))
-            .fluidOutputs(Materials.Lubricant.getFluid(500L))
+            .fluidOutputs(Materials.Lubricant.getFluid(500))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(distillationTowerRecipes);
@@ -365,21 +365,21 @@ public class DistilleryRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(2))
             .fluidInputs(Materials.FishOil.getFluid(1200L))
-            .fluidOutputs(Materials.Lubricant.getFluid(500L))
+            .fluidOutputs(Materials.Lubricant.getFluid(500))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(distillationTowerRecipes);
 
         GTValues.RA.stdBuilder()
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dustSmall, Materials.Wood, 2L))
-            .fluidInputs(Materials.Biomass.getFluid(1000L))
+            .fluidInputs(Materials.Biomass.getFluid(1000))
             .fluidOutputs(Materials.Ethanol.getFluid(600L), Materials.Water.getFluid(300L))
             .duration(1 * SECONDS + 12 * TICKS)
             .eut(400)
             .addTo(distillationTowerRecipes);
 
         GTValues.RA.stdBuilder()
-            .fluidInputs(Materials.Water.getFluid(1000L))
+            .fluidInputs(Materials.Water.getFluid(1000))
             .fluidOutputs(GTModHandler.getDistilledWater(1000L))
             .duration(1 * SECONDS + 12 * TICKS)
             .eut(TierEU.RECIPE_MV)
@@ -387,23 +387,23 @@ public class DistilleryRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(2))
-            .fluidInputs(Materials.OilLight.getFluid(1000L))
-            .fluidOutputs(Materials.Lubricant.getFluid(250L))
+            .fluidInputs(Materials.OilLight.getFluid(1000))
+            .fluidOutputs(Materials.Lubricant.getFluid(250))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(distillationTowerRecipes);
 
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(2))
-            .fluidInputs(Materials.OilMedium.getFluid(1000L))
-            .fluidOutputs(Materials.Lubricant.getFluid(500L))
+            .fluidInputs(Materials.OilMedium.getFluid(1000))
+            .fluidOutputs(Materials.Lubricant.getFluid(500))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(distillationTowerRecipes);
 
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(2))
-            .fluidInputs(Materials.OilHeavy.getFluid(1000L))
+            .fluidInputs(Materials.OilHeavy.getFluid(1000))
             .fluidOutputs(Materials.Lubricant.getFluid(750L))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_MV)
@@ -412,8 +412,8 @@ public class DistilleryRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, MaterialsKevlar.DiphenylmethaneDiisocyanate, 29L))
-            .fluidInputs(MaterialsKevlar.DiphenylmethaneDiisocyanateMixture.getFluid(1000L))
-            .fluidOutputs(Materials.HydrochloricAcid.getFluid(5000L))
+            .fluidInputs(MaterialsKevlar.DiphenylmethaneDiisocyanateMixture.getFluid(1000))
+            .fluidOutputs(Materials.HydrochloricAcid.getFluid(5000))
             .duration(2 * MINUTES + 5 * SECONDS)
             .eut(TierEU.RECIPE_EV)
             .addTo(distillationTowerRecipes);
@@ -528,7 +528,7 @@ public class DistilleryRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(9))
-            .fluidInputs(Materials.Oil.getFluid(1000L))
+            .fluidInputs(Materials.Oil.getFluid(1000))
             .fluidOutputs(
                 Materials.SulfuricHeavyFuel.getFluid(300),
                 Materials.SulfuricLightFuel.getFluid(1000),
@@ -557,7 +557,7 @@ public class DistilleryRecipes implements Runnable {
             .fluidInputs(Materials.MTBEMixture.getGas(900L))
             .fluidOutputs(
                 Materials.AntiKnock.getFluid(400L),
-                Materials.Methanol.getFluid(500L),
+                Materials.Methanol.getFluid(500),
                 Materials.Butene.getGas(400L))
             .duration(2 * SECONDS)
             .eut(TierEU.RECIPE_MV)
@@ -567,7 +567,7 @@ public class DistilleryRecipes implements Runnable {
             .fluidInputs(Materials.MTBEMixtureAlt.getGas(900L))
             .fluidOutputs(
                 Materials.AntiKnock.getFluid(400L),
-                Materials.Methanol.getFluid(500L),
+                Materials.Methanol.getFluid(500),
                 Materials.Butane.getGas(400L))
             .duration(2 * SECONDS)
             .eut(TierEU.RECIPE_MV)
@@ -591,7 +591,7 @@ public class DistilleryRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemOutputs(ItemList.IC2_Fertilizer.get(1))
             .fluidInputs(new FluidStack(FluidRegistry.getFluid("ic2biomass"), 3000))
-            .fluidOutputs(new FluidStack(FluidRegistry.getFluid("ic2biogas"), 8000), Materials.Water.getFluid(125L))
+            .fluidOutputs(new FluidStack(FluidRegistry.getFluid("ic2biogas"), 8000), Materials.Water.getFluid(125))
             .duration(12 * SECONDS + 10 * TICKS)
             .eut(TierEU.RECIPE_HV)
             .addTo(distillationTowerRecipes);

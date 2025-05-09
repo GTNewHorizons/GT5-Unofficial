@@ -5,6 +5,7 @@ import static gregtech.api.enums.Mods.BuildCraftSilicon;
 import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
 import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
 import static gregtech.api.recipe.RecipeMaps.laserEngraverRecipes;
+import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.MINUTES;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
@@ -37,7 +38,7 @@ public class ProcessingCrafting implements gregtech.api.interfaces.IOreRecipeReg
                 GTValues.RA.stdBuilder()
                     .itemInputs(new ItemStack(Blocks.redstone_torch, 3, 32767), GTUtility.copyAmount(1, aStack))
                     .itemOutputs(new ItemStack(net.minecraft.init.Items.comparator, 1, 0))
-                    .fluidInputs(Materials.Concrete.getMolten(144L))
+                    .fluidInputs(Materials.Concrete.getMolten(1 * INGOTS))
                     .duration(2 * SECONDS)
                     .eut(20)
                     .addTo(assemblerRecipes);

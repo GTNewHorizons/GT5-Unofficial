@@ -129,7 +129,7 @@ public class Electrolyzer implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.SiliconDioxide, 6),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Boron, 3),
                 GTOreDictUnificator.get(OrePrefixes.cell, Materials.Fluorine, 3))
-            .fluidOutputs(Materials.Oxygen.getGas(6000L))
+            .fluidOutputs(Materials.Oxygen.getGas(6000))
             .duration(36 * SECONDS + 10 * TICKS)
             .eut(TierEU.RECIPE_MV)
             .addTo(electrolyzerRecipes);
@@ -142,7 +142,7 @@ public class Electrolyzer implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.SiliconDioxide, 6L),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Boron, 3),
                 GTOreDictUnificator.get(OrePrefixes.cell, Materials.Hydrogen, 1))
-            .fluidOutputs(Materials.Oxygen.getGas(1000L))
+            .fluidOutputs(Materials.Oxygen.getGas(1000))
             .duration(39 * SECONDS + 10 * TICKS)
             .eut(TierEU.RECIPE_MV)
             .addTo(electrolyzerRecipes);

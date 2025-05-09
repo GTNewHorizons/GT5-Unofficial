@@ -145,7 +145,7 @@ public class MTEBioLab extends MTEBasicMachine {
 
         int rTier = 3;
         FluidStack dnaFluid = Gendustry.isModLoaded() ? FluidRegistry.getFluidStack("liquiddna", 1000)
-            : Materials.Biomass.getFluid(1000L);
+            : Materials.Biomass.getFluid(1000);
 
         if (this.getSpecialSlot() != null && this.getSpecialSlot()
             .getItem() instanceof ItemLabModule) {

@@ -56,7 +56,7 @@ public class RecipesRareEarthProcessing {
         // Add Process for creating Brine
         GTValues.RA.stdBuilder()
             .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Salt, 16L))
-            .fluidInputs(Materials.SaltWater.getFluid(2000L))
+            .fluidInputs(Materials.SaltWater.getFluid(2000))
             .fluidOutputs(FluidUtils.getFluidStack(mBrine, 4000))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_MV)
@@ -128,7 +128,7 @@ public class RecipesRareEarthProcessing {
         GTValues.RA.stdBuilder()
             .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.RareEarth, 3L))
             .itemOutputs(RARE_EARTH_LOW.getCrushed(2), RARE_EARTH_LOW.getCrushed(2), RARE_EARTH_LOW.getCrushed(2))
-            .fluidInputs(Materials.SulfuricAcid.getFluid(1000L))
+            .fluidInputs(Materials.SulfuricAcid.getFluid(1000))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(chemicalBathRecipes);
@@ -158,7 +158,7 @@ public class RecipesRareEarthProcessing {
             .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.RareEarth, 3L))
             .itemOutputs(RARE_EARTH_HIGH.getCrushed(2), RARE_EARTH_HIGH.getCrushed(2), RARE_EARTH_HIGH.getCrushed(2))
             .outputChances(9000, 8000, 7000)
-            .fluidInputs(Materials.HydrofluoricAcid.getFluid(2000L))
+            .fluidInputs(Materials.HydrofluoricAcid.getFluid(2000))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_IV)
             .addTo(chemicalBathRecipes);

@@ -436,7 +436,7 @@ public class MTEExoticModule extends MTEBaseModule {
 
             FluidStack outputFluid;
             if (magmatterMode) {
-                outputFluid = MaterialsUEVplus.MagMatter.getMolten(576L * actualParallel);
+                outputFluid = MaterialsUEVplus.MagMatter.getMolten(actualParallel * 4 * INGOTS);
             } else {
                 outputFluid = MaterialsUEVplus.QuarkGluonPlasma.getFluid(1000L * actualParallel);
             }

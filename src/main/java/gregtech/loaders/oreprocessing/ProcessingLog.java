@@ -100,7 +100,7 @@ public class ProcessingLog implements gregtech.api.interfaces.IOreRecipeRegistra
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.copyAmount(8, aStack), GTUtility.getIntegratedCircuit(8))
             .itemOutputs(ItemList.FR_Casing_Impregnated.get(1L))
-            .fluidInputs(Materials.SeedOil.getFluid(250L))
+            .fluidInputs(Materials.SeedOil.getFluid(250))
             .duration(3 * SECONDS + 4 * TICKS)
             .eut(16)
             .addTo(assemblerRecipes);

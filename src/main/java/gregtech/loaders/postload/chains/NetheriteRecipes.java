@@ -171,9 +171,9 @@ public class NetheriteRecipes {
 
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Netherite_Nanoparticles.get(1))
-            .fluidInputs(Materials.HellishMetal.getMolten(144))
+            .fluidInputs(Materials.HellishMetal.getMolten(1 * INGOTS))
             .itemOutputs(ItemList.Intensely_Bonded_Netherite_Nanoparticles.get(1))
-            .fluidOutputs(Materials.Thaumium.getMolten(32))
+            .fluidOutputs(Materials.Thaumium.getMolten(2 * NUGGETS))
             .duration(15 * SECONDS)
             .eut(TierEU.RECIPE_ZPM)
             .metadata(COIL_HEAT, 7500)

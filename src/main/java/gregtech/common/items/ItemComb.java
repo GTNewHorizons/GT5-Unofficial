@@ -17,6 +17,7 @@ import static gregtech.api.enums.Mods.ThaumicBases;
 import static gregtech.api.recipe.RecipeMaps.autoclaveRecipes;
 import static gregtech.api.recipe.RecipeMaps.centrifugeRecipes;
 import static gregtech.api.recipe.RecipeMaps.fluidExtractionRecipes;
+import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
 import static gregtech.api.util.GTRecipeConstants.CLEANROOM;
 import static gregtech.api.util.GTRecipeConstants.UniversalChemical;
@@ -1003,7 +1004,7 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer, IIte
                         combInput = GTUtility.copyAmount(4, tComb);
                         combOutput = Materials.Neutronium.getNuggets(1);
                         fluidInput = volt.getFluidAccordingToCombTier();
-                        fluidOutput = Materials.Neutronium.getMolten(576);
+                        fluidOutput = Materials.Neutronium.getMolten(4 * INGOTS);
                         durationTicks = volt.getComplexTime() * 17;
                         eut = volt.getChemicalEnergy();
                         requiresCleanroom = volt.compareTo(Voltage.IV) > 0;
@@ -1012,7 +1013,7 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer, IIte
                         combInput = GTUtility.copyAmount(4, tComb);
                         combOutput = Materials.Osmium.getNuggets(1);
                         fluidInput = volt.getFluidAccordingToCombTier();
-                        fluidOutput = Materials.Osmium.getMolten(288);
+                        fluidOutput = Materials.Osmium.getMolten(2 * INGOTS);
                         durationTicks = volt.getComplexTime() * 17;
                         eut = volt.getChemicalEnergy();
                         requiresCleanroom = volt.compareTo(Voltage.IV) > 0;
@@ -1021,7 +1022,7 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer, IIte
                         combInput = GTUtility.copyAmount(4, tComb);
                         combOutput = Materials.Platinum.getNuggets(1);
                         fluidInput = volt.getFluidAccordingToCombTier();
-                        fluidOutput = Materials.Platinum.getMolten(288);
+                        fluidOutput = Materials.Platinum.getMolten(2 * INGOTS);
                         durationTicks = volt.getComplexTime() * 10;
                         eut = volt.getChemicalEnergy();
                         requiresCleanroom = volt.compareTo(Voltage.HV) > 0;
@@ -1030,7 +1031,7 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer, IIte
                         combInput = GTUtility.copyAmount(4, tComb);
                         combOutput = Materials.Iridium.getNuggets(1);
                         fluidInput = volt.getFluidAccordingToCombTier();
-                        fluidOutput = Materials.Iridium.getMolten(288);
+                        fluidOutput = Materials.Iridium.getMolten(2 * INGOTS);
                         durationTicks = volt.getComplexTime() * 14;
                         eut = volt.getChemicalEnergy();
                         requiresCleanroom = volt.compareTo(Voltage.EV) > 0;
