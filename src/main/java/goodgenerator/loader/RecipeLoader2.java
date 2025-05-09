@@ -1668,7 +1668,7 @@ public class RecipeLoader2 {
             .itemInputs(ItemRefer.Fuel_Rod_Pu_Depleted_1.get(1))
             .itemOutputs(
                 ItemRefer.Advanced_Fuel_Rod.get(1),
-                Materials.Plutonium.getDust(5),
+                Materials.Plutonium.getDust(4),
                 Materials.Plutonium241.getDust(2),
                 Materials.Carbon.getDust(2),
                 Materials.Uranium.getDust(1),
@@ -1683,7 +1683,7 @@ public class RecipeLoader2 {
             .itemInputs(ItemRefer.Fuel_Rod_Pu_Depleted_2.get(1))
             .itemOutputs(
                 ItemRefer.Advanced_Fuel_Rod.get(2),
-                Materials.Plutonium.getDust(10),
+                Materials.Plutonium.getDust(8),
                 Materials.Plutonium241.getDust(4),
                 Materials.Carbon.getDust(4),
                 Materials.Uranium.getDust(2),
@@ -1698,7 +1698,7 @@ public class RecipeLoader2 {
             .itemInputs(ItemRefer.Fuel_Rod_Pu_Depleted_4.get(1))
             .itemOutputs(
                 ItemRefer.Advanced_Fuel_Rod.get(4),
-                Materials.Plutonium.getDust(20),
+                Materials.Plutonium.getDust(16),
                 Materials.Plutonium241.getDust(8),
                 Materials.Carbon.getDust(8),
                 Materials.Uranium.getDust(4),
