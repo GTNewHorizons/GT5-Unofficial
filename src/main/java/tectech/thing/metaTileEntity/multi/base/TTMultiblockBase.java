@@ -8,6 +8,7 @@ import static gregtech.api.enums.HatchElement.Maintenance;
 import static gregtech.api.enums.HatchElement.Muffler;
 import static gregtech.api.enums.HatchElement.OutputBus;
 import static gregtech.api.enums.HatchElement.OutputHatch;
+import static gregtech.api.enums.Mods.GTNHIntergalactic;
 import static gregtech.api.enums.Mods.GregTech;
 import static gregtech.api.metatileentity.BaseTileEntity.BUTTON_FORBIDDEN_TOOLTIP;
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
@@ -2857,8 +2858,8 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
     public void addEditParametersButton(ModularPanel panel, PanelSyncManager syncManager, Flow buttonColumn) {
         IPanelHandler infoPanel = syncManager
             .panel("info_panel", (p_syncManager, syncHandler) -> getParameterPanel(panel, p_syncManager), true);
-        UITexture editParametersEnabled = UITexture.fullImage(MODID, "gui/overlay_button/edit_parameters");
-        UITexture editParametersDisabled = UITexture.fullImage(MODID, "gui/overlay_button/edit_parameters_disabled");
+        UITexture editParametersEnabled = UITexture.fullImage(GTNHIntergalactic.ID, "gui/overlay_button/options");
+        UITexture editParametersDisabled = UITexture.fullImage(GTNHIntergalactic.ID, "gui/overlay_button/options_disabled");
         com.cleanroommc.modularui.widgets.ButtonWidget editParametersButton = new com.cleanroommc.modularui.widgets.ButtonWidget();
         editParametersButton.overlay(new DynamicDrawable(() -> {
             if (parameterList.isEmpty()) {
