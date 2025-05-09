@@ -404,6 +404,17 @@ public class NetheriteRecipes {
             .duration(1 * HOURS)
             .eut(TierEU.RECIPE_IV)
             .addTo(cutterRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                GTOreDictUnificator.get(OrePrefixes.plateDense, Materials.InfusedGold, 8),
+                ItemList.Intensely_Bonded_Netherite_Nanoparticles.get(36))
+            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.plateDense, Materials.Netherite, 1))
+            .fluidInputs(FluidUtils.getFluidStack("pyrotheum", 128000))
+            .duration(180 * SECONDS)
+            .eut(TierEU.RECIPE_ZPM)
+            .metadata(COIL_HEAT, 7600)
+            .addTo(blastFurnaceRecipes);
     }
 
     private static void addNetheritePartRecipe(OrePrefixes prefix, int multiplier, int inverseMultiplier) {
