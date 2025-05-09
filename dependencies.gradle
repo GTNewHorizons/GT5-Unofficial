@@ -59,7 +59,7 @@ dependencies {
 
     compileOnlyApi("com.github.GTNewHorizons:Avaritia:1.63:dev")
 
-    compileOnlyApi('com.github.GTNewHorizons:Angelica:1.0.0-beta40:api') { transitive = false }
+    compileOnlyApi('com.github.GTNewHorizons:Angelica:1.0.0-beta41:api') { transitive = false }
     compileOnlyApi("com.github.GTNewHorizons:AppleCore:3.3.4:dev") { transitive = false }
     compileOnlyApi("com.github.GTNewHorizons:BuildCraft:7.1.42:dev") { transitive = false }
     compileOnlyApi("com.github.GTNewHorizons:EnderIO:2.9.8:dev") { transitive = false }
@@ -110,7 +110,8 @@ dependencies {
 
     testImplementation(platform('org.junit:junit-bom:5.9.2'))
     testImplementation('org.junit.jupiter:junit-jupiter')
-    testImplementation("org.mockito:mockito-core:3.+")
+    testImplementation("org.mockito:mockito-core:5.+")
+    testImplementation("com.github.GTNewHorizons:Chisel:2.16.2-GTNH:dev") { transitive = false }
 
     functionalTestImplementation(platform('org.junit:junit-bom:5.9.2'))
     functionalTestImplementation('org.junit.jupiter:junit-jupiter')

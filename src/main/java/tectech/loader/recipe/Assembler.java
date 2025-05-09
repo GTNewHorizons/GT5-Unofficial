@@ -2923,20 +2923,6 @@ public class Assembler implements Runnable {
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_LuV)
             .addTo(assemblerRecipes);
-        // Network Switch
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                CustomItemList.Machine_Multi_Transformer.get(1),
-                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.LuV, 4),
-                GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.Cobalt, 64),
-                GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.Copper, 64),
-                CustomItemList.DATApipe.get(4))
-            .itemOutputs(CustomItemList.Machine_Multi_Switch.get(1))
-            .fluidInputs(Materials.Iridium.getMolten(1296))
-            .duration(40 * SECONDS)
-            .eut(TierEU.RECIPE_ZPM)
-            .addTo(assemblerRecipes);
-
     }
 
     public void cleanroomRecipes() {
