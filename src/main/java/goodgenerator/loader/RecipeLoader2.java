@@ -23,6 +23,7 @@ import static gregtech.api.recipe.RecipeMaps.multiblockChemicalReactorRecipes;
 import static gregtech.api.recipe.RecipeMaps.plasmaForgeRecipes;
 import static gregtech.api.recipe.RecipeMaps.unpackagerRecipes;
 import static gregtech.api.recipe.RecipeMaps.vacuumFreezerRecipes;
+import static gregtech.api.util.GTRecipeBuilder.EIGHTH_INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.HALF_INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.MINUTES;
@@ -446,8 +447,8 @@ public class RecipeLoader2 {
                 GTOreDictUnificator.get(OrePrefixes.plateQuintuple, Materials.Infinity, 24),
                 GTOreDictUnificator.get(OrePrefixes.plateDense, Materials.DraconiumAwakened, 16))
             .fluidInputs(
-                Materials.Draconium.getMolten(36864),
-                new FluidStack(solderIndalloy, 30240),
+                Materials.Draconium.getMolten(256 * INGOTS),
+                new FluidStack(solderIndalloy, 210 * INGOTS),
                 Materials.InfinityCatalyst.getMolten(5670))
             .itemOutputs(ItemRefer.Fluid_Storage_Core_T8.get(1))
             .eut(TierEU.RECIPE_UIV)
@@ -467,10 +468,10 @@ public class RecipeLoader2 {
                 GTOreDictUnificator.get(OrePrefixes.plateQuintuple, Materials.Infinity, 36),
                 GTOreDictUnificator.get(OrePrefixes.plateDense, Materials.DraconiumAwakened, 8))
             .fluidInputs(
-                Materials.Draconium.getMolten(36864),
-                new FluidStack(solderIndalloy, 30240),
+                Materials.Draconium.getMolten(256 * INGOTS),
+                new FluidStack(solderIndalloy, 210 * INGOTS),
                 MaterialsUEVplus.TranscendentMetal.getMolten(10 * INGOTS),
-                Materials.InfinityCatalyst.getMolten(5670))
+                Materials.InfinityCatalyst.getMolten(39 * INGOTS + 3 * EIGHTH_INGOTS))
             .itemOutputs(ItemRefer.Fluid_Storage_Core_T9.get(1))
             .eut(TierEU.RECIPE_UMV)
             .duration(20 * SECONDS)
@@ -489,10 +490,10 @@ public class RecipeLoader2 {
                 GTOreDictUnificator.get(OrePrefixes.plateQuintuple, Materials.CosmicNeutronium, 24),
                 GTOreDictUnificator.get(OrePrefixes.plateDouble, MaterialsUEVplus.SpaceTime, 4))
             .fluidInputs(
-                Materials.Draconium.getMolten(36864),
+                Materials.Draconium.getMolten(256 * INGOTS),
                 new FluidStack(solderIndalloy, 320 * INGOTS),
-                MaterialsUEVplus.TranscendentMetal.getMolten(4320),
-                Materials.InfinityCatalyst.getMolten(17010))
+                MaterialsUEVplus.TranscendentMetal.getMolten(30 * INGOTS),
+                Materials.InfinityCatalyst.getMolten(118 * INGOTS + 1 * EIGHTH_INGOTS))
             .itemOutputs(ItemRefer.Fluid_Storage_Core_T10.get(1))
             .eut(TierEU.RECIPE_UXV)
             .duration(20 * SECONDS)
