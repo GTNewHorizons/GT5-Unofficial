@@ -35,6 +35,7 @@ import gregtech.common.blocks.BlockOres;
 import gtPlusPlus.core.block.base.BlockBaseOre;
 import ic2.api.item.ElectricItem;
 import ic2.api.item.IElectricItem;
+import ic2.core.crop.TileEntityCrop;
 import mods.railcraft.common.blocks.machine.TileMultiBlock;
 
 public class ToolVajra extends ItemTool implements IElectricItem {
@@ -173,6 +174,7 @@ public class ToolVajra extends ItemTool implements IElectricItem {
     }
 
     private boolean isHarvestableTileEntity(TileEntity tileEntity, Block target, EntityPlayer player) {
+        if (tileEntity instanceof TileEntityCrop) return false;
         if (Mods.Railcraft.isModLoaded() && isUnformedRCMulti(tileEntity)) return true;
         if (tileEntity instanceof IInventory inv && inv.getSizeInventory() > 0) return false;
         if (isHarvestableGTSpecial(target, tileEntity) && !player.isSneaking()) return true;
