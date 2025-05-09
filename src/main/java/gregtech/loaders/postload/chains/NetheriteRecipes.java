@@ -50,10 +50,10 @@ public class NetheriteRecipes {
         // Prismatic Acid
         {
             GTValues.RA.stdBuilder() // Prismarine
-                .itemInputs(GregtechItemList.RedAlgaeBiomass.get(32),
+                .itemInputs(
+                    GregtechItemList.RedAlgaeBiomass.get(32),
                     GTOreDictUnificator.get(OrePrefixes.dust, Materials.CertusQuartz, 32))
-                .fluidInputs(
-                    Materials.Grade1PurifiedWater.getFluid(8000))
+                .fluidInputs(Materials.Grade1PurifiedWater.getFluid(8000))
                 .itemOutputs(GTOreDictUnificator.get(OrePrefixes.shard, MaterialsGTNH.Prismarine, 8))
                 .duration(15 * SECONDS)
                 .eut(TierEU.RECIPE_LuV)
