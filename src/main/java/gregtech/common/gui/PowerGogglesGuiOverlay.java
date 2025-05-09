@@ -248,21 +248,6 @@ public class PowerGogglesGuiOverlay {
                     "GT5U.power_goggles_config.gradient_good",
                     "GT5U.power_goggles_config.gradient_good_tooltip"))
             .child(
-                new Row().size(228, 18)
-                    .marginBottom(4)
-                    .child(
-                        new DynamicDrawable(
-                            () -> new Rectangle().setHorizontalGradient(
-                                PowerGogglesConfigHandler.gradientBadColor,
-                                PowerGogglesConfigHandler.gradientOkColor)).asWidget()
-                                    .size(114, 18))
-                    .child(
-                        new DynamicDrawable(
-                            () -> new Rectangle().setHorizontalGradient(
-                                PowerGogglesConfigHandler.gradientOkColor,
-                                PowerGogglesConfigHandler.gradientGoodColor)).asWidget()
-                                    .size(114, 18)))
-            .child(
                 makeColorConfigButton(
                     overlayPanel,
                     () -> PowerGogglesConfigHandler.textBadColor,
@@ -285,7 +270,22 @@ public class PowerGogglesGuiOverlay {
                     val -> { PowerGogglesConfigHandler.textGoodColor = val; },
                     "Good Text",
                     "GT5U.power_goggles_config.text_good",
-                    "GT5U.power_goggles_config.text_good_tooltip"));
+                    "GT5U.power_goggles_config.text_good_tooltip"))
+            .child(
+                new Row().size(228, 18)
+                    .marginBottom(4)
+                    .child(
+                        new DynamicDrawable(
+                            () -> new Rectangle().setHorizontalGradient(
+                                PowerGogglesConfigHandler.gradientBadColor,
+                                PowerGogglesConfigHandler.gradientOkColor)).asWidget()
+                                    .size(114, 18))
+                    .child(
+                        new DynamicDrawable(
+                            () -> new Rectangle().setHorizontalGradient(
+                                PowerGogglesConfigHandler.gradientOkColor,
+                                PowerGogglesConfigHandler.gradientGoodColor)).asWidget()
+                                    .size(114, 18)));
     }
 
     private static IWidget makeColorConfigButton(ModularPanel overlayPanel, Supplier<Integer> colorSupplier,
@@ -299,16 +299,23 @@ public class PowerGogglesGuiOverlay {
                 PowerGogglesConfigHandler.config.save();
             }, colorSupplier.get(), true).size(200, 100), true);
 
-        return new ButtonWidget<>().size(230, 18)
-            .overlay(
-                new DynamicDrawable(
-                    () -> IKey.lang(buttonKey)
-                        .color(colorSupplier.get())))
-            .tooltipBuilder(t -> t.addLine(IKey.lang((tooltipKey))))
+        return new Row().size(230, 18)
             .marginBottom(4)
-            .onMousePressed(d -> {
-                colorPicker.openPanel();
-                return true;
-            });
+            .child(
+                IKey.lang(buttonKey)
+                    .color(Color.WHITE.main)
+                    .asWidget()
+                    .size(106, 18)
+                    .marginRight(14)
+                    .alignment(Alignment.CenterRight))
+            .child(
+                new ButtonWidget<>().size(18, 18)
+                    .overlay(new DynamicDrawable(() -> new Rectangle().setColor(colorSupplier.get())))
+                    .hoverOverlay(new DynamicDrawable(() -> new Rectangle().setColor(colorSupplier.get())))
+                    .tooltipBuilder(t -> t.addLine(IKey.lang((tooltipKey))))
+                    .onMousePressed(d -> {
+                        colorPicker.openPanel();
+                        return true;
+                    }));
     }
 }
