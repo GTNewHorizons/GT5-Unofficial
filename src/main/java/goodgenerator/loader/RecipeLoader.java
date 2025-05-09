@@ -711,7 +711,7 @@ public class RecipeLoader {
                 GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.NaquadahAlloy, 64),
                 GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.Manyullyn, 64),
                 GGMaterial.orundum.get(OrePrefixes.plate, 4))
-            .fluidInputs(Materials.TungstenSteel.getMolten(8 * INGOTS), new FluidStack(solderIndalloy, 2304))
+            .fluidInputs(Materials.TungstenSteel.getMolten(8 * INGOTS), new FluidStack(solderIndalloy, 16 * INGOTS))
             .itemOutputs(ItemRefer.Naquadah_Fuel_Refinery_Casing.get(1))
             .eut(TierEU.RECIPE_ZPM / 2)
             .duration(25 * SECONDS)

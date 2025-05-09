@@ -296,7 +296,7 @@ public class MachineRecipes implements Runnable {
                 new Object[] { OrePrefixes.circuit.get(Materials.UIV), 16 }, ItemList.Electric_Pump_UIV.get(8),
                 GTOreDictUnificator.get(OrePrefixes.gearGt, MaterialsUEVplus.SpaceTime, 4), metaStableOgScrew_64, },
             new FluidStack[] { new FluidStack(solderUEV, 32 * INGOTS),
-                MaterialsUEVplus.MoltenProtoHalkoniteBase.getFluid(2304) },
+                MaterialsUEVplus.MoltenProtoHalkoniteBase.getFluid(16 * INGOTS) },
             ItemList.SpaceElevatorModulePumpT2.get(1),
             2 * MINUTE,
             (int) TierEU.RECIPE_UIV);

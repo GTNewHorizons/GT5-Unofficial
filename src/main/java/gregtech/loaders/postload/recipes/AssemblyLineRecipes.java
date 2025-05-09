@@ -351,7 +351,7 @@ public class AssemblyLineRecipes implements Runnable {
                 .itemOutputs(ItemList.Robot_Arm_UV.get(1))
                 .fluidInputs(
                     Materials.Naquadria.getMolten(9 * INGOTS),
-                    new FluidStack(solderIndalloy, 2304),
+                    new FluidStack(solderIndalloy, 16 * INGOTS),
                     Materials.Lubricant.getFluid(2000))
                 .duration(30 * SECONDS)
                 .eut((int) TierEU.RECIPE_ZPM)
@@ -415,7 +415,7 @@ public class AssemblyLineRecipes implements Runnable {
                     GTOreDictUnificator.get(OrePrefixes.foil, Materials.Naquadria, 64),
                     GTOreDictUnificator.get(OrePrefixes.cableGt04, Materials.NaquadahAlloy, 7))
                 .itemOutputs(ItemList.Emitter_UV.get(1))
-                .fluidInputs(Materials.Naquadria.getMolten(9 * INGOTS), new FluidStack(solderIndalloy, 2304))
+                .fluidInputs(Materials.Naquadria.getMolten(9 * INGOTS), new FluidStack(solderIndalloy, 16 * INGOTS))
                 .duration(30 * SECONDS)
                 .eut((int) TierEU.RECIPE_ZPM)
                 .addTo(AssemblyLine);
@@ -478,7 +478,7 @@ public class AssemblyLineRecipes implements Runnable {
                     GTOreDictUnificator.get(OrePrefixes.foil, Materials.Naquadria, 64),
                     GTOreDictUnificator.get(OrePrefixes.cableGt04, Materials.NaquadahAlloy, 7))
                 .itemOutputs(ItemList.Sensor_UV.get(1))
-                .fluidInputs(Materials.Naquadria.getMolten(9 * INGOTS), new FluidStack(solderIndalloy, 2304))
+                .fluidInputs(Materials.Naquadria.getMolten(9 * INGOTS), new FluidStack(solderIndalloy, 16 * INGOTS))
                 .duration(30 * SECONDS)
                 .eut((int) TierEU.RECIPE_ZPM)
                 .addTo(AssemblyLine);
@@ -546,7 +546,7 @@ public class AssemblyLineRecipes implements Runnable {
                     GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.Americium, 64),
                     GTOreDictUnificator.get(OrePrefixes.cableGt04, Materials.NaquadahAlloy, 8))
                 .itemOutputs(ItemList.Field_Generator_UV.get(1))
-                .fluidInputs(Materials.Naquadria.getMolten(9 * INGOTS), new FluidStack(solderIndalloy, 2304))
+                .fluidInputs(Materials.Naquadria.getMolten(9 * INGOTS), new FluidStack(solderIndalloy, 16 * INGOTS))
                 .duration(30 * SECONDS)
                 .eut((int) TierEU.RECIPE_ZPM)
                 .addTo(AssemblyLine);

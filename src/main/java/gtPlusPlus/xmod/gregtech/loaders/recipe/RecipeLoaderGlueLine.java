@@ -368,7 +368,7 @@ public class RecipeLoaderGlueLine {
                 GTOreDictUnificator.get(OrePrefixes.cableGt04, Materials.ElectrumFlux, 2),
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.NaquadahEnriched, 36))
             .itemOutputs(ItemUtils.getItemStackFromFQRN("gregtech:gt.metaitem.01:32562", 1))
-            .fluidInputs(MaterialMisc.ETHYL_CYANOACRYLATE.getFluidStack(2304))
+            .fluidInputs(MaterialMisc.ETHYL_CYANOACRYLATE.getFluidStack(16 * INGOTS))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_UHV)
             .addTo(assemblerRecipes);

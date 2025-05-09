@@ -942,7 +942,7 @@ public class RecipesGregTech {
                 ItemUtils.getItemStackOfAmountFromOreDict("dustOsmium", 6),
                 ItemUtils.getItemStackOfAmountFromOreDict("dustRuthenium", 6),
                 ItemUtils.getItemStackOfAmountFromOreDict("dustThallium", 3))
-            .fluidOutputs(MaterialsAlloy.BOTMIUM.getFluidStack(2304))
+            .fluidOutputs(MaterialsAlloy.BOTMIUM.getFluidStack(16 * INGOTS))
             .eut(TierEU.RECIPE_UV)
             .duration(2 * MINUTES)
             .addTo(alloyBlastSmelterRecipes);
