@@ -15,28 +15,25 @@ package bartworks.common.tileentities.multis.mega;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.withChannel;
 import static gregtech.api.enums.HatchElement.*;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_OIL_CRACKER;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_OIL_CRACKER_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_OIL_CRACKER_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_OIL_CRACKER_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.casingTexturePages;
-import static gregtech.api.util.GTStructureUtility.activeCoils;
-import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
-import static gregtech.api.util.GTStructureUtility.ofCoil;
+import static gregtech.api.util.GTStructureUtility.*;
 import static gregtech.api.util.GTUtility.validMTEList;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import javax.annotation.Nonnull;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
@@ -47,11 +44,10 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
-import bartworks.API.BorosilicateGlass;
 import bartworks.common.configs.Configuration;
 import gregtech.api.GregTechAPI;
-import gregtech.api.enums.GTValues;
 import gregtech.api.enums.HeatingCoilLevel;
+import gregtech.api.enums.VoltageIndex;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -68,6 +64,7 @@ import gregtech.api.recipe.maps.OilCrackerBackend;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.tileentities.machines.IRecipeProcessingAwareHatch;
 import gregtech.common.tileentities.machines.MTEHatchInputME;
 
@@ -97,7 +94,8 @@ public class MTEMegaOilCracker extends MegaMultiBlockBase<MTEMegaOilCracker> imp
                         "ppppppppppppp", "ppppppppppppp", "ppppppppppppp", "ppmmmmmmmmmpp" }, }))
         .addElement(
             'c',
-            withChannel("coil", activeCoils(ofCoil(MTEMegaOilCracker::setCoilLevel, MTEMegaOilCracker::getCoilLevel))))
+            GTStructureChannels.HEATING_COIL
+                .use(activeCoils(ofCoil(MTEMegaOilCracker::setCoilLevel, MTEMegaOilCracker::getCoilLevel))))
 
         .addElement('p', ofBlock(GregTechAPI.sBlockCasings4, 1))
         .addElement(
@@ -127,14 +125,9 @@ public class MTEMegaOilCracker extends MegaMultiBlockBase<MTEMegaOilCracker> imp
                 .dot(4)
                 .casingIndex(CASING_INDEX)
                 .buildAndChain(GregTechAPI.sBlockCasings4, 1))
-        .addElement(
-            'g',
-            withChannel(
-                "glass",
-                BorosilicateGlass
-                    .ofBoroGlass((byte) 0, (byte) 1, Byte.MAX_VALUE, (te, t) -> te.glassTier = t, te -> te.glassTier)))
+        .addElement('g', chainAllGlasses(-1, (te, t) -> te.glassTier = t, te -> te.glassTier))
         .build();
-    private byte glassTier;
+    private int glassTier = -1;
     private HeatingCoilLevel heatLevel;
     protected final List<MTEHatchInput> mMiddleInputHatches = new ArrayList<>();
     protected int mInputOnSide = -1;
@@ -160,30 +153,22 @@ public class MTEMegaOilCracker extends MegaMultiBlockBase<MTEMegaOilCracker> imp
             .addInfo("Steam - Outputs 50% more cracked fluid")
             .addInfo("(Values compared to cracking in the Chemical Reactor)")
             .addInfo("Place the appropriate circuit in the controller or an input bus")
+            .addGlassEnergyLimitInfo()
             .addTecTechHatchInfo()
-            .addInfo(
-                GTValues.TIER_COLORS[8] + GTValues.VN[8]
-                    + EnumChatFormatting.GRAY
-                    + "-tier glass required for "
-                    + EnumChatFormatting.BLUE
-                    + "Tec"
-                    + EnumChatFormatting.DARK_BLUE
-                    + "Tech"
-                    + EnumChatFormatting.GRAY
-                    + " Laser Hatches.")
+            .addMinGlassForLaser(VoltageIndex.UV)
             .addInfo("Gets 10% EU/t reduction per coil tier, up to a maximum of 50%")
             .beginStructureBlock(13, 7, 9, true)
             .addController("Front bottom")
             .addCasingInfoExactly("Clean Stainless Steel Machine Casing", 197, false)
             .addCasingInfoExactly("Coil", 92, true)
-            .addCasingInfoExactly("Borosilicate Glass", 196, true)
-            .addStructureInfo("The glass tier limits the Energy Input tier")
+            .addCasingInfoExactly("Any Tiered Glass", 196, true)
             .addEnergyHatch("Hint block", 1)
             .addMaintenanceHatch("Hint block", 1)
             .addInputHatch("Hint block", 2, 3)
             .addOutputHatch("Hint block", 2, 3)
             .addInputHatch("Steam/Hydrogen ONLY, Hint block", 4)
             .addInputBus("Optional, for programmed circuit automation. Hint block", 1)
+            .addSubChannelUsage(GTStructureChannels.BOROGLASS)
             .toolTipFinisher();
         return tt;
     }
@@ -265,14 +250,14 @@ public class MTEMegaOilCracker extends MegaMultiBlockBase<MTEMegaOilCracker> imp
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        this.glassTier = 0;
+        this.glassTier = -1;
         this.mInputOnSide = -1;
         this.mOutputOnSide = -1;
         this.mMiddleInputHatches.clear();
 
         if (!this.checkPiece(STRUCTURE_PIECE_MAIN, 6, 6, 0) || this.mMaintenanceHatches.size() != 1) return false;
 
-        if (this.glassTier < 8) {
+        if (this.glassTier < VoltageIndex.UV) {
             for (MTEHatch hatch : this.mExoticEnergyHatches) {
                 if (hatch.getConnectionType() == MTEHatch.ConnectionType.LASER) {
                     return false;
@@ -368,10 +353,13 @@ public class MTEMegaOilCracker extends MegaMultiBlockBase<MTEMegaOilCracker> imp
     }
 
     @Override
-    public ArrayList<FluidStack> getStoredFluids() {
+    public ArrayList<FluidStack> getStoredFluidsForColor(Optional<Byte> color) {
         final ArrayList<FluidStack> rList = new ArrayList<>();
         Map<Fluid, FluidStack> inputsFromME = new HashMap<>();
         for (final MTEHatchInput tHatch : validMTEList(mInputHatches)) {
+            byte hatchColor = tHatch.getBaseMetaTileEntity()
+                .getColorization();
+            if (color.isPresent() && hatchColor != -1 && hatchColor != color.get()) continue;
             tHatch.mRecipeMap = getRecipeMap();
             if (tHatch instanceof MTEHatchInputME meHatch) {
                 for (FluidStack tFluid : meHatch.getStoredFluids()) {
@@ -395,6 +383,9 @@ public class MTEMegaOilCracker extends MegaMultiBlockBase<MTEMegaOilCracker> imp
             }
         }
         for (final MTEHatchInput tHatch : validMTEList(mMiddleInputHatches)) {
+            byte hatchColor = tHatch.getBaseMetaTileEntity()
+                .getColorization();
+            if (color.isPresent() && hatchColor != -1 && hatchColor != color.get()) continue;
             tHatch.mRecipeMap = getRecipeMap();
             if (tHatch instanceof MTEHatchInputME meHatch) {
                 for (FluidStack tFluid : meHatch.getStoredFluids()) {

@@ -251,7 +251,8 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
     }
 
     @Override
-    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
+        ItemStack aTool) {
         shouldRender = !shouldRender;
         if (!shouldRender) {
             PlayerUtils.messagePlayer(aPlayer, "Rendering off");
@@ -632,10 +633,8 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
             @NotNull
             @Override
             protected OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
-                // Limit ocs up to hatch tier
-                int ocs = GTUtility.getTier(getAverageInputVoltage()) - GTUtility.getTier(recipe.mEUt);
-                if (ocs < 0) ocs = 0;
-                return super.createOverclockCalculator(recipe).limitOverclockCount(ocs);
+                return super.createOverclockCalculator(recipe)
+                    .setMaxOverclocks(GTUtility.getTier(getAverageInputVoltage()) - GTUtility.getTier(recipe.mEUt));
             }
 
             @NotNull
@@ -645,7 +644,7 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
 
                 // Cap recipes to energy hatch + 1
                 if (GTUtility.getTier(getAverageInputVoltage()) < GTUtility.getTier(recipe.mEUt) - 1)
-                    return CheckRecipeResultRegistry.insufficientPower(recipe.mEUt);
+                    return CheckRecipeResultRegistry.insufficientVoltage(recipe.mEUt);
                 return super.validateRecipe(recipe);
             }
         }.setMaxParallelSupplier(this::getTrueParallel)

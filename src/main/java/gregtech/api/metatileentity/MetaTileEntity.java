@@ -191,18 +191,12 @@ public abstract class MetaTileEntity extends CommonMetaTileEntity implements ICr
 
     @Override
     public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
-        ItemStack aTool) {
-        onScrewdriverRightClick(side, aPlayer, aX, aY, aZ);
-    }
+        ItemStack aTool) {}
 
     @Override
     public boolean onWrenchRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer entityPlayer,
         float aX, float aY, float aZ, ItemStack aTool) {
 
-        // glue
-        if (onWrenchRightClick(side, wrenchingSide, entityPlayer, aX, aY, aZ)) {
-            return true;
-        }
         if (getBaseMetaTileEntity().isValidFacing(wrenchingSide)) {
             getBaseMetaTileEntity().setFrontFacing(wrenchingSide);
             return true;
@@ -213,10 +207,7 @@ public abstract class MetaTileEntity extends CommonMetaTileEntity implements ICr
     @Override
     public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
         float aX, float aY, float aZ, ItemStack aTool) {
-        // glue
-        if (onWireCutterRightClick(side, wrenchingSide, aPlayer, aX, aY, aZ)) {
-            return true;
-        }
+
         if (!aPlayer.isSneaking()) return false;
         final ForgeDirection oppositeSide = wrenchingSide.getOpposite();
         final TileEntity tTileEntity = getBaseMetaTileEntity().getTileEntityAtSide(wrenchingSide);
@@ -233,11 +224,6 @@ public abstract class MetaTileEntity extends CommonMetaTileEntity implements ICr
     public boolean onSolderingToolRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
         float aX, float aY, float aZ, ItemStack aTool) {
 
-        // glue
-        if (onSolderingToolRightClick(side, wrenchingSide, aPlayer, aX, aY, aZ)) {
-            return true;
-        }
-
         if (!aPlayer.isSneaking()) return false;
         final ForgeDirection oppositeSide = wrenchingSide.getOpposite();
         TileEntity tTileEntity = getBaseMetaTileEntity().getTileEntityAtSide(wrenchingSide);
@@ -248,29 +234,6 @@ public abstract class MetaTileEntity extends CommonMetaTileEntity implements ICr
                 .onSolderingToolRightClick(wrenchingSide, oppositeSide, aPlayer, aX, aY, aZ, aTool);
         }
         return false;
-    }
-
-    @Deprecated
-    public boolean onSolderingToolRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
-        float aX, float aY, float aZ) {
-        return false;
-    }
-
-    @Deprecated
-    public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
-        float aX, float aY, float aZ) {
-        return false;
-    }
-
-    @Deprecated
-    public boolean onWrenchRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer, float aX,
-        float aY, float aZ) {
-        return false;
-    }
-
-    @Deprecated
-    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-
     }
 
     @Override
@@ -551,14 +514,6 @@ public abstract class MetaTileEntity extends CommonMetaTileEntity implements ICr
     }
 
     /**
-     * If this TileEntity makes use of Sided Redstone behaviors. Determines only, if the Output Redstone Array is
-     * getting filled with 0 for true, or 15 for false.
-     */
-    public boolean hasSidedRedstoneOutputBehavior() {
-        return false;
-    }
-
-    /**
      * When the Facing gets changed.
      */
     public void onFacingChange() {
@@ -773,20 +728,24 @@ public abstract class MetaTileEntity extends CommonMetaTileEntity implements ICr
 
     protected String getAEDiagnostics() {
         try {
-            if (getProxy() == null) return "(proxy)";
-            if (getProxy().getNode() == null) return "(node)";
+            if (getProxy() == null) return StatCollector.translateToLocal("GT5U.infodata.hatch.me.diagnostics.proxy");
+            if (getProxy().getNode() == null)
+                return StatCollector.translateToLocal("GT5U.infodata.hatch.me.diagnostics.node");
             if (getProxy().getNode()
-                .getGrid() == null) return "(grid)";
+                .getGrid() == null) return StatCollector.translateToLocal("GT5U.infodata.hatch.me.diagnostics.grid");
             if (!getProxy().getNode()
-                .meetsChannelRequirements()) return "(channels)";
+                .meetsChannelRequirements())
+                return StatCollector.translateToLocal("GT5U.infodata.hatch.me.diagnostics.channels");
             IPathingGrid pg = getProxy().getNode()
                 .getGrid()
                 .getCache(IPathingGrid.class);
-            if (!pg.isNetworkBooting()) return "(booting)";
+            if (!pg.isNetworkBooting())
+                return StatCollector.translateToLocal("GT5U.infodata.hatch.me.diagnostics.booting");
             IEnergyGrid eg = getProxy().getNode()
                 .getGrid()
                 .getCache(IEnergyGrid.class);
-            if (!eg.isNetworkPowered()) return "(power)";
+            if (!eg.isNetworkPowered())
+                return StatCollector.translateToLocal("GT5U.infodata.hatch.me.diagnostics.power");
         } catch (Throwable ex) {
             ex.printStackTrace();
         }
@@ -819,6 +778,10 @@ public abstract class MetaTileEntity extends CommonMetaTileEntity implements ICr
     @Override
     public int getTextColorOrDefault(String textType, int defaultColor) {
         return colorOverride.getTextColorOrDefault(textType, defaultColor);
+    }
+
+    final public byte getColor() {
+        return getBaseMetaTileEntity().getColorization();
     }
 
     protected Supplier<Integer> COLOR_TITLE = () -> getTextColorOrDefault("title", 0x404040);

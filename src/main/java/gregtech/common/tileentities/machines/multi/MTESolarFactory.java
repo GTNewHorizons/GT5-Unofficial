@@ -58,6 +58,7 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
 import gregtech.api.util.ParallelHelper;
 import gregtech.api.util.recipe.SolarFactoryRecipeData;
+import gregtech.common.misc.GTStructureChannels;
 
 public class MTESolarFactory extends MTEExtendedPowerMultiBlockBase<MTESolarFactory>
     implements IConstructable, ISurvivalConstructable {
@@ -169,11 +170,9 @@ public class MTESolarFactory extends MTEExtendedPowerMultiBlockBase<MTESolarFact
         // P for Precise Electronic Unit Casing ^-^
         .addElement(
             'P',
-            withChannel(
-                "unit casing",
+            GTStructureChannels.PRASS_UNIT_CASING.use(
                 ofBlocksTiered(
-                    (block, meta) -> block == Loaders.preciseUnitCasing ? meta : -2,
-                    // ^ if block is preciseUnitCasing return meta, otherwise return -2 & fail checkMachine
+                    (block, meta) -> block == Loaders.preciseUnitCasing ? meta : null,
                     ImmutableList.of(
                         Pair.of(Loaders.preciseUnitCasing, 0),
                         Pair.of(Loaders.preciseUnitCasing, 1),
@@ -394,16 +393,16 @@ public class MTESolarFactory extends MTEExtendedPowerMultiBlockBase<MTESolarFact
             .beginStructureBlock(7, 10, 9, false)
             .addStructureInfo(WHITE + "" + BOLD + "Tier " + AQUA + BOLD + "1:")
             .addCasingInfoRange("Clean Stainless Steel Machine Casing", 15, 41, false)
-            .addCasingInfoExactly("Any Glass", 24, false)
+            .addCasingInfoExactly("Any Tiered Glass", 24, false)
             .addCasingInfoExactly("Damascus Steel Frame Box", 20, false)
             .addStructureInfo(WHITE + "" + BOLD + "Tier " + AQUA + BOLD + "2:")
             .addCasingInfoRange("Tungstensteel Machine Casing", 35, 101, false)
-            .addCasingInfoExactly("Any Glass", 74, false)
+            .addCasingInfoExactly("Any Tiered Glass", 74, false)
             .addCasingInfoExactly("Tungsten Frame Box", 75, false)
             .addCasingInfoExactly("Precise Electronic Unit Casing", 20, true)
             .addStructureInfo(WHITE + "" + BOLD + "Tier " + AQUA + BOLD + "3:")
             .addCasingInfoRange("Advanced Iridium Machine Casing", 50, 140, false)
-            .addCasingInfoExactly("Any Glass", 67, false)
+            .addCasingInfoExactly("Any Tiered Glass", 67, false)
             .addCasingInfoExactly("Tungsten Frame Box", 24, false)
             .addCasingInfoExactly("Precise Electronic Unit Casing", 26, true)
             .addCasingInfoExactly("Black Plutonium Item Pipe", 6, false)
@@ -414,6 +413,7 @@ public class MTESolarFactory extends MTEExtendedPowerMultiBlockBase<MTESolarFact
             .addOutputBus("Any Machine Casing")
             .addEnergyHatch("Any Machine Casing")
             .addMaintenanceHatch("Any Machine Casing")
+            .addSubChannelUsage(GTStructureChannels.PRASS_UNIT_CASING)
             .toolTipFinisher(GTValues.AuthorPureBluez);
         return tt;
     }

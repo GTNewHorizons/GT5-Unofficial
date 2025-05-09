@@ -28,10 +28,10 @@ public class ALRecipeDataPacket extends DataPacket<RecipeAssemblyLine[]> {
                 recipes.addAll(AssemblyLineUtils.loadRecipe(nbt.getCompoundTag(Integer.toString(i))));
             }
 
-            return !recipes.isEmpty() ? recipes.toArray(new RecipeAssemblyLine[recipes.size()]) : null;
+            return recipes.toArray(new RecipeAssemblyLine[0]);
         }
 
-        return null;
+        return new RecipeAssemblyLine[0];
     }
 
     @Override

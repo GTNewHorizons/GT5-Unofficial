@@ -2,7 +2,6 @@ package gtnhlanth.common.hatch;
 
 import static gregtech.api.enums.Dyes.MACHINE_METAL;
 
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import gregtech.api.enums.Dyes;
@@ -11,11 +10,10 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.render.TextureFactory;
-import gtnhlanth.common.beamline.BeamLinePacket;
 import gtnhlanth.common.beamline.IConnectsToBeamline;
 import gtnhlanth.common.beamline.MTEBeamlinePipe;
 
-public class MTEHatchOutputBeamline extends MTEHatchBeamlineConnector<BeamLinePacket> implements IConnectsToBeamline {
+public class MTEHatchOutputBeamline extends MTEHatchBeamlineConnector implements IConnectsToBeamline {
 
     private static final String activeIconPath = "iconsets/OVERLAY_BO_ACTIVE";
     private static final String sideIconPath = "iconsets/OVERLAY_BO_SIDES";
@@ -61,25 +59,18 @@ public class MTEHatchOutputBeamline extends MTEHatchBeamlineConnector<BeamLinePa
 
         IMetaTileEntity meta = next.getMetaTileEntity();
         if (meta instanceof MTEBeamlinePipe) {
-
             ((MTEBeamlinePipe) meta).markUsed();
             return (IConnectsToBeamline) meta;
-
         } else if (meta instanceof MTEHatchInputBeamline && ((MTEHatchInputBeamline) meta).canConnect(
             base.getFrontFacing()
                 .getOpposite())) {
-
                     return (IConnectsToBeamline) meta;
                 }
-
         return null;
     }
 
     @Override
     public void moveAround(IGregTechTileEntity aBaseMetaTileEntity) {
-        IConnectsToBeamline current = this, source = this, next;
-        int range = 0;
-
         ForgeDirection front = this.getBaseMetaTileEntity()
             .getFrontFacing();
 
@@ -99,7 +90,7 @@ public class MTEHatchOutputBeamline extends MTEHatchBeamlineConnector<BeamLinePa
             }
 
             if (nextMeta instanceof MTEHatchInputBeamline) {
-                ((MTEHatchInputBeamline) nextMeta).setContents(q); // Reached another multi
+                ((MTEHatchInputBeamline) nextMeta).setContents(dataPacket); // Reached another multi
                 break;
 
             } else if (nextMeta instanceof MTEBeamlinePipe) { // Another pipe follows
@@ -115,23 +106,7 @@ public class MTEHatchOutputBeamline extends MTEHatchBeamlineConnector<BeamLinePa
             }
 
         }
-
-        /*
-         * while ((next = current.getNext(source)) != null && range++ < 100) {
-         * if (next instanceof TileHatchInputBeamline) {
-         * ((TileHatchInputBeamline) next).setContents(q);
-         * break;
-         * }
-         * source = current;
-         * current = next;
-         * }
-         */
-        q = null;
-    }
-
-    @Override
-    protected BeamLinePacket loadPacketFromNBT(NBTTagCompound nbt) {
-        return new BeamLinePacket(nbt);
+        dataPacket = null;
     }
 
     @Override
@@ -147,11 +122,6 @@ public class MTEHatchOutputBeamline extends MTEHatchBeamlineConnector<BeamLinePa
     @Override
     public boolean isFacingValid(ForgeDirection facing) {
         return true;
-    }
-
-    @Override
-    public boolean isInputFacing(ForgeDirection aSide) {
-        return false;
     }
 
     @Override

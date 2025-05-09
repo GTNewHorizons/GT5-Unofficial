@@ -137,7 +137,6 @@ import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
 import gregtech.api.damagesources.GTDamageSources;
 import gregtech.api.damagesources.GTDamageSources.DamageSourceHotItem;
-import gregtech.api.enchants.EnchantmentHazmat;
 import gregtech.api.enchants.EnchantmentRadioactivity;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
@@ -149,6 +148,7 @@ import gregtech.api.enums.SubTag;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.ToolDictNames;
 import gregtech.api.events.BlockScanningEvent;
+import gregtech.api.hazards.HazardProtection;
 import gregtech.api.interfaces.IBlockContainer;
 import gregtech.api.interfaces.IDebugableBlock;
 import gregtech.api.interfaces.IHasIndexedTexture;
@@ -2619,81 +2619,6 @@ public class GTUtility {
         return aNBT;
     }
 
-    public static boolean isWearingFullFrostHazmat(EntityLivingBase aEntity) {
-        for (byte i = 1; i < 5; i++) {
-            ItemStack tStack = aEntity.getEquipmentInSlot(i);
-
-            if (!isStackInList(tStack, GregTechAPI.sFrostHazmatList) && !hasHazmatEnchant(tStack)) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    public static boolean isWearingFullHeatHazmat(EntityLivingBase aEntity) {
-        for (byte i = 1; i < 5; i++) {
-            ItemStack tStack = aEntity.getEquipmentInSlot(i);
-
-            if (!isStackInList(tStack, GregTechAPI.sHeatHazmatList) && !hasHazmatEnchant(tStack)) {
-                return false;
-            }
-        }
-
-        return true;
-    }
-
-    public static boolean isWearingFullBioHazmat(EntityLivingBase aEntity) {
-        for (byte i = 1; i < 5; i++) {
-            ItemStack tStack = aEntity.getEquipmentInSlot(i);
-
-            if (!isStackInList(tStack, GregTechAPI.sBioHazmatList) && !hasHazmatEnchant(tStack)) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    public static boolean isWearingFullRadioHazmat(EntityLivingBase aEntity) {
-        for (byte i = 1; i < 5; i++) {
-            ItemStack tStack = aEntity.getEquipmentInSlot(i);
-
-            if (!isStackInList(tStack, GregTechAPI.sRadioHazmatList) && !hasHazmatEnchant(tStack)) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    public static boolean isWearingFullElectroHazmat(EntityLivingBase aEntity) {
-        for (byte i = 1; i < 5; i++) {
-            ItemStack tStack = aEntity.getEquipmentInSlot(i);
-
-            if (!isStackInList(tStack, GregTechAPI.sElectroHazmatList) && !hasHazmatEnchant(tStack)) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    public static boolean isWearingFullGasHazmat(EntityLivingBase aEntity) {
-        for (byte i = 1; i < 5; i++) {
-            ItemStack tStack = aEntity.getEquipmentInSlot(i);
-
-            if (!isStackInList(tStack, GregTechAPI.sGasHazmatList) && !hasHazmatEnchant(tStack)) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    public static boolean hasHazmatEnchant(ItemStack aStack) {
-        if (aStack == null) return false;
-        Map<Integer, Integer> tEnchantments = EnchantmentHelper.getEnchantments(aStack);
-        Integer tLevel = tEnchantments.get(EnchantmentHazmat.INSTANCE.effectId);
-
-        return tLevel != null && tLevel >= 1;
-    }
-
     public static float getHeatDamageFromItem(ItemStack aStack) {
         ItemData tData = GTOreDictUnificator.getItemData(aStack);
         return tData == null ? 0
@@ -2712,10 +2637,6 @@ public class GTUtility {
         return EnchantmentHelper.getEnchantmentLevel(EnchantmentRadioactivity.INSTANCE.effectId, aStack);
     }
 
-    public static boolean isImmuneToBreathingGasses(EntityLivingBase aEntity) {
-        return isWearingFullGasHazmat(aEntity);
-    }
-
     public static boolean applyHeatDamage(EntityLivingBase entity, float damage) {
         return applyHeatDamage(entity, damage, GTDamageSources.getHeatDamage());
     }
@@ -2725,7 +2646,7 @@ public class GTUtility {
     }
 
     private static boolean applyHeatDamage(EntityLivingBase aEntity, float aDamage, DamageSource source) {
-        if (aDamage > 0 && aEntity != null && !isWearingFullHeatHazmat(aEntity)) {
+        if (aDamage > 0 && aEntity != null && !HazardProtection.isWearingFullHeatHazmat(aEntity)) {
             try {
                 return aEntity.attackEntityFrom(source, aDamage);
             } catch (Throwable t) {
@@ -2736,7 +2657,7 @@ public class GTUtility {
     }
 
     public static boolean applyFrostDamage(EntityLivingBase aEntity, float aDamage) {
-        if (aDamage > 0 && aEntity != null && !isWearingFullFrostHazmat(aEntity)) {
+        if (aDamage > 0 && aEntity != null && !HazardProtection.isWearingFullFrostHazmat(aEntity)) {
             return aEntity.attackEntityFrom(GTDamageSources.getFrostDamage(), aDamage);
         }
         return false;
@@ -2744,7 +2665,7 @@ public class GTUtility {
 
     public static boolean applyElectricityDamage(EntityLivingBase aEntity, long aVoltage, long aAmperage) {
         long aDamage = getTier(aVoltage) * aAmperage * 4;
-        if (aDamage > 0 && aEntity != null && !isWearingFullElectroHazmat(aEntity)) {
+        if (aDamage > 0 && aEntity != null && !HazardProtection.isWearingFullElectroHazmat(aEntity)) {
             return aEntity.attackEntityFrom(GTDamageSources.getElectricDamage(), aDamage);
         }
         return false;
@@ -2754,7 +2675,7 @@ public class GTUtility {
         if (aLevel > 0 && aEntity != null
             && aEntity.getCreatureAttribute() != EnumCreatureAttribute.UNDEAD
             && aEntity.getCreatureAttribute() != EnumCreatureAttribute.ARTHROPOD
-            && !isWearingFullRadioHazmat(aEntity)) {
+            && !HazardProtection.isWearingFullRadioHazmat(aEntity)) {
             PotionEffect tEffect = null;
             aEntity.addPotionEffect(
                 new PotionEffect(
@@ -3870,6 +3791,10 @@ public class GTUtility {
         }
     }
 
+    public static String translate(String key, Object... parameters) {
+        return StatCollector.translateToLocalFormatted(key, parameters);
+    }
+
     /*
      * Check if stack has enough items of given type and subtract from stack, if there's no creative or 111 stack.
      */
@@ -4340,7 +4265,20 @@ public class GTUtility {
         char[] chars = Long.toString(no)
             .toCharArray();
         for (int i = 0; i < chars.length; i++) {
-            chars[i] += 8272;
+            chars[i] = switch (chars[i]) {
+                case '0' -> CustomGlyphs.SUBSCRIPT0.charAt(0);
+                case '1' -> '\u2081';
+                case '2' -> '\u2082';
+                case '3' -> '\u2083';
+                case '4' -> '\u2084';
+                case '5' -> '\u2085';
+                case '6' -> '\u2086';
+                case '7' -> '\u2087';
+                case '8' -> '\u2088';
+                case '9' -> '\u2089';
+                case '?' -> CustomGlyphs.SUBSCRIPT_QUESTION_MARK.charAt(0);
+                default -> chars[i];
+            };
         }
         return new String(chars);
     }
@@ -4540,8 +4478,16 @@ public class GTUtility {
             .count();
     }
 
+    public static long clamp(long val, long lo, long hi) {
+        return val < lo ? lo : val > hi ? hi : val;
+    }
+
     public static int clamp(int val, int lo, int hi) {
         return MathHelper.clamp_int(val, lo, hi);
+    }
+
+    public static float clamp(float val, float lo, float hi) {
+        return val < lo ? lo : val > hi ? hi : val;
     }
 
     public static int min(int first, int... rest) {
@@ -4613,6 +4559,10 @@ public class GTUtility {
         v.z = signum(v.z);
 
         return v;
+    }
+
+    public static int mod(int value, int divisor) {
+        return ((value % divisor) + divisor) % divisor;
     }
 
     /**
@@ -5031,5 +4981,33 @@ public class GTUtility {
 
     public static float getClientReachDistance() {
         return Minecraft.getMinecraft().playerController.getBlockReachDistance();
+    }
+
+    public static String formatShortenedLong(long number) {
+        if (number < 1000) {
+            return String.valueOf(number);
+        }
+
+        int exp = (int) (Math.log(number) / Math.log(1000));
+        char suffix = "kMGTPE".charAt(exp - 1);
+        double shortened = number / Math.pow(1000, exp);
+
+        if (shortened == (long) shortened) {
+            return String.format("%d%c", (long) shortened, suffix);
+        } else {
+            return String.format("%.1f%c", shortened, suffix);
+        }
+    }
+
+    public static String truncateText(String text, int limit) {
+        if (limit < 0) limit = 1;
+        if (text == null) {
+            return null;
+        }
+        if (text.length() <= limit) {
+            return text;
+        } else {
+            return text.substring(0, limit) + "...";
+        }
     }
 }

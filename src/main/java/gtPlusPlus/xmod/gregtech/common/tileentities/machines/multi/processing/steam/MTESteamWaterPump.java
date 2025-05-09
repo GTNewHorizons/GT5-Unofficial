@@ -10,6 +10,8 @@ import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 
 import java.util.List;
 
+import javax.annotation.Nullable;
+
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
@@ -94,10 +96,25 @@ public class MTESteamWaterPump extends MTESteamMultiBase<MTESteamWaterPump> impl
     private static final Fluid water = FluidRegistry.getFluid("water");
 
     private FluidStack[] getWater() {
-        return new FluidStack[] { new FluidStack(water, calculateFinalWaterOutput()) };
+        return new FluidStack[] { new FluidStack(
+            water,
+            (calculateFinalWaterOutput() <= 250 && isMinWaterAllowedDim() ? 250 : calculateFinalWaterOutput())) };
     }
 
     private int mCountCasing;
+
+    private boolean isMinWaterAllowedDim() {
+        return !(getBaseMetaTileEntity().getWorld().provider.getDimensionName()
+            .equals("Venus")
+            || getBaseMetaTileEntity().getWorld().provider.getDimensionName()
+                .equals("Mercury")
+            || getBaseMetaTileEntity().getWorld().provider.getDimensionName()
+                .equals("Mars")
+            || getBaseMetaTileEntity().getWorld().provider.getDimensionName()
+                .equals("Moon")
+            || getBaseMetaTileEntity().getWorld().provider.getDimensionName()
+                .equals("Nether"));
+    }
 
     private float getHumidity() {
         return this.getBaseMetaTileEntity()
@@ -105,7 +122,7 @@ public class MTESteamWaterPump extends MTESteamMultiBase<MTESteamWaterPump> impl
     }
 
     private int calculateFinalWaterOutput() {
-        return (int) (currentHumidity * BASE_WATER_PER_SECOND * mSetTier);
+        return (int) ((currentHumidity * BASE_WATER_PER_SECOND) * mSetTier);
     }
 
     @Override
@@ -149,12 +166,13 @@ public class MTESteamWaterPump extends MTESteamMultiBase<MTESteamWaterPump> impl
     }
     // spotless:on
 
-    public static int getFrameTier(Block block, int meta) {
+    @Nullable
+    public static Integer getFrameTier(Block block, int meta) {
         if (block == GregTechAPI.sBlockFrames) {
             if (meta == Materials.Bronze.mMetaItemSubID) return 1;
             if (meta == Materials.Steel.mMetaItemSubID) return 2;
         }
-        return 0;
+        return null;
     }
 
     @Override
@@ -194,7 +212,7 @@ public class MTESteamWaterPump extends MTESteamMultiBase<MTESteamWaterPump> impl
         if (this.mOutputHatches.size() != 1 || this.mSteamInputFluids.size() != 1) return false;
 
         currentHumidity = getHumidity();
-        return mCountCasing >= 9 && mSetTier > 0;
+        return mCountCasing >= 9;
     }
 
     @Override
@@ -230,11 +248,11 @@ public class MTESteamWaterPump extends MTESteamMultiBase<MTESteamWaterPump> impl
             .addInfo(
                 EnumChatFormatting.AQUA + "Generates: "
                     + EnumChatFormatting.WHITE
-                    + " humidity * tier * "
+                    + "tier * humidity * "
                     + BASE_WATER_PER_SECOND
                     + " L/s"
                     + EnumChatFormatting.AQUA
-                    + " of Water."
+                    + " of Water, to a minimum of 250L/s."
                     + EnumChatFormatting.RESET)
             .addInfo(
                 EnumChatFormatting.RED + "Consumes: "
@@ -244,7 +262,7 @@ public class MTESteamWaterPump extends MTESteamMultiBase<MTESteamWaterPump> impl
                     + EnumChatFormatting.RED
                     + " of Steam."
                     + EnumChatFormatting.RESET)
-            .beginStructureBlock(3, 3, 5, false)
+            .beginStructureBlock(3, 3, 4, false)
             .addOutputHatch(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + " Any casing", 1)
             .addStructureInfo(
                 EnumChatFormatting.WHITE + "Steam Input Hatch "

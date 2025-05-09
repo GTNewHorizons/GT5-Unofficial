@@ -184,10 +184,9 @@ public class GTRendererBlock implements ISimpleBlockRenderingHandler {
 
         for (int i = 0; i < VALID_DIRECTIONS.length; i++) {
             final ForgeDirection iSide = VALID_DIRECTIONS[i];
-            tIsCovered[i] = (aTileEntity.hasCoverAtSide(iSide));
+            tIsCovered[i] = aTileEntity.hasCoverAtSide(iSide);
             tCovers[i] = aTileEntity.getTexture(aBlock, iSide);
             tIcons[i] = aTileEntity.getTextureUncovered(iSide);
-
         }
 
         switch (aConnections) {
@@ -685,7 +684,9 @@ public class GTRendererBlock implements ISimpleBlockRenderingHandler {
     public static void renderNegativeYFacing(IBlockAccess aWorld, RenderBlocks aRenderer, Block aBlock, int aX, int aY,
         int aZ, ITexture[] aIcon, boolean aFullBlock) {
         if (aWorld != null) {
-            if ((aFullBlock) && (!aBlock.shouldSideBeRendered(aWorld, aX, aY - 1, aZ, 0))) return;
+            if (aFullBlock && !aRenderer.renderAllFaces && !aBlock.shouldSideBeRendered(aWorld, aX, aY - 1, aZ, 0)) {
+                return;
+            }
             Tessellator.instance
                 .setBrightness(aBlock.getMixedBrightnessForBlock(aWorld, aX, aFullBlock ? aY - 1 : aY, aZ));
         }
@@ -700,7 +701,9 @@ public class GTRendererBlock implements ISimpleBlockRenderingHandler {
     public static void renderPositiveYFacing(IBlockAccess aWorld, RenderBlocks aRenderer, Block aBlock, int aX, int aY,
         int aZ, ITexture[] aIcon, boolean aFullBlock) {
         if (aWorld != null) {
-            if ((aFullBlock) && (!aBlock.shouldSideBeRendered(aWorld, aX, aY + 1, aZ, 1))) return;
+            if (aFullBlock && !aRenderer.renderAllFaces && !aBlock.shouldSideBeRendered(aWorld, aX, aY + 1, aZ, 1)) {
+                return;
+            }
             Tessellator.instance
                 .setBrightness(aBlock.getMixedBrightnessForBlock(aWorld, aX, aFullBlock ? aY + 1 : aY, aZ));
         }
@@ -715,7 +718,9 @@ public class GTRendererBlock implements ISimpleBlockRenderingHandler {
     public static void renderNegativeZFacing(IBlockAccess aWorld, RenderBlocks aRenderer, Block aBlock, int aX, int aY,
         int aZ, ITexture[] aIcon, boolean aFullBlock) {
         if (aWorld != null) {
-            if ((aFullBlock) && (!aBlock.shouldSideBeRendered(aWorld, aX, aY, aZ - 1, 2))) return;
+            if (aFullBlock && !aRenderer.renderAllFaces && !aBlock.shouldSideBeRendered(aWorld, aX, aY, aZ - 1, 2)) {
+                return;
+            }
             Tessellator.instance
                 .setBrightness(aBlock.getMixedBrightnessForBlock(aWorld, aX, aY, aFullBlock ? aZ - 1 : aZ));
         }
@@ -730,7 +735,9 @@ public class GTRendererBlock implements ISimpleBlockRenderingHandler {
     public static void renderPositiveZFacing(IBlockAccess aWorld, RenderBlocks aRenderer, Block aBlock, int aX, int aY,
         int aZ, ITexture[] aIcon, boolean aFullBlock) {
         if (aWorld != null) {
-            if ((aFullBlock) && (!aBlock.shouldSideBeRendered(aWorld, aX, aY, aZ + 1, 3))) return;
+            if (aFullBlock && !aRenderer.renderAllFaces && !aBlock.shouldSideBeRendered(aWorld, aX, aY, aZ + 1, 3)) {
+                return;
+            }
             Tessellator.instance
                 .setBrightness(aBlock.getMixedBrightnessForBlock(aWorld, aX, aY, aFullBlock ? aZ + 1 : aZ));
         }
@@ -745,7 +752,9 @@ public class GTRendererBlock implements ISimpleBlockRenderingHandler {
     public static void renderNegativeXFacing(IBlockAccess aWorld, RenderBlocks aRenderer, Block aBlock, int aX, int aY,
         int aZ, ITexture[] aIcon, boolean aFullBlock) {
         if (aWorld != null) {
-            if ((aFullBlock) && (!aBlock.shouldSideBeRendered(aWorld, aX - 1, aY, aZ, 4))) return;
+            if (aFullBlock && !aRenderer.renderAllFaces && !aBlock.shouldSideBeRendered(aWorld, aX - 1, aY, aZ, 4)) {
+                return;
+            }
             Tessellator.instance
                 .setBrightness(aBlock.getMixedBrightnessForBlock(aWorld, aFullBlock ? aX - 1 : aX, aY, aZ));
         }
@@ -760,7 +769,9 @@ public class GTRendererBlock implements ISimpleBlockRenderingHandler {
     public static void renderPositiveXFacing(IBlockAccess aWorld, RenderBlocks aRenderer, Block aBlock, int aX, int aY,
         int aZ, ITexture[] aIcon, boolean aFullBlock) {
         if (aWorld != null) {
-            if ((aFullBlock) && (!aBlock.shouldSideBeRendered(aWorld, aX + 1, aY, aZ, 5))) return;
+            if (aFullBlock && !aRenderer.renderAllFaces && !aBlock.shouldSideBeRendered(aWorld, aX + 1, aY, aZ, 5)) {
+                return;
+            }
             Tessellator.instance
                 .setBrightness(aBlock.getMixedBrightnessForBlock(aWorld, aFullBlock ? aX + 1 : aX, aY, aZ));
         }

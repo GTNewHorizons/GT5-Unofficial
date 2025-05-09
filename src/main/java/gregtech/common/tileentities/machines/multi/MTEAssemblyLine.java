@@ -63,6 +63,7 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
 import gregtech.api.util.ParallelHelper;
 import gregtech.api.util.VoidProtectionHelper;
+import gregtech.common.misc.GTStructureChannels;
 
 public class MTEAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTEAssemblyLine> implements ISurvivalConstructable {
 
@@ -140,8 +141,7 @@ public class MTEAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTEAssemblyL
             .addStructureInfo("From Bottom to Top, Left to Right")
             .addStructureInfo(
                 "Layer 1 - Solid Steel Machine Casing, Input Bus (last can be Output Bus), Solid Steel Machine Casing")
-            .addStructureInfo(
-                "Layer 2 - Borosilicate Glass(any)/Warded Glass/Reinforced Glass, Assembly Line Casing, Reinforced Glass")
+            .addStructureInfo("Layer 2 - Glass, Assembly Line Casing, Glass")
             .addStructureInfo("Layer 3 - Grate Machine Casing, Assembler Machine Casing, Grate Machine Casing")
             .addStructureInfo("Layer 4 - Empty, Solid Steel Machine Casing, Empty")
             .addStructureInfo("Up to 16 repeating slices, each one allows for 1 more item in recipes")
@@ -155,6 +155,7 @@ public class MTEAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTEAssemblyL
                 StatCollector.translateToLocal("GT5U.tooltip.structure.data_access_hatch"),
                 "Optional, next to controller",
                 2)
+            .addSubChannelUsage(GTStructureChannels.BOROGLASS)
             .toolTipFinisher();
         return tt;
     }
@@ -449,7 +450,7 @@ public class MTEAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTEAssemblyL
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
         buildPiece(STRUCTURE_PIECE_FIRST, stackSize, hintsOnly, 0, 1, 0);
-        int tLength = Math.min(stackSize.stackSize + 1, 16);
+        int tLength = GTStructureChannels.STRUCTURE_LENGTH.getValueClamped(stackSize, 2, 17);
         for (int i = 1; i < tLength; i++) {
             buildPiece(STRUCTURE_PIECE_LATER, stackSize, hintsOnly, -i, 1, 0);
         }
@@ -460,7 +461,7 @@ public class MTEAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTEAssemblyL
         if (mMachine) return -1;
         int build = survivialBuildPiece(STRUCTURE_PIECE_FIRST, stackSize, 0, 1, 0, elementBudget, env, false, true);
         if (build >= 0) return build;
-        int tLength = Math.min(stackSize.stackSize + 1, 16);
+        int tLength = GTStructureChannels.STRUCTURE_LENGTH.getValueClamped(stackSize, 2, 17);
         for (int i = 1; i < tLength - 1; i++) {
             build = survivialBuildPiece(STRUCTURE_PIECE_LATER, stackSize, -i, 1, 0, elementBudget, env, false, true);
             if (build >= 0) return build;

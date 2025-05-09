@@ -4,7 +4,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.cleanroommc.modularui.api.IPanelHandler;
-import com.cleanroommc.modularui.api.drawable.IDrawable;
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.api.widget.IWidget;
 import com.cleanroommc.modularui.drawable.ItemDrawable;
@@ -16,7 +15,7 @@ import com.cleanroommc.modularui.value.sync.IntSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncHandler;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widget.ParentWidget;
-import com.cleanroommc.modularui.widgets.ButtonWidget;
+import com.cleanroommc.modularui.widget.Widget;
 import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 
@@ -24,10 +23,11 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.interfaces.IConfigurationCircuitSupport;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.modularui2.GTGuis;
+import gregtech.api.modularui2.GTWidgetThemes;
 import gregtech.api.util.item.GhostCircuitItemStackHandler;
 import gregtech.common.items.ItemIntegratedCircuit;
+import gregtech.common.modularui2.widget.CoverTabButton;
 import gregtech.common.modularui2.widget.GhostCircuitSlotWidget;
 
 // spotless:off
@@ -164,10 +164,11 @@ public final class GTBaseGuiBuilder {
         String title = mte.getLocalName();
         return new ParentWidget<>().coverChildren()
             .topRelAnchor(0, 1)
-            .background(GTGuiTextures.BACKGROUND_TITLE_STANDARD) // todo: theme
+            .widgetTheme(GTWidgetThemes.BACKGROUND_TITLE)
             .child(
                 IKey.str(title)
                     .asWidget()
+                    .widgetTheme(GTWidgetThemes.TEXT_TITLE)
                     .marginLeft(5)
                     .marginRight(5)
                     .marginTop(5)
@@ -177,7 +178,7 @@ public final class GTBaseGuiBuilder {
     private IWidget createCoverTabs() {
         Flow column = Flow.column()
             .coverChildren()
-            .leftRel(0, 2, 1)
+            .leftRel(0f, 2, 1f)
             .top(1)
             .childPadding(2);
         for (int i = 0; i < 6; i++) {
@@ -185,16 +186,7 @@ public final class GTBaseGuiBuilder {
             String panelKey = "cover_panel_" + side.toString()
                 .toLowerCase();
             IPanelHandler panel = syncManager.panel(panelKey, coverPanelBuilder(panelKey, side), true);
-            column.child(new ButtonWidget<>().onMousePressed(mouseButton -> {
-                panel.openPanel();
-                return true;
-            })
-                .overlay(
-                    new ItemDrawable(ItemList.Electric_Pump_LV.get(1)).asIcon()
-                        .marginLeft(2)
-                        .marginTop(1))
-                .background(GTGuiTextures.BACKGROUND_COVER_TAB_NORMAL_STANDARD) // todo: theme
-                .size(18, 20));
+            column.child(new CoverTabButton(mte.getBaseMetaTileEntity(), side, panel));
         }
         posGuiData.getNEISettings()
             .addNEIExclusionArea(column);
@@ -240,9 +232,8 @@ public final class GTBaseGuiBuilder {
     }
 
     private IWidget createGregTechLogo() {
-        return IDrawable.of(GTGuiTextures.PICTURE_GT_LOGO_STANDARD) // todo: theme
-            .asWidget()
-            .size(17, 17)
+        return new Widget<>().widgetTheme(GTWidgetThemes.PICTURE_LOGO)
+            .size(17, 17) // todo: size
             .pos(152, 63);
     }
 }

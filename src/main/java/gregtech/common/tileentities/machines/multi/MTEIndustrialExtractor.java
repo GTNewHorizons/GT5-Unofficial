@@ -12,6 +12,8 @@ import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 
 import java.util.List;
 
+import javax.annotation.Nullable;
+
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
@@ -43,6 +45,7 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.blocks.BlockCasings4;
+import gregtech.common.misc.GTStructureChannels;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
@@ -77,17 +80,18 @@ public class MTEIndustrialExtractor extends MTEExtendedPowerMultiBlockBase<MTEIn
                     Pair.of(GregTechAPI.sBlockCasings11, 5),
                     Pair.of(GregTechAPI.sBlockCasings11, 6),
                     Pair.of(GregTechAPI.sBlockCasings11, 7)),
-                -2,
+                -1,
                 MTEIndustrialExtractor::setItemPipeTier,
                 MTEIndustrialExtractor::getItemPipeTier))
         .addElement('A', chainAllGlasses())
         .build();
 
-    private int itemPipeTier = 0;
+    private int itemPipeTier = -1;
 
+    @Nullable
     private static Integer getItemPipeTierFromMeta(Block block, Integer metaID) {
-        if (block != GregTechAPI.sBlockCasings11) return -1;
-        if (metaID < 0 || metaID > 7) return -1;
+        if (block != GregTechAPI.sBlockCasings11) return null;
+        if (metaID < 0 || metaID > 7) return null;
         return metaID + 1;
     }
 
@@ -172,11 +176,12 @@ public class MTEIndustrialExtractor extends MTEExtendedPowerMultiBlockBase<MTEIn
             .addController("Front Center")
             .addCasingInfoMin("Stainless Steel Machine Casing", 45, false)
             .addCasingInfoExactly("Item Pipe Casing", 19, true)
-            .addCasingInfoExactly("Any Glass", 8, false)
+            .addCasingInfoExactly("Any Tiered Glass", 8, false)
             .addInputBus("Any Stainless Steel Casing", 1)
             .addOutputBus("Any Stainless Steel Casing", 1)
             .addEnergyHatch("Any Stainless Steel Casing", 1)
             .addMaintenanceHatch("Any Stainless Steel Casing", 1)
+            .addSubChannelUsage(GTStructureChannels.BOROGLASS)
             .toolTipFinisher(AuthorFourIsTheNumber);
         return tt;
     }
@@ -201,7 +206,7 @@ public class MTEIndustrialExtractor extends MTEExtendedPowerMultiBlockBase<MTEIn
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         mCasingAmount = 0;
-        itemPipeTier = -2;
+        itemPipeTier = -1;
 
         if (!checkPiece(STRUCTURE_PIECE_MAIN, 2, 4, 0)) return false;
         return mCasingAmount >= 45;

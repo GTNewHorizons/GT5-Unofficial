@@ -94,8 +94,8 @@ public class ProcessingLogic {
     }
 
     @Nonnull
-    public ProcessingLogic setInputItems(List<ItemStack> itemOutputs) {
-        this.inputItems = itemOutputs.toArray(new ItemStack[0]);
+    public ProcessingLogic setInputItems(List<ItemStack> itemInputs) {
+        this.inputItems = itemInputs.toArray(new ItemStack[0]);
         return this;
     }
 
@@ -117,6 +117,9 @@ public class ProcessingLogic {
     }
 
     public boolean craftingPatternHandler(IDualInputInventory slot) {
+        if (!slot.shouldBeCached()) {
+            return true;
+        }
         if (craftingPatternRecipeCache.containsKey(slot)) {
             craftingPattern = slot;
             return true;

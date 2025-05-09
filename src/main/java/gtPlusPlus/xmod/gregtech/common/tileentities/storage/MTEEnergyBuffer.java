@@ -5,6 +5,7 @@ import static gregtech.api.enums.GTValues.V;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -330,7 +331,8 @@ public class MTEEnergyBuffer extends MTETieredMachineBlock {
         String fmt = String.format("%%%ds", max.length());
         cur = String.format(fmt, cur);
 
-        return new String[] { cur + " EU stored", max + " EU capacity" };
+        return new String[] { StatCollector.translateToLocalFormatted("gtpp.infodata.energy_buffer.eu_stored", cur),
+            StatCollector.translateToLocalFormatted("gtpp.infodata.energy_buffer.eu_capacity", max) };
     }
 
     @Override
@@ -422,7 +424,8 @@ public class MTEEnergyBuffer extends MTETieredMachineBlock {
     }
 
     @Override
-    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
+        ItemStack aTool) {
         byte aTest = (byte) (aCurrentOutputAmperage + 1);
         if (aTest > 16 || aTest <= 0) {
             aTest = 1;

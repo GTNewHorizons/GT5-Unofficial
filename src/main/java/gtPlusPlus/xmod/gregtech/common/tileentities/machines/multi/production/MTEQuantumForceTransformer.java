@@ -3,7 +3,6 @@ package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.lazy;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.withChannel;
 import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.ExoticEnergy;
 import static gregtech.api.enums.HatchElement.InputBus;
@@ -17,7 +16,7 @@ import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.ParallelHelper.addFluidsLong;
 import static gregtech.api.util.ParallelHelper.addItemsLong;
-import static gregtech.api.util.ParallelHelper.calculateChancedOutputMultiplier;
+import static gregtech.api.util.ParallelHelper.calculateIntegralChancedOutputMultiplier;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -76,6 +75,7 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.IGTHatchAdder;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.ParallelHelper;
+import gregtech.common.misc.GTStructureChannels;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.material.MaterialsElements;
@@ -118,8 +118,7 @@ public class MTEQuantumForceTransformer extends MTEExtendedPowerMultiBlockBase<M
                 // spotless:on
         .addElement(
             'A',
-            withChannel(
-                "manipulator",
+            GTStructureChannels.QFT_MANIPULATOR.use(
                 StructureUtility.ofBlocksTiered(
                     craftingTierConverter(),
                     getAllCraftingTiers(),
@@ -128,8 +127,7 @@ public class MTEQuantumForceTransformer extends MTEExtendedPowerMultiBlockBase<M
                     MTEQuantumForceTransformer::getCraftingTier)))
         .addElement(
             'B',
-            withChannel(
-                "shielding",
+            GTStructureChannels.QFT_SHIELDING.use(
                 StructureUtility.ofBlocksTiered(
                     focusingTierConverter(),
                     getAllFocusingTiers(),
@@ -212,6 +210,8 @@ public class MTEQuantumForceTransformer extends MTEExtendedPowerMultiBlockBase<M
                     + "Bottom"
                     + EnumChatFormatting.GRAY
                     + " Layer")
+            .addSubChannelUsage(GTStructureChannels.QFT_SHIELDING)
+            .addSubChannelUsage(GTStructureChannels.QFT_MANIPULATOR)
             .toolTipFinisher(GTValues.AuthorBlueWeabo, EnumChatFormatting.GREEN + "Steelux");
         return tt;
     }
@@ -228,10 +228,6 @@ public class MTEQuantumForceTransformer extends MTEExtendedPowerMultiBlockBase<M
         this.mFocusingTier = 0;
         catalystHounsings.clear();
         if (!checkPiece(MAIN_PIECE, 7, 20, 4)) {
-            return false;
-        }
-
-        if (mOutputBusses.isEmpty() || mOutputHatches.isEmpty()) {
             return false;
         }
 
@@ -282,7 +278,7 @@ public class MTEQuantumForceTransformer extends MTEExtendedPowerMultiBlockBase<M
     public static ITierConverter<Integer> craftingTierConverter() {
         return (block, meta) -> {
             if (block == null) {
-                return -1;
+                return null;
             } else if (block == ModBlocks.blockCasings5Misc) { // Resonance Chambers
                 switch (meta) {
                     case 7 -> {
@@ -299,14 +295,14 @@ public class MTEQuantumForceTransformer extends MTEExtendedPowerMultiBlockBase<M
                     }
                 }
             }
-            return -1;
+            return null;
         };
     }
 
     public static ITierConverter<Integer> focusingTierConverter() {
         return (block, meta) -> {
             if (block == null) {
-                return -1;
+                return null;
             } else if (block == ModBlocks.blockCasings5Misc) { // Generation Coils
                 switch (meta) {
                     case 11 -> {
@@ -323,7 +319,7 @@ public class MTEQuantumForceTransformer extends MTEExtendedPowerMultiBlockBase<M
                     }
                 }
             }
-            return -1;
+            return null;
         };
     }
 
@@ -446,8 +442,8 @@ public class MTEQuantumForceTransformer extends MTEExtendedPowerMultiBlockBase<M
                         ItemStack item = recipe.getOutput(i);
                         if (item == null || fluidModeItems[i] != null) continue;
                         ItemStack itemToAdd = item.copy();
-                        double outputMultiplier = calculateChancedOutputMultiplier(chances[i], parallel);
-                        long itemAmount = (long) (item.stackSize * outputMultiplier);
+                        long outputMultiplier = calculateIntegralChancedOutputMultiplier(chances[i], parallel);
+                        long itemAmount = item.stackSize * outputMultiplier;
                         addItemsLong(items, itemToAdd, itemAmount);
                     }
 
@@ -461,9 +457,9 @@ public class MTEQuantumForceTransformer extends MTEExtendedPowerMultiBlockBase<M
                                 FluidStack fluid = fluidModeItems[i];
                                 if (fluid == null) continue;
                                 FluidStack fluidToAdd = fluid.copy();
-                                double outputMultiplier = calculateChancedOutputMultiplier(chances[i], parallel);
+                                long outputMultiplier = calculateIntegralChancedOutputMultiplier(chances[i], parallel);
                                 int itemAmount = recipe.mOutputs[i].stackSize;
-                                long fluidAmount = (long) (fluidToAdd.amount * outputMultiplier * itemAmount);
+                                long fluidAmount = fluidToAdd.amount * outputMultiplier * itemAmount;
                                 addFluidsLong(fluids, fluidToAdd, fluidAmount);
                             }
                         }
@@ -472,10 +468,10 @@ public class MTEQuantumForceTransformer extends MTEExtendedPowerMultiBlockBase<M
                             FluidStack fluid = recipe.getFluidOutput(i);
                             if (fluid == null) continue;
                             FluidStack fluidToAdd = fluid.copy();
-                            double outputMultiplier = calculateChancedOutputMultiplier(
+                            long outputMultiplier = calculateIntegralChancedOutputMultiplier(
                                 chances[i + recipe.mOutputs.length],
                                 parallel);
-                            long fluidAmount = (long) (fluidToAdd.amount * outputMultiplier);
+                            long fluidAmount = fluidToAdd.amount * outputMultiplier;
                             addFluidsLong(fluids, fluidToAdd, fluidAmount);
                         }
 
@@ -577,11 +573,6 @@ public class MTEQuantumForceTransformer extends MTEExtendedPowerMultiBlockBase<M
     }
 
     @Override
-    public int getPollutionPerSecond(final ItemStack aStack) {
-        return 0;
-    }
-
-    @Override
     public int getDamageToComponent(final ItemStack aStack) {
         return 0;
     }
@@ -654,7 +645,8 @@ public class MTEQuantumForceTransformer extends MTEExtendedPowerMultiBlockBase<M
     }
 
     @Override
-    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
+        ItemStack aTool) {
         mFluidMode = !mFluidMode;
         GTUtility.sendChatToPlayer(
             aPlayer,
@@ -916,7 +908,7 @@ public class MTEQuantumForceTransformer extends MTEExtendedPowerMultiBlockBase<M
 
     @Override
     public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
-        float aX, float aY, float aZ) {
+        float aX, float aY, float aZ, ItemStack aTool) {
         batchMode = !batchMode;
         if (batchMode) {
             GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOn"));

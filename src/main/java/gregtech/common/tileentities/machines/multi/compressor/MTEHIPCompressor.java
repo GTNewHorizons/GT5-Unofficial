@@ -276,7 +276,7 @@ public class MTEHIPCompressor extends MTEExtendedPowerMultiBlockBase<MTEHIPCompr
             .addCasingInfoMin("Compressor Pipe Casing", 60, false)
             .addCasingInfoExactly("Coolant Duct", 12, false)
             .addCasingInfoExactly("Heating Duct", 12, false)
-            .addCasingInfoExactly("Any Glass", 22, false)
+            .addCasingInfoExactly("Any Tiered Glass", 22, false)
             .addCasingInfoExactly("Coil", 30, true)
             .addOtherStructurePart(
                 StatCollector.translateToLocal("GT5U.tooltip.structure.heat_sensor_hatch"),

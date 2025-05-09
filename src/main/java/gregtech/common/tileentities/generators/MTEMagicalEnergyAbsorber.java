@@ -138,7 +138,8 @@ public class MTEMagicalEnergyAbsorber extends MTEBasicGenerator implements Magic
     }
 
     @Override
-    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
+        ItemStack aTool) {
         if (aPlayer.isSneaking()) mMagicalEnergyBB.decreaseTier();
         else mMagicalEnergyBB.increaseTier();
         GTUtility.sendChatToPlayer(

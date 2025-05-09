@@ -38,6 +38,7 @@ import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.blocks.BlockCasings10;
+import gregtech.common.misc.GTStructureChannels;
 
 public class MTEIndustrialCompressor extends MTEExtendedPowerMultiBlockBase<MTEIndustrialCompressor>
     implements ISurvivalConstructable {
@@ -150,12 +151,13 @@ public class MTEIndustrialCompressor extends MTEExtendedPowerMultiBlockBase<MTEI
             .addController("Front Center")
             .addCasingInfoMin("Electric Compressor Casing", 95, false)
             .addCasingInfoMin("Compressor Pipe Casing", 45, false)
-            .addCasingInfoExactly("Any Glass", 6, false)
+            .addCasingInfoExactly("Any Tiered Glass", 6, false)
             .addInputBus("Pipe Casings on Side", 2)
             .addInputHatch("Pipe Casings on Side", 2)
             .addOutputBus("Pipe Casings on Side", 2)
             .addEnergyHatch("Any Electric Compressor Casing", 1)
             .addMaintenanceHatch("Any Electric Compressor Casing", 1)
+            .addSubChannelUsage(GTStructureChannels.BOROGLASS)
             .toolTipFinisher(AuthorFourIsTheNumber, Ollie);
         return tt;
     }

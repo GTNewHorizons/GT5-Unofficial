@@ -543,7 +543,11 @@ public abstract class MTELargeFusionComputer extends MTETooltipMultiBlockBaseEM
         double plasmaOut = 0;
         if (mMaxProgresstime > 0) plasmaOut = (double) mOutputFluids[0].amount / mMaxProgresstime;
 
-        return new String[] { EnumChatFormatting.BLUE + "Fusion Reactor MK " + EnumChatFormatting.RESET + tier,
+        return new String[] {
+            EnumChatFormatting.BLUE + StatCollector.translateToLocal("gg.scanner.info.fusion_reactor_mk")
+                + " "
+                + EnumChatFormatting.RESET
+                + tier,
             StatCollector.translateToLocal("scanner.info.UX.0") + ": "
                 + EnumChatFormatting.LIGHT_PURPLE
                 + GTUtility.formatNumbers(this.para)

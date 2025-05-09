@@ -13,6 +13,7 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -212,14 +213,13 @@ public class MTEHatchMaintenance extends MTEHatch implements IAddUIWidgets, IAli
 
     @Override
     public boolean onWrenchRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer entityPlayer,
-        float aX, float aY, float aZ) {
-        if (wrenchingSide != getBaseMetaTileEntity().getFrontFacing())
-            return super.onWrenchRightClick(side, wrenchingSide, entityPlayer, aX, aY, aZ);
-        if (!entityPlayer.isSneaking() && isRotationChangeAllowed()) {
+        float aX, float aY, float aZ, ItemStack aTool) {
+        if (wrenchingSide == getBaseMetaTileEntity().getFrontFacing() && !entityPlayer.isSneaking()
+            && isRotationChangeAllowed()) {
             toolSetRotation(null);
             return true;
         }
-        return false;
+        return super.onWrenchRightClick(side, wrenchingSide, entityPlayer, aX, aY, aZ, aTool);
     }
 
     public boolean autoMaintainance() {
@@ -376,7 +376,8 @@ public class MTEHatchMaintenance extends MTEHatch implements IAddUIWidgets, IAli
                     .setBackground(GTUITextures.TRANSPARENT)
                     .setPos(79, 34))
                 .widget(
-                    new TextWidget("Click with Tool to repair.").setDefaultColor(COLOR_TEXT_GRAY.get())
+                    new TextWidget(StatCollector.translateToLocal("GT5U.gui.text.repair_tip"))
+                        .setDefaultColor(COLOR_TEXT_GRAY.get())
                         .setPos(8, 12));
         }
     }
