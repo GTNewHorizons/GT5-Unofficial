@@ -37,6 +37,7 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_TOWER_GLOW;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
+import static gregtech.api.util.GTStructureUtility.ofAnyWater;
 import static gregtech.api.util.GTUtility.formatShortenedLong;
 import static gregtech.api.util.GTUtility.truncateText;
 import static kubatech.api.utils.ItemUtils.readItemStackFromNBT;
@@ -132,6 +133,7 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.GTUtility.ItemId;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.common.misc.GTStructureChannels;
 import ic2.core.init.BlocksItems;
 import ic2.core.init.InternalName;
 import kubatech.api.DynamicInventory;
@@ -223,9 +225,7 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
         .addElement('N', ofBlock(PluginApiculture.blocks.alveary, BlockAlveary.Type.STABILIZER.ordinal()))
         .addElement('O', ofBlock(PluginApiculture.blocks.alveary, BlockAlveary.Type.HEATER.ordinal()))
         .addElement('P', ofBlock(PluginApiculture.blocks.alveary, BlockAlveary.Type.FAN.ordinal()))
-        .addElement(
-            'W',
-            ofChain(ofBlock(Blocks.water, 0), ofBlock(BlocksItems.getFluidBlock(InternalName.fluidDistilledWater), 0)))
+        .addElement('W', ofAnyWater())
         .addElement('F', new IStructureElementNoPlacement<>() {
 
             @Override
