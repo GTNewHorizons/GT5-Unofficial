@@ -842,11 +842,6 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
     }
 
     @Override
-    protected boolean forceUseMui2() {
-        return true;
-    }
-
-    @Override
     public void insertTexts(ListWidget<IWidget, ?> machineInfo, ItemStackHandler invSlot, PanelSyncManager syncManager,
         ModularPanel parentPanel) {
         IntSyncValue distanceSyncer = (IntSyncValue) syncManager.getSyncHandler("distanceParameter:0");
