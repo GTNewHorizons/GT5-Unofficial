@@ -4,11 +4,9 @@ import static gregtech.api.enums.Mods.IndustrialCraft2;
 import static gregtech.api.enums.Mods.Railcraft;
 import static gregtech.api.recipe.RecipeMaps.fluidSolidifierRecipes;
 import static gregtech.api.util.GTModHandler.getModItem;
-import static gregtech.api.util.GTRecipeBuilder.BUCKETS;
 import static gregtech.api.util.GTRecipeBuilder.HALF_INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.NUGGETS;
-import static gregtech.api.util.GTRecipeBuilder.QUARTER_BUCKETS;
 import static gregtech.api.util.GTRecipeBuilder.QUARTER_INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
@@ -53,7 +51,7 @@ public class FluidSolidifierRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Shape_Mold_Ball.get(0L))
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.gem, Materials.Mercury, 1L))
-            .fluidInputs(Materials.Mercury.getFluid(1 * BUCKETS))
+            .fluidInputs(Materials.Mercury.getFluid(1000))
             .duration(6 * SECONDS + 8 * TICKS)
             .eut(4)
             .addTo(fluidSolidifierRecipes);
@@ -61,7 +59,7 @@ public class FluidSolidifierRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Shape_Mold_Ball.get(0L))
             .itemOutputs(new ItemStack(Items.snowball, 1, 0))
-            .fluidInputs(Materials.Water.getFluid(1 * QUARTER_BUCKETS))
+            .fluidInputs(Materials.Water.getFluid(250))
             .duration(6 * SECONDS + 8 * TICKS)
             .eut(4)
             .addTo(fluidSolidifierRecipes);
@@ -77,7 +75,7 @@ public class FluidSolidifierRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Shape_Mold_Block.get(0L))
             .itemOutputs(new ItemStack(Blocks.snow, 1, 0))
-            .fluidInputs(Materials.Water.getFluid(1 * BUCKETS))
+            .fluidInputs(Materials.Water.getFluid(1000))
             .duration(25 * SECONDS + 12 * TICKS)
             .eut(4)
             .addTo(fluidSolidifierRecipes);
@@ -93,7 +91,7 @@ public class FluidSolidifierRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Shape_Mold_Block.get(0L))
             .itemOutputs(new ItemStack(Blocks.obsidian, 1, 0))
-            .fluidInputs(Materials.Lava.getFluid(1 * BUCKETS))
+            .fluidInputs(Materials.Lava.getFluid(1000))
             .duration(51 * SECONDS + 4 * TICKS)
             .eut(16)
             .addTo(fluidSolidifierRecipes);
@@ -133,7 +131,7 @@ public class FluidSolidifierRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Shape_Mold_Cylinder.get(0L))
             .itemOutputs(ItemList.Food_Cheese.get(1L))
-            .fluidInputs(Materials.Milk.getFluid(1 * QUARTER_BUCKETS))
+            .fluidInputs(Materials.Milk.getFluid(250))
             .duration(51 * SECONDS + 4 * TICKS)
             .eut(4)
             .addTo(fluidSolidifierRecipes);

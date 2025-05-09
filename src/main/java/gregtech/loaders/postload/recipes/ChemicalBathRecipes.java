@@ -4,11 +4,8 @@ import static gregtech.api.enums.GTValues.M;
 import static gregtech.api.enums.Mods.BuildCraftTransport;
 import static gregtech.api.recipe.RecipeMaps.chemicalBathRecipes;
 import static gregtech.api.util.GTModHandler.getModItem;
-import static gregtech.api.util.GTRecipeBuilder.BUCKETS;
-import static gregtech.api.util.GTRecipeBuilder.EIGHT_BUCKETS;
 import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.MINUTES;
-import static gregtech.api.util.GTRecipeBuilder.QUARTER_BUCKETS;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
 
@@ -62,7 +59,7 @@ public class ChemicalBathRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Coal, 1))
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.HydratedCoal, 1))
-            .fluidInputs(Materials.Water.getFluid(1 * EIGHT_BUCKETS))
+            .fluidInputs(Materials.Water.getFluid(125))
             .duration(12 * TICKS)
             .eut(4)
             .addTo(chemicalBathRecipes);
@@ -148,7 +145,7 @@ public class ChemicalBathRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(new ItemStack(GregTechAPI.sBlockConcretes, 1, i + 8))
                 .itemOutputs(new ItemStack(GregTechAPI.sBlockConcretes, 1, i))
-                .fluidInputs(Materials.Water.getFluid(1 * QUARTER_BUCKETS))
+                .fluidInputs(Materials.Water.getFluid(250))
                 .duration(10 * SECONDS)
                 .eut(4)
                 .addTo(chemicalBathRecipes);
@@ -299,7 +296,7 @@ public class ChemicalBathRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(GTOreDictUnificator.get(OrePrefixes.gem, Materials.EnderEye, 1))
             .itemOutputs(ItemList.QuantumEye.get(1))
-            .fluidInputs(Materials.Radon.getGas(1 * QUARTER_BUCKETS))
+            .fluidInputs(Materials.Radon.getGas(250))
             .duration(24 * SECONDS)
             .eut(384)
             .addTo(chemicalBathRecipes);
@@ -315,7 +312,7 @@ public class ChemicalBathRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.WovenKevlar.get(1))
             .itemOutputs(MaterialsKevlar.Kevlar.getPlates(1))
-            .fluidInputs(MaterialsKevlar.PolyurethaneResin.getFluid(1 * BUCKETS))
+            .fluidInputs(MaterialsKevlar.PolyurethaneResin.getFluid(1000))
             .duration(60 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(chemicalBathRecipes);
@@ -332,8 +329,8 @@ public class ChemicalBathRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(Materials.Sodium.getDust(1))
             .itemOutputs(Materials.SodiumHydroxide.getDust(3))
-            .fluidInputs(Materials.Water.getFluid(1 * BUCKETS))
-            .fluidOutputs(Materials.Hydrogen.getGas(1 * BUCKETS))
+            .fluidInputs(Materials.Water.getFluid(1000))
+            .fluidOutputs(Materials.Hydrogen.getGas(1000))
             .duration(5 * SECONDS)
             .eut(4)
             .addTo(chemicalBathRecipes);

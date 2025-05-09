@@ -3,11 +3,9 @@ package gregtech.loaders.postload.recipes;
 import static gregtech.api.enums.Mods.AppliedEnergistics2;
 import static gregtech.api.recipe.RecipeMaps.autoclaveRecipes;
 import static gregtech.api.util.GTModHandler.getModItem;
-import static gregtech.api.util.GTRecipeBuilder.BUCKETS;
 import static gregtech.api.util.GTRecipeBuilder.EIGHTH_INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.MINUTES;
-import static gregtech.api.util.GTRecipeBuilder.QUARTER_BUCKETS;
 import static gregtech.api.util.GTRecipeBuilder.QUARTER_INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
@@ -239,7 +237,7 @@ public class AutoclaveRecipes implements Runnable {
                 GTUtility.getIntegratedCircuit(1))
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.SiliconDioxide, 3))
             .outputChances(7500)
-            .fluidInputs(Materials.Water.getFluid(1 * BUCKETS))
+            .fluidInputs(Materials.Water.getFluid(1000))
             .duration(60 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(autoclaveRecipes);
@@ -250,7 +248,7 @@ public class AutoclaveRecipes implements Runnable {
                 GTUtility.getIntegratedCircuit(1))
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.SiliconDioxide, 3))
             .outputChances(9000)
-            .fluidInputs(GTModHandler.getDistilledWater(1 * BUCKETS))
+            .fluidInputs(GTModHandler.getDistilledWater(1000))
             .duration(60 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(autoclaveRecipes);
@@ -268,7 +266,7 @@ public class AutoclaveRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(GTOreDictUnificator.get(OrePrefixes.round, MaterialsUEVplus.MagMatter, 1))
             .itemOutputs(ItemList.Phononic_Seed_Crystal.get(5))
-            .fluidInputs(MaterialsUEVplus.PhononCrystalSolution.getFluid(1 * QUARTER_BUCKETS))
+            .fluidInputs(MaterialsUEVplus.PhononCrystalSolution.getFluid(250))
             .duration(2 * SECONDS + 10 * TICKS)
             .eut(TierEU.RECIPE_UXV)
             .addTo(autoclaveRecipes);

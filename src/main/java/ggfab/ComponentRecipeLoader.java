@@ -1,7 +1,6 @@
 package ggfab;
 
 import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
-import static gregtech.api.util.GTRecipeBuilder.BUCKETS;
 import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.MINUTES;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
@@ -38,7 +37,7 @@ class ComponentRecipeLoader implements Runnable {
                 new Object[] { OrePrefixes.circuit.get(Materials.IV), 4 },
                 new Object[] { OrePrefixes.circuit.get(Materials.EV), 8 },
                 ItemList.Automation_ChestBuffer_LuV.get(1L))
-            .fluidInputs(new FluidStack(solderIndalloy, 1296), Materials.Lubricant.getFluid(2 * BUCKETS))
+            .fluidInputs(new FluidStack(solderIndalloy, 1296), Materials.Lubricant.getFluid(2000))
             .itemOutputs(GGItemList.AdvAssLine.get(1L))
             .eut(6_000)
             .duration(10 * MINUTES)

@@ -8,9 +8,7 @@ import static gregtech.api.enums.Mods.ThaumicTinkerer;
 import static gregtech.api.enums.Mods.TwilightForest;
 import static gregtech.api.recipe.RecipeMaps.centrifugeRecipes;
 import static gregtech.api.util.GTModHandler.getModItem;
-import static gregtech.api.util.GTRecipeBuilder.BUCKETS;
 import static gregtech.api.util.GTRecipeBuilder.EIGHTH_INGOTS;
-import static gregtech.api.util.GTRecipeBuilder.HALF_BUCKETS;
 import static gregtech.api.util.GTRecipeBuilder.HALF_INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.MINUTES;
 import static gregtech.api.util.GTRecipeBuilder.NUGGETS;
@@ -54,7 +52,7 @@ public class CentrifugeRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Cell_Empty.get(1))
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.cell, Materials.Oxygen, 1))
-            .fluidInputs(Materials.Air.getGas(10 * BUCKETS))
+            .fluidInputs(Materials.Air.getGas(10000))
             .fluidOutputs(Materials.Nitrogen.getGas(3900))
             .duration(1 * MINUTES + 20 * SECONDS)
             .eut(8)
@@ -83,8 +81,8 @@ public class CentrifugeRecipes implements Runnable {
                 Materials.Nickel.getDust(1),
                 Materials.Antimony.getDust(1))
             .outputChances(10000, 4000, 2000, 2000, 2000, 2000)
-            .fluidInputs(MaterialsOreAlum.SluiceJuice.getFluid(1 * BUCKETS))
-            .fluidOutputs(Materials.Water.getFluid(1 * HALF_BUCKETS))
+            .fluidInputs(MaterialsOreAlum.SluiceJuice.getFluid(1000))
+            .fluidOutputs(Materials.Water.getFluid(500))
             .duration(2 * SECONDS)
             .eut((int) TierEU.RECIPE_MV)
             .addTo(centrifugeRecipes);
@@ -417,7 +415,7 @@ public class CentrifugeRecipes implements Runnable {
             .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Uranium, 1))
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Uranium235, 1))
             .outputChances(10000)
-            .fluidInputs(Materials.Fluorine.getGas(4 * BUCKETS))
+            .fluidInputs(Materials.Fluorine.getGas(4000))
             .duration(3 * MINUTES + 20 * SECONDS)
             .eut((int) TierEU.RECIPE_EV)
             .addTo(centrifugeRecipes);

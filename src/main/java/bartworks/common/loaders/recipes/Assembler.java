@@ -1,7 +1,6 @@
 package bartworks.common.loaders.recipes;
 
 import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
-import static gregtech.api.util.GTRecipeBuilder.BUCKETS;
 import static gregtech.api.util.GTRecipeBuilder.HOURS;
 import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
@@ -32,7 +31,7 @@ public class Assembler implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.circuit, Materials.HV, 2L),
                 GTUtility.getIntegratedCircuit(17))
             .itemOutputs(new ItemStack(ItemRegistry.BW_BLOCKS[0], 1, 1))
-            .fluidInputs(FluidRegistry.getFluidStack("ic2coolant", 1 * BUCKETS))
+            .fluidInputs(FluidRegistry.getFluidStack("ic2coolant", 1000))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(assemblerRecipes);

@@ -7,12 +7,9 @@ import static gregtech.api.enums.Mods.Railcraft;
 import static gregtech.api.enums.Mods.TinkerConstruct;
 import static gregtech.api.recipe.RecipeMaps.fluidExtractionRecipes;
 import static gregtech.api.util.GTModHandler.getModItem;
-import static gregtech.api.util.GTRecipeBuilder.BUCKETS;
-import static gregtech.api.util.GTRecipeBuilder.EIGHT_BUCKETS;
 import static gregtech.api.util.GTRecipeBuilder.HALF_INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.NUGGETS;
-import static gregtech.api.util.GTRecipeBuilder.QUARTER_BUCKETS;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
 import static gregtech.loaders.misc.GTBees.combs;
@@ -144,7 +141,7 @@ public class FluidExtractorRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(GTOreDictUnificator.get(OrePrefixes.gem, Materials.Mercury, 1L))
-            .fluidOutputs(Materials.Mercury.getFluid(1 * BUCKETS))
+            .fluidOutputs(Materials.Mercury.getFluid(1000))
             .duration(6 * SECONDS + 8 * TICKS)
             .eut(4)
             .addTo(fluidExtractionRecipes);
@@ -502,21 +499,21 @@ public class FluidExtractorRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Crop_Drop_Rape.get(1))
-            .fluidOutputs(Materials.SeedOil.getFluid(1 * EIGHT_BUCKETS))
+            .fluidOutputs(Materials.SeedOil.getFluid(125))
             .duration(1 * SECONDS + 12 * TICKS)
             .eut(2)
             .addTo(fluidExtractionRecipes);
 
         GTValues.RA.stdBuilder()
             .itemInputs(new ItemStack(Items.snowball, 1, 0))
-            .fluidOutputs(Materials.Water.getFluid(1 * QUARTER_BUCKETS))
+            .fluidOutputs(Materials.Water.getFluid(250))
             .duration(1 * SECONDS + 12 * TICKS)
             .eut(4)
             .addTo(fluidExtractionRecipes);
 
         GTValues.RA.stdBuilder()
             .itemInputs(new ItemStack(Blocks.snow, 1, 0))
-            .fluidOutputs(Materials.Water.getFluid(1 * BUCKETS))
+            .fluidOutputs(Materials.Water.getFluid(1000))
             .duration(6 * SECONDS + 8 * TICKS)
             .eut(4)
             .addTo(fluidExtractionRecipes);

@@ -41,7 +41,6 @@ import static gregtech.api.recipe.RecipeMaps.primitiveBlastRecipes;
 import static gregtech.api.recipe.RecipeMaps.sifterRecipes;
 import static gregtech.api.recipe.RecipeMaps.smallNaquadahReactorFuels;
 import static gregtech.api.recipe.RecipeMaps.ultraHugeNaquadahReactorFuels;
-import static gregtech.api.util.GTRecipeBuilder.BUCKETS;
 import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.MINUTES;
 import static gregtech.api.util.GTRecipeBuilder.NUGGETS;
@@ -92,8 +91,8 @@ public class AdditionalRecipes {
 
     private static void runBWRecipes() {
 
-        FluidStack[] dnaFluid = { Gendustry.isModLoaded() ? FluidRegistry.getFluidStack("liquiddna", 1 * BUCKETS)
-            : Materials.Biomass.getFluid(1 * BUCKETS) };
+        FluidStack[] dnaFluid = { Gendustry.isModLoaded() ? FluidRegistry.getFluidStack("liquiddna", 1000)
+            : Materials.Biomass.getFluid(1000) };
 
         for (ItemStack stack : BioItemList.getAllPetriDishes()) {
             BioData DNA = BioData.getBioDataFromNBTTag(
@@ -109,7 +108,7 @@ public class AdditionalRecipes {
                         BioItemList.getDNASampleFlask(BioDNA.convertDataToDNA(DNA)),
                         GTOreDictUnificator.get(OrePrefixes.cell, Materials.Empty, 1L))
                     .outputChances(DNA.getChance(), 100_00)
-                    .fluidInputs(FluidRegistry.getFluidStack("ic2distilledwater", 1 * BUCKETS))
+                    .fluidInputs(FluidRegistry.getFluidStack("ic2distilledwater", 1000))
                     .special(BioItemList.mBioLabParts[0])
                     .duration(25 * SECONDS)
                     .eut(GTValues.VP[3 + DNA.getTier()])
@@ -192,7 +191,7 @@ public class AdditionalRecipes {
                         FluidLoader.BioLabFluidCells[2])
                     .itemOutputs(stack, ItemList.Cell_Empty.get(1L))
                     .outputChances(Plasmid.getChance(), 100_00)
-                    .fluidInputs(FluidRegistry.getFluidStack("ic2distilledwater", 1 * BUCKETS))
+                    .fluidInputs(FluidRegistry.getFluidStack("ic2distilledwater", 1000))
                     .special(BioItemList.mBioLabParts[3])
                     .duration(25 * SECONDS)
                     .eut(energyUsageWithTransformModule)
@@ -216,7 +215,7 @@ public class AdditionalRecipes {
                 BioItemList.getPetriDish(null)
                     .setStackDisplayName("The Culture made from DNA"))
             .outputChances(75_00)
-            .fluidInputs(new FluidStack(dnaFluid[0].getFluid(), 8 * BUCKETS))
+            .fluidInputs(new FluidStack(dnaFluid[0].getFluid(), 8000))
             .special(BioItemList.mBioLabParts[4])
             .duration(25 * SECONDS)
             .eut(TierEU.RECIPE_LuV)
@@ -224,8 +223,8 @@ public class AdditionalRecipes {
             .fake()
             .addTo(bioLabRecipes);
 
-        FluidStack[] easyFluids = { Materials.Water.getFluid(1 * BUCKETS),
-            FluidRegistry.getFluidStack("ic2distilledwater", 1 * BUCKETS) };
+        FluidStack[] easyFluids = { Materials.Water.getFluid(1000),
+            FluidRegistry.getFluidStack("ic2distilledwater", 1000) };
         for (FluidStack fluidStack : easyFluids) {
             for (BioCulture bioCulture : BioCulture.BIO_CULTURE_ARRAY_LIST) {
                 if (bioCulture.isBreedable() && bioCulture.getTier() == 0) {
@@ -242,12 +241,12 @@ public class AdditionalRecipes {
                     GTValues.RA.stdBuilder()
                         .itemInputs(
                             BioItemList.getPetriDish(null),
-                            fluidStack.equals(Materials.Water.getFluid(1 * BUCKETS)) ? Materials.Water.getCells(1)
-                                : GTUtility.getContainersFromFluid(GTModHandler.getDistilledWater(1 * BUCKETS))
+                            fluidStack.equals(Materials.Water.getFluid(1000)) ? Materials.Water.getCells(1)
+                                : GTUtility.getContainersFromFluid(GTModHandler.getDistilledWater(1000))
                                     .get(0))
                         .itemOutputs(BioItemList.getPetriDish(bioCulture), Materials.Empty.getCells(1))
                         .outputChances(bioCulture.getChance(), 100_00)
-                        .fluidInputs(new FluidStack(bioCulture.getFluid(), 1 * BUCKETS))
+                        .fluidInputs(new FluidStack(bioCulture.getFluid(), 1000))
                         .duration(25 * SECONDS)
                         .eut(TierEU.RECIPE_HV)
                         .addTo(bioLabRecipes);
@@ -338,7 +337,7 @@ public class AdditionalRecipes {
         GTValues.RA.stdBuilder()
             .itemInputs(WerkstoffLoader.Thorianit.get(crushed), ItemList.Crop_Drop_Thorium.get(9))
             .itemOutputs(WerkstoffLoader.Thorianit.get(crushedPurified, 4))
-            .fluidInputs(Materials.Water.getFluid(1 * BUCKETS))
+            .fluidInputs(Materials.Water.getFluid(1000))
             .fluidOutputs(Materials.Thorium.getMolten(1 * INGOTS))
             .duration(4 * SECONDS + 16 * TICKS)
             .eut(24)
@@ -366,7 +365,7 @@ public class AdditionalRecipes {
         GTValues.RA.stdBuilder()
             .itemInputs(Materials.Yttrium.getDust(2), GTUtility.getIntegratedCircuit(5))
             .itemOutputs(WerkstoffLoader.YttriumOxide.get(dust, 5))
-            .fluidInputs(Materials.Oxygen.getGas(3 * BUCKETS))
+            .fluidInputs(Materials.Oxygen.getGas(3000))
             .duration(3 * MINUTES + 24 * SECONDS + 16 * TICKS)
             .eut(TierEU.RECIPE_LV)
             .addTo(UniversalChemical);
@@ -409,7 +408,7 @@ public class AdditionalRecipes {
             .addTo(fusionRecipes);
 
         GTValues.RA.stdBuilder()
-            .fluidInputs(Materials.LiquidAir.getFluid(100_000 * BUCKETS))
+            .fluidInputs(Materials.LiquidAir.getFluid(100_000_000))
             .fluidOutputs(
                 Materials.Nitrogen.getGas(78084000),
                 Materials.Oxygen.getGas(20946000),
@@ -429,7 +428,7 @@ public class AdditionalRecipes {
             .itemInputs(WerkstoffLoader.MagnetoResonaticDust.get(dust))
             .itemOutputs(WerkstoffLoader.MagnetoResonaticDust.get(gemChipped, 9))
             .outputChances(90_00)
-            .fluidInputs(WerkstoffLoader.Neon.getFluidOrGas(1 * BUCKETS))
+            .fluidInputs(WerkstoffLoader.Neon.getFluidOrGas(1000))
             .duration(25 * SECONDS)
             .eut(TierEU.RECIPE_IV)
             .addTo(autoclaveRecipes);
@@ -437,7 +436,7 @@ public class AdditionalRecipes {
         GTValues.RA.stdBuilder()
             .itemInputs(WerkstoffLoader.MagnetoResonaticDust.get(dust))
             .itemOutputs(WerkstoffLoader.MagnetoResonaticDust.get(gem))
-            .fluidInputs(WerkstoffLoader.Krypton.getFluidOrGas(1 * BUCKETS))
+            .fluidInputs(WerkstoffLoader.Krypton.getFluidOrGas(1000))
             .duration(25 * SECONDS)
             .eut(TierEU.RECIPE_IV)
             .addTo(autoclaveRecipes);
@@ -454,7 +453,7 @@ public class AdditionalRecipes {
                 Materials.Sodium.getDustTiny(4),
                 Materials.Phosphorus.getDustTiny(1))
             .outputChances(100_00, 100_00, 10_00, 100_00, 10_00, 10_00)
-            .fluidInputs(Materials.Milk.getFluid(10 * BUCKETS))
+            .fluidInputs(Materials.Milk.getFluid(10000))
             .fluidOutputs(Materials.Water.getFluid(8832))
             .duration(2 * SECONDS + 10 * TICKS)
             .eut(TierEU.RECIPE_MV)

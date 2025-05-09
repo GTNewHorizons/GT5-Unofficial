@@ -2,7 +2,6 @@ package gtPlusPlus.core.item.chemistry;
 
 import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
 import static gregtech.api.recipe.RecipeMaps.blastFurnaceRecipes;
-import static gregtech.api.util.GTRecipeBuilder.BUCKETS;
 import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.MINUTES;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
@@ -81,8 +80,8 @@ public class RecipeLoaderGenericChem {
                 GTUtility.getIntegratedCircuit(16),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Sodium, 1))
             .itemOutputs(GregtechItemList.SodiumEthoxide.get(9))
-            .fluidInputs(Materials.Ethanol.getFluid(1 * BUCKETS))
-            .fluidOutputs(Materials.Hydrogen.getGas(1 * BUCKETS))
+            .fluidInputs(Materials.Ethanol.getFluid(1000))
+            .fluidOutputs(Materials.Hydrogen.getGas(1000))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .metadata(CHEMPLANT_CASING_TIER, 2)
@@ -100,7 +99,7 @@ public class RecipeLoaderGenericChem {
             .itemOutputs(
                 ItemUtils.getItemStackOfAmountFromOreDict("dustCalciumCarbonate", 5),
                 GregtechItemList.PotassiumHydroxide.get(6))
-            .fluidInputs(Materials.CarbonDioxide.getGas(1 * BUCKETS))
+            .fluidInputs(Materials.CarbonDioxide.getGas(1000))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .metadata(CHEMPLANT_CASING_TIER, 2)
@@ -113,7 +112,7 @@ public class RecipeLoaderGenericChem {
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(17), GregtechItemList.PotassiumHydroxide.get(3))
             .itemOutputs(GregtechItemList.PotassiumEthylXanthate.get(12))
-            .fluidInputs(Materials.Ethanol.getFluid(1 * BUCKETS), new FluidStack(GTPPFluids.CarbonDisulfide, 1000))
+            .fluidInputs(Materials.Ethanol.getFluid(1000), new FluidStack(GTPPFluids.CarbonDisulfide, 1000))
             .fluidOutputs(GTModHandler.getWater(1000))
             .duration(60 * SECONDS)
             .eut(TierEU.RECIPE_MV)
@@ -211,7 +210,7 @@ public class RecipeLoaderGenericChem {
         // C6H6 + 6H = C6H12
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(8), GregtechItemList.BrownMetalCatalyst.get(0))
-            .fluidInputs(Materials.Benzene.getFluid(1 * BUCKETS), Materials.Hydrogen.getGas(6 * BUCKETS))
+            .fluidInputs(Materials.Benzene.getFluid(1000), Materials.Hydrogen.getGas(6000))
             .fluidOutputs(new FluidStack(GTPPFluids.Cyclohexane, 1000))
             .duration(2 * MINUTES)
             .eut(TierEU.RECIPE_MV)
@@ -223,7 +222,7 @@ public class RecipeLoaderGenericChem {
         // C6H12 + 2O(Air) = C6H10O + H2O
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(8), GregtechItemList.BlueMetalCatalyst.get(0))
-            .fluidInputs(new FluidStack(GTPPFluids.Cyclohexane, 1000), Materials.Air.getGas(4 * BUCKETS))
+            .fluidInputs(new FluidStack(GTPPFluids.Cyclohexane, 1000), Materials.Air.getGas(4000))
             .fluidOutputs(new FluidStack(GTPPFluids.Cyclohexanone, 1000))
             .duration(2 * MINUTES)
             .eut(TierEU.RECIPE_MV)
@@ -232,7 +231,7 @@ public class RecipeLoaderGenericChem {
 
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(8))
-            .fluidInputs(new FluidStack(GTPPFluids.Cyclohexane, 1000), Materials.Oxygen.getGas(2 * BUCKETS))
+            .fluidInputs(new FluidStack(GTPPFluids.Cyclohexane, 1000), Materials.Oxygen.getGas(2000))
             .fluidOutputs(new FluidStack(GTPPFluids.Cyclohexanone, 1000))
             .duration(2 * MINUTES)
             .eut(TierEU.RECIPE_MV)
@@ -408,7 +407,7 @@ public class RecipeLoaderGenericChem {
         // C6H5NO2 + 6H = C6H7N + 2H2O
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(12), GregtechItemList.BlueMetalCatalyst.get(0))
-            .fluidInputs(new FluidStack(GTPPFluids.Nitrobenzene, 1000), Materials.Hydrogen.getGas(6 * BUCKETS))
+            .fluidInputs(new FluidStack(GTPPFluids.Nitrobenzene, 1000), Materials.Hydrogen.getGas(6000))
             .fluidOutputs(new FluidStack(GTPPFluids.Aniline, 1000))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_HV)
@@ -421,9 +420,9 @@ public class RecipeLoaderGenericChem {
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(12))
             .fluidInputs(
-                Materials.Benzene.getFluid(5 * BUCKETS),
-                Materials.SulfuricAcid.getFluid(1 * BUCKETS),
-                Materials.NitricAcid.getFluid(5 * BUCKETS),
+                Materials.Benzene.getFluid(5000),
+                Materials.SulfuricAcid.getFluid(1000),
+                Materials.NitricAcid.getFluid(5000),
                 GTModHandler.getDistilledWater(10000))
             .fluidOutputs(new FluidStack(GTPPFluids.Nitrobenzene, 5000))
             .duration(30 * SECONDS)
@@ -448,7 +447,7 @@ public class RecipeLoaderGenericChem {
         // C6H4(CO)2C6H3CH2CH3 + 2H = C6H4(COH)2C6H3CH2CH3
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(4), GregtechItemList.OrangeMetalCatalyst.get(0))
-            .fluidInputs(new FluidStack(GTPPFluids.Ethylanthraquinone, 1000), Materials.Hydrogen.getGas(2 * BUCKETS))
+            .fluidInputs(new FluidStack(GTPPFluids.Ethylanthraquinone, 1000), Materials.Hydrogen.getGas(2000))
             .fluidOutputs(new FluidStack(GTPPFluids.Ethylanthrahydroquinone, 1000))
             .duration(40 * SECONDS)
             .eut(TierEU.RECIPE_MV)
@@ -500,7 +499,7 @@ public class RecipeLoaderGenericChem {
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(4))
             .fluidInputs(
-                Materials.Oxygen.getGas(10 * BUCKETS),
+                Materials.Oxygen.getGas(10000),
                 new FluidStack(GTPPFluids.Ethylanthrahydroquinone, 5000),
                 new FluidStack(GTPPFluids.Anthracene, 50))
             .fluidOutputs(

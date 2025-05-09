@@ -14,7 +14,6 @@
 package bartworks.common.tileentities.tiered;
 
 import static gregtech.api.enums.Mods.Gendustry;
-import static gregtech.api.util.GTRecipeBuilder.BUCKETS;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -146,7 +145,7 @@ public class MTEBioLab extends MTEBasicMachine {
 
         int rTier = 3;
         FluidStack dnaFluid = Gendustry.isModLoaded() ? FluidRegistry.getFluidStack("liquiddna", 1000)
-            : Materials.Biomass.getFluid(1 * BUCKETS);
+            : Materials.Biomass.getFluid(1000);
 
         if (this.getSpecialSlot() != null && this.getSpecialSlot()
             .getItem() instanceof ItemLabModule) {

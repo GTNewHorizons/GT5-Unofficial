@@ -8,7 +8,6 @@ import static gregtech.api.recipe.RecipeMaps.distillationTowerRecipes;
 import static gregtech.api.recipe.RecipeMaps.fluidHeaterRecipes;
 import static gregtech.api.recipe.RecipeMaps.mixerRecipes;
 import static gregtech.api.recipe.RecipeMaps.multiblockChemicalReactorRecipes;
-import static gregtech.api.util.GTRecipeBuilder.BUCKETS;
 import static gregtech.api.util.GTRecipeBuilder.MINUTES;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
@@ -89,7 +88,7 @@ public class RecipeLoaderGlueLine {
             .fluidInputs(
                 MaterialMisc.CHLOROACETIC_ACID.getFluidStack(1000),
                 FluidUtils.getFluidStack("hydrochloricacid_gt5u", 2000))
-            .fluidOutputs(Materials.CarbonDioxide.getGas(1 * BUCKETS), GTModHandler.getWater(1000))
+            .fluidOutputs(Materials.CarbonDioxide.getGas(1000), GTModHandler.getWater(1000))
             .duration(20 * SECONDS)
             .eut(1000)
             .metadata(CHEMPLANT_CASING_TIER, 4)
@@ -102,7 +101,7 @@ public class RecipeLoaderGlueLine {
                 MaterialMisc.COPPER_SULFATE.getDust(6),
                 MaterialMisc.CYANOACETIC_ACID.getDust(45))
             .itemOutputs(MaterialMisc.COPPER_SULFATE_HYDRATED.getDust(11))
-            .fluidInputs(Materials.Ethanol.getFluid(5 * BUCKETS))
+            .fluidInputs(Materials.Ethanol.getFluid(5000))
             .fluidOutputs(MaterialMisc.ETHYL_CYANOACETATE.getFluidStack(5000))
             .duration(8 * MINUTES + 20 * SECONDS)
             .eut(6000)
@@ -111,7 +110,7 @@ public class RecipeLoaderGlueLine {
         // C3H3NO2 + C2H6O = C5H7NO2 + H2O
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(21), MaterialMisc.CYANOACETIC_ACID.getDust(9))
-            .fluidInputs(Materials.Ethanol.getFluid(1 * BUCKETS))
+            .fluidInputs(Materials.Ethanol.getFluid(1000))
             .fluidOutputs(MaterialMisc.ETHYL_CYANOACETATE.getFluidStack(1000))
             .duration(16 * MINUTES + 40 * SECONDS)
             .eut(6000)
@@ -168,8 +167,8 @@ public class RecipeLoaderGlueLine {
         GTValues.RA.stdBuilder()
             .itemInputs(ItemUtils.getSimpleStack(ModItems.dustCalciumCarbonate, 5), GTUtility.getIntegratedCircuit(8))
             .itemOutputs(ItemUtils.getItemStackFromFQRN("bartworks:gt.bwMetaGenerateddust:63", 3))
-            .fluidInputs(Materials.HydrochloricAcid.getFluid(2 * BUCKETS))
-            .fluidOutputs(Materials.CarbonDioxide.getGas(1 * BUCKETS))
+            .fluidInputs(Materials.HydrochloricAcid.getFluid(2000))
+            .fluidOutputs(Materials.CarbonDioxide.getGas(1000))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(UniversalChemical);

@@ -23,11 +23,9 @@ import static gregtech.api.recipe.RecipeMaps.multiblockChemicalReactorRecipes;
 import static gregtech.api.recipe.RecipeMaps.plasmaForgeRecipes;
 import static gregtech.api.recipe.RecipeMaps.unpackagerRecipes;
 import static gregtech.api.recipe.RecipeMaps.vacuumFreezerRecipes;
-import static gregtech.api.util.GTRecipeBuilder.BUCKETS;
 import static gregtech.api.util.GTRecipeBuilder.HALF_INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.MINUTES;
-import static gregtech.api.util.GTRecipeBuilder.QUARTER_BUCKETS;
 import static gregtech.api.util.GTRecipeBuilder.QUARTER_INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeConstants.AssemblyLine;
@@ -348,7 +346,7 @@ public class RecipeLoader2 {
                 GTOreDictUnificator.get(OrePrefixes.plateDense, Materials.Osmium, 8),
                 GTModHandler.getModItem(GalacticraftMars.ID, "item.null", 1L, 6),
                 GTOreDictUnificator.get(OrePrefixes.foil, Materials.Polycaprolactam, 32))
-            .fluidInputs(new FluidStack(solderIndalloy, 16 * INGOTS), Materials.Lubricant.getFluid(4 * BUCKETS))
+            .fluidInputs(new FluidStack(solderIndalloy, 16 * INGOTS), Materials.Lubricant.getFluid(4000))
             .itemOutputs(ItemRefer.Fluid_Storage_Core_T3.get(1))
             .eut(TierEU.RECIPE_LuV)
             .duration(20 * SECONDS)
@@ -542,7 +540,7 @@ public class RecipeLoader2 {
             .fluidInputs(
                 Materials.Quantium.getMolten(10 * INGOTS),
                 FluidRegistry.getFluidStack("ic2coolant", 8000),
-                Materials.Lubricant.getFluid(8 * BUCKETS))
+                Materials.Lubricant.getFluid(8000))
             .itemOutputs(ItemRefer.YOTTank_Cell_T3.get(1))
             .eut(TierEU.RECIPE_LuV)
             .duration(50 * SECONDS)
@@ -854,11 +852,11 @@ public class RecipeLoader2 {
             .addTo(chemicalBathRecipes);
 
         GTValues.RA.stdBuilder()
-            .fluidInputs(Materials.HeavyFuel.getFluid(1 * BUCKETS))
+            .fluidInputs(Materials.HeavyFuel.getFluid(1000))
             .fluidOutputs(
                 Materials.Toluene.getFluid(400),
                 Materials.Benzene.getFluid(400),
-                Materials.Phenol.getFluid(1 * QUARTER_BUCKETS))
+                Materials.Phenol.getFluid(250))
             .duration(6 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(distillationTowerRecipes);
@@ -905,7 +903,7 @@ public class RecipeLoader2 {
         // FeCl2 + Cl = FeCl3
         GTValues.RA.stdBuilder()
             .itemInputs(GGMaterial.ferrousChloride.get(OrePrefixes.cell, 1), GTUtility.getIntegratedCircuit(1))
-            .fluidInputs(Materials.Chlorine.getGas(1 * BUCKETS))
+            .fluidInputs(Materials.Chlorine.getGas(1000))
             .itemOutputs(Materials.IronIIIChloride.getCells(1))
             .duration(2 * SECONDS)
             .eut(TierEU.RECIPE_LV)
@@ -914,8 +912,8 @@ public class RecipeLoader2 {
         // FeCl3 + H = FeCl2 + HCl
         GTValues.RA.stdBuilder()
             .itemInputs(Materials.IronIIIChloride.getCells(1), GTUtility.getIntegratedCircuit(7))
-            .fluidInputs(Materials.Hydrogen.getGas(1 * BUCKETS))
-            .fluidOutputs(Materials.HydrochloricAcid.getFluid(1 * BUCKETS))
+            .fluidInputs(Materials.Hydrogen.getGas(1000))
+            .fluidOutputs(Materials.HydrochloricAcid.getFluid(1000))
             .itemOutputs(GGMaterial.ferrousChloride.get(OrePrefixes.cell, 1))
             .duration(4 * SECONDS)
             .eut(TierEU.RECIPE_MV)
@@ -924,8 +922,8 @@ public class RecipeLoader2 {
         // NH3 + 2C2H6O = C4H11N + 2H2O
         GTValues.RA.stdBuilder()
             .itemInputs(Materials.Ammonia.getCells(1), GTUtility.getIntegratedCircuit(1))
-            .fluidInputs(Materials.Ethanol.getFluid(2 * BUCKETS))
-            .fluidOutputs(Materials.Water.getFluid(2 * BUCKETS))
+            .fluidInputs(Materials.Ethanol.getFluid(2000))
+            .fluidOutputs(Materials.Water.getFluid(2000))
             .itemOutputs(GGMaterial.diethylamine.get(OrePrefixes.cell, 1))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_MV)
@@ -971,7 +969,7 @@ public class RecipeLoader2 {
             .itemInputs(GGMaterial.ferrocene.get(OrePrefixes.dust, 4), Materials.SodiumHydroxide.getDust(8))
             .fluidInputs(
                 FluidRegistry.getFluidStack("fluid.kerosene", 40000),
-                Materials.Naphtha.getFluid(3 * BUCKETS),
+                Materials.Naphtha.getFluid(3000),
                 GGMaterial.diethylamine.getFluidOrGas(1000))
             .fluidOutputs(GGMaterial.ironedKerosene.getFluidOrGas(44000))
             .duration(2 * MINUTES)
@@ -983,9 +981,9 @@ public class RecipeLoader2 {
             .fluidInputs(
                 FluidRegistry.getFluidStack("combustionpromotor", 4000),
                 Materials.Naphtha.getFluid(40000),
-                Materials.LightFuel.getFluid(3 * BUCKETS),
-                Materials.LPG.getFluid(1 * BUCKETS),
-                Materials.Tetranitromethane.getFluid(2 * BUCKETS))
+                Materials.LightFuel.getFluid(3000),
+                Materials.LPG.getFluid(1000),
+                Materials.Tetranitromethane.getFluid(2000))
             .fluidOutputs(GGMaterial.ironedFuel.getFluidOrGas(50000))
             .duration(2 * MINUTES)
             .eut(TierEU.RECIPE_IV)
@@ -1108,7 +1106,7 @@ public class RecipeLoader2 {
 
         GTValues.RA.stdBuilder()
             .itemInputs(GTOreDictUnificator.get(OrePrefixes.crushedPurified, Materials.Lepidolite, 1))
-            .fluidInputs(Materials.HydrochloricAcid.getFluid(1 * BUCKETS))
+            .fluidInputs(Materials.HydrochloricAcid.getFluid(1000))
             .itemOutputs(
                 Materials.RockSalt.getDust(1),
                 GGMaterial.lithiumChloride.get(OrePrefixes.dust, 3),
@@ -1775,7 +1773,7 @@ public class RecipeLoader2 {
 
         GTValues.RA.stdBuilder()
             .itemInputs(ItemRefer.High_Energy_Mixture.get(2))
-            .fluidInputs(Materials.PhosphoricAcid.getFluid(4 * BUCKETS))
+            .fluidInputs(Materials.PhosphoricAcid.getFluid(4000))
             .itemOutputs(GGMaterial.lumiinessence.get(OrePrefixes.dust, 1))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_HV / 2)
@@ -1838,7 +1836,7 @@ public class RecipeLoader2 {
                 GGMaterial.metastableOganesson.getMolten(8 * INGOTS),
                 GGMaterial.preciousMetalAlloy.getMolten(16 * INGOTS),
                 MaterialsUEVplus.SpaceTime.getMolten(2 * INGOTS),
-                MaterialsUEVplus.DimensionallyTranscendentResidue.getFluid(5 * BUCKETS))
+                MaterialsUEVplus.DimensionallyTranscendentResidue.getFluid(5000))
             .fluidOutputs(GGMaterial.shirabon.getMolten(1 * INGOTS))
             .duration(10 * SECONDS)
             .eut(1_500_000_000)

@@ -17,15 +17,11 @@ import static gregtech.api.enums.Mods.TinkerConstruct;
 import static gregtech.api.enums.Mods.TwilightForest;
 import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
 import static gregtech.api.util.GTModHandler.getModItem;
-import static gregtech.api.util.GTRecipeBuilder.BUCKETS;
 import static gregtech.api.util.GTRecipeBuilder.EIGHTH_INGOTS;
-import static gregtech.api.util.GTRecipeBuilder.EIGHT_BUCKETS;
-import static gregtech.api.util.GTRecipeBuilder.HALF_BUCKETS;
 import static gregtech.api.util.GTRecipeBuilder.HALF_INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.MINUTES;
 import static gregtech.api.util.GTRecipeBuilder.NUGGETS;
-import static gregtech.api.util.GTRecipeBuilder.QUARTER_BUCKETS;
 import static gregtech.api.util.GTRecipeBuilder.QUARTER_INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
@@ -682,7 +678,7 @@ public class AssemblerRecipes implements Runnable {
                 ItemList.Circuit_Silicon_Wafer2.get(32),
                 GTUtility.getIntegratedCircuit(1))
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Graphene, 64))
-            .fluidInputs(Materials.AdvancedGlue.getFluid(1 * HALF_BUCKETS))
+            .fluidInputs(Materials.AdvancedGlue.getFluid(500))
             .duration(2 * MINUTES + 40 * SECONDS)
             .eut(TierEU.RECIPE_EV)
             .addTo(assemblerRecipes);
@@ -693,7 +689,7 @@ public class AssemblerRecipes implements Runnable {
                 ItemList.Circuit_Silicon_Wafer3.get(8),
                 GTUtility.getIntegratedCircuit(1))
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Graphene, 64))
-            .fluidInputs(Materials.AdvancedGlue.getFluid(1 * QUARTER_BUCKETS))
+            .fluidInputs(Materials.AdvancedGlue.getFluid(250))
             .duration(40 * SECONDS)
             .eut(TierEU.RECIPE_IV)
             .addTo(assemblerRecipes);
@@ -1547,7 +1543,7 @@ public class AssemblerRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.FR_Silk.get(9), GTUtility.getIntegratedCircuit(9))
             .itemOutputs(getModItem(Forestry.ID, "craftingMaterial", 1L, 3))
-            .fluidInputs(Materials.Water.getFluid(1 * HALF_BUCKETS))
+            .fluidInputs(Materials.Water.getFluid(500))
             .duration(3 * SECONDS + 4 * TICKS)
             .eut(8)
             .addTo(assemblerRecipes);
@@ -1564,7 +1560,7 @@ public class AssemblerRecipes implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.stick, Materials.Wood, 1),
                 new ItemStack(Blocks.wool, 1, 32767))
             .itemOutputs(new ItemStack(Blocks.torch, 6, 0))
-            .fluidInputs(Materials.Creosote.getFluid(1 * BUCKETS))
+            .fluidInputs(Materials.Creosote.getFluid(1000))
             .duration(2 * SECONDS)
             .eut(20)
             .addTo(assemblerRecipes);
@@ -1637,7 +1633,7 @@ public class AssemblerRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Hull_LV.get(1), ItemList.Duct_Tape.get(2), GTUtility.getIntegratedCircuit(2))
             .itemOutputs(ItemList.Hatch_Maintenance.get(1))
-            .fluidInputs(Materials.Glue.getFluid(1 * BUCKETS))
+            .fluidInputs(Materials.Glue.getFluid(1000))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(assemblerRecipes);
@@ -1700,7 +1696,7 @@ public class AssemblerRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Food_Baked_Cake.get(1), new ItemStack(Items.egg, 1, 0))
             .itemOutputs(new ItemStack(Items.cake, 1, 0))
-            .fluidInputs(Materials.Milk.getFluid(3 * BUCKETS))
+            .fluidInputs(Materials.Milk.getFluid(3000))
             .duration(5 * SECONDS)
             .eut(8)
             .addTo(assemblerRecipes);
@@ -1818,7 +1814,7 @@ public class AssemblerRecipes implements Runnable {
                 ItemList.Electric_Pump_MV.get(1),
                 GTUtility.getIntegratedCircuit(9))
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorMV, 3))
-            .fluidInputs(Materials.Helium.getGas(2 * BUCKETS))
+            .fluidInputs(Materials.Helium.getGas(2000))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(assemblerRecipes);
@@ -1830,7 +1826,7 @@ public class AssemblerRecipes implements Runnable {
                 ItemList.Electric_Pump_HV.get(1),
                 GTUtility.getIntegratedCircuit(9))
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorHV, 6))
-            .fluidInputs(Materials.Helium.getGas(4 * BUCKETS))
+            .fluidInputs(Materials.Helium.getGas(4000))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(assemblerRecipes);
@@ -1842,7 +1838,7 @@ public class AssemblerRecipes implements Runnable {
                 ItemList.Electric_Pump_EV.get(1),
                 GTUtility.getIntegratedCircuit(9))
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorEV, 9))
-            .fluidInputs(Materials.Helium.getGas(6 * BUCKETS))
+            .fluidInputs(Materials.Helium.getGas(6000))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_EV)
             .addTo(assemblerRecipes);
@@ -1854,7 +1850,7 @@ public class AssemblerRecipes implements Runnable {
                 ItemList.Electric_Pump_IV.get(1),
                 GTUtility.getIntegratedCircuit(9))
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorIV, 12))
-            .fluidInputs(Materials.Helium.getGas(8 * BUCKETS))
+            .fluidInputs(Materials.Helium.getGas(8000))
             .duration(40 * SECONDS)
             .eut(TierEU.RECIPE_IV)
             .addTo(assemblerRecipes);
@@ -3337,7 +3333,7 @@ public class AssemblerRecipes implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.SuperconductorUIVBase, 8),
                 GTOreDictUnificator.get(OrePrefixes.rotor, MaterialsUEVplus.SixPhasedCopper, 3),
                 ItemList.Field_Generator_UEV.get(1))
-            .fluidInputs(MaterialsUEVplus.PhononMedium.getFluid(1 * HALF_BUCKETS))
+            .fluidInputs(MaterialsUEVplus.PhononMedium.getFluid(500))
             .itemOutputs(ItemList.Relativistic_Heat_Capacitor.get(1))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_UIV)
@@ -6349,7 +6345,7 @@ public class AssemblerRecipes implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.Lapis, 1),
                 GTUtility.getIntegratedCircuit(1))
             .itemOutputs(getModItem(NewHorizonsCoreMod.ID, "item.EngineCore", 1L, 0))
-            .fluidInputs(Materials.SeedOil.getFluid(1 * QUARTER_BUCKETS))
+            .fluidInputs(Materials.SeedOil.getFluid(250))
             .duration(5 * SECONDS)
             .eut(16)
             .addTo(assemblerRecipes);
@@ -6361,7 +6357,7 @@ public class AssemblerRecipes implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.Lapis, 1),
                 GTUtility.getIntegratedCircuit(1))
             .itemOutputs(getModItem(NewHorizonsCoreMod.ID, "item.EngineCore", 1L, 0))
-            .fluidInputs(Materials.Lubricant.getFluid(1 * EIGHT_BUCKETS))
+            .fluidInputs(Materials.Lubricant.getFluid(125))
             .duration(5 * SECONDS)
             .eut(16)
             .addTo(assemblerRecipes);

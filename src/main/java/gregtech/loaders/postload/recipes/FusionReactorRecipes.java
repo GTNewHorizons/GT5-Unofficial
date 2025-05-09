@@ -1,13 +1,9 @@
 package gregtech.loaders.postload.recipes;
 
 import static gregtech.api.recipe.RecipeMaps.fusionRecipes;
-import static gregtech.api.util.GTRecipeBuilder.BUCKETS;
-import static gregtech.api.util.GTRecipeBuilder.EIGHT_BUCKETS;
-import static gregtech.api.util.GTRecipeBuilder.HALF_BUCKETS;
 import static gregtech.api.util.GTRecipeBuilder.HALF_INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.NUGGETS;
-import static gregtech.api.util.GTRecipeBuilder.QUARTER_BUCKETS;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
 import static gregtech.api.util.GTRecipeConstants.FUSION_THRESHOLD;
@@ -37,7 +33,7 @@ public class FusionReactorRecipes implements Runnable {
             .addTo(fusionRecipes); // FT1+ - utility
 
         GTValues.RA.stdBuilder()
-            .fluidInputs(Materials.Deuterium.getGas(1 * EIGHT_BUCKETS), Materials.Tritium.getGas(1 * EIGHT_BUCKETS))
+            .fluidInputs(Materials.Deuterium.getGas(125), Materials.Tritium.getGas(125))
             .fluidOutputs(Materials.Helium.getPlasma(125))
             .duration(16 * TICKS)
             .eut(4096)
@@ -45,7 +41,7 @@ public class FusionReactorRecipes implements Runnable {
             .addTo(fusionRecipes); // FT1 Cheap - farmable
 
         GTValues.RA.stdBuilder()
-            .fluidInputs(Materials.Deuterium.getGas(1 * EIGHT_BUCKETS), Materials.Helium_3.getGas(1 * EIGHT_BUCKETS))
+            .fluidInputs(Materials.Deuterium.getGas(125), Materials.Helium_3.getGas(125))
             .fluidOutputs(Materials.Helium.getPlasma(125))
             .duration(16 * TICKS)
             .eut(TierEU.RECIPE_EV)
@@ -182,7 +178,7 @@ public class FusionReactorRecipes implements Runnable {
             .addTo(fusionRecipes); // FT2+ - utility
 
         GTValues.RA.stdBuilder()
-            .fluidInputs(Materials.Vanadium.getMolten(1 * NUGGETS), Materials.Hydrogen.getGas(1 * EIGHT_BUCKETS))
+            .fluidInputs(Materials.Vanadium.getMolten(1 * NUGGETS), Materials.Hydrogen.getGas(125))
             .fluidOutputs(Materials.Chrome.getMolten(1 * NUGGETS))
             .duration(3 * SECONDS + 4 * TICKS)
             .eut(24576)
@@ -190,7 +186,7 @@ public class FusionReactorRecipes implements Runnable {
             .addTo(fusionRecipes); // FT1 - utility
 
         GTValues.RA.stdBuilder()
-            .fluidInputs(Materials.Gallium.getMolten(1 * NUGGETS), Materials.Radon.getGas(1 * EIGHT_BUCKETS))
+            .fluidInputs(Materials.Gallium.getMolten(1 * NUGGETS), Materials.Radon.getGas(125))
             .fluidOutputs(Materials.Duranium.getMolten(1 * NUGGETS))
             .duration(3 * SECONDS + 4 * TICKS)
             .eut(16384)
@@ -222,7 +218,7 @@ public class FusionReactorRecipes implements Runnable {
             .addTo(fusionRecipes); //
 
         GTValues.RA.stdBuilder()
-            .fluidInputs(Materials.Copper.getMolten(1 * HALF_INGOTS), Materials.Tritium.getGas(1 * QUARTER_BUCKETS))
+            .fluidInputs(Materials.Copper.getMolten(1 * HALF_INGOTS), Materials.Tritium.getGas(250))
             .fluidOutputs(Materials.Zinc.getPlasma(1 * HALF_INGOTS))
             .duration(16 * TICKS)
             .eut(49152)
@@ -262,7 +258,7 @@ public class FusionReactorRecipes implements Runnable {
             .addTo(fusionRecipes); // FT3 - farmable
 
         GTValues.RA.stdBuilder()
-            .fluidInputs(Materials.Iridium.getMolten(1 * INGOTS), Materials.Fluorine.getGas(1 * HALF_BUCKETS))
+            .fluidInputs(Materials.Iridium.getMolten(1 * INGOTS), Materials.Fluorine.getGas(500))
             .fluidOutputs(Materials.Radon.getPlasma(1 * INGOTS))
             .duration(1 * SECONDS + 12 * TICKS)
             .eut(98304)
@@ -270,7 +266,7 @@ public class FusionReactorRecipes implements Runnable {
             .addTo(fusionRecipes); // FT3 - utility
 
         GTValues.RA.stdBuilder()
-            .fluidInputs(Materials.Plutonium241.getMolten(1 * INGOTS), Materials.Hydrogen.getGas(2 * BUCKETS))
+            .fluidInputs(Materials.Plutonium241.getMolten(1 * INGOTS), Materials.Hydrogen.getGas(2000))
             .fluidOutputs(Materials.Americium.getPlasma(1 * INGOTS))
             .duration(3 * SECONDS + 4 * TICKS)
             .eut(98304)

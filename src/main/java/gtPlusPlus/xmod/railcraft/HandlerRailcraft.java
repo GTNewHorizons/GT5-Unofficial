@@ -5,8 +5,6 @@ import static gregtech.api.enums.Mods.GTPlusPlus;
 import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
 import static gregtech.api.enums.Mods.Railcraft;
 import static gregtech.api.recipe.RecipeMaps.fluidExtractionRecipes;
-import static gregtech.api.util.GTRecipeBuilder.BUCKETS;
-import static gregtech.api.util.GTRecipeBuilder.HALF_BUCKETS;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
 import static gregtech.api.util.GTRecipeConstants.UniversalChemical;
@@ -188,8 +186,8 @@ public class HandlerRailcraft {
         GTValues.RA.stdBuilder()
             .itemInputs(charcoal, GTUtility.getIntegratedCircuit(1))
             .itemOutputs(Materials.Ash.getDustTiny(1))
-            .fluidInputs(Materials.Oxygen.getGas(1 * HALF_BUCKETS))
-            .fluidOutputs(Materials.CarbonMonoxide.getGas(1 * HALF_BUCKETS))
+            .fluidInputs(Materials.Oxygen.getGas(500))
+            .fluidOutputs(Materials.CarbonMonoxide.getGas(500))
             .duration(4 * SECONDS)
             .eut(8)
             .addTo(UniversalChemical);
@@ -198,8 +196,8 @@ public class HandlerRailcraft {
         GTValues.RA.stdBuilder()
             .itemInputs(charcoal, GTUtility.getIntegratedCircuit(2))
             .itemOutputs(Materials.Ash.getDustTiny(1))
-            .fluidInputs(Materials.Oxygen.getGas(2 * BUCKETS))
-            .fluidOutputs(Materials.CarbonDioxide.getGas(1 * BUCKETS))
+            .fluidInputs(Materials.Oxygen.getGas(2000))
+            .fluidOutputs(Materials.CarbonDioxide.getGas(1000))
             .duration(2 * SECONDS)
             .eut(8)
             .addTo(UniversalChemical);

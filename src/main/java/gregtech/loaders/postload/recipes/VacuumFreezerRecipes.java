@@ -2,7 +2,6 @@ package gregtech.loaders.postload.recipes;
 
 import static gregtech.api.enums.GTValues.M;
 import static gregtech.api.recipe.RecipeMaps.vacuumFreezerRecipes;
-import static gregtech.api.util.GTRecipeBuilder.BUCKETS;
 import static gregtech.api.util.GTRecipeBuilder.HOURS;
 import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.MINUTES;
@@ -353,7 +352,7 @@ public class VacuumFreezerRecipes implements Runnable {
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.ingot, MaterialsUEVplus.TranscendentMetal, 1L))
             .fluidInputs(
                 new FluidStack(FluidRegistry.getFluid("molten.titansteel"), 144),
-                Materials.SuperCoolant.getFluid(1 * BUCKETS))
+                Materials.SuperCoolant.getFluid(1000))
             .duration(1 * SECONDS)
             .eut(TierEU.RECIPE_UIV)
             .addTo(vacuumFreezerRecipes);

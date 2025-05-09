@@ -16,7 +16,6 @@ package bartworks.common.loaders;
 import static bartworks.API.recipe.BartWorksRecipeMaps.bacterialVatRecipes;
 import static bartworks.API.recipe.BartWorksRecipeMaps.bioLabRecipes;
 import static gregtech.api.enums.Mods.CropsPlusPlus;
-import static gregtech.api.util.GTRecipeBuilder.BUCKETS;
 import static gregtech.api.util.GTRecipeBuilder.MINUTES;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
@@ -44,8 +43,8 @@ public class BioRecipeLoader {
     }
 
     public static void registerWaterBasedBioLabIncubations() {
-        FluidStack[] easyFluids = { Materials.Water.getFluid(1 * BUCKETS),
-            FluidRegistry.getFluidStack("ic2distilledwater", 1 * BUCKETS) };
+        FluidStack[] easyFluids = { Materials.Water.getFluid(1000),
+            FluidRegistry.getFluidStack("ic2distilledwater", 1000) };
         for (FluidStack fluidStack : easyFluids) {
 
             GTValues.RA.stdBuilder()
@@ -123,8 +122,8 @@ public class BioRecipeLoader {
     }
 
     public static void registerWaterBasedBacterialVatRecipes() {
-        FluidStack[] easyFluids = { Materials.Water.getFluid(1 * BUCKETS),
-            FluidRegistry.getFluidStack("ic2distilledwater", 1 * BUCKETS) };
+        FluidStack[] easyFluids = { Materials.Water.getFluid(1000),
+            FluidRegistry.getFluidStack("ic2distilledwater", 1000) };
         for (FluidStack fluidStack : easyFluids) {
             if (CropsPlusPlus.isModLoaded()) {
                 GTValues.RA.stdBuilder()
@@ -187,8 +186,8 @@ public class BioRecipeLoader {
 
         GTValues.RA.stdBuilder()
             .special(BioItemList.getPetriDish(BioCultureLoader.anaerobicOil))
-            .fluidInputs(Materials.FermentedBiomass.getFluid(10 * BUCKETS))
-            .fluidOutputs(new FluidStack(FluidLoader.fulvicAcid, 1 * BUCKETS))
+            .fluidInputs(Materials.FermentedBiomass.getFluid(10000))
+            .fluidOutputs(new FluidStack(FluidLoader.fulvicAcid, 1000))
             .metadata(GLASS, 3)
             .duration(2 * MINUTES + 17 * SECONDS + 8 * TICKS)
             .eut(TierEU.RECIPE_LV)

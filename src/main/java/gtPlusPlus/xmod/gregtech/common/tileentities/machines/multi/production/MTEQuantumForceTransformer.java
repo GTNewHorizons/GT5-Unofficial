@@ -11,7 +11,6 @@ import static gregtech.api.enums.HatchElement.Maintenance;
 import static gregtech.api.enums.HatchElement.OutputBus;
 import static gregtech.api.enums.HatchElement.OutputHatch;
 import static gregtech.api.util.GTOreDictUnificator.getAssociation;
-import static gregtech.api.util.GTRecipeBuilder.BUCKETS;
 import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.ParallelHelper.addFluidsLong;
@@ -421,9 +420,9 @@ public class MTEQuantumForceTransformer extends MTEExtendedPowerMultiBlockBase<M
                         Materials mat = data == null ? null : data.mMaterial.mMaterial;
                         if (mat != null) {
                             if (mat.mStandardMoltenFluid != null) {
-                                fluidModeItems[i] = mat.getMolten(INGOTS);
+                                fluidModeItems[i] = mat.getMolten(1 * INGOTS);
                             } else if (mat.mFluid != null) {
-                                fluidModeItems[i] = mat.getFluid(BUCKETS);
+                                fluidModeItems[i] = mat.getFluid(1000);
                             }
                         }
                     }

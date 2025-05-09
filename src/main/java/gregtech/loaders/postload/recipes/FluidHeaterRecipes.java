@@ -1,7 +1,6 @@
 package gregtech.loaders.postload.recipes;
 
 import static gregtech.api.recipe.RecipeMaps.fluidHeaterRecipes;
-import static gregtech.api.util.GTRecipeBuilder.BUCKETS;
 import static gregtech.api.util.GTRecipeBuilder.NUGGETS;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
@@ -19,16 +18,16 @@ public class FluidHeaterRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(1))
-            .fluidInputs(Materials.GrowthMediumRaw.getFluid(1 * BUCKETS))
-            .fluidOutputs(Materials.GrowthMediumSterilized.getFluid(1 * BUCKETS))
+            .fluidInputs(Materials.GrowthMediumRaw.getFluid(1000))
+            .fluidOutputs(Materials.GrowthMediumSterilized.getFluid(1000))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_IV)
             .addTo(fluidHeaterRecipes);
 
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(1))
-            .fluidInputs(Materials.BioMediumRaw.getFluid(1 * BUCKETS))
-            .fluidOutputs(Materials.BioMediumSterilized.getFluid(1 * BUCKETS))
+            .fluidInputs(Materials.BioMediumRaw.getFluid(1000))
+            .fluidOutputs(Materials.BioMediumSterilized.getFluid(1000))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_LuV)
             .addTo(fluidHeaterRecipes);
@@ -68,8 +67,8 @@ public class FluidHeaterRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(1))
-            .fluidInputs(Materials.CalciumAcetateSolution.getFluid(1 * BUCKETS))
-            .fluidOutputs(Materials.Acetone.getFluid(1 * BUCKETS))
+            .fluidInputs(Materials.CalciumAcetateSolution.getFluid(1000))
+            .fluidOutputs(Materials.Acetone.getFluid(1000))
             .duration(4 * SECONDS)
             .eut(30)
             .addTo(fluidHeaterRecipes);
@@ -80,15 +79,15 @@ public class FluidHeaterRecipes implements Runnable {
             .fluidInputs(
 
             )
-            .fluidOutputs(Materials.Sodium.getFluid(1 * BUCKETS))
+            .fluidOutputs(Materials.Sodium.getFluid(1000))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(fluidHeaterRecipes);
 
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(1))
-            .fluidInputs(Materials.Acetone.getFluid(1 * BUCKETS))
-            .fluidOutputs(Materials.Ethenone.getGas(1 * BUCKETS))
+            .fluidInputs(Materials.Acetone.getFluid(1000))
+            .fluidOutputs(Materials.Ethenone.getGas(1000))
             .duration(8 * SECONDS)
             .eut(160)
             .addTo(fluidHeaterRecipes);

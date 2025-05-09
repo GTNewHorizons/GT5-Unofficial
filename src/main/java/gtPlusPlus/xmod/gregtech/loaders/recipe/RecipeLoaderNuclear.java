@@ -13,7 +13,6 @@ import static gregtech.api.recipe.RecipeMaps.maceratorRecipes;
 import static gregtech.api.recipe.RecipeMaps.mixerRecipes;
 import static gregtech.api.recipe.RecipeMaps.multiblockChemicalReactorRecipes;
 import static gregtech.api.recipe.RecipeMaps.sifterRecipes;
-import static gregtech.api.util.GTRecipeBuilder.BUCKETS;
 import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.MINUTES;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
@@ -416,7 +415,7 @@ public class RecipeLoaderNuclear {
             .itemInputs(MaterialsFluorides.BERYLLIUM_HYDROXIDE.getDust(3))
             .fluidInputs(MaterialsFluorides.AMMONIUM_BIFLUORIDE.getFluidStack(1152))
             .fluidOutputs(
-                Materials.Water.getFluid(2 * BUCKETS),
+                Materials.Water.getFluid(2000),
                 MaterialsFluorides.AMMONIUM_TETRAFLUOROBERYLLATE.getFluidStack(1000))
             .eut(TierEU.RECIPE_MV)
             .duration(5 * MINUTES)

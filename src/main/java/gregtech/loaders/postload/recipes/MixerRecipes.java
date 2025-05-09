@@ -9,11 +9,7 @@ import static gregtech.api.enums.Mods.Railcraft;
 import static gregtech.api.enums.Mods.Thaumcraft;
 import static gregtech.api.recipe.RecipeMaps.mixerRecipes;
 import static gregtech.api.util.GTModHandler.getModItem;
-import static gregtech.api.util.GTRecipeBuilder.BUCKETS;
-import static gregtech.api.util.GTRecipeBuilder.EIGHT_BUCKETS;
-import static gregtech.api.util.GTRecipeBuilder.HALF_BUCKETS;
 import static gregtech.api.util.GTRecipeBuilder.MINUTES;
-import static gregtech.api.util.GTRecipeBuilder.QUARTER_BUCKETS;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
 import static gtPlusPlus.api.recipe.GTPPRecipeMaps.mixerNonCellRecipes;
@@ -468,7 +464,7 @@ public class MixerRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Wheat, 1))
             .itemOutputs(ItemList.Food_Dough.get(2))
-            .fluidInputs(Materials.Water.getFluid(1 * BUCKETS))
+            .fluidInputs(Materials.Water.getFluid(1000))
             .duration(1 * SECONDS + 12 * TICKS)
             .eut(8)
             .addTo(mixerRecipes);
@@ -534,7 +530,7 @@ public class MixerRecipes implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Redstone, 1),
                 GTOreDictUnificator.get(OrePrefixes.gem, Materials.NetherQuartz, 1))
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.gem, Materials.Fluix, 2))
-            .fluidInputs(Materials.Water.getFluid(1 * HALF_BUCKETS))
+            .fluidInputs(Materials.Water.getFluid(500))
             .duration(20 * TICKS)
             .eut(16)
             .addTo(mixerRecipes);
@@ -556,7 +552,7 @@ public class MixerRecipes implements Runnable {
                 new ItemStack(Blocks.dirt, 8, 32767),
                 GTUtility.getIntegratedCircuit(1))
             .itemOutputs(getModItem(Forestry.ID, "soil", 8L, 0))
-            .fluidInputs(Materials.Water.getFluid(1 * BUCKETS))
+            .fluidInputs(Materials.Water.getFluid(1000))
             .duration(3 * SECONDS + 4 * TICKS)
             .eut(16)
             .addTo(mixerRecipes);
@@ -567,7 +563,7 @@ public class MixerRecipes implements Runnable {
                 new ItemStack(Blocks.dirt, 8, 32767),
                 GTUtility.getIntegratedCircuit(1))
             .itemOutputs(getModItem(Forestry.ID, "soil", 8L, 0))
-            .fluidInputs(Materials.Water.getFluid(1 * BUCKETS))
+            .fluidInputs(Materials.Water.getFluid(1000))
             .duration(3 * SECONDS + 4 * TICKS)
             .eut(16)
             .addTo(mixerRecipes);
@@ -578,7 +574,7 @@ public class MixerRecipes implements Runnable {
                 new ItemStack(Blocks.dirt, 8, 32767),
                 GTUtility.getIntegratedCircuit(1))
             .itemOutputs(getModItem(Forestry.ID, "soil", 8L, 0))
-            .fluidInputs(Materials.Water.getFluid(1 * BUCKETS))
+            .fluidInputs(Materials.Water.getFluid(1000))
             .duration(3 * SECONDS + 4 * TICKS)
             .eut(16)
             .addTo(mixerRecipes);
@@ -589,7 +585,7 @@ public class MixerRecipes implements Runnable {
                 new ItemStack(Blocks.dirt, 8, 32767),
                 GTUtility.getIntegratedCircuit(1))
             .itemOutputs(getModItem(Forestry.ID, "soil", 8L, 0))
-            .fluidInputs(Materials.Water.getFluid(1 * BUCKETS))
+            .fluidInputs(Materials.Water.getFluid(1000))
             .duration(3 * SECONDS + 4 * TICKS)
             .eut(16)
             .addTo(mixerRecipes);
@@ -600,7 +596,7 @@ public class MixerRecipes implements Runnable {
                 new ItemStack(Blocks.dirt, 1, 32767),
                 GTUtility.getIntegratedCircuit(1))
             .itemOutputs(getModItem(Forestry.ID, "soil", 2L, 1))
-            .fluidInputs(Materials.Water.getFluid(1 * QUARTER_BUCKETS))
+            .fluidInputs(Materials.Water.getFluid(250))
             .duration(16 * TICKS)
             .eut(16)
             .addTo(mixerRecipes);
@@ -620,7 +616,7 @@ public class MixerRecipes implements Runnable {
                 Materials.Empty.getCells(1),
                 GTUtility.getIntegratedCircuit(1))
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.cell, Materials.Fuel, 6))
-            .fluidInputs(Materials.HeavyFuel.getFluid(1 * BUCKETS))
+            .fluidInputs(Materials.HeavyFuel.getFluid(1000))
             .duration(16 * TICKS)
             .eut(TierEU.RECIPE_MV)
             .addTo(mixerRecipes);
@@ -631,7 +627,7 @@ public class MixerRecipes implements Runnable {
                 Materials.Empty.getCells(5),
                 GTUtility.getIntegratedCircuit(1))
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.cell, Materials.Fuel, 6))
-            .fluidInputs(Materials.LightFuel.getFluid(5 * BUCKETS))
+            .fluidInputs(Materials.LightFuel.getFluid(5000))
             .duration(16 * TICKS)
             .eut(TierEU.RECIPE_MV)
             .addTo(mixerRecipes);
@@ -641,8 +637,8 @@ public class MixerRecipes implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.cell, Materials.LightFuel, 5),
                 GTUtility.getIntegratedCircuit(5))
             .itemOutputs(Materials.Empty.getCells(5))
-            .fluidInputs(Materials.HeavyFuel.getFluid(1 * BUCKETS))
-            .fluidOutputs(Materials.Fuel.getFluid(6 * BUCKETS))
+            .fluidInputs(Materials.HeavyFuel.getFluid(1000))
+            .fluidOutputs(Materials.Fuel.getFluid(6000))
             .duration(16 * TICKS)
             .eut(TierEU.RECIPE_MV)
             .addTo(mixerRecipes);
@@ -652,8 +648,8 @@ public class MixerRecipes implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.cell, Materials.HeavyFuel, 1),
                 GTUtility.getIntegratedCircuit(6))
             .itemOutputs(Materials.Empty.getCells(1))
-            .fluidInputs(Materials.LightFuel.getFluid(5 * BUCKETS))
-            .fluidOutputs(Materials.Fuel.getFluid(6 * BUCKETS))
+            .fluidInputs(Materials.LightFuel.getFluid(5000))
+            .fluidOutputs(Materials.Fuel.getFluid(6000))
             .duration(16 * TICKS)
             .eut(TierEU.RECIPE_MV)
             .addTo(mixerRecipes);
@@ -673,7 +669,7 @@ public class MixerRecipes implements Runnable {
             .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Lapis, 1),
                 GTUtility.getIntegratedCircuit(4))
-            .fluidInputs(Materials.Water.getFluid(1 * EIGHT_BUCKETS))
+            .fluidInputs(Materials.Water.getFluid(125))
             .fluidOutputs(getFluidStack("ic2coolant", 125))
             .duration(12 * SECONDS + 16 * TICKS)
             .eut(48)
@@ -766,7 +762,7 @@ public class MixerRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.SFMixture.get(2), GTOreDictUnificator.get(OrePrefixes.dust, Materials.EnderEye, 1))
             .itemOutputs(ItemList.MSFMixture.get(4))
-            .fluidInputs(Materials.Mercury.getFluid(1 * BUCKETS))
+            .fluidInputs(Materials.Mercury.getFluid(1000))
             .duration(15 * SECONDS)
             .eut(64)
             .addTo(mixerRecipes);
@@ -774,7 +770,7 @@ public class MixerRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.SFMixture.get(1), GTOreDictUnificator.get(OrePrefixes.dust, Materials.Blaze, 1))
             .itemOutputs(ItemList.MSFMixture.get(1))
-            .fluidInputs(Materials.Mercury.getFluid(1 * HALF_BUCKETS))
+            .fluidInputs(Materials.Mercury.getFluid(500))
             .duration(15 * SECONDS)
             .eut(64)
             .addTo(mixerRecipes);
@@ -786,7 +782,7 @@ public class MixerRecipes implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Diamond, 1),
                 GTUtility.getIntegratedCircuit(1))
             .itemOutputs(ItemList.Block_MSSFUEL.get(4))
-            .fluidInputs(Materials.NitroFuel.getFluid(4 * BUCKETS))
+            .fluidInputs(Materials.NitroFuel.getFluid(4000))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(mixerRecipes);
@@ -798,7 +794,7 @@ public class MixerRecipes implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Diamond, 1),
                 GTUtility.getIntegratedCircuit(1))
             .itemOutputs(ItemList.Block_MSSFUEL.get(4))
-            .fluidInputs(Materials.NitroFuel.getFluid(3 * BUCKETS))
+            .fluidInputs(Materials.NitroFuel.getFluid(3000))
             .duration(15 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(mixerRecipes);
@@ -810,7 +806,7 @@ public class MixerRecipes implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Diamond, 1),
                 GTUtility.getIntegratedCircuit(1))
             .itemOutputs(ItemList.Block_MSSFUEL.get(4))
-            .fluidInputs(Materials.NitroFuel.getFluid(2 * BUCKETS))
+            .fluidInputs(Materials.NitroFuel.getFluid(2000))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(mixerRecipes);
@@ -993,7 +989,7 @@ public class MixerRecipes implements Runnable {
                         getModItem(Thaumcraft.ID, "ItemResource", 4),
                         GTUtility.getIntegratedCircuit(1))
                     .itemOutputs(ItemList.Block_MSSFUEL.get(1))
-                    .fluidInputs(Materials.NitroFuel.getFluid(1 * BUCKETS))
+                    .fluidInputs(Materials.NitroFuel.getFluid(1000))
                     .duration(7 * SECONDS)
                     .eut(TierEU.RECIPE_HV)
                     .addTo(mixerRecipes);
@@ -1017,7 +1013,7 @@ public class MixerRecipes implements Runnable {
                         getModItem(Thaumcraft.ID, "ItemResource", 4),
                         GTUtility.getIntegratedCircuit(1))
                     .itemOutputs(ItemList.Block_MSSFUEL.get(1))
-                    .fluidInputs(Materials.NitroFuel.getFluid(1 * HALF_BUCKETS))
+                    .fluidInputs(Materials.NitroFuel.getFluid(500))
                     .duration(5 * SECONDS)
                     .eut(TierEU.RECIPE_HV)
                     .addTo(mixerRecipes);
@@ -1066,7 +1062,7 @@ public class MixerRecipes implements Runnable {
                 ItemList.SFMixture.get(6),
                 GTUtility.getIntegratedCircuit(1))
             .itemOutputs(ItemList.Block_SSFUEL.get(1))
-            .fluidInputs(Materials.NitroFuel.getFluid(1 * BUCKETS))
+            .fluidInputs(Materials.NitroFuel.getFluid(1000))
             .duration(7 * SECONDS)
             .eut(250)
             .addTo(mixerRecipes);
@@ -1088,7 +1084,7 @@ public class MixerRecipes implements Runnable {
                 ItemList.SFMixture.get(2),
                 GTUtility.getIntegratedCircuit(1))
             .itemOutputs(ItemList.Block_SSFUEL.get(1))
-            .fluidInputs(Materials.NitroFuel.getFluid(1 * HALF_BUCKETS))
+            .fluidInputs(Materials.NitroFuel.getFluid(500))
             .duration(5 * SECONDS)
             .eut(250)
             .addTo(mixerRecipes);
@@ -1131,7 +1127,7 @@ public class MixerRecipes implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.cell, Materials.SulfuricAcid, 1),
                 GTUtility.getIntegratedCircuit(1))
             .itemOutputs(ItemList.Cell_Empty.get(1))
-            .fluidInputs(Materials.NitricAcid.getFluid(1 * BUCKETS))
+            .fluidInputs(Materials.NitricAcid.getFluid(1000))
             .fluidOutputs(new FluidStack(ItemList.sNitrationMixture, 2000))
             .duration(24 * SECONDS)
             .eut(2)
@@ -1229,15 +1225,15 @@ public class MixerRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.IC2_Fuel_Rod_Empty.get(1), new ItemStack(Items.glowstone_dust, 9))
             .itemOutputs(ItemList.GlowstoneCell.get(1))
-            .fluidInputs(Materials.Helium.getGas(1 * QUARTER_BUCKETS))
+            .fluidInputs(Materials.Helium.getGas(250))
             .duration(1 * SECONDS + 10 * TICKS)
             .eut(16)
             .addTo(mixerRecipes);
 
         GTValues.RA.stdBuilder()
             .itemInputs(MaterialsOreAlum.SluiceSand.getDust(1))
-            .fluidInputs(Materials.Water.getFluid(1 * HALF_BUCKETS))
-            .fluidOutputs(MaterialsOreAlum.SluiceJuice.getFluid(1 * BUCKETS))
+            .fluidInputs(Materials.Water.getFluid(500))
+            .fluidOutputs(MaterialsOreAlum.SluiceJuice.getFluid(1000))
             .duration(5 * SECONDS)
             .eut(16)
             .addTo(mixerRecipes);
@@ -1246,8 +1242,8 @@ public class MixerRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(Materials.Salt.getDust(2), GTUtility.getIntegratedCircuit(3))
-            .fluidInputs(Materials.Water.getFluid(1 * BUCKETS))
-            .fluidOutputs(Materials.SaltWater.getFluid(1 * BUCKETS))
+            .fluidInputs(Materials.Water.getFluid(1000))
+            .fluidOutputs(Materials.SaltWater.getFluid(1000))
             .duration(5 * SECONDS)
             .eut(8)
             .addTo(mixerRecipes);
@@ -1257,8 +1253,8 @@ public class MixerRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(Materials.Calcite.getDust(5), Materials.Empty.getCells(2), GTUtility.getIntegratedCircuit(1))
             .itemOutputs(Materials.Water.getCells(1), Materials.CarbonDioxide.getCells(1))
-            .fluidInputs(Materials.AceticAcid.getFluid(2 * BUCKETS))
-            .fluidOutputs(Materials.CalciumAcetateSolution.getFluid(1 * BUCKETS))
+            .fluidInputs(Materials.AceticAcid.getFluid(2000))
+            .fluidOutputs(Materials.CalciumAcetateSolution.getFluid(1000))
             .duration(12 * SECONDS)
             .eut(16)
             .addTo(mixerRecipes);
@@ -1266,8 +1262,8 @@ public class MixerRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(Materials.Calcite.getDust(5), Materials.Empty.getCells(2), GTUtility.getIntegratedCircuit(11))
             .itemOutputs(Materials.CalciumAcetateSolution.getCells(1), Materials.CarbonDioxide.getCells(1))
-            .fluidInputs(Materials.AceticAcid.getFluid(2 * BUCKETS))
-            .fluidOutputs(Materials.Water.getFluid(1 * BUCKETS))
+            .fluidInputs(Materials.AceticAcid.getFluid(2000))
+            .fluidOutputs(Materials.Water.getFluid(1000))
             .duration(12 * SECONDS)
             .eut(16)
             .addTo(mixerRecipes);
@@ -1275,8 +1271,8 @@ public class MixerRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(Materials.Calcite.getDust(5), Materials.Empty.getCells(2), GTUtility.getIntegratedCircuit(21))
             .itemOutputs(Materials.Water.getCells(1), Materials.CalciumAcetateSolution.getCells(1))
-            .fluidInputs(Materials.AceticAcid.getFluid(2 * BUCKETS))
-            .fluidOutputs(Materials.CarbonDioxide.getGas(1 * BUCKETS))
+            .fluidInputs(Materials.AceticAcid.getFluid(2000))
+            .fluidOutputs(Materials.CarbonDioxide.getGas(1000))
             .duration(12 * SECONDS)
             .eut(16)
             .addTo(mixerRecipes);
@@ -1284,8 +1280,8 @@ public class MixerRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(Materials.Calcite.getDust(5), Materials.Empty.getCells(1), GTUtility.getIntegratedCircuit(4))
             .itemOutputs(Materials.CarbonDioxide.getCells(1))
-            .fluidInputs(Materials.AceticAcid.getFluid(2 * BUCKETS))
-            .fluidOutputs(Materials.CalciumAcetateSolution.getFluid(1 * BUCKETS))
+            .fluidInputs(Materials.AceticAcid.getFluid(2000))
+            .fluidOutputs(Materials.CalciumAcetateSolution.getFluid(1000))
             .duration(12 * SECONDS)
             .eut(16)
             .addTo(mixerRecipes);
@@ -1293,8 +1289,8 @@ public class MixerRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(Materials.Calcite.getDust(5), Materials.Empty.getCells(1), GTUtility.getIntegratedCircuit(14))
             .itemOutputs(Materials.CalciumAcetateSolution.getCells(1))
-            .fluidInputs(Materials.AceticAcid.getFluid(2 * BUCKETS))
-            .fluidOutputs(Materials.CarbonDioxide.getGas(1 * BUCKETS))
+            .fluidInputs(Materials.AceticAcid.getFluid(2000))
+            .fluidOutputs(Materials.CarbonDioxide.getGas(1000))
             .duration(12 * SECONDS)
             .eut(16)
             .addTo(mixerRecipes);
@@ -1304,8 +1300,8 @@ public class MixerRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(Materials.Calcium.getDust(1), Materials.Empty.getCells(2), GTUtility.getIntegratedCircuit(1))
             .itemOutputs(Materials.Hydrogen.getCells(2))
-            .fluidInputs(Materials.AceticAcid.getFluid(2 * BUCKETS))
-            .fluidOutputs(Materials.CalciumAcetateSolution.getFluid(1 * BUCKETS))
+            .fluidInputs(Materials.AceticAcid.getFluid(2000))
+            .fluidOutputs(Materials.CalciumAcetateSolution.getFluid(1000))
             .duration(4 * SECONDS)
             .eut(16)
             .addTo(mixerRecipes);
@@ -1313,8 +1309,8 @@ public class MixerRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(Materials.Calcium.getDust(1), Materials.Empty.getCells(1), GTUtility.getIntegratedCircuit(11))
             .itemOutputs(Materials.CalciumAcetateSolution.getCells(1))
-            .fluidInputs(Materials.AceticAcid.getFluid(2 * BUCKETS))
-            .fluidOutputs(Materials.Hydrogen.getGas(2 * BUCKETS))
+            .fluidInputs(Materials.AceticAcid.getFluid(2000))
+            .fluidOutputs(Materials.Hydrogen.getGas(2000))
             .duration(4 * SECONDS)
             .eut(16)
             .addTo(mixerRecipes);
@@ -1324,8 +1320,8 @@ public class MixerRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(Materials.Quicklime.getDust(2), Materials.Empty.getCells(1), GTUtility.getIntegratedCircuit(1))
             .itemOutputs(Materials.Water.getCells(1))
-            .fluidInputs(Materials.AceticAcid.getFluid(2 * BUCKETS))
-            .fluidOutputs(Materials.CalciumAcetateSolution.getFluid(1 * BUCKETS))
+            .fluidInputs(Materials.AceticAcid.getFluid(2000))
+            .fluidOutputs(Materials.CalciumAcetateSolution.getFluid(1000))
             .duration(4 * SECONDS)
             .eut(16)
             .addTo(mixerRecipes);
@@ -1333,8 +1329,8 @@ public class MixerRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(Materials.Quicklime.getDust(2), Materials.Empty.getCells(1), GTUtility.getIntegratedCircuit(11))
             .itemOutputs(Materials.CalciumAcetateSolution.getCells(1))
-            .fluidInputs(Materials.AceticAcid.getFluid(2 * BUCKETS))
-            .fluidOutputs(Materials.Water.getFluid(1 * BUCKETS))
+            .fluidInputs(Materials.AceticAcid.getFluid(2000))
+            .fluidOutputs(Materials.Water.getFluid(1000))
             .duration(4 * SECONDS)
             .eut(16)
             .addTo(mixerRecipes);
@@ -1344,8 +1340,8 @@ public class MixerRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(Materials.Acetone.getCells(3))
             .itemOutputs(Materials.Empty.getCells(3))
-            .fluidInputs(Materials.PolyvinylAcetate.getFluid(2 * BUCKETS))
-            .fluidOutputs(Materials.AdvancedGlue.getFluid(5 * BUCKETS))
+            .fluidInputs(Materials.PolyvinylAcetate.getFluid(2000))
+            .fluidOutputs(Materials.AdvancedGlue.getFluid(5000))
             .duration(5 * SECONDS)
             .eut(8)
             .addTo(mixerRecipes);
@@ -1353,8 +1349,8 @@ public class MixerRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(Materials.PolyvinylAcetate.getCells(2))
             .itemOutputs(Materials.Empty.getCells(2))
-            .fluidInputs(Materials.Acetone.getFluid(3 * BUCKETS))
-            .fluidOutputs(Materials.AdvancedGlue.getFluid(5 * BUCKETS))
+            .fluidInputs(Materials.Acetone.getFluid(3000))
+            .fluidOutputs(Materials.AdvancedGlue.getFluid(5000))
             .duration(5 * SECONDS)
             .eut(8)
             .addTo(mixerRecipes);
@@ -1362,8 +1358,8 @@ public class MixerRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(Materials.MethylAcetate.getCells(3))
             .itemOutputs(Materials.Empty.getCells(3))
-            .fluidInputs(Materials.PolyvinylAcetate.getFluid(2 * BUCKETS))
-            .fluidOutputs(Materials.AdvancedGlue.getFluid(5 * BUCKETS))
+            .fluidInputs(Materials.PolyvinylAcetate.getFluid(2000))
+            .fluidOutputs(Materials.AdvancedGlue.getFluid(5000))
             .duration(5 * SECONDS)
             .eut(8)
             .addTo(mixerRecipes);
@@ -1371,8 +1367,8 @@ public class MixerRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(Materials.PolyvinylAcetate.getCells(2))
             .itemOutputs(Materials.Empty.getCells(2))
-            .fluidInputs(Materials.MethylAcetate.getFluid(3 * BUCKETS))
-            .fluidOutputs(Materials.AdvancedGlue.getFluid(5 * BUCKETS))
+            .fluidInputs(Materials.MethylAcetate.getFluid(3000))
+            .fluidOutputs(Materials.AdvancedGlue.getFluid(5000))
             .duration(5 * SECONDS)
             .eut(8)
             .addTo(mixerRecipes);
@@ -1380,8 +1376,8 @@ public class MixerRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(Materials.Sugar.getDust(4))
             .itemOutputs(Materials.Charcoal.getGems(1))
-            .fluidInputs(Materials.SulfuricAcid.getFluid(1 * BUCKETS))
-            .fluidOutputs(Materials.DilutedSulfuricAcid.getFluid(1 * BUCKETS))
+            .fluidInputs(Materials.SulfuricAcid.getFluid(1000))
+            .fluidOutputs(Materials.DilutedSulfuricAcid.getFluid(1000))
             .duration(60 * SECONDS)
             .eut(2)
             .addTo(mixerRecipes);
@@ -1389,8 +1385,8 @@ public class MixerRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(Materials.Wood.getDust(4))
             .itemOutputs(Materials.Charcoal.getGems(1))
-            .fluidInputs(Materials.SulfuricAcid.getFluid(1 * BUCKETS))
-            .fluidOutputs(Materials.DilutedSulfuricAcid.getFluid(1 * BUCKETS))
+            .fluidInputs(Materials.SulfuricAcid.getFluid(1000))
+            .fluidOutputs(Materials.DilutedSulfuricAcid.getFluid(1000))
             .duration(60 * SECONDS)
             .eut(2)
             .addTo(mixerRecipes);
@@ -1399,7 +1395,7 @@ public class MixerRecipes implements Runnable {
             .itemInputs(Materials.Fuel.getCells(1))
             .itemOutputs(Materials.Empty.getCells(1))
             .fluidInputs(Materials.Tetranitromethane.getFluid(20))
-            .fluidOutputs(Materials.NitroFuel.getFluid(1 * BUCKETS))
+            .fluidOutputs(Materials.NitroFuel.getFluid(1000))
             .duration(20 * TICKS)
             .eut(TierEU.RECIPE_HV)
             .addTo(mixerRecipes);
@@ -1447,7 +1443,7 @@ public class MixerRecipes implements Runnable {
                 Materials.NitrousOxide.getCells(6),
                 Materials.Toluene.getCells(1))
             .itemOutputs(Materials.Empty.getCells(29))
-            .fluidInputs(Materials.AntiKnock.getFluid(3 * BUCKETS))
+            .fluidInputs(Materials.AntiKnock.getFluid(3000))
             .fluidOutputs(Materials.GasolinePremium.getFluid(32000))
             .duration(2 * SECONDS + 10 * TICKS)
             .eut(TierEU.RECIPE_EV)
@@ -1560,11 +1556,11 @@ public class MixerRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(GTUtility.getIntegratedCircuit(9))
                 .fluidInputs(
-                    Materials.Helium.getPlasma(1 * BUCKETS),
-                    Materials.Iron.getPlasma(1 * BUCKETS),
-                    Materials.Calcium.getPlasma(1 * BUCKETS),
-                    Materials.Niobium.getPlasma(1 * BUCKETS))
-                .fluidOutputs(MaterialsUEVplus.DimensionallyTranscendentCrudeCatalyst.getFluid(1 * BUCKETS))
+                    Materials.Helium.getPlasma(1000),
+                    Materials.Iron.getPlasma(1000),
+                    Materials.Calcium.getPlasma(1000),
+                    Materials.Niobium.getPlasma(1000))
+                .fluidOutputs(MaterialsUEVplus.DimensionallyTranscendentCrudeCatalyst.getFluid(1000))
                 .duration(41 * MINUTES + 40 * SECONDS)
                 .eut(TierEU.RECIPE_ZPM)
                 .addTo(mixerNonCellRecipes);
@@ -1572,12 +1568,12 @@ public class MixerRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(GTUtility.getIntegratedCircuit(10))
                 .fluidInputs(
-                    MaterialsUEVplus.DimensionallyTranscendentCrudeCatalyst.getFluid(1 * BUCKETS),
-                    Materials.Radon.getPlasma(1 * BUCKETS),
-                    Materials.Nickel.getPlasma(1 * BUCKETS),
-                    Materials.Boron.getPlasma(1 * BUCKETS),
-                    Materials.Sulfur.getPlasma(1 * BUCKETS))
-                .fluidOutputs(MaterialsUEVplus.DimensionallyTranscendentProsaicCatalyst.getFluid(1 * BUCKETS))
+                    MaterialsUEVplus.DimensionallyTranscendentCrudeCatalyst.getFluid(1000),
+                    Materials.Radon.getPlasma(1000),
+                    Materials.Nickel.getPlasma(1000),
+                    Materials.Boron.getPlasma(1000),
+                    Materials.Sulfur.getPlasma(1000))
+                .fluidOutputs(MaterialsUEVplus.DimensionallyTranscendentProsaicCatalyst.getFluid(1000))
                 .duration(41 * MINUTES + 40 * SECONDS)
                 .eut(TierEU.RECIPE_UV)
                 .addTo(mixerNonCellRecipes);
@@ -1585,12 +1581,12 @@ public class MixerRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(GTUtility.getIntegratedCircuit(11))
                 .fluidInputs(
-                    MaterialsUEVplus.DimensionallyTranscendentProsaicCatalyst.getFluid(1 * BUCKETS),
-                    Materials.Nitrogen.getPlasma(1 * BUCKETS),
-                    Materials.Zinc.getPlasma(1 * BUCKETS),
-                    Materials.Silver.getPlasma(1 * BUCKETS),
-                    Materials.Titanium.getPlasma(1 * BUCKETS))
-                .fluidOutputs(MaterialsUEVplus.DimensionallyTranscendentResplendentCatalyst.getFluid(1 * BUCKETS))
+                    MaterialsUEVplus.DimensionallyTranscendentProsaicCatalyst.getFluid(1000),
+                    Materials.Nitrogen.getPlasma(1000),
+                    Materials.Zinc.getPlasma(1000),
+                    Materials.Silver.getPlasma(1000),
+                    Materials.Titanium.getPlasma(1000))
+                .fluidOutputs(MaterialsUEVplus.DimensionallyTranscendentResplendentCatalyst.getFluid(1000))
                 .duration(41 * MINUTES + 40 * SECONDS)
                 .eut(TierEU.RECIPE_UHV)
                 .addTo(mixerNonCellRecipes);
@@ -1598,12 +1594,12 @@ public class MixerRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(GTUtility.getIntegratedCircuit(12))
                 .fluidInputs(
-                    MaterialsUEVplus.DimensionallyTranscendentResplendentCatalyst.getFluid(1 * BUCKETS),
-                    Materials.Americium.getPlasma(1 * BUCKETS),
-                    Materials.Bismuth.getPlasma(1 * BUCKETS),
-                    Materials.Oxygen.getPlasma(1 * BUCKETS),
-                    Materials.Tin.getPlasma(1 * BUCKETS))
-                .fluidOutputs(MaterialsUEVplus.DimensionallyTranscendentExoticCatalyst.getFluid(1 * BUCKETS))
+                    MaterialsUEVplus.DimensionallyTranscendentResplendentCatalyst.getFluid(1000),
+                    Materials.Americium.getPlasma(1000),
+                    Materials.Bismuth.getPlasma(1000),
+                    Materials.Oxygen.getPlasma(1000),
+                    Materials.Tin.getPlasma(1000))
+                .fluidOutputs(MaterialsUEVplus.DimensionallyTranscendentExoticCatalyst.getFluid(1000))
                 .duration(41 * MINUTES + 40 * SECONDS)
                 .eut(TierEU.RECIPE_UEV)
                 .addTo(mixerNonCellRecipes);
@@ -1611,12 +1607,12 @@ public class MixerRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(GTUtility.getIntegratedCircuit(13))
                 .fluidInputs(
-                    MaterialsUEVplus.DimensionallyTranscendentExoticCatalyst.getFluid(1 * BUCKETS),
-                    Materials.Lead.getPlasma(1 * BUCKETS),
-                    Materials.Thorium.getPlasma(1 * BUCKETS),
+                    MaterialsUEVplus.DimensionallyTranscendentExoticCatalyst.getFluid(1000),
+                    Materials.Lead.getPlasma(1000),
+                    Materials.Thorium.getPlasma(1000),
                     Materials.Naquadria.getPlasma(100L),
                     MaterialsUEVplus.RawStarMatter.getFluid(25L))
-                .fluidOutputs(MaterialsUEVplus.DimensionallyTranscendentStellarCatalyst.getFluid(1 * BUCKETS))
+                .fluidOutputs(MaterialsUEVplus.DimensionallyTranscendentStellarCatalyst.getFluid(1000))
                 .duration(41 * MINUTES + 40 * SECONDS)
                 .eut(TierEU.RECIPE_UIV)
                 .addTo(mixerNonCellRecipes);
@@ -1640,7 +1636,7 @@ public class MixerRecipes implements Runnable {
                 GGMaterial.atomicSeparationCatalyst.get(OrePrefixes.dust, 13),
                 GTUtility.getIntegratedCircuit(6))
             .itemOutputs(MaterialsUEVplus.Mellion.getDust(63))
-            .fluidInputs(MaterialsUEVplus.DimensionallyTranscendentResidue.getFluid(5 * BUCKETS))
+            .fluidInputs(MaterialsUEVplus.DimensionallyTranscendentResidue.getFluid(5000))
             .duration(15 * SECONDS)
             .eut((int) TierEU.RECIPE_UMV)
             .addTo(mixerRecipes);

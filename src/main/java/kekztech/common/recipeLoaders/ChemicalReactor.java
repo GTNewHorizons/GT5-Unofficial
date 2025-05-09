@@ -1,6 +1,5 @@
 package kekztech.common.recipeLoaders;
 
-import static gregtech.api.util.GTRecipeBuilder.BUCKETS;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeConstants.UniversalChemical;
 
@@ -21,7 +20,7 @@ public class ChemicalReactor implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(Materials.Cerium.getDust(1), GTUtility.getIntegratedCircuit(6))
             .itemOutputs(craftingItem.getStackOfAmountFromDamage(Items.CeriaDust.getMetaID(), 3))
-            .fluidInputs(Materials.Oxygen.getGas(2 * BUCKETS))
+            .fluidInputs(Materials.Oxygen.getGas(2000))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(UniversalChemical);

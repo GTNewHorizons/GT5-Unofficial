@@ -18,8 +18,6 @@ import static gregtech.api.enums.Mods.SuperSolarPanels;
 import static gregtech.api.enums.Mods.Thaumcraft;
 import static gregtech.api.enums.Mods.TinkersGregworks;
 import static gregtech.api.util.GTModHandler.getModItem;
-import static gregtech.api.util.GTRecipeBuilder.BUCKETS;
-import static gregtech.api.util.GTRecipeBuilder.HALF_BUCKETS;
 import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.MINUTES;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
@@ -233,7 +231,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                         ItemList.Reactor_Coolant_Sp_6.get(1L), ItemList.Reactor_Coolant_Sp_6.get(1L),
                         ItemList.Electric_Pump_UEV.get(1L) },
                     new FluidStack[] { new FluidStack(FluidRegistry.getFluid("ic2coolant"), 32000),
-                        new FluidStack(solderUEV, 20 * 144), Materials.UUMatter.getFluid(8 * BUCKETS) },
+                        new FluidStack(solderUEV, 20 * 144), Materials.UUMatter.getFluid(8000) },
                     ItemList.Hatch_Energy_UEV.get(1L),
                     1000,
                     (int) TierEU.RECIPE_UEV);
@@ -354,7 +352,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                         ItemList.Reactor_Coolant_Sp_6.get(1L), ItemList.Reactor_Coolant_Sp_6.get(1L),
                         ItemList.Electric_Pump_UEV.get(1L) },
                     new FluidStack[] { new FluidStack(FluidRegistry.getFluid("ic2coolant"), 32000),
-                        new FluidStack(solderUEV, 20 * 144), Materials.UUMatter.getFluid(8 * BUCKETS) },
+                        new FluidStack(solderUEV, 20 * 144), Materials.UUMatter.getFluid(8000) },
                     ItemList.Hatch_Dynamo_UEV.get(1L),
                     1000,
                     (int) TierEU.RECIPE_UEV);
@@ -593,7 +591,7 @@ public class ResearchStationAssemblyLine implements Runnable {
             new Object[] { CustomItemList.eM_Power.get(1L), CustomItemList.LASERpipe.get(4L),
                 CHRONOMATIC_GLASS.getPlateDense(1), ItemList.Circuit_Chip_QPIC.get(2L),
                 new Object[] { OrePrefixes.circuit.get(Materials.UHV), 1L } },
-            new FluidStack[] { Materials.Grade4PurifiedWater.getFluid(4 * BUCKETS) },
+            new FluidStack[] { Materials.Grade4PurifiedWater.getFluid(4000) },
             CustomItemList.LASERpipeSmart.get(1L),
             10 * 20,
             (int) TierEU.RECIPE_UHV);
@@ -992,7 +990,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                 new Object[] { OrePrefixes.circuit.get(Materials.UV), 8L },
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.Neutronium, 8), ItemList.Emitter_UHV.get(1),
                 ItemList.Sensor_UHV.get(1), ItemList.Casing_Fusion_Coil.get(1L), },
-            new FluidStack[] { Materials.UUMatter.getFluid(8 * BUCKETS), CINOBITE.getFluidStack(2304),
+            new FluidStack[] { Materials.UUMatter.getFluid(8000), CINOBITE.getFluidStack(2304),
                 MaterialsAlloy.OCTIRON.getFluidStack(2304),
                 MaterialsElements.STANDALONE.ASTRAL_TITANIUM.getFluidStack(2304), },
             GregtechItemList.Casing_Fusion_Internal.get(1),
@@ -1011,7 +1009,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.block, Materials.TungstenCarbide, 8),
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.Neutronium, 8), ItemList.Electric_Motor_UHV.get(2),
                 ItemList.Electric_Piston_UHV.get(1), ItemList.Casing_Fusion2.get(1L), },
-            new FluidStack[] { Materials.UUMatter.getFluid(1 * BUCKETS), CINOBITE.getFluidStack(576),
+            new FluidStack[] { Materials.UUMatter.getFluid(1000), CINOBITE.getFluidStack(576),
                 MaterialsAlloy.OCTIRON.getFluidStack(576),
                 MaterialsElements.STANDALONE.ASTRAL_TITANIUM.getFluidStack(576), },
             GregtechItemList.Casing_Fusion_External.get(1),
@@ -1219,7 +1217,7 @@ public class ResearchStationAssemblyLine implements Runnable {
 
         FluidStack fluid_0 = Materials.Naquadria.getMolten(2592);
         FluidStack fluid_1 = new FluidStack(solderIndalloy, 2592);
-        FluidStack fluid_2 = Materials.Lubricant.getFluid(4 * BUCKETS);
+        FluidStack fluid_2 = Materials.Lubricant.getFluid(4000);
 
         int crafting_time_in_ticks = 1000;
         int crafting_eu_per_tick = (int) TierEU.RECIPE_UV;
@@ -1433,7 +1431,7 @@ public class ResearchStationAssemblyLine implements Runnable {
 
         FluidStack fluid_0 = Materials.Quantium.getMolten(2592);
         FluidStack fluid_1 = new FluidStack(mutated_living_solder, 2592);
-        FluidStack fluid_2 = Materials.Lubricant.getFluid(4 * BUCKETS);
+        FluidStack fluid_2 = Materials.Lubricant.getFluid(4000);
 
         int crafting_time_in_ticks = 1000;
         int crafting_eu_per_tick = (int) TierEU.RECIPE_UHV;
@@ -1648,7 +1646,7 @@ public class ResearchStationAssemblyLine implements Runnable {
 
         FluidStack fluid_0 = celestialTungsten != null ? new FluidStack(celestialTungsten, 576) : null;
         FluidStack fluid_1 = new FluidStack(mutated_living_solder, 2592);
-        FluidStack fluid_2 = MaterialsUEVplus.DimensionallyShiftedSuperfluid.getFluid(4 * BUCKETS);
+        FluidStack fluid_2 = MaterialsUEVplus.DimensionallyShiftedSuperfluid.getFluid(4000);
 
         int crafting_time_in_ticks = 1000;
         int crafting_eu_per_tick = (int) TierEU.RECIPE_UEV;
@@ -1865,7 +1863,7 @@ public class ResearchStationAssemblyLine implements Runnable {
         FluidStack fluid_0 = hypogen != null ? new FluidStack(hypogen, 576) : null;
         FluidStack fluid_1 = celestialTungsten != null ? new FluidStack(celestialTungsten, 576) : null;
         FluidStack fluid_2 = new FluidStack(mutated_living_solder, 2592);
-        FluidStack fluid_3 = MaterialsUEVplus.DimensionallyShiftedSuperfluid.getFluid(4 * BUCKETS);
+        FluidStack fluid_3 = MaterialsUEVplus.DimensionallyShiftedSuperfluid.getFluid(4000);
 
         int crafting_time_in_ticks = 1000;
         int crafting_eu_per_tick = (int) TierEU.RECIPE_UIV;
@@ -2064,8 +2062,7 @@ public class ResearchStationAssemblyLine implements Runnable {
             .getMolten(4 * INGOTS);
         FluidStack moltenSpaceTime_576 = MaterialsUEVplus.SpaceTime.getMolten(4 * INGOTS);
         FluidStack moltenUniversium_576 = MaterialsUEVplus.Universium.getMolten(4 * INGOTS);
-        FluidStack dimensionallyShiftedSuperfluid8000 = MaterialsUEVplus.DimensionallyShiftedSuperfluid
-            .getFluid(8 * BUCKETS);
+        FluidStack dimensionallyShiftedSuperfluid8000 = MaterialsUEVplus.DimensionallyShiftedSuperfluid.getFluid(8000);
         FluidStack solderingAlloy_14_400 = new FluidStack(mutatedLivingSolder, 14_400);
 
         int totalComputation = 384_000;
@@ -3187,7 +3184,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                 ItemList.Field_Generator_UEV.get(4),
                 GTOreDictUnificator.get(OrePrefixes.bolt, MaterialsUEVplus.SixPhasedCopper, 24) },
             new FluidStack[] { MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack(64 * 144),
-                MaterialsUEVplus.PhononMedium.getFluid(1 * BUCKETS), Materials.Plutonium241.getPlasma(16 * 144) },
+                MaterialsUEVplus.PhononMedium.getFluid(1000), Materials.Plutonium241.getPlasma(16 * 144) },
             CustomItemList.Godforge_HarmonicPhononTransmissionConduit.get(1),
             10 * SECONDS,
             (int) TierEU.RECIPE_UIV);
@@ -3421,8 +3418,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                     GTOreDictUnificator.get(OrePrefixes.wireGt01, MaterialsUEVplus.SpaceTime, 2),
                     GTOreDictUnificator.get(OrePrefixes.plateDense, Materials.Infinity, 1), circuitsTierPlusTwo[i],
                     ItemList.EnergisedTesseract.get(1) },
-                new FluidStack[] { new FluidStack(solderUEV, 1296),
-                    MaterialsUEVplus.ExcitedDTEC.getFluid(1 * HALF_BUCKETS) },
+                new FluidStack[] { new FluidStack(solderUEV, 1296), MaterialsUEVplus.ExcitedDTEC.getFluid(500) },
                 wirelessHatches[i],
                 recipeDurationTicks,
                 recipeEuPerTick);
@@ -3648,8 +3644,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                     GTOreDictUnificator.get(OrePrefixes.wireGt01, MaterialsUEVplus.SpaceTime, 2),
                     GTOreDictUnificator.get(OrePrefixes.plateDense, Materials.Infinity, 1), circuitsTierPlusTwo[i],
                     ItemList.EnergisedTesseract.get(1) },
-                new FluidStack[] { new FluidStack(solderUEV, 1296),
-                    MaterialsUEVplus.ExcitedDTEC.getFluid(1 * HALF_BUCKETS) },
+                new FluidStack[] { new FluidStack(solderUEV, 1296), MaterialsUEVplus.ExcitedDTEC.getFluid(500) },
                 wirelessDynamos[i],
                 recipeDurationTicks,
                 recipeEuPerTick);

@@ -15,7 +15,6 @@ import static goodgenerator.util.ItemRefer.Compassline_Casing_UXV;
 import static goodgenerator.util.ItemRefer.Compassline_Casing_ZPM;
 import static goodgenerator.util.ItemRefer.Component_Assembly_Line;
 import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
-import static gregtech.api.util.GTRecipeBuilder.BUCKETS;
 import static gregtech.api.util.GTRecipeBuilder.HALF_INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.MINUTES;
@@ -85,7 +84,7 @@ public class ComponentAssemblyLineMiscRecipes {
             .fluidInputs(
                 new FluidStack(FluidRegistry.getFluid("molten.indalloy140"), 12 * INGOTS),
                 Materials.Naquadria.getMolten(16 * INGOTS),
-                Materials.Lubricant.getFluid(5 * BUCKETS))
+                Materials.Lubricant.getFluid(5000))
             .itemOutputs(Component_Assembly_Line.get(1))
             .eut(TierEU.RECIPE_UHV / 2)
             .duration(30 * SECONDS)

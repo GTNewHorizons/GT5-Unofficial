@@ -2,8 +2,6 @@ package tectech.loader.recipe;
 
 import static gregtech.api.enums.Mods.EternalSingularity;
 import static gregtech.api.util.GTModHandler.getModItem;
-import static gregtech.api.util.GTRecipeBuilder.BUCKETS;
-import static gregtech.api.util.GTRecipeBuilder.HALF_BUCKETS;
 import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
@@ -383,12 +381,10 @@ public class Godforge implements Runnable {
             // Fusion tier 1-3
             {
                 // Single step
-                FluidStack[] fluids_t0_1step = { Materials.Helium.getGas(1 * HALF_BUCKETS),
-                    Materials.Nitrogen.getGas(1 * HALF_BUCKETS), Materials.Argon.getGas(1 * HALF_BUCKETS),
-                    Materials.Chlorine.getGas(1 * HALF_BUCKETS), Materials.Deuterium.getGas(1 * HALF_BUCKETS),
-                    Materials.Fluorine.getGas(1 * HALF_BUCKETS), Materials.Hydrogen.getGas(1 * HALF_BUCKETS),
-                    Materials.Radon.getGas(1 * HALF_BUCKETS), Materials.Tritium.getGas(1 * HALF_BUCKETS),
-                    Materials.Mercury.getFluid(1 * HALF_BUCKETS) };
+                FluidStack[] fluids_t0_1step = { Materials.Helium.getGas(500), Materials.Nitrogen.getGas(500),
+                    Materials.Argon.getGas(500), Materials.Chlorine.getGas(500), Materials.Deuterium.getGas(500),
+                    Materials.Fluorine.getGas(500), Materials.Hydrogen.getGas(500), Materials.Radon.getGas(500),
+                    Materials.Tritium.getGas(500), Materials.Mercury.getFluid(500) };
                 FluidStack[] fluid_plasmas_t0_1step = { Materials.Helium.getPlasma(500),
                     Materials.Nitrogen.getPlasma(500), Materials.Argon.getPlasma(500),
                     Materials.Chlorine.getPlasma(500), Materials.Deuterium.getPlasma(500),
@@ -409,8 +405,7 @@ public class Godforge implements Runnable {
 
                 // Multi-step
                 FluidStack[] fluids_t0_xstep = { MaterialsElements.getInstance().NEON.getFluidStack(500),
-                    Materials.Oxygen.getGas(1 * HALF_BUCKETS),
-                    MaterialsElements.getInstance().KRYPTON.getFluidStack(500),
+                    Materials.Oxygen.getGas(500), MaterialsElements.getInstance().KRYPTON.getFluidStack(500),
                     MaterialsElements.getInstance().XENON.getFluidStack(500) };
                 FluidStack[] fluid_plasmas_t0_xstep = {
                     new FluidStack(MaterialsElements.getInstance().NEON.getPlasma(), 500),
@@ -448,7 +443,7 @@ public class Godforge implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(Materials.Iron.getDust(1))
                 .fluidInputs(Materials.Iron.getMolten(1))
-                .fluidOutputs(MaterialsUEVplus.QuarkGluonPlasma.getFluid(1 * BUCKETS))
+                .fluidOutputs(MaterialsUEVplus.QuarkGluonPlasma.getFluid(1000))
                 .duration(10 * SECONDS)
                 .eut(TierEU.RECIPE_MAX)
                 .metadata(FOG_EXOTIC_TIER, 1)
@@ -800,7 +795,7 @@ public class Godforge implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(ArrayUtils.addAll(ForgeOfGodsUpgrade.QGPIU.getExtraCost()))
             .itemOutputs(CustomItemList.Machine_Multi_QuarkGluonPlasmaModule.get(1))
-            .fluidOutputs(MaterialsUEVplus.QuarkGluonPlasma.getFluid(1 * BUCKETS))
+            .fluidOutputs(MaterialsUEVplus.QuarkGluonPlasma.getFluid(1000))
             .duration(1)
             .eut(1)
             .metadata(FOG_UPGRADE_NAME_SHORT, ForgeOfGodsUpgrade.QGPIU.getShortNameText())
@@ -825,7 +820,7 @@ public class Godforge implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(ArrayUtils.addAll(ForgeOfGodsUpgrade.END.getExtraCost()))
             .itemOutputs(MaterialsUEVplus.GravitonShard.getGems(1))
-            .fluidOutputs(MaterialsUEVplus.MagMatter.getMolten(4 * INGOTS), Materials.Neutronium.getPlasma(1 * BUCKETS))
+            .fluidOutputs(MaterialsUEVplus.MagMatter.getMolten(4 * INGOTS), Materials.Neutronium.getPlasma(1000))
             .duration(1)
             .eut(1)
             .metadata(FOG_UPGRADE_NAME_SHORT, ForgeOfGodsUpgrade.END.getShortNameText())
@@ -886,7 +881,7 @@ public class Godforge implements Runnable {
             if (mat.mStandardMoltenFluid != null) {
                 return mat.getMolten(INGOTS * data.mMaterial.mAmount / GTValues.M);
             } else if (mat.mFluid != null) {
-                return mat.getFluid(BUCKETS);
+                return mat.getFluid(1000);
             }
         }
         int[] oreIDs = OreDictionary.getOreIDs(stack);

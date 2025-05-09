@@ -1,7 +1,6 @@
 package kekztech.common.recipeLoaders;
 
 import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
-import static gregtech.api.util.GTRecipeBuilder.BUCKETS;
 import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.MINUTES;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
@@ -258,7 +257,7 @@ public class Assembler implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.rotor, Materials.StainlessSteel, 1),
                 ItemList.Electric_Motor_HV.get(1L))
             .itemOutputs(new ItemStack(Blocks.yszUnit, 1))
-            .fluidInputs(Materials.Hydrogen.getGas(4 * BUCKETS))
+            .fluidInputs(Materials.Hydrogen.getGas(4000))
             .duration(60 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(assemblerRecipes);
