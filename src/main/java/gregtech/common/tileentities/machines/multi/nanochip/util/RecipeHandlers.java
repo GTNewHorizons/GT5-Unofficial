@@ -292,7 +292,6 @@ public class RecipeHandlers {
             ModuleRecipeInfo.Fast,
             TierEU.RECIPE_LV);
         // Board processing recipes
-        // TODO: Different processing fluids for board tiers?
         addSimpleProcessingRecipe(
             CircuitComponent.BoardMultifiberglassElite,
             Materials.IronIIIChloride.getFluid(1000),
@@ -301,19 +300,19 @@ public class RecipeHandlers {
             TierEU.RECIPE_LV);
         addSimpleProcessingRecipe(
             CircuitComponent.BoardWetwareLifesupport,
-            Materials.IronIIIChloride.getFluid(1000),
+            Materials.GrowthMediumSterilized.getFluid(1000),
             CircuitComponent.ProcessedBoardWetwareLifesupport,
             ModuleRecipeInfo.Fast,
             TierEU.RECIPE_LV);
         addSimpleProcessingRecipe(
             CircuitComponent.BoardBioMutated,
-            Materials.IronIIIChloride.getFluid(1000),
+            Materials.BioMediumSterilized.getFluid(1000),
             CircuitComponent.ProcessedBoardBioMutated,
             ModuleRecipeInfo.Fast,
             TierEU.RECIPE_LV);
         addSimpleProcessingRecipe(
             CircuitComponent.BoardOptical,
-            Materials.IronIIIChloride.getFluid(1000),
+            Materials.MysteriousCrystal.getFluid(1000),
             CircuitComponent.ProcessedBoardOptical,
             ModuleRecipeInfo.Fast,
             TierEU.RECIPE_LV);
@@ -340,34 +339,33 @@ public class RecipeHandlers {
             ModuleRecipeInfo.Slow,
             TierEU.RECIPE_LV);
         // Wafer cutting processing recipes
-        // TODO: Which waters do we want for every wafer?
         addSimpleProcessingRecipe(
             CircuitComponent.WaferNanoCPU,
-            Materials.Grade1PurifiedWater.getFluid(1000),
+            Materials.Lubricant.getFluid(250),
             CircuitComponent.ProcessedChipNanoCPU,
             ModuleRecipeInfo.Medium,
             TierEU.RECIPE_LV);
         addSimpleProcessingRecipe(
             CircuitComponent.WaferRAM,
-            Materials.Grade1PurifiedWater.getFluid(1000),
+            Materials.Lubricant.getFluid(67),
             CircuitComponent.ProcessedChipRAM,
             ModuleRecipeInfo.Medium,
             TierEU.RECIPE_LV);
         addSimpleProcessingRecipe(
             CircuitComponent.WaferNOR,
-            Materials.Grade1PurifiedWater.getFluid(1000),
+            Materials.Lubricant.getFluid(135),
             CircuitComponent.ProcessedChipNOR,
             ModuleRecipeInfo.Medium,
             TierEU.RECIPE_LV);
         addSimpleProcessingRecipe(
             CircuitComponent.WaferNAND,
-            Materials.Grade1PurifiedWater.getFluid(1000),
+            Materials.Lubricant.getFluid(135),
             CircuitComponent.ProcessedChipNAND,
             ModuleRecipeInfo.Medium,
             TierEU.RECIPE_LV);
         addSimpleProcessingRecipe(
             CircuitComponent.WaferASOC,
-            Materials.Grade1PurifiedWater.getFluid(1000),
+            Materials.Lubricant.getFluid(250),
             CircuitComponent.ProcessedChipASOC,
             ModuleRecipeInfo.Medium,
             TierEU.RECIPE_LV);
