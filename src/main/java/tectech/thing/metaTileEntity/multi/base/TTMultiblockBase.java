@@ -2833,7 +2833,8 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
         IPanelHandler infoPanel = syncManager
             .panel("info_panel", (p_syncManager, syncHandler) -> getParameterPanel(panel, p_syncManager), true);
         UITexture editParametersEnabled = UITexture.fullImage(GTNHIntergalactic.ID, "gui/overlay_button/options");
-        UITexture editParametersDisabled = UITexture.fullImage(GTNHIntergalactic.ID, "gui/overlay_button/options_disabled");
+        UITexture editParametersDisabled = UITexture
+            .fullImage(GTNHIntergalactic.ID, "gui/overlay_button/options_disabled");
         com.cleanroommc.modularui.widgets.ButtonWidget editParametersButton = new com.cleanroommc.modularui.widgets.ButtonWidget();
         editParametersButton.overlay(new DynamicDrawable(() -> {
             if (parameterList.isEmpty()) {
