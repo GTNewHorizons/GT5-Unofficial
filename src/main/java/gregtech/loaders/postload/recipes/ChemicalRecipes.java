@@ -3941,7 +3941,7 @@ public class ChemicalRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(2))
             .fluidInputs(
-                new FluidStack(aBasicMaterial, 2160),
+                new FluidStack(aBasicMaterial, 14 * INGOTS),
                 Materials.Air.getGas(7500),
                 Materials.Titaniumtetrachloride.getFluid(100))
             .fluidOutputs(new FluidStack(aPolymer, 3240))
@@ -3952,7 +3952,7 @@ public class ChemicalRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(2))
             .fluidInputs(
-                new FluidStack(aBasicMaterial, 2160),
+                new FluidStack(aBasicMaterial, 14 * INGOTS),
                 Materials.Oxygen.getGas(7500),
                 Materials.Titaniumtetrachloride.getFluid(100))
             .fluidOutputs(new FluidStack(aPolymer, 4320))
@@ -5515,7 +5515,7 @@ public class ChemicalRecipes implements Runnable {
             .itemOutputs(Materials.RawStyreneButadieneRubber.getDust(3))
             .fluidInputs(
                 Materials.Styrene.getFluid(1 * HALF_INGOTS),
-                Materials.Butadiene.getGas(216),
+                Materials.Butadiene.getGas(3 * HALF_INGOTS),
                 Materials.Oxygen.getGas(2000))
             .duration(8 * SECONDS)
             .eut(TierEU.RECIPE_MV)
