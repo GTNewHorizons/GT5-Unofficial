@@ -226,30 +226,6 @@ public class PowerGogglesGuiOverlay {
             .child(
                 makeColorConfigButton(
                     overlayPanel,
-                    () -> PowerGogglesConfigHandler.gradientBadColor,
-                    val -> { PowerGogglesConfigHandler.gradientBadColor = val; },
-                    "Bad Gradient",
-                    "GT5U.power_goggles_config.gradient_bad",
-                    "GT5U.power_goggles_config.gradient_bad_tooltip"))
-            .child(
-                makeColorConfigButton(
-                    overlayPanel,
-                    () -> PowerGogglesConfigHandler.gradientOkColor,
-                    val -> { PowerGogglesConfigHandler.gradientOkColor = val; },
-                    "Ok Gradient",
-                    "GT5U.power_goggles_config.gradient_ok",
-                    "GT5U.power_goggles_config.gradient_ok_tooltip"))
-            .child(
-                makeColorConfigButton(
-                    overlayPanel,
-                    () -> PowerGogglesConfigHandler.gradientGoodColor,
-                    val -> { PowerGogglesConfigHandler.gradientOkColor = val; },
-                    "Good Gradient",
-                    "GT5U.power_goggles_config.gradient_good",
-                    "GT5U.power_goggles_config.gradient_good_tooltip"))
-            .child(
-                makeColorConfigButton(
-                    overlayPanel,
                     () -> PowerGogglesConfigHandler.textBadColor,
                     val -> { PowerGogglesConfigHandler.textBadColor = val; },
                     "Bad Text",
@@ -271,6 +247,30 @@ public class PowerGogglesGuiOverlay {
                     "Good Text",
                     "GT5U.power_goggles_config.text_good",
                     "GT5U.power_goggles_config.text_good_tooltip"))
+            .child(
+                makeColorConfigButton(
+                    overlayPanel,
+                    () -> PowerGogglesConfigHandler.gradientBadColor,
+                    val -> { PowerGogglesConfigHandler.gradientBadColor = val; },
+                    "Bad Gradient",
+                    "GT5U.power_goggles_config.gradient_bad",
+                    "GT5U.power_goggles_config.gradient_bad_tooltip"))
+            .child(
+                makeColorConfigButton(
+                    overlayPanel,
+                    () -> PowerGogglesConfigHandler.gradientOkColor,
+                    val -> { PowerGogglesConfigHandler.gradientOkColor = val; },
+                    "Ok Gradient",
+                    "GT5U.power_goggles_config.gradient_ok",
+                    "GT5U.power_goggles_config.gradient_ok_tooltip"))
+            .child(
+                makeColorConfigButton(
+                    overlayPanel,
+                    () -> PowerGogglesConfigHandler.gradientGoodColor,
+                    val -> { PowerGogglesConfigHandler.gradientOkColor = val; },
+                    "Good Gradient",
+                    "GT5U.power_goggles_config.gradient_good",
+                    "GT5U.power_goggles_config.gradient_good_tooltip"))
             .child(
                 new Row().size(228, 18)
                     .marginBottom(4)
