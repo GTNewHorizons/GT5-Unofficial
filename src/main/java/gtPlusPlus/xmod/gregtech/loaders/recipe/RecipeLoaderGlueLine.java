@@ -280,7 +280,7 @@ public class RecipeLoaderGlueLine {
             .itemOutputs(ItemUtils.getItemStackOfAmountFromOreDict("dustGraphene", 64))
             .fluidInputs(MaterialMisc.ETHYL_CYANOACRYLATE.getFluidStack(1000))
             .duration(10 * SECONDS)
-            .eut(TierEU.RECIPE_ZPM)
+            .eut(TierEU.RECIPE_LuV)
             .addTo(assemblerRecipes);
         GTValues.RA.stdBuilder()
             .itemInputs(
@@ -290,7 +290,7 @@ public class RecipeLoaderGlueLine {
             .itemOutputs(ItemUtils.getItemStackOfAmountFromOreDict("dustGraphene", 64))
             .fluidInputs(MaterialMisc.ETHYL_CYANOACRYLATE.getFluidStack(1000))
             .duration(10 * SECONDS)
-            .eut(TierEU.RECIPE_ZPM)
+            .eut(TierEU.RECIPE_LuV)
             .addTo(assemblerRecipes);
         GTValues.RA.stdBuilder()
             .itemInputs(
