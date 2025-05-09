@@ -43,6 +43,7 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.recipe.Scanning;
+import gtPlusPlus.core.material.MaterialsAlloy;
 import gtPlusPlus.core.recipe.common.CI;
 import tectech.recipe.TTRecipeAdder;
 
@@ -82,7 +83,7 @@ public class ComponentAssemblyLineMiscRecipes {
                 getALCircuit(7, 20),
                 getALCircuit(6, 24))
             .fluidInputs(
-                new FluidStack(FluidRegistry.getFluid("molten.indalloy140"), 12 * INGOTS),
+                MaterialsAlloy.INDALLOY_140.getFluidStack(12 * INGOTS),
                 Materials.Naquadria.getMolten(16 * INGOTS),
                 Materials.Lubricant.getFluid(5000))
             .itemOutputs(Component_Assembly_Line.get(1))

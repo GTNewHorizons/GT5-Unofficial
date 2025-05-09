@@ -89,6 +89,7 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.recipe.Scanning;
+import gtPlusPlus.core.material.MaterialsAlloy;
 import kubatech.api.enums.ItemList;
 import kubatech.tileentity.gregtech.multiblock.MTEDEFusionCrafter;
 import kubatech.tileentity.gregtech.multiblock.MTEExtremeEntityCrusher;
@@ -156,7 +157,7 @@ public class RecipeLoader {
                     gregtech.api.enums.ItemList.Robot_Arm_UV.get(16L),
                     new Object[] { OrePrefixes.circuit.get(Materials.UV), 16L })
                 .fluidInputs(
-                    FluidRegistry.getFluidStack("molten.indalloy140", 200 * INGOTS),
+                    MaterialsAlloy.INDALLOY_140.getFluidStack(200 * INGOTS),
                     FluidRegistry.getFluidStack("for.honey", 20000))
                 .itemOutputs(ExtremeIndustrialApiary.get(1))
                 .eut(TierEU.RECIPE_UHV)
@@ -341,7 +342,7 @@ public class RecipeLoader {
                     gregtech.api.enums.ItemList.Quantum_Tank_EV.get(1),
                     FluidExtractorUHV.get(10),
                     new Object[] { OrePrefixes.circuit.get(Materials.UV), 16L })
-                .fluidInputs(FluidRegistry.getFluidStack("molten.indalloy140", 200 * INGOTS))
+                .fluidInputs(MaterialsAlloy.INDALLOY_140.getFluidStack(200 * INGOTS))
                 .itemOutputs(TeaAcceptor.get(1))
                 .eut(TierEU.RECIPE_UHV)
                 .duration(5 * MINUTES)
