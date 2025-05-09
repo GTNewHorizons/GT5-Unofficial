@@ -27,6 +27,7 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.util.GTOreDictUnificator;
+import gregtech.api.util.GTRecipeConstants;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.base.BasicBlock.BlockTypes;
 import gtPlusPlus.core.block.base.BlockBaseModular;
@@ -167,6 +168,7 @@ public final class ModItems {
 
     // Unstable Elements & Related Content
     public static Item dustNeptunium238;
+    public static Item dustNeptunium239;
     public static Item dustDecayedRadium226;
     public static Item dustRadium226;
     public static Item dustProtactinium233;
@@ -181,10 +183,6 @@ public final class ModItems {
     public static Fluid fluidFertBasic;
     public static Fluid fluidFertUN32;
     public static Fluid fluidFertUN18;
-
-    public static DustDecayable dustMolybdenum99;
-    public static DustDecayable dustTechnetium99;
-    public static DustDecayable dustTechnetium99M;
 
     public static IonParticles itemIonParticleBase;
     public static StandardBaseParticles itemStandarParticleBase;
@@ -716,13 +714,22 @@ public final class ModItems {
 
         dustNeptunium238 = new DustDecayable(
             "dustNeptunium238",
-            Utils.rgbtoHexValue(175, 240, 75),
-            50640,
+            0xAFF04B,
+            50000,
             new String[] { StringUtils.superscript("238Np"),
                 "Result: Plutonium 238 (" + StringUtils.superscript("238Pu") + ")" },
-            MaterialsElements.getInstance().PLUTONIUM238.getDust(1)
-                .getItem(),
-            5);
+            MaterialsElements.getInstance().PLUTONIUM238.getDust(1),
+            5,
+            GTRecipeConstants.DecayType.BetaMinus);
+        dustNeptunium239 = new DustDecayable(
+            "dustNeptunium239",
+            0x71F045,
+            25000,
+            new String[] { StringUtils.superscript("238Np"),
+                "Result: Plutonium 239 (" + StringUtils.superscript("239Pu") + ")" },
+            Materials.Plutonium.getDust(1),
+            5,
+            GTRecipeConstants.DecayType.BetaMinus);
         dustDecayedRadium226 = ItemUtils.generateSpecialUseDusts(
             "DecayedRadium226",
             "Decayed Radium-226",
@@ -734,26 +741,18 @@ public final class ModItems {
             90000,
             new String[] { StringUtils.superscript("226Ra"),
                 "Result: Radon (" + StringUtils.superscript("222Rn") + ")" },
-            ItemUtils.getSimpleStack(dustDecayedRadium226)
-                .getItem(),
-            5);
+            ItemUtils.getSimpleStack(dustDecayedRadium226),
+            5,
+            GTRecipeConstants.DecayType.Alpha);
         dustProtactinium233 = new DustDecayable(
             "dustProtactinium233",
             MaterialsElements.getInstance().PROTACTINIUM.getRgbAsHex(),
             32000,
             new String[] { StringUtils.superscript("233Pa"),
-                "Result: Uranium 233(" + StringUtils.superscript("233U") + ")" },
-            MaterialsElements.getInstance().URANIUM233.getDust(1)
-                .getItem(),
-            6);
-        dustMolybdenum99 = new DustDecayable(
-            "dustMolybdenum99",
-            MaterialsElements.getInstance().MOLYBDENUM.getRgbAsHex(),
-            16450,
-            new String[] { StringUtils.superscript("99Mo"),
-                "Result: Technicium 99ᵐ (" + StringUtils.superscript("99ᵐTc") + ")" },
-            dustTechnetium99M,
-            4);
+                "Result: Uranium 233 (" + StringUtils.superscript("233U") + ")" },
+            MaterialsElements.getInstance().URANIUM233.getDust(1),
+            6,
+            GTRecipeConstants.DecayType.BetaMinus);
 
         itemIonParticleBase = new IonParticles();
         itemStandarParticleBase = new StandardBaseParticles();
