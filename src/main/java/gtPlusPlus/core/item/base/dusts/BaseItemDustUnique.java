@@ -11,10 +11,10 @@ import java.util.Map;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.StatCollector;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTOreDictUnificator;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.config.Configuration;
@@ -28,6 +28,7 @@ public class BaseItemDustUnique extends Item {
 
     protected final int colour;
     protected final int sRadiation;
+    protected final String typeLoc;
     protected final String materialName;
     protected final String chemicalNotation;
 
@@ -52,17 +53,15 @@ public class BaseItemDustUnique extends Item {
         this.sRadiation = ItemUtils.getRadioactivityLevel(materialName);
         GameRegistry.registerItem(this, unlocalizedName);
 
-        String type;
         if (this.getUnlocalizedName()
             .contains("DustTiny")) {
-            type = "Tiny Pile of %material Dust";
+            this.typeLoc = "gt.component.dusttiny";
         } else if (this.getUnlocalizedName()
             .contains("DustSmall")) {
-                type = "Small Pile of %material Dust";
+                this.typeLoc = "gt.component.dustsmall";
             } else {
-                type = "%material Dust";
+                this.typeLoc = "gt.component.dust";
             }
-        GTLanguageManager.addStringLocalization("gtplusplus." + this.getUnlocalizedName() + ".name", type);
 
         String temp = "";
         Logger.WARNING("Unlocalized name for OreDict nameGen: " + this.getUnlocalizedName());
@@ -116,8 +115,9 @@ public class BaseItemDustUnique extends Item {
 
     @Override
     public String getItemStackDisplayName(final ItemStack iStack) {
-        return GTLanguageManager.getTranslation("gtplusplus." + getUnlocalizedName() + ".name")
-            .replace("%material", GTLanguageManager.getTranslation("gtplusplus.material." + materialName));
+        return StatCollector.translateToLocalFormatted(
+            typeLoc,
+            StatCollector.translateToLocal("gtpp.material." + materialName.replaceAll("[^a-zA-Z0-9]", "")));
     }
 
     private String getCorrectTexture(final String pileSize) {
