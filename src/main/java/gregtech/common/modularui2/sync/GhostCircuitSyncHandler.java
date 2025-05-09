@@ -31,7 +31,7 @@ public class GhostCircuitSyncHandler extends PhantomItemSlotSH {
     }
 
     @Override
-    public void phantomClick(MouseData mouseData, ItemStack cursorStack) {
+    protected void phantomClick(MouseData mouseData, ItemStack cursorStack) {
         if (cursorStack != null && cursorStack.getItem() instanceof ItemIntegratedCircuit) {
             setCircuitConfig(cursorStack.getItemDamage());
         } else {
