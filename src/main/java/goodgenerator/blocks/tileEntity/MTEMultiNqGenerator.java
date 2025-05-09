@@ -466,10 +466,4 @@ public class MTEMultiNqGenerator extends MTETooltipMultiBlockBaseEM implements I
         if (mMachine) return -1;
         return survivialBuildPiece(mName, stackSize, 3, 7, 0, elementBudget, env, false, true);
     }
-
-    @Override
-    protected boolean forceUseMui2() {
-        return true;
-    }
-
 }

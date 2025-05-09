@@ -18,7 +18,6 @@ public class RecipeLoader implements Runnable {
     public void run() {
         SpaceMiningRecipes.addAsteroids();
         SpacePumpingRecipes.addPumpingRecipes();
-        SpacePumpingRecipes.addPumpingRecipesOLD();
         GasSiphonRecipes.addPumpingRecipes();
     }
 }

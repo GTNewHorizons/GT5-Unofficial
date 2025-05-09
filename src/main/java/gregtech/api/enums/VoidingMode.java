@@ -15,23 +15,20 @@ public enum VoidingMode {
     /**
      * Voids nothing, protects both item and fluid
      */
-    VOID_NONE(true, true, GTUITextures.BUTTON_STANDARD_NEW, GTUITextures.BUTTON_STANDARD,
-        GTUITextures.OVERLAY_BUTTON_VOID_EXCESS_NONE_NEW, GTUITextures.OVERLAY_BUTTON_VOID_EXCESS_NONE, "none"),
+    VOID_NONE(true, true, GTUITextures.BUTTON_STANDARD, GTUITextures.OVERLAY_BUTTON_VOID_EXCESS_NONE, "none"),
     /**
      * Voids item, protects fluid
      */
-    VOID_ITEM(false, true, GTUITextures.BUTTON_STANDARD_PRESSED_NEW, GTUITextures.BUTTON_STANDARD_PRESSED,
-        GTUITextures.OVERLAY_BUTTON_VOID_EXCESS_ITEM_NEW, GTUITextures.OVERLAY_BUTTON_VOID_EXCESS_ITEM, "item"),
+    VOID_ITEM(false, true, GTUITextures.BUTTON_STANDARD_PRESSED, GTUITextures.OVERLAY_BUTTON_VOID_EXCESS_ITEM, "item"),
     /**
      * Voids fluid, protects item
      */
-    VOID_FLUID(true, false, GTUITextures.BUTTON_STANDARD_PRESSED_NEW, GTUITextures.BUTTON_STANDARD_PRESSED,
-        GTUITextures.OVERLAY_BUTTON_VOID_EXCESS_FLUID_NEW, GTUITextures.OVERLAY_BUTTON_VOID_EXCESS_FLUID, "fluid"),
+    VOID_FLUID(true, false, GTUITextures.BUTTON_STANDARD_PRESSED, GTUITextures.OVERLAY_BUTTON_VOID_EXCESS_FLUID,
+        "fluid"),
     /**
      * Voids all, protects nothing
      */
-    VOID_ALL(false, false, GTUITextures.BUTTON_STANDARD_PRESSED_NEW, GTUITextures.BUTTON_STANDARD_PRESSED,
-        GTUITextures.OVERLAY_BUTTON_VOID_EXCESS_ALL_NEW, GTUITextures.OVERLAY_BUTTON_VOID_EXCESS_ALL, "all");
+    VOID_ALL(false, false, GTUITextures.BUTTON_STANDARD_PRESSED, GTUITextures.OVERLAY_BUTTON_VOID_EXCESS_ALL, "all");
 
     /**
      * Default set of voiding mode you will probably support.
@@ -47,19 +44,14 @@ public enum VoidingMode {
     public static final Set<VoidingMode> ITEM_ONLY_MODES = EnumSet.of(VOID_ITEM, VOID_NONE);
     public final boolean protectItem;
     public final boolean protectFluid;
-    public final com.cleanroommc.modularui.drawable.UITexture buttonTextureNew;
-    public final com.cleanroommc.modularui.drawable.UITexture buttonOverlayNew;
     public final UITexture buttonTexture;
     public final UITexture buttonOverlay;
     public final String name;
 
-    VoidingMode(boolean protectItem, boolean protectFluid,
-        com.cleanroommc.modularui.drawable.UITexture buttonTextureNew, UITexture buttonTexture,
-        com.cleanroommc.modularui.drawable.UITexture buttonTextureOld, UITexture buttonOverlay, String name) {
+    VoidingMode(boolean protectItem, boolean protectFluid, UITexture buttonTexture, UITexture buttonOverlay,
+        String name) {
         this.protectItem = protectItem;
         this.protectFluid = protectFluid;
-        this.buttonTextureNew = buttonTextureNew;
-        this.buttonOverlayNew = buttonTextureOld;
         this.buttonTexture = buttonTexture;
         this.buttonOverlay = buttonOverlay;
         this.name = name;

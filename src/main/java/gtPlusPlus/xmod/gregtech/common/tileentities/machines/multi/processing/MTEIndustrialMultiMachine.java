@@ -544,11 +544,6 @@ public class MTEIndustrialMultiMachine extends GTPPMultiBlockBase<MTEIndustrialM
     }
 
     @Override
-    public int machineModes() {
-        return 3;
-    }
-
-    @Override
     public void setMachineModeIcons() {
         machineModeIcons.clear();
         machineModeIcons.add(GTUITextures.OVERLAY_BUTTON_MACHINEMODE_LPF_METAL);

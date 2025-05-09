@@ -25,10 +25,6 @@ public class SimpleShutDownReason implements ShutDownReason {
         this.wasCritical = isCritical;
     }
 
-    public String getKey() {
-        return key;
-    }
-
     @NotNull
     @Override
     public String getID() {

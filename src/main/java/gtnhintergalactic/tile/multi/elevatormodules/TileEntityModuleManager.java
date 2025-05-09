@@ -333,7 +333,6 @@ public class TileEntityModuleManager extends TileEntityModuleBase {
      *
      * @return Button for project creation window
      */
-
     @Override
     protected ButtonWidget createSafeVoidButton() {
         Widget button = ButtonWidget.openSyncedWindowButton(PROJECT_WINDOW_ID)
@@ -1082,10 +1081,5 @@ public class TileEntityModuleManager extends TileEntityModuleBase {
         } else {
             return true;
         }
-    }
-
-    @Override
-    protected boolean forceUseMui2() {
-        return false;
     }
 }

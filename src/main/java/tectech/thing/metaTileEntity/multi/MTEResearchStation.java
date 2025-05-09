@@ -37,14 +37,6 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
 
-import com.cleanroommc.modularui.api.drawable.IKey;
-import com.cleanroommc.modularui.api.widget.IWidget;
-import com.cleanroommc.modularui.screen.ModularPanel;
-import com.cleanroommc.modularui.utils.item.ItemStackHandler;
-import com.cleanroommc.modularui.value.sync.LongSyncValue;
-import com.cleanroommc.modularui.value.sync.PanelSyncManager;
-import com.cleanroommc.modularui.value.sync.StringSyncValue;
-import com.cleanroommc.modularui.widgets.ListWidget;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IItemSource;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
@@ -150,8 +142,8 @@ public class MTEResearchStation extends TTMultiblockBase implements ISurvivalCon
     }
 
     private void makeStick() {
-        getControllerSlot().setTagCompound(new NBTTagCompound());
-        getControllerSlot().getTagCompound()
+        mInventory[1].setTagCompound(new NBTTagCompound());
+        mInventory[1].getTagCompound()
             .setString(
                 "author",
                 EnumChatFormatting.BLUE + "Tec"
@@ -161,7 +153,7 @@ public class MTEResearchStation extends TTMultiblockBase implements ISurvivalCon
                     + ' '
                     + machineType
                     + " Recipe Generator");
-        AssemblyLineUtils.setAssemblyLineRecipeOnDataStick(getControllerSlot(), tRecipe);
+        AssemblyLineUtils.setAssemblyLineRecipeOnDataStick(mInventory[1], tRecipe);
     }
 
     private boolean iterateRecipes() {
@@ -270,7 +262,7 @@ public class MTEResearchStation extends TTMultiblockBase implements ISurvivalCon
     @Override
     public void outputAfterRecipe_EM() {
         if (!eHolders.isEmpty()) {
-            if (tRecipe != null && ItemList.Tool_DataStick.isStackEqual(getControllerSlot(), false, true)) {
+            if (tRecipe != null && ItemList.Tool_DataStick.isStackEqual(mInventory[1], false, true)) {
                 eHolders.get(0)
                     .getBaseMetaTileEntity()
                     .setActive(false);
@@ -595,55 +587,6 @@ public class MTEResearchStation extends TTMultiblockBase implements ISurvivalCon
                 }
                 return "";
             }, aString -> clientOutputName = aString));
-    }
-
-    @Override
-    protected boolean forceUseMui2() {
-        return true;
-    }
-
-    @Override
-    public void insertTexts(ListWidget<IWidget, ?> machineInfo, ItemStackHandler invSlot, PanelSyncManager syncManager,
-        ModularPanel parentPanel) {
-        super.insertTexts(machineInfo, invSlot, syncManager, parentPanel);
-        LongSyncValue requiredComputationSyncer = new LongSyncValue(
-            () -> computationRequired,
-            val -> computationRequired = val);
-        LongSyncValue remainingcomputationSyncer = new LongSyncValue(
-            () -> computationRemaining,
-            val -> computationRemaining = val);
-        StringSyncValue outputSyncer = new StringSyncValue(() -> {
-            if (tRecipe != null && tRecipe.mOutput != null) {
-                return tRecipe.mOutput.getDisplayName();
-            }
-            return "";
-        }, val -> clientOutputName = val);
-        syncManager.syncValue("requiredComputation", requiredComputationSyncer);
-        syncManager.syncValue("remainingComputation", remainingcomputationSyncer);
-        syncManager.syncValue("output", outputSyncer);
-
-        machineInfo
-            .child(
-                IKey.dynamic(
-                    () -> StatCollector.translateToLocalFormatted("GT5U.gui.text.researching_item", clientOutputName))
-                    .asWidget()
-
-                    .setEnabledIf(
-                        widget -> computationRequired > 0 && clientOutputName != null && !clientOutputName.isEmpty()))
-            .child(
-                IKey.dynamic(
-                    () -> StatCollector.translateToLocalFormatted(
-                        "GT5U.gui.text.research_progress",
-                        getComputationConsumed(),
-                        getComputationRequired(),
-                        GTUtility.formatNumbers(getComputationProgress())))
-                    .asWidget()
-                    .widthRel(1)
-                    .marginTop(2)
-                    .height(18)
-                    .setEnabledIf(
-                        widget -> computationRequired > 0 && clientOutputName != null && !clientOutputName.isEmpty()));
-
     }
 
     @Override

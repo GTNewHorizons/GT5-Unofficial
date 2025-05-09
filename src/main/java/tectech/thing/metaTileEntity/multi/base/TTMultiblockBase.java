@@ -8,80 +8,31 @@ import static gregtech.api.enums.HatchElement.Maintenance;
 import static gregtech.api.enums.HatchElement.Muffler;
 import static gregtech.api.enums.HatchElement.OutputBus;
 import static gregtech.api.enums.HatchElement.OutputHatch;
-import static gregtech.api.enums.Mods.GregTech;
-import static gregtech.api.metatileentity.BaseTileEntity.BUTTON_FORBIDDEN_TOOLTIP;
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 import static gregtech.api.util.GTUtility.filterValidMTEs;
 import static gregtech.api.util.GTUtility.validMTEList;
 import static java.lang.Math.min;
-import static tectech.Reference.MODID;
 import static tectech.thing.casing.BlockGTCasingsTT.texturePage;
 
-import java.io.IOException;
-import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.BitSet;
 import java.util.Collections;
-import java.util.EnumSet;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.stream.Collectors;
 
 import javax.annotation.Nonnull;
 
 import net.minecraft.block.Block;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidTank;
 
 import org.jetbrains.annotations.NotNull;
+import org.lwjgl.opengl.GL11;
 
-import com.cleanroommc.modularui.api.IGuiHolder;
-import com.cleanroommc.modularui.api.IPanelHandler;
-import com.cleanroommc.modularui.api.drawable.IKey;
-import com.cleanroommc.modularui.api.widget.IWidget;
-import com.cleanroommc.modularui.drawable.DrawableArray;
-import com.cleanroommc.modularui.drawable.DynamicDrawable;
-import com.cleanroommc.modularui.drawable.GuiTextures;
-import com.cleanroommc.modularui.drawable.HoverableIcon;
-import com.cleanroommc.modularui.drawable.UITexture;
-import com.cleanroommc.modularui.factory.PosGuiData;
-import com.cleanroommc.modularui.screen.ModularPanel;
-import com.cleanroommc.modularui.screen.RichTooltip;
-import com.cleanroommc.modularui.utils.Alignment;
-import com.cleanroommc.modularui.utils.item.ItemStackHandler;
-import com.cleanroommc.modularui.utils.serialization.IByteBufAdapter;
-import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
-import com.cleanroommc.modularui.value.sync.DoubleSyncValue;
-import com.cleanroommc.modularui.value.sync.GenericListSyncHandler;
-import com.cleanroommc.modularui.value.sync.GenericSyncValue;
-import com.cleanroommc.modularui.value.sync.IntSyncValue;
-import com.cleanroommc.modularui.value.sync.LongSyncValue;
-import com.cleanroommc.modularui.value.sync.PanelSyncManager;
-import com.cleanroommc.modularui.value.sync.StringSyncValue;
-import com.cleanroommc.modularui.value.sync.SyncHandlers;
-import com.cleanroommc.modularui.widget.SingleChildWidget;
-import com.cleanroommc.modularui.widget.WidgetTree;
-import com.cleanroommc.modularui.widget.sizer.Area;
-import com.cleanroommc.modularui.widgets.CycleButtonWidget;
-import com.cleanroommc.modularui.widgets.ItemSlot;
-import com.cleanroommc.modularui.widgets.ListWidget;
-import com.cleanroommc.modularui.widgets.SlotGroupWidget;
-import com.cleanroommc.modularui.widgets.TextWidget;
-import com.cleanroommc.modularui.widgets.ToggleButton;
-import com.cleanroommc.modularui.widgets.layout.Column;
-import com.cleanroommc.modularui.widgets.layout.Flow;
-import com.cleanroommc.modularui.widgets.layout.Row;
-import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
 import com.gtnewhorizon.structurelib.StructureLibAPI;
 import com.gtnewhorizon.structurelib.alignment.IAlignment;
 import com.gtnewhorizon.structurelib.alignment.IAlignmentProvider;
@@ -90,11 +41,13 @@ import com.gtnewhorizon.structurelib.structure.IStructureElement;
 import com.gtnewhorizon.structurelib.util.Vec3Impl;
 import com.gtnewhorizons.modularui.api.NumberFormatMUI;
 import com.gtnewhorizons.modularui.api.drawable.IDrawable;
+import com.gtnewhorizons.modularui.api.drawable.UITexture;
+import com.gtnewhorizons.modularui.api.math.Alignment;
+import com.gtnewhorizons.modularui.api.math.Color;
 import com.gtnewhorizons.modularui.api.math.Pos2d;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.gtnewhorizons.modularui.api.widget.Widget;
-import com.gtnewhorizons.modularui.common.internal.network.NetworkUtils;
 import com.gtnewhorizons.modularui.common.internal.wrapper.BaseSlot;
 import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
 import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
@@ -102,15 +55,15 @@ import com.gtnewhorizons.modularui.common.widget.DynamicPositionedColumn;
 import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
 import com.gtnewhorizons.modularui.common.widget.Scrollable;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
+import com.gtnewhorizons.modularui.common.widget.TextWidget;
+import com.gtnewhorizons.modularui.common.widget.textfield.NumericWidget;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.GTMod;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.SoundResource;
-import gregtech.api.enums.StructureError;
 import gregtech.api.enums.Textures;
-import gregtech.api.enums.VoidingMode;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
@@ -154,7 +107,7 @@ import tectech.util.CommonValues;
  * Created by danie_000 on 27.10.2016.
  */
 public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TTMultiblockBase>
-    implements IAlignment, IGuiHolder<PosGuiData>, IBindPlayerInventoryUI {
+    implements IAlignment, IBindPlayerInventoryUI {
     // region Client side variables (static - one per class)
 
     // Front icon holders - static so it is default one for my blocks
@@ -229,14 +182,9 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
 
     // read only unless you are making computation generator - read computer class
     protected long eAvailableData = 0; // data being available
-    public final List<Parameter<?>> parameterList = new ArrayList<>();
 
     /** Flag if the new long power variable should be used */
     protected boolean useLongPower = false;
-    // GUI stuff
-    public int currentDropdownIndex = 0;
-    public final FluidTank fluidTankPhantom = new FluidTank(Integer.MAX_VALUE);
-    protected final ItemStackHandler invSlot = new ItemStackHandler(1);
 
     // Locale-aware formatting of numbers.
     protected static NumberFormatMUI numberFormat;
@@ -249,7 +197,6 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
 
     protected TTMultiblockBase(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
-        initParameters();
         parametrization = new Parameters(this);
         parametersInstantiation_EM();
         parametrization.setToDefaults(true, true);
@@ -257,7 +204,6 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
 
     protected TTMultiblockBase(String aName) {
         super(aName);
-        initParameters();
         parametrization = new Parameters(this);
         parametersInstantiation_EM();
         parametrization.setToDefaults(true, true);
@@ -591,8 +537,6 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
      */
     protected void parametersInstantiation_EM() {}
 
-    protected void initParameters() {}
-
     /**
      * It is automatically called OFTEN update status of parameters in guis (and "machine state" if u wish) Called
      * before check recipe, before outputting, and every second the machine is complete
@@ -759,18 +703,10 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
         aNBT.setInteger("eOutputStackCount", 0);
         aNBT.removeTag("outputEM");
 
-        NBTTagCompound parameterMapTag = new NBTTagCompound();
-        for (int i = 0; i < parameterList.size(); i++) {
-            Parameter<?> parameter = parameterList.get(i);
-            parameter.saveNBT(parameterMapTag, i);
-        }
-        aNBT.setTag("parameters", parameterMapTag);
         NBTTagCompound paramI = new NBTTagCompound();
         for (int i = 0; i < parametrization.iParamsIn.length; i++) {
             paramI.setDouble(Integer.toString(i), parametrization.iParamsIn[i]);
         }
-
-        aNBT.setTag("invSlot", this.invSlot.serializeNBT());
         aNBT.setTag("eParamsInD", paramI);
 
         NBTTagCompound paramO = new NBTTagCompound();
@@ -834,18 +770,6 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
             }
         }
 
-        if (aNBT.hasKey("parameters")) {
-            NBTTagCompound parameters = aNBT.getCompoundTag("parameters");
-            if (parameters.tagMap != null && !parameters.tagMap.isEmpty()) {
-                for (int i = 0; i < parameterList.size(); i++) {
-                    parameterList.get(i)
-                        .loadNBT(parameters, i);
-                }
-            }
-
-        }
-
-        this.invSlot.deserializeNBT(aNBT.getCompoundTag("invSlot"));
         if (aNBT.hasKey("eParamsIn") && aNBT.hasKey("eParamsOut") && aNBT.hasKey("eParamsB")) {
             NBTTagCompound paramI = aNBT.getCompoundTag("eParamsIn");
             NBTTagCompound paramO = aNBT.getCompoundTag("eParamsOut");
@@ -1133,10 +1057,6 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
                         dischargeController_EM(aBaseMetaTileEntity);
                         chargeController_EM(aBaseMetaTileEntity);
 
-                        if (!aBaseMetaTileEntity.isAllowedToWork() && mMaxProgresstime == 0
-                            && !aBaseMetaTileEntity.wasShutdown()) {
-                            notAllowedToWork_stopMachine_EM();
-                        }
                         if (mMaxProgresstime > 0 && doRandomMaintenanceDamage()) { // Start
                             if (onRunningTick(mInventory[1])) { // Compute EU
                                 if (!polluteEnvironment(getPollutionPerTick(mInventory[1]))) {
@@ -1169,6 +1089,8 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
                                             afterRecipeCheckFailed();
                                         }
                                         updateSlots();
+                                    } else {
+                                        notAllowedToWork_stopMachine_EM();
                                     }
                                 }
                             } // else {//failed to consume power/resources - inside on running tick
@@ -1406,11 +1328,6 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
                         .getStoredEU() + euVar);
             }
         }
-    }
-
-    @Override
-    public ItemStack getControllerSlot() {
-        return this.invSlot.getStackInSlot(0);
     }
 
     protected void chargeController_EM(IGregTechTileEntity aBaseMetaTileEntity) {
@@ -2282,938 +2199,15 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
         return true;
     }
 
+    @Override
+    public void addGregTechLogo(ModularWindow.Builder builder) {
+        builder.widget(
+            new DrawableWidget().setDrawable(TecTechUITextures.PICTURE_TECTECH_LOGO_DARK)
+                .setSize(18, 18)
+                .setPos(173, 74));
+    }
+
     private static byte LEDCounter = 0;
-
-    @Override
-    public ModularPanel buildUI(PosGuiData guiData, PanelSyncManager syncManager) {
-        com.cleanroommc.modularui.drawable.UITexture bg = com.cleanroommc.modularui.drawable.UITexture.builder()
-            .location(MODID, "gui/background/screen_blue")
-            .adaptable(2)
-            .imageSize(90, 72)
-            .canApplyTheme(true)
-            .build();
-        com.cleanroommc.modularui.drawable.UITexture bgNoInv = com.cleanroommc.modularui.drawable.UITexture.builder()
-            .location(MODID, "gui/background/screen_blue_no_inventory")
-            .canApplyTheme(true)
-            .build();
-        com.cleanroommc.modularui.drawable.UITexture mesh = com.cleanroommc.modularui.drawable.UITexture.builder()
-            .location(MODID, "gui/overlay_slot/mesh")
-            .canApplyTheme(true)
-            .build();
-        com.cleanroommc.modularui.drawable.UITexture heatSinkSmall = com.cleanroommc.modularui.drawable.UITexture
-            .builder()
-            .location(MODID, "gui/picture/heat_sink_small")
-            .canApplyTheme(true)
-            .build();
-        ModularPanel panel = new ModularPanel("tt_multiblock");
-        int textBoxToInventoryGap = 26;
-        panel.size(198, 181 + textBoxToInventoryGap)
-            .padding(4);
-
-        registerSyncValues(panel, syncManager);
-
-        ListWidget<IWidget, ?> machineInfo = new ListWidget<>().size(machineInfoSize()[0], machineInfoSize()[1])
-            .pos(6, 3);
-
-        Flow panelColumn = new Column().sizeRel(1);
-        if (doesBindPlayerInventory()) {
-            panelColumn.child(
-                new SingleChildWidget<>().size(mainTerminalSize()[0], mainTerminalSize()[1])
-                    .overlay(bg)
-                    .child(machineInfo)
-                    .alignX(0));
-        } else {
-            panelColumn.child(
-                new SingleChildWidget<>().size(190, 171)
-                    .overlay(bgNoInv));
-        }
-        Flow inventoryRow = new Row().widthRel(1)
-            .height(90)
-            .alignX(0);
-        Flow buttonColumn = new Column().width(18)
-            .leftRel(1, -2, 1);
-        if (doesBindPlayerInventory()) {
-            inventoryRow.child(
-                SlotGroupWidget.playerInventory(0)
-                    .leftRel(0)
-                    .marginLeft(4));
-        }
-
-        Flow panelGap = new Row().widthRel(1)
-            .paddingRight(6)
-            .paddingLeft(4)
-            .height(textBoxToInventoryGap);
-        insertThingsInGap(panelGap, syncManager, panel);
-        panelColumn.child(panelGap);
-
-        insertTexts(machineInfo, invSlot, syncManager, panel);
-        addTitleTextStyle(panel, this.getLocalName());
-
-        if (shouldMakePowerPassButton()) addPowerPassButton(buttonColumn, textBoxToInventoryGap);
-        if (shouldMakeEditParametersButtonEnabled()) addEditParametersButton(panel, syncManager, buttonColumn);
-        if (shouldMakePowerSwitchButtonEnabled()) addPowerSwitchButtton(buttonColumn);
-        addGregtechLogo(panel);
-
-        if (doesBindPlayerInventory()) {
-            buttonColumn.child(
-                new ItemSlot().slot(
-                    SyncHandlers.itemSlot(invSlot, 0)
-                        .singletonSlotGroup())
-                    .marginTop(4)
-                    .background(new DrawableArray(GuiTextures.SLOT_ITEM, mesh)));
-            buttonColumn.child(
-                new SingleChildWidget<>().size(18, 6)
-                    .overlay(heatSinkSmall));
-        }
-        inventoryRow.child(buttonColumn);
-        panelColumn.child(inventoryRow);
-
-        return panel.child(panelColumn);
-    }
-
-    protected int[] machineInfoSize() {
-        return new int[] { 178, 85 };
-    }
-
-    protected int[] mainTerminalSize() {
-        return new int[] { 190, 91 };
-    }
-
-    public void insertThingsInGap(Flow panelGap, PanelSyncManager syncManager, ModularPanel parent) {
-        UITexture crowbarFalse = UITexture.builder()
-            .location(GregTech.ID, "gui/icons/crowbarFalse")
-            .imageSize(16, 16)
-            .build();
-        UITexture hardhammerFalse = UITexture.builder()
-            .location(GregTech.ID, "gui/icons/hardhammerFalse")
-            .imageSize(16, 16)
-            .build();
-        UITexture screwdriverFalse = UITexture.builder()
-            .location(GregTech.ID, "gui/icons/screwdriverFalse")
-            .imageSize(16, 16)
-            .build();
-        UITexture softhammerFalse = UITexture.builder()
-            .location(GregTech.ID, "gui/icons/softhammerFalse")
-            .imageSize(16, 16)
-            .build();
-        UITexture solderingFalse = UITexture.builder()
-            .location(GregTech.ID, "gui/icons/solderingFalse")
-            .imageSize(16, 16)
-            .build();
-        UITexture wrenchFalse = UITexture.builder()
-            .location(GregTech.ID, "gui/icons/wrenchFalse")
-            .imageSize(16, 16)
-            .build();
-        UITexture noMaint = UITexture.builder()
-            .location(GregTech.ID, "gui/icons/noMaint")
-            .imageSize(16, 16)
-            .build();
-        UITexture checkmark = UITexture.builder()
-            .location(GregTech.ID, "gui/overlay_button/checkmark")
-            .imageSize(16, 16)
-            .build();
-
-        panelGap.child(createVoidExcessButton(syncManager));
-        panelGap.child(createInputSeparationButton(syncManager));
-        if (supportsMachineModeSwitch()) panelGap.child(createModeSwitchButton(syncManager));
-        panelGap.child(createBatchModeButton(syncManager));
-        panelGap.child(createLockToSingleRecipeButton(syncManager));
-        panelGap.child(createStructureUpdateButton(syncManager));
-        if (supportsPowerPanel()) panelGap.child(createPowerPanel(syncManager));
-
-        AtomicInteger maintIssues = new AtomicInteger(0);
-        IntSyncValue maintSyncer = new IntSyncValue(() -> {
-            int maintIsuses = 0;
-            maintIsuses += mCrowbar ? 0 : 1;
-            maintIsuses += mHardHammer ? 0 : 1;
-            maintIsuses += mScrewdriver ? 0 : 1;
-            maintIsuses += mSoftHammer ? 0 : 1;
-            maintIsuses += mSolderingTool ? 0 : 1;
-            maintIsuses += mWrench ? 0 : 1;
-            return maintIsuses;
-        }, val -> maintIssues.set(val));
-        syncManager.syncValue("maintCount", maintSyncer);
-
-        LongSyncValue euVarSyncer = new LongSyncValue(() -> getEUVar());
-        BooleanSyncValue wasShutdownSyncer = new BooleanSyncValue(() -> getBaseMetaTileEntity().wasShutdown());
-        syncManager.syncValue("storedEU", euVarSyncer);
-        syncManager.syncValue("wasShutdownThingsGap", wasShutdownSyncer);
-        panelGap.child(
-            new HoverableIcon(
-                new DynamicDrawable(
-                    () -> maintSyncer.getValue() == 0 ? noMaint
-                        : IKey.str(EnumChatFormatting.DARK_RED + String.valueOf(maintSyncer.getValue()))).asIcon())
-                            .asWidget()
-                            .tooltipBuilder(t -> {
-                                if (maintSyncer.getValue() == 0) {
-                                    t.addLine(IKey.str(EnumChatFormatting.GREEN + "No maintenance issues!"));
-                                    return;
-                                }
-                                if (!mCrowbar) t.add(
-                                    crowbarFalse.asIcon()
-                                        .size(16, 16))
-                                    .add(" ");
-                                if (!mHardHammer) t.add(
-                                    hardhammerFalse.asIcon()
-                                        .size(16, 16))
-                                    .add(" ");
-                                if (!mScrewdriver) t.add(
-                                    screwdriverFalse.asIcon()
-                                        .size(16, 16))
-                                    .add(" ");
-                                if (!mSoftHammer) t.add(
-                                    softhammerFalse.asIcon()
-                                        .size(16, 16))
-                                    .add(" ");
-                                if (!mSolderingTool) t.add(
-                                    solderingFalse.asIcon()
-                                        .size(16, 16))
-                                    .add(" ");
-                                if (!mWrench) t.add(
-                                    wrenchFalse.asIcon()
-                                        .size(16, 16))
-                                    .add(" ");
-                            })
-                            .background(GuiTextures.SLOT_ITEM))
-            .child(new HoverableIcon(new DynamicDrawable(() -> {
-                if (wasShutdownSyncer.getValue() || euVarSyncer.getValue() == 0)
-                    return getTextureForShutdownReason(getBaseMetaTileEntity(), euVarSyncer.getValue());
-                return checkmark;
-            }).asIcon()).asWidget()
-                .tooltipBuilder(t -> t.addLine(IKey.dynamic(() -> {
-                    if (wasShutdownSyncer.getValue() || euVarSyncer.getValue() == 0) {
-                        return getTooltipForShutdownReason(
-                            getBaseMetaTileEntity().getLastShutDownReason(),
-                            euVarSyncer.getValue());
-                    } else {
-                        return EnumChatFormatting.GREEN + "Running fine.";
-                    }
-                }))));
-    }
-
-    public IWidget createPowerPanel() {
-        return null;
-    }
-
-    public IWidget createStructureUpdateButton(PanelSyncManager syncManager) {
-        IntSyncValue structureUpdateSyncer = new IntSyncValue(
-            this::getStructureUpdateTime,
-            this::setStructureUpdateTime);
-        syncManager.syncValue("structureUpdate", structureUpdateSyncer);
-
-        ToggleButton structureUpdateButton = new ToggleButton().size(18, 18)
-            .value(
-                new BooleanSyncValue(
-                    () -> structureUpdateSyncer.getValue() > -20,
-                    val -> { if (val) structureUpdateSyncer.setValue(1); }))
-            .overlay(GTUITextures.OVERLAY_BUTTON_STRUCTURE_UPDATE_NEW)
-            .tooltipBuilder(t -> { t.addLine(IKey.lang("GT5U.gui.button.structure_update")); });
-
-        return structureUpdateButton;
-    }
-
-    public IWidget createPowerPanel(PanelSyncManager syncManager) {
-        return null;
-    }
-
-    public IWidget createLockToSingleRecipeButton(PanelSyncManager syncManager) {
-        BooleanSyncValue recipeLockSyncer = new BooleanSyncValue(this::isRecipeLockingEnabled, this::setRecipeLocking);
-        syncManager.syncValue("recipeLock", recipeLockSyncer);
-
-        ToggleButton lockToSingleRecipeButton = new ToggleButton().size(18, 18)
-            .value(new BooleanSyncValue(() -> recipeLockSyncer.getValue() || !supportsSingleRecipeLocking(), bool -> {
-                if (supportsSingleRecipeLocking()) {
-                    recipeLockSyncer.setValue(!recipeLockSyncer.getValue());
-                }
-            }))
-            .overlay(new DynamicDrawable(() -> {
-                UITexture forbidden = GTUITextures.OVERLAY_BUTTON_FORBIDDEN_NEW;
-                if (recipeLockSyncer.getValue()) {
-                    if (supportsSingleRecipeLocking()) {
-                        return GTUITextures.OVERLAY_BUTTON_RECIPE_LOCKED_NEW;
-                    } else {
-                        return new DrawableArray(GTUITextures.OVERLAY_BUTTON_RECIPE_LOCKED_DISABLED_NEW);
-                    }
-                } else {
-
-                    if (supportsSingleRecipeLocking()) {
-                        return GTUITextures.OVERLAY_BUTTON_RECIPE_LOCKED_NEW;
-                    } else {
-                        return new DrawableArray(GTUITextures.OVERLAY_BUTTON_RECIPE_LOCKED_DISABLED_NEW, forbidden);
-                    }
-                }
-            }))
-            .tooltipBuilder(t -> {
-                t.addLine(IKey.lang("GT5U.gui.button.lock_recipe"));
-                if (!supportsSingleRecipeLocking()) t.addLine(IKey.lang(BUTTON_FORBIDDEN_TOOLTIP));
-            });
-
-        return lockToSingleRecipeButton;
-    }
-
-    public IWidget createBatchModeButton(PanelSyncManager syncManager) {
-        BooleanSyncValue batchModeSyncer = new BooleanSyncValue(this::isBatchModeEnabled, this::setBatchMode);
-        syncManager.syncValue("batchMode", batchModeSyncer);
-
-        ToggleButton batchModeButton = new ToggleButton().size(18, 18)
-            .value(new BooleanSyncValue(() -> batchModeSyncer.getValue() || !supportsBatchMode(), bool -> {
-                if (supportsBatchMode()) {
-                    batchModeSyncer.setValue(bool);
-                }
-            }))
-            .overlay(new DynamicDrawable(() -> {
-                UITexture forbidden = GTUITextures.OVERLAY_BUTTON_FORBIDDEN_NEW;
-                if (batchModeSyncer.getValue()) {
-                    if (supportsBatchMode()) {
-                        return GTUITextures.OVERLAY_BUTTON_BATCH_MODE_ON_NEW;
-                    } else {
-                        return new DrawableArray(GTUITextures.OVERLAY_BUTTON_BATCH_MODE_ON_DISABLED_NEW);
-                    }
-                } else {
-
-                    if (supportsBatchMode()) {
-                        return GTUITextures.OVERLAY_BUTTON_BATCH_MODE_OFF_NEW;
-                    } else {
-                        return new DrawableArray(GTUITextures.OVERLAY_BUTTON_BATCH_MODE_OFF_DISABLED_NEW, forbidden);
-                    }
-                }
-            }))
-            .tooltipBuilder(t -> {
-                t.addLine(IKey.lang("GT5U.gui.button.batch_mode"));
-                if (!supportsBatchMode()) t.addLine(IKey.lang(BUTTON_FORBIDDEN_TOOLTIP));
-            });
-        return batchModeButton;
-    }
-
-    public IWidget createModeSwitchButton(PanelSyncManager syncManager) {
-        IntSyncValue machineModeSyncer = new IntSyncValue(this::getMachineMode, this::setMachineMode);
-        syncManager.syncValue("machineMode", machineModeSyncer);
-
-        CycleButtonWidget machineModeButton = new CycleButtonWidget().size(18, 18)
-            .value(
-                new IntSyncValue(
-                    machineModeSyncer::getValue,
-                    val -> { if (supportsMachineModeSwitch()) machineModeSyncer.setValue(val); }))
-            .length(machineModes())
-            .overlay(new DynamicDrawable(() -> {
-                com.gtnewhorizons.modularui.api.drawable.UITexture bla = getMachineModeIcon(
-                    machineModeSyncer.getValue());
-                return UITexture.builder()
-                    .location(bla.location)
-                    .imageSize(18, 18)
-                    .build();
-            }))
-            .tooltipBuilder(t -> {
-                t.addLine(IKey.dynamic(() -> StatCollector.translateToLocal("GT5U.gui.button.mode_switch")))
-                    .addLine(IKey.dynamic(() -> StatCollector.translateToLocal(getVoidingMode().getTransKey())));
-                if (!supportsVoidProtection()) {
-                    t.addLine(IKey.lang(BUTTON_FORBIDDEN_TOOLTIP));
-                }
-            });
-        return machineModeButton;
-    }
-
-    public IWidget createInputSeparationButton(PanelSyncManager syncManager) {
-
-        BooleanSyncValue inputSeparationSyncer = new BooleanSyncValue(
-            this::isInputSeparationEnabled,
-            this::setInputSeparation);
-        syncManager.syncValue("inputSeparation", inputSeparationSyncer);
-
-        ToggleButton inputSeparationButton = new ToggleButton().size(18, 18)
-            .value(new BooleanSyncValue(() -> inputSeparationSyncer.getValue() || !supportsInputSeparation(), bool -> {
-                if (supportsInputSeparation()) {
-                    inputSeparationSyncer.setValue(!inputSeparationSyncer.getValue());
-                }
-            }))
-            .overlay(new DynamicDrawable(() -> {
-                UITexture forbidden = GTUITextures.OVERLAY_BUTTON_FORBIDDEN_NEW;
-                if (inputSeparationSyncer.getValue()) {
-                    if (supportsInputSeparation()) {
-                        return GTUITextures.OVERLAY_BUTTON_INPUT_SEPARATION_ON_NEW;
-                    } else {
-                        return new DrawableArray(GTUITextures.OVERLAY_BUTTON_INPUT_SEPARATION_ON_DISABLED_NEW);
-                    }
-                } else {
-
-                    if (supportsInputSeparation()) {
-                        return GTUITextures.OVERLAY_BUTTON_INPUT_SEPARATION_OFF_NEW;
-                    } else {
-                        return new DrawableArray(
-                            GTUITextures.OVERLAY_BUTTON_INPUT_SEPARATION_OFF_DISABLED_NEW,
-                            forbidden);
-                    }
-                }
-            }))
-            .tooltipBuilder(t -> {
-                t.addLine(IKey.lang("GT5U.gui.button.input_separation"));
-                if (!supportsInputSeparation()) t.addLine(IKey.lang(BUTTON_FORBIDDEN_TOOLTIP));
-            });
-
-        return inputSeparationButton;
-    }
-
-    public IWidget createVoidExcessButton(PanelSyncManager syncManager) {
-
-        IntSyncValue voidExcessSyncer = new IntSyncValue(
-            () -> getVoidingMode().ordinal(),
-            val -> setVoidingMode(VoidingMode.fromOrdinal(val)));
-        syncManager.syncValue("voidExcess", voidExcessSyncer);
-
-        CycleButtonWidget voidExcessButton = new CycleButtonWidget().size(18, 18)
-            .value(
-                new IntSyncValue(
-                    voidExcessSyncer::getValue,
-                    val -> { if (supportsVoidProtection()) voidExcessSyncer.setValue(val); }))
-            .length(getAllowedVoidingModes().size())
-            .background(new DynamicDrawable(() -> getVoidingMode().buttonTextureNew))
-            .overlay(
-                new DynamicDrawable(
-                    () -> supportsVoidProtection() ? getVoidingMode().buttonOverlayNew
-                        : new DrawableArray(
-                            getVoidingMode().buttonOverlayNew,
-                            GTUITextures.OVERLAY_BUTTON_FORBIDDEN_NEW)))
-            .tooltipBuilder(t -> {
-                t.addLine(IKey.dynamic(() -> StatCollector.translateToLocal("GT5U.gui.button.voiding_mode")))
-                    .addLine(IKey.dynamic(() -> StatCollector.translateToLocal(getVoidingMode().getTransKey())));
-                if (!supportsVoidProtection()) {
-                    t.addLine(IKey.lang(BUTTON_FORBIDDEN_TOOLTIP));
-                }
-            });
-        return voidExcessButton;
-    }
-
-    private String getTooltipForShutdownReason(ShutDownReason lastShutDownReason, long eu) {
-        if (lastShutDownReason.getKey()
-            .equals(ShutDownReasonRegistry.STRUCTURE_INCOMPLETE.getKey())) {
-            return "Structure incomplete.";
-        } else if (eu == 0) {
-            return EnumChatFormatting.DARK_RED + "I don't have power!";
-        } else if (lastShutDownReason.getKey()
-            .equals(ShutDownReasonRegistry.POWER_LOSS.getKey())) {
-                return "Lost Power!";
-            } else if (lastShutDownReason.getKey()
-                .equals(ShutDownReasonRegistry.NO_REPAIR.getKey())) {
-                    return "Machine too damaged!";
-                } else if (lastShutDownReason.getKey()
-                    .equals(ShutDownReasonRegistry.NONE.getKey())) {
-                        return "Manual shutdown (get it?)";
-                    }
-        return "WTF?";
-    }
-
-    @Override
-    public boolean supportsPowerPanel() {
-        return false;
-    }
-
-    private com.cleanroommc.modularui.api.drawable.IDrawable getTextureForShutdownReason(IGregTechTileEntity tileEntity,
-        long eu) {
-        UITexture noRepairTexture = UITexture.builder()
-            .location(GregTech.ID, "gui/icons/wrenchFalse")
-            .imageSize(16, 16)
-            .build();
-
-        UITexture powerLossTexture = UITexture.builder()
-            .location(GregTech.ID, "gui/picture/stalled_electricity")
-            .imageSize(16, 16)
-            .build();
-
-        UITexture structureIncompleteTexture = UITexture.builder()
-            .location(GregTech.ID, "gui/icons/structureIncomplete")
-            .imageSize(16, 16)
-            .build();
-
-        UITexture manualShutdown = UITexture.builder()
-            .location(GregTech.ID, "gui/icons/manualShutdown")
-            .imageSize(16, 16)
-            .build();
-        UITexture unpowered = UITexture.builder()
-            .location(GregTech.ID, "gui/icons/unpowered")
-            .imageSize(16, 16)
-            .build();
-
-        ShutDownReason lastShutDownReason = tileEntity.getLastShutDownReason();
-        if (lastShutDownReason.getKey()
-            .equals(ShutDownReasonRegistry.STRUCTURE_INCOMPLETE.getKey())) {
-            return structureIncompleteTexture;
-        } else if (eu == 0) {
-            return unpowered;
-        } else if (lastShutDownReason.getKey()
-            .equals(ShutDownReasonRegistry.POWER_LOSS.getKey())) {
-                return powerLossTexture;
-            } else if (lastShutDownReason.getKey()
-                .equals(ShutDownReasonRegistry.NO_REPAIR.getKey())) {
-                    return noRepairTexture;
-                } else if (lastShutDownReason.getKey()
-                    .equals(ShutDownReasonRegistry.NONE.getKey())) {
-                        return manualShutdown;
-                    }
-        return null;
-    }
-
-    public void registerSyncValues(ModularPanel panel, PanelSyncManager syncManager) {
-        syncManager.syncValue(
-            "errors",
-            new GenericSyncValue<EnumSet<StructureError>>(
-                () -> structureErrors,
-                val -> { structureErrors = val; },
-                new StructureErrorAdapter()));
-        syncManager.syncValue("errorID", new IntSyncValue(this::getErrorDisplayID, this::setErrorDisplayID));
-        syncManager.syncValue(
-            "machineActive",
-            new BooleanSyncValue(
-                () -> getBaseMetaTileEntity().isActive(),
-                val -> getBaseMetaTileEntity().setActive(val)));
-
-        syncManager.syncValue("wrench", new BooleanSyncValue(() -> mWrench, val -> mWrench = val));
-        syncManager.syncValue("screwdriver", new BooleanSyncValue(() -> mScrewdriver, val -> mScrewdriver = val));
-        syncManager.syncValue("softHammer", new BooleanSyncValue(() -> mSoftHammer, val -> mSoftHammer = val));
-        syncManager.syncValue("hardHammer", new BooleanSyncValue(() -> mHardHammer, val -> mHardHammer = val));
-        syncManager.syncValue("solderingTool", new BooleanSyncValue(() -> mSolderingTool, val -> mSolderingTool = val));
-        syncManager.syncValue("crowbar", new BooleanSyncValue(() -> mCrowbar, val -> mCrowbar = val));
-        syncManager.syncValue("machine", new BooleanSyncValue(() -> mMachine, val -> mMachine = val));
-
-        syncManager.syncValue("totalRunTime", new LongSyncValue(() -> mTotalRunTime, time -> mTotalRunTime = time));
-        syncManager
-            .syncValue("lastWorkingTick", new LongSyncValue(() -> mLastWorkingTick, time -> mLastWorkingTick = time));
-        BooleanSyncValue wasShutDown = new BooleanSyncValue(
-            () -> getBaseMetaTileEntity().wasShutdown(),
-            val -> getBaseMetaTileEntity().setShutdownStatus(val));
-        syncManager.syncValue("wasShutdown", wasShutDown);
-        syncManager.syncValue(
-            "shutdownReason",
-            new GenericSyncValue<ShutDownReason>(
-                () -> getBaseMetaTileEntity().getLastShutDownReason(),
-                reason -> { getBaseMetaTileEntity().setShutDownReason(reason); },
-                new ShutdownReasonAdapter()));
-        syncManager.syncValue(
-            "checkRecipeResult",
-            new GenericSyncValue<CheckRecipeResult>(
-                () -> checkRecipeResult,
-                result -> { checkRecipeResult = result; },
-                new CheckRecipeResultAdapter()));
-        syncManager.syncValue(
-            "fluidOutput",
-            new GenericListSyncHandler<FluidStack>(
-                () -> mOutputFluids != null ? Arrays.stream(mOutputFluids)
-                    .map(fluidStack -> {
-                        if (fluidStack == null) return null;
-                        return new FluidStack(fluidStack, fluidStack.amount) {
-
-                            @Override
-                            public boolean isFluidEqual(FluidStack other) {
-                                return super.isFluidEqual(other) && amount == other.amount;
-                            }
-                        };
-                    })
-                    .collect(Collectors.toList()) : Collections.emptyList(),
-                val -> mOutputFluids = val.toArray(new FluidStack[0]),
-                NetworkUtils::readFluidStack,
-                NetworkUtils::writeFluidStack));
-        syncManager.syncValue(
-            "itemOutput",
-            new GenericListSyncHandler<ItemStack>(
-                () -> mOutputItems != null ? Arrays.asList(mOutputItems) : Collections.emptyList(),
-                val -> mOutputItems = val.toArray(new ItemStack[0]),
-                NetworkUtils::readItemStack,
-                NetworkUtils::writeItemStack));
-        syncManager.syncValue("progressTime", new IntSyncValue(() -> mProgresstime, val -> mProgresstime = val));
-        syncManager
-            .syncValue("maxProgressTime", new IntSyncValue(() -> mMaxProgresstime, val -> mMaxProgresstime = val));
-
-        StringSyncValue recipeInfoSyncer = new StringSyncValue(this::generateCurrentRecipeInfoString);
-        syncManager.syncValue("recipeInfo", recipeInfoSyncer);
-    }
-
-    public void addPowerPassButton(Flow buttonColumn, int yGap) {
-        com.cleanroommc.modularui.drawable.UITexture powerPassOn = com.cleanroommc.modularui.drawable.UITexture
-            .fullImage(MODID, "gui/overlay_button/power_pass_on");
-        com.cleanroommc.modularui.drawable.UITexture powerPassOff = com.cleanroommc.modularui.drawable.UITexture
-            .fullImage(MODID, "gui/overlay_button/power_pass_off");
-        com.cleanroommc.modularui.drawable.UITexture powerPassDisabled = com.cleanroommc.modularui.drawable.UITexture
-            .fullImage(MODID, "gui/overlay_button/power_pass_disabled");
-
-        buttonColumn.child(new ToggleButton().value(new BooleanSyncValue(() -> ePowerPass, bool -> {
-            if (!isAllowedToWorkButtonEnabled()) return;
-            ePowerPass = bool;
-            if (!isAllowedToWorkButtonEnabled()) { // TRANSFORMER HACK
-                if (ePowerPass) {
-                    getBaseMetaTileEntity().enableWorking();
-                } else {
-                    getBaseMetaTileEntity().disableWorking();
-                }
-            }
-        }))
-            .tooltip(tooltip -> tooltip.add("Power Switch"))
-            .size(18, 18)
-            .overlay(
-                new DynamicDrawable(
-                    () -> !isAllowedToWorkButtonEnabled() ? powerPassDisabled
-                        : ePowerPass ? powerPassOn : powerPassOff)));
-
-    }
-
-    public void addEditParametersButton(ModularPanel panel, PanelSyncManager syncManager, Flow buttonColumn) {
-        IPanelHandler infoPanel = syncManager
-            .panel("info_panel", (p_syncManager, syncHandler) -> getParameterPanel(panel, p_syncManager), true);
-        UITexture editParametersEnabled = UITexture.fullImage(MODID, "gui/overlay_button/edit_parameters");
-        UITexture editParametersDisabled = UITexture.fullImage(MODID, "gui/overlay_button/edit_parameters_disabled");
-        com.cleanroommc.modularui.widgets.ButtonWidget editParametersButton = new com.cleanroommc.modularui.widgets.ButtonWidget();
-        editParametersButton.overlay(new DynamicDrawable(() -> {
-            if (parameterList.isEmpty()) {
-                return editParametersDisabled.asIcon()
-                    .size(16, 16);
-            } else {
-                return editParametersEnabled.asIcon()
-                    .size(16, 16);
-            }
-        }));
-        editParametersButton.tooltip(new RichTooltip(editParametersButton).add("Edit Parameters"));
-        editParametersButton.size(18, 18);
-        editParametersButton.onMousePressed(mouseData -> {
-            if (parameterList.isEmpty()) return false;
-            if (!infoPanel.isPanelOpen()) {
-                infoPanel.openPanel();
-            } else {
-                infoPanel.closePanel();
-            }
-            return true;
-        });
-        buttonColumn.child(editParametersButton);
-    }
-
-    public void addPowerSwitchButtton(Flow buttonColumn) {
-        com.cleanroommc.modularui.drawable.UITexture powerSwitchOn = com.cleanroommc.modularui.drawable.UITexture
-            .fullImage(MODID, "gui/overlay_button/power_switch_on");
-        com.cleanroommc.modularui.drawable.UITexture powerSwitchOff = com.cleanroommc.modularui.drawable.UITexture
-            .fullImage(MODID, "gui/overlay_button/power_switch_off");
-        com.cleanroommc.modularui.drawable.UITexture powerSwitchDisabled = com.cleanroommc.modularui.drawable.UITexture
-            .fullImage(MODID, "gui/overlay_button/power_switch_disabled");
-
-        buttonColumn.child(new ToggleButton().value(new BooleanSyncValue(this::isAllowedToWork, bool -> {
-            if (!isAllowedToWorkButtonEnabled()) return;
-            if (bool) enableWorking();
-            else disableWorking();
-        }))
-            .tooltip(tooltip -> tooltip.add("Power Switch"))
-            .size(18, 18)
-            .overlay(
-                new DynamicDrawable(
-                    () -> !isAllowedToWorkButtonEnabled() ? powerSwitchDisabled
-                        : getBaseMetaTileEntity().isAllowedToWork() ? powerSwitchOn : powerSwitchOff)));
-    }
-
-    public boolean shouldMakePowerSwitchButtonEnabled() {
-        return true;
-    }
-
-    public boolean shouldMakeEditParametersButtonEnabled() {
-        return true;
-    }
-
-    public boolean shouldMakePowerPassButton() {
-        return true;
-    }
-
-    public void addGregtechLogo(ModularPanel panel) {
-        panel.child(
-            new SingleChildWidget<>().overlay(UITexture.fullImage(MODID, "gui/picture/tectech_logo_dark"))
-                .size(18, 18)
-                .pos(190 - 18 - 2, doesBindPlayerInventory() ? 91 - 18 - 2 : 171 - 18 - 2));
-    }
-
-    private ModularPanel getParameterPanel(ModularPanel parent, PanelSyncManager syncManager) {
-        Area parentArea = parent.getArea();
-        ModularPanel panel = new ModularPanel("parameters") {
-
-            @Override
-            public boolean isDraggable() {
-                return false;
-            }
-        }.size(125, 191)
-            .pos(parentArea.x + parentArea.width, parentArea.y);
-        ListWidget<IWidget, ?> parameterListWidget = new ListWidget<>();
-        parameterListWidget.sizeRel(1)
-            .margin(2);
-        for (Parameter<?> parameter : parameterList) {
-            if (!parameter.show) continue;
-            TextFieldWidget parameterField = new TextFieldWidget();
-            if (parameter instanceof Parameter.IntegerParameter intParameter) {
-                parameterField.value(new IntSyncValue(intParameter::getValue, intParameter::setValue))
-                    .setNumbers(intParameter::getMinValue, intParameter::getMaxValue);
-            } else if (parameter instanceof Parameter.DoubleParameter doubleParameter) {
-                parameterField.value(new DoubleSyncValue(doubleParameter::getValue, doubleParameter::setValue))
-                    .setNumbersDouble(
-                        val -> Math.max(doubleParameter.getMinValue(), Math.min(doubleParameter.getMaxValue(), val)));
-            } else if (parameter instanceof Parameter.StringParameter stringParameter) {
-                parameterField.value(new StringSyncValue(stringParameter::getValue, stringParameter::setValue));
-            }
-            parameterField.setText(parameter.getValueString());
-            parameterField.sizeRel(0.9f, 0.5f)
-                .align(com.cleanroommc.modularui.utils.Alignment.Center);
-
-            ToggleButton parameterButton = new ToggleButton();
-            if (parameter instanceof Parameter.BooleanParameter booleanParameter) {
-                parameterButton
-                    .value(new BooleanSyncValue(booleanParameter::getValue, bool -> booleanParameter.invert()))
-                    .overlay(
-                        false,
-                        UITexture.builder()
-                            .location(GregTech.ID, "gui/overlay_button/cross.png")
-                            .imageSize(18, 18)
-                            .build())
-                    .overlay(
-                        true,
-                        UITexture.builder()
-                            .location(GregTech.ID, "gui/overlay_button/checkmark.png")
-                            .imageSize(18, 18)
-                            .build())
-                    .align(com.cleanroommc.modularui.utils.Alignment.Center)
-                    .size(18, 18);
-            }
-
-            parameterListWidget.child(
-                new Column().heightRel(0.2f)
-                    .child(
-                        IKey.str(parameter.getLocalizedName())
-                            .asWidget()
-                            .alignment(com.cleanroommc.modularui.utils.Alignment.Center)
-                            .sizeRel(1, 0.5f))
-                    .child(
-                        new SingleChildWidget<>().sizeRel(1, 0.5f)
-                            .child(parameter instanceof Parameter.BooleanParameter ? parameterButton : parameterField))
-                    .marginBottom(2));
-        }
-        panel.child(parameterListWidget);
-
-        return panel;
-    }
-
-    public void insertTexts(ListWidget<IWidget, ?> machineInfo, ItemStackHandler invSlot, PanelSyncManager syncManager,
-        ModularPanel parentPanel) {
-        machineInfo.child(
-            new com.cleanroommc.modularui.widgets.TextWidget(GTUtility.trans("132", "Pipe is loose. (Wrench)"))
-                .color(COLOR_TEXT_WHITE.get())
-                .setEnabledIf(widget -> !mWrench)
-                .marginBottom(2)
-                .widthRel(1)
-
-        );
-
-        machineInfo.child(
-            new com.cleanroommc.modularui.widgets.TextWidget(GTUtility.trans("133", "Screws are loose. (Screwdriver)"))
-                .color(COLOR_TEXT_WHITE.get())
-                .setEnabledIf(widget -> !mScrewdriver)
-                .marginBottom(2)
-                .widthRel(1)
-
-        );
-
-        machineInfo.child(
-
-            new com.cleanroommc.modularui.widgets.TextWidget(
-                GTUtility.trans("134", "Something is stuck. (Soft Mallet)")).color(COLOR_TEXT_WHITE.get())
-                    .setEnabledIf(widget -> !mSoftHammer)
-                    .marginBottom(2)
-                    .widthRel(1)
-
-        );
-        machineInfo.child(
-
-            new com.cleanroommc.modularui.widgets.TextWidget(GTUtility.trans("135", "Platings are dented. (Hammer)"))
-                .color(COLOR_TEXT_WHITE.get())
-                .setEnabledIf(widget -> !mHardHammer)
-                .marginBottom(2)
-                .widthRel(1)
-
-        );
-
-        machineInfo.child(
-
-            new com.cleanroommc.modularui.widgets.TextWidget(
-                GTUtility.trans("136", "Circuitry burned out. (Soldering)")).color(COLOR_TEXT_WHITE.get())
-                    .setEnabledIf(widget -> !mSolderingTool)
-                    .marginBottom(2)
-                    .widthRel(1)
-
-        );
-
-        machineInfo.child(
-
-            new com.cleanroommc.modularui.widgets.TextWidget(
-                GTUtility.trans("137", "That doesn't belong there. (Crowbar)")).color(COLOR_TEXT_WHITE.get())
-                    .setEnabledIf(widget -> !mCrowbar)
-                    .marginBottom(2)
-                    .widthRel(1)
-
-        );
-
-        machineInfo.child(
-            new com.cleanroommc.modularui.widgets.TextWidget(GTUtility.trans("138", "Incomplete Structure."))
-                .color(COLOR_TEXT_WHITE.get())
-                .setEnabledIf(widget -> !mMachine)
-                .marginBottom(2)
-                .widthRel(1)
-
-        );
-
-        machineInfo.child(
-            new com.cleanroommc.modularui.widgets.TextWidget(
-                StatCollector.translateToLocal("GT5U.gui.text.too_uncertain")).color(COLOR_TEXT_WHITE.get())
-                    .setEnabledIf(widget -> (getErrorDisplayID() & 128) != 0)
-                    .marginBottom(2)
-                    .widthRel(1)
-
-        );
-
-        machineInfo.child(
-            new com.cleanroommc.modularui.widgets.TextWidget(
-                StatCollector.translateToLocal("GT5U.gui.text.invalid_parameters")).color(COLOR_TEXT_WHITE.get())
-                    .setEnabledIf(widget -> (getErrorDisplayID() & 256) != 0)
-                    .marginBottom(2)
-                    .widthRel(1)
-
-        );
-
-        machineInfo.child(
-            new com.cleanroommc.modularui.widgets.TextWidget(
-                GTUtility.trans("139", "Hit with Soft Mallet") + "\n"
-                    + GTUtility.trans("140", "to (re-)start the Machine")
-                    + "\n"
-                    + GTUtility.trans("141", "if it doesn't start.")).color(COLOR_TEXT_WHITE.get())
-                        .setEnabledIf(
-                            widget -> getErrorDisplayID() == 0 && !getBaseMetaTileEntity().isActive()
-                                && !getBaseMetaTileEntity().isAllowedToWork())
-                        .marginBottom(2)
-                        .widthRel(1)
-
-        );
-
-        machineInfo.child(
-            new com.cleanroommc.modularui.widgets.TextWidget(GTUtility.trans("142", "Running perfectly."))
-                .color(COLOR_TEXT_WHITE.get())
-                .setEnabledIf(widget -> getErrorDisplayID() == 0 && getBaseMetaTileEntity().isActive())
-                .marginBottom(2)
-                .widthRel(1)
-
-        );
-
-        com.cleanroommc.modularui.widgets.TextWidget shutdownDuration = IKey.dynamic(() -> {
-            Duration time = Duration.ofSeconds((mTotalRunTime - mLastWorkingTick) / 20);
-            return StatCollector.translateToLocalFormatted(
-                "GT5U.gui.text.shutdown_duration",
-                time.toHours(),
-                time.toMinutes() % 60,
-                time.getSeconds() % 60);
-        })
-            .asWidget()
-            .marginBottom(2)
-            .widthRel(1)
-            .setEnabledIf(
-                widget -> shouldDisplayShutDownReason() && !getBaseMetaTileEntity().isActive()
-                    && !getBaseMetaTileEntity().isAllowedToWork());
-
-        machineInfo.child(shutdownDuration);
-
-        com.cleanroommc.modularui.widgets.TextWidget shutdownReason = IKey
-            .dynamic(
-                () -> getBaseMetaTileEntity().getLastShutDownReason()
-                    .getDisplayString())
-            .asWidget()
-            .marginBottom(2)
-            .widthRel(1)
-            .setEnabledIf(
-                widget -> shouldDisplayShutDownReason() && !getBaseMetaTileEntity().isActive()
-                    && !getBaseMetaTileEntity().isAllowedToWork()
-                    && GTUtility.isStringValid(
-                        getBaseMetaTileEntity().getLastShutDownReason()
-                            .getDisplayString()));
-
-        machineInfo.child(shutdownReason);
-
-        com.cleanroommc.modularui.widgets.TextWidget checkRecipeResultWidget = IKey
-            .dynamic(() -> this.checkRecipeResult.getDisplayString())
-            .asWidget()
-            .marginBottom(2)
-            .widthRel(1)
-            .setEnabledIf(
-                widget -> shouldDisplayCheckRecipeResult()
-                    && GTUtility.isStringValid(checkRecipeResult.getDisplayString())
-                    && (isAllowedToWork() || getBaseMetaTileEntity().isActive()
-                        || checkRecipeResult.persistsOnShutdown()));
-        machineInfo.child(checkRecipeResultWidget);
-
-        if (showRecipeTextInGUI()) {
-            // Display current recipe
-            com.cleanroommc.modularui.widgets.TextWidget recipeInfoWidget = IKey
-                .dynamic(() -> ((StringSyncValue) syncManager.getSyncHandler("recipeInfo:0")).getValue())
-                .asWidget()
-                .marginBottom(2)
-                .widthRel(1)
-                .setEnabledIf(
-                    widget -> (((GenericListSyncHandler<?>) syncManager.getSyncHandler("itemOutput:0")).getValue()
-                        != null
-                        && !((GenericListSyncHandler<?>) syncManager.getSyncHandler("itemOutput:0")).getValue()
-                            .isEmpty())
-                        || ((GenericListSyncHandler<?>) syncManager.getSyncHandler("fluidOutput:0")).getValue() != null
-                            && !((GenericListSyncHandler<?>) syncManager.getSyncHandler("fluidOutput:0")).getValue()
-                                .isEmpty());
-            machineInfo.child(recipeInfoWidget);
-        }
-        machineInfo.onUpdateListener((bla) -> {
-            if (NetworkUtils.isClient()) {
-                WidgetTree.resize(machineInfo);
-            }
-        });
-    }
-
-    protected void addTitleTextStyle(ModularPanel panel, String title) {
-        final int TAB_PADDING = 3;
-        final int TITLE_PADDING = 2;
-        int titleWidth = 0, titleHeight = 0;
-        if (NetworkUtils.isClient()) {
-            final FontRenderer fontRenderer = Minecraft.getMinecraft().fontRenderer;
-            final List<String> titleLines = fontRenderer
-                .listFormattedStringToWidth(title, getGUIWidth() - (TAB_PADDING + TITLE_PADDING) * 2);
-            titleWidth = titleLines.size() > 1 ? getGUIWidth() - (TAB_PADDING + TITLE_PADDING) * 2
-                : fontRenderer.getStringWidth(title);
-            // noinspection PointlessArithmeticExpression
-            titleHeight = titleLines.size() * fontRenderer.FONT_HEIGHT + (titleLines.size() - 1) * 1;
-        }
-
-        final SingleChildWidget<?> tab = new SingleChildWidget<>();
-        final com.cleanroommc.modularui.widgets.TextWidget text = new TextWidget(title).color(0x404040)
-            .alignment(Alignment.CenterLeft)
-            .width(titleWidth);
-
-        com.cleanroommc.modularui.drawable.UITexture angular = com.cleanroommc.modularui.drawable.UITexture.builder()
-            .location(GregTech.ID, "gui/tab/title_angular_%s")
-            .adaptable(4)
-            .imageSize(18, 18)
-            .canApplyTheme(true)
-            .build();
-        com.cleanroommc.modularui.drawable.UITexture dark = UITexture.builder()
-            .location(GregTech.ID, "gui/tab/title_dark")
-            .adaptable(4)
-            .imageSize(28, 28)
-            .canApplyTheme(true)
-            .build();
-        if (GTMod.gregtechproxy.mTitleTabStyle == 1) {
-            panel.child(
-                angular.asWidget()
-                    .pos(0, -(titleHeight + TAB_PADDING) + 1)
-                    .size(getGUIWidth(), titleHeight + TAB_PADDING * 2));
-            text.pos(TAB_PADDING + TITLE_PADDING, -titleHeight + TAB_PADDING);
-        } else {
-            panel.child(
-                dark.asWidget()
-                    .pos(0, -(titleHeight + TAB_PADDING * 2) + 1)
-                    .size(titleWidth + (TAB_PADDING + TITLE_PADDING) * 2, titleHeight + TAB_PADDING * 2 - 1));
-            text.pos(TAB_PADDING + TITLE_PADDING, -titleHeight);
-        }
-        panel.child(text);
-    }
 
     @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
@@ -3267,6 +2261,73 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
                 if (val) getBaseMetaTileEntity().enableWorking();
                 else getBaseMetaTileEntity().disableWorking();
             }));
+
+        builder.widget(new DrawableWidget() {
+
+            @Override
+            public void draw(float partialTicks) {
+                super.draw(partialTicks);
+                LEDCounter = (byte) ((1 + LEDCounter) % 6);
+            }
+        }.setDrawable(TecTechUITextures.PICTURE_PARAMETER_BLANK)
+            .setPos(5, doesBindPlayerInventory() ? 96 : 176)
+            .setSize(166, 12));
+        for (int hatch = 0; hatch < 10; hatch++) {
+            for (int param = 0; param < 2; param++) {
+                int ledID = hatch + param * 10;
+                buildContext
+                    .addSyncedWindow(LED_WINDOW_BASE_ID + ledID, (player) -> createLEDConfigurationWindow(ledID));
+                addParameterLED(builder, hatch, param, true);
+                addParameterLED(builder, hatch, param, false);
+            }
+        }
+
+        if (doesBindPlayerInventory()) {
+            builder.widget(
+                new DrawableWidget().setDrawable(TecTechUITextures.PICTURE_UNCERTAINTY_MONITOR_MULTIMACHINE)
+                    .setPos(173, 96)
+                    .setSize(18, 18));
+            for (int i = 0; i < 9; i++) {
+                final int index = i;
+                builder.widget(new DrawableWidget().setDrawable(() -> {
+                    UITexture valid = TecTechUITextures.PICTURE_UNCERTAINTY_VALID[index];
+                    UITexture invalid = TecTechUITextures.PICTURE_UNCERTAINTY_INVALID[index];
+                    switch (eCertainMode) {
+                        case 1: // ooo oxo ooo
+                            if (index == 4) return eCertainStatus == 0 ? valid : invalid;
+                            break;
+                        case 2: // ooo xox ooo
+                            if (index == 3) return (eCertainStatus & 1) == 0 ? valid : invalid;
+                            if (index == 5) return (eCertainStatus & 2) == 0 ? valid : invalid;
+                            break;
+                        case 3: // oxo xox oxo
+                            if (index == 1) return (eCertainStatus & 1) == 0 ? valid : invalid;
+                            if (index == 3) return (eCertainStatus & 2) == 0 ? valid : invalid;
+                            if (index == 5) return (eCertainStatus & 4) == 0 ? valid : invalid;
+                            if (index == 7) return (eCertainStatus & 8) == 0 ? valid : invalid;
+                            break;
+                        case 4: // xox ooo xox
+                            if (index == 0) return (eCertainStatus & 1) == 0 ? valid : invalid;
+                            if (index == 2) return (eCertainStatus & 2) == 0 ? valid : invalid;
+                            if (index == 6) return (eCertainStatus & 4) == 0 ? valid : invalid;
+                            if (index == 8) return (eCertainStatus & 8) == 0 ? valid : invalid;
+                            break;
+                        case 5: // xox oxo xox
+                            if (index == 0) return (eCertainStatus & 1) == 0 ? valid : invalid;
+                            if (index == 2) return (eCertainStatus & 2) == 0 ? valid : invalid;
+                            if (index == 4) return (eCertainStatus & 4) == 0 ? valid : invalid;
+                            if (index == 6) return (eCertainStatus & 8) == 0 ? valid : invalid;
+                            if (index == 8) return (eCertainStatus & 16) == 0 ? valid : invalid;
+                            break;
+                    }
+                    return null;
+                })
+                    .setPos(174 + (index % 3) * 6, 97 + (index / 3) * 6)
+                    .setSize(4, 4));
+            }
+            builder.widget(new FakeSyncWidget.ByteSyncer(() -> eCertainMode, val -> eCertainMode = val))
+                .widget(new FakeSyncWidget.ByteSyncer(() -> eCertainStatus, val -> eCertainStatus = val));
+        }
     }
 
     protected ButtonWidget createPowerPassButton() {
@@ -3285,7 +2346,7 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
         })
             .setPlayClickSound(false)
             .setBackground(() -> {
-                List<com.gtnewhorizons.modularui.api.drawable.UITexture> ret = new ArrayList<>();
+                List<UITexture> ret = new ArrayList<>();
                 ret.add(TecTechUITextures.BUTTON_STANDARD_16x16);
                 if (!isPowerPassButtonEnabled() && !ePowerPassCover) {
                     ret.add(TecTechUITextures.OVERLAY_BUTTON_POWER_PASS_DISABLED);
@@ -3316,7 +2377,7 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
         })
             .setPlayClickSound(false)
             .setBackground(() -> {
-                List<com.gtnewhorizons.modularui.api.drawable.UITexture> ret = new ArrayList<>();
+                List<UITexture> ret = new ArrayList<>();
                 ret.add(TecTechUITextures.BUTTON_STANDARD_16x16);
                 if (!isSafeVoidButtonEnabled()) {
                     ret.add(TecTechUITextures.OVERLAY_BUTTON_SAFE_VOID_DISABLED);
@@ -3351,7 +2412,7 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
         })
             .setPlayClickSound(false)
             .setBackground(() -> {
-                List<com.gtnewhorizons.modularui.api.drawable.UITexture> ret = new ArrayList<>();
+                List<UITexture> ret = new ArrayList<>();
                 ret.add(TecTechUITextures.BUTTON_STANDARD_16x16);
                 if (!isAllowedToWorkButtonEnabled()) {
                     ret.add(TecTechUITextures.OVERLAY_BUTTON_POWER_SWITCH_DISABLED);
@@ -3373,89 +2434,170 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
         return (ButtonWidget) button;
     }
 
-    private class StructureErrorAdapter implements IByteBufAdapter<EnumSet<StructureError>> {
+    private ModularWindow createLEDConfigurationWindow(int ledID) {
+        return ModularWindow.builder(100, 40)
+            .setBackground(TecTechUITextures.BACKGROUND_SCREEN_BLUE)
+            .setPos(
+                (screenSize, mainWindow) -> new Pos2d(
+                    (screenSize.width / 2 - mainWindow.getSize().width / 2) - 110,
+                    (screenSize.height / 2 - mainWindow.getSize().height / 2)))
+            .widget(
+                ButtonWidget.closeWindowButton(true)
+                    .setPos(85, 3))
+            .widget(
+                new NumericWidget().setGetter(() -> parametrization.iParamsIn[ledID])
+                    .setSetter(val -> parametrization.iParamsIn[ledID] = val)
+                    .setIntegerOnly(false)
+                    .modifyNumberFormat(format -> format.setMaximumFractionDigits(8))
+                    .setTextColor(Color.LIGHT_BLUE.normal)
+                    .setTextAlignment(Alignment.CenterLeft)
+                    .setFocusOnGuiOpen(true)
+                    .setBackground(GTUITextures.BACKGROUND_TEXT_FIELD)
+                    .setPos(5, 20)
+                    .setSize(90, 15))
+            .widget(
+                new TextWidget((ledID % 10) + ":" + (ledID / 10) + ":I").setDefaultColor(Color.WHITE.normal)
+                    .setTextAlignment(Alignment.Center)
+                    .setPos(5, 5))
+            .build();
+    }
 
-        @Override
-        public EnumSet<StructureError> deserialize(PacketBuffer buffer) {
-            byte[] data = new byte[buffer.readVarIntFromBuffer()];
-            buffer.readBytes(data);
+    private void addParameterLED(ModularWindow.Builder builder, int hatch, int param, boolean input) {
+        final int parameterIndex = hatch + param * 10;
+        final int posIndex = hatch * 2 + param;
+        ButtonWidget ledWidget = new ButtonWidget() {
 
-            BitSet bits = BitSet.valueOf(data);
-
-            EnumSet<StructureError> out = EnumSet.noneOf(StructureError.class);
-
-            for (StructureError error : StructureError.values()) {
-                if (bits.get(error.ordinal())) {
-                    out.add(error);
+            @Override
+            public void draw(float partialTicks) {
+                IDrawable texture = null;
+                final LedStatus status = input ? parametrization.eParamsInStatus[parameterIndex]
+                    : parametrization.eParamsOutStatus[parameterIndex];
+                switch (status) {
+                    case STATUS_WTF: {
+                        int c = LEDCounter;
+                        if (c > 4) {
+                            c = TecTech.RANDOM.nextInt(5);
+                        }
+                        switch (c) {
+                            case 0:
+                                texture = TecTechUITextures.PICTURE_PARAMETER_BLUE[posIndex];
+                                break;
+                            case 1:
+                                texture = TecTechUITextures.PICTURE_PARAMETER_CYAN[posIndex];
+                                break;
+                            case 2:
+                                texture = TecTechUITextures.PICTURE_PARAMETER_GREEN[posIndex];
+                                break;
+                            case 3:
+                                texture = TecTechUITextures.PICTURE_PARAMETER_ORANGE[posIndex];
+                                break;
+                            case 4:
+                                texture = TecTechUITextures.PICTURE_PARAMETER_RED[posIndex];
+                                break;
+                        }
+                        break;
+                    }
+                    case STATUS_WRONG: // fallthrough
+                        if (LEDCounter < 2) {
+                            texture = TecTechUITextures.PICTURE_PARAMETER_BLUE[posIndex];
+                            break;
+                        } else if (LEDCounter < 4) {
+                            texture = TecTechUITextures.PICTURE_PARAMETER_RED[posIndex];
+                            break;
+                        }
+                    case STATUS_OK: // ok
+                        texture = TecTechUITextures.PICTURE_PARAMETER_GREEN[posIndex];
+                        break;
+                    case STATUS_TOO_LOW: // too low blink
+                        if (LEDCounter < 3) {
+                            texture = TecTechUITextures.PICTURE_PARAMETER_BLUE[posIndex];
+                            break;
+                        }
+                    case STATUS_LOW: // too low
+                        texture = TecTechUITextures.PICTURE_PARAMETER_CYAN[posIndex];
+                        break;
+                    case STATUS_TOO_HIGH: // too high blink
+                        if (LEDCounter < 3) {
+                            texture = TecTechUITextures.PICTURE_PARAMETER_RED[posIndex];
+                            break;
+                        }
+                    case STATUS_HIGH: // too high
+                        texture = TecTechUITextures.PICTURE_PARAMETER_ORANGE[posIndex];
+                        break;
+                    case STATUS_NEUTRAL:
+                        if (LEDCounter < 3) {
+                            GL11.glColor4f(.85f, .9f, .95f, .5F);
+                        } else {
+                            GL11.glColor4f(.8f, .9f, 1f, .5F);
+                        }
+                        texture = TecTechUITextures.PICTURE_PARAMETER_GRAY;
+                        break;
+                    case STATUS_UNDEFINED:
+                        if (LEDCounter < 3) {
+                            GL11.glColor4f(.5f, .1f, .15f, .5F);
+                        } else {
+                            GL11.glColor4f(0f, .1f, .2f, .5F);
+                        }
+                        texture = TecTechUITextures.PICTURE_PARAMETER_GRAY;
+                        break;
+                    case STATUS_UNUSED:
+                    default:
+                        // no-op
+                        break;
                 }
+                setBackground(texture);
+                GL11.glColor4f(1f, 1f, 1f, 1f);
             }
-
-            return out;
-        }
-
-        @Override
-        public void serialize(PacketBuffer buffer, EnumSet<StructureError> errors) {
-            BitSet bits = new BitSet();
-
-            for (StructureError error : errors) {
-                bits.set(error.ordinal());
+        }.setOnClick((clickData, widget) -> {
+            if (!widget.isClient() && input
+                && parametrization.eParamsInStatus[parameterIndex] != LedStatus.STATUS_UNUSED) {
+                // We don't use CloseAllButMain here in case MB implementation adds their own window
+                for (int i = 0; i < parametrization.eParamsInStatus.length; i++) {
+                    if (widget.getContext()
+                        .isWindowOpen(LED_WINDOW_BASE_ID + i)) {
+                        widget.getContext()
+                            .closeWindow(LED_WINDOW_BASE_ID + i);
+                    }
+                }
+                widget.getContext()
+                    .openSyncedWindow(LED_WINDOW_BASE_ID + parameterIndex);
             }
-
-            byte[] data = bits.toByteArray();
-
-            buffer.writeVarIntToBuffer(data.length);
-            buffer.writeBytes(data);
-        }
-
-        @Override
-        public boolean areEqual(@NotNull EnumSet<StructureError> t1, @NotNull EnumSet<StructureError> t2) {
-            return false;
-        }
-    }
-
-    private class ShutdownReasonAdapter implements IByteBufAdapter<ShutDownReason> {
-
-        @Override
-        public ShutDownReason deserialize(PacketBuffer buffer) throws IOException {
-            String id = NetworkUtils.readStringSafe(buffer);
-            ShutDownReason result = ShutDownReasonRegistry.getSampleFromRegistry(id)
-                .newInstance();
-            result.decode(buffer);
-            return result;
-        }
-
-        @Override
-        public void serialize(PacketBuffer buffer, ShutDownReason result) throws IOException {
-            NetworkUtils.writeStringSafe(buffer, result.getID());
-            result.encode(buffer);
-        }
-
-        @Override
-        public boolean areEqual(@NotNull ShutDownReason t1, @NotNull ShutDownReason t2) {
-            return false;
-        }
-    }
-
-    private class CheckRecipeResultAdapter implements IByteBufAdapter<CheckRecipeResult> {
-
-        @Override
-        public CheckRecipeResult deserialize(PacketBuffer buffer) throws IOException {
-            String id = NetworkUtils.readStringSafe(buffer);
-            CheckRecipeResult result = CheckRecipeResultRegistry.getSampleFromRegistry(id)
-                .newInstance();
-            result.decode(buffer);
-            return result;
-        }
-
-        @Override
-        public void serialize(PacketBuffer buffer, CheckRecipeResult result) throws IOException {
-            NetworkUtils.writeStringSafe(buffer, result.getID());
-            result.encode(buffer);
-        }
-
-        @Override
-        public boolean areEqual(@NotNull CheckRecipeResult t1, @NotNull CheckRecipeResult t2) {
-            return false;
+        });
+        builder.widget(ledWidget.dynamicTooltip(() -> {
+            if (input) {
+                return getFullLedDescriptionIn(hatch, param);
+            } else {
+                return getFullLedDescriptionOut(hatch, param);
+            }
+        })
+            .setPos(12 + posIndex * 8, (doesBindPlayerInventory() ? 97 : 177) + (input ? 0 : 1) * 6)
+            .setSize(6, 4));
+        if (input) {
+            builder
+                .widget(
+                    new FakeSyncWidget.ByteSyncer(
+                        () -> parametrization.eParamsInStatus[parameterIndex].getOrdinalByte(),
+                        val -> parametrization.eParamsInStatus[parameterIndex] = LedStatus.getStatus(val))
+                            .setOnClientUpdate(val -> ledWidget.notifyTooltipChange()))
+                .widget(
+                    new FakeSyncWidget.DoubleSyncer(
+                        () -> parametrization.iParamsIn[parameterIndex],
+                        val -> parametrization.iParamsIn[parameterIndex] = val)
+                            .setOnClientUpdate(val -> ledWidget.notifyTooltipChange()));
+        } else {
+            builder
+                .widget(
+                    new FakeSyncWidget.ByteSyncer(
+                        () -> parametrization.eParamsOutStatus[parameterIndex].getOrdinalByte(),
+                        val -> parametrization.eParamsOutStatus[parameterIndex] = LedStatus.getStatus(val))
+                            .setOnClientUpdate(val -> ledWidget.notifyTooltipChange()))
+                .widget(
+                    new FakeSyncWidget.DoubleSyncer(
+                        () -> parametrization.iParamsOut[parameterIndex],
+                        val -> parametrization.iParamsOut[parameterIndex] = val)
+                            .setOnClientUpdate(val -> ledWidget.notifyTooltipChange()));
         }
     }
+
+    // endregion
 }

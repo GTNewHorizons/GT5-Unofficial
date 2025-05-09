@@ -383,7 +383,7 @@ gui.AntimatterForge.3=Antimatter Change
 gui.AntimatterGenerator.0=EU Produced
 gui.AntimatterGenerator.1=Efficiency
 batch_mode.cfgi.0=Batch Size
-gt.blockmachines.YottaFluidTank.cfgi.0=Ticks Between I/O Update
+gt.blockmachines.YottaFluidTank.cfgi.0=Tick rate (Update I/O every x ticks)
 
 # RecipeMaps
 gg.recipe.naquadah_reactor=Large Naquadah Reactor

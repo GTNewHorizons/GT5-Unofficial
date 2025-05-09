@@ -170,8 +170,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
     protected boolean inputSeparation = getDefaultInputSeparationMode();
     protected VoidingMode voidingMode = getDefaultVoidingMode();
     protected boolean batchMode = getDefaultBatchMode();
-    @Nonnull
-    public CheckRecipeResult checkRecipeResult = CheckRecipeResultRegistry.NONE;
+    protected @Nonnull CheckRecipeResult checkRecipeResult = CheckRecipeResultRegistry.NONE;
     protected int powerPanelMaxParallel = 1;
     protected boolean alwaysMaxParallel = true;
     protected int maxParallel = 1;
@@ -210,7 +209,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
     private final int randomTickOffset = (int) (Math.random() * CHECK_INTERVAL + 1);
 
     /** A list of unparameterized structure errors. */
-    public EnumSet<StructureError> structureErrors = EnumSet.noneOf(StructureError.class);
+    private EnumSet<StructureError> structureErrors = EnumSet.noneOf(StructureError.class);
 
     /**
      * Any implementation-defined error data.
@@ -2720,10 +2719,6 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
     public int nextMachineMode() {
         if (machineMode == 0) return 1;
         else return 0;
-    }
-
-    public int machineModes() {
-        return 2;
     }
 
     @Override

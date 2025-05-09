@@ -27,7 +27,10 @@ import gtnhintergalactic.recipe.ResultNoSpaceProject;
 import gtnhintergalactic.tile.multi.elevator.ElevatorUtil;
 import gtnhintergalactic.tile.multi.elevator.TileEntitySpaceElevator;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
-import tectech.thing.metaTileEntity.multi.base.Parameter;
+import tectech.thing.metaTileEntity.multi.base.INameFunction;
+import tectech.thing.metaTileEntity.multi.base.IStatusFunction;
+import tectech.thing.metaTileEntity.multi.base.LedStatus;
+import tectech.thing.metaTileEntity.multi.base.Parameters;
 import tectech.thing.metaTileEntity.multi.base.render.TTRenderedExtendedFacingTexture;
 
 /**
@@ -37,10 +40,17 @@ import tectech.thing.metaTileEntity.multi.base.render.TTRenderedExtendedFacingTe
  */
 public abstract class TileEntityModuleAssembler extends TileEntityModuleBase implements IOverclockDescriptionProvider {
 
-    private Parameter.IntegerParameter parallelParameter;
+    /** Name of the parallel setting */
+    private static final INameFunction<TileEntityModuleAssembler> PARALLEL_SETTING_NAME = (base, p) -> GCCoreUtil
+        .translate("gt.blockmachines.multimachine.project.ig.assembler.cfgi.0"); // Parallels
+    /** Status of the parallel setting */
+    private static final IStatusFunction<TileEntityModuleAssembler> PARALLEL_STATUS = (base, p) -> LedStatus
+        .fromLimitsInclusiveOuterBoundary(p.get(), 0, 1, 100, base.getMaxParallels());
 
     /** Power object used for displaying in NEI */
     protected final OverclockDescriber overclockDescriber;
+    /** Input parameters */
+    Parameters.Group.ParameterIn parallelSetting;
 
     /**
      * Create new Space Assembler module
@@ -133,17 +143,17 @@ public abstract class TileEntityModuleAssembler extends TileEntityModuleBase imp
                 return CheckRecipeResultRegistry.SUCCESSFUL;
             }
         }.setAmperageOC(false)
-            .setMaxParallelSupplier(() -> Math.min(getMaxParallels(), (int) parallelParameter.getValue()));
+            .setMaxParallelSupplier(() -> Math.min(getMaxParallels(), (int) parallelSetting.get()));
     }
 
+    /**
+     * Instantiate parameters of the controller
+     */
     @Override
-    protected void initParameters() {
-        parallelParameter = new Parameter.IntegerParameter(
-            getMaxParallels(),
-            () -> 1,
-            () -> getMaxParallels(),
-            "tt.spaceminer.parallel");
-        parameterList.add(parallelParameter);
+    protected void parametersInstantiation_EM() {
+        super.parametersInstantiation_EM();
+        Parameters.Group hatch_0 = parametrization.getGroup(0, false);
+        parallelSetting = hatch_0.makeInParameter(0, getMaxParallels(), PARALLEL_SETTING_NAME, PARALLEL_STATUS);
     }
 
     /** Texture that will be displayed on the side of the module */

@@ -311,9 +311,4 @@ public class MTEEnergyInfuser extends TTMultiblockBase implements ISurvivalConst
     public boolean isAllowedToWorkButtonEnabled() {
         return true;
     }
-
-    @Override
-    protected boolean forceUseMui2() {
-        return true;
-    }
 }

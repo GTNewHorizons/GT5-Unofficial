@@ -2,11 +2,10 @@ package goodgenerator.blocks.tileEntity;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static goodgenerator.util.CharExchanger.formatNumber;
-import static gregtech.api.enums.Mods.GregTech;
+import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 import static gregtech.api.util.GTStructureUtility.*;
 import static java.lang.String.valueOf;
 import static net.minecraft.util.StatCollector.translateToLocal;
-import static tectech.Reference.MODID;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
@@ -26,26 +25,6 @@ import net.minecraftforge.fluids.FluidTankInfo;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 
-import com.cleanroommc.modularui.api.drawable.IKey;
-import com.cleanroommc.modularui.api.widget.IWidget;
-import com.cleanroommc.modularui.drawable.DrawableArray;
-import com.cleanroommc.modularui.drawable.GuiTextures;
-import com.cleanroommc.modularui.factory.PosGuiData;
-import com.cleanroommc.modularui.screen.ModularPanel;
-import com.cleanroommc.modularui.utils.NumberFormat;
-import com.cleanroommc.modularui.utils.item.ItemStackHandler;
-import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
-import com.cleanroommc.modularui.value.sync.DoubleSyncValue;
-import com.cleanroommc.modularui.value.sync.PanelSyncManager;
-import com.cleanroommc.modularui.value.sync.StringSyncValue;
-import com.cleanroommc.modularui.value.sync.SyncHandlers;
-import com.cleanroommc.modularui.widget.SingleChildWidget;
-import com.cleanroommc.modularui.widgets.ItemSlot;
-import com.cleanroommc.modularui.widgets.ListWidget;
-import com.cleanroommc.modularui.widgets.SlotGroupWidget;
-import com.cleanroommc.modularui.widgets.layout.Column;
-import com.cleanroommc.modularui.widgets.layout.Flow;
-import com.cleanroommc.modularui.widgets.layout.Row;
 import com.gtnewhorizon.structurelib.alignment.constructable.IConstructable;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
@@ -53,9 +32,18 @@ import com.gtnewhorizon.structurelib.structure.IStructureElement;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.gtnewhorizons.modularui.api.NumberFormatMUI;
+import com.gtnewhorizons.modularui.api.drawable.IDrawable;
+import com.gtnewhorizons.modularui.api.drawable.UITexture;
+import com.gtnewhorizons.modularui.api.math.Alignment;
+import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
+import com.gtnewhorizons.modularui.common.widget.DynamicPositionedColumn;
+import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
+import com.gtnewhorizons.modularui.common.widget.SlotWidget;
+import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
 import goodgenerator.blocks.tileEntity.GTMetaTileEntity.MTEYOTTAHatch;
 import goodgenerator.blocks.tileEntity.base.MTETooltipMultiBlockBaseEM;
+import goodgenerator.client.GUI.GGUITextures;
 import goodgenerator.loader.Loaders;
 import goodgenerator.util.DescTextLocalization;
 import gregtech.api.enums.Materials;
@@ -66,19 +54,19 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.metatileentity.implementations.MTEHatchOutput;
-import gregtech.api.modularui2.GTGuiTheme;
-import gregtech.api.modularui2.GTGuiThemes;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.LongRunningAverage;
 import gregtech.api.util.MultiblockTooltipBuilder;
-import gregtech.common.gui.modularui.widget.FluidDisplaySyncHandler;
-import gregtech.common.gui.modularui.widget.FluidSlotDisplayOnly;
 import gregtech.common.misc.GTStructureChannels;
-import gregtech.common.modularui2.widget.TransparentSingleChildWidget;
-import tectech.thing.metaTileEntity.multi.base.Parameter;
+import tectech.TecTech;
+import tectech.thing.gui.TecTechUITextures;
+import tectech.thing.metaTileEntity.multi.base.INameFunction;
+import tectech.thing.metaTileEntity.multi.base.IStatusFunction;
+import tectech.thing.metaTileEntity.multi.base.LedStatus;
+import tectech.thing.metaTileEntity.multi.base.Parameters;
 
 public class MTEYottaFluidTank extends MTETooltipMultiBlockBaseEM implements IConstructable, ISurvivalConstructable {
 
@@ -111,7 +99,7 @@ public class MTEYottaFluidTank extends MTETooltipMultiBlockBaseEM implements ICo
     protected boolean isFluidLocked = false;
     protected int glassTier = -1;
     protected int maxCell;
-    protected final String YOTTANK_BOTTOM = mName + "bottom";
+    protected final String YOTTANK_BOTTOM = mName + "buttom";
     protected final String YOTTANK_MID = mName + "mid";
     protected final String YOTTANK_TOP = mName + "top";
     protected final NumberFormatMUI numberFormat = new NumberFormatMUI();
@@ -124,16 +112,19 @@ public class MTEYottaFluidTank extends MTETooltipMultiBlockBaseEM implements ICo
     private final LongRunningAverage fluidInputValues1m = new LongRunningAverage(60 * 20);
     private final LongRunningAverage fluidOutputValues1m = new LongRunningAverage(60 * 20);
 
-    protected Parameter.IntegerParameter tickRateUpdate;
+    protected Parameters.Group.ParameterIn tickRateSettings;
+
+    /** Name of the tick rate setting */
+    private static final INameFunction<MTEYottaFluidTank> TICK_RATE_SETTING_NAME = (base,
+        p) -> translateToLocal("gt.blockmachines.YottaFluidTank.cfgi.0");
+    /** Status of the tick rate setting */
+    private static final IStatusFunction<MTEYottaFluidTank> TICK_RATE_STATUS = (base, p) -> LedStatus
+        .fromLimitsInclusiveOuterBoundary(p.get(), 1, 0, 100, 100);
 
     @Override
-    protected void initParameters() {
-        tickRateUpdate = new Parameter.IntegerParameter(
-            20,
-            () -> 1,
-            () -> 100,
-            "gt.blockmachines.YottaFluidTank.cfgi.0");
-        parameterList.add(tickRateUpdate);
+    protected void parametersInstantiation_EM() {
+        tickRateSettings = parametrization.getGroup(9, true)
+            .makeInParameter(1, 20, TICK_RATE_SETTING_NAME, TICK_RATE_STATUS);
     }
 
     public MTEYottaFluidTank(int id, String name, String nameRegional) {
@@ -175,7 +166,6 @@ public class MTEYottaFluidTank extends MTETooltipMultiBlockBaseEM implements ICo
         mLockedFluid = FluidRegistry.getFluidStack(aNBT.getString("mLockedFluidName"), 1);
         voidExcessEnabled = aNBT.getBoolean("voidExcessEnabled");
         isFluidLocked = aNBT.getBoolean("isFluidLocked");
-        tickRateUpdate.setValue(aNBT.getInteger("tickRate"));
         super.loadNBTData(aNBT);
     }
 
@@ -195,7 +185,6 @@ public class MTEYottaFluidTank extends MTETooltipMultiBlockBaseEM implements ICo
                     .getName());
         aNBT.setBoolean("voidExcessEnabled", voidExcessEnabled);
         aNBT.setBoolean("isFluidLocked", isFluidLocked);
-        aNBT.setInteger("tickRate", tickRateUpdate.getValue());
         super.saveNBTData(aNBT);
     }
 
@@ -497,7 +486,7 @@ public class MTEYottaFluidTank extends MTETooltipMultiBlockBaseEM implements ICo
         long totalInput = 0;
         long totalOutput = 0;
 
-        long tickRate = Math.min(100L, Math.max(1L, (long) tickRateUpdate.getValue()));
+        long tickRate = Math.min(100L, Math.max(1L, (long) tickRateSettings.get()));
         ++workTickCounter;
         if (workTickCounter < tickRate) {
             fluidInputValues1m.update(totalInput);
@@ -695,270 +684,94 @@ public class MTEYottaFluidTank extends MTETooltipMultiBlockBaseEM implements ICo
     }
 
     @Override
-    public boolean forceUseMui2() {
-        return true;
+    protected void drawTexts(DynamicPositionedColumn screenElements, SlotWidget inventorySlot) {
+        super.drawTexts(screenElements, inventorySlot);
+
+        screenElements
+            .widget(
+                new TextWidget().setStringSupplier(
+                    () -> StatCollector.translateToLocal("gui.YOTTank.0") + " " + numberFormat.format(mStorage) + " L")
+                    .setTextAlignment(Alignment.CenterLeft)
+                    .setDefaultColor(COLOR_TEXT_WHITE.get())
+                    .setEnabled(widget -> getErrorDisplayID() == 0))
+            .widget(new FakeSyncWidget.BigIntegerSyncer(() -> mStorage, val -> mStorage = val))
+            .widget(
+                new TextWidget()
+                    .setStringSupplier(() -> StatCollector.translateToLocal("gui.YOTTank.1") + " " + getFluidName())
+                    .setTextAlignment(Alignment.CenterLeft)
+                    .setDefaultColor(COLOR_TEXT_WHITE.get())
+                    .setEnabled(widget -> getErrorDisplayID() == 0))
+            .widget(new FakeSyncWidget.FluidStackSyncer(() -> mFluid, val -> mFluid = val))
+            .widget(
+                new TextWidget()
+                    .setStringSupplier(
+                        () -> StatCollector.translateToLocal("gui.YOTTank.2") + " "
+                            + numberFormat.format(mStorageCurrent)
+                            + EnumChatFormatting.RESET
+                            + " L"
+                            + " ("
+                            + EnumChatFormatting.GREEN
+                            + getPercent()
+                            + "%"
+                            + EnumChatFormatting.RESET
+                            + ")")
+                    .setTextAlignment(Alignment.CenterLeft)
+                    .setDefaultColor(COLOR_TEXT_WHITE.get())
+                    .setEnabled(widget -> getErrorDisplayID() == 0))
+            .widget(new FakeSyncWidget.BigIntegerSyncer(() -> mStorageCurrent, val -> mStorageCurrent = val))
+            .widget(
+                new TextWidget()
+                    .setStringSupplier(
+                        () -> StatCollector.translateToLocal("gui.YOTTank.3") + " " + getLockedFluidName())
+                    .setDefaultColor(COLOR_TEXT_WHITE.get())
+                    .setTextAlignment(Alignment.CenterLeft)
+                    .setEnabled(widget -> getErrorDisplayID() == 0))
+            .widget(new FakeSyncWidget.FluidStackSyncer(() -> mLockedFluid, val -> mLockedFluid = val))
+            .widget(new FakeSyncWidget.BooleanSyncer(() -> isFluidLocked, val -> isFluidLocked = val))
+            .widget(new FakeSyncWidget.BooleanSyncer(() -> voidExcessEnabled, val -> voidExcessEnabled = val));
     }
 
     @Override
-    protected int[] mainTerminalSize() {
-        return new int[] { 135, 91 };
+    protected ButtonWidget createSafeVoidButton() {
+        return (ButtonWidget) new ButtonWidget().setOnClick((clickData, widget) -> {
+            TecTech.proxy.playSound(getBaseMetaTileEntity(), "fx_click");
+            voidExcessEnabled = !voidExcessEnabled;
+        })
+            .setPlayClickSound(false)
+            .setBackground(() -> {
+                List<UITexture> ret = new ArrayList<>();
+                ret.add(TecTechUITextures.BUTTON_STANDARD_16x16);
+                ret.add(
+                    voidExcessEnabled ? TecTechUITextures.OVERLAY_BUTTON_SAFE_VOID_ON
+                        : TecTechUITextures.OVERLAY_BUTTON_SAFE_VOID_OFF);
+                return ret.toArray(new IDrawable[0]);
+            })
+            .setPos(174, doesBindPlayerInventory() ? 132 : 156)
+            .setSize(16, 16)
+            .addTooltip(StatCollector.translateToLocal("gui.YOTTank.button.void"))
+            .setTooltipShowUpDelay(TOOLTIP_DELAY);
     }
 
     @Override
-    protected int[] machineInfoSize() {
-        return new int[] { 123, 85 };
+    protected ButtonWidget createPowerPassButton() {
+        return (ButtonWidget) new ButtonWidget().setOnClick((clickData, widget) -> {
+            TecTech.proxy.playSound(getBaseMetaTileEntity(), "fx_click");
+            isFluidLocked = !isFluidLocked;
+            if (!widget.getContext()
+                .isClient()) mLockedFluid = isFluidLocked ? mFluid : null;
+        })
+            .setPlayClickSound(false)
+            .setBackground(() -> {
+                List<UITexture> ret = new ArrayList<>();
+                ret.add(TecTechUITextures.BUTTON_STANDARD_16x16);
+                ret.add(isFluidLocked ? GGUITextures.OVERLAY_BUTTON_LOCK_ON : GGUITextures.OVERLAY_BUTTON_LOCK_OFF);
+                return ret.toArray(new IDrawable[0]);
+            })
+            .setPos(174, doesBindPlayerInventory() ? 116 : 140)
+            .setSize(16, 16)
+            .addTooltip(StatCollector.translateToLocal("gui.YOTTank.button.locking"))
+            .setTooltipShowUpDelay(TOOLTIP_DELAY);
     }
-
-    @Override
-    protected GTGuiTheme getGuiTheme() {
-        return GTGuiThemes.TRANSPARENT_FLUID_SLOT;
-    }
-
-    @Override
-    public void insertTexts(ListWidget<IWidget, ?> machineInfo, ItemStackHandler invSlot, PanelSyncManager syncManager,
-        ModularPanel parentPanel) {
-
-        DoubleSyncValue maxStorageSyncer = (DoubleSyncValue) syncManager.getSyncHandler("maxStorage:0");
-
-        DoubleSyncValue currentStorageSyncer = (DoubleSyncValue) syncManager.getSyncHandler("currentStorage:0");
-
-        StringSyncValue percentageSyncer = (StringSyncValue) syncManager.getSyncHandler("percentage:0");
-
-        StringSyncValue timeTo = new StringSyncValue(this::getTimeTo);
-        syncManager.syncValue("timeTo", timeTo);
-
-        machineInfo.child(
-            IKey.dynamic(
-                () -> StatCollector.translateToLocal("gui.YOTTank.0") + " "
-                    + NumberFormat.formatWithMaxDigits(maxStorageSyncer.getDoubleValue(), 3))
-                .asWidget()
-                .alignment(com.cleanroommc.modularui.utils.Alignment.CenterLeft)
-                .color(COLOR_TEXT_WHITE.get())
-                .widthRel(1)
-                .marginBottom(2)
-                .setEnabledIf(w -> getErrorDisplayID() == 0));
-
-        machineInfo.child(
-            IKey.dynamic(
-                () -> StatCollector.translateToLocal("gui.YOTTank.2") + " "
-                    + (currentStorageSyncer.getValue() == 0 ? "0"
-                        : NumberFormat.formatWithMaxDigits(currentStorageSyncer.getValue(), 3))
-                    + " ("
-                    + EnumChatFormatting.GREEN
-                    + percentageSyncer.getStringValue()
-                    + "%"
-                    + EnumChatFormatting.RESET
-                    + ")")
-                .asWidget()
-                .alignment(com.cleanroommc.modularui.utils.Alignment.CenterLeft)
-                .color(COLOR_TEXT_WHITE.get())
-                .widthRel(1)
-                .marginBottom(2)
-                .setEnabledIf(w -> getErrorDisplayID() == 0));
-
-        machineInfo.child(
-            IKey.dynamic(timeTo::getStringValue)
-                .asWidget()
-                .alignment(com.cleanroommc.modularui.utils.Alignment.CenterLeft)
-                .color(COLOR_TEXT_WHITE.get())
-                .widthRel(1)
-                .marginBottom(2)
-                .setEnabledIf(w -> getErrorDisplayID() == 0));
-    }
-
-    @Override
-    public ModularPanel buildUI(PosGuiData guiData, PanelSyncManager syncManager) {
-
-        DoubleSyncValue maxStorageSyncer = new DoubleSyncValue(() -> mStorage.doubleValue());
-        syncManager.syncValue("maxStorage", maxStorageSyncer);
-
-        DoubleSyncValue currentStorageSyncer = new DoubleSyncValue(() -> mStorageCurrent.doubleValue());
-        syncManager.syncValue("currentStorage", currentStorageSyncer);
-
-        StringSyncValue percentageSyncer = new StringSyncValue(this::getPercent);
-        syncManager.syncValue("percentage", percentageSyncer);
-
-        FluidDisplaySyncHandler storedFluid = new FluidDisplaySyncHandler(() -> mFluid);
-        syncManager.syncValue("storedFluid", storedFluid);
-
-        FluidDisplaySyncHandler lockedFluid = new FluidDisplaySyncHandler(
-            () -> mLockedFluid,
-            aFluid -> mLockedFluid = aFluid);
-        syncManager.syncValue("lockedFluid", lockedFluid);
-
-        BooleanSyncValue locked = new BooleanSyncValue(() -> isFluidLocked, bool -> isFluidLocked = bool);
-        syncManager.syncValue("isLocked", locked);
-
-        com.cleanroommc.modularui.drawable.UITexture bg = com.cleanroommc.modularui.drawable.UITexture.builder()
-            .location(MODID, "gui/background/screen_blue")
-            .adaptable(2)
-            .imageSize(90, 72)
-            .canApplyTheme(true)
-            .build();
-        com.cleanroommc.modularui.drawable.UITexture bgNoInv = com.cleanroommc.modularui.drawable.UITexture.builder()
-            .location(MODID, "gui/background/screen_blue_no_inventory")
-            .canApplyTheme(true)
-            .build();
-        com.cleanroommc.modularui.drawable.UITexture mesh = com.cleanroommc.modularui.drawable.UITexture.builder()
-            .location(MODID, "gui/overlay_slot/mesh")
-            .canApplyTheme(true)
-            .build();
-        com.cleanroommc.modularui.drawable.UITexture heatSinkSmall = com.cleanroommc.modularui.drawable.UITexture
-            .builder()
-            .location(MODID, "gui/picture/heat_sink_small")
-            .canApplyTheme(true)
-            .build();
-        ModularPanel panel = new ModularPanel("tt_multiblock");
-        int textBoxToInventoryGap = 26;
-        panel.size(198, 181 + textBoxToInventoryGap)
-            .padding(4);
-
-        registerSyncValues(panel, syncManager);
-
-        ListWidget<IWidget, ?> machineInfo = new ListWidget<>().size(machineInfoSize()[0], machineInfoSize()[1])
-            .pos(6, 3);
-
-        Flow panelColumn = new Column().sizeRel(1);
-        Flow panelTopRow = new Row().widthRel(1)
-            .height(91);
-        panelColumn.child(panelTopRow);
-        panelTopRow.child(
-            new SingleChildWidget<>().size(mainTerminalSize()[0], mainTerminalSize()[1])
-                .overlay(bg)
-                .child(machineInfo)
-                .alignX(0));
-        final ItemStackHandler invSlot = new ItemStackHandler(1);
-        Flow inventoryRow = new Row().widthRel(1)
-            .height(90)
-            .alignX(0);
-        Flow buttonColumn = new Column().width(18)
-            .leftRel(1, -2, 1);
-        if (doesBindPlayerInventory()) {
-            inventoryRow.child(
-                SlotGroupWidget.playerInventory(0)
-                    .leftRel(0)
-                    .marginLeft(4));
-        }
-
-        Flow panelGap = new Row().widthRel(1)
-            .paddingRight(6)
-            .height(textBoxToInventoryGap);
-        insertThingsInGap(panelGap, syncManager, panel);
-        panelColumn.child(panelGap);
-
-        FluidSlotDisplayOnly fluidDisplay = new FluidSlotDisplayOnly(
-            () -> Double.parseDouble(percentageSyncer.getStringValue()) / 100) {
-
-            @NotNull
-            @Override
-            public Result onMousePressed(int mouseButton) {
-                if (!locked.getBoolValue()) {
-                    if (storedFluid.getValue() != null) {
-                        lockedFluid.setValue(storedFluid.getValue());
-                    }
-                    locked.setBoolValue(true);
-                } else {
-                    lockedFluid.setValue(null);
-                    locked.setBoolValue(false);
-                }
-                return Result.SUCCESS;
-            }
-
-        }.syncHandler("storedFluid")
-            .tooltipBuilder(t -> {
-                FluidStack fluidStack = storedFluid.getValue();
-                FluidStack lockedStack = lockedFluid.getValue();
-                if (locked.getBoolValue() && fluidStack == null && lockedStack != null) {
-                    t.clearText();
-                    t.add(
-                        lockedStack.getFluid()
-                            .getLocalizedName())
-                        .newLine()
-                        .add(
-                            EnumChatFormatting.BLUE
-                                + (currentStorageSyncer.getValue() == 0 ? "0"
-                                    : NumberFormat.formatWithMaxDigits(currentStorageSyncer.getValue(), 3))
-                                + "/"
-                                + NumberFormat.formatWithMaxDigits(maxStorageSyncer.getValue(), 3));
-                } else if (fluidStack == null) {
-                    t.clearText();
-                    t.add("Empty");
-                } else {
-                    t.clearText();
-                    t.add(
-                        fluidStack.getFluid()
-                            .getLocalizedName())
-                        .newLine()
-                        .add(
-                            EnumChatFormatting.BLUE
-                                + NumberFormat.formatWithMaxDigits(currentStorageSyncer.getValue(), 3)
-                                + "/"
-                                + NumberFormat.formatWithMaxDigits(maxStorageSyncer.getValue(), 3)
-                                + EnumChatFormatting.RESET
-                                + " ("
-                                + EnumChatFormatting.GREEN
-                                + percentageSyncer.getStringValue()
-                                + "%"
-                                + EnumChatFormatting.RESET
-                                + ")");
-                }
-                if (locked.getBoolValue()) t.newLine()
-                    .add("" + EnumChatFormatting.RED + EnumChatFormatting.ITALIC + "Locked");
-                else t.newLine()
-                    .add("" + EnumChatFormatting.DARK_GRAY + EnumChatFormatting.ITALIC + "Click to Lock Fluid!");
-            });
-
-        panelTopRow.child(
-            new SingleChildWidget<>()
-                .overlay(
-                    com.cleanroommc.modularui.drawable.UITexture.fullImage(GregTech.ID, "gui/picture/yottank_overlay"))
-                .size(48, 88)
-                .pos(139, 1));
-
-        panelTopRow.child(
-            fluidDisplay.pos(146, 8)
-                .size(34, 72));
-
-        panelTopRow.child(
-            new TransparentSingleChildWidget()
-                .overlay(
-                    com.cleanroommc.modularui.drawable.UITexture
-                        .fullImage(GregTech.ID, "gui/picture/yottank_overlay_lines"))
-                .size(32, 72)
-                .pos(147, 9));
-
-        insertTexts(machineInfo, invSlot, syncManager, panel);
-        addTitleTextStyle(panel, this.getLocalName());
-
-        if (shouldMakePowerPassButton()) addPowerPassButton(buttonColumn, textBoxToInventoryGap);
-        if (shouldMakeEditParametersButtonEnabled()) addEditParametersButton(panel, syncManager, buttonColumn);
-        if (shouldMakePowerSwitchButtonEnabled()) addPowerSwitchButtton(buttonColumn);
-
-        panelTopRow.child(
-            new SingleChildWidget<>()
-                .overlay(com.cleanroommc.modularui.drawable.UITexture.fullImage(MODID, "gui/picture/tectech_logo_dark"))
-                .size(18, 18)
-                .pos(134 - 18 - 2, 90 - 18 - 2));
-
-        if (doesBindPlayerInventory()) {
-            buttonColumn.child(
-                new ItemSlot().slot(
-                    SyncHandlers.itemSlot(invSlot, 0)
-                        .singletonSlotGroup())
-                    .marginTop(4)
-                    .background(new DrawableArray(GuiTextures.SLOT_ITEM, mesh)));
-            buttonColumn.child(
-                new SingleChildWidget<>().size(18, 6)
-                    .overlay(heatSinkSmall));
-        }
-        inventoryRow.child(buttonColumn);
-        panelColumn.child(inventoryRow);
-
-        return panel.child(panelColumn);
-    }
-
-    @Override
-    public void insertThingsInGap(Flow panelGap, PanelSyncManager syncManager, ModularPanel parent) {}
 
     @Override
     public boolean getDefaultHasMaintenanceChecks() {

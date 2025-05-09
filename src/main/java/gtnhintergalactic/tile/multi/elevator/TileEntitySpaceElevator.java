@@ -877,6 +877,14 @@ public class TileEntitySpaceElevator extends TTMultiblockBase implements ISurviv
     }
 
     /**
+     * @return Safe void button of this GUI
+     */
+    @Override
+    protected ButtonWidget createSafeVoidButton() {
+        return null;
+    }
+
+    /**
      * Will this machine explode in rain?
      *
      * @return False

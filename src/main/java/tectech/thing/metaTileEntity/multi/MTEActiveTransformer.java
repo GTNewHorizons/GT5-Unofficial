@@ -215,9 +215,4 @@ public class MTEActiveTransformer extends TTMultiblockBase implements ISurvivalC
     public boolean getDefaultHasMaintenanceChecks() {
         return false;
     }
-
-    @Override
-    protected boolean forceUseMui2() {
-        return true;
-    }
 }

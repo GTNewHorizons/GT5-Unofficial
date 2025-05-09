@@ -4,7 +4,6 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose
 import static gregtech.api.enums.GTValues.V;
 import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.Maintenance;
-import static gregtech.api.util.GTUtility.validMTEList;
 import static net.minecraft.util.StatCollector.translateToLocal;
 import static tectech.thing.metaTileEntity.multi.base.TTMultiblockBase.HatchElement.EnergyMulti;
 import static tectech.thing.metaTileEntity.multi.base.TTMultiblockBase.HatchElement.InputData;
@@ -40,6 +39,10 @@ import tectech.mechanics.dataTransport.QuantumDataPacket;
 import tectech.thing.casing.BlockGTCasingsTT;
 import tectech.thing.metaTileEntity.hatch.MTEHatchDataInput;
 import tectech.thing.metaTileEntity.hatch.MTEHatchDataOutput;
+import tectech.thing.metaTileEntity.multi.base.INameFunction;
+import tectech.thing.metaTileEntity.multi.base.IStatusFunction;
+import tectech.thing.metaTileEntity.multi.base.LedStatus;
+import tectech.thing.metaTileEntity.multi.base.Parameters;
 import tectech.thing.metaTileEntity.multi.base.TTMultiblockBase;
 import tectech.thing.metaTileEntity.multi.base.render.TTRenderedExtendedFacingTexture;
 
@@ -51,6 +54,15 @@ public class MTENetworkSwitch extends TTMultiblockBase
 
     protected final StructureWrapper<MTENetworkSwitch> structure;
     protected final StructureWrapperInstanceInfo<MTENetworkSwitch> structureInstanceInfo;
+
+    private static final INameFunction<MTENetworkSwitch> DEST_NAME = MTENetworkSwitch::getDestName;
+    private static final IStatusFunction<MTENetworkSwitch> DEST_STATUS = MTENetworkSwitch::getDestStatus;
+
+    private static final INameFunction<MTENetworkSwitch> WEIGHT_NAME = MTENetworkSwitch::getWeightName;
+    private static final IStatusFunction<MTENetworkSwitch> WEIGHT_STATUS = MTENetworkSwitch::getWeightStatus;
+
+    protected Parameters.Group.ParameterIn[] dst;
+    protected Parameters.Group.ParameterIn[] weight;
 
     public MTENetworkSwitch(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -106,12 +118,7 @@ public class MTENetworkSwitch extends TTMultiblockBase
 
     @Override
     public boolean checkMachine_EM(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack) {
-        if (!structure.checkStructure(this)) return false;
-        for (MTEHatchDataOutput output : validMTEList(eOutputData)) {
-            output.allowComputationConfiguring = true;
-            output.useWeight = true;
-        }
-        return true;
+        return structure.checkStructure(this);
     }
 
     @Override
@@ -173,6 +180,45 @@ public class MTENetworkSwitch extends TTMultiblockBase
         return SoundResource.TECTECH_MACHINES_FX_HIGH_FREQ;
     }
 
+    private static String getDestName(MTENetworkSwitch base, Parameters.IParameter p) {
+        return translateToLocal("tt.keyword.Destination") + " " + (p.hatchId() + 1);
+    }
+
+    private static LedStatus getDestStatus(MTENetworkSwitch base, Parameters.IParameter p) {
+        if (base.weight[p.hatchId()].getStatus(false).isOk) {
+            double v = p.get();
+            if (Double.isNaN(v)) return LedStatus.STATUS_WRONG;
+            v = (int) v;
+            if (v <= 0) return LedStatus.STATUS_TOO_LOW;
+            return LedStatus.STATUS_OK;
+        }
+        return LedStatus.STATUS_NEUTRAL;
+    }
+
+    private static String getWeightName(MTENetworkSwitch base, Parameters.IParameter p) {
+        return translateToLocal("tt.keyword.Weight") + " " + (p.hatchId() + 1);
+    }
+
+    private static LedStatus getWeightStatus(MTENetworkSwitch base, Parameters.IParameter p) {
+        double v = p.get();
+        if (Double.isNaN(v)) return LedStatus.STATUS_WRONG;
+        if (v < 0) return LedStatus.STATUS_TOO_LOW;
+        if (v == 0) return LedStatus.STATUS_LOW;
+        if (Double.isInfinite(v)) return LedStatus.STATUS_HIGH;
+        return LedStatus.STATUS_OK;
+    }
+
+    @Override
+    protected void parametersInstantiation_EM() {
+        dst = new Parameters.Group.ParameterIn[10];
+        weight = new Parameters.Group.ParameterIn[10];
+        for (int i = 0; i < 10; i++) {
+            Parameters.Group hatch = parametrization.getGroup(i);
+            dst[i] = hatch.makeInParameter(0, i + 1, DEST_NAME, DEST_STATUS);
+            weight[i] = hatch.makeInParameter(1, 0, WEIGHT_NAME, WEIGHT_STATUS);
+        }
+    }
+
     @Override
     @NotNull
     protected CheckRecipeResult checkProcessing_EM() {
@@ -199,10 +245,10 @@ public class MTENetworkSwitch extends TTMultiblockBase
         if (!eOutputData.isEmpty()) {
             double total = 0;
             double weight;
-            for (MTEHatchDataOutput output : validMTEList(eOutputData)) {
-                weight = output.weight;
-                if (weight > 0) {
-                    total += output.weight;
+            for (int i = 0; i < 10; i++) { // each param pair
+                weight = this.weight[i].get();
+                if (weight > 0 && dst[i].get() >= 0) {
+                    total += weight; // Total weighted div
                 }
             }
 
@@ -227,12 +273,19 @@ public class MTENetworkSwitch extends TTMultiblockBase
 
             long remaining = pack.getContent();
 
-            for (MTEHatchDataOutput output : validMTEList(eOutputData)) {
-                weight = output.weight;
-                if (weight > 0) {
+            double dest;
+            for (int i = 0; i < 10; i++) {
+                dest = dst[i].get();
+                weight = this.weight[i].get();
+                if (weight > 0 && dest >= 0) {
+                    int outIndex = (int) dest - 1;
+                    if (outIndex < 0 || outIndex >= eOutputData.size()) {
+                        continue;
+                    }
+                    MTEHatchDataOutput out = eOutputData.get(outIndex);
                     if (Double.isInfinite(total)) {
                         if (Double.isInfinite(weight)) {
-                            output.q = new QuantumDataPacket(remaining).unifyTraceWith(pack);
+                            out.q = new QuantumDataPacket(remaining).unifyTraceWith(pack);
                             break;
                         }
                     } else {
@@ -240,9 +293,9 @@ public class MTENetworkSwitch extends TTMultiblockBase
                         if (part > 0) {
                             remaining -= part;
                             if (remaining > 0) {
-                                output.q = new QuantumDataPacket(part).unifyTraceWith(pack);
+                                out.q = new QuantumDataPacket(part).unifyTraceWith(pack);
                             } else if (part + remaining > 0) {
-                                output.q = new QuantumDataPacket(part + remaining).unifyTraceWith(pack);
+                                out.q = new QuantumDataPacket(part + remaining).unifyTraceWith(pack);
                                 break;
                             } else {
                                 break;
@@ -253,10 +306,4 @@ public class MTENetworkSwitch extends TTMultiblockBase
             }
         }
     }
-
-    @Override
-    protected boolean forceUseMui2() {
-        return true;
-    }
-
 }

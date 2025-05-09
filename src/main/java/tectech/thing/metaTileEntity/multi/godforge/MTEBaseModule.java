@@ -323,11 +323,6 @@ public class MTEBaseModule extends TTMultiblockBase implements IConstructable, I
     }
 
     @Override
-    public boolean forceUseMui2() {
-        return false;
-    }
-
-    @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
         final DynamicPositionedColumn screenElements = new DynamicPositionedColumn();
         final SlotWidget inventorySlot = new SlotWidget(inventoryHandler, 1);

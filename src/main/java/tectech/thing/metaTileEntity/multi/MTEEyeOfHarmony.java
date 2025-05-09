@@ -1888,9 +1888,4 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements IConstructable,
     protected SoundResource getActivitySoundLoop() {
         return SoundResource.GT_MACHINES_EYE_OF_HARMONY_LOOP;
     }
-
-    @Override
-    protected boolean forceUseMui2() {
-        return true;
-    }
 }

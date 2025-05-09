@@ -207,9 +207,4 @@ public class MTECoolantTower extends MTETooltipMultiBlockBaseEM implements ICons
     public boolean getDefaultHasMaintenanceChecks() {
         return false;
     }
-
-    @Override
-    protected boolean forceUseMui2() {
-        return true;
-    }
 }

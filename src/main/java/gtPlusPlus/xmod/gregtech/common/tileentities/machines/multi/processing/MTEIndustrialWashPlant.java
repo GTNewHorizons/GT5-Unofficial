@@ -421,11 +421,6 @@ public class MTEIndustrialWashPlant extends GTPPMultiBlockBase<MTEIndustrialWash
     }
 
     @Override
-    public int machineModes() {
-        return 3;
-    }
-
-    @Override
     public void setMachineModeIcons() {
         machineModeIcons.clear();
         machineModeIcons.add(GTUITextures.OVERLAY_BUTTON_MACHINEMODE_WASHPLANT);
