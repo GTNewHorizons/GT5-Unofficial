@@ -333,40 +333,6 @@ public abstract class TileEntityModulePump extends TileEntityModuleBase {
         super.insertTexts(machineInfo, invSlot, syncManager, parentPanel);
     }
 
-    // @Override
-    // public boolean hasCustomButtons() {
-    // return true;
-    // }
-    //
-    // @Override
-    // public boolean shouldMakeEditParametersButtonEnabled() {
-    // return false;
-    // }
-
-    // @Override
-    // public void addCustomButtons(ModularPanel panel, PanelSyncManager syncManager) {
-    // UITexture fluidSelectorTexture = UITexture.fullImage(MODID, "gui/overlay_button/edit_parameters");
-    // ButtonWidget fluidSelector = new ButtonWidget();
-    // fluidSelector.tooltip(new RichTooltip(fluidSelector).add("Configure Fluids"))
-    // .overlay(fluidSelectorTexture);
-    // fluidSelector.pos(173, doesBindPlayerInventory() ? 109 + 18 : 133 + 18)
-    // .size(18, 18);
-    //
-    // IPanelHandler fluidSelectorPanel = syncManager.panel(
-    // "fluid_selector_panel",
-    // (p_syncManager, syncHandler) -> getFluidSelectorPanel(panel, p_syncManager, syncHandler, 0),
-    // true);
-    // fluidSelector.onMousePressed(mouseData -> {
-    // if (!fluidSelectorPanel.isPanelOpen()) {
-    // fluidSelectorPanel.openPanel();
-    // } else {
-    // fluidSelectorPanel.closePanel();
-    // }
-    // return true;
-    // });
-    // panel.child(fluidSelector);
-    // }
-
     private ModularPanel getFluidSelectorPanel(ModularPanel parent, PanelSyncManager syncManager,
         IPanelHandler thisPanel, int slot) {
         String[] planetTiers = new String[] { "De", "As", "Io", "En", "Pr", "Ha", "BC" }; // for tab icons

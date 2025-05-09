@@ -1,5 +1,6 @@
 package gtnhintergalactic.tile.multi.elevatormodules;
 
+import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 import static net.minecraft.util.EnumChatFormatting.WHITE;
 
 import java.util.ArrayList;
@@ -20,6 +21,7 @@ import com.gtnewhorizons.modularui.api.drawable.FluidDrawable;
 import com.gtnewhorizons.modularui.api.drawable.IDrawable;
 import com.gtnewhorizons.modularui.api.drawable.ItemDrawable;
 import com.gtnewhorizons.modularui.api.drawable.RepeatingDrawable;
+import com.gtnewhorizons.modularui.api.drawable.UITexture;
 import com.gtnewhorizons.modularui.api.math.Alignment;
 import com.gtnewhorizons.modularui.api.math.Pos2d;
 import com.gtnewhorizons.modularui.api.math.Size;
@@ -331,22 +333,23 @@ public class TileEntityModuleManager extends TileEntityModuleBase {
      *
      * @return Button for project creation window
      */
-    // @Override
-    // protected ButtonWidget createSafeVoidButton() {
-    // Widget button = ButtonWidget.openSyncedWindowButton(PROJECT_WINDOW_ID)
-    // .setPlayClickSound(false)
-    // .setBackground(() -> {
-    // List<UITexture> ret = new ArrayList<>();
-    // ret.add(TecTechUITextures.BUTTON_STANDARD_16x16);
-    // ret.add(IG_UITextures.OVERLAY_BUTTON_PROJECTS);
-    // return ret.toArray(new IDrawable[0]);
-    // })
-    // .setPos(174, doesBindPlayerInventory() ? 132 : 156)
-    // .setSize(16, 16);
-    // button.addTooltip(GCCoreUtil.translate("ig.button.projects"))
-    // .setTooltipShowUpDelay(TOOLTIP_DELAY);
-    // return (ButtonWidget) button;
-    // }
+
+    @Override
+    protected ButtonWidget createSafeVoidButton() {
+        Widget button = ButtonWidget.openSyncedWindowButton(PROJECT_WINDOW_ID)
+            .setPlayClickSound(false)
+            .setBackground(() -> {
+                List<UITexture> ret = new ArrayList<>();
+                ret.add(TecTechUITextures.BUTTON_STANDARD_16x16);
+                ret.add(IG_UITextures.OVERLAY_BUTTON_PROJECTS);
+                return ret.toArray(new IDrawable[0]);
+            })
+            .setPos(174, doesBindPlayerInventory() ? 132 : 156)
+            .setSize(16, 16);
+        button.addTooltip(GCCoreUtil.translate("ig.button.projects"))
+            .setTooltipShowUpDelay(TOOLTIP_DELAY);
+        return (ButtonWidget) button;
+    }
 
     /**
      * Create the project window which lets the user select a project for construction
@@ -1079,5 +1082,10 @@ public class TileEntityModuleManager extends TileEntityModuleBase {
         } else {
             return true;
         }
+    }
+
+    @Override
+    protected boolean forceUseMui2() {
+        return false;
     }
 }
