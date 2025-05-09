@@ -587,13 +587,6 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
         return new FluidStack(Objects.requireNonNull(WerkstoffLoader.molten.get(this)), fluidAmount);
     }
 
-    public FluidStack getMolten(long fluidAmount) {
-        if (fluidAmount > Integer.MAX_VALUE || fluidAmount < Integer.MIN_VALUE) {
-            throw new IllegalArgumentException("Fluid amount " + fluidAmount + " is out of range for an int");
-        }
-        return getMolten((int) fluidAmount);
-    }
-
     public ItemStack get(OrePrefixes prefixes, int amount) {
         return WerkstoffLoader.getCorrespondingItemStack(prefixes, this, amount);
     }

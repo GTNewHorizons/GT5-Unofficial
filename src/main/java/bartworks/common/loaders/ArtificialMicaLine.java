@@ -159,7 +159,7 @@ public class ArtificialMicaLine {
             .itemInputs(WerkstoffLoader.RawFluorophlogopite.get(OrePrefixes.dust, 27))
             .itemOutputs(Materials.Glass.getDust(1))
             .fluidInputs(BWGTMaterialReference.Magnesia.getMolten(5 * INGOTS))
-            .fluidOutputs(WerkstoffLoader.HotFluorophlogopite.getFluidOrGas(4608))
+            .fluidOutputs(WerkstoffLoader.HotFluorophlogopite.getFluidOrGas(32 * INGOTS))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .metadata(COIL_HEAT, 1700)

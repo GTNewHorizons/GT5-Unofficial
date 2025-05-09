@@ -110,7 +110,7 @@ public class RecipeLoader {
                 GTOreDictUnificator.get(OrePrefixes.screw, Materials.Osmium, 16))
             .fluidInputs(
                 Materials.Trinium.getMolten(4 * INGOTS),
-                new FluidStack(solderIndalloy, 4608),
+                new FluidStack(solderIndalloy, 32 * INGOTS),
                 Materials.Lubricant.getFluid(8000))
             .itemOutputs(ItemRefer.Large_Naquadah_Reactor.get(1))
             .eut(TierEU.RECIPE_ZPM)

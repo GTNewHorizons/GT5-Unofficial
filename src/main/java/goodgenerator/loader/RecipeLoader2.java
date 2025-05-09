@@ -490,7 +490,7 @@ public class RecipeLoader2 {
                 GTOreDictUnificator.get(OrePrefixes.plateDouble, MaterialsUEVplus.SpaceTime, 4))
             .fluidInputs(
                 Materials.Draconium.getMolten(36864),
-                new FluidStack(solderIndalloy, 46080),
+                new FluidStack(solderIndalloy, 320 * INGOTS),
                 MaterialsUEVplus.TranscendentMetal.getMolten(4320),
                 Materials.InfinityCatalyst.getMolten(17010))
             .itemOutputs(ItemRefer.Fluid_Storage_Core_T10.get(1))
@@ -599,7 +599,7 @@ public class RecipeLoader2 {
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.Infinity, 64))
             .fluidInputs(
                 Materials.DraconiumAwakened.getMolten(10 * INGOTS),
-                FluidRegistry.getFluidStack("ic2coolant", 46080),
+                FluidRegistry.getFluidStack("ic2coolant", 320 * INGOTS),
                 Materials.Lubricant.getFluid(32000))
             .itemOutputs(ItemRefer.YOTTank_Cell_T6.get(1))
             .eut(TierEU.RECIPE_UHV)
@@ -620,8 +620,8 @@ public class RecipeLoader2 {
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.Infinity, 32))
             .fluidInputs(
                 Materials.DraconiumAwakened.getMolten(100 * INGOTS),
-                FluidRegistry.getFluidStack("supercoolant", 46080),
-                Materials.Lubricant.getFluid(46080))
+                FluidRegistry.getFluidStack("supercoolant", 320 * INGOTS),
+                Materials.Lubricant.getFluid(320 * INGOTS))
             .itemOutputs(ItemRefer.YOTTank_Cell_T7.get(1))
             .eut(TierEU.RECIPE_UEV)
             .duration(50 * SECONDS)
@@ -642,8 +642,8 @@ public class RecipeLoader2 {
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.Infinity, 64))
             .fluidInputs(
                 Materials.DraconiumAwakened.getMolten(100 * INGOTS),
-                FluidRegistry.getFluidStack("supercoolant", 46080),
-                Materials.Lubricant.getFluid(46080))
+                FluidRegistry.getFluidStack("supercoolant", 320 * INGOTS),
+                Materials.Lubricant.getFluid(320 * INGOTS))
             .itemOutputs(ItemRefer.YOTTank_Cell_T8.get(1))
             .eut(TierEU.RECIPE_UIV)
             .duration(50 * SECONDS)
@@ -665,8 +665,8 @@ public class RecipeLoader2 {
                     GTOreDictUnificator.get(OrePrefixes.plate, Materials.Infinity, 64))
                 .fluidInputs(
                     Materials.DraconiumAwakened.getMolten(100 * INGOTS),
-                    FluidRegistry.getFluidStack("supercoolant", 46080),
-                    MaterialsUEVplus.DimensionallyShiftedSuperfluid.getFluid(46080))
+                    FluidRegistry.getFluidStack("supercoolant", 320 * INGOTS),
+                    MaterialsUEVplus.DimensionallyShiftedSuperfluid.getFluid(320 * INGOTS))
                 .itemOutputs(ItemRefer.YOTTank_Cell_T9.get(1))
                 .eut(TierEU.RECIPE_UMV)
                 .duration(50 * SECONDS)
@@ -688,8 +688,8 @@ public class RecipeLoader2 {
                 .fluidInputs(
                     Materials.DraconiumAwakened.getMolten(10 * INGOTS),
                     MaterialsUEVplus.TranscendentMetal.getMolten(10 * INGOTS),
-                    FluidRegistry.getFluidStack("supercoolant", 46080),
-                    MaterialsUEVplus.DimensionallyShiftedSuperfluid.getFluid(46080))
+                    FluidRegistry.getFluidStack("supercoolant", 320 * INGOTS),
+                    MaterialsUEVplus.DimensionallyShiftedSuperfluid.getFluid(320 * INGOTS))
                 .itemOutputs(ItemRefer.YOTTank_Cell_T10.get(1))
                 .eut(TierEU.RECIPE_UXV)
                 .duration(50 * SECONDS)

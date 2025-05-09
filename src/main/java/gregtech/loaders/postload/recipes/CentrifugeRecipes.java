@@ -10,6 +10,7 @@ import static gregtech.api.recipe.RecipeMaps.centrifugeRecipes;
 import static gregtech.api.util.GTModHandler.getModItem;
 import static gregtech.api.util.GTRecipeBuilder.EIGHTH_INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.HALF_INGOTS;
+import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.MINUTES;
 import static gregtech.api.util.GTRecipeBuilder.NUGGETS;
 import static gregtech.api.util.GTRecipeBuilder.QUARTER_INGOTS;
@@ -92,7 +93,7 @@ public class CentrifugeRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(new ItemStack(Items.golden_apple, 1, 1), GTUtility.getIntegratedCircuit(1))
             .itemOutputs(new ItemStack(Items.gold_ingot, 64))
-            .fluidOutputs(Materials.Methane.getGas(4608))
+            .fluidOutputs(Materials.Methane.getGas(32 * INGOTS))
             .duration(7 * MINUTES + 40 * SECONDS + 16 * TICKS)
             .eut(5)
             .addTo(centrifugeRecipes);

@@ -546,7 +546,7 @@ public class RecipeLoaderChemicalSkips {
                 Materials.Gadolinium.getDust(64),
                 Materials.Silver.getNanite(1))
             .itemOutputs(GregtechItemList.RareEarthGroupCatalyst.get(1))
-            .fluidInputs(MaterialsElements.STANDALONE.HYPOGEN.getFluidStack(9216))
+            .fluidInputs(MaterialsElements.STANDALONE.HYPOGEN.getFluidStack(64 * INGOTS))
             .duration(60 * SECONDS)
             .eut(TierEU.RECIPE_UEV)
             .addTo(assemblerRecipes);
@@ -558,7 +558,7 @@ public class RecipeLoaderChemicalSkips {
                 Materials.Adamantium.getDust(64),
                 Materials.Silver.getNanite(1))
             .itemOutputs(GregtechItemList.SimpleNaquadahCatalyst.get(1))
-            .fluidInputs(MaterialsElements.STANDALONE.HYPOGEN.getFluidStack(9216))
+            .fluidInputs(MaterialsElements.STANDALONE.HYPOGEN.getFluidStack(64 * INGOTS))
             .duration(60 * SECONDS)
             .eut(TierEU.RECIPE_UEV)
             .addTo(assemblerRecipes);
@@ -572,7 +572,7 @@ public class RecipeLoaderChemicalSkips {
                     getModItem(EtFuturumRequiem.ID, "netherite_scrap", 1),
                     Materials.Neutronium.getNanite(1))
                 .itemOutputs(GregtechItemList.HellishForceCatalyst.get(1))
-                .fluidInputs(MaterialsElements.STANDALONE.HYPOGEN.getFluidStack(9216))
+                .fluidInputs(MaterialsElements.STANDALONE.HYPOGEN.getFluidStack(64 * INGOTS))
                 .duration(60 * SECONDS)
                 .eut(TierEU.RECIPE_UEV)
                 .addTo(assemblerRecipes);
@@ -618,7 +618,7 @@ public class RecipeLoaderChemicalSkips {
                 MaterialsKevlar.Kevlar.getDust(64),
                 MaterialsUEVplus.TranscendentMetal.getNanite(1))
             .itemOutputs(GregtechItemList.UltimatePlasticCatalyst.get(1))
-            .fluidInputs(FluidUtils.getFluidStack("molten.shirabon", 92160))
+            .fluidInputs(FluidUtils.getFluidStack("molten.shirabon", 640 * INGOTS))
             .duration(60 * SECONDS)
             .eut(TierEU.RECIPE_UMV)
             .addTo(assemblerRecipes);
@@ -629,7 +629,7 @@ public class RecipeLoaderChemicalSkips {
                 ItemList.Circuit_Chip_Biocell.get(64),
                 MaterialsUEVplus.TranscendentMetal.getNanite(1))
             .itemOutputs(GregtechItemList.BiologicalIntelligenceCatalyst.get(1))
-            .fluidInputs(FluidUtils.getFluidStack("molten.shirabon", 92160))
+            .fluidInputs(FluidUtils.getFluidStack("molten.shirabon", 640 * INGOTS))
             .duration(60 * SECONDS)
             .eut(TierEU.RECIPE_UMV)
             .addTo(assemblerRecipes);
@@ -642,7 +642,7 @@ public class RecipeLoaderChemicalSkips {
                 Particle.getIon("Hydrogen", 0),
                 MaterialsUEVplus.Eternity.getNanite(16))
             .itemOutputs(GregtechItemList.SynchrotronCapableCatalyst.get(1))
-            .fluidInputs(FluidUtils.getFluidStack("molten.shirabon", 92160))
+            .fluidInputs(FluidUtils.getFluidStack("molten.shirabon", 640 * INGOTS))
             .duration(60 * SECONDS)
             .eut(TierEU.RECIPE_UMV)
             .addTo(assemblerRecipes);
@@ -654,7 +654,7 @@ public class RecipeLoaderChemicalSkips {
                 MaterialsUEVplus.Universium.getNanite(1),
                 ItemList.Timepiece.get(1))
             .itemOutputs(GregtechItemList.TemporalHarmonyCatalyst.get(1))
-            .fluidInputs(Materials.DarkIron.getMolten(92160))
+            .fluidInputs(Materials.DarkIron.getMolten(640 * INGOTS))
             .duration(60 * SECONDS)
             .eut(TierEU.RECIPE_UXV)
             .addTo(assemblerRecipes);
@@ -667,7 +667,7 @@ public class RecipeLoaderChemicalSkips {
                 GTOreDictUnificator.get("dustIodine", 64),
                 MaterialsUEVplus.TranscendentMetal.getNanite(1))
             .itemOutputs(GregtechItemList.AlgagenicGrowthPromoterCatalyst.get(1))
-            .fluidInputs(FluidUtils.getFluidStack("molten.shirabon", 92_160))
+            .fluidInputs(FluidUtils.getFluidStack("molten.shirabon", 640 * INGOTS))
             .duration(60 * SECONDS)
             .eut(TierEU.RECIPE_UMV)
             .addTo(assemblerRecipes);
