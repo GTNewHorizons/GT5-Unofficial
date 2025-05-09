@@ -275,11 +275,31 @@ public class RecipeLoaderGlueLine {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 ItemUtils.getItemStackOfAmountFromOreDict("dustGraphite", 64),
+                ItemList.Circuit_Silicon_Wafer2.get(32L),
+                GTUtility.getIntegratedCircuit(2))
+            .itemOutputs(ItemUtils.getItemStackOfAmountFromOreDict("dustGraphene", 64))
+            .fluidInputs(MaterialMisc.ETHYL_CYANOACRYLATE.getFluidStack(1000))
+            .duration(10 * SECONDS)
+            .eut(TierEU.RECIPE_ZPM)
+            .addTo(assemblerRecipes);
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                ItemUtils.getItemStackOfAmountFromOreDict("dustGraphite", 64),
+                ItemList.Circuit_Silicon_Wafer3.get(20L),
+                GTUtility.getIntegratedCircuit(2))
+            .itemOutputs(ItemUtils.getItemStackOfAmountFromOreDict("dustGraphene", 64))
+            .fluidInputs(MaterialMisc.ETHYL_CYANOACRYLATE.getFluidStack(1000))
+            .duration(10 * SECONDS)
+            .eut(TierEU.RECIPE_ZPM)
+            .addTo(assemblerRecipes);
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                ItemUtils.getItemStackOfAmountFromOreDict("dustGraphite", 64),
                 ItemList.Circuit_Silicon_Wafer4.get(2L),
                 GTUtility.getIntegratedCircuit(2))
             .itemOutputs(ItemUtils.getItemStackOfAmountFromOreDict("dustGraphene", 64))
             .fluidInputs(MaterialMisc.ETHYL_CYANOACRYLATE.getFluidStack(500))
-            .duration(20 * SECONDS)
+            .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_LuV)
             .addTo(assemblerRecipes);
         GTValues.RA.stdBuilder()
@@ -289,7 +309,7 @@ public class RecipeLoaderGlueLine {
                 GTUtility.getIntegratedCircuit(2))
             .itemOutputs(ItemUtils.getItemStackOfAmountFromOreDict("dustGraphene", 64))
             .fluidInputs(MaterialMisc.ETHYL_CYANOACRYLATE.getFluidStack(250))
-            .duration(4 * SECONDS)
+            .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_ZPM)
             .addTo(assemblerRecipes);
 
