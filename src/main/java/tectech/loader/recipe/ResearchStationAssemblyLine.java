@@ -118,7 +118,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                 ItemList.Electric_Pump_UHV.get(4), GTOreDictUnificator.get(OrePrefixes.gearGt, Materials.Neutronium, 4),
                 ItemList.Sensor_UHV.get(3), ItemList.Field_Generator_UHV.get(3),
                 GTOreDictUnificator.get(OrePrefixes.screw, Materials.Neutronium, 12) },
-            new FluidStack[] { new FluidStack(solderUEV, 1296), Materials.Neutronium.getMolten(4 * INGOTS) },
+            new FluidStack[] { new FluidStack(solderUEV, 9 * INGOTS), Materials.Neutronium.getMolten(4 * INGOTS) },
             ItemList.OilDrillInfinite.get(1),
             6000,
             (int) TierEU.RECIPE_UHV);
@@ -1176,7 +1176,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                 new Object[] { OrePrefixes.circuit.get(Materials.UV), 4L }, ItemList.Energy_LapotronicOrb2.get(1L),
                 ItemList.Duct_Tape.get(64L), ItemList.Duct_Tape.get(64L),
                 GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.Americium, 64L), },
-            new FluidStack[] { Materials.Lubricant.getFluid(256000), new FluidStack(solderIndalloy, 1296), },
+            new FluidStack[] { Materials.Lubricant.getFluid(256000), new FluidStack(solderIndalloy, 9 * INGOTS), },
             CustomItemList.hatch_CreativeMaintenance.get(1),
             6000,
             (int) TierEU.RECIPE_UV);
@@ -3418,7 +3418,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                     GTOreDictUnificator.get(OrePrefixes.wireGt01, MaterialsUEVplus.SpaceTime, 2),
                     GTOreDictUnificator.get(OrePrefixes.plateDense, Materials.Infinity, 1), circuitsTierPlusTwo[i],
                     ItemList.EnergisedTesseract.get(1) },
-                new FluidStack[] { new FluidStack(solderUEV, 1296), MaterialsUEVplus.ExcitedDTEC.getFluid(500) },
+                new FluidStack[] { new FluidStack(solderUEV, 9 * INGOTS), MaterialsUEVplus.ExcitedDTEC.getFluid(500) },
                 wirelessHatches[i],
                 recipeDurationTicks,
                 recipeEuPerTick);
@@ -3644,7 +3644,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                     GTOreDictUnificator.get(OrePrefixes.wireGt01, MaterialsUEVplus.SpaceTime, 2),
                     GTOreDictUnificator.get(OrePrefixes.plateDense, Materials.Infinity, 1), circuitsTierPlusTwo[i],
                     ItemList.EnergisedTesseract.get(1) },
-                new FluidStack[] { new FluidStack(solderUEV, 1296), MaterialsUEVplus.ExcitedDTEC.getFluid(500) },
+                new FluidStack[] { new FluidStack(solderUEV, 9 * INGOTS), MaterialsUEVplus.ExcitedDTEC.getFluid(500) },
                 wirelessDynamos[i],
                 recipeDurationTicks,
                 recipeEuPerTick);

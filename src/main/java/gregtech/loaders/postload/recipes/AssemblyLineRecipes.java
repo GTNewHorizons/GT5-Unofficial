@@ -104,7 +104,7 @@ public class AssemblyLineRecipes implements Runnable {
                     GTOreDictUnificator.get(OrePrefixes.cableGt04, Materials.NaquadahAlloy, 2))
                 .fluidInputs(
                     Materials.Naquadria.getMolten(9 * INGOTS),
-                    new FluidStack(solderIndalloy, 1296),
+                    new FluidStack(solderIndalloy, 9 * INGOTS),
                     Materials.Lubricant.getFluid(2000))
                 .itemOutputs(ItemList.Electric_Motor_UV.get(1))
                 .eut(TierEU.RECIPE_ZPM)
@@ -165,7 +165,7 @@ public class AssemblyLineRecipes implements Runnable {
                 .itemOutputs(ItemList.Electric_Pump_UV.get(1))
                 .fluidInputs(
                     Materials.Naquadria.getMolten(9 * INGOTS),
-                    new FluidStack(solderIndalloy, 1296),
+                    new FluidStack(solderIndalloy, 9 * INGOTS),
                     Materials.Lubricant.getFluid(2000))
                 .duration(30 * SECONDS)
                 .eut((int) TierEU.RECIPE_ZPM)
@@ -222,7 +222,7 @@ public class AssemblyLineRecipes implements Runnable {
                 .itemOutputs(ItemList.Conveyor_Module_UV.get(1))
                 .fluidInputs(
                     Materials.Naquadria.getMolten(9 * INGOTS),
-                    new FluidStack(solderIndalloy, 1296),
+                    new FluidStack(solderIndalloy, 9 * INGOTS),
                     Materials.Lubricant.getFluid(2000))
                 .duration(30 * SECONDS)
                 .eut((int) TierEU.RECIPE_ZPM)
@@ -285,7 +285,7 @@ public class AssemblyLineRecipes implements Runnable {
                 .itemOutputs(ItemList.Electric_Piston_UV.get(1))
                 .fluidInputs(
                     Materials.Naquadria.getMolten(9 * INGOTS),
-                    new FluidStack(solderIndalloy, 1296),
+                    new FluidStack(solderIndalloy, 9 * INGOTS),
                     Materials.Lubricant.getFluid(2000))
                 .duration(30 * SECONDS)
                 .eut((int) TierEU.RECIPE_ZPM)

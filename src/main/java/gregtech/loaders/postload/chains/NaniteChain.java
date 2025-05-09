@@ -56,7 +56,7 @@ public class NaniteChain {
                 GTOreDictUnificator.get(OrePrefixes.wireGt08, Materials.Naquadah, 32),
                 GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.NaquadahAlloy, 4))
             .fluidInputs(
-                new FluidStack(solderIndalloy, 144 * 32),
+                new FluidStack(solderIndalloy, 32 * INGOTS),
                 Materials.HSSS.getMolten(32 * INGOTS),
                 Materials.Osmiridium.getMolten(16 * INGOTS))
             .itemOutputs(ItemList.NanoForge.get(1))

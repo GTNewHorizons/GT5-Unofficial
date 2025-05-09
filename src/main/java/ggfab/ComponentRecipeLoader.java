@@ -37,7 +37,7 @@ class ComponentRecipeLoader implements Runnable {
                 new Object[] { OrePrefixes.circuit.get(Materials.IV), 4 },
                 new Object[] { OrePrefixes.circuit.get(Materials.EV), 8 },
                 ItemList.Automation_ChestBuffer_LuV.get(1L))
-            .fluidInputs(new FluidStack(solderIndalloy, 1296), Materials.Lubricant.getFluid(2000))
+            .fluidInputs(new FluidStack(solderIndalloy, 9 * INGOTS), Materials.Lubricant.getFluid(2000))
             .itemOutputs(GGItemList.AdvAssLine.get(1L))
             .eut(6_000)
             .duration(10 * MINUTES)
