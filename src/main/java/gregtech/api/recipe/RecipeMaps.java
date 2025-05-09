@@ -1216,4 +1216,13 @@ public final class RecipeMaps {
         .neiRecipeBackgroundSize(170, 60)
         .neiHandlerInfo(builder -> builder.setDisplayStack(GTModHandler.getIC2Item("nuclearReactor", 1, null)))
         .build();
+
+    public static final RecipeMap<RecipeMapBackend> entropicProcessing = RecipeMapBuilder
+        .of("gt.recipe.entropic-processing")
+        .maxIO(6, 6, 3, 3)
+        .minInputs(0, 1)
+        .progressBar(GTUITextures.PROGRESSBAR_ARROW_MULTIPLE)
+        .frontend(LargeNEIFrontend::new)
+        .build();
+
 }
