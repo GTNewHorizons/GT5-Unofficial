@@ -35,21 +35,21 @@ public class FluidExtractorRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Dye_SquidInk.get(1L))
-            .fluidOutputs(getFluidStack("squidink", 144))
+            .fluidOutputs(getFluidStack("squidink", 1 * INGOTS))
             .duration(6 * SECONDS + 8 * TICKS)
             .eut(4)
             .addTo(fluidExtractionRecipes);
 
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Dye_Indigo.get(1L))
-            .fluidOutputs(getFluidStack("indigo", 144))
+            .fluidOutputs(getFluidStack("indigo", 1 * INGOTS))
             .duration(6 * SECONDS + 8 * TICKS)
             .eut(4)
             .addTo(fluidExtractionRecipes);
 
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Crop_Drop_Indigo.get(1L))
-            .fluidOutputs(getFluidStack("indigo", 144))
+            .fluidOutputs(getFluidStack("indigo", 1 * INGOTS))
             .duration(6 * SECONDS + 8 * TICKS)
             .eut(4)
             .addTo(fluidExtractionRecipes);
@@ -176,7 +176,7 @@ public class FluidExtractorRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Long_Distance_Pipeline_Fluid.get(1L))
-            .fluidOutputs(Materials.Steel.getMolten(19 * 144))
+            .fluidOutputs(Materials.Steel.getMolten(19 * INGOTS))
             .duration(20 * SECONDS)
             .eut(90)
             .recipeCategory(RecipeCategories.fluidExtractorRecycling)
@@ -186,7 +186,7 @@ public class FluidExtractorRecipes implements Runnable {
             .itemInputs(ItemList.Long_Distance_Pipeline_Item.get(1L))
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Steel, 7L))
             .outputChances(10000)
-            .fluidOutputs(Materials.Tin.getMolten(12 * 144))
+            .fluidOutputs(Materials.Tin.getMolten(12 * INGOTS))
             .duration(20 * SECONDS)
             .eut(90)
             .recipeCategory(RecipeCategories.fluidExtractorRecycling)

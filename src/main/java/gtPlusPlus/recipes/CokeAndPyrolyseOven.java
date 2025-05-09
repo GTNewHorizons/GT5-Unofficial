@@ -1,6 +1,7 @@
 package gtPlusPlus.recipes;
 
 import static gregtech.api.recipe.RecipeMaps.pyrolyseRecipes;
+import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.MINUTES;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
@@ -56,7 +57,7 @@ public class CokeAndPyrolyseOven {
                 GTOreDictUnificator.get(OrePrefixes.gem, Materials.Coal, 16))
             .itemOutputs(GTOreDictUnificator.get("fuelCoke", 10))
             .fluidInputs(GTModHandler.getSteam(1000))
-            .fluidOutputs(new FluidStack(GTPPFluids.CoalGas, 2880))
+            .fluidOutputs(new FluidStack(GTPPFluids.CoalGas, 20 * INGOTS))
             .duration(36 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(pyrolyseRecipes);

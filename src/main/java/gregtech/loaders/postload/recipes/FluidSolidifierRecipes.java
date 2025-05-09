@@ -43,7 +43,7 @@ public class FluidSolidifierRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Shape_Mold_Ball.get(0))
             .itemOutputs(flask)
-            .fluidInputs(new FluidStack(FluidRegistry.getFluid("molten.borosilicateglass"), 144))
+            .fluidInputs(new FluidStack(FluidRegistry.getFluid("molten.borosilicateglass"), 1 * INGOTS))
             .duration(2 * SECONDS + 4 * TICKS)
             .eut(TierEU.RECIPE_LV)
             .addTo(fluidSolidifierRecipes);

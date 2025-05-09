@@ -239,7 +239,7 @@ public class RecipesMachines {
                 CI.getScrew(6, 16),
                 CI.getCircuit(5, 8))
             .itemOutputs(GregtechItemList.XL_HeatExchanger.get(1))
-            .fluidInputs(CI.tieredMaterials[5].getMolten(144 * 8))
+            .fluidInputs(CI.tieredMaterials[5].getMolten(8 * INGOTS))
             .duration(60 * SECONDS)
             .eut(TierEU.RECIPE_LuV)
             .addTo(assemblerRecipes);
@@ -250,7 +250,7 @@ public class RecipesMachines {
                 CI.getPlate(5, 4),
                 CI.getScrew(5, 8))
             .itemOutputs(GregtechItemList.Casing_XL_HeatExchanger.get(1))
-            .fluidInputs(CI.tieredMaterials[5].getMolten(144 * 2))
+            .fluidInputs(CI.tieredMaterials[5].getMolten(2 * INGOTS))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_LuV)
             .addTo(assemblerRecipes);
@@ -321,7 +321,7 @@ public class RecipesMachines {
                 MaterialsElements.getInstance().ZIRCONIUM.getFineWire(32),
                 GTOreDictUnificator.get(OrePrefixes.circuit, Materials.IV, 4L))
             .itemOutputs(GregtechItemList.Controller_IndustrialForgeHammer.get(1))
-            .fluidInputs(CI.getTieredFluid(4, 144 * 12))
+            .fluidInputs(CI.getTieredFluid(4, 12 * INGOTS))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_IV)
             .addTo(assemblerRecipes);
@@ -344,7 +344,7 @@ public class RecipesMachines {
                 ItemUtils.getItemStackOfAmountFromOreDict("circuitMaster", 10))
             .itemOutputs(
                 ItemDummyResearch.getResearchStack(ASSEMBLY_LINE_RESEARCH.RESEARCH_11_MOLECULAR_TRANSFORMER, 1))
-            .fluidInputs(CI.getTieredFluid(5, 144 * 16))
+            .fluidInputs(CI.getTieredFluid(5, 16 * INGOTS))
             .duration(60 * SECONDS)
             .eut(TierEU.RECIPE_IV)
             .addTo(assemblerRecipes);
@@ -371,9 +371,9 @@ public class RecipesMachines {
                 new Object[] { CI.getTieredCircuitOreDictName(6), 16 },
                 GregtechItemList.Laser_Lens_WoodsGlass.get(1))
             .fluidInputs(
-                MaterialsAlloy.NITINOL_60.getFluidStack(144 * 9 * (2)),
-                MaterialsAlloy.INCOLOY_MA956.getFluidStack(144 * 9 * (8)),
-                MaterialsAlloy.KANTHAL.getFluidStack(144 * 1 * (4)))
+                MaterialsAlloy.NITINOL_60.getFluidStack(9 * 2 * INGOTS),
+                MaterialsAlloy.INCOLOY_MA956.getFluidStack(9 * 8 * INGOTS),
+                MaterialsAlloy.KANTHAL.getFluidStack(1 * 4 * INGOTS))
             .itemOutputs(GregtechItemList.Controller_MolecularTransformer.get(1))
             .eut(TierEU.RECIPE_LuV)
             .duration(10 * MINUTES)
@@ -388,7 +388,7 @@ public class RecipesMachines {
                 CI.getSensor(5, 2),
                 ItemUtils.getItemStackOfAmountFromOreDict("circuitElite", 4))
             .itemOutputs(GregtechItemList.Casing_Molecular_Transformer_1.get(1))
-            .fluidInputs(CI.getTieredFluid(5, 144 * 4))
+            .fluidInputs(CI.getTieredFluid(5, 4 * INGOTS))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_IV)
             .addTo(assemblerRecipes);
@@ -401,7 +401,7 @@ public class RecipesMachines {
                 CI.getFieldGenerator(3, 2),
                 ItemUtils.getItemStackOfAmountFromOreDict("circuitData", 8))
             .itemOutputs(GregtechItemList.Casing_Molecular_Transformer_2.get(1))
-            .fluidInputs(CI.getTieredFluid(5, 144 * 4))
+            .fluidInputs(CI.getTieredFluid(5, 4 * INGOTS))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_IV)
             .addTo(assemblerRecipes);
@@ -414,7 +414,7 @@ public class RecipesMachines {
                 CI.getFieldGenerator(4, 2),
                 ItemUtils.getItemStackOfAmountFromOreDict("circuitData", 8))
             .itemOutputs(GregtechItemList.Casing_Molecular_Transformer_3.get(1))
-            .fluidInputs(CI.getTieredFluid(5, 144 * 4))
+            .fluidInputs(CI.getTieredFluid(5, 4 * INGOTS))
             .duration(60 * SECONDS)
             .eut(TierEU.RECIPE_IV)
             .addTo(assemblerRecipes);
@@ -444,7 +444,7 @@ public class RecipesMachines {
                 CI.getCircuit(4, 4),
                 CI.getGear(3, 8))
             .itemOutputs(GregtechItemList.Hatch_Turbine_Rotor.get(1))
-            .fluidInputs(CI.tieredMaterials[3].getMolten(144 * 8))
+            .fluidInputs(CI.tieredMaterials[3].getMolten(8 * INGOTS))
             .duration(60 * SECONDS)
             .eut(TierEU.RECIPE_EV)
             .addTo(assemblerRecipes);
@@ -469,7 +469,7 @@ public class RecipesMachines {
                 CI.getGear(4, 4),
                 CI.getCircuit(4, 8))
             .itemOutputs(GregtechItemList.Large_Steam_Turbine.get(1))
-            .fluidInputs(CI.tieredMaterials[4].getMolten(144 * 8))
+            .fluidInputs(CI.tieredMaterials[4].getMolten(8 * INGOTS))
             .duration(60 * SECONDS)
             .eut(TierEU.RECIPE_EV)
             .addTo(assemblerRecipes);
@@ -481,7 +481,7 @@ public class RecipesMachines {
                 CI.getPlate(5, 4),
                 CI.getScrew(5, 8))
             .itemOutputs(GregtechItemList.Casing_Turbine_Gas.get(1))
-            .fluidInputs(CI.tieredMaterials[4].getMolten(144 * 2))
+            .fluidInputs(CI.tieredMaterials[4].getMolten(2 * INGOTS))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_IV)
             .addTo(assemblerRecipes);
@@ -494,7 +494,7 @@ public class RecipesMachines {
                 CI.getGear(6, 4),
                 CI.getCircuit(6, 8))
             .itemOutputs(GregtechItemList.Large_Gas_Turbine.get(1))
-            .fluidInputs(CI.tieredMaterials[6].getMolten(144 * 8))
+            .fluidInputs(CI.tieredMaterials[6].getMolten(8 * INGOTS))
             .duration(60 * SECONDS)
             .eut(TierEU.RECIPE_LuV)
             .addTo(assemblerRecipes);
@@ -506,7 +506,7 @@ public class RecipesMachines {
                 CI.getPlate(4, 4),
                 CI.getScrew(4, 8))
             .itemOutputs(GregtechItemList.Casing_Turbine_HP.get(1))
-            .fluidInputs(CI.tieredMaterials[3].getMolten(144 * 2))
+            .fluidInputs(CI.tieredMaterials[3].getMolten(2 * INGOTS))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_EV)
             .addTo(assemblerRecipes);
@@ -519,7 +519,7 @@ public class RecipesMachines {
                 CI.getGear(5, 4),
                 CI.getCircuit(5, 8))
             .itemOutputs(GregtechItemList.Large_HPSteam_Turbine.get(1))
-            .fluidInputs(CI.tieredMaterials[5].getMolten(144 * 8))
+            .fluidInputs(CI.tieredMaterials[5].getMolten(8 * INGOTS))
             .duration(60 * SECONDS)
             .eut(TierEU.RECIPE_IV)
             .addTo(assemblerRecipes);
@@ -531,7 +531,7 @@ public class RecipesMachines {
                 CI.getPlate(6, 4),
                 CI.getScrew(6, 8))
             .itemOutputs(GregtechItemList.Casing_Turbine_Plasma.get(1))
-            .fluidInputs(CI.tieredMaterials[5].getMolten(144 * 2))
+            .fluidInputs(CI.tieredMaterials[5].getMolten(2 * INGOTS))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_LuV)
             .addTo(assemblerRecipes);
@@ -544,7 +544,7 @@ public class RecipesMachines {
                 CI.getGear(7, 4),
                 CI.getCircuit(7, 8))
             .itemOutputs(GregtechItemList.Large_Plasma_Turbine.get(1))
-            .fluidInputs(CI.tieredMaterials[7].getMolten(144 * 8))
+            .fluidInputs(CI.tieredMaterials[7].getMolten(8 * INGOTS))
             .duration(60 * SECONDS)
             .eut(TierEU.RECIPE_ZPM)
             .addTo(assemblerRecipes);
@@ -555,7 +555,7 @@ public class RecipesMachines {
                 new ItemStack(WerkstoffLoader.items.get(OrePrefixes.plate), 4, 10101),
                 new ItemStack(WerkstoffLoader.items.get(OrePrefixes.screw), 8, 10101))
             .itemOutputs(GregtechItemList.Casing_Turbine_SC.get(1))
-            .fluidInputs(FluidRegistry.getFluidStack("molten.adamantium alloy", 144 * 2))
+            .fluidInputs(FluidRegistry.getFluidStack("molten.adamantium alloy", 2 * INGOTS))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_LuV)
             .addTo(assemblerRecipes);
@@ -568,7 +568,7 @@ public class RecipesMachines {
                 new ItemStack(WerkstoffLoader.items.get(OrePrefixes.gearGt), 4, 10104),
                 CI.getCircuit(7, 8))
             .itemOutputs(GregtechItemList.Large_SCSteam_Turbine.get(1))
-            .fluidInputs(FluidRegistry.getFluidStack("molten.hikarium", 144 * 8))
+            .fluidInputs(FluidRegistry.getFluidStack("molten.hikarium", 8 * INGOTS))
             .duration(60 * SECONDS)
             .eut(TierEU.RECIPE_ZPM)
             .addTo(assemblerRecipes);
@@ -586,7 +586,7 @@ public class RecipesMachines {
                 MaterialsAlloy.MARAGING250.getScrew(8),
                 CI.getCircuit(5, 8))
             .itemOutputs(GregtechItemList.Industrial_Solar_Tower.get(1))
-            .fluidInputs(CI.getTieredFluid(3, 144 * 16))
+            .fluidInputs(CI.getTieredFluid(3, 16 * INGOTS))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_EV)
             .addTo(assemblerRecipes);
@@ -597,7 +597,7 @@ public class RecipesMachines {
                 MaterialsAlloy.STAINLESS_STEEL.getPlate(4),
                 MaterialsAlloy.MARAGING350.getScrew(8))
             .itemOutputs(GregtechItemList.Casing_SolarTower_Structural.get(1))
-            .fluidInputs(CI.getTieredFluid(3, 144 * 4))
+            .fluidInputs(CI.getTieredFluid(3, 4 * INGOTS))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(assemblerRecipes);
@@ -609,7 +609,7 @@ public class RecipesMachines {
                 MaterialsAlloy.MARAGING250.getBolt(16),
                 MaterialsElements.getInstance().ALUMINIUM.getScrew(8))
             .itemOutputs(GregtechItemList.Casing_SolarTower_SaltContainment.get(1))
-            .fluidInputs(CI.getTieredFluid(3, 144 * 4))
+            .fluidInputs(CI.getTieredFluid(3, 4 * INGOTS))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(assemblerRecipes);
@@ -620,7 +620,7 @@ public class RecipesMachines {
                 MaterialsAlloy.STEEL_BLACK.getPlate(4),
                 MaterialsAlloy.MARAGING250.getScrew(8))
             .itemOutputs(GregtechItemList.Casing_SolarTower_HeatContainment.get(1))
-            .fluidInputs(CI.getAlternativeTieredFluid(3, 144 * 4))
+            .fluidInputs(CI.getAlternativeTieredFluid(3, 4 * INGOTS))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(assemblerRecipes);
@@ -660,10 +660,10 @@ public class RecipesMachines {
                 ItemList.Tool_DataOrb.get(32),
                 GregtechItemList.Laser_Lens_Special.get(1))
             .fluidInputs(
-                CI.getTieredFluid(7, 144 * 32),
-                CI.getAlternativeTieredFluid(6, 144 * 16),
-                CI.getTertiaryTieredFluid(6, 144 * 16),
-                MaterialsAlloy.BABBIT_ALLOY.getFluidStack(128 * 144))
+                CI.getTieredFluid(7, 32 * INGOTS),
+                CI.getAlternativeTieredFluid(6, 16 * INGOTS),
+                CI.getTertiaryTieredFluid(6, 16 * INGOTS),
+                MaterialsAlloy.BABBIT_ALLOY.getFluidStack(128 * INGOTS))
             .itemOutputs(GregtechItemList.Controller_ElementalDuplicator.get(1))
             .eut(TierEU.RECIPE_ZPM)
             .duration(10 * MINUTES)

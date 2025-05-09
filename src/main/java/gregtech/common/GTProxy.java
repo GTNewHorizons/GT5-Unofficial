@@ -18,6 +18,7 @@ import static gregtech.api.enums.Mods.TinkerConstruct;
 import static gregtech.api.enums.Mods.TwilightForest;
 import static gregtech.api.recipe.RecipeMaps.crackingRecipes;
 import static gregtech.api.recipe.RecipeMaps.cutterRecipes;
+import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTUtil.LAST_BROKEN_TILEENTITY;
 import static net.minecraftforge.fluids.FluidRegistry.getFluidStack;
@@ -2290,7 +2291,7 @@ public abstract class GTProxy implements IGTMod, IFuelHandler {
             .registerContainers(
                 GTOreDictUnificator.get(OrePrefixes.cellPlasma, aMaterial, 1L),
                 ItemList.Cell_Empty.get(1L),
-                aMaterial.getMolten(1) != null ? 144 : 1000)
+                aMaterial.getMolten(1) != null ? 1 * INGOTS : 1000)
             .asFluid();
     }
 
@@ -2311,7 +2312,7 @@ public abstract class GTProxy implements IGTMod, IFuelHandler {
             .registerContainers(
                 GTOreDictUnificator.get(OrePrefixes.cellMolten, aMaterial, 1L),
                 ItemList.Cell_Empty.get(1L),
-                144)
+                1 * INGOTS)
             .asFluid();
     }
 

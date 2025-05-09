@@ -1241,7 +1241,8 @@ public class AssemblerRecipes implements Runnable {
         { // limiting lifetime of the variables
             ItemStack flask = ItemList.VOLUMETRIC_FLASK.get(1);
             NBTTagCompound nbtFlask = new NBTTagCompound();
-            int[] capacities = new int[] { 144, 288, 576, 720, 864, 72, 648, 936, 250, 500, 1000 };
+            int[] capacities = new int[] { 1 * INGOTS, 2 * INGOTS, 4 * INGOTS, 5 * INGOTS, 6 * INGOTS, 1 * HALF_INGOTS,
+                7 * HALF_INGOTS, 13 * HALF_INGOTS, 250, 500, 1000 };
             int[] circuitConfigurations = new int[] { 1, 2, 3, 4, 5, 6, 7, 8, 10, 11, 24 };
             for (int i = 0; i < capacities.length; i++) {
                 nbtFlask.setInteger("Capacity", capacities[i]);

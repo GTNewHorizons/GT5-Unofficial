@@ -158,7 +158,7 @@ public class ElectricImplosionCompressorRecipes implements Runnable {
             .fluidInputs(
                 MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter
                     .getMolten((long) partFraction * multiplier))
-            .duration((int) (multiplier * (20 * partFraction / 144.0)))
+            .duration((int) (multiplier * (20 * partFraction / (float) INGOTS)))
             .eut(TierEU.RECIPE_UXV)
             .addTo(electricImplosionCompressorRecipes);
     }

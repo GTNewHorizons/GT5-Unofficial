@@ -126,7 +126,7 @@ public class MTEPurificationUnitDegasser extends MTEPurificationUnitBase<MTEPuri
         }
     }
 
-    private static final long SUPERCON_FLUID_AMOUNT = 1440L;
+    private static final long SUPERCON_FLUID_AMOUNT = 10 * INGOTS;
 
     private static final Supplier<SuperconductorMaterial[]> SUPERCONDUCTOR_MATERIALS = () -> new SuperconductorMaterial[] {
         new SuperconductorMaterial(Materials.Longasssuperconductornameforuvwire.getMolten(SUPERCON_FLUID_AMOUNT), 1.0f),

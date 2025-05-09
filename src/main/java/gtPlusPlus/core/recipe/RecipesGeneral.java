@@ -127,7 +127,7 @@ public class RecipesGeneral {
                 Materials.Sapphire.getBlocks(32),
                 new ItemStack(Blocks.gold_block, 32))
             .itemOutputs(GregtechItemList.MagicFeather.get(1))
-            .fluidInputs(Materials.Silver.getMolten(32 * 144))
+            .fluidInputs(Materials.Silver.getMolten(32 * INGOTS))
             .duration(2 * MINUTES)
             .eut(TierEU.RECIPE_EV)
             .addTo(assemblerRecipes);

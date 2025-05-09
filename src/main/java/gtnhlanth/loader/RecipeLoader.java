@@ -3485,7 +3485,7 @@ public class RecipeLoader {
         GTValues.RA.stdBuilder()
             .itemInputs(CeriumDopedLutetiumAluminiumOxygenBlend.get(OrePrefixes.dust, 1))
             .itemOutputs(CeriumDopedLutetiumAluminiumGarnet.get(OrePrefixes.gem, 1))
-            .fluidInputs(Materials.Lutetium.getMolten(144 * 8))
+            .fluidInputs(Materials.Lutetium.getMolten(8 * INGOTS))
             .outputChances(514)
             .eut(TierEU.RECIPE_UV)
             .duration(500)

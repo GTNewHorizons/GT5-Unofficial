@@ -331,7 +331,7 @@ public class ProcessingWire implements gregtech.api.interfaces.IOreRecipeRegistr
                 GTValues.RA.stdBuilder()
                     .itemInputs(aStack, GTUtility.getIntegratedCircuit(24))
                     .itemOutputs(GTOreDictUnificator.get(correspondingCable, aMaterial, 1L))
-                    .fluidInputs(Materials.Rubber.getMolten(144 * costMultiplier))
+                    .fluidInputs(Materials.Rubber.getMolten(costMultiplier * INGOTS))
                     .duration(5 * SECONDS)
                     .eut(8)
                     .addTo(assemblerRecipes);

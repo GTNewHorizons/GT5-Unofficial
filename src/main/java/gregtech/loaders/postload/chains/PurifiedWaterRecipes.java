@@ -17,6 +17,7 @@ import static gregtech.api.recipe.RecipeMaps.purificationParticleExtractionRecip
 import static gregtech.api.recipe.RecipeMaps.purificationPhAdjustmentRecipes;
 import static gregtech.api.recipe.RecipeMaps.purificationPlasmaHeatingRecipes;
 import static gregtech.api.recipe.RecipeMaps.purificationUVTreatmentRecipes;
+import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.MINUTES;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeConstants.AssemblyLine;
@@ -275,10 +276,10 @@ public class PurifiedWaterRecipes {
                 new Object[] { OrePrefixes.circuit.get(Materials.UEV), 8 },
                 ItemList.Field_Generator_UEV.get(1))
             .fluidInputs(
-                Materials.Neutronium.getMolten(16 * 144),
-                Materials.Infinity.getMolten(16 * 144),
-                Materials.Tritanium.getMolten(16 * 144),
-                Materials.CosmicNeutronium.getMolten(16 * 144))
+                Materials.Neutronium.getMolten(16 * INGOTS),
+                Materials.Infinity.getMolten(16 * INGOTS),
+                Materials.Tritanium.getMolten(16 * INGOTS),
+                Materials.CosmicNeutronium.getMolten(16 * INGOTS))
             .itemOutputs(ItemList.Quark_Catalyst_Housing.get(1))
             .eut(TierEU.RECIPE_UIV)
             .duration(60 * SECONDS)

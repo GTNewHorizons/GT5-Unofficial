@@ -75,7 +75,7 @@ public class NaniteChain {
                 GTOreDictUnificator.get(OrePrefixes.ring, Materials.NaquadahAlloy, 32),
                 GTOreDictUnificator.get(OrePrefixes.stick, Materials.NaquadahAlloy, 16),
                 Materials.Carbon.getDust(64))
-            .fluidInputs(Materials.UUMatter.getFluid(10000), new FluidStack(solderIndalloy, 144 * 32))
+            .fluidInputs(Materials.UUMatter.getFluid(10000), new FluidStack(solderIndalloy, 32 * INGOTS))
             .itemOutputs(Materials.Carbon.getNanite(2))
             .eut(TierEU.RECIPE_UV)
             .duration(50 * SECONDS)
@@ -175,7 +175,7 @@ public class NaniteChain {
             .fluidInputs(
                 Materials.UUMatter.getFluid(500_000),
                 MaterialsUEVplus.DimensionallyTranscendentResidue.getFluid(50_000),
-                MaterialsUEVplus.Creon.getMolten(512 * 144))
+                MaterialsUEVplus.Creon.getMolten(512 * INGOTS))
             .metadata(NANO_FORGE_TIER, 3)
             .duration(100 * SECONDS)
             .eut(2_000_000_000)

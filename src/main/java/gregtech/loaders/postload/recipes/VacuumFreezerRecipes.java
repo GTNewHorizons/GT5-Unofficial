@@ -351,7 +351,7 @@ public class VacuumFreezerRecipes implements Runnable {
             .itemInputs(GTOreDictUnificator.get(OrePrefixes.ingotHot, MaterialsUEVplus.TranscendentMetal, 1L))
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.ingot, MaterialsUEVplus.TranscendentMetal, 1L))
             .fluidInputs(
-                new FluidStack(FluidRegistry.getFluid("molten.titansteel"), 144),
+                new FluidStack(FluidRegistry.getFluid("molten.titansteel"), 1 * INGOTS),
                 Materials.SuperCoolant.getFluid(1000))
             .duration(1 * SECONDS)
             .eut(TierEU.RECIPE_UIV)
@@ -387,7 +387,7 @@ public class VacuumFreezerRecipes implements Runnable {
     }
 
     private void addProtoHalkonitePartRecipe(OrePrefixes prefix, final int multiplier) {
-        final int partFraction = (int) (144 * prefix.mMaterialAmount / M);
+        final int partFraction = (int) (prefix.mMaterialAmount * INGOTS / M);
 
         GTValues.RA.stdBuilder()
             .itemInputs(GTOreDictUnificator.get(prefix, MaterialsUEVplus.HotProtoHalkonite, multiplier))
@@ -395,7 +395,7 @@ public class VacuumFreezerRecipes implements Runnable {
             .fluidInputs(
                 MaterialsUEVplus.DimensionallyShiftedSuperfluid.getFluid((long) partFraction * multiplier / 4),
                 Materials.SuperCoolant.getFluid(partFraction * multiplier * 4L))
-            .duration((int) (multiplier * (SECONDS * partFraction / 144.0)))
+            .duration((int) (multiplier * (SECONDS * partFraction / (float) INGOTS)))
             .eut(TierEU.RECIPE_UIV)
             .addTo(vacuumFreezerRecipes);
 

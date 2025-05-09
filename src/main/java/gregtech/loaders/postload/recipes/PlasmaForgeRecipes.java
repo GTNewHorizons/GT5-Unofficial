@@ -44,9 +44,9 @@ public class PlasmaForgeRecipes implements Runnable {
                 .itemInputs()
                 .fluidInputs(
                     Materials.StableBaryonicMatter.getFluid(8000),
-                    GGMaterial.metastableOganesson.getMolten(144 * 4),
+                    GGMaterial.metastableOganesson.getMolten(4 * INGOTS),
                     Materials.Grade8PurifiedWater.getFluid(12800),
-                    new FluidStack(celestialTungstenPlasma, 96 * 144),
+                    new FluidStack(celestialTungstenPlasma, 96 * INGOTS),
                     Materials.RadoxHeavy.getFluid(32000),
                     MaterialsUEVplus.ExcitedDTSC.getFluid(2000))
                 .fluidOutputs(
@@ -65,9 +65,9 @@ public class PlasmaForgeRecipes implements Runnable {
                 .itemInputs()
                 .fluidInputs(
                     Materials.StableBaryonicMatter.getFluid(2000),
-                    GGMaterial.metastableOganesson.getMolten(144 * 2),
+                    GGMaterial.metastableOganesson.getMolten(2 * INGOTS),
                     Materials.Grade8PurifiedWater.getFluid(3200),
-                    new FluidStack(celestialTungstenPlasma, 48 * 144),
+                    new FluidStack(celestialTungstenPlasma, 48 * INGOTS),
                     Materials.RadoxHeavy.getFluid(4000),
                     MaterialsUEVplus.ExcitedDTEC.getFluid(2000))
                 .fluidOutputs(
@@ -89,7 +89,7 @@ public class PlasmaForgeRecipes implements Runnable {
                     Materials.StableBaryonicMatter.getFluid(1000),
                     GGMaterial.metastableOganesson.getMolten(1 * INGOTS),
                     Materials.Grade8PurifiedWater.getFluid(1600),
-                    new FluidStack(celestialTungstenPlasma, 24 * 144),
+                    new FluidStack(celestialTungstenPlasma, 24 * INGOTS),
                     Materials.RadoxSuperHeavy.getFluid(2000),
                     MaterialsUEVplus.ExcitedDTRC.getFluid(2000))
                 .fluidOutputs(
@@ -108,7 +108,7 @@ public class PlasmaForgeRecipes implements Runnable {
                     Materials.StableBaryonicMatter.getFluid(250),
                     GGMaterial.metastableOganesson.getMolten(1 * INGOTS),
                     Materials.Grade8PurifiedWater.getFluid(400),
-                    new FluidStack(celestialTungstenPlasma, 24 * 144),
+                    new FluidStack(celestialTungstenPlasma, 24 * INGOTS),
                     Materials.RadoxSuperHeavy.getFluid(2000),
                     MaterialsUEVplus.ExcitedDTPC.getFluid(1000))
                 .fluidOutputs(
@@ -128,7 +128,7 @@ public class PlasmaForgeRecipes implements Runnable {
                 ItemList.Field_Generator_UMV.get(64))
             .fluidInputs(
                 MaterialsUEVplus.ExcitedDTEC.getFluid(100_000_000),
-                MaterialsUEVplus.SpaceTime.getMolten(64 * 2 * 9 * 144))
+                MaterialsUEVplus.SpaceTime.getMolten(64 * 2 * 9 * INGOTS))
             .itemOutputs(ItemList.GigaChad.get(1))
             .duration(86400 * 20 * 2)
             .eut(2_000_000_000)
@@ -154,12 +154,12 @@ public class PlasmaForgeRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(getModItem(Avaritia.ID, "Singularity", 8, 5))
                 .fluidInputs(
-                    MaterialsElements.STANDALONE.CELESTIAL_TUNGSTEN.getFluidStack(72 * 144),
-                    MaterialsElements.STANDALONE.ASTRAL_TITANIUM.getFluidStack(4 * 72 * 144),
-                    MaterialsElements.STANDALONE.HYPOGEN.getFluidStack(36 * 144),
-                    MaterialsElements.STANDALONE.CHRONOMATIC_GLASS.getFluidStack(8 * 72 * 144),
-                    MaterialsElements.STANDALONE.RHUGNOR.getFluidStack(18 * 144),
-                    MaterialsUEVplus.Mellion.getMolten(72 * 144))
+                    MaterialsElements.STANDALONE.CELESTIAL_TUNGSTEN.getFluidStack(72 * INGOTS),
+                    MaterialsElements.STANDALONE.ASTRAL_TITANIUM.getFluidStack(4 * 72 * INGOTS),
+                    MaterialsElements.STANDALONE.HYPOGEN.getFluidStack(36 * INGOTS),
+                    MaterialsElements.STANDALONE.CHRONOMATIC_GLASS.getFluidStack(8 * 72 * INGOTS),
+                    MaterialsElements.STANDALONE.RHUGNOR.getFluidStack(18 * INGOTS),
+                    MaterialsUEVplus.Mellion.getMolten(72 * INGOTS))
                 .fluidOutputs(MaterialsUEVplus.SixPhasedCopper.getMolten(72 * INGOTS))
                 .duration(60 * SECONDS)
                 .eut((int) TierEU.RECIPE_UMV)

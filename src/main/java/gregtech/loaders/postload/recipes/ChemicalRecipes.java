@@ -3905,8 +3905,8 @@ public class ChemicalRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Cell_Air.get(1), GTUtility.getIntegratedCircuit(1))
             .itemOutputs(Materials.Empty.getCells(1))
-            .fluidInputs(new FluidStack(aBasicMaterial, 144))
-            .fluidOutputs(new FluidStack(aPolymer, 144))
+            .fluidInputs(new FluidStack(aBasicMaterial, 1 * INGOTS))
+            .fluidOutputs(new FluidStack(aPolymer, 1 * INGOTS))
             .duration(8 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(UniversalChemical);
@@ -3914,8 +3914,8 @@ public class ChemicalRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(Materials.Oxygen.getCells(1), GTUtility.getIntegratedCircuit(1))
             .itemOutputs(Materials.Empty.getCells(1))
-            .fluidInputs(new FluidStack(aBasicMaterial, 144))
-            .fluidOutputs(new FluidStack(aPolymer, 216))
+            .fluidInputs(new FluidStack(aBasicMaterial, 1 * INGOTS))
+            .fluidOutputs(new FluidStack(aPolymer, 3 * HALF_INGOTS))
             .duration(8 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(UniversalChemical);

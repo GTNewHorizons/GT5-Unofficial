@@ -1476,7 +1476,7 @@ public class LoaderGTBlockFluid implements Runnable {
             .registerContainers(
                 GTOreDictUnificator.get(OrePrefixes.cellMolten, Materials.Glass, 1L),
                 ItemList.Cell_Empty.get(1L),
-                144);
+                1 * INGOTS);
         GTFluidFactory.builder("molten.redstone")
             .withLocalizedName("Molten Redstone")
             .withStateAndTemperature(MOLTEN, 500)
@@ -1485,7 +1485,7 @@ public class LoaderGTBlockFluid implements Runnable {
             .registerContainers(
                 GTOreDictUnificator.get(OrePrefixes.cellMolten, Materials.Redstone, 1L),
                 ItemList.Cell_Empty.get(1L),
-                144);
+                1 * INGOTS);
         GTFluidFactory.builder("molten.blaze")
             .withLocalizedName("Molten Blaze")
             .withStateAndTemperature(MOLTEN, 6400)
@@ -1494,7 +1494,7 @@ public class LoaderGTBlockFluid implements Runnable {
             .registerContainers(
                 GTOreDictUnificator.get(OrePrefixes.cellMolten, Materials.Blaze, 1L),
                 ItemList.Cell_Empty.get(1L),
-                144);
+                1 * INGOTS);
         GTFluidFactory.builder("wet.concrete")
             .withLocalizedName("Wet Concrete")
             .withStateAndTemperature(MOLTEN, 300)
@@ -1503,7 +1503,7 @@ public class LoaderGTBlockFluid implements Runnable {
             .registerContainers(
                 GTOreDictUnificator.get(OrePrefixes.cellMolten, Materials.Concrete, 1L),
                 ItemList.Cell_Empty.get(1L),
-                144);
+                1 * INGOTS);
 
         for (Materials tMaterial : Materials.values()) {
             if ((tMaterial.mStandardMoltenFluid == null) && (tMaterial.contains(SubTag.SMELTING_TO_FLUID))
