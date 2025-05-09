@@ -4257,7 +4257,20 @@ public class GTUtility {
         char[] chars = Long.toString(no)
             .toCharArray();
         for (int i = 0; i < chars.length; i++) {
-            chars[i] += 8272;
+            chars[i] = switch (chars[i]) {
+                case '0' -> CustomGlyphs.SUBSCRIPT0.charAt(0);
+                case '1' -> '\u2081';
+                case '2' -> '\u2082';
+                case '3' -> '\u2083';
+                case '4' -> '\u2084';
+                case '5' -> '\u2085';
+                case '6' -> '\u2086';
+                case '7' -> '\u2087';
+                case '8' -> '\u2088';
+                case '9' -> '\u2089';
+                case '?' -> CustomGlyphs.SUBSCRIPT_QUESTION_MARK.charAt(0);
+                default -> chars[i];
+            };
         }
         return new String(chars);
     }
@@ -4960,5 +4973,33 @@ public class GTUtility {
 
     public static float getClientReachDistance() {
         return Minecraft.getMinecraft().playerController.getBlockReachDistance();
+    }
+
+    public static String formatShortenedLong(long number) {
+        if (number < 1000) {
+            return String.valueOf(number);
+        }
+
+        int exp = (int) (Math.log(number) / Math.log(1000));
+        char suffix = "kMGTPE".charAt(exp - 1);
+        double shortened = number / Math.pow(1000, exp);
+
+        if (shortened == (long) shortened) {
+            return String.format("%d%c", (long) shortened, suffix);
+        } else {
+            return String.format("%.1f%c", shortened, suffix);
+        }
+    }
+
+    public static String truncateText(String text, int limit) {
+        if (limit < 0) limit = 1;
+        if (text == null) {
+            return null;
+        }
+        if (text.length() <= limit) {
+            return text;
+        } else {
+            return text.substring(0, limit) + "...";
+        }
     }
 }

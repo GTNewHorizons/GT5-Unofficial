@@ -4,6 +4,7 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static gregtech.api.GregTechAPI.*;
 import static gregtech.api.enums.HatchElement.InputHatch;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
+import static gregtech.api.util.GTStructureUtility.ofAnyWater;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -63,8 +64,6 @@ import gregtech.common.blocks.BlockCasings2;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.MTESteamMultiBase;
-import ic2.core.init.BlocksItems;
-import ic2.core.init.InternalName;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
@@ -216,12 +215,7 @@ public class MTESteamWasher extends MTESteamMultiBase<MTESteamWasher> implements
                         (t, m) -> t.tierPipeCasing = m,
                         t -> t.tierPipeCasing))
                 .addElement('D', ofBlock(Blocks.glass, 0))
-                .addElement(
-                    'E',
-                    ofChain(
-                        isAir(),
-                        ofBlockAnyMeta(Blocks.water),
-                        ofBlockAnyMeta(BlocksItems.getFluidBlock(InternalName.fluidDistilledWater))))
+                .addElement('E', ofChain(isAir(), ofAnyWater()))
                 .addElement(
                     'A',
                     ofChain(

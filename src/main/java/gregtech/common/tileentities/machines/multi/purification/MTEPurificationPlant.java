@@ -14,6 +14,7 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_PROCESSING_AR
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_PROCESSING_ARRAY_GLOW;
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
+import static gregtech.api.util.GTStructureUtility.ofAnyWater;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 import static gregtech.common.tileentities.machines.multi.purification.MTEPurificationUnitBase.WATER_BOOST_BONUS_CHANCE;
 import static gregtech.common.tileentities.machines.multi.purification.MTEPurificationUnitBase.WATER_BOOST_NEEDED_FLUID;
@@ -27,7 +28,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ChatComponentText;
@@ -130,7 +130,7 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
         .addElement('C', ofBlock(GregTechAPI.sBlockCasings9, 5))
         // Tinted Industrial Glass
         .addElement('D', ofBlockAnyMeta(GregTechAPI.sBlockTintedGlass, 0))
-        .addElement('F', ofBlock(Blocks.water, 0))
+        .addElement('F', ofAnyWater())
         .addElement('G', ofFrame(Materials.Tungsten))
         // Hatch space
         .addElement(
@@ -617,10 +617,13 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
                     () -> getBaseMetaTileEntity().wasShutdown(),
                     wasShutDown -> getBaseMetaTileEntity().setShutdownStatus(wasShutDown)));
         screenElements.widget(
-            TextWidget.dynamicString(this::generateCurrentRecipeInfoString)
+            TextWidget.dynamicString(this::generateCurrentProgress)
                 .setSynced(false)
-                .setTextAlignment(Alignment.CenterLeft)
-                .setEnabled(widget -> (mMaxProgresstime > 0)))
+                .setTextAlignment(new Alignment(-1, -1))
+                .setSize(180, 12)
+                .setEnabled(
+                    widget -> (mOutputFluids != null && mOutputFluids.length > 0)
+                        || (mOutputItems != null && mOutputItems.length > 0)))
             .widget(new FakeSyncWidget.IntegerSyncer(() -> mProgresstime, val -> mProgresstime = val))
             .widget(new FakeSyncWidget.IntegerSyncer(() -> mMaxProgresstime, val -> mMaxProgresstime = val));
     }
