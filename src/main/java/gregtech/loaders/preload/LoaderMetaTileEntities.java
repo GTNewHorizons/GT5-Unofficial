@@ -1074,6 +1074,11 @@ import gregtech.common.tileentities.machines.multi.compressor.MTEIndustrialCompr
 import gregtech.common.tileentities.machines.multi.compressor.MTENeutroniumCompressor;
 import gregtech.common.tileentities.machines.multi.drone.MTEDroneCentre;
 import gregtech.common.tileentities.machines.multi.drone.MTEHatchDroneDownLink;
+import gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex;
+import gregtech.common.tileentities.machines.multi.nanochip.MTEVacuumConveyorPipe;
+import gregtech.common.tileentities.machines.multi.nanochip.hatches.MTEHatchVacuumConveyorInput;
+import gregtech.common.tileentities.machines.multi.nanochip.hatches.MTEHatchVacuumConveyorOutput;
+import gregtech.common.tileentities.machines.multi.nanochip.modules.*;
 import gregtech.common.tileentities.machines.multi.purification.MTEHatchDegasifierControl;
 import gregtech.common.tileentities.machines.multi.purification.MTEHatchLensHousing;
 import gregtech.common.tileentities.machines.multi.purification.MTEHatchLensIndicator;
@@ -1623,6 +1628,55 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
         ItemList.LargeFluidExtractor.set(
             new MTELargeFluidExtractor(LARGE_FLUID_EXTRACTOR.ID, "multimachine.fluidextractor", "Large Fluid Extractor")
                 .getStackForm(1));
+
+        ItemList.Machine_Multi_NanochipAssemblyComplex.set(
+            new MTENanochipAssemblyComplex(
+                NANOCHIP_ASSEMBLY_CONTROLLER.ID,
+                "multimachine.nanochipassemblycomplex",
+                "Nanochip Assembly Complex").getStackForm(1));
+        ItemList.NanoChipModule_AssemblyMatrix.set(
+            new AssemblyMatrix(
+                NANOCHIP_MODULE_ASSEMBLY_MATRIX.ID,
+                "multimachine.nanochipmodule.assemblymatrix",
+                "Nanochip Assembly Matrix").getStackForm(1));
+        ItemList.NanoChipModule_SMDProcessor.set(
+            new SMDProcessor(
+                NANOCHIP_MODULE_SMD_PROCESSOR.ID,
+                "multimachine.nanochipmodule.smdprocessor",
+                "Part Preparation Apparatus").getStackForm(1));
+        ItemList.NanoChipModule_BoardProcessor.set(
+            new BoardProcessor(
+                NANOCHIP_MODULE_BOARD_PROCESSOR.ID,
+                "multimachine.nanochipmodule.boadprocessor",
+                "Full-Board Immersion Device").getStackForm(1));
+        ItemList.NanoChipModule_EtchingArray.set(
+            new EtchingArray(
+                NANOCHIP_MODULE_ETCHING_ARRAY.ID,
+                "multimachine.nanochipmodule.etchingarray",
+                "Ultra-high Energy Etching Array").getStackForm(1));
+        ItemList.NanoChipModule_CuttingChamber.set(
+            new CuttingChamber(
+                NANOCHIP_MODULE_CUTTING_CHAMBER.ID,
+                "multimachine.nanochipmodule.cuttingchamber",
+                "Nanoprecision Cutting Chamber").getStackForm(1));
+        ItemList.NanoChipModule_WireTracer.set(
+            new WireTracer(
+                NANOCHIP_MODULE_WIRE_TRACER.ID,
+                "multimachine.nanochipmodule.wiretracer",
+                "Nanoprecision Wire Tracer").getStackForm(1));
+        ItemList.NanoChipModule_SuperconductorSplitter.set(
+            new SuperconductorSplitter(
+                NANOCHIP_MODULE_SUPERCONDUCTOR_SPLITTER.ID,
+                "multimachine.nanochipmodule.superconductorsplitter",
+                "Superconductive Strand Splitter").getStackForm(1));
+        ItemList.NanoChipModule_Splitter.set(
+            new Splitter(NANOCHIP_MODULE_SPLITTER.ID, "multimachine.nanochipmodule.splitter", "Nanopart Splitter")
+                .getStackForm(1));
+        ItemList.NanoChipModule_OpticalOrganizer.set(
+            new OpticalOrganizer(
+                NANOCHIP_MODULE_OPTICAL_ORGANIZER.ID,
+                "multimachine.nanochipmodule.opticalorganizer",
+                "Optically Optimized Organizer").getStackForm(1));
 
         if (Thaumcraft.isModLoaded()) {
             ItemList.ResearchCompleter.set(
@@ -12374,6 +12428,23 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .getStackForm(1L));
     }
 
+    private static void registerVacuumComponents() {
+        ItemList.Hatch_VacuumConveyor_Input.set(
+            new MTEHatchVacuumConveyorInput(
+                HATCH_VACUUM_CONVEYOR_INPUT.ID,
+                "vacuum.hatch.input",
+                "Vacuum Conveyor Input",
+                1).getStackForm(1L));
+        ItemList.Hatch_VacuumConveyor_Output.set(
+            new MTEHatchVacuumConveyorOutput(
+                HATCH_VACUUM_CONVEYOR_OUTPUT.ID,
+                "vacuum.hatch.output",
+                "Vacuum Conveyor Output",
+                1).getStackForm(1L));
+        ItemList.VacuumConveyorPipe.set(
+            new MTEVacuumConveyorPipe(VACUUM_CONVEYOR_PIPE.ID, "vacuum.pipe", "Vacuum Conveyor Pipe").getStackForm(1L));
+    }
+
     @Override
     public void run() {
         GTLog.out.println("GTMod: Registering MetaTileEntities.");
@@ -12485,6 +12556,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
         registerOven();
         registerNameRemover();
         registerAirFilters();
+        registerVacuumComponents();
 
         ItemList.AdvDebugStructureWriter.set(
             new MTEAdvDebugStructureWriter(
