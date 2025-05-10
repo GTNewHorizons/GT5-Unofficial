@@ -16,7 +16,7 @@ import net.minecraftforge.fluids.FluidStack;
 
 import gregtech.api.interfaces.tileentity.IRecipeLockable;
 import gregtech.api.interfaces.tileentity.IVoidable;
-import gregtech.api.objects.GTDualInputs;
+import gregtech.api.objects.GTDualInputPattern;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
@@ -24,7 +24,7 @@ import gregtech.api.recipe.check.SingleRecipeCheck;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.OverclockCalculator;
 import gregtech.api.util.ParallelHelper;
-import gregtech.common.tileentities.machines.IDualInputInventory;
+import gregtech.common.tileentities.machines.IDualInputInventoryWithPattern;
 
 /**
  * Logic class to calculate result of recipe check from inputs, based on recipemap.
@@ -39,7 +39,6 @@ public class ProcessingLogic {
     protected ItemStack[] inputItems;
     protected FluidStack[] inputFluids;
     protected ItemStack specialSlotItem;
-    protected IDualInputInventory craftingPattern;
     protected int maxParallel = 1;
     protected Supplier<Integer> maxParallelSupplier;
     protected int batchSize = 1;
@@ -64,7 +63,21 @@ public class ProcessingLogic {
     // Cache
     protected RecipeMap<?> lastRecipeMap;
     protected GTRecipe lastRecipe;
-    protected Map<IDualInputInventory, Set<GTRecipe>> craftingPatternRecipeCache = new HashMap<>();
+
+    /**
+     * The {@link IDualInputInventoryWithPattern} that has any possible recipe found in the last call of
+     * {@link #tryCachePossibleRecipesFromPattern(IDualInputInventoryWithPattern)}.
+     */
+    protected IDualInputInventoryWithPattern activeDualInv;
+    /**
+     * The cache keyed by the {@link IDualInputInventoryWithPattern}, storing the possible recipes of the inv.
+     * <p>
+     * The entries can be removed by {@link #removeInventoryRecipeCache(IDualInputInventoryWithPattern)}, and it
+     * requires the hatches to actively call it when the inventory is changed (like the pattern is changed).
+     * <p>
+     * It will also be fully cleared when the {@link #getCurrentRecipeMap()} is not same to the last.
+     */
+    protected Map<IDualInputInventoryWithPattern, Set<GTRecipe>> dualInvWithPatternToRecipeCache = new HashMap<>();
 
     public ProcessingLogic() {}
 
@@ -116,31 +129,47 @@ public class ProcessingLogic {
         return this;
     }
 
-    public boolean craftingPatternHandler(IDualInputInventory slot) {
-        if (!slot.shouldBeCached()) {
-            return true;
-        }
-        if (craftingPatternRecipeCache.containsKey(slot)) {
-            craftingPattern = slot;
+    /**
+     * Try to cache the possible recipes from the pattern.
+     * <p>
+     * If the inventory can be cached, and any possible recipe is found, {@link #activeDualInv the active inv} will be
+     * set to the given inventory.
+     *
+     * @return {@code true} if the inv shouldn't be cached, or there is already a cached recipe sets, or the recipes
+     *         are cached successfully. {@code false} if there is no recipe found.
+     */
+    public boolean tryCachePossibleRecipesFromPattern(IDualInputInventoryWithPattern inv) {
+        if (!inv.shouldBeCached()) {
             return true;
         }
 
-        GTDualInputs inputs = slot.getPatternInputs();
+        // check existing caches
+        if (dualInvWithPatternToRecipeCache.containsKey(inv)) {
+            activeDualInv = inv;
+            return true;
+        }
+
+        // get recipes from the pattern
+        GTDualInputPattern inputs = inv.getPatternInputs();
         setInputItems(inputs.inputItems);
         setInputFluids(inputs.inputFluid);
         Set<GTRecipe> recipes = findRecipeMatches(getCurrentRecipeMap()).collect(Collectors.toSet());
+
+        // reset the status
         setInputItems();
         setInputFluids();
+
         if (!recipes.isEmpty()) {
-            craftingPatternRecipeCache.put(slot, recipes);
-            craftingPattern = slot;
+            dualInvWithPatternToRecipeCache.put(inv, recipes);
+            activeDualInv = inv;
             return true;
+        } else {
+            return false;
         }
-        return false;
     }
 
-    public void clearCraftingPatternRecipeCache(IDualInputInventory slot) {
-        craftingPatternRecipeCache.remove(slot);
+    public void removeInventoryRecipeCache(IDualInputInventoryWithPattern inv) {
+        dualInvWithPatternToRecipeCache.remove(inv);
     }
 
     /**
@@ -282,7 +311,7 @@ public class ProcessingLogic {
         this.calculatedEut = 0;
         this.duration = 0;
         this.calculatedParallels = 0;
-        this.craftingPattern = null;
+        this.activeDualInv = null;
         return this;
     }
 
@@ -302,7 +331,7 @@ public class ProcessingLogic {
         }
         if (lastRecipeMap != recipeMap) {
             if (lastRecipeMap != null) {
-                craftingPatternRecipeCache.clear();
+                dualInvWithPatternToRecipeCache.clear();
             }
             lastRecipe = null;
             lastRecipeMap = recipeMap;
@@ -328,15 +357,15 @@ public class ProcessingLogic {
             inputFluids = new FluidStack[0];
         }
 
-        if (craftingPattern != null) {
-            Set<GTRecipe> matchedRecipes = craftingPatternRecipeCache.get(craftingPattern);
+        if (activeDualInv != null) {
+            Set<GTRecipe> matchedRecipes = dualInvWithPatternToRecipeCache.get(activeDualInv);
             for (GTRecipe matchedRecipe : matchedRecipes) {
                 if (matchedRecipe.maxParallelCalculatedByInputs(1, inputFluids, inputItems) == 1) {
                     CalculationResult foundResult = validateAndCalculateRecipe(matchedRecipe);
                     return foundResult.checkRecipeResult;
                 }
             }
-            craftingPattern = null;
+            activeDualInv = null;
             return CheckRecipeResultRegistry.NO_RECIPE;
         }
 

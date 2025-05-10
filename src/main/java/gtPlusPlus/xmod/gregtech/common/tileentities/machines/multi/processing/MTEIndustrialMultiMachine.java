@@ -33,6 +33,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
+import org.apache.commons.lang3.ArrayUtils;
 import org.jetbrains.annotations.NotNull;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
@@ -393,9 +394,10 @@ public class MTEIndustrialMultiMachine extends GTPPMultiBlockBase<MTEIndustrialM
             // check crafting input hatches first
             if (supportsCraftingMEBuffer()) {
                 for (IDualInputHatch dualInputHatch : mDualInputHatches) {
+                    ItemStack[] sharedItems = dualInputHatch.getSharedItems();
                     for (var it = dualInputHatch.inventories(); it.hasNext();) {
                         IDualInputInventory slot = it.next();
-                        processingLogic.setInputItems(slot.getItemInputs());
+                        processingLogic.setInputItems(ArrayUtils.addAll(sharedItems, slot.getItemInputs()));
                         processingLogic.setInputFluids(slot.getFluidInputs());
                         CheckRecipeResult foundResult = processingLogic.process();
                         if (foundResult.wasSuccessful()) {

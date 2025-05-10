@@ -3,8 +3,6 @@ package gregtech.common.tileentities.machines;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
-import gregtech.api.objects.GTDualInputs;
-
 public interface IDualInputInventory {
 
     boolean isEmpty();
@@ -13,9 +11,4 @@ public interface IDualInputInventory {
 
     FluidStack[] getFluidInputs();
 
-    GTDualInputs getPatternInputs();
-
-    default boolean shouldBeCached() {
-        return true;
-    }
 }
