@@ -47,6 +47,8 @@ import static gregtech.api.recipe.RecipeMaps.vacuumFreezerRecipes;
 import static gregtech.api.util.GTRecipeBuilder.MINUTES;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
+import static gregtech.api.util.GTRecipeConstants.ADDITIVE_AMOUNT;
+import static gregtech.api.util.GTRecipeConstants.BlastFurnaceWithGas;
 import static gregtech.api.util.GTRecipeConstants.COIL_HEAT;
 import static gregtech.api.util.GTRecipeConstants.NKE_RANGE;
 import static gregtech.api.util.GTRecipeConstants.QFT_CATALYST;
@@ -513,12 +515,12 @@ public class NaquadahReworkRecipeLoader {
                 GTOreDictUnificator.get(OrePrefixes.block, Materials.SiliconSG, 16),
                 naquadahine.get(OrePrefixes.dust, 3),
                 ItemList.GalliumArsenideCrystal.get(1L))
-            .fluidInputs(Materials.Argon.getGas(8000))
             .itemOutputs(ItemList.Circuit_Silicon_Ingot3.get(1))
             .duration(50 * SECONDS)
             .eut(TierEU.RECIPE_IV)
             .metadata(COIL_HEAT, 4484)
-            .addTo(blastFurnaceRecipes);
+            .metadata(ADDITIVE_AMOUNT, 8000)
+            .addTo(BlastFurnaceWithGas);
 
         // NqO2 + 4Na = 2Na2O + Nq
         GTValues.RA.stdBuilder()
@@ -530,12 +532,12 @@ public class NaquadahReworkRecipeLoader {
 
         GTValues.RA.stdBuilder()
             .itemInputs(naquadahEarth.get(OrePrefixes.dust, 2), GTUtility.getIntegratedCircuit(2))
-            .fluidInputs(Materials.Nitrogen.getGas(1000))
             .itemOutputs(Materials.Naquadah.getNuggets(1))
             .duration(2 * MINUTES)
             .eut(TierEU.RECIPE_IV)
             .metadata(COIL_HEAT, 5000)
-            .addTo(blastFurnaceRecipes);
+            .metadata(ADDITIVE_AMOUNT, 1000)
+            .addTo(BlastFurnaceWithGas);
 
         // C2H4 + H2O(g) = C2H6O
         GTValues.RA.stdBuilder()
