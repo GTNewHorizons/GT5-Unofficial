@@ -1,10 +1,13 @@
 package gregtech.common.tileentities.machines.multi.nanochip.modules;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
+import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex.NAC_MODULE;
+import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex.TOOLTIP_CC;
 
 import java.util.ArrayList;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.fluids.FluidStack;
 
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
@@ -138,7 +141,15 @@ public class SuperconductorSplitter extends MTENanochipAssemblyModuleBase<Superc
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
-        return new MultiblockTooltipBuilder().toolTipFinisher("GregTech");
+        return new MultiblockTooltipBuilder().addInfo(NAC_MODULE)
+            .addInfo("Splits your Superconductor " + TOOLTIP_CC + "s")
+            .addInfo(
+                "Requires " + EnumChatFormatting.BLUE + "1000L/s Super Coolant" + EnumChatFormatting.GRAY + " to run")
+            .addInfo("Outputs into the VCO with the same color as the input VCI")
+            .addStructureInfo("Any base casing - Vacuum Conveyor Input")
+            .addStructureInfo("Any base casing - Input Hatch")
+            .addStructureInfo("Any base casing - Vacuum Conveyor Output")
+            .toolTipFinisher("GregTech");
     }
 
     @Override
