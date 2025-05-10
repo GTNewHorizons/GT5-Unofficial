@@ -58,6 +58,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.TestOnly;
 
 import com.cleanroommc.modularui.api.IGuiHolder;
+import com.cleanroommc.modularui.api.IPanelHandler;
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.api.widget.IWidget;
 import com.cleanroommc.modularui.drawable.DrawableArray;
@@ -76,6 +77,7 @@ import com.cleanroommc.modularui.value.sync.StringSyncValue;
 import com.cleanroommc.modularui.value.sync.SyncHandlers;
 import com.cleanroommc.modularui.widget.SingleChildWidget;
 import com.cleanroommc.modularui.widget.WidgetTree;
+import com.cleanroommc.modularui.widget.sizer.Area;
 import com.cleanroommc.modularui.widgets.CycleButtonWidget;
 import com.cleanroommc.modularui.widgets.ItemSlot;
 import com.cleanroommc.modularui.widgets.ListWidget;
@@ -84,6 +86,7 @@ import com.cleanroommc.modularui.widgets.ToggleButton;
 import com.cleanroommc.modularui.widgets.layout.Column;
 import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.cleanroommc.modularui.widgets.layout.Row;
+import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.gtnewhorizon.structurelib.structure.IStructureElement;
@@ -360,6 +363,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
                 aNBT.setTag("mOutputFluids" + i, tNBT);
             }
         }
+        aNBT.setTag("invSlot", this.invSlot.serializeNBT());
         aNBT.setBoolean("mWrench", mWrench);
         aNBT.setBoolean("mScrewdriver", mScrewdriver);
         aNBT.setBoolean("mSoftHammer", mSoftHammer);
@@ -439,6 +443,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
             mSolderingTool = aNBT.getBoolean("mSolderingTool");
             mCrowbar = aNBT.getBoolean("mCrowbar");
         } else fixAllIssues();
+        this.invSlot.deserializeNBT(aNBT.getCompoundTag("invSlot"));
     }
 
     protected SingleRecipeCheck loadSingleRecipeChecker(NBTTagCompound aNBT) {
@@ -2848,7 +2853,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
     // Until other features are implemented, this will be the same as supporting parallel.
     @Override
     public boolean supportsPowerPanel() {
-        return false;
+        return true;
     }
 
     @Override
@@ -3279,7 +3284,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
 
     @Override
     protected boolean forceUseMui2() {
-        return false;
+        return true;
     }
 
     @Override
@@ -3304,10 +3309,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
         if (doesBindPlayerInventory()) {
             panelColumn.child(
                 machineInfo.left(3)
-                    .paddingLeft(6)
-                    .paddingRight(6)
-                    .paddingTop(3)
-                    .paddingBottom(3));
+                    .padding(3));
         } else {
             panelColumn.child(
                 new SingleChildWidget<>().size(190, 171)
@@ -3453,7 +3455,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
         if (supportsMachineModeSwitch()) panelGap.child(createModeSwitchButton(syncManager));
         panelGap.child(createBatchModeButton(syncManager))
             .child(createLockToSingleRecipeButton(syncManager));
-        if (supportsPowerPanel()) panelGap.child(createPowerPanel(syncManager));
+        if (supportsPowerPanel()) panelGap.child(createPowerPanelButton(syncManager, parent));
     }
 
     public void insertTexts(ListWidget<IWidget, ?> machineInfo, ItemStackHandler invSlot, PanelSyncManager syncManager,
@@ -3642,10 +3644,6 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
                 .pos(190 - 18 - 2, doesBindPlayerInventory() ? 91 - 18 - 2 : 171 - 18 - 2));
     }
 
-    public IWidget createPowerPanel() {
-        return null;
-    }
-
     public IWidget createStructureUpdateButton(PanelSyncManager syncManager) {
         IntSyncValue structureUpdateSyncer = new IntSyncValue(
             this::getStructureUpdateTime,
@@ -3663,8 +3661,110 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
         return structureUpdateButton;
     }
 
-    public IWidget createPowerPanel(PanelSyncManager syncManager) {
-        return null;
+    public IWidget createPowerPanelButton(PanelSyncManager syncManager, ModularPanel parent) {
+        IPanelHandler bla = syncManager.panel(
+            "powerPanel",
+            (p_syncManager, syncHandler) -> openPowerControlPanel(p_syncManager, syncHandler, parent),
+            true);
+
+        return new com.cleanroommc.modularui.widgets.ButtonWidget<>().size(18, 18)
+            .rightRel(0, 6, 0)
+            .marginTop(4)
+            .overlay(
+                com.cleanroommc.modularui.drawable.UITexture.fullImage(GregTech.ID, "gui/overlay_button/power_panel"))
+            .onMousePressed(d -> {
+                if (!bla.isPanelOpen()) {
+                    bla.openPanel();
+                } else {
+                    bla.closePanel();
+                }
+                return true;
+            })
+            .tooltipBuilder(t -> t.addLine(IKey.lang("GT5U.gui.button.power_panel")))
+            .tooltipShowUpTimer(TOOLTIP_DELAY);
+    }
+
+    private ModularPanel openPowerControlPanel(PanelSyncManager syncManager, IPanelHandler thisPanel,
+        ModularPanel parent) {
+        Area area = parent.getArea();
+        int x = area.x + area.width;
+        int y = area.y;
+        ModularPanel panel = new ModularPanel("powerPanel").pos(x, y)
+            .size(120, 130)
+            .child(
+                new Column().sizeRel(1)
+                    .padding(3)
+                    .child(makeTitleTextWidget())
+                    .child(
+                        IKey.lang("GTPP.CC.parallel")
+                            .asWidget()
+                            .marginBottom(4))
+                    .child(makeParallelConfigurator(syncManager))
+
+            );
+
+        return panel;
+    }
+
+    private IWidget makeTitleTextWidget() {
+        return new com.cleanroommc.modularui.widgets.TextWidget(
+            EnumChatFormatting.UNDERLINE + StatCollector.translateToLocal("GT5U.gui.text.power_panel"))
+                .alignment(com.cleanroommc.modularui.utils.Alignment.Center)
+                .size(120, 18)
+                .marginBottom(4);
+    }
+
+    private IWidget makeParallelConfigurator(PanelSyncManager syncManager) {
+        IntSyncValue maxParallelSyncer = new IntSyncValue(this::getMaxParallelRecipes, val -> maxParallel = val);
+        syncManager.syncValue("maxParallel", maxParallelSyncer);
+        BooleanSyncValue alwaysMaxParallelSyncer = new BooleanSyncValue(
+            () -> alwaysMaxParallel,
+            val -> alwaysMaxParallel = val);
+        syncManager.syncValue("alwaysMaxParallel", alwaysMaxParallelSyncer);
+
+        IntSyncValue powerPanelMaxParallelSyncer = new IntSyncValue(
+            () -> powerPanelMaxParallel,
+            val -> powerPanelMaxParallel = val);
+
+        return new Row().widthRel(1)
+            .height(18)
+            .paddingLeft(3)
+            .paddingRight(3)
+            .mainAxisAlignment(com.cleanroommc.modularui.utils.Alignment.MainAxis.CENTER)
+            .child(
+                new TextFieldWidget().value(powerPanelMaxParallelSyncer)
+                    .setNumbers(
+                        () -> alwaysMaxParallelSyncer.getValue() ? maxParallelSyncer.getValue() : 1,
+                        maxParallelSyncer::getValue)
+                    .tooltipBuilder(
+                        t -> t.addLine(
+                            IKey.dynamic(
+                                () -> alwaysMaxParallelSyncer.getValue()
+                                    ? StatCollector.translateToLocalFormatted(
+                                        "GT5U.gui.text.lockedvalue",
+                                        maxParallelSyncer.getValue())
+                                    : StatCollector.translateToLocalFormatted(
+                                        "GT5U.gui.text.rangedvalue",
+                                        1,
+                                        maxParallelSyncer.getValue()))))
+                    .tooltipShowUpTimer(TOOLTIP_DELAY)
+                    .size(70, 14)
+                    .marginBottom(4))
+            .child(
+                new com.cleanroommc.modularui.widgets.ButtonWidget<>().size(18, 18)
+                    .overlay(new DynamicDrawable(() -> {
+                        if (alwaysMaxParallelSyncer.getValue()) return com.cleanroommc.modularui.drawable.UITexture
+                            .fullImage(GTUITextures.OVERLAY_BUTTON_CHECKMARK.location);
+                        return com.cleanroommc.modularui.drawable.UITexture
+                            .fullImage(GTUITextures.OVERLAY_BUTTON_CROSS.location);
+                    }))
+                    .onMousePressed(d -> {
+                        alwaysMaxParallelSyncer.setValue(!alwaysMaxParallelSyncer.getValue());
+                        powerPanelMaxParallelSyncer.setValue(maxParallelSyncer.getValue());
+                        return true;
+                    })
+                    .tooltipBuilder(t -> t.addLine(IKey.lang("GT5U.gui.button.max_parallel")))
+                    .tooltipShowUpTimer(TOOLTIP_DELAY));
     }
 
     public IWidget createLockToSingleRecipeButton(PanelSyncManager syncManager) {
