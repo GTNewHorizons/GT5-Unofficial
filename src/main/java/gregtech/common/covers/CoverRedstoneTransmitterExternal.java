@@ -29,6 +29,7 @@ public class CoverRedstoneTransmitterExternal extends CoverRedstoneWirelessBase 
         return true;
     }
 
+    // TODO: Remove this in 2.9 unless class moved from CoverLegacyData
     @Override
     protected void readDataFromNbt(NBTBase nbt) {
         if (nbt instanceof NBTTagInt nbtInt) {
@@ -39,7 +40,6 @@ public class CoverRedstoneTransmitterExternal extends CoverRedstoneWirelessBase 
             coverData = nbtInt.func_150287_d();
             return;
         }
-        // TODO: Remove this in 2.9
         NBTTagCompound tag = (NBTTagCompound) nbt;
         if (tag.hasKey("frequency") && !(tag.getInteger("frequency") == coverData)) {
             GregTechAPI.sWirelessRedstone.remove(coverData);
