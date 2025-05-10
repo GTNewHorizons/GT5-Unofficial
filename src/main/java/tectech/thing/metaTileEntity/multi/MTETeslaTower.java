@@ -35,6 +35,13 @@ import net.minecraftforge.fluids.FluidStack;
 import org.apache.commons.lang3.tuple.Pair;
 import org.jetbrains.annotations.NotNull;
 
+import com.cleanroommc.modularui.api.drawable.IKey;
+import com.cleanroommc.modularui.api.widget.IWidget;
+import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.utils.item.ItemStackHandler;
+import com.cleanroommc.modularui.value.sync.IntSyncValue;
+import com.cleanroommc.modularui.value.sync.PanelSyncManager;
+import com.cleanroommc.modularui.widgets.ListWidget;
 import com.google.common.collect.Multimap;
 import com.google.common.collect.MultimapBuilder;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
@@ -72,10 +79,7 @@ import tectech.thing.casing.TTCasingsContainer;
 import tectech.thing.metaTileEntity.hatch.MTEHatchCapacitor;
 import tectech.thing.metaTileEntity.hatch.MTEHatchDynamoMulti;
 import tectech.thing.metaTileEntity.hatch.MTEHatchEnergyMulti;
-import tectech.thing.metaTileEntity.multi.base.INameFunction;
-import tectech.thing.metaTileEntity.multi.base.IStatusFunction;
-import tectech.thing.metaTileEntity.multi.base.LedStatus;
-import tectech.thing.metaTileEntity.multi.base.Parameters;
+import tectech.thing.metaTileEntity.multi.base.Parameter;
 import tectech.thing.metaTileEntity.multi.base.TTMultiblockBase;
 import tectech.thing.metaTileEntity.multi.base.render.TTRenderedExtendedFacingTexture;
 
@@ -114,6 +118,7 @@ public class MTETeslaTower extends TTMultiblockBase implements ISurvivalConstruc
     // outputVoltage and current after settings
     private long outputVoltage;
     private long outputCurrent;
+    private long usedAmps;
 
     // Prevents unnecessary offset calculation, saving on lag
     private byte oldRotation = -1;
@@ -186,176 +191,72 @@ public class MTETeslaTower extends TTMultiblockBase implements ISurvivalConstruc
         .addElement('F', ofFrame(Materials.Titanium))
         .build();
     // endregion
-
     // region parameters
-    protected Parameters.Group.ParameterIn popogaSetting, histLowSetting, histHighSetting, transferRadiusTowerSetting,
-        transferRadiusTransceiverSetting, transferRadiusCoverUltimateSetting, outputVoltageSetting,
-        outputCurrentSetting, sortTimeMinSetting, overDriveSetting;
-    protected Parameters.Group.ParameterOut popogaDisplay, transferRadiusTowerDisplay, transferRadiusTransceiverDisplay,
-        transferRadiusCoverUltimateDisplay, outputVoltageDisplay, outputCurrentDisplay, outputMaxDisplay,
-        energyCapacityDisplay, energyStoredDisplay, energyFractionDisplay, sortTimeDisplay;
+    Parameter.DoubleParameter hysteresisLowParameter;
+    Parameter.DoubleParameter hysteresisHighParameter;
+    Parameter.IntegerParameter transferRadiusParameter;
+    Parameter.IntegerParameter outputVoltageParameter;
+    Parameter.IntegerParameter outputCurrentParameter;
+    Parameter.IntegerParameter scanTimeParameter;
+    Parameter.BooleanParameter overdriveParameter;
 
-    private static final INameFunction<MTETeslaTower> HYSTERESIS_LOW_SETTING_NAME = (base,
-        p) -> translateToLocal("gt.blockmachines.multimachine.tm.teslaCoil.cfgi.0"); // Hysteresis low setting
-    private static final INameFunction<MTETeslaTower> HYSTERESIS_HIGH_SETTING_NAME = (base,
-        p) -> translateToLocal("gt.blockmachines.multimachine.tm.teslaCoil.cfgi.1"); // Hysteresis high setting
-    private static final INameFunction<MTETeslaTower> TRANSFER_RADIUS_TOWER_SETTING_NAME = (base,
-        p) -> translateToLocal("gt.blockmachines.multimachine.tm.teslaCoil.cfgi.2"); // Tesla Towers transfer radius
-    // setting
-    private static final INameFunction<MTETeslaTower> TRANSFER_RADIUS_TRANSCEIVER_SETTING_NAME = (base,
-        p) -> translateToLocal("gt.blockmachines.multimachine.tm.teslaCoil.cfgi.3"); // Tesla Transceiver transfer
-    // radius setting
-    private static final INameFunction<MTETeslaTower> TRANSFER_RADIUS_COVER_ULTIMATE_SETTING_NAME = (base,
-        p) -> translateToLocal("gt.blockmachines.multimachine.tm.teslaCoil.cfgi.4"); // Tesla Ultimate Cover
-                                                                                     // transfer radius
-    // setting
-    private static final INameFunction<MTETeslaTower> OUTPUT_VOLTAGE_SETTING_NAME = (base,
-        p) -> translateToLocal("gt.blockmachines.multimachine.tm.teslaCoil.cfgi.5"); // Output voltage setting
-    private static final INameFunction<MTETeslaTower> OUTPUT_CURRENT_SETTING_NAME = (base,
-        p) -> translateToLocal("gt.blockmachines.multimachine.tm.teslaCoil.cfgi.6"); // Output current setting
-    private static final INameFunction<MTETeslaTower> SCAN_TIME_MIN_SETTING_NAME = (base,
-        p) -> translateToLocal("gt.blockmachines.multimachine.tm.teslaCoil.cfgi.7"); // Scan time Min setting
-    private static final INameFunction<MTETeslaTower> OVERDRIVE_SETTING_NAME = (base,
-        p) -> translateToLocal("gt.blockmachines.multimachine.tm.teslaCoil.cfgi.8"); // Overdrive setting
-    private static final INameFunction<MTETeslaTower> POPOGA_NAME = (base,
-        p) -> translateToLocal("gt.blockmachines.multimachine.tm.teslaCoil.cfgi.9"); // Unused
-
-    private static final INameFunction<MTETeslaTower> TRANSFER_RADIUS_TOWER_DISPLAY_NAME = (base,
-        p) -> translateToLocal("gt.blockmachines.multimachine.tm.teslaCoil.cfgo.0"); // Tesla Towers transfer radius
-    // display
-    private static final INameFunction<MTETeslaTower> TRANSFER_RADIUS_TRANSCEIVER_DISPLAY_NAME = (base,
-        p) -> translateToLocal("gt.blockmachines.multimachine.tm.teslaCoil.cfgo.1"); // Tesla Transceiver transfer
-    // radius display
-    private static final INameFunction<MTETeslaTower> TRANSFER_RADIUS_COVER_ULTIMATE_DISPLAY_NAME = (base,
-        p) -> translateToLocal("gt.blockmachines.multimachine.tm.teslaCoil.cfgo.2"); // Tesla Ultimate Cover
-                                                                                     // transfer radius
-    // display
-    private static final INameFunction<MTETeslaTower> OUTPUT_VOLTAGE_DISPLAY_NAME = (base,
-        p) -> translateToLocal("gt.blockmachines.multimachine.tm.teslaCoil.cfgo.3"); // Output voltage display
-    private static final INameFunction<MTETeslaTower> OUTPUT_MAX_DISPLAY_NAME = (base,
-        p) -> translateToLocal("gt.blockmachines.multimachine.tm.teslaCoil.cfgo.9"); // Output max display
-    private static final INameFunction<MTETeslaTower> OUTPUT_CURRENT_DISPLAY_NAME = (base,
-        p) -> translateToLocal("gt.blockmachines.multimachine.tm.teslaCoil.cfgo.4"); // Output current display
-    private static final INameFunction<MTETeslaTower> ENERGY_CAPACITY_DISPLAY_NAME = (base,
-        p) -> translateToLocal("gt.blockmachines.multimachine.tm.teslaCoil.cfgo.5"); // Energy Capacity display
-    private static final INameFunction<MTETeslaTower> ENERGY_STORED_DISPLAY_NAME = (base,
-        p) -> translateToLocal("gt.blockmachines.multimachine.tm.teslaCoil.cfgo.6"); // Energy Stored display
-    private static final INameFunction<MTETeslaTower> ENERGY_FRACTION_DISPLAY_NAME = (base,
-        p) -> translateToLocal("gt.blockmachines.multimachine.tm.teslaCoil.cfgo.7"); // Energy Fraction display
-    private static final INameFunction<MTETeslaTower> SCAN_TIME_DISPLAY_NAME = (base,
-        p) -> translateToLocal("gt.blockmachines.multimachine.tm.teslaCoil.cfgo.8"); // Scan time display
-
-    private static final IStatusFunction<MTETeslaTower> HYSTERESIS_LOW_STATUS = (base, p) -> {
-        double value = p.get();
-        if (Double.isNaN(value)) {
-            return LedStatus.STATUS_WRONG;
-        }
-        if (value <= 0.05) return LedStatus.STATUS_TOO_LOW;
-        if (value > base.histHighSetting.get()) return LedStatus.STATUS_TOO_HIGH;
-        return LedStatus.STATUS_OK;
-    };
-    private static final IStatusFunction<MTETeslaTower> HYSTERESIS_HIGH_STATUS = (base, p) -> {
-        double value = p.get();
-        if (Double.isNaN(value)) return LedStatus.STATUS_WRONG;
-        if (value <= base.histLowSetting.get()) return LedStatus.STATUS_TOO_LOW;
-        if (value > 0.95) return LedStatus.STATUS_TOO_HIGH;
-        return LedStatus.STATUS_OK;
-    };
-    private static final IStatusFunction<MTETeslaTower> TRANSFER_RADIUS_TOWER_STATUS = (base, p) -> {
-        double value = p.get();
-        if (Double.isNaN(value)) return LedStatus.STATUS_WRONG;
-        value = (int) value;
-        if (value < 0) return LedStatus.STATUS_TOO_LOW;
-        if (value > ConfigHandler.TeslaTweaks.TESLA_MULTI_RANGE_TOWER) return LedStatus.STATUS_HIGH;
-        if (value < ConfigHandler.TeslaTweaks.TESLA_MULTI_RANGE_TOWER) return LedStatus.STATUS_LOW;
-        return LedStatus.STATUS_OK;
-    };
-    private static final IStatusFunction<MTETeslaTower> TRANSFER_RADIUS_TRANSCEIVER_STATUS = (base, p) -> {
-        double value = p.get();
-        if (Double.isNaN(value)) return LedStatus.STATUS_WRONG;
-        value = (int) value;
-        if (value < 0) return LedStatus.STATUS_TOO_LOW;
-        if (value > ConfigHandler.TeslaTweaks.TESLA_MULTI_RANGE_TRANSCEIVER) return LedStatus.STATUS_HIGH;
-        if (value < ConfigHandler.TeslaTweaks.TESLA_MULTI_RANGE_TRANSCEIVER) return LedStatus.STATUS_LOW;
-        return LedStatus.STATUS_OK;
-    };
-    private static final IStatusFunction<MTETeslaTower> TRANSFER_RADIUS_COVER_ULTIMATE_STATUS = (base, p) -> {
-        double value = p.get();
-        if (Double.isNaN(value)) return LedStatus.STATUS_WRONG;
-        value = (int) value;
-        if (value < 0) return LedStatus.STATUS_TOO_LOW;
-        if (value > ConfigHandler.TeslaTweaks.TESLA_MULTI_RANGE_COVER) return LedStatus.STATUS_HIGH;
-        if (value < ConfigHandler.TeslaTweaks.TESLA_MULTI_RANGE_COVER) return LedStatus.STATUS_LOW;
-        return LedStatus.STATUS_OK;
-    };
-    private static final IStatusFunction<MTETeslaTower> OUTPUT_VOLTAGE_OR_CURRENT_STATUS = (base, p) -> {
-        double value = p.get();
-        if (Double.isNaN(value)) return LedStatus.STATUS_WRONG;
-        value = (long) value;
-        if (value == -1) return LedStatus.STATUS_OK;
-        if (value <= 0) return LedStatus.STATUS_TOO_LOW;
-        return LedStatus.STATUS_OK;
-    };
-    private static final IStatusFunction<MTETeslaTower> SCAN_TIME_MIN_STATUS = (base, p) -> {
-        double value = p.get();
-        if (Double.isNaN(value)) return LedStatus.STATUS_WRONG;
-        value = (int) value;
-        if (value < 100) return LedStatus.STATUS_TOO_LOW;
-        if (value == 100) return LedStatus.STATUS_OK;
-        return LedStatus.STATUS_HIGH;
-    };
-    private static final IStatusFunction<MTETeslaTower> OVERDRIVE_STATUS = (base, p) -> {
-        double value = p.get();
-        if (Double.isNaN(value)) return LedStatus.STATUS_WRONG;
-        value = (int) value;
-        if (value < 0) return LedStatus.STATUS_TOO_LOW;
-        if (value == 0) return LedStatus.STATUS_LOW;
-        return LedStatus.STATUS_HIGH;
-    };
-    private static final IStatusFunction<MTETeslaTower> POPOGA_STATUS = (base, p) -> {
-        if (base.getBaseMetaTileEntity()
-            .getWorld()
-            .isThundering()) {
-            return LedStatus.STATUS_WTF;
-        }
-        return LedStatus.STATUS_NEUTRAL;
-    };
-    private static final IStatusFunction<MTETeslaTower> SCAN_TIME_STATUS = (base, p) -> {
-        double value = p.get();
-        if (Double.isNaN(value)) return LedStatus.STATUS_WRONG;
-        value = (int) value;
-        if (value == 0) return LedStatus.STATUS_HIGH;
-        return LedStatus.STATUS_LOW;
-    };
-    private static final IStatusFunction<MTETeslaTower> POWER_STATUS = (base, p) -> {
-        double value = p.get();
-        if (Double.isNaN(value)) return LedStatus.STATUS_WRONG;
-        value = (long) value;
-        if (value > 0) {
-            return LedStatus.STATUS_OK;
-        } else {
-            return LedStatus.STATUS_LOW;
-        }
-    };
-    private static final IStatusFunction<MTETeslaTower> ENERGY_STATUS = (base, p) -> {
-        double value = p.get();
-        if (Double.isNaN(value)) return LedStatus.STATUS_WRONG;
-        if (base.energyFractionDisplay.get() > base.histHighSetting.get()) {
-            return LedStatus.STATUS_HIGH;
-        } else if (base.energyFractionDisplay.get() < base.histLowSetting.get()) {
-            return LedStatus.STATUS_LOW;
-        } else {
-            return LedStatus.STATUS_OK;
-        }
-    };
     // endregion
-
     public MTETeslaTower(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
     }
 
     public MTETeslaTower(String aName) {
         super(aName);
+    }
+
+    @Override
+    public void initParameters() {
+        hysteresisLowParameter = new Parameter.DoubleParameter(
+            0.25,
+            () -> 0.05,
+            () -> hysteresisHighParameter.getValue() - 0.05,
+            "gt.blockmachines.multimachine.tm.teslaCoil.hysteresisLow");
+
+        hysteresisHighParameter = new Parameter.DoubleParameter(
+            0.75,
+            () -> hysteresisLowParameter.getValue() + 0.05,
+            () -> 0.95,
+            "gt.blockmachines.multimachine.tm.teslaCoil.hysteresisHigh");
+
+        transferRadiusParameter = new Parameter.IntegerParameter(
+            ConfigHandler.TeslaTweaks.TESLA_MULTI_RANGE_TOWER,
+            () -> 0,
+            () -> Integer.MAX_VALUE,
+            "gt.blockmachines.multimachine.tm.teslaCoil.transferRadius");
+
+        outputVoltageParameter = new Parameter.IntegerParameter(
+            -1,
+            () -> -1,
+            () -> Integer.MAX_VALUE,
+            "gt.blockmachines.multimachine.tm.teslaCoil.outputVoltage");
+
+        outputCurrentParameter = new Parameter.IntegerParameter(
+            -1,
+            () -> -1,
+            () -> Integer.MAX_VALUE,
+            "gt.blockmachines.multimachine.tm.teslaCoil.outputCurrent");
+
+        scanTimeParameter = new Parameter.IntegerParameter(
+            100,
+            () -> 100,
+            () -> Integer.MAX_VALUE,
+            "gt.blockmachines.multimachine.tm.teslaCoil.scanTime");
+
+        overdriveParameter = new Parameter.BooleanParameter(
+            false,
+            "gt.blockmachines.multimachine.tm.teslaCoil.overdrive");
+        parameterList.add(hysteresisLowParameter);
+        parameterList.add(hysteresisHighParameter);
+        parameterList.add(transferRadiusParameter);
+        parameterList.add(outputVoltageParameter);
+        parameterList.add(outputCurrentParameter);
+        parameterList.add(scanTimeParameter);
+        parameterList.add(overdriveParameter);
     }
 
     private float getRangeMulti(int mTier, int vTier) {
@@ -473,19 +374,6 @@ public class MTETeslaTower extends TTMultiblockBase implements ISurvivalConstruc
     protected CheckRecipeResult checkProcessing_EM() {
         checkPlasmaBoost();
 
-        if (!histHighSetting.getStatus(false).isOk || !histLowSetting.getStatus(false).isOk)
-            return SimpleCheckRecipeResult.ofFailure("invalid_hysteresis");
-        if (!transferRadiusTowerSetting.getStatus(false).isOk || !transferRadiusTransceiverSetting.getStatus(false).isOk
-            || !transferRadiusCoverUltimateSetting.getStatus(false).isOk)
-            return SimpleCheckRecipeResult.ofFailure("invalid_transfer_radius");
-        if (!outputVoltageSetting.getStatus(false).isOk)
-            return SimpleCheckRecipeResult.ofFailure("invalid_voltage_setting");
-        if (!outputCurrentSetting.getStatus(false).isOk)
-            return SimpleCheckRecipeResult.ofFailure("invalid_current_setting");
-        if (!sortTimeMinSetting.getStatus(false).isOk) return SimpleCheckRecipeResult.ofFailure("invalid_time_setting");
-        if (!overDriveSetting.getStatus(false).isOk)
-            return SimpleCheckRecipeResult.ofFailure("invalid_overdrive_setting");
-
         mEfficiencyIncrease = 10000;
         mMaxProgresstime = 20;
         vTier = -1;
@@ -602,79 +490,6 @@ public class MTETeslaTower extends TTMultiblockBase implements ISurvivalConstruc
     }
 
     @Override
-    protected void parametersInstantiation_EM() {
-        Parameters.Group hatch_0 = parametrization.getGroup(0, true);
-        Parameters.Group hatch_1 = parametrization.getGroup(1, true);
-        Parameters.Group hatch_2 = parametrization.getGroup(2, true);
-        Parameters.Group hatch_3 = parametrization.getGroup(3, true);
-        Parameters.Group hatch_4 = parametrization.getGroup(4, true);
-        Parameters.Group hatch_5 = parametrization.getGroup(5, true);
-        Parameters.Group hatch_6 = parametrization.getGroup(6, true);
-        Parameters.Group hatch_7 = parametrization.getGroup(7, true);
-        Parameters.Group hatch_8 = parametrization.getGroup(8, true);
-        Parameters.Group hatch_9 = parametrization.getGroup(9, true);
-
-        histLowSetting = hatch_0.makeInParameter(0, 0.25, HYSTERESIS_LOW_SETTING_NAME, HYSTERESIS_LOW_STATUS);
-        popogaSetting = hatch_0.makeInParameter(1, 0, POPOGA_NAME, POPOGA_STATUS);
-        histHighSetting = hatch_1.makeInParameter(0, 0.75, HYSTERESIS_HIGH_SETTING_NAME, HYSTERESIS_HIGH_STATUS);
-        popogaSetting = hatch_1.makeInParameter(1, 0, POPOGA_NAME, POPOGA_STATUS);
-        transferRadiusTowerSetting = hatch_2.makeInParameter(
-            0,
-            ConfigHandler.TeslaTweaks.TESLA_MULTI_RANGE_TOWER,
-            TRANSFER_RADIUS_TOWER_SETTING_NAME,
-            TRANSFER_RADIUS_TOWER_STATUS);
-        popogaSetting = hatch_2.makeInParameter(1, 0, POPOGA_NAME, POPOGA_STATUS);
-        transferRadiusTransceiverSetting = hatch_3.makeInParameter(
-            0,
-            ConfigHandler.TeslaTweaks.TESLA_MULTI_RANGE_TRANSCEIVER,
-            TRANSFER_RADIUS_TRANSCEIVER_SETTING_NAME,
-            TRANSFER_RADIUS_TRANSCEIVER_STATUS);
-        transferRadiusCoverUltimateSetting = hatch_3.makeInParameter(
-            1,
-            ConfigHandler.TeslaTweaks.TESLA_MULTI_RANGE_COVER,
-            TRANSFER_RADIUS_COVER_ULTIMATE_SETTING_NAME,
-            TRANSFER_RADIUS_COVER_ULTIMATE_STATUS);
-        outputVoltageSetting = hatch_4
-            .makeInParameter(0, -1, OUTPUT_VOLTAGE_SETTING_NAME, OUTPUT_VOLTAGE_OR_CURRENT_STATUS);
-        popogaSetting = hatch_4.makeInParameter(1, 0, POPOGA_NAME, POPOGA_STATUS);
-        outputCurrentSetting = hatch_5
-            .makeInParameter(0, -1, OUTPUT_CURRENT_SETTING_NAME, OUTPUT_VOLTAGE_OR_CURRENT_STATUS);
-        popogaSetting = hatch_5.makeInParameter(1, 0, POPOGA_NAME, POPOGA_STATUS);
-        popogaSetting = hatch_6.makeInParameter(0, 0, POPOGA_NAME, POPOGA_STATUS);
-        popogaSetting = hatch_6.makeInParameter(1, 0, POPOGA_NAME, POPOGA_STATUS);
-        sortTimeMinSetting = hatch_7.makeInParameter(0, 100, SCAN_TIME_MIN_SETTING_NAME, SCAN_TIME_MIN_STATUS);
-        popogaSetting = hatch_7.makeInParameter(1, 0, POPOGA_NAME, POPOGA_STATUS);
-        overDriveSetting = hatch_8.makeInParameter(0, 0, OVERDRIVE_SETTING_NAME, OVERDRIVE_STATUS);
-        popogaSetting = hatch_8.makeInParameter(1, 0, POPOGA_NAME, POPOGA_STATUS);
-        popogaSetting = hatch_9.makeInParameter(0, 0, POPOGA_NAME, POPOGA_STATUS);
-        popogaSetting = hatch_9.makeInParameter(1, 0, POPOGA_NAME, POPOGA_STATUS);
-
-        popogaDisplay = hatch_0.makeOutParameter(0, 0, POPOGA_NAME, POPOGA_STATUS);
-        popogaDisplay = hatch_0.makeOutParameter(1, 0, POPOGA_NAME, POPOGA_STATUS);
-        popogaDisplay = hatch_1.makeOutParameter(0, 0, POPOGA_NAME, POPOGA_STATUS);
-        popogaDisplay = hatch_1.makeOutParameter(1, 0, POPOGA_NAME, POPOGA_STATUS);
-        transferRadiusTowerDisplay = hatch_2
-            .makeOutParameter(0, 0, TRANSFER_RADIUS_TOWER_DISPLAY_NAME, TRANSFER_RADIUS_TOWER_STATUS);
-        popogaDisplay = hatch_2.makeOutParameter(1, 0, POPOGA_NAME, POPOGA_STATUS);
-        transferRadiusTransceiverDisplay = hatch_3
-            .makeOutParameter(0, 0, TRANSFER_RADIUS_TRANSCEIVER_DISPLAY_NAME, TRANSFER_RADIUS_TRANSCEIVER_STATUS);
-        transferRadiusCoverUltimateDisplay = hatch_3
-            .makeOutParameter(1, 0, TRANSFER_RADIUS_COVER_ULTIMATE_DISPLAY_NAME, TRANSFER_RADIUS_COVER_ULTIMATE_STATUS);
-        outputVoltageDisplay = hatch_4.makeOutParameter(0, 0, OUTPUT_VOLTAGE_DISPLAY_NAME, POWER_STATUS);
-        outputMaxDisplay = hatch_4.makeOutParameter(1, 0, OUTPUT_MAX_DISPLAY_NAME, POWER_STATUS);
-        outputCurrentDisplay = hatch_5.makeOutParameter(0, 0, OUTPUT_CURRENT_DISPLAY_NAME, POWER_STATUS);
-        energyCapacityDisplay = hatch_5.makeOutParameter(1, 0, ENERGY_CAPACITY_DISPLAY_NAME, ENERGY_STATUS);
-        energyStoredDisplay = hatch_6.makeOutParameter(0, 0, ENERGY_STORED_DISPLAY_NAME, ENERGY_STATUS);
-        energyFractionDisplay = hatch_6.makeOutParameter(1, 0, ENERGY_FRACTION_DISPLAY_NAME, ENERGY_STATUS);
-        sortTimeDisplay = hatch_7.makeOutParameter(0, 0, SCAN_TIME_DISPLAY_NAME, SCAN_TIME_STATUS);
-        popogaDisplay = hatch_7.makeOutParameter(1, 0, POPOGA_NAME, POPOGA_STATUS);
-        popogaDisplay = hatch_8.makeOutParameter(0, 0, POPOGA_NAME, POPOGA_STATUS);
-        popogaDisplay = hatch_8.makeOutParameter(1, 0, POPOGA_NAME, POPOGA_STATUS);
-        popogaDisplay = hatch_9.makeOutParameter(0, 0, POPOGA_NAME, POPOGA_STATUS);
-        popogaDisplay = hatch_9.makeOutParameter(1, 0, POPOGA_NAME, POPOGA_STATUS);
-    }
-
-    @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
         aNBT.setLong("eEnergyCapacity", energyCapacity);
@@ -697,9 +512,6 @@ public class MTETeslaTower extends TTMultiblockBase implements ISurvivalConstruc
 
         ePowerPass = false;
         setEUVar(0);
-        energyStoredDisplay.set(0);
-        energyFractionDisplay.set(0);
-        outputMaxDisplay.set(0);
     }
 
     @Override
@@ -707,39 +519,28 @@ public class MTETeslaTower extends TTMultiblockBase implements ISurvivalConstruc
         // Hysteresis based ePowerPass setting
         float energyFrac = (float) getEUVar() / energyCapacity;
 
-        energyCapacityDisplay.set(energyCapacity);
-        energyStoredDisplay.set(getEUVar());
-        energyFractionDisplay.set(energyFrac);
-
-        if (!ePowerPass && energyFrac > histHighSetting.get()) {
+        if (!ePowerPass && energyFrac > hysteresisHighParameter.getValue()) {
             ePowerPass = true;
-        } else if (ePowerPass && energyFrac < histLowSetting.get()) {
+        } else if (ePowerPass && energyFrac < hysteresisLowParameter.getValue()) {
             ePowerPass = false;
         }
 
         // Power Limit Settings
-        if (outputVoltageSetting.get() > 0) {
-            outputVoltage = min(outputVoltageMax, (long) outputVoltageSetting.get());
+        if (outputVoltageParameter.getValue() > 0) {
+            outputVoltage = min(outputVoltageMax, outputVoltageParameter.getValue());
         } else {
             outputVoltage = outputVoltageMax;
         }
-        outputVoltageDisplay.set(outputVoltage);
 
-        if (outputCurrentSetting.get() > 0) {
-            outputCurrent = min(outputCurrentMax, (long) outputCurrentSetting.get());
+        if (outputCurrentParameter.getValue() > 0) {
+            outputCurrent = min(outputCurrentMax, outputCurrentParameter.getValue());
         } else {
             outputCurrent = outputCurrentMax;
         }
 
-        // Range calculation and display
-        int transferRadiusTower = getTeslaTransmissionRange();
-        transferRadiusTowerDisplay.set(transferRadiusTower);
-        transferRadiusTransceiverDisplay.set(transferRadiusTower * 2);
-        transferRadiusCoverUltimateDisplay.set(transferRadiusTower);
-
         // Power transfer
-        outputCurrentDisplay.set(TeslaUtil.powerTeslaNodeMap(this));
-        outputMaxDisplay.set(Math.max(outputCurrentDisplay.get(), outputMaxDisplay.get()));
+        usedAmps = TeslaUtil.powerTeslaNodeMap(this);
+
         // TODO Encapsulate the spark sender
         sparkCount--;
         if (sparkCount == 0 && ConfigHandler.teslaTweaks.TESLA_VISUAL_EFFECT) {
@@ -863,12 +664,12 @@ public class MTETeslaTower extends TTMultiblockBase implements ISurvivalConstruc
 
     @Override
     public int getTeslaTransmissionRange() {
-        return (int) (transferRadiusTowerSetting.get() * getRangeMulti(mTier, vTier));
+        return transferRadiusParameter.getValue();
     }
 
     @Override
     public boolean isOverdriveEnabled() {
-        return overDriveSetting.get() > 0;
+        return overdriveParameter.getValue();
     }
 
     @Override
@@ -956,5 +757,44 @@ public class MTETeslaTower extends TTMultiblockBase implements ISurvivalConstruc
         public long count(MTETeslaTower MTETeslaTower) {
             return MTETeslaTower.eCapacitorHatches.size();
         }
+    }
+
+    @Override
+    public boolean forceUseMui2() {
+        return true;
+    }
+
+    @Override
+    public void insertTexts(ListWidget<IWidget, ?> machineInfo, ItemStackHandler invSlot, PanelSyncManager syncManager,
+        ModularPanel parentPanel) {
+        IntSyncValue outputVoltageSyncer = new IntSyncValue(() -> 0, () -> (int) outputVoltage);
+        IntSyncValue outputCurrentSyncer = new IntSyncValue(() -> 0, () -> (int) outputCurrent);
+        IntSyncValue usedAmpsSyncer = new IntSyncValue(() -> 0, () -> (int) usedAmps);
+        syncManager.syncValue("outputVoltage", outputVoltageSyncer);
+        syncManager.syncValue("outputCurrent", outputCurrentSyncer);
+        syncManager.syncValue("usedAmps", usedAmpsSyncer);
+        super.insertTexts(machineInfo, invSlot, syncManager, parentPanel);
+        machineInfo.child(
+            IKey.dynamic(
+                () -> EnumChatFormatting.WHITE + "Output Voltage: "
+                    + EnumChatFormatting.BLUE
+                    + outputVoltageSyncer.getValue())
+                .asWidget()
+                .setEnabledIf(w -> getBaseMetaTileEntity().isActive())
+                .color(COLOR_TEXT_WHITE.get())
+                .widthRel(1)
+                .marginBottom(2));
+        machineInfo.child(
+            IKey.dynamic(
+                () -> EnumChatFormatting.WHITE + "Used Amperage: "
+                    + EnumChatFormatting.GREEN
+                    + usedAmpsSyncer.getValue()
+                    + "/"
+                    + outputCurrentSyncer.getValue())
+                .asWidget()
+                .setEnabledIf(w -> getBaseMetaTileEntity().isActive())
+                .color(COLOR_TEXT_WHITE.get())
+                .widthRel(1)
+                .marginBottom(2));
     }
 }

@@ -305,4 +305,9 @@ public class MTEFuelRefineFactory extends MTETooltipMultiBlockBaseEM implements 
     public boolean getDefaultHasMaintenanceChecks() {
         return false;
     }
+
+    @Override
+    protected boolean forceUseMui2() {
+        return true;
+    }
 }

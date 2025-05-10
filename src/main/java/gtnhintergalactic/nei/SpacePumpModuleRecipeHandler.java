@@ -119,7 +119,7 @@ public class SpacePumpModuleRecipeHandler extends TemplateRecipeHandler {
     @Override
     public void loadCraftingRecipes(String outputId, Object... results) {
         if (outputId.equals(getOutputId())) {
-            for (Map.Entry<Pair<Integer, Integer>, FluidStack> entry : SpacePumpingRecipes.RECIPES.entrySet()) {
+            for (Map.Entry<Pair<Integer, Integer>, FluidStack> entry : SpacePumpingRecipes.RECIPES_OLD.entrySet()) {
                 arecipes.add(
                     new CachedPumpRecipe(
                         entry.getKey()
@@ -182,7 +182,7 @@ public class SpacePumpModuleRecipeHandler extends TemplateRecipeHandler {
         }
         if (fluid == null) return;
 
-        for (Map.Entry<Pair<Integer, Integer>, FluidStack> entry : SpacePumpingRecipes.RECIPES.entrySet()) {
+        for (Map.Entry<Pair<Integer, Integer>, FluidStack> entry : SpacePumpingRecipes.RECIPES_OLD.entrySet()) {
             if (entry.getValue()
                 .isFluidEqual(new FluidStack(fluid, 0))) {
                 arecipes.add(
