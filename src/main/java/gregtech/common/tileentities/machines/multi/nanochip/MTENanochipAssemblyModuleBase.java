@@ -219,7 +219,7 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
      *         parallel
      *         calculation easier
      */
-    private ItemInputInformation refreshInputItems() {
+    protected ItemInputInformation refreshInputItems() {
         Map<GTUtility.ItemId, Byte> itemColorMap = new HashMap<>();
         Map<GTUtility.ItemId, ItemStack> inputs = new HashMap<>();
         // Clear input items before processing
@@ -449,6 +449,19 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
         // We need to override this because outputs are produced in vacuum conveyor outputs, not as real items
         if (GTUtility.isStackInvalid(aStack)) return false;
         MTEHatchVacuumConveyorOutput hatch = findOutputHatch(this.outputColor);
+        if (hatch == null) {
+            stopMachine(SimpleShutDownReason.ofCritical("Colored output hatch disappeared mid-recipe."));
+            return false;
+        }
+        // Look up component from this output fake stack and unify it with the packet inside the output hatch
+        CircuitComponent component = CircuitComponent.getFromFakeStackUnsafe(aStack);
+        CircuitComponentPacket outputPacket = new CircuitComponentPacket(component, aStack.stackSize);
+        hatch.unifyPacket(outputPacket);
+        return true;
+    }
+
+    public boolean addOutput(ItemStack aStack, MTEHatchVacuumConveyorOutput hatch) {
+        if (GTUtility.isStackInvalid(aStack)) return false;
         if (hatch == null) {
             stopMachine(SimpleShutDownReason.ofCritical("Colored output hatch disappeared mid-recipe."));
             return false;
