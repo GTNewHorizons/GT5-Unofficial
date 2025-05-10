@@ -734,9 +734,6 @@ public enum MetaTileEntityIDs {
     PLASMA_GENERATOR_IV(1197),
     PLASMA_GENERATOR_LuV(1198),
     PROCESSING_ARRAY_CONTROLLER(1199),
-    MAGLEV_PYLON_MV(1200),
-    MAGLEV_PYLON_HV(1201),
-    MAGLEV_PYLON_EV(1202),
     ADVANCED_SEISMIC_PROSPECTOR_LV(2102),
     ADVANCED_SEISMIC_PROSPECTOR_MV(2103),
     ADVANCED_SEISMIC_PROSPECTOR_HV(2104),
@@ -1963,7 +1960,10 @@ public enum MetaTileEntityIDs {
     NeutronAcceleratorUEV(32762),
     NeutronAcceleratorUIV(32763),
     NeutronAcceleratorUMV(32764),
-    Hatch_Air_Intake_Atmospheric(32765);
+    Hatch_Air_Intake_Atmospheric(32765),
+    MAGLEV_PYLON_MV(32780),
+    MAGLEV_PYLON_HV(32781),
+    MAGLEV_PYLON_EV(32782);
 
     public final int ID;
 
