@@ -4,6 +4,7 @@ import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 import net.minecraft.client.gui.GuiMainMenu;
+import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.config.Configuration;
 
@@ -44,45 +45,10 @@ public class PowerGogglesGuiOverlay {
 
     public static void init() {
 
-        OverlayManager.register(new OverlayHandler(screen -> screen instanceof PowerGogglesGuiHudConfig, screen -> {
-            PowerGogglesGuiHudConfig gui = (PowerGogglesGuiHudConfig) screen;
-            PagedWidget.Controller controller = new PagedWidget.Controller();
-            int height = 217;
-            ModularPanel overlayPanel = ModularPanel
-                .defaultPanel("power_goggles_overlay", gui.displayWidth, gui.displayHeight)
-                .size(230 + 2, height)
-                .background(IDrawable.EMPTY)
-                .leftRel(0.5f)
-                .top(10);
-
-            PagedWidget<?> pagedWidget = new PagedWidget() {
-
-                @Override
-                public void afterInit() {
-                    setPage(settingsPage);
-                }
-            }.controller(controller)
-                .addPage(makeGeneralSettingsPage(gui))
-                .addPage(makeColorSchemePage(overlayPanel));
-
-            return new CustomModularScreen() {
-
-                @Override
-                public @NotNull ModularPanel buildUI(ModularGuiContext context) {
-                    return overlayPanel.child(
-                        new Column().sizeRel(1)
-                            .child(
-                                new SingleChildWidget<>().size(230, 22)
-                                    .background(background)
-                                    .height(22)
-                                    .paddingBottom(4)
-                                    .child(makePagedWidgetButton(controller)))
-                            .child(
-                                new SingleChildWidget<>().size(230, height - 22)
-                                    .child(pagedWidget.sizeRel(1))));
-                }
-            };
-        }));
+        OverlayManager.register(
+            new OverlayHandler(
+                screen -> screen instanceof PowerGogglesGuiHudConfig,
+                PowerGogglesGuiOverlay::buildScreen));
         // Render an overlay in the main menu to prevent a ~1s delay when opening the config gui for the first time
         // This is a known bug with low priority
         OverlayManager.register(
@@ -94,15 +60,54 @@ public class PowerGogglesGuiOverlay {
                         .pos(-100, 0))));
     }
 
+    private static CustomModularScreen buildScreen(GuiScreen screen) {
+        PowerGogglesGuiHudConfig gui = (PowerGogglesGuiHudConfig) screen;
+        PagedWidget.Controller controller = new PagedWidget.Controller();
+        int height = 217;
+        ModularPanel overlayPanel = ModularPanel
+            .defaultPanel("power_goggles_overlay", gui.displayWidth, gui.displayHeight)
+            .size(230 + 2, height)
+            .background(IDrawable.EMPTY)
+            .leftRel(0.5f)
+            .top(10);
+
+        PagedWidget<?> pagedWidget = new PagedWidget() {
+
+            @Override
+            public void afterInit() {
+                setPage(settingsPage);
+            }
+        }.controller(controller)
+            .addPage(makeGeneralSettingsPage(gui))
+            .addPage(makeColorSchemePage(overlayPanel));
+
+        return new CustomModularScreen() {
+
+            @Override
+            public @NotNull ModularPanel buildUI(ModularGuiContext context) {
+                return overlayPanel.child(
+                    new Column().sizeRel(1)
+                        .child(
+                            new SingleChildWidget<>().size(230, 22)
+                                .background(background)
+                                .height(22)
+                                .paddingBottom(4)
+                                .child(makePagedWidgetButton(controller)))
+                        .child(
+                            new SingleChildWidget<>().size(230, height - 22)
+                                .child(pagedWidget.sizeRel(1))));
+            }
+        };
+    }
+
     private static IWidget makePagedWidgetButton(PagedWidget.Controller controller) {
-        ButtonWidget<?> pagedWidgetButton = new ButtonWidget<>().overlay(IKey.lang(settings[settingsPage]));
-        pagedWidgetButton.onMousePressed(mouseButton -> {
-            settingsPage = ++settingsPage % settings.length;
-            controller.setPage(settingsPage);
-            pagedWidgetButton.overlay(IKey.lang(settings[settingsPage]));
-            return true;
-        });
-        return pagedWidgetButton.sizeRel(1)
+        return new ButtonWidget<>().overlay(new DynamicDrawable(() -> IKey.lang(settings[settingsPage])))
+            .onMousePressed(mouseButton -> {
+                settingsPage = ++settingsPage % settings.length;
+                controller.setPage(settingsPage);
+                return true;
+            })
+            .sizeRel(1)
             .align(Alignment.Center);
     }
 
