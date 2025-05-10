@@ -18,7 +18,7 @@
  * spotless:on
  */
 
-package kubatech.loaders.item.items;
+package kubatech.loaders.item.kubaitem.items;
 
 import static kubatech.api.Variables.numberFormat;
 import static kubatech.api.Variables.numberFormatScientific;
@@ -57,7 +57,7 @@ import kubatech.api.enums.ItemList;
 import kubatech.api.tea.TeaNetwork;
 import kubatech.api.utils.ModUtils;
 import kubatech.api.utils.StringUtils;
-import kubatech.loaders.item.IItemProxyGUI;
+import kubatech.loaders.item.kubaitem.IItemProxyGUI;
 
 public class ItemTeaUltimate extends ItemTeaCollection implements IItemProxyGUI {
 
