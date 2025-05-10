@@ -3284,7 +3284,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
 
     @Override
     protected boolean forceUseMui2() {
-        return true;
+        return false;
     }
 
     @Override
