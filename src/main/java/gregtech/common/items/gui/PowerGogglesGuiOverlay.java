@@ -1,4 +1,4 @@
-package gregtech.common.gui;
+package gregtech.common.items.gui;
 
 import java.util.function.Consumer;
 import java.util.function.Supplier;
@@ -24,6 +24,7 @@ import com.cleanroommc.modularui.screen.ModularScreen;
 import com.cleanroommc.modularui.screen.viewport.ModularGuiContext;
 import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.utils.Color;
+import com.cleanroommc.modularui.value.DoubleValue;
 import com.cleanroommc.modularui.widget.SingleChildWidget;
 import com.cleanroommc.modularui.widgets.ButtonWidget;
 import com.cleanroommc.modularui.widgets.ColorPickerDialog;
@@ -32,7 +33,6 @@ import com.cleanroommc.modularui.widgets.SliderWidget;
 import com.cleanroommc.modularui.widgets.layout.Column;
 import com.cleanroommc.modularui.widgets.layout.Row;
 
-import gregtech.common.gui.modularui.NoSyncDouble;
 import gregtech.common.handlers.PowerGogglesConfigHandler;
 
 public class PowerGogglesGuiOverlay {
@@ -43,9 +43,6 @@ public class PowerGogglesGuiOverlay {
     private static IDrawable background = new Rectangle().setColor(Color.argb(0, 0, 0, 100));
 
     public static void init() {
-        ModularPanel hackPanel = ModularPanel.defaultPanel("overlay")
-            .size(0)
-            .pos(-100, 0);
 
         OverlayManager.register(new OverlayHandler(screen -> screen instanceof PowerGogglesGuiHudConfig, screen -> {
             PowerGogglesGuiHudConfig gui = (PowerGogglesGuiHudConfig) screen;
@@ -99,7 +96,12 @@ public class PowerGogglesGuiOverlay {
         // Render an overlay in the main menu to prevent a ~1s delay when opening the config gui for the first time
         // This is a known bug with low priority
         OverlayManager.register(
-            new OverlayHandler(screen -> screen instanceof GuiMainMenu, screen -> new ModularScreen(hackPanel)));
+            new OverlayHandler(
+                screen -> screen instanceof GuiMainMenu,
+                screen -> new ModularScreen(
+                    ModularPanel.defaultPanel("overlay")
+                        .size(0)
+                        .pos(-100, 0))));
     }
 
     private static IWidget makeGeneralSettingsPage(PowerGogglesGuiHudConfig gui) {
@@ -210,7 +212,7 @@ public class PowerGogglesGuiOverlay {
                     .background(GuiTextures.MC_BUTTON)
                     .bounds(0, 2)
                     .stopper(0.1)
-                    .value(new NoSyncDouble(valSupplier::get, val -> {
+                    .value(new DoubleValue.Dynamic(valSupplier::get, val -> {
                         setter.accept(val);
                         PowerGogglesConfigHandler.config.getCategory(Configuration.CATEGORY_GENERAL)
                             .get(key)
@@ -267,7 +269,7 @@ public class PowerGogglesGuiOverlay {
                 makeColorConfigButton(
                     overlayPanel,
                     () -> PowerGogglesConfigHandler.gradientGoodColor,
-                    val -> { PowerGogglesConfigHandler.gradientOkColor = val; },
+                    val -> { PowerGogglesConfigHandler.gradientGoodColor = val; },
                     "Good Gradient",
                     "GT5U.power_goggles_config.gradient_good",
                     "GT5U.power_goggles_config.gradient_good_tooltip"))

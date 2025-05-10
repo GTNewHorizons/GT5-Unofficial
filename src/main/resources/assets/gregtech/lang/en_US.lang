@@ -147,6 +147,10 @@ GTPP.algae.tooltip.generation=Generation: %d
 # Power Goggles
 GT5U.power_goggles.open_config_gui=Open Goggles Config
 GT5U.power_goggles.toggle_power_chart=Toggle Power Chart
+GT5U.power_goggles.link_lsc=Goggles linked to LSC at %d,%d,%d.
+GT5U.power_goggles.link_fail=That's not an LSC...
+GT5U.power_goggles.unlink=Goggles Unlinked.
+GT5U.power_goggles.link_tooltip=Linked to LSC at %d,%d,%d: %s
 # Power Goggles config GUI
 GT5U.power_goggles_config.notation_scientific=SCIENTIFIC
 GT5U.power_goggles_config.notation_engineering=ENGINEERING

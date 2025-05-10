@@ -28,7 +28,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.net.GTPacketLinkPowerGoggles;
 import gregtech.api.net.GTPacketUpdatePowerGoggles;
-import gregtech.common.gui.PowerGogglesGuiHudConfig;
+import gregtech.common.items.gui.PowerGogglesGuiHudConfig;
 import gregtech.common.misc.WirelessNetworkManager;
 import kekztech.common.tileentities.MTELapotronicSuperCapacitor;
 

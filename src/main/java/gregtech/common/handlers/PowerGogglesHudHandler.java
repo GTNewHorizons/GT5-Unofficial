@@ -17,7 +17,6 @@ import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiChat;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 
 import org.lwjgl.opengl.GL11;
@@ -28,11 +27,10 @@ import com.gtnewhorizons.modularui.api.drawable.GuiHelper;
 import com.gtnewhorizons.modularui.api.drawable.Text;
 import com.gtnewhorizons.modularui.api.math.Color;
 
-import baubles.common.container.InventoryBaubles;
-import baubles.common.lib.PlayerHandler;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.common.items.ItemPowerGoggles;
 
 public class PowerGogglesHudHandler {
 
@@ -67,16 +65,7 @@ public class PowerGogglesHudHandler {
         if (event.type != RenderGameOverlayEvent.ElementType.ALL || mc.gameSettings.showDebugInfo
             || (PowerGogglesConfigHandler.hideWhenChatOpen && mc.currentScreen instanceof GuiChat)) return;
 
-        InventoryBaubles baubles = PlayerHandler.getPlayerBaubles(mc.thePlayer);
-        boolean gogglesEquipped = false;
-        for (int i = 0; i < baubles.getSizeInventory(); i++) {
-            ItemStack bauble = baubles.getStackInSlot(i);
-            if (bauble == null) continue;
-            if (baubles.getStackInSlot(i)
-                .getUnlocalizedName()
-                .equals("gt.Power_Goggles")) gogglesEquipped = true;
-        }
-        if (!gogglesEquipped) return;
+        if (ItemPowerGoggles.getEquippedPowerGoggles(mc.thePlayer) == null) return;
         ScaledResolution resolution = event.resolution;
         int screenHeight = resolution.getScaledHeight();
         int screenWidth = resolution.getScaledWidth();

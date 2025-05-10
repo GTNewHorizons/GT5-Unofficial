@@ -11,6 +11,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
 import appeng.api.util.DimensionalCoord;
@@ -47,13 +48,16 @@ public class ItemPowerGoggles extends GTGenericItem implements IBauble, INetwork
                     NW.sendToServer(new GTPacketUpdateItem(tag));
                     stack.setTagCompound(tag);
                     player.addChatMessage(
-                        new ChatComponentText(String.format("Goggles linked to LSC at %d,%d,%d", x, y, z)));
+                        new ChatComponentText(
+                            StatCollector.translateToLocalFormatted("GT5U.power_goggles.link_lsc", x, y, z)));
                 }
             } else {
-                player.addChatMessage(new ChatComponentText("That's not an LSC..."));
+                player.addChatMessage(
+                    new ChatComponentText(StatCollector.translateToLocal("GT5U.power_goggles.link_fail")));
             }
         } else {
-            player.addChatMessage(new ChatComponentText("That's not an LSC..."));
+            player
+                .addChatMessage(new ChatComponentText(StatCollector.translateToLocal("GT5U.power_goggles.link_fail")));
         }
         return true;
     }
@@ -64,7 +68,8 @@ public class ItemPowerGoggles extends GTGenericItem implements IBauble, INetwork
         if (!world.isRemote) {
             if (player.isSneaking()) {
                 stack.setTagCompound(new NBTTagCompound());
-                player.addChatMessage(new ChatComponentText("Goggles unlinked."));
+                player
+                    .addChatMessage(new ChatComponentText(StatCollector.translateToLocal("GT5U.power_goggles.unlink")));
             } else {
 
                 InventoryBaubles baubles = PlayerHandler.getPlayerBaubles(player);
@@ -82,9 +87,7 @@ public class ItemPowerGoggles extends GTGenericItem implements IBauble, INetwork
                 }
                 for (int i = 0; i < baubles.getSizeInventory(); i++) {
                     ItemStack bauble = baubles.getStackInSlot(i);
-                    if (bauble != null && ((IBauble) bauble.getItem()).canUnequip(bauble, player)
-                        && bauble.getUnlocalizedName()
-                            .equals("gt.Power_Goggles")) {
+                    if (bauble != null && bauble.getItem() instanceof ItemPowerGoggles) {
                         baubles.setInventorySlotContents(i, stack.copy());
                         ((IBauble) bauble.getItem()).onEquipped(stack, player);
                         if (!player.capabilities.isCreativeMode) {
@@ -100,12 +103,13 @@ public class ItemPowerGoggles extends GTGenericItem implements IBauble, INetwork
 
     @Override
     public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean bool) {
+        super.addInformation(stack, player, tooltip, bool);
         NBTTagCompound tag = stack.getTagCompound();
         if (tag != null && !stack.getTagCompound()
             .hasNoTags()) {
             tooltip.add(
-                String.format(
-                    "Linked to LSC at %d,%d,%d: %s",
+                StatCollector.translateToLocalFormatted(
+                    "GT5U.power_goggles.link_tooltip",
                     tag.getInteger("x"),
                     tag.getInteger("y"),
                     tag.getInteger("z"),
@@ -147,17 +151,15 @@ public class ItemPowerGoggles extends GTGenericItem implements IBauble, INetwork
 
     @Override
     public boolean canEquip(ItemStack itemstack, EntityLivingBase player) {
+        return getEquippedPowerGoggles(player) == null;
+    }
+
+    public static ItemStack getEquippedPowerGoggles(EntityLivingBase player) {
         InventoryBaubles baubles = PlayerHandler.getPlayerBaubles((EntityPlayer) player);
-        for (int i = 0; i < baubles.getSizeInventory(); i++) {
-            ItemStack bauble = baubles.getStackInSlot(i);
-            if (bauble == null) continue;
-            if (baubles.getStackInSlot(i)
-                .getUnlocalizedName()
-                .equals("gt.Power_Goggles")) {
-                return false;
-            }
+        for (ItemStack bauble : baubles.stackList) {
+            if (bauble != null && bauble.getItem() instanceof ItemPowerGoggles) return bauble;
         }
-        return true;
+        return null;
     }
 
     @Override

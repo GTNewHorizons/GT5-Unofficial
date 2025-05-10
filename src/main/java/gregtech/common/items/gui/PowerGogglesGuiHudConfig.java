@@ -1,4 +1,4 @@
-package gregtech.common.gui;
+package gregtech.common.items.gui;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
