@@ -5,7 +5,7 @@ item.GT_Rockcutter_Item_HV.name=Камнерез HV
 item.GT_Teslastaff_Item.name=Посох Теслы
 BW_ItemBlocks.name=Травлённая лазуритовая ячейка
 BW_ItemBlocks.0.name=Травлённая лазуритовая ячейка
-BW_ItemBlocks.1.name=Лазуритом покрытая ячейка
+BW_ItemBlocks.1.name=Покрытая лазуритовая ячейка
 GT_LESU_CASING.name=LESU корпус
 GT_LESU_CASING.0.name=LESU корпус
 
