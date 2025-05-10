@@ -1756,6 +1756,10 @@ public enum ItemList implements IItemContainer {
     Cover_PlayerDetector,
     Machine_Multi_HeatExchanger,
 
+    MagLevPython_MV,
+    MagLevPython_HV,
+    MagLevPython_EV,
+
     Block_BronzePlate,
     Block_SteelPlate,
     Block_TitaniumPlate,
