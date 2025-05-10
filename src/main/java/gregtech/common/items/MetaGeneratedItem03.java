@@ -278,6 +278,8 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.common.covers.CoverMetricsTransmitter;
 import gregtech.common.covers.CoverSolarPanel;
+import gregtech.common.render.items.GlitchEffectMetaItemRenderer;
+import gregtech.common.render.items.InfinityMetaItemRenderer;
 import mods.railcraft.common.items.firestone.IItemFirestoneBurning;
 
 @Optional.Interface(iface = "mods.railcraft.common.items.firestone.IItemFirestoneBurning", modid = Mods.Names.RAILCRAFT)
@@ -1146,12 +1148,14 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 implements IItemFi
                 "Night upgrade for Industrial Apiary/n Maximum Installed: 1/n * Internal Darkness/n * Energy Consumption +5%",
                 OrePrefixes.apiaryUpgrade.name()));
 
-        ItemList.NuclearStar.set(
-            addItem(
-                NuclearStar.ID,
-                "Nuclear Star",
-                "By the powers of Greg, I command this star to be really hot.",
-                SubTag.NO_UNIFICATION));
+        ItemList.NuclearStar
+            .set(
+                addItem(
+                    NuclearStar.ID,
+                    "Nuclear Star",
+                    "By the powers of Greg, I command this star to be really hot.",
+                    SubTag.NO_UNIFICATION))
+            .setRender(new InfinityMetaItemRenderer());
 
         ItemList.Cover_Metrics_Transmitter.set(
             addItem(
@@ -1228,7 +1232,8 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 implements IItemFi
         ItemList.Optically_Compatible_Memory
             .set(addItem(Optically_Compatible_Memory.ID, "Optically Compatible Memory", "Its in the name!", o));
 
-        ItemList.Timepiece.set(addItem(Timepiece.ID, "Timepiece", "Beware of the kid with the hat", o));
+        ItemList.Timepiece.set(addItem(Timepiece.ID, "Timepiece", "Beware of the kid with the hat", o))
+            .setRender(new GlitchEffectMetaItemRenderer());
         ItemList.Transdimensional_Alignment_Matrix.set(
             addItem(
                 Transdimensional_Alignment_Matrix.ID,
@@ -1244,9 +1249,11 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 implements IItemFi
         ItemList.Relativistic_Heat_Capacitor
             .set(addItem(Relativistic_Heat_Capacitor.ID, "Relativistic Heat Capacitor", "Thermal Resonance?", o));
         ItemList.Phononic_Seed_Crystal
-            .set(addItem(Phononic_Seed_Crystal.ID, "Phononic Seed Crystal", "Perfect Thermal Conductance", o));
-        ItemList.Harmonic_Compound.set(
-            addItem(Harmonic_Compound.ID, "Harmonic Compound", "Toxic violet with a red haze", "ingotHotHarmonic"));
+            .set(addItem(Phononic_Seed_Crystal.ID, "Phononic Seed Crystal", "Perfect Thermal Conductance", o))
+            .setRender(new GlitchEffectMetaItemRenderer());
+        ItemList.Harmonic_Compound
+            .set(addItem(Harmonic_Compound.ID, "Harmonic Compound", "Toxic violet with a red haze", "ingotHotHarmonic"))
+            .setRender(new InfinityMetaItemRenderer());
 
         ItemList.Heavy_Hellish_Mud.set(addItem(Heavy_Hellish_Mud.ID, "Heavy Hellish Mud", "God wouldn't touch this"));
         ItemList.Netherite_Scrap_Seed.set(addItem(Netherite_Scrap_Seed.ID, "Netherite Scrap Seed", ""));
