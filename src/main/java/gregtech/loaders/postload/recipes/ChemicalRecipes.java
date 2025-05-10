@@ -867,28 +867,6 @@ public class ChemicalRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Glass, 3),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Magnesium, 2))
-            .itemOutputs(
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Silicon, 1),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Magnesia, 4))
-            .duration(5 * SECONDS)
-            .eut(8)
-            .addTo(UniversalChemical);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Flint, 3),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Magnesium, 2))
-            .itemOutputs(
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Silicon, 1),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Magnesia, 4))
-            .duration(5 * SECONDS)
-            .eut(8)
-            .addTo(UniversalChemical);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Jasper, 3),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Magnesium, 2))
             .itemOutputs(
