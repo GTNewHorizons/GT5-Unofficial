@@ -29,6 +29,8 @@ import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.api.widget.IWidget;
 import com.cleanroommc.modularui.drawable.DrawableArray;
 import com.cleanroommc.modularui.drawable.DynamicDrawable;
+import com.cleanroommc.modularui.drawable.GuiTextures;
+import com.cleanroommc.modularui.drawable.UITexture;
 import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.utils.Color;
@@ -83,20 +85,22 @@ public class MTEMultiBlockBaseGUI {
             .padding(4);
 
         registerSyncValues(panel, syncManager);
-        ListWidget<IWidget, ?> machineInfo = new ListWidget<>().size(machineInfoSize()[0], machineInfoSize()[1])
-            .background(
-                com.cleanroommc.modularui.drawable.UITexture.builder()
-                    .location(GregTech.ID, "gui/background/text_field")
-                    .adaptable(1)
-                    .imageSize(142, 28)
-                    .build()
-                    .asIcon());
+        ListWidget<IWidget, ?> machineInfo = new ListWidget<>()
+            .size(machineInfoSize()[0] - 4, machineInfoSize()[1] - 3);
 
         Flow panelColumn = new Column().sizeRel(1);
         if (base.doesBindPlayerInventory()) {
             panelColumn.child(
-                machineInfo.left(3)
-                    .padding(3));
+                new SingleChildWidget<>().size(machineInfoSize()[0] + 4, machineInfoSize()[1] + 3)
+                    .padding(3)
+                    .background(
+                        UITexture.builder()
+                            .location(GregTech.ID, "gui/background/text_field")
+                            .adaptable(1)
+                            .imageSize(142, 28)
+                            .build()
+                            .asIcon())
+                    .child(machineInfo));
         } else {
             panelColumn.child(
                 new SingleChildWidget<>().size(190, 171)
@@ -147,12 +151,9 @@ public class MTEMultiBlockBaseGUI {
     }
 
     public void addPowerSwitchButtton(Flow buttonColumn) {
-        com.cleanroommc.modularui.drawable.UITexture powerSwitchOn = com.cleanroommc.modularui.drawable.UITexture
-            .fullImage(GregTech.ID, "gui/overlay_button/power_switch_on");
-        com.cleanroommc.modularui.drawable.UITexture powerSwitchOff = com.cleanroommc.modularui.drawable.UITexture
-            .fullImage(GregTech.ID, "gui/overlay_button/power_switch_off");
-        com.cleanroommc.modularui.drawable.UITexture powerSwitchDisabled = com.cleanroommc.modularui.drawable.UITexture
-            .fullImage(MODID, "gui/overlay_button/power_switch_disabled");
+        UITexture powerSwitchOn = UITexture.fullImage(GregTech.ID, "gui/overlay_button/power_switch_on");
+        UITexture powerSwitchOff = UITexture.fullImage(GregTech.ID, "gui/overlay_button/power_switch_off");
+        UITexture powerSwitchDisabled = UITexture.fullImage(MODID, "gui/overlay_button/power_switch_disabled");
 
         buttonColumn.child(new ToggleButton().value(new BooleanSyncValue(base::isAllowedToWork, bool -> {
             if (!isAllowedToWorkButtonEnabled()) return;
@@ -192,13 +193,13 @@ public class MTEMultiBlockBaseGUI {
                 .alignment(com.cleanroommc.modularui.utils.Alignment.CenterLeft)
                 .width(titleWidth);
 
-        com.cleanroommc.modularui.drawable.UITexture angular = com.cleanroommc.modularui.drawable.UITexture.builder()
+        UITexture angular = UITexture.builder()
             .location(GregTech.ID, "gui/tab/title_angular_%s")
             .adaptable(4)
             .imageSize(18, 18)
             .canApplyTheme(true)
             .build();
-        com.cleanroommc.modularui.drawable.UITexture dark = com.cleanroommc.modularui.drawable.UITexture.builder()
+        UITexture dark = UITexture.builder()
             .location(GregTech.ID, "gui/tab/title_dark")
             .adaptable(4)
             .imageSize(28, 28)
@@ -221,7 +222,7 @@ public class MTEMultiBlockBaseGUI {
     }
 
     protected int[] machineInfoSize() {
-        return new int[] { 178, 85 };
+        return new int[] { 184, 91 };
     }
 
     protected int[] mainTerminalSize() {
@@ -229,11 +230,11 @@ public class MTEMultiBlockBaseGUI {
     }
 
     public void insertThingsInGap(Flow panelGap, PanelSyncManager syncManager, ModularPanel parent) {
-        com.cleanroommc.modularui.drawable.UITexture noMaint = com.cleanroommc.modularui.drawable.UITexture.builder()
+        UITexture noMaint = UITexture.builder()
             .location(GregTech.ID, "gui/icons/noMaint")
             .imageSize(16, 16)
             .build();
-        com.cleanroommc.modularui.drawable.UITexture checkmark = com.cleanroommc.modularui.drawable.UITexture.builder()
+        UITexture checkmark = UITexture.builder()
             .location(GregTech.ID, "gui/overlay_button/checkmark")
             .imageSize(16, 16)
             .build();
@@ -440,8 +441,7 @@ public class MTEMultiBlockBaseGUI {
 
     public void addGregtechLogo(ModularPanel panel) {
         panel.child(
-            new SingleChildWidget<>()
-                .overlay(com.cleanroommc.modularui.drawable.UITexture.fullImage(MODID, "gui/picture/tectech_logo_dark"))
+            new SingleChildWidget<>().overlay(UITexture.fullImage(MODID, "gui/picture/tectech_logo_dark"))
                 .size(18, 18)
                 .pos(190 - 18 - 2, base.doesBindPlayerInventory() ? 91 - 18 - 2 : 171 - 18 - 2));
     }
@@ -472,8 +472,7 @@ public class MTEMultiBlockBaseGUI {
         return new com.cleanroommc.modularui.widgets.ButtonWidget<>().size(18, 18)
             .rightRel(0, 6, 0)
             .marginTop(4)
-            .overlay(
-                com.cleanroommc.modularui.drawable.UITexture.fullImage(GregTech.ID, "gui/overlay_button/power_panel"))
+            .overlay(UITexture.fullImage(GregTech.ID, "gui/overlay_button/power_panel"))
             .onMousePressed(d -> {
                 if (!bla.isPanelOpen()) {
                     bla.openPanel();
@@ -555,10 +554,9 @@ public class MTEMultiBlockBaseGUI {
             .child(
                 new com.cleanroommc.modularui.widgets.ButtonWidget<>().size(18, 18)
                     .overlay(new DynamicDrawable(() -> {
-                        if (alwaysMaxParallelSyncer.getValue()) return com.cleanroommc.modularui.drawable.UITexture
-                            .fullImage(GTGuiTextures.OVERLAY_BUTTON_CHECKMARK.location);
-                        return com.cleanroommc.modularui.drawable.UITexture
-                            .fullImage(GTGuiTextures.OVERLAY_BUTTON_CROSS.location);
+                        if (alwaysMaxParallelSyncer.getValue())
+                            return UITexture.fullImage(GTGuiTextures.OVERLAY_BUTTON_CHECKMARK.location);
+                        return UITexture.fullImage(GTGuiTextures.OVERLAY_BUTTON_CROSS.location);
                     }))
                     .onMousePressed(d -> {
                         alwaysMaxParallelSyncer.setValue(!alwaysMaxParallelSyncer.getValue());
@@ -573,7 +571,15 @@ public class MTEMultiBlockBaseGUI {
         BooleanSyncValue recipeLockSyncer = new BooleanSyncValue(base::isRecipeLockingEnabled, base::setRecipeLocking);
         syncManager.syncValue("recipeLock", recipeLockSyncer);
 
-        ToggleButton lockToSingleRecipeButton = new ToggleButton().size(18, 18)
+        ToggleButton lockToSingleRecipeButton = new ToggleButton() {
+
+            @NotNull
+            @Override
+            public Result onMousePressed(int mouseButton) {
+                if (!base.supportsSingleRecipeLocking()) return Result.IGNORE;
+                return super.onMousePressed(mouseButton);
+            }
+        }.size(18, 18)
             .value(
                 new BooleanSyncValue(() -> recipeLockSyncer.getValue() || !base.supportsSingleRecipeLocking(), bool -> {
                     if (base.supportsSingleRecipeLocking()) {
@@ -581,7 +587,7 @@ public class MTEMultiBlockBaseGUI {
                     }
                 }))
             .overlay(new DynamicDrawable(() -> {
-                com.cleanroommc.modularui.drawable.UITexture forbidden = GTGuiTextures.OVERLAY_BUTTON_FORBIDDEN;
+                UITexture forbidden = GTGuiTextures.OVERLAY_BUTTON_FORBIDDEN;
                 if (recipeLockSyncer.getValue()) {
                     if (base.supportsSingleRecipeLocking()) {
                         return GTGuiTextures.OVERLAY_BUTTON_RECIPE_LOCKED;
@@ -609,14 +615,22 @@ public class MTEMultiBlockBaseGUI {
         BooleanSyncValue batchModeSyncer = new BooleanSyncValue(base::isBatchModeEnabled, base::setBatchMode);
         syncManager.syncValue("batchMode", batchModeSyncer);
 
-        ToggleButton batchModeButton = new ToggleButton().size(18, 18)
+        ToggleButton batchModeButton = new ToggleButton() {
+
+            @NotNull
+            @Override
+            public Result onMousePressed(int mouseButton) {
+                if (!base.supportsBatchMode()) return Result.IGNORE;
+                return super.onMousePressed(mouseButton);
+            }
+        }.size(18, 18)
             .value(new BooleanSyncValue(() -> batchModeSyncer.getValue() || !base.supportsBatchMode(), bool -> {
                 if (base.supportsBatchMode()) {
                     batchModeSyncer.setValue(bool);
                 }
             }))
             .overlay(new DynamicDrawable(() -> {
-                com.cleanroommc.modularui.drawable.UITexture forbidden = GTGuiTextures.OVERLAY_BUTTON_FORBIDDEN;
+                UITexture forbidden = GTGuiTextures.OVERLAY_BUTTON_FORBIDDEN;
                 if (batchModeSyncer.getValue()) {
                     if (base.supportsBatchMode()) {
                         return GTGuiTextures.OVERLAY_BUTTON_BATCH_MODE_ON;
@@ -652,7 +666,7 @@ public class MTEMultiBlockBaseGUI {
             .overlay(new DynamicDrawable(() -> {
                 com.gtnewhorizons.modularui.api.drawable.UITexture bla = base
                     .getMachineModeIcon(machineModeSyncer.getValue());
-                return com.cleanroommc.modularui.drawable.UITexture.builder()
+                return UITexture.builder()
                     .location(bla.location)
                     .imageSize(18, 18)
                     .build();
@@ -682,7 +696,15 @@ public class MTEMultiBlockBaseGUI {
             base::setInputSeparation);
         syncManager.syncValue("inputSeparation", inputSeparationSyncer);
 
-        ToggleButton inputSeparationButton = new ToggleButton().size(18, 18)
+        ToggleButton inputSeparationButton = new ToggleButton() {
+
+            @NotNull
+            @Override
+            public Result onMousePressed(int mouseButton) {
+                if (!base.supportsInputSeparation()) return Result.IGNORE;
+                return super.onMousePressed(mouseButton);
+            }
+        }.size(18, 18)
             .value(
                 new BooleanSyncValue(
                     () -> inputSeparationSyncer.getValue() || !base.supportsInputSeparation(),
@@ -692,7 +714,7 @@ public class MTEMultiBlockBaseGUI {
                         }
                     }))
             .overlay(new DynamicDrawable(() -> {
-                com.cleanroommc.modularui.drawable.UITexture forbidden = GTGuiTextures.OVERLAY_BUTTON_FORBIDDEN;
+                UITexture forbidden = GTGuiTextures.OVERLAY_BUTTON_FORBIDDEN;
                 if (inputSeparationSyncer.getValue()) {
                     if (base.supportsInputSeparation()) {
                         return GTGuiTextures.OVERLAY_BUTTON_INPUT_SEPARATION_ON;
@@ -732,18 +754,19 @@ public class MTEMultiBlockBaseGUI {
             .length(
                 base.getAllowedVoidingModes()
                     .size())
-            .background(
-                new DynamicDrawable(
-                    () -> com.cleanroommc.modularui.drawable.UITexture
-                        .fullImage(base.getVoidingMode().buttonTexture.location)))
+            .background(new DynamicDrawable(() -> UITexture.fullImage(base.getVoidingMode().buttonTexture.location)))
+            .stateHoverOverlay(base.supportsVoidProtection(), GuiTextures.MC_BUTTON_PRESSED)
             .overlay(
                 new DynamicDrawable(
-                    () -> base.supportsVoidProtection()
-                        ? com.cleanroommc.modularui.drawable.UITexture
-                            .fullImage(base.getVoidingMode().buttonOverlay.location)
+                    () -> base.supportsVoidProtection() ? UITexture.builder()
+                        .location(base.getVoidingMode().buttonOverlay.location)
+                        .canApplyTheme(true)
+                        .build()
                         : new DrawableArray(
-                            com.cleanroommc.modularui.drawable.UITexture
-                                .fullImage(base.getVoidingMode().buttonOverlay.location),
+                            UITexture.builder()
+                                .location(base.getVoidingMode().buttonOverlay.location)
+                                .canApplyTheme(true)
+                                .build(),
                             GTGuiTextures.OVERLAY_BUTTON_FORBIDDEN)))
             .tooltipBuilder(t -> {
                 t.addLine(IKey.dynamic(() -> StatCollector.translateToLocal("GT5U.gui.button.voiding_mode")))
