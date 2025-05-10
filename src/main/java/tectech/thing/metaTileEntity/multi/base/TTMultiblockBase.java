@@ -2283,10 +2283,8 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
 
         int textBoxToInventoryGap = 26;
 
-        ModularPanel panel = new ModularPanel("tt_multiblock")
-            .size(198, 181 + textBoxToInventoryGap)
+        ModularPanel panel = new ModularPanel("tt_multiblock").size(198, 181 + textBoxToInventoryGap)
             .padding(4);
-
 
         registerSyncValues(panel, syncManager);
         ListWidget<IWidget, ?> machineInfo = new ListWidget<>().size(machineInfoSize()[0], machineInfoSize()[1])
@@ -2391,13 +2389,13 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
         BooleanSyncValue wasShutdownSyncer = new BooleanSyncValue(() -> getBaseMetaTileEntity().wasShutdown());
         syncManager.syncValue("storedEU", euVarSyncer);
         syncManager.syncValue("wasShutdownThingsGap", wasShutdownSyncer);
-        panelGap.child(
-            new DynamicDrawable(
-                () -> maintSyncer.getValue() == 0 ? noMaint
-                    : IKey.str(EnumChatFormatting.DARK_RED + String.valueOf(maintSyncer.getValue())))
-                .asWidget()
-                .tooltipBuilder(t -> makeMaintenanceHoverableTooltip(t, maintSyncer))
-                .background(GuiTextures.SLOT_ITEM))
+        panelGap
+            .child(
+                new DynamicDrawable(
+                    () -> maintSyncer.getValue() == 0 ? noMaint
+                        : IKey.str(EnumChatFormatting.DARK_RED + String.valueOf(maintSyncer.getValue()))).asWidget()
+                            .tooltipBuilder(t -> makeMaintenanceHoverableTooltip(t, maintSyncer))
+                            .background(GuiTextures.SLOT_ITEM))
             .child(new HoverableIcon(new DynamicDrawable(() -> {
                 if (wasShutdownSyncer.getValue() || euVarSyncer.getValue() == 0)
                     return getTextureForShutdownReason(getBaseMetaTileEntity(), euVarSyncer.getValue());
@@ -2414,7 +2412,7 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
                 }))));
     }
 
-    private void makeMaintenanceHoverableTooltip(RichTooltip t, IntSyncValue maintSyncer){
+    private void makeMaintenanceHoverableTooltip(RichTooltip t, IntSyncValue maintSyncer) {
         UITexture crowbarFalse = UITexture.builder()
             .location(GregTech.ID, "gui/icons/crowbarFalse")
             .imageSize(16, 16)
@@ -2445,30 +2443,31 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
             return;
         }
         if (!mCrowbar) t.add(
-                crowbarFalse.asIcon()
-                    .size(16, 16))
+            crowbarFalse.asIcon()
+                .size(16, 16))
             .add(" ");
         if (!mHardHammer) t.add(
-                hardhammerFalse.asIcon()
-                    .size(16, 16))
+            hardhammerFalse.asIcon()
+                .size(16, 16))
             .add(" ");
         if (!mScrewdriver) t.add(
-                screwdriverFalse.asIcon()
-                    .size(16, 16))
+            screwdriverFalse.asIcon()
+                .size(16, 16))
             .add(" ");
         if (!mSoftHammer) t.add(
-                softhammerFalse.asIcon()
-                    .size(16, 16))
+            softhammerFalse.asIcon()
+                .size(16, 16))
             .add(" ");
         if (!mSolderingTool) t.add(
-                solderingFalse.asIcon()
-                    .size(16, 16))
+            solderingFalse.asIcon()
+                .size(16, 16))
             .add(" ");
         if (!mWrench) t.add(
-                wrenchFalse.asIcon()
-                    .size(16, 16))
+            wrenchFalse.asIcon()
+                .size(16, 16))
             .add(" ");
     }
+
     public IWidget createPowerPanel() {
         return null;
     }

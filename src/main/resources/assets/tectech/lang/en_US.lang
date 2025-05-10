@@ -711,7 +711,6 @@ gt.blockmachines.multimachine.tm.teslaCoil.cfgo.8=Scan time display
 gt.blockmachines.multimachine.tm.teslaCoil.cfgo.9=Output max display
 gt.blockmachines.multimachine.tm.teslaCoil.hysteresisLow=Hysteresis Low
 gt.blockmachines.multimachine.tm.teslaCoil.hysteresisHigh=Hysteresis High
-gt.blockmachines.multimachine.tm.teslaCoil.hysteresisHigh=Hysteresis High
 gt.blockmachines.multimachine.tm.teslaCoil.transferRadius=Transfer Radius
 gt.blockmachines.multimachine.tm.teslaCoil.outputVoltage=Output Voltage
 gt.blockmachines.multimachine.tm.teslaCoil.outputCurrent=Output Current
@@ -719,11 +718,8 @@ gt.blockmachines.multimachine.tm.teslaCoil.scanTime=Scan Time
 gt.blockmachines.multimachine.tm.teslaCoil.overdrive=Overdrive
 
 gt.blockmachines.multimachine.em.switch.desc.0=Distributes computation to transmission connectors based on weights.
-gt.blockmachines.multimachine.em.switch.desc.1=Transmission connectors are assigned an ID.
-gt.blockmachines.multimachine.em.switch.desc.2=Scan connectors with a Portable Scanner to determine their ID.
-gt.blockmachines.multimachine.em.switch.desc.3=Computation output is configured via TecTech parameters.
-gt.blockmachines.multimachine.em.switch.desc.4=The first parameter in each group controls the hatch ID.
-gt.blockmachines.multimachine.em.switch.desc.5=The second parameter in each group controls the hatch weight.
+gt.blockmachines.multimachine.em.switch.desc.1=Computation output is configured by right clicking transmission connectors with a screwdriver.
+gt.blockmachines.multimachine.em.switch.desc.2=Transmission connectors must be part of the structure for them to be configurable.
 
 gt.blockmachines.multimachine.em.computer.name=Quantum Computer
 gt.blockmachines.multimachine.em.computer.machinetype=Quantum Computer, QC
