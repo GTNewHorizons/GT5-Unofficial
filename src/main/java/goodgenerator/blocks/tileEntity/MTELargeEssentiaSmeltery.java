@@ -589,4 +589,9 @@ public class MTELargeEssentiaSmeltery extends MTETooltipMultiBlockBaseEM
         }
         return survivialBuildPiece(STRUCTURE_PIECE_LAST, stackSize, 2, 2, -length - 1, elementBudget, env, false, true);
     }
+
+    @Override
+    protected boolean forceUseMui2() {
+        return true;
+    }
 }
