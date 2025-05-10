@@ -2,6 +2,8 @@ package gregtech.common.tileentities.machines.multi.nanochip.modules;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
+import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex.NAC_MODULE;
+import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex.TOOLTIP_CC;
 
 import java.util.ArrayList;
 import java.util.Map;
@@ -145,7 +147,12 @@ public class Splitter extends MTENanochipAssemblyModuleBase<Splitter> {
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
-        return new MultiblockTooltipBuilder().toolTipFinisher("GregTech");
+        return new MultiblockTooltipBuilder().addInfo(NAC_MODULE)
+            .addInfo("Splits your " + TOOLTIP_CC + "s from one color VCI to one or more VCOs")
+            .addInfo("Select the color mappings in the Controller GUI")
+            .addStructureInfo("Any base casing - Vacuum Conveyor Input")
+            .addStructureInfo("Any base casing - Vacuum Conveyor Output")
+            .toolTipFinisher("GregTech");
     }
 
     @Override
