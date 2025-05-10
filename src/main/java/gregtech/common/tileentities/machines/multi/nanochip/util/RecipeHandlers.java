@@ -99,7 +99,7 @@ public class RecipeHandlers {
             .toArray(ItemStack[]::new);
         GTRecipeBuilder builder = GTValues.RA.stdBuilder()
             .metadata(NanochipAssemblyRecipeInfo.INSTANCE, info)
-            .fluidInputs(fluidInputs.toArray(new FluidStack[]{}))
+            .fluidInputs(fluidInputs.toArray(new FluidStack[] {}))
             .itemOutputs(output.getFakeStack(info.getBaseParallel()))
             .duration(ModuleRecipeInfo.MODULE_RECIPE_TIME)
             .eut(eut);
