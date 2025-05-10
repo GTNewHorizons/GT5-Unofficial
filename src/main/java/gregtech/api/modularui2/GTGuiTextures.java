@@ -247,6 +247,31 @@ public final class GTGuiTextures {
             GTTextureIds.OVERLAY_SLOT_BLOCK_PRIMITIVE)
         .build();
 
+    public static final UITexture OVERLAY_BUTTON_INPUT_SEPARATION_ON = UITexture
+        .fullImage(GregTech.ID, "gui/overlay_button/input_separation_on");
+    public static final UITexture OVERLAY_BUTTON_INPUT_SEPARATION_ON_DISABLED = UITexture
+        .fullImage(GregTech.ID, "gui/overlay_button/input_separation_on_disabled");
+    public static final UITexture OVERLAY_BUTTON_INPUT_SEPARATION_OFF = UITexture
+        .fullImage(GregTech.ID, "gui/overlay_button/input_separation_off");
+    public static final UITexture OVERLAY_BUTTON_INPUT_SEPARATION_OFF_DISABLED = UITexture
+        .fullImage(GregTech.ID, "gui/overlay_button/input_separation_off_disabled");
+    public static final UITexture OVERLAY_BUTTON_RECIPE_LOCKED = UITexture
+        .fullImage(GregTech.ID, "gui/overlay_button/recipe_locked");
+    public static final UITexture OVERLAY_BUTTON_RECIPE_LOCKED_DISABLED = UITexture
+        .fullImage(GregTech.ID, "gui/overlay_button/recipe_locked_disabled");
+    public static final UITexture OVERLAY_BUTTON_BATCH_MODE_ON = UITexture
+        .fullImage(GregTech.ID, "gui/overlay_button/batch_mode_on");
+    public static final UITexture OVERLAY_BUTTON_BATCH_MODE_ON_DISABLED = UITexture
+        .fullImage(GregTech.ID, "gui/overlay_button/batch_mode_on_disabled");
+    public static final UITexture OVERLAY_BUTTON_BATCH_MODE_OFF = UITexture
+        .fullImage(GregTech.ID, "gui/overlay_button/batch_mode_off");
+    public static final UITexture OVERLAY_BUTTON_BATCH_MODE_OFF_DISABLED = UITexture
+        .fullImage(GregTech.ID, "gui/overlay_button/batch_mode_off_disabled");
+    public static final UITexture OVERLAY_BUTTON_STRUCTURE_UPDATE = UITexture
+        .fullImage(GregTech.ID, "gui/overlay_button/structure_update");
+    public static final UITexture OVERLAY_BUTTON_FORBIDDEN = UITexture
+        .fullImage(GregTech.ID, "gui/overlay_button/forbidden");
+
     // endregion slot overlay
 
     // region progressbar
@@ -448,30 +473,6 @@ public final class GTGuiTextures {
         .name(GTTextureIds.PICTURE_RADIATION_SHUTTER_INSIDE)
         .build();
 
-    public static final UITexture OVERLAY_BUTTON_INPUT_SEPARATION_ON = UITexture
-        .fullImage(GregTech.ID, "gui/overlay_button/input_separation_on");
-    public static final UITexture OVERLAY_BUTTON_INPUT_SEPARATION_ON_DISABLED = UITexture
-        .fullImage(GregTech.ID, "gui/overlay_button/input_separation_on_disabled");
-    public static final UITexture OVERLAY_BUTTON_INPUT_SEPARATION_OFF = UITexture
-        .fullImage(GregTech.ID, "gui/overlay_button/input_separation_off");
-    public static final UITexture OVERLAY_BUTTON_INPUT_SEPARATION_OFF_DISABLED = UITexture
-        .fullImage(GregTech.ID, "gui/overlay_button/input_separation_off_disabled");
-    public static final UITexture OVERLAY_BUTTON_RECIPE_LOCKED = UITexture
-        .fullImage(GregTech.ID, "gui/overlay_button/recipe_locked");
-    public static final UITexture OVERLAY_BUTTON_RECIPE_LOCKED_DISABLED = UITexture
-        .fullImage(GregTech.ID, "gui/overlay_button/recipe_locked_disabled");
-    public static final UITexture OVERLAY_BUTTON_BATCH_MODE_ON = UITexture
-        .fullImage(GregTech.ID, "gui/overlay_button/batch_mode_on");
-    public static final UITexture OVERLAY_BUTTON_BATCH_MODE_ON_DISABLED = UITexture
-        .fullImage(GregTech.ID, "gui/overlay_button/batch_mode_on_disabled");
-    public static final UITexture OVERLAY_BUTTON_BATCH_MODE_OFF = UITexture
-        .fullImage(GregTech.ID, "gui/overlay_button/batch_mode_off");
-    public static final UITexture OVERLAY_BUTTON_BATCH_MODE_OFF_DISABLED = UITexture
-        .fullImage(GregTech.ID, "gui/overlay_button/batch_mode_off_disabled");
-    public static final UITexture OVERLAY_BUTTON_STRUCTURE_UPDATE = UITexture
-        .fullImage(GregTech.ID, "gui/overlay_button/structure_update");
-    public static final UITexture OVERLAY_BUTTON_FORBIDDEN = UITexture
-        .fullImage(GregTech.ID, "gui/overlay_button/forbidden");
     // endregion picture
 
     /**
