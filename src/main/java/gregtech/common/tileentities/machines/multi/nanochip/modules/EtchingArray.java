@@ -86,7 +86,7 @@ public class EtchingArray extends MTENanochipAssemblyModuleBase<EtchingArray> {
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         return new MultiblockTooltipBuilder().addInfo(NAC_MODULE)
-            .addInfo("Etches your Chip " + TOOLTIP_CC + "s into Processed Chip " + TOOLTIP_CC + "s")
+            .addInfo("Etches your Chip " + TOOLTIP_CC + "s")
             .addInfo("Outputs into the VCO with the same color as the input VCI")
             .addStructureInfo("Any base casing - Vacuum Conveyor Input")
             .addStructureInfo("Any base casing - Vacuum Conveyor Output")
