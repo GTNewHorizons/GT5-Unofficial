@@ -642,8 +642,10 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
             new Splitter(NANOCHIP_MODULE_SPLITTER.ID, "multimachine.nanochipmodule.splitter", "Nanopart Splitter")
                 .getStackForm(1));
         ItemList.NanoChipModule_OpticalOrganizer.set(
-            new OpticalOrganizer(NANOCHIP_MODULE_OPTICAL_ORGANIZER.ID, "multimachine.nanochipmodule.opticalorganizer", "Optically Optimized Organizer")
-                .getStackForm(1));
+            new OpticalOrganizer(
+                NANOCHIP_MODULE_OPTICAL_ORGANIZER.ID,
+                "multimachine.nanochipmodule.opticalorganizer",
+                "Optically Optimized Organizer").getStackForm(1));
 
         ItemList.EntropicProcessor.set(
             new MTEEntropicProcessor(ENTROPIC_PROCESSOR.ID, "multimachine.entropic-processor", "Entropic Processor")
