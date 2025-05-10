@@ -26,6 +26,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.function.Function;
+import java.util.function.LongConsumer;
 import java.util.stream.Collectors;
 
 import javax.annotation.Nonnull;
@@ -52,6 +53,11 @@ import org.apache.commons.lang3.ArrayUtils;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.TestOnly;
 
+import com.cleanroommc.modularui.api.IGuiHolder;
+import com.cleanroommc.modularui.factory.PosGuiData;
+import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.utils.item.ItemStackHandler;
+import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.gtnewhorizon.structurelib.structure.IStructureElement;
@@ -99,6 +105,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.items.MetaGeneratedTool;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.MetaTileEntity;
+import gregtech.api.metatileentity.implementations.gui.MTEMultiBlockBaseGUI;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
@@ -141,8 +148,8 @@ import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 import tectech.thing.metaTileEntity.hatch.MTEHatchEnergyMulti;
 
-public abstract class MTEMultiBlockBase extends MetaTileEntity
-    implements IControllerWithOptionalFeatures, IAddGregtechLogo, IAddUIWidgets, IBindPlayerInventoryUI {
+public abstract class MTEMultiBlockBase extends MetaTileEntity implements IControllerWithOptionalFeatures,
+    IAddGregtechLogo, IGuiHolder<PosGuiData>, IAddUIWidgets, IBindPlayerInventoryUI {
 
     public static boolean disableMaintenance;
     public boolean hasMaintenanceChecks = getDefaultHasMaintenanceChecks();
@@ -215,6 +222,9 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
 
     protected static final byte INTERRUPT_SOUND_INDEX = 8;
     protected static final byte PROCESS_START_SOUND_INDEX = 1;
+
+    // GUI
+    protected final ItemStackHandler invSlot = new ItemStackHandler(1);
 
     public MTEMultiBlockBase(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional, 2);
@@ -329,6 +339,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
                 aNBT.setTag("mOutputFluids" + i, tNBT);
             }
         }
+        aNBT.setTag("invSlot", this.invSlot.serializeNBT());
         aNBT.setBoolean("mWrench", mWrench);
         aNBT.setBoolean("mScrewdriver", mScrewdriver);
         aNBT.setBoolean("mSoftHammer", mSoftHammer);
@@ -408,6 +419,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
             mSolderingTool = aNBT.getBoolean("mSolderingTool");
             mCrowbar = aNBT.getBoolean("mCrowbar");
         } else fixAllIssues();
+        this.invSlot.deserializeNBT(aNBT.getCompoundTag("invSlot"));
     }
 
     protected SingleRecipeCheck loadSingleRecipeChecker(NBTTagCompound aNBT) {
@@ -2923,7 +2935,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
     @Override
     public void addGregTechLogo(ModularWindow.Builder builder) {}
 
-    protected boolean shouldDisplayCheckRecipeResult() {
+    public boolean shouldDisplayCheckRecipeResult() {
         return true;
     }
 
@@ -2932,6 +2944,88 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
     }
 
     protected final NumberFormatMUI numberFormat = new NumberFormatMUI();
+
+    public String generateCurrentRecipeInfoString() {
+        StringBuffer ret = new StringBuffer(StatCollector.translateToLocal("GT5U.gui.text.progress"));
+        ret.append(" ");
+
+        numberFormat.setMinimumFractionDigits(2);
+        numberFormat.setMaximumFractionDigits(2);
+        numberFormat.format((double) mProgresstime / 20, ret);
+        ret.append("s / ");
+        numberFormat.format((double) mMaxProgresstime / 20, ret);
+        ret.append("s (");
+        numberFormat.setMinimumFractionDigits(1);
+        numberFormat.setMaximumFractionDigits(1);
+        numberFormat.format((double) mProgresstime / mMaxProgresstime * 100, ret);
+        ret.append("%)\n");
+        numberFormat.setMinimumFractionDigits(0);
+        numberFormat.setMaximumFractionDigits(2);
+
+        LongConsumer appendRate = (amount) -> {
+            double processPerTick = (double) amount / mMaxProgresstime * 20;
+            ret.append(" (");
+            if (processPerTick > 1) {
+                numberFormat.format(Math.round(processPerTick * 10) / 10.0, ret);
+                ret.append("/s)");
+            } else {
+                numberFormat.format(Math.round(1 / processPerTick * 10) / 10.0, ret);
+                ret.append("s/ea)");
+            }
+        };
+
+        int lines = 0;
+        int MAX_LINES = 10;
+
+        if (mOutputItems != null) {
+            HashMap<String, Long> nameToAmount = new HashMap<>();
+            for (var item : mOutputItems) {
+                if (item == null || item.stackSize <= 0) continue;
+                nameToAmount.merge(item.getDisplayName(), (long) item.stackSize, Long::sum);
+            }
+            for (Map.Entry<String, Long> entry : nameToAmount.entrySet()) {
+                if (lines >= MAX_LINES) {
+                    ret.append("...");
+                    return ret.toString();
+                }
+                lines++;
+                ret.append(EnumChatFormatting.AQUA)
+                    .append(entry.getKey())
+                    .append(EnumChatFormatting.WHITE)
+                    .append(" x ")
+                    .append(EnumChatFormatting.GOLD);
+                numberFormat.format(entry.getValue(), ret);
+                ret.append(EnumChatFormatting.WHITE);
+                appendRate.accept(entry.getValue());
+                ret.append('\n');
+            }
+        }
+        if (mOutputFluids != null) {
+            HashMap<String, Long> nameToAmount = new HashMap<>();
+            for (var fluid : mOutputFluids) {
+                if (fluid == null || fluid.amount <= 0) continue;
+                nameToAmount.merge(fluid.getLocalizedName(), (long) fluid.amount, Long::sum);
+            }
+            for (Map.Entry<String, Long> entry : nameToAmount.entrySet()) {
+                if (lines >= MAX_LINES) {
+                    ret.append("...");
+                    return ret.toString();
+                }
+                lines++;
+                ret.append(EnumChatFormatting.AQUA)
+                    .append(entry.getKey())
+                    .append(EnumChatFormatting.WHITE)
+                    .append(" x ")
+                    .append(EnumChatFormatting.GOLD);
+                numberFormat.format(entry.getValue(), ret);
+                ret.append("L")
+                    .append(EnumChatFormatting.WHITE);
+                appendRate.accept(entry.getValue());
+                ret.append('\n');
+            }
+        }
+        return ret.toString();
+    }
 
     protected Widget generateCurrentRecipeInfoWidget() {
         final DynamicPositionedColumn processingDetails = new DynamicPositionedColumn();
@@ -3367,7 +3461,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
                 }));
     }
 
-    protected boolean showRecipeTextInGUI() {
+    public boolean showRecipeTextInGUI() {
         return true;
     }
 
@@ -3390,11 +3484,94 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         mCrowbar = true;
     }
 
+    @Override
+    protected boolean forceUseMui2() {
+        return true;
+    }
+
+    @Override
+    public ModularPanel buildUI(PosGuiData guiData, PanelSyncManager syncManager) {
+        return new MTEMultiBlockBaseGUI(this).build(guiData, syncManager);
+    }
+
+    public int machineModes() {
+        return 2;
+    }
+
     public boolean getDefaultHasMaintenanceChecks() {
         return true;
     }
 
     public boolean shouldCheckMaintenance() {
         return !disableMaintenance && hasMaintenanceChecks;
+    }
+
+    public int getMaxParallelForPanel() {
+        return maxParallel;
+    }
+
+    public void setMaxParallelForPanel(int parallel) {
+        this.maxParallel = parallel;
+    }
+
+    @Nonnull
+    public CheckRecipeResult getCheckRecipeResult() {
+        return checkRecipeResult;
+    }
+
+    public void setCheckRecipeResult(@Nonnull CheckRecipeResult checkRecipeResult) {
+        this.checkRecipeResult = checkRecipeResult;
+    }
+
+    public ItemStackHandler getInvSlot() {
+        return invSlot;
+    }
+
+    public int getRuntime() {
+        return mRuntime;
+    }
+
+    public int getMaxProgresstime() {
+        return mMaxProgresstime;
+    }
+
+    public long getTotalRunTime() {
+        return mTotalRunTime;
+    }
+
+    public void setTotalRunTime(long mTotalRunTime) {
+        this.mTotalRunTime = mTotalRunTime;
+    }
+
+    public long getLastWorkingTick() {
+        return mLastWorkingTick;
+    }
+
+    public void setLastWorkingTick(long mLastWorkingTick) {
+        this.mLastWorkingTick = mLastWorkingTick;
+    }
+
+    public EnumSet<StructureError> getStructureErrors() {
+        return structureErrors;
+    }
+
+    public void setStructureErrors(EnumSet<StructureError> structureErrors) {
+        this.structureErrors = structureErrors;
+    }
+
+    public int getPowerPanelMaxParallel() {
+        return powerPanelMaxParallel;
+    }
+
+    public void setPowerPanelMaxParallel(int powerPanelMaxParallel) {
+        this.powerPanelMaxParallel = powerPanelMaxParallel;
+    }
+
+    public boolean isAlwaysMaxParallel() {
+        return alwaysMaxParallel;
+    }
+
+    public void setAlwaysMaxParallel(boolean alwaysMaxParallel) {
+        this.alwaysMaxParallel = alwaysMaxParallel;
     }
 }
