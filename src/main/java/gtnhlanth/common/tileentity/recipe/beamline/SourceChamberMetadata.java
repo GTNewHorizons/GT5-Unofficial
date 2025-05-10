@@ -4,6 +4,8 @@ import java.util.Objects;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
+import gtnhlanth.common.beamline.Particle;
+
 public class SourceChamberMetadata {
 
     public final int particleID;
@@ -64,22 +66,29 @@ public class SourceChamberMetadata {
         private Builder() {}
 
         public Builder particleID(int particleID) {
+            if (particleID < 0 || particleID >= Particle.VALUES.length) {
+                throw new IllegalArgumentException("'particleID' must be within bounds for the Particle enum!");
+            }
             this.particleID = particleID;
             return this;
         }
 
         public Builder rate(int rate) {
+            if (rate <= 0) throw new IllegalArgumentException("'rate' must be greater than zero!");
             this.rate = rate;
             return this;
         }
 
         public Builder energy(float maxEnergy, float energyRatio) {
+            if (maxEnergy <= 0) throw new IllegalArgumentException("'maxEnergy' must be greater than zero!");
+            if (energyRatio <= 0) throw new IllegalArgumentException("'energyRatio' must be greater than zero!");
             this.maxEnergy = maxEnergy;
             this.energyRatio = energyRatio;
             return this;
         }
 
         public Builder focus(float focus) {
+            if (focus <= 0) throw new IllegalArgumentException("'focus' must be greater than zero!");
             this.focus = focus;
             return this;
         }

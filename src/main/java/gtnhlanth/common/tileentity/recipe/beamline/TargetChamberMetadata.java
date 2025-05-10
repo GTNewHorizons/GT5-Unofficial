@@ -7,6 +7,7 @@ import net.minecraft.item.ItemStack;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import gregtech.api.util.GTUtility;
+import gtnhlanth.common.beamline.Particle;
 
 public class TargetChamberMetadata {
 
@@ -87,16 +88,25 @@ public class TargetChamberMetadata {
         }
 
         public Builder particleID(int particleID) {
+            if (particleID < 0 || particleID >= Particle.VALUES.length) {
+                throw new IllegalArgumentException("'particleID' must be within bounds for the Particle enum!");
+            }
             this.particleID = particleID;
             return this;
         }
 
         public Builder amount(int amount) {
+            if (amount < 0) throw new IllegalArgumentException("'amount' must be greater than or equal to zero!");
             this.amount = amount;
             return this;
         }
 
         public Builder energy(float minEnergy, float maxEnergy, float energyRatio) {
+            if (minEnergy < 0) throw new IllegalArgumentException("'minEnergy' must be greater than zero!");
+            if (maxEnergy < 0) throw new IllegalArgumentException("'maxEnergy' must be greater than zero!");
+            if (energyRatio < 0) throw new IllegalArgumentException("'energyRatio' must be greater than zero!");
+            if (minEnergy >= maxEnergy) throw new IllegalArgumentException("'minEnergy' must be less than 'maxEnergy'");
+
             this.minEnergy = minEnergy;
             this.maxEnergy = maxEnergy;
             this.energyRatio = energyRatio;
@@ -104,6 +114,7 @@ public class TargetChamberMetadata {
         }
 
         public Builder minFocus(float minFocus) {
+            if (minFocus <= 0) throw new IllegalArgumentException("'focus' must be greater than zero!");
             this.minFocus = minFocus;
             return this;
         }
