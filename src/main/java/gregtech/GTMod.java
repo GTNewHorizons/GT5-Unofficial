@@ -57,6 +57,7 @@ import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.Textures;
 import gregtech.api.gui.modularui.GTUIInfos;
+import gregtech.api.interfaces.IBlockWithClientMeta;
 import gregtech.api.interfaces.internal.IGTMod;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.modularui2.GTGuiTextures;
@@ -305,6 +306,8 @@ public class GTMod implements IGTMod {
         GTLog.ore.println("GTMod: Preload-Phase finished!");
 
         GTUIInfos.init();
+
+        IBlockWithClientMeta.register();
 
         for (Runnable tRunnable : GregTechAPI.sAfterGTPreload) {
             tRunnable.run();
