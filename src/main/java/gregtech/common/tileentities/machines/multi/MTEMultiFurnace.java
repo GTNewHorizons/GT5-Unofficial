@@ -210,7 +210,15 @@ public class MTEMultiFurnace extends MTEAbstractMultiFurnace<MTEMultiFurnace> im
 
         int finalParallel = (int) (batchMultiplierMax * currentParallelBeforeBatchMode);
 
-        List<ItemStack> outputSlots = getItemOutputSlots(null);
+        // Copy the getItemOutputSlots as to not mutate the output busses' slots.
+        List<ItemStack> outputSlots = new ArrayList<>();
+        for (ItemStack stack : getItemOutputSlots(null)) {
+            if (stack != null) {
+                outputSlots.add(stack.copy());
+            } else {
+                outputSlots.add(null);
+            }
+        }
 
         boolean hasMEOutputBus = false;
         for (final MTEHatch bus : validMTEList(mOutputBusses)) {
