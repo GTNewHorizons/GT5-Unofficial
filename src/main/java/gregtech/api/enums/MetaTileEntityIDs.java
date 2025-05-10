@@ -1818,6 +1818,9 @@ public enum MetaTileEntityIDs {
     WIRELESS_LASER_UXV8(16026),
     WIRELESS_LASER_UXV9(16027),
     FuelRefineFactory(16999),
+    MAGLEV_PYLON_MV(29990),
+    MAGLEV_PYLON_HV(29991),
+    MAGLEV_PYLON_EV(29992),
     Hatch_Muffler_Adv_LV(30001),
     Hatch_Muffler_Adv_MV(30002),
     Hatch_Muffler_Adv_HV(30003),
@@ -1960,10 +1963,7 @@ public enum MetaTileEntityIDs {
     NeutronAcceleratorUEV(32762),
     NeutronAcceleratorUIV(32763),
     NeutronAcceleratorUMV(32764),
-    Hatch_Air_Intake_Atmospheric(32765),
-    MAGLEV_PYLON_MV(32780),
-    MAGLEV_PYLON_HV(32781),
-    MAGLEV_PYLON_EV(32782);
+    Hatch_Air_Intake_Atmospheric(32765);
 
     public final int ID;
 
