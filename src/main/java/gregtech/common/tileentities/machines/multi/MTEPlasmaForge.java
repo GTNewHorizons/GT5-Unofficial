@@ -616,7 +616,8 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
                 "When no recipe is running, fuel discount decays x" + EnumChatFormatting.RED
                     + GTUtility.formatNumbers(efficiency_decay_rate)
                     + EnumChatFormatting.GRAY
-                    + " as fast as it builds up.")
+                    + " as fast as it builds up, draining")
+            .addInfo("the total amount of stored runtime.")
             .beginStructureBlock(33, 24, 33, false)
             .addStructureInfo(EnumChatFormatting.GOLD + "2,112" + EnumChatFormatting.GRAY + " Heating coils required.")
             .addStructureInfo(
