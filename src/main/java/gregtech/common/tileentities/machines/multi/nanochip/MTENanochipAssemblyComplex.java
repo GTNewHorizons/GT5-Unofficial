@@ -447,7 +447,6 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
 
                         long eutPerModule = euToCharge / MODULE_CONNECT_INTERVAL;
 
-
                         for (MTENanochipAssemblyModuleBase<?> module : modules) {
                             module.connect();
                             // Set available EU/t for this module, which is the total EU/t divided by the amount of
