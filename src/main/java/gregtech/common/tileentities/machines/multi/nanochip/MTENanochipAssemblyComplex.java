@@ -30,6 +30,7 @@ import net.minecraft.block.Block;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
@@ -103,6 +104,10 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
     implements ISurvivalConstructable {
 
     public static final String STRUCTURE_PIECE_MAIN = "main";
+    public static final String TOOLTIP_CC = EnumChatFormatting.YELLOW + "CC" + EnumChatFormatting.GRAY;
+    public static final String NAC_MODULE = "Module of the " + EnumChatFormatting.GREEN
+        + "Nanochip Assembly Complex"
+        + EnumChatFormatting.GRAY;
     public static final int CASING_INDEX_BASE = GregTechAPI.getCasingTextureIndex(GregTechAPI.sBlockCasings8, 10);
     public static final int CASING_INDEX_WHITE = GregTechAPI.getCasingTextureIndex(GregTechAPI.sBlockCasings8, 5);
 
@@ -226,7 +231,22 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
-        return new MultiblockTooltipBuilder().toolTipFinisher("GregTech");
+        return new MultiblockTooltipBuilder()
+            .addInfo("Creates Circuits out of Circuit Components (" + TOOLTIP_CC + "s) at lightning speed")
+            .addInfo("Convert items to " + TOOLTIP_CC + "s in the control room")
+            .addInfo("Convert finished Circuit " + TOOLTIP_CC + "s back to items in the control room")
+            .addInfo("Items in a colored input bus go into their corresponding color's VCO")
+            .addInfo(TOOLTIP_CC + "s in a colored VCI go into their corresponding color's output bus")
+            .addInfo("Build modules to process " + TOOLTIP_CC + "s into their processed version")
+            .addInfo(
+                "Assemble them together in the " + EnumChatFormatting.GREEN
+                    + "Nanochip Assembly Matrix"
+                    + EnumChatFormatting.RESET)
+            .addStructureInfo("Any control room base casing - Vacuum Conveyor Input")
+            .addStructureInfo("Any control room base casing - Input bus")
+            .addStructureInfo("Any control room base casing - Vacuum Conveyor Output")
+            .addStructureInfo("Any control room base casing - Output bus")
+            .toolTipFinisher("GregTech");
     }
 
     @Override
@@ -435,13 +455,14 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
                 if (hatch instanceof MTEHatchVacuumConveyorInput) {
                     // Skip empty hatches
                     if (hatch.contents == null) continue;
-                    Map<CircuitComponent, Integer> contents = hatch.contents.getComponents();
-                    for (Map.Entry<CircuitComponent, Integer> entry : contents.entrySet()) {
+                    Map<CircuitComponent, Long> contents = hatch.contents.getComponents();
+                    for (Map.Entry<CircuitComponent, Long> entry : contents.entrySet()) {
                         CircuitComponent component = entry.getKey();
-                        Integer amount = entry.getValue();
+                        Long amount = entry.getValue();
                         // If this entry has a real circuit, we have produced a circuit using the NAC!
                         if (component.realCircuit != null) {
-                            ItemStack toOutput = GTUtility.copyAmount(amount, component.realCircuit);
+                            ItemStack toOutput = GTUtility
+                                .copyAmount((int) Math.min(Integer.MAX_VALUE, amount), component.realCircuit);
                             // Add output and deplete from hatch
                             addOutput(toOutput);
                             contents.remove(component);
@@ -457,10 +478,13 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
         if (hatch == null) return;
 
         long eut = this.getMaxInputEu();
-        long euToAdd = Math.min(eut, hatch.getEUVar());
+        long euToAdd = Math.min(
+            eut,
+            hatch.getBaseMetaTileEntity()
+                .getStoredEU());
         if (hatch.getBaseMetaTileEntity()
             .decreaseStoredEnergyUnits(euToAdd, false)) {
-            setEUVar(getEUVar() + euToAdd);
+            setEUVar(getBaseMetaTileEntity().getStoredEU() + euToAdd);
         }
     }
 
@@ -478,8 +502,15 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
                 // conditions such as energy tier.
                 if (aTick % MODULE_CONNECT_INTERVAL == 0) {
                     if (!modules.isEmpty()) {
-                        long eutPerModule = this.getMaxInputEu() / modules.size();
-                        long euToCharge = eutPerModule * MODULE_CONNECT_INTERVAL;
+                        // Calculate the max power to be shared to the modules
+                        // to not powerfail or distribute un-evenly.
+                        long totalEU = (long) (getEUVar() * 0.9);
+                        long totalEUPerModule = totalEU / modules.size();
+                        long euToCharge = this.getMaxInputEu() / modules.size() * MODULE_CONNECT_INTERVAL;
+                        euToCharge = Math.min(euToCharge, totalEUPerModule);
+
+                        long eutPerModule = euToCharge / MODULE_CONNECT_INTERVAL;
+
                         for (MTENanochipAssemblyModuleBase<?> module : modules) {
                             module.connect();
                             // Set available EU/t for this module, which is the total EU/t divided by the amount of

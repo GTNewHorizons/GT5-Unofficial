@@ -19,6 +19,7 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GTUtility;
 import gregtech.common.tileentities.machines.multi.nanochip.util.CircuitComponent;
 import gregtech.common.tileentities.machines.multi.nanochip.util.CircuitComponentPacket;
 import gregtech.common.tileentities.machines.multi.nanochip.util.IConnectsToVacuumConveyor;
@@ -149,11 +150,14 @@ public abstract class MTEHatchVacuumConveyor extends MTEHatch implements IConnec
         if (contents != null) {
             // TODO: Would be neat to get a gui that displays these in item form I suppose (using some fake items or
             // something)
-            Map<CircuitComponent, Integer> components = contents.getComponents();
-            for (Map.Entry<CircuitComponent, Integer> component : components.entrySet()) {
+            Map<CircuitComponent, Long> components = contents.getComponents();
+            for (Map.Entry<CircuitComponent, Long> component : components.entrySet()) {
                 info.add(
                     EnumChatFormatting.YELLOW + component.getKey()
-                        .getLocalizedName() + ": " + EnumChatFormatting.WHITE + component.getValue());
+                        .getLocalizedName()
+                        + ": "
+                        + EnumChatFormatting.WHITE
+                        + GTUtility.formatNumbers(component.getValue()));
             }
         }
         return info.toArray(new String[] {});

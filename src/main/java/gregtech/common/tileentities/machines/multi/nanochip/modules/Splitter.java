@@ -3,6 +3,9 @@ package gregtech.common.tileentities.machines.multi.nanochip.modules;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static gregtech.api.modularui2.GTGuis.createPopUpPanel;
 import static gregtech.api.modularui2.GTGuis.mteTemplatePanelBuilder;
+import static gregtech.api.util.GTRecipeBuilder.SECONDS;
+import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex.NAC_MODULE;
+import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex.TOOLTIP_CC;
 
 import java.util.ArrayList;
 import java.util.HashMap;
