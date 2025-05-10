@@ -1528,8 +1528,10 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
             new MTEEntropicProcessor(ENTROPIC_PROCESSOR.ID, "multimachine.entropic-processor", "Entropic Processor")
                 .getStackForm(1));
         ItemList.NanoChipModule_OpticalOrganizer.set(
-            new OpticalOrganizer(NANOCHIP_MODULE_OPTICAL_ORGANIZER.ID, "multimachine.nanochipmodule.opticalorganizer", "Optically Optimized Organizer")
-                .getStackForm(1));
+            new OpticalOrganizer(
+                NANOCHIP_MODULE_OPTICAL_ORGANIZER.ID,
+                "multimachine.nanochipmodule.opticalorganizer",
+                "Optically Optimized Organizer").getStackForm(1));
 
         ItemList.DecayWarehouse.set(
             new MTEDecayWarehouse(DECAY_WAREHOUSE.ID, "multimachine.decay-warehouse", "Decay Warehouse")
