@@ -703,6 +703,7 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
             case "be the other guy" -> "I am now mDiyoOS.";
             case "open the doors" -> "I'm sorry Player, I'm afraid I can't do that";
             case "d" -> "n";
+            case "how fast are you" -> "2fast2quick";
             default -> switch (MathUtils.randInt(1, 10)) {
                     case 1 -> "It is certain";
                     case 2 -> "It is decidedly so";

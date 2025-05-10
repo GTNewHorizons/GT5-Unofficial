@@ -5,10 +5,11 @@ import static gregtech.api.modularui2.GTGuis.createPopUpPanel;
 import static gregtech.api.modularui2.GTGuis.mteTemplatePanelBuilder;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -37,6 +38,7 @@ import com.cleanroommc.modularui.widget.ParentWidget;
 import com.cleanroommc.modularui.widget.WidgetTree;
 import com.cleanroommc.modularui.widgets.ButtonWidget;
 import com.cleanroommc.modularui.widgets.ListWidget;
+import com.google.common.collect.ImmutableList;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 
@@ -65,8 +67,9 @@ public class Splitter extends MTENanochipAssemblyModuleBase<Splitter> {
     private static final String[][] structure = new String[][] { { "  AAA  ", "  AAA  ", "  AAA  " },
         { "  AAA  ", "  A A  ", "  AAA  " }, { "  AAA  ", "  AAA  ", "  AAA  " } };
 
-    // Maps an input color to a list of output colors
-    public Map<Byte, List<Byte>> colorMap = new HashMap<>();
+    // Maps the "id" of a rule to the rule it represents. Don't use this to lookup output colors, use
+    // Splitter$getOutputColors instead.
+    public Map<Integer, ColorRule> colorMap = new HashMap<>();
 
     public static final IStructureDefinition<Splitter> STRUCTURE_DEFINITION = ModuleStructureDefinition
         .<Splitter>builder()
@@ -112,6 +115,16 @@ public class Splitter extends MTENanochipAssemblyModuleBase<Splitter> {
             env,
             false,
             true);
+    }
+
+    public List<Byte> getGetOutputColors(byte color) {
+        Set<Byte> set = new HashSet<>();
+        for (Map.Entry<Integer, ColorRule> entry : colorMap.entrySet()) {
+            ColorRule rule = entry.getValue();
+            if (rule.getInputColor() != color) continue;
+            set.addAll(rule.getOutputColors());
+        }
+        return new ArrayList<>(set);
     }
 
     private static EnumChatFormatting getPrefixColor(byte color) {
@@ -180,9 +193,32 @@ public class Splitter extends MTENanochipAssemblyModuleBase<Splitter> {
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Splitter")
-            .addInfo("Splits inputs of the same color evenly into their respective outputs")
+            .addInfo("Splits inputs of the same " + rainbowColor(false) + " evenly into their respective outputs")
+            .addInfo("You can add Rules to override what " + rainbowColor(false) + " inputs will go to")
+            .addInfo(
+                "If a rule has multiple output " + rainbowColor(true)
+                    + ", inputs will be split evenly into those as well")
+            .addInfo(
+                "If there are multiple rules of the same " + rainbowColor(false) + ", they will be treated as if they")
+            .addInfo("were merged into a single rule")
+            .beginStructureBlock(3, 3, 3, true)
+            .addCasingInfoExactly("Robust Tungstensteel machine casing", 26, false)
+            .addStructureInfo(EnumChatFormatting.BOLD + "Must be connected to a NAC")
             .toolTipFinisher();
         return tt;
+    }
+
+    private static String rainbowColor(boolean plural) {
+        // spotless:off
+        return
+            EnumChatFormatting.RED + "c" +
+            EnumChatFormatting.YELLOW + "o" +
+            EnumChatFormatting.GREEN + "l" +
+            EnumChatFormatting.AQUA + "o" +
+            EnumChatFormatting.LIGHT_PURPLE + "r" +
+            (plural ? EnumChatFormatting.DARK_PURPLE + "s" : "")
+            + EnumChatFormatting.GRAY;
+        // spotless:on
     }
 
     @Override
@@ -213,7 +249,7 @@ public class Splitter extends MTENanochipAssemblyModuleBase<Splitter> {
             ItemStack stack = inputs.get(color.getKey());
             if (currentDye == -1) continue;
 
-            List<Byte> outputDyes = colorMap.get(currentDye);
+            List<Byte> outputDyes = getGetOutputColors(currentDye);
             if (outputDyes == null) continue;
 
             // Find output hatches that have the color of the dye
@@ -276,32 +312,35 @@ public class Splitter extends MTENanochipAssemblyModuleBase<Splitter> {
 
     public NBTTagList createRulesTagList() {
         NBTTagList list = new NBTTagList();
-        for (Map.Entry<Byte, List<Byte>> entry : colorMap.entrySet()) {
-            String outputsString = "";
-            for (Byte color : entry.getValue()) {
-                outputsString = outputsString + color + "+";
+        for (Map.Entry<Integer, ColorRule> entry : colorMap.entrySet()) {
+            ColorRule rule = entry.getValue();
+            StringBuilder outputsString = new StringBuilder();
+            List<Byte> outputs = rule.getOutputColors();
+            for (int i = 0; i < outputs.size(); i++) {
+                outputsString.append(outputs.get(i));
+                if (i != outputs.size() - 1) outputsString.append("+");
             }
-            list.appendTag(new NBTTagString(entry.getKey() + "->" + outputsString));
+            list.appendTag(new NBTTagString(entry.getKey() + "+" + rule.getInputColor() + "->" + outputsString));
         }
         return list;
     }
 
-    public Map<Byte, List<Byte>> loadRulesTagList(NBTTagList tagList) {
-        Map<Byte, List<Byte>> rulesMap = new HashMap<>();
+    public Map<Integer, ColorRule> loadRulesTagList(NBTTagList tagList) {
+        Map<Integer, ColorRule> map = new HashMap<>();
         for (Object a : tagList.tagList) {
-            if (!(a instanceof NBTTagString tag)) continue;
+            if (!(a instanceof NBTTagString t)) continue;
             // Obfuscated method returns the stored string
-            String[] data = tag.func_150285_a_()
-                .split("->");
-            List<Byte> outputs = new ArrayList<>();
+            String tag = t.func_150285_a_();
+            String[] data = tag.split("->");
+            String[] inputs = data[0].split("\\+");
+            Set<Byte> outputs = new HashSet<>();
             for (String string : data[1].split("\\+")) {
-                if (string.isEmpty()) break;
                 outputs.add(Byte.valueOf(string));
             }
-            rulesMap.put(Byte.valueOf(data[0]), outputs);
+            int id = Integer.parseInt(inputs[0]);
+            map.put(id, new ColorRule(Byte.valueOf(inputs[1]), new ArrayList<>(outputs)));
         }
-
-        return rulesMap;
+        return map;
     }
 
     @Override
@@ -313,10 +352,11 @@ public class Splitter extends MTENanochipAssemblyModuleBase<Splitter> {
     public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager) {
         ModularPanel ui = mteTemplatePanelBuilder(this, data, syncManager).build();
         IPanelHandler popupPanel = syncManager.panel("popup", (m, h) -> createRuleManagerPanel(syncManager), true);
-        syncManager.syncValue(
-            "map",
-            0,
-            new GenericSyncValue<>(() -> colorMap, map -> { colorMap = map; }, new ColorMapAdapter()));
+        GenericSyncValue<Map<Integer, ColorRule>> listSyncer = new GenericSyncValue<>(
+            () -> colorMap,
+            map -> { colorMap = map; },
+            new ColorMapAdapter());
+        syncManager.syncValue("rules", 0, listSyncer);
 
         return ui.child(new ButtonWidget<>().onMousePressed(mouseButton -> {
             popupPanel.openPanel();
@@ -337,19 +377,20 @@ public class Splitter extends MTENanochipAssemblyModuleBase<Splitter> {
         list.pos(4, 21);
 
         // Add existing rules
-        for (Map.Entry<Byte, List<Byte>> entry : colorMap.entrySet()) {
-            Byte input = entry.getKey();
-            List<Byte> outputs = entry.getValue();
-            // Skip if the rule is empty
-            if (outputs.contains(input) && outputs.size() == 1) continue;
+        for (Map.Entry<Integer, ColorRule> entry : colorMap.entrySet()) {
+            int id = entry.getKey();
+            ColorRule rule = entry.getValue();
+            if (rule == null) continue;
+            Byte input = rule.getInputColor();
+            List<Byte> outputs = rule.getOutputColors();
             // spotless:off
-            list.child(createColorManager(syncManager, Stream.of(input).collect(Collectors.toList()), outputs));
+            list.child(createColorManager(syncManager, Stream.of(input).collect(Collectors.toList()), outputs, id));
             // spotless:on
         }
 
         return ui.child(list)
             .child(new ButtonWidget<>().onMousePressed(mouseButton -> {
-                list.child(createColorManager(syncManager, null, null));
+                list.child(createColorManager(syncManager, null, null, null));
                 WidgetTree.resize(ui);
                 return true;
             })
@@ -357,30 +398,14 @@ public class Splitter extends MTENanochipAssemblyModuleBase<Splitter> {
                 .size(16, 16)
                 .overlay(GuiTextures.ADD)
                 .tooltip(tooltip -> tooltip.add("Add new Rule")))
-            .child(
-                GuiTextures.EXCLAMATION.asWidget()
-                    .background(GTGuiTextures.BUTTON_STANDARD)
-                    .tooltip(this::getRulesInfo)
-                    .pos(144, 4)
-                    .size(16, 16))
             .posRel(0.75F, 0.5F);
     }
 
-    private void getRulesInfo(RichTooltip t) {
-        t.pos(RichTooltip.Pos.ABOVE)
-            .add("This is the rules manager\n")
-            .add(
-                "Here you can set a color of Vacuum Conveyor Input to always route to another color of Vacuum Conveyor Output.\n")
-            .newLine()
-            .add("Check out this awesome icon: ")
-            .add(GTGuiTextures.PICTURE_GT_LOGO_STANDARD);
-    }
-
-    public IWidget createColorManager(PanelSyncManager syncManager, List<Byte> inputSelected,
-        List<Byte> outputSelected) {
+    public IWidget createColorManager(PanelSyncManager syncManager, List<Byte> inputSelected, List<Byte> outputSelected,
+        Integer indexOverride) {
         ColorGridWidget inputGrid = new ColorGridWidget();
         ColorGridWidget outputGrid = new ColorGridWidget();
-        ColorGridSelector selector = new ColorGridSelector(syncManager);
+        ColorGridSelector selector = new ColorGridSelector(syncManager, indexOverride);
 
         return selector
             // Arrow icon
@@ -426,23 +451,16 @@ public class Splitter extends MTENanochipAssemblyModuleBase<Splitter> {
                     .alignment(Alignment.Center)
                     .size(42, 8)
                     .pos(120, 5))
-            // Save button
-            .child(
-                new ButtonWidget<>().onMousePressed(a -> selector.saveColorData())
-                    .tooltip(t -> t.add("Save"))
-                    .overlay(GTGuiTextures.OVERLAY_BUTTON_CHECKMARK)
-                    .pos(85, 5)
-                    .size(8, 8))
             // Delete button
             .child(
                 new ButtonWidget<>().tooltip(t -> t.add("Delete"))
                     .onMousePressed(a -> {
-                        selector.removeColorData(true);
+                        selector.removeColorData();
                         WidgetTree.resize(selector.getParent());
                         return true;
                     })
                     .overlay(GTGuiTextures.OVERLAY_BUTTON_CROSS)
-                    .pos(73, 5)
+                    .pos(80, 5)
                     .size(8, 8))
             .size(166, 58)
             .background(GTGuiTextures.BACKGROUND_POPUP_STANDARD);
@@ -465,15 +483,27 @@ public class Splitter extends MTENanochipAssemblyModuleBase<Splitter> {
 
     private class ColorGridSelector extends ParentWidget<ColorGridSelector> {
 
+        int id;
         ColorGridWidget inputGrid;
         ColorGridWidget outputGrid;
-        Byte lastInputSelected = null;
-        List<Byte> lastOutputSelected = null;
-        GenericSyncValue<Map<Byte, List<Byte>>> colorMapSyncer;
+        PanelSyncManager manager;
+        GenericSyncValue<Map<Integer, ColorRule>> colorMapSyncer;
 
-        public ColorGridSelector(PanelSyncManager syncManager) {
+        public ColorGridSelector(PanelSyncManager syncManager, Integer indexOverride) {
             super();
-            colorMapSyncer = (GenericSyncValue<Map<Byte, List<Byte>>>) syncManager.getSyncHandler("map:0");
+            manager = syncManager;
+            colorMapSyncer = (GenericSyncValue<Map<Integer, ColorRule>>) syncManager.getSyncHandler("rules:0");
+            if (indexOverride == null) {
+                while (colorMap.get(id) != null) {
+                    id++;
+                }
+            } else id = indexOverride;
+        }
+
+        @Override
+        public void onInit() {
+            super.onInit();
+            saveColorData();
         }
 
         public void removeSelector() {
@@ -484,90 +514,96 @@ public class Splitter extends MTENanochipAssemblyModuleBase<Splitter> {
         }
 
         public ColorGridSelector setInputGrid(ColorGridWidget widget) {
-            inputGrid = widget;
-            if (widget.getAmountSelected() == 1) {
-                lastInputSelected = widget.getSelected(0);
-            }
-            return this.child(widget);
+            inputGrid = widget.onButtonToggled(this::saveColorData);
+            return this.child(inputGrid);
         }
 
         public ColorGridSelector setOutputGrid(ColorGridWidget widget) {
-            outputGrid = widget;
-            lastOutputSelected = widget.getSelected();
-            return this.child(widget);
+            outputGrid = widget.onButtonToggled(this::saveColorData);
+            return this.child(outputGrid);
         }
 
-        private boolean saveColorData() {
+        private void saveColorData() {
+            if (manager.isClient()) {
+                colorMap.put(id, thisAsRule());
+                colorMapSyncer.setValue(colorMap);
+            }
+        }
+
+        private void removeColorData() {
+            if (manager.isClient()) {
+                colorMap.remove(id);
+                colorMapSyncer.setValue(colorMap);
+            }
+            removeSelector();
+        }
+
+        public ColorRule thisAsRule() {
             List<Byte> input = inputGrid.getSelected();
             List<Byte> output = outputGrid.getSelected();
-            if (input.isEmpty() || output.isEmpty()) return false;
-
-            if (lastInputSelected == null) {
-                lastInputSelected = input.get(0);
-            } else {
-                if (lastOutputSelected == colorMap.get(lastInputSelected)) {
-                    removeColorData(false, lastInputSelected);
-                }
-                lastInputSelected = input.get(0);
-            }
-
-            List<Byte> newOutputs = new ArrayList<>(output);
-            colorMap.put(input.get(0), newOutputs);
-            colorMapSyncer.setValue(colorMap);
-
-            lastOutputSelected = output;
-            return true;
+            if (input.isEmpty()) input = ImmutableList.of((byte) -1);
+            if (output.isEmpty()) output = ImmutableList.of((byte) -1);
+            return new ColorRule(input.get(0), output);
         }
-
-        private boolean removeColorData(boolean removeParent, Byte... inputOverride) {
-            if (removeParent) removeSelector();
-            List<Byte> input = inputOverride.length == 0 ? inputGrid.getSelected() : Arrays.asList(inputOverride);
-            List<Byte> output = outputGrid.getSelected();
-            if (input.isEmpty() || output.isEmpty()) return false;
-            for (Byte inputColor : input) {
-                colorMap.remove(inputColor);
-            }
-            colorMapSyncer.setValue(colorMap);
-            return true;
-        }
-
     }
 
-    private static class ColorMapAdapter implements IByteBufAdapter<Map<Byte, List<Byte>>> {
+    private static class ColorMapAdapter implements IByteBufAdapter<Map<Integer, ColorRule>> {
 
         @Override
-        public Map<Byte, List<Byte>> deserialize(PacketBuffer buffer) {
-            Map<Byte, List<Byte>> rulesMap = new HashMap<>();
+        public Map<Integer, ColorRule> deserialize(PacketBuffer buffer) {
+            Map<Integer, ColorRule> list = new HashMap<>();
             int size = buffer.readInt();
             for (int i = 0; i < size; i++) {
-                Byte key = buffer.readByte();
-                List<Byte> value = new ArrayList<>();
+                int id = buffer.readInt();
+                Byte input = buffer.readByte();
+                List<Byte> outputs = new ArrayList<>();
                 int ruleCount = buffer.readInt();
                 for (int j = 0; j < ruleCount; j++) {
-                    value.add(buffer.readByte());
+                    outputs.add(buffer.readByte());
                 }
-                rulesMap.put(key, value);
+                list.put(id, new ColorRule(input, outputs));
             }
-            return rulesMap;
+            return list;
         }
 
         @Override
-        public void serialize(PacketBuffer buffer, Map<Byte, List<Byte>> map) {
+        public void serialize(PacketBuffer buffer, Map<Integer, ColorRule> map) {
             buffer.writeInt(map.size());
-            for (Map.Entry<Byte, List<Byte>> entry : map.entrySet()) {
-                Byte key = entry.getKey();
-                List<Byte> value = entry.getValue();
-                buffer.writeByte(key);
-                buffer.writeInt(value.size());
-                for (Byte dye : value) {
+            for (Map.Entry<Integer, ColorRule> entry : map.entrySet()) {
+                ColorRule rule = entry.getValue();
+                Byte input = rule.getInputColor();
+                List<Byte> outputs = rule.getOutputColors();
+                buffer.writeInt(entry.getKey());
+                buffer.writeByte(input);
+                buffer.writeInt(outputs.size());
+                for (Byte dye : outputs) {
                     buffer.writeByte(dye);
                 }
             }
         }
 
         @Override
-        public boolean areEqual(@NotNull Map<Byte, List<Byte>> t1, @NotNull Map<Byte, List<Byte>> t2) {
+        public boolean areEqual(Map<Integer, ColorRule> t1, Map<Integer, ColorRule> t2) {
             return t1.equals(t2);
+        }
+    }
+
+    public static class ColorRule {
+
+        Byte inputColor;
+        List<Byte> outputColors;
+
+        public ColorRule(Byte input, List<Byte> outputs) {
+            inputColor = input;
+            outputColors = outputs;
+        }
+
+        public Byte getInputColor() {
+            return inputColor;
+        }
+
+        public List<Byte> getOutputColors() {
+            return outputColors;
         }
     }
 }

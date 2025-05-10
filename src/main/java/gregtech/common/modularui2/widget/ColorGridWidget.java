@@ -21,12 +21,13 @@ import gregtech.api.enums.Dyes;
 
 /**
  * A Grid containing 16 ToggleButtons arranged in a 4x4 pattern. Each button represents a different minecraft dye
- * color.
+ * color
  */
 public class ColorGridWidget extends Column {
 
     // TODO: consider changing this to Set
     public List<Byte> selected = new ArrayList<>();
+    public Runnable onToggle;
     public int maxSelected = 16;
     public int buttonSize = 9;
     public int buttonPadding = 1;
@@ -37,7 +38,7 @@ public class ColorGridWidget extends Column {
     }
 
     /**
-     * @param value The initial selected button index (0-15) for the grid. Enter a number outside bounds for none.
+     * @param value The initial selected button index (0-15) for the grid. Enter a number outside bounds for none
      * @return this
      */
     public ColorGridWidget setInitialSelected(byte value) {
@@ -49,12 +50,15 @@ public class ColorGridWidget extends Column {
 
     /**
      *
-     * @param value The initial selected buttons index (0-15) for the grid. Enter null for none.
+     * @param list The initial selected buttons index (0-15) for the grid. Enter an invalid index (like null) for none
      * @return
      */
-    public ColorGridWidget setInitialSelected(List<Byte> value) {
-        if (value == null) return this;
-        selected = value;
+    public ColorGridWidget setInitialSelected(List<Byte> list) {
+        if (list == null) return this;
+        for (Byte value : list) {
+            if (value < 0 || value > 15) return this;
+        }
+        selected = list;
         return this;
     }
 
@@ -91,6 +95,16 @@ public class ColorGridWidget extends Column {
      */
     public ColorGridWidget setBorderSize(int value) {
         borderSize = value;
+        return this;
+    }
+
+    /**
+     * @param toRun What gets called on every button press. This is called after the button has been toggled and the
+     *              grid checked for excess
+     * @return this
+     */
+    public ColorGridWidget onButtonToggled(Runnable toRun) {
+        onToggle = toRun;
         return this;
     }
 
@@ -132,6 +146,7 @@ public class ColorGridWidget extends Column {
             public @NotNull Result onMousePressed(int mouseButton) {
                 Result result = super.onMousePressed(mouseButton);
                 onToggled();
+                onToggle.run();
                 return result;
             }
         }.background(false, drawButton(Color.multiply(color, 0.5F, false)))
@@ -156,7 +171,7 @@ public class ColorGridWidget extends Column {
         });
     }
 
-    public void onToggled() {
+    protected void onToggled() {
         if (selected.size() > maxSelected) {
             int target = selected.get(0);
             IWidget targetChild = getChildren().get(target / 4)
