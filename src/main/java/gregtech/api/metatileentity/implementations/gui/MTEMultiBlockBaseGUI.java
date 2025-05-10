@@ -59,8 +59,8 @@ import com.gtnewhorizons.modularui.common.internal.network.NetworkUtils;
 import gregtech.GTMod;
 import gregtech.api.enums.StructureError;
 import gregtech.api.enums.VoidingMode;
-import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.metatileentity.implementations.MTEMultiBlockBase;
+import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.util.GTUtility;
@@ -457,7 +457,7 @@ public class MTEMultiBlockBaseGUI {
                 new BooleanSyncValue(
                     () -> structureUpdateSyncer.getValue() > -20,
                     val -> { if (val) structureUpdateSyncer.setValue(1); }))
-            .overlay(GTUITextures.OVERLAY_BUTTON_STRUCTURE_UPDATE_NEW)
+            .overlay(GTGuiTextures.OVERLAY_BUTTON_STRUCTURE_UPDATE)
             .tooltipBuilder(t -> { t.addLine(IKey.lang("GT5U.gui.button.structure_update")); });
 
         return structureUpdateButton;
@@ -556,9 +556,9 @@ public class MTEMultiBlockBaseGUI {
                 new com.cleanroommc.modularui.widgets.ButtonWidget<>().size(18, 18)
                     .overlay(new DynamicDrawable(() -> {
                         if (alwaysMaxParallelSyncer.getValue()) return com.cleanroommc.modularui.drawable.UITexture
-                            .fullImage(GTUITextures.OVERLAY_BUTTON_CHECKMARK.location);
+                            .fullImage(GTGuiTextures.OVERLAY_BUTTON_CHECKMARK.location);
                         return com.cleanroommc.modularui.drawable.UITexture
-                            .fullImage(GTUITextures.OVERLAY_BUTTON_CROSS.location);
+                            .fullImage(GTGuiTextures.OVERLAY_BUTTON_CROSS.location);
                     }))
                     .onMousePressed(d -> {
                         alwaysMaxParallelSyncer.setValue(!alwaysMaxParallelSyncer.getValue());
@@ -581,19 +581,19 @@ public class MTEMultiBlockBaseGUI {
                     }
                 }))
             .overlay(new DynamicDrawable(() -> {
-                com.cleanroommc.modularui.drawable.UITexture forbidden = GTUITextures.OVERLAY_BUTTON_FORBIDDEN_NEW;
+                com.cleanroommc.modularui.drawable.UITexture forbidden = GTGuiTextures.OVERLAY_BUTTON_FORBIDDEN;
                 if (recipeLockSyncer.getValue()) {
                     if (base.supportsSingleRecipeLocking()) {
-                        return GTUITextures.OVERLAY_BUTTON_RECIPE_LOCKED_NEW;
+                        return GTGuiTextures.OVERLAY_BUTTON_RECIPE_LOCKED;
                     } else {
-                        return new DrawableArray(GTUITextures.OVERLAY_BUTTON_RECIPE_LOCKED_DISABLED_NEW);
+                        return new DrawableArray(GTGuiTextures.OVERLAY_BUTTON_RECIPE_LOCKED_DISABLED);
                     }
                 } else {
 
                     if (base.supportsSingleRecipeLocking()) {
-                        return GTUITextures.OVERLAY_BUTTON_RECIPE_LOCKED_NEW;
+                        return GTGuiTextures.OVERLAY_BUTTON_RECIPE_LOCKED;
                     } else {
-                        return new DrawableArray(GTUITextures.OVERLAY_BUTTON_RECIPE_LOCKED_DISABLED_NEW, forbidden);
+                        return new DrawableArray(GTGuiTextures.OVERLAY_BUTTON_RECIPE_LOCKED_DISABLED, forbidden);
                     }
                 }
             }))
@@ -616,19 +616,19 @@ public class MTEMultiBlockBaseGUI {
                 }
             }))
             .overlay(new DynamicDrawable(() -> {
-                com.cleanroommc.modularui.drawable.UITexture forbidden = GTUITextures.OVERLAY_BUTTON_FORBIDDEN_NEW;
+                com.cleanroommc.modularui.drawable.UITexture forbidden = GTGuiTextures.OVERLAY_BUTTON_FORBIDDEN;
                 if (batchModeSyncer.getValue()) {
                     if (base.supportsBatchMode()) {
-                        return GTUITextures.OVERLAY_BUTTON_BATCH_MODE_ON_NEW;
+                        return GTGuiTextures.OVERLAY_BUTTON_BATCH_MODE_ON;
                     } else {
-                        return new DrawableArray(GTUITextures.OVERLAY_BUTTON_BATCH_MODE_ON_DISABLED_NEW);
+                        return new DrawableArray(GTGuiTextures.OVERLAY_BUTTON_BATCH_MODE_ON_DISABLED);
                     }
                 } else {
 
                     if (base.supportsBatchMode()) {
-                        return GTUITextures.OVERLAY_BUTTON_BATCH_MODE_OFF_NEW;
+                        return GTGuiTextures.OVERLAY_BUTTON_BATCH_MODE_OFF;
                     } else {
-                        return new DrawableArray(GTUITextures.OVERLAY_BUTTON_BATCH_MODE_OFF_DISABLED_NEW, forbidden);
+                        return new DrawableArray(GTGuiTextures.OVERLAY_BUTTON_BATCH_MODE_OFF_DISABLED, forbidden);
                     }
                 }
             }))
@@ -692,23 +692,19 @@ public class MTEMultiBlockBaseGUI {
                         }
                     }))
             .overlay(new DynamicDrawable(() -> {
-                com.cleanroommc.modularui.drawable.UITexture forbidden = GTUITextures.OVERLAY_BUTTON_FORBIDDEN_NEW;
+                com.cleanroommc.modularui.drawable.UITexture forbidden = GTGuiTextures.OVERLAY_BUTTON_FORBIDDEN;
                 if (inputSeparationSyncer.getValue()) {
                     if (base.supportsInputSeparation()) {
-                        return GTUITextures.OVERLAY_BUTTON_INPUT_SEPARATION_ON_NEW;
+                        return GTGuiTextures.OVERLAY_BUTTON_INPUT_SEPARATION_ON;
                     } else {
-                        return new DrawableArray(
-                            GTUITextures.OVERLAY_BUTTON_INPUT_SEPARATION_ON_DISABLED_NEW,
-                            forbidden);
+                        return new DrawableArray(GTGuiTextures.OVERLAY_BUTTON_INPUT_SEPARATION_ON_DISABLED, forbidden);
                     }
                 } else {
 
                     if (base.supportsInputSeparation()) {
-                        return GTUITextures.OVERLAY_BUTTON_INPUT_SEPARATION_OFF_NEW;
+                        return GTGuiTextures.OVERLAY_BUTTON_INPUT_SEPARATION_OFF;
                     } else {
-                        return new DrawableArray(
-                            GTUITextures.OVERLAY_BUTTON_INPUT_SEPARATION_OFF_DISABLED_NEW,
-                            forbidden);
+                        return new DrawableArray(GTGuiTextures.OVERLAY_BUTTON_INPUT_SEPARATION_OFF_DISABLED, forbidden);
                     }
                 }
             }))
@@ -748,7 +744,7 @@ public class MTEMultiBlockBaseGUI {
                         : new DrawableArray(
                             com.cleanroommc.modularui.drawable.UITexture
                                 .fullImage(base.getVoidingMode().buttonOverlay.location),
-                            GTUITextures.OVERLAY_BUTTON_FORBIDDEN_NEW)))
+                            GTGuiTextures.OVERLAY_BUTTON_FORBIDDEN)))
             .tooltipBuilder(t -> {
                 t.addLine(IKey.dynamic(() -> StatCollector.translateToLocal("GT5U.gui.button.voiding_mode")))
                     .addLine(
