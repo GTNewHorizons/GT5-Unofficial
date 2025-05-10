@@ -991,6 +991,7 @@ import gregtech.common.tileentities.machines.basic.MTEBetterJukebox;
 import gregtech.common.tileentities.machines.basic.MTEBoxinator;
 import gregtech.common.tileentities.machines.basic.MTECharger;
 import gregtech.common.tileentities.machines.basic.MTEIndustrialApiary;
+import gregtech.common.tileentities.machines.basic.MTEMagLevPylon;
 import gregtech.common.tileentities.machines.basic.MTEMassfabricator;
 import gregtech.common.tileentities.machines.basic.MTEMicrowaveEnergyTransmitter;
 import gregtech.common.tileentities.machines.basic.MTEMiner;
@@ -2709,6 +2710,18 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 "basicmachine.mobrep.tier.08",
                 "Advanced Monster Repellator VII",
                 8).getStackForm(1L));
+    }
+
+    private static void registerMagLevPylon() {
+        ItemList.MagLevPython_MV.set(
+            new MTEMagLevPylon(MAGLEV_PYLON_MV.ID, "basicmachine.maglev.tier.02", "Advanced MagLev Pylon", 2)
+                .getStackForm(1L));
+        ItemList.MagLevPython_MV.set(
+            new MTEMagLevPylon(MAGLEV_PYLON_HV.ID, "basicmachine.maglev.tier.03", "Advanced MagLev Pylon II", 3)
+                .getStackForm(1L));
+        ItemList.MagLevPython_MV.set(
+            new MTEMagLevPylon(MAGLEV_PYLON_EV.ID, "basicmachine.maglev.tier.04", "Advanced MagLev Pylon III", 4)
+                .getStackForm(1L));
     }
 
     private void registerWorldAccelerator() {
@@ -12416,6 +12429,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
         registerPump();
         registerTeleporter();
         registerMonsterRepellator();
+        registerMagLevPylon();
         registerAdvancedSeismicProspector();
         registerMicrowaveEnergyTransmitter();
         registerChestBuffer();
