@@ -2,8 +2,7 @@ package gregtech.common.covers;
 
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
-
-import org.jetbrains.annotations.NotNull;
+import net.minecraft.nbt.NBTTagInt;
 
 import gregtech.api.GregTechAPI;
 import gregtech.api.covers.CoverContext;
@@ -46,17 +45,19 @@ public class CoverRedstoneTransmitterInternal extends CoverRedstoneWirelessBase 
 
     @Override
     protected void readDataFromNbt(NBTBase nbt) {
+        if (nbt instanceof NBTTagInt nbtInt) {
+            int data = nbtInt.func_150287_d();
+            if (data != coverData) {
+                GregTechAPI.sWirelessRedstone.remove(coverData);
+            }
+            coverData = nbtInt.func_150287_d();
+            return;
+        }
+        // TODO: Remove this in 2.9
         NBTTagCompound tag = (NBTTagCompound) nbt;
         if (tag.hasKey("frequency") && !(tag.getInteger("frequency") == coverData)) {
             GregTechAPI.sWirelessRedstone.remove(coverData);
         }
         coverData = tag.getInteger("frequency");
-    }
-
-    @Override
-    protected @NotNull NBTBase saveDataToNbt() {
-        NBTTagCompound tag = new NBTTagCompound();
-        tag.setInteger("frequency", coverData);
-        return tag;
     }
 }
