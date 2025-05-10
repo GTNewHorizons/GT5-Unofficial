@@ -79,6 +79,10 @@ public class EtchingArray extends MTENanochipAssemblyModuleBase<EtchingArray> {
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         // Check base structure
         if (!super.checkMachine(aBaseMetaTileEntity, aStack)) return false;
+
+        // Ensure at least one beamline input hatch is present
+        if (beamlineInputs.isEmpty() || beamlineInputs.get(0).getBaseMetaTileEntity() == null) return false;
+
         // Now check module structure
         return checkPiece(STRUCTURE_PIECE_MAIN, STRUCTURE_OFFSET_X, STRUCTURE_OFFSET_Y, STRUCTURE_OFFSET_Z);
     }
@@ -89,6 +93,7 @@ public class EtchingArray extends MTENanochipAssemblyModuleBase<EtchingArray> {
             .addInfo("Etches your Chip " + TOOLTIP_CC + "s")
             .addInfo("Outputs into the VCO with the same color as the input VCI")
             .addStructureInfo("Any base casing - Vacuum Conveyor Input")
+            .addStructureInfo("Any base casing - Beamline Input")
             .addStructureInfo("Any base casing - Vacuum Conveyor Output")
             .toolTipFinisher("GregTech");
     }

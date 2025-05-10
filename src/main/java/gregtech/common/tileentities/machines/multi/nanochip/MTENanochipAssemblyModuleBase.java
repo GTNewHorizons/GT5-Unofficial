@@ -50,6 +50,7 @@ import gregtech.common.tileentities.machines.multi.nanochip.util.CCInputConsumer
 import gregtech.common.tileentities.machines.multi.nanochip.util.CircuitComponent;
 import gregtech.common.tileentities.machines.multi.nanochip.util.CircuitComponentPacket;
 import gregtech.common.tileentities.machines.multi.nanochip.util.VacuumConveyorHatchMap;
+import gtnhlanth.common.hatch.MTEHatchInputBeamline;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
@@ -83,6 +84,7 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
 
     protected final VacuumConveyorHatchMap<MTEHatchVacuumConveyorInput> vacuumConveyorInputs = new VacuumConveyorHatchMap<>();
     protected final VacuumConveyorHatchMap<MTEHatchVacuumConveyorOutput> vacuumConveyorOutputs = new VacuumConveyorHatchMap<>();
+    protected final List<MTEHatchInputBeamline> beamlineInputs = new ArrayList<>();
 
     public static <B extends MTENanochipAssemblyModuleBase<B>> StructureDefinition.Builder<B> addBaseStructure(
         StructureDefinition.Builder<B> structure) {
@@ -90,7 +92,11 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
             .addElement(
                 'V',
                 HatchElementBuilder.<B>builder()
-                    .atLeast(ModuleHatchElement.VacuumConveyorHatch, InputBus, InputHatch)
+                    .atLeast(
+                        ModuleHatchElement.VacuumConveyorHatch,
+                        ModuleHatchElement.BeamlineInputHatch,
+                        InputBus,
+                        InputHatch)
                     .casingIndex(CASING_INDEX_WHITE)
                     .dot(2)
                     .buildAndChain(ofBlock(GregTechAPI.sBlockCasings8, 5)))
@@ -105,6 +111,15 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
             @Override
             public long count(MTENanochipAssemblyModuleBase<?> tileEntity) {
                 return tileEntity.vacuumConveyorInputs.size() + tileEntity.vacuumConveyorOutputs.size();
+            }
+        },
+
+        BeamlineInputHatch(MTENanochipAssemblyModuleBase::addBeamlineTargetHatchToMachineList,
+            MTENanochipAssemblyModuleBase.class) {
+
+            @Override
+            public long count(MTENanochipAssemblyModuleBase<?> tileEntity) {
+                return tileEntity.beamlineInputs.size();
             }
         };
 
@@ -171,6 +186,21 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
         if (aMetaTileEntity instanceof MTEHatchVacuumConveyorOutput hatch) {
             hatch.updateTexture(aBaseCasingIndex);
             return vacuumConveyorOutputs.addHatch(hatch);
+        }
+        return false;
+    }
+
+    public boolean addBeamlineTargetHatchToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
+        if (aTileEntity == null) {
+            return false;
+        }
+        IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
+        if (aMetaTileEntity == null) {
+            return false;
+        }
+        if (aMetaTileEntity instanceof MTEHatchInputBeamline hatch) {
+            hatch.updateTexture(aBaseCasingIndex);
+            return beamlineInputs.add(hatch);
         }
         return false;
     }
