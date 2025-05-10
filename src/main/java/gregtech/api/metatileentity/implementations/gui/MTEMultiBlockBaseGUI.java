@@ -746,7 +746,15 @@ public class MTEMultiBlockBaseGUI {
             val -> base.setVoidingMode(VoidingMode.fromOrdinal(val)));
         syncManager.syncValue("voidExcess", voidExcessSyncer);
 
-        CycleButtonWidget voidExcessButton = new CycleButtonWidget().size(18, 18)
+        CycleButtonWidget voidExcessButton = new CycleButtonWidget() {
+
+            @NotNull
+            @Override
+            public Result onMousePressed(int mouseButton) {
+                if (!base.supportsVoidProtection()) return Result.IGNORE;
+                return super.onMousePressed(mouseButton);
+            }
+        }.size(18, 18)
             .value(
                 new IntSyncValue(
                     voidExcessSyncer::getValue,
@@ -754,19 +762,19 @@ public class MTEMultiBlockBaseGUI {
             .length(
                 base.getAllowedVoidingModes()
                     .size())
-            .background(new DynamicDrawable(() -> UITexture.fullImage(base.getVoidingMode().buttonTexture.location)))
+            .background(
+                new DynamicDrawable(
+                    () -> UITexture.builder()
+                        .location(base.getVoidingMode().buttonTexture.location)
+                        .canApplyTheme(true)
+                        .build()))
             .stateHoverOverlay(base.supportsVoidProtection(), GuiTextures.MC_BUTTON_PRESSED)
             .overlay(
                 new DynamicDrawable(
-                    () -> base.supportsVoidProtection() ? UITexture.builder()
-                        .location(base.getVoidingMode().buttonOverlay.location)
-                        .canApplyTheme(true)
-                        .build()
+                    () -> base.supportsVoidProtection()
+                        ? UITexture.fullImage(base.getVoidingMode().buttonOverlay.location)
                         : new DrawableArray(
-                            UITexture.builder()
-                                .location(base.getVoidingMode().buttonOverlay.location)
-                                .canApplyTheme(true)
-                                .build(),
+                            UITexture.fullImage(base.getVoidingMode().buttonOverlay.location),
                             GTGuiTextures.OVERLAY_BUTTON_FORBIDDEN)))
             .tooltipBuilder(t -> {
                 t.addLine(IKey.dynamic(() -> StatCollector.translateToLocal("GT5U.gui.button.voiding_mode")))
