@@ -135,10 +135,6 @@ public class MTENetworkSwitch extends TTMultiblockBase
         tt.addInfo(translateToLocal("gt.blockmachines.multimachine.em.switch.desc.0"));
         tt.addInfo(translateToLocal("gt.blockmachines.multimachine.em.switch.desc.1"));
         tt.addInfo(translateToLocal("gt.blockmachines.multimachine.em.switch.desc.2"));
-        tt.addSeparator();
-        tt.addInfo(translateToLocal("gt.blockmachines.multimachine.em.switch.desc.3"));
-        tt.addInfo(translateToLocal("gt.blockmachines.multimachine.em.switch.desc.4"));
-        tt.addInfo(translateToLocal("gt.blockmachines.multimachine.em.switch.desc.5"));
 
         tt.addTecTechHatchInfo();
 
