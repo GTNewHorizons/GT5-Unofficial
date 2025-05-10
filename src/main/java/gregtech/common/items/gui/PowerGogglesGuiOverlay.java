@@ -61,17 +61,9 @@ public class PowerGogglesGuiOverlay {
                 public void afterInit() {
                     setPage(settingsPage);
                 }
-            }.controller(controller);
-            ButtonWidget<?> pagedWidgetButton = new ButtonWidget<>().overlay(IKey.lang(settings[settingsPage]));
-            pagedWidgetButton.onMousePressed(mouseButton -> {
-                settingsPage = ++settingsPage % settings.length;
-                controller.setPage(settingsPage);
-                pagedWidgetButton.overlay(IKey.lang(settings[settingsPage]));
-                return true;
-            });
-
-            pagedWidget.addPage(makeGeneralSettingsPage(gui));
-            pagedWidget.addPage(makeColorSchemePage(overlayPanel));
+            }.controller(controller)
+                .addPage(makeGeneralSettingsPage(gui))
+                .addPage(makeColorSchemePage(overlayPanel));
 
             return new CustomModularScreen() {
 
@@ -84,9 +76,7 @@ public class PowerGogglesGuiOverlay {
                                     .background(background)
                                     .height(22)
                                     .paddingBottom(4)
-                                    .child(
-                                        pagedWidgetButton.sizeRel(1)
-                                            .align(Alignment.Center)))
+                                    .child(makePagedWidgetButton(controller)))
                             .child(
                                 new SingleChildWidget<>().size(230, height - 22)
                                     .child(pagedWidget.sizeRel(1))));
@@ -102,6 +92,18 @@ public class PowerGogglesGuiOverlay {
                     ModularPanel.defaultPanel("overlay")
                         .size(0)
                         .pos(-100, 0))));
+    }
+
+    private static IWidget makePagedWidgetButton(PagedWidget.Controller controller) {
+        ButtonWidget<?> pagedWidgetButton = new ButtonWidget<>().overlay(IKey.lang(settings[settingsPage]));
+        pagedWidgetButton.onMousePressed(mouseButton -> {
+            settingsPage = ++settingsPage % settings.length;
+            controller.setPage(settingsPage);
+            pagedWidgetButton.overlay(IKey.lang(settings[settingsPage]));
+            return true;
+        });
+        return pagedWidgetButton.sizeRel(1)
+            .align(Alignment.Center);
     }
 
     private static IWidget makeGeneralSettingsPage(PowerGogglesGuiHudConfig gui) {
