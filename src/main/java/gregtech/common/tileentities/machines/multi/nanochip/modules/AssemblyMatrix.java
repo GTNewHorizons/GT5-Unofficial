@@ -1,6 +1,8 @@
 package gregtech.common.tileentities.machines.multi.nanochip.modules;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
+import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex.NAC_MODULE;
+import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex.TOOLTIP_CC;
 
 import net.minecraft.item.ItemStack;
 
@@ -97,7 +99,12 @@ public class AssemblyMatrix extends MTENanochipAssemblyModuleBase<AssemblyMatrix
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
-        return new MultiblockTooltipBuilder().toolTipFinisher("GregTech");
+        return new MultiblockTooltipBuilder().addInfo(NAC_MODULE)
+            .addInfo("Assembles your Circuit Part " + TOOLTIP_CC + "s into Circuit " + TOOLTIP_CC + "s")
+            .addInfo("Outputs into the VCO with the color of the first input in NEI")
+            .addStructureInfo("Any base casing - Vacuum Conveyor Input")
+            .addStructureInfo("Any base casing - Vacuum Conveyor Output")
+            .toolTipFinisher("GregTech");
     }
 
     @Override
