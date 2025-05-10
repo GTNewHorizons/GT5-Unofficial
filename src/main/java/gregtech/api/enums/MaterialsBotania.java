@@ -207,6 +207,7 @@ public class MaterialsBotania {
         Livingrock.mChemicalFormula = "Lv";
         Terrasteel.mChemicalFormula = "Tr";
         ElvenElementium.mChemicalFormula = "Ef";
+        ManaDiamond.mChemicalFormula = "Ma\u2084C";
 
         Livingrock.add(SubTag.NO_SMASHING, SubTag.NO_SMELTING);
         Livingwood.add(SubTag.WOOD, SubTag.FLAMMABLE, SubTag.NO_SMELTING, SubTag.NO_SMASHING);

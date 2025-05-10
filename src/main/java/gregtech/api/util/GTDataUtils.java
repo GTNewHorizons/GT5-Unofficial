@@ -2,6 +2,7 @@ package gregtech.api.util;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.function.Function;
@@ -55,5 +56,14 @@ public class GTDataUtils {
 
     public static <T> T getIndexSafe(List<T> list, int index) {
         return list == null || index < 0 || index >= list.size() ? null : list.get(index);
+    }
+
+    @SuppressWarnings("UnusedReturnValue")
+    public static <T> HashSet<T> dedupList(List<T> l) {
+        HashSet<T> set = new HashSet<>();
+
+        l.removeIf(t -> !set.add(t));
+
+        return set;
     }
 }
