@@ -294,7 +294,19 @@ public class Cover implements IGuiHolder<CoverGuiData> {
      */
     @Override
     public final ModularPanel buildUI(CoverGuiData guiData, PanelSyncManager syncManager) {
-        return getCoverGui().createBasePanel(guiData, syncManager);
+        return getCoverGui().createStandalonePanel(guiData, syncManager);
+    }
+
+    /**
+     * Use this method to get a panel representing this cover that you can open from another MUI2 UI.
+     * 
+     * @param guiData     information about the creation context
+     * @param panelName   the unique name of this panel in the context of your UI.
+     * @param syncManager sync handler where widget sync handlers should be registered
+     * @return UI panel to show
+     */
+    public final ModularPanel buildPopUpUi(CoverGuiData guiData, String panelName, PanelSyncManager syncManager) {
+        return getCoverGui().createBasePanel(guiData, panelName, syncManager);
     }
 
     /**
