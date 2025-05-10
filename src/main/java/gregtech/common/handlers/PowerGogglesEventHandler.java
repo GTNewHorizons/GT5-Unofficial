@@ -17,8 +17,6 @@ import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.config.Configuration;
 
 import appeng.api.util.DimensionalCoord;
-import baubles.common.container.InventoryBaubles;
-import baubles.common.lib.PlayerHandler;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.InputEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
@@ -28,6 +26,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.net.GTPacketLinkPowerGoggles;
 import gregtech.api.net.GTPacketUpdatePowerGoggles;
+import gregtech.common.items.ItemPowerGoggles;
 import gregtech.common.items.gui.PowerGogglesGuiHudConfig;
 import gregtech.common.misc.WirelessNetworkManager;
 import kekztech.common.tileentities.MTELapotronicSuperCapacitor;
@@ -53,14 +52,8 @@ public class PowerGogglesEventHandler {
 
     private void doClientStuff(TickEvent.PlayerTickEvent event) {
         if (firstClientTick) {
-            InventoryBaubles baubles = PlayerHandler.getPlayerBaubles(event.player);
-            for (ItemStack bauble : baubles.stackList) {
-                if (bauble == null) continue;
-                if (bauble.getUnlocalizedName()
-                    .equals("gt.Power_Goggles")) {
-                    setLink(bauble);
-                }
-            }
+            ItemStack bauble = ItemPowerGoggles.getEquippedPowerGoggles(event.player);
+            if (bauble != null) setLink(bauble);
             firstClientTick = false;
         }
         if (forceUpdate || PowerGogglesHudHandler.updateClient) PowerGogglesHudHandler.drawTick();
