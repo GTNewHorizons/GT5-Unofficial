@@ -61,7 +61,6 @@ import gregtech.api.enums.StructureError;
 import gregtech.api.enums.VoidingMode;
 import gregtech.api.metatileentity.implementations.MTEMultiBlockBase;
 import gregtech.api.modularui2.GTGuiTextures;
-import gregtech.api.modularui2.GTWidgetThemes;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.shutdown.ShutDownReason;
@@ -134,10 +133,8 @@ public class MTEMultiBlockBaseGUI {
         if (base.doesBindPlayerInventory()) {
             buttonColumn
                 .child(
-                    new ItemSlot()
-                        .slot(
-                            new ModularSlot(base.inventoryHandler, base.getControllerSlotIndex()).slotGroup("item_inv"))
-                        .widgetTheme(GTWidgetThemes.OVERLAY_ITEM_SLOT_IN))
+                    new ItemSlot().slot(
+                        new ModularSlot(base.inventoryHandler, base.getControllerSlotIndex()).slotGroup("item_inv")))
                 .marginTop(4);
         }
         inventoryRow.child(buttonColumn);
