@@ -248,7 +248,7 @@ public class BWMetaGeneratedItems extends MetaGeneratedItem implements IRadMater
     public int getCapacity(ItemStack aStack) {
         return this.orePrefixes == OrePrefixes.capsule || this.orePrefixes == OrePrefixes.cell
             || this.orePrefixes == OrePrefixes.cellPlasma
-                ? 1000
+                ? 1_000
                 : this.orePrefixes == OrePrefixes.cellMolten || this.orePrefixes == OrePrefixes.capsuleMolten
                     ? 1 * INGOTS
                     : 0;

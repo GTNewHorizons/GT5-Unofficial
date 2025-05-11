@@ -9,6 +9,8 @@ import static gregtech.api.enums.GTValues.M;
 import static gregtech.api.enums.GTValues.V;
 import static gregtech.api.enums.GTValues.VN;
 import static gregtech.api.enums.GTValues.W;
+import static gregtech.api.enums.Mods.Gendustry;
+import static gregtech.api.enums.Mods.IndustrialCraft2;
 import static gregtech.api.recipe.RecipeMaps.alloySmelterRecipes;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
@@ -173,6 +175,22 @@ public class GTModHandler {
         FluidStack tFluid = FluidRegistry.getFluidStack("ic2distilledwater", (int) aAmount);
         if (tFluid == null) tFluid = getWater(aAmount);
         return tFluid;
+    }
+
+    /**
+     * Returns a Liquid Stack with given amount of IC2 Coolant, falling back to water if not available.
+     */
+    public static FluidStack getIC2Coolant(long aAmount) {
+        if (IndustrialCraft2.isModLoaded()) return FluidRegistry.getFluidStack("ic2coolant", (int) aAmount);
+        else return getWater(aAmount);
+    }
+
+    /**
+     * Returns a Liquid Stack with given amount of Liquid DNA, falling back to Biomass if not available.
+     */
+    public static FluidStack getLiquidDNA(long aAmount) {
+        if (Gendustry.isModLoaded()) return FluidRegistry.getFluidStack("liquiddna", (int) aAmount);
+        else return Materials.Biomass.getFluid(aAmount);
     }
 
     /**

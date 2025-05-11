@@ -998,7 +998,7 @@ public class RecipeLoader {
             .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.Quartzite, 1),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Sodium, 4))
-            .fluidInputs(FluidRegistry.getFluidStack("ic2distilledwater", 1000))
+            .fluidInputs(GTModHandler.getDistilledWater(1000))
             .itemOutputs(ItemRefer.Quartz_Wafer.get(1))
             .requiresCleanRoom()
             .duration(1 * MINUTES + 15 * SECONDS)

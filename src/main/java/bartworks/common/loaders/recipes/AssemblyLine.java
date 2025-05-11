@@ -36,7 +36,7 @@ public class AssemblyLine implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.screw, Materials.Europium, 36L))
             .fluidInputs(
                 MaterialsAlloy.INDALLOY_140.getFluidStack(10 * INGOTS),
-                WerkstoffLoader.Neon.getFluidOrGas(20000))
+                WerkstoffLoader.Neon.getFluidOrGas(20_000))
             .itemOutputs(ItemRegistry.voidminer[0].copy())
             .eut(TierEU.RECIPE_LuV)
             .duration(5 * MINUTES)

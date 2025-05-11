@@ -11,7 +11,6 @@ import static gregtech.api.util.GTRecipeConstants.LNG_BASIC_OUTPUT;
 import static gregtech.api.util.GTRecipeConstants.NFR_COIL_TIER;
 import static gtPlusPlus.core.material.MaterialsElements.STANDALONE.CHRONOMATIC_GLASS;
 
-import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
 import bartworks.system.material.WerkstoffLoader;
@@ -63,7 +62,7 @@ public class FuelRecipeLoader {
                 ItemRefer.High_Density_Plutonium.get(1))
             .fluidInputs(
                 GGMaterial.heavyNaquadahFuel.getFluidOrGas(800),
-                GGMaterial.lightNaquadahFuel.getFluidOrGas(1000))
+                GGMaterial.lightNaquadahFuel.getFluidOrGas(1_000))
             .fluidOutputs(GGMaterial.naquadahBasedFuelMkIII.getFluidOrGas(100))
             .duration(5 * SECONDS)
             .eut(1_100_000)
@@ -79,7 +78,7 @@ public class FuelRecipeLoader {
                 ItemRefer.High_Density_Plutonium.get(1))
             .fluidInputs(
                 GGMaterial.heavyNaquadahFuel.getFluidOrGas(800),
-                GGMaterial.lightNaquadahFuel.getFluidOrGas(1000))
+                GGMaterial.lightNaquadahFuel.getFluidOrGas(1_000))
             .fluidOutputs(GGMaterial.naquadahBasedFuelMkIII.getFluidOrGas(200))
             .duration(5 * SECONDS)
             .eut(2_100_000)
@@ -94,7 +93,7 @@ public class FuelRecipeLoader {
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.DraconiumAwakened, 64),
                 GGMaterial.orundum.get(OrePrefixes.dust, 32))
             .fluidInputs(
-                GGMaterial.naquadahBasedFuelMkIII.getFluidOrGas(2000),
+                GGMaterial.naquadahBasedFuelMkIII.getFluidOrGas(2_000),
                 Materials.Praseodymium.getMolten(64 * INGOTS))
             .fluidOutputs(GGMaterial.naquadahBasedFuelMkIV.getFluidOrGas(250))
             .duration(8 * SECONDS)
@@ -110,8 +109,8 @@ public class FuelRecipeLoader {
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.DraconiumAwakened, 64),
                 GGMaterial.orundum.get(OrePrefixes.dust, 64))
             .fluidInputs(
-                GGMaterial.naquadahBasedFuelMkIII.getFluidOrGas(2000),
-                new FluidStack(FluidRegistry.getFluid("molten.hypogen"), 240))
+                GGMaterial.naquadahBasedFuelMkIII.getFluidOrGas(2_000),
+                MaterialsElements.STANDALONE.HYPOGEN.getFluidStack(240))
             .fluidOutputs(GGMaterial.naquadahBasedFuelMkIV.getFluidOrGas(500))
             .duration(8 * SECONDS)
             .eut(75_000_000)
@@ -126,10 +125,10 @@ public class FuelRecipeLoader {
                 ItemRefer.High_Density_Uranium.get(10),
                 ItemRefer.High_Density_Plutonium.get(5))
             .fluidInputs(
-                GGMaterial.heavyNaquadahFuel.getFluidOrGas(4000),
-                GGMaterial.lightNaquadahFuel.getFluidOrGas(5000),
-                new FluidStack(FluidRegistry.getFluid("molten.hypogen"), 120),
-                new FluidStack(FluidRegistry.getFluid("molten.chromaticglass"), 6480))
+                GGMaterial.heavyNaquadahFuel.getFluidOrGas(4_000),
+                GGMaterial.lightNaquadahFuel.getFluidOrGas(5_000),
+                MaterialsElements.STANDALONE.HYPOGEN.getFluidStack(120),
+                MaterialsElements.STANDALONE.CHRONOMATIC_GLASS.getFluidStack(6_480))
             .fluidOutputs(GGMaterial.naquadahBasedFuelMkIV.getFluidOrGas(250))
             .duration(2 * TICKS)
             .eut(350_000_000)
@@ -141,9 +140,7 @@ public class FuelRecipeLoader {
             .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Infinity, 8),
                 GGMaterial.atomicSeparationCatalyst.get(OrePrefixes.dust, 32))
-            .fluidInputs(
-                GGMaterial.naquadahBasedFuelMkIV.getFluidOrGas(2000),
-                FluidRegistry.getFluidStack("heavyradox", 250))
+            .fluidInputs(GGMaterial.naquadahBasedFuelMkIV.getFluidOrGas(2_000), Materials.RadoxHeavy.getMolten(250))
             .fluidOutputs(GGMaterial.naquadahBasedFuelMkV.getFluidOrGas(500))
             .duration(10 * SECONDS)
             .eut(100_000_000)
@@ -156,8 +153,8 @@ public class FuelRecipeLoader {
                 GTOreDictUnificator.get(OrePrefixes.dust, MaterialsUEVplus.TranscendentMetal, 16),
                 GGMaterial.atomicSeparationCatalyst.get(OrePrefixes.dust, 48))
             .fluidInputs(
-                GGMaterial.naquadahBasedFuelMkIV.getFluidOrGas(2000),
-                FluidRegistry.getFluidStack("heavyradox", 250),
+                GGMaterial.naquadahBasedFuelMkIV.getFluidOrGas(2_000),
+                Materials.RadoxHeavy.getMolten(250),
                 MaterialsUEVplus.Mellion.getMolten(2 * INGOTS),
                 MaterialsUEVplus.Creon.getMolten(2 * INGOTS))
             .fluidOutputs(GGMaterial.naquadahBasedFuelMkV.getFluidOrGas(750))
@@ -171,9 +168,7 @@ public class FuelRecipeLoader {
             .itemInputs(
                 MaterialsElements.STANDALONE.ASTRAL_TITANIUM.getDust(64),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Tritanium, 32))
-            .fluidInputs(
-                GGMaterial.naquadahBasedFuelMkV.getFluidOrGas(2000),
-                FluidRegistry.getFluidStack("molten.shirabon", 360))
+            .fluidInputs(GGMaterial.naquadahBasedFuelMkV.getFluidOrGas(2_000), GGMaterial.shirabon.getMolten(360))
             .fluidOutputs(GGMaterial.naquadahBasedFuelMkVI.getFluidOrGas(750))
             .duration(12 * SECONDS)
             .eut(320_000_000)
@@ -186,10 +181,10 @@ public class FuelRecipeLoader {
                 MaterialsElements.STANDALONE.CELESTIAL_TUNGSTEN.getDust(64),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Tritanium, 48))
             .fluidInputs(
-                GGMaterial.naquadahBasedFuelMkV.getFluidOrGas(2000),
-                FluidRegistry.getFluidStack("molten.shirabon", 360),
+                GGMaterial.naquadahBasedFuelMkV.getFluidOrGas(2_000),
+                GGMaterial.shirabon.getMolten(360),
                 MaterialsUEVplus.RawStarMatter.getFluid(60L))
-            .fluidOutputs(GGMaterial.naquadahBasedFuelMkVI.getFluidOrGas(1250))
+            .fluidOutputs(GGMaterial.naquadahBasedFuelMkVI.getFluidOrGas(1_250))
             .duration(3 * SECONDS)
             .eut(TierEU.RECIPE_UXV)
             .metadata(NFR_COIL_TIER, 4)

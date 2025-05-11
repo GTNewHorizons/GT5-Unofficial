@@ -47,6 +47,7 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
@@ -75,9 +76,9 @@ public class MTEMultiNqGenerator extends MTETooltipMultiBlockBaseEM implements I
             Pair.of(Materials.Caesium.getMolten(180L), ExcitedLiquidCoe[4]));
         coolant = Arrays.asList(
             Pair.of(MaterialsUEVplus.Time.getMolten(20L), CoolantEfficiency[0]),
-            Pair.of(FluidRegistry.getFluidStack("cryotheum", 1000), CoolantEfficiency[1]),
-            Pair.of(Materials.SuperCoolant.getFluid(1000), CoolantEfficiency[2]),
-            Pair.of(FluidRegistry.getFluidStack("ic2coolant", 1000), CoolantEfficiency[3]));
+            Pair.of(FluidRegistry.getFluidStack("cryotheum", 1_000), CoolantEfficiency[1]),
+            Pair.of(Materials.SuperCoolant.getFluid(1_000), CoolantEfficiency[2]),
+            Pair.of(GTModHandler.getIC2Coolant(1_000), CoolantEfficiency[3]));
     }
 
     @Override
