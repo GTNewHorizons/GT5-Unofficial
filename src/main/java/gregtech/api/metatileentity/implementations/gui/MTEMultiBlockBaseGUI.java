@@ -43,7 +43,6 @@ import com.cleanroommc.modularui.value.sync.IntSyncValue;
 import com.cleanroommc.modularui.value.sync.LongSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.value.sync.StringSyncValue;
-import com.cleanroommc.modularui.value.sync.SyncHandlers;
 import com.cleanroommc.modularui.widget.SingleChildWidget;
 import com.cleanroommc.modularui.widget.WidgetTree;
 import com.cleanroommc.modularui.widget.sizer.Area;
@@ -57,6 +56,7 @@ import com.cleanroommc.modularui.widgets.ToggleButton;
 import com.cleanroommc.modularui.widgets.layout.Column;
 import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.cleanroommc.modularui.widgets.layout.Row;
+import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
 import com.gtnewhorizons.modularui.common.internal.network.NetworkUtils;
 
@@ -65,6 +65,7 @@ import gregtech.api.enums.StructureError;
 import gregtech.api.enums.VoidingMode;
 import gregtech.api.metatileentity.implementations.MTEMultiBlockBase;
 import gregtech.api.modularui2.GTGuiTextures;
+import gregtech.api.modularui2.GTWidgetThemes;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.util.GTUtility;
@@ -136,11 +137,13 @@ public class MTEMultiBlockBaseGUI {
         addGregtechLogo(panel);
 
         if (base.doesBindPlayerInventory()) {
-            buttonColumn.child(
-                new ItemSlot().slot(
-                    SyncHandlers.itemSlot(base.getInvSlot(), 0)
-                        .singletonSlotGroup())
-                    .marginTop(4));
+            buttonColumn
+                .child(
+                    new ItemSlot()
+                        .slot(
+                            new ModularSlot(base.inventoryHandler, base.getControllerSlotIndex()).slotGroup("item_inv"))
+                        .widgetTheme(GTWidgetThemes.OVERLAY_ITEM_SLOT_IN))
+                .marginTop(4);
         }
         inventoryRow.child(buttonColumn);
         panelColumn.child(inventoryRow);

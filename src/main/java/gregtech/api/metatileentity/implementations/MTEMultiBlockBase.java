@@ -56,7 +56,6 @@ import org.jetbrains.annotations.TestOnly;
 import com.cleanroommc.modularui.api.IGuiHolder;
 import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
-import com.cleanroommc.modularui.utils.item.ItemStackHandler;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
@@ -223,9 +222,6 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
     protected static final byte INTERRUPT_SOUND_INDEX = 8;
     protected static final byte PROCESS_START_SOUND_INDEX = 1;
 
-    // GUI
-    protected final ItemStackHandler invSlot = new ItemStackHandler(1);
-
     public MTEMultiBlockBase(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional, 2);
         this.processingLogic = null;
@@ -339,7 +335,6 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
                 aNBT.setTag("mOutputFluids" + i, tNBT);
             }
         }
-        aNBT.setTag("invSlot", this.invSlot.serializeNBT());
         aNBT.setBoolean("mWrench", mWrench);
         aNBT.setBoolean("mScrewdriver", mScrewdriver);
         aNBT.setBoolean("mSoftHammer", mSoftHammer);
@@ -419,7 +414,6 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
             mSolderingTool = aNBT.getBoolean("mSolderingTool");
             mCrowbar = aNBT.getBoolean("mCrowbar");
         } else fixAllIssues();
-        this.invSlot.deserializeNBT(aNBT.getCompoundTag("invSlot"));
     }
 
     protected SingleRecipeCheck loadSingleRecipeChecker(NBTTagCompound aNBT) {
@@ -3521,10 +3515,6 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
 
     public void setCheckRecipeResult(@Nonnull CheckRecipeResult checkRecipeResult) {
         this.checkRecipeResult = checkRecipeResult;
-    }
-
-    public ItemStackHandler getInvSlot() {
-        return invSlot;
     }
 
     public int getRuntime() {
