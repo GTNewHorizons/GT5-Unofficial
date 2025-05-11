@@ -1,11 +1,9 @@
 package gregtech.common.misc;
 
-import net.minecraft.item.ItemStack;
-
 import com.gtnewhorizon.structurelib.StructureLibAPI;
-
 import gregtech.api.enums.Mods;
 import gregtech.api.structure.IStructureChannels;
+import net.minecraft.item.ItemStack;
 
 /*
  * To unofficial addon authors:

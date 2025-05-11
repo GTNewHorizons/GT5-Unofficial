@@ -1,18 +1,6 @@
 package gregtech.api.recipe.maps;
 
-import static gregtech.api.util.GTRecipeConstants.ECCF_PRESSURE;
-import static gregtech.api.util.GTRecipeConstants.ECCF_TEMPERATURE;
-import static gregtech.api.util.GTUtility.formatNumbers;
-import static gregtech.api.util.GTUtility.trans;
-
-import java.util.List;
-
-import javax.annotation.ParametersAreNonnullByDefault;
-
-import net.minecraft.util.StatCollector;
-
 import com.gtnewhorizons.modularui.api.math.Pos2d;
-
 import gregtech.api.recipe.BasicUIPropertiesBuilder;
 import gregtech.api.recipe.NEIRecipePropertiesBuilder;
 import gregtech.api.recipe.RecipeMapFrontend;
@@ -20,13 +8,21 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.MethodsReturnNonnullByDefault;
 import gregtech.common.gui.modularui.UIHelper;
 import gregtech.nei.RecipeDisplayInfo;
+import net.minecraft.util.StatCollector;
+
+import javax.annotation.ParametersAreNonnullByDefault;
+import java.util.List;
+
+import static gregtech.api.util.GTRecipeConstants.ECCF_PRESSURE;
+import static gregtech.api.util.GTRecipeConstants.ECCF_TEMPERATURE;
+import static gregtech.api.util.GTUtility.formatNumbers;
+import static gregtech.api.util.GTUtility.trans;
 
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
-public class AdvancedChemFrontend extends RecipeMapFrontend {
+public class ECCFFrontend extends RecipeMapFrontend {
 
-    public AdvancedChemFrontend(BasicUIPropertiesBuilder uiPropertiesBuilder,
-        NEIRecipePropertiesBuilder neiPropertiesBuilder) {
+    public ECCFFrontend(BasicUIPropertiesBuilder uiPropertiesBuilder, NEIRecipePropertiesBuilder neiPropertiesBuilder) {
         super(uiPropertiesBuilder, neiPropertiesBuilder);
     }
 

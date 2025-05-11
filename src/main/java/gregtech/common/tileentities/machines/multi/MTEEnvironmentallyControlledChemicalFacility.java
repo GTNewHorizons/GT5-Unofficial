@@ -1,45 +1,10 @@
 package gregtech.common.tileentities.machines.multi;
 
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlocksTiered;
-import static gregtech.api.GregTechAPI.sBlockCoilECCF;
-import static gregtech.api.enums.HatchElement.Energy;
-import static gregtech.api.enums.HatchElement.ExoticEnergy;
-import static gregtech.api.enums.HatchElement.InputBus;
-import static gregtech.api.enums.HatchElement.InputHatch;
-import static gregtech.api.enums.HatchElement.Maintenance;
-import static gregtech.api.enums.HatchElement.OutputBus;
-import static gregtech.api.enums.HatchElement.OutputHatch;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_ACTIVE;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_ACTIVE_GLOW;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_GLOW;
-import static gregtech.api.enums.Textures.BlockIcons.casingTexturePages;
-import static gregtech.api.util.GTRecipeConstants.ECCF_PRESSURE;
-import static gregtech.api.util.GTRecipeConstants.ECCF_TEMPERATURE;
-import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
-import static gregtech.api.util.GTStructureUtility.ofFrame;
-
-import javax.annotation.Nullable;
-
-import net.minecraft.block.Block;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
-import net.minecraft.world.WorldProvider;
-import net.minecraftforge.common.util.ForgeDirection;
-
-import org.apache.commons.lang3.tuple.Pair;
-import org.jetbrains.annotations.NotNull;
-
 import com.google.common.collect.ImmutableList;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
-
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.ITexture;
@@ -61,6 +26,38 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.SimpleShutDownReason;
 import gregtech.common.blocks.BlockCasings8;
 import gregtech.common.misc.GTStructureChannels;
+import net.minecraft.block.Block;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
+import net.minecraft.world.WorldProvider;
+import net.minecraftforge.common.util.ForgeDirection;
+import org.apache.commons.lang3.tuple.Pair;
+import org.jetbrains.annotations.NotNull;
+
+import javax.annotation.Nullable;
+
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlocksTiered;
+import static gregtech.api.GregTechAPI.sBlockCoilECCF;
+import static gregtech.api.enums.HatchElement.Energy;
+import static gregtech.api.enums.HatchElement.ExoticEnergy;
+import static gregtech.api.enums.HatchElement.InputBus;
+import static gregtech.api.enums.HatchElement.InputHatch;
+import static gregtech.api.enums.HatchElement.Maintenance;
+import static gregtech.api.enums.HatchElement.OutputBus;
+import static gregtech.api.enums.HatchElement.OutputHatch;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_ACTIVE;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_ACTIVE_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.casingTexturePages;
+import static gregtech.api.util.GTRecipeConstants.ECCF_PRESSURE;
+import static gregtech.api.util.GTRecipeConstants.ECCF_TEMPERATURE;
+import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
+import static gregtech.api.util.GTStructureUtility.ofFrame;
 
 public class MTEEnvironmentallyControlledChemicalFacility extends
     MTEExtendedPowerMultiBlockBase<MTEEnvironmentallyControlledChemicalFacility> implements ISurvivalConstructable {
@@ -161,7 +158,7 @@ public class MTEEnvironmentallyControlledChemicalFacility extends
                 .buildAndChain(GregTechAPI.sBlockCasings8, 0))
         .addElement(
             'C',
-            GTStructureChannels.ACR_COOL_PIPE.use(
+            GTStructureChannels.ECCF_COOLER.use(
                 ofBlocksTiered(
                     MTEEnvironmentallyControlledChemicalFacility::getCoolCoilMeta,
                     ImmutableList.of(
@@ -174,7 +171,7 @@ public class MTEEnvironmentallyControlledChemicalFacility extends
                     (MTEEnvironmentallyControlledChemicalFacility t) -> t.coolCoilTier)))
         .addElement(
             'H',
-            GTStructureChannels.ACR_HEAT_PIPE.use(
+            GTStructureChannels.ECCF_HEATER.use(
                 ofBlocksTiered(
                     MTEEnvironmentallyControlledChemicalFacility::getHeatCoilMeta,
                     ImmutableList.of(
@@ -187,7 +184,7 @@ public class MTEEnvironmentallyControlledChemicalFacility extends
                     (MTEEnvironmentallyControlledChemicalFacility t) -> t.heatCoilTier)))
         .addElement(
             'K',
-            GTStructureChannels.ACR_COMPRESS_PIPE.use(
+            GTStructureChannels.ECCF_COMPRESSOR.use(
                 ofBlocksTiered(
                     MTEEnvironmentallyControlledChemicalFacility::getCompressCoilMeta,
                     ImmutableList.of(
@@ -200,7 +197,7 @@ public class MTEEnvironmentallyControlledChemicalFacility extends
                     (MTEEnvironmentallyControlledChemicalFacility t) -> t.compressCoilTier)))
         .addElement(
             'V',
-            GTStructureChannels.ACR_VACUUM_PIPE.use(
+            GTStructureChannels.ECCF_VACUUM.use(
                 ofBlocksTiered(
                     MTEEnvironmentallyControlledChemicalFacility::getVacuumCoilMeta,
                     ImmutableList.of(
@@ -302,6 +299,10 @@ public class MTEEnvironmentallyControlledChemicalFacility extends
                     + "single step"
                     + EnumChatFormatting.GRAY
                     + ", but requires special conditions")
+            .addInfo(
+                EnumChatFormatting.GRAY + "Doesn't overclock, instead increases parallels by "
+                    + EnumChatFormatting.YELLOW
+                    + "4 ^ Energy Tier")
             .addSeparator()
             .addInfo(
                 EnumChatFormatting.GRAY + "Conditions are shown in "
@@ -422,18 +423,31 @@ public class MTEEnvironmentallyControlledChemicalFacility extends
             .addInfo(EnumChatFormatting.GOLD + "VO-43 " + EnumChatFormatting.GRAY + "- 10% loss")
             .addInfo(EnumChatFormatting.GOLD + "VO-75 " + EnumChatFormatting.GRAY + "- 0% loss")
             .addSeparator()
+            .addInfo("" + EnumChatFormatting.WHITE + EnumChatFormatting.BOLD + "Information")
             .addInfo(
                 EnumChatFormatting.GRAY + "Use "
-                    + EnumChatFormatting.YELLOW
+                    + EnumChatFormatting.GOLD
                     + "portable scanner "
                     + EnumChatFormatting.GRAY
                     + "to get information about "
-                    + EnumChatFormatting.YELLOW
+                    + EnumChatFormatting.GOLD
                     + "pressure"
                     + EnumChatFormatting.GRAY
                     + " and "
-                    + EnumChatFormatting.YELLOW
+                    + EnumChatFormatting.GOLD
                     + "temperature")
+            .addInfo(
+                EnumChatFormatting.GRAY + "Check"
+                    + EnumChatFormatting.GOLD
+                    + " quest about ECCF"
+                    + EnumChatFormatting.GRAY
+                    + " to get information about "
+                    + EnumChatFormatting.GOLD
+                    + "formulas "
+                    + EnumChatFormatting.GRAY
+                    + "and "
+                    + EnumChatFormatting.GOLD
+                    + " dimension conditions")
             .beginStructureBlock(5, 6, 5, true)
             .addController("Front Center")
             .addCasingInfoMin("Chemically Inert Casing", 0, false)
@@ -625,10 +639,10 @@ public class MTEEnvironmentallyControlledChemicalFacility extends
                     && Math.abs(currentPressure - requiredPressure) <= pressureThreshold) {
                     return super.validateRecipe(recipe);
                 }
-                stopMachine(SimpleShutDownReason.ofCritical("conditions.out.of.range"));
-                return CheckRecipeResultRegistry.OUT_OF_RECIPE_CONDITIONS;
+                stopMachine(SimpleShutDownReason.ofCritical("conditions_range"));
+                return CheckRecipeResultRegistry.RECIPE_CONDITIONS;
             }
-        }.setOverclock(4, 4);
+        }.setOverclock(1, 4);
     }
 
     @Override
@@ -639,7 +653,7 @@ public class MTEEnvironmentallyControlledChemicalFacility extends
 
     @Override
     public int getMaxParallelRecipes() {
-        return (4 * GTUtility.getTier(this.getMaxInputVoltage()));
+        return (int) Math.pow(4, GTUtility.getTier(this.getMaxInputVoltage()));
     }
 
     @Override
@@ -1018,7 +1032,7 @@ public class MTEEnvironmentallyControlledChemicalFacility extends
                                 case "vo17" -> 0.3;
                                 case "vo43" -> 0.1;
                                 case "vo75" -> 0;
-                                default -> leakCoeff;
+                                default -> 0.8;
                             };
                             mLubricantInputHatch.drain(5, true);
                         }
@@ -1031,7 +1045,7 @@ public class MTEEnvironmentallyControlledChemicalFacility extends
             if (mMaxProgresstime != 0) {
                 if ((Math.abs(currentTemp - requiredTemp) > tempThreshold)
                     || (Math.abs(currentPressure - requiredPressure) > pressureThreshold)) {
-                    stopMachine(SimpleShutDownReason.ofCritical("conditions.out.of.range"));
+                    stopMachine(SimpleShutDownReason.ofCritical("conditions_range"));
                 }
             }
         }

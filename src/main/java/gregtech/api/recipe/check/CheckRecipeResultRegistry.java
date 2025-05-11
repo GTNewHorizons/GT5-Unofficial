@@ -1,10 +1,9 @@
 package gregtech.api.recipe.check;
 
+import javax.annotation.Nonnull;
 import java.math.BigInteger;
 import java.util.HashMap;
 import java.util.Map;
-
-import javax.annotation.Nonnull;
 
 public final class CheckRecipeResultRegistry {
 
@@ -113,8 +112,7 @@ public final class CheckRecipeResultRegistry {
      * ECCF recipe conditions are out of given range
      */
 
-    public static final CheckRecipeResult OUT_OF_RECIPE_CONDITIONS = SimpleCheckRecipeResult
-        .ofFailure("conditions.out.of.range");
+    public static final CheckRecipeResult RECIPE_CONDITIONS = SimpleCheckRecipeResult.ofFailure("conditions_range");
 
     /**
      * Black Hole Compressor does not have an active black hole

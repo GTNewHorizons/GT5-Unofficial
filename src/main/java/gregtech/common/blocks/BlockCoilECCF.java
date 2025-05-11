@@ -1,17 +1,15 @@
 package gregtech.common.blocks;
 
-import java.util.List;
-
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.IIcon;
-import net.minecraft.util.StatCollector;
-
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Textures;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.IIcon;
+import net.minecraft.util.StatCollector;
+
+import java.util.List;
 
 public class BlockCoilECCF extends BlockCasingsAbstract {
 
@@ -68,38 +66,22 @@ public class BlockCoilECCF extends BlockCasingsAbstract {
     public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean advancedTooltips) {
         super.addInformation(stack, player, tooltip, advancedTooltips);
         switch (stack.getItemDamage()) {
-            case 0 -> tooltip
-                .add(StatCollector.translateToLocal(EnumChatFormatting.GOLD + "Temperature range: 200K to 400K"));
-            case 1 -> tooltip
-                .add(StatCollector.translateToLocal(EnumChatFormatting.GOLD + "Temperature range: 100K to 200K"));
-            case 2 -> tooltip
-                .add(StatCollector.translateToLocal(EnumChatFormatting.GOLD + "Temperature range: 30K to 100K"));
-            case 3 -> tooltip
-                .add(StatCollector.translateToLocal(EnumChatFormatting.GOLD + "Temperature range: 0K to 30K"));
-            case 4 -> tooltip
-                .add(StatCollector.translateToLocal(EnumChatFormatting.GOLD + "Temperature range: 300K to 2300K"));
-            case 5 -> tooltip
-                .add(StatCollector.translateToLocal(EnumChatFormatting.GOLD + "Temperature range: 2300K to 5300K"));
-            case 6 -> tooltip
-                .add(StatCollector.translateToLocal(EnumChatFormatting.GOLD + "Temperature range: 5300K to 10000K"));
-            case 7 -> tooltip
-                .add(StatCollector.translateToLocal(EnumChatFormatting.GOLD + "Temperature range: 10000K to 20000K"));
-            case 8 -> tooltip
-                .add(StatCollector.translateToLocal(EnumChatFormatting.GOLD + "Pressure range: 100kPa to 150kPa"));
-            case 9 -> tooltip
-                .add(StatCollector.translateToLocal(EnumChatFormatting.GOLD + "Pressure range: 150kPa to 350kPa"));
-            case 10 -> tooltip
-                .add(StatCollector.translateToLocal(EnumChatFormatting.GOLD + "Pressure range: 350kPa to 700kPa"));
-            case 11 -> tooltip
-                .add(StatCollector.translateToLocal(EnumChatFormatting.GOLD + "Pressure range: 700kPa to 1200kPa"));
-            case 12 -> tooltip
-                .add(StatCollector.translateToLocal(EnumChatFormatting.GOLD + "Pressure range: 50kPa to 100kPa"));
-            case 13 -> tooltip
-                .add(StatCollector.translateToLocal(EnumChatFormatting.GOLD + "Pressure range: 30kPa to 50kPa"));
-            case 14 -> tooltip
-                .add(StatCollector.translateToLocal(EnumChatFormatting.GOLD + "Pressure range: 10kPa to 30kPa"));
-            case 15 -> tooltip
-                .add(StatCollector.translateToLocal(EnumChatFormatting.GOLD + "Pressure range: 0kPa to 10kPa"));
+            case 0 -> tooltip.add(StatCollector.translateToLocalFormatted("tooltip.blockECCFTemp", 200, 400));
+            case 1 -> tooltip.add(StatCollector.translateToLocalFormatted("tooltip.blockECCFTemp", 100, 200));
+            case 2 -> tooltip.add(StatCollector.translateToLocalFormatted("tooltip.blockECCFTemp", 30, 100));
+            case 3 -> tooltip.add(StatCollector.translateToLocalFormatted("tooltip.blockECCFTemp", 0, 30));
+            case 4 -> tooltip.add(StatCollector.translateToLocalFormatted("tooltip.blockECCFTemp", 300, 2300));
+            case 5 -> tooltip.add(StatCollector.translateToLocalFormatted("tooltip.blockECCFTemp", 2300, 5300));
+            case 6 -> tooltip.add(StatCollector.translateToLocalFormatted("tooltip.blockECCFTemp", 5300, 10000));
+            case 7 -> tooltip.add(StatCollector.translateToLocalFormatted("tooltip.blockECCFTemp", 10000, 20000));
+            case 8 -> tooltip.add(StatCollector.translateToLocalFormatted("tooltip.blockECCFPressure", 100, 150));
+            case 9 -> tooltip.add(StatCollector.translateToLocalFormatted("tooltip.blockECCFPressure", 150, 350));
+            case 10 -> tooltip.add(StatCollector.translateToLocalFormatted("tooltip.blockECCFPressure", 350, 700));
+            case 11 -> tooltip.add(StatCollector.translateToLocalFormatted("tooltip.blockECCFPressure", 700, 1200));
+            case 12 -> tooltip.add(StatCollector.translateToLocalFormatted("tooltip.blockECCFPressure", 50, 100));
+            case 13 -> tooltip.add(StatCollector.translateToLocalFormatted("tooltip.blockECCFPressure", 30, 50));
+            case 14 -> tooltip.add(StatCollector.translateToLocalFormatted("tooltip.blockECCFPressure", 10, 30));
+            case 15 -> tooltip.add(StatCollector.translateToLocalFormatted("tooltip.blockECCFPressure", 0, 10));
         }
     }
 }
