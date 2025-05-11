@@ -82,6 +82,12 @@ public enum Mixin {
         .setApplyIf(() -> true)
         .setPhase(Phase.LATE)
         .setSide(Side.BOTH)),
+    IC2_REINFORCED_GLASS_SILK(
+        new Builder("Lets Reinforced Glass be harvested by silk touch").addMixinClasses("ic2.MixinIc2ReinforcedGlass")
+            .addTargetedMod(TargetedMod.IC2)
+            .setApplyIf(() -> true)
+            .setPhase(Phase.LATE)
+            .setSide(Side.BOTH)),
 
     // Hazmat armors
     IC2_HAZMAT(new Builder("Hazmat").setPhase(Phase.LATE)
