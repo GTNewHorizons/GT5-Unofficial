@@ -3500,10 +3500,6 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
         return !disableMaintenance && hasMaintenanceChecks;
     }
 
-    public int getMaxParallelForPanel() {
-        return maxParallel;
-    }
-
     public void setMaxParallelForPanel(int parallel) {
         this.maxParallel = parallel;
     }
