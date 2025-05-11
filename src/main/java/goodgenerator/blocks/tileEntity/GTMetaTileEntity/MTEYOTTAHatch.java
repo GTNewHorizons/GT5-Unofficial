@@ -143,9 +143,12 @@ public class MTEYOTTAHatch extends MTEHatch implements IGridProxyable, IActionHo
     }
 
     @Override
-    public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer, float aX, float aY, float aZ, ItemStack aTool) {
+    public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
+        float aX, float aY, float aZ, ItemStack aTool) {
         this.isSticky = !this.isSticky;
-        GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal(this.isSticky ? "yothatch.chat.2" : "yothatch.chat.3"));
+        GTUtility.sendChatToPlayer(
+            aPlayer,
+            StatCollector.translateToLocal(this.isSticky ? "yothatch.chat.2" : "yothatch.chat.3"));
         return true;
     }
 
@@ -491,7 +494,8 @@ public class MTEYOTTAHatch extends MTEHatch implements IGridProxyable, IActionHo
     @Override
     public boolean canAccept(IAEFluidStack input) {
         FluidStack rInput = input.getFluidStack();
-        return (host.mLockedFluid != null && !host.mLockedFluid.isFluidEqual(rInput)) || host.mFluid == null || host.mFluid.isFluidEqual(rInput);
+        return (host.mLockedFluid != null && !host.mLockedFluid.isFluidEqual(rInput)) || host.mFluid == null
+            || host.mFluid.isFluidEqual(rInput);
     }
 
     @Override
@@ -509,7 +513,7 @@ public class MTEYOTTAHatch extends MTEHatch implements IGridProxyable, IActionHo
         return this.priority;
     }
 
-    public  boolean getSticky() {
+    public boolean getSticky() {
         return this.isSticky;
     }
 
