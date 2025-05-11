@@ -730,7 +730,7 @@ public class MTEYottaFluidTank extends MTETooltipMultiBlockBaseEM implements ICo
         machineInfo.child(
             IKey.dynamic(
                 () -> StatCollector.translateToLocal("gui.YOTTank.0") + " "
-                    + NumberFormat.formatWithMaxDigits(maxStorageSyncer.getDoubleValue(), 3))
+                    + NumberFormat.format(maxStorageSyncer.getDoubleValue(), NumberFormat.DEFAULT))
                 .asWidget()
                 .alignment(com.cleanroommc.modularui.utils.Alignment.CenterLeft)
                 .color(COLOR_TEXT_WHITE.get())
@@ -742,7 +742,7 @@ public class MTEYottaFluidTank extends MTETooltipMultiBlockBaseEM implements ICo
             IKey.dynamic(
                 () -> StatCollector.translateToLocal("gui.YOTTank.2") + " "
                     + (currentStorageSyncer.getValue() == 0 ? "0"
-                        : NumberFormat.formatWithMaxDigits(currentStorageSyncer.getValue(), 3))
+                        : NumberFormat.format(currentStorageSyncer.getValue(), NumberFormat.DEFAULT))
                     + " ("
                     + EnumChatFormatting.GREEN
                     + percentageSyncer.getStringValue()
@@ -877,9 +877,9 @@ public class MTEYottaFluidTank extends MTETooltipMultiBlockBaseEM implements ICo
                         .add(
                             EnumChatFormatting.BLUE
                                 + (currentStorageSyncer.getValue() == 0 ? "0"
-                                    : NumberFormat.formatWithMaxDigits(currentStorageSyncer.getValue(), 3))
+                                    : NumberFormat.format(currentStorageSyncer.getValue(), NumberFormat.DEFAULT))
                                 + "/"
-                                + NumberFormat.formatWithMaxDigits(maxStorageSyncer.getValue(), 3));
+                                + NumberFormat.format(maxStorageSyncer.getValue(), NumberFormat.DEFAULT));
                 } else if (fluidStack == null) {
                     t.clearText();
                     t.add("Empty");
@@ -891,9 +891,9 @@ public class MTEYottaFluidTank extends MTETooltipMultiBlockBaseEM implements ICo
                         .newLine()
                         .add(
                             EnumChatFormatting.BLUE
-                                + NumberFormat.formatWithMaxDigits(currentStorageSyncer.getValue(), 3)
+                                + NumberFormat.format(currentStorageSyncer.getValue(), NumberFormat.DEFAULT)
                                 + "/"
-                                + NumberFormat.formatWithMaxDigits(maxStorageSyncer.getValue(), 3)
+                                + NumberFormat.format(maxStorageSyncer.getValue(), NumberFormat.DEFAULT)
                                 + EnumChatFormatting.RESET
                                 + " ("
                                 + EnumChatFormatting.GREEN
