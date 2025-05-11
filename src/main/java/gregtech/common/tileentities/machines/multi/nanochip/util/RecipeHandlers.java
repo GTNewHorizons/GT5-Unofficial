@@ -510,7 +510,7 @@ public class RecipeHandlers {
             Arrays.asList(
                 FluidRegistry.getFluidStack("molten.indalloy140", 2880),
                 FluidRegistry.getFluidStack("ic2coolant", 10000),
-                Materials.Radon.getFluid(2500)),
+                Materials.Radon.getGas(2500)),
             CircuitComponent.WetwareMainframe,
             ModuleRecipeInfo.Fast,
             TierEU.RECIPE_LuV);
@@ -602,7 +602,7 @@ public class RecipeHandlers {
                 new CircuitComponentStack(CircuitComponent.FoilSiliconeRubber, 64)),
             Arrays.asList(
                 MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack(1440),
-                Materials.Radon.getFluid(1440),
+                Materials.Radon.getGas(1440),
                 Materials.SuperCoolant.getFluid(10000),
                 FluidRegistry.getFluidStack("oganesson", 500)),
             CircuitComponent.OpticalAssembly,
@@ -623,7 +623,7 @@ public class RecipeHandlers {
                 new CircuitComponentStack(CircuitComponent.FoilPolybenzimidazole, 64)),
             Arrays.asList(
                 MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack(2880),
-                Materials.Radon.getFluid(2880),
+                Materials.Radon.getGas(2880),
                 Materials.SuperCoolant.getFluid(20000),
                 FluidRegistry.getFluidStack("oganesson", 1000)),
             CircuitComponent.OpticalComputer,
@@ -646,7 +646,7 @@ public class RecipeHandlers {
                 new CircuitComponentStack(CircuitComponent.FoilPolybenzimidazole, 64)),
             Arrays.asList(
                 MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack(5760),
-                Materials.Radon.getFluid(5760),
+                Materials.Radon.getGas(5760),
                 Materials.SuperCoolant.getFluid(40000),
                 FluidRegistry.getFluidStack("oganesson", 2000)),
             CircuitComponent.OpticalMainframe,
