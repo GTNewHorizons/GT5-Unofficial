@@ -1364,6 +1364,7 @@ public final class RecipeMaps {
                 AssemblyMatrix.registerLocalName(output.realCircuit, output);
             }
         })
+        .frontend(AssemblyLineFrontend::new)
         .build();
 
     public static final RecipeMap<RecipeMapBackend> nanochipSMDProcessorRecipes = RecipeMapBuilder
