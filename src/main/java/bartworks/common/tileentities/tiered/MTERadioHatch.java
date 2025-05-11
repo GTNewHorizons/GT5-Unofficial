@@ -16,6 +16,8 @@ package bartworks.common.tileentities.tiered;
 import static bartworks.common.loaders.RadioHatchMaterialLoader.getRadioHatchMaterialFromInput;
 import static bartworks.common.loaders.RadioHatchMaterialLoader.getRadioHatchMaterialList;
 import static gregtech.api.enums.GTValues.ticksBetweenSounds;
+import static gregtech.api.modularui2.GTGuis.createPopUpPanel;
+import static gregtech.common.modularui2.util.CommonGuiComponents.gridTemplate1by1;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -43,6 +45,8 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.RecipeMapWorkable;
 import gregtech.api.metatileentity.BaseMetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatch;
+import gregtech.api.modularui2.GTGuiTextures;
+import gregtech.api.modularui2.GTGuis;
 import gregtech.api.objects.ItemData;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.render.TextureFactory;
