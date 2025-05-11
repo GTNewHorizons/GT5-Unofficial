@@ -3481,11 +3481,6 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
     }
 
     @Override
-    protected boolean forceUseMui2() {
-        return true;
-    }
-
-    @Override
     public final ModularPanel buildUI(PosGuiData guiData, PanelSyncManager syncManager) {
         return getGui().build(guiData, syncManager);
     }
