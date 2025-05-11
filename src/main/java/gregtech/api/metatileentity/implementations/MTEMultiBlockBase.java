@@ -167,6 +167,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
     public float damageFactorHigh = 0.6f;
     public int machineMode = 0;
     public List<UITexture> machineModeIcons = new ArrayList<>();
+    public List<UITexture> machineModeIconsMui2 = new ArrayList<>();
 
     public boolean mLockedToSingleRecipe = getDefaultRecipeLockingMode();
     protected boolean inputSeparation = getDefaultInputSeparationMode();
@@ -3480,17 +3481,8 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
     }
 
     @Override
-    protected boolean forceUseMui2() {
-        return true;
-    }
-
-    @Override
     public ModularPanel buildUI(PosGuiData guiData, PanelSyncManager syncManager) {
         return new MTEMultiBlockBaseGui(this).build(guiData, syncManager);
-    }
-
-    public int machineModes() {
-        return 2;
     }
 
     public boolean getDefaultHasMaintenanceChecks() {

@@ -475,6 +475,44 @@ public final class GTGuiTextures {
 
     // endregion picture
 
+    // region machine modes
+
+    public static final UITexture OVERLAY_BUTTON_MACHINEMODE_DEFAULT = UITexture
+        .fullImage(GregTech.ID, "gui/overlay_button/machine_mode_default");
+    public static final UITexture OVERLAY_BUTTON_MACHINEMODE_CHEMBATH = UITexture
+        .fullImage(GregTech.ID, "gui/overlay_button/machine_mode_chembath");
+    public static final UITexture OVERLAY_BUTTON_MACHINEMODE_WASHPLANT = UITexture
+        .fullImage(GregTech.ID, "gui/overlay_button/machine_mode_washplant");
+    public static final UITexture OVERLAY_BUTTON_MACHINEMODE_SIMPLEWASHER = UITexture
+        .fullImage(GregTech.ID, "gui/overlay_button/machine_mode_simplewasher");
+    public static final UITexture OVERLAY_BUTTON_MACHINEMODE_PACKAGER = UITexture
+        .fullImage(GregTech.ID, "gui/overlay_button/machine_mode_packager");
+    public static final UITexture OVERLAY_BUTTON_MACHINEMODE_UNPACKAGER = UITexture
+        .fullImage(GregTech.ID, "gui/overlay_button/machine_mode_unpackager");
+    public static final UITexture OVERLAY_BUTTON_MACHINEMODE_SEPARATOR = UITexture
+        .fullImage(GregTech.ID, "gui/overlay_button/machine_mode_separator");
+    public static final UITexture OVERLAY_BUTTON_MACHINEMODE_POLARIZER = UITexture
+        .fullImage(GregTech.ID, "gui/overlay_button/machine_mode_polarizer");
+    public static final UITexture OVERLAY_BUTTON_MACHINEMODE_LPF_FLUID = UITexture
+        .fullImage(GregTech.ID, "gui/overlay_button/machine_mode_lpf_fluid");
+    public static final UITexture OVERLAY_BUTTON_MACHINEMODE_LPF_METAL = UITexture
+        .fullImage(GregTech.ID, "gui/overlay_button/machine_mode_lpf_metal");
+    public static final UITexture OVERLAY_BUTTON_MACHINEMODE_BENDING = UITexture
+        .fullImage(GregTech.ID, "gui/overlay_button/machine_mode_bending");
+    public static final UITexture OVERLAY_BUTTON_MACHINEMODE_FORMING = UITexture
+        .fullImage(GregTech.ID, "gui/overlay_button/machine_mode_forming");
+    public static final UITexture OVERLAY_BUTTON_MACHINEMODE_SLICING = UITexture
+        .fullImage(GregTech.ID, "gui/overlay_button/machine_mode_slicing");
+    public static final UITexture OVERLAY_BUTTON_MACHINEMODE_CUTTING = UITexture
+        .fullImage(GregTech.ID, "gui/overlay_button/machine_mode_cutting");
+    public static final UITexture OVERLAY_BUTTON_MACHINEMODE_COMPRESSING = UITexture
+        .fullImage(GregTech.ID, "gui/overlay_button/machine_mode_compressing");
+    public static final UITexture OVERLAY_BUTTON_MACHINEMODE_SINGULARITY = UITexture
+        .fullImage(GregTech.ID, "gui/overlay_button/machine_mode_singularity");
+    public static final UITexture OVERLAY_BUTTON_MACHINEMODE_STEAM = UITexture
+        .fullImage(GregTech.ID, "gui/overlay_button/machine_mode_dehp_steam");
+
+    // endregion machine modes
     /**
      * Creates texture of full image. Theme of GUI does not affect how the texture is drawn.
      *

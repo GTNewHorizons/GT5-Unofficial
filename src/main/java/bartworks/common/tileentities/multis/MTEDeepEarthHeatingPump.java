@@ -26,8 +26,12 @@ import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 
+import com.cleanroommc.modularui.factory.PosGuiData;
+import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.gtnewhorizons.modularui.api.math.Pos2d;
 
+import bartworks.common.tileentities.multis.gui.MTEDeepEarthHeatingPumpGui;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.TierEU;
@@ -301,5 +305,10 @@ public class MTEDeepEarthHeatingPump extends MTEDrillerBase {
     @Override
     public int calculateMaxProgressTime(int tier, boolean simulateWorking) {
         return 1;
+    }
+
+    @Override
+    public ModularPanel buildUI(PosGuiData guiData, PanelSyncManager syncManager) {
+        return new MTEDeepEarthHeatingPumpGui(this).build(guiData, syncManager);
     }
 }
