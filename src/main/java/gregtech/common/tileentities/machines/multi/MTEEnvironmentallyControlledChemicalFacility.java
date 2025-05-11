@@ -120,14 +120,14 @@ public class MTEEnvironmentallyControlledChemicalFacility extends
         .addShape(
             HEAT_MODULE_L,
             new String[][]{
-                {" P", "QP", "PF", "QQ"},
+                {" P", "QP", "PF", "QY"},
                 {"  ", "QQ", "FH", "QQ"},
                 {" P", "QP", "PF", "QQ"}}
         )
         .addShape(
             COOL_MODULE_L,
             new String[][]{
-                {" P", "QP", "PF", "QQ"},
+                {" P", "QP", "PF", "QY"},
                 {"  ", "QQ", "FC", "QQ"},
                 {" P", "QP", "PF", "QQ"}}
         )
@@ -154,58 +154,58 @@ public class MTEEnvironmentallyControlledChemicalFacility extends
                 .casingIndex(((BlockCasings8) GregTechAPI.sBlockCasings8).getTextureIndex(0))
                 .dot(2)
                 .buildAndChain(GregTechAPI.sBlockCasings8, 0))
-            .addElement(
-                    'C',
-                    GTStructureChannels.ACR_COOL_PIPE.use(
-                                    ofBlocksTiered(
-                                            MTEEnvironmentallyControlledChemicalFacility::getCoolCoilMeta,
-                                            ImmutableList.of(
-                                                    Pair.of(sBlockCoilECCF, 0),
-                                                    Pair.of(sBlockCoilECCF, 1),
-                                                    Pair.of(sBlockCoilECCF, 2),
-                                                    Pair.of(sBlockCoilECCF, 3)),
-                                            -1,
-                                            (MTEEnvironmentallyControlledChemicalFacility t, Integer m) -> t.coolCoilTier = m,
-                                            (MTEEnvironmentallyControlledChemicalFacility t) -> t.coolCoilTier)))
-            .addElement(
-                    'H',
-                    GTStructureChannels.ACR_HEAT_PIPE.use(
-                                    ofBlocksTiered(
-                                            MTEEnvironmentallyControlledChemicalFacility::getHeatCoilMeta,
-                                            ImmutableList.of(
-                                                    Pair.of(sBlockCoilECCF, 4),
-                                                    Pair.of(sBlockCoilECCF, 5),
-                                                    Pair.of(sBlockCoilECCF, 6),
-                                                    Pair.of(sBlockCoilECCF, 7)),
-                                            -1,
-                                            (MTEEnvironmentallyControlledChemicalFacility t, Integer m) -> t.heatCoilTier = m,
-                                            (MTEEnvironmentallyControlledChemicalFacility t) -> t.heatCoilTier)))
-            .addElement(
-                    'K',
-                    GTStructureChannels.ACR_COMPRESS_PIPE.use(
-                                    ofBlocksTiered(
-                                            MTEEnvironmentallyControlledChemicalFacility::getCompressCoilMeta,
-                                            ImmutableList.of(
-                                                    Pair.of(sBlockCoilECCF, 8),
-                                                    Pair.of(sBlockCoilECCF, 9),
-                                                    Pair.of(sBlockCoilECCF, 10),
-                                                    Pair.of(sBlockCoilECCF, 11)),
-                                            -1,
-                                            (MTEEnvironmentallyControlledChemicalFacility t, Integer m) -> t.compressCoilTier = m,
-                                            (MTEEnvironmentallyControlledChemicalFacility t) -> t.compressCoilTier)))
-            .addElement(
-                    'V',
-                    GTStructureChannels.ACR_VACUUM_PIPE.use(
-                                    ofBlocksTiered(
-                                            MTEEnvironmentallyControlledChemicalFacility::getVacuumCoilMeta,
-                                            ImmutableList.of(
-                                                    Pair.of(sBlockCoilECCF, 12),
-                                                    Pair.of(sBlockCoilECCF, 13),
-                                                    Pair.of(sBlockCoilECCF, 14),
-                                                    Pair.of(sBlockCoilECCF, 15)),
-                                            -1,
-                                            (MTEEnvironmentallyControlledChemicalFacility t, Integer m) -> t.vacuumCoilTier = m,
-                                            (MTEEnvironmentallyControlledChemicalFacility t) -> t.vacuumCoilTier)))
+        .addElement(
+            'C',
+            GTStructureChannels.ACR_COOL_PIPE.use(
+                ofBlocksTiered(
+                    MTEEnvironmentallyControlledChemicalFacility::getCoolCoilMeta,
+                    ImmutableList.of(
+                        Pair.of(sBlockCoilECCF, 0),
+                        Pair.of(sBlockCoilECCF, 1),
+                        Pair.of(sBlockCoilECCF, 2),
+                        Pair.of(sBlockCoilECCF, 3)),
+                    -1,
+                    (MTEEnvironmentallyControlledChemicalFacility t, Integer m) -> t.coolCoilTier = m,
+                    (MTEEnvironmentallyControlledChemicalFacility t) -> t.coolCoilTier)))
+        .addElement(
+            'H',
+            GTStructureChannels.ACR_HEAT_PIPE.use(
+                ofBlocksTiered(
+                    MTEEnvironmentallyControlledChemicalFacility::getHeatCoilMeta,
+                    ImmutableList.of(
+                        Pair.of(sBlockCoilECCF, 4),
+                        Pair.of(sBlockCoilECCF, 5),
+                        Pair.of(sBlockCoilECCF, 6),
+                        Pair.of(sBlockCoilECCF, 7)),
+                    -1,
+                    (MTEEnvironmentallyControlledChemicalFacility t, Integer m) -> t.heatCoilTier = m,
+                    (MTEEnvironmentallyControlledChemicalFacility t) -> t.heatCoilTier)))
+        .addElement(
+            'K',
+            GTStructureChannels.ACR_COMPRESS_PIPE.use(
+                ofBlocksTiered(
+                    MTEEnvironmentallyControlledChemicalFacility::getCompressCoilMeta,
+                    ImmutableList.of(
+                        Pair.of(sBlockCoilECCF, 8),
+                        Pair.of(sBlockCoilECCF, 9),
+                        Pair.of(sBlockCoilECCF, 10),
+                        Pair.of(sBlockCoilECCF, 11)),
+                    -1,
+                    (MTEEnvironmentallyControlledChemicalFacility t, Integer m) -> t.compressCoilTier = m,
+                    (MTEEnvironmentallyControlledChemicalFacility t) -> t.compressCoilTier)))
+        .addElement(
+            'V',
+            GTStructureChannels.ACR_VACUUM_PIPE.use(
+                ofBlocksTiered(
+                    MTEEnvironmentallyControlledChemicalFacility::getVacuumCoilMeta,
+                    ImmutableList.of(
+                        Pair.of(sBlockCoilECCF, 12),
+                        Pair.of(sBlockCoilECCF, 13),
+                        Pair.of(sBlockCoilECCF, 14),
+                        Pair.of(sBlockCoilECCF, 15)),
+                    -1,
+                    (MTEEnvironmentallyControlledChemicalFacility t, Integer m) -> t.vacuumCoilTier = m,
+                    (MTEEnvironmentallyControlledChemicalFacility t) -> t.vacuumCoilTier)))
         .addElement(
             'A',
             buildHatchAdder(MTEEnvironmentallyControlledChemicalFacility.class)
@@ -230,11 +230,11 @@ public class MTEEnvironmentallyControlledChemicalFacility extends
                 .buildAndChain(GregTechAPI.sBlockCasings8, 0))
         .addElement(
             'E',
-                buildHatchAdder(MTEEnvironmentallyControlledChemicalFacility.class).hatchClass(MTEHatchEnergy.class)
-                        .adder(MTEEnvironmentallyControlledChemicalFacility::addPressureEnergyToMachineList)
-                        .casingIndex(((BlockCasings8) GregTechAPI.sBlockCasings8).getTextureIndex(0))
-                        .dot(2)
-                        .buildAndChain(GregTechAPI.sBlockCasings8, 0))
+            buildHatchAdder(MTEEnvironmentallyControlledChemicalFacility.class).hatchClass(MTEHatchEnergy.class)
+                .adder(MTEEnvironmentallyControlledChemicalFacility::addPressureEnergyToMachineList)
+                .casingIndex(((BlockCasings8) GregTechAPI.sBlockCasings8).getTextureIndex(0))
+                .dot(2)
+                .buildAndChain(GregTechAPI.sBlockCasings8, 0))
         .addElement('F', ofFrame(Materials.Polytetrafluoroethylene))
         .build();
 
@@ -305,105 +305,131 @@ public class MTEEnvironmentallyControlledChemicalFacility extends
                     + EnumChatFormatting.GRAY
                     + " and can be achieved by placing ECCF on a "
                     + EnumChatFormatting.BLUE
-                    + "planet "
-            )
+                    + "planet ")
             .addInfo(
-                    EnumChatFormatting.GRAY
-                    + "with required conditions or maintaining them using "
+                EnumChatFormatting.GRAY + "with required conditions or maintaining them using "
                     + EnumChatFormatting.BLUE
                     + "modules")
             .addSeparator()
             .addInfo("" + EnumChatFormatting.WHITE + EnumChatFormatting.BOLD + "Modules:")
-            .addInfo(EnumChatFormatting.GRAY
-                + "2 exclusive modules for temperature: "
-                + EnumChatFormatting.BLUE
-                + "Cooling"
-                + EnumChatFormatting.GRAY
-                + " and "
-                + EnumChatFormatting.RED + "Heating")
-            .addInfo(EnumChatFormatting.GRAY + "2 exclusive modules for pressure: "
-                + EnumChatFormatting.DARK_AQUA
-                + "Vacuum Pump"
-                + EnumChatFormatting.GRAY
-                + " and "
-                + EnumChatFormatting.BLUE + "Compressor")
-            .addInfo(EnumChatFormatting.GRAY + "Internal structure changes "
-                + EnumChatFormatting.GREEN
-                + "Radioactivity"
-                + EnumChatFormatting.GRAY
-                + " and "
-                + EnumChatFormatting.WHITE
-                + "Inertness "
-                + EnumChatFormatting.GRAY
-                + "of the environment"
-                + EnumChatFormatting.WHITE
-                + EnumChatFormatting.BOLD
-                + " [COMING SOON]")
+            .addInfo(
+                EnumChatFormatting.GRAY + "2 exclusive modules for temperature: "
+                    + EnumChatFormatting.BLUE
+                    + "Cooling"
+                    + EnumChatFormatting.GRAY
+                    + " and "
+                    + EnumChatFormatting.RED
+                    + "Heating")
+            .addInfo(
+                EnumChatFormatting.GRAY + "2 exclusive modules for pressure: "
+                    + EnumChatFormatting.DARK_AQUA
+                    + "Vacuum Pump"
+                    + EnumChatFormatting.GRAY
+                    + " and "
+                    + EnumChatFormatting.BLUE
+                    + "Compressor")
             .addSeparator()
-            .addInfo("" + EnumChatFormatting.WHITE
-                + EnumChatFormatting.BOLD
-                + "Temperature Values:")
-            .addInfo("" + EnumChatFormatting.RED
-                + EnumChatFormatting.BOLD
-                + "Heating")
-            .addInfo(EnumChatFormatting.GOLD + "Lava"
-                + EnumChatFormatting.GRAY + ": "
-                + EnumChatFormatting.YELLOW
-                + "1 300K")
-            .addInfo(EnumChatFormatting.GOLD + "Blazing Pyrotheum"
-                + EnumChatFormatting.GRAY + ": "
-                + EnumChatFormatting.YELLOW
-                + "4 000K")
-            .addInfo(EnumChatFormatting.GOLD + "Helium Plasma"
-                + EnumChatFormatting.GRAY + ": "
-                + EnumChatFormatting.YELLOW
-                + "10 000K")
-            .addInfo(EnumChatFormatting.GOLD + "Raw Stellar Plasma Mixture"
-                + EnumChatFormatting.GRAY + ": "
-                + EnumChatFormatting.YELLOW
-                + "10 000 000K")
-            .addInfo("" + EnumChatFormatting.BLUE
-                + EnumChatFormatting.BOLD
-                + "Cooling")
-            .addInfo(EnumChatFormatting.DARK_AQUA + "IC2 Coolant"
-                + EnumChatFormatting.GRAY + ": "
-                + EnumChatFormatting.BLUE
-                + "250K")
-            .addInfo(EnumChatFormatting.DARK_AQUA + "Gelid Cryotheum"
-                + EnumChatFormatting.GRAY + ": "
-                + EnumChatFormatting.BLUE
-                + "25K")
-            .addInfo(EnumChatFormatting.DARK_AQUA + "Super Coolant"
-                + EnumChatFormatting.GRAY + ": "
-                + EnumChatFormatting.BLUE
-                + "5K")
-            .addInfo(EnumChatFormatting.DARK_AQUA + "Molten Spacetime"
-                + EnumChatFormatting.GRAY + ": "
-                + EnumChatFormatting.BLUE
-                + "0K")
+            .addInfo("" + EnumChatFormatting.WHITE + EnumChatFormatting.BOLD + "Temperature Values:")
+            .addInfo("" + EnumChatFormatting.RED + EnumChatFormatting.BOLD + "Heating")
+            .addInfo(
+                EnumChatFormatting.GOLD + "Lava"
+                    + EnumChatFormatting.GRAY
+                    + ": "
+                    + EnumChatFormatting.YELLOW
+                    + "1 300K")
+            .addInfo(
+                EnumChatFormatting.GOLD + "Blazing Pyrotheum"
+                    + EnumChatFormatting.GRAY
+                    + ": "
+                    + EnumChatFormatting.YELLOW
+                    + "4 000K")
+            .addInfo(
+                EnumChatFormatting.GOLD + "Helium Plasma"
+                    + EnumChatFormatting.GRAY
+                    + ": "
+                    + EnumChatFormatting.YELLOW
+                    + "10 000K")
+            .addInfo(
+                EnumChatFormatting.GOLD + "Raw Stellar Plasma Mixture"
+                    + EnumChatFormatting.GRAY
+                    + ": "
+                    + EnumChatFormatting.YELLOW
+                    + "10 000 000K")
+            .addInfo("" + EnumChatFormatting.BLUE + EnumChatFormatting.BOLD + "Cooling")
+            .addInfo(
+                EnumChatFormatting.DARK_AQUA + "IC2 Coolant"
+                    + EnumChatFormatting.GRAY
+                    + ": "
+                    + EnumChatFormatting.BLUE
+                    + "250K")
+            .addInfo(
+                EnumChatFormatting.DARK_AQUA + "Gelid Cryotheum"
+                    + EnumChatFormatting.GRAY
+                    + ": "
+                    + EnumChatFormatting.BLUE
+                    + "25K")
+            .addInfo(
+                EnumChatFormatting.DARK_AQUA + "Super Coolant"
+                    + EnumChatFormatting.GRAY
+                    + ": "
+                    + EnumChatFormatting.BLUE
+                    + "5K")
+            .addInfo(
+                EnumChatFormatting.DARK_AQUA + "Molten Spacetime"
+                    + EnumChatFormatting.GRAY
+                    + ": "
+                    + EnumChatFormatting.BLUE
+                    + "0K")
             .addSeparator()
             .addInfo("" + EnumChatFormatting.WHITE + EnumChatFormatting.BOLD + "Pressure")
-            .addInfo(EnumChatFormatting.GRAY + "Pressure module requires energy and "
-                + EnumChatFormatting.YELLOW
-                + "5L/s"
-                + EnumChatFormatting.GRAY
-                + " of "
+            .addInfo(
+                EnumChatFormatting.GRAY + "Pressure module requires energy and "
                     + EnumChatFormatting.YELLOW
-                    + "VC lubricant "
-                + EnumChatFormatting.GRAY + "to operate")
-            .addInfo(EnumChatFormatting.GRAY + "If"
-                + EnumChatFormatting.YELLOW
-                + " 0L "
-                + EnumChatFormatting.GRAY
-                + "of lubricant is supplied, "
-                + EnumChatFormatting.BLUE
-                + "depressurization "
-                + EnumChatFormatting.GRAY
-                + "happens")
-            .addInfo(EnumChatFormatting.GRAY + "Causing a loss of " + EnumChatFormatting.YELLOW + "80%" + EnumChatFormatting.GRAY + " of pressure")
-                .addSeparator()
-                .addInfo(EnumChatFormatting.GRAY + "Use " + EnumChatFormatting.YELLOW + "portable scanner " + EnumChatFormatting.GRAY + "to get information about " + EnumChatFormatting.YELLOW + "pressure" + EnumChatFormatting.GRAY + " and " + EnumChatFormatting.YELLOW + "temperature")
-                .beginStructureBlock(5, 6, 5, true)
+                    + "5L/s"
+                    + EnumChatFormatting.GRAY
+                    + " of "
+                    + EnumChatFormatting.YELLOW
+                    + "VO lubricants "
+                    + EnumChatFormatting.GRAY
+                    + "to operate")
+            .addInfo(
+                EnumChatFormatting.GRAY + "If"
+                    + EnumChatFormatting.YELLOW
+                    + " 0L "
+                    + EnumChatFormatting.GRAY
+                    + "of lubricant is supplied, "
+                    + EnumChatFormatting.BLUE
+                    + "depressurization "
+                    + EnumChatFormatting.GRAY
+                    + "happens")
+            .addInfo(
+                EnumChatFormatting.GRAY + "Causing a loss of "
+                    + EnumChatFormatting.YELLOW
+                    + "0-80%"
+                    + EnumChatFormatting.GRAY
+                    + " of pressure depending on the "
+                    + EnumChatFormatting.YELLOW
+            + "VO lubricant")
+            .addSeparator()
+            .addInfo("" + EnumChatFormatting.WHITE + EnumChatFormatting.BOLD + "VO Lubricants Values:")
+            .addInfo(EnumChatFormatting.GOLD + "No lubricant " + EnumChatFormatting.GRAY + "- 80% loss")
+            .addInfo(EnumChatFormatting.GOLD + "VO-17 " + EnumChatFormatting.GRAY + "- 30% loss")
+            .addInfo(EnumChatFormatting.GOLD + "VO-43 " + EnumChatFormatting.GRAY + "- 10% loss")
+            .addInfo(EnumChatFormatting.GOLD + "VO-75 " + EnumChatFormatting.GRAY + "- 0% loss")
+            .addSeparator()
+            .addInfo(
+                EnumChatFormatting.GRAY + "Use "
+                    + EnumChatFormatting.YELLOW
+                    + "portable scanner "
+                    + EnumChatFormatting.GRAY
+                    + "to get information about "
+                    + EnumChatFormatting.YELLOW
+                    + "pressure"
+                    + EnumChatFormatting.GRAY
+                    + " and "
+                    + EnumChatFormatting.YELLOW
+                    + "temperature")
+            .beginStructureBlock(5, 6, 5, true)
             .addController("Front Center")
             .addCasingInfoMin("Chemically Inert Casing", 0, false)
             .addInputBus("Any Chemically Inert Casing", 1)
@@ -412,8 +438,8 @@ public class MTEEnvironmentallyControlledChemicalFacility extends
             .addOutputHatch("Any Chemically Inert Casing", 1)
             .addEnergyHatch("Any Chemically Inert Casing", 1)
             .addMaintenanceHatch("Any Chemically Inert Casing", 1)
-            .toolTipFinisher(""
-                    + EnumChatFormatting.BLUE
+            .toolTipFinisher(
+                "" + EnumChatFormatting.BLUE
                     + EnumChatFormatting.BOLD
                     + "VorTex"
                     + EnumChatFormatting.GRAY
@@ -432,12 +458,36 @@ public class MTEEnvironmentallyControlledChemicalFacility extends
         int MODULE_RIGHT = modules.getRight();
 
         switch (MODULE_LEFT) {
-            case 1 -> buildPiece(HEAT_MODULE_L, stackSize, hintsOnly, MODULE_OFFSET_LEFT, MODULE_OFFSET_V, MODULE_OFFSET_DEPTH);
-            case 2 -> buildPiece(COOL_MODULE_L, stackSize, hintsOnly, MODULE_OFFSET_LEFT, MODULE_OFFSET_V, MODULE_OFFSET_DEPTH);
+            case 1 -> buildPiece(
+                HEAT_MODULE_L,
+                stackSize,
+                hintsOnly,
+                MODULE_OFFSET_LEFT,
+                MODULE_OFFSET_V,
+                MODULE_OFFSET_DEPTH);
+            case 2 -> buildPiece(
+                COOL_MODULE_L,
+                stackSize,
+                hintsOnly,
+                MODULE_OFFSET_LEFT,
+                MODULE_OFFSET_V,
+                MODULE_OFFSET_DEPTH);
         }
         switch (MODULE_RIGHT) {
-            case 3 -> buildPiece(COMPRESSION_MODULE_R, stackSize, hintsOnly, MODULE_OFFSET_RIGHT, MODULE_OFFSET_V, MODULE_OFFSET_DEPTH);
-            case 4 -> buildPiece(VACUUM_MODULE_R, stackSize, hintsOnly, MODULE_OFFSET_RIGHT, MODULE_OFFSET_V, MODULE_OFFSET_DEPTH);
+            case 3 -> buildPiece(
+                COMPRESSION_MODULE_R,
+                stackSize,
+                hintsOnly,
+                MODULE_OFFSET_RIGHT,
+                MODULE_OFFSET_V,
+                MODULE_OFFSET_DEPTH);
+            case 4 -> buildPiece(
+                VACUUM_MODULE_R,
+                stackSize,
+                hintsOnly,
+                MODULE_OFFSET_RIGHT,
+                MODULE_OFFSET_V,
+                MODULE_OFFSET_DEPTH);
         }
     }
 
@@ -453,7 +503,7 @@ public class MTEEnvironmentallyControlledChemicalFacility extends
                 stackSize,
                 MODULE_OFFSET_LEFT,
                 MODULE_OFFSET_V,
-                    MODULE_OFFSET_DEPTH,
+                MODULE_OFFSET_DEPTH,
                 elementBudget,
                 env,
                 false,
@@ -463,7 +513,7 @@ public class MTEEnvironmentallyControlledChemicalFacility extends
                 stackSize,
                 MODULE_OFFSET_LEFT,
                 MODULE_OFFSET_V,
-                    MODULE_OFFSET_DEPTH,
+                MODULE_OFFSET_DEPTH,
                 elementBudget,
                 env,
                 false,
@@ -475,7 +525,7 @@ public class MTEEnvironmentallyControlledChemicalFacility extends
                 stackSize,
                 MODULE_OFFSET_RIGHT,
                 MODULE_OFFSET_V,
-                    MODULE_OFFSET_DEPTH,
+                MODULE_OFFSET_DEPTH,
                 elementBudget,
                 env,
                 false,
@@ -558,6 +608,7 @@ public class MTEEnvironmentallyControlledChemicalFacility extends
     @Override
     protected ProcessingLogic createProcessingLogic() {
         return new ProcessingLogic() {
+
             @NotNull
             @Override
             protected CheckRecipeResult validateRecipe(@NotNull GTRecipe recipe) {
@@ -566,11 +617,12 @@ public class MTEEnvironmentallyControlledChemicalFacility extends
                 tempThreshold = (int) (1.5 * Math.pow(requiredTemp, 0.55));
                 pressureThreshold = (int) (1.5 * Math.pow(requiredPressure, 0.55));
                 this.maxParallel = Math.toIntExact(availableVoltage / recipe.mEUt);
-                if (Math.abs(currentTemp - requiredTemp) <= tempThreshold || Math.abs(currentPressure - requiredPressure) <= pressureThreshold) {
+                if (Math.abs(currentTemp - requiredTemp) <= tempThreshold
+                    || Math.abs(currentPressure - requiredPressure) <= pressureThreshold) {
                     return super.validateRecipe(recipe);
                 }
                 stopMachine(SimpleShutDownReason.ofCritical("conditions.out.of.range"));
-                return CheckRecipeResultRegistry.insufficientHeat(requiredTemp);
+                return CheckRecipeResultRegistry.NO_FUEL_FOUND;
             }
         }.setOverclock(1, 4);
     }
@@ -699,12 +751,12 @@ public class MTEEnvironmentallyControlledChemicalFacility extends
                 + EnumChatFormatting.GREEN
                 + GTUtility.formatNumbers(pressureThreshold)
                 + EnumChatFormatting.RESET
-                + " Pa" ,
+                + " Pa",
             StatCollector.translateToLocal("GT5U.ECCF.temperature") + ": "
                 + EnumChatFormatting.GREEN
                 + GTUtility.formatNumbers(currentTemp)
                 + EnumChatFormatting.RESET
-                + " K" ,
+                + " K",
             StatCollector.translateToLocal("GT5U.ECCF.temperature.required") + ": "
                 + EnumChatFormatting.GREEN
                 + GTUtility.formatNumbers(requiredTemp)
@@ -714,8 +766,7 @@ public class MTEEnvironmentallyControlledChemicalFacility extends
                 + EnumChatFormatting.GREEN
                 + GTUtility.formatNumbers(tempThreshold)
                 + EnumChatFormatting.RESET
-                + " K"
-        };
+                + " K" };
     }
 
     @Override
@@ -855,27 +906,27 @@ public class MTEEnvironmentallyControlledChemicalFacility extends
                 initialTemp = 300;
                 initialPressure = 10000;
                 break;
-                // temporary
+            // temporary
             case "BarnardC":
                 initialTemp = 300;
                 initialPressure = 10000;
                 break;
-                // temporary
+            // temporary
             case "BarnardE":
                 initialTemp = 300;
                 initialPressure = 10000;
                 break;
-                // temporary
+            // temporary
             case "BarnardF":
                 initialTemp = 300;
                 initialPressure = 10000;
                 break;
-                // temporary
+            // temporary
             case "TCetiE":
                 initialTemp = 300;
                 initialPressure = 10000;
                 break;
-                // temporary
+            // temporary
             case "Ross128b":
                 initialTemp = 295;
                 initialPressure = 101000;
@@ -892,32 +943,32 @@ public class MTEEnvironmentallyControlledChemicalFacility extends
                 initialTemp = 300;
                 initialPressure = 10000;
                 break;
-                // temporary
+            // temporary
             case "Maahes":
                 initialTemp = 300;
                 initialPressure = 10000;
                 break;
-                // temporary
+            // temporary
             case "Anubis":
                 initialTemp = 300;
                 initialPressure = 10000;
                 break;
-                // temporary
+            // temporary
             case "Horus":
                 initialTemp = 300;
                 initialPressure = 10000;
                 break;
-                // temporary
+            // temporary
             case "Seth":
                 initialTemp = 300;
                 initialPressure = 10000;
                 break;
-                // temporary
+            // temporary
             case "MehenBelt":
                 initialTemp = 300;
                 initialPressure = 10000;
                 break;
-                // temporary
+            // temporary
             case "Underdark":
                 initialTemp = 270;
                 initialPressure = 131000;
@@ -1002,8 +1053,10 @@ public class MTEEnvironmentallyControlledChemicalFacility extends
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         super.onPostTick(aBaseMetaTileEntity, aTick);
         if (mPressureEnergyHatch != null) {
-        drainAmountEU += mPressureEnergyHatch.getBaseMetaTileEntity().getStoredEU();
-        mPressureEnergyHatch.getBaseMetaTileEntity().decreaseStoredEnergyUnits(drainAmountEU, false);
+            drainAmountEU += mPressureEnergyHatch.getBaseMetaTileEntity()
+                .getStoredEU();
+            mPressureEnergyHatch.getBaseMetaTileEntity()
+                .decreaseStoredEnergyUnits(drainAmountEU, false);
         }
         if (mMachine && (aTick % 20 == 0)) {
             if ((currentTemp == 0) && (currentPressure == 0)) {
@@ -1020,17 +1073,19 @@ public class MTEEnvironmentallyControlledChemicalFacility extends
                         String coolantName = mCoolantInputHatch.mFluid.getFluid()
                             .getName();
                         getCoolantTemperature(coolantName);
-                        boolean isCold = ((coolantName.equals("ic2coolant")) || (coolantName.equals("cryotheum"))
-                            || (coolantName.equals("supercoolant")) || (coolantName.equals("molten.spacetime")));
+                        boolean isCoolant = ((coolantName.equals("ic2coolant")) || (coolantName.equals("cryotheum"))
+                            || (coolantName.equals("supercoolant"))
+                            || (coolantName.equals("molten.spacetime")));
                         boolean isHot = ((coolantName.equals("pyrotheum")) || (coolantName.equals("plasma.helium"))
-                            || (coolantName.equals("rawstarmatter")) || (coolantName.equals("lava")));
+                            || (coolantName.equals("rawstarmatter"))
+                            || (coolantName.equals("lava")));
                         // Apply coolant (linear function)
-                        if (isCoolModule && isCold) {
-                            currentTemp = Math.max(currentTemp - mCoolantInputHatch.mFluid.amount / 10000f * coolantTemp, coolantTemp);
-                            drain(mCoolantInputHatch, mCoolantInputHatch.mFluid, true);
-                        }
-                        if (isHeatModule && isHot) {
-                            currentTemp = Math.min(currentTemp + mCoolantInputHatch.mFluid.amount / 10000f * coolantTemp, coolantTemp);
+                        double tempFormulaCoeff = mCoolantInputHatch.mFluid.amount / 10000f * coolantTemp;
+                        if ((isCoolModule || isCoolant) || (isHeatModule || isHot)) {
+                            if (coolantTemp < initialTemp)
+                                currentTemp = Math.max(currentTemp - tempFormulaCoeff, coolantTemp);
+                            if (coolantTemp > initialTemp)
+                                currentTemp = Math.min(currentTemp + tempFormulaCoeff, coolantTemp);
                             drain(mCoolantInputHatch, mCoolantInputHatch.mFluid, true);
                         }
                     }
@@ -1057,7 +1112,17 @@ public class MTEEnvironmentallyControlledChemicalFacility extends
                         // if more than 5mb of fluid is in hatch:
                         if (mLubricantInputHatch.mFluid.amount >= 5) {
                             String lubricantType = mLubricantInputHatch.mFluid.getUnlocalizedName();
-                            //TODO add leakCoeff for different lubricants
+                            switch (lubricantType) {
+                                case "vo17":
+                                    leakCoeff = 0.3;
+                                    break;
+                                case "vo43":
+                                    leakCoeff = 0.1;
+                                    break;
+                                case "vo75":
+                                    leakCoeff = 0;
+                                    break;
+                            }
                             mLubricantInputHatch.drain(5, true);
                         }
                     }
@@ -1067,7 +1132,8 @@ public class MTEEnvironmentallyControlledChemicalFacility extends
 
             // Range check
             if (mMaxProgresstime != 0) {
-                if ((Math.abs(currentTemp - requiredTemp) <= tempThreshold) || (Math.abs(currentPressure - requiredPressure) <= pressureThreshold)) {
+                if ((Math.abs(currentTemp - requiredTemp) <= tempThreshold)
+                    || (Math.abs(currentPressure - requiredPressure) <= pressureThreshold)) {
                     stopMachine(SimpleShutDownReason.ofCritical("conditions.out.of.range"));
                 }
             }

@@ -1,5 +1,17 @@
 package gregtech.loaders.materials;
 
+import gregtech.api.enums.Dyes;
+import gregtech.api.enums.Element;
+import gregtech.api.enums.MaterialBuilder;
+import gregtech.api.enums.Materials;
+import gregtech.api.enums.TCAspects;
+import gregtech.api.enums.TextureSet;
+import gregtech.api.enums.TierEU;
+import gregtech.api.objects.MaterialStack;
+
+import java.util.Arrays;
+import java.util.Collections;
+
 import static gregtech.api.enums.Materials.Almandine;
 import static gregtech.api.enums.Materials.Aluminium;
 import static gregtech.api.enums.Materials.Americium;
@@ -152,18 +164,6 @@ import static gregtech.api.enums.Materials.Water;
 import static gregtech.api.enums.Materials.Wood;
 import static gregtech.api.enums.Materials.Yttrium;
 import static gregtech.api.enums.Materials.Zinc;
-
-import java.util.Arrays;
-import java.util.Collections;
-
-import gregtech.api.enums.Dyes;
-import gregtech.api.enums.Element;
-import gregtech.api.enums.MaterialBuilder;
-import gregtech.api.enums.Materials;
-import gregtech.api.enums.TCAspects;
-import gregtech.api.enums.TextureSet;
-import gregtech.api.enums.TierEU;
-import gregtech.api.objects.MaterialStack;
 
 public class MaterialsInit1 {
 
@@ -1120,6 +1120,30 @@ public class MaterialsInit1 {
             .addCell()
             .setRGB(156, 87, 90)
             .setName("activatednetherite")
+            .setColor(Dyes._NULL)
+            .constructMaterial();
+
+        Materials.VO17_lubricant = new MaterialBuilder( 180, TextureSet.SET_FLUID, "VO-17 lubricant")
+            .addFluid()
+            .addCell()
+            .setRGB(255,196,0)
+            .setName("VO17")
+            .setColor(Dyes._NULL)
+            .constructMaterial();
+
+        Materials.VO43_lubricant = new MaterialBuilder( 181, TextureSet.SET_FLUID, "VO-43 lubricant")
+            .addFluid()
+            .addCell()
+            .setRGB(255,196,0)
+            .setName("VO43")
+            .setColor(Dyes._NULL)
+            .constructMaterial();
+
+        Materials.VO75_lubricant = new MaterialBuilder( 182, TextureSet.SET_FLUID, "VO-75 lubricant")
+            .addFluid()
+            .addCell()
+            .setRGB(255,196,0)
+            .setName("VO75")
             .setColor(Dyes._NULL)
             .constructMaterial();
 

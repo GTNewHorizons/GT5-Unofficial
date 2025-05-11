@@ -53,13 +53,20 @@ public class AdvancedChemFrontend extends RecipeMapFrontend {
         double rangeTemp = (int) (1.5 * Math.pow(temperature, 0.55));
         if (pressure < 10000) {
             recipeInfo.drawText(
-                StatCollector.translateToLocalFormatted("GT5U.nei.pressure", formatNumbers(pressure + rangePressure) + " - " + formatNumbers(pressure - rangePressure) + " Pa"));
-        }
-        else {
+                StatCollector.translateToLocalFormatted(
+                    "GT5U.nei.pressure",
+                    formatNumbers(pressure + rangePressure) + " - " + formatNumbers(pressure - rangePressure) + " Pa"));
+        } else {
             recipeInfo.drawText(
-                StatCollector.translateToLocalFormatted("GT5U.nei.pressure", formatNumbers((int) ((pressure + rangePressure)/1000)) + " - " + formatNumbers((int)((pressure - rangePressure)/1000)) + " kPa"));
+                StatCollector.translateToLocalFormatted(
+                    "GT5U.nei.pressure",
+                    formatNumbers((int) ((pressure + rangePressure) / 1000)) + " - "
+                        + formatNumbers((int) ((pressure - rangePressure) / 1000))
+                        + " kPa"));
         }
-        recipeInfo
-            .drawText(StatCollector.translateToLocalFormatted("GT5U.nei.temperature", formatNumbers(temperature + rangeTemp) + " - " + formatNumbers(temperature - rangeTemp)));
+        recipeInfo.drawText(
+            StatCollector.translateToLocalFormatted(
+                "GT5U.nei.temperature",
+                formatNumbers(temperature + rangeTemp) + " - " + formatNumbers(temperature - rangeTemp)));
     }
 }
