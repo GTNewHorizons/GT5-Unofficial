@@ -1,9 +1,10 @@
 package gregtech.api.recipe.check;
 
-import javax.annotation.Nonnull;
 import java.math.BigInteger;
 import java.util.HashMap;
 import java.util.Map;
+
+import javax.annotation.Nonnull;
 
 public final class CheckRecipeResultRegistry {
 

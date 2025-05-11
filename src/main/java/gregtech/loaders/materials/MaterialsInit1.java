@@ -1,17 +1,5 @@
 package gregtech.loaders.materials;
 
-import gregtech.api.enums.Dyes;
-import gregtech.api.enums.Element;
-import gregtech.api.enums.MaterialBuilder;
-import gregtech.api.enums.Materials;
-import gregtech.api.enums.TCAspects;
-import gregtech.api.enums.TextureSet;
-import gregtech.api.enums.TierEU;
-import gregtech.api.objects.MaterialStack;
-
-import java.util.Arrays;
-import java.util.Collections;
-
 import static gregtech.api.enums.Materials.Almandine;
 import static gregtech.api.enums.Materials.Aluminium;
 import static gregtech.api.enums.Materials.Americium;
@@ -164,6 +152,18 @@ import static gregtech.api.enums.Materials.Water;
 import static gregtech.api.enums.Materials.Wood;
 import static gregtech.api.enums.Materials.Yttrium;
 import static gregtech.api.enums.Materials.Zinc;
+
+import java.util.Arrays;
+import java.util.Collections;
+
+import gregtech.api.enums.Dyes;
+import gregtech.api.enums.Element;
+import gregtech.api.enums.MaterialBuilder;
+import gregtech.api.enums.Materials;
+import gregtech.api.enums.TCAspects;
+import gregtech.api.enums.TextureSet;
+import gregtech.api.enums.TierEU;
+import gregtech.api.objects.MaterialStack;
 
 public class MaterialsInit1 {
 
