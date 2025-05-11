@@ -26,9 +26,8 @@ import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 
-import com.cleanroommc.modularui.factory.PosGuiData;
-import com.cleanroommc.modularui.screen.ModularPanel;
-import com.cleanroommc.modularui.value.sync.PanelSyncManager;
+import org.jetbrains.annotations.NotNull;
+
 import com.gtnewhorizons.modularui.api.math.Pos2d;
 
 import bartworks.common.tileentities.multis.gui.MTEDeepEarthHeatingPumpGui;
@@ -308,7 +307,7 @@ public class MTEDeepEarthHeatingPump extends MTEDrillerBase {
     }
 
     @Override
-    public ModularPanel buildUI(PosGuiData guiData, PanelSyncManager syncManager) {
-        return new MTEDeepEarthHeatingPumpGui(this).build(guiData, syncManager);
+    protected @NotNull MTEDeepEarthHeatingPumpGui getGui() {
+        return new MTEDeepEarthHeatingPumpGui(this);
     }
 }

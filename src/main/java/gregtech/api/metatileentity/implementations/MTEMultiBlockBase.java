@@ -51,6 +51,7 @@ import net.minecraftforge.fluids.FluidStack;
 
 import org.apache.commons.lang3.ArrayUtils;
 import org.jetbrains.annotations.ApiStatus;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.TestOnly;
 
 import com.cleanroommc.modularui.api.IGuiHolder;
@@ -3481,8 +3482,17 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
     }
 
     @Override
-    public ModularPanel buildUI(PosGuiData guiData, PanelSyncManager syncManager) {
-        return new MTEMultiBlockBaseGui(this).build(guiData, syncManager);
+    protected boolean forceUseMui2() {
+        return true;
+    }
+
+    @Override
+    public final ModularPanel buildUI(PosGuiData guiData, PanelSyncManager syncManager) {
+        return getGui().build(guiData, syncManager);
+    }
+
+    protected @NotNull MTEMultiBlockBaseGui getGui() {
+        return new MTEMultiBlockBaseGui(this);
     }
 
     public boolean getDefaultHasMaintenanceChecks() {
