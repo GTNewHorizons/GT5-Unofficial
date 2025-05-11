@@ -86,7 +86,7 @@ public class MTEMultiBlockBaseGUI {
         ModularPanel panel = new ModularPanel("MTEMultiblockBase").size(198, 181 + textBoxToInventoryGap)
             .padding(4);
 
-        registerSyncValues(panel, syncManager);
+        registerSyncValues(syncManager);
         ListWidget<IWidget, ?> machineInfo = new ListWidget<>()
             .size(machineInfoSize()[0] - 4, machineInfoSize()[1] - 3);
 
@@ -766,7 +766,7 @@ public class MTEMultiBlockBaseGUI {
             });
     }
 
-    public void registerSyncValues(ModularPanel panel, PanelSyncManager syncManager) {
+    public void registerSyncValues(PanelSyncManager syncManager) {
         syncManager.syncValue(
             "errors",
             new GenericSyncValue<EnumSet<StructureError>>(
