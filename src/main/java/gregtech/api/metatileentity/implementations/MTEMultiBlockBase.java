@@ -28,6 +28,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.function.Function;
+import java.util.function.LongConsumer;
 import java.util.stream.Collectors;
 
 import javax.annotation.Nonnull;
@@ -168,7 +169,8 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
     protected boolean inputSeparation = getDefaultInputSeparationMode();
     protected VoidingMode voidingMode = getDefaultVoidingMode();
     protected boolean batchMode = getDefaultBatchMode();
-    protected @Nonnull CheckRecipeResult checkRecipeResult = CheckRecipeResultRegistry.NONE;
+    @Nonnull
+    public CheckRecipeResult checkRecipeResult = CheckRecipeResultRegistry.NONE;
     protected int powerPanelMaxParallel = 1;
     protected boolean alwaysMaxParallel = true;
     protected int maxParallel = 1;
@@ -207,7 +209,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
     private final int randomTickOffset = (int) (Math.random() * CHECK_INTERVAL + 1);
 
     /** A list of unparameterized structure errors. */
-    private EnumSet<StructureError> structureErrors = EnumSet.noneOf(StructureError.class);
+    public EnumSet<StructureError> structureErrors = EnumSet.noneOf(StructureError.class);
 
     /**
      * Any implementation-defined error data.
@@ -2702,6 +2704,10 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         else return 0;
     }
 
+    public int machineModes() {
+        return 2;
+    }
+
     @Override
     public Pos2d getMachineModeSwitchButtonPos() {
         return new Pos2d(80, 91);
@@ -2924,6 +2930,88 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
     }
 
     protected final NumberFormatMUI numberFormat = new NumberFormatMUI();
+
+    protected String generateCurrentRecipeInfoString() {
+        StringBuffer ret = new StringBuffer(StatCollector.translateToLocal("GT5U.gui.text.progress"));
+        ret.append(" ");
+
+        numberFormat.setMinimumFractionDigits(2);
+        numberFormat.setMaximumFractionDigits(2);
+        numberFormat.format((double) mProgresstime / 20, ret);
+        ret.append("s / ");
+        numberFormat.format((double) mMaxProgresstime / 20, ret);
+        ret.append("s (");
+        numberFormat.setMinimumFractionDigits(1);
+        numberFormat.setMaximumFractionDigits(1);
+        numberFormat.format((double) mProgresstime / mMaxProgresstime * 100, ret);
+        ret.append("%)\n");
+        numberFormat.setMinimumFractionDigits(0);
+        numberFormat.setMaximumFractionDigits(2);
+
+        LongConsumer appendRate = (amount) -> {
+            double processPerTick = (double) amount / mMaxProgresstime * 20;
+            ret.append(" (");
+            if (processPerTick > 1) {
+                numberFormat.format(Math.round(processPerTick * 10) / 10.0, ret);
+                ret.append("/s)");
+            } else {
+                numberFormat.format(Math.round(1 / processPerTick * 10) / 10.0, ret);
+                ret.append("s/ea)");
+            }
+        };
+
+        int lines = 0;
+        int MAX_LINES = 10;
+
+        if (mOutputItems != null) {
+            HashMap<String, Long> nameToAmount = new HashMap<>();
+            for (var item : mOutputItems) {
+                if (item == null || item.stackSize <= 0) continue;
+                nameToAmount.merge(item.getDisplayName(), (long) item.stackSize, Long::sum);
+            }
+            for (Map.Entry<String, Long> entry : nameToAmount.entrySet()) {
+                if (lines >= MAX_LINES) {
+                    ret.append("...");
+                    return ret.toString();
+                }
+                lines++;
+                ret.append(EnumChatFormatting.AQUA)
+                    .append(entry.getKey())
+                    .append(EnumChatFormatting.WHITE)
+                    .append(" x ")
+                    .append(EnumChatFormatting.GOLD);
+                numberFormat.format(entry.getValue(), ret);
+                ret.append(EnumChatFormatting.WHITE);
+                appendRate.accept(entry.getValue());
+                ret.append('\n');
+            }
+        }
+        if (mOutputFluids != null) {
+            HashMap<String, Long> nameToAmount = new HashMap<>();
+            for (var fluid : mOutputFluids) {
+                if (fluid == null || fluid.amount <= 0) continue;
+                nameToAmount.merge(fluid.getLocalizedName(), (long) fluid.amount, Long::sum);
+            }
+            for (Map.Entry<String, Long> entry : nameToAmount.entrySet()) {
+                if (lines >= MAX_LINES) {
+                    ret.append("...");
+                    return ret.toString();
+                }
+                lines++;
+                ret.append(EnumChatFormatting.AQUA)
+                    .append(entry.getKey())
+                    .append(EnumChatFormatting.WHITE)
+                    .append(" x ")
+                    .append(EnumChatFormatting.GOLD);
+                numberFormat.format(entry.getValue(), ret);
+                ret.append("L")
+                    .append(EnumChatFormatting.WHITE);
+                appendRate.accept(entry.getValue());
+                ret.append('\n');
+            }
+        }
+        return ret.toString();
+    }
 
     protected Widget generateCurrentRecipeInfoWidget() {
         final DynamicPositionedColumn processingDetails = new DynamicPositionedColumn();
