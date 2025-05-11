@@ -6,12 +6,14 @@ import static gregtech.api.enums.Mods.IC2CropPlugin;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.StatCollector;
 
 import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
@@ -99,7 +101,6 @@ public class GTBaseCrop extends CropCard implements ICropCardInfo {
         int aStatColor, int aStatWeed, String[] aAttributes, Materials aBlock, ItemStack aDrop,
         ItemStack[] aSpecialDrops) {
         mName = aCropName;
-        GTLanguageManager.addStringLocalization("gt.crop." + mName + ".name", mName);
         aID = GTConfig.addIDConfig(ConfigCategories.IDs.crops, mName.replaceAll(" ", "_"), aID);
         if (aDiscoveredBy != null && !aDiscoveredBy.equals(E)) mDiscoveredBy = aDiscoveredBy;
         if (aDrop != null && aID > 0 && aID < 256) {
@@ -194,7 +195,9 @@ public class GTBaseCrop extends CropCard implements ICropCardInfo {
 
     @Override
     public String displayName() {
-        return GTLanguageManager.getTranslation("gt.crop." + mName + ".name");
+        return StatCollector.translateToLocal(
+            "gt.crop." + mName.toLowerCase(Locale.ENGLISH)
+                .replace(" ", "_") + ".name");
     }
 
     @Override
@@ -209,7 +212,7 @@ public class GTBaseCrop extends CropCard implements ICropCardInfo {
 
     @Override
     public ItemStack getGain(ICropTile aCrop) {
-        int tDrop = 0;
+        int tDrop;
         if (mSpecialDrops != null && (tDrop = java.util.concurrent.ThreadLocalRandom.current()
             .nextInt(0, (mSpecialDrops.length * 2) + 2)) < mSpecialDrops.length && mSpecialDrops[tDrop] != null) {
             return GTUtility.copyOrNull(mSpecialDrops[tDrop]);
