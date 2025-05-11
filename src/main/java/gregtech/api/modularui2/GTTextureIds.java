@@ -27,6 +27,9 @@ public final class GTTextureIds {
     public static final String BACKGROUND_CHAOS_LOCATOR = "gregtech:bg_chaos_locator";
     public static final String BACKGROUND_CONTRIBUTORS_FOUNDRY = "gregtech:bg_contributors_foundry";
 
+    public static final String BACKGROUND_TEXT_FIELD = "gregtech:bg_text_field";
+    public static final String BACKGROUND_TEXT_FIELD_LIGHT_GRAY = "gregtech:bg_text_field_light_gray";
+
     public static final String SLOT_ITEM_STANDARD = "gregtech:slot_item_standard";
     public static final String SLOT_ITEM_BRONZE = "gregtech:slot_item_bronze";
     public static final String SLOT_ITEM_STEEL = "gregtech:slot_item_steel";
@@ -82,6 +85,9 @@ public final class GTTextureIds {
     public static final String PROGRESSBAR_FUEL_BRONZE = "gregtech:progressbar_fuel_bronze";
     public static final String PROGRESSBAR_FUEL_STEEL = "gregtech:progressbar_fuel_steel";
     public static final String PROGRESSBAR_SIEVERT = "gregtech:progressbar_sievert";
+    public static final String PROGRESSBAR_METER_MINT = "gregtech:progressbar_meter_mint";
+    public static final String PROGRESSBAR_METER_ORANGE = "gregtech:progressbar_meter_orange";
+    public static final String PROGRESSBAR_METER_ROSE = "gregtech:progressbar_meter_rose";
 
     public static final String BUTTON_STANDARD = "gregtech:button_standard";
     public static final String BUTTON_STANDARD_PRESSED = "gregtech:button_standard_pressed";
@@ -113,6 +119,7 @@ public final class GTTextureIds {
     public static final String PICTURE_GT_LOGO_BRONZE = "gregtech:picture_gt_logo_bronze";
     public static final String PICTURE_GT_LOGO_STEEL = "gregtech:picture_gt_logo_steel";
     public static final String PICTURE_GT_LOGO_PRIMITIVE = "gregtech:picture_gt_logo_primitive";
+
     public static final String PICTURE_TECTECH_LOGO_DARK = "tectech:picture_tt_logo_dark";
     public static final String PICTURE_LOGO_EXOFOUNDRY = "gregtech:picture_logo_exofoundry";
 
@@ -120,6 +127,8 @@ public final class GTTextureIds {
     public static final String PICTURE_INFORMATION_SYMBOL = "gregtech:picture_information_symbol";
     public static final String PICTURE_INFORMATION_BUBBLE = "gregtech:picture_information_bubble";
     public static final String PICTURE_BW_LOGO_STANDARD = "bartworks:picture_bw_logo";
+    public static final String PICTURE_BRAIN = "gregtech:picture_brain";
+    public static final String PICTURE_ELECRICITY = "gregtech:picture_electricity";
     public static final String PICTURE_SIEVERT_CONTAINER = "bartworks:picture_bw_sievert_container";
     public static final String PICTURE_DECAY_TIME_CONTAINER = "bartworks:picture_bw_decay_time_container";
     public static final String PICTURE_DECAY_TIME_INSIDE = "bartworks:picture_bw_decay_time_inside";

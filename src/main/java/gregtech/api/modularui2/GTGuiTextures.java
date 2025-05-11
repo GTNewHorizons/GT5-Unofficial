@@ -71,6 +71,13 @@ public final class GTGuiTextures {
         .canApplyTheme()
         .name(GTTextureIds.BACKGROUND_TITLE_FOUNDRY)
         .build();
+
+    public static final UITexture BACKGROUND_TEXT_FIELD_LIGHT_GRAY = UITexture.builder()
+        .location(GregTech.ID, "gui/background/text_field_light_gray")
+        .adaptable(1)
+        .name(GTTextureIds.BACKGROUND_TEXT_FIELD_LIGHT_GRAY)
+        .build();
+
     public static final UITexture BACKGROUND_POPUP_STANDARD = UITexture.builder()
         .location(GregTech.ID, "gui/background/popup")
         .imageSize(195, 136)
@@ -550,6 +557,23 @@ public final class GTGuiTextures {
 
     public static final UITexture PROGRESSBAR_TESLA_TOWER_CURRENT = UITexture
         .fullImage(MODID, "gui/tesla_tower_current");
+
+    public static final UITexture PROGRESSBAR_METER_MINT = UITexture.builder()
+        .location(GregTech.ID, "gui/progressbar/meter_mint")
+        .fullImage()
+        .name(GTTextureIds.PROGRESSBAR_METER_MINT)
+        .build();
+    public static final UITexture PROGRESSBAR_METER_ORANGE = UITexture.builder()
+        .location(GregTech.ID, "gui/progressbar/meter_orange")
+        .fullImage()
+        .name(GTTextureIds.PROGRESSBAR_METER_ORANGE)
+        .build();
+    public static final UITexture PROGRESSBAR_METER_ROSE = UITexture.builder()
+        .location(GregTech.ID, "gui/progressbar/meter_rose")
+        .fullImage()
+        .name(GTTextureIds.PROGRESSBAR_METER_ROSE)
+        .build();
+
     // endregion progressbar
 
     // region button
@@ -815,12 +839,12 @@ public final class GTGuiTextures {
             GTTextureIds.PICTURE_GT_LOGO_STEEL,
             GTTextureIds.PICTURE_GT_LOGO_PRIMITIVE)
         .build();
+
     public static final UITexture PICTURE_TECTECH_LOGO_DARK = UITexture.builder()
         .location(MODID, "gui/picture/tectech_logo_dark")
         .fullImage()
         .name(GTTextureIds.PICTURE_TECTECH_LOGO_DARK)
         .build();
-    public static final UITexture PICTURE_GODFORGE_LOGO = UITexture.fullImage(MODID, "gui/picture/gorge_logo");
     public static final UITexture PICTURE_BARTWORKS_LOGO_STANDARD = UITexture.builder()
         .location(MainMod.MOD_ID, "GUI/picture/bw_logo_47x21")
         .fullImage()
@@ -830,6 +854,17 @@ public final class GTGuiTextures {
         .location(GregTech.ID, "gui/picture/exofoundry_logo")
         .fullImage()
         .name(GTTextureIds.PICTURE_LOGO_EXOFOUNDRY)
+        .build();
+
+    public static final UITexture PICTURE_BRAIN = UITexture.builder()
+        .location(GregTech.ID, "gui/picture/brain")
+        .fullImage()
+        .name(GTTextureIds.PICTURE_BRAIN)
+        .build();
+    public static final UITexture PICTURE_ELECRICITY = UITexture.builder()
+        .location(GregTech.ID, "gui/picture/electricity")
+        .fullImage()
+        .name(GTTextureIds.PICTURE_ELECRICITY)
         .build();
 
     public static final UITexture PICTURE_TRANSPARENT = UITexture.builder()
