@@ -97,7 +97,9 @@ public class MTEMultiBlockBaseGui {
                             .imageSize(142, 28)
                             .build()
                             .asIcon())
-                    .child(createTerminalTextWidget(syncManager).size(machineInfoSize()[0] - 4, machineInfoSize()[1] - 3)));
+                    .child(
+                        createTerminalTextWidget(syncManager)
+                            .size(machineInfoSize()[0] - 4, machineInfoSize()[1] - 3)));
         } else {
             panelColumn.child(
                 new SingleChildWidget<>().size(190, 171)
@@ -108,12 +110,13 @@ public class MTEMultiBlockBaseGui {
                             .imageSize(142, 28)
                             .build()
                             .asIcon())
-                    .child(createTerminalTextWidget(syncManager).size(machineInfoSize()[0] - 4, machineInfoSize()[1] - 3)));
+                    .child(
+                        createTerminalTextWidget(syncManager)
+                            .size(machineInfoSize()[0] - 4, machineInfoSize()[1] - 3)));
         }
         Flow inventoryRow = new Row().widthRel(1)
             .height(76)
             .alignX(0);
-        panelColumn.child(inventoryRow);
 
         if (base.doesBindPlayerInventory()) {
             inventoryRow.child(
@@ -123,6 +126,7 @@ public class MTEMultiBlockBaseGui {
         }
 
         panelColumn.child(createPanelGap(syncManager, panel));
+        panelColumn.child(inventoryRow);
 
         addTitleTextStyle(panel, base.getLocalName());
         addGregtechLogo(panel);
