@@ -164,6 +164,7 @@ public class ResearchStationAssemblyLine implements Runnable {
             new Object[] { new Object[] { OrePrefixes.circuit.get(Materials.UIV), 1L },
                 GTOreDictUnificator.get(OrePrefixes.wireGt02, MaterialsUEVplus.SpaceTime, 8),
                 GTOreDictUnificator.get(OrePrefixes.screw, MaterialsUEVplus.SpaceTime, 8),
+                getModItem(EternalSingularity.ID, "eternal_singularity", 1L),
                 ItemList.Naquarite_Universal_Insulator_Foil.get(64) },
             new FluidStack[] { new FluidStack(FluidRegistry.getFluid("molten.hypogen"), 576), },
             ItemList.Casing_Coil_Eternal.get(1),
