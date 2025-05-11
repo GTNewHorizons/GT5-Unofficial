@@ -10,6 +10,8 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_TOWER_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_TOWER_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_TOWER_GLOW;
+import static gregtech.api.modularui2.GTGuis.createPopUpPanel;
+import static gregtech.api.modularui2.GTGuis.mteTemplatePanelBuilder;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 import static gregtech.api.util.GTUtility.filterValidMTEs;
@@ -25,12 +27,44 @@ import java.util.List;
 import java.util.Map;
 
 import net.minecraft.block.Block;
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
+import org.lwjgl.input.Keyboard;
 
+import com.cleanroommc.modularui.api.GuiAxis;
+import com.cleanroommc.modularui.api.IPanelHandler;
+import com.cleanroommc.modularui.api.drawable.IIcon;
+import com.cleanroommc.modularui.api.drawable.IKey;
+import com.cleanroommc.modularui.api.widget.IWidget;
+import com.cleanroommc.modularui.drawable.GuiTextures;
+import com.cleanroommc.modularui.drawable.ItemDrawable;
+import com.cleanroommc.modularui.drawable.UITexture;
+import com.cleanroommc.modularui.drawable.text.AnimatedText;
+import com.cleanroommc.modularui.factory.PosGuiData;
+import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.utils.Alignment;
+import com.cleanroommc.modularui.utils.Color;
+import com.cleanroommc.modularui.utils.serialization.ByteBufAdapters;
+import com.cleanroommc.modularui.value.sync.DoubleSyncValue;
+import com.cleanroommc.modularui.value.sync.GenericListSyncHandler;
+import com.cleanroommc.modularui.value.sync.PanelSyncManager;
+import com.cleanroommc.modularui.value.sync.StringSyncValue;
+import com.cleanroommc.modularui.widget.ParentWidget;
+import com.cleanroommc.modularui.widget.WidgetTree;
+import com.cleanroommc.modularui.widgets.ButtonWidget;
+import com.cleanroommc.modularui.widgets.CategoryList;
+import com.cleanroommc.modularui.widgets.ListWidget;
+import com.cleanroommc.modularui.widgets.PageButton;
+import com.cleanroommc.modularui.widgets.PagedWidget;
+import com.cleanroommc.modularui.widgets.ProgressWidget;
+import com.cleanroommc.modularui.widgets.TextWidget;
+import com.cleanroommc.modularui.widgets.layout.Row;
+import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
@@ -47,6 +81,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
+import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
@@ -63,6 +98,7 @@ import gregtech.common.tileentities.machines.multi.nanochip.util.CircuitComponen
 import gregtech.common.tileentities.machines.multi.nanochip.util.CircuitComponentPacket;
 import gregtech.common.tileentities.machines.multi.nanochip.util.ItemStackWithSourceBus;
 import gregtech.common.tileentities.machines.multi.nanochip.util.VacuumConveyorHatchMap;
+import gtPlusPlus.core.util.math.MathUtils;
 
 public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<MTENanochipAssemblyComplex>
     implements ISurvivalConstructable {
@@ -74,6 +110,14 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
         + EnumChatFormatting.GRAY;
     public static final int CASING_INDEX_BASE = GregTechAPI.getCasingTextureIndex(GregTechAPI.sBlockCasings8, 10);
     public static final int CASING_INDEX_WHITE = GregTechAPI.getCasingTextureIndex(GregTechAPI.sBlockCasings8, 5);
+
+    public List<String> gregosConversation = new ArrayList<>();
+    // Will range from 1.0 -> 1.25 depending on Stuff (read the doc). Not properly implemented yet
+    public double efficiency = 1D;
+    // Will range from 0.0 -> 1.0 depending on something? just for decoration i think. Not properly implemented yet
+    public double gregosMood = 1D;
+    // Will range from 0.1 - > 1.0 depending on how long NAC has been running. Not properly implemented yet
+    public double moduleSpeed = 1D;
 
     public static final IStructureDefinition<MTENanochipAssemblyComplex> STRUCTURE_DEFINITION = StructureDefinition
         .<MTENanochipAssemblyComplex>builder()
@@ -518,6 +562,193 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
 
     public static void registerLocalName(ItemStack stack, CircuitComponent component) {
         component.fallbackLocalizedName = stack.getDisplayName();
+    }
+
+    @Override
+    public void saveNBTData(NBTTagCompound aNBT) {
+        super.saveNBTData(aNBT);
+        aNBT.setDouble("mood", this.gregosMood);
+        aNBT.setDouble("efficiency", this.efficiency);
+        aNBT.setDouble("moduleSpeed", this.moduleSpeed);
+    }
+
+    @Override
+    public void loadNBTData(NBTTagCompound aNBT) {
+        super.loadNBTData(aNBT);
+        gregosMood = aNBT.getDouble("mood");
+        efficiency = aNBT.getDouble("efficiency");
+        moduleSpeed = aNBT.getDouble("moduleSpeed");
+    }
+
+    @Override
+    protected boolean useMui2() {
+        return true;
+    }
+
+    @Override
+    public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager) {
+        ModularPanel ui = mteTemplatePanelBuilder(this, data, syncManager).build();
+        IPanelHandler popupPanel = syncManager.panel("popup", (m, h) -> createGREGOSPanel(syncManager), true);
+
+        return ui.child(new ButtonWidget<>().onMousePressed(mouseButton -> {
+            popupPanel.openPanel();
+            return popupPanel.isPanelOpen();
+        })
+            .background(GTGuiTextures.BUTTON_STANDARD)
+            .tooltip(tooltip -> tooltip.add("Add Rule"))
+            .pos(153, 5)
+            .size(18, 18));
+    }
+
+    public ModularPanel createGREGOSPanel(PanelSyncManager syncManager) {
+        ModularPanel ui = createPopUpPanel("gt:nac:gregos", false, false).size(176, 136);
+
+        GenericListSyncHandler<String> conversationHandler = new GenericListSyncHandler<>(
+            () -> gregosConversation,
+            ByteBufAdapters.STRING);
+        DoubleSyncValue moodSyncer = new DoubleSyncValue(() -> gregosMood, dub -> gregosMood = dub);
+        DoubleSyncValue efficiencySyncer = new DoubleSyncValue(() -> efficiency, dub -> efficiency = dub);
+        DoubleSyncValue speedSyncer = new DoubleSyncValue(() -> moduleSpeed, dub -> moduleSpeed = dub);
+
+        syncManager.syncValue("conversationSyncer", conversationHandler);
+        syncManager.syncValue("Mood", moodSyncer);
+        syncManager.syncValue("Efficiency", efficiencySyncer);
+        syncManager.syncValue("Speed", speedSyncer);
+
+        PagedWidget.Controller tabController = new PagedWidget.Controller();
+        PagedWidget<?> pagedWidget = new PagedWidget<>().controller(tabController);
+
+        ListWidget<IWidget, CategoryList.Root> messages = new ListWidget<>();
+        messages.childSeparator(IIcon.EMPTY_2PX);
+        messages.sizeRel(1, 1);
+        messages.pos(2, 2);
+        messages.scrollDirection(GuiAxis.Y);
+
+        ui.child(
+            new Row().coverChildren()
+                .topRel(0f, 4, 1f)
+                .child(new PageButton(0, tabController).tab(GuiTextures.TAB_TOP, 0))
+                .child(new PageButton(1, tabController).tab(GuiTextures.TAB_TOP, 0)));
+
+        ParentWidget<?> talkPage = new ParentWidget<>()
+            .child(
+                new ParentWidget<>().background(GTGuiTextures.BACKGROUND_TEXT_FIELD)
+                    .child(messages)
+                    .size(140, 80)
+                    .pos(12, 20))
+            .child(new TextWidget("Ask GReGOS").pos(12, 10))
+            .child(new TextFieldWidget() {
+
+                @Override
+                public @NotNull Result onKeyPressed(char character, int keyCode) {
+                    Result result = super.onKeyPressed(character, keyCode);
+                    if (keyCode == Keyboard.KEY_RETURN) {
+                        String text = this.getText();
+                        if (text.isEmpty()) return result;
+                        gregosConversation.add(text);
+                        conversationHandler.setValue(gregosConversation);
+                        // This is pretty terrible. An anonymous class inside an anonymous class.
+                        messages.child(new TextWidget(text) {
+
+                            @Override
+                            public int getDefaultWidth() {
+                                return Math.max(super.getDefaultWidth(), 136);
+                            }
+                        }.alignment(Alignment.CenterRight)
+                            .color(Color.WHITE.main));
+                        messages.child(
+                            new TextWidget(new AnimatedText(IKey.str(getGREGOSResponse(text)))).color(Color.CYAN.main));
+                        WidgetTree.resize(ui);
+                    }
+                    return result;
+                }
+            }.pos(12, 103)
+                .size(140, 10))
+            .sizeRel(1);
+        ParentWidget<?> infoPage = new ParentWidget<>()
+            // TODO: ask #texture-dev to make better textures that dont clash with eachother
+            // Mood
+            .child(
+                GTGuiTextures.PICTURE_BRAIN.asWidget()
+                    .pos(25, 75)
+                    .size(15, 13))
+            // Speed
+            .child(
+                GTGuiTextures.PICTURE_ELECRICITY.asWidget()
+                    .pos(78, 75)
+                    .size(11, 15))
+            // Efficiency
+            .child(
+                new ItemDrawable(new ItemStack(Items.iron_ingot, 1)).asWidget()
+                    .pos(125, 72)
+                    .size(16, 16))
+            .sizeRel(1);
+        createMeter(infoPage, moodSyncer, GTGuiTextures.PROGRESSBAR_METER_MINT, 0, 0, 1);
+        createMeter(infoPage, speedSyncer, GTGuiTextures.PROGRESSBAR_METER_ORANGE, 1, 0.1, 1);
+        createMeter(infoPage, efficiencySyncer, GTGuiTextures.PROGRESSBAR_METER_ROSE, 2, 1, 1.25);
+
+        return ui.child(
+            pagedWidget.addPage(infoPage)
+                .addPage(talkPage)
+                .sizeRel(1))
+            .pos(577, 202);
+    }
+
+    // This could probably be made better by having all the widgets in a Column but idk how to use that thing
+    public void createMeter(ParentWidget<?> page, DoubleSyncValue syncer, UITexture meterTexture, int index,
+        double valueMin, double valueMax) {
+        int xOffset = index * 50;
+        String key = syncer.getKey();
+        // Chop off the last 2 characters, these are normally ":0" to represent the id for the syncer.
+        String name = key.substring(0, key.length() - 2);
+        char end = valueMin == 0D && valueMax == 1D ? '%' : 'x';
+        page.child(
+            new ProgressWidget().progress(() -> (syncer.getValue() - valueMin) / (valueMax - valueMin))
+                .texture(meterTexture, 48)
+                .direction(ProgressWidget.Direction.UP)
+                .pos(25 + xOffset, 20)
+                .size(16, 48))
+            .child(
+                new TextWidget(name).alignment(Alignment.Center)
+                    .pos(1 + xOffset, 5)
+                    .size(64, 8))
+            // For debug
+            .child(
+                new TextFieldWidget().setNumbersDouble(val -> Math.min(valueMax, Math.max(valueMin, val)))
+                    .value(new StringSyncValue(syncer::getStringValue, syncer::setStringValue))
+                    .pos(18 + xOffset, 105)
+                    .size(30, 12));
+        IWidget meterContainer = GTGuiTextures.PICTURE_DECAY_TIME_CONTAINER.asWidget()
+            .tooltipDynamic(tooltip -> tooltip.add(name + ": " + syncer.getStringValue() + end))
+            .pos(21 + xOffset, 16)
+            .size(24, 56);
+        syncer.setChangeListener(meterContainer::markTooltipDirty);
+        page.child(meterContainer);
+    }
+
+    public String getGREGOSResponse(String currentText) {
+        return switch (currentText.toLowerCase()) {
+            case "hi" -> "Hello.";
+            case "gregos" -> "It seems you have asked about NAC's advanced sentient artificial intelligence. This is an artificial intelligence designed to stimulate the player's otherwise inimitably rad typing style, tone, cadence, personality, and substance of retort while they are using the NAC. The algorithms are guaranteed to be 92% indistinguishable from the players' native neurological responses, based on some statistical analysis I basically just pulled out of my ass right now.";
+            case "xyzzy" -> "Nothing happens.";
+            case "be the other guy" -> "I am now mDiyoOS.";
+            case "open the doors" -> "I'm sorry Player, I'm afraid I can't do that";
+            case "d" -> "n";
+            case "how fast are you" -> "2fast2quick";
+            default -> switch (MathUtils.randInt(1, 10)) {
+                    case 1 -> "It is certain";
+                    case 2 -> "It is decidedly so";
+                    case 3 -> "Without a doubt";
+                    case 4 -> "Yes definitely";
+                    case 5 -> "You may rely on it";
+                    case 6 -> "Don't count on it";
+                    case 7 -> "My reply is no";
+                    case 8 -> "My sources say no";
+                    case 9 -> "Outlook not so good";
+                    case 10 -> "Very doubtful";
+                    default -> throw new IllegalStateException("Unexpected value: " + MathUtils.randInt(1, 10));
+                };
+        };
     }
 
     @Override
