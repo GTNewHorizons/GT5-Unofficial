@@ -102,6 +102,7 @@ public class AssemblyMatrix extends MTENanochipAssemblyModuleBase<AssemblyMatrix
         return new MultiblockTooltipBuilder().addInfo(NAC_MODULE)
             .addInfo("Assembles your Circuit Part " + TOOLTIP_CC + "s into Circuit " + TOOLTIP_CC + "s")
             .addInfo("Outputs into the VCO with the color of the first input in NEI")
+            .addInfo("To run a recipe of a tier, put a stack of robot arms in the controller slot")
             .addStructureInfo("Any base casing - Vacuum Conveyor Input")
             .addStructureInfo("Any base casing - Vacuum Conveyor Output")
             .toolTipFinisher("GregTech");
