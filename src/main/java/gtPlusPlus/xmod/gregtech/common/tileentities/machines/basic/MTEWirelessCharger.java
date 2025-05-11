@@ -635,9 +635,9 @@ public class MTEWirelessCharger extends MTETieredMachineBlock implements IWirele
             } else if (COFHCore.isModLoaded() && stack.getItem() instanceof IEnergyContainerItem rfItem) {
                 int chargeableRF = Math.min(
                     rfItem.getMaxEnergyStored(stack) - rfItem.getEnergyStored(stack),
-                    chargeableEU * mEUtoRF / 100);
+                    (int) Math.min(Integer.MAX_VALUE, (long) chargeableEU * mEUtoRF / 100));
                 int chargedRF = rfItem.receiveEnergy(stack, chargeableRF, false);
-                chargedEU += chargedRF * 100L / mEUtoRF;
+                chargedEU += (long) chargedRF * 100L / mEUtoRF;
             }
         }
 
