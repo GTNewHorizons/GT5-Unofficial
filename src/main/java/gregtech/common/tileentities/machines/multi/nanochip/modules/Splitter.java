@@ -3,6 +3,7 @@ package gregtech.common.tileentities.machines.multi.nanochip.modules;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static gregtech.api.modularui2.GTGuis.createPopUpPanel;
 import static gregtech.api.modularui2.GTGuis.mteTemplatePanelBuilder;
+import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex.NAC_MODULE;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -193,6 +194,7 @@ public class Splitter extends MTENanochipAssemblyModuleBase<Splitter> {
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Splitter")
+            .addInfo(NAC_MODULE)
             .addInfo("Splits inputs of the same " + rainbowColor(false) + " evenly into their respective outputs")
             .addInfo("You can add Rules to override what " + rainbowColor(false) + " inputs will go to")
             .addInfo(
@@ -201,9 +203,8 @@ public class Splitter extends MTENanochipAssemblyModuleBase<Splitter> {
             .addInfo(
                 "If there are multiple rules of the same " + rainbowColor(false) + ", they will be treated as if they")
             .addInfo("were merged into a single rule")
-            .beginStructureBlock(3, 3, 3, true)
-            .addCasingInfoExactly("Robust Tungstensteel machine casing", 26, false)
-            .addStructureInfo(EnumChatFormatting.BOLD + "Must be connected to a NAC")
+            .addStructureInfo("Any base casing - Vacuum Conveyor Input")
+            .addStructureInfo("Any base casing - Vacuum Conveyor Output")
             .toolTipFinisher();
         return tt;
     }
