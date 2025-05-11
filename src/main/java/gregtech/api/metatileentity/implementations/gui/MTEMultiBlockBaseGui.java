@@ -26,7 +26,6 @@ import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.api.widget.IWidget;
 import com.cleanroommc.modularui.drawable.DrawableArray;
 import com.cleanroommc.modularui.drawable.DynamicDrawable;
-import com.cleanroommc.modularui.drawable.GuiTextures;
 import com.cleanroommc.modularui.drawable.UITexture;
 import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
@@ -644,7 +643,7 @@ public class MTEMultiBlockBaseGui {
             .overlay(new DynamicDrawable(() -> {
                 com.gtnewhorizons.modularui.api.drawable.UITexture machineModeIcon = base
                     .getMachineModeIcon(machineModeSyncer.getValue());
-                if(machineModeIcon == null) return null;
+                if (machineModeIcon == null) return null;
                 return UITexture.builder()
                     .location(machineModeIcon.location)
                     .imageSize(18, 18)
@@ -652,9 +651,7 @@ public class MTEMultiBlockBaseGui {
             }))
             .tooltipBuilder(t -> {
                 t.addLine(IKey.dynamic(() -> StatCollector.translateToLocal("GT5U.gui.button.mode_switch")))
-                    .addLine(
-                        IKey.dynamic(
-                            base::getMachineModeName));
+                    .addLine(IKey.dynamic(base::getMachineModeName));
             });
     }
 
