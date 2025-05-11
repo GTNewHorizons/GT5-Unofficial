@@ -103,8 +103,8 @@ public enum ItemList implements IItemContainer {
     Tool_Vajra,
     Vajra_Core,
     Magnetron,
+    Item_Power_Goggles,
     Shape_Empty,
-
     Shape_Mold_Bottle,
     Shape_Mold_Plate,
     Shape_Mold_Ingot,
