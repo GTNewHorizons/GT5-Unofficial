@@ -444,6 +444,19 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
         return vacuumConveyorOutputs.findAnyColoredHatch(color);
     }
 
+    protected boolean removeItemFromInputByColor(ItemStack stack, byte color) {
+        int totalToConsome = stack.stackSize;
+        List<MTEHatchVacuumConveyorInput> hatches = vacuumConveyorInputs.findColoredHatches(color);
+        for (MTEHatchVacuumConveyorInput inputHatch : hatches) {
+            int amountConsumed = inputHatch.tryConsume(stack);
+            totalToConsome -= amountConsumed;
+            if (totalToConsome <= 0) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     @Override
     public boolean addOutput(ItemStack aStack) {
         // We need to override this because outputs are produced in vacuum conveyor outputs, not as real items
