@@ -444,7 +444,7 @@ public class MTEMultiBlockBaseGUI {
         panel.child(
             new SingleChildWidget<>().overlay(UITexture.fullImage(MODID, "gui/picture/tectech_logo_dark"))
                 .size(18, 18)
-                .pos(190 - 18 - 2, base.doesBindPlayerInventory() ? 91 - 18 - 2 : 171 - 18 - 2));
+                .pos(mainTerminalSize()[0] - 18 - 2, base.doesBindPlayerInventory() ? mainTerminalSize()[1] - 18 - 2 : 171 - 18 - 2));
     }
 
     public IWidget createStructureUpdateButton(PanelSyncManager syncManager) {
