@@ -33,6 +33,7 @@ import com.cleanroommc.modularui.drawable.GuiTextures;
 import com.cleanroommc.modularui.drawable.UITexture;
 import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.utils.Alignment.MainAxis;
 import com.cleanroommc.modularui.utils.Color;
 import com.cleanroommc.modularui.utils.item.ItemStackHandler;
 import com.cleanroommc.modularui.utils.serialization.IByteBufAdapter;
@@ -47,6 +48,7 @@ import com.cleanroommc.modularui.value.sync.SyncHandlers;
 import com.cleanroommc.modularui.widget.SingleChildWidget;
 import com.cleanroommc.modularui.widget.WidgetTree;
 import com.cleanroommc.modularui.widget.sizer.Area;
+import com.cleanroommc.modularui.widgets.ButtonWidget;
 import com.cleanroommc.modularui.widgets.CycleButtonWidget;
 import com.cleanroommc.modularui.widgets.ItemSlot;
 import com.cleanroommc.modularui.widgets.ListWidget;
@@ -112,7 +114,7 @@ public class MTEMultiBlockBaseGUI {
             .alignX(0);
         Flow buttonColumn = new Column().width(18)
             .leftRel(1, -2, 1)
-            .mainAxisAlignment(com.cleanroommc.modularui.utils.Alignment.MainAxis.END);
+            .mainAxisAlignment(MainAxis.END);
         if (base.doesBindPlayerInventory()) {
             inventoryRow.child(
                 SlotGroupWidget.playerInventory(0)
@@ -459,7 +461,7 @@ public class MTEMultiBlockBaseGUI {
             (p_syncManager, syncHandler) -> openPowerControlPanel(p_syncManager, syncHandler, parent),
             true);
 
-        return new com.cleanroommc.modularui.widgets.ButtonWidget<>().size(18, 18)
+        return new ButtonWidget<>().size(18, 18)
             .rightRel(0, 6, 0)
             .marginTop(4)
             .overlay(UITexture.fullImage(GregTech.ID, "gui/overlay_button/power_panel"))
@@ -521,7 +523,7 @@ public class MTEMultiBlockBaseGUI {
             .height(18)
             .paddingLeft(3)
             .paddingRight(3)
-            .mainAxisAlignment(com.cleanroommc.modularui.utils.Alignment.MainAxis.CENTER)
+            .mainAxisAlignment(MainAxis.CENTER)
             .child(
                 new TextFieldWidget().value(powerPanelMaxParallelSyncer)
                     .setNumbers(
@@ -542,7 +544,7 @@ public class MTEMultiBlockBaseGUI {
                     .size(70, 14)
                     .marginBottom(4))
             .child(
-                new com.cleanroommc.modularui.widgets.ButtonWidget<>().size(18, 18)
+                new ButtonWidget<>().size(18, 18)
                     .overlay(new DynamicDrawable(() -> {
                         if (alwaysMaxParallelSyncer.getValue())
                             return UITexture.fullImage(GTGuiTextures.OVERLAY_BUTTON_CHECKMARK.location);
