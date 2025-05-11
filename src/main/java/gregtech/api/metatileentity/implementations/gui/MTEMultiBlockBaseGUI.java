@@ -438,15 +438,13 @@ public class MTEMultiBlockBaseGUI {
             base::setStructureUpdateTime);
         syncManager.syncValue("structureUpdate", structureUpdateSyncer);
 
-        ToggleButton structureUpdateButton = new ToggleButton().size(18, 18)
+        return new ToggleButton().size(18, 18)
             .value(
                 new BooleanSyncValue(
                     () -> structureUpdateSyncer.getValue() > -20,
                     val -> { if (val) structureUpdateSyncer.setValue(1); }))
             .overlay(GTGuiTextures.OVERLAY_BUTTON_STRUCTURE_UPDATE)
             .tooltipBuilder(t -> { t.addLine(IKey.lang("GT5U.gui.button.structure_update")); });
-
-        return structureUpdateButton;
     }
 
     public IWidget createPowerPanelButton(PanelSyncManager syncManager, ModularPanel parent) {
@@ -476,7 +474,8 @@ public class MTEMultiBlockBaseGUI {
         Area area = parent.getArea();
         int x = area.x + area.width;
         int y = area.y;
-        ModularPanel panel = new ModularPanel("powerPanel").pos(x, y)
+
+        return new ModularPanel("powerPanel").pos(x, y)
             .size(120, 130)
             .child(
                 new Column().sizeRel(1)
@@ -489,8 +488,6 @@ public class MTEMultiBlockBaseGUI {
                     .child(makeParallelConfigurator(syncManager))
 
             );
-
-        return panel;
     }
 
     private IWidget makeTitleTextWidget() {
@@ -557,7 +554,7 @@ public class MTEMultiBlockBaseGUI {
         BooleanSyncValue recipeLockSyncer = new BooleanSyncValue(base::isRecipeLockingEnabled, base::setRecipeLocking);
         syncManager.syncValue("recipeLock", recipeLockSyncer);
 
-        ToggleButton lockToSingleRecipeButton = new ToggleButton() {
+        return new ToggleButton() {
 
             @NotNull
             @Override
@@ -593,15 +590,13 @@ public class MTEMultiBlockBaseGUI {
                 t.addLine(IKey.lang("GT5U.gui.button.lock_recipe"));
                 if (!base.supportsSingleRecipeLocking()) t.addLine(IKey.lang(BUTTON_FORBIDDEN_TOOLTIP));
             });
-
-        return lockToSingleRecipeButton;
     }
 
     public IWidget createBatchModeButton(PanelSyncManager syncManager) {
         BooleanSyncValue batchModeSyncer = new BooleanSyncValue(base::isBatchModeEnabled, base::setBatchMode);
         syncManager.syncValue("batchMode", batchModeSyncer);
 
-        ToggleButton batchModeButton = new ToggleButton() {
+        return new ToggleButton() {
 
             @NotNull
             @Override
@@ -636,14 +631,13 @@ public class MTEMultiBlockBaseGUI {
                 t.addLine(IKey.lang("GT5U.gui.button.batch_mode"));
                 if (!base.supportsBatchMode()) t.addLine(IKey.lang(BUTTON_FORBIDDEN_TOOLTIP));
             });
-        return batchModeButton;
     }
 
     public IWidget createModeSwitchButton(PanelSyncManager syncManager) {
         IntSyncValue machineModeSyncer = new IntSyncValue(base::getMachineMode, base::setMachineMode);
         syncManager.syncValue("machineMode", machineModeSyncer);
 
-        CycleButtonWidget machineModeButton = new CycleButtonWidget().size(18, 18)
+        return new CycleButtonWidget().size(18, 18)
             .value(
                 new IntSyncValue(
                     machineModeSyncer::getValue,
@@ -668,7 +662,6 @@ public class MTEMultiBlockBaseGUI {
                     t.addLine(IKey.lang(BUTTON_FORBIDDEN_TOOLTIP));
                 }
             });
-        return machineModeButton;
     }
 
     public int machineModes() {
@@ -682,7 +675,7 @@ public class MTEMultiBlockBaseGUI {
             base::setInputSeparation);
         syncManager.syncValue("inputSeparation", inputSeparationSyncer);
 
-        ToggleButton inputSeparationButton = new ToggleButton() {
+        return new ToggleButton() {
 
             @NotNull
             @Override
@@ -720,8 +713,6 @@ public class MTEMultiBlockBaseGUI {
                 t.addLine(IKey.lang("GT5U.gui.button.input_separation"));
                 if (!base.supportsInputSeparation()) t.addLine(IKey.lang(BUTTON_FORBIDDEN_TOOLTIP));
             });
-
-        return inputSeparationButton;
     }
 
     public IWidget createVoidExcessButton(PanelSyncManager syncManager) {
@@ -732,7 +723,7 @@ public class MTEMultiBlockBaseGUI {
             val -> base.setVoidingMode(VoidingMode.fromOrdinal(val)));
         syncManager.syncValue("voidExcess", voidExcessSyncer);
 
-        CycleButtonWidget voidExcessButton = new CycleButtonWidget() {
+        return new CycleButtonWidget() {
 
             @NotNull
             @Override
@@ -773,7 +764,6 @@ public class MTEMultiBlockBaseGUI {
                     t.addLine(IKey.lang(BUTTON_FORBIDDEN_TOOLTIP));
                 }
             });
-        return voidExcessButton;
     }
 
     public void registerSyncValues(ModularPanel panel, PanelSyncManager syncManager) {
