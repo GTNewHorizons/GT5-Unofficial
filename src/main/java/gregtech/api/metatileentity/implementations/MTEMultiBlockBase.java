@@ -104,7 +104,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.items.MetaGeneratedTool;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.api.metatileentity.implementations.gui.MTEMultiBlockBaseGUI;
+import gregtech.api.metatileentity.implementations.gui.MTEMultiBlockBaseGui;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
@@ -3485,7 +3485,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
 
     @Override
     public ModularPanel buildUI(PosGuiData guiData, PanelSyncManager syncManager) {
-        return new MTEMultiBlockBaseGUI(this).build(guiData, syncManager);
+        return new MTEMultiBlockBaseGui(this).build(guiData, syncManager);
     }
 
     public int machineModes() {

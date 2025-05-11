@@ -66,11 +66,11 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.shutdown.ShutDownReason;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 
-public class MTEMultiBlockBaseGUI {
+public class MTEMultiBlockBaseGui {
 
     private final MTEMultiBlockBase base;
 
-    public MTEMultiBlockBaseGUI(MTEMultiBlockBase base) {
+    public MTEMultiBlockBaseGui(MTEMultiBlockBase base) {
         this.base = base;
     }
 
