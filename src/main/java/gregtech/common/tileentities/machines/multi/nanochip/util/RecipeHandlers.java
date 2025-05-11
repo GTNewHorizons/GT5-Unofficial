@@ -200,6 +200,12 @@ public class RecipeHandlers {
         addConversionRecipe(
             CircuitComponent.FoilPolybenzimidazole,
             GTOreDictUnificator.get(OrePrefixes.foil, Materials.Polybenzimidazole, 1));
+        // Circuits
+        for (CircuitComponent circuitComponent : CircuitComponent.values()) {
+            if (circuitComponent.realCircuit != null) {
+                addConversionRecipe(circuitComponent, circuitComponent.realCircuit);
+            }
+        }
 
         // Processing recipes
         // Wire processing recipes
