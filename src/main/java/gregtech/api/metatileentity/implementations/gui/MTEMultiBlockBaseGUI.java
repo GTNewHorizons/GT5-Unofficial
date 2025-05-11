@@ -5,10 +5,8 @@ import static gregtech.api.metatileentity.BaseTileEntity.BUTTON_FORBIDDEN_TOOLTI
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 import static tectech.Reference.MODID;
 
-import java.io.IOException;
 import java.time.Duration;
 import java.util.Arrays;
-import java.util.BitSet;
 import java.util.Collections;
 import java.util.EnumSet;
 import java.util.List;
@@ -17,7 +15,6 @@ import java.util.stream.Collectors;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.FluidStack;
@@ -35,7 +32,6 @@ import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.utils.Alignment.MainAxis;
 import com.cleanroommc.modularui.utils.Color;
-import com.cleanroommc.modularui.utils.serialization.IByteBufAdapter;
 import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
 import com.cleanroommc.modularui.value.sync.GenericListSyncHandler;
 import com.cleanroommc.modularui.value.sync.GenericSyncValue;
@@ -67,7 +63,6 @@ import gregtech.api.metatileentity.implementations.MTEMultiBlockBase;
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.modularui2.GTWidgetThemes;
 import gregtech.api.recipe.check.CheckRecipeResult;
-import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.shutdown.ShutDownReason;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
@@ -860,90 +855,4 @@ public class MTEMultiBlockBaseGUI {
         syncManager.syncValue("recipeInfo", recipeInfoSyncer);
     }
 
-    private class StructureErrorAdapter implements IByteBufAdapter<EnumSet<StructureError>> {
-
-        @Override
-        public EnumSet<StructureError> deserialize(PacketBuffer buffer) {
-            byte[] data = new byte[buffer.readVarIntFromBuffer()];
-            buffer.readBytes(data);
-
-            BitSet bits = BitSet.valueOf(data);
-
-            EnumSet<StructureError> out = EnumSet.noneOf(StructureError.class);
-
-            for (StructureError error : StructureError.values()) {
-                if (bits.get(error.ordinal())) {
-                    out.add(error);
-                }
-            }
-
-            return out;
-        }
-
-        @Override
-        public void serialize(PacketBuffer buffer, EnumSet<StructureError> errors) {
-            BitSet bits = new BitSet();
-
-            for (StructureError error : errors) {
-                bits.set(error.ordinal());
-            }
-
-            byte[] data = bits.toByteArray();
-
-            buffer.writeVarIntToBuffer(data.length);
-            buffer.writeBytes(data);
-        }
-
-        @Override
-        public boolean areEqual(@NotNull EnumSet<StructureError> t1, @NotNull EnumSet<StructureError> t2) {
-            return t1.containsAll(t2) && t2.containsAll(t1);
-        }
-    }
-
-    private class ShutdownReasonAdapter implements IByteBufAdapter<ShutDownReason> {
-
-        @Override
-        public ShutDownReason deserialize(PacketBuffer buffer) throws IOException {
-            String id = NetworkUtils.readStringSafe(buffer);
-            ShutDownReason result = ShutDownReasonRegistry.getSampleFromRegistry(id)
-                .newInstance();
-            result.decode(buffer);
-            return result;
-        }
-
-        @Override
-        public void serialize(PacketBuffer buffer, ShutDownReason result) throws IOException {
-            NetworkUtils.writeStringSafe(buffer, result.getID());
-            result.encode(buffer);
-        }
-
-        @Override
-        public boolean areEqual(@NotNull ShutDownReason t1, @NotNull ShutDownReason t2) {
-            return t1.getID()
-                .equals(t2.getID());
-        }
-    }
-
-    private class CheckRecipeResultAdapter implements IByteBufAdapter<CheckRecipeResult> {
-
-        @Override
-        public CheckRecipeResult deserialize(PacketBuffer buffer) throws IOException {
-            String id = NetworkUtils.readStringSafe(buffer);
-            CheckRecipeResult result = CheckRecipeResultRegistry.getSampleFromRegistry(id)
-                .newInstance();
-            result.decode(buffer);
-            return result;
-        }
-
-        @Override
-        public void serialize(PacketBuffer buffer, CheckRecipeResult result) throws IOException {
-            NetworkUtils.writeStringSafe(buffer, result.getID());
-            result.encode(buffer);
-        }
-
-        @Override
-        public boolean areEqual(@NotNull CheckRecipeResult t1, @NotNull CheckRecipeResult t2) {
-            return t1.equals(t2);
-        }
-    }
 }
