@@ -21,6 +21,7 @@ import static gregtech.api.enums.MetaTileEntityIDs.RadioHatch_UV;
 import static gregtech.api.enums.MetaTileEntityIDs.RadioHatch_ZPM;
 import static gregtech.api.enums.MetaTileEntityIDs.Windmill;
 import static gregtech.api.enums.Mods.IndustrialCraft2;
+import static gtPlusPlus.core.recipe.RecipesTools.craftingToolHardHammer;
 import static gtPlusPlus.core.recipe.RecipesTools.craftingToolScrewdriver;
 import static gtPlusPlus.core.recipe.RecipesTools.craftingToolWrench;
 
@@ -49,6 +50,7 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.interfaces.ISubTagContainer;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
+import gtPlusPlus.core.util.minecraft.RecipeUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import ic2.core.Ic2Items;
 
@@ -576,5 +578,42 @@ public class CraftingRecipes implements Runnable {
             new Object[] { " M ", "STS", "RPW", 'M', ItemList.Cover_Screen.get(1L), 'S',
                 OrePrefixes.screw.get(Materials.Titanium), 'T', GregtechItemList.TransmissionComponent_EV.get(1), 'R',
                 craftingToolScrewdriver, 'P', OrePrefixes.plate.get(Materials.Titanium), 'W', craftingToolWrench });
+
+        RecipeUtils.addShapedRecipe(
+            OrePrefixes.lens.get(Materials.Ruby),
+            ItemList.Magnetron.get(1),
+            OrePrefixes.lens.get(Materials.Ruby),
+            craftingToolHardHammer,
+            ItemList.Vajra_Core.get(1),
+            craftingToolScrewdriver,
+            OrePrefixes.plateDense.get(Materials.Electrum),
+            OrePrefixes.battery.get(Materials.IV),
+            OrePrefixes.plateDense.get(Materials.Electrum),
+            ItemList.Tool_Vajra.get(1));
+
+        RecipeUtils.addShapedRecipe(
+            OrePrefixes.plateDense.get(Materials.NeodymiumMagnetic),
+            ItemList.HV_Coil.get(1),
+            OrePrefixes.plateDense.get(Materials.NeodymiumMagnetic),
+            OrePrefixes.plate.get(Materials.Electrum),
+            OrePrefixes.wireGt12.get(Materials.SuperconductorIV),
+            OrePrefixes.plate.get(Materials.Electrum),
+            OrePrefixes.plateDense.get(Materials.NeodymiumMagnetic),
+            ItemList.HV_Coil.get(1),
+            OrePrefixes.plateDense.get(Materials.NeodymiumMagnetic),
+            ItemList.Magnetron.get(1));
+
+        RecipeUtils.addShapedRecipe(
+            craftingToolWrench,
+            OrePrefixes.plate.get(Materials.Electrum),
+            craftingToolHardHammer,
+            OrePrefixes.plateDense.get(Materials.Iridium),
+            ItemList.Transformer_EV_HV.get(1),
+            OrePrefixes.plateDense.get(Materials.Iridium),
+            OrePrefixes.wireGt12.get(Materials.SuperconductorIV),
+            ItemList.Transformer_IV_EV.get(1),
+            OrePrefixes.wireGt12.get(Materials.SuperconductorIV),
+            ItemList.Vajra_Core.get(1));
+
     }
 }
