@@ -151,8 +151,9 @@ public class MTEMiner extends MTEBasicMachine implements IDrillingLogicDelegateO
     }
 
     @Override
-    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        super.onScrewdriverRightClick(side, aPlayer, aX, aY, aZ);
+    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
+        ItemStack aTool) {
+        super.onScrewdriverRightClick(side, aPlayer, aX, aY, aZ, aTool);
         if (side != getBaseMetaTileEntity().getFrontFacing() && side != mMainFacing) {
             if (aPlayer.isSneaking()) {
                 if (radiusConfig >= 0) {
