@@ -2,7 +2,6 @@ package gregtech.common.tileentities.machines.basic;
 
 import static gregtech.api.enums.GTValues.V;
 import static gregtech.api.enums.Textures.BlockIcons.*;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TELEPORTER_GLOW;
 
 import java.util.List;
 
@@ -60,14 +59,17 @@ public class MTEMagLevPylon extends MTETieredMachineBlock {
     @Override
     public void onPostTick(IGregTechTileEntity baseMetaTileEntity, long tick) {
         if (baseMetaTileEntity.isServerSide() && baseMetaTileEntity.isAllowedToWork()) {
-            if (tick % 100 == 0 && checkArea != null) {
-                List<EntityPlayer> players = getBaseMetaTileEntity().getWorld()
-                    .getEntitiesWithinAABB(EntityPlayer.class, checkArea);
-                for (int i = 0; i < players.size(); i++) {
-                    EntityPlayer player = players.get(i);
-                    if (player instanceof FakePlayer) continue;
-
-                    player.addPotionEffect(new PotionEffect(GTPotions.potionMagLev.id, TickTime.SECOND * 6));
+            if (tick % 80 == 0 && checkArea != null) {
+                if (baseMetaTileEntity.isUniversalEnergyStored(getMinimumStoredEU())
+                    && baseMetaTileEntity.decreaseStoredEnergyUnits(1L << (this.mTier * 2), false)) {
+                    List<EntityPlayer> players = getBaseMetaTileEntity().getWorld()
+                        .getEntitiesWithinAABB(EntityPlayer.class, checkArea);
+                    for (int i = 0; i < players.size(); i++) {
+                        EntityPlayer player = players.get(i);
+                        if (player instanceof FakePlayer) continue;
+                        player.addPotionEffect(
+                            new PotionEffect(GTPotions.potionMagLev.id, TickTime.SECOND * 6, mTier - 1));
+                    }
                 }
             }
         }
@@ -76,23 +78,6 @@ public class MTEMagLevPylon extends MTETieredMachineBlock {
     @Override
     public void onRemoval() {
         checkArea = null;
-    }
-
-    // TODO: New Texture
-    @Override
-    public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
-        int colorIndex, boolean active, boolean redstoneLevel) {
-        if (facing != ForgeDirection.UP) return new ITexture[] { MACHINE_CASINGS[mTier][colorIndex + 1] };
-        if (active) return new ITexture[] { MACHINE_CASINGS[mTier][colorIndex + 1],
-            TextureFactory.of(OVERLAY_TELEPORTER_ACTIVE), TextureFactory.builder()
-                .addIcon(OVERLAY_TELEPORTER_ACTIVE_GLOW)
-                .glow()
-                .build() };
-        return new ITexture[] { MACHINE_CASINGS[mTier][colorIndex + 1], TextureFactory.of(OVERLAY_TELEPORTER),
-            TextureFactory.builder()
-                .addIcon(OVERLAY_TELEPORTER_GLOW)
-                .glow()
-                .build() };
     }
 
     @Override
@@ -158,6 +143,28 @@ public class MTEMagLevPylon extends MTETieredMachineBlock {
     }
 
     @Override
+    public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
+        int colorIndex, boolean active, boolean redstoneLevel) {
+        if (side != this.getBaseMetaTileEntity()
+            .getFrontFacing())
+            return new ITexture[] { MACHINE_CASINGS[mTier][colorIndex + 1], TextureFactory.of(OVERLAY_MAGLEV_SIDES),
+                TextureFactory.builder()
+                    .addIcon(OVERLAY_MAGLEV_SIDES_GLOW)
+                    .glow()
+                    .build() };
+        if (active) return new ITexture[] { MACHINE_CASINGS[mTier][colorIndex + 1],
+            TextureFactory.of(OVERLAY_MAGLEV_ACTIVE), TextureFactory.builder()
+                .addIcon(OVERLAY_MAGLEV_ACTIVE_GLOW)
+                .glow()
+                .build() };
+        return new ITexture[] { MACHINE_CASINGS[mTier][colorIndex + 1], TextureFactory.of(OVERLAY_MAGLEV),
+            TextureFactory.builder()
+                .addIcon(OVERLAY_MAGLEV_GLOW)
+                .glow()
+                .build() };
+    }
+
+    @Override
     public ITexture[][][] getTextureSet(ITexture[] aTextures) {
         return null;
     }
@@ -180,11 +187,22 @@ public class MTEMagLevPylon extends MTETieredMachineBlock {
                 playerBuffMap.put(ownerUUID, true);
             } else playerBuffMap.replace(ownerUUID, true);
             player.capabilities.allowFlying = true;
+            if (player.worldObj.isRemote) {
+                // client only
+                // MV = 50% creative flight speed
+                // HV+= 100% creative flight speed
+                player.capabilities.setFlySpeed(
+                    0.05F + (0.025F * player.getActivePotionEffect(GTPotions.potionMagLev)
+                        .getAmplifier() - 2));
+            }
         } else {
             if (playerBuffMap.replace(ownerUUID, false)) {
                 if (!player.capabilities.isCreativeMode) {
                     player.capabilities.allowFlying = false;
                     player.capabilities.isFlying = false;
+                }
+                player.capabilities.setFlySpeed(0.05F);
+                if (!player.worldObj.isRemote) {
                     player.sendPlayerAbilities();
                 }
             }
