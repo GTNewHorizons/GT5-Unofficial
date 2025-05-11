@@ -4,34 +4,37 @@ import static gregtech.api.enums.GTValues.V;
 import static gregtech.api.enums.Textures.BlockIcons.*;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TELEPORTER_GLOW;
 
-import java.lang.ref.WeakReference;
-import java.util.WeakHashMap;
+import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.potion.PotionEffect;
+import net.minecraft.util.AxisAlignedBB;
 import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.event.entity.living.LivingEvent;
 
 import com.gtnewhorizon.gtnhlib.eventbus.EventBusSubscriber;
 
 import cpw.mods.fml.common.eventhandler.EventPriority;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import cpw.mods.fml.common.gameevent.TickEvent;
-import cpw.mods.fml.relauncher.Side;
+import gregtech.api.enums.TickTime;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTETieredMachineBlock;
 import gregtech.api.render.TextureFactory;
+import gregtech.loaders.misc.GTPotions;
+import it.unimi.dsi.fastutil.ints.Int2BooleanOpenHashMap;
 
 @EventBusSubscriber
 public class MTEMagLevPylon extends MTETieredMachineBlock {
 
     public int mRange = 16;
+    private final static Int2BooleanOpenHashMap playerBuffMap = new Int2BooleanOpenHashMap();
 
-    private static final WeakHashMap<EntityPlayer, PlayerFlightData> playerMap = new WeakHashMap<>();
-    private static final WeakHashMap<MTEMagLevPylon, Integer> machineMap = new WeakHashMap<>();
+    private AxisAlignedBB checkArea;
 
     public MTEMagLevPylon(int aID, String aName, String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional, aTier, 0, "Grants flight with the power of magnets. Range: ");
@@ -43,21 +46,36 @@ public class MTEMagLevPylon extends MTETieredMachineBlock {
 
     @Override
     public void onFirstTick(IGregTechTileEntity baseMetaTileEntity) {
-        machineMap.put(this, mRange);
+        checkArea = AxisAlignedBB
+            .getBoundingBox(
+                baseMetaTileEntity.getXCoord(),
+                baseMetaTileEntity.getYCoord(),
+                baseMetaTileEntity.getZCoord(),
+                baseMetaTileEntity.getXCoord() + 1,
+                baseMetaTileEntity.getYCoord() + 1,
+                baseMetaTileEntity.getZCoord() + 1)
+            .expand(mRange, mRange, mRange);
     }
 
     @Override
     public void onPostTick(IGregTechTileEntity baseMetaTileEntity, long tick) {
-        if (baseMetaTileEntity.isAllowedToWork() && baseMetaTileEntity.isServerSide()) {
-            if (tick % 100 == 0 && !machineMap.containsKey(this)) {
-                machineMap.put(this, mRange);
+        if (baseMetaTileEntity.isServerSide() && baseMetaTileEntity.isAllowedToWork()) {
+            if (tick % 100 == 0 && checkArea != null) {
+                List<EntityPlayer> players = getBaseMetaTileEntity().getWorld()
+                    .getEntitiesWithinAABB(EntityPlayer.class, checkArea);
+                for (int i = 0; i < players.size(); i++) {
+                    EntityPlayer player = players.get(i);
+                    if (player instanceof FakePlayer) continue;
+
+                    player.addPotionEffect(new PotionEffect(GTPotions.potionMagLev.id, TickTime.SECOND * 6));
+                }
             }
         }
     }
 
     @Override
     public void onRemoval() {
-        machineMap.remove(this);
+        checkArea = null;
     }
 
     // TODO: New Texture
@@ -151,21 +169,25 @@ public class MTEMagLevPylon extends MTETieredMachineBlock {
     public void loadNBTData(NBTTagCompound aNBT) {}
 
     @SubscribeEvent(priority = EventPriority.HIGHEST)
-    public static void onPlayerTick(TickEvent.PlayerTickEvent event) {
-        if (event.side != Side.SERVER || event.phase != TickEvent.Phase.END) {
-            return;
-        }
-        if (event.player instanceof FakePlayer) return;
+    public static void onEntityUpdate(LivingEvent.LivingUpdateEvent event) {
+        if (event.entityLiving instanceof FakePlayer) return;
+        if (!(event.entityLiving instanceof EntityPlayer player)) return;
 
-    }
-
-    private static class PlayerFlightData {
-
-        private final WeakReference<EntityPlayer> player;
-        private int checkTick = 0;
-
-        public PlayerFlightData(EntityPlayer player) {
-            this.player = new WeakReference<>(player);
+        int ownerUUID = player.getUniqueID()
+            .hashCode();
+        if (player.isPotionActive(GTPotions.potionMagLev)) {
+            if (!playerBuffMap.containsKey(ownerUUID)) {
+                playerBuffMap.put(ownerUUID, true);
+            } else playerBuffMap.replace(ownerUUID, true);
+            player.capabilities.allowFlying = true;
+        } else {
+            if (playerBuffMap.replace(ownerUUID, false)) {
+                if (!player.capabilities.isCreativeMode) {
+                    player.capabilities.allowFlying = false;
+                    player.capabilities.isFlying = false;
+                    player.sendPlayerAbilities();
+                }
+            }
         }
     }
 }

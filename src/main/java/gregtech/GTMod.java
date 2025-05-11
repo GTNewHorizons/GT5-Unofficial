@@ -103,6 +103,7 @@ import gregtech.loaders.load.MTERecipeLoader;
 import gregtech.loaders.misc.CoverLoader;
 import gregtech.loaders.misc.GTAchievements;
 import gregtech.loaders.misc.GTBees;
+import gregtech.loaders.misc.GTPotions;
 import gregtech.loaders.postload.BlockResistanceLoader;
 import gregtech.loaders.postload.BookAndLootLoader;
 import gregtech.loaders.postload.CraftingRecipeLoader;
@@ -329,13 +330,14 @@ public class GTMod implements IGTMod {
             // noinspection InstantiationOfUtilityClass//TODO: Refactor GTBees with proper state handling
             new GTBees();
 
+        new GTPotions().run();
+
         // Disable Low Grav regardless of config if Cleanroom is disabled.
         if (!gregtechproxy.mEnableCleanroom) {
             gregtechproxy.mLowGravProcessing = false;
         }
 
         gregtechproxy.onLoad();
-
         new MTERecipeLoader().run();
 
         new GTItemIterator().run();
