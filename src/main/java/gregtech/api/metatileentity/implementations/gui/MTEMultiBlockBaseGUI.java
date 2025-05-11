@@ -14,6 +14,7 @@ import java.util.EnumSet;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.cleanroommc.modularui.widgets.TextWidget;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.item.ItemStack;
@@ -188,7 +189,7 @@ public class MTEMultiBlockBaseGUI {
         }
 
         final SingleChildWidget<?> tab = new SingleChildWidget<>();
-        final com.cleanroommc.modularui.widgets.TextWidget text = new com.cleanroommc.modularui.widgets.TextWidget(
+        final TextWidget text = new TextWidget(
             title).color(0x404040)
                 .alignment(com.cleanroommc.modularui.utils.Alignment.CenterLeft)
                 .width(titleWidth);
@@ -250,7 +251,7 @@ public class MTEMultiBlockBaseGUI {
     public void insertTexts(ListWidget<IWidget, ?> machineInfo, ItemStackHandler invSlot, PanelSyncManager syncManager,
         ModularPanel parentPanel) {
         machineInfo.child(
-            new com.cleanroommc.modularui.widgets.TextWidget(GTUtility.trans("132", "Pipe is loose. (Wrench)"))
+            new TextWidget(GTUtility.trans("132", "Pipe is loose. (Wrench)"))
                 .color(Color.WHITE.main)
                 .setEnabledIf(widget -> !base.mWrench)
                 .marginBottom(2)
@@ -259,7 +260,7 @@ public class MTEMultiBlockBaseGUI {
         );
 
         machineInfo.child(
-            new com.cleanroommc.modularui.widgets.TextWidget(GTUtility.trans("133", "Screws are loose. (Screwdriver)"))
+            new TextWidget(GTUtility.trans("133", "Screws are loose. (Screwdriver)"))
                 .color(Color.WHITE.main)
                 .setEnabledIf(widget -> !base.mScrewdriver)
                 .marginBottom(2)
@@ -269,7 +270,7 @@ public class MTEMultiBlockBaseGUI {
 
         machineInfo.child(
 
-            new com.cleanroommc.modularui.widgets.TextWidget(
+            new TextWidget(
                 GTUtility.trans("134", "Something is stuck. (Soft Mallet)")).color(Color.WHITE.main)
                     .setEnabledIf(widget -> !base.mSoftHammer)
                     .marginBottom(2)
@@ -278,7 +279,7 @@ public class MTEMultiBlockBaseGUI {
         );
         machineInfo.child(
 
-            new com.cleanroommc.modularui.widgets.TextWidget(GTUtility.trans("135", "Platings are dented. (Hammer)"))
+            new TextWidget(GTUtility.trans("135", "Platings are dented. (Hammer)"))
                 .color(Color.WHITE.main)
                 .setEnabledIf(widget -> !base.mHardHammer)
                 .marginBottom(2)
@@ -288,7 +289,7 @@ public class MTEMultiBlockBaseGUI {
 
         machineInfo.child(
 
-            new com.cleanroommc.modularui.widgets.TextWidget(
+            new TextWidget(
                 GTUtility.trans("136", "Circuitry burned out. (Soldering)")).color(Color.WHITE.main)
                     .setEnabledIf(widget -> !base.mSolderingTool)
                     .marginBottom(2)
@@ -298,7 +299,7 @@ public class MTEMultiBlockBaseGUI {
 
         machineInfo.child(
 
-            new com.cleanroommc.modularui.widgets.TextWidget(
+            new TextWidget(
                 GTUtility.trans("137", "That doesn't belong there. (Crowbar)")).color(Color.WHITE.main)
                     .setEnabledIf(widget -> !base.mCrowbar)
                     .marginBottom(2)
@@ -307,7 +308,7 @@ public class MTEMultiBlockBaseGUI {
         );
 
         machineInfo.child(
-            new com.cleanroommc.modularui.widgets.TextWidget(GTUtility.trans("138", "Incomplete Structure."))
+            new TextWidget(GTUtility.trans("138", "Incomplete Structure."))
                 .color(Color.WHITE.main)
                 .setEnabledIf(widget -> !base.mMachine)
                 .marginBottom(2)
@@ -316,7 +317,7 @@ public class MTEMultiBlockBaseGUI {
         );
 
         machineInfo.child(
-            new com.cleanroommc.modularui.widgets.TextWidget(
+            new TextWidget(
                 StatCollector.translateToLocal("GT5U.gui.text.too_uncertain")).color(Color.WHITE.main)
                     .setEnabledIf(widget -> (base.getErrorDisplayID() & 128) != 0)
                     .marginBottom(2)
@@ -325,7 +326,7 @@ public class MTEMultiBlockBaseGUI {
         );
 
         machineInfo.child(
-            new com.cleanroommc.modularui.widgets.TextWidget(
+            new TextWidget(
                 StatCollector.translateToLocal("GT5U.gui.text.invalid_parameters")).color(Color.WHITE.main)
                     .setEnabledIf(widget -> (base.getErrorDisplayID() & 256) != 0)
                     .marginBottom(2)
@@ -334,7 +335,7 @@ public class MTEMultiBlockBaseGUI {
         );
 
         machineInfo.child(
-            new com.cleanroommc.modularui.widgets.TextWidget(
+            new TextWidget(
                 GTUtility.trans("139", "Hit with Soft Mallet") + "\n"
                     + GTUtility.trans("140", "to (re-)start the Machine")
                     + "\n"
@@ -350,7 +351,7 @@ public class MTEMultiBlockBaseGUI {
         );
 
         machineInfo.child(
-            new com.cleanroommc.modularui.widgets.TextWidget(GTUtility.trans("142", "Running perfectly."))
+            new TextWidget(GTUtility.trans("142", "Running perfectly."))
                 .color(Color.WHITE.main)
                 .setEnabledIf(
                     widget -> base.getErrorDisplayID() == 0 && base.getBaseMetaTileEntity()
@@ -360,7 +361,7 @@ public class MTEMultiBlockBaseGUI {
 
         );
 
-        com.cleanroommc.modularui.widgets.TextWidget shutdownDuration = IKey.dynamic(() -> {
+        TextWidget shutdownDuration = IKey.dynamic(() -> {
             Duration time = Duration.ofSeconds((base.getTotalRunTime() - base.getLastWorkingTick()) / 20);
             return StatCollector.translateToLocalFormatted(
                 "GT5U.gui.text.shutdown_duration",
@@ -379,7 +380,7 @@ public class MTEMultiBlockBaseGUI {
 
         machineInfo.child(shutdownDuration);
 
-        com.cleanroommc.modularui.widgets.TextWidget shutdownReason = IKey.dynamic(
+        TextWidget shutdownReason = IKey.dynamic(
             () -> base.getBaseMetaTileEntity()
                 .getLastShutDownReason()
                 .getDisplayString())
@@ -398,7 +399,7 @@ public class MTEMultiBlockBaseGUI {
 
         machineInfo.child(shutdownReason);
 
-        com.cleanroommc.modularui.widgets.TextWidget checkRecipeResultWidget = IKey
+        TextWidget checkRecipeResultWidget = IKey
             .dynamic(
                 () -> base.getCheckRecipeResult()
                     .getDisplayString())
@@ -417,7 +418,7 @@ public class MTEMultiBlockBaseGUI {
 
         if (base.showRecipeTextInGUI()) {
             // Display current recipe
-            com.cleanroommc.modularui.widgets.TextWidget recipeInfoWidget = IKey
+            TextWidget recipeInfoWidget = IKey
                 .dynamic(() -> ((StringSyncValue) syncManager.getSyncHandler("recipeInfo:0")).getValue())
                 .asWidget()
                 .marginBottom(2)
@@ -508,7 +509,7 @@ public class MTEMultiBlockBaseGUI {
     }
 
     private IWidget makeTitleTextWidget() {
-        return new com.cleanroommc.modularui.widgets.TextWidget(
+        return new TextWidget(
             EnumChatFormatting.UNDERLINE + StatCollector.translateToLocal("GT5U.gui.text.power_panel"))
                 .alignment(com.cleanroommc.modularui.utils.Alignment.Center)
                 .size(120, 18)
