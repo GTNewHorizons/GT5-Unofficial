@@ -1,13 +1,14 @@
-package gregtech.common.tileentities.machines.multi;
+package gregtech.common.tileentities.machines.multi.Solidifier;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlocksTiered;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static gregtech.api.enums.GTValues.AuthorOmdaCZ;
 import static gregtech.api.enums.HatchElement.Energy;
+import static gregtech.api.enums.HatchElement.ExoticEnergy;
 import static gregtech.api.enums.HatchElement.InputBus;
 import static gregtech.api.enums.HatchElement.InputHatch;
 import static gregtech.api.enums.HatchElement.Maintenance;
-import static gregtech.api.enums.HatchElement.MultiAmpEnergy;
 import static gregtech.api.enums.HatchElement.OutputBus;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_CANNER;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_CANNER_ACTIVE;
@@ -24,20 +25,21 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
+import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
-import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
+import org.apache.commons.lang3.tuple.Pair;
 import org.jetbrains.annotations.NotNull;
 
+import com.google.common.collect.ImmutableList;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
@@ -70,84 +72,140 @@ import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchSolid
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
-public class MTEMultiSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMultiSolidifier>
+public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModularSolidifier>
     implements ISurvivalConstructable {
-
-    private static final double DECAY_RATE = 0.025;
 
     private int glassTier = -1;
     protected int width;
     private int casingAmount;
-    private float speedup = 1;
-    private int runningTickCounter = 0;
+    protected int casingTier;
+
+    private static final int DEFAULT_MODULE_AMOUNT = 2;
+    private final int ModuleAmount = DEFAULT_MODULE_AMOUNT;
 
     // spotless:off
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
-    private static final IStructureDefinition<MTEMultiSolidifier> STRUCTURE_DEFINITION = StructureDefinition
-        .<MTEMultiSolidifier>builder()
+    private static final String MODULE_1 = "Module Slot 1";
+    private static final String MODULE_2 = "Module Slot 2";
+    private static final String MODULE_3 = "Module Slot 3";
+    private static final String MODULE_4 = "Module Slot 4";
+
+
+    private static final IStructureDefinition<MTEModularSolidifier> STRUCTURE_DEFINITION = StructureDefinition
+        .<MTEModularSolidifier>builder()
         .addShape(
             STRUCTURE_PIECE_MAIN,
-            new String[][]{{
-            },{
-                "C                               C",
-                "C            CCCCCCC            C",
-                "C            AAAAAAA            C",
-                "C            DDDCDDD            C",
-                "C            CCC~CCC            C"
-            },{
-                "CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC",
-                "CAAAAAAAAAAAA       AAAAAAAAAAAAC",
-                "CAAAAAAAAAAAA       AAAAAAAAAAAAC",
-                "CDDDDDDDDDDDD       DDDDDDDDDDDDC",
-                "CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC"
-            },{
-                "CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC",
-                "CE E E E E E E E E E E E E E E EC",
-                "C                               C",
-                "CBDBDBDBDBDBDB B B BDBDBDBDBDBDBC",
-                "CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC"
-            },{
-                "CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC",
-                "CAAAAAAAAAAAA       AAAAAAAAAAAAC",
-                "CAAAAAAAAAAAA       AAAAAAAAAAAAC",
-                "CDDDDDDDDDDDD       DDDDDDDDDDDDC",
-                "CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC"
-            },{
-                "C                               C",
-                "C            CCCCCCC            C",
-                "C            AAAAAAA            C",
-                "C            DDDDDDD            C",
-                "C            CCCCCCC            C"
-            }})
-
-        .addElement('A', chainAllGlasses(-1, (te, t) -> te.glassTier = t, te -> te.glassTier))
+            // spotless:off
+            new String[][]{
+                {"     "," AAA "," AAA "," AAA "," A~A "," AAA "},
+                {" AAA ","AJJJA","PJJJP","AJJJA","AJJJA","AAAAA"},
+                {" AAA ","AJJJA","AJ JA","AJ JA","AJJJA","AAAAA"},
+                {" AAA ","AJJJA","PJJJP","AJJJA","AJJJA","AAAAA"},
+                {"     "," AAA "," AAA "," AAA "," AAA "," AAA "}}
+        )
+        .addShape(
+            MODULE_1,
+            new String[][]{
+                {"  ","  ","  ","  "},
+                {"AA","A ","C ","AA"},
+                {"  ","  ","  ","AA"},
+                {"AA","A ","A ","AA"},
+                {"  ","  ","  ","  "}}
+        )
+        .addShape(
+            MODULE_2,
+            new String[][]{
+                {"  ","  ","  ","  "},
+                {"AA","A ","A ","AA"},
+                {"  ","  ","  ","AA"},
+                {"AA","A ","C ","AA"},
+                {"  ","  ","  ","  "}}
+        )
+        .addShape(
+            MODULE_3,
+            new String[][]{
+                {"  ","  ","  ","  "},
+                {"AA","C ","A ","AA"},
+                {"  ","  ","  ","AA"},
+                {"AA","A ","A ","AA"},
+                {"  ","  ","  ","  "}}
+        )
+        .addShape(
+            MODULE_4,
+            new String[][]{
+                {"  ","  ","  ","  "},
+                {"AA","A ","A ","AA"},
+                {"  ","  ","  ","AA"},
+                {"AA","C ","A ","AA"},
+                {"  ","  ","  ","  "}}
+        )// spotless:on
+        .addElement('P', chainAllGlasses(-1, (te, t) -> te.glassTier = t, te -> te.glassTier))
         .addElement(
-            'C',
-            buildHatchAdder(MTEMultiSolidifier.class).atLeast(InputBus, InputHatch, OutputBus, Maintenance, Energy, MultiAmpEnergy)
+            'A',
+            buildHatchAdder(MTEModularSolidifier.class)
+                .atLeast(InputBus, InputHatch, OutputBus, Maintenance, Energy, ExoticEnergy)
                 .casingIndex(((BlockCasings10) GregTechAPI.sBlockCasings10).getTextureIndex(13))
                 .dot(1)
                 .buildAndChain(
-                    onElementPass(MTEMultiSolidifier::onCasingAdded, ofBlock(GregTechAPI.sBlockCasings10, 13))))
+                    onElementPass(MTEModularSolidifier::onCasingAdded, ofBlock(GregTechAPI.sBlockCasings10, 13))))
 
-        .addElement('D', ofBlock(GregTechAPI.sBlockCasings10, 14))
-        .addElement('B', ofBlock(GregTechAPI.sBlockCasings8, 10))
+        .addElement('J', ofBlock(GregTechAPI.sBlockCasings10, 14))
         .addElement('E', ofBlock(GregTechAPI.sBlockCasings11, 7))
+        .addElement(
+            'C',
+            GTStructureChannels.SOLIDIFER_MODULES.use(
+                ofBlocksTiered(
+                    MTEModularSolidifier::getModuleMeta,
+                    ImmutableList.of(
+                        Pair.of(GregTechAPI.sBlockCasings12, 4),
+                        Pair.of(GregTechAPI.sBlockCasings12, 5),
+                        Pair.of(GregTechAPI.sBlockCasings12, 6),
+                        Pair.of(GregTechAPI.sBlockCasings12, 7),
+                        Pair.of(GregTechAPI.sBlockCasings12, 8),
+                        Pair.of(GregTechAPI.sBlockCasings12, 9),
+                        Pair.of(GregTechAPI.sBlockCasings12, 13)),
+                    -1,
+                    MTEModularSolidifier::setCasingTier,
+                    MTEModularSolidifier::getCasingTier)))
         .build();
 
-    // spotless:on
+    @Nullable
+    public static Integer getModuleMeta(Block block, int meta) {
+        if (block == GregTechAPI.sBlockCasings12) {
+            return switch (meta) {
+                case 4 -> 1;
+                case 5 -> 2;
+                case 6 -> 3;
+                case 7 -> 4;
+                case 8 -> 5;
+                case 9 -> 6;
+                case 13 -> 7;
+                default -> null;
+            };
+        }
+        return null;
+    }
 
-    public MTEMultiSolidifier(final int aID, final String aName, final String aNameRegional) {
+    public int getCasingTier() {
+        return casingTier;
+    }
+
+    public void setCasingTier(int i) {
+        casingTier = i;
+    }
+
+    public MTEModularSolidifier(final int aID, final String aName, final String aNameRegional) {
         super(aID, aName, aNameRegional);
     }
 
-    public MTEMultiSolidifier(String aName) {
+    public MTEModularSolidifier(String aName) {
         super(aName);
     }
 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new MTEMultiSolidifier(this.mName);
+        return new MTEModularSolidifier(this.mName);
     }
 
     @Override
@@ -228,17 +286,39 @@ public class MTEMultiSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMultiS
 
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
-        buildPiece(STRUCTURE_PIECE_MAIN, stackSize, hintsOnly, 16, 4, 1);
+        buildPiece(STRUCTURE_PIECE_MAIN, stackSize, hintsOnly, 2, 4, 0);
+        buildPiece(MODULE_1, stackSize, hintsOnly, 63, 14, -59);
+        buildPiece(MODULE_2, stackSize, hintsOnly, 55, 11, -67);
+        buildPiece(MODULE_3, stackSize, hintsOnly, 47, 13, -76);
+        buildPiece(MODULE_4, stackSize, hintsOnly, 39, 11, -84);
     }
 
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
-        if (mMachine) return -1;
-        return survivialBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 16, 4, 1, elementBudget, env, false, true);
+        int built = 0;
+
+        survivialBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 16, 4, 1, elementBudget, env, false, true);
+
+        if (stackSize.stackSize > 0) {
+            built += survivialBuildPiece(MODULE_1, stackSize, 63, 14, -59, elementBudget, env, false, true);
+        }
+
+        if (stackSize.stackSize > 1) {
+            built += survivialBuildPiece(MODULE_2, stackSize, 55, 11, -67, elementBudget, env, false, true);
+        }
+
+        if (stackSize.stackSize > 2 && ModuleAmount < 3) {
+            built += survivialBuildPiece(MODULE_3, stackSize, 47, 13, -76, elementBudget, env, false, true);
+        }
+
+        if (stackSize.stackSize > 3 && ModuleAmount < 4) {
+            built += survivialBuildPiece(MODULE_4, stackSize, 39, 11, -84, elementBudget, env, false, true);
+        }
+        return built;
     }
 
     @Override
-    public IStructureDefinition<MTEMultiSolidifier> getStructureDefinition() {
+    public IStructureDefinition<MTEModularSolidifier> getStructureDefinition() {
         return STRUCTURE_DEFINITION;
     }
 
@@ -314,7 +394,6 @@ public class MTEMultiSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMultiS
             @NotNull
             @Override
             protected CheckRecipeResult validateRecipe(@NotNull GTRecipe recipe) {
-                setSpeedBonus(1F / speedup);
                 return super.validateRecipe(recipe);
             }
         }.setMaxParallelSupplier(this::getTrueParallel)
@@ -328,24 +407,8 @@ public class MTEMultiSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMultiS
     }
 
     @Override
-    public boolean onRunningTick(ItemStack aStack) {
-        runningTickCounter++;
-        if (runningTickCounter % 10 == 0 && speedup < 3.5) {
-            runningTickCounter = 0;
-            speedup += 0.025F;
-        }
-        return super.onRunningTick(aStack);
-    }
-
-    @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         super.onPostTick(aBaseMetaTileEntity, aTick);
-        if (!aBaseMetaTileEntity.isServerSide()) return;
-        if (mMaxProgresstime == 0 && speedup > 1) {
-            if (aTick % 5 == 0) {
-                speedup = (float) Math.max(1, speedup - DECAY_RATE);
-            }
-        }
     }
 
     @Override
@@ -369,34 +432,10 @@ public class MTEMultiSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMultiS
     }
 
     @Override
-    public void loadNBTData(NBTTagCompound aNBT) {
-        super.loadNBTData(aNBT);
-        if (aNBT.hasKey("speedup")) speedup = aNBT.getFloat("speedup");
-    }
-
-    @Override
-    public void saveNBTData(NBTTagCompound aNBT) {
-        super.saveNBTData(aNBT);
-        aNBT.setFloat("speedup", speedup);
-    }
-
-    @Override
-    public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
-        int z) {
-        super.getWailaNBTData(player, tile, tag, world, x, y, z);
-        tag.setFloat("speedup", speedup);
-        tag.setInteger("parallels", getMaxParallelRecipes());
-    }
-
-    @Override
     public void getWailaBody(ItemStack itemStack, List<String> currentTip, IWailaDataAccessor accessor,
         IWailaConfigHandler config) {
         super.getWailaBody(itemStack, currentTip, accessor, config);
         final NBTTagCompound tag = accessor.getNBTData();
-        currentTip.add(
-            StatCollector.translateToLocal("GT5U.multiblock.speed") + ": "
-                + EnumChatFormatting.WHITE
-                + String.format("%.1f%%", 100 * tag.getFloat("speedup")));
         currentTip.add(
             StatCollector.translateToLocal("GT5U.multiblock.parallelism") + ": "
                 + EnumChatFormatting.WHITE
