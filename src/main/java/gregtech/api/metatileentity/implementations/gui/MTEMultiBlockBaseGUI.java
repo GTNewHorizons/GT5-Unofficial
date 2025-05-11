@@ -35,7 +35,6 @@ import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.utils.Alignment.MainAxis;
 import com.cleanroommc.modularui.utils.Color;
-import com.cleanroommc.modularui.utils.item.ItemStackHandler;
 import com.cleanroommc.modularui.utils.serialization.IByteBufAdapter;
 import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
 import com.cleanroommc.modularui.value.sync.GenericListSyncHandler;
@@ -129,7 +128,7 @@ public class MTEMultiBlockBaseGUI {
         insertThingsInGap(panelGap, syncManager, panel);
         panelColumn.child(panelGap);
 
-        insertTexts(machineInfo, base.getInvSlot(), syncManager, panel);
+        insertTexts(machineInfo, syncManager);
         addTitleTextStyle(panel, base.getLocalName());
 
         buttonColumn.child(createStructureUpdateButton(syncManager));
@@ -244,8 +243,7 @@ public class MTEMultiBlockBaseGUI {
         if (base.supportsPowerPanel()) panelGap.child(createPowerPanelButton(syncManager, parent));
     }
 
-    public void insertTexts(ListWidget<IWidget, ?> machineInfo, ItemStackHandler invSlot, PanelSyncManager syncManager,
-        ModularPanel parentPanel) {
+    public void insertTexts(ListWidget<IWidget, ?> machineInfo, PanelSyncManager syncManager) {
         machineInfo.child(
             new TextWidget(GTUtility.trans("132", "Pipe is loose. (Wrench)")).color(Color.WHITE.main)
                 .setEnabledIf(widget -> !base.mWrench)
