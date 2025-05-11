@@ -640,10 +640,11 @@ public class MTEMultiBlockBaseGui {
                 new IntSyncValue(
                     machineModeSyncer::getValue,
                     val -> { if (base.supportsMachineModeSwitch()) machineModeSyncer.setValue(val); }))
-            .length(machineModes())
+            .length(base.machineModes())
             .overlay(new DynamicDrawable(() -> {
                 com.gtnewhorizons.modularui.api.drawable.UITexture machineModeIcon = base
                     .getMachineModeIcon(machineModeSyncer.getValue());
+                if(machineModeIcon == null) return null;
                 return UITexture.builder()
                     .location(machineModeIcon.location)
                     .imageSize(18, 18)
@@ -653,17 +654,8 @@ public class MTEMultiBlockBaseGui {
                 t.addLine(IKey.dynamic(() -> StatCollector.translateToLocal("GT5U.gui.button.mode_switch")))
                     .addLine(
                         IKey.dynamic(
-                            () -> StatCollector.translateToLocal(
-                                base.getVoidingMode()
-                                    .getTransKey())));
-                if (!base.supportsVoidProtection()) {
-                    t.addLine(IKey.lang(BUTTON_FORBIDDEN_TOOLTIP));
-                }
+                            base::getMachineModeName));
             });
-    }
-
-    public int machineModes() {
-        return 2;
     }
 
     public IWidget createInputSeparationButton(PanelSyncManager syncManager) {
@@ -743,7 +735,6 @@ public class MTEMultiBlockBaseGui {
                         .location(base.getVoidingMode().buttonTexture.location)
                         .canApplyTheme(true)
                         .build()))
-            .stateHoverOverlay(base.supportsVoidProtection(), GuiTextures.MC_BUTTON_PRESSED)
             .overlay(
                 new DynamicDrawable(
                     () -> base.supportsVoidProtection()

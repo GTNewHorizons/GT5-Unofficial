@@ -2700,6 +2700,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
 
     @Override
     public UITexture getMachineModeIcon(int index) {
+        if(index > machineModeIcons.size()-1) return null;
         return machineModeIcons.get(index);
     }
 
