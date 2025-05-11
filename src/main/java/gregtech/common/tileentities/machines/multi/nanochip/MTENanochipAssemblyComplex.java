@@ -135,7 +135,7 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
         .addElement(
             'F',
             HatchElementBuilder.<MTENanochipAssemblyComplex>builder()
-                .atLeast(AssemblyHatchElement.AssemblyModule)
+                .atLeastList(Arrays.asList(AssemblyHatchElement.IgnoredHatch, AssemblyHatchElement.AssemblyModule))
                 .casingIndex(CASING_INDEX_WHITE)
                 .dot(1)
                 // Base casing or assembly module
