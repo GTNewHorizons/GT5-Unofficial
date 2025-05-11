@@ -237,7 +237,7 @@ public class MTEMultiBlockBaseGui {
             .child(createVoidExcessButton(syncManager))
             .child(createInputSeparationButton(syncManager));
 
-        if (base.supportsMachineModeSwitch()) panelGap.child(createModeSwitchButton(syncManager));
+        if (!machineModeIcons.isEmpty()) panelGap.child(createModeSwitchButton(syncManager));
         panelGap.child(createBatchModeButton(syncManager))
             .child(createLockToSingleRecipeButton(syncManager));
         if (base.supportsPowerPanel()) panelGap.child(createPowerPanelButton(syncManager, parent));
@@ -612,10 +612,7 @@ public class MTEMultiBlockBaseGui {
         syncManager.syncValue("machineMode", machineModeSyncer);
 
         return new CycleButtonWidget().size(18, 18)
-            .value(
-                new IntSyncValue(
-                    machineModeSyncer::getValue,
-                    val -> { if (base.supportsMachineModeSwitch()) machineModeSyncer.setValue(val); }))
+            .value(new IntSyncValue(machineModeSyncer::getValue, machineModeSyncer::setValue))
             .length(machineModeIcons.size())
             .overlay(new DynamicDrawable(() -> getMachineModeIcon(machineModeSyncer.getValue())))
             .tooltipBuilder(t -> {
