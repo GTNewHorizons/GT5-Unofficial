@@ -125,8 +125,8 @@ public class MTEMultiBlockBaseGui {
                     .marginLeft(4));
         }
 
-        panelColumn.child(createPanelGap(syncManager, panel));
-        panelColumn.child(inventoryRow);
+        panelColumn.child(createPanelGap(syncManager, panel))
+            .child(inventoryRow);
 
         addTitleTextStyle(panel, base.getLocalName());
         addGregtechLogo(panel);
