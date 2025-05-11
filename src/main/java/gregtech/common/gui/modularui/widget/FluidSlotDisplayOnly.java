@@ -45,6 +45,9 @@ public class FluidSlotDisplayOnly extends Widget<FluidSlotDisplayOnly>
     private static final String UNIT_LITER = "L";
 
     private static final IFluidTank EMPTY = new FluidTank(0);
+    private static final NumberFormat.Params SLOT_FORMAT_PARAMS = NumberFormat.DEFAULT.copyToBuilder()
+        .maxLength(3)
+        .build();
 
     private final TextRenderer textRenderer = new TextRenderer();
     private FluidDisplaySyncHandler syncHandler;
@@ -79,8 +82,7 @@ public class FluidSlotDisplayOnly extends Widget<FluidSlotDisplayOnly>
     }
 
     public String formatFluidAmount(double amount) {
-        NumberFormat.FORMAT.setMaximumFractionDigits(3);
-        return NumberFormat.FORMAT.format(getBaseUnitAmount(amount));
+        return NumberFormat.format(getBaseUnitAmount(amount), SLOT_FORMAT_PARAMS);
     }
 
     protected double getBaseUnitAmount(double amount) {
@@ -124,7 +126,7 @@ public class FluidSlotDisplayOnly extends Widget<FluidSlotDisplayOnly>
             this.overlayTexture.drawAtZero(context, getArea(), widgetTheme);
         }
         if (content != null && this.syncHandler.controlsAmount()) {
-            String s = NumberFormat.formatWithMaxDigits(getBaseUnitAmount(content.amount)) + getBaseUnit();
+            String s = NumberFormat.format(getBaseUnitAmount(content.amount), SLOT_FORMAT_PARAMS) + getBaseUnit();
             this.textRenderer.setAlignment(Alignment.CenterRight, getArea().width - this.contentOffsetX - 1f);
             this.textRenderer.setPos((int) (this.contentOffsetX + 0.5f), (int) (getArea().height - 5.5f));
             this.textRenderer.draw(s);

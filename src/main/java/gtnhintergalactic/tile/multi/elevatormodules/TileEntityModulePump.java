@@ -307,7 +307,8 @@ public abstract class TileEntityModulePump extends TileEntityModuleBase {
                             .addLine(IKey.str(fluidStack.getLocalizedName()))
                             .add(
                                 IKey.str(
-                                    EnumChatFormatting.GREEN + NumberFormat.formatWithMaxDigits(fluidStack.amount, 4)
+                                    EnumChatFormatting.GREEN
+                                        + NumberFormat.format(fluidStack.amount, NumberFormat.DEFAULT)
                                         + "L/s "
                                         + EnumChatFormatting.WHITE))
                             .add(IKey.lang("tt.spacepump.parallelTooltip"));
@@ -326,7 +327,7 @@ public abstract class TileEntityModulePump extends TileEntityModuleBase {
                         FluidStack fluidStack = fluidDisplaySyncer.getValue();
                         if (fluidStack == null) return "";
                         fluidStack.amount *= recipeParallelSyncer.getValue();
-                        return NumberFormat.formatWithMaxDigits(fluidStack.amount, 4) + "L/s";
+                        return NumberFormat.format(fluidStack.amount, NumberFormat.DEFAULT) + "L/s";
                     })
                         .asWidget()
                         .color(Color.ORANGE.main))
@@ -428,7 +429,8 @@ public abstract class TileEntityModulePump extends TileEntityModuleBase {
                             .addLine(IKey.str(fluidStack.getLocalizedName()))
                             .addLine(
                                 IKey.str(
-                                    EnumChatFormatting.GREEN + NumberFormat.formatWithMaxDigits(fluidStack.amount, 4)
+                                    EnumChatFormatting.GREEN
+                                        + NumberFormat.format(fluidStack.amount, NumberFormat.DEFAULT)
                                         + "L/s"
                                         + EnumChatFormatting.WHITE
                                         + " per parallel")));
