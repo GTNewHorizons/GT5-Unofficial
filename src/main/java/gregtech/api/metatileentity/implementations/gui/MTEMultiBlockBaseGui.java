@@ -422,10 +422,8 @@ public class MTEMultiBlockBaseGui {
     }
 
     private IWidget createPowerPanelButton(PanelSyncManager syncManager, ModularPanel parent) {
-        IPanelHandler powerPanel = syncManager.panel(
-            "powerPanel",
-            (p_syncManager, syncHandler) -> openPowerControlPanel(p_syncManager, syncHandler, parent),
-            true);
+        IPanelHandler powerPanel = syncManager
+            .panel("powerPanel", (p_syncManager, syncHandler) -> openPowerControlPanel(p_syncManager, parent), true);
 
         return new ButtonWidget<>().size(18, 18)
             .rightRel(0, 6, 0)
@@ -443,8 +441,7 @@ public class MTEMultiBlockBaseGui {
             .tooltipShowUpTimer(TOOLTIP_DELAY);
     }
 
-    private ModularPanel openPowerControlPanel(PanelSyncManager syncManager, IPanelHandler thisPanel,
-        ModularPanel parent) {
+    private ModularPanel openPowerControlPanel(PanelSyncManager syncManager, ModularPanel parent) {
         Area area = parent.getArea();
         int x = area.x + area.width;
         int y = area.y;
