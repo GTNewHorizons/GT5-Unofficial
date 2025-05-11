@@ -610,6 +610,7 @@ public class MTEEnvironmentallyControlledChemicalFacility extends
     @Override
     protected ProcessingLogic createProcessingLogic() {
         return new ProcessingLogic() {
+
             @NotNull
             @Override
             protected CheckRecipeResult validateRecipe(@NotNull GTRecipe recipe) {
@@ -1010,17 +1011,12 @@ public class MTEEnvironmentallyControlledChemicalFacility extends
                         // if more than 5mb of fluid is in hatch:
                         if (mLubricantInputHatch.mFluid.amount >= 5) {
                             String lubricantType = mLubricantInputHatch.mFluid.getUnlocalizedName();
-                            switch (lubricantType) {
-                                case "vo17":
-                                    leakCoeff = 0.3;
-                                    break;
-                                case "vo43":
-                                    leakCoeff = 0.1;
-                                    break;
-                                case "vo75":
-                                    leakCoeff = 0;
-                                    break;
-                            }
+                            leakCoeff = switch (lubricantType) {
+                                case "vo17" -> 0.3;
+                                case "vo43" -> 0.1;
+                                case "vo75" -> 0;
+                                default -> leakCoeff;
+                            };
                             mLubricantInputHatch.drain(5, true);
                         }
                     }

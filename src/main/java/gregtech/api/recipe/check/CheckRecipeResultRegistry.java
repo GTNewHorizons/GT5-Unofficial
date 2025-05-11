@@ -112,7 +112,8 @@ public final class CheckRecipeResultRegistry {
      * ECCF recipe conditions are out of given range
      */
 
-    public static final CheckRecipeResult OUT_OF_RECIPE_CONDITIONS = SimpleCheckRecipeResult.ofFailure("conditions.out.of.range");
+    public static final CheckRecipeResult OUT_OF_RECIPE_CONDITIONS = SimpleCheckRecipeResult
+        .ofFailure("conditions.out.of.range");
 
     /**
      * Black Hole Compressor does not have an active black hole
