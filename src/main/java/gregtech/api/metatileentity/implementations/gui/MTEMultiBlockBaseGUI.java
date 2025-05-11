@@ -159,7 +159,10 @@ public class MTEMultiBlockBaseGUI {
         buttonColumn.child(new ToggleButton().value(new BooleanSyncValue(base::isAllowedToWork, bool -> {
             if (!isAllowedToWorkButtonEnabled()) return;
             if (bool) base.enableWorking();
-            else base.disableWorking();
+            else {
+                if (base.maxProgresstime() > 0) base.disableWorking();
+                else base.stopMachine(ShutDownReasonRegistry.NONE);
+            }
         }))
             .tooltip(tooltip -> tooltip.add("Power Switch"))
             .size(18, 18)
@@ -893,7 +896,7 @@ public class MTEMultiBlockBaseGUI {
 
         @Override
         public boolean areEqual(@NotNull EnumSet<StructureError> t1, @NotNull EnumSet<StructureError> t2) {
-            return false;
+            return t1.containsAll(t2) && t2.containsAll(t1);
         }
     }
 
@@ -916,7 +919,8 @@ public class MTEMultiBlockBaseGUI {
 
         @Override
         public boolean areEqual(@NotNull ShutDownReason t1, @NotNull ShutDownReason t2) {
-            return false;
+            return t1.getID()
+                .equals(t2.getID());
         }
     }
 
@@ -939,7 +943,7 @@ public class MTEMultiBlockBaseGUI {
 
         @Override
         public boolean areEqual(@NotNull CheckRecipeResult t1, @NotNull CheckRecipeResult t2) {
-            return false;
+            return t1.equals(t2);
         }
     }
 }
