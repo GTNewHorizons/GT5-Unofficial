@@ -29,6 +29,7 @@ import com.cleanroommc.modularui.drawable.DynamicDrawable;
 import com.cleanroommc.modularui.drawable.UITexture;
 import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.utils.Alignment.MainAxis;
 import com.cleanroommc.modularui.utils.Color;
 import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
@@ -81,6 +82,7 @@ public class MTEMultiBlockBaseGui {
             .padding(4);
 
         registerSyncValues(syncManager);
+        base.setMachineModeIcons();
         ListWidget<IWidget, ?> machineInfo = new ListWidget<>()
             .size(machineInfoSize()[0] - 4, machineInfoSize()[1] - 3);
 
@@ -183,7 +185,7 @@ public class MTEMultiBlockBaseGui {
         }
 
         final TextWidget text = new TextWidget(title).color(0x404040)
-            .alignment(com.cleanroommc.modularui.utils.Alignment.CenterLeft)
+            .alignment(Alignment.CenterLeft)
             .width(titleWidth);
 
         UITexture angular = UITexture.builder()
@@ -490,7 +492,7 @@ public class MTEMultiBlockBaseGui {
     private IWidget makeTitleTextWidget() {
         return new TextWidget(
             EnumChatFormatting.UNDERLINE + StatCollector.translateToLocal("GT5U.gui.text.power_panel"))
-                .alignment(com.cleanroommc.modularui.utils.Alignment.Center)
+                .alignment(Alignment.Center)
                 .size(120, 18)
                 .marginBottom(4);
     }
