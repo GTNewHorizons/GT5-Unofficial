@@ -255,6 +255,10 @@ public final class GTGuiTextures {
         .fullImage(GregTech.ID, "gui/overlay_button/input_separation_off");
     public static final UITexture OVERLAY_BUTTON_INPUT_SEPARATION_OFF_DISABLED = UITexture
         .fullImage(GregTech.ID, "gui/overlay_button/input_separation_off_disabled");
+    public static final UITexture OVERLAY_BUTTON_RECIPE_UNLOCKED = UITexture
+        .fullImage(GregTech.ID, "gui/overlay_button/recipe_unlocked");
+    public static final UITexture OVERLAY_BUTTON_RECIPE_UNLOCKED_DISABLED = UITexture
+        .fullImage(GregTech.ID, "gui/overlay_button/recipe_unlocked_disabled");
     public static final UITexture OVERLAY_BUTTON_RECIPE_LOCKED = UITexture
         .fullImage(GregTech.ID, "gui/overlay_button/recipe_locked");
     public static final UITexture OVERLAY_BUTTON_RECIPE_LOCKED_DISABLED = UITexture

@@ -491,6 +491,7 @@ public class MTEMultiBlockBaseGui {
             .mainAxisAlignment(MainAxis.CENTER)
             .child(
                 new TextFieldWidget().value(powerPanelMaxParallelSyncer)
+                    .setTextAlignment(Alignment.Center)
                     .setNumbers(
                         () -> alwaysMaxParallelSyncer.getValue() ? maxParallelSyncer.getValue() : 1,
                         maxParallelSyncer::getValue)
@@ -552,11 +553,10 @@ public class MTEMultiBlockBaseGui {
                         return new DrawableArray(GTGuiTextures.OVERLAY_BUTTON_RECIPE_LOCKED_DISABLED);
                     }
                 } else {
-
                     if (base.supportsSingleRecipeLocking()) {
-                        return GTGuiTextures.OVERLAY_BUTTON_RECIPE_LOCKED;
+                        return GTGuiTextures.OVERLAY_BUTTON_RECIPE_UNLOCKED;
                     } else {
-                        return new DrawableArray(GTGuiTextures.OVERLAY_BUTTON_RECIPE_LOCKED_DISABLED, forbidden);
+                        return new DrawableArray(GTGuiTextures.OVERLAY_BUTTON_RECIPE_UNLOCKED_DISABLED, forbidden);
                     }
                 }
             }))
