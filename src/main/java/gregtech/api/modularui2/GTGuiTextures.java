@@ -2,6 +2,7 @@ package gregtech.api.modularui2;
 
 import static gregtech.api.enums.Mods.GregTech;
 
+import com.cleanroommc.modularui.drawable.AdaptableUITexture;
 import com.cleanroommc.modularui.drawable.UITexture;
 
 import bartworks.MainMod;
@@ -310,6 +311,13 @@ public final class GTGuiTextures {
         .canApplyTheme()
         .name(GTTextureIds.BUTTON_STANDARD_PRESSED)
         .build();
+    public static final UITexture BUTTON_STANDARD_TOGGLE = UITexture.builder()
+        .location(GregTech.ID, "gui/button/standard_toggle")
+        .imageSize(18, 18)
+        .adaptable(1)
+        .canApplyTheme()
+        .name(GTTextureIds.BUTTON_STANDARD_TOGGLE)
+        .build();
     private static final SteamTextureRegisterer BUTTON_STEAM_PRESSED = SteamTextureRegisterer.builder()
         .location("gui/button%s_pressed")
         .imageSize(18, 18)
@@ -380,6 +388,8 @@ public final class GTGuiTextures {
     public static final UITexture OVERLAY_BUTTON_EXPORT = fullImageGT("overlay_button/export");
     public static final UITexture OVERLAY_BUTTON_HOURGLASS = fullImageGT("overlay_button/hourglass");
     public static final UITexture OVERLAY_BUTTON_IMPORT = fullImageGT("overlay_button/import");
+    public static final UITexture OVERLAY_BUTTON_AUTOOUTPUT_ITEM = fullImageGT("overlay_button/autooutput_item");
+    public static final UITexture OVERLAY_BUTTON_AUTOOUTPUT_FLUID = fullImageGT("overlay_button/autooutput_fluid");
     public static final UITexture OVERLAY_BUTTON_POWER_SWITCH_ON = fullImageGT("overlay_button/power_switch_on");
     public static final UITexture OVERLAY_BUTTON_PROGRESS = fullImageGT("overlay_button/progress");
     public static final UITexture OVERLAY_BUTTON_REDSTONE_OFF = fullImageGT("overlay_button/redstone_off");
@@ -390,6 +400,11 @@ public final class GTGuiTextures {
     public static final UITexture OVERLAY_BUTTON_USE_INVERTED_PROCESSING_STATE = fullImageGT(
         "overlay_button/use_inverted_processing_state");
     public static final UITexture OVERLAY_BUTTON_WHITELIST = fullImageGT("overlay_button/whitelist");
+    public static final UITexture OVERLAY_BUTTON_LOCK = fullImageGT("overlay_button/lock");
+    public static final UITexture OVERLAY_BUTTON_INPUT_FROM_OUTPUT_SIDE = fullImageGT(
+        "overlay_button/input_from_output_side");
+    public static final UITexture OVERLAY_BUTTON_TANK_VOID_EXCESS = fullImageGT("overlay_button/tank_void_excess");
+    public static final UITexture OVERLAY_BUTTON_TANK_VOID_ALL = fullImageGT("overlay_button/tank_void_all");
 
     // endregion button overlay
 
@@ -412,6 +427,12 @@ public final class GTGuiTextures {
             GTTextureIds.PICTURE_GT_LOGO_BRONZE,
             GTTextureIds.PICTURE_GT_LOGO_STEEL,
             GTTextureIds.PICTURE_GT_LOGO_PRIMITIVE)
+        .build();
+    public static final AdaptableUITexture PICTURE_SCREEN_BLACK = (AdaptableUITexture) AdaptableUITexture.builder()
+        .location(GregTech.ID, "gui/picture/screen_black")
+        .name(GTTextureIds.PICTURE_GT_SCREEN_BLACK)
+        .adaptable(2)
+        .tiled(16, 16)
         .build();
     public static final UITexture PICTURE_BARTWORKS_LOGO_STANDARD = UITexture.builder()
         .location(MainMod.MOD_ID, "GUI/picture/bw_logo_47x21")

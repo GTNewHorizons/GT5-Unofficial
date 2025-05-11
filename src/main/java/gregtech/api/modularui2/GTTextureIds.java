@@ -73,6 +73,7 @@ public final class GTTextureIds {
 
     public static final String BUTTON_STANDARD = "gregtech:button_standard";
     public static final String BUTTON_STANDARD_PRESSED = "gregtech:button_standard_pressed";
+    public static final String BUTTON_STANDARD_TOGGLE = "gregtech:button_standard_toggle";
     public static final String BUTTON_BRONZE = "gregtech:button_bronze";
     public static final String BUTTON_BRONZE_PRESSED = "gregtech:button_bronze_pressed";
     public static final String BUTTON_STEEL = "gregtech:button_steel";
@@ -98,6 +99,7 @@ public final class GTTextureIds {
     public static final String PICTURE_GT_LOGO_BRONZE = "gregtech:picture_gt_logo_bronze";
     public static final String PICTURE_GT_LOGO_STEEL = "gregtech:picture_gt_logo_steel";
     public static final String PICTURE_GT_LOGO_PRIMITIVE = "gregtech:picture_gt_logo_primitive";
+    public static final String PICTURE_GT_SCREEN_BLACK = "gregtech:picture_gt_screen_black";
 
     public static final String PICTURE_TRANSPARENT = "gregtech:picture_transparent";
     public static final String PICTURE_BW_LOGO_STANDARD = "bartworks:picture_bw_logo";
