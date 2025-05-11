@@ -6,6 +6,7 @@ import com.cleanroommc.modularui.network.NetworkUtils;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
+import com.cleanroommc.modularui.widgets.ButtonWidget;
 import com.cleanroommc.modularui.widgets.layout.Flow;
 
 import gregtech.api.modularui2.CoverGuiData;
@@ -39,18 +40,34 @@ public class CoverGui<T extends Cover> {
     public void addUIWidgets(CoverGuiData guiData, PanelSyncManager syncManager, Flow column) {}
 
     /**
+     * Creates a standalone panel holding the UI for this cover.
+     * <br>
+     * Since it is standalone, you shouldn't try to have multiple instances of this panel on screen at once, or tied to
+     * several widgets. Use {@link CoverGui#createBasePanel} with a unique panel name instead.
+     */
+    public final ModularPanel createStandalonePanel(CoverGuiData guiData, PanelSyncManager syncManager) {
+        return createBasePanel(guiData, "standalone.cover", syncManager);
+    }
+
+    /**
      * Creates template panel for cover GUI. Called by {@link Cover#buildUI}.
      * Override this method if you want to implement more customized GUI. Otherwise, implement {@link #addUIWidgets}
      * instead.
+     *
+     * @param guiData     information about the creation context
+     * @param panelName   the unique name of this panel in the context of your UI.
+     * @param syncManager sync handler where widget sync handlers should be registered
+     * @return UI panel to show
      */
-    public ModularPanel createBasePanel(CoverGuiData guiData, PanelSyncManager syncManager) {
+    public ModularPanel createBasePanel(CoverGuiData guiData, String panelName, PanelSyncManager syncManager) {
         syncManager.addCloseListener(player -> {
             if (!NetworkUtils.isClient(player)) {
                 guiData.getTileEntity()
                     .markDirty();
             }
         });
-        final ModularPanel panel = ModularPanel.defaultPanel(getGuiId(), getGUIWidth(), getGUIHeight());
+        final ModularPanel panel = ModularPanel.defaultPanel(panelName, getGUIWidth(), getGUIHeight())
+            .debugName(getGuiId());
         if (doesBindPlayerInventory() && !guiData.isAnotherWindow()) {
             panel.bindPlayerInventory();
         }
@@ -62,11 +79,9 @@ public class CoverGui<T extends Cover> {
         panel.child(widgetsColumn);
         addTitleToUI(guiData, widgetsColumn);
         addUIWidgets(guiData, syncManager, widgetsColumn);
-        // if (getUIBuildContext().isAnotherWindow()) {
-        // builder.widget(
-        // ButtonWidget.closeWindowButton(true)
-        // .setPos(getGUIWidth() - 15, 3));
-        // }
+        if (guiData.isAnotherWindow()) {
+            panel.child(ButtonWidget.panelCloseButton());
+        }
 
         final Cover cover = guiData.getCoverable()
             .getCoverAtSide(guiData.getSide());

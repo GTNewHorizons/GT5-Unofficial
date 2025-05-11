@@ -3,10 +3,11 @@ package gregtech.common.modularui2.factory;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import org.jetbrains.annotations.NotNull;
+
 import com.cleanroommc.modularui.api.IPanelHandler;
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.api.widget.IWidget;
-import com.cleanroommc.modularui.drawable.ItemDrawable;
 import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.network.NetworkUtils;
 import com.cleanroommc.modularui.screen.ContainerCustomizer;
@@ -19,13 +20,15 @@ import com.cleanroommc.modularui.widget.Widget;
 import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 
-import gregtech.api.enums.ItemList;
 import gregtech.api.interfaces.IConfigurationCircuitSupport;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.modularui2.CoverGuiData;
 import gregtech.api.modularui2.GTGuis;
 import gregtech.api.modularui2.GTWidgetThemes;
 import gregtech.api.util.item.GhostCircuitItemStackHandler;
+import gregtech.common.covers.Cover;
 import gregtech.common.items.ItemIntegratedCircuit;
 import gregtech.common.modularui2.widget.CoverTabButton;
 import gregtech.common.modularui2.widget.GhostCircuitSlotWidget;
@@ -185,31 +188,28 @@ public final class GTBaseGuiBuilder {
             ForgeDirection side = ForgeDirection.getOrientation(i);
             String panelKey = "cover_panel_" + side.toString()
                 .toLowerCase();
-            IPanelHandler panel = syncManager.panel(panelKey, coverPanelBuilder(panelKey, side), true);
-            column.child(new CoverTabButton(mte.getBaseMetaTileEntity(), side, panel));
+            ICoverable coverable = mte.getBaseMetaTileEntity();
+            IPanelHandler panel = syncManager
+                .panel(panelKey, coverPanelBuilder(panelKey, coverable.getCoverAtSide(side), side), true);
+            column.child(new CoverTabButton(coverable, side, panel));
         }
         posGuiData.getNEISettings()
             .addNEIExclusionArea(column);
         return column;
     }
 
-    private PanelSyncHandler.IPanelBuilder coverPanelBuilder(String name, ForgeDirection side) {
-        // todo: actual cover panel
-        return (syncManager, syncHandler) -> GTGuis.createPopUpPanel(name)
-            .size(176, 107)
-            .child(
-                Flow.column()
-                    .coverChildren()
-                    .childPadding(4)
-                    .center()
-                    .child(
-                        IKey.str(
-                            "Cover Panel " + side.toString()
-                                .toLowerCase())
-                            .asWidget())
-                    .child(
-                        new ItemDrawable(ItemList.GigaChad.get(1)).asIcon()
-                            .asWidget()));
+    private PanelSyncHandler.IPanelBuilder coverPanelBuilder(String name, @NotNull Cover cover, ForgeDirection side) {
+        return (syncManager, syncHandler) -> cover.buildPopUpUi(
+            new CoverGuiData(
+                this.posGuiData.getPlayer(),
+                cover.getCoverID(),
+                this.posGuiData.getX(),
+                this.posGuiData.getY(),
+                this.posGuiData.getZ(),
+                side,
+                true),
+            name,
+            syncManager);
     }
 
     private IWidget createGhostCircuitSlot() {
