@@ -422,7 +422,7 @@ public class MTEMultiBlockBaseGUI {
                                 .isEmpty());
             machineInfo.child(recipeInfoWidget);
         }
-        machineInfo.onUpdateListener((bla) -> {
+        machineInfo.onUpdateListener((unused) -> {
             if (NetworkUtils.isClient()) {
                 WidgetTree.resize(machineInfo);
             }
@@ -456,7 +456,7 @@ public class MTEMultiBlockBaseGUI {
     }
 
     public IWidget createPowerPanelButton(PanelSyncManager syncManager, ModularPanel parent) {
-        IPanelHandler bla = syncManager.panel(
+        IPanelHandler powerPanel = syncManager.panel(
             "powerPanel",
             (p_syncManager, syncHandler) -> openPowerControlPanel(p_syncManager, syncHandler, parent),
             true);
@@ -466,10 +466,10 @@ public class MTEMultiBlockBaseGUI {
             .marginTop(4)
             .overlay(UITexture.fullImage(GregTech.ID, "gui/overlay_button/power_panel"))
             .onMousePressed(d -> {
-                if (!bla.isPanelOpen()) {
-                    bla.openPanel();
+                if (!powerPanel.isPanelOpen()) {
+                    powerPanel.openPanel();
                 } else {
-                    bla.closePanel();
+                    powerPanel.closePanel();
                 }
                 return true;
             })
@@ -656,10 +656,10 @@ public class MTEMultiBlockBaseGUI {
                     val -> { if (base.supportsMachineModeSwitch()) machineModeSyncer.setValue(val); }))
             .length(machineModes())
             .overlay(new DynamicDrawable(() -> {
-                com.gtnewhorizons.modularui.api.drawable.UITexture bla = base
+                com.gtnewhorizons.modularui.api.drawable.UITexture machineModeIcon = base
                     .getMachineModeIcon(machineModeSyncer.getValue());
                 return UITexture.builder()
-                    .location(bla.location)
+                    .location(machineModeIcon.location)
                     .imageSize(18, 18)
                     .build();
             }))
