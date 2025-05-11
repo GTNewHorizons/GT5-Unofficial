@@ -66,6 +66,7 @@ import gregtech.common.blocks.BlockCasings6;
 import gregtech.common.blocks.BlockCasings8;
 import gregtech.common.blocks.BlockCasings9;
 import gregtech.common.blocks.BlockCasingsNH;
+import gregtech.common.blocks.BlockCoilECCF;
 import gregtech.common.blocks.BlockConcretes;
 import gregtech.common.blocks.BlockCyclotronCoils;
 import gregtech.common.blocks.BlockDrone;

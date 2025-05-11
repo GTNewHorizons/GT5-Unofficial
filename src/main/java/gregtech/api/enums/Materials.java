@@ -1,29 +1,5 @@
 package gregtech.api.enums;
 
-import static gregtech.api.enums.FluidState.GAS;
-import static gregtech.api.enums.GTValues.M;
-import static gregtech.api.enums.Mods.Thaumcraft;
-import static gregtech.api.util.GTUtility.formatStringSafe;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.LinkedHashMap;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
-
-import javax.annotation.Nonnull;
-
-import net.minecraft.enchantment.Enchantment;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidStack;
-
 import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.TCAspects.TC_AspectStack;
@@ -47,6 +23,28 @@ import gregtech.common.render.items.UniversiumRenderer;
 import gregtech.loaders.materialprocessing.ProcessingConfig;
 import gregtech.loaders.materialprocessing.ProcessingModSupport;
 import gregtech.loaders.materials.MaterialsInit1;
+import net.minecraft.enchantment.Enchantment;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidStack;
+
+import javax.annotation.Nonnull;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+
+import static gregtech.api.enums.FluidState.GAS;
+import static gregtech.api.enums.GTValues.M;
+import static gregtech.api.enums.Mods.Thaumcraft;
+import static gregtech.api.util.GTUtility.formatStringSafe;
 
 @SuppressWarnings("unused") // API Legitimately has unused Members and Methods
 public class Materials implements IColorModulationContainer, ISubTagContainer {
@@ -442,6 +440,9 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials Honey;
     public static Materials Leather;
     public static Materials Lubricant;
+    public static Materials VO17_lubricant;
+    public static Materials VO43_lubricant;
+    public static Materials VO75_lubricant;
     public static Materials McGuffium239;
     public static Materials MeatRaw;
     public static Materials MeatCooked;
