@@ -168,7 +168,6 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
     public float damageFactorHigh = 0.6f;
     public int machineMode = 0;
     public List<UITexture> machineModeIcons = new ArrayList<>();
-    public List<UITexture> machineModeIconsMui2 = new ArrayList<>();
 
     public boolean mLockedToSingleRecipe = getDefaultRecipeLockingMode();
     protected boolean inputSeparation = getDefaultInputSeparationMode();
