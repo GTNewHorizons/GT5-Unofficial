@@ -315,7 +315,7 @@ public class RecipeHandlers {
             TierEU.RECIPE_LV);
         addSimpleProcessingRecipe(
             CircuitComponent.BoardOptical,
-            Materials.MysteriousCrystal.getFluid(1000),
+            Materials.MysteriousCrystal.getMolten(1000),
             CircuitComponent.ProcessedBoardOptical,
             ModuleRecipeInfo.Fast,
             TierEU.RECIPE_LV);
