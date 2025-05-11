@@ -133,7 +133,7 @@ public class MTEMultiBlockBaseGUI {
         addTitleTextStyle(panel, base.getLocalName());
 
         buttonColumn.child(createStructureUpdateButton(syncManager));
-        if (shouldMakePowerSwitchButtonEnabled()) addPowerSwitchButtton(buttonColumn);
+        addPowerSwitchButtton(buttonColumn);
         addGregtechLogo(panel);
 
         if (base.doesBindPlayerInventory()) {
@@ -147,10 +147,6 @@ public class MTEMultiBlockBaseGUI {
         panelColumn.child(inventoryRow);
 
         return panel.child(panelColumn);
-    }
-
-    public boolean shouldMakePowerSwitchButtonEnabled() {
-        return true;
     }
 
     public void addPowerSwitchButtton(Flow buttonColumn) {
