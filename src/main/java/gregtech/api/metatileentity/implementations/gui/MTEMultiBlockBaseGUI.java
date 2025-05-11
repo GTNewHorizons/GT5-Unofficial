@@ -188,7 +188,6 @@ public class MTEMultiBlockBaseGUI {
             titleHeight = titleLines.size() * fontRenderer.FONT_HEIGHT + (titleLines.size() - 1) * 1;
         }
 
-        final SingleChildWidget<?> tab = new SingleChildWidget<>();
         final TextWidget text = new TextWidget(title).color(0x404040)
             .alignment(com.cleanroommc.modularui.utils.Alignment.CenterLeft)
             .width(titleWidth);
