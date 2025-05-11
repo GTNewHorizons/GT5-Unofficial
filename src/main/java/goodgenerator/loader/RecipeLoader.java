@@ -19,6 +19,7 @@ import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
 import static gregtech.api.util.GTRecipeConstants.ADDITIVE_AMOUNT;
 import static gregtech.api.util.GTRecipeConstants.AssemblyLine;
+import static gregtech.api.util.GTRecipeConstants.BlastFurnaceWithGas;
 import static gregtech.api.util.GTRecipeConstants.COIL_HEAT;
 import static gregtech.api.util.GTRecipeConstants.FUEL_TYPE;
 import static gregtech.api.util.GTRecipeConstants.FUEL_VALUE;
@@ -364,13 +365,13 @@ public class RecipeLoader {
 
         GTValues.RA.stdBuilder()
             .itemInputs(GGMaterial.zincThoriumAlloy.get(OrePrefixes.ingot, 1), GTUtility.getIntegratedCircuit(11))
-            .fluidInputs(Materials.Argon.getGas(250))
             .fluidOutputs(Materials.Zinc.getMolten(144))
             .itemOutputs(WerkstoffLoader.Thorium232.get(OrePrefixes.dust, 1))
             .duration(7 * SECONDS + 10 * TICKS)
             .eut(TierEU.RECIPE_HV)
             .metadata(COIL_HEAT, 1900)
-            .addTo(blastFurnaceRecipes);
+            .metadata(ADDITIVE_AMOUNT, 250)
+            .addTo(BlastFurnaceWithGas);
 
         // 2V + 5O = V2O5
         GTValues.RA.stdBuilder()
