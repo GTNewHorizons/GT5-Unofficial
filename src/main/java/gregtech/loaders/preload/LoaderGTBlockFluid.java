@@ -654,7 +654,8 @@ public class LoaderGTBlockFluid implements Runnable {
             new Materials[] { Materials.Cryolite, Materials.SiliconSG, MaterialsKevlar.NickelAluminide,
                 MaterialsUEVplus.SpaceTime, MaterialsUEVplus.TranscendentMetal, Materials.Oriharukon,
                 MaterialsUEVplus.WhiteDwarfMatter, MaterialsUEVplus.BlackDwarfMatter, MaterialsUEVplus.Universium,
-                MaterialsUEVplus.Eternity, MaterialsUEVplus.MagMatter, MaterialsUEVplus.SixPhasedCopper },
+                MaterialsUEVplus.Eternity, MaterialsUEVplus.MagMatter, MaterialsUEVplus.SixPhasedCopper,
+                Materials.HellishMetal, MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter },
             OrePrefixes.block,
             gregtech.api.enums.Textures.BlockIcons.STORAGE_BLOCKS12);
 
@@ -1342,6 +1343,24 @@ public class LoaderGTBlockFluid implements Runnable {
             .configureMaterials(Materials.CosmicNeutronium)
             .registerBContainers(
                 GTOreDictUnificator.get(OrePrefixes.cellMolten, Materials.CosmicNeutronium, 1L),
+                ItemList.Cell_Empty.get(1L));
+
+        GTFluidFactory.builder("plasma.ichorium")
+            .withLocalizedName("Ichorium Plasma")
+            .withStateAndTemperature(PLASMA, 9000)
+            .buildAndRegister()
+            .configureMaterials(Materials.Ichorium)
+            .registerBContainers(
+                GTOreDictUnificator.get(OrePrefixes.cellPlasma, Materials.Ichorium, 1L),
+                ItemList.Cell_Empty.get(1L));
+
+        GTFluidFactory.builder("molten.ichorium")
+            .withLocalizedName("Molten Ichorium")
+            .withStateAndTemperature(MOLTEN, 9000)
+            .buildAndRegister()
+            .configureMaterials(Materials.Ichorium)
+            .registerBContainers(
+                GTOreDictUnificator.get(OrePrefixes.cellMolten, Materials.Ichorium, 1L),
                 ItemList.Cell_Empty.get(1L));
 
         GTFluidFactory.builder("fieryblood")

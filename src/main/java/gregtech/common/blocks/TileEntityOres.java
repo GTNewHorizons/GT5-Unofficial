@@ -335,11 +335,12 @@ public class TileEntityOres extends TileEntity implements IAllSidedTexturedTileE
                         // if not shouldFortune and isNatural then get normal drops
                         // if shouldFortune and not isNatural then get normal drops
                         if (shouldFortune && this.mNatural && aFortune > 0) {
-                            int aMinAmount = 1;
                             // Max applicable fortune
                             if (aFortune > 3) aFortune = 3;
-                            int amount = aMinAmount
-                                + Math.max(worldObj.rand.nextInt(aFortune * (tIsRich ? 2 : 1) + 2) - 1, 0);
+                            int addedDrops = worldObj.rand.nextInt(aFortune + 2) - 1;
+                            if (addedDrops < 0) addedDrops = 0;
+
+                            int amount = (tIsRich ? 2 : 1) * (addedDrops + 1);
                             for (int i = 0; i < amount; i++) {
                                 rList.add(GTOreDictUnificator.get(OrePrefixes.rawOre, aOreMaterial, 1));
                             }

@@ -46,6 +46,7 @@ import forestry.api.arboriculture.IToolGrafter;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enchants.EnchantmentRadioactivity;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.Mods;
 import gregtech.api.enums.TCAspects.TC_AspectStack;
 import gregtech.api.interfaces.IDamagableItem;
 import gregtech.api.interfaces.IToolStats;
@@ -64,12 +65,11 @@ import mrtjp.projectred.api.IScrewdriver;
  * Materials.Bismuth, Materials.Bismuth, null);
  */
 @Optional.InterfaceList(
-    value = {
-        @Optional.Interface(iface = "forestry.api.arboriculture.IToolGrafter", modid = "ForestryAPI|arboriculture"),
-        @Optional.Interface(iface = "mods.railcraft.api.core.items.IToolCrowbar", modid = "RailcraftAPI|items"),
-        @Optional.Interface(iface = "buildcraft.api.tools.IToolWrench", modid = "BuildCraftAPI|tools"),
-        @Optional.Interface(iface = "crazypants.enderio.api.tool.ITool", modid = "EnderIOAPI|Tools"),
-        @Optional.Interface(iface = "mrtjp.projectred.api.IScrewdriver", modid = "ProjRed|Core"), })
+    value = { @Optional.Interface(iface = "forestry.api.arboriculture.IToolGrafter", modid = Mods.Names.FORESTRY),
+        @Optional.Interface(iface = "mods.railcraft.api.core.items.IToolCrowbar", modid = Mods.Names.RAILCRAFT),
+        @Optional.Interface(iface = "buildcraft.api.tools.IToolWrench", modid = Mods.Names.BUILD_CRAFT_CORE),
+        @Optional.Interface(iface = "crazypants.enderio.api.tool.ITool", modid = Mods.Names.ENDER_I_O),
+        @Optional.Interface(iface = "mrtjp.projectred.api.IScrewdriver", modid = Mods.Names.PROJECT_RED_CORE), })
 public abstract class MetaGeneratedTool extends MetaBaseItem
     implements IDamagableItem, IToolGrafter, IToolCrowbar, IToolWrench, ITool, IScrewdriver, IAEWrench {
 
@@ -448,7 +448,7 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
                     EnumChatFormatting.WHITE
                         + String.format(
                             transItem("005", "Base Efficiency: %s"),
-                            "" + EnumChatFormatting.BLUE + (int) Math.ceil(turbine.getEfficiency() * 100))
+                            "" + EnumChatFormatting.BLUE + (int) Math.ceil(turbine.getBaseEfficiency() * 100))
                         + "%"
                         + EnumChatFormatting.GRAY);
                 aList.add(
