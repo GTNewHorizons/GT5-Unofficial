@@ -437,7 +437,7 @@ public class Cover implements IGuiHolder<CoverGuiData> {
         if (coverable != null && hasCoverGUI() && aPlayer instanceof EntityPlayerMP) {
             if (GTGuis.GLOBAL_SWITCH_MUI2) {
                 gregtech.api.modularui2.CoverUIFactory.INSTANCE
-                    .open((EntityPlayerMP) aPlayer, coverID, coverable, coverSide, false);
+                    .open((EntityPlayerMP) aPlayer, coverID, coverable, coverSide);
             } else {
                 GTUIInfos.openCoverUI(coverable, aPlayer, coverSide);
             }

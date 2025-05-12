@@ -211,8 +211,7 @@ public final class GTBaseGuiBuilder {
                     this.posGuiData.getX(),
                     this.posGuiData.getY(),
                     this.posGuiData.getZ(),
-                    side,
-                    true),
+                    side),
                 name,
                 syncManager)
             .child(ButtonWidget.panelCloseButton());

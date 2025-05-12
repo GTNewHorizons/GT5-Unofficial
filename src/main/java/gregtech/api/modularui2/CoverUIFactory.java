@@ -31,13 +31,12 @@ public class CoverUIFactory extends AbstractUIFactory<CoverGuiData> {
      * Call this method on server side to open cover window. Actual code to create GUI is located at
      * {@link Cover#buildUI}.
      *
-     * @param player        Player opened this UI
-     * @param coverID       ID of the cover
-     * @param tile          TileEntity this cover is attached to
-     * @param side          Side this cover is attached to
-     * @param anotherWindow If cover UI is shown on top of another window
+     * @param player  Player opened this UI
+     * @param coverID ID of the cover
+     * @param tile    TileEntity this cover is attached to
+     * @param side    Side this cover is attached to
      */
-    public void open(EntityPlayerMP player, int coverID, ICoverable tile, ForgeDirection side, boolean anotherWindow) {
+    public void open(EntityPlayerMP player, int coverID, ICoverable tile, ForgeDirection side) {
         if (player instanceof FakePlayer) return;
         CoverGuiData guiData = new CoverGuiData(
             player,
@@ -45,8 +44,7 @@ public class CoverUIFactory extends AbstractUIFactory<CoverGuiData> {
             tile.getXCoord(),
             tile.getYCoord(),
             tile.getZCoord(),
-            side,
-            anotherWindow);
+            side);
         GuiManager.open(this, guiData, player);
     }
 
@@ -73,7 +71,6 @@ public class CoverUIFactory extends AbstractUIFactory<CoverGuiData> {
         buffer.writeByte(
             guiData.getSide()
                 .ordinal());
-        buffer.writeBoolean(guiData.isAnotherWindow());
     }
 
     @Override
@@ -84,7 +81,6 @@ public class CoverUIFactory extends AbstractUIFactory<CoverGuiData> {
             buffer.readVarIntFromBuffer(),
             buffer.readVarIntFromBuffer(),
             buffer.readVarIntFromBuffer(),
-            ForgeDirection.getOrientation(buffer.readByte()),
-            buffer.readBoolean());
+            ForgeDirection.getOrientation(buffer.readByte()));
     }
 }
