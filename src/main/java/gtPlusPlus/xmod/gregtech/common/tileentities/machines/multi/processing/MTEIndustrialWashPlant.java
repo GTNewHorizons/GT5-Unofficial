@@ -70,6 +70,7 @@ import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
+import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.gui.MTEIndustrialWashPlantGui;
 import ic2.core.init.BlocksItems;
 import ic2.core.init.InternalName;
 import mcp.mobius.waila.api.IWailaConfigHandler;
@@ -432,5 +433,10 @@ public class MTEIndustrialWashPlant extends GTPPMultiBlockBase<MTEIndustrialWash
     @Override
     protected SoundResource getActivitySoundLoop() {
         return SoundResource.GT_MACHINES_MULTI_ORE_WASHER_PLANT_LOOP;
+    }
+
+    @Override
+    protected @NotNull MTEIndustrialWashPlantGui getGui() {
+        return new MTEIndustrialWashPlantGui(this);
     }
 }
