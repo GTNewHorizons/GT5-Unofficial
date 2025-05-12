@@ -787,7 +787,7 @@ public abstract class MTEDrillerBase extends MTEEnhancedMultiBlockBase<MTEDrille
     }
 
     @Override
-    protected boolean showRecipeTextInGUI() {
+    public boolean showRecipeTextInGUI() {
         return false;
     }
 
