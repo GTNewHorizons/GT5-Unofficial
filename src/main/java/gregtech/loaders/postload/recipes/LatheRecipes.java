@@ -22,9 +22,7 @@ public class LatheRecipes implements Runnable {
     public void run() {
         GTValues.RA.stdBuilder()
             .itemInputs(new ItemStack(Blocks.wooden_slab, 1, GTValues.W))
-            .itemOutputs(
-                new ItemStack(Items.bowl, 1),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 1))
+            .itemOutputs(new ItemStack(Items.bowl, 1), GTOreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 1))
             .outputChances(10000, 2500)
             .duration(2 * SECONDS + 10 * TICKS)
             .eut(8)

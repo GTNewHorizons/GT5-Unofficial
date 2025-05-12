@@ -16,7 +16,6 @@ package bartworks.system.material.werkstoff_loaders.recipe;
 import static gregtech.api.enums.OrePrefixes.block;
 import static gregtech.api.enums.OrePrefixes.crushedPurified;
 import static gregtech.api.enums.OrePrefixes.dust;
-import static gregtech.api.enums.OrePrefixes.dustSmall;
 import static gregtech.api.enums.OrePrefixes.dustTiny;
 import static gregtech.api.enums.OrePrefixes.gem;
 import static gregtech.api.enums.OrePrefixes.gemChipped;
