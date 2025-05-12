@@ -288,25 +288,25 @@ public class Cover implements IGuiHolder<CoverGuiData> {
      * functionality to open cover window on top of machine GUI, we need to make cover GUI capable of operating on both
      * ways. So don't forget to also implement {@link #createWindow}.
      *
-     * @param guiData     information about the creation context
+     * @param guiData     information about the creation context, ignored for covers since we've already used it to
+     *                    locate the right cover instance
      * @param syncManager sync handler where widget sync handlers should be registered
      * @return UI panel to show
      */
     @Override
     public final ModularPanel buildUI(CoverGuiData guiData, PanelSyncManager syncManager) {
-        return getCoverGui().createStandalonePanel(guiData, syncManager);
+        return getCoverGui().createStandalonePanel(syncManager);
     }
 
     /**
      * Use this method to get a panel representing this cover that you can open from another MUI2 UI.
      *
-     * @param guiData     information about the creation context
      * @param panelName   the unique name of this panel in the context of your UI.
      * @param syncManager sync handler where widget sync handlers should be registered
      * @return UI panel to show
      */
-    public final ModularPanel buildPopUpUi(CoverGuiData guiData, String panelName, PanelSyncManager syncManager) {
-        return getCoverGui().createBasePanel(guiData, panelName, syncManager);
+    public final ModularPanel buildPopUpUi(String panelName, PanelSyncManager syncManager) {
+        return getCoverGui().createBasePanel(panelName, syncManager);
     }
 
     /**
@@ -315,7 +315,7 @@ public class Cover implements IGuiHolder<CoverGuiData> {
      * @return The variant of CoverGui that can build a GUI for this cover
      */
     protected @NotNull CoverGui<?> getCoverGui() {
-        return new CoverGui<>();
+        return new CoverGui<>(this);
     }
 
     // endregion

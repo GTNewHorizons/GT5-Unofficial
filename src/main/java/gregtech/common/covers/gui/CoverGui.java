@@ -8,13 +8,18 @@ import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widgets.layout.Flow;
 
-import gregtech.api.modularui2.CoverGuiData;
 import gregtech.api.modularui2.GTWidgetThemes;
 import gregtech.api.util.GTUtility;
 import gregtech.common.covers.Cover;
 import gregtech.common.modularui2.widget.CoverTickRateButton;
 
 public class CoverGui<T extends Cover> {
+
+    protected final T cover;
+
+    public CoverGui(T cover) {
+        this.cover = cover;
+    }
 
     protected static final int WIDGET_MARGIN = 5;
 
@@ -32,11 +37,10 @@ public class CoverGui<T extends Cover> {
      * GUI,
      * override {@link Cover#buildUI} instead.
      *
-     * @param guiData     information about the creation context
      * @param syncManager sync handler where widget sync handlers should be registered
      * @param column      main column to add child widgets
      */
-    public void addUIWidgets(CoverGuiData guiData, PanelSyncManager syncManager, Flow column) {}
+    public void addUIWidgets(PanelSyncManager syncManager, Flow column) {}
 
     /**
      * Creates a standalone panel holding the UI for this cover.
@@ -44,8 +48,8 @@ public class CoverGui<T extends Cover> {
      * Since it is standalone, you shouldn't try to have multiple instances of this panel on screen at once, or tied to
      * several widgets. Use {@link CoverGui#createBasePanel} with a unique panel name instead.
      */
-    public final ModularPanel createStandalonePanel(CoverGuiData guiData, PanelSyncManager syncManager) {
-        ModularPanel basePanel = createBasePanel(guiData, "standalone.cover", syncManager);
+    public final ModularPanel createStandalonePanel(PanelSyncManager syncManager) {
+        ModularPanel basePanel = createBasePanel("standalone.cover", syncManager);
         if (doesBindPlayerInventory()) {
             basePanel.bindPlayerInventory();
         }
@@ -57,15 +61,14 @@ public class CoverGui<T extends Cover> {
      * Override this method if you want to implement more customized GUI. Otherwise, implement {@link #addUIWidgets}
      * instead.
      *
-     * @param guiData     information about the creation context
      * @param panelName   the unique name of this panel in the context of your UI.
      * @param syncManager sync handler where widget sync handlers should be registered
      * @return UI panel to show
      */
-    public ModularPanel createBasePanel(CoverGuiData guiData, String panelName, PanelSyncManager syncManager) {
+    public ModularPanel createBasePanel(String panelName, PanelSyncManager syncManager) {
         syncManager.addCloseListener(player -> {
             if (!NetworkUtils.isClient(player)) {
-                guiData.getTileEntity()
+                cover.getTile()
                     .markDirty();
             }
         });
@@ -77,11 +80,9 @@ public class CoverGui<T extends Cover> {
             .marginLeft(WIDGET_MARGIN)
             .marginTop(WIDGET_MARGIN);
         panel.child(widgetsColumn);
-        addTitleToUI(guiData, widgetsColumn);
-        addUIWidgets(guiData, syncManager, widgetsColumn);
+        addTitleToUI(widgetsColumn);
+        addUIWidgets(syncManager, widgetsColumn);
 
-        final Cover cover = guiData.getCoverable()
-            .getCoverAtSide(guiData.getSide());
         if (cover.getMinimumTickRate() > 0 && cover.allowsTickRateAddition()) {
             panel.child(
                 new CoverTickRateButton(cover, syncManager).right(4)
@@ -91,8 +92,8 @@ public class CoverGui<T extends Cover> {
         return panel;
     }
 
-    protected void addTitleToUI(CoverGuiData guiData, Flow column) {
-        ItemStack coverItem = GTUtility.intToStack(guiData.getCoverID());
+    protected void addTitleToUI(Flow column) {
+        ItemStack coverItem = GTUtility.intToStack(cover.getCoverID());
         if (coverItem == null) return;
         column.child(
             Flow.row()
@@ -116,8 +117,4 @@ public class CoverGui<T extends Cover> {
         return false;
     }
 
-    protected T getCover(CoverGuiData guiData) {
-        // noinspection unchecked
-        return (T) guiData.getCover();
-    }
 }
