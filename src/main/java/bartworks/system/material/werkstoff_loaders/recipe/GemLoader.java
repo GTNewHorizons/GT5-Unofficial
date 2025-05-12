@@ -183,7 +183,8 @@ public class GemLoader implements IWerkstoffRunnable {
 
                 GTValues.RA.stdBuilder()
                     .itemInputs(werkstoff.get(plate))
-                    .itemOutputs(werkstoff.get(lens), werkstoff.get(dustSmall))
+                    .itemOutputs(werkstoff.get(lens), werkstoff.get(dust))
+                    .outputChances(10000, 2500)
                     .duration(60 * SECONDS)
                     .eut(TierEU.RECIPE_MV)
                     .addTo(latheRecipes);
