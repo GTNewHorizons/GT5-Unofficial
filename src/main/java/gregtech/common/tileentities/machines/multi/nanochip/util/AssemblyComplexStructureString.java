@@ -3,6 +3,32 @@ package gregtech.common.tileentities.machines.multi.nanochip.util;
 // spotless:off
 public class AssemblyComplexStructureString {
 
+    public static final int SPLITTER_OFFSET_X = 3;
+    public static final int SPLITTER_OFFSET_Y = 2;
+    public static final int SPLITTER_OFFSET_Z = 0;
+    public static final String[][] SPLITTER_STRUCTURE = new String[][]{{
+            "  A    ",
+            " CBBBC "
+        },{
+            "  AA A ",
+            "CBBBBBC"
+        },{
+            "   ACA ",
+            "BBBBBBB"
+        },{
+            "AA A A ",
+            "BBBBBBB"
+        },{
+            " ACA AA",
+            "BBBBBBB"
+        },{
+            " A A   ",
+            "CBBBBBC"
+        },{
+            "   AA  ",
+            " CBBBC "
+        }};
+
     public static final int SUPERCOND_SPLITTER_OFFSET_X = 3;
     public static final int SUPERCOND_SPLITTER_OFFSET_Y = 7;
     public static final int SUPERCOND_SPLITTER_OFFSET_Z = 0;
