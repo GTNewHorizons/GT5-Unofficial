@@ -2039,6 +2039,10 @@ gt.time.second.plural=seconds
 #Tool modes
 gt.wrench.mode.1=Line Mode
 
+# Tooltip for vajra
+gt.vajra.tooltip.flavor=Your friendly instant block breaker
+gt.vajra.tooltip.charge=Can be charged in any %s machine
+gt.vajra.tooltip.silk_touch=Shift right click air to toggle silk touch
 
 # GT++
 
