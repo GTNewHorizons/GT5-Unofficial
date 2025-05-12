@@ -1,10 +1,17 @@
 package gregtech.common.tileentities.machines.multi.nanochip.modules;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
+import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex.NAC_MODULE;
 import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex.TOOLTIP_CC;
 
+import java.util.ArrayList;
+
+import javax.annotation.Nullable;
+
 import net.minecraft.item.ItemStack;
+
+import org.jetbrains.annotations.NotNull;
 
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
@@ -14,10 +21,16 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
+import gregtech.api.recipe.check.CheckRecipeResult;
+import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.common.blocks.BlockCasings4;
 import gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyModuleBase;
 import gregtech.common.tileentities.machines.multi.nanochip.util.CircuitComponent;
 import gregtech.common.tileentities.machines.multi.nanochip.util.ModuleStructureDefinition;
+import gtnhlanth.common.beamline.BeamInformation;
+import gtnhlanth.common.beamline.Particle;
+import gtnhlanth.common.hatch.MTEHatchInputBeamline;
 
 public class EtchingArray extends MTENanochipAssemblyModuleBase<EtchingArray> {
 
@@ -25,15 +38,64 @@ public class EtchingArray extends MTENanochipAssemblyModuleBase<EtchingArray> {
     protected static final int STRUCTURE_OFFSET_Y = 3;
     protected static final int STRUCTURE_OFFSET_Z = -2;
 
+    private final ArrayList<MTEHatchInputBeamline> mInputBeamline = new ArrayList<>();
+
     protected static final String STRUCTURE_PIECE_MAIN = "main";
-    private static final String[][] structure = new String[][] { { "  AAA  ", "  AAA  ", "  AAA  " },
+
+    private static final String[][] structure = new String[][] { { "  AAA  ", "  ABA  ", "  AAA  " },
         { "  AAA  ", "  A A  ", "  AAA  " }, { "  AAA  ", "  AAA  ", "  AAA  " } };
 
     public static final IStructureDefinition<EtchingArray> STRUCTURE_DEFINITION = ModuleStructureDefinition
         .<EtchingArray>builder()
         .addShape(STRUCTURE_PIECE_MAIN, structure)
         .addElement('A', ofBlock(GregTechAPI.sBlockCasings4, 0))
+        .addElement(
+            'B',
+            buildHatchAdder(EtchingArray.class).hatchClass(MTEHatchInputBeamline.class)
+                .casingIndex(((BlockCasings4) GregTechAPI.sBlockCasings4).getTextureIndex(0))
+                .dot(5)
+                .adder(EtchingArray::addBeamLineInputHatch)
+                .build())
         .build();
+
+    private boolean addBeamLineInputHatch(IGregTechTileEntity te, int casingIndex) {
+        if (te == null) return false;
+
+        IMetaTileEntity mte = te.getMetaTileEntity();
+        if (mte == null) return false;
+
+        if (mte instanceof MTEHatchInputBeamline) {
+            return this.mInputBeamline.add((MTEHatchInputBeamline) mte);
+        }
+
+        return false;
+    }
+
+    @Nullable
+    private BeamInformation getInputInformation() {
+        for (MTEHatchInputBeamline in : this.mInputBeamline) {
+            if (in.dataPacket == null) return new BeamInformation(0, 0, 0, 0);
+            return in.dataPacket.getContent();
+        }
+        return null;
+    }
+
+    @NotNull
+    @Override
+    public CheckRecipeResult checkProcessing() {
+
+        BeamInformation inputInfo = this.getInputInformation();
+        if (inputInfo == null) return CheckRecipeResultRegistry.NO_RECIPE;
+
+        float inputEnergy = inputInfo.getEnergy();
+        Particle inputParticle = Particle.getParticleFromId(inputInfo.getParticleId());
+
+        if (inputEnergy <= 1234) return CheckRecipeResultRegistry.NO_RECIPE;
+        if (inputParticle != Particle.getParticleFromId(0)) return CheckRecipeResultRegistry.NO_RECIPE;
+
+        return CheckRecipeResultRegistry.SUCCESSFUL;
+
+    }
 
     public EtchingArray(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
