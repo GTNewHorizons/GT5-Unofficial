@@ -301,93 +301,109 @@ public class MTEEnvironmentallyControlledChemicalFacility extends
                     + ", but requires special conditions")
             .addInfo(
                 EnumChatFormatting.GRAY + "Doesn't overclock, instead increases parallels by "
-                    + EnumChatFormatting.YELLOW
+                    + EnumChatFormatting.GOLD
                     + "4 ^ Energy Tier")
             .addSeparator()
             .addInfo(
-                EnumChatFormatting.GRAY + "Conditions are shown in "
-                    + EnumChatFormatting.BLUE
-                    + "NEI"
-                    + EnumChatFormatting.GRAY
-                    + " and can be achieved by placing ECCF on a "
+                EnumChatFormatting.GRAY + "Conditions are shown in NEI and can be achieved by placing ECCF on another "
                     + EnumChatFormatting.BLUE
                     + "planet ")
             .addInfo(
                 EnumChatFormatting.GRAY + "with required conditions or maintaining them using "
                     + EnumChatFormatting.BLUE
-                    + "modules")
+                    + "Modules")
             .addSeparator()
-            .addInfo("" + EnumChatFormatting.WHITE + EnumChatFormatting.BOLD + "Modules:")
+            .addInfo("" + EnumChatFormatting.WHITE + EnumChatFormatting.BOLD + "Module interaction")
             .addInfo(
-                EnumChatFormatting.GRAY + "2 exclusive modules for temperature: "
-                    + EnumChatFormatting.BLUE
-                    + "Cooling"
+                EnumChatFormatting.GRAY + "ECCF drains "
+                    + EnumChatFormatting.YELLOW
+                    + "all coolants"
                     + EnumChatFormatting.GRAY
-                    + " and "
-                    + EnumChatFormatting.RED
-                    + "Heating")
+                    + " from the input hatch in the temperature module")
             .addInfo(
-                EnumChatFormatting.GRAY + "2 exclusive modules for pressure: "
-                    + EnumChatFormatting.DARK_AQUA
-                    + "Vacuum Pump"
-                    + EnumChatFormatting.GRAY
-                    + " and "
-                    + EnumChatFormatting.BLUE
-                    + "Compressor")
+                EnumChatFormatting.GRAY + "Every second, ECCF temperature drifts towards ambient, to: "
+                    + EnumChatFormatting.GOLD
+                    + "(current - initial) * 0.98 + initial")
+            .addInfo(
+                EnumChatFormatting.GRAY + "And applies temperature changes regardless of the module type: "
+                    + EnumChatFormatting.GOLD
+                    + "current + (fluid amount / 10000) * coolant value")
+            .addInfo(
+                EnumChatFormatting.GRAY + "ECCF drains energy hatch buffer of pressure module "
+                    + EnumChatFormatting.YELLOW
+                    + "every tick")
+            .addInfo(
+                EnumChatFormatting.GRAY + "Every second, ECCF pressure drifts towards ambient, to: "
+                    + EnumChatFormatting.GOLD
+                    + "(current - initial) * 0.95 + initial")
+            .addInfo(
+                EnumChatFormatting.GRAY + "And applies pressure changes depending on the module type: "
+                    + EnumChatFormatting.GOLD
+                    + "current + (buffer EU ^ 0.7)")
             .addSeparator()
-            .addInfo("" + EnumChatFormatting.WHITE + EnumChatFormatting.BOLD + "Temperature Values:")
-            .addInfo("" + EnumChatFormatting.RED + EnumChatFormatting.BOLD + "Heating")
+            .addInfo("" + EnumChatFormatting.WHITE + EnumChatFormatting.BOLD + "Temperature")
+            .addInfo("" + EnumChatFormatting.RED + EnumChatFormatting.BOLD + "Heating Module")
             .addInfo(
                 EnumChatFormatting.GOLD + "Lava"
                     + EnumChatFormatting.GRAY
                     + ": "
                     + EnumChatFormatting.YELLOW
-                    + "1 300K")
+                    + "1,300K")
             .addInfo(
                 EnumChatFormatting.GOLD + "Blazing Pyrotheum"
                     + EnumChatFormatting.GRAY
                     + ": "
                     + EnumChatFormatting.YELLOW
-                    + "4 000K")
+                    + "4,000K")
             .addInfo(
                 EnumChatFormatting.GOLD + "Helium Plasma"
                     + EnumChatFormatting.GRAY
                     + ": "
                     + EnumChatFormatting.YELLOW
-                    + "10 000K")
+                    + "10,000K")
             .addInfo(
-                EnumChatFormatting.GOLD + "Raw Stellar Plasma Mixture"
+                EnumChatFormatting.GOLD + "Raw Stellar Plasma"
                     + EnumChatFormatting.GRAY
                     + ": "
                     + EnumChatFormatting.YELLOW
-                    + "10 000 000K")
-            .addInfo("" + EnumChatFormatting.BLUE + EnumChatFormatting.BOLD + "Cooling")
+                    + "10,000,000K")
+            .addInfo("" + EnumChatFormatting.BLUE + EnumChatFormatting.BOLD + "Cooling Module")
             .addInfo(
                 EnumChatFormatting.DARK_AQUA + "IC2 Coolant"
                     + EnumChatFormatting.GRAY
                     + ": "
-                    + EnumChatFormatting.BLUE
+                    + EnumChatFormatting.AQUA
                     + "250K")
             .addInfo(
                 EnumChatFormatting.DARK_AQUA + "Gelid Cryotheum"
                     + EnumChatFormatting.GRAY
                     + ": "
-                    + EnumChatFormatting.BLUE
+                    + EnumChatFormatting.AQUA
                     + "25K")
             .addInfo(
                 EnumChatFormatting.DARK_AQUA + "Super Coolant"
                     + EnumChatFormatting.GRAY
                     + ": "
-                    + EnumChatFormatting.BLUE
+                    + EnumChatFormatting.AQUA
                     + "5K")
             .addInfo(
                 EnumChatFormatting.DARK_AQUA + "Molten Spacetime"
                     + EnumChatFormatting.GRAY
                     + ": "
-                    + EnumChatFormatting.BLUE
+                    + EnumChatFormatting.AQUA
                     + "0K")
             .addSeparator()
             .addInfo("" + EnumChatFormatting.WHITE + EnumChatFormatting.BOLD + "Pressure")
+            .addInfo(
+                EnumChatFormatting.GRAY + "2 modules: "
+                    + EnumChatFormatting.DARK_AQUA
+                    + "Vacuum"
+                    + EnumChatFormatting.GRAY
+                    + " to decrease pressure and "
+                    + EnumChatFormatting.GOLD
+                    + "Compressor"
+                    + EnumChatFormatting.GRAY
+                    + " to increase pressure")
             .addInfo(
                 EnumChatFormatting.GRAY + "Pressure module requires energy and "
                     + EnumChatFormatting.YELLOW
@@ -404,7 +420,7 @@ public class MTEEnvironmentallyControlledChemicalFacility extends
                     + " 0L "
                     + EnumChatFormatting.GRAY
                     + "of lubricant is supplied, "
-                    + EnumChatFormatting.BLUE
+                    + EnumChatFormatting.RED
                     + "depressurization "
                     + EnumChatFormatting.GRAY
                     + "happens")
@@ -415,9 +431,11 @@ public class MTEEnvironmentallyControlledChemicalFacility extends
                     + EnumChatFormatting.GRAY
                     + " of pressure depending on the "
                     + EnumChatFormatting.YELLOW
-                    + "VO lubricant")
+                    + "VO lubricant"
+                    + EnumChatFormatting.GRAY
+                    + " used")
             .addSeparator()
-            .addInfo("" + EnumChatFormatting.WHITE + EnumChatFormatting.BOLD + "VO Lubricants Values:")
+            .addInfo("" + EnumChatFormatting.WHITE + EnumChatFormatting.BOLD + "VO Lubricants Values")
             .addInfo(EnumChatFormatting.GOLD + "No lubricant " + EnumChatFormatting.GRAY + "- 80% loss")
             .addInfo(EnumChatFormatting.GOLD + "VO-17 " + EnumChatFormatting.GRAY + "- 30% loss")
             .addInfo(EnumChatFormatting.GOLD + "VO-43 " + EnumChatFormatting.GRAY + "- 10% loss")
