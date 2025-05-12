@@ -1006,9 +1006,9 @@ public class GTRecipe implements Comparable<GTRecipe> {
                 if (!inputBus.isValid()) return null;
                 ItemStack slotStack;
                 if (inputBus instanceof MTEHatchInputBusME meBus) {
-                    slotStack = meBus.getShadowItemStack(0);
+                    slotStack = meBus.getFirstShadowItemStack(true);
                 } else {
-                    slotStack = inputBus.getStackInSlot(0);
+                    slotStack = inputBus.getFirstStack();
                 }
                 if (slotStack == null) return null;
 
@@ -1053,7 +1053,7 @@ public class GTRecipe implements Comparable<GTRecipe> {
                 MTEHatchInputBus inputBus = inputBusses.get(i);
                 if (!inputBus.isValid()) return 0;
                 if (inputBus instanceof MTEHatchInputBusME meBus) {
-                    ItemStack item = meBus.getShadowItemStack(0);
+                    ItemStack item = meBus.getFirstShadowItemStack(true);
                     if (item == null) return 0;
                     GTUtility.ItemId id = GTUtility.ItemId.createNoCopy(item);
                     itemConsumptionsFromME.merge(id, (long) itemConsumptions[i], Long::sum);
@@ -1076,7 +1076,7 @@ public class GTRecipe implements Comparable<GTRecipe> {
                 if (!inputBus.isValid()) return 0;
                 if (inputBus instanceof MTEHatchInputBusME) continue;
 
-                ItemStack item = inputBus.getStackInSlot(0);
+                ItemStack item = inputBus.getFirstStack();
                 if (item == null) return 0;
                 // For non-consumed inputs
                 if (itemConsumptions[i] == 0) continue;
@@ -1102,7 +1102,7 @@ public class GTRecipe implements Comparable<GTRecipe> {
                 MTEHatchInput inputHatch = inputHatches.get(i);
                 if (!inputHatch.isValid()) return 0;
                 if (inputHatch instanceof MTEHatchInputME meHatch) {
-                    FluidStack fluid = meHatch.getShadowFluidStack(0);
+                    FluidStack fluid = meHatch.getFirstShadowFluidStack(true);
                     if (fluid == null) return 0;
                     if (!GTUtility.areFluidsEqual(fluid, fluidConsumptions[i])) return 0;
                     fluidConsumptionsFromME.merge(fluid.getFluid(), (long) fluidConsumptions[i].amount, Long::sum);
@@ -1125,7 +1125,7 @@ public class GTRecipe implements Comparable<GTRecipe> {
 
                 FluidStack fluid;
                 if (inputHatch instanceof MTEHatchMultiInput multiInput) {
-                    fluid = multiInput.getFluid(0);
+                    fluid = multiInput.getFluid();
                 } else {
                     fluid = inputHatch.getFillableStack();
                 }
@@ -1151,9 +1151,10 @@ public class GTRecipe implements Comparable<GTRecipe> {
                 if (!inputBus.isValid()) continue;
                 ItemStack item;
                 if (inputBus instanceof MTEHatchInputBusME meBus) {
-                    item = inputsFromME.get(GTUtility.ItemId.createNoCopy(meBus.getShadowItemStack(0)));
+                    ItemStack itemStack = meBus.getFirstShadowItemStack(true);
+                    item = inputsFromME.get(GTUtility.ItemId.createNoCopy(itemStack));
                 } else {
-                    item = inputBus.getStackInSlot(0);
+                    item = inputBus.getFirstStack();
                 }
                 item.stackSize -= itemConsumptions[i] * amountMultiplier;
             }
@@ -1173,11 +1174,10 @@ public class GTRecipe implements Comparable<GTRecipe> {
                 if (!inputHatch.isValid()) continue;
                 FluidStack fluid;
                 if (inputHatch instanceof MTEHatchInputME meHatch) {
-                    fluid = fluidsFromME.get(
-                        meHatch.getShadowFluidStack(0)
-                            .getFluid());
+                    FluidStack fluidStack = meHatch.getFirstShadowFluidStack(true);
+                    fluid = fluidsFromME.get(fluidStack.getFluid());
                 } else if (inputHatch instanceof MTEHatchMultiInput multiInput) {
-                    fluid = multiInput.getFluid(0);
+                    fluid = multiInput.getFluid();
                 } else {
                     fluid = inputHatch.getFillableStack();
                 }

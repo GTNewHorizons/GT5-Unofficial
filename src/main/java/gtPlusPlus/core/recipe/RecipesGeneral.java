@@ -204,6 +204,15 @@ public class RecipesGeneral {
         addCompressionRecipe(withCrafting, four, five);
     }
 
+    private static void addCompressionRecipes(boolean withCrafting, ItemStack item, ItemStack block, ItemStack one,
+        ItemStack two, ItemStack three) {
+
+        addCompressionRecipe(withCrafting, item, block);
+        addCompressionRecipe(withCrafting, block, one);
+        addCompressionRecipe(withCrafting, one, two);
+        addCompressionRecipe(withCrafting, two, three);
+    }
+
     private static void addCompressionRecipe(boolean crafting, ItemStack raw, ItemStack compressed) {
         if (raw == null || compressed == null) return;
 
@@ -256,6 +265,37 @@ public class RecipesGeneral {
             true,
             GregtechItemList.QuadrupleCompressedGlowstone.get(1),
             GregtechItemList.QuintupleCompressedGlowstone.get(1));
+
+        // Compressed Netherrack
+        addCompressionRecipes(
+            true,
+            null,
+            new ItemStack(Blocks.netherrack, 1),
+            GregtechItemList.CompressedNetherrack.get(1),
+            GregtechItemList.DoubleCompressedNetherrack.get(1),
+            GregtechItemList.TripleCompressedNetherrack.get(1));
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(new ItemStack(Blocks.netherrack, 9))
+            .itemOutputs(GregtechItemList.CompressedNetherrack.get(1))
+            .duration(15 * SECONDS)
+            .eut(TierEU.RECIPE_LV)
+            .addTo(compressorRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(GregtechItemList.CompressedNetherrack.get(9))
+            .itemOutputs(GregtechItemList.DoubleCompressedNetherrack.get(1))
+            .duration(15 * SECONDS)
+            .eut(TierEU.RECIPE_LV)
+            .addTo(compressorRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(GregtechItemList.DoubleCompressedNetherrack.get(9))
+            .itemOutputs(GregtechItemList.TripleCompressedNetherrack.get(1))
+            .duration(15 * SECONDS)
+            .eut(TierEU.RECIPE_LV)
+            .addTo(compressorRecipes);
+
     }
 
     private static void addPipesAndWires() {

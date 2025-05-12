@@ -1,7 +1,6 @@
 package tectech.loader.recipe;
 
 import static gregtech.api.enums.Mods.EternalSingularity;
-import static gregtech.api.enums.Mods.GTNHIntergalactic;
 import static gregtech.api.util.GTModHandler.getModItem;
 import static gregtech.api.util.GTRecipeBuilder.BUCKETS;
 import static gregtech.api.util.GTRecipeBuilder.INGOTS;
@@ -106,7 +105,8 @@ public class Godforge implements Runnable {
                     Materials.Tantalum.getDust(1), Materials.Tellurium.getDust(1), Materials.Terbium.getDust(1),
                     Materials.Thulium.getDust(1), Materials.Tungsten.getDust(1), Materials.Uranium.getDust(1),
                     Materials.Uranium235.getDust(1), Materials.Vanadium.getDust(1), Materials.Ytterbium.getDust(1),
-                    Materials.Yttrium.getDust(1), MaterialsElements.getInstance().ZIRCONIUM.getDust(1),
+                    Materials.Yttrium.getDust(1), Materials.Chrome.getDust(1),
+                    MaterialsElements.getInstance().ZIRCONIUM.getDust(1),
                     MaterialsElements.getInstance().THORIUM232.getDust(1),
                     MaterialsElements.getInstance().GERMANIUM.getDust(1),
                     MaterialsElements.getInstance().THALLIUM.getDust(1),
@@ -146,6 +146,7 @@ public class Godforge implements Runnable {
                     Materials.Tungsten.getPlasma(144), Materials.Uranium.getPlasma(144),
                     Materials.Uranium235.getPlasma(144), Materials.Vanadium.getPlasma(144),
                     Materials.Ytterbium.getPlasma(144), Materials.Yttrium.getPlasma(144),
+                    Materials.Chrome.getPlasma(144),
                     new FluidStack(MaterialsElements.getInstance().ZIRCONIUM.getPlasma(), 144),
                     new FluidStack(MaterialsElements.getInstance().THORIUM232.getPlasma(), 144),
                     new FluidStack(MaterialsElements.getInstance().GERMANIUM.getPlasma(), 144),
@@ -186,8 +187,7 @@ public class Godforge implements Runnable {
                 MaterialsElements.STANDALONE.ASTRAL_TITANIUM.getDust(1), MaterialsElements.STANDALONE.RUNITE.getDust(1),
                 MaterialsElements.STANDALONE.CELESTIAL_TUNGSTEN.getDust(1), Materials.Iridium.getDust(1),
                 Materials.Naquadah.getDust(1), Materials.Osmium.getDust(1), Materials.Platinum.getDust(1),
-                Materials.Plutonium.getDust(1), MaterialsElements.getInstance().CALIFORNIUM.getDust(1),
-                Materials.Chrome.getDust(1) };
+                Materials.Plutonium.getDust(1), MaterialsElements.getInstance().CALIFORNIUM.getDust(1) };
 
             FluidStack[] molten_t0_xstep = convertToFluid(solids_t0_xstep);
 
@@ -200,8 +200,7 @@ public class Godforge implements Runnable {
                 new FluidStack(MaterialsElements.STANDALONE.CELESTIAL_TUNGSTEN.getPlasma(), 144),
                 Materials.Iridium.getPlasma(144), Materials.Naquadah.getPlasma(144), Materials.Osmium.getPlasma(144),
                 Materials.Platinum.getPlasma(144), Materials.Plutonium.getPlasma(144),
-                new FluidStack(MaterialsElements.getInstance().CALIFORNIUM.getPlasma(), 144),
-                Materials.Chrome.getPlasma(144), };
+                new FluidStack(MaterialsElements.getInstance().CALIFORNIUM.getPlasma(), 144) };
 
             for (int i = 0; i < solids_t0_xstep.length; i++) {
                 GTValues.RA.stdBuilder()
@@ -390,13 +389,12 @@ public class Godforge implements Runnable {
                     Materials.Mercury.getPlasma(500) };
 
                 for (int i = 0; i < fluids_t0_1step.length; i++) {
-                    boolean multistep = false;
                     GTValues.RA.stdBuilder()
                         .fluidInputs(fluids_t0_1step[i])
                         .fluidOutputs(fluid_plasmas_t0_1step[i])
                         .duration(1 * SECONDS)
                         .eut(TierEU.RECIPE_MAX)
-                        .special(multistep)
+                        .metadata(FOG_PLASMA_MULTISTEP, false)
                         .metadata(FOG_PLASMA_TIER, 0)
                         .addTo(godforgePlasmaRecipes);
                 }
@@ -412,13 +410,12 @@ public class Godforge implements Runnable {
                     new FluidStack(MaterialsElements.getInstance().XENON.getPlasma(), 500) };
 
                 for (int i = 0; i < fluids_t0_xstep.length; i++) {
-                    boolean multistep = true;
                     GTValues.RA.stdBuilder()
                         .fluidInputs(fluids_t0_xstep[i])
                         .fluidOutputs(fluid_plasmas_t0_xstep[i])
                         .duration(3 * SECONDS)
                         .eut(TierEU.RECIPE_MAX)
-                        .special(multistep)
+                        .metadata(FOG_PLASMA_MULTISTEP, true)
                         .metadata(FOG_PLASMA_TIER, 0)
                         .addTo(godforgePlasmaRecipes);
                 }
@@ -676,7 +673,7 @@ public class Godforge implements Runnable {
         magmatterItemsForNEI.addAll(exoticModuleMagmatterItemMap.keySet());
 
         // Godforge upgrade materials
-        if (EternalSingularity.isModLoaded() && GTNHIntergalactic.isModLoaded()) {
+        if (EternalSingularity.isModLoaded()) {
             ForgeOfGodsUpgrade.START.addExtraCost(
                 GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.SuperconductorUIVBase, 64),
                 ItemList.SuperconductorComposite.get(32),
@@ -698,7 +695,7 @@ public class Godforge implements Runnable {
                 CustomItemList.Godforge_StellarEnergySiphonCasing.get(8),
                 GregtechItemList.FusionComputer_UV3.get(8),
                 GregtechItemList.Casing_Fusion_Internal2.get(64),
-                getModItem(GTNHIntergalactic.ID, "item.DysonSwarmParts", 64, 3),
+                ItemList.UHTResistantMesh.get(64),
                 MaterialsAlloy.QUANTUM.getPlateDense(48),
                 MaterialsElements.STANDALONE.RHUGNOR.getGear(32),
                 getModItem(EternalSingularity.ID, "eternal_singularity", 16L),

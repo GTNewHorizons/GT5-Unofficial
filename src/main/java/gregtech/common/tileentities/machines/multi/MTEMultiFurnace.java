@@ -169,9 +169,11 @@ public class MTEMultiFurnace extends MTEAbstractMultiFurnace<MTEMultiFurnace> im
             .setDuration(RECIPE_DURATION)
             .setParallel(originalMaxParallel);
 
-        double fractionalDuration = calculator.calculateFractionalDuration();
-        double fractionalMultiplier = Math.ceil(fractionalDuration) / fractionalDuration;
-        maxParallel = (int) Math.floor(maxParallel * fractionalMultiplier);
+        double tickTimeAfterOC = calculator.calculateDurationUnderOneTick();
+
+        if (tickTimeAfterOC < 1) {
+            maxParallel = GTUtility.safeInt((long) (maxParallel / tickTimeAfterOC), 0);
+        }
 
         int maxParallelBeforeBatchMode = maxParallel;
         if (isBatchModeEnabled()) {
@@ -368,7 +370,7 @@ public class MTEMultiFurnace extends MTEAbstractMultiFurnace<MTEMultiFurnace> im
 
     @Override
     public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
-        float aX, float aY, float aZ) {
+        float aX, float aY, float aZ, ItemStack aTool) {
         batchMode = !batchMode;
         if (batchMode) {
             GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOn"));
