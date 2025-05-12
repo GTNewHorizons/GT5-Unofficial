@@ -3,6 +3,38 @@ package gregtech.common.tileentities.machines.multi.nanochip.util;
 // spotless:off
 public class AssemblyComplexStructureString {
 
+    public static final int SMD_OFFSET_X = 3;
+    public static final int SMD_OFFSET_Y = 3;
+    public static final int SMD_OFFSET_Z = 0;
+    public static final String[][] SMD_STRING = new String[][]{{
+        " B   B ",
+        " EA AE ",
+        " BB BB "
+    },{
+        "BBDDDBB",
+        "ECA ACE",
+        "BBB BBB"
+    },{
+        " D   D ",
+        "AAA AAA",
+        "BBBDBBB"
+    },{
+        " D   D ",
+        "       ",
+        "  DDD  "
+    },{
+        " D   D ",
+        "AAA AAA",
+        "BBBDBBB"
+    },{
+        "BBDDDBB",
+        "ECA ACE",
+        "BBB BBB"
+    },{
+        " B   B ",
+        " EA AE ",
+        " BB BB "
+    }};
 
     public static final int ASSEMBLY_OFFSET_X = 3;
     public static final int ASSEMBLY_OFFSET_Y = 4;
