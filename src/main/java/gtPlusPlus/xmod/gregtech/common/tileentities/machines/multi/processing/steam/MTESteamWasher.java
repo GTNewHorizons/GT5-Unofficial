@@ -64,6 +64,7 @@ import gregtech.common.blocks.BlockCasings2;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.MTESteamMultiBase;
+import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.gui.MTESteamWasherGui;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
@@ -549,5 +550,10 @@ public class MTESteamWasher extends MTESteamMultiBase<MTESteamWasher> implements
             }
         }
         return false;
+    }
+
+    @Override
+    protected @NotNull MTESteamWasherGui getGui() {
+        return new MTESteamWasherGui(this);
     }
 }
