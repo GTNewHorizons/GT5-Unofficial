@@ -1,8 +1,13 @@
 package gregtech.common.tileentities.machines.multi.nanochip.modules;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
+import static gregtech.api.util.GTStructureUtility.ofFrame;
 import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex.NAC_MODULE;
 import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex.TOOLTIP_CC;
+import static gregtech.common.tileentities.machines.multi.nanochip.util.AssemblyComplexStructureString.WIRE_OFFSET_X;
+import static gregtech.common.tileentities.machines.multi.nanochip.util.AssemblyComplexStructureString.WIRE_OFFSET_Y;
+import static gregtech.common.tileentities.machines.multi.nanochip.util.AssemblyComplexStructureString.WIRE_OFFSET_Z;
+import static gregtech.common.tileentities.machines.multi.nanochip.util.AssemblyComplexStructureString.WIRE_STRING;
 
 import net.minecraft.item.ItemStack;
 
@@ -10,6 +15,7 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 
 import gregtech.api.GregTechAPI;
+import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.recipe.RecipeMap;
@@ -21,18 +27,22 @@ import gregtech.common.tileentities.machines.multi.nanochip.util.ModuleStructure
 
 public class WireTracer extends MTENanochipAssemblyModuleBase<WireTracer> {
 
-    protected static final int STRUCTURE_OFFSET_X = 3;
-    protected static final int STRUCTURE_OFFSET_Y = 3;
-    protected static final int STRUCTURE_OFFSET_Z = -2;
-
     protected static final String STRUCTURE_PIECE_MAIN = "main";
-    private static final String[][] structure = new String[][] { { "  AAA  ", "  AAA  ", "  AAA  " },
-        { "  AAA  ", "  A A  ", "  AAA  " }, { "  AAA  ", "  AAA  ", "  AAA  " } };
+    private static final String[][] structure = WIRE_STRING;
 
     public static final IStructureDefinition<WireTracer> STRUCTURE_DEFINITION = ModuleStructureDefinition
         .<WireTracer>builder()
         .addShape(STRUCTURE_PIECE_MAIN, structure)
-        .addElement('A', ofBlock(GregTechAPI.sBlockCasings4, 0))
+        // White casing block
+        .addElement('A', ofBlock(GregTechAPI.sBlockCasings8, 5))
+        // Black casing block
+        .addElement('B', ofBlock(GregTechAPI.sBlockCasings8, 10))
+        // UEV Machine Casings
+        .addElement('C', ofBlock(GregTechAPI.sBlockCasingsNH, 10))
+        // Radox polymer frame
+        .addElement('D', ofFrame(Materials.Vinteum))
+        // Black glass
+        .addElement('E', ofBlock(GregTechAPI.sBlockTintedGlass, 3))
         .build();
 
     public WireTracer(int aID, String aName, String aNameRegional) {
@@ -51,13 +61,7 @@ public class WireTracer extends MTENanochipAssemblyModuleBase<WireTracer> {
     @Override
     public void construct(ItemStack trigger, boolean hintsOnly) {
         // Should only construct the main structure, since the base structure is built by the nanochip assembly complex.
-        buildPiece(
-            STRUCTURE_PIECE_MAIN,
-            trigger,
-            hintsOnly,
-            STRUCTURE_OFFSET_X,
-            STRUCTURE_OFFSET_Y,
-            STRUCTURE_OFFSET_Z);
+        buildPiece(STRUCTURE_PIECE_MAIN, trigger, hintsOnly, WIRE_OFFSET_X, WIRE_OFFSET_Y, WIRE_OFFSET_Z);
     }
 
     @Override
@@ -66,9 +70,9 @@ public class WireTracer extends MTENanochipAssemblyModuleBase<WireTracer> {
         return survivialBuildPiece(
             STRUCTURE_PIECE_MAIN,
             trigger,
-            STRUCTURE_OFFSET_X,
-            STRUCTURE_OFFSET_Y,
-            STRUCTURE_OFFSET_Z,
+            WIRE_OFFSET_X,
+            WIRE_OFFSET_Y,
+            WIRE_OFFSET_Z,
             elementBudget,
             env,
             false,
@@ -80,7 +84,7 @@ public class WireTracer extends MTENanochipAssemblyModuleBase<WireTracer> {
         // Check base structure
         if (!super.checkMachine(aBaseMetaTileEntity, aStack)) return false;
         // Now check module structure
-        return checkPiece(STRUCTURE_PIECE_MAIN, STRUCTURE_OFFSET_X, STRUCTURE_OFFSET_Y, STRUCTURE_OFFSET_Z);
+        return checkPiece(STRUCTURE_PIECE_MAIN, WIRE_OFFSET_X, WIRE_OFFSET_Y, WIRE_OFFSET_Z);
     }
 
     @Override
