@@ -103,6 +103,7 @@ import gregtech.api.objects.GTDualInputs;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.extensions.ArrayExt;
+import gregtech.common.config.Gregtech;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
@@ -281,7 +282,7 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
                     src);
                 itemStack.stackSize = rest != null && rest.getStackSize() > 0 ? (int) rest.getStackSize() : 0;
 
-                if (shouldDrop && itemStack.stackSize > 0) {
+                if (Gregtech.machines.allowCribDropItems && shouldDrop && itemStack.stackSize > 0) {
                     World world = parentMTE.getBaseMetaTileEntity()
                         .getWorld();
                     EntityItem entityItem = new EntityItem(
@@ -317,7 +318,7 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
                     src);
                 fluidStack.amount = rest != null && rest.getStackSize() > 0 ? (int) rest.getStackSize() : 0;
 
-                if (shouldDrop && fluidStack.amount > 0) {
+                if (Gregtech.machines.allowCribDropItems && shouldDrop && fluidStack.amount > 0) {
                     World world = parentMTE.getBaseMetaTileEntity()
                         .getWorld();
 

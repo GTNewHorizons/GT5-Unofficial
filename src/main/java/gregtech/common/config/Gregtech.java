@@ -529,6 +529,10 @@ public class Gregtech {
         @Config.DefaultBoolean(true)
         @Config.RequiresMcRestart
         public boolean useMachineMetal;
+
+        @Config.Comment("If ture, Crafting Input Bus/Buffer will drop items and fluids if failed to refund to the AE.")
+        @Config.DefaultBoolean(true)
+        public boolean allowCribDropItems;
     }
 
     @Config.LangKey("GT5U.gui.config.gregtech.ore_drop_behavior")
