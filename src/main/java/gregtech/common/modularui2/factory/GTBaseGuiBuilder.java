@@ -200,7 +200,7 @@ public final class GTBaseGuiBuilder {
         return syncManager.panel(
             panelKey,
             (syncManager, syncHandler) -> coverable.getCoverAtSide(side)
-                .buildPopUpUi(panelKey, syncManager)
+                .buildPopUpUI(panelKey, syncManager)
                 .child(ButtonWidget.panelCloseButton()),
             true);
     }

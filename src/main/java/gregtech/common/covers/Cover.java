@@ -305,7 +305,7 @@ public class Cover implements IGuiHolder<CoverGuiData> {
      * @param syncManager sync handler where widget sync handlers should be registered
      * @return UI panel to show
      */
-    public final ModularPanel buildPopUpUi(String panelName, PanelSyncManager syncManager) {
+    public final ModularPanel buildPopUpUI(String panelName, PanelSyncManager syncManager) {
         return getCoverGui().createBasePanel(panelName, syncManager);
     }
 
