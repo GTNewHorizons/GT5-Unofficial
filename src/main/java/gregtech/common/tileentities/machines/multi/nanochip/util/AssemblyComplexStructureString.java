@@ -3,6 +3,53 @@ package gregtech.common.tileentities.machines.multi.nanochip.util;
 // spotless:off
 public class AssemblyComplexStructureString {
 
+    public static final int CUTTING_OFFSET_X = 3;
+    public static final int CUTTING_OFFSET_Y = 5;
+    public static final int CUTTING_OFFSET_Z = 0;
+    public static final String[][] CUTTING_STRUCTURE = new String[][]{{
+            "       ",
+            "       ",
+            "       ",
+            " A   A ",
+            " A   A "
+        },{
+            "  CCC  ",
+            " BBBBB ",
+            " CEEEC ",
+            "ACEEECA",
+            "ACEDECA"
+        },{
+            " CCDCC ",
+            "B     B",
+            "B     B",
+            "B     B",
+            "B  D  B"
+        },{
+            " DDDDD ",
+            "BCCCCCB",
+            "EAAAAAE",
+            "E     E",
+            "EDDDDDE"
+        },{
+            " CCDCC ",
+            "B     B",
+            "B     B",
+            "B     B",
+            "B  D  B"
+        },{
+            "  CCC  ",
+            " BBBBB ",
+            " CEEEC ",
+            "ACEEECA",
+            "ACEDECA"
+        },{
+            "       ",
+            "       ",
+            "       ",
+            " A   A ",
+            " A   A "
+        }};
+
     public static final int ETCHING_OFFSET_X = 3;
     public static final int ETCHING_OFFSET_Y = 4;
     public static final int ETCHING_OFFSET_Z = 0;
