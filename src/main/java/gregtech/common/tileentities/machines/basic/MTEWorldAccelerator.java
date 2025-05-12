@@ -83,7 +83,7 @@ public class MTEWorldAccelerator extends MTETieredMachineBlock {
         return _mRadiusTierOverride;
     }
 
-    private byte mMode = 0; // 0: RandomTicks around 1: TileEntities with range 1
+    private byte mMode = 1; // 0: RandomTicks around 1: TileEntities with range 1
     private static Textures.BlockIcons.CustomIcon _mGTIco_Norm_Idle;
     private static Textures.BlockIcons.CustomIcon _mGTIco_Norm_Active;
     private static Textures.BlockIcons.CustomIcon _mGTIco_TE_Idle;
