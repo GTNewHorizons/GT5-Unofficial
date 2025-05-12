@@ -321,7 +321,7 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
                     World world = parentMTE.getBaseMetaTileEntity()
                         .getWorld();
 
-                    ItemStack fluidDropItemStack = ItemFluidDrop.newStack(fluidStack);
+                    ItemStack fluidDropItemStack = ItemFluidPacket.newStack(fluidStack);
                     if (fluidDropItemStack == null) continue;
 
                     EntityItem entityItem = new EntityItem(
