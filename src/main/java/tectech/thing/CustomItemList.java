@@ -322,6 +322,7 @@ public enum CustomItemList implements IItemContainer {
     Machine_Multi_Transformer,
     Machine_Multi_Computer,
     Machine_Multi_Switch,
+    Machine_Multi_Switch_Adv,
     Machine_Multi_Research,
     Machine_Multi_DataBank,
     Machine_Multi_Infuser,

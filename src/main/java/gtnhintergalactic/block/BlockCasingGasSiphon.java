@@ -5,6 +5,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
+import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.ItemList;
 import gtnhintergalactic.GTNHIntergalactic;
@@ -21,6 +22,9 @@ public class BlockCasingGasSiphon extends Block implements ITerraformableBlock {
         this.setCreativeTab(GTNHIntergalactic.tab);
         this.setBlockTextureName(GTNHIntergalactic.MODID + ":gasSiphon/SiphonCasing");
         GregTechAPI.registerMachineBlock(this, -1);
+
+        GameRegistry.registerBlock(this, "gassiphoncasing");
+
         ItemList.PlanetaryGasSiphonCasing.set(new ItemStack(this));
     }
 
