@@ -1,7 +1,83 @@
 package gregtech.common.tileentities.machines.multi.nanochip.util;
 
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
+import static gregtech.api.util.GTStructureUtility.ofFrame;
+
+import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
+
+import gregtech.api.GregTechAPI;
+import gregtech.api.enums.Materials;
+import gregtech.common.tileentities.machines.multi.nanochip.modules.OpticalOrganizer;
+
 // spotless:off
 public class AssemblyComplexStructureString {
+
+    public static final int SHEET_OFFSET_X = 3;
+    public static final int SHEET_OFFSET_Y = 6;
+    public static final int SHEET_OFFSET_Z = 0;
+    public static final String[][] SHEET_STRING = new String[][]{{
+            "       ",
+            "  DBD  ",
+            "  DBD  ",
+            " CDBDC ",
+            " CDBDC ",
+            " CDBDC "
+    },{
+            "  BBB  ",
+            " A   A ",
+            " A C A ",
+            "CA   AC",
+            "CA C AC",
+            "CA   AC"
+    },{
+            " BAAAB ",
+            "D     D",
+            "D AAA D",
+            "D     D",
+            "D AAA D",
+            "D     D"
+    },{
+            " BAAAB ",
+            "B     B",
+            "BCAAACB",
+            "B     B",
+            "BCAAACB",
+            "B     B"
+    },{
+            " BAAAB ",
+            "D     D",
+            "D AAA D",
+            "D     D",
+            "D AAA D",
+            "D     D"
+    },{
+            "  BBB  ",
+            " A   A ",
+            " A C A ",
+            "CA   AC",
+            "CA C AC",
+            "CA   AC"
+    },{
+            "       ",
+            "  DBD  ",
+            "  DBD  ",
+            " CDBDC ",
+            " CDBDC ",
+            " CDBDC "
+    }};
+
+    public static final IStructureDefinition<?> STRUCTURE_DEFINITION = ModuleStructureDefinition
+        .<OpticalOrganizer>builder()
+        .addShape("main", SHEET_STRING)
+        // White casing block
+        .addElement('A', ofBlock(GregTechAPI.sBlockCasings8, 5))
+        // Black casing block
+        .addElement('B', ofBlock(GregTechAPI.sBlockCasings8, 10))
+        // Quantium Frame Box
+        .addElement('C', ofFrame(Materials.Quantium))
+        // Black glass
+        .addElement('D', ofBlock(GregTechAPI.sBlockTintedGlass, 3))
+        .build();
 
     public static final int OPTICAL_OFFSET_X = 3;
     public static final int OPTICAL_OFFSET_Y = 7;
@@ -101,7 +177,7 @@ public class AssemblyComplexStructureString {
     },{
         "       ",
         " A   A ",
-//        " A   A ",
+        " A   A ",
         " B   B "
     }};
 
