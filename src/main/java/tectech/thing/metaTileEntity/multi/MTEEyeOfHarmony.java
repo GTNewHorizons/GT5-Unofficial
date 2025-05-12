@@ -1441,7 +1441,7 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements IConstructable,
     private double previousRecipeChance;
     private long currentRecipeRocketTier;
 
-    private void outputFailedChance() {
+    private void outputFailedChance(double currentBaseChance) {
         long failedParallelAmount = parallelAmount - successfulParallelAmount;
         if (failedParallelAmount > 0) {
             // 2^Tier spacetime released upon recipe failure.
@@ -1451,13 +1451,13 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements IConstructable,
                     * pow(SPACETIME_FAILURE_BASE, currentRecipeRocketTier + 1)) * failedParallelAmount));
             // Add chance to pity if previous recipe is equal to current one, else reset pity
             if (previousRecipeChance == successChance) {
-                pityChance += successChance;
+                pityChance += (1 - successChance) * successChance;
             } else {
                 pityChance = successChance;
             }
         } else {
             // Recipe succeeded, reset pity
-            pityChance = 0;
+            pityChance = currentBaseChance;
         }
         super.outputAfterRecipe_EM();
     }
@@ -1506,7 +1506,7 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements IConstructable,
         startEU = 0;
         outputEU_BigInt = BigInteger.ZERO;
 
-        outputFailedChance();
+        outputFailedChance(currentBaseChance);
         previousRecipeChance = currentBaseChance;
 
         if (successfulParallelAmount > 0) {
