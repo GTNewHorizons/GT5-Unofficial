@@ -1,8 +1,10 @@
 package gregtech.common.tileentities.machines.multi.nanochip.modules;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
+import static gregtech.api.util.GTStructureUtility.ofFrame;
 import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex.NAC_MODULE;
 import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex.TOOLTIP_CC;
+import static gregtech.common.tileentities.machines.multi.nanochip.util.AssemblyComplexStructureString.*;
 
 import java.util.ArrayList;
 
@@ -29,21 +31,28 @@ import gregtech.common.tileentities.machines.multi.nanochip.util.ModuleStructure
 
 public class SuperconductorSplitter extends MTENanochipAssemblyModuleBase<SuperconductorSplitter> {
 
-    protected static final int STRUCTURE_OFFSET_X = 3;
-    protected static final int STRUCTURE_OFFSET_Y = 3;
-    protected static final int STRUCTURE_OFFSET_Z = -2;
     protected static final int COOLANT_CONSUMED_PER_SEC = 1000;
 
     private MTEHatchInput coolantInputHatch;
 
     protected static final String STRUCTURE_PIECE_MAIN = "main";
-    private static final String[][] structure = new String[][] { { "  AAA  ", "  AAA  ", "  AAA  " },
-        { "  AAA  ", "  A A  ", "  AAA  " }, { "  AAA  ", "  AAA  ", "  AAA  " } };
+    private static final String[][] structure = SUPERCOND_SPLITTER_STRUCTURE;
 
     public static final IStructureDefinition<SuperconductorSplitter> STRUCTURE_DEFINITION = ModuleStructureDefinition
         .<SuperconductorSplitter>builder()
         .addShape(STRUCTURE_PIECE_MAIN, structure)
-        .addElement('A', ofBlock(GregTechAPI.sBlockCasings4, 0))
+        // UHV Solenoid
+        .addElement('A', ofBlock(GregTechAPI.sSolenoidCoilCasings, 7))
+        // UEV Solenoid
+        .addElement('B', ofBlock(GregTechAPI.sSolenoidCoilCasings, 8))
+        // White casing block
+        .addElement('C', ofBlock(GregTechAPI.sBlockCasings8, 5))
+        // Black casing block
+        .addElement('D', ofBlock(GregTechAPI.sBlockCasings8, 10))
+        // Naquadah Frame box
+        .addElement('E', ofFrame(Materials.Naquadah))
+        // Black glass
+        .addElement('F', ofBlock(GregTechAPI.sBlockTintedGlass, 3))
         .build();
 
     public SuperconductorSplitter(int aID, String aName, String aNameRegional) {
@@ -66,9 +75,9 @@ public class SuperconductorSplitter extends MTENanochipAssemblyModuleBase<Superc
             STRUCTURE_PIECE_MAIN,
             trigger,
             hintsOnly,
-            STRUCTURE_OFFSET_X,
-            STRUCTURE_OFFSET_Y,
-            STRUCTURE_OFFSET_Z);
+            SUPERCOND_SPLITTER_OFFSET_X,
+            SUPERCOND_SPLITTER_OFFSET_Y,
+            SUPERCOND_SPLITTER_OFFSET_Z);
     }
 
     @Override
@@ -77,9 +86,9 @@ public class SuperconductorSplitter extends MTENanochipAssemblyModuleBase<Superc
         return survivialBuildPiece(
             STRUCTURE_PIECE_MAIN,
             trigger,
-            STRUCTURE_OFFSET_X,
-            STRUCTURE_OFFSET_Y,
-            STRUCTURE_OFFSET_Z,
+            SUPERCOND_SPLITTER_OFFSET_X,
+            SUPERCOND_SPLITTER_OFFSET_Y,
+            SUPERCOND_SPLITTER_OFFSET_Z,
             elementBudget,
             env,
             false,
@@ -93,7 +102,11 @@ public class SuperconductorSplitter extends MTENanochipAssemblyModuleBase<Superc
         // Add coolant hatch
         if (!findCoolantHatch()) return false;
         // Now check module structure
-        return checkPiece(STRUCTURE_PIECE_MAIN, STRUCTURE_OFFSET_X, STRUCTURE_OFFSET_Y, STRUCTURE_OFFSET_Z);
+        return checkPiece(
+            STRUCTURE_PIECE_MAIN,
+            SUPERCOND_SPLITTER_OFFSET_X,
+            SUPERCOND_SPLITTER_OFFSET_Y,
+            SUPERCOND_SPLITTER_OFFSET_Z);
     }
 
     private boolean findCoolantHatch() {

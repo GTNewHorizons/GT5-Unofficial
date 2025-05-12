@@ -1,6 +1,70 @@
 package gregtech.common.tileentities.machines.multi.nanochip.util;
 
+// spotless:off
 public class AssemblyComplexStructureString {
+
+    public static final int SUPERCOND_SPLITTER_OFFSET_X = 3;
+    public static final int SUPERCOND_SPLITTER_OFFSET_Y = 7;
+    public static final int SUPERCOND_SPLITTER_OFFSET_Z = 0;
+    public static final String[][] SUPERCOND_SPLITTER_STRUCTURE = new String[][]{
+        {
+            "       ",
+            "       ",
+            " DEEED ",
+            "       ",
+            "       ",
+            "       ",
+            " DEEED "
+        },{
+            "       ",
+            " D   D ",
+            "DBD DBD",
+            " B   B ",
+            " B   B ",
+            " B   B ",
+            "DDD DDD"
+        },{
+            "   C   ",
+            "  CFC  ",
+            "EDCFCDE",
+            "  CFC  ",
+            "  CFC  ",
+            "  CFC  ",
+            "EDCFCDE"
+        },{
+            "  CCC  ",
+            "  FAF  ",
+            "E FAF E",
+            "  FAF  ",
+            "  FAF  ",
+            "  FAF  ",
+            "E FAF E"
+        },{
+            "   C   ",
+            "  CFC  ",
+            "EDCFCDE",
+            "  CFC  ",
+            "  CFC  ",
+            "  CFC  ",
+            "EDCFCDE"
+        },{
+            "       ",
+            " D   D ",
+            "DBD DBD",
+            " B   B ",
+            " B   B ",
+            " B   B ",
+            "DDD DDD"
+        },{
+            "       ",
+            "       ",
+            " DEEED ",
+            "       ",
+            "       ",
+            "       ",
+            " DEEED "
+        }};
+
 
     public static final int MAIN_OFFSET_X = 31;
     public static final int MAIN_OFFSET_Y = 40;
@@ -4967,3 +5031,4 @@ public class AssemblyComplexStructureString {
             "                                                              ",
             "                                                              " } };
 }
+//spotless:on
