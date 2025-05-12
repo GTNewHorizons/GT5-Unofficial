@@ -21,6 +21,7 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
@@ -176,7 +177,7 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
     }
 
     public boolean tickCoverAtSide(ForgeDirection side) {
-        return tickCoverAtSide(side, mTickTimer);
+        return tickCoverAtSide(side, MinecraftServer.getServer().getTickCounter());
     }
 
     /**
