@@ -171,6 +171,7 @@ import static gregtech.common.items.IDMetaItem02.Food_Sliced_Onion;
 import static gregtech.common.items.IDMetaItem02.Food_Sliced_Tomato;
 import static gregtech.common.items.IDMetaItem02.GelledToluene;
 import static gregtech.common.items.IDMetaItem02.MSFMixture;
+import static gregtech.common.items.IDMetaItem02.Magnetron;
 import static gregtech.common.items.IDMetaItem02.Plank_Acacia;
 import static gregtech.common.items.IDMetaItem02.Plank_Acacia_Green;
 import static gregtech.common.items.IDMetaItem02.Plank_Balsa;
@@ -212,6 +213,7 @@ import static gregtech.common.items.IDMetaItem02.ThermosCan_Sweet_Jesus_Latte;
 import static gregtech.common.items.IDMetaItem02.ThermosCan_Sweet_Latte;
 import static gregtech.common.items.IDMetaItem02.ThermosCan_Sweet_Tea;
 import static gregtech.common.items.IDMetaItem02.ThermosCan_Tea;
+import static gregtech.common.items.IDMetaItem02.Vajra_Core;
 
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnumEnchantmentType;
@@ -2389,6 +2391,8 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
                 new TCAspects.TC_AspectStack(TCAspects.LUCRUM, 1L)));
         ItemList.Item_Redstone_Sniffer
             .set(new ItemRedstoneSniffer("Item_Redstone_Sniffer", "Redstone Sniffer", "What are these frequencies?!"));
+        ItemList.Vajra_Core.set(addItem(Vajra_Core.ID, "Vajra Core", ""));
+        ItemList.Magnetron.set(addItem(Magnetron.ID, "Magnetron", ""));
 
         try {
             CropCard tCrop;
