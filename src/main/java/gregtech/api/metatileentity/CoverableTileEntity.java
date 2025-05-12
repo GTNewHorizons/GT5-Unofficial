@@ -176,19 +176,14 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
         cover.onCoverUnload();
     }
 
-    private boolean tickCoverAtSide(ForgeDirection side) {
-        return tickCoverAtSide(
-            side,
-            MinecraftServer.getServer()
-                .getTickCounter());
-    }
-
     /**
      * @return {@code false} if the tile is no longer valid after ticking the cover
      */
-    private boolean tickCoverAtSide(ForgeDirection side, long aTickTimer) {
+    private boolean tickCoverAtSide(ForgeDirection side) {
         final Cover cover = getCoverAtSide(side);
         if (!cover.isValid()) return true;
+        final int aTickTimer = MinecraftServer.getServer()
+            .getTickCounter();
         final int tCoverTickRate = cover.getTickRate();
         if (tCoverTickRate > 0 && aTickTimer % tCoverTickRate == 0) {
             final byte tRedstone = cover.isRedstoneSensitive(aTickTimer) ? getInputRedstoneSignal(side) : 0;
