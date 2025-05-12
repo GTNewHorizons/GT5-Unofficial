@@ -299,7 +299,7 @@ public class Cover implements IGuiHolder<CoverGuiData> {
 
     /**
      * Use this method to get a panel representing this cover that you can open from another MUI2 UI.
-     * 
+     *
      * @param guiData     information about the creation context
      * @param panelName   the unique name of this panel in the context of your UI.
      * @param syncManager sync handler where widget sync handlers should be registered

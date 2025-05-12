@@ -6,7 +6,6 @@ import com.cleanroommc.modularui.network.NetworkUtils;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
-import com.cleanroommc.modularui.widgets.ButtonWidget;
 import com.cleanroommc.modularui.widgets.layout.Flow;
 
 import gregtech.api.modularui2.CoverGuiData;
@@ -46,7 +45,11 @@ public class CoverGui<T extends Cover> {
      * several widgets. Use {@link CoverGui#createBasePanel} with a unique panel name instead.
      */
     public final ModularPanel createStandalonePanel(CoverGuiData guiData, PanelSyncManager syncManager) {
-        return createBasePanel(guiData, "standalone.cover", syncManager);
+        ModularPanel basePanel = createBasePanel(guiData, "standalone.cover", syncManager);
+        if (doesBindPlayerInventory()) {
+            basePanel.bindPlayerInventory();
+        }
+        return basePanel;
     }
 
     /**
@@ -68,9 +71,6 @@ public class CoverGui<T extends Cover> {
         });
         final ModularPanel panel = ModularPanel.defaultPanel(panelName, getGUIWidth(), getGUIHeight())
             .debugName(getGuiId());
-        if (doesBindPlayerInventory() && !guiData.isAnotherWindow()) {
-            panel.bindPlayerInventory();
-        }
         final Flow widgetsColumn = Flow.column()
             .coverChildren()
             .crossAxisAlignment(Alignment.CrossAxis.START)
@@ -79,9 +79,6 @@ public class CoverGui<T extends Cover> {
         panel.child(widgetsColumn);
         addTitleToUI(guiData, widgetsColumn);
         addUIWidgets(guiData, syncManager, widgetsColumn);
-        if (guiData.isAnotherWindow()) {
-            panel.child(ButtonWidget.panelCloseButton());
-        }
 
         final Cover cover = guiData.getCoverable()
             .getCoverAtSide(guiData.getSide());

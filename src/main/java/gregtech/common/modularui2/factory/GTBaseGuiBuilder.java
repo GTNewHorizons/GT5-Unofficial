@@ -5,7 +5,6 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
 
-import com.cleanroommc.modularui.api.IPanelHandler;
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.api.widget.IWidget;
 import com.cleanroommc.modularui.factory.PosGuiData;
@@ -17,6 +16,7 @@ import com.cleanroommc.modularui.value.sync.PanelSyncHandler;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widget.ParentWidget;
 import com.cleanroommc.modularui.widget.Widget;
+import com.cleanroommc.modularui.widgets.ButtonWidget;
 import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 
@@ -185,31 +185,37 @@ public final class GTBaseGuiBuilder {
             .top(1)
             .childPadding(2);
         for (int i = 0; i < 6; i++) {
-            ForgeDirection side = ForgeDirection.getOrientation(i);
-            String panelKey = "cover_panel_" + side.toString()
-                .toLowerCase();
-            ICoverable coverable = mte.getBaseMetaTileEntity();
-            IPanelHandler panel = syncManager
-                .panel(panelKey, coverPanelBuilder(panelKey, coverable.getCoverAtSide(side), side), true);
-            column.child(new CoverTabButton(coverable, side, panel));
+            column.child(getCoverTabButton(ForgeDirection.getOrientation(i)));
         }
         posGuiData.getNEISettings()
             .addNEIExclusionArea(column);
         return column;
     }
 
+    private @NotNull CoverTabButton getCoverTabButton(ForgeDirection side) {
+        String panelKey = "cover_panel_" + side.toString()
+            .toLowerCase();
+        ICoverable coverable = mte.getBaseMetaTileEntity();
+        return new CoverTabButton(
+            coverable,
+            side,
+            syncManager.panel(panelKey, coverPanelBuilder(panelKey, coverable.getCoverAtSide(side), side), true));
+    }
+
     private PanelSyncHandler.IPanelBuilder coverPanelBuilder(String name, @NotNull Cover cover, ForgeDirection side) {
-        return (syncManager, syncHandler) -> cover.buildPopUpUi(
-            new CoverGuiData(
-                this.posGuiData.getPlayer(),
-                cover.getCoverID(),
-                this.posGuiData.getX(),
-                this.posGuiData.getY(),
-                this.posGuiData.getZ(),
-                side,
-                true),
-            name,
-            syncManager);
+        return (syncManager, syncHandler) -> cover
+            .buildPopUpUi(
+                new CoverGuiData(
+                    this.posGuiData.getPlayer(),
+                    cover.getCoverID(),
+                    this.posGuiData.getX(),
+                    this.posGuiData.getY(),
+                    this.posGuiData.getZ(),
+                    side,
+                    true),
+                name,
+                syncManager)
+            .child(ButtonWidget.panelCloseButton());
     }
 
     private IWidget createGhostCircuitSlot() {
