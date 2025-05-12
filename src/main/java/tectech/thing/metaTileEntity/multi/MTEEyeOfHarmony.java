@@ -806,7 +806,7 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements IConstructable,
         if (parallelAmount > 1) {
             chance -= stellarPlasmaOverflowProbabilityAdjustment;
         } else {
-            if (pityChance >= 1) {
+            if (chance == previousRecipeChance && pityChance >= 1) {
                 chance = 1;
             }
             chance -= (hydrogenOverflowProbabilityAdjustment + heliumOverflowProbabilityAdjustment);
@@ -1449,13 +1449,15 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements IConstructable,
                 MaterialsUEVplus.SpaceTime.getMolten(1),
                 (long) ((successChance * MOLTEN_SPACETIME_PER_FAILURE_TIER
                     * pow(SPACETIME_FAILURE_BASE, currentRecipeRocketTier + 1)) * failedParallelAmount));
-            // Add chance to pity if previous recipe is equal to current one, else reset pity
-            if (previousRecipeChance == successChance) {
-                pityChance += (1 - successChance) * successChance;
-            } else {
-                pityChance = successChance;
+            if (parallelAmount == 1) {
+                // Add chance to pity if previous recipe is equal to current one, else reset pity
+                if (previousRecipeChance == successChance) {
+                    pityChance += (1 - successChance) * successChance;
+                } else {
+                    pityChance = successChance;
+                }
             }
-        } else {
+        } else if (parallelAmount == 1) {
             // Recipe succeeded, reset pity
             pityChance = currentBaseChance;
         }
