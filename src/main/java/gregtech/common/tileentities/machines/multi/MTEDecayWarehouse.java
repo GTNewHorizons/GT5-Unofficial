@@ -569,7 +569,7 @@ public class MTEDecayWarehouse extends MTEExtendedPowerMultiBlockBase<MTEDecayWa
     }
 
     @Override
-    protected boolean showRecipeTextInGUI() {
+    public boolean showRecipeTextInGUI() {
         return false;
     }
 
