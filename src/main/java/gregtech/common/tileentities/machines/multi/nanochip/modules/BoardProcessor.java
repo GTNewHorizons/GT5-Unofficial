@@ -2,7 +2,6 @@ package gregtech.common.tileentities.machines.multi.nanochip.modules;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.lazy;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
-import static gregtech.api.util.GTStructureUtility.ofFrame;
 import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex.NAC_MODULE;
 import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex.TOOLTIP_CC;
 import static gregtech.common.tileentities.machines.multi.nanochip.util.AssemblyComplexStructureString.BOARD_OFFSET_X;
@@ -11,13 +10,13 @@ import static gregtech.common.tileentities.machines.multi.nanochip.util.Assembly
 import static gregtech.common.tileentities.machines.multi.nanochip.util.AssemblyComplexStructureString.BOARD_STRING;
 import static gtPlusPlus.xmod.thermalfoundation.block.TFBlocks.blockFluidEnder;
 
+import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 
 import gregtech.api.GregTechAPI;
-import gregtech.api.enums.MaterialsUEVplus;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.recipe.RecipeMap;
@@ -26,6 +25,7 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyModuleBase;
 import gregtech.common.tileentities.machines.multi.nanochip.util.CircuitComponent;
 import gregtech.common.tileentities.machines.multi.nanochip.util.ModuleStructureDefinition;
+import gtPlusPlus.core.material.MaterialsAlloy;
 
 public class BoardProcessor extends MTENanochipAssemblyModuleBase<BoardProcessor> {
 
@@ -34,8 +34,15 @@ public class BoardProcessor extends MTENanochipAssemblyModuleBase<BoardProcessor
     public static final IStructureDefinition<BoardProcessor> STRUCTURE_DEFINITION = ModuleStructureDefinition
         .<BoardProcessor>builder()
         .addShape(STRUCTURE_PIECE_MAIN, structure)
-        // Transcendent metal frame
-        .addElement('A', ofFrame(MaterialsUEVplus.TranscendentMetal))
+        // Octiron frame
+        .addElement(
+            'A',
+            lazy(
+                t -> ofBlock(
+                    Block.getBlockFromItem(
+                        MaterialsAlloy.OCTIRON.getFrameBox(1)
+                            .getItem()),
+                    1)))
         // White casing block
         .addElement('B', ofBlock(GregTechAPI.sBlockCasings8, 5))
         // Black casing block
