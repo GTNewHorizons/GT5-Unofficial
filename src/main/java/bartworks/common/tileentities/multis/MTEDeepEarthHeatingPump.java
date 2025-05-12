@@ -26,8 +26,11 @@ import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 
+import org.jetbrains.annotations.NotNull;
+
 import com.gtnewhorizons.modularui.api.math.Pos2d;
 
+import bartworks.common.tileentities.multis.gui.MTEDeepEarthHeatingPumpGui;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.TierEU;
@@ -301,5 +304,10 @@ public class MTEDeepEarthHeatingPump extends MTEDrillerBase {
     @Override
     public int calculateMaxProgressTime(int tier, boolean simulateWorking) {
         return 1;
+    }
+
+    @Override
+    protected @NotNull MTEDeepEarthHeatingPumpGui getGui() {
+        return new MTEDeepEarthHeatingPumpGui(this);
     }
 }
