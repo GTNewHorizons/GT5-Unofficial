@@ -29,10 +29,13 @@ import javax.annotation.Nullable;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
+import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -117,16 +120,16 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
             MODULE_2,
             new String[][]{
                 {"  ","  ","  ","  "},
-                {"AA","A ","A ","AA"},
-                {"  ","  ","  ","AA"},
                 {"AA","A ","C ","AA"},
+                {"  ","  ","  ","AA"},
+                {"AA","A ","A ","AA"},
                 {"  ","  ","  ","  "}}
         )
         .addShape(
             MODULE_3,
             new String[][]{
                 {"  ","  ","  ","  "},
-                {"AA","C ","A ","AA"},
+                {"AA","A ","C ","AA"},
                 {"  ","  ","  ","AA"},
                 {"AA","A ","A ","AA"},
                 {"  ","  ","  ","  "}}
@@ -135,9 +138,9 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
             MODULE_4,
             new String[][]{
                 {"  ","  ","  ","  "},
-                {"AA","A ","A ","AA"},
+                {"AA","A ","C ","AA"},
                 {"  ","  ","  ","AA"},
-                {"AA","C ","A ","AA"},
+                {"AA","A ","A ","AA"},
                 {"  ","  ","  ","  "}}
         )// spotless:on
         .addElement('P', chainAllGlasses(-1, (te, t) -> te.glassTier = t, te -> te.glassTier))
@@ -287,32 +290,32 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
         buildPiece(STRUCTURE_PIECE_MAIN, stackSize, hintsOnly, 2, 4, 0);
-        buildPiece(MODULE_1, stackSize, hintsOnly, 63, 14, -59);
-        buildPiece(MODULE_2, stackSize, hintsOnly, 55, 11, -67);
-        buildPiece(MODULE_3, stackSize, hintsOnly, 47, 13, -76);
-        buildPiece(MODULE_4, stackSize, hintsOnly, 39, 11, -84);
+        buildPiece(MODULE_1, stackSize, hintsOnly, 10, 4, -4);
+        buildPiece(MODULE_2, stackSize, hintsOnly, 15, 4, -4);
+        buildPiece(MODULE_3, stackSize, hintsOnly, 20, 4, -4);
+        buildPiece(MODULE_4, stackSize, hintsOnly, 25, 4, -4);
     }
 
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         int built = 0;
 
-        survivialBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 16, 4, 1, elementBudget, env, false, true);
+        survivialBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 2, 4, 0, elementBudget, env, false, true);
 
-        if (stackSize.stackSize > 0) {
-            built += survivialBuildPiece(MODULE_1, stackSize, 63, 14, -59, elementBudget, env, false, true);
+        if ((stackSize.stackSize > 0)) {
+            built += survivialBuildPiece(MODULE_1, stackSize, 10, 4, -4, elementBudget, env, false, true);
         }
 
         if (stackSize.stackSize > 1) {
-            built += survivialBuildPiece(MODULE_2, stackSize, 55, 11, -67, elementBudget, env, false, true);
+            built += survivialBuildPiece(MODULE_2, stackSize, 15, 4, -4, elementBudget, env, false, true);
         }
 
         if (stackSize.stackSize > 2 && ModuleAmount < 3) {
-            built += survivialBuildPiece(MODULE_3, stackSize, 47, 13, -76, elementBudget, env, false, true);
+            built += survivialBuildPiece(MODULE_3, stackSize, 20, 4, -4, elementBudget, env, false, true);
         }
 
         if (stackSize.stackSize > 3 && ModuleAmount < 4) {
-            built += survivialBuildPiece(MODULE_4, stackSize, 39, 11, -84, elementBudget, env, false, true);
+            built += survivialBuildPiece(MODULE_4, stackSize, 25, 4, -4, elementBudget, env, false, true);
         }
         return built;
     }
@@ -329,7 +332,11 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         glassTier = -1;
-        if (!checkPiece(STRUCTURE_PIECE_MAIN, 16, 4, 1)) return false;
+        casingTier = -1;
+
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, 2, 4, 0)) return false;
+
+
 
         if (!mExoticEnergyHatches.isEmpty()) {
             if (!mEnergyHatches.isEmpty()) return false;
@@ -429,6 +436,13 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
     @Override
     public int getRecipeCatalystPriority() {
         return -10;
+    }
+
+    @Override
+    public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
+                                int z) {
+        super.getWailaNBTData(player, tile, tag, world, x, y, z);
+        tag.setInteger("parallels", getMaxParallelRecipes());
     }
 
     @Override
