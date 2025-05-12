@@ -3,6 +3,68 @@ package gregtech.common.tileentities.machines.multi.nanochip.util;
 // spotless:off
 public class AssemblyComplexStructureString {
 
+    public static final int OPTICAL_OFFSET_X = 3;
+    public static final int OPTICAL_OFFSET_Y = 7;
+    public static final int OPTICAL_OFFSET_Z = 0;
+    public static final String[][] OPTICAL_STRING = new String[][]{{
+        "       ",
+        " BBCBB ",
+        " AACAA ",
+        "   C   ",
+        "   C   ",
+        "   C   ",
+        " AACAA "
+    },{
+        " AAAAA ",
+        "BBBCBBB",
+        "ABD DBA",
+        " BD DB ",
+        " BD DB ",
+        " BD DB ",
+        "ABD DBA"
+    },{
+        " A   A ",
+        "BBCCCBB",
+        "AD   DA",
+        " DCCCD ",
+        " D   D ",
+        " DCCCD ",
+        "AD   DA"
+    },{
+        " A   A ",
+        "CCCBCCC",
+        "C  C  C",
+        "C CCC C",
+        "C     C",
+        "C CCC C",
+        "C  C  C"
+    },{
+        " A   A ",
+        "BBCCCBB",
+        "AD   DA",
+        " DCC D ",
+        " D   D ",
+        " DCCCD ",
+        "AD   DA"
+    },{
+        " AAAAA ",
+        "BBBCBBB",
+        "ABD DBA",
+        " BD DB ",
+        " BD DB ",
+        " BD DB ",
+        "ABD DBA"
+    },{
+        "       ",
+        " BBCBB ",
+        " AACAA ",
+        "   C   ",
+        "   C   ",
+        "   C   ",
+        " AACAA "
+    }};
+
+
     public static final int BOARD_OFFSET_X = 3;
     public static final int BOARD_OFFSET_Y = 4;
     public static final int BOARD_OFFSET_Z = 0;
