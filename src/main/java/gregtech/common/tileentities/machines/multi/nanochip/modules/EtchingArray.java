@@ -5,14 +5,13 @@ import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex.NAC_MODULE;
 import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex.TOOLTIP_CC;
+import static gtnhlanth.util.DescTextLocalization.addDotText;
 
 import java.util.ArrayList;
 
 import javax.annotation.Nullable;
 
-import gregtech.common.blocks.BlockCasings8;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.StatCollector;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -29,6 +28,7 @@ import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.common.blocks.BlockCasings8;
 import gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyModuleBase;
 import gregtech.common.tileentities.machines.multi.nanochip.util.CircuitComponent;
 import gregtech.common.tileentities.machines.multi.nanochip.util.ModuleStructureDefinition;
@@ -167,12 +167,13 @@ public class EtchingArray extends MTENanochipAssemblyModuleBase<EtchingArray> {
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
-        return new MultiblockTooltipBuilder().addInfo(NAC_MODULE)
+        return new MultiblockTooltipBuilder().addMachineType("NAC Module")
+            .addInfo(NAC_MODULE)
             .addInfo("Etches your Chip " + TOOLTIP_CC + "s")
             .addInfo("Outputs into the VCO with the same color as the input VCI")
             .addStructureInfo("Any base casing - Vacuum Conveyor Input")
             .addStructureInfo("Any base casing - Vacuum Conveyor Output")
-            .addOtherStructurePart(StatCollector.translateToLocal("GT5U.tooltip.structure.laser_source_hatch"), "x1", 1)
+            .addOtherStructurePart("Beamline Input Hatch", addDotText(1))
             .toolTipFinisher("GregTech");
     }
 

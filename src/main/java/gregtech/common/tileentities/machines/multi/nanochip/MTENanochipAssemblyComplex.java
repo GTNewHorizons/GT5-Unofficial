@@ -16,6 +16,7 @@ import static gregtech.api.util.GTUtility.filterValidMTEs;
 import static gregtech.common.tileentities.machines.multi.nanochip.util.AssemblyComplexStructureString.MAIN_OFFSET_X;
 import static gregtech.common.tileentities.machines.multi.nanochip.util.AssemblyComplexStructureString.MAIN_OFFSET_Y;
 import static gregtech.common.tileentities.machines.multi.nanochip.util.AssemblyComplexStructureString.MAIN_OFFSET_Z;
+import static gtnhlanth.util.DescTextLocalization.addDotText;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -198,7 +199,7 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
-        return new MultiblockTooltipBuilder()
+        return new MultiblockTooltipBuilder().addMachineType("NAC, Nanochip-Assembly-Complex")
             .addInfo("Creates Circuits out of Circuit Components (" + TOOLTIP_CC + "s) at lightning speed")
             .addInfo("Convert items to " + TOOLTIP_CC + "s in the control room")
             .addInfo("Convert finished Circuit " + TOOLTIP_CC + "s back to items in the control room")
@@ -213,6 +214,7 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
             .addStructureInfo("Any control room base casing - Input bus")
             .addStructureInfo("Any control room base casing - Vacuum Conveyor Output")
             .addStructureInfo("Any control room base casing - Output bus")
+            .addOtherStructurePart("Energy Hatch Above Controller, Center of 3x3", addDotText(1))
             .toolTipFinisher("GregTech");
     }
 

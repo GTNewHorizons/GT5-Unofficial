@@ -89,7 +89,8 @@ public class SMDProcessor extends MTENanochipAssemblyModuleBase<SMDProcessor> {
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
-        return new MultiblockTooltipBuilder().addInfo(NAC_MODULE)
+        return new MultiblockTooltipBuilder().addMachineType("NAC Module")
+            .addInfo(NAC_MODULE)
             .addInfo("Processes your SMD " + TOOLTIP_CC + "s")
             .addInfo("Outputs into the VCO with the same color as the input VCI")
             .addStructureInfo("Any base casing - Vacuum Conveyor Input")
