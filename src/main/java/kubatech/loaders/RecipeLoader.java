@@ -39,6 +39,7 @@ import static gregtech.api.recipe.RecipeMaps.mixerRecipes;
 import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.MINUTES;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
+import static gregtech.api.util.GTRecipeBuilder.STACKS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
 import static gregtech.api.util.GTRecipeConstants.AssemblyLine;
 import static gregtech.api.util.GTRecipeConstants.RESEARCH_ITEM;
@@ -157,8 +158,8 @@ public class RecipeLoader {
                     gregtech.api.enums.ItemList.Robot_Arm_UV.get(16L),
                     new Object[] { OrePrefixes.circuit.get(Materials.UV), 16L })
                 .fluidInputs(
-                    MaterialsAlloy.INDALLOY_140.getFluidStack(200 * INGOTS),
-                    FluidRegistry.getFluidStack("for.honey", 20000))
+                    MaterialsAlloy.INDALLOY_140.getFluidStack(3 * STACKS + 8 * INGOTS),
+                    FluidRegistry.getFluidStack("for.honey", 20_000))
                 .itemOutputs(ExtremeIndustrialApiary.get(1))
                 .eut(TierEU.RECIPE_UHV)
                 .duration(5 * MINUTES)
@@ -322,7 +323,7 @@ public class RecipeLoader {
             GTValues.RA.stdBuilder()
                 .itemInputs(GameRegistry.findItemStack("harvestcraft", "peppermintItem", 1))
                 .itemOutputs(PeppermintTea.get(1))
-                .fluidInputs(FluidRegistry.getFluidStack("water", 1000))
+                .fluidInputs(FluidRegistry.getFluidStack("water", 1_000))
                 .eut(TierEU.RECIPE_LV)
                 .duration(5 * SECONDS)
                 .addTo(mixerRecipes);
@@ -342,7 +343,7 @@ public class RecipeLoader {
                     gregtech.api.enums.ItemList.Quantum_Tank_EV.get(1),
                     FluidExtractorUHV.get(10),
                     new Object[] { OrePrefixes.circuit.get(Materials.UV), 16L })
-                .fluidInputs(MaterialsAlloy.INDALLOY_140.getFluidStack(200 * INGOTS))
+                .fluidInputs(MaterialsAlloy.INDALLOY_140.getFluidStack(3 * STACKS + 8 * INGOTS))
                 .itemOutputs(TeaAcceptor.get(1))
                 .eut(TierEU.RECIPE_UHV)
                 .duration(5 * MINUTES)

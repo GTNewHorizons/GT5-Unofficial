@@ -32,7 +32,7 @@ public class RecipeLoaderGTNH {
 
         // MK3
         GTValues.RA.stdBuilder()
-            .fluidInputs(Materials.Plutonium241.getMolten(1 * INGOTS), Materials.Helium.getGas(1000))
+            .fluidInputs(Materials.Plutonium241.getMolten(1 * INGOTS), Materials.Helium.getGas(1_000))
             .fluidOutputs(MaterialsElements.getInstance().CURIUM.getFluidStack(1 * INGOTS))
             .duration(4 * SECONDS + 16 * TICKS)
             .eut(98304)
@@ -68,7 +68,7 @@ public class RecipeLoaderGTNH {
 
         GTValues.RA.stdBuilder()
             .fluidInputs(
-                Materials.Fluorine.getGas(1000),
+                Materials.Fluorine.getGas(1_000),
                 MaterialsElements.getInstance().SELENIUM.getFluidStack(1 * INGOTS))
             .fluidOutputs(new FluidStack(MaterialsElements.getInstance().TECHNETIUM.getPlasma(), 2 * INGOTS))
             .duration(3 * SECONDS + 4 * TICKS)

@@ -136,7 +136,7 @@ public class ProcessingDirty implements gregtech.api.interfaces.IOreRecipeRegist
                     GTOreDictUnificator.get(OrePrefixes.dust, byproduct.mMacerateInto, 1L),
                     GTOreDictUnificator.get(OrePrefixes.dust, Materials.Stone, 1L))
                 .outputChances(10000, 7000, 4000)
-                .fluidInputs(Materials.Mercury.getFluid(1000))
+                .fluidInputs(Materials.Mercury.getFluid(1_000))
                 .duration(40 * SECONDS)
                 .eut(8)
                 .addTo(chemicalBathRecipes);
@@ -151,7 +151,7 @@ public class ProcessingDirty implements gregtech.api.interfaces.IOreRecipeRegist
                     GTOreDictUnificator.get(OrePrefixes.dust, byproduct.mMacerateInto, 1L),
                     GTOreDictUnificator.get(OrePrefixes.dust, Materials.Stone, 1L))
                 .outputChances(10000, 9900, 4000)
-                .fluidInputs(Materials.Mercury.getFluid(1000))
+                .fluidInputs(Materials.Mercury.getFluid(1_000))
                 .duration(40 * SECONDS)
                 .eut(8)
                 .addTo(chemicalBathRecipes);

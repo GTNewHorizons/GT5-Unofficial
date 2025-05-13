@@ -70,7 +70,7 @@ public class Godforge implements Runnable {
             String dict = OreDictionary.getOreName(OreDictionary.getOreIDs(itemStack)[0]);
             // substring 4 because dust is 4 characters long and there is no other possible oreDict
             String strippedOreDict = dict.substring(4);
-            molten.add(FluidRegistry.getFluidStack("molten." + strippedOreDict.toLowerCase(), 144));
+            molten.add(FluidRegistry.getFluidStack("molten." + strippedOreDict.toLowerCase(), 1 * INGOTS));
 
         }
 
@@ -270,8 +270,8 @@ public class Godforge implements Runnable {
             FluidStack[] molten_t1_xstep = convertToFluid(solids_t1_xstep);
 
             FluidStack[] solid_plasmas_t1_xstep = {
-                new FluidStack(MaterialsElements.getInstance().NEPTUNIUM.getPlasma(), 144),
-                new FluidStack(MaterialsElements.getInstance().FERMIUM.getPlasma(), 144) };
+                new FluidStack(MaterialsElements.getInstance().NEPTUNIUM.getPlasma(), 1 * INGOTS),
+                new FluidStack(MaterialsElements.getInstance().FERMIUM.getPlasma(), 1 * INGOTS) };
 
             for (int i = 0; i < solids_t1_xstep.length; i++) {
                 GTValues.RA.stdBuilder()
@@ -443,7 +443,7 @@ public class Godforge implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(Materials.Iron.getDust(1))
                 .fluidInputs(Materials.Iron.getMolten(1))
-                .fluidOutputs(MaterialsUEVplus.QuarkGluonPlasma.getFluid(1000))
+                .fluidOutputs(MaterialsUEVplus.QuarkGluonPlasma.getFluid(1_000))
                 .duration(10 * SECONDS)
                 .eut(TierEU.RECIPE_MAX)
                 .metadata(FOG_EXOTIC_TIER, 1)
@@ -795,7 +795,7 @@ public class Godforge implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(ArrayUtils.addAll(ForgeOfGodsUpgrade.QGPIU.getExtraCost()))
             .itemOutputs(CustomItemList.Machine_Multi_QuarkGluonPlasmaModule.get(1))
-            .fluidOutputs(MaterialsUEVplus.QuarkGluonPlasma.getFluid(1000))
+            .fluidOutputs(MaterialsUEVplus.QuarkGluonPlasma.getFluid(1_000))
             .duration(1)
             .eut(1)
             .metadata(FOG_UPGRADE_NAME_SHORT, ForgeOfGodsUpgrade.QGPIU.getShortNameText())
@@ -820,7 +820,7 @@ public class Godforge implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(ArrayUtils.addAll(ForgeOfGodsUpgrade.END.getExtraCost()))
             .itemOutputs(MaterialsUEVplus.GravitonShard.getGems(1))
-            .fluidOutputs(MaterialsUEVplus.MagMatter.getMolten(4 * INGOTS), Materials.Neutronium.getPlasma(1000))
+            .fluidOutputs(MaterialsUEVplus.MagMatter.getMolten(4 * INGOTS), Materials.Neutronium.getPlasma(1_000))
             .duration(1)
             .eut(1)
             .metadata(FOG_UPGRADE_NAME_SHORT, ForgeOfGodsUpgrade.END.getShortNameText())
@@ -881,7 +881,7 @@ public class Godforge implements Runnable {
             if (mat.mStandardMoltenFluid != null) {
                 return mat.getMolten(INGOTS * data.mMaterial.mAmount / GTValues.M);
             } else if (mat.mFluid != null) {
-                return mat.getFluid(1000);
+                return mat.getFluid(1_000);
             }
         }
         int[] oreIDs = OreDictionary.getOreIDs(stack);
@@ -898,7 +898,7 @@ public class Godforge implements Runnable {
             strippedOreDict = dict.substring(11);
         }
         if (strippedOreDict != null) {
-            return FluidRegistry.getFluidStack("molten." + strippedOreDict.toLowerCase(), INGOTS);
+            return FluidRegistry.getFluidStack("molten." + strippedOreDict.toLowerCase(), 1 * INGOTS);
         }
         return null;
     }

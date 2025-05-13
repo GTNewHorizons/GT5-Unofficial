@@ -6,6 +6,7 @@ import static goodgenerator.main.GGConfigLoader.NaquadahFuelTime;
 import static goodgenerator.main.GGConfigLoader.NaquadahFuelVoltage;
 import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
+import static gregtech.api.util.GTRecipeBuilder.STACKS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
 import static gregtech.api.util.GTRecipeConstants.LNG_BASIC_OUTPUT;
 import static gregtech.api.util.GTRecipeConstants.NFR_COIL_TIER;
@@ -94,7 +95,7 @@ public class FuelRecipeLoader {
                 GGMaterial.orundum.get(OrePrefixes.dust, 32))
             .fluidInputs(
                 GGMaterial.naquadahBasedFuelMkIII.getFluidOrGas(2_000),
-                Materials.Praseodymium.getMolten(64 * INGOTS))
+                Materials.Praseodymium.getMolten(1 * STACKS))
             .fluidOutputs(GGMaterial.naquadahBasedFuelMkIV.getFluidOrGas(250))
             .duration(8 * SECONDS)
             .eut(46_000_000)

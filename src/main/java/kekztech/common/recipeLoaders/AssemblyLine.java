@@ -54,7 +54,7 @@ public class AssemblyLine implements Runnable {
                 ItemList.Field_Generator_EV.get(8),
                 ItemList.FluidRegulator_LuV.get(1),
                 GTModHandler.getModItem(NewHorizonsCoreMod.ID, "item.EngineeringProcessorFluidEmeraldCore", 4))
-            .fluidInputs(Materials.Enderium.getMolten(10 * INGOTS), Materials.Polybenzimidazole.getMolten(1584))
+            .fluidInputs(Materials.Enderium.getMolten(10 * INGOTS), Materials.Polybenzimidazole.getMolten(11 * INGOTS))
             .itemOutputs(new ItemStack(Blocks.tfftStorageField, 1, 6))
             .eut(TierEU.RECIPE_LuV)
             .duration(30 * SECONDS)
@@ -74,7 +74,9 @@ public class AssemblyLine implements Runnable {
                 ItemList.Field_Generator_LuV.get(4),
                 ItemList.FluidRegulator_UV.get(1),
                 GTModHandler.getModItem(NewHorizonsCoreMod.ID, "item.EngineeringProcessorFluidEmeraldCore", 16))
-            .fluidInputs(Materials.CrystallineAlloy.getMolten(20 * INGOTS), Materials.Polybenzimidazole.getMolten(2016))
+            .fluidInputs(
+                Materials.CrystallineAlloy.getMolten(20 * INGOTS),
+                Materials.Polybenzimidazole.getMolten(14 * INGOTS))
             .itemOutputs(new ItemStack(Blocks.tfftStorageField, 1, 7))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_UV)
@@ -95,7 +97,7 @@ public class AssemblyLine implements Runnable {
                 ItemList.Field_Generator_UV.get(4),
                 new ItemStack(huiCircuit, 4, 2),
                 GTModHandler.getModItem(UniversalSingularities.ID, "universal.tinkersConstruct.singularity", 1, 4))
-            .fluidInputs(Materials.CrystallinePinkSlime.getMolten(4320), new FluidStack(radoxPoly, 20 * INGOTS))
+            .fluidInputs(Materials.CrystallinePinkSlime.getMolten(30 * INGOTS), new FluidStack(radoxPoly, 20 * INGOTS))
             .itemOutputs(new ItemStack(Blocks.tfftStorageField, 1, 8))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_UEV)
@@ -117,7 +119,7 @@ public class AssemblyLine implements Runnable {
                 ItemList.Field_Generator_UEV.get(4),
                 new ItemStack(huiCircuit, 4, 3),
                 GTModHandler.getModItem(UniversalSingularities.ID, "universal.tinkersConstruct.singularity", 1, 4))
-            .fluidInputs(Materials.MelodicAlloy.getMolten(5760), new FluidStack(radoxPoly, 3456))
+            .fluidInputs(Materials.MelodicAlloy.getMolten(40 * INGOTS), new FluidStack(radoxPoly, 24 * INGOTS))
             .itemOutputs(new ItemStack(Blocks.tfftStorageField, 1, 9))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_UMV)
@@ -139,7 +141,7 @@ public class AssemblyLine implements Runnable {
                 new ItemStack(huiCircuit, 8, 4),
                 GTModHandler.getModItem(EnderIO.ID, "itemBasicCapacitor", 64, 6),
                 GTModHandler.getModItem(EternalSingularity.ID, "eternal_singularity", 1))
-            .fluidInputs(Materials.StellarAlloy.getMolten(7200), new FluidStack(radoxPoly, 32 * INGOTS))
+            .fluidInputs(Materials.StellarAlloy.getMolten(50 * INGOTS), new FluidStack(radoxPoly, 32 * INGOTS))
             .itemOutputs(new ItemStack(Blocks.tfftStorageField, 1, 10))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_UXV)
@@ -163,7 +165,7 @@ public class AssemblyLine implements Runnable {
                 ItemList.Circuit_Parts_ResistorASMD.get(8),
                 ItemList.Circuit_Parts_TransistorASMD.get(8),
                 GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.Platinum, 64))
-            .fluidInputs(new FluidStack(solderIndalloy, 720))
+            .fluidInputs(new FluidStack(solderIndalloy, 5 * INGOTS))
             .itemOutputs(new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 2))
             .duration(50 * SECONDS)
             .eut(80_000)
@@ -189,7 +191,7 @@ public class AssemblyLine implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.cableGt01, Materials.Naquadah, 32))
             .fluidInputs(
                 new FluidStack(solderIndalloy, 20 * INGOTS),
-                new FluidStack(FluidRegistry.getFluid("ic2coolant"), 16000))
+                new FluidStack(FluidRegistry.getFluid("ic2coolant"), 16_000))
             .itemOutputs(new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 3))
             .duration(1 * MINUTES + 40 * SECONDS)
             .eut(100_000)
@@ -215,7 +217,7 @@ public class AssemblyLine implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.cableGt01, Materials.NaquadahAlloy, 32))
             .fluidInputs(
                 new FluidStack(solderIndalloy, 20 * INGOTS),
-                new FluidStack(FluidRegistry.getFluid("ic2coolant"), 16000))
+                new FluidStack(FluidRegistry.getFluid("ic2coolant"), 16_000))
             .itemOutputs(new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 4))
             .eut(200_000)
             .duration(1 * MINUTES + 40 * SECONDS)

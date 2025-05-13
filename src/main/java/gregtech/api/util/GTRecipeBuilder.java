@@ -64,6 +64,7 @@ public class GTRecipeBuilder {
     public static final int QUARTER_INGOTS = INGOTS / 4;
     public static final int EIGHTH_INGOTS = INGOTS / 8;
     public static final int NUGGETS = INGOTS / 9;
+    public static final int STACKS = 64 * INGOTS;
 
     /** @deprecated Use {@code INGOTS} or quantities in liters instead. */
     @Deprecated

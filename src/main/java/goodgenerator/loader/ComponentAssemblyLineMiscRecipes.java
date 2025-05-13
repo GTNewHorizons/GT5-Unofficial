@@ -28,7 +28,6 @@ import java.util.HashMap;
 import javax.annotation.Nullable;
 
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
 import bartworks.system.material.WerkstoffLoader;
@@ -198,8 +197,6 @@ public class ComponentAssemblyLineMiscRecipes {
             .duration(16 * SECONDS)
             .eut(GTValues.VP[t])
             .addTo(assemblerRecipes);
-
-        FluidRegistry.getFluid("molten.indalloy140");
         // Assline Recipes!
         // luv 6
         t++;

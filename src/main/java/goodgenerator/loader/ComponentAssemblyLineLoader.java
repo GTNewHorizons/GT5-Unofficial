@@ -22,7 +22,9 @@ import static gregtech.api.enums.TierEU.RECIPE_UV;
 import static gregtech.api.enums.TierEU.RECIPE_ZPM;
 import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.MINUTES;
+import static gregtech.api.util.GTRecipeBuilder.NUGGETS;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
+import static gregtech.api.util.GTRecipeBuilder.STACKS;
 import static gregtech.api.util.GTRecipeConstants.COAL_CASING_TIER;
 import static gregtech.api.util.GTUtility.getIntegratedCircuit;
 import static gtPlusPlus.core.material.MaterialMisc.MUTATED_LIVING_SOLDER;
@@ -196,7 +198,7 @@ public class ComponentAssemblyLineLoader {
                     get(cableGt16, Tin, 3),
                     get(pipeMedium, Bronze, 48))
                 .fluidInputs(
-                    rubber.getMolten(24* INGOTS))
+                    rubber.getMolten(24 * INGOTS))
                 .duration(48 * SECONDS)
                 .eut(RECIPE_ULV)
                 .metadata(COAL_CASING_TIER, COAL_LV)
@@ -236,7 +238,7 @@ public class ComponentAssemblyLineLoader {
                 get(wrapCircuit, LV, 6),
                 get(cableGt16, Tin, 6))
             .fluidInputs(
-                Brass.getMolten(96* INGOTS))
+                Brass.getMolten(1 * STACKS + 32 * INGOTS))
             .duration(48 * SECONDS)
             .eut(RECIPE_ULV)
             .metadata(COAL_CASING_TIER, COAL_LV)
@@ -249,7 +251,7 @@ public class ComponentAssemblyLineLoader {
                 get(plate, EnderPearl, 48),
                 get(wrapCircuit, HV, 12))
             .fluidInputs(
-                RedSteel.getMolten(96* INGOTS))
+                RedSteel.getMolten(1 * STACKS + 32 * INGOTS))
             .duration(24 * MINUTES)
             .eut(RECIPE_ULV)
             .metadata(COAL_CASING_TIER, COAL_LV)
@@ -311,7 +313,7 @@ public class ComponentAssemblyLineLoader {
                     get(cableGt16, Copper, 3),
                     get(pipeMedium, Steel, 48))
                 .fluidInputs(
-                    rubber.getMolten(24* INGOTS))
+                    rubber.getMolten(24 * INGOTS))
                 .duration(48 * SECONDS)
                 .eut(RECIPE_LV)
                 .metadata(COAL_CASING_TIER, COAL_MV)
@@ -351,7 +353,7 @@ public class ComponentAssemblyLineLoader {
                 get(wrapCircuit, MV, 6),
                 get(cableGt16, Copper, 6))
             .fluidInputs(
-                Electrum.getMolten(96* INGOTS))
+                Electrum.getMolten(1 * STACKS + 32 * INGOTS))
             .duration(48 * SECONDS)
             .eut(RECIPE_LV)
             .metadata(COAL_CASING_TIER, COAL_MV)
@@ -364,7 +366,7 @@ public class ComponentAssemblyLineLoader {
                 get(plate, EnderEye, 48),
                 get(wrapCircuit, EV, 12))
             .fluidInputs(
-                TungstenSteel.getMolten(96* INGOTS))
+                TungstenSteel.getMolten(1 * STACKS + 32 * INGOTS))
             .duration(24 * MINUTES)
             .eut(RECIPE_LV)
             .metadata(COAL_CASING_TIER, COAL_MV)
@@ -424,7 +426,7 @@ public class ComponentAssemblyLineLoader {
                     get(cableGt16, Gold, 3),
                     get(pipeMedium, StainlessSteel, 48))
                 .fluidInputs(
-                    rubber.getMolten(24* INGOTS))
+                    rubber.getMolten(24 * INGOTS))
                 .duration(48 * SECONDS)
                 .eut(RECIPE_MV)
                 .metadata(COAL_CASING_TIER, COAL_HV)
@@ -464,7 +466,7 @@ public class ComponentAssemblyLineLoader {
                 get(wrapCircuit, HV, 6),
                 get(cableGt16, Gold, 6))
             .fluidInputs(
-                Chrome.getMolten(96* INGOTS))
+                Chrome.getMolten(1 * STACKS + 32 * INGOTS))
             .duration(48 * SECONDS)
             .eut(RECIPE_MV)
             .metadata(COAL_CASING_TIER, COAL_HV)
@@ -477,7 +479,7 @@ public class ComponentAssemblyLineLoader {
                 get(QuantumEye, 48),
                 get(wrapCircuit, IV, 12))
             .fluidInputs(
-                NiobiumTitanium.getMolten(192* INGOTS))
+                NiobiumTitanium.getMolten(3 * STACKS))
             .duration(24 * MINUTES)
             .eut(RECIPE_MV)
             .metadata(COAL_CASING_TIER, COAL_HV)
@@ -537,7 +539,7 @@ public class ComponentAssemblyLineLoader {
                     get(cableGt16, Aluminium, 3),
                     get(pipeMedium, Titanium, 48))
                 .fluidInputs(
-                    rubber.getMolten(24* INGOTS))
+                    rubber.getMolten(24 * INGOTS))
                 .duration(48 * SECONDS)
                 .eut(RECIPE_HV)
                 .metadata(COAL_CASING_TIER, COAL_EV)
@@ -577,7 +579,7 @@ public class ComponentAssemblyLineLoader {
                 get(wrapCircuit, EV, 6),
                 get(cableGt16, Aluminium, 6))
             .fluidInputs(
-                Platinum.getMolten(96* INGOTS))
+                Platinum.getMolten(1 * STACKS + 32 * INGOTS))
             .duration(48 * SECONDS)
             .eut(RECIPE_HV)
             .metadata(COAL_CASING_TIER, COAL_EV)
@@ -590,7 +592,7 @@ public class ComponentAssemblyLineLoader {
                 get(gem, NetherStar, 48),
                 get(wrapCircuit, LuV, 12))
             .fluidInputs(
-                HSSG.getMolten(192* INGOTS))
+                HSSG.getMolten(3 * STACKS))
             .duration(24 * MINUTES)
             .eut(RECIPE_HV)
             .metadata(COAL_CASING_TIER, COAL_EV)
@@ -690,7 +692,7 @@ public class ComponentAssemblyLineLoader {
                 get(wrapCircuit, IV, 6),
                 get(cableGt16, Tungsten, 6))
             .fluidInputs(
-                Iridium.getMolten(96* INGOTS))
+                Iridium.getMolten(1 * STACKS + 32 * INGOTS))
             .duration(48 * SECONDS)
             .eut(RECIPE_EV)
             .metadata(COAL_CASING_TIER, COAL_IV)
@@ -703,7 +705,7 @@ public class ComponentAssemblyLineLoader {
                 get(QuantumStar, 48),
                 get(wrapCircuit, Materials.ZPM, 12))
             .fluidInputs(
-                HSSS.getMolten(192* INGOTS))
+                HSSS.getMolten(3 * STACKS))
             .duration(24 * MINUTES)
             .eut(RECIPE_EV)
             .metadata(COAL_CASING_TIER, COAL_IV)
@@ -758,7 +760,7 @@ public class ComponentAssemblyLineLoader {
                     INDALLOY_140.getFluidStack(48*INGOTS),
                     Lubricant.getFluid(12000),
                     HSSS.getMolten(450* INGOTS + 96),
-                    NiobiumTitanium.getMolten(96* INGOTS),
+                    NiobiumTitanium.getMolten(1 * STACKS + 32 * INGOTS),
                     rubber.getMolten(48* INGOTS))
                 .duration(24 * MINUTES)
                 .eut(RECIPE_IV)
@@ -796,7 +798,7 @@ public class ComponentAssemblyLineLoader {
                 get(cableGt16, YttriumBariumCuprate, 18),
                 getIntegratedCircuit(ROBOT_ARM_CIRCUIT))
             .fluidInputs(
-                INDALLOY_140.getFluidStack(192* INGOTS),
+                INDALLOY_140.getFluidStack(3 * STACKS),
                 Lubricant.getFluid(12000),
                 HSSS.getMolten(528* INGOTS))
             .duration(24 * MINUTES)
@@ -816,7 +818,7 @@ public class ComponentAssemblyLineLoader {
                 get(cableGt16, YttriumBariumCuprate, 21),
                 getIntegratedCircuit(SENSOR_CIRCUIT))
             .fluidInputs(
-                INDALLOY_140.getFluidStack(192* INGOTS),
+                INDALLOY_140.getFluidStack(3 * STACKS),
                 Gallium.getMolten(2304* INGOTS))
             .duration(24 * MINUTES)
             .eut(RECIPE_IV)
@@ -834,9 +836,9 @@ public class ComponentAssemblyLineLoader {
                 get(cableGt16, YttriumBariumCuprate, 21),
                 getIntegratedCircuit(EMITTER_CIRCUIT))
             .fluidInputs(
-                INDALLOY_140.getFluidStack(192* INGOTS),
+                INDALLOY_140.getFluidStack(3 * STACKS),
                 Gallium.getMolten(2304* INGOTS),
-                Ruridit.getMolten(192* INGOTS))
+                Ruridit.getMolten(3 * STACKS))
             .duration(24 * MINUTES)
             .eut(RECIPE_IV)
             .metadata(COAL_CASING_TIER, COAL_LuV)
@@ -853,7 +855,7 @@ public class ComponentAssemblyLineLoader {
                 get(wrapCircuit, Materials.ZPM, 12),
                 get(cableGt16, YttriumBariumCuprate, 24))
             .fluidInputs(
-                INDALLOY_140.getFluidStack(192* INGOTS),
+                INDALLOY_140.getFluidStack(3 * STACKS),
                 Ruridit.getMolten(1536* INGOTS))
             .duration(24 * MINUTES)
             .eut(RECIPE_IV)
@@ -870,7 +872,7 @@ public class ComponentAssemblyLineLoader {
                 get(cableGt16, VanadiumGallium, 24),
                 getIntegratedCircuit(MOTOR_CIRCUIT))
             .fluidInputs(
-                INDALLOY_140.getFluidStack(96* INGOTS),
+                INDALLOY_140.getFluidStack(1 * STACKS + 32 * INGOTS),
                 Lubricant.getFluid(36000),
                 Europium.getMolten(1152* INGOTS),
                 NaquadahAlloy.getMolten(325* INGOTS + 48))
@@ -888,7 +890,7 @@ public class ComponentAssemblyLineLoader {
                 get(cableGt16, VanadiumGallium, 48),
                 getIntegratedCircuit(PISTON_CIRCUIT))
             .fluidInputs(
-                INDALLOY_140.getFluidStack(96* INGOTS),
+                INDALLOY_140.getFluidStack(1 * STACKS + 32 * INGOTS),
                 Lubricant.getFluid(36000),
                 NaquadahAlloy.getMolten(602* INGOTS + 96))
             .duration(24 * MINUTES)
@@ -926,11 +928,11 @@ public class ComponentAssemblyLineLoader {
                     get(cableGt16, VanadiumGallium, 24),
                     getIntegratedCircuit(PUMP_CIRCUIT))
                 .fluidInputs(
-                    INDALLOY_140.getFluidStack(96* INGOTS),
-                    Lubricant.getFluid(36000),
+                    INDALLOY_140.getFluidStack(1 * STACKS + 32 * INGOTS),
+                    Lubricant.getFluid(36_000),
                     NaquadahAlloy.getMolten(450* INGOTS + 96),
                     Enderium.getMolten(288* INGOTS),
-                    rubber.getMolten(96* INGOTS))
+                    rubber.getMolten(1 * STACKS + 32 * INGOTS))
                 .duration(24 * MINUTES)
                 .eut(RECIPE_LuV)
                 .metadata(COAL_CASING_TIER, COAL_ZPM)
@@ -945,10 +947,10 @@ public class ComponentAssemblyLineLoader {
                     get(cableGt16, VanadiumGallium, 24),
                     getIntegratedCircuit(CONVEYOR_CIRCUIT))
                 .fluidInputs(
-                    INDALLOY_140.getFluidStack(96* INGOTS),
-                    Lubricant.getFluid(36000),
-                    rubber.getMolten(954* INGOTS),
-                    NaquadahAlloy.getMolten(218* INGOTS + 96))
+                    INDALLOY_140.getFluidStack(1 * STACKS + 32 * INGOTS),
+                    Lubricant.getFluid(36_000),
+                    rubber.getMolten(14 * STACKS + 58 * INGOTS),
+                    NaquadahAlloy.getMolten(3 * STACKS + 26 * INGOTS + 6 * NUGGETS))
                 .duration(24 * MINUTES)
                 .eut(RECIPE_LuV)
                 .metadata(COAL_CASING_TIER, COAL_ZPM)
@@ -987,7 +989,7 @@ public class ComponentAssemblyLineLoader {
                 INDALLOY_140.getFluidStack(384* INGOTS),
                 Trinium.getMolten(2304* INGOTS),
                 VanadiumGallium.getMolten(672* INGOTS),
-                Osmiridium.getMolten(192* INGOTS))
+                Osmiridium.getMolten(3 * STACKS))
             .duration(24 * MINUTES)
             .eut(RECIPE_LuV)
             .metadata(COAL_CASING_TIER, COAL_ZPM)
@@ -1025,7 +1027,7 @@ public class ComponentAssemblyLineLoader {
                 Americium.getMolten(2304 * INGOTS),
                 Naquadria.getMolten(432 * INGOTS),
                 Neutronium.getMolten(325 * INGOTS + 48),
-                Samarium.getMolten(96 * INGOTS))
+                Samarium.getMolten(1 * STACKS + 32 * INGOTS))
             .duration(24 * MINUTES)
             .eut(RECIPE_ZPM)
             .metadata(COAL_CASING_TIER, COAL_UV)
@@ -1085,7 +1087,7 @@ public class ComponentAssemblyLineLoader {
                     Naquadah.getMolten(576* INGOTS),
                     Neutronium.getMolten(450* INGOTS + 96),
                     Naquadria.getMolten(432* INGOTS),
-                    rubber.getMolten(192* INGOTS))
+                    rubber.getMolten(3 * STACKS))
                 .duration(24 * MINUTES)
                 .eut(RECIPE_ZPM)
                 .metadata(COAL_CASING_TIER, COAL_UV)
@@ -1143,7 +1145,7 @@ public class ComponentAssemblyLineLoader {
                 INDALLOY_140.getFluidStack(768* INGOTS),
                 Naquadria.getMolten(2736* INGOTS),
                 NaquadahAlloy.getMolten(672* INGOTS),
-                Neutronium.getMolten(192* INGOTS))
+                Neutronium.getMolten(3 * STACKS))
             .duration(24 * MINUTES)
             .eut(RECIPE_ZPM)
             .metadata(COAL_CASING_TIER, COAL_UV)
@@ -1182,7 +1184,7 @@ public class ComponentAssemblyLineLoader {
                 Neutronium.getMolten(3072* INGOTS),
                 Naquadria.getMolten(864* INGOTS),
                 CosmicNeutronium.getMolten(650* INGOTS + 96),
-                Samarium.getMolten(192* INGOTS))
+                Samarium.getMolten(3 * STACKS))
             .duration(40 * MINUTES)
             .eut(RECIPE_UV)
             .metadata(COAL_CASING_TIER, COAL_UHV)
@@ -1302,7 +1304,7 @@ public class ComponentAssemblyLineLoader {
                 ElectrumFlux.getMolten(3072* INGOTS),
                 Naquadria.getMolten(864* INGOTS),
                 Bedrockium.getMolten(672* INGOTS),
-                CosmicNeutronium.getMolten(192* INGOTS))
+                CosmicNeutronium.getMolten(3 * STACKS))
             .duration(40 * MINUTES)
             .eut(RECIPE_UV)
             .metadata(COAL_CASING_TIER, COAL_UHV)
@@ -1508,7 +1510,7 @@ public class ComponentAssemblyLineLoader {
                 Infinity.getMolten(3072* INGOTS),
                 TranscendentMetal.getMolten(1034* INGOTS + 96),
                 TengamPurified.getMolten(768* INGOTS),
-                CELESTIAL_TUNGSTEN.getFluidStack(192* INGOTS))
+                CELESTIAL_TUNGSTEN.getFluidStack(3 * STACKS))
             .duration(40 * MINUTES)
             .eut(RECIPE_UEV)
             .metadata(COAL_CASING_TIER, COAL_UIV)
@@ -1527,7 +1529,7 @@ public class ComponentAssemblyLineLoader {
                 Mellion.getMolten(1536* INGOTS),
                 TranscendentMetal.getMolten(1034* INGOTS + 96),
                 TengamPurified.getMolten(768* INGOTS),
-                CELESTIAL_TUNGSTEN.getFluidStack(192* INGOTS))
+                CELESTIAL_TUNGSTEN.getFluidStack(3 * STACKS))
             .duration(40 * MINUTES)
             .eut(RECIPE_UEV)
             .metadata(COAL_CASING_TIER, COAL_UIV)
@@ -1545,7 +1547,7 @@ public class ComponentAssemblyLineLoader {
                 MUTATED_LIVING_SOLDER.getFluidStack(864* INGOTS),
                 DimensionallyShiftedSuperfluid.getFluid(192000),
                 TranscendentMetal.getMolten(1205* INGOTS + 48),
-                CELESTIAL_TUNGSTEN.getFluidStack(192* INGOTS))
+                CELESTIAL_TUNGSTEN.getFluidStack(3 * STACKS))
             .duration(40 * MINUTES)
             .eut(RECIPE_UEV)
             .metadata(COAL_CASING_TIER, COAL_UIV)
@@ -1566,7 +1568,7 @@ public class ComponentAssemblyLineLoader {
                 MUTATED_LIVING_SOLDER.getFluidStack(864* INGOTS),
                 DimensionallyShiftedSuperfluid.getFluid(192000),
                 TranscendentMetal.getMolten(1056* INGOTS),
-                CELESTIAL_TUNGSTEN.getFluidStack(192* INGOTS))
+                CELESTIAL_TUNGSTEN.getFluidStack(3 * STACKS))
             .duration(40 * MINUTES)
             .eut(RECIPE_UEV)
             .metadata(COAL_CASING_TIER, COAL_UIV)
@@ -1587,7 +1589,7 @@ public class ComponentAssemblyLineLoader {
                     TranscendentMetal.getMolten(901* INGOTS + 48),
                     rubber.getMolten(768* INGOTS),
                     DraconiumAwakened.getMolten(576* INGOTS),
-                    CELESTIAL_TUNGSTEN.getFluidStack(192* INGOTS))
+                    CELESTIAL_TUNGSTEN.getFluidStack(3 * STACKS))
                 .duration(40 * MINUTES)
                 .eut(RECIPE_UEV)
                 .metadata(COAL_CASING_TIER, COAL_UIV)
@@ -1606,7 +1608,7 @@ public class ComponentAssemblyLineLoader {
                     DimensionallyShiftedSuperfluid.getFluid(192000),
                     rubber.getMolten(3834* INGOTS),
                     TranscendentMetal.getMolten(437* INGOTS + 48),
-                    CELESTIAL_TUNGSTEN.getFluidStack(192* INGOTS))
+                    CELESTIAL_TUNGSTEN.getFluidStack(3 * STACKS))
                 .duration(40 * MINUTES)
                 .eut(RECIPE_UEV)
                 .metadata(COAL_CASING_TIER, COAL_UIV)
@@ -1630,7 +1632,7 @@ public class ComponentAssemblyLineLoader {
                 LAFIUM.getFluidStack(768* INGOTS),
                 CINOBITE.getFluidStack(768* INGOTS),
                 PIKYONIUM.getFluidStack(768* INGOTS),
-                CELESTIAL_TUNGSTEN.getFluidStack(192* INGOTS))
+                CELESTIAL_TUNGSTEN.getFluidStack(3 * STACKS))
             .duration(40 * MINUTES)
             .eut(RECIPE_UEV)
             .metadata(COAL_CASING_TIER, COAL_UIV)
@@ -1653,7 +1655,7 @@ public class ComponentAssemblyLineLoader {
                 CINOBITE.getFluidStack(768* INGOTS),
                 PIKYONIUM.getFluidStack(768* INGOTS),
                 TranscendentMetal.getMolten(384* INGOTS),
-                CELESTIAL_TUNGSTEN.getFluidStack(192* INGOTS))
+                CELESTIAL_TUNGSTEN.getFluidStack(3 * STACKS))
             .duration(40 * MINUTES)
             .eut(RECIPE_UEV)
             .metadata(COAL_CASING_TIER, COAL_UIV)
@@ -1674,7 +1676,7 @@ public class ComponentAssemblyLineLoader {
                 DimensionallyShiftedSuperfluid.getFluid(768* INGOTS),
                 MoltenProtoHalkoniteBase.getFluid(3072* INGOTS),
                 Infinity.getMolten(3072* INGOTS),
-                CELESTIAL_TUNGSTEN.getFluidStack(192* INGOTS))
+                CELESTIAL_TUNGSTEN.getFluidStack(3 * STACKS))
             .duration(40 * MINUTES)
             .eut(RECIPE_UEV)
             .metadata(COAL_CASING_TIER, COAL_UIV)
@@ -1695,7 +1697,7 @@ public class ComponentAssemblyLineLoader {
                 MoltenProtoHalkoniteBase.getFluid(1536* INGOTS),
                 Creon.getMolten(1536* INGOTS),
                 Mellion.getMolten(1536* INGOTS),
-                CELESTIAL_TUNGSTEN.getFluidStack(192* INGOTS))
+                CELESTIAL_TUNGSTEN.getFluidStack(3 * STACKS))
             .duration(40 * MINUTES)
             .eut(RECIPE_UEV)
             .metadata(COAL_CASING_TIER, COAL_UIV)
@@ -1715,7 +1717,7 @@ public class ComponentAssemblyLineLoader {
                 HYPOGEN.getFluidStack(3264* INGOTS),
                 TengamPurified.getMolten(1536* INGOTS),
                 SpaceTime.getMolten(1034* INGOTS + 96),
-                CELESTIAL_TUNGSTEN.getFluidStack(192* INGOTS))
+                CELESTIAL_TUNGSTEN.getFluidStack(3 * STACKS))
             .duration(40 * MINUTES)
             .eut(RECIPE_UIV)
             .metadata(COAL_CASING_TIER, COAL_UMV)
@@ -1733,8 +1735,8 @@ public class ComponentAssemblyLineLoader {
                 MUTATED_LIVING_SOLDER.getFluidStack(864* INGOTS),
                 DimensionallyShiftedSuperfluid.getFluid(192000),
                 SpaceTime.getMolten(1205* INGOTS + 48),
-                HYPOGEN.getFluidStack(192* INGOTS),
-                CELESTIAL_TUNGSTEN.getFluidStack(192* INGOTS))
+                HYPOGEN.getFluidStack(3 * STACKS),
+                CELESTIAL_TUNGSTEN.getFluidStack(3 * STACKS))
             .duration(40 * MINUTES)
             .eut(RECIPE_UIV)
             .metadata(COAL_CASING_TIER, COAL_UMV)
@@ -1755,8 +1757,8 @@ public class ComponentAssemblyLineLoader {
                 DimensionallyShiftedSuperfluid.getFluid(192000),
                 SpaceTime.getMolten(1056* INGOTS),
                 Quantium.getMolten(576* INGOTS),
-                HYPOGEN.getFluidStack(192* INGOTS),
-                CELESTIAL_TUNGSTEN.getFluidStack(192* INGOTS))
+                HYPOGEN.getFluidStack(3 * STACKS),
+                CELESTIAL_TUNGSTEN.getFluidStack(3 * STACKS))
             .duration(40 * MINUTES)
             .eut(RECIPE_UIV)
             .metadata(COAL_CASING_TIER, COAL_UMV)
@@ -1777,8 +1779,8 @@ public class ComponentAssemblyLineLoader {
                     SpaceTime.getMolten(901* INGOTS + 48),
                     rubber.getMolten(768* INGOTS),
                     Infinity.getMolten(576* INGOTS),
-                    HYPOGEN.getFluidStack(192* INGOTS),
-                    CELESTIAL_TUNGSTEN.getFluidStack(192* INGOTS))
+                    HYPOGEN.getFluidStack(3 * STACKS),
+                    CELESTIAL_TUNGSTEN.getFluidStack(3 * STACKS))
                 .duration(40 * MINUTES)
                 .eut(RECIPE_UIV)
                 .metadata(COAL_CASING_TIER, COAL_UMV)
@@ -1797,8 +1799,8 @@ public class ComponentAssemblyLineLoader {
                     DimensionallyShiftedSuperfluid.getFluid(192000),
                     rubber.getMolten(3834* INGOTS),
                     SpaceTime.getMolten(437* INGOTS + 48),
-                    HYPOGEN.getFluidStack(192* INGOTS),
-                    CELESTIAL_TUNGSTEN.getFluidStack(192* INGOTS))
+                    HYPOGEN.getFluidStack(3 * STACKS),
+                    CELESTIAL_TUNGSTEN.getFluidStack(3 * STACKS))
                 .duration(40 * MINUTES)
                 .eut(RECIPE_UIV)
                 .metadata(COAL_CASING_TIER, COAL_UMV)
@@ -1822,7 +1824,7 @@ public class ComponentAssemblyLineLoader {
                 ASTRAL_TITANIUM.getFluidStack(768* INGOTS),
                 TITANSTEEL.getFluidStack(768* INGOTS),
                 Quantium.getMolten(672* INGOTS),
-                HYPOGEN.getFluidStack(192* INGOTS))
+                HYPOGEN.getFluidStack(3 * STACKS))
             .duration(40 * MINUTES)
             .eut(RECIPE_UIV)
             .metadata(COAL_CASING_TIER, COAL_UMV)
@@ -1845,7 +1847,7 @@ public class ComponentAssemblyLineLoader {
                 TITANSTEEL.getFluidStack(768* INGOTS),
                 Quantium.getMolten(672* INGOTS),
                 SpaceTime.getMolten(384* INGOTS),
-                HYPOGEN.getFluidStack(192* INGOTS))
+                HYPOGEN.getFluidStack(3 * STACKS))
             .duration(40 * MINUTES)
             .eut(RECIPE_UIV)
             .metadata(COAL_CASING_TIER, COAL_UMV)
@@ -1864,7 +1866,7 @@ public class ComponentAssemblyLineLoader {
                 MUTATED_LIVING_SOLDER.getFluidStack(864* INGOTS),
                 HYPOGEN.getFluidStack(3264* INGOTS),
                 Quantium.getMolten(768* INGOTS),
-                CELESTIAL_TUNGSTEN.getFluidStack(192* INGOTS))
+                CELESTIAL_TUNGSTEN.getFluidStack(3 * STACKS))
             .duration(40 * MINUTES)
             .eut(RECIPE_UIV)
             .metadata(COAL_CASING_TIER, COAL_UMV)
@@ -1896,7 +1898,7 @@ public class ComponentAssemblyLineLoader {
                 Universium.getMolten(960* INGOTS),
                 MagMatter.getMolten(768* INGOTS),
                 SuperconductorUMVBase.getMolten(768* INGOTS),
-                SpaceTime.getMolten(192* INGOTS))
+                SpaceTime.getMolten(3 * STACKS))
             .duration(40 * MINUTES)
             .eut(RECIPE_UMV)
             .metadata(COAL_CASING_TIER, COAL_UXV)
@@ -1916,7 +1918,7 @@ public class ComponentAssemblyLineLoader {
                 Eternity.getMolten(1493* INGOTS + 48),
                 SpaceTime.getMolten(960* INGOTS),
                 MagMatter.getMolten(576* INGOTS),
-                Universium.getMolten(192* INGOTS))
+                Universium.getMolten(3 * STACKS))
             .duration(40 * MINUTES)
             .eut(RECIPE_UMV)
             .metadata(COAL_CASING_TIER, COAL_UXV)
@@ -1940,7 +1942,7 @@ public class ComponentAssemblyLineLoader {
                 MagnetohydrodynamicallyConstrainedStarMatter.getMolten(1248* INGOTS),
                 Eternity.getMolten(1056* INGOTS),
                 MagMatter.getMolten(672* INGOTS),
-                Universium.getMolten(192* INGOTS))
+                Universium.getMolten(3 * STACKS))
             .duration(40 * MINUTES)
             .eut(RECIPE_UMV)
             .metadata(COAL_CASING_TIER, COAL_UXV)
@@ -1963,7 +1965,7 @@ public class ComponentAssemblyLineLoader {
                 RadoxPolymer.getMolten(768* INGOTS),
                 Kevlar.getMolten(768* INGOTS),
                 SpaceTime.getMolten(768* INGOTS),
-                Universium.getMolten(192* INGOTS))
+                Universium.getMolten(3 * STACKS))
             .duration(40 * MINUTES)
             .eut(RECIPE_UMV)
             .metadata(COAL_CASING_TIER, COAL_UXV)
@@ -1984,8 +1986,8 @@ public class ComponentAssemblyLineLoader {
                 Kevlar.getMolten(3834* INGOTS),
                 MagnetohydrodynamicallyConstrainedStarMatter.getMolten(725* INGOTS + 48),
                 Eternity.getMolten(533* INGOTS + 48),
-                SpaceTime.getMolten(192* INGOTS),
-                Universium.getMolten(192* INGOTS))
+                SpaceTime.getMolten(3 * STACKS),
+                Universium.getMolten(3 * STACKS))
             .duration(40 * MINUTES)
             .eut(RECIPE_UMV)
             .metadata(COAL_CASING_TIER, COAL_UXV)

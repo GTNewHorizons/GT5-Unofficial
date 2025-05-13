@@ -15,6 +15,7 @@ import static gregtech.api.util.GTRecipeBuilder.HALF_INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.MINUTES;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
+import static gregtech.api.util.GTRecipeBuilder.STACKS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
 import static gregtech.api.util.GTRecipeConstants.COIL_HEAT;
 import static gregtech.api.util.GTRecipeConstants.NKE_RANGE;
@@ -120,7 +121,7 @@ public class NaquadahReworkRecipeLoader {
                 GGMaterial.inertNaquadah.get(OrePrefixes.dust, 32))
             .itemOutputs(Materials.Nickel.getDust(16))
             .fluidInputs(Materials.Nickel.getPlasma(16 * INGOTS))
-            .fluidOutputs(Materials.Naquadah.getMolten((144 * 64) * INGOTS))
+            .fluidOutputs(Materials.Naquadah.getMolten(144 * STACKS))
             .duration(1 * MINUTES + 40 * SECONDS)
             .eut(0)
             .metadata(NKE_RANGE, computeRangeNKE(600, 500))
@@ -131,7 +132,7 @@ public class NaquadahReworkRecipeLoader {
                 GGMaterial.inertEnrichedNaquadah.get(OrePrefixes.dust, 32))
             .itemOutputs(Materials.Titanium.getDust(16))
             .fluidInputs(Materials.Titanium.getPlasma(16 * INGOTS))
-            .fluidOutputs(Materials.NaquadahEnriched.getMolten((144 * 64) * INGOTS))
+            .fluidOutputs(Materials.NaquadahEnriched.getMolten(144 * STACKS))
             .duration(1 * MINUTES + 40 * SECONDS)
             .eut(0)
             .metadata(NKE_RANGE, computeRangeNKE(900, 850))
@@ -142,7 +143,7 @@ public class NaquadahReworkRecipeLoader {
                 GGMaterial.inertNaquadria.get(OrePrefixes.dust, 32))
             .itemOutputs(Materials.Americium.getDust(16))
             .fluidInputs(Materials.Americium.getPlasma(16 * INGOTS))
-            .fluidOutputs(Materials.Naquadria.getMolten((144 * 64) * INGOTS))
+            .fluidOutputs(Materials.Naquadria.getMolten(144 * STACKS))
             .duration(1 * MINUTES + 40 * SECONDS)
             .eut(0)
             .metadata(NKE_RANGE, computeRangeNKE(1100, 1080))
@@ -236,8 +237,8 @@ public class NaquadahReworkRecipeLoader {
                 GGMaterial.adamantine.get(OrePrefixes.dust, 4),
                 GGMaterial.naquadahEarth.get(OrePrefixes.dust, 2),
                 GGMaterial.concentratedEnrichedNaquadahSludge.get(OrePrefixes.dust, 1))
-            .fluidInputs(GGMaterial.naquadahAdamantiumSolution.getFluidOrGas(3000))
-            .fluidOutputs(GGMaterial.naquadahRichSolution.getFluidOrGas(2000))
+            .fluidInputs(GGMaterial.naquadahAdamantiumSolution.getFluidOrGas(3_000))
+            .fluidOutputs(GGMaterial.naquadahRichSolution.getFluidOrGas(2_000))
             .duration(5 * SECONDS)
             .eut(0)
             .metadata(NKE_RANGE, computeRangeNKE(230, 200))
@@ -245,9 +246,9 @@ public class NaquadahReworkRecipeLoader {
 
         GTValues.RA.stdBuilder()
             .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.SodiumHydroxide, 27))
-            .fluidInputs(GGMaterial.naquadahRichSolution.getFluidOrGas(5000))
+            .fluidInputs(GGMaterial.naquadahRichSolution.getFluidOrGas(5_000))
             .itemOutputs(GGMaterial.naquadahine.get(OrePrefixes.dust, 30))
-            .fluidOutputs(GGMaterial.P507.getFluidOrGas(1000))
+            .fluidOutputs(GGMaterial.P507.getFluidOrGas(1_000))
             .duration(50 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(autoclaveRecipes);
@@ -257,7 +258,7 @@ public class NaquadahReworkRecipeLoader {
             .itemInputs(
                 GGMaterial.naquadahine.get(OrePrefixes.dust, 3),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Carbon, 1))
-            .fluidOutputs(Materials.CarbonDioxide.getGas(1000))
+            .fluidOutputs(Materials.CarbonDioxide.getGas(1_000))
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.ingotHot, Materials.Naquadah, 1))
             .duration(2 * SECONDS)
             .eut(TierEU.RECIPE_IV)
@@ -268,23 +269,23 @@ public class NaquadahReworkRecipeLoader {
             .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.SodiumHydroxide, 27),
                 GTUtility.getIntegratedCircuit(1))
-            .fluidInputs(GGMaterial.lowQualityNaquadahEmulsion.getFluidOrGas(10000))
+            .fluidInputs(GGMaterial.lowQualityNaquadahEmulsion.getFluidOrGas(10_000))
             .itemOutputs(
                 GGMaterial.galliumHydroxide.get(OrePrefixes.dust, 64),
                 GGMaterial.galliumHydroxide.get(OrePrefixes.dust, 48),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Antimony, 15))
             .outputChances(6250, 6250, 10000)
-            .fluidOutputs(GGMaterial.lowQualityNaquadahSolution.getFluidOrGas(9000))
+            .fluidOutputs(GGMaterial.lowQualityNaquadahSolution.getFluidOrGas(9_000))
             .duration(50 * SECONDS)
             .eut(TierEU.RECIPE_EV)
             .addTo(centrifugeRecipes);
 
         GTValues.RA.stdBuilder()
             .itemInputs(GGMaterial.enrichedNaquadahEarth.get(OrePrefixes.dust, 4))
-            .fluidInputs(GGMaterial.P507.getFluidOrGas(1000), Materials.SulfuricAcid.getFluid(18000))
+            .fluidInputs(GGMaterial.P507.getFluidOrGas(1_000), Materials.SulfuricAcid.getFluid(18_000))
             .fluidOutputs(
-                GGMaterial.enrichedNaquadahRichSolution.getFluidOrGas(4000),
-                GGMaterial.wasteLiquid.getFluidOrGas(1000))
+                GGMaterial.enrichedNaquadahRichSolution.getFluidOrGas(4_000),
+                GGMaterial.wasteLiquid.getFluidOrGas(1_000))
             .itemOutputs(
                 GGMaterial.naquadahEarth.get(OrePrefixes.dust, 1),
                 GGMaterial.triniumSulphate.get(OrePrefixes.dust, 1))
@@ -295,8 +296,8 @@ public class NaquadahReworkRecipeLoader {
         // ZnSO4 + 2H = H2SO4 + Zn
         GTValues.RA.stdBuilder()
             .itemInputs(WerkstoffLoader.ZincSulfate.get(OrePrefixes.dust, 6))
-            .fluidInputs(Materials.Hydrogen.getGas(2000))
-            .fluidOutputs(Materials.SulfuricAcid.getFluid(1000))
+            .fluidInputs(Materials.Hydrogen.getGas(2_000))
+            .fluidOutputs(Materials.SulfuricAcid.getFluid(1_000))
             .itemOutputs(Materials.Zinc.getDust(1))
             .duration(1 * SECONDS + 10 * TICKS)
             .eut(TierEU.RECIPE_ULV)
@@ -304,9 +305,9 @@ public class NaquadahReworkRecipeLoader {
 
         GTValues.RA.stdBuilder()
             .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.SodiumHydroxide, 60))
-            .fluidInputs(GGMaterial.enrichedNaquadahRichSolution.getFluidOrGas(10000))
+            .fluidInputs(GGMaterial.enrichedNaquadahRichSolution.getFluidOrGas(10_000))
             .itemOutputs(GGMaterial.concentratedEnrichedNaquadahSludge.get(OrePrefixes.dust, 8))
-            .fluidOutputs(GGMaterial.P507.getFluidOrGas(2500))
+            .fluidOutputs(GGMaterial.P507.getFluidOrGas(2_500))
             .duration(50 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(autoclaveRecipes);
@@ -342,8 +343,8 @@ public class NaquadahReworkRecipeLoader {
         // KeSO4 + 2H = Ke + H2SO4
         GTValues.RA.stdBuilder()
             .itemInputs(GGMaterial.triniumSulphate.get(OrePrefixes.dust, 6))
-            .fluidInputs(Materials.Hydrogen.getGas(2000))
-            .fluidOutputs(Materials.SulfuricAcid.getFluid(1000))
+            .fluidInputs(Materials.Hydrogen.getGas(2_000))
+            .fluidOutputs(Materials.SulfuricAcid.getFluid(1_000))
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Trinium, 1))
             .duration(6 * SECONDS)
             .eut(TierEU.RECIPE_HV)
@@ -351,7 +352,7 @@ public class NaquadahReworkRecipeLoader {
 
         GTValues.RA.stdBuilder()
             .itemInputs(GGMaterial.naquadriaEarth.get(OrePrefixes.dust, 4))
-            .fluidInputs(Materials.PhosphoricAcid.getFluid(4000))
+            .fluidInputs(Materials.PhosphoricAcid.getFluid(4_000))
             .itemOutputs(
                 GGMaterial.indiumPhosphate.get(OrePrefixes.dust, 6),
                 GGMaterial.lowQualityNaquadriaPhosphate.get(OrePrefixes.dust, 4))
@@ -389,7 +390,7 @@ public class NaquadahReworkRecipeLoader {
             .itemInputs(
                 GGMaterial.lowQualityNaquadriaPhosphate.get(OrePrefixes.dust, 10),
                 Materials.SulfuricAcid.getCells(30))
-            .fluidOutputs(GGMaterial.naquadriaRichSolution.getFluidOrGas(9000))
+            .fluidOutputs(GGMaterial.naquadriaRichSolution.getFluidOrGas(9_000))
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Barite, 1), ItemList.Cell_Empty.get(30))
             .duration(50 * SECONDS)
             .eut(TierEU.RECIPE_IV)
@@ -399,7 +400,7 @@ public class NaquadahReworkRecipeLoader {
             .itemOutputs(
                 GGMaterial.naquadriaSulphate.get(OrePrefixes.dust, 44),
                 GGMaterial.lowQualityNaquadriaSulphate.get(OrePrefixes.dust, 6))
-            .fluidInputs(GGMaterial.naquadriaRichSolution.getFluidOrGas(9000))
+            .fluidInputs(GGMaterial.naquadriaRichSolution.getFluidOrGas(9_000))
             .duration(5 * SECONDS)
             .eut(0)
             .metadata(NKE_RANGE, computeRangeNKE(1100, 1050))
@@ -408,16 +409,16 @@ public class NaquadahReworkRecipeLoader {
         GTValues.RA.stdBuilder()
             .itemInputs(GGMaterial.lowQualityNaquadriaSulphate.get(OrePrefixes.dust, 3), Materials.Water.getCells(3))
             .fluidInputs(GGMaterial.P507.getFluidOrGas(500))
-            .fluidOutputs(GGMaterial.lowQualityNaquadriaSolution.getFluidOrGas(3500))
+            .fluidOutputs(GGMaterial.lowQualityNaquadriaSolution.getFluidOrGas(3_500))
             .itemOutputs(ItemList.Cell_Empty.get(3))
             .duration(25 * SECONDS)
             .eut(TierEU.RECIPE_EV)
             .addTo(UniversalChemical);
 
         CrackRecipeAdder.addUniversalDistillationRecipe(
-            GGMaterial.lowQualityNaquadriaSolution.getFluidOrGas(7000),
-            new FluidStack[] { GGMaterial.P507.getFluidOrGas(1000),
-                GGMaterial.naquadriaRichSolution.getFluidOrGas(5400), Materials.DilutedSulfuricAcid.getFluid(12000) },
+            GGMaterial.lowQualityNaquadriaSolution.getFluidOrGas(7_000),
+            new FluidStack[] { GGMaterial.P507.getFluidOrGas(1_000),
+                GGMaterial.naquadriaRichSolution.getFluidOrGas(5_400), Materials.DilutedSulfuricAcid.getFluid(12_000) },
             GGMaterial.enrichedNaquadahEarth.get(OrePrefixes.dust, 2),
             25 * SECONDS,
             TierEU.RECIPE_IV);
@@ -505,7 +506,7 @@ public class NaquadahReworkRecipeLoader {
                 GTOreDictUnificator.get(OrePrefixes.block, Materials.SiliconSG, 16),
                 GGMaterial.naquadahine.get(OrePrefixes.dust, 3),
                 ItemList.GalliumArsenideCrystal.get(1L))
-            .fluidInputs(Materials.Argon.getGas(8000))
+            .fluidInputs(Materials.Argon.getGas(8_000))
             .itemOutputs(ItemList.Circuit_Silicon_Ingot3.get(1))
             .duration(50 * SECONDS)
             .eut(TierEU.RECIPE_IV)
@@ -522,7 +523,7 @@ public class NaquadahReworkRecipeLoader {
 
         GTValues.RA.stdBuilder()
             .itemInputs(GGMaterial.naquadahEarth.get(OrePrefixes.dust, 2), GTUtility.getIntegratedCircuit(2))
-            .fluidInputs(Materials.Nitrogen.getGas(1000))
+            .fluidInputs(Materials.Nitrogen.getGas(1_000))
             .itemOutputs(Materials.Naquadah.getNuggets(1))
             .duration(2 * MINUTES)
             .eut(TierEU.RECIPE_IV)
@@ -532,15 +533,15 @@ public class NaquadahReworkRecipeLoader {
         // C2H4 + H2O(g) = C2H6O
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(24))
-            .fluidInputs(Materials.Ethylene.getGas(1000), FluidRegistry.getFluidStack("steam", 2000))
-            .fluidOutputs(Materials.Ethanol.getFluid(1000))
+            .fluidInputs(Materials.Ethylene.getGas(1_000), FluidRegistry.getFluidStack("steam", 2_000))
+            .fluidOutputs(Materials.Ethanol.getFluid(1_000))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(multiblockChemicalReactorRecipes);
 
         GTValues.RA.stdBuilder()
             .itemInputs(Materials.Ethylene.getCells(1), GTUtility.getIntegratedCircuit(24))
-            .fluidInputs(FluidRegistry.getFluidStack("steam", 2000))
+            .fluidInputs(FluidRegistry.getFluidStack("steam", 2_000))
             .itemOutputs(Materials.Ethanol.getCells(1))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_HV)

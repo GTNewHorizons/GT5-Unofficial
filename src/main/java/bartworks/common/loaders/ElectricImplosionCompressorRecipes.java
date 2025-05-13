@@ -17,6 +17,7 @@ import static gregtech.api.util.GTModHandler.getModItem;
 import static gregtech.api.util.GTRecipeBuilder.HALF_INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
+import static gregtech.api.util.GTRecipeBuilder.STACKS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
 
 import net.minecraft.item.ItemStack;
@@ -92,7 +93,7 @@ public class ElectricImplosionCompressorRecipes implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.nanite, MaterialsUEVplus.WhiteDwarfMatter, 1L),
                 GTOreDictUnificator.get(OrePrefixes.nanite, MaterialsUEVplus.Universium, 1L),
                 GTOreDictUnificator.get(OrePrefixes.nanite, MaterialsUEVplus.BlackDwarfMatter, 1L))
-            .fluidInputs(MaterialsUEVplus.RawStarMatter.getFluid(64 * INGOTS))
+            .fluidInputs(MaterialsUEVplus.RawStarMatter.getFluid(1 * STACKS))
             .fluidOutputs(MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter.getMolten(16 * INGOTS))
             .duration(4 * SECONDS)
             .eut(TierEU.RECIPE_UXV)
@@ -109,7 +110,7 @@ public class ElectricImplosionCompressorRecipes implements Runnable {
         // MHDCSM V2
         GTValues.RA.stdBuilder()
             .itemInputs(MaterialsUEVplus.Eternity.getNanite(1), MaterialsUEVplus.Universium.getNanite(1))
-            .fluidInputs(MaterialsUEVplus.RawStarMatter.getFluid((2 * 64) * INGOTS))
+            .fluidInputs(MaterialsUEVplus.RawStarMatter.getFluid(2 * STACKS))
             .fluidOutputs(MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter.getMolten(32 * INGOTS))
             .duration(4 * SECONDS)
             .eut(TierEU.RECIPE_MAX)
