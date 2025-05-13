@@ -12,8 +12,6 @@ import java.util.ArrayList;
 import javax.annotation.Nullable;
 
 import gregtech.api.util.GTRecipe;
-import gregtech.api.util.GTUtility;
-import gregtech.api.util.shutdown.SimpleShutDownReason;
 import net.minecraft.item.ItemStack;
 
 import org.jetbrains.annotations.NotNull;
@@ -54,6 +52,7 @@ public class EtchingArray extends MTENanochipAssemblyModuleBase<EtchingArray> {
     private final ArrayList<MTEHatchInputBeamline> mInputBeamline = new ArrayList<>();
 
     float inputEnergy = 1;
+    int requiredEnergy = 1234;
 
     public static final IStructureDefinition<EtchingArray> STRUCTURE_DEFINITION = ModuleStructureDefinition
         .<EtchingArray>builder()
@@ -117,7 +116,7 @@ public class EtchingArray extends MTENanochipAssemblyModuleBase<EtchingArray> {
             return CheckRecipeResultRegistry.WRONG_PARTICLE;
         }
 
-        if (inputEnergy <= 1234) {
+        if (inputEnergy <= requiredEnergy) {
             return CheckRecipeResultRegistry.LOW_ENERGY;
         }
 
