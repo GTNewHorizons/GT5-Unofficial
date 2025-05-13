@@ -1,6 +1,7 @@
 package gregtech.api.modularui2;
 
 import static gregtech.api.enums.Mods.GregTech;
+import static tectech.Reference.MODID;
 
 import com.cleanroommc.modularui.drawable.UITexture;
 
@@ -14,6 +15,18 @@ public final class GTGuiTextures {
 
     public static void init() {}
 
+    public static final UITexture TITLE_ANGULAR = UITexture.builder()
+        .location(GregTech.ID, "gui/tab/title_angular_%s")
+        .adaptable(4)
+        .imageSize(18, 18)
+        .canApplyTheme(true)
+        .build();
+    public static final UITexture TITLE_DARK = UITexture.builder()
+        .location(GregTech.ID, "gui/tab/title_dark")
+        .adaptable(4)
+        .imageSize(28, 28)
+        .canApplyTheme(true)
+        .build();
     // region background
 
     public static final UITexture BACKGROUND_STANDARD = UITexture.builder()
@@ -65,9 +78,22 @@ public final class GTGuiTextures {
             GTTextureIds.BACKGROUND_POPUP_STEEL,
             GTTextureIds.BACKGROUND_POPUP_PRIMITIVE)
         .build();
-
+    public static final UITexture BACKGROUND_TEXT_FIELD = UITexture.builder()
+        .location(GregTech.ID, "gui/background/text_field")
+        .imageSize(142, 28)
+        .adaptable(1)
+        .build();
+    public static final UITexture TT_BACKGROUND_TEXT_FIELD = UITexture.builder()
+        .location(MODID, "gui/background/screen_blue")
+        .imageSize(90, 72)
+        .adaptable(2)
+        .build();
     // endregion background
 
+    // region overlay
+    public static final UITexture GREGTECH_LOGO = fullImageGT("picture/gt_logo_standard");
+    public static final UITexture TECTECH_LOGO = UITexture.fullImage(MODID, "gui/picture/tectech_logo_dark");
+    // endregion overlay
     // region slot
 
     public static final UITexture SLOT_EMPTY = UITexture.builder()
@@ -410,6 +436,15 @@ public final class GTGuiTextures {
     public static final UITexture OVERLAY_BUTTON_HOURGLASS = fullImageGT("overlay_button/hourglass");
     public static final UITexture OVERLAY_BUTTON_IMPORT = fullImageGT("overlay_button/import");
     public static final UITexture OVERLAY_BUTTON_POWER_SWITCH_ON = fullImageGT("overlay_button/power_switch_on");
+    public static final UITexture OVERLAY_BUTTON_POWER_SWITCH_OFF = fullImageGT("overlay_button/power_switch_off");
+    public static final UITexture OVERLAY_BUTTON_POWER_SWITCH_DISABLED = fullImageGT(
+        "overlay_button/power_switch_disabled");
+    public static final UITexture TT_OVERLAY_BUTTON_POWER_SWITCH_ON = UITexture
+        .fullImage(MODID, "gui/overlay_button/power_switch_on");
+    public static final UITexture TT_OVERLAY_BUTTON_POWER_SWITCH_OFF = UITexture
+        .fullImage(MODID, "gui/overlay_button/power_switch_off");
+    public static final UITexture TT_OVERLAY_BUTTON_POWER_SWITCH_DISABLED = UITexture
+        .fullImage(MODID, "gui/overlay_button/power_switch_disabled");
     public static final UITexture OVERLAY_BUTTON_PROGRESS = fullImageGT("overlay_button/progress");
     public static final UITexture OVERLAY_BUTTON_REDSTONE_OFF = fullImageGT("overlay_button/redstone_off");
     public static final UITexture OVERLAY_BUTTON_REDSTONE_ON = fullImageGT("overlay_button/redstone_on");

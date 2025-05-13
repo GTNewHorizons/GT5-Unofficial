@@ -3,14 +3,15 @@ package gregtech.api.metatileentity.implementations.gui;
 import static gregtech.api.enums.Mods.GregTech;
 import static gregtech.api.metatileentity.BaseTileEntity.BUTTON_FORBIDDEN_TOOLTIP;
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
-import static tectech.Reference.MODID;
 
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.EnumSet;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import net.minecraft.client.Minecraft;
@@ -69,12 +70,24 @@ import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 
 public class MTEMultiBlockBaseGui {
 
-    private final MTEMultiBlockBase base;
+    protected final MTEMultiBlockBase base;
     protected List<UITexture> machineModeIcons = new ArrayList<>();
-    private final int textBoxToInventoryGap = 26;
+    protected Map<String, UITexture> customIcons = new HashMap<>();
+    protected final int textBoxToInventoryGap = 26;
 
     public MTEMultiBlockBaseGui(MTEMultiBlockBase base) {
         this.base = base;
+        initCustomIcons();
+    }
+
+    protected void initCustomIcons() {
+        this.customIcons.put("text_field", GTGuiTextures.BACKGROUND_TEXT_FIELD);
+        this.customIcons.put("logo", null);
+        this.customIcons.put("power_switch_disabled", GTGuiTextures.OVERLAY_BUTTON_POWER_SWITCH_DISABLED);
+        this.customIcons.put("power_switch_on", GTGuiTextures.OVERLAY_BUTTON_POWER_SWITCH_ON);
+        this.customIcons.put("power_switch_off", GTGuiTextures.OVERLAY_BUTTON_POWER_SWITCH_OFF);
+        this.customIcons.put("title_angular", GTGuiTextures.TITLE_ANGULAR);
+        this.customIcons.put("title_dark", GTGuiTextures.TITLE_DARK);
     }
 
     public ModularPanel build(PosGuiData guiData, PanelSyncManager syncManager) {
@@ -87,28 +100,12 @@ public class MTEMultiBlockBaseGui {
 
         Flow panelColumn = new Column().sizeRel(1);
         if (base.doesBindPlayerInventory()) {
-            panelColumn.child(
-                new SingleChildWidget<>().size(machineInfoSize()[0] + 4, machineInfoSize()[1] + 3)
-                    .padding(3)
-                    .background(
-                        UITexture.builder()
-                            .location(GregTech.ID, "gui/background/text_field")
-                            .adaptable(1)
-                            .imageSize(142, 28)
-                            .build()
-                            .asIcon())
-                    .child(
-                        createTerminalTextWidget(syncManager)
-                            .size(machineInfoSize()[0] - 4, machineInfoSize()[1] - 3)));
+            panelColumn.child(createTopRow(syncManager));
         } else {
             panelColumn.child(
                 new SingleChildWidget<>().size(190, 171)
                     .background(
-                        UITexture.builder()
-                            .location(GregTech.ID, "gui/background/text_field")
-                            .adaptable(1)
-                            .imageSize(142, 28)
-                            .build()
+                        this.customIcons.get("text_field")
                             .asIcon())
                     .child(
                         createTerminalTextWidget(syncManager)
@@ -129,8 +126,31 @@ public class MTEMultiBlockBaseGui {
             .child(inventoryRow);
 
         addTitleTextStyle(panel, base.getLocalName());
-        addGregtechLogo(panel);
+        inventoryRow.child(createButtonColumn(panel, syncManager));
 
+        return panel.child(panelColumn);
+    }
+
+    protected IWidget createTopRow(PanelSyncManager syncManager) {
+        return new Row().size(machineInfoSize()[0] + 4, machineInfoSize()[1] + 3)
+            .child(
+                new SingleChildWidget<>().sizeRel(1)
+                    .padding(3)
+                    .background(
+                        this.customIcons.get("text_field")
+                            .asIcon())
+                    .child(
+                        createTerminalTextWidget(syncManager).size(machineInfoSize()[0] - 4, machineInfoSize()[1] - 3)
+                            .overlay(
+                                this.customIcons.get("logo")
+                                    .asIcon()
+                                    .alignment(Alignment.BottomRight)
+                                    .size(18, 18)
+                                    .marginBottom(2)
+                                    .marginRight(4))));
+    }
+
+    protected Flow createButtonColumn(ModularPanel panel, PanelSyncManager syncManager) {
         Flow buttonColumn = new Column().width(18)
             .leftRel(1, -2, 1)
             .mainAxisAlignment(MainAxis.END)
@@ -138,22 +158,14 @@ public class MTEMultiBlockBaseGui {
             .child(createPowerSwitchButton());
 
         if (base.doesBindPlayerInventory()) {
-            buttonColumn
-                .child(
-                    new ItemSlot().slot(
-                        new ModularSlot(base.inventoryHandler, base.getControllerSlotIndex()).slotGroup("item_inv")))
-                .marginTop(4);
+            buttonColumn.child(
+                new ItemSlot()
+                    .slot(new ModularSlot(base.inventoryHandler, base.getControllerSlotIndex()).slotGroup("item_inv")));
         }
-        inventoryRow.child(buttonColumn);
-
-        return panel.child(panelColumn);
+        return buttonColumn;
     }
 
-    private IWidget createPowerSwitchButton() {
-        UITexture powerSwitchOn = UITexture.fullImage(GregTech.ID, "gui/overlay_button/power_switch_on");
-        UITexture powerSwitchOff = UITexture.fullImage(GregTech.ID, "gui/overlay_button/power_switch_off");
-        UITexture powerSwitchDisabled = UITexture.fullImage(MODID, "gui/overlay_button/power_switch_disabled");
-
+    protected IWidget createPowerSwitchButton() {
         return new ToggleButton().value(new BooleanSyncValue(base::isAllowedToWork, bool -> {
             if (!isAllowedToWorkButtonEnabled()) return;
             if (bool) base.enableWorking();
@@ -164,14 +176,16 @@ public class MTEMultiBlockBaseGui {
         }))
             .tooltip(tooltip -> tooltip.add("Power Switch"))
             .size(18, 18)
+            .marginBottom(4)
             .overlay(
                 new DynamicDrawable(
-                    () -> !isAllowedToWorkButtonEnabled() ? powerSwitchDisabled
+                    () -> !isAllowedToWorkButtonEnabled() ? this.customIcons.get("power_switch_disabled")
                         : base.getBaseMetaTileEntity()
-                            .isAllowedToWork() ? powerSwitchOn : powerSwitchOff));
+                            .isAllowedToWork() ? this.customIcons.get("power_switch_on")
+                                : this.customIcons.get("power_switch_off")));
     }
 
-    private boolean isAllowedToWorkButtonEnabled() {
+    protected boolean isAllowedToWorkButtonEnabled() {
         return true;
     }
 
@@ -193,27 +207,17 @@ public class MTEMultiBlockBaseGui {
             .alignment(Alignment.CenterLeft)
             .width(titleWidth);
 
-        UITexture angular = UITexture.builder()
-            .location(GregTech.ID, "gui/tab/title_angular_%s")
-            .adaptable(4)
-            .imageSize(18, 18)
-            .canApplyTheme(true)
-            .build();
-        UITexture dark = UITexture.builder()
-            .location(GregTech.ID, "gui/tab/title_dark")
-            .adaptable(4)
-            .imageSize(28, 28)
-            .canApplyTheme(true)
-            .build();
         if (GTMod.gregtechproxy.mTitleTabStyle == 1) {
             panel.child(
-                angular.asWidget()
+                this.customIcons.get("title_angular")
+                    .asWidget()
                     .pos(0, -(titleHeight + TAB_PADDING) + 1)
                     .size(base.getGUIWidth(), titleHeight + TAB_PADDING * 2));
             text.pos(TAB_PADDING + TITLE_PADDING, -titleHeight + TAB_PADDING);
         } else {
             panel.child(
-                dark.asWidget()
+                this.customIcons.get("title_dark")
+                    .asWidget()
                     .pos(0, -(titleHeight + TAB_PADDING * 2) + 1)
                     .size(titleWidth + (TAB_PADDING + TITLE_PADDING) * 2, titleHeight + TAB_PADDING * 2 - 1));
             text.pos(TAB_PADDING + TITLE_PADDING, -titleHeight);
@@ -221,15 +225,15 @@ public class MTEMultiBlockBaseGui {
         panel.child(text);
     }
 
-    private int[] machineInfoSize() {
+    protected int[] machineInfoSize() {
         return base.doesBindPlayerInventory() ? new int[] { 184, 91 } : new int[] { 184, 171 };
     }
 
-    private int[] mainTerminalSize() {
+    protected int[] mainTerminalSize() {
         return base.doesBindPlayerInventory() ? new int[] { 190, 91 } : new int[] { 190, 171 };
     }
 
-    private IWidget createPanelGap(PanelSyncManager syncManager, ModularPanel parent) {
+    protected IWidget createPanelGap(PanelSyncManager syncManager, ModularPanel parent) {
         Flow panelGap = new Row().widthRel(1)
             .paddingRight(6)
             .paddingLeft(4)
@@ -245,7 +249,7 @@ public class MTEMultiBlockBaseGui {
         return panelGap;
     }
 
-    private ListWidget<IWidget, ?> createTerminalTextWidget(PanelSyncManager syncManager) {
+    protected ListWidget<IWidget, ?> createTerminalTextWidget(PanelSyncManager syncManager) {
         ListWidget<IWidget, ?> resultWidget = new ListWidget<>()
             .child(
                 new TextWidget(GTUtility.trans("132", "Pipe is loose. (Wrench)")).color(Color.WHITE.main)
@@ -399,14 +403,7 @@ public class MTEMultiBlockBaseGui {
                             .persistsOnShutdown()));
     }
 
-    private void addGregtechLogo(ModularPanel panel) {
-        panel.child(
-            new SingleChildWidget<>().overlay(UITexture.fullImage(MODID, "gui/picture/tectech_logo_dark"))
-                .size(18, 18)
-                .pos(mainTerminalSize()[0] - 18 - 2, mainTerminalSize()[1] - 18 - 2));
-    }
-
-    private IWidget createStructureUpdateButton(PanelSyncManager syncManager) {
+    protected IWidget createStructureUpdateButton(PanelSyncManager syncManager) {
         IntSyncValue structureUpdateSyncer = new IntSyncValue(
             base::getStructureUpdateTime,
             base::setStructureUpdateTime);
@@ -421,7 +418,7 @@ public class MTEMultiBlockBaseGui {
             .tooltipBuilder(t -> { t.addLine(IKey.lang("GT5U.gui.button.structure_update")); });
     }
 
-    private IWidget createPowerPanelButton(PanelSyncManager syncManager, ModularPanel parent) {
+    protected IWidget createPowerPanelButton(PanelSyncManager syncManager, ModularPanel parent) {
         IPanelHandler powerPanel = syncManager
             .panel("powerPanel", (p_syncManager, syncHandler) -> openPowerControlPanel(p_syncManager, parent), true);
 
@@ -522,7 +519,7 @@ public class MTEMultiBlockBaseGui {
                     .tooltipShowUpTimer(TOOLTIP_DELAY));
     }
 
-    private IWidget createLockToSingleRecipeButton(PanelSyncManager syncManager) {
+    protected IWidget createLockToSingleRecipeButton(PanelSyncManager syncManager) {
         BooleanSyncValue recipeLockSyncer = new BooleanSyncValue(base::isRecipeLockingEnabled, base::setRecipeLocking);
         syncManager.syncValue("recipeLock", recipeLockSyncer);
 
@@ -563,7 +560,7 @@ public class MTEMultiBlockBaseGui {
             });
     }
 
-    private IWidget createBatchModeButton(PanelSyncManager syncManager) {
+    protected IWidget createBatchModeButton(PanelSyncManager syncManager) {
         BooleanSyncValue batchModeSyncer = new BooleanSyncValue(base::isBatchModeEnabled, base::setBatchMode);
         syncManager.syncValue("batchMode", batchModeSyncer);
 
@@ -604,7 +601,7 @@ public class MTEMultiBlockBaseGui {
             });
     }
 
-    private IWidget createModeSwitchButton(PanelSyncManager syncManager) {
+    protected IWidget createModeSwitchButton(PanelSyncManager syncManager) {
         IntSyncValue machineModeSyncer = new IntSyncValue(base::getMachineMode, base::setMachineMode);
         syncManager.syncValue("machineMode", machineModeSyncer);
 
@@ -618,12 +615,12 @@ public class MTEMultiBlockBaseGui {
             });
     }
 
-    private UITexture getMachineModeIcon(int index) {
+    protected UITexture getMachineModeIcon(int index) {
         if (index > machineModeIcons.size() - 1) return null;
         return machineModeIcons.get(index);
     }
 
-    private IWidget createInputSeparationButton(PanelSyncManager syncManager) {
+    protected IWidget createInputSeparationButton(PanelSyncManager syncManager) {
 
         BooleanSyncValue inputSeparationSyncer = new BooleanSyncValue(
             base::isInputSeparationEnabled,
@@ -670,7 +667,7 @@ public class MTEMultiBlockBaseGui {
             });
     }
 
-    private IWidget createVoidExcessButton(PanelSyncManager syncManager) {
+    protected IWidget createVoidExcessButton(PanelSyncManager syncManager) {
 
         IntSyncValue voidExcessSyncer = new IntSyncValue(
             () -> base.getVoidingMode()

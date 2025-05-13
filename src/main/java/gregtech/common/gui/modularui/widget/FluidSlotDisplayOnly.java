@@ -46,7 +46,7 @@ public class FluidSlotDisplayOnly extends Widget<FluidSlotDisplayOnly>
 
     private static final IFluidTank EMPTY = new FluidTank(0);
     private static final NumberFormat.Params SLOT_FORMAT_PARAMS = NumberFormat.DEFAULT.copyToBuilder()
-        .maxLength(3)
+        .maxLength(4)
         .build();
 
     private final TextRenderer textRenderer = new TextRenderer();

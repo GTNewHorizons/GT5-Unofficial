@@ -69,19 +69,15 @@ import com.cleanroommc.modularui.value.sync.IntSyncValue;
 import com.cleanroommc.modularui.value.sync.LongSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.value.sync.StringSyncValue;
-import com.cleanroommc.modularui.value.sync.SyncHandlers;
 import com.cleanroommc.modularui.widget.SingleChildWidget;
 import com.cleanroommc.modularui.widget.WidgetTree;
 import com.cleanroommc.modularui.widget.sizer.Area;
 import com.cleanroommc.modularui.widgets.CycleButtonWidget;
-import com.cleanroommc.modularui.widgets.ItemSlot;
 import com.cleanroommc.modularui.widgets.ListWidget;
-import com.cleanroommc.modularui.widgets.SlotGroupWidget;
 import com.cleanroommc.modularui.widgets.TextWidget;
 import com.cleanroommc.modularui.widgets.ToggleButton;
 import com.cleanroommc.modularui.widgets.layout.Column;
 import com.cleanroommc.modularui.widgets.layout.Flow;
-import com.cleanroommc.modularui.widgets.layout.Row;
 import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
 import com.gtnewhorizon.structurelib.StructureLibAPI;
 import com.gtnewhorizon.structurelib.alignment.IAlignment;
@@ -129,6 +125,7 @@ import gregtech.api.metatileentity.implementations.MTEHatchMaintenance;
 import gregtech.api.metatileentity.implementations.MTEHatchMuffler;
 import gregtech.api.metatileentity.implementations.MTEHatchOutput;
 import gregtech.api.metatileentity.implementations.MTEHatchOutputBus;
+import gregtech.api.metatileentity.implementations.gui.MTEMultiBlockBaseGui;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.util.GTUtility;
@@ -148,6 +145,7 @@ import tectech.thing.metaTileEntity.hatch.MTEHatchDataOutput;
 import tectech.thing.metaTileEntity.hatch.MTEHatchDynamoMulti;
 import tectech.thing.metaTileEntity.hatch.MTEHatchEnergyMulti;
 import tectech.thing.metaTileEntity.hatch.MTEHatchUncertainty;
+import tectech.thing.metaTileEntity.multi.base.gui.TTMultiBlockBaseGui;
 import tectech.thing.metaTileEntity.multi.base.render.TTRenderedExtendedFacingTexture;
 import tectech.util.CommonValues;
 
@@ -2286,90 +2284,8 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
     private static byte LEDCounter = 0;
 
     @Override
-    public ModularPanel buildUI(PosGuiData guiData, PanelSyncManager syncManager) {
-        com.cleanroommc.modularui.drawable.UITexture bg = com.cleanroommc.modularui.drawable.UITexture.builder()
-            .location(MODID, "gui/background/screen_blue")
-            .adaptable(2)
-            .imageSize(90, 72)
-            .canApplyTheme(true)
-            .build();
-        com.cleanroommc.modularui.drawable.UITexture bgNoInv = com.cleanroommc.modularui.drawable.UITexture.builder()
-            .location(MODID, "gui/background/screen_blue_no_inventory")
-            .canApplyTheme(true)
-            .build();
-        com.cleanroommc.modularui.drawable.UITexture mesh = com.cleanroommc.modularui.drawable.UITexture.builder()
-            .location(MODID, "gui/overlay_slot/mesh")
-            .canApplyTheme(true)
-            .build();
-        com.cleanroommc.modularui.drawable.UITexture heatSinkSmall = com.cleanroommc.modularui.drawable.UITexture
-            .builder()
-            .location(MODID, "gui/picture/heat_sink_small")
-            .canApplyTheme(true)
-            .build();
-
-        int textBoxToInventoryGap = 26;
-
-        ModularPanel panel = new ModularPanel("tt_multiblock").size(198, 181 + textBoxToInventoryGap)
-            .padding(4);
-
-        registerSyncValues(panel, syncManager);
-        ListWidget<IWidget, ?> machineInfo = new ListWidget<>().size(machineInfoSize()[0], machineInfoSize()[1])
-            .pos(6, 3);
-
-        Flow panelColumn = new Column().sizeRel(1);
-        if (doesBindPlayerInventory()) {
-            panelColumn.child(
-                new SingleChildWidget<>().size(mainTerminalSize()[0], mainTerminalSize()[1])
-                    .overlay(bg)
-                    .child(machineInfo)
-                    .alignX(0));
-        } else {
-            panelColumn.child(
-                new SingleChildWidget<>().size(190, 171)
-                    .overlay(bgNoInv));
-        }
-        Flow inventoryRow = new Row().widthRel(1)
-            .height(90)
-            .alignX(0);
-        Flow buttonColumn = new Column().width(18)
-            .leftRel(1, -2, 1);
-        if (doesBindPlayerInventory()) {
-            inventoryRow.child(
-                SlotGroupWidget.playerInventory(0)
-                    .leftRel(0)
-                    .marginLeft(4));
-        }
-
-        Flow panelGap = new Row().widthRel(1)
-            .paddingRight(6)
-            .paddingLeft(4)
-            .height(textBoxToInventoryGap);
-        insertThingsInGap(panelGap, syncManager, panel);
-        panelColumn.child(panelGap);
-
-        insertTexts(machineInfo, invSlot, syncManager, panel);
-        addTitleTextStyle(panel, this.getLocalName());
-
-        if (shouldMakePowerPassButton()) addPowerPassButton(buttonColumn, textBoxToInventoryGap);
-        if (shouldMakeEditParametersButtonEnabled()) addEditParametersButton(panel, syncManager, buttonColumn);
-        if (shouldMakePowerSwitchButtonEnabled()) addPowerSwitchButtton(buttonColumn);
-        addGregtechLogo(panel);
-
-        if (doesBindPlayerInventory()) {
-            buttonColumn.child(
-                new ItemSlot().slot(
-                    SyncHandlers.itemSlot(invSlot, 0)
-                        .singletonSlotGroup())
-                    .marginTop(4)
-                    .background(new DrawableArray(GuiTextures.SLOT_ITEM, mesh)));
-            buttonColumn.child(
-                new SingleChildWidget<>().size(18, 6)
-                    .overlay(heatSinkSmall));
-        }
-        inventoryRow.child(buttonColumn);
-        panelColumn.child(inventoryRow);
-
-        return panel.child(panelColumn);
+    protected @NotNull MTEMultiBlockBaseGui getGui() {
+        return new TTMultiBlockBaseGui(this);
     }
 
     protected int[] machineInfoSize() {
