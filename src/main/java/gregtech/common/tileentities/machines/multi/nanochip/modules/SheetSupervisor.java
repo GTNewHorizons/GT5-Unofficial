@@ -4,10 +4,6 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex.NAC_MODULE;
 import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex.TOOLTIP_CC;
-import static gregtech.common.tileentities.machines.multi.nanochip.util.AssemblyComplexStructureString.SHEET_OFFSET_X;
-import static gregtech.common.tileentities.machines.multi.nanochip.util.AssemblyComplexStructureString.SHEET_OFFSET_Y;
-import static gregtech.common.tileentities.machines.multi.nanochip.util.AssemblyComplexStructureString.SHEET_OFFSET_Z;
-import static gregtech.common.tileentities.machines.multi.nanochip.util.AssemblyComplexStructureString.SHEET_STRING;
 
 import net.minecraft.item.ItemStack;
 
@@ -28,11 +24,20 @@ import gregtech.common.tileentities.machines.multi.nanochip.util.ModuleStructure
 public class SheetSupervisor extends MTENanochipAssemblyModuleBase<SheetSupervisor> {
 
     protected static final String STRUCTURE_PIECE_MAIN = "main";
-    private static final String[][] structure = SHEET_STRING;
-
+    protected static final int SHEET_OFFSET_X = 3;
+    protected static final int SHEET_OFFSET_Y = 6;
+    protected static final int SHEET_OFFSET_Z = 0;
+    protected static final String[][] SHEET_STRING = new String[][] {
+        { "       ", "  DBD  ", "  DBD  ", " CDBDC ", " CDBDC ", " CDBDC " },
+        { "  BBB  ", " A   A ", " A C A ", "CA   AC", "CA C AC", "CA   AC" },
+        { " BAAAB ", "D     D", "D AAA D", "D     D", "D AAA D", "D     D" },
+        { " BAAAB ", "B     B", "BCAAACB", "B     B", "BCAAACB", "B     B" },
+        { " BAAAB ", "D     D", "D AAA D", "D     D", "D AAA D", "D     D" },
+        { "  BBB  ", " A   A ", " A C A ", "CA   AC", "CA C AC", "CA   AC" },
+        { "       ", "  DBD  ", "  DBD  ", " CDBDC ", " CDBDC ", " CDBDC " } };
     public static final IStructureDefinition<SheetSupervisor> STRUCTURE_DEFINITION = ModuleStructureDefinition
         .<SheetSupervisor>builder()
-        .addShape(STRUCTURE_PIECE_MAIN, structure)
+        .addShape(STRUCTURE_PIECE_MAIN, SHEET_STRING)
         // White casing block
         .addElement('A', ofBlock(GregTechAPI.sBlockCasings8, 5))
         // Black casing block
