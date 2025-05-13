@@ -313,7 +313,9 @@ public abstract class MTEEnhancedMultiBlockBase<T extends MTEEnhancedMultiBlockB
     }
 
     /**
-     * @deprecated typo in the name.
+     * @deprecated typo in the name. Use
+     *             {@link #survivalBuildPiece(String, ItemStack, int, int, int, int, IItemSource, EntityPlayerMP, boolean)}
+     *             instead.
      */
     @SuppressWarnings("SpellCheckingInspection")
     @Deprecated
@@ -333,7 +335,9 @@ public abstract class MTEEnhancedMultiBlockBase<T extends MTEEnhancedMultiBlockB
     }
 
     /**
-     * @deprecated typo in the name.
+     * @deprecated typo in the name. Use
+     *             {@link #survivalBuildPiece(String, ItemStack, int, int, int, int, ISurvivalBuildEnvironment, boolean)}
+     *             instead.
      */
     @SuppressWarnings("SpellCheckingInspection")
     @Deprecated
@@ -352,7 +356,9 @@ public abstract class MTEEnhancedMultiBlockBase<T extends MTEEnhancedMultiBlockB
     }
 
     /**
-     * @deprecated typo in the name.
+     * @deprecated typo in the name. Use
+     *             {@link #survivalBuildPiece(String, ItemStack, int, int, int, int, IItemSource, EntityPlayerMP, boolean, boolean)}
+     *             instead.
      */
     @SuppressWarnings("SpellCheckingInspection")
     @Deprecated
@@ -374,7 +380,9 @@ public abstract class MTEEnhancedMultiBlockBase<T extends MTEEnhancedMultiBlockB
     }
 
     /**
-     * @deprecated typo in the name.
+     * @deprecated typo in the name. Use
+     *             {@link #survivalBuildPiece(String, ItemStack, int, int, int, int, ISurvivalBuildEnvironment, boolean, boolean)}
+     *             instead.
      */
     @SuppressWarnings("SpellCheckingInspection")
     @Deprecated
