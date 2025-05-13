@@ -5,15 +5,11 @@ import static gtnhintergalactic.GTNHIntergalactic.ASSET_PREFIX;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import com.cleanroommc.modularui.api.drawable.IKey;
-import com.cleanroommc.modularui.api.widget.IWidget;
+import org.jetbrains.annotations.NotNull;
+
 import com.cleanroommc.modularui.drawable.UITexture;
 import com.cleanroommc.modularui.screen.ModularPanel;
-import com.cleanroommc.modularui.utils.item.ItemStackHandler;
-import com.cleanroommc.modularui.value.sync.LongSyncValue;
-import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widget.SingleChildWidget;
-import com.cleanroommc.modularui.widgets.ListWidget;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureUtility;
@@ -24,10 +20,12 @@ import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.metatileentity.implementations.gui.MTEMultiBlockBaseGui;
 import gregtech.api.util.GTStructureUtility;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gtnhintergalactic.gui.IG_UITextures;
 import gtnhintergalactic.tile.multi.elevator.TileEntitySpaceElevator;
+import gtnhintergalactic.tile.multi.gui.TileEntityModuleBaseGui;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import tectech.thing.metaTileEntity.multi.base.INameFunction;
 import tectech.thing.metaTileEntity.multi.base.IStatusFunction;
@@ -376,19 +374,8 @@ public abstract class TileEntityModuleBase extends TTMultiblockBase {
     }
 
     @Override
-    public void insertTexts(ListWidget<IWidget, ?> machineInfo, ItemStackHandler invSlot, PanelSyncManager syncManager,
-        ModularPanel parentPanel) {
-        LongSyncValue euVarSyncer = new LongSyncValue(this::getEUVar);
-        syncManager.syncValue("euVar", euVarSyncer);
-        super.insertTexts(machineInfo, invSlot, syncManager, parentPanel);
-        machineInfo.child(
-            IKey.dynamic(() -> "Stored Energy: " + numberFormat.format(euVarSyncer.getValue()) + " EU")
-                .asWidget()
-                .setEnabledIf(w -> getBaseMetaTileEntity().isAllowedToWork() || getBaseMetaTileEntity().isActive())
-                .color(COLOR_TEXT_WHITE.get())
-                .widthRel(1)
-                .marginBottom(2));
-
+    protected @NotNull MTEMultiBlockBaseGui getGui() {
+        return new TileEntityModuleBaseGui(this);
     }
 
     @Override

@@ -98,19 +98,9 @@ public class MTEMultiBlockBaseGui {
         registerSyncValues(syncManager);
         setMachineModeIcons();
 
-        Flow panelColumn = new Column().sizeRel(1);
-        if (base.doesBindPlayerInventory()) {
-            panelColumn.child(createTopRow(syncManager));
-        } else {
-            panelColumn.child(
-                new SingleChildWidget<>().size(190, 171)
-                    .background(
-                        this.customIcons.get("text_field")
-                            .asIcon())
-                    .child(
-                        createTerminalTextWidget(syncManager)
-                            .size(machineInfoSize()[0] - 4, machineInfoSize()[1] - 3)));
-        }
+        Flow panelColumn = new Column().sizeRel(1)
+            .child(createTopRow(syncManager, panel));
+
         Flow inventoryRow = new Row().widthRel(1)
             .height(76)
             .alignX(0);
@@ -131,7 +121,7 @@ public class MTEMultiBlockBaseGui {
         return panel.child(panelColumn);
     }
 
-    protected IWidget createTopRow(PanelSyncManager syncManager) {
+    protected IWidget createTopRow(PanelSyncManager syncManager, ModularPanel panel) {
         return new Row().size(machineInfoSize()[0] + 4, machineInfoSize()[1] + 3)
             .child(
                 new SingleChildWidget<>().sizeRel(1)
@@ -140,9 +130,10 @@ public class MTEMultiBlockBaseGui {
                         this.customIcons.get("text_field")
                             .asIcon())
                     .child(
-                        createTerminalTextWidget(syncManager).size(machineInfoSize()[0] - 4, machineInfoSize()[1] - 3)
+                        createTerminalTextWidget(syncManager, panel)
+                            .size(machineInfoSize()[0] - 4, machineInfoSize()[1] - 3)
                             .overlay(
-                                this.customIcons.get("logo")
+                                (this.customIcons.get("logo") == null ? UITexture.EMPTY : this.customIcons.get("logo"))
                                     .asIcon()
                                     .alignment(Alignment.BottomRight)
                                     .size(18, 18)
@@ -247,6 +238,10 @@ public class MTEMultiBlockBaseGui {
         if (base.supportsPowerPanel()) panelGap.child(createPowerPanelButton(syncManager, parent));
 
         return panelGap;
+    }
+
+    protected ListWidget<IWidget, ?> createTerminalTextWidget(PanelSyncManager syncManager, ModularPanel parent) {
+        return createTerminalTextWidget(syncManager);
     }
 
     protected ListWidget<IWidget, ?> createTerminalTextWidget(PanelSyncManager syncManager) {
