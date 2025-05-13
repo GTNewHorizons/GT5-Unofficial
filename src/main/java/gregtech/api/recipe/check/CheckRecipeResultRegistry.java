@@ -117,6 +117,13 @@ public final class CheckRecipeResultRegistry {
     public static final CheckRecipeResult NO_SEE_SKY = SimpleCheckRecipeResult.ofFailure("no_see_sky");
 
     /**
+     * Etching Array Missing Energy and/or Wrong Particle
+     */
+    public static final CheckRecipeResult WRONG_PARTICLE = SimpleCheckRecipeResult.ofFailure("gtnhlanth.wrongparticle");
+
+    public static final CheckRecipeResult LOW_ENERGY = SimpleCheckRecipeResult.ofFailure("gtnhlanth.toolowenergy");
+
+    /**
      * Machine is waiting for the main controller to start the cycle.
      */
     @Nonnull
