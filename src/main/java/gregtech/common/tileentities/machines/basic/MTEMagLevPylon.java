@@ -3,40 +3,42 @@ package gregtech.common.tileentities.machines.basic;
 import static gregtech.api.enums.GTValues.V;
 import static gregtech.api.enums.Textures.BlockIcons.*;
 
-import java.util.List;
-
-import net.minecraft.entity.player.EntityPlayer;
+import gregtech.common.data.maglev.TetherManager;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.potion.PotionEffect;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.event.entity.living.LivingEvent;
 
 import com.gtnewhorizon.gtnhlib.eventbus.EventBusSubscriber;
 
-import cpw.mods.fml.common.eventhandler.EventPriority;
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import gregtech.api.enums.TickTime;
+import gregtech.api.enums.GTValues;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTETieredMachineBlock;
 import gregtech.api.render.TextureFactory;
-import gregtech.loaders.misc.GTPotions;
-import it.unimi.dsi.fastutil.ints.Int2BooleanOpenHashMap;
+import gregtech.common.data.maglev.Tether;
+import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet;
+import scala.reflect.internal.util.WeakHashSet;
 
 @EventBusSubscriber
 public class MTEMagLevPylon extends MTETieredMachineBlock {
 
     public int mRange = 16;
-    private final static Int2BooleanOpenHashMap playerBuffMap = new Int2BooleanOpenHashMap();
-
-    private AxisAlignedBB checkArea;
+    private final ObjectOpenHashSet<Tether> tethers = new ObjectOpenHashSet<>();
 
     public MTEMagLevPylon(int aID, String aName, String aNameRegional, int aTier) {
-        super(aID, aName, aNameRegional, aTier, 0, "Grants flight with the power of magnets. Range: ");
+        super(
+            aID,
+            aName,
+            aNameRegional,
+            aTier,
+            0,
+            "Grants flight with the power of magnets. Range: " + (4 + (12 * aTier))
+                + " unpowered / "
+                + (16 + (48 * aTier))
+                + " powered. Costs "
+                + (GTValues.VP[aTier])
+                + " EU/t");
     }
 
     public MTEMagLevPylon(String aName, int aTier, int aInvSlotCount, String[] aDescription, ITexture[][][] aTextures) {
@@ -45,39 +47,21 @@ public class MTEMagLevPylon extends MTETieredMachineBlock {
 
     @Override
     public void onFirstTick(IGregTechTileEntity baseMetaTileEntity) {
-        checkArea = AxisAlignedBB
-            .getBoundingBox(
-                baseMetaTileEntity.getXCoord(),
-                baseMetaTileEntity.getYCoord(),
-                baseMetaTileEntity.getZCoord(),
-                baseMetaTileEntity.getXCoord() + 1,
-                baseMetaTileEntity.getYCoord() + 1,
-                baseMetaTileEntity.getZCoord() + 1)
-            .expand(mRange, mRange, mRange);
+        TetherManager.ACTIVE_PYLONS
+            .get(baseMetaTileEntity.getWorld().provider.dimensionId)
+            .add(this);
     }
 
     @Override
     public void onPostTick(IGregTechTileEntity baseMetaTileEntity, long tick) {
         if (baseMetaTileEntity.isServerSide() && baseMetaTileEntity.isAllowedToWork()) {
-            if (tick % 80 == 0 && checkArea != null) {
-                if (baseMetaTileEntity.isUniversalEnergyStored(getMinimumStoredEU())
-                    && baseMetaTileEntity.decreaseStoredEnergyUnits(1L << (this.mTier * 2), false)) {
-                    List<EntityPlayer> players = getBaseMetaTileEntity().getWorld()
-                        .getEntitiesWithinAABB(EntityPlayer.class, checkArea);
-                    for (int i = 0; i < players.size(); i++) {
-                        EntityPlayer player = players.get(i);
-                        if (player instanceof FakePlayer) continue;
-                        player.addPotionEffect(
-                            new PotionEffect(GTPotions.potionMagLev.id, TickTime.SECOND * 6, mTier - 1));
-                    }
-                }
-            }
+
         }
     }
 
     @Override
     public void onRemoval() {
-        checkArea = null;
+        TetherManager.ACTIVE_PYLONS.get(getBaseMetaTileEntity().getWorld().provider.dimensionId).remove(this);
     }
 
     @Override
@@ -174,38 +158,4 @@ public class MTEMagLevPylon extends MTETieredMachineBlock {
 
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {}
-
-    @SubscribeEvent(priority = EventPriority.HIGHEST)
-    public static void onEntityUpdate(LivingEvent.LivingUpdateEvent event) {
-        if (event.entityLiving instanceof FakePlayer) return;
-        if (!(event.entityLiving instanceof EntityPlayer player)) return;
-
-        int ownerUUID = player.getUniqueID()
-            .hashCode();
-        if (player.isPotionActive(GTPotions.potionMagLev)) {
-            if (!playerBuffMap.containsKey(ownerUUID)) {
-                playerBuffMap.put(ownerUUID, true);
-            } else playerBuffMap.replace(ownerUUID, true);
-            player.capabilities.allowFlying = true;
-            if (player.worldObj.isRemote) {
-                // client only
-                // MV = 50% creative flight speed
-                // HV+= 100% creative flight speed
-                player.capabilities.setFlySpeed(
-                    0.05F + (0.025F * player.getActivePotionEffect(GTPotions.potionMagLev)
-                        .getAmplifier() - 2));
-            }
-        } else {
-            if (playerBuffMap.replace(ownerUUID, false)) {
-                if (!player.capabilities.isCreativeMode) {
-                    player.capabilities.allowFlying = false;
-                    player.capabilities.isFlying = false;
-                }
-                player.capabilities.setFlySpeed(0.05F);
-                if (!player.worldObj.isRemote) {
-                    player.sendPlayerAbilities();
-                }
-            }
-        }
-    }
 }
