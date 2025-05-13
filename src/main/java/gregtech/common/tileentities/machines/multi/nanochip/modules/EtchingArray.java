@@ -52,7 +52,7 @@ public class EtchingArray extends MTENanochipAssemblyModuleBase<EtchingArray> {
     private final ArrayList<MTEHatchInputBeamline> mInputBeamline = new ArrayList<>();
 
     float inputEnergy = 1;
-    int requiredEnergy = 1234;
+    int requiredEnergy = 1;
     int requiredParticle = 0;
 
     public static final IStructureDefinition<EtchingArray> STRUCTURE_DEFINITION = ModuleStructureDefinition
