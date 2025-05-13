@@ -1,48 +1,5 @@
 package goodgenerator.loader;
 
-import static goodgenerator.api.recipe.GoodGeneratorRecipeMaps.neutronActivatorRecipes;
-import static goodgenerator.api.recipe.GoodGeneratorRecipeMaps.preciseAssemblerRecipes;
-import static goodgenerator.util.MyRecipeAdder.computeRangeNKE;
-import static gregtech.api.enums.Mods.AppliedEnergistics2;
-import static gregtech.api.enums.Mods.GalacticraftMars;
-import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
-import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
-import static gregtech.api.recipe.RecipeMaps.autoclaveRecipes;
-import static gregtech.api.recipe.RecipeMaps.blastFurnaceRecipes;
-import static gregtech.api.recipe.RecipeMaps.cannerRecipes;
-import static gregtech.api.recipe.RecipeMaps.centrifugeRecipes;
-import static gregtech.api.recipe.RecipeMaps.chemicalBathRecipes;
-import static gregtech.api.recipe.RecipeMaps.distillationTowerRecipes;
-import static gregtech.api.recipe.RecipeMaps.distilleryRecipes;
-import static gregtech.api.recipe.RecipeMaps.fluidCannerRecipes;
-import static gregtech.api.recipe.RecipeMaps.fluidExtractionRecipes;
-import static gregtech.api.recipe.RecipeMaps.fluidSolidifierRecipes;
-import static gregtech.api.recipe.RecipeMaps.fusionRecipes;
-import static gregtech.api.recipe.RecipeMaps.mixerRecipes;
-import static gregtech.api.recipe.RecipeMaps.multiblockChemicalReactorRecipes;
-import static gregtech.api.recipe.RecipeMaps.multiblockECCFRecipes;
-import static gregtech.api.recipe.RecipeMaps.plasmaForgeRecipes;
-import static gregtech.api.recipe.RecipeMaps.unpackagerRecipes;
-import static gregtech.api.recipe.RecipeMaps.vacuumFreezerRecipes;
-import static gregtech.api.util.GTRecipeBuilder.INGOTS;
-import static gregtech.api.util.GTRecipeBuilder.MINUTES;
-import static gregtech.api.util.GTRecipeBuilder.SECONDS;
-import static gregtech.api.util.GTRecipeConstants.AssemblyLine;
-import static gregtech.api.util.GTRecipeConstants.COIL_HEAT;
-import static gregtech.api.util.GTRecipeConstants.ECCF_PRESSURE;
-import static gregtech.api.util.GTRecipeConstants.ECCF_TEMPERATURE;
-import static gregtech.api.util.GTRecipeConstants.FUSION_THRESHOLD;
-import static gregtech.api.util.GTRecipeConstants.NKE_RANGE;
-import static gregtech.api.util.GTRecipeConstants.PRECISE_ASSEMBLER_CASING_TIER;
-import static gregtech.api.util.GTRecipeConstants.RESEARCH_ITEM;
-import static gregtech.api.util.GTRecipeConstants.SCANNING;
-import static gregtech.api.util.GTRecipeConstants.UniversalChemical;
-
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.oredict.OreDictionary;
-
 import bartworks.system.material.WerkstoffLoader;
 import goodgenerator.items.GGMaterial;
 import goodgenerator.util.CrackRecipeAdder;
@@ -64,8 +21,54 @@ import gtPlusPlus.core.material.MaterialsAlloy;
 import gtPlusPlus.core.material.MaterialsElements;
 import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
+import gtneioreplugin.plugin.block.ModBlocks;
 import ic2.core.Ic2Items;
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.oredict.OreDictionary;
 import tectech.recipe.TTRecipeAdder;
+
+import static goodgenerator.api.recipe.GoodGeneratorRecipeMaps.neutronActivatorRecipes;
+import static goodgenerator.api.recipe.GoodGeneratorRecipeMaps.preciseAssemblerRecipes;
+import static goodgenerator.util.MyRecipeAdder.computeRangeNKE;
+import static gregtech.api.enums.Mods.AppliedEnergistics2;
+import static gregtech.api.enums.Mods.GalacticraftMars;
+import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
+import static gregtech.api.recipe.RecipeMaps.ECCFRecipes;
+import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
+import static gregtech.api.recipe.RecipeMaps.autoclaveRecipes;
+import static gregtech.api.recipe.RecipeMaps.blastFurnaceRecipes;
+import static gregtech.api.recipe.RecipeMaps.cannerRecipes;
+import static gregtech.api.recipe.RecipeMaps.centrifugeRecipes;
+import static gregtech.api.recipe.RecipeMaps.chemicalBathRecipes;
+import static gregtech.api.recipe.RecipeMaps.distillationTowerRecipes;
+import static gregtech.api.recipe.RecipeMaps.distilleryRecipes;
+import static gregtech.api.recipe.RecipeMaps.fluidCannerRecipes;
+import static gregtech.api.recipe.RecipeMaps.fluidExtractionRecipes;
+import static gregtech.api.recipe.RecipeMaps.fluidSolidifierRecipes;
+import static gregtech.api.recipe.RecipeMaps.fusionRecipes;
+import static gregtech.api.recipe.RecipeMaps.mixerRecipes;
+import static gregtech.api.recipe.RecipeMaps.multiblockChemicalReactorRecipes;
+import static gregtech.api.recipe.RecipeMaps.planetConditions;
+import static gregtech.api.recipe.RecipeMaps.plasmaForgeRecipes;
+import static gregtech.api.recipe.RecipeMaps.unpackagerRecipes;
+import static gregtech.api.recipe.RecipeMaps.vacuumFreezerRecipes;
+import static gregtech.api.util.GTRecipeBuilder.INGOTS;
+import static gregtech.api.util.GTRecipeBuilder.MINUTES;
+import static gregtech.api.util.GTRecipeBuilder.SECONDS;
+import static gregtech.api.util.GTRecipeConstants.AssemblyLine;
+import static gregtech.api.util.GTRecipeConstants.COIL_HEAT;
+import static gregtech.api.util.GTRecipeConstants.ECCF_PRESSURE;
+import static gregtech.api.util.GTRecipeConstants.ECCF_TEMPERATURE;
+import static gregtech.api.util.GTRecipeConstants.FUSION_THRESHOLD;
+import static gregtech.api.util.GTRecipeConstants.NKE_RANGE;
+import static gregtech.api.util.GTRecipeConstants.PLANET_TIER;
+import static gregtech.api.util.GTRecipeConstants.PRECISE_ASSEMBLER_CASING_TIER;
+import static gregtech.api.util.GTRecipeConstants.RESEARCH_ITEM;
+import static gregtech.api.util.GTRecipeConstants.SCANNING;
+import static gregtech.api.util.GTRecipeConstants.UniversalChemical;
 
 public class RecipeLoader2 {
 
@@ -852,7 +855,7 @@ public class RecipeLoader2 {
             .eut(TierEU.RECIPE_EV)
             .metadata(ECCF_PRESSURE, 110300)
             .metadata(ECCF_TEMPERATURE, 280)
-            .addTo(multiblockECCFRecipes);
+            .addTo(ECCFRecipes);
 
         GTValues.RA.stdBuilder()
             .itemInputs(Materials.Stone.getDust(1))
@@ -861,7 +864,55 @@ public class RecipeLoader2 {
             .eut(TierEU.RECIPE_ZPM)
             .metadata(ECCF_PRESSURE, 10230)
             .metadata(ECCF_TEMPERATURE, 400)
-            .addTo(multiblockECCFRecipes);
+            .addTo(ECCFRecipes);
+
+        // new ItemStack(ModBlocks.blocks.get("Ow"), 1, 0),
+        // new ItemStack(ModBlocks.blocks.get("Ne"), 1, 0),
+        // new ItemStack(ModBlocks.blocks.get("TF"), 1, 0),
+        // new ItemStack(ModBlocks.blocks.get("ED"), 1, 0),
+        // new ItemStack(ModBlocks.blocks.get("Mo"), 1, 0),
+        // new ItemStack(ModBlocks.blocks.get("De"), 1, 0),
+        // new ItemStack(ModBlocks.blocks.get("Ma"), 1, 0),
+        // new ItemStack(ModBlocks.blocks.get("Ph"), 1, 0),
+        // new ItemStack(ModBlocks.blocks.get("As"), 1, 0),
+        // new ItemStack(ModBlocks.blocks.get("Ca"), 1, 0),
+        // new ItemStack(ModBlocks.blocks.get("Ce"), 1, 0),
+        // new ItemStack(ModBlocks.blocks.get("Eu"), 1, 0),
+        // new ItemStack(ModBlocks.blocks.get("Ga"), 1, 0),
+        // new ItemStack(ModBlocks.blocks.get("Rb"), 1, 0),
+        // new ItemStack(ModBlocks.blocks.get("Io"), 1, 0),
+        // new ItemStack(ModBlocks.blocks.get("Me"), 1, 0),
+        // new ItemStack(ModBlocks.blocks.get("Ve"), 1, 0),
+        // new ItemStack(ModBlocks.blocks.get("En"), 1, 0),
+        // new ItemStack(ModBlocks.blocks.get("Mi"), 1, 0),
+        // new ItemStack(ModBlocks.blocks.get("Ob"), 1, 0),
+        // new ItemStack(ModBlocks.blocks.get("Ti"), 1, 0),
+        // new ItemStack(ModBlocks.blocks.get("Ra"), 1, 0),
+        // new ItemStack(ModBlocks.blocks.get("Pr"), 1, 0),
+        // new ItemStack(ModBlocks.blocks.get("Tr"), 1, 0),
+        // new ItemStack(ModBlocks.blocks.get("Ha"), 1, 0),
+        // new ItemStack(ModBlocks.blocks.get("KB"), 1, 0),
+        // new ItemStack(ModBlocks.blocks.get("MM"), 1, 0),
+        // new ItemStack(ModBlocks.blocks.get("Pl"), 1, 0),
+        // new ItemStack(ModBlocks.blocks.get("BC"), 1, 0),
+        // new ItemStack(ModBlocks.blocks.get("BE"), 1, 0),
+        // new ItemStack(ModBlocks.blocks.get("BF"), 1, 0),
+        // new ItemStack(ModBlocks.blocks.get("CB"), 1, 0),
+        // new ItemStack(ModBlocks.blocks.get("TE"), 1, 0),
+        // new ItemStack(ModBlocks.blocks.get("VB"), 1, 0),
+        // new ItemStack(ModBlocks.blocks.get("An"), 1, 0),
+        // new ItemStack(ModBlocks.blocks.get("Ho"), 1, 0),
+        // new ItemStack(ModBlocks.blocks.get("Mh"), 1, 0),
+        // new ItemStack(ModBlocks.blocks.get("Np"), 1, 0),
+        // new ItemStack(ModBlocks.blocks.get("Se"), 1, 0),
+        // new ItemStack(ModBlocks.blocks.get("DD"), 1, 0))
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(new ItemStack(ModBlocks.blocks.get("Ow"), 1, 0))
+            .duration(0)
+            .eut(0)
+            .metadata(PLANET_TIER, 0)
+            .addTo(planetConditions);
 
         GTValues.RA.stdBuilder()
             .itemInputs(Materials.Diamond.getGems(1))

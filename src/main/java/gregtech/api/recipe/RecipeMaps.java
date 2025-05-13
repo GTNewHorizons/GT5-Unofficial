@@ -26,6 +26,7 @@ import gregtech.api.recipe.maps.LargeBoilerFuelFrontend;
 import gregtech.api.recipe.maps.LargeNEIFrontend;
 import gregtech.api.recipe.maps.MicrowaveBackend;
 import gregtech.api.recipe.maps.OilCrackerBackend;
+import gregtech.api.recipe.maps.PlanetConditionsFrontend;
 import gregtech.api.recipe.maps.PrinterBackend;
 import gregtech.api.recipe.maps.PurificationUnitClarifierFrontend;
 import gregtech.api.recipe.maps.PurificationUnitFlocculatorFrontend;
@@ -805,7 +806,7 @@ public final class RecipeMaps {
         .progressBar(GTUITextures.PROGRESSBAR_ARROW_MULTIPLE)
         .frontend(LargeNEIFrontend::new)
         .build();
-    public static final RecipeMap<RecipeMapBackend> multiblockECCFRecipes = RecipeMapBuilder.of("gt.recipe.eccf")
+    public static final RecipeMap<RecipeMapBackend> ECCFRecipes = RecipeMapBuilder.of("gt.recipe.eccf")
         .maxIO(8, 8, 8, 8)
         .progressBar(GTUITextures.PROGRESSBAR_ARROW_MULTIPLE)
         .logoPos(80, 63)
@@ -813,6 +814,16 @@ public final class RecipeMaps {
         .progressBarSize(16, 16)
         .progressBarPos(80, 36)
         .frontend(ECCFFrontend::new)
+        .build();
+    public static final RecipeMap<RecipeMapBackend> planetConditions = RecipeMapBuilder.of("gt.recipe.planets")
+        .maxIO(41, 0, 0, 0)
+        .dontUseProgressBar()
+        .logoSize(0, 0)
+
+        .neiHandlerInfo(
+            builder -> builder.setDisplayStack(Materials.Lava.getCells(1))
+                .setMaxRecipesPerPage(1))
+        .frontend(PlanetConditionsFrontend::new)
         .build();
     public static final RecipeMap<RecipeMapBackend> distillationTowerRecipes = RecipeMapBuilder
         .of("gt.recipe.distillationtower")

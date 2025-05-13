@@ -37,7 +37,10 @@ import net.minecraftforge.common.util.ForgeDirection;
 import org.apache.commons.lang3.tuple.Pair;
 import org.jetbrains.annotations.NotNull;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.util.Arrays;
+import java.util.Collection;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlocksTiered;
@@ -323,7 +326,7 @@ public class MTEEnvironmentallyControlledChemicalFacility extends
             .addInfo(
                 EnumChatFormatting.GRAY + "Every second, ECCF temperature drifts towards ambient, to: "
                     + EnumChatFormatting.GOLD
-                    + "(current - initial) * 0.98 + initial")
+                    + "(current - ambient) * 0.98 + ambient")
             .addInfo(
                 EnumChatFormatting.GRAY + "And applies temperature changes regardless of the module type: "
                     + EnumChatFormatting.GOLD
@@ -335,7 +338,7 @@ public class MTEEnvironmentallyControlledChemicalFacility extends
             .addInfo(
                 EnumChatFormatting.GRAY + "Every second, ECCF pressure drifts towards ambient, to: "
                     + EnumChatFormatting.GOLD
-                    + "(current - initial) * 0.95 + initial")
+                    + "(current - ambient) * 0.95 + ambient")
             .addInfo(
                 EnumChatFormatting.GRAY + "And applies pressure changes depending on the module type: "
                     + EnumChatFormatting.GOLD
@@ -415,25 +418,19 @@ public class MTEEnvironmentallyControlledChemicalFacility extends
                     + EnumChatFormatting.GRAY
                     + "to operate")
             .addInfo(
-                EnumChatFormatting.GRAY + "If"
+                EnumChatFormatting.GRAY + "While the module is running, "
                     + EnumChatFormatting.YELLOW
-                    + " 0L "
+                    + "0-80% "
                     + EnumChatFormatting.GRAY
-                    + "of lubricant is supplied, "
+                    + "of the non-ambient pressure is"
                     + EnumChatFormatting.RED
-                    + "depressurization "
+                    + " lost"
                     + EnumChatFormatting.GRAY
-                    + "happens")
-            .addInfo(
-                EnumChatFormatting.GRAY + "Causing a loss of "
+                    + " depending on the "
                     + EnumChatFormatting.YELLOW
-                    + "0-80%"
+                    + "VO lubricant "
                     + EnumChatFormatting.GRAY
-                    + " of pressure depending on the "
-                    + EnumChatFormatting.YELLOW
-                    + "VO lubricant"
-                    + EnumChatFormatting.GRAY
-                    + " used")
+                    + "used")
             .addSeparator()
             .addInfo("" + EnumChatFormatting.WHITE + EnumChatFormatting.BOLD + "VO Lubricants Values")
             .addInfo(EnumChatFormatting.GOLD + "No lubricant " + EnumChatFormatting.GRAY + "- 80% loss")
@@ -465,7 +462,7 @@ public class MTEEnvironmentallyControlledChemicalFacility extends
                     + EnumChatFormatting.GRAY
                     + "and "
                     + EnumChatFormatting.GOLD
-                    + " dimension conditions")
+                    + "dimension conditions")
             .beginStructureBlock(5, 6, 5, true)
             .addController("Front Center")
             .addCasingInfoMin("Chemically Inert Casing", 0, false)
@@ -674,9 +671,15 @@ public class MTEEnvironmentallyControlledChemicalFacility extends
         return (int) Math.pow(4, GTUtility.getTier(this.getMaxInputVoltage()));
     }
 
+    @Nonnull
+    @Override
+    public Collection<RecipeMap<?>> getAvailableRecipeMaps() {
+        return Arrays.asList(RecipeMaps.ECCFRecipes, RecipeMaps.planetConditions);
+    }
+
     @Override
     public RecipeMap<?> getRecipeMap() {
-        return RecipeMaps.multiblockECCFRecipes;
+        return RecipeMaps.ECCFRecipes;
     }
 
     @Override
@@ -836,46 +839,57 @@ public class MTEEnvironmentallyControlledChemicalFacility extends
 
     public enum DimensionConditions {
 
-        END("End", 220, 0),
-        NETHER("Nether", 900, 200000),
-        MERCURY("Mercury", 440, 0),
-        VENUS("Venus", 740, 9200000),
+        // T0
         OVERWORLD("Overworld", 290, 101000),
+        NETHER("Nether", 900, 200000),
+        TWILIGHT("Twilight", 270, 101000),
+        END("End", 220, 0),
+        // T1
         MOON("Moon", 250, 0),
+        // T2
+        DEIMOS("Deimos", 233, 0),
         MARS("Mars", 215, 600),
         PHOBOS("Phobos", 233, 0),
-        DEIMOS("Deimos", 233, 0),
+        // T3
         ASTEROIDS("Asteroids", 200, 0),
-        IO("Io", 130, 0),
-        EUROPA("Europa", 102, 0),
         CALLISTO("Callisto", 134, 0),
-        GANYMEDE("Ganymede", 132, 0),
-        MIRANDA("Miranda", 60, 0),
-        TITAN("Titan", 94, 146700),
-        OBERON("Oberon", 70, 0),
-        PROTEUS("Proteus", 50, 0),
-        PLUTO("Pluto", 44, 1),
-        TRITON("Triton", 38, 1),
-        MAKEMAKE("Makemake", 30, 0),
         CERES("Ceres", 168, 0),
+        EUROPA("Europa", 102, 0),
+        GANYMEDE("Ganymede", 132, 0),
+        ROSS128B("Ross128b", 295, 101000),
+        // T4
+        IO("Io", 130, 0),
+        MERCURY("Mercury", 440, 0),
+        VENUS("Venus", 740, 9200000),
+        // T5
+        ENCELADUS("Enceladus", 70, 1),
+        MIRANDA("Miranda", 60, 0),
+        OBERON("Oberon", 70, 0),
+        TITAN("Titan", 94, 146700),
+        ROSS128BA("Ross128ba", 285, 101000),
+        // T6
+        PROTEUS("Proteus", 50, 0),
+        TRITON("Triton", 38, 1),
+        // T7
         HAUMEA("Haumea", 32, 0),
-        CENTAURI_A("CentauriA", 1500, 0),
-        VEGA_B("VegaB", 300, 10000), // temporary
+        KUIPERBELT("Kuiperbelt", 50, 0),
+        MAKEMAKE("Makemake", 30, 0),
+        PLUTO("Pluto", 44, 1),
+        // T8
         BARNARD_C("BarnardC", 300, 10000), // temporary
         BARNARD_E("BarnardE", 300, 10000), // temporary
         BARNARD_F("BarnardF", 300, 10000), // temporary
+        CENTAURI_A("CentauriA", 1500, 0),
         TCETI_E("TCetiE", 300, 10000), // temporary
-        ROSS128B("Ross128b", 295, 101000),
-        ROSS128BA("Ross128ba", 285, 101000),
-        KUIPERBELT("Kuiperbelt", 50, 0),
-        NEPER("Neper", 300, 10000), // temporary
-        MAAHES("Maahes", 300, 10000), // temporary
+        VEGA_B("VegaB", 300, 10000), // temporary
+        // T9
         ANUBIS("Anubis", 300, 10000), // temporary
         HORUS("Horus", 300, 10000), // temporary
+        MAAHES("Maahes", 300, 10000), // temporary
+        NEPER("Neper", 300, 10000), // temporary
         SETH("Seth", 300, 10000), // temporary
-        MEHEN_BELT("MehenBelt", 300, 10000), // temporary
-        UNDERDARK("Underdark", 270, 131000),
-        DEFAULT("Default", 270, 101000);
+        // T10
+        UNDERDARK("Underdark", 270, 131000);
 
         private final String dimensionName;
         private final int initialTemp;
@@ -901,7 +915,7 @@ public class MTEEnvironmentallyControlledChemicalFacility extends
                     return condition;
                 }
             }
-            return DEFAULT;
+            return OVERWORLD;
         }
     }
 
