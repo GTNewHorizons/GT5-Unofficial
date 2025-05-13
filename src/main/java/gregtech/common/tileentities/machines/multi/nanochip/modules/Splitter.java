@@ -1,6 +1,7 @@
 package gregtech.common.tileentities.machines.multi.nanochip.modules;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
+import static gregtech.api.util.GTStructureUtility.ofFrame;
 import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex.NAC_MODULE;
 
 import java.util.ArrayList;
@@ -22,6 +23,7 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 
 import gregtech.api.GregTechAPI;
+import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.gui.MTEMultiBlockBaseGui;
@@ -37,13 +39,13 @@ import gregtech.common.tileentities.machines.multi.nanochip.util.ModuleStructure
 
 public class Splitter extends MTENanochipAssemblyModuleBase<Splitter> {
 
-    protected static final int STRUCTURE_OFFSET_X = 3;
-    protected static final int STRUCTURE_OFFSET_Y = 3;
-    protected static final int STRUCTURE_OFFSET_Z = -2;
-
     protected static final String STRUCTURE_PIECE_MAIN = "main";
-    private static final String[][] structure = new String[][] { { "  AAA  ", "  AAA  ", "  AAA  " },
-        { "  AAA  ", "  A A  ", "  AAA  " }, { "  AAA  ", "  AAA  ", "  AAA  " } };
+    protected static final int SPLITTER_OFFSET_X = 3;
+    protected static final int SPLITTER_OFFSET_Y = 2;
+    protected static final int SPLITTER_OFFSET_Z = 0;
+    protected static final String[][] SPLITTER_STRUCTURE = new String[][] { { "  A    ", " CBBBC " },
+        { "  AA A ", "CBBBBBC" }, { "   ACA ", "BBBBBBB" }, { "AA A A ", "BBBBBBB" }, { " ACA AA", "BBBBBBB" },
+        { " A A   ", "CBBBBBC" }, { "   AA  ", " CBBBC " } };
 
     // Maps the "id" of a rule to the rule it represents. Don't use this to lookup output colors, use
     // Splitter$getOutputColors instead.
@@ -51,8 +53,13 @@ public class Splitter extends MTENanochipAssemblyModuleBase<Splitter> {
 
     public static final IStructureDefinition<Splitter> STRUCTURE_DEFINITION = ModuleStructureDefinition
         .<Splitter>builder()
-        .addShape(STRUCTURE_PIECE_MAIN, structure)
-        .addElement('A', ofBlock(GregTechAPI.sBlockCasings4, 0))
+        .addShape(STRUCTURE_PIECE_MAIN, SPLITTER_STRUCTURE)
+        // White casing block
+        .addElement('A', ofBlock(GregTechAPI.sBlockCasings8, 5))
+        // Black casing block
+        .addElement('B', ofBlock(GregTechAPI.sBlockCasings8, 10))
+        // Epoxy Resin Casing
+        .addElement('C', ofFrame(Materials.EpoxidFiberReinforced))
         .build();
 
     public Splitter(int aID, String aName, String aNameRegional) {
@@ -71,13 +78,7 @@ public class Splitter extends MTENanochipAssemblyModuleBase<Splitter> {
     @Override
     public void construct(ItemStack trigger, boolean hintsOnly) {
         // Should only construct the main structure, since the base structure is built by the nanochip assembly complex.
-        buildPiece(
-            STRUCTURE_PIECE_MAIN,
-            trigger,
-            hintsOnly,
-            STRUCTURE_OFFSET_X,
-            STRUCTURE_OFFSET_Y,
-            STRUCTURE_OFFSET_Z);
+        buildPiece(STRUCTURE_PIECE_MAIN, trigger, hintsOnly, SPLITTER_OFFSET_X, SPLITTER_OFFSET_Y, SPLITTER_OFFSET_Z);
     }
 
     @Override
@@ -86,9 +87,9 @@ public class Splitter extends MTENanochipAssemblyModuleBase<Splitter> {
         return survivialBuildPiece(
             STRUCTURE_PIECE_MAIN,
             trigger,
-            STRUCTURE_OFFSET_X,
-            STRUCTURE_OFFSET_Y,
-            STRUCTURE_OFFSET_Z,
+            SPLITTER_OFFSET_X,
+            SPLITTER_OFFSET_Y,
+            SPLITTER_OFFSET_Z,
             elementBudget,
             env,
             false,
@@ -160,7 +161,7 @@ public class Splitter extends MTENanochipAssemblyModuleBase<Splitter> {
         // Check base structure
         if (!super.checkMachine(aBaseMetaTileEntity, aStack)) return false;
         // Now check module structure
-        if (!checkPiece(STRUCTURE_PIECE_MAIN, STRUCTURE_OFFSET_X, STRUCTURE_OFFSET_Y, STRUCTURE_OFFSET_Z)) {
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, SPLITTER_OFFSET_X, SPLITTER_OFFSET_Y, SPLITTER_OFFSET_Z)) {
             return false;
         }
         assignHatchIdentifiers();
