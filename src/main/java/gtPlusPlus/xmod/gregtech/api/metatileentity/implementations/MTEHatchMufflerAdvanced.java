@@ -1,5 +1,7 @@
 package gtPlusPlus.xmod.gregtech.api.metatileentity.implementations;
 
+import static gregtech.api.util.GTUtility.validMTEList;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
@@ -16,10 +18,12 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.modularui.IAddGregtechLogo;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
+import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
 import gregtech.api.metatileentity.implementations.MTEHatchMuffler;
 import gregtech.api.metatileentity.implementations.MTEMultiBlockBase;
 import gregtech.api.render.TextureFactory;
 import gregtech.common.pollution.Pollution;
+import gregtech.common.tileentities.machines.IRecipeProcessingAwareHatch;
 import gtPlusPlus.core.item.general.ItemAirFilter;
 import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.xmod.gregtech.api.gui.GTPPUITextures;
@@ -183,9 +187,16 @@ public class MTEHatchMufflerAdvanced extends MTEHatchMuffler implements IAddGreg
         if (hasAirFilter()) return true; // Has a filter in inventory.
         if (mInventory[SLOT_FILTER] != null) return false; // Has a non-filter item in inventory.
         if (parentTileEntity == null) return false; // Unknown parent multiblock.
+        if (!(parentTileEntity instanceof MTEMultiBlockBase GTMultiBase)) return false;
 
-        if (parentTileEntity instanceof MTEMultiBlockBase GTMultiBase) {
-            for (var inputBus : GTMultiBase.mInputBusses) {
+        for (MTEHatchInputBus hatch : validMTEList(GTMultiBase.mInputBusses)) {
+            if (hatch instanceof IRecipeProcessingAwareHatch aware) {
+                aware.startRecipeProcessing();
+            }
+        }
+
+        try {
+            for (MTEHatchInputBus inputBus : GTMultiBase.mInputBusses) {
                 for (ItemStack stack : inputBus.mInventory) {
                     if (isAirFilter(stack)) {
                         ItemStack stackCopy = stack.copy();
@@ -196,9 +207,14 @@ public class MTEHatchMufflerAdvanced extends MTEHatchMuffler implements IAddGreg
                     }
                 }
             }
+            return false;
+        } finally {
+            for (MTEHatchInputBus hatch : validMTEList(GTMultiBase.mInputBusses)) {
+                if (hatch instanceof IRecipeProcessingAwareHatch aware) {
+                    GTMultiBase.setResultIfFailure(aware.endRecipeProcessing(GTMultiBase));
+                }
+            }
         }
-
-        return false;
     }
 
     /**
