@@ -1302,4 +1302,9 @@ public final class RecipeMaps {
         .maxIO(1, 1, 0, 0)
         .minInputs(1, 0)
         .build();
+    public static final RecipeMap<RecipeMapBackend> nanochipSheetSupervisor = RecipeMapBuilder
+        .of("gt.recipe.nanochip.sheetsupervisor")
+        .maxIO(1, 1, 0, 0)
+        .minInputs(1, 0)
+        .build();
 }
