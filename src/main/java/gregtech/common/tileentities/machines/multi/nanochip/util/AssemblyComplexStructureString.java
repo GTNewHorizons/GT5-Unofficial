@@ -1,6 +1,7 @@
 package gregtech.common.tileentities.machines.multi.nanochip.util;
 
 public class AssemblyComplexStructureString {
+
     public static final int MAIN_OFFSET_X = 31;
     public static final int MAIN_OFFSET_Y = 40;
     public static final int MAIN_OFFSET_Z = 31;

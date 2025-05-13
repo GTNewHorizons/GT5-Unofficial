@@ -17,12 +17,14 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyModuleBase;
 import gregtech.common.tileentities.machines.multi.nanochip.util.CircuitComponent;
 import gregtech.common.tileentities.machines.multi.nanochip.util.ModuleStructureDefinition;
 
 public class SheetSupervisor extends MTENanochipAssemblyModuleBase<SheetSupervisor> {
 
+    private static final int COMPUTATION_TO_BE_DRAINED_PER_SECOND = 100000;
     protected static final String STRUCTURE_PIECE_MAIN = "main";
     protected static final int SHEET_OFFSET_X = 3;
     protected static final int SHEET_OFFSET_Y = 6;
@@ -88,6 +90,31 @@ public class SheetSupervisor extends MTENanochipAssemblyModuleBase<SheetSupervis
         if (!super.checkMachine(aBaseMetaTileEntity, aStack)) return false;
         // Now check module structure
         return checkPiece(STRUCTURE_PIECE_MAIN, SHEET_OFFSET_X, SHEET_OFFSET_Y, SHEET_OFFSET_Z);
+    }
+
+    private int ticker = 0;
+
+    @Override
+    public boolean onRunningTick(ItemStack aStack) {
+        if (!super.onRunningTick(aStack)) {
+            return false;
+        }
+
+        if (ticker % 20 == 0) {
+            if (!drainComputation(COMPUTATION_TO_BE_DRAINED_PER_SECOND)) {
+                stopMachine(ShutDownReasonRegistry.outOfStuff("Computation", COMPUTATION_TO_BE_DRAINED_PER_SECOND));
+                return false;
+            }
+            ticker = 0;
+        }
+
+        ticker++;
+
+        return true;
+    }
+
+    private boolean drainComputation(int computationDrain) {
+        return true;
     }
 
     @Override
