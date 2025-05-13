@@ -115,7 +115,8 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
                 .atLeast(Energy, ExoticEnergy)
                 .casingIndex(CASING_INDEX_BASE)
                 .dot(1)
-                .buildAndChain(GregTechAPI.sBlockCasings8, 10))
+                .build())
+
         // Vacuum conveyor hatches that the main controller cares about go in specific slots
         .addElement(
             'H',
