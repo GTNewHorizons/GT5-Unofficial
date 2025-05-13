@@ -163,7 +163,8 @@ public class SuperconductorSplitter extends MTENanochipAssemblyModuleBase<Superc
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
-        return new MultiblockTooltipBuilder().addInfo(NAC_MODULE)
+        return new MultiblockTooltipBuilder().addMachineType("NAC Module")
+            .addInfo(NAC_MODULE)
             .addInfo("Splits your Superconductor " + TOOLTIP_CC + "s")
             .addInfo(
                 "Requires " + EnumChatFormatting.BLUE + "1000L/s Super Coolant" + EnumChatFormatting.GRAY + " to run")
