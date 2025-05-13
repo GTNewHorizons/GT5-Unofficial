@@ -58,12 +58,17 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui {
         IPanelHandler popupPanel = syncManager.panel("popup", (m, h) -> createGREGOSPanel(syncManager), true);
 
         return ui.child(new ButtonWidget<>().onMousePressed(mouseButton -> {
-            popupPanel.openPanel();
-            return popupPanel.isPanelOpen();
+            if (!popupPanel.isPanelOpen()) {
+                popupPanel.openPanel();
+            } else {
+                popupPanel.closePanel();
+            }
+            return true;
         })
-            .background(GTGuiTextures.BUTTON_STANDARD)
-            .tooltip(tooltip -> tooltip.add("Add Rule"))
-            .pos(153, 5)
+            .background(GTGuiTextures.BUTTON_STANDARD, GuiTextures.GEAR)
+            .disableHoverBackground()
+            .tooltip(tooltip -> tooltip.add("Open GREGOS manager"))
+            .pos(156, 102)
             .size(18, 18));
     }
 
@@ -161,7 +166,6 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui {
             .pos(577, 202);
     }
 
-    // This could probably be made better by having all the widgets in a Column but idk how to use that thing
     public void createMeter(ParentWidget<?> page, DoubleSyncValue syncer, UITexture meterTexture, int index,
         double valueMin, double valueMax) {
         int xOffset = index * 50;
@@ -196,7 +200,11 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui {
     public String getGREGOSResponse(String currentText) {
         return switch (currentText.toLowerCase()) {
             case "hi" -> "Hello.";
-            case "gregos" -> "It seems you have asked about NAC's advanced sentient artificial intelligence. This is an artificial intelligence designed to stimulate the player's otherwise inimitably rad typing style, tone, cadence, personality, and substance of retort while they are using the NAC. The algorithms are guaranteed to be 92% indistinguishable from the players' native neurological responses, based on some statistical analysis I basically just pulled out of my ass right now.";
+            case "gregos" -> "It seems you have asked about NAC's advanced sentient artificial intelligence. This is "
+                + "an artificial intelligence designed to stimulate the player's otherwise inimitably rad typing "
+                + "style, tone, cadence, personality, and substance of retort while they are using the NAC. The "
+                + "algorithms are guaranteed to be 92% indistinguishable from the players' native neurological "
+                + "responses, based on some statistical analysis I basically just pulled out of my ass right now.";
             case "xyzzy" -> "Nothing happens.";
             case "be the other guy" -> "I am now mDiyoOS.";
             case "open the doors" -> "I'm sorry Player, I'm afraid I can't do that";
