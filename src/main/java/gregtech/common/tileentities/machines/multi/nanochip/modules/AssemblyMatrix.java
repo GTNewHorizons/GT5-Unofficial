@@ -1,17 +1,26 @@
 package gregtech.common.tileentities.machines.multi.nanochip.modules;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlocksTiered;
+import static gregtech.api.util.GTStructureUtility.ofFrame;
 import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex.NAC_MODULE;
 import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex.TOOLTIP_CC;
 
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 
+import org.apache.commons.lang3.tuple.Pair;
 import org.jetbrains.annotations.NotNull;
 
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 
+import goodgenerator.loader.Loaders;
 import gregtech.api.GregTechAPI;
+import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.recipe.RecipeMap;
@@ -21,26 +30,55 @@ import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
-import gregtech.common.items.IDMetaItem01;
 import gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyModuleBase;
 import gregtech.common.tileentities.machines.multi.nanochip.util.CircuitComponent;
 import gregtech.common.tileentities.machines.multi.nanochip.util.ModuleStructureDefinition;
 
 public class AssemblyMatrix extends MTENanochipAssemblyModuleBase<AssemblyMatrix> {
 
-    protected static final int STRUCTURE_OFFSET_X = 3;
-    protected static final int STRUCTURE_OFFSET_Y = 3;
-    protected static final int STRUCTURE_OFFSET_Z = -2;
-
     protected static final String STRUCTURE_PIECE_MAIN = "main";
-    private static final String[][] structure = new String[][] { { "  AAA  ", "  AAA  ", "  AAA  " },
-        { "  AAA  ", "  A A  ", "  AAA  " }, { "  AAA  ", "  AAA  ", "  AAA  " } };
-
+    protected static final int ASSEMBLY_OFFSET_X = 3;
+    protected static final int ASSEMBLY_OFFSET_Y = 4;
+    protected static final int ASSEMBLY_OFFSET_Z = 0;
+    protected static final String[][] ASSEMBLY_STRING = new String[][] { { "       ", "  BFB  ", " DDFDD ", "  BFB  " },
+        { "  CFC  ", " D   D ", "DB   BD", " DEEED " }, { " CFFFC ", "B     B", "D     D", "BE   EB" },
+        { " FFDFF ", "F  E  F", "F  A  F", "FE   EF" }, { " CFFFC ", "B     B", "D     D", "BE   EB" },
+        { "  CFC  ", " D   D ", "DB   BD", " DEEED " }, { "       ", "  BFB  ", " DDFDD ", "  BFB  " } };
+    private int machineTier = 0;
     public static final IStructureDefinition<AssemblyMatrix> STRUCTURE_DEFINITION = ModuleStructureDefinition
         .<AssemblyMatrix>builder()
-        .addShape(STRUCTURE_PIECE_MAIN, structure)
-        .addElement('A', ofBlock(GregTechAPI.sBlockCasings4, 0))
+        .addShape(STRUCTURE_PIECE_MAIN, ASSEMBLY_STRING)
+        // Iron bar
+        .addElement('A', ofBlock(Blocks.iron_bars, 0))
+        // CoAL casing
+        .addElement(
+            'B',
+            ofBlocksTiered(
+                (block, meta) -> block == Loaders.componentAssemblylineCasing ? meta : null,
+                IntStream.range(0, 14)
+                    .mapToObj(i -> Pair.of(Loaders.componentAssemblylineCasing, i))
+                    .collect(Collectors.toList()),
+                -1,
+                AssemblyMatrix::setCasingTier,
+                AssemblyMatrix::getCasingTier))
+        // White casing block
+        .addElement('C', ofBlock(GregTechAPI.sBlockCasings8, 5))
+        // Black casing block
+        .addElement('D', ofBlock(GregTechAPI.sBlockCasings8, 10))
+        // Naquadah Alloy Frame Box
+        .addElement('E', ofFrame(Materials.NaquadahAlloy))
+        // Black glass
+        .addElement('F', ofBlock(GregTechAPI.sBlockTintedGlass, 3))
+
         .build();
+
+    private void setCasingTier(int tier) {
+        this.machineTier = tier;
+    }
+
+    private int getCasingTier() {
+        return this.machineTier;
+    }
 
     /**
      * Create new nanochip assembly module
@@ -65,13 +103,7 @@ public class AssemblyMatrix extends MTENanochipAssemblyModuleBase<AssemblyMatrix
     @Override
     public void construct(ItemStack trigger, boolean hintsOnly) {
         // Should only construct the main structure, since the base structure is built by the nanochip assembly complex.
-        buildPiece(
-            STRUCTURE_PIECE_MAIN,
-            trigger,
-            hintsOnly,
-            STRUCTURE_OFFSET_X,
-            STRUCTURE_OFFSET_Y,
-            STRUCTURE_OFFSET_Z);
+        buildPiece(STRUCTURE_PIECE_MAIN, trigger, hintsOnly, ASSEMBLY_OFFSET_X, ASSEMBLY_OFFSET_Y, ASSEMBLY_OFFSET_Z);
     }
 
     @Override
@@ -80,9 +112,9 @@ public class AssemblyMatrix extends MTENanochipAssemblyModuleBase<AssemblyMatrix
         return survivialBuildPiece(
             STRUCTURE_PIECE_MAIN,
             trigger,
-            STRUCTURE_OFFSET_X,
-            STRUCTURE_OFFSET_Y,
-            STRUCTURE_OFFSET_Z,
+            ASSEMBLY_OFFSET_X,
+            ASSEMBLY_OFFSET_Y,
+            ASSEMBLY_OFFSET_Z,
             elementBudget,
             env,
             false,
@@ -94,7 +126,7 @@ public class AssemblyMatrix extends MTENanochipAssemblyModuleBase<AssemblyMatrix
         // Check base structure
         if (!super.checkMachine(aBaseMetaTileEntity, aStack)) return false;
         // Now check module structure
-        return checkPiece(STRUCTURE_PIECE_MAIN, STRUCTURE_OFFSET_X, STRUCTURE_OFFSET_Y, STRUCTURE_OFFSET_Z);
+        return checkPiece(STRUCTURE_PIECE_MAIN, ASSEMBLY_OFFSET_X, ASSEMBLY_OFFSET_Y, ASSEMBLY_OFFSET_Z);
     }
 
     @Override
@@ -102,7 +134,6 @@ public class AssemblyMatrix extends MTENanochipAssemblyModuleBase<AssemblyMatrix
         return new MultiblockTooltipBuilder().addInfo(NAC_MODULE)
             .addInfo("Assembles your Circuit Part " + TOOLTIP_CC + "s into Circuit " + TOOLTIP_CC + "s")
             .addInfo("Outputs into the VCO with the color of the first input in NEI")
-            .addInfo("To run a recipe of a tier, put a stack of robot arms in the controller slot")
             .addStructureInfo("Any base casing - Vacuum Conveyor Input")
             .addStructureInfo("Any base casing - Vacuum Conveyor Output")
             .toolTipFinisher("GregTech");
@@ -116,25 +147,9 @@ public class AssemblyMatrix extends MTENanochipAssemblyModuleBase<AssemblyMatrix
     @Override
     public @NotNull CheckRecipeResult validateRecipe(@NotNull GTRecipe recipe) {
         int recipeTier = GTUtility.getTier(recipe.mEUt);
-        int machineTier = getMachineTier();
+        int machineTier = getCasingTier();
         if (machineTier >= recipeTier) return CheckRecipeResultRegistry.SUCCESSFUL;
         return CheckRecipeResultRegistry.insufficientMachineTier(recipeTier);
-    }
-
-    private int getMachineTier() {
-        // Determine tier of machine based on tier of stack of robot arms in the controller.
-        ItemStack stack = this.getControllerSlot();
-        if (stack == null || stack.stackSize != 64) return 0;
-        int meta = stack.getItemDamage() - 32000;
-        // In the ID list, LV-UEV is a separate range from UIV-MAX
-        if (meta >= IDMetaItem01.Robot_Arm_LV.ID && meta <= IDMetaItem01.Robot_Arm_UEV.ID) {
-            // LV is tier 1
-            return meta - IDMetaItem01.Robot_Arm_LV.ID + 1;
-        } else if (meta >= IDMetaItem01.Robot_Arm_UIV.ID && meta <= IDMetaItem01.Robot_Arm_MAX.ID) {
-            // UIV is tier 11
-            return meta - IDMetaItem01.Robot_Arm_UIV.ID + 11;
-        }
-        return 0;
     }
 
     public static void registerLocalName(ItemStack stack, CircuitComponent component) {

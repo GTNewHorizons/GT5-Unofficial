@@ -1,6 +1,7 @@
 package gregtech.common.tileentities.machines.multi.nanochip.modules;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
+import static gregtech.api.util.GTStructureUtility.ofFrame;
 import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex.NAC_MODULE;
 import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex.TOOLTIP_CC;
 
@@ -10,6 +11,7 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 
 import gregtech.api.GregTechAPI;
+import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.recipe.RecipeMap;
@@ -21,18 +23,26 @@ import gregtech.common.tileentities.machines.multi.nanochip.util.ModuleStructure
 
 public class SMDProcessor extends MTENanochipAssemblyModuleBase<SMDProcessor> {
 
-    protected static final int STRUCTURE_OFFSET_X = 3;
-    protected static final int STRUCTURE_OFFSET_Y = 3;
-    protected static final int STRUCTURE_OFFSET_Z = -2;
-
     protected static final String STRUCTURE_PIECE_MAIN = "main";
-    private static final String[][] structure = new String[][] { { "  AAA  ", "  AAA  ", "  AAA  " },
-        { "  AAA  ", "  A A  ", "  AAA  " }, { "  AAA  ", "  AAA  ", "  AAA  " } };
-
+    protected static final int SMD_OFFSET_X = 3;
+    protected static final int SMD_OFFSET_Y = 3;
+    protected static final int SMD_OFFSET_Z = 0;
+    protected static final String[][] SMD_STRING = new String[][] { { " B   B ", " EA AE ", " BB BB " },
+        { "BBDDDBB", "ECA ACE", "BBB BBB" }, { " D   D ", "AAA AAA", "BBBDBBB" }, { " D   D ", "       ", "  DDD  " },
+        { " D   D ", "AAA AAA", "BBBDBBB" }, { "BBDDDBB", "ECA ACE", "BBB BBB" }, { " B   B ", " EA AE ", " BB BB " } };
     public static final IStructureDefinition<SMDProcessor> STRUCTURE_DEFINITION = ModuleStructureDefinition
         .<SMDProcessor>builder()
-        .addShape(STRUCTURE_PIECE_MAIN, structure)
-        .addElement('A', ofBlock(GregTechAPI.sBlockCasings4, 0))
+        .addShape(STRUCTURE_PIECE_MAIN, SMD_STRING)
+        // White casing block
+        .addElement('A', ofBlock(GregTechAPI.sBlockCasings8, 5))
+        // Black casing block
+        .addElement('B', ofBlock(GregTechAPI.sBlockCasings8, 10))
+        // UEV Machine Casings
+        .addElement('C', ofBlock(GregTechAPI.sBlockCasingsNH, 10))
+        // Radox polymer frame
+        .addElement('D', ofFrame(Materials.RadoxPolymer))
+        // Black glass
+        .addElement('E', ofBlock(GregTechAPI.sBlockTintedGlass, 3))
         .build();
 
     public SMDProcessor(int aID, String aName, String aNameRegional) {
@@ -51,13 +61,7 @@ public class SMDProcessor extends MTENanochipAssemblyModuleBase<SMDProcessor> {
     @Override
     public void construct(ItemStack trigger, boolean hintsOnly) {
         // Should only construct the main structure, since the base structure is built by the nanochip assembly complex.
-        buildPiece(
-            STRUCTURE_PIECE_MAIN,
-            trigger,
-            hintsOnly,
-            STRUCTURE_OFFSET_X,
-            STRUCTURE_OFFSET_Y,
-            STRUCTURE_OFFSET_Z);
+        buildPiece(STRUCTURE_PIECE_MAIN, trigger, hintsOnly, SMD_OFFSET_X, SMD_OFFSET_Y, SMD_OFFSET_Z);
     }
 
     @Override
@@ -66,9 +70,9 @@ public class SMDProcessor extends MTENanochipAssemblyModuleBase<SMDProcessor> {
         return survivialBuildPiece(
             STRUCTURE_PIECE_MAIN,
             trigger,
-            STRUCTURE_OFFSET_X,
-            STRUCTURE_OFFSET_Y,
-            STRUCTURE_OFFSET_Z,
+            SMD_OFFSET_X,
+            SMD_OFFSET_Y,
+            SMD_OFFSET_Z,
             elementBudget,
             env,
             false,
@@ -80,7 +84,7 @@ public class SMDProcessor extends MTENanochipAssemblyModuleBase<SMDProcessor> {
         // Check base structure
         if (!super.checkMachine(aBaseMetaTileEntity, aStack)) return false;
         // Now check module structure
-        return checkPiece(STRUCTURE_PIECE_MAIN, STRUCTURE_OFFSET_X, STRUCTURE_OFFSET_Y, STRUCTURE_OFFSET_Z);
+        return checkPiece(STRUCTURE_PIECE_MAIN, SMD_OFFSET_X, SMD_OFFSET_Y, SMD_OFFSET_Z);
     }
 
     @Override
