@@ -156,7 +156,7 @@ public class SheetSupervisor extends MTENanochipAssemblyModuleBase<SheetSupervis
 
     private boolean drainComputation() {
         long availableData = getAvailableData();
-        return availableData <= SheetSupervisor.COMPUTATION_TO_BE_DRAINED_PER_SECOND;
+        return availableData >= SheetSupervisor.COMPUTATION_TO_BE_DRAINED_PER_SECOND;
     }
 
     @Override
@@ -175,7 +175,7 @@ public class SheetSupervisor extends MTENanochipAssemblyModuleBase<SheetSupervis
     }
 
     public static void registerLocalName(String unprocessedName, CircuitComponent component) {
-        component.fallbackLocalizedName = "Cut " + unprocessedName;
+        component.fallbackLocalizedName = "Observed " + unprocessedName;
     }
 
     @Override
