@@ -531,31 +531,4 @@ public abstract class TileEntityModulePump extends TileEntityModuleBase {
             return tt;
         }
     }
-
-    private static class SpacePumpData {
-
-        private FluidTank fluidTank;
-        private int parallels;
-
-        public SpacePumpData(FluidTank fluidTank, int parallels) {
-            this.fluidTank = fluidTank;
-            this.parallels = parallels;
-        }
-
-        public FluidTank getFluidTank() {
-            return fluidTank;
-        }
-
-        public void setFluidStack(FluidStack fluidStack) {
-            this.fluidTank.setFluid(fluidStack);
-        }
-
-        public int getParallels() {
-            return parallels;
-        }
-
-        public void setParallels(int parallels) {
-            this.parallels = parallels;
-        }
-    }
 }
