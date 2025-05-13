@@ -238,7 +238,7 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
     protected final ItemStackHandler invSlot = new ItemStackHandler(1);
 
     // Locale-aware formatting of numbers.
-    protected static NumberFormatMUI numberFormat;
+    public static NumberFormatMUI numberFormat;
     static {
         numberFormat = new NumberFormatMUI();
         numberFormat.setMaximumFractionDigits(8);
