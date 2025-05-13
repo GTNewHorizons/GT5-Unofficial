@@ -10,8 +10,14 @@ import static gregtech.common.tileentities.machines.multi.nanochip.util.Assembly
 import static gregtech.common.tileentities.machines.multi.nanochip.util.AssemblyComplexStructureString.ETCHING_OFFSET_Z;
 import static gregtech.common.tileentities.machines.multi.nanochip.util.AssemblyComplexStructureString.ETCHING_STRUCTURE;
 
+import java.util.ArrayList;
+
+import javax.annotation.Nullable;
+
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
+
+import org.jetbrains.annotations.NotNull;
 
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
@@ -20,19 +26,28 @@ import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
+import gregtech.api.recipe.check.CheckRecipeResult;
+import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.util.MultiblockTooltipBuilder;
-import gregtech.common.blocks.BlockCasings10;
+import gregtech.common.blocks.BlockCasings4;
 import gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyModuleBase;
 import gregtech.common.tileentities.machines.multi.nanochip.util.CircuitComponent;
 import gregtech.common.tileentities.machines.multi.nanochip.util.ModuleStructureDefinition;
-import tectech.thing.metaTileEntity.hatch.MTEHatchDynamoTunnel;
+import gtnhlanth.common.beamline.BeamInformation;
+import gtnhlanth.common.beamline.Particle;
+import gtnhlanth.common.hatch.MTEHatchInputBeamline;
 
 public class EtchingArray extends MTENanochipAssemblyModuleBase<EtchingArray> {
 
     protected static final String STRUCTURE_PIECE_MAIN = "main";
     private static final String[][] structure = ETCHING_STRUCTURE;
+
+    private final ArrayList<MTEHatchInputBeamline> mInputBeamline = new ArrayList<>();
+
+    float inputEnergy = 1;
 
     public static final IStructureDefinition<EtchingArray> STRUCTURE_DEFINITION = ModuleStructureDefinition
         .<EtchingArray>builder()
@@ -51,25 +66,58 @@ public class EtchingArray extends MTENanochipAssemblyModuleBase<EtchingArray> {
         .addElement('F', ofBlock(GregTechAPI.sBlockGlass1, 3))
         // Black glass
         .addElement('G', ofBlock(GregTechAPI.sBlockTintedGlass, 3))
+        // Beamline input
         .addElement(
             'H',
-            buildHatchAdder(EtchingArray.class).adder(EtchingArray::addDynamoHatch)
-                .hatchClass(MTEHatchDynamoTunnel.class)
+            buildHatchAdder(EtchingArray.class).hatchClass(MTEHatchInputBeamline.class)
+                .casingIndex(((BlockCasings4) GregTechAPI.sBlockCasings4).getTextureIndex(0))
                 .dot(1)
-                .casingIndex(((BlockCasings10) GregTechAPI.sBlockCasings10).getTextureIndex(1))
+                .adder(EtchingArray::addBeamLineInputHatch)
                 .build())
         .build();
 
-    private MTEHatchDynamoTunnel sourceHatch;
+    private boolean addBeamLineInputHatch(IGregTechTileEntity te, int casingIndex) {
+        if (te == null) return false;
 
-    private boolean addDynamoHatch(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
-        if (aTileEntity == null) return false;
-        final IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
-        if (!(aMetaTileEntity instanceof MTEHatchDynamoTunnel)) return false;
+        IMetaTileEntity mte = te.getMetaTileEntity();
+        if (mte == null) return false;
 
-        sourceHatch = (MTEHatchDynamoTunnel) aMetaTileEntity;
-        sourceHatch.updateTexture(aBaseCasingIndex);
-        return true;
+        if (mte instanceof MTEHatchInputBeamline) {
+            return this.mInputBeamline.add((MTEHatchInputBeamline) mte);
+        }
+
+        return false;
+    }
+
+    @Nullable
+    private BeamInformation getInputInformation() {
+        for (MTEHatchInputBeamline in : this.mInputBeamline) {
+            if (in.dataPacket == null) return new BeamInformation(0, 0, 0, 0);
+            return in.dataPacket.getContent();
+        }
+        return null;
+    }
+
+    @NotNull
+    @Override
+    public CheckRecipeResult checkProcessing() {
+
+        BeamInformation inputInfo = this.getInputInformation();
+        if (inputInfo == null) return CheckRecipeResultRegistry.NO_RECIPE;
+
+        float inputEnergy = inputInfo.getEnergy();
+        Particle inputParticle = Particle.getParticleFromId(inputInfo.getParticleId());
+
+        if (inputEnergy <= 1234) return CheckRecipeResultRegistry.NO_RECIPE;
+        if (inputParticle != Particle.getParticleFromId(0)) return CheckRecipeResultRegistry.NO_RECIPE;
+
+        return CheckRecipeResultRegistry.SUCCESSFUL;
+
+    }
+
+    @Override
+    protected ProcessingLogic createProcessingLogic() {
+        return new ProcessingLogic().setSpeedBonus(1F / inputEnergy);
     }
 
     public EtchingArray(int aID, String aName, String aNameRegional) {
