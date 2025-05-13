@@ -19,6 +19,7 @@ import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import gregtech.api.GregTechAPI;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
@@ -42,6 +43,7 @@ public class EtchingArray extends MTENanochipAssemblyModuleBase<EtchingArray> {
 
     protected static final String STRUCTURE_PIECE_MAIN = "main";
 
+    float inputEnergy = 1;
     private static final String[][] structure = new String[][] { { "  AAA  ", "  ABA  ", "  AAA  " },
         { "  AAA  ", "  A A  ", "  AAA  " }, { "  AAA  ", "  AAA  ", "  AAA  " } };
 
@@ -95,6 +97,11 @@ public class EtchingArray extends MTENanochipAssemblyModuleBase<EtchingArray> {
 
         return CheckRecipeResultRegistry.SUCCESSFUL;
 
+    }
+
+    @Override
+    protected ProcessingLogic createProcessingLogic() {
+        return new ProcessingLogic().setSpeedBonus(1F / inputEnergy);
     }
 
     public EtchingArray(int aID, String aName, String aNameRegional) {
