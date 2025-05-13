@@ -490,10 +490,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
         mSmartInputHatches.clear();
 
         mCoils.clear();
-        if (coilLease != null) {
-            GTCoilTracker.deactivate(coilLease);
-            coilLease = null;
-        }
+        deactivateCoilLease();
     }
 
     public boolean checkStructure(boolean aForceReset) {
@@ -620,9 +617,8 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
 
             boolean isActive = mMaxProgresstime > 0;
 
-            if ((!mMachine || !isActive) && coilLease != null) {
-                GTCoilTracker.deactivate(coilLease);
-                coilLease = null;
+            if (!mMachine || !isActive) {
+                deactivateCoilLease();
             }
 
             if (mMachine && !mCoils.isEmpty() && isActive && coilLease == null) {
@@ -2386,6 +2382,17 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
         // Deactivate mufflers
         setMufflers(false);
 
+        deactivateCoilLease();
+    }
+
+    @Override
+    public void onUnload() {
+        super.onUnload();
+
+        deactivateCoilLease();
+    }
+
+    private void deactivateCoilLease() {
         if (coilLease != null) {
             GTCoilTracker.deactivate(coilLease);
             coilLease = null;
