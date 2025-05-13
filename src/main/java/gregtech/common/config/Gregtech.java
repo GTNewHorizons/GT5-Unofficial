@@ -27,9 +27,6 @@ public class Gregtech {
     @Config.Comment("Ore drop behavior section")
     public static final OreDropBehavior oreDropBehavior = new OreDropBehavior();
 
-    @Config.Comment("Custom potion id section")
-    public static final PotionIDs potionIDs = new PotionIDs();
-
     @Config.LangKey("GT5U.gui.config.gregtech.debug")
     public static class Debug {
 
@@ -547,14 +544,5 @@ public class Gregtech {
         @Config.DefaultEnum("FortuneItem")
         @Config.RequiresMcRestart
         public GTProxy.OreDropSystem setting = GTProxy.OreDropSystem.FortuneItem;
-    }
-
-    @Config.LangKey("GT5U.gui.config.gregtech.potion_ids")
-    public static class PotionIDs {
-
-        @Config.Comment("Potion ID for MagLev Potion Effect")
-        @Config.DefaultInt(200)
-        @Config.RequiresMcRestart
-        public int magLevPotionID = 200;
     }
 }
