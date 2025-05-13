@@ -5,10 +5,14 @@ import static gregtech.api.util.GTStructureUtility.ofFrame;
 import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex.NAC_MODULE;
 import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex.TOOLTIP_CC;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import net.minecraft.item.ItemStack;
 
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
+import com.gtnewhorizon.structurelib.util.Vec3Impl;
 
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Materials;
@@ -16,11 +20,13 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
+import gregtech.api.util.GTStructureUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyModuleBase;
 import gregtech.common.tileentities.machines.multi.nanochip.util.CircuitComponent;
 import gregtech.common.tileentities.machines.multi.nanochip.util.ModuleStructureDefinition;
+import tectech.thing.metaTileEntity.hatch.MTEHatchDataInput;
 
 public class SheetSupervisor extends MTENanochipAssemblyModuleBase<SheetSupervisor> {
 
@@ -30,13 +36,13 @@ public class SheetSupervisor extends MTENanochipAssemblyModuleBase<SheetSupervis
     protected static final int SHEET_OFFSET_Y = 6;
     protected static final int SHEET_OFFSET_Z = 0;
     protected static final String[][] SHEET_STRING = new String[][] {
-        { "       ", "  DBD  ", "  DBD  ", " CDBDC ", " CDBDC ", " CDBDC " },
+        { "       ", "  DED  ", "  DED  ", " CDEDC ", " CDEDC ", " CDEDC " },
         { "  BBB  ", " A   A ", " A C A ", "CA   AC", "CA C AC", "CA   AC" },
         { " BAAAB ", "D     D", "D AAA D", "D     D", "D AAA D", "D     D" },
-        { " BAAAB ", "B     B", "BCAAACB", "B     B", "BCAAACB", "B     B" },
+        { " BAAAB ", "E     E", "ECAAACE", "E     E", "ECAAACE", "E     E" },
         { " BAAAB ", "D     D", "D AAA D", "D     D", "D AAA D", "D     D" },
         { "  BBB  ", " A   A ", " A C A ", "CA   AC", "CA C AC", "CA   AC" },
-        { "       ", "  DBD  ", "  DBD  ", " CDBDC ", " CDBDC ", " CDBDC " } };
+        { "       ", "  DED  ", "  DED  ", " CDEDC ", " CDEDC ", " CDEDC " } };
     public static final IStructureDefinition<SheetSupervisor> STRUCTURE_DEFINITION = ModuleStructureDefinition
         .<SheetSupervisor>builder()
         .addShape(STRUCTURE_PIECE_MAIN, SHEET_STRING)
@@ -48,7 +54,24 @@ public class SheetSupervisor extends MTENanochipAssemblyModuleBase<SheetSupervis
         .addElement('C', ofFrame(Materials.Quantium))
         // Black glass
         .addElement('D', ofBlock(GregTechAPI.sBlockTintedGlass, 3))
+        // Compuation input hatch
+        .addElement(
+            'E',
+            // TODO: Add correct textureIndex when the new blocks get made
+            GTStructureUtility
+                .ofHatchAdderOptional(SheetSupervisor::addDataHatch, 0, 1, GregTechAPI.sBlockCasings8, 10))
         .build();
+
+    private Set<MTEHatchDataInput> dataInputHatchList = new HashSet<>();
+
+    private boolean addDataHatch(IGregTechTileEntity mte, int baseCasingIndex) {
+        if (mte.getMetaTileEntity() instanceof MTEHatchDataInput dataInput) {
+            dataInput.updateTexture(baseCasingIndex);
+            dataInputHatchList.add(dataInput);
+            return true;
+        }
+        return false;
+    }
 
     public SheetSupervisor(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -101,7 +124,7 @@ public class SheetSupervisor extends MTENanochipAssemblyModuleBase<SheetSupervis
         }
 
         if (ticker % 20 == 0) {
-            if (!drainComputation(COMPUTATION_TO_BE_DRAINED_PER_SECOND)) {
+            if (!drainComputation()) {
                 stopMachine(ShutDownReasonRegistry.outOfStuff("Computation", COMPUTATION_TO_BE_DRAINED_PER_SECOND));
                 return false;
             }
@@ -113,8 +136,27 @@ public class SheetSupervisor extends MTENanochipAssemblyModuleBase<SheetSupervis
         return true;
     }
 
-    private boolean drainComputation(int computationDrain) {
-        return true;
+    protected long getAvailableData() {
+        long result = 0;
+        IGregTechTileEntity baseMetaTileEntity = getBaseMetaTileEntity();
+        Vec3Impl pos = new Vec3Impl(
+            baseMetaTileEntity.getXCoord(),
+            baseMetaTileEntity.getYCoord(),
+            baseMetaTileEntity.getZCoord());
+        for (MTEHatchDataInput in : dataInputHatchList) {
+            if (in.q != null) {
+                Long value = in.q.contentIfNotInTrace(pos);
+                if (value != null) {
+                    result += value;
+                }
+            }
+        }
+        return result;
+    }
+
+    private boolean drainComputation() {
+        long availableData = getAvailableData();
+        return availableData <= SheetSupervisor.COMPUTATION_TO_BE_DRAINED_PER_SECOND;
     }
 
     @Override
@@ -140,4 +182,5 @@ public class SheetSupervisor extends MTENanochipAssemblyModuleBase<SheetSupervis
     public RecipeMap<?> getRecipeMap() {
         return RecipeMaps.nanochipSheetSupervisor;
     }
+
 }

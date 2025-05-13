@@ -1678,7 +1678,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 "multimachine.nanochipmodule.opticalorganizer",
                 "Optically Optimized Organizer").getStackForm(1));
         ItemList.NanoChipModule_SheetSupervisor.set(
-            new OpticalOrganizer(
+            new SheetSupervisor(
                 NANOCHIP_MODULE_SHEET_SUPERVISOR.ID,
                 "multimachine.nanochipmodule.sheetsupervisor",
                 "Atomic Sheet Supervisor").getStackForm(1));
