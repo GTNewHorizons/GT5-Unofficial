@@ -171,7 +171,7 @@ public class Splitter extends MTENanochipAssemblyModuleBase<Splitter> {
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Splitter")
+        tt.addMachineType("Splitter, NAC Module")
             .addInfo(NAC_MODULE)
             .addInfo("Splits inputs of the same " + rainbowColor(false) + " evenly into their respective outputs")
             .addInfo("You can add Rules to override what " + rainbowColor(false) + " inputs will go to")
