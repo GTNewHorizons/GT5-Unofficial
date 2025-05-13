@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+import gregtech.api.enums.GTValues;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -53,7 +54,7 @@ public class AssemblyMatrix extends MTENanochipAssemblyModuleBase<AssemblyMatrix
         { "  CFC  ", " D   D ", "DB   BD", " DEEED " }, { " CFFFC ", "B     B", "D     D", "BE   EB" },
         { " FFDFF ", "F  E  F", "F  A  F", "FE   EF" }, { " CFFFC ", "B     B", "D     D", "BE   EB" },
         { "  CFC  ", " D   D ", "DB   BD", " DEEED " }, { "       ", "  BFB  ", " DDFDD ", "  BFB  " } };
-    private int machineTier = 0;
+    private int machineTier = -1;
     public static final IStructureDefinition<AssemblyMatrix> STRUCTURE_DEFINITION = ModuleStructureDefinition
         .<AssemblyMatrix>builder()
         .addShape(STRUCTURE_PIECE_MAIN, ASSEMBLY_STRING)
@@ -132,6 +133,7 @@ public class AssemblyMatrix extends MTENanochipAssemblyModuleBase<AssemblyMatrix
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+        this.machineTier = -1;
         // Check base structure
         if (!super.checkMachine(aBaseMetaTileEntity, aStack)) return false;
         // Now check module structure
@@ -157,7 +159,7 @@ public class AssemblyMatrix extends MTENanochipAssemblyModuleBase<AssemblyMatrix
     public @NotNull CheckRecipeResult validateRecipe(@NotNull GTRecipe recipe) {
         int recipeTier = GTUtility.getTier(recipe.mEUt);
         int machineTier = getCasingTier();
-        if (machineTier >= recipeTier) return CheckRecipeResultRegistry.SUCCESSFUL;
+        if (machineTier + 1 >= recipeTier) return CheckRecipeResultRegistry.SUCCESSFUL;
         return CheckRecipeResultRegistry.insufficientMachineTier(recipeTier);
     }
 
@@ -165,7 +167,7 @@ public class AssemblyMatrix extends MTENanochipAssemblyModuleBase<AssemblyMatrix
     public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
                                 int z) {
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
-        tag.setInteger("tier", machineTier);
+        tag.setInteger("tier", machineTier + 1);
     }
 
     @Override
@@ -182,14 +184,25 @@ public class AssemblyMatrix extends MTENanochipAssemblyModuleBase<AssemblyMatrix
 
     @Override
     public String[] getInfoData() {
+        String[] origin = super.getInfoData();
+        String[] ret = new String[origin.length + 1];
+        System.arraycopy(origin, 0, ret, 0, origin.length);
+        ret[origin.length] = StatCollector.translateToLocal("scanner.info.CASS.tier")
+            + (machineTier >= 0 ? GTValues.VN[machineTier + 1]
+            : StatCollector.translateToLocal("scanner.info.CASS.tier.none"));
+        return ret;
+    }
 
-        return new String[]{
-                StatCollector.translateToLocal("GT5U.machines.tier")
-                + ": "
-                + EnumChatFormatting.WHITE
-                + machineTier
-                + EnumChatFormatting.RESET,
-    };
+    @Override
+    public void saveNBTData(NBTTagCompound aNBT) {
+        super.saveNBTData(aNBT);
+        aNBT.setInteger("machineTier", machineTier);
+    }
+
+    @Override
+    public void loadNBTData(final NBTTagCompound aNBT) {
+        super.loadNBTData(aNBT);
+        machineTier = aNBT.getInteger("machineTier");
     }
 
     public static void registerLocalName(ItemStack stack, CircuitComponent component) {

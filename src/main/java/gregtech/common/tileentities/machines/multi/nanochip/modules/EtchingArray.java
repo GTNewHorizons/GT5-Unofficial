@@ -10,6 +10,7 @@ import java.util.ArrayList;
 
 import javax.annotation.Nullable;
 
+import gregtech.common.blocks.BlockCasings8;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
 
@@ -28,7 +29,6 @@ import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.util.MultiblockTooltipBuilder;
-import gregtech.common.blocks.BlockCasings4;
 import gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyModuleBase;
 import gregtech.common.tileentities.machines.multi.nanochip.util.CircuitComponent;
 import gregtech.common.tileentities.machines.multi.nanochip.util.ModuleStructureDefinition;
@@ -73,7 +73,7 @@ public class EtchingArray extends MTENanochipAssemblyModuleBase<EtchingArray> {
         .addElement(
             'H',
             buildHatchAdder(EtchingArray.class).hatchClass(MTEHatchInputBeamline.class)
-                .casingIndex(((BlockCasings4) GregTechAPI.sBlockCasings4).getTextureIndex(0))
+                .casingIndex(((BlockCasings8) GregTechAPI.sBlockCasings8).getTextureIndex(10))
                 .dot(1)
                 .adder(EtchingArray::addBeamLineInputHatch)
                 .build())
