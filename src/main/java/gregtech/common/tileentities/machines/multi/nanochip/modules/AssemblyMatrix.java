@@ -5,10 +5,6 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlocksT
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex.NAC_MODULE;
 import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex.TOOLTIP_CC;
-import static gregtech.common.tileentities.machines.multi.nanochip.util.AssemblyComplexStructureString.ASSEMBLY_OFFSET_X;
-import static gregtech.common.tileentities.machines.multi.nanochip.util.AssemblyComplexStructureString.ASSEMBLY_OFFSET_Y;
-import static gregtech.common.tileentities.machines.multi.nanochip.util.AssemblyComplexStructureString.ASSEMBLY_OFFSET_Z;
-import static gregtech.common.tileentities.machines.multi.nanochip.util.AssemblyComplexStructureString.ASSEMBLY_STRING;
 
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -41,12 +37,17 @@ import gregtech.common.tileentities.machines.multi.nanochip.util.ModuleStructure
 public class AssemblyMatrix extends MTENanochipAssemblyModuleBase<AssemblyMatrix> {
 
     protected static final String STRUCTURE_PIECE_MAIN = "main";
-    private static final String[][] structure = ASSEMBLY_STRING;
-
+    protected static final int ASSEMBLY_OFFSET_X = 3;
+    protected static final int ASSEMBLY_OFFSET_Y = 4;
+    protected static final int ASSEMBLY_OFFSET_Z = 0;
+    protected static final String[][] ASSEMBLY_STRING = new String[][] { { "       ", "  BFB  ", " DDFDD ", "  BFB  " },
+        { "  CFC  ", " D   D ", "DB   BD", " DEEED " }, { " CFFFC ", "B     B", "D     D", "BE   EB" },
+        { " FFDFF ", "F  E  F", "F  A  F", "FE   EF" }, { " CFFFC ", "B     B", "D     D", "BE   EB" },
+        { "  CFC  ", " D   D ", "DB   BD", " DEEED " }, { "       ", "  BFB  ", " DDFDD ", "  BFB  " } };
     private int machineTier = 0;
     public static final IStructureDefinition<AssemblyMatrix> STRUCTURE_DEFINITION = ModuleStructureDefinition
         .<AssemblyMatrix>builder()
-        .addShape(STRUCTURE_PIECE_MAIN, structure)
+        .addShape(STRUCTURE_PIECE_MAIN, ASSEMBLY_STRING)
         // Iron bar
         .addElement('A', ofBlock(Blocks.iron_bars, 0))
         // CoAL casing

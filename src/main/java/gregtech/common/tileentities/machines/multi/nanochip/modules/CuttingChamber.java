@@ -4,10 +4,6 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.lazy;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex.NAC_MODULE;
 import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex.TOOLTIP_CC;
-import static gregtech.common.tileentities.machines.multi.nanochip.util.AssemblyComplexStructureString.CUTTING_OFFSET_X;
-import static gregtech.common.tileentities.machines.multi.nanochip.util.AssemblyComplexStructureString.CUTTING_OFFSET_Y;
-import static gregtech.common.tileentities.machines.multi.nanochip.util.AssemblyComplexStructureString.CUTTING_OFFSET_Z;
-import static gregtech.common.tileentities.machines.multi.nanochip.util.AssemblyComplexStructureString.CUTTING_STRUCTURE;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
@@ -30,11 +26,21 @@ import gtPlusPlus.core.material.MaterialsElements;
 public class CuttingChamber extends MTENanochipAssemblyModuleBase<CuttingChamber> {
 
     protected static final String STRUCTURE_PIECE_MAIN = "main";
-    private static final String[][] structure = CUTTING_STRUCTURE;
+    protected static final int CUTTING_OFFSET_X = 3;
+    protected static final int CUTTING_OFFSET_Y = 5;
+    protected static final int CUTTING_OFFSET_Z = 0;
+    protected static final String[][] CUTTING_STRUCTURE = new String[][] {
+        { "       ", "       ", "       ", " A   A ", " A   A " },
+        { "  CCC  ", " BBBBB ", " CEEEC ", "ACEEECA", "ACEDECA" },
+        { " CCDCC ", "B     B", "B     B", "B     B", "B  D  B" },
+        { " DDDDD ", "BCCCCCB", "EAAAAAE", "E     E", "EDDDDDE" },
+        { " CCDCC ", "B     B", "B     B", "B     B", "B  D  B" },
+        { "  CCC  ", " BBBBB ", " CEEEC ", "ACEEECA", "ACEDECA" },
+        { "       ", "       ", "       ", " A   A ", " A   A " } };
 
     public static final IStructureDefinition<CuttingChamber> STRUCTURE_DEFINITION = ModuleStructureDefinition
         .<CuttingChamber>builder()
-        .addShape(STRUCTURE_PIECE_MAIN, structure)
+        .addShape(STRUCTURE_PIECE_MAIN, CUTTING_STRUCTURE)
         // Celestial Tungsten Framebox
         .addElement(
             'A',

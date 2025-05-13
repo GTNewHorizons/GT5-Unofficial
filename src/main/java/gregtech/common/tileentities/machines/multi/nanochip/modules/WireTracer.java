@@ -4,10 +4,6 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex.NAC_MODULE;
 import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex.TOOLTIP_CC;
-import static gregtech.common.tileentities.machines.multi.nanochip.util.AssemblyComplexStructureString.WIRE_OFFSET_X;
-import static gregtech.common.tileentities.machines.multi.nanochip.util.AssemblyComplexStructureString.WIRE_OFFSET_Y;
-import static gregtech.common.tileentities.machines.multi.nanochip.util.AssemblyComplexStructureString.WIRE_OFFSET_Z;
-import static gregtech.common.tileentities.machines.multi.nanochip.util.AssemblyComplexStructureString.WIRE_STRING;
 
 import net.minecraft.item.ItemStack;
 
@@ -28,11 +24,20 @@ import gregtech.common.tileentities.machines.multi.nanochip.util.ModuleStructure
 public class WireTracer extends MTENanochipAssemblyModuleBase<WireTracer> {
 
     protected static final String STRUCTURE_PIECE_MAIN = "main";
-    private static final String[][] structure = WIRE_STRING;
-
+    protected static final int WIRE_OFFSET_X = 3;
+    protected static final int WIRE_OFFSET_Y = 5;
+    protected static final int WIRE_OFFSET_Z = 0;
+    protected static final String[][] WIRE_STRING = new String[][] {
+        { "       ", "  BBB  ", "  BAB  ", "  BAB  ", " BBABB " },
+        { " DAAAD ", " E D E ", " E A E ", " E   E ", "BEDDDEB" },
+        { " AEEEA ", "B     B", "B     B", "B     B", "BD   DB" },
+        { " AEEEA ", "BD   DB", "AA C AA", "A  B  A", "AD B DA" },
+        { " AEEEA ", "B     B", "B     B", "B     B", "BD   DB" },
+        { " DAAAD ", " E D E ", " E A E ", " E   E ", "BEDDDEB" },
+        { "       ", "  BBB  ", "  BAB  ", "  BAB  ", " BBABB " } };
     public static final IStructureDefinition<WireTracer> STRUCTURE_DEFINITION = ModuleStructureDefinition
         .<WireTracer>builder()
-        .addShape(STRUCTURE_PIECE_MAIN, structure)
+        .addShape(STRUCTURE_PIECE_MAIN, WIRE_STRING)
         // White casing block
         .addElement('A', ofBlock(GregTechAPI.sBlockCasings8, 5))
         // Black casing block

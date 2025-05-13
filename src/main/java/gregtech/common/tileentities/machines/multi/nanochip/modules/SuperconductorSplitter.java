@@ -4,10 +4,6 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex.NAC_MODULE;
 import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex.TOOLTIP_CC;
-import static gregtech.common.tileentities.machines.multi.nanochip.util.AssemblyComplexStructureString.SUPERCOND_SPLITTER_OFFSET_X;
-import static gregtech.common.tileentities.machines.multi.nanochip.util.AssemblyComplexStructureString.SUPERCOND_SPLITTER_OFFSET_Y;
-import static gregtech.common.tileentities.machines.multi.nanochip.util.AssemblyComplexStructureString.SUPERCOND_SPLITTER_OFFSET_Z;
-import static gregtech.common.tileentities.machines.multi.nanochip.util.AssemblyComplexStructureString.SUPERCOND_SPLITTER_STRUCTURE;
 
 import java.util.ArrayList;
 
@@ -39,11 +35,21 @@ public class SuperconductorSplitter extends MTENanochipAssemblyModuleBase<Superc
     private MTEHatchInput coolantInputHatch;
 
     protected static final String STRUCTURE_PIECE_MAIN = "main";
-    private static final String[][] structure = SUPERCOND_SPLITTER_STRUCTURE;
+    protected static final int SUPERCOND_SPLITTER_OFFSET_X = 3;
+    protected static final int SUPERCOND_SPLITTER_OFFSET_Y = 7;
+    protected static final int SUPERCOND_SPLITTER_OFFSET_Z = 0;
+    protected static final String[][] SUPERCOND_SPLITTER_STRUCTURE = new String[][] {
+        { "       ", "       ", " DEEED ", "       ", "       ", "       ", " DEEED " },
+        { "       ", " D   D ", "DBD DBD", " B   B ", " B   B ", " B   B ", "DDD DDD" },
+        { "   C   ", "  CFC  ", "EDCFCDE", "  CFC  ", "  CFC  ", "  CFC  ", "EDCFCDE" },
+        { "  CCC  ", "  FAF  ", "E FAF E", "  FAF  ", "  FAF  ", "  FAF  ", "E FAF E" },
+        { "   C   ", "  CFC  ", "EDCFCDE", "  CFC  ", "  CFC  ", "  CFC  ", "EDCFCDE" },
+        { "       ", " D   D ", "DBD DBD", " B   B ", " B   B ", " B   B ", "DDD DDD" },
+        { "       ", "       ", " DEEED ", "       ", "       ", "       ", " DEEED " } };
 
     public static final IStructureDefinition<SuperconductorSplitter> STRUCTURE_DEFINITION = ModuleStructureDefinition
         .<SuperconductorSplitter>builder()
-        .addShape(STRUCTURE_PIECE_MAIN, structure)
+        .addShape(STRUCTURE_PIECE_MAIN, SUPERCOND_SPLITTER_STRUCTURE)
         // UHV Solenoid
         .addElement('A', ofBlock(GregTechAPI.sSolenoidCoilCasings, 7))
         // UEV Solenoid
