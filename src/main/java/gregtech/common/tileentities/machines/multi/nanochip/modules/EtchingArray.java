@@ -11,6 +11,9 @@ import java.util.ArrayList;
 
 import javax.annotation.Nullable;
 
+import gregtech.api.util.GTRecipe;
+import gregtech.api.util.GTUtility;
+import gregtech.api.util.shutdown.SimpleShutDownReason;
 import net.minecraft.item.ItemStack;
 
 import org.jetbrains.annotations.NotNull;
@@ -101,9 +104,8 @@ public class EtchingArray extends MTENanochipAssemblyModuleBase<EtchingArray> {
         return null;
     }
 
-    @NotNull
     @Override
-    public CheckRecipeResult checkProcessing() {
+    public @NotNull CheckRecipeResult validateRecipe(@NotNull GTRecipe recipe) {
 
         BeamInformation inputInfo = this.getInputInformation();
         if (inputInfo == null) return CheckRecipeResultRegistry.NO_RECIPE;
@@ -111,8 +113,13 @@ public class EtchingArray extends MTENanochipAssemblyModuleBase<EtchingArray> {
         float inputEnergy = inputInfo.getEnergy();
         Particle inputParticle = Particle.getParticleFromId(inputInfo.getParticleId());
 
-        if (inputEnergy <= 1234) return CheckRecipeResultRegistry.NO_RECIPE;
-        if (inputParticle != Particle.getParticleFromId(0)) return CheckRecipeResultRegistry.NO_RECIPE;
+        if (inputParticle != Particle.getParticleFromId(0)) {
+            return CheckRecipeResultRegistry.WRONG_PARTICLE;
+        }
+
+        if (inputEnergy <= 1234) {
+            return CheckRecipeResultRegistry.LOW_ENERGY;
+        }
 
         return CheckRecipeResultRegistry.SUCCESSFUL;
 
