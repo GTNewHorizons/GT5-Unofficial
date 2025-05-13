@@ -136,7 +136,7 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements IConstructable,
         if (mMachine) return -1;
         int realBudget = elementBudget >= 200 ? elementBudget : Math.min(200, elementBudget * 5); // 200 blocks max per
                                                                                                   // placement.
-        return survivialBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 16, 16, 0, realBudget, source, actor, false, true);
+        return survivalBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 16, 16, 0, realBudget, source, actor, false, true);
     }
 
     protected static final String STRUCTURE_PIECE_MAIN = "main";

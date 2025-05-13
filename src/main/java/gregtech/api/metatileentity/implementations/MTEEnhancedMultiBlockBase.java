@@ -236,7 +236,7 @@ public abstract class MTEEnhancedMultiBlockBase<T extends MTEEnhancedMultiBlockB
     }
 
     @Deprecated
-    protected final int survivialBuildPiece(String piece, ItemStack trigger, int horizontalOffset, int verticalOffset,
+    protected final int survivalBuildPiece(String piece, ItemStack trigger, int horizontalOffset, int verticalOffset,
         int depthOffset, int elementsBudget, IItemSource source, EntityPlayerMP actor, boolean check) {
         final IGregTechTileEntity tTile = getBaseMetaTileEntity();
         return getCastedStructureDefinition().survivalBuild(
@@ -257,7 +257,7 @@ public abstract class MTEEnhancedMultiBlockBase<T extends MTEEnhancedMultiBlockB
             check);
     }
 
-    protected final int survivialBuildPiece(String piece, ItemStack trigger, int horizontalOffset, int verticalOffset,
+    protected final int survivalBuildPiece(String piece, ItemStack trigger, int horizontalOffset, int verticalOffset,
         int depthOffset, int elementsBudget, ISurvivalBuildEnvironment env, boolean check) {
         final IGregTechTileEntity tTile = getBaseMetaTileEntity();
         return getCastedStructureDefinition().survivalBuild(
@@ -278,10 +278,10 @@ public abstract class MTEEnhancedMultiBlockBase<T extends MTEEnhancedMultiBlockB
     }
 
     @Deprecated
-    protected final int survivialBuildPiece(String piece, ItemStack trigger, int horizontalOffset, int verticalOffset,
+    protected final int survivalBuildPiece(String piece, ItemStack trigger, int horizontalOffset, int verticalOffset,
         int depthOffset, int elementsBudget, IItemSource source, EntityPlayerMP actor, boolean check,
         boolean checkIfPlaced) {
-        int built = survivialBuildPiece(
+        int built = survivalBuildPiece(
             piece,
             trigger,
             horizontalOffset,
@@ -295,9 +295,9 @@ public abstract class MTEEnhancedMultiBlockBase<T extends MTEEnhancedMultiBlockB
         return built;
     }
 
-    protected final int survivialBuildPiece(String piece, ItemStack trigger, int horizontalOffset, int verticalOffset,
+    protected final int survivalBuildPiece(String piece, ItemStack trigger, int horizontalOffset, int verticalOffset,
         int depthOffset, int elementsBudget, ISurvivalBuildEnvironment env, boolean check, boolean checkIfPlaced) {
-        int built = survivialBuildPiece(
+        int built = survivalBuildPiece(
             piece,
             trigger,
             horizontalOffset,

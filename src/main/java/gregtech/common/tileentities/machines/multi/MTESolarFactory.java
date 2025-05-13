@@ -251,13 +251,13 @@ public class MTESolarFactory extends MTEExtendedPowerMultiBlockBase<MTESolarFact
     public int survivalConstruct(ItemStack holoStack, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
         if (holoStack.stackSize == 1) {
-            return survivialBuildPiece(STRUCTURE_TIER_1, holoStack, 2, 4, 0, elementBudget, env, false, true);
+            return survivalBuildPiece(STRUCTURE_TIER_1, holoStack, 2, 4, 0, elementBudget, env, false, true);
         }
         if (holoStack.stackSize == 2) {
-            return survivialBuildPiece(STRUCTURE_TIER_2, holoStack, 4, 5, 0, elementBudget, env, false, true);
+            return survivalBuildPiece(STRUCTURE_TIER_2, holoStack, 4, 5, 0, elementBudget, env, false, true);
         }
         if (holoStack.stackSize >= 3) {
-            return survivialBuildPiece(STRUCTURE_TIER_3, holoStack, 4, 8, 0, elementBudget, env, false, true);
+            return survivalBuildPiece(STRUCTURE_TIER_3, holoStack, 4, 8, 0, elementBudget, env, false, true);
         }
         return 0;
     }

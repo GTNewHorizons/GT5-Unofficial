@@ -119,7 +119,7 @@ public class MTECyclotron extends GTPPMultiBlockBase<MTECyclotron> implements IS
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
-        return survivialBuildPiece(mName, stackSize, 7, 1, 12, elementBudget, env, false, true);
+        return survivalBuildPiece(mName, stackSize, 7, 1, 12, elementBudget, env, false, true);
     }
 
     @SideOnly(Side.CLIENT)
