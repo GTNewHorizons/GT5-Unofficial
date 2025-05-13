@@ -137,6 +137,6 @@ project.getConfigurations()
         ds.substitute(ds.module("com.github.GTNewHorizons:Baubles"))
             .using(ds.module("com.github.GTNewHorizons:Baubles-Expanded:2.1.7-GTNH"))
             .withClassifier("dev")
-            .because("Baubles-Expanded repalces Baubles");
+            .because("Baubles-Expanded replaces Baubles");
     });
 
