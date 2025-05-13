@@ -216,7 +216,8 @@ public class MechArmorBase extends ItemArmor implements IKeyPressedListener, ISp
         model.bipedLeftLeg.showModel = (armorType == 2 || armorType == 3);
         model.bipedRightLeg.showModel = (armorType == 2 || armorType == 3);
 
-        model.jettank1.showModel = (armorSlot == SLOT_CHEST && itemStack.getTagCompound().hasKey(JETPACK_KEY));
+        model.jettank1.showModel = (armorSlot == SLOT_CHEST && itemStack.getTagCompound()
+            .hasKey(JETPACK_KEY));
 
         switch (getCore(itemStack)) {
             case 1 -> model.core1.showModel = true;

@@ -116,8 +116,7 @@ public class MechArmorAugmentRegistries {
         SpaceSuit("SpaceSuit", ItemList.Augment_SpaceSuit),
         ForceField("ForceField", ItemList.Augment_ForceField),
         OmniMovement("OmniMovement", ItemList.Augment_OmniMovement),
-        WaterBreathing("WaterBreathing", ItemList.Augment_WaterBreathing),
-        Teleporter("Teleporter", ItemList.Augment_Teleporter);
+        WaterBreathing("WaterBreathing", ItemList.Augment_WaterBreathing);
 
         public final String id;
         public final ItemList item;

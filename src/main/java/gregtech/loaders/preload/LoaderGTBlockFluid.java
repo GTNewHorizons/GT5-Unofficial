@@ -76,7 +76,6 @@ import gregtech.api.items.armor.behaviors.SpaceSuitBehavior;
 import gregtech.api.items.armor.behaviors.SpeedBoostBehavior;
 import gregtech.api.items.armor.behaviors.StepAssistBehavior;
 import gregtech.api.items.armor.behaviors.SwimSpeedBehavior;
-import gregtech.api.items.armor.behaviors.TeleporterBehavior;
 import gregtech.api.items.armor.behaviors.WaterBreathingBehavior;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.metatileentity.BaseMetaTileEntity;
@@ -440,16 +439,6 @@ public class LoaderGTBlockFluid implements Runnable {
                 Augments.WaterBreathing).validArmors(Collections.singletonList(MechArmorLoader.MechArmorHelmet))
                     .attachedBehaviors(Collections.singletonList(WaterBreathingBehavior.INSTANCE))
                     .category(CATEGORY_UTILITY)
-                    .build());
-        ItemList.Augment_Teleporter.set(
-            new ItemAugment.AugmentBuilder(
-                "augmentteleporter",
-                "Augment: Personal Teleporter",
-                "Allows the user to teleport to set locations",
-                Augments.Teleporter).validArmors(Collections.singletonList(MechArmorLoader.MechArmorLeggings))
-                    .attachedBehaviors(Collections.singletonList(TeleporterBehavior.INSTANCE))
-                    .category(CATEGORY_UTILITY)
-                    .minimumCore(3)
                     .build());
 
         // Mechanical Armor Frames

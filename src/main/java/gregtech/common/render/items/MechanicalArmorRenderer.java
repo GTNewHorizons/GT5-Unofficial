@@ -2,7 +2,6 @@ package gregtech.common.render.items;
 
 import static gregtech.api.enums.Dyes.dyeGreen;
 import static gregtech.api.enums.Dyes.dyeLightBlue;
-import static gregtech.api.enums.Dyes.dyeMagenta;
 import static gregtech.api.enums.Dyes.dyeOrange;
 import static gregtech.api.enums.Dyes.dyeRed;
 import static gregtech.api.enums.Dyes.dyeWhite;

@@ -1,8 +1,8 @@
 package gregtech.api.items.armor;
 
-import static gregtech.api.items.armor.ArmorHelper.SLOT_BOOTS;
 import static gregtech.api.items.armor.ArmorHelper.FALL_PROTECTION_KEY;
 import static gregtech.api.items.armor.ArmorHelper.JUMP_BOOST_KEY;
+import static gregtech.api.items.armor.ArmorHelper.SLOT_BOOTS;
 import static gregtech.api.items.armor.ArmorHelper.drainArmor;
 import static gregtech.api.util.GTUtility.getOrCreateNbtCompound;
 
