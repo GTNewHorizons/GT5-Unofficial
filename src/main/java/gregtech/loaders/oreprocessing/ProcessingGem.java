@@ -369,7 +369,7 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
                             .itemOutputs(
                                 GTOreDictUnificator.get(OrePrefixes.bolt, aMaterial, 2L),
                                 GTOreDictUnificator.get(OrePrefixes.dust, aMaterial, 1L))
-                            .outputChances(10000, 5000)
+                            .outputChances(10000, 2500)
                             .duration(((int) Math.max(aMaterialMass, 1L)) * TICKS)
                             .eut(12)
                             .addTo(latheRecipes);
