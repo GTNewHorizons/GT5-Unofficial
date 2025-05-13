@@ -6,6 +6,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import org.jetbrains.annotations.ApiStatus;
+
 import com.gtnewhorizon.structurelib.StructureLibAPI;
 import com.gtnewhorizon.structurelib.alignment.IAlignment;
 import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
@@ -308,6 +310,87 @@ public abstract class MTEEnhancedMultiBlockBase<T extends MTEEnhancedMultiBlockB
             check);
         if (checkIfPlaced && built > 0) checkStructure(true, getBaseMetaTileEntity());
         return built;
+    }
+
+    /**
+     * @deprecated typo in the name.
+     */
+    @SuppressWarnings("SpellCheckingInspection")
+    @Deprecated
+    @ApiStatus.ScheduledForRemoval
+    protected final int survivialBuildPiece(String piece, ItemStack trigger, int horizontalOffset, int verticalOffset,
+        int depthOffset, int elementsBudget, IItemSource source, EntityPlayerMP actor, boolean check) {
+        return survivalBuildPiece(
+            piece,
+            trigger,
+            horizontalOffset,
+            verticalOffset,
+            depthOffset,
+            elementsBudget,
+            source,
+            actor,
+            check);
+    }
+
+    /**
+     * @deprecated typo in the name.
+     */
+    @SuppressWarnings("SpellCheckingInspection")
+    @Deprecated
+    @ApiStatus.ScheduledForRemoval
+    protected final int survivialBuildPiece(String piece, ItemStack trigger, int horizontalOffset, int verticalOffset,
+        int depthOffset, int elementsBudget, ISurvivalBuildEnvironment env, boolean check) {
+        return survivalBuildPiece(
+            piece,
+            trigger,
+            horizontalOffset,
+            verticalOffset,
+            depthOffset,
+            elementsBudget,
+            env,
+            check);
+    }
+
+    /**
+     * @deprecated typo in the name.
+     */
+    @SuppressWarnings("SpellCheckingInspection")
+    @Deprecated
+    @ApiStatus.ScheduledForRemoval
+    protected final int survivialBuildPiece(String piece, ItemStack trigger, int horizontalOffset, int verticalOffset,
+        int depthOffset, int elementsBudget, IItemSource source, EntityPlayerMP actor, boolean check,
+        boolean checkIfPlaced) {
+        return survivalBuildPiece(
+            piece,
+            trigger,
+            horizontalOffset,
+            verticalOffset,
+            depthOffset,
+            elementsBudget,
+            source,
+            actor,
+            check,
+            checkIfPlaced);
+    }
+
+    /**
+     * @deprecated typo in the name.
+     */
+    @SuppressWarnings("SpellCheckingInspection")
+    @Deprecated
+    @ApiStatus.ScheduledForRemoval
+    protected final int survivialBuildPiece(String piece, ItemStack trigger, int horizontalOffset, int verticalOffset,
+        int depthOffset, int elementsBudget, ISurvivalBuildEnvironment env, boolean check, boolean checkIfPlaced) {
+        return survivalBuildPiece(
+            piece,
+            trigger,
+            horizontalOffset,
+            verticalOffset,
+            depthOffset,
+            elementsBudget,
+            env,
+            check,
+            checkIfPlaced);
     }
 
     @Override
