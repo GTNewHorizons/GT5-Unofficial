@@ -4,10 +4,6 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.lazy;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex.NAC_MODULE;
 import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex.TOOLTIP_CC;
-import static gregtech.common.tileentities.machines.multi.nanochip.util.AssemblyComplexStructureString.OPTICAL_OFFSET_X;
-import static gregtech.common.tileentities.machines.multi.nanochip.util.AssemblyComplexStructureString.OPTICAL_OFFSET_Y;
-import static gregtech.common.tileentities.machines.multi.nanochip.util.AssemblyComplexStructureString.OPTICAL_OFFSET_Z;
-import static gregtech.common.tileentities.machines.multi.nanochip.util.AssemblyComplexStructureString.OPTICAL_STRING;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
@@ -29,11 +25,20 @@ import gtPlusPlus.core.material.MaterialsElements;
 public class OpticalOrganizer extends MTENanochipAssemblyModuleBase<OpticalOrganizer> {
 
     protected static final String STRUCTURE_PIECE_MAIN = "main";
-    private static final String[][] structure = OPTICAL_STRING;
-
+    protected static final int OPTICAL_OFFSET_X = 3;
+    protected static final int OPTICAL_OFFSET_Y = 7;
+    protected static final int OPTICAL_OFFSET_Z = 0;
+    protected static final String[][] OPTICAL_STRING = new String[][] {
+        { "       ", " BBCBB ", " AACAA ", "   C   ", "   C   ", "   C   ", " AACAA " },
+        { " AAAAA ", "BBBCBBB", "ABD DBA", " BD DB ", " BD DB ", " BD DB ", "ABD DBA" },
+        { " A   A ", "BBCCCBB", "AD   DA", " DCCCD ", " D   D ", " DCCCD ", "AD   DA" },
+        { " A   A ", "CCCBCCC", "C  C  C", "C CCC C", "C     C", "C CCC C", "C  C  C" },
+        { " A   A ", "BBCCCBB", "AD   DA", " DCC D ", " D   D ", " DCCCD ", "AD   DA" },
+        { " AAAAA ", "BBBCBBB", "ABD DBA", " BD DB ", " BD DB ", " BD DB ", "ABD DBA" },
+        { "       ", " BBCBB ", " AACAA ", "   C   ", "   C   ", "   C   ", " AACAA " } };
     public static final IStructureDefinition<OpticalOrganizer> STRUCTURE_DEFINITION = ModuleStructureDefinition
         .<OpticalOrganizer>builder()
-        .addShape(STRUCTURE_PIECE_MAIN, structure)
+        .addShape(STRUCTURE_PIECE_MAIN, OPTICAL_STRING)
         // Hypogen Frame Box
         .addElement(
             'A',

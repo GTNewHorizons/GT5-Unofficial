@@ -4,10 +4,6 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex.NAC_MODULE;
 import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex.TOOLTIP_CC;
-import static gregtech.common.tileentities.machines.multi.nanochip.util.AssemblyComplexStructureString.SMD_OFFSET_X;
-import static gregtech.common.tileentities.machines.multi.nanochip.util.AssemblyComplexStructureString.SMD_OFFSET_Y;
-import static gregtech.common.tileentities.machines.multi.nanochip.util.AssemblyComplexStructureString.SMD_OFFSET_Z;
-import static gregtech.common.tileentities.machines.multi.nanochip.util.AssemblyComplexStructureString.SMD_STRING;
 
 import net.minecraft.item.ItemStack;
 
@@ -28,11 +24,15 @@ import gregtech.common.tileentities.machines.multi.nanochip.util.ModuleStructure
 public class SMDProcessor extends MTENanochipAssemblyModuleBase<SMDProcessor> {
 
     protected static final String STRUCTURE_PIECE_MAIN = "main";
-    private static final String[][] structure = SMD_STRING;
-
+    protected static final int SMD_OFFSET_X = 3;
+    protected static final int SMD_OFFSET_Y = 3;
+    protected static final int SMD_OFFSET_Z = 0;
+    protected static final String[][] SMD_STRING = new String[][] { { " B   B ", " EA AE ", " BB BB " },
+        { "BBDDDBB", "ECA ACE", "BBB BBB" }, { " D   D ", "AAA AAA", "BBBDBBB" }, { " D   D ", "       ", "  DDD  " },
+        { " D   D ", "AAA AAA", "BBBDBBB" }, { "BBDDDBB", "ECA ACE", "BBB BBB" }, { " B   B ", " EA AE ", " BB BB " } };
     public static final IStructureDefinition<SMDProcessor> STRUCTURE_DEFINITION = ModuleStructureDefinition
         .<SMDProcessor>builder()
-        .addShape(STRUCTURE_PIECE_MAIN, structure)
+        .addShape(STRUCTURE_PIECE_MAIN, SMD_STRING)
         // White casing block
         .addElement('A', ofBlock(GregTechAPI.sBlockCasings8, 5))
         // Black casing block

@@ -4,10 +4,6 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.lazy;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex.NAC_MODULE;
 import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex.TOOLTIP_CC;
-import static gregtech.common.tileentities.machines.multi.nanochip.util.AssemblyComplexStructureString.BOARD_OFFSET_X;
-import static gregtech.common.tileentities.machines.multi.nanochip.util.AssemblyComplexStructureString.BOARD_OFFSET_Y;
-import static gregtech.common.tileentities.machines.multi.nanochip.util.AssemblyComplexStructureString.BOARD_OFFSET_Z;
-import static gregtech.common.tileentities.machines.multi.nanochip.util.AssemblyComplexStructureString.BOARD_STRING;
 import static gtPlusPlus.xmod.thermalfoundation.block.TFBlocks.blockFluidEnder;
 
 import net.minecraft.block.Block;
@@ -30,10 +26,16 @@ import gtPlusPlus.core.material.MaterialsAlloy;
 public class BoardProcessor extends MTENanochipAssemblyModuleBase<BoardProcessor> {
 
     protected static final String STRUCTURE_PIECE_MAIN = "main";
-    private static final String[][] structure = BOARD_STRING;
+    protected static final int BOARD_OFFSET_X = 3;
+    protected static final int BOARD_OFFSET_Y = 4;
+    protected static final int BOARD_OFFSET_Z = 0;
+    protected static final String[][] BOARD_STRING = new String[][] { { "       ", " A   A ", " A   A ", " B   B " },
+        { " A   A ", "CCC CCC", "DDD DDD", "DDD DDD" }, { "  A A  ", "CBCCCBC", "DEDDDED", "DEDDDED" },
+        { "   A   ", "CBCCCBC", "DEDADED", "DEDADED" }, { "  A A  ", "CBCCCBC", "DEDDDED", "DEDDDED" },
+        { " A   A ", "CCC CCC", "DDD DDD", "DDD DDD" }, { "       ", " A   A ", " A   A ", " B   B " } };
     public static final IStructureDefinition<BoardProcessor> STRUCTURE_DEFINITION = ModuleStructureDefinition
         .<BoardProcessor>builder()
-        .addShape(STRUCTURE_PIECE_MAIN, structure)
+        .addShape(STRUCTURE_PIECE_MAIN, BOARD_STRING)
         // Octiron frame
         .addElement(
             'A',

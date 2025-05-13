@@ -3,10 +3,6 @@ package gregtech.common.tileentities.machines.multi.nanochip.modules;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex.NAC_MODULE;
-import static gregtech.common.tileentities.machines.multi.nanochip.util.AssemblyComplexStructureString.SPLITTER_OFFSET_X;
-import static gregtech.common.tileentities.machines.multi.nanochip.util.AssemblyComplexStructureString.SPLITTER_OFFSET_Y;
-import static gregtech.common.tileentities.machines.multi.nanochip.util.AssemblyComplexStructureString.SPLITTER_OFFSET_Z;
-import static gregtech.common.tileentities.machines.multi.nanochip.util.AssemblyComplexStructureString.SPLITTER_STRUCTURE;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -44,6 +40,12 @@ import gregtech.common.tileentities.machines.multi.nanochip.util.ModuleStructure
 public class Splitter extends MTENanochipAssemblyModuleBase<Splitter> {
 
     protected static final String STRUCTURE_PIECE_MAIN = "main";
+    protected static final int SPLITTER_OFFSET_X = 3;
+    protected static final int SPLITTER_OFFSET_Y = 2;
+    protected static final int SPLITTER_OFFSET_Z = 0;
+    protected static final String[][] SPLITTER_STRUCTURE = new String[][] { { "  A    ", " CBBBC " },
+        { "  AA A ", "CBBBBBC" }, { "   ACA ", "BBBBBBB" }, { "AA A A ", "BBBBBBB" }, { " ACA AA", "BBBBBBB" },
+        { " A A   ", "CBBBBBC" }, { "   AA  ", " CBBBC " } };
 
     // Maps the "id" of a rule to the rule it represents. Don't use this to lookup output colors, use
     // Splitter$getOutputColors instead.

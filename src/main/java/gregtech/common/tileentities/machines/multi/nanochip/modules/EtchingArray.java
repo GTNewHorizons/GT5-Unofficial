@@ -5,10 +5,6 @@ import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex.NAC_MODULE;
 import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex.TOOLTIP_CC;
-import static gregtech.common.tileentities.machines.multi.nanochip.util.AssemblyComplexStructureString.ETCHING_OFFSET_X;
-import static gregtech.common.tileentities.machines.multi.nanochip.util.AssemblyComplexStructureString.ETCHING_OFFSET_Y;
-import static gregtech.common.tileentities.machines.multi.nanochip.util.AssemblyComplexStructureString.ETCHING_OFFSET_Z;
-import static gregtech.common.tileentities.machines.multi.nanochip.util.AssemblyComplexStructureString.ETCHING_STRUCTURE;
 
 import java.util.ArrayList;
 
@@ -43,7 +39,14 @@ import gtnhlanth.common.hatch.MTEHatchInputBeamline;
 public class EtchingArray extends MTENanochipAssemblyModuleBase<EtchingArray> {
 
     protected static final String STRUCTURE_PIECE_MAIN = "main";
-    private static final String[][] structure = ETCHING_STRUCTURE;
+    protected static final int ETCHING_OFFSET_X = 3;
+    protected static final int ETCHING_OFFSET_Y = 4;
+    protected static final int ETCHING_OFFSET_Z = 0;
+    protected static final String[][] ETCHING_STRUCTURE = new String[][] {
+        { "  EEE  ", " EBBBE ", " EBHBE ", " BBBBB " }, { "  AGA  ", " A   A ", " G F G ", "B     B" },
+        { "  AGA  ", " A   A ", " G F G ", "B     B" }, { "  AGA  ", " A   A ", " G F G ", "B     B" },
+        { "  AGA  ", " A   A ", " G F G ", "B     B" }, { "  AGA  ", " BCCCB ", " BCDCB ", "BBCCCBB" },
+        { "  EEE  ", " EAEAE ", " EAAAE ", " BAEAB " } };
 
     private final ArrayList<MTEHatchInputBeamline> mInputBeamline = new ArrayList<>();
 
@@ -51,7 +54,7 @@ public class EtchingArray extends MTENanochipAssemblyModuleBase<EtchingArray> {
 
     public static final IStructureDefinition<EtchingArray> STRUCTURE_DEFINITION = ModuleStructureDefinition
         .<EtchingArray>builder()
-        .addShape(STRUCTURE_PIECE_MAIN, structure)
+        .addShape(STRUCTURE_PIECE_MAIN, ETCHING_STRUCTURE)
         // White casing block
         .addElement('A', ofBlock(GregTechAPI.sBlockCasings8, 5))
         // Black casing block
