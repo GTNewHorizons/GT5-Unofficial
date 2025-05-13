@@ -53,6 +53,7 @@ public class EtchingArray extends MTENanochipAssemblyModuleBase<EtchingArray> {
 
     float inputEnergy = 1;
     int requiredEnergy = 1234;
+    int requiredParticle = 0;
 
     public static final IStructureDefinition<EtchingArray> STRUCTURE_DEFINITION = ModuleStructureDefinition
         .<EtchingArray>builder()
@@ -112,7 +113,7 @@ public class EtchingArray extends MTENanochipAssemblyModuleBase<EtchingArray> {
         float inputEnergy = inputInfo.getEnergy();
         Particle inputParticle = Particle.getParticleFromId(inputInfo.getParticleId());
 
-        if (inputParticle != Particle.getParticleFromId(0)) {
+        if (inputParticle != Particle.getParticleFromId(requiredParticle)) {
             return CheckRecipeResultRegistry.WRONG_PARTICLE;
         }
 
