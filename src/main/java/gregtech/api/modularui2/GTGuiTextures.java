@@ -1,6 +1,7 @@
 package gregtech.api.modularui2;
 
 import static gregtech.api.enums.Mods.GregTech;
+import static tectech.Reference.MODID;
 
 import com.cleanroommc.modularui.drawable.UITexture;
 
@@ -69,13 +70,17 @@ public final class GTGuiTextures {
         .location(GregTech.ID, "gui/background/text_field")
         .imageSize(142, 28)
         .adaptable(1)
-        .name(GTTextureIds.BACKGROUND_TERMINAL_STANDARD)
+        .build();
+    public static final UITexture TT_BACKGROUND_TEXT_FIELD = UITexture.builder()
+        .location(MODID, "gui/background/screen_blue")
+        .imageSize(90, 72)
+        .adaptable(2)
         .build();
     // endregion background
 
     // region overlay
     public static final UITexture OVERLAY_GREGTECH_LOGO = fullImageGT("picture/gt_logo_standard");
-
+    public static final UITexture TECTECH_LOGO = UITexture.fullImage(MODID, "gui/picture/tectech_logo_dark");
     // endregion overlay
     // region slot
 
@@ -438,6 +443,12 @@ public final class GTGuiTextures {
     public static final UITexture OVERLAY_BUTTON_POWER_SWITCH_OFF = fullImageGT("overlay_button/power_switch_off");
     public static final UITexture OVERLAY_BUTTON_POWER_SWITCH_DISABLED = fullImageGT(
         "overlay_button/power_switch_disabled");
+    public static final UITexture TT_OVERLAY_BUTTON_POWER_SWITCH_ON = UITexture
+        .fullImage(MODID, "gui/overlay_button/power_switch_on");
+    public static final UITexture TT_OVERLAY_BUTTON_POWER_SWITCH_OFF = UITexture
+        .fullImage(MODID, "gui/overlay_button/power_switch_off");
+    public static final UITexture TT_OVERLAY_BUTTON_POWER_SWITCH_DISABLED = UITexture
+        .fullImage(MODID, "gui/overlay_button/power_switch_disabled");
     public static final UITexture OVERLAY_BUTTON_PROGRESS = fullImageGT("overlay_button/progress");
     public static final UITexture OVERLAY_BUTTON_REDSTONE_OFF = fullImageGT("overlay_button/redstone_off");
     public static final UITexture OVERLAY_BUTTON_REDSTONE_ON = fullImageGT("overlay_button/redstone_on");
