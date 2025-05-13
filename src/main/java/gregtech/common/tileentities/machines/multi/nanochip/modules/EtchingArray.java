@@ -5,13 +5,14 @@ import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex.NAC_MODULE;
 import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex.TOOLTIP_CC;
+import static gtnhlanth.util.DescTextLocalization.addDotText;
 
 import java.util.ArrayList;
 
 import javax.annotation.Nullable;
 
+import gregtech.api.util.GTRecipe;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.StatCollector;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -28,7 +29,7 @@ import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.util.MultiblockTooltipBuilder;
-import gregtech.common.blocks.BlockCasings4;
+import gregtech.common.blocks.BlockCasings8;
 import gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyModuleBase;
 import gregtech.common.tileentities.machines.multi.nanochip.util.CircuitComponent;
 import gregtech.common.tileentities.machines.multi.nanochip.util.ModuleStructureDefinition;
@@ -51,6 +52,8 @@ public class EtchingArray extends MTENanochipAssemblyModuleBase<EtchingArray> {
     private final ArrayList<MTEHatchInputBeamline> mInputBeamline = new ArrayList<>();
 
     float inputEnergy = 1;
+    int requiredEnergy = 1;
+    int requiredParticle = 0;
 
     public static final IStructureDefinition<EtchingArray> STRUCTURE_DEFINITION = ModuleStructureDefinition
         .<EtchingArray>builder()
@@ -73,7 +76,7 @@ public class EtchingArray extends MTENanochipAssemblyModuleBase<EtchingArray> {
         .addElement(
             'H',
             buildHatchAdder(EtchingArray.class).hatchClass(MTEHatchInputBeamline.class)
-                .casingIndex(((BlockCasings4) GregTechAPI.sBlockCasings4).getTextureIndex(0))
+                .casingIndex(((BlockCasings8) GregTechAPI.sBlockCasings8).getTextureIndex(10))
                 .dot(1)
                 .adder(EtchingArray::addBeamLineInputHatch)
                 .build())
@@ -101,9 +104,8 @@ public class EtchingArray extends MTENanochipAssemblyModuleBase<EtchingArray> {
         return null;
     }
 
-    @NotNull
     @Override
-    public CheckRecipeResult checkProcessing() {
+    public @NotNull CheckRecipeResult validateRecipe(@NotNull GTRecipe recipe) {
 
         BeamInformation inputInfo = this.getInputInformation();
         if (inputInfo == null) return CheckRecipeResultRegistry.NO_RECIPE;
@@ -111,8 +113,13 @@ public class EtchingArray extends MTENanochipAssemblyModuleBase<EtchingArray> {
         float inputEnergy = inputInfo.getEnergy();
         Particle inputParticle = Particle.getParticleFromId(inputInfo.getParticleId());
 
-        if (inputEnergy <= 1234) return CheckRecipeResultRegistry.NO_RECIPE;
-        if (inputParticle != Particle.getParticleFromId(0)) return CheckRecipeResultRegistry.NO_RECIPE;
+        if (inputParticle != Particle.getParticleFromId(requiredParticle)) {
+            return CheckRecipeResultRegistry.WRONG_PARTICLE;
+        }
+
+        if (inputEnergy <= requiredEnergy) {
+            return CheckRecipeResultRegistry.LOW_ENERGY;
+        }
 
         return CheckRecipeResultRegistry.SUCCESSFUL;
 
@@ -167,12 +174,13 @@ public class EtchingArray extends MTENanochipAssemblyModuleBase<EtchingArray> {
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
-        return new MultiblockTooltipBuilder().addInfo(NAC_MODULE)
+        return new MultiblockTooltipBuilder().addMachineType("NAC Module")
+            .addInfo(NAC_MODULE)
             .addInfo("Etches your Chip " + TOOLTIP_CC + "s")
             .addInfo("Outputs into the VCO with the same color as the input VCI")
             .addStructureInfo("Any base casing - Vacuum Conveyor Input")
             .addStructureInfo("Any base casing - Vacuum Conveyor Output")
-            .addOtherStructurePart(StatCollector.translateToLocal("GT5U.tooltip.structure.laser_source_hatch"), "x1", 1)
+            .addOtherStructurePart("Beamline Input Hatch", addDotText(1))
             .toolTipFinisher("GregTech");
     }
 
