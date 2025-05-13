@@ -129,6 +129,7 @@ dependencies {
     runtimeOnlyNonPublishable(rfg.deobf("CoreTweaks:CoreTweaks:0.3.3.2"))
 }
 
+// deps may transitively add Baubles, so we replace it
 project.getConfigurations()
     .all(c -> {
         final DependencySubstitutions ds = c.getResolutionStrategy()
