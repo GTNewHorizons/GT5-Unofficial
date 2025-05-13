@@ -4,7 +4,10 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex.NAC_MODULE;
 import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex.TOOLTIP_CC;
-import static gregtech.common.tileentities.machines.multi.nanochip.util.AssemblyComplexStructureString.*;
+import static gregtech.common.tileentities.machines.multi.nanochip.util.AssemblyComplexStructureString.SUPERCOND_SPLITTER_OFFSET_X;
+import static gregtech.common.tileentities.machines.multi.nanochip.util.AssemblyComplexStructureString.SUPERCOND_SPLITTER_OFFSET_Y;
+import static gregtech.common.tileentities.machines.multi.nanochip.util.AssemblyComplexStructureString.SUPERCOND_SPLITTER_OFFSET_Z;
+import static gregtech.common.tileentities.machines.multi.nanochip.util.AssemblyComplexStructureString.SUPERCOND_SPLITTER_STRUCTURE;
 
 import java.util.ArrayList;
 
