@@ -376,11 +376,6 @@ public class MTEComponentAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTE
     }
 
     @Override
-    public int getDamageToComponent(ItemStack aStack) {
-        return 0;
-    }
-
-    @Override
     public boolean explodesOnComponentBreak(ItemStack aStack) {
         return false;
     }

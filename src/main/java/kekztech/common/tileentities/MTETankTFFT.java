@@ -614,11 +614,6 @@ public class MTETankTFFT extends MTEEnhancedMultiBlockBase<MTETankTFFT> implemen
     }
 
     @Override
-    public int getDamageToComponent(ItemStack stack) {
-        return 0;
-    }
-
-    @Override
     public boolean explodesOnComponentBreak(ItemStack stack) {
         return false;
     }

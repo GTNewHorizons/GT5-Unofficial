@@ -327,11 +327,6 @@ public class MTEAdvDistillationTower extends GTPPMultiBlockBase<MTEAdvDistillati
     }
 
     @Override
-    public int getDamageToComponent(ItemStack aStack) {
-        return 0;
-    }
-
-    @Override
     public boolean explodesOnComponentBreak(ItemStack aStack) {
         return false;
     }

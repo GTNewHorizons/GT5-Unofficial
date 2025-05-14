@@ -563,11 +563,6 @@ public class MTEQuantumForceTransformer extends MTEExtendedPowerMultiBlockBase<M
     }
 
     @Override
-    public int getDamageToComponent(final ItemStack aStack) {
-        return 0;
-    }
-
-    @Override
     public boolean explodesOnComponentBreak(final ItemStack aStack) {
         return false;
     }

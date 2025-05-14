@@ -417,11 +417,6 @@ public class MTEMultiSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMultiS
     }
 
     @Override
-    public int getDamageToComponent(ItemStack aStack) {
-        return 0;
-    }
-
-    @Override
     public boolean explodesOnComponentBreak(ItemStack aStack) {
         return false;
     }

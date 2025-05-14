@@ -380,17 +380,6 @@ public class TileEntityPlanetaryGasSiphon extends MTEEnhancedMultiBlockBase<Tile
     }
 
     /**
-     * Get the damage that will be dealt to the item in the controller
-     *
-     * @param stack Item in the controller
-     * @return Damage that is applied to the item in the controller
-     */
-    @Override
-    public int getDamageToComponent(ItemStack stack) {
-        return 0;
-    }
-
-    /**
      * Whether this machine should explode, when the structure is broken while running
      *
      * @param stack Item in the controller

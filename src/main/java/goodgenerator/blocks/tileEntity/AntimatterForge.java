@@ -723,11 +723,6 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
     }
 
     @Override
-    public int getDamageToComponent(ItemStack aStack) {
-        return 0;
-    }
-
-    @Override
     public boolean explodesOnComponentBreak(ItemStack aStack) {
         return false;
     }

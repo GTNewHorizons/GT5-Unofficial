@@ -323,11 +323,6 @@ public class MTEBioVat extends MTEEnhancedMultiBlockBase<MTEBioVat> implements I
             && this.mOutputHatches.size() == 1;
     }
 
-    @Override
-    public int getDamageToComponent(ItemStack itemStack) {
-        return 0;
-    }
-
     private void sendAllRequiredRendererPackets(int offsetX_L, int offsetY_L, int offsetZ_L, int offsetX_U,
         int offsetY_U, int offsetZ_U) {
         int height = this.reCalculateHeight();

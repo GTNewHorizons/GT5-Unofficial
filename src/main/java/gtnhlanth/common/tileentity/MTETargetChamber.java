@@ -402,11 +402,6 @@ public class MTETargetChamber extends MTEEnhancedMultiBlockBase<MTETargetChamber
     }
 
     @Override
-    public int getDamageToComponent(ItemStack arg0) {
-        return 0;
-    }
-
-    @Override
     public String[] getStructureDescription(ItemStack arg0) {
         return DescTextLocalization.addText("TargetChamber.hint", 13);
     }

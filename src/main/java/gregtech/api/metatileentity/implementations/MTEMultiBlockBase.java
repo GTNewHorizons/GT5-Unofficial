@@ -103,7 +103,6 @@ import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.modularui.IBindPlayerInventoryUI;
 import gregtech.api.interfaces.modularui.IControllerWithOptionalFeatures;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.items.MetaGeneratedTool;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.gui.MTEMultiBlockBaseGui;
@@ -1223,9 +1222,19 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
     }
 
     /**
-     * Gets the damage to the ItemStack, usually 0 or 1.
+     * Gets the factor value to damage the ItemStack in the controller slot.
+     * <p>
+     * This function will called only if the ItemStack is {@link MetaGeneratedTool01}, and the actual applied damage
+     * value is multiplied by another weird value calculated with {@link #damageFactorLow} and
+     * {@link #damageFactorHigh}. See {@link #doRandomMaintenanceDamage()} for the details.
+     *
+     * @param aStack the ItemStack in the controller slot.
+     * @return the factor value to damage the ItemStack in the controller slot.
      */
-    public abstract int getDamageToComponent(ItemStack aStack);
+    @Range(from = 0, to = Integer.MAX_VALUE)
+    public int getDamageToComponent(@Nullable ItemStack aStack) {
+        return 0;
+    }
 
     /**
      * If it explodes when the Component has to be replaced.
@@ -1302,11 +1311,10 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
             if (mInventory[1] != null && getBaseMetaTileEntity().getRandomNumber(2) == 0
                 && !mInventory[1].getUnlocalizedName()
                     .startsWith("gt.blockmachines.basicmachine.")) {
-                if (mInventory[1].getItem() instanceof MetaGeneratedTool01) {
-                    NBTTagCompound tNBT = mInventory[1].getTagCompound();
-                    ((MetaGeneratedTool) mInventory[1].getItem()).doDamage(
+                if (mInventory[1].getItem() instanceof MetaGeneratedTool01 metaGeneratedTool) {
+                    metaGeneratedTool.doDamage(
                         mInventory[1],
-                        (long) getDamageToComponent(mInventory[1])
+                        (long) getDamageToComponent(getControllerSlot())
                             * (long) Math.min(mEUt / this.damageFactorLow, Math.pow(mEUt, this.damageFactorHigh)));
                     if (mInventory[1].stackSize == 0) mInventory[1] = null;
                 }

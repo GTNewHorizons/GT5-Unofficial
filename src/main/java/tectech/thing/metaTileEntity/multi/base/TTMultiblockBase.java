@@ -486,14 +486,6 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
     // region Methods to maybe override (if u implement certain stuff)
 
     /**
-     * how much damage to apply to thing in controller - not sure how it does it
-     */
-    @Override
-    public int getDamageToComponent(ItemStack itemStack) {
-        return 0;
-    }
-
-    /**
      * called when removing from map - not when unloading? //todo check
      */
     @Override

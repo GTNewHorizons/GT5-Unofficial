@@ -448,11 +448,6 @@ public class MTEElectricImplosionCompressor extends MTEExtendedPowerMultiBlockBa
     }
 
     @Override
-    public int getDamageToComponent(ItemStack itemStack) {
-        return 0;
-    }
-
-    @Override
     public boolean explodesOnComponentBreak(ItemStack itemStack) {
         return false;
     }

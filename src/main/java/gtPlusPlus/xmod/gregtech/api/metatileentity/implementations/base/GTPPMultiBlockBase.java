@@ -334,11 +334,6 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
     public static final String TAG_HIDE_MACHINE_TYPE = "TAG_HIDE_MACHINE_TYPE";
 
     @Override
-    public int getDamageToComponent(final ItemStack paramItemStack) {
-        return 0;
-    }
-
-    @Override
     public boolean explodesOnComponentBreak(ItemStack p0) {
         return false;
     }

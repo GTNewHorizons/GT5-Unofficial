@@ -228,9 +228,4 @@ public class MTEDigester extends MTEEnhancedMultiBlockBase<MTEDigester> implemen
         return false;
     }
 
-    @Override
-    public int getDamageToComponent(ItemStack arg0) {
-        // TODO Auto-generated method stub
-        return 0;
-    }
 }

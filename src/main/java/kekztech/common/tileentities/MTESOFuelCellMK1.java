@@ -194,11 +194,6 @@ public class MTESOFuelCellMK1 extends MTEEnhancedMultiBlockBase<MTESOFuelCellMK1
     }
 
     @Override
-    public int getDamageToComponent(ItemStack stack) {
-        return 0;
-    }
-
-    @Override
     public boolean explodesOnComponentBreak(ItemStack stack) {
         return false;
     }

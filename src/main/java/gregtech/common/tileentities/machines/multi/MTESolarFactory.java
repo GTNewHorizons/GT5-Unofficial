@@ -465,11 +465,6 @@ public class MTESolarFactory extends MTEExtendedPowerMultiBlockBase<MTESolarFact
     }
 
     @Override
-    public int getDamageToComponent(ItemStack aStack) {
-        return 0;
-    }
-
-    @Override
     public boolean explodesOnComponentBreak(ItemStack aStack) {
         return false;
     }

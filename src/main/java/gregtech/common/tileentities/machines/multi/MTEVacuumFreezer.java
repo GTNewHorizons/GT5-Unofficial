@@ -132,11 +132,6 @@ public class MTEVacuumFreezer extends MTECubicMultiBlockBase<MTEVacuumFreezer> {
     }
 
     @Override
-    public int getDamageToComponent(ItemStack aStack) {
-        return 0;
-    }
-
-    @Override
     public boolean explodesOnComponentBreak(ItemStack aStack) {
         return false;
     }

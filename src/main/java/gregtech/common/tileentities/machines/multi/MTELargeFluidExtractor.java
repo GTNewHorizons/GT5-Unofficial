@@ -342,11 +342,6 @@ public class MTELargeFluidExtractor extends MTEExtendedPowerMultiBlockBase<MTELa
     }
 
     @Override
-    public int getDamageToComponent(ItemStack aStack) {
-        return 0;
-    }
-
-    @Override
     public RecipeMap<?> getRecipeMap() {
         return RecipeMaps.fluidExtractionRecipes;
     }

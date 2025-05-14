@@ -653,11 +653,6 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
         return (int) (10000f * mRoughnessMultiplier);
     }
 
-    @Override
-    public int getDamageToComponent(ItemStack aStack) {
-        return 0;
-    }
-
     private int getTier() {
         return mSetTier;
     }

@@ -225,10 +225,6 @@ public class MTEDEFusionCrafter extends KubaTechGTMultiBlockBase<MTEDEFusionCraf
         };
     }
 
-    public int getDamageToComponent(ItemStack aStack) {
-        return 0;
-    }
-
     public boolean explodesOnComponentBreak(ItemStack aStack) {
         return false;
     }

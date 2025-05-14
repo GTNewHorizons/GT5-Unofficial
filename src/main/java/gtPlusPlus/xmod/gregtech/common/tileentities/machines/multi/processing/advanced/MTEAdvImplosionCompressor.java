@@ -167,11 +167,6 @@ public class MTEAdvImplosionCompressor extends GTPPMultiBlockBase<MTEAdvImplosio
     }
 
     @Override
-    public int getDamageToComponent(ItemStack aStack) {
-        return 0;
-    }
-
-    @Override
     public boolean explodesOnComponentBreak(ItemStack aStack) {
         return false;
     }

@@ -428,11 +428,6 @@ public class MTELESU extends MTEMultiBlockBase {
     }
 
     @Override
-    public int getDamageToComponent(ItemStack itemStack) {
-        return 0;
-    }
-
-    @Override
     public boolean explodesOnComponentBreak(ItemStack itemStack) {
         return false;
     }

@@ -249,8 +249,4 @@ public class MTEDissolutionTank extends MTEEnhancedMultiBlockBase<MTEDissolution
         return false;
     }
 
-    @Override
-    public int getDamageToComponent(ItemStack arg0) {
-        return 0;
-    }
 }
