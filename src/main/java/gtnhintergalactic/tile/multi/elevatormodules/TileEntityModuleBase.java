@@ -47,7 +47,7 @@ public abstract class TileEntityModuleBase extends TTMultiblockBase {
     /** Tier of this controller (Voltage), which determines the recipes that it can execute */
     protected final int tTier;
     /** Module tier of this controller */
-    protected final int tModuleTier;
+    public final int tModuleTier;
     /** Minimum motor tier that is needed to run this module */
     protected final int tMinMotorTier;
     /** Flag if the module is connected to an elevator */

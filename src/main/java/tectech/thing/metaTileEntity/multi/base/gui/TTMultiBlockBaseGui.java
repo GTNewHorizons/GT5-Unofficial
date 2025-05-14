@@ -28,6 +28,7 @@ import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.value.sync.StringSyncValue;
 import com.cleanroommc.modularui.widget.SingleChildWidget;
 import com.cleanroommc.modularui.widget.sizer.Area;
+import com.cleanroommc.modularui.widgets.ButtonWidget;
 import com.cleanroommc.modularui.widgets.ItemSlot;
 import com.cleanroommc.modularui.widgets.ListWidget;
 import com.cleanroommc.modularui.widgets.ToggleButton;
@@ -319,7 +320,7 @@ public class TTMultiBlockBaseGui extends MTEMultiBlockBaseGui {
         UITexture editParametersEnabled = UITexture.fullImage(GTNHIntergalactic.ID, "gui/overlay_button/options");
         UITexture editParametersDisabled = UITexture
             .fullImage(GTNHIntergalactic.ID, "gui/overlay_button/options_disabled");
-        com.cleanroommc.modularui.widgets.ButtonWidget editParametersButton = new com.cleanroommc.modularui.widgets.ButtonWidget();
+        ButtonWidget editParametersButton = new ButtonWidget();
         editParametersButton.overlay(new DynamicDrawable(() -> {
             if (ttBase.parameterList.isEmpty()) {
                 return editParametersDisabled.asIcon()
