@@ -6,9 +6,6 @@ import static gregtech.api.util.GTModHandler.getModItem;
 import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.fluids.FluidStack;
 
 import bartworks.common.loaders.ItemRegistry;
 import gregtech.api.enums.ItemList;
@@ -19,6 +16,7 @@ import gregtech.common.misc.spaceprojects.base.SPUpgrade;
 import gregtech.common.misc.spaceprojects.base.SpaceProject;
 import gregtech.common.misc.spaceprojects.enums.SolarSystem;
 import gregtech.common.misc.spaceprojects.interfaces.ISpaceProject;
+import gtPlusPlus.core.material.MaterialMisc;
 import gtPlusPlus.core.material.MaterialsAlloy;
 import gtnhintergalactic.gui.IG_UITextures;
 import gtnhintergalactic.spaceprojects.ProjectAsteroidOutpost;
@@ -30,10 +28,6 @@ import tectech.thing.CustomItemList;
  * @author BlueWeabo
  */
 public class SpaceProjectRegistration implements Runnable {
-
-    Fluid solderUEV = FluidRegistry.getFluid("molten.mutatedlivingsolder") != null
-        ? FluidRegistry.getFluid("molten.mutatedlivingsolder")
-        : FluidRegistry.getFluid("molten.solderingalloy");
 
     /**
      * Register space projects
@@ -76,7 +70,7 @@ public class SpaceProjectRegistration implements Runnable {
                 CustomItemList.Machine_Multi_Computer.get(16),
                 ItemList.Sensor_UEV.get(1),
                 ItemList.Emitter_UEV.get(1))
-            .setUpgradeFluidsCost(new FluidStack(solderUEV, 10 * INGOTS));
+            .setUpgradeFluidsCost(MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack(10 * INGOTS));
         ISpaceProject asteroidOutpost = new ProjectAsteroidOutpost().setProjectName("AsteroidOutpost")
             .setProjectUnlocalizedName("ig.spaceproject.asteroidoutpost")
             .setProjectUpgrades(reinforcedStructure, improvedComputation)
