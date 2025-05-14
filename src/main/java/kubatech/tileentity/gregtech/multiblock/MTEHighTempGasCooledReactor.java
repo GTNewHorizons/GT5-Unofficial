@@ -1,13 +1,24 @@
 /*
- * Copyright (C) 2022 kuba6000 This program is free software: you can redistribute it and/or modify it under the terms
- * of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version. This program is distributed in the hope that it will be useful, but WITHOUT ANY
- * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
- * General Public License for more details. You should have received a copy of the GNU General Public License along with
- * this program. If not, see <https://www.gnu.org/licenses/>.
+ * spotless:off
+ * KubaTech - Gregtech Addon
+ * Copyright (C) 2022 - 2025  kuba6000
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 3 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this library. If not, see <https://www.gnu.org/licenses/>.
+ * spotless:on
  */
 
-package bartworks.common.tileentities.multis;
+package kubatech.tileentity.gregtech.multiblock;
 
 import static bartworks.API.recipe.BartWorksRecipeMaps.htgrFakeRecipes;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
@@ -22,6 +33,7 @@ import static gregtech.api.util.GTUtility.validMTEList;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -39,7 +51,6 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import bartworks.common.items.SimpleSubItemClass;
 import bartworks.system.material.WerkstoffLoader;
-import bartworks.util.MathUtils;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTValues;
@@ -50,9 +61,7 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.MTEEnhancedMultiBlockBase;
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
-import gregtech.api.metatileentity.implementations.MTEHatchOutputBus;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
@@ -60,13 +69,14 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
-import gregtech.api.util.shutdown.ShutDownReasonRegistry;
-import gregtech.api.util.shutdown.SimpleShutDownReason;
+import kubatech.api.implementations.KubaTechGTMultiBlockBase;
+import kubatech.loaders.HTGRLoader;
 
-public class MTEHighTempGasCooledReactor extends MTEEnhancedMultiBlockBase<MTEHighTempGasCooledReactor> {
+public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHighTempGasCooledReactor> {
 
     private static final int BASECASINGINDEX = 181;
 
+    // TODO: Wypierdolić strukture
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final IStructureDefinition<MTEHighTempGasCooledReactor> STRUCTURE_DEFINITION = StructureDefinition
         .<MTEHighTempGasCooledReactor>builder()
@@ -111,16 +121,25 @@ public class MTEHighTempGasCooledReactor extends MTEEnhancedMultiBlockBase<MTEHi
             ofChain(
                 ofHatchAdder(MTEHighTempGasCooledReactor::addInputToMachineList, BASECASINGINDEX, 2),
                 onElementPass(x -> x.mCasing++, ofBlock(GregTechAPI.sBlockCasings8, 5))))
-        // ofHatchAdderOptional(GT_TileEntity_HTGR::addInputToMachineList, BASECASINGINDEX, 2,
-        // GregTechAPI.sBlockCasings8, 5))
         .build();
 
-    private static final int HELIUM_NEEDED = 730000;
-    public static final int powerUsage = (int) TierEU.RECIPE_LuV;
-    private static final int maxcapacity = 720000;
-    private static final int mincapacity = maxcapacity / 10;
-    private int HeliumSupply;
-    private int fueltype = -1, fuelsupply = 0;
+    private static final int HELIUM_NEEDED = 512000;
+
+    private static final int MIN_HELIUM_NEEDED = HELIUM_NEEDED / 10;
+
+    // conversion factor per operation ππππππππππππππππππππππππππππππππππππππππππππππππππππππππ
+    private static final double CONVERSION_FACTOR = 0.000141592653589793238462643383279502884197169399375105820974944592307816406286208998628034825342117067982148086513282306647093844609550582231725359408128481117450284102701938521105559644622948954930381964429d;
+
+    private static final long POWER_USAGE = (long) (TierEU.RECIPE_IV * 0.1d);
+
+    private static final int MAX_CAPACITY = 10000;
+
+    private static final int MIN_CAPACITY = MAX_CAPACITY / 100;
+
+    private int heliumSupply;
+    private double fuelsupply = 0;
+    private final HashMap<Materials, Double> mStoredFuels = new HashMap<>();
+    private final HashMap<Materials, Double> mStoredBurnedFuels = new HashMap<>();
     private boolean empty;
     private int emptyticksnodiff = 0;
     private int coolanttaking = 0;
@@ -156,7 +175,7 @@ public class MTEHighTempGasCooledReactor extends MTEEnhancedMultiBlockBase<MTEHi
             .addInfo("and affects total recipe time (at 100% eff, -50% total recipe time")
             .addInfo(
                 "Reactor will take 4 000L/s of coolant multiplied by efficiency and by fuel coolant value (check tooltips)")
-            .addInfo("Uses " + GTUtility.formatNumbers(powerUsage) + " EU/t")
+            .addInfo("Uses " + GTUtility.formatNumbers(POWER_USAGE) + " EU/t")
             .addInfo("One Operation takes 1 hour")
             .beginStructureBlock(11, 12, 11, true)
             .addController("Front bottom center")
@@ -197,21 +216,51 @@ public class MTEHighTempGasCooledReactor extends MTEEnhancedMultiBlockBase<MTEHi
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
-        this.HeliumSupply = aNBT.getInteger("HeliumSupply");
-        this.fueltype = aNBT.getInteger("fueltype");
-        this.fuelsupply = aNBT.getInteger("fuelsupply");
+        this.heliumSupply = aNBT.getInteger("HeliumSupply");
+        this.fuelsupply = aNBT.getDouble("fuelsupply");
         this.empty = aNBT.getBoolean("EmptyMode");
         this.coolanttaking = aNBT.getInteger("coolanttaking");
+        int fuels = aNBT.getInteger("fuels");
+        int burnedfuels = aNBT.getInteger("burnedfuels");
+        for (int i = 0; i < fuels; i++) {
+            String name = aNBT.getString("fuels" + i);
+            double amount = aNBT.getDouble("fuelsamount" + i);
+            Materials m = Materials.get(name);
+            if (m != null) {
+                this.mStoredFuels.put(m, amount);
+            }
+        }
+        for (int i = 0; i < burnedfuels; i++) {
+            String name = aNBT.getString("burnedfuels" + i);
+            double amount = aNBT.getDouble("burnedfuelsamount" + i);
+            Materials m = Materials.get(name);
+            if (m != null) {
+                this.mStoredBurnedFuels.put(m, amount);
+            }
+        }
     }
 
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
-        aNBT.setInteger("HeliumSupply", this.HeliumSupply);
-        aNBT.setInteger("fueltype", this.fueltype);
-        aNBT.setInteger("fuelsupply", this.fuelsupply);
+        aNBT.setInteger("HeliumSupply", this.heliumSupply);
+        aNBT.setDouble("fuelsupply", this.fuelsupply);
         aNBT.setBoolean("EmptyMode", this.empty);
         aNBT.setInteger("coolanttaking", this.coolanttaking);
+        aNBT.setInteger("fuels", this.mStoredFuels.size());
+        aNBT.setInteger("burnedfuels", this.mStoredBurnedFuels.size());
+        int i = 0;
+        for (Map.Entry<Materials, Double> entry : this.mStoredFuels.entrySet()) {
+            aNBT.setString("fuels" + i, entry.getKey().mName);
+            aNBT.setDouble("fuelsamount" + i, entry.getValue());
+            i++;
+        }
+        i = 0;
+        for (Map.Entry<Materials, Double> entry : this.mStoredBurnedFuels.entrySet()) {
+            aNBT.setString("burnedfuels" + i, entry.getKey().mName);
+            aNBT.setDouble("burnedfuelsamount" + i, entry.getValue());
+            i++;
+        }
     }
 
     @Override
@@ -219,31 +268,28 @@ public class MTEHighTempGasCooledReactor extends MTEEnhancedMultiBlockBase<MTEHi
         super.onPostTick(aBaseMetaTileEntity, aTick);
         if (aBaseMetaTileEntity.isServerSide() && !this.empty) {
             boolean updateneeded = false;
-            if (this.HeliumSupply < MTEHighTempGasCooledReactor.HELIUM_NEEDED) {
+            if (this.heliumSupply < MTEHighTempGasCooledReactor.HELIUM_NEEDED) {
                 for (FluidStack fluidStack : this.getStoredFluids()) {
                     if (fluidStack.isFluidEqual(Materials.Helium.getGas(1))) {
                         int toget = Math
-                            .min(MTEHighTempGasCooledReactor.HELIUM_NEEDED - this.HeliumSupply, fluidStack.amount);
+                            .min(MTEHighTempGasCooledReactor.HELIUM_NEEDED - this.heliumSupply, fluidStack.amount);
                         fluidStack.amount -= toget;
-                        this.HeliumSupply += toget;
+                        this.heliumSupply += toget;
                         updateneeded = true;
                     }
                 }
             }
-            if (this.fuelsupply < maxcapacity) {
+            if (MAX_CAPACITY - this.fuelsupply >= 1) {
                 this.startRecipeProcessing();
                 for (ItemStack itemStack : this.getStoredInputs()) {
-                    int type = -1;
-                    if (itemStack == null || itemStack.getItem() != HTGRMaterials.aHTGR_Materials) continue;
-                    int damage = HTGRMaterials.aHTGR_Materials.getDamage(itemStack);
-                    if ((damage + 1) % HTGRMaterials.MATERIALS_PER_FUEL != HTGRMaterials.USABLE_FUEL_INDEX + 1)
-                        continue; // is fuel
-                    type = damage / HTGRMaterials.MATERIALS_PER_FUEL;
-                    if (this.fueltype == -1) this.fueltype = type;
-                    if (this.fueltype != type) continue;
-                    int toget = Math.min(maxcapacity - this.fuelsupply, itemStack.stackSize);
+                    if (itemStack == null || itemStack.getItem() != HTGRLoader.HTGR_ITEM) continue;
+                    int damage = HTGRLoader.HTGR_ITEM.getDamage(itemStack);
+                    if (damage != 3) continue;
+                    Materials m = HTGRLoader.HTGR_ITEM.getItemMaterial(itemStack);
+                    int toget = (int) Math.min(MAX_CAPACITY - this.fuelsupply, itemStack.stackSize);
                     this.fuelsupply += toget;
                     itemStack.stackSize -= toget;
+                    mStoredFuels.merge(m, (double) toget, Double::sum);
                     updateneeded = true;
                 }
                 this.endRecipeProcessing();
@@ -255,7 +301,7 @@ public class MTEHighTempGasCooledReactor extends MTEEnhancedMultiBlockBase<MTEHi
     @Override
     public RecipeMap<?> getRecipeMap() {
         // Only for visual
-        return htgrFakeRecipes;
+        return HTGRLoader.HTGRRecipes;
     }
 
     @Override
@@ -267,114 +313,149 @@ public class MTEHighTempGasCooledReactor extends MTEEnhancedMultiBlockBase<MTEHi
     public @NotNull CheckRecipeResult checkProcessing() {
 
         if (this.empty) {
-            if (this.HeliumSupply > 0 || this.fuelsupply > 0) {
+            if (this.heliumSupply > 0 || this.fuelsupply > 0) {
                 this.mEfficiency = 10000;
                 this.mMaxProgresstime = 100;
                 return CheckRecipeResultRegistry.SUCCESSFUL;
             }
             return CheckRecipeResultRegistry.NO_RECIPE;
         }
-        if (this.HeliumSupply < MTEHighTempGasCooledReactor.HELIUM_NEEDED || this.fuelsupply < mincapacity)
-            return CheckRecipeResultRegistry.NO_RECIPE;
+        if (this.heliumSupply < MIN_HELIUM_NEEDED || this.fuelsupply < MIN_CAPACITY)
+            return CheckRecipeResultRegistry.NO_FUEL_FOUND;
 
-        double eff = Math.min(Math.pow((double) this.fuelsupply / (double) mincapacity, 2D), 100D) / 100D
-            - (this.getIdealStatus() - this.getRepairStatus()) / 10D;
+        // 1 - Math.pow(1 - x, 3)
+
+        double eff = (0.1d + (1d - Math.pow(1 - (this.fuelsupply / MAX_CAPACITY), 3)) * 0.9d)
+            - (this.getIdealStatus() - this.getRepairStatus()) / 10d;
 
         if (eff <= 0) return CheckRecipeResultRegistry.NO_RECIPE;
 
-        int toReduce = MathUtils.floorInt(this.fuelsupply * 0.025D * eff);
+        double toReduce = this.fuelsupply * CONVERSION_FACTOR * eff;
 
-        final int originalToReduce = toReduce;
-        int burnedballs = toReduce / 64;
-        if (burnedballs > 0) toReduce -= burnedballs * 64;
+        for (Map.Entry<Materials, Double> entry : mStoredFuels.entrySet()) {
+            Materials m = entry.getKey();
+            double amount = entry.getValue();
+            if (amount > 0) {
+                double toUse = (amount / fuelsupply) * toReduce;
+                mStoredBurnedFuels.merge(m, toUse, Double::sum);
+                entry.setValue(amount - toUse);
+                this.fuelsupply -= toUse;
+            }
+        }
 
-        int meta = this.fueltype * HTGRMaterials.MATERIALS_PER_FUEL + HTGRMaterials.BURNED_OUT_FUEL_INDEX;
+        ArrayList<ItemStack> toOutput = new ArrayList<>();
 
-        ItemStack[] toOutput = { new ItemStack(HTGRMaterials.aHTGR_Materials, burnedballs, meta),
-            new ItemStack(HTGRMaterials.aHTGR_Materials, toReduce, meta + 1) };
-        if (!this.canOutputAll(toOutput)) return CheckRecipeResultRegistry.NO_RECIPE;
+        for (Map.Entry<Materials, Double> entry : mStoredBurnedFuels.entrySet()) {
+            if (entry.getValue() >= 1.d) {
+                Materials m = entry.getKey();
+                double output = Math.floor(entry.getValue());
+                ItemStack stack = HTGRLoader.HTGR_ITEM.createBurnedTRISOFuel(m);
+                stack.stackSize = (int) output;
+                toOutput.add(stack);
+            }
+        }
 
-        this.fuelsupply -= originalToReduce;
-        this.mOutputItems = toOutput;
+        if (this.canOutputAll(toOutput.toArray(new ItemStack[0]))) {
+            for (ItemStack itemStack : toOutput) {
+                Materials m = HTGRLoader.HTGR_ITEM.getItemMaterial(itemStack);
+                if (m != null) {
+                    mStoredBurnedFuels.merge(m, (double) -itemStack.stackSize, Double::sum);
+                }
+            }
+            this.mOutputItems = toOutput.toArray(new ItemStack[0]);
+        }
 
-        // this.updateSlots(); // not needed ?
-
-        this.coolanttaking = (int) (4000D * (this.fueltype * 0.5D + 1) * eff);
+        this.coolanttaking = (int) (10d * this.fuelsupply);
 
         this.mEfficiency = (int) (eff * 10000D);
         this.mEfficiencyIncrease = 0;
-        this.mEUt = -powerUsage;
-        this.mMaxProgresstime = (int) (72000 * (1d - eff / 2d));
+        this.lEUt = (long) -(POWER_USAGE + POWER_USAGE
+            * (1d - (double) (this.heliumSupply - MIN_HELIUM_NEEDED) / (HELIUM_NEEDED - MIN_HELIUM_NEEDED))
+            * 39d);
+
+        this.heliumSupply = (int) ((double) this.heliumSupply * (1d - 0.0002d));
+
+        this.updateSlots();
+
+        this.mMaxProgresstime = 2000 + (int) (18000d * eff);
         return CheckRecipeResultRegistry.SUCCESSFUL;
     }
 
     private int runningtick = 0;
 
     @Override
+    protected long getActualEnergyUsage() {
+        return lEUt;
+    }
+
+    @Override
     public boolean onRunningTick(ItemStack aStack) {
         this.runningtick++;
+
+        super.onRunningTick(aStack);
 
         if (this.empty) {
             if (this.emptyticksnodiff > 20 && this.emptyticksnodiff % 20 != 0) {
                 this.emptyticksnodiff++;
                 return true;
             }
-            if (this.HeliumSupply > 0) {
-                this.addOutput(Materials.Helium.getGas(this.HeliumSupply));
-                this.HeliumSupply = 0;
+            if (this.heliumSupply > 0) {
+                this.addOutput(Materials.Helium.getGas(this.heliumSupply));
+                this.heliumSupply = 0;
             }
             if (this.fuelsupply > 0) {
-                ItemStack iStack = new ItemStack(
-                    HTGRMaterials.aHTGR_Materials,
-                    this.fuelsupply,
-                    HTGRMaterials.MATERIALS_PER_FUEL * this.fueltype + HTGRMaterials.USABLE_FUEL_INDEX);
-                boolean storedAll = false;
-                for (MTEHatchOutputBus tHatch : validMTEList(mOutputBusses)) {
-                    if (tHatch.storePartial(iStack)) {
-                        storedAll = true;
-                        break;
-                    }
-                }
-                if (!storedAll) {
-                    if (this.fuelsupply == iStack.stackSize) this.emptyticksnodiff++;
-                    else {
-                        this.fuelsupply = iStack.stackSize;
-                        this.emptyticksnodiff = 0;
-                    }
-                } else {
-                    this.fuelsupply = 0;
-                    this.fueltype = -1;
-                    this.coolanttaking = 0;
-                }
+                // ItemStack iStack = new ItemStack(
+                // HTGRMaterials.aHTGR_Materials,
+                // this.fuelsupply,
+                // HTGRMaterials.MATERIALS_PER_FUEL * this.fueltype + HTGRMaterials.USABLE_FUEL_INDEX);
+                // boolean storedAll = false;
+                // for (MTEHatchOutputBus tHatch : validMTEList(mOutputBusses)) {
+                // if (tHatch.storePartial(iStack)) {
+                // storedAll = true;
+                // break;
+                // }
+                // }
+                // if (!storedAll) {
+                // if (this.fuelsupply == iStack.stackSize) this.emptyticksnodiff++;
+                // else {
+                // this.fuelsupply = iStack.stackSize;
+                // this.emptyticksnodiff = 0;
+                // }
+                // } else {
+                // this.fuelsupply = 0;
+                // this.fueltype = -1;
+                // this.coolanttaking = 0;
+                // }
             }
             return true;
         }
-        // USE DA POWAH
-        if (!this.drainEnergyInput(-this.mEUt)) {
-            this.stopMachine(ShutDownReasonRegistry.POWER_LOSS);
-            return false;
-        }
 
-        if (this.runningtick % 20 == 0) {
-            int takecoolant = this.coolanttaking;
-            int drainedamount = 0;
+        // if (this.runningtick % 20 == 0) {
+        int takecoolant = this.coolanttaking;
+        int drainedamount = 0;
 
-            for (MTEHatchInput tHatch : validMTEList(mInputHatches)) {
-                FluidStack tLiquid = tHatch.getFluid();
-                if (tLiquid != null && tLiquid.isFluidEqual(FluidRegistry.getFluidStack("ic2coolant", 1))) {
-                    FluidStack drained = tHatch.drain(takecoolant, true);
-                    takecoolant -= drained.amount;
-                    drainedamount += drained.amount;
-                    if (takecoolant <= 0) break;
-                }
+        for (MTEHatchInput tHatch : validMTEList(mInputHatches)) {
+            FluidStack tLiquid = tHatch.getFluid();
+            if (tLiquid != null && tLiquid.isFluidEqual(FluidRegistry.getFluidStack("ic2coolant", 1))) {
+                FluidStack drained = tHatch.drain(takecoolant, true);
+                takecoolant -= drained.amount;
+                drainedamount += drained.amount;
+                if (takecoolant <= 0) break;
             }
-
-            if (drainedamount > 0) this.addOutput(FluidRegistry.getFluidStack("ic2hotcoolant", drainedamount));
-
-            this.updateSlots();
-
-            if (takecoolant > 0) this.stopMachine(SimpleShutDownReason.ofNormal("no_coolant"));
         }
+
+        if (drainedamount > 0) {
+            this.addOutput(FluidRegistry.getFluidStack("ic2hotcoolant", drainedamount));
+
+            double eff = drainedamount / ((double) this.coolanttaking);
+            int addedTime = (int) (this.mMaxProgresstime * 0.0035d * eff);
+            if (addedTime > 0) this.mProgresstime += addedTime;
+        }
+
+        this.updateSlots();
+
+        // if (takecoolant > 0) this.stopMachine(SimpleShutDownReason.ofNormal("no_coolant"));
+        // }
 
         return true;
     }
@@ -410,24 +491,55 @@ public class MTEHighTempGasCooledReactor extends MTEEnhancedMultiBlockBase<MTEHi
                 "BW.infoData.htgr.progress",
                 GTUtility.formatNumbers(this.mProgresstime / 20),
                 GTUtility.formatNumbers(this.mMaxProgresstime / 20)),
-            StatCollector.translateToLocalFormatted(
-                "BW.infoData.htgr.fuel_type",
-                this.fueltype == -1 ? StatCollector.translateToLocal("BW.infoData.htgr.fuel_type.none")
-                    : StatCollector.translateToLocalFormatted(
-                        "BW.infoData.htgr.fuel_type.triso",
-                        // TODO: check how to get fuel type localized name
-                        HTGRMaterials.sHTGR_Fuel[this.fueltype].sEnglish)),
+            // StatCollector.translateToLocalFormatted(
+            // "BW.infoData.htgr.fuel_type",
+            // this.fueltype == -1 ? StatCollector.translateToLocal("BW.infoData.htgr.fuel_type.none")
+            // : StatCollector.translateToLocalFormatted(
+            // "BW.infoData.htgr.fuel_type.triso",
+            // // TODO: check how to get fuel type localized name
+            // HTGRMaterials.sHTGR_Fuel[this.fueltype].sEnglish)),
             StatCollector
                 .translateToLocalFormatted("BW.infoData.htgr.fuel_amount", GTUtility.formatNumbers(this.fuelsupply)),
             StatCollector.translateToLocalFormatted(
                 "BW.infoData.htr.helium_level",
-                GTUtility.formatNumbers(this.HeliumSupply),
+                GTUtility.formatNumbers(this.heliumSupply),
                 GTUtility.formatNumbers(MTEHighTempGasCooledReactor.HELIUM_NEEDED)),
             StatCollector
                 .translateToLocalFormatted("BW.infoData.htgr.coolant", GTUtility.formatNumbers(this.coolanttaking)),
             StatCollector.translateToLocalFormatted(
                 "BW.infoData.htr.problems",
                 String.valueOf(this.getIdealStatus() - this.getRepairStatus())) };
+    }
+
+    @Override
+    protected String generateCurrentRecipeInfoString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("Stored Fuel: ");
+        for (Map.Entry<Materials, Double> entry : mStoredFuels.entrySet()) {
+            sb.append(
+                entry.getKey()
+                    .getLocalizedNameForItem("- %material"))
+                .append(": ")
+                .append(GTUtility.formatNumbers(entry.getValue()))
+                .append("\n");
+        }
+        sb.append("Burned Fuel: ");
+        for (Map.Entry<Materials, Double> entry : mStoredBurnedFuels.entrySet()) {
+            sb.append(
+                entry.getKey()
+                    .getLocalizedNameForItem("- %material"))
+                .append(": ")
+                .append(GTUtility.formatNumbers(entry.getValue()))
+                .append("\n");
+        }
+        sb.append("Helium Supply: ")
+            .append(GTUtility.formatNumbers(this.heliumSupply))
+            .append("\n");
+        sb.append("Coolant Taking: ")
+            .append(GTUtility.formatNumbers(this.coolanttaking))
+            .append("\n");
+
+        return sb.toString();
     }
 
     @Override
@@ -479,6 +591,8 @@ public class MTEHighTempGasCooledReactor extends MTEEnhancedMultiBlockBase<MTEHi
         return true;
     }
 
+    // TODO: Wypierdolić
+    @Deprecated
     public static class HTGRMaterials {
 
         private static class CustomHTGRSimpleSubItemClass extends SimpleSubItemClass {
@@ -619,7 +733,7 @@ public class MTEHighTempGasCooledReactor extends MTEEnhancedMultiBlockBase<MTEHi
                     .itemInputs(new ItemStack(MTEHighTempGasCooledReactor.HTGRMaterials.aHTGR_Materials, 64, i + 4))
                     .itemOutputs(new ItemStack(MTEHighTempGasCooledReactor.HTGRMaterials.aHTGR_Materials, 1, i + 5))
                     .duration(1 * HOURS)
-                    .eut(powerUsage)
+                    .eut(POWER_USAGE)
                     .ignoreCollision()
                     .fake()
                     .addTo(htgrFakeRecipes);
