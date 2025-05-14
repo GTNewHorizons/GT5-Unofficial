@@ -381,7 +381,7 @@ public class RecipesGregTech {
             .duration(20 * MINUTES)
             .addTo(AssemblyLine);
 
-        // Turbine Automation Port
+        // Turbine Housing / Turbine Automation Port
         RA.stdBuilder()
             .metadata(
                 RESEARCH_ITEM,
@@ -406,7 +406,7 @@ public class RecipesGregTech {
                 MaterialsAlloy.BABBIT_ALLOY.getFluidStack(2 * STACKS + 16 * INGOTS))
             .itemOutputs(GregtechItemList.Hatch_Input_TurbineHousing.get(4))
             .eut(TierEU.RECIPE_UV)
-            .duration(2 * HOURS)
+            .duration(2 * MINUTES)
             .addTo(AssemblyLine);
 
         /*
@@ -479,7 +479,7 @@ public class RecipesGregTech {
         }
 
         if (Baubles.isModLoaded()) {
-            // Nano Healer
+            // Personal Healing Nanobooster
             RA.stdBuilder()
                 .metadata(RESEARCH_ITEM, ItemUtils.simpleMetaStack(Items.golden_apple, 1, 1))
                 .metadata(SCANNING, new Scanning(2 * MINUTES, TierEU.RECIPE_LuV))
@@ -500,7 +500,7 @@ public class RecipesGregTech {
                     CI.getAlternativeTieredFluid(7, 4 * STACKS + 32 * INGOTS))
                 .itemOutputs(ItemUtils.getItemStackFromFQRN("miscutils:personalHealingDevice", 1))
                 .eut(TierEU.RECIPE_ZPM)
-                .duration(1 * HOURS)
+                .duration(3 * MINUTES)
                 .addTo(AssemblyLine);
 
             // Charge Pack LuV-UV
@@ -538,7 +538,7 @@ public class RecipesGregTech {
                         CI.getAlternativeTieredFluid(h - 2, 4 * 8 * INGOTS))
                     .itemOutputs(aChargeOutputs[aCurrSlot])
                     .eut(GTValues.VP[h])
-                    .duration((aCurrSlot + 1) * HOURS)
+                    .duration(3 * MINUTES)
                     .addTo(AssemblyLine);
                 aCurrSlot++;
             }
@@ -562,10 +562,10 @@ public class RecipesGregTech {
                     CI.getAlternativeTieredFluid(7, 4 * 8 * INGOTS))
                 .itemOutputs(aChargeOutputs[aCurrSlot])
                 .eut(GTValues.VP[9])
-                .duration((aCurrSlot + 1) * HOURS)
+                .duration(3 * MINUTES)
                 .addTo(AssemblyLine);
 
-            // Cloaking device
+            // Personal Cloaking device
             RA.stdBuilder()
                 .metadata(
                     RESEARCH_ITEM,
@@ -588,7 +588,7 @@ public class RecipesGregTech {
                     CI.getAlternativeTieredFluid(8, 4 * STACKS + 32 * INGOTS))
                 .itemOutputs(ItemUtils.getItemStackFromFQRN("miscutils:personalCloakingDevice-0.0", 1))
                 .eut(TierEU.RECIPE_UV)
-                .duration(1 * HOURS)
+                .duration(3 * MINUTES)
                 .addTo(AssemblyLine);
         }
 

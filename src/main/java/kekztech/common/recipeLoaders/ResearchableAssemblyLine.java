@@ -113,7 +113,7 @@ public class ResearchableAssemblyLine implements Runnable {
                 new FluidStack(FluidRegistry.getFluid("molten.celestialtungsten"), 4 * STACKS),
                 Materials.SuperCoolant.getFluid(256_000) },
             new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 10),
-            350 * 20,
+            360 * 20,
             (int) TierEU.RECIPE_UMV);
 
     }

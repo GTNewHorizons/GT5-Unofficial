@@ -45,9 +45,10 @@ public class TecTechResearchLoader {
             new FluidStack[] { MaterialsAlloy.INDALLOY_140.getFluidStack(10 * INGOTS),
                 WerkstoffLoader.Krypton.getFluidOrGas(20_000) },
             ItemRegistry.voidminer[1].copy(),
-            5 * MINUTES,
+            2 * MINUTES,
             (int) TierEU.RECIPE_ZPM);
 
+        // Void Miner Mk III
         TTRecipeAdder.addResearchableAssemblylineRecipe(
             ItemRegistry.voidminer[1].copy(),
             8192000,
@@ -62,9 +63,10 @@ public class TecTechResearchLoader {
             new FluidStack[] { MaterialsAlloy.INDALLOY_140.getFluidStack(10 * INGOTS),
                 WerkstoffLoader.Oganesson.getFluidOrGas(20_000) },
             ItemRegistry.voidminer[2].copy(),
-            5 * MINUTES,
+            2 * MINUTES,
             (int) TierEU.RECIPE_UV);
 
+        // Electric Implosion Compressor
         TTRecipeAdder.addResearchableAssemblylineRecipe(
             ItemList.Machine_Multi_ImplosionCompressor.get(1L),
             64000,
@@ -80,7 +82,7 @@ public class TecTechResearchLoader {
             new FluidStack[] { MaterialsAlloy.INDALLOY_140.getFluidStack(10 * INGOTS),
                 Materials.Osmium.getMolten(10 * INGOTS), Materials.Neutronium.getMolten(10 * INGOTS) },
             ItemRegistry.eic.copy(),
-            5 * MINUTES,
+            2 * MINUTES,
             (int) TierEU.RECIPE_UV);
 
     }

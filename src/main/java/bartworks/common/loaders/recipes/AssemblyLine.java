@@ -39,7 +39,7 @@ public class AssemblyLine implements Runnable {
                 WerkstoffLoader.Neon.getFluidOrGas(20_000))
             .itemOutputs(ItemRegistry.voidminer[0].copy())
             .eut(TierEU.RECIPE_LuV)
-            .duration(5 * MINUTES)
+            .duration(2 * MINUTES)
             .addTo(AssemblyLine);
 
         // Circuit Assembly Line

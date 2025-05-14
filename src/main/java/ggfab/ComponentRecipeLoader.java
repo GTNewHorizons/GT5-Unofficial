@@ -34,8 +34,8 @@ class ComponentRecipeLoader implements Runnable {
                 ItemList.Automation_ChestBuffer_LuV.get(1L))
             .fluidInputs(MaterialsAlloy.INDALLOY_140.getFluidStack(9 * INGOTS), Materials.Lubricant.getFluid(2_000))
             .itemOutputs(GGItemList.AdvAssLine.get(1L))
-            .eut(6_000)
-            .duration(10 * MINUTES)
+            .eut(TierEU.RECIPE_LuV)
+            .duration(3 * MINUTES)
             .addTo(AssemblyLine);
 
         GTValues.RA.stdBuilder()
@@ -48,7 +48,7 @@ class ComponentRecipeLoader implements Runnable {
             .itemOutputs(GGItemList.LinkedInputBus.get(1L))
             .fluidInputs(Materials.Polybenzimidazole.getMolten(1 * INGOTS))
             .duration(30 * SECONDS)
-            .eut(GTValues.VP[5])
+            .eut(TierEU.RECIPE_IV)
             .addTo(assemblerRecipes);
 
     }

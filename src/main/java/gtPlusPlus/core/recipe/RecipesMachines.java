@@ -8,7 +8,6 @@ import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
 import static gregtech.api.recipe.RecipeMaps.cutterRecipes;
 import static gregtech.api.recipe.RecipeMaps.distilleryRecipes;
 import static gregtech.api.util.GTModHandler.getModItem;
-import static gregtech.api.util.GTRecipeBuilder.HOURS;
 import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.MINUTES;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
@@ -377,7 +376,7 @@ public class RecipesMachines {
                 MaterialsAlloy.KANTHAL.getFluidStack(4 * INGOTS))
             .itemOutputs(GregtechItemList.Controller_MolecularTransformer.get(1))
             .eut(TierEU.RECIPE_LuV)
-            .duration(10 * MINUTES)
+            .duration(2 * MINUTES)
             .addTo(AssemblyLine);
 
         GTValues.RA.stdBuilder()
@@ -666,8 +665,8 @@ public class RecipesMachines {
                 CI.getTertiaryTieredFluid(6, 16 * INGOTS),
                 MaterialsAlloy.BABBIT_ALLOY.getFluidStack(2 * STACKS))
             .itemOutputs(GregtechItemList.Controller_ElementalDuplicator.get(1))
-            .eut(TierEU.RECIPE_ZPM)
-            .duration(10 * MINUTES)
+            .eut(TierEU.RECIPE_UV)
+            .duration(60 * SECONDS)
             .addTo(AssemblyLine);
 
         // Data Orb Repository
@@ -691,7 +690,7 @@ public class RecipesMachines {
                 MaterialsAlloy.BABBIT_ALLOY.getFluidStack(1 * STACKS))
             .itemOutputs(GregtechItemList.Hatch_Input_Elemental_Duplicator.get(1))
             .eut(TierEU.RECIPE_LuV)
-            .duration(2 * HOURS)
+            .duration(60 * SECONDS)
             .addTo(AssemblyLine);
 
         // Elemental Confinement Shell
@@ -714,8 +713,8 @@ public class RecipesMachines {
                 CI.getTertiaryTieredFluid(4, 8 * INGOTS),
                 MaterialsAlloy.BABBIT_ALLOY.getFluidStack(16 * INGOTS))
             .itemOutputs(GregtechItemList.Casing_ElementalDuplicator.get(1))
-            .eut(TierEU.RECIPE_LuV)
-            .duration(10 * MINUTES)
+            .eut(TierEU.RECIPE_ZPM)
+            .duration(30 * SECONDS)
             .addTo(AssemblyLine);
     }
 
@@ -1770,8 +1769,8 @@ public class RecipesMachines {
             new FluidStack[] { MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack(10 * INGOTS),
                 MaterialsAlloy.PIKYONIUM.getFluidStack(32 * INGOTS) },
             GregtechItemList.QuantumForceTransformer.get(1),
-            1200 * 20,
-            (int) GTValues.VP[11]);
+            3 * MINUTES,
+            (int) TierEU.RECIPE_UIV);
 
         // Industrial Matter Fabricator
         RECIPE_IndustrialMatterFabController = GregtechItemList.Industrial_MassFab.get(1);
@@ -3140,7 +3139,7 @@ public class RecipesMachines {
                 CI.getTertiaryTieredFluid(4, 32 * INGOTS))
             .itemOutputs(GregtechItemList.Controller_Flotation_Cell.get(1))
             .eut(TierEU.RECIPE_LuV)
-            .duration(10 * MINUTES)
+            .duration(60 * SECONDS)
             .addTo(AssemblyLine);
 
         // Flotation Cell Casing
@@ -3211,7 +3210,7 @@ public class RecipesMachines {
                 CI.getTertiaryTieredFluid(3, 32 * INGOTS))
             .itemOutputs(GregtechItemList.Controller_Sparge_Tower.get(1))
             .eut(TierEU.RECIPE_LuV)
-            .duration(10 * MINUTES)
+            .duration(60 * SECONDS)
             .addTo(AssemblyLine);
 
         // Sparge Tower Casing

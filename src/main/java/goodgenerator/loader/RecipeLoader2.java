@@ -151,7 +151,7 @@ public class RecipeLoader2 {
             .addTo(assemblerRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(ItemRefer.Advanced_Fuel_Rod.get(1), ItemRefer.High_Density_Uranium.get(1))
+            .itemInputs(ItemRefer.Advanced_Fuel_Rod.get(1), ItemRefer.High_Density_Uranium_Nugget.get(1))
             .itemOutputs(ItemRefer.Fuel_Rod_U_1.get(1))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_MV)
@@ -188,7 +188,7 @@ public class RecipeLoader2 {
             .addTo(assemblerRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(ItemRefer.Advanced_Fuel_Rod.get(1), ItemRefer.High_Density_Plutonium.get(1))
+            .itemInputs(ItemRefer.Advanced_Fuel_Rod.get(1), ItemRefer.High_Density_Plutonium_Nugget.get(1))
             .itemOutputs(ItemRefer.Fuel_Rod_Pu_1.get(1))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_MV)
@@ -1623,13 +1623,13 @@ public class RecipeLoader2 {
             .itemInputs(ItemRefer.Fuel_Rod_U_Depleted_1.get(1))
             .itemOutputs(
                 ItemRefer.Advanced_Fuel_Rod.get(1),
-                Materials.Uranium.getDust(8),
-                Materials.Plutonium.getDust(2),
-                Materials.Graphite.getDust(8),
+                Materials.Uranium.getDust(2),
+                Materials.Plutonium.getDust(1),
+                Materials.Graphite.getDust(2),
                 Materials.Uranium235.getDust(1),
                 Materials.Plutonium241.getDust(1))
-            .outputChances(10000, 10000, 10000, 9000, 5000, 3000)
-            .fluidOutputs(WerkstoffLoader.Neon.getFluidOrGas(32))
+            .outputChances(10000, 5000, 10000, 9000, 1250, 750)
+            .fluidOutputs(WerkstoffLoader.Neon.getFluidOrGas(32), Materials.TungstenCarbide.getMolten(1 * INGOTS))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_EV)
             .addTo(centrifugeRecipes);
@@ -1638,13 +1638,13 @@ public class RecipeLoader2 {
             .itemInputs(ItemRefer.Fuel_Rod_U_Depleted_2.get(1))
             .itemOutputs(
                 ItemRefer.Advanced_Fuel_Rod.get(2),
-                Materials.Uranium.getDust(16),
-                Materials.Plutonium.getDust(4),
-                Materials.Graphite.getDust(16),
-                Materials.Uranium235.getDust(2),
-                Materials.Plutonium241.getDust(2))
-            .outputChances(10000, 10000, 10000, 9000, 5000, 3000)
-            .fluidOutputs(WerkstoffLoader.Neon.getFluidOrGas(64))
+                Materials.Uranium.getDust(4),
+                Materials.Plutonium.getDust(1),
+                Materials.Graphite.getDust(4),
+                Materials.Uranium235.getDust(1),
+                Materials.Plutonium241.getDust(1))
+            .outputChances(10000, 10000, 10000, 9000, 2500, 1500)
+            .fluidOutputs(WerkstoffLoader.Neon.getFluidOrGas(64), Materials.TungstenCarbide.getMolten(2 * INGOTS))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_EV)
             .addTo(centrifugeRecipes);
@@ -1653,13 +1653,13 @@ public class RecipeLoader2 {
             .itemInputs(ItemRefer.Fuel_Rod_U_Depleted_4.get(1))
             .itemOutputs(
                 ItemRefer.Advanced_Fuel_Rod.get(4),
-                Materials.Uranium.getDust(32),
-                Materials.Plutonium.getDust(8),
-                Materials.Graphite.getDust(32),
-                Materials.Uranium235.getDust(4),
-                Materials.Plutonium241.getDust(4))
+                Materials.Uranium.getDust(8),
+                Materials.Plutonium.getDust(2),
+                Materials.Graphite.getDust(8),
+                Materials.Uranium235.getDust(1),
+                Materials.Plutonium241.getDust(1))
             .outputChances(10000, 10000, 10000, 9000, 5000, 3000)
-            .fluidOutputs(WerkstoffLoader.Neon.getFluidOrGas(128))
+            .fluidOutputs(WerkstoffLoader.Neon.getFluidOrGas(128), Materials.TungstenCarbide.getMolten(4 * INGOTS))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_EV)
             .addTo(centrifugeRecipes);
@@ -1668,13 +1668,13 @@ public class RecipeLoader2 {
             .itemInputs(ItemRefer.Fuel_Rod_Pu_Depleted_1.get(1))
             .itemOutputs(
                 ItemRefer.Advanced_Fuel_Rod.get(1),
-                Materials.Plutonium.getDust(5),
+                Materials.Plutonium.getDust(4),
                 Materials.Plutonium241.getDust(2),
                 Materials.Carbon.getDust(2),
                 Materials.Uranium.getDust(1),
                 Materials.Uranium235.getDust(1))
             .outputChances(10000, 10000, 10000, 9000, 5000, 3000)
-            .fluidOutputs(Materials.Argon.getGas(32))
+            .fluidOutputs(Materials.Argon.getGas(32), Materials.HSSS.getMolten(1 * INGOTS))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_EV)
             .addTo(centrifugeRecipes);
@@ -1683,13 +1683,13 @@ public class RecipeLoader2 {
             .itemInputs(ItemRefer.Fuel_Rod_Pu_Depleted_2.get(1))
             .itemOutputs(
                 ItemRefer.Advanced_Fuel_Rod.get(2),
-                Materials.Plutonium.getDust(10),
+                Materials.Plutonium.getDust(8),
                 Materials.Plutonium241.getDust(4),
                 Materials.Carbon.getDust(4),
                 Materials.Uranium.getDust(2),
                 Materials.Uranium235.getDust(2))
             .outputChances(10000, 10000, 10000, 9000, 5000, 3000)
-            .fluidOutputs(Materials.Argon.getGas(64))
+            .fluidOutputs(Materials.Argon.getGas(64), Materials.HSSS.getMolten(2 * INGOTS))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_EV)
             .addTo(centrifugeRecipes);
@@ -1698,13 +1698,13 @@ public class RecipeLoader2 {
             .itemInputs(ItemRefer.Fuel_Rod_Pu_Depleted_4.get(1))
             .itemOutputs(
                 ItemRefer.Advanced_Fuel_Rod.get(4),
-                Materials.Plutonium.getDust(20),
+                Materials.Plutonium.getDust(16),
                 Materials.Plutonium241.getDust(8),
                 Materials.Carbon.getDust(8),
                 Materials.Uranium.getDust(4),
                 Materials.Uranium235.getDust(4))
             .outputChances(10000, 10000, 10000, 9000, 5000, 3000)
-            .fluidOutputs(Materials.Argon.getGas(128))
+            .fluidOutputs(Materials.Argon.getGas(128), Materials.HSSS.getMolten(4 * INGOTS))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_EV)
             .addTo(centrifugeRecipes);

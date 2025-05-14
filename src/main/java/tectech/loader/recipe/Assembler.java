@@ -1168,7 +1168,7 @@ public class Assembler implements Runnable {
                         GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.TungstenSteel, 2),
                         GTUtility.getIntegratedCircuit(1))
                     .itemOutputs(CustomItemList.eM_dynamoTunnel1_IV.get(1))
-                    .duration(50 * SECONDS)
+                    .duration(30 * SECONDS)
                     .eut(TierEU.RECIPE_IV)
                     .addTo(assemblerRecipes);
                 GTValues.RA.stdBuilder()
@@ -1180,7 +1180,7 @@ public class Assembler implements Runnable {
                         GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.VanadiumGallium, 2),
                         GTUtility.getIntegratedCircuit(1))
                     .itemOutputs(CustomItemList.eM_dynamoTunnel1_LuV.get(1))
-                    .duration(50 * SECONDS)
+                    .duration(30 * SECONDS)
                     .eut(TierEU.RECIPE_LuV)
                     .addTo(assemblerRecipes);
                 GTValues.RA.stdBuilder()
@@ -1192,7 +1192,7 @@ public class Assembler implements Runnable {
                         GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.Naquadah, 2),
                         GTUtility.getIntegratedCircuit(1))
                     .itemOutputs(CustomItemList.eM_dynamoTunnel1_ZPM.get(1))
-                    .duration(50 * SECONDS)
+                    .duration(30 * SECONDS)
                     .eut(TierEU.RECIPE_ZPM)
                     .addTo(assemblerRecipes);
                 GTValues.RA.stdBuilder()
@@ -1204,7 +1204,7 @@ public class Assembler implements Runnable {
                         GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.NaquadahAlloy, 2),
                         GTUtility.getIntegratedCircuit(1))
                     .itemOutputs(CustomItemList.eM_dynamoTunnel1_UV.get(1))
-                    .duration(50 * SECONDS)
+                    .duration(30 * SECONDS)
                     .eut(TierEU.RECIPE_UV)
                     .addTo(assemblerRecipes);
                 GTValues.RA.stdBuilder()
@@ -1216,7 +1216,7 @@ public class Assembler implements Runnable {
                         GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.Bedrockium, 2),
                         GTUtility.getIntegratedCircuit(1))
                     .itemOutputs(CustomItemList.eM_dynamoTunnel1_UHV.get(1))
-                    .duration(50 * SECONDS)
+                    .duration(30 * SECONDS)
                     .eut(TierEU.RECIPE_UHV)
                     .addTo(assemblerRecipes);
                 GTValues.RA.stdBuilder()
@@ -1228,7 +1228,7 @@ public class Assembler implements Runnable {
                         GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.Draconium, 2),
                         GTUtility.getIntegratedCircuit(1))
                     .itemOutputs(CustomItemList.eM_dynamoTunnel1_UEV.get(1))
-                    .duration(50 * SECONDS)
+                    .duration(30 * SECONDS)
                     .eut(TierEU.RECIPE_UEV)
                     .addTo(assemblerRecipes);
                 GTValues.RA.stdBuilder()
@@ -1240,7 +1240,7 @@ public class Assembler implements Runnable {
                         GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.NetherStar, 2),
                         GTUtility.getIntegratedCircuit(1))
                     .itemOutputs(CustomItemList.eM_dynamoTunnel1_UIV.get(1))
-                    .duration(50 * SECONDS)
+                    .duration(30 * SECONDS)
                     .eut(TierEU.RECIPE_UIV)
                     .addTo(assemblerRecipes);
                 GTValues.RA.stdBuilder()
@@ -1252,7 +1252,7 @@ public class Assembler implements Runnable {
                         GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.Quantium, 2),
                         GTUtility.getIntegratedCircuit(1))
                     .itemOutputs(CustomItemList.eM_dynamoTunnel1_UMV.get(1))
-                    .duration(50 * SECONDS)
+                    .duration(30 * SECONDS)
                     .eut(TierEU.RECIPE_UMV)
                     .addTo(assemblerRecipes);
                 GTValues.RA.stdBuilder()
@@ -1264,7 +1264,7 @@ public class Assembler implements Runnable {
                         GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.BlackPlutonium, 2),
                         GTUtility.getIntegratedCircuit(1))
                     .itemOutputs(CustomItemList.eM_dynamoTunnel1_UXV.get(1))
-                    .duration(50 * SECONDS)
+                    .duration(30 * SECONDS)
                     .eut(TierEU.RECIPE_UXV)
                     .addTo(assemblerRecipes);
 
@@ -1281,7 +1281,7 @@ public class Assembler implements Runnable {
                         GTOreDictUnificator.get(OrePrefixes.wireGt02, Materials.VanadiumGallium, 4),
                         GTUtility.getIntegratedCircuit(2))
                     .itemOutputs(CustomItemList.eM_dynamoTunnel2_LuV.get(1))
-                    .duration(1 * MINUTES + 40 * SECONDS)
+                    .duration(40 * SECONDS)
                     .eut(TierEU.RECIPE_LuV)
                     .addTo(assemblerRecipes);
                 GTValues.RA.stdBuilder()
@@ -1293,7 +1293,7 @@ public class Assembler implements Runnable {
                         GTOreDictUnificator.get(OrePrefixes.wireGt02, Materials.Naquadah, 4),
                         GTUtility.getIntegratedCircuit(2))
                     .itemOutputs(CustomItemList.eM_dynamoTunnel2_ZPM.get(1))
-                    .duration(1 * MINUTES + 40 * SECONDS)
+                    .duration(40 * SECONDS)
                     .eut(TierEU.RECIPE_ZPM)
                     .addTo(assemblerRecipes);
                 GTValues.RA.stdBuilder()
@@ -1305,7 +1305,7 @@ public class Assembler implements Runnable {
                         GTOreDictUnificator.get(OrePrefixes.wireGt02, Materials.NaquadahAlloy, 4),
                         GTUtility.getIntegratedCircuit(2))
                     .itemOutputs(CustomItemList.eM_dynamoTunnel2_UV.get(1))
-                    .duration(1 * MINUTES + 40 * SECONDS)
+                    .duration(40 * SECONDS)
                     .eut(TierEU.RECIPE_UV)
                     .addTo(assemblerRecipes);
                 GTValues.RA.stdBuilder()
@@ -1317,7 +1317,7 @@ public class Assembler implements Runnable {
                         GTOreDictUnificator.get(OrePrefixes.wireGt02, Materials.Bedrockium, 4),
                         GTUtility.getIntegratedCircuit(2))
                     .itemOutputs(CustomItemList.eM_dynamoTunnel2_UHV.get(1))
-                    .duration(1 * MINUTES + 40 * SECONDS)
+                    .duration(40 * SECONDS)
                     .eut(TierEU.RECIPE_UHV)
                     .addTo(assemblerRecipes);
                 GTValues.RA.stdBuilder()
@@ -1329,7 +1329,7 @@ public class Assembler implements Runnable {
                         GTOreDictUnificator.get(OrePrefixes.wireGt02, Materials.Draconium, 4),
                         GTUtility.getIntegratedCircuit(2))
                     .itemOutputs(CustomItemList.eM_dynamoTunnel2_UEV.get(1))
-                    .duration(1 * MINUTES + 40 * SECONDS)
+                    .duration(40 * SECONDS)
                     .eut(TierEU.RECIPE_UEV)
                     .addTo(assemblerRecipes);
                 GTValues.RA.stdBuilder()
@@ -1341,7 +1341,7 @@ public class Assembler implements Runnable {
                         GTOreDictUnificator.get(OrePrefixes.wireGt02, Materials.NetherStar, 4),
                         GTUtility.getIntegratedCircuit(2))
                     .itemOutputs(CustomItemList.eM_dynamoTunnel2_UIV.get(1))
-                    .duration(1 * MINUTES + 40 * SECONDS)
+                    .duration(40 * SECONDS)
                     .eut(TierEU.RECIPE_UIV)
                     .addTo(assemblerRecipes);
                 GTValues.RA.stdBuilder()
@@ -1353,7 +1353,7 @@ public class Assembler implements Runnable {
                         GTOreDictUnificator.get(OrePrefixes.wireGt02, Materials.Quantium, 4),
                         GTUtility.getIntegratedCircuit(2))
                     .itemOutputs(CustomItemList.eM_dynamoTunnel2_UMV.get(1))
-                    .duration(1 * MINUTES + 40 * SECONDS)
+                    .duration(40 * SECONDS)
                     .eut(TierEU.RECIPE_UMV)
                     .addTo(assemblerRecipes);
                 GTValues.RA.stdBuilder()
@@ -1365,7 +1365,7 @@ public class Assembler implements Runnable {
                         GTOreDictUnificator.get(OrePrefixes.wireGt02, Materials.BlackPlutonium, 4),
                         GTUtility.getIntegratedCircuit(2))
                     .itemOutputs(CustomItemList.eM_dynamoTunnel2_UXV.get(1))
-                    .duration(1 * MINUTES + 40 * SECONDS)
+                    .duration(40 * SECONDS)
                     .eut(TierEU.RECIPE_UXV)
                     .addTo(assemblerRecipes);
 
@@ -1382,7 +1382,7 @@ public class Assembler implements Runnable {
                         GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials.Naquadah, 4),
                         GTUtility.getIntegratedCircuit(3))
                     .itemOutputs(CustomItemList.eM_dynamoTunnel3_ZPM.get(1))
-                    .duration(3 * MINUTES + 20 * SECONDS)
+                    .duration(50 * SECONDS)
                     .eut(TierEU.RECIPE_ZPM)
                     .addTo(assemblerRecipes);
                 GTValues.RA.stdBuilder()
@@ -1394,7 +1394,7 @@ public class Assembler implements Runnable {
                         GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials.NaquadahAlloy, 4),
                         GTUtility.getIntegratedCircuit(3))
                     .itemOutputs(CustomItemList.eM_dynamoTunnel3_UV.get(1))
-                    .duration(3 * MINUTES + 20 * SECONDS)
+                    .duration(50 * SECONDS)
                     .eut(TierEU.RECIPE_UV)
                     .addTo(assemblerRecipes);
                 GTValues.RA.stdBuilder()
@@ -1406,7 +1406,7 @@ public class Assembler implements Runnable {
                         GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials.Bedrockium, 4),
                         GTUtility.getIntegratedCircuit(3))
                     .itemOutputs(CustomItemList.eM_dynamoTunnel3_UHV.get(1))
-                    .duration(3 * MINUTES + 20 * SECONDS)
+                    .duration(50 * SECONDS)
                     .eut(TierEU.RECIPE_UHV)
                     .addTo(assemblerRecipes);
                 GTValues.RA.stdBuilder()
@@ -1418,7 +1418,7 @@ public class Assembler implements Runnable {
                         GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials.Draconium, 4),
                         GTUtility.getIntegratedCircuit(3))
                     .itemOutputs(CustomItemList.eM_dynamoTunnel3_UEV.get(1))
-                    .duration(3 * MINUTES + 20 * SECONDS)
+                    .duration(50 * SECONDS)
                     .eut(TierEU.RECIPE_UEV)
                     .addTo(assemblerRecipes);
                 GTValues.RA.stdBuilder()
@@ -1430,7 +1430,7 @@ public class Assembler implements Runnable {
                         GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials.NetherStar, 4),
                         GTUtility.getIntegratedCircuit(3))
                     .itemOutputs(CustomItemList.eM_dynamoTunnel3_UIV.get(1))
-                    .duration(3 * MINUTES + 20 * SECONDS)
+                    .duration(50 * SECONDS)
                     .eut(TierEU.RECIPE_UIV)
                     .addTo(assemblerRecipes);
                 GTValues.RA.stdBuilder()
@@ -1442,7 +1442,7 @@ public class Assembler implements Runnable {
                         GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials.Quantium, 4),
                         GTUtility.getIntegratedCircuit(3))
                     .itemOutputs(CustomItemList.eM_dynamoTunnel3_UMV.get(1))
-                    .duration(3 * MINUTES + 20 * SECONDS)
+                    .duration(50 * SECONDS)
                     .eut(TierEU.RECIPE_UMV)
                     .addTo(assemblerRecipes);
                 GTValues.RA.stdBuilder()
@@ -1454,7 +1454,7 @@ public class Assembler implements Runnable {
                         GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials.BlackPlutonium, 4),
                         GTUtility.getIntegratedCircuit(3))
                     .itemOutputs(CustomItemList.eM_dynamoTunnel3_UXV.get(1))
-                    .duration(3 * MINUTES + 20 * SECONDS)
+                    .duration(50 * SECONDS)
                     .eut(TierEU.RECIPE_UXV)
                     .addTo(assemblerRecipes);
 
@@ -1471,7 +1471,7 @@ public class Assembler implements Runnable {
                         GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials.NaquadahAlloy, 8),
                         GTUtility.getIntegratedCircuit(4))
                     .itemOutputs(CustomItemList.eM_dynamoTunnel4_UV.get(1))
-                    .duration(6 * MINUTES + 40 * SECONDS)
+                    .duration(60 * SECONDS)
                     .eut(TierEU.RECIPE_UV)
                     .addTo(assemblerRecipes);
                 GTValues.RA.stdBuilder()
@@ -1483,7 +1483,7 @@ public class Assembler implements Runnable {
                         GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials.Bedrockium, 8),
                         GTUtility.getIntegratedCircuit(4))
                     .itemOutputs(CustomItemList.eM_dynamoTunnel4_UHV.get(1))
-                    .duration(6 * MINUTES + 40 * SECONDS)
+                    .duration(60 * SECONDS)
                     .eut(TierEU.RECIPE_UHV)
                     .addTo(assemblerRecipes);
                 GTValues.RA.stdBuilder()
@@ -1495,7 +1495,7 @@ public class Assembler implements Runnable {
                         GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials.Draconium, 8),
                         GTUtility.getIntegratedCircuit(4))
                     .itemOutputs(CustomItemList.eM_dynamoTunnel4_UEV.get(1))
-                    .duration(6 * MINUTES + 40 * SECONDS)
+                    .duration(60 * SECONDS)
                     .eut(TierEU.RECIPE_UEV)
                     .addTo(assemblerRecipes);
                 GTValues.RA.stdBuilder()
@@ -1507,7 +1507,7 @@ public class Assembler implements Runnable {
                         GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials.NetherStar, 8),
                         GTUtility.getIntegratedCircuit(4))
                     .itemOutputs(CustomItemList.eM_dynamoTunnel4_UIV.get(1))
-                    .duration(6 * MINUTES + 40 * SECONDS)
+                    .duration(60 * SECONDS)
                     .eut(TierEU.RECIPE_UIV)
                     .addTo(assemblerRecipes);
                 GTValues.RA.stdBuilder()
@@ -1519,7 +1519,7 @@ public class Assembler implements Runnable {
                         GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials.Quantium, 8),
                         GTUtility.getIntegratedCircuit(4))
                     .itemOutputs(CustomItemList.eM_dynamoTunnel4_UMV.get(1))
-                    .duration(6 * MINUTES + 40 * SECONDS)
+                    .duration(60 * SECONDS)
                     .eut(TierEU.RECIPE_UMV)
                     .addTo(assemblerRecipes);
                 GTValues.RA.stdBuilder()
@@ -1531,7 +1531,7 @@ public class Assembler implements Runnable {
                         GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials.BlackPlutonium, 8),
                         GTUtility.getIntegratedCircuit(4))
                     .itemOutputs(CustomItemList.eM_dynamoTunnel4_UXV.get(1))
-                    .duration(6 * MINUTES + 40 * SECONDS)
+                    .duration(60 * SECONDS)
                     .eut(TierEU.RECIPE_UXV)
                     .addTo(assemblerRecipes);
 
@@ -1548,7 +1548,7 @@ public class Assembler implements Runnable {
                         GTOreDictUnificator.get(OrePrefixes.wireGt08, Materials.Bedrockium, 8),
                         GTUtility.getIntegratedCircuit(5))
                     .itemOutputs(CustomItemList.eM_dynamoTunnel5_UHV.get(1))
-                    .duration(13 * MINUTES + 20 * SECONDS)
+                    .duration(70 * SECONDS)
                     .eut(TierEU.RECIPE_UHV)
                     .addTo(assemblerRecipes);
                 GTValues.RA.stdBuilder()
@@ -1560,7 +1560,7 @@ public class Assembler implements Runnable {
                         GTOreDictUnificator.get(OrePrefixes.wireGt08, Materials.Draconium, 8),
                         GTUtility.getIntegratedCircuit(5))
                     .itemOutputs(CustomItemList.eM_dynamoTunnel5_UEV.get(1))
-                    .duration(13 * MINUTES + 20 * SECONDS)
+                    .duration(70 * SECONDS)
                     .eut(TierEU.RECIPE_UEV)
                     .addTo(assemblerRecipes);
                 GTValues.RA.stdBuilder()
@@ -1572,7 +1572,7 @@ public class Assembler implements Runnable {
                         GTOreDictUnificator.get(OrePrefixes.wireGt08, Materials.NetherStar, 8),
                         GTUtility.getIntegratedCircuit(5))
                     .itemOutputs(CustomItemList.eM_dynamoTunnel5_UIV.get(1))
-                    .duration(13 * MINUTES + 20 * SECONDS)
+                    .duration(70 * SECONDS)
                     .eut(TierEU.RECIPE_UIV)
                     .addTo(assemblerRecipes);
                 GTValues.RA.stdBuilder()
@@ -1584,7 +1584,7 @@ public class Assembler implements Runnable {
                         GTOreDictUnificator.get(OrePrefixes.wireGt08, Materials.Quantium, 8),
                         GTUtility.getIntegratedCircuit(5))
                     .itemOutputs(CustomItemList.eM_dynamoTunnel5_UMV.get(1))
-                    .duration(13 * MINUTES + 20 * SECONDS)
+                    .duration(70 * SECONDS)
                     .eut(TierEU.RECIPE_UMV)
                     .addTo(assemblerRecipes);
                 GTValues.RA.stdBuilder()
@@ -1596,7 +1596,7 @@ public class Assembler implements Runnable {
                         GTOreDictUnificator.get(OrePrefixes.wireGt08, Materials.BlackPlutonium, 8),
                         GTUtility.getIntegratedCircuit(5))
                     .itemOutputs(CustomItemList.eM_dynamoTunnel5_UXV.get(1))
-                    .duration(13 * MINUTES + 20 * SECONDS)
+                    .duration(70 * SECONDS)
                     .eut(TierEU.RECIPE_UXV)
                     .addTo(assemblerRecipes);
 
@@ -1613,7 +1613,7 @@ public class Assembler implements Runnable {
                         GTOreDictUnificator.get(OrePrefixes.wireGt08, Materials.Draconium, 16),
                         GTUtility.getIntegratedCircuit(6))
                     .itemOutputs(CustomItemList.eM_dynamoTunnel6_UEV.get(1))
-                    .duration(26 * MINUTES + 40 * SECONDS)
+                    .duration(80 * SECONDS)
                     .eut(TierEU.RECIPE_UEV)
                     .addTo(assemblerRecipes);
                 GTValues.RA.stdBuilder()
@@ -1625,7 +1625,7 @@ public class Assembler implements Runnable {
                         GTOreDictUnificator.get(OrePrefixes.wireGt08, Materials.NetherStar, 16),
                         GTUtility.getIntegratedCircuit(6))
                     .itemOutputs(CustomItemList.eM_dynamoTunnel6_UIV.get(1))
-                    .duration(26 * MINUTES + 40 * SECONDS)
+                    .duration(80 * SECONDS)
                     .eut(TierEU.RECIPE_UIV)
                     .addTo(assemblerRecipes);
                 GTValues.RA.stdBuilder()
@@ -1637,7 +1637,7 @@ public class Assembler implements Runnable {
                         GTOreDictUnificator.get(OrePrefixes.wireGt08, Materials.Quantium, 16),
                         GTUtility.getIntegratedCircuit(6))
                     .itemOutputs(CustomItemList.eM_dynamoTunnel6_UMV.get(1))
-                    .duration(26 * MINUTES + 40 * SECONDS)
+                    .duration(80 * SECONDS)
                     .eut(TierEU.RECIPE_UMV)
                     .addTo(assemblerRecipes);
                 GTValues.RA.stdBuilder()
@@ -1649,7 +1649,7 @@ public class Assembler implements Runnable {
                         GTOreDictUnificator.get(OrePrefixes.wireGt08, Materials.BlackPlutonium, 16),
                         GTUtility.getIntegratedCircuit(6))
                     .itemOutputs(CustomItemList.eM_dynamoTunnel6_UXV.get(1))
-                    .duration(26 * MINUTES + 40 * SECONDS)
+                    .duration(80 * SECONDS)
                     .eut(TierEU.RECIPE_UXV)
                     .addTo(assemblerRecipes);
 
@@ -1666,7 +1666,7 @@ public class Assembler implements Runnable {
                         GTOreDictUnificator.get(OrePrefixes.wireGt16, Materials.NetherStar, 16),
                         GTUtility.getIntegratedCircuit(7))
                     .itemOutputs(CustomItemList.eM_dynamoTunnel7_UIV.get(1))
-                    .duration(53 * MINUTES + 20 * SECONDS)
+                    .duration(90 * SECONDS)
                     .eut(TierEU.RECIPE_UIV)
                     .addTo(assemblerRecipes);
                 GTValues.RA.stdBuilder()
@@ -1678,7 +1678,7 @@ public class Assembler implements Runnable {
                         GTOreDictUnificator.get(OrePrefixes.wireGt16, Materials.Quantium, 16),
                         GTUtility.getIntegratedCircuit(7))
                     .itemOutputs(CustomItemList.eM_dynamoTunnel7_UMV.get(1))
-                    .duration(53 * MINUTES + 20 * SECONDS)
+                    .duration(90 * SECONDS)
                     .eut(TierEU.RECIPE_UMV)
                     .addTo(assemblerRecipes);
                 GTValues.RA.stdBuilder()
@@ -1690,7 +1690,7 @@ public class Assembler implements Runnable {
                         GTOreDictUnificator.get(OrePrefixes.wireGt16, Materials.BlackPlutonium, 16),
                         GTUtility.getIntegratedCircuit(7))
                     .itemOutputs(CustomItemList.eM_dynamoTunnel7_UXV.get(1))
-                    .duration(53 * MINUTES + 20 * SECONDS)
+                    .duration(90 * SECONDS)
                     .eut(TierEU.RECIPE_UXV)
                     .addTo(assemblerRecipes);
 
@@ -1710,7 +1710,7 @@ public class Assembler implements Runnable {
                         GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.TungstenSteel, 2),
                         GTUtility.getIntegratedCircuit(1))
                     .itemOutputs(CustomItemList.eM_energyTunnel1_IV.get(1))
-                    .duration(50 * SECONDS)
+                    .duration(30 * SECONDS)
                     .eut(TierEU.RECIPE_IV)
                     .addTo(assemblerRecipes);
                 GTValues.RA.stdBuilder()
@@ -1722,7 +1722,7 @@ public class Assembler implements Runnable {
                         GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.VanadiumGallium, 2),
                         GTUtility.getIntegratedCircuit(1))
                     .itemOutputs(CustomItemList.eM_energyTunnel1_LuV.get(1))
-                    .duration(50 * SECONDS)
+                    .duration(30 * SECONDS)
                     .eut(TierEU.RECIPE_LuV)
                     .addTo(assemblerRecipes);
                 GTValues.RA.stdBuilder()
@@ -1734,7 +1734,7 @@ public class Assembler implements Runnable {
                         GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.Naquadah, 2),
                         GTUtility.getIntegratedCircuit(1))
                     .itemOutputs(CustomItemList.eM_energyTunnel1_ZPM.get(1))
-                    .duration(50 * SECONDS)
+                    .duration(30 * SECONDS)
                     .eut(TierEU.RECIPE_ZPM)
                     .addTo(assemblerRecipes);
                 GTValues.RA.stdBuilder()
@@ -1746,7 +1746,7 @@ public class Assembler implements Runnable {
                         GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.NaquadahAlloy, 2),
                         GTUtility.getIntegratedCircuit(1))
                     .itemOutputs(CustomItemList.eM_energyTunnel1_UV.get(1))
-                    .duration(50 * SECONDS)
+                    .duration(30 * SECONDS)
                     .eut(TierEU.RECIPE_UV)
                     .addTo(assemblerRecipes);
                 GTValues.RA.stdBuilder()
@@ -1758,7 +1758,7 @@ public class Assembler implements Runnable {
                         GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.Bedrockium, 2),
                         GTUtility.getIntegratedCircuit(1))
                     .itemOutputs(CustomItemList.eM_energyTunnel1_UHV.get(1))
-                    .duration(50 * SECONDS)
+                    .duration(30 * SECONDS)
                     .eut(TierEU.RECIPE_UHV)
                     .addTo(assemblerRecipes);
                 GTValues.RA.stdBuilder()
@@ -1770,7 +1770,7 @@ public class Assembler implements Runnable {
                         GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.Draconium, 2),
                         GTUtility.getIntegratedCircuit(1))
                     .itemOutputs(CustomItemList.eM_energyTunnel1_UEV.get(1))
-                    .duration(50 * SECONDS)
+                    .duration(30 * SECONDS)
                     .eut(TierEU.RECIPE_UEV)
                     .addTo(assemblerRecipes);
                 GTValues.RA.stdBuilder()
@@ -1782,7 +1782,7 @@ public class Assembler implements Runnable {
                         GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.NetherStar, 2),
                         GTUtility.getIntegratedCircuit(1))
                     .itemOutputs(CustomItemList.eM_energyTunnel1_UIV.get(1))
-                    .duration(50 * SECONDS)
+                    .duration(30 * SECONDS)
                     .eut(TierEU.RECIPE_UIV)
                     .addTo(assemblerRecipes);
                 GTValues.RA.stdBuilder()
@@ -1794,7 +1794,7 @@ public class Assembler implements Runnable {
                         GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.Quantium, 2),
                         GTUtility.getIntegratedCircuit(1))
                     .itemOutputs(CustomItemList.eM_energyTunnel1_UMV.get(1))
-                    .duration(50 * SECONDS)
+                    .duration(30 * SECONDS)
                     .eut(TierEU.RECIPE_UMV)
                     .addTo(assemblerRecipes);
                 GTValues.RA.stdBuilder()
@@ -1806,7 +1806,7 @@ public class Assembler implements Runnable {
                         GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.BlackPlutonium, 2),
                         GTUtility.getIntegratedCircuit(1))
                     .itemOutputs(CustomItemList.eM_energyTunnel1_UXV.get(1))
-                    .duration(50 * SECONDS)
+                    .duration(30 * SECONDS)
                     .eut(TierEU.RECIPE_UXV)
                     .addTo(assemblerRecipes);
 
@@ -1823,7 +1823,7 @@ public class Assembler implements Runnable {
                         GTOreDictUnificator.get(OrePrefixes.wireGt02, Materials.VanadiumGallium, 4),
                         GTUtility.getIntegratedCircuit(2))
                     .itemOutputs(CustomItemList.eM_energyTunnel2_LuV.get(1))
-                    .duration(1 * MINUTES + 40 * SECONDS)
+                    .duration(40 * SECONDS)
                     .eut(TierEU.RECIPE_LuV)
                     .addTo(assemblerRecipes);
                 GTValues.RA.stdBuilder()
@@ -1835,7 +1835,7 @@ public class Assembler implements Runnable {
                         GTOreDictUnificator.get(OrePrefixes.wireGt02, Materials.Naquadah, 4),
                         GTUtility.getIntegratedCircuit(2))
                     .itemOutputs(CustomItemList.eM_energyTunnel2_ZPM.get(1))
-                    .duration(1 * MINUTES + 40 * SECONDS)
+                    .duration(40 * SECONDS)
                     .eut(TierEU.RECIPE_ZPM)
                     .addTo(assemblerRecipes);
                 GTValues.RA.stdBuilder()
@@ -1847,7 +1847,7 @@ public class Assembler implements Runnable {
                         GTOreDictUnificator.get(OrePrefixes.wireGt02, Materials.NaquadahAlloy, 4),
                         GTUtility.getIntegratedCircuit(2))
                     .itemOutputs(CustomItemList.eM_energyTunnel2_UV.get(1))
-                    .duration(1 * MINUTES + 40 * SECONDS)
+                    .duration(40 * SECONDS)
                     .eut(TierEU.RECIPE_UV)
                     .addTo(assemblerRecipes);
                 GTValues.RA.stdBuilder()
@@ -1859,7 +1859,7 @@ public class Assembler implements Runnable {
                         GTOreDictUnificator.get(OrePrefixes.wireGt02, Materials.Bedrockium, 4),
                         GTUtility.getIntegratedCircuit(2))
                     .itemOutputs(CustomItemList.eM_energyTunnel2_UHV.get(1))
-                    .duration(1 * MINUTES + 40 * SECONDS)
+                    .duration(40 * SECONDS)
                     .eut(TierEU.RECIPE_UHV)
                     .addTo(assemblerRecipes);
                 GTValues.RA.stdBuilder()
@@ -1871,7 +1871,7 @@ public class Assembler implements Runnable {
                         GTOreDictUnificator.get(OrePrefixes.wireGt02, Materials.Draconium, 4),
                         GTUtility.getIntegratedCircuit(2))
                     .itemOutputs(CustomItemList.eM_energyTunnel2_UEV.get(1))
-                    .duration(1 * MINUTES + 40 * SECONDS)
+                    .duration(40 * SECONDS)
                     .eut(TierEU.RECIPE_UEV)
                     .addTo(assemblerRecipes);
                 GTValues.RA.stdBuilder()
@@ -1883,7 +1883,7 @@ public class Assembler implements Runnable {
                         GTOreDictUnificator.get(OrePrefixes.wireGt02, Materials.NetherStar, 4),
                         GTUtility.getIntegratedCircuit(2))
                     .itemOutputs(CustomItemList.eM_energyTunnel2_UIV.get(1))
-                    .duration(1 * MINUTES + 40 * SECONDS)
+                    .duration(40 * SECONDS)
                     .eut(TierEU.RECIPE_UIV)
                     .addTo(assemblerRecipes);
                 GTValues.RA.stdBuilder()
@@ -1895,7 +1895,7 @@ public class Assembler implements Runnable {
                         GTOreDictUnificator.get(OrePrefixes.wireGt02, Materials.Quantium, 4),
                         GTUtility.getIntegratedCircuit(2))
                     .itemOutputs(CustomItemList.eM_energyTunnel2_UMV.get(1))
-                    .duration(1 * MINUTES + 40 * SECONDS)
+                    .duration(40 * SECONDS)
                     .eut(TierEU.RECIPE_UMV)
                     .addTo(assemblerRecipes);
                 GTValues.RA.stdBuilder()
@@ -1907,7 +1907,7 @@ public class Assembler implements Runnable {
                         GTOreDictUnificator.get(OrePrefixes.wireGt02, Materials.BlackPlutonium, 4),
                         GTUtility.getIntegratedCircuit(2))
                     .itemOutputs(CustomItemList.eM_energyTunnel2_UXV.get(1))
-                    .duration(1 * MINUTES + 40 * SECONDS)
+                    .duration(40 * SECONDS)
                     .eut(TierEU.RECIPE_UXV)
                     .addTo(assemblerRecipes);
 
@@ -1924,7 +1924,7 @@ public class Assembler implements Runnable {
                         GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials.Naquadah, 4),
                         GTUtility.getIntegratedCircuit(3))
                     .itemOutputs(CustomItemList.eM_energyTunnel3_ZPM.get(1))
-                    .duration(3 * MINUTES + 20 * SECONDS)
+                    .duration(50 * SECONDS)
                     .eut(TierEU.RECIPE_ZPM)
                     .addTo(assemblerRecipes);
                 GTValues.RA.stdBuilder()
@@ -1936,7 +1936,7 @@ public class Assembler implements Runnable {
                         GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials.NaquadahAlloy, 4),
                         GTUtility.getIntegratedCircuit(3))
                     .itemOutputs(CustomItemList.eM_energyTunnel3_UV.get(1))
-                    .duration(3 * MINUTES + 20 * SECONDS)
+                    .duration(50 * SECONDS)
                     .eut(TierEU.RECIPE_UV)
                     .addTo(assemblerRecipes);
                 GTValues.RA.stdBuilder()
@@ -1948,7 +1948,7 @@ public class Assembler implements Runnable {
                         GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials.Bedrockium, 4),
                         GTUtility.getIntegratedCircuit(3))
                     .itemOutputs(CustomItemList.eM_energyTunnel3_UHV.get(1))
-                    .duration(3 * MINUTES + 20 * SECONDS)
+                    .duration(50 * SECONDS)
                     .eut(TierEU.RECIPE_UHV)
                     .addTo(assemblerRecipes);
                 GTValues.RA.stdBuilder()
@@ -1960,7 +1960,7 @@ public class Assembler implements Runnable {
                         GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials.Draconium, 4),
                         GTUtility.getIntegratedCircuit(3))
                     .itemOutputs(CustomItemList.eM_energyTunnel3_UEV.get(1))
-                    .duration(3 * MINUTES + 20 * SECONDS)
+                    .duration(50 * SECONDS)
                     .eut(TierEU.RECIPE_UEV)
                     .addTo(assemblerRecipes);
                 GTValues.RA.stdBuilder()
@@ -1972,7 +1972,7 @@ public class Assembler implements Runnable {
                         GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials.NetherStar, 4),
                         GTUtility.getIntegratedCircuit(3))
                     .itemOutputs(CustomItemList.eM_energyTunnel3_UIV.get(1))
-                    .duration(3 * MINUTES + 20 * SECONDS)
+                    .duration(50 * SECONDS)
                     .eut(TierEU.RECIPE_UIV)
                     .addTo(assemblerRecipes);
                 GTValues.RA.stdBuilder()
@@ -1984,7 +1984,7 @@ public class Assembler implements Runnable {
                         GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials.Quantium, 4),
                         GTUtility.getIntegratedCircuit(3))
                     .itemOutputs(CustomItemList.eM_energyTunnel3_UMV.get(1))
-                    .duration(3 * MINUTES + 20 * SECONDS)
+                    .duration(50 * SECONDS)
                     .eut(TierEU.RECIPE_UMV)
                     .addTo(assemblerRecipes);
                 GTValues.RA.stdBuilder()
@@ -1996,7 +1996,7 @@ public class Assembler implements Runnable {
                         GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials.BlackPlutonium, 4),
                         GTUtility.getIntegratedCircuit(3))
                     .itemOutputs(CustomItemList.eM_energyTunnel3_UXV.get(1))
-                    .duration(3 * MINUTES + 20 * SECONDS)
+                    .duration(50 * SECONDS)
                     .eut(TierEU.RECIPE_UXV)
                     .addTo(assemblerRecipes);
 
@@ -2013,7 +2013,7 @@ public class Assembler implements Runnable {
                         GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials.NaquadahAlloy, 8),
                         GTUtility.getIntegratedCircuit(4))
                     .itemOutputs(CustomItemList.eM_energyTunnel4_UV.get(1))
-                    .duration(6 * MINUTES + 40 * SECONDS)
+                    .duration(60 * SECONDS)
                     .eut(TierEU.RECIPE_UV)
                     .addTo(assemblerRecipes);
                 GTValues.RA.stdBuilder()
@@ -2025,7 +2025,7 @@ public class Assembler implements Runnable {
                         GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials.Bedrockium, 8),
                         GTUtility.getIntegratedCircuit(4))
                     .itemOutputs(CustomItemList.eM_energyTunnel4_UHV.get(1))
-                    .duration(6 * MINUTES + 40 * SECONDS)
+                    .duration(60 * SECONDS)
                     .eut(TierEU.RECIPE_UHV)
                     .addTo(assemblerRecipes);
                 GTValues.RA.stdBuilder()
@@ -2037,7 +2037,7 @@ public class Assembler implements Runnable {
                         GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials.Draconium, 8),
                         GTUtility.getIntegratedCircuit(4))
                     .itemOutputs(CustomItemList.eM_energyTunnel4_UEV.get(1))
-                    .duration(6 * MINUTES + 40 * SECONDS)
+                    .duration(60 * SECONDS)
                     .eut(TierEU.RECIPE_UEV)
                     .addTo(assemblerRecipes);
                 GTValues.RA.stdBuilder()
@@ -2049,7 +2049,7 @@ public class Assembler implements Runnable {
                         GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials.NetherStar, 8),
                         GTUtility.getIntegratedCircuit(4))
                     .itemOutputs(CustomItemList.eM_energyTunnel4_UIV.get(1))
-                    .duration(6 * MINUTES + 40 * SECONDS)
+                    .duration(60 * SECONDS)
                     .eut(TierEU.RECIPE_UIV)
                     .addTo(assemblerRecipes);
                 GTValues.RA.stdBuilder()
@@ -2061,7 +2061,7 @@ public class Assembler implements Runnable {
                         GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials.Quantium, 8),
                         GTUtility.getIntegratedCircuit(4))
                     .itemOutputs(CustomItemList.eM_energyTunnel4_UMV.get(1))
-                    .duration(6 * MINUTES + 40 * SECONDS)
+                    .duration(60 * SECONDS)
                     .eut(TierEU.RECIPE_UMV)
                     .addTo(assemblerRecipes);
                 GTValues.RA.stdBuilder()
@@ -2073,7 +2073,7 @@ public class Assembler implements Runnable {
                         GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials.BlackPlutonium, 8),
                         GTUtility.getIntegratedCircuit(4))
                     .itemOutputs(CustomItemList.eM_energyTunnel4_UXV.get(1))
-                    .duration(6 * MINUTES + 40 * SECONDS)
+                    .duration(60 * SECONDS)
                     .eut(TierEU.RECIPE_UXV)
                     .addTo(assemblerRecipes);
 
@@ -2090,7 +2090,7 @@ public class Assembler implements Runnable {
                         GTOreDictUnificator.get(OrePrefixes.wireGt08, Materials.Bedrockium, 8),
                         GTUtility.getIntegratedCircuit(5))
                     .itemOutputs(CustomItemList.eM_energyTunnel5_UHV.get(1))
-                    .duration(13 * MINUTES + 20 * SECONDS)
+                    .duration(70 * SECONDS)
                     .eut(TierEU.RECIPE_UHV)
                     .addTo(assemblerRecipes);
                 GTValues.RA.stdBuilder()
@@ -2102,7 +2102,7 @@ public class Assembler implements Runnable {
                         GTOreDictUnificator.get(OrePrefixes.wireGt08, Materials.Draconium, 8),
                         GTUtility.getIntegratedCircuit(5))
                     .itemOutputs(CustomItemList.eM_energyTunnel5_UEV.get(1))
-                    .duration(13 * MINUTES + 20 * SECONDS)
+                    .duration(70 * SECONDS)
                     .eut(TierEU.RECIPE_UEV)
                     .addTo(assemblerRecipes);
                 GTValues.RA.stdBuilder()
@@ -2114,7 +2114,7 @@ public class Assembler implements Runnable {
                         GTOreDictUnificator.get(OrePrefixes.wireGt08, Materials.NetherStar, 8),
                         GTUtility.getIntegratedCircuit(5))
                     .itemOutputs(CustomItemList.eM_energyTunnel5_UIV.get(1))
-                    .duration(13 * MINUTES + 20 * SECONDS)
+                    .duration(70 * SECONDS)
                     .eut(TierEU.RECIPE_UIV)
                     .addTo(assemblerRecipes);
                 GTValues.RA.stdBuilder()
@@ -2126,7 +2126,7 @@ public class Assembler implements Runnable {
                         GTOreDictUnificator.get(OrePrefixes.wireGt08, Materials.Quantium, 8),
                         GTUtility.getIntegratedCircuit(5))
                     .itemOutputs(CustomItemList.eM_energyTunnel5_UMV.get(1))
-                    .duration(13 * MINUTES + 20 * SECONDS)
+                    .duration(70 * SECONDS)
                     .eut(TierEU.RECIPE_UMV)
                     .addTo(assemblerRecipes);
                 GTValues.RA.stdBuilder()
@@ -2138,7 +2138,7 @@ public class Assembler implements Runnable {
                         GTOreDictUnificator.get(OrePrefixes.wireGt08, Materials.BlackPlutonium, 8),
                         GTUtility.getIntegratedCircuit(5))
                     .itemOutputs(CustomItemList.eM_energyTunnel5_UXV.get(1))
-                    .duration(13 * MINUTES + 20 * SECONDS)
+                    .duration(70 * SECONDS)
                     .eut(TierEU.RECIPE_UXV)
                     .addTo(assemblerRecipes);
 
@@ -2155,7 +2155,7 @@ public class Assembler implements Runnable {
                         GTOreDictUnificator.get(OrePrefixes.wireGt08, Materials.Draconium, 16),
                         GTUtility.getIntegratedCircuit(6))
                     .itemOutputs(CustomItemList.eM_energyTunnel6_UEV.get(1))
-                    .duration(26 * MINUTES + 40 * SECONDS)
+                    .duration(80 * SECONDS)
                     .eut(TierEU.RECIPE_UEV)
                     .addTo(assemblerRecipes);
                 GTValues.RA.stdBuilder()
@@ -2167,7 +2167,7 @@ public class Assembler implements Runnable {
                         GTOreDictUnificator.get(OrePrefixes.wireGt08, Materials.NetherStar, 16),
                         GTUtility.getIntegratedCircuit(6))
                     .itemOutputs(CustomItemList.eM_energyTunnel6_UIV.get(1))
-                    .duration(26 * MINUTES + 40 * SECONDS)
+                    .duration(80 * SECONDS)
                     .eut(TierEU.RECIPE_UIV)
                     .addTo(assemblerRecipes);
                 GTValues.RA.stdBuilder()
@@ -2179,7 +2179,7 @@ public class Assembler implements Runnable {
                         GTOreDictUnificator.get(OrePrefixes.wireGt08, Materials.Quantium, 16),
                         GTUtility.getIntegratedCircuit(6))
                     .itemOutputs(CustomItemList.eM_energyTunnel6_UMV.get(1))
-                    .duration(26 * MINUTES + 40 * SECONDS)
+                    .duration(80 * SECONDS)
                     .eut(TierEU.RECIPE_UMV)
                     .addTo(assemblerRecipes);
                 GTValues.RA.stdBuilder()
@@ -2191,7 +2191,7 @@ public class Assembler implements Runnable {
                         GTOreDictUnificator.get(OrePrefixes.wireGt08, Materials.BlackPlutonium, 16),
                         GTUtility.getIntegratedCircuit(6))
                     .itemOutputs(CustomItemList.eM_energyTunnel6_UXV.get(1))
-                    .duration(26 * MINUTES + 40 * SECONDS)
+                    .duration(80 * SECONDS)
                     .eut(TierEU.RECIPE_UXV)
                     .addTo(assemblerRecipes);
 
@@ -2208,7 +2208,7 @@ public class Assembler implements Runnable {
                         GTOreDictUnificator.get(OrePrefixes.wireGt16, Materials.NetherStar, 16),
                         GTUtility.getIntegratedCircuit(7))
                     .itemOutputs(CustomItemList.eM_energyTunnel7_UIV.get(1))
-                    .duration(53 * MINUTES + 20 * SECONDS)
+                    .duration(90 * SECONDS)
                     .eut(TierEU.RECIPE_UIV)
                     .addTo(assemblerRecipes);
                 GTValues.RA.stdBuilder()
@@ -2220,7 +2220,7 @@ public class Assembler implements Runnable {
                         GTOreDictUnificator.get(OrePrefixes.wireGt16, Materials.Quantium, 16),
                         GTUtility.getIntegratedCircuit(7))
                     .itemOutputs(CustomItemList.eM_energyTunnel7_UMV.get(1))
-                    .duration(53 * MINUTES + 20 * SECONDS)
+                    .duration(90 * SECONDS)
                     .eut(TierEU.RECIPE_UMV)
                     .addTo(assemblerRecipes);
                 GTValues.RA.stdBuilder()
@@ -2232,7 +2232,7 @@ public class Assembler implements Runnable {
                         GTOreDictUnificator.get(OrePrefixes.wireGt16, Materials.BlackPlutonium, 16),
                         GTUtility.getIntegratedCircuit(7))
                     .itemOutputs(CustomItemList.eM_energyTunnel7_UXV.get(1))
-                    .duration(53 * MINUTES + 20 * SECONDS)
+                    .duration(90 * SECONDS)
                     .eut(TierEU.RECIPE_UXV)
                     .addTo(assemblerRecipes);
 

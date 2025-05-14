@@ -88,7 +88,7 @@ public class RecipeLoader {
             .eut(TierEU.RECIPE_EV)
             .addTo(assemblerRecipes);
 
-        // LNR Controller
+        // LNR Controller - Large Naquadah Reactor
         GTValues.RA.stdBuilder()
             .metadata(
                 RESEARCH_ITEM,
@@ -110,8 +110,8 @@ public class RecipeLoader {
                 MaterialsAlloy.INDALLOY_140.getFluidStack(32 * INGOTS),
                 Materials.Lubricant.getFluid(8_000))
             .itemOutputs(ItemRefer.Large_Naquadah_Reactor.get(1))
-            .eut(TierEU.RECIPE_ZPM)
-            .duration(13 * MINUTES + 30 * SECONDS)
+            .eut(TierEU.RECIPE_UV)
+            .duration(60 * SECONDS)
             .addTo(AssemblyLine);
 
         // LNR Casing
@@ -678,7 +678,7 @@ public class RecipeLoader {
                 MaterialsAlloy.INDALLOY_140.getFluidStack(1 * STACKS + 36 * INGOTS))
             .itemOutputs(ItemRefer.Naquadah_Fuel_Refinery.get(1))
             .eut(TierEU.RECIPE_UHV)
-            .duration(30 * MINUTES)
+            .duration(60 * SECONDS)
             .addTo(AssemblyLine);
 
         // Advanced Radiation Proof Plate
@@ -740,7 +740,7 @@ public class RecipeLoader {
                     Materials.Lubricant.getFluid(128_000))
                 .itemOutputs(ItemRefer.Field_Restriction_Coil_T1.get(1))
                 .eut(TierEU.RECIPE_ZPM)
-                .duration(15 * MINUTES)
+                .duration(60 * SECONDS)
                 .addTo(AssemblyLine);
 
             // Advanced Field Restriction Coil
@@ -762,8 +762,8 @@ public class RecipeLoader {
                     Materials.DraconiumAwakened.getMolten(1 * STACKS),
                     Materials.Lubricant.getFluid(128_000))
                 .itemOutputs(ItemRefer.Field_Restriction_Coil_T2.get(1))
-                .eut(TierEU.RECIPE_ZPM)
-                .duration(30 * MINUTES)
+                .eut(TierEU.RECIPE_UV)
+                .duration(60 * SECONDS)
                 .addTo(AssemblyLine);
 
             // Ultimate Field Restriction Coil
@@ -785,8 +785,8 @@ public class RecipeLoader {
                     Materials.Neutronium.getMolten(1 * STACKS),
                     MaterialsUEVplus.DimensionallyShiftedSuperfluid.getFluid(64_000))
                 .itemOutputs(ItemRefer.Field_Restriction_Coil_T3.get(1))
-                .eut(TierEU.RECIPE_ZPM)
-                .duration(1 * HOURS)
+                .eut(TierEU.RECIPE_UHV)
+                .duration(60 * SECONDS)
                 .addTo(AssemblyLine);
 
             // Temporal Field Restriction Coil
@@ -808,8 +808,8 @@ public class RecipeLoader {
                     MaterialsUEVplus.TranscendentMetal.getMolten(1 * STACKS),
                     MaterialsUEVplus.DimensionallyShiftedSuperfluid.getFluid(64_000))
                 .itemOutputs(ItemRefer.Field_Restriction_Coil_T4.get(1))
-                .eut(TierEU.RECIPE_ZPM)
-                .duration(2 * HOURS)
+                .eut(TierEU.RECIPE_UEV)
+                .duration(60 * SECONDS)
                 .addTo(AssemblyLine);
         }
 

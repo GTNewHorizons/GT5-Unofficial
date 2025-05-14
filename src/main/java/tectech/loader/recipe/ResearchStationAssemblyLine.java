@@ -857,8 +857,8 @@ public class ResearchStationAssemblyLine implements Runnable {
             new FluidStack[] { new FluidStack(FluidRegistry.getFluid("oganesson"), 50_000),
                 Materials.Infinity.getMolten(8 * STACKS), Materials.Cheese.getMolten(232_000L), },
             ItemList.Block_BedrockiumCompressed.get(1),
-            10000,
-            5000000);
+            3 * MINUTES,
+            (int) TierEU.RECIPE_UMV);
 
         // Batteries
         {
@@ -960,7 +960,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                     MaterialsElements.STANDALONE.CELESTIAL_TUNGSTEN.getFluidStack(4 * STACKS),
                     Materials.SuperCoolant.getFluid(256_000) },
                 ItemList.ZPM6.get(1),
-                350 * 20,
+                360 * 20,
                 (int) TierEU.RECIPE_UMV);
         }
 
@@ -1121,8 +1121,8 @@ public class ResearchStationAssemblyLine implements Runnable {
                 new FluidStack[] { Materials.Sunnarium.getMolten(1 * STACKS + 36 * INGOTS),
                     Materials.Void.getMolten(3 * STACKS + 8 * INGOTS), },
                 DEFCDraconicSchematic.get(1),
-                6000,
-                (int) TierEU.RECIPE_UV);
+                3 * MINUTES,
+                (int) TierEU.RECIPE_UHV);
 
             // DE Schematics Cores Tier 2
             TTRecipeAdder.addResearchableAssemblylineRecipe(
@@ -1137,8 +1137,8 @@ public class ResearchStationAssemblyLine implements Runnable {
                     new Object[] { OrePrefixes.circuit.get(Materials.UEV), 1 }, },
                 new FluidStack[] { Materials.Neutronium.getMolten(14400L), Materials.Void.getMolten(57600L), },
                 DEFCWyvernSchematic.get(1),
-                12000,
-                (int) TierEU.RECIPE_UHV);
+                3 * MINUTES,
+                (int) TierEU.RECIPE_UEV);
 
             // DE Schematics Cores Tier 3
             TTRecipeAdder.addResearchableAssemblylineRecipe(
@@ -1153,8 +1153,8 @@ public class ResearchStationAssemblyLine implements Runnable {
                     new Object[] { OrePrefixes.circuit.get(Materials.UIV), 1L } },
                 new FluidStack[] { Materials.Infinity.getMolten(14400L), Materials.Void.getMolten(115200L), },
                 DEFCAwakenedSchematic.get(1),
-                24000,
-                (int) TierEU.RECIPE_UEV);
+                3 * MINUTES,
+                (int) TierEU.RECIPE_UIV);
 
             // DE Schematics Cores Tier 4
             TTRecipeAdder.addResearchableAssemblylineRecipe(
@@ -1170,8 +1170,8 @@ public class ResearchStationAssemblyLine implements Runnable {
                 new FluidStack[] { MaterialsUEVplus.SpaceTime.getMolten(1 * STACKS + 36 * INGOTS),
                     Materials.Void.getMolten(25 * STACKS), },
                 DEFCChaoticSchematic.get(1),
-                36000,
-                (int) TierEU.RECIPE_UIV);
+                3 * MINUTES,
+                (int) TierEU.RECIPE_UMV);
         }
 
         // Debug maintenance hatch
@@ -3552,7 +3552,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.wireGt16, Materials.Quantium, 32) },
             new FluidStack[] { MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack(36 * STACKS) },
             CustomItemList.eM_energyTunnel8_UMV.get(1),
-            53 * MINUTES + 20 * SECONDS,
+            100 * SECONDS,
             (int) TierEU.RECIPE_UMV);
 
         // 4M UXV Target
@@ -3568,7 +3568,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.wireGt16, Materials.BlackPlutonium, 32) },
             new FluidStack[] { MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack(36 * STACKS) },
             CustomItemList.eM_energyTunnel8_UXV.get(1),
-            106 * MINUTES + 40 * SECONDS,
+            100 * SECONDS,
             (int) TierEU.RECIPE_UXV);
 
         // 16M UXV Target
@@ -3588,7 +3588,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.wireGt16, Materials.BlackPlutonium, 64) },
             new FluidStack[] { MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack(72 * STACKS) },
             CustomItemList.eM_energyTunnel9_UXV.get(1),
-            213 * MINUTES + 20 * SECONDS,
+            110 * SECONDS,
             (int) TierEU.RECIPE_UXV);
 
         // 4M UMV Source
@@ -3604,7 +3604,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.wireGt16, Materials.Quantium, 32) },
             new FluidStack[] { MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack(36 * STACKS) },
             CustomItemList.eM_dynamoTunnel8_UMV.get(1),
-            53 * MINUTES + 20 * SECONDS,
+            100 * SECONDS,
             (int) TierEU.RECIPE_UMV);
 
         // 4M UXV Source
@@ -3620,7 +3620,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.wireGt16, Materials.BlackPlutonium, 32) },
             new FluidStack[] { MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack(36 * STACKS) },
             CustomItemList.eM_dynamoTunnel8_UXV.get(1),
-            106 * MINUTES + 40 * SECONDS,
+            100 * SECONDS,
             (int) TierEU.RECIPE_UXV);
 
         // 16M UXV Source
@@ -3640,7 +3640,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.wireGt16, Materials.BlackPlutonium, 64) },
             new FluidStack[] { MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack(72 * STACKS) },
             CustomItemList.eM_dynamoTunnel9_UXV.get(1),
-            213 * MINUTES + 20 * SECONDS,
+            110 * SECONDS,
             (int) TierEU.RECIPE_UXV);
 
         // ------------------------ Wireless EU dynamos ------------------------

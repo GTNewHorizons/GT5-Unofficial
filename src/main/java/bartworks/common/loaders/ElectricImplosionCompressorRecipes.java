@@ -140,6 +140,7 @@ public class ElectricImplosionCompressorRecipes implements Runnable {
         this.addWhiteDwarfMagnetoEICRecipe(OrePrefixes.spring, 1, 1);
         this.addWhiteDwarfMagnetoEICRecipe(OrePrefixes.gearGt, 1, 2);
         this.addWhiteDwarfMagnetoEICRecipe(OrePrefixes.wireFine, 8, 1);
+        this.addWhiteDwarfMagnetoEICRecipe(OrePrefixes.block, 1, 1);
     }
 
     private void addWhiteDwarfMagnetoEICRecipe(final OrePrefixes part, final int multiplier,
