@@ -166,7 +166,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                 getModItem(NewHorizonsCoreMod.ID, "item.MicaInsulatorFoil", 64, 0),
                 getModItem(NewHorizonsCoreMod.ID, "item.MicaInsulatorFoil", 64, 0),
                 getModItem(NewHorizonsCoreMod.ID, "item.MicaInsulatorFoil", 64, 0), },
-            new FluidStack[] { new FluidStack(FluidRegistry.getFluid("molten.hypogen"), 576), },
+            new FluidStack[] { MaterialsElements.STANDALONE.HYPOGEN.getFluidStack(4 * INGOTS), },
             ItemList.Casing_Coil_Eternal.get(1),
             60 * 20,
             (int) TierEU.RECIPE_UMV);
