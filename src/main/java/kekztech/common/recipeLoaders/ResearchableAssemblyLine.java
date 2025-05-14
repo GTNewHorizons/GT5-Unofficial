@@ -18,6 +18,7 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
+import gtPlusPlus.core.material.MaterialsElements;
 import kekztech.common.Blocks;
 import tectech.recipe.TTRecipeAdder;
 
@@ -87,7 +88,7 @@ public class ResearchableAssemblyLine implements Runnable {
                 ItemList.Circuit_Parts_DiodeXSMD.get(64), ItemList.Circuit_Parts_InductorXSMD.get(32),
                 GTOreDictUnificator.get(OrePrefixes.wireGt08, Materials.SuperconductorUIV, 64) },
             new FluidStack[] { new FluidStack(solderUEV, 2 * STACKS),
-                new FluidStack(FluidRegistry.getFluid("molten.celestialtungsten"), 2 * STACKS),
+                MaterialsElements.STANDALONE.CELESTIAL_TUNGSTEN.getFluidStack(2 * STACKS),
                 Materials.Quantium.getMolten(2 * STACKS), Materials.SuperCoolant.getFluid(128_000) },
             new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 9),
             300 * 20,
@@ -110,7 +111,7 @@ public class ResearchableAssemblyLine implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.wireGt16, Materials.SuperconductorUMV, 64) },
             new FluidStack[] { new FluidStack(solderUEV, 4 * STACKS),
                 new FluidStack(FluidRegistry.getFluid("molten.astraltitanium"), 4 * STACKS),
-                new FluidStack(FluidRegistry.getFluid("molten.celestialtungsten"), 4 * STACKS),
+                MaterialsElements.STANDALONE.CELESTIAL_TUNGSTEN.getFluidStack(4 * STACKS),
                 Materials.SuperCoolant.getFluid(256_000) },
             new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 10),
             360 * 20,

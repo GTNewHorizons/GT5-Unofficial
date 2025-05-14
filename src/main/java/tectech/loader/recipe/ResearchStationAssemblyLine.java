@@ -30,7 +30,6 @@ import static gtPlusPlus.core.material.MaterialsAlloy.QUANTUM;
 import static gtPlusPlus.core.material.MaterialsAlloy.TITANSTEEL;
 import static gtPlusPlus.core.material.MaterialsAlloy.TRINIUM_REINFORCED_STEEL;
 import static gtPlusPlus.core.material.MaterialsElements.STANDALONE.ASTRAL_TITANIUM;
-import static gtPlusPlus.core.material.MaterialsElements.STANDALONE.CELESTIAL_TUNGSTEN;
 import static gtPlusPlus.core.material.MaterialsElements.STANDALONE.CHRONOMATIC_GLASS;
 import static gtPlusPlus.core.material.MaterialsElements.STANDALONE.HYPOGEN;
 import static kekztech.common.Blocks.lscLapotronicEnergyUnit;
@@ -1645,7 +1644,7 @@ public class ResearchStationAssemblyLine implements Runnable {
         Fluid mutated_living_solder = FluidRegistry.getFluid("molten.mutatedlivingsolder") != null
             ? FluidRegistry.getFluid("molten.mutatedlivingsolder")
             : FluidRegistry.getFluid("molten.solderingalloy");
-        Fluid celestialTungsten = FluidRegistry.getFluid("molten.celestialtungsten");
+        Fluid celestialTungsten = MaterialsElements.STANDALONE.CELESTIAL_TUNGSTEN.getFluid();
 
         int total_computation = 96_000;
         int comp_per_second = 128;
@@ -2002,8 +2001,9 @@ public class ResearchStationAssemblyLine implements Runnable {
                 ItemList.Electric_Motor_UMV.get(1L),
                 GTOreDictUnificator.get(OrePrefixes.stick, MaterialsUEVplus.SpaceTime, 16L),
                 ItemList.NuclearStar.get(4L), new Object[] { OrePrefixes.circuit.get(Materials.UMV), 4L },
-                CELESTIAL_TUNGSTEN.getFoil(64), QUANTUM.getFoil(64), ASTRAL_TITANIUM.getFoil(64),
-                TITANSTEEL.getFoil(64), GTOreDictUnificator.get(OrePrefixes.cableGt04, Materials.Quantium, 7L) },
+                MaterialsElements.STANDALONE.CELESTIAL_TUNGSTEN.getFoil(64), QUANTUM.getFoil(64),
+                ASTRAL_TITANIUM.getFoil(64), TITANSTEEL.getFoil(64),
+                GTOreDictUnificator.get(OrePrefixes.cableGt04, Materials.Quantium, 7L) },
             new FluidStack[] { fluid_0, fluid_1, fluid_2 },
             ItemList.Emitter_UMV.get(1L),
             crafting_time_in_ticks,
@@ -2023,8 +2023,9 @@ public class ResearchStationAssemblyLine implements Runnable {
                 ItemList.Electric_Motor_UMV.get(1),
                 GTOreDictUnificator.get(OrePrefixes.plate, MaterialsUEVplus.SpaceTime, 8L),
                 ItemList.NuclearStar.get(4L), new Object[] { OrePrefixes.circuit.get(Materials.UMV), 4L },
-                CELESTIAL_TUNGSTEN.getFoil(64), QUANTUM.getFoil(64), ASTRAL_TITANIUM.getFoil(64),
-                TITANSTEEL.getFoil(64), GTOreDictUnificator.get(OrePrefixes.cableGt04, Materials.Quantium, 7L) },
+                MaterialsElements.STANDALONE.CELESTIAL_TUNGSTEN.getFoil(64), QUANTUM.getFoil(64),
+                ASTRAL_TITANIUM.getFoil(64), TITANSTEEL.getFoil(64),
+                GTOreDictUnificator.get(OrePrefixes.cableGt04, Materials.Quantium, 7L) },
             new FluidStack[] { fluid_0, fluid_1, fluid_2 },
             ItemList.Sensor_UMV.get(1L),
             crafting_time_in_ticks,
@@ -3693,7 +3694,8 @@ public class ResearchStationAssemblyLine implements Runnable {
                     GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.CosmicNeutronium, 2),
                     MaterialsAlloy.ABYSSAL.getFrameBox(4) },
                 new FluidStack[] { MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack(2 * STACKS),
-                    Materials.Bedrockium.getMolten(256 * STACKS), CELESTIAL_TUNGSTEN.getFluidStack(32 * STACKS),
+                    Materials.Bedrockium.getMolten(256 * STACKS),
+                    MaterialsElements.STANDALONE.CELESTIAL_TUNGSTEN.getFluidStack(32 * STACKS),
                     Materials.Neutronium.getMolten(32 * STACKS) },
                 CustomItemList.Godforge_SingularityShieldingCasing.get(4),
                 30 * SECONDS,

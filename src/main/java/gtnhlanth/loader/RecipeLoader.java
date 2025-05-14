@@ -644,7 +644,7 @@ public class RecipeLoader {
 
         GTValues.RA.stdBuilder()
             .itemInputs(new ItemStack(LanthItemList.MASKED_MASK))
-            .fluidInputs(WerkstoffMaterialPool.FluoroformOxygenMix.getFluidOrGas(4000))
+            .fluidInputs(WerkstoffMaterialPool.FluoroformOxygenMix.getFluidOrGas(4_000))
             .itemOutputs(new ItemStack(LanthItemList.ETCHED_MASK_1))
             .duration(60 * GTRecipeBuilder.SECONDS)
             .eut(TierEU.RECIPE_LuV)
@@ -930,7 +930,7 @@ public class RecipeLoader {
                 GTUtility.getIntegratedCircuit(1),
                 WerkstoffMaterialPool.LowPurityHafnium.get(OrePrefixes.dust, 1))
             .itemOutputs(WerkstoffMaterialPool.HafniumIodide.get(OrePrefixes.dust, 5))
-            .fluidInputs(WerkstoffMaterialPool.Iodine.getFluidOrGas(4000))
+            .fluidInputs(WerkstoffMaterialPool.Iodine.getFluidOrGas(4_000))
             .duration(15 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(UniversalChemical);
@@ -953,7 +953,7 @@ public class RecipeLoader {
             .itemOutputs(
                 WerkstoffMaterialPool.Hafnium.get(OrePrefixes.ingotHot, 1),
                 WerkstoffMaterialPool.HafniumRunoff.get(OrePrefixes.dustTiny, 1))
-            .fluidOutputs(WerkstoffMaterialPool.Iodine.getFluidOrGas(4000))
+            .fluidOutputs(WerkstoffMaterialPool.Iodine.getFluidOrGas(4_000))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .metadata(COIL_HEAT, 3400)
@@ -1129,7 +1129,7 @@ public class RecipeLoader {
 
         // Lanthanum Hexaboride
         GTValues.RA.stdBuilder()
-            .fluidInputs(WerkstoffMaterialPool.BoronTrichloride.getFluidOrGas(8000))
+            .fluidInputs(WerkstoffMaterialPool.BoronTrichloride.getFluidOrGas(8_000))
             .fluidOutputs(FluidRegistry.getFluidStack("boricacid", 1000))
             .itemInputs(WerkstoffMaterialPool.LanthanumOxide.get(OrePrefixes.dust, 1))
             .itemOutputs(WerkstoffMaterialPool.LanthanumHexaboride.get(OrePrefixes.gemFlawless))
@@ -2222,7 +2222,7 @@ public class RecipeLoader {
                 GTModHandler.getModItem(NewHorizonsCoreMod.ID, "item.MysteriousCrystalLens", 0),
                 Materials.Lanthanum.getDust(1),
                 Materials.Carbon.getNanite(1))
-            .fluidInputs(GGMaterial.P507.getFluidOrGas(4000))
+            .fluidInputs(GGMaterial.P507.getFluidOrGas(4_000))
             .fluidOutputs(LanthanumExtractingNanoResin.getFluidOrGas(1_000))
             .eut(TierEU.RECIPE_UV)
             .duration(10 * SECONDS)
@@ -2234,7 +2234,7 @@ public class RecipeLoader {
                 GTModHandler.getModItem(NewHorizonsCoreMod.ID, "item.MysteriousCrystalLens", 0),
                 Materials.Praseodymium.getDust(1),
                 Materials.Carbon.getNanite(1))
-            .fluidInputs(GGMaterial.P507.getFluidOrGas(4000))
+            .fluidInputs(GGMaterial.P507.getFluidOrGas(4_000))
             .fluidOutputs(PraseodymiumExtractingNanoResin.getFluidOrGas(1_000))
             .eut(TierEU.RECIPE_UV)
             .duration(10 * SECONDS)
@@ -2246,7 +2246,7 @@ public class RecipeLoader {
                 GTModHandler.getModItem(NewHorizonsCoreMod.ID, "item.MysteriousCrystalLens", 0),
                 Materials.Cerium.getDust(1),
                 Materials.Carbon.getNanite(1))
-            .fluidInputs(GGMaterial.P507.getFluidOrGas(4000))
+            .fluidInputs(GGMaterial.P507.getFluidOrGas(4_000))
             .fluidOutputs(CeriumExtractingNanoResin.getFluidOrGas(1_000))
             .eut(TierEU.RECIPE_UV)
             .duration(10 * SECONDS)
@@ -2258,7 +2258,7 @@ public class RecipeLoader {
                 GTModHandler.getModItem(NewHorizonsCoreMod.ID, "item.MysteriousCrystalLens", 0),
                 Materials.Neodymium.getDust(1),
                 Materials.Carbon.getNanite(1))
-            .fluidInputs(GGMaterial.P507.getFluidOrGas(4000))
+            .fluidInputs(GGMaterial.P507.getFluidOrGas(4_000))
             .fluidOutputs(NeodymiumExtractingNanoResin.getFluidOrGas(1_000))
             .eut(TierEU.RECIPE_UV)
             .duration(10 * SECONDS)
@@ -2270,7 +2270,7 @@ public class RecipeLoader {
                 GTModHandler.getModItem(NewHorizonsCoreMod.ID, "item.MysteriousCrystalLens", 0),
                 Materials.Promethium.getDust(1),
                 Materials.Carbon.getNanite(1))
-            .fluidInputs(GGMaterial.P507.getFluidOrGas(4000))
+            .fluidInputs(GGMaterial.P507.getFluidOrGas(4_000))
             .fluidOutputs(PromethiumExtractingNanoResin.getFluidOrGas(1_000))
             .eut(TierEU.RECIPE_UV)
             .duration(10 * SECONDS)
@@ -2282,7 +2282,7 @@ public class RecipeLoader {
                 GTModHandler.getModItem(NewHorizonsCoreMod.ID, "item.MysteriousCrystalLens", 0),
                 Materials.Samarium.getDust(1),
                 Materials.Carbon.getNanite(1))
-            .fluidInputs(GGMaterial.P507.getFluidOrGas(4000))
+            .fluidInputs(GGMaterial.P507.getFluidOrGas(4_000))
             .fluidOutputs(SamariumExtractingNanoResin.getFluidOrGas(1_000))
             .eut(TierEU.RECIPE_UV)
             .duration(10 * SECONDS)
@@ -2294,7 +2294,7 @@ public class RecipeLoader {
                 GTModHandler.getModItem(NewHorizonsCoreMod.ID, "item.MysteriousCrystalLens", 0),
                 Materials.Europium.getDust(1),
                 Materials.Carbon.getNanite(1))
-            .fluidInputs(GGMaterial.P507.getFluidOrGas(4000))
+            .fluidInputs(GGMaterial.P507.getFluidOrGas(4_000))
             .fluidOutputs(EuropiumExtractingNanoResin.getFluidOrGas(1_000))
             .eut(TierEU.RECIPE_UV)
             .duration(10 * SECONDS)
@@ -2306,7 +2306,7 @@ public class RecipeLoader {
                 GTModHandler.getModItem(NewHorizonsCoreMod.ID, "item.MysteriousCrystalLens", 0),
                 Materials.Gadolinium.getDust(1),
                 Materials.Carbon.getNanite(1))
-            .fluidInputs(GGMaterial.P507.getFluidOrGas(4000))
+            .fluidInputs(GGMaterial.P507.getFluidOrGas(4_000))
             .fluidOutputs(GadoliniumExtractingNanoResin.getFluidOrGas(1_000))
             .eut(TierEU.RECIPE_UV)
             .duration(10 * SECONDS)
@@ -2318,7 +2318,7 @@ public class RecipeLoader {
                 GTModHandler.getModItem(NewHorizonsCoreMod.ID, "item.MysteriousCrystalLens", 0),
                 Materials.Terbium.getDust(1),
                 Materials.Carbon.getNanite(1))
-            .fluidInputs(GGMaterial.P507.getFluidOrGas(4000))
+            .fluidInputs(GGMaterial.P507.getFluidOrGas(4_000))
             .fluidOutputs(TerbiumExtractingNanoResin.getFluidOrGas(1_000))
             .eut(TierEU.RECIPE_UV)
             .duration(10 * SECONDS)
@@ -2330,7 +2330,7 @@ public class RecipeLoader {
                 GTModHandler.getModItem(NewHorizonsCoreMod.ID, "item.MysteriousCrystalLens", 0),
                 Materials.Dysprosium.getDust(1),
                 Materials.Carbon.getNanite(1))
-            .fluidInputs(GGMaterial.P507.getFluidOrGas(4000))
+            .fluidInputs(GGMaterial.P507.getFluidOrGas(4_000))
             .fluidOutputs(DysprosiumExtractingNanoResin.getFluidOrGas(1_000))
             .eut(TierEU.RECIPE_UV)
             .duration(10 * SECONDS)
@@ -2342,7 +2342,7 @@ public class RecipeLoader {
                 GTModHandler.getModItem(NewHorizonsCoreMod.ID, "item.MysteriousCrystalLens", 0),
                 Materials.Holmium.getDust(1),
                 Materials.Carbon.getNanite(1))
-            .fluidInputs(GGMaterial.P507.getFluidOrGas(4000))
+            .fluidInputs(GGMaterial.P507.getFluidOrGas(4_000))
             .fluidOutputs(HolmiumExtractingNanoResin.getFluidOrGas(1_000))
             .eut(TierEU.RECIPE_UV)
             .duration(10 * SECONDS)
@@ -2354,7 +2354,7 @@ public class RecipeLoader {
                 GTModHandler.getModItem(NewHorizonsCoreMod.ID, "item.MysteriousCrystalLens", 0),
                 Materials.Erbium.getDust(1),
                 Materials.Carbon.getNanite(1))
-            .fluidInputs(GGMaterial.P507.getFluidOrGas(4000))
+            .fluidInputs(GGMaterial.P507.getFluidOrGas(4_000))
             .fluidOutputs(ErbiumExtractingNanoResin.getFluidOrGas(1_000))
             .eut(TierEU.RECIPE_UV)
             .duration(10 * SECONDS)
@@ -2366,7 +2366,7 @@ public class RecipeLoader {
                 GTModHandler.getModItem(NewHorizonsCoreMod.ID, "item.MysteriousCrystalLens", 0),
                 Materials.Thulium.getDust(1),
                 Materials.Carbon.getNanite(1))
-            .fluidInputs(GGMaterial.P507.getFluidOrGas(4000))
+            .fluidInputs(GGMaterial.P507.getFluidOrGas(4_000))
             .fluidOutputs(ThuliumExtractingNanoResin.getFluidOrGas(1_000))
             .eut(TierEU.RECIPE_UV)
             .duration(10 * SECONDS)
@@ -2378,7 +2378,7 @@ public class RecipeLoader {
                 GTModHandler.getModItem(NewHorizonsCoreMod.ID, "item.MysteriousCrystalLens", 0),
                 Materials.Ytterbium.getDust(1),
                 Materials.Carbon.getNanite(1))
-            .fluidInputs(GGMaterial.P507.getFluidOrGas(4000))
+            .fluidInputs(GGMaterial.P507.getFluidOrGas(4_000))
             .fluidOutputs(YtterbiumExtractingNanoResin.getFluidOrGas(1_000))
             .eut(TierEU.RECIPE_UV)
             .duration(10 * SECONDS)
@@ -2390,7 +2390,7 @@ public class RecipeLoader {
                 GTModHandler.getModItem(NewHorizonsCoreMod.ID, "item.MysteriousCrystalLens", 0),
                 Materials.Lutetium.getDust(1),
                 Materials.Carbon.getNanite(1))
-            .fluidInputs(GGMaterial.P507.getFluidOrGas(4000))
+            .fluidInputs(GGMaterial.P507.getFluidOrGas(4_000))
             .fluidOutputs(LutetiumExtractingNanoResin.getFluidOrGas(1_000))
             .eut(TierEU.RECIPE_UV)
             .duration(10 * SECONDS)
@@ -3147,7 +3147,7 @@ public class RecipeLoader {
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(1))
             .fluidInputs(SamariumRareEarthMud.getFluidOrGas(1_000), Materials.Water.getFluid(16_000))
-            .fluidOutputs(DilutedSamariumRareEarthSolution.getFluidOrGas(8000))
+            .fluidOutputs(DilutedSamariumRareEarthSolution.getFluidOrGas(8_000))
             .eut(TierEU.RECIPE_EV)
             .duration(1200)
             .addTo(multiblockChemicalReactorRecipes);
@@ -3242,7 +3242,7 @@ public class RecipeLoader {
         GTValues.RA.stdBuilder()
             .itemInputs(WerkstoffMaterialPool.Butanediol.get(OrePrefixes.cell, 1))
             .itemOutputs(Materials.Empty.getCells(1))
-            .fluidInputs(WerkstoffMaterialPool.TolueneTetramethylDiisocyanate.getFluidOrGas(4000))
+            .fluidInputs(WerkstoffMaterialPool.TolueneTetramethylDiisocyanate.getFluidOrGas(4_000))
             .fluidOutputs(WerkstoffMaterialPool.PTMEGElastomer.getMolten(4000))
             .duration(1 * MINUTES + 15 * SECONDS)
             .eut(TierEU.RECIPE_HV)

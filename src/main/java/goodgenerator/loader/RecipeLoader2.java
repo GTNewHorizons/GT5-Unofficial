@@ -931,7 +931,7 @@ public class RecipeLoader2 {
             .fluidInputs(
                 GGMaterial.cyclopentadiene.getFluidOrGas(2000),
                 GGMaterial.ferrousChloride.getFluidOrGas(1_000),
-                GGMaterial.diethylamine.getFluidOrGas(8000),
+                GGMaterial.diethylamine.getFluidOrGas(8_000),
                 Materials.Ice.getSolid(4000))
             .fluidOutputs(GGMaterial.impureFerroceneMixture.getFluidOrGas(15000))
             .duration(2 * MINUTES)
@@ -1592,14 +1592,14 @@ public class RecipeLoader2 {
                 GGMaterial.ether.getFluidOrGas(1_000),
                 Materials.Fluorine.getGas(40000),
                 Materials.Ice.getSolid(8000))
-            .fluidOutputs(GGMaterial.antimonyPentafluorideSolution.getFluidOrGas(8000))
+            .fluidOutputs(GGMaterial.antimonyPentafluorideSolution.getFluidOrGas(8_000))
             .duration(40 * SECONDS)
             .eut(TierEU.RECIPE_IV)
             .addTo(multiblockChemicalReactorRecipes);
 
         CrackRecipeAdder.addUniversalDistillationRecipe(
-            GGMaterial.antimonyPentafluorideSolution.getFluidOrGas(4000),
-            new FluidStack[] { GGMaterial.antimonyPentafluoride.getFluidOrGas(4000),
+            GGMaterial.antimonyPentafluorideSolution.getFluidOrGas(4_000),
+            new FluidStack[] { GGMaterial.antimonyPentafluoride.getFluidOrGas(4_000),
                 GGMaterial.ether.getFluidOrGas(500) },
             GTValues.NI,
             5 * SECONDS,
