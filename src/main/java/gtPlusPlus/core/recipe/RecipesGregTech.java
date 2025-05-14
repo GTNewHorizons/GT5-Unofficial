@@ -1665,7 +1665,7 @@ public class RecipesGregTech {
             .itemInputs(GTUtility.getIntegratedCircuit(1))
             .itemOutputs(GregtechItemList.Pellet_RTG_PO210.get(1))
             .outputChances(100)
-            .fluidInputs(FluidUtils.getFluidStack("molten.bismuth", 1))
+            .fluidInputs(Materials.Bismuth.getMolten(1))
             .duration(8 * HOURS + 20 * MINUTES)
             .eut(TierEU.RECIPE_IV)
             .addTo(cyclotronRecipes);
@@ -1675,7 +1675,7 @@ public class RecipesGregTech {
             .itemInputs(GTUtility.getIntegratedCircuit(1))
             .itemOutputs(GregtechItemList.Pellet_RTG_AM241.get(4))
             .outputChances(2500)
-            .fluidInputs(FluidUtils.getFluidStack("molten.americium", 1))
+            .fluidInputs(Materials.Americium.getMolten(1))
             .duration(8 * HOURS + 20 * MINUTES)
             .eut(4080)
             .addTo(cyclotronRecipes);
@@ -1685,7 +1685,7 @@ public class RecipesGregTech {
             .itemInputs(GTUtility.getIntegratedCircuit(1))
             .itemOutputs(GregtechItemList.Pellet_RTG_SR90.get(1))
             .outputChances(570)
-            .fluidInputs(FluidUtils.getFluidStack("molten.uranium235", 10))
+            .fluidInputs(Materials.Uranium235.getMolten(10))
             .duration(8 * HOURS + 20 * MINUTES)
             .eut(4080)
             .addTo(cyclotronRecipes);
@@ -1705,7 +1705,7 @@ public class RecipesGregTech {
             .itemInputs(GTUtility.getIntegratedCircuit(1))
             .itemOutputs(GregtechItemList.Pellet_RTG_SR90.get(1))
             .outputChances(220)
-            .fluidInputs(FluidUtils.getFluidStack("molten.plutonium", 10))
+            .fluidInputs(Materials.Plutonium.getMolten(10))
             .duration(8 * HOURS + 20 * MINUTES)
             .eut(4080)
             .addTo(cyclotronRecipes);

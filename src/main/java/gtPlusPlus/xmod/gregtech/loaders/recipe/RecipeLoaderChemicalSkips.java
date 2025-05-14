@@ -24,6 +24,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
 import bartworks.system.material.WerkstoffLoader;
+import goodgenerator.items.GGMaterial;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
@@ -621,7 +622,7 @@ public class RecipeLoaderChemicalSkips {
                 MaterialsKevlar.Kevlar.getDust(64),
                 MaterialsUEVplus.TranscendentMetal.getNanite(1))
             .itemOutputs(GregtechItemList.UltimatePlasticCatalyst.get(1))
-            .fluidInputs(FluidUtils.getFluidStack("molten.shirabon", 10 * STACKS))
+            .fluidInputs(GGMaterial.shirabon.getMolten(10 * STACKS))
             .duration(60 * SECONDS)
             .eut(TierEU.RECIPE_UMV)
             .addTo(assemblerRecipes);
@@ -632,7 +633,7 @@ public class RecipeLoaderChemicalSkips {
                 ItemList.Circuit_Chip_Biocell.get(64),
                 MaterialsUEVplus.TranscendentMetal.getNanite(1))
             .itemOutputs(GregtechItemList.BiologicalIntelligenceCatalyst.get(1))
-            .fluidInputs(FluidUtils.getFluidStack("molten.shirabon", 10 * STACKS))
+            .fluidInputs(GGMaterial.shirabon.getMolten(10 * STACKS))
             .duration(60 * SECONDS)
             .eut(TierEU.RECIPE_UMV)
             .addTo(assemblerRecipes);
@@ -645,7 +646,7 @@ public class RecipeLoaderChemicalSkips {
                 Particle.getIon("Hydrogen", 0),
                 MaterialsUEVplus.Eternity.getNanite(16))
             .itemOutputs(GregtechItemList.SynchrotronCapableCatalyst.get(1))
-            .fluidInputs(FluidUtils.getFluidStack("molten.shirabon", 10 * STACKS))
+            .fluidInputs(GGMaterial.shirabon.getMolten(10 * STACKS))
             .duration(60 * SECONDS)
             .eut(TierEU.RECIPE_UMV)
             .addTo(assemblerRecipes);
@@ -670,7 +671,7 @@ public class RecipeLoaderChemicalSkips {
                 GTOreDictUnificator.get("dustIodine", 64),
                 MaterialsUEVplus.TranscendentMetal.getNanite(1))
             .itemOutputs(GregtechItemList.AlgagenicGrowthPromoterCatalyst.get(1))
-            .fluidInputs(FluidUtils.getFluidStack("molten.shirabon", 10 * STACKS))
+            .fluidInputs(GGMaterial.shirabon.getMolten(10 * STACKS))
             .duration(60 * SECONDS)
             .eut(TierEU.RECIPE_UMV)
             .addTo(assemblerRecipes);

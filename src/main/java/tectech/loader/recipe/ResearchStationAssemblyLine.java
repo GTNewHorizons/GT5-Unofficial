@@ -2372,7 +2372,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                     GTOreDictUnificator.get(OrePrefixes.wireGt16, Materials.SuperconductorUMV, 64) },
                 new FluidStack[] { MaterialsUEVplus.Time.getMolten(144_000), MaterialsUEVplus.Space.getMolten(144_000),
                     FluidUtils.getFluidStack("molten.metastable oganesson", 16 * STACKS),
-                    FluidUtils.getFluidStack("molten.shirabon", 16 * STACKS), },
+                    GGMaterial.shirabon.getMolten(16 * STACKS), },
                 CustomItemList.Machine_Multi_EyeOfHarmony.get(1),
                 400 * MINUTES,
                 (int) TierEU.RECIPE_UMV);
