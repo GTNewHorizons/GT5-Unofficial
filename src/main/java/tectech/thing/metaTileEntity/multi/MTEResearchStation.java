@@ -24,6 +24,7 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 
+import gregtech.api.metatileentity.implementations.gui.MTEMultiBlockBaseGui;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
@@ -83,6 +84,7 @@ import tectech.thing.casing.TTCasingsContainer;
 import tectech.thing.metaTileEntity.hatch.MTEHatchEnergyMulti;
 import tectech.thing.metaTileEntity.hatch.MTEHatchObjectHolder;
 import tectech.thing.metaTileEntity.multi.base.TTMultiblockBase;
+import tectech.thing.metaTileEntity.multi.base.gui.MTEResearchStationGui;
 import tectech.thing.metaTileEntity.multi.base.render.TTRenderedExtendedFacingTexture;
 
 /**
@@ -94,15 +96,16 @@ public class MTEResearchStation extends TTMultiblockBase implements ISurvivalCon
     public static final String crafter = "EM Crafting";
     // region variables
     private final ArrayList<MTEHatchObjectHolder> eHolders = new ArrayList<>();
-    private GTRecipe.RecipeAssemblyLine tRecipe;
+    public GTRecipe.RecipeAssemblyLine tRecipe;
     private static final String assembly = "Assembly line";
     private static final String scanner = "Scanner";
     private String machineType = assembly;
     private ItemStack holdItem;
-    private long computationRemaining, computationRequired;
+    public long computationRemaining;
+    public long computationRequired;
 
     // Used to sync currently researching item to GUI
-    private String clientOutputName;
+    public String clientOutputName;
 
     private static final String[] description = new String[] {
         EnumChatFormatting.AQUA + translateToLocal("tt.keyphrase.Hint_Details") + ":",
@@ -603,47 +606,8 @@ public class MTEResearchStation extends TTMultiblockBase implements ISurvivalCon
     }
 
     @Override
-    public void insertTexts(ListWidget<IWidget, ?> machineInfo, ItemStackHandler invSlot, PanelSyncManager syncManager,
-        ModularPanel parentPanel) {
-        super.insertTexts(machineInfo, invSlot, syncManager, parentPanel);
-        LongSyncValue requiredComputationSyncer = new LongSyncValue(
-            () -> computationRequired,
-            val -> computationRequired = val);
-        LongSyncValue remainingcomputationSyncer = new LongSyncValue(
-            () -> computationRemaining,
-            val -> computationRemaining = val);
-        StringSyncValue outputSyncer = new StringSyncValue(() -> {
-            if (tRecipe != null && tRecipe.mOutput != null) {
-                return tRecipe.mOutput.getDisplayName();
-            }
-            return "";
-        }, val -> clientOutputName = val);
-        syncManager.syncValue("requiredComputation", requiredComputationSyncer);
-        syncManager.syncValue("remainingComputation", remainingcomputationSyncer);
-        syncManager.syncValue("output", outputSyncer);
-
-        machineInfo
-            .child(
-                IKey.dynamic(
-                    () -> StatCollector.translateToLocalFormatted("GT5U.gui.text.researching_item", clientOutputName))
-                    .asWidget()
-
-                    .setEnabledIf(
-                        widget -> computationRequired > 0 && clientOutputName != null && !clientOutputName.isEmpty()))
-            .child(
-                IKey.dynamic(
-                    () -> StatCollector.translateToLocalFormatted(
-                        "GT5U.gui.text.research_progress",
-                        getComputationConsumed(),
-                        getComputationRequired(),
-                        GTUtility.formatNumbers(getComputationProgress())))
-                    .asWidget()
-                    .widthRel(1)
-                    .marginTop(2)
-                    .height(18)
-                    .setEnabledIf(
-                        widget -> computationRequired > 0 && clientOutputName != null && !clientOutputName.isEmpty()));
-
+    protected @NotNull MTEMultiBlockBaseGui getGui() {
+        return new MTEResearchStationGui(this);
     }
 
     @Override
@@ -657,15 +621,15 @@ public class MTEResearchStation extends TTMultiblockBase implements ISurvivalCon
         tag.setLong("computationRequired", getComputationRequired());
     }
 
-    private long getComputationConsumed() {
+    public long getComputationConsumed() {
         return (computationRequired - computationRemaining) / 20L;
     }
 
-    private long getComputationRequired() {
+    public long getComputationRequired() {
         return computationRequired / 20L;
     }
 
-    private double getComputationProgress() {
+    public double getComputationProgress() {
         return 100d
             * (getComputationRequired() > 0d ? (double) getComputationConsumed() / getComputationRequired() : 0d);
     }
