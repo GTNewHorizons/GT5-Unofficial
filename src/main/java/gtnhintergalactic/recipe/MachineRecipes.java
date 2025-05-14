@@ -105,7 +105,7 @@ public class MachineRecipes implements Runnable {
         // Space Elevator Cable
         RA.stdBuilder()
             .itemInputs(ItemList.NanotubeSpool.get(64), GTOreDictUnificator.get(OrePrefixes.circuit, Materials.UHV, 4))
-            .fluidInputs(FluidRegistry.getFluidStack("molten.ethylcyanoacrylatesuperglue", 8000))
+            .fluidInputs(MaterialMisc.ETHYL_CYANOACRYLATE.getFluidStack(8_000))
             .itemOutputs(ItemList.SpaceElevatorCable.get(1))
             .duration(2 * MINUTE)
             .eut(TierEU.RECIPE_UHV)

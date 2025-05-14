@@ -186,7 +186,7 @@ public class RecipeLoaderChemicalSkips {
             .itemOutputs(ItemList.StableAdhesive.get(1))
             .fluidInputs(Materials.Oxygen.getGas(10_000), Materials.Hydrogen.getGas(10_000))
             .fluidOutputs(
-                MaterialMisc.ETHYL_CYANOACRYLATE.getFluidStack(1000 * 32),
+                MaterialMisc.ETHYL_CYANOACRYLATE.getFluidStack(32_000),
                 Materials.AdvancedGlue.getFluid(1_000 * NUGGETS),
                 MaterialsAlloy.INDALLOY_140.getFluidStack(1 * STACKS),
                 Materials.SolderingAlloy.getMolten(2 * STACKS))

@@ -22,6 +22,7 @@ import gregtech.api.util.ExternalMaterials;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.recipe.Scanning;
+import gtPlusPlus.core.material.MaterialMisc;
 import gtPlusPlus.core.material.MaterialsAlloy;
 import tectech.thing.CustomItemList;
 
@@ -894,7 +895,7 @@ public class AssemblyLineRecipes implements Runnable {
             .itemOutputs(ItemList.TierdDrone2.get(1))
             .fluidInputs(
                 MaterialsAlloy.INDALLOY_140.getFluidStack(15 * STACKS + 40 * INGOTS),
-                FluidRegistry.getFluidStack("molten.ethylcyanoacrylatesuperglue", 2_000))
+                MaterialMisc.ETHYL_CYANOACRYLATE.getFluidStack(2_000))
             .duration(60 * SECONDS)
             .eut(TierEU.RECIPE_UHV)
             .addTo(AssemblyLine);
