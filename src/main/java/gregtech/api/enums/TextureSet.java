@@ -66,6 +66,12 @@ public class TextureSet {
         SET_GEM_VERTICAL = new TextureSet("GEM_VERTICAL"), SET_GEM_HORIZONTAL = new TextureSet("GEM_HORIZONTAL");
 
     /**
+     * Custom Texture Sets for more clean code
+     */
+    public static final TextureSet SET_DARKSTEEL = new TextureSet("darksteel", true),
+        SET_VIBRANT = new TextureSet("vibrant", true), SET_MELODIC = new TextureSet("melodic", true);
+
+    /**
      * For the Indices of OrePrefixes you need to look into the OrePrefix Enum.
      */
     public static final short INDEX_wire = 69, INDEX_foil = 70, INDEX_block1 = 71, INDEX_block2 = 72, INDEX_block3 = 73,
