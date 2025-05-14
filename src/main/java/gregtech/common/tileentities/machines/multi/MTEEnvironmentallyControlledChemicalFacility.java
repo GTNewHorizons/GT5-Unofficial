@@ -318,17 +318,17 @@ public class MTEEnvironmentallyControlledChemicalFacility extends
             .addSeparator()
             .addInfo("" + EnumChatFormatting.WHITE + EnumChatFormatting.BOLD + "Module interaction")
             .addInfo(
-                EnumChatFormatting.GRAY + "ECCF drains "
+                EnumChatFormatting.GRAY + "Every second, ECCF temperature drifts towards ambient, to: "
+                    + EnumChatFormatting.GOLD
+                    + "(current - ambient) * 0.98 + ambient")
+            .addInfo(
+                EnumChatFormatting.GRAY + "It drains "
                     + EnumChatFormatting.YELLOW
                     + "all coolants"
                     + EnumChatFormatting.GRAY
                     + " from the input hatch in the temperature module")
             .addInfo(
-                EnumChatFormatting.GRAY + "Every second, ECCF temperature drifts towards ambient, to: "
-                    + EnumChatFormatting.GOLD
-                    + "(current - ambient) * 0.98 + ambient")
-            .addInfo(
-                EnumChatFormatting.GRAY + "And applies temperature changes regardless of the module type: "
+                EnumChatFormatting.GRAY + "And changes temperature to: "
                     + EnumChatFormatting.GOLD
                     + "current + (fluid amount / 10000) * coolant value")
             .addInfo(
