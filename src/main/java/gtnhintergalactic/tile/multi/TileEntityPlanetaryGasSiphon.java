@@ -239,17 +239,6 @@ public class TileEntityPlanetaryGasSiphon extends MTEEnhancedMultiBlockBase<Tile
     }
 
     /**
-     * Check if the input item is the correct machine part
-     *
-     * @param stack Input item
-     * @return True if correct machine part, else false
-     */
-    @Override
-    public boolean isCorrectMachinePart(ItemStack stack) {
-        return true;
-    }
-
-    /**
      * Check if this machine can perform a recipe
      *
      * @return True if recipe was started, else false

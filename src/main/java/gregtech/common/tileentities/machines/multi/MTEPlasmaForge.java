@@ -732,11 +732,6 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
     }
 
     @Override
-    public boolean isCorrectMachinePart(ItemStack aStack) {
-        return true;
-    }
-
-    @Override
     public IStructureDefinition<MTEPlasmaForge> getStructureDefinition() {
         return STRUCTURE_DEFINITION;
     }

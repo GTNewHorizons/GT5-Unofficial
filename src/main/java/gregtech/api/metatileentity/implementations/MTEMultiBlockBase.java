@@ -934,9 +934,15 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
     }
 
     /**
-     * Checks if this is a Correct Machine Part for this kind of Machine (Turbine Rotor for example)
+     * Check the ItemStack in the controller slot.
+     *
+     * @param aStack the ItemStack in the controller slot.
+     * @return {@code true} if the item is valid for this machine or the machine doesn't have restrictions on the
+     *         controller slot.
      */
-    public abstract boolean isCorrectMachinePart(ItemStack aStack);
+    public boolean isCorrectMachinePart(@Nullable ItemStack aStack) {
+        return true;
+    }
 
     /**
      * @deprecated Use {@link #createProcessingLogic()} or {@link #checkProcessing()}
@@ -1270,7 +1276,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
     }
 
     public boolean doRandomMaintenanceDamage() {
-        if (!isCorrectMachinePart(mInventory[1])) {
+        if (!isCorrectMachinePart(getControllerSlot())) {
             stopMachine(ShutDownReasonRegistry.NO_MACHINE_PART);
             return false;
         }

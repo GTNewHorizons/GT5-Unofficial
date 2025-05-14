@@ -227,11 +227,6 @@ public abstract class MTELargeBoiler extends MTEEnhancedMultiBlockBase<MTELargeB
         return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(getCasingTextureIndex()) };
     }
 
-    @Override
-    public boolean isCorrectMachinePart(ItemStack aStack) {
-        return true;
-    }
-
     boolean isFuelValid() {
         if (!isSuperheated()) return true;
         for (ItemStack input : getStoredInputs()) {

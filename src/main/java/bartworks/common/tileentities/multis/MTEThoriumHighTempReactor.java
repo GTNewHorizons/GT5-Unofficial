@@ -123,11 +123,6 @@ public class MTEThoriumHighTempReactor extends MTEEnhancedMultiBlockBase<MTEThor
     }
 
     @Override
-    public boolean isCorrectMachinePart(ItemStack itemStack) {
-        return true;
-    }
-
-    @Override
     public IStructureDefinition<MTEThoriumHighTempReactor> getStructureDefinition() {
         return STRUCTURE_DEFINITION;
     }

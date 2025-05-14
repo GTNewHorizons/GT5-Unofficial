@@ -170,11 +170,6 @@ public class MTETranscendentPlasmaMixer extends MTEEnhancedMultiBlockBase<MTETra
         return new ITexture[] { casingTexturePages[0][DIM_TRANS_CASING] };
     }
 
-    @Override
-    public boolean isCorrectMachinePart(ItemStack aStack) {
-        return true;
-    }
-
     int multiplier = 1;
     BigInteger finalConsumption = BigInteger.ZERO;
 

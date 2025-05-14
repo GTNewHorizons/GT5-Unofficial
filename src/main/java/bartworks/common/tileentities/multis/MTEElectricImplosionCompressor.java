@@ -334,11 +334,6 @@ public class MTEElectricImplosionCompressor extends MTEExtendedPowerMultiBlockBa
     }
 
     @Override
-    public boolean isCorrectMachinePart(ItemStack itemStack) {
-        return true;
-    }
-
-    @Override
     public void stopMachine(@NotNull ShutDownReason reason) {
         this.resetPiston(this.mBlockTier);
         super.stopMachine(reason);

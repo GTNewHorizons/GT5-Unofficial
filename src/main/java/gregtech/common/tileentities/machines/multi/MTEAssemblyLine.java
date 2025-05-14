@@ -192,11 +192,6 @@ public class MTEAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTEAssemblyL
     }
 
     @Override
-    public boolean isCorrectMachinePart(ItemStack aStack) {
-        return true;
-    }
-
-    @Override
     public @Nonnull CheckRecipeResult checkProcessing() {
         if (GTValues.D1) {
             GT_FML_LOGGER.info("Start ALine recipe check");

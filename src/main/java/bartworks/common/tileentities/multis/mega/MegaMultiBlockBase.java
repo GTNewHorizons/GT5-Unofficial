@@ -131,11 +131,6 @@ public abstract class MegaMultiBlockBase<T extends MegaMultiBlockBase<T>> extend
     }
 
     @Override
-    public boolean isCorrectMachinePart(ItemStack itemStack) {
-        return true;
-    }
-
-    @Override
     public int getDamageToComponent(ItemStack itemStack) {
         return 0;
     }

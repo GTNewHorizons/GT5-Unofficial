@@ -163,11 +163,6 @@ public class MTEIndustrialElectromagneticSeparator
     }
 
     @Override
-    public boolean isCorrectMachinePart(ItemStack aStack) {
-        return true;
-    }
-
-    @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new MTEIndustrialElectromagneticSeparator(this.mName);
     }

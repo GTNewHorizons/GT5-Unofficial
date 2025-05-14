@@ -19,11 +19,6 @@ public abstract class MTEAbstractMultiFurnace<T extends MTEAbstractMultiFurnace<
     }
 
     @Override
-    public boolean isCorrectMachinePart(ItemStack aStack) {
-        return true;
-    }
-
-    @Override
     public int getMaxEfficiency(ItemStack aStack) {
         return 10000;
     }

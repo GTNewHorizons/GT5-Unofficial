@@ -92,11 +92,6 @@ public class MTEDissolutionTank extends MTEEnhancedMultiBlockBase<MTEDissolution
         return checkPiece(mName, 2, 3, 0) && mMaintenanceHatches.size() == 1;
     }
 
-    @Override
-    public boolean isCorrectMachinePart(ItemStack aStack) {
-        return true;
-    }
-
     private boolean addGlass(Block block, int meta) {
         return block == ItemRegistry.bw_glasses[0];
     }

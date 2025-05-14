@@ -146,11 +146,6 @@ public class MTESOFuelCellMK2 extends MTEEnhancedMultiBlockBase<MTESOFuelCellMK2
         return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_TEXTURE_ID) };
     }
 
-    @Override
-    public boolean isCorrectMachinePart(ItemStack stack) {
-        return true;
-    }
-
     @Nonnull
     @Override
     public CheckRecipeResult checkProcessing() {

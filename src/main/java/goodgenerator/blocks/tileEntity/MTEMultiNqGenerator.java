@@ -166,11 +166,6 @@ public class MTEMultiNqGenerator extends MTETooltipMultiBlockBaseEM implements I
     }
 
     @Override
-    public boolean isCorrectMachinePart(ItemStack aStack) {
-        return true;
-    }
-
-    @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         this.times = aNBT.getInteger("mTimes");
         this.leftEnergy = aNBT.getLong("mLeftEnergy");

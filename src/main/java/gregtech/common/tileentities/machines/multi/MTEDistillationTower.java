@@ -183,11 +183,6 @@ public class MTEDistillationTower extends MTEEnhancedMultiBlockBase<MTEDistillat
     }
 
     @Override
-    public boolean isCorrectMachinePart(ItemStack aStack) {
-        return true;
-    }
-
-    @Override
     protected ProcessingLogic createProcessingLogic() {
         return new ProcessingLogic();
     }

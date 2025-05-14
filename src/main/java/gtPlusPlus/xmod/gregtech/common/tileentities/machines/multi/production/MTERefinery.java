@@ -196,11 +196,6 @@ public class MTERefinery extends GTPPMultiBlockBase<MTERefinery> implements ISur
     }
 
     @Override
-    public boolean isCorrectMachinePart(final ItemStack aStack) {
-        return true;
-    }
-
-    @Override
     public int getMaxEfficiency(final ItemStack aStack) {
         return 10000;
     }

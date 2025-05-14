@@ -484,11 +484,6 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
     }
 
     @Override
-    public boolean isCorrectMachinePart(ItemStack stack) {
-        return true;
-    }
-
-    @Override
     public @NotNull CheckRecipeResult checkProcessing() {
         this.mProgresstime = 1;
         this.mMaxProgresstime = 1;

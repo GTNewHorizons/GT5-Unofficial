@@ -1014,11 +1014,6 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
     }
 
     @Override
-    public boolean isCorrectMachinePart(ItemStack aStack) {
-        return true;
-    }
-
-    @Override
     protected SoundResource getProcessStartSound() {
         return SoundResource.IC2_MACHINES_MAGNETIZER_LOOP;
     }

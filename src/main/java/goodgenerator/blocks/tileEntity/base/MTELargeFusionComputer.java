@@ -397,11 +397,6 @@ public abstract class MTELargeFusionComputer extends MTETooltipMultiBlockBaseEM
     }
 
     @Override
-    public boolean isCorrectMachinePart(ItemStack aStack) {
-        return true;
-    }
-
-    @Override
     public void onMachineBlockUpdate() {
         mUpdate = 100;
     }

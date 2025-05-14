@@ -286,11 +286,6 @@ public class MTENuclearReactor extends GTPPMultiBlockBase<MTENuclearReactor> imp
      */
 
     @Override
-    public boolean isCorrectMachinePart(final ItemStack aStack) {
-        return true;
-    }
-
-    @Override
     public int getMaxEfficiency(final ItemStack aStack) {
         return 10000;
     }

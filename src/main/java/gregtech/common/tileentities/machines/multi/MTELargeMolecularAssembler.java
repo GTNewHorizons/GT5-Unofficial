@@ -183,11 +183,6 @@ public class MTELargeMolecularAssembler extends MTEExtendedPowerMultiBlockBase<M
     }
 
     @Override
-    public boolean isCorrectMachinePart(ItemStack aStack) {
-        return true;
-    }
-
-    @Override
     public boolean checkRecipe(ItemStack aStack) {
         return withAeJobs(($, aeJobs) -> {
             mMaxProgresstime = 20;

@@ -221,11 +221,6 @@ public class MTEDroneCentre extends MTEExtendedPowerMultiBlockBase<MTEDroneCentr
             && !f.isVerticallyFliped();
     }
 
-    @Override
-    public boolean isCorrectMachinePart(ItemStack aStack) {
-        return true;
-    }
-
     private void onCasingAdded() {
         mCasingAmount++;
     }

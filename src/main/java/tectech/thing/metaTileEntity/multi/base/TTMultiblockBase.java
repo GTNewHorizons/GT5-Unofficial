@@ -486,14 +486,6 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
     // region Methods to maybe override (if u implement certain stuff)
 
     /**
-     * is the thing inside controller a valid item to make the machine work
-     */
-    @Override
-    public boolean isCorrectMachinePart(ItemStack itemStack) {
-        return true;
-    }
-
-    /**
      * how much damage to apply to thing in controller - not sure how it does it
      */
     @Override

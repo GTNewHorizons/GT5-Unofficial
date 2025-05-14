@@ -306,11 +306,6 @@ public class MTELESU extends MTEMultiBlockBase {
     }
 
     @Override
-    public boolean isCorrectMachinePart(ItemStack itemStack) {
-        return true;
-    }
-
-    @Override
     public @NotNull CheckRecipeResult checkProcessing() {
         return CheckRecipeResultRegistry.SUCCESSFUL;
     }

@@ -87,11 +87,6 @@ public class MTEDigester extends MTEEnhancedMultiBlockBase<MTEDigester> implemen
         return checkPiece(mName, 3, 3, 0) && !mMufflerHatches.isEmpty() && mMaintenanceHatches.size() == 1;
     }
 
-    @Override
-    public boolean isCorrectMachinePart(ItemStack aStack) {
-        return true;
-    }
-
     public HeatingCoilLevel getCoilLevel() {
         return this.heatLevel;
     }

@@ -213,11 +213,6 @@ public class MTEWindmill extends MTEEnhancedMultiBlockBase<MTEWindmill>
         return tt;
     }
 
-    @Override
-    public boolean isCorrectMachinePart(ItemStack itemStack) {
-        return true;
-    }
-
     private final Set<TileEntityDispenser> tileEntityDispensers = new HashSet<>();
 
     @Override

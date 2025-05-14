@@ -319,11 +319,6 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
             Textures.BlockIcons.getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings9, 4)) };
     }
 
-    @Override
-    public boolean isCorrectMachinePart(ItemStack aStack) {
-        return true;
-    }
-
     private List<IHatchElement<? super MTEPurificationPlant>> getAllowedHatches() {
         return ImmutableList.of(Maintenance, Energy, ExoticEnergy);
     }

@@ -412,11 +412,6 @@ public class MTETargetChamber extends MTEEnhancedMultiBlockBase<MTETargetChamber
     }
 
     @Override
-    public boolean isCorrectMachinePart(ItemStack arg0) {
-        return true;
-    }
-
-    @Override
     public String[] getStructureDescription(ItemStack arg0) {
         return DescTextLocalization.addText("TargetChamber.hint", 13);
     }

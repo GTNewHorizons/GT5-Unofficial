@@ -212,11 +212,6 @@ public class MTEIndustrialMolecularTransformer extends GTPPMultiBlockBase<MTEInd
     }
 
     @Override
-    public boolean isCorrectMachinePart(final ItemStack aStack) {
-        return true;
-    }
-
-    @Override
     protected ProcessingLogic createProcessingLogic() {
         return new ProcessingLogic();
     }

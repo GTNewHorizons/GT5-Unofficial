@@ -313,11 +313,6 @@ public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeG
     }
 
     @Override
-    public boolean isCorrectMachinePart(ItemStack aStack) {
-        return true;
-    }
-
-    @Override
     protected SoundResource getProcessStartSound() {
         return SoundResource.GT_MACHINES_FUSION_LOOP;
     }

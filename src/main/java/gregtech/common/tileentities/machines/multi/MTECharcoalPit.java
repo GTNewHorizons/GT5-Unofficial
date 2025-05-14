@@ -58,11 +58,6 @@ public class MTECharcoalPit extends MTETooltipMultiBlockBase implements ISeconda
         return false;
     }
 
-    @Override
-    public boolean isCorrectMachinePart(ItemStack aStack) {
-        return true;
-    }
-
     @Nonnull
     @Override
     public CheckRecipeResult checkProcessing() {
