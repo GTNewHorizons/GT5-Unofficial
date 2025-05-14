@@ -12,6 +12,8 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
+import goodgenerator.blocks.tileEntity.gui.MTELargeFusionComputerGui;
+import gregtech.api.metatileentity.implementations.gui.MTEMultiBlockBaseGui;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -692,37 +694,7 @@ public abstract class MTELargeFusionComputer extends MTETooltipMultiBlockBaseEM
     }
 
     @Override
-    public void insertTexts(ListWidget<IWidget, ?> machineInfo, ItemStackHandler invSlot, PanelSyncManager syncManager,
-        ModularPanel parentPanel) {
-        super.insertTexts(machineInfo, invSlot, syncManager, parentPanel);
-
-        LongSyncValue storedEnergySyncer = new LongSyncValue(this::getEUVar, this::setEUVar);
-        LongSyncValue energyCapacitySyncer = new LongSyncValue(this::maxEUStore);
-        syncManager.syncValue("storedEnergy", storedEnergySyncer);
-        syncManager.syncValue("energyCapacity", energyCapacitySyncer);
-
-        machineInfo.child(
-            IKey.dynamic(
-                () -> StatCollector.translateToLocal("gui.LargeFusion.0") + " "
-                    + numberFormat.format(storedEnergySyncer.getValue())
-                    + " EU")
-                .asWidget()
-                .alignment(com.cleanroommc.modularui.utils.Alignment.CenterLeft)
-                .color(COLOR_TEXT_WHITE.get())
-                .widthRel(1)
-                .marginBottom(2)
-                .setEnabledIf(w -> getErrorDisplayID() == 0));
-
-        machineInfo.child(
-            IKey.dynamic(
-                () -> StatCollector.translateToLocal("gui.LargeFusion.1") + " "
-                    + numberFormat.format(energyCapacitySyncer.getValue())
-                    + " EU")
-                .asWidget()
-                .alignment(com.cleanroommc.modularui.utils.Alignment.CenterLeft)
-                .color(COLOR_TEXT_WHITE.get())
-                .widthRel(1)
-                .marginBottom(2)
-                .setEnabledIf(w -> getErrorDisplayID() == 0));
+    protected @NotNull MTEMultiBlockBaseGui getGui() {
+        return new MTELargeFusionComputerGui(this);
     }
 }
