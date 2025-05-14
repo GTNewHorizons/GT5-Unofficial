@@ -26,6 +26,7 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
+import gtPlusPlus.core.material.MaterialsAlloy;
 import gtPlusPlus.core.material.MaterialsElements;
 import micdoodle8.mods.galacticraft.core.items.GCItems;
 import micdoodle8.mods.galacticraft.core.util.RecipeUtil;
@@ -39,9 +40,6 @@ public class MachineRecipes implements Runnable {
 
     Fluid solderUEV = FluidRegistry.getFluid("molten.mutatedlivingsolder") != null
         ? FluidRegistry.getFluid("molten.mutatedlivingsolder")
-        : FluidRegistry.getFluid("molten.solderingalloy");
-    Fluid solderLuV = FluidRegistry.getFluid("molten.indalloy140") != null
-        ? FluidRegistry.getFluid("molten.indalloy140")
         : FluidRegistry.getFluid("molten.solderingalloy");
 
     @Override
@@ -86,8 +84,9 @@ public class MachineRecipes implements Runnable {
                 ItemList.Circuit_Chip_PPIC.get(64),
                 GTOreDictUnificator.get(OrePrefixes.screw, Materials.CosmicNeutronium, 64),
                 ItemList.Electric_Motor_UV.get(32), ItemList.SpaceElevatorBaseCasing.get(8) },
-            new FluidStack[] { new FluidStack(solderLuV, 40 * INGOTS), Materials.UUMatter.getFluid(16_000),
-                Materials.Lubricant.getFluid(32_000), Materials.Neutronium.getMolten(10 * INGOTS) },
+            new FluidStack[] { MaterialsAlloy.INDALLOY_140.getFluidStack(40 * INGOTS),
+                Materials.UUMatter.getFluid(16_000), Materials.Lubricant.getFluid(32_000),
+                Materials.Neutronium.getMolten(10 * INGOTS) },
             ItemList.SpaceElevatorController.get(1),
             5 * MINUTE,
             (int) TierEU.RECIPE_UHV);
@@ -127,8 +126,8 @@ public class MachineRecipes implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.Osmiridium, 64),
                 new Object[] { OrePrefixes.circuit.get(Materials.UHV), 4 }, ItemList.Electric_Piston_UV.get(2),
                 GTOreDictUnificator.get(OrePrefixes.ring, Materials.CosmicNeutronium, 8), },
-            new FluidStack[] { new FluidStack(solderLuV, 40 * INGOTS), Materials.UUMatter.getFluid(2_000),
-                Materials.Iridium.getMolten(8 * INGOTS) },
+            new FluidStack[] { MaterialsAlloy.INDALLOY_140.getFluidStack(40 * INGOTS),
+                Materials.UUMatter.getFluid(2_000), Materials.Iridium.getMolten(8 * INGOTS) },
             ItemList.SpaceElevatorBaseCasing.get(8),
             1 * MINUTE,
             (int) TierEU.RECIPE_UV);
@@ -144,8 +143,8 @@ public class MachineRecipes implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.bolt, Materials.Naquadria, 16),
                 GTOreDictUnificator.get(OrePrefixes.stickLong, Materials.Neutronium, 8),
                 GTOreDictUnificator.get(OrePrefixes.plateDouble, Materials.Osmiridium, 8), },
-            new FluidStack[] { new FluidStack(solderLuV, 40 * INGOTS), Materials.UUMatter.getFluid(1_000),
-                Materials.Iridium.getMolten(10 * INGOTS) },
+            new FluidStack[] { MaterialsAlloy.INDALLOY_140.getFluidStack(40 * INGOTS),
+                Materials.UUMatter.getFluid(1_000), Materials.Iridium.getMolten(10 * INGOTS) },
             ItemList.SpaceElevatorSupportStructure.get(8),
             1 * MINUTE,
             (int) TierEU.RECIPE_UV);
@@ -160,8 +159,8 @@ public class MachineRecipes implements Runnable {
             new Object[] { new ItemStack(TTCasingsContainer.sBlockCasingsTT, 8, 0),
                 GTOreDictUnificator.get(OrePrefixes.bolt, Materials.Palladium, 16),
                 GTOreDictUnificator.get(OrePrefixes.plateDouble, Materials.Neutronium, 8), },
-            new FluidStack[] { new FluidStack(solderLuV, 40 * INGOTS), Materials.UUMatter.getFluid(8_000),
-                Materials.Concrete.getMolten(10 * INGOTS) },
+            new FluidStack[] { MaterialsAlloy.INDALLOY_140.getFluidStack(40 * INGOTS),
+                Materials.UUMatter.getFluid(8_000), Materials.Concrete.getMolten(10 * INGOTS) },
             ItemList.SpaceElevatorInternalStructure.get(8),
             1 * MINUTE,
             (int) TierEU.RECIPE_UV);
@@ -179,8 +178,9 @@ public class MachineRecipes implements Runnable {
                 new Object[] { OrePrefixes.circuit.get(Materials.UV), 1 },
                 GTOreDictUnificator.get(OrePrefixes.screw, Materials.CosmicNeutronium, 16),
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.Osmiridium, 16), },
-            new FluidStack[] { new FluidStack(solderLuV, 40 * INGOTS), Materials.UUMatter.getFluid(8_000),
-                Materials.Naquadria.getMolten(10 * INGOTS), Materials.Lubricant.getFluid(16_000) },
+            new FluidStack[] { MaterialsAlloy.INDALLOY_140.getFluidStack(40 * INGOTS),
+                Materials.UUMatter.getFluid(8_000), Materials.Naquadria.getMolten(10 * INGOTS),
+                Materials.Lubricant.getFluid(16_000) },
             ItemList.SpaceElevatorMotorT1.get(1),
             1 * MINUTE,
             (int) TierEU.RECIPE_UV);
@@ -198,8 +198,9 @@ public class MachineRecipes implements Runnable {
                 new Object[] { OrePrefixes.circuit.get(Materials.UHV), 1 },
                 GTOreDictUnificator.get(OrePrefixes.screw, Materials.Infinity, 16),
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.Osmiridium, 16), },
-            new FluidStack[] { new FluidStack(solderLuV, 40 * INGOTS), Materials.UUMatter.getFluid(8_000),
-                Materials.Naquadria.getMolten(10 * INGOTS), Materials.Lubricant.getFluid(16_000) },
+            new FluidStack[] { MaterialsAlloy.INDALLOY_140.getFluidStack(40 * INGOTS),
+                Materials.UUMatter.getFluid(8_000), Materials.Naquadria.getMolten(10 * INGOTS),
+                Materials.Lubricant.getFluid(16_000) },
             ItemList.SpaceElevatorMotorT2.get(1),
             1 * MINUTE,
             (int) TierEU.RECIPE_UHV);
@@ -369,8 +370,8 @@ public class MachineRecipes implements Runnable {
                 new Object[] { OrePrefixes.circuit.get(Materials.UV), 16 },
                 GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Neutronium, 8),
                 GTOreDictUnificator.get(OrePrefixes.screw, Materials.Neutronium, 32) },
-            new FluidStack[] { new FluidStack(solderLuV, 9 * INGOTS), Materials.Naquadria.getMolten(9 * INGOTS),
-                Materials.Lubricant.getFluid(16_000) },
+            new FluidStack[] { MaterialsAlloy.INDALLOY_140.getFluidStack(9 * INGOTS),
+                Materials.Naquadria.getMolten(9 * INGOTS), Materials.Lubricant.getFluid(16_000) },
             ItemList.SpaceElevatorModuleAssemblerT1.get(1),
             2 * MINUTE,
             (int) TierEU.RECIPE_UEV);
@@ -437,8 +438,9 @@ public class MachineRecipes implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.CosmicNeutronium, 64),
                 GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.CosmicNeutronium, 64), metaStableOgScrew_64,
                 GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials.SuperconductorUHV, 32) },
-            new FluidStack[] { new FluidStack(solderLuV, 32 * INGOTS), Materials.Infinity.getMolten(16 * INGOTS),
-                Materials.UUMatter.getFluid(8_000), Materials.SuperCoolant.getFluid(4_000) },
+            new FluidStack[] { MaterialsAlloy.INDALLOY_140.getFluidStack(32 * INGOTS),
+                Materials.Infinity.getMolten(16 * INGOTS), Materials.UUMatter.getFluid(8_000),
+                Materials.SuperCoolant.getFluid(4_000) },
             ItemList.SpaceElevatorModuleResearch.get(1),
             2 * MINUTE,
             (int) TierEU.RECIPE_UEV);
@@ -457,8 +459,8 @@ public class MachineRecipes implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Neutronium, 4),
                 new ItemStack(GameRegistry.findItem("structurelib", "item.structurelib.constructableTrigger"), 64),
                 titaniumBetaCScrew_64, },
-            new FluidStack[] { new FluidStack(solderLuV, 32 * INGOTS), Materials.Iridium.getMolten(16 * INGOTS),
-                Materials.UUMatter.getFluid(2_000) },
+            new FluidStack[] { MaterialsAlloy.INDALLOY_140.getFluidStack(32 * INGOTS),
+                Materials.Iridium.getMolten(16 * INGOTS), Materials.UUMatter.getFluid(2_000) },
             ItemList.SpaceElevatorModuleManager.get(1),
             2 * MINUTE,
             (int) TierEU.RECIPE_UHV);
@@ -474,8 +476,8 @@ public class MachineRecipes implements Runnable {
                 new Object[] { OrePrefixes.circuit.get(Materials.UV), 16 }, ItemList.Sensor_UV.get(16),
                 GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials.SuperconductorUV, 32),
                 GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Neutronium, 16) },
-            new FluidStack[] { new FluidStack(solderLuV, 20 * INGOTS), Materials.Naquadria.getMolten(10 * INGOTS),
-                Materials.Lubricant.getFluid(8_000) },
+            new FluidStack[] { MaterialsAlloy.INDALLOY_140.getFluidStack(20 * INGOTS),
+                Materials.Naquadria.getMolten(10 * INGOTS), Materials.Lubricant.getFluid(8_000) },
             ItemList.SpaceElevatorModuleMinerT1.get(1),
             2 * MINUTE,
             (int) TierEU.RECIPE_UHV);
@@ -491,8 +493,8 @@ public class MachineRecipes implements Runnable {
                 ItemList.Sensor_UHV.get(16),
                 GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials.SuperconductorUHV, 32),
                 GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.CosmicNeutronium, 16) },
-            new FluidStack[] { new FluidStack(solderLuV, 20 * INGOTS), Materials.Naquadria.getMolten(20 * INGOTS),
-                Materials.Lubricant.getFluid(16_000) },
+            new FluidStack[] { MaterialsAlloy.INDALLOY_140.getFluidStack(20 * INGOTS),
+                Materials.Naquadria.getMolten(20 * INGOTS), Materials.Lubricant.getFluid(16_000) },
             ItemList.SpaceElevatorModuleMinerT2.get(1),
             2 * MINUTE,
             (int) TierEU.RECIPE_UEV);
@@ -576,7 +578,8 @@ public class MachineRecipes implements Runnable {
                 new Object[] { OrePrefixes.circuit.get(Materials.LuV), 4 },
                 new ItemStack(AsteroidsItems.basicItem, 32, 0), new ItemStack(AsteroidsItems.basicItem, 4, 1),
                 ItemList.Sensor_EV.get(8) },
-            new FluidStack[] { new FluidStack(solderLuV, 5 * INGOTS), Materials.Iridium.getMolten(5 * INGOTS),
+            new FluidStack[] { MaterialsAlloy.INDALLOY_140.getFluidStack(5 * INGOTS),
+                Materials.Iridium.getMolten(5 * INGOTS),
                 new FluidStack(FluidRegistry.getFluid("liquid_drillingfluid"), 16_000) },
             ItemList.MiningDroneEV.get(1),
             1 * MINUTE,
@@ -594,7 +597,8 @@ public class MachineRecipes implements Runnable {
                 new Object[] { OrePrefixes.circuit.get(Materials.ZPM), 4 },
                 GTModHandler.getModItem(NewHorizonsCoreMod.ID, "item.HeavyDutyPlateTier4", 32),
                 new ItemStack(AsteroidsItems.basicItem, 4, 1), ItemList.Sensor_IV.get(8) },
-            new FluidStack[] { new FluidStack(solderLuV, 10 * INGOTS), Materials.Iridium.getMolten(10 * INGOTS),
+            new FluidStack[] { MaterialsAlloy.INDALLOY_140.getFluidStack(10 * INGOTS),
+                Materials.Iridium.getMolten(10 * INGOTS),
                 new FluidStack(FluidRegistry.getFluid("liquid_drillingfluid"), 32_000) },
             ItemList.MiningDroneIV.get(1),
             1 * MINUTE,
@@ -613,7 +617,8 @@ public class MachineRecipes implements Runnable {
                 GTModHandler.getModItem(NewHorizonsCoreMod.ID, "item.HeavyDutyPlateTier5", 32),
                 GTModHandler.getModItem(NewHorizonsCoreMod.ID, "item.HeavyDutyRocketEngineTier3", 4),
                 ItemList.Sensor_LuV.get(8) },
-            new FluidStack[] { new FluidStack(solderLuV, 20 * INGOTS), Materials.Osmiridium.getMolten(10 * INGOTS),
+            new FluidStack[] { MaterialsAlloy.INDALLOY_140.getFluidStack(20 * INGOTS),
+                Materials.Osmiridium.getMolten(10 * INGOTS),
                 new FluidStack(FluidRegistry.getFluid("liquid_drillingfluid"), 64_000) },
             ItemList.MiningDroneLuV.get(1),
             1 * MINUTE,
@@ -632,7 +637,8 @@ public class MachineRecipes implements Runnable {
                 GTModHandler.getModItem(NewHorizonsCoreMod.ID, "item.HeavyDutyPlateTier6", 32),
                 GTModHandler.getModItem(NewHorizonsCoreMod.ID, "item.HeavyDutyRocketEngineTier3", 4),
                 ItemList.Sensor_ZPM.get(8) },
-            new FluidStack[] { new FluidStack(solderLuV, 20 * INGOTS), Materials.Osmiridium.getMolten(10 * INGOTS),
+            new FluidStack[] { MaterialsAlloy.INDALLOY_140.getFluidStack(20 * INGOTS),
+                Materials.Osmiridium.getMolten(10 * INGOTS),
                 new FluidStack(FluidRegistry.getFluid("liquid_drillingfluid"), 128_000) },
             ItemList.MiningDroneZPM.get(1),
             1 * MINUTE,
@@ -651,7 +657,8 @@ public class MachineRecipes implements Runnable {
                 GTModHandler.getModItem(NewHorizonsCoreMod.ID, "item.HeavyDutyPlateTier7", 32),
                 GTModHandler.getModItem(NewHorizonsCoreMod.ID, "item.HeavyDutyRocketEngineTier4", 4),
                 ItemList.Sensor_UV.get(8) },
-            new FluidStack[] { new FluidStack(solderLuV, 20 * INGOTS), Materials.Naquadria.getMolten(10 * INGOTS),
+            new FluidStack[] { MaterialsAlloy.INDALLOY_140.getFluidStack(20 * INGOTS),
+                Materials.Naquadria.getMolten(10 * INGOTS),
                 new FluidStack(FluidRegistry.getFluid("liquid_drillingfluid"), 256_000) },
             ItemList.MiningDroneUV.get(1),
             1 * MINUTE,

@@ -39,7 +39,6 @@ import static gregtech.api.util.GTRecipeConstants.RESEARCH_ITEM;
 import static gregtech.api.util.GTRecipeConstants.SCANNING;
 import static gregtech.api.util.GTRecipeConstants.UniversalChemical;
 
-import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
@@ -333,10 +332,6 @@ public class RecipeLoader2 {
             .eut(TierEU.RECIPE_IV)
             .addTo(assemblerRecipes);
 
-        Fluid solderIndalloy = FluidRegistry.getFluid("molten.indalloy140") != null
-            ? FluidRegistry.getFluid("molten.indalloy140")
-            : FluidRegistry.getFluid("molten.solderingalloy");
-
         // Fluid Storage Core T3
         GTValues.RA.stdBuilder()
             .metadata(RESEARCH_ITEM, ItemRefer.Fluid_Storage_Core_T2.get(1))
@@ -348,7 +343,7 @@ public class RecipeLoader2 {
                 GTOreDictUnificator.get(OrePrefixes.plateDense, Materials.Osmium, 8),
                 GTModHandler.getModItem(GalacticraftMars.ID, "item.null", 1L, 6),
                 GTOreDictUnificator.get(OrePrefixes.foil, Materials.Polycaprolactam, 32))
-            .fluidInputs(new FluidStack(solderIndalloy, 16 * INGOTS), Materials.Lubricant.getFluid(4_000))
+            .fluidInputs(MaterialsAlloy.INDALLOY_140.getFluidStack(16 * INGOTS), Materials.Lubricant.getFluid(4_000))
             .itemOutputs(ItemRefer.Fluid_Storage_Core_T3.get(1))
             .eut(TierEU.RECIPE_LuV)
             .duration(20 * SECONDS)
@@ -366,7 +361,7 @@ public class RecipeLoader2 {
                 GTModHandler.getModItem(GalacticraftMars.ID, "item.null", 4L, 6),
                 GTOreDictUnificator.get(OrePrefixes.foil, Materials.StyreneButadieneRubber, 64),
                 GTOreDictUnificator.get(OrePrefixes.pipeLarge, Materials.TungstenSteel, 64))
-            .fluidInputs(new FluidStack(solderIndalloy, 18432), Materials.Lubricant.getFluid(16_000))
+            .fluidInputs(MaterialsAlloy.INDALLOY_140.getFluidStack(2 * STACKS), Materials.Lubricant.getFluid(16_000))
             .itemOutputs(ItemRefer.Fluid_Storage_Core_T4.get(1))
             .eut(TierEU.RECIPE_ZPM)
             .duration(20 * SECONDS)
@@ -428,7 +423,7 @@ public class RecipeLoader2 {
                 GTOreDictUnificator.get(OrePrefixes.plateDense, Materials.DraconiumAwakened, 16))
             .fluidInputs(
                 Materials.Draconium.getMolten(16 * INGOTS),
-                new FluidStack(solderIndalloy, 16 * INGOTS),
+                MaterialsAlloy.INDALLOY_140.getFluidStack(16 * INGOTS),
                 Materials.InfinityCatalyst.getMolten(1140))
             .itemOutputs(ItemRefer.Fluid_Storage_Core_T7.get(1))
             .eut(TierEU.RECIPE_UEV)
@@ -449,7 +444,7 @@ public class RecipeLoader2 {
                 GTOreDictUnificator.get(OrePrefixes.plateDense, Materials.DraconiumAwakened, 16))
             .fluidInputs(
                 Materials.Draconium.getMolten(4 * STACKS),
-                new FluidStack(solderIndalloy, 3 * STACKS + 18 * INGOTS),
+                MaterialsAlloy.INDALLOY_140.getFluidStack(3 * STACKS + 18 * INGOTS),
                 Materials.InfinityCatalyst.getMolten(39 * INGOTS + 3 * EIGHTH_INGOTS))
             .itemOutputs(ItemRefer.Fluid_Storage_Core_T8.get(1))
             .eut(TierEU.RECIPE_UIV)
@@ -470,7 +465,7 @@ public class RecipeLoader2 {
                 GTOreDictUnificator.get(OrePrefixes.plateDense, Materials.DraconiumAwakened, 8))
             .fluidInputs(
                 Materials.Draconium.getMolten(4 * STACKS),
-                new FluidStack(solderIndalloy, 3 * STACKS + 18 * INGOTS),
+                MaterialsAlloy.INDALLOY_140.getFluidStack(3 * STACKS + 18 * INGOTS),
                 MaterialsUEVplus.TranscendentMetal.getMolten(10 * INGOTS),
                 Materials.InfinityCatalyst.getMolten(39 * INGOTS + 3 * EIGHTH_INGOTS))
             .itemOutputs(ItemRefer.Fluid_Storage_Core_T9.get(1))
@@ -492,7 +487,7 @@ public class RecipeLoader2 {
                 GTOreDictUnificator.get(OrePrefixes.plateDouble, MaterialsUEVplus.SpaceTime, 4))
             .fluidInputs(
                 Materials.Draconium.getMolten(4 * STACKS),
-                new FluidStack(solderIndalloy, 5 * STACKS),
+                MaterialsAlloy.INDALLOY_140.getFluidStack(5 * STACKS),
                 MaterialsUEVplus.TranscendentMetal.getMolten(30 * INGOTS),
                 Materials.InfinityCatalyst.getMolten(1 * STACKS + 54 * INGOTS + 1 * EIGHTH_INGOTS))
             .itemOutputs(ItemRefer.Fluid_Storage_Core_T10.get(1))

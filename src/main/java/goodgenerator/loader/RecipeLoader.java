@@ -36,7 +36,6 @@ import static gregtech.api.util.GTRecipeConstants.UniversalChemical;
 import static gregtech.loaders.postload.MachineRecipeLoader.solderingMats;
 
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -59,6 +58,7 @@ import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipeConstants;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.recipe.Scanning;
+import gtPlusPlus.core.material.MaterialsAlloy;
 import gtPlusPlus.core.material.MaterialsElements;
 
 public class RecipeLoader {
@@ -88,10 +88,6 @@ public class RecipeLoader {
             .eut(TierEU.RECIPE_EV)
             .addTo(assemblerRecipes);
 
-        Fluid solderIndalloy = FluidRegistry.getFluid("molten.indalloy140") != null
-            ? FluidRegistry.getFluid("molten.indalloy140")
-            : FluidRegistry.getFluid("molten.solderingalloy");
-
         // LNR Controller
         GTValues.RA.stdBuilder()
             .metadata(
@@ -111,7 +107,7 @@ public class RecipeLoader {
                 GTOreDictUnificator.get(OrePrefixes.screw, Materials.Osmium, 16))
             .fluidInputs(
                 Materials.Trinium.getMolten(4 * INGOTS),
-                new FluidStack(solderIndalloy, 32 * INGOTS),
+                MaterialsAlloy.INDALLOY_140.getFluidStack(32 * INGOTS),
                 Materials.Lubricant.getFluid(8_000))
             .itemOutputs(ItemRefer.Large_Naquadah_Reactor.get(1))
             .eut(TierEU.RECIPE_ZPM)
@@ -679,7 +675,7 @@ public class RecipeLoader {
                 Materials.Quantium.getMolten(1 * STACKS),
                 Materials.DraconiumAwakened.getMolten(32 * INGOTS),
                 GGMaterial.extremelyUnstableNaquadah.getMolten(10 * INGOTS),
-                new FluidStack(solderIndalloy, 1 * STACKS + 36 * INGOTS))
+                MaterialsAlloy.INDALLOY_140.getFluidStack(1 * STACKS + 36 * INGOTS))
             .itemOutputs(ItemRefer.Naquadah_Fuel_Refinery.get(1))
             .eut(TierEU.RECIPE_UHV)
             .duration(30 * MINUTES)
@@ -696,7 +692,7 @@ public class RecipeLoader {
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.NaquadahAlloy, 4),
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.Osmiridium, 4),
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.VibrantAlloy, 4))
-            .fluidInputs(new FluidStack(solderIndalloy, 8 * INGOTS))
+            .fluidInputs(MaterialsAlloy.INDALLOY_140.getFluidStack(8 * INGOTS))
             .itemOutputs(ItemRefer.Advanced_Radiation_Protection_Plate.get(1))
             .eut(TierEU.RECIPE_ZPM / 2)
             .duration(50 * SECONDS)
@@ -714,7 +710,9 @@ public class RecipeLoader {
                 GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.NaquadahAlloy, 64),
                 GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.Manyullyn, 64),
                 GGMaterial.orundum.get(OrePrefixes.plate, 4))
-            .fluidInputs(Materials.TungstenSteel.getMolten(8 * INGOTS), new FluidStack(solderIndalloy, 16 * INGOTS))
+            .fluidInputs(
+                Materials.TungstenSteel.getMolten(8 * INGOTS),
+                MaterialsAlloy.INDALLOY_140.getFluidStack(16 * INGOTS))
             .itemOutputs(ItemRefer.Naquadah_Fuel_Refinery_Casing.get(1))
             .eut(TierEU.RECIPE_ZPM / 2)
             .duration(25 * SECONDS)

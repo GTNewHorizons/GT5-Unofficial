@@ -27,6 +27,7 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.recipe.Scanning;
+import gtPlusPlus.core.material.MaterialsAlloy;
 import kekztech.common.Blocks;
 
 public class AssemblyLine implements Runnable {
@@ -36,10 +37,6 @@ public class AssemblyLine implements Runnable {
         final Fluid radoxPoly = FluidRegistry.getFluid("molten.radoxpoly") != null
             ? FluidRegistry.getFluid("molten.radoxpoly")
             : FluidRegistry.getFluid("molten.polybenzimidazole");
-
-        final Fluid solderIndalloy = FluidRegistry.getFluid("molten.indalloy140") != null
-            ? FluidRegistry.getFluid("molten.indalloy140")
-            : FluidRegistry.getFluid("molten.solderingalloy");
 
         // TFFTStorageField6
         GTValues.RA.stdBuilder()
@@ -165,7 +162,7 @@ public class AssemblyLine implements Runnable {
                 ItemList.Circuit_Parts_ResistorASMD.get(8),
                 ItemList.Circuit_Parts_TransistorASMD.get(8),
                 GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.Platinum, 64))
-            .fluidInputs(new FluidStack(solderIndalloy, 5 * INGOTS))
+            .fluidInputs(MaterialsAlloy.INDALLOY_140.getFluidStack(5 * INGOTS))
             .itemOutputs(new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 2))
             .duration(50 * SECONDS)
             .eut(80_000)
@@ -190,7 +187,7 @@ public class AssemblyLine implements Runnable {
                 ItemList.Circuit_Parts_DiodeASMD.get(8),
                 GTOreDictUnificator.get(OrePrefixes.cableGt01, Materials.Naquadah, 32))
             .fluidInputs(
-                new FluidStack(solderIndalloy, 20 * INGOTS),
+                MaterialsAlloy.INDALLOY_140.getFluidStack(20 * INGOTS),
                 new FluidStack(FluidRegistry.getFluid("ic2coolant"), 16_000))
             .itemOutputs(new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 3))
             .duration(1 * MINUTES + 40 * SECONDS)
@@ -216,7 +213,7 @@ public class AssemblyLine implements Runnable {
                 ItemList.Circuit_Parts_DiodeASMD.get(16),
                 GTOreDictUnificator.get(OrePrefixes.cableGt01, Materials.NaquadahAlloy, 32))
             .fluidInputs(
-                new FluidStack(solderIndalloy, 20 * INGOTS),
+                MaterialsAlloy.INDALLOY_140.getFluidStack(20 * INGOTS),
                 new FluidStack(FluidRegistry.getFluid("ic2coolant"), 16_000))
             .itemOutputs(new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 4))
             .eut(200_000)

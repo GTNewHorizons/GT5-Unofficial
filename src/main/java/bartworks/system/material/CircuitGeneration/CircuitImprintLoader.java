@@ -49,6 +49,7 @@ import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.mixin.hooks.BWCoreStaticReplacementMethodes;
+import gtPlusPlus.core.material.MaterialsAlloy;
 
 public class CircuitImprintLoader {
 
@@ -96,16 +97,12 @@ public class CircuitImprintLoader {
             CircuitImprintLoader.recipeTagMap
                 .put(CircuitImprintLoader.getTagFromStack(outputs[0]), circuitRecipe.copy());
 
-            Fluid solderIndalloy = FluidRegistry.getFluid("molten.indalloy140") != null
-                ? FluidRegistry.getFluid("molten.indalloy140")
-                : FluidRegistry.getFluid("molten.solderingalloy");
-
             Fluid solderUEV = FluidRegistry.getFluid("molten.mutatedlivingsolder") != null
                 ? FluidRegistry.getFluid("molten.mutatedlivingsolder")
                 : FluidRegistry.getFluid("molten.solderingalloy");
 
             if (circuitRecipe.mFluidInputs[0].isFluidEqual(Materials.SolderingAlloy.getMolten(0))
-                || circuitRecipe.mFluidInputs[0].isFluidEqual(new FluidStack(solderIndalloy, 0))
+                || circuitRecipe.mFluidInputs[0].isFluidEqual(MaterialsAlloy.INDALLOY_140.getFluidStack(0))
                 || circuitRecipe.mFluidInputs[0].isFluidEqual(new FluidStack(solderUEV, 0))) {
                 GTRecipe newRecipe = CircuitImprintLoader.reBuildRecipe(circuitRecipe);
                 if (newRecipe != null) BartWorksRecipeMaps.circuitAssemblyLineRecipes.addRecipe(newRecipe);

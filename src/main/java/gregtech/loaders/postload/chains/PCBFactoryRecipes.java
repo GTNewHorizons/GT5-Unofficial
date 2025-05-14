@@ -18,9 +18,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.fluids.FluidStack;
 
 import bartworks.system.material.WerkstoffLoader;
 import gregtech.api.enums.GTValues;
@@ -36,6 +33,7 @@ import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.PCBFactoryManager;
 import gregtech.api.util.recipe.Scanning;
+import gtPlusPlus.core.material.MaterialsAlloy;
 
 @SuppressWarnings("SpellCheckingInspection")
 public class PCBFactoryRecipes {
@@ -44,10 +42,6 @@ public class PCBFactoryRecipes {
     private static final PCBFactoryUpgradeKey UPGRADE = PCBFactoryUpgradeKey.INSTANCE;
 
     public static void load() {
-        final Fluid solderLuV = FluidRegistry.getFluid("molten.indalloy140") != null
-            ? FluidRegistry.getFluid("molten.indalloy140")
-            : FluidRegistry.getFluid("molten.solderingalloy");
-
         // Load Multi Recipes
         GTValues.RA.stdBuilder()
             .metadata(RESEARCH_ITEM, ItemList.Circuit_Board_Wetware.get(1))
@@ -57,7 +51,9 @@ public class PCBFactoryRecipes {
                 ItemList.Machine_ZPM_CircuitAssembler.get(4),
                 new Object[] { OrePrefixes.circuit.get(Materials.LuV), 16 },
                 ItemList.Robot_Arm_ZPM.get(8))
-            .fluidInputs(new FluidStack(solderLuV, 36 * INGOTS), Materials.Naquadah.getMolten(18 * INGOTS))
+            .fluidInputs(
+                MaterialsAlloy.INDALLOY_140.getFluidStack(36 * INGOTS),
+                Materials.Naquadah.getMolten(18 * INGOTS))
             .itemOutputs(ItemList.PCBFactory.get(1))
             .eut(TierEU.RECIPE_UV)
             .duration(5 * MINUTES)

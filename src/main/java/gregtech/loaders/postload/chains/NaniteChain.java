@@ -14,9 +14,6 @@ import static gregtech.api.util.GTRecipeConstants.RESEARCH_ITEM;
 import static gregtech.api.util.GTRecipeConstants.SCANNING;
 
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.fluids.FluidStack;
 
 import bartworks.system.material.WerkstoffLoader;
 import gregtech.api.enums.GTValues;
@@ -27,6 +24,7 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.recipe.Scanning;
+import gtPlusPlus.core.material.MaterialsAlloy;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 
 public class NaniteChain {
@@ -38,10 +36,6 @@ public class NaniteChain {
         ItemStack aUEVTierLens = getModItem(NewHorizonsCoreMod.ID, "item.RadoxPolymerLens", 0);
         ItemStack aUIVTierLens = ItemList.EnergisedTesseract.get(0);
         ItemStack aUMVTierLens = GTOreDictUnificator.get(OrePrefixes.lens, Materials.Dilithium, 0, false);
-
-        Fluid solderIndalloy = FluidRegistry.getFluid("molten.indalloy140") != null
-            ? FluidRegistry.getFluid("molten.indalloy140")
-            : FluidRegistry.getFluid("molten.solderingalloy");
 
         // Nano Forge
         GTValues.RA.stdBuilder()
@@ -57,7 +51,7 @@ public class NaniteChain {
                 GTOreDictUnificator.get(OrePrefixes.wireGt08, Materials.Naquadah, 32),
                 GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.NaquadahAlloy, 4))
             .fluidInputs(
-                new FluidStack(solderIndalloy, 32 * INGOTS),
+                MaterialsAlloy.INDALLOY_140.getFluidStack(32 * INGOTS),
                 Materials.HSSS.getMolten(32 * INGOTS),
                 Materials.Osmiridium.getMolten(16 * INGOTS))
             .itemOutputs(ItemList.NanoForge.get(1))
@@ -76,7 +70,7 @@ public class NaniteChain {
                 GTOreDictUnificator.get(OrePrefixes.ring, Materials.NaquadahAlloy, 32),
                 GTOreDictUnificator.get(OrePrefixes.stick, Materials.NaquadahAlloy, 16),
                 Materials.Carbon.getDust(64))
-            .fluidInputs(Materials.UUMatter.getFluid(10_000), new FluidStack(solderIndalloy, 32 * INGOTS))
+            .fluidInputs(Materials.UUMatter.getFluid(10_000), MaterialsAlloy.INDALLOY_140.getFluidStack(32 * INGOTS))
             .itemOutputs(Materials.Carbon.getNanite(2))
             .eut(TierEU.RECIPE_UV)
             .duration(50 * SECONDS)

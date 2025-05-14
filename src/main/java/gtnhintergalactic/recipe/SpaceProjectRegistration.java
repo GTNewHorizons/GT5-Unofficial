@@ -19,6 +19,7 @@ import gregtech.common.misc.spaceprojects.base.SPUpgrade;
 import gregtech.common.misc.spaceprojects.base.SpaceProject;
 import gregtech.common.misc.spaceprojects.enums.SolarSystem;
 import gregtech.common.misc.spaceprojects.interfaces.ISpaceProject;
+import gtPlusPlus.core.material.MaterialsAlloy;
 import gtnhintergalactic.gui.IG_UITextures;
 import gtnhintergalactic.spaceprojects.ProjectAsteroidOutpost;
 import tectech.thing.CustomItemList;
@@ -32,10 +33,6 @@ public class SpaceProjectRegistration implements Runnable {
 
     Fluid solderUEV = FluidRegistry.getFluid("molten.mutatedlivingsolder") != null
         ? FluidRegistry.getFluid("molten.mutatedlivingsolder")
-        : FluidRegistry.getFluid("molten.solderingalloy");
-
-    Fluid solderLuV = FluidRegistry.getFluid("molten.indalloy140") != null
-        ? FluidRegistry.getFluid("molten.indalloy140")
         : FluidRegistry.getFluid("molten.solderingalloy");
 
     /**
@@ -64,7 +61,7 @@ public class SpaceProjectRegistration implements Runnable {
                 CustomItemList.Machine_Multi_Computer.get(1),
                 ItemList.Sensor_UHV.get(1),
                 ItemList.Emitter_UHV.get(1))
-            .setUpgradeFluidsCost(new FluidStack(solderLuV, 30 * INGOTS));
+            .setUpgradeFluidsCost(MaterialsAlloy.INDALLOY_140.getFluidStack(30 * INGOTS));
         ISpaceProject.ISP_Upgrade improvedComputation = new SPUpgrade().setUpgradeName("ImprovedComputation")
             .setUpgradeUnlocalizedName("ig.sp.upgrade.improvedcomputation")
             .setUpgradeTotalStages(20)
@@ -96,7 +93,7 @@ public class SpaceProjectRegistration implements Runnable {
                 ItemList.Block_NeutroniumPlate.get(16),
                 ItemList.Sensor_UV.get(1),
                 ItemList.Emitter_UV.get(1))
-            .setProjectFluidsCost(new FluidStack(solderLuV, 20 * INGOTS));
+            .setProjectFluidsCost(MaterialsAlloy.INDALLOY_140.getFluidStack(20 * INGOTS));
 
         SpaceProjectManager.addProject(asteroidOutpost);
     }
@@ -117,7 +114,7 @@ public class SpaceProjectRegistration implements Runnable {
                 ItemList.Block_NeutroniumPlate.get(4),
                 ItemList.Sensor_UV.get(2),
                 ItemList.Emitter_UV.get(2))
-            .setProjectFluidsCost(new FluidStack(solderLuV, 20 * INGOTS));
+            .setProjectFluidsCost(MaterialsAlloy.INDALLOY_140.getFluidStack(20 * INGOTS));
 
         SpaceProjectManager.addProject(planetScan);
     }
