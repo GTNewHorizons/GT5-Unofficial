@@ -1840,7 +1840,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
         for (MTEHatchInputBus tHatch : validMTEList(mInputBusses)) tHatch.updateSlots();
     }
 
-    protected void startRecipeProcessing() {
+    public void startRecipeProcessing() {
         mDualInputHatches.removeIf(mte -> mte == null || !((MetaTileEntity) mte).isValid());
 
         for (MTEHatchInputBus hatch : validMTEList(mInputBusses)) {
@@ -1861,7 +1861,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
         }
     }
 
-    protected void endRecipeProcessing() {
+    public void endRecipeProcessing() {
         for (MTEHatchInputBus hatch : validMTEList(mInputBusses)) {
             if (hatch instanceof IRecipeProcessingAwareHatch aware) {
                 setResultIfFailure(aware.endRecipeProcessing(this));
