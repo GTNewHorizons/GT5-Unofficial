@@ -20,13 +20,6 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
 
-import com.cleanroommc.modularui.api.drawable.IKey;
-import com.cleanroommc.modularui.api.widget.IWidget;
-import com.cleanroommc.modularui.screen.ModularPanel;
-import com.cleanroommc.modularui.utils.item.ItemStackHandler;
-import com.cleanroommc.modularui.value.sync.IntSyncValue;
-import com.cleanroommc.modularui.value.sync.PanelSyncManager;
-import com.cleanroommc.modularui.widgets.ListWidget;
 import com.gtnewhorizon.structurelib.alignment.constructable.IConstructable;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
@@ -38,6 +31,7 @@ import goodgenerator.api.recipe.GoodGeneratorRecipeMaps;
 import goodgenerator.blocks.tileEntity.GTMetaTileEntity.MTENeutronAccelerator;
 import goodgenerator.blocks.tileEntity.GTMetaTileEntity.MTENeutronSensor;
 import goodgenerator.blocks.tileEntity.base.MTETooltipMultiBlockBaseEM;
+import goodgenerator.blocks.tileEntity.gui.MTENeutronActivatorGui;
 import goodgenerator.loader.Loaders;
 import goodgenerator.util.DescTextLocalization;
 import goodgenerator.util.ItemRefer;
@@ -51,6 +45,7 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEHatch;
+import gregtech.api.metatileentity.implementations.gui.MTEMultiBlockBaseGui;
 import gregtech.api.objects.XSTR;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
@@ -77,7 +72,9 @@ public class MTENeutronActivator extends MTETooltipMultiBlockBaseEM implements I
     protected final ArrayList<MTENeutronSensor> mNeutronSensor = new ArrayList<>();
     protected int casingAmount = 0;
     protected int height = 0;
-    protected int eV = 0, mCeil = 0, mFloor = 0;
+    public int eV = 0;
+    protected int mCeil = 0;
+    protected int mFloor = 0;
     protected static final NumberFormatMUI numberFormat;
     static {
         numberFormat = new NumberFormatMUI();
@@ -460,31 +457,8 @@ public class MTENeutronActivator extends MTETooltipMultiBlockBaseEM implements I
     }
 
     @Override
-    public void insertTexts(ListWidget<IWidget, ?> machineInfo, ItemStackHandler invSlot, PanelSyncManager syncManager,
-        ModularPanel parentPanel) {
-        super.insertTexts(machineInfo, invSlot, syncManager, parentPanel);
-        IntSyncValue evSyncer = new IntSyncValue(() -> eV, val -> eV = val);
-        syncManager.syncValue("ev", evSyncer);
-
-        machineInfo.child(
-            new com.cleanroommc.modularui.widgets.TextWidget(StatCollector.translateToLocal("gui.NeutronActivator.0"))
-                .alignment(com.cleanroommc.modularui.utils.Alignment.CenterLeft)
-                .color(COLOR_TEXT_WHITE.get())
-                .widthRel(1)
-                .marginBottom(2)
-                .setEnabledIf(
-                    w -> getErrorDisplayID() == 0
-                        && (getBaseMetaTileEntity().isAllowedToWork() || getBaseMetaTileEntity().isActive())));
-
-        machineInfo.child(
-            IKey.dynamic(() -> numberFormat.format(eV / 1_000_000d) + " MeV")
-                .asWidget()
-                .color(COLOR_TEXT_WHITE.get())
-                .widthRel(1)
-                .marginBottom(2)
-                .setEnabledIf(
-                    w -> getErrorDisplayID() == 0
-                        && (getBaseMetaTileEntity().isAllowedToWork() || getBaseMetaTileEntity().isActive())));
+    protected @NotNull MTEMultiBlockBaseGui getGui() {
+        return new MTENeutronActivatorGui(this);
     }
 
     private enum NeutronHatchElement implements IHatchElement<MTENeutronActivator> {
