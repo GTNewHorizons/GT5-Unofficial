@@ -28,14 +28,6 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
 
-import com.cleanroommc.modularui.api.drawable.IKey;
-import com.cleanroommc.modularui.api.widget.IWidget;
-import com.cleanroommc.modularui.screen.ModularPanel;
-import com.cleanroommc.modularui.utils.item.ItemStackHandler;
-import com.cleanroommc.modularui.value.sync.DoubleSyncValue;
-import com.cleanroommc.modularui.value.sync.LongSyncValue;
-import com.cleanroommc.modularui.value.sync.PanelSyncManager;
-import com.cleanroommc.modularui.widgets.ListWidget;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IItemSource;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
@@ -51,6 +43,7 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatch;
+import gregtech.api.metatileentity.implementations.gui.MTEMultiBlockBaseGui;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
@@ -69,6 +62,7 @@ import tectech.thing.metaTileEntity.hatch.MTEHatchRack;
 import tectech.thing.metaTileEntity.hatch.MTEHatchWirelessComputationOutput;
 import tectech.thing.metaTileEntity.multi.base.Parameter;
 import tectech.thing.metaTileEntity.multi.base.TTMultiblockBase;
+import tectech.thing.metaTileEntity.multi.base.gui.MTEQuantumComputerGui;
 import tectech.thing.metaTileEntity.multi.base.render.TTRenderedExtendedFacingTexture;
 import tectech.util.CommonValues;
 
@@ -84,8 +78,8 @@ public class MTEQuantumComputer extends TTMultiblockBase implements ISurvivalCon
 
     private static Textures.BlockIcons.CustomIcon ScreenOFF;
     private static Textures.BlockIcons.CustomIcon ScreenON;
-    private double currentTemp;
-    private long computation;
+    public double currentTemp;
+    public long computation;
     // endregion
 
     // region structure
@@ -566,33 +560,8 @@ public class MTEQuantumComputer extends TTMultiblockBase implements ISurvivalCon
     }
 
     @Override
-    public void insertTexts(ListWidget<IWidget, ?> machineInfo, ItemStackHandler invSlot, PanelSyncManager syncManager,
-        ModularPanel parentPanel) {
-        super.insertTexts(machineInfo, invSlot, syncManager, parentPanel);
-        DoubleSyncValue tempSyncer = new DoubleSyncValue(() -> currentTemp);
-        LongSyncValue computationSyncer = new LongSyncValue(() -> computation);
-        syncManager.syncValue("temp", tempSyncer);
-        syncManager.syncValue("computation", computationSyncer);
-
-        machineInfo.child(
-            IKey.dynamic(
-                () -> EnumChatFormatting.WHITE + "Current temperature: "
-                    + EnumChatFormatting.YELLOW
-                    + tempSyncer.getValue())
-                .asWidget()
-                .widthRel(1)
-                .marginBottom(2)
-                .setEnabledIf(w -> getErrorDisplayID() == 0 && getBaseMetaTileEntity().isActive()));
-
-        machineInfo.child(
-            IKey.dynamic(
-                () -> EnumChatFormatting.WHITE + "Computation/s: "
-                    + EnumChatFormatting.GREEN
-                    + computationSyncer.getValue())
-                .asWidget()
-                .widthRel(1)
-                .marginBottom(2)
-                .setEnabledIf(w -> getErrorDisplayID() == 0 && getBaseMetaTileEntity().isActive()));
+    protected @NotNull MTEMultiBlockBaseGui getGui() {
+        return new MTEQuantumComputerGui(this);
     }
 
     private enum RackHatchElement implements IHatchElement<MTEQuantumComputer> {
