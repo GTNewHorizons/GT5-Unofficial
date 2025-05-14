@@ -614,7 +614,7 @@ public class PCBFactoryRecipes {
                     CHRONOMATIC_GLASS.getFoil((int) (16 * (Math.sqrt(tier - 6)))))
                 .fluidInputs(
                     Materials.SulfuricAcid.getFluid((long) (500 * (Math.sqrt(tier - 6)))),
-                    Materials.IronIIIChloride.getFluid((long) (12500 * (Math.sqrt(tier - 6)))),
+                    Materials.IronIIIChloride.getFluid((long) (12_500 * (Math.sqrt(tier - 6)))),
                     Materials.MysteriousCrystal.getMolten((long) (20 * INGOTS * (Math.sqrt(tier - 6)))))
                 .itemOutputs(aBoards.toArray(new ItemStack[0]))
                 .duration((int) Math.ceil(600 / Math.sqrt(Math.pow(1.5, tier - 5.5))))
@@ -644,7 +644,7 @@ public class PCBFactoryRecipes {
                     CHRONOMATIC_GLASS.getFoil((int) (16 * (Math.sqrt(tier - 6)))))
                 .fluidInputs(
                     Materials.SulfuricAcid.getFluid((long) (500 * (Math.sqrt(tier - 6)))),
-                    Materials.IronIIIChloride.getFluid((long) (12500 * (Math.sqrt(tier - 6)))),
+                    Materials.IronIIIChloride.getFluid((long) (12_500 * (Math.sqrt(tier - 6)))),
                     Materials.MysteriousCrystal.getMolten((long) (20 * INGOTS * (Math.sqrt(tier - 6)))))
                 .itemOutputs(aBoards.toArray(new ItemStack[0]))
                 .duration((int) Math.ceil(500 / Math.sqrt(Math.pow(1.5, tier - 6.5))))
@@ -675,7 +675,7 @@ public class PCBFactoryRecipes {
                     CHRONOMATIC_GLASS.getFoil((int) (16 * (Math.sqrt(tier - 6)))))
                 .fluidInputs(
                     Materials.SulfuricAcid.getFluid((long) (500 * (Math.sqrt(tier - 6)))),
-                    Materials.IronIIIChloride.getFluid((long) (12500 * (Math.sqrt(tier - 6)))),
+                    Materials.IronIIIChloride.getFluid((long) (12_500 * (Math.sqrt(tier - 6)))),
                     Materials.MysteriousCrystal.getMolten((long) (20 * INGOTS * (Math.sqrt(tier - 6)))))
                 .itemOutputs(aBoards.toArray(new ItemStack[0]))
                 .duration((int) Math.ceil(400 / Math.sqrt(Math.pow(1.5, tier - 6.5))))

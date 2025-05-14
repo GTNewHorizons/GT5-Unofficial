@@ -945,9 +945,9 @@ public class RecipeLoader2 {
 
         GTValues.RA.stdBuilder()
             .itemInputs(GGMaterial.ether.get(OrePrefixes.cell, 1), GTUtility.getIntegratedCircuit(1))
-            .fluidInputs(GGMaterial.impureFerroceneMixture.getFluidOrGas(7500))
+            .fluidInputs(GGMaterial.impureFerroceneMixture.getFluidOrGas(7_500))
             .itemOutputs(GGMaterial.ferroceneSolution.get(OrePrefixes.cell, 1))
-            .fluidOutputs(GGMaterial.ferroceneWaste.getFluidOrGas(5000))
+            .fluidOutputs(GGMaterial.ferroceneWaste.getFluidOrGas(5_000))
             .duration(40 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(mixerRecipes);
@@ -971,7 +971,7 @@ public class RecipeLoader2 {
             .itemInputs(GGMaterial.ferrocene.get(OrePrefixes.dust, 4), Materials.SodiumHydroxide.getDust(8))
             .fluidInputs(
                 FluidRegistry.getFluidStack("fluid.kerosene", 40000),
-                Materials.Naphtha.getFluid(3000),
+                Materials.Naphtha.getFluid(3_000),
                 GGMaterial.diethylamine.getFluidOrGas(1_000))
             .fluidOutputs(GGMaterial.ironedKerosene.getFluidOrGas(44000))
             .duration(2 * MINUTES)
@@ -983,7 +983,7 @@ public class RecipeLoader2 {
             .fluidInputs(
                 FluidRegistry.getFluidStack("combustionpromotor", 4000),
                 Materials.Naphtha.getFluid(40000),
-                Materials.LightFuel.getFluid(3000),
+                Materials.LightFuel.getFluid(3_000),
                 Materials.LPG.getFluid(1_000),
                 Materials.Tetranitromethane.getFluid(2_000))
             .fluidOutputs(GGMaterial.ironedFuel.getFluidOrGas(50000))

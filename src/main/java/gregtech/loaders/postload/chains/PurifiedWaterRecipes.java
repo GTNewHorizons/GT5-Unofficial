@@ -103,7 +103,7 @@ public class PurifiedWaterRecipes {
             GTValues.RA.stdBuilder()
                 .itemInputs(GTUtility.copyAmount(0, lens))
                 .fluidInputs(Materials.Air.getGas(10_000))
-                .fluidOutputs(Materials.Ozone.getGas(2000L))
+                .fluidOutputs(Materials.Ozone.getGas(2_000))
                 .duration(1 * SECONDS)
                 .eut(TierEU.RECIPE_LuV)
                 .addTo(laserEngraverRecipes);
@@ -144,16 +144,16 @@ public class PurifiedWaterRecipes {
         // 2 Al(OH)3 + 3 HCl -> Al2(OH)3 Cl3 + 3 H2O
         GTValues.RA.stdBuilder()
             .itemInputs(Materials.Aluminiumhydroxide.getDust(8))
-            .fluidInputs(Materials.HydrochloricAcid.getFluid(3000))
-            .fluidOutputs(Materials.PolyAluminiumChloride.getFluid(1_000), Materials.Water.getFluid(3000))
+            .fluidInputs(Materials.HydrochloricAcid.getFluid(3_000))
+            .fluidOutputs(Materials.PolyAluminiumChloride.getFluid(1_000), Materials.Water.getFluid(3_000))
             .duration(4 * SECONDS)
             .eut(TierEU.RECIPE_EV)
             .addTo(multiblockChemicalReactorRecipes);
 
         GTValues.RA.stdBuilder()
-            .fluidInputs(Materials.FlocculationWasteLiquid.getFluid(10000L))
+            .fluidInputs(Materials.FlocculationWasteLiquid.getFluid(10_000))
             .itemOutputs(Materials.Aluminium.getDust(20))
-            .fluidOutputs(Materials.Oxygen.getGas(30000L), Materials.HydrochloricAcid.getFluid(30000L))
+            .fluidOutputs(Materials.Oxygen.getGas(30_000), Materials.HydrochloricAcid.getFluid(30_000))
             .duration(1 * SECONDS)
             .eut(TierEU.RECIPE_EV)
             .addTo(distillationTowerRecipes);
@@ -250,7 +250,7 @@ public class PurifiedWaterRecipes {
         for (int i = 0; i < catalystInputs.length; ++i) {
             GTValues.RA.stdBuilder()
                 .itemInputs(ItemList.Quark_Catalyst_Housing.get(1), quarks[i])
-                .fluidInputs(MaterialsUEVplus.ExcitedDTRC.getFluid(10000L))
+                .fluidInputs(MaterialsUEVplus.ExcitedDTRC.getFluid(10_000))
                 .itemOutputs(catalystInputs[i])
                 .fluidOutputs(MaterialsUEVplus.DimensionallyTranscendentResidue.getFluid(5_000))
                 .metadata(COIL_HEAT, 10800)

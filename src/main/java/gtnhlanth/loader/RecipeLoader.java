@@ -624,7 +624,7 @@ public class RecipeLoader {
 
         /*
          * GT_Values.RA.stdBuilder().itemInputs(GTOreDictUnificator.get(OrePrefixes.foil, Materials.Silicon, 1))
-         * .fluidInputs(Materials.SiliconTetrachloride.getFluid(3000), Materials.Ammonia.getFluid(4_000))
+         * .fluidInputs(Materials.SiliconTetrachloride.getFluid(3_000), Materials.Ammonia.getFluid(4_000))
          * .fluidOutputs(Materials.HydrochloricAcid.getFluid(12000))
          * .itemOutputs(WerkstoffMaterialPool.SiliconNitride.get(OrePrefixes.plate)) .duration(GTRecipeBuilder.SECONDS
          * * 30) .eut(TierEU.EV) .addTo(GTRecipe.GTRecipe_Map.sPlasmaArcFurnaceRecipes);
@@ -1071,7 +1071,7 @@ public class RecipeLoader {
                 Materials.RockSalt.getDust(10),
                 WerkstoffMaterialPool.PotassiumChlorate.get(OrePrefixes.dust, 5))
             .fluidInputs(Materials.Chlorine.getGas(6000))
-            .fluidOutputs(Materials.Water.getFluid(3000))
+            .fluidOutputs(Materials.Water.getFluid(3_000))
             .duration(2 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(UniversalChemical);
@@ -1090,7 +1090,7 @@ public class RecipeLoader {
         // La + 6HCl = LaCl3 + 3H
         GTValues.RA.stdBuilder()
             .itemInputs(Materials.Lanthanum.getDust(1), GTUtility.getIntegratedCircuit(1))
-            .fluidInputs(Materials.HydrochloricAcid.getFluid(3000))
+            .fluidInputs(Materials.HydrochloricAcid.getFluid(3_000))
             .itemOutputs(WerkstoffMaterialPool.LanthaniumChloride.get(OrePrefixes.dust, 4))
             .fluidOutputs(Materials.Hydrogen.getGas(3_000))
             .duration(10 * SECONDS)
@@ -1099,7 +1099,7 @@ public class RecipeLoader {
 
         // Lanthanum Oxide
         GTValues.RA.stdBuilder()
-            .fluidInputs(Materials.Water.getFluid(3000))
+            .fluidInputs(Materials.Water.getFluid(3_000))
             .fluidOutputs(Materials.HydrochloricAcid.getFluid(6_000))
             .itemInputs(WerkstoffMaterialPool.LanthaniumChloride.get(OrePrefixes.dust, 8))
             .itemOutputs(WerkstoffMaterialPool.LanthanumOxide.get(OrePrefixes.dust, 1))
@@ -1209,7 +1209,7 @@ public class RecipeLoader {
 
         GTValues.RA.stdBuilder()
             .fluidInputs(
-                Materials.Water.getFluid(10000),
+                Materials.Water.getFluid(10_000),
                 WerkstoffMaterialPool.MuddyRareEarthMonaziteSolution.getFluidOrGas(1_000))
             .itemInputs(GTUtility.getIntegratedCircuit(1), Materials.Saltpeter.getDust(1))
             .fluidOutputs(WerkstoffMaterialPool.DilutedRareEarthMonaziteMud.getFluidOrGas(11000))
@@ -1542,7 +1542,7 @@ public class RecipeLoader {
 
         GTValues.RA.stdBuilder()
             .fluidInputs(
-                Materials.Water.getFluid(10000),
+                Materials.Water.getFluid(10_000),
                 WerkstoffMaterialPool.ConditionedBastnasiteMud.getFluidOrGas(1_000))
             .itemInputs(Materials.Saltpeter.getDust(1))
             .fluidOutputs(WerkstoffMaterialPool.DiltedRareEarthBastnasiteMud.getFluidOrGas(11000))

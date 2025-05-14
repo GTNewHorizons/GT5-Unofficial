@@ -755,7 +755,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                     ItemList.Electric_Pump_UEV.get(4), ItemList.ZPM3.get(1),
                     getModItem(IndustrialCraft2.ID, "blockMachine2", 1, 0) },
                 new FluidStack[] { new FluidStack(FluidRegistry.getFluid("oganesson"), 128000),
-                    MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack(512 * INGOTS),
+                    MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack(8 * STACKS),
                     new FluidStack(FluidRegistry.getFluid("molten.californium"), 36864),
                     Materials.NaquadahEnriched.getMolten(36864L) },
                 ItemList.Machine_Multi_PlasmaForge.get(1),
@@ -855,7 +855,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                 getModItem(NewHorizonsCoreMod.ID, "item.PicoWafer", 32, 0), ItemList.Robot_Arm_UIV.get(4),
                 ItemList.Emitter_UIV.get(4), ItemList.Sensor_UIV.get(4), },
             new FluidStack[] { new FluidStack(FluidRegistry.getFluid("oganesson"), 50_000),
-                Materials.Infinity.getMolten(512 * INGOTS), Materials.Cheese.getMolten(232_000L), },
+                Materials.Infinity.getMolten(8 * STACKS), Materials.Cheese.getMolten(232_000L), },
             ItemList.Block_BedrockiumCompressed.get(1),
             10000,
             5000000);
@@ -2418,7 +2418,7 @@ public class ResearchStationAssemblyLine implements Runnable {
 
                 new FluidStack[] { Materials.Neutronium.getMolten(144 * 256 * 4),
                     Materials.CosmicNeutronium.getMolten(144 * 256 * 4),
-                    MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack(512 * INGOTS),
+                    MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack(8 * STACKS),
                     MaterialsUEVplus.Space.getMolten(1_440) },
                 CustomItemList.EOH_Reinforced_Spatial_Casing.get(4),
                 10_000,
@@ -2899,7 +2899,7 @@ public class ResearchStationAssemblyLine implements Runnable {
 
                 new FluidStack[] { Materials.Neutronium.getMolten(144 * 256 * 4),
                     Materials.CosmicNeutronium.getMolten(144 * 256 * 4),
-                    MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack(512 * INGOTS),
+                    MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack(8 * STACKS),
                     MaterialsUEVplus.Time.getMolten(1_440) },
                 CustomItemList.EOH_Reinforced_Temporal_Casing.get(4),
                 10_000,

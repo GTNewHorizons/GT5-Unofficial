@@ -112,7 +112,7 @@ public class ChemicalRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Iron, 1), ItemList.Cell_Empty.get(3))
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.cell, Materials.Hydrogen, 3))
-            .fluidInputs(Materials.HydrochloricAcid.getFluid(3000))
+            .fluidInputs(Materials.HydrochloricAcid.getFluid(3_000))
             .fluidOutputs(Materials.IronIIIChloride.getFluid(1_000))
             .duration(20 * SECONDS)
             .eut(30)
@@ -946,7 +946,7 @@ public class ChemicalRecipes implements Runnable {
                 GTUtility.getIntegratedCircuit(1))
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.SiliconSG, 1), ItemList.Cell_Empty.get(2))
             .fluidInputs(Materials.Trichlorosilane.getFluid(1_000))
-            .fluidOutputs(Materials.HydrochloricAcid.getFluid(3000))
+            .fluidOutputs(Materials.HydrochloricAcid.getFluid(3_000))
             .duration(15 * SECONDS)
             .eut(30)
             .addTo(UniversalChemical);
@@ -957,7 +957,7 @@ public class ChemicalRecipes implements Runnable {
                 GTUtility.getIntegratedCircuit(1))
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.SiliconSG, 1), ItemList.Cell_Empty.get(1))
             .fluidInputs(Materials.Hydrogen.getGas(2_000))
-            .fluidOutputs(Materials.HydrochloricAcid.getFluid(3000))
+            .fluidOutputs(Materials.HydrochloricAcid.getFluid(3_000))
             .duration(15 * SECONDS)
             .eut(30)
             .addTo(chemicalReactorRecipes);
@@ -968,7 +968,7 @@ public class ChemicalRecipes implements Runnable {
             .itemInputs(ItemList.Cell_Empty.get(1), GTUtility.getIntegratedCircuit(2))
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.cell, Materials.Silane, 1))
             .fluidInputs(Materials.Trichlorosilane.getFluid(4_000))
-            .fluidOutputs(Materials.SiliconTetrachloride.getFluid(3000))
+            .fluidOutputs(Materials.SiliconTetrachloride.getFluid(3_000))
             .duration(12 * SECONDS)
             .eut(30)
             .addTo(UniversalChemical);
@@ -2229,7 +2229,7 @@ public class ChemicalRecipes implements Runnable {
             .itemInputs(Materials.Chlorine.getCells(6), GTUtility.getIntegratedCircuit(13))
             .itemOutputs(Materials.Chloroform.getCells(1), Materials.Empty.getCells(5))
             .fluidInputs(Materials.Methane.getGas(1_000))
-            .fluidOutputs(Materials.HydrochloricAcid.getFluid(3000))
+            .fluidOutputs(Materials.HydrochloricAcid.getFluid(3_000))
             .duration(4 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(UniversalChemical);
@@ -2238,7 +2238,7 @@ public class ChemicalRecipes implements Runnable {
             .itemInputs(Materials.Methane.getCells(1), GTUtility.getIntegratedCircuit(13))
             .itemOutputs(Materials.Chloroform.getCells(1))
             .fluidInputs(Materials.Chlorine.getGas(6000))
-            .fluidOutputs(Materials.HydrochloricAcid.getFluid(3000))
+            .fluidOutputs(Materials.HydrochloricAcid.getFluid(3_000))
             .duration(4 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(UniversalChemical);
@@ -3538,7 +3538,7 @@ public class ChemicalRecipes implements Runnable {
             .itemInputs(Materials.Glycerol.getCells(1), GTUtility.getIntegratedCircuit(1))
             .itemOutputs(Materials.Glyceryl.getCells(1))
             .fluidInputs(Materials.NitrationMixture.getFluid(6_000))
-            .fluidOutputs(Materials.DilutedSulfuricAcid.getFluid(3000))
+            .fluidOutputs(Materials.DilutedSulfuricAcid.getFluid(3_000))
             .duration(9 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(UniversalChemical);
@@ -3547,7 +3547,7 @@ public class ChemicalRecipes implements Runnable {
             .itemInputs(Materials.NitrationMixture.getCells(6), GTUtility.getIntegratedCircuit(1))
             .itemOutputs(Materials.Glyceryl.getCells(1), Materials.Empty.getCells(5))
             .fluidInputs(Materials.Glycerol.getFluid(1_000))
-            .fluidOutputs(Materials.DilutedSulfuricAcid.getFluid(3000))
+            .fluidOutputs(Materials.DilutedSulfuricAcid.getFluid(3_000))
             .duration(9 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(chemicalReactorRecipes);
@@ -4046,8 +4046,8 @@ public class ChemicalRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(Materials.Apatite.getDust(9), Materials.SulfuricAcid.getCells(5))
             .itemOutputs(Materials.HydrochloricAcid.getCells(1), Materials.Empty.getCells(4))
-            .fluidInputs(Materials.Water.getFluid(10000))
-            .fluidOutputs(Materials.PhosphoricAcid.getFluid(3000))
+            .fluidInputs(Materials.Water.getFluid(10_000))
+            .fluidOutputs(Materials.PhosphoricAcid.getFluid(3_000))
             .duration(16 * SECONDS)
             .eut(30)
             .addTo(chemicalReactorRecipes);
@@ -4077,8 +4077,8 @@ public class ChemicalRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(Materials.Chlorine.getCells(10), Materials.Mercury.getCells(1))
             .itemOutputs(Materials.Hydrogen.getCells(10), Materials.Empty.getCells(1))
-            .fluidInputs(Materials.Water.getFluid(10000))
-            .fluidOutputs(Materials.HypochlorousAcid.getFluid(10000))
+            .fluidInputs(Materials.Water.getFluid(10_000))
+            .fluidOutputs(Materials.HypochlorousAcid.getFluid(10_000))
             .duration(30 * SECONDS)
             .eut(8)
             .addTo(chemicalReactorRecipes);
@@ -4087,7 +4087,7 @@ public class ChemicalRecipes implements Runnable {
             .itemInputs(Materials.Water.getCells(10), Materials.Mercury.getCells(1))
             .itemOutputs(Materials.Hydrogen.getCells(10), Materials.Empty.getCells(1))
             .fluidInputs(Materials.Chlorine.getGas(10000))
-            .fluidOutputs(Materials.HypochlorousAcid.getFluid(10000))
+            .fluidOutputs(Materials.HypochlorousAcid.getFluid(10_000))
             .duration(30 * SECONDS)
             .eut(8)
             .addTo(chemicalReactorRecipes);
@@ -4216,7 +4216,7 @@ public class ChemicalRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Silicon, 1), ItemList.Cell_Empty.get(2))
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.cell, Materials.Hydrogen, 2))
-            .fluidInputs(Materials.HydrochloricAcid.getFluid(3000))
+            .fluidInputs(Materials.HydrochloricAcid.getFluid(3_000))
             .fluidOutputs(Materials.Trichlorosilane.getFluid(1_000))
             .duration(15 * SECONDS)
             .eut(30)
@@ -4973,7 +4973,7 @@ public class ChemicalRecipes implements Runnable {
                 MaterialsKevlar.CobaltIINaphthenate.getDust(64),
                 MaterialsKevlar.CobaltIINaphthenate.getDust(64),
                 MaterialsKevlar.CobaltIINaphthenate.getDust(49))
-            .fluidInputs(MaterialsKevlar.NaphthenicAcid.getFluid(10000))
+            .fluidInputs(MaterialsKevlar.NaphthenicAcid.getFluid(10_000))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_EV)
             .addTo(multiblockChemicalReactorRecipes);
@@ -4991,7 +4991,7 @@ public class ChemicalRecipes implements Runnable {
                 MaterialsKevlar.CobaltIINaphthenate.getDust(64),
                 MaterialsKevlar.CobaltIINaphthenate.getDust(64),
                 MaterialsKevlar.CobaltIINaphthenate.getDust(49))
-            .fluidInputs(MaterialsKevlar.NaphthenicAcid.getFluid(10000))
+            .fluidInputs(MaterialsKevlar.NaphthenicAcid.getFluid(10_000))
             .fluidOutputs(Materials.AceticAcid.getFluid(15000))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_EV)
@@ -5004,7 +5004,7 @@ public class ChemicalRecipes implements Runnable {
                 GTUtility.getIntegratedCircuit(1),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Sodium, 6))
             .itemOutputs(MaterialsKevlar.Triphenylphosphene.getDust(34), Materials.Salt.getDust(12))
-            .fluidInputs(MaterialsKevlar.PhosphorusTrichloride.getFluid(1_000), Materials.Chlorobenzene.getFluid(3000))
+            .fluidInputs(MaterialsKevlar.PhosphorusTrichloride.getFluid(1_000), Materials.Chlorobenzene.getFluid(3_000))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_EV)
             .addTo(multiblockChemicalReactorRecipes);
@@ -5087,9 +5087,9 @@ public class ChemicalRecipes implements Runnable {
             .itemInputs(GTUtility.getIntegratedCircuit(2))
             .fluidInputs(
                 Materials.Chlorine.getGas(10000),
-                Materials.Water.getFluid(10000),
+                Materials.Water.getFluid(10_000),
                 Materials.Mercury.getFluid(1_000))
-            .fluidOutputs(Materials.HypochlorousAcid.getFluid(10000), Materials.Hydrogen.getGas(10000))
+            .fluidOutputs(Materials.HypochlorousAcid.getFluid(10_000), Materials.Hydrogen.getGas(10000))
             .duration(30 * SECONDS)
             .eut(8)
             .addTo(multiblockChemicalReactorRecipes);
@@ -5146,8 +5146,8 @@ public class ChemicalRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(Materials.Apatite.getDust(9))
             .itemOutputs(Materials.Gypsum.getDust(40))
-            .fluidInputs(Materials.SulfuricAcid.getFluid(5_000), Materials.Water.getFluid(10000))
-            .fluidOutputs(Materials.PhosphoricAcid.getFluid(3000), Materials.HydrochloricAcid.getFluid(1_000))
+            .fluidInputs(Materials.SulfuricAcid.getFluid(5_000), Materials.Water.getFluid(10_000))
+            .fluidOutputs(Materials.PhosphoricAcid.getFluid(3_000), Materials.HydrochloricAcid.getFluid(1_000))
             .duration(16 * SECONDS)
             .eut(30)
             .addTo(multiblockChemicalReactorRecipes);
@@ -5277,7 +5277,7 @@ public class ChemicalRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(23))
             .fluidInputs(Materials.Ammonia.getGas(2_000), Materials.Oxygen.getGas(7000))
-            .fluidOutputs(Materials.DinitrogenTetroxide.getGas(1_000), Materials.Water.getFluid(3000))
+            .fluidOutputs(Materials.DinitrogenTetroxide.getGas(1_000), Materials.Water.getFluid(3_000))
             .duration(24 * SECONDS)
             .eut(30)
             .addTo(multiblockChemicalReactorRecipes);
@@ -5290,7 +5290,7 @@ public class ChemicalRecipes implements Runnable {
                 Materials.Nitrogen.getGas(2_000),
                 Materials.Hydrogen.getGas(6000),
                 Materials.Oxygen.getGas(7000))
-            .fluidOutputs(Materials.DinitrogenTetroxide.getGas(1_000), Materials.Water.getFluid(3000))
+            .fluidOutputs(Materials.DinitrogenTetroxide.getGas(1_000), Materials.Water.getFluid(3_000))
             .duration(55 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(multiblockChemicalReactorRecipes);
@@ -5602,15 +5602,15 @@ public class ChemicalRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(24))
-            .fluidInputs(Materials.Fuel.getFluid(10000), Materials.Tetranitromethane.getFluid(200))
-            .fluidOutputs(Materials.NitroFuel.getFluid(10000))
+            .fluidInputs(Materials.Fuel.getFluid(10_000), Materials.Tetranitromethane.getFluid(200))
+            .fluidOutputs(Materials.NitroFuel.getFluid(10_000))
             .duration(6 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(multiblockChemicalReactorRecipes);
 
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(24))
-            .fluidInputs(Materials.BioDiesel.getFluid(10000), Materials.Tetranitromethane.getFluid(400))
+            .fluidInputs(Materials.BioDiesel.getFluid(10_000), Materials.Tetranitromethane.getFluid(400))
             .fluidOutputs(Materials.NitroFuel.getFluid(9000))
             .duration(6 * SECONDS)
             .eut(TierEU.RECIPE_HV)
@@ -5658,7 +5658,7 @@ public class ChemicalRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(24))
-            .fluidInputs(Materials.GasolineRaw.getFluid(10000), Materials.Toluene.getFluid(1_000))
+            .fluidInputs(Materials.GasolineRaw.getFluid(10_000), Materials.Toluene.getFluid(1_000))
             .fluidOutputs(Materials.GasolineRegular.getFluid(11000))
             .duration(10 * TICKS)
             .eut(TierEU.RECIPE_HV)
@@ -5671,7 +5671,7 @@ public class ChemicalRecipes implements Runnable {
                 Materials.Octane.getFluid(2_000),
                 Materials.NitrousOxide.getGas(6000),
                 Materials.Toluene.getFluid(1_000),
-                Materials.AntiKnock.getFluid(3000))
+                Materials.AntiKnock.getFluid(3_000))
             .fluidOutputs(Materials.GasolinePremium.getFluid(32_000))
             .duration(2 * SECONDS + 10 * TICKS)
             .eut(TierEU.RECIPE_EV)
@@ -5736,12 +5736,12 @@ public class ChemicalRecipes implements Runnable {
             .itemInputs(GTUtility.getIntegratedCircuit(1))
             .fluidInputs(
                 Materials.Benzene.getFluid(5_000),
-                Materials.SulfuricAcid.getFluid(3000),
+                Materials.SulfuricAcid.getFluid(3_000),
                 Materials.NitricAcid.getFluid(5_000),
                 GTModHandler.getDistilledWater(10000))
             .fluidOutputs(
                 new FluidStack(FluidRegistry.getFluid("nitrobenzene"), 5000),
-                Materials.DilutedSulfuricAcid.getFluid(3000))
+                Materials.DilutedSulfuricAcid.getFluid(3_000))
             .duration(6 * SECONDS)
             .eut(TierEU.RECIPE_IV)
             .addTo(multiblockChemicalReactorRecipes);
@@ -5969,7 +5969,7 @@ public class ChemicalRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(1))
             .fluidInputs(
-                Materials.Methanol.getFluid(3000),
+                Materials.Methanol.getFluid(3_000),
                 new FluidStack(FluidRegistry.getFluid("boricacid"), 1000),
                 Materials.SulfuricAcid.getFluid(6_000))
             .fluidOutputs(

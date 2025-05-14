@@ -7,6 +7,7 @@ import static gregtech.api.util.GTModHandler.getModItem;
 import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.MINUTES;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
+import static gregtech.api.util.GTRecipeBuilder.STACKS;
 import static gregtech.api.util.GTRecipeConstants.AssemblyLine;
 import static gregtech.api.util.GTRecipeConstants.NANO_FORGE_TIER;
 import static gregtech.api.util.GTRecipeConstants.RESEARCH_ITEM;
@@ -75,7 +76,7 @@ public class NaniteChain {
                 GTOreDictUnificator.get(OrePrefixes.ring, Materials.NaquadahAlloy, 32),
                 GTOreDictUnificator.get(OrePrefixes.stick, Materials.NaquadahAlloy, 16),
                 Materials.Carbon.getDust(64))
-            .fluidInputs(Materials.UUMatter.getFluid(10000), new FluidStack(solderIndalloy, 32 * INGOTS))
+            .fluidInputs(Materials.UUMatter.getFluid(10_000), new FluidStack(solderIndalloy, 32 * INGOTS))
             .itemOutputs(Materials.Carbon.getNanite(2))
             .eut(TierEU.RECIPE_UV)
             .duration(50 * SECONDS)
@@ -175,7 +176,7 @@ public class NaniteChain {
             .fluidInputs(
                 Materials.UUMatter.getFluid(500_000),
                 MaterialsUEVplus.DimensionallyTranscendentResidue.getFluid(50_000),
-                MaterialsUEVplus.Creon.getMolten(512 * INGOTS))
+                MaterialsUEVplus.Creon.getMolten(8 * STACKS))
             .metadata(NANO_FORGE_TIER, 3)
             .duration(100 * SECONDS)
             .eut(2_000_000_000)

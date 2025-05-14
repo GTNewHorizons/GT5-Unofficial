@@ -794,7 +794,7 @@ public class MixerRecipes implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Diamond, 1),
                 GTUtility.getIntegratedCircuit(1))
             .itemOutputs(ItemList.Block_MSSFUEL.get(4))
-            .fluidInputs(Materials.NitroFuel.getFluid(3000))
+            .fluidInputs(Materials.NitroFuel.getFluid(3_000))
             .duration(15 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(mixerRecipes);
@@ -1349,7 +1349,7 @@ public class MixerRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(Materials.PolyvinylAcetate.getCells(2))
             .itemOutputs(Materials.Empty.getCells(2))
-            .fluidInputs(Materials.Acetone.getFluid(3000))
+            .fluidInputs(Materials.Acetone.getFluid(3_000))
             .fluidOutputs(Materials.AdvancedGlue.getFluid(5_000))
             .duration(5 * SECONDS)
             .eut(8)
@@ -1367,7 +1367,7 @@ public class MixerRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(Materials.PolyvinylAcetate.getCells(2))
             .itemOutputs(Materials.Empty.getCells(2))
-            .fluidInputs(Materials.MethylAcetate.getFluid(3000))
+            .fluidInputs(Materials.MethylAcetate.getFluid(3_000))
             .fluidOutputs(Materials.AdvancedGlue.getFluid(5_000))
             .duration(5 * SECONDS)
             .eut(8)
@@ -1443,7 +1443,7 @@ public class MixerRecipes implements Runnable {
                 Materials.NitrousOxide.getCells(6),
                 Materials.Toluene.getCells(1))
             .itemOutputs(Materials.Empty.getCells(29))
-            .fluidInputs(Materials.AntiKnock.getFluid(3000))
+            .fluidInputs(Materials.AntiKnock.getFluid(3_000))
             .fluidOutputs(Materials.GasolinePremium.getFluid(32_000))
             .duration(2 * SECONDS + 10 * TICKS)
             .eut(TierEU.RECIPE_EV)

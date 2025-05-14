@@ -696,7 +696,7 @@ public class DistilleryRecipes implements Runnable {
             480);
 
         addUniversalDistillationRecipe(
-            Materials.DilutedSulfuricAcid.getFluid(3000),
+            Materials.DilutedSulfuricAcid.getFluid(3_000),
             new FluidStack[] { Materials.SulfuricAcid.getFluid(2_000), Materials.Water.getFluid(1_000) },
             GTValues.NI,
             600,

@@ -1698,7 +1698,7 @@ public class AssemblerRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Food_Baked_Cake.get(1), new ItemStack(Items.egg, 1, 0))
             .itemOutputs(new ItemStack(Items.cake, 1, 0))
-            .fluidInputs(Materials.Milk.getFluid(3000))
+            .fluidInputs(Materials.Milk.getFluid(3_000))
             .duration(5 * SECONDS)
             .eut(8)
             .addTo(assemblerRecipes);

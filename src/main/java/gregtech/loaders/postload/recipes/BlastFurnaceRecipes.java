@@ -674,7 +674,7 @@ public class BlastFurnaceRecipes implements Runnable {
                 GGMaterial.shirabon.get(OrePrefixes.dust, 8),
                 GTUtility.getIntegratedCircuit(2))
             .fluidInputs(MaterialsUEVplus.PhononMedium.getFluid(10L))
-            .fluidOutputs(MaterialsUEVplus.PhononCrystalSolution.getFluid(3000))
+            .fluidOutputs(MaterialsUEVplus.PhononCrystalSolution.getFluid(3_000))
             .duration(200 * SECONDS)
             .eut((int) TierEU.RECIPE_UXV)
             .metadata(COIL_HEAT, 50000)

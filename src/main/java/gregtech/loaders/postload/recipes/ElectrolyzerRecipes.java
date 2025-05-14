@@ -28,7 +28,7 @@ public class ElectrolyzerRecipes implements Runnable {
             .itemInputs(GTUtility.getIntegratedCircuit(1), ItemList.Cell_Empty.get(1L))
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.cell, Materials.Oxygen, 1L))
             .fluidInputs(Materials.Water.getFluid(1_000))
-            .fluidOutputs(Materials.Hydrogen.getGas(2000L))
+            .fluidOutputs(Materials.Hydrogen.getGas(2_000))
             .duration(1 * MINUTES + 40 * SECONDS)
             .eut(30)
             .addTo(electrolyzerRecipes);
@@ -37,7 +37,7 @@ public class ElectrolyzerRecipes implements Runnable {
             .itemInputs(GTUtility.getIntegratedCircuit(2), ItemList.Cell_Empty.get(1L))
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.cell, Materials.Oxygen, 1L))
             .fluidInputs(GTModHandler.getDistilledWater(1000L))
-            .fluidOutputs(Materials.Hydrogen.getGas(2000L))
+            .fluidOutputs(Materials.Hydrogen.getGas(2_000))
             .duration(1 * MINUTES + 40 * SECONDS)
             .eut(30)
             .addTo(electrolyzerRecipes);
@@ -72,7 +72,7 @@ public class ElectrolyzerRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(GTModHandler.getIC2Item("electrolyzedWaterCell", 1L), GTUtility.getIntegratedCircuit(1))
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.cell, Materials.Oxygen, 1L))
-            .fluidOutputs(Materials.Hydrogen.getGas(2000L))
+            .fluidOutputs(Materials.Hydrogen.getGas(2_000))
             .duration(1 * SECONDS + 10 * TICKS)
             .eut(30)
             .addTo(electrolyzerRecipes);

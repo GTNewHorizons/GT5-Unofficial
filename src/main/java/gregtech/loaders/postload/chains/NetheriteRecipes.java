@@ -35,7 +35,7 @@ public class NetheriteRecipes {
     public static void run() {
 
         GTValues.RA.stdBuilder()
-            .fluidInputs(Materials.NetherAir.getFluid(10000))
+            .fluidInputs(Materials.NetherAir.getFluid(10_000))
             .fluidOutputs(
                 Materials.NitrogenDioxide.getGas(1400),
                 Materials.SulfurDioxide.getGas(3800),

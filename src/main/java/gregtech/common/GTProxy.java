@@ -2291,7 +2291,7 @@ public abstract class GTProxy implements IGTMod, IFuelHandler {
             .registerContainers(
                 GTOreDictUnificator.get(OrePrefixes.cellPlasma, aMaterial, 1L),
                 ItemList.Cell_Empty.get(1L),
-                aMaterial.getMolten(1) != null ? 1 * INGOTS : 1000)
+                aMaterial.getMolten(1) != null ? 1 * INGOTS : 1_000)
             .asFluid();
     }
 

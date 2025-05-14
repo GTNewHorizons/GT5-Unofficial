@@ -341,7 +341,7 @@ public class RecipeLoaderAgriculturalChem {
             .fluidOutputs(
                 new FluidStack(GTPPFluids.Butanol, 18000),
                 Materials.Acetone.getFluid(9000),
-                Materials.Ethanol.getFluid(3000))
+                Materials.Ethanol.getFluid(3_000))
             .duration(100 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .metadata(CHEMPLANT_CASING_TIER, 1)
