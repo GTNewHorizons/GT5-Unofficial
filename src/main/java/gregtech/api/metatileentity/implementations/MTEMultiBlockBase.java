@@ -1237,9 +1237,13 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
     }
 
     /**
-     * If it explodes when the Component has to be replaced.
+     * @deprecated no longer being called.
      */
-    public abstract boolean explodesOnComponentBreak(ItemStack aStack);
+    @Deprecated
+    @ApiStatus.ScheduledForRemoval
+    public boolean explodesOnComponentBreak(ItemStack aStack) {
+        return false;
+    }
 
     /**
      * @deprecated Use {@link #stopMachine(ShutDownReason)}

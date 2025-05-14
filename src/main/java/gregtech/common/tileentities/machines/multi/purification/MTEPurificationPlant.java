@@ -477,11 +477,6 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
         return euT;
     }
 
-    @Override
-    public boolean explodesOnComponentBreak(ItemStack aStack) {
-        return false;
-    }
-
     public void registerLinkedUnit(MTEPurificationUnitBase<?> unit) {
         LinkedPurificationUnit link = new LinkedPurificationUnit(unit);
         // Make sure to mark it as active if it is running a recipe. This happens on server restart and fixes

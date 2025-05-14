@@ -504,11 +504,6 @@ public abstract class MTELargeFusionComputer extends MTETooltipMultiBlockBaseEM
         return STRUCTURE_DEFINITION.get(getClass());
     }
 
-    @Override
-    public boolean explodesOnComponentBreak(ItemStack aStack) {
-        return false;
-    }
-
     @SideOnly(Side.CLIENT)
     @Override
     protected SoundResource getActivitySoundLoop() {

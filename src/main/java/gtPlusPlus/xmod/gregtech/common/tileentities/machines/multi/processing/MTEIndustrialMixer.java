@@ -202,11 +202,6 @@ public class MTEIndustrialMixer extends GTPPMultiBlockBase<MTEIndustrialMixer> i
     }
 
     @Override
-    public boolean explodesOnComponentBreak(final ItemStack aStack) {
-        return false;
-    }
-
-    @Override
     public boolean supportsInputSeparation() {
         return true;
     }

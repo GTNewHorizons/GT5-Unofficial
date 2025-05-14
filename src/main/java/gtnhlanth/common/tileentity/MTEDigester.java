@@ -222,10 +222,4 @@ public class MTEDigester extends MTEEnhancedMultiBlockBase<MTEDigester> implemen
         return multiDefinition;
     }
 
-    @Override
-    public boolean explodesOnComponentBreak(ItemStack arg0) {
-        // TODO Auto-generated method stub
-        return false;
-    }
-
 }

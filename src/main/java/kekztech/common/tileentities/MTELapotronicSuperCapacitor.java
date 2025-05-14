@@ -1223,11 +1223,6 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
         super.loadNBTData(nbt);
     }
 
-    @Override
-    public boolean explodesOnComponentBreak(ItemStack stack) {
-        return false;
-    }
-
     // called by the getEUCapacity() function in BaseMetaTileEntity
     @Override
     public long maxEUStore() {

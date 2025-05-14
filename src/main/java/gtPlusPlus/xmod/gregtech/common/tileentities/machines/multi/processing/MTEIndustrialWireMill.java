@@ -191,11 +191,6 @@ public class MTEIndustrialWireMill extends GTPPMultiBlockBase<MTEIndustrialWireM
         return PollutionConfig.pollutionPerSecondMultiIndustrialWireMill;
     }
 
-    @Override
-    public boolean explodesOnComponentBreak(final ItemStack aStack) {
-        return false;
-    }
-
     public Block getCasingBlock() {
         return ModBlocks.blockCasingsMisc;
     }

@@ -238,11 +238,6 @@ public class MTEIndustrialForgeHammer extends GTPPMultiBlockBase<MTEIndustrialFo
         return PollutionConfig.pollutionPerSecondMultiIndustrialForgeHammer;
     }
 
-    @Override
-    public boolean explodesOnComponentBreak(final ItemStack aStack) {
-        return false;
-    }
-
     private void setAnvilTier(int tier) {
         mAnvilTier = tier;
     }

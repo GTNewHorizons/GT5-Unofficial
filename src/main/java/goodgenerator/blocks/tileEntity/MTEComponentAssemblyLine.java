@@ -376,11 +376,6 @@ public class MTEComponentAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTE
     }
 
     @Override
-    public boolean explodesOnComponentBreak(ItemStack aStack) {
-        return false;
-    }
-
-    @Override
     public RecipeMap<?> getRecipeMap() {
         return GoodGeneratorRecipeMaps.componentAssemblyLineRecipes;
     }

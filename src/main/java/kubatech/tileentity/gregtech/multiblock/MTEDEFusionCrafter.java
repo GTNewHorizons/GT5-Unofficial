@@ -225,10 +225,6 @@ public class MTEDEFusionCrafter extends KubaTechGTMultiBlockBase<MTEDEFusionCraf
         };
     }
 
-    public boolean explodesOnComponentBreak(ItemStack aStack) {
-        return false;
-    }
-
     @Override
     public void construct(ItemStack itemStack, boolean b) {
         buildPiece(STRUCTURE_PIECE_MAIN, itemStack, b, 2, 9, 0);

@@ -380,17 +380,6 @@ public class TileEntityPlanetaryGasSiphon extends MTEEnhancedMultiBlockBase<Tile
     }
 
     /**
-     * Whether this machine should explode, when the structure is broken while running
-     *
-     * @param stack Item in the controller
-     * @return True if it should explode, else false
-     */
-    @Override
-    public boolean explodesOnComponentBreak(ItemStack stack) {
-        return false;
-    }
-
-    /**
      * Save additional nbt data to this controller
      *
      * @param aNBT Tag to which will be saved

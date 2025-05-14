@@ -159,11 +159,6 @@ public class MTEndustrialElectrolyzer extends GTPPMultiBlockBase<MTEndustrialEle
     }
 
     @Override
-    public boolean explodesOnComponentBreak(final ItemStack aStack) {
-        return false;
-    }
-
-    @Override
     public int getMaxParallelRecipes() {
         return 2 * GTUtility.getTier(this.getMaxInputVoltage());
     }

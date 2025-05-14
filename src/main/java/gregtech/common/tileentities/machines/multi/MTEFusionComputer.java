@@ -465,11 +465,6 @@ public abstract class MTEFusionComputer extends MTEEnhancedMultiBlockBase<MTEFus
     }
 
     @Override
-    public boolean explodesOnComponentBreak(ItemStack aStack) {
-        return false;
-    }
-
-    @Override
     public void stopMachine(@NotNull ShutDownReason reason) {
         super.stopMachine(reason);
         turnCasingActive(false);

@@ -167,11 +167,6 @@ public class MTEAdvImplosionCompressor extends GTPPMultiBlockBase<MTEAdvImplosio
     }
 
     @Override
-    public boolean explodesOnComponentBreak(ItemStack aStack) {
-        return false;
-    }
-
-    @Override
     public int getMaxParallelRecipes() {
         return (GTUtility.getTier(this.getMaxInputVoltage()) / 2 + 1);
     }

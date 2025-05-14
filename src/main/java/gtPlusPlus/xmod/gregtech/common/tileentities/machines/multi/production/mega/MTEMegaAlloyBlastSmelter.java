@@ -226,11 +226,6 @@ public class MTEMegaAlloyBlastSmelter extends MTEExtendedPowerMultiBlockBase<MTE
         return true;
     }
 
-    @Override
-    public boolean explodesOnComponentBreak(ItemStack aStack) {
-        return false;
-    }
-
     private void calculateSpeedBonus(HeatingCoilLevel lvl, int glassTier) {
         int bonusTier = lvl != null ? Math.min(lvl.getTier() - 3, glassTier - 2) : 0;
         if (bonusTier < 0) {

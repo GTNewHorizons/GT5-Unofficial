@@ -562,11 +562,6 @@ public class MTEQuantumForceTransformer extends MTEExtendedPowerMultiBlockBase<M
         }
     }
 
-    @Override
-    public boolean explodesOnComponentBreak(final ItemStack aStack) {
-        return false;
-    }
-
     public static int getBaseOutputChance(GTRecipe tRecipe) {
         int aOutputsAmount = tRecipe.mOutputs.length + tRecipe.mFluidOutputs.length;
         return 10000 / aOutputsAmount;

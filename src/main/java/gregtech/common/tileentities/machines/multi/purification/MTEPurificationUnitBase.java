@@ -141,11 +141,6 @@ public abstract class MTEPurificationUnitBase<T extends MTEExtendedPowerMultiBlo
     }
 
     @Override
-    public boolean explodesOnComponentBreak(ItemStack aStack) {
-        return false;
-    }
-
-    @Override
     public boolean doRandomMaintenanceDamage() {
         // The individual purification unit structures cannot have maintenance issues, so do nothing.
         return true;

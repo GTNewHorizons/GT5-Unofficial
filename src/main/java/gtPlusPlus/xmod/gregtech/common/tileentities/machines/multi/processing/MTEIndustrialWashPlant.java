@@ -256,11 +256,6 @@ public class MTEIndustrialWashPlant extends GTPPMultiBlockBase<MTEIndustrialWash
         return PollutionConfig.pollutionPerSecondMultiIndustrialWashPlant_ModeWasher;
     }
 
-    @Override
-    public boolean explodesOnComponentBreak(final ItemStack aStack) {
-        return false;
-    }
-
     public Block getCasingBlock() {
         return ModBlocks.blockCasings2Misc;
     }

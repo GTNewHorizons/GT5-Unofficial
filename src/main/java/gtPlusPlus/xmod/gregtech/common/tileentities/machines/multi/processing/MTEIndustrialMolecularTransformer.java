@@ -226,8 +226,4 @@ public class MTEIndustrialMolecularTransformer extends GTPPMultiBlockBase<MTEInd
         return PollutionConfig.pollutionPerSecondMultiMolecularTransformer;
     }
 
-    @Override
-    public boolean explodesOnComponentBreak(final ItemStack aStack) {
-        return false;
-    }
 }

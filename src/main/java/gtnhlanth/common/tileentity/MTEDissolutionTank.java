@@ -244,9 +244,4 @@ public class MTEDissolutionTank extends MTEEnhancedMultiBlockBase<MTEDissolution
         return tt;
     }
 
-    @Override
-    public boolean explodesOnComponentBreak(ItemStack arg0) {
-        return false;
-    }
-
 }

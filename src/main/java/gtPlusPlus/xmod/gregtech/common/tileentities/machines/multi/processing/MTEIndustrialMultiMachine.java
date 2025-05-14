@@ -232,11 +232,6 @@ public class MTEIndustrialMultiMachine extends GTPPMultiBlockBase<MTEIndustrialM
         return TAE.getIndexFromPage(2, 2);
     }
 
-    @Override
-    public boolean explodesOnComponentBreak(final ItemStack aStack) {
-        return false;
-    }
-
     private ItemStack getCircuit(ItemStack[] t) {
         for (ItemStack j : t) {
             if (j.getItem() == GTUtility.getIntegratedCircuit(0)

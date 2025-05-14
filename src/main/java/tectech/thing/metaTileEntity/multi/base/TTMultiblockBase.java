@@ -1630,11 +1630,6 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
         return new ArrayList<>(eEnergyMulti);
     }
 
-    @Override
-    public boolean explodesOnComponentBreak(ItemStack itemStack) {
-        return false;
-    }
-
     // empty body to prevent any explosion
     @Override
     public final void explodeMultiblock() {}

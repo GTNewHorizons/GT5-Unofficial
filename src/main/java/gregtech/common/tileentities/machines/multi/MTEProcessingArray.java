@@ -379,11 +379,6 @@ public class MTEProcessingArray extends MTEExtendedPowerMultiBlockBase<MTEProces
         return true;
     }
 
-    @Override
-    public boolean explodesOnComponentBreak(ItemStack aStack) {
-        return false;
-    }
-
     private List<IHatchElement<? super MTEProcessingArray>> getAllowedHatches() {
         return ImmutableList.of(InputHatch, OutputHatch, InputBus, OutputBus, Maintenance, Energy, ExoticEnergy);
     }

@@ -591,11 +591,6 @@ public class MTESolarTower extends GTPPMultiBlockBase<MTESolarTower> implements 
         return 1;
     }
 
-    @Override
-    public boolean explodesOnComponentBreak(final ItemStack aStack) {
-        return false;
-    }
-
     public Block getCasingBlock() {
         return ModBlocks.blockSpecialMultiCasings;
     }

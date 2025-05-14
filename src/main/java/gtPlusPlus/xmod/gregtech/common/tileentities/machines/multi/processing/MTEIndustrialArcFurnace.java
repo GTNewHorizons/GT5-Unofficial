@@ -268,11 +268,6 @@ public class MTEIndustrialArcFurnace extends GTPPMultiBlockBase<MTEIndustrialArc
         return PollutionConfig.pollutionPerSecondMultiIndustrialArcFurnace;
     }
 
-    @Override
-    public boolean explodesOnComponentBreak(final ItemStack aStack) {
-        return false;
-    }
-
     public Block getCasingBlock() {
         return ModBlocks.blockCasings4Misc;
     }

@@ -378,11 +378,6 @@ public class MTEPreciseAssembler extends MTEExtendedPowerMultiBlockBase<MTEPreci
     }
 
     @Override
-    public boolean explodesOnComponentBreak(ItemStack aStack) {
-        return false;
-    }
-
-    @Override
     public String[] getStructureDescription(ItemStack stackSize) {
         return DescTextLocalization.addText("PreciseAssembler.hint", 7);
     }

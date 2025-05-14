@@ -180,11 +180,6 @@ public class MTEIndustrialFluidHeater extends GTPPMultiBlockBase<MTEIndustrialFl
         return PollutionConfig.pollutionPerSecondMultiIndustrialFluidHeater;
     }
 
-    @Override
-    public boolean explodesOnComponentBreak(final ItemStack aStack) {
-        return false;
-    }
-
     public Block getCasingBlock1() {
         return ModBlocks.blockCasings2Misc;
     }

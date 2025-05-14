@@ -662,11 +662,6 @@ public abstract class MTEDrillerBase extends MTEEnhancedMultiBlockBase<MTEDrille
         return mFakePlayer;
     }
 
-    @Override
-    public boolean explodesOnComponentBreak(ItemStack aStack) {
-        return false;
-    }
-
     protected abstract ItemList getCasingBlockItem();
 
     protected abstract Materials getFrameMaterial();

@@ -204,8 +204,4 @@ public class MTEIndustrialCokeOven extends GTPPMultiBlockBase<MTEIndustrialCokeO
         return PollutionConfig.pollutionPerSecondMultiIndustrialCokeOven;
     }
 
-    @Override
-    public boolean explodesOnComponentBreak(final ItemStack aStack) {
-        return false;
-    }
 }

@@ -165,11 +165,6 @@ public class MTEIndustrialThermalCentrifuge extends GTPPMultiBlockBase<MTEIndust
         return PollutionConfig.pollutionPerSecondMultiIndustrialThermalCentrifuge;
     }
 
-    @Override
-    public boolean explodesOnComponentBreak(final ItemStack aStack) {
-        return false;
-    }
-
     public Block getCasingBlock() {
         return ModBlocks.blockCasings2Misc;
     }

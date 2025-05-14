@@ -333,11 +333,6 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
     public static final String TAG_HIDE_POLLUTION = "TAG_HIDE_POLLUTION";
     public static final String TAG_HIDE_MACHINE_TYPE = "TAG_HIDE_MACHINE_TYPE";
 
-    @Override
-    public boolean explodesOnComponentBreak(ItemStack p0) {
-        return false;
-    }
-
     /**
      * A Static {@link Method} object which holds the current status of logging.
      */

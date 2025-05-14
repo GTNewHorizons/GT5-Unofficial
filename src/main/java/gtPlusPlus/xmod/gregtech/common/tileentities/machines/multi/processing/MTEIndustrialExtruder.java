@@ -172,11 +172,6 @@ public class MTEIndustrialExtruder extends GTPPMultiBlockBase<MTEIndustrialExtru
         return PollutionConfig.pollutionPerSecondMultiIndustrialExtruder;
     }
 
-    @Override
-    public boolean explodesOnComponentBreak(final ItemStack aStack) {
-        return false;
-    }
-
     public Block getCasingBlock() {
         return ModBlocks.blockCasings3Misc;
     }

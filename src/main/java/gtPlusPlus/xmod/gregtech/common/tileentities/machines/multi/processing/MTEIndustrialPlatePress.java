@@ -203,11 +203,6 @@ public class MTEIndustrialPlatePress extends GTPPMultiBlockBase<MTEIndustrialPla
     }
 
     @Override
-    public boolean explodesOnComponentBreak(final ItemStack aStack) {
-        return false;
-    }
-
-    @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         // Migrates old NBT tag to the new one
         if (aNBT.hasKey("mFormingMode")) {

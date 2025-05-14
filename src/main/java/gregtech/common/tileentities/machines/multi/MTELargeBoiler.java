@@ -460,11 +460,6 @@ public abstract class MTELargeBoiler extends MTEEnhancedMultiBlockBase<MTELargeB
             && !mMufflerHatches.isEmpty();
     }
 
-    @Override
-    public boolean explodesOnComponentBreak(ItemStack aStack) {
-        return false;
-    }
-
     private int adjustEUtForConfig(int rawEUt) {
         int adjustedSteamOutput = rawEUt - (isSuperheated() ? 75 : 25) * integratedCircuitConfig;
         return Math.max(adjustedSteamOutput, 25);

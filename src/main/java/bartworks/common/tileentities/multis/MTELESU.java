@@ -427,11 +427,6 @@ public class MTELESU extends MTEMultiBlockBase {
         return true;
     }
 
-    @Override
-    public boolean explodesOnComponentBreak(ItemStack itemStack) {
-        return false;
-    }
-
     public World getWorld() {
         return this.getBaseMetaTileEntity()
             .getWorld();

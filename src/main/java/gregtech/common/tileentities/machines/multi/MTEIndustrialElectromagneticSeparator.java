@@ -375,11 +375,6 @@ public class MTEIndustrialElectromagneticSeparator
     }
 
     @Override
-    public boolean explodesOnComponentBreak(ItemStack aStack) {
-        return false;
-    }
-
-    @Override
     public boolean supportsVoidProtection() {
         return true;
     }

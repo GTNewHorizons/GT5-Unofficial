@@ -397,11 +397,6 @@ public class MTETargetChamber extends MTEEnhancedMultiBlockBase<MTETargetChamber
     }
 
     @Override
-    public boolean explodesOnComponentBreak(ItemStack arg0) {
-        return false;
-    }
-
-    @Override
     public String[] getStructureDescription(ItemStack arg0) {
         return DescTextLocalization.addText("TargetChamber.hint", 13);
     }

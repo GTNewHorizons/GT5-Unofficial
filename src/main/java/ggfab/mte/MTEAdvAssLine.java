@@ -869,11 +869,6 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
     }
 
     @Override
-    public boolean explodesOnComponentBreak(ItemStack aStack) {
-        return false;
-    }
-
-    @Override
     protected boolean supportsSlotAutomation(int aSlot) {
         return aSlot == getControllerSlotIndex();
     }

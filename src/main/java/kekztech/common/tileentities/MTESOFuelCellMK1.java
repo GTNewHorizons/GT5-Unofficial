@@ -194,11 +194,6 @@ public class MTESOFuelCellMK1 extends MTEEnhancedMultiBlockBase<MTESOFuelCellMK1
     }
 
     @Override
-    public boolean explodesOnComponentBreak(ItemStack stack) {
-        return false;
-    }
-
-    @Override
     public void construct(ItemStack itemStack, boolean b) {
         buildPiece(STRUCTURE_PIECE_MAIN, itemStack, b, 1, 1, 0);
     }
