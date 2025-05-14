@@ -1062,7 +1062,7 @@ public abstract class GTProxy implements IGTMod, IFuelHandler {
 
             FluidContainerRegistry.registerFluidContainer(
                 new FluidContainerRegistry.FluidContainerData(
-                    Materials.Milk.getFluid(1000),
+                    Materials.Milk.getFluid(1_000),
                     GTOreDictUnificator.get(OrePrefixes.bucketClay, Materials.Milk, 1L),
                     GTOreDictUnificator.get(OrePrefixes.bucketClay, Materials.Empty, 1L)));
         }

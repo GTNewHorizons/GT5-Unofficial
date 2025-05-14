@@ -261,7 +261,7 @@ public class RecipeLoaderAgriculturalChem {
             if (ItemUtils.checkForInvalidItems(a)) {
                 GTValues.RA.stdBuilder()
                     .itemInputs(GTUtility.getIntegratedCircuit(2), GTUtility.copyAmount(10, a))
-                    .fluidInputs(GTModHandler.getDistilledWater(1000))
+                    .fluidInputs(GTModHandler.getDistilledWater(1_000))
                     .fluidOutputs(new FluidStack(GTPPFluids.FermentationBase, 1000))
                     .duration(30 * SECONDS)
                     .eut(2)
@@ -274,7 +274,7 @@ public class RecipeLoaderAgriculturalChem {
             if (ItemUtils.checkForInvalidItems(a)) {
                 GTValues.RA.stdBuilder()
                     .itemInputs(GTUtility.getIntegratedCircuit(3), GTUtility.copyAmount(20, a))
-                    .fluidInputs(GTModHandler.getDistilledWater(1000))
+                    .fluidInputs(GTModHandler.getDistilledWater(1_000))
                     .fluidOutputs(new FluidStack(GTPPFluids.FermentationBase, 1000))
                     .duration(30 * SECONDS)
                     .eut(2)
@@ -286,7 +286,7 @@ public class RecipeLoaderAgriculturalChem {
         // Sugar Cane
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(4), new ItemStack(Items.reeds, 32))
-            .fluidInputs(GTModHandler.getDistilledWater(1000))
+            .fluidInputs(GTModHandler.getDistilledWater(1_000))
             .fluidOutputs(new FluidStack(GTPPFluids.FermentationBase, 1000))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_LV)
@@ -311,7 +311,7 @@ public class RecipeLoaderAgriculturalChem {
 
             GTValues.RA.stdBuilder()
                 .itemInputs(GTUtility.getIntegratedCircuit(4), GTOreDictUnificator.get("cropSugarbeet", 4))
-                .fluidInputs(GTModHandler.getDistilledWater(1000))
+                .fluidInputs(GTModHandler.getDistilledWater(1_000))
                 .fluidOutputs(new FluidStack(GTPPFluids.FermentationBase, 1000))
                 .duration(30 * SECONDS)
                 .eut(TierEU.RECIPE_LV)

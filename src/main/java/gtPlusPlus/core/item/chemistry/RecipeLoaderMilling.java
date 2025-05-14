@@ -50,7 +50,7 @@ public class RecipeLoaderMilling {
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Indium, 64),
                 MaterialsElements.getInstance().GERMANIUM.getDust(15))
             .fluidInputs(new FluidStack(GTPPFluids.SphaleriteFlotationFroth, 4000))
-            .fluidOutputs(new FluidStack(GTPPFluids.RedMud, 2000), GTModHandler.getWater(2000))
+            .fluidOutputs(new FluidStack(GTPPFluids.RedMud, 2000), GTModHandler.getWater(2_000))
             .eut(TierEU.RECIPE_LuV)
             .metadata(COIL_HEAT, 5500)
             .duration(2 * MINUTES)
@@ -67,7 +67,7 @@ public class RecipeLoaderMilling {
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Cadmium, 50),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Indium, 10))
             .fluidInputs(new FluidStack(GTPPFluids.ChalcopyriteFlotationFroth, 4000))
-            .fluidOutputs(new FluidStack(GTPPFluids.RedMud, 2000), GTModHandler.getWater(2000))
+            .fluidOutputs(new FluidStack(GTPPFluids.RedMud, 2000), GTModHandler.getWater(2_000))
             .eut(TierEU.RECIPE_IV)
             .metadata(COIL_HEAT, 4500)
             .duration(2 * MINUTES)
@@ -83,7 +83,7 @@ public class RecipeLoaderMilling {
                 MaterialsElements.getInstance().RHODIUM.getDust(32),
                 MaterialsElements.getInstance().RUTHENIUM.getDust(16))
             .fluidInputs(new FluidStack(GTPPFluids.NickelFlotationFroth, 4000))
-            .fluidOutputs(new FluidStack(GTPPFluids.RedMud, 2000), GTModHandler.getWater(2000))
+            .fluidOutputs(new FluidStack(GTPPFluids.RedMud, 2000), GTModHandler.getWater(2_000))
             .eut(TierEU.RECIPE_IV)
             .metadata(COIL_HEAT, 4500)
             .duration(2 * MINUTES)
@@ -97,7 +97,7 @@ public class RecipeLoaderMilling {
                 MaterialsElements.getInstance().SELENIUM.getDust(40),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Tellurium, 10))
             .fluidInputs(new FluidStack(GTPPFluids.PlatinumFlotationFroth, 4000))
-            .fluidOutputs(new FluidStack(GTPPFluids.RedMud, 2000), GTModHandler.getWater(2000))
+            .fluidOutputs(new FluidStack(GTPPFluids.RedMud, 2000), GTModHandler.getWater(2_000))
             .eut(TierEU.RECIPE_LuV)
             .metadata(COIL_HEAT, 5500)
             .duration(2 * MINUTES)
@@ -113,7 +113,7 @@ public class RecipeLoaderMilling {
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Promethium, 20),
                 MaterialsElements.getInstance().HAFNIUM.getDust(10))
             .fluidInputs(new FluidStack(GTPPFluids.PentlanditeFlotationFroth, 4000))
-            .fluidOutputs(new FluidStack(GTPPFluids.RedMud, 2000), GTModHandler.getWater(2000))
+            .fluidOutputs(new FluidStack(GTPPFluids.RedMud, 2000), GTModHandler.getWater(2_000))
             .eut(TierEU.RECIPE_LuV)
             .metadata(COIL_HEAT, 5500)
             .duration(2 * MINUTES)
@@ -130,7 +130,7 @@ public class RecipeLoaderMilling {
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Firestone, 45),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Dysprosium, 16))
             .fluidInputs(new FluidStack(GTPPFluids.RedstoneFlotationFroth, 4000))
-            .fluidOutputs(new FluidStack(GTPPFluids.RedMud, 2000), GTModHandler.getWater(2000))
+            .fluidOutputs(new FluidStack(GTPPFluids.RedMud, 2000), GTModHandler.getWater(2_000))
             .eut(TierEU.RECIPE_IV)
             .metadata(COIL_HEAT, 4500)
             .duration(2 * MINUTES)
@@ -146,7 +146,7 @@ public class RecipeLoaderMilling {
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Osmium, 30),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Strontium, 20))
             .fluidInputs(new FluidStack(GTPPFluids.SpessartineFlotationFroth, 4000))
-            .fluidOutputs(new FluidStack(GTPPFluids.RedMud, 2000), GTModHandler.getWater(2000))
+            .fluidOutputs(new FluidStack(GTPPFluids.RedMud, 2000), GTModHandler.getWater(2_000))
             .eut(TierEU.RECIPE_LuV)
             .metadata(COIL_HEAT, 5500)
             .duration(2 * MINUTES)
@@ -162,7 +162,7 @@ public class RecipeLoaderMilling {
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Tungsten, 60),
                 MaterialsElements.getInstance().THALLIUM.getDust(15))
             .fluidInputs(new FluidStack(GTPPFluids.GrossularFlotationFroth, 4000))
-            .fluidOutputs(new FluidStack(GTPPFluids.RedMud, 2000), GTModHandler.getWater(2000))
+            .fluidOutputs(new FluidStack(GTPPFluids.RedMud, 2000), GTModHandler.getWater(2_000))
             .eut(TierEU.RECIPE_LuV)
             .metadata(COIL_HEAT, 5500)
             .duration(2 * MINUTES)
@@ -178,7 +178,7 @@ public class RecipeLoaderMilling {
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Yttrium, 25),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Ytterbium, 15))
             .fluidInputs(new FluidStack(GTPPFluids.AlmandineFlotationFroth, 4000))
-            .fluidOutputs(new FluidStack(GTPPFluids.RedMud, 2000), GTModHandler.getWater(2000))
+            .fluidOutputs(new FluidStack(GTPPFluids.RedMud, 2000), GTModHandler.getWater(2_000))
             .eut(TierEU.RECIPE_LuV)
             .metadata(COIL_HEAT, 5500)
             .duration(2 * MINUTES)
@@ -193,7 +193,7 @@ public class RecipeLoaderMilling {
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Borax, 60),
                 MaterialsElements.getInstance().RHENIUM.getDust(20))
             .fluidInputs(new FluidStack(GTPPFluids.PyropeFlotationFroth, 4000))
-            .fluidOutputs(new FluidStack(GTPPFluids.RedMud, 2000), GTModHandler.getWater(2000))
+            .fluidOutputs(new FluidStack(GTPPFluids.RedMud, 2000), GTModHandler.getWater(2_000))
             .eut(TierEU.RECIPE_EV)
             .metadata(COIL_HEAT, 3500)
             .duration(2 * MINUTES)
@@ -206,7 +206,7 @@ public class RecipeLoaderMilling {
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Lutetium, 16),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Europium, 8))
             .fluidInputs(new FluidStack(GTPPFluids.MonaziteFlotationFroth, 4000))
-            .fluidOutputs(new FluidStack(GTPPFluids.RedMud, 2000), GTModHandler.getWater(2000))
+            .fluidOutputs(new FluidStack(GTPPFluids.RedMud, 2000), GTModHandler.getWater(2_000))
             .eut(TierEU.RECIPE_UV)
             .metadata(COIL_HEAT, 7500)
             // 60s UV instead of 120s ZPM to avoid fusion skip
@@ -225,7 +225,7 @@ public class RecipeLoaderMilling {
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Ardite, 32),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Cobalt, 32))
             .fluidInputs(new FluidStack(GTPPFluids.NetherrackFlotationFroth, 3000))
-            .fluidOutputs(Materials.PoorNetherWaste.getFluid(16000))
+            .fluidOutputs(Materials.PoorNetherWaste.getFluid(16_000))
             .eut((int) TierEU.RECIPE_LuV)
             .metadata(COIL_HEAT, 7200)
             .duration(1 * MINUTES)
@@ -394,7 +394,7 @@ public class RecipeLoaderMilling {
                 GTOreDictUnificator.get(OrePrefixes.milled, Materials.Netherrack, 64),
                 GTOreDictUnificator.get(OrePrefixes.milled, Materials.Netherrack, 64),
                 GTOreDictUnificator.get(OrePrefixes.milled, Materials.Netherrack, 64))
-            .fluidInputs(Materials.NefariousOil.getFluid(8000))
+            .fluidInputs(Materials.NefariousOil.getFluid(8_000))
             .fluidOutputs(new FluidStack(GTPPFluids.NetherrackFlotationFroth, 1000))
             .duration(8 * MINUTES)
             .eut(TierEU.RECIPE_IV)

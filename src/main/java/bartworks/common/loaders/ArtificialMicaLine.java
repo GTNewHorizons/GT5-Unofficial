@@ -30,7 +30,7 @@ public class ArtificialMicaLine {
         GTValues.RA.stdBuilder()
             .itemInputs(Materials.Magnesium.getDust(1))
             .itemOutputs(Materials.Magnesia.getDust(2))
-            .fluidInputs(Materials.Oxygen.getGas(1000))
+            .fluidInputs(Materials.Oxygen.getGas(1_000))
             .duration(2 * SECONDS)
             .eut(8)
             .addTo(UniversalChemical);
@@ -39,8 +39,8 @@ public class ArtificialMicaLine {
         GTValues.RA.stdBuilder()
             .itemInputs(Materials.Silicon.getDust(1), Materials.Empty.getCells(4))
             .itemOutputs(Materials.Hydrogen.getCells(4))
-            .fluidInputs(Materials.HydrofluoricAcid.getFluid(6000))
-            .fluidOutputs(WerkstoffLoader.HexafluorosilicicAcid.getFluidOrGas(1000))
+            .fluidInputs(Materials.HydrofluoricAcid.getFluid(6_000))
+            .fluidOutputs(WerkstoffLoader.HexafluorosilicicAcid.getFluidOrGas(1_000))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(UniversalChemical);
@@ -49,7 +49,7 @@ public class ArtificialMicaLine {
         GTValues.RA.stdBuilder()
             .itemInputs(Materials.Potassium.getDust(1), GTUtility.getIntegratedCircuit(2))
             .itemOutputs(Materials.RockSalt.getDust(2))
-            .fluidInputs(Materials.Chlorine.getGas(1000))
+            .fluidInputs(Materials.Chlorine.getGas(1_000))
             .duration(20 * TICKS)
             .eut(8)
             .addTo(UniversalChemical);
@@ -58,8 +58,8 @@ public class ArtificialMicaLine {
         GTValues.RA.stdBuilder()
             .itemInputs(Materials.RockSalt.getDust(4))
             .itemOutputs(WerkstoffLoader.Potassiumfluorosilicate.get(OrePrefixes.dust, 9))
-            .fluidInputs(WerkstoffLoader.HexafluorosilicicAcid.getFluidOrGas(1000))
-            .fluidOutputs(Materials.HydrochloricAcid.getFluid(2000))
+            .fluidInputs(WerkstoffLoader.HexafluorosilicicAcid.getFluidOrGas(1_000))
+            .fluidOutputs(Materials.HydrochloricAcid.getFluid(2_000))
             .duration(1 * SECONDS)
             .eut(8)
             .addTo(mixerRecipes);
@@ -69,7 +69,7 @@ public class ArtificialMicaLine {
         GTValues.RA.stdBuilder()
             .itemInputs(Materials.Potassium.getDust(2), Materials.CarbonDioxide.getCells(1))
             .itemOutputs(WerkstoffLoader.PotassiumCarbonate.get(OrePrefixes.dust, 6), Materials.Empty.getCells(1))
-            .fluidInputs(Materials.Oxygen.getGas(1000))
+            .fluidInputs(Materials.Oxygen.getGas(1_000))
             .duration(2 * SECONDS)
             .eut(8)
             .addTo(UniversalChemical);

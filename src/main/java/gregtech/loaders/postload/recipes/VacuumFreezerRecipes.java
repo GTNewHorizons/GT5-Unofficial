@@ -352,7 +352,7 @@ public class VacuumFreezerRecipes implements Runnable {
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.ingot, MaterialsUEVplus.TranscendentMetal, 1L))
             .fluidInputs(
                 new FluidStack(FluidRegistry.getFluid("molten.titansteel"), 1 * INGOTS),
-                Materials.SuperCoolant.getFluid(1000))
+                Materials.SuperCoolant.getFluid(1_000))
             .duration(1 * SECONDS)
             .eut(TierEU.RECIPE_UIV)
             .addTo(vacuumFreezerRecipes);

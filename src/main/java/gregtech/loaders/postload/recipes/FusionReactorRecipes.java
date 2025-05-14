@@ -266,7 +266,7 @@ public class FusionReactorRecipes implements Runnable {
             .addTo(fusionRecipes); // FT3 - utility
 
         GTValues.RA.stdBuilder()
-            .fluidInputs(Materials.Plutonium241.getMolten(1 * INGOTS), Materials.Hydrogen.getGas(2000))
+            .fluidInputs(Materials.Plutonium241.getMolten(1 * INGOTS), Materials.Hydrogen.getGas(2_000))
             .fluidOutputs(Materials.Americium.getPlasma(1 * INGOTS))
             .duration(3 * SECONDS + 4 * TICKS)
             .eut(98304)

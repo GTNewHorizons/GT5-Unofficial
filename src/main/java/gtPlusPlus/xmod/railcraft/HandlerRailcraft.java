@@ -196,8 +196,8 @@ public class HandlerRailcraft {
         GTValues.RA.stdBuilder()
             .itemInputs(charcoal, GTUtility.getIntegratedCircuit(2))
             .itemOutputs(Materials.Ash.getDustTiny(1))
-            .fluidInputs(Materials.Oxygen.getGas(2000))
-            .fluidOutputs(Materials.CarbonDioxide.getGas(1000))
+            .fluidInputs(Materials.Oxygen.getGas(2_000))
+            .fluidOutputs(Materials.CarbonDioxide.getGas(1_000))
             .duration(2 * SECONDS)
             .eut(8)
             .addTo(UniversalChemical);

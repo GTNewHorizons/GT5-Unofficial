@@ -12,6 +12,7 @@ import static gregtech.api.util.GTRecipeBuilder.HOURS;
 import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.MINUTES;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
+import static gregtech.api.util.GTRecipeBuilder.STACKS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
 import static gregtech.api.util.GTRecipeConstants.AssemblyLine;
 import static gregtech.api.util.GTRecipeConstants.CHEMPLANT_CASING_TIER;
@@ -371,9 +372,9 @@ public class RecipesMachines {
                 new Object[] { CI.getTieredCircuitOreDictName(6), 16 },
                 GregtechItemList.Laser_Lens_WoodsGlass.get(1))
             .fluidInputs(
-                MaterialsAlloy.NITINOL_60.getFluidStack(9 * 2 * INGOTS),
-                MaterialsAlloy.INCOLOY_MA956.getFluidStack(9 * 8 * INGOTS),
-                MaterialsAlloy.KANTHAL.getFluidStack(1 * 4 * INGOTS))
+                MaterialsAlloy.NITINOL_60.getFluidStack(18 * INGOTS),
+                MaterialsAlloy.INCOLOY_MA956.getFluidStack(1 * STACKS + 8 * INGOTS),
+                MaterialsAlloy.KANTHAL.getFluidStack(4 * INGOTS))
             .itemOutputs(GregtechItemList.Controller_MolecularTransformer.get(1))
             .eut(TierEU.RECIPE_LuV)
             .duration(10 * MINUTES)
@@ -663,7 +664,7 @@ public class RecipesMachines {
                 CI.getTieredFluid(7, 32 * INGOTS),
                 CI.getAlternativeTieredFluid(6, 16 * INGOTS),
                 CI.getTertiaryTieredFluid(6, 16 * INGOTS),
-                MaterialsAlloy.BABBIT_ALLOY.getFluidStack(128 * INGOTS))
+                MaterialsAlloy.BABBIT_ALLOY.getFluidStack(2 * STACKS))
             .itemOutputs(GregtechItemList.Controller_ElementalDuplicator.get(1))
             .eut(TierEU.RECIPE_ZPM)
             .duration(10 * MINUTES)
@@ -684,10 +685,10 @@ public class RecipesMachines {
                 new Object[] { CI.getTieredCircuitOreDictName(6), 32 },
                 ItemList.Tool_DataOrb.get(32))
             .fluidInputs(
-                CI.getTieredFluid(6, 144 * 16),
-                CI.getAlternativeTieredFluid(5, 144 * 8),
-                CI.getTertiaryTieredFluid(5, 144 * 8),
-                MaterialsAlloy.BABBIT_ALLOY.getFluidStack(64 * 144))
+                CI.getTieredFluid(6, 16 * INGOTS),
+                CI.getAlternativeTieredFluid(5, 8 * INGOTS),
+                CI.getTertiaryTieredFluid(5, 8 * INGOTS),
+                MaterialsAlloy.BABBIT_ALLOY.getFluidStack(1 * STACKS))
             .itemOutputs(GregtechItemList.Hatch_Input_Elemental_Duplicator.get(1))
             .eut(TierEU.RECIPE_LuV)
             .duration(2 * HOURS)
@@ -708,10 +709,10 @@ public class RecipesMachines {
                 new Object[] { CI.getTieredCircuitOreDictName(5), 4 },
                 ItemList.Tool_DataStick.get(4))
             .fluidInputs(
-                CI.getTieredFluid(5, 144 * 16),
-                CI.getAlternativeTieredFluid(4, 144 * 8),
-                CI.getTertiaryTieredFluid(4, 144 * 8),
-                MaterialsAlloy.BABBIT_ALLOY.getFluidStack(16 * 144))
+                CI.getTieredFluid(5, 16 * INGOTS),
+                CI.getAlternativeTieredFluid(4, 8 * INGOTS),
+                CI.getTertiaryTieredFluid(4, 8 * INGOTS),
+                MaterialsAlloy.BABBIT_ALLOY.getFluidStack(16 * INGOTS))
             .itemOutputs(GregtechItemList.Casing_ElementalDuplicator.get(1))
             .eut(TierEU.RECIPE_LuV)
             .duration(10 * MINUTES)
@@ -766,7 +767,7 @@ public class RecipesMachines {
                 CI.getBolt(3, 64),
                 CI.getPlate(4, 16))
             .itemOutputs(GregtechItemList.Industrial_AlloySmelter.get(1))
-            .fluidInputs(CI.getAlternativeTieredFluid(4, 144 * 8))
+            .fluidInputs(CI.getAlternativeTieredFluid(4, 8 * INGOTS))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_EV)
             .addTo(assemblerRecipes);
@@ -796,7 +797,7 @@ public class RecipesMachines {
                 CI.getTieredComponentOfMaterial(Materials.Plastic, OrePrefixes.pipeLarge, 4),
                 CI.getTieredComponent(OrePrefixes.frameGt, 2, 4))
             .itemOutputs(GregtechItemList.ChemicalPlant_Controller.get(1))
-            .fluidInputs(MaterialsAlloy.STEEL_BLACK.getFluidStack(2 * (144 * 4)))
+            .fluidInputs(MaterialsAlloy.STEEL_BLACK.getFluidStack(8 * INGOTS))
             .duration(2 * MINUTES)
             .eut(TierEU.RECIPE_MV)
             .addTo(assemblerRecipes);
@@ -809,7 +810,7 @@ public class RecipesMachines {
                 CI.getTieredComponentOfMaterial(Materials.Lead, OrePrefixes.plate, 48),
                 CI.getTieredComponentOfMaterial(Materials.SolderingAlloy, OrePrefixes.wireFine, 16))
             .itemOutputs(GregtechItemList.Bus_Catalysts.get(1))
-            .fluidInputs(MaterialsAlloy.BRONZE.getFluidStack(2 * (144 * 4)))
+            .fluidInputs(MaterialsAlloy.BRONZE.getFluidStack(8 * INGOTS))
             .duration(60 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(assemblerRecipes);
@@ -835,7 +836,7 @@ public class RecipesMachines {
                 CI.getTieredComponentOfMaterial(Materials.Steel, OrePrefixes.bolt, 16),
                 CI.getTieredComponentOfMaterial(Materials.Redstone, OrePrefixes.dust, 32))
             .itemOutputs(GregtechItemList.AlgaeFarm_Controller.get(1))
-            .fluidInputs(MaterialsAlloy.POTIN.getFluidStack(2 * (144 * 4)))
+            .fluidInputs(MaterialsAlloy.POTIN.getFluidStack(8 * INGOTS))
             .duration(60 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(assemblerRecipes);
@@ -850,10 +851,10 @@ public class RecipesMachines {
                 CI.getTieredComponent(OrePrefixes.circuit, 6, 8))
             .itemOutputs(GregtechItemList.Machine_Adv_DistillationTower.get(1))
             .fluidInputs(
-                MaterialsAlloy.AQUATIC_STEEL.getFluidStack(144 * 32),
-                MaterialsAlloy.BABBIT_ALLOY.getFluidStack(144 * 16),
-                MaterialsAlloy.BRONZE.getFluidStack(144 * 64),
-                MaterialsAlloy.KANTHAL.getFluidStack(144 * 16))
+                MaterialsAlloy.AQUATIC_STEEL.getFluidStack(32 * INGOTS),
+                MaterialsAlloy.BABBIT_ALLOY.getFluidStack(16 * INGOTS),
+                MaterialsAlloy.BRONZE.getFluidStack(1 * STACKS),
+                MaterialsAlloy.KANTHAL.getFluidStack(16 * INGOTS))
             .duration(10 * MINUTES)
             .eut(TierEU.RECIPE_LuV)
             .metadata(CHEMPLANT_CASING_TIER, 5)
@@ -875,7 +876,7 @@ public class RecipesMachines {
                     CI.getElectricMotor(tier, 2),
                     CI.getPlate(tier, 4))
                 .itemOutputs(aOutputs[tier - 1].copy())
-                .fluidInputs(Materials.SolderingAlloy.getMolten(tier * (144)))
+                .fluidInputs(Materials.SolderingAlloy.getMolten(tier * INGOTS))
                 .duration(20 * SECONDS)
                 .eut(voltageTiers[tier - 1])
                 .addTo(assemblerRecipes);
@@ -902,7 +903,7 @@ public class RecipesMachines {
                     CI.getTieredComponent(OrePrefixes.cableGt02, i, 4),
                     CI.getTieredComponent(OrePrefixes.circuit, i, 2))
                 .itemOutputs(aHulls[i].get(1))
-                .fluidInputs(CI.getAlternativeTieredFluid(i, 144 * (i + 1) * 2))
+                .fluidInputs(CI.getAlternativeTieredFluid(i, 2 * (i + 1) * INGOTS))
                 .duration(20 * SECONDS)
                 .eut(voltageTiers[i])
                 .addTo(assemblerRecipes);
@@ -949,7 +950,7 @@ public class RecipesMachines {
                 CI.machineHull_IV,
                 ItemUtils.getItemStackOfAmountFromOreDict(CI.getTieredCircuitOreDictName(7), 2))
             .itemOutputs(GregtechItemList.Gregtech_Computer_Cube.get(1))
-            .fluidInputs(MaterialsElements.getInstance().TANTALUM.getFluidStack(144 * 16))
+            .fluidInputs(MaterialsElements.getInstance().TANTALUM.getFluidStack(16 * INGOTS))
             .duration(3 * MINUTES)
             .eut(TierEU.RECIPE_IV)
             .addTo(assemblerRecipes);
@@ -962,7 +963,7 @@ public class RecipesMachines {
                 GTOreDictUnificator.get(OrePrefixes.circuit, Materials.LV, 2),
                 GTOreDictUnificator.get(OrePrefixes.circuit, Materials.MV, 2))
             .itemOutputs(ItemUtils.getSimpleStack(ModBlocks.blockCircuitProgrammer))
-            .fluidInputs(MaterialsElements.getInstance().IRON.getFluidStack(144 * 4))
+            .fluidInputs(MaterialsElements.getInstance().IRON.getFluidStack(4 * INGOTS))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(assemblerRecipes);
@@ -976,7 +977,7 @@ public class RecipesMachines {
                     ItemUtils.getItemStackOfAmountFromOreDict("plateDenseLead", 9),
                     ItemUtils.getSimpleStack(Blocks.chest))
                 .itemOutputs(ItemUtils.getSimpleStack(ModBlocks.blockDecayablesChest))
-                .fluidInputs(MaterialsElements.getInstance().LEAD.getFluidStack(144 * 16))
+                .fluidInputs(MaterialsElements.getInstance().LEAD.getFluidStack(16 * INGOTS))
                 .duration(1 * MINUTES + 30 * SECONDS)
                 .eut(60)
                 .addTo(assemblerRecipes);
@@ -993,7 +994,7 @@ public class RecipesMachines {
                 GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.Platinum, 32),
                 ItemUtils.getItemStackOfAmountFromOreDict(CI.getTieredCircuitOreDictName(6), 4))
             .itemOutputs(GregtechItemList.RTG.get(1))
-            .fluidInputs(MaterialsAlloy.NIOBIUM_CARBIDE.getFluidStack(144 * 16))
+            .fluidInputs(MaterialsAlloy.NIOBIUM_CARBIDE.getFluidStack(16 * INGOTS))
             .duration(10 * MINUTES)
             .eut(TierEU.RECIPE_IV)
             .addTo(assemblerRecipes);
@@ -1005,7 +1006,7 @@ public class RecipesMachines {
                 ItemUtils.getItemStackOfAmountFromOreDict("plateTumbaga", 8),
                 ItemUtils.getSimpleStack(Blocks.jukebox))
             .itemOutputs(ItemUtils.getSimpleStack(ModBlocks.blockCustomJukebox))
-            .fluidInputs(MaterialsElements.getInstance().COPPER.getFluidStack(144 * 2))
+            .fluidInputs(MaterialsElements.getInstance().COPPER.getFluidStack(2 * INGOTS))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(assemblerRecipes);
@@ -1018,7 +1019,7 @@ public class RecipesMachines {
                 MaterialsAlloy.EGLIN_STEEL.getPlate(4),
                 MaterialsAlloy.POTIN.getScrew(6))
             .itemOutputs(ItemUtils.getSimpleStack(ModBlocks.blockPooCollector))
-            .fluidInputs(MaterialsAlloy.TUMBAGA.getFluidStack(144 * 4))
+            .fluidInputs(MaterialsAlloy.TUMBAGA.getFluidStack(4 * INGOTS))
             .duration(60 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(assemblerRecipes);
@@ -1031,7 +1032,7 @@ public class RecipesMachines {
                 CI.getTieredComponent(OrePrefixes.pipeHuge, 6, 4),
                 CI.getTieredComponent(OrePrefixes.screw, 6, 16))
             .itemOutputs(ItemUtils.getSimpleStack(ModBlocks.blockPooCollector, 8, 1))
-            .fluidInputs(CI.getAlternativeTieredFluid(5, 144 * 9))
+            .fluidInputs(CI.getAlternativeTieredFluid(5, 9 * INGOTS))
             .duration(5 * MINUTES)
             .eut(TierEU.RECIPE_HV)
             .addTo(assemblerRecipes);
@@ -1178,7 +1179,7 @@ public class RecipesMachines {
                 CI.getTieredComponent(OrePrefixes.pipeSmall, 2, 2),
                 CI.getPlate(2, 4))
             .itemOutputs(ItemUtils.getSimpleStack(ModBlocks.blockVolumetricFlaskSetter, 1))
-            .fluidInputs(CI.getAlternativeTieredFluid(1, 144 * 8))
+            .fluidInputs(CI.getAlternativeTieredFluid(1, 8 * INGOTS))
             .duration(60 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(assemblerRecipes);
@@ -1751,7 +1752,7 @@ public class RecipesMachines {
                 MaterialsAlloy.LAURENIUM.getPlateDouble(2),
                 CustomItemList.eM_Coil.get(1))
             .itemOutputs(GregtechItemList.Casing_Coil_QuantumForceTransformer.get(1))
-            .fluidInputs(MaterialsAlloy.QUANTUM.getFluidStack(144 * 4))
+            .fluidInputs(MaterialsAlloy.QUANTUM.getFluidStack(4 * INGOTS))
             .duration(1 * MINUTES + 30 * SECONDS)
             .eut(TierEU.RECIPE_LuV)
             .addTo(assemblerRecipes);
@@ -1766,8 +1767,8 @@ public class RecipesMachines {
                 GTModHandler.getModItem(EternalSingularity.ID, "eternal_singularity", 1),
                 new Object[] { OrePrefixes.circuit.get(Materials.UEV), 8 }, ItemList.Electric_Pump_UEV.get(4),
                 ItemList.Field_Generator_UEV.get(4), GregtechItemList.Laser_Lens_Special.get(1) },
-            new FluidStack[] { MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack(144 * 10),
-                MaterialsAlloy.PIKYONIUM.getFluidStack(144 * 32) },
+            new FluidStack[] { MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack(10 * INGOTS),
+                MaterialsAlloy.PIKYONIUM.getFluidStack(32 * INGOTS) },
             GregtechItemList.QuantumForceTransformer.get(1),
             1200 * 20,
             (int) GTValues.VP[11]);
@@ -1921,7 +1922,7 @@ public class RecipesMachines {
                 ItemList.IC2_Plantball.get(4),
                 GTOreDictUnificator.get(OrePrefixes.plank, Materials.Wood, 8))
             .itemOutputs(RECIPE_TreeFarmFrame)
-            .fluidInputs(GTModHandler.getDistilledWater(2000))
+            .fluidInputs(GTModHandler.getDistilledWater(2_000))
             .duration(10 * SECONDS)
             .eut(64)
             .addTo(assemblerRecipes);
@@ -1975,7 +1976,7 @@ public class RecipesMachines {
                     CI.getTieredComponent(OrePrefixes.rod, tier, tier),
                     CI.getTieredComponent(OrePrefixes.circuit, tier, 1))
                 .itemOutputs(washers.get(i))
-                .fluidInputs(CI.getTieredFluid(tier, 144 * tier))
+                .fluidInputs(CI.getTieredFluid(tier, tier * INGOTS))
                 .duration(20 * 5 * tier)
                 .eut(GTValues.VP[tier])
                 .addTo(assemblerRecipes);
@@ -2168,7 +2169,7 @@ public class RecipesMachines {
                 ItemUtils.getItemStackOfAmountFromOreDict("foilCopper", 4),
                 ItemUtils.getItemStackWithMeta(true, "IC2:itemPartCarbonMesh", "RawCarbonMesh", 0, 64))
             .itemOutputs(ItemUtils.getSimpleStack(ModItems.itemLavaFilter, 16))
-            .fluidInputs(CI.getTieredFluid(3, 144))
+            .fluidInputs(CI.getTieredFluid(3, 1 * INGOTS))
             .duration(1 * MINUTES + 20 * SECONDS)
             .eut(240)
             .addTo(assemblerRecipes);
@@ -2392,8 +2393,7 @@ public class RecipesMachines {
                 MaterialsAlloy.EGLIN_STEEL.getLongRod(4),
                 CI.getElectricPiston(3, 2))
             .itemOutputs(RECIPE_CyclotronOuterCasing)
-            .fluidInputs(MaterialsAlloy.ZIRCONIUM_CARBIDE.getFluidStack(144 * 8) // Input Flui
-            )
+            .fluidInputs(MaterialsAlloy.ZIRCONIUM_CARBIDE.getFluidStack(8 * INGOTS))
             .duration(60 * SECONDS)
             .eut(TierEU.RECIPE_EV)
             .addTo(assemblerRecipes);
@@ -2407,8 +2407,7 @@ public class RecipesMachines {
                 MaterialsAlloy.INCOLOY_020.getScrew(32),
                 CI.getFieldGenerator(4, 1))
             .itemOutputs(RECIPE_CyclotronInnerCoil)
-            .fluidInputs(MaterialsAlloy.HG1223.getFluidStack(144 * 5) // Input Flui
-            )
+            .fluidInputs(MaterialsAlloy.HG1223.getFluidStack(5 * INGOTS))
             .duration(2 * MINUTES)
             .eut(TierEU.RECIPE_IV)
             .addTo(assemblerRecipes);
@@ -2422,8 +2421,7 @@ public class RecipesMachines {
                 MaterialsAlloy.INCOLOY_MA956.getScrew(16),
                 ItemUtils.getItemStackOfAmountFromOreDict(CI.getTieredCircuitOreDictName(5), 16))
             .itemOutputs(RECIPE_CyclotronController)
-            .fluidInputs(MaterialsAlloy.INCOLOY_020.getFluidStack(144 * 9) // Input Flui
-            )
+            .fluidInputs(MaterialsAlloy.INCOLOY_020.getFluidStack(9 * INGOTS))
             .duration(5 * MINUTES)
             .eut(TierEU.RECIPE_IV)
             .addTo(assemblerRecipes);
@@ -2538,7 +2536,7 @@ public class RecipesMachines {
                 CI.getTieredComponent(OrePrefixes.bolt, 5, 12),
                 CI.getTieredComponent(OrePrefixes.plate, 6, 8))
             .itemOutputs(GregtechItemList.Casing_Autocrafter.get(1))
-            .fluidInputs(CI.getTertiaryTieredFluid(6, 144 * (4)))
+            .fluidInputs(CI.getTertiaryTieredFluid(6, 4 * INGOTS))
             .duration(2 * MINUTES)
             .eut(TierEU.RECIPE_IV)
             .addTo(assemblerRecipes);
@@ -2550,7 +2548,7 @@ public class RecipesMachines {
                 CI.getTransmissionComponent(5, 2),
                 GregtechItemList.Gregtech_Computer_Cube.get(1))
             .itemOutputs(GregtechItemList.GT4_Multi_Crafter.get(1))
-            .fluidInputs(CI.getTieredFluid(7, 144 * 8))
+            .fluidInputs(CI.getTieredFluid(7, 8 * INGOTS))
             .duration(5 * MINUTES)
             .eut(TierEU.RECIPE_IV)
             .addTo(assemblerRecipes);
@@ -2563,7 +2561,7 @@ public class RecipesMachines {
                 CI.getTieredComponent(OrePrefixes.screw, 3, 8),
                 CI.getTieredComponent(OrePrefixes.plate, 5, 4))
             .itemOutputs(ItemUtils.getSimpleStack(ModBlocks.blockProjectTable))
-            .fluidInputs(CI.getAlternativeTieredFluid(5, 144 * 4))
+            .fluidInputs(CI.getAlternativeTieredFluid(5, 4 * INGOTS))
             .duration(1 * MINUTES + 30 * SECONDS)
             .eut(TierEU.RECIPE_EV)
             .addTo(assemblerRecipes);
@@ -2869,7 +2867,7 @@ public class RecipesMachines {
                 MaterialsAlloy.TRINIUM_REINFORCED_STEEL.getPlateDouble(4 * 1),
                 ItemUtils.getSimpleStack((CI.machineHull_LuV), 1 * 1))
             .itemOutputs(GregtechItemList.Casing_BedrockMiner.get(1))
-            .fluidInputs(MaterialsAlloy.MARAGING350.getFluidStack(144 * 16 * 1))
+            .fluidInputs(MaterialsAlloy.MARAGING350.getFluidStack(16 * INGOTS))
             .duration((int) GTValues.V[4])
             .eut(TierEU.RECIPE_LuV)
             .addTo(assemblerRecipes);
@@ -2898,7 +2896,7 @@ public class RecipesMachines {
                 CI.getTieredComponent(OrePrefixes.plate, 7, 8 * aCostMultiplier),
                 CI.getTieredComponent(OrePrefixes.wireGt08, 8, 4 * aCostMultiplier))
             .itemOutputs(ItemUtils.getSimpleStack(DimensionEverglades.blockPortalFrame, 2))
-            .fluidInputs(CI.getTieredFluid(6, (144 * 8)))
+            .fluidInputs(CI.getTieredFluid(6, (8 * INGOTS)))
             .duration(4 * MINUTES + 30 * SECONDS)
             .eut(TierEU.RECIPE_LuV)
             .addTo(assemblerRecipes);
@@ -2941,7 +2939,7 @@ public class RecipesMachines {
                     CI.getTieredComponent(OrePrefixes.screw, aTier, 6),
                     CI.getTieredComponent(OrePrefixes.bolt, i, 12))
                 .itemOutputs(aOutput[i])
-                .fluidInputs(CI.getTieredFluid(i, (144 * 4 * aTier)))
+                .fluidInputs(CI.getTieredFluid(i, (aTier * 4 * INGOTS)))
                 .duration(45 * 10 * 1 * (aTier))
                 .eut(voltageTiers[i])
                 .addTo(assemblerRecipes);
@@ -2955,7 +2953,7 @@ public class RecipesMachines {
                     CI.getTieredComponent(OrePrefixes.stickLong, aTier, 4),
                     CI.getTieredComponent(OrePrefixes.gearGt, i, 5))
                 .itemOutputs(aBufferOutput[i])
-                .fluidInputs(CI.getTieredFluid(aTier, (144 * 16 * aTier)))
+                .fluidInputs(CI.getTieredFluid(aTier, (16 * INGOTS * aTier)))
                 .duration(45 * 20 * 1 * (aTier))
                 .eut(voltageTiers[i])
                 .addTo(assemblerRecipes);
@@ -2983,7 +2981,7 @@ public class RecipesMachines {
             GTValues.RA.stdBuilder()
                 .itemInputs(aInputs)
                 .itemOutputs(aChargers[tier - 1])
-                .fluidInputs(CI.getAlternativeTieredFluid(tier, (144 * 2 * (tier + 1))))
+                .fluidInputs(CI.getAlternativeTieredFluid(tier, (2 * INGOTS * (tier + 1))))
                 .duration(45 * 10 * (tier + 1))
                 .eut(voltageTiers[tier])
                 .addTo(assemblerRecipes);
@@ -3001,7 +2999,7 @@ public class RecipesMachines {
                 CI.getTieredComponent(OrePrefixes.plate, 5, 4 * aCostMultiplier),
                 CI.getTieredComponent(OrePrefixes.pipeSmall, 4, 1 * aCostMultiplier))
             .itemOutputs(GregtechItemList.Casing_Industrial_Arc_Furnace.get(1))
-            .fluidInputs(CI.getAlternativeTieredFluid(5, (144 * 2 * 4)))
+            .fluidInputs(CI.getAlternativeTieredFluid(5, 8 * INGOTS))
             .duration(60 * SECONDS)
             .eut(TierEU.RECIPE_IV)
             .addTo(assemblerRecipes);
@@ -3014,7 +3012,7 @@ public class RecipesMachines {
                 CI.getTieredComponent(OrePrefixes.plate, 6, 8 * aCostMultiplier),
                 CI.getTieredComponent(OrePrefixes.circuit, 5, 8 * aCostMultiplier))
             .itemOutputs(GregtechItemList.Industrial_Arc_Furnace.get(1))
-            .fluidInputs(CI.getAlternativeTieredFluid(6, (144 * 4 * 5)))
+            .fluidInputs(CI.getAlternativeTieredFluid(6, 20 * INGOTS))
             .duration(8 * MINUTES)
             .eut(TierEU.RECIPE_LuV)
             .addTo(assemblerRecipes);
@@ -3031,7 +3029,7 @@ public class RecipesMachines {
                 CI.getTieredComponent(OrePrefixes.plate, 6, 4),
                 CI.getTieredComponent(OrePrefixes.gearGt, 6, 2))
             .itemOutputs(GregtechItemList.Casing_Vacuum_Furnace.get(1))
-            .fluidInputs(CI.getTertiaryTieredFluid(5, (144 * 2 * 4)))
+            .fluidInputs(CI.getTertiaryTieredFluid(5, 8 * INGOTS))
             .duration(60 * SECONDS)
             .eut(TierEU.RECIPE_LuV)
             .addTo(assemblerRecipes);
@@ -3044,7 +3042,7 @@ public class RecipesMachines {
                 CI.getTieredComponent(OrePrefixes.plate, 6, 8),
                 CI.getTieredComponent(OrePrefixes.circuit, 6, 8))
             .itemOutputs(GregtechItemList.Controller_Vacuum_Furnace.get(1))
-            .fluidInputs(CI.getTieredFluid(6, (144 * 4 * 5)))
+            .fluidInputs(CI.getTieredFluid(6, 20 * INGOTS))
             .duration(12 * MINUTES)
             .eut(TierEU.RECIPE_LuV)
             .addTo(assemblerRecipes);
@@ -3069,9 +3067,9 @@ public class RecipesMachines {
                 CI.getTieredComponentOfMaterial(Materials.NiobiumTitanium, OrePrefixes.wireFine, 64),
                 CI.getTieredComponentOfMaterial(Materials.Titanium, OrePrefixes.foil, 32))
             .fluidInputs(
-                CI.getTieredFluid(6, 16 * 144),
-                CI.getAlternativeTieredFluid(6, 32 * 144),
-                CI.getTertiaryTieredFluid(6, 32 * 144))
+                CI.getTieredFluid(6, 16 * INGOTS),
+                CI.getAlternativeTieredFluid(6, 32 * INGOTS),
+                CI.getTertiaryTieredFluid(6, 32 * INGOTS))
             .itemOutputs(GregtechItemList.Controller_IsaMill.get(1))
             .eut(TierEU.RECIPE_LuV)
             .duration(10 * MINUTES)
@@ -3087,7 +3085,7 @@ public class RecipesMachines {
                 MaterialsAlloy.INCONEL_625.getPlate(16),
                 MaterialsAlloy.ZERON_100.getBolt(16))
             .itemOutputs(GregtechItemList.Casing_IsaMill_Gearbox.get(1))
-            .fluidInputs(MaterialsAlloy.TUNGSTENSTEEL.getFluidStack(8 * 144))
+            .fluidInputs(MaterialsAlloy.TUNGSTENSTEEL.getFluidStack(8 * INGOTS))
             .duration(2 * MINUTES)
             .eut(TierEU.RECIPE_LuV)
             .addTo(assemblerRecipes);
@@ -3101,7 +3099,7 @@ public class RecipesMachines {
                 CI.getTieredComponentOfMaterial(Materials.HSSG, OrePrefixes.gearGtSmall, 4),
                 MaterialsAlloy.ZERON_100.getScrew(8))
             .itemOutputs(GregtechItemList.Casing_IsaMill_Casing.get(1))
-            .fluidInputs(MaterialsElements.getInstance().TITANIUM.getFluidStack(4 * 144))
+            .fluidInputs(MaterialsElements.getInstance().TITANIUM.getFluidStack(4 * INGOTS))
             .duration(2 * MINUTES)
             .eut(TierEU.RECIPE_LuV)
             .addTo(assemblerRecipes);
@@ -3115,7 +3113,7 @@ public class RecipesMachines {
                 CI.getTieredComponentOfMaterial(Materials.HSSE, OrePrefixes.plate, 8),
                 MaterialsAlloy.INCOLOY_MA956.getBolt(16))
             .itemOutputs(GregtechItemList.Casing_IsaMill_Pipe.get(1))
-            .fluidInputs(MaterialsElements.getInstance().ALUMINIUM.getFluidStack(8 * 144))
+            .fluidInputs(MaterialsElements.getInstance().ALUMINIUM.getFluidStack(8 * INGOTS))
             .duration(8 * MINUTES)
             .eut(TierEU.RECIPE_EV)
             .addTo(assemblerRecipes);
@@ -3137,9 +3135,9 @@ public class RecipesMachines {
                 CI.getTieredComponentOfMaterial(Materials.YttriumBariumCuprate, OrePrefixes.wireFine, 64),
                 CI.getTieredComponentOfMaterial(Materials.Platinum, OrePrefixes.foil, 64))
             .fluidInputs(
-                CI.getTieredFluid(5, 16 * 144),
-                CI.getAlternativeTieredFluid(4, 32 * 144),
-                CI.getTertiaryTieredFluid(4, 32 * 144))
+                CI.getTieredFluid(5, 16 * INGOTS),
+                CI.getAlternativeTieredFluid(4, 32 * INGOTS),
+                CI.getTertiaryTieredFluid(4, 32 * INGOTS))
             .itemOutputs(GregtechItemList.Controller_Flotation_Cell.get(1))
             .eut(TierEU.RECIPE_LuV)
             .duration(10 * MINUTES)
@@ -3155,7 +3153,7 @@ public class RecipesMachines {
                 CI.getTieredComponentOfMaterial(Materials.HSSG, OrePrefixes.plateDouble, 4),
                 MaterialsAlloy.HASTELLOY_N.getScrew(8))
             .itemOutputs(GregtechItemList.Casing_Flotation_Cell.get(1))
-            .fluidInputs(MaterialsAlloy.STAINLESS_STEEL.getFluidStack(8 * 144))
+            .fluidInputs(MaterialsAlloy.STAINLESS_STEEL.getFluidStack(8 * INGOTS))
             .duration(2 * MINUTES)
             .eut(TierEU.RECIPE_LuV)
             .addTo(assemblerRecipes);
@@ -3169,7 +3167,7 @@ public class RecipesMachines {
                 CI.getTieredComponentOfMaterial(Materials.TungstenSteel, OrePrefixes.plate, 32),
                 CI.getTieredComponentOfMaterial(Materials.SolderingAlloy, OrePrefixes.wireFine, 16))
             .itemOutputs(GregtechItemList.Bus_Milling_Balls.get(1))
-            .fluidInputs(MaterialsElements.getInstance().TUNGSTEN.getFluidStack(8 * 144))
+            .fluidInputs(MaterialsElements.getInstance().TUNGSTEN.getFluidStack(8 * INGOTS))
             .duration(4 * MINUTES)
             .eut(TierEU.RECIPE_IV)
             .addTo(assemblerRecipes);
@@ -3208,9 +3206,9 @@ public class RecipesMachines {
                 CI.getTieredComponentOfMaterial(Materials.YttriumBariumCuprate, OrePrefixes.wireFine, 64),
                 CI.getTieredComponentOfMaterial(Materials.Platinum, OrePrefixes.foil, 64))
             .fluidInputs(
-                CI.getTieredFluid(4, 16 * 144),
-                CI.getAlternativeTieredFluid(3, 32 * 144),
-                CI.getTertiaryTieredFluid(3, 32 * 144))
+                CI.getTieredFluid(4, 16 * INGOTS),
+                CI.getAlternativeTieredFluid(3, 32 * INGOTS),
+                CI.getTertiaryTieredFluid(3, 32 * INGOTS))
             .itemOutputs(GregtechItemList.Controller_Sparge_Tower.get(1))
             .eut(TierEU.RECIPE_LuV)
             .duration(10 * MINUTES)
@@ -3226,7 +3224,7 @@ public class RecipesMachines {
                 CI.getTieredComponentOfMaterial(Materials.TungstenSteel, OrePrefixes.plateDouble, 4),
                 MaterialsAlloy.HASTELLOY_N.getScrew(4))
             .itemOutputs(GregtechItemList.Casing_Sparge_Tower_Exterior.get(1))
-            .fluidInputs(MaterialsAlloy.STAINLESS_STEEL.getFluidStack(8 * 144))
+            .fluidInputs(MaterialsAlloy.STAINLESS_STEEL.getFluidStack(8 * INGOTS))
             .duration(2 * MINUTES)
             .eut(TierEU.RECIPE_IV)
             .addTo(assemblerRecipes);
@@ -3248,7 +3246,7 @@ public class RecipesMachines {
                     CI.getConveyor(i, 2),
                     CI.getRobotArm(i, 1))
                 .itemOutputs(aChisels[i - 1])
-                .fluidInputs(CI.getTieredFluid(i, 144 * 4))
+                .fluidInputs(CI.getTieredFluid(i, 4 * INGOTS))
                 .duration(20 * SECONDS)
                 .eut(voltageTiers[i - 1])
                 .addTo(assemblerRecipes);
@@ -3264,7 +3262,7 @@ public class RecipesMachines {
                 CI.getConveyor(4, 8),
                 CI.getRobotArm(4, 4))
             .itemOutputs(GregtechItemList.Controller_IndustrialAutoChisel.get(1))
-            .fluidInputs(CI.getTieredFluid(4, 144 * 8))
+            .fluidInputs(CI.getTieredFluid(4, 8 * INGOTS))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_EV)
             .addTo(assemblerRecipes);
@@ -3277,7 +3275,7 @@ public class RecipesMachines {
                 CI.getTieredComponent(OrePrefixes.ring, 3, 8),
                 CI.getTieredComponent(OrePrefixes.rod, 2, 4))
             .itemOutputs(GregtechItemList.Casing_IndustrialAutoChisel.get(1))
-            .fluidInputs(CI.getTieredFluid(2, 144 * 2))
+            .fluidInputs(CI.getTieredFluid(2, 2 * INGOTS))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(assemblerRecipes);
@@ -3295,7 +3293,7 @@ public class RecipesMachines {
                 CI.getTieredComponentOfMaterial(Materials.Aluminium, OrePrefixes.plateDouble, 8),
                 MaterialsAlloy.EGLIN_STEEL.getScrew(8))
             .itemOutputs(GregtechItemList.Controller_IndustrialRockBreaker.get(1))
-            .fluidInputs(MaterialsElements.getInstance().ALUMINIUM.getFluidStack(144 * 8))
+            .fluidInputs(MaterialsElements.getInstance().ALUMINIUM.getFluidStack(8 * INGOTS))
             .duration(2 * MINUTES)
             .eut(TierEU.RECIPE_EV)
             .addTo(assemblerRecipes);
@@ -3357,7 +3355,7 @@ public class RecipesMachines {
                     CI.getBolt(tier, 16),
                     CI.getTieredComponent(OrePrefixes.circuit, tier, 2))
                 .itemOutputs(mSuperBusesInput[tier - 1].get(1))
-                .fluidInputs(CI.getAlternativeTieredFluid(tier, 144 * 8))
+                .fluidInputs(CI.getAlternativeTieredFluid(tier, 8 * INGOTS))
                 .duration(60 * SECONDS)
                 .eut(GTValues.VP[tier])
                 .addTo(assemblerRecipes);
@@ -3374,7 +3372,7 @@ public class RecipesMachines {
                     CI.getGear(tier, 3),
                     CI.getTieredComponent(OrePrefixes.circuit, tier, 2))
                 .itemOutputs(mSuperBusesOutput[tier - 1].get(1))
-                .fluidInputs(CI.getTertiaryTieredFluid(tier, 144 * 8))
+                .fluidInputs(CI.getTertiaryTieredFluid(tier, 8 * INGOTS))
                 .duration(60 * SECONDS)
                 .eut(GTValues.VP[tier])
                 .addTo(assemblerRecipes);
@@ -3399,7 +3397,7 @@ public class RecipesMachines {
                     CI.getBolt(tier, 16),
                     ItemUtils.getSimpleStack(Blocks.chest))
                 .itemOutputs(mChiselBuses[tier - 1])
-                .fluidInputs(CI.getAlternativeTieredFluid(tier, 144 * 2))
+                .fluidInputs(CI.getAlternativeTieredFluid(tier, 2 * INGOTS))
                 .duration(60 * SECONDS)
                 .eut(GTValues.VP[tier + 1])
                 .addTo(assemblerRecipes);
@@ -3426,7 +3424,7 @@ public class RecipesMachines {
                     CI.getTieredComponent(OrePrefixes.circuit, componentTier + 1, 4),
                     ItemUtils.getSimpleStack(Blocks.chest))
                 .itemOutputs(mSolidifierHatches[i])
-                .fluidInputs(CI.getTieredFluid(componentTier, 144 * 2))
+                .fluidInputs(CI.getTieredFluid(componentTier, 2 * INGOTS))
                 .duration(30 * SECONDS)
                 .eut(GTValues.VP[componentTier])
                 .addTo(assemblerRecipes);

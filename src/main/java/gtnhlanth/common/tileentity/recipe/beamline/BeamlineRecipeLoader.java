@@ -50,7 +50,7 @@ public class BeamlineRecipeLoader {
             Materials.SuperCoolant.getFluid(1L)
                 .getFluid()
                 .getName(),
-            WerkstoffMaterialPool.HotSuperCoolant.getFluidOrGas(1000)
+            WerkstoffMaterialPool.HotSuperCoolant.getFluidOrGas(1_000)
                 .getFluid());
 
         /*

@@ -6,6 +6,7 @@ import static gregtech.api.util.GTRecipeBuilder.HALF_INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.MINUTES;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
+import static gregtech.api.util.GTRecipeBuilder.STACKS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
 
 import net.minecraft.init.Blocks;
@@ -333,7 +334,7 @@ public class Assembler implements Runnable {
                             BaseRecipeLoader.getOrDefault("BlackPlutonium", Materials.Neutronium),
                             2))
                     .itemOutputs(CustomItemList.eM_dynamoMulti4_UIV.get(1))
-                    .fluidInputs(Materials.Silver.getMolten(64 * INGOTS))
+                    .fluidInputs(Materials.Silver.getMolten(1 * STACKS))
                     .duration(5 * SECONDS)
                     .eut(TierEU.RECIPE_UEV)
                     .addTo(assemblerRecipes);
@@ -344,7 +345,7 @@ public class Assembler implements Runnable {
                         GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials.Quantium, 2),
                         GTOreDictUnificator.get(OrePrefixes.plate, MaterialsUEVplus.SpaceTime, 2))
                     .itemOutputs(CustomItemList.eM_dynamoMulti4_UMV.get(1))
-                    .fluidInputs(Materials.Silver.getMolten(64 * INGOTS))
+                    .fluidInputs(Materials.Silver.getMolten(1 * STACKS))
                     .duration(5 * SECONDS)
                     .eut(TierEU.RECIPE_UIV)
                     .addTo(assemblerRecipes);
@@ -357,7 +358,7 @@ public class Assembler implements Runnable {
                             .get(OrePrefixes.plate, MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter, 1),
                         GTOreDictUnificator.get(OrePrefixes.plate, MaterialsUEVplus.MagMatter, 1L))
                     .itemOutputs(CustomItemList.eM_dynamoMulti4_UXV.get(1))
-                    .fluidInputs(Materials.Silver.getMolten(64 * INGOTS))
+                    .fluidInputs(Materials.Silver.getMolten(1 * STACKS))
                     .duration(5 * SECONDS)
                     .eut((int) TierEU.RECIPE_UMV)
                     .addTo(assemblerRecipes);
@@ -467,7 +468,7 @@ public class Assembler implements Runnable {
                             BaseRecipeLoader.getOrDefault("BlackPlutonium", Materials.Neutronium),
                             4))
                     .itemOutputs(CustomItemList.eM_dynamoMulti16_UIV.get(1))
-                    .fluidInputs(Materials.Electrum.getMolten(64 * INGOTS))
+                    .fluidInputs(Materials.Electrum.getMolten(1 * STACKS))
                     .duration(10 * SECONDS)
                     .eut(TierEU.RECIPE_UEV)
                     .addTo(assemblerRecipes);
@@ -479,7 +480,7 @@ public class Assembler implements Runnable {
                         GTOreDictUnificator.get(OrePrefixes.wireGt08, Materials.Quantium, 2),
                         GTOreDictUnificator.get(OrePrefixes.plate, MaterialsUEVplus.SpaceTime, 4))
                     .itemOutputs(CustomItemList.eM_dynamoMulti16_UMV.get(1))
-                    .fluidInputs(Materials.Electrum.getMolten(64 * INGOTS))
+                    .fluidInputs(Materials.Electrum.getMolten(1 * STACKS))
                     .duration(10 * SECONDS)
                     .eut(TierEU.RECIPE_UIV)
                     .addTo(assemblerRecipes);
@@ -493,7 +494,7 @@ public class Assembler implements Runnable {
                             .get(OrePrefixes.plate, MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter, 2),
                         GTOreDictUnificator.get(OrePrefixes.plate, MaterialsUEVplus.MagMatter, 2L))
                     .itemOutputs(CustomItemList.eM_dynamoMulti16_UXV.get(1))
-                    .fluidInputs(Materials.Electrum.getMolten(64 * INGOTS))
+                    .fluidInputs(Materials.Electrum.getMolten(1 * STACKS))
                     .duration(10 * SECONDS)
                     .eut((int) TierEU.RECIPE_UMV)
                     .addTo(assemblerRecipes);
@@ -603,7 +604,7 @@ public class Assembler implements Runnable {
                             BaseRecipeLoader.getOrDefault("BlackPlutonium", Materials.Neutronium),
                             6))
                     .itemOutputs(CustomItemList.eM_dynamoMulti64_UIV.get(1))
-                    .fluidInputs(Materials.Tungsten.getMolten(64 * INGOTS))
+                    .fluidInputs(Materials.Tungsten.getMolten(1 * STACKS))
                     .duration(20 * SECONDS)
                     .eut(TierEU.RECIPE_UEV)
                     .addTo(assemblerRecipes);
@@ -615,7 +616,7 @@ public class Assembler implements Runnable {
                         GTOreDictUnificator.get(OrePrefixes.wireGt12, Materials.Quantium, 2),
                         GTOreDictUnificator.get(OrePrefixes.plate, MaterialsUEVplus.SpaceTime, 6))
                     .itemOutputs(CustomItemList.eM_dynamoMulti64_UMV.get(1))
-                    .fluidInputs(Materials.Tungsten.getMolten(64 * INGOTS))
+                    .fluidInputs(Materials.Tungsten.getMolten(1 * STACKS))
                     .duration(20 * SECONDS)
                     .eut(TierEU.RECIPE_UIV)
                     .addTo(assemblerRecipes);
@@ -629,7 +630,7 @@ public class Assembler implements Runnable {
                             .get(OrePrefixes.plate, MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter, 3),
                         GTOreDictUnificator.get(OrePrefixes.plate, MaterialsUEVplus.MagMatter, 3L))
                     .itemOutputs(CustomItemList.eM_dynamoMulti64_UXV.get(1))
-                    .fluidInputs(Materials.Tungsten.getMolten(64 * INGOTS))
+                    .fluidInputs(Materials.Tungsten.getMolten(1 * STACKS))
                     .duration(20 * SECONDS)
                     .eut((int) TierEU.RECIPE_UMV)
                     .addTo(assemblerRecipes);
@@ -734,7 +735,7 @@ public class Assembler implements Runnable {
                             BaseRecipeLoader.getOrDefault("BlackPlutonium", Materials.Neutronium),
                             2))
                     .itemOutputs(CustomItemList.eM_energyMulti4_UIV.get(1))
-                    .fluidInputs(Materials.Silver.getMolten(64 * INGOTS))
+                    .fluidInputs(Materials.Silver.getMolten(1 * STACKS))
                     .duration(5 * SECONDS)
                     .eut(TierEU.RECIPE_UEV)
                     .addTo(assemblerRecipes);
@@ -745,7 +746,7 @@ public class Assembler implements Runnable {
                         GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials.Quantium, 2),
                         GTOreDictUnificator.get(OrePrefixes.plate, MaterialsUEVplus.SpaceTime, 2))
                     .itemOutputs(CustomItemList.eM_energyMulti4_UMV.get(1))
-                    .fluidInputs(Materials.Silver.getMolten(64 * INGOTS))
+                    .fluidInputs(Materials.Silver.getMolten(1 * STACKS))
                     .duration(5 * SECONDS)
                     .eut(TierEU.RECIPE_UIV)
                     .addTo(assemblerRecipes);
@@ -758,7 +759,7 @@ public class Assembler implements Runnable {
                             .get(OrePrefixes.plate, MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter, 1),
                         GTOreDictUnificator.get(OrePrefixes.plate, MaterialsUEVplus.MagMatter, 1L))
                     .itemOutputs(CustomItemList.eM_energyMulti4_UXV.get(1))
-                    .fluidInputs(Materials.Silver.getMolten(64 * INGOTS))
+                    .fluidInputs(Materials.Silver.getMolten(1 * STACKS))
                     .duration(5 * SECONDS)
                     .eut((int) TierEU.RECIPE_UMV)
                     .addTo(assemblerRecipes);
@@ -868,7 +869,7 @@ public class Assembler implements Runnable {
                             BaseRecipeLoader.getOrDefault("BlackPlutonium", Materials.Neutronium),
                             4))
                     .itemOutputs(CustomItemList.eM_energyMulti16_UIV.get(1))
-                    .fluidInputs(Materials.Electrum.getMolten(64 * INGOTS))
+                    .fluidInputs(Materials.Electrum.getMolten(1 * STACKS))
                     .duration(10 * SECONDS)
                     .eut(TierEU.RECIPE_UEV)
                     .addTo(assemblerRecipes);
@@ -880,7 +881,7 @@ public class Assembler implements Runnable {
                         GTOreDictUnificator.get(OrePrefixes.wireGt08, Materials.Quantium, 2),
                         GTOreDictUnificator.get(OrePrefixes.plate, MaterialsUEVplus.SpaceTime, 4))
                     .itemOutputs(CustomItemList.eM_energyMulti16_UMV.get(1))
-                    .fluidInputs(Materials.Electrum.getMolten(64 * INGOTS))
+                    .fluidInputs(Materials.Electrum.getMolten(1 * STACKS))
                     .duration(10 * SECONDS)
                     .eut(TierEU.RECIPE_UIV)
                     .addTo(assemblerRecipes);
@@ -894,7 +895,7 @@ public class Assembler implements Runnable {
                             .get(OrePrefixes.plate, MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter, 2),
                         GTOreDictUnificator.get(OrePrefixes.plate, MaterialsUEVplus.MagMatter, 2L))
                     .itemOutputs(CustomItemList.eM_energyMulti16_UXV.get(1))
-                    .fluidInputs(Materials.Electrum.getMolten(64 * INGOTS))
+                    .fluidInputs(Materials.Electrum.getMolten(1 * STACKS))
                     .duration(10 * SECONDS)
                     .eut((int) TierEU.RECIPE_UMV)
                     .addTo(assemblerRecipes);
@@ -1004,7 +1005,7 @@ public class Assembler implements Runnable {
                             BaseRecipeLoader.getOrDefault("BlackPlutonium", Materials.Neutronium),
                             6))
                     .itemOutputs(CustomItemList.eM_energyMulti64_UIV.get(1))
-                    .fluidInputs(Materials.Tungsten.getMolten(64 * INGOTS))
+                    .fluidInputs(Materials.Tungsten.getMolten(1 * STACKS))
                     .duration(20 * SECONDS)
                     .eut(TierEU.RECIPE_UEV)
                     .addTo(assemblerRecipes);
@@ -1016,7 +1017,7 @@ public class Assembler implements Runnable {
                         GTOreDictUnificator.get(OrePrefixes.wireGt12, Materials.Quantium, 2),
                         GTOreDictUnificator.get(OrePrefixes.plate, MaterialsUEVplus.SpaceTime, 6))
                     .itemOutputs(CustomItemList.eM_energyMulti64_UMV.get(1))
-                    .fluidInputs(Materials.Tungsten.getMolten(64 * INGOTS))
+                    .fluidInputs(Materials.Tungsten.getMolten(1 * STACKS))
                     .duration(20 * SECONDS)
                     .eut(TierEU.RECIPE_UIV)
                     .addTo(assemblerRecipes);
@@ -1030,7 +1031,7 @@ public class Assembler implements Runnable {
                             .get(OrePrefixes.plate, MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter, 3),
                         GTOreDictUnificator.get(OrePrefixes.plate, MaterialsUEVplus.MagMatter, 3L))
                     .itemOutputs(CustomItemList.eM_energyMulti64_UXV.get(1))
-                    .fluidInputs(Materials.Tungsten.getMolten(64 * INGOTS))
+                    .fluidInputs(Materials.Tungsten.getMolten(1 * STACKS))
                     .duration(20 * SECONDS)
                     .eut((int) TierEU.RECIPE_UMV)
                     .addTo(assemblerRecipes);

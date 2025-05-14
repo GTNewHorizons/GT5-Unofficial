@@ -24,6 +24,7 @@ import static gregtech.api.util.GTRecipeBuilder.MINUTES;
 import static gregtech.api.util.GTRecipeBuilder.NUGGETS;
 import static gregtech.api.util.GTRecipeBuilder.QUARTER_INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
+import static gregtech.api.util.GTRecipeBuilder.STACKS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
 import static gregtech.loaders.postload.MachineRecipeLoader.solderingMats;
 import static gtPlusPlus.core.material.MaterialsAlloy.INCONEL_690;
@@ -526,7 +527,7 @@ public class AssemblerRecipes implements Runnable {
                     GTOreDictUnificator.get(OrePrefixes.wireGt16, Materials.SuperconductorUHV, 2L),
                     GTOreDictUnificator.get(OrePrefixes.plate, Materials.Neutronium, 56L))
                 .itemOutputs(ItemList.BatteryHull_UMV.get(1L))
-                .fluidInputs(Materials.Polybenzimidazole.getMolten(64 * INGOTS))
+                .fluidInputs(Materials.Polybenzimidazole.getMolten(1 * STACKS))
                 .duration(30 * SECONDS)
                 .eut(TierEU.RECIPE_UHV)
                 .addTo(assemblerRecipes);
@@ -1561,7 +1562,7 @@ public class AssemblerRecipes implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.stick, Materials.Wood, 1),
                 new ItemStack(Blocks.wool, 1, 32767))
             .itemOutputs(new ItemStack(Blocks.torch, 6, 0))
-            .fluidInputs(Materials.Creosote.getFluid(1000))
+            .fluidInputs(Materials.Creosote.getFluid(1_000))
             .duration(2 * SECONDS)
             .eut(20)
             .addTo(assemblerRecipes);
@@ -1634,7 +1635,7 @@ public class AssemblerRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Hull_LV.get(1), ItemList.Duct_Tape.get(2), GTUtility.getIntegratedCircuit(2))
             .itemOutputs(ItemList.Hatch_Maintenance.get(1))
-            .fluidInputs(Materials.Glue.getFluid(1000))
+            .fluidInputs(Materials.Glue.getFluid(1_000))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(assemblerRecipes);
@@ -1815,7 +1816,7 @@ public class AssemblerRecipes implements Runnable {
                 ItemList.Electric_Pump_MV.get(1),
                 GTUtility.getIntegratedCircuit(9))
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorMV, 3))
-            .fluidInputs(Materials.Helium.getGas(2000))
+            .fluidInputs(Materials.Helium.getGas(2_000))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(assemblerRecipes);
@@ -1827,7 +1828,7 @@ public class AssemblerRecipes implements Runnable {
                 ItemList.Electric_Pump_HV.get(1),
                 GTUtility.getIntegratedCircuit(9))
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorHV, 6))
-            .fluidInputs(Materials.Helium.getGas(4000))
+            .fluidInputs(Materials.Helium.getGas(4_000))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(assemblerRecipes);
@@ -1851,7 +1852,7 @@ public class AssemblerRecipes implements Runnable {
                 ItemList.Electric_Pump_IV.get(1),
                 GTUtility.getIntegratedCircuit(9))
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorIV, 12))
-            .fluidInputs(Materials.Helium.getGas(8000))
+            .fluidInputs(Materials.Helium.getGas(8_000))
             .duration(40 * SECONDS)
             .eut(TierEU.RECIPE_IV)
             .addTo(assemblerRecipes);
@@ -1878,7 +1879,7 @@ public class AssemblerRecipes implements Runnable {
                 ItemList.Electric_Pump_ZPM.get(1),
                 GTUtility.getIntegratedCircuit(9))
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorZPM, 18))
-            .fluidInputs(Materials.Helium.getGas(16000))
+            .fluidInputs(Materials.Helium.getGas(16_000))
             .duration(1 * MINUTES + 20 * SECONDS)
             .eut(TierEU.RECIPE_ZPM)
             .addTo(assemblerRecipes);

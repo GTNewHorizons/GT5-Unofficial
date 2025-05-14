@@ -257,7 +257,7 @@ public class Assembler implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.rotor, Materials.StainlessSteel, 1),
                 ItemList.Electric_Motor_HV.get(1L))
             .itemOutputs(new ItemStack(Blocks.yszUnit, 1))
-            .fluidInputs(Materials.Hydrogen.getGas(4000))
+            .fluidInputs(Materials.Hydrogen.getGas(4_000))
             .duration(60 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(assemblerRecipes);
@@ -273,7 +273,7 @@ public class Assembler implements Runnable {
                     .get(OrePrefixes.rotor, Materials.Desh, new ItemStack(ErrorItem.getInstance(), 1), 1),
                 ItemList.Electric_Motor_IV.get(1L))
             .itemOutputs(new ItemStack(Blocks.gdcUnit, 1))
-            .fluidInputs(Materials.Hydrogen.getGas(16000))
+            .fluidInputs(Materials.Hydrogen.getGas(16_000))
             .duration(2 * MINUTES)
             .eut(TierEU.RECIPE_EV)
             .addTo(assemblerRecipes);

@@ -9,6 +9,7 @@ import static gregtech.api.enums.Mods.Witchery;
 import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
 import static gregtech.api.recipe.RecipeMaps.mixerRecipes;
 import static gregtech.api.util.GTRecipeBuilder.INGOTS;
+import static gregtech.api.util.GTRecipeBuilder.STACKS;
 import static gregtech.api.util.GTRecipeConstants.DEFC_CASING_TIER;
 
 import java.util.Arrays;
@@ -112,7 +113,7 @@ public class DEFCRecipes {
                 kubatech.api.enums.ItemList.DEFCCasingT3.get(1),
                 GTOreDictUnificator.get(OrePrefixes.plateDense, Materials.DraconiumAwakened, 6L),
                 GTModHandler.getModItem(DraconicEvolution.ID, "awakenedCore", 3, 0))
-            .fluidInputs(Materials.Void.getMolten(64 * INGOTS))
+            .fluidInputs(Materials.Void.getMolten(1 * STACKS))
             .itemOutputs(kubatech.api.enums.ItemList.DEFCCasingT4.get(1))
             .eut(TierEU.RECIPE_UEV)
             .duration(12000)

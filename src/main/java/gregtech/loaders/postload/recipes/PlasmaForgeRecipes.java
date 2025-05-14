@@ -43,15 +43,15 @@ public class PlasmaForgeRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs()
                 .fluidInputs(
-                    Materials.StableBaryonicMatter.getFluid(8000),
+                    Materials.StableBaryonicMatter.getFluid(8_000),
                     GGMaterial.metastableOganesson.getMolten(4 * INGOTS),
                     Materials.Grade8PurifiedWater.getFluid(12800),
                     new FluidStack(celestialTungstenPlasma, 96 * INGOTS),
-                    Materials.RadoxHeavy.getFluid(32000),
-                    MaterialsUEVplus.ExcitedDTSC.getFluid(2000))
+                    Materials.RadoxHeavy.getFluid(32_000),
+                    MaterialsUEVplus.ExcitedDTSC.getFluid(2_000))
                 .fluidOutputs(
                     MaterialsUEVplus.DimensionallyShiftedSuperfluid.getFluid(360000),
-                    MaterialsUEVplus.DimensionallyTranscendentResidue.getFluid(4000))
+                    MaterialsUEVplus.DimensionallyTranscendentResidue.getFluid(4_000))
                 .duration(7 * SECONDS + 10 * TICKS)
                 .eut((int) TierEU.RECIPE_UXV)
                 .metadata(COIL_HEAT, 13500)
@@ -64,15 +64,15 @@ public class PlasmaForgeRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs()
                 .fluidInputs(
-                    Materials.StableBaryonicMatter.getFluid(2000),
+                    Materials.StableBaryonicMatter.getFluid(2_000),
                     GGMaterial.metastableOganesson.getMolten(2 * INGOTS),
                     Materials.Grade8PurifiedWater.getFluid(3200),
                     new FluidStack(celestialTungstenPlasma, 48 * INGOTS),
-                    Materials.RadoxHeavy.getFluid(4000),
-                    MaterialsUEVplus.ExcitedDTEC.getFluid(2000))
+                    Materials.RadoxHeavy.getFluid(4_000),
+                    MaterialsUEVplus.ExcitedDTEC.getFluid(2_000))
                 .fluidOutputs(
                     MaterialsUEVplus.DimensionallyShiftedSuperfluid.getFluid(90000),
-                    MaterialsUEVplus.DimensionallyTranscendentResidue.getFluid(2000))
+                    MaterialsUEVplus.DimensionallyTranscendentResidue.getFluid(2_000))
                 .duration(30 * SECONDS)
                 .eut((int) TierEU.RECIPE_UMV)
                 .metadata(COIL_HEAT, 13500)
@@ -86,15 +86,15 @@ public class PlasmaForgeRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs()
                 .fluidInputs(
-                    Materials.StableBaryonicMatter.getFluid(1000),
+                    Materials.StableBaryonicMatter.getFluid(1_000),
                     GGMaterial.metastableOganesson.getMolten(1 * INGOTS),
                     Materials.Grade8PurifiedWater.getFluid(1600),
                     new FluidStack(celestialTungstenPlasma, 24 * INGOTS),
-                    Materials.RadoxSuperHeavy.getFluid(2000),
-                    MaterialsUEVplus.ExcitedDTRC.getFluid(2000))
+                    Materials.RadoxSuperHeavy.getFluid(2_000),
+                    MaterialsUEVplus.ExcitedDTRC.getFluid(2_000))
                 .fluidOutputs(
                     MaterialsUEVplus.DimensionallyShiftedSuperfluid.getFluid(30000),
-                    MaterialsUEVplus.DimensionallyTranscendentResidue.getFluid(1000))
+                    MaterialsUEVplus.DimensionallyTranscendentResidue.getFluid(1_000))
                 .duration(30 * SECONDS)
                 .eut((int) TierEU.RECIPE_UMV)
                 .metadata(COIL_HEAT, 12600)
@@ -109,8 +109,8 @@ public class PlasmaForgeRecipes implements Runnable {
                     GGMaterial.metastableOganesson.getMolten(1 * INGOTS),
                     Materials.Grade8PurifiedWater.getFluid(400),
                     new FluidStack(celestialTungstenPlasma, 24 * INGOTS),
-                    Materials.RadoxSuperHeavy.getFluid(2000),
-                    MaterialsUEVplus.ExcitedDTPC.getFluid(1000))
+                    Materials.RadoxSuperHeavy.getFluid(2_000),
+                    MaterialsUEVplus.ExcitedDTPC.getFluid(1_000))
                 .fluidOutputs(
                     MaterialsUEVplus.DimensionallyShiftedSuperfluid.getFluid(7500),
                     MaterialsUEVplus.DimensionallyTranscendentResidue.getFluid(250))

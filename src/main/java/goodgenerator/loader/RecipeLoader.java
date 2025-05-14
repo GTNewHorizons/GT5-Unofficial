@@ -112,7 +112,7 @@ public class RecipeLoader {
             .fluidInputs(
                 Materials.Trinium.getMolten(4 * INGOTS),
                 new FluidStack(solderIndalloy, 32 * INGOTS),
-                Materials.Lubricant.getFluid(8000))
+                Materials.Lubricant.getFluid(8_000))
             .itemOutputs(ItemRefer.Large_Naquadah_Reactor.get(1))
             .eut(TierEU.RECIPE_ZPM)
             .duration(13 * MINUTES + 30 * SECONDS)

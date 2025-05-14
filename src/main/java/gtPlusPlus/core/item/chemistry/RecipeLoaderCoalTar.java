@@ -77,8 +77,8 @@ public class RecipeLoaderCoalTar {
         GTValues.RA.stdBuilder()
             .itemInputs(Materials.Toluene.getCells(1))
             .itemOutputs(Materials.Benzene.getCells(1))
-            .fluidInputs(Materials.Hydrogen.getGas(2000))
-            .fluidOutputs(Materials.Methane.getGas(1000))
+            .fluidInputs(Materials.Hydrogen.getGas(2_000))
+            .fluidOutputs(Materials.Methane.getGas(1_000))
             .duration(10 * SECONDS)
             .eut(90)
             .addTo(chemicalDehydratorRecipes);
@@ -89,7 +89,7 @@ public class RecipeLoaderCoalTar {
         GTValues.RA.stdBuilder()
             .itemInputs(Materials.Ethylene.getCells(2), GTUtility.getIntegratedCircuit(3))
             .itemOutputs(ItemList.Cell_Empty.get(2))
-            .fluidInputs(Materials.Benzene.getFluid(2000))
+            .fluidInputs(Materials.Benzene.getFluid(2_000))
             .fluidOutputs(new FluidStack(GTPPFluids.Ethylbenzene, 2000))
             .duration(15 * SECONDS)
             .eut(TierEU.RECIPE_LV)
@@ -98,7 +98,7 @@ public class RecipeLoaderCoalTar {
         GTValues.RA.stdBuilder()
             .itemInputs(Materials.Benzene.getCells(2), GTUtility.getIntegratedCircuit(3))
             .itemOutputs(ItemList.Cell_Empty.get(2))
-            .fluidInputs(Materials.Ethylene.getGas(2000))
+            .fluidInputs(Materials.Ethylene.getGas(2_000))
             .fluidOutputs(new FluidStack(GTPPFluids.Ethylbenzene, 2000))
             .duration(15 * SECONDS)
             .eut(TierEU.RECIPE_LV)
@@ -275,7 +275,7 @@ public class RecipeLoaderCoalTar {
     private static void recipePhthalicAcidToPhthalicAnhydride() {
         GTValues.RA.stdBuilder()
             .itemOutputs(GregtechItemList.PhthalicAnhydrideDust.get(15))
-            .fluidInputs(Materials.PhthalicAcid.getFluid(1000))
+            .fluidInputs(Materials.PhthalicAcid.getFluid(1_000))
             .eut(TierEU.RECIPE_MV)
             .duration(60 * SECONDS)
             .addTo(chemicalDehydratorRecipes);

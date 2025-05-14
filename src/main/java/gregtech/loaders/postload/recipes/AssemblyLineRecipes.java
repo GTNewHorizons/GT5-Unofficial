@@ -105,7 +105,7 @@ public class AssemblyLineRecipes implements Runnable {
                 .fluidInputs(
                     Materials.Naquadria.getMolten(9 * INGOTS),
                     new FluidStack(solderIndalloy, 9 * INGOTS),
-                    Materials.Lubricant.getFluid(2000))
+                    Materials.Lubricant.getFluid(2_000))
                 .itemOutputs(ItemList.Electric_Motor_UV.get(1))
                 .eut(TierEU.RECIPE_ZPM)
                 .duration(30 * SECONDS)
@@ -166,7 +166,7 @@ public class AssemblyLineRecipes implements Runnable {
                 .fluidInputs(
                     Materials.Naquadria.getMolten(9 * INGOTS),
                     new FluidStack(solderIndalloy, 9 * INGOTS),
-                    Materials.Lubricant.getFluid(2000))
+                    Materials.Lubricant.getFluid(2_000))
                 .duration(30 * SECONDS)
                 .eut((int) TierEU.RECIPE_ZPM)
                 .addTo(AssemblyLine);
@@ -223,7 +223,7 @@ public class AssemblyLineRecipes implements Runnable {
                 .fluidInputs(
                     Materials.Naquadria.getMolten(9 * INGOTS),
                     new FluidStack(solderIndalloy, 9 * INGOTS),
-                    Materials.Lubricant.getFluid(2000))
+                    Materials.Lubricant.getFluid(2_000))
                 .duration(30 * SECONDS)
                 .eut((int) TierEU.RECIPE_ZPM)
                 .addTo(AssemblyLine);
@@ -286,7 +286,7 @@ public class AssemblyLineRecipes implements Runnable {
                 .fluidInputs(
                     Materials.Naquadria.getMolten(9 * INGOTS),
                     new FluidStack(solderIndalloy, 9 * INGOTS),
-                    Materials.Lubricant.getFluid(2000))
+                    Materials.Lubricant.getFluid(2_000))
                 .duration(30 * SECONDS)
                 .eut((int) TierEU.RECIPE_ZPM)
                 .addTo(AssemblyLine);
@@ -352,7 +352,7 @@ public class AssemblyLineRecipes implements Runnable {
                 .fluidInputs(
                     Materials.Naquadria.getMolten(9 * INGOTS),
                     new FluidStack(solderIndalloy, 16 * INGOTS),
-                    Materials.Lubricant.getFluid(2000))
+                    Materials.Lubricant.getFluid(2_000))
                 .duration(30 * SECONDS)
                 .eut((int) TierEU.RECIPE_ZPM)
                 .addTo(AssemblyLine);

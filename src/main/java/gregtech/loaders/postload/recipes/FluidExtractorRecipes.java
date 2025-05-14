@@ -141,7 +141,7 @@ public class FluidExtractorRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(GTOreDictUnificator.get(OrePrefixes.gem, Materials.Mercury, 1L))
-            .fluidOutputs(Materials.Mercury.getFluid(1000))
+            .fluidOutputs(Materials.Mercury.getFluid(1_000))
             .duration(6 * SECONDS + 8 * TICKS)
             .eut(4)
             .addTo(fluidExtractionRecipes);
@@ -513,7 +513,7 @@ public class FluidExtractorRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(new ItemStack(Blocks.snow, 1, 0))
-            .fluidOutputs(Materials.Water.getFluid(1000))
+            .fluidOutputs(Materials.Water.getFluid(1_000))
             .duration(6 * SECONDS + 8 * TICKS)
             .eut(4)
             .addTo(fluidExtractionRecipes);

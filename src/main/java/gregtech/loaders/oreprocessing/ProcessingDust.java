@@ -298,7 +298,7 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
                     case "Oilsands":
                         GTValues.RA.stdBuilder()
                             .itemInputs(GTUtility.copyAmount(1, aStack))
-                            .fluidOutputs(Materials.OilHeavy.getFluid(1000))
+                            .fluidOutputs(Materials.OilHeavy.getFluid(1_000))
                             .duration(33 * SECONDS)
                             .eut(8)
                             .addTo(centrifugeRecipes);

@@ -422,7 +422,7 @@ public class MTEQuantumForceTransformer extends MTEExtendedPowerMultiBlockBase<M
                             if (mat.mStandardMoltenFluid != null) {
                                 fluidModeItems[i] = mat.getMolten(1 * INGOTS);
                             } else if (mat.mFluid != null) {
-                                fluidModeItems[i] = mat.getFluid(1000);
+                                fluidModeItems[i] = mat.getFluid(1_000);
                             }
                         }
                     }

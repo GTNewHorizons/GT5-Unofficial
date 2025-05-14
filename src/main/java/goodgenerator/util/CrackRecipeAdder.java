@@ -115,7 +115,7 @@ public class CrackRecipeAdder {
         if (gas) {
             GTValues.RA.stdBuilder()
                 .itemInputs(input, GTUtility.getIntegratedCircuit(11))
-                .fluidInputs(Materials.Helium.getGas(1000))
+                .fluidInputs(Materials.Helium.getGas(1_000))
                 .itemOutputs(output)
                 .duration(duration * TICKS)
                 .eut(EUt)
