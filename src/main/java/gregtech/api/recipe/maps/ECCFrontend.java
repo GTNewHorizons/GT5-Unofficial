@@ -20,9 +20,9 @@ import static gregtech.api.util.GTUtility.trans;
 
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
-public class ECCFFrontend extends RecipeMapFrontend {
+public class ECCFrontend extends RecipeMapFrontend {
 
-    public ECCFFrontend(BasicUIPropertiesBuilder uiPropertiesBuilder, NEIRecipePropertiesBuilder neiPropertiesBuilder) {
+    public ECCFrontend(BasicUIPropertiesBuilder uiPropertiesBuilder, NEIRecipePropertiesBuilder neiPropertiesBuilder) {
         super(uiPropertiesBuilder, neiPropertiesBuilder);
     }
 

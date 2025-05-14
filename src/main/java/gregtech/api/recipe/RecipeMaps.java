@@ -15,7 +15,7 @@ import gregtech.api.objects.ItemData;
 import gregtech.api.recipe.maps.AssemblerBackend;
 import gregtech.api.recipe.maps.AssemblyLineFrontend;
 import gregtech.api.recipe.maps.DistillationTowerFrontend;
-import gregtech.api.recipe.maps.ECCFFrontend;
+import gregtech.api.recipe.maps.ECCFrontend;
 import gregtech.api.recipe.maps.FluidCannerBackend;
 import gregtech.api.recipe.maps.FluidOnlyFrontend;
 import gregtech.api.recipe.maps.FormingPressBackend;
@@ -813,7 +813,7 @@ public final class RecipeMaps {
         .logoSize(16, 16)
         .progressBarSize(16, 16)
         .progressBarPos(80, 36)
-        .frontend(ECCFFrontend::new)
+        .frontend(ECCFrontend::new)
         .build();
     public static final RecipeMap<RecipeMapBackend> planetConditions = RecipeMapBuilder.of("gt.recipe.planets")
         .maxIO(41, 0, 0, 0)
