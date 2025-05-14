@@ -712,7 +712,7 @@ public class MTEMultiBlockBaseGui {
             });
     }
 
-    private void registerSyncValues(PanelSyncManager syncManager) {
+    protected void registerSyncValues(PanelSyncManager syncManager) {
         syncManager.syncValue(
             "errors",
             new GenericSyncValue<EnumSet<StructureError>>(
