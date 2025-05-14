@@ -23,13 +23,6 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
 
-import com.cleanroommc.modularui.api.drawable.IKey;
-import com.cleanroommc.modularui.api.widget.IWidget;
-import com.cleanroommc.modularui.screen.ModularPanel;
-import com.cleanroommc.modularui.utils.item.ItemStackHandler;
-import com.cleanroommc.modularui.value.sync.IntSyncValue;
-import com.cleanroommc.modularui.value.sync.PanelSyncManager;
-import com.cleanroommc.modularui.widgets.ListWidget;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IItemSource;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
@@ -41,6 +34,7 @@ import gregtech.api.hazards.HazardProtection;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.metatileentity.implementations.gui.MTEMultiBlockBaseGui;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
@@ -53,6 +47,7 @@ import tectech.loader.MainLoader;
 import tectech.recipe.TTRecipeAdder;
 import tectech.thing.metaTileEntity.multi.base.Parameter;
 import tectech.thing.metaTileEntity.multi.base.TTMultiblockBase;
+import tectech.thing.metaTileEntity.multi.base.gui.MTEMicrowaveGui;
 import tectech.thing.metaTileEntity.multi.base.render.TTRenderedExtendedFacingTexture;
 
 /**
@@ -63,8 +58,8 @@ public class MTEMicrowave extends TTMultiblockBase implements ISurvivalConstruct
     // region variables
     private boolean hasBeenPausedThisCycle = false;
     private int currentTime;
-    private int remainingTime;
-    private int maxDamagePerSecond;
+    public int remainingTime;
+    public int maxDamagePerSecond;
     // endregion
 
     // region structure
@@ -329,36 +324,7 @@ public class MTEMicrowave extends TTMultiblockBase implements ISurvivalConstruct
     }
 
     @Override
-    public void insertTexts(ListWidget<IWidget, ?> machineInfo, ItemStackHandler invSlot, PanelSyncManager syncManager,
-        ModularPanel parentPanel) {
-        super.insertTexts(machineInfo, invSlot, syncManager, parentPanel);
-
-        IntSyncValue damageFactorSyncer = new IntSyncValue(() -> maxDamagePerSecond);
-        IntSyncValue remainingTimeSyncer = new IntSyncValue(() -> remainingTime);
-        syncManager.syncValue("damageFactor", damageFactorSyncer);
-        syncManager.syncValue("remainingTime", remainingTimeSyncer);
-
-        machineInfo.child(
-            IKey.dynamic(
-                () -> EnumChatFormatting.WHITE + "Up to "
-                    + EnumChatFormatting.RED
-                    + damageFactorSyncer.getValue()
-                    + EnumChatFormatting.WHITE
-                    + " damage per second")
-                .asWidget()
-                .setEnabledIf(widget -> getErrorDisplayID() == 0 && getBaseMetaTileEntity().isActive())
-                .widthRel(1)
-                .marginBottom(2));
-
-        machineInfo.child(
-            IKey.dynamic(
-                () -> EnumChatFormatting.WHITE + "Remaining time: "
-                    + EnumChatFormatting.GREEN
-                    + remainingTimeSyncer.getValue())
-                .asWidget()
-                .setEnabledIf(widget -> getErrorDisplayID() == 0 && getBaseMetaTileEntity().isActive())
-                .widthRel(1)
-                .marginBottom(2));
-
+    protected @NotNull MTEMultiBlockBaseGui getGui() {
+        return new MTEMicrowaveGui(this);
     }
 }
