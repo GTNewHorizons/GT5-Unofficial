@@ -14,7 +14,6 @@ import static gregtech.api.util.GTRecipeConstants.SCANNING;
 import static gtPlusPlus.core.material.MaterialsElements.STANDALONE.HYPOGEN;
 
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -34,9 +33,6 @@ public class AssemblyLine implements Runnable {
 
     @Override
     public void run() {
-        final Fluid radoxPoly = FluidRegistry.getFluid("molten.radoxpoly") != null
-            ? FluidRegistry.getFluid("molten.radoxpoly")
-            : FluidRegistry.getFluid("molten.polybenzimidazole");
 
         // TFFTStorageField6
         GTValues.RA.stdBuilder()
@@ -94,7 +90,9 @@ public class AssemblyLine implements Runnable {
                 ItemList.Field_Generator_UV.get(4),
                 new ItemStack(huiCircuit, 4, 2),
                 GTModHandler.getModItem(UniversalSingularities.ID, "universal.tinkersConstruct.singularity", 1, 4))
-            .fluidInputs(Materials.CrystallinePinkSlime.getMolten(30 * INGOTS), new FluidStack(radoxPoly, 20 * INGOTS))
+            .fluidInputs(
+                Materials.CrystallinePinkSlime.getMolten(30 * INGOTS),
+                Materials.RadoxPolymer.getMolten(20 * INGOTS))
             .itemOutputs(new ItemStack(Blocks.tfftStorageField, 1, 8))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_UEV)
@@ -116,7 +114,7 @@ public class AssemblyLine implements Runnable {
                 ItemList.Field_Generator_UEV.get(4),
                 new ItemStack(huiCircuit, 4, 3),
                 GTModHandler.getModItem(UniversalSingularities.ID, "universal.tinkersConstruct.singularity", 1, 4))
-            .fluidInputs(Materials.MelodicAlloy.getMolten(40 * INGOTS), new FluidStack(radoxPoly, 24 * INGOTS))
+            .fluidInputs(Materials.MelodicAlloy.getMolten(40 * INGOTS), Materials.RadoxPolymer.getMolten(24 * INGOTS))
             .itemOutputs(new ItemStack(Blocks.tfftStorageField, 1, 9))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_UMV)
@@ -138,7 +136,7 @@ public class AssemblyLine implements Runnable {
                 new ItemStack(huiCircuit, 8, 4),
                 GTModHandler.getModItem(EnderIO.ID, "itemBasicCapacitor", 64, 6),
                 GTModHandler.getModItem(EternalSingularity.ID, "eternal_singularity", 1))
-            .fluidInputs(Materials.StellarAlloy.getMolten(50 * INGOTS), new FluidStack(radoxPoly, 32 * INGOTS))
+            .fluidInputs(Materials.StellarAlloy.getMolten(50 * INGOTS), Materials.RadoxPolymer.getMolten(32 * INGOTS))
             .itemOutputs(new ItemStack(Blocks.tfftStorageField, 1, 10))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_UXV)

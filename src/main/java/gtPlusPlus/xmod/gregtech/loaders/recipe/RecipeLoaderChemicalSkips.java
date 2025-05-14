@@ -146,10 +146,10 @@ public class RecipeLoaderChemicalSkips {
         GTValues.RA.stdBuilder()
             .itemInputs(Materials.Carbon.getDust(64))
             .fluidInputs(
-                Materials.Oxygen.getGas(1_000 * NUGGETS),
-                Materials.Hydrogen.getGas(1_000 * NUGGETS),
-                Materials.Chlorine.getGas(1_000 * NUGGETS),
-                Materials.Fluorine.getGas(1_000 * NUGGETS))
+                Materials.Oxygen.getGas(16_000),
+                Materials.Hydrogen.getGas(16_000),
+                Materials.Chlorine.getGas(16_000),
+                Materials.Fluorine.getGas(16_000))
             .fluidOutputs(
                 Materials.Plastic.getMolten(4 * STACKS),
                 Materials.PolyvinylChloride.getMolten(2 * STACKS),
@@ -166,9 +166,9 @@ public class RecipeLoaderChemicalSkips {
         GTValues.RA.stdBuilder()
             .itemInputs(Materials.Carbon.getDust(64))
             .fluidInputs(
-                Materials.Oxygen.getGas(1_000 * NUGGETS),
-                Materials.Hydrogen.getGas(1_000 * NUGGETS),
-                Materials.Chlorine.getGas(1_000 * NUGGETS))
+                Materials.Oxygen.getGas(16_000),
+                Materials.Hydrogen.getGas(16_000),
+                Materials.Chlorine.getGas(16_000))
             .fluidOutputs(
                 Materials.Silicone.getMolten(1 * STACKS),
                 Materials.StyreneButadieneRubber.getMolten(1 * STACKS),
@@ -187,7 +187,7 @@ public class RecipeLoaderChemicalSkips {
             .fluidInputs(Materials.Oxygen.getGas(10_000), Materials.Hydrogen.getGas(10_000))
             .fluidOutputs(
                 MaterialMisc.ETHYL_CYANOACRYLATE.getFluidStack(32_000),
-                Materials.AdvancedGlue.getFluid(1_000 * NUGGETS),
+                Materials.AdvancedGlue.getFluid(16_000),
                 MaterialsAlloy.INDALLOY_140.getFluidStack(1 * STACKS),
                 Materials.SolderingAlloy.getMolten(2 * STACKS))
             .duration(20 * SECONDS)
@@ -333,11 +333,11 @@ public class RecipeLoaderChemicalSkips {
         // Lategame Plastics (Missing Radox Polymer and Heavy Radox)
         GTValues.RA.stdBuilder()
             .itemInputs(Materials.Carbon.getDust(64), Materials.Osmium.getDust(24))
-            .fluidInputs(Materials.Hydrogen.getGas(1_000 * NUGGETS), Materials.Nitrogen.getGas(1_000 * NUGGETS))
+            .fluidInputs(Materials.Hydrogen.getGas(16_000), Materials.Nitrogen.getGas(16_000))
             .fluidOutputs(
-                FluidUtils.getFluidStack("xenoxene", 1_000 * NUGGETS),
-                FluidUtils.getFluidStack("molten.radoxpoly", 1 * STACKS),
-                FluidUtils.getFluidStack("heavyradox", 1_000 * NUGGETS),
+                FluidUtils.getFluidStack("xenoxene", 16_000),
+                Materials.RadoxPolymer.getMolten(1 * STACKS),
+                FluidUtils.getFluidStack("heavyradox", 16_000),
                 MaterialsKevlar.Kevlar.getMolten(1 * STACKS))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_UIV)
@@ -348,7 +348,7 @@ public class RecipeLoaderChemicalSkips {
             // Lategame Kevlar using Kevlar bee comb
             GTValues.RA.stdBuilder()
                 .itemInputs(GTBees.combs.getStackForType(CombType.KEVLAR, 24), Materials.Carbon.getDust(64))
-                .fluidInputs(Materials.Nitrogen.getGas(1_000 * NUGGETS), Materials.Hydrogen.getGas(1_000 * NUGGETS))
+                .fluidInputs(Materials.Nitrogen.getGas(16_000), Materials.Hydrogen.getGas(16_000))
                 .fluidOutputs(
                     MaterialsKevlar.PolyurethaneResin.getFluid(2_000 * NUGGETS),
                     MaterialsKevlar.LiquidCrystalKevlar.getFluid(32 * INGOTS),
