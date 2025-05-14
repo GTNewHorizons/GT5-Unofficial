@@ -7,7 +7,6 @@ import static gtPlusPlus.core.material.MaterialsElements.STANDALONE.DRAGON_METAL
 import static gtPlusPlus.core.material.MaterialsElements.STANDALONE.HYPOGEN;
 
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -18,6 +17,7 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
+import gtPlusPlus.core.material.MaterialMisc;
 import gtPlusPlus.core.material.MaterialsElements;
 import kekztech.common.Blocks;
 import tectech.recipe.TTRecipeAdder;
@@ -26,10 +26,6 @@ public class ResearchableAssemblyLine implements Runnable {
 
     @Override
     public void run() {
-        final Fluid solderUEV = FluidRegistry.getFluid("molten.mutatedlivingsolder") != null
-            ? FluidRegistry.getFluid("molten.mutatedlivingsolder")
-            : FluidRegistry.getFluid("molten.solderingalloy");
-
         // Ultimate Capacitor (UHV)
         TTRecipeAdder.addResearchableAssemblylineRecipe(
             new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 4),
@@ -45,8 +41,8 @@ public class ResearchableAssemblyLine implements Runnable {
                 ItemList.Circuit_Wafer_UHPIC.get(64), ItemList.Circuit_Wafer_SoC2.get(32),
                 ItemList.Circuit_Parts_DiodeASMD.get(64),
                 GTOreDictUnificator.get(OrePrefixes.wireGt02, Materials.SuperconductorUHV, 64) },
-            new FluidStack[] { new FluidStack(solderUEV, 32 * INGOTS), Materials.Naquadria.getMolten(1 * STACKS),
-                GTModHandler.getIC2Coolant(32_000) },
+            new FluidStack[] { MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack(32 * INGOTS),
+                Materials.Naquadria.getMolten(1 * STACKS), GTModHandler.getIC2Coolant(32_000) },
             new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 5),
             4000,
             1600000);
@@ -66,8 +62,9 @@ public class ResearchableAssemblyLine implements Runnable {
                 ItemList.Circuit_Wafer_PPIC.get(64), ItemList.Circuit_Wafer_SoC2.get(64),
                 ItemList.Circuit_Parts_DiodeXSMD.get(64),
                 GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials.SuperconductorUEV, 64) },
-            new FluidStack[] { new FluidStack(solderUEV, 1 * STACKS), Materials.Quantium.getMolten(2 * STACKS),
-                Materials.Naquadria.getMolten(2 * STACKS), Materials.SuperCoolant.getFluid(64_000) },
+            new FluidStack[] { MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack(1 * STACKS),
+                Materials.Quantium.getMolten(2 * STACKS), Materials.Naquadria.getMolten(2 * STACKS),
+                Materials.SuperCoolant.getFluid(64_000) },
             new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 8),
             250 * 20,
             (int) TierEU.RECIPE_UEV);
@@ -87,7 +84,7 @@ public class ResearchableAssemblyLine implements Runnable {
                 GTModHandler.getModItem(NewHorizonsCoreMod.ID, "item.RawPicoWafer", 64),
                 ItemList.Circuit_Parts_DiodeXSMD.get(64), ItemList.Circuit_Parts_InductorXSMD.get(32),
                 GTOreDictUnificator.get(OrePrefixes.wireGt08, Materials.SuperconductorUIV, 64) },
-            new FluidStack[] { new FluidStack(solderUEV, 2 * STACKS),
+            new FluidStack[] { MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack(2 * STACKS),
                 MaterialsElements.STANDALONE.CELESTIAL_TUNGSTEN.getFluidStack(2 * STACKS),
                 Materials.Quantium.getMolten(2 * STACKS), Materials.SuperCoolant.getFluid(128_000) },
             new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 9),
@@ -109,7 +106,7 @@ public class ResearchableAssemblyLine implements Runnable {
                 GTModHandler.getModItem(NewHorizonsCoreMod.ID, "item.PicoWafer", 64),
                 ItemList.Circuit_Parts_DiodeXSMD.get(64), ItemList.Circuit_Parts_InductorXSMD.get(64),
                 GTOreDictUnificator.get(OrePrefixes.wireGt16, Materials.SuperconductorUMV, 64) },
-            new FluidStack[] { new FluidStack(solderUEV, 4 * STACKS),
+            new FluidStack[] { MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack(4 * STACKS),
                 new FluidStack(FluidRegistry.getFluid("molten.astraltitanium"), 4 * STACKS),
                 MaterialsElements.STANDALONE.CELESTIAL_TUNGSTEN.getFluidStack(4 * STACKS),
                 Materials.SuperCoolant.getFluid(256_000) },

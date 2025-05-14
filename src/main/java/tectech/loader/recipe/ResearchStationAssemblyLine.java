@@ -42,7 +42,6 @@ import static kubatech.loaders.BlockLoader.defcCasingBlock;
 import static tectech.loader.recipe.BaseRecipeLoader.getItemContainer;
 
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -1427,17 +1426,13 @@ public class ResearchStationAssemblyLine implements Runnable {
         // ------------------------- Set up information -------------------------
         // ----------------------------------------------------------------------
 
-        Fluid mutated_living_solder = FluidRegistry.getFluid("molten.mutatedlivingsolder") != null
-            ? FluidRegistry.getFluid("molten.mutatedlivingsolder")
-            : FluidRegistry.getFluid("molten.solderingalloy");
-
         int total_computation = 48_000;
         int comp_per_second = 64;
         int research_eu_per_tick = (int) TierEU.RECIPE_UHV;
         int research_amperage = 1;
 
-        FluidStack fluid_0 = Materials.Quantium.getMolten(2592);
-        FluidStack fluid_1 = new FluidStack(mutated_living_solder, 2592);
+        FluidStack fluid_0 = Materials.Quantium.getMolten(18 * INGOTS);
+        FluidStack fluid_1 = MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack(18 * INGOTS);
         FluidStack fluid_2 = Materials.Lubricant.getFluid(4_000);
 
         int crafting_time_in_ticks = 1000;
@@ -1641,18 +1636,13 @@ public class ResearchStationAssemblyLine implements Runnable {
         // ------------------------- Set up information -------------------------
         // ----------------------------------------------------------------------
 
-        Fluid mutated_living_solder = FluidRegistry.getFluid("molten.mutatedlivingsolder") != null
-            ? FluidRegistry.getFluid("molten.mutatedlivingsolder")
-            : FluidRegistry.getFluid("molten.solderingalloy");
-        Fluid celestialTungsten = MaterialsElements.STANDALONE.CELESTIAL_TUNGSTEN.getFluid();
-
         int total_computation = 96_000;
         int comp_per_second = 128;
         int research_eu_per_tick = (int) TierEU.RECIPE_UEV;
         int research_amperage = 1;
 
-        FluidStack fluid_0 = celestialTungsten != null ? new FluidStack(celestialTungsten, 576) : null;
-        FluidStack fluid_1 = new FluidStack(mutated_living_solder, 2592);
+        FluidStack fluid_0 = MaterialsElements.STANDALONE.CELESTIAL_TUNGSTEN.getFluidStack(4 * INGOTS);
+        FluidStack fluid_1 = MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack(18 * INGOTS);
         FluidStack fluid_2 = MaterialsUEVplus.DimensionallyShiftedSuperfluid.getFluid(4_000);
 
         int crafting_time_in_ticks = 1000;
@@ -1856,20 +1846,14 @@ public class ResearchStationAssemblyLine implements Runnable {
         // ------------------------- Set up information -------------------------
         // ----------------------------------------------------------------------
 
-        Fluid mutated_living_solder = FluidRegistry.getFluid("molten.mutatedlivingsolder") != null
-            ? FluidRegistry.getFluid("molten.mutatedlivingsolder")
-            : FluidRegistry.getFluid("molten.solderingalloy");
-        Fluid hypogen = FluidRegistry.getFluid("molten.hypogen");
-        Fluid celestialTungsten = FluidRegistry.getFluid("molten.celestialtungsten");
-
         int total_computation = 192_000;
         int comp_per_second = 256;
         int research_eu_per_tick = (int) TierEU.RECIPE_UIV;
         int research_amperage = 1;
 
-        FluidStack fluid_0 = hypogen != null ? new FluidStack(hypogen, 576) : null;
-        FluidStack fluid_1 = celestialTungsten != null ? new FluidStack(celestialTungsten, 576) : null;
-        FluidStack fluid_2 = new FluidStack(mutated_living_solder, 2592);
+        FluidStack fluid_0 = MaterialsElements.STANDALONE.HYPOGEN.getFluidStack(4 * INGOTS);
+        FluidStack fluid_1 = MaterialsElements.STANDALONE.CELESTIAL_TUNGSTEN.getFluidStack(4 * INGOTS);
+        FluidStack fluid_2 = MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack(18 * INGOTS);
         FluidStack fluid_3 = MaterialsUEVplus.DimensionallyShiftedSuperfluid.getFluid(4_000);
 
         int crafting_time_in_ticks = 1000;
@@ -2063,16 +2047,12 @@ public class ResearchStationAssemblyLine implements Runnable {
         // ------------------------- Set up information -------------------------
         // ----------------------------------------------------------------------
 
-        Fluid mutatedLivingSolder = FluidRegistry.getFluid("molten.mutatedlivingsolder") != null
-            ? FluidRegistry.getFluid("molten.mutatedlivingsolder")
-            : FluidRegistry.getFluid("molten.solderingalloy");
-
         FluidStack moltenMHDCSM_576 = MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter
             .getMolten(4 * INGOTS);
         FluidStack moltenSpaceTime_576 = MaterialsUEVplus.SpaceTime.getMolten(4 * INGOTS);
         FluidStack moltenUniversium_576 = MaterialsUEVplus.Universium.getMolten(4 * INGOTS);
         FluidStack dimensionallyShiftedSuperfluid8000 = MaterialsUEVplus.DimensionallyShiftedSuperfluid.getFluid(8_000);
-        FluidStack solderingAlloy_14_400 = new FluidStack(mutatedLivingSolder, 14_400);
+        FluidStack solderingAlloy_14_400 = MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack(1 * STACKS + 36 * INGOTS);
 
         int totalComputation = 384_000;
         int compPerSecond = 512;
