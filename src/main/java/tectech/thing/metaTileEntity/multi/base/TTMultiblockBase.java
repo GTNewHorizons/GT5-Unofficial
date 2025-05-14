@@ -1407,11 +1407,6 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
         }
     }
 
-    @Override
-    public ItemStack getControllerSlot() {
-        return this.invSlot.getStackInSlot(0);
-    }
-
     protected void chargeController_EM(IGregTechTileEntity aBaseMetaTileEntity) {
         powerInput();
     }
