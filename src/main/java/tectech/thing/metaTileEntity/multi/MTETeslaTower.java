@@ -35,13 +35,6 @@ import net.minecraftforge.fluids.FluidStack;
 import org.apache.commons.lang3.tuple.Pair;
 import org.jetbrains.annotations.NotNull;
 
-import com.cleanroommc.modularui.api.drawable.IKey;
-import com.cleanroommc.modularui.api.widget.IWidget;
-import com.cleanroommc.modularui.screen.ModularPanel;
-import com.cleanroommc.modularui.utils.item.ItemStackHandler;
-import com.cleanroommc.modularui.value.sync.IntSyncValue;
-import com.cleanroommc.modularui.value.sync.PanelSyncManager;
-import com.cleanroommc.modularui.widgets.ListWidget;
 import com.google.common.collect.Multimap;
 import com.google.common.collect.MultimapBuilder;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
@@ -63,6 +56,7 @@ import gregtech.api.metatileentity.implementations.MTEHatchEnergy;
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
 import gregtech.api.metatileentity.implementations.MTEHatchMaintenance;
 import gregtech.api.metatileentity.implementations.MTEHatchOutput;
+import gregtech.api.metatileentity.implementations.gui.MTEMultiBlockBaseGui;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.util.IGTHatchAdder;
@@ -81,6 +75,7 @@ import tectech.thing.metaTileEntity.hatch.MTEHatchDynamoMulti;
 import tectech.thing.metaTileEntity.hatch.MTEHatchEnergyMulti;
 import tectech.thing.metaTileEntity.multi.base.Parameter;
 import tectech.thing.metaTileEntity.multi.base.TTMultiblockBase;
+import tectech.thing.metaTileEntity.multi.base.gui.MTETeslaTowerGui;
 import tectech.thing.metaTileEntity.multi.base.render.TTRenderedExtendedFacingTexture;
 
 public class MTETeslaTower extends TTMultiblockBase implements ISurvivalConstructable, ITeslaConnectable {
@@ -116,9 +111,9 @@ public class MTETeslaTower extends TTMultiblockBase implements ISurvivalConstruc
     private long outputCurrentMax = 0; // Tesla current output limited by capacitors
 
     // outputVoltage and current after settings
-    private long outputVoltage;
-    private long outputCurrent;
-    private long usedAmps;
+    public long outputVoltage;
+    public long outputCurrent;
+    public long usedAmps;
 
     // Prevents unnecessary offset calculation, saving on lag
     private byte oldRotation = -1;
@@ -765,36 +760,7 @@ public class MTETeslaTower extends TTMultiblockBase implements ISurvivalConstruc
     }
 
     @Override
-    public void insertTexts(ListWidget<IWidget, ?> machineInfo, ItemStackHandler invSlot, PanelSyncManager syncManager,
-        ModularPanel parentPanel) {
-        IntSyncValue outputVoltageSyncer = new IntSyncValue(() -> 0, () -> (int) outputVoltage);
-        IntSyncValue outputCurrentSyncer = new IntSyncValue(() -> 0, () -> (int) outputCurrent);
-        IntSyncValue usedAmpsSyncer = new IntSyncValue(() -> 0, () -> (int) usedAmps);
-        syncManager.syncValue("outputVoltage", outputVoltageSyncer);
-        syncManager.syncValue("outputCurrent", outputCurrentSyncer);
-        syncManager.syncValue("usedAmps", usedAmpsSyncer);
-        super.insertTexts(machineInfo, invSlot, syncManager, parentPanel);
-        machineInfo.child(
-            IKey.dynamic(
-                () -> EnumChatFormatting.WHITE + "Output Voltage: "
-                    + EnumChatFormatting.BLUE
-                    + outputVoltageSyncer.getValue())
-                .asWidget()
-                .setEnabledIf(w -> getBaseMetaTileEntity().isActive())
-                .color(COLOR_TEXT_WHITE.get())
-                .widthRel(1)
-                .marginBottom(2));
-        machineInfo.child(
-            IKey.dynamic(
-                () -> EnumChatFormatting.WHITE + "Used Amperage: "
-                    + EnumChatFormatting.GREEN
-                    + usedAmpsSyncer.getValue()
-                    + "/"
-                    + outputCurrentSyncer.getValue())
-                .asWidget()
-                .setEnabledIf(w -> getBaseMetaTileEntity().isActive())
-                .color(COLOR_TEXT_WHITE.get())
-                .widthRel(1)
-                .marginBottom(2));
+    protected @NotNull MTEMultiBlockBaseGui getGui() {
+        return new MTETeslaTowerGui(this);
     }
 }
