@@ -137,7 +137,7 @@ public class CokeAndPyrolyseOven {
             .itemInputs(coke, GTUtility.getIntegratedCircuit(6))
             .itemOutputs(Materials.Ash.getDust(5))
             .fluidInputs(GTModHandler.getSteam(2000))
-            .fluidOutputs(Materials.WoodGas.getGas(6000))
+            .fluidOutputs(Materials.WoodGas.getGas(6_000))
             .eut(240)
             .duration(75 * SECONDS)
             .addTo(pyrolyseRecipes);

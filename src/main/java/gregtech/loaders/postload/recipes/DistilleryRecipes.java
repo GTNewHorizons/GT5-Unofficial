@@ -356,7 +356,7 @@ public class DistilleryRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(2))
-            .fluidInputs(Materials.SeedOil.getFluid(1400L))
+            .fluidInputs(Materials.SeedOil.getFluid(1_400))
             .fluidOutputs(Materials.Lubricant.getFluid(500))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_MV)
@@ -364,7 +364,7 @@ public class DistilleryRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(2))
-            .fluidInputs(Materials.FishOil.getFluid(1200L))
+            .fluidInputs(Materials.FishOil.getFluid(1_200))
             .fluidOutputs(Materials.Lubricant.getFluid(500))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_MV)
@@ -380,7 +380,7 @@ public class DistilleryRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .fluidInputs(Materials.Water.getFluid(1_000))
-            .fluidOutputs(GTModHandler.getDistilledWater(1000L))
+            .fluidOutputs(GTModHandler.getDistilledWater(1_000))
             .duration(1 * SECONDS + 12 * TICKS)
             .eut(TierEU.RECIPE_MV)
             .addTo(distillationTowerRecipes);
@@ -519,7 +519,7 @@ public class DistilleryRecipes implements Runnable {
             .fluidOutputs(
                 Materials.SulfuricHeavyFuel.getFluid(100),
                 Materials.SulfuricLightFuel.getFluid(500),
-                Materials.SulfuricNaphtha.getFluid(1500),
+                Materials.SulfuricNaphtha.getFluid(1_500),
                 MaterialsKevlar.NaphthenicAcid.getFluid(25),
                 Materials.SulfuricGas.getGas(600))
             .duration(1 * SECONDS + 12 * TICKS)
@@ -534,7 +534,7 @@ public class DistilleryRecipes implements Runnable {
                 Materials.SulfuricLightFuel.getFluid(1_000),
                 Materials.SulfuricNaphtha.getFluid(400),
                 MaterialsKevlar.NaphthenicAcid.getFluid(50),
-                Materials.SulfuricGas.getGas(1200))
+                Materials.SulfuricGas.getGas(1_200))
             .duration(3 * SECONDS + 4 * TICKS)
             .eut(TierEU.RECIPE_HV)
             .addTo(distillationTowerRecipes);
@@ -590,14 +590,14 @@ public class DistilleryRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemOutputs(ItemList.IC2_Fertilizer.get(1))
-            .fluidInputs(new FluidStack(FluidRegistry.getFluid("ic2biomass"), 3000))
-            .fluidOutputs(new FluidStack(FluidRegistry.getFluid("ic2biogas"), 8000), Materials.Water.getFluid(125))
+            .fluidInputs(new FluidStack(FluidRegistry.getFluid("ic2biomass"), 3_000))
+            .fluidOutputs(new FluidStack(FluidRegistry.getFluid("ic2biogas"), 8_000), Materials.Water.getFluid(125))
             .duration(12 * SECONDS + 10 * TICKS)
             .eut(TierEU.RECIPE_HV)
             .addTo(distillationTowerRecipes);
         GTValues.RA.stdBuilder()
-            .fluidInputs(new FluidStack(ItemList.sOilExtraHeavy, 1000))
-            .fluidOutputs(Materials.OilHeavy.getFluid(1500))
+            .fluidInputs(new FluidStack(ItemList.sOilExtraHeavy, 1_000))
+            .fluidOutputs(Materials.OilHeavy.getFluid(1_500))
             .duration(16 * TICKS)
             .eut(2400)
             .addTo(distillationTowerRecipes);

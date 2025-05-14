@@ -184,7 +184,7 @@ public class RecipeLoaderChemicalSkips {
         GTValues.RA.stdBuilder()
             .itemInputs(Materials.Carbon.getDust(32), Materials.Bismuth.getDust(32))
             .itemOutputs(ItemList.StableAdhesive.get(1))
-            .fluidInputs(Materials.Oxygen.getGas(10000), Materials.Hydrogen.getGas(10000))
+            .fluidInputs(Materials.Oxygen.getGas(10_000), Materials.Hydrogen.getGas(10_000))
             .fluidOutputs(
                 MaterialMisc.ETHYL_CYANOACRYLATE.getFluidStack(1000 * 32),
                 Materials.AdvancedGlue.getFluid(1_000 * NUGGETS),

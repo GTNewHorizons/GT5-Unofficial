@@ -83,7 +83,7 @@ public class FluidSolidifierRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Shape_Mold_Block.get(0L))
             .itemOutputs(new ItemStack(Blocks.snow, 1, 0))
-            .fluidInputs(GTModHandler.getDistilledWater(1000L))
+            .fluidInputs(GTModHandler.getDistilledWater(1_000))
             .duration(25 * SECONDS + 12 * TICKS)
             .eut(4)
             .addTo(fluidSolidifierRecipes);

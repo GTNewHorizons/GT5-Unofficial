@@ -36,7 +36,7 @@ public class ElectrolyzerRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(2), ItemList.Cell_Empty.get(1L))
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.cell, Materials.Oxygen, 1L))
-            .fluidInputs(GTModHandler.getDistilledWater(1000L))
+            .fluidInputs(GTModHandler.getDistilledWater(1_000))
             .fluidOutputs(Materials.Hydrogen.getGas(2_000))
             .duration(1 * MINUTES + 40 * SECONDS)
             .eut(30)

@@ -223,7 +223,7 @@ public class BioRecipes {
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(16), GregtechItemList.CellulosePulp.get(4))
             .fluidInputs(Materials.AceticAcid.getFluid(500), new FluidStack(GTPPFluids.PropionicAcid, 500))
-            .fluidOutputs(Materials.Plastic.getMolten(1000))
+            .fluidOutputs(Materials.Plastic.getMolten(1_000))
             .duration(10 * SECONDS)
             .eut(240)
             .metadata(CHEMPLANT_CASING_TIER, 2)
@@ -750,7 +750,7 @@ public class BioRecipes {
         // 6CH4 = C6H6 + 18H
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(19), GregtechItemList.GreenMetalCatalyst.get(0))
-            .fluidInputs(Materials.Methane.getGas(6000))
+            .fluidInputs(Materials.Methane.getGas(6_000))
             .fluidOutputs(Materials.Benzene.getFluid(1_000), Materials.Hydrogen.getGas(18000))
             .duration(8 * SECONDS)
             .eut(TierEU.RECIPE_MV)

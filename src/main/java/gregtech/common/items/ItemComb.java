@@ -1192,7 +1192,7 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer, IIte
             if (this.compareTo(Voltage.MV) < 0) {
                 return Materials.HydrofluoricAcid.getFluid((this.compareTo(Voltage.ULV) > 0) ? 1000 : 500);
             } else if (this.compareTo(Voltage.HV) < 0) {
-                return GTModHandler.getDistilledWater(1000L);
+                return GTModHandler.getDistilledWater(1_000);
             } else if (this.compareTo(Voltage.LuV) < 0) {
                 return Materials.HydrofluoricAcid.getFluid((long) (Math.pow(2, this.compareTo(Voltage.HV)) * L));
             } else if (this.compareTo(Voltage.UHV) < 0) {

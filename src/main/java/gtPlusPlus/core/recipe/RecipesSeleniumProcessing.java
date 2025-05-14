@@ -48,7 +48,7 @@ public class RecipesSeleniumProcessing {
             .fluidInputs(MaterialMisc.SELENIOUS_ACID.getFluidStack(750), Materials.SulfuricAcid.getFluid(8_000))
             .fluidOutputs(
                 MaterialsElements.getInstance().SELENIUM.getFluidStack(144 * 2 + 36),
-                Materials.DilutedSulfuricAcid.getFluid(12000))
+                Materials.DilutedSulfuricAcid.getFluid(12_000))
             .eut(TierEU.RECIPE_IV)
             .duration(5 * MINUTES)
             .addTo(alloyBlastSmelterRecipes);

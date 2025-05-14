@@ -1840,7 +1840,7 @@ public class AssemblerRecipes implements Runnable {
                 ItemList.Electric_Pump_EV.get(1),
                 GTUtility.getIntegratedCircuit(9))
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorEV, 9))
-            .fluidInputs(Materials.Helium.getGas(6000))
+            .fluidInputs(Materials.Helium.getGas(6_000))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_EV)
             .addTo(assemblerRecipes);

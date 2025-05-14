@@ -116,7 +116,7 @@ public class BotRecipes {
         GTValues.RA.stdBuilder()
             .itemInputs(WO3, C2)
             .itemOutputs(Materials.Tungsten.getDust(1))
-            .fluidInputs(Materials.Hydrogen.getGas(6000))
+            .fluidInputs(Materials.Hydrogen.getGas(6_000))
             .fluidOutputs(GTModHandler.getSteam(3000))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_HV)

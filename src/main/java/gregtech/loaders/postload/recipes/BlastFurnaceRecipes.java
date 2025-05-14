@@ -38,7 +38,7 @@ public class BlastFurnaceRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(Materials.Gypsum.getDust(8))
             .itemOutputs(Materials.Quicklime.getDust(1))
-            .fluidOutputs(Materials.DilutedSulfuricAcid.getFluid(1500))
+            .fluidOutputs(Materials.DilutedSulfuricAcid.getFluid(1_500))
             .duration(10 * SECONDS)
             .eut((int) TierEU.RECIPE_HV)
             .metadata(COIL_HEAT, 3200)

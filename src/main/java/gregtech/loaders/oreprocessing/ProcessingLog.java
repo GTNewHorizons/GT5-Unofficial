@@ -313,7 +313,7 @@ public class ProcessingLog implements gregtech.api.interfaces.IOreRecipeRegistra
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.copyAmount(16, logStack), GTUtility.getIntegratedCircuit(9))
             .itemOutputs(Materials.Charcoal.getGems(20))
-            .fluidOutputs(Materials.WoodTar.getFluid(1500))
+            .fluidOutputs(Materials.WoodTar.getFluid(1_500))
             .duration(32 * SECONDS)
             .eut(64)
             .addTo(pyrolyseRecipes);
@@ -321,7 +321,7 @@ public class ProcessingLog implements gregtech.api.interfaces.IOreRecipeRegistra
             .itemInputs(GTUtility.copyAmount(16, logStack), GTUtility.getIntegratedCircuit(10))
             .itemOutputs(Materials.Charcoal.getGems(20))
             .fluidInputs(Materials.Nitrogen.getGas(1_000))
-            .fluidOutputs(Materials.WoodTar.getFluid(1500))
+            .fluidOutputs(Materials.WoodTar.getFluid(1_500))
             .duration(16 * SECONDS)
             .eut(96)
             .addTo(pyrolyseRecipes);

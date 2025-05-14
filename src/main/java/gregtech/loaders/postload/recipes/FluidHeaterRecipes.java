@@ -1,7 +1,6 @@
 package gregtech.loaders.postload.recipes;
 
 import static gregtech.api.recipe.RecipeMaps.fluidHeaterRecipes;
-import static gregtech.api.util.GTRecipeBuilder.NUGGETS;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
 
@@ -50,16 +49,16 @@ public class FluidHeaterRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(1))
-            .fluidInputs(Materials.SeedOil.getFluid(1 * NUGGETS))
-            .fluidOutputs(Materials.FryingOilHot.getFluid(1 * NUGGETS))
+            .fluidInputs(Materials.SeedOil.getFluid(16))
+            .fluidOutputs(Materials.FryingOilHot.getFluid(16))
             .duration(16 * TICKS)
             .eut(30)
             .addTo(fluidHeaterRecipes);
 
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(1))
-            .fluidInputs(Materials.FishOil.getFluid(1 * NUGGETS))
-            .fluidOutputs(Materials.FryingOilHot.getFluid(1 * NUGGETS))
+            .fluidInputs(Materials.FishOil.getFluid(16))
+            .fluidOutputs(Materials.FryingOilHot.getFluid(16))
             .duration(16 * TICKS)
             .eut(30)
             .addTo(fluidHeaterRecipes);

@@ -1854,7 +1854,7 @@ public class RecipesGregTech {
             FluidStack plasmaFromName = FluidUtils.getFluidStack("plasma." + y.toLowerCase(), 1000);
 
             Materials particleMaterial = MaterialUtils.getMaterial(y);
-            FluidStack recipePlasma = particleMaterial != null ? particleMaterial.getPlasma(1000) : plasmaFromName;
+            FluidStack recipePlasma = particleMaterial != null ? particleMaterial.getPlasma(1_000) : plasmaFromName;
 
             // Ionize Plasma
             if (recipePlasma != null && !recipePlasma.isFluidEqual(aPlasma_NULL)) {

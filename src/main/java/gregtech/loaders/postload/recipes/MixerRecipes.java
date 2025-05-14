@@ -1556,10 +1556,10 @@ public class MixerRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(GTUtility.getIntegratedCircuit(9))
                 .fluidInputs(
-                    Materials.Helium.getPlasma(1000),
-                    Materials.Iron.getPlasma(1000),
-                    Materials.Calcium.getPlasma(1000),
-                    Materials.Niobium.getPlasma(1000))
+                    Materials.Helium.getPlasma(1_000),
+                    Materials.Iron.getPlasma(1_000),
+                    Materials.Calcium.getPlasma(1_000),
+                    Materials.Niobium.getPlasma(1_000))
                 .fluidOutputs(MaterialsUEVplus.DimensionallyTranscendentCrudeCatalyst.getFluid(1_000))
                 .duration(41 * MINUTES + 40 * SECONDS)
                 .eut(TierEU.RECIPE_ZPM)
@@ -1569,10 +1569,10 @@ public class MixerRecipes implements Runnable {
                 .itemInputs(GTUtility.getIntegratedCircuit(10))
                 .fluidInputs(
                     MaterialsUEVplus.DimensionallyTranscendentCrudeCatalyst.getFluid(1_000),
-                    Materials.Radon.getPlasma(1000),
-                    Materials.Nickel.getPlasma(1000),
-                    Materials.Boron.getPlasma(1000),
-                    Materials.Sulfur.getPlasma(1000))
+                    Materials.Radon.getPlasma(1_000),
+                    Materials.Nickel.getPlasma(1_000),
+                    Materials.Boron.getPlasma(1_000),
+                    Materials.Sulfur.getPlasma(1_000))
                 .fluidOutputs(MaterialsUEVplus.DimensionallyTranscendentProsaicCatalyst.getFluid(1_000))
                 .duration(41 * MINUTES + 40 * SECONDS)
                 .eut(TierEU.RECIPE_UV)
@@ -1582,10 +1582,10 @@ public class MixerRecipes implements Runnable {
                 .itemInputs(GTUtility.getIntegratedCircuit(11))
                 .fluidInputs(
                     MaterialsUEVplus.DimensionallyTranscendentProsaicCatalyst.getFluid(1_000),
-                    Materials.Nitrogen.getPlasma(1000),
-                    Materials.Zinc.getPlasma(1000),
-                    Materials.Silver.getPlasma(1000),
-                    Materials.Titanium.getPlasma(1000))
+                    Materials.Nitrogen.getPlasma(1_000),
+                    Materials.Zinc.getPlasma(1_000),
+                    Materials.Silver.getPlasma(1_000),
+                    Materials.Titanium.getPlasma(1_000))
                 .fluidOutputs(MaterialsUEVplus.DimensionallyTranscendentResplendentCatalyst.getFluid(1_000))
                 .duration(41 * MINUTES + 40 * SECONDS)
                 .eut(TierEU.RECIPE_UHV)
@@ -1595,10 +1595,10 @@ public class MixerRecipes implements Runnable {
                 .itemInputs(GTUtility.getIntegratedCircuit(12))
                 .fluidInputs(
                     MaterialsUEVplus.DimensionallyTranscendentResplendentCatalyst.getFluid(1_000),
-                    Materials.Americium.getPlasma(1000),
-                    Materials.Bismuth.getPlasma(1000),
-                    Materials.Oxygen.getPlasma(1000),
-                    Materials.Tin.getPlasma(1000))
+                    Materials.Americium.getPlasma(1_000),
+                    Materials.Bismuth.getPlasma(1_000),
+                    Materials.Oxygen.getPlasma(1_000),
+                    Materials.Tin.getPlasma(1_000))
                 .fluidOutputs(MaterialsUEVplus.DimensionallyTranscendentExoticCatalyst.getFluid(1_000))
                 .duration(41 * MINUTES + 40 * SECONDS)
                 .eut(TierEU.RECIPE_UEV)
@@ -1608,8 +1608,8 @@ public class MixerRecipes implements Runnable {
                 .itemInputs(GTUtility.getIntegratedCircuit(13))
                 .fluidInputs(
                     MaterialsUEVplus.DimensionallyTranscendentExoticCatalyst.getFluid(1_000),
-                    Materials.Lead.getPlasma(1000),
-                    Materials.Thorium.getPlasma(1000),
+                    Materials.Lead.getPlasma(1_000),
+                    Materials.Thorium.getPlasma(1_000),
                     Materials.Naquadria.getPlasma(100L),
                     MaterialsUEVplus.RawStarMatter.getFluid(25L))
                 .fluidOutputs(MaterialsUEVplus.DimensionallyTranscendentStellarCatalyst.getFluid(1_000))
