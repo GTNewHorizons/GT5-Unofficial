@@ -407,11 +407,6 @@ public class MTETargetChamber extends MTEEnhancedMultiBlockBase<MTETargetChamber
     }
 
     @Override
-    public int getMaxEfficiency(ItemStack arg0) {
-        return 10000;
-    }
-
-    @Override
     public String[] getStructureDescription(ItemStack arg0) {
         return DescTextLocalization.addText("TargetChamber.hint", 13);
     }

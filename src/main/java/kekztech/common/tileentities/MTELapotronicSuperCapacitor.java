@@ -1224,11 +1224,6 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
     }
 
     @Override
-    public int getMaxEfficiency(ItemStack stack) {
-        return 10000;
-    }
-
-    @Override
     public int getDamageToComponent(ItemStack stack) {
         return 0;
     }

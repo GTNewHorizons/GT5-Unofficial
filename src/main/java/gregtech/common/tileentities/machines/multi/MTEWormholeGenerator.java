@@ -498,11 +498,6 @@ public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeG
     // #region Logic
 
     @Override
-    public int getMaxEfficiency(ItemStack aStack) {
-        return 10000;
-    }
-
-    @Override
     public void onUnload() {
         super.onUnload();
         mIsUnloading = true;

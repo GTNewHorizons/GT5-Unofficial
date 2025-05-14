@@ -347,11 +347,6 @@ public class MTELargeFluidExtractor extends MTEExtendedPowerMultiBlockBase<MTELa
     }
 
     @Override
-    public int getMaxEfficiency(ItemStack aStack) {
-        return 10_000;
-    }
-
-    @Override
     public RecipeMap<?> getRecipeMap() {
         return RecipeMaps.fluidExtractionRecipes;
     }

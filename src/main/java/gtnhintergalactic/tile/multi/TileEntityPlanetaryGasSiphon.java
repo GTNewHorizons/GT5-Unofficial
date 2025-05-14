@@ -380,17 +380,6 @@ public class TileEntityPlanetaryGasSiphon extends MTEEnhancedMultiBlockBase<Tile
     }
 
     /**
-     * Get the maximum efficiency of this machine
-     *
-     * @param stack Item in the controller
-     * @return Maximum efficiency
-     */
-    @Override
-    public int getMaxEfficiency(ItemStack stack) {
-        return 10000;
-    }
-
-    /**
      * Get the damage that will be dealt to the item in the controller
      *
      * @param stack Item in the controller

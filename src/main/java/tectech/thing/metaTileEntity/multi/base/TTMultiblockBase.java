@@ -1379,11 +1379,6 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
     // region EFFICIENCY AND FIXING LIMITS
 
     @Override
-    public int getMaxEfficiency(ItemStack itemStack) {
-        return 10000;
-    }
-
-    @Override
     public int getIdealStatus() {
         return super.getIdealStatus() + 2;
     }

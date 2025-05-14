@@ -146,11 +146,6 @@ public class MTEImplosionCompressor extends MTECubicMultiBlockBase<MTEImplosionC
     }
 
     @Override
-    public int getMaxEfficiency(ItemStack aStack) {
-        return 10000;
-    }
-
-    @Override
     public int getPollutionPerSecond(ItemStack aStack) {
         return GTMod.gregtechproxy.mPollutionImplosionCompressorPerSecond;
     }

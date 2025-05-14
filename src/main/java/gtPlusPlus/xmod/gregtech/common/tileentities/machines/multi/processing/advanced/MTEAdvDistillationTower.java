@@ -295,11 +295,6 @@ public class MTEAdvDistillationTower extends GTPPMultiBlockBase<MTEAdvDistillati
     }
 
     @Override
-    public int getMaxEfficiency(ItemStack aStack) {
-        return 10000;
-    }
-
-    @Override
     public int getPollutionPerSecond(ItemStack aStack) {
         if (this.mMode == Mode.Distillery)
             return PollutionConfig.pollutionPerSecondMultiAdvDistillationTower_ModeDistillery;

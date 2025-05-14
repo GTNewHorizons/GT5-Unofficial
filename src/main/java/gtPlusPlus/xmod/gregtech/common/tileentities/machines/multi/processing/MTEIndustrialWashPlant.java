@@ -250,11 +250,6 @@ public class MTEIndustrialWashPlant extends GTPPMultiBlockBase<MTEIndustrialWash
     }
 
     @Override
-    public int getMaxEfficiency(final ItemStack aStack) {
-        return 10000;
-    }
-
-    @Override
     public int getPollutionPerSecond(final ItemStack aStack) {
         if (machineMode == MACHINEMODE_CHEMBATH)
             return PollutionConfig.pollutionPerSecondMultiIndustrialWashPlant_ModeChemBath;

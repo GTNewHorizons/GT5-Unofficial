@@ -196,11 +196,6 @@ public class MTEIndustrialPlatePress extends GTPPMultiBlockBase<MTEIndustrialPla
     }
 
     @Override
-    public int getMaxEfficiency(final ItemStack aStack) {
-        return 10000;
-    }
-
-    @Override
     public int getPollutionPerSecond(final ItemStack aStack) {
         if (machineMode == MACHINEMODE_FORMER)
             return PollutionConfig.pollutionPerSecondMultiIndustrialPlatePress_ModeForming;

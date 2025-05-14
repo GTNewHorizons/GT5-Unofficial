@@ -225,10 +225,6 @@ public class MTEDEFusionCrafter extends KubaTechGTMultiBlockBase<MTEDEFusionCraf
         };
     }
 
-    public int getMaxEfficiency(ItemStack aStack) {
-        return 10000;
-    }
-
     public int getDamageToComponent(ItemStack aStack) {
         return 0;
     }

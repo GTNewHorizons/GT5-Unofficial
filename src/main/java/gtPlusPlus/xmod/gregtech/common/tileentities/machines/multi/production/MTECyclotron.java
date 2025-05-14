@@ -281,11 +281,6 @@ public class MTECyclotron extends GTPPMultiBlockBase<MTECyclotron> implements IS
     }
 
     @Override
-    public int getMaxEfficiency(ItemStack aStack) {
-        return 10000;
-    }
-
-    @Override
     public int getPollutionPerSecond(ItemStack aStack) {
         return 0;
     }

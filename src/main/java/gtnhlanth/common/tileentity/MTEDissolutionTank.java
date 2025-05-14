@@ -176,11 +176,6 @@ public class MTEDissolutionTank extends MTEEnhancedMultiBlockBase<MTEDissolution
     }
 
     @Override
-    public int getMaxEfficiency(ItemStack itemStack) {
-        return 10000;
-    }
-
-    @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity arg0) {
         return new MTEDissolutionTank(this.mName);
     }

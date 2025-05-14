@@ -206,11 +206,6 @@ public class MTECharcoalPit extends MTETooltipMultiBlockBase implements ISeconda
     }
 
     @Override
-    public int getMaxEfficiency(ItemStack aStack) {
-        return 10000;
-    }
-
-    @Override
     public int getPollutionPerSecond(ItemStack aStack) {
         return GTMod.gregtechproxy.mPollutionCharcoalPitPerSecond;
     }

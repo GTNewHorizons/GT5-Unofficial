@@ -289,11 +289,6 @@ public class MTEPreciseAssembler extends MTEExtendedPowerMultiBlockBase<MTEPreci
         logic.setAmperageOC(true);
     }
 
-    @Override
-    public int getMaxEfficiency(ItemStack aStack) {
-        return 10000;
-    }
-
     public long getMachineVoltageLimit() {
         if (machineTier < 0) return 0;
         if (machineTier >= 9) return GTValues.V[energyHatchTier];

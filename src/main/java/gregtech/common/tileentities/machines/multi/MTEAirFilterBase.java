@@ -456,11 +456,6 @@ public abstract class MTEAirFilterBase extends MTEEnhancedMultiBlockBase<MTEAirF
     public abstract int getCasingMeta();
 
     @Override
-    public int getMaxEfficiency(ItemStack aStack) {
-        return 10000;
-    }
-
-    @Override
     public void onPreTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         if (size == 0) { // here in case it's not set by NBT loading
             size = 2 * multiTier + 1;

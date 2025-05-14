@@ -52,6 +52,7 @@ import net.minecraftforge.fluids.FluidStack;
 import org.apache.commons.lang3.ArrayUtils;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Range;
 import org.jetbrains.annotations.TestOnly;
 
 import com.cleanroommc.modularui.api.IGuiHolder;
@@ -742,7 +743,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
                         0,
                         Math.min(
                             mEfficiency + mEfficiencyIncrease,
-                            getMaxEfficiency(mInventory[1]) - ((getIdealStatus() - getRepairStatus()) * 1000)));
+                            getMaxEfficiency(getControllerSlot()) - ((getIdealStatus() - getRepairStatus()) * 1000)));
                     mOutputItems = null;
                     mProgresstime = 0;
                     mMaxProgresstime = 0;
@@ -1187,9 +1188,18 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
     public abstract boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack);
 
     /**
-     * Gets the maximum Efficiency that spare Part can get (0 - 10000)
+     * Gets the maximum efficiency of this machine with current state.
+     * <p>
+     * The ItemStack argument is supposed to be the one in the controller slot, but in some implementation, it directly
+     * gives {@code null}.
+     *
+     * @param aStack the ItemStack in the controller slot or null.
+     * @return the maximum efficiency in the range of 0 to 10,000.
      */
-    public abstract int getMaxEfficiency(ItemStack aStack);
+    @Range(from = 0, to = 10000)
+    public int getMaxEfficiency(@Nullable ItemStack aStack) {
+        return 10000;
+    }
 
     /**
      * Gets the pollution this Device outputs to a Muffler per tick (10000 = one Pullution Block)

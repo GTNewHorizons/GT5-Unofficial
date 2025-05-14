@@ -913,11 +913,6 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
     }
 
     @Override
-    public int getMaxEfficiency(ItemStack aStack) {
-        return 10000;
-    }
-
-    @Override
     public void clearHatches() {
         super.clearHatches();
         mExoticEnergyHatches.clear();
