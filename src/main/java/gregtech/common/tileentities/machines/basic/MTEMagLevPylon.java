@@ -3,7 +3,6 @@ package gregtech.common.tileentities.machines.basic;
 import static gregtech.api.enums.GTValues.V;
 import static gregtech.api.enums.Textures.BlockIcons.*;
 
-import gregtech.common.data.maglev.TetherManager;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -17,14 +16,13 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTETieredMachineBlock;
 import gregtech.api.render.TextureFactory;
 import gregtech.common.data.maglev.Tether;
-import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet;
-import scala.reflect.internal.util.WeakHashSet;
+import gregtech.common.data.maglev.TetherManager;
 
 @EventBusSubscriber
 public class MTEMagLevPylon extends MTETieredMachineBlock {
 
     public int mRange = 16;
-    private final ObjectOpenHashSet<Tether> tethers = new ObjectOpenHashSet<>();
+    public Tether machineTether;
 
     public MTEMagLevPylon(int aID, String aName, String aNameRegional, int aTier) {
         super(
@@ -47,21 +45,42 @@ public class MTEMagLevPylon extends MTETieredMachineBlock {
 
     @Override
     public void onFirstTick(IGregTechTileEntity baseMetaTileEntity) {
-        TetherManager.ACTIVE_PYLONS
-            .get(baseMetaTileEntity.getWorld().provider.dimensionId)
+        if (!baseMetaTileEntity.isServerSide()) return;
+
+        machineTether = new Tether(
+            baseMetaTileEntity.getXCoord(),
+            baseMetaTileEntity.getYCoord(),
+            baseMetaTileEntity.getZCoord(),
+            baseMetaTileEntity.getWorld().provider.dimensionId,
+            8 * mTier,
+            mTier);
+        TetherManager.ACTIVE_PYLONS.get(baseMetaTileEntity.getWorld().provider.dimensionId)
             .add(this);
     }
 
     @Override
     public void onPostTick(IGregTechTileEntity baseMetaTileEntity, long tick) {
-        if (baseMetaTileEntity.isServerSide() && baseMetaTileEntity.isAllowedToWork()) {
+        if (!baseMetaTileEntity.isServerSide()) return;
 
+        if (baseMetaTileEntity.isAllowedToWork()) {
+            if (baseMetaTileEntity.isUniversalEnergyStored(32)) {
+                baseMetaTileEntity.setActive(true);
+                machineTether.range(16 * mTier);
+                // only drain power if a player is connected
+                if (TetherManager.PLAYER_TETHERS.containsValue(this.machineTether)) {
+                    baseMetaTileEntity.decreaseStoredEnergyUnits(32, false);
+                }
+            } else {
+                baseMetaTileEntity.setActive(false);
+                machineTether.range(8 * mTier);
+            }
         }
     }
 
     @Override
     public void onRemoval() {
-        TetherManager.ACTIVE_PYLONS.get(getBaseMetaTileEntity().getWorld().provider.dimensionId).remove(this);
+        TetherManager.ACTIVE_PYLONS.get(getBaseMetaTileEntity().getWorld().provider.dimensionId)
+            .remove(this);
     }
 
     @Override
