@@ -20,9 +20,9 @@ import static gregtech.api.util.GTUtility.trans;
 
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
-public class ECCFrontend extends RecipeMapFrontend {
+public class ECCFFrontend extends RecipeMapFrontend {
 
-    public ECCFrontend(BasicUIPropertiesBuilder uiPropertiesBuilder, NEIRecipePropertiesBuilder neiPropertiesBuilder) {
+    public ECCFFrontend(BasicUIPropertiesBuilder uiPropertiesBuilder, NEIRecipePropertiesBuilder neiPropertiesBuilder) {
         super(uiPropertiesBuilder, neiPropertiesBuilder);
     }
 
@@ -61,18 +61,17 @@ public class ECCFrontend extends RecipeMapFrontend {
             recipeInfo.drawText(
                 StatCollector.translateToLocalFormatted(
                     "GT5U.nei.pressure",
-                    formatNumbers(pressure - rangePressure) + " - " + formatNumbers(pressure + rangePressure) + " Pa"));
+                    formatNumbers(pressure - rangePressure),formatNumbers(pressure + rangePressure) + " Pa"));
         } else {
             recipeInfo.drawText(
                 StatCollector.translateToLocalFormatted(
                     "GT5U.nei.pressure",
-                    formatNumbers((int) ((pressure - rangePressure) / 1000)) + " - "
-                        + formatNumbers((int) ((pressure + rangePressure) / 1000))
+                    formatNumbers((int) ((pressure - rangePressure) / 1000)),formatNumbers((int) ((pressure + rangePressure) / 1000))
                         + " kPa"));
         }
         recipeInfo.drawText(
             StatCollector.translateToLocalFormatted(
                 "GT5U.nei.temperature",
-                formatNumbers(temperature - rangeTemp) + " - " + formatNumbers(temperature + rangeTemp)));
+                formatNumbers(temperature - rangeTemp),formatNumbers(temperature + rangeTemp)));
     }
 }

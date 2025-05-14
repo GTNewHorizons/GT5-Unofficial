@@ -588,33 +588,25 @@ public class MTEEnvironmentallyControlledChemicalFacility extends
          */
         int MODULE_LEFT = 0;
         int MODULE_RIGHT = 0;
-        boolean COOL_PIPE = false;
-        boolean HEAT_PIPE = false;
-        boolean VACUUM_PIPE = false;
-        boolean COMPRESS_PIPE = false;
+        boolean COOLER = false;
+        boolean HEATER = false;
+        boolean VACUUM = false;
+        boolean COMPRESSOR = false;
         if (stackSize.getTagCompound() != null) {
-            if (stackSize.getTagCompound()
-                .getCompoundTag("channels") != null) {
-                HEAT_PIPE = stackSize.getTagCompound()
-                    .getCompoundTag("channels")
-                    .getInteger("heat_pipe") > 0;
-                COOL_PIPE = stackSize.getTagCompound()
-                    .getCompoundTag("channels")
-                    .getInteger("cool_pipe") > 0;
-                COMPRESS_PIPE = stackSize.getTagCompound()
-                    .getCompoundTag("channels")
-                    .getInteger("compress_pipe") > 0;
-                VACUUM_PIPE = stackSize.getTagCompound()
-                    .getCompoundTag("channels")
-                    .getInteger("vacuum_pipe") > 0;
+            NBTTagCompound channels = stackSize.getTagCompound().getCompoundTag("channels");
+            if (channels != null) {
+                HEATER = channels.getInteger("eccf_heater") > 0;
+                COOLER = channels.getInteger("eccf_cooler") > 0;
+                COMPRESSOR = channels.getInteger("eccf_compress") > 0;
+                VACUUM = channels.getInteger("eccf_vacuum") > 0;
             }
         }
         // right
-        if (HEAT_PIPE) MODULE_LEFT = 1;
-        if (COOL_PIPE) MODULE_LEFT = 2;
+        if (HEATER) MODULE_LEFT = 1;
+        if (COOLER) MODULE_LEFT = 2;
         // left
-        if (COMPRESS_PIPE) MODULE_RIGHT = 3;
-        if (VACUUM_PIPE) MODULE_RIGHT = 4;
+        if (COMPRESSOR) MODULE_RIGHT = 3;
+        if (VACUUM) MODULE_RIGHT = 4;
         return Pair.of(MODULE_LEFT, MODULE_RIGHT);
     }
 
@@ -776,17 +768,17 @@ public class MTEEnvironmentallyControlledChemicalFacility extends
     public String[] getInfoData() {
         return new String[] {
 
-            StatCollector.translateToLocal("GT5U.ECCF.pressure") + ": "
+            StatCollector.translateToLocal("GT5U.ECCF_pressure") + ": "
                 + EnumChatFormatting.GREEN
                 + GTUtility.formatNumbers(currentPressure)
                 + EnumChatFormatting.RESET
                 + " Pa",
-            StatCollector.translateToLocal("GT5U.ECCF.pressure.required") + ": "
+            StatCollector.translateToLocal("GT5U.ECCF.pressure_required") + ": "
                 + EnumChatFormatting.GREEN
                 + GTUtility.formatNumbers(requiredPressure)
                 + EnumChatFormatting.RESET
                 + " Pa",
-            StatCollector.translateToLocal("GT5U.ECCF.pressure.threshold") + ": "
+            StatCollector.translateToLocal("GT5U.ECCF.pressure_threshold") + ": "
                 + EnumChatFormatting.GREEN
                 + GTUtility.formatNumbers(pressureThreshold)
                 + EnumChatFormatting.RESET
@@ -796,12 +788,12 @@ public class MTEEnvironmentallyControlledChemicalFacility extends
                 + GTUtility.formatNumbers(currentTemp)
                 + EnumChatFormatting.RESET
                 + " K",
-            StatCollector.translateToLocal("GT5U.ECCF.temperature.required") + ": "
+            StatCollector.translateToLocal("GT5U.ECCF.temperature_required") + ": "
                 + EnumChatFormatting.GREEN
                 + GTUtility.formatNumbers(requiredTemp)
                 + EnumChatFormatting.RESET
                 + " K",
-            StatCollector.translateToLocal("GT5U.ECCF.temperature.threshold") + ": "
+            StatCollector.translateToLocal("GT5U.ECCF.temperature_threshold") + ": "
                 + EnumChatFormatting.GREEN
                 + GTUtility.formatNumbers(tempThreshold)
                 + EnumChatFormatting.RESET
@@ -928,7 +920,7 @@ public class MTEEnvironmentallyControlledChemicalFacility extends
         initialPressure = condition.getInitialPressure();
     }
 
-    public void getCoolantTemperature(String name) {
+    public void setTempFromCoolant(String name) {
         switch (name) {
             // cooling
             case "ic2coolant":
@@ -1020,7 +1012,7 @@ public class MTEEnvironmentallyControlledChemicalFacility extends
                     if (mCoolantInputHatch.mFluid != null) {
                         String coolantName = mCoolantInputHatch.mFluid.getFluid()
                             .getName();
-                        getCoolantTemperature(coolantName);
+                        setTempFromCoolant(coolantName);
                         boolean isCoolant = ((coolantName.equals("ic2coolant")) || (coolantName.equals("cryotheum"))
                             || (coolantName.equals("supercoolant"))
                             || (coolantName.equals("molten.spacetime")));
@@ -1028,12 +1020,12 @@ public class MTEEnvironmentallyControlledChemicalFacility extends
                             || (coolantName.equals("rawstarmatter"))
                             || (coolantName.equals("lava")));
                         // Apply coolant (linear function)
-                        double tempFormulaCoeff = mCoolantInputHatch.mFluid.amount / 10000f * coolantTemp;
+                        double coolantTempImpact = mCoolantInputHatch.mFluid.amount / 10000f * coolantTemp;
                         if ((isCoolModule || isCoolant) || (isHeatModule || isHot)) {
                             if (coolantTemp < initialTemp)
-                                currentTemp = Math.max(currentTemp - tempFormulaCoeff, coolantTemp);
+                                currentTemp = Math.max(currentTemp - coolantTempImpact, coolantTemp);
                             if (coolantTemp > initialTemp)
-                                currentTemp = Math.min(currentTemp + tempFormulaCoeff, coolantTemp);
+                                currentTemp = Math.min(currentTemp + coolantTempImpact, coolantTemp);
                             drain(mCoolantInputHatch, mCoolantInputHatch.mFluid, true);
                         }
                     }
@@ -1041,14 +1033,13 @@ public class MTEEnvironmentallyControlledChemicalFacility extends
             } else currentTemp = initialTemp;
 
             // Pressure calculation
-            if (this.isCompressModule || this.isVacuumModule) {
+            if (isCompressModule || isVacuumModule) {
                 // returns values to atmosphere conditions
                 currentPressure = (currentPressure - initialPressure) * COEFF_PRESSURE + initialPressure;
                 // Apply pressure changes
                 if (mPressureEnergyHatch != null) {
                     drainAmountEU /= 20;
-                    currentPressure += Math.pow(drainAmountEU, 0.7) * (isCompressModule ? 1 : 0);
-                    currentPressure -= Math.pow(drainAmountEU, 0.7) * (isVacuumModule ? 1 : 0);
+                    currentPressure += Math.pow(drainAmountEU, 0.7) * (isCompressModule ? 1 : -1);
                     currentPressure = Math.max(currentPressure, 0);
                     drainAmountEU = 0;
                 }

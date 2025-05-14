@@ -285,10 +285,10 @@ GT5U.tpm.parallelwindow=Open Parallel Configuration Window
 
 GT5U.ECCF.pressure=Current pressure
 GT5U.ECCF.temperature=Current temperature
-GT5U.ECCF.pressure.threshold=Pressure threshold
-GT5U.ECCF.temperature.threshold=Temperature threshold
-GT5U.ECCF.pressure.required=Pressure required
-GT5U.ECCF.temperature.required=Temperature required
+GT5U.ECCF.pressure_threshold=Pressure threshold
+GT5U.ECCF.temperature_threshold=Temperature threshold
+GT5U.ECCF.pressure_required=Pressure required
+GT5U.ECCF.temperature_required=Temperature required
 
 GT5U.EBF.heat=Heat capacity
 GT5U.coil.None=None
@@ -1028,6 +1028,8 @@ GT5U.nei.nuclear.breeder.neutron_reflecting=Neutron reflecting Breeder
 GT5U.nei.nuclear.breeder.heat_neutral=Heat neutral Breeder
 GT5U.nei.nuclear.breeder.reactor_hull_heat=Every %d reactor hull heat\nincrease speed by %d00%%
 GT5U.nei.nuclear.breeder.required_pulse=Required pulses: %d
+GT5U.nei.temperature=Temperature: %s - %s K
+GT5U.nei.pressure=Pressure: %s - %s
 
 GT5U.config.colormodulation=Color Modulator
 GT5U.config.colormodulation.cable_insulation=Cable Insulation
