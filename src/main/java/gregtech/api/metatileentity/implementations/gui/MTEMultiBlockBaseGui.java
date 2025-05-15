@@ -14,8 +14,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
@@ -41,6 +39,7 @@ import com.cleanroommc.modularui.value.sync.IntSyncValue;
 import com.cleanroommc.modularui.value.sync.LongSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.value.sync.StringSyncValue;
+import com.cleanroommc.modularui.widget.ParentWidget;
 import com.cleanroommc.modularui.widget.SingleChildWidget;
 import com.cleanroommc.modularui.widget.WidgetTree;
 import com.cleanroommc.modularui.widget.sizer.Area;
@@ -58,11 +57,11 @@ import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
 import com.gtnewhorizons.modularui.common.internal.network.NetworkUtils;
 
-import gregtech.GTMod;
 import gregtech.api.enums.StructureError;
 import gregtech.api.enums.VoidingMode;
 import gregtech.api.metatileentity.implementations.MTEMultiBlockBase;
 import gregtech.api.modularui2.GTGuiTextures;
+import gregtech.api.modularui2.GTWidgetThemes;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.shutdown.ShutDownReason;
@@ -81,13 +80,9 @@ public class MTEMultiBlockBaseGui {
     }
 
     protected void initCustomIcons() {
-        this.customIcons.put("text_field", GTGuiTextures.BACKGROUND_TEXT_FIELD);
-        this.customIcons.put("logo", null);
         this.customIcons.put("power_switch_disabled", GTGuiTextures.OVERLAY_BUTTON_POWER_SWITCH_DISABLED);
         this.customIcons.put("power_switch_on", GTGuiTextures.OVERLAY_BUTTON_POWER_SWITCH_ON);
         this.customIcons.put("power_switch_off", GTGuiTextures.OVERLAY_BUTTON_POWER_SWITCH_OFF);
-        this.customIcons.put("title_angular", GTGuiTextures.TITLE_ANGULAR);
-        this.customIcons.put("title_dark", GTGuiTextures.TITLE_DARK);
     }
 
     public ModularPanel build(PosGuiData guiData, PanelSyncManager syncManager) {
@@ -124,21 +119,17 @@ public class MTEMultiBlockBaseGui {
     protected IWidget createTopRow(PanelSyncManager syncManager, ModularPanel panel) {
         return new Row().size(machineInfoSize()[0] + 4, machineInfoSize()[1] + 3)
             .child(
-                new SingleChildWidget<>().sizeRel(1)
+                new ParentWidget<>().sizeRel(1)
                     .padding(3)
-                    .background(
-                        this.customIcons.get("text_field")
-                            .asIcon())
+                    .widgetTheme(GTWidgetThemes.BACKGROUND_TERMINAL)
                     .child(
                         createTerminalTextWidget(syncManager, panel)
-                            .size(machineInfoSize()[0] - 4, machineInfoSize()[1] - 3)
-                            .overlay(
-                                (this.customIcons.get("logo") == null ? UITexture.EMPTY : this.customIcons.get("logo"))
-                                    .asIcon()
-                                    .alignment(Alignment.BottomRight)
-                                    .size(18, 18)
-                                    .marginBottom(2)
-                                    .marginRight(4))));
+                            .size(machineInfoSize()[0] - 4, machineInfoSize()[1] - 3))
+                    .child(
+                        new SingleChildWidget<>().bottomRel(0, 10, 0)
+                            .rightRel(0, 10, 0)
+                            .size(18, 18)
+                            .widgetTheme(GTWidgetThemes.PICTURE_LOGO)));
     }
 
     protected Flow createButtonColumn(ModularPanel panel, PanelSyncManager syncManager) {
@@ -181,39 +172,20 @@ public class MTEMultiBlockBaseGui {
     }
 
     private void addTitleTextStyle(ModularPanel panel, String title) {
-        final int TAB_PADDING = 3;
-        final int TITLE_PADDING = 2;
-        int titleWidth = 0, titleHeight = 0;
-        if (NetworkUtils.isClient()) {
-            final FontRenderer fontRenderer = Minecraft.getMinecraft().fontRenderer;
-            final List<String> titleLines = fontRenderer
-                .listFormattedStringToWidth(title, base.getGUIWidth() - (TAB_PADDING + TITLE_PADDING) * 2);
-            titleWidth = titleLines.size() > 1 ? base.getGUIWidth() - (TAB_PADDING + TITLE_PADDING) * 2
-                : fontRenderer.getStringWidth(title);
-            // noinspection PointlessArithmeticExpression
-            titleHeight = titleLines.size() * fontRenderer.FONT_HEIGHT + (titleLines.size() - 1) * 1;
-        }
-
-        final TextWidget text = new TextWidget(title).color(0x404040)
-            .alignment(Alignment.CenterLeft)
-            .width(titleWidth);
-
-        if (GTMod.gregtechproxy.mTitleTabStyle == 1) {
-            panel.child(
-                this.customIcons.get("title_angular")
-                    .asWidget()
-                    .pos(0, -(titleHeight + TAB_PADDING) + 1)
-                    .size(base.getGUIWidth(), titleHeight + TAB_PADDING * 2));
-            text.pos(TAB_PADDING + TITLE_PADDING, -titleHeight + TAB_PADDING);
-        } else {
-            panel.child(
-                this.customIcons.get("title_dark")
-                    .asWidget()
-                    .pos(0, -(titleHeight + TAB_PADDING * 2) + 1)
-                    .size(titleWidth + (TAB_PADDING + TITLE_PADDING) * 2, titleHeight + TAB_PADDING * 2 - 1));
-            text.pos(TAB_PADDING + TITLE_PADDING, -titleHeight);
-        }
-        panel.child(text);
+        panel.child(
+            new ParentWidget<>().coverChildren()
+                .topRel(0, -4, 1)
+                .leftRel(0, -4, 0)
+                .widgetTheme(GTWidgetThemes.BACKGROUND_TITLE)
+                .child(
+                    IKey.str(title)
+                        .asWidget()
+                        .alignment(Alignment.Center)
+                        .widgetTheme(GTWidgetThemes.TEXT_TITLE)
+                        .marginLeft(5)
+                        .marginRight(5)
+                        .marginTop(5)
+                        .marginBottom(1)));
     }
 
     protected int[] machineInfoSize() {
@@ -686,18 +658,11 @@ public class MTEMultiBlockBaseGui {
             .length(
                 base.getAllowedVoidingModes()
                     .size())
-            .background(
-                new DynamicDrawable(
-                    () -> UITexture.builder()
-                        .location(base.getVoidingMode().buttonTexture.location)
-                        .canApplyTheme(true)
-                        .build()))
             .overlay(
                 new DynamicDrawable(
-                    () -> base.supportsVoidProtection()
-                        ? UITexture.fullImage(base.getVoidingMode().buttonOverlay.location)
+                    () -> base.supportsVoidProtection() ? base.getVoidingMode().buttonOverlayNew
                         : new DrawableArray(
-                            UITexture.fullImage(base.getVoidingMode().buttonOverlay.location),
+                            base.getVoidingMode().buttonOverlayNew,
                             GTGuiTextures.OVERLAY_BUTTON_FORBIDDEN)))
             .tooltipBuilder(t -> {
                 t.addLine(IKey.dynamic(() -> StatCollector.translateToLocal("GT5U.gui.button.voiding_mode")))

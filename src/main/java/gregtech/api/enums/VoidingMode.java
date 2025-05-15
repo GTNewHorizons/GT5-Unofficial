@@ -9,29 +9,30 @@ import javax.annotation.Nonnull;
 import com.gtnewhorizons.modularui.api.drawable.UITexture;
 
 import gregtech.api.gui.modularui.GTUITextures;
+import gregtech.api.modularui2.GTGuiTextures;
 
 public enum VoidingMode {
 
     /**
      * Voids nothing, protects both item and fluid
      */
-    VOID_NONE(true, true, GTUITextures.BUTTON_STANDARD_NEW, GTUITextures.BUTTON_STANDARD,
-        GTUITextures.OVERLAY_BUTTON_VOID_EXCESS_NONE_NEW, GTUITextures.OVERLAY_BUTTON_VOID_EXCESS_NONE, "none"),
+    VOID_NONE(true, true, GTGuiTextures.BUTTON_STANDARD, GTUITextures.BUTTON_STANDARD,
+        GTGuiTextures.OVERLAY_BUTTON_VOID_EXCESS_NONE, GTUITextures.OVERLAY_BUTTON_VOID_EXCESS_NONE, "none"),
     /**
      * Voids item, protects fluid
      */
-    VOID_ITEM(false, true, GTUITextures.BUTTON_STANDARD_PRESSED_NEW, GTUITextures.BUTTON_STANDARD_PRESSED,
-        GTUITextures.OVERLAY_BUTTON_VOID_EXCESS_ITEM_NEW, GTUITextures.OVERLAY_BUTTON_VOID_EXCESS_ITEM, "item"),
+    VOID_ITEM(false, true, GTGuiTextures.BUTTON_STANDARD_PRESSED, GTUITextures.BUTTON_STANDARD_PRESSED,
+        GTGuiTextures.OVERLAY_BUTTON_VOID_EXCESS_ITEM, GTUITextures.OVERLAY_BUTTON_VOID_EXCESS_ITEM, "item"),
     /**
      * Voids fluid, protects item
      */
-    VOID_FLUID(true, false, GTUITextures.BUTTON_STANDARD_PRESSED_NEW, GTUITextures.BUTTON_STANDARD_PRESSED,
-        GTUITextures.OVERLAY_BUTTON_VOID_EXCESS_FLUID_NEW, GTUITextures.OVERLAY_BUTTON_VOID_EXCESS_FLUID, "fluid"),
+    VOID_FLUID(true, false, GTGuiTextures.BUTTON_STANDARD_PRESSED, GTUITextures.BUTTON_STANDARD_PRESSED,
+        GTGuiTextures.OVERLAY_BUTTON_VOID_EXCESS_FLUID, GTUITextures.OVERLAY_BUTTON_VOID_EXCESS_FLUID, "fluid"),
     /**
      * Voids all, protects nothing
      */
-    VOID_ALL(false, false, GTUITextures.BUTTON_STANDARD_PRESSED_NEW, GTUITextures.BUTTON_STANDARD_PRESSED,
-        GTUITextures.OVERLAY_BUTTON_VOID_EXCESS_ALL_NEW, GTUITextures.OVERLAY_BUTTON_VOID_EXCESS_ALL, "all");
+    VOID_ALL(false, false, GTGuiTextures.BUTTON_STANDARD_PRESSED, GTUITextures.BUTTON_STANDARD_PRESSED,
+        GTGuiTextures.OVERLAY_BUTTON_VOID_EXCESS_ALL, GTUITextures.OVERLAY_BUTTON_VOID_EXCESS_ALL, "all");
 
     /**
      * Default set of voiding mode you will probably support.

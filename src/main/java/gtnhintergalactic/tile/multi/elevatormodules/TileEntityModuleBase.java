@@ -21,6 +21,8 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.gui.MTEMultiBlockBaseGui;
+import gregtech.api.modularui2.GTGuiTheme;
+import gregtech.api.modularui2.GTGuiThemes;
 import gregtech.api.util.GTStructureUtility;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gtnhintergalactic.gui.IG_UITextures;
@@ -371,6 +373,11 @@ public abstract class TileEntityModuleBase extends TTMultiblockBase {
                 .overlay(UITexture.fullImage(ASSET_PREFIX, "gui/picture/space_elevator_logo_dark.png"))
                 .size(18, 18)
                 .pos(190 - 18 - 2, doesBindPlayerInventory() ? 91 - 18 - 2 : 171 - 18 - 2));
+    }
+
+    @Override
+    protected GTGuiTheme getGuiTheme() {
+        return GTGuiThemes.INTERGALACTIC_STANDARD;
     }
 
     @Override
