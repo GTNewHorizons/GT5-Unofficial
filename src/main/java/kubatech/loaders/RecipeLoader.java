@@ -215,7 +215,7 @@ public class RecipeLoader {
             GTValues.RA.stdBuilder()
                 .itemInputs(TeaLeafDehydrated.get(1))
                 .itemOutputs(SteamedTeaLeaf.get(1))
-                .fluidInputs(FluidRegistry.getFluidStack("water", 50))
+                .fluidInputs(Materials.Water.getFluid(50))
                 .eut(TierEU.RECIPE_LV)
                 .duration(5 * SECONDS)
                 .addTo(mixerRecipes);
@@ -323,7 +323,7 @@ public class RecipeLoader {
             GTValues.RA.stdBuilder()
                 .itemInputs(GameRegistry.findItemStack("harvestcraft", "peppermintItem", 1))
                 .itemOutputs(PeppermintTea.get(1))
-                .fluidInputs(FluidRegistry.getFluidStack("water", 1_000))
+                .fluidInputs(Materials.Water.getFluid(1_000))
                 .eut(TierEU.RECIPE_LV)
                 .duration(5 * SECONDS)
                 .addTo(mixerRecipes);

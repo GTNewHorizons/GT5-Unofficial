@@ -220,7 +220,7 @@ public class RecipeLoaderNuclear {
             .itemInputs(ItemUtils.getItemStackOfAmountFromOreDict("dustLithiumHydroxide", 3))
             .itemOutputs(ItemUtils.getItemStackOfAmountFromOreDict("dustLithiumFluoride", 2))
             .fluidInputs(FluidUtils.getFluidStack("hydrofluoricacid", 500))
-            .fluidOutputs(FluidUtils.getFluidStack("water", 1_000))
+            .fluidOutputs(Materials.Water.getFluid(1_000))
             .duration(2 * MINUTES)
             .eut(TierEU.RECIPE_LV)
             .addTo(UniversalChemical);
@@ -230,7 +230,7 @@ public class RecipeLoaderNuclear {
                 ItemUtils.getItemStackOfAmountFromOreDict("cellOxygen", 8),
                 ItemUtils.getItemStackOfAmountFromOreDict("dustLithium7", 16))
             .itemOutputs(CI.emptyCells(8))
-            .fluidInputs(FluidUtils.getFluidStack("water", 8_000))
+            .fluidInputs(Materials.Water.getFluid(8_000))
             .fluidOutputs(FluidUtils.getFluidStack("lithiumhydroxide", 43 * INGOTS))
             .duration(5 * MINUTES)
             .eut(TierEU.RECIPE_LV)
@@ -345,7 +345,7 @@ public class RecipeLoaderNuclear {
             GTValues.RA.stdBuilder()
                 .itemInputs(ItemUtils.getItemStackOfAmountFromOreDict("dustQuicklime", 2))
                 .itemOutputs(ItemUtils.getItemStackOfAmountFromOreDict("dustCalciumHydroxide", 5))
-                .fluidInputs(FluidUtils.getFluidStack("water", 1_000))
+                .fluidInputs(Materials.Water.getFluid(1_000))
                 .eut(TierEU.RECIPE_MV)
                 .duration(12 * SECONDS)
                 .addTo(chemicalDehydratorRecipes);
