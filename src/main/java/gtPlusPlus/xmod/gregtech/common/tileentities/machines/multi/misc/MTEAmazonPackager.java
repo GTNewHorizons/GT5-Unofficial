@@ -173,11 +173,6 @@ public class MTEAmazonPackager extends GTPPMultiBlockBase<MTEAmazonPackager> imp
     }
 
     @Override
-    public int getMaxEfficiency(ItemStack p0) {
-        return 10000;
-    }
-
-    @Override
     public int getPollutionPerSecond(ItemStack arg0) {
         return PollutionConfig.pollutionPerSecondMultiPackager;
     }
