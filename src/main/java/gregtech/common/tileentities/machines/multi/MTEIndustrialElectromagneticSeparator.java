@@ -228,7 +228,7 @@ public class MTEIndustrialElectromagneticSeparator
             .addEnergyHatch("Any Casing", 1)
             .addMaintenanceHatch("Any Casing", 1)
             .addSubChannelUsage(GTStructureChannels.BOROGLASS)
-            .toolTipFinisher(GTValues.AuthorFourIsTheNumber, GTValues.authorBaps);
+            .toolTipFinisher(GTValues.authorBaps);
         return tt;
     }
 
