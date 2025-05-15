@@ -48,9 +48,9 @@ public class SimpleCheckFlowerResult implements CheckRecipeResult {
     @Nonnull
     public @NotNull String getDisplayString() {
         if (flowers.isEmpty()) {
-            return Objects.requireNonNull(StatCollector.translateToLocal("GT5U.gui.text.MegaApiary_noflowers"));
+            return StatCollector.translateToLocal("GT5U.gui.text.MegaApiary_noflowers");
         }
-        String text = Objects.requireNonNull(StatCollector.translateToLocal("GT5U.gui.text." + key));
+        String text = StatCollector.translateToLocal("GT5U.gui.text." + key);
         StringBuffer sb = new StringBuffer();
         for (String flower : flowers) {
             sb.append(flower);
