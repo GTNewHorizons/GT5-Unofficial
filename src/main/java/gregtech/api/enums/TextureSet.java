@@ -69,9 +69,9 @@ public class TextureSet {
      * Custom Texture Sets for more clean code
      */
     public static final TextureSet SET_DARKSTEEL = new TextureSet("darksteel", true),
-        SET_VIBRANT = new TextureSet("vibrant", true),
-        SET_CRYSTALLINE = new TextureSet("crystalline", true).withBlockTextures("vibrant"),
-        SET_MELODIC = new TextureSet("melodic", true).withBlockTextures("vibrant");
+        SET_ENERGETIC = new TextureSet("energetic", true), SET_VIBRANT = new TextureSet("vibrant", true),
+        SET_CRYSTALLINE = new TextureSet("crystalline", true),
+        SET_MELODIC = new TextureSet("melodic", true), SET_STELLAR = new TextureSet("stellar", true);
 
     /**
      * For the Indices of OrePrefixes you need to look into the OrePrefix Enum.
