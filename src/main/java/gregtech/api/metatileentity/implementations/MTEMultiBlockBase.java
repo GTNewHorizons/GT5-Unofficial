@@ -1014,7 +1014,8 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
     protected void setProcessingLogicPower(ProcessingLogic logic) {
         logic.setAvailableVoltage(getAverageInputVoltage());
         logic.setAvailableAmperage(getMaxInputAmps());
-        logic.setAmperageOC(mExoticEnergyHatches.size() > 0 || mEnergyHatches.size() != 1);
+        logic.setMaxTierSkips(1);
+        logic.setAmperageOC(!mExoticEnergyHatches.isEmpty() || mEnergyHatches.size() != 1);
     }
 
     protected boolean supportsCraftingMEBuffer() {
