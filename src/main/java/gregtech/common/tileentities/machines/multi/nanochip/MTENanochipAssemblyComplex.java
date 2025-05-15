@@ -412,8 +412,16 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
             boolean routed = routeToHatches(destinationHatches, busColor, component, stack.stack.stackSize);
             // If successful, consume the input
             if (routed) {
-                this.depleteInput(stack.stack);
-            }
+                final IGregTechTileEntity baseMetaTileEntity = stack.bus.getBaseMetaTileEntity();
+                for (int i = baseMetaTileEntity.getSizeInventory() - 1; i >= 0; i--) {
+                    ItemStack stackInSlot = baseMetaTileEntity.getStackInSlot(i);
+                    if (GTUtility.areStacksEqual(stack.stack, stackInSlot)) {
+                        if (stackInSlot.stackSize >= stack.stack.stackSize) {
+                            baseMetaTileEntity.decrStackSize(i, stack.stack.stackSize);
+                            break;
+                        }
+                    }
+                }            }
         }
     }
 
@@ -512,11 +520,9 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
         if (isAllowedToWork()) {
             mEfficiencyIncrease = 10000;
             mMaxProgresstime = 1 * SECONDS;
-
             // Inside checkProcessing we can safely consume inputs from hatches
             processRealItemInputs();
             processComponentInputs();
-
             return CheckRecipeResultRegistry.SUCCESSFUL;
         }
 
