@@ -259,7 +259,7 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus implements IPowerChan
     }
 
     protected void flushCachedStack() {
-        if (!isActive()) return;
+        if (!isActive() || itemCache.isEmpty()) return;
         AENetworkProxy proxy = getProxy();
         try {
             IMEMonitor<IAEItemStack> sg = proxy.getStorage()
