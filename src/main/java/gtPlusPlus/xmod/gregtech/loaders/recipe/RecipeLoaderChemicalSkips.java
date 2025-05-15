@@ -338,7 +338,7 @@ public class RecipeLoaderChemicalSkips {
             .fluidOutputs(
                 FluidUtils.getFluidStack("xenoxene", 16_000),
                 Materials.RadoxPolymer.getMolten(1 * STACKS),
-                FluidUtils.getFluidStack("heavyradox", 16_000),
+                Materials.RadoxHeavy.getFluid(16_000),
                 MaterialsKevlar.Kevlar.getMolten(1 * STACKS))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_UIV)

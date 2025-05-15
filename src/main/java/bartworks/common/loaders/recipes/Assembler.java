@@ -8,7 +8,6 @@ import static gregtech.api.util.GTRecipeBuilder.STACKS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
 
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.fluids.FluidRegistry;
 
 import bartworks.common.loaders.ItemRegistry;
 import goodgenerator.items.GGMaterial;
@@ -18,6 +17,7 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
+import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 
@@ -32,7 +32,7 @@ public class Assembler implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.circuit, Materials.HV, 2L),
                 GTUtility.getIntegratedCircuit(17))
             .itemOutputs(new ItemStack(ItemRegistry.BW_BLOCKS[0], 1, 1))
-            .fluidInputs(FluidRegistry.getFluidStack("ic2coolant", 1000))
+            .fluidInputs(GTModHandler.getIC2Coolant(1_000))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(assemblerRecipes);

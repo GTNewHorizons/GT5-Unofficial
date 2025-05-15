@@ -123,7 +123,7 @@ public class ChemicalRecipes implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.InfusedGold, 8),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Iron, 8))
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Thaumium, 16))
-            .fluidInputs(new FluidStack(FluidRegistry.getFluid("ic2coolant"), 1000))
+            .fluidInputs(GTModHandler.getIC2Coolant(1_000))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(UniversalChemical);

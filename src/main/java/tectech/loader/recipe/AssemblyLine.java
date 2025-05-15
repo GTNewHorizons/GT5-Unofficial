@@ -8,14 +8,13 @@ import static gregtech.api.util.GTRecipeConstants.RESEARCH_ITEM;
 import static gregtech.api.util.GTRecipeConstants.SCANNING;
 
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.fluids.FluidStack;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
+import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.recipe.Scanning;
 import tectech.thing.CustomItemList;
@@ -33,7 +32,7 @@ public class AssemblyLine implements Runnable {
                 new Object[] { OrePrefixes.circuit.get(Materials.LuV), 2 },
                 ItemList.Tool_DataOrb.get(1),
                 ItemList.Cover_Screen.get(1))
-            .fluidInputs(new FluidStack(FluidRegistry.getFluid("ic2coolant"), 2000), Materials.Hydrogen.getGas(1_000))
+            .fluidInputs(GTModHandler.getIC2Coolant(2_000), Materials.Hydrogen.getGas(1_000))
             .itemOutputs(CustomItemList.Machine_Multi_DataBank.get(1))
             .eut(TierEU.RECIPE_LuV)
             .duration(2 * MINUTES)
@@ -55,7 +54,7 @@ public class AssemblyLine implements Runnable {
                 BaseRecipeLoader.getOrDefault("Trinium", Materials.Osmium)
                     .getMolten(9 * INGOTS),
                 Materials.Osmium.getMolten(9 * INGOTS),
-                new FluidStack(FluidRegistry.getFluid("ic2coolant"), 2000),
+                GTModHandler.getIC2Coolant(2_000),
                 Materials.Argon.getGas(1_000))
             .itemOutputs(CustomItemList.eM_Hollow.get(2))
             .eut(200_000)
@@ -75,7 +74,7 @@ public class AssemblyLine implements Runnable {
             .fluidInputs(
                 Materials.Glass.getMolten(16 * INGOTS),
                 Materials.Silicone.getMolten(1872),
-                new FluidStack(FluidRegistry.getFluid("ic2coolant"), 2000),
+                GTModHandler.getIC2Coolant(2_000),
                 BaseRecipeLoader.getOrDefault("Trinium", Materials.Osmium)
                     .getMolten(9 * INGOTS))
             .itemOutputs(CustomItemList.eM_Coil.get(4))
@@ -100,7 +99,7 @@ public class AssemblyLine implements Runnable {
             .fluidInputs(
                 Materials.UUMatter.getFluid(500),
                 Materials.Iridium.getMolten(9 * INGOTS),
-                new FluidStack(FluidRegistry.getFluid("ic2coolant"), 1000))
+                GTModHandler.getIC2Coolant(1_000))
             .itemOutputs(CustomItemList.holder_Hatch.get(1))
             .eut(TierEU.RECIPE_UV)
             .duration(30 * SECONDS)
@@ -122,7 +121,7 @@ public class AssemblyLine implements Runnable {
             .fluidInputs(
                 Materials.UUMatter.getFluid(1_000),
                 Materials.Iridium.getMolten(9 * INGOTS),
-                new FluidStack(FluidRegistry.getFluid("ic2coolant"), 2000),
+                GTModHandler.getIC2Coolant(2_000),
                 Materials.Hydrogen.getGas(1_000))
             .itemOutputs(CustomItemList.Machine_Multi_Computer.get(1))
             .eut(100_000)
@@ -145,7 +144,7 @@ public class AssemblyLine implements Runnable {
             .fluidInputs(
                 Materials.UUMatter.getFluid(1_000),
                 Materials.Iridium.getMolten(9 * INGOTS),
-                new FluidStack(FluidRegistry.getFluid("ic2coolant"), 2000),
+                GTModHandler.getIC2Coolant(2_000),
                 Materials.Osmium.getMolten(9 * INGOTS))
             .itemOutputs(CustomItemList.Machine_Multi_Research.get(1))
             .eut(TierEU.RECIPE_UV)
@@ -164,7 +163,7 @@ public class AssemblyLine implements Runnable {
             .fluidInputs(
                 Materials.Electrum.getMolten(2592),
                 Materials.Europium.getMolten(1872),
-                new FluidStack(FluidRegistry.getFluid("ic2coolant"), 2000))
+                GTModHandler.getIC2Coolant(2_000))
             .itemOutputs(CustomItemList.Machine_Multi_Infuser.get(1))
             .eut(200_000)
             .duration(60 * SECONDS)

@@ -129,7 +129,7 @@ public class FuelRecipeLoader {
                 GGMaterial.heavyNaquadahFuel.getFluidOrGas(4_000),
                 GGMaterial.lightNaquadahFuel.getFluidOrGas(5_000),
                 MaterialsElements.STANDALONE.HYPOGEN.getFluidStack(120),
-                MaterialsElements.STANDALONE.CHRONOMATIC_GLASS.getFluidStack(6_480))
+                MaterialsElements.STANDALONE.CHRONOMATIC_GLASS.getFluidStack(45 * INGOTS))
             .fluidOutputs(GGMaterial.naquadahBasedFuelMkIV.getFluidOrGas(250))
             .duration(2 * TICKS)
             .eut(350_000_000)
@@ -141,7 +141,7 @@ public class FuelRecipeLoader {
             .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Infinity, 8),
                 GGMaterial.atomicSeparationCatalyst.get(OrePrefixes.dust, 32))
-            .fluidInputs(GGMaterial.naquadahBasedFuelMkIV.getFluidOrGas(2_000), Materials.RadoxHeavy.getMolten(250))
+            .fluidInputs(GGMaterial.naquadahBasedFuelMkIV.getFluidOrGas(2_000), Materials.RadoxHeavy.getFluid(250))
             .fluidOutputs(GGMaterial.naquadahBasedFuelMkV.getFluidOrGas(500))
             .duration(10 * SECONDS)
             .eut(100_000_000)
@@ -155,7 +155,7 @@ public class FuelRecipeLoader {
                 GGMaterial.atomicSeparationCatalyst.get(OrePrefixes.dust, 48))
             .fluidInputs(
                 GGMaterial.naquadahBasedFuelMkIV.getFluidOrGas(2_000),
-                Materials.RadoxHeavy.getMolten(250),
+                Materials.RadoxHeavy.getFluid(250),
                 MaterialsUEVplus.Mellion.getMolten(2 * INGOTS),
                 MaterialsUEVplus.Creon.getMolten(2 * INGOTS))
             .fluidOutputs(GGMaterial.naquadahBasedFuelMkV.getFluidOrGas(750))

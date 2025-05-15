@@ -14,8 +14,6 @@ import static gregtech.api.util.GTRecipeConstants.SCANNING;
 import static gtPlusPlus.core.material.MaterialsElements.STANDALONE.HYPOGEN;
 
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.fluids.FluidStack;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
@@ -184,9 +182,7 @@ public class AssemblyLine implements Runnable {
                 ItemList.Circuit_Wafer_SoC2.get(64),
                 ItemList.Circuit_Parts_DiodeASMD.get(8),
                 GTOreDictUnificator.get(OrePrefixes.cableGt01, Materials.Naquadah, 32))
-            .fluidInputs(
-                MaterialsAlloy.INDALLOY_140.getFluidStack(20 * INGOTS),
-                new FluidStack(FluidRegistry.getFluid("ic2coolant"), 16_000))
+            .fluidInputs(MaterialsAlloy.INDALLOY_140.getFluidStack(20 * INGOTS), GTModHandler.getIC2Coolant(16_000))
             .itemOutputs(new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 3))
             .duration(1 * MINUTES + 40 * SECONDS)
             .eut(100_000)
@@ -210,9 +206,7 @@ public class AssemblyLine implements Runnable {
                 ItemList.Circuit_Wafer_HPIC.get(64),
                 ItemList.Circuit_Parts_DiodeASMD.get(16),
                 GTOreDictUnificator.get(OrePrefixes.cableGt01, Materials.NaquadahAlloy, 32))
-            .fluidInputs(
-                MaterialsAlloy.INDALLOY_140.getFluidStack(20 * INGOTS),
-                new FluidStack(FluidRegistry.getFluid("ic2coolant"), 16_000))
+            .fluidInputs(MaterialsAlloy.INDALLOY_140.getFluidStack(20 * INGOTS), GTModHandler.getIC2Coolant(16_000))
             .itemOutputs(new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 4))
             .eut(200_000)
             .duration(1 * MINUTES + 40 * SECONDS)

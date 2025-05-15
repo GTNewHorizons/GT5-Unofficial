@@ -40,6 +40,7 @@ import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.util.GTLog;
+import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.ParallelHelper;
@@ -62,7 +63,7 @@ public class MTEThermalBoiler extends GTPPMultiBlockBase<MTEThermalBoiler> imple
     private static final Item itemLavaFilter = ItemList.Component_LavaFilter.getItem();
     private static final Item itemObsidian = Item.getItemFromBlock(Blocks.obsidian);
     private static final Fluid fluidWater = FluidRegistry.WATER;
-    private static final Fluid fluidDistilledWater = FluidUtils.getDistilledWater(1)
+    private static final Fluid fluidDistilledWater = GTModHandler.getDistilledWater(1)
         .getFluid();
     private static final Fluid fluidSteam = FluidUtils.getSteam(1)
         .getFluid();
@@ -246,7 +247,8 @@ public class MTEThermalBoiler extends GTPPMultiBlockBase<MTEThermalBoiler> imple
     private boolean useWater(int steamAmount) {
         // Round up to not dupe decimal amounts of water.
         int waterAmount = Math.floorDiv(steamAmount + GTValues.STEAM_PER_WATER - 1, GTValues.STEAM_PER_WATER);
-        if (depleteInput(FluidUtils.getWater(waterAmount)) || depleteInput(FluidUtils.getDistilledWater(waterAmount))) {
+        if (depleteInput(FluidUtils.getWater(waterAmount))
+            || depleteInput(GTModHandler.getDistilledWater(waterAmount))) {
             dryHeatCounter = 0;
             return true;
         } else {

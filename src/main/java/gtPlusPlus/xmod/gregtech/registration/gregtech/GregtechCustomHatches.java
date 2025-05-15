@@ -61,6 +61,7 @@ import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchSuper
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchTurbineProvider;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTESuperBusOutput;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.MTEHatchCustomFluidBase;
+import gtPlusPlus.xmod.thermalfoundation.fluid.TFFluids;
 
 public class GregtechCustomHatches {
 
@@ -79,8 +80,7 @@ public class GregtechCustomHatches {
 
         GregtechItemList.Hatch_Input_Cryotheum.set(
             new MTEHatchCustomFluidBase(
-                FluidUtils.getFluidStack("cryotheum", 1)
-                    .getFluid(), // Fluid to restrict hatch to
+                TFFluids.fluidCryotheum, // Fluid to restrict hatch to
                 128000, // Capacity
                 Hatch_Input_Cryotheum.ID, // ID
                 "hatch.cryotheum.input.tier.00", // unlocal name
@@ -90,8 +90,7 @@ public class GregtechCustomHatches {
 
         GregtechItemList.Hatch_Input_Pyrotheum.set(
             new MTEHatchCustomFluidBase(
-                FluidUtils.getFluidStack("pyrotheum", 1)
-                    .getFluid(), // Fluid to restrict hatch to
+                TFFluids.fluidPyrotheum, // Fluid to restrict hatch to
                 128000, // Capacity
                 Hatch_Input_Pyrotheum.ID, // ID
                 "hatch.pyrotheum.input.tier.00", // unlocal name

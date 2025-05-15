@@ -536,7 +536,7 @@ public class RecipeLoader2 {
                 GGMaterial.adamantiumAlloy.get(OrePrefixes.plate, 32))
             .fluidInputs(
                 Materials.Quantium.getMolten(10 * INGOTS),
-                FluidRegistry.getFluidStack("ic2coolant", 8_000),
+                GTModHandler.getIC2Coolant(8_000),
                 Materials.Lubricant.getFluid(8_000))
             .itemOutputs(ItemRefer.YOTTank_Cell_T3.get(1))
             .eut(TierEU.RECIPE_LuV)
@@ -556,7 +556,7 @@ public class RecipeLoader2 {
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.ElectrumFlux, 32))
             .fluidInputs(
                 Materials.Draconium.getMolten(10 * INGOTS),
-                FluidRegistry.getFluidStack("ic2coolant", 16_000),
+                GTModHandler.getIC2Coolant(16_000),
                 Materials.Lubricant.getFluid(16_000))
             .itemOutputs(ItemRefer.YOTTank_Cell_T4.get(1))
             .eut(TierEU.RECIPE_ZPM)
@@ -576,7 +576,7 @@ public class RecipeLoader2 {
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.Neutronium, 64))
             .fluidInputs(
                 Materials.Draconium.getMolten(10 * INGOTS),
-                FluidRegistry.getFluidStack("ic2coolant", 16_000),
+                GTModHandler.getIC2Coolant(16_000),
                 Materials.Lubricant.getFluid(16_000))
             .itemOutputs(ItemRefer.YOTTank_Cell_T5.get(1))
             .eut(TierEU.RECIPE_UV)
@@ -596,7 +596,7 @@ public class RecipeLoader2 {
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.Infinity, 64))
             .fluidInputs(
                 Materials.DraconiumAwakened.getMolten(10 * INGOTS),
-                FluidRegistry.getFluidStack("ic2coolant", 5 * STACKS),
+                GTModHandler.getIC2Coolant(5 * STACKS),
                 Materials.Lubricant.getFluid(32_000))
             .itemOutputs(ItemRefer.YOTTank_Cell_T6.get(1))
             .eut(TierEU.RECIPE_UHV)
@@ -1078,27 +1078,27 @@ public class RecipeLoader2 {
             .addTo(assemblerRecipes);
 
         MyRecipeAdder.instance.addExtremeHeatExchangerRecipe(
-            FluidRegistry.getFluidStack("lava", 160000),
-            FluidRegistry.getFluidStack("ic2pahoehoelava", 160000),
-            FluidRegistry.getFluidStack("ic2distilledwater", 80000),
-            FluidRegistry.getFluidStack("ic2superheatedsteam", 12800000),
-            FluidRegistry.getFluidStack("supercriticalsteam", 12800000),
+            FluidRegistry.getFluidStack("lava", 160_000),
+            FluidRegistry.getFluidStack("ic2pahoehoelava", 160_000),
+            GTModHandler.getDistilledWater(80_000),
+            FluidRegistry.getFluidStack("ic2superheatedsteam", 12_800_000),
+            FluidRegistry.getFluidStack("supercriticalsteam", 12_800_000),
             80000);
 
         MyRecipeAdder.instance.addExtremeHeatExchangerRecipe(
-            FluidRegistry.getFluidStack("ic2hotcoolant", 16000),
-            FluidRegistry.getFluidStack("ic2coolant", 16_000),
-            FluidRegistry.getFluidStack("ic2distilledwater", 20000),
-            FluidRegistry.getFluidStack("ic2superheatedsteam", 3200000),
-            FluidRegistry.getFluidStack("supercriticalsteam", 3200000),
+            FluidRegistry.getFluidStack("ic2hotcoolant", 16_000),
+            GTModHandler.getIC2Coolant(16_000),
+            GTModHandler.getDistilledWater(20_000),
+            FluidRegistry.getFluidStack("ic2superheatedsteam", 3_200_000),
+            FluidRegistry.getFluidStack("supercriticalsteam", 3_200_000),
             8000);
 
         MyRecipeAdder.instance.addExtremeHeatExchangerRecipe(
-            FluidRegistry.getFluidStack("molten.solarsalthot", 3200),
-            FluidRegistry.getFluidStack("molten.solarsaltcold", 3200),
-            FluidRegistry.getFluidStack("ic2distilledwater", 20000),
-            FluidRegistry.getFluidStack("ic2superheatedsteam", 3200000),
-            FluidRegistry.getFluidStack("supercriticalsteam", 3200000),
+            FluidRegistry.getFluidStack("molten.solarsalthot", 3_200),
+            FluidRegistry.getFluidStack("molten.solarsaltcold", 3_200),
+            GTModHandler.getDistilledWater(20_000),
+            FluidRegistry.getFluidStack("ic2superheatedsteam", 3_200_000),
+            FluidRegistry.getFluidStack("supercriticalsteam", 3_200_000),
             1600);
 
         GTValues.RA.stdBuilder()
@@ -1874,7 +1874,7 @@ public class RecipeLoader2 {
                     MyRecipeAdder.instance.addExtremeHeatExchangerRecipe(
                         tPlasma,
                         output,
-                        FluidRegistry.getFluidStack("ic2distilledwater", (int) waterAmount),
+                        GTModHandler.getDistilledWater(waterAmount),
                         FluidRegistry.getFluidStack("ic2superheatedsteam", 0), // Plasma always outputs SC steam.
                         Materials.DenseSupercriticalSteam.getGas(criticalSteamAmount),
                         1);

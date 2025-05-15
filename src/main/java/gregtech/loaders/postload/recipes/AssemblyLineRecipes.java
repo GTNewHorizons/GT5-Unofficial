@@ -11,7 +11,6 @@ import static gregtech.api.util.GTRecipeConstants.SCANNING;
 
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.fluids.FluidStack;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
@@ -575,9 +574,7 @@ public class AssemblyLineRecipes implements Runnable {
                         ItemList.Reactor_Coolant_Sp_1.get(1) },
                     ItemList.Electric_Pump_LuV.get(1))
                 .itemOutputs(ItemList.Hatch_Energy_LuV.get(1))
-                .fluidInputs(
-                    new FluidStack(FluidRegistry.getFluid("ic2coolant"), 2000),
-                    MaterialsAlloy.INDALLOY_140.getFluidStack(5 * INGOTS))
+                .fluidInputs(GTModHandler.getIC2Coolant(2_000), MaterialsAlloy.INDALLOY_140.getFluidStack(5 * INGOTS))
                 .duration(20 * SECONDS)
                 .eut((int) TierEU.RECIPE_LuV)
                 .addTo(AssemblyLine);
@@ -598,9 +595,7 @@ public class AssemblyLineRecipes implements Runnable {
                         ItemList.Reactor_Coolant_Sp_2.get(1) },
                     ItemList.Electric_Pump_ZPM.get(1))
                 .itemOutputs(ItemList.Hatch_Energy_ZPM.get(1))
-                .fluidInputs(
-                    new FluidStack(FluidRegistry.getFluid("ic2coolant"), 4_000),
-                    MaterialsAlloy.INDALLOY_140.getFluidStack(10 * INGOTS))
+                .fluidInputs(GTModHandler.getIC2Coolant(4_000), MaterialsAlloy.INDALLOY_140.getFluidStack(10 * INGOTS))
                 .duration(30 * SECONDS)
                 .eut((int) TierEU.RECIPE_ZPM)
                 .addTo(AssemblyLine);
@@ -625,9 +620,7 @@ public class AssemblyLineRecipes implements Runnable {
                         ItemList.Reactor_Coolant_Sp_2.get(1) },
                     ItemList.Electric_Pump_UV.get(1))
                 .itemOutputs(ItemList.Hatch_Energy_UV.get(1))
-                .fluidInputs(
-                    new FluidStack(FluidRegistry.getFluid("ic2coolant"), 8_000),
-                    MaterialsAlloy.INDALLOY_140.getFluidStack(20 * INGOTS))
+                .fluidInputs(GTModHandler.getIC2Coolant(8_000), MaterialsAlloy.INDALLOY_140.getFluidStack(20 * INGOTS))
                 .duration(40 * SECONDS)
                 .eut((int) TierEU.RECIPE_UV)
                 .addTo(AssemblyLine);
@@ -654,9 +647,7 @@ public class AssemblyLineRecipes implements Runnable {
                         ItemList.Reactor_Coolant_Sp_1.get(1) },
                     ItemList.Electric_Pump_LuV.get(1))
                 .itemOutputs(ItemList.Hatch_Dynamo_LuV.get(1))
-                .fluidInputs(
-                    new FluidStack(FluidRegistry.getFluid("ic2coolant"), 2000),
-                    MaterialsAlloy.INDALLOY_140.getFluidStack(5 * INGOTS))
+                .fluidInputs(GTModHandler.getIC2Coolant(2_000), MaterialsAlloy.INDALLOY_140.getFluidStack(5 * INGOTS))
                 .duration(20 * SECONDS)
                 .eut((int) TierEU.RECIPE_LuV)
                 .addTo(AssemblyLine);
@@ -677,9 +668,7 @@ public class AssemblyLineRecipes implements Runnable {
                         ItemList.Reactor_Coolant_Sp_2.get(1) },
                     ItemList.Electric_Pump_ZPM.get(1))
                 .itemOutputs(ItemList.Hatch_Dynamo_ZPM.get(1))
-                .fluidInputs(
-                    new FluidStack(FluidRegistry.getFluid("ic2coolant"), 4000),
-                    MaterialsAlloy.INDALLOY_140.getFluidStack(10 * INGOTS))
+                .fluidInputs(GTModHandler.getIC2Coolant(4_000), MaterialsAlloy.INDALLOY_140.getFluidStack(10 * INGOTS))
                 .duration(30 * SECONDS)
                 .eut((int) TierEU.RECIPE_ZPM)
                 .addTo(AssemblyLine);
@@ -704,9 +693,7 @@ public class AssemblyLineRecipes implements Runnable {
                         ItemList.Reactor_Coolant_Sp_2.get(1) },
                     ItemList.Electric_Pump_UV.get(1))
                 .itemOutputs(ItemList.Hatch_Dynamo_UV.get(1))
-                .fluidInputs(
-                    new FluidStack(FluidRegistry.getFluid("ic2coolant"), 8000),
-                    MaterialsAlloy.INDALLOY_140.getFluidStack(20 * INGOTS))
+                .fluidInputs(GTModHandler.getIC2Coolant(8_000), MaterialsAlloy.INDALLOY_140.getFluidStack(20 * INGOTS))
                 .duration(40 * SECONDS)
                 .eut((int) TierEU.RECIPE_UV)
                 .addTo(AssemblyLine);
@@ -798,9 +785,7 @@ public class AssemblyLineRecipes implements Runnable {
                 ItemList.Circuit_Parts_DiodeASMD.get(8),
                 GTOreDictUnificator.get(OrePrefixes.cableGt01, Materials.Naquadah, 32))
             .itemOutputs(ItemList.Energy_Module.get(1))
-            .fluidInputs(
-                MaterialsAlloy.INDALLOY_140.getFluidStack(20 * INGOTS),
-                new FluidStack(FluidRegistry.getFluid("ic2coolant"), 16000))
+            .fluidInputs(MaterialsAlloy.INDALLOY_140.getFluidStack(20 * INGOTS), GTModHandler.getIC2Coolant(16_000))
             .duration(1 * MINUTES + 40 * SECONDS)
             .eut((int) TierEU.RECIPE_ZPM)
             .addTo(AssemblyLine);
@@ -822,9 +807,7 @@ public class AssemblyLineRecipes implements Runnable {
                 ItemList.Circuit_Parts_DiodeASMD.get(16),
                 GTOreDictUnificator.get(OrePrefixes.cableGt01, Materials.NaquadahAlloy, 32))
             .itemOutputs(ItemList.Energy_Cluster.get(1))
-            .fluidInputs(
-                MaterialsAlloy.INDALLOY_140.getFluidStack(20 * INGOTS),
-                new FluidStack(FluidRegistry.getFluid("ic2coolant"), 16000))
+            .fluidInputs(MaterialsAlloy.INDALLOY_140.getFluidStack(20 * INGOTS), GTModHandler.getIC2Coolant(16_000))
             .duration(1 * MINUTES + 40 * SECONDS)
             .eut(200000)
             .addTo(AssemblyLine);

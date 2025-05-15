@@ -670,7 +670,7 @@ public class MixerRecipes implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Lapis, 1),
                 GTUtility.getIntegratedCircuit(4))
             .fluidInputs(Materials.Water.getFluid(125))
-            .fluidOutputs(getFluidStack("ic2coolant", 125))
+            .fluidOutputs(GTModHandler.getIC2Coolant(125))
             .duration(12 * SECONDS + 16 * TICKS)
             .eut(48)
             .addTo(mixerRecipes);
@@ -680,7 +680,7 @@ public class MixerRecipes implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Lapis, 1),
                 GTUtility.getIntegratedCircuit(4))
             .fluidInputs(GTModHandler.getDistilledWater(1_000))
-            .fluidOutputs(getFluidStack("ic2coolant", 1000))
+            .fluidOutputs(GTModHandler.getIC2Coolant(1_000))
             .duration(12 * SECONDS + 16 * TICKS)
             .eut(48)
             .addTo(mixerRecipes);

@@ -91,6 +91,7 @@ import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.minecraft.MaterialUtils;
 import gtPlusPlus.xmod.bop.blocks.BOPBlockRegistrator;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
+import gtPlusPlus.xmod.thermalfoundation.fluid.TFFluids;
 
 public class RecipesGregTech {
 
@@ -158,7 +159,7 @@ public class RecipesGregTech {
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(17), CI.getPinkCatalyst(0))
             .fluidInputs(Materials.NitrogenDioxide.getGas(4_000), FluidUtils.getAir(4_000), FluidUtils.getWater(2_000))
-            .fluidOutputs(FluidUtils.getFluidStack("nitricacid", 4_000))
+            .fluidOutputs(Materials.NitricAcid.getFluid(4_000))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .metadata(CHEMPLANT_CASING_TIER, 3)
@@ -176,7 +177,7 @@ public class RecipesGregTech {
                 MaterialsFluorides.FLUORITE.getOre(4),
                 MaterialsFluorides.FLUORITE.getOre(4),
                 MaterialsFluorides.FLUORITE.getOre(4))
-            .fluidInputs(FluidUtils.getFluidStack("nitricacid", 4_000), FluidUtils.getAir(8_000))
+            .fluidInputs(Materials.NitricAcid.getFluid(4_000), FluidUtils.getAir(8_000))
             .duration(10 * SECONDS)
             .eut(1024)
             .metadata(CHEMPLANT_CASING_TIER, 5)
@@ -193,7 +194,7 @@ public class RecipesGregTech {
                 MaterialsFluorides.FLUORITE.getOre(2),
                 MaterialsFluorides.FLUORITE.getOre(2),
                 MaterialsFluorides.FLUORITE.getOre(2))
-            .fluidInputs(FluidUtils.getFluidStack("nitricacid", 5_000), FluidUtils.getAir(12_000))
+            .fluidInputs(Materials.NitricAcid.getFluid(5_000), FluidUtils.getAir(12_000))
             .duration(10 * SECONDS)
             .eut(1024)
             .metadata(CHEMPLANT_CASING_TIER, 5)
@@ -202,8 +203,8 @@ public class RecipesGregTech {
         // 3NO2 + H2O = 2HNO3 + NO
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(16), CI.getPinkCatalyst(0))
-            .fluidInputs(Materials.NitrogenDioxide.getGas(3_000), FluidUtils.getDistilledWater(1_000))
-            .fluidOutputs(FluidUtils.getFluidStack("nitricacid", 2_000), Materials.NitricOxide.getGas(1_000))
+            .fluidInputs(Materials.NitrogenDioxide.getGas(3_000), GTModHandler.getDistilledWater(1_000))
+            .fluidOutputs(Materials.NitricAcid.getFluid(2_000), Materials.NitricOxide.getGas(1_000))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .metadata(CHEMPLANT_CASING_TIER, 2)
@@ -228,7 +229,7 @@ public class RecipesGregTech {
                 MaterialsElements.getInstance().THORIUM232.getDust(2),
                 MaterialsElements.getInstance().THORIUM232.getSmallDust(2),
                 MaterialsElements.getInstance().URANIUM232.getDust(1))
-            .fluidInputs(FluidUtils.getDistilledWater(2_000), FluidUtils.getFluidStack("boricacid", 1_500))
+            .fluidInputs(GTModHandler.getDistilledWater(2_000), FluidUtils.getFluidStack("boricacid", 1_500))
             .duration(5 * MINUTES)
             .eut(TierEU.RECIPE_EV)
             .metadata(CHEMPLANT_CASING_TIER, 4)
@@ -238,7 +239,7 @@ public class RecipesGregTech {
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(6), ItemUtils.getSimpleStack(Blocks.sapling, 32))
             .itemOutputs(ItemUtils.getSimpleStack(BOPBlockRegistrator.sapling_Pine, 16))
-            .fluidInputs(FluidUtils.getFluidStack("fluid.geneticmutagen", 2_000), FluidUtils.getDistilledWater(8_000))
+            .fluidInputs(FluidUtils.getFluidStack("fluid.geneticmutagen", 2_000), GTModHandler.getDistilledWater(8_000))
             .duration(120 * SECONDS)
             .eut(64)
             .metadata(CHEMPLANT_CASING_TIER, 2)
@@ -1442,7 +1443,7 @@ public class RecipesGregTech {
             .fluidInputs(
                 FluidUtils.getFluidStack("ic2hotcoolant", 500),
                 FluidUtils.getWater(100_000 / GTValues.STEAM_PER_WATER))
-            .fluidOutputs(FluidUtils.getFluidStack("ic2coolant", 500), FluidUtils.getSuperHeatedSteam(100_000))
+            .fluidOutputs(GTModHandler.getIC2Coolant(500), FluidUtils.getSuperHeatedSteam(100_000))
             .duration(1 * SECONDS)
             .eut(0)
             .addTo(thermalBoilerRecipes);
@@ -1511,7 +1512,7 @@ public class RecipesGregTech {
         // Gelid Cryotheum
         RA.stdBuilder()
             .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Cryotheum, 1L))
-            .fluidOutputs(FluidUtils.getFluidStack("cryotheum", 250))
+            .fluidOutputs(new FluidStack(TFFluids.fluidCryotheum, 250))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_HV / 2)
             .addTo(fluidExtractionRecipes);
@@ -1519,7 +1520,7 @@ public class RecipesGregTech {
         // Blazing Pyrotheum
         RA.stdBuilder()
             .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Pyrotheum, 1L))
-            .fluidOutputs(FluidUtils.getFluidStack("pyrotheum", 250))
+            .fluidOutputs(new FluidStack(TFFluids.fluidPyrotheum, 250))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_HV / 2)
             .addTo(fluidExtractionRecipes);
@@ -1971,7 +1972,7 @@ public class RecipesGregTech {
                 Particle.getBaseParticle(Particle.UNKNOWN))
             .itemOutputs(MaterialsOres.DEEP_EARTH_REACTOR_FUEL_DEPOSIT.getDust(1))
             .outputChances(2500)
-            .fluidInputs(FluidUtils.getFluidStack(FluidUtils.getWildcardFluidStack("ender", 1000), 1000))
+            .fluidInputs(new FluidStack(TFFluids.fluidEnder, 1_000))
             .duration(15 * MINUTES)
             .eut(TierEU.RECIPE_ZPM)
             .addTo(cyclotronRecipes);

@@ -20,6 +20,7 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.util.GTLanguageManager;
+import gregtech.api.util.GTModHandler;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.minecraft.FluidGT6;
 import gtPlusPlus.core.item.base.BaseItemComponent;
@@ -37,7 +38,7 @@ public class FluidUtils {
     }
 
     public static FluidStack getDistilledWater(final int amount) {
-        return FluidUtils.getFluidStack("ic2distilledwater", amount);
+        return GTModHandler.getDistilledWater(amount);
     }
 
     public static FluidStack getHotWater(final int amount) {
