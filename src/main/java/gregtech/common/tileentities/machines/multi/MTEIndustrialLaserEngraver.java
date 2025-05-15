@@ -1,7 +1,6 @@
 package gregtech.common.tileentities.machines.multi;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
-import static gregtech.api.enums.GTValues.AuthorFourIsTheNumber;
 import static gregtech.api.enums.HatchElement.*;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ENGRAVER;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ENGRAVER_ACTIVE;
@@ -255,7 +254,7 @@ public class MTEIndustrialLaserEngraver extends MTEExtendedPowerMultiBlockBase<M
             .addEnergyHatch("Any Casing", 1)
             .addMaintenanceHatch("Any Casing", 1)
             .addSubChannelUsage(GTStructureChannels.BOROGLASS)
-            .toolTipFinisher(AuthorFourIsTheNumber);
+            .toolTipFinisher();
         return tt;
     }
 
