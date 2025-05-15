@@ -47,7 +47,8 @@ public class OpticalOrganizer extends MTENanochipAssemblyModuleBase<OpticalOrgan
                     Block.getBlockFromItem(
                         MaterialsElements.STANDALONE.HYPOGEN.getFrameBox(1)
                             .getItem()),
-                    0)))
+                    MaterialsElements.STANDALONE.HYPOGEN.getFrameBox(1)
+                        .getItemDamage())))
         // White casing block
         .addElement('B', ofBlock(GregTechAPI.sBlockCasings8, 5))
         // Black casing block
