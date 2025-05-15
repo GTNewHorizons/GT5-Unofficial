@@ -1,15 +1,10 @@
 package gtnhintergalactic.tile.multi.elevatormodules;
 
-import static gtnhintergalactic.GTNHIntergalactic.ASSET_PREFIX;
-
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
 
-import com.cleanroommc.modularui.drawable.UITexture;
-import com.cleanroommc.modularui.screen.ModularPanel;
-import com.cleanroommc.modularui.widget.SingleChildWidget;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureUtility;
