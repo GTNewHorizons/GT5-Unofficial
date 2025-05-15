@@ -44,7 +44,8 @@ public class BoardProcessor extends MTENanochipAssemblyModuleBase<BoardProcessor
                     Block.getBlockFromItem(
                         MaterialsAlloy.OCTIRON.getFrameBox(1)
                             .getItem()),
-                    1)))
+                    MaterialsAlloy.OCTIRON.getFrameBox(1)
+                        .getItemDamage())))
         // White casing block
         .addElement('B', ofBlock(GregTechAPI.sBlockCasings8, 5))
         // Black casing block

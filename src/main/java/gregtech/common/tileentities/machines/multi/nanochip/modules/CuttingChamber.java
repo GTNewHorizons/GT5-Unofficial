@@ -49,7 +49,8 @@ public class CuttingChamber extends MTENanochipAssemblyModuleBase<CuttingChamber
                     Block.getBlockFromItem(
                         MaterialsElements.STANDALONE.CELESTIAL_TUNGSTEN.getFrameBox(1)
                             .getItem()),
-                    0)))
+                    MaterialsElements.STANDALONE.CELESTIAL_TUNGSTEN.getFrameBox(1)
+                        .getItemDamage())))
         // White casing block
         .addElement('B', ofBlock(GregTechAPI.sBlockCasings8, 5))
         // Black casing block
