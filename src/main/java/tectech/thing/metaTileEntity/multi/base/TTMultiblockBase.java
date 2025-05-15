@@ -486,22 +486,6 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
     // region Methods to maybe override (if u implement certain stuff)
 
     /**
-     * is the thing inside controller a valid item to make the machine work
-     */
-    @Override
-    public boolean isCorrectMachinePart(ItemStack itemStack) {
-        return true;
-    }
-
-    /**
-     * how much damage to apply to thing in controller - not sure how it does it
-     */
-    @Override
-    public int getDamageToComponent(ItemStack itemStack) {
-        return 0;
-    }
-
-    /**
      * called when removing from map - not when unloading? //todo check
      */
     @Override
@@ -1387,11 +1371,6 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
     // region EFFICIENCY AND FIXING LIMITS
 
     @Override
-    public int getMaxEfficiency(ItemStack itemStack) {
-        return 10000;
-    }
-
-    @Override
     public int getIdealStatus() {
         return super.getIdealStatus() + 2;
     }
@@ -1649,11 +1628,6 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
     @Override
     public List<MTEHatch> getExoticEnergyHatches() {
         return new ArrayList<>(eEnergyMulti);
-    }
-
-    @Override
-    public boolean explodesOnComponentBreak(ItemStack itemStack) {
-        return false;
     }
 
     // empty body to prevent any explosion
