@@ -47,8 +47,10 @@ public class CCInputConsumer implements ParallelHelper.InputConsumer {
         }
 
         // Consume fluid inputs in recipe
-        for (FluidStack fluid : aFluidInputs) {
-            module.depleteInput(fluid);
+        for (FluidStack fluid : recipe.mFluidInputs) {
+            FluidStack toConsume = fluid.copy();
+            toConsume.amount *= amountMultiplier;
+            module.depleteInput(toConsume);
         }
     }
 }
