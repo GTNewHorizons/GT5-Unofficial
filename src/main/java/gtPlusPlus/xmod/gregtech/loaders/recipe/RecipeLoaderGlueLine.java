@@ -124,7 +124,7 @@ public class RecipeLoaderGlueLine {
             .fluidInputs(
                 MaterialMisc.ETHYL_CYANOACETATE.getFluidStack(100),
                 new FluidStack(GTPPFluids.Formaldehyde, 100))
-            .fluidOutputs(MaterialMisc.CYANOACRYLATE_POLYMER.getFluidStack(100), FluidUtils.getWater(1_000))
+            .fluidOutputs(MaterialMisc.CYANOACRYLATE_POLYMER.getFluidStack(100), GTModHandler.getWater(1_000))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_IV)
             .metadata(CHEMPLANT_CASING_TIER, 5)
@@ -136,7 +136,7 @@ public class RecipeLoaderGlueLine {
                 FluidUtils.getFluidStack("methane", 2_000),
                 FluidUtils.getFluidStack("ammonia", 2_000),
                 FluidUtils.getFluidStack("oxygen", 6_000))
-            .fluidOutputs(MaterialMisc.HYDROGEN_CYANIDE.getFluidStack(2_000), FluidUtils.getWater(6_000))
+            .fluidOutputs(MaterialMisc.HYDROGEN_CYANIDE.getFluidStack(2_000), GTModHandler.getWater(6_000))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .metadata(CHEMPLANT_CASING_TIER, 3)
@@ -150,7 +150,7 @@ public class RecipeLoaderGlueLine {
             .itemInputs(GTUtility.getIntegratedCircuit(17), Materials.SodiumHydroxide.getDust(3))
             .itemOutputs(MaterialMisc.SODIUM_CYANIDE.getDust(3))
             .fluidInputs(MaterialMisc.HYDROGEN_CYANIDE.getFluidStack(1_000))
-            .fluidOutputs(FluidUtils.getWater(1_000))
+            .fluidOutputs(GTModHandler.getWater(1_000))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(chemicalReactorRecipes);
@@ -160,7 +160,7 @@ public class RecipeLoaderGlueLine {
             .itemInputs(GTUtility.getIntegratedCircuit(17), Materials.SodiumHydroxide.getDust(3))
             .itemOutputs(MaterialMisc.SODIUM_CYANIDE.getDust(3))
             .fluidInputs(MaterialMisc.HYDROGEN_CYANIDE.getFluidStack(1_000))
-            .fluidOutputs(FluidUtils.getWater(1_000))
+            .fluidOutputs(GTModHandler.getWater(1_000))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(multiblockChemicalReactorRecipes);

@@ -22,6 +22,7 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.recipe.metadata.CompressionTierKey;
+import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipeConstants;
 import gregtech.api.util.GTUtility;
@@ -126,7 +127,7 @@ public class NetheriteRecipes {
 
         GTValues.RA.stdBuilder()
             .itemInputs(getModItem(EtFuturumRequiem.ID, "netherite_scrap", 1, missing))
-            .fluidInputs(FluidUtils.getLava(100))
+            .fluidInputs(GTModHandler.getLava(100))
             .itemOutputs(ItemList.Hot_Netherite_Scrap.get(1))
             .duration(25 * SECONDS)
             .eut(TierEU.RECIPE_MV)

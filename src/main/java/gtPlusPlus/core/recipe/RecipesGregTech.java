@@ -158,7 +158,10 @@ public class RecipesGregTech {
         // Advanced method for Nitric Acid Production
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(17), CI.getPinkCatalyst(0))
-            .fluidInputs(Materials.NitrogenDioxide.getGas(4_000), FluidUtils.getAir(4_000), FluidUtils.getWater(2_000))
+            .fluidInputs(
+                Materials.NitrogenDioxide.getGas(4_000),
+                FluidUtils.getAir(4_000),
+                GTModHandler.getWater(2_000))
             .fluidOutputs(Materials.NitricAcid.getFluid(4_000))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_HV)
@@ -215,7 +218,7 @@ public class RecipesGregTech {
             .itemInputs(GTUtility.getIntegratedCircuit(21), ItemUtils.getItemStackOfAmountFromOreDict("dustBorax", 23))
             .itemOutputs(ItemUtils.getItemStackOfAmountFromOreDict("dustSalt", 4))
             .fluidInputs(Materials.HydrochloricAcid.getFluid(2_000))
-            .fluidOutputs(FluidUtils.getFluidStack("boricacid", 4_000), FluidUtils.getWater(5_000))
+            .fluidOutputs(FluidUtils.getFluidStack("boricacid", 4_000), GTModHandler.getWater(5_000))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .metadata(CHEMPLANT_CASING_TIER, 3)
@@ -1406,8 +1409,8 @@ public class RecipesGregTech {
         // Lava
 
         RA.stdBuilder()
-            .fluidInputs(FluidUtils.getLava(1000), FluidUtils.getWater(16_000 / GTValues.STEAM_PER_WATER))
-            .fluidOutputs(FluidUtils.getPahoehoeLava(1000), FluidUtils.getSteam(16_000))
+            .fluidInputs(GTModHandler.getLava(1_000), GTModHandler.getWater(16_000 / GTValues.STEAM_PER_WATER))
+            .fluidOutputs(FluidUtils.getPahoehoeLava(1_000), GTModHandler.getSteam(16_000))
             .itemOutputs(
                 GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Copper, 1),
                 GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Tin, 1),
@@ -1424,8 +1427,8 @@ public class RecipesGregTech {
         // Pahoehoe Lava
 
         RA.stdBuilder()
-            .fluidInputs(FluidUtils.getPahoehoeLava(1000), FluidUtils.getWater(16_000 / GTValues.STEAM_PER_WATER))
-            .fluidOutputs(FluidUtils.getSteam(16_000))
+            .fluidInputs(FluidUtils.getPahoehoeLava(1000), GTModHandler.getWater(16_000 / GTValues.STEAM_PER_WATER))
+            .fluidOutputs(GTModHandler.getSteam(16_000))
             .itemOutputs(
                 GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Bronze, 1),
                 GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Electrum, 1),
@@ -1442,7 +1445,7 @@ public class RecipesGregTech {
         RA.stdBuilder()
             .fluidInputs(
                 FluidUtils.getFluidStack("ic2hotcoolant", 500),
-                FluidUtils.getWater(100_000 / GTValues.STEAM_PER_WATER))
+                GTModHandler.getWater(100_000 / GTValues.STEAM_PER_WATER))
             .fluidOutputs(GTModHandler.getIC2Coolant(500), FluidUtils.getSuperHeatedSteam(100_000))
             .duration(1 * SECONDS)
             .eut(0)
@@ -1453,7 +1456,7 @@ public class RecipesGregTech {
         RA.stdBuilder()
             .fluidInputs(
                 MaterialMisc.SOLAR_SALT_HOT.getFluidStack(100),
-                FluidUtils.getWater(100_000 / GTValues.STEAM_PER_WATER))
+                GTModHandler.getWater(100_000 / GTValues.STEAM_PER_WATER))
             .fluidOutputs(MaterialMisc.SOLAR_SALT_COLD.getFluidStack(100), FluidUtils.getSuperHeatedSteam(100_000))
             .duration(1 * SECONDS)
             .eut(0)

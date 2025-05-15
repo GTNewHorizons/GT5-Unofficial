@@ -617,7 +617,7 @@ public class RecipeLoader2 {
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.Infinity, 32))
             .fluidInputs(
                 Materials.DraconiumAwakened.getMolten(1 * STACKS + 36 * INGOTS),
-                FluidRegistry.getFluidStack("supercoolant", 5 * STACKS),
+                Materials.SuperCoolant.getFluid(5 * STACKS),
                 Materials.Lubricant.getFluid(5 * STACKS))
             .itemOutputs(ItemRefer.YOTTank_Cell_T7.get(1))
             .eut(TierEU.RECIPE_UEV)
@@ -639,7 +639,7 @@ public class RecipeLoader2 {
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.Infinity, 64))
             .fluidInputs(
                 Materials.DraconiumAwakened.getMolten(1 * STACKS + 36 * INGOTS),
-                FluidRegistry.getFluidStack("supercoolant", 5 * STACKS),
+                Materials.SuperCoolant.getFluid(5 * STACKS),
                 Materials.Lubricant.getFluid(5 * STACKS))
             .itemOutputs(ItemRefer.YOTTank_Cell_T8.get(1))
             .eut(TierEU.RECIPE_UIV)
@@ -662,7 +662,7 @@ public class RecipeLoader2 {
                     GTOreDictUnificator.get(OrePrefixes.plate, Materials.Infinity, 64))
                 .fluidInputs(
                     Materials.DraconiumAwakened.getMolten(1 * STACKS + 36 * INGOTS),
-                    FluidRegistry.getFluidStack("supercoolant", 5 * STACKS),
+                    Materials.SuperCoolant.getFluid(5 * STACKS),
                     MaterialsUEVplus.DimensionallyShiftedSuperfluid.getFluid(5 * STACKS))
                 .itemOutputs(ItemRefer.YOTTank_Cell_T9.get(1))
                 .eut(TierEU.RECIPE_UMV)
@@ -685,7 +685,7 @@ public class RecipeLoader2 {
                 .fluidInputs(
                     Materials.DraconiumAwakened.getMolten(10 * INGOTS),
                     MaterialsUEVplus.TranscendentMetal.getMolten(10 * INGOTS),
-                    FluidRegistry.getFluidStack("supercoolant", 5 * STACKS),
+                    Materials.SuperCoolant.getFluid(5 * STACKS),
                     MaterialsUEVplus.DimensionallyShiftedSuperfluid.getFluid(5 * STACKS))
                 .itemOutputs(ItemRefer.YOTTank_Cell_T10.get(1))
                 .eut(TierEU.RECIPE_UXV)
@@ -1078,7 +1078,7 @@ public class RecipeLoader2 {
             .addTo(assemblerRecipes);
 
         MyRecipeAdder.instance.addExtremeHeatExchangerRecipe(
-            FluidRegistry.getFluidStack("lava", 160_000),
+            Materials.Lava.getFluid(160_000),
             FluidRegistry.getFluidStack("ic2pahoehoelava", 160_000),
             GTModHandler.getDistilledWater(80_000),
             FluidRegistry.getFluidStack("ic2superheatedsteam", 12_800_000),

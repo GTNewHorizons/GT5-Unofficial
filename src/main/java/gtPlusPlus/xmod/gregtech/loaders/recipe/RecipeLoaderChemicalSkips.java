@@ -291,7 +291,7 @@ public class RecipeLoaderChemicalSkips {
                 .fluidInputs(
                     Materials.NetherAir.getFluid(64_000),
                     Materials.HellishMetal.getMolten(8 * INGOTS),
-                    FluidUtils.getLava(256_000))
+                    GTModHandler.getLava(256_000))
                 .itemOutputs(
                     getModItem(EtFuturumRequiem.ID, "netherite_scrap", 16),
                     ItemList.Intensely_Bonded_Netherite_Nanoparticles.get(64))

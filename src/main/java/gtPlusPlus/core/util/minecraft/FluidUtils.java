@@ -33,10 +33,18 @@ public class FluidUtils {
 
     private static final HashMap<String, Fluid> sFluidCache = new HashMap<>();
 
+    /**
+     * @deprecated Use {@link GTModHandler#getWater(long)} or {@link gregtech.api.enums.Materials} instead.
+     */
+    @Deprecated
     public static FluidStack getWater(final int amount) {
-        return FluidUtils.getFluidStack("water", amount);
+        return GTModHandler.getWater(amount);
     }
 
+    /**
+     * @deprecated Use {@link GTModHandler#getDistilledWater(long)} or {@link gregtech.api.enums.Materials} instead.
+     */
+    @Deprecated
     public static FluidStack getDistilledWater(final int amount) {
         return GTModHandler.getDistilledWater(amount);
     }
@@ -45,16 +53,24 @@ public class FluidUtils {
         return FluidUtils.getFluidStack("ic2hotwater", amount);
     }
 
+    /**
+     * @deprecated Use {@link GTModHandler#getLava(long)} or {@link gregtech.api.enums.Materials} instead.
+     */
+    @Deprecated
     public static FluidStack getLava(final int amount) {
-        return FluidUtils.getFluidStack("lava", amount);
+        return GTModHandler.getLava(amount);
     }
 
     public static FluidStack getPahoehoeLava(final int amount) {
         return FluidUtils.getFluidStack("ic2pahoehoelava", amount);
     }
 
+    /**
+     * @deprecated Use {@link GTModHandler#getSteam(long)} or {@link gregtech.api.enums.Materials} instead.
+     */
+    @Deprecated
     public static FluidStack getSteam(final int amount) {
-        return FluidUtils.getFluidStack("steam", amount);
+        return GTModHandler.getSteam(amount);
     }
 
     public static FluidStack getSuperHeatedSteam(final int amount) {

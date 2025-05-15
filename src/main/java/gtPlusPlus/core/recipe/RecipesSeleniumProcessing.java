@@ -8,6 +8,7 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
+import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
 import gtPlusPlus.core.material.MaterialMisc;
 import gtPlusPlus.core.material.MaterialsElements;
@@ -28,7 +29,7 @@ public class RecipesSeleniumProcessing {
         // Liquify the Dried Dioxide
         GTValues.RA.stdBuilder()
             .itemInputs(MaterialMisc.SELENIUM_DIOXIDE.getDust(1))
-            .fluidInputs(FluidUtils.getSteam(500))
+            .fluidInputs(GTModHandler.getSteam(500))
             .fluidOutputs(MaterialMisc.SELENIUM_DIOXIDE.getFluidStack(1000))
             .duration(24 * SECONDS)
             .eut(1024)

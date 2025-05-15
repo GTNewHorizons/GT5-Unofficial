@@ -65,7 +65,7 @@ public class MTEThermalBoiler extends GTPPMultiBlockBase<MTEThermalBoiler> imple
     private static final Fluid fluidWater = FluidRegistry.WATER;
     private static final Fluid fluidDistilledWater = GTModHandler.getDistilledWater(1)
         .getFluid();
-    private static final Fluid fluidSteam = FluidUtils.getSteam(1)
+    private static final Fluid fluidSteam = GTModHandler.getSteam(1)
         .getFluid();
     private static final Fluid fluidSHSteam = FluidUtils.getSuperHeatedSteam(1)
         .getFluid();
@@ -247,7 +247,7 @@ public class MTEThermalBoiler extends GTPPMultiBlockBase<MTEThermalBoiler> imple
     private boolean useWater(int steamAmount) {
         // Round up to not dupe decimal amounts of water.
         int waterAmount = Math.floorDiv(steamAmount + GTValues.STEAM_PER_WATER - 1, GTValues.STEAM_PER_WATER);
-        if (depleteInput(FluidUtils.getWater(waterAmount))
+        if (depleteInput(GTModHandler.getWater(waterAmount))
             || depleteInput(GTModHandler.getDistilledWater(waterAmount))) {
             dryHeatCounter = 0;
             return true;

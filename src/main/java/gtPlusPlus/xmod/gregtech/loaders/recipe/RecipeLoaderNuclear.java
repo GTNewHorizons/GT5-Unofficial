@@ -31,6 +31,7 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
+import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gtPlusPlus.api.objects.Logger;
@@ -294,7 +295,7 @@ public class RecipeLoaderNuclear {
             .itemInputs(GTUtility.getIntegratedCircuit(15), Materials.SodiumHydroxide.getDust(3))
             .itemOutputs(MaterialsFluorides.SODIUM_FLUORIDE.getDust(2))
             .fluidInputs(FluidUtils.getFluidStack("hydrofluoricacid", 500))
-            .fluidOutputs(FluidUtils.getWater(1_000))
+            .fluidOutputs(GTModHandler.getWater(1_000))
             .duration(1 * MINUTES)
             .eut(TierEU.RECIPE_LV)
             .addTo(UniversalChemical);
@@ -303,7 +304,7 @@ public class RecipeLoaderNuclear {
             .itemInputs(GTUtility.getIntegratedCircuit(15), Materials.SodiumHydroxide.getDust(3))
             .itemOutputs(MaterialsFluorides.SODIUM_FLUORIDE.getDust(2))
             .fluidInputs(FluidUtils.getFluidStack("hydrofluoricacid_gt5u", 1_000))
-            .fluidOutputs(FluidUtils.getWater(1_000))
+            .fluidOutputs(GTModHandler.getWater(1_000))
             .duration(1 * MINUTES)
             .eut(TierEU.RECIPE_LV)
             .addTo(UniversalChemical);
