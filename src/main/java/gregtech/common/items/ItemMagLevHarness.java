@@ -45,17 +45,7 @@ public class ItemMagLevHarness extends GTGenericItem implements IBaubleExpanded 
             if (player.worldObj.provider.dimensionId != activeTether.dimID()
                 || player.getDistance(activeTether.sourceX(), activeTether.sourceY(), activeTether.sourceZ())
                     > activeTether.range()) {
-                TetherManager.PLAYER_TETHERS.replace(player, null);
-                if (!player.capabilities.isCreativeMode) {
-                    player.capabilities.allowFlying = false;
-                    player.capabilities.isFlying = false;
-                    if (!player.worldObj.isRemote) {
-                        player.sendPlayerAbilities();
-                    }
-                }
-            } else {
-                player.capabilities.allowFlying = true;
-                if (player.worldObj.isRemote) player.capabilities.setFlySpeed(0.05f);
+                activeTether = null;
             }
         } else {
             ObjectOpenHashSet<MTEMagLevPylon> pylons = TetherManager.ACTIVE_PYLONS
@@ -67,11 +57,31 @@ public class ItemMagLevHarness extends GTGenericItem implements IBaubleExpanded 
                     pylon.machineTether.sourceX(),
                     pylon.machineTether.sourceY(),
                     pylon.machineTether.sourceZ()) <= pylon.machineTether.range()) {
-                    TetherManager.PLAYER_TETHERS.replace(player, pylon.machineTether);
+                    activeTether = pylon.machineTether;
                     break;
                 }
             }
         }
+        TetherManager.PLAYER_TETHERS.replace(player, activeTether);
+        setFly(player, player.capabilities.isCreativeMode || activeTether != null);
+    }
+
+    private static void setFly(EntityPlayer player, boolean fly) {
+        if (player.capabilities.allowFlying == fly) {
+            return;
+        }
+        if (fly) {
+            player.capabilities.allowFlying = true;
+            if (player.worldObj.isRemote) player.capabilities.setFlySpeed(0.05f);
+        } else {
+            player.capabilities.isFlying = false;
+            // so that the player doesnt go splat when going from inside range to outside range
+            // it does allow them to double space to try to fly again, but it is only for a tick
+            if (player.onGround && player.fallDistance < 1F) {
+                player.capabilities.allowFlying = false;
+            }
+        }
+        player.sendPlayerAbilities();
     }
 
     @Override
