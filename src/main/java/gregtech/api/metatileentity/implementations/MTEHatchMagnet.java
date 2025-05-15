@@ -1,14 +1,11 @@
 package gregtech.api.metatileentity.implementations;
 
-import static gregtech.api.enums.GTValues.AuthorFourIsTheNumber;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_EMS_HOUSING;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_EMS_HOUSING_GLOW;
 import static gregtech.common.modularui2.util.CommonGuiComponents.gridTemplate1by1;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.common.util.ForgeDirection;
-
-import org.apache.commons.lang3.ArrayUtils;
 
 import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
@@ -39,11 +36,6 @@ public class MTEHatchMagnet extends MTEHatch {
     @Override
     public boolean isFacingValid(ForgeDirection facing) {
         return true;
-    }
-
-    @Override
-    public String[] getDescription() {
-        return ArrayUtils.addAll(this.mDescriptionArray, AuthorFourIsTheNumber);
     }
 
     @Override
