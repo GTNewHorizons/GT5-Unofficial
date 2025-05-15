@@ -3,60 +3,25 @@ package gtPlusPlus.core.recipe;
 import net.minecraft.item.ItemStack;
 
 import gregtech.api.enums.ItemList;
-import gtPlusPlus.core.recipe.common.CI;
-import gtPlusPlus.core.util.minecraft.ItemUtils;
-import gtPlusPlus.core.util.minecraft.RecipeUtils;
+import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
+import gregtech.api.util.GTModHandler;
+import gregtech.api.util.GTOreDictUnificator;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 
 public class RecipesBatteries {
 
-    static ItemStack RECIPE_Battery_Sodium = GregtechItemList.Battery_RE_EV_Sodium.get(1);
-    static ItemStack RECIPE_Battery_Cadmium = GregtechItemList.Battery_RE_EV_Cadmium.get(1);
-    static ItemStack RECIPE_Battery_Lithium = GregtechItemList.Battery_RE_EV_Lithium.get(1);
-    static ItemStack GT_Battery_Sodium = ItemUtils.simpleMetaStack("gregtech:gt.metaitem.01", 32539, 1);
-    static ItemStack GT_Battery_Cadmium = ItemUtils.simpleMetaStack("gregtech:gt.metaitem.01", 32537, 1);
-    static ItemStack GT_Battery_Lithium = ItemUtils.simpleMetaStack("gregtech:gt.metaitem.01", 32538, 1);
-    static ItemStack machineTransformer_EV;
-
     public static void loadRecipes() {
-        machineTransformer_EV = ItemList.Transformer_EV_HV.get(1);
-        run();
+        addBatteryRecipe(GregtechItemList.Battery_RE_EV_Sodium.get(1), ItemList.Battery_RE_HV_Sodium.get(1));
+        addBatteryRecipe(GregtechItemList.Battery_RE_EV_Cadmium.get(1), ItemList.Battery_RE_HV_Cadmium.get(1));
+        addBatteryRecipe(GregtechItemList.Battery_RE_EV_Lithium.get(1), ItemList.Battery_RE_HV_Lithium.get(1));
     }
 
-    private static void run() {
-
-        RecipeUtils.addShapedGregtechRecipe(
-            GT_Battery_Sodium,
-            RecipesMachines.cableTier4,
-            GT_Battery_Sodium,
-            CI.circuitTier3,
-            machineTransformer_EV,
-            CI.circuitTier3,
-            GT_Battery_Sodium,
-            RecipesMachines.cableTier4,
-            GT_Battery_Sodium,
-            RECIPE_Battery_Sodium);
-        RecipeUtils.addShapedGregtechRecipe(
-            GT_Battery_Cadmium,
-            RecipesMachines.cableTier4,
-            GT_Battery_Cadmium,
-            CI.circuitTier3,
-            machineTransformer_EV,
-            CI.circuitTier3,
-            GT_Battery_Cadmium,
-            RecipesMachines.cableTier4,
-            GT_Battery_Cadmium,
-            RECIPE_Battery_Cadmium);
-        RecipeUtils.addShapedGregtechRecipe(
-            GT_Battery_Lithium,
-            RecipesMachines.cableTier4,
-            GT_Battery_Lithium,
-            CI.circuitTier3,
-            machineTransformer_EV,
-            CI.circuitTier3,
-            GT_Battery_Lithium,
-            RecipesMachines.cableTier4,
-            GT_Battery_Lithium,
-            RECIPE_Battery_Lithium);
+    private static void addBatteryRecipe(ItemStack quad, ItemStack single) {
+        GTModHandler.addCraftingRecipe(
+            quad,
+            new Object[] { "BWB", "CTC", "BWB", 'B', single, 'W',
+                GTOreDictUnificator.get(OrePrefixes.cableGt04, Materials.Gold, 1), 'C', "circuitAdvanced", 'T',
+                ItemList.Transformer_EV_HV.get(1) });
     }
 }

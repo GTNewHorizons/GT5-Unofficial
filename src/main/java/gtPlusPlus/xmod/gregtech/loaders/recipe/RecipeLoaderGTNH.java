@@ -29,13 +29,22 @@ public class RecipeLoaderGTNH {
             .eut(TierEU.RECIPE_LV)
             .addTo(fluidSolidifierRecipes);
 
-        // MK4
+        // MK3
         GTValues.RA.stdBuilder()
             .fluidInputs(Materials.Plutonium241.getMolten(144), Materials.Helium.getGas(1000))
             .fluidOutputs(MaterialsElements.getInstance().CURIUM.getFluidStack(144))
             .duration(4 * SECONDS + 16 * TICKS)
             .eut(98304)
-            .metadata(FUSION_THRESHOLD, 500_000_000)
+            .metadata(FUSION_THRESHOLD, 500_000_000L)
+            .addTo(fusionRecipes);
+
+        // MK4
+        GTValues.RA.stdBuilder()
+            .fluidInputs(MaterialsElements.getInstance().CURIUM.getFluidStack(144), Materials.Helium.getPlasma(144))
+            .fluidOutputs(MaterialsElements.getInstance().CALIFORNIUM.getFluidStack(144))
+            .duration(1 * SECONDS + 12 * TICKS)
+            .eut(196608)
+            .metadata(FUSION_THRESHOLD, 750_000_000L)
             .addTo(fusionRecipes);
 
         GTValues.RA.stdBuilder()
@@ -43,7 +52,7 @@ public class RecipeLoaderGTNH {
             .fluidOutputs(Materials.Flerovium.getMolten(144))
             .duration(8 * SECONDS)
             .eut(196608)
-            .metadata(FUSION_THRESHOLD, 1_000_000_000)
+            .metadata(FUSION_THRESHOLD, 1_000_000_000L)
             .addTo(fusionRecipes);
 
         GTValues.RA.stdBuilder()
@@ -51,7 +60,7 @@ public class RecipeLoaderGTNH {
             .fluidOutputs(new FluidStack(MaterialsElements.getInstance().BROMINE.getPlasma(), 144))
             .duration(1 * SECONDS + 12 * TICKS)
             .eut(196608)
-            .metadata(FUSION_THRESHOLD, 1_000_000_000)
+            .metadata(FUSION_THRESHOLD, 1_000_000_000L)
             .addTo(fusionRecipes);
 
         GTValues.RA.stdBuilder()
@@ -59,7 +68,7 @@ public class RecipeLoaderGTNH {
             .fluidOutputs(new FluidStack(MaterialsElements.getInstance().TECHNETIUM.getPlasma(), 288))
             .duration(3 * SECONDS + 4 * TICKS)
             .eut(196608)
-            .metadata(FUSION_THRESHOLD, 800_000_000)
+            .metadata(FUSION_THRESHOLD, 800_000_000L)
             .addTo(fusionRecipes);
     }
 }

@@ -12,11 +12,7 @@ import static gregtech.api.enums.MetaTileEntityIDs.SimpleDustWasher_ZPM;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
 import static gtPlusPlus.api.recipe.GTPPRecipeMaps.simpleWasherRecipes;
 
-import java.util.List;
-
 import net.minecraft.item.ItemStack;
-
-import com.google.common.collect.ImmutableList;
 
 import bartworks.system.material.Werkstoff;
 import gregtech.api.enums.GTValues;
@@ -27,7 +23,6 @@ import gregtech.api.enums.SubTag;
 import gregtech.api.metatileentity.implementations.MTEBasicMachineWithRecipe;
 import gregtech.api.metatileentity.implementations.MTEBasicMachineWithRecipe.SpecialEffects;
 import gregtech.api.util.GTOreDictUnificator;
-import gtPlusPlus.api.objects.data.Quad;
 import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
@@ -42,47 +37,54 @@ public class GregtechSimpleWasher {
         // The unlocalized names here have inconsistent numbering because there only used to be a simple washer
         // every other tier, and they were numbered numerically. In order to maintain backwards compatibility,
         // the tier numbers need to stay as they were.
-        List<Quad<GregtechItemList, Integer, String, String>> washers = ImmutableList.of(
-            new Quad<>(
-                GregtechItemList.SimpleDustWasher_LV,
-                SimpleDustWasher_LV.ID,
-                "simplewasher.01.tier.06",
-                "Simple Washer I"),
-            new Quad<>(
-                GregtechItemList.SimpleDustWasher_MV,
-                SimpleDustWasher_MV.ID,
-                "simplewasher.01.tier.02",
-                "Simple Washer II"),
-            new Quad<>(
-                GregtechItemList.SimpleDustWasher_HV,
-                SimpleDustWasher_HV.ID,
-                "simplewasher.01.tier.07",
-                "Simple Washer III"),
-            new Quad<>(
-                GregtechItemList.SimpleDustWasher_EV,
-                SimpleDustWasher_EV.ID,
-                "simplewasher.01.tier.03",
-                "Simple Washer IV"),
-            new Quad<>(
-                GregtechItemList.SimpleDustWasher_IV,
-                SimpleDustWasher_IV.ID,
-                "simplewasher.01.tier.08",
-                "Simple Washer V"),
-            new Quad<>(
-                GregtechItemList.SimpleDustWasher_LuV,
-                SimpleDustWasher_LuV.ID,
-                "simplewasher.01.tier.04",
-                "Simple Washer VI"),
-            new Quad<>(
-                GregtechItemList.SimpleDustWasher_ZPM,
-                SimpleDustWasher_ZPM.ID,
-                "simplewasher.01.tier.09",
-                "Simple Washer VII"),
-            new Quad<>(
-                GregtechItemList.SimpleDustWasher_UV,
-                SimpleDustWasher_UV.ID,
-                "simplewasher.01.tier.05",
-                "Simple Washer VIII"));
+        registerSimpleWasher(
+            GregtechItemList.SimpleDustWasher_LV,
+            SimpleDustWasher_LV.ID,
+            "simplewasher.01.tier.06",
+            "Simple Washer I",
+            1);
+        registerSimpleWasher(
+            GregtechItemList.SimpleDustWasher_MV,
+            SimpleDustWasher_MV.ID,
+            "simplewasher.01.tier.02",
+            "Simple Washer II",
+            2);
+        registerSimpleWasher(
+            GregtechItemList.SimpleDustWasher_HV,
+            SimpleDustWasher_HV.ID,
+            "simplewasher.01.tier.07",
+            "Simple Washer III",
+            3);
+        registerSimpleWasher(
+            GregtechItemList.SimpleDustWasher_EV,
+            SimpleDustWasher_EV.ID,
+            "simplewasher.01.tier.03",
+            "Simple Washer IV",
+            4);
+        registerSimpleWasher(
+            GregtechItemList.SimpleDustWasher_IV,
+            SimpleDustWasher_IV.ID,
+            "simplewasher.01.tier.08",
+            "Simple Washer V",
+            5);
+        registerSimpleWasher(
+            GregtechItemList.SimpleDustWasher_LuV,
+            SimpleDustWasher_LuV.ID,
+            "simplewasher.01.tier.04",
+            "Simple Washer VI",
+            6);
+        registerSimpleWasher(
+            GregtechItemList.SimpleDustWasher_ZPM,
+            SimpleDustWasher_ZPM.ID,
+            "simplewasher.01.tier.09",
+            "Simple Washer VII",
+            7);
+        registerSimpleWasher(
+            GregtechItemList.SimpleDustWasher_UV,
+            SimpleDustWasher_UV.ID,
+            "simplewasher.01.tier.05",
+            "Simple Washer VIII",
+            8);
 
         GregtechItemList.SimpleDustWasher_ULV.set(
             new MTEBasicMachineWithRecipe(
@@ -101,30 +103,25 @@ public class GregtechSimpleWasher {
                 "SIMPLE_WASHER",
                 null).setRecipeCatalystPriority(-11)
                     .getStackForm(1L));
+    }
 
-        for (int i = 0; i < washers.size(); i++) {
-            Quad<GregtechItemList, Integer, String, String> washer = washers.get(i);
-            int tier = i + 1;
-            washer.getKey()
-                .set(
-                    new MTEBasicMachineWithRecipe(
-                        washer.getValue_1(),
-                        washer.getValue_2(),
-                        washer.getValue_3(),
-                        tier,
-                        new String[] { "It's like an automatic Cauldron for washing dusts.",
-                            GTPPCore.GT_Tooltip.get() },
-                        simpleWasherRecipes,
-                        1,
-                        1,
-                        true,
-                        SoundResource.NONE,
-                        SpecialEffects.NONE,
-                        "SIMPLE_WASHER",
-                        null).setRecipeCatalystPriority(-tier)
-                            .getStackForm(1L));
-        }
-
+    private static void registerSimpleWasher(GregtechItemList washer, int id, String unloc, String loc, int tier) {
+        washer.set(
+            new MTEBasicMachineWithRecipe(
+                id,
+                unloc,
+                loc,
+                tier,
+                new String[] { "It's like an automatic Cauldron for washing dusts.", GTPPCore.GT_Tooltip.get() },
+                simpleWasherRecipes,
+                1,
+                1,
+                true,
+                SoundResource.NONE,
+                SpecialEffects.NONE,
+                "SIMPLE_WASHER",
+                null).setRecipeCatalystPriority(-tier)
+                    .getStackForm(1L));
     }
 
     private static boolean generateDirtyDustRecipes() {

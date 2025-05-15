@@ -44,26 +44,23 @@ import com.gtnewhorizon.structurelib.structure.IStructureElement;
 
 import bartworks.API.BioVatLogicAdder;
 import bartworks.API.BorosilicateGlass;
-import bartworks.API.GlassTier;
 import bartworks.MainMod;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OreDictNames;
 import gregtech.api.enums.ToolDictNames;
 import gregtech.api.interfaces.IItemContainer;
 import gregtech.api.objects.ItemData;
+import gregtech.api.util.CustomGlyphs;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTShapedRecipe;
 import gregtech.api.util.GTUtility;
+import gregtech.api.util.GlassTier;
 
 public class BWUtil {
 
-    @Deprecated
-    public static final int STANDART = 0;
-    @Deprecated
-    public static final int LOWGRAVITY = -100;
     @Deprecated
     public static final int CLEANROOM = -200;
 
@@ -92,7 +89,7 @@ public class BWUtil {
         char[] nu = new char[chars.length];
         for (int i = 0; i < chars.length; i++) {
             nu[i] = switch (chars[i]) {
-                case '0' -> '\u2080';
+                case '0' -> CustomGlyphs.SUBSCRIPT0.charAt(0);
                 case '1' -> '\u2081';
                 case '2' -> '\u2082';
                 case '3' -> '\u2083';
@@ -102,6 +99,7 @@ public class BWUtil {
                 case '7' -> '\u2087';
                 case '8' -> '\u2088';
                 case '9' -> '\u2089';
+                case '?' -> CustomGlyphs.SUBSCRIPT_QUESTION_MARK.charAt(0);
                 default -> chars[i];
             };
         }
@@ -114,7 +112,7 @@ public class BWUtil {
         char[] nu = new char[chars.length];
         for (int i = 0; i < chars.length; i++) {
             nu[i] = switch (chars[i]) {
-                case '0' -> '\u2080';
+                case '0' -> CustomGlyphs.SUBSCRIPT0.charAt(0);
                 case '1' -> '\u2081';
                 case '2' -> '\u2082';
                 case '3' -> '\u2083';
@@ -124,6 +122,7 @@ public class BWUtil {
                 case '7' -> '\u2087';
                 case '8' -> '\u2088';
                 case '9' -> '\u2089';
+                case '?' -> CustomGlyphs.SUBSCRIPT_QUESTION_MARK.charAt(0);
                 default -> chars[i];
             };
         }
@@ -135,16 +134,16 @@ public class BWUtil {
         char[] nu = new char[chars.length];
         for (int i = 0; i < chars.length; i++) {
             nu[i] = switch (chars[i]) {
-                case '0' -> '\u2070';
-                case '1' -> '\u2071';
-                case '2' -> '\u00B2';
-                case '3' -> '\u00B3';
-                case '4' -> '\u2074';
-                case '5' -> '\u2075';
-                case '6' -> '\u2076';
-                case '7' -> '\u2077';
-                case '8' -> '\u2078';
-                case '9' -> '\u2079';
+                case '0' -> CustomGlyphs.SUPERSCRIPT0.charAt(0);
+                case '1' -> CustomGlyphs.SUPERSCRIPT1.charAt(0);
+                case '2' -> CustomGlyphs.SUPERSCRIPT2.charAt(0);
+                case '3' -> CustomGlyphs.SUPERSCRIPT3.charAt(0);
+                case '4' -> CustomGlyphs.SUPERSCRIPT4.charAt(0);
+                case '5' -> CustomGlyphs.SUPERSCRIPT5.charAt(0);
+                case '6' -> CustomGlyphs.SUPERSCRIPT6.charAt(0);
+                case '7' -> CustomGlyphs.SUPERSCRIPT7.charAt(0);
+                case '8' -> CustomGlyphs.SUPERSCRIPT8.charAt(0);
+                case '9' -> CustomGlyphs.SUPERSCRIPT9.charAt(0);
                 default -> chars[i];
             };
         }
@@ -213,23 +212,6 @@ public class BWUtil {
         return 0;
     }
 
-    /**
-     * @deprecated Use stuff in {@link BorosilicateGlass} instead
-     */
-    @Deprecated
-    public static byte getTierFromGlasMeta(int meta) {
-        return switch (meta) {
-            case 1 -> 4;
-            case 2, 12 -> 5;
-            case 3 -> 6;
-            case 4 -> 7;
-            case 5 -> 8;
-            case 13 -> 9;
-            case 14 -> 10;
-            default -> 3;
-        };
-    }
-
     public static EnumRarity getRarityFromByte(byte b) {
         return switch (b) {
             case 1 -> EnumRarity.uncommon;
@@ -282,6 +264,10 @@ public class BWUtil {
         return ret;
     }
 
+    /**
+     * @deprecated use gregtech.api.util.GTStructureUtility.chainAllGlasses
+     */
+    @Deprecated
     public static <T> IStructureElement<T> ofGlassTiered(byte mintier, byte maxtier, byte notset,
         BiConsumer<T, Byte> setter, Function<T, Byte> getter, int aDots) {
         return new IStructureElement<>() {
@@ -295,7 +281,7 @@ public class BWUtil {
                 Block block = world.getBlock(x, y, z);
                 int meta = world.getBlockMetadata(x, y, z);
 
-                int glassTier = GlassTier.getGlassTier(block, meta);
+                int glassTier = GlassTier.getGlassBlockTier(block, meta);
 
                 // If it is not a glass, the tier will be 0.
                 if (glassTier == 0 || glassTier == notset || glassTier < mintier || glassTier > maxtier) return false;
@@ -310,7 +296,7 @@ public class BWUtil {
                 Block block = world.getBlock(x, y, z);
                 int meta = world.getBlockMetadata(x, y, z);
 
-                int glassTier = GlassTier.getGlassTier(block, meta);
+                int glassTier = GlassTier.getGlassBlockTier(block, meta);
 
                 // If it is not a glass, the tier will be 0.
                 return glassTier != 0 && glassTier != notset && glassTier >= mintier && glassTier <= maxtier;
@@ -335,6 +321,7 @@ public class BWUtil {
         };
     }
 
+    @Deprecated
     public static <T> IStructureElement<T> ofGlassTieredMixed(byte mintier, byte maxtier, int aDots) {
         return new IStructureElement<>() {
 
@@ -346,7 +333,7 @@ public class BWUtil {
                 if (world.isAirBlock(x, y, z)) return false;
                 Block block = world.getBlock(x, y, z);
                 int meta = world.getBlockMetadata(x, y, z);
-                int glassTier = GlassTier.getGlassTier(block, meta);
+                int glassTier = GlassTier.getGlassBlockTier(block, meta);
 
                 if (glassTier == 0) return false; // Not a glass.
                 return glassTier >= mintier && glassTier <= maxtier;

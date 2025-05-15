@@ -22,6 +22,7 @@ public abstract class MixinThaumcraftAlchemyFurnacePollution extends TileEntity 
             value = "FIELD",
             target = "thaumcraft/common/tiles/TileAlchemyFurnace.furnaceBurnTime:I",
             opcode = Opcodes.PUTFIELD,
+            ordinal = 0,
             remap = false))
     private void gt5u$addPollution(CallbackInfo ci) {
         if (!this.worldObj.isRemote && (this.worldObj.getTotalWorldTime() % 20) == 0) {

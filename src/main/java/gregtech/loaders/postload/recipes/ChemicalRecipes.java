@@ -865,6 +865,28 @@ public class ChemicalRecipes implements Runnable {
             .eut(8)
             .addTo(UniversalChemical);
 
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Jasper, 3),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Magnesium, 2))
+            .itemOutputs(
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Silicon, 1),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Magnesia, 4))
+            .duration(5 * SECONDS)
+            .eut(8)
+            .addTo(UniversalChemical);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Opal, 3),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Magnesium, 2))
+            .itemOutputs(
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Silicon, 1),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Magnesia, 4))
+            .duration(5 * SECONDS)
+            .eut(8)
+            .addTo(UniversalChemical);
+
         // 3SiF4 + 4Al = 3Si + 4AlF3
 
         GTValues.RA.stdBuilder()
@@ -4797,7 +4819,7 @@ public class ChemicalRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                GTUtility.getIntegratedCircuit(8),
+                GTUtility.getIntegratedCircuit(7),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Silver, 9),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Aluminiumoxide, 9))
             .fluidInputs(Materials.Ethylene.getGas(9000), Materials.Oxygen.getGas(9000))

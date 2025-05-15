@@ -21,9 +21,12 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.joml.Vector4i;
 
 import com.google.common.collect.ImmutableList;
@@ -190,6 +193,15 @@ public class MTEBetterJukebox extends MTEBasicMachine implements IAddUIWidgets, 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new MTEBetterJukebox(this.mName, this.mTier, this.mDescriptionArray, this.mTextures);
+    }
+
+    @Nullable
+    @Override
+    public <T> T getCapability(@NotNull Class<T> capability, @NotNull ForgeDirection side) {
+        if (capability == ISoundP2PHandler.class) {
+            return capability.cast(this);
+        }
+        return super.getCapability(capability, side);
     }
 
     @Override
@@ -442,12 +454,23 @@ public class MTEBetterJukebox extends MTEBasicMachine implements IAddUIWidgets, 
 
     @Override
     public String[] getInfoData() {
-        return new String[] { "Jukebox UUID: " + ((jukeboxUuid == UNSET_UUID) ? "unset" : jukeboxUuid),
-            "Loop mode: " + loopMode, "Shuffle mode: " + shuffleMode, "Played the disc for [ms]: " + discProgressMs,
-            "Current disc duration [ms]: " + discDurationMs,
-            "Playback range [blocks]: " + BalanceMath.volumeToAttenuationDistance(playbackVolume),
-            "P2P range [blocks]: " + BalanceMath.volumeToAttenuationDistance(playbackVolume),
-            "Raw playback strength: " + playbackVolume, "Raw p2p strength: " + p2pVolume };
+        return new String[] {
+            StatCollector.translateToLocalFormatted(
+                "GT5U.infodata.juke_box.uuid",
+                (jukeboxUuid == UNSET_UUID) ? StatCollector.translateToLocal("GT5U.infodata.juke_box.uuid.unset")
+                    : jukeboxUuid),
+            StatCollector.translateToLocalFormatted("GT5U.infodata.juke_box.loop_mode", loopMode),
+            StatCollector.translateToLocalFormatted("GT5U.infodata.juke_box.shuffle_mode", shuffleMode),
+            StatCollector.translateToLocalFormatted("GT5U.infodata.juke_box.played", discProgressMs),
+            StatCollector.translateToLocalFormatted("GT5U.infodata.juke_box.current", discDurationMs),
+            StatCollector.translateToLocalFormatted(
+                "GT5U.infodata.juke_box.playback_range",
+                BalanceMath.volumeToAttenuationDistance(playbackVolume)),
+            StatCollector.translateToLocalFormatted(
+                "GT5U.infodata.juke_box.p2p_range",
+                BalanceMath.volumeToAttenuationDistance(playbackVolume)),
+            StatCollector.translateToLocalFormatted("GT5U.infodata.juke_box.raw_playback_strength", playbackVolume),
+            StatCollector.translateToLocalFormatted("GT5U.infodata.juke_box.raw_p2p_strength", p2pVolume) };
     }
 
     @Override

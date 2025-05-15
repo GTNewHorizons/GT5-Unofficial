@@ -1244,8 +1244,9 @@ public class MTEIndustrialApiary extends MTEBasicMachine
                         final String energyreq = GTUtility.formatNumbers(
                             (int) ((float) MTEIndustrialApiary.baseEUtUsage * getEnergyModifier() * getAcceleration())
                                 + getAdditionalEnergyUsage());
-                        final String Temp = StatCollector.translateToLocal(getTemperature().getName());
-                        final String Hum = StatCollector.translateToLocal(getHumidity().getName());
+                        // The localization in Forestry is written like this.
+                        final String Temp = AlleleManager.climateHelper.toDisplay(getTemperature());
+                        final String Hum = AlleleManager.climateHelper.toDisplay(getHumidity());
                         if (getUsedQueen() != null
                             && BeeManager.beeRoot.isMember(getUsedQueen(), EnumBeeType.QUEEN.ordinal())) {
                             final IBee bee = BeeManager.beeRoot.getMember(getUsedQueen());
@@ -1465,10 +1466,8 @@ public class MTEIndustrialApiary extends MTEBasicMachine
         @Override
         public ItemStack transferStackInSlot(EntityPlayer aPlayer, int aSlotIndex) {
             final Slot s = getSlot(aSlotIndex);
-            if (s == null) return super.transferStackInSlot(aPlayer, aSlotIndex);
-            if (aSlotIndex >= playerInventorySlot) return super.transferStackInSlot(aPlayer, aSlotIndex);
+            if (s instanceof ApiarySlot) return super.transferStackInSlot(aPlayer, aSlotIndex);
             final ItemStack aStack = s.getStack();
-            if (aStack == null) return super.transferStackInSlot(aPlayer, aSlotIndex);
             if (!GTApiaryUpgrade.isUpgrade(aStack)) return super.transferStackInSlot(aPlayer, aSlotIndex);
             for (int i = playerInventorySlot + 2; i < playerInventorySlot + 2 + 4; i++) {
                 final Slot iSlot = getSlot(i);

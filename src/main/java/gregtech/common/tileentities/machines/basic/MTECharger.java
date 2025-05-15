@@ -17,10 +17,6 @@ public class MTECharger extends MTEBasicBatteryBuffer {
         super(aID, aName, aNameRegional, aTier, aDescription, aSlotCount);
     }
 
-    public MTECharger(String aName, int aTier, String aDescription, ITexture[][][] aTextures, int aSlotCount) {
-        super(aName, aTier, aDescription, aTextures, aSlotCount);
-    }
-
     public MTECharger(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures, int aSlotCount) {
         super(aName, aTier, aDescription, aTextures, aSlotCount);
     }

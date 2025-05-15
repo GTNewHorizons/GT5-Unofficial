@@ -40,7 +40,6 @@ public class FurnaceBackend extends NonGTBackend {
                 .itemOutputs(output)
                 .duration(128)
                 .eut(4)
-                .noOptimize()
                 .build()
                 .orElse(null);
     }

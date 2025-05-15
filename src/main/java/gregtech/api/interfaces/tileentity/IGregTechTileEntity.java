@@ -8,8 +8,13 @@ import javax.annotation.Nonnull;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.NetworkManager;
+import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.IFluidHandler;
+
+import com.gtnewhorizon.gtnhlib.capability.CapabilityProvider;
 
 import gregtech.api.interfaces.IDescribable;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -26,7 +31,7 @@ import gregtech.api.util.shutdown.ShutDownReason;
  */
 public interface IGregTechTileEntity extends ITexturedTileEntity, ICoverable, IFluidHandler, ITurnable,
     IGregTechDeviceInformation, IUpgradableMachine, IDigitalChest, IDescribable, IMachineBlockUpdateable,
-    IGregtechWailaProvider, IGetGUITextureSet, IAddInventorySlots {
+    IGregtechWailaProvider, IGetGUITextureSet, IAddInventorySlots, CapabilityProvider {
 
     /**
      * @return the MetaID of the Block or the MetaTileEntity ID.
@@ -68,6 +73,20 @@ public interface IGregTechTileEntity extends ITexturedTileEntity, ICoverable, IF
      * Causes the Machine to send its initial Data, like Covers and its ID.
      */
     void issueClientUpdate();
+
+    /**
+     * Causes the machine to send a tile entity description packet to the client.
+     * Only has an effect on the server.
+     * 
+     * @see IMetaTileEntity#getDescriptionData()
+     * @see IMetaTileEntity#onDescriptionPacket(NBTTagCompound)
+     * @see TileEntity#getDescriptionPacket()
+     * @see TileEntity#onDataPacket(NetworkManager, S35PacketUpdateTileEntity)
+     * @see net.minecraft.world.World#markBlockForUpdate(int, int, int)
+     */
+    default void issueTileUpdate() {
+
+    }
 
     /**
      * causes Explosion. Strength in Overload-EU

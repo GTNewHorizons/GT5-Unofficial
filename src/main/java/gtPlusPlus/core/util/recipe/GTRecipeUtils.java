@@ -31,10 +31,10 @@ public class GTRecipeUtils {
                 if (itemStack == null) {
                     continue;
                 }
-                if (isRegularProgrammableCircuit(itemStack) == -1) {
-                    itemInputsWithoutProgrammableCircuit.add(itemStack);
-                } else {
+                if (isRegularProgrammableCircuit(itemStack)) {
                     savedCircuit = itemStack;
+                } else {
+                    itemInputsWithoutProgrammableCircuit.add(itemStack);
                 }
             }
             GTRecipe newRecipe = new GTRecipe(

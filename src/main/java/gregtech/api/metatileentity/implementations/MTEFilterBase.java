@@ -18,17 +18,8 @@ public abstract class MTEFilterBase extends MTEBuffer {
     protected boolean invertFilter = false;
 
     public MTEFilterBase(int aID, String aName, String aNameRegional, int aTier, int aInvSlotCount,
-        String aDescription) {
-        super(aID, aName, aNameRegional, aTier, aInvSlotCount, aDescription);
-    }
-
-    public MTEFilterBase(int aID, String aName, String aNameRegional, int aTier, int aInvSlotCount,
         String[] aDescription) {
         super(aID, aName, aNameRegional, aTier, aInvSlotCount, aDescription);
-    }
-
-    public MTEFilterBase(String aName, int aTier, int aInvSlotCount, String aDescription, ITexture[][][] aTextures) {
-        super(aName, aTier, aInvSlotCount, aDescription, aTextures);
     }
 
     public MTEFilterBase(String aName, int aTier, int aInvSlotCount, String[] aDescription, ITexture[][][] aTextures) {

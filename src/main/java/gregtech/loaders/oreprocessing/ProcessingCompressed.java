@@ -19,7 +19,8 @@ public class ProcessingCompressed implements IOreRecipeRegistrator {
     public void registerOre(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName,
         ItemStack aStack) {
         GTModHandler.removeRecipeByOutputDelayed(aStack);
-        CoverRegistry
-            .registerCover(aStack, TextureFactory.of(aMaterial.mIconSet.mTextures[72], aMaterial.mRGBa, false), null);
+        CoverRegistry.registerDecorativeCover(
+            aStack,
+            TextureFactory.of(aMaterial.mIconSet.mTextures[72], aMaterial.mRGBa, false));
     }
 }

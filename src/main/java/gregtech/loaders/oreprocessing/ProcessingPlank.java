@@ -10,9 +10,9 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 
 import gregtech.api.enums.GTValues;
-import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.items.MetaGeneratedItem;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
@@ -41,35 +41,19 @@ public class ProcessingPlank implements gregtech.api.interfaces.IOreRecipeRegist
                 .eut(8)
                 .addTo(latheRecipes);
             GTValues.RA.stdBuilder()
-                .itemInputs(
-                    GTUtility.copyAmount(1, aStack),
-                    GTOreDictUnificator.get(OrePrefixes.screw, Materials.Iron, 1L))
-                .itemOutputs(ItemList.Crate_Empty.get(1L))
-                .duration(10 * SECONDS)
-                .eut(1)
-                .addTo(assemblerRecipes);
-            GTValues.RA.stdBuilder()
-                .itemInputs(
-                    GTUtility.copyAmount(1, aStack),
-                    GTOreDictUnificator.get(OrePrefixes.screw, Materials.WroughtIron, 1L))
-                .itemOutputs(ItemList.Crate_Empty.get(1L))
-                .duration(10 * SECONDS)
-                .eut(1)
-                .addTo(assemblerRecipes);
-            GTValues.RA.stdBuilder()
-                .itemInputs(
-                    GTUtility.copyAmount(1, aStack),
-                    GTOreDictUnificator.get(OrePrefixes.screw, Materials.Steel, 1L))
-                .itemOutputs(ItemList.Crate_Empty.get(1L))
-                .duration(10 * SECONDS)
-                .eut(1)
-                .addTo(assemblerRecipes);
-            GTValues.RA.stdBuilder()
                 .itemInputs(GTUtility.copyAmount(8, aStack), GTUtility.getIntegratedCircuit(8))
                 .itemOutputs(new ItemStack(Blocks.chest, 1))
                 .duration(40 * SECONDS)
                 .eut(4)
                 .addTo(assemblerRecipes);
+
+            if (aStack.getItem() instanceof MetaGeneratedItem) {
+                // https://github.com/GTNewHorizons/GT-New-Horizons-Modpack/issues/19273
+                // "plankWood" from GT are also having other recipes in cutters, which causing recipe conflicts.
+                // And I don't think people would use this kind of plankWood to make wooden products, so just skipping
+                // these recipes to temporary fix this error.
+                return;
+            }
 
             if (aStack.getItemDamage() == 32767) {
                 for (byte i = 0; i < 64; i = (byte) (i + 1)) {

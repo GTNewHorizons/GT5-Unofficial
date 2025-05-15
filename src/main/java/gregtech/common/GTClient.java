@@ -33,7 +33,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.ChunkCoordIntPair;
-import net.minecraft.world.World;
 import net.minecraftforge.client.event.DrawBlockHighlightEvent;
 import net.minecraftforge.client.event.sound.SoundSetupEvent;
 import net.minecraftforge.common.MinecraftForge;
@@ -64,7 +63,6 @@ import gregtech.api.covers.CoverRegistry;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
-import gregtech.api.enums.SoundResource;
 import gregtech.api.gui.GUIColorOverride;
 import gregtech.api.gui.modularui.FallbackableSteamTexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
@@ -85,11 +83,11 @@ import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTMusicSystem;
 import gregtech.api.util.GTPlayedSound;
 import gregtech.api.util.GTUtility;
-import gregtech.api.util.WorldSpawnedEventBuilder;
 import gregtech.client.GTMouseEventHandler;
 import gregtech.client.SeekingOggCodec;
 import gregtech.common.blocks.BlockFrameBox;
 import gregtech.common.blocks.ItemMachines;
+import gregtech.common.config.Client;
 import gregtech.common.pollution.Pollution;
 import gregtech.common.pollution.PollutionRenderer;
 import gregtech.common.render.BlackholeRenderer;
@@ -98,6 +96,7 @@ import gregtech.common.render.FlaskRenderer;
 import gregtech.common.render.FluidDisplayStackRenderer;
 import gregtech.common.render.GTCapeRenderer;
 import gregtech.common.render.GTRendererBlock;
+import gregtech.common.render.GTRendererCasing;
 import gregtech.common.render.LaserRenderer;
 import gregtech.common.render.MetaGeneratedToolRenderer;
 import gregtech.common.render.WormholeRenderer;
@@ -360,7 +359,7 @@ public class GTClient extends GTProxy implements Runnable {
         if (tTile instanceof ICoverable iCoverable) {
             if (showCoverConnections) {
                 for (final ForgeDirection tSide : ForgeDirection.VALID_DIRECTIONS) {
-                    if (iCoverable.getCoverIDAtSide(tSide) != 0) tConnections |= tSide.flag;
+                    if (iCoverable.hasCoverAtSide(tSide)) tConnections |= tSide.flag;
                 }
             } else if (tTile instanceof BaseMetaTileEntity baseMetaTile && baseMetaTile.getAlignment() == null) {
                 if (!aIsSneaking) tConnections |= baseMetaTile.getFrontFacing().flag;
@@ -589,6 +588,8 @@ public class GTClient extends GTProxy implements Runnable {
     public void onPreLoad() {
         super.onPreLoad();
 
+        SoundSystemConfig.setNumberNormalChannels(Client.preference.maxNumSounds);
+
         MinecraftForge.EVENT_BUS.register(new ExtraIcons());
         Minecraft.getMinecraft()
             .getResourcePackRepository().rprMetadataSerializer
@@ -629,6 +630,7 @@ public class GTClient extends GTProxy implements Runnable {
     public void onLoad() {
         super.onLoad();
         GTRendererBlock.register();
+        GTRendererCasing.register();
         new DroneRender();
         new LaserRenderer();
         new WormholeRenderer();
@@ -824,7 +826,7 @@ public class GTClient extends GTProxy implements Runnable {
         if (GTUtility.isStackInList(aEvent.currentItem, GregTechAPI.sWireCutterList)
             || GTUtility.isStackInList(aEvent.currentItem, GregTechAPI.sSolderingToolList)
                 && aEvent.player.isSneaking()) {
-            if (((ICoverable) aTileEntity).getCoverIDAtSide(ForgeDirection.getOrientation(aEvent.target.sideHit)) == 0)
+            if (!((ICoverable) aTileEntity).hasCoverAtSide(ForgeDirection.getOrientation(aEvent.target.sideHit)))
                 drawGrid(aEvent, false, false, aEvent.player.isSneaking());
             return;
         }
@@ -832,9 +834,9 @@ public class GTClient extends GTProxy implements Runnable {
         if ((aEvent.currentItem == null && aEvent.player.isSneaking())
             || GTUtility.isStackInList(aEvent.currentItem, GregTechAPI.sCrowbarList)
             || GTUtility.isStackInList(aEvent.currentItem, GregTechAPI.sScrewdriverList)) {
-            if (((ICoverable) aTileEntity).getCoverIDAtSide(ForgeDirection.getOrientation(aEvent.target.sideHit)) == 0)
+            if (!((ICoverable) aTileEntity).hasCoverAtSide(ForgeDirection.getOrientation(aEvent.target.sideHit)))
                 for (final ForgeDirection tSide : ForgeDirection.VALID_DIRECTIONS) {
-                    if (((ICoverable) aTileEntity).getCoverIDAtSide(tSide) > 0) {
+                    if (((ICoverable) aTileEntity).hasCoverAtSide(tSide)) {
                         drawGrid(aEvent, true, false, true);
                         return;
                     }
@@ -843,12 +845,12 @@ public class GTClient extends GTProxy implements Runnable {
         }
 
         if (CoverRegistry.isCover(aEvent.currentItem)) {
-            if (((ICoverable) aTileEntity).getCoverIDAtSide(ForgeDirection.getOrientation(aEvent.target.sideHit)) == 0)
+            if (!((ICoverable) aTileEntity).hasCoverAtSide(ForgeDirection.getOrientation(aEvent.target.sideHit)))
                 drawGrid(aEvent, true, false, aEvent.player.isSneaking());
         }
 
         if (GTUtility.areStacksEqual(ItemList.Tool_Cover_Copy_Paste.get(1), aEvent.currentItem, true)) {
-            if (((ICoverable) aTileEntity).getCoverIDAtSide(ForgeDirection.getOrientation(aEvent.target.sideHit)) == 0)
+            if (!((ICoverable) aTileEntity).hasCoverAtSide(ForgeDirection.getOrientation(aEvent.target.sideHit)))
                 drawGrid(aEvent, true, false, aEvent.player.isSneaking());
         }
     }
@@ -873,11 +875,12 @@ public class GTClient extends GTProxy implements Runnable {
             GTMusicSystem.ClientSystem.tick();
 
             if (changeDetected > 0) changeDetected--;
-            final int newHideValue = shouldHeldItemHideThings();
-            if (newHideValue != hideValue) {
-                hideValue = newHideValue;
+            final boolean newHideValue = shouldHeldItemHideThings();
+            if (newHideValue != hideThings) {
+                hideThings = newHideValue;
                 changeDetected = 5;
             }
+            forceFullBlockBoundingBoxes = shouldHeldItemForceFullBlockBoundingBoxes();
             mAnimationTick++;
             if (mAnimationTick % 50L == 0L) {
                 mAnimationDirection = !mAnimationDirection;
@@ -966,65 +969,11 @@ public class GTClient extends GTProxy implements Runnable {
         return renderTickTime;
     }
 
-    @Override
-    public void doSonictronSound(ItemStack aStack, World aWorld, double aX, double aY, double aZ) {
-        if (GTUtility.isStackInvalid(aStack)) return;
-        String tString = SoundResource.NOTE_HARP.toString();
-        int i = 0;
-        int j = mSoundItems.size();
-        do {
-            if (i >= j) break;
-            if (GTUtility.areStacksEqual(mSoundItems.get(i), aStack)) {
-                tString = mSoundNames.get(i);
-                break;
-            }
-            i++;
-        } while (true);
-        if (tString.startsWith(SoundResource.RANDOM_EXPLODE.toString()))
-            if (aStack.stackSize == 3) tString = SoundResource.RANDOM_FUSE.toString();
-            else if (aStack.stackSize == 2) tString = "random.old_explode";
-        if (tString.startsWith("streaming.")) tString = switch (aStack.stackSize) {
-            case 1 -> // '\001'
-                tString + "13";
-            case 2 -> // '\002'
-                tString + "cat";
-            case 3 -> // '\003'
-                tString + "blocks";
-            case 4 -> // '\004'
-                tString + "chirp";
-            case 5 -> // '\005'
-                tString + "far";
-            case 6 -> // '\006'
-                tString + "mall";
-            case 7 -> // '\007'
-                tString + "mellohi";
-            case 8 -> // '\b'
-                tString + "stal";
-            case 9 -> // '\t'
-                tString + "strad";
-            case 10 -> // '\n'
-                tString + "ward";
-            case 11 -> // '\013'
-                tString + "11";
-            case 12 -> // '\f'
-                tString + "wait";
-            default -> tString + "wherearewenow";
-        };
-        if (tString.startsWith("streaming.")) {
-            new WorldSpawnedEventBuilder.RecordEffectEventBuilder().setIdentifier(tString.substring(10))
-                .setPosition(aX, aY, aZ)
-                .run();
-        } else {
-            new WorldSpawnedEventBuilder.SoundEventBuilder().setVolume(3f)
-                .setPitch(
-                    tString.startsWith("note.") ? (float) Math.pow(2D, (double) (aStack.stackSize - 13) / 12D) : 1.0F)
-                .setIdentifier(tString)
-                .setPosition(aX, aY, aZ)
-                .run();
-        }
-    }
+    private static boolean hideThings = false;
 
-    public static int hideValue = 0;
+    public static boolean shouldHideThings() {
+        return hideThings;
+    }
 
     /**
      * <p>
@@ -1037,37 +986,42 @@ public class GTClient extends GTProxy implements Runnable {
      */
     public static int changeDetected = 0;
 
-    private static int shouldHeldItemHideThings() {
-        try {
-            final EntityPlayer player = Minecraft.getMinecraft().thePlayer;
-            if (player == null) return 0;
-            final ItemStack tCurrentItem = player.getCurrentEquippedItem();
-            if (tCurrentItem == null) return 0;
-            final int[] ids = OreDictionary.getOreIDs(tCurrentItem);
-            int hide = 0;
-            for (int i : ids) {
-                if (OreDictionary.getOreName(i)
-                    .equals("craftingToolSolderingIron")) {
-                    hide |= 0x1;
-                    break;
-                }
+    private static boolean shouldHeldItemHideThings() {
+        final EntityPlayer player = Minecraft.getMinecraft().thePlayer;
+        if (player == null) return false;
+        final ItemStack tCurrentItem = player.getCurrentEquippedItem();
+        if (tCurrentItem == null) return false;
+        final int[] ids = OreDictionary.getOreIDs(tCurrentItem);
+        for (int i : ids) {
+            String oreName = OreDictionary.getOreName(i);
+            if (oreName != null && oreName.equals("craftingToolSolderingIron")) {
+                return true;
             }
-            if (GTUtility.isStackInList(tCurrentItem, GregTechAPI.sWrenchList)
-                || GTUtility.isStackInList(tCurrentItem, GregTechAPI.sHardHammerList)
-                || GTUtility.isStackInList(tCurrentItem, GregTechAPI.sSoftHammerList)
-                || GTUtility.isStackInList(tCurrentItem, GregTechAPI.sWireCutterList)
-                || GTUtility.isStackInList(tCurrentItem, GregTechAPI.sSolderingToolList)
-                || GTUtility.isStackInList(tCurrentItem, GregTechAPI.sCrowbarList)
-                || CoverRegistry.isCover(tCurrentItem)
-                || (tCurrentItem.getItem() instanceof ItemMachines
-                    && GregTechAPI.METATILEENTITIES[tCurrentItem.getItemDamage()] instanceof MetaPipeEntity
-                    && player.isSneaking())) {
-                hide |= 0x2;
-            }
-            return hide;
-        } catch (Exception e) {
-            return 0;
         }
+        return false;
+    }
+
+    private static boolean forceFullBlockBoundingBoxes;
+
+    public static boolean shouldForceFullBlockBoundingBoxes() {
+        return forceFullBlockBoundingBoxes;
+    }
+
+    private static boolean shouldHeldItemForceFullBlockBoundingBoxes() {
+        final EntityPlayer player = Minecraft.getMinecraft().thePlayer;
+        if (player == null) return false;
+        final ItemStack tCurrentItem = player.getCurrentEquippedItem();
+        if (tCurrentItem == null) return false;
+        return GTUtility.isStackInList(tCurrentItem, GregTechAPI.sWrenchList)
+            || GTUtility.isStackInList(tCurrentItem, GregTechAPI.sHardHammerList)
+            || GTUtility.isStackInList(tCurrentItem, GregTechAPI.sSoftHammerList)
+            || GTUtility.isStackInList(tCurrentItem, GregTechAPI.sWireCutterList)
+            || GTUtility.isStackInList(tCurrentItem, GregTechAPI.sSolderingToolList)
+            || GTUtility.isStackInList(tCurrentItem, GregTechAPI.sCrowbarList)
+            || CoverRegistry.isCover(tCurrentItem)
+            || (tCurrentItem.getItem() instanceof ItemMachines
+                && GregTechAPI.METATILEENTITIES[tCurrentItem.getItemDamage()] instanceof MetaPipeEntity
+                && player.isSneaking());
     }
 
     public static void recieveChunkPollutionPacket(ChunkCoordIntPair chunk, int pollution) {

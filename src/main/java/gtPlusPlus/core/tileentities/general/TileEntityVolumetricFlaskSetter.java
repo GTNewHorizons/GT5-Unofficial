@@ -15,7 +15,6 @@ import net.minecraftforge.fluids.FluidStack;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.container.ContainerVolumetricFlaskSetter;
 import gtPlusPlus.core.inventories.InventoryVolumetricFlaskSetter;
-import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import gtPlusPlus.xmod.gregtech.common.helpers.VolumetricFlaskHelper;
 
@@ -42,7 +41,7 @@ public class TileEntityVolumetricFlaskSetter extends TileEntity implements ISide
 
     public void setCustomValue(int aVal) {
         log("Old Value: " + this.aCustomValue);
-        this.aCustomValue = (short) MathUtils.balance(aVal, 0, Short.MAX_VALUE);
+        this.aCustomValue = aVal;
         log("New Value: " + this.aCustomValue);
         markDirty();
     }

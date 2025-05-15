@@ -45,10 +45,6 @@ public class MTETransformer extends MTETieredMachineBlock {
         super(aID, aName, aNameRegional, aTier, 0, aDescription);
     }
 
-    public MTETransformer(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {
-        super(aName, aTier, 0, aDescription, aTextures);
-    }
-
     public MTETransformer(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, 0, aDescription, aTextures);
     }
@@ -99,11 +95,6 @@ public class MTETransformer extends MTETieredMachineBlock {
 
     @Override
     public boolean isAccessAllowed(EntityPlayer aPlayer) {
-        return true;
-    }
-
-    @Override
-    public boolean isSimpleMachine() {
         return true;
     }
 

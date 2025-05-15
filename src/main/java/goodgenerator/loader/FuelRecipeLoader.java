@@ -67,7 +67,6 @@ public class FuelRecipeLoader {
             .duration(5 * SECONDS)
             .eut(1_100_000)
             .metadata(NFR_COIL_TIER, 1)
-            .noOptimize()
             .addTo(naquadahFuelRefineFactoryRecipes);
 
         // Alternative higher tier recipe
@@ -84,7 +83,6 @@ public class FuelRecipeLoader {
             .duration(5 * SECONDS)
             .eut(2_100_000)
             .metadata(NFR_COIL_TIER, 1)
-            .noOptimize()
             .addTo(naquadahFuelRefineFactoryRecipes);
 
         // MK IV Naquadah Fuel
@@ -99,7 +97,6 @@ public class FuelRecipeLoader {
             .duration(8 * SECONDS)
             .eut(46_000_000)
             .metadata(NFR_COIL_TIER, 2)
-            .noOptimize()
             .addTo(naquadahFuelRefineFactoryRecipes);
 
         // Alternate higher tier recipe
@@ -116,7 +113,6 @@ public class FuelRecipeLoader {
             .duration(8 * SECONDS)
             .eut(75_000_000)
             .metadata(NFR_COIL_TIER, 2)
-            .noOptimize()
             .addTo(naquadahFuelRefineFactoryRecipes);
 
         // One-step recipe to allow easier scaling for MK VI
@@ -135,7 +131,6 @@ public class FuelRecipeLoader {
             .duration(2 * TICKS)
             .eut(350_000_000)
             .metadata(NFR_COIL_TIER, 4)
-            .noOptimize()
             .addTo(naquadahFuelRefineFactoryRecipes);
 
         // MK V Naquadah Fuel
@@ -150,7 +145,6 @@ public class FuelRecipeLoader {
             .duration(10 * SECONDS)
             .eut(100_000_000)
             .metadata(NFR_COIL_TIER, 2)
-            .noOptimize()
             .addTo(naquadahFuelRefineFactoryRecipes);
 
         // Alternate higher tier recipe
@@ -167,7 +161,6 @@ public class FuelRecipeLoader {
             .duration(2 * SECONDS + 10 * TICKS)
             .eut(300_000_000)
             .metadata(NFR_COIL_TIER, 3)
-            .noOptimize()
             .addTo(naquadahFuelRefineFactoryRecipes);
 
         // MK VI Naquadah Fuel
@@ -182,7 +175,6 @@ public class FuelRecipeLoader {
             .duration(12 * SECONDS)
             .eut(320_000_000)
             .metadata(NFR_COIL_TIER, 3)
-            .noOptimize()
             .addTo(naquadahFuelRefineFactoryRecipes);
 
         // Alternate higher tier recipe
@@ -198,7 +190,6 @@ public class FuelRecipeLoader {
             .duration(3 * SECONDS)
             .eut(TierEU.RECIPE_UXV)
             .metadata(NFR_COIL_TIER, 4)
-            .noOptimize()
             .addTo(naquadahFuelRefineFactoryRecipes);
     }
 }

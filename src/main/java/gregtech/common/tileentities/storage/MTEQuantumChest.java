@@ -9,6 +9,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.util.StatCollector;
 
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -22,10 +23,6 @@ public class MTEQuantumChest extends MTEDigitalChestBase {
 
     public MTEQuantumChest(int aID, String aName, String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional, aTier);
-    }
-
-    public MTEQuantumChest(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {
-        super(aName, aTier, aDescription, aTextures);
     }
 
     public MTEQuantumChest(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
@@ -64,12 +61,12 @@ public class MTEQuantumChest extends MTEDigitalChestBase {
     }
 
     @Override
-    protected String chestName() {
-        return "Quantum Chest";
+    protected String localizedChestName() {
+        return StatCollector.translateToLocal("GT5U.infodata.quantum_chest.name");
     }
 
     @Override
-    protected int getItemCount() {
+    public int getItemCount() {
         return mItemCount;
     }
 
@@ -79,12 +76,12 @@ public class MTEQuantumChest extends MTEDigitalChestBase {
     }
 
     @Override
-    protected ItemStack getItemStack() {
+    public ItemStack getItemStack() {
         return mItemStack;
     }
 
     @Override
-    protected void setItemStack(ItemStack s) {
+    public void setItemStack(ItemStack s) {
         mItemStack = s;
     }
 

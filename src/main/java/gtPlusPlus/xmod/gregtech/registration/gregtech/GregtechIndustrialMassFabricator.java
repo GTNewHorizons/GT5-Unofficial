@@ -41,7 +41,6 @@ public class GregtechIndustrialMassFabricator {
             .fluidOutputs(Materials.UUAmplifier.getFluid(1))
             .duration(9 * SECONDS)
             .eut(TierEU.RECIPE_LV)
-            .noOptimize()
             .addTo(multiblockMassFabricatorRecipes);
 
         // Basic UUA2
@@ -50,7 +49,6 @@ public class GregtechIndustrialMassFabricator {
             .fluidOutputs(Materials.UUAmplifier.getFluid(1))
             .duration(9 * SECONDS)
             .eut(TierEU.RECIPE_LV)
-            .noOptimize()
             .addTo(multiblockMassFabricatorRecipes);
 
         // Basic UUM
@@ -59,7 +57,6 @@ public class GregtechIndustrialMassFabricator {
             .fluidOutputs(Materials.UUMatter.getFluid(16))
             .duration(2 * MINUTES + 40 * SECONDS)
             .eut(4096)
-            .noOptimize()
             .addTo(multiblockMassFabricatorRecipes);
 
         // Basic UUM
@@ -69,7 +66,6 @@ public class GregtechIndustrialMassFabricator {
             .fluidOutputs(Materials.UUMatter.getFluid(16))
             .duration(40 * SECONDS)
             .eut(4096)
-            .noOptimize()
             .addTo(multiblockMassFabricatorRecipes);
 
         // Advanced UUM
@@ -78,7 +74,6 @@ public class GregtechIndustrialMassFabricator {
             .fluidOutputs(Materials.UUMatter.getFluid(256))
             .duration(2 * MINUTES + 40 * SECONDS)
             .eut(65536)
-            .noOptimize()
             .addTo(multiblockMassFabricatorRecipes);
 
         // Advanced UUM
@@ -88,7 +83,6 @@ public class GregtechIndustrialMassFabricator {
             .fluidOutputs(Materials.UUMatter.getFluid(256))
             .duration(40 * SECONDS)
             .eut(65536)
-            .noOptimize()
             .addTo(multiblockMassFabricatorRecipes);
 
         Logger.INFO(

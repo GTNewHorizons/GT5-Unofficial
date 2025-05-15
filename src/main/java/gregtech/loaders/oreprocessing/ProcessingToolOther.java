@@ -128,6 +128,13 @@ public class ProcessingToolOther implements gregtech.api.interfaces.IOreRecipeRe
                         OrePrefixes.toolHeadFile.get(aMaterial), 'E', OrePrefixes.plate.get(aMaterial), 'F',
                         OrePrefixes.spring.get(aMaterial), 'G', Dyes.dyeBlue });
 
+                GTModHandler.addCraftingRecipe(
+                    MetaGeneratedTool01.INSTANCE
+                        .getToolWithStats(IDMetaTool01.TROWEL.ID, 1, aMaterial, aMaterial.mHandleMaterial, null),
+                    GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
+                    new Object[] { "  d", "SSC", "fPP", 'S', OrePrefixes.stick.get(aMaterial.mHandleMaterial), 'C',
+                        OrePrefixes.screw.get(aMaterial), 'P', OrePrefixes.plate.get(aMaterial) });
+
             }
         }
     }

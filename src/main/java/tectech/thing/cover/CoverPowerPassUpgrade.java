@@ -1,20 +1,19 @@
 package tectech.thing.cover;
 
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import gregtech.api.covers.CoverContext;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICoverable;
-import gregtech.api.util.CoverBehavior;
+import gregtech.common.covers.Cover;
 import tectech.thing.metaTileEntity.multi.base.TTMultiblockBase;
 
-public class CoverPowerPassUpgrade extends CoverBehavior {
+public class CoverPowerPassUpgrade extends Cover {
 
-    public CoverPowerPassUpgrade() {}
-
-    @Override
-    public boolean isCoverPlaceable(ForgeDirection side, ItemStack aStack, ICoverable aTileEntity) {
-        IMetaTileEntity iGregTechTileEntityOffset = aTileEntity.getIGregTechTileEntityOffset(0, 0, 0)
+    public static boolean isCoverPlaceable(ForgeDirection side, ItemStack coverItem, ICoverable coverable) {
+        IMetaTileEntity iGregTechTileEntityOffset = coverable.getIGregTechTileEntityOffset(0, 0, 0)
             .getMetaTileEntity();
         if (iGregTechTileEntityOffset instanceof TTMultiblockBase multi) {
             return !multi.ePowerPassCover;
@@ -22,31 +21,32 @@ public class CoverPowerPassUpgrade extends CoverBehavior {
         return false;
     }
 
+    public CoverPowerPassUpgrade(CoverContext context) {
+        super(context, null);
+    }
+
     @Override
-    public void placeCover(ForgeDirection side, ItemStack aCover, ICoverable aTileEntity) {
-        IMetaTileEntity iGregTechTileEntityOffset = aTileEntity.getIGregTechTileEntityOffset(0, 0, 0)
-            .getMetaTileEntity();
-        if (iGregTechTileEntityOffset instanceof TTMultiblockBase multi) {
+    public void onPlayerAttach(EntityPlayer player, ItemStack coverItem) {
+        ICoverable coverable = coveredTile.get();
+        if (coverable != null && coverable.getIGregTechTileEntityOffset(0, 0, 0)
+            .getMetaTileEntity() instanceof TTMultiblockBase multi) {
             multi.ePowerPassCover = true;
             multi.ePowerPass = true;
         }
-        super.placeCover(side, aCover, aTileEntity);
     }
 
     @Override
-    public boolean onCoverRemoval(ForgeDirection side, int aCoverID, int aCoverVariable, ICoverable aTileEntity,
-        boolean aForced) {
-        IMetaTileEntity iGregTechTileEntityOffset = aTileEntity.getIGregTechTileEntityOffset(0, 0, 0)
-            .getMetaTileEntity();
-        if (iGregTechTileEntityOffset instanceof TTMultiblockBase multi) {
+    public void onCoverRemoval() {
+        ICoverable coverable = coveredTile.get();
+        if (coverable != null && coverable.getIGregTechTileEntityOffset(0, 0, 0)
+            .getMetaTileEntity() instanceof TTMultiblockBase multi) {
             multi.ePowerPassCover = false;
             multi.ePowerPass = false;
         }
-        return true;
     }
 
     @Deprecated
-    public int getTickRate(ForgeDirection side, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
+    public int getMinimumTickRate() {
         return 0;
     }
 }

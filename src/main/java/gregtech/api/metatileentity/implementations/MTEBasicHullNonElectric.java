@@ -11,10 +11,6 @@ public abstract class MTEBasicHullNonElectric extends MTEBasicHull {
         super(aID, aName, aNameRegional, aTier, aDescription);
     }
 
-    public MTEBasicHullNonElectric(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {
-        super(aName, aTier, 1, aDescription, aTextures);
-    }
-
     public MTEBasicHullNonElectric(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, 1, aDescription, aTextures);
     }

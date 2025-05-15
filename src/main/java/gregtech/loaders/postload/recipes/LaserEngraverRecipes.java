@@ -19,7 +19,6 @@ public class LaserEngraverRecipes implements Runnable {
             .requiresCleanRoom()
             .duration(41 * MINUTES + 40 * SECONDS)
             .eut((int) TierEU.RECIPE_ZPM)
-            .noOptimize()
             .addTo(laserEngraverRecipes);
 
         GTValues.RA.stdBuilder()
@@ -28,7 +27,6 @@ public class LaserEngraverRecipes implements Runnable {
             .requiresCleanRoom()
             .duration(41 * MINUTES + 40 * SECONDS)
             .eut((int) TierEU.RECIPE_UV)
-            .noOptimize()
             .addTo(laserEngraverRecipes);
 
         GTValues.RA.stdBuilder()
@@ -37,7 +35,6 @@ public class LaserEngraverRecipes implements Runnable {
             .requiresCleanRoom()
             .duration(41 * MINUTES + 40 * SECONDS)
             .eut((int) TierEU.RECIPE_UHV)
-            .noOptimize()
             .addTo(laserEngraverRecipes);
 
         GTValues.RA.stdBuilder()
@@ -46,7 +43,6 @@ public class LaserEngraverRecipes implements Runnable {
             .requiresCleanRoom()
             .duration(41 * MINUTES + 40 * SECONDS)
             .eut((int) TierEU.RECIPE_UEV)
-            .noOptimize()
             .addTo(laserEngraverRecipes);
 
         GTValues.RA.stdBuilder()
@@ -55,7 +51,6 @@ public class LaserEngraverRecipes implements Runnable {
             .requiresCleanRoom()
             .duration(41 * MINUTES + 40 * SECONDS)
             .eut((int) TierEU.RECIPE_UIV)
-            .noOptimize()
             .addTo(laserEngraverRecipes);
 
     }

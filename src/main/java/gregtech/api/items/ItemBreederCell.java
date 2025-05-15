@@ -10,10 +10,12 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTValues;
+import gregtech.api.hazards.HazardProtection;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.util.GTUtility;
 import ic2.api.reactor.IReactor;
@@ -48,10 +50,16 @@ public class ItemBreederCell extends GTGenericItem implements IReactorComponent 
                     .itemInputs(new ItemStack(this))
                     .itemOutputs(mProduct)
                     .setNEIDesc(
-                        deflector ? "Neutron reflecting Breeder" : "Heat neutral Breeder",
-                        String.format("Every %d reactor hull heat", mHeatBonusStep),
-                        String.format("increase speed by %d00%%", mHeatBonusMultiplier),
-                        String.format("Required pulses: %d", getMaxDamage()))
+                        GTUtility.breakLines(
+                            StatCollector.translateToLocal(
+                                deflector ? "GT5U.nei.nuclear.breeder.neutron_reflecting"
+                                    : "GT5U.nei.nuclear.breeder.heat_neutral"),
+                            StatCollector.translateToLocalFormatted(
+                                "GT5U.nei.nuclear.breeder.reactor_hull_heat",
+                                mHeatBonusStep,
+                                mHeatBonusMultiplier),
+                            StatCollector
+                                .translateToLocalFormatted("GT5U.nei.nuclear.breeder.required_pulse", getMaxDamage())))
                     .duration(0)
                     .eut(0)
                     .addTo(RecipeMaps.ic2NuclearFakeRecipes);
@@ -74,7 +82,7 @@ public class ItemBreederCell extends GTGenericItem implements IReactorComponent 
     @Override
     public void onUpdate(ItemStack stack, World world, Entity entity, int slotIndex, boolean isCurrentItem) {
         if ((entity instanceof EntityLivingBase entityLiving)) {
-            if (!GTUtility.isWearingFullRadioHazmat(entityLiving)) {
+            if (!HazardProtection.isWearingFullRadioHazmat(entityLiving)) {
                 IC2Potion.radiation.applyTo(entityLiving, 20, 1);
             }
         }

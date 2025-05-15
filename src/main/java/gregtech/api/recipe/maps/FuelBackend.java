@@ -24,7 +24,7 @@ public class FuelBackend extends RecipeMapBackend {
     private final Map<String, GTRecipe> recipesByFluidInput = new HashMap<>();
 
     public FuelBackend(RecipeMapBackendPropertiesBuilder propertiesBuilder) {
-        super(propertiesBuilder.disableOptimize());
+        super(propertiesBuilder);
     }
 
     @Override

@@ -31,17 +31,8 @@ public class MTEChestBuffer extends MTEBuffer {
     }
 
     public MTEChestBuffer(int aID, String aName, String aNameRegional, int aTier, int aInvSlotCount,
-        String aDescription) {
-        super(aID, aName, aNameRegional, aTier, aInvSlotCount, aDescription);
-    }
-
-    public MTEChestBuffer(int aID, String aName, String aNameRegional, int aTier, int aInvSlotCount,
         String[] aDescription) {
         super(aID, aName, aNameRegional, aTier, aInvSlotCount, aDescription);
-    }
-
-    public MTEChestBuffer(String aName, int aTier, int aInvSlotCount, String aDescription, ITexture[][][] aTextures) {
-        super(aName, aTier, aInvSlotCount, aDescription, aTextures);
     }
 
     public MTEChestBuffer(String aName, int aTier, int aInvSlotCount, String[] aDescription, ITexture[][][] aTextures) {

@@ -27,6 +27,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
 import kubatech.loaders.block.kubablock.BlockProxy;
@@ -53,8 +54,8 @@ public class BlockTeaAcceptor extends BlockProxy implements IProxyTileEntityProv
 
     @Override
     public void addInformation(ItemStack stack, EntityPlayer entity, List<String> tooltipList, boolean showDebugInfo) {
-        tooltipList.add("Accepts Tea items and adds them to your network");
-        tooltipList.add("Can accept up to 10 stacks per tick");
+        tooltipList.add(StatCollector.translateToLocal("kubatech.tooltip.tea_acceptor.0"));
+        tooltipList.add(StatCollector.translateToLocal("kubatech.tooltip.tea_acceptor.1"));
     }
 
     @Override

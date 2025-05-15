@@ -122,7 +122,6 @@ public class EyeOfHarmonyRecipeStorage {
                 .duration(recipe.getRecipeTimeInTicks())
                 .eut(0)
                 .special(recipe)
-                .noOptimize()
                 .addTo(eyeOfHarmonyRecipes);
         }
     }

@@ -120,6 +120,11 @@ public class MTEProcessingArray extends MTEExtendedPowerMultiBlockBase<MTEProces
     }
 
     @Override
+    public boolean supportsPowerPanel() {
+        return false;
+    }
+
+    @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new MTEProcessingArray(this.mName);
     }
@@ -253,7 +258,7 @@ public class MTEProcessingArray extends MTEExtendedPowerMultiBlockBase<MTEProces
                 if (recipe.mEUt > availableVoltage) return CheckRecipeResultRegistry.insufficientPower(recipe.mEUt);
                 return CheckRecipeResultRegistry.SUCCESSFUL;
             }
-        }.setMaxParallelSupplier(this::getMaxParallel);
+        }.setMaxParallelSupplier(this::getTrueParallel);
     }
 
     @Override
@@ -264,7 +269,7 @@ public class MTEProcessingArray extends MTEExtendedPowerMultiBlockBase<MTEProces
     @Override
     protected void setProcessingLogicPower(ProcessingLogic logic) {
         logic.setAvailableVoltage(GTValues.V[tTier] * (mLastRecipeMap != null ? mLastRecipeMap.getAmperage() : 1));
-        logic.setAvailableAmperage(getMaxParallel());
+        logic.setAvailableAmperage(getMaxParallelRecipes());
         logic.setAmperageOC(false);
     }
 
@@ -282,7 +287,8 @@ public class MTEProcessingArray extends MTEExtendedPowerMultiBlockBase<MTEProces
         }
     }
 
-    private int getMaxParallel() {
+    @Override
+    public int getMaxParallelRecipes() {
         if (getControllerSlot() == null) {
             return 0;
         }
@@ -343,10 +349,11 @@ public class MTEProcessingArray extends MTEExtendedPowerMultiBlockBase<MTEProces
     }
 
     @Override
-    public final void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+    public final void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
+        ItemStack aTool) {
         if (aPlayer.isSneaking()) {
             // Lock to single recipe
-            super.onScrewdriverRightClick(side, aPlayer, aX, aY, aZ);
+            super.onScrewdriverRightClick(side, aPlayer, aX, aY, aZ, aTool);
         } else {
             inputSeparation = !inputSeparation;
             GTUtility.sendChatToPlayer(
@@ -357,7 +364,7 @@ public class MTEProcessingArray extends MTEExtendedPowerMultiBlockBase<MTEProces
 
     @Override
     public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
-        float aX, float aY, float aZ) {
+        float aX, float aY, float aZ, ItemStack aTool) {
         if (aPlayer.isSneaking()) {
             batchMode = !batchMode;
             if (batchMode) {
@@ -370,21 +377,6 @@ public class MTEProcessingArray extends MTEExtendedPowerMultiBlockBase<MTEProces
             GTUtility.sendChatToPlayer(aPlayer, "Treat UEV+ machines as multiple UHV " + downtierUEV);
         }
         return true;
-    }
-
-    @Override
-    public int getMaxEfficiency(ItemStack aStack) {
-        return 10000;
-    }
-
-    @Override
-    public int getDamageToComponent(ItemStack aStack) {
-        return 0;
-    }
-
-    @Override
-    public boolean explodesOnComponentBreak(ItemStack aStack) {
-        return false;
     }
 
     private List<IHatchElement<? super MTEProcessingArray>> getAllowedHatches() {
@@ -472,7 +464,7 @@ public class MTEProcessingArray extends MTEExtendedPowerMultiBlockBase<MTEProces
                 + " x",
             StatCollector.translateToLocal("GT5U.PA.parallel") + ": "
                 + EnumChatFormatting.GREEN
-                + GTUtility.formatNumbers(getMaxParallel())
+                + GTUtility.formatNumbers(getMaxParallelRecipes())
                 + EnumChatFormatting.RESET };
     }
 

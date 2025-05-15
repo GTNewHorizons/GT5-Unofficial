@@ -28,7 +28,6 @@ public class HandlerTF {
     public static void postInit() {
         if (COFHCore.isModLoaded()) {
             TFFluids.postInit();
-            TFItems.postInit();
             TFBlocks.postInit();
             TFGregtechRecipes.run();
         }

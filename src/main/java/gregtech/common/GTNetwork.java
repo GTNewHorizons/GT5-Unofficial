@@ -140,6 +140,17 @@ public class GTNetwork extends MessageToMessageCodec<FMLProxyPacket, GTPacket> i
         }
     }
 
+    @Override
+    public void sendToWorld(World world, GTPacket packet) {
+        if (!world.isRemote) {
+            for (EntityPlayer player : world.playerEntities) {
+                if (player instanceof EntityPlayerMP mp) {
+                    sendToPlayer(packet, mp);
+                }
+            }
+        }
+    }
+
     @ChannelHandler.Sharable
     static final class HandlerShared extends SimpleChannelInboundHandler<GTPacket> {
 

@@ -4,6 +4,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -28,7 +29,6 @@ import tectech.util.TTUtility;
 
 public class MTERTGenerator extends MTEBasicGenerator {
 
-    public int mEfficiency;
     private long mTicksToBurnFor;
     private int mVoltage = 0;
     private GTRecipe mCurrentRecipe;
@@ -213,7 +213,7 @@ public class MTERTGenerator extends MTEBasicGenerator {
 
     @Override
     public int getEfficiency() {
-        return this.mEfficiency = 100;
+        return 100;
     }
 
     @Override
@@ -352,11 +352,20 @@ public class MTERTGenerator extends MTEBasicGenerator {
 
     @Override
     public String[] getInfoData() {
-        return new String[] { "RTG - Running at tier " + this.mTier, "Active: " + this.getBaseMetaTileEntity()
-            .isActive(), "Current Output: " + GTUtility.formatNumbers(mVoltage) + " EU/t",
-            "Days of Fuel remaining: " + GTUtility.formatNumbers(mTicksToBurnFor / 20 / 60 / 20),
-            "Hours of Fuel remaining: " + GTUtility.formatNumbers(mTicksToBurnFor / 20 / 60 / 60),
-            "Ticks of " + this.mVoltage + "v remaining: " + mTicksToBurnFor,
+        return new String[] { StatCollector.translateToLocalFormatted("gtpp.infodata.rtg.running_at", this.mTier),
+            StatCollector.translateToLocalFormatted(
+                "gtpp.infodata.rtg.active",
+                this.getBaseMetaTileEntity()
+                    .isActive()),
+            StatCollector.translateToLocalFormatted("gtpp.infodata.rtg.output", GTUtility.formatNumbers(mVoltage)),
+            StatCollector.translateToLocalFormatted(
+                "gtpp.infodata.rtg.remaining.days",
+                GTUtility.formatNumbers(mTicksToBurnFor / 20 / 60 / 20)),
+            StatCollector.translateToLocalFormatted(
+                "gtpp.infodata.rtg.remaining.hours",
+                GTUtility.formatNumbers(mTicksToBurnFor / 20 / 60 / 60)),
+            StatCollector
+                .translateToLocalFormatted("gtpp.infodata.rtg.remaining.ticks", this.mVoltage, mTicksToBurnFor),
             this.mCurrentRecipe.mInputs[0].getDisplayName() + " x1" };
     }
 }

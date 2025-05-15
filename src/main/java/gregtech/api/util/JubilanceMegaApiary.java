@@ -1,5 +1,7 @@
 package gregtech.api.util;
 
+import net.minecraft.util.StatCollector;
+
 import forestry.api.apiculture.IAlleleBeeSpecies;
 import forestry.api.apiculture.IBeeGenome;
 import forestry.api.apiculture.IBeeHousing;
@@ -18,6 +20,6 @@ public class JubilanceMegaApiary implements IJubilanceProvider {
 
     @Override
     public String getDescription() {
-        return "Will only be produced in mega Apiary";
+        return StatCollector.translateToLocal("GT5U.tooltip.mega_apiary.only_producer");
     }
 }

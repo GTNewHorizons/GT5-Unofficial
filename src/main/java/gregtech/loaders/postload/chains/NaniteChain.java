@@ -10,7 +10,6 @@ import static gregtech.api.util.GTRecipeConstants.AssemblyLine;
 import static gregtech.api.util.GTRecipeConstants.NANO_FORGE_TIER;
 import static gregtech.api.util.GTRecipeConstants.RESEARCH_ITEM;
 import static gregtech.api.util.GTRecipeConstants.SCANNING;
-import static gtPlusPlus.core.block.ModBlocks.blockCompressedObsidian;
 
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
@@ -129,8 +128,7 @@ public class NaniteChain {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 aUEVTierLens,
-                new ItemStack(blockCompressedObsidian, 8, 7), // Double compressed glowstone blocks (yes,
-                                                              // it's not obsidian)
+                GregtechItemList.DoubleCompressedGlowstone.get(8),
                 ItemList.Circuit_Chip_SoC2.get(64))
             .itemOutputs(Materials.Glowstone.getNanite(64))
             .fluidInputs(Materials.UUMatter.getFluid(50_000))
@@ -175,7 +173,8 @@ public class NaniteChain {
             .itemOutputs(MaterialsUEVplus.SixPhasedCopper.getNanite(8))
             .fluidInputs(
                 Materials.UUMatter.getFluid(500_000),
-                MaterialsUEVplus.DimensionallyTranscendentResidue.getFluid(50_000))
+                MaterialsUEVplus.DimensionallyTranscendentResidue.getFluid(50_000),
+                MaterialsUEVplus.Creon.getMolten(512 * 144))
             .metadata(NANO_FORGE_TIER, 3)
             .duration(100 * SECONDS)
             .eut(2_000_000_000)

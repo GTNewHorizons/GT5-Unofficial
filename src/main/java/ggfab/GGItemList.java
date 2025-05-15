@@ -15,27 +15,30 @@ public enum GGItemList implements IItemContainer {
 
     LinkedInputBus,
     AdvAssLine,
+
     // region single use tool
     ToolCast_MV,
     ToolCast_HV,
     ToolCast_EV,
+
     // order matters, do not insert randomly like a n00b
-    One_Use_craftingToolFile,
-    One_Use_craftingToolWrench,
-    One_Use_craftingToolCrowbar,
-    One_Use_craftingToolWireCutter,
-    One_Use_craftingToolHardHammer,
-    One_Use_craftingToolSoftHammer,
-    One_Use_craftingToolScrewdriver,
-    One_Use_craftingToolSaw,
-    Shape_One_Use_craftingToolFile,
-    Shape_One_Use_craftingToolWrench,
-    Shape_One_Use_craftingToolCrowbar,
-    Shape_One_Use_craftingToolWireCutter,
-    Shape_One_Use_craftingToolHardHammer,
-    Shape_One_Use_craftingToolSoftHammer,
-    Shape_One_Use_craftingToolScrewdriver,
-    Shape_One_Use_craftingToolSaw,
+    SingleUseFile,
+    SingleUseWrench,
+    SingleUseCrowbar,
+    SingleUseWireCutter,
+    SingleUseHardHammer,
+    SingleUseSoftHammer,
+    SingleUseScrewdriver,
+    SingleUseSaw,
+
+    SingleUseFileMold,
+    SingleUseWrenchMold,
+    SingleUseCrowbarMold,
+    SingleUseWireCutterMold,
+    SingleUseHardHammerMold,
+    SingleUseSoftHammerMold,
+    SingleUseScrewdriverMold,
+    SingleUseSawMold,
     // ordered section ends
     // endregion
     //

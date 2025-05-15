@@ -383,7 +383,7 @@ public class MTEMegaVacuumFreezer extends MegaMultiBlockBase<MTEMegaVacuumFreeze
 
     @Override
     public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
-        float aX, float aY, float aZ) {
+        float aX, float aY, float aZ, ItemStack aTool) {
         if (aPlayer.isSneaking()) {
             this.batchMode = !this.batchMode;
             if (this.batchMode) {
@@ -393,7 +393,7 @@ public class MTEMegaVacuumFreezer extends MegaMultiBlockBase<MTEMegaVacuumFreeze
             }
             return true;
         }
-        return false;
+        return super.onWireCutterRightClick(side, wrenchingSide, aPlayer, aX, aY, aZ, aTool);
     }
 
     public SubspaceCoolingFluid findSubspaceCoolingFluid() {
@@ -426,7 +426,12 @@ public class MTEMegaVacuumFreezer extends MegaMultiBlockBase<MTEMegaVacuumFreeze
                     .setHeatOC(true)
                     .setHeatDiscount(false);
             }
-        }.setMaxParallel(Configuration.Multiblocks.megaMachinesMax);
+        }.setMaxParallelSupplier(this::getTrueParallel);
+    }
+
+    @Override
+    public int getMaxParallelRecipes() {
+        return Configuration.Multiblocks.megaMachinesMax;
     }
 
     @Override
@@ -507,17 +512,16 @@ public class MTEMegaVacuumFreezer extends MegaMultiBlockBase<MTEMegaVacuumFreeze
     @Override
     public String[] getInfoData() {
         ArrayList<String> info = new ArrayList<>(Arrays.asList(super.getInfoData()));
-        info.add("Tier: " + mTier);
+        info.add(StatCollector.translateToLocalFormatted("BW.infoData.mega_vacuum_freezer.tier", mTier));
         if (mTier == 2) {
             if (currentCoolingFluid != null) {
                 info.add(
-                    "Subspace cooling: " + EnumChatFormatting.GREEN
-                        + "Active ("
-                        + currentCoolingFluid.getStack()
-                            .getLocalizedName()
-                        + ")");
+                    StatCollector.translateToLocalFormatted(
+                        "BW.infoData.mega_vacuum_freezer.subspace_cooling.active",
+                        currentCoolingFluid.getStack()
+                            .getLocalizedName()));
             } else {
-                info.add("Subspace cooling: " + EnumChatFormatting.RED + "Inactive");
+                info.add(StatCollector.translateToLocal("BW.infoData.mega_vacuum_freezer.subspace_cooling.inactive"));
             }
         }
         return info.toArray(new String[] {});

@@ -3,9 +3,7 @@ package gregtech.api.metatileentity.implementations;
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -24,29 +22,31 @@ import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
+import appeng.api.config.AccessRestriction;
+import appeng.api.config.Actionable;
+import appeng.api.networking.security.BaseActionSource;
 import appeng.api.storage.IMEMonitor;
 import appeng.api.storage.IMEMonitorHandlerReceiver;
 import appeng.api.storage.StorageChannel;
 import appeng.api.storage.data.IAEItemStack;
 import appeng.api.storage.data.IItemList;
-import appeng.util.item.AEItemStack;
-import appeng.util.item.ItemList;
 import gregtech.api.enums.GTValues;
-import gregtech.api.gui.modularui.GTUIInfos;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.objects.AE2NonconsumableHatchHandler;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTUtility;
+import gregtech.crossmod.ae2.IMEAwareItemInventory;
+import gregtech.crossmod.ae2.MEItemInventoryHandler;
 
-public abstract class MTEHatchNonConsumableBase extends MTEHatch implements IMEMonitor<IAEItemStack>, IAddUIWidgets {
+public abstract class MTEHatchNonConsumableBase extends MTEHatch
+    implements IMEMonitor<IAEItemStack>, IMEAwareItemInventory, IAddUIWidgets {
 
     private ItemStack itemStack = null;
     private int itemCount = 0;
     private boolean isOutputSlotLocked = true;
-    private Map<IMEMonitorHandlerReceiver<IAEItemStack>, Object> listeners = null;
+    private final MEItemInventoryHandler<?> meInventoryHandler = new MEItemInventoryHandler<>(this);
 
     public MTEHatchNonConsumableBase(int ID, String name, String nameRegional, int tier, String description) {
         super(ID, name, nameRegional, tier, 3, new String[] { description, "Will keep its contents when broken" });
@@ -57,23 +57,21 @@ public abstract class MTEHatchNonConsumableBase extends MTEHatch implements IMEM
     }
 
     @Override
-    public boolean isSimpleMachine() {
-        return true;
-    }
-
-    @Override
     public boolean isFacingValid(ForgeDirection facing) {
         return true;
     }
 
+    @Override
     public ItemStack getItemStack() {
         return itemStack;
     }
 
-    protected void setItemStack(ItemStack stack) {
+    @Override
+    public void setItemStack(ItemStack stack) {
         itemStack = stack;
     }
 
+    @Override
     public int getItemCount() {
         return itemCount;
     }
@@ -83,9 +81,21 @@ public abstract class MTEHatchNonConsumableBase extends MTEHatch implements IMEM
         itemCount = amount;
     }
 
-    protected abstract int getItemCapacity();
+    @Override
+    public abstract int getItemCapacity();
 
-    protected abstract boolean isValidItem(ItemStack item);
+    @Override
+    public abstract boolean isValidItem(ItemStack item);
+
+    @Override
+    public ItemStack getExtraItemStack() {
+        return mInventory[1];
+    }
+
+    @Override
+    public void setExtraItemStack(ItemStack stack) {
+        mInventory[1] = stack;
+    }
 
     protected int clientItemCount;
 
@@ -155,178 +165,69 @@ public abstract class MTEHatchNonConsumableBase extends MTEHatch implements IMEM
         }
     }
 
-    public static void registerAEIntegration() {
-        appeng.api.AEApi.instance()
-            .registries()
-            .externalStorage()
-            .addExternalStorageInterface(new AE2NonconsumableHatchHandler());
-    }
-
     @Override
     public void addListener(IMEMonitorHandlerReceiver<IAEItemStack> meMonitorHandlerReceiver, Object o) {
-        if (listeners == null) listeners = new HashMap<>();
-        listeners.put(meMonitorHandlerReceiver, o);
+        meInventoryHandler.addListener(meMonitorHandlerReceiver, o);
     }
 
     @Override
     public void removeListener(IMEMonitorHandlerReceiver<IAEItemStack> meMonitorHandlerReceiver) {
-        if (listeners == null) listeners = new HashMap<>();
-        listeners.remove(meMonitorHandlerReceiver);
+        meInventoryHandler.removeListener(meMonitorHandlerReceiver);
     }
 
     @Override
-    public appeng.api.config.AccessRestriction getAccess() {
-        return appeng.api.config.AccessRestriction.READ_WRITE;
+    public AccessRestriction getAccess() {
+        return meInventoryHandler.getAccess();
     }
 
     @Override
     public boolean isPrioritized(IAEItemStack aeItemStack) {
-        ItemStack s = getItemStack();
-        if (s == null || aeItemStack == null) return false;
-        return aeItemStack.isSameType(s);
+        return meInventoryHandler.isPrioritized(aeItemStack);
     }
 
     @Override
     public boolean canAccept(IAEItemStack aeItemStack) {
-        ItemStack s = getItemStack();
-        if (s == null || aeItemStack == null) return true;
-        return aeItemStack.isSameType(s);
+        return meInventoryHandler.canAccept(aeItemStack);
     }
 
     @Override
     public int getPriority() {
-        return 0;
+        return meInventoryHandler.getPriority();
     }
 
     @Override
     public int getSlot() {
-        return 0;
+        return meInventoryHandler.getSlot();
     }
 
     @Override
     public boolean validForPass(int i) {
-        return true;
+        return meInventoryHandler.validForPass(i);
     }
 
-    @SuppressWarnings("unchecked")
     @Override
-    public IItemList<IAEItemStack> getAvailableItems(final IItemList out, int iteration) {
-        ItemStack storedStack = getItemStack();
-        if (storedStack != null) {
-            AEItemStack s = AEItemStack.create(storedStack);
-            s.setStackSize(getItemCount());
-            out.add(s);
-        }
-        return out;
+    public IItemList<IAEItemStack> getAvailableItems(final IItemList<IAEItemStack> out, int iteration) {
+        return meInventoryHandler.getAvailableItems(out, iteration);
     }
 
     @Override
     public IItemList<IAEItemStack> getStorageList() {
-        IItemList<IAEItemStack> res = new ItemList();
-        ItemStack storedStack = getItemStack();
-        if (storedStack != null) {
-            AEItemStack s = AEItemStack.create(storedStack);
-            s.setStackSize(getItemCount());
-            res.add(s);
-        }
-        return res;
+        return meInventoryHandler.getStorageList();
     }
 
     @Override
-    public IAEItemStack injectItems(final IAEItemStack input, final appeng.api.config.Actionable mode,
-        final appeng.api.networking.security.BaseActionSource src) {
-        if (getBaseMetaTileEntity() == null) return input;
-
-        final ItemStack inputStack = input.getItemStack();
-        final int maxCapacity = getItemCapacity();
-        final int itemCount = getItemCount();
-        final long toAdd = input.getStackSize();
-        final ItemStack storedStack = getItemStack();
-
-        if (storedStack != null && !GTUtility.areStacksEqual(storedStack, inputStack)) {
-            // Can't stack with existing item, just return the input.
-            return input;
-        }
-
-        if (storedStack == null && !isValidItem(inputStack)) {
-            // Invalid item, return input.
-            return input;
-        }
-
-        // Number of items not added because there's too much to add.
-        final long notAdded = itemCount + toAdd - maxCapacity;
-
-        if (mode == appeng.api.config.Actionable.MODULATE) {
-            final int newCount = (int) Math.min(maxCapacity, itemCount + toAdd);
-
-            if (storedStack == null) {
-                setItemStack(inputStack.copy());
-            }
-            setItemCount(newCount);
-            getBaseMetaTileEntity().markDirty();
-        }
-
-        if (notAdded <= 0) {
-            return null;
-        } else {
-            return input.copy()
-                .setStackSize(notAdded);
-        }
-
+    public IAEItemStack injectItems(final IAEItemStack input, final Actionable mode, final BaseActionSource src) {
+        return meInventoryHandler.injectItems(input, mode, src);
     }
 
     @Override
-    public IAEItemStack extractItems(final IAEItemStack request, final appeng.api.config.Actionable mode,
-        final appeng.api.networking.security.BaseActionSource src) {
-        if (request.isSameType(getItemStack())) {
-            if (getBaseMetaTileEntity() == null) return null;
-            if (mode != appeng.api.config.Actionable.SIMULATE) getBaseMetaTileEntity().markDirty();
-            if (request.getStackSize() >= getItemCount()) {
-                AEItemStack result = AEItemStack.create(getItemStack());
-                result.setStackSize(getItemCount());
-                if (mode != appeng.api.config.Actionable.SIMULATE) setItemCount(0);
-                return result;
-            } else {
-                if (mode != appeng.api.config.Actionable.SIMULATE)
-                    setItemCount(getItemCount() - (int) request.getStackSize());
-                return request.copy();
-            }
-        }
-        return null;
-    }
-
-    private void notifyListeners(int count, ItemStack stack) {
-        if (listeners == null) {
-            listeners = new HashMap<>();
-            return;
-        }
-        if (count == 0 || stack == null) return;
-        ItemList change = new ItemList();
-        AEItemStack s = AEItemStack.create(stack);
-        s.setStackSize(count);
-        change.add(s);
-        listeners.forEach((l, o) -> {
-            if (l.isValid(o)) l.postChange(this, change, null);
-            else removeListener(l);
-        });
-    }
-
-    private boolean hasActiveMEConnection() {
-        if (listeners == null || listeners.isEmpty()) return false;
-        for (Map.Entry<IMEMonitorHandlerReceiver<IAEItemStack>, Object> e : listeners.entrySet()) {
-            if ((e.getKey() instanceof appeng.api.parts.IPart)) {
-                appeng.api.networking.IGridNode n = ((appeng.api.parts.IPart) e.getKey()).getGridNode();
-                if (n != null && n.isActive()) return true;
-            }
-        }
-        // if there are no active storage buses - clear the listeners
-        listeners.clear();
-        return false;
+    public IAEItemStack extractItems(final IAEItemStack request, final Actionable mode, final BaseActionSource src) {
+        return meInventoryHandler.extractItems(request, mode, src);
     }
 
     @Override
     public StorageChannel getChannel() {
-        return StorageChannel.ITEMS;
+        return meInventoryHandler.getChannel();
     }
 
     @Override
@@ -373,7 +274,7 @@ public abstract class MTEHatchNonConsumableBase extends MTEHatch implements IMEM
                 mInventory[2] = null;
             }
 
-            notifyListeners(count - savedCount, stack);
+            meInventoryHandler.notifyListeners(count - savedCount, stack);
             if (count != savedCount) getBaseMetaTileEntity().markDirty();
         }
     }
@@ -385,7 +286,7 @@ public abstract class MTEHatchNonConsumableBase extends MTEHatch implements IMEM
 
     @Override
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
-        GTUIInfos.openGTTileEntityUI(aBaseMetaTileEntity, aPlayer);
+        openGui(aPlayer);
         return true;
     }
 
@@ -430,14 +331,14 @@ public abstract class MTEHatchNonConsumableBase extends MTEHatch implements IMEM
     @Override
     public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
         ItemStack aStack) {
-        if (GTValues.disableDigitalChestsExternalAccess && hasActiveMEConnection()) return false;
+        if (GTValues.disableDigitalChestsExternalAccess && meInventoryHandler.hasActiveMEConnection()) return false;
         return aIndex == 1;
     }
 
     @Override
     public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
         ItemStack aStack) {
-        if (GTValues.disableDigitalChestsExternalAccess && hasActiveMEConnection()) return false;
+        if (GTValues.disableDigitalChestsExternalAccess && meInventoryHandler.hasActiveMEConnection()) return false;
         if (aIndex != 0) return false;
         if ((mInventory[0] != null && !GTUtility.areStacksEqual(mInventory[0], aStack))) return false;
         if (getItemStack() == null) return mInventory[1] == null || GTUtility.areStacksEqual(mInventory[1], aStack);

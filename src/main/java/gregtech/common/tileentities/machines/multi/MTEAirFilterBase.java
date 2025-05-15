@@ -15,6 +15,7 @@ import static java.lang.Math.min;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Random;
 
 import net.minecraft.block.Block;
@@ -25,6 +26,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -50,11 +52,13 @@ import gregtech.api.metatileentity.implementations.MTEHatchMuffler;
 import gregtech.api.objects.XSTR;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
+import gregtech.api.render.RenderOverlay;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.GTUtilityClient;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.api.util.TurbineStatCalculator;
 import gregtech.common.items.MetaGeneratedTool01;
 import gregtech.common.pollution.Pollution;
 
@@ -69,7 +73,7 @@ public abstract class MTEAirFilterBase extends MTEEnhancedMultiBlockBase<MTEAirF
 
     private static final Random RANDOM = new XSTR();
 
-    protected int baseEff = 0;
+    protected float baseEff = 0;
     protected int multiTier = 0;
     protected int chunkIndex = 0;
     protected boolean hasPollution = false;
@@ -78,6 +82,7 @@ public abstract class MTEAirFilterBase extends MTEEnhancedMultiBlockBase<MTEAirF
     protected boolean isFilterLoaded = false;
     protected int filterUsageRemaining = 0;
     protected int tickCounter = 0; // because we can't trust the world tick, it may be in a dim with eternal day, etc
+    protected final List<RenderOverlay.OverlayTicket> overlayTickets = new ArrayList<>();
     private boolean mFormed;
     protected static final String STRUCTURE_PIECE_MAIN = "main";
     protected static final ClassValue<IStructureDefinition<MTEAirFilterBase>> STRUCTURE_DEFINITION = new ClassValue<>() {
@@ -128,6 +133,11 @@ public abstract class MTEAirFilterBase extends MTEEnhancedMultiBlockBase<MTEAirF
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         return checkPiece(STRUCTURE_PIECE_MAIN, 1, 3, 0) && !mMufflerHatches.isEmpty()
             && mMaintenanceHatches.size() == 1;
+    }
+
+    @Override
+    public boolean supportsPowerPanel() {
+        return false;
     }
 
     public MTEAirFilterBase(int aID, String aName, String aNameRegional) {
@@ -287,7 +297,9 @@ public abstract class MTEAirFilterBase extends MTEEnhancedMultiBlockBase<MTEAirF
         if (damage == -1) {
             return CheckRecipeResultRegistry.NO_TURBINE_FOUND;
         }
-        baseEff = GTUtility.safeInt((long) ((50.0F + 10.0F * damage) * 100));
+
+        TurbineStatCalculator turbine = new TurbineStatCalculator((MetaGeneratedTool) aStack.getItem(), aStack);
+        baseEff = turbine.getBaseEfficiency();
         tickCounter = 0; // resetting the counter in case of a power failure, etc
 
         // scan the inventory to search for filter if none has been loaded previously
@@ -392,7 +404,7 @@ public abstract class MTEAirFilterBase extends MTEEnhancedMultiBlockBase<MTEAirF
     }
 
     public void cleanPollution() {
-        int cleaningRate = getPollutionCleaningRatePerSecond(baseEff / 10000f, mEfficiency / 10000f, isFilterLoaded);
+        int cleaningRate = getPollutionCleaningRatePerSecond(baseEff, mEfficiency / 10000f, isFilterLoaded);
         if (cleaningRate > 0) {
             World world = this.getBaseMetaTileEntity()
                 .getWorld();
@@ -444,11 +456,6 @@ public abstract class MTEAirFilterBase extends MTEEnhancedMultiBlockBase<MTEAirF
     public abstract int getCasingMeta();
 
     @Override
-    public int getMaxEfficiency(ItemStack aStack) {
-        return 10000;
-    }
-
-    @Override
     public void onPreTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         if (size == 0) { // here in case it's not set by NBT loading
             size = 2 * multiTier + 1;
@@ -485,6 +492,13 @@ public abstract class MTEAirFilterBase extends MTEEnhancedMultiBlockBase<MTEAirF
     @Override
     public void onValueUpdate(byte aValue) {
         mFormed = aValue == 1;
+        setTurbineOverlay();
+    }
+
+    @Override
+    public void onRemoval() {
+        super.onRemoval();
+        if (getBaseMetaTileEntity().isClientSide()) GTUtilityClient.clearTurbineOverlay(overlayTickets);
     }
 
     @Override
@@ -493,8 +507,33 @@ public abstract class MTEAirFilterBase extends MTEEnhancedMultiBlockBase<MTEAirF
     }
 
     @Override
+    public void onFirstTick(IGregTechTileEntity aBaseMetaTileEntity) {
+        super.onFirstTick(aBaseMetaTileEntity);
+        setTurbineOverlay();
+    }
+
+    protected void setTurbineOverlay() {
+        IGregTechTileEntity tile = getBaseMetaTileEntity();
+        if (tile.isServerSide()) return;
+
+        IIconContainer[] tTextures = getBaseMetaTileEntity().isActive() ? TURBINE_NEW_ACTIVE : TURBINE_NEW;
+
+        int[] xyz = new int[3];
+        ExtendedFacing ext = getExtendedFacing();
+        ext.getWorldOffset(new int[] { 0, -3, 1 }, xyz);
+        GTUtilityClient.setTurbineOverlay(
+            tile.getWorld(),
+            xyz[0] + tile.getXCoord(),
+            xyz[1] + tile.getYCoord(),
+            xyz[2] + tile.getZCoord(),
+            getExtendedFacing(),
+            tTextures,
+            overlayTickets);
+    }
+
+    @Override
     public boolean renderInWorld(IBlockAccess aWorld, int aX, int aY, int aZ, Block aBlock, RenderBlocks aRenderer) {
-        if (!mFormed) return false;
+        if (!mFormed || !overlayTickets.isEmpty()) return false;
         int[] xyz = new int[3];
         ExtendedFacing ext = getExtendedFacing();
         ext.getWorldOffset(new int[] { 0, -3, 1 }, xyz);
@@ -537,12 +576,8 @@ public abstract class MTEAirFilterBase extends MTEEnhancedMultiBlockBase<MTEAirF
     }
 
     @Override
-    public boolean explodesOnComponentBreak(ItemStack aStack) {
-        return false;
-    }
-
-    @Override
-    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
+        ItemStack aTool) {
         if (!aPlayer.isSneaking()) { // change mode
             mode = mode == 1 ? 0 : 1;
             if (mode == 0) {
@@ -565,45 +600,37 @@ public abstract class MTEAirFilterBase extends MTEEnhancedMultiBlockBase<MTEAirF
 
     @Override
     public String[] getInfoData() {
-        return new String[] { "Progress:",
-            EnumChatFormatting.GREEN + Integer.toString(mProgresstime / 20)
-                + EnumChatFormatting.RESET
-                + " s / "
-                + EnumChatFormatting.YELLOW
-                + mMaxProgresstime / 20
-                + EnumChatFormatting.RESET
-                + " s",
-            "Stored Energy:",
-            EnumChatFormatting.GREEN + Long.toString(getBaseMetaTileEntity().getStoredEU())
-                + EnumChatFormatting.RESET
-                + " EU / "
-                + EnumChatFormatting.YELLOW
-                + getBaseMetaTileEntity().getEUCapacity()
-                + EnumChatFormatting.RESET
-                + " EU",
-            "Probably uses: " +
-            // negative EU triggers special EU consumption behavior. however it does not produce power.
-                EnumChatFormatting.RED + Math.abs(mEUt) + EnumChatFormatting.RESET + " EU/t",
-            "Max Energy Income: " + EnumChatFormatting.YELLOW
-                + getMaxInputVoltage()
-                + EnumChatFormatting.RESET
-                + " EU/t(*2A) Tier: "
-                + EnumChatFormatting.YELLOW
-                + VN[GTUtility.getTier(getMaxInputVoltage())]
-                + EnumChatFormatting.RESET,
-            "Problems: " + EnumChatFormatting.RED
-                + (getIdealStatus() - getRepairStatus())
-                + EnumChatFormatting.RESET
-                + " Efficiency: "
-                + EnumChatFormatting.YELLOW
-                + mEfficiency / 100.0F
-                + EnumChatFormatting.RESET
-                + " %",
-            "Pollution reduction: " + EnumChatFormatting.GREEN
-                + getPollutionCleaningRatePerTick(baseEff / 10000f, mEfficiency / 10000f, isFilterLoaded)
-                + EnumChatFormatting.RESET
-                + " gibbl/t",
-            "Has a filter in it: " + isFilterLoaded,
-            "remaining cycles for the filter (if present): " + filterUsageRemaining };
+        return new String[] {
+            StatCollector.translateToLocalFormatted(
+                "GT5U.infodata.progress",
+                EnumChatFormatting.GREEN + Integer.toString(mProgresstime / 20) + EnumChatFormatting.RESET,
+                EnumChatFormatting.YELLOW + Integer.toString(mMaxProgresstime / 20) + EnumChatFormatting.RESET),
+            StatCollector.translateToLocalFormatted(
+                "GT5U.infodata.energy",
+                EnumChatFormatting.GREEN + Long.toString(getBaseMetaTileEntity().getStoredEU())
+                    + EnumChatFormatting.RESET,
+                EnumChatFormatting.YELLOW + Long.toString(getBaseMetaTileEntity().getEUCapacity())
+                    + EnumChatFormatting.RESET),
+            StatCollector.translateToLocalFormatted(
+                "GT5U.infodata.probably_uses",
+                // negative EU triggers special EU consumption behavior. however it does not produce power.
+                EnumChatFormatting.RED + Integer.toString(Math.abs(mEUt)) + EnumChatFormatting.RESET),
+            StatCollector.translateToLocalFormatted(
+                "GT5U.infodata.max_energy_income_tie",
+                EnumChatFormatting.YELLOW + Long.toString(getMaxInputVoltage()) + EnumChatFormatting.RESET,
+                EnumChatFormatting.YELLOW + VN[GTUtility.getTier(getMaxInputVoltage())] + EnumChatFormatting.RESET),
+            StatCollector.translateToLocalFormatted(
+                "GT5U.infodata.problems_efficiency",
+                EnumChatFormatting.RED + Integer.toString(getIdealStatus() - getRepairStatus())
+                    + EnumChatFormatting.RESET,
+                EnumChatFormatting.YELLOW + Float.toString(mEfficiency / 100.0F) + EnumChatFormatting.RESET + " %"),
+            StatCollector.translateToLocalFormatted(
+                "GT5U.infodata.air_filter.pollution_reduction",
+                EnumChatFormatting.GREEN
+                    + Integer.toString(getPollutionCleaningRatePerTick(baseEff, mEfficiency / 10000f, isFilterLoaded))
+                    + EnumChatFormatting.RESET),
+            StatCollector.translateToLocalFormatted("GT5U.infodata.air_filter.has_filter", isFilterLoaded),
+            StatCollector
+                .translateToLocalFormatted("GT5U.infodata.air_filter.remaining_cycles", filterUsageRemaining) };
     }
 }

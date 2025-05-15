@@ -29,7 +29,6 @@ import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 import com.gtnewhorizons.modularui.common.widget.textfield.NumericWidget;
 
-import gregtech.api.gui.modularui.GTUIInfos;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -74,6 +73,12 @@ public class MTEHatchWirelessMulti extends MTEHatchEnergyMulti {
                     + GRAY
                     + " EU/t" },
             aAmp);
+    }
+
+    @Override
+    public int getHatchType() {
+        // If amperage is > 64, this is a "wireless laser" and should not be usable on multi-amp only machines
+        return maxAmperes <= 64 ? 1 : 2;
     }
 
     public MTEHatchWirelessMulti(String aName, int aTier, int aAmp, String[] aDescription, ITexture[][][] aTextures) {
@@ -219,7 +224,7 @@ public class MTEHatchWirelessMulti extends MTEHatchEnergyMulti {
     @Override
     public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
         ItemStack aTool) {
-        GTUIInfos.openGTTileEntityUI(this.getBaseMetaTileEntity(), aPlayer);
+        openGui(aPlayer);
         super.onScrewdriverRightClick(side, aPlayer, aX, aY, aZ, aTool);
     }
 

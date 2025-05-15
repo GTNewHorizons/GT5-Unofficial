@@ -17,7 +17,8 @@ import static bartworks.MainMod.DEBUG;
 
 import net.minecraft.item.ItemStack;
 
-import bartworks.util.Pair;
+import org.apache.commons.lang3.tuple.Pair;
+
 import bartworks.util.log.DebugLog;
 import thaumcraft.api.ThaumcraftApi;
 import thaumcraft.api.aspects.Aspect;

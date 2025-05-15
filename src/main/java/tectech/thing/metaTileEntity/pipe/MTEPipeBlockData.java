@@ -2,9 +2,7 @@ package tectech.thing.metaTileEntity.pipe;
 
 import static net.minecraft.util.StatCollector.translateToLocal;
 
-import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.apache.commons.lang3.ArrayUtils;
@@ -28,12 +26,12 @@ public class MTEPipeBlockData extends MTEPipeData {
     }
 
     @Override
-    public AxisAlignedBB getCollisionBoundingBoxFromPool(World aWorld, int aX, int aY, int aZ) {
-        return AxisAlignedBB.getBoundingBox(aX, aY, aZ, aX + 1, aY + 1, aZ + 1);
+    public float getThickness() {
+        return 1f;
     }
 
     @Override
-    public float getThickNess() {
+    public float getCollisionThickness() {
         return 1f;
     }
 

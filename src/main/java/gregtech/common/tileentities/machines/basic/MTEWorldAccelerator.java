@@ -14,6 +14,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -82,7 +83,7 @@ public class MTEWorldAccelerator extends MTETieredMachineBlock {
         return _mRadiusTierOverride;
     }
 
-    private byte mMode = 0; // 0: RandomTicks around 1: TileEntities with range 1
+    private byte mMode = 1; // 0: RandomTicks around 1: TileEntities with range 1
     private static Textures.BlockIcons.CustomIcon _mGTIco_Norm_Idle;
     private static Textures.BlockIcons.CustomIcon _mGTIco_Norm_Active;
     private static Textures.BlockIcons.CustomIcon _mGTIco_TE_Idle;
@@ -136,19 +137,24 @@ public class MTEWorldAccelerator extends MTETieredMachineBlock {
     public String[] getInfoData() {
         List<String> tInfoDisplay = new ArrayList<>();
 
-        tInfoDisplay.add(String.format("Accelerator running in %s mode", mModeStr[mMode]));
         tInfoDisplay.add(
-            String.format(
-                "Speed setting: [%d / %d]",
+            StatCollector.translateToLocalFormatted(
+                "GT5U.infodata.world_accelerator.mode",
+                StatCollector.translateToLocal(mUnlocalizedModeStr[mMode])));
+        tInfoDisplay.add(
+            StatCollector.translateToLocalFormatted(
+                "GT5U.infodata.world_accelerator.speed",
                 mAccelerateStatic[getSpeedTierOverride()],
                 mAccelerateStatic[mTier]));
         tInfoDisplay.add(
-            String.format(
-                "Consuming %d EU/t",
+            StatCollector.translateToLocalFormatted(
+                "GT5U.infodata.world_accelerator.consuming",
                 getEnergyDemand(getSpeedTierOverride(), getRadiusTierOverride(), mMode == 1)));
 
         // Don't show radius setting if in TE Mode
-        if (mMode == 0) tInfoDisplay.add(String.format("Radius setting: [%d / %d]", getRadiusTierOverride(), mTier));
+        if (mMode == 0) tInfoDisplay.add(
+            StatCollector
+                .translateToLocalFormatted("GT5U.infodata.world_accelerator.radius", getRadiusTierOverride(), mTier));
 
         return tInfoDisplay.toArray(new String[0]);
     }
@@ -229,11 +235,6 @@ public class MTEWorldAccelerator extends MTETieredMachineBlock {
     }
 
     @Override
-    public boolean isSimpleMachine() {
-        return false;
-    }
-
-    @Override
     public boolean isFacingValid(ForgeDirection facing) {
         return true;
     }
@@ -275,10 +276,13 @@ public class MTEWorldAccelerator extends MTETieredMachineBlock {
 
     private static final String[] mModeStr = { "Blocks", "TileEntities" };
 
+    private static final String[] mUnlocalizedModeStr = { "GT5U.word_accelerator.mode.blocks",
+        "GT5U.word_accelerator.mode.tile_entities" };
+
     // This uses the Wrench as second tool to cycle speeds
     @Override
     public boolean onWrenchRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer pPlayer, float aX,
-        float aY, float aZ) {
+        float aY, float aZ, ItemStack aTool) {
         incSpeedTierOverride();
 
         markDirty();
@@ -290,7 +294,8 @@ public class MTEWorldAccelerator extends MTETieredMachineBlock {
     }
 
     @Override
-    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer pPlayer, float pX, float pY, float pZ) {
+    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer pPlayer, float pX, float pY, float pZ,
+        ItemStack aTool) {
         if (pPlayer.isSneaking()) {
             if (mMode == 0) {
                 incRadiusTierOverride();

@@ -37,6 +37,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityDispenser;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -207,14 +208,9 @@ public class MTEWindmill extends MTEEnhancedMultiBlockBase<MTEWindmill>
             .addCasingInfoMin("Hardened Clay block", 40, false)
             .addOtherStructurePart("Dispenser", "Any Hardened Clay block")
             .addOtherStructurePart("0-1 Wooden door", "Any Hardened Clay block")
-            .addStructureHint("Primitive Kinetic Shaftbox", 1)
+            .addStructureHint("tile.BWRotorBlock.0.name", 1)
             .toolTipFinisher();
         return tt;
-    }
-
-    @Override
-    public boolean isCorrectMachinePart(ItemStack itemStack) {
-        return true;
     }
 
     private final Set<TileEntityDispenser> tileEntityDispensers = new HashSet<>();
@@ -415,30 +411,17 @@ public class MTEWindmill extends MTEEnhancedMultiBlockBase<MTEWindmill>
     }
 
     @Override
-    public int getMaxEfficiency(ItemStack itemStack) {
-        return 10000;
-    }
-
-    @Override
-    public int getDamageToComponent(ItemStack itemStack) {
-        return 0;
-    }
-
-    @Override
-    public boolean explodesOnComponentBreak(ItemStack itemStack) {
-        return false;
-    }
-
-    @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity iGregTechTileEntity) {
         return new MTEWindmill(this.mName);
     }
 
     @Override
     public String[] getInfoData() {
-        return new String[] { "Progress:",
-            this.mProgresstime + " Grindings of " + this.mMaxProgresstime + " needed Grindings", "GrindPower:",
-            this.rotorBlock.getGrindPower() + "KU/t" };
+        return new String[] {
+            StatCollector
+                .translateToLocalFormatted("BW.infoData.wind_mill.progress", this.mProgresstime, this.mMaxProgresstime),
+            StatCollector
+                .translateToLocalFormatted("BW.infoData.wind_mill.grind_power", this.rotorBlock.getGrindPower()) };
     }
 
     @SideOnly(Side.CLIENT)

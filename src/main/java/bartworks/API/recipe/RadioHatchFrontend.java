@@ -7,7 +7,7 @@ import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.util.StatCollector;
 
-import bartworks.common.tileentities.tiered.GT_MetaTileEntity_RadioHatch;
+import bartworks.common.tileentities.tiered.MTERadioHatch;
 import gregtech.api.recipe.BasicUIPropertiesBuilder;
 import gregtech.api.recipe.NEIRecipePropertiesBuilder;
 import gregtech.api.recipe.RecipeMapFrontend;
@@ -39,7 +39,7 @@ public class RadioHatchFrontend extends RecipeMapFrontend {
             Sievert data = recipeInfo.recipe.getMetadataOrDefault(GTRecipeConstants.SIEVERT, new Sievert(0));
             int radioLevel = data.sievert;
             int mass = recipeInfo.recipe.getMetadataOrDefault(GTRecipeConstants.MASS, 0);
-            long time = GT_MetaTileEntity_RadioHatch.calcDecayTicks(radioLevel);
+            long time = MTERadioHatch.calcDecayTicks(radioLevel);
             return Arrays.asList(
                 StatCollector.translateToLocalFormatted("BW.NEI.display.radhatch.0", radioLevel),
                 StatCollector.translateToLocalFormatted("BW.NEI.display.radhatch.1", mass),

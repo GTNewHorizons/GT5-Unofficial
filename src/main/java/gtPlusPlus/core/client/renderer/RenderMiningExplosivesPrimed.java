@@ -11,8 +11,8 @@ import org.lwjgl.opengl.GL11;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.entity.EntityPrimedMiningExplosive;
+import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 
 @SideOnly(Side.CLIENT)
 public class RenderMiningExplosivesPrimed extends RenderTNTPrimed {
@@ -56,7 +56,8 @@ public class RenderMiningExplosivesPrimed extends RenderTNTPrimed {
 
         f2 = (1.0F - (((entity.fuse - p_76986_9_) + 1.0F) / 100.0F)) * 0.8F;
         this.bindEntityTexture(entity);
-        this.blockRenderer.renderBlockAsItem(ModBlocks.blockMiningExplosive, 0, entity.getBrightness(p_76986_9_));
+        this.blockRenderer
+            .renderBlockAsItem(GregtechItemList.MiningExplosives.getBlock(), 0, entity.getBrightness(p_76986_9_));
 
         if (((entity.fuse / 5) % 2) == 0) {
             GL11.glDisable(GL11.GL_TEXTURE_2D);
@@ -64,7 +65,7 @@ public class RenderMiningExplosivesPrimed extends RenderTNTPrimed {
             GL11.glEnable(GL11.GL_BLEND);
             GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_DST_ALPHA);
             GL11.glColor4f(1.0F, 1.0F, 1.0F, f2);
-            this.blockRenderer.renderBlockAsItem(ModBlocks.blockMiningExplosive, 0, 1.0F);
+            this.blockRenderer.renderBlockAsItem(GregtechItemList.MiningExplosives.getBlock(), 0, 1.0F);
             GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
             GL11.glDisable(GL11.GL_BLEND);
             GL11.glEnable(GL11.GL_LIGHTING);

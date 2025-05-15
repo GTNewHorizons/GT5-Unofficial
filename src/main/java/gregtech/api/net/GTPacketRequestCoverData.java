@@ -13,7 +13,7 @@ import com.google.common.io.ByteArrayDataInput;
 
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.metatileentity.CoverableTileEntity;
-import gregtech.common.covers.CoverInfo;
+import gregtech.common.covers.Cover;
 import io.netty.buffer.ByteBuf;
 
 /**
@@ -34,14 +34,14 @@ public class GTPacketRequestCoverData extends GTPacket {
         super();
     }
 
-    public GTPacketRequestCoverData(CoverInfo info, ICoverable tile) {
+    public GTPacketRequestCoverData(Cover cover, ICoverable tile) {
         super();
         this.mX = tile.getXCoord();
         this.mY = tile.getYCoord();
         this.mZ = tile.getZCoord();
 
-        this.side = info.getSide();
-        this.coverID = info.getCoverID();
+        this.side = cover.getSide();
+        this.coverID = cover.getCoverID();
     }
 
     public GTPacketRequestCoverData(int mX, short mY, int mZ, ForgeDirection coverSide, int coverID) {
@@ -49,16 +49,6 @@ public class GTPacketRequestCoverData extends GTPacket {
         this.mX = mX;
         this.mY = mY;
         this.mZ = mZ;
-
-        this.side = coverSide;
-        this.coverID = coverID;
-    }
-
-    public GTPacketRequestCoverData(ForgeDirection coverSide, int coverID, ICoverable tile) {
-        super();
-        this.mX = tile.getXCoord();
-        this.mY = tile.getYCoord();
-        this.mZ = tile.getZCoord();
 
         this.side = coverSide;
         this.coverID = coverID;
@@ -104,7 +94,8 @@ public class GTPacketRequestCoverData extends GTPacket {
         if (world != null) {
             final TileEntity tile = world.getTileEntity(mX, mY, mZ);
             if (tile instanceof CoverableTileEntity te) {
-                if (!te.isDead() && te.getCoverIDAtSide(side) == coverID) {
+                if (!te.isDead() && te.getCoverAtSide(side)
+                    .getCoverID() == coverID) {
                     te.issueCoverUpdate(side);
                 }
             }

@@ -11,7 +11,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.function.Function;
@@ -31,7 +30,6 @@ import com.google.common.collect.LinkedHashMultimap;
 import com.google.common.collect.SetMultimap;
 
 import gregtech.api.GregTechAPI;
-import gregtech.api.interfaces.IRecipeMap;
 import gregtech.api.objects.GTItemStack;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
@@ -64,11 +62,6 @@ public class RecipeMapBackend {
      * All the recipes belonging to this backend, indexed by recipe category.
      */
     private final Map<RecipeCategory, Collection<GTRecipe>> recipesByCategory = new HashMap<>();
-
-    /**
-     * List of recipemaps that also receive recipe addition from this backend.
-     */
-    private final List<IRecipeMap> downstreams = new ArrayList<>(0);
 
     /**
      * All the properties specific to this backend.
@@ -171,6 +164,7 @@ public class RecipeMapBackend {
      * Builds recipe from supplied recipe builder and adds it.
      */
     protected Collection<GTRecipe> doAdd(GTRecipeBuilder builder) {
+        properties.transformBuilder(builder);
         Iterable<? extends GTRecipe> recipes = properties.recipeEmitter.apply(builder);
         Collection<GTRecipe> ret = new ArrayList<>();
         for (GTRecipe recipe : recipes) {
@@ -182,13 +176,7 @@ public class RecipeMapBackend {
                 handleInvalidRecipeLowFluids();
                 return Collections.emptyList();
             }
-            if (properties.recipeTransformer != null) {
-                recipe = properties.recipeTransformer.apply(recipe);
-            }
-            if (recipe == null) {
-                handleInvalidRecipe();
-                continue;
-            }
+            properties.transformRecipe(recipe);
             if (builder.isCheckForCollision() && ENABLE_COLLISION_CHECK && checkCollision(recipe)) {
                 handleCollision(recipe);
                 continue;
@@ -198,12 +186,6 @@ public class RecipeMapBackend {
                 continue;
             }
             ret.add(compileRecipe(recipe));
-        }
-        if (!ret.isEmpty()) {
-            builder.clearInvalid();
-            for (IRecipeMap downstream : downstreams) {
-                downstream.doAdd(builder);
-            }
         }
         return ret;
     }
@@ -241,10 +223,6 @@ public class RecipeMapBackend {
             hasAnEntry = true;
         }
         handleRecipeCollision(errorInfo.toString());
-    }
-
-    void addDownstream(IRecipeMap downstream) {
-        downstreams.add(downstream);
     }
 
     /**

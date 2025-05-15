@@ -53,7 +53,6 @@ public class BauxiteRefineChain {
             .fluidOutputs(MaterialsOreAlum.HeatedBauxiteSlurry.getFluid(2000))
             .duration(2 * SECONDS)
             .eut(TierEU.RECIPE_HV)
-            .noOptimize()
             .addTo(fluidHeaterRecipes);
 
         GTValues.RA.stdBuilder()

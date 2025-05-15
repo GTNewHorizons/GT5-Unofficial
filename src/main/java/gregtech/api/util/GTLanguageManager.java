@@ -433,6 +433,7 @@ public class GTLanguageManager {
         addStringLocalization("Interaction_DESCRIPTION_Index_221", "Item threshold");
         addStringLocalization("Interaction_DESCRIPTION_Index_222", "Fluid threshold");
         addStringLocalization("Interaction_DESCRIPTION_Index_222.1", "Energy threshold");
+
         addStringLocalization(
             "Interaction_DESCRIPTION_Index_223",
             "Single recipe locking enabled. Will lock to next recipe.");
@@ -487,7 +488,7 @@ public class GTLanguageManager {
         addStringLocalization("Interaction_DESCRIPTION_Index_268", "Overflow Voiding Mode Enabled");
         addStringLocalization("Interaction_DESCRIPTION_Index_269", "Void Full Mode Disabled");
         addStringLocalization("Interaction_DESCRIPTION_Index_270", "Void Full Mode Enabled");
-        addStringLocalization("Interaction_DESCRIPTION_Index_271", "unspecified");
+        addStringLocalization("Interaction_DESCRIPTION_Index_271", "Machine enabled");
         addStringLocalization("Interaction_DESCRIPTION_Index_272", "Recipe by: ");
         addStringLocalization("Interaction_DESCRIPTION_Index_273", "Original Recipe by: ");
         addStringLocalization("Interaction_DESCRIPTION_Index_274", "Modified by: ");
@@ -554,6 +555,7 @@ public class GTLanguageManager {
         addStringLocalization("Interaction_DESCRIPTION_Index_507", "Safe Mode");
         addStringLocalization("Interaction_DESCRIPTION_Index_508", "Requires Stabilized Black Hole");
         addStringLocalization("Interaction_DESCRIPTION_Index_509", "Requires HIP Unit");
+        addStringLocalization("Interaction_DESCRIPTION_Index_510", "Multi Tier required: ");
         addStringLocalization("Interaction_DESCRIPTION_Index_602", "Use Private Frequency");
         addStringLocalization("Interaction_DESCRIPTION_Index_756", "Connectable: ");
         addStringLocalization("Interaction_DESCRIPTION_Index_ALL", "All");

@@ -1,6 +1,8 @@
 package gtPlusPlus.api.objects.minecraft;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.ISidedInventory;
@@ -9,7 +11,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import gregtech.api.util.GTUtility;
 import gtPlusPlus.core.tileentities.base.TileEntityBase;
-import gtPlusPlus.core.util.data.ArrayUtils;
+import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 
 public class BTF_Inventory implements ISidedInventory {
 
@@ -204,7 +206,9 @@ public class BTF_Inventory implements ISidedInventory {
     }
 
     public final void purgeNulls() {
-        ItemStack[] aTemp = ArrayUtils.removeNulls(this.mInventory);
+        List<ItemStack> list = new ObjectArrayList<>(this.mInventory);
+        list.removeAll(Collections.singleton((ItemStack) null));
+        ItemStack[] aTemp = list.toArray(new ItemStack[0]);
         for (int g = 0; g < this.getSizeInventory(); g++) {
             if (aTemp.length < this.getSizeInventory()) {
                 if (g <= aTemp.length - 1) {

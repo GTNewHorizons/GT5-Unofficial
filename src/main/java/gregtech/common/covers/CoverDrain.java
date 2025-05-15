@@ -9,47 +9,49 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidBlock;
 import net.minecraftforge.fluids.IFluidHandler;
 
+import gregtech.api.covers.CoverContext;
 import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IMachineProgress;
-import gregtech.api.util.CoverBehavior;
 import gregtech.api.util.GTUtility;
 
-public class CoverDrain extends CoverBehavior {
+public class CoverDrain extends CoverLegacyData {
 
-    public CoverDrain(ITexture coverTexture) {
-        super(coverTexture);
+    public CoverDrain(CoverContext context, ITexture coverTexture) {
+        super(context, coverTexture);
     }
 
     @Override
-    public boolean isRedstoneSensitive(ForgeDirection side, int aCoverID, int aCoverVariable, ICoverable aTileEntity,
-        long aTimer) {
+    public boolean isRedstoneSensitive(long aTimer) {
         return false;
     }
 
     @Override
-    public int doCoverThings(ForgeDirection side, byte aInputRedstone, int aCoverID, int aCoverVariable,
-        ICoverable aTileEntity, long aTimer) {
-        if ((aCoverVariable % 3 > 1) && ((aTileEntity instanceof IMachineProgress))) {
-            if (((IMachineProgress) aTileEntity).isAllowedToWork()) {
-                return aCoverVariable;
+    public void doCoverThings(byte aInputRedstone, long aTimer) {
+        ICoverable coverable = coveredTile.get();
+        if (coverable == null) {
+            return;
+        }
+        if ((this.coverData % 3 > 1) && ((coverable instanceof IMachineProgress))) {
+            if (((IMachineProgress) coverable).isAllowedToWork()) {
+                return;
             }
         }
-        if (side != ForgeDirection.UNKNOWN) {
-            final Block tBlock = aTileEntity.getBlockAtSide(side);
-            if ((aCoverVariable < 3) && ((aTileEntity instanceof IFluidHandler))) {
-                if ((side == ForgeDirection.UP) && (aTileEntity.getWorld()
+        if (coverSide != ForgeDirection.UNKNOWN) {
+            final Block tBlock = coverable.getBlockAtSide(coverSide);
+            if ((this.coverData < 3) && ((coverable instanceof IFluidHandler))) {
+                if ((coverSide == ForgeDirection.UP) && (coverable.getWorld()
                     .isRaining())
-                    && (aTileEntity.getWorld()
-                        .getPrecipitationHeight(aTileEntity.getXCoord(), aTileEntity.getZCoord()) - 2
-                        < aTileEntity.getYCoord())) {
-                    int tAmount = (int) (aTileEntity.getBiome().rainfall * 10.0F);
+                    && (coverable.getWorld()
+                        .getPrecipitationHeight(coverable.getXCoord(), coverable.getZCoord()) - 2
+                        < coverable.getYCoord())) {
+                    int tAmount = (int) (coverable.getBiome().rainfall * 10.0F);
                     if (tAmount > 0) {
-                        ((IFluidHandler) aTileEntity).fill(
-                            side,
+                        ((IFluidHandler) coverable).fill(
+                            coverSide,
                             Materials.Water.getFluid(
-                                aTileEntity.getWorld()
+                                coverable.getWorld()
                                     .isThundering() ? tAmount * 2L : tAmount),
                             true);
                     }
@@ -57,61 +59,59 @@ public class CoverDrain extends CoverBehavior {
                 FluidStack tLiquid = null;
                 if (tBlock != null) {
                     if (((tBlock == Blocks.water) || (tBlock == Blocks.flowing_water))
-                        && (aTileEntity.getMetaIDAtSide(side) == 0)) {
+                        && (coverable.getMetaIDAtSide(coverSide) == 0)) {
                         tLiquid = Materials.Water.getFluid(1000L);
                     } else if (((tBlock == Blocks.lava) || (tBlock == Blocks.flowing_lava))
-                        && (aTileEntity.getMetaIDAtSide(side) == 0)) {
+                        && (coverable.getMetaIDAtSide(coverSide) == 0)) {
                             tLiquid = Materials.Lava.getFluid(1000L);
                         } else if ((tBlock instanceof IFluidBlock)) {
                             tLiquid = ((IFluidBlock) tBlock).drain(
-                                aTileEntity.getWorld(),
-                                aTileEntity.getOffsetX(side, 1),
-                                aTileEntity.getOffsetY(side, 1),
-                                aTileEntity.getOffsetZ(side, 1),
+                                coverable.getWorld(),
+                                coverable.getOffsetX(coverSide, 1),
+                                coverable.getOffsetY(coverSide, 1),
+                                coverable.getOffsetZ(coverSide, 1),
                                 false);
                         }
                     if ((tLiquid != null) && (tLiquid.getFluid() != null)
-                        && ((side.flag & (ForgeDirection.UP.flag | ForgeDirection.DOWN.flag)) == 0 // Horizontal
-                            || ((side == ForgeDirection.DOWN) && (tLiquid.getFluid()
+                        && ((coverSide.flag & (ForgeDirection.UP.flag | ForgeDirection.DOWN.flag)) == 0 // Horizontal
+                            || ((coverSide == ForgeDirection.DOWN) && (tLiquid.getFluid()
                                 .getDensity() <= 0))
-                            || ((side == ForgeDirection.UP) && (tLiquid.getFluid()
+                            || ((coverSide == ForgeDirection.UP) && (tLiquid.getFluid()
                                 .getDensity() >= 0)))
-                        && (((IFluidHandler) aTileEntity).fill(side, tLiquid, false) == tLiquid.amount)) {
-                        ((IFluidHandler) aTileEntity).fill(side, tLiquid, true);
-                        aTileEntity.getWorld()
+                        && (((IFluidHandler) coverable).fill(coverSide, tLiquid, false) == tLiquid.amount)) {
+                        ((IFluidHandler) coverable).fill(coverSide, tLiquid, true);
+                        coverable.getWorld()
                             .setBlockToAir(
-                                aTileEntity.getXCoord() + side.offsetX,
-                                aTileEntity.getYCoord() + side.offsetY,
-                                aTileEntity.getZCoord() + side.offsetZ);
+                                coverable.getXCoord() + coverSide.offsetX,
+                                coverable.getYCoord() + coverSide.offsetY,
+                                coverable.getZCoord() + coverSide.offsetZ);
                     }
                 }
             }
-            if ((aCoverVariable >= 3) && (tBlock != null)
+            if ((this.coverData >= 3) && (tBlock != null)
                 && ((tBlock == Blocks.lava) || (tBlock == Blocks.flowing_lava)
                     || (tBlock == Blocks.water)
                     || (tBlock == Blocks.flowing_water)
                     || ((tBlock instanceof IFluidBlock)))) {
-                aTileEntity.getWorld()
+                coverable.getWorld()
                     .setBlock(
-                        aTileEntity.getOffsetX(side, 1),
-                        aTileEntity.getOffsetY(side, 1),
-                        aTileEntity.getOffsetZ(side, 1),
+                        coverable.getOffsetX(coverSide, 1),
+                        coverable.getOffsetY(coverSide, 1),
+                        coverable.getOffsetZ(coverSide, 1),
                         Blocks.air,
                         0,
                         0);
             }
         }
-        return aCoverVariable;
     }
 
     @Override
-    public int onCoverScrewdriverclick(ForgeDirection side, int aCoverID, int aCoverVariable, ICoverable aTileEntity,
-        EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        aCoverVariable = (aCoverVariable + (aPlayer.isSneaking() ? -1 : 1)) % 6;
-        if (aCoverVariable < 0) {
-            aCoverVariable = 5;
+    public void onCoverScrewdriverClick(EntityPlayer aPlayer, float aX, float aY, float aZ) {
+        this.coverData = (this.coverData + (aPlayer.isSneaking() ? -1 : 1)) % 6;
+        if (this.coverData < 0) {
+            this.coverData = 5;
         }
-        switch (aCoverVariable) {
+        switch (this.coverData) {
             case 0 -> GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("022", "Import"));
             case 1 -> GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("023", "Import (conditional)"));
             case 2 -> GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("024", "Import (invert cond)"));
@@ -119,22 +119,20 @@ public class CoverDrain extends CoverBehavior {
             case 4 -> GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("026", "Keep Liquids Away (conditional)"));
             case 5 -> GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("027", "Keep Liquids Away (invert cond)"));
         }
-        return aCoverVariable;
     }
 
     @Override
-    public boolean letsFluidIn(ForgeDirection side, int aCoverID, int aCoverVariable, Fluid aFluid,
-        ICoverable aTileEntity) {
-        return ((IMachineProgress) aTileEntity).isAllowedToWork() == aCoverVariable < 2;
+    public boolean letsFluidIn(Fluid aFluid) {
+        return (coveredTile.get() instanceof IMachineProgress machine && machine.isAllowedToWork()) == (coverData < 2);
     }
 
     @Override
-    public boolean alwaysLookConnected(ForgeDirection side, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
+    public boolean alwaysLookConnected() {
         return true;
     }
 
     @Override
-    public int getTickRate(ForgeDirection side, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
-        return aCoverVariable < 3 ? 50 : 1;
+    public int getMinimumTickRate() {
+        return coverData < 3 ? 50 : 1;
     }
 }

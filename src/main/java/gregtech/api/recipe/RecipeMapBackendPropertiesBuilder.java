@@ -2,9 +2,9 @@ package gregtech.api.recipe;
 
 import static gregtech.api.util.GTRecipeMapUtil.buildOrEmpty;
 
+import java.util.function.Consumer;
 import java.util.function.Function;
 
-import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 import com.google.common.collect.Iterables;
@@ -26,12 +26,11 @@ public final class RecipeMapBackendPropertiesBuilder {
 
     private boolean specialSlotSensitive;
 
-    private boolean disableOptimize;
+    private Consumer<? super GTRecipeBuilder> builderTransformer;
 
     private Function<? super GTRecipeBuilder, ? extends Iterable<? extends GTRecipe>> recipeEmitter = this::defaultBuildRecipe;
 
-    @Nullable
-    private Function<? super GTRecipe, ? extends GTRecipe> recipeTransformer;
+    private Consumer<? super GTRecipe> recipeTransformer;
 
     RecipeMapBackendPropertiesBuilder() {}
 
@@ -40,8 +39,8 @@ public final class RecipeMapBackendPropertiesBuilder {
             minItemInputs,
             minFluidInputs,
             specialSlotSensitive,
-            disableOptimize,
             recipeEmitter,
+            builderTransformer,
             recipeTransformer);
     }
 
@@ -60,11 +59,6 @@ public final class RecipeMapBackendPropertiesBuilder {
         return this;
     }
 
-    public RecipeMapBackendPropertiesBuilder disableOptimize() {
-        this.disableOptimize = true;
-        return this;
-    }
-
     public RecipeMapBackendPropertiesBuilder recipeEmitter(
         Function<? super GTRecipeBuilder, ? extends Iterable<? extends GTRecipe>> recipeEmitter) {
         this.recipeEmitter = recipeEmitter;
@@ -78,28 +72,40 @@ public final class RecipeMapBackendPropertiesBuilder {
         return recipeEmitter(b -> Iterables.concat(cur.apply(b), func.apply(b)));
     }
 
-    public RecipeMapBackendPropertiesBuilder recipeTransformer(
-        Function<? super GTRecipe, ? extends GTRecipe> recipeTransformer) {
-        this.recipeTransformer = recipeTransformer;
-        return this;
-    }
-
-    public RecipeMapBackendPropertiesBuilder chainRecipeTransformer(
-        Function<? super GTRecipe, ? extends GTRecipe> func) {
-        this.recipeTransformer = this.recipeTransformer == null ? func : this.recipeTransformer.andThen(func);
+    public RecipeMapBackendPropertiesBuilder builderTransformer(Consumer<? super GTRecipeBuilder> builderTransformer) {
+        if (this.builderTransformer == null) {
+            this.builderTransformer = builderTransformer;
+        } else {
+            Consumer<? super GTRecipeBuilder> t = this.builderTransformer;
+            this.builderTransformer = b -> {
+                t.accept(b);
+                builderTransformer.accept(b);
+            };
+        }
         return this;
     }
 
     private Iterable<? extends GTRecipe> defaultBuildRecipe(GTRecipeBuilder builder) {
         // TODO sensible validation
         GTRecipeBuilder b = builder;
-        if (disableOptimize && builder.isOptimize()) {
-            b = copy(builder, b).noOptimize();
-        }
+        b = copy(builder, b);
         return buildOrEmpty(b);
     }
 
     private static GTRecipeBuilder copy(GTRecipeBuilder original, GTRecipeBuilder b) {
         return b == original ? b.copy() : b;
+    }
+
+    public RecipeMapBackendPropertiesBuilder recipeTransformer(Consumer<? super GTRecipe> recipeTransformer) {
+        if (this.recipeTransformer == null) {
+            this.recipeTransformer = recipeTransformer;
+        } else {
+            Consumer<? super GTRecipe> t = this.recipeTransformer;
+            this.recipeTransformer = r -> {
+                t.accept(r);
+                recipeTransformer.accept(r);
+            };
+        }
+        return this;
     }
 }

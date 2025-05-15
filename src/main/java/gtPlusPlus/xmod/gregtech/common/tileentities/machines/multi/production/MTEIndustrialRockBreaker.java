@@ -81,9 +81,10 @@ public class MTEIndustrialRockBreaker extends GTPPMultiBlockBase<MTEIndustrialRo
         tt.addMachineType(getMachineType())
             .addInfo("Speed: +200% | EU Usage: 75% | Parallel: Tier x 8")
             .addInfo("Use Integrated Circuit to determine recipe")
-            .addInfo("1 = cobble, 2 = stone, 3 = obsidian, 4 = basalt")
+            .addInfo("1 = Cobble, 2 = Stone, 3 = Obsidian, 4 = Basalt, 5 = Deepslate, 6 = Netherrack")
             .addInfo("Needs Water and Lava in input hatch")
-            .addInfo("Needs Soul Sand and Packed Ice in input bus for basalt")
+            .addInfo("Needs Soul Sand and Blue Ice in input bus for basalt")
+            .addInfo("Needs Soul Sand and Magma in input bus for deepslate")
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(3, 4, 3, true)
             .addController("Bottom Center")
@@ -215,18 +216,13 @@ public class MTEIndustrialRockBreaker extends GTPPMultiBlockBase<MTEIndustrialRo
             }
         }.setSpeedBonus(1 / 3.0)
             .setEuModifier(0.75)
-            .setMaxParallelSupplier(this::getMaxParallelRecipes);
+            .setMaxParallelSupplier(this::getTrueParallel);
 
     }
 
     @Override
     public int getMaxParallelRecipes() {
         return 8 * GTUtility.getTier(this.getMaxInputVoltage());
-    }
-
-    @Override
-    public int getMaxEfficiency(final ItemStack aStack) {
-        return 10000;
     }
 
     @Override

@@ -15,9 +15,9 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.interfaces.IOreRecipeRegistrator;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
-import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
-import gtPlusPlus.everglades.dimension.DimensionEverglades;
+import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
+import toxiceverglades.dimension.DimensionEverglades;
 
 public class RecipesLaserEngraver implements IOreRecipeRegistrator {
 
@@ -125,7 +125,7 @@ public class RecipesLaserEngraver implements IOreRecipeRegistrator {
 
         } else if (aOreDictName.equals(OreDictNames.craftingLensOrange.toString())) {
             GTValues.RA.stdBuilder()
-                .itemInputs(ItemUtils.getSimpleStack(ModItems.itemAlkalusDisk), GTUtility.copyAmount(0L, aStack))
+                .itemInputs(GregtechItemList.AlkalusDisk.get(1), GTUtility.copyAmount(0L, aStack))
                 .itemOutputs(ItemUtils.getSimpleStack(DimensionEverglades.portalItem))
                 .duration(3 * HOURS)
                 .eut(TierEU.RECIPE_IV)

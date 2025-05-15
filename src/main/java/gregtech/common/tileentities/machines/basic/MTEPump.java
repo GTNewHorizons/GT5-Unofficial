@@ -214,7 +214,7 @@ public class MTEPump extends MTEBasicMachine {
         this.mRetractDone = aNBT.getBoolean("mRetractDone");
         this.mDisallowRetract = aNBT.getBoolean("mDisallowRetract");
 
-        // Transition from old TE which was derived from GT_MetaTileEntity_Hatch
+        // Transition from old TE which was derived from MTEHatch
         if (!aNBT.hasKey("mEUt")) {
             // Output of old pump always faces up.
             getBaseMetaTileEntity().setFrontFacing(ForgeDirection.UP);
@@ -258,8 +258,9 @@ public class MTEPump extends MTEBasicMachine {
     }
 
     @Override
-    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        super.onScrewdriverRightClick(side, aPlayer, aX, aY, aZ);
+    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
+        ItemStack aTool) {
+        super.onScrewdriverRightClick(side, aPlayer, aX, aY, aZ, aTool);
 
         if (side == getBaseMetaTileEntity().getFrontFacing() || side == mMainFacing) {
             // Configuring "input from output side allowed".
@@ -290,8 +291,7 @@ public class MTEPump extends MTEBasicMachine {
 
     @Override
     public boolean onSolderingToolRightClick(ForgeDirection side, ForgeDirection wrenchingSide,
-        EntityPlayer entityPlayer, float aX, float aY, float aZ) {
-        if (super.onSolderingToolRightClick(side, wrenchingSide, entityPlayer, aX, aY, aZ)) return true;
+        EntityPlayer entityPlayer, float aX, float aY, float aZ, ItemStack aTool) {
         mDisallowRetract = !mDisallowRetract;
         GTUtility.sendChatToPlayer(
             entityPlayer,

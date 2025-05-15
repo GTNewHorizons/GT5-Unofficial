@@ -91,7 +91,6 @@ public class MTEMagicalEnergyAbsorber extends MTEBasicGenerator implements Magic
     private static final int sDragonEggEnergyPerTick = 2048;
     private static final int sCreeperEggEnergyPerTick = 512;
     private final MagicalEnergyBB mMagicalEnergyBB = new MagicalEnergyBB(this, mTier, mTier + 2);
-    private int mEfficiency;
     private int mMaxVisPerDrain;
     private long mNextGenerateTickRate = 1;
     private int mNoGenerationTicks = 0;
@@ -132,7 +131,6 @@ public class MTEMagicalEnergyAbsorber extends MTEBasicGenerator implements Magic
 
     public void onConfigLoad() {
         sharedConfigLoad();
-        mEfficiency = 100 - mTier * 10;
         mMaxVisPerDrain = (int) Math.round(Math.sqrt((double) (V[mTier] * 10000) / (sEnergyFromVis * getEfficiency())));
         if (Math.pow(mMaxVisPerDrain, 2) * sEnergyFromVis * getEfficiency() < V[mTier]) {
             mMaxVisPerDrain += 1;
@@ -140,7 +138,8 @@ public class MTEMagicalEnergyAbsorber extends MTEBasicGenerator implements Magic
     }
 
     @Override
-    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
+        ItemStack aTool) {
         if (aPlayer.isSneaking()) mMagicalEnergyBB.decreaseTier();
         else mMagicalEnergyBB.increaseTier();
         GTUtility.sendChatToPlayer(
@@ -205,7 +204,7 @@ public class MTEMagicalEnergyAbsorber extends MTEBasicGenerator implements Magic
         description
             .add(UNDERLINE + "Feasts on " + LIGHT_PURPLE + UNDERLINE + "magic" + GRAY + UNDERLINE + " close to it:");
         description.add(
-            LI + (sAllowMultipleEggs ? "A " : "An " + YELLOW + UNDERLINE + "EXCLUSIVE" + RESET)
+            "- " + (sAllowMultipleEggs ? "A " : "An " + YELLOW + UNDERLINE + "EXCLUSIVE" + RESET)
                 + GRAY
                 + " "
                 + LIGHT_PURPLE
@@ -433,7 +432,7 @@ public class MTEMagicalEnergyAbsorber extends MTEBasicGenerator implements Magic
 
     @Override
     public int getEfficiency() {
-        return mEfficiency;
+        return 100 - mTier * 10;
     }
 
     @Override

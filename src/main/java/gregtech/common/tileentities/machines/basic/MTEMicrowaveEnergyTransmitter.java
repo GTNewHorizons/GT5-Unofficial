@@ -13,6 +13,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -29,7 +30,6 @@ import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Materials;
-import gregtech.api.gui.modularui.GTUIInfos;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.gui.modularui.GUITextureSet;
 import gregtech.api.interfaces.ITexture;
@@ -73,10 +73,6 @@ public class MTEMicrowaveEnergyTransmitter extends MTEBasicTank implements IAddG
                 "0.004EU Loss per 100 Blocks" });
     }
 
-    public MTEMicrowaveEnergyTransmitter(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {
-        super(aName, aTier, 3, aDescription, aTextures);
-    }
-
     public MTEMicrowaveEnergyTransmitter(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, 3, aDescription, aTextures);
     }
@@ -85,7 +81,7 @@ public class MTEMicrowaveEnergyTransmitter extends MTEBasicTank implements IAddG
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
         if (aBaseMetaTileEntity.isClientSide()) return true;
         this.hasBlock = checkForBlock();
-        GTUIInfos.openGTTileEntityUI(aBaseMetaTileEntity, aPlayer);
+        openGui(aPlayer);
         return true;
     }
 
@@ -96,17 +92,33 @@ public class MTEMicrowaveEnergyTransmitter extends MTEBasicTank implements IAddG
 
     @Override
     public String[] getInfoData() {
-        return new String[] { "Coordinates:",
-            "X: " + EnumChatFormatting.GREEN + GTUtility.formatNumbers(this.mTargetX) + EnumChatFormatting.RESET,
-            "Y: " + EnumChatFormatting.GREEN + GTUtility.formatNumbers(this.mTargetY) + EnumChatFormatting.RESET,
-            "Z: " + EnumChatFormatting.GREEN + GTUtility.formatNumbers(this.mTargetZ) + EnumChatFormatting.RESET,
-            "Dimension: " + EnumChatFormatting.GREEN + this.mTargetD + EnumChatFormatting.RESET,
-            "Dimension Valid: " + (GTUtility.isRealDimension(this.mTargetD)
-                ? EnumChatFormatting.GREEN + "Yes" + EnumChatFormatting.RESET
-                : EnumChatFormatting.RED + "No" + EnumChatFormatting.RESET),
-            "Dimension Registered: " + (DimensionManager.isDimensionRegistered(this.mTargetD)
-                ? EnumChatFormatting.GREEN + "Yes" + EnumChatFormatting.RESET
-                : EnumChatFormatting.RED + "No" + EnumChatFormatting.RESET) };
+        return new String[] { StatCollector.translateToLocal("GT5U.infodata.coordinates"),
+            StatCollector.translateToLocalFormatted(
+                "GT5U.infodata.coordinates.x",
+                EnumChatFormatting.GREEN + GTUtility.formatNumbers(this.mTargetX) + EnumChatFormatting.RESET),
+            StatCollector.translateToLocalFormatted(
+                "GT5U.infodata.coordinates.y",
+                EnumChatFormatting.GREEN + GTUtility.formatNumbers(this.mTargetY) + EnumChatFormatting.RESET),
+            StatCollector.translateToLocalFormatted(
+                "GT5U.infodata.coordinates.z",
+                EnumChatFormatting.GREEN + GTUtility.formatNumbers(this.mTargetZ) + EnumChatFormatting.RESET),
+            StatCollector.translateToLocalFormatted(
+                "GT5U.infodata.dimension",
+                "" + EnumChatFormatting.GREEN + this.mTargetD + EnumChatFormatting.RESET),
+            StatCollector.translateToLocalFormatted(
+                "GT5U.infodata.dimension.valid",
+                (GTUtility.isRealDimension(this.mTargetD)
+                    ? EnumChatFormatting.GREEN + StatCollector.translateToLocal("GT5U.infodata.yes")
+                        + EnumChatFormatting.RESET
+                    : EnumChatFormatting.RED + StatCollector.translateToLocal("GT5U.infodata.no")
+                        + EnumChatFormatting.RESET)),
+            StatCollector.translateToLocalFormatted(
+                "GT5U.infodata.dimension.registered",
+                (DimensionManager.isDimensionRegistered(this.mTargetD)
+                    ? EnumChatFormatting.GREEN + StatCollector.translateToLocal("GT5U.infodata.yes")
+                        + EnumChatFormatting.RESET
+                    : EnumChatFormatting.RED + StatCollector.translateToLocal("GT5U.infodata.no")
+                        + EnumChatFormatting.RESET)) };
     }
 
     @Override
@@ -270,21 +282,6 @@ public class MTEMicrowaveEnergyTransmitter extends MTEBasicTank implements IAddG
     }
 
     @Override
-    public boolean isSimpleMachine() {
-        return false;
-    }
-
-    @Override
-    public boolean isOverclockerUpgradable() {
-        return false;
-    }
-
-    @Override
-    public boolean isTransformerUpgradable() {
-        return false;
-    }
-
-    @Override
     public boolean isElectric() {
         return true;
     }
@@ -382,16 +379,6 @@ public class MTEMicrowaveEnergyTransmitter extends MTEBasicTank implements IAddG
     @Override
     public boolean canTankBeEmptied() {
         return true;
-    }
-
-    @Override
-    public boolean displaysItemStack() {
-        return false;
-    }
-
-    @Override
-    public boolean displaysStackSize() {
-        return false;
     }
 
     @Override

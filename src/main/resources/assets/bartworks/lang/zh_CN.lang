@@ -126,6 +126,8 @@ tooltip.tile.radhatch.9.name=h
 tooltip.tile.acidgen.0.name=酸性发电机
 tooltip.tile.acidgen.1.name=用化学势能产生电力.
 
+tooltip.bw.structure.glass=玻璃
+
 # RecipeMap
 bw.recipe.biolab=生物实验室
 bw.recipe.BacteriaVat=生物培养缸

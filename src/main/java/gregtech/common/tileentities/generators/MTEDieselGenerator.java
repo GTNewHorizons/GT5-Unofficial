@@ -40,15 +40,14 @@ import gregtech.api.metatileentity.implementations.MTEBasicGenerator;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GTLog;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.WorldSpawnedEventBuilder.ParticleEventBuilder;
 
 public class MTEDieselGenerator extends MTEBasicGenerator {
 
-    public int mEfficiency;
+    private final int efficiency;
 
-    public MTEDieselGenerator(int aID, String aName, String aNameRegional, int aTier) {
+    public MTEDieselGenerator(int aID, String aName, String aNameRegional, int aTier, int efficiency) {
         super(
             aID,
             aName,
@@ -59,17 +58,13 @@ public class MTEDieselGenerator extends MTEBasicGenerator {
                     + (int) (GTMod.gregtechproxy.mPollutionBaseDieselGeneratorPerSecond
                         * GTMod.gregtechproxy.mPollutionDieselGeneratorReleasedByTier[aTier])
                     + " Pollution per second" });
-        onConfigLoad();
+        this.efficiency = efficiency;
     }
 
-    public MTEDieselGenerator(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {
+    public MTEDieselGenerator(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures,
+        int efficiency) {
         super(aName, aTier, aDescription, aTextures);
-        onConfigLoad();
-    }
-
-    public MTEDieselGenerator(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
-        super(aName, aTier, aDescription, aTextures);
-        onConfigLoad();
+        this.efficiency = efficiency;
     }
 
     @Override
@@ -79,7 +74,7 @@ public class MTEDieselGenerator extends MTEBasicGenerator {
 
     @Override
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new MTEDieselGenerator(this.mName, this.mTier, this.mDescriptionArray, this.mTextures);
+        return new MTEDieselGenerator(this.mName, this.mTier, this.mDescriptionArray, this.mTextures, this.efficiency);
     }
 
     @Override
@@ -92,13 +87,9 @@ public class MTEDieselGenerator extends MTEBasicGenerator {
         return 16000;
     }
 
-    public void onConfigLoad() {
-        this.mEfficiency = (100 - this.mTier * 5);
-    }
-
     @Override
     public int getEfficiency() {
-        return this.mEfficiency;
+        return this.efficiency;
     }
 
     @Override
@@ -114,22 +105,6 @@ public class MTEDieselGenerator extends MTEBasicGenerator {
         return (int) rValue;
     }
 
-    @Override
-    public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
-        if (aTick % 100 == 0 && mFluid != null && mFluid.amount > this.getCapacity()) {
-            GTLog.err.println(
-                "Dupe Abuse: " + aBaseMetaTileEntity.getOwnerName()
-                    + " Coords: "
-                    + aBaseMetaTileEntity.getXCoord()
-                    + " "
-                    + aBaseMetaTileEntity.getYCoord()
-                    + " "
-                    + aBaseMetaTileEntity.getZCoord());
-            aBaseMetaTileEntity.setToFire();
-        }
-        super.onPostTick(aBaseMetaTileEntity, aTick);
-    }
-
     /**
      * Draws random smoke particles on top when active
      *
@@ -140,7 +115,7 @@ public class MTEDieselGenerator extends MTEBasicGenerator {
     public void onRandomDisplayTick(IGregTechTileEntity aBaseMetaTileEntity) {
         if (aBaseMetaTileEntity.isActive()) {
 
-            if (aBaseMetaTileEntity.getCoverIDAtSide(ForgeDirection.UP) == 0
+            if (!aBaseMetaTileEntity.hasCoverAtSide(ForgeDirection.UP)
                 && !aBaseMetaTileEntity.getOpacityAtSide(ForgeDirection.UP)) {
 
                 final double x = aBaseMetaTileEntity.getOffsetX(ForgeDirection.UP, 1) + 2D / 16D

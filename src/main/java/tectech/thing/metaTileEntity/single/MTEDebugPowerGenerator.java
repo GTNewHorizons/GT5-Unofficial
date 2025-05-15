@@ -27,7 +27,6 @@ import com.gtnewhorizons.modularui.common.widget.textfield.NumericWidget;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Textures;
-import gregtech.api.gui.modularui.GTUIInfos;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -40,7 +39,8 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
 import tectech.mechanics.pipe.IConnectsToEnergyTunnel;
 import tectech.thing.metaTileEntity.hatch.MTEHatchEnergyTunnel;
-import tectech.thing.metaTileEntity.pipe.MTEPipeEnergy;
+import tectech.thing.metaTileEntity.pipe.MTEPipeLaser;
+import tectech.thing.metaTileEntity.pipe.MTEPipeLaserMirror;
 import tectech.util.CommonValues;
 
 /**
@@ -78,7 +78,8 @@ public class MTEDebugPowerGenerator extends MTETieredMachineBlock
     }
 
     @Override
-    public final void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+    public final void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
+        ItemStack aTool) {
         LASER = !LASER;
         GTUtility.sendChatToPlayer(
             aPlayer,
@@ -139,11 +140,6 @@ public class MTEDebugPowerGenerator extends MTETieredMachineBlock
     }
 
     @Override
-    public boolean isSimpleMachine() {
-        return false;
-    }
-
-    @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         if (aBaseMetaTileEntity.isServerSide()) {
             aBaseMetaTileEntity.setActive(producing);
@@ -167,7 +163,7 @@ public class MTEDebugPowerGenerator extends MTETieredMachineBlock
 
     @Override
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
-        GTUIInfos.openGTTileEntityUI(aBaseMetaTileEntity, aPlayer);
+        openGui(aPlayer);
         return true;
     }
 
@@ -270,35 +266,52 @@ public class MTEDebugPowerGenerator extends MTETieredMachineBlock
     private void moveAround(IGregTechTileEntity aBaseMetaTileEntity) {
         for (final ForgeDirection face : ForgeDirection.VALID_DIRECTIONS) {
             if (face == aBaseMetaTileEntity.getFrontFacing()) continue;
-            final ForgeDirection opposite = face.getOpposite();
+            ForgeDirection opposite = face.getOpposite();
             for (short dist = 1; dist < 1000; dist++) {
                 IGregTechTileEntity tGTTileEntity = aBaseMetaTileEntity
                     .getIGregTechTileEntityAtSideAndDistance(face, dist);
-                if (tGTTileEntity != null) {
-                    IMetaTileEntity aMetaTileEntity = tGTTileEntity.getMetaTileEntity();
-                    if (aMetaTileEntity != null) {
-                        if (aMetaTileEntity instanceof MTEHatchEnergyTunnel
-                            && opposite == tGTTileEntity.getFrontFacing()) {
-                            if (maxEUOutput() > ((MTEHatchEnergyTunnel) aMetaTileEntity).maxEUInput()) {
-                                aMetaTileEntity.doExplosion(maxEUOutput());
-                            } else {
-                                long diff = Math.min(
-                                    AMP * 20L * maxEUOutput(),
-                                    Math.min(
-                                        ((MTEHatchEnergyTunnel) aMetaTileEntity).maxEUStore()
-                                            - aMetaTileEntity.getBaseMetaTileEntity()
-                                                .getStoredEU(),
-                                        aBaseMetaTileEntity.getStoredEU()));
-                                ((MTEHatchEnergyTunnel) aMetaTileEntity).setEUVar(
-                                    aMetaTileEntity.getBaseMetaTileEntity()
-                                        .getStoredEU() + diff);
-                            }
-                        } else if (aMetaTileEntity instanceof MTEPipeEnergy) {
-                            if (((MTEPipeEnergy) aMetaTileEntity).connectionCount < 2) {} else {
-                                ((MTEPipeEnergy) aMetaTileEntity).markUsed();
-                            }
-                        }
+                if (tGTTileEntity == null) {
+                    break;
+                }
+                IMetaTileEntity aMetaTileEntity = tGTTileEntity.getMetaTileEntity();
+                if (aMetaTileEntity == null) {
+                    break;
+                }
+
+                // If we hit a mirror, use the mirror's view instead
+                if (aMetaTileEntity instanceof MTEPipeLaserMirror tMirror) {
+                    tGTTileEntity = tMirror.bendAround(opposite);
+                    if (tGTTileEntity == null) {
+                        break;
+                    } else {
+                        aMetaTileEntity = tGTTileEntity.getMetaTileEntity();
+                        opposite = tMirror.getChainedFrontFacing();
                     }
+                }
+
+                if (aMetaTileEntity instanceof MTEHatchEnergyTunnel && opposite == tGTTileEntity.getFrontFacing()) {
+                    if (maxEUOutput() > ((MTEHatchEnergyTunnel) aMetaTileEntity).maxEUInput()) {
+                        aMetaTileEntity.doExplosion(maxEUOutput());
+                    } else {
+                        long diff = Math.min(
+                            AMP * 20L * maxEUOutput(),
+                            Math.min(
+                                ((MTEHatchEnergyTunnel) aMetaTileEntity).maxEUStore()
+                                    - aMetaTileEntity.getBaseMetaTileEntity()
+                                        .getStoredEU(),
+                                aBaseMetaTileEntity.getStoredEU()));
+                        ((MTEHatchEnergyTunnel) aMetaTileEntity).setEUVar(
+                            aMetaTileEntity.getBaseMetaTileEntity()
+                                .getStoredEU() + diff);
+                    }
+                } else if (aMetaTileEntity instanceof MTEPipeLaser) {
+                    if (((MTEPipeLaser) aMetaTileEntity).connectionCount < 2) {
+                        break;
+                    } else {
+                        ((MTEPipeLaser) aMetaTileEntity).markUsed();
+                    }
+                } else {
+                    break;
                 }
             }
         }

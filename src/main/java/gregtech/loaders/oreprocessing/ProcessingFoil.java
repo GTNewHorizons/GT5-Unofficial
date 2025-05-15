@@ -43,6 +43,6 @@ public class ProcessingFoil implements IOreRecipeRegistrator {
 
     private void registerCover(ItemStack stack, Materials material) {
         CoverRegistry
-            .registerCover(stack, TextureFactory.of(material.mIconSet.mTextures[70], material.mRGBa, false), null);
+            .registerDecorativeCover(stack, TextureFactory.of(material.mIconSet.mTextures[70], material.mRGBa, false));
     }
 }

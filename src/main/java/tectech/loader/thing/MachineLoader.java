@@ -109,6 +109,7 @@ import static gregtech.api.enums.MetaTileEntityIDs.MAX4AWirelessEnergyHatch;
 import static gregtech.api.enums.MetaTileEntityIDs.MAX64AWirelessEnergyHatch;
 import static gregtech.api.enums.MetaTileEntityIDs.MegaUltimateBuckConverter;
 import static gregtech.api.enums.MetaTileEntityIDs.MicrowaveGrinder;
+import static gregtech.api.enums.MetaTileEntityIDs.NetworkSwitchAdv;
 import static gregtech.api.enums.MetaTileEntityIDs.NetworkSwitchWithQoS;
 import static gregtech.api.enums.MetaTileEntityIDs.ObjectHolder;
 import static gregtech.api.enums.MetaTileEntityIDs.OpticalFiberCable;
@@ -329,6 +330,7 @@ import static tectech.thing.CustomItemList.Machine_Multi_QuarkGluonPlasmaModule;
 import static tectech.thing.CustomItemList.Machine_Multi_Research;
 import static tectech.thing.CustomItemList.Machine_Multi_SmeltingModule;
 import static tectech.thing.CustomItemList.Machine_Multi_Switch;
+import static tectech.thing.CustomItemList.Machine_Multi_Switch_Adv;
 import static tectech.thing.CustomItemList.Machine_Multi_TeslaCoil;
 import static tectech.thing.CustomItemList.Machine_Multi_Transformer;
 import static tectech.thing.CustomItemList.Machine_OwnerDetector;
@@ -642,6 +644,7 @@ import tectech.thing.metaTileEntity.multi.MTEEnergyInfuser;
 import tectech.thing.metaTileEntity.multi.MTEEyeOfHarmony;
 import tectech.thing.metaTileEntity.multi.MTEMicrowave;
 import tectech.thing.metaTileEntity.multi.MTENetworkSwitch;
+import tectech.thing.metaTileEntity.multi.MTENetworkSwitchAdv;
 import tectech.thing.metaTileEntity.multi.MTEQuantumComputer;
 import tectech.thing.metaTileEntity.multi.MTEResearchStation;
 import tectech.thing.metaTileEntity.multi.MTETeslaTower;
@@ -651,10 +654,10 @@ import tectech.thing.metaTileEntity.multi.godforge.MTEMoltenModule;
 import tectech.thing.metaTileEntity.multi.godforge.MTEPlasmaModule;
 import tectech.thing.metaTileEntity.multi.godforge.MTESmeltingModule;
 import tectech.thing.metaTileEntity.pipe.MTEPipeBlockData;
-import tectech.thing.metaTileEntity.pipe.MTEPipeBlockEnergy;
+import tectech.thing.metaTileEntity.pipe.MTEPipeBlockLaser;
 import tectech.thing.metaTileEntity.pipe.MTEPipeData;
-import tectech.thing.metaTileEntity.pipe.MTEPipeEnergy;
-import tectech.thing.metaTileEntity.pipe.MTEPipeEnergyMirror;
+import tectech.thing.metaTileEntity.pipe.MTEPipeLaser;
+import tectech.thing.metaTileEntity.pipe.MTEPipeLaserMirror;
 import tectech.thing.metaTileEntity.single.MTEBuckConverter;
 import tectech.thing.metaTileEntity.single.MTEDebugPollutor;
 import tectech.thing.metaTileEntity.single.MTEDebugPowerGenerator;
@@ -2213,7 +2216,10 @@ public class MachineLoader implements Runnable {
         Machine_Multi_TeslaCoil
             .set(new MTETeslaTower(TeslaTower.ID, "multimachine.tm.teslaCoil", "Tesla Tower").getStackForm(1L));
         Machine_Multi_Switch.set(
-            new MTENetworkSwitch(NetworkSwitchWithQoS.ID, "multimachine.em.switch", "Network Switch With QoS")
+            new MTENetworkSwitch(NetworkSwitchWithQoS.ID, "multimachine.em.switch", "Weighted Network Switch With QoS")
+                .getStackForm(1L));
+        Machine_Multi_Switch_Adv.set(
+            new MTENetworkSwitchAdv(NetworkSwitchAdv.ID, "multimachine.em.switch.adv", "Static Network Switch With QoS")
                 .getStackForm(1L));
         Machine_Multi_Computer.set(
             new MTEQuantumComputer(QuantumComputer.ID, "multimachine.em.computer", "Quantum Computer")
@@ -2315,9 +2321,9 @@ public class MachineLoader implements Runnable {
         // Pipes
         // ===================================================================================================
 
-        LASERpipe.set(new MTEPipeEnergy(LaserVacuumPipe.ID, "pipe.energystream", "Laser Vacuum Pipe").getStackForm(1L));
+        LASERpipe.set(new MTEPipeLaser(LaserVacuumPipe.ID, "pipe.energystream", "Laser Vacuum Pipe").getStackForm(1L));
         LASERpipeSmart.set(
-            new MTEPipeEnergyMirror(LaserVacuumMirror.ID, "pipe.energymirror", "Laser Vacuum Mirror").getStackForm(1L));
+            new MTEPipeLaserMirror(LaserVacuumMirror.ID, "pipe.energymirror", "Laser Vacuum Mirror").getStackForm(1L));
         DATApipe.set(new MTEPipeData(OpticalFiberCable.ID, "pipe.datastream", "Optical Fiber Cable").getStackForm(1L));
 
         if ((boolean) Launch.blackboard.get("fml.deobfuscatedEnvironment")) {
@@ -2327,7 +2333,7 @@ public class MachineLoader implements Runnable {
         }
 
         LASERpipeBlock.set(
-            new MTEPipeBlockEnergy(LaserVacuumPipeCasing.ID, "pipe.energystream.block", "Laser Vacuum Pipe Casing")
+            new MTEPipeBlockLaser(LaserVacuumPipeCasing.ID, "pipe.energystream.block", "Laser Vacuum Pipe Casing")
                 .getStackForm(1L));
         DATApipeBlock.set(
             new MTEPipeBlockData(OpticalFiberCableCasing.ID, "pipe.datastream.block", "Optical Fiber Cable Casing")

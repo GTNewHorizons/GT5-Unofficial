@@ -25,6 +25,10 @@ public interface IHatchElement<T> {
 
     String name();
 
+    public default String getDisplayName() {
+        return name();
+    }
+
     long count(T t);
 
     default <T2 extends T> IHatchElement<T2> withMteClass(Class<? extends IMetaTileEntity> aClass) {
@@ -40,22 +44,27 @@ public interface IHatchElement<T> {
 
     default <T2 extends T> IHatchElement<T2> withMteClasses(List<Class<? extends IMetaTileEntity>> aClasses) {
         if (aClasses == null) throw new IllegalArgumentException();
-        return new HatchElement<>(aClasses, null, null, null, this);
+        return new HatchElement<>(aClasses, null, null, null, null, this);
     }
 
     default <T2 extends T> IHatchElement<T2> withAdder(IGTHatchAdder<T2> aAdder) {
         if (aAdder == null) throw new IllegalArgumentException();
-        return new HatchElement<>(null, aAdder, null, null, this);
+        return new HatchElement<>(null, aAdder, null, null, null, this);
     }
 
     default IHatchElement<T> withName(String aName) {
         if (aName == null) throw new IllegalArgumentException();
-        return new HatchElement<>(null, null, aName, null, this);
+        return new HatchElement<>(null, null, aName, null, null, this);
+    }
+
+    default IHatchElement<T> withDisplayName(String aDisplayName) {
+        if (aDisplayName == null) throw new IllegalArgumentException();
+        return new HatchElement<>(null, null, null, aDisplayName, null, this);
     }
 
     default <T2 extends T> IHatchElement<T2> withCount(ToLongFunction<T2> aCount) {
         if (aCount == null) throw new IllegalArgumentException();
-        return new HatchElement<>(null, null, null, aCount, this);
+        return new HatchElement<>(null, null, null, null, aCount, this);
     }
 
     default <T2 extends T> IStructureElement<T2> newAny(int aCasingIndex, int aDot) {
@@ -113,7 +122,7 @@ class HatchElementEither<T> implements IHatchElement<T> {
 
     private final IHatchElement<? super T> first, second;
     private ImmutableList<? extends Class<? extends IMetaTileEntity>> mMteClasses;
-    private String name;
+    private String name, displayName;
 
     HatchElementEither(IHatchElement<? super T> first, IHatchElement<? super T> second) {
         this.first = first;
@@ -144,6 +153,12 @@ class HatchElementEither<T> implements IHatchElement<T> {
     }
 
     @Override
+    public String getDisplayName() {
+        if (displayName == null) displayName = first.getDisplayName() + " or " + second.getDisplayName();
+        return displayName;
+    }
+
+    @Override
     public long count(T t) {
         return first.count(t) + second.count(t);
     }
@@ -153,15 +168,16 @@ class HatchElement<T> implements IHatchElement<T> {
 
     private final List<Class<? extends IMetaTileEntity>> mClasses;
     private final IGTHatchAdder<? super T> mAdder;
-    private final String mName;
+    private final String mName, mDisplayName;
     private final IHatchElement<? super T> mBacking;
     private final ToLongFunction<? super T> mCount;
 
     public HatchElement(List<Class<? extends IMetaTileEntity>> aMteClasses, IGTHatchAdder<? super T> aAdder,
-        String aName, ToLongFunction<? super T> aCount, IHatchElement<? super T> aBacking) {
+        String aName, String aDisplayName, ToLongFunction<? super T> aCount, IHatchElement<? super T> aBacking) {
         this.mClasses = aMteClasses;
         this.mAdder = aAdder;
         this.mName = aName;
+        this.mDisplayName = aDisplayName;
         this.mCount = aCount;
         this.mBacking = aBacking;
     }
@@ -182,6 +198,11 @@ class HatchElement<T> implements IHatchElement<T> {
     }
 
     @Override
+    public String getDisplayName() {
+        return mDisplayName == null ? mBacking.getDisplayName() : mDisplayName;
+    }
+
+    @Override
     public long count(T t) {
         return mCount == null ? mBacking.count(t) : mCount.applyAsLong(t);
     }
@@ -189,24 +210,30 @@ class HatchElement<T> implements IHatchElement<T> {
     @Override
     public <T2 extends T> IHatchElement<T2> withMteClasses(List<Class<? extends IMetaTileEntity>> aClasses) {
         if (aClasses == null) throw new IllegalArgumentException();
-        return new HatchElement<>(aClasses, mAdder, mName, mCount, mBacking);
+        return new HatchElement<>(aClasses, mAdder, mName, mDisplayName, mCount, mBacking);
     }
 
     @Override
     public <T2 extends T> IHatchElement<T2> withAdder(IGTHatchAdder<T2> aAdder) {
         if (aAdder == null) throw new IllegalArgumentException();
-        return new HatchElement<>(mClasses, aAdder, mName, mCount, mBacking);
+        return new HatchElement<>(mClasses, aAdder, mName, mDisplayName, mCount, mBacking);
     }
 
     @Override
     public IHatchElement<T> withName(String aName) {
         if (aName == null) throw new IllegalArgumentException();
-        return new HatchElement<>(mClasses, mAdder, aName, mCount, mBacking);
+        return new HatchElement<>(mClasses, mAdder, aName, mDisplayName, mCount, mBacking);
+    }
+
+    @Override
+    public IHatchElement<T> withDisplayName(String aDisplayName) {
+        if (aDisplayName == null) throw new IllegalArgumentException();
+        return new HatchElement<>(mClasses, mAdder, mName, aDisplayName, mCount, mBacking);
     }
 
     @Override
     public <T2 extends T> IHatchElement<T2> withCount(ToLongFunction<T2> aCount) {
         if (aCount == null) throw new IllegalArgumentException();
-        return new HatchElement<>(mClasses, mAdder, mName, aCount, mBacking);
+        return new HatchElement<>(mClasses, mAdder, mName, mDisplayName, aCount, mBacking);
     }
 }

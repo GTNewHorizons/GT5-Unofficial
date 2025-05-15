@@ -446,7 +446,6 @@ public class ChemicalBathRecipes implements Runnable {
             .fluidInputs(MaterialsUEVplus.MoltenProtoHalkoniteBase.getFluid((long) partFraction * multiplier))
             .duration((int) (multiplier * (8 * SECONDS * partFraction / 144.0)))
             .eut(TierEU.RECIPE_UEV)
-            .noOptimize()
             .addTo(chemicalBathRecipes);
 
         GTValues.RA.stdBuilder()
@@ -455,7 +454,6 @@ public class ChemicalBathRecipes implements Runnable {
             .fluidInputs(MaterialsUEVplus.MoltenProtoHalkoniteBase.getFluid((long) partFraction * multiplier / 2L))
             .duration((int) (multiplier * (2 * SECONDS * partFraction / 144.0)))
             .eut(TierEU.RECIPE_UIV)
-            .noOptimize()
             .addTo(chemicalBathRecipes);
 
         GTValues.RA.stdBuilder()
@@ -464,7 +462,6 @@ public class ChemicalBathRecipes implements Runnable {
             .fluidInputs(MaterialsUEVplus.MoltenProtoHalkoniteBase.getFluid((long) partFraction * multiplier / 2L))
             .duration((int) (multiplier * (2 * SECONDS * partFraction / 144.0)))
             .eut(TierEU.RECIPE_UIV)
-            .noOptimize()
             .addTo(chemicalBathRecipes);
     }
 }

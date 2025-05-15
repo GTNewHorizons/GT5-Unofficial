@@ -23,7 +23,7 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.metatileentity.implementations.MTECable;
-import gregtech.api.metatileentity.implementations.MTEFluid;
+import gregtech.api.metatileentity.implementations.MTEFluidPipe;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipeBuilder;
 import gregtech.api.util.GTUtility;
@@ -192,7 +192,7 @@ public class CrackRecipeAdder {
         String Name = material.getDefaultName();
         GTOreDictUnificator.registerOre(
             OrePrefixes.pipeTiny.get(material.getBridgeMaterial()),
-            new MTEFluid(
+            new MTEFluidPipe(
                 ID,
                 "GT_Pipe_" + unName + "_Tiny",
                 "Tiny " + Name + " Fluid Pipe",
@@ -203,7 +203,7 @@ public class CrackRecipeAdder {
                 gas).getStackForm(1L));
         GTOreDictUnificator.registerOre(
             OrePrefixes.pipeSmall.get(material.getBridgeMaterial()),
-            new MTEFluid(
+            new MTEFluidPipe(
                 ID + 1,
                 "GT_Pipe_" + unName + "_Small",
                 "Small " + Name + " Fluid Pipe",
@@ -214,7 +214,7 @@ public class CrackRecipeAdder {
                 gas).getStackForm(1L));
         GTOreDictUnificator.registerOre(
             OrePrefixes.pipeMedium.get(material.getBridgeMaterial()),
-            new MTEFluid(
+            new MTEFluidPipe(
                 ID + 2,
                 "GT_Pipe_" + unName,
                 Name + " Fluid Pipe",
@@ -225,7 +225,7 @@ public class CrackRecipeAdder {
                 gas).getStackForm(1L));
         GTOreDictUnificator.registerOre(
             OrePrefixes.pipeLarge.get(material.getBridgeMaterial()),
-            new MTEFluid(
+            new MTEFluidPipe(
                 ID + 3,
                 "GT_Pipe_" + unName + "_Large",
                 "Large " + Name + " Fluid Pipe",
@@ -236,7 +236,7 @@ public class CrackRecipeAdder {
                 gas).getStackForm(1L));
         GTOreDictUnificator.registerOre(
             OrePrefixes.pipeHuge.get(material.getBridgeMaterial()),
-            new MTEFluid(
+            new MTEFluidPipe(
                 ID + 4,
                 "GT_Pipe_" + unName + "_Huge",
                 "Huge " + Name + " Fluid Pipe",

@@ -9,6 +9,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.MathHelper;
+import net.minecraft.util.StatCollector;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -89,8 +90,8 @@ public class ItemParticle extends Item {
             if (charge > 0) chargeStringToAppend = "+" + charge;
             else chargeStringToAppend = "" + charge;
         }
-        list.add("Rest Mass: " + restMass + " MeV");
-        list.add("Charge: " + chargeStringToAppend + "e");
+        list.add(StatCollector.translateToLocalFormatted("tooltip.gtnhlanth.particle.rest_mass", restMass));
+        list.add(StatCollector.translateToLocalFormatted("tooltip.gtnhlanth.particle.charge", chargeStringToAppend));
     }
 
 }

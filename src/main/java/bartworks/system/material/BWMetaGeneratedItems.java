@@ -35,13 +35,14 @@ import bartworks.API.SideReference;
 import bartworks.client.textures.PrefixTextureLinker;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.hazards.HazardProtection;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.items.MetaGeneratedItem;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTOreDictUnificator;
-import gregtech.api.util.GTUtility;
 import ic2.core.IC2Potion;
 
 public class BWMetaGeneratedItems extends MetaGeneratedItem implements IRadMaterial {
@@ -189,12 +190,12 @@ public class BWMetaGeneratedItems extends MetaGeneratedItem implements IRadMater
         if (w == null || w.getStats() == null) return;
 
         if (w.getStats()
-            .isToxic() && !GTUtility.isWearingFullBioHazmat(bPlayer)) {
+            .isToxic() && !HazardProtection.isWearingFullBioHazmat(bPlayer)) {
             bPlayer.addPotionEffect(new PotionEffect(Potion.poison.getId(), 80, 4));
         }
 
         if (w.getStats()
-            .isRadioactive() && !GTUtility.isWearingFullRadioHazmat(bPlayer)) {
+            .isRadioactive() && !HazardProtection.isWearingFullRadioHazmat(bPlayer)) {
             bPlayer.addPotionEffect(new PotionEffect(IC2Potion.radiation.id, 80, 4));
         }
     }
@@ -250,7 +251,13 @@ public class BWMetaGeneratedItems extends MetaGeneratedItem implements IRadMater
 
     @Override
     public ItemStack getContainerItem(ItemStack aStack) {
-        return this.orePrefixes == OrePrefixes.cell || this.orePrefixes == OrePrefixes.cellPlasma
-            || this.orePrefixes == OrePrefixes.cellMolten ? Materials.Empty.getCells(1) : null;
+        if (this.orePrefixes == OrePrefixes.cell || this.orePrefixes == OrePrefixes.cellPlasma
+            || this.orePrefixes == OrePrefixes.cellMolten) {
+            return Materials.Empty.getCells(1);
+        }
+
+        if (this.orePrefixes == OrePrefixes.capsule) return ItemList.FR_WaxCapsule.get(1);
+        if (this.orePrefixes == OrePrefixes.capsuleMolten) return ItemList.FR_RefractoryCapsule.get(1);
+        return null;
     }
 }

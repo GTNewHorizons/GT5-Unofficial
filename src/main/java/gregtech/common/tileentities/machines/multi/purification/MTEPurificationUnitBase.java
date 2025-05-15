@@ -19,6 +19,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -85,7 +86,7 @@ public abstract class MTEPurificationUnitBase<T extends MTEExtendedPowerMultiBlo
          */
         TOO_FAR,
         /**
-         * No valid GT_MetaTileEntity_PurificationPlant was found at the link target position.
+         * No valid MTEPurificationPlant was found at the link target position.
          */
         NO_VALID_PLANT,
         /**
@@ -140,24 +141,14 @@ public abstract class MTEPurificationUnitBase<T extends MTEExtendedPowerMultiBlo
     }
 
     @Override
-    public int getMaxEfficiency(ItemStack aStack) {
-        return 10000;
-    }
-
-    @Override
-    public int getDamageToComponent(ItemStack aStack) {
-        return 0;
-    }
-
-    @Override
-    public boolean explodesOnComponentBreak(ItemStack aStack) {
-        return false;
-    }
-
-    @Override
     public boolean doRandomMaintenanceDamage() {
         // The individual purification unit structures cannot have maintenance issues, so do nothing.
         return true;
+    }
+
+    @Override
+    public boolean supportsPowerPanel() {
+        return false;
     }
 
     @Override
@@ -664,24 +655,27 @@ public abstract class MTEPurificationUnitBase<T extends MTEExtendedPowerMultiBlo
         // If this purification unit is linked to a controller, add this info to the scanner output.
         if (getController() != null) {
             ret.add(
-                "This Purification Unit is linked to the Water Purification Plant at " + controllerX
-                    + ", "
-                    + controllerY
-                    + ", "
-                    + controllerZ
-                    + ".");
+                StatCollector.translateToLocalFormatted(
+                    "GT5U.infodata.purification_unit_base.linked_at",
+                    controllerX,
+                    controllerY,
+                    controllerZ));
 
             // If recipe is running, display success chance
             if (this.mMaxProgresstime != 0) {
                 ret.add(
-                    "Success chance: " + EnumChatFormatting.YELLOW
-                        + GTUtility.formatNumbers(this.calculateFinalSuccessChance())
-                        + "%"
-                        + EnumChatFormatting.RESET);
+                    StatCollector.translateToLocalFormatted(
+                        "GT5U.infodata.purification_unit_base.success_chance",
+                        EnumChatFormatting.YELLOW + GTUtility.formatNumbers(this.calculateFinalSuccessChance())
+                            + "%"
+                            + EnumChatFormatting.RESET));
             }
 
-        } else ret.add("This Purification Unit is not linked to any Water Purification Plant.");
-        ret.add("Current parallel: " + EnumChatFormatting.YELLOW + this.effectiveParallel);
+        } else ret.add(StatCollector.translateToLocal("GT5U.infodata.purification_unit_base.not_linked"));
+        ret.add(
+            StatCollector.translateToLocalFormatted(
+                "GT5U.infodata.parallel.current",
+                "" + EnumChatFormatting.YELLOW + this.effectiveParallel));
         return ret.toArray(new String[0]);
     }
 

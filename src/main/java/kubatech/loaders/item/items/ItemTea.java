@@ -25,6 +25,7 @@ import java.util.List;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
 import kubatech.loaders.item.ItemProxy;
@@ -42,7 +43,7 @@ public class ItemTea extends ItemProxy {
 
     @Override
     public void addInformation(ItemStack stack, EntityPlayer entity, List<String> tooltipList, boolean showDebugInfo) {
-        tooltipList.add("Tea");
+        tooltipList.add(StatCollector.translateToLocal("kubatech.tooltip.tea"));
     }
 
     @Override

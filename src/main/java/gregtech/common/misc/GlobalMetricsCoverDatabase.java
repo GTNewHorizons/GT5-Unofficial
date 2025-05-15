@@ -1,7 +1,6 @@
 package gregtech.common.misc;
 
 import static net.minecraftforge.common.util.Constants.NBT.TAG_BYTE_ARRAY;
-import static net.minecraftforge.common.util.Constants.NBT.TAG_COMPOUND;
 
 import java.nio.ByteBuffer;
 import java.util.Arrays;
@@ -15,7 +14,6 @@ import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
 import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 import net.minecraft.entity.item.EntityItem;
@@ -37,9 +35,8 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import gregtech.api.enums.GTValues;
+import gregtech.api.metatileentity.CoverableTileEntity;
 import gregtech.api.util.GTUtility;
-import gregtech.common.covers.CoverInfo;
 import gregtech.common.covers.CoverMetricsTransmitter;
 import gregtech.common.events.MetricsCoverDataEvent;
 import gregtech.common.events.MetricsCoverHostDeconstructedEvent;
@@ -301,18 +298,10 @@ public class GlobalMetricsCoverDatabase extends WorldSavedData {
     }
 
     private static Stream<UUID> getCoverUUIDsFromItemStack(final ItemStack stack) {
-        if (stack.hasTagCompound() && stack.getTagCompound()
-            .hasKey(GTValues.NBT.COVERS, TAG_COMPOUND)) {
-            final NBTTagList tagList = stack.getTagCompound()
-                .getTagList(GTValues.NBT.COVERS, TAG_COMPOUND);
-            return IntStream.range(0, tagList.tagCount())
-                .mapToObj(tagList::getCompoundTagAt)
-                .map(nbt -> new CoverInfo(null, nbt).getCoverData())
-                .filter(
-                    serializableObject -> serializableObject instanceof CoverMetricsTransmitter.MetricsTransmitterData)
-                .map(data -> ((CoverMetricsTransmitter.MetricsTransmitterData) data).getFrequency());
-        }
-        return Stream.empty();
+        return CoverableTileEntity.readCoversNBT(stack.getTagCompound(), null)
+            .stream()
+            .filter(cover -> cover instanceof CoverMetricsTransmitter)
+            .map(cover -> ((CoverMetricsTransmitter) cover).getFrequency());
     }
 
     /**

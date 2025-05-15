@@ -20,12 +20,13 @@ import java.util.Set;
 
 import net.minecraft.item.ItemStack;
 
+import org.apache.commons.lang3.tuple.Pair;
+
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.util.GTModHandler;
 import gtPlusPlus.api.interfaces.RunnableWithInfo;
 import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.api.objects.data.Pair;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.material.MaterialGenerator;
 import gtPlusPlus.core.material.MaterialStack;
@@ -167,7 +168,7 @@ public class RecipeGenOre extends RecipeGenBase {
         ArrayList<Pair<Integer, Material>> componentMap = new ArrayList<>();
         for (MaterialStack r : material.getComposites()) {
             if (r != null) {
-                componentMap.add(new Pair<>(r.getPartsPerOneHundred(), r.getStackMaterial()));
+                componentMap.add(Pair.of(r.getPartsPerOneHundred(), r.getStackMaterial()));
             }
         }
 

@@ -14,10 +14,6 @@ public class MTEBasicHullBronze extends MTEBasicHullNonElectric {
         super(aID, aName, aNameRegional, aTier, aDescription);
     }
 
-    public MTEBasicHullBronze(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {
-        super(aName, aTier, aDescription, aTextures);
-    }
-
     public MTEBasicHullBronze(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, aDescription, aTextures);
     }

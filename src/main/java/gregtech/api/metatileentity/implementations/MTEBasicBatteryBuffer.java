@@ -20,7 +20,6 @@ import com.gtnewhorizons.modularui.common.internal.wrapper.BaseSlot;
 import com.gtnewhorizons.modularui.common.widget.SlotGroup;
 
 import gregtech.api.enums.Textures;
-import gregtech.api.gui.modularui.GTUIInfos;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.modularui.IAddUIWidgets;
@@ -49,11 +48,6 @@ public class MTEBasicBatteryBuffer extends MTETieredMachineBlock implements IAdd
     public MTEBasicBatteryBuffer(int aID, String aName, String aNameRegional, int aTier, String aDescription,
         int aSlotCount) {
         super(aID, aName, aNameRegional, aTier, aSlotCount, aDescription);
-    }
-
-    public MTEBasicBatteryBuffer(String aName, int aTier, String aDescription, ITexture[][][] aTextures,
-        int aSlotCount) {
-        super(aName, aTier, aSlotCount, aDescription, aTextures);
     }
 
     public MTEBasicBatteryBuffer(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures,
@@ -91,11 +85,6 @@ public class MTEBasicBatteryBuffer extends MTETieredMachineBlock implements IAdd
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new MTEBasicBatteryBuffer(mName, mTier, mDescriptionArray, mTextures, mInventory.length);
-    }
-
-    @Override
-    public boolean isSimpleMachine() {
-        return false;
     }
 
     @Override
@@ -215,7 +204,7 @@ public class MTEBasicBatteryBuffer extends MTETieredMachineBlock implements IAdd
 
     @Override
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
-        GTUIInfos.openGTTileEntityUI(aBaseMetaTileEntity, aPlayer);
+        openGui(aPlayer);
         return true;
     }
 
@@ -308,16 +297,17 @@ public class MTEBasicBatteryBuffer extends MTETieredMachineBlock implements IAdd
     public String[] getInfoData() {
         updateStorageInfo();
 
-        return new String[] { EnumChatFormatting.BLUE + getLocalName() + EnumChatFormatting.RESET, "Stored Items:",
-            EnumChatFormatting.GREEN + GTUtility.formatNumbers(mStored)
-                + EnumChatFormatting.RESET
-                + " EU / "
-                + EnumChatFormatting.YELLOW
-                + GTUtility.formatNumbers(mMax)
-                + EnumChatFormatting.RESET
-                + " EU",
-            "Average input:", GTUtility.formatNumbers(getBaseMetaTileEntity().getAverageElectricInput()) + " EU/t",
-            "Average output:", GTUtility.formatNumbers(getBaseMetaTileEntity().getAverageElectricOutput()) + " EU/t" };
+        return new String[] { EnumChatFormatting.BLUE + getLocalName() + EnumChatFormatting.RESET,
+            StatCollector.translateToLocalFormatted(
+                "GT5U.infodata.battery_buffer.stored_items",
+                EnumChatFormatting.GREEN + GTUtility.formatNumbers(mStored) + EnumChatFormatting.RESET,
+                EnumChatFormatting.YELLOW + GTUtility.formatNumbers(mMax) + EnumChatFormatting.RESET),
+            StatCollector.translateToLocalFormatted(
+                "GT5U.infodata.battery_buffer.average_input",
+                GTUtility.formatNumbers(getBaseMetaTileEntity().getAverageElectricInput())),
+            StatCollector.translateToLocalFormatted(
+                "GT5U.infodata.battery_buffer.average_output",
+                GTUtility.formatNumbers(getBaseMetaTileEntity().getAverageElectricOutput())) };
     }
 
     private void updateStorageInfo() {

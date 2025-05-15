@@ -5,8 +5,9 @@ import static bartworks.util.BWUtil.subscriptNumbers;
 import static gregtech.api.enums.Materials.*;
 import static gregtech.api.enums.TextureSet.*;
 
+import org.apache.commons.lang3.tuple.Pair;
+
 import bartworks.system.material.Werkstoff;
-import bartworks.util.Pair;
 
 /*
  * Originally authored by botn365 under the MIT License. See BotdustriesLICENSE
@@ -22,9 +23,9 @@ public class BotWerkstoffMaterialPool implements Runnable {
             .enforceUnification(),
         29900,
         SET_SHINY,
-        new Pair<>(Hydrogen, 2),
-        new Pair<>(Tungsten, 1),
-        new Pair<>(Oxygen, 4));
+        Pair.of(Hydrogen, 2),
+        Pair.of(Tungsten, 1),
+        Pair.of(Oxygen, 4));
     public static final Werkstoff TungstenTrioxide = new Werkstoff(
         new short[] { 0x0f, 0x5, 0x16 },
         "Tungsten Trioxide",
@@ -34,8 +35,8 @@ public class BotWerkstoffMaterialPool implements Runnable {
             .enforceUnification(),
         29901,
         SET_SHINY,
-        new Pair<>(Tungsten, 1),
-        new Pair<>(Oxygen, 3));
+        Pair.of(Tungsten, 1),
+        Pair.of(Oxygen, 3));
     public static final Werkstoff AmmoniumNitrate = new Werkstoff(
         new short[] { 0x81, 0xcc, 0x00 },
         "Ammonium Nitrate",
@@ -44,10 +45,10 @@ public class BotWerkstoffMaterialPool implements Runnable {
         new Werkstoff.GenerationFeatures().onlyDust(),
         29903,
         SET_FINE,
-        new Pair<>(Nitrogen, 1),
-        new Pair<>(Hydrogen, 4),
-        new Pair<>(Nitrogen, 1),
-        new Pair<>(Oxygen, 3));
+        Pair.of(Nitrogen, 1),
+        Pair.of(Hydrogen, 4),
+        Pair.of(Nitrogen, 1),
+        Pair.of(Oxygen, 3));
     public static final Werkstoff SodiumTungstate = new Werkstoff(
         new short[] { 0xc, 0xed, 0xd7, 0 },
         "Sodium Tungstate",

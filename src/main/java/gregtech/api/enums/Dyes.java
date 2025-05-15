@@ -3,6 +3,7 @@ package gregtech.api.enums;
 import java.util.ArrayList;
 
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -10,6 +11,7 @@ import org.jetbrains.annotations.Contract;
 
 import gregtech.api.interfaces.IColorModulationContainer;
 import gregtech.api.objects.GTArrayList;
+import gregtech.api.util.GTUtil;
 import gregtech.api.util.GTUtility;
 
 public enum Dyes implements IColorModulationContainer {
@@ -122,6 +124,10 @@ public enum Dyes implements IColorModulationContainer {
         return mRGBa;
     }
 
+    public int toInt() {
+        return GTUtil.getRGBInt(getRGBA());
+    }
+
     public static Dyes getDyeFromIndex(short index) {
         return index != -1 ? Dyes.get(index) : Dyes.MACHINE_METAL;
     }
@@ -139,5 +145,9 @@ public enum Dyes implements IColorModulationContainer {
         }
 
         return (~(byte) color) & 0xF;
+    }
+
+    public String getLocalizedDyeName() {
+        return StatCollector.translateToLocal("GT5U.infinite_spray_can.color." + this.mName);
     }
 }

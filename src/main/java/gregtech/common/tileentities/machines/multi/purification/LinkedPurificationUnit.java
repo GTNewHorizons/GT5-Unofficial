@@ -13,7 +13,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.util.GTUtil;
 
 /**
- * Small wrapper around a GT_MetaTileEntity_PurificationUnitBase, to be stored in the main purification plant
+ * Small wrapper around a MTEPurificationUnitBase, to be stored in the main purification plant
  * controller. May be useful for storing additional data in the controller that the individual units do not need
  * to know about.
  */
