@@ -1224,9 +1224,11 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
     /**
      * Gets the factor value to damage the ItemStack in the controller slot.
      * <p>
-     * This function will called only if the ItemStack is {@link MetaGeneratedTool01}, and the actual applied damage
-     * value is multiplied by another weird value calculated with {@link #damageFactorLow} and
-     * {@link #damageFactorHigh}. See {@link #doRandomMaintenanceDamage()} for the details.
+     * This function will be called only if the ItemStack is {@link MetaGeneratedTool01}, and the actual applied damage
+     * value is multiplied by
+     * <a href="https://www.wolframalpha.com/input?i=plot+min%28x%2F5%2C+x%5E%280.6%29%29+range+0+to+512">a formula</a>
+     * calculated with {@link #damageFactorLow} and {@link #damageFactorHigh}. See {@link #doRandomMaintenanceDamage()}
+     * for the details.
      *
      * @param aStack the ItemStack in the controller slot.
      * @return the factor value to damage the ItemStack in the controller slot.
