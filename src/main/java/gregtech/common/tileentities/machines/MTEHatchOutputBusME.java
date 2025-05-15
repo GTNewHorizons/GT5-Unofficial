@@ -259,7 +259,6 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus implements IPowerChan
     }
 
     protected void flushCachedStack() {
-        lastOutputTick = tickCounter;
         if (!isActive()) return;
         AENetworkProxy proxy = getProxy();
         try {
@@ -275,6 +274,7 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus implements IPowerChan
                 s.setStackSize(0);
             }
         } catch (final GridAccessException ignored) {}
+        lastOutputTick = tickCounter;
     }
 
     @Override
