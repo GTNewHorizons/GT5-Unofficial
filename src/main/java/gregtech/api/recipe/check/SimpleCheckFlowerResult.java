@@ -1,7 +1,6 @@
 package gregtech.api.recipe.check;
 
 import java.util.HashSet;
-import java.util.Objects;
 import java.util.StringJoiner;
 
 import javax.annotation.Nonnull;
@@ -51,12 +50,12 @@ public class SimpleCheckFlowerResult implements CheckRecipeResult {
             return StatCollector.translateToLocal("GT5U.gui.text.MegaApiary_noflowers");
         }
         String text = StatCollector.translateToLocal("GT5U.gui.text." + key);
-        StringBuffer sb = new StringBuffer();
+        StringJoiner joiner = new StringJoiner(",");
         for (String flower : flowers) {
-            sb.append(flower);
-            sb.append(' ');
+            joiner.add(flower);
         }
-        return String.format(text, sb.toString());
+
+        return String.format(text, joiner.toString());
     }
 
     @Override
