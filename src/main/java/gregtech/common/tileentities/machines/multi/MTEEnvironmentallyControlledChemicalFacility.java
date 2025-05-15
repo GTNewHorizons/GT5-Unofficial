@@ -43,8 +43,10 @@ import java.util.Arrays;
 import java.util.Collection;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlockAnyMeta;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlocksTiered;
 import static gregtech.api.GregTechAPI.sBlockCoilECCF;
+import static gregtech.api.GregTechAPI.sBlockTintedGlass;
 import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.ExoticEnergy;
 import static gregtech.api.enums.HatchElement.InputBus;
@@ -70,6 +72,8 @@ public class MTEEnvironmentallyControlledChemicalFacility extends
     private static final String COOL_MODULE_L = "tempCoolL";
     private static final String VACUUM_MODULE_R = "VacuumR";
     private static final String COMPRESSION_MODULE_R = "PressureR";
+    private static final String PARALLEL_MODULE_R = "ParallelR";
+    private static final String PARALLEL_MODULE_L = "ParallelL";
 
     double currentTemp = 0;
     double currentPressure = 0;
@@ -101,6 +105,7 @@ public class MTEEnvironmentallyControlledChemicalFacility extends
     private int tempThreshold = 10;
     private int pressureThreshold = 10;
     private long drainAmountEU = 0;
+    private int coolantInputHatchAmount = 0;
 
     static final int MODULE_OFFSET_V = 2;
     static final int MODULE_OFFSET_LEFT = 4;
@@ -149,10 +154,25 @@ public class MTEEnvironmentallyControlledChemicalFacility extends
                 {"P ", "P ", "PF", "QU"},
                 {"  ", "Q ", "KF", "QQ"},
                 {"P ", "P ", "PF", "QE"}}
-        )// spotless:on
+        )
+        .addShape(
+            PARALLEL_MODULE_R,
+            new String[][]{
+                {"P ", "PF", "PF", "QQ"},
+                {"Q ", "CG", "CG", "QQ"},
+                {"P ", "PF", "PF", "QQ"}}
+        )
+        .addShape(
+            PARALLEL_MODULE_L,
+            new String[][]{
+                {" P", "FP", "FP", "QQ"}, // {" ", "", "", ""},
+                {" Q", "GC", "GC", "QQ"}, // {" ", "G", "G", ""},
+                {" P", "FP", "FP", "QQ"}} // {" ", "", "", ""}}
+        )
+        // spotless:on
         .addElement('Q', ofBlock(GregTechAPI.sBlockCasings8, 0))
         .addElement('P', ofBlock(GregTechAPI.sBlockCasings8, 1))
-        .addElement('J', ofBlock(GregTechAPI.sBlockCasings2, 15))
+        .addElement('J', ofBlock(GregTechAPI.sBlockCasings2, 0))
         .addElement(
             'D',
             buildHatchAdder(MTEEnvironmentallyControlledChemicalFacility.class).atLeast(InputHatch, OutputHatch)
@@ -218,7 +238,6 @@ public class MTEEnvironmentallyControlledChemicalFacility extends
                 .casingIndex(((BlockCasings8) GregTechAPI.sBlockCasings8).getTextureIndex(0))
                 .dot(1)
                 .buildAndChain(ofBlock(GregTechAPI.sBlockCasings8, 0)))
-        .addElement('S', ofBlock(GregTechAPI.sBlockCasings2, 0))
         .addElement(
             'Y',
             buildHatchAdder(MTEEnvironmentallyControlledChemicalFacility.class).hatchClass(MTEHatchInput.class)
@@ -241,6 +260,7 @@ public class MTEEnvironmentallyControlledChemicalFacility extends
                 .dot(2)
                 .buildAndChain(GregTechAPI.sBlockCasings8, 0))
         .addElement('F', ofFrame(Materials.Polytetrafluoroethylene))
+        .addElement('G', ofBlockAnyMeta(sBlockTintedGlass, 1))
         .build();
 
     public MTEEnvironmentallyControlledChemicalFacility(final int aID, final String aName, final String aNameRegional) {
@@ -593,7 +613,8 @@ public class MTEEnvironmentallyControlledChemicalFacility extends
         boolean VACUUM = false;
         boolean COMPRESSOR = false;
         if (stackSize.getTagCompound() != null) {
-            NBTTagCompound channels = stackSize.getTagCompound().getCompoundTag("channels");
+            NBTTagCompound channels = stackSize.getTagCompound()
+                .getCompoundTag("channels");
             if (channels != null) {
                 HEATER = channels.getInteger("eccf_heater") > 0;
                 COOLER = channels.getInteger("eccf_cooler") > 0;
@@ -624,8 +645,12 @@ public class MTEEnvironmentallyControlledChemicalFacility extends
         if (!checkPiece(STRUCTURE_PIECE_MAIN, 2, 4, 0)) {
             return false;
         }
+        coolantInputHatchAmount = 0;
         isHeatModule = checkPiece(HEAT_MODULE_L, MODULE_OFFSET_LEFT, MODULE_OFFSET_V, MODULE_OFFSET_DEPTH);
+        if (coolantInputHatchAmount > 1) return false;
+        coolantInputHatchAmount = 0;
         isCoolModule = checkPiece(COOL_MODULE_L, MODULE_OFFSET_LEFT, MODULE_OFFSET_V, MODULE_OFFSET_DEPTH);
+        if (coolantInputHatchAmount > 1) return false;
         isVacuumModule = checkPiece(VACUUM_MODULE_R, MODULE_OFFSET_RIGHT, MODULE_OFFSET_V, MODULE_OFFSET_DEPTH);
         isCompressModule = checkPiece(COMPRESSION_MODULE_R, MODULE_OFFSET_RIGHT, MODULE_OFFSET_V, MODULE_OFFSET_DEPTH);
         return (!isHeatModule || !isCoolModule) && (!isVacuumModule || !isCompressModule);
@@ -959,6 +984,7 @@ public class MTEEnvironmentallyControlledChemicalFacility extends
             ((MTEHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
             ((MTEHatchInput) aMetaTileEntity).mRecipeMap = null;
             mCoolantInputHatch = (MTEHatchInput) aMetaTileEntity;
+            coolantInputHatchAmount++;
             return true;
         }
         return false;

@@ -34,11 +34,12 @@ public class PlanetConditionsFrontend extends RecipeMapFrontend {
         return UIHelper.getGridPositions(1, 8, 8, 1, 1);
     }
 
-    private void drawPlanetConditions(String text, String text_value, int height, float fontScale, int xOffset, int colonOffset) {
+    private void drawPlanetConditions(String text, String text_value, int height, float fontScale, int xOffset,
+        int colonOffset) {
         // Draw main text
         drawNEIOverlayText(
             text,
-            new PositionedStack(Materials.Acetone.getCells(1), 27+xOffset, height, false),
+            new PositionedStack(Materials.Acetone.getCells(1), 27 + xOffset, height, false),
             0x3f3f3f,
             fontScale,
             false,
@@ -47,7 +48,7 @@ public class PlanetConditionsFrontend extends RecipeMapFrontend {
         // Draw :
         drawNEIOverlayText(
             ":",
-            new PositionedStack(Materials.Acetone.getCells(1), 27 + 18 * 4+xOffset+colonOffset, height, false),
+            new PositionedStack(Materials.Acetone.getCells(1), 27 + 18 * 4 + xOffset + colonOffset, height, false),
             0x3f3f3f,
             fontScale,
             false,
@@ -56,7 +57,7 @@ public class PlanetConditionsFrontend extends RecipeMapFrontend {
         // Draw value
         drawNEIOverlayText(
             text_value,
-            new PositionedStack(Materials.Acetone.getCells(1), 27 + 18 * 4 + 6+xOffset+colonOffset, height, false),
+            new PositionedStack(Materials.Acetone.getCells(1), 27 + 18 * 4 + 6 + xOffset + colonOffset, height, false),
             0xffffff,
             fontScale,
             true,
@@ -82,14 +83,18 @@ public class PlanetConditionsFrontend extends RecipeMapFrontend {
             StatCollector.translateToLocalFormatted("GT5U.nei.bare_name"),
             displayName,
             yOffset,
-            fontScale, 0,-24);
+            fontScale,
+            0,
+            -24);
 
         // Tier
         drawPlanetConditions(
             StatCollector.translateToLocalFormatted("GT5U.nei.bare_tier"),
             formatNumbers(planetTier),
             yOffset + yStepOffset,
-            fontScale, 0,-24);
+            fontScale,
+            0,
+            -24);
 
         // Pressure
         if (pressure < 1000) {
@@ -97,13 +102,17 @@ public class PlanetConditionsFrontend extends RecipeMapFrontend {
                 StatCollector.translateToLocalFormatted("GT5U.nei.bare_pressure"),
                 formatNumbers(pressure) + " Pa",
                 yOffset + 2 * yStepOffset,
-                fontScale, -24, 0);
+                fontScale,
+                -24,
+                0);
         } else {
             drawPlanetConditions(
                 StatCollector.translateToLocalFormatted("GT5U.nei.bare_pressure"),
                 formatNumbers(pressure / 1000) + " kPa",
                 yOffset + 2 * yStepOffset,
-                fontScale,-24, 0);
+                fontScale,
+                -24,
+                0);
         }
 
         // Temperature
@@ -111,6 +120,8 @@ public class PlanetConditionsFrontend extends RecipeMapFrontend {
             StatCollector.translateToLocalFormatted("GT5U.nei.bare_temperature"),
             formatNumbers(temperature) + " K",
             yOffset + 3 * yStepOffset,
-            fontScale,-24, 0);
+            fontScale,
+            -24,
+            0);
     }
 }

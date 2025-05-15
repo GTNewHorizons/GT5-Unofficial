@@ -864,7 +864,7 @@ public final class RecipeMaps {
         .neiHandlerInfo(
             builder -> builder.setDisplayStack(Materials.Lava.getCells(1))
                 .setMaxRecipesPerPage(4)
-                .setHeight(5*18))
+                .setHeight(5 * 18))
         .frontend(PlanetConditionsFrontend::new)
         .build();
     public static final RecipeMap<RecipeMapBackend> distillationTowerRecipes = RecipeMapBuilder
