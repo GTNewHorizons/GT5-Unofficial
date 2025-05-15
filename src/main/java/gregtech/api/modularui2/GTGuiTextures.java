@@ -1,5 +1,6 @@
 package gregtech.api.modularui2;
 
+import static gregtech.api.enums.Mods.GTNHIntergalactic;
 import static gregtech.api.enums.Mods.GregTech;
 import static tectech.Reference.MODID;
 
@@ -70,11 +71,13 @@ public final class GTGuiTextures {
         .location(GregTech.ID, "gui/background/text_field")
         .imageSize(142, 28)
         .adaptable(1)
+        .name(GTTextureIds.BACKGROUND_TERMINAL_STANDARD)
         .build();
     public static final UITexture TT_BACKGROUND_TEXT_FIELD = UITexture.builder()
         .location(MODID, "gui/background/screen_blue")
         .imageSize(90, 72)
         .adaptable(2)
+        .name(GTTextureIds.BACKGROUND_TERMINAL_TECTECH)
         .build();
     // endregion background
 
@@ -481,6 +484,17 @@ public final class GTGuiTextures {
             GTTextureIds.PICTURE_GT_LOGO_STEEL,
             GTTextureIds.PICTURE_GT_LOGO_PRIMITIVE)
         .build();
+    public static final UITexture PICTURE_TECTECH_LOGO_DARK = UITexture.builder()
+        .location(MODID, "gui/picture/tectech_logo_dark")
+        .fullImage()
+        .name(GTTextureIds.PICTURE_TECTECH_LOGO_DARK)
+        .build();
+    public static final UITexture PICTURE_INTERGALACTIC_LOGO = UITexture.builder()
+        .location(GTNHIntergalactic.ID, "gui/picture/space_elevator_logo")
+        .fullImage()
+        .name(GTTextureIds.PICTURE_INTERGALACTIC_LOGO)
+        .build();
+
     public static final UITexture PICTURE_BARTWORKS_LOGO_STANDARD = UITexture.builder()
         .location(MainMod.MOD_ID, "GUI/picture/bw_logo_47x21")
         .fullImage()

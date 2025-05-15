@@ -58,9 +58,6 @@ public class TTMultiBlockBaseGui extends MTEMultiBlockBaseGui {
 
     @Override
     protected void initCustomIcons() {
-        super.initCustomIcons();
-        this.customIcons.put("text_field", GTGuiTextures.TT_BACKGROUND_TEXT_FIELD);
-        this.customIcons.put("logo", GTGuiTextures.TECTECH_LOGO);
         this.customIcons.put("power_switch_disabled", GTGuiTextures.TT_OVERLAY_BUTTON_POWER_SWITCH_DISABLED);
         this.customIcons.put("power_switch_on", GTGuiTextures.TT_OVERLAY_BUTTON_POWER_SWITCH_ON);
         this.customIcons.put("power_switch_off", GTGuiTextures.TT_OVERLAY_BUTTON_POWER_SWITCH_OFF);
