@@ -22,6 +22,7 @@ import net.minecraftforge.fluids.IFluidBlock;
 
 import com.gtnewhorizons.modularui.api.drawable.FallbackableUITexture;
 
+import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
@@ -751,8 +752,8 @@ public class MTEPump extends MTEBasicMachine {
 
             } else if (getDrainableStack() == null) {
                 // The pump has no internal fluid
-                if (this.mPrimaryPumpedBlock == Blocks.water) setDrainableStack(GTModHandler.getWater(1000L));
-                else if (this.mPrimaryPumpedBlock == Blocks.lava) setDrainableStack(GTModHandler.getLava(1000L));
+                if (this.mPrimaryPumpedBlock == Blocks.water) setDrainableStack(Materials.Water.getFluid(1_000));
+                else if (this.mPrimaryPumpedBlock == Blocks.lava) setDrainableStack(Materials.Lava.getFluid(1_000));
                 else {
                     // Not water or lava; try to drain and set to air
                     setDrainableStack(

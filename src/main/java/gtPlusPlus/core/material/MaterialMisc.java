@@ -2,7 +2,6 @@ package gtPlusPlus.core.material;
 
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.TextureSet;
-import gregtech.api.util.GTModHandler;
 import gtPlusPlus.core.client.CustomTextureSet.TextureSets;
 import gtPlusPlus.core.material.state.MaterialState;
 import gtPlusPlus.core.util.minecraft.MaterialUtils;
@@ -23,7 +22,7 @@ public final class MaterialMisc {
         MaterialUtils.generateSpecialDustAndAssignToAMaterial(SODIUM_CYANIDE, false);
         MaterialUtils.generateSpecialDustAndAssignToAMaterial(COPPER_SULFATE, false);
         MaterialUtils.generateSpecialDustAndAssignToAMaterial(COPPER_SULFATE_HYDRATED, false);
-        WATER.registerComponentForMaterial(GTModHandler.getWater(1_000));
+        WATER.registerComponentForMaterial(Materials.Water.getFluid(1_000));
     }
 
     public static final Material POTASSIUM_NITRATE = new Material(

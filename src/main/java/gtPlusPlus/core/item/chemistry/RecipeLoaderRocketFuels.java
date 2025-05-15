@@ -19,7 +19,6 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
-import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
@@ -132,7 +131,7 @@ public class RecipeLoaderRocketFuels {
             .itemInputs(GTUtility.getIntegratedCircuit(8))
             .itemOutputs(GregtechItemList.AmmoniumNitrateDust.get(8))
             .fluidInputs(new FluidStack(GTPPFluids.HydratedAmmoniumNitrateSlurry, 8 * INGOTS))
-            .fluidOutputs(GTModHandler.getWater(2_000))
+            .fluidOutputs(Materials.Water.getFluid(2_000))
             .eut(TierEU.RECIPE_HV)
             .duration(1 * MINUTES + 30 * SECONDS)
             .addTo(chemicalDehydratorRecipes);
@@ -169,7 +168,7 @@ public class RecipeLoaderRocketFuels {
                 new FluidStack(GTPPFluids.Hydrazine, 2000),
                 new FluidStack(GTPPFluids.Formaldehyde, 2000),
                 Materials.Hydrogen.getGas(4_000))
-            .fluidOutputs(Materials.Dimethylhydrazine.getFluid(2_000), GTModHandler.getWater(2_000))
+            .fluidOutputs(Materials.Dimethylhydrazine.getFluid(2_000), Materials.Water.getFluid(2_000))
             .duration(60 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .metadata(CHEMPLANT_CASING_TIER, 3)

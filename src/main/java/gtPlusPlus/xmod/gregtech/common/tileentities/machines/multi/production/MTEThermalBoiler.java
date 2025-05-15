@@ -248,7 +248,7 @@ public class MTEThermalBoiler extends GTPPMultiBlockBase<MTEThermalBoiler> imple
     private boolean useWater(int steamAmount) {
         // Round up to not dupe decimal amounts of water.
         int waterAmount = Math.floorDiv(steamAmount + GTValues.STEAM_PER_WATER - 1, GTValues.STEAM_PER_WATER);
-        if (depleteInput(GTModHandler.getWater(waterAmount))
+        if (depleteInput(Materials.Water.getFluid(waterAmount))
             || depleteInput(GTModHandler.getDistilledWater(waterAmount))) {
             dryHeatCounter = 0;
             return true;

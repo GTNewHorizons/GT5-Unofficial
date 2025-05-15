@@ -106,10 +106,9 @@ public class LoaderGTBlockFluid implements Runnable {
 
     @Override
     public void run() {
-        Materials.Water.mFluid = (Materials.Ice.mFluid = GTModHandler.getWater(1000L)
-            .getFluid());
-        Materials.Lava.mFluid = GTModHandler.getLava(1000L)
-            .getFluid();
+        Materials.Water.mFluid = FluidRegistry.getFluid("water");
+        Materials.Ice.mFluid = FluidRegistry.getFluid("water");
+        Materials.Lava.mFluid = FluidRegistry.getFluid("lava");
 
         GTLog.out.println("GTMod: Register Books.");
 

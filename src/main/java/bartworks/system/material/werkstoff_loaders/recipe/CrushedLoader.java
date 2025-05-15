@@ -98,7 +98,7 @@ public class CrushedLoader implements IWerkstoffRunnable {
                 werkstoff.getOreByProduct(0, dust),
                 GTOreDictUnificator.get(dust, Materials.Stone, 1L))
             .outputChances(100_00, 11_11, 100_00)
-            .fluidInputs(GTModHandler.getWater(1000))
+            .fluidInputs(Materials.Water.getFluid(1_000))
             .duration(25 * SECONDS)
             .eut(16)
             .addTo(oreWasherRecipes);

@@ -20,7 +20,6 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
-import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipeConstants;
 import gregtech.api.util.GTUtility;
@@ -54,7 +53,7 @@ public class RecipeLoaderCoalTar {
                 .itemInputs(GTUtility.getIntegratedCircuit(17), ItemList.Cell_Empty.get(1))
                 .itemOutputs(Materials.Ethylene.getCells(1))
                 .fluidInputs(bioEth1)
-                .fluidOutputs(GTModHandler.getWater(1000))
+                .fluidOutputs(Materials.Water.getFluid(1_000))
                 .eut(80)
                 .duration(2 * MINUTES)
                 .addTo(chemicalDehydratorRecipes);
@@ -65,7 +64,7 @@ public class RecipeLoaderCoalTar {
                 .itemInputs(ItemList.Cell_Empty.get(1))
                 .itemOutputs(Materials.Ethylene.getCells(1))
                 .fluidInputs(bioEth2)
-                .fluidOutputs(GTModHandler.getWater(1000))
+                .fluidOutputs(Materials.Water.getFluid(1_000))
                 .eut(80)
                 .duration(2 * MINUTES)
                 .addTo(chemicalDehydratorRecipes);

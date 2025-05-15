@@ -1178,7 +1178,7 @@ public class RecipeLoader2 {
 
         GTValues.RA.stdBuilder()
             .itemInputs(ItemRefer.Salty_Root.get(1))
-            .fluidInputs(GTModHandler.getWater(100))
+            .fluidInputs(Materials.Water.getFluid(100))
             .itemOutputs(Materials.Salt.getDust(1), Materials.RockSalt.getDust(1), Materials.Saltpeter.getDust(1))
             .outputChances(9500, 8000, 5000)
             .duration(5 * SECONDS)

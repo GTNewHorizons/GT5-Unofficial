@@ -58,7 +58,7 @@ public class FluidExtractorRecipes implements Runnable {
             .itemInputs(ItemList.Crop_Drop_MilkWart.get(1L))
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Milk, 1L))
             .outputChances(1000)
-            .fluidOutputs(GTModHandler.getMilk(150L))
+            .fluidOutputs(Materials.Milk.getFluid(150L))
             .duration(6 * SECONDS + 8 * TICKS)
             .eut(4)
             .addTo(fluidExtractionRecipes);

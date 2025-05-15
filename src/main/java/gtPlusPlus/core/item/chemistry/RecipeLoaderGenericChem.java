@@ -113,7 +113,7 @@ public class RecipeLoaderGenericChem {
             .itemInputs(GTUtility.getIntegratedCircuit(17), GregtechItemList.PotassiumHydroxide.get(3))
             .itemOutputs(GregtechItemList.PotassiumEthylXanthate.get(12))
             .fluidInputs(Materials.Ethanol.getFluid(1_000), new FluidStack(GTPPFluids.CarbonDisulfide, 1000))
-            .fluidOutputs(GTModHandler.getWater(1000))
+            .fluidOutputs(Materials.Water.getFluid(1_000))
             .duration(60 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .metadata(CHEMPLANT_CASING_TIER, 4)

@@ -263,7 +263,7 @@ public class RecipeGenFluorite extends RecipeGenBase {
                 ItemUtils.getItemStackOfAmountFromOreDict("dustTin", 1),
                 ItemUtils.getItemStackOfAmountFromOreDict("dustCopper", 2))
             .outputChances(100_00, 10_00, 10_00, 30_00, 20_00)
-            .fluidInputs(FluidUtils.getFluidStack("sulfuricacid", 8000))
+            .fluidInputs(Materials.SulfuricAcid.getFluid(8_000))
             .fluidOutputs(aGregtechHydro)
             .eut(240)
             .duration(10 * MINUTES)

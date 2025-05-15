@@ -18,6 +18,7 @@ import org.mockito.MockedStatic;
 
 import cpw.mods.fml.common.Optional;
 import cpw.mods.fml.common.registry.GameRegistry;
+import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -137,7 +138,7 @@ public class BlockMachinesSubclassTest {
         // And apparently the mocked getWater is enough to let us instantiate real BaseMetaTileEntity classes. Huzzah!
         try (MockedStatic<GameRegistry> gameRegistry = mockStatic(GameRegistry.class);
             MockedStatic<GTModHandler> modHandler = mockStatic(GTModHandler.class)) {
-            modHandler.when(() -> GTModHandler.getWater(anyLong()))
+            modHandler.when(() -> Materials.Water.getFluid(anyLong()))
                 .thenReturn(mock(FluidStack.class));
 
             MyBlockMachines block = new MyBlockMachines();

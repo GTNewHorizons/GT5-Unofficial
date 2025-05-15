@@ -158,14 +158,16 @@ public class GTModHandler {
      */
     public static boolean isWater(FluidStack aFluid) {
         if (aFluid == null) return false;
-        return aFluid.isFluidEqual(getWater(1)) || aFluid.isFluidEqual(getDistilledWater(1));
+        return aFluid.isFluidEqual(Materials.Water.getFluid(1)) || aFluid.isFluidEqual(getDistilledWater(1));
     }
 
     /**
      * Returns a Liquid Stack with given amount of Water.
+     *
+     * @deprecated Use {@link gregtech.api.enums.Materials} instead.
      */
     public static FluidStack getWater(long aAmount) {
-        return FluidRegistry.getFluidStack("water", (int) aAmount);
+        return Materials.Water.getFluid(aAmount);
     }
 
     /**
@@ -173,7 +175,7 @@ public class GTModHandler {
      */
     public static FluidStack getDistilledWater(long aAmount) {
         FluidStack tFluid = FluidRegistry.getFluidStack("ic2distilledwater", (int) aAmount);
-        if (tFluid == null) tFluid = getWater(aAmount);
+        if (tFluid == null) tFluid = Materials.Water.getFluid(aAmount);
         return tFluid;
     }
 
@@ -182,7 +184,7 @@ public class GTModHandler {
      */
     public static FluidStack getIC2Coolant(long aAmount) {
         if (IndustrialCraft2.isModLoaded()) return FluidRegistry.getFluidStack("ic2coolant", (int) aAmount);
-        else return getWater(aAmount);
+        else return Materials.Water.getFluid(aAmount);
     }
 
     /**
@@ -198,14 +200,16 @@ public class GTModHandler {
      */
     public static boolean isLava(FluidStack aFluid) {
         if (aFluid == null) return false;
-        return aFluid.isFluidEqual(getLava(1));
+        return aFluid.isFluidEqual(Materials.Lava.getFluid(1));
     }
 
     /**
      * Returns a Liquid Stack with given amount of Lava.
+     *
+     * @deprecated Use {@link gregtech.api.enums.Materials} instead.
      */
     public static FluidStack getLava(long aAmount) {
-        return FluidRegistry.getFluidStack("lava", (int) aAmount);
+        return Materials.Lava.getFluid(aAmount);
     }
 
     /**
@@ -242,9 +246,12 @@ public class GTModHandler {
 
     /**
      * Returns a Liquid Stack with given amount of Milk.
+     *
+     * @deprecated Use {@link gregtech.api.enums.Materials} instead.
      */
+    @Deprecated
     public static FluidStack getMilk(long aAmount) {
-        return FluidRegistry.getFluidStack("milk", (int) aAmount);
+        return Materials.Milk.getFluid(aAmount);
     }
 
     /**

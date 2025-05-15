@@ -38,7 +38,6 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.recipe.maps.PurificationUnitParticleExtractorFrontend;
 import gregtech.api.recipe.metadata.PurificationPlantBaseChanceKey;
-import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.recipe.Scanning;
@@ -57,7 +56,7 @@ public class PurifiedWaterRecipes {
         // Grade 1 - Clarifier
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.ActivatedCarbonFilterMesh.get(1))
-            .fluidInputs(GTModHandler.getWater(1000L))
+            .fluidInputs(Materials.Water.getFluid(1_000))
             .fluidOutputs(Materials.Grade1PurifiedWater.getFluid(900L))
             .itemOutputs(new ItemStack(Items.stick, 1), Materials.Stone.getDust(1), Materials.Gold.getNuggets(1))
             .outputChances(1000, 500, 100)
