@@ -421,7 +421,8 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
                             break;
                         }
                     }
-                }            }
+                }
+            }
         }
     }
 

@@ -6,7 +6,6 @@ import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAs
 import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex.TOOLTIP_CC;
 import static gtPlusPlus.xmod.thermalfoundation.block.TFBlocks.blockFluidEnder;
 
-import gtPlusPlus.core.material.MaterialsElements;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 
@@ -22,6 +21,7 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyModuleBase;
 import gregtech.common.tileentities.machines.multi.nanochip.util.CircuitComponent;
 import gregtech.common.tileentities.machines.multi.nanochip.util.ModuleStructureDefinition;
+import gtPlusPlus.core.material.MaterialsElements;
 
 public class BoardProcessor extends MTENanochipAssemblyModuleBase<BoardProcessor> {
 
