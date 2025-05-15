@@ -367,15 +367,6 @@ public abstract class TileEntityModuleBase extends TTMultiblockBase {
     }
 
     @Override
-    public void addGregtechLogo(ModularPanel panel) {
-        panel.child(
-            new SingleChildWidget<>()
-                .overlay(UITexture.fullImage(ASSET_PREFIX, "gui/picture/space_elevator_logo_dark.png"))
-                .size(18, 18)
-                .pos(190 - 18 - 2, doesBindPlayerInventory() ? 91 - 18 - 2 : 171 - 18 - 2));
-    }
-
-    @Override
     protected GTGuiTheme getGuiTheme() {
         return GTGuiThemes.INTERGALACTIC_STANDARD;
     }
