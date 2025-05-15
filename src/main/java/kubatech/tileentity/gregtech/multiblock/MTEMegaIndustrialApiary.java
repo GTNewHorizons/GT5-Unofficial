@@ -264,8 +264,14 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
     private int megaApiaryStorageVersion = 0;
 
     private void flowerCheck(final World world, final int x, final int y, final int z) {
-        if (!flowersCheck.isEmpty() && !world.isAirBlock(x, y, z))
-            flowersCheck.removeIf(s -> FlowerManager.flowerRegistry.isAcceptedFlower(s, world, x, y, z));
+        if (!flowersCheck.isEmpty() && !world.isAirBlock(x, y, z)) {
+            for (String s : flowersCheck) {
+                if (FlowerManager.flowerRegistry.isAcceptedFlower(s, world, x, y, z)) {
+                    flowersCheck.remove(s);
+                    flowersDescription.remove(flowersCache.get(s));
+                }
+            }
+        }
     }
 
     @Override
