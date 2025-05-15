@@ -46,7 +46,7 @@ public class RecipeLoaderCoalTar {
     private static void recipeCreateEthylene() {
 
         FluidStack bioEth1 = FluidRegistry.getFluidStack("fluid.bioethanol", 1000);
-        FluidStack bioEth2 = FluidRegistry.getFluidStack("bioethanol", 1000);
+        FluidStack bioEth2 = Materials.Ethanol.getFluid(1_000);
 
         // C2H6O = C2H4 + H2O
         if (bioEth1 != null) {

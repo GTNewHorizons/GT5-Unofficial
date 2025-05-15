@@ -213,7 +213,7 @@ public class GTModHandler {
      */
     public static boolean isSteam(FluidStack aFluid) {
         if (aFluid == null) return false;
-        return aFluid.isFluidEqual(getSteam(1));
+        return aFluid.isFluidEqual(Materials.Water.getGas(1));
     }
 
     /**
@@ -232,9 +232,12 @@ public class GTModHandler {
 
     /**
      * Returns a Liquid Stack with given amount of Steam.
+     *
+     * @deprecated Use {@link gregtech.api.enums.Materials} instead.
      */
+    @Deprecated
     public static FluidStack getSteam(long aAmount) {
-        return FluidRegistry.getFluidStack("steam", (int) aAmount);
+        return Materials.Water.getGas(aAmount);
     }
 
     /**

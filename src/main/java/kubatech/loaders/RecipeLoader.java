@@ -159,7 +159,7 @@ public class RecipeLoader {
                     new Object[] { OrePrefixes.circuit.get(Materials.UV), 16L })
                 .fluidInputs(
                     MaterialsAlloy.INDALLOY_140.getFluidStack(3 * STACKS + 8 * INGOTS),
-                    FluidRegistry.getFluidStack("for.honey", 20_000))
+                    Materials.Honey.getFluid(20_000))
                 .itemOutputs(ExtremeIndustrialApiary.get(1))
                 .eut(TierEU.RECIPE_UHV)
                 .duration(5 * MINUTES)

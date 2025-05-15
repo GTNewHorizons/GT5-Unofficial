@@ -18,7 +18,6 @@ import net.minecraft.item.ItemStack;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gtPlusPlus.core.item.base.BaseItemBurnable;
@@ -156,7 +155,7 @@ public class HandlerRailcraft {
         GTValues.RA.stdBuilder()
             .itemInputs(coke, GTUtility.getIntegratedCircuit(5))
             .itemOutputs(Materials.Ash.getDustSmall(1))
-            .fluidInputs(GTModHandler.getSteam(100))
+            .fluidInputs(Materials.Water.getGas(100))
             .fluidOutputs(Materials.WoodTar.getFluid(200))
             .eut(240)
             .duration(3 * SECONDS)
@@ -165,7 +164,7 @@ public class HandlerRailcraft {
         GTValues.RA.stdBuilder()
             .itemInputs(coke, GTUtility.getIntegratedCircuit(6))
             .itemOutputs(Materials.Ash.getDustSmall(1))
-            .fluidInputs(GTModHandler.getSteam(100))
+            .fluidInputs(Materials.Water.getGas(100))
             .fluidOutputs(Materials.WoodGas.getGas(300))
             .eut(240)
             .duration(3 * SECONDS)

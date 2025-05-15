@@ -463,7 +463,7 @@ public class BioRecipes {
                 GTUtility.getIntegratedCircuit(14),
                 GTOreDictUnificator.get(OrePrefixes.crushedPurified, Materials.Sapphire, 5))
             .itemOutputs(GregtechItemList.CleanAluminiumMix.get(3))
-            .fluidInputs(GTModHandler.getSteam(10000))
+            .fluidInputs(Materials.Water.getGas(10_000))
             .fluidOutputs(new FluidStack(GTPPFluids.RedMud, 300))
             .duration(60 * SECONDS)
             .eut(TierEU.RECIPE_LV)
@@ -475,7 +475,7 @@ public class BioRecipes {
                 GTUtility.getIntegratedCircuit(14),
                 GTOreDictUnificator.get(OrePrefixes.crushedPurified, Materials.GreenSapphire, 5))
             .itemOutputs(GregtechItemList.CleanAluminiumMix.get(3))
-            .fluidInputs(GTModHandler.getSteam(10000))
+            .fluidInputs(Materials.Water.getGas(10_000))
             .fluidOutputs(new FluidStack(GTPPFluids.RedMud, 300))
             .duration(60 * SECONDS)
             .eut(TierEU.RECIPE_LV)
@@ -487,7 +487,7 @@ public class BioRecipes {
                 GTUtility.getIntegratedCircuit(14),
                 GTOreDictUnificator.get(OrePrefixes.crushedPurified, Materials.Ruby, 6))
             .itemOutputs(GregtechItemList.CleanAluminiumMix.get(3))
-            .fluidInputs(GTModHandler.getSteam(12000))
+            .fluidInputs(Materials.Water.getGas(12_000))
             .fluidOutputs(new FluidStack(GTPPFluids.RedMud, 300))
             .duration(60 * SECONDS)
             .eut(TierEU.RECIPE_MV / 2)
@@ -499,7 +499,7 @@ public class BioRecipes {
                 GTUtility.getIntegratedCircuit(14),
                 GTOreDictUnificator.get(OrePrefixes.crushedPurified, Materials.Grossular, 20))
             .itemOutputs(GregtechItemList.CleanAluminiumMix.get(3))
-            .fluidInputs(GTModHandler.getSteam(40000))
+            .fluidInputs(Materials.Water.getGas(40_000))
             .fluidOutputs(new FluidStack(GTPPFluids.RedMud, 300))
             .duration(60 * SECONDS)
             .eut(90)
@@ -511,7 +511,7 @@ public class BioRecipes {
                 GTUtility.getIntegratedCircuit(14),
                 GTOreDictUnificator.get(OrePrefixes.crushedPurified, Materials.Pyrope, 20))
             .itemOutputs(GregtechItemList.CleanAluminiumMix.get(3))
-            .fluidInputs(GTModHandler.getSteam(40000))
+            .fluidInputs(Materials.Water.getGas(40_000))
             .fluidOutputs(new FluidStack(GTPPFluids.RedMud, 300))
             .duration(60 * SECONDS)
             .eut(90)
@@ -523,7 +523,7 @@ public class BioRecipes {
                 GTUtility.getIntegratedCircuit(14),
                 GTOreDictUnificator.get(OrePrefixes.crushedPurified, Materials.Sodalite, 11))
             .itemOutputs(GregtechItemList.CleanAluminiumMix.get(5))
-            .fluidInputs(GTModHandler.getSteam(22000))
+            .fluidInputs(Materials.Water.getGas(22_000))
             .fluidOutputs(new FluidStack(GTPPFluids.RedMud, 500))
             .duration(60 * SECONDS)
             .eut(90)
@@ -535,7 +535,7 @@ public class BioRecipes {
                 GTUtility.getIntegratedCircuit(14),
                 GTOreDictUnificator.get(OrePrefixes.crushedPurified, Materials.Spodumene, 10))
             .itemOutputs(GregtechItemList.CleanAluminiumMix.get(2))
-            .fluidInputs(GTModHandler.getSteam(20000))
+            .fluidInputs(Materials.Water.getGas(20_000))
             .fluidOutputs(new FluidStack(GTPPFluids.RedMud, 200))
             .duration(60 * SECONDS)
             .eut(90)
@@ -547,7 +547,7 @@ public class BioRecipes {
                 GTUtility.getIntegratedCircuit(14),
                 GTOreDictUnificator.get(OrePrefixes.crushedPurified, Materials.Bauxite, 39))
             .itemOutputs(GregtechItemList.CleanAluminiumMix.get(23))
-            .fluidInputs(GTModHandler.getSteam(78000))
+            .fluidInputs(Materials.Water.getGas(78_000))
             .fluidOutputs(new FluidStack(GTPPFluids.RedMud, 2300))
             .duration(60 * SECONDS)
             .eut(90)
@@ -559,7 +559,7 @@ public class BioRecipes {
                 GTUtility.getIntegratedCircuit(14),
                 GTOreDictUnificator.get(OrePrefixes.crushedPurified, Materials.Lazurite, 14))
             .itemOutputs(GregtechItemList.CleanAluminiumMix.get(5))
-            .fluidInputs(GTModHandler.getSteam(28000))
+            .fluidInputs(Materials.Water.getGas(28_000))
             .fluidOutputs(new FluidStack(GTPPFluids.RedMud, 500))
             .duration(60 * SECONDS)
             .eut(TierEU.RECIPE_MV)

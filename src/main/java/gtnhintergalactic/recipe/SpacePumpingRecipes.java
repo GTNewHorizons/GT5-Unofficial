@@ -56,7 +56,7 @@ public class SpacePumpingRecipes {
         RECIPES.put(Pair.of(5, 7), Materials.Argon.getGas(32_000));
         RECIPES.put(Pair.of(5, 8), WerkstoffLoader.Krypton.getFluidOrGas(8_000));
         RECIPES.put(Pair.of(5, 9), Materials.Methane.getGas(1_792_000));
-        RECIPES.put(Pair.of(5, 10), FluidRegistry.getFluidStack("liquid_hydricsulfur", 392_000));
+        RECIPES.put(Pair.of(5, 10), Materials.HydricSulfide.getGas(392_000));
         RECIPES.put(Pair.of(5, 11), Materials.Ethane.getGas(1_194_000));
 
         // T6

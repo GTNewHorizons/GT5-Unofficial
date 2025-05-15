@@ -30,7 +30,6 @@ import java.util.HashSet;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.item.crafting.IRecipe;
-import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
 
@@ -533,7 +532,7 @@ public class NaquadahReworkRecipeLoader {
         // C2H4 + H2O(g) = C2H6O
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(24))
-            .fluidInputs(Materials.Ethylene.getGas(1_000), FluidRegistry.getFluidStack("steam", 2_000))
+            .fluidInputs(Materials.Ethylene.getGas(1_000), Materials.Water.getGas(2_000))
             .fluidOutputs(Materials.Ethanol.getFluid(1_000))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_HV)
@@ -541,7 +540,7 @@ public class NaquadahReworkRecipeLoader {
 
         GTValues.RA.stdBuilder()
             .itemInputs(Materials.Ethylene.getCells(1), GTUtility.getIntegratedCircuit(24))
-            .fluidInputs(FluidRegistry.getFluidStack("steam", 2_000))
+            .fluidInputs(Materials.Water.getGas(2_000))
             .itemOutputs(Materials.Ethanol.getCells(1))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_HV)

@@ -133,9 +133,9 @@ public class RecipeLoaderGlueLine {
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(23), GregtechItemList.PinkMetalCatalyst.get(0))
             .fluidInputs(
-                FluidUtils.getFluidStack("methane", 2_000),
+                Materials.Methane.getGas(2_000),
                 FluidUtils.getFluidStack("ammonia", 2_000),
-                FluidUtils.getFluidStack("oxygen", 6_000))
+                Materials.Oxygen.getGas(6_000))
             .fluidOutputs(MaterialMisc.HYDROGEN_CYANIDE.getFluidStack(2_000), GTModHandler.getWater(6_000))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_HV)

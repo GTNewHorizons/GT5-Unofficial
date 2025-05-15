@@ -34,15 +34,15 @@ public class FluidUtils {
     private static final HashMap<String, Fluid> sFluidCache = new HashMap<>();
 
     /**
-     * @deprecated Use {@link GTModHandler#getWater(long)} or {@link gregtech.api.enums.Materials} instead.
+     * @deprecated Use {@link gregtech.api.enums.Materials} instead.
      */
     @Deprecated
     public static FluidStack getWater(final int amount) {
-        return GTModHandler.getWater(amount);
+        return Materials.Water.getFluid(amount);
     }
 
     /**
-     * @deprecated Use {@link GTModHandler#getDistilledWater(long)} or {@link gregtech.api.enums.Materials} instead.
+     * @deprecated Use {@link GTModHandler#getDistilledWater(long)} instead.
      */
     @Deprecated
     public static FluidStack getDistilledWater(final int amount) {
@@ -54,11 +54,11 @@ public class FluidUtils {
     }
 
     /**
-     * @deprecated Use {@link GTModHandler#getLava(long)} or {@link gregtech.api.enums.Materials} instead.
+     * @deprecated Use {@link gregtech.api.enums.Materials} instead.
      */
     @Deprecated
     public static FluidStack getLava(final int amount) {
-        return GTModHandler.getLava(amount);
+        return Materials.Lava.getFluid(amount);
     }
 
     public static FluidStack getPahoehoeLava(final int amount) {
@@ -66,11 +66,11 @@ public class FluidUtils {
     }
 
     /**
-     * @deprecated Use {@link GTModHandler#getSteam(long)} or {@link gregtech.api.enums.Materials} instead.
+     * @deprecated Use {@link gregtech.api.enums.Materials} instead.
      */
     @Deprecated
     public static FluidStack getSteam(final int amount) {
-        return GTModHandler.getSteam(amount);
+        return Materials.Water.getGas(amount);
     }
 
     public static FluidStack getSuperHeatedSteam(final int amount) {
@@ -656,7 +656,11 @@ public class FluidUtils {
         } else return aFStack4;
     }
 
+    /**
+     * @deprecated Use {@link gregtech.api.enums.Materials} instead.
+     */
+    @Deprecated
     public static FluidStack getAir(int aAmount) {
-        return FluidUtils.getFluidStack("air", aAmount);
+        return Materials.Air.getGas(aAmount);
     }
 }

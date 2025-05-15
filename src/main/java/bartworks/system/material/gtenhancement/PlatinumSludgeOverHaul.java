@@ -517,7 +517,7 @@ public class PlatinumSludgeOverHaul {
             .itemInputs(LeachResidue.get(dust, 10), Materials.Saltpeter.getDust(10))
             .itemOutputs(SodiumRuthenate.get(dust, 3), IrOsLeachResidue.get(dust, 6))
             .fluidInputs(Materials.SaltWater.getFluid(1_000))
-            .fluidOutputs(GTModHandler.getSteam(1000))
+            .fluidOutputs(Materials.Water.getGas(1_000))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .metadata(COIL_HEAT, 775)

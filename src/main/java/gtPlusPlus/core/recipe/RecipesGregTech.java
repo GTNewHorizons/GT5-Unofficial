@@ -160,7 +160,7 @@ public class RecipesGregTech {
             .itemInputs(GTUtility.getIntegratedCircuit(17), CI.getPinkCatalyst(0))
             .fluidInputs(
                 Materials.NitrogenDioxide.getGas(4_000),
-                FluidUtils.getAir(4_000),
+                Materials.Air.getGas(4_000),
                 GTModHandler.getWater(2_000))
             .fluidOutputs(Materials.NitricAcid.getFluid(4_000))
             .duration(10 * SECONDS)
@@ -180,7 +180,7 @@ public class RecipesGregTech {
                 MaterialsFluorides.FLUORITE.getOre(4),
                 MaterialsFluorides.FLUORITE.getOre(4),
                 MaterialsFluorides.FLUORITE.getOre(4))
-            .fluidInputs(Materials.NitricAcid.getFluid(4_000), FluidUtils.getAir(8_000))
+            .fluidInputs(Materials.NitricAcid.getFluid(4_000), Materials.Air.getGas(8_000))
             .duration(10 * SECONDS)
             .eut(1024)
             .metadata(CHEMPLANT_CASING_TIER, 5)
@@ -197,7 +197,7 @@ public class RecipesGregTech {
                 MaterialsFluorides.FLUORITE.getOre(2),
                 MaterialsFluorides.FLUORITE.getOre(2),
                 MaterialsFluorides.FLUORITE.getOre(2))
-            .fluidInputs(Materials.NitricAcid.getFluid(5_000), FluidUtils.getAir(12_000))
+            .fluidInputs(Materials.NitricAcid.getFluid(5_000), Materials.Air.getGas(12_000))
             .duration(10 * SECONDS)
             .eut(1024)
             .metadata(CHEMPLANT_CASING_TIER, 5)
@@ -756,7 +756,7 @@ public class RecipesGregTech {
     private static void electrolyzerRecipes() {
         RA.stdBuilder()
             .itemInputs(ItemUtils.getSimpleStack(ModItems.dustDecayedRadium226, 1))
-            .fluidOutputs(FluidUtils.getFluidStack("radon", 1 * INGOTS))
+            .fluidOutputs(Materials.Radon.getGas(1 * INGOTS))
             .duration(1 * MINUTES + 30 * SECONDS)
             .eut(TierEU.RECIPE_HV / 2)
             .addTo(electrolyzerRecipes);
@@ -1410,7 +1410,7 @@ public class RecipesGregTech {
 
         RA.stdBuilder()
             .fluidInputs(GTModHandler.getLava(1_000), GTModHandler.getWater(16_000 / GTValues.STEAM_PER_WATER))
-            .fluidOutputs(FluidUtils.getPahoehoeLava(1_000), GTModHandler.getSteam(16_000))
+            .fluidOutputs(FluidUtils.getPahoehoeLava(1_000), Materials.Water.getGas(16_000))
             .itemOutputs(
                 GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Copper, 1),
                 GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Tin, 1),
@@ -1428,7 +1428,7 @@ public class RecipesGregTech {
 
         RA.stdBuilder()
             .fluidInputs(FluidUtils.getPahoehoeLava(1000), GTModHandler.getWater(16_000 / GTValues.STEAM_PER_WATER))
-            .fluidOutputs(GTModHandler.getSteam(16_000))
+            .fluidOutputs(Materials.Water.getGas(16_000))
             .itemOutputs(
                 GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Bronze, 1),
                 GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Electrum, 1),
@@ -1729,7 +1729,7 @@ public class RecipesGregTech {
             .itemInputs(MaterialsElements.getInstance().URANIUM238.getDust(1))
             .itemOutputs(ItemUtils.getSimpleStack(ModItems.dustNeptunium238))
             .outputChances(500)
-            .fluidInputs(FluidUtils.getFluidStack("deuterium", 400))
+            .fluidInputs(Materials.Deuterium.getGas(400))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_EV)
             .addTo(cyclotronRecipes);
@@ -1906,7 +1906,7 @@ public class RecipesGregTech {
                 Particle.getIon("Hydrogen", -2),
                 Particle.getIon("Hydrogen", -3))
             .outputChances(500, 500, 500, 500, 500, 500, 500, 500, 500)
-            .fluidInputs(FluidUtils.getWildcardFluidStack("hydrogen", 1000))
+            .fluidInputs(Materials.Hydrogen.getGas(1_000))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_LuV)
             .addTo(cyclotronRecipes);
@@ -1921,7 +1921,7 @@ public class RecipesGregTech {
                 Particle.getBaseParticle(Particle.UNKNOWN),
                 Particle.getBaseParticle(Particle.UNKNOWN))
             .outputChances(1250, 1250, 1250, 750, 750, 750)
-            .fluidInputs(FluidUtils.getFluidStack("hydrogen", 1000))
+            .fluidInputs(Materials.Hydrogen.getGas(1_000))
             .fluidOutputs(FluidUtils.getFluidStack("plasma.hydrogen", 100))
             .duration(2 * MINUTES)
             .eut(TierEU.RECIPE_LuV)
@@ -1940,7 +1940,7 @@ public class RecipesGregTech {
                 Particle.getBaseParticle(Particle.PROTON),
                 Particle.getBaseParticle(Particle.PROTON))
             .outputChances(750, 750, 750, 750, 750, 750, 750, 750, 750)
-            .fluidInputs(FluidUtils.getWildcardFluidStack("hydrogen", 100))
+            .fluidInputs(Materials.Hydrogen.getGas(100))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_LuV)
             .addTo(cyclotronRecipes);
@@ -1957,7 +1957,7 @@ public class RecipesGregTech {
                 Particle.getBaseParticle(Particle.PROTON),
                 Particle.getBaseParticle(Particle.PROTON))
             .outputChances(375, 375, 375, 375, 375, 375, 375, 375, 375)
-            .fluidInputs(FluidUtils.getWildcardFluidStack("hydrogen", 100))
+            .fluidInputs(Materials.Hydrogen.getGas(100))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_LuV)
             .addTo(cyclotronRecipes);

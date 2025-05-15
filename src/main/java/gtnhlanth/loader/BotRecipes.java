@@ -22,7 +22,6 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.TierEU;
-import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gtnhlanth.common.register.BotWerkstoffMaterialPool;
@@ -117,7 +116,7 @@ public class BotRecipes {
             .itemInputs(WO3, C2)
             .itemOutputs(Materials.Tungsten.getDust(1))
             .fluidInputs(Materials.Hydrogen.getGas(6_000))
-            .fluidOutputs(GTModHandler.getSteam(3000))
+            .fluidOutputs(Materials.Water.getGas(3_000))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .metadata(COIL_HEAT, 1000)

@@ -1521,8 +1521,8 @@ public class RecipeLoader {
             .itemInputs(GTUtility.getIntegratedCircuit(1))
             .fluidInputs(
                 WerkstoffMaterialPool.MuddyRareEarthBastnasiteSolution.getFluidOrGas(1_000),
-                GTModHandler.getSteam(1000))
-            .fluidOutputs(WerkstoffMaterialPool.SteamCrackedBasnasiteSolution.getFluidOrGas(2000))
+                Materials.Water.getGas(1_000))
+            .fluidOutputs(WerkstoffMaterialPool.SteamCrackedBasnasiteSolution.getFluidOrGas(2_000))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(crackingRecipes);
@@ -1533,7 +1533,7 @@ public class RecipeLoader {
                 WerkstoffMaterialPool.SteamCrackedBasnasiteSolution.get(OrePrefixes.cell, 1))
             .itemOutputs(Materials.Empty.getCells(1))
             .fluidInputs(WerkstoffMaterialPool.SodiumFluorosilicate.getFluidOrGas(320))
-            .fluidOutputs(WerkstoffMaterialPool.ConditionedBastnasiteMud.getFluidOrGas(1320))
+            .fluidOutputs(WerkstoffMaterialPool.ConditionedBastnasiteMud.getFluidOrGas(1_320))
             .duration(40 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(mixerRecipes);
@@ -1543,7 +1543,7 @@ public class RecipeLoader {
                 Materials.Water.getFluid(10_000),
                 WerkstoffMaterialPool.ConditionedBastnasiteMud.getFluidOrGas(1_000))
             .itemInputs(Materials.Saltpeter.getDust(1))
-            .fluidOutputs(WerkstoffMaterialPool.DiltedRareEarthBastnasiteMud.getFluidOrGas(11000))
+            .fluidOutputs(WerkstoffMaterialPool.DiltedRareEarthBastnasiteMud.getFluidOrGas(11_000))
             .itemOutputs(Gangue.get(OrePrefixes.dust, 1))
             .eut(TierEU.RECIPE_EV)
             .duration(1000)

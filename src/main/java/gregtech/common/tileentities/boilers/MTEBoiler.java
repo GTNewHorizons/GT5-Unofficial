@@ -232,7 +232,7 @@ public abstract class MTEBoiler extends MTEBasicTank implements IGetTitleColor, 
         if (GTModHandler.isSteam(this.mSteam)) {
             this.mSteam.amount += aAmount;
         } else {
-            this.mSteam = GTModHandler.getSteam(aAmount);
+            this.mSteam = Materials.Water.getGas(aAmount);
         }
     }
 
@@ -568,7 +568,7 @@ public abstract class MTEBoiler extends MTEBasicTank implements IGetTitleColor, 
     }
 
     private boolean isValidFluidInputSlotItem(@NotNull ItemStack stack) {
-        return GTUtility.fillFluidContainer(GTModHandler.getSteam(getSteamCapacity()), stack, false, true) != null
+        return GTUtility.fillFluidContainer(Materials.Water.getGas(getSteamCapacity()), stack, false, true) != null
             || isFluidInputAllowed(GTUtility.getFluidForFilledItem(stack, true));
     }
 

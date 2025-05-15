@@ -857,7 +857,7 @@ public class LoaderGTBlockFluid implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(Materials.Empty.getCells(1))
             .itemOutputs(GTModHandler.getIC2Item("steamCell", 1))
-            .fluidInputs(GTModHandler.getSteam(1000))
+            .fluidInputs(Materials.Water.getGas(1_000))
             .duration(16 * TICKS)
             .eut(1)
             .addTo(fluidCannerRecipes);
