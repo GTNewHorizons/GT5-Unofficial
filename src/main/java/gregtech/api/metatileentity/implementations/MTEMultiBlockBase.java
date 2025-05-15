@@ -6,12 +6,15 @@ import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 import static gregtech.api.recipe.check.SingleRecipeCheck.getDisplayString;
 import static gregtech.api.util.GTUtility.filterValidMTEs;
 import static gregtech.api.util.GTUtility.formatNumbers;
+import static gregtech.api.util.GTUtility.formatShortenedLong;
 import static gregtech.api.util.GTUtility.min;
+import static gregtech.api.util.GTUtility.truncateText;
 import static gregtech.api.util.GTUtility.validMTEList;
 import static mcp.mobius.waila.api.SpecialChars.GREEN;
 import static mcp.mobius.waila.api.SpecialChars.RED;
 import static mcp.mobius.waila.api.SpecialChars.RESET;
 
+import java.text.DecimalFormat;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -22,6 +25,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.function.Function;
 import java.util.function.LongConsumer;
 import java.util.stream.Collectors;
 
@@ -47,13 +51,21 @@ import net.minecraftforge.fluids.FluidStack;
 
 import org.apache.commons.lang3.ArrayUtils;
 import org.jetbrains.annotations.ApiStatus;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Range;
 import org.jetbrains.annotations.TestOnly;
 
+import com.cleanroommc.modularui.api.IGuiHolder;
+import com.cleanroommc.modularui.factory.PosGuiData;
+import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.gtnewhorizon.structurelib.structure.IStructureElement;
 import com.gtnewhorizons.modularui.api.NumberFormatMUI;
+import com.gtnewhorizons.modularui.api.drawable.FluidDrawable;
 import com.gtnewhorizons.modularui.api.drawable.IDrawable;
+import com.gtnewhorizons.modularui.api.drawable.ItemDrawable;
 import com.gtnewhorizons.modularui.api.drawable.UITexture;
 import com.gtnewhorizons.modularui.api.math.Alignment;
 import com.gtnewhorizons.modularui.api.math.Color;
@@ -64,9 +76,11 @@ import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.gtnewhorizons.modularui.api.widget.Widget;
 import com.gtnewhorizons.modularui.common.internal.network.NetworkUtils;
 import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
+import com.gtnewhorizons.modularui.common.widget.ChangeableWidget;
 import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
 import com.gtnewhorizons.modularui.common.widget.DynamicPositionedColumn;
 import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
+import com.gtnewhorizons.modularui.common.widget.MultiChildWidget;
 import com.gtnewhorizons.modularui.common.widget.Scrollable;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
@@ -89,9 +103,9 @@ import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.modularui.IBindPlayerInventoryUI;
 import gregtech.api.interfaces.modularui.IControllerWithOptionalFeatures;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.items.MetaGeneratedTool;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.MetaTileEntity;
+import gregtech.api.metatileentity.implementations.gui.MTEMultiBlockBaseGui;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
@@ -116,7 +130,9 @@ import gregtech.common.gui.modularui.widget.ShutDownReasonSyncer;
 import gregtech.common.items.MetaGeneratedTool01;
 import gregtech.common.pollution.Pollution;
 import gregtech.common.tileentities.machines.IDualInputHatch;
+import gregtech.common.tileentities.machines.IDualInputHatchWithPattern;
 import gregtech.common.tileentities.machines.IDualInputInventory;
+import gregtech.common.tileentities.machines.IDualInputInventoryWithPattern;
 import gregtech.common.tileentities.machines.IRecipeProcessingAwareHatch;
 import gregtech.common.tileentities.machines.ISmartInputHatch;
 import gregtech.common.tileentities.machines.MTEHatchCraftingInputME;
@@ -134,8 +150,8 @@ import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 import tectech.thing.metaTileEntity.hatch.MTEHatchEnergyMulti;
 
-public abstract class MTEMultiBlockBase extends MetaTileEntity
-    implements IControllerWithOptionalFeatures, IAddGregtechLogo, IAddUIWidgets, IBindPlayerInventoryUI {
+public abstract class MTEMultiBlockBase extends MetaTileEntity implements IControllerWithOptionalFeatures,
+    IAddGregtechLogo, IGuiHolder<PosGuiData>, IAddUIWidgets, IBindPlayerInventoryUI {
 
     public static boolean disableMaintenance;
     public boolean hasMaintenanceChecks = getDefaultHasMaintenanceChecks();
@@ -476,10 +492,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         mSmartInputHatches.clear();
 
         mCoils.clear();
-        if (coilLease != null) {
-            GTCoilTracker.deactivate(coilLease);
-            coilLease = null;
-        }
+        deactivateCoilLease();
     }
 
     public boolean checkStructure(boolean aForceReset) {
@@ -606,9 +619,8 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
 
             boolean isActive = mMaxProgresstime > 0;
 
-            if ((!mMachine || !isActive) && coilLease != null) {
-                GTCoilTracker.deactivate(coilLease);
-                coilLease = null;
+            if (!mMachine || !isActive) {
+                deactivateCoilLease();
             }
 
             if (mMachine && !mCoils.isEmpty() && isActive && coilLease == null) {
@@ -732,7 +744,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
                         0,
                         Math.min(
                             mEfficiency + mEfficiencyIncrease,
-                            getMaxEfficiency(mInventory[1]) - ((getIdealStatus() - getRepairStatus()) * 1000)));
+                            getMaxEfficiency(getControllerSlot()) - ((getIdealStatus() - getRepairStatus()) * 1000)));
                     mOutputItems = null;
                     mProgresstime = 0;
                     mMaxProgresstime = 0;
@@ -924,9 +936,15 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
     }
 
     /**
-     * Checks if this is a Correct Machine Part for this kind of Machine (Turbine Rotor for example)
+     * Check the ItemStack in the controller slot.
+     *
+     * @param aStack the ItemStack in the controller slot.
+     * @return {@code true} if the item is valid for this machine or the machine doesn't have restrictions on the
+     *         controller slot.
      */
-    public abstract boolean isCorrectMachinePart(ItemStack aStack);
+    public boolean isCorrectMachinePart(@Nullable ItemStack aStack) {
+        return true;
+    }
 
     /**
      * @deprecated Use {@link #createProcessingLogic()} or {@link #checkProcessing()}
@@ -1017,7 +1035,15 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
             for (var it = dualInputHatch.inventories(); it.hasNext();) {
                 IDualInputInventory slot = it.next();
 
-                if (!slot.isEmpty() && processingLogic.craftingPatternHandler(slot)) {
+                if (!slot.isEmpty()) {
+                    // try to cache the possible recipes from pattern
+                    if (slot instanceof IDualInputInventoryWithPattern withPattern) {
+                        if (!processingLogic.tryCachePossibleRecipesFromPattern(withPattern)) {
+                            // move on to next slots if it returns false, which means there is no possible recipes with
+                            // given pattern.
+                            continue;
+                        }
+                    }
 
                     processingLogic.setInputItems(ArrayUtils.addAll(sharedItems, slot.getItemInputs()));
                     processingLogic.setInputFluids(slot.getFluidInputs());
@@ -1171,9 +1197,18 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
     public abstract boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack);
 
     /**
-     * Gets the maximum Efficiency that spare Part can get (0 - 10000)
+     * Gets the maximum efficiency of this machine with current state.
+     * <p>
+     * The ItemStack argument is supposed to be the one in the controller slot, but in some implementation, it directly
+     * gives {@code null}.
+     *
+     * @param aStack the ItemStack in the controller slot or null.
+     * @return the maximum efficiency in the range of 0 to 10,000.
      */
-    public abstract int getMaxEfficiency(ItemStack aStack);
+    @Range(from = 0, to = 10000)
+    public int getMaxEfficiency(@Nullable ItemStack aStack) {
+        return 10000;
+    }
 
     /**
      * Gets the pollution this Device outputs to a Muffler per tick (10000 = one Pullution Block)
@@ -1197,14 +1232,30 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
     }
 
     /**
-     * Gets the damage to the ItemStack, usually 0 or 1.
+     * Gets the factor value to damage the ItemStack in the controller slot.
+     * <p>
+     * This function will be called only if the ItemStack is {@link MetaGeneratedTool01}, and the actual applied damage
+     * value is multiplied by
+     * <a href="https://www.wolframalpha.com/input?i=plot+min%28x%2F5%2C+x%5E%280.6%29%29+range+0+to+512">a formula</a>
+     * calculated with {@link #damageFactorLow} and {@link #damageFactorHigh}. See {@link #doRandomMaintenanceDamage()}
+     * for the details.
+     *
+     * @param aStack the ItemStack in the controller slot.
+     * @return the factor value to damage the ItemStack in the controller slot.
      */
-    public abstract int getDamageToComponent(ItemStack aStack);
+    @Range(from = 0, to = Integer.MAX_VALUE)
+    public int getDamageToComponent(@Nullable ItemStack aStack) {
+        return 0;
+    }
 
     /**
-     * If it explodes when the Component has to be replaced.
+     * @deprecated no longer being called.
      */
-    public abstract boolean explodesOnComponentBreak(ItemStack aStack);
+    @Deprecated
+    @ApiStatus.ScheduledForRemoval
+    public boolean explodesOnComponentBreak(ItemStack aStack) {
+        return false;
+    }
 
     /**
      * @deprecated Use {@link #stopMachine(ShutDownReason)}
@@ -1260,7 +1311,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
     }
 
     public boolean doRandomMaintenanceDamage() {
-        if (!isCorrectMachinePart(mInventory[1])) {
+        if (!isCorrectMachinePart(getControllerSlot())) {
             stopMachine(ShutDownReasonRegistry.NO_MACHINE_PART);
             return false;
         }
@@ -1276,11 +1327,10 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
             if (mInventory[1] != null && getBaseMetaTileEntity().getRandomNumber(2) == 0
                 && !mInventory[1].getUnlocalizedName()
                     .startsWith("gt.blockmachines.basicmachine.")) {
-                if (mInventory[1].getItem() instanceof MetaGeneratedTool01) {
-                    NBTTagCompound tNBT = mInventory[1].getTagCompound();
-                    ((MetaGeneratedTool) mInventory[1].getItem()).doDamage(
+                if (mInventory[1].getItem() instanceof MetaGeneratedTool01 metaGeneratedTool) {
+                    metaGeneratedTool.doDamage(
                         mInventory[1],
-                        (long) getDamageToComponent(mInventory[1])
+                        (long) getDamageToComponent(getControllerSlot())
                             * (long) Math.min(mEUt / this.damageFactorLow, Math.pow(mEUt, this.damageFactorHigh)));
                     if (mInventory[1].stackSize == 0) mInventory[1] = null;
                 }
@@ -1830,7 +1880,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         for (MTEHatchInputBus tHatch : validMTEList(mInputBusses)) tHatch.updateSlots();
     }
 
-    protected void startRecipeProcessing() {
+    public void startRecipeProcessing() {
         mDualInputHatches.removeIf(mte -> mte == null || !((MetaTileEntity) mte).isValid());
 
         for (MTEHatchInputBus hatch : validMTEList(mInputBusses)) {
@@ -1851,7 +1901,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         }
     }
 
-    protected void endRecipeProcessing() {
+    public void endRecipeProcessing() {
         for (MTEHatchInputBus hatch : validMTEList(mInputBusses)) {
             if (hatch instanceof IRecipeProcessingAwareHatch aware) {
                 setResultIfFailure(aware.endRecipeProcessing(this));
@@ -1874,7 +1924,9 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         }
         if (aMetaTileEntity instanceof IDualInputHatch hatch) {
             hatch.updateCraftingIcon(this.getMachineCraftingIcon());
-            hatch.setProcessingLogic(processingLogic);
+            if (hatch instanceof IDualInputHatchWithPattern withPattern) {
+                withPattern.setProcessingLogic(processingLogic);
+            }
             return mDualInputHatches.add(hatch);
         }
         if (aMetaTileEntity instanceof ISmartInputHatch hatch) {
@@ -2372,6 +2424,17 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         // Deactivate mufflers
         setMufflers(false);
 
+        deactivateCoilLease();
+    }
+
+    @Override
+    public void onUnload() {
+        super.onUnload();
+
+        deactivateCoilLease();
+    }
+
+    private void deactivateCoilLease() {
         if (coilLease != null) {
             GTCoilTracker.deactivate(coilLease);
             coilLease = null;
@@ -2687,6 +2750,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
 
     @Override
     public UITexture getMachineModeIcon(int index) {
+        if (index > machineModeIcons.size() - 1) return null;
         return machineModeIcons.get(index);
     }
 
@@ -2916,7 +2980,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
     @Override
     public void addGregTechLogo(ModularWindow.Builder builder) {}
 
-    protected boolean shouldDisplayCheckRecipeResult() {
+    public boolean shouldDisplayCheckRecipeResult() {
         return true;
     }
 
@@ -2926,7 +2990,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
 
     protected final NumberFormatMUI numberFormat = new NumberFormatMUI();
 
-    protected String generateCurrentRecipeInfoString() {
+    public String generateCurrentRecipeInfoString() {
         StringBuffer ret = new StringBuffer(StatCollector.translateToLocal("GT5U.gui.text.progress"));
         ret.append(" ");
 
@@ -3005,6 +3069,219 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
                 ret.append('\n');
             }
         }
+        return ret.toString();
+    }
+
+    protected Widget generateCurrentRecipeInfoWidget() {
+        final DynamicPositionedColumn processingDetails = new DynamicPositionedColumn();
+
+        if (mOutputItems != null) {
+            final Map<ItemStack, Long> nameToAmount = new HashMap<>();
+
+            for (ItemStack item : mOutputItems) {
+                if (item == null || item.stackSize <= 0) continue;
+                nameToAmount.merge(item, (long) item.stackSize, Long::sum);
+            }
+
+            final List<Map.Entry<ItemStack, Long>> sortedMap = nameToAmount.entrySet()
+                .stream()
+                .sorted(
+                    Map.Entry.<ItemStack, Long>comparingByValue()
+                        .reversed())
+                .collect(Collectors.toList());
+
+            for (Map.Entry<ItemStack, Long> entry : sortedMap) {
+                Long itemCount = entry.getValue();
+                String itemName = entry.getKey()
+                    .getDisplayName();
+                String itemAmountString = EnumChatFormatting.WHITE + " x "
+                    + EnumChatFormatting.GOLD
+                    + formatShortenedLong(itemCount)
+                    + EnumChatFormatting.WHITE
+                    + appendRate(false, itemCount, true);
+                String lineText = EnumChatFormatting.AQUA + truncateText(itemName, 40 - itemAmountString.length())
+                    + itemAmountString;
+                String lineTooltip = EnumChatFormatting.AQUA + itemName + "\n" + appendRate(false, itemCount, false);
+
+                processingDetails.widget(
+                    new MultiChildWidget().addChild(
+                        new ItemDrawable(
+                            entry.getKey()
+                                .copy()).asWidget()
+                                    .setSize(8, 8)
+                                    .setPos(0, 0))
+                        .addChild(
+                            new TextWidget(lineText).setTextAlignment(Alignment.CenterLeft)
+                                .addTooltip(lineTooltip)
+                                .setPos(10, 1)));
+            }
+        }
+        if (mOutputFluids != null) {
+            final Map<FluidStack, Long> nameToAmount = new HashMap<>();
+
+            for (FluidStack fluid : mOutputFluids) {
+                if (fluid == null || fluid.amount <= 0) continue;
+                nameToAmount.merge(fluid, (long) fluid.amount, Long::sum);
+            }
+
+            final List<Map.Entry<FluidStack, Long>> sortedMap = nameToAmount.entrySet()
+                .stream()
+                .sorted(
+                    Map.Entry.<FluidStack, Long>comparingByValue()
+                        .reversed())
+                .collect(Collectors.toList());
+
+            for (Map.Entry<FluidStack, Long> entry : sortedMap) {
+                Long itemCount = entry.getValue();
+                String itemName = entry.getKey()
+                    .getLocalizedName();
+                String itemAmountString = EnumChatFormatting.WHITE + " x "
+                    + EnumChatFormatting.GOLD
+                    + formatShortenedLong(itemCount)
+                    + "L"
+                    + EnumChatFormatting.WHITE
+                    + appendRate(false, itemCount, true);
+                String lineText = EnumChatFormatting.AQUA + truncateText(itemName, 40 - itemAmountString.length())
+                    + itemAmountString;
+                String lineTooltip = EnumChatFormatting.AQUA + itemName + "\n" + appendRate(true, itemCount, false);
+
+                processingDetails.widget(
+                    new MultiChildWidget().addChild(
+                        new FluidDrawable().setFluid(
+                            entry.getKey()
+                                .getFluid())
+                            .asWidget()
+                            .setSize(8, 8)
+                            .setPos(0, 0))
+                        .addChild(
+                            new TextWidget(lineText).setTextAlignment(Alignment.CenterLeft)
+                                .addTooltip(lineTooltip)
+                                .setPos(10, 1)));
+
+            }
+        }
+        return processingDetails;
+    }
+
+    protected String appendRate(boolean isLiquid, Long amount, boolean isFormatShortened) {
+        final StringBuffer ret = new StringBuffer();
+        final DecimalFormat df = new DecimalFormat("0.00");
+        final double progressTime = (double) mMaxProgresstime / 20;
+        double perSecond = amount / progressTime;
+        double perMinute = perSecond * 60;
+        double perHour = perSecond * 3_600;
+        double perDay = perSecond * 86_400;
+
+        final String amountText = StatCollector.translateToLocal("GT5U.gui.text.amount") + " ";
+        final String perSecondText = StatCollector.translateToLocal("GT5U.gui.text.per_second") + " ";
+        final String perMinuteText = StatCollector.translateToLocal("GT5U.gui.text.per_minute") + " ";
+        final String perHourText = StatCollector.translateToLocal("GT5U.gui.text.per_hour") + " ";
+        final String perDayText = StatCollector.translateToLocal("GT5U.gui.text.per_day") + " ";
+
+        final Function<Double, Double> roundNumber = (number) -> {
+            if (Math.abs(number) < 10) {
+                return Math.round(number * 100) / 100.0;
+            } else {
+                return Math.floor(number);
+            }
+        };
+
+        if (isFormatShortened) {
+            ret.append(" (");
+            ret.append(EnumChatFormatting.GRAY);
+            ret.append(perSecond > 1 ? formatShortenedLong((long) perSecond) : df.format(perSecond));
+            ret.append("/s");
+            ret.append(EnumChatFormatting.WHITE);
+            ret.append(")");
+        } else {
+            ret.append(EnumChatFormatting.RESET);
+            ret.append(
+                amountText + EnumChatFormatting.GOLD
+                    + formatNumbers(amount)
+                    + (isLiquid ? "L" : "")
+                    + EnumChatFormatting.RESET);
+            ret.append("\n");
+            ret.append(
+                perSecondText + EnumChatFormatting.GOLD
+                    + formatNumbers(roundNumber.apply(perSecond))
+                    + (isLiquid ? "L" : "")
+                    + (perSecond > 1_000_000
+                        ? EnumChatFormatting.WHITE + " ["
+                            + EnumChatFormatting.GRAY
+                            + formatShortenedLong((long) perSecond)
+                            + EnumChatFormatting.WHITE
+                            + "]"
+                        : "")
+                    + EnumChatFormatting.RESET);
+            ret.append("\n");
+            ret.append(
+                perMinuteText + EnumChatFormatting.GOLD
+                    + formatNumbers(roundNumber.apply(perMinute))
+                    + (isLiquid ? "L" : "")
+                    + (perMinute > 1_000_000
+                        ? EnumChatFormatting.WHITE + " ["
+                            + EnumChatFormatting.GRAY
+                            + formatShortenedLong((long) perMinute)
+                            + EnumChatFormatting.WHITE
+                            + "]"
+                        : "")
+                    + EnumChatFormatting.RESET);
+            ret.append("\n");
+            ret.append(
+                perHourText + EnumChatFormatting.GOLD
+                    + formatNumbers(roundNumber.apply(perHour))
+                    + (isLiquid ? "L" : "")
+                    + (perHour > 1_000_000
+                        ? EnumChatFormatting.WHITE + " ["
+                            + EnumChatFormatting.GRAY
+                            + formatShortenedLong((long) perHour)
+                            + EnumChatFormatting.WHITE
+                            + "]"
+                        : "")
+                    + EnumChatFormatting.RESET);
+            ret.append("\n");
+            ret.append(
+                perDayText + EnumChatFormatting.GOLD
+                    + formatNumbers(roundNumber.apply(perDay))
+                    + (isLiquid ? "L" : "")
+                    + (perDay > 1_000_000
+                        ? EnumChatFormatting.WHITE + " ["
+                            + EnumChatFormatting.GRAY
+                            + formatShortenedLong((long) perDay)
+                            + EnumChatFormatting.WHITE
+                            + "]"
+                        : "")
+                    + EnumChatFormatting.RESET);
+        }
+        return ret.toString();
+    }
+
+    protected String generateCurrentProgress() {
+        StringBuffer ret = new StringBuffer(StatCollector.translateToLocal("GT5U.gui.text.progress"));
+        ret.append(" ");
+
+        numberFormat.setMinimumFractionDigits(1);
+        numberFormat.setMaximumFractionDigits(1);
+        numberFormat.format((double) mProgresstime / mMaxProgresstime * 100, ret);
+        ret.append("% ");
+        ret.append(EnumChatFormatting.GRAY);
+        ret.append("(");
+        ret.append(EnumChatFormatting.WHITE);
+        numberFormat.setMinimumFractionDigits((mMaxProgresstime / 20) > 1_000 ? 0 : 2);
+        numberFormat.setMaximumFractionDigits((mMaxProgresstime / 20) > 1_000 ? 0 : 2);
+        numberFormat.format((double) mProgresstime / 20, ret);
+        ret.append("s");
+        ret.append(EnumChatFormatting.GRAY);
+        ret.append("/");
+        ret.append(EnumChatFormatting.WHITE);
+        numberFormat.format((double) mMaxProgresstime / 20, ret);
+        ret.append("s");
+        ret.append(EnumChatFormatting.GRAY);
+        ret.append(")");
+        ret.append(EnumChatFormatting.RESET);
+        ret.append("\n");
+        numberFormat.setMinimumFractionDigits(0);
+        numberFormat.setMaximumFractionDigits(2);
         return ret.toString();
     }
 
@@ -3165,39 +3442,52 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
             .widget(new CheckRecipeResultSyncer(() -> checkRecipeResult, (result) -> checkRecipeResult = result));
 
         if (showRecipeTextInGUI()) {
-            // Display current recipe
             screenElements.widget(
-                TextWidget.dynamicString(this::generateCurrentRecipeInfoString)
+                TextWidget.dynamicString(this::generateCurrentProgress)
                     .setSynced(false)
-                    .setTextAlignment(Alignment.CenterLeft)
+                    .setTextAlignment(new Alignment(-1, -1))
+                    .setSize(180, 12)
                     .setEnabled(
                         widget -> (mOutputFluids != null && mOutputFluids.length > 0)
-                            || (mOutputItems != null && mOutputItems.length > 0)))
-                .widget(
-                    new FakeSyncWidget.ListSyncer<>(
-                        () -> mOutputFluids != null ? Arrays.stream(mOutputFluids)
-                            .map(fluidStack -> {
-                                if (fluidStack == null) return null;
-                                return new FluidStack(fluidStack, fluidStack.amount) {
+                            || (mOutputItems != null && mOutputItems.length > 0)));
+            final ChangeableWidget recipeOutputItemsWidget = new ChangeableWidget(
+                this::generateCurrentRecipeInfoWidget);
+            // Display current recipe
+            screenElements.widget(
+                new FakeSyncWidget.ListSyncer<>(
+                    () -> mOutputFluids != null ? Arrays.stream(mOutputFluids)
+                        .map(fluidStack -> {
+                            if (fluidStack == null) return null;
+                            return new FluidStack(fluidStack, fluidStack.amount) {
 
-                                    @Override
-                                    public boolean isFluidEqual(FluidStack other) {
-                                        return super.isFluidEqual(other) && amount == other.amount;
-                                    }
-                                };
-                            })
-                            .collect(Collectors.toList()) : Collections.emptyList(),
-                        val -> mOutputFluids = val.toArray(new FluidStack[0]),
-                        NetworkUtils::writeFluidStack,
-                        NetworkUtils::readFluidStack))
+                                @Override
+                                public boolean isFluidEqual(FluidStack other) {
+                                    return super.isFluidEqual(other) && amount == other.amount;
+                                }
+                            };
+                        })
+                        .collect(Collectors.toList()) : Collections.emptyList(),
+                    val -> {
+                        mOutputFluids = val.toArray(new FluidStack[0]);
+                        recipeOutputItemsWidget.notifyChangeNoSync();
+                    },
+                    NetworkUtils::writeFluidStack,
+                    NetworkUtils::readFluidStack))
                 .widget(
                     new FakeSyncWidget.ListSyncer<>(
                         () -> mOutputItems != null ? Arrays.asList(mOutputItems) : Collections.emptyList(),
-                        val -> mOutputItems = val.toArray(new ItemStack[0]),
+                        val -> {
+                            mOutputItems = val.toArray(new ItemStack[0]);
+                            recipeOutputItemsWidget.notifyChangeNoSync();
+                        },
                         NetworkUtils::writeItemStack,
                         NetworkUtils::readItemStack))
                 .widget(new FakeSyncWidget.IntegerSyncer(() -> mProgresstime, val -> mProgresstime = val))
-                .widget(new FakeSyncWidget.IntegerSyncer(() -> mMaxProgresstime, val -> mMaxProgresstime = val));
+                .widget(new FakeSyncWidget.IntegerSyncer(() -> mMaxProgresstime, val -> {
+                    mMaxProgresstime = val;
+                    recipeOutputItemsWidget.notifyChangeNoSync();
+                }));
+            screenElements.widget(recipeOutputItemsWidget);
         }
 
         screenElements.widget(
@@ -3216,7 +3506,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
                 }));
     }
 
-    protected boolean showRecipeTextInGUI() {
+    public boolean showRecipeTextInGUI() {
         return true;
     }
 
@@ -3239,11 +3529,81 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         mCrowbar = true;
     }
 
+    @Override
+    public final ModularPanel buildUI(PosGuiData guiData, PanelSyncManager syncManager) {
+        return getGui().build(guiData, syncManager);
+    }
+
+    protected @NotNull MTEMultiBlockBaseGui getGui() {
+        return new MTEMultiBlockBaseGui(this);
+    }
+
     public boolean getDefaultHasMaintenanceChecks() {
         return true;
     }
 
     public boolean shouldCheckMaintenance() {
         return !disableMaintenance && hasMaintenanceChecks;
+    }
+
+    public void setMaxParallelForPanel(int parallel) {
+        this.maxParallel = parallel;
+    }
+
+    @Nonnull
+    public CheckRecipeResult getCheckRecipeResult() {
+        return checkRecipeResult;
+    }
+
+    public void setCheckRecipeResult(@Nonnull CheckRecipeResult checkRecipeResult) {
+        this.checkRecipeResult = checkRecipeResult;
+    }
+
+    public int getRuntime() {
+        return mRuntime;
+    }
+
+    public int getMaxProgresstime() {
+        return mMaxProgresstime;
+    }
+
+    public long getTotalRunTime() {
+        return mTotalRunTime;
+    }
+
+    public void setTotalRunTime(long mTotalRunTime) {
+        this.mTotalRunTime = mTotalRunTime;
+    }
+
+    public long getLastWorkingTick() {
+        return mLastWorkingTick;
+    }
+
+    public void setLastWorkingTick(long mLastWorkingTick) {
+        this.mLastWorkingTick = mLastWorkingTick;
+    }
+
+    public EnumSet<StructureError> getStructureErrors() {
+        return structureErrors;
+    }
+
+    public void setStructureErrors(EnumSet<StructureError> structureErrors) {
+        this.structureErrors = structureErrors;
+    }
+
+    public int getPowerPanelMaxParallel() {
+        return powerPanelMaxParallel;
+    }
+
+    public void setPowerPanelMaxParallel(int powerPanelMaxParallel) {
+        this.powerPanelMaxParallel = powerPanelMaxParallel;
+    }
+
+    public boolean isAlwaysMaxParallel() {
+        return alwaysMaxParallel;
+    }
+
+    public void setAlwaysMaxParallel(boolean alwaysMaxParallel) {
+        this.alwaysMaxParallel = alwaysMaxParallel;
     }
 }
