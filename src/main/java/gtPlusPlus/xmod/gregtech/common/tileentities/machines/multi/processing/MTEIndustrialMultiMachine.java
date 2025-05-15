@@ -215,11 +215,6 @@ public class MTEIndustrialMultiMachine extends GTPPMultiBlockBase<MTEIndustrialM
     }
 
     @Override
-    public int getMaxEfficiency(final ItemStack aStack) {
-        return 10000;
-    }
-
-    @Override
     public int getPollutionPerSecond(final ItemStack aStack) {
         switch (machineMode) {
             case MACHINEMODE_METAL -> {
@@ -236,11 +231,6 @@ public class MTEIndustrialMultiMachine extends GTPPMultiBlockBase<MTEIndustrialM
 
     public int getTextureIndex() {
         return TAE.getIndexFromPage(2, 2);
-    }
-
-    @Override
-    public boolean explodesOnComponentBreak(final ItemStack aStack) {
-        return false;
     }
 
     private ItemStack getCircuit(ItemStack[] t) {

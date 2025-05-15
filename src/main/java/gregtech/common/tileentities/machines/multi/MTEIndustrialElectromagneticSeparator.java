@@ -163,11 +163,6 @@ public class MTEIndustrialElectromagneticSeparator
     }
 
     @Override
-    public boolean isCorrectMachinePart(ItemStack aStack) {
-        return true;
-    }
-
-    @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new MTEIndustrialElectromagneticSeparator(this.mName);
     }
@@ -377,21 +372,6 @@ public class MTEIndustrialElectromagneticSeparator
                 + StatCollector
                     .translateToLocal("GT5U.INDUSTRIAL_ELECTROMAGNETIC_SEPARATOR.mode." + tag.getInteger("mode"))
                 + EnumChatFormatting.RESET);
-    }
-
-    @Override
-    public int getMaxEfficiency(ItemStack aStack) {
-        return 10000;
-    }
-
-    @Override
-    public int getDamageToComponent(ItemStack aStack) {
-        return 0;
-    }
-
-    @Override
-    public boolean explodesOnComponentBreak(ItemStack aStack) {
-        return false;
     }
 
     @Override

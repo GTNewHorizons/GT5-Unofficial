@@ -196,28 +196,8 @@ public class MTERefinery extends GTPPMultiBlockBase<MTERefinery> implements ISur
     }
 
     @Override
-    public boolean isCorrectMachinePart(final ItemStack aStack) {
-        return true;
-    }
-
-    @Override
-    public int getMaxEfficiency(final ItemStack aStack) {
-        return 10000;
-    }
-
-    @Override
     public int getPollutionPerSecond(final ItemStack aStack) {
         return PollutionConfig.pollutionPerSecondMultiRefinery;
-    }
-
-    @Override
-    public int getDamageToComponent(final ItemStack aStack) {
-        return 0;
-    }
-
-    @Override
-    public boolean explodesOnComponentBreak(final ItemStack aStack) {
-        return false;
     }
 
     @Override
