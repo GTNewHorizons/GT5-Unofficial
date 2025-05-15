@@ -417,11 +417,9 @@ public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelSta
     }
 
     private void flushCachedStack() {
-        if (fluidCache.isEmpty()) return;
+        lastOutputTick = tickCounter;
+        if (!isActive() || fluidCache.isEmpty()) return;
         AENetworkProxy proxy = getProxy();
-        if (proxy == null) {
-            return;
-        }
         try {
             IMEMonitor<IAEFluidStack> sg = proxy.getStorage()
                 .getFluidInventory();
@@ -435,7 +433,6 @@ public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelSta
                 s.setStackSize(0);
             }
         } catch (final GridAccessException ignored) {}
-        lastOutputTick = tickCounter;
     }
 
     @Override
