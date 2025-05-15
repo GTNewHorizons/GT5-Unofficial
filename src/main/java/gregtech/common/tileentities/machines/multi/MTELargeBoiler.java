@@ -227,11 +227,6 @@ public abstract class MTELargeBoiler extends MTEEnhancedMultiBlockBase<MTELargeB
         return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(getCasingTextureIndex()) };
     }
 
-    @Override
-    public boolean isCorrectMachinePart(ItemStack aStack) {
-        return true;
-    }
-
     boolean isFuelValid() {
         if (!isSuperheated()) return true;
         for (ItemStack input : getStoredInputs()) {
@@ -463,21 +458,6 @@ public abstract class MTELargeBoiler extends MTEEnhancedMultiBlockBase<MTELargeB
             && mFireboxAmount >= 3
             && mMaintenanceHatches.size() == 1
             && !mMufflerHatches.isEmpty();
-    }
-
-    @Override
-    public int getMaxEfficiency(ItemStack aStack) {
-        return 10000;
-    }
-
-    @Override
-    public int getDamageToComponent(ItemStack aStack) {
-        return 0;
-    }
-
-    @Override
-    public boolean explodesOnComponentBreak(ItemStack aStack) {
-        return false;
     }
 
     private int adjustEUtForConfig(int rawEUt) {

@@ -183,11 +183,6 @@ public class MTELargeMolecularAssembler extends MTEExtendedPowerMultiBlockBase<M
     }
 
     @Override
-    public boolean isCorrectMachinePart(ItemStack aStack) {
-        return true;
-    }
-
-    @Override
     public boolean checkRecipe(ItemStack aStack) {
         return withAeJobs(($, aeJobs) -> {
             mMaxProgresstime = 20;
@@ -272,21 +267,6 @@ public class MTELargeMolecularAssembler extends MTEExtendedPowerMultiBlockBase<M
         if (aNBT.hasKey("proxy")) {
             getProxy().readFromNBT(aNBT.getCompoundTag("proxy"));
         }
-    }
-
-    @Override
-    public int getMaxEfficiency(ItemStack aStack) {
-        return 10000;
-    }
-
-    @Override
-    public int getDamageToComponent(ItemStack aStack) {
-        return 0;
-    }
-
-    @Override
-    public boolean explodesOnComponentBreak(ItemStack aStack) {
-        return false;
     }
 
     @Override
