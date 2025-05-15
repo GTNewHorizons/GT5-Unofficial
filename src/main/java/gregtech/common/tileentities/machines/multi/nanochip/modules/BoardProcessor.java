@@ -6,6 +6,7 @@ import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAs
 import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex.TOOLTIP_CC;
 import static gtPlusPlus.xmod.thermalfoundation.block.TFBlocks.blockFluidEnder;
 
+import gtPlusPlus.core.material.MaterialsElements;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 
@@ -21,7 +22,6 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyModuleBase;
 import gregtech.common.tileentities.machines.multi.nanochip.util.CircuitComponent;
 import gregtech.common.tileentities.machines.multi.nanochip.util.ModuleStructureDefinition;
-import gtPlusPlus.core.material.MaterialsAlloy;
 
 public class BoardProcessor extends MTENanochipAssemblyModuleBase<BoardProcessor> {
 
@@ -42,9 +42,9 @@ public class BoardProcessor extends MTENanochipAssemblyModuleBase<BoardProcessor
             lazy(
                 t -> ofBlock(
                     Block.getBlockFromItem(
-                        MaterialsAlloy.OCTIRON.getFrameBox(1)
+                        MaterialsElements.STANDALONE.CELESTIAL_TUNGSTEN.getFrameBox(1)
                             .getItem()),
-                    1)))
+                    0)))
         // White casing block
         .addElement('B', ofBlock(GregTechAPI.sBlockCasings8, 5))
         // Black casing block
