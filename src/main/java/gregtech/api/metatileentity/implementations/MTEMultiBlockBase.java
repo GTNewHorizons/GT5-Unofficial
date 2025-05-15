@@ -1015,8 +1015,8 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
         boolean useSingleAmp = mEnergyHatches.size() == 1 && mExoticEnergyHatches.isEmpty();
         logic.setAvailableVoltage(getAverageInputVoltage());
         logic.setAvailableAmperage(useSingleAmp ? 1 : getMaxInputAmps());
-        logic.setMaxTierSkips(1);
         logic.setAmperageOC(true);
+        logic.setMaxTierSkips(1);
     }
 
     protected boolean supportsCraftingMEBuffer() {
