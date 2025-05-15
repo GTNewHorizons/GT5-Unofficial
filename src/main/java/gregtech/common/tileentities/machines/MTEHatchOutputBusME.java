@@ -274,10 +274,7 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus implements IPowerChan
                 }
                 s.setStackSize(0);
             }
-        } catch (final GridAccessException ignored) {
-
-        }
-        lastOutputTick = tickCounter;
+        } catch (final GridAccessException ignored) {}
     }
 
     @Override
