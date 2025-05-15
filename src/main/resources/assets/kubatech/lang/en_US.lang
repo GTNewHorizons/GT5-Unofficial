@@ -36,6 +36,7 @@ GT5U.gui.text.EIG_slotoverflow=Too many seed types inside!
 GT5U.gui.text.EIG_seedOverflow=Too many seeds inside!
 GT5U.gui.text.EIG_missingwater=No water!
 GT5U.gui.text.EIG_ic2glass=Insufficient glass tier!
+GT5U.gui.text.MegaApiary_flowererror=Missing the following flowers: %s
 
 # info data
 ## general
