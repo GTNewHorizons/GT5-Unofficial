@@ -857,14 +857,14 @@ public final class RecipeMaps {
         .progressBarPos(80, 36)
         .frontend(ECCFFrontend::new)
         .build();
-    public static final RecipeMap<RecipeMapBackend> planetConditions = RecipeMapBuilder.of("gt.recipe.planets")
+    public static final RecipeMap<RecipeMapBackend> planetConditions = RecipeMapBuilder.of("gt.recipe.category.planets")
         .maxIO(41, 0, 0, 0)
         .dontUseProgressBar()
         .logoSize(0, 0)
-
         .neiHandlerInfo(
             builder -> builder.setDisplayStack(Materials.Lava.getCells(1))
-                .setMaxRecipesPerPage(1))
+                .setMaxRecipesPerPage(4)
+                .setHeight(5*18))
         .frontend(PlanetConditionsFrontend::new)
         .build();
     public static final RecipeMap<RecipeMapBackend> distillationTowerRecipes = RecipeMapBuilder

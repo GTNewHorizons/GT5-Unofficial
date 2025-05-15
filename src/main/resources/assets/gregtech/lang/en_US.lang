@@ -464,6 +464,7 @@ gt.recipe.purificationplantquarkextractor=Baryonic Perfection
 gt.recipe.quantumcomputer=QC Components
 gt.recipe.eccf=Environmentally Controlled Chemical Facility
 
+
 # Recipe categories
 gt.recipe.category.arc_furnace_recycling=Arc Furnace Recycling
 gt.recipe.category.plasma_arc_furnace_recycling=Plasma Arc Furnace Recycling
@@ -474,6 +475,7 @@ gt.recipe.category.alloy_smelter_molding=Alloy Smelter Molding
 gt.recipe.category.forge_hammer_recycling=Forge Hammer Recycling
 gt.recipe.category.tic_part_extruding=TiC Part Extruding
 gt.recipe.category.tic_bolt_molding=TiC Bolt Molding
+gt.recipe.category.planets=Planet Conditions
 
 GT5U.machines.tier=Tier
 GT5U.machines.workarea=Work Area
@@ -1030,6 +1032,10 @@ GT5U.nei.nuclear.breeder.reactor_hull_heat=Every %d reactor hull heat\nincrease 
 GT5U.nei.nuclear.breeder.required_pulse=Required pulses: %d
 GT5U.nei.temperature=Temperature: %s - %s K
 GT5U.nei.pressure=Pressure: %s - %s
+GT5U.nei.bare_temperature=Temperature
+GT5U.nei.bare_pressure=Pressure
+GT5U.nei.bare_tier=Tier
+GT5U.nei.bare_name=Name
 
 GT5U.config.colormodulation=Color Modulator
 GT5U.config.colormodulation.cable_insulation=Cable Insulation

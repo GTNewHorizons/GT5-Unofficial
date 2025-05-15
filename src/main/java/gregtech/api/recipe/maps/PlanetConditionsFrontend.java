@@ -16,6 +16,7 @@ import net.minecraft.util.StatCollector;
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.List;
 
+import static gregtech.api.util.GTRecipeConstants.DIMENSION_NAME;
 import static gregtech.api.util.GTRecipeConstants.PLANET_TIER;
 import static gregtech.api.util.GTUtility.formatNumbers;
 
@@ -33,11 +34,11 @@ public class PlanetConditionsFrontend extends RecipeMapFrontend {
         return UIHelper.getGridPositions(1, 8, 8, 1, 1);
     }
 
-    private void drawPlanetConditions(String text, String text_value, int height, float fontScale) {
+    private void drawPlanetConditions(String text, String text_value, int height, float fontScale, int xOffset, int colonOffset) {
         // Draw main text
         drawNEIOverlayText(
             text,
-            new PositionedStack(Materials.Acetone.getCells(1), 27, height, false),
+            new PositionedStack(Materials.Acetone.getCells(1), 27+xOffset, height, false),
             0x3f3f3f,
             fontScale,
             false,
@@ -46,7 +47,7 @@ public class PlanetConditionsFrontend extends RecipeMapFrontend {
         // Draw :
         drawNEIOverlayText(
             ":",
-            new PositionedStack(Materials.Acetone.getCells(1), 27 + 18 * 4, height, false),
+            new PositionedStack(Materials.Acetone.getCells(1), 27 + 18 * 4+xOffset+colonOffset, height, false),
             0x3f3f3f,
             fontScale,
             false,
@@ -55,7 +56,7 @@ public class PlanetConditionsFrontend extends RecipeMapFrontend {
         // Draw value
         drawNEIOverlayText(
             text_value,
-            new PositionedStack(Materials.Acetone.getCells(1), 27 + 18 * 4 + 6, height, false),
+            new PositionedStack(Materials.Acetone.getCells(1), 27 + 18 * 4 + 6+xOffset+colonOffset, height, false),
             0xffffff,
             fontScale,
             true,
@@ -66,9 +67,11 @@ public class PlanetConditionsFrontend extends RecipeMapFrontend {
     protected void drawDurationInfo(RecipeDisplayInfo recipeInfo) {
         int yOffset = -6;
         int yStepOffset = 10;
-        int planetTier = recipeInfo.recipe.getMetadataOrDefault(PLANET_TIER, 0);
         float fontScale = 1f;
-        String dimName = recipeInfo.recipe.mInputs[0].getUnlocalizedName();
+        String displayName = recipeInfo.recipe.mInputs[0].getDisplayName();
+        displayName = (displayName != null) ? displayName.replaceFirst("^T[1-9]0?:\\s*", "") : "";
+        int planetTier = recipeInfo.recipe.getMetadataOrDefault(PLANET_TIER, 0);
+        String dimName = recipeInfo.recipe.getMetadata(DIMENSION_NAME);
         int temperature = MTEEnvironmentallyControlledChemicalFacility.DimensionConditions.fromDimensionName(dimName)
             .getInitialTemp();
         int pressure = MTEEnvironmentallyControlledChemicalFacility.DimensionConditions.fromDimensionName(dimName)
@@ -76,38 +79,38 @@ public class PlanetConditionsFrontend extends RecipeMapFrontend {
 
         // Name
         drawPlanetConditions(
-            StatCollector.translateToLocalFormatted("Name"),
-            recipeInfo.recipe.mInputs[0].getDisplayName(),
+            StatCollector.translateToLocalFormatted("GT5U.nei.bare_name"),
+            displayName,
             yOffset,
-            fontScale);
+            fontScale, 0,-24);
 
         // Tier
         drawPlanetConditions(
-            StatCollector.translateToLocalFormatted("Tier"),
+            StatCollector.translateToLocalFormatted("GT5U.nei.bare_tier"),
             formatNumbers(planetTier),
             yOffset + yStepOffset,
-            fontScale);
+            fontScale, 0,-24);
 
         // Pressure
         if (pressure < 1000) {
             drawPlanetConditions(
-                StatCollector.translateToLocalFormatted("Pressure"),
-                (formatNumbers(pressure) + " Pa"),
+                StatCollector.translateToLocalFormatted("GT5U.nei.bare_pressure"),
+                formatNumbers(pressure) + " Pa",
                 yOffset + 2 * yStepOffset,
-                fontScale);
+                fontScale, -24, 0);
         } else {
             drawPlanetConditions(
-                StatCollector.translateToLocalFormatted("Pressure"),
-                (formatNumbers(pressure / 1000) + " kPa"),
+                StatCollector.translateToLocalFormatted("GT5U.nei.bare_pressure"),
+                formatNumbers(pressure / 1000) + " kPa",
                 yOffset + 2 * yStepOffset,
-                fontScale);
+                fontScale,-24, 0);
         }
 
         // Temperature
         drawPlanetConditions(
-            StatCollector.translateToLocalFormatted("Temperature"),
-            formatNumbers(temperature),
+            StatCollector.translateToLocalFormatted("GT5U.nei.bare_temperature"),
+            formatNumbers(temperature) + " K",
             yOffset + 3 * yStepOffset,
-            fontScale);
+            fontScale,-24, 0);
     }
 }

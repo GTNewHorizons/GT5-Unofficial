@@ -228,6 +228,8 @@ public class GTRecipeConstants {
      */
     public static final RecipeMetadataKey<Integer> PLANET_TIER = SimpleRecipeMetadataKey
         .create(Integer.class, "PLANET_TIER");
+    public static final RecipeMetadataKey<String> DIMENSION_NAME = SimpleRecipeMetadataKey
+        .create(String.class, "DIMENSION_NAME");
     /**
      * CoAL casing tier.
      */
