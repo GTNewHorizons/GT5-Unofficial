@@ -99,7 +99,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
-import gregtech.api.objects.GTDualInputs;
+import gregtech.api.objects.GTDualInputPattern;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.extensions.ArrayExt;
@@ -109,10 +109,10 @@ import mcp.mobius.waila.api.IWailaDataAccessor;
 
 public class MTEHatchCraftingInputME extends MTEHatchInputBus
     implements IConfigurationCircuitSupport, IAddGregtechLogo, IAddUIWidgets, IPowerChannelState, ICraftingProvider,
-    IGridProxyable, IDualInputHatch, ICustomNameObject, IInterfaceViewable, IMEConnectable {
+    IGridProxyable, IDualInputHatchWithPattern, ICustomNameObject, IInterfaceViewable, IMEConnectable {
 
     // Each pattern slot in the crafting input hatch has its own internal inventory
-    public static class PatternSlot<P extends IMetaTileEntity & IDualInputHatch> implements IDualInputInventory {
+    public static class PatternSlot<P extends IMetaTileEntity & IDualInputHatch> implements IDualInputInventoryWithPattern {
 
         protected final P parentMTE;
         protected final ItemStack pattern;
@@ -225,8 +225,8 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
         }
 
         @Override
-        public GTDualInputs getPatternInputs() {
-            GTDualInputs dualInputs = new GTDualInputs();
+        public GTDualInputPattern getPatternInputs() {
+            GTDualInputPattern dualInputs = new GTDualInputPattern();
 
             ItemStack[] inputItems = this.parentMTE.getSharedItems();
             FluidStack[] inputFluids = new FluidStack[0];
@@ -895,7 +895,7 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
                 try {
                     originalPattern.refund(getProxy(), getRequest(), true);
                     for (ProcessingLogic pl : processingLogics) {
-                        pl.clearCraftingPatternRecipeCache(originalPattern);
+                        pl.removeInventoryRecipeCache(originalPattern);
                     }
                 } catch (GridAccessException ignored) {}
                 internalInventory[index] = null;
@@ -934,7 +934,7 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
         for (ProcessingLogic pl : processingLogics) {
             for (PatternSlot<MTEHatchCraftingInputME> sl : internalInventory) {
                 if (sl == null) continue;
-                pl.clearCraftingPatternRecipeCache(sl);
+                pl.removeInventoryRecipeCache(sl);
             }
         }
     }
