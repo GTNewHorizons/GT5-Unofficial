@@ -49,8 +49,8 @@ public class CoverGui<T extends Cover> {
      * Since it is standalone, you shouldn't try to have multiple instances of this panel on screen at once, or tied to
      * several widgets. Use {@link CoverGui#createBasePanel} with a unique panel name instead.
      */
-    public final ModularPanel createStandalonePanel(PanelSyncManager syncManager) {
-        ModularPanel basePanel = createBasePanel("standalone.cover", syncManager);
+    public final ModularPanel createStandalonePanel(PanelSyncManager syncManager, UISettings uiSettings) {
+        ModularPanel basePanel = createBasePanel("standalone.cover", syncManager, uiSettings);
         if (doesBindPlayerInventory()) {
             basePanel.bindPlayerInventory();
         }

@@ -296,7 +296,7 @@ public class Cover implements IGuiHolder<CoverGuiData> {
      */
     @Override
     public final ModularPanel buildUI(CoverGuiData guiData, PanelSyncManager syncManager, UISettings uiSettings) {
-        return getCoverGui().createStandalonePanel(syncManager);
+        return getCoverGui().createStandalonePanel(syncManager, uiSettings);
     }
 
     /**
