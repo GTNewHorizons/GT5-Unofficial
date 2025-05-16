@@ -124,7 +124,7 @@ public class SheetSupervisor extends MTENanochipAssemblyModuleBase<SheetSupervis
         }
 
         if (ticker % 20 == 0) {
-            if (!drainComputation()) {
+            if (!hasEnoughComputation()) {
                 stopMachine(ShutDownReasonRegistry.outOfStuff("Computation", COMPUTATION_TO_BE_DRAINED_PER_SECOND));
                 return false;
             }
@@ -154,7 +154,7 @@ public class SheetSupervisor extends MTENanochipAssemblyModuleBase<SheetSupervis
         return result;
     }
 
-    private boolean drainComputation() {
+    private boolean hasEnoughComputation() {
         long availableData = getAvailableData();
         return availableData >= SheetSupervisor.COMPUTATION_TO_BE_DRAINED_PER_SECOND;
     }
