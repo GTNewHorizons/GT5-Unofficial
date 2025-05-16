@@ -573,8 +573,8 @@ public class MTEBrickedBlastFurnace extends MetaTileEntity implements IAlignment
     @Override
     public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager, UISettings settings) {
         syncManager.registerSlotGroup("item_inv", 0);
-        return GTGuis.mteTemplatePanelBuilder(this, data, syncManager)
-            .build(settings)
+        return GTGuis.mteTemplatePanelBuilder(this, data, syncManager, settings)
+            .build()
             .child(
                 SlotGroupWidget.builder()
                     .matrix("I", "I", "I")

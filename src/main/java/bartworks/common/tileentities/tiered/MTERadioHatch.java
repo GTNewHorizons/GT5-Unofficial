@@ -375,9 +375,9 @@ public class MTERadioHatch extends MTEHatch implements RecipeMapWorkable, IAddGr
         syncManager.syncValue("color2", new IntSyncValue(() -> colorForGUI[2], c -> colorForGUI[2] = (short) c));
         syncManager.syncValue("coverage", 0, new IntSyncValue(() -> coverage, value -> coverage = (byte) value));
 
-        return GTGuis.mteTemplatePanelBuilder(this, data, syncManager)
+        return GTGuis.mteTemplatePanelBuilder(this, data, syncManager, settings)
             .doesAddGregTechLogo(false)
-            .build(settings)
+            .build()
             .child(
                 gridTemplate1by1(
                     index -> new ItemSlot().slot(new ModularSlot(inventoryHandler, index).slotGroup("item_inv"))))

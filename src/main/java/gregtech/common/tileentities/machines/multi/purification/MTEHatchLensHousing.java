@@ -62,8 +62,8 @@ public class MTEHatchLensHousing extends MTEHatchInputBus {
     @Override
     public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager, UISettings settings) {
         syncManager.registerSlotGroup("item_inv", 1);
-        return GTGuis.mteTemplatePanelBuilder(this, data, syncManager)
-            .build(settings)
+        return GTGuis.mteTemplatePanelBuilder(this, data, syncManager, settings)
+            .build()
             .child(
                 gridTemplate1by1(
                     index -> new ItemSlot().slot(new ModularSlot(inventoryHandler, index).slotGroup("item_inv"))));

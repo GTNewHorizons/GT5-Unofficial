@@ -209,8 +209,8 @@ public class MTEHatchElementalDataOrbHolder extends MTEHatch implements IConfigu
     @Override
     public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager, UISettings settings) {
         syncManager.registerSlotGroup("item_inv", 4);
-        return GTGuis.mteTemplatePanelBuilder(this, data, syncManager)
-            .build(settings)
+        return GTGuis.mteTemplatePanelBuilder(this, data, syncManager, settings)
+            .build()
             .child(
                 gridTemplate4by4(
                     index -> new ItemSlot().slot(

@@ -474,8 +474,8 @@ public abstract class MTEBoiler extends MTEBasicTank implements IGetTitleColor, 
                     .size(14)
                     .margin(2))
             .childIf(doesAddFuelSlot(), createFuelSlot());
-        return GTGuis.mteTemplatePanelBuilder(this, data, syncManager)
-            .build(settings)
+        return GTGuis.mteTemplatePanelBuilder(this, data, syncManager, settings)
+            .build()
             .child(
                 Flow.row()
                     .alignX(0.5f)

@@ -55,6 +55,7 @@ public final class GTBaseGuiBuilder {
     private final IMetaTileEntity mte;
     private final PosGuiData posGuiData;
     private final PanelSyncManager syncManager;
+    private final UISettings settings;
 
     private int width = 176;
     private int height = 166;
@@ -64,10 +65,11 @@ public final class GTBaseGuiBuilder {
     private boolean doesAddGhostCircuitSlot;
     private boolean doesAddGregTechLogo;
 
-    public GTBaseGuiBuilder(IMetaTileEntity mte, PosGuiData data, PanelSyncManager syncManager) {
+    public GTBaseGuiBuilder(IMetaTileEntity mte, PosGuiData data, PanelSyncManager syncManager, UISettings settings) {
         this.mte = mte;
         this.posGuiData = data;
         this.syncManager = syncManager;
+        this.settings = settings;
         this.doesAddGhostCircuitSlot = mte instanceof IConfigurationCircuitSupport ccs && ccs.allowSelectCircuit();
         this.doesAddGregTechLogo = !this.doesAddGhostCircuitSlot;
     }
@@ -133,7 +135,7 @@ public final class GTBaseGuiBuilder {
     /**
      * Builds the resulting panel. Call after calling all the necessary feature switch methods.
      */
-    public ModularPanel build(UISettings settings) {
+    public ModularPanel build() {
         ModularPanel panel = ModularPanel.defaultPanel(mte.getGuiId(), width, height);
         if (doesBindPlayerInventory) {
             panel.bindPlayerInventory();
