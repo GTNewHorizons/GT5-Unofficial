@@ -59,6 +59,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.metatileentity.implementations.MTEHatchEnergy;
+import gregtech.api.metatileentity.implementations.gui.MTEMultiBlockBaseGui;
 import gregtech.api.objects.ItemData;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
@@ -309,20 +310,21 @@ public class MTEResearchStation extends TTMultiblockBase implements ISurvivalCon
                 eHolders.get(0)
                     .getBaseMetaTileEntity()
                     .setActive(false);
-            if (ItemList.Tool_DataStick.isStackEqual(mInventory[1], false, true)) {
-                makeStick();
-                eHolders.get(0).mInventory[0] = null;
-            } else if (ItemList.Tool_DataOrb.isStackEqual(mInventory[1], false, true)) {
-                BehaviourDataOrb.setDataTitle(mInventory[1], "Elemental-Scan");
-                ItemData tData = GTOreDictUnificator.getAssociation(holdItem);
-                assert tData != null;
-                BehaviourDataOrb.setDataName(mInventory[1], tData.mMaterial.mMaterial.mElement.name());
-                eHolders.get(0).mInventory[0] = null;
+                if (ItemList.Tool_DataStick.isStackEqual(mInventory[1], false, true)) {
+                    makeStick();
+                    eHolders.get(0).mInventory[0] = null;
+                } else if (ItemList.Tool_DataOrb.isStackEqual(mInventory[1], false, true)) {
+                    BehaviourDataOrb.setDataTitle(mInventory[1], "Elemental-Scan");
+                    ItemData tData = GTOreDictUnificator.getAssociation(holdItem);
+                    assert tData != null;
+                    BehaviourDataOrb.setDataName(mInventory[1], tData.mMaterial.mMaterial.mElement.name());
+                    eHolders.get(0).mInventory[0] = null;
+                }
             }
+            computationRequired = computationRemaining = 0;
+            tRecipe = null;
+            holdItem = null;
         }
-        computationRequired = computationRemaining = 0;
-        tRecipe = null;
-        holdItem = null;
     }
 
     @Override

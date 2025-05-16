@@ -1,8 +1,19 @@
 package gregtech.api.recipe.maps;
 
-import codechicken.nei.PositionedStack;
+import static gregtech.api.util.GTRecipeConstants.DIMENSION_NAME;
+import static gregtech.api.util.GTRecipeConstants.PLANET_TIER;
+import static gregtech.api.util.GTUtility.formatNumbers;
+
+import java.util.List;
+
+import javax.annotation.ParametersAreNonnullByDefault;
+
+import net.minecraft.util.StatCollector;
+
 import com.gtnewhorizons.modularui.api.math.Alignment;
 import com.gtnewhorizons.modularui.api.math.Pos2d;
+
+import codechicken.nei.PositionedStack;
 import gregtech.api.enums.Materials;
 import gregtech.api.recipe.BasicUIPropertiesBuilder;
 import gregtech.api.recipe.NEIRecipePropertiesBuilder;
@@ -11,14 +22,6 @@ import gregtech.api.util.MethodsReturnNonnullByDefault;
 import gregtech.common.gui.modularui.UIHelper;
 import gregtech.common.tileentities.machines.multi.MTEEnvironmentallyControlledChemicalFacility;
 import gregtech.nei.RecipeDisplayInfo;
-import net.minecraft.util.StatCollector;
-
-import javax.annotation.ParametersAreNonnullByDefault;
-import java.util.List;
-
-import static gregtech.api.util.GTRecipeConstants.DIMENSION_NAME;
-import static gregtech.api.util.GTRecipeConstants.PLANET_TIER;
-import static gregtech.api.util.GTUtility.formatNumbers;
 
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault

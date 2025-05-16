@@ -313,6 +313,8 @@ public class OverclockCalculator {
         if (this.maxTierSkip == Integer.MAX_VALUE) return true;
         return recipeEUt <= machineVoltage * Math.pow(4, maxTierSkip);
 
+    }
+
     /** Call this when all values have been put it. */
     @Nonnull
     public OverclockCalculator calculate() {
