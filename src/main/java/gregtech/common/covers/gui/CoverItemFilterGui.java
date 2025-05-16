@@ -4,9 +4,9 @@ import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.value.sync.EnumSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
-import com.cleanroommc.modularui.widgets.ItemSlot;
 import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.cleanroommc.modularui.widgets.slot.ModularSlot;
+import com.cleanroommc.modularui.widgets.slot.PhantomItemSlot;
 
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.util.GTUtility;
@@ -54,7 +54,7 @@ public class CoverItemFilterGui extends CoverGui<CoverItemFilter> {
                         .asWidget()
                         .marginTop(WIDGET_MARGIN))
                 .child(
-                    new ItemSlot().slot(new ModularSlot(cover.getFilter(), 0, true))
+                    new PhantomItemSlot().slot(new ModularSlot(cover.getFilter(), 0))
                         .marginTop(WIDGET_MARGIN)));
     }
 

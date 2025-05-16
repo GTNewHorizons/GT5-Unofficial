@@ -4,6 +4,7 @@ import net.minecraft.item.ItemStack;
 
 import com.cleanroommc.modularui.network.NetworkUtils;
 import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widgets.layout.Flow;
@@ -65,7 +66,7 @@ public class CoverGui<T extends Cover> {
      * @param syncManager sync handler where widget sync handlers should be registered
      * @return UI panel to show
      */
-    public ModularPanel createBasePanel(String panelName, PanelSyncManager syncManager) {
+    public ModularPanel createBasePanel(String panelName, PanelSyncManager syncManager, UISettings uiSettings) {
         syncManager.addCloseListener(player -> {
             if (!NetworkUtils.isClient(player)) {
                 cover.getTile()
