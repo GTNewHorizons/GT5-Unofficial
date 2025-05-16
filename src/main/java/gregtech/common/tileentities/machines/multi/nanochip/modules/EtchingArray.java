@@ -1,6 +1,7 @@
 package gregtech.common.tileentities.machines.multi.nanochip.modules;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
+import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex.NAC_MODULE;
@@ -8,11 +9,17 @@ import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAs
 import static gtnhlanth.util.DescTextLocalization.addDotText;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.annotation.Nullable;
 
-import gregtech.api.util.GTRecipe;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
+import net.minecraft.world.World;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -23,19 +30,22 @@ import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
+import gregtech.api.util.GTRecipe;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.blocks.BlockCasings8;
 import gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyModuleBase;
 import gregtech.common.tileentities.machines.multi.nanochip.util.CircuitComponent;
 import gregtech.common.tileentities.machines.multi.nanochip.util.ModuleStructureDefinition;
+import gtPlusPlus.core.util.math.MathUtils;
 import gtnhlanth.common.beamline.BeamInformation;
 import gtnhlanth.common.beamline.Particle;
 import gtnhlanth.common.hatch.MTEHatchInputBeamline;
+import mcp.mobius.waila.api.IWailaConfigHandler;
+import mcp.mobius.waila.api.IWailaDataAccessor;
 
 public class EtchingArray extends MTENanochipAssemblyModuleBase<EtchingArray> {
 
@@ -51,9 +61,9 @@ public class EtchingArray extends MTENanochipAssemblyModuleBase<EtchingArray> {
 
     private final ArrayList<MTEHatchInputBeamline> mInputBeamline = new ArrayList<>();
 
-    float inputEnergy = 1;
     int requiredEnergy = 1;
-    int requiredParticle = 0;
+    int requiredParticle = getRandomParticle();
+    boolean canRunRandomParticle;
 
     public static final IStructureDefinition<EtchingArray> STRUCTURE_DEFINITION = ModuleStructureDefinition
         .<EtchingArray>builder()
@@ -113,7 +123,7 @@ public class EtchingArray extends MTENanochipAssemblyModuleBase<EtchingArray> {
         float inputEnergy = inputInfo.getEnergy();
         Particle inputParticle = Particle.getParticleFromId(inputInfo.getParticleId());
 
-        if (inputParticle != Particle.getParticleFromId(requiredParticle)) {
+        if (inputParticle != Particle.getParticleFromId(getRandomParticle())) {
             return CheckRecipeResultRegistry.WRONG_PARTICLE;
         }
 
@@ -125,9 +135,64 @@ public class EtchingArray extends MTENanochipAssemblyModuleBase<EtchingArray> {
 
     }
 
+    public Integer getRandomParticle() {
+
+        if (canRunRandomParticle) {
+            int particle = MathUtils.randInt(1, 3);
+            return switch (particle) {
+                case 1 -> 0;
+                case 2 -> 4;
+                case 3 -> 5;
+                default -> throw new IllegalStateException("Unexpected Particle: " + MathUtils.randInt(1, 3));
+            };
+        }
+        else
+            return 0;
+    }
+
+    long ticker = 0;
+
+    public boolean onRunningTick(ItemStack aStack) {
+        if (!super.onRunningTick(aStack)) {
+            return false;
+        }
+            if (ticker % (5 * SECONDS) == 0) {
+                canRunRandomParticle = true;
+                ticker = 0;
+            }
+        ticker++;
+
+        return true;
+    }
+
     @Override
-    protected ProcessingLogic createProcessingLogic() {
-        return new ProcessingLogic().setSpeedBonus(1F / inputEnergy);
+    public void loadNBTData(NBTTagCompound aNBT) {
+        super.loadNBTData(aNBT);
+        if (aNBT.hasKey("particle")) requiredParticle = aNBT.getInteger("particle");
+    }
+
+    @Override
+    public void saveNBTData(NBTTagCompound aNBT) {
+        super.saveNBTData(aNBT);
+        aNBT.setInteger("particle", getRandomParticle());
+    }
+
+    @Override
+    public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
+        int z) {
+        super.getWailaNBTData(player, tile, tag, world, x, y, z);
+        tag.setInteger("particle", getRandomParticle());
+    }
+
+    @Override
+    public void getWailaBody(ItemStack itemStack, List<String> currentTip, IWailaDataAccessor accessor,
+        IWailaConfigHandler config) {
+        super.getWailaBody(itemStack, currentTip, accessor, config);
+        final NBTTagCompound tag = accessor.getNBTData();
+        currentTip.add(
+            StatCollector.translateToLocal("item.particle.name") + ": "
+                + EnumChatFormatting.WHITE
+                + tag.getInteger("particle"));
     }
 
     public EtchingArray(int aID, String aName, String aNameRegional) {
