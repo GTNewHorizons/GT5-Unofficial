@@ -654,11 +654,6 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
         return (int) (10000f * mRoughnessMultiplier);
     }
 
-    @Override
-    public int getDamageToComponent(ItemStack aStack) {
-        return 0;
-    }
-
     private int getTier() {
         return mSetTier;
     }
@@ -742,11 +737,6 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
         }
 
         return ExtendedFacing.of(newDirection, newRotation, newFlip);
-    }
-
-    @Override
-    public boolean explodesOnComponentBreak(ItemStack aStack) {
-        return false;
     }
 
     public boolean addCoolantInputToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
@@ -1009,11 +999,6 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
         mOCTier2Offsets[1] = aNBT.getInteger("mOCTier2OffsetZ");
         mRoughnessMultiplier = aNBT.getFloat("mRoughnessMultiplier");
         mSetTier = aNBT.getInteger("mSetTier");
-    }
-
-    @Override
-    public boolean isCorrectMachinePart(ItemStack aStack) {
-        return true;
     }
 
     @Override

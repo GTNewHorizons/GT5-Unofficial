@@ -58,6 +58,7 @@ public class MTEYOTTAHatch extends MTEHatch implements IGridProxyable, IActionHo
     private MTEYottaFluidTank host;
     private AENetworkProxy gridProxy = null;
     private int priority;
+    private boolean isSticky = false;
     private byte tickRate = 20;
     private FluidStack lastFluid = null;
     private BigInteger lastAmt = BigInteger.ZERO;
@@ -95,6 +96,7 @@ public class MTEYOTTAHatch extends MTEHatch implements IGridProxyable, IActionHo
         super.saveNBTData(aNBT);
         aNBT.setInteger("mAEPriority", this.priority);
         aNBT.setInteger("mAEMode", this.readMode.ordinal());
+        aNBT.setBoolean("mAESticky", this.isSticky);
     }
 
     @Override
@@ -102,6 +104,7 @@ public class MTEYOTTAHatch extends MTEHatch implements IGridProxyable, IActionHo
         super.loadNBTData(aNBT);
         this.priority = aNBT.getInteger("mAEPriority");
         this.readMode = AEModes[aNBT.getInteger("mAEMode")];
+        this.isSticky = aNBT.getBoolean("mAESticky");
     }
 
     @Override
@@ -136,6 +139,16 @@ public class MTEYOTTAHatch extends MTEHatch implements IGridProxyable, IActionHo
         float aX, float aY, float aZ, ItemStack toolStack) {
         this.readMode = AEModes[(readMode.ordinal() + 1) % 4];
         GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocalFormatted("yothatch.chat.1", this.readMode));
+        return true;
+    }
+
+    @Override
+    public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
+        float aX, float aY, float aZ, ItemStack aTool) {
+        this.isSticky = !this.isSticky;
+        GTUtility.sendChatToPlayer(
+            aPlayer,
+            StatCollector.translateToLocal(this.isSticky ? "yothatch.chat.2" : "yothatch.chat.3"));
         return true;
     }
 
@@ -481,7 +494,8 @@ public class MTEYOTTAHatch extends MTEHatch implements IGridProxyable, IActionHo
     @Override
     public boolean canAccept(IAEFluidStack input) {
         FluidStack rInput = input.getFluidStack();
-        return fill(null, rInput, false) > 0;
+        return (host.mLockedFluid != null && !host.mLockedFluid.isFluidEqual(rInput)) || host.mFluid == null
+            || host.mFluid.isFluidEqual(rInput);
     }
 
     @Override
@@ -497,6 +511,10 @@ public class MTEYOTTAHatch extends MTEHatch implements IGridProxyable, IActionHo
     @Override
     public int getPriority() {
         return this.priority;
+    }
+
+    public boolean getSticky() {
+        return this.isSticky;
     }
 
     @Override
