@@ -58,6 +58,7 @@ import org.jetbrains.annotations.TestOnly;
 import com.cleanroommc.modularui.api.IGuiHolder;
 import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
@@ -3532,8 +3533,8 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
     }
 
     @Override
-    public final ModularPanel buildUI(PosGuiData guiData, PanelSyncManager syncManager) {
-        return getGui().build(guiData, syncManager);
+    public final ModularPanel buildUI(PosGuiData guiData, PanelSyncManager syncManager, UISettings uiSettings) {
+        return getGui().build(guiData, syncManager, uiSettings);
     }
 
     protected @NotNull MTEMultiBlockBaseGui getGui() {
