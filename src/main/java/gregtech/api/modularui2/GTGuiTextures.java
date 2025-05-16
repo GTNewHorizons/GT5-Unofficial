@@ -247,6 +247,35 @@ public final class GTGuiTextures {
             GTTextureIds.OVERLAY_SLOT_BLOCK_PRIMITIVE)
         .build();
 
+    public static final UITexture OVERLAY_BUTTON_INPUT_SEPARATION_ON = UITexture
+        .fullImage(GregTech.ID, "gui/overlay_button/input_separation_on");
+    public static final UITexture OVERLAY_BUTTON_INPUT_SEPARATION_ON_DISABLED = UITexture
+        .fullImage(GregTech.ID, "gui/overlay_button/input_separation_on_disabled");
+    public static final UITexture OVERLAY_BUTTON_INPUT_SEPARATION_OFF = UITexture
+        .fullImage(GregTech.ID, "gui/overlay_button/input_separation_off");
+    public static final UITexture OVERLAY_BUTTON_INPUT_SEPARATION_OFF_DISABLED = UITexture
+        .fullImage(GregTech.ID, "gui/overlay_button/input_separation_off_disabled");
+    public static final UITexture OVERLAY_BUTTON_RECIPE_UNLOCKED = UITexture
+        .fullImage(GregTech.ID, "gui/overlay_button/recipe_unlocked");
+    public static final UITexture OVERLAY_BUTTON_RECIPE_UNLOCKED_DISABLED = UITexture
+        .fullImage(GregTech.ID, "gui/overlay_button/recipe_unlocked_disabled");
+    public static final UITexture OVERLAY_BUTTON_RECIPE_LOCKED = UITexture
+        .fullImage(GregTech.ID, "gui/overlay_button/recipe_locked");
+    public static final UITexture OVERLAY_BUTTON_RECIPE_LOCKED_DISABLED = UITexture
+        .fullImage(GregTech.ID, "gui/overlay_button/recipe_locked_disabled");
+    public static final UITexture OVERLAY_BUTTON_BATCH_MODE_ON = UITexture
+        .fullImage(GregTech.ID, "gui/overlay_button/batch_mode_on");
+    public static final UITexture OVERLAY_BUTTON_BATCH_MODE_ON_DISABLED = UITexture
+        .fullImage(GregTech.ID, "gui/overlay_button/batch_mode_on_disabled");
+    public static final UITexture OVERLAY_BUTTON_BATCH_MODE_OFF = UITexture
+        .fullImage(GregTech.ID, "gui/overlay_button/batch_mode_off");
+    public static final UITexture OVERLAY_BUTTON_BATCH_MODE_OFF_DISABLED = UITexture
+        .fullImage(GregTech.ID, "gui/overlay_button/batch_mode_off_disabled");
+    public static final UITexture OVERLAY_BUTTON_STRUCTURE_UPDATE = UITexture
+        .fullImage(GregTech.ID, "gui/overlay_button/structure_update");
+    public static final UITexture OVERLAY_BUTTON_FORBIDDEN = UITexture
+        .fullImage(GregTech.ID, "gui/overlay_button/forbidden");
+
     // endregion slot overlay
 
     // region progressbar
@@ -450,6 +479,44 @@ public final class GTGuiTextures {
 
     // endregion picture
 
+    // region machine modes
+
+    public static final UITexture OVERLAY_BUTTON_MACHINEMODE_DEFAULT = UITexture
+        .fullImage(GregTech.ID, "gui/overlay_button/machine_mode_default");
+    public static final UITexture OVERLAY_BUTTON_MACHINEMODE_CHEMBATH = UITexture
+        .fullImage(GregTech.ID, "gui/overlay_button/machine_mode_chembath");
+    public static final UITexture OVERLAY_BUTTON_MACHINEMODE_WASHPLANT = UITexture
+        .fullImage(GregTech.ID, "gui/overlay_button/machine_mode_washplant");
+    public static final UITexture OVERLAY_BUTTON_MACHINEMODE_SIMPLEWASHER = UITexture
+        .fullImage(GregTech.ID, "gui/overlay_button/machine_mode_simplewasher");
+    public static final UITexture OVERLAY_BUTTON_MACHINEMODE_PACKAGER = UITexture
+        .fullImage(GregTech.ID, "gui/overlay_button/machine_mode_packager");
+    public static final UITexture OVERLAY_BUTTON_MACHINEMODE_UNPACKAGER = UITexture
+        .fullImage(GregTech.ID, "gui/overlay_button/machine_mode_unpackager");
+    public static final UITexture OVERLAY_BUTTON_MACHINEMODE_SEPARATOR = UITexture
+        .fullImage(GregTech.ID, "gui/overlay_button/machine_mode_separator");
+    public static final UITexture OVERLAY_BUTTON_MACHINEMODE_POLARIZER = UITexture
+        .fullImage(GregTech.ID, "gui/overlay_button/machine_mode_polarizer");
+    public static final UITexture OVERLAY_BUTTON_MACHINEMODE_LPF_FLUID = UITexture
+        .fullImage(GregTech.ID, "gui/overlay_button/machine_mode_lpf_fluid");
+    public static final UITexture OVERLAY_BUTTON_MACHINEMODE_LPF_METAL = UITexture
+        .fullImage(GregTech.ID, "gui/overlay_button/machine_mode_lpf_metal");
+    public static final UITexture OVERLAY_BUTTON_MACHINEMODE_BENDING = UITexture
+        .fullImage(GregTech.ID, "gui/overlay_button/machine_mode_bending");
+    public static final UITexture OVERLAY_BUTTON_MACHINEMODE_FORMING = UITexture
+        .fullImage(GregTech.ID, "gui/overlay_button/machine_mode_forming");
+    public static final UITexture OVERLAY_BUTTON_MACHINEMODE_SLICING = UITexture
+        .fullImage(GregTech.ID, "gui/overlay_button/machine_mode_slicing");
+    public static final UITexture OVERLAY_BUTTON_MACHINEMODE_CUTTING = UITexture
+        .fullImage(GregTech.ID, "gui/overlay_button/machine_mode_cutting");
+    public static final UITexture OVERLAY_BUTTON_MACHINEMODE_COMPRESSING = UITexture
+        .fullImage(GregTech.ID, "gui/overlay_button/machine_mode_compressing");
+    public static final UITexture OVERLAY_BUTTON_MACHINEMODE_SINGULARITY = UITexture
+        .fullImage(GregTech.ID, "gui/overlay_button/machine_mode_singularity");
+    public static final UITexture OVERLAY_BUTTON_MACHINEMODE_STEAM = UITexture
+        .fullImage(GregTech.ID, "gui/overlay_button/machine_mode_dehp_steam");
+
+    // endregion machine modes
     /**
      * Creates texture of full image. Theme of GUI does not affect how the texture is drawn.
      *

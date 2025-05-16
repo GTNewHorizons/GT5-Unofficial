@@ -329,9 +329,8 @@ public enum Mods implements IMod {
         public static final String BOTANIA = "Botania";
         public static final String BOTANIC_HORIZONS = "botanichorizons";
         public static final String BRANDONS_CORE = "BrandonsCore";
-        public static final String BUILD_CRAFT = "BuildCraft",
+        public static final String BUILD_CRAFT_CORE = "BuildCraft|Core",
             BUILD_CRAFT_BUILDERS = "BuildCraft|Builders",
-            BUILD_CRAFT_CORE = "BuildCraft|Core",
             BUILD_CRAFT_FACTORY = "BuildCraft|Factory",
             BUILD_CRAFT_ROBOTICS = "BuildCraft|Robotics",
             BUILD_CRAFT_SILICON = "BuildCraft|Silicon",
