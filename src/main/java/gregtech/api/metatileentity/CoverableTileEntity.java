@@ -21,6 +21,7 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
@@ -175,16 +176,14 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
         cover.onCoverUnload();
     }
 
-    public boolean tickCoverAtSide(ForgeDirection side) {
-        return tickCoverAtSide(side, mTickTimer);
-    }
-
     /**
      * @return {@code false} if the tile is no longer valid after ticking the cover
      */
-    public boolean tickCoverAtSide(ForgeDirection side, long aTickTimer) {
+    private boolean tickCoverAtSide(ForgeDirection side) {
         final Cover cover = getCoverAtSide(side);
         if (!cover.isValid()) return true;
+        final int aTickTimer = MinecraftServer.getServer()
+            .getTickCounter();
         final int tCoverTickRate = cover.getTickRate();
         if (tCoverTickRate > 0 && aTickTimer % tCoverTickRate == 0) {
             final byte tRedstone = cover.isRedstoneSensitive(aTickTimer) ? getInputRedstoneSignal(side) : 0;
@@ -327,6 +326,18 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
         mSidedRedstone[3] = (byte) ((packedRedstoneValue & 8) == 8 ? 15 : 0);
         mSidedRedstone[4] = (byte) ((packedRedstoneValue & 16) == 16 ? 15 : 0);
         mSidedRedstone[5] = (byte) ((packedRedstoneValue & 32) == 32 ? 15 : 0);
+    }
+
+    public byte getSidedRedstoneMask() {
+        byte redstone = 0;
+
+        for (int i = 0; i < 6; i++) {
+            if (mSidedRedstone[i] > 0) {
+                redstone |= (byte) (0b1 << i);
+            }
+        }
+
+        return redstone;
     }
 
     @Override

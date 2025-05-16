@@ -52,6 +52,7 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.pollution.PollutionConfig;
 import gregtech.common.tileentities.machines.MTEHatchOutputME;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
@@ -200,7 +201,8 @@ public class MTEAdvDistillationTower extends GTPPMultiBlockBase<MTEAdvDistillati
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
         buildPiece(STRUCTURE_PIECE_BASE, stackSize, hintsOnly, 1, 0, 0);
-        int tTotalHeight = Math.min(12, stackSize.stackSize + 2); // min 2 output layer, so at least 1 + 2 height
+        // min 2 output layer, so at least 1 + 2 height
+        int tTotalHeight = GTStructureChannels.STRUCTURE_HEIGHT.getValueClamped(stackSize, 3, 12);
         for (int i = 1; i < tTotalHeight - 1; i++) {
             buildPiece(STRUCTURE_PIECE_LAYER_HINT, stackSize, hintsOnly, 1, i, 0);
         }
@@ -212,7 +214,8 @@ public class MTEAdvDistillationTower extends GTPPMultiBlockBase<MTEAdvDistillati
         mHeight = 0;
         int built = survivialBuildPiece(STRUCTURE_PIECE_BASE, stackSize, 1, 0, 0, elementBudget, env, false, true);
         if (built >= 0) return built;
-        int tTotalHeight = Math.min(12, stackSize.stackSize + 2); // min 2 output layer, so at least 1 + 2 height
+        // min 2 output layer, so at least 1 + 2 height
+        int tTotalHeight = GTStructureChannels.STRUCTURE_HEIGHT.getValueClamped(stackSize, 3, 12);
         for (int i = 1; i < tTotalHeight - 1; i++) {
             mHeight = i;
             built = survivialBuildPiece(
@@ -286,19 +289,9 @@ public class MTEAdvDistillationTower extends GTPPMultiBlockBase<MTEAdvDistillati
     }
 
     @Override
-    public boolean isCorrectMachinePart(ItemStack aStack) {
-        return true;
-    }
-
-    @Override
     protected IAlignmentLimits getInitialAlignmentLimits() {
         // don't rotate a freaking tower, it won't work
         return (d, r, f) -> d.offsetY == 0 && r.isNotRotated() && !f.isVerticallyFliped();
-    }
-
-    @Override
-    public int getMaxEfficiency(ItemStack aStack) {
-        return 10000;
     }
 
     @Override
@@ -331,16 +324,6 @@ public class MTEAdvDistillationTower extends GTPPMultiBlockBase<MTEAdvDistillati
         mMode = mMode.next();
         PlayerUtils.messagePlayer(aPlayer, "Now running in " + mMode + " Mode.");
         mLastRecipe = null;
-    }
-
-    @Override
-    public int getDamageToComponent(ItemStack aStack) {
-        return 0;
-    }
-
-    @Override
-    public boolean explodesOnComponentBreak(ItemStack aStack) {
-        return false;
     }
 
     @Override

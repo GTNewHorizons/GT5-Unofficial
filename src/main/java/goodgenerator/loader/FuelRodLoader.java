@@ -150,7 +150,7 @@ public class FuelRodLoader {
             50,
             4,
             1000,
-            30000,
+            70000,
             6,
             new ItemStack(rodCompressedPlutoniumDepleted, 1),
             GoodGenerator.GG);
@@ -160,7 +160,7 @@ public class FuelRodLoader {
             50,
             4,
             2000,
-            30000,
+            70000,
             6,
             new ItemStack(rodCompressedPlutoniumDepleted_2, 1),
             GoodGenerator.GG);
@@ -170,7 +170,7 @@ public class FuelRodLoader {
             50,
             4,
             4000,
-            30000,
+            70000,
             6,
             new ItemStack(rodCompressedPlutoniumDepleted_4, 1),
             GoodGenerator.GG);

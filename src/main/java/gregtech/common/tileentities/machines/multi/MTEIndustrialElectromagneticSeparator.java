@@ -55,6 +55,8 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.blocks.BlockCasings10;
 import gregtech.common.items.MetaGeneratedItem01;
+import gregtech.common.misc.GTStructureChannels;
+import gregtech.common.tileentities.machines.multi.gui.MTEIndustrialElectromagneticSeparatorGui;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
@@ -161,11 +163,6 @@ public class MTEIndustrialElectromagneticSeparator
     }
 
     @Override
-    public boolean isCorrectMachinePart(ItemStack aStack) {
-        return true;
-    }
-
-    @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new MTEIndustrialElectromagneticSeparator(this.mName);
     }
@@ -230,8 +227,8 @@ public class MTEIndustrialElectromagneticSeparator
             .addOutputBus("Any Casing", 1)
             .addEnergyHatch("Any Casing", 1)
             .addMaintenanceHatch("Any Casing", 1)
-            .addSubChannelUsage("glass", "Glass Tier")
-            .toolTipFinisher(GTValues.AuthorFourIsTheNumber, GTValues.authorBaps);
+            .addSubChannelUsage(GTStructureChannels.BOROGLASS)
+            .toolTipFinisher(GTValues.authorBaps);
         return tt;
     }
 
@@ -378,21 +375,6 @@ public class MTEIndustrialElectromagneticSeparator
     }
 
     @Override
-    public int getMaxEfficiency(ItemStack aStack) {
-        return 10000;
-    }
-
-    @Override
-    public int getDamageToComponent(ItemStack aStack) {
-        return 0;
-    }
-
-    @Override
-    public boolean explodesOnComponentBreak(ItemStack aStack) {
-        return false;
-    }
-
-    @Override
     public boolean supportsVoidProtection() {
         return true;
     }
@@ -471,5 +453,10 @@ public class MTEIndustrialElectromagneticSeparator
             GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOff"));
         }
         return true;
+    }
+
+    @Override
+    protected @NotNull MTEIndustrialElectromagneticSeparatorGui getGui() {
+        return new MTEIndustrialElectromagneticSeparatorGui(this);
     }
 }

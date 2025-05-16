@@ -548,18 +548,6 @@ public class GTValues {
     public static final String AuthorQuerns = "Author: " + EnumChatFormatting.RED + "Querns";
     public static final String AuthorSilverMoon = "Author: " + EnumChatFormatting.AQUA + "SilverMoon";
     public static final String AuthorTheEpicGamer274 = "Author: " + EnumChatFormatting.DARK_AQUA + "TheEpicGamer274";
-    public static final String AuthorFourIsTheNumber = "Author: " + EnumChatFormatting.LIGHT_PURPLE
-        + EnumChatFormatting.ITALIC
-        + "Four"
-        + EnumChatFormatting.WHITE
-        + EnumChatFormatting.ITALIC
-        + "Is"
-        + EnumChatFormatting.LIGHT_PURPLE
-        + EnumChatFormatting.ITALIC
-        + "The"
-        + EnumChatFormatting.WHITE
-        + EnumChatFormatting.ITALIC
-        + "Number";
     public static final String Ollie = EnumChatFormatting.GREEN.toString() + EnumChatFormatting.BOLD + "Ollie";
     public static final String authorBaps = "Author: " + EnumChatFormatting.GOLD
         + "Ba"
@@ -594,6 +582,18 @@ public class GTValues {
         + "APenguin";
 
     public static final String AuthorPineapple = "Author: " + EnumChatFormatting.BLUE + "Recursive Pineapple";
+
+    public static final Supplier<String> AuthorNoc = chain(
+        text("Author: "),
+        animatedText(
+            "Noc",
+            0,
+            500,
+            EnumChatFormatting.GOLD + BOLD,
+            EnumChatFormatting.DARK_GREEN + BOLD,
+            EnumChatFormatting.GOLD + BOLD,
+            EnumChatFormatting.DARK_GREEN + BOLD,
+            EnumChatFormatting.DARK_GREEN + OBFUSCATED + BOLD));
 
     public static final String TecTechHatches = "Supports " + TT + " laser and multi-amp hatches";
 

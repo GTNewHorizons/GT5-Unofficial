@@ -9,7 +9,6 @@ import static gregtech.api.enums.Mods.BloodMagic;
 import static gregtech.api.enums.Mods.DraconicEvolution;
 import static gregtech.api.enums.Mods.EternalSingularity;
 import static gregtech.api.enums.Mods.ExtraUtilities;
-import static gregtech.api.enums.Mods.GTNHIntergalactic;
 import static gregtech.api.enums.Mods.GalacticraftAmunRa;
 import static gregtech.api.enums.Mods.GraviSuite;
 import static gregtech.api.enums.Mods.IndustrialCraft2;
@@ -852,8 +851,8 @@ public class ResearchStationAssemblyLine implements Runnable {
             new FluidStack[] { new FluidStack(FluidRegistry.getFluid("oganesson"), 50000),
                 Materials.Infinity.getMolten(144L * 512), Materials.Cheese.getMolten(232000L), },
             ItemList.Block_BedrockiumCompressed.get(1),
-            10000,
-            5000000);
+            3 * MINUTES,
+            (int) TierEU.RECIPE_UMV);
 
         // Batteries
         {
@@ -953,7 +952,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                     MaterialsElements.STANDALONE.CELESTIAL_TUNGSTEN.getFluidStack(36_864),
                     Materials.SuperCoolant.getFluid(256_000) },
                 ItemList.ZPM6.get(1),
-                350 * 20,
+                360 * 20,
                 (int) TierEU.RECIPE_UMV);
         }
 
@@ -1113,8 +1112,8 @@ public class ResearchStationAssemblyLine implements Runnable {
                     new Object[] { OrePrefixes.circuit.get(Materials.UHV), 1 }, },
                 new FluidStack[] { Materials.Sunnarium.getMolten(14400L), Materials.Void.getMolten(28800L), },
                 DEFCDraconicSchematic.get(1),
-                6000,
-                (int) TierEU.RECIPE_UV);
+                3 * MINUTES,
+                (int) TierEU.RECIPE_UHV);
 
             // DE Schematics Cores Tier 2
             TTRecipeAdder.addResearchableAssemblylineRecipe(
@@ -1129,8 +1128,8 @@ public class ResearchStationAssemblyLine implements Runnable {
                     new Object[] { OrePrefixes.circuit.get(Materials.UEV), 1 }, },
                 new FluidStack[] { Materials.Neutronium.getMolten(14400L), Materials.Void.getMolten(57600L), },
                 DEFCWyvernSchematic.get(1),
-                12000,
-                (int) TierEU.RECIPE_UHV);
+                3 * MINUTES,
+                (int) TierEU.RECIPE_UEV);
 
             // DE Schematics Cores Tier 3
             TTRecipeAdder.addResearchableAssemblylineRecipe(
@@ -1145,8 +1144,8 @@ public class ResearchStationAssemblyLine implements Runnable {
                     new Object[] { OrePrefixes.circuit.get(Materials.UIV), 1L } },
                 new FluidStack[] { Materials.Infinity.getMolten(14400L), Materials.Void.getMolten(115200L), },
                 DEFCAwakenedSchematic.get(1),
-                24000,
-                (int) TierEU.RECIPE_UEV);
+                3 * MINUTES,
+                (int) TierEU.RECIPE_UIV);
 
             // DE Schematics Cores Tier 4
             TTRecipeAdder.addResearchableAssemblylineRecipe(
@@ -1161,8 +1160,8 @@ public class ResearchStationAssemblyLine implements Runnable {
                     new Object[] { OrePrefixes.circuit.get(Materials.UMV), 1 }, },
                 new FluidStack[] { MaterialsUEVplus.SpaceTime.getMolten(14400L), Materials.Void.getMolten(230400L), },
                 DEFCChaoticSchematic.get(1),
-                36000,
-                (int) TierEU.RECIPE_UIV);
+                3 * MINUTES,
+                (int) TierEU.RECIPE_UMV);
         }
 
         // Debug maintenance hatch
@@ -2395,8 +2394,7 @@ public class ResearchStationAssemblyLine implements Runnable {
         // EOH Spatial Individual Casing
         {
             TTRecipeAdder.addResearchableAssemblylineRecipe(
-                // Dyson Swarm Module Deployment Unit Base Casing
-                getModItem(GTNHIntergalactic.ID, "dysonswarmparts", 1, 2),
+                ItemList.DysonSwarmDeploymentUnitCasing.get(1),
                 256_000_000, // total comp
                 16_384, // comp/s
                 (int) TierEU.RECIPE_MAX, // eu/t
@@ -2750,11 +2748,8 @@ public class ResearchStationAssemblyLine implements Runnable {
                         // Blue Spectral Component
                         spectralComponents[(absoluteTier + 2) % spectralComponents.length],
 
-                        plateList[absoluteTier],
-                        // Dyson Swarm Module Deployment Unit Base Casing
-                        getModItem(GTNHIntergalactic.ID, "dysonswarmparts", (absoluteTier + 1) * 4, 2),
-                        // Dyson Swarm Energy Receiver Dish Block
-                        getModItem(GTNHIntergalactic.ID, "dysonswarmparts", (absoluteTier + 1) * 4, 1),
+                        plateList[absoluteTier], ItemList.DysonSwarmDeploymentUnitCasing.get((absoluteTier + 1) * 4),
+                        ItemList.DysonSwarmReceiverDish.get((absoluteTier + 1) * 4),
                         ItemList.AcceleratorUV.get((absoluteTier + 1) * 4),
 
                         ItemList.Energy_Module.get(absoluteTier + 1), GTOreDictUnificator
@@ -2831,8 +2826,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                                 timeCasings[absoluteTier],
                                 spatialCasings[absoluteTier],
                                 baseCasing,
-                                // Dyson Swarm Module.
-                                getModItem(GTNHIntergalactic.ID, "item.DysonSwarmParts", 4 * (absoluteTier + 1), 0),
+                                ItemList.DysonSwarmModule.get(4 * (absoluteTier + 1)),
 
                                 GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.SuperconductorUMVBase, 4 * (absoluteTier + 1)),
                                 GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.SuperconductorUIVBase, 4 * (absoluteTier + 1)),
@@ -3512,9 +3506,8 @@ public class ResearchStationAssemblyLine implements Runnable {
                 researchEuPerTick * 4,
                 researchAmperage * 16,
                 new Object[] { laserTargets_UXV[i], new ItemStack(compactFusionCoil, 1, 4),
-                    // Dyson Swarm Module Deployment Unit Superconducting Magnet
-                    getModItem(GTNHIntergalactic.ID, "dysonswarmparts", 1, 4),
-                    CustomItemList.Machine_Multi_Transformer.get(1), CustomItemList.eM_Power.get(64),
+                    ItemList.DysonSwarmDeploymentUnitMagnet.get(1), CustomItemList.Machine_Multi_Transformer.get(1),
+                    CustomItemList.eM_Power.get(64),
                     GTOreDictUnificator.get(OrePrefixes.wireGt16, MaterialsUEVplus.SpaceTime, 64),
                     GTOreDictUnificator.get(OrePrefixes.plateDense, MaterialsUEVplus.Eternity, 32),
                     GTOreDictUnificator
@@ -3542,7 +3535,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.wireGt16, Materials.Quantium, 32) },
             new FluidStack[] { new FluidStack(solderUEV, 1_296 * 64 * 4) },
             CustomItemList.eM_energyTunnel8_UMV.get(1),
-            53 * MINUTES + 20 * SECONDS,
+            100 * SECONDS,
             (int) TierEU.RECIPE_UMV);
 
         // 4M UXV Target
@@ -3558,7 +3551,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.wireGt16, Materials.BlackPlutonium, 32) },
             new FluidStack[] { new FluidStack(solderUEV, 1_296 * 64 * 4) },
             CustomItemList.eM_energyTunnel8_UXV.get(1),
-            106 * MINUTES + 40 * SECONDS,
+            100 * SECONDS,
             (int) TierEU.RECIPE_UXV);
 
         // 16M UXV Target
@@ -3578,7 +3571,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.wireGt16, Materials.BlackPlutonium, 64) },
             new FluidStack[] { new FluidStack(solderUEV, 1_296 * 128 * 4) },
             CustomItemList.eM_energyTunnel9_UXV.get(1),
-            213 * MINUTES + 20 * SECONDS,
+            110 * SECONDS,
             (int) TierEU.RECIPE_UXV);
 
         // 4M UMV Source
@@ -3594,7 +3587,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.wireGt16, Materials.Quantium, 32) },
             new FluidStack[] { new FluidStack(solderUEV, 1_296 * 64 * 4) },
             CustomItemList.eM_dynamoTunnel8_UMV.get(1),
-            53 * MINUTES + 20 * SECONDS,
+            100 * SECONDS,
             (int) TierEU.RECIPE_UMV);
 
         // 4M UXV Source
@@ -3610,7 +3603,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.wireGt16, Materials.BlackPlutonium, 32) },
             new FluidStack[] { new FluidStack(solderUEV, 1_296 * 64 * 4) },
             CustomItemList.eM_dynamoTunnel8_UXV.get(1),
-            106 * MINUTES + 40 * SECONDS,
+            100 * SECONDS,
             (int) TierEU.RECIPE_UXV);
 
         // 16M UXV Source
@@ -3630,7 +3623,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.wireGt16, Materials.BlackPlutonium, 64) },
             new FluidStack[] { new FluidStack(solderUEV, 1_296 * 128 * 4) },
             CustomItemList.eM_dynamoTunnel9_UXV.get(1),
-            213 * MINUTES + 20 * SECONDS,
+            110 * SECONDS,
             (int) TierEU.RECIPE_UXV);
 
         // ------------------------ Wireless EU dynamos ------------------------

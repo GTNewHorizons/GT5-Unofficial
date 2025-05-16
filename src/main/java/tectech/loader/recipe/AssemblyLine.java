@@ -28,14 +28,14 @@ public class AssemblyLine implements Runnable {
             .metadata(RESEARCH_ITEM, ItemList.Hatch_DataAccess_EV.get(1))
             .metadata(SCANNING, new Scanning(1 * MINUTES + 30 * SECONDS, TierEU.RECIPE_LuV))
             .itemInputs(
-                CustomItemList.Machine_Multi_Switch.get(1),
+                CustomItemList.Machine_Multi_Switch_Adv.get(1),
                 new Object[] { OrePrefixes.circuit.get(Materials.LuV), 2 },
                 ItemList.Tool_DataOrb.get(1),
                 ItemList.Cover_Screen.get(1))
             .fluidInputs(new FluidStack(FluidRegistry.getFluid("ic2coolant"), 2000), Materials.Hydrogen.getGas(1000))
             .itemOutputs(CustomItemList.Machine_Multi_DataBank.get(1))
-            .eut(14_000)
-            .duration(10 * MINUTES)
+            .eut(TierEU.RECIPE_LuV)
+            .duration(2 * MINUTES)
             .addTo(AssemblyLine);
 
         // Hollow Casing
@@ -101,8 +101,8 @@ public class AssemblyLine implements Runnable {
                 Materials.Iridium.getMolten(1296),
                 new FluidStack(FluidRegistry.getFluid("ic2coolant"), 1000))
             .itemOutputs(CustomItemList.holder_Hatch.get(1))
-            .eut(100_000)
-            .duration(10 * MINUTES)
+            .eut(TierEU.RECIPE_UV)
+            .duration(30 * SECONDS)
             .addTo(AssemblyLine);
 
         // Quantum Computer
@@ -110,7 +110,7 @@ public class AssemblyLine implements Runnable {
             .metadata(RESEARCH_ITEM, ItemList.Tool_DataOrb.get(1))
             .metadata(SCANNING, new Scanning(2 * MINUTES, TierEU.RECIPE_LuV))
             .itemInputs(
-                CustomItemList.Machine_Multi_Switch.get(1),
+                CustomItemList.Machine_Multi_Switch_Adv.get(1),
                 new Object[] { OrePrefixes.circuit.get(Materials.UV), 2 },
                 ItemList.Tool_DataOrb.get(1),
                 ItemList.Cover_Screen.get(1),
@@ -125,7 +125,7 @@ public class AssemblyLine implements Runnable {
                 Materials.Hydrogen.getGas(1000))
             .itemOutputs(CustomItemList.Machine_Multi_Computer.get(1))
             .eut(100_000)
-            .duration(10 * MINUTES)
+            .duration(60 * SECONDS)
             .addTo(AssemblyLine);
 
         // Research Station
@@ -133,7 +133,7 @@ public class AssemblyLine implements Runnable {
             .metadata(RESEARCH_ITEM, ItemList.ScannerZPM.get(1))
             .metadata(SCANNING, new Scanning(1 * MINUTES + 30 * SECONDS, TierEU.RECIPE_LuV))
             .itemInputs(
-                CustomItemList.Machine_Multi_Switch.get(1),
+                CustomItemList.Machine_Multi_Switch_Adv.get(1),
                 ItemList.Sensor_ZPM.get(8),
                 new Object[] { OrePrefixes.circuit.get(Materials.UV), 4 },
                 ItemList.Field_Generator_ZPM.get(1),
@@ -147,8 +147,8 @@ public class AssemblyLine implements Runnable {
                 new FluidStack(FluidRegistry.getFluid("ic2coolant"), 2000),
                 Materials.Osmium.getMolten(1296))
             .itemOutputs(CustomItemList.Machine_Multi_Research.get(1))
-            .eut(100_000)
-            .duration(10 * MINUTES)
+            .eut(TierEU.RECIPE_UV)
+            .duration(3 * MINUTES)
             .addTo(AssemblyLine);
 
         // Multi Infuser
@@ -166,7 +166,7 @@ public class AssemblyLine implements Runnable {
                 new FluidStack(FluidRegistry.getFluid("ic2coolant"), 2000))
             .itemOutputs(CustomItemList.Machine_Multi_Infuser.get(1))
             .eut(200_000)
-            .duration(6 * MINUTES + 40 * SECONDS)
+            .duration(60 * SECONDS)
             .addTo(AssemblyLine);
     }
 }

@@ -1,10 +1,12 @@
 package gregtech.common.blocks;
 
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Textures;
+import gregtech.common.misc.GTStructureChannels;
 
 /**
  * The casings are split into separate files because they are registered as regular blocks, and a regular block can have
@@ -39,6 +41,10 @@ public class BlockCasings1 extends BlockCasingsAbstract {
         register(13, ItemList.Casing_Dim_Injector, "Dimensional Injection Casing");
         register(14, ItemList.Casing_Dim_Bridge, "Dimensional Bridge");
         register(15, ItemList.Casing_Coil_Superconductor, "Superconducting Coil Block");
+
+        for (int i = 0; i < 10; i++) {
+            GTStructureChannels.TIER_MACHINE_CASING.registerAsIndicator(new ItemStack(this, 1, i), i + 1);
+        }
     }
 
     @Override
