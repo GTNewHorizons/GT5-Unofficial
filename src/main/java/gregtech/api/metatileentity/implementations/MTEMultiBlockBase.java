@@ -178,7 +178,8 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
     protected boolean inputSeparation = getDefaultInputSeparationMode();
     protected VoidingMode voidingMode = getDefaultVoidingMode();
     protected boolean batchMode = getDefaultBatchMode();
-    protected @Nonnull CheckRecipeResult checkRecipeResult = CheckRecipeResultRegistry.NONE;
+    @Nonnull
+    public CheckRecipeResult checkRecipeResult = CheckRecipeResultRegistry.NONE;
     protected int powerPanelMaxParallel = 1;
     protected boolean alwaysMaxParallel = true;
     protected int maxParallel = 1;
@@ -217,7 +218,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
     private final int randomTickOffset = (int) (Math.random() * CHECK_INTERVAL + 1);
 
     /** A list of unparameterized structure errors. */
-    private EnumSet<StructureError> structureErrors = EnumSet.noneOf(StructureError.class);
+    public EnumSet<StructureError> structureErrors = EnumSet.noneOf(StructureError.class);
 
     /**
      * Any implementation-defined error data.
@@ -2760,6 +2761,10 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
         else return 0;
     }
 
+    public int machineModes() {
+        return 2;
+    }
+
     @Override
     public Pos2d getMachineModeSwitchButtonPos() {
         return new Pos2d(80, 91);
@@ -3518,6 +3523,10 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
     }
 
     @Override
+    protected boolean forceUseMui2() {
+        return false;
+    }
+
     public final ModularPanel buildUI(PosGuiData guiData, PanelSyncManager syncManager, UISettings uiSettings) {
         return getGui().build(guiData, syncManager, uiSettings);
     }

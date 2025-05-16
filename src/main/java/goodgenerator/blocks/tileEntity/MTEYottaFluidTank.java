@@ -2,7 +2,6 @@ package goodgenerator.blocks.tileEntity;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static goodgenerator.util.CharExchanger.formatNumber;
-import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 import static gregtech.api.util.GTStructureUtility.*;
 import static java.lang.String.valueOf;
 import static net.minecraft.util.StatCollector.translateToLocal;
@@ -32,18 +31,10 @@ import com.gtnewhorizon.structurelib.structure.IStructureElement;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.gtnewhorizons.modularui.api.NumberFormatMUI;
-import com.gtnewhorizons.modularui.api.drawable.IDrawable;
-import com.gtnewhorizons.modularui.api.drawable.UITexture;
-import com.gtnewhorizons.modularui.api.math.Alignment;
-import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
-import com.gtnewhorizons.modularui.common.widget.DynamicPositionedColumn;
-import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
-import com.gtnewhorizons.modularui.common.widget.SlotWidget;
-import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
 import goodgenerator.blocks.tileEntity.GTMetaTileEntity.MTEYOTTAHatch;
 import goodgenerator.blocks.tileEntity.base.MTETooltipMultiBlockBaseEM;
-import goodgenerator.client.GUI.GGUITextures;
+import goodgenerator.blocks.tileEntity.gui.MTEYottaFluidTankGui;
 import goodgenerator.loader.Loaders;
 import goodgenerator.util.DescTextLocalization;
 import gregtech.api.enums.Materials;
@@ -54,6 +45,9 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.metatileentity.implementations.MTEHatchOutput;
+import gregtech.api.metatileentity.implementations.gui.MTEMultiBlockBaseGui;
+import gregtech.api.modularui2.GTGuiTheme;
+import gregtech.api.modularui2.GTGuiThemes;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.render.TextureFactory;
@@ -61,12 +55,7 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.LongRunningAverage;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.misc.GTStructureChannels;
-import tectech.TecTech;
-import tectech.thing.gui.TecTechUITextures;
-import tectech.thing.metaTileEntity.multi.base.INameFunction;
-import tectech.thing.metaTileEntity.multi.base.IStatusFunction;
-import tectech.thing.metaTileEntity.multi.base.LedStatus;
-import tectech.thing.metaTileEntity.multi.base.Parameters;
+import tectech.thing.metaTileEntity.multi.base.Parameter;
 
 public class MTEYottaFluidTank extends MTETooltipMultiBlockBaseEM implements IConstructable, ISurvivalConstructable {
 
@@ -96,10 +85,10 @@ public class MTEYottaFluidTank extends MTETooltipMultiBlockBaseEM implements ICo
      * in mStorageCurrent.
      */
     public FluidStack mLockedFluid = null;
-    protected boolean isFluidLocked = false;
+    public boolean isFluidLocked = false;
     protected int glassTier = -1;
     protected int maxCell;
-    protected final String YOTTANK_BOTTOM = mName + "buttom";
+    protected final String YOTTANK_BOTTOM = mName + "bottom";
     protected final String YOTTANK_MID = mName + "mid";
     protected final String YOTTANK_TOP = mName + "top";
     protected final NumberFormatMUI numberFormat = new NumberFormatMUI();
@@ -112,19 +101,16 @@ public class MTEYottaFluidTank extends MTETooltipMultiBlockBaseEM implements ICo
     private final LongRunningAverage fluidInputValues1m = new LongRunningAverage(60 * 20);
     private final LongRunningAverage fluidOutputValues1m = new LongRunningAverage(60 * 20);
 
-    protected Parameters.Group.ParameterIn tickRateSettings;
-
-    /** Name of the tick rate setting */
-    private static final INameFunction<MTEYottaFluidTank> TICK_RATE_SETTING_NAME = (base,
-        p) -> translateToLocal("gt.blockmachines.YottaFluidTank.cfgi.0");
-    /** Status of the tick rate setting */
-    private static final IStatusFunction<MTEYottaFluidTank> TICK_RATE_STATUS = (base, p) -> LedStatus
-        .fromLimitsInclusiveOuterBoundary(p.get(), 1, 0, 100, 100);
+    protected Parameter.IntegerParameter tickRateUpdate;
 
     @Override
-    protected void parametersInstantiation_EM() {
-        tickRateSettings = parametrization.getGroup(9, true)
-            .makeInParameter(1, 20, TICK_RATE_SETTING_NAME, TICK_RATE_STATUS);
+    protected void initParameters() {
+        tickRateUpdate = new Parameter.IntegerParameter(
+            20,
+            () -> 1,
+            () -> 100,
+            "gt.blockmachines.YottaFluidTank.cfgi.0");
+        parameterList.add(tickRateUpdate);
     }
 
     public MTEYottaFluidTank(int id, String name, String nameRegional) {
@@ -166,6 +152,7 @@ public class MTEYottaFluidTank extends MTETooltipMultiBlockBaseEM implements ICo
         mLockedFluid = FluidRegistry.getFluidStack(aNBT.getString("mLockedFluidName"), 1);
         voidExcessEnabled = aNBT.getBoolean("voidExcessEnabled");
         isFluidLocked = aNBT.getBoolean("isFluidLocked");
+        tickRateUpdate.setValue(aNBT.getInteger("tickRate"));
         super.loadNBTData(aNBT);
     }
 
@@ -185,6 +172,7 @@ public class MTEYottaFluidTank extends MTETooltipMultiBlockBaseEM implements ICo
                     .getName());
         aNBT.setBoolean("voidExcessEnabled", voidExcessEnabled);
         aNBT.setBoolean("isFluidLocked", isFluidLocked);
+        aNBT.setInteger("tickRate", tickRateUpdate.getValue());
         super.saveNBTData(aNBT);
     }
 
@@ -399,7 +387,7 @@ public class MTEYottaFluidTank extends MTETooltipMultiBlockBaseEM implements ICo
         return info.toArray(a);
     }
 
-    private String getPercent() {
+    public String getPercent() {
         if (mStorage.signum() == 0) return "0";
         return valueOf(
             mStorageCurrent.multiply(BigInteger.valueOf(10000))
@@ -407,7 +395,7 @@ public class MTEYottaFluidTank extends MTETooltipMultiBlockBaseEM implements ICo
                 .doubleValue() / 100);
     }
 
-    private String getTimeTo() {
+    public String getTimeTo() {
         double avgIn = fluidInputValues1m.avgLong();
         double avgOut = fluidOutputValues1m.avgLong();
         double cap = mStorage.doubleValue();
@@ -486,7 +474,7 @@ public class MTEYottaFluidTank extends MTETooltipMultiBlockBaseEM implements ICo
         long totalInput = 0;
         long totalOutput = 0;
 
-        long tickRate = Math.min(100L, Math.max(1L, (long) tickRateSettings.get()));
+        long tickRate = Math.min(100L, Math.max(1L, (long) tickRateUpdate.getValue()));
         ++workTickCounter;
         if (workTickCounter < tickRate) {
             fluidInputValues1m.update(totalInput);
@@ -684,93 +672,18 @@ public class MTEYottaFluidTank extends MTETooltipMultiBlockBaseEM implements ICo
     }
 
     @Override
-    protected void drawTexts(DynamicPositionedColumn screenElements, SlotWidget inventorySlot) {
-        super.drawTexts(screenElements, inventorySlot);
-
-        screenElements
-            .widget(
-                new TextWidget().setStringSupplier(
-                    () -> StatCollector.translateToLocal("gui.YOTTank.0") + " " + numberFormat.format(mStorage) + " L")
-                    .setTextAlignment(Alignment.CenterLeft)
-                    .setDefaultColor(COLOR_TEXT_WHITE.get())
-                    .setEnabled(widget -> getErrorDisplayID() == 0))
-            .widget(new FakeSyncWidget.BigIntegerSyncer(() -> mStorage, val -> mStorage = val))
-            .widget(
-                new TextWidget()
-                    .setStringSupplier(() -> StatCollector.translateToLocal("gui.YOTTank.1") + " " + getFluidName())
-                    .setTextAlignment(Alignment.CenterLeft)
-                    .setDefaultColor(COLOR_TEXT_WHITE.get())
-                    .setEnabled(widget -> getErrorDisplayID() == 0))
-            .widget(new FakeSyncWidget.FluidStackSyncer(() -> mFluid, val -> mFluid = val))
-            .widget(
-                new TextWidget()
-                    .setStringSupplier(
-                        () -> StatCollector.translateToLocal("gui.YOTTank.2") + " "
-                            + numberFormat.format(mStorageCurrent)
-                            + EnumChatFormatting.RESET
-                            + " L"
-                            + " ("
-                            + EnumChatFormatting.GREEN
-                            + getPercent()
-                            + "%"
-                            + EnumChatFormatting.RESET
-                            + ")")
-                    .setTextAlignment(Alignment.CenterLeft)
-                    .setDefaultColor(COLOR_TEXT_WHITE.get())
-                    .setEnabled(widget -> getErrorDisplayID() == 0))
-            .widget(new FakeSyncWidget.BigIntegerSyncer(() -> mStorageCurrent, val -> mStorageCurrent = val))
-            .widget(
-                new TextWidget()
-                    .setStringSupplier(
-                        () -> StatCollector.translateToLocal("gui.YOTTank.3") + " " + getLockedFluidName())
-                    .setDefaultColor(COLOR_TEXT_WHITE.get())
-                    .setTextAlignment(Alignment.CenterLeft)
-                    .setEnabled(widget -> getErrorDisplayID() == 0))
-            .widget(new FakeSyncWidget.FluidStackSyncer(() -> mLockedFluid, val -> mLockedFluid = val))
-            .widget(new FakeSyncWidget.BooleanSyncer(() -> isFluidLocked, val -> isFluidLocked = val))
-            .widget(new FakeSyncWidget.BooleanSyncer(() -> voidExcessEnabled, val -> voidExcessEnabled = val));
+    public boolean forceUseMui2() {
+        return true;
     }
 
     @Override
-    protected ButtonWidget createSafeVoidButton() {
-        return (ButtonWidget) new ButtonWidget().setOnClick((clickData, widget) -> {
-            TecTech.proxy.playSound(getBaseMetaTileEntity(), "fx_click");
-            voidExcessEnabled = !voidExcessEnabled;
-        })
-            .setPlayClickSound(false)
-            .setBackground(() -> {
-                List<UITexture> ret = new ArrayList<>();
-                ret.add(TecTechUITextures.BUTTON_STANDARD_16x16);
-                ret.add(
-                    voidExcessEnabled ? TecTechUITextures.OVERLAY_BUTTON_SAFE_VOID_ON
-                        : TecTechUITextures.OVERLAY_BUTTON_SAFE_VOID_OFF);
-                return ret.toArray(new IDrawable[0]);
-            })
-            .setPos(174, doesBindPlayerInventory() ? 132 : 156)
-            .setSize(16, 16)
-            .addTooltip(StatCollector.translateToLocal("gui.YOTTank.button.void"))
-            .setTooltipShowUpDelay(TOOLTIP_DELAY);
+    protected GTGuiTheme getGuiTheme() {
+        return GTGuiThemes.TRANSPARENT_FLUID_SLOT;
     }
 
     @Override
-    protected ButtonWidget createPowerPassButton() {
-        return (ButtonWidget) new ButtonWidget().setOnClick((clickData, widget) -> {
-            TecTech.proxy.playSound(getBaseMetaTileEntity(), "fx_click");
-            isFluidLocked = !isFluidLocked;
-            if (!widget.getContext()
-                .isClient()) mLockedFluid = isFluidLocked ? mFluid : null;
-        })
-            .setPlayClickSound(false)
-            .setBackground(() -> {
-                List<UITexture> ret = new ArrayList<>();
-                ret.add(TecTechUITextures.BUTTON_STANDARD_16x16);
-                ret.add(isFluidLocked ? GGUITextures.OVERLAY_BUTTON_LOCK_ON : GGUITextures.OVERLAY_BUTTON_LOCK_OFF);
-                return ret.toArray(new IDrawable[0]);
-            })
-            .setPos(174, doesBindPlayerInventory() ? 116 : 140)
-            .setSize(16, 16)
-            .addTooltip(StatCollector.translateToLocal("gui.YOTTank.button.locking"))
-            .setTooltipShowUpDelay(TOOLTIP_DELAY);
+    protected @NotNull MTEMultiBlockBaseGui getGui() {
+        return new MTEYottaFluidTankGui(this);
     }
 
     @Override

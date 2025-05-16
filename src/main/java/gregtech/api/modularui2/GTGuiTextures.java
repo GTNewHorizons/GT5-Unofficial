@@ -1,6 +1,8 @@
 package gregtech.api.modularui2;
 
+import static gregtech.api.enums.Mods.GTNHIntergalactic;
 import static gregtech.api.enums.Mods.GregTech;
+import static tectech.Reference.MODID;
 
 import com.cleanroommc.modularui.drawable.AdaptableUITexture;
 import com.cleanroommc.modularui.drawable.UITexture;
@@ -15,6 +17,18 @@ public final class GTGuiTextures {
 
     public static void init() {}
 
+    public static final UITexture TITLE_ANGULAR = UITexture.builder()
+        .location(GregTech.ID, "gui/tab/title_angular_%s")
+        .adaptable(4)
+        .imageSize(18, 18)
+        .canApplyTheme(true)
+        .build();
+    public static final UITexture TITLE_DARK = UITexture.builder()
+        .location(GregTech.ID, "gui/tab/title_dark")
+        .adaptable(4)
+        .imageSize(28, 28)
+        .canApplyTheme(true)
+        .build();
     // region background
 
     public static final UITexture BACKGROUND_STANDARD = UITexture.builder()
@@ -66,11 +80,33 @@ public final class GTGuiTextures {
             GTTextureIds.BACKGROUND_POPUP_STEEL,
             GTTextureIds.BACKGROUND_POPUP_PRIMITIVE)
         .build();
-
+    public static final UITexture BACKGROUND_TEXT_FIELD = UITexture.builder()
+        .location(GregTech.ID, "gui/background/text_field")
+        .imageSize(142, 28)
+        .adaptable(1)
+        .name(GTTextureIds.BACKGROUND_TERMINAL_STANDARD)
+        .build();
+    public static final UITexture TT_BACKGROUND_TEXT_FIELD = UITexture.builder()
+        .location(MODID, "gui/background/screen_blue")
+        .imageSize(90, 72)
+        .adaptable(2)
+        .name(GTTextureIds.BACKGROUND_TERMINAL_TECTECH)
+        .build();
     // endregion background
 
+    // region overlay
+    public static final UITexture GREGTECH_LOGO = fullImageGT("picture/gt_logo_standard");
+    public static final UITexture TECTECH_LOGO = UITexture.fullImage(MODID, "gui/picture/tectech_logo_dark");
+    // endregion overlay
     // region slot
 
+    public static final UITexture SLOT_EMPTY = UITexture.builder()
+        .location(GregTech.ID, "gui/slot/empty")
+        .imageSize(18, 18)
+        .adaptable(1)
+        .canApplyTheme()
+        .name(GTTextureIds.SLOT_EMPTY)
+        .build();
     public static final UITexture SLOT_ITEM_STANDARD = UITexture.builder()
         .location(GregTech.ID, "gui/slot/item_standard")
         .imageSize(18, 18)
@@ -248,6 +284,22 @@ public final class GTGuiTextures {
             GTTextureIds.OVERLAY_SLOT_BLOCK_PRIMITIVE)
         .build();
 
+    public static final UITexture OVERLAY_BUTTON_VOID_EXCESS_NONE = UITexture.builder()
+        .canApplyTheme(true)
+        .location(GregTech.ID, "gui/overlay_button/void_excess_none")
+        .build();
+    public static final UITexture OVERLAY_BUTTON_VOID_EXCESS_ITEM = UITexture.builder()
+        .canApplyTheme(true)
+        .location(GregTech.ID, "gui/overlay_button/void_excess_item")
+        .build();
+    public static final UITexture OVERLAY_BUTTON_VOID_EXCESS_FLUID = UITexture.builder()
+        .canApplyTheme(true)
+        .location(GregTech.ID, "gui/overlay_button/void_excess_fluid")
+        .build();
+    public static final UITexture OVERLAY_BUTTON_VOID_EXCESS_ALL = UITexture.builder()
+        .canApplyTheme(true)
+        .location(GregTech.ID, "gui/overlay_button/void_excess_all")
+        .build();
     public static final UITexture OVERLAY_BUTTON_INPUT_SEPARATION_ON = UITexture
         .fullImage(GregTech.ID, "gui/overlay_button/input_separation_on");
     public static final UITexture OVERLAY_BUTTON_INPUT_SEPARATION_ON_DISABLED = UITexture
@@ -341,7 +393,7 @@ public final class GTGuiTextures {
         .name(GTTextureIds.BUTTON_STANDARD_TOGGLE)
         .build();
     private static final SteamTextureRegisterer BUTTON_STEAM_PRESSED = SteamTextureRegisterer.builder()
-        .location("gui/button%s_pressed")
+        .location("gui/button/%s_pressed")
         .imageSize(18, 18)
         .adaptable(1)
         .canApplyTheme()
@@ -413,6 +465,15 @@ public final class GTGuiTextures {
     public static final UITexture OVERLAY_BUTTON_AUTOOUTPUT_ITEM = fullImageGT("overlay_button/autooutput_item");
     public static final UITexture OVERLAY_BUTTON_AUTOOUTPUT_FLUID = fullImageGT("overlay_button/autooutput_fluid");
     public static final UITexture OVERLAY_BUTTON_POWER_SWITCH_ON = fullImageGT("overlay_button/power_switch_on");
+    public static final UITexture OVERLAY_BUTTON_POWER_SWITCH_OFF = fullImageGT("overlay_button/power_switch_off");
+    public static final UITexture OVERLAY_BUTTON_POWER_SWITCH_DISABLED = fullImageGT(
+        "overlay_button/power_switch_disabled");
+    public static final UITexture TT_OVERLAY_BUTTON_POWER_SWITCH_ON = UITexture
+        .fullImage(MODID, "gui/overlay_button/power_switch_on");
+    public static final UITexture TT_OVERLAY_BUTTON_POWER_SWITCH_OFF = UITexture
+        .fullImage(MODID, "gui/overlay_button/power_switch_off");
+    public static final UITexture TT_OVERLAY_BUTTON_POWER_SWITCH_DISABLED = UITexture
+        .fullImage(MODID, "gui/overlay_button/power_switch_disabled");
     public static final UITexture OVERLAY_BUTTON_PROGRESS = fullImageGT("overlay_button/progress");
     public static final UITexture OVERLAY_BUTTON_REDSTONE_OFF = fullImageGT("overlay_button/redstone_off");
     public static final UITexture OVERLAY_BUTTON_REDSTONE_ON = fullImageGT("overlay_button/redstone_on");
@@ -456,6 +517,18 @@ public final class GTGuiTextures {
         .adaptable(2)
         .tiled(16, 16)
         .build();
+
+    public static final UITexture PICTURE_TECTECH_LOGO_DARK = UITexture.builder()
+        .location(MODID, "gui/picture/tectech_logo_dark")
+        .fullImage()
+        .name(GTTextureIds.PICTURE_TECTECH_LOGO_DARK)
+        .build();
+    public static final UITexture PICTURE_INTERGALACTIC_LOGO = UITexture.builder()
+        .location(GTNHIntergalactic.ID, "gui/picture/space_elevator_logo")
+        .fullImage()
+        .name(GTTextureIds.PICTURE_INTERGALACTIC_LOGO)
+        .build();
+
     public static final UITexture PICTURE_BARTWORKS_LOGO_STANDARD = UITexture.builder()
         .location(MainMod.MOD_ID, "GUI/picture/bw_logo_47x21")
         .fullImage()
