@@ -1,21 +1,5 @@
 package gregtech.api.util;
 
-import static gregtech.api.recipe.RecipeMaps.scannerFakeRecipes;
-import static gregtech.api.util.GTRecipeMapUtil.convertCellToFluid;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Optional;
-
-import net.minecraft.init.Items;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.fluids.FluidStack;
-
-import org.apache.commons.lang3.ArrayUtils;
-
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
@@ -32,6 +16,20 @@ import gregtech.common.items.MetaGeneratedItem03;
 import gtnhlanth.common.item.ItemPhotolithographicMask;
 import gtnhlanth.common.item.MaskList;
 import gtnhlanth.common.register.LanthItemList;
+import net.minecraft.init.Items;
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.FluidStack;
+import org.apache.commons.lang3.ArrayUtils;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Optional;
+
+import static gregtech.api.recipe.RecipeMaps.scannerFakeRecipes;
+import static gregtech.api.util.GTRecipeMapUtil.convertCellToFluid;
 
 // this class is intended to be import-static-ed on every recipe script
 // so take care to not put unrelated stuff here!
@@ -216,6 +214,20 @@ public class GTRecipeConstants {
      */
     public static final RecipeMetadataKey<Integer> PRECISE_ASSEMBLER_CASING_TIER = SimpleRecipeMetadataKey
         .create(Integer.class, "precise_assembler_casing_tier");
+    /**
+     * Environmentally Controlled Chemical Facility parameters
+     */
+    public static final RecipeMetadataKey<Integer> ECCF_PRESSURE = SimpleRecipeMetadataKey
+        .create(Integer.class, "ECCF_PRESSURE");
+    public static final RecipeMetadataKey<Integer> ECCF_TEMPERATURE = SimpleRecipeMetadataKey
+        .create(Integer.class, "ECCF_TEMPERATURE");
+    /**
+     * Planet tier
+     */
+    public static final RecipeMetadataKey<Integer> PLANET_TIER = SimpleRecipeMetadataKey
+        .create(Integer.class, "PLANET_TIER");
+    public static final RecipeMetadataKey<String> DIMENSION_NAME = SimpleRecipeMetadataKey
+        .create(String.class, "DIMENSION_NAME");
     /**
      * CoAL casing tier.
      */

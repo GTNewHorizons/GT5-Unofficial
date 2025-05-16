@@ -857,6 +857,13 @@ GT5U.fusion.plasma=Plasma Output
 
 GT5U.tpm.parallelwindow=Open Parallel Configuration Window
 
+GT5U.ECCF.pressure=Current pressure
+GT5U.ECCF.temperature=Current temperature
+GT5U.ECCF.pressure_threshold=Pressure threshold
+GT5U.ECCF.temperature_threshold=Temperature threshold
+GT5U.ECCF.pressure_required=Pressure required
+GT5U.ECCF.temperature_required=Temperature required
+
 GT5U.EBF.heat=Heat capacity
 GT5U.coil.None=None
 GT5U.coil.ULV=None
@@ -1031,6 +1038,8 @@ gt.recipe.purificationplantuvtreatment=High Energy Laser Treatment
 gt.recipe.purificationplantdegasifier=Degassing
 gt.recipe.purificationplantquarkextractor=Baryonic Perfection
 gt.recipe.quantumcomputer=QC Components
+gt.recipe.eccf=Environmentally Controlled Chemical Facility
+
 
 # Recipe categories
 gt.recipe.category.arc_furnace_recycling=Arc Furnace Recycling
@@ -1042,6 +1051,7 @@ gt.recipe.category.alloy_smelter_molding=Alloy Smelter Molding
 gt.recipe.category.forge_hammer_recycling=Forge Hammer Recycling
 gt.recipe.category.tic_part_extruding=TiC Part Extruding
 gt.recipe.category.tic_bolt_molding=TiC Bolt Molding
+gt.recipe.category.planets=Planet Conditions
 
 GT5U.machines.tier=Tier
 GT5U.machines.workarea=Work Area
@@ -1304,6 +1314,10 @@ channels.gregtech.stabilisation=Decides the tier of Stabilisation Field Generato
 channels.gregtech.time_dilation=Decides the tier of Time Dilation Field Generator. Starts at §6Crude Time Dilation Field Generator§r at value 1 and ends at §6Gallifreyan Time Dilation Field Generator§r at value 9.
 channels.gregtech.gt_no_hatch=When set, disable automatic hatch placement
 channels.gregtech.field=Decides the tier of T.F.F.T. Storage Field.
+channels.gregtech.heat_pipe=Decides the tier of §6ECCF heating module§r. Starts at value 1 and ends at value 4.
+channels.gregtech.cool_pipe=Decides the tier of §6ECCF cooling module§r. Starts at value 1 and ends at value 4.
+channels.gregtech.vacuum_pipe=Decides the tier of §6ECCF compressor module§r. Starts at value 1 and ends at value 4.
+channels.gregtech.compress_pipe=Decides the tier of §6ECCF vacuum pump module§r. Starts at value 1 and ends at value 4.
 
 GT5U.gui.select.current=Current:
 GT5U.gui.button.liquid_filling_OFF=§7Liquid Filling: §4OFF
@@ -1454,6 +1468,7 @@ GT5U.gui.text.enabled=§aEnabled§f
 GT5U.gui.text.disabled=§cDisabled§f
 GT5U.gui.text.lma_craftingfx=Show Crafting Effects
 GT5U.gui.text.repair_tip=Click with Tool to repair.
+GT5U.gui.text.conditions_range=§4Out of recipe conditions
 GT5U.gui.text.item.amount=Item Amount
 GT5U.gui.text.contents=§7Contents:§r
 GT5U.gui.text.content-entry=§7%s:§9 %s§r
@@ -1620,7 +1635,12 @@ GT5U.nei.nuclear.breeder.neutron_reflecting=Neutron reflecting Breeder
 GT5U.nei.nuclear.breeder.heat_neutral=Heat neutral Breeder
 GT5U.nei.nuclear.breeder.reactor_hull_heat=Every %d reactor hull heat\nincrease speed by %d00%%
 GT5U.nei.nuclear.breeder.required_pulse=Required pulses: %d
-
+GT5U.nei.temperature=Temperature: %s - %s K
+GT5U.nei.pressure=Pressure: %s - %s
+GT5U.nei.bare_temperature=Temperature
+GT5U.nei.bare_pressure=Pressure
+GT5U.nei.bare_tier=Tier
+GT5U.nei.bare_name=Name
 
 GT5U.config.colormodulation=Color Modulator
 GT5U.config.colormodulation.cable_insulation=Cable Insulation
@@ -2791,7 +2811,6 @@ GTPP.tooltip.meta_special.quantum_modulation=Provides quantum modulation
 GTPP.tooltip.meta_food.unless_starving=I wouldn't eat this unless I was starving
 GTPP.tooltip.meta_food.better_cooked=Doesn't look any better cooked
 GTPP.tooltip.meta_food.warm_touch=Warm to the touch
-GTPP.tooltip.dust-decay-hint=Only decays in a %s or a %s
 
 # GTPP structure hints
 GTPP.tooltip.structure.anvil=Anvil
