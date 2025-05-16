@@ -27,6 +27,7 @@ import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.network.NetworkUtils;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.ModularScreen;
+import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 
 import cpw.mods.fml.relauncher.Side;
@@ -359,7 +360,7 @@ public abstract class CommonMetaTileEntity implements IMetaTileEntity {
 
     /**
      * Gets the first ItemStack in the bus, reading from the top left to bottom right
-     * 
+     *
      * @return the first ItemStack in the bus
      */
     public ItemStack getFirstStack() {
@@ -626,7 +627,7 @@ public abstract class CommonMetaTileEntity implements IMetaTileEntity {
      * @inheritDoc
      */
     @Override
-    public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager) {
+    public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager, UISettings uiSettings) {
         return null;
     }
 

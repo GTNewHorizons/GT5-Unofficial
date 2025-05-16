@@ -16,6 +16,7 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.modularui.IAddGregtechLogo;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
+import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
 import gregtech.api.metatileentity.implementations.MTEHatchMuffler;
 import gregtech.api.metatileentity.implementations.MTEMultiBlockBase;
 import gregtech.api.render.TextureFactory;
@@ -180,24 +181,23 @@ public class MTEHatchMufflerAdvanced extends MTEHatchMuffler implements IAddGreg
      *         parent multiblock.
      */
     private boolean findAirFilter(MetaTileEntity parentTileEntity) {
-        if (hasAirFilter()) return true; // Has a filter in inventory.
-        if (mInventory[SLOT_FILTER] != null) return false; // Has a non-filter item in inventory.
-        if (parentTileEntity == null) return false; // Unknown parent multiblock.
-
-        if (parentTileEntity instanceof MTEMultiBlockBase GTMultiBase) {
-            for (var inputBus : GTMultiBase.mInputBusses) {
-                for (ItemStack stack : inputBus.mInventory) {
-                    if (isAirFilter(stack)) {
-                        ItemStack stackCopy = stack.copy();
-                        if (GTMultiBase.depleteInput(stack)) {
-                            mInventory[SLOT_FILTER] = stackCopy;
-                            return true;
-                        }
+        if (hasAirFilter()) return true;
+        if (mInventory[SLOT_FILTER] != null) return false;
+        if (!(parentTileEntity instanceof MTEMultiBlockBase multiBase)) return false;
+        multiBase.startRecipeProcessing();
+        for (MTEHatchInputBus inputBus : multiBase.mInputBusses) {
+            for (ItemStack stack : inputBus.mInventory) {
+                if (isAirFilter(stack)) {
+                    ItemStack stackCopy = stack.copy();
+                    if (multiBase.depleteInput(stack)) {
+                        mInventory[SLOT_FILTER] = stackCopy;
+                        multiBase.endRecipeProcessing();
+                        return true;
                     }
                 }
             }
         }
-
+        multiBase.endRecipeProcessing();
         return false;
     }
 

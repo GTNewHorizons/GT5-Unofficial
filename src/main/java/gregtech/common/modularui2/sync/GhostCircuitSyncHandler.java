@@ -10,7 +10,7 @@ import net.minecraft.network.PacketBuffer;
 import com.cleanroommc.modularui.network.NetworkUtils;
 import com.cleanroommc.modularui.utils.MouseData;
 import com.cleanroommc.modularui.utils.item.IItemHandler;
-import com.cleanroommc.modularui.value.sync.ItemSlotSH;
+import com.cleanroommc.modularui.value.sync.PhantomItemSlotSH;
 import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 
 import gregtech.api.util.item.GhostCircuitItemStackHandler;
@@ -20,7 +20,7 @@ import gregtech.common.items.ItemIntegratedCircuit;
  * Sync handler dedicated for {@link gregtech.common.modularui2.widget.GhostCircuitSlotWidget
  * GhostCircuitSlotWidget}.
  */
-public class GhostCircuitSyncHandler extends ItemSlotSH {
+public class GhostCircuitSyncHandler extends PhantomItemSlotSH {
 
     public static final int SYNC_CIRCUIT_CONFIG = 10;
 
