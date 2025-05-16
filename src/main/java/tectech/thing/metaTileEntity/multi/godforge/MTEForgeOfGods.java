@@ -2861,7 +2861,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
             .addStructureInfo("Total blocks needed for the structure with " + getRingText("1", "2", "3") + "rings:")
             .addStructureInfo(
                 getRingText("3943", "7279", "11005") + "Transcendentally Amplified Magnetic Confinement Casing")
-            .addStructureInfo(getRingText("2819", "4831", "6567") + "Singularity Reinforced Stellar Shielding Casing")
+            .addStructureInfo(getRingText("2818", "4831", "6567") + "Singularity Reinforced Stellar Shielding Casing")
             .addStructureInfo(getRingText("272", "512", "824") + "Celestial Matter Guidance Casing")
             .addStructureInfo(getRingText("130", "144", "158") + "Boundless Gravitationally Severed Structure Casing")
             .addStructureInfo(getRingText("9", "54", "155") + "Spatially Transcendent Gravitational Lens Block")
