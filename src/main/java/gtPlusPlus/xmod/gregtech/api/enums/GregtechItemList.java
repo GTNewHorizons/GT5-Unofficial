@@ -418,6 +418,7 @@ public enum GregtechItemList implements IGregtechItemContainer {
     // Air Intake hatch
     Hatch_Air_Intake,
     Hatch_Air_Intake_Extreme,
+    Hatch_Air_Intake_Atmospheric,
 
     // Reservoir Hatch
     Hatch_Reservoir,
@@ -717,6 +718,7 @@ public enum GregtechItemList implements IGregtechItemContainer {
     RadioactivityCatalyst,
     RareEarthGroupCatalyst,
     SimpleNaquadahCatalyst,
+    HellishForceCatalyst,
     AdvancedNaquadahCatalyst,
     RawIntelligenceCatalyst,
     UltimatePlasticCatalyst,
@@ -769,6 +771,7 @@ public enum GregtechItemList implements IGregtechItemContainer {
     MilledAlmandine,
     MilledPyrope,
     MilledMonazite,
+    MilledNetherite,
 
     // Compressed Stuff
     CactusCharcoal,
@@ -815,6 +818,10 @@ public enum GregtechItemList implements IGregtechItemContainer {
     TripleCompressedGlowstone,
     QuadrupleCompressedGlowstone,
     QuintupleCompressedGlowstone,
+
+    CompressedNetherrack,
+    DoubleCompressedNetherrack,
+    TripleCompressedNetherrack,
 
     // IC2 Rotors
     EnergeticAlloyRotor,

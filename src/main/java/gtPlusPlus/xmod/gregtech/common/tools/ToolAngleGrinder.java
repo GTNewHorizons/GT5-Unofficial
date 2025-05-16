@@ -148,7 +148,6 @@ public class ToolAngleGrinder extends GTTool {
         aPlayer.triggerAchievement(AchievementList.buildSword);
         try {
             GTMod.achievements.issueAchievement(aPlayer, "tools");
-            GTMod.achievements.issueAchievement(aPlayer, "unitool");
         } catch (final Exception e) {}
     }
 

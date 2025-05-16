@@ -1,10 +1,10 @@
 package gregtech.api.util;
 
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
@@ -18,53 +18,40 @@ import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.event.world.ChunkEvent;
 import net.minecraftforge.event.world.WorldEvent;
 
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.eventhandler.EventPriority;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import cpw.mods.fml.common.gameevent.TickEvent;
 
 /**
  * Provide a fake IBlockAccess to support CTM. Facade are supposed to set these when they are placed/received by client.
  */
 public class GTRenderingWorld implements IBlockAccess {
 
-    private static final GTRenderingWorld INSTANCE = new GTRenderingWorld();
+    private static final ThreadLocal<GTRenderingWorld> INSTANCE = ThreadLocal.withInitial(GTRenderingWorld::new);
     /*
      * I do not think this map would ever grow too huge, so I won't go too overcomplicated on this one
      */
-    private final Map<ChunkPosition, BlockInfo> infos = new HashMap<>();
-    private final Map<ChunkCoordIntPair, Set<ChunkPosition>> index = new HashMap<>();
+    private static final Map<ChunkPosition, BlockInfo> infos = new ConcurrentHashMap<>();
+    private static final Map<ChunkCoordIntPair, Set<ChunkPosition>> index = new ConcurrentHashMap<>();
     private IBlockAccess mWorld = Minecraft.getMinecraft().theWorld;
 
-    private GTRenderingWorld() {
-        new FMLEventHandler();
+    static {
         new ForgeEventHandler();
     }
 
-    public static GTRenderingWorld getInstance() {
-        return INSTANCE;
-    }
-
     public static GTRenderingWorld getInstance(IBlockAccess aWorld) {
-        if (aWorld == INSTANCE) return INSTANCE;
-        if (aWorld == null) INSTANCE.mWorld = Minecraft.getMinecraft().theWorld;
-        else INSTANCE.mWorld = aWorld;
-        return INSTANCE;
+        if (aWorld instanceof GTRenderingWorld thiz) return thiz;
+        if (aWorld == null) INSTANCE.get().mWorld = Minecraft.getMinecraft().theWorld;
+        else INSTANCE.get().mWorld = aWorld;
+        return INSTANCE.get();
     }
 
-    private void setWorld(IBlockAccess aWorld) {
-        if (aWorld == null) mWorld = Minecraft.getMinecraft().theWorld;
-        else mWorld = aWorld;
-    }
-
-    public void register(int x, int y, int z, Block block, int meta) {
+    public static void register(int x, int y, int z, Block block, int meta) {
         ChunkPosition key = new ChunkPosition(x, y, z);
         infos.put(key, new BlockInfo(block, meta));
         index.computeIfAbsent(new ChunkCoordIntPair(x >> 4, z >> 4), p -> new HashSet<>())
             .add(key);
     }
 
-    public void unregister(int x, int y, int z, Block block, int meta) {
+    public static void unregister(int x, int y, int z, Block block, int meta) {
         ChunkPosition key = new ChunkPosition(x, y, z);
         if (infos.remove(key, new BlockInfo(block, meta))) {
             ChunkCoordIntPair chunkKey = new ChunkCoordIntPair(x >> 4, z >> 4);
@@ -126,21 +113,7 @@ public class GTRenderingWorld implements IBlockAccess {
         return getBlock(x, y, z).isSideSolid(this, x, y, z, side);
     }
 
-    public class FMLEventHandler {
-
-        public FMLEventHandler() {
-            FMLCommonHandler.instance()
-                .bus()
-                .register(this);
-        }
-
-        @SubscribeEvent(priority = EventPriority.HIGHEST)
-        public void onRenderTickStart(TickEvent.RenderTickEvent e) {
-            if (e.phase == TickEvent.Phase.START) mWorld = Minecraft.getMinecraft().theWorld;
-        }
-    }
-
-    public class ForgeEventHandler {
+    public static class ForgeEventHandler {
 
         private ForgeEventHandler() {
             MinecraftForge.EVENT_BUS.register(this);
