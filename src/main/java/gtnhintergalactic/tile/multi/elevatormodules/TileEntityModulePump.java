@@ -207,13 +207,19 @@ public abstract class TileEntityModulePump extends TileEntityModuleBase {
     @Override
     protected void initParameters() {
         recipeParallelParameters = new Parameter.IntegerParameter[getParallelRecipes()];
-        batchSizeParameter = new Parameter.IntegerParameter(1, () -> 1, () -> 128, "tt.multiblock.batchSize");
+        batchSizeParameter = new Parameter.IntegerParameter(
+            1,
+            () -> 1,
+            () -> 128,
+            "spacePump_batchSize",
+            "tt.multiblock.batchSize");
         parameterList.add(batchSizeParameter);
         for (int i = 0; i < getParallelRecipes(); i++) {
             recipeParallelParameters[i] = new Parameter.IntegerParameter(
                 getRecipeParallels(),
                 () -> 1,
                 this::getRecipeParallels,
+                "spacePump_parallel_" + i,
                 "tt.multiblock.parallel",
                 i + 1);
             parameterList.add(recipeParallelParameters[i]);

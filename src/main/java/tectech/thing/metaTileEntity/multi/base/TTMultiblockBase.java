@@ -707,7 +707,7 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
         NBTTagCompound parameterMapTag = new NBTTagCompound();
         for (int i = 0; i < parameterList.size(); i++) {
             Parameter<?> parameter = parameterList.get(i);
-            parameter.saveNBT(parameterMapTag, i);
+            parameter.saveNBT(parameterMapTag);
         }
         aNBT.setTag("parameters", parameterMapTag);
         NBTTagCompound paramI = new NBTTagCompound();
@@ -782,9 +782,8 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
         if (aNBT.hasKey("parameters")) {
             NBTTagCompound parameters = aNBT.getCompoundTag("parameters");
             if (parameters.tagMap != null && !parameters.tagMap.isEmpty()) {
-                for (int i = 0; i < parameterList.size(); i++) {
-                    parameterList.get(i)
-                        .loadNBT(parameters, i);
+                for (Parameter<?> parameter : parameterList) {
+                    parameter.loadNBT(parameters);
                 }
             }
 

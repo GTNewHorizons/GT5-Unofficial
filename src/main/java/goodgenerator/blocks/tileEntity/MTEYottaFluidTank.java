@@ -109,6 +109,7 @@ public class MTEYottaFluidTank extends MTETooltipMultiBlockBaseEM implements ICo
             20,
             () -> 1,
             () -> 100,
+            "yottank_tickrate",
             "gt.blockmachines.YottaFluidTank.cfgi.0");
         parameterList.add(tickRateUpdate);
     }

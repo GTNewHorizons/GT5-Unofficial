@@ -106,11 +106,13 @@ public class MTEMicrowave extends TTMultiblockBase implements ISurvivalConstruct
             1000,
             () -> 128,
             () -> Integer.MAX_VALUE,
+            "microwave_power",
             "gt.blockmachines.multimachine.tm.microwave.power");
         timerParameter = new Parameter.IntegerParameter(
             360,
             () -> 1,
             () -> 3000,
+            "microwave_timer",
             "gt.blockmachines.multimachine.tm.microwave.timer");
         parameterList.add(powerParameter);
         parameterList.add(timerParameter);
