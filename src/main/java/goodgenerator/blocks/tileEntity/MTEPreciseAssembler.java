@@ -262,9 +262,6 @@ public class MTEPreciseAssembler extends MTEExtendedPowerMultiBlockBase<MTEPreci
                         return CheckRecipeResultRegistry.insufficientMachineTier(recipe.mSpecialValue);
                     }
                 }
-                if (availableVoltage < recipe.mEUt) {
-                    return CheckRecipeResultRegistry.insufficientPower(recipe.mEUt);
-                }
                 return CheckRecipeResultRegistry.SUCCESSFUL;
             }
 
@@ -287,7 +284,7 @@ public class MTEPreciseAssembler extends MTEExtendedPowerMultiBlockBase<MTEPreci
         logic.setAvailableVoltage(getMachineVoltageLimit());
         logic.setAvailableAmperage(useSingleAmp ? 1 : getMaxInputAmps());
         logic.setAmperageOC(true);
-        logic.setMaxTierSkips(1);
+        logic.setMaxTierSkips(0);
     }
 
     public long getMachineVoltageLimit() {

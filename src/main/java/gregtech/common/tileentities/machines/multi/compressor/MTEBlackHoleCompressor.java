@@ -635,15 +635,20 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
             @Override
             protected CheckRecipeResult validateRecipe(@NotNull GTRecipe recipe) {
                 if (blackHoleStatus == 1) return CheckRecipeResultRegistry.NO_BLACK_HOLE;
-
-                // Cap recipes to energy hatch + 1
-                if (GTUtility.getTier(getAverageInputVoltage()) < GTUtility.getTier(recipe.mEUt) - 1)
-                    return CheckRecipeResultRegistry.insufficientVoltage(recipe.mEUt);
                 return super.validateRecipe(recipe);
             }
         }.setMaxParallelSupplier(this::getTrueParallel)
             .setEuModifier(0.7F)
             .setSpeedBonus(0.2F);
+    }
+
+    @Override
+    protected void setProcessingLogicPower(ProcessingLogic logic) {
+        boolean useSingleAmp = mEnergyHatches.size() == 1 && mExoticEnergyHatches.isEmpty();
+        logic.setAvailableVoltage(getAverageInputVoltage());
+        logic.setAvailableAmperage(useSingleAmp ? 1 : getMaxInputAmps());
+        logic.setAmperageOC(true);
+        logic.setMaxTierSkips(1);
     }
 
     @Override
