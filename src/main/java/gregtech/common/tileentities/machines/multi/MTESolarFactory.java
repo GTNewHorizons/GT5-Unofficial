@@ -465,26 +465,6 @@ public class MTESolarFactory extends MTEExtendedPowerMultiBlockBase<MTESolarFact
     }
 
     @Override
-    public int getMaxEfficiency(ItemStack aStack) {
-        return 10000;
-    }
-
-    @Override
-    public boolean isCorrectMachinePart(ItemStack aStack) {
-        return true;
-    }
-
-    @Override
-    public int getDamageToComponent(ItemStack aStack) {
-        return 0;
-    }
-
-    @Override
-    public boolean explodesOnComponentBreak(ItemStack aStack) {
-        return false;
-    }
-
-    @Override
     public boolean supportsInputSeparation() {
         return true;
     }
