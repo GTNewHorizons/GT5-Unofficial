@@ -1,12 +1,25 @@
 package gregtech.common.tileentities.machines.multi.nanochip.hatches;
 
 import static gregtech.api.enums.Dyes.MACHINE_METAL;
+import static gregtech.common.modularui2.util.CommonGuiComponents.gridTemplate1by1;
 import static tectech.thing.metaTileEntity.hatch.MTEHatchDataConnector.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Map;
 
+import com.cleanroommc.modularui.factory.PosGuiData;
+import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.screen.UISettings;
+import com.cleanroommc.modularui.utils.item.ItemStackHandler;
+import com.cleanroommc.modularui.value.sync.PanelSyncManager;
+import com.cleanroommc.modularui.widgets.layout.Grid;
+import com.cleanroommc.modularui.widgets.slot.ModularSlot;
+import com.cleanroommc.modularui.widgets.slot.PhantomItemSlot;
+import gregtech.api.enums.ItemList;
+import gregtech.api.metatileentity.MetaTileEntity;
+import gregtech.api.modularui2.GTGuis;
+import gregtech.common.tileentities.machines.multi.nanochip.util.ReadOnlyItemSlot;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -30,15 +43,17 @@ public abstract class MTEHatchVacuumConveyor extends MTEHatch implements IConnec
 
     public CircuitComponentPacket contents;
 
+    private ItemStackHandler fakeItemHandler;
+
     // Identifier used to identify this hatch uniquely inside a multiblock.
     public String identifier = null;
 
     protected MTEHatchVacuumConveyor(int aID, String aName, String aNameRegional, int aTier, String[] descr) {
-        super(aID, aName, aNameRegional, aTier, 0, descr);
+        super(aID, aName, aNameRegional, aTier, 27, descr);
     }
 
     protected MTEHatchVacuumConveyor(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
-        super(aName, aTier, 0, aDescription, aTextures);
+        super(aName, aTier, 27, aDescription, aTextures);
     }
 
     @Override
@@ -139,6 +154,31 @@ public abstract class MTEHatchVacuumConveyor extends MTEHatch implements IConnec
         }
         super.loadNBTData(aNBT);
     }
+
+    @Override
+    public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
+        openGui(aPlayer);
+        return true;
+    }
+
+    @Override
+    protected boolean useMui2() {
+        return true;
+    }
+
+    @Override
+    public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager, UISettings uiSettings) {
+        for(int i=0; i<27; i++){
+            mInventory[i] = ItemList.Battery_Buffer_1by1_LV.get(i);
+        }
+        syncManager.registerSlotGroup("item_inv", 27);
+        ModularPanel panel = GTGuis.mteTemplatePanelBuilder(this, data, syncManager, uiSettings).build();
+        Grid grid = new Grid().coverChildren()
+            .pos(7, 7)
+            .mapTo(9, 27, index -> new ReadOnlyItemSlot().slot(new ModularSlot(inventoryHandler, index).slotGroup("item_inv")));
+        return panel.child(grid);
+    }
+
 
     @Override
     public String[] getInfoData() {
