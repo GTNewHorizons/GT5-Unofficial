@@ -662,6 +662,11 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 NANOCHIP_MODULE_OPTICAL_ORGANIZER.ID,
                 "multimachine.nanochipmodule.opticalorganizer",
                 "Optically Optimized Organizer").getStackForm(1));
+        ItemList.NanoChipModule_SheetSupervisor.set(
+            new SheetSupervisor(
+                NANOCHIP_MODULE_SHEET_SUPERVISOR.ID,
+                "multimachine.nanochipmodule.sheetsupervisor",
+                "Atomic Sheet Supervisor").getStackForm(1));
 
         if (Thaumcraft.isModLoaded()) {
             ItemList.ResearchCompleter.set(

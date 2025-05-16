@@ -1421,10 +1421,30 @@ public final class RecipeMaps {
         .of("gt.recipe.nanochip.superconductorsplitter")
         .maxIO(1, 1, 0, 0)
         .minInputs(1, 0)
+        .recipeTransformer(recipe -> {
+            CircuitComponent output = CircuitComponent.getFromFakeStackUnsafe(recipe.mOutputs[0]);
+            CircuitComponent input = CircuitComponent.getFromFakeStackUnsafe(recipe.mInputs[0]);
+            SuperconductorSplitter.registerLocalName(input.getLocalizedName(), output);
+        })
         .build();
     public static final RecipeMap<RecipeMapBackend> nanochipOpticalOrganizer = RecipeMapBuilder
         .of("gt.recipe.nanochip.opticalorganizer")
         .maxIO(1, 1, 0, 0)
         .minInputs(1, 0)
+        .recipeTransformer(recipe -> {
+            CircuitComponent output = CircuitComponent.getFromFakeStackUnsafe(recipe.mOutputs[0]);
+            CircuitComponent input = CircuitComponent.getFromFakeStackUnsafe(recipe.mInputs[0]);
+            OpticalOrganizer.registerLocalName(input.getLocalizedName(), output);
+        })
+        .build();
+    public static final RecipeMap<RecipeMapBackend> nanochipSheetSupervisor = RecipeMapBuilder
+        .of("gt.recipe.nanochip.sheetsupervisor")
+        .maxIO(1, 1, 0, 0)
+        .minInputs(1, 0)
+        .recipeTransformer(recipe -> {
+            CircuitComponent output = CircuitComponent.getFromFakeStackUnsafe(recipe.mOutputs[0]);
+            CircuitComponent input = CircuitComponent.getFromFakeStackUnsafe(recipe.mInputs[0]);
+            SheetSupervisor.registerLocalName(input.getLocalizedName(), output);
+        })
         .build();
 }
