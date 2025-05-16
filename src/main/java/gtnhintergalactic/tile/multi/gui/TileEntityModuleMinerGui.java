@@ -25,7 +25,7 @@ import net.minecraft.util.EnumChatFormatting;
 import com.cleanroommc.modularui.api.IPanelHandler;
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.api.widget.IWidget;
-import com.cleanroommc.modularui.drawable.DrawableArray;
+import com.cleanroommc.modularui.drawable.DrawableStack;
 import com.cleanroommc.modularui.drawable.DynamicDrawable;
 import com.cleanroommc.modularui.drawable.GuiTextures;
 import com.cleanroommc.modularui.drawable.ItemDrawable;
@@ -236,7 +236,7 @@ public class TileEntityModuleMinerGui extends TileEntityModuleBaseGui {
                         droneTierSyncer.getValue(),
                         syncManager,
                         index)) {
-                    return new DrawableArray(
+                    return new DrawableStack(
                         GuiTextures.SLOT_ITEM,
                         new Rectangle().setColor(spaceMiner.isWhitelisted ? Color.rgb(0, 255, 0) : Color.rgb(255, 0, 0))
                             .asIcon()
@@ -424,7 +424,7 @@ public class TileEntityModuleMinerGui extends TileEntityModuleBaseGui {
                 ButtonWidget asteroidButton = new ButtonWidget<>().size(18, 18)
                     .background(new DynamicDrawable(() -> {
                         if (filterContainsAsteroidOre(data)) {
-                            return new DrawableArray(
+                            return new DrawableStack(
                                 GuiTextures.BUTTON_CLEAN,
                                 new Rectangle()
                                     .setColor(spaceMiner.isWhitelisted ? Color.rgb(0, 255, 0) : Color.rgb(255, 0, 0))
@@ -592,7 +592,7 @@ public class TileEntityModuleMinerGui extends TileEntityModuleBaseGui {
                         distanceSyncer.getValue(),
                         droneFilterSyncer.getValue(),
                         moduleTierFilterSyncer.getValue())) {
-                        return new DrawableArray(
+                        return new DrawableStack(
                             new Rectangle().setColor(Color.rgb(0, 255, 0))
                                 .asIcon()
                                 .size(16, 16),
@@ -922,7 +922,7 @@ public class TileEntityModuleMinerGui extends TileEntityModuleBaseGui {
                 .background(new DynamicDrawable(() -> {
                     if (droneSelectorPanel != null) return GuiTextures.SLOT_ITEM;
                     if (filterContainsOre(ore)) {
-                        return new DrawableArray(
+                        return new DrawableStack(
                             GuiTextures.SLOT_ITEM,
                             new Rectangle()
                                 .setColor(spaceMiner.isWhitelisted ? Color.rgb(0, 255, 0) : Color.rgb(255, 0, 0))
@@ -1146,7 +1146,7 @@ public class TileEntityModuleMinerGui extends TileEntityModuleBaseGui {
 
         Flow column = new Column().sizeRel(1);
         ListWidget<IWidget, ?> outputListWidget = new ListWidget<>()
-            .background(new DrawableArray(new Rectangle().setColor(Color.rgb(91, 110, 225))))
+            .background(new DrawableStack(new Rectangle().setColor(Color.rgb(91, 110, 225))))
             .widthRel(1)
             .height(100)
             .marginBottom(4)
