@@ -155,11 +155,6 @@ public class MTENeutronActivator extends MTETooltipMultiBlockBaseEM implements I
     }
 
     @Override
-    public int getMaxEfficiency(ItemStack aStack) {
-        return 10000;
-    }
-
-    @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         eV = aNBT.getInteger("mKeV");
         mCeil = aNBT.getInteger("mCeil");

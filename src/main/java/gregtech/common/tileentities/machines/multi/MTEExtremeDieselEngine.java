@@ -165,11 +165,6 @@ public class MTEExtremeDieselEngine extends MTEDieselEngine {
     }
 
     @Override
-    public int getMaxEfficiency(ItemStack aStack) {
-        return boostEu ? 30000 : 10000;
-    }
-
-    @Override
     public int getPollutionPerSecond(ItemStack aStack) {
         return GTMod.gregtechproxy.mPollutionExtremeCombustionEnginePerSecond;
     }

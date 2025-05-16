@@ -446,11 +446,6 @@ public class MTELargeEssentiaGenerator extends MTETooltipMultiBlockBaseEM
     }
 
     @Override
-    public int getMaxEfficiency(ItemStack aStack) {
-        return 10000;
-    }
-
-    @Override
     public String[] getStructureDescription(ItemStack itemStack) {
         return DescTextLocalization.addText("LargeEssentiaGenerator.hint", 6);
     }
