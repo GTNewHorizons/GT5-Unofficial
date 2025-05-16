@@ -2,6 +2,7 @@ package gregtech.common.tileentities.machines.multi.gui.nanochip;
 
 import static gregtech.api.modularui2.GTGuis.createPopUpPanel;
 
+import com.cleanroommc.modularui.screen.UISettings;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 
@@ -53,8 +54,8 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui {
     }
 
     @Override
-    public ModularPanel build(PosGuiData data, PanelSyncManager syncManager) {
-        ModularPanel ui = super.build(data, syncManager);
+    public ModularPanel build(PosGuiData data, PanelSyncManager syncManager, UISettings uiSettings) {
+        ModularPanel ui = super.build(data, syncManager, uiSettings);
         IPanelHandler popupPanel = syncManager.panel("popup", (m, h) -> createGREGOSPanel(syncManager), true);
 
         return ui.child(new ButtonWidget<>().onMousePressed(mouseButton -> {
