@@ -289,13 +289,25 @@ public class Cover implements IGuiHolder<CoverGuiData> {
      * functionality to open cover window on top of machine GUI, we need to make cover GUI capable of operating on both
      * ways. So don't forget to also implement {@link #createWindow}.
      *
-     * @param guiData     information about the creation context
+     * @param guiData     information about the creation context, ignored for covers since we've already used it to
+     *                    locate the right cover instance
      * @param syncManager sync handler where widget sync handlers should be registered
      * @return UI panel to show
      */
     @Override
     public final ModularPanel buildUI(CoverGuiData guiData, PanelSyncManager syncManager, UISettings uiSettings) {
-        return getCoverGui().createBasePanel(guiData, syncManager, uiSettings);
+        return getCoverGui().createStandalonePanel(syncManager, uiSettings);
+    }
+
+    /**
+     * Use this method to get a panel representing this cover that you can open from another MUI2 UI.
+     *
+     * @param panelName   the unique name of this panel in the context of your UI.
+     * @param syncManager sync handler where widget sync handlers should be registered
+     * @return UI panel to show
+     */
+    public final ModularPanel buildPopUpUI(String panelName, PanelSyncManager syncManager, UISettings uiSettings) {
+        return getCoverGui().createBasePanel(panelName, syncManager, uiSettings);
     }
 
     /**
@@ -304,7 +316,7 @@ public class Cover implements IGuiHolder<CoverGuiData> {
      * @return The variant of CoverGui that can build a GUI for this cover
      */
     protected @NotNull CoverGui<?> getCoverGui() {
-        return new CoverGui<>();
+        return new CoverGui<>(this);
     }
 
     // endregion
@@ -426,7 +438,7 @@ public class Cover implements IGuiHolder<CoverGuiData> {
         if (coverable != null && hasCoverGUI() && aPlayer instanceof EntityPlayerMP) {
             if (GTGuis.GLOBAL_SWITCH_MUI2) {
                 gregtech.api.modularui2.CoverUIFactory.INSTANCE
-                    .open((EntityPlayerMP) aPlayer, coverID, coverable, coverSide, false);
+                    .open((EntityPlayerMP) aPlayer, coverID, coverable, coverSide);
             } else {
                 GTUIInfos.openCoverUI(coverable, aPlayer, coverSide);
             }
