@@ -104,6 +104,7 @@ public abstract class TileEntityModuleAssembler extends TileEntityModuleBase imp
     protected void setProcessingLogicPower(ProcessingLogic logic) {
         logic.setAvailableVoltage(V[tTier]);
         logic.setAvailableAmperage(getMaxParallels());
+        logic.setMaxTierSkips(1);
     }
 
     /**
