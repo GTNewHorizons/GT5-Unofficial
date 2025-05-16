@@ -124,7 +124,8 @@ public class MTEMultiBlockBaseGui {
                     .widgetTheme(GTWidgetThemes.BACKGROUND_TERMINAL)
                     .child(
                         createTerminalTextWidget(syncManager, panel)
-                            .size(machineInfoSize()[0] - 4, machineInfoSize()[1] - 3))
+                            .size(machineInfoSize()[0] - 4, machineInfoSize()[1] - 3)
+                            .collapseDisabledChild())
                     .child(
                         new SingleChildWidget<>().bottomRel(0, 10, 0)
                             .rightRel(0, 10, 0)
@@ -292,12 +293,11 @@ public class MTEMultiBlockBaseGui {
             // Display current recipe
             resultWidget.child(createRecipeInfoWidget(syncManager));
         }
-        resultWidget.onUpdateListener((unused) -> {
-            if (NetworkUtils.isClient()) {
+        resultWidget.onUpdateListener(w -> {
+            if (syncManager.isClient()) {
                 WidgetTree.resize(resultWidget);
             }
         });
-
         return resultWidget;
     }
 

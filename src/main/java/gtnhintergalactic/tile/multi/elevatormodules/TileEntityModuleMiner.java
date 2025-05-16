@@ -723,19 +723,32 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
             0,
             () -> 0,
             () -> (int) MAX_DISTANCE,
+            "spaceMiner_distance",
             "tt.spaceminer.distance");
         parallelParameter = new Parameter.IntegerParameter(
             getMaxParallels(),
             () -> 0,
             () -> getMaxParallels(),
+            "spaceMiner_parallel",
             "tt.spaceminer.parallel");
-        cycleParameter = new Parameter.BooleanParameter(false, "tt.spaceminer.cycle");
-        rangeParameter = new Parameter.IntegerParameter(0, () -> 0, () -> Integer.MAX_VALUE, "tt.spaceminer.range");
-        stepParameter = new Parameter.IntegerParameter(0, () -> 0, () -> Integer.MAX_VALUE, "tt.spaceminer.step");
+        cycleParameter = new Parameter.BooleanParameter(false, "spaceMiner_cycle", "tt.spaceminer.cycle");
+        rangeParameter = new Parameter.IntegerParameter(
+            0,
+            () -> 0,
+            () -> Integer.MAX_VALUE,
+            "spaceMiner_range",
+            "tt.spaceminer.range");
+        stepParameter = new Parameter.IntegerParameter(
+            0,
+            () -> 0,
+            () -> Integer.MAX_VALUE,
+            "spaceMiner_step",
+            "tt.spaceminer.step");
         cycleDistanceParameter = new Parameter.IntegerParameter(
             distanceParameter.getValue(),
             () -> distanceParameter.getValue() - rangeParameter.getValue(),
             () -> distanceParameter.getValue() + rangeParameter.getValue(),
+            "spaceMiner_cycleDistance",
             "").dontShow();
 
         parameterList.add(distanceParameter);

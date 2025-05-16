@@ -143,6 +143,7 @@ public abstract class TileEntityModuleAssembler extends TileEntityModuleBase imp
             getMaxParallels(),
             () -> 1,
             () -> getMaxParallels(),
+            "spaceAssembler_parallel",
             "tt.spaceminer.parallel");
         parameterList.add(parallelParameter);
     }
