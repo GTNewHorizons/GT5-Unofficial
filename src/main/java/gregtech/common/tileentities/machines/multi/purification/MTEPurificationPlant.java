@@ -319,11 +319,6 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
             Textures.BlockIcons.getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings9, 4)) };
     }
 
-    @Override
-    public boolean isCorrectMachinePart(ItemStack aStack) {
-        return true;
-    }
-
     private List<IHatchElement<? super MTEPurificationPlant>> getAllowedHatches() {
         return ImmutableList.of(Maintenance, Energy, ExoticEnergy);
     }
@@ -482,21 +477,6 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
         return euT;
     }
 
-    @Override
-    public int getMaxEfficiency(ItemStack aStack) {
-        return 10000;
-    }
-
-    @Override
-    public int getDamageToComponent(ItemStack aStack) {
-        return 0;
-    }
-
-    @Override
-    public boolean explodesOnComponentBreak(ItemStack aStack) {
-        return false;
-    }
-
     public void registerLinkedUnit(MTEPurificationUnitBase<?> unit) {
         LinkedPurificationUnit link = new LinkedPurificationUnit(unit);
         // Make sure to mark it as active if it is running a recipe. This happens on server restart and fixes
@@ -617,10 +597,13 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
                     () -> getBaseMetaTileEntity().wasShutdown(),
                     wasShutDown -> getBaseMetaTileEntity().setShutdownStatus(wasShutDown)));
         screenElements.widget(
-            TextWidget.dynamicString(this::generateCurrentRecipeInfoString)
+            TextWidget.dynamicString(this::generateCurrentProgress)
                 .setSynced(false)
-                .setTextAlignment(Alignment.CenterLeft)
-                .setEnabled(widget -> (mMaxProgresstime > 0)))
+                .setTextAlignment(new Alignment(-1, -1))
+                .setSize(180, 12)
+                .setEnabled(
+                    widget -> (mOutputFluids != null && mOutputFluids.length > 0)
+                        || (mOutputItems != null && mOutputItems.length > 0)))
             .widget(new FakeSyncWidget.IntegerSyncer(() -> mProgresstime, val -> mProgresstime = val))
             .widget(new FakeSyncWidget.IntegerSyncer(() -> mMaxProgresstime, val -> mMaxProgresstime = val));
     }

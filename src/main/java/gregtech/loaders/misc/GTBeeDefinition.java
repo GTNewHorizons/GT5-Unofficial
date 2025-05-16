@@ -92,6 +92,7 @@ import gregtech.api.GregTechAPI;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.MaterialsKevlar;
+import gregtech.api.enums.MetaTileEntityIDs;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTModHandler;
@@ -1331,7 +1332,7 @@ public enum GTBeeDefinition implements IBeeDefinition {
     }, dis -> {
         IBeeMutationCustom tMutation = dis.registerMutation(NAQUADAH, THAUMIUMSHARD, 2);
         if (AdvancedSolarPanel.isModLoaded())
-            tMutation.requireResource(GameRegistry.findBlock(AdvancedSolarPanel.ID, "BlockAdvSolarPanel"), 2);
+            tMutation.requireResource(GregTechAPI.sBlockMachines, MetaTileEntityIDs.SOLAR_PANEL_HV.ID);
         tMutation.addMutationCondition(new GTBees.BiomeIDMutationCondition(9, "END Biome")); // sky end biome
     }),
     THORIUM(GTBranchDefinition.RADIOACTIVE, "Thorium", false, new Color(0x005000), new Color(0x001E00), beeSpecies -> {
