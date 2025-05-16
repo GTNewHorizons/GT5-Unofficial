@@ -271,11 +271,6 @@ public class MTELargerTurbinePlasma extends MTELargerTurbineBase {
     }
 
     @Override
-    public int getDamageToComponent(ItemStack aStack) {
-        return 1;
-    }
-
-    @Override
     public String getMachineType() {
         return "Large Plasma Turbine, XLPT";
     }
