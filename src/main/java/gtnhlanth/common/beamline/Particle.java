@@ -10,6 +10,8 @@ public enum Particle {
     PROTON(true, 3, 938.27f, 15000, "proton", "p\u207A", 1, null),
     ALPHA(true, 4, 3727.38f, 8000, "alpha", "\u03B1", 2, null);
 
+    public static final Particle[] VALUES = values();
+
     private final boolean canAcc;
 
     private final float restMass; // in MeV
