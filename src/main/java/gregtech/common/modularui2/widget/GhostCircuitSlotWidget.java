@@ -11,7 +11,7 @@ import com.cleanroommc.modularui.api.ITheme;
 import com.cleanroommc.modularui.api.drawable.IDrawable;
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.api.widget.Interactable;
-import com.cleanroommc.modularui.drawable.DrawableArray;
+import com.cleanroommc.modularui.drawable.DrawableStack;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.ModularScreen;
 import com.cleanroommc.modularui.screen.RichTooltip;
@@ -19,7 +19,7 @@ import com.cleanroommc.modularui.theme.WidgetTheme;
 import com.cleanroommc.modularui.utils.MouseData;
 import com.cleanroommc.modularui.value.sync.IntSyncValue;
 import com.cleanroommc.modularui.value.sync.ItemSlotSH;
-import com.cleanroommc.modularui.widgets.ItemSlot;
+import com.cleanroommc.modularui.widgets.slot.ItemSlot;
 import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 
 import gregtech.api.interfaces.IConfigurationCircuitSupport;
@@ -51,7 +51,7 @@ public class GhostCircuitSlotWidget extends ItemSlot {
     @Override
     public IDrawable getCurrentBackground(ITheme theme, WidgetTheme widgetTheme) {
         IDrawable background = super.getCurrentBackground(theme, widgetTheme);
-        return new DrawableArray(background, GTGuiTextures.OVERLAY_SLOT_INT_CIRCUIT);
+        return new DrawableStack(background, GTGuiTextures.OVERLAY_SLOT_INT_CIRCUIT);
     }
 
     @Override

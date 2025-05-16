@@ -35,13 +35,14 @@ import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.api.widget.IWidget;
 import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.value.sync.IntSyncValue;
 import com.cleanroommc.modularui.value.sync.LongSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.value.sync.StringSyncValue;
 import com.cleanroommc.modularui.widget.sizer.Area;
-import com.cleanroommc.modularui.widgets.ItemSlot;
 import com.cleanroommc.modularui.widgets.ProgressWidget;
+import com.cleanroommc.modularui.widgets.slot.ItemSlot;
 import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
 import com.gtnewhorizons.modularui.api.ModularUITextures;
@@ -364,7 +365,7 @@ public class MTERadioHatch extends MTEHatch implements RecipeMapWorkable, IAddGr
     }
 
     @Override
-    public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager) {
+    public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager, UISettings settings) {
         IPanelHandler popupPanel = syncManager.panel("popup", (manager, handler) -> createShutterUI(syncManager), true);
         syncManager.registerSlotGroup("item_inv", 1);
         syncManager.syncValue("mass", new IntSyncValue(() -> mass, value -> mass = (byte) value));
@@ -376,7 +377,7 @@ public class MTERadioHatch extends MTEHatch implements RecipeMapWorkable, IAddGr
 
         return GTGuis.mteTemplatePanelBuilder(this, data, syncManager)
             .doesAddGregTechLogo(false)
-            .build()
+            .build(settings)
             .child(
                 gridTemplate1by1(
                     index -> new ItemSlot().slot(new ModularSlot(inventoryHandler, index).slotGroup("item_inv"))))

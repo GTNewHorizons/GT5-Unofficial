@@ -4,8 +4,9 @@ import static gregtech.common.modularui2.util.CommonGuiComponents.gridTemplate1b
 
 import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
-import com.cleanroommc.modularui.widgets.ItemSlot;
+import com.cleanroommc.modularui.widgets.slot.ItemSlot;
 import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
@@ -59,10 +60,10 @@ public class MTEHatchLensHousing extends MTEHatchInputBus {
     }
 
     @Override
-    public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager) {
+    public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager, UISettings settings) {
         syncManager.registerSlotGroup("item_inv", 1);
         return GTGuis.mteTemplatePanelBuilder(this, data, syncManager)
-            .build()
+            .build(settings)
             .child(
                 gridTemplate1by1(
                     index -> new ItemSlot().slot(new ModularSlot(inventoryHandler, index).slotGroup("item_inv"))));
