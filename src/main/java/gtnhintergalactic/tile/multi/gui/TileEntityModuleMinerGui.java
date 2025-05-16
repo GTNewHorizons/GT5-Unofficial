@@ -906,7 +906,7 @@ public class TileEntityModuleMinerGui extends TileEntityModuleBaseGui {
             int finalI = i;
             dropRow.child(new SlotLikeButtonWidget(ore).tooltipBuilder(t -> {
                 t.addLine(IKey.str(ore.getDisplayName()))
-                    .addLine(IKey.str(((double) data.chances[finalI] / totalWeight) * 100 + "%"));
+                    .addLine(IKey.str(String.format("%.2f%%", ((double) data.chances[finalI] / totalWeight) * 100)));
                 if (droneSelectorPanel == null)
                     t.addLine(IKey.str(EnumChatFormatting.DARK_GREEN + "Click to add this ore to the filter"));
             })
