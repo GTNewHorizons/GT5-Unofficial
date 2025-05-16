@@ -20,6 +20,7 @@ import org.jetbrains.annotations.NotNull;
 import com.cleanroommc.modularui.api.IGuiHolder;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.ModularScreen;
+import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.google.common.collect.ImmutableList;
 import com.google.common.io.ByteArrayDataInput;
@@ -293,8 +294,8 @@ public class Cover implements IGuiHolder<CoverGuiData> {
      * @return UI panel to show
      */
     @Override
-    public final ModularPanel buildUI(CoverGuiData guiData, PanelSyncManager syncManager) {
-        return getCoverGui().createBasePanel(guiData, syncManager);
+    public final ModularPanel buildUI(CoverGuiData guiData, PanelSyncManager syncManager, UISettings uiSettings) {
+        return getCoverGui().createBasePanel(guiData, syncManager, uiSettings);
     }
 
     /**
