@@ -144,6 +144,8 @@ public final class GTGuiThemes {
         .build();
     public static final GTGuiTheme TRANSPARENT_FLUID_SLOT = GTGuiTheme.builder("gregtech:transparentFluidSlot")
         .parent(STEEL)
+        .themedTexture(GTWidgetThemes.PICTURE_LOGO, GTTextureIds.PICTURE_TECTECH_LOGO_DARK)
+        .themedTexture(GTWidgetThemes.BACKGROUND_TERMINAL, GTTextureIds.BACKGROUND_TERMINAL_TECTECH)
         .fluidSlot(GTTextureIds.SLOT_EMPTY)
         .button(GTTextureIds.BUTTON_STANDARD)
         .simpleToggleButton(

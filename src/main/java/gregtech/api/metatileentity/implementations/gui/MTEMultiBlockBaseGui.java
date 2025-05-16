@@ -42,7 +42,6 @@ import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.value.sync.StringSyncValue;
 import com.cleanroommc.modularui.widget.ParentWidget;
 import com.cleanroommc.modularui.widget.SingleChildWidget;
-import com.cleanroommc.modularui.widget.WidgetTree;
 import com.cleanroommc.modularui.widget.sizer.Area;
 import com.cleanroommc.modularui.widgets.ButtonWidget;
 import com.cleanroommc.modularui.widgets.CycleButtonWidget;
@@ -124,7 +123,8 @@ public class MTEMultiBlockBaseGui {
                     .widgetTheme(GTWidgetThemes.BACKGROUND_TERMINAL)
                     .child(
                         createTerminalTextWidget(syncManager, panel)
-                            .size(machineInfoSize()[0] - 4, machineInfoSize()[1] - 3))
+                            .size(machineInfoSize()[0] - 4, machineInfoSize()[1] - 3)
+                            .collapseDisabledChild())
                     .child(
                         new SingleChildWidget<>().bottomRel(0, 10, 0)
                             .rightRel(0, 10, 0)
@@ -292,12 +292,6 @@ public class MTEMultiBlockBaseGui {
             // Display current recipe
             resultWidget.child(createRecipeInfoWidget(syncManager));
         }
-        resultWidget.onUpdateListener((unused) -> {
-            if (NetworkUtils.isClient()) {
-                WidgetTree.resize(resultWidget);
-            }
-        });
-
         return resultWidget;
     }
 

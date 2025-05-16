@@ -26,6 +26,7 @@ import com.cleanroommc.modularui.widgets.layout.Row;
 
 import goodgenerator.blocks.tileEntity.MTEYottaFluidTank;
 import gregtech.api.metatileentity.implementations.MTEMultiBlockBase;
+import gregtech.api.modularui2.GTWidgetThemes;
 import gregtech.common.gui.modularui.widget.FluidDisplaySyncHandler;
 import gregtech.common.gui.modularui.widget.FluidSlotDisplayOnly;
 import gregtech.common.modularui2.widget.TransparentSingleChildWidget;
@@ -127,23 +128,20 @@ public class MTEYottaFluidTankGui extends TTMultiBlockBaseGui {
 
         return new Row().size(machineInfoSize()[0] + 4, machineInfoSize()[1] + 3)
             .child(
-                new SingleChildWidget<>().size(machineInfoSize()[0] - 48 - 4, 88)
+                new ParentWidget<>().size(machineInfoSize()[0] - 48 - 4, 88)
                     .padding(3)
-                    .marginRight(4)
-                    .background(
-                        this.customIcons.get("text_field")
-                            .asIcon())
+                    .widgetTheme(GTWidgetThemes.BACKGROUND_TERMINAL)
                     .child(
-                        createTerminalTextWidget(syncManager).size(machineInfoSize()[0] - 48 - 10, 88 - 5)
-                            .overlay(
-                                this.customIcons.get("logo")
-                                    .asIcon()
-                                    .alignment(Alignment.BottomRight)
-                                    .size(18, 18)
-                                    .marginBottom(2)
-                                    .marginRight(4))))
+                        createTerminalTextWidget(syncManager, panel).size(machineInfoSize()[0] - 48 - 10, 88 - 5)
+                            .collapseDisabledChild())
+                    .child(
+                        new SingleChildWidget<>().bottomRel(0, 10, 0)
+                            .rightRel(0, 10, 0)
+                            .size(18, 18)
+                            .widgetTheme(GTWidgetThemes.PICTURE_LOGO)))
             .child(
                 new ParentWidget<>().size(48, 88)
+                    .align(Alignment.CenterRight)
                     .child(
                         new SingleChildWidget<>()
                             .overlay(UITexture.fullImage(GregTech.ID, "gui/picture/yottank_overlay"))
