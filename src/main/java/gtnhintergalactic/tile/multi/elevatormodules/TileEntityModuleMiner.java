@@ -26,8 +26,8 @@ import org.jetbrains.annotations.NotNull;
 import com.cleanroommc.modularui.api.IPanelHandler;
 import com.cleanroommc.modularui.utils.item.ItemStackHandler;
 import com.cleanroommc.modularui.utils.item.LimitingItemStackHandler;
-import com.cleanroommc.modularui.widgets.ItemSlot;
 import com.cleanroommc.modularui.widgets.slot.ModularSlot;
+import com.cleanroommc.modularui.widgets.slot.PhantomItemSlot;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -102,7 +102,7 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
     /** Flag if the user modified the filter */
     protected boolean wasFilterModified;
     public ItemStackHandler filterInventory = new LimitingItemStackHandler(64, 1);
-    public ItemSlot[] filterSlots = new ItemSlot[64];
+    public PhantomItemSlot[] filterSlots = new PhantomItemSlot[64];
     public ModularSlot[] filterModularSlots = new ModularSlot[64];
     private int filterStacksUsed;
     protected static final ISpaceProject ASTEROID_OUTPOST = SpaceProjectManager.getProject("AsteroidOutput");
@@ -166,14 +166,14 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
         super(aID, aName, aNameRegional, tTier, tModuleTier, tMinMotorTier);
         overclockDescriber = new ModuleOverclockDescriber((byte) tTier, tModuleTier);
         for (int i = 0; i < 64; i++) {
-            filterModularSlots[i] = new ModularSlot(this.filterInventory, i, true) {
+            filterModularSlots[i] = new ModularSlot(this.filterInventory, i) {
 
                 @Override
                 public void onSlotChanged() {
                     generateOreConfigurationList();
                 }
             };
-            filterSlots[i] = new ItemSlot().slot(filterModularSlots[i]);
+            filterSlots[i] = new PhantomItemSlot().slot(filterModularSlots[i]);
         }
     }
 
@@ -189,14 +189,14 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
         super(aName, tTier, tModuleTier, tMinMotorTier);
         overclockDescriber = new ModuleOverclockDescriber((byte) tTier, tModuleTier);
         for (int i = 0; i < 64; i++) {
-            filterModularSlots[i] = new ModularSlot(this.filterInventory, i, true) {
+            filterModularSlots[i] = new ModularSlot(this.filterInventory, i) {
 
                 @Override
                 public void onSlotChanged() {
                     generateOreConfigurationList();
                 }
             };
-            filterSlots[i] = new ItemSlot().slot(filterModularSlots[i]);
+            filterSlots[i] = new PhantomItemSlot().slot(filterModularSlots[i]);
         }
     }
 

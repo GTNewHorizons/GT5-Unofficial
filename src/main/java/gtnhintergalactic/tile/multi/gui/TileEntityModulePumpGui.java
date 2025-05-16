@@ -16,7 +16,7 @@ import com.cleanroommc.modularui.api.GuiAxis;
 import com.cleanroommc.modularui.api.IPanelHandler;
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.api.widget.IWidget;
-import com.cleanroommc.modularui.drawable.DrawableArray;
+import com.cleanroommc.modularui.drawable.DrawableStack;
 import com.cleanroommc.modularui.drawable.DynamicDrawable;
 import com.cleanroommc.modularui.drawable.ItemDrawable;
 import com.cleanroommc.modularui.drawable.Rectangle;
@@ -183,7 +183,7 @@ public class TileEntityModulePumpGui extends TileEntityModuleBaseGui {
                             finalI,
                             textFieldSyncer.getStringValue()
                                 .toLowerCase())) {
-                            return new DrawableArray(
+                            return new DrawableStack(
                                 new Rectangle().setColor(Color.rgb(0, 255, 0))
                                     .asIcon()
                                     .size(16, 16),
