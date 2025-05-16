@@ -21,6 +21,7 @@ import com.cleanroommc.modularui.value.sync.IntSyncValue;
 import com.cleanroommc.modularui.value.sync.ItemSlotSH;
 import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 import com.cleanroommc.modularui.widgets.slot.PhantomItemSlot;
+import com.cleanroommc.modularui.value.sync.PhantomItemSlotSH;
 
 import gregtech.api.interfaces.IConfigurationCircuitSupport;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -61,7 +62,7 @@ public class GhostCircuitSlotWidget extends PhantomItemSlot {
                 openSelectorPanel();
             } else {
                 MouseData mouseData = MouseData.create(mouseButton);
-                getSyncHandler().syncToServer(2, mouseData::writeToPacket);
+                getSyncHandler().syncToServer(PhantomItemSlotSH.SYNC_CLICK, mouseData::writeToPacket);
             }
         }
         return Result.SUCCESS;
@@ -71,7 +72,7 @@ public class GhostCircuitSlotWidget extends PhantomItemSlot {
     public boolean onMouseScroll(ModularScreen.UpOrDown scrollDirection, int amount) {
         if (isSelectorPanelOpen()) return true;
         MouseData mouseData = MouseData.create(scrollDirection.modifier);
-        getSyncHandler().syncToServer(3, mouseData::writeToPacket);
+        getSyncHandler().syncToServer(PhantomItemSlotSH.SYNC_SCROLL, mouseData::writeToPacket);
         return true;
     }
 
