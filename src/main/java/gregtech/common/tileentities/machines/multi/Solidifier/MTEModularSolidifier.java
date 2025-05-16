@@ -56,7 +56,7 @@ import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.metatileentity.implementations.MTEHatchEnergy;
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
-import gregtech.api.objects.GTDualInputs;
+import gregtech.api.objects.GTDualInputPattern;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
@@ -67,7 +67,7 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.blocks.BlockCasings10;
 import gregtech.common.misc.GTStructureChannels;
-import gregtech.common.tileentities.machines.IDualInputInventory;
+import gregtech.common.tileentities.machines.IDualInputInventoryWithPattern;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchSolidifier;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
@@ -154,7 +154,7 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
         .addElement('E', ofBlock(GregTechAPI.sBlockCasings11, 7))
         .addElement(
             'C',
-            GTStructureChannels.SOLIDIFER_MODULES.use(
+            GTStructureChannels.SOLIDIFIER_MODULES.use(
                 ofBlocksTiered(
                     MTEModularSolidifier::getModuleMeta,
                     ImmutableList.of(
@@ -370,13 +370,13 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
             }
 
             @Override
-            public boolean craftingPatternHandler(IDualInputInventory slot) {
-                if (craftingPatternRecipeCache.containsKey(slot)) {
-                    craftingPattern = slot;
+            public boolean tryCachePossibleRecipesFromPattern(IDualInputInventoryWithPattern inv) {
+                if (dualInvWithPatternToRecipeCache.containsKey(inv)) {
+                    activeDualInv = inv;
                     return true;
                 }
 
-                GTDualInputs inputs = slot.getPatternInputs();
+                GTDualInputPattern inputs = inv.getPatternInputs();
                 setInputItems(inputs.inputItems);
                 setInputFluids(inputs.inputFluid);
                 Set<GTRecipe> recipes = findRecipeMatches(RecipeMaps.fluidSolidifierRecipes)
@@ -384,8 +384,8 @@ public class MTEModularSolidifier extends MTEExtendedPowerMultiBlockBase<MTEModu
                 if (recipes.isEmpty())
                     recipes = findRecipeMatches(GGFabRecipeMaps.toolCastRecipes).collect(Collectors.toSet());
                 if (!recipes.isEmpty()) {
-                    craftingPatternRecipeCache.put(slot, recipes);
-                    craftingPattern = slot;
+                    dualInvWithPatternToRecipeCache.put(inv, recipes);
+                    activeDualInv = inv;
                     return true;
                 }
                 return false;
