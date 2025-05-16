@@ -210,40 +210,47 @@ public class MTETeslaTower extends TTMultiblockBase implements ISurvivalConstruc
             0.25,
             () -> 0.05,
             () -> hysteresisHighParameter.getValue() - 0.05,
+            "tesla_hysteresisLow",
             "gt.blockmachines.multimachine.tm.teslaCoil.hysteresisLow");
 
         hysteresisHighParameter = new Parameter.DoubleParameter(
             0.75,
             () -> hysteresisLowParameter.getValue() + 0.05,
             () -> 0.95,
+            "tesla_hysteresisHigh",
             "gt.blockmachines.multimachine.tm.teslaCoil.hysteresisHigh");
 
         transferRadiusParameter = new Parameter.IntegerParameter(
             ConfigHandler.TeslaTweaks.TESLA_MULTI_RANGE_TOWER,
             () -> 0,
             () -> Integer.MAX_VALUE,
+            "tesla_transferRadius",
             "gt.blockmachines.multimachine.tm.teslaCoil.transferRadius");
 
         outputVoltageParameter = new Parameter.IntegerParameter(
             -1,
             () -> -1,
             () -> Integer.MAX_VALUE,
+            "tesla_outputVoltage",
             "gt.blockmachines.multimachine.tm.teslaCoil.outputVoltage");
 
         outputCurrentParameter = new Parameter.IntegerParameter(
             -1,
             () -> -1,
             () -> Integer.MAX_VALUE,
+            "tesla_outputCurrent",
             "gt.blockmachines.multimachine.tm.teslaCoil.outputCurrent");
 
         scanTimeParameter = new Parameter.IntegerParameter(
             100,
             () -> 100,
             () -> Integer.MAX_VALUE,
+            "tesla_scanTime",
             "gt.blockmachines.multimachine.tm.teslaCoil.scanTime");
 
         overdriveParameter = new Parameter.BooleanParameter(
             false,
+            "tesla_overdrive",
             "gt.blockmachines.multimachine.tm.teslaCoil.overdrive");
         parameterList.add(hysteresisLowParameter);
         parameterList.add(hysteresisHighParameter);
