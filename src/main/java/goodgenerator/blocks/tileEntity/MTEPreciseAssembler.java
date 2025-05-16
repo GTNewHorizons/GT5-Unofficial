@@ -85,6 +85,7 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.HatchElementBuilder;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
+import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.tileentities.machines.IDualInputHatch;
 import gregtech.common.tileentities.machines.ISmartInputHatch;
 import mcp.mobius.waila.api.IWailaConfigHandler;
@@ -132,8 +133,7 @@ public class MTEPreciseAssembler extends MTEExtendedPowerMultiBlockBase<MTEPreci
                             { "CCCC~CCCC", "CMMMMMMMC", "CMMMMMMMC", "CMMMMMMMC", "CCCCCCCCC" } }))
                 .addElement(
                     'C',
-                    withChannel(
-                        "unit_casing",
+                    GTStructureChannels.PRASS_UNIT_CASING.use(
                         HatchElementBuilder.<MTEPreciseAssembler>builder()
                             .atLeast(
                                 InputBus,
@@ -164,8 +164,7 @@ public class MTEPreciseAssembler extends MTEExtendedPowerMultiBlockBase<MTEPreci
                 .addElement('G', chainAllGlasses(-1, (te, t) -> te.glassTier = t, te -> te.glassTier))
                 .addElement(
                     'M',
-                    withChannel(
-                        "machine_casing",
+                    GTStructureChannels.TIER_MACHINE_CASING.use(
                         StructureUtility.ofBlocksTiered(
                             (block, meta) -> (block == GregTechAPI.sBlockCasings1 && meta >= 0 && meta <= 9) ? meta
                                 : null,
@@ -234,11 +233,6 @@ public class MTEPreciseAssembler extends MTEExtendedPowerMultiBlockBase<MTEPreci
     }
 
     @Override
-    public boolean isCorrectMachinePart(ItemStack aStack) {
-        return true;
-    }
-
-    @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         aNBT.setInteger("casingTier", casingTier);
         aNBT.setInteger("machineTier", machineTier);
@@ -293,11 +287,6 @@ public class MTEPreciseAssembler extends MTEExtendedPowerMultiBlockBase<MTEPreci
         logic.setAvailableVoltage(getMachineVoltageLimit());
         logic.setAvailableAmperage(useSingleAmp ? 1 : getMaxInputAmps());
         logic.setAmperageOC(true);
-    }
-
-    @Override
-    public int getMaxEfficiency(ItemStack aStack) {
-        return 10000;
     }
 
     public long getMachineVoltageLimit() {
@@ -376,9 +365,9 @@ public class MTEPreciseAssembler extends MTEExtendedPowerMultiBlockBase<MTEPreci
             .addEnergyHatch("Any Casing")
             .addMufflerHatch("Any Casing")
             .addMaintenanceHatch("Any Casing")
-            .addSubChannelUsage("glass", "Glass Tier")
-            .addSubChannelUsage("unit_casing", "Precise Electronic Unit Casing Tier")
-            .addSubChannelUsage("machine_casing", "Machine Casing Tier")
+            .addSubChannelUsage(GTStructureChannels.BOROGLASS)
+            .addSubChannelUsage(GTStructureChannels.PRASS_UNIT_CASING)
+            .addSubChannelUsage(GTStructureChannels.TIER_MACHINE_CASING)
             .toolTipFinisher();
         return tt;
     }
@@ -386,16 +375,6 @@ public class MTEPreciseAssembler extends MTEExtendedPowerMultiBlockBase<MTEPreci
     @Override
     public int getPollutionPerSecond(ItemStack aStack) {
         return 780;
-    }
-
-    @Override
-    public int getDamageToComponent(ItemStack aStack) {
-        return 0;
-    }
-
-    @Override
-    public boolean explodesOnComponentBreak(ItemStack aStack) {
-        return false;
     }
 
     @Override

@@ -3,7 +3,6 @@ package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.lazy;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.withChannel;
 import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.ExoticEnergy;
 import static gregtech.api.enums.HatchElement.InputBus;
@@ -76,6 +75,7 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.IGTHatchAdder;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.ParallelHelper;
+import gregtech.common.misc.GTStructureChannels;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.material.MaterialsElements;
@@ -118,8 +118,7 @@ public class MTEQuantumForceTransformer extends MTEExtendedPowerMultiBlockBase<M
                 // spotless:on
         .addElement(
             'A',
-            withChannel(
-                "manipulator",
+            GTStructureChannels.QFT_MANIPULATOR.use(
                 StructureUtility.ofBlocksTiered(
                     craftingTierConverter(),
                     getAllCraftingTiers(),
@@ -128,8 +127,7 @@ public class MTEQuantumForceTransformer extends MTEExtendedPowerMultiBlockBase<M
                     MTEQuantumForceTransformer::getCraftingTier)))
         .addElement(
             'B',
-            withChannel(
-                "shielding",
+            GTStructureChannels.QFT_SHIELDING.use(
                 StructureUtility.ofBlocksTiered(
                     focusingTierConverter(),
                     getAllFocusingTiers(),
@@ -212,6 +210,8 @@ public class MTEQuantumForceTransformer extends MTEExtendedPowerMultiBlockBase<M
                     + "Bottom"
                     + EnumChatFormatting.GRAY
                     + " Layer")
+            .addSubChannelUsage(GTStructureChannels.QFT_SHIELDING)
+            .addSubChannelUsage(GTStructureChannels.QFT_MANIPULATOR)
             .toolTipFinisher(GTValues.AuthorBlueWeabo, EnumChatFormatting.GREEN + "Steelux");
         return tt;
     }
@@ -346,11 +346,6 @@ public class MTEQuantumForceTransformer extends MTEExtendedPowerMultiBlockBase<M
     @Override
     public RecipeMap<?> getRecipeMap() {
         return GTPPRecipeMaps.quantumForceTransformerRecipes;
-    }
-
-    @Override
-    public boolean isCorrectMachinePart(final ItemStack aStack) {
-        return true;
     }
 
     @Override
@@ -565,21 +560,6 @@ public class MTEQuantumForceTransformer extends MTEExtendedPowerMultiBlockBase<M
             // Updates every 30 sec
             if (mUpdate <= -550) mUpdate = 50;
         }
-    }
-
-    @Override
-    public int getMaxEfficiency(final ItemStack aStack) {
-        return 10000;
-    }
-
-    @Override
-    public int getDamageToComponent(final ItemStack aStack) {
-        return 0;
-    }
-
-    @Override
-    public boolean explodesOnComponentBreak(final ItemStack aStack) {
-        return false;
     }
 
     public static int getBaseOutputChance(GTRecipe tRecipe) {

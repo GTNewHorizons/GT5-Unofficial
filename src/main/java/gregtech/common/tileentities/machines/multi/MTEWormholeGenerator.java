@@ -70,6 +70,7 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.IGTHatchAdder;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.tileentities.render.TileEntityWormhole;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import tectech.thing.casing.BlockGTCasingsTT;
@@ -312,11 +313,6 @@ public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeG
     }
 
     @Override
-    public boolean isCorrectMachinePart(ItemStack aStack) {
-        return true;
-    }
-
-    @Override
     protected SoundResource getProcessStartSound() {
         return SoundResource.GT_MACHINES_FUSION_LOOP;
     }
@@ -359,16 +355,6 @@ public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeG
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
         return survivialBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 3, 3, 0, elementBudget, env, false, true);
-    }
-
-    @Override
-    public int getDamageToComponent(ItemStack aStack) {
-        return 0;
-    }
-
-    @Override
-    public boolean explodesOnComponentBreak(ItemStack aStack) {
-        return false;
     }
 
     // #endregion
@@ -500,11 +486,6 @@ public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeG
     }
 
     // #region Logic
-
-    @Override
-    public int getMaxEfficiency(ItemStack aStack) {
-        return 10000;
-    }
 
     @Override
     public void onUnload() {
@@ -1012,7 +993,7 @@ public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeG
             .addInputBus("§61§r (dot 1)")
             .addDynamoHatch("§60§r - §64§r (laser only, dot 2)")
             .addEnergyHatch("§60§r - §64§r (laser only, dot 2)")
-            .addSubChannelUsage("glass", "Glass Tier")
+            .addSubChannelUsage(GTStructureChannels.BOROGLASS)
             .toolTipFinisher(GTValues.AuthorPineapple + EnumChatFormatting.GRAY + ", Rendering by: " + EnumChatFormatting.WHITE + "BucketBrigade");
         // spotless:on
 
