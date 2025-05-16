@@ -84,6 +84,10 @@ public class GTStructureUtility {
         return ofHatchAdder(aHatchAdder, aTextureIndex, StructureLibAPI.getBlockHint(), aDots - 1);
     }
 
+    public static <T> IStructureElement<T> ofAnyWater() {
+        return ofAnyWater(false);
+    }
+
     public static <T> IStructureElement<T> ofAnyWater(boolean allowFlowing) {
         return new IStructureElement<>() {
 

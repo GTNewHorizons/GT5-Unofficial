@@ -442,7 +442,6 @@ public final class ModItems {
 
             // formula override
             MaterialsAlloy.TUNGSTEN_TITANIUM_CARBIDE.vChemicalFormula = StringUtils.subscript("(CW)7Ti3");
-            MaterialsAlloy.TITANSTEEL.vChemicalFormula = StringUtils.subscript("((CW)7Ti3)3???");
 
             // Werkstoff bridge
             MaterialsElements.getInstance().ZIRCONIUM.setWerkstoffID((short) 3);

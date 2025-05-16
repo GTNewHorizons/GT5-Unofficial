@@ -131,26 +131,6 @@ public abstract class MegaMultiBlockBase<T extends MegaMultiBlockBase<T>> extend
     }
 
     @Override
-    public boolean isCorrectMachinePart(ItemStack itemStack) {
-        return true;
-    }
-
-    @Override
-    public int getDamageToComponent(ItemStack itemStack) {
-        return 0;
-    }
-
-    @Override
-    public boolean explodesOnComponentBreak(ItemStack itemStack) {
-        return false;
-    }
-
-    @Override
-    public int getMaxEfficiency(ItemStack itemStack) {
-        return 10000;
-    }
-
-    @Override
     protected void setProcessingLogicPower(ProcessingLogic logic) {
         logic.setAvailableVoltage(this.getMaxInputEu());
         logic.setAvailableAmperage(1);

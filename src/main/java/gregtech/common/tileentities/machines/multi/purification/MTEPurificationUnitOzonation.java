@@ -280,11 +280,6 @@ public class MTEPurificationUnitOzonation extends MTEPurificationUnitBase<MTEPur
     }
 
     @Override
-    public boolean isCorrectMachinePart(ItemStack aStack) {
-        return true;
-    }
-
-    @Override
     public int getWaterTier() {
         return 2;
     }

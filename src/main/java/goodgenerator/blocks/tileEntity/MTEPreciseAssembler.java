@@ -233,11 +233,6 @@ public class MTEPreciseAssembler extends MTEExtendedPowerMultiBlockBase<MTEPreci
     }
 
     @Override
-    public boolean isCorrectMachinePart(ItemStack aStack) {
-        return true;
-    }
-
-    @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         aNBT.setInteger("casingTier", casingTier);
         aNBT.setInteger("machineTier", machineTier);
@@ -292,11 +287,6 @@ public class MTEPreciseAssembler extends MTEExtendedPowerMultiBlockBase<MTEPreci
         logic.setAvailableVoltage(getMachineVoltageLimit());
         logic.setAvailableAmperage(useSingleAmp ? 1 : getMaxInputAmps());
         logic.setAmperageOC(true);
-    }
-
-    @Override
-    public int getMaxEfficiency(ItemStack aStack) {
-        return 10000;
     }
 
     public long getMachineVoltageLimit() {
@@ -385,16 +375,6 @@ public class MTEPreciseAssembler extends MTEExtendedPowerMultiBlockBase<MTEPreci
     @Override
     public int getPollutionPerSecond(ItemStack aStack) {
         return 780;
-    }
-
-    @Override
-    public int getDamageToComponent(ItemStack aStack) {
-        return 0;
-    }
-
-    @Override
-    public boolean explodesOnComponentBreak(ItemStack aStack) {
-        return false;
     }
 
     @Override

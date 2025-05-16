@@ -255,11 +255,6 @@ public class MTEIndustrialVacuumFreezer extends GTPPMultiBlockBase<MTEIndustrial
     }
 
     @Override
-    public boolean isCorrectMachinePart(final ItemStack aStack) {
-        return true;
-    }
-
-    @Override
     protected ProcessingLogic createProcessingLogic() {
         return new ProcessingLogic().setSpeedBonus(1F / 2F)
             .setMaxParallelSupplier(this::getTrueParallel);
@@ -271,23 +266,8 @@ public class MTEIndustrialVacuumFreezer extends GTPPMultiBlockBase<MTEIndustrial
     }
 
     @Override
-    public int getMaxEfficiency(final ItemStack aStack) {
-        return 10000;
-    }
-
-    @Override
     public int getPollutionPerSecond(final ItemStack aStack) {
         return PollutionConfig.pollutionPerSecondMultiIndustrialVacuumFreezer;
-    }
-
-    @Override
-    public int getDamageToComponent(final ItemStack aStack) {
-        return 0;
-    }
-
-    @Override
-    public boolean explodesOnComponentBreak(final ItemStack aStack) {
-        return false;
     }
 
     @Override
