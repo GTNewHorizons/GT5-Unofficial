@@ -62,8 +62,7 @@ public class EtchingArray extends MTENanochipAssemblyModuleBase<EtchingArray> {
     private final ArrayList<MTEHatchInputBeamline> mInputBeamline = new ArrayList<>();
 
     int requiredEnergy = 1;
-    int requiredParticle = getRandomParticle();
-    boolean canRunRandomParticle;
+    int requiredParticle = 0;
 
     public static final IStructureDefinition<EtchingArray> STRUCTURE_DEFINITION = ModuleStructureDefinition
         .<EtchingArray>builder()
@@ -123,7 +122,7 @@ public class EtchingArray extends MTENanochipAssemblyModuleBase<EtchingArray> {
         float inputEnergy = inputInfo.getEnergy();
         Particle inputParticle = Particle.getParticleFromId(inputInfo.getParticleId());
 
-        if (inputParticle != Particle.getParticleFromId(getRandomParticle())) {
+        if (inputParticle != Particle.getParticleFromId(requiredParticle)) {
             return CheckRecipeResultRegistry.WRONG_PARTICLE;
         }
 
@@ -135,34 +134,41 @@ public class EtchingArray extends MTENanochipAssemblyModuleBase<EtchingArray> {
 
     }
 
-    public Integer getRandomParticle() {
-
-        if (canRunRandomParticle) {
-            int particle = MathUtils.randInt(1, 3);
-            return switch (particle) {
-                case 1 -> 0;
-                case 2 -> 4;
-                case 3 -> 5;
-                default -> throw new IllegalStateException("Unexpected Particle: " + MathUtils.randInt(1, 3));
-            };
-        }
-        else
-            return 0;
-    }
+    /*
+     * private long ticker = 0;
+     * public boolean onRunningTick(ItemStack aStack) {
+     * if (!super.onRunningTick(aStack)) {
+     * return false;
+     * }
+     * if (ticker % (5 * SECONDS) == 0) {
+     * updateRequiredPatricle();
+     * ticker = 0;
+     * }
+     * ticker++;
+     * return true;
+     * }
+     */
 
     long ticker = 0;
 
-    public boolean onRunningTick(ItemStack aStack) {
-        if (!super.onRunningTick(aStack)) {
-            return false;
+    @Override
+    public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
+        super.onPostTick(aBaseMetaTileEntity, aTick);
+        if (ticker % (5 * SECONDS) == 0) {
+            updateRequiredPatricle();
+            ticker = 0;
         }
-            if (ticker % (5 * SECONDS) == 0) {
-                canRunRandomParticle = true;
-                ticker = 0;
-            }
         ticker++;
+    }
 
-        return true;
+    private void updateRequiredPatricle() {
+        int particle = MathUtils.randInt(1, 3);
+        requiredParticle = switch (particle) {
+            case 1 -> 0;
+            case 2 -> 4;
+            case 3 -> 5;
+            default -> throw new IllegalStateException("Unexpected Particle: " + particle);
+        };
     }
 
     @Override
@@ -174,14 +180,14 @@ public class EtchingArray extends MTENanochipAssemblyModuleBase<EtchingArray> {
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
-        aNBT.setInteger("particle", getRandomParticle());
+        aNBT.setInteger("particle", requiredParticle);
     }
 
     @Override
     public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
         int z) {
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
-        tag.setInteger("particle", getRandomParticle());
+        tag.setInteger("particle", requiredParticle);
     }
 
     @Override
