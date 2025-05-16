@@ -391,11 +391,6 @@ public class MTETankTFFT extends MTEEnhancedMultiBlockBase<MTETankTFFT> implemen
     }
 
     @Override
-    public boolean isCorrectMachinePart(ItemStack aStack) {
-        return true;
-    }
-
-    @Override
     public void clearHatches() {
         super.clearHatches();
         if (tfftHatch != null) {
@@ -616,21 +611,6 @@ public class MTETankTFFT extends MTEEnhancedMultiBlockBase<MTETankTFFT> implemen
         }
 
         super.loadNBTData(aNBT);
-    }
-
-    @Override
-    public int getMaxEfficiency(ItemStack stack) {
-        return 10000;
-    }
-
-    @Override
-    public int getDamageToComponent(ItemStack stack) {
-        return 0;
-    }
-
-    @Override
-    public boolean explodesOnComponentBreak(ItemStack stack) {
-        return false;
     }
 
     @Override
