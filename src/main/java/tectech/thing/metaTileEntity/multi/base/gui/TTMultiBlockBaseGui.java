@@ -4,8 +4,6 @@ import static gregtech.api.enums.Mods.GTNHIntergalactic;
 import static gregtech.api.enums.Mods.GregTech;
 import static tectech.Reference.MODID;
 
-import java.util.concurrent.atomic.AtomicInteger;
-
 import net.minecraft.util.EnumChatFormatting;
 
 import com.cleanroommc.modularui.api.IPanelHandler;
@@ -72,63 +70,59 @@ public class TTMultiBlockBaseGui extends MTEMultiBlockBaseGui {
             .child(createVoidExcessButton(syncManager))
             .child(createInputSeparationButton(syncManager));
 
-        UITexture noMaint = UITexture.builder()
-            .location(GregTech.ID, "gui/icons/noMaint")
-            .imageSize(16, 16)
-            .build();
-        UITexture checkmark = UITexture.builder()
-            .location(GregTech.ID, "gui/overlay_button/checkmark")
-            .imageSize(16, 16)
-            .build();
-
         if (ttBase.supportsMachineModeSwitch()) panelGap.child(createModeSwitchButton(syncManager));
         panelGap.child(createBatchModeButton(syncManager))
             .child(createLockToSingleRecipeButton(syncManager))
             .child(createStructureUpdateButton(syncManager));
         if (supportsPowerPanel()) panelGap.child(createPowerPanelButton(syncManager, parent));
-
-        AtomicInteger maintIssues = new AtomicInteger(0);
-        IntSyncValue maintSyncer = new IntSyncValue(() -> {
-            int maintIsuses = 0;
-            maintIsuses += ttBase.mCrowbar ? 0 : 1;
-            maintIsuses += ttBase.mHardHammer ? 0 : 1;
-            maintIsuses += ttBase.mScrewdriver ? 0 : 1;
-            maintIsuses += ttBase.mSoftHammer ? 0 : 1;
-            maintIsuses += ttBase.mSolderingTool ? 0 : 1;
-            maintIsuses += ttBase.mWrench ? 0 : 1;
-            return maintIsuses;
-        }, val -> maintIssues.set(val));
-        syncManager.syncValue("maintCount", maintSyncer);
-
-        LongSyncValue euVarSyncer = new LongSyncValue(() -> ttBase.getEUVar());
-        BooleanSyncValue wasShutdownSyncer = new BooleanSyncValue(
-            () -> ttBase.getBaseMetaTileEntity()
-                .wasShutdown());
-        syncManager.syncValue("storedEU", euVarSyncer);
-        syncManager.syncValue("wasShutdownThingsGap", wasShutdownSyncer);
-        panelGap
-            .child(
-                new DynamicDrawable(
-                    () -> maintSyncer.getValue() == 0 ? noMaint
-                        : IKey.str(EnumChatFormatting.DARK_RED + String.valueOf(maintSyncer.getValue()))).asWidget()
-                            .tooltipBuilder(t -> makeMaintenanceHoverableTooltip(t, maintSyncer))
-                            .background(GuiTextures.SLOT_ITEM))
-            .child(new HoverableIcon(new DynamicDrawable(() -> {
-                if (wasShutdownSyncer.getValue() || euVarSyncer.getValue() == 0)
-                    return getTextureForShutdownReason(ttBase.getBaseMetaTileEntity(), euVarSyncer.getValue());
-                return checkmark;
-            }).asIcon()).asWidget()
-                .tooltipBuilder(t -> t.addLine(IKey.dynamic(() -> {
-                    if (wasShutdownSyncer.getValue() || euVarSyncer.getValue() == 0) {
-                        return getTooltipForShutdownReason(
-                            ttBase.getBaseMetaTileEntity()
-                                .getLastShutDownReason(),
-                            euVarSyncer.getValue());
-                    } else {
-                        return EnumChatFormatting.GREEN + "Running fine.";
-                    }
-                }))));
+        panelGap.child(createMaintIssueHoverable(syncManager))
+            .child(createShutdownReasonHoverable(syncManager));
         return panelGap;
+    }
+
+    private IWidget createMaintIssueHoverable(PanelSyncManager syncManager) {
+        UITexture noMaint = UITexture.builder()
+            .location(GregTech.ID, "gui/icons/noMaint")
+            .imageSize(16, 16)
+            .build();
+        IntSyncValue maintSyncer = (IntSyncValue) syncManager.getSyncHandler("maintCount:0");
+
+        return new DynamicDrawable(
+            () -> maintSyncer.getValue() == 0 ? noMaint
+                : IKey.str(EnumChatFormatting.DARK_RED + String.valueOf(maintSyncer.getValue()))).asWidget()
+                    .tooltipBuilder(t -> makeMaintenanceHoverableTooltip(t, maintSyncer))
+                    .tooltipAutoUpdate(true)
+                    .background(GuiTextures.SLOT_ITEM);
+    }
+
+    private IWidget createShutdownReasonHoverable(PanelSyncManager syncManager) {
+        UITexture checkmark = UITexture.builder()
+            .location(GregTech.ID, "gui/overlay_button/checkmark")
+            .imageSize(16, 16)
+            .build();
+        BooleanSyncValue wasShutdownSyncer = (BooleanSyncValue) syncManager.getSyncHandler("wasShutdown:0");
+        LongSyncValue euVarSyncer = (LongSyncValue) syncManager.getSyncHandler("storedEU:0");
+
+        return new HoverableIcon(new DynamicDrawable(() -> {
+            if (wasShutdownSyncer.getValue() || euVarSyncer.getValue() == 0)
+                return getTextureForShutdownReason(ttBase.getBaseMetaTileEntity(), euVarSyncer.getValue());
+            return checkmark;
+        }).asIcon()).asWidget()
+            .tooltipBuilder(t -> makeShutdownReasonHoverableTooltip(t, wasShutdownSyncer, euVarSyncer))
+            .tooltipAutoUpdate(true);
+    }
+
+    private void makeShutdownReasonHoverableTooltip(RichTooltip t, BooleanSyncValue wasShutdownSyncer,
+        LongSyncValue euVarSyncer) {
+        if (wasShutdownSyncer.getValue() || euVarSyncer.getValue() == 0) {
+            t.add(
+                getTooltipForShutdownReason(
+                    ttBase.getBaseMetaTileEntity()
+                        .getLastShutDownReason(),
+                    euVarSyncer.getValue()));
+        } else {
+            t.add(EnumChatFormatting.GREEN + "Running fine.");
+        }
     }
 
     @Override
@@ -406,5 +400,24 @@ public class TTMultiBlockBaseGui extends MTEMultiBlockBaseGui {
         panel.child(parameterListWidget);
 
         return panel;
+    }
+
+    @Override
+    protected void registerSyncValues(PanelSyncManager syncManager) {
+        super.registerSyncValues(syncManager);
+        IntSyncValue maintSyncer = new IntSyncValue(() -> {
+            int maintIsuses = 0;
+            maintIsuses += ttBase.mCrowbar ? 0 : 1;
+            maintIsuses += ttBase.mHardHammer ? 0 : 1;
+            maintIsuses += ttBase.mScrewdriver ? 0 : 1;
+            maintIsuses += ttBase.mSoftHammer ? 0 : 1;
+            maintIsuses += ttBase.mSolderingTool ? 0 : 1;
+            maintIsuses += ttBase.mWrench ? 0 : 1;
+            return maintIsuses;
+        });
+        syncManager.syncValue("maintCount", maintSyncer);
+
+        LongSyncValue euVarSyncer = new LongSyncValue(() -> ttBase.getEUVar());
+        syncManager.syncValue("storedEU", euVarSyncer);
     }
 }
