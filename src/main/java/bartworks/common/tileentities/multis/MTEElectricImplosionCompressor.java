@@ -334,11 +334,6 @@ public class MTEElectricImplosionCompressor extends MTEExtendedPowerMultiBlockBa
     }
 
     @Override
-    public boolean isCorrectMachinePart(ItemStack itemStack) {
-        return true;
-    }
-
-    @Override
     public void stopMachine(@NotNull ShutDownReason reason) {
         this.resetPiston(this.mBlockTier);
         super.stopMachine(reason);
@@ -450,21 +445,6 @@ public class MTEElectricImplosionCompressor extends MTEExtendedPowerMultiBlockBa
     public void onBlockDestroyed() {
         this.resetPiston(this.mBlockTier);
         super.onBlockDestroyed();
-    }
-
-    @Override
-    public int getMaxEfficiency(ItemStack itemStack) {
-        return 10000;
-    }
-
-    @Override
-    public int getDamageToComponent(ItemStack itemStack) {
-        return 0;
-    }
-
-    @Override
-    public boolean explodesOnComponentBreak(ItemStack itemStack) {
-        return false;
     }
 
     @Override

@@ -15,15 +15,16 @@ import org.jetbrains.annotations.NotNull;
 import com.cleanroommc.modularui.api.widget.IWidget;
 import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.utils.fluid.FluidStackTank;
 import com.cleanroommc.modularui.value.sync.DoubleSyncValue;
 import com.cleanroommc.modularui.value.sync.FluidSlotSyncHandler;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
-import com.cleanroommc.modularui.widgets.FluidSlot;
-import com.cleanroommc.modularui.widgets.ItemSlot;
 import com.cleanroommc.modularui.widgets.ProgressWidget;
 import com.cleanroommc.modularui.widgets.layout.Flow;
+import com.cleanroommc.modularui.widgets.slot.FluidSlot;
+import com.cleanroommc.modularui.widgets.slot.ItemSlot;
 import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 import com.gtnewhorizons.modularui.api.drawable.IDrawable;
 import com.gtnewhorizons.modularui.api.drawable.UITexture;
@@ -420,7 +421,7 @@ public abstract class MTEBoiler extends MTEBasicTank implements IGetTitleColor, 
     protected abstract GTGuiTheme getGuiTheme();
 
     @Override
-    public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager) {
+    public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager, UISettings uiSettings) {
         syncManager.registerSlotGroup("item_inv", 0);
         IWidget waterSlots = Flow.column()
             .coverChildren()
@@ -473,7 +474,7 @@ public abstract class MTEBoiler extends MTEBasicTank implements IGetTitleColor, 
                     .size(14)
                     .margin(2))
             .childIf(doesAddFuelSlot(), createFuelSlot());
-        return GTGuis.mteTemplatePanelBuilder(this, data, syncManager)
+        return GTGuis.mteTemplatePanelBuilder(this, data, syncManager, uiSettings)
             .build()
             .child(
                 Flow.row()

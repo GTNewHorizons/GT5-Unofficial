@@ -342,11 +342,6 @@ public class MTEExtremeHeatExchanger extends MTETooltipMultiBlockBaseEM
     }
 
     @Override
-    public int getMaxEfficiency(ItemStack aStack) {
-        return 10000;
-    }
-
-    @Override
     public String[] getInfoData() {
         int tThreshold = tRunningRecipe != null ? tRunningRecipe.mSpecialValue : 0;
         return new String[] {

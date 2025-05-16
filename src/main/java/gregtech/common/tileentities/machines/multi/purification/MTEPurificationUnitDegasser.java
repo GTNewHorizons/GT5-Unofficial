@@ -689,11 +689,6 @@ public class MTEPurificationUnitDegasser extends MTEPurificationUnitBase<MTEPuri
     }
 
     @Override
-    public boolean isCorrectMachinePart(ItemStack aStack) {
-        return true;
-    }
-
-    @Override
     public int getWaterTier() {
         return 7;
     }

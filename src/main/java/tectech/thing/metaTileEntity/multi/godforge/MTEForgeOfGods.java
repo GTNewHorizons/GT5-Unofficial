@@ -439,8 +439,10 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
         if (isUpgradeActive(CD)) {
             if (checkPiece(STRUCTURE_PIECE_SECOND_RING, 55, 11, -67)) {
                 ringAmount = 2;
-                destroySecondRing();
-                updateRenderer();
+                if (!isRendererDisabled) {
+                    destroySecondRing();
+                    updateRenderer();
+                }
             }
             if (isRenderActive && ringAmount >= 2 && !checkPiece(STRUCTURE_PIECE_SECOND_RING_AIR, 55, 11, -67)) {
                 destroyRenderer();
@@ -451,7 +453,9 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
             }
             if (ringAmount >= 2) {
                 ringAmount = 1;
-                updateRenderer();
+                if (!isRendererDisabled) {
+                    updateRenderer();
+                }
                 buildSecondRing();
             }
         }
@@ -459,8 +463,10 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
         if (isUpgradeActive(EE)) {
             if (checkPiece(STRUCTURE_PIECE_THIRD_RING, 47, 13, -76)) {
                 ringAmount = 3;
-                destroyThirdRing();
-                updateRenderer();
+                if (!isRendererDisabled) {
+                    destroyThirdRing();
+                    updateRenderer();
+                }
             }
             if (isRenderActive && ringAmount == 3 && !checkPiece(STRUCTURE_PIECE_THIRD_RING_AIR, 47, 13, -76)) {
                 destroyRenderer();
@@ -468,7 +474,9 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
         } else {
             if (ringAmount == 3) {
                 ringAmount = 2;
-                updateRenderer();
+                if (!isRendererDisabled) {
+                    updateRenderer();
+                }
                 buildThirdRing();
             }
         }
@@ -545,8 +553,8 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
                 }
 
                 determineCompositionMilestoneLevel();
-                checkInversionStatus();
                 determineMilestoneProgress();
+                checkInversionStatus();
                 if (!ConfigHandler.debug.DEBUG_MODE) {
                     determineGravitonShardAmount();
                 }
@@ -3301,6 +3309,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
         if (force || stellarFuelAmount != 0) NBT.setInteger("starFuelStored", stellarFuelAmount);
         if (force || gravitonShardEjection) NBT.setBoolean("gravitonShardEjection", gravitonShardEjection);
         if (force || secretUpgrade) NBT.setBoolean("secretUpgrade", secretUpgrade);
+        if (force || inversion) NBT.setBoolean("inversion", inversion);
 
         // Fields with non-zero defaults
         if (force || fuelConsumptionFactor != DEFAULT_FUEL_CONSUMPTION_FACTOR) {
@@ -3332,6 +3341,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
         stellarFuelAmount = NBT.getInteger("starFuelStored");
         gravitonShardEjection = NBT.getBoolean("gravitonShardEjection");
         secretUpgrade = NBT.getBoolean("secretUpgrade");
+        inversion = NBT.getBoolean("inversion");
 
         // Fields with non-zero defaults
         if (NBT.hasKey("fuelConsumptionFactor")) {

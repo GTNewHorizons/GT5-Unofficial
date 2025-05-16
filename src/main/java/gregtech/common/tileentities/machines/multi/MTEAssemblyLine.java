@@ -192,11 +192,6 @@ public class MTEAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTEAssemblyL
     }
 
     @Override
-    public boolean isCorrectMachinePart(ItemStack aStack) {
-        return true;
-    }
-
-    @Override
     public @Nonnull CheckRecipeResult checkProcessing() {
         if (GTValues.D1) {
             GT_FML_LOGGER.info("Start ALine recipe check");
@@ -429,21 +424,6 @@ public class MTEAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTEAssemblyL
             ((MTEHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
             return mDataAccessHatches.add((MTEHatchDataAccess) aMetaTileEntity);
         }
-        return false;
-    }
-
-    @Override
-    public int getMaxEfficiency(ItemStack aStack) {
-        return 10000;
-    }
-
-    @Override
-    public int getDamageToComponent(ItemStack aStack) {
-        return 0;
-    }
-
-    @Override
-    public boolean explodesOnComponentBreak(ItemStack aStack) {
         return false;
     }
 
