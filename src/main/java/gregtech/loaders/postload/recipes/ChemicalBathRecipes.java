@@ -4,6 +4,7 @@ import static gregtech.api.enums.GTValues.M;
 import static gregtech.api.enums.Mods.BuildCraftTransport;
 import static gregtech.api.recipe.RecipeMaps.chemicalBathRecipes;
 import static gregtech.api.util.GTModHandler.getModItem;
+import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.MINUTES;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
@@ -50,7 +51,7 @@ public class ChemicalBathRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Steel, 1))
             .itemOutputs(GTModHandler.getIC2Item("reinforcedStone", 1))
-            .fluidInputs(Materials.Concrete.getMolten(144))
+            .fluidInputs(Materials.Concrete.getMolten(1 * INGOTS))
             .duration(10 * SECONDS)
             .eut(4)
             .addTo(chemicalBathRecipes);
@@ -163,7 +164,7 @@ public class ChemicalBathRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Bronze, 1))
                 .itemOutputs(ItemList.Block_BronzePlate.get(1))
-                .fluidInputs(Materials.Concrete.getMolten(144))
+                .fluidInputs(Materials.Concrete.getMolten(1 * INGOTS))
                 .duration(10 * SECONDS)
                 .eut(4)
                 .addTo(chemicalBathRecipes);
@@ -171,7 +172,7 @@ public class ChemicalBathRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Steel, 1))
                 .itemOutputs(ItemList.Block_SteelPlate.get(1))
-                .fluidInputs(Materials.Steel.getMolten(288))
+                .fluidInputs(Materials.Steel.getMolten(2 * INGOTS))
                 .duration(12 * SECONDS + 10 * TICKS)
                 .eut(16)
                 .addTo(chemicalBathRecipes);
@@ -179,7 +180,7 @@ public class ChemicalBathRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Titanium, 1))
                 .itemOutputs(ItemList.Block_TitaniumPlate.get(1))
-                .fluidInputs(Materials.Titanium.getMolten(144))
+                .fluidInputs(Materials.Titanium.getMolten(1 * INGOTS))
                 .duration(15 * SECONDS)
                 .eut(TierEU.RECIPE_LV)
                 .addTo(chemicalBathRecipes);
@@ -187,7 +188,7 @@ public class ChemicalBathRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.TungstenSteel, 1))
                 .itemOutputs(ItemList.Block_TungstenSteelReinforced.get(1))
-                .fluidInputs(Materials.TungstenSteel.getMolten(144))
+                .fluidInputs(Materials.TungstenSteel.getMolten(1 * INGOTS))
                 .duration(17 * SECONDS + 10 * TICKS)
                 .eut(64)
                 .addTo(chemicalBathRecipes);
@@ -195,7 +196,7 @@ public class ChemicalBathRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Iridium, 1))
                 .itemOutputs(ItemList.Block_IridiumTungstensteel.get(1))
-                .fluidInputs(Materials.Iridium.getMolten(144))
+                .fluidInputs(Materials.Iridium.getMolten(1 * INGOTS))
                 .duration(20 * SECONDS)
                 .eut(TierEU.RECIPE_MV)
                 .addTo(chemicalBathRecipes);
@@ -203,7 +204,7 @@ public class ChemicalBathRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Naquadah, 1))
                 .itemOutputs(ItemList.Block_NaquadahPlate.get(1))
-                .fluidInputs(Materials.Osmium.getMolten(144))
+                .fluidInputs(Materials.Osmium.getMolten(1 * INGOTS))
                 .duration(22 * SECONDS + 10 * TICKS)
                 .eut(256)
                 .addTo(chemicalBathRecipes);
@@ -211,7 +212,7 @@ public class ChemicalBathRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Neutronium, 1))
                 .itemOutputs(ItemList.Block_NeutroniumPlate.get(1))
-                .fluidInputs(Materials.Naquadria.getMolten(144))
+                .fluidInputs(Materials.Naquadria.getMolten(1 * INGOTS))
                 .duration(25 * SECONDS)
                 .eut(TierEU.RECIPE_HV)
                 .addTo(chemicalBathRecipes);
@@ -219,7 +220,7 @@ public class ChemicalBathRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.TungstenSteel, 1))
                 .itemOutputs(ItemList.Block_TungstenSteelReinforced.get(1))
-                .fluidInputs(Materials.Concrete.getMolten(144))
+                .fluidInputs(Materials.Concrete.getMolten(1 * INGOTS))
                 .duration(10 * SECONDS)
                 .eut(4)
                 .addTo(chemicalBathRecipes);
@@ -311,7 +312,7 @@ public class ChemicalBathRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.WovenKevlar.get(1))
             .itemOutputs(MaterialsKevlar.Kevlar.getPlates(1))
-            .fluidInputs(MaterialsKevlar.PolyurethaneResin.getFluid(1000))
+            .fluidInputs(MaterialsKevlar.PolyurethaneResin.getFluid(1_000))
             .duration(60 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(chemicalBathRecipes);
@@ -328,8 +329,8 @@ public class ChemicalBathRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(Materials.Sodium.getDust(1))
             .itemOutputs(Materials.SodiumHydroxide.getDust(3))
-            .fluidInputs(Materials.Water.getFluid(1000))
-            .fluidOutputs(Materials.Hydrogen.getGas(1000))
+            .fluidInputs(Materials.Water.getFluid(1_000))
+            .fluidOutputs(Materials.Hydrogen.getGas(1_000))
             .duration(5 * SECONDS)
             .eut(4)
             .addTo(chemicalBathRecipes);
@@ -438,13 +439,13 @@ public class ChemicalBathRecipes implements Runnable {
 
     private void addProtoHalkonitePartRecipe(OrePrefixes prefix, final int multiplier) {
 
-        final int partFraction = (int) (144 * prefix.mMaterialAmount / M);
+        final int partFraction = (int) (prefix.mMaterialAmount * INGOTS / M);
 
         GTValues.RA.stdBuilder()
             .itemInputs(GTOreDictUnificator.get(prefix, Materials.Infinity, multiplier))
             .itemOutputs(GTOreDictUnificator.get(prefix, MaterialsUEVplus.HotProtoHalkonite, multiplier))
             .fluidInputs(MaterialsUEVplus.MoltenProtoHalkoniteBase.getFluid((long) partFraction * multiplier))
-            .duration((int) (multiplier * (8 * SECONDS * partFraction / 144.0)))
+            .duration((int) (multiplier * (8 * SECONDS * partFraction / (float) INGOTS)))
             .eut(TierEU.RECIPE_UEV)
             .addTo(chemicalBathRecipes);
 
@@ -452,7 +453,7 @@ public class ChemicalBathRecipes implements Runnable {
             .itemInputs(GTOreDictUnificator.get(prefix, MaterialsUEVplus.Creon, multiplier))
             .itemOutputs(GTOreDictUnificator.get(prefix, MaterialsUEVplus.HotProtoHalkonite, multiplier))
             .fluidInputs(MaterialsUEVplus.MoltenProtoHalkoniteBase.getFluid((long) partFraction * multiplier / 2L))
-            .duration((int) (multiplier * (2 * SECONDS * partFraction / 144.0)))
+            .duration((int) (multiplier * (2 * SECONDS * partFraction / (float) INGOTS)))
             .eut(TierEU.RECIPE_UIV)
             .addTo(chemicalBathRecipes);
 
@@ -460,7 +461,7 @@ public class ChemicalBathRecipes implements Runnable {
             .itemInputs(GTOreDictUnificator.get(prefix, MaterialsUEVplus.Mellion, multiplier))
             .itemOutputs(GTOreDictUnificator.get(prefix, MaterialsUEVplus.HotProtoHalkonite, multiplier))
             .fluidInputs(MaterialsUEVplus.MoltenProtoHalkoniteBase.getFluid((long) partFraction * multiplier / 2L))
-            .duration((int) (multiplier * (2 * SECONDS * partFraction / 144.0)))
+            .duration((int) (multiplier * (2 * SECONDS * partFraction / (float) INGOTS)))
             .eut(TierEU.RECIPE_UIV)
             .addTo(chemicalBathRecipes);
     }

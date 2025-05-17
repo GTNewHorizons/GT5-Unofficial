@@ -42,6 +42,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTValues;
+import gregtech.api.enums.Materials;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.gui.modularui.GTUITextures;
@@ -62,7 +63,6 @@ import gregtech.api.util.OverclockCalculator;
 import gregtech.common.blocks.BlockCasings1;
 import gregtech.common.blocks.BlockCasings2;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
-import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.MTESteamMultiBase;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.gui.MTESteamWasherGui;
 import mcp.mobius.waila.api.IWailaConfigHandler;
@@ -541,7 +541,7 @@ public class MTESteamWasher extends MTESteamMultiBase<MTESteamWasher> implements
     private boolean tryConsumeWater() {
         if (getStoredFluids() != null) {
             for (FluidStack waterCapacity : this.getStoredFluids()) {
-                if (waterCapacity.isFluidEqual(FluidUtils.getWater(1000))) {
+                if (waterCapacity.isFluidEqual(Materials.Water.getFluid(1_000))) {
                     if (waterCapacity.amount >= 1000) {
                         waterCapacity.amount -= 1000;
                         return true;

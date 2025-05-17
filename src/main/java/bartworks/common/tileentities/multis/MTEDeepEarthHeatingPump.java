@@ -232,8 +232,14 @@ public class MTEDeepEarthHeatingPump extends MTEDrillerBase {
             }
         } else if (this.machineMode == 1) {
             long coolantConverted = (long) (192L * this.mEfficiency / 10000L);
-            if (this.getFluidFromHatches(FluidRegistry.getFluid("ic2coolant")) - coolantConverted > 0) {
-                this.consumeFluid(FluidRegistry.getFluid("ic2coolant"), coolantConverted);
+            if (this.getFluidFromHatches(
+                GTModHandler.getIC2Coolant(0)
+                    .getFluid())
+                - coolantConverted > 0) {
+                this.consumeFluid(
+                    GTModHandler.getIC2Coolant(0)
+                        .getFluid(),
+                    coolantConverted);
                 this.addOutput(FluidRegistry.getFluidStack("ic2hotcoolant", (int) coolantConverted));
             } else {
                 this.explodeMultiblock();

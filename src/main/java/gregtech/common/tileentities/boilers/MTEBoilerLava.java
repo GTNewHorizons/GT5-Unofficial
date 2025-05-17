@@ -22,7 +22,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.FluidTankInfo;
@@ -39,6 +38,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.GTMod;
 import gregtech.api.enums.Dyes;
+import gregtech.api.enums.Materials;
 import gregtech.api.enums.ParticleFX;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.SteamVariant;
@@ -273,15 +273,11 @@ public class MTEBoilerLava extends MTEBoiler {
         final IFluidHandler upTank = aBaseMetaTileEntity.getITankContainerAtSide(ForgeDirection.UP);
         if (upTank == null) return;
         // Simulates drain of maximum lava amount up to 1000L that can fit the internal tank
-        final FluidStack drainableLavaStack = upTank.drain(
-            ForgeDirection.DOWN,
-            FluidRegistry.getFluidStack(
-                "lava",
-                Math.min(
-                    this.lavaTank.getCapacity()
-                        - (this.lavaTank.getFluid() != null ? this.lavaTank.getFluid().amount : 0),
-                    1000)),
-            false);
+        int toDrain = Math.min(
+            this.lavaTank.getCapacity() - (this.lavaTank.getFluid() != null ? this.lavaTank.getFluid().amount : 0),
+            1_000);
+        final FluidStack drainableLavaStack = upTank
+            .drain(ForgeDirection.DOWN, Materials.Lava.getFluid(toDrain), false);
         if (!GTModHandler.isLava(drainableLavaStack) || drainableLavaStack.amount <= 0) return;
         // Performs actual drain up and fill internal tank
         this.lavaTank.fill(upTank.drain(ForgeDirection.DOWN, drainableLavaStack, true), true);

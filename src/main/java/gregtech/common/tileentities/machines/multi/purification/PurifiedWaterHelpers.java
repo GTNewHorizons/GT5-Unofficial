@@ -23,14 +23,14 @@ public class PurifiedWaterHelpers {
 
     public static int getWaterTier(FluidStack fluid) {
         if (fluid == null) return 0;
-        else if (fluid.isFluidEqual(Materials.Grade1PurifiedWater.getFluid(1000L))) return 1;
-        else if (fluid.isFluidEqual(Materials.Grade2PurifiedWater.getFluid(1000L))) return 2;
-        else if (fluid.isFluidEqual(Materials.Grade3PurifiedWater.getFluid(1000L))) return 3;
-        else if (fluid.isFluidEqual(Materials.Grade4PurifiedWater.getFluid(1000L))) return 4;
-        else if (fluid.isFluidEqual(Materials.Grade5PurifiedWater.getFluid(1000L))) return 5;
-        else if (fluid.isFluidEqual(Materials.Grade6PurifiedWater.getFluid(1000L))) return 6;
-        else if (fluid.isFluidEqual(Materials.Grade7PurifiedWater.getFluid(1000L))) return 7;
-        else if (fluid.isFluidEqual(Materials.Grade8PurifiedWater.getFluid(1000L))) return 8;
+        else if (fluid.isFluidEqual(Materials.Grade1PurifiedWater.getFluid(1_000))) return 1;
+        else if (fluid.isFluidEqual(Materials.Grade2PurifiedWater.getFluid(1_000))) return 2;
+        else if (fluid.isFluidEqual(Materials.Grade3PurifiedWater.getFluid(1_000))) return 3;
+        else if (fluid.isFluidEqual(Materials.Grade4PurifiedWater.getFluid(1_000))) return 4;
+        else if (fluid.isFluidEqual(Materials.Grade5PurifiedWater.getFluid(1_000))) return 5;
+        else if (fluid.isFluidEqual(Materials.Grade6PurifiedWater.getFluid(1_000))) return 6;
+        else if (fluid.isFluidEqual(Materials.Grade7PurifiedWater.getFluid(1_000))) return 7;
+        else if (fluid.isFluidEqual(Materials.Grade8PurifiedWater.getFluid(1_000))) return 8;
         else return 0;
     }
 

@@ -134,10 +134,11 @@ public class BlockMachinesSubclassTest {
         templateInstance = MyMTE.createTemplateInstance();
 
         // Mocked GameRegistry for the block construction.
-        // And apparently the mocked getWater is enough to let us instantiate real BaseMetaTileEntity classes. Huzzah!
+        // And apparently the mocked getIC2Coolant is enough to let us instantiate real BaseMetaTileEntity classes.
+        // Huzzah!
         try (MockedStatic<GameRegistry> gameRegistry = mockStatic(GameRegistry.class);
             MockedStatic<GTModHandler> modHandler = mockStatic(GTModHandler.class)) {
-            modHandler.when(() -> GTModHandler.getWater(anyLong()))
+            modHandler.when(() -> GTModHandler.getIC2Coolant(anyLong()))
                 .thenReturn(mock(FluidStack.class));
 
             MyBlockMachines block = new MyBlockMachines();

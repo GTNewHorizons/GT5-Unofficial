@@ -18,6 +18,7 @@ import static gregtech.api.enums.Mods.TinkerConstruct;
 import static gregtech.api.enums.Mods.TwilightForest;
 import static gregtech.api.recipe.RecipeMaps.crackingRecipes;
 import static gregtech.api.recipe.RecipeMaps.cutterRecipes;
+import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTUtil.LAST_BROKEN_TILEENTITY;
 import static net.minecraftforge.fluids.FluidRegistry.getFluidStack;
@@ -1062,7 +1063,7 @@ public abstract class GTProxy implements IGTMod, IFuelHandler {
 
             FluidContainerRegistry.registerFluidContainer(
                 new FluidContainerRegistry.FluidContainerData(
-                    Materials.Milk.getFluid(1000L),
+                    Materials.Milk.getFluid(1_000),
                     GTOreDictUnificator.get(OrePrefixes.bucketClay, Materials.Milk, 1L),
                     GTOreDictUnificator.get(OrePrefixes.bucketClay, Materials.Empty, 1L)));
         }
@@ -2295,7 +2296,7 @@ public abstract class GTProxy implements IGTMod, IFuelHandler {
             .registerContainers(
                 GTOreDictUnificator.get(OrePrefixes.cellPlasma, aMaterial, 1L),
                 ItemList.Cell_Empty.get(1L),
-                aMaterial.getMolten(1) != null ? 144 : 1000)
+                aMaterial.getMolten(1) != null ? 1 * INGOTS : 1_000)
             .asFluid();
     }
 
@@ -2316,7 +2317,7 @@ public abstract class GTProxy implements IGTMod, IFuelHandler {
             .registerContainers(
                 GTOreDictUnificator.get(OrePrefixes.cellMolten, aMaterial, 1L),
                 ItemList.Cell_Empty.get(1L),
-                144)
+                1 * INGOTS)
             .asFluid();
     }
 
@@ -2408,8 +2409,8 @@ public abstract class GTProxy implements IGTMod, IFuelHandler {
 
             GTValues.RA.stdBuilder()
                 .itemInputs(GTUtility.getIntegratedCircuit(i + 1))
-                .fluidInputs(new FluidStack(uncrackedFluid, 1000), GTModHandler.getSteam(1000))
-                .fluidOutputs(new FluidStack(crackedFluids[i], 1200))
+                .fluidInputs(new FluidStack(uncrackedFluid, 1_000), Materials.Steam.getGas(1_000))
+                .fluidOutputs(new FluidStack(crackedFluids[i], 1_200))
                 .duration((1 + i) * SECONDS)
                 .eut(240)
                 .addTo(crackingRecipes);
@@ -2417,7 +2418,7 @@ public abstract class GTProxy implements IGTMod, IFuelHandler {
             GTValues.RA.stdBuilder()
                 .itemInputs(GTModHandler.getIC2Item("steamCell", 1L), GTUtility.getIntegratedCircuit(i + 1))
                 .itemOutputs(Materials.Empty.getCells(1))
-                .fluidInputs(new FluidStack(uncrackedFluid, 1000))
+                .fluidInputs(new FluidStack(uncrackedFluid, 1_000))
                 .fluidOutputs(new FluidStack(crackedFluids[i], 800))
                 .duration((8 + 4 * i) * SECONDS)
                 .eut(TierEU.RECIPE_LV)
@@ -2426,7 +2427,7 @@ public abstract class GTProxy implements IGTMod, IFuelHandler {
             GTValues.RA.stdBuilder()
                 .itemInputs(aMaterial.getCells(1), GTUtility.getIntegratedCircuit(i + 1))
                 .itemOutputs(Materials.Empty.getCells(1))
-                .fluidInputs(GTModHandler.getSteam(1000))
+                .fluidInputs(Materials.Steam.getGas(1_000))
                 .fluidOutputs(new FluidStack(crackedFluids[i], 800))
                 .duration((8 + 4 * i) * SECONDS)
                 .eut(TierEU.RECIPE_LV)
@@ -2443,7 +2444,7 @@ public abstract class GTProxy implements IGTMod, IFuelHandler {
 
             GTValues.RA.stdBuilder()
                 .itemInputs(GTUtility.getIntegratedCircuit(i + 1))
-                .fluidInputs(new FluidStack(uncrackedFluid, 1000), GTModHandler.getSteam(1000))
+                .fluidInputs(new FluidStack(uncrackedFluid, 1_000), Materials.Steam.getGas(1_000))
                 .fluidOutputs(new FluidStack(crackedFluids[i], 800))
                 .duration((4 + 2 * i) * SECONDS)
                 .eut(TierEU.RECIPE_HV)

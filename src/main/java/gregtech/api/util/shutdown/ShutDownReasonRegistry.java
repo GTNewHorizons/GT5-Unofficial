@@ -1,7 +1,5 @@
 package gregtech.api.util.shutdown;
 
-import static gregtech.api.util.GTModHandler.getWater;
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -10,6 +8,8 @@ import javax.annotation.Nonnull;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
+
+import gregtech.api.enums.Materials;
 
 public class ShutDownReasonRegistry {
 
@@ -111,7 +111,7 @@ public class ShutDownReasonRegistry {
 
     static {
         register(new SimpleShutDownReason("", false));
-        register(new ReasonOutOfFluid(getWater(0)));
+        register(new ReasonOutOfFluid(Materials.Water.getFluid(0)));
         register(new ReasonOutOfItem(new ItemStack(Items.feather, 1)));
         register(new ReasonOutOfStuff("stuff", 1));
     }

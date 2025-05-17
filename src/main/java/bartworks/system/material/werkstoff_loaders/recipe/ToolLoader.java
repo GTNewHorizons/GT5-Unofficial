@@ -32,6 +32,7 @@ import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
 import static gregtech.api.recipe.RecipeMaps.extruderRecipes;
 import static gregtech.api.recipe.RecipeMaps.fluidSolidifierRecipes;
 import static gregtech.api.recipe.RecipeMaps.formingPressRecipes;
+import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.MINUTES;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 
@@ -439,7 +440,7 @@ public class ToolLoader implements IWerkstoffRunnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(ItemList.Shape_Mold_Turbine_Blade.get(0))
                 .itemOutputs(werkstoff.get(turbineBlade, 1))
-                .fluidInputs(werkstoff.getMolten(864))
+                .fluidInputs(werkstoff.getMolten(6 * INGOTS))
                 .duration(
                     (int) werkstoff.getStats()
                         .getMass() * 20)

@@ -8,6 +8,7 @@ import static gregtech.api.enums.Mods.ThaumicTinkerer;
 import static gregtech.api.enums.Mods.TwilightForest;
 import static gregtech.api.recipe.RecipeMaps.centrifugeRecipes;
 import static gregtech.api.util.GTModHandler.getModItem;
+import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.MINUTES;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
@@ -48,7 +49,7 @@ public class CentrifugeRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Cell_Empty.get(1))
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.cell, Materials.Oxygen, 1))
-            .fluidInputs(Materials.Air.getGas(10000))
+            .fluidInputs(Materials.Air.getGas(10_000))
             .fluidOutputs(Materials.Nitrogen.getGas(3900))
             .duration(1 * MINUTES + 20 * SECONDS)
             .eut(8)
@@ -77,7 +78,7 @@ public class CentrifugeRecipes implements Runnable {
                 Materials.Nickel.getDust(1),
                 Materials.Antimony.getDust(1))
             .outputChances(10000, 4000, 2000, 2000, 2000, 2000)
-            .fluidInputs(MaterialsOreAlum.SluiceJuice.getFluid(1000))
+            .fluidInputs(MaterialsOreAlum.SluiceJuice.getFluid(1_000))
             .fluidOutputs(Materials.Water.getFluid(500))
             .duration(2 * SECONDS)
             .eut((int) TierEU.RECIPE_MV)
@@ -88,7 +89,7 @@ public class CentrifugeRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(new ItemStack(Items.golden_apple, 1, 1), GTUtility.getIntegratedCircuit(1))
             .itemOutputs(new ItemStack(Items.gold_ingot, 64))
-            .fluidOutputs(Materials.Methane.getGas(4608))
+            .fluidOutputs(Materials.Methane.getGas(32 * INGOTS))
             .duration(7 * MINUTES + 40 * SECONDS + 16 * TICKS)
             .eut(5)
             .addTo(centrifugeRecipes);
@@ -411,7 +412,7 @@ public class CentrifugeRecipes implements Runnable {
             .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Uranium, 1))
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Uranium235, 1))
             .outputChances(10000)
-            .fluidInputs(Materials.Fluorine.getGas(4000))
+            .fluidInputs(Materials.Fluorine.getGas(4_000))
             .duration(3 * MINUTES + 20 * SECONDS)
             .eut((int) TierEU.RECIPE_EV)
             .addTo(centrifugeRecipes);

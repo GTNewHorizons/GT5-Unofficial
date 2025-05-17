@@ -22,7 +22,6 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.TierEU;
-import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gtnhlanth.common.register.BotWerkstoffMaterialPool;
@@ -42,21 +41,21 @@ public class BotRecipes {
         GTValues.RA.stdBuilder()
             .itemInputs(Materials.Calcite.getDust(5), Materials.Empty.getCells(1))
             .itemOutputs(Materials.CarbonDioxide.getCells(1), WerkstoffLoader.CalciumChloride.get(dust, 3))
-            .fluidInputs(Materials.HydrochloricAcid.getFluid(2000))
-            .fluidOutputs(Materials.Water.getFluid(1000))
+            .fluidInputs(Materials.HydrochloricAcid.getFluid(2_000))
+            .fluidOutputs(Materials.Water.getFluid(1_000))
             .duration(4 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(UniversalChemical);
 
         // tungsten chain
-        FluidStack sodiumTungsten = SodiumTungstate.getFluidOrGas(1000);
+        FluidStack sodiumTungsten = SodiumTungstate.getFluidOrGas(1_000);
         ItemStack scheelite = Materials.Scheelite.getDust(6);
 
         // Li2WO4 + 2Na = Na2WO4 + 2Li
         GTValues.RA.stdBuilder()
             .itemInputs(Materials.Tungstate.getDust(7), Materials.Sodium.getDust(2))
             .itemOutputs(Materials.Lithium.getDust(2))
-            .fluidInputs(Materials.Water.getFluid(4000))
+            .fluidInputs(Materials.Water.getFluid(4_000))
             .fluidOutputs(sodiumTungsten)
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_EV)
@@ -66,7 +65,7 @@ public class BotRecipes {
         GTValues.RA.stdBuilder()
             .itemInputs(WerkstoffLoader.Huebnerit.get(dust, 6), Materials.Sodium.getDust(2))
             .itemOutputs(Materials.Manganese.getDust(1))
-            .fluidInputs(Materials.Water.getFluid(4000))
+            .fluidInputs(Materials.Water.getFluid(4_000))
             .fluidOutputs(sodiumTungsten)
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_EV)
@@ -76,7 +75,7 @@ public class BotRecipes {
         GTValues.RA.stdBuilder()
             .itemInputs(WerkstoffLoader.Ferberite.get(dust, 6), Materials.Sodium.getDust(2))
             .itemOutputs(Materials.Iron.getDust(1))
-            .fluidInputs(Materials.Water.getFluid(4000))
+            .fluidInputs(Materials.Water.getFluid(4_000))
             .fluidOutputs(sodiumTungsten)
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_EV)
@@ -97,7 +96,7 @@ public class BotRecipes {
         GTValues.RA.stdBuilder()
             .itemInputs(scheelite)
             .itemOutputs(H2WO4, Ca2Cl)
-            .fluidInputs(Materials.HydrochloricAcid.getFluid(2000))
+            .fluidInputs(Materials.HydrochloricAcid.getFluid(2_000))
             .duration(2 * SECONDS + 10 * TICKS)
             .eut(TierEU.RECIPE_EV)
             .addTo(UniversalChemical);
@@ -116,8 +115,8 @@ public class BotRecipes {
         GTValues.RA.stdBuilder()
             .itemInputs(WO3, C2)
             .itemOutputs(Materials.Tungsten.getDust(1))
-            .fluidInputs(Materials.Hydrogen.getGas(6000))
-            .fluidOutputs(GTModHandler.getSteam(3000))
+            .fluidInputs(Materials.Hydrogen.getGas(6_000))
+            .fluidOutputs(Materials.Steam.getGas(3_000))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .metadata(COIL_HEAT, 1000)
@@ -127,7 +126,7 @@ public class BotRecipes {
         GTValues.RA.stdBuilder()
             .itemInputs(TungstenTrioxide.get(dust, 8), Materials.Carbon.getDust(3))
             .itemOutputs(GTOreDictUnificator.get(ingotHot, Materials.Tungsten, 2L))
-            .fluidOutputs(Materials.CarbonDioxide.getGas(3000))
+            .fluidOutputs(Materials.CarbonDioxide.getGas(3_000))
             .duration(6 * MINUTES + 40 * SECONDS)
             .eut(TierEU.RECIPE_EV)
             .metadata(COIL_HEAT, 3000)
@@ -140,14 +139,14 @@ public class BotRecipes {
         GTValues.RA.stdBuilder()
             .itemInputs(Materials.CarbonMonoxide.getCells(1), GTUtility.getIntegratedCircuit(12))
             .itemOutputs(Phosgene.get(cell, 1))
-            .fluidInputs(Materials.Chlorine.getGas(2000))
+            .fluidInputs(Materials.Chlorine.getGas(2_000))
             .duration(2 * SECONDS + 10 * TICKS)
             .eut(TierEU.RECIPE_HV)
             .addTo(chemicalReactorRecipes);
         GTValues.RA.stdBuilder()
             .itemInputs(Materials.Chlorine.getCells(2), GTUtility.getIntegratedCircuit(12))
             .itemOutputs(Phosgene.get(cell, 1), Materials.Empty.getCells(1))
-            .fluidInputs(Materials.CarbonMonoxide.getGas(1000))
+            .fluidInputs(Materials.CarbonMonoxide.getGas(1_000))
             .duration(2 * SECONDS + 10 * TICKS)
             .eut(TierEU.RECIPE_HV)
             .addTo(chemicalReactorRecipes);
@@ -160,8 +159,8 @@ public class BotRecipes {
         GTValues.RA.stdBuilder()
             .itemInputs(Materials.Chlorine.getCells(2), GTUtility.getIntegratedCircuit(2))
             .itemOutputs(Materials.Empty.getCells(2))
-            .fluidInputs(Materials.CarbonMonoxide.getGas(1000))
-            .fluidOutputs(BotWerkstoffMaterialPool.Phosgene.getFluidOrGas(1000))
+            .fluidInputs(Materials.CarbonMonoxide.getGas(1_000))
+            .fluidOutputs(BotWerkstoffMaterialPool.Phosgene.getFluidOrGas(1_000))
             .duration(2 * SECONDS + 10 * TICKS)
             .eut(TierEU.RECIPE_HV)
             .addTo(UniversalChemical);
@@ -170,7 +169,7 @@ public class BotRecipes {
         GTValues.RA.stdBuilder()
             .itemInputs(C2)
             .itemOutputs(Materials.Phosphorus.getDust(1))
-            .fluidInputs(Materials.PhosphoricAcid.getFluid(1000))
+            .fluidInputs(Materials.PhosphoricAcid.getFluid(1_000))
             .fluidOutputs(Materials.Water.getFluid(500))
             .eut(TierEU.RECIPE_HV)
             .duration(1 * SECONDS)
@@ -182,8 +181,8 @@ public class BotRecipes {
         GTValues.RA.stdBuilder()
             .itemInputs(cells)
             .itemOutputs(Materials.Ammonia.getCells(1))
-            .fluidInputs(WerkstoffLoader.AmmoniumChloride.getFluidOrGas(1000))
-            .fluidOutputs(Materials.HydrochloricAcid.getFluid(1000))
+            .fluidInputs(WerkstoffLoader.AmmoniumChloride.getFluidOrGas(1_000))
+            .fluidOutputs(Materials.HydrochloricAcid.getFluid(1_000))
             .eut(TierEU.RECIPE_MV)
             .duration(2 * SECONDS + 10 * TICKS)
             .addTo(distilleryRecipes);
@@ -192,7 +191,7 @@ public class BotRecipes {
         GTValues.RA.stdBuilder()
             .itemInputs(AmmoniumNitrate.get(dust, 9), Materials.SodiumHydroxide.getDust(3))
             .itemOutputs(WerkstoffLoader.SodiumNitrate.get(dust, 5))
-            .fluidOutputs(Materials.Ammonia.getGas(1000))
+            .fluidOutputs(Materials.Ammonia.getGas(1_000))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(chemicalReactorRecipes);
@@ -200,7 +199,7 @@ public class BotRecipes {
         GTValues.RA.stdBuilder()
             .itemInputs(AmmoniumNitrate.get(dust, 9), Materials.SodiumHydroxide.getDust(3), C2)
             .itemOutputs(WerkstoffLoader.SodiumNitrate.get(dust, 5))
-            .fluidOutputs(Materials.Ammonia.getGas(1000), Materials.Water.getFluid(1000))
+            .fluidOutputs(Materials.Ammonia.getGas(1_000), Materials.Water.getFluid(1_000))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(multiblockChemicalReactorRecipes);
@@ -209,11 +208,11 @@ public class BotRecipes {
         GTValues.RA.stdBuilder()
             .itemInputs(C24, AmmoniumNitrate.get(dust, 9), Materials.SodiumHydroxide.getDust(3))
             .itemOutputs(Materials.Sodium.getDust(1))
-            .fluidInputs(Materials.SulfuricAcid.getFluid(1000), Materials.Hydrogen.getGas(1000))
+            .fluidInputs(Materials.SulfuricAcid.getFluid(1_000), Materials.Hydrogen.getGas(1_000))
             .fluidOutputs(
-                Materials.Ammonia.getGas(1000),
-                Materials.NitricAcid.getFluid(1000),
-                Materials.DilutedSulfuricAcid.getFluid(1000))
+                Materials.Ammonia.getGas(1_000),
+                Materials.NitricAcid.getFluid(1_000),
+                Materials.DilutedSulfuricAcid.getFluid(1_000))
             .duration(15 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(multiblockChemicalReactorRecipes);
@@ -221,8 +220,8 @@ public class BotRecipes {
         // 2HNO3 + C3H8 = 2CH3NO2 + 2H2O + C
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(2))
-            .fluidInputs(Materials.Propane.getGas(1000), Materials.NitricAcid.getFluid(2000))
-            .fluidOutputs(Nitromethane.getFluidOrGas(2000))
+            .fluidInputs(Materials.Propane.getGas(1_000), Materials.NitricAcid.getFluid(2_000))
+            .fluidOutputs(Nitromethane.getFluidOrGas(2_000))
             .duration(15 * SECONDS)
             .eut(TierEU.RECIPE_EV)
             .addTo(crackingRecipes);

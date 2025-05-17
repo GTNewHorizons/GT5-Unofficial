@@ -1,8 +1,9 @@
 package kekztech.common.recipeLoaders;
 
+import static gregtech.api.util.GTRecipeBuilder.WILDCARD;
+
 import net.minecraft.item.ItemStack;
 
-import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
@@ -59,7 +60,7 @@ public class Crafting implements Runnable {
 
         // EV Capacitor
         final Object[] lcEV_recipe = { "SLS", "LCL", "SLS", 'S', OrePrefixes.screw.get(Materials.Lapis), 'L',
-            OrePrefixes.plate.get(Materials.Lapis), 'C', GTModHandler.getIC2Item("lapotronCrystal", 1L, GTValues.W) };
+            OrePrefixes.plate.get(Materials.Lapis), 'C', GTModHandler.getIC2Item("lapotronCrystal", 1L, WILDCARD) };
         GTModHandler.addCraftingRecipe(new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 7), lcEV_recipe);
 
         // IV Capacitor
