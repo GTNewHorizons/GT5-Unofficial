@@ -417,11 +417,8 @@ public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelSta
     }
 
     private void flushCachedStack() {
-        if (fluidCache.isEmpty()) return;
+        if (!isActive() || fluidCache.isEmpty()) return;
         AENetworkProxy proxy = getProxy();
-        if (proxy == null) {
-            return;
-        }
         try {
             IMEMonitor<IAEFluidStack> sg = proxy.getStorage()
                 .getFluidInventory();
