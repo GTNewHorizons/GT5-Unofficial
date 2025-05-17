@@ -287,7 +287,8 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
     /**
      * The map used to check the flowers in the apiary.
      * <p>
-     * The instance is updated in {@link #checkMachine(IGregTechTileEntity, ItemStack)} and entries will be removed during structural check defined in the structure definition, via {@link #flowerCheck(World, int, int, int)}.
+     * The instance is updated in {@link #checkMachine(IGregTechTileEntity, ItemStack)} and entries will be removed
+     * during structural check defined in the structure definition, via {@link #flowerCheck(World, int, int, int)}.
      * After {@code checkMachine}, the remaining entries are the missing flowers, which is shown on the GUI as error
      * message.
      *
@@ -654,8 +655,11 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
             // bee flower info
             String flowerType = beeSimulator.getFlowerType();
             boolean flowerExists = !missingFlowers || flowerCheckingMap.get(flowerType) == null;
-            builder.append(" ").append(flowerExists ? EnumChatFormatting.GREEN : EnumChatFormatting.RED)
-                .append("(").append(flowerType).append(")");
+            builder.append(" ")
+                .append(flowerExists ? EnumChatFormatting.GREEN : EnumChatFormatting.RED)
+                .append("(")
+                .append(flowerType)
+                .append(")");
             infos.merge(builder.toString(), 1, Integer::sum);
         }
         infos.forEach((key, value) -> info.add("x" + value + ": " + key));
