@@ -158,6 +158,63 @@ public class LoaderGTItemData implements Runnable {
         GTOreDictUnificator.addItemData(
             GTModHandler.getModItem(NewHorizonsCoreMod.ID, "item.SteelBars", 8L, 0),
             new ItemData(Materials.Steel, 10886400L));
+        GTOreDictUnificator.addItemData(
+            GTModHandler.getModItem(NewHorizonsCoreMod.ID, "item.StainlessSteelBars", 8L, 0),
+            new ItemData(Materials.StainlessSteel, 10886400L));
+        GTOreDictUnificator.addItemData(
+            GTModHandler.getModItem(NewHorizonsCoreMod.ID, "item.SoulariumBars", 8L, 0),
+            new ItemData(Materials.Soularium, 10886400L));
+        GTOreDictUnificator.addItemData(
+            GTModHandler.getModItem(NewHorizonsCoreMod.ID, "item.TitaniumBars", 8L, 0),
+            new ItemData(Materials.Titanium, 10886400L));
+        GTOreDictUnificator.addItemData(
+            GTModHandler.getModItem(NewHorizonsCoreMod.ID, "item.TungstenBars", 8L, 0),
+            new ItemData(Materials.Tungsten, 10886400L));
+        GTOreDictUnificator.addItemData(
+            GTModHandler.getModItem(NewHorizonsCoreMod.ID, "item.TungstenSteelBars", 8L, 0),
+            new ItemData(Materials.TungstenSteel, 10886400L));
+        GTOreDictUnificator.addItemData(
+            GTModHandler.getModItem(NewHorizonsCoreMod.ID, "item.VibrantAlloyBars", 8L, 0),
+            new ItemData(Materials.VibrantAlloy, 10886400L));
+        GTOreDictUnificator.addItemData(
+            GTModHandler.getModItem(NewHorizonsCoreMod.ID, "item.OsmiumBars", 8L, 0),
+            new ItemData(Materials.Osmium, 10886400L));
+        GTOreDictUnificator.addItemData(
+            GTModHandler.getModItem(NewHorizonsCoreMod.ID, "item.PulsatingIronBars", 8L, 0),
+            new ItemData(Materials.PulsatingIron, 10886400L));
+        GTOreDictUnificator.addItemData(
+            GTModHandler.getModItem(NewHorizonsCoreMod.ID, "item.NeutroniumBars", 8L, 0),
+            new ItemData(Materials.Neutronium, 10886400L));
+        GTOreDictUnificator.addItemData(
+            GTModHandler.getModItem(NewHorizonsCoreMod.ID, "item.IridiumBars", 8L, 0),
+            new ItemData(Materials.Iridium, 10886400L));
+        GTOreDictUnificator.addItemData(
+            GTModHandler.getModItem(NewHorizonsCoreMod.ID, "item.OsmiumBars", 8L, 0),
+            new ItemData(Materials.Osmium, 10886400L));
+        GTOreDictUnificator.addItemData(
+            GTModHandler.getModItem(NewHorizonsCoreMod.ID, "item.EnderiumBaseBars", 8L, 0),
+            new ItemData(Materials.EnderiumBase, 10886400L));
+        GTOreDictUnificator.addItemData(
+            GTModHandler.getModItem(NewHorizonsCoreMod.ID, "item.EnderiumBars", 8L, 0),
+            new ItemData(Materials.Enderium, 10886400L));
+        GTOreDictUnificator.addItemData(
+            GTModHandler.getModItem(NewHorizonsCoreMod.ID, "item.EnergeticAlloyBars", 8L, 0),
+            new ItemData(Materials.EnergeticAlloy, 10886400L));
+        GTOreDictUnificator.addItemData(
+            GTModHandler.getModItem(NewHorizonsCoreMod.ID, "item.ElectricalSteelBars", 8L, 0),
+            new ItemData(Materials.ElectricalSteel, 10886400L));
+        GTOreDictUnificator.addItemData(
+            GTModHandler.getModItem(NewHorizonsCoreMod.ID, "item.ConductiveIronBars", 8L, 0),
+            new ItemData(Materials.ConductiveIron, 10886400L));
+        GTOreDictUnificator.addItemData(
+            GTModHandler.getModItem(NewHorizonsCoreMod.ID, "item.ChromeBars", 8L, 0),
+            new ItemData(Materials.Chrome, 10886400L));
+        GTOreDictUnificator.addItemData(
+            GTModHandler.getModItem(NewHorizonsCoreMod.ID, "item.AluminiumBars", 8L, 0),
+            new ItemData(Materials.Aluminium, 10886400L));
+        GTOreDictUnificator.addItemData(
+            GTModHandler.getModItem(NewHorizonsCoreMod.ID, "item.RedstoneAlloyBars", 8L, 0),
+            new ItemData(Materials.RedstoneAlloy, 10886400L));
         GTOreDictUnificator
             .addItemData(GTModHandler.getIC2Item("ironFurnace", 1L), new ItemData(Materials.Iron, 18144000L));
         GTOreDictUnificator.addItemData(ItemList.IC2_Food_Can_Empty.get(1L), new ItemData(Materials.Tin, 1814400L));
