@@ -28,8 +28,7 @@ public class MTENeutronActivatorGui extends TTMultiBlockBaseGui {
 
     @Override
     protected ListWidget<IWidget, ?> createTerminalTextWidget(PanelSyncManager syncManager) {
-        IntSyncValue evSyncer = new IntSyncValue(() -> activator.eV, val -> activator.eV = val);
-        syncManager.syncValue("ev", evSyncer);
+        IntSyncValue evSyncer = (IntSyncValue) syncManager.getSyncHandler("ev:0");
         return super.createTerminalTextWidget(syncManager)
             .child(
                 new TextWidget(StatCollector.translateToLocal("gui.NeutronActivator.0")).alignment(Alignment.CenterLeft)
@@ -52,5 +51,12 @@ public class MTENeutronActivatorGui extends TTMultiBlockBaseGui {
                             .isAllowedToWork()
                             || activator.getBaseMetaTileEntity()
                                 .isActive())));
+    }
+
+    @Override
+    protected void registerSyncValues(PanelSyncManager syncManager) {
+        super.registerSyncValues(syncManager);
+        IntSyncValue evSyncer = new IntSyncValue(() -> activator.eV, val -> activator.eV = val);
+        syncManager.syncValue("ev", evSyncer);
     }
 }
