@@ -17,7 +17,6 @@ import java.util.stream.IntStream;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import gregtech.client.GTTooltipHandler;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -348,10 +347,12 @@ public class MTEPreciseAssembler extends MTEExtendedPowerMultiBlockBase<MTEPreci
             .addInfo("It is 100% faster than single block assemblers in Normal Mode.")
             .addInfo("More advanced Electronic Unit Casings increase maximum parallel in Normal Mode.")
             .addInfo("Imprecise (MK-0) = 16x, MK-I = 32x, MK-II = 64x, MK-III = 128x, MK-IV = 256x")
-            .addInfo("Machine Casing limits the voltage tier the machine can work on, "
-                + GTValues.TIER_COLORS[VoltageIndex.UMV] + "UMV"
-                + EnumChatFormatting.GRAY
-                + "-tier Machine Casing unlocks all.")
+            .addInfo(
+                "Machine Casing limits the voltage tier the machine can work on, "
+                    + GTValues.TIER_COLORS[VoltageIndex.UMV]
+                    + "UMV"
+                    + EnumChatFormatting.GRAY
+                    + "-tier Machine Casing unlocks all.")
             .addTecTechHatchInfo()
             .addNoTierSkips()
             .addPollutionAmount(getPollutionPerSecond(null))
