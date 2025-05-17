@@ -1220,7 +1220,7 @@ public class ResearchStationAssemblyLine implements Runnable {
         int research_eu_per_tick = (int) TierEU.RECIPE_UV;
         int research_amperage = 1;
 
-        FluidStack fluid_0 = Materials.Naquadria.getMolten(2592);
+        FluidStack fluid_0 = Materials.Naquadria.getMolten(18 * INGOTS);
         FluidStack fluid_1 = MaterialsAlloy.INDALLOY_140.getFluidStack(18 * INGOTS);
         FluidStack fluid_2 = Materials.Lubricant.getFluid(4_000);
 
@@ -2452,7 +2452,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                         GregtechItemList.CosmicFabricManipulator.get(tier), ME_Singularity, plateList[absoluteTier],
                         new Object[] { OrePrefixes.circuit.get(Materials.UXV), set } },
                     new FluidStack[] {
-                        MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack((int) (2_880 * pow(2L, absoluteTier))),
+                        MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack((int) (20 * INGOTS * pow(2L, absoluteTier))),
                         MaterialsUEVplus.Space.getMolten(1_440 * (absoluteTier + 1)), specialFluid[absoluteTier] },
                     CustomItemList.SpacetimeCompressionFieldGeneratorTier0.get(1),
                     (absoluteTier + 1) * 4_000 * 20,
@@ -2477,7 +2477,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                         GregtechItemList.CosmicFabricManipulator.get(tier), ME_Singularity, ME_Singularity,
                         plateList[absoluteTier], new Object[] { OrePrefixes.circuit.get(Materials.UXV), set } },
                     new FluidStack[] {
-                        MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack((int) (2_880 * pow(2L, absoluteTier))),
+                        MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack((int) (20 * INGOTS * pow(2L, absoluteTier))),
                         MaterialsUEVplus.Space.getMolten(1_440 * (absoluteTier + 1)), specialFluid[absoluteTier] },
                     CustomItemList.SpacetimeCompressionFieldGeneratorTier1.get(1),
                     (absoluteTier + 1) * 4_000 * 20,
@@ -2503,7 +2503,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                         ME_Singularity, plateList[absoluteTier],
                         new Object[] { OrePrefixes.circuit.get(Materials.UXV), set } },
                     new FluidStack[] {
-                        MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack((int) (2_880 * pow(2L, absoluteTier))),
+                        MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack((int) (20 * INGOTS * pow(2L, absoluteTier))),
                         MaterialsUEVplus.Space.getMolten(1_440 * (absoluteTier + 1)), specialFluid[absoluteTier], },
                     CustomItemList.SpacetimeCompressionFieldGeneratorTier2.get(1),
                     (absoluteTier + 1) * 4_000 * 20,
@@ -2532,7 +2532,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                         ME_Singularity, ME_Singularity, plateList[absoluteTier],
                         new Object[] { OrePrefixes.circuit.get(Materials.UXV), set } },
                     new FluidStack[] {
-                        MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack((int) (2_880 * pow(2L, absoluteTier))),
+                        MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack((int) (20 * INGOTS * pow(2L, absoluteTier))),
                         MaterialsUEVplus.Space.getMolten(1_440 * (absoluteTier + 1)), specialFluid[absoluteTier], },
                     CustomItemList.SpacetimeCompressionFieldGeneratorTier3.get(1),
                     (absoluteTier + 1) * 4_000 * 20,
@@ -2558,7 +2558,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                         ME_Singularity, ME_Singularity, ME_Singularity, plateList[absoluteTier],
                         new Object[] { OrePrefixes.circuit.get(Materials.UXV), set } },
                     new FluidStack[] {
-                        MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack((int) (2_880 * pow(2L, absoluteTier))),
+                        MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack((int) (20 * INGOTS * pow(2L, absoluteTier))),
                         MaterialsUEVplus.Space.getMolten(1_440 * (absoluteTier + 1)), specialFluid[absoluteTier], },
                     CustomItemList.SpacetimeCompressionFieldGeneratorTier4.get(1),
                     (absoluteTier + 1) * 4_000 * 20,
@@ -2584,7 +2584,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                         ME_Singularity, ME_Singularity, ME_Singularity, ME_Singularity, plateList[absoluteTier],
                         new Object[] { OrePrefixes.circuit.get(Materials.UXV), set } },
                     new FluidStack[] {
-                        MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack((int) (2_880 * pow(2L, absoluteTier))),
+                        MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack((int) (20 * INGOTS * pow(2L, absoluteTier))),
                         MaterialsUEVplus.Space.getMolten(1_440 * (absoluteTier + 1)), specialFluid[absoluteTier], },
                     CustomItemList.SpacetimeCompressionFieldGeneratorTier5.get(1),
                     (absoluteTier + 1) * 4_000 * 20,
@@ -2613,7 +2613,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                         ME_Singularity, ME_Singularity, ME_Singularity, ME_Singularity, ME_Singularity,
                         plateList[absoluteTier], new Object[] { OrePrefixes.circuit.get(Materials.UXV), set } },
                     new FluidStack[] {
-                        MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack((int) (2_880 * pow(2L, absoluteTier))),
+                        MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack((int) (20 * INGOTS * pow(2L, absoluteTier))),
                         MaterialsUEVplus.Space.getMolten(1_440 * (absoluteTier + 1)), specialFluid[absoluteTier], },
                     CustomItemList.SpacetimeCompressionFieldGeneratorTier6.get(1),
                     (absoluteTier + 1) * 4_000 * 20,
@@ -2639,7 +2639,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                         ME_Singularity, ME_Singularity, ME_Singularity, ME_Singularity, ME_Singularity, ME_Singularity,
                         plateList[absoluteTier], new Object[] { OrePrefixes.circuit.get(Materials.UXV), set } },
                     new FluidStack[] {
-                        MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack((int) (2_880 * pow(2L, absoluteTier))),
+                        MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack((int) (20 * INGOTS * pow(2L, absoluteTier))),
                         MaterialsUEVplus.Space.getMolten(1_440 * (absoluteTier + 1)), specialFluid[absoluteTier], },
                     CustomItemList.SpacetimeCompressionFieldGeneratorTier7.get(1),
                     (absoluteTier + 1) * 4_000 * 20,
@@ -2666,7 +2666,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                         ME_Singularity, plateList[absoluteTier],
                         new Object[] { OrePrefixes.circuit.get(Materials.UXV), set } },
                     new FluidStack[] {
-                        MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack((int) (2_880 * pow(2L, absoluteTier))),
+                        MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack((int) (20 * INGOTS * pow(2L, absoluteTier))),
                         MaterialsUEVplus.Space.getMolten(1_440 * (absoluteTier + 1)), specialFluid[absoluteTier], },
                     CustomItemList.SpacetimeCompressionFieldGeneratorTier8.get(1),
                     (absoluteTier + 1) * 4_000 * 20,
@@ -2753,7 +2753,7 @@ public class ResearchStationAssemblyLine implements Runnable {
 
                     },
                     new FluidStack[] {
-                        MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack((int) (2_880 * pow(2L, absoluteTier))),
+                        MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack((int) (20 * INGOTS * pow(2L, absoluteTier))),
                         MaterialsUEVplus.Time.getMolten(1_440 * (absoluteTier + 1)), specialFluid[absoluteTier] },
                     researchStuff[absoluteTier + 1],
                     (absoluteTier + 1) * 4_000 * 20,
@@ -2843,7 +2843,7 @@ public class ResearchStationAssemblyLine implements Runnable {
 
 
                         },
-                        new FluidStack[] { MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack((int) (2_880 * pow(2L, absoluteTier))),
+                        new FluidStack[] { MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack((int) (20 * INGOTS * pow(2L, absoluteTier))),
                                 MaterialsUEVplus.Time.getMolten(1_440 * (absoluteTier + 1)),
                                 MaterialsUEVplus.Space.getMolten(1_440 * (absoluteTier + 1)),
                                 specialFluid[absoluteTier] },
@@ -3161,10 +3161,10 @@ public class ResearchStationAssemblyLine implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.nanite, Materials.Gold, 8),
                 GTOreDictUnificator.get(OrePrefixes.nanite, MaterialsUEVplus.SixPhasedCopper, 8),
                 GTOreDictUnificator.get(OrePrefixes.nanite, MaterialsUEVplus.Universium, 8) },
-            new FluidStack[] { MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack(256 * INGOTS),
-                Materials.SuperconductorUMVBase.getMolten(256 * INGOTS),
-                MaterialsUEVplus.WhiteDwarfMatter.getMolten(256 * INGOTS),
-                MaterialsUEVplus.Eternity.getMolten(256 * INGOTS) },
+            new FluidStack[] { MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack(4 * STACKS),
+                Materials.SuperconductorUMVBase.getMolten(4 * STACKS),
+                MaterialsUEVplus.WhiteDwarfMatter.getMolten(4 * STACKS),
+                MaterialsUEVplus.Eternity.getMolten(4 * STACKS) },
             CustomItemList.Godforge_GravitonFlowModulatorTier3.get(1),
             10 * SECONDS,
             (int) TierEU.RECIPE_UXV);
@@ -3207,7 +3207,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.plateDense, MaterialsUEVplus.Mellion, 8),
                 new Object[] { OrePrefixes.circuit.get(Materials.UIV), 32L } },
             new FluidStack[] { MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack(16 * STACKS),
-                MaterialsUEVplus.ExcitedDTEC.getFluid(2_048_000), Materials.Lead.getPlasma(256 * INGOTS),
+                MaterialsUEVplus.ExcitedDTEC.getFluid(2_048_000), Materials.Lead.getPlasma(4 * STACKS),
                 MaterialsUEVplus.TranscendentMetal.getMolten(16 * STACKS) },
             CustomItemList.Machine_Multi_SmeltingModule.get(1),
             300 * SECONDS,
@@ -3437,7 +3437,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                     GTOreDictUnificator.get(OrePrefixes.plateDense, Materials.Flerovium, 4), circuitsTierPlusTwo[i + 4],
                     ItemList.EnergisedTesseract.get(1) },
                 new FluidStack[] { MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack(36 * INGOTS),
-                    MaterialsUEVplus.ExcitedDTEC.getFluid(500L * 4) },
+                    MaterialsUEVplus.ExcitedDTEC.getFluid(2_000) },
                 wirelessHatches_4A[i],
                 recipeDurationTicks,
                 recipeEuPerTick);
@@ -3485,7 +3485,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                     GTOreDictUnificator.get("plateDenseMetastableOganesson", 4), circuitsTierPlusTwo[i + 4],
                     ItemList.EnergisedTesseract.get(1) },
                 new FluidStack[] { MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack(9 * STACKS),
-                    MaterialsUEVplus.ExcitedDTEC.getFluid(500L * 64) },
+                    MaterialsUEVplus.ExcitedDTEC.getFluid(32_000) },
                 wirelessHatches_64A[i],
                 recipeDurationTicks,
                 recipeEuPerTick);
@@ -3511,7 +3511,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                         .get(OrePrefixes.plateDense, MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter, 16),
                     new Object[] { OrePrefixes.circuit.get(Materials.UXV), 16L }, ItemList.EnergisedTesseract.get(1) },
                 new FluidStack[] { MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack(36 * STACKS),
-                    MaterialsUEVplus.ExcitedDTSC.getFluid(500L * 64) },
+                    MaterialsUEVplus.ExcitedDTSC.getFluid(32_000) },
                 wirelessLasers[i],
                 recipeDurationTicks,
                 recipeEuPerTick);
