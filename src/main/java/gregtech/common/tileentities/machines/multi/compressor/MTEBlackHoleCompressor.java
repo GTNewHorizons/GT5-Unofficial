@@ -643,15 +643,6 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
     }
 
     @Override
-    protected void setProcessingLogicPower(ProcessingLogic logic) {
-        boolean useSingleAmp = mEnergyHatches.size() == 1 && mExoticEnergyHatches.isEmpty();
-        logic.setAvailableVoltage(getAverageInputVoltage());
-        logic.setAvailableAmperage(useSingleAmp ? 1 : getMaxInputAmps());
-        logic.setAmperageOC(true);
-        logic.setMaxTierSkips(1);
-    }
-
-    @Override
     public boolean isInputSeparationEnabled() {
         return true;
     }
