@@ -530,7 +530,7 @@ public class Gregtech {
         @Config.RequiresMcRestart
         public boolean useMachineMetal;
 
-        @Config.Comment("If ture, Crafting Input Bus/Buffer will drop items and fluids if failed to refund to the AE.")
+        @Config.Comment("If true, Crafting Input Bus/Buffer will drop items and fluids if they cannot be returned to the AE network.")
         @Config.DefaultBoolean(true)
         public boolean allowCribDropItems;
     }
