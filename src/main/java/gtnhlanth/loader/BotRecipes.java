@@ -221,7 +221,7 @@ public class BotRecipes {
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(2))
             .fluidInputs(Materials.Propane.getGas(1_000), Materials.NitricAcid.getFluid(2_000))
-            .fluidOutputs(Nitromethane.getFluidOrGas(2000))
+            .fluidOutputs(Nitromethane.getFluidOrGas(2_000))
             .duration(15 * SECONDS)
             .eut(TierEU.RECIPE_EV)
             .addTo(crackingRecipes);
