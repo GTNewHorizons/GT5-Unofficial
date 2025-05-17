@@ -1,5 +1,6 @@
 package gregtech.common.tileentities.machines.multi.nanochip.modules;
 
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.lazy;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
@@ -9,10 +10,21 @@ import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAs
 import static gtnhlanth.util.DescTextLocalization.addDotText;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import javax.annotation.Nullable;
 
+import gregtech.api.interfaces.IHatchElement;
+import gregtech.api.metatileentity.implementations.MTEHatch;
+import gregtech.api.util.GTStructureUtility;
+import gregtech.api.util.IGTHatchAdder;
+import gregtech.common.tileentities.machines.multi.compressor.MTEHeatSensor;
+import gregtech.common.tileentities.machines.multi.nanochip.hatches.MTEHatchParticleSensor;
+import gregtech.common.tileentities.machines.multi.purification.MTEHatchLensIndicator;
+import gregtech.common.tileentities.machines.multi.purification.MTEHatchPHSensor;
+import gregtech.common.tileentities.machines.multi.purification.MTEPurificationUnitUVTreatment;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -57,9 +69,10 @@ public class EtchingArray extends MTENanochipAssemblyModuleBase<EtchingArray> {
         { "  EEE  ", " EBBBE ", " EBHBE ", " BBBBB " }, { "  AGA  ", " A   A ", " G F G ", "B     B" },
         { "  AGA  ", " A   A ", " G F G ", "B     B" }, { "  AGA  ", " A   A ", " G F G ", "B     B" },
         { "  AGA  ", " A   A ", " G F G ", "B     B" }, { "  AGA  ", " BCCCB ", " BCDCB ", "BBCCCBB" },
-        { "  EEE  ", " EAEAE ", " EAAAE ", " BAEAB " } };
+        { "  EEE  ", " EAEAE ", " EAIAE ", " BAEAB " } };
 
     private final ArrayList<MTEHatchInputBeamline> mInputBeamline = new ArrayList<>();
+    private final ArrayList<MTEHatchParticleSensor> particleSensor = new ArrayList<>();
 
     int requiredEnergy = 1;
     int requiredParticle = 0;
@@ -89,6 +102,16 @@ public class EtchingArray extends MTENanochipAssemblyModuleBase<EtchingArray> {
                 .dot(1)
                 .adder(EtchingArray::addBeamLineInputHatch)
                 .build())
+        // Particle Indicator Hatch
+        .addElement(
+            'I',
+            lazy(
+                t -> GTStructureUtility.<EtchingArray>buildHatchAdder()
+                    .atLeast(SpecialHatchElement.ParticleSensor)
+                    .dot(3)
+                    .cacheHint(() -> "Particle Indicator")
+                    .casingIndex(((BlockCasings8) GregTechAPI.sBlockCasings8).getTextureIndex(10))
+                    .build()))
         .build();
 
     private boolean addBeamLineInputHatch(IGregTechTileEntity te, int casingIndex) {
@@ -113,6 +136,46 @@ public class EtchingArray extends MTENanochipAssemblyModuleBase<EtchingArray> {
         return null;
     }
 
+    public boolean addParticleSensorToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
+        if (aTileEntity == null) return false;
+        IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
+        if (aMetaTileEntity instanceof MTEHatchParticleSensor sensor) {
+            sensor.updateTexture(aBaseCasingIndex);
+            return this.particleSensor.add(sensor);
+        }
+        return false;
+    }
+
+    private enum SpecialHatchElement implements IHatchElement<EtchingArray> {
+
+        ParticleSensor(EtchingArray::addParticleSensorToMachineList, MTEHatchParticleSensor.class) {
+
+            @Override
+            public long count(EtchingArray gtMetaTileEntityEtchingArray) {
+                return gtMetaTileEntityEtchingArray.particleSensor.size();
+            }
+        };
+
+        private final List<Class<? extends IMetaTileEntity>> mteClasses;
+        private final IGTHatchAdder<EtchingArray> adder;
+
+        @SafeVarargs
+        SpecialHatchElement(IGTHatchAdder<EtchingArray> adder,
+                            Class<? extends IMetaTileEntity>... mteClasses) {
+            this.mteClasses = Collections.unmodifiableList(Arrays.asList(mteClasses));
+            this.adder = adder;
+        }
+
+        @Override
+        public List<? extends Class<? extends IMetaTileEntity>> mteClasses() {
+            return mteClasses;
+        }
+
+        public IGTHatchAdder<? super EtchingArray> adder() {
+            return adder;
+        }
+    }
+
     @Override
     public @NotNull CheckRecipeResult validateRecipe(@NotNull GTRecipe recipe) {
 
@@ -134,32 +197,27 @@ public class EtchingArray extends MTENanochipAssemblyModuleBase<EtchingArray> {
 
     }
 
-    /*
-     * private long ticker = 0;
-     * public boolean onRunningTick(ItemStack aStack) {
-     * if (!super.onRunningTick(aStack)) {
-     * return false;
-     * }
-     * if (ticker % (5 * SECONDS) == 0) {
-     * updateRequiredPatricle();
-     * ticker = 0;
-     * }
-     * ticker++;
-     * return true;
-     * }
-     */
-
-    long ticker = 0;
-
     @Override
-    public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
-        super.onPostTick(aBaseMetaTileEntity, aTick);
-        if (ticker % (5 * SECONDS) == 0) {
-            updateRequiredPatricle();
-            ticker = 0;
+    public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTimer) {
+        super.onPostTick(aBaseMetaTileEntity, aTimer);
+        // Update sensor hatch
+        for (MTEHatchParticleSensor hatch : particleSensor) {
+            hatch.updateRedstoneOutput(this.requiredParticle);
         }
-        ticker++;
     }
+
+    private long ticker = 0;
+     public boolean onRunningTick(ItemStack aStack) {
+      if (!super.onRunningTick(aStack)) {
+      return false;
+      }
+      if (ticker % (5 * SECONDS) == 0) {
+      updateRequiredPatricle();
+      ticker = 0;
+      }
+      ticker++;
+      return true;
+      }
 
     private void updateRequiredPatricle() {
         int particle = MathUtils.randInt(1, 3);

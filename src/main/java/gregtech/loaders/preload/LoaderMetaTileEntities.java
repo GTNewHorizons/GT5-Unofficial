@@ -926,6 +926,7 @@ import static gregtech.api.recipe.RecipeMaps.slicerRecipes;
 import static gregtech.api.recipe.RecipeMaps.thermalCentrifugeRecipes;
 import static gregtech.api.recipe.RecipeMaps.wiremillRecipes;
 
+import gregtech.common.tileentities.machines.multi.nanochip.hatches.MTEHatchParticleSensor;
 import net.minecraft.util.EnumChatFormatting;
 
 import gregtech.api.enums.ItemList;
@@ -12620,7 +12621,9 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 "Bulk Catalyst Housing",
                 10,
                 Integer.MAX_VALUE).getStackForm(1));
-
+        ItemList.Hatch_Particle_Sensor.set(
+            new MTEHatchParticleSensor(HATCH_PARTICLE_SENSOR.ID, "hatch.particleindicator", "Particle Indicator Hatch", 8)
+                .getStackForm(1L));
         ItemList.LargeMolecularAssembler.set(
             new MTELargeMolecularAssembler(
                 LargeMolecularAssembler.ID,
