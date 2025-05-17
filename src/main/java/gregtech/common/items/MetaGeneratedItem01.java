@@ -542,6 +542,9 @@ import gregtech.common.items.behaviors.BehaviourSprayColor;
 import gregtech.common.items.behaviors.BehaviourSprayColorInfinite;
 import gregtech.common.items.behaviors.BehaviourSprayColorRemover;
 import gregtech.common.items.behaviors.BehaviourWrittenBook;
+import gregtech.common.render.items.CosmicNeutroniumMetaItemRenderer;
+import gregtech.common.render.items.InfinityMetaItemRenderer;
+import gregtech.common.render.items.TranscendentalMetaItemRenderer;
 import gregtech.common.tileentities.machines.multi.MTEIndustrialElectromagneticSeparator.MagnetTiers;
 import mods.railcraft.common.items.firestone.IItemFirestoneBurning;
 
@@ -1638,30 +1641,36 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 128L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 128L),
                 new TCAspects.TC_AspectStack(TCAspects.MOTUS, 128L)));
-        ItemList.Electric_Motor_UHV.set(
-            addItem(
-                Electric_Motor_UHV.ID,
-                "Electric Motor (UHV)",
-                "",
-                new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 256L),
-                new TCAspects.TC_AspectStack(TCAspects.MACHINA, 256L),
-                new TCAspects.TC_AspectStack(TCAspects.MOTUS, 256L)));
-        ItemList.Electric_Motor_UEV.set(
-            addItem(
-                Electric_Motor_UEV.ID,
-                "Electric Motor (UEV)",
-                "",
-                new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 512L),
-                new TCAspects.TC_AspectStack(TCAspects.MACHINA, 512L),
-                new TCAspects.TC_AspectStack(TCAspects.MOTUS, 512L)));
-        ItemList.Electric_Motor_UIV.set(
-            addItem(
-                Electric_Motor_UIV.ID,
-                "Electric Motor (UIV)",
-                "",
-                new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 512L),
-                new TCAspects.TC_AspectStack(TCAspects.MACHINA, 512L),
-                new TCAspects.TC_AspectStack(TCAspects.MOTUS, 512L)));
+        ItemList.Electric_Motor_UHV
+            .set(
+                addItem(
+                    Electric_Motor_UHV.ID,
+                    "Electric Motor (UHV)",
+                    "",
+                    new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 256L),
+                    new TCAspects.TC_AspectStack(TCAspects.MACHINA, 256L),
+                    new TCAspects.TC_AspectStack(TCAspects.MOTUS, 256L)))
+            .setRender(new CosmicNeutroniumMetaItemRenderer());
+        ItemList.Electric_Motor_UEV
+            .set(
+                addItem(
+                    Electric_Motor_UEV.ID,
+                    "Electric Motor (UEV)",
+                    "",
+                    new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 512L),
+                    new TCAspects.TC_AspectStack(TCAspects.MACHINA, 512L),
+                    new TCAspects.TC_AspectStack(TCAspects.MOTUS, 512L)))
+            .setRender(new InfinityMetaItemRenderer());
+        ItemList.Electric_Motor_UIV
+            .set(
+                addItem(
+                    Electric_Motor_UIV.ID,
+                    "Electric Motor (UIV)",
+                    "",
+                    new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 512L),
+                    new TCAspects.TC_AspectStack(TCAspects.MACHINA, 512L),
+                    new TCAspects.TC_AspectStack(TCAspects.MOTUS, 512L)))
+            .setRender(new TranscendentalMetaItemRenderer());
         ItemList.Electric_Motor_UMV.set(
             addItem(
                 Electric_Motor_UMV.ID,
@@ -1783,30 +1792,36 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 128L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 128L),
                 new TCAspects.TC_AspectStack(TCAspects.MOTUS, 128L)));
-        ItemList.Electric_Piston_UHV.set(
-            addItem(
-                Electric_Piston_UHV.ID,
-                "Electric Piston (UHV)",
-                "",
-                new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 256L),
-                new TCAspects.TC_AspectStack(TCAspects.MACHINA, 256L),
-                new TCAspects.TC_AspectStack(TCAspects.MOTUS, 256L)));
-        ItemList.Electric_Piston_UEV.set(
-            addItem(
-                Electric_Piston_UEV.ID,
-                "Electric Piston (UEV)",
-                "",
-                new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 512L),
-                new TCAspects.TC_AspectStack(TCAspects.MACHINA, 512L),
-                new TCAspects.TC_AspectStack(TCAspects.MOTUS, 512L)));
-        ItemList.Electric_Piston_UIV.set(
-            addItem(
-                Electric_Piston_UIV.ID,
-                "Electric Piston (UIV)",
-                "",
-                new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 512L),
-                new TCAspects.TC_AspectStack(TCAspects.MACHINA, 512L),
-                new TCAspects.TC_AspectStack(TCAspects.MOTUS, 512L)));
+        ItemList.Electric_Piston_UHV
+            .set(
+                addItem(
+                    Electric_Piston_UHV.ID,
+                    "Electric Piston (UHV)",
+                    "",
+                    new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 256L),
+                    new TCAspects.TC_AspectStack(TCAspects.MACHINA, 256L),
+                    new TCAspects.TC_AspectStack(TCAspects.MOTUS, 256L)))
+            .setRender(new CosmicNeutroniumMetaItemRenderer());
+        ItemList.Electric_Piston_UEV
+            .set(
+                addItem(
+                    Electric_Piston_UEV.ID,
+                    "Electric Piston (UEV)",
+                    "",
+                    new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 512L),
+                    new TCAspects.TC_AspectStack(TCAspects.MACHINA, 512L),
+                    new TCAspects.TC_AspectStack(TCAspects.MOTUS, 512L)))
+            .setRender(new InfinityMetaItemRenderer());
+        ItemList.Electric_Piston_UIV
+            .set(
+                addItem(
+                    Electric_Piston_UIV.ID,
+                    "Electric Piston (UIV)",
+                    "",
+                    new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 512L),
+                    new TCAspects.TC_AspectStack(TCAspects.MACHINA, 512L),
+                    new TCAspects.TC_AspectStack(TCAspects.MOTUS, 512L)))
+            .setRender(new TranscendentalMetaItemRenderer());
         ItemList.Electric_Piston_UMV.set(
             addItem(
                 Electric_Piston_UMV.ID,
@@ -1904,37 +1919,43 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 128L),
                 new TCAspects.TC_AspectStack(TCAspects.ITER, 128L),
                 new TCAspects.TC_AspectStack(TCAspects.AQUA, 128L)));
-        ItemList.Electric_Pump_UHV.set(
-            addItem(
-                Electric_Pump_UHV.ID,
-                "Electric Pump (UHV)",
-                GTUtility.formatNumbers(1048576) + PartCoverText
-                    + GTUtility.formatNumbers(1048576 * 20)
-                    + PartCoverText2,
-                new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 256L),
-                new TCAspects.TC_AspectStack(TCAspects.MACHINA, 256L),
-                new TCAspects.TC_AspectStack(TCAspects.ITER, 256L),
-                new TCAspects.TC_AspectStack(TCAspects.AQUA, 256L)));
-        ItemList.Electric_Pump_UEV.set(
-            addItem(
-                Electric_Pump_UEV.ID,
-                "Electric Pump (UEV)",
-                GTUtility.formatNumbers(2097152) + PartCoverText
-                    + GTUtility.formatNumbers(2097152 * 20)
-                    + PartCoverText2,
-                new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 512L),
-                new TCAspects.TC_AspectStack(TCAspects.MACHINA, 512L),
-                new TCAspects.TC_AspectStack(TCAspects.ITER, 512L),
-                new TCAspects.TC_AspectStack(TCAspects.AQUA, 512L)));
-        ItemList.Electric_Pump_UIV.set(
-            addItem(
-                Electric_Pump_UIV.ID,
-                "Electric Pump (UIV)",
-                PartNotCoverText,
-                new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 512L),
-                new TCAspects.TC_AspectStack(TCAspects.MACHINA, 512L),
-                new TCAspects.TC_AspectStack(TCAspects.ITER, 512L),
-                new TCAspects.TC_AspectStack(TCAspects.AQUA, 512L)));
+        ItemList.Electric_Pump_UHV
+            .set(
+                addItem(
+                    Electric_Pump_UHV.ID,
+                    "Electric Pump (UHV)",
+                    GTUtility.formatNumbers(1048576) + PartCoverText
+                        + GTUtility.formatNumbers(1048576 * 20)
+                        + PartCoverText2,
+                    new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 256L),
+                    new TCAspects.TC_AspectStack(TCAspects.MACHINA, 256L),
+                    new TCAspects.TC_AspectStack(TCAspects.ITER, 256L),
+                    new TCAspects.TC_AspectStack(TCAspects.AQUA, 256L)))
+            .setRender(new CosmicNeutroniumMetaItemRenderer());
+        ItemList.Electric_Pump_UEV
+            .set(
+                addItem(
+                    Electric_Pump_UEV.ID,
+                    "Electric Pump (UEV)",
+                    GTUtility.formatNumbers(2097152) + PartCoverText
+                        + GTUtility.formatNumbers(2097152 * 20)
+                        + PartCoverText2,
+                    new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 512L),
+                    new TCAspects.TC_AspectStack(TCAspects.MACHINA, 512L),
+                    new TCAspects.TC_AspectStack(TCAspects.ITER, 512L),
+                    new TCAspects.TC_AspectStack(TCAspects.AQUA, 512L)))
+            .setRender(new InfinityMetaItemRenderer());
+        ItemList.Electric_Pump_UIV
+            .set(
+                addItem(
+                    Electric_Pump_UIV.ID,
+                    "Electric Pump (UIV)",
+                    PartNotCoverText,
+                    new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 512L),
+                    new TCAspects.TC_AspectStack(TCAspects.MACHINA, 512L),
+                    new TCAspects.TC_AspectStack(TCAspects.ITER, 512L),
+                    new TCAspects.TC_AspectStack(TCAspects.AQUA, 512L)))
+            .setRender(new TranscendentalMetaItemRenderer());
         ItemList.Electric_Pump_UMV.set(
             addItem(
                 Electric_Pump_UMV.ID,
@@ -2049,21 +2070,27 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                 FluidRegulator_UV.ID,
                 "Fluid Regulator (UV)",
                 FRText1 + GTUtility.formatNumbers(524288 * 20) + FRText2));
-        ItemList.FluidRegulator_UHV.set(
-            addItem(
-                FluidRegulator_UHV.ID,
-                "Fluid Regulator (UHV)",
-                FRText1 + GTUtility.formatNumbers(1048576 * 20) + FRText2));
-        ItemList.FluidRegulator_UEV.set(
-            addItem(
-                FluidRegulator_UEV.ID,
-                "Fluid Regulator (UEV)",
-                FRText1 + GTUtility.formatNumbers(2097152 * 20) + FRText2));
-        ItemList.FluidRegulator_UIV.set(
-            addItem(
-                FluidRegulator_UIV.ID,
-                "Fluid Regulator (UIV)",
-                FRText1 + GTUtility.formatNumbers(4194304 * 20) + FRText2));
+        ItemList.FluidRegulator_UHV
+            .set(
+                addItem(
+                    FluidRegulator_UHV.ID,
+                    "Fluid Regulator (UHV)",
+                    FRText1 + GTUtility.formatNumbers(1048576 * 20) + FRText2))
+            .setRender(new CosmicNeutroniumMetaItemRenderer());
+        ItemList.FluidRegulator_UEV
+            .set(
+                addItem(
+                    FluidRegulator_UEV.ID,
+                    "Fluid Regulator (UEV)",
+                    FRText1 + GTUtility.formatNumbers(2097152 * 20) + FRText2))
+            .setRender(new InfinityMetaItemRenderer());
+        ItemList.FluidRegulator_UIV
+            .set(
+                addItem(
+                    FluidRegulator_UIV.ID,
+                    "Fluid Regulator (UIV)",
+                    FRText1 + GTUtility.formatNumbers(4194304 * 20) + FRText2))
+            .setRender(new TranscendentalMetaItemRenderer());
         ItemList.FluidRegulator_UMV.set(
             addItem(
                 FluidRegulator_UMV.ID,
@@ -2162,30 +2189,36 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 128L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 128L),
                 new TCAspects.TC_AspectStack(TCAspects.ITER, 128L)));
-        ItemList.Conveyor_Module_UHV.set(
-            addItem(
-                Conveyor_Module_UHV.ID,
-                "Conveyor Module (UHV)",
-                "16 stacks every 1/20 sec (as Cover)",
-                new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 256L),
-                new TCAspects.TC_AspectStack(TCAspects.MACHINA, 256L),
-                new TCAspects.TC_AspectStack(TCAspects.ITER, 256L)));
-        ItemList.Conveyor_Module_UEV.set(
-            addItem(
-                Conveyor_Module_UEV.ID,
-                "Conveyor Module (UEV)",
-                "32 stacks every 1/20 sec (as Cover)",
-                new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 512L),
-                new TCAspects.TC_AspectStack(TCAspects.MACHINA, 512L),
-                new TCAspects.TC_AspectStack(TCAspects.ITER, 512L)));
-        ItemList.Conveyor_Module_UIV.set(
-            addItem(
-                Conveyor_Module_UIV.ID,
-                "Conveyor Module (UIV)",
-                PartNotCoverText,
-                new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 512L),
-                new TCAspects.TC_AspectStack(TCAspects.MACHINA, 512L),
-                new TCAspects.TC_AspectStack(TCAspects.ITER, 512L)));
+        ItemList.Conveyor_Module_UHV
+            .set(
+                addItem(
+                    Conveyor_Module_UHV.ID,
+                    "Conveyor Module (UHV)",
+                    "16 stacks every 1/20 sec (as Cover)",
+                    new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 256L),
+                    new TCAspects.TC_AspectStack(TCAspects.MACHINA, 256L),
+                    new TCAspects.TC_AspectStack(TCAspects.ITER, 256L)))
+            .setRender(new CosmicNeutroniumMetaItemRenderer());
+        ItemList.Conveyor_Module_UEV
+            .set(
+                addItem(
+                    Conveyor_Module_UEV.ID,
+                    "Conveyor Module (UEV)",
+                    "32 stacks every 1/20 sec (as Cover)",
+                    new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 512L),
+                    new TCAspects.TC_AspectStack(TCAspects.MACHINA, 512L),
+                    new TCAspects.TC_AspectStack(TCAspects.ITER, 512L)))
+            .setRender(new InfinityMetaItemRenderer());
+        ItemList.Conveyor_Module_UIV
+            .set(
+                addItem(
+                    Conveyor_Module_UIV.ID,
+                    "Conveyor Module (UIV)",
+                    PartNotCoverText,
+                    new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 512L),
+                    new TCAspects.TC_AspectStack(TCAspects.MACHINA, 512L),
+                    new TCAspects.TC_AspectStack(TCAspects.ITER, 512L)))
+            .setRender(new TranscendentalMetaItemRenderer());
         ItemList.Conveyor_Module_UMV.set(
             addItem(
                 Conveyor_Module_UMV.ID,
@@ -2283,33 +2316,39 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 256L),
                 new TCAspects.TC_AspectStack(TCAspects.MOTUS, 128L),
                 new TCAspects.TC_AspectStack(TCAspects.COGNITIO, 128L)));
-        ItemList.Robot_Arm_UHV.set(
-            addItem(
-                Robot_Arm_UHV.ID,
-                "Robot Arm (UHV)",
-                PartNotCoverText,
-                new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 256L),
-                new TCAspects.TC_AspectStack(TCAspects.MACHINA, 512L),
-                new TCAspects.TC_AspectStack(TCAspects.MOTUS, 256L),
-                new TCAspects.TC_AspectStack(TCAspects.COGNITIO, 256L)));
-        ItemList.Robot_Arm_UEV.set(
-            addItem(
-                Robot_Arm_UEV.ID,
-                "Robot Arm (UEV)",
-                PartNotCoverText,
-                new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 512L),
-                new TCAspects.TC_AspectStack(TCAspects.MACHINA, 1024L),
-                new TCAspects.TC_AspectStack(TCAspects.MOTUS, 512L),
-                new TCAspects.TC_AspectStack(TCAspects.COGNITIO, 512L)));
-        ItemList.Robot_Arm_UIV.set(
-            addItem(
-                Robot_Arm_UIV.ID,
-                "Robot Arm (UIV)",
-                PartNotCoverText,
-                new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 512L),
-                new TCAspects.TC_AspectStack(TCAspects.MACHINA, 1024L),
-                new TCAspects.TC_AspectStack(TCAspects.MOTUS, 512L),
-                new TCAspects.TC_AspectStack(TCAspects.COGNITIO, 512L)));
+        ItemList.Robot_Arm_UHV
+            .set(
+                addItem(
+                    Robot_Arm_UHV.ID,
+                    "Robot Arm (UHV)",
+                    PartNotCoverText,
+                    new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 256L),
+                    new TCAspects.TC_AspectStack(TCAspects.MACHINA, 512L),
+                    new TCAspects.TC_AspectStack(TCAspects.MOTUS, 256L),
+                    new TCAspects.TC_AspectStack(TCAspects.COGNITIO, 256L)))
+            .setRender(new CosmicNeutroniumMetaItemRenderer());
+        ItemList.Robot_Arm_UEV
+            .set(
+                addItem(
+                    Robot_Arm_UEV.ID,
+                    "Robot Arm (UEV)",
+                    PartNotCoverText,
+                    new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 512L),
+                    new TCAspects.TC_AspectStack(TCAspects.MACHINA, 1024L),
+                    new TCAspects.TC_AspectStack(TCAspects.MOTUS, 512L),
+                    new TCAspects.TC_AspectStack(TCAspects.COGNITIO, 512L)))
+            .setRender(new InfinityMetaItemRenderer());
+        ItemList.Robot_Arm_UIV
+            .set(
+                addItem(
+                    Robot_Arm_UIV.ID,
+                    "Robot Arm (UIV)",
+                    PartNotCoverText,
+                    new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 512L),
+                    new TCAspects.TC_AspectStack(TCAspects.MACHINA, 1024L),
+                    new TCAspects.TC_AspectStack(TCAspects.MOTUS, 512L),
+                    new TCAspects.TC_AspectStack(TCAspects.COGNITIO, 512L)))
+            .setRender(new TranscendentalMetaItemRenderer());
         ItemList.Robot_Arm_UMV.set(
             addItem(
                 Robot_Arm_UMV.ID,
@@ -2406,30 +2445,36 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 128L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 128L),
                 new TCAspects.TC_AspectStack(TCAspects.LUX, 128L)));
-        ItemList.Emitter_UHV.set(
-            addItem(
-                Emitter_UHV.ID,
-                "Emitter (UHV)",
-                "",
-                new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 256L),
-                new TCAspects.TC_AspectStack(TCAspects.MACHINA, 256L),
-                new TCAspects.TC_AspectStack(TCAspects.LUX, 256L)));
-        ItemList.Emitter_UEV.set(
-            addItem(
-                Emitter_UEV.ID,
-                "Emitter (UEV)",
-                "",
-                new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 512L),
-                new TCAspects.TC_AspectStack(TCAspects.MACHINA, 512L),
-                new TCAspects.TC_AspectStack(TCAspects.LUX, 512L)));
-        ItemList.Emitter_UIV.set(
-            addItem(
-                Emitter_UIV.ID,
-                "Emitter (UIV)",
-                "",
-                new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 512L),
-                new TCAspects.TC_AspectStack(TCAspects.MACHINA, 512L),
-                new TCAspects.TC_AspectStack(TCAspects.LUX, 512L)));
+        ItemList.Emitter_UHV
+            .set(
+                addItem(
+                    Emitter_UHV.ID,
+                    "Emitter (UHV)",
+                    "",
+                    new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 256L),
+                    new TCAspects.TC_AspectStack(TCAspects.MACHINA, 256L),
+                    new TCAspects.TC_AspectStack(TCAspects.LUX, 256L)))
+            .setRender(new CosmicNeutroniumMetaItemRenderer());
+        ItemList.Emitter_UEV
+            .set(
+                addItem(
+                    Emitter_UEV.ID,
+                    "Emitter (UEV)",
+                    "",
+                    new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 512L),
+                    new TCAspects.TC_AspectStack(TCAspects.MACHINA, 512L),
+                    new TCAspects.TC_AspectStack(TCAspects.LUX, 512L)))
+            .setRender(new InfinityMetaItemRenderer());
+        ItemList.Emitter_UIV
+            .set(
+                addItem(
+                    Emitter_UIV.ID,
+                    "Emitter (UIV)",
+                    "",
+                    new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 512L),
+                    new TCAspects.TC_AspectStack(TCAspects.MACHINA, 512L),
+                    new TCAspects.TC_AspectStack(TCAspects.LUX, 512L)))
+            .setRender(new TranscendentalMetaItemRenderer());
         ItemList.Emitter_UMV.set(
             addItem(
                 Emitter_UMV.ID,
@@ -2520,30 +2565,36 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 128L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 128L),
                 new TCAspects.TC_AspectStack(TCAspects.SENSUS, 128L)));
-        ItemList.Sensor_UHV.set(
-            addItem(
-                Sensor_UHV.ID,
-                "Sensor (UHV)",
-                "",
-                new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 256L),
-                new TCAspects.TC_AspectStack(TCAspects.MACHINA, 256L),
-                new TCAspects.TC_AspectStack(TCAspects.SENSUS, 256L)));
-        ItemList.Sensor_UEV.set(
-            addItem(
-                Sensor_UEV.ID,
-                "Sensor (UEV)",
-                "",
-                new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 512L),
-                new TCAspects.TC_AspectStack(TCAspects.MACHINA, 512L),
-                new TCAspects.TC_AspectStack(TCAspects.SENSUS, 512L)));
-        ItemList.Sensor_UIV.set(
-            addItem(
-                Sensor_UIV.ID,
-                "Sensor (UIV)",
-                "",
-                new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 512L),
-                new TCAspects.TC_AspectStack(TCAspects.MACHINA, 512L),
-                new TCAspects.TC_AspectStack(TCAspects.SENSUS, 512L)));
+        ItemList.Sensor_UHV
+            .set(
+                addItem(
+                    Sensor_UHV.ID,
+                    "Sensor (UHV)",
+                    "",
+                    new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 256L),
+                    new TCAspects.TC_AspectStack(TCAspects.MACHINA, 256L),
+                    new TCAspects.TC_AspectStack(TCAspects.SENSUS, 256L)))
+            .setRender(new CosmicNeutroniumMetaItemRenderer());
+        ItemList.Sensor_UEV
+            .set(
+                addItem(
+                    Sensor_UEV.ID,
+                    "Sensor (UEV)",
+                    "",
+                    new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 512L),
+                    new TCAspects.TC_AspectStack(TCAspects.MACHINA, 512L),
+                    new TCAspects.TC_AspectStack(TCAspects.SENSUS, 512L)))
+            .setRender(new InfinityMetaItemRenderer());
+        ItemList.Sensor_UIV
+            .set(
+                addItem(
+                    Sensor_UIV.ID,
+                    "Sensor (UIV)",
+                    "",
+                    new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 512L),
+                    new TCAspects.TC_AspectStack(TCAspects.MACHINA, 512L),
+                    new TCAspects.TC_AspectStack(TCAspects.SENSUS, 512L)))
+            .setRender(new TranscendentalMetaItemRenderer());
         ItemList.Sensor_UMV.set(
             addItem(
                 Sensor_UMV.ID,
@@ -2633,30 +2684,36 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 256L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 128L),
                 new TCAspects.TC_AspectStack(TCAspects.TUTAMEN, 128L)));
-        ItemList.Field_Generator_UHV.set(
-            addItem(
-                Field_Generator_UHV.ID,
-                "Field Generator (UHV)",
-                "",
-                new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 512L),
-                new TCAspects.TC_AspectStack(TCAspects.MACHINA, 256L),
-                new TCAspects.TC_AspectStack(TCAspects.TUTAMEN, 256L)));
-        ItemList.Field_Generator_UEV.set(
-            addItem(
-                Field_Generator_UEV.ID,
-                "Field Generator (UEV)",
-                "",
-                new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 1024L),
-                new TCAspects.TC_AspectStack(TCAspects.MACHINA, 512L),
-                new TCAspects.TC_AspectStack(TCAspects.TUTAMEN, 512L)));
-        ItemList.Field_Generator_UIV.set(
-            addItem(
-                Field_Generator_UIV.ID,
-                "Field Generator (UIV)",
-                "",
-                new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 1024L),
-                new TCAspects.TC_AspectStack(TCAspects.MACHINA, 512L),
-                new TCAspects.TC_AspectStack(TCAspects.TUTAMEN, 512L)));
+        ItemList.Field_Generator_UHV
+            .set(
+                addItem(
+                    Field_Generator_UHV.ID,
+                    "Field Generator (UHV)",
+                    "",
+                    new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 512L),
+                    new TCAspects.TC_AspectStack(TCAspects.MACHINA, 256L),
+                    new TCAspects.TC_AspectStack(TCAspects.TUTAMEN, 256L)))
+            .setRender(new CosmicNeutroniumMetaItemRenderer());
+        ItemList.Field_Generator_UEV
+            .set(
+                addItem(
+                    Field_Generator_UEV.ID,
+                    "Field Generator (UEV)",
+                    "",
+                    new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 1024L),
+                    new TCAspects.TC_AspectStack(TCAspects.MACHINA, 512L),
+                    new TCAspects.TC_AspectStack(TCAspects.TUTAMEN, 512L)))
+            .setRender(new InfinityMetaItemRenderer());
+        ItemList.Field_Generator_UIV
+            .set(
+                addItem(
+                    Field_Generator_UIV.ID,
+                    "Field Generator (UIV)",
+                    "",
+                    new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 1024L),
+                    new TCAspects.TC_AspectStack(TCAspects.MACHINA, 512L),
+                    new TCAspects.TC_AspectStack(TCAspects.TUTAMEN, 512L)))
+            .setRender(new TranscendentalMetaItemRenderer());
         ItemList.Field_Generator_UMV.set(
             addItem(
                 Field_Generator_UMV.ID,
