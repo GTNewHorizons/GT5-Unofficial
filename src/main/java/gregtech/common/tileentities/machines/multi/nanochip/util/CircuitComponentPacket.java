@@ -8,9 +8,13 @@ import java.util.Map;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
+import it.unimi.dsi.fastutil.Pair;
+
 public class CircuitComponentPacket {
 
     private final Map<CircuitComponent, Long> components = new HashMap<>();
+
+    public CircuitComponentPacket() {}
 
     public CircuitComponentPacket(CircuitComponent component, long amount) {
         components.put(component, amount);
@@ -24,9 +28,9 @@ public class CircuitComponentPacket {
         }
     }
 
-    public CircuitComponentPacket(List<ItemStack> items) {
-        for (ItemStack item : items) {
-            components.put(CircuitComponent.getFromFakeStackUnsafe(item), (long) item.stackSize);
+    public CircuitComponentPacket(List<Pair<ItemStack, Long>> items) {
+        for (Pair<ItemStack, Long> item : items) {
+            components.put(CircuitComponent.getFromFakeStackUnsafe(item.left()), (long) item.right());
         }
     }
 
