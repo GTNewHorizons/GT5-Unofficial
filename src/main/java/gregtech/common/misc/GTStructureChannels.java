@@ -1,11 +1,9 @@
 package gregtech.common.misc;
 
-import net.minecraft.item.ItemStack;
-
 import com.gtnewhorizon.structurelib.StructureLibAPI;
-
 import gregtech.api.enums.Mods;
 import gregtech.api.structure.IStructureChannels;
+import net.minecraft.item.ItemStack;
 
 /*
  * To unofficial addon authors:
@@ -47,6 +45,10 @@ public enum GTStructureChannels implements IStructureChannels {
     EOH_DILATION("time_dilation", "Time Dilation Field Generator Tier"),
     NO_HATCH("gt_no_hatch", ""),
     TFFT_FIELD("field", "Storage Field Tier"),
+    ECCF_HEATER("eccf_heater", "ECCF Heater Tier"),
+    ECCF_COOLER("eccf_cooler", "ECCF Cooler Tier"),
+    ECCF_VACUUM("eccf_vacuum", "ECCF Vacuum Tier"),
+    ECCF_COMPRESSOR("eccf_compress", "ECCF Compressor Tier"),
     //
     ;
 
