@@ -25,7 +25,7 @@ public interface IHatchElement<T> {
 
     String name();
 
-    public default String getDisplayName() {
+    default String getDisplayName() {
         return name();
     }
 
