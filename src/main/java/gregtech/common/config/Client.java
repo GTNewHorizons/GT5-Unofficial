@@ -184,6 +184,10 @@ public class Client {
         @Config.DefaultBoolean(false)
         @Config.Name("Use Old Coil Textures")
         public boolean useOldCoils;
+
+        @Config.Comment("if true, render item hologram inside super or quantum chest")
+        @Config.DefaultBoolean(true)
+        public boolean renderDigitalChestItem;
     }
 
     @Config.LangKey("GT5U.gui.config.client.waila")
