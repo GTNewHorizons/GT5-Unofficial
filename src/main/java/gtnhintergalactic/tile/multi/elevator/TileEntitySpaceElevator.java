@@ -906,4 +906,9 @@ public class TileEntitySpaceElevator extends TTMultiblockBase implements ISurviv
             elevatorCable.setShouldRender(false);
         }
     }
+
+    @Override
+    protected boolean forceUseMui2() {
+        return false;
+    }
 }
