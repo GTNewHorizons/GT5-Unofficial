@@ -121,6 +121,8 @@ public class SplitterGui extends MTEMultiBlockBaseGui {
             // Input grid color display
             .child(
                 getAboveGridText(inputGrid).asWidget()
+                    .tooltipAutoUpdate(true)
+                    .tooltipBuilder(t -> getInfo(t, inputGrid))
                     .scale(0.8F)
                     .alignment(Alignment.Center)
                     .pos(4, 5)
