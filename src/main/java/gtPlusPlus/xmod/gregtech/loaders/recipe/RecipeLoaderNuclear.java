@@ -231,7 +231,7 @@ public class RecipeLoaderNuclear {
                 ItemUtils.getItemStackOfAmountFromOreDict("dustLithium7", 16))
             .itemOutputs(CI.emptyCells(8))
             .fluidInputs(Materials.Water.getFluid(8_000))
-            .fluidOutputs(FluidUtils.getFluidStack("lithiumhydroxide", 43 * INGOTS))
+            .fluidOutputs(FluidUtils.getFluidStack("lithiumhydroxide", 48 * INGOTS))
             .duration(5 * MINUTES)
             .eut(TierEU.RECIPE_LV)
             .addTo(UniversalChemical);
