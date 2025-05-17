@@ -2,7 +2,6 @@ package gregtech.common.tileentities.machines.multi.gui.nanochip;
 
 import static gregtech.api.modularui2.GTGuis.createPopUpPanel;
 
-import com.cleanroommc.modularui.screen.UISettings;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 
@@ -20,6 +19,7 @@ import com.cleanroommc.modularui.drawable.UITexture;
 import com.cleanroommc.modularui.drawable.text.AnimatedText;
 import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.utils.Color;
 import com.cleanroommc.modularui.utils.serialization.ByteBufAdapters;
