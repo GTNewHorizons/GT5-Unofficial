@@ -22,11 +22,8 @@ public class MTELargeFusionComputerGui extends TTMultiBlockBaseGui {
 
     @Override
     protected ListWidget<IWidget, ?> createTerminalTextWidget(PanelSyncManager syncManager) {
-        LongSyncValue storedEnergySyncer = new LongSyncValue(base::getEUVar, base::setEUVar);
-        LongSyncValue energyCapacitySyncer = new LongSyncValue(base::maxEUStore);
-        syncManager.syncValue("storedEnergy", storedEnergySyncer);
-        syncManager.syncValue("energyCapacity", energyCapacitySyncer);
-
+        LongSyncValue storedEnergySyncer = (LongSyncValue) syncManager.getSyncHandler("storedEnergy:0");
+        LongSyncValue energyCapacitySyncer = (LongSyncValue) syncManager.getSyncHandler("energyCapacity:0");
         return super.createTerminalTextWidget(syncManager)
             .child(
                 IKey.dynamic(
@@ -50,5 +47,14 @@ public class MTELargeFusionComputerGui extends TTMultiBlockBaseGui {
                     .widthRel(1)
                     .marginBottom(2)
                     .setEnabledIf(w -> base.getErrorDisplayID() == 0));
+    }
+
+    @Override
+    protected void registerSyncValues(PanelSyncManager syncManager) {
+        super.registerSyncValues(syncManager);
+        LongSyncValue storedEnergySyncer = new LongSyncValue(base::getEUVar, base::setEUVar);
+        LongSyncValue energyCapacitySyncer = new LongSyncValue(base::maxEUStore);
+        syncManager.syncValue("storedEnergy", storedEnergySyncer);
+        syncManager.syncValue("energyCapacity", energyCapacitySyncer);
     }
 }
