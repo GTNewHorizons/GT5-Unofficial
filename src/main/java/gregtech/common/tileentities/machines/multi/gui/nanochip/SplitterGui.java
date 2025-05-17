@@ -119,25 +119,14 @@ public class SplitterGui extends MTEMultiBlockBaseGui {
                     .pos(121, 17))
             // Input grid color display
             .child(
-                IKey.dynamic(() -> inputGrid.getName(0))
-                    .asWidget()
+                getAboveGridText(inputGrid).asWidget()
                     .scale(0.8F)
                     .alignment(Alignment.Center)
-                    .size(42, 8)
-                    .pos(4, 5))
+                    .pos(4, 5)
+                    .size(42, 8))
             // Output grid color display
             .child(
-                // spotless makes this look vile and disgusting and abominable and atrocious and yucky and horrid and
-                // offensive to the eyes and nasty and foul and repugnant and abhorrent and deplorable and nauseating
-                // and Dirty
-                // spotless:off
-                IKey.dynamic(() -> switch (outputGrid.getAmountSelected()) {
-                        case 0: yield "None";
-                        case 1: yield outputGrid.getName(0);
-                        default: yield "[Hover]";
-                    })
-                    // spotless:on
-                    .asWidget()
+                getAboveGridText(outputGrid).asWidget()
                     .tooltipAutoUpdate(true)
                     .tooltipBuilder(t -> getInfo(t, outputGrid))
                     .scale(0.8F)
@@ -157,6 +146,20 @@ public class SplitterGui extends MTEMultiBlockBaseGui {
                     .size(8, 8))
             .size(166, 58)
             .background(GTGuiTextures.BACKGROUND_POPUP_STANDARD);
+    }
+
+    public IKey getAboveGridText(ColorGridWidget selector) {
+        return
+        // spotless makes this look vile and disgusting and abominable and atrocious and yucky and horrid and
+        // offensive to the eyes and nasty and foul and repugnant and abhorrent and deplorable and nauseating
+        // and Dirty
+        // spotless:off
+            IKey.dynamic(() -> switch (selector.getAmountSelected()) {
+                case 0: yield "None";
+                case 1: yield selector.getName(0);
+                default: yield "[Hover]";
+            });
+        // spotless:on
     }
 
     public void getInfo(RichTooltip t, ColorGridWidget grid) {
