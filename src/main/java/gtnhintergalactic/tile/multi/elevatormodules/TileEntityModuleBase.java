@@ -1,33 +1,32 @@
 package gtnhintergalactic.tile.multi.elevatormodules;
 
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
+
+import org.jetbrains.annotations.NotNull;
 
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureUtility;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
-import com.gtnewhorizons.modularui.common.widget.DynamicPositionedColumn;
-import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
-import com.gtnewhorizons.modularui.common.widget.SlotWidget;
-import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.metatileentity.implementations.gui.MTEMultiBlockBaseGui;
+import gregtech.api.modularui2.GTGuiTheme;
+import gregtech.api.modularui2.GTGuiThemes;
 import gregtech.api.util.GTStructureUtility;
-import gregtech.api.util.GTUtility;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gtnhintergalactic.gui.IG_UITextures;
 import gtnhintergalactic.tile.multi.elevator.TileEntitySpaceElevator;
+import gtnhintergalactic.tile.multi.gui.TileEntityModuleBaseGui;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import tectech.thing.metaTileEntity.multi.base.INameFunction;
 import tectech.thing.metaTileEntity.multi.base.IStatusFunction;
 import tectech.thing.metaTileEntity.multi.base.LedStatus;
-import tectech.thing.metaTileEntity.multi.base.Parameters;
 import tectech.thing.metaTileEntity.multi.base.TTMultiblockBase;
 import tectech.thing.metaTileEntity.multi.base.render.TTRenderedExtendedFacingTexture;
 
@@ -45,14 +44,11 @@ public abstract class TileEntityModuleBase extends TTMultiblockBase {
     /** Tier of this controller (Voltage), which determines the recipes that it can execute */
     protected final int tTier;
     /** Module tier of this controller */
-    protected final int tModuleTier;
+    public final int tModuleTier;
     /** Minimum motor tier that is needed to run this module */
     protected final int tMinMotorTier;
     /** Flag if the module is connected to an elevator */
     protected boolean isConnected = false;
-
-    /** Output parameters */
-    Parameters.Group.ParameterOut energyDisplay;
 
     /** Name of the stored energy display */
     private static final INameFunction<TileEntityModuleBase> ENERGY_DISPLAY_NAME = (base, p) -> GCCoreUtil
@@ -169,7 +165,6 @@ public abstract class TileEntityModuleBase extends TTMultiblockBase {
         if (aBaseMetaTileEntity.isServerSide() && isConnected) {
             super.onPostTick(aBaseMetaTileEntity, aTick);
             if (aTick % 400 == 0) fixAllIssues();
-            if (aTick % 20 == 0) energyDisplay.set(getEUVar());
             if (mEfficiency < 0) mEfficiency = 0;
             if (aBaseMetaTileEntity.getStoredEU() <= 0 && mMaxProgresstime > 0) {
                 stopMachine(ShutDownReasonRegistry.POWER_LOSS);
@@ -366,46 +361,19 @@ public abstract class TileEntityModuleBase extends TTMultiblockBase {
                 .setPos(173, 74));
     }
 
-    /**
-     * Draw texts on the project module GUI
-     *
-     * @param screenElements Column that holds all screen elements
-     * @param inventorySlot  Inventory slot of the controller
-     */
     @Override
-    protected void drawTexts(DynamicPositionedColumn screenElements, SlotWidget inventorySlot) {
-        screenElements.setSynced(false)
-            .setSpace(0);
-
-        screenElements
-            .widget(
-                new TextWidget(GTUtility.trans("138", "Incomplete Structure.")).setDefaultColor(COLOR_TEXT_WHITE.get())
-                    .setEnabled(widget -> !mMachine))
-            .widget(new FakeSyncWidget.BooleanSyncer(() -> mMachine, val -> mMachine = val));
-
-        screenElements.widget(
-            new TextWidget(StatCollector.translateToLocal("gt.blockmachines.multimachine.ig.elevator.gui.ready"))
-                .setDefaultColor(COLOR_TEXT_WHITE.get())
-                .setEnabled(widget -> mMachine));
-
-        screenElements.widget(
-            new TextWidget(StatCollector.translateToLocal("gt.blockmachines.multimachine.ig.elevator.gui.noRecipe"))
-                .setDefaultColor(COLOR_TEXT_WHITE.get())
-                .setEnabled(widget -> mMachine && !getBaseMetaTileEntity().isActive()));
-
-        screenElements.widget(
-            new TextWidget(StatCollector.translateToLocal("gt.blockmachines.multimachine.ig.elevator.gui.recipe"))
-                .setDefaultColor(COLOR_TEXT_WHITE.get())
-                .setEnabled(widget -> mMachine && getBaseMetaTileEntity().isActive()));
+    protected GTGuiTheme getGuiTheme() {
+        return GTGuiThemes.INTERGALACTIC_STANDARD;
     }
 
-    /**
-     * Instantiate parameters of the controller
-     */
     @Override
-    protected void parametersInstantiation_EM() {
-        Parameters.Group hatch_0 = parametrization.getGroup(0, false);
-        energyDisplay = hatch_0.makeOutParameter(0, 0, ENERGY_DISPLAY_NAME, ENERGY_STATUS);
+    protected @NotNull MTEMultiBlockBaseGui getGui() {
+        return new TileEntityModuleBaseGui(this);
+    }
+
+    @Override
+    protected boolean forceUseMui2() {
+        return true;
     }
 
     @Override

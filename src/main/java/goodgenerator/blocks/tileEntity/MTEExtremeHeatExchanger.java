@@ -461,4 +461,10 @@ public class MTEExtremeHeatExchanger extends MTETooltipMultiBlockBaseEM
             aware.endRecipeProcessing(this);
         }
     }
+
+    @Override
+    protected boolean forceUseMui2() {
+        return true;
+    }
+
 }

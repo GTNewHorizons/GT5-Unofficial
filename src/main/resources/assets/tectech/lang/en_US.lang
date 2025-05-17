@@ -675,6 +675,8 @@ gt.blockmachines.multimachine.tm.microwave.desc.3=The machine will also collect 
 gt.blockmachines.multimachine.tm.microwave.desc.4=Can be configured with a Parametrizer
 gt.blockmachines.multimachine.tm.microwave.desc.5=(Do not insert a Wither)
 gt.blockmachines.multimachine.tm.microwave.cfgi.0=Power setting
+gt.blockmachines.multimachine.tm.microwave.power=Power
+gt.blockmachines.multimachine.tm.microwave.timer=Timer
 gt.blockmachines.multimachine.tm.microwave.cfgi.1=Timer setting
 gt.blockmachines.multimachine.tm.microwave.cfgo.0=Timer value
 gt.blockmachines.multimachine.tm.microwave.cfgo.1=Timer remaining
@@ -707,13 +709,17 @@ gt.blockmachines.multimachine.tm.teslaCoil.cfgo.6=Energy Stored display
 gt.blockmachines.multimachine.tm.teslaCoil.cfgo.7=Energy Fraction display
 gt.blockmachines.multimachine.tm.teslaCoil.cfgo.8=Scan time display
 gt.blockmachines.multimachine.tm.teslaCoil.cfgo.9=Output max display
+gt.blockmachines.multimachine.tm.teslaCoil.hysteresisLow=Hysteresis Low
+gt.blockmachines.multimachine.tm.teslaCoil.hysteresisHigh=Hysteresis High
+gt.blockmachines.multimachine.tm.teslaCoil.transferRadius=Transfer Radius
+gt.blockmachines.multimachine.tm.teslaCoil.outputVoltage=Output Voltage
+gt.blockmachines.multimachine.tm.teslaCoil.outputCurrent=Output Current
+gt.blockmachines.multimachine.tm.teslaCoil.scanTime=Scan Time
+gt.blockmachines.multimachine.tm.teslaCoil.overdrive=Overdrive
 
 gt.blockmachines.multimachine.em.switch.desc.0=Distributes computation to transmission connectors based on weights.
-gt.blockmachines.multimachine.em.switch.desc.1=Transmission connectors are assigned an ID.
-gt.blockmachines.multimachine.em.switch.desc.2=Scan connectors with a Portable Scanner to determine their ID.
-gt.blockmachines.multimachine.em.switch.desc.3=Computation output is configured via TecTech parameters.
-gt.blockmachines.multimachine.em.switch.desc.4=The first parameter in each group controls the hatch ID.
-gt.blockmachines.multimachine.em.switch.desc.5=The second parameter in each group controls the hatch weight.
+gt.blockmachines.multimachine.em.switch.desc.1=Computation output is configured by right clicking transmission connectors with a screwdriver.
+gt.blockmachines.multimachine.em.switch.desc.2=Transmission connectors must be part of the structure for them to be configurable.
 
 gt.blockmachines.multimachine.em.computer.name=Quantum Computer
 gt.blockmachines.multimachine.em.computer.machinetype=Quantum Computer, QC
@@ -1910,6 +1916,48 @@ GT5U.gui.config.general.debug=Debug
 GT5U.gui.config.general.features=Features
 GT5U.gui.config.general.teslatweaks=Tesla Tweaks
 GT5U.gui.config.general.visual=Visual
+
+tt.spacepump.noFluidTooltip=No fluid set! Click to open configuration panel!
+tt.spacepump.parallelTooltip=per parallel
+tt.spacepump.fluid=Fluid %d:
+
+
+tt.multiblock.batchSize=Batch Size
+tt.multiblock.parallel=Fluid %d Parallels
+
+
+tt.spaceminer.distance=Distance
+tt.spaceminer.parallel=Parallels
+tt.spaceminer.cycle=Cycle Distance
+tt.spaceminer.range=Cycle Range
+tt.spaceminer.step=Cycle Step
+tt.spaceminer.filterButtonTooltip=Open Filter
+tt.spaceminer.togglefilter=Toggle Filter
+tt.spaceminer.asteroidutilitypanelButtonTooltip=Open Space Miner Utility Panel
+tt.spaceminer.asteroidButtonTooltipInfo=Click me to get more info!
+tt.spaceminer.asteroidButtonFilter=Right click to add asteroid to filter
+tt.spaceminer.textFieldOre=Ore
+tt.spaceminer.textFieldDistance=Distance
+tt.spaceminer.textFieldTier=Tier
+tt.spaceminer.calculatorButtonTooltip=Open Space Miner Calculator
+tt.spaceminer.asteroidutilitypanel.miningDrones=Can be mined by:
+tt.spaceminer.asteroidutilitypanel.uses=Uses
+tt.spaceminer.asteroidutilitypanel.and=And
+tt.spaceminer.asteroidutilitypanel.parallelInfo=Per parallel
+tt.spaceminer.asteroidutilitypanel.sizeForDrone=Asteroid size with this drone: %d-%d
+tt.spaceminer.asteroidutilitypanel.miningTime=Mining operation time with this drone: %ss
+tt.spaceminer.asteroidutilitypanel.distanceRange=Found at: %s%d-%d%s distance
+tt.spaceminer.asteroidutilitypanel.computation=Requires %s%d computation/s per parallel
+tt.spaceminer.asteroidutilitypanel.moduleTier=Requires at least tier %d Space Mining module
+tt.spaceminer.asteroidutilitypanel.drops=Drops:
+tt.spaceminer.asteroidutilitypanel.targetAsteroidButtonTooltip=Target this asteroid
+tt.spaceminer.calculator.missing.distance=Missing distance setting!
+tt.spaceminer.calculator.missing.moduleTier=Missing module tier!
+tt.spaceminer.calculator.missing.drone=Missing drone!
+tt.spaceminer.calculator.calculate=Calculate
+tt.spaceminer.calculator.asteroidChance= %s Chance for:
+
+
 
 tt.eoh.fancy_names.crude=Crude
 tt.eoh.fancy_names.primitive=Primitive

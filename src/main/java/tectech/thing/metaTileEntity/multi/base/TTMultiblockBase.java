@@ -14,9 +14,12 @@ import static gregtech.api.util.GTUtility.validMTEList;
 import static java.lang.Math.min;
 import static tectech.thing.casing.BlockGTCasingsTT.texturePage;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.BitSet;
 import java.util.Collections;
+import java.util.EnumSet;
 import java.util.List;
 
 import javax.annotation.Nonnull;
@@ -25,14 +28,19 @@ import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidTank;
 
 import org.jetbrains.annotations.NotNull;
-import org.lwjgl.opengl.GL11;
 
+import com.cleanroommc.modularui.api.IGuiHolder;
+import com.cleanroommc.modularui.factory.PosGuiData;
+import com.cleanroommc.modularui.utils.item.ItemStackHandler;
+import com.cleanroommc.modularui.utils.serialization.IByteBufAdapter;
 import com.gtnewhorizon.structurelib.StructureLibAPI;
 import com.gtnewhorizon.structurelib.alignment.IAlignment;
 import com.gtnewhorizon.structurelib.alignment.IAlignmentProvider;
@@ -41,13 +49,11 @@ import com.gtnewhorizon.structurelib.structure.IStructureElement;
 import com.gtnewhorizon.structurelib.util.Vec3Impl;
 import com.gtnewhorizons.modularui.api.NumberFormatMUI;
 import com.gtnewhorizons.modularui.api.drawable.IDrawable;
-import com.gtnewhorizons.modularui.api.drawable.UITexture;
-import com.gtnewhorizons.modularui.api.math.Alignment;
-import com.gtnewhorizons.modularui.api.math.Color;
 import com.gtnewhorizons.modularui.api.math.Pos2d;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.gtnewhorizons.modularui.api.widget.Widget;
+import com.gtnewhorizons.modularui.common.internal.network.NetworkUtils;
 import com.gtnewhorizons.modularui.common.internal.wrapper.BaseSlot;
 import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
 import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
@@ -55,16 +61,14 @@ import com.gtnewhorizons.modularui.common.widget.DynamicPositionedColumn;
 import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
 import com.gtnewhorizons.modularui.common.widget.Scrollable;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
-import com.gtnewhorizons.modularui.common.widget.TextWidget;
-import com.gtnewhorizons.modularui.common.widget.textfield.NumericWidget;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.GTMod;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.SoundResource;
+import gregtech.api.enums.StructureError;
 import gregtech.api.enums.Textures;
-import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -81,6 +85,9 @@ import gregtech.api.metatileentity.implementations.MTEHatchMaintenance;
 import gregtech.api.metatileentity.implementations.MTEHatchMuffler;
 import gregtech.api.metatileentity.implementations.MTEHatchOutput;
 import gregtech.api.metatileentity.implementations.MTEHatchOutputBus;
+import gregtech.api.metatileentity.implementations.gui.MTEMultiBlockBaseGui;
+import gregtech.api.modularui2.GTGuiTheme;
+import gregtech.api.modularui2.GTGuiThemes;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.util.GTUtility;
@@ -100,6 +107,7 @@ import tectech.thing.metaTileEntity.hatch.MTEHatchDataOutput;
 import tectech.thing.metaTileEntity.hatch.MTEHatchDynamoMulti;
 import tectech.thing.metaTileEntity.hatch.MTEHatchEnergyMulti;
 import tectech.thing.metaTileEntity.hatch.MTEHatchUncertainty;
+import tectech.thing.metaTileEntity.multi.base.gui.TTMultiBlockBaseGui;
 import tectech.thing.metaTileEntity.multi.base.render.TTRenderedExtendedFacingTexture;
 import tectech.util.CommonValues;
 
@@ -107,7 +115,7 @@ import tectech.util.CommonValues;
  * Created by danie_000 on 27.10.2016.
  */
 public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TTMultiblockBase>
-    implements IAlignment, IBindPlayerInventoryUI {
+    implements IAlignment, IGuiHolder<PosGuiData>, IBindPlayerInventoryUI {
     // region Client side variables (static - one per class)
 
     // Front icon holders - static so it is default one for my blocks
@@ -182,12 +190,17 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
 
     // read only unless you are making computation generator - read computer class
     protected long eAvailableData = 0; // data being available
+    public final List<Parameter<?>> parameterList = new ArrayList<>();
 
     /** Flag if the new long power variable should be used */
     protected boolean useLongPower = false;
+    // GUI stuff
+    public int currentDropdownIndex = 0;
+    public final FluidTank fluidTankPhantom = new FluidTank(Integer.MAX_VALUE);
+    protected final ItemStackHandler invSlot = new ItemStackHandler(1);
 
     // Locale-aware formatting of numbers.
-    protected static NumberFormatMUI numberFormat;
+    public static NumberFormatMUI numberFormat;
     static {
         numberFormat = new NumberFormatMUI();
         numberFormat.setMaximumFractionDigits(8);
@@ -197,6 +210,7 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
 
     protected TTMultiblockBase(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
+        initParameters();
         parametrization = new Parameters(this);
         parametersInstantiation_EM();
         parametrization.setToDefaults(true, true);
@@ -204,6 +218,7 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
 
     protected TTMultiblockBase(String aName) {
         super(aName);
+        initParameters();
         parametrization = new Parameters(this);
         parametersInstantiation_EM();
         parametrization.setToDefaults(true, true);
@@ -521,6 +536,8 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
      */
     protected void parametersInstantiation_EM() {}
 
+    protected void initParameters() {}
+
     /**
      * It is automatically called OFTEN update status of parameters in guis (and "machine state" if u wish) Called
      * before check recipe, before outputting, and every second the machine is complete
@@ -687,10 +704,18 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
         aNBT.setInteger("eOutputStackCount", 0);
         aNBT.removeTag("outputEM");
 
+        NBTTagCompound parameterMapTag = new NBTTagCompound();
+        for (int i = 0; i < parameterList.size(); i++) {
+            Parameter<?> parameter = parameterList.get(i);
+            parameter.saveNBT(parameterMapTag);
+        }
+        aNBT.setTag("parameters", parameterMapTag);
         NBTTagCompound paramI = new NBTTagCompound();
         for (int i = 0; i < parametrization.iParamsIn.length; i++) {
             paramI.setDouble(Integer.toString(i), parametrization.iParamsIn[i]);
         }
+
+        aNBT.setTag("invSlot", this.invSlot.serializeNBT());
         aNBT.setTag("eParamsInD", paramI);
 
         NBTTagCompound paramO = new NBTTagCompound();
@@ -754,6 +779,17 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
             }
         }
 
+        if (aNBT.hasKey("parameters")) {
+            NBTTagCompound parameters = aNBT.getCompoundTag("parameters");
+            if (parameters.tagMap != null && !parameters.tagMap.isEmpty()) {
+                for (Parameter<?> parameter : parameterList) {
+                    parameter.loadNBT(parameters);
+                }
+            }
+
+        }
+
+        this.invSlot.deserializeNBT(aNBT.getCompoundTag("invSlot"));
         if (aNBT.hasKey("eParamsIn") && aNBT.hasKey("eParamsOut") && aNBT.hasKey("eParamsB")) {
             NBTTagCompound paramI = aNBT.getCompoundTag("eParamsIn");
             NBTTagCompound paramO = aNBT.getCompoundTag("eParamsOut");
@@ -1041,6 +1077,10 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
                         dischargeController_EM(aBaseMetaTileEntity);
                         chargeController_EM(aBaseMetaTileEntity);
 
+                        if (!aBaseMetaTileEntity.isAllowedToWork() && mMaxProgresstime == 0
+                            && !aBaseMetaTileEntity.wasShutdown()) {
+                            notAllowedToWork_stopMachine_EM();
+                        }
                         if (mMaxProgresstime > 0 && doRandomMaintenanceDamage()) { // Start
                             if (onRunningTick(mInventory[1])) { // Compute EU
                                 if (!polluteEnvironment(getPollutionPerTick(mInventory[1]))) {
@@ -1073,8 +1113,6 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
                                             afterRecipeCheckFailed();
                                         }
                                         updateSlots();
-                                    } else {
-                                        notAllowedToWork_stopMachine_EM();
                                     }
                                 }
                             } // else {//failed to consume power/resources - inside on running tick
@@ -2173,15 +2211,22 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
         return true;
     }
 
+    private static byte LEDCounter = 0;
+
     @Override
-    public void addGregTechLogo(ModularWindow.Builder builder) {
-        builder.widget(
-            new DrawableWidget().setDrawable(TecTechUITextures.PICTURE_TECTECH_LOGO_DARK)
-                .setSize(18, 18)
-                .setPos(173, 74));
+    protected GTGuiTheme getGuiTheme() {
+        return GTGuiThemes.TECTECH_STANDARD;
     }
 
-    private static byte LEDCounter = 0;
+    @Override
+    protected @NotNull MTEMultiBlockBaseGui getGui() {
+        return new TTMultiBlockBaseGui(this);
+    }
+
+    @Override
+    public boolean supportsPowerPanel() {
+        return false;
+    }
 
     @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
@@ -2235,73 +2280,6 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
                 if (val) getBaseMetaTileEntity().enableWorking();
                 else getBaseMetaTileEntity().disableWorking();
             }));
-
-        builder.widget(new DrawableWidget() {
-
-            @Override
-            public void draw(float partialTicks) {
-                super.draw(partialTicks);
-                LEDCounter = (byte) ((1 + LEDCounter) % 6);
-            }
-        }.setDrawable(TecTechUITextures.PICTURE_PARAMETER_BLANK)
-            .setPos(5, doesBindPlayerInventory() ? 96 : 176)
-            .setSize(166, 12));
-        for (int hatch = 0; hatch < 10; hatch++) {
-            for (int param = 0; param < 2; param++) {
-                int ledID = hatch + param * 10;
-                buildContext
-                    .addSyncedWindow(LED_WINDOW_BASE_ID + ledID, (player) -> createLEDConfigurationWindow(ledID));
-                addParameterLED(builder, hatch, param, true);
-                addParameterLED(builder, hatch, param, false);
-            }
-        }
-
-        if (doesBindPlayerInventory()) {
-            builder.widget(
-                new DrawableWidget().setDrawable(TecTechUITextures.PICTURE_UNCERTAINTY_MONITOR_MULTIMACHINE)
-                    .setPos(173, 96)
-                    .setSize(18, 18));
-            for (int i = 0; i < 9; i++) {
-                final int index = i;
-                builder.widget(new DrawableWidget().setDrawable(() -> {
-                    UITexture valid = TecTechUITextures.PICTURE_UNCERTAINTY_VALID[index];
-                    UITexture invalid = TecTechUITextures.PICTURE_UNCERTAINTY_INVALID[index];
-                    switch (eCertainMode) {
-                        case 1: // ooo oxo ooo
-                            if (index == 4) return eCertainStatus == 0 ? valid : invalid;
-                            break;
-                        case 2: // ooo xox ooo
-                            if (index == 3) return (eCertainStatus & 1) == 0 ? valid : invalid;
-                            if (index == 5) return (eCertainStatus & 2) == 0 ? valid : invalid;
-                            break;
-                        case 3: // oxo xox oxo
-                            if (index == 1) return (eCertainStatus & 1) == 0 ? valid : invalid;
-                            if (index == 3) return (eCertainStatus & 2) == 0 ? valid : invalid;
-                            if (index == 5) return (eCertainStatus & 4) == 0 ? valid : invalid;
-                            if (index == 7) return (eCertainStatus & 8) == 0 ? valid : invalid;
-                            break;
-                        case 4: // xox ooo xox
-                            if (index == 0) return (eCertainStatus & 1) == 0 ? valid : invalid;
-                            if (index == 2) return (eCertainStatus & 2) == 0 ? valid : invalid;
-                            if (index == 6) return (eCertainStatus & 4) == 0 ? valid : invalid;
-                            if (index == 8) return (eCertainStatus & 8) == 0 ? valid : invalid;
-                            break;
-                        case 5: // xox oxo xox
-                            if (index == 0) return (eCertainStatus & 1) == 0 ? valid : invalid;
-                            if (index == 2) return (eCertainStatus & 2) == 0 ? valid : invalid;
-                            if (index == 4) return (eCertainStatus & 4) == 0 ? valid : invalid;
-                            if (index == 6) return (eCertainStatus & 8) == 0 ? valid : invalid;
-                            if (index == 8) return (eCertainStatus & 16) == 0 ? valid : invalid;
-                            break;
-                    }
-                    return null;
-                })
-                    .setPos(174 + (index % 3) * 6, 97 + (index / 3) * 6)
-                    .setSize(4, 4));
-            }
-            builder.widget(new FakeSyncWidget.ByteSyncer(() -> eCertainMode, val -> eCertainMode = val))
-                .widget(new FakeSyncWidget.ByteSyncer(() -> eCertainStatus, val -> eCertainStatus = val));
-        }
     }
 
     protected ButtonWidget createPowerPassButton() {
@@ -2320,7 +2298,7 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
         })
             .setPlayClickSound(false)
             .setBackground(() -> {
-                List<UITexture> ret = new ArrayList<>();
+                List<com.gtnewhorizons.modularui.api.drawable.UITexture> ret = new ArrayList<>();
                 ret.add(TecTechUITextures.BUTTON_STANDARD_16x16);
                 if (!isPowerPassButtonEnabled() && !ePowerPassCover) {
                     ret.add(TecTechUITextures.OVERLAY_BUTTON_POWER_PASS_DISABLED);
@@ -2351,7 +2329,7 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
         })
             .setPlayClickSound(false)
             .setBackground(() -> {
-                List<UITexture> ret = new ArrayList<>();
+                List<com.gtnewhorizons.modularui.api.drawable.UITexture> ret = new ArrayList<>();
                 ret.add(TecTechUITextures.BUTTON_STANDARD_16x16);
                 if (!isSafeVoidButtonEnabled()) {
                     ret.add(TecTechUITextures.OVERLAY_BUTTON_SAFE_VOID_DISABLED);
@@ -2386,7 +2364,7 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
         })
             .setPlayClickSound(false)
             .setBackground(() -> {
-                List<UITexture> ret = new ArrayList<>();
+                List<com.gtnewhorizons.modularui.api.drawable.UITexture> ret = new ArrayList<>();
                 ret.add(TecTechUITextures.BUTTON_STANDARD_16x16);
                 if (!isAllowedToWorkButtonEnabled()) {
                     ret.add(TecTechUITextures.OVERLAY_BUTTON_POWER_SWITCH_DISABLED);
@@ -2408,170 +2386,89 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
         return (ButtonWidget) button;
     }
 
-    private ModularWindow createLEDConfigurationWindow(int ledID) {
-        return ModularWindow.builder(100, 40)
-            .setBackground(TecTechUITextures.BACKGROUND_SCREEN_BLUE)
-            .setPos(
-                (screenSize, mainWindow) -> new Pos2d(
-                    (screenSize.width / 2 - mainWindow.getSize().width / 2) - 110,
-                    (screenSize.height / 2 - mainWindow.getSize().height / 2)))
-            .widget(
-                ButtonWidget.closeWindowButton(true)
-                    .setPos(85, 3))
-            .widget(
-                new NumericWidget().setGetter(() -> parametrization.iParamsIn[ledID])
-                    .setSetter(val -> parametrization.iParamsIn[ledID] = val)
-                    .setIntegerOnly(false)
-                    .modifyNumberFormat(format -> format.setMaximumFractionDigits(8))
-                    .setTextColor(Color.LIGHT_BLUE.normal)
-                    .setTextAlignment(Alignment.CenterLeft)
-                    .setFocusOnGuiOpen(true)
-                    .setBackground(GTUITextures.BACKGROUND_TEXT_FIELD)
-                    .setPos(5, 20)
-                    .setSize(90, 15))
-            .widget(
-                new TextWidget((ledID % 10) + ":" + (ledID / 10) + ":I").setDefaultColor(Color.WHITE.normal)
-                    .setTextAlignment(Alignment.Center)
-                    .setPos(5, 5))
-            .build();
-    }
+    private class StructureErrorAdapter implements IByteBufAdapter<EnumSet<StructureError>> {
 
-    private void addParameterLED(ModularWindow.Builder builder, int hatch, int param, boolean input) {
-        final int parameterIndex = hatch + param * 10;
-        final int posIndex = hatch * 2 + param;
-        ButtonWidget ledWidget = new ButtonWidget() {
+        @Override
+        public EnumSet<StructureError> deserialize(PacketBuffer buffer) {
+            byte[] data = new byte[buffer.readVarIntFromBuffer()];
+            buffer.readBytes(data);
 
-            @Override
-            public void draw(float partialTicks) {
-                IDrawable texture = null;
-                final LedStatus status = input ? parametrization.eParamsInStatus[parameterIndex]
-                    : parametrization.eParamsOutStatus[parameterIndex];
-                switch (status) {
-                    case STATUS_WTF: {
-                        int c = LEDCounter;
-                        if (c > 4) {
-                            c = TecTech.RANDOM.nextInt(5);
-                        }
-                        switch (c) {
-                            case 0:
-                                texture = TecTechUITextures.PICTURE_PARAMETER_BLUE[posIndex];
-                                break;
-                            case 1:
-                                texture = TecTechUITextures.PICTURE_PARAMETER_CYAN[posIndex];
-                                break;
-                            case 2:
-                                texture = TecTechUITextures.PICTURE_PARAMETER_GREEN[posIndex];
-                                break;
-                            case 3:
-                                texture = TecTechUITextures.PICTURE_PARAMETER_ORANGE[posIndex];
-                                break;
-                            case 4:
-                                texture = TecTechUITextures.PICTURE_PARAMETER_RED[posIndex];
-                                break;
-                        }
-                        break;
-                    }
-                    case STATUS_WRONG: // fallthrough
-                        if (LEDCounter < 2) {
-                            texture = TecTechUITextures.PICTURE_PARAMETER_BLUE[posIndex];
-                            break;
-                        } else if (LEDCounter < 4) {
-                            texture = TecTechUITextures.PICTURE_PARAMETER_RED[posIndex];
-                            break;
-                        }
-                    case STATUS_OK: // ok
-                        texture = TecTechUITextures.PICTURE_PARAMETER_GREEN[posIndex];
-                        break;
-                    case STATUS_TOO_LOW: // too low blink
-                        if (LEDCounter < 3) {
-                            texture = TecTechUITextures.PICTURE_PARAMETER_BLUE[posIndex];
-                            break;
-                        }
-                    case STATUS_LOW: // too low
-                        texture = TecTechUITextures.PICTURE_PARAMETER_CYAN[posIndex];
-                        break;
-                    case STATUS_TOO_HIGH: // too high blink
-                        if (LEDCounter < 3) {
-                            texture = TecTechUITextures.PICTURE_PARAMETER_RED[posIndex];
-                            break;
-                        }
-                    case STATUS_HIGH: // too high
-                        texture = TecTechUITextures.PICTURE_PARAMETER_ORANGE[posIndex];
-                        break;
-                    case STATUS_NEUTRAL:
-                        if (LEDCounter < 3) {
-                            GL11.glColor4f(.85f, .9f, .95f, .5F);
-                        } else {
-                            GL11.glColor4f(.8f, .9f, 1f, .5F);
-                        }
-                        texture = TecTechUITextures.PICTURE_PARAMETER_GRAY;
-                        break;
-                    case STATUS_UNDEFINED:
-                        if (LEDCounter < 3) {
-                            GL11.glColor4f(.5f, .1f, .15f, .5F);
-                        } else {
-                            GL11.glColor4f(0f, .1f, .2f, .5F);
-                        }
-                        texture = TecTechUITextures.PICTURE_PARAMETER_GRAY;
-                        break;
-                    case STATUS_UNUSED:
-                    default:
-                        // no-op
-                        break;
+            BitSet bits = BitSet.valueOf(data);
+
+            EnumSet<StructureError> out = EnumSet.noneOf(StructureError.class);
+
+            for (StructureError error : StructureError.values()) {
+                if (bits.get(error.ordinal())) {
+                    out.add(error);
                 }
-                setBackground(texture);
-                GL11.glColor4f(1f, 1f, 1f, 1f);
             }
-        }.setOnClick((clickData, widget) -> {
-            if (!widget.isClient() && input
-                && parametrization.eParamsInStatus[parameterIndex] != LedStatus.STATUS_UNUSED) {
-                // We don't use CloseAllButMain here in case MB implementation adds their own window
-                for (int i = 0; i < parametrization.eParamsInStatus.length; i++) {
-                    if (widget.getContext()
-                        .isWindowOpen(LED_WINDOW_BASE_ID + i)) {
-                        widget.getContext()
-                            .closeWindow(LED_WINDOW_BASE_ID + i);
-                    }
-                }
-                widget.getContext()
-                    .openSyncedWindow(LED_WINDOW_BASE_ID + parameterIndex);
+
+            return out;
+        }
+
+        @Override
+        public void serialize(PacketBuffer buffer, EnumSet<StructureError> errors) {
+            BitSet bits = new BitSet();
+
+            for (StructureError error : errors) {
+                bits.set(error.ordinal());
             }
-        });
-        builder.widget(ledWidget.dynamicTooltip(() -> {
-            if (input) {
-                return getFullLedDescriptionIn(hatch, param);
-            } else {
-                return getFullLedDescriptionOut(hatch, param);
-            }
-        })
-            .setPos(12 + posIndex * 8, (doesBindPlayerInventory() ? 97 : 177) + (input ? 0 : 1) * 6)
-            .setSize(6, 4));
-        if (input) {
-            builder
-                .widget(
-                    new FakeSyncWidget.ByteSyncer(
-                        () -> parametrization.eParamsInStatus[parameterIndex].getOrdinalByte(),
-                        val -> parametrization.eParamsInStatus[parameterIndex] = LedStatus.getStatus(val))
-                            .setOnClientUpdate(val -> ledWidget.notifyTooltipChange()))
-                .widget(
-                    new FakeSyncWidget.DoubleSyncer(
-                        () -> parametrization.iParamsIn[parameterIndex],
-                        val -> parametrization.iParamsIn[parameterIndex] = val)
-                            .setOnClientUpdate(val -> ledWidget.notifyTooltipChange()));
-        } else {
-            builder
-                .widget(
-                    new FakeSyncWidget.ByteSyncer(
-                        () -> parametrization.eParamsOutStatus[parameterIndex].getOrdinalByte(),
-                        val -> parametrization.eParamsOutStatus[parameterIndex] = LedStatus.getStatus(val))
-                            .setOnClientUpdate(val -> ledWidget.notifyTooltipChange()))
-                .widget(
-                    new FakeSyncWidget.DoubleSyncer(
-                        () -> parametrization.iParamsOut[parameterIndex],
-                        val -> parametrization.iParamsOut[parameterIndex] = val)
-                            .setOnClientUpdate(val -> ledWidget.notifyTooltipChange()));
+
+            byte[] data = bits.toByteArray();
+
+            buffer.writeVarIntToBuffer(data.length);
+            buffer.writeBytes(data);
+        }
+
+        @Override
+        public boolean areEqual(@NotNull EnumSet<StructureError> t1, @NotNull EnumSet<StructureError> t2) {
+            return false;
         }
     }
 
-    // endregion
+    private class ShutdownReasonAdapter implements IByteBufAdapter<ShutDownReason> {
+
+        @Override
+        public ShutDownReason deserialize(PacketBuffer buffer) throws IOException {
+            String id = NetworkUtils.readStringSafe(buffer);
+            ShutDownReason result = ShutDownReasonRegistry.getSampleFromRegistry(id)
+                .newInstance();
+            result.decode(buffer);
+            return result;
+        }
+
+        @Override
+        public void serialize(PacketBuffer buffer, ShutDownReason result) throws IOException {
+            NetworkUtils.writeStringSafe(buffer, result.getID());
+            result.encode(buffer);
+        }
+
+        @Override
+        public boolean areEqual(@NotNull ShutDownReason t1, @NotNull ShutDownReason t2) {
+            return false;
+        }
+    }
+
+    private class CheckRecipeResultAdapter implements IByteBufAdapter<CheckRecipeResult> {
+
+        @Override
+        public CheckRecipeResult deserialize(PacketBuffer buffer) throws IOException {
+            String id = NetworkUtils.readStringSafe(buffer);
+            CheckRecipeResult result = CheckRecipeResultRegistry.getSampleFromRegistry(id)
+                .newInstance();
+            result.decode(buffer);
+            return result;
+        }
+
+        @Override
+        public void serialize(PacketBuffer buffer, CheckRecipeResult result) throws IOException {
+            NetworkUtils.writeStringSafe(buffer, result.getID());
+            result.encode(buffer);
+        }
+
+        @Override
+        public boolean areEqual(@NotNull CheckRecipeResult t1, @NotNull CheckRecipeResult t2) {
+            return false;
+        }
+    }
 }

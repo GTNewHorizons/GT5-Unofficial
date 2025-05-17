@@ -26,16 +26,12 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.gtnewhorizons.modularui.api.NumberFormatMUI;
-import com.gtnewhorizons.modularui.api.math.Alignment;
-import com.gtnewhorizons.modularui.common.widget.DynamicPositionedColumn;
-import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
-import com.gtnewhorizons.modularui.common.widget.SlotWidget;
-import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
 import goodgenerator.api.recipe.GoodGeneratorRecipeMaps;
 import goodgenerator.blocks.tileEntity.GTMetaTileEntity.MTENeutronAccelerator;
 import goodgenerator.blocks.tileEntity.GTMetaTileEntity.MTENeutronSensor;
 import goodgenerator.blocks.tileEntity.base.MTETooltipMultiBlockBaseEM;
+import goodgenerator.blocks.tileEntity.gui.MTENeutronActivatorGui;
 import goodgenerator.loader.Loaders;
 import goodgenerator.util.DescTextLocalization;
 import goodgenerator.util.ItemRefer;
@@ -49,6 +45,7 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEHatch;
+import gregtech.api.metatileentity.implementations.gui.MTEMultiBlockBaseGui;
 import gregtech.api.objects.XSTR;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
@@ -61,11 +58,8 @@ import gregtech.api.util.OverclockCalculator;
 import tectech.thing.metaTileEntity.multi.base.INameFunction;
 import tectech.thing.metaTileEntity.multi.base.IStatusFunction;
 import tectech.thing.metaTileEntity.multi.base.LedStatus;
-import tectech.thing.metaTileEntity.multi.base.Parameters;
 
 public class MTENeutronActivator extends MTETooltipMultiBlockBaseEM implements IConstructable, ISurvivalConstructable {
-
-    public Parameters.Group.ParameterIn batchSetting;
 
     /** Name of the batch setting */
     public static final INameFunction<MTENeutronActivator> BATCH_SETTING_NAME = (base,
@@ -78,7 +72,9 @@ public class MTENeutronActivator extends MTETooltipMultiBlockBaseEM implements I
     protected final ArrayList<MTENeutronSensor> mNeutronSensor = new ArrayList<>();
     protected int casingAmount = 0;
     protected int height = 0;
-    protected int eV = 0, mCeil = 0, mFloor = 0;
+    public int eV = 0;
+    protected int mCeil = 0;
+    protected int mFloor = 0;
     protected static final NumberFormatMUI numberFormat;
     static {
         numberFormat = new NumberFormatMUI();
@@ -149,13 +145,12 @@ public class MTENeutronActivator extends MTETooltipMultiBlockBaseEM implements I
     @Override
     public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
         float aX, float aY, float aZ, ItemStack aTool) {
-        if (getMaxBatchSize() == 1) {
-            parametrization.trySetParameters(batchSetting.hatchId(), batchSetting.parameterId(), 128);
+        if (!isBatchModeEnabled()) {
             GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOn"));
         } else {
-            parametrization.trySetParameters(batchSetting.hatchId(), batchSetting.parameterId(), 1);
             GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOff"));
         }
+        setBatchMode(!isBatchModeEnabled());
         return true;
     }
 
@@ -302,15 +297,8 @@ public class MTENeutronActivator extends MTETooltipMultiBlockBaseEM implements I
     }
 
     @Override
-    protected void parametersInstantiation_EM() {
-        batchSetting = parametrization.getGroup(9, true)
-            .makeInParameter(1, 1, BATCH_SETTING_NAME, BATCH_STATUS);
-    }
-
-    @Override
     protected int getMaxBatchSize() {
-        // Batch size 1~128
-        return (int) Math.min(Math.max(batchSetting.get(), 1.0D), 128.0D);
+        return 128;
     }
 
     @Override
@@ -469,21 +457,8 @@ public class MTENeutronActivator extends MTETooltipMultiBlockBaseEM implements I
     }
 
     @Override
-    protected void drawTexts(DynamicPositionedColumn screenElements, SlotWidget inventorySlot) {
-        super.drawTexts(screenElements, inventorySlot);
-
-        screenElements
-            .widget(
-                new TextWidget(StatCollector.translateToLocal("gui.NeutronActivator.0"))
-                    .setTextAlignment(Alignment.CenterLeft)
-                    .setDefaultColor(COLOR_TEXT_WHITE.get())
-                    .setEnabled(widget -> getErrorDisplayID() == 0))
-            .widget(
-                new TextWidget().setStringSupplier(() -> numberFormat.format(eV / 1_000_000d) + " MeV")
-                    .setTextAlignment(Alignment.CenterLeft)
-                    .setDefaultColor(COLOR_TEXT_WHITE.get())
-                    .setEnabled(widget -> getErrorDisplayID() == 0))
-            .widget(new FakeSyncWidget.IntegerSyncer(() -> eV, val -> eV = val));
+    protected @NotNull MTEMultiBlockBaseGui getGui() {
+        return new MTENeutronActivatorGui(this);
     }
 
     private enum NeutronHatchElement implements IHatchElement<MTENeutronActivator> {
@@ -521,4 +496,10 @@ public class MTENeutronActivator extends MTETooltipMultiBlockBaseEM implements I
             return adder;
         }
     }
+
+    @Override
+    protected boolean forceUseMui2() {
+        return true;
+    }
+
 }
