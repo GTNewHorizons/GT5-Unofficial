@@ -23,12 +23,9 @@ public class MTETeslaTowerGui extends TTMultiBlockBaseGui {
 
     @Override
     protected ListWidget<IWidget, ?> createTerminalTextWidget(PanelSyncManager syncManager) {
-        IntSyncValue outputVoltageSyncer = new IntSyncValue(() -> 0, () -> (int) tesla.outputVoltage);
-        IntSyncValue outputCurrentSyncer = new IntSyncValue(() -> 0, () -> (int) tesla.outputCurrent);
-        IntSyncValue usedAmpsSyncer = new IntSyncValue(() -> 0, () -> (int) tesla.usedAmps);
-        syncManager.syncValue("outputVoltage", outputVoltageSyncer);
-        syncManager.syncValue("outputCurrent", outputCurrentSyncer);
-        syncManager.syncValue("usedAmps", usedAmpsSyncer);
+        IntSyncValue outputVoltageSyncer = (IntSyncValue) syncManager.getSyncHandler("outputVoltage:0");
+        IntSyncValue outputCurrentSyncer = (IntSyncValue) syncManager.getSyncHandler("outputCurrent:0");
+        IntSyncValue usedAmpsSyncer = (IntSyncValue) syncManager.getSyncHandler("usedAmps:0");
         return super.createTerminalTextWidget(syncManager)
             .child(
                 IKey.dynamic(
@@ -56,5 +53,16 @@ public class MTETeslaTowerGui extends TTMultiBlockBaseGui {
                     .color(Color.WHITE.main)
                     .widthRel(1)
                     .marginBottom(2));
+    }
+
+    @Override
+    protected void registerSyncValues(PanelSyncManager syncManager) {
+        super.registerSyncValues(syncManager);
+        IntSyncValue outputVoltageSyncer = new IntSyncValue(() -> 0, () -> (int) tesla.outputVoltage);
+        IntSyncValue outputCurrentSyncer = new IntSyncValue(() -> 0, () -> (int) tesla.outputCurrent);
+        IntSyncValue usedAmpsSyncer = new IntSyncValue(() -> 0, () -> (int) tesla.usedAmps);
+        syncManager.syncValue("outputVoltage", outputVoltageSyncer);
+        syncManager.syncValue("outputCurrent", outputCurrentSyncer);
+        syncManager.syncValue("usedAmps", usedAmpsSyncer);
     }
 }
