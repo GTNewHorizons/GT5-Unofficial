@@ -47,7 +47,7 @@ import tectech.thing.metaTileEntity.multi.base.TTMultiblockBase;
 
 public class TTMultiBlockBaseGui extends MTEMultiBlockBaseGui {
 
-    private TTMultiblockBase ttBase;
+    private final TTMultiblockBase ttBase;
 
     public TTMultiBlockBaseGui(MTEMultiBlockBase base) {
         super(base);
