@@ -394,17 +394,6 @@ public class MTEIndustrialElectromagneticSeparator
         return true;
     }
 
-    @Override
-    protected void setProcessingLogicPower(ProcessingLogic logic) {
-        // This fix works for normal energy hatches, preventing over-paralleling with 1 energy hatch
-        // However, it does not work with multiamp.
-
-        if (mExoticEnergyHatches.isEmpty()) {
-            logic.setAvailableVoltage(GTUtility.roundUpVoltage(this.getMaxInputVoltage()));
-            logic.setAvailableAmperage(1L);
-        } else super.setProcessingLogicPower(logic);
-    }
-
     private void findMagnet() {
         magnetTier = null;
         if (mMagHatch != null) {

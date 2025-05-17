@@ -36,7 +36,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import net.minecraft.block.Block;
@@ -82,14 +81,13 @@ import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.recipe.RecipeMap;
-import gregtech.api.recipe.check.CheckRecipeResult;
-import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
 import gregtech.api.util.shutdown.ShutDownReason;
+import gregtech.common.misc.GTStructureChannels;
 
 public class MTEElectricImplosionCompressor extends MTEExtendedPowerMultiBlockBase<MTEElectricImplosionCompressor>
     implements ISurvivalConstructable, INEIPreviewModifier {
@@ -189,8 +187,7 @@ public class MTEElectricImplosionCompressor extends MTEExtendedPowerMultiBlockBa
             .addElement('D', ofBlock(BW_BLOCKS[2], 1))
             .addElement(
                 'E',
-                StructureUtility.withChannel(
-                    "piston_block",
+                GTStructureChannels.EIC_PISTON.use(
                     StructureUtility.ofBlocksTiered(
                         MTEElectricImplosionCompressor::getTierBlock,
                         getTierBlockList(),
@@ -199,8 +196,7 @@ public class MTEElectricImplosionCompressor extends MTEExtendedPowerMultiBlockBa
                         t -> t.mBlockTier)))
             .addElement(
                 'F',
-                StructureUtility.withChannel(
-                    "piston_block",
+                GTStructureChannels.EIC_PISTON.use(
                     StructureUtility.ofBlocksTiered(
                         MTEElectricImplosionCompressor::getTierBlock,
                         getTierBlockList(),
@@ -240,7 +236,7 @@ public class MTEElectricImplosionCompressor extends MTEExtendedPowerMultiBlockBa
             .addInputHatch("Any bottom casing", 1)
             .addOutputBus("Any bottom casing", 1)
             .addEnergyHatch("Bottom middle and/or top middle", 2)
-            .addSubChannelUsage("piston_block", "Metal Block Tier")
+            .addSubChannelUsage(GTStructureChannels.EIC_PISTON)
             .toolTipFinisher();
         return tt;
     }
@@ -253,17 +249,6 @@ public class MTEElectricImplosionCompressor extends MTEExtendedPowerMultiBlockBa
     @Override
     protected ProcessingLogic createProcessingLogic() {
         return new ProcessingLogic() {
-
-            @NotNull
-            @Override
-            protected CheckRecipeResult validateRecipe(@Nonnull GTRecipe recipe) {
-                long voltage = MTEElectricImplosionCompressor.this.getAverageInputVoltage();
-                // Only allow a minimum of T-1 energy hatch
-                if (recipe.mEUt > voltage * 4) {
-                    return CheckRecipeResultRegistry.insufficientPower(recipe.mEUt);
-                }
-                return CheckRecipeResultRegistry.SUCCESSFUL;
-            }
 
             @NotNull
             @Override

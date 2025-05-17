@@ -252,6 +252,7 @@ public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge> i
         logic.setAvailableVoltage(getMaxInputEu());
         logic.setAvailableAmperage(1);
         logic.setAmperageOC(false);
+        logic.setUnlimitedTierSkips();
     }
 
     @Override
@@ -354,6 +355,7 @@ public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge> i
             .addInfo("If a recipe's tier is lower than the tier of the Nano Forge")
             .addInfo("it gains " + EnumChatFormatting.RED + "perfect overclock" + EnumChatFormatting.GRAY + ".")
             .addTecTechHatchInfo()
+            .addUnlimitedTierSkips()
             .beginStructureBlock(30, 38, 13, false)
             .addStructureInfo("Tier " + EnumChatFormatting.DARK_PURPLE + 1 + EnumChatFormatting.GRAY)
             .addStructureInfo(

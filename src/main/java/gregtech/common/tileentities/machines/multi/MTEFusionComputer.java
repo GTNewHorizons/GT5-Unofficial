@@ -351,6 +351,7 @@ public abstract class MTEFusionComputer extends MTEEnhancedMultiBlockBase<MTEFus
         logic.setAvailableVoltage(GTValues.V[tier()]);
         logic.setAvailableAmperage(1);
         logic.setAmperageOC(false);
+        logic.setUnlimitedTierSkips();
     }
 
     public boolean turnCasingActive(boolean status) {

@@ -623,6 +623,40 @@ public class MultiblockTooltipBuilder {
 
     /**
      * Add a line of information about the structure:<br>
+     * This machine can run recipes regardless of tier, if given enough energy.
+     *
+     * @return Instance this method was called on.
+     */
+    public MultiblockTooltipBuilder addNoTierSkips() {
+        iLines.add(StatCollector.translateToLocal("GT5U.MBTT.Structure.NoTierSkips"));
+        return this;
+    }
+
+    /**
+     * Add a line of information about the structure:<br>
+     * This machine can run recipes regardless of tier, if given enough energy.
+     *
+     * @return Instance this method was called on.
+     */
+    public MultiblockTooltipBuilder addUnlimitedTierSkips() {
+        iLines.add(StatCollector.translateToLocal("GT5U.MBTT.Structure.UnlimitedTierSkips"));
+        return this;
+    }
+
+    /**
+     * Add a line of information about the structure:<br>
+     * This machine can run recipes at most n tiers above the average energy hatch tier.
+     *
+     * @param n The max amount of tier skips allowed
+     * @return Instance this method was called on.
+     */
+    public MultiblockTooltipBuilder addMaxTierSkips(int n) {
+        iLines.add(StatCollector.translateToLocalFormatted("GT5U.MBTT.Structure.MaxTierSkips", n));
+        return this;
+    }
+
+    /**
+     * Add a line of information about the structure:<br>
      * (indent)Maintenance Hatch: info
      *
      * @param info Positional information.

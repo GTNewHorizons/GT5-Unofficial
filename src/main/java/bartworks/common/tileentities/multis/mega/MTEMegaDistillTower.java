@@ -263,6 +263,7 @@ public class MTEMegaDistillTower extends MegaMultiBlockBase<MTEMegaDistillTower>
             .addInfo("Fluids are only put out at the correct height")
             .addInfo("The correct height equals the slot number in the NEI recipe")
             .addTecTechHatchInfo()
+            .addUnlimitedTierSkips()
             .beginVariableStructureBlock(15, 15, 16, 56, 15, 15, true)
             .addController("Front bottom")
             .addOtherStructurePart("Clean Stainless Steel Machine Casing", "15 x h - 5 (minimum)")

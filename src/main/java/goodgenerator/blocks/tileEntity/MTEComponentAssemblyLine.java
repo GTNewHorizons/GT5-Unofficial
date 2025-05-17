@@ -316,6 +316,7 @@ public class MTEComponentAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTE
     protected void setProcessingLogicPower(ProcessingLogic logic) {
         logic.setAvailableVoltage(getMaxInputEu());
         logic.setAvailableAmperage(1);
+        logic.setUnlimitedTierSkips();
     }
 
     @Override

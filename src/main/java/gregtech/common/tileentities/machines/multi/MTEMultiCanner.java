@@ -283,12 +283,6 @@ public class MTEMultiCanner extends MTEExtendedPowerMultiBlockBase<MTEMultiCanne
     }
 
     @Override
-    protected void setProcessingLogicPower(ProcessingLogic logic) {
-        logic.setAvailableVoltage(GTUtility.roundUpVoltage(this.getMaxInputVoltage()));
-        logic.setAvailableAmperage(1L);
-    }
-
-    @Override
     protected @NotNull MTEMultiCannerGui getGui() {
         return new MTEMultiCannerGui(this);
     }
