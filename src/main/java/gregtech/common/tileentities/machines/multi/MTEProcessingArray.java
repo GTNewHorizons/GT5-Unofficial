@@ -271,7 +271,6 @@ public class MTEProcessingArray extends MTEExtendedPowerMultiBlockBase<MTEProces
         logic.setAvailableVoltage(GTValues.V[tTier] * (mLastRecipeMap != null ? mLastRecipeMap.getAmperage() : 1));
         logic.setAvailableAmperage(getMaxParallelRecipes());
         logic.setAmperageOC(false);
-        logic.setMaxTierSkips(1);
     }
 
     private void setTierAndMult() {

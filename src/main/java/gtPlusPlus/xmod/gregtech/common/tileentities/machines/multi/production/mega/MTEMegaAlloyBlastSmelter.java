@@ -291,6 +291,7 @@ public class MTEMegaAlloyBlastSmelter extends MTEExtendedPowerMultiBlockBase<MTE
             .addGlassEnergyLimitInfo(VoltageIndex.UEV)
             .addTecTechHatchInfo()
             .addMinGlassForLaser(VoltageIndex.UV)
+            .addUnlimitedTierSkips()
             .addInfo(
                 EnumChatFormatting.ITALIC + "\"all it does is make metals hot\""
                     + EnumChatFormatting.RESET

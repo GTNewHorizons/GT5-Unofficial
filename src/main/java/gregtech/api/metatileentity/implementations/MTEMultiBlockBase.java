@@ -1018,7 +1018,6 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
         logic.setAvailableVoltage(getAverageInputVoltage());
         logic.setAvailableAmperage(useSingleAmp ? 1 : getMaxInputAmps());
         logic.setAmperageOC(true);
-        logic.setMaxTierSkips(1);
     }
 
     protected boolean supportsCraftingMEBuffer() {
