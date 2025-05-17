@@ -339,7 +339,6 @@ public class TileEntityModuleMinerGui extends TileEntityModuleBaseGui {
             .child(
                 new Row().widthRel(1)
                     .coverChildrenHeight()
-                    .marginBottom(4)
                     .child(
                         IKey.str("Currently minable asteroids for ")
                             .asWidget())
@@ -353,7 +352,7 @@ public class TileEntityModuleMinerGui extends TileEntityModuleBaseGui {
                         })));
 
         Flow asteroidButtonColumn = new Column().widthRel(1)
-            .marginTop(4);
+            .marginTop(3);
         generateMinableAsteroids(asteroidButtonColumn, syncManager);
         resultColumn.child(asteroidButtonColumn);
 
