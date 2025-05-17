@@ -23,11 +23,8 @@ public class MTEQuantumComputerGui extends TTMultiBlockBaseGui {
 
     @Override
     protected ListWidget<IWidget, ?> createTerminalTextWidget(PanelSyncManager syncManager) {
-        DoubleSyncValue tempSyncer = new DoubleSyncValue(() -> quantumComputer.currentTemp);
-        LongSyncValue computationSyncer = new LongSyncValue(() -> quantumComputer.computation);
-        syncManager.syncValue("temp", tempSyncer);
-        syncManager.syncValue("computation", computationSyncer);
-
+        DoubleSyncValue tempSyncer = (DoubleSyncValue) syncManager.getSyncHandler("temp:0");
+        LongSyncValue computationSyncer = (LongSyncValue) syncManager.getSyncHandler("computation:0");
         return super.createTerminalTextWidget(syncManager)
 
             .child(
@@ -52,5 +49,14 @@ public class MTEQuantumComputerGui extends TTMultiBlockBaseGui {
                     .setEnabledIf(
                         w -> base.getErrorDisplayID() == 0 && base.getBaseMetaTileEntity()
                             .isActive()));
+    }
+
+    @Override
+    protected void registerSyncValues(PanelSyncManager syncManager) {
+        super.registerSyncValues(syncManager);
+        DoubleSyncValue tempSyncer = new DoubleSyncValue(() -> quantumComputer.currentTemp);
+        LongSyncValue computationSyncer = new LongSyncValue(() -> quantumComputer.computation);
+        syncManager.syncValue("temp", tempSyncer);
+        syncManager.syncValue("computation", computationSyncer);
     }
 }
