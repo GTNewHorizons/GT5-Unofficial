@@ -22,10 +22,8 @@ public class MTEMicrowaveGui extends TTMultiBlockBaseGui {
 
     @Override
     protected ListWidget<IWidget, ?> createTerminalTextWidget(PanelSyncManager syncManager) {
-        IntSyncValue damageFactorSyncer = new IntSyncValue(() -> microwave.maxDamagePerSecond);
-        IntSyncValue remainingTimeSyncer = new IntSyncValue(() -> microwave.remainingTime);
-        syncManager.syncValue("damageFactor", damageFactorSyncer);
-        syncManager.syncValue("remainingTime", remainingTimeSyncer);
+        IntSyncValue damageFactorSyncer = (IntSyncValue) syncManager.getSyncHandler("damageFactor:0");
+        IntSyncValue remainingTimeSyncer = (IntSyncValue) syncManager.getSyncHandler("remainingTime:0");
         return super.createTerminalTextWidget(syncManager)
 
             .child(
@@ -52,5 +50,14 @@ public class MTEMicrowaveGui extends TTMultiBlockBaseGui {
                             .isActive())
                     .widthRel(1)
                     .marginBottom(2));
+    }
+
+    @Override
+    protected void registerSyncValues(PanelSyncManager syncManager) {
+        super.registerSyncValues(syncManager);
+        IntSyncValue damageFactorSyncer = new IntSyncValue(() -> microwave.maxDamagePerSecond);
+        IntSyncValue remainingTimeSyncer = new IntSyncValue(() -> microwave.remainingTime);
+        syncManager.syncValue("damageFactor", damageFactorSyncer);
+        syncManager.syncValue("remainingTime", remainingTimeSyncer);
     }
 }
