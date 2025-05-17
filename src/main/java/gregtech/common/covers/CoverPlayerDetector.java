@@ -148,7 +148,7 @@ public class CoverPlayerDetector extends CoverLegacyData {
 
     @Override
     protected @NotNull CoverGui<?> getCoverGui() {
-        return new CoverPlayerDetectorGui();
+        return new CoverPlayerDetectorGui(this);
     }
 
     @Override
