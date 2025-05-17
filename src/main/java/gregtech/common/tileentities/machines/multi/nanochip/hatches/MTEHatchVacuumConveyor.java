@@ -215,7 +215,7 @@ public abstract class MTEHatchVacuumConveyor extends MTEHatch implements IConnec
                         t -> t.clearText()
                             .addStringLines(item.getTooltip(data.getPlayer(), false)));
                 }
-                return slot.tooltip(t -> t.clearText());
+                return slot;
             });
 
         // Make sure to update the slots each time the contents gets updated
@@ -227,13 +227,13 @@ public abstract class MTEHatchVacuumConveyor extends MTEHatch implements IConnec
             for (int i = 0; i < UI_SLOT_COUNT; i++) {
                 Widget<?> slot = (Widget<?>) grid.getChildren()
                     .get(i);
+                Widget<?> slotChild = (Widget<?>) slot.getChildren()
+                    .get(0);
                 if (contents != null && i < contents.getItemRepresentations()
                     .size()) {
                     ItemStack item = contents.getItemRepresentations()
                         .get(i);
                     ItemDrawable itemDraw = new ItemDrawable(item);
-                    Widget<?> slotChild = ((Widget<?>) slot.getChildren()
-                        .get(0));
                     slotChild.background(itemDraw)
                         .overlay(
                             new StringKey(NumberFormat.format(item.stackSize, NumberFormat.AMOUNT_TEXT)).scale(0.6f)
@@ -244,8 +244,8 @@ public abstract class MTEHatchVacuumConveyor extends MTEHatch implements IConnec
                             .addStringLines(item.getTooltip(data.getPlayer(), false)));
                     continue;
                 }
-                slot.overlay();
-                slot.tooltip(t -> t.clearText());
+                slotChild.overlay();
+                slotChild.tooltip(t -> t.clearText());
 
             }
         });
