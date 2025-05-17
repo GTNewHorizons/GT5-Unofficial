@@ -47,7 +47,7 @@ public class ProcessingLogic {
     protected double speedBoost = 1.0;
     protected long availableVoltage;
     protected long availableAmperage;
-    protected int maxTierSkips;
+    protected int maxTierSkips = 1;
     protected boolean protectItems;
     protected boolean protectFluids;
     protected double overClockTimeReduction = 2.0;

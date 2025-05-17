@@ -191,19 +191,11 @@ public class MTELargeFluidExtractor extends MTEExtendedPowerMultiBlockBase<MTELa
 
     @Override
     protected ProcessingLogic createProcessingLogic() {
-        return new ProcessingLogic();
-    }
 
-    @Override
-    protected void setProcessingLogicPower(ProcessingLogic logic) {
-        boolean useSingleAmp = mEnergyHatches.size() == 1 && mExoticEnergyHatches.isEmpty();
-        logic.setAvailableVoltage(getAverageInputVoltage());
-        logic.setAvailableAmperage(useSingleAmp ? 1 : getMaxInputAmps());
-        logic.setMaxTierSkips(1);
-        logic.setAmperageOC(true);
-        logic.setEuModifier(getEUMultiplier());
-        logic.setMaxParallel(getTrueParallel());
-        logic.setSpeedBonus(1.0f / getSpeedBonus());
+        return new ProcessingLogic()
+            .setMaxParallelSupplier(this::getTrueParallel)
+            .setEuModifier(getEUMultiplier())
+            .setSpeedBonus(1.0f / getSpeedBonus());
     }
 
     @Override
