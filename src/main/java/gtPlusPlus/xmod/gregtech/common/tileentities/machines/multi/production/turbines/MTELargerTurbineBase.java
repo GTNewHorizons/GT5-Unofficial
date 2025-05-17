@@ -550,11 +550,6 @@ public abstract class MTELargerTurbineBase extends GTPPMultiBlockBase<MTELargerT
         return this.getMaxParallelRecipes() == 12 ? 10000 : 0;
     }
 
-    @Override
-    public boolean explodesOnComponentBreak(ItemStack aStack) {
-        return false;
-    }
-
     public boolean isLooseMode() {
         return looseFit;
     }
