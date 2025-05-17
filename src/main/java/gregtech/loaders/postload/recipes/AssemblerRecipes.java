@@ -2797,13 +2797,6 @@ public class AssemblerRecipes implements Runnable {
             .addTo(assemblerRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(GTOreDictUnificator.get(OrePrefixes.plate, Materials.HSSS, 6), ItemList.Casing_Turbine.get(1))
-            .itemOutputs(ItemList.Casing_TurbineGasAdvanced.get(1))
-            .duration(2 * SECONDS + 10 * TICKS)
-            .eut(16)
-            .addTo(assemblerRecipes);
-
-        GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Casing_SolidSteel.get(1), GTUtility.getIntegratedCircuit(6))
             .itemOutputs(ItemList.Casing_Chemically_Inert.get(1))
             .fluidInputs(Materials.Polytetrafluoroethylene.getMolten(216))
