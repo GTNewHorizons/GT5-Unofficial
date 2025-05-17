@@ -11,7 +11,6 @@ import static gregtech.api.util.GTModHandler.getModItem;
 import static gregtech.api.util.GTRecipeBuilder.HALF_INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.MINUTES;
-import static gregtech.api.util.GTRecipeBuilder.NUGGETS;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.STACKS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
@@ -351,7 +350,7 @@ public class RecipeLoaderChemicalSkips {
                 .itemInputs(GTBees.combs.getStackForType(CombType.KEVLAR, 24), Materials.Carbon.getDust(64))
                 .fluidInputs(Materials.Nitrogen.getGas(16_000), Materials.Hydrogen.getGas(16_000))
                 .fluidOutputs(
-                    MaterialsKevlar.PolyurethaneResin.getFluid(2_000 * NUGGETS),
+                    MaterialsKevlar.PolyurethaneResin.getFluid(32_000),
                     MaterialsKevlar.LiquidCrystalKevlar.getFluid(32 * INGOTS),
                     MaterialsKevlar.Kevlar.getMolten(1 * STACKS))
                 .duration(20 * SECONDS)
