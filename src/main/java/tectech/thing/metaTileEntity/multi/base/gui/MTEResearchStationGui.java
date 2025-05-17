@@ -24,21 +24,6 @@ public class MTEResearchStationGui extends TTMultiBlockBaseGui {
 
     @Override
     protected ListWidget<IWidget, ?> createTerminalTextWidget(PanelSyncManager syncManager) {
-        LongSyncValue requiredComputationSyncer = new LongSyncValue(
-            () -> station.computationRequired,
-            val -> station.computationRequired = val);
-        LongSyncValue remainingcomputationSyncer = new LongSyncValue(
-            () -> station.computationRemaining,
-            val -> station.computationRemaining = val);
-        StringSyncValue outputSyncer = new StringSyncValue(() -> {
-            if (station.tRecipe != null && station.tRecipe.mOutput != null) {
-                return station.tRecipe.mOutput.getDisplayName();
-            }
-            return "";
-        }, val -> station.clientOutputName = val);
-        syncManager.syncValue("requiredComputation", requiredComputationSyncer);
-        syncManager.syncValue("remainingComputation", remainingcomputationSyncer);
-        syncManager.syncValue("output", outputSyncer);
         return super.createTerminalTextWidget(syncManager)
             .child(
                 IKey.dynamic(
@@ -63,5 +48,25 @@ public class MTEResearchStationGui extends TTMultiBlockBaseGui {
                     .setEnabledIf(
                         widget -> station.computationRequired > 0 && station.clientOutputName != null
                             && !station.clientOutputName.isEmpty()));
+    }
+
+    @Override
+    protected void registerSyncValues(PanelSyncManager syncManager) {
+        super.registerSyncValues(syncManager);
+        LongSyncValue requiredComputationSyncer = new LongSyncValue(
+            () -> station.computationRequired,
+            val -> station.computationRequired = val);
+        LongSyncValue remainingcomputationSyncer = new LongSyncValue(
+            () -> station.computationRemaining,
+            val -> station.computationRemaining = val);
+        StringSyncValue outputSyncer = new StringSyncValue(() -> {
+            if (station.tRecipe != null && station.tRecipe.mOutput != null) {
+                return station.tRecipe.mOutput.getDisplayName();
+            }
+            return "";
+        }, val -> station.clientOutputName = val);
+        syncManager.syncValue("requiredComputation", requiredComputationSyncer);
+        syncManager.syncValue("remainingComputation", remainingcomputationSyncer);
+        syncManager.syncValue("output", outputSyncer);
     }
 }
