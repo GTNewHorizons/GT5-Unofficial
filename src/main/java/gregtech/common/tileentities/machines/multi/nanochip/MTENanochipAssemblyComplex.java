@@ -16,6 +16,7 @@ import static gregtech.api.util.GTUtility.filterValidMTEs;
 import static gregtech.common.tileentities.machines.multi.nanochip.util.AssemblyComplexStructureString.MAIN_OFFSET_X;
 import static gregtech.common.tileentities.machines.multi.nanochip.util.AssemblyComplexStructureString.MAIN_OFFSET_Y;
 import static gregtech.common.tileentities.machines.multi.nanochip.util.AssemblyComplexStructureString.MAIN_OFFSET_Z;
+import static gtnhlanth.util.DescTextLocalization.addDotText;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -114,7 +115,8 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
                 .atLeast(Energy, ExoticEnergy)
                 .casingIndex(CASING_INDEX_BASE)
                 .dot(1)
-                .buildAndChain(GregTechAPI.sBlockCasings8, 10))
+                .build())
+
         // Vacuum conveyor hatches that the main controller cares about go in specific slots
         .addElement(
             'H',
@@ -198,7 +200,7 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
-        return new MultiblockTooltipBuilder()
+        return new MultiblockTooltipBuilder().addMachineType("NAC, Nanochip-Assembly-Complex")
             .addInfo("Creates Circuits out of Circuit Components (" + TOOLTIP_CC + "s) at lightning speed")
             .addInfo("Convert items to " + TOOLTIP_CC + "s in the control room")
             .addInfo("Convert finished Circuit " + TOOLTIP_CC + "s back to items in the control room")
@@ -213,6 +215,7 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
             .addStructureInfo("Any control room base casing - Input bus")
             .addStructureInfo("Any control room base casing - Vacuum Conveyor Output")
             .addStructureInfo("Any control room base casing - Output bus")
+            .addOtherStructurePart("Energy Hatch Above Controller, Center of 3x3", addDotText(1))
             .toolTipFinisher("GregTech");
     }
 
@@ -409,7 +412,16 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
             boolean routed = routeToHatches(destinationHatches, busColor, component, stack.stack.stackSize);
             // If successful, consume the input
             if (routed) {
-                this.depleteInput(stack.stack);
+                final IGregTechTileEntity baseMetaTileEntity = stack.bus.getBaseMetaTileEntity();
+                for (int i = baseMetaTileEntity.getSizeInventory() - 1; i >= 0; i--) {
+                    ItemStack stackInSlot = baseMetaTileEntity.getStackInSlot(i);
+                    if (GTUtility.areStacksEqual(stack.stack, stackInSlot)) {
+                        if (stackInSlot.stackSize >= stack.stack.stackSize) {
+                            baseMetaTileEntity.decrStackSize(i, stack.stack.stackSize);
+                            break;
+                        }
+                    }
+                }
             }
         }
     }
@@ -429,7 +441,7 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
                         // If this entry has a real circuit, we have produced a circuit using the NAC!
                         if (component.realCircuit != null) {
                             ItemStack toOutput = GTUtility
-                                .copyAmount((int) Math.min(Integer.MAX_VALUE, amount), component.realCircuit);
+                                .copyAmountUnsafe((int) Math.min(Integer.MAX_VALUE, amount), component.realCircuit);
                             // Add output and deplete from hatch
                             addOutput(toOutput);
                             contents.remove(component);
@@ -509,11 +521,9 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
         if (isAllowedToWork()) {
             mEfficiencyIncrease = 10000;
             mMaxProgresstime = 1 * SECONDS;
-
             // Inside checkProcessing we can safely consume inputs from hatches
             processRealItemInputs();
             processComponentInputs();
-
             return CheckRecipeResultRegistry.SUCCESSFUL;
         }
 
