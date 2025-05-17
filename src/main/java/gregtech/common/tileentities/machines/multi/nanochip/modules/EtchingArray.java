@@ -106,7 +106,7 @@ public class EtchingArray extends MTENanochipAssemblyModuleBase<EtchingArray> {
                     .atLeast(SpecialHatchElement.ParticleSensor)
                     .dot(3)
                     .cacheHint(() -> "Particle Indicator")
-                    .casingIndex(((BlockCasings8) GregTechAPI.sBlockCasings8).getTextureIndex(10))
+                    .casingIndex(((BlockCasings8) GregTechAPI.sBlockCasings8).getTextureIndex(5))
                     .build()))
         .build();
 
