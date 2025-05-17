@@ -1,25 +1,14 @@
 package gregtech.common.tileentities.machines.multi.nanochip.hatches;
 
 import static gregtech.api.enums.Dyes.MACHINE_METAL;
-import static gregtech.common.modularui2.util.CommonGuiComponents.gridTemplate1by1;
 import static tectech.thing.metaTileEntity.hatch.MTEHatchDataConnector.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
 
-import com.cleanroommc.modularui.factory.PosGuiData;
-import com.cleanroommc.modularui.screen.ModularPanel;
-import com.cleanroommc.modularui.screen.UISettings;
-import com.cleanroommc.modularui.utils.item.ItemStackHandler;
-import com.cleanroommc.modularui.value.sync.PanelSyncManager;
-import com.cleanroommc.modularui.widgets.layout.Grid;
-import com.cleanroommc.modularui.widgets.slot.ModularSlot;
-import com.cleanroommc.modularui.widgets.slot.PhantomItemSlot;
-import gregtech.api.enums.ItemList;
-import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.api.modularui2.GTGuis;
-import gregtech.common.tileentities.machines.multi.nanochip.util.ReadOnlyItemSlot;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -27,19 +16,34 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
+import com.cleanroommc.modularui.factory.PosGuiData;
+import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.screen.UISettings;
+import com.cleanroommc.modularui.utils.ItemStackItemHandler;
+import com.cleanroommc.modularui.utils.item.ItemStackHandler;
+import com.cleanroommc.modularui.value.sync.GenericListSyncHandler;
+import com.cleanroommc.modularui.value.sync.PanelSyncManager;
+import com.cleanroommc.modularui.widgets.layout.Grid;
+import com.cleanroommc.modularui.widgets.slot.ModularSlot;
+import com.gtnewhorizons.modularui.common.internal.network.NetworkUtils;
+
 import gregtech.api.enums.Dyes;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.items.CircuitComponentFakeItem;
 import gregtech.api.metatileentity.implementations.MTEHatch;
+import gregtech.api.modularui2.GTGuis;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
 import gregtech.common.tileentities.machines.multi.nanochip.util.CircuitComponent;
 import gregtech.common.tileentities.machines.multi.nanochip.util.CircuitComponentPacket;
 import gregtech.common.tileentities.machines.multi.nanochip.util.IConnectsToVacuumConveyor;
+import gregtech.common.tileentities.machines.multi.nanochip.util.ReadOnlyItemSlot;
 
 public abstract class MTEHatchVacuumConveyor extends MTEHatch implements IConnectsToVacuumConveyor {
 
     public static final int VACUUM_MOVE_TICK = 17;
+    private static final int UI_SLOT_COUNT = 72;
 
     public CircuitComponentPacket contents;
 
@@ -168,17 +172,81 @@ public abstract class MTEHatchVacuumConveyor extends MTEHatch implements IConnec
 
     @Override
     public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager, UISettings uiSettings) {
-        for(int i=0; i<27; i++){
-            mInventory[i] = ItemList.Battery_Buffer_1by1_LV.get(i);
+
+        // Sync the contents between server and client
+        GenericListSyncHandler<ItemStack> contentsSyncHandler = new GenericListSyncHandler<ItemStack>(
+            () -> contents != null ? contents.getItemRepresentations() : Collections.emptyList(),
+            val -> contents = new CircuitComponentPacket(val),
+            NetworkUtils::readItemStack,
+            NetworkUtils::writeItemStack);
+        syncManager.syncValue("contents", contentsSyncHandler);
+
+        // Create the panel
+        ModularPanel panel = GTGuis.mteTemplatePanelBuilder(this, data, syncManager, uiSettings)
+            .doesBindPlayerInventory(false)
+            .doesAddGregTechLogo(false)
+            .build();
+
+        final int contentSize = contents == null ? 0
+            : contents.getComponents()
+                .size();
+
+        // Create handler and fill with data
+        ItemStackItemHandler handler = new ItemStackItemHandler(
+            new ItemStack(CircuitComponentFakeItem.INSTANCE, 1),
+            UI_SLOT_COUNT);
+
+        for (int i = 0; i < contentSize; i++) {
+            handler.insertItem(
+                i,
+                contents.getItemRepresentations(64)
+                    .get(i),
+                false);
         }
-        syncManager.registerSlotGroup("item_inv", 27);
-        ModularPanel panel = GTGuis.mteTemplatePanelBuilder(this, data, syncManager, uiSettings).build();
+
+        // Create grid and fill with ReadOnlyInventorySlots()
+        // that contain the items from the handler
         Grid grid = new Grid().coverChildren()
             .pos(7, 7)
-            .mapTo(9, 27, index -> new ReadOnlyItemSlot().slot(new ModularSlot(inventoryHandler, index).slotGroup("item_inv")));
+            .mapTo(
+                9,
+                UI_SLOT_COUNT,
+                i -> (new ReadOnlyItemSlot().slot(new ModularSlot(handler, i).accessibility(false, false))
+                    .tooltipBuilder(
+                        t -> t.clearText()
+                            .add("Total items: 25"))));
+        // .setEnabledIf(itemSlot -> itemSlot.getSlot().getHasStack())));
+
+        // Set update listener for when the client receives updates
+        contentsSyncHandler.setChangeListener(() -> {
+            AtomicInteger tempContentSize = new AtomicInteger(0);
+            if (contents != null) {
+                tempContentSize.set(
+                    contents.getComponents()
+                        .size());
+            }
+
+            for (int i = 0; i < tempContentSize.get(); i++) {
+                handler.insertItem(
+                    i,
+                    contents.getItemRepresentations(64)
+                        .get(i),
+                    false);
+            }
+
+            for (int i = 0; i < UI_SLOT_COUNT; i++) {
+                ReadOnlyItemSlot slot = (ReadOnlyItemSlot) grid.getChildren()
+                    .get(i);
+                slot.slot(new ModularSlot(handler, i).accessibility(false, false))
+                    .tooltipBuilder(
+                        t -> t.clearText()
+                            .add("Total items: 25"));
+                // .setEnabledIf(itemSlot -> itemSlot.getSlot().getHasStack());
+
+            }
+        });
         return panel.child(grid);
     }
-
 
     @Override
     public String[] getInfoData() {

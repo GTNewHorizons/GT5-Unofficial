@@ -24,6 +24,12 @@ public class CircuitComponentPacket {
         }
     }
 
+    public CircuitComponentPacket(List<ItemStack> items) {
+        for (ItemStack item : items) {
+            components.put(CircuitComponent.getFromFakeStackUnsafe(item), (long) item.stackSize);
+        }
+    }
+
     // Accept more circuit components from a new packet
     public void unifyWith(CircuitComponentPacket other) {
         for (Map.Entry<CircuitComponent, Long> entry : other.components.entrySet()) {
@@ -46,10 +52,14 @@ public class CircuitComponentPacket {
     }
 
     public List<ItemStack> getItemRepresentations() {
+        return getItemRepresentations(Integer.MAX_VALUE);
+    }
+
+    public List<ItemStack> getItemRepresentations(int limit) {
         ArrayList<ItemStack> stacks = new ArrayList<>();
         for (Map.Entry<CircuitComponent, Long> entry : components.entrySet()) {
             ItemStack componentStack = entry.getKey()
-                .getFakeStack((int) Math.min(Integer.MAX_VALUE, entry.getValue()));
+                .getFakeStack((int) Math.min(limit, entry.getValue()));
             stacks.add(componentStack);
         }
         return stacks;
