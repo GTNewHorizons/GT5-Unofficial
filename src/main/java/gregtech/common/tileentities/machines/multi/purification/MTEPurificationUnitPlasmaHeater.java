@@ -449,7 +449,7 @@ public class MTEPurificationUnitPlasmaHeater extends MTEPurificationUnitBase<MTE
             FluidStack insertedWater = currentRecipe.mFluidInputs[0];
             // Multiply by 60 since that's the water:steam ratio in GTNH
             long steamAmount = insertedWater.amount * 60L;
-            addOutput(Materials.Water.getGas(steamAmount));
+            addOutput(Materials.Steam.getGas(steamAmount));
         }
     }
 

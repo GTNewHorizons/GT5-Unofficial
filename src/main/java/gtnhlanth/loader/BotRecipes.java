@@ -116,7 +116,7 @@ public class BotRecipes {
             .itemInputs(WO3, C2)
             .itemOutputs(Materials.Tungsten.getDust(1))
             .fluidInputs(Materials.Hydrogen.getGas(6_000))
-            .fluidOutputs(Materials.Water.getGas(3_000))
+            .fluidOutputs(Materials.Steam.getGas(3_000))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .metadata(COIL_HEAT, 1000)

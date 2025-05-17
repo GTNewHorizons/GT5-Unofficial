@@ -134,7 +134,7 @@ public class MTELargeTurbineSHSteam extends MTELargerTurbineBase {
         if (isUsingDenseSteam) {
             addOutput(Materials.DenseSteam.getGas((long) steamFlowForNextSteam));
         } else {
-            addOutput(Materials.Water.getGas(totalFlow));
+            addOutput(Materials.Steam.getGas(totalFlow));
         }
         if (totalFlow != realOptFlow) {
             float efficiency = 1.0f - Math.abs((totalFlow - (float) realOptFlow) / (float) realOptFlow);

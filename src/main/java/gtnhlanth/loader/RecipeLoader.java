@@ -1402,7 +1402,7 @@ public class RecipeLoader {
                 WerkstoffLoader.AmmoniumChloride.get(OrePrefixes.cell, 3))
             .itemOutputs(WerkstoffMaterialPool.CeriumChloride.get(OrePrefixes.dust, 4), Materials.Ammonia.getCells(3))
             .fluidInputs(Materials.Hydrogen.getGas(1_000))
-            .fluidOutputs(Materials.Water.getGas(2_000))
+            .fluidOutputs(Materials.Steam.getGas(2_000))
             .duration(15 * SECONDS)
             .eut(450)
             .addTo(UniversalChemical);
@@ -1521,7 +1521,7 @@ public class RecipeLoader {
             .itemInputs(GTUtility.getIntegratedCircuit(1))
             .fluidInputs(
                 WerkstoffMaterialPool.MuddyRareEarthBastnasiteSolution.getFluidOrGas(1_000),
-                Materials.Water.getGas(1_000))
+                Materials.Steam.getGas(1_000))
             .fluidOutputs(WerkstoffMaterialPool.SteamCrackedBasnasiteSolution.getFluidOrGas(2_000))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_HV)

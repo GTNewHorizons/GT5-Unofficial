@@ -217,7 +217,7 @@ public class GTModHandler {
      */
     public static boolean isSteam(FluidStack aFluid) {
         if (aFluid == null) return false;
-        return aFluid.isFluidEqual(Materials.Water.getGas(1));
+        return aFluid.isFluidEqual(Materials.Steam.getGas(1));
     }
 
     /**
@@ -241,7 +241,7 @@ public class GTModHandler {
      */
     @Deprecated
     public static FluidStack getSteam(long aAmount) {
-        return Materials.Water.getGas(aAmount);
+        return Materials.Steam.getGas(aAmount);
     }
 
     /**

@@ -435,7 +435,7 @@ public class RecipeLoaderMilling {
                 Materials.Ash.getDustTiny(5),
                 Materials.DarkAsh.getDustTiny(5),
                 Materials.DarkAsh.getDustTiny(5))
-            .fluidInputs(Materials.Water.getGas(5_000))
+            .fluidInputs(Materials.Steam.getGas(5_000))
             .fluidOutputs(new FluidStack(GTPPFluids.PineOil, 500))
             .duration(60 * SECONDS)
             .eut(TierEU.RECIPE_MV)

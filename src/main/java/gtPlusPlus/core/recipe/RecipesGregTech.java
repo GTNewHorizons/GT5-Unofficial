@@ -1410,7 +1410,7 @@ public class RecipesGregTech {
 
         RA.stdBuilder()
             .fluidInputs(Materials.Lava.getFluid(1_000), Materials.Water.getFluid(16_000 / GTValues.STEAM_PER_WATER))
-            .fluidOutputs(FluidUtils.getPahoehoeLava(1_000), Materials.Water.getGas(16_000))
+            .fluidOutputs(FluidUtils.getPahoehoeLava(1_000), Materials.Steam.getGas(16_000))
             .itemOutputs(
                 GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Copper, 1),
                 GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Tin, 1),
@@ -1428,7 +1428,7 @@ public class RecipesGregTech {
 
         RA.stdBuilder()
             .fluidInputs(FluidUtils.getPahoehoeLava(1000), Materials.Water.getFluid(16_000 / GTValues.STEAM_PER_WATER))
-            .fluidOutputs(Materials.Water.getGas(16_000))
+            .fluidOutputs(Materials.Steam.getGas(16_000))
             .itemOutputs(
                 GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Bronze, 1),
                 GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Electrum, 1),

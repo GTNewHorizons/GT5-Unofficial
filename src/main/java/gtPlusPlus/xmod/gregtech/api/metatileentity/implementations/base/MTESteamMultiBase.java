@@ -101,7 +101,7 @@ public abstract class MTESteamMultiBase<T extends MTESteamMultiBase<T>> extends 
 
     public ArrayList<FluidStack> getAllSteamStacks() {
         ArrayList<FluidStack> aFluids = new ArrayList<>();
-        FluidStack aSteam = Materials.Water.getGas(1);
+        FluidStack aSteam = Materials.Steam.getGas(1);
         for (FluidStack aFluid : this.getStoredFluids()) {
             if (aFluid.isFluidEqual(aSteam)) {
                 aFluids.add(aFluid);
@@ -122,7 +122,7 @@ public abstract class MTESteamMultiBase<T extends MTESteamMultiBase<T>> extends 
         if (getTotalSteamStored() <= 0) {
             return false;
         } else {
-            return this.depleteInput(Materials.Water.getGas(aAmount));
+            return this.depleteInput(Materials.Steam.getGas(aAmount));
         }
     }
 

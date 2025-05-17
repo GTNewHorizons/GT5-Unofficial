@@ -70,7 +70,7 @@ public class FluidUtils {
      */
     @Deprecated
     public static FluidStack getSteam(final int amount) {
-        return Materials.Water.getGas(amount);
+        return Materials.Steam.getGas(amount);
     }
 
     public static FluidStack getSuperHeatedSteam(final int amount) {

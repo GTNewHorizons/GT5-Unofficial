@@ -271,7 +271,7 @@ public class MTEHeatExchanger extends MTEEnhancedMultiBlockBase<MTEHeatExchanger
                                                                                                      // superheated
                                                                                                      // steam
                     } else {
-                        addOutput(Materials.Water.getGas(tGeneratedEU)); // Generate regular steam
+                        addOutput(Materials.Steam.getGas(tGeneratedEU)); // Generate regular steam
                     }
                     dryHeatCounter = 0;
                 } else {

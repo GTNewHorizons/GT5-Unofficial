@@ -66,7 +66,7 @@ public class MTEThermalBoiler extends GTPPMultiBlockBase<MTEThermalBoiler> imple
     private static final Fluid fluidWater = FluidRegistry.WATER;
     private static final Fluid fluidDistilledWater = GTModHandler.getDistilledWater(1)
         .getFluid();
-    private static final Fluid fluidSteam = Materials.Water.getGas(1)
+    private static final Fluid fluidSteam = Materials.Steam.getGas(1)
         .getFluid();
     private static final Fluid fluidSHSteam = FluidUtils.getSuperHeatedSteam(1)
         .getFluid();

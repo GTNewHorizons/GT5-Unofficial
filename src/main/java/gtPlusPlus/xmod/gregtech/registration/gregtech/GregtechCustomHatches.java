@@ -131,7 +131,7 @@ public class GregtechCustomHatches {
         // Steam Hatch
         GregtechItemList.Hatch_Input_Steam.set(
             new MTEHatchCustomFluidBase(
-                Materials.Water.getGas(1)
+                Materials.Steam.getGas(1)
                     .getFluid(), // Fluid to restrict hatch to
                 64000, // Capacity
                 Hatch_Input_Steam.ID, // ID
