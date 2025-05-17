@@ -1468,6 +1468,7 @@ GT5U.gui.text.enabled=§aEnabled§f
 GT5U.gui.text.disabled=§cDisabled§f
 GT5U.gui.text.lma_craftingfx=Show Crafting Effects
 GT5U.gui.text.repair_tip=Click with Tool to repair.
+GT5U.gui.text.apiary_missing_flowers=Missing flowers: %s
 GT5U.gui.text.conditions_range=§4Out of recipe conditions
 GT5U.gui.text.item.amount=Item Amount
 GT5U.gui.text.contents=§7Contents:§r

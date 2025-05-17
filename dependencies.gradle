@@ -64,7 +64,7 @@ dependencies {
     compileOnlyApi("com.github.GTNewHorizons:AppleCore:3.3.4:dev") { transitive = false }
     compileOnlyApi("com.github.GTNewHorizons:BuildCraft:7.1.42:dev") { transitive = false }
     compileOnlyApi("com.github.GTNewHorizons:EnderIO:2.9.12:dev") { transitive = false }
-    compileOnlyApi("com.github.GTNewHorizons:ForestryMC:4.10.8:dev") { transitive = false }
+    devOnlyNonPublishable("com.github.GTNewHorizons:ForestryMC:4.10.8:dev") { transitive = false }
     compileOnlyApi("com.github.GTNewHorizons:ProjectRed:4.11.4-GTNH:dev") { transitive = false }
     compileOnlyApi("com.github.GTNewHorizons:Railcraft:9.16.28:dev") { transitive = false }
 
