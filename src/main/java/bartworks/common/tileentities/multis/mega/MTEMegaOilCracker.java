@@ -156,6 +156,7 @@ public class MTEMegaOilCracker extends MegaMultiBlockBase<MTEMegaOilCracker> imp
             .addGlassEnergyLimitInfo()
             .addTecTechHatchInfo()
             .addMinGlassForLaser(VoltageIndex.UV)
+            .addUnlimitedTierSkips()
             .addInfo("Gets 10% EU/t reduction per coil tier, up to a maximum of 50%")
             .beginStructureBlock(13, 7, 9, true)
             .addController("Front bottom")

@@ -237,6 +237,7 @@ public class MTEMegaVacuumFreezer extends MegaMultiBlockBase<MTEMegaVacuumFreeze
             .addInfo("Cools hot ingots and cells")
             .addParallelInfo(Configuration.Multiblocks.megaMachinesMax)
             .addTecTechHatchInfo()
+            .addUnlimitedTierSkips()
             .addSeparator()
             .addInfo("Upgrade to Tier 2 to unlock " + EnumChatFormatting.LIGHT_PURPLE + "Subspace Cooling.")
             .addInfo(
