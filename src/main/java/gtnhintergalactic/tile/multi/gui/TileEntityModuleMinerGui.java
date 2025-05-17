@@ -101,7 +101,7 @@ public class TileEntityModuleMinerGui extends TileEntityModuleBaseGui {
     }
 
     @Override
-    public IWidget createPanelGap(PanelSyncManager syncManager, ModularPanel parent) {
+    public IWidget createPanelGap(ModularPanel parent, PanelSyncManager syncManager) {
         UITexture whitelist = UITexture.builder()
             .location(GTNHIntergalactic.MODID, "gui/overlay_button/whitelist")
             .imageSize(16, 16)

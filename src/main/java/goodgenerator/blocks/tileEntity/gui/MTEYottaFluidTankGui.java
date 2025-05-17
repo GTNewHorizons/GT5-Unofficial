@@ -42,7 +42,7 @@ public class MTEYottaFluidTankGui extends TTMultiBlockBaseGui {
     }
 
     @Override
-    protected IWidget createTopRow(PanelSyncManager syncManager, ModularPanel panel) {
+    protected IWidget createTopRow(ModularPanel panel, PanelSyncManager syncManager) {
         DoubleSyncValue maxStorageSyncer = new DoubleSyncValue(() -> yottaBase.mStorage.doubleValue());
         syncManager.syncValue("maxStorage", maxStorageSyncer);
 
@@ -157,7 +157,7 @@ public class MTEYottaFluidTankGui extends TTMultiBlockBaseGui {
     }
 
     @Override
-    public IWidget createPanelGap(PanelSyncManager syncManager, ModularPanel parent) {
+    public IWidget createPanelGap(ModularPanel parent, PanelSyncManager syncManager) {
         return new Row().widthRel(1)
             .paddingRight(6)
             .paddingLeft(4)

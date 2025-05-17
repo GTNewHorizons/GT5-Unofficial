@@ -62,7 +62,7 @@ public class TTMultiBlockBaseGui extends MTEMultiBlockBaseGui {
     }
 
     @Override
-    public IWidget createPanelGap(PanelSyncManager syncManager, ModularPanel parent) {
+    public IWidget createPanelGap(ModularPanel parent, PanelSyncManager syncManager) {
         Flow panelGap = new Row().widthRel(1)
             .paddingRight(6)
             .paddingLeft(4)
@@ -284,9 +284,9 @@ public class TTMultiBlockBaseGui extends MTEMultiBlockBaseGui {
         UITexture powerPassDisabled = UITexture.fullImage(MODID, "gui/overlay_button/power_pass_disabled");
 
         return new ToggleButton().value(new BooleanSyncValue(() -> ttBase.ePowerPass, bool -> {
-            if (!isAllowedToWorkButtonEnabled()) return;
+            if (isPowerSwitchDisabled()) return;
             ttBase.ePowerPass = bool;
-            if (!isAllowedToWorkButtonEnabled()) { // TRANSFORMER HACK
+            if (isPowerSwitchDisabled()) { // TRANSFORMER HACK
                 if (ttBase.ePowerPass) {
                     ttBase.getBaseMetaTileEntity()
                         .enableWorking();
@@ -300,7 +300,7 @@ public class TTMultiBlockBaseGui extends MTEMultiBlockBaseGui {
             .size(18, 18)
             .overlay(
                 new DynamicDrawable(
-                    () -> !isAllowedToWorkButtonEnabled() ? powerPassDisabled
+                    () -> isPowerSwitchDisabled() ? powerPassDisabled
                         : ttBase.ePowerPass ? powerPassOn : powerPassOff));
 
     }
