@@ -128,6 +128,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchEnergy;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
+import gregtech.api.recipe.check.SimpleCheckFlowerResult;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
@@ -257,13 +258,20 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
     private boolean isCacheDirty = true;
     private final HashMap<String, String> flowersCache = new HashMap<>();
     private final HashSet<String> flowersCheck = new HashSet<>();
+    private final HashSet<String> flowersDescription = new HashSet<>();
     private boolean flowersError = false;
     private boolean needsTVarUpdate = false;
     private int megaApiaryStorageVersion = 0;
 
     private void flowerCheck(final World world, final int x, final int y, final int z) {
-        if (!flowersCheck.isEmpty() && !world.isAirBlock(x, y, z))
-            flowersCheck.removeIf(s -> FlowerManager.flowerRegistry.isAcceptedFlower(s, world, x, y, z));
+        if (!flowersCheck.isEmpty() && !world.isAirBlock(x, y, z)) {
+            for (String s : flowersCheck) {
+                if (FlowerManager.flowerRegistry.isAcceptedFlower(s, world, x, y, z)) {
+                    flowersCheck.remove(s);
+                    flowersDescription.remove(flowersCache.get(s));
+                }
+            }
+        }
     }
 
     @Override
@@ -492,7 +500,7 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
                     if (mStorage.size() > mMaxSlots)
                         return SimpleCheckRecipeResult.ofFailure("MegaApiary_slotoverflow");
 
-                    if (flowersError) return SimpleCheckRecipeResult.ofFailure("MegaApiary_noflowers");
+                    if (flowersError) return SimpleCheckFlowerResult.ofFailure(this.flowersDescription);
 
                     if (needsTVarUpdate) {
                         float t = (float) getVoltageTierExact();
@@ -593,6 +601,8 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
         }
         flowersCheck.clear();
         flowersCheck.addAll(flowersCache.keySet());
+        flowersDescription.clear();
+        flowersCache.forEach((k, v) -> flowersDescription.add(v));
         if (!checkPiece(STRUCTURE_PIECE_MAIN, 7, 8, 0)) return false;
         if (this.glassTier < VoltageIndex.UEV && !this.mEnergyHatches.isEmpty())
             for (MTEHatchEnergy hatchEnergy : this.mEnergyHatches) if (this.glassTier < hatchEnergy.mTier) return false;
