@@ -757,6 +757,7 @@ public class MTEMultiBlockBaseGui {
             val -> { if (base.supportsVoidProtection()) base.setVoidingMode(VoidingMode.fromOrdinal(val)); });
         syncManager.syncValue("voidExcess", voidExcessSyncer);
 
+        syncManager.registerSlotGroup("item_inv", 1);
     }
 
     protected void setMachineModeIcons() {}
