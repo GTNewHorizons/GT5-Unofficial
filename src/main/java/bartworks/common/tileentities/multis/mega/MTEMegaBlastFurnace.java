@@ -306,7 +306,7 @@ public class MTEMegaBlastFurnace extends MegaMultiBlockBase<MTEMegaBlastFurnace>
         int realBudget = elementBudget >= 200 ? elementBudget : Math.min(200, elementBudget * 5);
         this.glassTier = -1;
         this.setCoilLevel(HeatingCoilLevel.None);
-        return this.survivialBuildPiece("main", stackSize, 7, 17, 0, realBudget, env, false, true);
+        return this.survivalBuildPiece("main", stackSize, 7, 17, 0, realBudget, env, false, true);
     }
 
     public void setCoilLevel(HeatingCoilLevel aCoilLevel) {

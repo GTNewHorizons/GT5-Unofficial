@@ -195,7 +195,7 @@ public class MTECoolantTower extends MTETooltipMultiBlockBaseEM implements ICons
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
-        return survivialBuildPiece(mName, stackSize, 5, 11, 0, elementBudget, env, false, true);
+        return survivalBuildPiece(mName, stackSize, 5, 11, 0, elementBudget, env, false, true);
     }
 
     @Override

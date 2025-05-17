@@ -334,12 +334,12 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
         int built = 0;
         if (mMachine) return -1;
         if (mSetTier < 3) {
-            built += survivialBuildPiece(tier1, stackSize, 3, 5, 0, elementBudget, env, false, true);
+            built += survivalBuildPiece(tier1, stackSize, 3, 5, 0, elementBudget, env, false, true);
             if (mSetTier == 2) {
-                built += survivialBuildPiece(tier2, stackSize, 7, 6, 2, elementBudget, env, false, true);
+                built += survivalBuildPiece(tier2, stackSize, 7, 6, 2, elementBudget, env, false, true);
             }
         } else {
-            built += survivialBuildPiece(tier3, stackSize, 3, 21, 0, elementBudget, env, false, true);
+            built += survivalBuildPiece(tier3, stackSize, 3, 21, 0, elementBudget, env, false, true);
         }
 
         if (mBioUpgrade) {
@@ -361,7 +361,7 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
                     env,
                     false);
             } else {
-                built += survivialBuildPiece(
+                built += survivalBuildPiece(
                     bioUpgrade,
                     stackSize,
                     mBioOffsets[0],
@@ -375,7 +375,7 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
         }
 
         if (mOCTier1 && !mOCTier2) {
-            built += survivialBuildPiece(
+            built += survivalBuildPiece(
                 ocTier1Upgrade,
                 stackSize,
                 mOCTier1Offsets[0],
@@ -387,7 +387,7 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
                 true);
         }
         if (!mOCTier1 && mOCTier2) {
-            built += survivialBuildPiece(
+            built += survivalBuildPiece(
                 ocTier2Upgrade,
                 stackSize,
                 mOCTier2Offsets[0],

@@ -211,7 +211,7 @@ public class MTEDroneCentre extends MTEExtendedPowerMultiBlockBase<MTEDroneCentr
     @Override
     public int survivalConstruct(ItemStack stack, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
-        return survivialBuildPiece("main", stack, 2, 1, 0, elementBudget, env, false, true);
+        return survivalBuildPiece("main", stack, 2, 1, 0, elementBudget, env, false, true);
     }
 
     @Override

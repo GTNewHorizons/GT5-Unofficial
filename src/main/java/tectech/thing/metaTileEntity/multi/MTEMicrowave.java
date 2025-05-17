@@ -311,7 +311,7 @@ public class MTEMicrowave extends TTMultiblockBase implements ISurvivalConstruct
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, IItemSource source, EntityPlayerMP actor) {
         if (mMachine) return -1;
-        return survivialBuildPiece("main", stackSize, 2, 2, 0, elementBudget, source, actor, false, true);
+        return survivalBuildPiece("main", stackSize, 2, 2, 0, elementBudget, source, actor, false, true);
     }
 
     @Override

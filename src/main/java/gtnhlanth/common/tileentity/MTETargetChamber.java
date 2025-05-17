@@ -218,7 +218,7 @@ public class MTETargetChamber extends MTEEnhancedMultiBlockBase<MTETargetChamber
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (this.mMachine) return -1;
-        return survivialBuildPiece("base", stackSize, 2, 4, 0, elementBudget, env, false, true);
+        return survivalBuildPiece("base", stackSize, 2, 4, 0, elementBudget, env, false, true);
     }
 
     @Override

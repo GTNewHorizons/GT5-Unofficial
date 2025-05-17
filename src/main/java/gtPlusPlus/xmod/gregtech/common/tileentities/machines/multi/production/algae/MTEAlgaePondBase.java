@@ -177,7 +177,7 @@ public class MTEAlgaePondBase extends GTPPMultiBlockBase<MTEAlgaePondBase> imple
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
-        return survivialBuildPiece(mName, stackSize, 4, 2, 0, elementBudget, env, false, true);
+        return survivalBuildPiece(mName, stackSize, 4, 2, 0, elementBudget, env, false, true);
     }
 
     @Override

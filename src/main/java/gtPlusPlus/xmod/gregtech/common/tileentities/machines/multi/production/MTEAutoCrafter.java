@@ -136,7 +136,7 @@ public class MTEAutoCrafter extends GTPPMultiBlockBase<MTEAutoCrafter> implement
     @Override
     public int survivalConstruct(ItemStack itemStack, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
-        return survivialBuildPiece(mName, itemStack, 1, 1, 0, elementBudget, env, false, true);
+        return survivalBuildPiece(mName, itemStack, 1, 1, 0, elementBudget, env, false, true);
     }
 
     @Override
