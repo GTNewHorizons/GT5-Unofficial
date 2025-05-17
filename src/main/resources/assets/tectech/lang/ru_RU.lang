@@ -101,9 +101,9 @@ item.tm.teslaCover.0.name=Тесла-покрытие
 item.tm.teslaCover.1.name=Тесла-МЕГАпокрытие
 item.tm.teslaCover.desc.0=Заражает механизмы вирусом ТЕСЛА!
 item.tm.teslaCover.desc.1=Заражает механизмы вирусом ТЕСЛА! (ЕЩЁ ЗАРАЗНЕЕ!!)
-item.tm.teslaCover.desc.2=И все же этот сломанный предмет окунули в пряную воду!
-item.tm.teslaCover.desc.3=Используйте на механизме, чтобы приобщить механизм к гениальной Тесла-энергосистеме
-item.tm.teslaCover.desc.4=Кто вообще использует эти чертовы кабеля?!
+item.tm.teslaCover.desc.2=Зашвырни этот сломанный предмет в какую-нибудь ядрёную водичку!
+item.tm.teslaCover.desc.3=Используйте на механизме, чтобы приобщить его к гениальной Тесла-энергосистеме
+item.tm.teslaCover.desc.4=Кто, черт возьми, вообще пользуется кабелями?!
 
 item.tm.teslaStaff.name=Посох Теслы
 item.tm.teslaStaff.desc=Сила богов по прихоти смертного!
@@ -111,7 +111,7 @@ item.tm.teslaStaff.desc=Сила богов по прихоти смертног
 item.tm.enderfluidlinkcover.name=Модуль жидкостной телепортации
 item.tm.enderfluidlinkcover.desc.0=Приобщает механизмы к таинству жидкостной телепортации
 item.tm.enderfluidlinkcover.desc.1=Используйте на любую сторону резервуара чтобы подключить его к телепортационной сети
-item.tm.enderfluidlinkcover.desc.2=Ender Tanks so are laggy -Bot from the Chads of NH
+item.tm.enderfluidlinkcover.desc.2="Цистерны Края такие лагучие" - Bot из Chads of NH
 
 item.tm.powerpassupgradecover.name=Модуль трансформации энергии
 item.tm.powerpassupgradecover.desc.0=Добавляет трансформаторный функционал TecTech механизмам
@@ -119,7 +119,7 @@ item.tm.powerpassupgradecover.desc.1=Трансформаторная подст
 item.tm.powerpassupgradecover.desc.2=Сделайте из них гирлянду!
 
 item.tm.itemAstralArrayFabricator.name=Астральный массив
-item.tm.itemAstralArrayFabricator.desc0=Parallel dimensions?!
+item.tm.itemAstralArrayFabricator.desc0=Параллельные измерения?!
 item.tm.itemAstralArrayFabricator.desc1=Устройство, способное усилить пространственное сжатие Ока Гармонии,
 item.tm.itemAstralArrayFabricator.desc2=проникая в пространство за его пределами.
 item.tm.itemAstralArrayFabricator.desc3=Позволяет реализовать параллелизм рецептов.
@@ -675,6 +675,8 @@ gt.blockmachines.multimachine.tm.microwave.desc.3=Механизм также б
 gt.blockmachines.multimachine.tm.microwave.desc.4=Может быть настроен с помощью параметрайзера
 gt.blockmachines.multimachine.tm.microwave.desc.5=(Не вставляйте Иссушителя)
 gt.blockmachines.multimachine.tm.microwave.cfgi.0=Настройки энергии
+gt.blockmachines.multimachine.tm.microwave.power=Энергия
+gt.blockmachines.multimachine.tm.microwave.timer=Время
 gt.blockmachines.multimachine.tm.microwave.cfgi.1=Настройки таймера
 gt.blockmachines.multimachine.tm.microwave.cfgo.0=Значение таймера
 gt.blockmachines.multimachine.tm.microwave.cfgo.1=Оставшееся время
@@ -707,13 +709,17 @@ gt.blockmachines.multimachine.tm.teslaCoil.cfgo.6=Отображение нак�
 gt.blockmachines.multimachine.tm.teslaCoil.cfgo.7=Отображение доли заполнения
 gt.blockmachines.multimachine.tm.teslaCoil.cfgo.8=Отображение времени сканирования
 gt.blockmachines.multimachine.tm.teslaCoil.cfgo.9=Отображение макс. выхода
+gt.blockmachines.multimachine.tm.teslaCoil.hysteresisLow=Нижний порог гистерезиса
+gt.blockmachines.multimachine.tm.teslaCoil.hysteresisHigh=Верхний порог гистерезиса
+gt.blockmachines.multimachine.tm.teslaCoil.transferRadius=Радиус передачи
+gt.blockmachines.multimachine.tm.teslaCoil.outputVoltage=Выходной вольтаж
+gt.blockmachines.multimachine.tm.teslaCoil.outputCurrent=Текущий выход
+gt.blockmachines.multimachine.tm.teslaCoil.scanTime=Время сканирования
+gt.blockmachines.multimachine.tm.teslaCoil.overdrive=Перегрузка
 
 gt.blockmachines.multimachine.em.switch.desc.0=Распределяет вычисления по выходным разъёмам на основе весов.
-gt.blockmachines.multimachine.em.switch.desc.1=Выходным разъёмам присваивается ID.
-gt.blockmachines.multimachine.em.switch.desc.2=Сканируйте разъёмы с помощью портативного сканера, чтобы определить ID.
-gt.blockmachines.multimachine.em.switch.desc.3=Вычисления настраиваются с помощью параметров TecTech.
-gt.blockmachines.multimachine.em.switch.desc.4=Первый параметр в каждой группе управляет ID.
-gt.blockmachines.multimachine.em.switch.desc.5=Второй параметр в каждой группе контролирует вес.
+gt.blockmachines.multimachine.em.switch.desc.1=Вывод вычислений настраивается путем щелчка ПКМ по выходному разъёму отвёрткой.
+gt.blockmachines.multimachine.em.switch.desc.2=Выходные разъёмы должны быть частью структуры, чтобы их можно было настраивать.
 
 gt.blockmachines.multimachine.em.computer.name=Квантовый компьютер
 gt.blockmachines.multimachine.em.computer.machinetype=Квантовый компьютер, QC
@@ -1132,7 +1138,7 @@ gt.blockmachines.multimachine.FOG.availableshards=Available Graviton Shards:
 gt.blockmachines.multimachine.FOG.modulestatus=Статус:
 gt.blockmachines.multimachine.FOG.modulestatus.true=Подключено
 gt.blockmachines.multimachine.FOG.modulestatus.false=Отключено
-gt.blockmachines.multimachine.FOG.voltageinfo=Set processing voltage
+gt.blockmachines.multimachine.FOG.voltageinfo=Установите вольтаж обработки
 gt.blockmachines.multimachine.FOG.totalprogress=Общий прогресс
 gt.blockmachines.multimachine.FOG.milestoneprogress=Current Milestone Level
 gt.blockmachines.multimachine.FOG.progress=Next Milestone at
@@ -1174,11 +1180,11 @@ gt.blockmachines.multimachine.FOG.teg=TheEpicGamer
 gt.blockmachines.multimachine.FOG.serenibyss=§dSereni§5byss
 gt.blockmachines.multimachine.FOG.textures=Текстуры и структура
 gt.blockmachines.multimachine.FOG.ant=Ant
-gt.blockmachines.multimachine.FOG.lore=Loremaster
+gt.blockmachines.multimachine.FOG.lore=Мастер лора
 gt.blockmachines.multimachine.FOG.deleno=Deleno
 gt.blockmachines.multimachine.FOG.rendering=Волшебник рендеринга
 gt.blockmachines.multimachine.FOG.bucket=BucketBrigade
-gt.blockmachines.multimachine.FOG.playtesting=Playtesting
+gt.blockmachines.multimachine.FOG.playtesting=Игровое тестирование
 gt.blockmachines.multimachine.FOG.misi=Misi
 gt.blockmachines.multimachine.FOG.thanks=Огромное спасибо этим невероятным людям за помощь в воплощении этого в реальность! -Cloud
 gt.blockmachines.multimachine.FOG.modulestats=Статистика модуля
@@ -1396,7 +1402,7 @@ tt.nei.eoh.solid_mass=Процент от твердой массы: %s%%
 tt.nei.eoh.item_count=Количество предметов: %s
 tt.nei.research.max_eu=Макс. EU: %s EU
 tt.nei.research.computation=Вычисление: %s
-tt.nei.research.min_computation=Мин. вычислений: %s /сек
+tt.nei.research.min_computation=Мин. вычислений: %s /с
 
 #Keywords and phrases
 #Example: ID:3
@@ -1450,7 +1456,7 @@ tt.keyphrase.Hint_Details=Hint Details
 
 #debug boom
 tt.keyword.BOOM=БУУУУУМ!
-tt.keyword.Destination=Пункт назначения
+tt.keyword.Destination=ID Выходного разъёма
 tt.keyword.Weight=Вес
 tt.keyword.Source=Источник
 tt.keyword.Progress=Прогресс
@@ -1554,7 +1560,7 @@ tt.keyword.unit.itemMols=предмет(ов)
 tt.keyword.unit.mbMols=mb
 tt.keyword.unit.energy=eV
 tt.keyword.unit.charge=e
-tt.keyword.unit.time=сек
+tt.keyword.unit.time=с
 tt.keyword.unit.tick=тик
 #that the thing wont decay
 tt.keyword.stable=СТАБИЛЬНЫЙ
@@ -1911,6 +1917,48 @@ GT5U.gui.config.general.features=Особенности
 GT5U.gui.config.general.teslatweaks=Tesla Tweaks
 GT5U.gui.config.general.visual=Visual
 
+tt.spacepump.noFluidTooltip=Жидкость не установлена! Нажмите, чтобы открыть панель конфигурации!
+tt.spacepump.parallelTooltip=per parallel
+tt.spacepump.fluid=Fluid %d:
+
+
+tt.multiblock.batchSize=Размер партии
+tt.multiblock.parallel=Fluid %d Parallels
+
+
+tt.spaceminer.distance=Дистанция
+tt.spaceminer.parallel=Параллелей
+tt.spaceminer.cycle=Cycle Distance
+tt.spaceminer.range=Cycle Range
+tt.spaceminer.step=Cycle Step
+tt.spaceminer.filterButtonTooltip=Открытый фильтр
+tt.spaceminer.togglefilter=Переключить фильтр
+tt.spaceminer.asteroidutilitypanelButtonTooltip=Open Space Miner Utility Panel
+tt.spaceminer.asteroidButtonTooltipInfo=Нажмите, чтобы получить больше информации!
+tt.spaceminer.asteroidButtonFilter=Щелкните ПКМ, чтобы добавить астероид в фильтр
+tt.spaceminer.textFieldOre=Руда
+tt.spaceminer.textFieldDistance=Дистанция
+tt.spaceminer.textFieldTier=Тир
+tt.spaceminer.calculatorButtonTooltip=Open Space Miner Calculator
+tt.spaceminer.asteroidutilitypanel.miningDrones=Может быть добыто:
+tt.spaceminer.asteroidutilitypanel.uses=Использует
+tt.spaceminer.asteroidutilitypanel.and=И
+tt.spaceminer.asteroidutilitypanel.parallelInfo=Per parallel
+tt.spaceminer.asteroidutilitypanel.sizeForDrone=Размер астероида с помощью этого дрона: %d-%d
+tt.spaceminer.asteroidutilitypanel.miningTime=Mining operation time with this drone: %ss
+tt.spaceminer.asteroidutilitypanel.distanceRange=Found at: %s%d-%d%s distance
+tt.spaceminer.asteroidutilitypanel.computation=Requires %s%d computation/s per parallel
+tt.spaceminer.asteroidutilitypanel.moduleTier=Requires at least tier %d Space Mining module
+tt.spaceminer.asteroidutilitypanel.drops=Drops:
+tt.spaceminer.asteroidutilitypanel.targetAsteroidButtonTooltip=Target this asteroid
+tt.spaceminer.calculator.missing.distance=Missing distance setting!
+tt.spaceminer.calculator.missing.moduleTier=Missing module tier!
+tt.spaceminer.calculator.missing.drone=Missing drone!
+tt.spaceminer.calculator.calculate=Рассчитать
+tt.spaceminer.calculator.asteroidChance=%s шанс для:
+
+
+
 tt.eoh.fancy_names.crude=Грубый
 tt.eoh.fancy_names.primitive=Примитивный
 tt.eoh.fancy_names.stable=Стабильный
@@ -1946,8 +1994,8 @@ tt.godforge.casings.8.Tooltip.2=>>>Wave>>>
 tt.eoh.stability.tooltip=§b§lIncreases stability of spacetime field.
 tt.eoh.time_dilation.standard.tooltip=§b§lTime dilation in a box.
 tt.eoh.time_dilation.error.tooltip=§c§lError, report to GTNH team
-tt.eoh.spacetime.standard.tooltip.0=Supports an internal spacetime volume of up to %d km³.
-tt.eoh.spacetime.standard.tooltip.1=§b§lCapable of running recipes up to tier %d
+tt.eoh.spacetime.standard.tooltip.0=Поддерживает внутренний пространственно-временной объем до %d km³.
+tt.eoh.spacetime.standard.tooltip.1=§b§lВозможность запуска рецептов вплоть до %d тира
 
 # Info data
 
@@ -1979,7 +2027,7 @@ tt.infodata.eoh.effective_astral_array_fabricators=Действующие аст
 tt.infodata.eoh.total_parallel=Всего параллелей: %s
 tt.infodata.eoh.eu_output=Вывод EU: %s EU
 tt.infodata.eoh.eu_input=Ввод EU: %s EU
-tt.infodata.eoh.avg_output=Средний вывод %s: %s Л, %s Л/сек
+tt.infodata.eoh.avg_output=Средний вывод %s: %s Л, %s Л/с
 tt.infodata.eoh.estimated_eu=Расчётные EU/t: %s EU/t
 
 ## Quantum Computer

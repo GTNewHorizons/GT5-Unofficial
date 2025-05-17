@@ -9,17 +9,17 @@ kubatech.mobhandler.eec_chance=§5Шанс добычи в EEC: %.2f%%
 kubatech.mobhandler.eec_disabled=§5Не падает в EEC
 
 #Commands
-kubatech.commandhandler.invalid=§cНедопустимое использование ! Правильное использование этой команды /%s
+kubatech.commandhandler.invalid=§cНедопустимое использование! Правильное использование этой команды /%s
 kubatech.commandhandler.cant_find=§cНе удается найти параметр команды %s
 kubatech.commandhandler.generic_help=§cВы также можете использовать "/kubatech help" для получения возможных команд
 kubatech.commandhandler.usage=<option>
 kubatech.command.help.possible_commands=Возможные команды:
 kubatech.command.help.usage=- Показывает все возможные команды
-kubatech.command.config.invalid_option=§cНеверный вариант ! Возможные варианты: перезагрузить
+kubatech.command.config.invalid_option=§cНеверный вариант! Возможные варианты: перезагрузить
 kubatech.command.config.success=§aКонфигурация успешно перезагружена!
 kubatech.command.config.usage=<option>
 
-kubatech.command.tea.invalid_option=§cНедопустимое использование !
+kubatech.command.tea.invalid_option=§cНедопустимое использование!
 kubatech.command.tea.player_not_found=§cИгрок не найден!
 kubatech.command.tea.success_get=Игрок %s имеет %d Чай
 kubatech.command.tea.success_set=Игрок %s теперь имеет %d Чай
@@ -63,7 +63,7 @@ kubatech.infodata.eec.total_damage=Общий урон от атаки: §e%f
 ## Exreme Industrial Greenhouse
 kubatech.infodata.eig.running_mode.setup_mode.input=Режим настройки (загрузка)
 kubatech.infodata.eig.running_mode.setup_mode.output=Режим настройки (выгрузка)
-kubatech.infodata.eig.uses.water=Uses %dL/operation of water
+kubatech.infodata.eig.uses.water=Использует %dЛ воды за операцию
 kubatech.infodata.eig.uses.weedex=Использует %dЛ/секунду Анти-сорняка 9000
 kubatech.infodata.eig.max_slots=Макс. слотов:
 kubatech.infodata.eig.used_slots=Используется слотов:
@@ -91,7 +91,7 @@ kubablock.tea_storage.name=§4§lРасширенное хранилище ча�
 
 #DEFC Casings
 defc.casing.name=Термоядерный корпус
-defc.casing.tip=Корпус Draconic Evolution термоядерный крафтера, тир %d
+defc.casing.tip=Корпус Draconic Evolution термоядерного крафтера, тир %d
 
 #Items
 item.kubaitems.name=Чай/Чайный лист

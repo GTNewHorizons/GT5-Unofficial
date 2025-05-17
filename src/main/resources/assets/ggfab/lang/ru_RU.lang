@@ -1,11 +1,11 @@
 ggfab.recipe.toolcast=Литейная машина для инструментов
 
-ggfab.waila.advassline.slice=Срез #%s: %s сек / %s сек
+ggfab.waila.advassline.slice=Срез #%s: %s с / %s с
 ggfab.waila.advassline.slice.small=Срез #%s: %s тик(ов) / %s тик(ов)
 ggfab.waila.advassline.slice.idle=Срез #%s: Бездействует
-ggfab.waila.advassline.slice.stuck=Срез #%s: §4STUCK
+ggfab.waila.advassline.slice.stuck=Срез #%s: §4ЗАСТРЯЛ
 ggfab.gui.advassline.slice.idle=Срез #%s: Бездействует
-ggfab.gui.advassline.slice.stuck=Срез #%s: §4STUCK
+ggfab.gui.advassline.slice.stuck=Срез #%s: §4ЗАСТРЯЛ
 ggfab.gui.advassline.slice.unknown=Срез #%s: ?
 ggfab.gui.advassline.shutdown=§4Последняя причина нештатного выключения:
 ggfab.gui.advassline.shutdown_clear=§6Очистить

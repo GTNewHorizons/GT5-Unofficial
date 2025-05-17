@@ -1,7 +1,7 @@
 # Creative Tabs
 itemGroup.MiscUtilBlockTab=[GT++] Блоки
 itemGroup.MiscUtilMiscTab=[GT++] Предметы
-itemGroup.MiscUtilCombatTab=[GT++] Combat
+itemGroup.MiscUtilCombatTab=[GT++] Сражения
 itemGroup.MiscUtilToolsTab=[GT++] Инструменты
 itemGroup.MiscUtilMachineTab=[GT++] Механизмы
 itemGroup.MiscUtilOtherTab=[GT++] Предметы II
@@ -9,12 +9,12 @@ itemGroup.MiscUtilBOP=[GT++] Biomes O'Plenty Additions
 
 # Debug
 item.AAA_Broken.name=[Несуществующий предмет] Сообщите об этом рецепте на Github, пожалуйста.
-item.itemBedLocator_Base.name=Bed Locator [NBT Test]
+item.itemBedLocator_Base.name=Локатор кровати [NBT Test]
 item.itemBaseItemWithCharge.name=Base Chargeable Item
 item.miscutils_itemDebugShapeSpawner.name=[Отладка] Формы
 
 # Fluids
-tile.fluidSludge.name=Застойная сточная вода
+tile.fluidSludge.name=Застоявшиеся сточные воды
 tile.fluidSludge.0.name=Застойная сточная вода
 
 # Death Messages
@@ -60,8 +60,8 @@ item.itemStaballoyAxe.name=Вальщик деревьев
 item.itemSandstoneHammer.name=Разрушитель булыжника
 
 # Tooltips
-GTPP.machines.chisel_slot.tooltip=Слот блока
-GTPP.machines.chisel_slot.tooltip.1=§7Поместите chisel предмет, чтобы указать выход
+GTPP.machines.chisel_slot.tooltip=Слот для образца
+GTPP.machines.chisel_slot.tooltip.1=7Поместите сюда §6Chisel§7еный блок для выбора выходного продукта
 GTPP.core.GT_Tooltip=Добавлено: §2Alkalus §7- §c[GT++]
 GTPP.core.GT_Tooltip_Builder=§2Alkalus §7- §c[GT++]
 GTPP.core.GT_Tooltip_Radioactive=§7Внимание: §aРадиоактивно! §6Избегайте прямого контакта без средств защиты.
@@ -2864,9 +2864,9 @@ tile.Abyssal Alloy Frame Box.name=Каркас из сплава бездны
 item.dustNeptunium238.name=Пыль нептуния-238
 item.dustNeptunium239.name=Пыль нептуния-239
 item.dustRadium226.name=Пыль радия-226
-item.itemDustDecayedRadium226.name=Разложившийся радий-226
-item.itemDustSmallDecayedRadium226.name=Маленькая кучка пыли разложившегося радия-226
-item.itemDustTinyDecayedRadium226.name=Крошечная кучка пыли разложившегося радия-226
+item.itemDustDecayedRadium226.name=Распавшаяся пыль радия-226
+item.itemDustSmallDecayedRadium226.name=Маленькая кучка распавшейся пыли радия-226
+item.itemDustTinyDecayedRadium226.name=Крошечная кучка распавшейся пыли радия-226
 
 # Bags
 item.item.MysticBag.name=Мистическая сумка
@@ -4029,7 +4029,7 @@ gtpp.tooltip.alkalus_disk.0=Shines the way, towards the far away Everglades.
 gtpp.tooltip.alkalus_disk.1=Этот предмет создает такую температуру, что вам бы не хотелось использовать его неправильно.
 gtpp.tooltip.tool.durability=Прочность:
 gtpp.tooltip.tool.turbine_efficiency=Эффективность турбины:
-gtpp.tooltip.tool.optimal_steam_flow=Оптимальный поток пара: §d%f§7 Л/тик
+gtpp.tooltip.tool.optimal_steam_flow=Оптимальный поток пара: §d%f§7 Л/сек
 gtpp.tooltip.tool.optimal_gas_flow=Оптимальный поток газа (EU значение горения за тик):
 gtpp.tooltip.tool.optimal_plasma_flow=Оптимальный поток плазмы (значение энергии плазмы на тик):
 gtpp.tooltip.tool.attack_damage=Урон:

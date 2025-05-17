@@ -2,7 +2,7 @@
 gtnop.gui.veinStat.name=Сводка по жиле
 gtnop.gui.asteroidStat.name=Сводка по астероидам
 gtnop.gui.smallOreStat.name=Сводка по маленьким рудам
-gtnop.gui.undergroundFluid.name=Сводка по Подземным Жидкостям
+gtnop.gui.undergroundFluid.name=Сводка по подземным жидкостям
 gtnop.gui.ieVeinStat.name=IE Сводка жилы
 gtnop.gui.bedrockOreStat.name=Сводка по бедроковым рудам
 
@@ -44,7 +44,7 @@ gtnop.world.Nether=Нижний мир
 gtnop.world.TheEnd=Энд
 gtnop.world.Twilight=Сумеречный лес
 gtnop.world.EndAsteroid=Далёкие астероиды Энда
-gtnop.world.Vanilla EndAsteroids=Астероиды Ванильного Энд
+gtnop.world.Vanilla EndAsteroids=Астероиды ванильного Энда
 gtnop.world.Moon=Луна
 gtnop.world.Mars=Марс
 gtnop.world.Phobos=Фобос

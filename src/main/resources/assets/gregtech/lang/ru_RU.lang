@@ -327,7 +327,7 @@ gtpp.material.CryoliteF=Криолит (F)
 gtpp.material.Curium=Кюрий
 gtpp.material.CyanoaceticAcid=Циануксусная кислота
 gtpp.material.CyanoacrylatePolymer=Цианоакрилатный полимер
-gtpp.material.DecayedRadium226=Разложившийся радий-226
+gtpp.material.DecayedRadium226=Распавшийся радий-226
 gtpp.material.DemicheleiteBr=Демишелеит (Br)
 gtpp.material.DichloroaceticAcid=Дихлоруксусная кислота
 gtpp.material.Dragonblood=Драконья кровь
@@ -691,6 +691,10 @@ GTPP.algae.tooltip.generation=Generation: %d
 # Power Goggles
 GT5U.power_goggles.open_config_gui=Открыть конфигурацию очков
 GT5U.power_goggles.toggle_power_chart=Toggle Power Chart
+GT5U.power_goggles.link_lsc=Goggles linked to LSC at %d,%d,%d.
+GT5U.power_goggles.link_fail=Это не LSC...
+GT5U.power_goggles.unlink=Очки не привязаны.
+GT5U.power_goggles.link_tooltip=Linked to LSC at %d,%d,%d: %s
 # Power Goggles config GUI
 GT5U.power_goggles_config.notation_scientific=SCIENTIFIC
 GT5U.power_goggles_config.notation_engineering=ENGINEERING
@@ -700,28 +704,27 @@ GT5U.power_goggles_config.reading_total=TOTAL
 GT5U.power_goggles_config.reading_eut=EUT
 GT5U.power_goggles_config.settings_general=Основные настройки
 GT5U.power_goggles_config.settings_scale=Scale settings
-GT5U.power_goggles_config.settings_color_gradient=Цветовая гамма: Градиент
-GT5U.power_goggles_config.settings_color_text=Цветовая гамма: Текст
+GT5U.power_goggles_config.settings_color=Цветовая гамма
 
 GT5U.power_goggles_config.toggle_notation=Toggle Notation: %s
 GT5U.power_goggles_config.toggle_reading=Toggle Reading Type: %s
-GT5U.power_goggles_config.toggle_hud_with_chat=Toggle HUD with chat open: %s
+GT5U.power_goggles_config.toggle_hud_with_chat=Hide HUD when chat open: %s
 GT5U.power_goggles_config.main_text_scale=Storage Text Scale
 GT5U.power_goggles_config.sub_text_scale=Sub Text Scale
 GT5U.power_goggles_config.hud_scale=HUD Scale
 
-GT5U.power_goggles_config.gradient_bad=Bad Gradient RGB
+GT5U.power_goggles_config.gradient_bad=Плохой цвет градиента
 GT5U.power_goggles_config.gradient_bad_tooltip=Affects what color the power rectangle's gradient approaches as EU change goes lower
-GT5U.power_goggles_config.gradient_ok=OK Gradient RGB
+GT5U.power_goggles_config.gradient_ok=OK Цвет градиента
 GT5U.power_goggles_config.gradient_ok_tooltip=Affects what color the power rectangle's gradient approaches as EU change approaches 0
-GT5U.power_goggles_config.gradient_good=Good Gradient RGB
+GT5U.power_goggles_config.gradient_good=Хороший цвет градиента
 GT5U.power_goggles_config.gradient_good_tooltip=Affects what color the power rectangle's gradient approaches as EU change goes higher
 
-GT5U.power_goggles_config.text_bad=Bad Text RGB
+GT5U.power_goggles_config.text_bad=Плохой цвет текста
 GT5U.power_goggles_config.text_bad_tooltip=Affects Text and Power Chart color when EU change is negative
-GT5U.power_goggles_config.text_ok=OK Text RGB
+GT5U.power_goggles_config.text_ok=OK Цвет текста
 GT5U.power_goggles_config.text_ok_tooltip=Affects Text color when EU change is 0
-GT5U.power_goggles_config.text_good=Good Text RGB
+GT5U.power_goggles_config.text_good=Хороший цвет текста
 GT5U.power_goggles_config.text_good_tooltip=Affects Text and Power Chart color when EU change is positive
 
 GT5U.autoplace.error.no_hatch=§cSuggested to place hatch §4%s§c but none was found
@@ -784,6 +787,9 @@ GT5U.MBTT.HatchInfo=Любой %s
 GT5U.MBTT.HatchDots= (точки %s)
 GT5U.MBTT.BoroGlassAny=Боросиликатное стекло (любое, смешанное)
 GT5U.MBTT.BoroGlassTiered=Боросиликатное стекло (любое)
+GT5U.MBTT.AlchemyCasingAny=Алхимически устойчивый/инертный/иммунный корпус
+GT5U.MBTT.AlchemicalConstructAny=Алхимическая конструкция
+GT5U.MBTT.SuperChest=Супер/Квантовый сундук
 GT5U.MBTT.ConfigMenu=Меню конфигурации
 
 GT5U.MBTT.PCB.Tier=Тир завода печатных плат
@@ -811,9 +817,6 @@ GT5U.MBTT.PCB.Tooltip.3=Позволяет разгонять. Требуетс�
 GT5U.MBTT.PCB.Tooltip.4=Обеспечивает идеальный разгон, позволяя нанитам работать с экстремальной скоростью и эффективностью. Использует 10 Л/с промышленного хладагента.
 GT5U.MBTT.PCB.Tooltip.5=Установите ширину дорожки. Более мелкие дорожки позволяют экономить материал, но требуют больше времени на изготовление. Более крупные дорожки тратят материал впустую, но работают быстро. 50-200 мкм.
 GT5U.MBTT.PCB.Tooltip.6=Невозможно изменить конфигурацию во время работы!
-
-GT5U.MBTT.AlchemyCasingAny=Алхимически устойчивый/инертный/иммунный корпус
-GT5U.MBTT.AlchemicalConstructAny=Алхимическая конструкция
 
 GT5U.MBTT.subchannel=Использует подканал §6%s§r§7 для §6%s
 
@@ -853,6 +856,13 @@ GT5U.fusion.req=EU требуется
 GT5U.fusion.plasma=Выход плазмы
 
 GT5U.tpm.parallelwindow=Открыть окно конфигурации параллели
+
+GT5U.ECCF.pressure=Текущее давление
+GT5U.ECCF.temperature=Текущая температура
+GT5U.ECCF.pressure.threshold=Порог давления
+GT5U.ECCF.temperature.threshold=Порог температуры
+GT5U.ECCF.pressure.required=Требуемое давление
+GT5U.ECCF.temperature.required=Требуемая температура
 
 GT5U.EBF.heat=Температура в печи
 GT5U.coil.None=Нет
@@ -1028,6 +1038,7 @@ gt.recipe.purificationplantuvtreatment=Обработка высокоэнерг
 gt.recipe.purificationplantdegasifier=Дегазация
 gt.recipe.purificationplantquarkextractor=Барионное совершенство
 gt.recipe.quantumcomputer=QC Components
+gt.recipe.eccf=Environmentally Controlled Chemical Facility
 
 # Recipe categories
 gt.recipe.category.arc_furnace_recycling=Переработка в дуговой печи
@@ -1035,10 +1046,10 @@ gt.recipe.category.plasma_arc_furnace_recycling=Переработка в пла
 gt.recipe.category.macerator_recycling=Переработка в дробителе
 gt.recipe.category.fluid_extractor_recycling=Переработка в жидкостном экстракторе
 gt.recipe.category.alloy_smelter_recycling=Переработка в плавильной печи
-gt.recipe.category.alloy_smelter_molding=Alloy Smelter Molding
+gt.recipe.category.alloy_smelter_molding=Формовка в плавильной печи
 gt.recipe.category.forge_hammer_recycling=Переработка в кузнечном молоте
-gt.recipe.category.tic_part_extruding=TiC Part Extruding
-gt.recipe.category.tic_bolt_molding=TiC Bolt Molding
+gt.recipe.category.tic_part_extruding=Экструдирование TiC деталей
+gt.recipe.category.tic_bolt_molding=Формовка TiC болтов
 
 GT5U.machines.tier=Тир
 GT5U.machines.workarea=Рабочая площадь
@@ -1169,7 +1180,7 @@ GT5U.MULTI_MACHINE_CONFIG.LOAD.FAIL=Не удается загрузить на�
 GT5U.DEHP.mode.0=Прямой пар
 GT5U.DEHP.mode.1=Нагрев хладагента
 GT5U.machines.oreprocessor1=§eРежим работы:
-GT5U.machines.oreprocessor2=§cВремя: %s сек
+GT5U.machines.oreprocessor2=§cВремя: %s с
 GT5U.machines.oreprocessor.void=§eУдаление каменной пыли: %s
 GT5U.machines.oreprocessor.Macerate=Дробитель
 GT5U.machines.oreprocessor.Centrifuge=Центрифуга
@@ -1267,6 +1278,7 @@ GT5U.machines.betterjukebox.shuffle.tooltip=Режим случайного во
 GT5U.machines.betterjukebox.headphonesbound=Наушники привязаны к проигрывателю
 GT5U.machines.betterjukebox.headphonesunbound=Shift+клик на электрическом проигрывателе для привязки наушников
 GT5U.machines.computation_hatch.computation=Вычисление
+GT5U.machines.computation_hatch.weightedComputation=Computation Weight
 GT5U.machines.laser_hatch.amperage=Ампераж
 GT5U.machines.hatch_output.lockfluid.label=Закреплено
 GT5U.machines.hatch_output.lockfluid.empty=Нет
@@ -1285,7 +1297,7 @@ channels.gregtech.shielding=Определяет тир блоков защит�
 channels.gregtech.coil=Определяет тир нагревательной катушки. Начинается с §6Катушки из мельхиора§r со значением 1 и заканчивается §6Катушки из вечности§r со значением 14.
 channels.gregtech.glass=Определяет тир стекла. У этого есть много тиров и много заменителей для различных тиров. Пожалуйста, обратитесь к tooltip отдельных блоков стекла.
 channels.gregtech.casing=Decides the tier of metallic machine casing.
-channels.gregtech.unit_casing=Определяет тир Корпуса электронного блока. Начинается с §6Точный корпус электронного блока§r со значением 1 и заканчивается §6MkIV§r со значением 5.
+channels.gregtech.unit_casing=Определяет тир Корпуса электронного блока. Начинается с §6Неточный корпус электронного блока§r со значением 1 и заканчивается §6MkIV§r со значением 5.
 channels.gregtech.machine_casing=Определяет тир Обшивки механизма. Начинается с §6ULV Обшивка механизма§r со значением 1 и заканчивается §6UHV Обшивка механизма§r со значением 10.
 channels.gregtech.solenoid=Определяет тир Соленоидной сверхпроводниковой катушки. Начинается с §6MV§r со значении 1 и заканчивается §6UMV§r со значении 11.
 channels.gregtech.capacitor=Определяет тир Лазуротронового конденсатора. Начинается с §6Пустой§r со значением 1 и заканчивается §6UMV§r со значением 10.
@@ -1300,6 +1312,10 @@ channels.gregtech.stabilisation=Определяет тир Генератора
 channels.gregtech.time_dilation=Определяет тир Генератора поля замедления времени. Начинается с §6Грубый генератор поля замедления времени§r со значением 1 и заканчивается §6Галлифрейский генератор поля замедления времени§r со значением 9.
 channels.gregtech.gt_no_hatch=When set, disable automatic hatch placement
 channels.gregtech.field=Определяет тир T.F.F.T блока хранения жидкостей.
+channels.gregtech.heat_pipe=Decides the tier of §6ECCF heating module§r. Starts at value 1 and ends at value 4.
+channels.gregtech.cool_pipe=Decides the tier of §6ECCF cooling module§r. Starts at value 1 and ends at value 4.
+channels.gregtech.vacuum_pipe=Decides the tier of §6ECCF compressor module§r. Starts at value 1 and ends at value 4.
+channels.gregtech.compress_pipe=Decides the tier of §6ECCF vacuum pump module§r. Starts at value 1 and ends at value 4.
 
 GT5U.gui.select.current=Состояние:
 GT5U.gui.button.liquid_filling_OFF=§7Жидкое наполнение: §4ОТКЛ.
@@ -1338,10 +1354,10 @@ GT5U.gui.button.drone_distance=Сортировать по §3дистанции
 GT5U.gui.button.drone_error=Сортировать по §3статусу неисправности
 GT5U.gui.button.drone_showLocalName=Показать локализованное имя
 GT5U.gui.button.toggle_output_slot_lock=Toggle output slot
-GT5U.gui.button.power_panel=Open Power Panel
+GT5U.gui.button.power_panel=Открыть панель энергии
 GT5U.gui.button.max_parallel=Всегда использовать максимум
 GT5U.gui.text.rangedvalue=Радиус: %s-%s
-GT5U.gui.text.lockedvalue=Locked: %s
+GT5U.gui.text.lockedvalue=Заблокировано: %s
 GT5U.gui.text.locked=Locked
 GT5U.gui.text.success=§aОбработка рецепта
 GT5U.gui.text.progress=§fПрогресс:
@@ -1443,13 +1459,14 @@ GT5U.gui.missing_casings=Too few casings: need %s but have %s
 GT5U.gui.missing_casings_specific=Too few %s: need %s but have %s
 GT5U.gui.missing_hatch=Отсутствует %s
 GT5U.gui.too_many_hatches=Too many %ses (max %s)
-GT5U.gui.text.power_panel=Power Control Panel
+GT5U.gui.text.power_panel=Панель управления энергией
 GT5U.gui.text.too_uncertain=Too Uncertain.
 GT5U.gui.text.invalid_parameters=Неверные параметры.
 GT5U.gui.text.enabled=§aВключён§f
 GT5U.gui.text.disabled=§cОтключён§f
 GT5U.gui.text.lma_craftingfx=Показать эффекты крафта
 GT5U.gui.text.repair_tip=Click with Tool to repair.
+GT5U.gui.text.conditions.out.of.range=§4Out of recipe conditions
 GT5U.gui.text.item.amount=Количество предметов
 GT5U.gui.text.contents=§7Contents:§r
 GT5U.gui.text.content-entry=§7%s:§9 %s§r
@@ -1616,6 +1633,8 @@ GT5U.nei.nuclear.breeder.neutron_reflecting=Neutron reflecting Breeder
 GT5U.nei.nuclear.breeder.heat_neutral=Heat neutral Breeder
 GT5U.nei.nuclear.breeder.reactor_hull_heat=Every %d reactor hull heat\nincrease speed by %d00%%
 GT5U.nei.nuclear.breeder.required_pulse=Требуемые импульсы: %d
+GT5U.nei.temperature=Температура: %s K
+GT5U.nei.pressure=Давление: %s
 
 
 GT5U.config.colormodulation=Цветовой модулятор
@@ -2699,7 +2718,7 @@ GTPP.multiblock.multimachine.fluid=Fluid режим: Ферментер (схе�
 GTPP.multiblock.multimachine.misc=Misc. режим: Точный лазерный гравировщик (схема 20), Автоклав (схема 21) и Жидкостный отвердитель (схема 22).
 
 
-GTPP.waila.steam.use=Сейчас используется: §e%s§r Л/сек пара
+GTPP.waila.steam.use=Сейчас используется: §e%s§r Л/с пара
 
 GTPP.CC.machinetier=Тир ядра управления
 GTPP.CC.discount=EU Скидка
@@ -2944,7 +2963,7 @@ GT5U.infodata.oil_drill.drilling_fluid=Буровой раствор: %s
 GT5U.infodata.oil_drill.drilling_flow=Поток бурения: %s Л/тик
 
 GT5U.infodata.critical_info=Важнейшая информация
-GT5U.infodata.plasma_forge.ticks_run_fuel_discount=Ticks run: %s, Fuel Discount: %s (Extra catalyst use: %smb)
+GT5U.infodata.plasma_forge.ticks_run_fuel_discount=Ticks run: %s, Fuel Discount: %s (Extra catalyst use: %sL)
 GT5U.infodata.plasma_forge.convergence=Конвергенция: %s
 GT5U.infodata.plasma_forge.convergence.progress=, perfect convergence reached in %s min
 GT5U.infodata.plasma_forge.convergence.achieved=, perfect convergence achieved

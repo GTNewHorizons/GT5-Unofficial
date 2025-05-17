@@ -1,11 +1,4 @@
-# English (US)
-
-
-# NOTE: 
-# Providing additional lore translations doesn't require any code changes, they are detected automatically. If you have
-# fewer variations in your lang file than the default lang file (en_US, this file), provide blank translations to avoid
-# the game falling back to the default translations. Adding more variations than provided by default is possible.
-
+# Russian (RU)
 
 # Creative Tabs
 itemGroup.GTNH-Intergalactic=GTNH-Intergalactic
@@ -16,7 +9,7 @@ achievement.gt.blockmachines.spaceelevator.desc=Вы достигли следу
 achievement.gt.blockmachines.projectmoduleassemblert1=Модуль сборочной машины космического лифта MK-I
 achievement.gt.blockmachines.projectmoduleassemblert1.desc=Сборка в космосе? Богохульство!
 achievement.gt.blockmachines.projectmoduleassemblert2=Модуль сборочной машины космического лифта MK-II
-achievement.gt.blockmachines.projectmoduleassemblert2.desc=Это сборка пространства? Или космос его собирает?
+achievement.gt.blockmachines.projectmoduleassemblert2.desc=Это космос собирает нечто? Или нечто собирает космос?
 achievement.gt.blockmachines.projectmoduleassemblert3=Модуль сборочной машины космического лифта MK-III
 achievement.gt.blockmachines.projectmoduleassemblert3.desc=Планеты уже собираются?
 achievement.gt.blockmachines.projectmoduleminert1=Шахтёрский модуль космического лифта MK-I
@@ -26,11 +19,11 @@ achievement.gt.blockmachines.projectmoduleminert2.desc=Разверните др
 achievement.gt.blockmachines.projectmoduleminert3=Шахтёрский модуль космического лифта MK-III
 achievement.gt.blockmachines.projectmoduleminert3.desc=Будем надеяться, что дроны не поднимут восстание
 achievement.gt.blockmachines.projectmodulepumpt1=Модуль помпы космического лифта MK-I
-achievement.gt.blockmachines.projectmodulepumpt1.desc=Let's pump some gas planets
+achievement.gt.blockmachines.projectmodulepumpt1.desc=Давайте выкачаем газовые планеты
 achievement.gt.blockmachines.projectmodulepumpt2=Модуль помпы космического лифта MK-II
-achievement.gt.blockmachines.projectmodulepumpt2.desc=S U C C
+achievement.gt.blockmachines.projectmodulepumpt2.desc=С О С А Т Ь
 achievement.gt.blockmachines.projectmodulepumpt3=Модуль помпы космического лифта MK-III
-achievement.gt.blockmachines.projectmodulepumpt3.desc=Пик S U C C
+achievement.gt.blockmachines.projectmodulepumpt3.desc=Максимальное В С А С Ы В А Н И Е
 achievement.gt.blockmachines.projectmoduleresearch=Модуль исследований космического лифта
 achievement.gt.blockmachines.projectmoduleresearch.desc=Бесконечность не предел
 achievement.gt.blockmachines.projectmodulemanager=Менеджер проектов космического лифта
@@ -75,27 +68,27 @@ achievement.item.MiningDroneUXV=Шахтёрский дрон MK-XIII
 achievement.item.MiningDroneUXV.desc=Пожиратель известной вселенной
 achievement.item.MiningDroneMAX=Шахтёрский дрон MK XIV
 achievement.item.MiningDroneMAX.desc=Пожиратель всего, что было и будет
-achievement.tile.DysonSwarmReceiverCasing=Основной корпус приёмника энергии Дайсон роя
+achievement.tile.DysonSwarmReceiverCasing=Основной корпус приёмника энергии роя Дайсона
 achievement.tile.DysonSwarmReceiverCasing.desc=Просто посмотри рецепт в NEI
-achievement.tile.DysonSwarmReceiverDish=Блок тарелки приёмника энергии дайсон роя
+achievement.tile.DysonSwarmReceiverDish=Блок тарелки приёмника энергии роя Дайсона
 achievement.tile.DysonSwarmReceiverDish.desc=Просто посмотри рецепт в NEI
-achievement.tile.DysonSwarmDeploymentUnitCore=Ядро модуля группы развертывания дайсон роя
+achievement.tile.DysonSwarmDeploymentUnitCore=Ядро модуля группы развертывания роя Дайсона
 achievement.tile.DysonSwarmDeploymentUnitCore.desc=Просто посмотри рецепт в NEI
-achievement.tile.DysonSwarmControlSecondary=Вторичная обмотка центра управления дайсон роя
+achievement.tile.DysonSwarmControlSecondary=Вторичная обмотка центра управления роя Дайсона
 achievement.tile.DysonSwarmControlSecondary.desc=Просто посмотри рецепт в NEI
-achievement.tile.DysonSwarmControlToroid=Тороидальный корпус центра управления дайсон роя
+achievement.tile.DysonSwarmControlToroid=Тороидальный корпус центра управления роя Дайсона
 achievement.tile.DysonSwarmControlToroid.desc=Просто посмотри рецепт в NEI
-achievement.tile.DysonSwarmControlCasing=Основной корпус центра управления дайсон роя
+achievement.tile.DysonSwarmControlCasing=Основной корпус центра управления роя Дайсона
 achievement.tile.DysonSwarmControlCasing.desc=Просто посмотри рецепт в NEI
-achievement.tile.DysonSwarmDeploymentUnitMagnet=Сверхпроводящий магнит модуля группы развертывания дайсон роя
+achievement.tile.DysonSwarmDeploymentUnitMagnet=Сверхпроводящий магнит модуля группы развертывания роя Дайсона
 achievement.tile.DysonSwarmDeploymentUnitMagnet.desc=Просто посмотри рецепт в NEI
-achievement.tile.DysonSwarmControlPrimary=Первичная обмотка центра управления дайсон роя
+achievement.tile.DysonSwarmControlPrimary=Первичная обмотка центра управления роя Дайсона
 achievement.tile.DysonSwarmControlPrimary.desc=Просто посмотри рецепт в NEI
-achievement.tile.DysonSwarmDeploymentUnitCasing=Основной корпус модуля группы развертывания дайсон роя
+achievement.tile.DysonSwarmDeploymentUnitCasing=Основной корпус модуля группы развертывания роя Дайсона
 achievement.tile.DysonSwarmDeploymentUnitCasing.desc=Просто посмотри рецепт в NEI
-achievement.gt.blockmachines.dysonswarm=Ядро группы дайсон роя
+achievement.gt.blockmachines.dysonswarm=Ядро группы роя Дайсона
 achievement.gt.blockmachines.dysonswarm.desc=Просто посмотри рецепт в NEI
-achievement.item.dysonSwarmModule=Модуль дайсон роя
+achievement.item.dysonSwarmModule=Модуль роя Дайсона
 achievement.item.dysonSwarmModule.desc=Просто посмотри рецепт в NEI
 
 
@@ -117,13 +110,13 @@ item.MiningDroneUIV.name=Шахтёрский дрон MK-XI
 item.MiningDroneUMV.name=Шахтёрский дрон MK-XII
 item.MiningDroneUXV.name=Шахтёрский дрон MK-XIII
 item.MiningDroneMAX.name=Шахтёрский дрон MK-XIV
-item.DysonSwarmParts.name=Компонент дайсон роя
-item.dysonSwarmModule.name=Модуль дайсон роя
+item.DysonSwarmParts.name=Компонент роя Дайсона
+item.dysonSwarmModule.name=Модуль роя Дайсона
 item.TaHfCNanofibers.name=Нановолокна из тантал-гафниевого карбида
 item.NtNanofibers.name=Нейтрониевые нановолокна
 item.UHTResistantMesh.name=Сетка устойчивая к ультравысоким температурам
 item.TaHfNanoparticles.name=Наночастицы тантал-гафниевого карбида
-item.NtNanoparticles.name=Нейтрониевые наночастицы
+item.NtNanoparticles.name=Наночастицы из нейтрония
 
 # Blocks
 gt.blockcasingsSE.name=Часть космического лифта
@@ -148,32 +141,32 @@ gt.blockcasings.ig.motor.t4.name=Мотор космического лифта 
 gt.blockcasings.ig.motor.t5.name=Мотор космического лифта MK-V
 gt.blockcasings.ig.motor.desc0=Открывает больше слотов для модулей и более высокие тиры модулей
 gt.blockcasings.ig.motor.t1.desc1=Продолжайте подниматься!
-gt.blockcasings.ig.motor.t2.desc1=Faster ascend!
-gt.blockcasings.ig.motor.t3.desc1=Zooooom
+gt.blockcasings.ig.motor.t2.desc1=Быстрое вознесенье!
+gt.blockcasings.ig.motor.t3.desc1=Вжуууух
 gt.blockcasings.ig.motor.t4.desc1=Я СКОРОСТЬ
-gt.blockcasings.ig.motor.t5.desc1=Kachow
-gt.blockcasings.ig.motor.desc2=Unlocks %s Module-Slots in the Space Elevator
+gt.blockcasings.ig.motor.t5.desc1=Кчааау
+gt.blockcasings.ig.motor.desc2=Разблокирует %s слотов для модулей в космическом лифте
 tile.DysonSwarmPart.name=Часть роя Дайсона
-tile.DysonSwarmReceiverCasing.name=Основной корпус приёмника энергии Дайсон роя
-tile.DysonSwarmReceiverDish.name=Блок тарелки приёмника энергии дайсон роя
-tile.DysonSwarmDeploymentUnitCasing.name=Основной корпус модуля группы развертывания дайсон роя
-tile.DysonSwarmDeploymentUnitCore.name=Ядро модуля группы развертывания дайсон роя
-tile.DysonSwarmDeploymentUnitMagnet.name=Сверхпроводящий магнит модуля группы развертывания дайсон роя
-tile.DysonSwarmControlCasing.name=Основной корпус центра управления дайсон роя
-tile.DysonSwarmControlPrimary.name=Первичная обмотка центра управления дайсон роя
-tile.DysonSwarmControlSecondary.name=Вторичная обмотка центра управления дайсон роя
-tile.DysonSwarmControlToroid.name=Тороидальный корпус центра управления дайсон роя
+tile.DysonSwarmReceiverCasing.name=Основной корпус приёмника энергии роя Дайсона
+tile.DysonSwarmReceiverDish.name=Блок тарелки приёмника энергии роя Дайсона
+tile.DysonSwarmDeploymentUnitCasing.name=Основной корпус модуля группы развертывания роя Дайсона
+tile.DysonSwarmDeploymentUnitCore.name=Ядро модуля группы развертывания роя Дайсона
+tile.DysonSwarmDeploymentUnitMagnet.name=Сверхпроводящий магнит модуля группы развертывания роя Дайсона
+tile.DysonSwarmControlCasing.name=Основной корпус центра управления роя Дайсона
+tile.DysonSwarmControlPrimary.name=Первичная обмотка центра управления роя Дайсона
+tile.DysonSwarmControlSecondary.name=Вторичная обмотка центра управления роя Дайсона
+tile.DysonSwarmControlToroid.name=Тороидальный корпус центра управления роя Дайсона
 tile.DysonSwarmFloor.name=Сверхвысокопрочный бетонный пол
 tile.GasSiphonCasing.name=Корпус планетарного сифона
 
 # GUI
-GT5U.gui.text.no_space_station=§7Not on a space station
+GT5U.gui.text.no_space_station=§7Не на космической станции
 GT5U.gui.text.invalid_depth=§7Неверная глубина
 GT5U.gui.text.siphoning=§aИзвлечение из планеты
 GT5U.gui.text.missing_project=§7Отсутствует §b%s §7в §b%s
 GT5U.gui.text.no_plasma=§7Недостаточно плазмы
 GT5U.gui.text.invalid_overdrive=§7Неверные настройки перегрузки
-GT5U.gui.text.no_project_selected=§7Not working on any project
+GT5U.gui.text.no_project_selected=§7Не работает ни над одним проектом
 ig.text.project=Проект
 ig.text.upgrades=Улучшение
 ig.text.start=Старт
@@ -201,19 +194,19 @@ gt.blockmachines.multimachine.ig.siphon.lore2=333:Торговля EU -> Жид�
 gt.blockmachines.multimachine.ig.siphon.lore3=Название неверно по определению...
 
 # Dyson Swarm
-gt.blockmachines.multimachine.ig.dyson.name=Ядро группы дайсон роя
-gt.blockmachines.multimachine.ig.dyson.type=Дайсон рой
-gt.blockmachines.multimachine.ig.dyson.desc1=Поместите Модули дайсон роя во входную люк(и), чтобы отправить их к следующей звезде.
+gt.blockmachines.multimachine.ig.dyson.name=Ядро группы роя Дайсона
+gt.blockmachines.multimachine.ig.dyson.type=Рой Дайсона
+gt.blockmachines.multimachine.ig.dyson.desc1=Поместите Модули роя Дайсона во входную люк(и), чтобы отправить их к следующей звезде.
 gt.blockmachines.multimachine.ig.dyson.desc2=Выдаёт %s*f EU/t на модуль до 10 000, где f - коэффициент, зависящий от измерения.
-gt.blockmachines.multimachine.ig.dyson.desc3=Каждую секунду n из m Модули дайсон роя уничтожаются в соответствии со следующей формулой:
+gt.blockmachines.multimachine.ig.dyson.desc3=Каждую секунду n из m Модули роя Дайсона уничтожаются в соответствии со следующей формулой:
 gt.blockmachines.multimachine.ig.dyson.desc4=Каждый час, n из m модули уничтожаются по формуле: n = m * (2 * 0.066) / (exp(-0.00005* (m - 1))+exp(3.0E-5 * cps)), где cps - это вычисление в секунду.
-gt.blockmachines.multimachine.ig.dyson.desc5=Requires %sL/h of %s.
+gt.blockmachines.multimachine.ig.dyson.desc5=Требует %sЛ/ч %s.
 gt.blockmachines.multimachine.ig.dyson.desc6=Щелкните ПКМ с помощью вантуза, чтобы извлечь как можно больше модулей в свой инвентарь.
 gt.blockmachines.multimachine.ig.dyson.desc7=Подкравшись, вы сбросите остальные на землю.
 gt.blockmachines.multimachine.ig.dyson.lore0=Подождите, это не армия пылесосов?
 gt.blockmachines.multimachine.ig.dyson.lore1=Номер 9? Не совсем.
 gt.blockmachines.multimachine.ig.dyson.lore2=Это не игра.
-gt.blockmachines.multimachine.ig.dyson.lore3=Basically solar panels.
+gt.blockmachines.multimachine.ig.dyson.lore3=В основном солнечные батареи.
 gt.blockmachines.multimachine.ig.dyson.lore4=Изобретено свободным человеком.
 
 # Space Elevator
@@ -231,9 +224,9 @@ gt.blockmachines.multimachine.ig.elevator.lore3=Представлено Кон�
 gt.blockmachines.multimachine.ig.elevator.lore4=Вы читали "Фонтаны рая"?
 gt.blockmachines.multimachine.ig.elevator.lore5=Вы читали "Сеть между мирами"?
 gt.blockmachines.multimachine.ig.elevator.gui.numOfModules=Установленно модулей
-gt.blockmachines.multimachine.ig.elevator.gui.ready=Ready for Operation.
-gt.blockmachines.multimachine.ig.elevator.gui.noRecipe=No Operation started.
-gt.blockmachines.multimachine.ig.elevator.gui.recipe=Operating.
+gt.blockmachines.multimachine.ig.elevator.gui.ready=Готов к эксплуатации.
+gt.blockmachines.multimachine.ig.elevator.gui.noRecipe=Операция не запущена.
+gt.blockmachines.multimachine.ig.elevator.gui.recipe=Работает.
 gt.blockmachines.multimachine.ig.elevator.gui.config=Конфигурация:
 
 # Module Base
@@ -255,7 +248,7 @@ gt.blockmachines.multimachine.project.ig.assembler.t2.desc1=Это действ�
 gt.blockmachines.multimachine.project.ig.assembler.t3.desc1=Я предполагаю, мы никогда не узнаем.
 gt.blockmachines.multimachine.project.ig.assembler.t1.desc2=Работает в UHV до 4 параллелей
 gt.blockmachines.multimachine.project.ig.assembler.t2.desc2=Работает в UIV до 16 параллелей
-gt.blockmachines.multimachine.project.ig.assembler.t3.desc2=Работает в UXV до 4 параллелей
+gt.blockmachines.multimachine.project.ig.assembler.t3.desc2=Работает в UXV до 64 параллелей
 gt.blockmachines.multimachine.project.ig.assembler.cfgi.0=Макс. параллелей
 
 # Module Miner
@@ -294,9 +287,9 @@ gt.blockmachines.multimachine.project.ig.pump.t1.name=Модуль космич�
 gt.blockmachines.multimachine.project.ig.pump.t2.name=Модуль космической помпы MK-II
 gt.blockmachines.multimachine.project.ig.pump.t3.name=Модуль космической помпы MK-III
 gt.blockmachines.multimachine.project.ig.pump.desc0=Модуль, добавляющий Космические насосные операции к космическому лифту
-gt.blockmachines.multimachine.project.ig.pump.t1.desc1=Поглощение целых газовых планет никогда не было таким простым
-gt.blockmachines.multimachine.project.ig.pump.t2.desc1=Буквально отстой
-gt.blockmachines.multimachine.project.ig.pump.t3.desc1=S U C C
+gt.blockmachines.multimachine.project.ig.pump.t1.desc1=Всасывание целых газовых планет никогда не было таким простым
+gt.blockmachines.multimachine.project.ig.pump.t2.desc1=Буквально сосёт
+gt.blockmachines.multimachine.project.ig.pump.t3.desc1=С О С Ё Т
 gt.blockmachines.multimachine.project.ig.pump.desc3=Установите Планету и Тип газа, чтобы определить перекачиваемую жидкость
 gt.blockmachines.multimachine.project.ig.pump.desc4=Может быть защищен от войда путём блокировки выходных люков
 gt.blockmachines.multimachine.project.ig.pump.t1.desc5=Работает в UHV до 4 параллелей
@@ -383,7 +376,7 @@ ig.dyson.structure.base.coil=Блок катушки из пробуждённо
 ig.dyson.structure.base.hermetic=Герметичный корпус X
 ig.dyson.structure.base.frameTitanium=Титановый каркас
 ig.dyson.structure.base.frameHSSS=HSS-S каркас
-ig.dyson.structure.base.frameUHVBase=Каркас из основы UHV сверхпроводника=
+ig.dyson.structure.base.frameUHVBase=Каркас из основы UHV сверхпроводника
 
 # Space Projects
 ig.spaceproject.asteroidoutpost=Астероидный аванпост
@@ -396,6 +389,7 @@ ig.sp.upgrade.reinforcedstructure=Улучшение 'Усиленная кон�
 ig.sp.upgrade.reinforcedstructure.description=Эта улучшение усиливает конструкцию, чтобы выдержать удары любых быстро движущихся астероидов, и защищает дроны от аварий.
 
 # Asteroids
+ig.asteroid=Астериод
 ig.asteroid.coalAsteroid=Уголь
 ig.asteroid.saltAsteroid=Соль
 ig.asteroid.ironAsteroid=Железо
