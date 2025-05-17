@@ -13,14 +13,7 @@
 
 package bartworks.system.material.werkstoff_loaders.recipe;
 
-import static gregtech.api.enums.OrePrefixes.block;
-import static gregtech.api.enums.OrePrefixes.dustSmall;
-import static gregtech.api.enums.OrePrefixes.foil;
-import static gregtech.api.enums.OrePrefixes.gem;
-import static gregtech.api.enums.OrePrefixes.ingot;
-import static gregtech.api.enums.OrePrefixes.plate;
-import static gregtech.api.enums.OrePrefixes.stick;
-import static gregtech.api.enums.OrePrefixes.stickLong;
+import static gregtech.api.enums.OrePrefixes.*;
 import static gregtech.api.recipe.RecipeMaps.benderRecipes;
 import static gregtech.api.recipe.RecipeMaps.extruderRecipes;
 import static gregtech.api.recipe.RecipeMaps.hammerRecipes;
@@ -53,7 +46,8 @@ public class SimpleMetalLoader implements IWerkstoffRunnable {
 
                 GTValues.RA.stdBuilder()
                     .itemInputs(werkstoff.get(gem))
-                    .itemOutputs(werkstoff.get(stick), werkstoff.get(dustSmall, 2))
+                    .itemOutputs(werkstoff.get(stick), werkstoff.get(dust, 1))
+                    .outputChances(10000, 5000)
                     .duration(
                         (int) Math.max(
                             werkstoff.getStats()
@@ -142,7 +136,8 @@ public class SimpleMetalLoader implements IWerkstoffRunnable {
 
             GTValues.RA.stdBuilder()
                 .itemInputs(werkstoff.get(ingot))
-                .itemOutputs(werkstoff.get(stick), werkstoff.get(dustSmall, 2))
+                .itemOutputs(werkstoff.get(stick), werkstoff.get(dust, 1))
+                .outputChances(10000, 5000)
                 .duration(
                     (int) Math.max(
                         werkstoff.getStats()

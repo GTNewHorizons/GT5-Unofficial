@@ -180,12 +180,13 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
                     if (aMaterial.getProcessingMaterialTierEU() < TierEU.IV) {
                         // Lathe recipes
                         if (GTOreDictUnificator.get(OrePrefixes.stick, aMaterial, 1L) != null
-                            && GTOreDictUnificator.get(OrePrefixes.dustSmall, aMaterial, 1L) != null) {
+                            && GTOreDictUnificator.get(OrePrefixes.dust, aMaterial, 1L) != null) {
                             GTValues.RA.stdBuilder()
                                 .itemInputs(GTUtility.copyAmount(1, aStack))
                                 .itemOutputs(
                                     GTOreDictUnificator.get(OrePrefixes.stick, aMaterial, 1L),
-                                    GTOreDictUnificator.get(OrePrefixes.dustSmall, aMaterial, 2L))
+                                    GTOreDictUnificator.get(OrePrefixes.dust, aMaterial, 1L))
+                                .outputChances(10000, 5000)
                                 .duration(((int) Math.max(aMaterialMass, 1L)) * TICKS)
                                 .eut(calculateRecipeEU(aMaterial, 16))
                                 .addTo(latheRecipes);
@@ -260,12 +261,13 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
                 if (!aNoWorking) {
                     // Lathe recipes
                     if (GTOreDictUnificator.get(OrePrefixes.bolt, aMaterial, 1L) != null
-                        && GTOreDictUnificator.get(OrePrefixes.dustTiny, aMaterial, 1L) != null) {
+                        && GTOreDictUnificator.get(OrePrefixes.dust, aMaterial, 1L) != null) {
                         GTValues.RA.stdBuilder()
                             .itemInputs(GTUtility.copyAmount(1, aStack))
                             .itemOutputs(
                                 GTOreDictUnificator.get(OrePrefixes.bolt, aMaterial, 1L),
-                                GTOreDictUnificator.get(OrePrefixes.dustTiny, aMaterial, 1L))
+                                GTOreDictUnificator.get(OrePrefixes.dust, aMaterial, 1L))
+                            .outputChances(10000, 1111)
                             .duration(((int) Math.max(aMaterialMass, 1L)) * TICKS)
                             .eut(8)
                             .addTo(latheRecipes);
@@ -361,12 +363,13 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
                 if (!aNoWorking) {
                     // Lathe recipes
                     if (GTOreDictUnificator.get(OrePrefixes.bolt, aMaterial, 1L) != null
-                        && GTOreDictUnificator.get(OrePrefixes.dustSmall, aMaterial, 1L) != null) {
+                        && GTOreDictUnificator.get(OrePrefixes.dust, aMaterial, 1L) != null) {
                         GTValues.RA.stdBuilder()
                             .itemInputs(GTUtility.copyAmount(1, aStack))
                             .itemOutputs(
                                 GTOreDictUnificator.get(OrePrefixes.bolt, aMaterial, 2L),
-                                GTOreDictUnificator.get(OrePrefixes.dustSmall, aMaterial, 1L))
+                                GTOreDictUnificator.get(OrePrefixes.dust, aMaterial, 1L))
+                            .outputChances(10000, 2500)
                             .duration(((int) Math.max(aMaterialMass, 1L)) * TICKS)
                             .eut(12)
                             .addTo(latheRecipes);
