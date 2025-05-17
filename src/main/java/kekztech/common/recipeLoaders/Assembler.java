@@ -4,6 +4,7 @@ import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
 import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.MINUTES;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
+import static gregtech.api.util.GTRecipeBuilder.WILDCARD;
 
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -143,7 +144,7 @@ public class Assembler implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 6),
-                GTModHandler.getIC2Item("lapotronCrystal", 1L, GTValues.W),
+                GTModHandler.getIC2Item("lapotronCrystal", 1L, WILDCARD),
                 GTUtility.getIntegratedCircuit(7))
             .itemOutputs(new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 7))
             .duration(10 * SECONDS)

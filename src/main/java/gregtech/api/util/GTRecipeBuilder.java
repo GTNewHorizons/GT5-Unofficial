@@ -59,7 +59,7 @@ public class GTRecipeBuilder {
     public static final int TICKS = 1;
 
     // fluid units
-    public static final int INGOTS = (int) GTValues.L;
+    public static final int INGOTS = 144;
     public static final int HALF_INGOTS = INGOTS / 2;
     public static final int QUARTER_INGOTS = INGOTS / 4;
     public static final int EIGHTH_INGOTS = INGOTS / 8;

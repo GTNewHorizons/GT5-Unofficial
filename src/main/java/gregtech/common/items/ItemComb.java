@@ -1,6 +1,5 @@
 package gregtech.common.items;
 
-import static gregtech.api.enums.GTValues.L;
 import static gregtech.api.enums.GTValues.NF;
 import static gregtech.api.enums.GTValues.NI;
 import static gregtech.api.enums.GTValues.V;
@@ -1194,9 +1193,10 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer, IIte
             } else if (this.compareTo(Voltage.HV) < 0) {
                 return GTModHandler.getDistilledWater(1_000);
             } else if (this.compareTo(Voltage.LuV) < 0) {
-                return Materials.HydrofluoricAcid.getFluid((long) (Math.pow(2, this.compareTo(Voltage.HV)) * L));
+                return Materials.HydrofluoricAcid.getFluid((long) (Math.pow(2, this.compareTo(Voltage.HV)) * INGOTS));
             } else if (this.compareTo(Voltage.UHV) < 0) {
-                return FluidRegistry.getFluidStack("mutagen", (int) (Math.pow(2, this.compareTo(Voltage.LuV)) * L));
+                return FluidRegistry
+                    .getFluidStack("mutagen", (int) (Math.pow(2, this.compareTo(Voltage.LuV)) * INGOTS));
             } else {
                 return NF;
             }
