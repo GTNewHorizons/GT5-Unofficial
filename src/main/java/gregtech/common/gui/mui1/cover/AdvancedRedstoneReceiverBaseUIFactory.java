@@ -2,6 +2,8 @@ package gregtech.common.gui.mui1.cover;
 
 import java.util.Arrays;
 
+import net.minecraft.util.StatCollector;
+
 import org.jetbrains.annotations.NotNull;
 
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
@@ -98,9 +100,8 @@ public class AdvancedRedstoneReceiverBaseUIFactory
                 widget -> widget.setStaticTexture(GTUITextures.OVERLAY_BUTTON_ANALOG)
                     .addTooltips(
                         Arrays.asList(
-                            "ANALOG Mode",
-                            "Only use this mode with ONE transmitter in total,",
-                            "no logic involved"))
+                            GTUtility.breakLines(
+                                StatCollector.translateToLocal("GT5U.gui.tooltip.redstone_receiver.analog"))))
                     .setPos(spaceX * 4, spaceY * 2));
     }
 }

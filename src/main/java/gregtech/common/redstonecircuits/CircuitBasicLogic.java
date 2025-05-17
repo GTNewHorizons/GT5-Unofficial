@@ -1,5 +1,7 @@
 package gregtech.common.redstonecircuits;
 
+import net.minecraft.util.StatCollector;
+
 import gregtech.api.interfaces.IRedstoneCircuitBlock;
 import gregtech.api.util.CircuitryBehavior;
 
@@ -66,12 +68,12 @@ public class CircuitBasicLogic extends CircuitryBehavior {
 
     @Override
     public String getName() {
-        return "Basic Logic";
+        return StatCollector.translateToLocal("GT5U.gui.circuit.basic.name");
     }
 
     @Override
     public String getDescription() {
-        return "Regular Logic Gates";
+        return StatCollector.translateToLocal("GT5U.gui.circuit.basic.description");
     }
 
     @Override
@@ -79,46 +81,46 @@ public class CircuitBasicLogic extends CircuitryBehavior {
         if (aCircuitDataIndex == 0) {
             switch (aCircuitData[0]) {
                 case 0 -> {
-                    return "OR";
+                    return StatCollector.translateToLocal("GT5U.gui.circuit.data_description.or");
                 }
                 case 1 -> {
-                    return "NOR";
+                    return StatCollector.translateToLocal("GT5U.gui.circuit.data_description.nor");
                 }
                 case 2 -> {
-                    return "XOR";
+                    return StatCollector.translateToLocal("GT5U.gui.circuit.data_description.xor");
                 }
                 case 3 -> {
-                    return "XNOR";
+                    return StatCollector.translateToLocal("GT5U.gui.circuit.data_description.xnor");
                 }
                 case 4 -> {
-                    return "AND";
+                    return StatCollector.translateToLocal("GT5U.gui.circuit.data_description.and");
                 }
                 case 5 -> {
-                    return "NAND";
+                    return StatCollector.translateToLocal("GT5U.gui.circuit.data_description.nand");
                 }
                 case 6 -> {
-                    return "INVERT";
+                    return StatCollector.translateToLocal("GT5U.gui.circuit.data_description.invert");
                 }
                 case 7 -> {
-                    return "BIT_OR";
+                    return StatCollector.translateToLocal("GT5U.gui.circuit.data_description.bit_or");
                 }
                 case 8 -> {
-                    return "BIT_NOR";
+                    return StatCollector.translateToLocal("GT5U.gui.circuit.data_description.bit_nor");
                 }
                 case 9 -> {
-                    return "BIT_XOR";
+                    return StatCollector.translateToLocal("GT5U.gui.circuit.data_description.bit_xor");
                 }
                 case 10 -> {
-                    return "BIT_XNOR";
+                    return StatCollector.translateToLocal("GT5U.gui.circuit.data_description.bit_xnor");
                 }
                 case 11 -> {
-                    return "BIT_AND";
+                    return StatCollector.translateToLocal("GT5U.gui.circuit.data_description.bit_and");
                 }
                 case 12 -> {
-                    return "BIT_NAND";
+                    return StatCollector.translateToLocal("GT5U.gui.circuit.data_description.bit_nand");
                 }
                 case 13 -> {
-                    return "BIT_INVERT";
+                    return StatCollector.translateToLocal("GT5U.gui.circuit.data_description.bit_invert");
                 }
             }
         }
