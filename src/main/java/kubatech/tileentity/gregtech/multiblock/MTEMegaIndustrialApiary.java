@@ -50,7 +50,6 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -128,6 +127,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchEnergy;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
+import gregtech.api.recipe.check.ResultMissingApiaryFlowers;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
@@ -256,14 +256,32 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
 
     private boolean isCacheDirty = true;
     private final HashMap<String, String> flowersCache = new HashMap<>();
-    private final HashSet<String> flowersCheck = new HashSet<>();
+
+    /**
+     * The map used to check the flowers in the apiary.
+     * <p>
+     * The entries are added in {@link #checkMachine(IGregTechTileEntity, ItemStack)} and will be removed during
+     * structural check defined in the structure definition, via {@link #flowerCheck(World, int, int, int)}.
+     * After {@code checkMachine}, the remaining entries are the missing flowers, which is shown on the GUI as error
+     * message.
+     */
+    @NotNull
+    private Map<String, String> flowerCheckingMap = new HashMap<>();
+
     private boolean flowersError = false;
     private boolean needsTVarUpdate = false;
     private int megaApiaryStorageVersion = 0;
 
+    /**
+     * Checks the block in the given world and block position, and remove the entries in the {@link #flowerCheckingMap}
+     * if it matches any.
+     * This function will be called during the structural check, see structure definition also.
+     */
     private void flowerCheck(final World world, final int x, final int y, final int z) {
-        if (!flowersCheck.isEmpty() && !world.isAirBlock(x, y, z))
-            flowersCheck.removeIf(s -> FlowerManager.flowerRegistry.isAcceptedFlower(s, world, x, y, z));
+        if (!flowerCheckingMap.isEmpty() && !world.isAirBlock(x, y, z)) {
+            flowerCheckingMap.keySet()
+                .removeIf(flowerType -> FlowerManager.flowerRegistry.isAcceptedFlower(flowerType, world, x, y, z));
+        }
     }
 
     @Override
@@ -492,7 +510,9 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
                     if (mStorage.size() > mMaxSlots)
                         return SimpleCheckRecipeResult.ofFailure("MegaApiary_slotoverflow");
 
-                    if (flowersError) return SimpleCheckRecipeResult.ofFailure("MegaApiary_noflowers");
+                    if (flowersError) {
+                        return ResultMissingApiaryFlowers.newFailure(flowerCheckingMap);
+                    }
 
                     if (needsTVarUpdate) {
                         float t = (float) getVoltageTierExact();
@@ -591,13 +611,15 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
             flowersCache.remove("");
             isCacheDirty = false;
         }
-        flowersCheck.clear();
-        flowersCheck.addAll(flowersCache.keySet());
+
+        flowerCheckingMap.clear();
+        flowerCheckingMap = new HashMap<>(flowersCache);
+
         if (!checkPiece(STRUCTURE_PIECE_MAIN, 7, 8, 0)) return false;
         if (this.glassTier < VoltageIndex.UEV && !this.mEnergyHatches.isEmpty())
             for (MTEHatchEnergy hatchEnergy : this.mEnergyHatches) if (this.glassTier < hatchEnergy.mTier) return false;
         boolean valid = this.mMaintenanceHatches.size() == 1 && !this.mEnergyHatches.isEmpty() && this.mCasing >= 190;
-        flowersError = valid && !this.flowersCheck.isEmpty();
+        flowersError = valid && !flowerCheckingMap.isEmpty();
         if (valid) updateMaxSlots();
         return valid;
     }
