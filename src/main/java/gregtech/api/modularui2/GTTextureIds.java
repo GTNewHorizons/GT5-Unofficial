@@ -21,6 +21,10 @@ public final class GTTextureIds {
     public static final String SLOT_ITEM_BRONZE = "gregtech:slot_item_bronze";
     public static final String SLOT_ITEM_STEEL = "gregtech:slot_item_steel";
     public static final String SLOT_ITEM_PRIMITIVE = "gregtech:slot_item_primitive";
+    public static final String SLOT_ITEM_GOLD = "gregtech:slot_item_gold";
+    public static final String SLOT_ITEM_GREEN = "gregtech:slot_item_green";
+    public static final String SLOT_ITEM_PURPLE = "gregtech:slot_item_purple";
+    public static final String SLOT_ITEM_PRISMATIC = "gregtech:slot_item_prismatic";
 
     public static final String SLOT_FLUID_STANDARD = "gregtech:slot_fluid_standard";
     public static final String SLOT_FLUID_BRONZE = "gregtech:slot_fluid_bronze";
