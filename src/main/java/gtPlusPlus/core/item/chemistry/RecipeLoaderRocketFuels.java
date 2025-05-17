@@ -74,7 +74,7 @@ public class RecipeLoaderRocketFuels {
             .itemInputs(Materials.Copper.getDust(1), GregtechItemList.OrangeMetalCatalyst.get(0))
             .itemOutputs(Materials.CupricOxide.getDust(2))
             .fluidInputs(Materials.NitricAcid.getFluid(2_000))
-            .fluidOutputs(new FluidStack(GTPPFluids.NitrogenTetroxide, 1000))
+            .fluidOutputs(new FluidStack(GTPPFluids.NitrogenTetroxide, 1_000))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .metadata(CHEMPLANT_CASING_TIER, 3)
@@ -85,8 +85,8 @@ public class RecipeLoaderRocketFuels {
         // H2O2 + 2NH3 = N2H4 + 2H2O
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(21))
-            .fluidInputs(new FluidStack(GTPPFluids.HydrogenPeroxide, 1000), Materials.Ammonia.getGas(2_000))
-            .fluidOutputs(new FluidStack(GTPPFluids.Hydrazine, 1000))
+            .fluidInputs(new FluidStack(GTPPFluids.HydrogenPeroxide, 1_000), Materials.Ammonia.getGas(2_000))
+            .fluidOutputs(new FluidStack(GTPPFluids.Hydrazine, 1_000))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .metadata(CHEMPLANT_CASING_TIER, 1)
@@ -97,8 +97,8 @@ public class RecipeLoaderRocketFuels {
         // C + 2H + N2H4 = CH6N2
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(21), Materials.Carbon.getDust(1))
-            .fluidInputs(Materials.Hydrogen.getGas(2_000), new FluidStack(GTPPFluids.Hydrazine, 1000))
-            .fluidOutputs(new FluidStack(GTPPFluids.Monomethylhydrazine, 1000))
+            .fluidInputs(Materials.Hydrogen.getGas(2_000), new FluidStack(GTPPFluids.Hydrazine, 1_000))
+            .fluidOutputs(new FluidStack(GTPPFluids.Monomethylhydrazine, 1_000))
             .duration(48 * SECONDS)
             .eut(240)
             .metadata(CHEMPLANT_CASING_TIER, 2)
@@ -141,8 +141,8 @@ public class RecipeLoaderRocketFuels {
         // O + CH4O = CH2O + H2O
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(21), GregtechItemList.FormaldehydeCatalyst.get(0))
-            .fluidInputs(Materials.Oxygen.getGas(32000), Materials.Methanol.getFluid(32_000))
-            .fluidOutputs(new FluidStack(GTPPFluids.Formaldehyde, 32000))
+            .fluidInputs(Materials.Oxygen.getGas(32_000), Materials.Methanol.getFluid(32_000))
+            .fluidOutputs(new FluidStack(GTPPFluids.Formaldehyde, 32_000))
             .duration(1 * MINUTES + 30 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .metadata(CHEMPLANT_CASING_TIER, 1)
@@ -165,8 +165,8 @@ public class RecipeLoaderRocketFuels {
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(21), GregtechItemList.FormaldehydeCatalyst.get(0))
             .fluidInputs(
-                new FluidStack(GTPPFluids.Hydrazine, 2000),
-                new FluidStack(GTPPFluids.Formaldehyde, 2000),
+                new FluidStack(GTPPFluids.Hydrazine, 2_000),
+                new FluidStack(GTPPFluids.Formaldehyde, 2_000),
                 Materials.Hydrogen.getGas(4_000))
             .fluidOutputs(Materials.Dimethylhydrazine.getFluid(2_000), Materials.Water.getFluid(2_000))
             .duration(60 * SECONDS)
@@ -202,7 +202,7 @@ public class RecipeLoaderRocketFuels {
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(1))
             .fluidInputs(Materials.LiquidOxygen.getGas(2_000), new FluidStack(GTPPFluids.RP1, 500))
-            .fluidOutputs(new FluidStack(GTPPFluids.RP1RocketFuel, 1500))
+            .fluidOutputs(new FluidStack(GTPPFluids.RP1RocketFuel, 1_500))
             .duration(15 * SECONDS)
             .eut(240)
             .metadata(CHEMPLANT_CASING_TIER, 3)
@@ -211,8 +211,8 @@ public class RecipeLoaderRocketFuels {
         // Dense Hydrazine Fuel Mixture
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(2))
-            .fluidInputs(new FluidStack(GTPPFluids.Hydrazine, 4000), Materials.Methanol.getFluid(6_000))
-            .fluidOutputs(new FluidStack(GTPPFluids.DenseHydrazineFuelMixture, 10000))
+            .fluidInputs(new FluidStack(GTPPFluids.Hydrazine, 4_000), Materials.Methanol.getFluid(6_000))
+            .fluidOutputs(new FluidStack(GTPPFluids.DenseHydrazineFuelMixture, 10_000))
             .duration(30 * SECONDS)
             .eut(240)
             .metadata(CHEMPLANT_CASING_TIER, 4)
@@ -221,8 +221,8 @@ public class RecipeLoaderRocketFuels {
         // CN3H7O3 Rocket Fuel
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(3))
-            .fluidInputs(new FluidStack(GTPPFluids.Monomethylhydrazine, 2000), Materials.NitricAcid.getFluid(1_000))
-            .fluidOutputs(new FluidStack(GTPPFluids.CN3H7O3RocketFuel, 2000))
+            .fluidInputs(new FluidStack(GTPPFluids.Monomethylhydrazine, 2_000), Materials.NitricAcid.getFluid(1_000))
+            .fluidOutputs(new FluidStack(GTPPFluids.CN3H7O3RocketFuel, 2_000))
             .duration(45 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .metadata(CHEMPLANT_CASING_TIER, 5)
@@ -233,8 +233,8 @@ public class RecipeLoaderRocketFuels {
             .itemInputs(GTUtility.getIntegratedCircuit(4))
             .fluidInputs(
                 Materials.Dimethylhydrazine.getFluid(2_000),
-                new FluidStack(GTPPFluids.NitrogenTetroxide, 2000))
-            .fluidOutputs(new FluidStack(GTPPFluids.H8N4C2O4RocketFuel, 5000))
+                new FluidStack(GTPPFluids.NitrogenTetroxide, 2_000))
+            .fluidOutputs(new FluidStack(GTPPFluids.H8N4C2O4RocketFuel, 5_000))
             .duration(60 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .metadata(CHEMPLANT_CASING_TIER, 6)
