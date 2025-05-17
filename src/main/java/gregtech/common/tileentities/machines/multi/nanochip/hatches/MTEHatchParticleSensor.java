@@ -50,13 +50,13 @@ public class MTEHatchParticleSensor extends MTEHatch {
 
     @Override
     public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection Side,
-                                  ItemStack aStack) {
+        ItemStack aStack) {
         return false;
     }
 
     @Override
     public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
-                                 ItemStack aStack) {
+        ItemStack aStack) {
         return false;
     }
 
@@ -107,4 +107,3 @@ public class MTEHatchParticleSensor extends MTEHatch {
         return new ITexture[] { aBaseTexture, TextureFactory.of(textureFont) };
     }
 }
-

@@ -16,21 +16,11 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
-import gregtech.api.interfaces.IHatchElement;
-import gregtech.api.metatileentity.implementations.MTEHatch;
-import gregtech.api.util.GTStructureUtility;
-import gregtech.api.util.IGTHatchAdder;
-import gregtech.common.tileentities.machines.multi.compressor.MTEHeatSensor;
-import gregtech.common.tileentities.machines.multi.nanochip.hatches.MTEHatchParticleSensor;
-import gregtech.common.tileentities.machines.multi.purification.MTEHatchLensIndicator;
-import gregtech.common.tileentities.machines.multi.purification.MTEHatchPHSensor;
-import gregtech.common.tileentities.machines.multi.purification.MTEPurificationUnitUVTreatment;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
 import org.jetbrains.annotations.NotNull;
@@ -40,6 +30,7 @@ import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Materials;
+import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.recipe.RecipeMap;
@@ -47,9 +38,12 @@ import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.util.GTRecipe;
+import gregtech.api.util.GTStructureUtility;
+import gregtech.api.util.IGTHatchAdder;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.blocks.BlockCasings8;
 import gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyModuleBase;
+import gregtech.common.tileentities.machines.multi.nanochip.hatches.MTEHatchParticleSensor;
 import gregtech.common.tileentities.machines.multi.nanochip.util.CircuitComponent;
 import gregtech.common.tileentities.machines.multi.nanochip.util.ModuleStructureDefinition;
 import gtPlusPlus.core.util.math.MathUtils;
@@ -76,6 +70,8 @@ public class EtchingArray extends MTENanochipAssemblyModuleBase<EtchingArray> {
 
     int requiredEnergy = 1;
     int requiredParticle = 0;
+
+    Particle getInputParticle;
 
     public static final IStructureDefinition<EtchingArray> STRUCTURE_DEFINITION = ModuleStructureDefinition
         .<EtchingArray>builder()
@@ -160,8 +156,7 @@ public class EtchingArray extends MTENanochipAssemblyModuleBase<EtchingArray> {
         private final IGTHatchAdder<EtchingArray> adder;
 
         @SafeVarargs
-        SpecialHatchElement(IGTHatchAdder<EtchingArray> adder,
-                            Class<? extends IMetaTileEntity>... mteClasses) {
+        SpecialHatchElement(IGTHatchAdder<EtchingArray> adder, Class<? extends IMetaTileEntity>... mteClasses) {
             this.mteClasses = Collections.unmodifiableList(Arrays.asList(mteClasses));
             this.adder = adder;
         }
@@ -207,17 +202,18 @@ public class EtchingArray extends MTENanochipAssemblyModuleBase<EtchingArray> {
     }
 
     private long ticker = 0;
-     public boolean onRunningTick(ItemStack aStack) {
-      if (!super.onRunningTick(aStack)) {
-      return false;
-      }
-      if (ticker % (5 * SECONDS) == 0) {
-      updateRequiredPatricle();
-      ticker = 0;
-      }
-      ticker++;
-      return true;
-      }
+
+    public boolean onRunningTick(ItemStack aStack) {
+        if (!super.onRunningTick(aStack)) {
+            return false;
+        }
+        if (ticker % (5 * SECONDS) == 0) {
+            updateRequiredPatricle();
+            ticker = 0;
+        }
+        ticker++;
+        return true;
+    }
 
     private void updateRequiredPatricle() {
         int particle = MathUtils.randInt(1, 3);
@@ -226,6 +222,15 @@ public class EtchingArray extends MTENanochipAssemblyModuleBase<EtchingArray> {
             case 2 -> 4;
             case 3 -> 5;
             default -> throw new IllegalStateException("Unexpected Particle: " + particle);
+        };
+    }
+
+    private String getParticleString() {
+        return switch (requiredParticle) {
+            case 0 -> "Electron";
+            case 4 -> "Alpha";
+            case 5 -> "Positron";
+            default -> throw new IllegalStateException("thats no good, oopsies");
         };
     }
 
@@ -245,7 +250,7 @@ public class EtchingArray extends MTENanochipAssemblyModuleBase<EtchingArray> {
     public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
         int z) {
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
-        tag.setInteger("particle", requiredParticle);
+        tag.setString("particle", getParticleString());
     }
 
     @Override
@@ -253,10 +258,7 @@ public class EtchingArray extends MTENanochipAssemblyModuleBase<EtchingArray> {
         IWailaConfigHandler config) {
         super.getWailaBody(itemStack, currentTip, accessor, config);
         final NBTTagCompound tag = accessor.getNBTData();
-        currentTip.add(
-            StatCollector.translateToLocal("item.particle.name") + ": "
-                + EnumChatFormatting.WHITE
-                + tag.getInteger("particle"));
+        currentTip.add(EnumChatFormatting.LIGHT_PURPLE + "Particle Needed" + ": " + tag.getString("particle"));
     }
 
     public EtchingArray(int aID, String aName, String aNameRegional) {
