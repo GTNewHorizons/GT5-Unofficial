@@ -631,6 +631,20 @@ public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelSta
     }
 
     @Override
+    public NBTTagCompound getDescriptionData() {
+        NBTTagCompound tag = new NBTTagCompound();
+
+        tag.setLong("baseCapacity", baseCapacity);
+
+        return tag;
+    }
+
+    @Override
+    public void onDescriptionPacket(NBTTagCompound data) {
+        baseCapacity = data.getLong("baseCapacity");
+    }
+
+    @Override
     public boolean isGivingInformation() {
         return true;
     }
