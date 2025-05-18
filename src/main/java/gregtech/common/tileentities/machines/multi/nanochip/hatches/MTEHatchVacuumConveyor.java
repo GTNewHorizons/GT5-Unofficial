@@ -205,9 +205,13 @@ public abstract class MTEHatchVacuumConveyor extends MTEHatch implements IConnec
                     ItemDrawable itemDraw = new ItemDrawable(item);
                     slotChild.background(itemDraw)
                         .overlay(
-                            new StringKey(NumberFormat.format(item.stackSize, NumberFormat.AMOUNT_TEXT)).scale(0.6f)
-                                .alignment(Alignment.BottomRight)
-                                .style(EnumChatFormatting.WHITE));
+                            new StringKey(
+                                NumberFormat.format(
+                                    contents.getComponents()
+                                        .get(CircuitComponent.getFromFakeStackUnsafe(item)),
+                                    NumberFormat.AMOUNT_TEXT)).scale(0.6f)
+                                        .alignment(Alignment.BottomRight)
+                                        .style(EnumChatFormatting.WHITE));
                     slotChild.tooltip(
                         t -> t.clearText()
                             .addStringLines(item.getTooltip(data.getPlayer(), false)));
@@ -233,9 +237,13 @@ public abstract class MTEHatchVacuumConveyor extends MTEHatch implements IConnec
                     ItemDrawable itemDraw = new ItemDrawable(item);
                     slotChild.background(itemDraw)
                         .overlay(
-                            new StringKey(NumberFormat.format(item.stackSize, NumberFormat.AMOUNT_TEXT)).scale(0.6f)
-                                .alignment(Alignment.BottomRight)
-                                .style(EnumChatFormatting.WHITE));
+                            new StringKey(
+                                NumberFormat.format(
+                                    contents.getComponents()
+                                        .get(CircuitComponent.getFromFakeStackUnsafe(item)),
+                                    NumberFormat.AMOUNT_TEXT)).scale(0.6f)
+                                        .alignment(Alignment.BottomRight)
+                                        .style(EnumChatFormatting.WHITE));
                     slotChild.tooltip(
                         t -> t.clearText()
                             .addStringLines(item.getTooltip(data.getPlayer(), false)));
