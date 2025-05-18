@@ -1867,7 +1867,7 @@ public class AssemblerRecipes implements Runnable {
                 ItemList.Electric_Pump_LuV.get(1),
                 GTUtility.getIntegratedCircuit(9))
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorLuV, 15))
-            .fluidInputs(Materials.Helium.getGas(12000))
+            .fluidInputs(Materials.Helium.getGas(12_000))
             .duration(40 * SECONDS)
             .eut(TierEU.RECIPE_LuV)
             .addTo(assemblerRecipes);
@@ -1891,7 +1891,7 @@ public class AssemblerRecipes implements Runnable {
                 ItemList.Electric_Pump_UV.get(1),
                 GTUtility.getIntegratedCircuit(9))
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorUV, 21))
-            .fluidInputs(Materials.Helium.getGas(20000))
+            .fluidInputs(Materials.Helium.getGas(20_000))
             .duration(1 * MINUTES + 20 * SECONDS)
             .eut(TierEU.RECIPE_UV)
             .addTo(assemblerRecipes);
