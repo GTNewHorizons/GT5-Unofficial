@@ -144,15 +144,16 @@ public class RedstoneSnifferGuiBuilder {
         data.sizeRel(1, 0.7f);
         data.controller(controller);
         // Process regular wireless redstone frequencies
-        GenericListSyncHandler<ItemRedstoneSniffer.SnifferEntry> regularMapSyncer = new GenericListSyncHandler<>(() -> {
-            List<ItemRedstoneSniffer.SnifferEntry> result = new ArrayList<>();
-            GregTechAPI.sWirelessRedstone.forEach((frequency, ignored) -> {
-                boolean isPrivate = frequency > 65535;
-                int displayFreq = isPrivate ? frequency - 65536 : frequency;
-                result.add(new ItemRedstoneSniffer.SnifferEntry(String.valueOf(displayFreq), isPrivate));
+        GenericListSyncHandler<ItemRedstoneSniffer.SnifferEntry> regularMapSyncer = new SnifferEntryListSyncHandler(
+            () -> {
+                List<ItemRedstoneSniffer.SnifferEntry> result = new ArrayList<>();
+                GregTechAPI.sWirelessRedstone.forEach((frequency, ignored) -> {
+                    boolean isPrivate = frequency > 65535;
+                    int displayFreq = isPrivate ? frequency - 65536 : frequency;
+                    result.add(new ItemRedstoneSniffer.SnifferEntry(String.valueOf(displayFreq), isPrivate));
+                });
+                return result;
             });
-            return result;
-        }, new ItemRedstoneSniffer.SnifferEntryAdapter());
         regularMapSyncer.setChangeListener(() -> {
             if (!regularListWidget.getChildren()
                 .isEmpty()) return;
@@ -205,7 +206,7 @@ public class RedstoneSnifferGuiBuilder {
                         .child(regularListWidget)));
 
         // Process advanced wireless redstone frequencies
-        GenericListSyncHandler<ItemRedstoneSniffer.SnifferEntry> advancedMapSyncer = new GenericListSyncHandler<>(
+        GenericListSyncHandler<ItemRedstoneSniffer.SnifferEntry> advancedMapSyncer = new SnifferEntryListSyncHandler(
             () -> {
                 List<ItemRedstoneSniffer.SnifferEntry> result = new ArrayList<>();
                 GregTechAPI.sAdvancedWirelessRedstone.forEach((uuid, coverMap) -> {
@@ -221,8 +222,7 @@ public class RedstoneSnifferGuiBuilder {
                     }
                 });
                 return result;
-            },
-            new ItemRedstoneSniffer.SnifferEntryAdapter());
+            });
         advancedMapSyncer.setChangeListener(() -> {
             if (!advancedListWidget.getChildren()
                 .isEmpty()) return;
