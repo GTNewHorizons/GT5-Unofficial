@@ -241,12 +241,12 @@ public class MTEPurificationUnitFlocculation extends MTEPurificationUnitBase<MTE
         if (!checkPiece(STRUCTURE_PIECE_MAIN, STRUCTURE_X_OFFSET, STRUCTURE_Y_OFFSET, STRUCTURE_Z_OFFSET)) return false;
 
         // At most two input hatches allowed
-        if (mInputHatches.size() > 2) {
+        if (mInputHatches.size() > 3) {
             return false;
         }
 
         // At most two output hatches allowed
-        if (mOutputHatches.size() > 2) {
+        if (mOutputHatches.size() > 3) {
             return false;
         }
 
@@ -361,10 +361,10 @@ public class MTEPurificationUnitFlocculation extends MTEPurificationUnitBase<MTE
                 false)
             .addOutputBus(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + "+", 1)
             .addInputHatch(
-                EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + "-" + EnumChatFormatting.GOLD + "2",
+                EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + "-" + EnumChatFormatting.GOLD + "3",
                 1)
             .addOutputHatch(
-                EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + "-" + EnumChatFormatting.GOLD + "2",
+                EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + "-" + EnumChatFormatting.GOLD + "3",
                 1)
             .toolTipFinisher(AuthorNotAPenguin);
         return tt;
