@@ -382,7 +382,7 @@ public class RecipeLoader2 {
             .fluidInputs(
                 Materials.Draconium.getMolten(16 * INGOTS),
                 Materials.Titanium.getMolten(2 * INGOTS),
-                Materials.Lubricant.getFluid(64000))
+                Materials.Lubricant.getFluid(64_000))
             .itemOutputs(ItemRefer.Fluid_Storage_Core_T5.get(1))
             .eut(TierEU.RECIPE_UV)
             .duration(20 * SECONDS)
@@ -403,7 +403,7 @@ public class RecipeLoader2 {
             .fluidInputs(
                 Materials.Draconium.getMolten(16 * INGOTS),
                 Materials.Titanium.getMolten(2 * INGOTS),
-                Materials.Lubricant.getFluid(64000))
+                Materials.Lubricant.getFluid(64_000))
             .itemOutputs(ItemRefer.Fluid_Storage_Core_T6.get(1))
             .eut(TierEU.RECIPE_UHV)
             .duration(20 * SECONDS)
@@ -424,7 +424,7 @@ public class RecipeLoader2 {
             .fluidInputs(
                 Materials.Draconium.getMolten(16 * INGOTS),
                 MaterialsAlloy.INDALLOY_140.getFluidStack(16 * INGOTS),
-                Materials.InfinityCatalyst.getMolten(1140))
+                Materials.InfinityCatalyst.getMolten(1_140))
             .itemOutputs(ItemRefer.Fluid_Storage_Core_T7.get(1))
             .eut(TierEU.RECIPE_UEV)
             .duration(20 * SECONDS)
@@ -929,11 +929,11 @@ public class RecipeLoader2 {
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(2))
             .fluidInputs(
-                GGMaterial.cyclopentadiene.getFluidOrGas(2000),
+                GGMaterial.cyclopentadiene.getFluidOrGas(2_000),
                 GGMaterial.ferrousChloride.getFluidOrGas(1_000),
                 GGMaterial.diethylamine.getFluidOrGas(8_000),
-                Materials.Ice.getSolid(4000))
-            .fluidOutputs(GGMaterial.impureFerroceneMixture.getFluidOrGas(15000))
+                Materials.Ice.getSolid(4_000))
+            .fluidOutputs(GGMaterial.impureFerroceneMixture.getFluidOrGas(15_000))
             .duration(2 * MINUTES)
             .eut(TierEU.RECIPE_MV)
             .addTo(multiblockChemicalReactorRecipes);
@@ -956,7 +956,7 @@ public class RecipeLoader2 {
             TierEU.RECIPE_MV);
 
         CrackRecipeAdder.addUniversalDistillationRecipe(
-            GGMaterial.ferroceneSolution.getFluidOrGas(2000),
+            GGMaterial.ferroceneSolution.getFluidOrGas(2_000),
             new FluidStack[] { GGMaterial.ether.getFluidOrGas(1_000) },
             GGMaterial.ferrocene.get(OrePrefixes.dust, 1),
             30 * SECONDS,
@@ -965,10 +965,10 @@ public class RecipeLoader2 {
         GTValues.RA.stdBuilder()
             .itemInputs(GGMaterial.ferrocene.get(OrePrefixes.dust, 4), Materials.SodiumHydroxide.getDust(8))
             .fluidInputs(
-                FluidRegistry.getFluidStack("fluid.kerosene", 40000),
+                FluidRegistry.getFluidStack("fluid.kerosene", 40_000),
                 Materials.Naphtha.getFluid(3_000),
                 GGMaterial.diethylamine.getFluidOrGas(1_000))
-            .fluidOutputs(GGMaterial.ironedKerosene.getFluidOrGas(44000))
+            .fluidOutputs(GGMaterial.ironedKerosene.getFluidOrGas(44_000))
             .duration(2 * MINUTES)
             .eut(TierEU.RECIPE_EV)
             .addTo(multiblockChemicalReactorRecipes);
@@ -976,12 +976,12 @@ public class RecipeLoader2 {
         GTValues.RA.stdBuilder()
             .itemInputs(GGMaterial.ferrocene.get(OrePrefixes.dust, 4))
             .fluidInputs(
-                FluidRegistry.getFluidStack("combustionpromotor", 4000),
-                Materials.Naphtha.getFluid(40000),
+                FluidRegistry.getFluidStack("combustionpromotor", 4_000),
+                Materials.Naphtha.getFluid(40_000),
                 Materials.LightFuel.getFluid(3_000),
                 Materials.LPG.getFluid(1_000),
                 Materials.Tetranitromethane.getFluid(2_000))
-            .fluidOutputs(GGMaterial.ironedFuel.getFluidOrGas(50000))
+            .fluidOutputs(GGMaterial.ironedFuel.getFluidOrGas(50_000))
             .duration(2 * MINUTES)
             .eut(TierEU.RECIPE_IV)
             .addTo(multiblockChemicalReactorRecipes);
@@ -1306,7 +1306,7 @@ public class RecipeLoader2 {
                     Ic2Items.reactorVentSpread)
                 .itemOutputs(ItemRefer.HiC_T5.get(1))
                 .fluidInputs(
-                    GGMaterial.titaniumBetaC.getMolten(1728),
+                    GGMaterial.titaniumBetaC.getMolten(12 * INGOTS),
                     GGMaterial.signalium.getMolten(8 * INGOTS),
                     GGMaterial.lumiium.getMolten(4 * INGOTS),
                     GGMaterial.dalisenite.getMolten(2 * INGOTS))
@@ -1322,7 +1322,7 @@ public class RecipeLoader2 {
                     GTOreDictUnificator.get(OrePrefixes.rotor, Materials.TungstenCarbide, 2))
                 .itemOutputs(ItemRefer.HiC_T5.get(1))
                 .fluidInputs(
-                    GGMaterial.titaniumBetaC.getMolten(1728),
+                    GGMaterial.titaniumBetaC.getMolten(12 * INGOTS),
                     GGMaterial.signalium.getMolten(8 * INGOTS),
                     GGMaterial.lumiium.getMolten(4 * INGOTS),
                     GGMaterial.dalisenite.getMolten(2 * INGOTS))
@@ -1590,8 +1590,8 @@ public class RecipeLoader2 {
             .itemInputs(Materials.Antimony.getDust(8), GTUtility.getIntegratedCircuit(24))
             .fluidInputs(
                 GGMaterial.ether.getFluidOrGas(1_000),
-                Materials.Fluorine.getGas(40000),
-                Materials.Ice.getSolid(8000))
+                Materials.Fluorine.getGas(40_000),
+                Materials.Ice.getSolid(8_000))
             .fluidOutputs(GGMaterial.antimonyPentafluorideSolution.getFluidOrGas(8_000))
             .duration(40 * SECONDS)
             .eut(TierEU.RECIPE_IV)
@@ -1812,7 +1812,7 @@ public class RecipeLoader2 {
 
         // Mk5 recipe
         GTValues.RA.stdBuilder()
-            .fluidInputs(Materials.Copper.getPlasma(576), WerkstoffLoader.Oganesson.getFluidOrGas(1_000))
+            .fluidInputs(Materials.Copper.getPlasma(4 * INGOTS), WerkstoffLoader.Oganesson.getFluidOrGas(1_000))
             .fluidOutputs(GGMaterial.metastableOganesson.getMolten(4 * INGOTS))
             .eut(TierEU.RECIPE_UEV)
             .duration(5 * SECONDS)
