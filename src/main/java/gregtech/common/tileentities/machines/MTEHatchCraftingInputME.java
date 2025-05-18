@@ -323,8 +323,8 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
                     World world = parentMTE.getBaseMetaTileEntity()
                         .getWorld();
 
-                    ItemStack fluidDropItemStack = ItemFluidPacket.newStack(fluidStack);
-                    if (fluidDropItemStack == null) continue;
+                    ItemStack fluidPacketItemStack = ItemFluidPacket.newStack(fluidStack);
+                    if (fluidPacketItemStack == null) continue;
 
                     EntityItem entityItem = new EntityItem(
                         world,
@@ -337,7 +337,7 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
                         parentMTE.getBaseMetaTileEntity()
                             .getZCoord() + XSTR_INSTANCE.nextFloat() * 0.8F
                             + 0.1F,
-                        fluidDropItemStack);
+                        fluidPacketItemStack);
                     entityItem.motionX = XSTR_INSTANCE.nextGaussian() * 0.05;
                     entityItem.motionY = XSTR_INSTANCE.nextGaussian() * 0.25;
                     entityItem.motionZ = XSTR_INSTANCE.nextGaussian() * 0.05;
