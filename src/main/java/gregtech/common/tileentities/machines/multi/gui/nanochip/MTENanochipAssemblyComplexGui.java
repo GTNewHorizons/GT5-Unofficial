@@ -168,7 +168,7 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui {
         return switch (currentText.toLowerCase()) {
             case "hi" -> "Hello.";
             case "gregos" -> "It seems you have asked about NAC's advanced sentient artificial intelligence. This is "
-                + "an artificial intelligence designed to stimulate the player's otherwise inimitably rad typing "
+                + "an artificial intelligence designed to simulate the player's otherwise inimitably rad typing "
                 + "style, tone, cadence, personality, and substance of retort while they are using the NAC. The "
                 + "algorithms are guaranteed to be 92% indistinguishable from the players' native neurological "
                 + "responses, based on some statistical analysis I basically just pulled out of my ass right now.";
