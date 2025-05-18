@@ -21,9 +21,9 @@ import static gregtech.api.enums.MetaTileEntityIDs.RadioHatch_UV;
 import static gregtech.api.enums.MetaTileEntityIDs.RadioHatch_ZPM;
 import static gregtech.api.enums.MetaTileEntityIDs.Windmill;
 import static gregtech.api.enums.Mods.IndustrialCraft2;
-import static gtPlusPlus.core.recipe.RecipesTools.craftingToolHardHammer;
-import static gtPlusPlus.core.recipe.RecipesTools.craftingToolScrewdriver;
-import static gtPlusPlus.core.recipe.RecipesTools.craftingToolWrench;
+import static gregtech.api.enums.ToolDictNames.craftingToolHardHammer;
+import static gregtech.api.enums.ToolDictNames.craftingToolScrewdriver;
+import static gregtech.api.enums.ToolDictNames.craftingToolWrench;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -577,15 +577,16 @@ public class CraftingRecipes implements Runnable {
             0,
             new Object[] { " M ", "STS", "RPW", 'M', ItemList.Cover_Screen.get(1L), 'S',
                 OrePrefixes.screw.get(Materials.Titanium), 'T', GregtechItemList.TransmissionComponent_EV.get(1), 'R',
-                craftingToolScrewdriver, 'P', OrePrefixes.plate.get(Materials.Titanium), 'W', craftingToolWrench });
+                craftingToolScrewdriver, 'P', OrePrefixes.plate.get(Materials.Titanium), 'W',
+                craftingToolWrench.name() });
 
         RecipeUtils.addShapedRecipe(
             OrePrefixes.lens.get(Materials.Ruby),
             ItemList.Magnetron.get(1),
             OrePrefixes.lens.get(Materials.Ruby),
-            craftingToolHardHammer,
+            craftingToolHardHammer.name(),
             ItemList.Vajra_Core.get(1),
-            craftingToolScrewdriver,
+            craftingToolScrewdriver.name(),
             OrePrefixes.plateDense.get(Materials.Electrum),
             OrePrefixes.battery.get(Materials.IV),
             OrePrefixes.plateDense.get(Materials.Electrum),
