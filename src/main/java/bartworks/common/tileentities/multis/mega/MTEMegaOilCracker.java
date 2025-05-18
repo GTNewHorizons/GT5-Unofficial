@@ -244,7 +244,7 @@ public class MTEMegaOilCracker extends MegaMultiBlockBase<MTEMegaOilCracker> imp
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (this.mMachine) return -1;
         int realBudget = elementBudget >= 200 ? elementBudget : Math.min(200, elementBudget * 5);
-        return this.survivialBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 6, 6, 0, realBudget, env, false, true);
+        return this.survivalBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 6, 6, 0, realBudget, env, false, true);
     }
     // -------------- TEC TECH COMPAT ----------------
 
