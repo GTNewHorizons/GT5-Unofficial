@@ -438,7 +438,6 @@ import static gregtech.api.enums.MetaTileEntityIDs.ITEM_FILTER_UHV;
 import static gregtech.api.enums.MetaTileEntityIDs.ITEM_FILTER_ULV;
 import static gregtech.api.enums.MetaTileEntityIDs.ITEM_FILTER_UV;
 import static gregtech.api.enums.MetaTileEntityIDs.ITEM_FILTER_ZPM;
-import static gregtech.api.enums.MetaTileEntityIDs.LARGE_ADVANCED_GAS_TURBINE_CONTROLLER;
 import static gregtech.api.enums.MetaTileEntityIDs.LARGE_BRONZE_BOILER_CONTROLLER;
 import static gregtech.api.enums.MetaTileEntityIDs.LARGE_GAS_TURBINE_CONTROLLER;
 import static gregtech.api.enums.MetaTileEntityIDs.LARGE_HEAT_EXCHANGER_CONTROLLER;
