@@ -9,6 +9,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import com.cleanroommc.modularui.screen.UISettings;
 import net.minecraft.network.PacketBuffer;
 
 import com.cleanroommc.modularui.api.IPanelHandler;
@@ -44,8 +45,8 @@ public class SplitterGui extends MTEMultiBlockBaseGui {
         this.base = base;
     }
 
-    public ModularPanel build(PosGuiData data, PanelSyncManager syncManager) {
-        ModularPanel ui = super.build(data, syncManager);
+    public ModularPanel build(PosGuiData data, PanelSyncManager syncManager, UISettings uiSettings) {
+        ModularPanel ui = super.build(data, syncManager, uiSettings);
         IPanelHandler popupPanel = syncManager.panel("popup", (m, h) -> createRuleManagerPanel(syncManager), true);
         GenericSyncValue<Map<Integer, Splitter.ColorRule>> listSyncer = new GenericSyncValue<>(
             () -> base.colorMap,
