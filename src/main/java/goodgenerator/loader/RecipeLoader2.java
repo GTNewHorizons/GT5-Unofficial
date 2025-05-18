@@ -422,7 +422,7 @@ public class RecipeLoader2 {
                 GTOreDictUnificator.get(OrePrefixes.plateQuintuple, Materials.InfinityCatalyst, 8),
                 GTOreDictUnificator.get(OrePrefixes.plateDense, Materials.DraconiumAwakened, 16))
             .fluidInputs(
-                Materials.Draconium.getMolten(16 * INGOTS),
+                Materials.Draconium.getMolten(2 * STACKS + 32 * INGOTS),
                 MaterialsAlloy.INDALLOY_140.getFluidStack(16 * INGOTS),
                 Materials.InfinityCatalyst.getMolten(1_140))
             .itemOutputs(ItemRefer.Fluid_Storage_Core_T7.get(1))
