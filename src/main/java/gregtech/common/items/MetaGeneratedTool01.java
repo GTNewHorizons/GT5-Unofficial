@@ -133,7 +133,7 @@ public class MetaGeneratedTool01 extends MetaGeneratedTool {
                 "Soft Mallet",
                 "",
                 new ToolSoftHammer(),
-                ToolDictNames.craftingToolSoftHammer,
+                ToolDictNames.craftingToolSoftMallet,
                 new TCAspects.TC_AspectStack(TCAspects.INSTRUMENTUM, 2L),
                 new TCAspects.TC_AspectStack(TCAspects.LIMUS, 4L)),
             GregTechAPI.sSoftHammerList);

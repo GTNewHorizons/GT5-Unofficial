@@ -126,7 +126,7 @@ public class GigaGramFab {
                 INSTANCE.mToolStats.get((short) HARDHAMMER.ID),
                 6 * ingot);
             GigaGramFabAPI.addSingleUseToolType(
-                craftingToolSoftHammer,
+                craftingToolSoftMallet,
                 INSTANCE.mToolStats.get((short) SOFTMALLET.ID),
                 6 * ingot);
             GigaGramFabAPI.addSingleUseToolType(
@@ -158,7 +158,7 @@ public class GigaGramFab {
                     GGUtils.processSentence(tool.name(), ' ', true, true),
                     null,
                     tool,
-                    tool.name()));
+                    singleUseTool.toolDictName.name()));
 
             GGItemList mold = singleUseTool.mold;
             String moldLabel = "Mold (" + GGUtils.processSentence(tool.name() + ")", ' ', true, true);

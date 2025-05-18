@@ -10,8 +10,8 @@ import static ggfab.GGItemList.SingleUseSaw;
 import static ggfab.GGItemList.SingleUseSawMold;
 import static ggfab.GGItemList.SingleUseScrewdriver;
 import static ggfab.GGItemList.SingleUseScrewdriverMold;
-import static ggfab.GGItemList.SingleUseSoftHammer;
-import static ggfab.GGItemList.SingleUseSoftHammerMold;
+import static ggfab.GGItemList.SingleUseSoftMallet;
+import static ggfab.GGItemList.SingleUseSoftMalletMold;
 import static ggfab.GGItemList.SingleUseWireCutter;
 import static ggfab.GGItemList.SingleUseWireCutterMold;
 import static ggfab.GGItemList.SingleUseWrench;
@@ -21,7 +21,7 @@ import static gregtech.api.enums.ToolDictNames.craftingToolFile;
 import static gregtech.api.enums.ToolDictNames.craftingToolHardHammer;
 import static gregtech.api.enums.ToolDictNames.craftingToolSaw;
 import static gregtech.api.enums.ToolDictNames.craftingToolScrewdriver;
-import static gregtech.api.enums.ToolDictNames.craftingToolSoftHammer;
+import static gregtech.api.enums.ToolDictNames.craftingToolSoftMallet;
 import static gregtech.api.enums.ToolDictNames.craftingToolWireCutter;
 import static gregtech.api.enums.ToolDictNames.craftingToolWrench;
 
@@ -44,12 +44,12 @@ public enum SingleUseTool {
     Saw(SingleUseSaw, 7, SingleUseSawMold, 37, craftingToolSaw),
 
     // Soft tools
-    SoftHammer(SingleUseSoftHammer, 5, SingleUseSoftHammerMold, 35, craftingToolSoftHammer);
+    SoftMallet(SingleUseSoftMallet, 5, SingleUseSoftMalletMold, 35, craftingToolSoftMallet);
 
     public static final List<SingleUseTool> HARD_TOOLS = ImmutableList
         .of(File, Wrench, Crowbar, WireCutter, HardHammer, Screwdriver, Saw);
 
-    public static final List<SingleUseTool> SOFT_TOOLS = ImmutableList.of(SoftHammer);
+    public static final List<SingleUseTool> SOFT_TOOLS = ImmutableList.of(SoftMallet);
 
     public final GGItemList tool;
     public final int toolID;

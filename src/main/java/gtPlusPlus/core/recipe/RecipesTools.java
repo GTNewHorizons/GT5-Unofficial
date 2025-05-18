@@ -102,7 +102,7 @@ public class RecipesTools {
 
     // Crafting Tools
     public static String craftingToolHardHammer = "craftingToolHardHammer";
-    public static String craftingToolSoftHammer = "craftingToolSoftHammer";
+    public static String craftingToolSoftHammer = "craftingToolSoftMallet";
     public static String craftingToolFile = "craftingToolFile";
     public static String craftingToolSaw = "craftingToolSaw";
     public static String craftingToolPickaxe = "craftingToolPickaxe";

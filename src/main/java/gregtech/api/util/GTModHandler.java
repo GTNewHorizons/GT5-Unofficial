@@ -905,7 +905,7 @@ public class GTModHandler {
                     }
                     case 'r' -> {
                         tRecipeList.add(c);
-                        tRecipeList.add(ToolDictNames.craftingToolSoftHammer.name());
+                        tRecipeList.add(ToolDictNames.craftingToolSoftMallet.name());
                     }
                     case 's' -> {
                         tRecipeList.add(c);
