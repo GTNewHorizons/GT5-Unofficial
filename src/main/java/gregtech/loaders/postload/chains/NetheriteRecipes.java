@@ -37,9 +37,9 @@ public class NetheriteRecipes {
         GTValues.RA.stdBuilder()
             .fluidInputs(Materials.NetherAir.getFluid(10_000))
             .fluidOutputs(
-                Materials.NitrogenDioxide.getGas(1400),
-                Materials.SulfurDioxide.getGas(3800),
-                Materials.SulfurTrioxide.getGas(2100))
+                Materials.NitrogenDioxide.getGas(1_400),
+                Materials.SulfurDioxide.getGas(3_800),
+                Materials.SulfurTrioxide.getGas(2_100))
             .duration(60 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(centrifugeNonCellRecipes);
@@ -52,16 +52,16 @@ public class NetheriteRecipes {
             .addTo(vacuumFreezerRecipes);
 
         GTValues.RA.stdBuilder()
-            .fluidInputs(Materials.NetherSemiFluid.getFluid(100000))
+            .fluidInputs(Materials.NetherSemiFluid.getFluid(100_000))
             .itemOutputs(ItemList.Heavy_Hellish_Mud.get(2))
             .fluidOutputs(
                 Materials.NefariousGas.getFluid(4_000),
-                FluidUtils.getFluidStack("fluid.coalgas", 16000),
-                FluidUtils.getFluidStack("fluid.anthracene", 70000),
-                Materials.SulfurTrioxide.getGas(210000),
-                Materials.SulfurDioxide.getGas(380000),
-                Materials.NitrogenDioxide.getGas(140000),
-                WerkstoffLoader.Neon.getFluidOrGas(36000))
+                FluidUtils.getFluidStack("fluid.coalgas", 16_000),
+                FluidUtils.getFluidStack("fluid.anthracene", 70_000),
+                Materials.SulfurTrioxide.getGas(210_000),
+                Materials.SulfurDioxide.getGas(380_000),
+                Materials.NitrogenDioxide.getGas(140_000),
+                WerkstoffLoader.Neon.getFluidOrGas(36_000))
             .duration(24 * SECONDS)
             .eut(TierEU.RECIPE_IV)
             .addTo(distillationTowerRecipes);

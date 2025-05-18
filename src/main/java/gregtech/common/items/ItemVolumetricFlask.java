@@ -290,10 +290,10 @@ public class ItemVolumetricFlask extends GTGenericItem implements IFluidContaine
             FluidStack fluid = null;
             if (block != Blocks.water && block != Blocks.flowing_water) {
                 if (block == Blocks.lava || block == Blocks.flowing_lava) {
-                    fluid = Materials.Lava.getFluid(1000);
+                    fluid = Materials.Lava.getFluid(1_000);
                 }
             } else {
-                fluid = Materials.Water.getFluid(1000);
+                fluid = Materials.Water.getFluid(1_000);
             }
 
             if (fluid != null) {

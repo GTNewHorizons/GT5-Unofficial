@@ -152,7 +152,7 @@ public class ProcessingLog implements gregtech.api.interfaces.IOreRecipeRegistra
                                     GTMod.gregtechproxy.mNerfedWoodPlank ? tStack.stackSize : tStack.stackSize * 5 / 4,
                                     tStack),
                                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 2L))
-                            .fluidInputs(Materials.Water.getFluid(Math.min(1000, 200 * 8 / 320)))
+                            .fluidInputs(Materials.Water.getFluid(Math.min(1_000, 200 * 8 / 320)))
                             .duration(20 * SECONDS)
                             .eut(8)
                             .addTo(cutterRecipes);
@@ -209,7 +209,7 @@ public class ProcessingLog implements gregtech.api.interfaces.IOreRecipeRegistra
                                 GTMod.gregtechproxy.mNerfedWoodPlank ? tStack.stackSize : tStack.stackSize * 5 / 4,
                                 tStack),
                             GTOreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 2L))
-                        .fluidInputs(Materials.Water.getFluid(Math.min(1000, 200 * 8 / 320)))
+                        .fluidInputs(Materials.Water.getFluid(Math.min(1_000, 200 * 8 / 320)))
                         .duration(20 * SECONDS)
                         .eut(8)
                         .addTo(cutterRecipes);
@@ -283,7 +283,7 @@ public class ProcessingLog implements gregtech.api.interfaces.IOreRecipeRegistra
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.copyAmount(16, logStack), GTUtility.getIntegratedCircuit(5))
             .itemOutputs(Materials.Charcoal.getGems(20))
-            .fluidOutputs(Materials.WoodGas.getGas(1500))
+            .fluidOutputs(Materials.WoodGas.getGas(1_500))
             .duration(32 * SECONDS)
             .eut(64)
             .addTo(pyrolyseRecipes);
@@ -291,7 +291,7 @@ public class ProcessingLog implements gregtech.api.interfaces.IOreRecipeRegistra
             .itemInputs(GTUtility.copyAmount(16, logStack), GTUtility.getIntegratedCircuit(6))
             .itemOutputs(Materials.Charcoal.getGems(20))
             .fluidInputs(Materials.Nitrogen.getGas(1_000))
-            .fluidOutputs(Materials.WoodGas.getGas(1500))
+            .fluidOutputs(Materials.WoodGas.getGas(1_500))
             .duration(16 * SECONDS)
             .eut(96)
             .addTo(pyrolyseRecipes);

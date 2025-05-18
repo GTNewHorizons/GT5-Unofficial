@@ -68,7 +68,7 @@ public class GTRecipeBuilder {
 
     /** @deprecated Use {@code INGOTS} or quantities in liters instead. */
     @Deprecated
-    public static final int BUCKETS = 1000;
+    public static final int BUCKETS = 1_000;
 
     static {
         final boolean debugAll;

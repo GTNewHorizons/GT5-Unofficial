@@ -63,7 +63,7 @@ public class BauxiteRefineChain {
                 Materials.SodiumCarbonate.getDust(9),
                 Materials.Calcite.getDust(10),
                 MaterialsOreAlum.BauxiteSlag.getDust(16))
-            .fluidInputs(Materials.CarbonDioxide.getGas(5000), MaterialsOreAlum.HeatedBauxiteSlurry.getFluid(8_000))
+            .fluidInputs(Materials.CarbonDioxide.getGas(5_000), MaterialsOreAlum.HeatedBauxiteSlurry.getFluid(8_000))
             .fluidOutputs(MaterialsOreAlum.SluiceJuice.getFluid(5_000))
             .duration(15 * SECONDS)
             .eut(TierEU.RECIPE_HV)
@@ -87,7 +87,7 @@ public class BauxiteRefineChain {
             .itemOutputs(Materials.Rutile.getDust(2), MaterialsOreAlum.IlmeniteSlag.getDust(1))
             .outputChances(10000, 3000)
             .fluidInputs(Materials.SulfuricAcid.getFluid(1_000))
-            .fluidOutputs(new FluidStack(ItemList.sGreenVitriol, 2000))
+            .fluidOutputs(new FluidStack(ItemList.sGreenVitriol, 2_000))
             .duration(21 * SECONDS)
             .eut(1000)
             .addTo(chemicalBathRecipes);
@@ -97,7 +97,7 @@ public class BauxiteRefineChain {
             .itemOutputs(Materials.Rutile.getDust(2), MaterialsOreAlum.IlmeniteSlag.getDust(1))
             .outputChances(10000, 6000)
             .fluidInputs(Materials.SulfuricAcid.getFluid(1_000))
-            .fluidOutputs(new FluidStack(ItemList.sGreenVitriol, 2000))
+            .fluidOutputs(new FluidStack(ItemList.sGreenVitriol, 2_000))
             .duration(21 * SECONDS)
             .eut(1000)
             .addTo(chemicalBathRecipes);
