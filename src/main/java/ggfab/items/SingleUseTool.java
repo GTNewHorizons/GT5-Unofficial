@@ -35,16 +35,16 @@ import gregtech.api.enums.ToolDictNames;
 public enum SingleUseTool {
 
     // Hard tools
-    File(SingleUseFile, SingleUseFileMold, craftingToolFile),
-    Wrench(SingleUseWrench, SingleUseWrenchMold, craftingToolWrench),
-    Crowbar(SingleUseCrowbar, SingleUseCrowbarMold, craftingToolCrowbar),
-    WireCutter(SingleUseWireCutter, SingleUseWireCutterMold, craftingToolWireCutter),
-    HardHammer(SingleUseHardHammer, SingleUseHardHammerMold, craftingToolHardHammer),
-    Screwdriver(SingleUseScrewdriver, SingleUseScrewdriverMold, craftingToolScrewdriver),
-    Saw(SingleUseSaw, SingleUseSawMold, craftingToolSaw),
+    File(SingleUseFile, 0, SingleUseFileMold, 30, craftingToolFile),
+    Wrench(SingleUseWrench, 1, SingleUseWrenchMold, 31, craftingToolWrench),
+    Crowbar(SingleUseCrowbar, 2, SingleUseCrowbarMold, 32, craftingToolCrowbar),
+    WireCutter(SingleUseWireCutter, 3, SingleUseWireCutterMold, 33, craftingToolWireCutter),
+    HardHammer(SingleUseHardHammer, 4, SingleUseHardHammerMold, 34, craftingToolHardHammer),
+    Screwdriver(SingleUseScrewdriver, 6, SingleUseScrewdriverMold, 36, craftingToolScrewdriver),
+    Saw(SingleUseSaw, 7, SingleUseSawMold, 37, craftingToolSaw),
 
     // Soft tools
-    SoftHammer(SingleUseSoftHammer, SingleUseSoftHammerMold, craftingToolSoftHammer);
+    SoftHammer(SingleUseSoftHammer, 5, SingleUseSoftHammerMold, 35, craftingToolSoftHammer);
 
     public static final List<SingleUseTool> HARD_TOOLS = ImmutableList
         .of(File, Wrench, Crowbar, WireCutter, HardHammer, Screwdriver, Saw);
@@ -52,12 +52,16 @@ public enum SingleUseTool {
     public static final List<SingleUseTool> SOFT_TOOLS = ImmutableList.of(SoftHammer);
 
     public final GGItemList tool;
+    public final int toolID;
     public final GGItemList mold;
+    public final int moldID;
     public final ToolDictNames toolDictName;
 
-    SingleUseTool(GGItemList tool, GGItemList mold, ToolDictNames toolDictName) {
+    SingleUseTool(GGItemList tool, int toolID, GGItemList mold, int moldID, ToolDictNames toolDictName) {
         this.tool = tool;
+        this.toolID = toolID;
         this.mold = mold;
+        this.moldID = moldID;
         this.toolDictName = toolDictName;
     }
 }
