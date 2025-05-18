@@ -5,32 +5,24 @@ import static gregtech.api.modularui2.GTGuis.createPopUpPanel;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 
-import org.jetbrains.annotations.NotNull;
-import org.lwjgl.input.Keyboard;
-
 import com.cleanroommc.modularui.api.GuiAxis;
 import com.cleanroommc.modularui.api.IPanelHandler;
 import com.cleanroommc.modularui.api.drawable.IIcon;
-import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.api.widget.IWidget;
 import com.cleanroommc.modularui.drawable.GuiTextures;
 import com.cleanroommc.modularui.drawable.ItemDrawable;
 import com.cleanroommc.modularui.drawable.UITexture;
-import com.cleanroommc.modularui.drawable.text.AnimatedText;
 import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.utils.Alignment;
-import com.cleanroommc.modularui.utils.Color;
 import com.cleanroommc.modularui.utils.serialization.ByteBufAdapters;
 import com.cleanroommc.modularui.value.sync.DoubleSyncValue;
 import com.cleanroommc.modularui.value.sync.GenericListSyncHandler;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.value.sync.StringSyncValue;
 import com.cleanroommc.modularui.widget.ParentWidget;
-import com.cleanroommc.modularui.widget.WidgetTree;
 import com.cleanroommc.modularui.widgets.ButtonWidget;
-import com.cleanroommc.modularui.widgets.CategoryList;
 import com.cleanroommc.modularui.widgets.ListWidget;
 import com.cleanroommc.modularui.widgets.PageButton;
 import com.cleanroommc.modularui.widgets.PagedWidget;
@@ -41,6 +33,7 @@ import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
 
 import gregtech.api.metatileentity.implementations.gui.MTEMultiBlockBaseGui;
 import gregtech.api.modularui2.GTGuiTextures;
+import gregtech.common.modularui2.widget.TerminalWidget;
 import gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex;
 import gtPlusPlus.core.util.math.MathUtils;
 
@@ -59,18 +52,24 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui {
         IPanelHandler popupPanel = syncManager.panel("popup", (m, h) -> createGREGOSPanel(syncManager), true);
 
         return ui.child(new ButtonWidget<>().onMousePressed(mouseButton -> {
-            popupPanel.openPanel();
-            return popupPanel.isPanelOpen();
+            if (!popupPanel.isPanelOpen()) {
+                popupPanel.openPanel();
+            } else {
+                popupPanel.closePanel();
+            }
+            return true;
         })
-            .background(GTGuiTextures.BUTTON_STANDARD)
-            .tooltip(tooltip -> tooltip.add("Add Rule"))
-            .pos(153, 5)
+            .background(GTGuiTextures.BUTTON_STANDARD, GuiTextures.GEAR)
+            .disableHoverBackground()
+            .tooltip(tooltip -> tooltip.add("Open GREGOS manager"))
+            .pos(156, 102)
             .size(18, 18));
     }
 
     public ModularPanel createGREGOSPanel(PanelSyncManager syncManager) {
         ModularPanel ui = createPopUpPanel("gt:nac:gregos", false, false).size(176, 136);
 
+        // TODO: figure out if we should save the conversation to nbt and stuff or not
         GenericListSyncHandler<String> conversationHandler = new GenericListSyncHandler<>(
             () -> base.gregosConversation,
             ByteBufAdapters.STRING);
@@ -86,10 +85,10 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui {
         PagedWidget.Controller tabController = new PagedWidget.Controller();
         PagedWidget<?> pagedWidget = new PagedWidget<>().controller(tabController);
 
-        ListWidget<IWidget, CategoryList.Root> messages = new ListWidget<>();
+        ListWidget<IWidget, ?> messages = new ListWidget<>();
         messages.childSeparator(IIcon.EMPTY_2PX);
-        messages.sizeRel(1, 1);
         messages.pos(2, 2);
+        messages.sizeRel(1, 1);
         messages.scrollDirection(GuiAxis.Y);
 
         ui.child(
@@ -100,38 +99,10 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui {
 
         ParentWidget<?> talkPage = new ParentWidget<>()
             .child(
-                new ParentWidget<>().background(GTGuiTextures.BACKGROUND_TEXT_FIELD)
-                    .child(messages)
-                    .size(140, 80)
-                    .pos(12, 20))
-            .child(new TextWidget("Ask GReGOS").pos(12, 10))
-            .child(new TextFieldWidget() {
-
-                @Override
-                public @NotNull Result onKeyPressed(char character, int keyCode) {
-                    Result result = super.onKeyPressed(character, keyCode);
-                    if (keyCode == Keyboard.KEY_RETURN) {
-                        String text = this.getText();
-                        if (text.isEmpty()) return result;
-                        base.gregosConversation.add(text);
-                        conversationHandler.setValue(base.gregosConversation);
-                        // This is pretty terrible. An anonymous class inside an anonymous class.
-                        messages.child(new TextWidget(text) {
-
-                            @Override
-                            public int getDefaultWidth() {
-                                return Math.max(super.getDefaultWidth(), 136);
-                            }
-                        }.alignment(Alignment.CenterRight)
-                            .color(Color.WHITE.main));
-                        messages.child(
-                            new TextWidget(new AnimatedText(IKey.str(getGREGOSResponse(text)))).color(Color.CYAN.main));
-                        WidgetTree.resize(ui);
-                    }
-                    return result;
-                }
-            }.pos(12, 103)
-                .size(140, 10))
+                new TerminalWidget().setResponseSupplier(this::getGREGOSResponse)
+                    .pos(12, 12)
+                    .size(152, 112)
+                    .build())
             .sizeRel(1);
         ParentWidget<?> infoPage = new ParentWidget<>()
             // TODO: ask #texture-dev to make better textures that dont clash with eachother
@@ -159,10 +130,9 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui {
             pagedWidget.addPage(infoPage)
                 .addPage(talkPage)
                 .sizeRel(1))
-            .pos(577, 202);
+            .posRel(0.75F, 0.5F);
     }
 
-    // This could probably be made better by having all the widgets in a Column but idk how to use that thing
     public void createMeter(ParentWidget<?> page, DoubleSyncValue syncer, UITexture meterTexture, int index,
         double valueMin, double valueMax) {
         int xOffset = index * 50;
@@ -197,7 +167,11 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui {
     public String getGREGOSResponse(String currentText) {
         return switch (currentText.toLowerCase()) {
             case "hi" -> "Hello.";
-            case "gregos" -> "It seems you have asked about NAC's advanced sentient artificial intelligence. This is an artificial intelligence designed to stimulate the player's otherwise inimitably rad typing style, tone, cadence, personality, and substance of retort while they are using the NAC. The algorithms are guaranteed to be 92% indistinguishable from the players' native neurological responses, based on some statistical analysis I basically just pulled out of my ass right now.";
+            case "gregos" -> "It seems you have asked about NAC's advanced sentient artificial intelligence. This is "
+                + "an artificial intelligence designed to simulate the player's otherwise inimitably rad typing "
+                + "style, tone, cadence, personality, and substance of retort while they are using the NAC. The "
+                + "algorithms are guaranteed to be 92% indistinguishable from the players' native neurological "
+                + "responses, based on some statistical analysis I basically just pulled out of my ass right now.";
             case "xyzzy" -> "Nothing happens.";
             case "be the other guy" -> "I am now mDiyoOS.";
             case "open the doors" -> "I'm sorry Player, I'm afraid I can't do that";
@@ -214,7 +188,7 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui {
                     case 8 -> "My sources say no";
                     case 9 -> "Outlook not so good";
                     case 10 -> "Very doubtful";
-                    default -> throw new IllegalStateException("Unexpected value: " + MathUtils.randInt(1, 10));
+                    default -> "what the hell man";
                 };
         };
     }

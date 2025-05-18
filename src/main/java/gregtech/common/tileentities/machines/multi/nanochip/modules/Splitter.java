@@ -12,13 +12,14 @@ import java.util.Map;
 import java.util.Set;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagByteArray;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.nbt.NBTTagString;
 import net.minecraft.util.EnumChatFormatting;
 
 import org.jetbrains.annotations.NotNull;
 
+import com.google.common.primitives.Bytes;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 
@@ -100,7 +101,8 @@ public class Splitter extends MTENanochipAssemblyModuleBase<Splitter> {
         Set<Byte> set = new HashSet<>();
         for (Map.Entry<Integer, ColorRule> entry : colorMap.entrySet()) {
             ColorRule rule = entry.getValue();
-            if (rule.getInputColor() != color) continue;
+            if (!rule.getInputColors()
+                .contains(color)) continue;
             set.addAll(rule.getOutputColors());
         }
         return new ArrayList<>(set);
@@ -287,39 +289,30 @@ public class Splitter extends MTENanochipAssemblyModuleBase<Splitter> {
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
-        // Type "8" is NBTTagString
-        colorMap = loadRulesTagList(aNBT.getTagList("rules", 8));
+        colorMap = loadRulesTagList(aNBT.getTagList("rules", new NBTTagCompound().getId()));
     }
 
     public NBTTagList createRulesTagList() {
         NBTTagList list = new NBTTagList();
         for (Map.Entry<Integer, ColorRule> entry : colorMap.entrySet()) {
             ColorRule rule = entry.getValue();
-            StringBuilder outputsString = new StringBuilder();
-            List<Byte> outputs = rule.getOutputColors();
-            for (int i = 0; i < outputs.size(); i++) {
-                outputsString.append(outputs.get(i));
-                if (i != outputs.size() - 1) outputsString.append("+");
-            }
-            list.appendTag(new NBTTagString(entry.getKey() + "+" + rule.getInputColor() + "->" + outputsString));
+            NBTTagCompound compound = new NBTTagCompound();
+            compound.setTag("inputs", new NBTTagByteArray(Bytes.toArray(rule.getInputColors())));
+            compound.setTag("outputs", new NBTTagByteArray(Bytes.toArray(rule.getOutputColors())));
+            list.appendTag(compound);
         }
         return list;
     }
 
     public Map<Integer, ColorRule> loadRulesTagList(NBTTagList tagList) {
         Map<Integer, ColorRule> map = new HashMap<>();
+        int sustain = 0;
         for (Object a : tagList.tagList) {
-            if (!(a instanceof NBTTagString t)) continue;
-            // Obfuscated method returns the stored string
-            String tag = t.func_150285_a_();
-            String[] data = tag.split("->");
-            String[] inputs = data[0].split("\\+");
-            Set<Byte> outputs = new HashSet<>();
-            for (String string : data[1].split("\\+")) {
-                outputs.add(Byte.valueOf(string));
-            }
-            int id = Integer.parseInt(inputs[0]);
-            map.put(id, new ColorRule(Byte.valueOf(inputs[1]), new ArrayList<>(outputs)));
+            if (!(a instanceof NBTTagCompound compound)) continue;
+            List<Byte> inputs = Bytes.asList(compound.getByteArray("inputs"));
+            List<Byte> outputs = Bytes.asList(compound.getByteArray("outputs"));
+            map.put(sustain, new ColorRule(inputs, outputs));
+            sustain++;
         }
         return map;
     }
@@ -336,16 +329,16 @@ public class Splitter extends MTENanochipAssemblyModuleBase<Splitter> {
 
     public static class ColorRule {
 
-        Byte inputColor;
+        List<Byte> inputColors;
         List<Byte> outputColors;
 
-        public ColorRule(Byte input, List<Byte> outputs) {
-            inputColor = input;
+        public ColorRule(List<Byte> inputs, List<Byte> outputs) {
+            inputColors = inputs;
             outputColors = outputs;
         }
 
-        public Byte getInputColor() {
-            return inputColor;
+        public List<Byte> getInputColors() {
+            return inputColors;
         }
 
         public List<Byte> getOutputColors() {
