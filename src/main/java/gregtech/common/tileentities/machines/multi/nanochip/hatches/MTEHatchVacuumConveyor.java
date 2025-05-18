@@ -5,6 +5,7 @@ import static tectech.thing.metaTileEntity.hatch.MTEHatchDataConnector.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -23,7 +24,7 @@ import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.utils.NumberFormat;
 import com.cleanroommc.modularui.value.sync.GenericSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
-import com.cleanroommc.modularui.widget.ParentWidget;
+import com.cleanroommc.modularui.widget.SingleChildWidget;
 import com.cleanroommc.modularui.widget.Widget;
 import com.cleanroommc.modularui.widgets.layout.Grid;
 import com.gtnewhorizons.modularui.common.internal.network.NetworkUtils;
@@ -193,29 +194,30 @@ public abstract class MTEHatchVacuumConveyor extends MTEHatch implements IConnec
         Grid grid = new Grid().coverChildren()
             .pos(7, 7)
             .mapTo(9, UI_SLOT_COUNT, i -> {
-                ParentWidget<?> slot = new ParentWidget<>().background(GTGuiTextures.SLOT_ITEM_STANDARD)
+                SingleChildWidget<?> slot = new SingleChildWidget<>().background(GTGuiTextures.SLOT_ITEM_STANDARD)
                     .size(18);
                 Widget<?> slotChild = new Widget<>().size(16)
                     .pos(1, 1);
-                slot.child(slotChild);
-                if (contents != null && i < contents.getItemRepresentations()
-                    .size()) {
-                    ItemStack item = contents.getItemRepresentations()
-                        .get(i);
-                    ItemDrawable itemDraw = new ItemDrawable(item);
-                    slotChild.background(itemDraw)
-                        .overlay(
-                            new StringKey(
-                                NumberFormat.format(
-                                    contents.getComponents()
-                                        .get(CircuitComponent.getFromFakeStackUnsafe(item)),
-                                    NumberFormat.AMOUNT_TEXT)).scale(0.6f)
-                                        .alignment(Alignment.BottomRight)
-                                        .style(EnumChatFormatting.WHITE));
-                    slotChild.tooltip(
-                        t -> t.clearText()
-                            .addStringLines(item.getTooltip(data.getPlayer(), false)));
+                if (contents != null) {
+                    List<ItemStack> representations = contents.getItemRepresentations();
+                    if (i < representations.size()) {
+                        ItemStack item = representations.get(i);
+                        ItemDrawable itemDraw = new ItemDrawable(item);
+                        slotChild.background(itemDraw)
+                            .overlay(
+                                new StringKey(
+                                    NumberFormat.format(
+                                        contents.getComponents()
+                                            .get(CircuitComponent.getFromFakeStackUnsafe(item)),
+                                        NumberFormat.AMOUNT_TEXT)).scale(0.6f)
+                                            .alignment(Alignment.BottomRight)
+                                            .style(EnumChatFormatting.WHITE));
+                        slotChild.tooltip(
+                            t -> t.clearText()
+                                .addStringLines(item.getTooltip(data.getPlayer(), false)));
+                    }
                 }
+                slot.child(slotChild);
                 return slot;
             });
 
@@ -226,28 +228,29 @@ public abstract class MTEHatchVacuumConveyor extends MTEHatch implements IConnec
             }
 
             for (int i = 0; i < UI_SLOT_COUNT; i++) {
-                Widget<?> slot = (Widget<?>) grid.getChildren()
+                SingleChildWidget<?> slot = (SingleChildWidget<?>) grid.getChildren()
                     .get(i);
                 Widget<?> slotChild = (Widget<?>) slot.getChildren()
                     .get(0);
-                if (contents != null && i < contents.getItemRepresentations()
-                    .size()) {
-                    ItemStack item = contents.getItemRepresentations()
-                        .get(i);
-                    ItemDrawable itemDraw = new ItemDrawable(item);
-                    slotChild.background(itemDraw)
-                        .overlay(
-                            new StringKey(
-                                NumberFormat.format(
-                                    contents.getComponents()
-                                        .get(CircuitComponent.getFromFakeStackUnsafe(item)),
-                                    NumberFormat.AMOUNT_TEXT)).scale(0.6f)
-                                        .alignment(Alignment.BottomRight)
-                                        .style(EnumChatFormatting.WHITE));
-                    slotChild.tooltip(
-                        t -> t.clearText()
-                            .addStringLines(item.getTooltip(data.getPlayer(), false)));
-                    continue;
+                if (contents != null) {
+                    List<ItemStack> representations = contents.getItemRepresentations();
+                    if (i < representations.size()) {
+                        ItemStack item = representations.get(i);
+                        ItemDrawable itemDraw = new ItemDrawable(item);
+                        slotChild.background(itemDraw)
+                            .overlay(
+                                new StringKey(
+                                    NumberFormat.format(
+                                        contents.getComponents()
+                                            .get(CircuitComponent.getFromFakeStackUnsafe(item)),
+                                        NumberFormat.AMOUNT_TEXT)).scale(0.6f)
+                                            .alignment(Alignment.BottomRight)
+                                            .style(EnumChatFormatting.WHITE));
+                        slotChild.tooltip(
+                            t -> t.clearText()
+                                .addStringLines(item.getTooltip(data.getPlayer(), false)));
+                        continue;
+                    }
                 }
                 slotChild.overlay();
                 slotChild.tooltip(t -> t.clearText());
@@ -266,8 +269,6 @@ public abstract class MTEHatchVacuumConveyor extends MTEHatch implements IConnec
             info.add("Hatch ID: " + identifier);
         }
         if (contents != null) {
-            // TODO: Would be neat to get a gui that displays these in item form I suppose (using some fake items or
-            // something)
             Map<CircuitComponent, Long> components = contents.getComponents();
             for (Map.Entry<CircuitComponent, Long> component : components.entrySet()) {
                 info.add(
