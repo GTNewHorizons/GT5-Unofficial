@@ -51,6 +51,7 @@ public class CoverUIFactory extends AbstractUIFactory<CoverGuiData> {
     @Override
     public @NotNull IGuiHolder<CoverGuiData> getGuiHolder(CoverGuiData data) {
         TileEntity tile = data.getTileEntity();
+        // TODO: Figure out a more graceful way to handle mismatches.
         if (!(tile instanceof ICoverable coverable)) {
             throw new RuntimeException(
                 String.format(
@@ -59,7 +60,26 @@ public class CoverUIFactory extends AbstractUIFactory<CoverGuiData> {
                     tile.yCoord,
                     tile.zCoord));
         }
-        return coverable.getCoverAtSide(data.getSide());
+        Cover cover = coverable.getCoverAtSide(data.getSide());
+        if (!(cover.getCoverID() == data.getCoverID())) {
+            throw new RuntimeException(
+                String.format(
+                    "Cover at %s, %s, %s on side %s is not the expected kind! Expected %s, got %s",
+                    tile.xCoord,
+                    tile.yCoord,
+                    tile.zCoord,
+                    data.getSide(),
+                    data.getCoverID(),
+                    cover.getCoverID()));
+        }
+        return cover;
+    }
+
+    @Override
+    public boolean canInteractWith(EntityPlayer player, CoverGuiData guiData) {
+        return super.canInteractWith(player, guiData) && guiData.getTileEntity() instanceof ICoverable coverable
+            && coverable.getCoverAtSide(guiData.getSide())
+                .getCoverID() == guiData.getCoverID();
     }
 
     @Override
