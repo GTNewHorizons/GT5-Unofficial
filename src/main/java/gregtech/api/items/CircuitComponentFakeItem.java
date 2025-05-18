@@ -23,6 +23,7 @@ public class CircuitComponentFakeItem extends GTGenericItem {
 
     public CircuitComponentFakeItem() {
         super("gt.fakecircuitcomponent", "Fake Circuit Component Item", null);
+        setMaxStackSize(Integer.MAX_VALUE);
         setMaxDamage(0);
         setHasSubtypes(true);
         INSTANCE = this;
