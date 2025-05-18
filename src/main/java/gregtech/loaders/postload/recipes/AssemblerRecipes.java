@@ -1915,7 +1915,7 @@ public class AssemblerRecipes implements Runnable {
                 ItemList.Electric_Pump_MV.get(1),
                 GTUtility.getIntegratedCircuit(9))
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorMV, 3))
-            .fluidInputs(WerkstoffLoader.LiquidHelium.getFluidOrGas(2000))
+            .fluidInputs(WerkstoffLoader.LiquidHelium.getFluidOrGas(2_000))
             .duration(16 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(assemblerRecipes);

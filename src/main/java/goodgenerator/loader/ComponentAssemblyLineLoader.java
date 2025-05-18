@@ -873,7 +873,7 @@ public class ComponentAssemblyLineLoader {
                 getIntegratedCircuit(MOTOR_CIRCUIT))
             .fluidInputs(
                 INDALLOY_140.getFluidStack(1 * STACKS + 32 * INGOTS),
-                Lubricant.getFluid(36000),
+                Lubricant.getFluid(36_000),
                 Europium.getMolten(18 * STACKS),
                 NaquadahAlloy.getMolten(5 * STACKS + 5 * INGOTS + 3 * NUGGETS))
             .duration(24 * MINUTES)
