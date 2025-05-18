@@ -240,12 +240,12 @@ public class MTEPurificationUnitFlocculation extends MTEPurificationUnitBase<MTE
         casingCount = 0;
         if (!checkPiece(STRUCTURE_PIECE_MAIN, STRUCTURE_X_OFFSET, STRUCTURE_Y_OFFSET, STRUCTURE_Z_OFFSET)) return false;
 
-        // At most two input hatches allowed
+        // At most three input hatches allowed
         if (mInputHatches.size() > 3) {
             return false;
         }
 
-        // At most two output hatches allowed
+        // At most three output hatches allowed
         if (mOutputHatches.size() > 3) {
             return false;
         }
