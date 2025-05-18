@@ -530,16 +530,6 @@ public class MTEChemicalPlant extends GTPPMultiBlockBase<MTEChemicalPlant> imple
         return super.addToMachineList(aTileEntity, aBaseCasingIndex);
     }
 
-    @Override
-    public int getMaxEfficiency(final ItemStack aStack) {
-        return 10000;
-    }
-
-    @Override
-    public boolean explodesOnComponentBreak(final ItemStack aStack) {
-        return false;
-    }
-
     public int getMaxCatalystDurability() {
         return 50;
     }

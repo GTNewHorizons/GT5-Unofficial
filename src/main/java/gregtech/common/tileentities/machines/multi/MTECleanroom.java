@@ -709,26 +709,6 @@ public class MTECleanroom extends MTETooltipMultiBlockBase
     }
 
     @Override
-    public boolean isCorrectMachinePart(ItemStack aStack) {
-        return true;
-    }
-
-    @Override
-    public int getMaxEfficiency(ItemStack aStack) {
-        return 10000;
-    }
-
-    @Override
-    public int getDamageToComponent(ItemStack aStack) {
-        return 0;
-    }
-
-    @Override
-    public boolean explodesOnComponentBreak(ItemStack aStack) {
-        return false;
-    }
-
-    @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
         int i = Math.min(stackSize.stackSize, 7);
         IGregTechTileEntity baseEntity = this.getBaseMetaTileEntity();

@@ -146,6 +146,22 @@ public class StructureWrapper<MTE extends MTEMultiBlockBase & IAlignment & IStru
 
     // #region Structure checks/building boilerplate
 
+    public IStructureDefinition<MTE> getStructureDefinition() {
+        return structureDefinition;
+    }
+
+    public Vec3Impl getControllerOffset() {
+        return controllerOffset;
+    }
+
+    public Vec3Impl getMinSize() {
+        return minSize;
+    }
+
+    public Vec3Impl getMaxSize() {
+        return maxSize;
+    }
+
     public boolean checkStructure(MTE instance) {
         return checkStructure(instance, STRUCTURE_SHAPE_MAIN, null);
     }

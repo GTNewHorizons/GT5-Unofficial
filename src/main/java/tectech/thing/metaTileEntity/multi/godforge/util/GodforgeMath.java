@@ -305,6 +305,14 @@ public class GodforgeMath {
         return module instanceof MTESmeltingModule;
     }
 
+    public static boolean factorChangeDuringRecipeAntiCheese(MTEBaseModule module) {
+        if (module instanceof MTESmeltingModule || module instanceof MTEMoltenModule) {
+            return module.getCurrentRecipeHeat() > module.getHeat();
+        } else {
+            return false;
+        }
+    }
+
     public static void queryMilestoneStats(MTEBaseModule module, MTEForgeOfGods godforge) {
         godforge.addTotalPowerConsumed(module.getPowerTally());
         module.setPowerTally(BigInteger.ZERO);

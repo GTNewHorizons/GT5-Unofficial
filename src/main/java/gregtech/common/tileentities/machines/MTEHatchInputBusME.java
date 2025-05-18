@@ -541,6 +541,7 @@ public class MTEHatchInputBusME extends MTEHatchInputBus
     }
 
     protected void refreshItemList() {
+        if (!isActive()) return;
         AENetworkProxy proxy = getProxy();
         try {
             IMEMonitor<IAEItemStack> sg = proxy.getStorage()
@@ -684,7 +685,7 @@ public class MTEHatchInputBusME extends MTEHatchInputBus
 
     /**
      * Gets the first non-null shadow item stack.
-     * 
+     *
      * @param hasToMatchGhost Whether the first item stack returned has to match the first non-null ghost stack
      * @return The first shadow item stack, or null if this doesn't exist.
      */

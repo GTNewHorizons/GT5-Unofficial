@@ -4,8 +4,6 @@ import static gregtech.api.enums.ToolDictNames.*;
 import static gregtech.common.items.IDMetaTool01.*;
 import static gregtech.common.items.MetaGeneratedTool01.INSTANCE;
 
-import net.minecraft.item.ItemStack;
-
 import com.gtnewhorizon.gtnhlib.config.ConfigException;
 import com.gtnewhorizon.gtnhlib.config.ConfigurationManager;
 
@@ -16,6 +14,7 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import ggfab.api.GGFabRecipeMaps;
 import ggfab.api.GigaGramFabAPI;
 import ggfab.items.GGMetaItemDumbItems;
+import ggfab.items.SingleUseTool;
 import ggfab.mte.MTEAdvAssLine;
 import ggfab.mte.MTELinkedInputBus;
 import ggfab.util.GGUtils;
@@ -154,41 +153,16 @@ public class GigaGramFab {
         int id = 0;
         int idShape = 30;
         final int budget = idShape;
-        String prefix = "One_Use_craftingTool";
-        String prefix2 = "Shape_One_Use_craftingTool";
-        for (GGItemList i : GGItemList.values()) {
-            ItemStack stack = null;
-            if (i.name()
-                .startsWith(prefix)) {
-                stack = i1.addItem(
-                    id++,
-                    "Single Use " + GGUtils.processSentence(
-                        i.name()
-                            .substring(prefix.length()),
-                        ' ',
-                        true,
-                        true),
-                    null,
-                    i,
-                    i.name()
-                        .substring("One_Use_".length()));
-            } else if (i.name()
-                .startsWith(prefix2)) {
-                    stack = i1.addItem(
-                        idShape++,
-                        "Tool Casting Mold (" + GGUtils.processSentence(
-                            i.name()
-                                .substring(prefix2.length()),
-                            ' ',
-                            true,
-                            true) + ")",
-                        null,
-                        i);
-                }
-            if (stack != null) {
-                i.set(stack);
-            }
+
+        for (SingleUseTool singleUseTool : SingleUseTool.values()) {
+            GGItemList tool = singleUseTool.tool;
+            tool.set(i1.addItem(id++, GGUtils.processSentence(tool.name(), ' ', true, true), null, tool, tool.name()));
+
+            GGItemList mold = singleUseTool.mold;
+            String moldLabel = "Mold (" + GGUtils.processSentence(tool.name() + ")", ' ', true, true);
+            mold.set(i1.addItem(idShape++, moldLabel, null, mold, mold.name()));
         }
+
         if (id >= budget || idShape >= 2 * budget || idShape - id != budget) throw new AssertionError();
     }
 }

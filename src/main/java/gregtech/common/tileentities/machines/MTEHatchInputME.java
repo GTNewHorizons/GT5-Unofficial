@@ -502,7 +502,7 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
 
     /**
      * Gets the first non-null shadow fluid stack.
-     * 
+     *
      * @param hasToMatchGhost Whether the first fluid stack returned has to match the first non-null ghost stack
      * @return The first shadow fluid stack, or null if this doesn't exist.
      */
@@ -708,13 +708,6 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
         dataStick.stackTagCompound = getCopiedData(aPlayer);
         dataStick.setStackDisplayName("Stocking Input Hatch Configuration");
         aPlayer.addChatMessage(new ChatComponentTranslation("GT5U.machines.stocking_bus.saved"));
-    }
-
-    @Override
-    public void onExplosion() {
-        for (int i = 0; i < SLOT_COUNT; i++) {
-            mInventory[i] = null;
-        }
     }
 
     public boolean containsSuchStack(FluidStack tStack) {

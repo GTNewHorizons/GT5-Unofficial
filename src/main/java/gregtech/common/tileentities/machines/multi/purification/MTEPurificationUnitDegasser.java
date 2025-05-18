@@ -673,7 +673,7 @@ public class MTEPurificationUnitDegasser extends MTEPurificationUnitBase<MTEPuri
             FluidStack waterOutput = mOutputFluids[0];
             FluidStack bonusOutput = new FluidStack(
                 waterOutput.getFluid(),
-                (int) (this.effectiveParallel * waterOutput.amount * (outputMultiplier - 1.0f)));
+                (int) (waterOutput.amount * (outputMultiplier - 1.0f)));
             this.addOutput(bonusOutput);
         }
     }
@@ -686,11 +686,6 @@ public class MTEPurificationUnitDegasser extends MTEPurificationUnitBase<MTEPuri
         } else {
             return 0.0f;
         }
-    }
-
-    @Override
-    public boolean isCorrectMachinePart(ItemStack aStack) {
-        return true;
     }
 
     @Override

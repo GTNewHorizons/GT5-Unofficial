@@ -132,11 +132,6 @@ public class MTECoolantTower extends MTETooltipMultiBlockBaseEM implements ICons
     }
 
     @Override
-    public int getMaxEfficiency(ItemStack aStack) {
-        return 10000;
-    }
-
-    @Override
     public boolean onRunningTick(ItemStack aStack) {
         return true;
     }

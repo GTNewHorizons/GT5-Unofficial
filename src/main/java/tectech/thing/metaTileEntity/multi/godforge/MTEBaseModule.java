@@ -85,6 +85,7 @@ public class MTEBaseModule extends TTMultiblockBase implements IConstructable, I
     protected long processingVoltage = 2_000_000_000;
     protected BigInteger powerTally = BigInteger.ZERO;
     protected long recipeTally = 0;
+    private long currentRecipeHeat = 0;
     private static Textures.BlockIcons.CustomIcon ScreenON;
     private static Textures.BlockIcons.CustomIcon ScreenOFF;
 
@@ -257,6 +258,14 @@ public class MTEBaseModule extends TTMultiblockBase implements IConstructable, I
 
     public int getTier() {
         return tier;
+    }
+
+    public void setCurrentRecipeHeat(long heat) {
+        currentRecipeHeat = heat;
+    }
+
+    public long getCurrentRecipeHeat() {
+        return currentRecipeHeat;
     }
 
     @Override
@@ -610,6 +619,7 @@ public class MTEBaseModule extends TTMultiblockBase implements IConstructable, I
         NBT.setBoolean("isVoltageConfigUnlocked", isVoltageConfigUnlocked);
         NBT.setLong("processingVoltage", processingVoltage);
         NBT.setLong("recipeTally", recipeTally);
+        NBT.setLong("currentRecipeHeat", currentRecipeHeat);
         NBT.setByteArray("powerTally", powerTally.toByteArray());
         super.saveNBTData(NBT);
     }
@@ -620,6 +630,7 @@ public class MTEBaseModule extends TTMultiblockBase implements IConstructable, I
         isVoltageConfigUnlocked = NBT.getBoolean("isVoltageConfigUnlocked");
         processingVoltage = NBT.getLong("processingVoltage");
         recipeTally = NBT.getLong("recipeTally");
+        currentRecipeHeat = NBT.getLong("currentRecipeHeat");
         powerTally = new BigInteger(NBT.getByteArray("powerTally"));
         super.loadNBTData(NBT);
     }

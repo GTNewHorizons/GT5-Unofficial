@@ -213,11 +213,6 @@ public class MTEWindmill extends MTEEnhancedMultiBlockBase<MTEWindmill>
         return tt;
     }
 
-    @Override
-    public boolean isCorrectMachinePart(ItemStack itemStack) {
-        return true;
-    }
-
     private final Set<TileEntityDispenser> tileEntityDispensers = new HashSet<>();
 
     @Override
@@ -413,21 +408,6 @@ public class MTEWindmill extends MTEEnhancedMultiBlockBase<MTEWindmill>
         if (this.mInventory[1] != null && this.mInventory[1].stackSize <= 0) {
             this.mInventory[1] = null;
         }
-    }
-
-    @Override
-    public int getMaxEfficiency(ItemStack itemStack) {
-        return 10000;
-    }
-
-    @Override
-    public int getDamageToComponent(ItemStack itemStack) {
-        return 0;
-    }
-
-    @Override
-    public boolean explodesOnComponentBreak(ItemStack itemStack) {
-        return false;
     }
 
     @Override

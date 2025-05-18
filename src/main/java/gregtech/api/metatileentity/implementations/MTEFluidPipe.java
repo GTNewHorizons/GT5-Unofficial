@@ -46,6 +46,7 @@ import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.ParticleFX;
 import gregtech.api.enums.SoundResource;
+import gregtech.api.enums.TextureSet;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.ToolModes;
 import gregtech.api.interfaces.IIconContainer;
@@ -90,14 +91,14 @@ public class MTEFluidPipe extends MetaPipeEntity {
         RESTR_TEXTURE_MAP.put(LEFT.mask, Textures.BlockIcons.PIPE_RESTRICTOR_LEFT);
         RESTR_TEXTURE_MAP.put(TOP.mask | LEFT.mask, Textures.BlockIcons.PIPE_RESTRICTOR_UL);
         RESTR_TEXTURE_MAP.put(BOTTOM.mask | LEFT.mask, Textures.BlockIcons.PIPE_RESTRICTOR_DL);
-        RESTR_TEXTURE_MAP.put(TOP.mask | BOTTOM.mask | LEFT.mask, Textures.BlockIcons.PIPE_RESTRICTOR_NR);
+        RESTR_TEXTURE_MAP.put(TOP.mask | BOTTOM.mask | LEFT.mask, Textures.BlockIcons.PIPE_RESTRICTOR_NR); // not right
         RESTR_TEXTURE_MAP.put(RIGHT.mask, Textures.BlockIcons.PIPE_RESTRICTOR_RIGHT);
         RESTR_TEXTURE_MAP.put(TOP.mask | RIGHT.mask, Textures.BlockIcons.PIPE_RESTRICTOR_UR);
         RESTR_TEXTURE_MAP.put(BOTTOM.mask | RIGHT.mask, Textures.BlockIcons.PIPE_RESTRICTOR_DR);
-        RESTR_TEXTURE_MAP.put(TOP.mask | BOTTOM.mask | RIGHT.mask, Textures.BlockIcons.PIPE_RESTRICTOR_NL);
+        RESTR_TEXTURE_MAP.put(TOP.mask | BOTTOM.mask | RIGHT.mask, Textures.BlockIcons.PIPE_RESTRICTOR_NL); // not left
         RESTR_TEXTURE_MAP.put(LEFT.mask | RIGHT.mask, Textures.BlockIcons.PIPE_RESTRICTOR_LR);
-        RESTR_TEXTURE_MAP.put(TOP.mask | LEFT.mask | RIGHT.mask, Textures.BlockIcons.PIPE_RESTRICTOR_ND);
-        RESTR_TEXTURE_MAP.put(BOTTOM.mask | LEFT.mask | RIGHT.mask, Textures.BlockIcons.PIPE_RESTRICTOR_NU);
+        RESTR_TEXTURE_MAP.put(TOP.mask | LEFT.mask | RIGHT.mask, Textures.BlockIcons.PIPE_RESTRICTOR_ND); // not down
+        RESTR_TEXTURE_MAP.put(BOTTOM.mask | LEFT.mask | RIGHT.mask, Textures.BlockIcons.PIPE_RESTRICTOR_NU); // not up
         RESTR_TEXTURE_MAP.put(TOP.mask | BOTTOM.mask | LEFT.mask | RIGHT.mask, Textures.BlockIcons.PIPE_RESTRICTOR);
     }
 
@@ -153,52 +154,54 @@ public class MTEFluidPipe extends MetaPipeEntity {
     }
 
     @Override
-    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, int aConnections,
-        int colorIndex, boolean aConnected, boolean redstoneLevel) {
-        if (side == ForgeDirection.UNKNOWN) return Textures.BlockIcons.ERROR_RENDERING;
-        final float tThickNess = getThickness();
-        if (mDisableInput == 0)
-            return new ITexture[] { aConnected ? getBaseTexture(tThickNess, mPipeAmount, mMaterial, colorIndex)
-                : TextureFactory.of(
-                    mMaterial.mIconSet.mTextures[OrePrefixes.pipe.mTextureIndex],
-                    Dyes.getModulation(colorIndex, mMaterial.mRGBa)) };
-        int borderMask = 0;
-        for (Border border : Border.values()) {
-            if (isInputDisabledAtSide(getSideAtBorder(side, border))) borderMask |= border.mask;
+    public ITexture[] getTexture(IGregTechTileEntity base, ForgeDirection side, int connections, int colorIndex,
+        boolean connected, boolean redstoneLevel) {
+        List<ITexture> textures = new ArrayList<>();
+
+        textures.add(getBaseTexture(connected, colorIndex));
+
+        if (mDisableInput != 0) {
+            int borderMask = 0;
+
+            for (Border border : Border.values()) {
+                if (isInputDisabledAtSide(getSideAtBorder(side, border))) borderMask |= border.mask;
+            }
+
+            textures.add(getRestrictorTexture(borderMask));
         }
 
-        return new ITexture[] { aConnected ? getBaseTexture(tThickNess, mPipeAmount, mMaterial, colorIndex)
-            : TextureFactory.of(
-                mMaterial.mIconSet.mTextures[OrePrefixes.pipe.mTextureIndex],
-                Dyes.getModulation(colorIndex, mMaterial.mRGBa)),
-            getRestrictorTexture(borderMask) };
+        return textures.toArray(new ITexture[0]);
     }
 
-    protected static ITexture getBaseTexture(float aThickNess, int aPipeAmount, Materials aMaterial, int colorIndex) {
-        if (aPipeAmount >= 9) return TextureFactory.of(
-            aMaterial.mIconSet.mTextures[OrePrefixes.pipeNonuple.mTextureIndex],
-            Dyes.getModulation(colorIndex, aMaterial.mRGBa));
-        if (aPipeAmount >= 4) return TextureFactory.of(
-            aMaterial.mIconSet.mTextures[OrePrefixes.pipeQuadruple.mTextureIndex],
-            Dyes.getModulation(colorIndex, aMaterial.mRGBa));
-        if (aThickNess < 0.124F) return TextureFactory.of(
-            aMaterial.mIconSet.mTextures[OrePrefixes.pipe.mTextureIndex],
-            Dyes.getModulation(colorIndex, aMaterial.mRGBa));
-        if (aThickNess < 0.374F) return TextureFactory.of(
-            aMaterial.mIconSet.mTextures[OrePrefixes.pipeTiny.mTextureIndex],
-            Dyes.getModulation(colorIndex, aMaterial.mRGBa));
-        if (aThickNess < 0.499F) return TextureFactory.of(
-            aMaterial.mIconSet.mTextures[OrePrefixes.pipeSmall.mTextureIndex],
-            Dyes.getModulation(colorIndex, aMaterial.mRGBa));
-        if (aThickNess < 0.749F) return TextureFactory.of(
-            aMaterial.mIconSet.mTextures[OrePrefixes.pipeMedium.mTextureIndex],
-            Dyes.getModulation(colorIndex, aMaterial.mRGBa));
-        if (aThickNess < 0.874F) return TextureFactory.of(
-            aMaterial.mIconSet.mTextures[OrePrefixes.pipeLarge.mTextureIndex],
-            Dyes.getModulation(colorIndex, aMaterial.mRGBa));
-        return TextureFactory.of(
-            aMaterial.mIconSet.mTextures[OrePrefixes.pipeHuge.mTextureIndex],
-            Dyes.getModulation(colorIndex, aMaterial.mRGBa));
+    protected ITexture getBaseTexture(boolean connected, int colorIndex) {
+        return getBaseTexture(mThickNess, mPipeAmount, mMaterial.mIconSet, mMaterial.mRGBa, connected, colorIndex);
+    }
+
+    protected static ITexture getBaseTexture(float aThickNess, int aPipeAmount, TextureSet textureSet, short[] rgba,
+        boolean connected, int colorIndex) {
+        IIconContainer texture = textureSet.mTextures[OrePrefixes.pipeHuge.mTextureIndex];
+
+        if (!connected) {
+            texture = textureSet.mTextures[OrePrefixes.pipe.mTextureIndex];
+        } else if (aPipeAmount >= 9) {
+            texture = textureSet.mTextures[OrePrefixes.pipeNonuple.mTextureIndex];
+        } else if (aPipeAmount >= 4) {
+            texture = textureSet.mTextures[OrePrefixes.pipeQuadruple.mTextureIndex];
+        } else if (aThickNess < 0.124F) {
+            texture = textureSet.mTextures[OrePrefixes.pipe.mTextureIndex];
+        } else if (aThickNess < 0.374F) {
+            texture = textureSet.mTextures[OrePrefixes.pipeTiny.mTextureIndex];
+        } else if (aThickNess < 0.499F) {
+            texture = textureSet.mTextures[OrePrefixes.pipeSmall.mTextureIndex];
+        } else if (aThickNess < 0.749F) {
+            texture = textureSet.mTextures[OrePrefixes.pipeMedium.mTextureIndex];
+        } else if (aThickNess < 0.874F) {
+            texture = textureSet.mTextures[OrePrefixes.pipeLarge.mTextureIndex];
+        }
+
+        rgba = Dyes.getModulation(colorIndex, rgba);
+
+        return TextureFactory.of(texture, rgba);
     }
 
     protected static ITexture getRestrictorTexture(int borderMask) {

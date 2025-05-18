@@ -136,11 +136,6 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase
     }
 
     @Override
-    public boolean isCorrectMachinePart(ItemStack aStack) {
-        return true;
-    }
-
-    @Override
     public RecipeMap<?> getRecipeMap() {
         return null;
     }
@@ -260,21 +255,6 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase
     public void loadNBTData(NBTTagCompound nbt) {
         wirelessEnabled = nbt.getBoolean("wirelessEnabled");
         super.loadNBTData(nbt);
-    }
-
-    @Override
-    public int getMaxEfficiency(ItemStack aStack) {
-        return 10000;
-    }
-
-    @Override
-    public int getDamageToComponent(ItemStack aStack) {
-        return 0;
-    }
-
-    @Override
-    public boolean explodesOnComponentBreak(ItemStack aStack) {
-        return false;
     }
 
     @Override

@@ -2020,7 +2020,7 @@ public abstract class ForgeOfGodsStructureString {
             "                                                                                                                               ",
             "                                                                                                                               ",
             "                                                                                                                               ",
-            "                              BBBBBBB                                                      BBBBBB                              ",
+            "                              BBBBBB                                                       BBBBBB                              ",
             "                              EEEEEE                                                       EEEEEE                              ",
             "                              EEEEGG                                                       GGEEEE                              ",
             "                              EEEEEE                                                       EEEEEE                              ",

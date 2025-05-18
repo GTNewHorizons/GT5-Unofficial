@@ -184,10 +184,9 @@ public class GTRendererBlock implements ISimpleBlockRenderingHandler {
 
         for (int i = 0; i < VALID_DIRECTIONS.length; i++) {
             final ForgeDirection iSide = VALID_DIRECTIONS[i];
-            tIsCovered[i] = (aTileEntity.hasCoverAtSide(iSide));
+            tIsCovered[i] = aTileEntity.hasCoverAtSide(iSide);
             tCovers[i] = aTileEntity.getTexture(aBlock, iSide);
             tIcons[i] = aTileEntity.getTextureUncovered(iSide);
-
         }
 
         switch (aConnections) {

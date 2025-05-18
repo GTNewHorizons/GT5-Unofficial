@@ -221,11 +221,6 @@ public class MTEDroneCentre extends MTEExtendedPowerMultiBlockBase<MTEDroneCentr
             && !f.isVerticallyFliped();
     }
 
-    @Override
-    public boolean isCorrectMachinePart(ItemStack aStack) {
-        return true;
-    }
-
     private void onCasingAdded() {
         mCasingAmount++;
     }
@@ -234,11 +229,6 @@ public class MTEDroneCentre extends MTEExtendedPowerMultiBlockBase<MTEDroneCentr
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         mCasingAmount = 0;
         return checkPiece("main", 2, 1, 0) && mCasingAmount >= CASINGS_MIN;
-    }
-
-    @Override
-    public int getMaxEfficiency(ItemStack aStack) {
-        return 10000;
     }
 
     @Override
@@ -254,11 +244,6 @@ public class MTEDroneCentre extends MTEExtendedPowerMultiBlockBase<MTEDroneCentr
         } else {
             destroyRenderBlock();
         }
-    }
-
-    @Override
-    public int getDamageToComponent(ItemStack aStack) {
-        return 0;
     }
 
     @Override

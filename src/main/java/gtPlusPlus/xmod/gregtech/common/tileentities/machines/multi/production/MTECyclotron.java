@@ -160,7 +160,7 @@ public class MTECyclotron extends GTPPMultiBlockBase<MTECyclotron> implements IS
             .addInfo("Can produce a continuous beam current of 2.2 mA at 590 MeV")
             .addInfo("Which will be extracted from the Isochronous Cyclotron")
             .addSeparator()
-            .addInfo("Consists of the same layout as a Fusion Reactor")
+            .addInfo("Similar structure to the Fusion Reactor")
             .addInfo("Any external casing can be a hatch/bus, unlike Fusion")
             .addInfo("Cyclotron Machine Casings around Cyclotron Coil Blocks")
             .addPollutionAmount(getPollutionPerSecond(null))
@@ -171,7 +171,6 @@ public class MTECyclotron extends GTPPMultiBlockBase<MTECyclotron> implements IS
             .addInputHatch("Any Casing", 1)
             .addOutputHatch("Any Casing", 1)
             .addEnergyHatch("Any Casing", 1)
-            .addMaintenanceHatch("Any Casing", 1)
             .toolTipFinisher();
         return tt;
     }
@@ -278,11 +277,6 @@ public class MTECyclotron extends GTPPMultiBlockBase<MTECyclotron> implements IS
             }
         }
         return super.onRunningTick(aStack);
-    }
-
-    @Override
-    public int getMaxEfficiency(ItemStack aStack) {
-        return 10000;
     }
 
     @Override

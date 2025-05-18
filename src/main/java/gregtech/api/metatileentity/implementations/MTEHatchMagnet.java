@@ -1,6 +1,5 @@
 package gregtech.api.metatileentity.implementations;
 
-import static gregtech.api.enums.GTValues.AuthorFourIsTheNumber;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_EMS_HOUSING;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_EMS_HOUSING_GLOW;
 import static gregtech.common.modularui2.util.CommonGuiComponents.gridTemplate1by1;
@@ -8,12 +7,11 @@ import static gregtech.common.modularui2.util.CommonGuiComponents.gridTemplate1b
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import org.apache.commons.lang3.ArrayUtils;
-
 import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
-import com.cleanroommc.modularui.widgets.ItemSlot;
+import com.cleanroommc.modularui.widgets.slot.ItemSlot;
 import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
@@ -39,11 +37,6 @@ public class MTEHatchMagnet extends MTEHatch {
     @Override
     public boolean isFacingValid(ForgeDirection facing) {
         return true;
-    }
-
-    @Override
-    public String[] getDescription() {
-        return ArrayUtils.addAll(this.mDescriptionArray, AuthorFourIsTheNumber);
     }
 
     @Override
@@ -102,9 +95,9 @@ public class MTEHatchMagnet extends MTEHatch {
     }
 
     @Override
-    public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager) {
+    public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager, UISettings uiSettings) {
         syncManager.registerSlotGroup("item_inv", 1);
-        return GTGuis.mteTemplatePanelBuilder(this, data, syncManager)
+        return GTGuis.mteTemplatePanelBuilder(this, data, syncManager, uiSettings)
             .build()
             .child(
                 gridTemplate1by1(

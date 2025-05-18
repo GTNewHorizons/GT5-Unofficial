@@ -806,6 +806,9 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements IConstructable,
         if (parallelAmount > 1) {
             chance -= stellarPlasmaOverflowProbabilityAdjustment;
         } else {
+            if (chance == previousRecipeChance && pityChance >= 1) {
+                chance = 1;
+            }
             chance -= (hydrogenOverflowProbabilityAdjustment + heliumOverflowProbabilityAdjustment);
         }
 
@@ -1434,9 +1437,11 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements IConstructable,
     }
 
     private double successChance;
+    private double pityChance;
+    private double previousRecipeChance;
     private long currentRecipeRocketTier;
 
-    private void outputFailedChance() {
+    private void outputFailedChance(double currentBaseChance) {
         long failedParallelAmount = parallelAmount - successfulParallelAmount;
         if (failedParallelAmount > 0) {
             // 2^Tier spacetime released upon recipe failure.
@@ -1444,6 +1449,17 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements IConstructable,
                 MaterialsUEVplus.SpaceTime.getMolten(1),
                 (long) ((successChance * MOLTEN_SPACETIME_PER_FAILURE_TIER
                     * pow(SPACETIME_FAILURE_BASE, currentRecipeRocketTier + 1)) * failedParallelAmount));
+            if (parallelAmount == 1) {
+                // Add chance to pity if previous recipe is equal to current one, else reset pity
+                if (previousRecipeChance == successChance) {
+                    pityChance += (1 - successChance) * successChance;
+                } else {
+                    pityChance = successChance;
+                }
+            }
+        } else if (parallelAmount == 1) {
+            // Recipe succeeded, reset pity
+            pityChance = currentBaseChance;
         }
         super.outputAfterRecipe_EM();
     }
@@ -1480,6 +1496,9 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements IConstructable,
     public void outputAfterRecipe_EM() {
         recipeRunning = false;
         eRequiredData = 0L;
+        double currentBaseChance = currentRecipe.getBaseRecipeSuccessChance()
+            - timeAccelerationFieldMetadata * TIME_ACCEL_DECREASE_CHANCE_PER_TIER
+            + stabilisationFieldMetadata * STABILITY_INCREASE_PROBABILITY_DECREASE_YIELD_PER_TIER;
 
         destroyRenderBlock();
 
@@ -1489,7 +1508,8 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements IConstructable,
         startEU = 0;
         outputEU_BigInt = BigInteger.ZERO;
 
-        outputFailedChance();
+        outputFailedChance(currentBaseChance);
+        previousRecipeChance = currentBaseChance;
 
         if (successfulParallelAmount > 0) {
             for (ItemStackLong itemStack : outputItems) {
@@ -1702,6 +1722,8 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements IConstructable,
     private static final String SUCCESSFUL_PARALLEL_AMOUNT_NBT_TAG = EYE_OF_HARMONY + "successfulParallelAmount";
     private static final String ASTRAL_ARRAY_AMOUNT_NBT_TAG = EYE_OF_HARMONY + "astralArrayAmount";
     private static final String CALCULATED_EU_INPUT_NBT_TAG = EYE_OF_HARMONY + "usedEU";
+    private static final String EXTRA_PITY_CHANCE_BOOST_NBT_TAG = EYE_OF_HARMONY + "pityChance";
+    private static final String PREVIOUS_RECIPE_CHANCE_NBT_TAG = EYE_OF_HARMONY + "previousChance";
 
     // Sub tags, less specific names required.
     private static final String STACK_SIZE = "stackSize";
@@ -1763,6 +1785,8 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements IConstructable,
         aNBT.setLong(ASTRAL_ARRAY_AMOUNT_NBT_TAG, astralArrayAmount);
         aNBT.setByteArray(CALCULATED_EU_OUTPUT_NBT_TAG, outputEU_BigInt.toByteArray());
         aNBT.setByteArray(CALCULATED_EU_INPUT_NBT_TAG, usedEU.toByteArray());
+        aNBT.setDouble(EXTRA_PITY_CHANCE_BOOST_NBT_TAG, pityChance);
+        aNBT.setDouble(PREVIOUS_RECIPE_CHANCE_NBT_TAG, previousRecipeChance);
 
         // Store damage values/stack sizes of GT items being outputted.
         NBTTagCompound itemStackListNBTTag = new NBTTagCompound();
@@ -1835,6 +1859,8 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements IConstructable,
             outputEU_BigInt = new BigInteger(aNBT.getByteArray(CALCULATED_EU_OUTPUT_NBT_TAG));
         if (aNBT.hasKey(CALCULATED_EU_INPUT_NBT_TAG))
             usedEU = new BigInteger(aNBT.getByteArray(CALCULATED_EU_INPUT_NBT_TAG));
+        pityChance = aNBT.getDouble(EXTRA_PITY_CHANCE_BOOST_NBT_TAG);
+        previousRecipeChance = aNBT.getDouble(PREVIOUS_RECIPE_CHANCE_NBT_TAG);
 
         // Load damage values/stack sizes of GT items being outputted and convert back to items.
         NBTTagCompound tempItemTag = aNBT.getCompoundTag(ITEM_OUTPUT_NBT_TAG);

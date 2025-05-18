@@ -484,11 +484,6 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
     }
 
     @Override
-    public boolean isCorrectMachinePart(ItemStack stack) {
-        return true;
-    }
-
-    @Override
     public @NotNull CheckRecipeResult checkProcessing() {
         this.mProgresstime = 1;
         this.mMaxProgresstime = 1;
@@ -1226,21 +1221,6 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
         warningReceived = nbt.getBoolean("warningReceived");
 
         super.loadNBTData(nbt);
-    }
-
-    @Override
-    public int getMaxEfficiency(ItemStack stack) {
-        return 10000;
-    }
-
-    @Override
-    public int getDamageToComponent(ItemStack stack) {
-        return 0;
-    }
-
-    @Override
-    public boolean explodesOnComponentBreak(ItemStack stack) {
-        return false;
     }
 
     // called by the getEUCapacity() function in BaseMetaTileEntity

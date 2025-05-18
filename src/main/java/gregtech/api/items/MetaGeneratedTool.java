@@ -67,7 +67,7 @@ import mrtjp.projectred.api.IScrewdriver;
 @Optional.InterfaceList(
     value = { @Optional.Interface(iface = "forestry.api.arboriculture.IToolGrafter", modid = Mods.Names.FORESTRY),
         @Optional.Interface(iface = "mods.railcraft.api.core.items.IToolCrowbar", modid = Mods.Names.RAILCRAFT),
-        @Optional.Interface(iface = "buildcraft.api.tools.IToolWrench", modid = Mods.Names.BUILD_CRAFT),
+        @Optional.Interface(iface = "buildcraft.api.tools.IToolWrench", modid = Mods.Names.BUILD_CRAFT_CORE),
         @Optional.Interface(iface = "crazypants.enderio.api.tool.ITool", modid = Mods.Names.ENDER_I_O),
         @Optional.Interface(iface = "mrtjp.projectred.api.IScrewdriver", modid = Mods.Names.PROJECT_RED_CORE), })
 public abstract class MetaGeneratedTool extends MetaBaseItem

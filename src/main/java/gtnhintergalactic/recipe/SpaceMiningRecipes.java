@@ -49,7 +49,7 @@ public class SpaceMiningRecipes {
     static {
         for (ItemMiningDrones.DroneTiers droneTier : ItemMiningDrones.DroneTiers.values()) {
             int i = droneTier.ordinal();
-            ItemStack drone = droneTier.get(1);
+            ItemStack drone = droneTier.get(0);
             MINING_DRONES[i] = drone;
             DRONE_TIERS.put(GTUtility.ItemId.createWithoutNBT(drone), i);
         }

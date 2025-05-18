@@ -239,17 +239,6 @@ public class TileEntityPlanetaryGasSiphon extends MTEEnhancedMultiBlockBase<Tile
     }
 
     /**
-     * Check if the input item is the correct machine part
-     *
-     * @param stack Input item
-     * @return True if correct machine part, else false
-     */
-    @Override
-    public boolean isCorrectMachinePart(ItemStack stack) {
-        return true;
-    }
-
-    /**
      * Check if this machine can perform a recipe
      *
      * @return True if recipe was started, else false
@@ -388,39 +377,6 @@ public class TileEntityPlanetaryGasSiphon extends MTEEnhancedMultiBlockBase<Tile
             && mEnergyHatches.size() == 1
             && mInputHatches.isEmpty()
             && mOutputBusses.isEmpty();
-    }
-
-    /**
-     * Get the maximum efficiency of this machine
-     *
-     * @param stack Item in the controller
-     * @return Maximum efficiency
-     */
-    @Override
-    public int getMaxEfficiency(ItemStack stack) {
-        return 10000;
-    }
-
-    /**
-     * Get the damage that will be dealt to the item in the controller
-     *
-     * @param stack Item in the controller
-     * @return Damage that is applied to the item in the controller
-     */
-    @Override
-    public int getDamageToComponent(ItemStack stack) {
-        return 0;
-    }
-
-    /**
-     * Whether this machine should explode, when the structure is broken while running
-     *
-     * @param stack Item in the controller
-     * @return True if it should explode, else false
-     */
-    @Override
-    public boolean explodesOnComponentBreak(ItemStack stack) {
-        return false;
     }
 
     /**

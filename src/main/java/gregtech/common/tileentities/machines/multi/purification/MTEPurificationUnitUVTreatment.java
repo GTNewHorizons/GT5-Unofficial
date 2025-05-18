@@ -401,11 +401,6 @@ public class MTEPurificationUnitUVTreatment extends MTEPurificationUnitBase<MTEP
     }
 
     @Override
-    public boolean isCorrectMachinePart(ItemStack aStack) {
-        return true;
-    }
-
-    @Override
     public int getWaterTier() {
         return 6;
     }

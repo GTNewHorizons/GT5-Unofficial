@@ -183,11 +183,6 @@ public class MTEDistillationTower extends MTEEnhancedMultiBlockBase<MTEDistillat
     }
 
     @Override
-    public boolean isCorrectMachinePart(ItemStack aStack) {
-        return true;
-    }
-
-    @Override
     protected ProcessingLogic createProcessingLogic() {
         return new ProcessingLogic();
     }
@@ -269,21 +264,6 @@ public class MTEDistillationTower extends MTEEnhancedMultiBlockBase<MTEDistillat
         return mCasing >= 7 * (mHeight + 1) - 5 && mHeight + 1 >= 3
             && mTopLayerFound
             && mMaintenanceHatches.size() == 1;
-    }
-
-    @Override
-    public int getMaxEfficiency(ItemStack aStack) {
-        return 10000;
-    }
-
-    @Override
-    public int getDamageToComponent(ItemStack aStack) {
-        return 0;
-    }
-
-    @Override
-    public boolean explodesOnComponentBreak(ItemStack aStack) {
-        return false;
     }
 
     @Override

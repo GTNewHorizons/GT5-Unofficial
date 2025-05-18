@@ -9,8 +9,8 @@ import com.cleanroommc.modularui.api.widget.IWidget;
 import com.cleanroommc.modularui.drawable.ItemDrawable;
 import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.network.NetworkUtils;
-import com.cleanroommc.modularui.screen.ContainerCustomizer;
 import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.value.sync.IntSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncHandler;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
@@ -22,7 +22,6 @@ import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 import gregtech.api.enums.ItemList;
 import gregtech.api.interfaces.IConfigurationCircuitSupport;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
-import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.modularui2.GTGuis;
 import gregtech.api.modularui2.GTWidgetThemes;
 import gregtech.api.util.item.GhostCircuitItemStackHandler;
@@ -38,8 +37,8 @@ import gregtech.common.modularui2.widget.GhostCircuitSlotWidget;
  * Example usage:
  * <pre>{@code
  *     @Overrride
- *     public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager) {
- *         return GTGuis.mteTemplatePanelBuilder(this, data, syncManager)
+ *     public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager, UISettings uiSettings) {
+ *         return GTGuis.mteTemplatePanelBuilder(this, data, syncManager, uiSettings)
  *             .setHeight(200)
  *             .doesBindPlayerInventory(false)
  *             .build()
@@ -55,6 +54,7 @@ public final class GTBaseGuiBuilder {
     private final IMetaTileEntity mte;
     private final PosGuiData posGuiData;
     private final PanelSyncManager syncManager;
+    private final UISettings uiSettings;
 
     private int width = 176;
     private int height = 166;
@@ -64,10 +64,11 @@ public final class GTBaseGuiBuilder {
     private boolean doesAddGhostCircuitSlot;
     private boolean doesAddGregTechLogo;
 
-    public GTBaseGuiBuilder(IMetaTileEntity mte, PosGuiData data, PanelSyncManager syncManager) {
+    public GTBaseGuiBuilder(IMetaTileEntity mte, PosGuiData data, PanelSyncManager syncManager, UISettings uiSettings) {
         this.mte = mte;
         this.posGuiData = data;
         this.syncManager = syncManager;
+        this.uiSettings = uiSettings;
         this.doesAddGhostCircuitSlot = mte instanceof IConfigurationCircuitSupport ccs && ccs.allowSelectCircuit();
         this.doesAddGregTechLogo = !this.doesAddGhostCircuitSlot;
     }
@@ -150,12 +151,6 @@ public final class GTBaseGuiBuilder {
         if (doesAddGregTechLogo) {
             panel.child(createGregTechLogo());
         }
-        syncManager.setContainerCustomizer(new ContainerCustomizer());
-        syncManager.getContainerCustomizer()
-            .setCanInteractWith($ -> {
-                IGregTechTileEntity gtTE = mte.getBaseMetaTileEntity();
-                return gtTE != null && gtTE.canAccessData();
-            });
         syncManager.addCloseListener($ -> mte.markDirty());
         return panel;
     }
@@ -188,7 +183,7 @@ public final class GTBaseGuiBuilder {
             IPanelHandler panel = syncManager.panel(panelKey, coverPanelBuilder(panelKey, side), true);
             column.child(new CoverTabButton(mte.getBaseMetaTileEntity(), side, panel));
         }
-        posGuiData.getNEISettings()
+        uiSettings.getNEISettings()
             .addNEIExclusionArea(column);
         return column;
     }
@@ -227,7 +222,7 @@ public final class GTBaseGuiBuilder {
         });
         syncManager.syncValue("selector_screen_selected", selectedSyncHandler);
         return new GhostCircuitSlotWidget(mte, selectedSyncHandler)
-            .slot(new ModularSlot(new GhostCircuitItemStackHandler(mte), 0, true))
+            .slot(new ModularSlot(new GhostCircuitItemStackHandler(mte), 0))
             .pos(ccs.getCircuitSlotX() - 1, ccs.getCircuitSlotY() - 1);
     }
 

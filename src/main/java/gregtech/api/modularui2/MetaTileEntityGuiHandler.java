@@ -61,6 +61,12 @@ public final class MetaTileEntityGuiHandler extends AbstractUIFactory<PosGuiData
     }
 
     @Override
+    public boolean canInteractWith(EntityPlayer player, PosGuiData guiData) {
+        return super.canInteractWith(player, guiData) && guiData.getTileEntity() instanceof IGregTechTileEntity baseTE
+            && baseTE.canAccessData();
+    }
+
+    @Override
     public void writeGuiData(PosGuiData guiData, PacketBuffer buffer) {
         buffer.writeVarIntToBuffer(guiData.getX());
         buffer.writeVarIntToBuffer(guiData.getY());

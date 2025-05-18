@@ -33,10 +33,10 @@ public class MTEHatchSolidifier extends MTEHatchInput {
         ItemList.Shape_Mold_Pipe_Large.get(1), ItemList.Shape_Mold_Pipe_Huge.get(1),
         ItemList.Shape_Mold_ToolHeadDrill.get(1),
 
-        GGItemList.Shape_One_Use_craftingToolFile.get(1), GGItemList.Shape_One_Use_craftingToolWrench.get(1),
-        GGItemList.Shape_One_Use_craftingToolCrowbar.get(1), GGItemList.Shape_One_Use_craftingToolWireCutter.get(1),
-        GGItemList.Shape_One_Use_craftingToolHardHammer.get(1), GGItemList.Shape_One_Use_craftingToolSoftHammer.get(1),
-        GGItemList.Shape_One_Use_craftingToolScrewdriver.get(1), GGItemList.Shape_One_Use_craftingToolSaw.get(1) };
+        GGItemList.SingleUseFileMold.get(1), GGItemList.SingleUseWrenchMold.get(1),
+        GGItemList.SingleUseCrowbarMold.get(1), GGItemList.SingleUseWireCutterMold.get(1),
+        GGItemList.SingleUseHardHammerMold.get(1), GGItemList.SingleUseSoftHammerMold.get(1),
+        GGItemList.SingleUseScrewdriverMold.get(1), GGItemList.SingleUseSawMold.get(1) };
 
     public MTEHatchSolidifier(int aID, String aName, String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional, aTier);

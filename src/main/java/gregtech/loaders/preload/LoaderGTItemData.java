@@ -1,6 +1,7 @@
 package gregtech.loaders.preload;
 
 import static gregtech.api.enums.Mods.AppliedEnergistics2;
+import static gregtech.api.enums.Mods.EnderIO;
 import static gregtech.api.enums.Mods.Forestry;
 import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
 import static gregtech.api.enums.Mods.PamsHarvestCraft;
@@ -11,6 +12,8 @@ import static gregtech.api.enums.Mods.TwilightForest;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+
+import com.google.common.collect.ImmutableMap;
 
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
@@ -155,9 +158,38 @@ public class LoaderGTItemData implements Runnable {
         GTOreDictUnificator.addItemData(new ItemStack(Items.cauldron, 1), new ItemData(Materials.Iron, 25401600L));
         GTOreDictUnificator
             .addItemData(new ItemStack(Blocks.iron_bars, 8, 32767), new ItemData(Materials.Iron, 10886400L));
-        GTOreDictUnificator.addItemData(
-            GTModHandler.getModItem(NewHorizonsCoreMod.ID, "item.SteelBars", 8L, 0),
-            new ItemData(Materials.Steel, 10886400L));
+        ImmutableMap.of(
+            NewHorizonsCoreMod.ID,
+            ImmutableMap.<String, Materials>builder()
+                .put("item.AluminiumBars", Materials.Aluminium)
+                .put("item.ChromeBars", Materials.Chrome)
+                .put("item.ConductiveIronBars", Materials.ConductiveIron)
+                .put("item.ElectricalSteelBars", Materials.ElectricalSteel)
+                .put("item.EnderiumBars", Materials.Enderium)
+                .put("item.EnderiumBaseBars", Materials.EnderiumBase)
+                .put("item.EnergeticAlloyBars", Materials.EnergeticAlloy)
+                .put("item.IridiumBars", Materials.Iridium)
+                .put("item.NeutroniumBars", Materials.Neutronium)
+                .put("item.OsmiumBars", Materials.Osmium)
+                .put("item.PulsatingIronBars", Materials.PulsatingIron)
+                .put("item.RedstoneAlloyBars", Materials.RedstoneAlloy)
+                .put("item.SoulariumBars", Materials.Soularium)
+                .put("item.StainlessSteelBars", Materials.StainlessSteel)
+                .put("item.SteelBars", Materials.Steel)
+                .put("item.TitaniumBars", Materials.Titanium)
+                .put("item.TungstenBars", Materials.Tungsten)
+                .put("item.TungstenSteelBars", Materials.TungstenSteel)
+                .put("item.VibrantAlloyBars", Materials.VibrantAlloy)
+                .build(),
+            EnderIO.ID,
+            ImmutableMap.<String, Materials>builder()
+                .put("blockDarkIronBars", Materials.DarkSteel)
+                .put("blockEndSteelBars", Materials.EndSteel)
+                .put("blockSoulariumBars", Materials.Soularium)
+                .build())
+            .forEach(
+                (modId, items) -> items
+                    .forEach((item, material) -> registerMetalBarUnificationData(modId, item, material)));
         GTOreDictUnificator
             .addItemData(GTModHandler.getIC2Item("ironFurnace", 1L), new ItemData(Materials.Iron, 18144000L));
         GTOreDictUnificator.addItemData(ItemList.IC2_Food_Can_Empty.get(1L), new ItemData(Materials.Tin, 1814400L));
@@ -381,5 +413,10 @@ public class LoaderGTItemData implements Runnable {
                     new ItemData(Materials.MeatCooked, 3628800L, new MaterialStack(Materials.Bone, 403200L)));
             }
         }
+    }
+
+    private static void registerMetalBarUnificationData(String modId, String itemName, Materials material) {
+        GTOreDictUnificator
+            .addItemData(GTModHandler.getModItem(modId, itemName, 8L, 0), new ItemData(material, 10886400L));
     }
 }
