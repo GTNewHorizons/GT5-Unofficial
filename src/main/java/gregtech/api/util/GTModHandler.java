@@ -510,7 +510,7 @@ public class GTModHandler {
      * ToolDictNames.craftingToolHardHammer, 'i' ToolDictNames.craftingToolSolderingIron, 'j'
      * ToolDictNames.craftingToolSolderingMetal, 'k' ToolDictNames.craftingToolKnive 'm'
      * ToolDictNames.craftingToolMortar, 'p' ToolDictNames.craftingToolDrawplate, 'r'
-     * ToolDictNames.craftingToolSoftHammer, 's' ToolDictNames.craftingToolSaw, 'w' ToolDictNames.craftingToolWrench,
+     * ToolDictNames.craftingToolSoftMallet, 's' ToolDictNames.craftingToolSaw, 'w' ToolDictNames.craftingToolWrench,
      * 'x' ToolDictNames.craftingToolWireCutter,
      */
     public static boolean addCraftingRecipe(ItemStack aResult, Object[] aRecipe) {
@@ -532,7 +532,7 @@ public class GTModHandler {
      * ToolDictNames.craftingToolHardHammer, 'i' ToolDictNames.craftingToolSolderingIron, 'j'
      * ToolDictNames.craftingToolSolderingMetal, 'k' ToolDictNames.craftingToolKnive 'm'
      * ToolDictNames.craftingToolMortar, 'p' ToolDictNames.craftingToolDrawplate, 'r'
-     * ToolDictNames.craftingToolSoftHammer, 's' ToolDictNames.craftingToolSaw, 'w' ToolDictNames.craftingToolWrench,
+     * ToolDictNames.craftingToolSoftMallet, 's' ToolDictNames.craftingToolSaw, 'w' ToolDictNames.craftingToolWrench,
      * 'x' ToolDictNames.craftingToolWireCutter,
      */
     public static boolean addCraftingRecipe(ItemStack aResult, long aBitMask, Object[] aRecipe) {

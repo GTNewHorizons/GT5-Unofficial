@@ -15,13 +15,13 @@ import gregtech.api.items.MetaGeneratedTool;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTUtility;
 
-public class BehaviourSoftHammer extends BehaviourNone {
+public class BehaviourSoftMallet extends BehaviourNone {
 
     private final int mCosts;
     private final String mTooltip = GTLanguageManager
-        .addStringLocalization("gt.behaviour.softhammer", "Activates and Deactivates Machines");
+        .addStringLocalization("gt.behaviour.softmallet", "Activates and Deactivates Machines");
 
-    public BehaviourSoftHammer(int aCosts) {
+    public BehaviourSoftMallet(int aCosts) {
         this.mCosts = aCosts;
     }
 

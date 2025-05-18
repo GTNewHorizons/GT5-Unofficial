@@ -1426,7 +1426,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
                         return true;
                     }
 
-                    if (GTUtility.isStackInList(tCurrentItem, GregTechAPI.sSoftHammerList)) {
+                    if (GTUtility.isStackInList(tCurrentItem, GregTechAPI.sSoftMalletList)) {
                         if (GTModHandler.damageOrDechargeItem(tCurrentItem, 1, 1000, aPlayer)) {
                             if (mWorks) disableWorking();
                             else enableWorking();
