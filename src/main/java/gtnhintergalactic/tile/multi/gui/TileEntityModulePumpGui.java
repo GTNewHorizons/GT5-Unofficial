@@ -216,7 +216,7 @@ public class TileEntityModulePumpGui extends TileEntityModuleBaseGui {
                     @Override
                     public Result onMousePressed(int mouseButton) {
                         PanelSyncManager manager = syncManager.getModularSyncManager()
-                            .getPanelSyncManager("MTEMultiblockBase");
+                            .getPanelSyncManager("MTEMultiBlockBase");
                         ((FluidDisplaySyncHandler) manager.getSyncHandler("recipeFluidSlot" + slot + ":0"))
                             .setValue(fluidDisplaySyncer.getValue());
                         ((IntSyncValue) manager.getSyncHandler("recipeTier" + slot + ":0")).setValue(finalI1);

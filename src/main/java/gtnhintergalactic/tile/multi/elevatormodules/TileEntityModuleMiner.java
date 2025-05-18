@@ -81,7 +81,7 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
     /** Minimal factor used to calculate the recipe time */
     protected static final double MIN_RECIPE_TIME_MODIFIER = 0.5D;
     /** Max distance a mining drone can travel */
-    protected static final double MAX_DISTANCE = 300D;
+    public static final double MAX_DISTANCE = 250;
 
     // Tiered plasmas, the mining operation uses one of them. Using higher tier plasmas boosts the mining operation
     /** Usage of helium plasma per mining operation */

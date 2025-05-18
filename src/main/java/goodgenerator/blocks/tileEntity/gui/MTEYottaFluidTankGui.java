@@ -12,6 +12,7 @@ import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.api.widget.IWidget;
 import com.cleanroommc.modularui.drawable.UITexture;
 import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.screen.RichTooltip;
 import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.utils.Color;
 import com.cleanroommc.modularui.utils.NumberFormat;
@@ -42,30 +43,46 @@ public class MTEYottaFluidTankGui extends TTMultiBlockBaseGui {
     }
 
     @Override
-    protected IWidget createTopRow(PanelSyncManager syncManager, ModularPanel panel) {
-        DoubleSyncValue maxStorageSyncer = new DoubleSyncValue(() -> yottaBase.mStorage.doubleValue());
-        syncManager.syncValue("maxStorage", maxStorageSyncer);
+    protected IWidget createTopRow(ModularPanel panel, PanelSyncManager syncManager) {
+        return new Row().size(machineInfoSize()[0] + 4, machineInfoSize()[1] + 3)
+            .child(
+                new ParentWidget<>().size(machineInfoSize()[0] - 48 - 4, 88)
+                    .padding(3)
+                    .widgetTheme(GTWidgetThemes.BACKGROUND_TERMINAL)
+                    .child(
+                        createTerminalTextWidget(syncManager, panel).size(machineInfoSize()[0] - 48 - 10, 88 - 5)
+                            .collapseDisabledChild())
+                    .child(
+                        new SingleChildWidget<>().bottomRel(0, 10, 0)
+                            .rightRel(0, 10, 0)
+                            .size(18, 18)
+                            .widgetTheme(GTWidgetThemes.PICTURE_LOGO)))
+            .child(createYottankDisplay(syncManager));
+    }
 
-        DoubleSyncValue currentStorageSyncer = new DoubleSyncValue(() -> yottaBase.mStorageCurrent.doubleValue());
-        syncManager.syncValue("currentStorage", currentStorageSyncer);
+    private IWidget createYottankDisplay(PanelSyncManager syncManager) {
+        return new ParentWidget<>().size(48, 88)
+            .align(Alignment.CenterRight)
+            .child(
+                new SingleChildWidget<>().overlay(UITexture.fullImage(GregTech.ID, "gui/picture/yottank_overlay"))
+                    .size(48, 88))
+            .child(
+                createFluidDisplay(syncManager).size(34, 72)
+                    .align(Alignment.Center))
+            .child(
+                new TransparentSingleChildWidget()
+                    .overlay(UITexture.fullImage(GregTech.ID, "gui/picture/yottank_overlay_lines"))
+                    .size(32, 72)
+                    .align(Alignment.Center));
+    }
 
-        StringSyncValue percentageSyncer = new StringSyncValue(yottaBase::getPercent);
-        syncManager.syncValue("percentage", percentageSyncer);
+    private FluidSlotDisplayOnly createFluidDisplay(PanelSyncManager syncManager) {
+        StringSyncValue percentageSyncer = (StringSyncValue) syncManager.getSyncHandler("percentage:0");
+        FluidDisplaySyncHandler storedFluid = (FluidDisplaySyncHandler) syncManager.getSyncHandler("storedFluid:0");
+        FluidDisplaySyncHandler lockedFluid = (FluidDisplaySyncHandler) syncManager.getSyncHandler("lockedFluid:0");
+        BooleanSyncValue locked = (BooleanSyncValue) syncManager.getSyncHandler("isLocked:0");
 
-        FluidDisplaySyncHandler storedFluid = new FluidDisplaySyncHandler(() -> yottaBase.mFluid);
-        syncManager.syncValue("storedFluid", storedFluid);
-
-        FluidDisplaySyncHandler lockedFluid = new FluidDisplaySyncHandler(
-            () -> yottaBase.mLockedFluid,
-            aFluid -> yottaBase.mLockedFluid = aFluid);
-        syncManager.syncValue("lockedFluid", lockedFluid);
-
-        BooleanSyncValue locked = new BooleanSyncValue(
-            () -> yottaBase.isFluidLocked,
-            bool -> yottaBase.isFluidLocked = bool);
-        syncManager.syncValue("isLocked", locked);
-        FluidSlotDisplayOnly fluidDisplay = new FluidSlotDisplayOnly(
-            () -> Double.parseDouble(percentageSyncer.getStringValue()) / 100) {
+        return new FluidSlotDisplayOnly(() -> Double.parseDouble(percentageSyncer.getStringValue()) / 100) {
 
             @NotNull
             @Override
@@ -83,81 +100,60 @@ public class MTEYottaFluidTankGui extends TTMultiBlockBaseGui {
             }
 
         }.syncHandler("storedFluid")
-            .tooltipBuilder(t -> {
-                FluidStack fluidStack = storedFluid.getValue();
-                FluidStack lockedStack = lockedFluid.getValue();
-                if (locked.getBoolValue() && fluidStack == null && lockedStack != null) {
-                    t.clearText();
-                    t.add(
-                        lockedStack.getFluid()
-                            .getLocalizedName())
-                        .newLine()
-                        .add(
-                            EnumChatFormatting.BLUE
-                                + (currentStorageSyncer.getValue() == 0 ? "0"
-                                    : NumberFormat.format(currentStorageSyncer.getValue(), NumberFormat.DEFAULT))
-                                + "/"
-                                + NumberFormat.format(maxStorageSyncer.getValue(), NumberFormat.DEFAULT));
-                } else if (fluidStack == null) {
-                    t.clearText();
-                    t.add("Empty");
-                } else {
-                    t.clearText();
-                    t.add(
-                        fluidStack.getFluid()
-                            .getLocalizedName())
-                        .newLine()
-                        .add(
-                            EnumChatFormatting.BLUE
-                                + NumberFormat.format(currentStorageSyncer.getValue(), NumberFormat.DEFAULT)
-                                + "/"
-                                + NumberFormat.format(maxStorageSyncer.getValue(), NumberFormat.DEFAULT)
-                                + EnumChatFormatting.RESET
-                                + " ("
-                                + EnumChatFormatting.GREEN
-                                + percentageSyncer.getStringValue()
-                                + "%"
-                                + EnumChatFormatting.RESET
-                                + ")");
-                }
-                if (locked.getBoolValue()) t.newLine()
-                    .add("" + EnumChatFormatting.RED + EnumChatFormatting.ITALIC + "Locked");
-                else t.newLine()
-                    .add("" + EnumChatFormatting.DARK_GRAY + EnumChatFormatting.ITALIC + "Click to Lock Fluid!");
-            });
+            .tooltipBuilder(t -> getFluidDisplayTooltip(t, syncManager));
+    }
 
-        return new Row().size(machineInfoSize()[0] + 4, machineInfoSize()[1] + 3)
-            .child(
-                new ParentWidget<>().size(machineInfoSize()[0] - 48 - 4, 88)
-                    .padding(3)
-                    .widgetTheme(GTWidgetThemes.BACKGROUND_TERMINAL)
-                    .child(
-                        createTerminalTextWidget(syncManager, panel).size(machineInfoSize()[0] - 48 - 10, 88 - 5)
-                            .collapseDisabledChild())
-                    .child(
-                        new SingleChildWidget<>().bottomRel(0, 10, 0)
-                            .rightRel(0, 10, 0)
-                            .size(18, 18)
-                            .widgetTheme(GTWidgetThemes.PICTURE_LOGO)))
-            .child(
-                new ParentWidget<>().size(48, 88)
-                    .align(Alignment.CenterRight)
-                    .child(
-                        new SingleChildWidget<>()
-                            .overlay(UITexture.fullImage(GregTech.ID, "gui/picture/yottank_overlay"))
-                            .size(48, 88))
-                    .child(
-                        fluidDisplay.size(34, 72)
-                            .align(Alignment.Center))
-                    .child(
-                        new TransparentSingleChildWidget()
-                            .overlay(UITexture.fullImage(GregTech.ID, "gui/picture/yottank_overlay_lines"))
-                            .size(32, 72)
-                            .align(Alignment.Center)));
+    private void getFluidDisplayTooltip(RichTooltip t, PanelSyncManager syncManager) {
+        DoubleSyncValue maxStorageSyncer = (DoubleSyncValue) syncManager.getSyncHandler("maxStorage:0");
+        DoubleSyncValue currentStorageSyncer = (DoubleSyncValue) syncManager.getSyncHandler("currentStorage:0");
+        StringSyncValue percentageSyncer = (StringSyncValue) syncManager.getSyncHandler("percentage:0");
+        FluidDisplaySyncHandler storedFluid = (FluidDisplaySyncHandler) syncManager.getSyncHandler("storedFluid:0");
+        FluidDisplaySyncHandler lockedFluid = (FluidDisplaySyncHandler) syncManager.getSyncHandler("lockedFluid:0");
+        BooleanSyncValue locked = (BooleanSyncValue) syncManager.getSyncHandler("isLocked:0");
+
+        FluidStack fluidStack = storedFluid.getValue();
+        FluidStack lockedStack = lockedFluid.getValue();
+        if (locked.getBoolValue() && fluidStack == null && lockedStack != null) {
+            t.clearText();
+            t.add(
+                lockedStack.getFluid()
+                    .getLocalizedName())
+                .newLine()
+                .add(
+                    EnumChatFormatting.BLUE
+                        + (currentStorageSyncer.getValue() == 0 ? "0"
+                            : NumberFormat.format(currentStorageSyncer.getValue(), NumberFormat.DEFAULT))
+                        + "/"
+                        + NumberFormat.format(maxStorageSyncer.getValue(), NumberFormat.DEFAULT));
+        } else if (fluidStack == null) {
+            t.clearText();
+            t.add("Empty");
+        } else {
+            t.clearText();
+            t.add(
+                fluidStack.getFluid()
+                    .getLocalizedName())
+                .newLine()
+                .add(
+                    EnumChatFormatting.BLUE + NumberFormat.format(currentStorageSyncer.getValue(), NumberFormat.DEFAULT)
+                        + "/"
+                        + NumberFormat.format(maxStorageSyncer.getValue(), NumberFormat.DEFAULT)
+                        + EnumChatFormatting.RESET
+                        + " ("
+                        + EnumChatFormatting.GREEN
+                        + percentageSyncer.getStringValue()
+                        + "%"
+                        + EnumChatFormatting.RESET
+                        + ")");
+        }
+        if (locked.getBoolValue()) t.newLine()
+            .add("" + EnumChatFormatting.RED + EnumChatFormatting.ITALIC + "Locked");
+        else t.newLine()
+            .add("" + EnumChatFormatting.DARK_GRAY + EnumChatFormatting.ITALIC + "Click to Lock Fluid!");
     }
 
     @Override
-    public IWidget createPanelGap(PanelSyncManager syncManager, ModularPanel parent) {
+    public IWidget createPanelGap(ModularPanel parent, PanelSyncManager syncManager) {
         return new Row().widthRel(1)
             .paddingRight(6)
             .paddingLeft(4)
@@ -167,13 +163,9 @@ public class MTEYottaFluidTankGui extends TTMultiBlockBaseGui {
     @Override
     protected ListWidget<IWidget, ?> createTerminalTextWidget(PanelSyncManager syncManager) {
         DoubleSyncValue maxStorageSyncer = (DoubleSyncValue) syncManager.getSyncHandler("maxStorage:0");
-
         DoubleSyncValue currentStorageSyncer = (DoubleSyncValue) syncManager.getSyncHandler("currentStorage:0");
-
         StringSyncValue percentageSyncer = (StringSyncValue) syncManager.getSyncHandler("percentage:0");
-
-        StringSyncValue timeTo = new StringSyncValue(yottaBase::getTimeTo);
-        syncManager.syncValue("timeTo", timeTo);
+        StringSyncValue timeTo = (StringSyncValue) syncManager.getSyncHandler("timeTo:0");
 
         return new ListWidget<>().padding(2)
             .child(
@@ -213,4 +205,32 @@ public class MTEYottaFluidTankGui extends TTMultiBlockBaseGui {
                     .setEnabledIf(w -> yottaBase.getErrorDisplayID() == 0));
     }
 
+    @Override
+    protected void registerSyncValues(PanelSyncManager syncManager) {
+        super.registerSyncValues(syncManager);
+        DoubleSyncValue maxStorageSyncer = new DoubleSyncValue(() -> yottaBase.mStorage.doubleValue());
+        syncManager.syncValue("maxStorage", maxStorageSyncer);
+
+        DoubleSyncValue currentStorageSyncer = new DoubleSyncValue(() -> yottaBase.mStorageCurrent.doubleValue());
+        syncManager.syncValue("currentStorage", currentStorageSyncer);
+
+        StringSyncValue percentageSyncer = new StringSyncValue(yottaBase::getPercent);
+        syncManager.syncValue("percentage", percentageSyncer);
+
+        FluidDisplaySyncHandler storedFluid = new FluidDisplaySyncHandler(() -> yottaBase.mFluid);
+        syncManager.syncValue("storedFluid", storedFluid);
+
+        FluidDisplaySyncHandler lockedFluid = new FluidDisplaySyncHandler(
+            () -> yottaBase.mLockedFluid,
+            aFluid -> yottaBase.mLockedFluid = aFluid);
+        syncManager.syncValue("lockedFluid", lockedFluid);
+
+        BooleanSyncValue locked = new BooleanSyncValue(
+            () -> yottaBase.isFluidLocked,
+            bool -> yottaBase.isFluidLocked = bool);
+        syncManager.syncValue("isLocked", locked);
+
+        StringSyncValue timeTo = new StringSyncValue(yottaBase::getTimeTo);
+        syncManager.syncValue("timeTo", timeTo);
+    }
 }
