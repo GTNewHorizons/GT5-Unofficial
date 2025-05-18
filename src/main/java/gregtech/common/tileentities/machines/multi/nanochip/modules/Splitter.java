@@ -289,8 +289,7 @@ public class Splitter extends MTENanochipAssemblyModuleBase<Splitter> {
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
-        // Type "10" is NBTTagCompound
-        colorMap = loadRulesTagList(aNBT.getTagList("rules", 10));
+        colorMap = loadRulesTagList(aNBT.getTagList("rules", new NBTTagCompound().getId()));
     }
 
     public NBTTagList createRulesTagList() {

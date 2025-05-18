@@ -7,7 +7,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.cleanroommc.modularui.screen.UISettings;
 import net.minecraft.network.PacketBuffer;
 
 import com.cleanroommc.modularui.api.IPanelHandler;
@@ -18,6 +17,7 @@ import com.cleanroommc.modularui.drawable.GuiTextures;
 import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.RichTooltip;
+import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.utils.serialization.IByteBufAdapter;
 import com.cleanroommc.modularui.value.sync.GenericSyncValue;
