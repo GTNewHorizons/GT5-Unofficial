@@ -11,7 +11,6 @@ import static gregtech.api.util.GTModHandler.getModItem;
 import static gregtech.api.util.GTRecipeBuilder.HALF_INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.MINUTES;
-import static gregtech.api.util.GTRecipeBuilder.QUARTER_INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.STACKS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
@@ -3286,7 +3285,7 @@ public class ChemicalRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Cell_Air.get(1), GTUtility.getIntegratedCircuit(1))
             .itemOutputs(Materials.RawRubber.getDust(1), Materials.Empty.getCells(1))
-            .fluidInputs(Materials.Isoprene.getFluid(1 * INGOTS))
+            .fluidInputs(Materials.Isoprene.getFluid(144))
             .duration(8 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(UniversalChemical);
@@ -5508,7 +5507,7 @@ public class ChemicalRecipes implements Runnable {
             .itemInputs(GTUtility.getIntegratedCircuit(2))
             .itemOutputs(Materials.RawRubber.getDust(18))
             .fluidInputs(
-                Materials.Isoprene.getFluid(12 * INGOTS),
+                Materials.Isoprene.getFluid(1728),
                 Materials.Air.getGas(6_000),
                 Materials.Titaniumtetrachloride.getFluid(80))
             .duration(32 * SECONDS)
@@ -5519,7 +5518,7 @@ public class ChemicalRecipes implements Runnable {
             .itemInputs(GTUtility.getIntegratedCircuit(2))
             .itemOutputs(Materials.RawRubber.getDust(24))
             .fluidInputs(
-                Materials.Isoprene.getFluid(12 * INGOTS),
+                Materials.Isoprene.getFluid(1728),
                 Materials.Oxygen.getGas(6_000),
                 Materials.Titaniumtetrachloride.getFluid(80))
             .duration(32 * SECONDS)
@@ -5529,10 +5528,7 @@ public class ChemicalRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(3))
             .itemOutputs(Materials.RawStyreneButadieneRubber.getDust(1))
-            .fluidInputs(
-                Materials.Styrene.getFluid(1 * QUARTER_INGOTS),
-                Materials.Butadiene.getGas(3 * QUARTER_INGOTS),
-                Materials.Air.getGas(2_000))
+            .fluidInputs(Materials.Styrene.getFluid(36), Materials.Butadiene.getGas(108), Materials.Air.getGas(2_000))
             .duration(8 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(multiblockChemicalReactorRecipes);
@@ -5541,8 +5537,8 @@ public class ChemicalRecipes implements Runnable {
             .itemInputs(GTUtility.getIntegratedCircuit(3))
             .itemOutputs(Materials.RawStyreneButadieneRubber.getDust(3))
             .fluidInputs(
-                Materials.Styrene.getFluid(1 * HALF_INGOTS),
-                Materials.Butadiene.getGas(3 * HALF_INGOTS),
+                Materials.Styrene.getFluid(36),
+                Materials.Butadiene.getGas(108),
                 Materials.Oxygen.getGas(2_000))
             .duration(8 * SECONDS)
             .eut(TierEU.RECIPE_MV)
