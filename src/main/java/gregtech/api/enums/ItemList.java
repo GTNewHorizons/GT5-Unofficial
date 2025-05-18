@@ -1704,7 +1704,6 @@ public enum ItemList implements IItemContainer {
     LargeSteamTurbine,
     LargeGasTurbine,
     LargeHPSteamTurbine,
-    LargeAdvancedGasTurbine,
     LargePlasmaTurbine,
 
     Ingot_Heavy1,
@@ -1723,7 +1722,6 @@ public enum ItemList implements IItemContainer {
     Casing_Turbine3,
     Casing_EngineIntake,
     Casing_ExtremeEngineIntake,
-    Casing_TurbineGasAdvanced,
 
     Casing_Coil_Cupronickel,
     Casing_Coil_Kanthal,
