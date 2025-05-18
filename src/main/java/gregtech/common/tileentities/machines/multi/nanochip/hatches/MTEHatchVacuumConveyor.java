@@ -21,7 +21,6 @@ import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.utils.NumberFormat;
-import com.cleanroommc.modularui.utils.item.ItemStackHandler;
 import com.cleanroommc.modularui.value.sync.GenericSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widget.ParentWidget;
@@ -48,17 +47,15 @@ public abstract class MTEHatchVacuumConveyor extends MTEHatch implements IConnec
 
     public CircuitComponentPacket contents;
 
-    private ItemStackHandler fakeItemHandler;
-
     // Identifier used to identify this hatch uniquely inside a multiblock.
     public String identifier = null;
 
     protected MTEHatchVacuumConveyor(int aID, String aName, String aNameRegional, int aTier, String[] descr) {
-        super(aID, aName, aNameRegional, aTier, 27, descr);
+        super(aID, aName, aNameRegional, aTier, 0, descr);
     }
 
     protected MTEHatchVacuumConveyor(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
-        super(aName, aTier, 27, aDescription, aTextures);
+        super(aName, aTier, 0, aDescription, aTextures);
     }
 
     @Override
