@@ -67,12 +67,12 @@ public class PlasmaForgeRecipes implements Runnable {
                 .fluidInputs(
                     Materials.StableBaryonicMatter.getFluid(2_000),
                     GGMaterial.metastableOganesson.getMolten(2 * INGOTS),
-                    Materials.Grade8PurifiedWater.getFluid(3200),
+                    Materials.Grade8PurifiedWater.getFluid(3_200),
                     new FluidStack(celestialTungstenPlasma, 48 * INGOTS),
                     Materials.RadoxHeavy.getFluid(4_000),
                     MaterialsUEVplus.ExcitedDTEC.getFluid(2_000))
                 .fluidOutputs(
-                    MaterialsUEVplus.DimensionallyShiftedSuperfluid.getFluid(90000),
+                    MaterialsUEVplus.DimensionallyShiftedSuperfluid.getFluid(90_000),
                     MaterialsUEVplus.DimensionallyTranscendentResidue.getFluid(2_000))
                 .duration(30 * SECONDS)
                 .eut((int) TierEU.RECIPE_UMV)
@@ -89,7 +89,7 @@ public class PlasmaForgeRecipes implements Runnable {
                 .fluidInputs(
                     Materials.StableBaryonicMatter.getFluid(1_000),
                     GGMaterial.metastableOganesson.getMolten(1 * INGOTS),
-                    Materials.Grade8PurifiedWater.getFluid(1600),
+                    Materials.Grade8PurifiedWater.getFluid(1_600),
                     new FluidStack(celestialTungstenPlasma, 24 * INGOTS),
                     Materials.RadoxSuperHeavy.getFluid(2_000),
                     MaterialsUEVplus.ExcitedDTRC.getFluid(2_000))

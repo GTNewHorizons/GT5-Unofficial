@@ -3267,7 +3267,7 @@ public class AssemblerRecipes implements Runnable {
                 GTValues.RA.stdBuilder()
                     .itemInputs(new ItemStack(Blocks.lever, 1, 32767), tPlate, GTUtility.getIntegratedCircuit(1))
                     .itemOutputs(ItemList.Cover_Controller.get(1))
-                    .fluidInputs(tMat.getMolten(tMultiplier * INGOTS / 2))
+                    .fluidInputs(tMat.getMolten(tMultiplier * HALF_INGOTS))
                     .duration(40 * SECONDS)
                     .eut(16)
                     .addTo(assemblerRecipes);
@@ -3278,7 +3278,7 @@ public class AssemblerRecipes implements Runnable {
                         tPlate,
                         GTUtility.getIntegratedCircuit(1))
                     .itemOutputs(ItemList.Cover_ActivityDetector.get(1))
-                    .fluidInputs(tMat.getMolten(tMultiplier * INGOTS / 2))
+                    .fluidInputs(tMat.getMolten(tMultiplier * HALF_INGOTS))
                     .duration(40 * SECONDS)
                     .eut(16)
                     .addTo(assemblerRecipes);
@@ -3289,7 +3289,7 @@ public class AssemblerRecipes implements Runnable {
                         tPlate,
                         GTUtility.getIntegratedCircuit(1))
                     .itemOutputs(ItemList.Cover_FluidDetector.get(1))
-                    .fluidInputs(tMat.getMolten(tMultiplier * INGOTS / 2))
+                    .fluidInputs(tMat.getMolten(tMultiplier * HALF_INGOTS))
                     .duration(40 * SECONDS)
                     .eut(16)
                     .addTo(assemblerRecipes);
@@ -3300,7 +3300,7 @@ public class AssemblerRecipes implements Runnable {
                         tPlate,
                         GTUtility.getIntegratedCircuit(1))
                     .itemOutputs(ItemList.Cover_ItemDetector.get(1))
-                    .fluidInputs(tMat.getMolten(tMultiplier * INGOTS / 2))
+                    .fluidInputs(tMat.getMolten(tMultiplier * HALF_INGOTS))
                     .duration(40 * SECONDS)
                     .eut(16)
                     .addTo(assemblerRecipes);
@@ -3308,7 +3308,7 @@ public class AssemblerRecipes implements Runnable {
                 GTValues.RA.stdBuilder()
                     .itemInputs(GTModHandler.getIC2Item("ecMeter", 1), tPlate, GTUtility.getIntegratedCircuit(1))
                     .itemOutputs(ItemList.Cover_EnergyDetector.get(1))
-                    .fluidInputs(tMat.getMolten(tMultiplier * INGOTS / 2))
+                    .fluidInputs(tMat.getMolten(tMultiplier * HALF_INGOTS))
                     .duration(40 * SECONDS)
                     .eut(16)
                     .addTo(assemblerRecipes);
@@ -6333,7 +6333,7 @@ public class AssemblerRecipes implements Runnable {
                     getModItem(OpenComputers.ID, "item", 1L, 26),
                     GTUtility.getIntegratedCircuit(1))
                 .itemOutputs(getModItem(OpenComputers.ID, "item", 1L, 62))
-                .fluidInputs(tMat.getMolten(tMultiplier * INGOTS / 2))
+                .fluidInputs(tMat.getMolten(tMultiplier * HALF_INGOTS))
                 .duration(12 * SECONDS + 10 * TICKS)
                 .eut(256)
                 .addTo(assemblerRecipes);

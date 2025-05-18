@@ -88,7 +88,7 @@ public class PyrolyseRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(GTModHandler.getIC2Item("biochaff", 4), GTUtility.getIntegratedCircuit(1))
             .fluidInputs(Materials.Water.getFluid(4_000))
-            .fluidOutputs(new FluidStack(FluidRegistry.getFluid("ic2biomass"), 5000))
+            .fluidOutputs(new FluidStack(FluidRegistry.getFluid("ic2biomass"), 5_000))
             .duration(45 * SECONDS)
             .eut(10)
             .addTo(pyrolyseRecipes);
@@ -103,7 +103,7 @@ public class PyrolyseRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(2))
-            .fluidInputs(new FluidStack(FluidRegistry.getFluid("ic2biomass"), 1000))
+            .fluidInputs(new FluidStack(FluidRegistry.getFluid("ic2biomass"), 1_000))
             .fluidOutputs(Materials.FermentedBiomass.getFluid(1_000))
             .duration(5 * SECONDS)
             .eut(10)

@@ -615,7 +615,7 @@ public class BlastFurnaceRecipes implements Runnable {
             .itemOutputs(Materials.RoastedAntimony.getDust(1), Materials.Ash.getDust(1))
             .outputChances(10000, 1111)
             .fluidInputs(Materials.Oxygen.getGas(3_000))
-            .fluidOutputs(Materials.SulfurDioxide.getGas(1500))
+            .fluidOutputs(Materials.SulfurDioxide.getGas(1_500))
             .duration(6 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .metadata(COIL_HEAT, 1200)

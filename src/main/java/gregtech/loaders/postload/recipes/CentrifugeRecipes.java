@@ -50,7 +50,7 @@ public class CentrifugeRecipes implements Runnable {
             .itemInputs(ItemList.Cell_Empty.get(1))
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.cell, Materials.Oxygen, 1))
             .fluidInputs(Materials.Air.getGas(10_000))
-            .fluidOutputs(Materials.Nitrogen.getGas(3900))
+            .fluidOutputs(Materials.Nitrogen.getGas(3_900))
             .duration(1 * MINUTES + 20 * SECONDS)
             .eut(8)
             .addTo(centrifugeRecipes);
@@ -484,7 +484,7 @@ public class CentrifugeRecipes implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Platinum, 1),
                 new ItemStack(Blocks.sand, 36))
             .outputChances(3750, 2500, 9000)
-            .fluidOutputs(Materials.Helium.getGas(4320))
+            .fluidOutputs(Materials.Helium.getGas(4_320))
             .duration(9 * MINUTES + 36 * SECONDS)
             .eut(20)
             .addTo(centrifugeRecipes);
@@ -526,7 +526,7 @@ public class CentrifugeRecipes implements Runnable {
                 Materials.Sapphire.getDust(3),
                 Materials.Tantalite.getDust(1))
             .outputChances(9000, 9000, 9000, 1000, 3750, 4500)
-            .fluidInputs(Materials.Lava.getFluid(3600))
+            .fluidInputs(Materials.Lava.getFluid(3_600))
             .duration(2 * MINUTES + 24 * SECONDS)
             .eut(80)
             .addTo(centrifugeRecipes);
@@ -568,7 +568,7 @@ public class CentrifugeRecipes implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Scheelite, 1),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Bauxite, 1))
             .outputChances(8000, 4000, 1000, 450, 2250, 4500)
-            .fluidInputs(getFluidStack("ic2pahoehoelava", 3600))
+            .fluidInputs(getFluidStack("ic2pahoehoelava", 3_600))
             .duration(16 * SECONDS + 8 * TICKS)
             .eut(4096)
             .addTo(centrifugeRecipes);

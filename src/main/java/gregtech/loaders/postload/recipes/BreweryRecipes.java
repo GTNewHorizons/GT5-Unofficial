@@ -63,7 +63,7 @@ public class BreweryRecipes implements Runnable {
                 GTValues.RA.stdBuilder()
                     .itemInputs(item)
                     .fluidInputs(Materials.OilLight.getFluid(750))
-                    .fluidOutputs(Materials.Lubricant.getFluid(750))
+                    .fluidOutputs(Materials.Lubricant.getFluid(500))
                     .duration(6 * SECONDS + 8 * TICKS)
                     .eut(4)
                     .addTo(brewingRecipes);

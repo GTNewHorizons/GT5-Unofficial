@@ -456,7 +456,7 @@ public class MixerRecipes implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.MeatRaw, 1))
             .itemOutputs(ItemList.Food_Chum.get(4))
             .fluidInputs(getFluidStack("potion.purpledrink", 750))
-            .fluidOutputs(getFluidStack("sludge", 1000))
+            .fluidOutputs(getFluidStack("sludge", 1_000))
             .duration(6 * SECONDS + 8 * TICKS)
             .eut(24)
             .addTo(mixerRecipes);
@@ -660,7 +660,7 @@ public class MixerRecipes implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Stone, 1))
             .itemOutputs(Materials.Empty.getCells(5))
             .fluidInputs(Materials.Lubricant.getFluid(20))
-            .fluidOutputs(new FluidStack(ItemList.sDrillingFluid, 5000))
+            .fluidOutputs(new FluidStack(ItemList.sDrillingFluid, 5_000))
             .duration(3 * SECONDS + 4 * TICKS)
             .eut(16)
             .addTo(mixerRecipes);
@@ -818,7 +818,7 @@ public class MixerRecipes implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Diamond, 1),
                 GTUtility.getIntegratedCircuit(1))
             .itemOutputs(ItemList.Block_MSSFUEL.get(4))
-            .fluidInputs(Materials.GasolinePremium.getFluid(1600))
+            .fluidInputs(Materials.GasolinePremium.getFluid(1_600))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(mixerRecipes);
@@ -830,7 +830,7 @@ public class MixerRecipes implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Diamond, 1),
                 GTUtility.getIntegratedCircuit(1))
             .itemOutputs(ItemList.Block_MSSFUEL.get(4))
-            .fluidInputs(Materials.GasolinePremium.getFluid(1200))
+            .fluidInputs(Materials.GasolinePremium.getFluid(1_200))
             .duration(15 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(mixerRecipes);
@@ -1128,7 +1128,7 @@ public class MixerRecipes implements Runnable {
                 GTUtility.getIntegratedCircuit(1))
             .itemOutputs(ItemList.Cell_Empty.get(1))
             .fluidInputs(Materials.NitricAcid.getFluid(1_000))
-            .fluidOutputs(new FluidStack(ItemList.sNitrationMixture, 2000))
+            .fluidOutputs(new FluidStack(ItemList.sNitrationMixture, 2_000))
             .duration(24 * SECONDS)
             .eut(2)
             .addTo(mixerRecipes);
