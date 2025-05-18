@@ -8,7 +8,6 @@ import static gregtech.api.enums.Mods.ThaumicTinkerer;
 import static gregtech.api.enums.Mods.TwilightForest;
 import static gregtech.api.recipe.RecipeMaps.centrifugeRecipes;
 import static gregtech.api.util.GTModHandler.getModItem;
-import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.MINUTES;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
@@ -89,7 +88,7 @@ public class CentrifugeRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(new ItemStack(Items.golden_apple, 1, 1), GTUtility.getIntegratedCircuit(1))
             .itemOutputs(new ItemStack(Items.gold_ingot, 64))
-            .fluidOutputs(Materials.Methane.getGas(32 * INGOTS))
+            .fluidOutputs(Materials.Methane.getGas(4608))
             .duration(7 * MINUTES + 40 * SECONDS + 16 * TICKS)
             .eut(5)
             .addTo(centrifugeRecipes);
