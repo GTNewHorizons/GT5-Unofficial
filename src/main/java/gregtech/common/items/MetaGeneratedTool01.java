@@ -52,6 +52,7 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 
 import gregtech.api.GregTechAPI;
+import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TCAspects;
@@ -87,6 +88,7 @@ import gregtech.common.tools.ToolTurbineHuge;
 import gregtech.common.tools.ToolTurbineLarge;
 import gregtech.common.tools.ToolTurbineNormal;
 import gregtech.common.tools.ToolTurbineSmall;
+import gregtech.common.tools.ToolVajra;
 import gregtech.common.tools.ToolWireCutter;
 import gregtech.common.tools.ToolWrench;
 import gregtech.common.tools.ToolWrenchHV;
@@ -522,6 +524,8 @@ public class MetaGeneratedTool01 extends MetaGeneratedTool {
             new TCAspects.TC_AspectStack(TCAspects.INSTRUMENTUM, 8),
             new TCAspects.TC_AspectStack(TCAspects.SENSUS, 4),
             new TCAspects.TC_AspectStack(TCAspects.PERDITIO, 2));
+        ItemList.Tool_Vajra.set(new ToolVajra("Tool_Vajra", "Vajra", "", 0, 20, true));
+
         initCraftingShapedRecipes();
         initCraftingShapelessRecipes();
     }

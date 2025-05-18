@@ -248,7 +248,7 @@ public class MTEQuantumForceTransformer extends MTEExtendedPowerMultiBlockBase<M
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
-        return survivialBuildPiece(MAIN_PIECE, stackSize, 7, 20, 4, elementBudget, env, false, true);
+        return survivalBuildPiece(MAIN_PIECE, stackSize, 7, 20, 4, elementBudget, env, false, true);
     }
 
     public static List<Pair<Block, Integer>> getAllCraftingTiers() {
@@ -346,11 +346,6 @@ public class MTEQuantumForceTransformer extends MTEExtendedPowerMultiBlockBase<M
     @Override
     public RecipeMap<?> getRecipeMap() {
         return GTPPRecipeMaps.quantumForceTransformerRecipes;
-    }
-
-    @Override
-    public boolean isCorrectMachinePart(final ItemStack aStack) {
-        return true;
     }
 
     @Override
@@ -565,21 +560,6 @@ public class MTEQuantumForceTransformer extends MTEExtendedPowerMultiBlockBase<M
             // Updates every 30 sec
             if (mUpdate <= -550) mUpdate = 50;
         }
-    }
-
-    @Override
-    public int getMaxEfficiency(final ItemStack aStack) {
-        return 10000;
-    }
-
-    @Override
-    public int getDamageToComponent(final ItemStack aStack) {
-        return 0;
-    }
-
-    @Override
-    public boolean explodesOnComponentBreak(final ItemStack aStack) {
-        return false;
     }
 
     public static int getBaseOutputChance(GTRecipe tRecipe) {
