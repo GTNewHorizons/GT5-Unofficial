@@ -136,7 +136,7 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements IConstructable,
         if (mMachine) return -1;
         int realBudget = elementBudget >= 200 ? elementBudget : Math.min(200, elementBudget * 5); // 200 blocks max per
                                                                                                   // placement.
-        return survivialBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 16, 16, 0, realBudget, source, actor, false, true);
+        return survivalBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 16, 16, 0, realBudget, source, actor, false, true);
     }
 
     protected static final String STRUCTURE_PIECE_MAIN = "main";
@@ -1349,6 +1349,14 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements IConstructable,
             stellarPlasmaOverflowProbabilityAdjustment = 0;
         }
 
+        // If pityChance needs to be reset, it will be set to Double.MIN_Value at the end of the recipe.
+        if (pityChance == Double.MIN_VALUE) {
+            pityChance = currentRecipe.getBaseRecipeSuccessChance()
+                - timeAccelerationFieldMetadata * TIME_ACCEL_DECREASE_CHANCE_PER_TIER
+                + stabilisationFieldMetadata * STABILITY_INCREASE_PROBABILITY_DECREASE_YIELD_PER_TIER;
+        }
+
+        previousRecipeChance = successChance;
         successChance = recipeChanceCalculator();
         currentRecipeRocketTier = currentRecipe.getRocketTier();
 
@@ -1441,7 +1449,7 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements IConstructable,
     private double previousRecipeChance;
     private long currentRecipeRocketTier;
 
-    private void outputFailedChance(double currentBaseChance) {
+    private void outputFailedChance() {
         long failedParallelAmount = parallelAmount - successfulParallelAmount;
         if (failedParallelAmount > 0) {
             // 2^Tier spacetime released upon recipe failure.
@@ -1459,7 +1467,8 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements IConstructable,
             }
         } else if (parallelAmount == 1) {
             // Recipe succeeded, reset pity
-            pityChance = currentBaseChance;
+            // Set to Double.MIN_VALUE here and actually reset this when the recipe starts.
+            pityChance = Double.MIN_VALUE;
         }
         super.outputAfterRecipe_EM();
     }
@@ -1496,9 +1505,6 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements IConstructable,
     public void outputAfterRecipe_EM() {
         recipeRunning = false;
         eRequiredData = 0L;
-        double currentBaseChance = currentRecipe.getBaseRecipeSuccessChance()
-            - timeAccelerationFieldMetadata * TIME_ACCEL_DECREASE_CHANCE_PER_TIER
-            + stabilisationFieldMetadata * STABILITY_INCREASE_PROBABILITY_DECREASE_YIELD_PER_TIER;
 
         destroyRenderBlock();
 
@@ -1508,8 +1514,7 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements IConstructable,
         startEU = 0;
         outputEU_BigInt = BigInteger.ZERO;
 
-        outputFailedChance(currentBaseChance);
-        previousRecipeChance = currentBaseChance;
+        outputFailedChance();
 
         if (successfulParallelAmount > 0) {
             for (ItemStackLong itemStack : outputItems) {
