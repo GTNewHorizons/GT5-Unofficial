@@ -15,13 +15,13 @@ import gregtech.api.render.TextureFactory;
 
 public class MTEHatchParticleSensor extends MTEHatch {
 
-    private int isOn;
+    private int isOn = 1;
 
     private static final IIconContainer textureFont = Textures.BlockIcons.OVERLAY_HATCH_PH_SENSOR;
     private static final IIconContainer textureFont_Glow = Textures.BlockIcons.OVERLAY_HATCH_PH_SENSOR_GLOW;
 
     public MTEHatchParticleSensor(int aID, String aName, String aNameRegional, int aTier) {
-        super(aID, aName, aNameRegional, aTier, 0, "Indicates required lens swaps.");
+        super(aID, aName, aNameRegional, aTier, 0, "Indicates required particle.");
     }
 
     public MTEHatchParticleSensor(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
@@ -77,14 +77,8 @@ public class MTEHatchParticleSensor extends MTEHatch {
 
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
-        if (isOn != 0) {
-            for (final ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
-                aBaseMetaTileEntity.setInternalOutputRedstoneSignal(side, (byte) isOn);
-            }
-        } else {
-            for (final ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
-                aBaseMetaTileEntity.setInternalOutputRedstoneSignal(side, (byte) 0);
-            }
+        for (final ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
+            aBaseMetaTileEntity.setInternalOutputRedstoneSignal(side, (byte) isOn);
         }
         super.onPostTick(aBaseMetaTileEntity, aTick);
     }

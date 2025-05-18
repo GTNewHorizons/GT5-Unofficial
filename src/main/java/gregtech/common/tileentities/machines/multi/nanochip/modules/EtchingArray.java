@@ -230,7 +230,7 @@ public class EtchingArray extends MTENanochipAssemblyModuleBase<EtchingArray> {
             case 0 -> "Electron";
             case 4 -> "Alpha";
             case 5 -> "Positron";
-            default -> throw new IllegalStateException("thats no good, oopsies");
+            default -> throw new IllegalStateException("Could Not Get: " + requiredParticle);
         };
     }
 
