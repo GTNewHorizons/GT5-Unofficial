@@ -120,9 +120,17 @@ public class RecipeHandlers {
         // Note: To correctly generate localized names, currently all conversion recipes need to be registered
         // before processing recipes. I'll admit this is a bit messy, so I may try to find a solution for this
         // in the future (TODO)
+        registerConversionRecipes();
+        registerWireRecipes();
+        registerBoardRecipes();
+        registerCuttingRecipes();
+        registerEtchingRecipes();
+        registerOpticalRecipes();
+        registerSuperconductorRecipes();
+        registerFrameBoxRecipes();
+    }
 
-        // Conversion recipes
-        // Wires
+    public static void registerConversionRecipes() {
         addConversionRecipe(
             CircuitComponent.WireNiobiumTitanium,
             GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.NiobiumTitanium, 1));
@@ -206,7 +214,9 @@ public class RecipeHandlers {
                 addConversionRecipe(circuitComponent, circuitComponent.realCircuit);
             }
         }
+    }
 
+    public static void registerWireRecipes() {
         // Processing recipes
         // Wire processing recipes
         addSimpleProcessingRecipe(
@@ -300,6 +310,9 @@ public class RecipeHandlers {
             CircuitComponent.ProcessedOpticalSMDDiode,
             ModuleRecipeInfo.Fast,
             TierEU.RECIPE_LV);
+    }
+
+    public static void registerBoardRecipes() {
         // Board processing recipes
         addSimpleProcessingRecipe(
             CircuitComponent.BoardMultifiberglassElite,
@@ -325,6 +338,9 @@ public class RecipeHandlers {
             CircuitComponent.ProcessedBoardOptical,
             ModuleRecipeInfo.Fast,
             TierEU.RECIPE_LV);
+    }
+
+    public static void registerEtchingRecipes() {
         // CPU processing recipes
         addSimpleProcessingRecipe(
             CircuitComponent.ChipCrystalCPU,
@@ -336,6 +352,10 @@ public class RecipeHandlers {
             CircuitComponent.ProcessedChipAdvCrystalCPU,
             ModuleRecipeInfo.Slow,
             TierEU.RECIPE_LV);
+
+    }
+
+    public static void registerOpticalRecipes() {
         addSimpleProcessingRecipe(
             CircuitComponent.ChipOpticalCPU,
             CircuitComponent.ProcessedChipOpticalCPU,
@@ -347,6 +367,9 @@ public class RecipeHandlers {
             CircuitComponent.ProcessedOpticalRAM,
             ModuleRecipeInfo.Slow,
             TierEU.RECIPE_LV);
+    }
+
+    public static void registerCuttingRecipes() {
         // Wafer cutting processing recipes
         addSimpleProcessingRecipe(
             CircuitComponent.WaferNanoCPU,
@@ -378,6 +401,9 @@ public class RecipeHandlers {
             CircuitComponent.ProcessedChipASOC,
             ModuleRecipeInfo.Medium,
             TierEU.RECIPE_LV);
+    }
+
+    public static void registerSuperconductorRecipes() {
         // Superconductor processing recipes
         addSimpleProcessingRecipe(
             CircuitComponent.SuperconductorLuV,
@@ -399,6 +425,9 @@ public class RecipeHandlers {
             CircuitComponent.ProcessedSuperconductorUEV,
             ModuleRecipeInfo.Medium,
             TierEU.RECIPE_LV);
+    }
+
+    public static void registerFrameBoxRecipes() {
         // Frame box processing recipes
         addSimpleProcessingRecipe(
             CircuitComponent.FrameboxAluminium,
