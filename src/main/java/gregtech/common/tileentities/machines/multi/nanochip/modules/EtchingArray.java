@@ -69,9 +69,7 @@ public class EtchingArray extends MTENanochipAssemblyModuleBase<EtchingArray> {
     private final ArrayList<MTEHatchParticleSensor> particleSensor = new ArrayList<>();
 
     int requiredEnergy = 1;
-    int requiredParticle = 0;
-
-    Particle getInputParticle;
+    Particle requiredParticle;
 
     public static final IStructureDefinition<EtchingArray> STRUCTURE_DEFINITION = ModuleStructureDefinition
         .<EtchingArray>builder()
@@ -180,7 +178,7 @@ public class EtchingArray extends MTENanochipAssemblyModuleBase<EtchingArray> {
         float inputEnergy = inputInfo.getEnergy();
         Particle inputParticle = Particle.getParticleFromId(inputInfo.getParticleId());
 
-        if (inputParticle != Particle.getParticleFromId(requiredParticle)) {
+        if (inputParticle != requiredParticle) {
             return CheckRecipeResultRegistry.WRONG_PARTICLE;
         }
 
@@ -197,7 +195,7 @@ public class EtchingArray extends MTENanochipAssemblyModuleBase<EtchingArray> {
         super.onPostTick(aBaseMetaTileEntity, aTimer);
         // Update sensor hatch
         for (MTEHatchParticleSensor hatch : particleSensor) {
-            hatch.updateRedstoneOutput(this.requiredParticle);
+            hatch.updateRedstoneOutput(this.requiredParticle.ordinal());
         }
     }
 
@@ -218,18 +216,18 @@ public class EtchingArray extends MTENanochipAssemblyModuleBase<EtchingArray> {
     private void updateRequiredPatricle() {
         int particle = MathUtils.randInt(1, 3);
         requiredParticle = switch (particle) {
-            case 1 -> 0;
-            case 2 -> 4;
-            case 3 -> 5;
+            case 1 -> Particle.ELECTRON;
+            case 2 -> Particle.ALPHA;
+            case 3 -> Particle.POSITRON;
             default -> throw new IllegalStateException("Unexpected Particle: " + particle);
         };
     }
 
     private String getParticleString() {
         return switch (requiredParticle) {
-            case 0 -> "Electron";
-            case 4 -> "Alpha";
-            case 5 -> "Positron";
+            case ELECTRON -> "Electron";
+            case ALPHA -> "Alpha";
+            case POSITRON -> "Positron";
             default -> throw new IllegalStateException("Could Not Get: " + requiredParticle);
         };
     }
@@ -237,13 +235,13 @@ public class EtchingArray extends MTENanochipAssemblyModuleBase<EtchingArray> {
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
-        if (aNBT.hasKey("particle")) requiredParticle = aNBT.getInteger("particle");
+        if (aNBT.hasKey("particle")) requiredParticle = Particle.getParticleFromId(aNBT.getInteger("particle"));
     }
 
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
-        aNBT.setInteger("particle", requiredParticle);
+        aNBT.setInteger("particle", requiredParticle.ordinal());
     }
 
     @Override
@@ -297,6 +295,7 @@ public class EtchingArray extends MTENanochipAssemblyModuleBase<EtchingArray> {
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+        particleSensor.clear();
         // Check base structure
         if (!super.checkMachine(aBaseMetaTileEntity, aStack)) return false;
         // Now check module structure

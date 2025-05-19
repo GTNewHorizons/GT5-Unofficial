@@ -15,7 +15,7 @@ import gregtech.api.render.TextureFactory;
 
 public class MTEHatchParticleSensor extends MTEHatch {
 
-    private int isOn = 1;
+    private int targetParticle = 1;
 
     private static final IIconContainer textureFont = Textures.BlockIcons.OVERLAY_HATCH_PH_SENSOR;
     private static final IIconContainer textureFont_Glow = Textures.BlockIcons.OVERLAY_HATCH_PH_SENSOR_GLOW;
@@ -68,17 +68,18 @@ public class MTEHatchParticleSensor extends MTEHatch {
     @Override
     public String[] getDescription() {
         return new String[] { "Can be installed in the NAC Etching Array.",
-            "Outputs Redstone Signal based on requested particle." };
+            "Outputs Redstone Signal based on requested particle.", "Positron = 12 Strength", "Alpha = 10 Strength",
+            "Electron = 2 Strength", };
     }
 
     public void updateRedstoneOutput(int requiredParticle) {
-        isOn = ((requiredParticle + 1) * 2);
+        targetParticle = ((requiredParticle + 1) * 2);
     }
 
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         for (final ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
-            aBaseMetaTileEntity.setInternalOutputRedstoneSignal(side, (byte) isOn);
+            aBaseMetaTileEntity.setInternalOutputRedstoneSignal(side, (byte) targetParticle);
         }
         super.onPostTick(aBaseMetaTileEntity, aTick);
     }
