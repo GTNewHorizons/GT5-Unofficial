@@ -123,7 +123,7 @@ public class MTESourceChamber extends MTEEnhancedMultiBlockBase<MTESourceChamber
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (this.mMachine) return -1;
-        return survivialBuildPiece("sc", stackSize, 2, 4, 0, elementBudget, env, false, true);
+        return survivalBuildPiece("sc", stackSize, 2, 4, 0, elementBudget, env, false, true);
     }
 
     @Override
