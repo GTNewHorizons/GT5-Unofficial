@@ -170,6 +170,11 @@ public class MTEIndustrialCentrifuge extends GTPPMultiBlockBase<MTEIndustrialCen
         }
     }
 
+    @Override
+    public void onTextureUpdate() {
+        setTurbineOverlay();
+    }
+
     protected void setTurbineOverlay() {
         IGregTechTileEntity tile = getBaseMetaTileEntity();
         if (tile.isServerSide()) return;

@@ -163,8 +163,9 @@ public abstract class MTELargeTurbineBase extends MTEEnhancedMultiBlockBase<MTEL
             overlayTickets);
     }
 
-    public boolean isNewStyleRendering() {
-        return false;
+    @Override
+    public void onTextureUpdate() {
+        setTurbineOverlay();
     }
 
     public IIconContainer[] getTurbineTextureActive() {

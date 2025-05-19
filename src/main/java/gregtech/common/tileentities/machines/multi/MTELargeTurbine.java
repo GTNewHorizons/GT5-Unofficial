@@ -162,6 +162,7 @@ public abstract class MTELargeTurbine extends MTEEnhancedMultiBlockBase<MTELarge
 
     public abstract int getCasingTextureIndex();
 
+    @Deprecated
     public boolean isNewStyleRendering() {
         return false;
     }
@@ -201,6 +202,11 @@ public abstract class MTELargeTurbine extends MTEEnhancedMultiBlockBase<MTELarge
             getExtendedFacing(),
             tTextures,
             overlayTickets);
+    }
+
+    @Override
+    public void onTextureUpdate() {
+        setTurbineOverlay();
     }
 
     @Override

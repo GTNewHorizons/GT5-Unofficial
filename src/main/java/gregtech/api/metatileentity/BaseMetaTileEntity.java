@@ -323,6 +323,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
                     } else {
                         worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
                     }
+                    mMetaTileEntity.onTextureUpdate();
                     mNeedsUpdate = false;
                 }
             }
