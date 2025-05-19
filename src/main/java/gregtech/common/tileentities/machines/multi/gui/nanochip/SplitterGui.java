@@ -6,8 +6,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import net.minecraft.network.PacketBuffer;
 
@@ -48,19 +46,23 @@ public class SplitterGui extends MTEMultiBlockBaseGui {
     public ModularPanel build(PosGuiData data, PanelSyncManager syncManager, UISettings uiSettings) {
         ModularPanel ui = super.build(data, syncManager, uiSettings);
         IPanelHandler popupPanel = syncManager.panel("popup", (m, h) -> createRuleManagerPanel(syncManager), true);
-        GenericSyncValue<Map<Integer, Splitter.ColorRule>> listSyncer = new GenericSyncValue<>(
-            () -> base.colorMap,
-            map -> { base.colorMap = map; },
-            new ColorMapAdapter());
-        syncManager.syncValue("rules", 0, listSyncer);
+        syncManager.syncValue(
+            "rules",
+            0,
+            new GenericSyncValue<>(() -> base.colorMap, map -> { base.colorMap = map; }, new ColorMapAdapter()));
 
         return ui.child(new ButtonWidget<>().onMousePressed(mouseButton -> {
-            popupPanel.openPanel();
-            return popupPanel.isPanelOpen();
+            if (!popupPanel.isPanelOpen()) {
+                popupPanel.openPanel();
+            } else {
+                popupPanel.closePanel();
+            }
+            return true;
         })
-            .background(GTGuiTextures.BUTTON_STANDARD)
-            .tooltip(tooltip -> tooltip.add("Add Rule"))
-            .pos(153, 5)
+            .background(GTGuiTextures.BUTTON_STANDARD, GuiTextures.GEAR)
+            .disableHoverBackground()
+            .tooltip(tooltip -> tooltip.add("Open Rules manager"))
+            .pos(156, 102)
             .size(18, 18));
     }
 
@@ -77,11 +79,7 @@ public class SplitterGui extends MTEMultiBlockBaseGui {
             int id = entry.getKey();
             Splitter.ColorRule rule = entry.getValue();
             if (rule == null) continue;
-            Byte input = rule.getInputColor();
-            List<Byte> outputs = rule.getOutputColors();
-            // spotless:off
-            list.child(createColorManager(syncManager, Stream.of(input).collect(Collectors.toList()), outputs, id));
-            // spotless:on
+            list.child(createColorManager(syncManager, rule.getInputColors(), rule.getOutputColors(), id));
         }
 
         return ui.child(list)
@@ -112,7 +110,7 @@ public class SplitterGui extends MTEMultiBlockBaseGui {
                     .posRel(0.5F, 0.5F))
             .setInputGrid(
                 (ColorGridWidget) inputGrid.setInitialSelected(inputSelected)
-                    .setMaxSelected(1)
+                    .setMaxSelected(16)
                     .build()
                     .pos(5, 17))
             .setOutputGrid(
@@ -122,25 +120,16 @@ public class SplitterGui extends MTEMultiBlockBaseGui {
                     .pos(121, 17))
             // Input grid color display
             .child(
-                IKey.dynamic(() -> inputGrid.getName(0))
-                    .asWidget()
+                getAboveGridText(inputGrid).asWidget()
+                    .tooltipAutoUpdate(true)
+                    .tooltipBuilder(t -> getInfo(t, inputGrid))
                     .scale(0.8F)
                     .alignment(Alignment.Center)
-                    .size(42, 8)
-                    .pos(4, 5))
+                    .pos(4, 5)
+                    .size(42, 8))
             // Output grid color display
             .child(
-                // spotless makes this look vile and disgusting and abominable and atrocious and yucky and horrid and
-                // offensive to the eyes and nasty and foul and repugnant and abhorrent and deplorable and nauseating
-                // and Dirty
-                // spotless:off
-                IKey.dynamic(() -> switch (outputGrid.getAmountSelected()) {
-                        case 0: yield "None";
-                        case 1: yield outputGrid.getName(0);
-                        default: yield "[Hover]";
-                    })
-                    // spotless:on
-                    .asWidget()
+                getAboveGridText(outputGrid).asWidget()
                     .tooltipAutoUpdate(true)
                     .tooltipBuilder(t -> getInfo(t, outputGrid))
                     .scale(0.8F)
@@ -160,6 +149,20 @@ public class SplitterGui extends MTEMultiBlockBaseGui {
                     .size(8, 8))
             .size(166, 58)
             .background(GTGuiTextures.BACKGROUND_POPUP_STANDARD);
+    }
+
+    public IKey getAboveGridText(ColorGridWidget selector) {
+        return
+        // spotless makes this look vile and disgusting and abominable and atrocious and yucky and horrid and
+        // offensive to the eyes and nasty and foul and repugnant and abhorrent and deplorable and nauseating
+        // and Dirty
+        // spotless:off
+            IKey.dynamic(() -> switch (selector.getAmountSelected()) {
+                case 0: yield "None";
+                case 1: yield selector.getName(0);
+                default: yield "[Hover]";
+            });
+        // spotless:on
     }
 
     public void getInfo(RichTooltip t, ColorGridWidget grid) {
@@ -239,7 +242,7 @@ public class SplitterGui extends MTEMultiBlockBaseGui {
             List<Byte> output = outputGrid.getSelected();
             if (input.isEmpty()) input = ImmutableList.of((byte) -1);
             if (output.isEmpty()) output = ImmutableList.of((byte) -1);
-            return new Splitter.ColorRule(input.get(0), output);
+            return new Splitter.ColorRule(input, output);
         }
     }
 
@@ -251,13 +254,13 @@ public class SplitterGui extends MTEMultiBlockBaseGui {
             int size = buffer.readInt();
             for (int i = 0; i < size; i++) {
                 int id = buffer.readInt();
-                Byte input = buffer.readByte();
+                int inputCount = buffer.readInt();
+                int outputCount = buffer.readInt();
+                List<Byte> inputs = new ArrayList<>();
                 List<Byte> outputs = new ArrayList<>();
-                int ruleCount = buffer.readInt();
-                for (int j = 0; j < ruleCount; j++) {
-                    outputs.add(buffer.readByte());
-                }
-                list.put(id, new Splitter.ColorRule(input, outputs));
+                for (int j = 0; j < inputCount; j++) inputs.add(buffer.readByte());
+                for (int j = 0; j < outputCount; j++) outputs.add(buffer.readByte());
+                list.put(id, new Splitter.ColorRule(inputs, outputs));
             }
             return list;
         }
@@ -267,14 +270,13 @@ public class SplitterGui extends MTEMultiBlockBaseGui {
             buffer.writeInt(map.size());
             for (Map.Entry<Integer, Splitter.ColorRule> entry : map.entrySet()) {
                 Splitter.ColorRule rule = entry.getValue();
-                Byte input = rule.getInputColor();
+                List<Byte> inputs = rule.getInputColors();
                 List<Byte> outputs = rule.getOutputColors();
                 buffer.writeInt(entry.getKey());
-                buffer.writeByte(input);
+                buffer.writeInt(inputs.size());
                 buffer.writeInt(outputs.size());
-                for (Byte dye : outputs) {
-                    buffer.writeByte(dye);
-                }
+                for (Byte dye : inputs) buffer.writeByte(dye);
+                for (Byte dye : outputs) buffer.writeByte(dye);
             }
         }
 
