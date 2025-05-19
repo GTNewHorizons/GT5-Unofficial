@@ -1,5 +1,7 @@
 package gregtech.common.covers;
 
+import java.util.Arrays;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
@@ -179,6 +181,18 @@ public class CoverLiquidMeter extends Cover {
         return 5;
     }
 
+    private int getMaxCapacity() {
+        final ICoverable tile = getTile();
+        if (!tile.isDead() && tile instanceof IFluidHandler) {
+            FluidTankInfo[] tanks = ((IFluidHandler) tile).getTankInfo(ForgeDirection.UNKNOWN);
+            return Arrays.stream(tanks)
+                .mapToInt(tank -> tank.capacity)
+                .sum();
+        } else {
+            return -1;
+        }
+    }
+
     // GUI stuff
 
     @Override
@@ -188,7 +202,7 @@ public class CoverLiquidMeter extends Cover {
 
     @Override
     public ModularWindow createWindow(CoverUIBuildContext buildContext) {
-        return new LiquidMeterUIFactory(buildContext).createWindow();
+        return new LiquidMeterUIFactory(buildContext, getMaxCapacity()).createWindow();
     }
 
 }

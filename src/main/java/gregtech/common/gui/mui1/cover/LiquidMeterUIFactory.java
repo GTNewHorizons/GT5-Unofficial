@@ -1,16 +1,9 @@
 package gregtech.common.gui.mui1.cover;
 
-import java.util.Arrays;
-
-import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.FluidTankInfo;
-import net.minecraftforge.fluids.IFluidHandler;
-
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
 import gregtech.api.gui.modularui.CoverUIBuildContext;
-import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.util.GTUtility;
 import gregtech.common.covers.Cover;
 import gregtech.common.covers.CoverLiquidMeter;
@@ -24,10 +17,11 @@ public class LiquidMeterUIFactory extends CoverUIFactory<CoverLiquidMeter> {
     private static final int startY = 25;
     private static final int spaceX = 18;
     private static final int spaceY = 18;
-    private int maxCapacity;
+    private final int maxCapacity;
 
-    public LiquidMeterUIFactory(CoverUIBuildContext buildContext) {
+    public LiquidMeterUIFactory(CoverUIBuildContext buildContext, int maxCapacity) {
         super(buildContext);
+        this.maxCapacity = maxCapacity;
     }
 
     @Override
@@ -43,8 +37,6 @@ public class LiquidMeterUIFactory extends CoverUIFactory<CoverLiquidMeter> {
     protected void addUIWidgets(ModularWindow.Builder builder) {
         final String INVERTED = GTUtility.trans("INVERTED", "Inverted");
         final String NORMAL = GTUtility.trans("NORMAL", "Normal");
-
-        setMaxCapacity();
 
         builder
             .widget(
@@ -73,17 +65,5 @@ public class LiquidMeterUIFactory extends CoverUIFactory<CoverLiquidMeter> {
             .widget(
                 new TextWidget(GTUtility.trans("222", "Fluid threshold")).setDefaultColor(COLOR_TEXT_GRAY.get())
                     .setPos(startX + spaceX * 5 - 10, startY + spaceY * 1 + 4));
-    }
-
-    private void setMaxCapacity() {
-        final ICoverable tile = getUIBuildContext().getTile();
-        if (!tile.isDead() && tile instanceof IFluidHandler) {
-            FluidTankInfo[] tanks = ((IFluidHandler) tile).getTankInfo(ForgeDirection.UNKNOWN);
-            maxCapacity = Arrays.stream(tanks)
-                .mapToInt(tank -> tank.capacity)
-                .sum();
-        } else {
-            maxCapacity = -1;
-        }
     }
 }
