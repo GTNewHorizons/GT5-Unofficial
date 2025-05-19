@@ -189,6 +189,7 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
 
                 if (mNeedsUpdate) {
                     worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+                    mMetaTileEntity.onTextureUpdate();
                     mNeedsUpdate = false;
                 }
             }

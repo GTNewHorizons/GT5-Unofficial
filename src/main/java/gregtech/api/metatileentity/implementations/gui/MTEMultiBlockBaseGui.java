@@ -790,14 +790,18 @@ public class MTEMultiBlockBaseGui {
                     .collect(Collectors.toList()) : Collections.emptyList(),
                 val -> base.mOutputFluids = val.toArray(new FluidStack[0]),
                 NetworkUtils::readFluidStack,
-                NetworkUtils::writeFluidStack));
+                NetworkUtils::writeFluidStack,
+                null,
+                null));
         syncManager.syncValue(
             "itemOutput",
             new GenericListSyncHandler<ItemStack>(
                 () -> base.mOutputItems != null ? Arrays.asList(base.mOutputItems) : Collections.emptyList(),
                 val -> base.mOutputItems = val.toArray(new ItemStack[0]),
                 NetworkUtils::readItemStack,
-                NetworkUtils::writeItemStack));
+                NetworkUtils::writeItemStack,
+                null,
+                null));
         syncManager
             .syncValue("progressTime", new IntSyncValue(() -> base.mProgresstime, val -> base.mProgresstime = val));
         syncManager.syncValue(
