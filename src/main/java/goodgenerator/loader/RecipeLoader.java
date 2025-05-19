@@ -54,6 +54,7 @@ import gregtech.api.util.GTRecipeConstants;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.recipe.Scanning;
 import gtPlusPlus.core.material.MaterialsElements;
+import gtPlusPlus.core.material.nuclear.MaterialsFluorides;
 
 public class RecipeLoader {
 
@@ -335,7 +336,7 @@ public class RecipeLoader {
         GTValues.RA.stdBuilder()
             .itemInputs(GGMaterial.thoriumHydroxide.get(OrePrefixes.dust, 9), GTUtility.getIntegratedCircuit(1))
             .fluidInputs(Materials.HydrofluoricAcid.getFluid(4000))
-            .fluidOutputs(GGMaterial.thoriumTetrafluoride.getFluidOrGas(1000))
+            .fluidOutputs(MaterialsFluorides.THORIUM_TETRAFLUORIDE.getFluidStack(1000))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(UniversalChemical);
@@ -1495,7 +1496,7 @@ public class RecipeLoader {
 
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(1))
-            .fluidInputs(GGMaterial.thoriumTetrafluoride.getFluidOrGas(1000))
+            .fluidInputs(MaterialsFluorides.THORIUM_TETRAFLUORIDE.getFluidStack(1000))
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dustSmall, Materials.Thorium, 1))
             .fluidOutputs(GGMaterial.thorium232Tetrafluoride.getFluidOrGas(750))
             .duration(5 * SECONDS)
