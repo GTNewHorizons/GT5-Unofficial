@@ -9,7 +9,6 @@ import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAs
 import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex.TOOLTIP_CC;
 import static gtnhlanth.util.DescTextLocalization.addDotText;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -65,11 +64,11 @@ public class EtchingArray extends MTENanochipAssemblyModuleBase<EtchingArray> {
         { "  AGA  ", " A   A ", " G F G ", "B     B" }, { "  AGA  ", " BCCCB ", " BCDCB ", "BBCCCBB" },
         { "  EEE  ", " EAEAE ", " EAIAE ", " BAEAB " } };
 
-    private final ArrayList<MTEHatchInputBeamline> mInputBeamline = new ArrayList<>();
-    private final ArrayList<MTEHatchParticleSensor> particleSensor = new ArrayList<>();
+    private MTEHatchInputBeamline beamlineInput = null;
+    private MTEHatchParticleSensor particleSensor = null;
 
     int requiredEnergy = 1;
-    Particle requiredParticle;
+    Particle requiredParticle = Particle.ALPHA;
 
     public static final IStructureDefinition<EtchingArray> STRUCTURE_DEFINITION = ModuleStructureDefinition
         .<EtchingArray>builder()
@@ -92,6 +91,7 @@ public class EtchingArray extends MTENanochipAssemblyModuleBase<EtchingArray> {
         .addElement(
             'H',
             buildHatchAdder(EtchingArray.class).hatchClass(MTEHatchInputBeamline.class)
+                .atLeast(SpecialHatchElement.BeamlineInput)
                 .casingIndex(((BlockCasings8) GregTechAPI.sBlockCasings8).getTextureIndex(10))
                 .dot(1)
                 .adder(EtchingArray::addBeamLineInputHatch)
@@ -102,20 +102,22 @@ public class EtchingArray extends MTENanochipAssemblyModuleBase<EtchingArray> {
             lazy(
                 t -> GTStructureUtility.<EtchingArray>buildHatchAdder()
                     .atLeast(SpecialHatchElement.ParticleSensor)
-                    .dot(3)
+                    .dot(2)
                     .cacheHint(() -> "Particle Indicator")
                     .casingIndex(((BlockCasings8) GregTechAPI.sBlockCasings8).getTextureIndex(5))
                     .build()))
         .build();
 
-    private boolean addBeamLineInputHatch(IGregTechTileEntity te, int casingIndex) {
+    public boolean addBeamLineInputHatch(IGregTechTileEntity te, int casingIndex) {
         if (te == null) return false;
 
         IMetaTileEntity mte = te.getMetaTileEntity();
         if (mte == null) return false;
 
-        if (mte instanceof MTEHatchInputBeamline) {
-            return this.mInputBeamline.add((MTEHatchInputBeamline) mte);
+        if (mte instanceof MTEHatchInputBeamline beamlineInput) {
+            beamlineInput.updateTexture(casingIndex);
+            this.beamlineInput = beamlineInput;
+            return true;
         }
 
         return false;
@@ -123,11 +125,11 @@ public class EtchingArray extends MTENanochipAssemblyModuleBase<EtchingArray> {
 
     @Nullable
     private BeamInformation getInputInformation() {
-        for (MTEHatchInputBeamline in : this.mInputBeamline) {
-            if (in.dataPacket == null) return new BeamInformation(0, 0, 0, 0);
-            return in.dataPacket.getContent();
-        }
-        return null;
+        if (this.beamlineInput == null) return null;
+
+        if (this.beamlineInput.dataPacket == null) return new BeamInformation(0, 0, 0, 0);
+
+        return this.beamlineInput.dataPacket.getContent();
     }
 
     private Particle inputParticle() {
@@ -139,12 +141,13 @@ public class EtchingArray extends MTENanochipAssemblyModuleBase<EtchingArray> {
         else return null;
     }
 
-    public boolean addParticleSensorToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
-        if (aTileEntity == null) return false;
-        IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
-        if (aMetaTileEntity instanceof MTEHatchParticleSensor sensor) {
+    public boolean addParticleSensorToMachineList(IGregTechTileEntity te, int aBaseCasingIndex) {
+        if (te == null) return false;
+        IMetaTileEntity mte = te.getMetaTileEntity();
+        if (mte instanceof MTEHatchParticleSensor sensor) {
             sensor.updateTexture(aBaseCasingIndex);
-            return this.particleSensor.add(sensor);
+            this.particleSensor = sensor;
+            return true;
         }
         return false;
     }
@@ -155,7 +158,15 @@ public class EtchingArray extends MTENanochipAssemblyModuleBase<EtchingArray> {
 
             @Override
             public long count(EtchingArray gtMetaTileEntityEtchingArray) {
-                return gtMetaTileEntityEtchingArray.particleSensor.size();
+                return gtMetaTileEntityEtchingArray.particleSensor != null ? 1 : 0;
+            }
+        },
+
+        BeamlineInput(EtchingArray::addBeamLineInputHatch, MTEHatchInputBeamline.class) {
+
+            @Override
+            public long count(EtchingArray gtMetaTileEntityEtchingArray) {
+                return gtMetaTileEntityEtchingArray.beamlineInput != null ? 1 : 0;
             }
         };
 
@@ -202,8 +213,8 @@ public class EtchingArray extends MTENanochipAssemblyModuleBase<EtchingArray> {
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTimer) {
         super.onPostTick(aBaseMetaTileEntity, aTimer);
         // Update sensor hatch
-        for (MTEHatchParticleSensor hatch : particleSensor) {
-            hatch.updateRedstoneOutput(this.requiredParticle.ordinal());
+        if (particleSensor != null) {
+            particleSensor.updateRedstoneOutput(this.requiredParticle.ordinal());
         }
     }
 
@@ -296,7 +307,8 @@ public class EtchingArray extends MTENanochipAssemblyModuleBase<EtchingArray> {
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        particleSensor.clear();
+        particleSensor = null;
+        beamlineInput = null;
         // Check base structure
         if (!super.checkMachine(aBaseMetaTileEntity, aStack)) return false;
         // Now check module structure
@@ -312,6 +324,7 @@ public class EtchingArray extends MTENanochipAssemblyModuleBase<EtchingArray> {
             .addStructureInfo("Any base casing - Vacuum Conveyor Input")
             .addStructureInfo("Any base casing - Vacuum Conveyor Output")
             .addOtherStructurePart("Beamline Input Hatch", addDotText(1))
+            .addOtherStructurePart("Particle Indicator", addDotText(2))
             .toolTipFinisher("GregTech");
     }
 
