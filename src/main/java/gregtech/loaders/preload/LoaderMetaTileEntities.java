@@ -1091,6 +1091,7 @@ import gregtech.common.tileentities.machines.multi.drone.MTEDroneCentre;
 import gregtech.common.tileentities.machines.multi.drone.MTEHatchDroneDownLink;
 import gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex;
 import gregtech.common.tileentities.machines.multi.nanochip.MTEVacuumConveyorPipe;
+import gregtech.common.tileentities.machines.multi.nanochip.hatches.MTEHatchParticleSensor;
 import gregtech.common.tileentities.machines.multi.nanochip.hatches.MTEHatchVacuumConveyorInput;
 import gregtech.common.tileentities.machines.multi.nanochip.hatches.MTEHatchVacuumConveyorOutput;
 import gregtech.common.tileentities.machines.multi.nanochip.modules.*;
@@ -12064,7 +12065,12 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 "Bulk Catalyst Housing",
                 10,
                 Integer.MAX_VALUE).getStackForm(1));
-
+        ItemList.Hatch_Particle_Sensor.set(
+            new MTEHatchParticleSensor(
+                HATCH_PARTICLE_SENSOR.ID,
+                "hatch.particleindicator",
+                "Particle Indicator Hatch",
+                8).getStackForm(1L));
         ItemList.LargeMolecularAssembler.set(
             new MTELargeMolecularAssembler(
                 LargeMolecularAssembler.ID,
