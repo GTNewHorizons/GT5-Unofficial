@@ -223,15 +223,6 @@ public class EtchingArray extends MTENanochipAssemblyModuleBase<EtchingArray> {
         };
     }
 
-    private String getParticleString() {
-        return switch (requiredParticle) {
-            case ELECTRON -> "Electron";
-            case ALPHA -> "Alpha";
-            case POSITRON -> "Positron";
-            default -> throw new IllegalStateException("Could Not Get: " + requiredParticle);
-        };
-    }
-
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
