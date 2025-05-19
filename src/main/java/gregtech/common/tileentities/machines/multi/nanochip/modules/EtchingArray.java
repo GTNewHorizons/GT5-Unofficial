@@ -248,7 +248,7 @@ public class EtchingArray extends MTENanochipAssemblyModuleBase<EtchingArray> {
     public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
         int z) {
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
-        tag.setString("particle", getParticleString());
+        tag.setString("particle", requiredParticle.getName());
     }
 
     @Override
