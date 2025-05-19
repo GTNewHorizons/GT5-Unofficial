@@ -207,6 +207,7 @@ import gregtech.common.tileentities.machines.multi.pcb.MTEPCBCoolingTower;
 import gregtech.common.tileentities.machines.multi.pcb.MTEPCBFactory;
 import gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex;
 import gregtech.common.tileentities.machines.multi.nanochip.MTEVacuumConveyorPipe;
+import gregtech.common.tileentities.machines.multi.nanochip.hatches.MTEHatchParticleSensor;
 import gregtech.common.tileentities.machines.multi.nanochip.hatches.MTEHatchVacuumConveyorInput;
 import gregtech.common.tileentities.machines.multi.nanochip.hatches.MTEHatchVacuumConveyorOutput;
 import gregtech.common.tileentities.machines.multi.nanochip.modules.*;
@@ -10884,6 +10885,12 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 LargeMolecularAssembler.ID,
                 "largemolecularassembler",
                 "Large Molecular Assembler").getStackForm(1));
+        ItemList.Hatch_Particle_Sensor.set(
+            new MTEHatchParticleSensor(
+                HATCH_PARTICLE_SENSOR.ID,
+                "hatch.particleindicator",
+                "Particle Indicator Hatch",
+                8).getStackForm(1L));
     }
 
 }
