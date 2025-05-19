@@ -70,9 +70,13 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui {
         ModularPanel ui = createPopUpPanel("gt:nac:gregos", false, false).size(176, 136);
 
         // TODO: figure out if we should save the conversation to nbt and stuff or not
-        GenericListSyncHandler<String> conversationHandler = new GenericListSyncHandler<>(
+        GenericListSyncHandler<String> conversationHandler = new GenericListSyncHandler<String>(
             () -> base.gregosConversation,
-            ByteBufAdapters.STRING);
+            null,
+            ByteBufAdapters.STRING,
+            ByteBufAdapters.STRING,
+            ByteBufAdapters.STRING,
+            null);
         DoubleSyncValue moodSyncer = new DoubleSyncValue(() -> base.gregosMood, dub -> base.gregosMood = dub);
         DoubleSyncValue efficiencySyncer = new DoubleSyncValue(() -> base.efficiency, dub -> base.efficiency = dub);
         DoubleSyncValue speedSyncer = new DoubleSyncValue(() -> base.moduleSpeed, dub -> base.moduleSpeed = dub);

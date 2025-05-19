@@ -438,7 +438,6 @@ import static gregtech.api.enums.MetaTileEntityIDs.ITEM_FILTER_UHV;
 import static gregtech.api.enums.MetaTileEntityIDs.ITEM_FILTER_ULV;
 import static gregtech.api.enums.MetaTileEntityIDs.ITEM_FILTER_UV;
 import static gregtech.api.enums.MetaTileEntityIDs.ITEM_FILTER_ZPM;
-import static gregtech.api.enums.MetaTileEntityIDs.LARGE_ADVANCED_GAS_TURBINE_CONTROLLER;
 import static gregtech.api.enums.MetaTileEntityIDs.LARGE_BRONZE_BOILER_CONTROLLER;
 import static gregtech.api.enums.MetaTileEntityIDs.LARGE_GAS_TURBINE_CONTROLLER;
 import static gregtech.api.enums.MetaTileEntityIDs.LARGE_HEAT_EXCHANGER_CONTROLLER;
@@ -1037,7 +1036,6 @@ import gregtech.common.tileentities.machines.multi.MTELargeChemicalReactor;
 import gregtech.common.tileentities.machines.multi.MTELargeFluidExtractor;
 import gregtech.common.tileentities.machines.multi.MTELargeMolecularAssembler;
 import gregtech.common.tileentities.machines.multi.MTELargeTurbineGas;
-import gregtech.common.tileentities.machines.multi.MTELargeTurbineGasAdvanced;
 import gregtech.common.tileentities.machines.multi.MTELargeTurbineHPSteam;
 import gregtech.common.tileentities.machines.multi.MTELargeTurbinePlasma;
 import gregtech.common.tileentities.machines.multi.MTELargeTurbineSteam;
@@ -1079,7 +1077,16 @@ import gregtech.common.tileentities.machines.multi.nanochip.MTEVacuumConveyorPip
 import gregtech.common.tileentities.machines.multi.nanochip.hatches.MTEHatchParticleSensor;
 import gregtech.common.tileentities.machines.multi.nanochip.hatches.MTEHatchVacuumConveyorInput;
 import gregtech.common.tileentities.machines.multi.nanochip.hatches.MTEHatchVacuumConveyorOutput;
-import gregtech.common.tileentities.machines.multi.nanochip.modules.*;
+import gregtech.common.tileentities.machines.multi.nanochip.modules.AssemblyMatrix;
+import gregtech.common.tileentities.machines.multi.nanochip.modules.BoardProcessor;
+import gregtech.common.tileentities.machines.multi.nanochip.modules.CuttingChamber;
+import gregtech.common.tileentities.machines.multi.nanochip.modules.EtchingArray;
+import gregtech.common.tileentities.machines.multi.nanochip.modules.OpticalOrganizer;
+import gregtech.common.tileentities.machines.multi.nanochip.modules.SMDProcessor;
+import gregtech.common.tileentities.machines.multi.nanochip.modules.SheetSupervisor;
+import gregtech.common.tileentities.machines.multi.nanochip.modules.Splitter;
+import gregtech.common.tileentities.machines.multi.nanochip.modules.SuperconductorSplitter;
+import gregtech.common.tileentities.machines.multi.nanochip.modules.WireTracer;
 import gregtech.common.tileentities.machines.multi.purification.MTEHatchDegasifierControl;
 import gregtech.common.tileentities.machines.multi.purification.MTEHatchLensHousing;
 import gregtech.common.tileentities.machines.multi.purification.MTEHatchLensIndicator;
@@ -1453,11 +1460,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 LARGE_HP_STEAM_TURBINE_CONTROLLER.ID,
                 "multimachine.largehpturbine",
                 "Large HP Steam Turbine").getStackForm(1L));
-        ItemList.LargeAdvancedGasTurbine.set(
-            new MTELargeTurbineGasAdvanced(
-                LARGE_ADVANCED_GAS_TURBINE_CONTROLLER.ID,
-                "multimachine.largeadvancedgasturbine",
-                "Large Advanced Gas Turbine").getStackForm(1L));
         ItemList.Machine_Multi_TranscendentPlasmaMixer.set(
             new MTETranscendentPlasmaMixer(
                 TRANSCENDENT_PLASMA_MIXER_CONTROLLER.ID,

@@ -266,7 +266,7 @@ public class MTEPurificationUnitDegasser extends MTEPurificationUnitBase<MTEPuri
 
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
-        return survivialBuildPiece(
+        return survivalBuildPiece(
             STRUCTURE_PIECE_MAIN,
             stackSize,
             STRUCTURE_X_OFFSET,
@@ -673,7 +673,7 @@ public class MTEPurificationUnitDegasser extends MTEPurificationUnitBase<MTEPuri
             FluidStack waterOutput = mOutputFluids[0];
             FluidStack bonusOutput = new FluidStack(
                 waterOutput.getFluid(),
-                (int) (this.effectiveParallel * waterOutput.amount * (outputMultiplier - 1.0f)));
+                (int) (waterOutput.amount * (outputMultiplier - 1.0f)));
             this.addOutput(bonusOutput);
         }
     }
