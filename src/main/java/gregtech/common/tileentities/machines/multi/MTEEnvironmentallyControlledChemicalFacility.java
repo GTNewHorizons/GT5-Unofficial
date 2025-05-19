@@ -117,9 +117,9 @@ public class MTEEnvironmentallyControlledChemicalFacility extends
 
     private static final IStructureDefinition<MTEEnvironmentallyControlledChemicalFacility> STRUCTURE_DEFINITION = StructureDefinition
         .<MTEEnvironmentallyControlledChemicalFacility>builder()
+        // spotless:off
         .addShape(
             STRUCTURE_PIECE_MAIN,
-            // spotless:off
             new String[][]{
                 {"     "," AAA "," AAA "," AAA "," A~A "," AAA "},
                 {" AAA ","AJJJA","PJJJP","AJJJA","AJJJA","AAAAA"},
@@ -165,9 +165,9 @@ public class MTEEnvironmentallyControlledChemicalFacility extends
         .addShape(
             PARALLEL_MODULE_L,
             new String[][]{
-                {" P", "FP", "FP", "QQ"}, // {" ", "", "", ""},
-                {" Q", "GC", "GC", "QQ"}, // {" ", "G", "G", ""},
-                {" P", "FP", "FP", "QQ"}} // {" ", "", "", ""}}
+                {" P", "FP", "FP", "QQ"},
+                {" Q", "GC", "GC", "QQ"},
+                {" P", "FP", "FP", "QQ"}}
         )
         // spotless:on
         .addElement('Q', ofBlock(GregTechAPI.sBlockCasings8, 0))

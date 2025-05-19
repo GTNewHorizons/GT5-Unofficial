@@ -850,7 +850,7 @@ public final class RecipeMaps {
         .build();
     public static final RecipeMap<RecipeMapBackend> ECCFRecipes = RecipeMapBuilder.of("gt.recipe.eccf")
         .maxIO(8, 8, 8, 8)
-        .progressBar(GTUITextures.PROGRESSBAR_ARROW_MULTIPLE)
+        .progressBar(GTUITextures.PROGRESSBAR_MIXER, ProgressBar.Direction.CIRCULAR_CW)
         .logoPos(80, 63)
         .logoSize(16, 16)
         .progressBarSize(16, 16)
