@@ -33,7 +33,6 @@ public class BlockCasings8 extends BlockCasingsAbstract {
         register(6, ItemList.Casing_Advanced_Rhodium_Palladium, "Advanced Rhodium Plated Palladium Machine Casing");
         register(7, ItemList.Casing_Advanced_Iridium, "Advanced Iridium Plated Machine Casing");
         register(8, ItemList.Casing_Magical, "Magical Machine Casing");
-        register(9, ItemList.Casing_TurbineGasAdvanced, "HSS-S Turbine Casing");
         register(10, ItemList.RadiantNaquadahAlloyCasing, "Radiant Naquadah Alloy Casing");
         register(11, ItemList.BasicPhotolithographicFrameworkCasing, "Basic Photolithographic Framework Casing");
         register(

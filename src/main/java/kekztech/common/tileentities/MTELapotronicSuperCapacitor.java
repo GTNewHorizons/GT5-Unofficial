@@ -574,12 +574,12 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
         if (mMachine) return -1;
         int layer = GTStructureChannels.STRUCTURE_HEIGHT.getValueClamped(stackSize, 4, 50);
         int built;
-        built = survivialBuildPiece(STRUCTURE_PIECE_BASE, stackSize, 2, 1, 0, elementBudget, env, false, true);
+        built = survivalBuildPiece(STRUCTURE_PIECE_BASE, stackSize, 2, 1, 0, elementBudget, env, false, true);
         if (built >= 0) return built;
         for (int i = 2; i < layer - 1; i++)
-            built = survivialBuildPiece(STRUCTURE_PIECE_MID, stackSize, 2, i, 0, elementBudget, env, false, true);
+            built = survivalBuildPiece(STRUCTURE_PIECE_MID, stackSize, 2, i, 0, elementBudget, env, false, true);
         if (built >= 0) return built;
-        return survivialBuildPiece(STRUCTURE_PIECE_TOP, stackSize, 2, layer - 1, 0, elementBudget, env, false, true);
+        return survivalBuildPiece(STRUCTURE_PIECE_TOP, stackSize, 2, layer - 1, 0, elementBudget, env, false, true);
     }
 
     @Override
