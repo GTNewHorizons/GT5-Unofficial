@@ -130,6 +130,15 @@ public class EtchingArray extends MTENanochipAssemblyModuleBase<EtchingArray> {
         return null;
     }
 
+    private Particle inputParticle() {
+        BeamInformation inputInfo = this.getInputInformation();
+        if (inputInfo != null) return Particle.getParticleFromId(
+            inputInfo.getParticle()
+                .ordinal());
+
+        else return null;
+    }
+
     public boolean addParticleSensorToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
         if (aTileEntity == null) return false;
         IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
@@ -176,9 +185,8 @@ public class EtchingArray extends MTENanochipAssemblyModuleBase<EtchingArray> {
         if (inputInfo == null) return CheckRecipeResultRegistry.NO_RECIPE;
 
         float inputEnergy = inputInfo.getEnergy();
-        Particle inputParticle = Particle.getParticleFromId(inputInfo.getParticleId());
 
-        if (inputParticle != requiredParticle) {
+        if (inputParticle() != requiredParticle) {
             return CheckRecipeResultRegistry.WRONG_PARTICLE;
         }
 
@@ -240,6 +248,7 @@ public class EtchingArray extends MTENanochipAssemblyModuleBase<EtchingArray> {
         int z) {
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
         tag.setString("particle", requiredParticle.getName());
+        tag.setString("inputparticle", inputParticle().getName());
     }
 
     @Override
@@ -248,6 +257,7 @@ public class EtchingArray extends MTENanochipAssemblyModuleBase<EtchingArray> {
         super.getWailaBody(itemStack, currentTip, accessor, config);
         final NBTTagCompound tag = accessor.getNBTData();
         currentTip.add(EnumChatFormatting.LIGHT_PURPLE + "Particle Needed" + ": " + tag.getString("particle"));
+        currentTip.add(EnumChatFormatting.LIGHT_PURPLE + "Current Particle" + ": " + tag.getString("inputparticle"));
     }
 
     public EtchingArray(int aID, String aName, String aNameRegional) {
