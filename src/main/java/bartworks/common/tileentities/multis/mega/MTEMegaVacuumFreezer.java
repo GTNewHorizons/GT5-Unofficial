@@ -347,9 +347,9 @@ public class MTEMegaVacuumFreezer extends MegaMultiBlockBase<MTEMegaVacuumFreeze
         int realBudget = elementBudget >= 200 ? elementBudget : Math.min(200, elementBudget * 5);
         if (stackSize.stackSize == 1) {
             return this
-                .survivialBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 7, 7, 0, realBudget, source, actor, false, true);
+                .survivalBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 7, 7, 0, realBudget, source, actor, false, true);
         } else {
-            return this.survivialBuildPiece(
+            return this.survivalBuildPiece(
                 STRUCTURE_PIECE_MAIN_T2,
                 stackSize,
                 7,

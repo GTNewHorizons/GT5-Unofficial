@@ -122,7 +122,7 @@ public class MTEIndustrialFluidHeater extends GTPPMultiBlockBase<MTEIndustrialFl
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
-        return survivialBuildPiece(mName, stackSize, 2, 4, 0, elementBudget, env, false, true);
+        return survivalBuildPiece(mName, stackSize, 2, 4, 0, elementBudget, env, false, true);
     }
 
     @Override
