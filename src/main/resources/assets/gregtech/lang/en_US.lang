@@ -923,6 +923,16 @@ GT5U.coil.UMV=Infinity
 GT5U.coil.UXV=Hypogen
 GT5U.coil.MAX=Eternal
 
+gt.recipe.nanochip.conversion=Nanochip Conversion Complex
+gt.recipe.nanochip.assemblymatrix=Nanochip Assembly Matrix
+gt.recipe.nanochip.smdprocessor=Part Preparation Apparatus
+gt.recipe.nanochip.boardprocessor=Full-Board Immersion Device
+gt.recipe.nanochip.etchingarray=Ultra-high Energy Etching Array
+gt.recipe.nanochip.cuttingchamber=Nanoprecision Cutting Chamber
+gt.recipe.nanochip.wiretracer=Nanoprecision Wire Tracer
+gt.recipe.nanochip.superconductorsplitter=Superconductive Strand Splitter
+gt.recipe.nanochip.opticalorganizer=Optically Optimized Organizer
+
 GT5U.MS.multismelting=Multi smelting
 
 gt.casing.no-mob-spawning=Mobs cannot Spawn on this Block
