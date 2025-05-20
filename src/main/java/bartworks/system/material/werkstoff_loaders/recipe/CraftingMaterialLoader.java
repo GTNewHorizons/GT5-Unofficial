@@ -211,9 +211,9 @@ public class CraftingMaterialLoader implements IWerkstoffRunnable {
                 .addTo(assemblerRecipes);
 
             GTValues.RA.stdBuilder()
-                .itemInputs(werkstoff.get(ingot, 5), ItemList.Shape_Extruder_Rotor.get(0L))
-                .itemOutputs(werkstoff.get(rotor))
-                .duration(10 * SECONDS)
+                .itemInputs(werkstoff.get(ingot, 17), ItemList.Shape_Extruder_Rotor.get(0L))
+                .itemOutputs(werkstoff.get(rotor, 4))
+                .duration(40 * SECONDS)
                 .eut(60)
                 .addTo(extruderRecipes);
 

@@ -146,9 +146,9 @@ public class RecipeGenExtruder extends RecipeGenBase {
             && ItemUtils.checkForInvalidItems(material.getRotor(1))) {
 
             GTValues.RA.stdBuilder()
-                .itemInputs(material.getIngot(5), ItemList.Shape_Extruder_Rotor.get(0))
-                .itemOutputs(material.getRotor(1))
-                .duration((int) Math.max(material.getMass() * 5L * 1, 1))
+                .itemInputs(material.getIngot(17), ItemList.Shape_Extruder_Rotor.get(0))
+                .itemOutputs(material.getRotor(4))
+                .duration((int) Math.max(material.getMass() * 5L * 4, 1))
                 .eut(material.vVoltageMultiplier)
                 .addTo(extruderRecipes);
 

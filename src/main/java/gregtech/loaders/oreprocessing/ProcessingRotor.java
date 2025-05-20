@@ -73,10 +73,10 @@ public class ProcessingRotor implements gregtech.api.interfaces.IOreRecipeRegist
             if (GTOreDictUnificator.get(OrePrefixes.ingot, aMaterial, 1L) != null) {
                 GTValues.RA.stdBuilder()
                     .itemInputs(
-                        GTOreDictUnificator.get(OrePrefixes.ingot, aMaterial, 5L),
+                        GTOreDictUnificator.get(OrePrefixes.ingot, aMaterial, 17L),
                         ItemList.Shape_Extruder_Rotor.get(0L))
-                    .itemOutputs(GTOreDictUnificator.get(OrePrefixes.rotor, aMaterial, 1L))
-                    .duration(((int) Math.max(aMaterial.getMass(), 1L)) * TICKS)
+                    .itemOutputs(GTOreDictUnificator.get(OrePrefixes.rotor, aMaterial, 4L))
+                    .duration(((int) Math.max(aMaterial.getMass(), 1L)) * 4 * TICKS)
                     .eut(calculateRecipeEU(aMaterial, 24))
                     .addTo(extruderRecipes);
             }
