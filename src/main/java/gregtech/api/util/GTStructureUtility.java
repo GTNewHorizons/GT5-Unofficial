@@ -2,19 +2,13 @@ package gregtech.api.util;
 
 import static com.gtnewhorizon.structurelib.item.ItemConstructableTrigger.TriggerMode.BUILDING;
 import static com.gtnewhorizon.structurelib.item.ItemConstructableTrigger.TriggerMode.REMOVING;
-import static com.gtnewhorizon.structurelib.structure.IStructureElement.PlaceResult.ACCEPT;
-import static com.gtnewhorizon.structurelib.structure.IStructureElement.PlaceResult.ACCEPT_STOP;
-import static com.gtnewhorizon.structurelib.structure.IStructureElement.PlaceResult.REJECT;
-import static com.gtnewhorizon.structurelib.structure.IStructureElement.PlaceResult.SKIP;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.checkForRemoving;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.lazy;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlocksTiered;
+import static com.gtnewhorizon.structurelib.structure.IStructureElement.PlaceResult.*;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static com.gtnewhorizon.structurelib.util.ItemStackPredicate.NBTMode.EXACT;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.function.*;
 import java.util.function.BiConsumer;
 import java.util.function.BiPredicate;
 import java.util.function.Consumer;
@@ -771,7 +765,9 @@ public class GTStructureUtility {
         return chainAllGlasses(-1, (te, t) -> {}, te -> -1);
     }
 
-    /** support all Bart, Botania, Ic2, Thaumcraft glasses for multiblock structure **/
+    /**
+     * support all Bart, Botania, Ic2, Thaumcraft glasses for multiblock structure
+     **/
     public static <T> IStructureElement<T> chainAllGlasses(int notSet, BiConsumer<T, Integer> setter,
         Function<T, Integer> getter) {
         return GTStructureChannels.BOROGLASS.use(
