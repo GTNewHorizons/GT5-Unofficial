@@ -397,7 +397,7 @@ public class TileEntitySpaceElevator extends TTMultiblockBase implements ISurviv
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
-        int consumedBudget = survivialBuildPiece(
+        int consumedBudget = survivalBuildPiece(
             STRUCTURE_PIECE_MAIN,
             stackSize,
             STRUCTURE_PIECE_MAIN_HOR_OFFSET,
@@ -408,7 +408,7 @@ public class TileEntitySpaceElevator extends TTMultiblockBase implements ISurviv
             false,
             true);
         if (isExtensionEnabled) {
-            consumedBudget += survivialBuildPiece(
+            consumedBudget += survivalBuildPiece(
                 STRUCTURE_PIECE_EXTENDED,
                 stackSize,
                 STRUCTURE_PIECE_EXTENDED_HOR_OFFSET,

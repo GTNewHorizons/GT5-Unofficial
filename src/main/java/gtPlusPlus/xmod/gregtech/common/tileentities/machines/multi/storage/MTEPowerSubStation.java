@@ -408,13 +408,13 @@ public class MTEPowerSubStation extends GTPPMultiBlockBase<MTEPowerSubStation> i
         if (mMachine) return -1;
         int layer = GTStructureChannels.STRUCTURE_HEIGHT.getValueClamped(stackSize, 4, 18);
         int built;
-        built = survivialBuildPiece(mName + "bottom", stackSize, 2, 0, 0, elementBudget, env, false, true);
+        built = survivalBuildPiece(mName + "bottom", stackSize, 2, 0, 0, elementBudget, env, false, true);
         if (built >= 0) return built;
         for (int i = 1; i < layer - 1; i++) {
-            built = survivialBuildPiece(mName + "mid", stackSize, 2, i, 0, elementBudget, env, false, true);
+            built = survivalBuildPiece(mName + "mid", stackSize, 2, i, 0, elementBudget, env, false, true);
             if (built >= 0) return built;
         }
-        return survivialBuildPiece(mName + "top", stackSize, 2, layer - 1, 0, elementBudget, env, false, true);
+        return survivalBuildPiece(mName + "top", stackSize, 2, layer - 1, 0, elementBudget, env, false, true);
     }
 
     @Override

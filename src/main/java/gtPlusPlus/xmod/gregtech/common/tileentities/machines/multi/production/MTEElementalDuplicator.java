@@ -185,7 +185,7 @@ public class MTEElementalDuplicator extends GTPPMultiBlockBase<MTEElementalDupli
     @Override
     public int survivalConstruct(ItemStack itemStack, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
-        return survivialBuildPiece(STRUCTURE_PIECE_MAIN, itemStack, 4, 4, 0, elementBudget, env, false, true);
+        return survivalBuildPiece(STRUCTURE_PIECE_MAIN, itemStack, 4, 4, 0, elementBudget, env, false, true);
     }
 
     protected static int getCasingTextureIndex() {

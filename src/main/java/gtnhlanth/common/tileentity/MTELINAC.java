@@ -397,7 +397,7 @@ public class MTELINAC extends MTEEnhancedMultiBlockBase<MTELINAC> implements ISu
 
         if (this.mMachine) return -1;
 
-        int build = survivialBuildPiece(STRUCTURE_PIECE_BASE, stackSize, 3, 6, 0, elementBudget, env, false, true);
+        int build = survivalBuildPiece(STRUCTURE_PIECE_BASE, stackSize, 3, 6, 0, elementBudget, env, false, true);
         if (build >= 0) return build; // Incomplete
 
         int lLength = Math.max(stackSize.stackSize + 7, 8); // !!
@@ -406,11 +406,11 @@ public class MTELINAC extends MTEEnhancedMultiBlockBase<MTELINAC> implements ISu
         }
 
         for (int i = -8; i > -lLength - 1; i -= 2) {
-            build = survivialBuildPiece(STRUCTURE_PIECE_LAYER, stackSize, 3, 6, i, elementBudget, env, false, true);
+            build = survivalBuildPiece(STRUCTURE_PIECE_LAYER, stackSize, 3, 6, i, elementBudget, env, false, true);
             if (build >= 0) return build;
         }
 
-        return survivialBuildPiece(
+        return survivalBuildPiece(
             STRUCTURE_PIECE_END,
             stackSize,
             3,

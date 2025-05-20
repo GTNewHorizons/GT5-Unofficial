@@ -18,8 +18,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
-import net.minecraft.block.Block;
-import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
@@ -27,7 +25,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
-import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -532,24 +529,8 @@ public abstract class MTEAirFilterBase extends MTEEnhancedMultiBlockBase<MTEAirF
     }
 
     @Override
-    public boolean renderInWorld(IBlockAccess aWorld, int aX, int aY, int aZ, Block aBlock, RenderBlocks aRenderer) {
-        if (!mFormed || !overlayTickets.isEmpty()) return false;
-        int[] xyz = new int[3];
-        ExtendedFacing ext = getExtendedFacing();
-        ext.getWorldOffset(new int[] { 0, -3, 1 }, xyz);
-        IIconContainer[] tTextures = getBaseMetaTileEntity().isActive() ? TURBINE_NEW_ACTIVE : TURBINE_NEW;
-        // we know this multi can only ever face upwards, so just use +y directly
-        ExtendedFacing direction = ExtendedFacing.of(ForgeDirection.UP);
-        GTUtilityClient.renderTurbineOverlay(
-            aWorld,
-            xyz[0] + aX,
-            xyz[1] + aY,
-            xyz[2] + aZ,
-            aRenderer,
-            direction,
-            GregTechAPI.sBlockCasingsNH,
-            tTextures);
-        return false;
+    public void onTextureUpdate() {
+        setTurbineOverlay();
     }
 
     @Override

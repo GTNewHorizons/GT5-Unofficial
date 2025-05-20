@@ -301,6 +301,11 @@ public class MTEHatchTurbine extends MTEHatch {
             overlayTickets);
     }
 
+    @Override
+    public void onTextureUpdate() {
+        setTurbineOverlay();
+    }
+
     public boolean usingAnimations() {
         return mUsingAnimation;
     }

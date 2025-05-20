@@ -262,12 +262,7 @@ public class MTEAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTEAssemblyL
                 .setAmperageOC(mEnergyHatches.size() != 1)
                 .setDuration(tRecipe.mDuration)
                 .setParallel(originalMaxParallel);
-
-            double tickTimeAfterOC = calculator.calculateDurationUnderOneTick();
-            if (tickTimeAfterOC < 1) {
-                maxParallel = GTUtility.safeInt((long) (maxParallel / tickTimeAfterOC), 0);
-            }
-
+            maxParallel = GTUtility.safeInt((long) (maxParallel * calculator.calculateMultiplierUnderOneTick()), 0);
             int maxParallelBeforeBatchMode = maxParallel;
             if (isBatchModeEnabled()) {
                 maxParallel = GTUtility.safeInt((long) maxParallel * getMaxBatchSize(), 0);
@@ -439,14 +434,14 @@ public class MTEAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTEAssemblyL
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
-        int build = survivialBuildPiece(STRUCTURE_PIECE_FIRST, stackSize, 0, 1, 0, elementBudget, env, false, true);
+        int build = survivalBuildPiece(STRUCTURE_PIECE_FIRST, stackSize, 0, 1, 0, elementBudget, env, false, true);
         if (build >= 0) return build;
         int tLength = GTStructureChannels.STRUCTURE_LENGTH.getValueClamped(stackSize, 2, 17);
         for (int i = 1; i < tLength - 1; i++) {
-            build = survivialBuildPiece(STRUCTURE_PIECE_LATER, stackSize, -i, 1, 0, elementBudget, env, false, true);
+            build = survivalBuildPiece(STRUCTURE_PIECE_LATER, stackSize, -i, 1, 0, elementBudget, env, false, true);
             if (build >= 0) return build;
         }
-        return survivialBuildPiece(STRUCTURE_PIECE_LAST, stackSize, 1 - tLength, 1, 0, elementBudget, env, false, true);
+        return survivalBuildPiece(STRUCTURE_PIECE_LAST, stackSize, 1 - tLength, 1, 0, elementBudget, env, false, true);
     }
 
     @Override

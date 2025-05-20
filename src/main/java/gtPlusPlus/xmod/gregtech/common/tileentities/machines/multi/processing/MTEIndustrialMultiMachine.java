@@ -185,7 +185,7 @@ public class MTEIndustrialMultiMachine extends GTPPMultiBlockBase<MTEIndustrialM
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
-        return survivialBuildPiece(mName, stackSize, 1, 1, 0, elementBudget, env, false, true);
+        return survivalBuildPiece(mName, stackSize, 1, 1, 0, elementBudget, env, false, true);
     }
 
     @Override
@@ -403,16 +403,14 @@ public class MTEIndustrialMultiMachine extends GTPPMultiBlockBase<MTEIndustrialM
 
             // Logic for MTEHatchInput
             for (MTEHatchInput solidifierHatch : mInputHatches) {
-                if (solidifierHatch instanceof MTEHatchSolidifier) {
-                    ItemStack mold = ((MTEHatchSolidifier) solidifierHatch).getMold();
+                if (solidifierHatch instanceof MTEHatchSolidifier hatch) {
+                    List<ItemStack> items = hatch.getNonConsumableItems();
                     FluidStack fluid = solidifierHatch.getFluid();
 
-                    if (mold != null && fluid != null) {
-                        List<ItemStack> inputItems = new ArrayList<>();
-                        inputItems.add(mold);
-                        inputItems.add(GTUtility.getIntegratedCircuit(22));
+                    if (items != null && fluid != null) {
+                        items.add(GTUtility.getIntegratedCircuit(22));
 
-                        processingLogic.setInputItems(inputItems.toArray(new ItemStack[0]));
+                        processingLogic.setInputItems(items.toArray(new ItemStack[0]));
                         processingLogic.setInputFluids(fluid);
 
                         CheckRecipeResult foundResult = processingLogic.process();

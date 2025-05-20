@@ -197,7 +197,7 @@ public class RecipeLoaderTreeFarm {
 
     private static void generateGalaxySpaceTrees() {
         MTETreeFarm.registerTreeProducts( // Barnarda C
-            GTModHandler.getModItem(Mods.GalaxySpace.ID, "barnardaCsapling", 1, 1),
+            GTModHandler.getModItem(Mods.GalaxySpace.ID, "barnardaCsapling", 1, 0),
             GTModHandler.getModItem(Mods.GalaxySpace.ID, "barnardaClog", 1, 0),
             GTModHandler.getModItem(Mods.GalaxySpace.ID, "barnardaCleaves", 1, 0),
             null);

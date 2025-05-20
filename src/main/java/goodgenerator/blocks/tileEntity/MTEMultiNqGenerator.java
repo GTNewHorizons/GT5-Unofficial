@@ -449,6 +449,6 @@ public class MTEMultiNqGenerator extends MTETooltipMultiBlockBaseEM implements I
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
-        return survivialBuildPiece(mName, stackSize, 3, 7, 0, elementBudget, env, false, true);
+        return survivalBuildPiece(mName, stackSize, 3, 7, 0, elementBudget, env, false, true);
     }
 }

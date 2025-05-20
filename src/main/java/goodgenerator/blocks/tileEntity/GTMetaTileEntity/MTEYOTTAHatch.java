@@ -495,6 +495,7 @@ public class MTEYOTTAHatch extends MTEHatch implements IGridProxyable, IActionHo
 
     @Override
     public boolean canAccept(IAEFluidStack input) {
+        if (this.host == null) return false;
         FluidStack rInput = input.getFluidStack();
         return (host.mLockedFluid != null && !host.mLockedFluid.isFluidEqual(rInput)) || host.mFluid == null
             || host.mFluid.isFluidEqual(rInput);

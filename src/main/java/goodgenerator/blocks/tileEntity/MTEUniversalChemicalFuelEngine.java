@@ -374,6 +374,6 @@ public class MTEUniversalChemicalFuelEngine extends MTETooltipMultiBlockBaseEM
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
-        return survivialBuildPiece(mName, stackSize, 2, 2, 0, elementBudget, env, false, true);
+        return survivalBuildPiece(mName, stackSize, 2, 2, 0, elementBudget, env, false, true);
     }
 }

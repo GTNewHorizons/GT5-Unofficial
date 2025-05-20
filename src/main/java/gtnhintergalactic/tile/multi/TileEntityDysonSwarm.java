@@ -232,7 +232,7 @@ public class TileEntityDysonSwarm extends TTMultiblockBase implements ISurvivalC
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (this.mMachine) return -1;
-        return this.survivialBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 10, 18, 3, elementBudget, env, true, true);
+        return this.survivalBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 10, 18, 3, elementBudget, env, true, true);
     }
 
     @Override

@@ -297,7 +297,7 @@ public class MTEDataBank extends TTMultiblockBase implements ISurvivalConstructa
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
-        return survivialBuildPiece("main", stackSize, 2, 1, 0, elementBudget, env, false, true);
+        return survivalBuildPiece("main", stackSize, 2, 1, 0, elementBudget, env, false, true);
     }
 
     @Override
