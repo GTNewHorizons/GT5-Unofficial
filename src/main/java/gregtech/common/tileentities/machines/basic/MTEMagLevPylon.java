@@ -160,23 +160,14 @@ public class MTEMagLevPylon extends MTETieredMachineBlock {
     @Override
     public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
         int colorIndex, boolean active, boolean redstoneLevel) {
-        if (side != this.getBaseMetaTileEntity()
-            .getFrontFacing())
-            return new ITexture[] { MACHINE_CASINGS[mTier][colorIndex + 1], TextureFactory.of(OVERLAY_MAGLEV_SIDES),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_MAGLEV_SIDES_GLOW)
-                    .glow()
-                    .build() };
+        if (side == ForgeDirection.UP || side == ForgeDirection.DOWN)
+            return new ITexture[] { MACHINE_CASINGS[mTier][colorIndex + 1] };
         if (active) return new ITexture[] { MACHINE_CASINGS[mTier][colorIndex + 1],
             TextureFactory.of(OVERLAY_MAGLEV_ACTIVE), TextureFactory.builder()
                 .addIcon(OVERLAY_MAGLEV_ACTIVE_GLOW)
                 .glow()
                 .build() };
-        return new ITexture[] { MACHINE_CASINGS[mTier][colorIndex + 1], TextureFactory.of(OVERLAY_MAGLEV),
-            TextureFactory.builder()
-                .addIcon(OVERLAY_MAGLEV_GLOW)
-                .glow()
-                .build() };
+        return new ITexture[] { MACHINE_CASINGS[mTier][colorIndex + 1], TextureFactory.of(OVERLAY_MAGLEV) };
     }
 
     @Override
