@@ -237,7 +237,7 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
         int realBudget = elementBudget >= 200 ? elementBudget : Math.min(200, elementBudget * 5);
-        return survivialBuildPiece(MAIN_NAME, stackSize, 17, 41, 0, realBudget, env, false, true);
+        return survivalBuildPiece(MAIN_NAME, stackSize, 17, 41, 0, realBudget, env, false, true);
     }
 
     @Override

@@ -158,7 +158,7 @@ public class MTEDigester extends MTEEnhancedMultiBlockBase<MTEDigester> implemen
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
-        return survivialBuildPiece(mName, stackSize, 3, 3, 0, elementBudget, env, false, true);
+        return survivalBuildPiece(mName, stackSize, 3, 3, 0, elementBudget, env, false, true);
     }
 
     @Override
