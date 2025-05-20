@@ -163,8 +163,9 @@ public abstract class MTELargeTurbineBase extends MTEEnhancedMultiBlockBase<MTEL
             overlayTickets);
     }
 
-    public boolean isNewStyleRendering() {
-        return false;
+    @Override
+    public void onTextureUpdate() {
+        setTurbineOverlay();
     }
 
     public IIconContainer[] getTurbineTextureActive() {
@@ -419,7 +420,7 @@ public abstract class MTELargeTurbineBase extends MTEEnhancedMultiBlockBase<MTEL
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
-        return survivialBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 2, 2, 1, elementBudget, env, false, true);
+        return survivalBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 2, 2, 1, elementBudget, env, false, true);
     }
 
     @Override
