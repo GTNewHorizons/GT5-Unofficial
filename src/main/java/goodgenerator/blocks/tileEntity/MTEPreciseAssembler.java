@@ -350,7 +350,7 @@ public class MTEPreciseAssembler extends MTEExtendedPowerMultiBlockBase<MTEPreci
             .addInfo(
                 "Machine Casing limits the voltage tier the machine can work on, "
                     + GTValues.TIER_COLORS[VoltageIndex.UHV]
-                    + "UMV"
+                    + "UHV"
                     + EnumChatFormatting.GRAY
                     + "-tier Machine Casing unlocks all.")
             .addTecTechHatchInfo()
