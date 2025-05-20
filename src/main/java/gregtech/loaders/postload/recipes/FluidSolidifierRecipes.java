@@ -298,7 +298,7 @@ public class FluidSolidifierRecipes implements Runnable {
             .itemInputs(ItemList.Shape_Mold_Rod_Long.get(0L))
             .itemOutputs(new ItemStack(ItemRegistry.PUMPPARTS, 1, 0))
             .fluidInputs(Materials.Glass.getMolten(288L))
-            .duration(6 * SECONDS + 8 * TICKS)
+            .duration(15 * SECONDS)
             .eut(16)
             .addTo(fluidSolidifierRecipes);
 

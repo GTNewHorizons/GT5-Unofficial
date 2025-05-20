@@ -191,7 +191,7 @@ public class FormingPressRecipes implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Glass, 2L),
                 ItemList.Shape_Mold_Rod_Long.get(0L))
             .itemOutputs(new ItemStack(ItemRegistry.PUMPPARTS, 1, 0))
-            .duration(5 * SECONDS)
+            .duration(15 * SECONDS)
             .eut(16)
             .addTo(formingPressRecipes);
     }
