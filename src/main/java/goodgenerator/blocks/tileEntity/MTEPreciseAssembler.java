@@ -349,7 +349,7 @@ public class MTEPreciseAssembler extends MTEExtendedPowerMultiBlockBase<MTEPreci
             .addInfo("Imprecise (MK-0) = 16x, MK-I = 32x, MK-II = 64x, MK-III = 128x, MK-IV = 256x")
             .addInfo(
                 "Machine Casing limits the voltage tier the machine can work on, "
-                    + GTValues.TIER_COLORS[VoltageIndex.UMV]
+                    + GTValues.TIER_COLORS[VoltageIndex.UHV]
                     + "UMV"
                     + EnumChatFormatting.GRAY
                     + "-tier Machine Casing unlocks all.")
