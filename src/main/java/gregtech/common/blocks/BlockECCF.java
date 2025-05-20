@@ -11,9 +11,9 @@ import net.minecraft.util.StatCollector;
 
 import java.util.List;
 
-public class BlockCoilECCF extends BlockCasingsAbstract {
+public class BlockECCF extends BlockCasingsAbstract {
 
-    public BlockCoilECCF() {
+    public BlockECCF() {
         super(ItemCasings.class, "gt.blockECCF", MaterialCasings.INSTANCE, 8);
 
         register(0, ItemList.ECCF_cooling_block_0, "ECCF Freezer Tier 1");
@@ -66,22 +66,22 @@ public class BlockCoilECCF extends BlockCasingsAbstract {
     public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean advancedTooltips) {
         super.addInformation(stack, player, tooltip, advancedTooltips);
         switch (stack.getItemDamage()) {
-            case 0 -> tooltip.add(StatCollector.translateToLocalFormatted("tooltip.blockECCFTemp", 200, 400));
-            case 1 -> tooltip.add(StatCollector.translateToLocalFormatted("tooltip.blockECCFTemp", 100, 200));
-            case 2 -> tooltip.add(StatCollector.translateToLocalFormatted("tooltip.blockECCFTemp", 30, 100));
-            case 3 -> tooltip.add(StatCollector.translateToLocalFormatted("tooltip.blockECCFTemp", 0, 30));
-            case 4 -> tooltip.add(StatCollector.translateToLocalFormatted("tooltip.blockECCFTemp", 300, 2300));
-            case 5 -> tooltip.add(StatCollector.translateToLocalFormatted("tooltip.blockECCFTemp", 2300, 5300));
-            case 6 -> tooltip.add(StatCollector.translateToLocalFormatted("tooltip.blockECCFTemp", 5300, 10000));
-            case 7 -> tooltip.add(StatCollector.translateToLocalFormatted("tooltip.blockECCFTemp", 10000, 20000));
-            case 8 -> tooltip.add(StatCollector.translateToLocalFormatted("tooltip.blockECCFPressure", 100, 150));
-            case 9 -> tooltip.add(StatCollector.translateToLocalFormatted("tooltip.blockECCFPressure", 150, 350));
-            case 10 -> tooltip.add(StatCollector.translateToLocalFormatted("tooltip.blockECCFPressure", 350, 700));
-            case 11 -> tooltip.add(StatCollector.translateToLocalFormatted("tooltip.blockECCFPressure", 700, 1200));
-            case 12 -> tooltip.add(StatCollector.translateToLocalFormatted("tooltip.blockECCFPressure", 50, 100));
-            case 13 -> tooltip.add(StatCollector.translateToLocalFormatted("tooltip.blockECCFPressure", 30, 50));
-            case 14 -> tooltip.add(StatCollector.translateToLocalFormatted("tooltip.blockECCFPressure", 10, 30));
-            case 15 -> tooltip.add(StatCollector.translateToLocalFormatted("tooltip.blockECCFPressure", 0, 10));
+            case 0 -> tooltip.add(StatCollector.translateToLocalFormatted("tooltip.blockECCFTemp", 50));
+            case 1 -> tooltip.add(StatCollector.translateToLocalFormatted("tooltip.blockECCFTemp", 35));
+            case 2 -> tooltip.add(StatCollector.translateToLocalFormatted("tooltip.blockECCFTemp", 15));
+            case 3 -> tooltip.add(StatCollector.translateToLocalFormatted("tooltip.blockECCFTemp", 5));
+            case 4 -> tooltip.add(StatCollector.translateToLocalFormatted("tooltip.blockECCFTemp", 50));
+            case 5 -> tooltip.add(StatCollector.translateToLocalFormatted("tooltip.blockECCFTemp", 35));
+            case 6 -> tooltip.add(StatCollector.translateToLocalFormatted("tooltip.blockECCFTemp", 15));
+            case 7 -> tooltip.add(StatCollector.translateToLocalFormatted("tooltip.blockECCFTemp", 5));
+            case 8 -> tooltip.add(StatCollector.translateToLocalFormatted("tooltip.blockECCFPressure", 60));
+            case 9 -> tooltip.add(StatCollector.translateToLocalFormatted("tooltip.blockECCFPressure", 35));
+            case 10 -> tooltip.add(StatCollector.translateToLocalFormatted("tooltip.blockECCFPressure", 20));
+            case 11 -> tooltip.add(StatCollector.translateToLocalFormatted("tooltip.blockECCFPressure", 5));
+            case 12 -> tooltip.add(StatCollector.translateToLocalFormatted("tooltip.blockECCFPressure", 60));
+            case 13 -> tooltip.add(StatCollector.translateToLocalFormatted("tooltip.blockECCFPressure", 35));
+            case 14 -> tooltip.add(StatCollector.translateToLocalFormatted("tooltip.blockECCFPressure", 20));
+            case 15 -> tooltip.add(StatCollector.translateToLocalFormatted("tooltip.blockECCFPressure", 5));
         }
     }
 }

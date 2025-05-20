@@ -23,6 +23,7 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.api.util.OverclockCalculator;
 import gregtech.api.util.shutdown.SimpleShutDownReason;
 import gregtech.common.blocks.BlockCasings8;
 import gregtech.common.misc.GTStructureChannels;
@@ -46,6 +47,7 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlockAnyMeta;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlocksTiered;
 import static gregtech.api.GregTechAPI.sBlockCoilECCF;
+import static gregtech.api.GregTechAPI.sBlockCoilECCF2;
 import static gregtech.api.GregTechAPI.sBlockTintedGlass;
 import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.ExoticEnergy;
@@ -63,6 +65,7 @@ import static gregtech.api.util.GTRecipeConstants.ECCF_PRESSURE;
 import static gregtech.api.util.GTRecipeConstants.ECCF_TEMPERATURE;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
+import static gregtech.api.util.GTUtility.getTier;
 
 public class MTEEnvironmentallyControlledChemicalFacility extends
     MTEExtendedPowerMultiBlockBase<MTEEnvironmentallyControlledChemicalFacility> implements ISurvivalConstructable {
@@ -82,6 +85,8 @@ public class MTEEnvironmentallyControlledChemicalFacility extends
     private int vacuumCoilTier = 0;
     private int heatCoilTier = 0;
     private int compressCoilTier = 0;
+    private int parallelModuleTierR = 0;
+    private int parallelModuleTierL = 0;
 
     private boolean isHeatModule;
     private boolean isCoolModule;
@@ -102,8 +107,8 @@ public class MTEEnvironmentallyControlledChemicalFacility extends
     private MTEHatchInput mCoolantInputHatch;
     private MTEHatchEnergy mPressureEnergyHatch;
 
-    private int tempThreshold = 10;
-    private int pressureThreshold = 10;
+    private int tempThreshold;
+    private int pressureThreshold;
     private long drainAmountEU = 0;
     private int coolantInputHatchAmount = 0;
 
@@ -121,11 +126,11 @@ public class MTEEnvironmentallyControlledChemicalFacility extends
         .addShape(
             STRUCTURE_PIECE_MAIN,
             new String[][]{
-                {"     "," AAA "," AAA "," AAA "," A~A "," AAA "},
+                {"     "," AAA "," AFA "," AFA "," A~A "," AAA "},
                 {" AAA ","AJJJA","PJJJP","AJJJA","AJJJA","AAAAA"},
                 {" AAA ","AJJJA","AJ JA","AJ JA","AJJJA","AAAAA"},
                 {" AAA ","AJJJA","PJJJP","AJJJA","AJJJA","AAAAA"},
-                {"     "," AAA "," AAA "," AAA "," AAA "," AAA "}}
+                {"     "," AAA "," AFA "," AFA "," AFA "," AAA "}}
         )
         .addShape(
             HEAT_MODULE_L,
@@ -156,18 +161,18 @@ public class MTEEnvironmentallyControlledChemicalFacility extends
                 {"P ", "P ", "PF", "QE"}}
         )
         .addShape(
-            PARALLEL_MODULE_R,
-            new String[][]{
-                {"P ", "PF", "PF", "QQ"},
-                {"Q ", "CG", "CG", "QQ"},
-                {"P ", "PF", "PF", "QQ"}}
-        )
-        .addShape(
             PARALLEL_MODULE_L,
             new String[][]{
                 {" P", "FP", "FP", "QQ"},
-                {" Q", "GC", "GC", "QQ"},
+                {" Q", "GW", "GW", "QQ"},
                 {" P", "FP", "FP", "QQ"}}
+        )
+        .addShape(
+            PARALLEL_MODULE_R,
+            new String[][]{
+                {"P ", "PF", "PF", "QQ"},
+                {"Q ", "IG", "IG", "QQ"},
+                {"P ", "PF", "PF", "QQ"}}
         )
         // spotless:on
         .addElement('Q', ofBlock(GregTechAPI.sBlockCasings8, 0))
@@ -231,6 +236,26 @@ public class MTEEnvironmentallyControlledChemicalFacility extends
                     -1,
                     (MTEEnvironmentallyControlledChemicalFacility t, Integer m) -> t.vacuumCoilTier = m,
                     (MTEEnvironmentallyControlledChemicalFacility t) -> t.vacuumCoilTier)))
+        .addElement(
+            'W',
+            GTStructureChannels.ECCF_PARALLEL_L.use(
+                ofBlocksTiered(
+                    MTEEnvironmentallyControlledChemicalFacility::getParallelMeta,
+                    ImmutableList
+                        .of(Pair.of(sBlockCoilECCF2, 0), Pair.of(sBlockCoilECCF2, 1), Pair.of(sBlockCoilECCF2, 2)),
+                    -1,
+                    (MTEEnvironmentallyControlledChemicalFacility t, Integer m) -> t.parallelModuleTierL = m,
+                    (MTEEnvironmentallyControlledChemicalFacility t) -> t.parallelModuleTierL)))
+        .addElement(
+            'I',
+            GTStructureChannels.ECCF_PARALLEL_R.use(
+                ofBlocksTiered(
+                    MTEEnvironmentallyControlledChemicalFacility::getParallelMeta,
+                    ImmutableList
+                        .of(Pair.of(sBlockCoilECCF2, 0), Pair.of(sBlockCoilECCF2, 1), Pair.of(sBlockCoilECCF2, 2)),
+                    -1,
+                    (MTEEnvironmentallyControlledChemicalFacility t, Integer m) -> t.parallelModuleTierR = m,
+                    (MTEEnvironmentallyControlledChemicalFacility t) -> t.parallelModuleTierR)))
         .addElement(
             'A',
             buildHatchAdder(MTEEnvironmentallyControlledChemicalFacility.class)
@@ -326,6 +351,7 @@ public class MTEEnvironmentallyControlledChemicalFacility extends
                 EnumChatFormatting.GRAY + "Doesn't overclock, instead increases parallels by "
                     + EnumChatFormatting.GOLD
                     + "4 ^ Energy Tier")
+            .addInfo(EnumChatFormatting.GRAY + "Voltage tier is limited by Energy Hatch")
             .addSeparator()
             .addInfo(
                 EnumChatFormatting.GRAY + "Conditions are shown in NEI and can be achieved by placing ECCF on another "
@@ -526,6 +552,13 @@ public class MTEEnvironmentallyControlledChemicalFacility extends
                 MODULE_OFFSET_LEFT,
                 MODULE_OFFSET_V,
                 MODULE_OFFSET_DEPTH);
+            case 5 -> buildPiece(
+                PARALLEL_MODULE_L,
+                stackSize,
+                hintsOnly,
+                MODULE_OFFSET_LEFT,
+                MODULE_OFFSET_V,
+                MODULE_OFFSET_DEPTH);
         }
         switch (MODULE_RIGHT) {
             case 3 -> buildPiece(
@@ -537,6 +570,13 @@ public class MTEEnvironmentallyControlledChemicalFacility extends
                 MODULE_OFFSET_DEPTH);
             case 4 -> buildPiece(
                 VACUUM_MODULE_R,
+                stackSize,
+                hintsOnly,
+                MODULE_OFFSET_RIGHT,
+                MODULE_OFFSET_V,
+                MODULE_OFFSET_DEPTH);
+            case 5 -> buildPiece(
+                PARALLEL_MODULE_R,
                 stackSize,
                 hintsOnly,
                 MODULE_OFFSET_RIGHT,
@@ -572,6 +612,16 @@ public class MTEEnvironmentallyControlledChemicalFacility extends
                 env,
                 false,
                 true);
+            case 5 -> built += survivialBuildPiece(
+                PARALLEL_MODULE_L,
+                stackSize,
+                MODULE_OFFSET_LEFT,
+                MODULE_OFFSET_V,
+                MODULE_OFFSET_DEPTH,
+                elementBudget,
+                env,
+                false,
+                true);
         }
         switch (modules.getRight()) {
             case 3 -> built += survivialBuildPiece(
@@ -594,6 +644,16 @@ public class MTEEnvironmentallyControlledChemicalFacility extends
                 env,
                 false,
                 true);
+            case 5 -> built += survivialBuildPiece(
+                PARALLEL_MODULE_R,
+                stackSize,
+                MODULE_OFFSET_RIGHT,
+                MODULE_OFFSET_V,
+                MODULE_OFFSET_DEPTH,
+                elementBudget,
+                env,
+                false,
+                true);
         }
         return built;
     }
@@ -605,30 +665,38 @@ public class MTEEnvironmentallyControlledChemicalFacility extends
          * 2 - freeze
          * 3 - compress
          * 4 - pump
+         * 5 - parallel
          */
-        int MODULE_LEFT = 0;
-        int MODULE_RIGHT = 0;
-        boolean COOLER = false;
-        boolean HEATER = false;
-        boolean VACUUM = false;
-        boolean COMPRESSOR = false;
+        int moduleLeft = 0;
+        int moduleRight = 0;
+        boolean cooler = false;
+        boolean heater = false;
+        boolean vacuum = false;
+        boolean compressor = false;
+        boolean lParallel = false;
+        boolean rParallel = false;
         if (stackSize.getTagCompound() != null) {
             NBTTagCompound channels = stackSize.getTagCompound()
                 .getCompoundTag("channels");
             if (channels != null) {
-                HEATER = channels.getInteger("eccf_heater") > 0;
-                COOLER = channels.getInteger("eccf_cooler") > 0;
-                COMPRESSOR = channels.getInteger("eccf_compress") > 0;
-                VACUUM = channels.getInteger("eccf_vacuum") > 0;
+                heater = channels.getInteger("eccf_heater") > 0;
+                cooler = channels.getInteger("eccf_cooler") > 0;
+                compressor = channels.getInteger("eccf_compress") > 0;
+                vacuum = channels.getInteger("eccf_vacuum") > 0;
+                lParallel = channels.getInteger("eccf_parallel_left") > 0;
+                rParallel = channels.getInteger("eccf_parallel_right") > 0;
             }
         }
         // right
-        if (HEATER) MODULE_LEFT = 1;
-        if (COOLER) MODULE_LEFT = 2;
+        if (heater) moduleLeft = 1;
+        if (cooler) moduleLeft = 2;
+        if (lParallel) moduleLeft = 5;
         // left
-        if (COMPRESSOR) MODULE_RIGHT = 3;
-        if (VACUUM) MODULE_RIGHT = 4;
-        return Pair.of(MODULE_LEFT, MODULE_RIGHT);
+        if (compressor) moduleRight = 3;
+        if (vacuum) moduleRight = 4;
+        if (rParallel) moduleRight = 5;
+
+        return Pair.of(moduleLeft, moduleRight);
     }
 
     @Override
@@ -637,10 +705,14 @@ public class MTEEnvironmentallyControlledChemicalFacility extends
         heatCoilTier = -1;
         vacuumCoilTier = -1;
         compressCoilTier = -1;
+        parallelModuleTierL = -1;
+        parallelModuleTierR = -1;
+
         isHeatModule = false;
         isCoolModule = false;
         isVacuumModule = false;
         isCompressModule = false;
+
         getDimConditions();
         if (!checkPiece(STRUCTURE_PIECE_MAIN, 2, 4, 0)) {
             return false;
@@ -653,12 +725,20 @@ public class MTEEnvironmentallyControlledChemicalFacility extends
         if (coolantInputHatchAmount > 1) return false;
         isVacuumModule = checkPiece(VACUUM_MODULE_R, MODULE_OFFSET_RIGHT, MODULE_OFFSET_V, MODULE_OFFSET_DEPTH);
         isCompressModule = checkPiece(COMPRESSION_MODULE_R, MODULE_OFFSET_RIGHT, MODULE_OFFSET_V, MODULE_OFFSET_DEPTH);
-        return (!isHeatModule || !isCoolModule) && (!isVacuumModule || !isCompressModule);
+        checkPiece(PARALLEL_MODULE_L, MODULE_OFFSET_LEFT, MODULE_OFFSET_V, MODULE_OFFSET_DEPTH);
+        checkPiece(PARALLEL_MODULE_R, MODULE_OFFSET_RIGHT, MODULE_OFFSET_V, MODULE_OFFSET_DEPTH);
+        return true;
     }
 
     @Override
     protected ProcessingLogic createProcessingLogic() {
         return new ProcessingLogic() {
+
+            @Nonnull
+            @Override
+            protected OverclockCalculator createOverclockCalculator(@Nonnull GTRecipe recipe) {
+                return super.createOverclockCalculator(recipe).setNoOverclock(true);
+            }
 
             @NotNull
             @Override
@@ -671,10 +751,13 @@ public class MTEEnvironmentallyControlledChemicalFacility extends
                     && Math.abs(currentPressure - requiredPressure) <= pressureThreshold) {
                     return super.validateRecipe(recipe);
                 }
+                if (recipe.mEUt > availableVoltage) {
+                    return CheckRecipeResultRegistry.insufficientPower(recipe.mEUt);
+                }
                 stopMachine(SimpleShutDownReason.ofCritical("conditions_range"));
                 return CheckRecipeResultRegistry.RECIPE_CONDITIONS;
             }
-        }.setOverclock(1, 4);
+        };
     }
 
     @Override
@@ -685,7 +768,8 @@ public class MTEEnvironmentallyControlledChemicalFacility extends
 
     @Override
     public int getMaxParallelRecipes() {
-        return (int) Math.pow(4, GTUtility.getTier(this.getMaxInputVoltage()));
+        return (int) Math.pow(4, getTier(this.getMaxInputVoltage())) * (parallelModuleTierL + 2)
+            * (parallelModuleTierR + 2);
     }
 
     @Nonnull
@@ -707,11 +791,6 @@ public class MTEEnvironmentallyControlledChemicalFacility extends
     @Override
     public int getDamageToComponent(ItemStack aStack) {
         return 0;
-    }
-
-    @Override
-    public boolean explodesOnComponentBreak(ItemStack aStack) {
-        return false;
     }
 
     @Override
@@ -784,6 +863,20 @@ public class MTEEnvironmentallyControlledChemicalFacility extends
                 case 13 -> 1;
                 case 14 -> 2;
                 case 15 -> 3;
+                default -> null;
+            };
+        }
+        return null;
+    }
+
+    @Nullable
+    public static Integer getParallelMeta(Block block, int meta) {
+        if (block == sBlockCoilECCF2) {
+            return switch (meta) {
+                case 0 -> 0;
+                case 1 -> 1;
+                case 2 -> 2;
+                case 3 -> 3;
                 default -> null;
             };
         }
@@ -893,18 +986,18 @@ public class MTEEnvironmentallyControlledChemicalFacility extends
         MAKEMAKE("Makemake", 30, 0),
         PLUTO("Pluto", 44, 1),
         // T8
-        BARNARD_C("BarnardC", 300, 10000), // temporary
-        BARNARD_E("BarnardE", 300, 10000), // temporary
-        BARNARD_F("BarnardF", 300, 10000), // temporary
+        BARNARD_C("BarnardC", 290, 110000),
+        BARNARD_E("BarnardE", 170, 30000),
+        BARNARD_F("BarnardF", 105, 0),
         CENTAURI_A("CentauriA", 1500, 0),
-        TCETI_E("TCetiE", 300, 10000), // temporary
-        VEGA_B("VegaB", 300, 10000), // temporary
+        TCETI_E("TCetiE", 320, 85000),
+        VEGA_B("VegaB", 210, 0),
         // T9
-        ANUBIS("Anubis", 300, 10000), // temporary
-        HORUS("Horus", 300, 10000), // temporary
-        MAAHES("Maahes", 300, 10000), // temporary
-        NEPER("Neper", 300, 10000), // temporary
-        SETH("Seth", 300, 10000), // temporary
+        ANUBIS("Anubis", 300, 10000),
+        HORUS("Horus", 350, 15000),
+        MAAHES("Maahes", 120, 0),
+        NEPER("Neper", 30, 0),
+        SETH("Seth", 24, 43000),
         // T10
         UNDERDARK("Underdark", 270, 131000);
 

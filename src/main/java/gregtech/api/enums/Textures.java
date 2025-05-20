@@ -1,19 +1,18 @@
 package gregtech.api.enums;
 
-import static gregtech.api.enums.Mods.GregTech;
-
-import java.util.HashMap;
-import java.util.Map;
-
-import net.minecraft.client.renderer.texture.TextureMap;
-import net.minecraft.util.IIcon;
-import net.minecraft.util.ResourceLocation;
-
 import gregtech.api.GregTechAPI;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
+import net.minecraft.client.renderer.texture.TextureMap;
+import net.minecraft.util.IIcon;
+import net.minecraft.util.ResourceLocation;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import static gregtech.api.enums.Mods.GregTech;
 
 public class Textures {
 
@@ -422,6 +421,9 @@ public class Textures {
         ECCF_VACUUM_BLOCK_1,
         ECCF_VACUUM_BLOCK_2,
         ECCF_VACUUM_BLOCK_3,
+        ECCF_PARALLEL_BLOCK_0,
+        ECCF_PARALLEL_BLOCK_1,
+        ECCF_PARALLEL_BLOCK_2,
 
         MACHINE_CASING_DENSEBRICKS,
         MACHINE_CASING_BRICKEDBLASTFURNACE_ACTIVE,

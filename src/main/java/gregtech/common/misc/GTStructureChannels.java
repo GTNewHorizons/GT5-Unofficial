@@ -49,6 +49,8 @@ public enum GTStructureChannels implements IStructureChannels {
     ECCF_COOLER("eccf_cooler", "ECCF Cooler Tier"),
     ECCF_VACUUM("eccf_vacuum", "ECCF Vacuum Tier"),
     ECCF_COMPRESSOR("eccf_compress", "ECCF Compressor Tier"),
+    ECCF_PARALLEL_L("eccf_parallel_right", "ECCF Parallel Tier"),
+    ECCF_PARALLEL_R("eccf_parallel_left", "ECCF Parallel Tier"),
     //
     ;
 
