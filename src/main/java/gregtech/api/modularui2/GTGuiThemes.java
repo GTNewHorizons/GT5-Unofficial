@@ -50,7 +50,8 @@ public final class GTGuiThemes {
     public static final GTGuiTheme COVER = GTGuiTheme.builder("gregtech:cover")
         .textColor(0x555555)
         .customTextColor(GTWidgetThemes.TEXT_TITLE, 0x222222)
-        .parent(STANDARD).build();
+        .parent(STANDARD)
+        .build();
     public static final GTGuiTheme BRONZE = GTGuiTheme.builder("gregtech:bronze")
         .parent(STANDARD)
         .panel(GTTextureIds.BACKGROUND_BRONZE)
