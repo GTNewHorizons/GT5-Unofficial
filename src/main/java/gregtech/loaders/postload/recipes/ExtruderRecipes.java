@@ -4,9 +4,6 @@ import static gregtech.api.recipe.RecipeMaps.extruderRecipes;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
 
-import net.minecraft.item.ItemStack;
-
-import bartworks.common.loaders.ItemRegistry;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Mods;
@@ -44,12 +41,5 @@ public class ExtruderRecipes implements Runnable {
                 .eut(16)
                 .addTo(extruderRecipes);
         }
-        // Bartworks Glass Tube
-        GTValues.RA.stdBuilder()
-            .itemInputs(ItemList.Circuit_Parts_Glass_Tube.get(1L), ItemList.Shape_Extruder_Wire.get(0L))
-            .itemOutputs(new ItemStack(ItemRegistry.PUMPPARTS, 1, 0))
-            .duration(5 * SECONDS)
-            .eut(16)
-            .addTo(extruderRecipes);
     }
 }

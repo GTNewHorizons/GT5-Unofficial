@@ -7,9 +7,7 @@ import static gregtech.api.util.GTRecipeRegistrator.registerWiremillRecipes;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 
-import bartworks.common.loaders.ItemRegistry;
 import gregtech.api.enums.GTValues;
-import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.MaterialsUEVplus;
 import gregtech.api.enums.OrePrefixes;
@@ -38,13 +36,6 @@ public class WiremillRecipes implements Runnable {
             .itemOutputs(GTModHandler.getIC2Item("miningPipe", 1))
             .duration(10 * SECONDS)
             .eut(16)
-            .addTo(wiremillRecipes);
-        // Bartworks Glass Tube
-        GTValues.RA.stdBuilder()
-            .itemInputs(ItemList.Circuit_Parts_Glass_Tube.get(2L))
-            .itemOutputs(new ItemStack(ItemRegistry.PUMPPARTS, 1, 0))
-            .duration(5 * SECONDS)
-            .eut(8)
             .addTo(wiremillRecipes);
     }
 }
