@@ -170,7 +170,7 @@ public class MTEIndustrialMacerator extends GTPPMultiBlockBase<MTEIndustrialMace
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (this.mMachine) return -1;
-        return survivialBuildPiece(
+        return survivalBuildPiece(
             STRUCTURE_PIECE_MAIN,
             stackSize,
             HORIZONTAL_OFF_SET,
