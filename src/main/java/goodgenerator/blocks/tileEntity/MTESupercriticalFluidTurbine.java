@@ -139,10 +139,6 @@ public class MTESupercriticalFluidTurbine extends MTELargeTurbineBase {
         return 1538;
     }
 
-    public boolean isNewStyleRendering() {
-        return true;
-    }
-
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
