@@ -64,11 +64,13 @@ public class MTEMagLevPylon extends MTETieredMachineBlock {
 
         if (baseMetaTileEntity.isAllowedToWork()) {
             if (baseMetaTileEntity.isUniversalEnergyStored(32)) {
-                baseMetaTileEntity.setActive(true);
                 machineTether.range(16 * mTier);
                 // only drain power if a player is connected
                 if (TetherManager.PLAYER_TETHERS.containsValue(this.machineTether)) {
+                    baseMetaTileEntity.setActive(true);
                     baseMetaTileEntity.decreaseStoredEnergyUnits(32, false);
+                } else {
+                    baseMetaTileEntity.setActive(false);
                 }
             } else {
                 baseMetaTileEntity.setActive(false);
@@ -81,6 +83,16 @@ public class MTEMagLevPylon extends MTETieredMachineBlock {
     public void onRemoval() {
         TetherManager.ACTIVE_PYLONS.get(getBaseMetaTileEntity().getWorld().provider.dimensionId)
             .remove(this);
+        TetherManager.PLAYER_TETHERS.entrySet()
+            .forEach(entry -> {
+                Tether value = entry.getValue();
+                if (getBaseMetaTileEntity().getWorld().provider.dimensionId == value.dimID()
+                    && getBaseMetaTileEntity().getXCoord() == value.sourceX()
+                    && getBaseMetaTileEntity().getYCoord() == value.sourceY()
+                    && getBaseMetaTileEntity().getZCoord() == value.sourceZ()) {
+                    entry.setValue(null);
+                }
+            });
     }
 
     @Override

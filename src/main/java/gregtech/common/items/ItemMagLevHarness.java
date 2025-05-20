@@ -19,7 +19,7 @@ public class ItemMagLevHarness extends GTGenericItem implements IBaubleExpanded 
     // private Tether activeTether;
 
     public ItemMagLevHarness() {
-        super("maglev_harness", "MagLev Harness", null);
+        super("MaglevHarness", "MagLev Harness", null);
         setMaxStackSize(1);
 
         ItemList.MagLevHarness.set(this);
@@ -42,10 +42,11 @@ public class ItemMagLevHarness extends GTGenericItem implements IBaubleExpanded 
 
         Tether activeTether = TetherManager.PLAYER_TETHERS.get(player);
         if (activeTether != null) {
-            if (player.worldObj.provider.dimensionId != activeTether.dimID()
-                || player.getDistance(activeTether.sourceX(), activeTether.sourceY(), activeTether.sourceZ())
+            if (player.worldObj.provider.dimensionId != activeTether.dimID()) {
+                if (player.getDistance(activeTether.sourceX(), activeTether.sourceY(), activeTether.sourceZ())
                     > activeTether.range()) {
-                activeTether = null;
+                    activeTether = null;
+                }
             }
         } else {
             ObjectOpenHashSet<MTEMagLevPylon> pylons = TetherManager.ACTIVE_PYLONS
