@@ -27,12 +27,12 @@ import gregtech.common.gui.modularui.UIHelper;
 // Makes some small changes to the default recipe frontend to display custom backgrounds and progress bars
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
-public class PurificationUnitRecipeMapFrontend extends RecipeMapFrontend {
+public class CustomBackgroundRecipeMapFrontend extends RecipeMapFrontend {
 
     private final int overlayHeight;
     private static final Pos2d realProgressBarPos = new Pos2d(3, 3);
 
-    public PurificationUnitRecipeMapFrontend(int overlayHeight, BasicUIPropertiesBuilder uiPropertiesBuilder,
+    public CustomBackgroundRecipeMapFrontend(int overlayHeight, BasicUIPropertiesBuilder uiPropertiesBuilder,
         NEIRecipePropertiesBuilder neiPropertiesBuilder) {
         super(
             uiPropertiesBuilder.progressBarSize(new Size(0, 0))

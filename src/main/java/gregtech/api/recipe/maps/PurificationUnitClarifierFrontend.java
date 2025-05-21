@@ -21,7 +21,7 @@ import gregtech.nei.GTNEIDefaultHandler;
 
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
-public class PurificationUnitClarifierFrontend extends PurificationUnitRecipeMapFrontend {
+public class PurificationUnitClarifierFrontend extends CustomBackgroundRecipeMapFrontend {
 
     public PurificationUnitClarifierFrontend(BasicUIPropertiesBuilder uiPropertiesBuilder,
         NEIRecipePropertiesBuilder neiPropertiesBuilder) {

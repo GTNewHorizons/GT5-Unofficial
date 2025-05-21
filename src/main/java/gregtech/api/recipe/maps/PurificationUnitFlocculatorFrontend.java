@@ -26,7 +26,7 @@ import gregtech.nei.GTNEIDefaultHandler;
 
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
-public class PurificationUnitFlocculatorFrontend extends PurificationUnitRecipeMapFrontend {
+public class PurificationUnitFlocculatorFrontend extends CustomBackgroundRecipeMapFrontend {
 
     public PurificationUnitFlocculatorFrontend(BasicUIPropertiesBuilder uiPropertiesBuilder,
         NEIRecipePropertiesBuilder neiPropertiesBuilder) {
