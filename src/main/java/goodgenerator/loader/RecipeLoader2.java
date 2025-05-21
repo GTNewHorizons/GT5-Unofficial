@@ -62,7 +62,9 @@ import static gregtech.api.util.GTRecipeConstants.AssemblyLine;
 import static gregtech.api.util.GTRecipeConstants.COIL_HEAT;
 import static gregtech.api.util.GTRecipeConstants.DIMENSION_NAME;
 import static gregtech.api.util.GTRecipeConstants.ECCF_PRESSURE;
+import static gregtech.api.util.GTRecipeConstants.ECCF_PRESSURE_DELTA;
 import static gregtech.api.util.GTRecipeConstants.ECCF_TEMPERATURE;
+import static gregtech.api.util.GTRecipeConstants.ECCF_TEMPERATURE_DELTA;
 import static gregtech.api.util.GTRecipeConstants.FUSION_THRESHOLD;
 import static gregtech.api.util.GTRecipeConstants.NKE_RANGE;
 import static gregtech.api.util.GTRecipeConstants.PLANET_TIER;
@@ -863,8 +865,10 @@ public class RecipeLoader2 {
             .itemOutputs(Materials.Stone.getDust(1))
             .duration(100 * SECONDS)
             .eut(TierEU.RECIPE_ZPM)
-            .metadata(ECCF_PRESSURE, 10230)
-            .metadata(ECCF_TEMPERATURE, 400)
+            .metadata(ECCF_PRESSURE, 101000)
+            .metadata(ECCF_TEMPERATURE, 290)
+            .metadata(ECCF_PRESSURE_DELTA, 10)
+            .metadata(ECCF_TEMPERATURE_DELTA, 5)
             .addTo(ECCFRecipes);
 
         GTValues.RA.stdBuilder()

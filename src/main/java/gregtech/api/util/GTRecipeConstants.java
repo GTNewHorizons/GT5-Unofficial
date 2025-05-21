@@ -223,6 +223,10 @@ public class GTRecipeConstants {
         .create(Integer.class, "ECCF_PRESSURE");
     public static final RecipeMetadataKey<Integer> ECCF_TEMPERATURE = SimpleRecipeMetadataKey
         .create(Integer.class, "ECCF_TEMPERATURE");
+    public static final RecipeMetadataKey<Integer> ECCF_PRESSURE_DELTA = SimpleRecipeMetadataKey
+        .create(Integer.class, "ECCF_PRESSURE_DELTA");
+    public static final RecipeMetadataKey<Integer> ECCF_TEMPERATURE_DELTA = SimpleRecipeMetadataKey
+        .create(Integer.class, "ECCF_TEMPERATURE_DELTA");
     /**
      * Planet tier
      */

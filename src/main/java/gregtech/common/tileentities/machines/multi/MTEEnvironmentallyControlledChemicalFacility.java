@@ -62,7 +62,9 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LARGE_CHEMICA
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.casingTexturePages;
 import static gregtech.api.util.GTRecipeConstants.ECCF_PRESSURE;
+import static gregtech.api.util.GTRecipeConstants.ECCF_PRESSURE_DELTA;
 import static gregtech.api.util.GTRecipeConstants.ECCF_TEMPERATURE;
+import static gregtech.api.util.GTRecipeConstants.ECCF_TEMPERATURE_DELTA;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 import static gregtech.api.util.GTUtility.getTier;
@@ -93,8 +95,8 @@ public class MTEEnvironmentallyControlledChemicalFacility extends
     private boolean isVacuumModule;
     private boolean isCompressModule;
 
-    private static final double COEFF_TEMP = 0.98;
-    private static final double COEFF_PRESSURE = 0.95;
+    private double coeffTemp = 0.98;
+    private double coeffPressure = 0.95;
 
     private double initialPressure = 0;
     private double initialTemp = 0;
@@ -116,6 +118,9 @@ public class MTEEnvironmentallyControlledChemicalFacility extends
     static final int MODULE_OFFSET_LEFT = 4;
     static final int MODULE_OFFSET_RIGHT = -3;
     static final int MODULE_OFFSET_DEPTH = -1;
+
+    private int deltaPressure;
+    private int deltaTemp;
 
     private static final String ECCFPressureNBTTag = "ECCFPressure";
     private static final String ECCFTempNBTTag = "ECCFTemperature";
@@ -238,7 +243,7 @@ public class MTEEnvironmentallyControlledChemicalFacility extends
                     (MTEEnvironmentallyControlledChemicalFacility t) -> t.vacuumCoilTier)))
         .addElement(
             'W',
-            GTStructureChannels.ECCF_PARALLEL_L.use(
+            GTStructureChannels.ECCF_PARALLEL_R.use(
                 ofBlocksTiered(
                     MTEEnvironmentallyControlledChemicalFacility::getParallelMeta,
                     ImmutableList
@@ -248,7 +253,7 @@ public class MTEEnvironmentallyControlledChemicalFacility extends
                     (MTEEnvironmentallyControlledChemicalFacility t) -> t.parallelModuleTierL)))
         .addElement(
             'I',
-            GTStructureChannels.ECCF_PARALLEL_R.use(
+            GTStructureChannels.ECCF_PARALLEL_L.use(
                 ofBlocksTiered(
                     MTEEnvironmentallyControlledChemicalFacility::getParallelMeta,
                     ImmutableList
@@ -497,18 +502,7 @@ public class MTEEnvironmentallyControlledChemicalFacility extends
                     + " and "
                     + EnumChatFormatting.GOLD
                     + "temperature")
-            .addInfo(
-                EnumChatFormatting.GRAY + "Check"
-                    + EnumChatFormatting.GOLD
-                    + " quest about ECCF"
-                    + EnumChatFormatting.GRAY
-                    + " to get information about "
-                    + EnumChatFormatting.GOLD
-                    + "formulas "
-                    + EnumChatFormatting.GRAY
-                    + "and "
-                    + EnumChatFormatting.GOLD
-                    + "dimension conditions")
+            .addTecTechHatchInfo()
             .beginStructureBlock(5, 6, 5, true)
             .addController("Front Center")
             .addCasingInfoMin("Chemically Inert Casing", 0, false)
@@ -518,6 +512,12 @@ public class MTEEnvironmentallyControlledChemicalFacility extends
             .addOutputHatch("Any Chemically Inert Casing", 1)
             .addEnergyHatch("Any Chemically Inert Casing", 1)
             .addMaintenanceHatch("Any Chemically Inert Casing", 1)
+            .addSubChannelUsage(GTStructureChannels.ECCF_PARALLEL_L)
+            .addSubChannelUsage(GTStructureChannels.ECCF_PARALLEL_R)
+            .addSubChannelUsage(GTStructureChannels.ECCF_COMPRESSOR)
+            .addSubChannelUsage(GTStructureChannels.ECCF_VACUUM)
+            .addSubChannelUsage(GTStructureChannels.ECCF_HEATER)
+            .addSubChannelUsage(GTStructureChannels.ECCF_COOLER)
             .toolTipFinisher(
                 "" + EnumChatFormatting.BLUE
                     + EnumChatFormatting.BOLD
@@ -727,6 +727,7 @@ public class MTEEnvironmentallyControlledChemicalFacility extends
         isCompressModule = checkPiece(COMPRESSION_MODULE_R, MODULE_OFFSET_RIGHT, MODULE_OFFSET_V, MODULE_OFFSET_DEPTH);
         checkPiece(PARALLEL_MODULE_L, MODULE_OFFSET_LEFT, MODULE_OFFSET_V, MODULE_OFFSET_DEPTH);
         checkPiece(PARALLEL_MODULE_R, MODULE_OFFSET_RIGHT, MODULE_OFFSET_V, MODULE_OFFSET_DEPTH);
+        if (mExoticEnergyHatches.size() > 1) return false;
         return true;
     }
 
@@ -745,6 +746,8 @@ public class MTEEnvironmentallyControlledChemicalFacility extends
             protected CheckRecipeResult validateRecipe(@NotNull GTRecipe recipe) {
                 requiredTemp = recipe.getMetadataOrDefault(ECCF_TEMPERATURE, 0);
                 requiredPressure = recipe.getMetadataOrDefault(ECCF_PRESSURE, 0);
+                deltaPressure = recipe.getMetadataOrDefault(ECCF_PRESSURE_DELTA, 0);
+                deltaTemp = recipe.getMetadataOrDefault(ECCF_TEMPERATURE_DELTA, 0);
                 tempThreshold = (int) (1.5 * Math.pow(requiredTemp, 0.55));
                 pressureThreshold = (int) (1.5 * Math.pow(requiredPressure, 0.55));
                 if (Math.abs(currentTemp - requiredTemp) <= tempThreshold
@@ -757,7 +760,7 @@ public class MTEEnvironmentallyControlledChemicalFacility extends
                 stopMachine(SimpleShutDownReason.ofCritical("conditions_range"));
                 return CheckRecipeResultRegistry.RECIPE_CONDITIONS;
             }
-        };
+        }.setMaxParallelSupplier(this::getTrueParallel);
     }
 
     @Override
@@ -886,7 +889,7 @@ public class MTEEnvironmentallyControlledChemicalFacility extends
     public String[] getInfoData() {
         return new String[] {
 
-            StatCollector.translateToLocal("GT5U.ECCF_pressure") + ": "
+            StatCollector.translateToLocal("GT5U.ECCF.pressure") + ": "
                 + EnumChatFormatting.GREEN
                 + GTUtility.formatNumbers(currentPressure)
                 + EnumChatFormatting.RESET
@@ -1038,6 +1041,26 @@ public class MTEEnvironmentallyControlledChemicalFacility extends
         initialPressure = condition.getInitialPressure();
     }
 
+    public double getTempCoefficient(int blockTier) {
+        return switch (blockTier) {
+            case 0 -> 1 - 0.5;
+            case 1 -> 1 - 0.35;
+            case 2 -> 1 - 0.15;
+            case 3 -> 1 - 0.05;
+            default -> 0;
+        };
+    }
+
+    public double getPresCoefficient(int blockTier) {
+        return switch (blockTier) {
+            case 0 -> 1 - 0.6;
+            case 1 -> 1 - 0.35;
+            case 2 -> 1 - 0.20;
+            case 3 -> 1 - 0.05;
+            default -> 0;
+        };
+    }
+
     public void setTempFromCoolant(String name) {
         switch (name) {
             // cooling
@@ -1122,10 +1145,15 @@ public class MTEEnvironmentallyControlledChemicalFacility extends
                 currentPressure = initialPressure;
                 currentTemp = initialTemp;
             }
+
+            if (isVacuumModule || isCompressModule)
+                coeffPressure = getPresCoefficient(Math.max(vacuumCoilTier, compressCoilTier));
+            if (isCoolModule || isHeatModule) coeffTemp = getTempCoefficient(Math.max(coolCoilTier, heatCoilTier));
+
+            // returns temperature values to atmosphere conditions
+            currentTemp = (currentTemp - initialTemp) * coeffTemp + initialTemp;
             // Temperature calculation
             if (isCoolModule || isHeatModule) {
-                // returns values to atmosphere conditions
-                currentTemp = (currentTemp - initialTemp) * COEFF_TEMP + initialTemp;
                 // drain all coolant from hatches and change temperature
                 if (mCoolantInputHatch != null) {
                     if (mCoolantInputHatch.mFluid != null) {
@@ -1149,12 +1177,12 @@ public class MTEEnvironmentallyControlledChemicalFacility extends
                         }
                     }
                 }
-            } else currentTemp = initialTemp;
+            }
 
+            // returns pressure values to atmosphere conditions
+            currentPressure = (currentPressure - initialPressure) * coeffPressure + initialPressure;
             // Pressure calculation
             if (isCompressModule || isVacuumModule) {
-                // returns values to atmosphere conditions
-                currentPressure = (currentPressure - initialPressure) * COEFF_PRESSURE + initialPressure;
                 // Apply pressure changes
                 if (mPressureEnergyHatch != null) {
                     drainAmountEU /= 20;
@@ -1181,7 +1209,10 @@ public class MTEEnvironmentallyControlledChemicalFacility extends
                     }
                     currentPressure = currentPressure * leakCoeff + initialPressure * (1 - leakCoeff);
                 }
-            } else currentPressure = initialPressure;
+            }
+
+            currentPressure += deltaPressure;
+            currentTemp += deltaTemp;
 
             // Range check
             if (mMaxProgresstime != 0) {
