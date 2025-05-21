@@ -23,7 +23,7 @@ public class WidgetResizer {
     public <T> Consumer<T> wrap(Consumer<T> setter) {
         return newValue -> {
             setter.accept(newValue);
-            WidgetTree.resize(widget);
+            widget.scheduleResize();
         };
     }
 
