@@ -181,9 +181,7 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui {
             case "open the doors" -> "I'm sorry Player, I'm afraid I can't do that";
             case "d" -> "n";
             case "how fast are you" -> "2fast2quick";
-            case "boubou_19" -> "Boubou’s teachings are the divine providence of this modpack.";
             case "steel" -> "Dun dun dunnnnnn I finally got it now steel";
-            case "amp" -> "mom said its my time on the mv amp";
             case "copypasta" -> switch (MathUtils.randInt(1, 6)) {
                     case 1 -> "Is it just me or does this pack actually seem really easy and not that hard..? People "
                         + "give it a bad rap but I've only been playing for a little while and I've already mined enough "
