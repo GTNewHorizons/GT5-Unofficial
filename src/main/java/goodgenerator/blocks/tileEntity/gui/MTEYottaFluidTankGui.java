@@ -23,11 +23,11 @@ import com.cleanroommc.modularui.value.sync.StringSyncValue;
 import com.cleanroommc.modularui.widget.ParentWidget;
 import com.cleanroommc.modularui.widget.SingleChildWidget;
 import com.cleanroommc.modularui.widgets.ListWidget;
+import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.cleanroommc.modularui.widgets.layout.Row;
 
 import goodgenerator.blocks.tileEntity.MTEYottaFluidTank;
 import gregtech.api.metatileentity.implementations.MTEMultiBlockBase;
-import gregtech.api.modularui2.GTWidgetThemes;
 import gregtech.common.gui.modularui.widget.FluidDisplaySyncHandler;
 import gregtech.common.gui.modularui.widget.FluidSlotDisplayOnly;
 import gregtech.common.modularui2.widget.TransparentSingleChildWidget;
@@ -43,29 +43,27 @@ public class MTEYottaFluidTankGui extends TTMultiBlockBaseGui {
     }
 
     @Override
-    protected IWidget createTopRow(ModularPanel panel, PanelSyncManager syncManager) {
-        return new Row().size(machineInfoSize()[0] + 4, machineInfoSize()[1] + 3)
-            .child(
-                new ParentWidget<>().size(machineInfoSize()[0] - 48 - 4, 88)
-                    .padding(3)
-                    .widgetTheme(GTWidgetThemes.BACKGROUND_TERMINAL)
-                    .child(
-                        createTerminalTextWidget(syncManager, panel).size(machineInfoSize()[0] - 48 - 10, 88 - 5)
-                            .collapseDisabledChild())
-                    .child(
-                        new SingleChildWidget<>().bottomRel(0, 10, 0)
-                            .rightRel(0, 10, 0)
-                            .size(18, 18)
-                            .widgetTheme(GTWidgetThemes.PICTURE_LOGO)))
-            .child(createYottankDisplay(syncManager));
+    protected Flow createTerminalRow(ModularPanel panel, PanelSyncManager syncManager) {
+        return super.createTerminalRow(panel, syncManager).child(createYottankDisplay(syncManager));
+    }
+
+    @Override
+    protected int[] mainTerminalSize() {
+        int[] superSize = super.mainTerminalSize();
+        int[] yottankSize = this.yottankDisplaySize();
+        return new int[] { superSize[0] - yottankSize[0] - 6, yottankSize[1] };
+    }
+
+    private int[] yottankDisplaySize() {
+        return new int[] { 48, 88 };
     }
 
     private IWidget createYottankDisplay(PanelSyncManager syncManager) {
-        return new ParentWidget<>().size(48, 88)
-            .align(Alignment.CenterRight)
+        return new ParentWidget<>().size(yottankDisplaySize()[0], yottankDisplaySize()[1])
+            .marginLeft(3)
             .child(
                 new SingleChildWidget<>().overlay(UITexture.fullImage(GregTech.ID, "gui/picture/yottank_overlay"))
-                    .size(48, 88))
+                    .size(yottankDisplaySize()[0], yottankDisplaySize()[1]))
             .child(
                 createFluidDisplay(syncManager).size(34, 72)
                     .align(Alignment.Center))
