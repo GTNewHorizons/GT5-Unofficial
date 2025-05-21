@@ -281,7 +281,7 @@ public class Cover implements IGuiHolder<CoverGuiData> {
      * Specifies theme of this GUI. You don't need to touch this unless you really want to go fancy.
      */
     protected GTGuiTheme getUITheme() {
-        return GTGuiThemes.STANDARD;
+        return GTGuiThemes.COVER;
     }
 
     /**

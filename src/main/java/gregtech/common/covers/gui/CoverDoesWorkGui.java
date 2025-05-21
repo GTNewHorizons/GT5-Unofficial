@@ -14,7 +14,7 @@ import gregtech.api.util.GTUtility;
 import gregtech.common.covers.CoverDoesWork;
 import gregtech.common.covers.modes.DetectionMode;
 import gregtech.common.covers.modes.RedstoneMode;
-import gregtech.common.modularui2.util.FlowActions;
+import gregtech.common.modularui2.sync.wrappers.WidgetResizer;
 import gregtech.common.modularui2.widget.builder.EnumRowBuilder;
 
 public class CoverDoesWorkGui extends CoverGui<CoverDoesWork> {
@@ -30,21 +30,16 @@ public class CoverDoesWorkGui extends CoverGui<CoverDoesWork> {
 
     @Override
     public void addUIWidgets(PanelSyncManager syncManager, Flow column) {
+        WidgetResizer resizer = WidgetResizer.of(column);
         EnumSyncValue<DetectionMode> detectionModeSyncValue = new EnumSyncValue<>(
             DetectionMode.class,
             cover::getDetectionMode,
-            mode -> {
-                cover.setDetectionMode(mode);
-                FlowActions.resize(column);
-            });
+            resizer.wrap(cover::setDetectionMode));
         syncManager.syncValue("detection_mode", detectionModeSyncValue);
         BinaryEnumSyncValue<RedstoneMode> redstoneModeSyncValue = new BinaryEnumSyncValue<>(
             RedstoneMode.class,
             cover::getRedstoneMode,
-            mode -> {
-                cover.setRedstoneMode(mode);
-                FlowActions.resize(column);
-            });
+            resizer.wrap(cover::setRedstoneMode));
 
         column.child(
             new Grid().marginLeft(WIDGET_MARGIN)

@@ -454,14 +454,14 @@ public class MTENeutronActivator extends MTETooltipMultiBlockBaseEM implements I
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
 
-        int built = survivialBuildPiece(NA_BOTTOM, stackSize, 2, 0, 0, elementBudget, env, false, true);
+        int built = survivalBuildPiece(NA_BOTTOM, stackSize, 2, 0, 0, elementBudget, env, false, true);
         if (built >= 0) return built;
         int heights = stackSize.stackSize + 3;
         for (int i = 1; i <= heights; i++) {
-            built = survivialBuildPiece(NA_MID, stackSize, 2, i, 0, elementBudget, env, false, true);
+            built = survivalBuildPiece(NA_MID, stackSize, 2, i, 0, elementBudget, env, false, true);
             if (built >= 0) return built;
         }
-        return survivialBuildPiece(NA_TOP, stackSize, 2, heights + 1, 0, elementBudget, env, false, true);
+        return survivalBuildPiece(NA_TOP, stackSize, 2, heights + 1, 0, elementBudget, env, false, true);
     }
 
     protected void onCasingFound() {
