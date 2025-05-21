@@ -1,14 +1,8 @@
 package gregtech.common.tileentities.machines.multi;
 
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static gregtech.api.enums.GTValues.AuthorChrom;
-import static gregtech.api.enums.HatchElement.Energy;
-import static gregtech.api.enums.HatchElement.InputBus;
-import static gregtech.api.enums.HatchElement.InputHatch;
-import static gregtech.api.enums.HatchElement.Maintenance;
-import static gregtech.api.enums.HatchElement.OutputBus;
-import static gregtech.api.enums.HatchElement.OutputHatch;
+import static gregtech.api.enums.HatchElement.*;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_BREWERY;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_BREWERY_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_BREWERY_ACTIVE_GLOW;
@@ -17,7 +11,12 @@ import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 
+//import fox.spiteful.avaritia.blocks.LudicrousBlocks;
+import gregtech.common.blocks.BlockCasings1;
+import gtPlusPlus.GTplusplus;
+import gtPlusPlus.core.material.MaterialsAlloy;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
@@ -27,6 +26,7 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.MaterialsUEVplus;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -43,44 +43,91 @@ import gregtech.common.misc.GTStructureChannels;
 
 public class MTEChamberCentrifuge extends MTEExtendedPowerMultiBlockBase<MTEChamberCentrifuge>
     implements ISurvivalConstructable {
-
+    private int horizontalOffset = 4;
+    private int verticalOffset = 6;
+    private int mTier;
     private int[] modules = {1,2,3,4,5}; //TODO: replace this with actual modules.
-    private static final String STRUCTURE_PIECE_MAIN = "main";
+    private static final String STRUCTURE_TIER_1 = "t1";
+    private static final String STRUCTURE_TIER_2 = "t2";
+    private static final String STRUCTURE_TIER_3 = "t3";
+    private static final String STRUCTURE_TIER_4 = "t4";
     private static final IStructureDefinition<MTEChamberCentrifuge> STRUCTURE_DEFINITION = StructureDefinition
         .<MTEChamberCentrifuge>builder()
         .addShape(
-            STRUCTURE_PIECE_MAIN,
+            STRUCTURE_TIER_1,
             // spotless:off
-            new String[][]{{
-                "BBB",
-                "BBB",
-                "B~B",
-                "BBB",
-                "C C"
-            },{
-                "BBB",
-                "A A",
-                "A A",
-                "BBB",
-                "   "
-            },{
-                "BBB",
-                "BAB",
-                "BAB",
-                "BBB",
-                "C C"
-            }})
+            transpose(new String[][]{
+                {" CCCCCCC ","CCCCCCCCC","CCCCCCCCC","CCCEEECCC","CCCEEECCC","CCCEEECCC","CCCCCCCCC","CCCCCCCCC"," CCCCCCC "},
+                {"  AAAAA  "," A     A ","A       A","A       A","A   BDD A","A       A","A       A"," A     A ","  AAAAA  "},
+                {"         ","  AAAAA  "," A     A "," A     A "," ADDB  A "," A     A "," A     A ","  AAAAA  ","         "},
+                {"         ","  AAAAA  "," A     A "," A     A "," A  BDDA "," A     A "," A     A ","  AAAAA  ","         "},
+                {"         ","  AAAAA  "," A     A "," A     A "," ADDB  A "," A     A "," A     A ","  AAAAA  ","         "},
+                {"  CCCCC  "," C     C ","C       C","C       C","C   BDD C","C       C","C       C"," C     C ","  CCCCC  "},
+                {" CCC~CCC ","CC     CC","C       C","C       C","C DDB   C","C       C","C       C","CC     CC"," CCCCCCC "},
+                {"  CCCCC  "," CCCCCCC ","CCCCCCCCC","CCCCCCCCC","CCCCCCCCC","CCCCCCCCC","CCCCCCCCC"," CCCCCCC ","  CCCCC  "}
+            }))
+        .addShape(
+            STRUCTURE_TIER_2,
+            transpose(new String[][]{
+                {" CCCCCCC ","CCCCCCCCC","CCCCCCCCC","CCCEEECCC","CCCEEECCC","CCCEEECCC","CCCCCCCCC","CCCCCCCCC"," CCCCCCC "},
+                {"  AAAAA  "," A     A ","A       A","A       A","A GGF   A","A       A","A       A"," A     A ","  AAAAA  "},
+                {"  AAAAA  "," A     A ","A       A","A       A","A   FGG A","A       A","A       A"," A     A ","  AAAAA  "},
+                {"         ","  AAAAA  "," A     A "," A     A "," AGGF  A "," A     A "," A     A ","  AAAAA  ","         "},
+                {"         ","  AAAAA  "," A     A "," A     A "," A  FGGA "," A     A "," A     A ","  AAAAA  ","         "},
+                {"         ","  AAAAA  "," A     A "," A     A "," AGGF  A "," A     A "," A     A ","  AAAAA  ","         "},
+                {"  CCCCC  "," C     C ","C       C","C       C","C   FGG C","C       C","C       C"," C     C ","  CCCCC  "},
+                {" CCC~CCC ","CC     CC","C       C","C       C","C GGF   C","C       C","C       C","CC     CC"," CCCCCCC "},
+                {"  CCCCC  "," CCCCCCC ","CCCCCCCCC","CCCCCCCCC","CCCCCCCCC","CCCCCCCCC","CCCCCCCCC"," CCCCCCC ","  CCCCC  "}
+            }))
+        .addShape(
+            STRUCTURE_TIER_3,
+            transpose(new String[][]{
+                {" CCCCCCC ","CCCCCCCCC","CCCCCCCCC","CCCEEECCC","CCCEEECCC","CCCEEECCC","CCCCCCCCC","CCCCCCCCC"," CCCCCCC "},
+                {"  AAAAA  "," A     A ","A       A","A       A","A   HII A","A       A","A       A"," A     A ","  AAAAA  "},
+                {"  AAAAA  "," A     A ","A       A","A       A","A IIH   A","A       A","A       A"," A     A ","  AAAAA  "},
+                {"  AAAAA  "," A     A ","A       A","A       A","A   HII A","A       A","A       A"," A     A ","  AAAAA  "},
+                {"         ","  AAAAA  "," A     A "," A     A "," AIIH  A "," A     A "," A     A ","  AAAAA  ","         "},
+                {"         ","  AAAAA  "," A     A "," A     A "," A  HIIA "," A     A "," A     A ","  AAAAA  ","         "},
+                {"         ","  AAAAA  "," A     A "," A     A "," AIIH  A "," A     A "," A     A ","  AAAAA  ","         "},
+                {"  CCCCC  "," C     C ","C       C","C       C","C   HII C","C       C","C       C"," C     C ","  CCCCC  "},
+                {" CCC~CCC ","CC     CC","C       C","C       C","C IIH   C","C       C","C       C","CC     CC"," CCCCCCC "},
+                {"  CCCCC  "," CCCCCCC ","CCCCCCCCC","CCCCCCCCC","CCCCCCCCC","CCCCCCCCC","CCCCCCCCC"," CCCCCCC ","  CCCCC  "}
+            }))
+        .addShape(
+            STRUCTURE_TIER_4,
+            transpose(new String[][]{
+                {" CCCCCCC ","CCCCCCCCC","CCCCCCCCC","CCCEEECCC","CCCEEECCC","CCCEEECCC","CCCCCCCCC","CCCCCCCCC"," CCCCCCC "},
+                {"  AAAAA  "," A     A ","A       A","A       A","A KKD   A","A       A","A       A"," A     A ","  AAAAA  "},
+                {"  AAAAA  "," A     A ","A       A","A       A","A   DKK A","A       A","A       A"," A     A ","  AAAAA  "},
+                {"  AAAAA  "," A     A ","A       A","A       A","A KKD   A","A       A","A       A"," A     A ","  AAAAA  "},
+                {"  AAAAA  "," A     A ","A       A","A       A","A   DKK A","A       A","A       A"," A     A ","  AAAAA  "},
+                {"         ","  AAAAA  "," A     A "," A     A "," AKKD  A "," A     A "," A     A ","  AAAAA  ","         "},
+                {"         ","  AAAAA  "," A     A "," A     A "," A  DKKA "," A     A "," A     A ","  AAAAA  ","         "},
+                {"         ","  AAAAA  "," A     A "," A     A "," AKKD  A "," A     A "," A     A ","  AAAAA  ","         "},
+                {"  CCCCC  "," C     C ","C       C","C       C","C   DKK C","C       C","C       C"," C     C ","  CCCCC  "},
+                {" CCC~CCC ","CC     CC","C       C","C       C","C KKD   C","C       C","C       C","CC     CC"," CCCCCCC "},
+                {"  CCCCC  "," CCCCCCC ","CCCCCCCCC","CCCCCCCCC","CCCCCCCCC","CCCCCCCCC","CCCCCCCCC"," CCCCCCC ","  CCCCC  "}
+            }))
         //spotless:on
-        .addElement(
-            'B',
+        .addElement('A', chainAllGlasses()) //tiered glasses
+
+        .addElement('C', //main casing block
             buildHatchAdder(MTEChamberCentrifuge.class)
-                .atLeast(InputBus, OutputBus, InputHatch, OutputHatch, Maintenance, Energy)
-                .casingIndex(((BlockCasings10) GregTechAPI.sBlockCasings10).getTextureIndex(15))
+                .atLeast(InputBus, OutputBus, InputHatch, OutputHatch, Maintenance, Energy, ExoticEnergy)
+                .casingIndex(((BlockCasings1) GregTechAPI.sBlockCasings1).getTextureIndex(12))
                 .dot(1)
                 .buildAndChain(
-                    onElementPass(MTEChamberCentrifuge::onCasingAdded, ofBlock(GregTechAPI.sBlockCasings10, 15))))
-        .addElement('A', chainAllGlasses())
-        .addElement('C', ofFrame(Materials.Steel))
+                    onElementPass(MTEChamberCentrifuge::onCasingAdded, ofBlock(GregTechAPI.sBlockCasings1, 12))))
+        .addElement('E', ofBlock(GregTechAPI.sBlockCasings2,4)) //titanium turbine casings, for top section.
+        .addElement('B', ofFrame(Materials.NaquadahAlloy))                    //central shaft piece for tier 1
+        .addElement('D', ofBlock(GregTechAPI.sBlockMetal4,14))          //central rotor piece for tier 1
+        .addElement('F', ofFrame(Materials.Neutronium) )                     //central shaft piece for tier 2
+        .addElement('G', ofBlock(GregTechAPI.sBlockMetal5,2))          //central rotor piece for tier 2
+        .addElement('H',ofFrame(Materials.Infinity))                         //central shaft piece for tier 3
+        //.addElement('I', ofBlock(LudicrousBlocks.resource_block,1))    //central rotor piece for tier 3
+        .addElement('I',ofBlock(GregTechAPI.sBlockMetal5,3))
+        .addElement('J',ofFrame(MaterialsUEVplus.TranscendentMetal))      //central shaft piece for tier 4, transcendent metal
+        .addElement('K',ofBlock(GregTechAPI.sBlockMetal9,3))          //central rotor piece for tier 4, ~shirabon time. is spacetime
         .build();
 
     public MTEChamberCentrifuge(final int aID, final String aName, final String aNameRegional) {
@@ -99,6 +146,17 @@ public class MTEChamberCentrifuge extends MTEExtendedPowerMultiBlockBase<MTECham
     @Override
     public boolean isCorrectMachinePart(ItemStack aStack) {
         return true;
+    }
+    @Override
+    public void loadNBTData(NBTTagCompound aNBT) {
+        mTier = aNBT.getInteger("multiTier");
+        super.loadNBTData(aNBT);
+    }
+
+    @Override
+    public void saveNBTData(NBTTagCompound aNBT) {
+        aNBT.setInteger("multiTier", mTier);
+        super.saveNBTData(aNBT);
     }
 
     @Override
@@ -152,31 +210,56 @@ public class MTEChamberCentrifuge extends MTEExtendedPowerMultiBlockBase<MTECham
             .addInfo("400% faster than singleblock machines of the same voltage")
             .addInfo("Gains 4 * (Total Rotor Tier) Parallels")
             .addInfo("Requires {Fluid1} to operate, supply {Fluid2} for a 1.25x Parallel multiplier")
-            .beginStructureBlock(3, 5, 3, true)
+            .beginStructureBlock(9, 9, 9, false)
             .addController("Front Center")
-            .addCasingInfoMin("Reinforced Wooden Casing", 14, false)
-            .addCasingInfoExactly("Any Tiered Glass", 6, false)
-            .addCasingInfoExactly("Steel Frame Box", 4, false)
-            .addInputBus("Any Wooden Casing", 1)
-            .addOutputBus("Any Wooden Casing", 1)
-            .addInputHatch("Any Wooden Casing", 1)
-            .addOutputHatch("Any Wooden Casing", 1)
-            .addEnergyHatch("Any Wooden Casing", 1)
-            .addMaintenanceHatch("Any Wooden Casing", 1)
+            .addCasingInfoMin("Chamber Casing", 120, false)
+            .addCasingInfoMin("Any Tiered Glass", 84, true)
+            .addCasingInfoMin("Central Frame", 6, false )
+            .addCasingInfoMin("Central Rotor Blocks", 10,false)
+            .addInputBus("Any Chamber Casing", 1)
+            .addOutputBus("Any Chamber Casing", 1)
+            .addInputHatch("Any Chamber Casing", 1)
+            .addOutputHatch("Any Chamber Casing", 1)
+            .addEnergyHatch("Any Chamber Casing", 1)
+            .addMaintenanceHatch("Any Chamber Casing", 1)
             .addSubChannelUsage(GTStructureChannels.BOROGLASS)
             .toolTipFinisher(AuthorChrom);
         return tt;
     }
 
     @Override
-    public void construct(ItemStack stackSize, boolean hintsOnly) {
-        buildPiece(STRUCTURE_PIECE_MAIN, stackSize, hintsOnly, 1, 2, 0);
+    public void construct(ItemStack holoStack, boolean hintsOnly) {
+        if (holoStack.stackSize == 1) {
+            buildPiece(STRUCTURE_TIER_1, holoStack, hintsOnly, horizontalOffset, verticalOffset, 0);
+        }
+        if (holoStack.stackSize == 2) {
+            buildPiece(STRUCTURE_TIER_2, holoStack, hintsOnly, horizontalOffset, verticalOffset+1, 0);
+        }
+        if (holoStack.stackSize == 3) {
+            buildPiece(STRUCTURE_TIER_3, holoStack, hintsOnly, horizontalOffset, verticalOffset+2, 0);
+        }
+        if (holoStack.stackSize >= 4) {
+            buildPiece(STRUCTURE_TIER_4, holoStack, hintsOnly, horizontalOffset, verticalOffset+3, 0);
+        }
+
     }
 
     @Override
-    public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
+    public int survivalConstruct(ItemStack holoStack, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
-        return survivialBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 1, 2, 0, elementBudget, env, false, true);
+        if (holoStack.stackSize == 1) {
+            return survivialBuildPiece(STRUCTURE_TIER_1, holoStack, horizontalOffset, verticalOffset, 0, elementBudget, env, false, true);
+        }
+        if (holoStack.stackSize == 2) {
+            return survivialBuildPiece(STRUCTURE_TIER_2, holoStack, horizontalOffset, verticalOffset+1, 0, elementBudget, env, false, true);
+        }
+        if (holoStack.stackSize == 3) {
+            return survivialBuildPiece(STRUCTURE_TIER_3, holoStack, horizontalOffset, verticalOffset+2, 0, elementBudget, env, false, true);
+        }
+        if (holoStack.stackSize >= 4) {
+            return survivialBuildPiece(STRUCTURE_TIER_4, holoStack, horizontalOffset, verticalOffset+3, 0, elementBudget, env, false, true);
+        }
+        return 0;
     }
 
     private int mCasingAmount;
@@ -188,13 +271,33 @@ public class MTEChamberCentrifuge extends MTEExtendedPowerMultiBlockBase<MTECham
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         mCasingAmount = 0;
-        return checkPiece(STRUCTURE_PIECE_MAIN, 1, 2, 0) && mCasingAmount >= 14;
+        mTier = 0;
+        boolean hasEnoughCasings = false;
+        if (checkPiece(STRUCTURE_TIER_1,horizontalOffset,verticalOffset,0))
+        {
+            mTier=1;
+        }
+        else if(checkPiece(STRUCTURE_TIER_2,horizontalOffset,verticalOffset+1,0))
+        {
+            mTier=2;
+        }
+        else if(checkPiece(STRUCTURE_TIER_3,horizontalOffset,verticalOffset+2,0))
+        {
+            mTier=3;
+        }
+        else if(checkPiece(STRUCTURE_TIER_4,horizontalOffset,verticalOffset+3,0))
+        {
+            mTier=4;
+        }
+        return mTier>0 && mCasingAmount>=120;
     }
 
     @Override
     protected void setProcessingLogicPower(ProcessingLogic logic) {
-        logic.setAvailableVoltage(GTUtility.roundUpVoltage(this.getMaxInputVoltage()));
-        logic.setAvailableAmperage(1L);
+        if (mExoticEnergyHatches.isEmpty()) {
+            logic.setAvailableVoltage(GTUtility.roundUpVoltage(this.getMaxInputVoltage()));
+            logic.setAvailableAmperage(1L);
+        } else super.setProcessingLogicPower(logic);
     }
 
     @Override
