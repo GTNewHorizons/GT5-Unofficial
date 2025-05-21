@@ -60,7 +60,6 @@ public class CoverFluidfilterGui extends CoverGui<CoverFluidfilter> {
         }, fluidStack -> {
             int fluidId = fluidStack != null ? FluidRegistry.getFluidID(fluidStack.getFluid()) : -1;
             cover.setFluidId(fluidId);
-            column.scheduleResize();
         }, 1);
 
         column.child(

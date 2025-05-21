@@ -320,7 +320,6 @@ public class MTEMultiBlockBaseGui {
             // Display current recipe
             resultWidget.child(createRecipeInfoWidget(syncManager));
         }
-        resultWidget.onUpdateListener(widget -> resultWidget.scheduleResize());
 
         return resultWidget;
     }
