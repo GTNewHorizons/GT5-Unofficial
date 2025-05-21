@@ -1,14 +1,14 @@
 package gregtech.api.gui.modularui;
 
-import static gregtech.api.enums.Mods.GregTech;
+import com.gtnewhorizons.modularui.api.drawable.AdaptableUITexture;
+import com.gtnewhorizons.modularui.api.drawable.FallbackableUITexture;
+import com.gtnewhorizons.modularui.api.drawable.UITexture;
 
 import java.util.function.BiFunction;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-import com.gtnewhorizons.modularui.api.drawable.AdaptableUITexture;
-import com.gtnewhorizons.modularui.api.drawable.FallbackableUITexture;
-import com.gtnewhorizons.modularui.api.drawable.UITexture;
+import static gregtech.api.enums.Mods.GregTech;
 
 /**
  * Textures for MUI1.
@@ -60,6 +60,7 @@ public class GTUITextures {
     public static final UITexture OVERLAY_SLOT_CAULDRON = UITexture.fullImage(GregTech.ID, "gui/overlay_slot/cauldron");
     public static final UITexture OVERLAY_SLOT_CENTRIFUGE = UITexture
         .fullImage(GregTech.ID, "gui/overlay_slot/centrifuge");
+
     public static final UITexture OVERLAY_SLOT_CENTRIFUGE_FLUID = UITexture
         .fullImage(GregTech.ID, "gui/overlay_slot/centrifuge_fluid");
     public static final SteamTexture OVERLAY_SLOT_CENTRIFUGE_STEAM = SteamTexture

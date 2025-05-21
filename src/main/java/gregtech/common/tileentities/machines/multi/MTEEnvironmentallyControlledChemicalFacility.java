@@ -15,6 +15,7 @@ import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBas
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.metatileentity.implementations.MTEHatchEnergy;
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
+import gregtech.api.metatileentity.implementations.gui.MTEMultiBlockBaseGui;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
@@ -27,6 +28,7 @@ import gregtech.api.util.OverclockCalculator;
 import gregtech.api.util.shutdown.SimpleShutDownReason;
 import gregtech.common.blocks.BlockCasings8;
 import gregtech.common.misc.GTStructureChannels;
+import gregtech.common.tileentities.machines.multi.gui.MTEEnvironmentallyCCFGUI;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -80,8 +82,8 @@ public class MTEEnvironmentallyControlledChemicalFacility extends
     private static final String PARALLEL_MODULE_R = "ParallelR";
     private static final String PARALLEL_MODULE_L = "ParallelL";
 
-    double currentTemp = 0;
-    double currentPressure = 0;
+    public double ECCFCurrentTemp = 0;
+    public double ECCFCurrentPressure = 0;
 
     private int coolCoilTier = 0;
     private int vacuumCoilTier = 0;
@@ -750,8 +752,8 @@ public class MTEEnvironmentallyControlledChemicalFacility extends
                 deltaTemp = recipe.getMetadataOrDefault(ECCF_TEMPERATURE_DELTA, 0);
                 tempThreshold = (int) (1.5 * Math.pow(requiredTemp, 0.55));
                 pressureThreshold = (int) (1.5 * Math.pow(requiredPressure, 0.55));
-                if (Math.abs(currentTemp - requiredTemp) <= tempThreshold
-                    && Math.abs(currentPressure - requiredPressure) <= pressureThreshold) {
+                if (Math.abs(ECCFCurrentTemp - requiredTemp) <= tempThreshold
+                    && Math.abs(ECCFCurrentPressure - requiredPressure) <= pressureThreshold) {
                     return super.validateRecipe(recipe);
                 }
                 if (recipe.mEUt > availableVoltage) {
@@ -891,7 +893,7 @@ public class MTEEnvironmentallyControlledChemicalFacility extends
 
             StatCollector.translateToLocal("GT5U.ECCF.pressure") + ": "
                 + EnumChatFormatting.GREEN
-                + GTUtility.formatNumbers(currentPressure)
+                + GTUtility.formatNumbers(ECCFCurrentPressure)
                 + EnumChatFormatting.RESET
                 + " Pa",
             StatCollector.translateToLocal("GT5U.ECCF.pressure_required") + ": "
@@ -906,7 +908,7 @@ public class MTEEnvironmentallyControlledChemicalFacility extends
                 + " Pa",
             StatCollector.translateToLocal("GT5U.ECCF.temperature") + ": "
                 + EnumChatFormatting.GREEN
-                + GTUtility.formatNumbers(currentTemp)
+                + GTUtility.formatNumbers(ECCFCurrentTemp)
                 + EnumChatFormatting.RESET
                 + " K",
             StatCollector.translateToLocal("GT5U.ECCF.temperature_required") + ": "
@@ -919,6 +921,16 @@ public class MTEEnvironmentallyControlledChemicalFacility extends
                 + GTUtility.formatNumbers(tempThreshold)
                 + EnumChatFormatting.RESET
                 + " K" };
+    }
+
+    @Override
+    protected boolean forceUseMui2() {
+        return true;
+    }
+
+    @Override
+    protected @NotNull MTEMultiBlockBaseGui getGui() {
+        return new MTEEnvironmentallyCCFGUI(this);
     }
 
     @Override
@@ -938,15 +950,15 @@ public class MTEEnvironmentallyControlledChemicalFacility extends
 
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
-        aNBT.setDouble(ECCFPressureNBTTag, currentPressure);
-        aNBT.setDouble(ECCFTempNBTTag, currentTemp);
+        aNBT.setDouble(ECCFPressureNBTTag, ECCFCurrentPressure);
+        aNBT.setDouble(ECCFTempNBTTag, ECCFCurrentTemp);
         super.saveNBTData(aNBT);
     }
 
     @Override
     public void loadNBTData(final NBTTagCompound aNBT) {
-        currentPressure = aNBT.getDouble(ECCFPressureNBTTag);
-        currentTemp = aNBT.getDouble(ECCFTempNBTTag);
+        ECCFCurrentPressure = aNBT.getDouble(ECCFPressureNBTTag);
+        ECCFCurrentTemp = aNBT.getDouble(ECCFTempNBTTag);
         super.loadNBTData(aNBT);
     }
 
@@ -1141,9 +1153,9 @@ public class MTEEnvironmentallyControlledChemicalFacility extends
                 .decreaseStoredEnergyUnits(drainAmountEU, false);
         }
         if (mMachine && (aTick % 20 == 0)) {
-            if ((currentTemp == 0) && (currentPressure == 0)) {
-                currentPressure = initialPressure;
-                currentTemp = initialTemp;
+            if ((ECCFCurrentTemp == 0) && (ECCFCurrentPressure == 0)) {
+                ECCFCurrentPressure = initialPressure;
+                ECCFCurrentTemp = initialTemp;
             }
 
             if (isVacuumModule || isCompressModule)
@@ -1151,7 +1163,7 @@ public class MTEEnvironmentallyControlledChemicalFacility extends
             if (isCoolModule || isHeatModule) coeffTemp = getTempCoefficient(Math.max(coolCoilTier, heatCoilTier));
 
             // returns temperature values to atmosphere conditions
-            currentTemp = (currentTemp - initialTemp) * coeffTemp + initialTemp;
+            ECCFCurrentTemp = (ECCFCurrentTemp - initialTemp) * coeffTemp + initialTemp;
             // Temperature calculation
             if (isCoolModule || isHeatModule) {
                 // drain all coolant from hatches and change temperature
@@ -1170,9 +1182,9 @@ public class MTEEnvironmentallyControlledChemicalFacility extends
                         double coolantTempImpact = mCoolantInputHatch.mFluid.amount / 10000f * coolantTemp;
                         if ((isCoolModule || isCoolant) || (isHeatModule || isHot)) {
                             if (coolantTemp < initialTemp)
-                                currentTemp = Math.max(currentTemp - coolantTempImpact, coolantTemp);
+                                ECCFCurrentTemp = Math.max(ECCFCurrentTemp - coolantTempImpact, coolantTemp);
                             if (coolantTemp > initialTemp)
-                                currentTemp = Math.min(currentTemp + coolantTempImpact, coolantTemp);
+                                ECCFCurrentTemp = Math.min(ECCFCurrentTemp + coolantTempImpact, coolantTemp);
                             drain(mCoolantInputHatch, mCoolantInputHatch.mFluid, true);
                         }
                     }
@@ -1180,14 +1192,14 @@ public class MTEEnvironmentallyControlledChemicalFacility extends
             }
 
             // returns pressure values to atmosphere conditions
-            currentPressure = (currentPressure - initialPressure) * coeffPressure + initialPressure;
+            ECCFCurrentPressure = (ECCFCurrentPressure - initialPressure) * coeffPressure + initialPressure;
             // Pressure calculation
             if (isCompressModule || isVacuumModule) {
                 // Apply pressure changes
                 if (mPressureEnergyHatch != null) {
                     drainAmountEU /= 20;
-                    currentPressure += Math.pow(drainAmountEU, 0.7) * (isCompressModule ? 1 : -1);
-                    currentPressure = Math.max(currentPressure, 0);
+                    ECCFCurrentPressure += Math.pow(drainAmountEU, 0.7) * (isCompressModule ? 1 : -1);
+                    ECCFCurrentPressure = Math.max(ECCFCurrentPressure, 0);
                     drainAmountEU = 0;
                 }
                 // Apply lubricant depressurization (leakCoeff is loss percentage)
@@ -1207,17 +1219,17 @@ public class MTEEnvironmentallyControlledChemicalFacility extends
                             mLubricantInputHatch.drain(5, true);
                         }
                     }
-                    currentPressure = currentPressure * leakCoeff + initialPressure * (1 - leakCoeff);
+                    ECCFCurrentPressure = ECCFCurrentPressure * leakCoeff + initialPressure * (1 - leakCoeff);
                 }
             }
 
-            currentPressure += deltaPressure;
-            currentTemp += deltaTemp;
+            ECCFCurrentPressure += deltaPressure;
+            ECCFCurrentTemp += deltaTemp;
 
             // Range check
             if (mMaxProgresstime != 0) {
-                if ((Math.abs(currentTemp - requiredTemp) > tempThreshold)
-                    || (Math.abs(currentPressure - requiredPressure) > pressureThreshold)) {
+                if ((Math.abs(ECCFCurrentTemp - requiredTemp) > tempThreshold)
+                    || (Math.abs(ECCFCurrentPressure - requiredPressure) > pressureThreshold)) {
                     stopMachine(SimpleShutDownReason.ofCritical("conditions_range"));
                 }
             }

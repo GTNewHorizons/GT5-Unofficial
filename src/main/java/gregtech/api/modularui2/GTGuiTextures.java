@@ -1,11 +1,10 @@
 package gregtech.api.modularui2;
 
-import static gregtech.api.enums.Mods.GregTech;
-
-import com.cleanroommc.modularui.drawable.UITexture;
-
 import bartworks.MainMod;
+import com.cleanroommc.modularui.drawable.UITexture;
 import gregtech.common.modularui2.util.SteamTextureRegisterer;
+
+import static gregtech.api.enums.Mods.GregTech;
 
 /**
  * Holds all the references to GUI textures used within GregTech.
@@ -247,6 +246,9 @@ public final class GTGuiTextures {
             GTTextureIds.OVERLAY_SLOT_BLOCK_PRIMITIVE)
         .build();
 
+    public static final UITexture OVERLAY_BUTTON_THERMOMETER = UITexture
+        .fullImage(GregTech.ID, "gui/overlay_button/thermometer");
+
     public static final UITexture OVERLAY_BUTTON_INPUT_SEPARATION_ON = UITexture
         .fullImage(GregTech.ID, "gui/overlay_button/input_separation_on");
     public static final UITexture OVERLAY_BUTTON_INPUT_SEPARATION_ON_DISABLED = UITexture
@@ -475,6 +477,17 @@ public final class GTGuiTextures {
         .adaptable(1, 1, 1, 1)
         .canApplyTheme()
         .name(GTTextureIds.PICTURE_RADIATION_SHUTTER_INSIDE)
+        .build();
+
+    public static final UITexture PROGRESSBAR_ECCF_TEMPERATURE = UITexture.builder()
+        .location(GregTech.ID, "gui/progressbar/progressbar_eccf_temperature")
+        .fullImage()
+        .name(GTTextureIds.PROGRESSBAR_ECCF_TEMPERATURE)
+        .build();
+    public static final UITexture PROGRESSBAR_ECCF_PRESSURE = UITexture.builder()
+        .location(GregTech.ID, "gui/progressbar/progressbar_eccf_pressure")
+        .fullImage()
+        .name(GTTextureIds.PROGRESSBAR_ECCF_PRESSURE)
         .build();
 
     // endregion picture
