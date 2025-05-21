@@ -215,7 +215,7 @@ public class TTMultiBlockBaseGui extends MTEMultiBlockBaseGui {
                 }
             }
         }))
-            .tooltip(tooltip -> tooltip.add("Power Switch"))
+            .tooltip(tooltip -> tooltip.add("Power Pass"))
             .size(18, 18)
             .overlay(
                 new DynamicDrawable(
