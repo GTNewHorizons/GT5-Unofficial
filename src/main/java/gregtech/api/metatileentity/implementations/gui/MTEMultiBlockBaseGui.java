@@ -4,6 +4,7 @@ import static gregtech.api.enums.Mods.GregTech;
 import static gregtech.api.metatileentity.BaseTileEntity.BUTTON_FORBIDDEN_TOOLTIP;
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 
+import java.awt.*;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -125,14 +126,16 @@ public class MTEMultiBlockBaseGui {
     }
 
     protected Flow createTerminalRow(ModularPanel panel, PanelSyncManager syncManager) {
-        return new Row().size(machineInfoSize()[0], machineInfoSize()[1])
+        Dimension machineInfoDimensions = getTerminalRowDimensions();
+        Dimension mainTerminalDimensions = getTerminalDimensions();
+        return new Row().size(machineInfoDimensions.width, machineInfoDimensions.height)
             .child(
-                new ParentWidget<>().size(mainTerminalSize()[0], mainTerminalSize()[1])
+                new ParentWidget<>().size(mainTerminalDimensions.width, mainTerminalDimensions.height)
                     .padding(4)
                     .widgetTheme(GTWidgetThemes.BACKGROUND_TERMINAL)
                     .child(
                         createTerminalTextWidget(syncManager, panel)
-                            .size(mainTerminalSize()[0] - 10, mainTerminalSize()[1] - 8)
+                            .size(mainTerminalDimensions.width - 10, mainTerminalDimensions.height - 8)
                             .collapseDisabledChild())
                     .child(
                         new SingleChildWidget<>().bottomRel(0, 10, 0)
@@ -661,12 +664,12 @@ public class MTEMultiBlockBaseGui {
         return false;
     }
 
-    protected int[] mainTerminalSize() {
-        return machineInfoSize();
+    protected Dimension getTerminalDimensions() {
+        return getTerminalRowDimensions();
     }
 
-    protected int[] machineInfoSize() {
-        return base.doesBindPlayerInventory() ? new int[] { 190, 94 } : new int[] { 190, 174 };
+    protected Dimension getTerminalRowDimensions() {
+        return base.doesBindPlayerInventory() ? new Dimension(190, 94) : new Dimension(190, 174);
     }
 
     protected void registerSyncValues(PanelSyncManager syncManager) {
