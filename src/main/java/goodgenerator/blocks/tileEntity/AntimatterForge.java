@@ -403,7 +403,7 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
         int realBudget = elementBudget >= 200 ? elementBudget : Math.min(200, elementBudget * 5);
-        return survivialBuildPiece(MAIN_NAME, stackSize, 26, 26, 4, realBudget, env, false, true);
+        return survivalBuildPiece(MAIN_NAME, stackSize, 26, 26, 4, realBudget, env, false, true);
     }
 
     @Override
@@ -435,11 +435,6 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
             .addIcon(MACHINE_CASING_ANTIMATTER)
             .extFacing()
             .build() };
-    }
-
-    @Override
-    public boolean isCorrectMachinePart(ItemStack aStack) {
-        return true;
     }
 
     @Override
@@ -724,21 +719,6 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
             return amOutputHatches.add(tAntimatter);
         }
 
-        return false;
-    }
-
-    @Override
-    public int getMaxEfficiency(ItemStack aStack) {
-        return 10000;
-    }
-
-    @Override
-    public int getDamageToComponent(ItemStack aStack) {
-        return 0;
-    }
-
-    @Override
-    public boolean explodesOnComponentBreak(ItemStack aStack) {
         return false;
     }
 

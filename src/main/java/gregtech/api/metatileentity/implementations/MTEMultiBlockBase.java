@@ -52,11 +52,13 @@ import net.minecraftforge.fluids.FluidStack;
 import org.apache.commons.lang3.ArrayUtils;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Range;
 import org.jetbrains.annotations.TestOnly;
 
 import com.cleanroommc.modularui.api.IGuiHolder;
 import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
@@ -102,7 +104,6 @@ import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.modularui.IBindPlayerInventoryUI;
 import gregtech.api.interfaces.modularui.IControllerWithOptionalFeatures;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.items.MetaGeneratedTool;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.gui.MTEMultiBlockBaseGui;
@@ -130,7 +131,9 @@ import gregtech.common.gui.modularui.widget.ShutDownReasonSyncer;
 import gregtech.common.items.MetaGeneratedTool01;
 import gregtech.common.pollution.Pollution;
 import gregtech.common.tileentities.machines.IDualInputHatch;
+import gregtech.common.tileentities.machines.IDualInputHatchWithPattern;
 import gregtech.common.tileentities.machines.IDualInputInventory;
+import gregtech.common.tileentities.machines.IDualInputInventoryWithPattern;
 import gregtech.common.tileentities.machines.IRecipeProcessingAwareHatch;
 import gregtech.common.tileentities.machines.ISmartInputHatch;
 import gregtech.common.tileentities.machines.MTEHatchCraftingInputME;
@@ -742,7 +745,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
                         0,
                         Math.min(
                             mEfficiency + mEfficiencyIncrease,
-                            getMaxEfficiency(mInventory[1]) - ((getIdealStatus() - getRepairStatus()) * 1000)));
+                            getMaxEfficiency(getControllerSlot()) - ((getIdealStatus() - getRepairStatus()) * 1000)));
                     mOutputItems = null;
                     mProgresstime = 0;
                     mMaxProgresstime = 0;
@@ -934,9 +937,15 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
     }
 
     /**
-     * Checks if this is a Correct Machine Part for this kind of Machine (Turbine Rotor for example)
+     * Check the ItemStack in the controller slot.
+     *
+     * @param aStack the ItemStack in the controller slot.
+     * @return {@code true} if the item is valid for this machine or the machine doesn't have restrictions on the
+     *         controller slot.
      */
-    public abstract boolean isCorrectMachinePart(ItemStack aStack);
+    public boolean isCorrectMachinePart(@Nullable ItemStack aStack) {
+        return true;
+    }
 
     /**
      * @deprecated Use {@link #createProcessingLogic()} or {@link #checkProcessing()}
@@ -1027,7 +1036,15 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
             for (var it = dualInputHatch.inventories(); it.hasNext();) {
                 IDualInputInventory slot = it.next();
 
-                if (!slot.isEmpty() && processingLogic.craftingPatternHandler(slot)) {
+                if (!slot.isEmpty()) {
+                    // try to cache the possible recipes from pattern
+                    if (slot instanceof IDualInputInventoryWithPattern withPattern) {
+                        if (!processingLogic.tryCachePossibleRecipesFromPattern(withPattern)) {
+                            // move on to next slots if it returns false, which means there is no possible recipes with
+                            // given pattern.
+                            continue;
+                        }
+                    }
 
                     processingLogic.setInputItems(ArrayUtils.addAll(sharedItems, slot.getItemInputs()));
                     processingLogic.setInputFluids(slot.getFluidInputs());
@@ -1181,9 +1198,18 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
     public abstract boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack);
 
     /**
-     * Gets the maximum Efficiency that spare Part can get (0 - 10000)
+     * Gets the maximum efficiency of this machine with current state.
+     * <p>
+     * The ItemStack argument is supposed to be the one in the controller slot, but in some implementation, it directly
+     * gives {@code null}.
+     *
+     * @param aStack the ItemStack in the controller slot or null.
+     * @return the maximum efficiency in the range of 0 to 10,000.
      */
-    public abstract int getMaxEfficiency(ItemStack aStack);
+    @Range(from = 0, to = 10000)
+    public int getMaxEfficiency(@Nullable ItemStack aStack) {
+        return 10000;
+    }
 
     /**
      * Gets the pollution this Device outputs to a Muffler per tick (10000 = one Pullution Block)
@@ -1207,14 +1233,30 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
     }
 
     /**
-     * Gets the damage to the ItemStack, usually 0 or 1.
+     * Gets the factor value to damage the ItemStack in the controller slot.
+     * <p>
+     * This function will be called only if the ItemStack is {@link MetaGeneratedTool01}, and the actual applied damage
+     * value is multiplied by
+     * <a href="https://www.wolframalpha.com/input?i=plot+min%28x%2F5%2C+x%5E%280.6%29%29+range+0+to+512">a formula</a>
+     * calculated with {@link #damageFactorLow} and {@link #damageFactorHigh}. See {@link #doRandomMaintenanceDamage()}
+     * for the details.
+     *
+     * @param aStack the ItemStack in the controller slot.
+     * @return the factor value to damage the ItemStack in the controller slot.
      */
-    public abstract int getDamageToComponent(ItemStack aStack);
+    @Range(from = 0, to = Integer.MAX_VALUE)
+    public int getDamageToComponent(@Nullable ItemStack aStack) {
+        return 0;
+    }
 
     /**
-     * If it explodes when the Component has to be replaced.
+     * @deprecated no longer being called.
      */
-    public abstract boolean explodesOnComponentBreak(ItemStack aStack);
+    @Deprecated
+    @ApiStatus.ScheduledForRemoval
+    public boolean explodesOnComponentBreak(ItemStack aStack) {
+        return false;
+    }
 
     /**
      * @deprecated Use {@link #stopMachine(ShutDownReason)}
@@ -1270,7 +1312,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
     }
 
     public boolean doRandomMaintenanceDamage() {
-        if (!isCorrectMachinePart(mInventory[1])) {
+        if (!isCorrectMachinePart(getControllerSlot())) {
             stopMachine(ShutDownReasonRegistry.NO_MACHINE_PART);
             return false;
         }
@@ -1286,11 +1328,10 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
             if (mInventory[1] != null && getBaseMetaTileEntity().getRandomNumber(2) == 0
                 && !mInventory[1].getUnlocalizedName()
                     .startsWith("gt.blockmachines.basicmachine.")) {
-                if (mInventory[1].getItem() instanceof MetaGeneratedTool01) {
-                    NBTTagCompound tNBT = mInventory[1].getTagCompound();
-                    ((MetaGeneratedTool) mInventory[1].getItem()).doDamage(
+                if (mInventory[1].getItem() instanceof MetaGeneratedTool01 metaGeneratedTool) {
+                    metaGeneratedTool.doDamage(
                         mInventory[1],
-                        (long) getDamageToComponent(mInventory[1])
+                        (long) getDamageToComponent(getControllerSlot())
                             * (long) Math.min(mEUt / this.damageFactorLow, Math.pow(mEUt, this.damageFactorHigh)));
                     if (mInventory[1].stackSize == 0) mInventory[1] = null;
                 }
@@ -1840,7 +1881,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
         for (MTEHatchInputBus tHatch : validMTEList(mInputBusses)) tHatch.updateSlots();
     }
 
-    protected void startRecipeProcessing() {
+    public void startRecipeProcessing() {
         mDualInputHatches.removeIf(mte -> mte == null || !((MetaTileEntity) mte).isValid());
 
         for (MTEHatchInputBus hatch : validMTEList(mInputBusses)) {
@@ -1861,7 +1902,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
         }
     }
 
-    protected void endRecipeProcessing() {
+    public void endRecipeProcessing() {
         for (MTEHatchInputBus hatch : validMTEList(mInputBusses)) {
             if (hatch instanceof IRecipeProcessingAwareHatch aware) {
                 setResultIfFailure(aware.endRecipeProcessing(this));
@@ -1884,7 +1925,9 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
         }
         if (aMetaTileEntity instanceof IDualInputHatch hatch) {
             hatch.updateCraftingIcon(this.getMachineCraftingIcon());
-            hatch.setProcessingLogic(processingLogic);
+            if (hatch instanceof IDualInputHatchWithPattern withPattern) {
+                withPattern.setProcessingLogic(processingLogic);
+            }
             return mDualInputHatches.add(hatch);
         }
         if (aMetaTileEntity instanceof ISmartInputHatch hatch) {
@@ -3488,8 +3531,8 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
     }
 
     @Override
-    public final ModularPanel buildUI(PosGuiData guiData, PanelSyncManager syncManager) {
-        return getGui().build(guiData, syncManager);
+    public final ModularPanel buildUI(PosGuiData guiData, PanelSyncManager syncManager, UISettings uiSettings) {
+        return getGui().build(guiData, syncManager, uiSettings);
     }
 
     protected @NotNull MTEMultiBlockBaseGui getGui() {

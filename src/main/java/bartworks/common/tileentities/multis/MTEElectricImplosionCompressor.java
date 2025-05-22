@@ -334,11 +334,6 @@ public class MTEElectricImplosionCompressor extends MTEExtendedPowerMultiBlockBa
     }
 
     @Override
-    public boolean isCorrectMachinePart(ItemStack itemStack) {
-        return true;
-    }
-
-    @Override
     public void stopMachine(@NotNull ShutDownReason reason) {
         this.resetPiston(this.mBlockTier);
         super.stopMachine(reason);
@@ -453,21 +448,6 @@ public class MTEElectricImplosionCompressor extends MTEExtendedPowerMultiBlockBa
     }
 
     @Override
-    public int getMaxEfficiency(ItemStack itemStack) {
-        return 10000;
-    }
-
-    @Override
-    public int getDamageToComponent(ItemStack itemStack) {
-        return 0;
-    }
-
-    @Override
-    public boolean explodesOnComponentBreak(ItemStack itemStack) {
-        return false;
-    }
-
-    @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
         int aColorIndex, boolean aActive, boolean aRedstone) {
         if (side == facing) {
@@ -504,7 +484,7 @@ public class MTEElectricImplosionCompressor extends MTEExtendedPowerMultiBlockBa
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (this.mMachine) return -1;
         this.isSuccessful = false;
-        return this.survivialBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 1, 6, 0, elementBudget, env, false, true);
+        return this.survivalBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 1, 6, 0, elementBudget, env, false, true);
     }
 
     @Override

@@ -291,11 +291,6 @@ public class MTEComponentAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTE
     }
 
     @Override
-    public boolean isCorrectMachinePart(ItemStack aStack) {
-        return true;
-    }
-
-    @Override
     protected ProcessingLogic createProcessingLogic() {
         return new ProcessingLogic() {
 
@@ -327,7 +322,7 @@ public class MTEComponentAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTE
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
         int realBudget = elementBudget >= 200 ? elementBudget : Math.min(200, elementBudget * 5);
-        return survivialBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 4, 2, 0, realBudget, env, false, true);
+        return survivalBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 4, 2, 0, realBudget, env, false, true);
     }
 
     private void setCasingTier(int tier) {
@@ -378,21 +373,6 @@ public class MTEComponentAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTE
     @Override
     public boolean supportsBatchMode() {
         return true;
-    }
-
-    @Override
-    public int getMaxEfficiency(ItemStack aStack) {
-        return 10000;
-    }
-
-    @Override
-    public int getDamageToComponent(ItemStack aStack) {
-        return 0;
-    }
-
-    @Override
-    public boolean explodesOnComponentBreak(ItemStack aStack) {
-        return false;
     }
 
     @Override

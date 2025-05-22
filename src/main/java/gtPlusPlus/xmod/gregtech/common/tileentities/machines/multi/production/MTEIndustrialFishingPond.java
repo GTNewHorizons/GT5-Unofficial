@@ -152,7 +152,7 @@ public class MTEIndustrialFishingPond extends GTPPMultiBlockBase<MTEIndustrialFi
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
-        return survivialBuildPiece(mName, stackSize, 4, 1, 0, elementBudget, env, false, true);
+        return survivalBuildPiece(mName, stackSize, 4, 1, 0, elementBudget, env, false, true);
     }
 
     @Override
@@ -232,11 +232,6 @@ public class MTEIndustrialFishingPond extends GTPPMultiBlockBase<MTEIndustrialFi
     @Override
     public int getMaxParallelRecipes() {
         return (2 * (GTUtility.getTier(this.getMaxInputVoltage()) + 1));
-    }
-
-    @Override
-    public int getMaxEfficiency(final ItemStack aStack) {
-        return 10000;
     }
 
     @Override

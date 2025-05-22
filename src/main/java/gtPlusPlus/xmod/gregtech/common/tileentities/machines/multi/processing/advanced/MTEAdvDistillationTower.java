@@ -212,26 +212,17 @@ public class MTEAdvDistillationTower extends GTPPMultiBlockBase<MTEAdvDistillati
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         mHeight = 0;
-        int built = survivialBuildPiece(STRUCTURE_PIECE_BASE, stackSize, 1, 0, 0, elementBudget, env, false, true);
+        int built = survivalBuildPiece(STRUCTURE_PIECE_BASE, stackSize, 1, 0, 0, elementBudget, env, false, true);
         if (built >= 0) return built;
         // min 2 output layer, so at least 1 + 2 height
         int tTotalHeight = GTStructureChannels.STRUCTURE_HEIGHT.getValueClamped(stackSize, 3, 12);
         for (int i = 1; i < tTotalHeight - 1; i++) {
             mHeight = i;
-            built = survivialBuildPiece(
-                STRUCTURE_PIECE_LAYER_HINT,
-                stackSize,
-                1,
-                i,
-                0,
-                elementBudget,
-                env,
-                false,
-                true);
+            built = survivalBuildPiece(STRUCTURE_PIECE_LAYER_HINT, stackSize, 1, i, 0, elementBudget, env, false, true);
             if (built >= 0) return built;
         }
         mHeight = tTotalHeight - 1;
-        return survivialBuildPiece(
+        return survivalBuildPiece(
             STRUCTURE_PIECE_TOP_HINT,
             stackSize,
             1,
@@ -289,19 +280,9 @@ public class MTEAdvDistillationTower extends GTPPMultiBlockBase<MTEAdvDistillati
     }
 
     @Override
-    public boolean isCorrectMachinePart(ItemStack aStack) {
-        return true;
-    }
-
-    @Override
     protected IAlignmentLimits getInitialAlignmentLimits() {
         // don't rotate a freaking tower, it won't work
         return (d, r, f) -> d.offsetY == 0 && r.isNotRotated() && !f.isVerticallyFliped();
-    }
-
-    @Override
-    public int getMaxEfficiency(ItemStack aStack) {
-        return 10000;
     }
 
     @Override
@@ -334,16 +315,6 @@ public class MTEAdvDistillationTower extends GTPPMultiBlockBase<MTEAdvDistillati
         mMode = mMode.next();
         PlayerUtils.messagePlayer(aPlayer, "Now running in " + mMode + " Mode.");
         mLastRecipe = null;
-    }
-
-    @Override
-    public int getDamageToComponent(ItemStack aStack) {
-        return 0;
-    }
-
-    @Override
-    public boolean explodesOnComponentBreak(ItemStack aStack) {
-        return false;
     }
 
     @Override

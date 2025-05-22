@@ -173,11 +173,6 @@ public class MTEAmazonPackager extends GTPPMultiBlockBase<MTEAmazonPackager> imp
     }
 
     @Override
-    public int getMaxEfficiency(ItemStack p0) {
-        return 10000;
-    }
-
-    @Override
     public int getPollutionPerSecond(ItemStack arg0) {
         return PollutionConfig.pollutionPerSecondMultiPackager;
     }
@@ -195,7 +190,7 @@ public class MTEAmazonPackager extends GTPPMultiBlockBase<MTEAmazonPackager> imp
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
-        return survivialBuildPiece(mName, stackSize, 1, 1, 0, elementBudget, env, false, true);
+        return survivalBuildPiece(mName, stackSize, 1, 1, 0, elementBudget, env, false, true);
     }
 
     @Override

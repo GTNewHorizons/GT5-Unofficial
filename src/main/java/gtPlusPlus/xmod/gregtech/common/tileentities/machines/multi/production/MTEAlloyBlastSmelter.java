@@ -128,7 +128,7 @@ public class MTEAlloyBlastSmelter extends GTPPMultiBlockBase<MTEAlloyBlastSmelte
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
-        return survivialBuildPiece(mName, stackSize, 1, 3, 0, elementBudget, env, false, true);
+        return survivalBuildPiece(mName, stackSize, 1, 3, 0, elementBudget, env, false, true);
     }
 
     @Override
@@ -213,11 +213,6 @@ public class MTEAlloyBlastSmelter extends GTPPMultiBlockBase<MTEAlloyBlastSmelte
         GTUtility.sendChatToPlayer(
             aPlayer,
             StatCollector.translateToLocal("GT5U.machines.separatebus") + " " + inputSeparation);
-    }
-
-    @Override
-    public int getMaxEfficiency(final ItemStack aStack) {
-        return 10000;
     }
 
     @Override

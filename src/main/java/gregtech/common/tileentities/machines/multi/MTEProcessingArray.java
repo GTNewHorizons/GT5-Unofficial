@@ -321,7 +321,7 @@ public class MTEProcessingArray extends MTEExtendedPowerMultiBlockBase<MTEProces
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
-        return survivialBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 1, 1, 0, elementBudget, env, false, true);
+        return survivalBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 1, 1, 0, elementBudget, env, false, true);
     }
 
     private boolean checkHatches() {
@@ -377,21 +377,6 @@ public class MTEProcessingArray extends MTEExtendedPowerMultiBlockBase<MTEProces
             GTUtility.sendChatToPlayer(aPlayer, "Treat UEV+ machines as multiple UHV " + downtierUEV);
         }
         return true;
-    }
-
-    @Override
-    public int getMaxEfficiency(ItemStack aStack) {
-        return 10000;
-    }
-
-    @Override
-    public int getDamageToComponent(ItemStack aStack) {
-        return 0;
-    }
-
-    @Override
-    public boolean explodesOnComponentBreak(ItemStack aStack) {
-        return false;
     }
 
     private List<IHatchElement<? super MTEProcessingArray>> getAllowedHatches() {

@@ -160,7 +160,7 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
 
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
-        int built = survivialBuildPiece(STRUCTURE_PIECE_MAIN_SURVIVAL, stackSize, 3, 6, 0, elementBudget, env, true);
+        int built = survivalBuildPiece(STRUCTURE_PIECE_MAIN_SURVIVAL, stackSize, 3, 6, 0, elementBudget, env, true);
         if (built == -1) {
             GTUtility.sendChatToPlayer(
                 env.getActor(),
@@ -319,11 +319,6 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
             Textures.BlockIcons.getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings9, 4)) };
     }
 
-    @Override
-    public boolean isCorrectMachinePart(ItemStack aStack) {
-        return true;
-    }
-
     private List<IHatchElement<? super MTEPurificationPlant>> getAllowedHatches() {
         return ImmutableList.of(Maintenance, Energy, ExoticEnergy);
     }
@@ -480,21 +475,6 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
             }
         }
         return euT;
-    }
-
-    @Override
-    public int getMaxEfficiency(ItemStack aStack) {
-        return 10000;
-    }
-
-    @Override
-    public int getDamageToComponent(ItemStack aStack) {
-        return 0;
-    }
-
-    @Override
-    public boolean explodesOnComponentBreak(ItemStack aStack) {
-        return false;
     }
 
     public void registerLinkedUnit(MTEPurificationUnitBase<?> unit) {

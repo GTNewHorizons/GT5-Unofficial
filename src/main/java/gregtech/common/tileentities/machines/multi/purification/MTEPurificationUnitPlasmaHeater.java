@@ -250,7 +250,7 @@ public class MTEPurificationUnitPlasmaHeater extends MTEPurificationUnitBase<MTE
 
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
-        return survivialBuildPiece(
+        return survivalBuildPiece(
             STRUCTURE_PIECE_MAIN,
             stackSize,
             STRUCTURE_X_OFFSET,
@@ -552,11 +552,6 @@ public class MTEPurificationUnitPlasmaHeater extends MTEPurificationUnitBase<MTE
         cyclesCompleted = aNBT.getInteger("mCyclesCompleted");
         ruinedCycle = aNBT.getBoolean("mRuinedCycle");
         state = CycleState.valueOf(aNBT.getString("mCycleState"));
-    }
-
-    @Override
-    public boolean isCorrectMachinePart(ItemStack aStack) {
-        return true;
     }
 
     @Override

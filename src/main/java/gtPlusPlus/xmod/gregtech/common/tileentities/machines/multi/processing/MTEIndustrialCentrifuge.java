@@ -132,7 +132,7 @@ public class MTEIndustrialCentrifuge extends GTPPMultiBlockBase<MTEIndustrialCen
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
-        return survivialBuildPiece(mName, stackSize, 1, 1, 0, elementBudget, env, false, true);
+        return survivalBuildPiece(mName, stackSize, 1, 1, 0, elementBudget, env, false, true);
     }
 
     @Override
@@ -168,6 +168,11 @@ public class MTEIndustrialCentrifuge extends GTPPMultiBlockBase<MTEIndustrialCen
         if (extendedFacingChanged) {
             setTurbineOverlay();
         }
+    }
+
+    @Override
+    public void onTextureUpdate() {
+        setTurbineOverlay();
     }
 
     protected void setTurbineOverlay() {
@@ -223,18 +228,8 @@ public class MTEIndustrialCentrifuge extends GTPPMultiBlockBase<MTEIndustrialCen
     }
 
     @Override
-    public int getMaxEfficiency(final ItemStack aStack) {
-        return 10000;
-    }
-
-    @Override
     public int getPollutionPerSecond(final ItemStack aStack) {
         return PollutionConfig.pollutionPerSecondMultiIndustrialCentrifuge;
-    }
-
-    @Override
-    public boolean explodesOnComponentBreak(final ItemStack aStack) {
-        return false;
     }
 
     @Override
