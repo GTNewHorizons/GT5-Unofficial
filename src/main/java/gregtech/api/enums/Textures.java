@@ -1,18 +1,19 @@
 package gregtech.api.enums;
 
+import static gregtech.api.enums.Mods.GregTech;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import net.minecraft.client.renderer.texture.TextureMap;
+import net.minecraft.util.IIcon;
+import net.minecraft.util.ResourceLocation;
+
 import gregtech.api.GregTechAPI;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
-import net.minecraft.client.renderer.texture.TextureMap;
-import net.minecraft.util.IIcon;
-import net.minecraft.util.ResourceLocation;
-
-import java.util.HashMap;
-import java.util.Map;
-
-import static gregtech.api.enums.Mods.GregTech;
 
 public class Textures {
 

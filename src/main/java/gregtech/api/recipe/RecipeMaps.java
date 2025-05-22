@@ -1,10 +1,44 @@
 package gregtech.api.recipe;
 
+import static gregtech.api.enums.Mods.Avaritia;
+import static gregtech.api.enums.Mods.GTNHIntergalactic;
+import static gregtech.api.enums.Mods.NEICustomDiagrams;
+import static gregtech.api.enums.Mods.Railcraft;
+import static gregtech.api.enums.TickTime.TICK;
+import static gregtech.api.util.GTModHandler.getModItem;
+import static gregtech.api.util.GTRecipeConstants.ADDITIVE_AMOUNT;
+import static gregtech.api.util.GTRecipeConstants.FUEL_VALUE;
+import static gregtech.api.util.GTRecipeConstants.GLASS;
+import static gregtech.api.util.GTRecipeConstants.PCB_NANITE_MATERIAL;
+import static gregtech.api.util.GTRecipeMapUtil.GTRecipeTemplate;
+import static gregtech.api.util.GTRecipeMapUtil.asTemplate;
+import static gregtech.api.util.GTRecipeMapUtil.buildOrEmpty;
+import static gregtech.api.util.GTUtility.clamp;
+import static gregtech.api.util.GTUtility.copyAmount;
+import static gregtech.api.util.GTUtility.getFluidForFilledItem;
+import static gregtech.api.util.GTUtility.isArrayEmptyOrNull;
+import static gregtech.api.util.GTUtility.isArrayOfLength;
+import static gregtech.api.util.GTUtility.min;
+import static gregtech.api.util.GTUtility.multiplyStack;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Optional;
+
+import net.minecraft.init.Blocks;
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.FluidStack;
+
+import com.gtnewhorizons.modularui.api.drawable.UITexture;
+import com.gtnewhorizons.modularui.common.widget.ProgressBar;
+
 import bartworks.API.recipe.BartWorksRecipeMaps;
 import bartworks.common.loaders.BioCultureLoader;
 import bartworks.common.loaders.BioItemList;
-import com.gtnewhorizons.modularui.api.drawable.UITexture;
-import com.gtnewhorizons.modularui.common.widget.ProgressBar;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
@@ -57,39 +91,7 @@ import gregtech.nei.formatter.SimpleSpecialValueFormatter;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import mods.railcraft.common.blocks.aesthetics.cube.EnumCube;
 import mods.railcraft.common.items.RailcraftToolItems;
-import net.minecraft.init.Blocks;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.fluids.FluidStack;
 import tectech.thing.CustomItemList;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Optional;
-
-import static gregtech.api.enums.Mods.Avaritia;
-import static gregtech.api.enums.Mods.GTNHIntergalactic;
-import static gregtech.api.enums.Mods.NEICustomDiagrams;
-import static gregtech.api.enums.Mods.Railcraft;
-import static gregtech.api.enums.TickTime.TICK;
-import static gregtech.api.util.GTModHandler.getModItem;
-import static gregtech.api.util.GTRecipeConstants.ADDITIVE_AMOUNT;
-import static gregtech.api.util.GTRecipeConstants.FUEL_VALUE;
-import static gregtech.api.util.GTRecipeConstants.GLASS;
-import static gregtech.api.util.GTRecipeConstants.PCB_NANITE_MATERIAL;
-import static gregtech.api.util.GTRecipeMapUtil.GTRecipeTemplate;
-import static gregtech.api.util.GTRecipeMapUtil.asTemplate;
-import static gregtech.api.util.GTRecipeMapUtil.buildOrEmpty;
-import static gregtech.api.util.GTUtility.clamp;
-import static gregtech.api.util.GTUtility.copyAmount;
-import static gregtech.api.util.GTUtility.getFluidForFilledItem;
-import static gregtech.api.util.GTUtility.isArrayEmptyOrNull;
-import static gregtech.api.util.GTUtility.isArrayOfLength;
-import static gregtech.api.util.GTUtility.min;
-import static gregtech.api.util.GTUtility.multiplyStack;
 
 @SuppressWarnings("SimplifyOptionalCallChains")
 public final class RecipeMaps {

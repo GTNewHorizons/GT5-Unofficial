@@ -1,20 +1,21 @@
 package gregtech.api.enums;
 
+import static gregtech.api.enums.GTValues.NI;
+import static gregtech.api.enums.GTValues.W;
+
+import java.util.Locale;
+
+import net.minecraft.block.Block;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.Fluid;
+
 import gregtech.api.interfaces.IItemContainer;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
-import net.minecraft.block.Block;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.fluids.Fluid;
-
-import java.util.Locale;
-
-import static gregtech.api.enums.GTValues.NI;
-import static gregtech.api.enums.GTValues.W;
 
 /**
  * Class containing all non-OreDict Items of GregTech.
