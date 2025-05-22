@@ -4,7 +4,7 @@ import static gregtech.api.enums.Mods.GregTech;
 import static gregtech.api.metatileentity.BaseTileEntity.BUTTON_FORBIDDEN_TOOLTIP;
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 
-import java.awt.*;
+import java.awt.Dimension;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
