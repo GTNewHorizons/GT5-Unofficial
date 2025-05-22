@@ -70,6 +70,7 @@ import static gregtech.api.util.GTRecipeConstants.ECCF_TEMPERATURE_DELTA;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 import static gregtech.api.util.GTUtility.getTier;
+import static java.lang.Math.min;
 
 public class MTEEnvironmentallyControlledChemicalFacility extends
     MTEExtendedPowerMultiBlockBase<MTEEnvironmentallyControlledChemicalFacility> implements ISurvivalConstructable {
@@ -103,6 +104,7 @@ public class MTEEnvironmentallyControlledChemicalFacility extends
     private double initialPressure = 0;
     private double initialTemp = 0;
     private double coolantTemp = 0;
+    private int recipeEUt = 0;
 
     private int requiredTemp = 0;
     private int requiredPressure = 0;
@@ -357,7 +359,7 @@ public class MTEEnvironmentallyControlledChemicalFacility extends
             .addInfo(
                 EnumChatFormatting.GRAY + "Doesn't overclock, instead increases parallels by "
                     + EnumChatFormatting.GOLD
-                    + "4 ^ Energy Tier")
+                    + "4 ^ (Energy Hatch Tier - Recipe EU tier")
             .addInfo(EnumChatFormatting.GRAY + "Voltage tier is limited by Energy Hatch")
             .addSeparator()
             .addInfo(
@@ -735,6 +737,8 @@ public class MTEEnvironmentallyControlledChemicalFacility extends
 
     @Override
     protected ProcessingLogic createProcessingLogic() {
+        int parallelLimit = (int) (Math.pow(4, getTier(this.getMaxInputVoltage()-recipeEUt)) * (parallelModuleTierL + 2)
+                        * (parallelModuleTierR + 2));
         return new ProcessingLogic() {
 
             @Nonnull
@@ -752,17 +756,18 @@ public class MTEEnvironmentallyControlledChemicalFacility extends
                 deltaTemp = recipe.getMetadataOrDefault(ECCF_TEMPERATURE_DELTA, 0);
                 tempThreshold = (int) (1.5 * Math.pow(requiredTemp, 0.55));
                 pressureThreshold = (int) (1.5 * Math.pow(requiredPressure, 0.55));
+                recipeEUt = recipe.mEUt;
                 if (Math.abs(ECCFCurrentTemp - requiredTemp) <= tempThreshold
                     && Math.abs(ECCFCurrentPressure - requiredPressure) <= pressureThreshold) {
                     return super.validateRecipe(recipe);
                 }
-                if (recipe.mEUt > availableVoltage) {
+                if (recipeEUt > availableVoltage) {
                     return CheckRecipeResultRegistry.insufficientPower(recipe.mEUt);
                 }
                 stopMachine(SimpleShutDownReason.ofCritical("conditions_range"));
                 return CheckRecipeResultRegistry.RECIPE_CONDITIONS;
             }
-        }.setMaxParallelSupplier(this::getTrueParallel);
+        }.setMaxParallelSupplier(()-> Math.min(getTrueParallel(),  parallelLimit));
     }
 
     @Override
@@ -773,7 +778,7 @@ public class MTEEnvironmentallyControlledChemicalFacility extends
 
     @Override
     public int getMaxParallelRecipes() {
-        return (int) Math.pow(4, getTier(this.getMaxInputVoltage())) * (parallelModuleTierL + 2)
+        return (int) Math.pow(4, getTier(this.getMaxInputVoltage()-recipeEUt)) * (parallelModuleTierL + 2)
             * (parallelModuleTierR + 2);
     }
 
@@ -1184,7 +1189,7 @@ public class MTEEnvironmentallyControlledChemicalFacility extends
                             if (coolantTemp < initialTemp)
                                 ECCFCurrentTemp = Math.max(ECCFCurrentTemp - coolantTempImpact, coolantTemp);
                             if (coolantTemp > initialTemp)
-                                ECCFCurrentTemp = Math.min(ECCFCurrentTemp + coolantTempImpact, coolantTemp);
+                                ECCFCurrentTemp = min(ECCFCurrentTemp + coolantTempImpact, coolantTemp);
                             drain(mCoolantInputHatch, mCoolantInputHatch.mFluid, true);
                         }
                     }
