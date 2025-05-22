@@ -2,44 +2,55 @@ package gregtech.common.tileentities.machines.multi.gui.nanochip;
 
 import static gregtech.api.modularui2.GTGuis.createPopUpPanel;
 
+import java.awt.*;
+import java.util.List;
+
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 
+import org.jetbrains.annotations.NotNull;
+import org.lwjgl.input.Keyboard;
+
 import com.cleanroommc.modularui.api.GuiAxis;
 import com.cleanroommc.modularui.api.IPanelHandler;
+import com.cleanroommc.modularui.api.drawable.IDrawable;
 import com.cleanroommc.modularui.api.drawable.IIcon;
 import com.cleanroommc.modularui.api.widget.IWidget;
 import com.cleanroommc.modularui.drawable.GuiTextures;
 import com.cleanroommc.modularui.drawable.ItemDrawable;
 import com.cleanroommc.modularui.drawable.UITexture;
-import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
-import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.utils.Alignment;
+import com.cleanroommc.modularui.utils.Color;
 import com.cleanroommc.modularui.utils.serialization.ByteBufAdapters;
+import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
 import com.cleanroommc.modularui.value.sync.DoubleSyncValue;
 import com.cleanroommc.modularui.value.sync.GenericListSyncHandler;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.value.sync.StringSyncValue;
 import com.cleanroommc.modularui.widget.ParentWidget;
+import com.cleanroommc.modularui.widget.WidgetTree;
+import com.cleanroommc.modularui.widget.scroll.ScrollData;
 import com.cleanroommc.modularui.widgets.ButtonWidget;
 import com.cleanroommc.modularui.widgets.ListWidget;
 import com.cleanroommc.modularui.widgets.PageButton;
 import com.cleanroommc.modularui.widgets.PagedWidget;
 import com.cleanroommc.modularui.widgets.ProgressWidget;
 import com.cleanroommc.modularui.widgets.TextWidget;
+import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.cleanroommc.modularui.widgets.layout.Row;
 import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
 
 import gregtech.api.metatileentity.implementations.gui.MTEMultiBlockBaseGui;
 import gregtech.api.modularui2.GTGuiTextures;
-import gregtech.common.modularui2.widget.TerminalWidget;
 import gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex;
 import gtPlusPlus.core.util.math.MathUtils;
 
 public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui {
 
     private final MTENanochipAssemblyComplex base;
+    protected boolean isTalkModeActive = false;
+    protected TerminalTextListWidget textList = new TerminalTextListWidget();
 
     public MTENanochipAssemblyComplexGui(MTENanochipAssemblyComplex base) {
         super(base);
@@ -47,11 +58,54 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui {
     }
 
     @Override
-    public ModularPanel build(PosGuiData data, PanelSyncManager syncManager, UISettings uiSettings) {
-        ModularPanel ui = super.build(data, syncManager, uiSettings);
-        IPanelHandler popupPanel = syncManager.panel("popup", (m, h) -> createGREGOSPanel(syncManager), true);
+    protected Flow createTerminalRow(ModularPanel panel, PanelSyncManager syncManager) {
+        Flow row = super.createTerminalRow(panel, syncManager);
+        List<IWidget> sisters = row.getChildren();
+        if (!sisters.isEmpty() && (sisters.get(0) instanceof ParentWidget<?>parent)) {
+            Dimension mainTerminalDimensions = getTerminalDimensions();
+            textList.setEnabledIf(ignored -> isTalkModeActive)
+                .childSeparator(
+                    IDrawable.EMPTY.asIcon()
+                        .height(2))
+                .size(mainTerminalDimensions.width - 10, mainTerminalDimensions.height - 8);
+            parent.child(textList);
+        }
+        return row;
+    }
 
-        return ui.child(new ButtonWidget<>().onMousePressed(mouseButton -> {
+    @Override
+    protected ListWidget<IWidget, ?> createTerminalTextWidget(PanelSyncManager syncManager) {
+        return super.createTerminalTextWidget(syncManager).setEnabledIf(flow -> !isTalkModeActive);
+    }
+
+    @Override
+    protected IWidget createPanelGap(ModularPanel panel, PanelSyncManager syncManager) {
+        return new Row().widthRel(1)
+            .paddingRight(6)
+            .paddingLeft(4)
+            .height(textBoxToInventoryGap)
+            .child(createButtonToRemoveLater(panel, syncManager))
+            .child(createTalkTextField(panel, syncManager))
+            .childIf(base.supportsPowerPanel(), createPowerPanelButton(syncManager, panel));
+    }
+
+    public IWidget createTalkTextField(ModularPanel panel, PanelSyncManager syncManager) {
+        Dimension mainTerminalDimensions = getTerminalDimensions();
+        return new TerminalTextFieldWidget(textList).tooltip(t -> {
+            if (isTalkModeActive) {
+                t.add("Enter \"exit\" to exit talk mode");
+            } else {
+                t.add("Enter \"talk\" to enter talk mode");
+            }
+        })
+            .tooltipAutoUpdate(true)
+            .setFocusOnGuiOpen(true)
+            .size(mainTerminalDimensions.width - 45, 10);
+    }
+
+    public IWidget createButtonToRemoveLater(ModularPanel panel, PanelSyncManager syncManager) {
+        IPanelHandler popupPanel = syncManager.panel("popup", (m, h) -> createGREGOSPanel(syncManager), true);
+        return new ButtonWidget<>().onMousePressed(mouseButton -> {
             if (!popupPanel.isPanelOpen()) {
                 popupPanel.openPanel();
             } else {
@@ -62,26 +116,34 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui {
             .background(GTGuiTextures.BUTTON_STANDARD, GuiTextures.GEAR)
             .disableHoverBackground()
             .tooltip(tooltip -> tooltip.add("Open GREGOS manager"))
-            .pos(156, 102)
-            .size(18, 18));
+            .size(18, 18);
+    }
+
+    @Override
+    protected void registerSyncValues(PanelSyncManager syncManager) {
+        super.registerSyncValues(syncManager);
+        syncManager.syncValue(
+            "conversationSyncer",
+            new GenericListSyncHandler<String>(
+                () -> base.gregosConversation,
+                null,
+                ByteBufAdapters.STRING,
+                ByteBufAdapters.STRING,
+                ByteBufAdapters.STRING,
+                null));
+        syncManager
+            .syncValue("talkMode", new BooleanSyncValue(() -> isTalkModeActive, bool -> isTalkModeActive = bool));
     }
 
     public ModularPanel createGREGOSPanel(PanelSyncManager syncManager) {
         ModularPanel ui = createPopUpPanel("gt:nac:gregos", false, false).size(176, 136);
 
         // TODO: figure out if we should save the conversation to nbt and stuff or not
-        GenericListSyncHandler<String> conversationHandler = new GenericListSyncHandler<String>(
-            () -> base.gregosConversation,
-            null,
-            ByteBufAdapters.STRING,
-            ByteBufAdapters.STRING,
-            ByteBufAdapters.STRING,
-            null);
+
         DoubleSyncValue moodSyncer = new DoubleSyncValue(() -> base.gregosMood, dub -> base.gregosMood = dub);
         DoubleSyncValue efficiencySyncer = new DoubleSyncValue(() -> base.efficiency, dub -> base.efficiency = dub);
         DoubleSyncValue speedSyncer = new DoubleSyncValue(() -> base.moduleSpeed, dub -> base.moduleSpeed = dub);
 
-        syncManager.syncValue("conversationSyncer", conversationHandler);
         syncManager.syncValue("Mood", moodSyncer);
         syncManager.syncValue("Efficiency", efficiencySyncer);
         syncManager.syncValue("Speed", speedSyncer);
@@ -101,13 +163,7 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui {
                 .child(new PageButton(0, tabController).tab(GuiTextures.TAB_TOP, 0))
                 .child(new PageButton(1, tabController).tab(GuiTextures.TAB_TOP, 0)));
 
-        ParentWidget<?> talkPage = new ParentWidget<>()
-            .child(
-                new TerminalWidget().setResponseSupplier(this::getGREGOSResponse)
-                    .pos(12, 12)
-                    .size(152, 112)
-                    .build())
-            .sizeRel(1);
+        ParentWidget<?> talkPage = new ParentWidget<>().sizeRel(1);
         ParentWidget<?> infoPage = new ParentWidget<>()
             // TODO: ask #texture-dev to make better textures that dont clash with eachother
             // Mood
@@ -205,4 +261,88 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui {
                 };
         };
     }
+
+    public class TerminalTextFieldWidget extends TextFieldWidget {
+
+        TerminalTextListWidget parentList;
+        StringSyncValue dummySyncer = new StringSyncValue(() -> "");
+
+        public TerminalTextFieldWidget(TerminalTextListWidget parent) {
+            super();
+            this.value(dummySyncer);
+            parentList = parent;
+        }
+
+        @Override
+        public @NotNull Result onKeyPressed(char character, int keyCode) {
+            if (keyCode == Keyboard.KEY_RETURN) {
+                String text = this.getText();
+                if (text.isEmpty()) return Result.IGNORE;
+                String response = getGREGOSResponse(text);
+                this.handler.clear();
+                // Reset the text box to be blank
+                dummySyncer.setValue("");
+                if (!checkForKeywords(text) && isTalkModeActive) {
+                    saveTextToList(text, response);
+                    parentList.child(createPlayerTextWidget(text));
+                    parentList.child(createResponseTextWidget(response));
+                }
+            } else return super.onKeyPressed(character, keyCode);
+            return Result.SUCCESS;
+        }
+
+        public boolean checkForKeywords(String text) {
+            return switch (text.toLowerCase()) {
+                case "talk" -> {
+                    isTalkModeActive = true;
+                    yield true;
+                }
+                case "exit" -> {
+                    isTalkModeActive = false;
+                    yield true;
+                }
+                default -> false;
+            };
+        }
+
+        public void saveTextToList(String playerText, String responseText) {
+            // parentList.textData.add(playerText);
+            // parentList.textData.add(responseText);
+        }
+
+        public TextWidget createResponseTextWidget(String text) {
+            return new TextWidget(text).color(parentList.responseTextColor);
+        }
+
+        public TextWidget createPlayerTextWidget(String text) {
+            return new TextWidget(text) {
+
+                @Override
+                public int getDefaultWidth() {
+                    return Math.max(super.getDefaultWidth(), getParentArea().width - 4);
+                }
+            }.alignment(Alignment.CenterRight)
+                .color(parentList.playerTextColor);
+        }
+    }
+
+    public class TerminalTextListWidget extends ListWidget<IWidget, TerminalTextListWidget> {
+
+        public int playerTextColor = Color.WHITE.main;
+        public int responseTextColor = Color.CYAN.main;
+
+        public TerminalTextListWidget() {
+            super();
+        }
+
+        @Override
+        public void onChildAdd(IWidget child) {
+            super.onChildAdd(child);
+            WidgetTree.resize(this.getParent());
+            ScrollData data = this.getScrollData();
+            // Scroll to the bottom
+            data.scrollTo(getScrollArea(), data.getScrollSize());
+        }
+    }
+
 }

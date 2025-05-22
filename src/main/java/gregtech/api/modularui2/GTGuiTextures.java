@@ -76,12 +76,6 @@ public final class GTGuiTextures {
             GTTextureIds.BACKGROUND_POPUP_STEEL,
             GTTextureIds.BACKGROUND_POPUP_PRIMITIVE)
         .build();
-    public static final UITexture BACKGROUND_TEXT_FIELD = UITexture.builder()
-        .location(GregTech.ID, "gui/background/text_field")
-        .imageSize(142, 28)
-        .adaptable(1)
-        .name(GTTextureIds.BACKGROUND_TERMINAL_STANDARD)
-        .build();
     // endregion background
 
     // region overlay
