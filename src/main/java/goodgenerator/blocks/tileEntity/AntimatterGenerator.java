@@ -687,4 +687,9 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase
         return false;
     }
 
+    @Override
+    public boolean showRecipeTextInGUI() {
+        return false;
+    }
+
 }
