@@ -1,7 +1,5 @@
 package gregtech.common.tileentities.machines.multi.gui.nanochip;
 
-import static gregtech.api.modularui2.GTGuis.createPopUpPanel;
-
 import java.awt.*;
 import java.util.List;
 
@@ -11,10 +9,7 @@ import net.minecraft.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.lwjgl.input.Keyboard;
 
-import com.cleanroommc.modularui.api.GuiAxis;
-import com.cleanroommc.modularui.api.IPanelHandler;
 import com.cleanroommc.modularui.api.drawable.IDrawable;
-import com.cleanroommc.modularui.api.drawable.IIcon;
 import com.cleanroommc.modularui.api.widget.IWidget;
 import com.cleanroommc.modularui.drawable.GuiTextures;
 import com.cleanroommc.modularui.drawable.ItemDrawable;
@@ -31,12 +26,12 @@ import com.cleanroommc.modularui.value.sync.StringSyncValue;
 import com.cleanroommc.modularui.widget.ParentWidget;
 import com.cleanroommc.modularui.widget.WidgetTree;
 import com.cleanroommc.modularui.widget.scroll.ScrollData;
-import com.cleanroommc.modularui.widgets.ButtonWidget;
 import com.cleanroommc.modularui.widgets.ListWidget;
 import com.cleanroommc.modularui.widgets.PageButton;
 import com.cleanroommc.modularui.widgets.PagedWidget;
 import com.cleanroommc.modularui.widgets.ProgressWidget;
 import com.cleanroommc.modularui.widgets.TextWidget;
+import com.cleanroommc.modularui.widgets.layout.Column;
 import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.cleanroommc.modularui.widgets.layout.Row;
 import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
@@ -70,7 +65,7 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui {
                 .size(mainTerminalDimensions.width - 10, mainTerminalDimensions.height - 8);
             parent.child(textList);
         }
-        return row;
+        return row.child(createGREGOSMeterPages(panel, syncManager));
     }
 
     @Override
@@ -84,13 +79,12 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui {
             .paddingRight(6)
             .paddingLeft(4)
             .height(textBoxToInventoryGap)
-            .child(createButtonToRemoveLater(panel, syncManager))
             .child(createTalkTextField(panel, syncManager))
             .childIf(base.supportsPowerPanel(), createPowerPanelButton(syncManager, panel));
     }
 
     public IWidget createTalkTextField(ModularPanel panel, PanelSyncManager syncManager) {
-        Dimension mainTerminalDimensions = getTerminalDimensions();
+        Dimension mainTerminalDimensions = super.getTerminalDimensions();
         return new TerminalTextFieldWidget(textList).tooltip(t -> {
             if (isTalkModeActive) {
                 t.add("Enter \"exit\" to exit talk mode");
@@ -100,23 +94,18 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui {
         })
             .tooltipAutoUpdate(true)
             .setFocusOnGuiOpen(true)
-            .size(mainTerminalDimensions.width - 45, 10);
+            .size(mainTerminalDimensions.width - 27, 10);
     }
 
-    public IWidget createButtonToRemoveLater(ModularPanel panel, PanelSyncManager syncManager) {
-        IPanelHandler popupPanel = syncManager.panel("popup", (m, h) -> createGREGOSPanel(syncManager), true);
-        return new ButtonWidget<>().onMousePressed(mouseButton -> {
-            if (!popupPanel.isPanelOpen()) {
-                popupPanel.openPanel();
-            } else {
-                popupPanel.closePanel();
-            }
-            return true;
-        })
-            .background(GTGuiTextures.BUTTON_STANDARD, GuiTextures.GEAR)
-            .disableHoverBackground()
-            .tooltip(tooltip -> tooltip.add("Open GREGOS manager"))
-            .size(18, 18);
+    @Override
+    protected Dimension getTerminalDimensions() {
+        Dimension base = super.getTerminalDimensions();
+        return new Dimension(base.width - getMeterViewerDimensions().width, base.height);
+    }
+
+    public Dimension getMeterViewerDimensions() {
+        Dimension base = super.getTerminalDimensions();
+        return new Dimension(56, base.height);
     }
 
     @Override
@@ -133,95 +122,79 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui {
                 null));
         syncManager
             .syncValue("talkMode", new BooleanSyncValue(() -> isTalkModeActive, bool -> isTalkModeActive = bool));
+        syncManager.syncValue("mood", 0, new DoubleSyncValue(() -> base.gregosMood, dub -> base.gregosMood = dub));
+        syncManager.syncValue("eff", 0, new DoubleSyncValue(() -> base.efficiency, dub -> base.efficiency = dub));
+        syncManager.syncValue("speed", 0, new DoubleSyncValue(() -> base.moduleSpeed, dub -> base.moduleSpeed = dub));
     }
 
-    public ModularPanel createGREGOSPanel(PanelSyncManager syncManager) {
-        ModularPanel ui = createPopUpPanel("gt:nac:gregos", false, false).size(176, 136);
+    public IWidget createGREGOSMeterPages(ModularPanel panel, PanelSyncManager syncManager) {
+        Dimension area = getMeterViewerDimensions();
 
-        // TODO: figure out if we should save the conversation to nbt and stuff or not
-
-        DoubleSyncValue moodSyncer = new DoubleSyncValue(() -> base.gregosMood, dub -> base.gregosMood = dub);
-        DoubleSyncValue efficiencySyncer = new DoubleSyncValue(() -> base.efficiency, dub -> base.efficiency = dub);
-        DoubleSyncValue speedSyncer = new DoubleSyncValue(() -> base.moduleSpeed, dub -> base.moduleSpeed = dub);
-
-        syncManager.syncValue("Mood", moodSyncer);
-        syncManager.syncValue("Efficiency", efficiencySyncer);
-        syncManager.syncValue("Speed", speedSyncer);
+        DoubleSyncValue moodSyncer = (DoubleSyncValue) syncManager.getSyncHandler("mood:0");
+        DoubleSyncValue effSyncer = (DoubleSyncValue) syncManager.getSyncHandler("eff:0");
+        DoubleSyncValue speedSyncer = (DoubleSyncValue) syncManager.getSyncHandler("speed:0");
 
         PagedWidget.Controller tabController = new PagedWidget.Controller();
         PagedWidget<?> pagedWidget = new PagedWidget<>().controller(tabController);
 
-        ListWidget<IWidget, ?> messages = new ListWidget<>();
-        messages.childSeparator(IIcon.EMPTY_2PX);
-        messages.pos(2, 2);
-        messages.sizeRel(1, 1);
-        messages.scrollDirection(GuiAxis.Y);
-
-        ui.child(
-            new Row().coverChildren()
-                .topRel(0f, 4, 1f)
-                .child(new PageButton(0, tabController).tab(GuiTextures.TAB_TOP, 0))
-                .child(new PageButton(1, tabController).tab(GuiTextures.TAB_TOP, 0)));
-
-        ParentWidget<?> talkPage = new ParentWidget<>().sizeRel(1);
-        ParentWidget<?> infoPage = new ParentWidget<>()
-            // TODO: ask #texture-dev to make better textures that dont clash with eachother
-            // Mood
+        return new ParentWidget<>()
+            // preventative comment so spotless doesnt move child call up
             .child(
-                GTGuiTextures.PICTURE_BRAIN.asWidget()
-                    .pos(25, 75)
-                    .size(15, 13))
-            // Speed
+                new Column().coverChildren()
+                    .rightRel(0f, 0, 1f)
+                    .child(
+                        new PageButton(0, tabController).tab(GuiTextures.TAB_RIGHT, -1)
+                            .overlay(
+                                GTGuiTextures.PICTURE_BRAIN.asIcon()
+                                    .size(15, 13)))
+                    .child(
+                        new PageButton(1, tabController).tab(GuiTextures.TAB_RIGHT, 0)
+                            .overlay(
+                                GTGuiTextures.PICTURE_ELECRICITY.asIcon()
+                                    .size(11, 15)))
+                    .child(
+                        new PageButton(2, tabController).tab(GuiTextures.TAB_RIGHT, 0)
+                            .overlay(new ItemDrawable(new ItemStack(Items.iron_ingot, 1)).asIcon())))
             .child(
-                GTGuiTextures.PICTURE_ELECRICITY.asWidget()
-                    .pos(78, 75)
-                    .size(11, 15))
-            // Efficiency
-            .child(
-                new ItemDrawable(new ItemStack(Items.iron_ingot, 1)).asWidget()
-                    .pos(125, 72)
-                    .size(16, 16))
-            .sizeRel(1);
-        createMeter(infoPage, moodSyncer, GTGuiTextures.PROGRESSBAR_METER_MINT, 0, 0, 1);
-        createMeter(infoPage, speedSyncer, GTGuiTextures.PROGRESSBAR_METER_ORANGE, 1, 0.1, 1);
-        createMeter(infoPage, efficiencySyncer, GTGuiTextures.PROGRESSBAR_METER_ROSE, 2, 1, 1.25);
-
-        return ui.child(
-            pagedWidget.addPage(infoPage)
-                .addPage(talkPage)
-                .sizeRel(1))
-            .posRel(0.75F, 0.5F);
+                pagedWidget
+                    // preventative comment so spotless doesnt move addPage call up
+                    .addPage(createMeter("Mood", moodSyncer, GTGuiTextures.PROGRESSBAR_METER_ROSE, 0, 1))
+                    .addPage(createMeter("Speed", speedSyncer, GTGuiTextures.PROGRESSBAR_METER_ORANGE, 0.1, 1))
+                    .addPage(createMeter("Efficiency", effSyncer, GTGuiTextures.PROGRESSBAR_METER_MINT, 1, 1.25)))
+            .size(area.width, area.height);
     }
 
-    public void createMeter(ParentWidget<?> page, DoubleSyncValue syncer, UITexture meterTexture, int index,
-        double valueMin, double valueMax) {
-        int xOffset = index * 50;
-        String key = syncer.getKey();
-        // Chop off the last 2 characters, these are normally ":0" to represent the id for the syncer.
-        String name = key.substring(0, key.length() - 2);
-        char end = valueMin == 0D && valueMax == 1D ? '%' : 'x';
-        page.child(
-            new ProgressWidget().progress(() -> (syncer.getValue() - valueMin) / (valueMax - valueMin))
-                .texture(meterTexture, 48)
+    public ParentWidget<?> createMeter(String name, DoubleSyncValue syncer, UITexture meter, double min, double max) {
+        ParentWidget<?> ui = new ParentWidget<>();
+        boolean isPercentage = (min == 0D && max == 1D);
+        char end = isPercentage ? '%' : 'x';
+        ui.child(
+            new ProgressWidget().progress(() -> (syncer.getValue() - min) / (max - min))
+                .texture(meter, 48)
                 .direction(ProgressWidget.Direction.UP)
-                .pos(25 + xOffset, 20)
+                .pos(20, 20)
                 .size(16, 48))
             .child(
                 new TextWidget(name).alignment(Alignment.Center)
-                    .pos(1 + xOffset, 5)
-                    .size(64, 8))
-            // For debug
+                    .pos(0, 5)
+                    .size(56, 8))
             .child(
-                new TextFieldWidget().setNumbersDouble(val -> Math.min(valueMax, Math.max(valueMin, val)))
-                    .value(new StringSyncValue(syncer::getStringValue, syncer::setStringValue))
-                    .pos(18 + xOffset, 105)
-                    .size(30, 12));
-        IWidget meterContainer = GTGuiTextures.PICTURE_DECAY_TIME_CONTAINER.asWidget()
-            .tooltipDynamic(tooltip -> tooltip.add(name + ": " + syncer.getStringValue() + end))
-            .pos(21 + xOffset, 16)
-            .size(24, 56);
-        syncer.setChangeListener(meterContainer::markTooltipDirty);
-        page.child(meterContainer);
+                GTGuiTextures.PICTURE_DECAY_TIME_CONTAINER.asWidget()
+                    .tooltipDynamic(tooltip -> {
+                        double amount = isPercentage ? syncer.getDoubleValue() * 100 : syncer.getDoubleValue();
+                        tooltip.add(name + ": " + amount + end);
+                    })
+                    .tooltipAutoUpdate(true)
+                    .pos(16, 16)
+                    .size(24, 56))
+        // Un-comment for debug purposes
+        // .child(
+        // new TextFieldWidget().setNumbersDouble(val -> Math.min(max, Math.max(min, val)))
+        // .value(new StringSyncValue(syncer::getStringValue, syncer::setStringValue))
+        // .pos(12, 70)
+        // .size(30, 12))
+        ;
+        return ui.sizeRel(1);
     }
 
     public String getGREGOSResponse(String currentText) {
@@ -294,6 +267,10 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui {
         public boolean checkForKeywords(String text) {
             return switch (text.toLowerCase()) {
                 case "talk" -> {
+                    List<IWidget> texts = parentList.getChildren();
+                    if (texts.isEmpty()) {
+                        parentList.child(createGenericTextWidget("Ask GREGOS a question"));
+                    }
                     isTalkModeActive = true;
                     yield true;
                 }
@@ -324,12 +301,24 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui {
             }.alignment(Alignment.CenterRight)
                 .color(parentList.playerTextColor);
         }
+
+        public TextWidget createGenericTextWidget(String text) {
+            return new TextWidget(text) {
+
+                @Override
+                public int getDefaultWidth() {
+                    return Math.max(super.getDefaultWidth(), getParentArea().width - 4);
+                }
+            }.alignment(Alignment.Center)
+                .color(parentList.genericTextColor);
+        }
     }
 
     public class TerminalTextListWidget extends ListWidget<IWidget, TerminalTextListWidget> {
 
         public int playerTextColor = Color.WHITE.main;
         public int responseTextColor = Color.CYAN.main;
+        public int genericTextColor = Color.LIME.main;
 
         public TerminalTextListWidget() {
             super();
