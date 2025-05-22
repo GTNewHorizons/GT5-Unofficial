@@ -3539,11 +3539,6 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
         return new MTEMultiBlockBaseGui(this);
     }
 
-    @Override
-    protected boolean forceUseMui2() {
-        return true;
-    }
-
     public boolean getDefaultHasMaintenanceChecks() {
         return true;
     }
