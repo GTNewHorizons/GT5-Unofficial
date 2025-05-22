@@ -196,17 +196,10 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
             if (isServerSide && mTickTimer > 10) {
                 if (!doCoverThings()) return;
 
-                final byte oldConnections = mConnections;
-                // Mask-out connection direction bits to keep only Foam related connections
-                mConnections = (byte) (mMetaTileEntity.mConnections | (mConnections & ~IConnectable.CONNECTED_ALL));
-                // If foam not hardened, tries roll chance to harden
-                if ((mConnections & IConnectable.HAS_FOAM) == IConnectable.HAS_FRESHFOAM
-                    && getRandomNumber(1000) == 0) {
-                    mConnections = (byte) ((mConnections & ~IConnectable.HAS_FRESHFOAM)
-                        | IConnectable.HAS_HARDENEDFOAM);
-                }
-                if (mTickTimer > 12 && oldConnections != mConnections)
+                if (mTickTimer > 12 && mConnections != mMetaTileEntity.mConnections) {
+                    mConnections = mMetaTileEntity.mConnections;
                     GregTechAPI.causeCableUpdate(worldObj, xCoord, yCoord, zCoord);
+                }
             }
             mMetaTileEntity.onPreTick(this, mTickTimer);
             if (!hasValidMetaTileEntity()) return;
