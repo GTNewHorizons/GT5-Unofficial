@@ -569,7 +569,7 @@ public class RecipeLoaderChemicalSkips {
                     Materials.Netherite.getDust(64),
                     Materials.InfusedGold.getDust(64),
                     getModItem(EtFuturumRequiem.ID, "netherite_scrap", 1),
-                    Materials.Neutronium.getNanite(1))
+                    Materials.Silver.getNanite(1))
                 .itemOutputs(GregtechItemList.HellishForceCatalyst.get(1))
                 .fluidInputs(MaterialsElements.STANDALONE.HYPOGEN.getFluidStack(9216))
                 .duration(60 * SECONDS)

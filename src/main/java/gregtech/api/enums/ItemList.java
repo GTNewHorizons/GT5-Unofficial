@@ -2612,6 +2612,10 @@ public enum ItemList implements IItemContainer {
     Intensely_Bonded_Netherite_Nanoparticles,
     Hot_Netherite_Scrap,
     LargeMolecularAssembler,
+    Prismarine_Precipitate,
+    Prismatic_Crystal,
+    Radiation_Proof_Prismatic_Naquadah_Composite_Sheet,
+    Naquarite_Universal_Insulator_Foil,
 
     SpaceElevatorController,
     SpaceElevatorModuleAssemblerT1,
