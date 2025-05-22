@@ -1,7 +1,5 @@
 package gregtech.common.tileentities.machines.multi.gui;
 
-import static gregtech.api.modularui2.GTGuis.createPopUpPanel;
-
 import com.cleanroommc.modularui.api.IPanelHandler;
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.factory.PosGuiData;
@@ -14,7 +12,6 @@ import com.cleanroommc.modularui.widget.ParentWidget;
 import com.cleanroommc.modularui.widgets.ButtonWidget;
 import com.cleanroommc.modularui.widgets.PagedWidget;
 import com.cleanroommc.modularui.widgets.TextWidget;
-
 import gregtech.api.metatileentity.implementations.gui.MTEMultiBlockBaseGui;
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.common.tileentities.machines.multi.MTEEnvironmentallyControlledChemicalFacility;
@@ -49,7 +46,9 @@ public class MTEEnvironmentallyCCFGUI extends MTEMultiBlockBaseGui {
     }
 
     public ModularPanel createECCFPanel(PanelSyncManager syncManager) {
-        ModularPanel ui = createPopUpPanel("gt:eccf", false, false).size(176, 207);
+        ModularPanel ui = ModularPanel.defaultPanel("gt:eccf")
+            .size(176, 207)
+            .background(GTGuiTextures.BACKGROUND_STANDARD);
 
         DoubleSyncValue tempSyncer = new DoubleSyncValue(() -> base.ECCFCurrentTemp, dub -> base.ECCFCurrentTemp = dub);
         DoubleSyncValue pressureSyncer = new DoubleSyncValue(
@@ -60,7 +59,6 @@ public class MTEEnvironmentallyCCFGUI extends MTEMultiBlockBaseGui {
 
         PagedWidget.Controller tabController = new PagedWidget.Controller();
         PagedWidget<?> pagedWidget = new PagedWidget<>().controller(tabController);
-
         ParentWidget<?> infoPage = new ParentWidget<>().child(
             GTGuiTextures.PROGRESSBAR_ECCF_TEMPERATURE.asWidget()
                 .pos(40 - 24 / 2, 5)
@@ -81,6 +79,6 @@ public class MTEEnvironmentallyCCFGUI extends MTEMultiBlockBaseGui {
                     .alignment(Alignment.Center))
             .sizeRel(1.0f);
         return ui.child(pagedWidget.addPage(infoPage))
-            .posRel(0.35f, 0.5f);
+            .posRel(0.3f, 0.5f);
     }
 }
