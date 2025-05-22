@@ -41,7 +41,7 @@ public class MTEHatchSolidifier extends MTEHatchInput implements IConfigurationC
 
         GGItemList.SingleUseFileMold.get(1), GGItemList.SingleUseWrenchMold.get(1),
         GGItemList.SingleUseCrowbarMold.get(1), GGItemList.SingleUseWireCutterMold.get(1),
-        GGItemList.SingleUseHardHammerMold.get(1), GGItemList.SingleUseSoftHammerMold.get(1),
+        GGItemList.SingleUseHardHammerMold.get(1), GGItemList.SingleUseSoftMalletMold.get(1),
         GGItemList.SingleUseScrewdriverMold.get(1), GGItemList.SingleUseSawMold.get(1) };
 
     public MTEHatchSolidifier(int aID, String aName, String aNameRegional, int aTier) {
