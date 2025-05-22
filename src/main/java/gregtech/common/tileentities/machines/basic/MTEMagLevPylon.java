@@ -76,6 +76,8 @@ public class MTEMagLevPylon extends MTETieredMachineBlock {
                 baseMetaTileEntity.setActive(false);
                 machineTether.range(8 * mTier);
             }
+        } else {
+            baseMetaTileEntity.setActive(false);
         }
     }
 
