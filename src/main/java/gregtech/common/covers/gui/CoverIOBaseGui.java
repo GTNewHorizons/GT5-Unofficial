@@ -15,7 +15,6 @@ import gregtech.common.covers.CoverIOBase;
 import gregtech.common.covers.modes.BlockMode;
 import gregtech.common.covers.modes.MachineProcessingCondition;
 import gregtech.common.covers.modes.TransferMode;
-import gregtech.common.modularui2.sync.wrappers.WidgetResizer;
 import gregtech.common.modularui2.widget.builder.EnumRowBuilder;
 
 public class CoverIOBaseGui extends CoverGui<CoverIOBase> {
@@ -37,8 +36,7 @@ public class CoverIOBaseGui extends CoverGui<CoverIOBase> {
         EnumSyncValue<TransferMode> ioModeSyncValue = new EnumSyncValue<>(
             TransferMode.class,
             cover::getIOMode,
-            WidgetResizer.of(column)
-                .wrap(cover::setIOMode));
+            cover::setIOMode);
         syncManager.syncValue("io_mode", ioModeSyncValue);
         IWidget exportImportButtons = new EnumRowBuilder<>(TransferMode.class).value(ioModeSyncValue)
             .overlay(GTGuiTextures.OVERLAY_BUTTON_EXPORT, GTGuiTextures.OVERLAY_BUTTON_IMPORT)
