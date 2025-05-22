@@ -97,6 +97,7 @@ public abstract class MTESteamMultiBase<T extends MTESteamMultiBase<T>> extends 
         // We need to trick the GT_ParallelHelper we have enough amps for all recipe parallels.
         logic.setAvailableAmperage(getMaxParallelRecipes());
         logic.setAmperageOC(false);
+        logic.setMaxTierSkips(0);
     }
 
     public ArrayList<FluidStack> getAllSteamStacks() {

@@ -19,6 +19,8 @@ public class OverclockCalculator {
     protected Supplier<Double> durationUnderOneTickSupplier;
     /** The parallel the machine has when trying to overclock */
     protected int parallel = 1;
+    /** The max amount of tiers above the machine voltage a recipe is valid */
+    protected int maxTierSkip = 1;
 
     // Modifiers
     /** Energy modifier that is applied at the start of calculating overclocks, like GT++ machines */
@@ -174,6 +176,19 @@ public class OverclockCalculator {
         return this;
     }
 
+    /** Sets the max tiers above the machine's voltage a valid recipe can be */
+    @Nonnull
+    public OverclockCalculator setMaxTierSkips(int aMaxTierSkips) {
+        this.maxTierSkip = aMaxTierSkips;
+        return this;
+    }
+
+    @Nonnull
+    public OverclockCalculator setUnlimitedTierSkips() {
+        this.maxTierSkip = Integer.MAX_VALUE;
+        return this;
+    }
+
     /**
      * Sets the heat discount during OC calculation if HeatOC is used. Default: 0.95 = 5% discount Used like a EU/t
      * Discount
@@ -284,6 +299,11 @@ public class OverclockCalculator {
             throw new IllegalStateException("Tried to get performed overclocks before calculating");
         }
         return overclocks;
+    }
+
+    public boolean getAllowedTierSkip() {
+        if (this.maxTierSkip == Integer.MAX_VALUE) return true;
+        return recipeEUt <= machineVoltage * Math.pow(4, maxTierSkip);
     }
 
     public boolean hasDurationUnderOneTickSupplier() {
