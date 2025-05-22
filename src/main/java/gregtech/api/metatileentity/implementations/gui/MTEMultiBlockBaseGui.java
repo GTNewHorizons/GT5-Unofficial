@@ -46,7 +46,6 @@ import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.value.sync.StringSyncValue;
 import com.cleanroommc.modularui.widget.ParentWidget;
 import com.cleanroommc.modularui.widget.SingleChildWidget;
-import com.cleanroommc.modularui.widget.WidgetTree;
 import com.cleanroommc.modularui.widget.sizer.Area;
 import com.cleanroommc.modularui.widgets.ButtonWidget;
 import com.cleanroommc.modularui.widgets.CycleButtonWidget;
@@ -149,7 +148,7 @@ public class MTEMultiBlockBaseGui {
     }
 
     protected ListWidget<IWidget, ?> createTerminalTextWidget(PanelSyncManager syncManager) {
-        ListWidget<IWidget, ?> resultWidget = new ListWidget<>()
+        return new ListWidget<>()
             .child(
                 new TextWidget(GTUtility.trans("132", "Pipe is loose. (Wrench)")).color(Color.WHITE.main)
                     .setEnabledIf(widget -> !base.mWrench)
@@ -219,13 +218,6 @@ public class MTEMultiBlockBaseGui {
             .child(createShutdownReasonWidget())
             .child(createRecipeResultWidget())
             .childIf(base.showRecipeTextInGUI(), createRecipeInfoWidget(syncManager));
-
-        resultWidget.onUpdateListener(w -> {
-            if (syncManager.isClient()) {
-                WidgetTree.resize(resultWidget);
-            }
-        });
-        return resultWidget;
     }
 
     private IWidget createShutdownDurationWidget() {
