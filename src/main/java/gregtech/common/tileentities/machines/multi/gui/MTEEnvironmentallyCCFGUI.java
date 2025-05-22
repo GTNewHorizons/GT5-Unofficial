@@ -19,6 +19,7 @@ import gregtech.common.tileentities.machines.multi.MTEEnvironmentallyControlledC
 import static gregtech.api.modularui2.GTGuis.createPopUpPanel;
 
 public class MTEEnvironmentallyCCFGUI extends MTEMultiBlockBaseGui {
+
     private final MTEEnvironmentallyControlledChemicalFacility base;
 
     public MTEEnvironmentallyCCFGUI(MTEEnvironmentallyControlledChemicalFacility base) {
@@ -31,15 +32,14 @@ public class MTEEnvironmentallyCCFGUI extends MTEMultiBlockBaseGui {
         ModularPanel ui = super.build(data, syncManager, uiSettings);
         IPanelHandler popupPanel = syncManager.panel("popup", (m, h) -> createECCFPanel(syncManager), true);
 
-        return ui.child(new ButtonWidget<>()
-            .onMousePressed(mouseButton -> {
-                if (!popupPanel.isPanelOpen()) {
-                    popupPanel.openPanel();
-                } else {
-                    popupPanel.closePanel();
-                }
-                return true;
-            })
+        return ui.child(new ButtonWidget<>().onMousePressed(mouseButton -> {
+            if (!popupPanel.isPanelOpen()) {
+                popupPanel.openPanel();
+            } else {
+                popupPanel.closePanel();
+            }
+            return true;
+        })
             .background(GTGuiTextures.BUTTON_STANDARD, GTGuiTextures.OVERLAY_BUTTON_THERMOMETER)
             .disableHoverBackground()
             .tooltip(tooltip -> tooltip.add("Temperature Control"))
@@ -50,39 +50,36 @@ public class MTEEnvironmentallyCCFGUI extends MTEMultiBlockBaseGui {
     public ModularPanel createECCFPanel(PanelSyncManager syncManager) {
         ModularPanel ui = createPopUpPanel("gt:eccf", false, false).size(176, 207);
 
-        DoubleSyncValue tempSyncer = new DoubleSyncValue(
-            () -> base.ECCFCurrentTemp,
-            dub -> base.ECCFCurrentTemp = dub
-        );
+        DoubleSyncValue tempSyncer = new DoubleSyncValue(() -> base.ECCFCurrentTemp, dub -> base.ECCFCurrentTemp = dub);
         DoubleSyncValue pressureSyncer = new DoubleSyncValue(
             () -> base.ECCFCurrentPressure,
-            dub -> base.ECCFCurrentPressure = dub
-        );
+            dub -> base.ECCFCurrentPressure = dub);
         syncManager.syncValue("Temperature", tempSyncer);
         syncManager.syncValue("Pressure", pressureSyncer);
 
         PagedWidget.Controller tabController = new PagedWidget.Controller();
         PagedWidget<?> pagedWidget = new PagedWidget<>().controller(tabController);
 
-        ParentWidget<?> infoPage = new ParentWidget<>()
-                .child(GTGuiTextures.PROGRESSBAR_ECCF_TEMPERATURE.asWidget()
-                        .pos(40-24/2, 5)
-                        .size(24, 100))
-                .child(new TextWidget(IKey.dynamic(() -> String.format("Temperature: %.2f K", tempSyncer.getValue())))
-                        .pos(5, 110)
-                        .size(70, 10)
-                        .alignment(Alignment.Center))
-                .child(GTGuiTextures.PROGRESSBAR_ECCF_PRESSURE.asWidget()
-                        .pos(140-24/2, 5)
-                        .size(24, 100))
-            .child(new TextWidget(IKey.dynamic(() -> String.format("Pressure: %.2f Pa", pressureSyncer.getValue())))
-                .pos(105, 110)
-                .size(70, 10)
-                .alignment(Alignment.Center))
+        ParentWidget<?> infoPage = new ParentWidget<>().child(
+            GTGuiTextures.PROGRESSBAR_ECCF_TEMPERATURE.asWidget()
+                .pos(40 - 24 / 2, 5)
+                .size(24, 100))
+            .child(
+                new TextWidget(IKey.dynamic(() -> String.format("Temperature: %.2f K", tempSyncer.getValue())))
+                    .pos(5, 110)
+                    .size(70, 10)
+                    .alignment(Alignment.Center))
+            .child(
+                GTGuiTextures.PROGRESSBAR_ECCF_PRESSURE.asWidget()
+                    .pos(140 - 24 / 2, 5)
+                    .size(24, 100))
+            .child(
+                new TextWidget(IKey.dynamic(() -> String.format("Pressure: %.2f Pa", pressureSyncer.getValue())))
+                    .pos(105, 110)
+                    .size(70, 10)
+                    .alignment(Alignment.Center))
             .sizeRel(1.0f);
-        return ui.child(
-            pagedWidget
-                .addPage(infoPage)
-        ).posRel( 0.35f, 0.5f);
+        return ui.child(pagedWidget.addPage(infoPage))
+            .posRel(0.35f, 0.5f);
     }
 }

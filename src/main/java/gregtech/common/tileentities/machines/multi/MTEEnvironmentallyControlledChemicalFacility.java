@@ -30,7 +30,6 @@ import gregtech.common.blocks.BlockCasings8;
 import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.tileentities.machines.multi.gui.MTEEnvironmentallyCCFGUI;
 import net.minecraft.block.Block;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
@@ -737,8 +736,9 @@ public class MTEEnvironmentallyControlledChemicalFacility extends
 
     @Override
     protected ProcessingLogic createProcessingLogic() {
-        int parallelLimit = (int) (Math.pow(4, getTier(this.getMaxInputVoltage()-recipeEUt)) * (parallelModuleTierL + 2)
-                        * (parallelModuleTierR + 2));
+        int parallelLimit = (int) (Math.pow(4, getTier(this.getMaxInputVoltage() - recipeEUt))
+            * (parallelModuleTierL + 2)
+            * (parallelModuleTierR + 2));
         return new ProcessingLogic() {
 
             @Nonnull
@@ -767,7 +767,7 @@ public class MTEEnvironmentallyControlledChemicalFacility extends
                 stopMachine(SimpleShutDownReason.ofCritical("conditions_range"));
                 return CheckRecipeResultRegistry.RECIPE_CONDITIONS;
             }
-        }.setMaxParallelSupplier(()-> Math.min(getTrueParallel(),  parallelLimit));
+        }.setMaxParallelSupplier(() -> Math.min(getTrueParallel(), parallelLimit));
     }
 
     @Override
@@ -778,7 +778,7 @@ public class MTEEnvironmentallyControlledChemicalFacility extends
 
     @Override
     public int getMaxParallelRecipes() {
-        return (int) Math.pow(4, getTier(this.getMaxInputVoltage()-recipeEUt)) * (parallelModuleTierL + 2)
+        return (int) Math.pow(4, getTier(this.getMaxInputVoltage() - recipeEUt)) * (parallelModuleTierL + 2)
             * (parallelModuleTierR + 2);
     }
 
@@ -936,21 +936,6 @@ public class MTEEnvironmentallyControlledChemicalFacility extends
     @Override
     protected @NotNull MTEMultiBlockBaseGui getGui() {
         return new MTEEnvironmentallyCCFGUI(this);
-    }
-
-    @Override
-    public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
-        float aX, float aY, float aZ, ItemStack aTool) {
-        if (aPlayer.isSneaking()) {
-            this.batchMode = !this.batchMode;
-            if (this.batchMode) {
-                GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOn"));
-            } else {
-                GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOff"));
-            }
-            return true;
-        }
-        return false;
     }
 
     @Override
