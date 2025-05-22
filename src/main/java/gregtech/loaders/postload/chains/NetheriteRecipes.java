@@ -210,16 +210,16 @@ public class NetheriteRecipes {
             .fluidInputs(Materials.NetherAir.getFluid(1000))
             .fluidOutputs(Materials.NetherSemiFluid.getFluid(100))
             .duration(10 * SECONDS)
-            .eut(TierEU.RECIPE_MV)
+            .eut(TierEU.RECIPE_LV)
             .addTo(vacuumFreezerRecipes);
 
         GTValues.RA.stdBuilder()
             .fluidInputs(Materials.NetherSemiFluid.getFluid(100000))
             .itemOutputs(ItemList.Heavy_Hellish_Mud.get(4))
             .fluidOutputs(
-                Materials.NefariousGas.getFluid(4000),
+                Materials.NefariousGas.getFluid(8000),
                 FluidUtils.getFluidStack("fluid.coalgas", 16000),
-                FluidUtils.getFluidStack("fluid.anthracene", 70000),
+                FluidUtils.getFluidStack("fluid.anthracene", 66000),
                 Materials.SulfurTrioxide.getGas(210000),
                 Materials.SulfurDioxide.getGas(380000),
                 Materials.NitrogenDioxide.getGas(140000),
@@ -318,7 +318,7 @@ public class NetheriteRecipes {
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Netherite_Scrap_Seed.get(1))
             .fluidInputs(Materials.PoorNetherWaste.getFluid(16000))
-            .itemOutputs(ItemList.Brittle_Netherite_Scrap.get(1), ItemList.Netherite_Scrap_Seed.get(1))
+            .itemOutputs(ItemList.Brittle_Netherite_Scrap.get(3), ItemList.Netherite_Scrap_Seed.get(1))
             .outputChances(5000, 5000)
             .duration(60 * SECONDS)
             .eut(TierEU.RECIPE_IV)
