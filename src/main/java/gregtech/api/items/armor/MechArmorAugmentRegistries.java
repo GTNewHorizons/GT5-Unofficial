@@ -16,21 +16,21 @@ public class MechArmorAugmentRegistries {
 
     public enum Frames {
 
-        None(0, 0, 0, 0, null, null, new short[] { 0, 0, 0, 0 }),
+        None(0, 0, 0, 0, null, null, new short[] { 0, 0, 0, 0 }, 0),
 
-        Light(1, 2, 0, 0, "Light", ItemList.Armor_Frame_Light, Materials.Iron.mRGBa),
-        Medium(1, 1, 1, 0, "Medium", ItemList.Armor_Frame_Medium, Materials.Bronze.mRGBa),
-        Heavy(2, 0, 1, 0, "Heavy", ItemList.Armor_Frame_Heavy, Materials.Steel.mRGBa),
+        Light(1, 2, 0, 0, "Light", ItemList.Armor_Frame_Light, Materials.Iron.mRGBa, 8),
+        Medium(1, 1, 1, 0, "Medium", ItemList.Armor_Frame_Medium, Materials.Bronze.mRGBa, 11),
+        Heavy(2, 0, 1, 0, "Heavy", ItemList.Armor_Frame_Heavy, Materials.Steel.mRGBa, 15),
 
-        Nimble(1, 3, 1, 0, "Nimble", ItemList.Armor_Frame_Nimble, Materials.VibrantAlloy.mRGBa),
-        Adaptive(2, 1, 1, 1, "Adaptive", ItemList.Armor_Frame_Adaptive, Materials.Titanium.mRGBa),
-        Tough(3, 0, 2, 0, "Tough", ItemList.Armor_Frame_Tough, Materials.TungstenSteel.mRGBa),
+        Nimble(1, 3, 1, 0, "Nimble", ItemList.Armor_Frame_Nimble, Materials.VibrantAlloy.mRGBa, 10),
+        Adaptive(2, 1, 1, 1, "Adaptive", ItemList.Armor_Frame_Adaptive, Materials.Titanium.mRGBa, 13),
+        Tough(3, 0, 2, 0, "Tough", ItemList.Armor_Frame_Tough, Materials.TungstenSteel.mRGBa, 17),
 
-        Lightning(1, 4, 1, 1, "Lightning", ItemList.Armor_Frame_Lightning, Materials.Electrum.mRGBa),
-        Morphic(2, 1, 2, 2, "Morphic", ItemList.Armor_Frame_Morphic, Materials.RedstoneAlloy.mRGBa),
-        Bulwark(4, 1, 1, 1, "Bulwark", ItemList.Armor_Frame_Bulwark, Materials.RedSteel.mRGBa),
+        Lightning(1, 4, 1, 1, "Lightning", ItemList.Armor_Frame_Lightning, Materials.Electrum.mRGBa, 15),
+        Morphic(2, 1, 2, 2, "Morphic", ItemList.Armor_Frame_Morphic, Materials.RedstoneAlloy.mRGBa, 17),
+        Bulwark(4, 1, 1, 1, "Bulwark", ItemList.Armor_Frame_Bulwark, Materials.RedSteel.mRGBa, 20),
 
-        Infinity(5, 5, 5, 5, "Infinity", ItemList.Armor_Frame_Infinity, Materials.Infinity.mRGBa);
+        Infinity(5, 5, 5, 5, "Infinity", ItemList.Armor_Frame_Infinity, Materials.Infinity.mRGBa, 30);
 
         public final int protectionSlots;
         public final int movementSlots;
@@ -42,8 +42,10 @@ public class MechArmorAugmentRegistries {
 
         public final short[] color;
 
+        public final int protection;
+
         Frames(int protectionSlots, int movementSlots, int utilitySlots, int prismaticSlots, String id, ItemList item,
-            short[] color) {
+            short[] color, int protection) {
             this.protectionSlots = protectionSlots;
             this.movementSlots = movementSlots;
             this.utilitySlots = utilitySlots;
@@ -51,6 +53,7 @@ public class MechArmorAugmentRegistries {
             this.id = id;
             this.item = item;
             this.color = color;
+            this.protection = protection;
         }
 
         public static int getProtectionSlots(Frames frame) {

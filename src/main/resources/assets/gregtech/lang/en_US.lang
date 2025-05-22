@@ -903,6 +903,7 @@ GT5U.armor.tooltip.incompatible=Incompatible With:
 GT5U.armor.tooltip.stackable= (Stackable)
 GT5U.armor.tooltip.category=Category: %s
 GT5U.armor.tooltip.slots=Armor Slots:
+GT5U.armor.tooltip.armorvalue=Protection: %s
 GT5U.armor.tooltip.protection=§6Protection§r
 GT5U.armor.tooltip.movement=§aMovement§r
 GT5U.armor.tooltip.utility=§dUtility§r

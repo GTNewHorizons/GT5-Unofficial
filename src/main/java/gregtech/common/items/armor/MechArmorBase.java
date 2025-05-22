@@ -11,11 +11,14 @@ import static gregtech.api.items.armor.ArmorHelper.SLOT_LEGS;
 import static gregtech.api.items.armor.ArmorHelper.VIS_DISCOUNT_KEY;
 import static gregtech.api.items.armor.ArmorHelper.drainArmor;
 import static gregtech.api.items.armor.MechArmorAugmentRegistries.coresMap;
+import static gregtech.api.items.armor.MechArmorAugmentRegistries.framesMap;
 import static gregtech.api.util.GTUtility.getOrCreateNbtCompound;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import ic2.api.item.ElectricItem;
+import ic2.core.item.ElectricItemManager;
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
@@ -45,6 +48,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import forestry.api.apiculture.IArmorApiarist;
 import gregtech.api.enums.Mods;
+import gregtech.api.items.armor.MechArmorAugmentRegistries.Frames;
 import gregtech.api.items.armor.behaviors.IArmorBehavior;
 import ic2.api.item.IElectricItem;
 import thaumcraft.api.IGoggles;
@@ -174,7 +178,6 @@ public class MechArmorBase extends ItemArmor implements IKeyPressedListener, ISp
             if (tag.hasKey(MECH_CORE_KEY)) {
                 aList.add("Energy Core: " + tag.getString(MECH_CORE_KEY));
             }
-            // todo armor toughness tooltip
             for (IArmorBehavior behavior : behaviors) {
                 behavior.addInformation(aStack, aList);
             }
@@ -194,7 +197,7 @@ public class MechArmorBase extends ItemArmor implements IKeyPressedListener, ISp
 
     @Override
     public String getArmorTexture(ItemStack stack, Entity entity, int slot, String type) {
-        if (getCore(stack) == 0) {
+        if (getFrame(stack) == null) {
             if (slot == 2) return GregTech.getResourcePath("textures/items/mech_armor/texture_layer_skeleton2.png");
             return GregTech.getResourcePath("textures/items/mech_armor/texture_layer_skeleton1.png");
         }
@@ -237,6 +240,15 @@ public class MechArmorBase extends ItemArmor implements IKeyPressedListener, ISp
         return 0;
     }
 
+    protected Frames getFrame(ItemStack stack) {
+        String frame = stack.getTagCompound()
+            .getString(MECH_FRAME_KEY);
+        if (framesMap.containsKey(frame)) {
+            return (framesMap.get(frame));
+        }
+        return null;
+    }
+
     @Override
     public boolean showDurabilityBar(ItemStack stack) {
         int core = getCore(stack);
@@ -257,23 +269,31 @@ public class MechArmorBase extends ItemArmor implements IKeyPressedListener, ISp
         };
     }
 
+    private float getDamageReduction(ItemStack stack) {
+        Frames frame = getFrame(stack);
+        if (frame != null) {
+            return frame.protection * getProtectionShare();
+        }
+        return 0;
+    }
+
     // Special armor settings
 
     @Override
     public ArmorProperties getProperties(EntityLivingBase player, ItemStack armor, DamageSource source, double damage,
         int slot) {
-        if (source.isUnblockable()) return new ArmorProperties(0, damageReduceAmount / 100D, 15);
+        if (source.isUnblockable()) return new ArmorProperties(0, getDamageReduction(armor) / 100D, 15);
         if (armor.getTagCompound()
             .getBoolean(FORCE_FIELD_KEY) && drainArmor(armor, 100000 * damage))
             return new ArmorProperties(0, 100, Integer.MAX_VALUE);
-        if (source.isDamageAbsolute() || source.isMagicDamage())
-            return new ArmorProperties(0, damageReduceAmount / 100D, 15);
-        return new ArmorProperties(0, damageReduceAmount / 24.5D, 1000);
+        if (source.isDamageAbsolute() || source.isMagicDamage() || ElectricItem.manager.getCharge(armor) < damage * 100)
+            return new ArmorProperties(0, getDamageReduction(armor) / 100D, 15);
+        return new ArmorProperties(0, getDamageReduction(armor) / 24.5D, 1000);
     }
 
     @Override
     public int getArmorDisplay(EntityPlayer player, ItemStack armor, int slot) {
-        return (int) (damageReduceAmount);
+        return (int) getDamageReduction(armor);
     }
 
     @Override

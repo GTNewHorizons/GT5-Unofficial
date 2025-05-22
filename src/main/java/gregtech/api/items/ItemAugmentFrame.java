@@ -33,6 +33,7 @@ public class ItemAugmentFrame extends ItemAugmentAbstract {
     @Override
     protected void addAdditionalToolTips(List<String> aList, ItemStack aStack, EntityPlayer aPlayer) {
         super.addAdditionalToolTips(aList, aStack, aPlayer);
+        aList.add(StatCollector.translateToLocalFormatted("GT5U.armor.tooltip.armorvalue", frameData.protection));
         aList.add(StatCollector.translateToLocal("GT5U.armor.tooltip.slots"));
         if (frameData.protectionSlots > 0) aList
             .add(frameData.protectionSlots + " " + StatCollector.translateToLocal("GT5U.armor.tooltip.protection"));
