@@ -27,7 +27,6 @@ import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
 import com.cleanroommc.modularui.value.sync.GenericListSyncHandler;
 import com.cleanroommc.modularui.value.sync.IntSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
-import com.cleanroommc.modularui.value.sync.StringSyncValue;
 import com.cleanroommc.modularui.value.sync.SyncHandlers;
 import com.cleanroommc.modularui.widget.SingleChildWidget;
 import com.cleanroommc.modularui.widgets.ButtonWidget;
@@ -112,15 +111,6 @@ public class RedstoneSnifferGuiBuilder {
                 .func_152596_g(player.getGameProfile());
         });
         guiSyncManager.syncValue("player_is_op", playerIsOpSyncer);
-        StringSyncValue freqFilterSyncer = new StringSyncValue(() -> this.freqFilter, (k -> {
-            regularListWidget.scheduleResize();
-            advancedListWidget.scheduleResize();
-        }));
-        guiSyncManager.syncValue("freq_filter", freqFilterSyncer);
-        StringSyncValue ownerFilterSyncer = new StringSyncValue(
-            () -> ownerFilter,
-            (k -> { advancedListWidget.scheduleResize(); }));
-        guiSyncManager.syncValue("owner_filter", ownerFilterSyncer);
         ModularPanel panel = ModularPanel.defaultPanel("redstone_sniffer");
         panel.flex()
             .sizeRel(0.5f, 0.75f)
@@ -179,7 +169,6 @@ public class RedstoneSnifferGuiBuilder {
                                             .alignment(Alignment.Center)));
             });
             regularList.forEach(regularListWidget::child);
-            regularListWidget.scheduleResize();
         });
         guiSyncManager.syncValue("regular_map", regularMapSyncer);
 
@@ -233,7 +222,6 @@ public class RedstoneSnifferGuiBuilder {
                 textColor));
 
             advancedList.forEach(advancedListWidget::child);
-            advancedListWidget.scheduleResize();
         });
         guiSyncManager.syncValue("adv_map", advancedMapSyncer);
         data.addPage(
