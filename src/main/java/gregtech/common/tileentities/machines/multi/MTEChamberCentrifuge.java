@@ -12,6 +12,7 @@ import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 
 //import fox.spiteful.avaritia.blocks.LudicrousBlocks;
+import gregtech.api.metatileentity.implementations.MTEHatchInput;
 import gregtech.common.blocks.BlockCasings1;
 import gtPlusPlus.GTplusplus;
 import gtPlusPlus.core.material.MaterialsAlloy;
@@ -64,7 +65,7 @@ public class MTEChamberCentrifuge extends MTEExtendedPowerMultiBlockBase<MTECham
                 {"         ","  AAAAA  "," A     A "," A     A "," ADDB  A "," A     A "," A     A ","  AAAAA  ","         "},
                 {"  CCCCC  "," C     C ","C       C","C       C","C   BDD C","C       C","C       C"," C     C ","  CCCCC  "},
                 {" CCC~CCC ","CC     CC","C       C","C       C","C DDB   C","C       C","C       C","CC     CC"," CCCCCCC "},
-                {"  CCCCC  "," CCCCCCC ","CCCCCCCCC","CCCCCCCCC","CCCCCCCCC","CCCCCCCCC","CCCCCCCCC"," CCCCCCC ","  CCCCC  "}
+                {"  CCCCC  "," CCCCCCC ","CCCCCCCCC","CCCCCCCCC","CCCCLCCCC","CCCCCCCCC","CCCCCCCCC"," CCCCCCC ","  CCCCC  "}
             }))
         .addShape(
             STRUCTURE_TIER_2,
@@ -77,7 +78,7 @@ public class MTEChamberCentrifuge extends MTEExtendedPowerMultiBlockBase<MTECham
                 {"         ","  AAAAA  "," A     A "," A     A "," AGGF  A "," A     A "," A     A ","  AAAAA  ","         "},
                 {"  CCCCC  "," C     C ","C       C","C       C","C   FGG C","C       C","C       C"," C     C ","  CCCCC  "},
                 {" CCC~CCC ","CC     CC","C       C","C       C","C GGF   C","C       C","C       C","CC     CC"," CCCCCCC "},
-                {"  CCCCC  "," CCCCCCC ","CCCCCCCCC","CCCCCCCCC","CCCCCCCCC","CCCCCCCCC","CCCCCCCCC"," CCCCCCC ","  CCCCC  "}
+                {"  CCCCC  "," CCCCCCC ","CCCCCCCCC","CCCCCCCCC","CCCCLCCCC","CCCCCCCCC","CCCCCCCCC"," CCCCCCC ","  CCCCC  "}
             }))
         .addShape(
             STRUCTURE_TIER_3,
@@ -91,7 +92,7 @@ public class MTEChamberCentrifuge extends MTEExtendedPowerMultiBlockBase<MTECham
                 {"         ","  AAAAA  "," A     A "," A     A "," AIIH  A "," A     A "," A     A ","  AAAAA  ","         "},
                 {"  CCCCC  "," C     C ","C       C","C       C","C   HII C","C       C","C       C"," C     C ","  CCCCC  "},
                 {" CCC~CCC ","CC     CC","C       C","C       C","C IIH   C","C       C","C       C","CC     CC"," CCCCCCC "},
-                {"  CCCCC  "," CCCCCCC ","CCCCCCCCC","CCCCCCCCC","CCCCCCCCC","CCCCCCCCC","CCCCCCCCC"," CCCCCCC ","  CCCCC  "}
+                {"  CCCCC  "," CCCCCCC ","CCCCCCCCC","CCCCCCCCC","CCCCLCCCC","CCCCCCCCC","CCCCCCCCC"," CCCCCCC ","  CCCCC  "}
             }))
         .addShape(
             STRUCTURE_TIER_4,
@@ -106,7 +107,7 @@ public class MTEChamberCentrifuge extends MTEExtendedPowerMultiBlockBase<MTECham
                 {"         ","  AAAAA  "," A     A "," A     A "," AKKD  A "," A     A "," A     A ","  AAAAA  ","         "},
                 {"  CCCCC  "," C     C ","C       C","C       C","C   DKK C","C       C","C       C"," C     C ","  CCCCC  "},
                 {" CCC~CCC ","CC     CC","C       C","C       C","C KKD   C","C       C","C       C","CC     CC"," CCCCCCC "},
-                {"  CCCCC  "," CCCCCCC ","CCCCCCCCC","CCCCCCCCC","CCCCCCCCC","CCCCCCCCC","CCCCCCCCC"," CCCCCCC ","  CCCCC  "}
+                {"  CCCCC  "," CCCCCCC ","CCCCCCCCC","CCCCCCCCC","CCCCLCCCC","CCCCCCCCC","CCCCCCCCC"," CCCCCCC ","  CCCCC  "}
             }))
         //spotless:on
         .addElement('A', chainAllGlasses()) //tiered glasses
@@ -128,6 +129,13 @@ public class MTEChamberCentrifuge extends MTEExtendedPowerMultiBlockBase<MTECham
         .addElement('I',ofBlock(GregTechAPI.sBlockMetal5,3))
         .addElement('J',ofFrame(MaterialsUEVplus.TranscendentMetal))      //central shaft piece for tier 4, transcendent metal
         .addElement('K',ofBlock(GregTechAPI.sBlockMetal9,3))          //central rotor piece for tier 4, ~shirabon time. is spacetime
+        .addElement('L',
+            buildHatchAdder(MTEChamberCentrifuge.class).hatchClass(MTEHatchInput.class)
+                .adder((MTEChamberCentrifuge::addInputHatchToMachineList)) //add fluid input to machinelist, for now just hatch
+                .casingIndex(((BlockCasings1) GregTechAPI.sBlockCasings1).getTextureIndex(12))
+                .dot(2)
+                .buildAndChain(GregTechAPI.sBlockCasings1,12)
+        )
         .build();
 
     public MTEChamberCentrifuge(final int aID, final String aName, final String aNameRegional) {
@@ -209,7 +217,7 @@ public class MTEChamberCentrifuge extends MTEExtendedPowerMultiBlockBase<MTECham
         tt.addMachineType("Centrifuge")
             .addInfo("400% faster than singleblock machines of the same voltage")
             .addInfo("Gains 4 * (Total Rotor Tier) Parallels")
-            .addInfo("Requires {Fluid1} to operate, supply {Fluid2} for a 1.25x Parallel multiplier")
+            .addInfo("Requires Lubricant to operate, supply {Fluid2} for a 1.25x Parallel multiplier")
             .beginStructureBlock(9, 9, 9, false)
             .addController("Front Center")
             .addCasingInfoMin("Chamber Casing", 120, false)
@@ -222,6 +230,7 @@ public class MTEChamberCentrifuge extends MTEExtendedPowerMultiBlockBase<MTECham
             .addOutputHatch("Any Chamber Casing", 1)
             .addEnergyHatch("Any Chamber Casing", 1)
             .addMaintenanceHatch("Any Chamber Casing", 1)
+            .addStructureInfo("Extra Fluid Input Hatch: Bottom Centerws")
             .addSubChannelUsage(GTStructureChannels.BOROGLASS)
             .toolTipFinisher(AuthorChrom);
         return tt;
