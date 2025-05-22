@@ -247,7 +247,7 @@ public class NetheriteRecipes {
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(1))
             .fluidInputs(Materials.Grade2PurifiedWater.getFluid(4000), Materials.NefariousGas.getFluid(16000))
-            .fluidOutputs(Materials.NefariousOil.getFluid(12000))
+            .fluidOutputs(Materials.NefariousOil.getFluid(18000))
             .duration(6 * SECONDS)
             .eut(TierEU.RECIPE_IV)
             .addTo(crackingRecipes);
