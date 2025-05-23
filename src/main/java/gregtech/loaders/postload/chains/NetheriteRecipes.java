@@ -215,7 +215,7 @@ public class NetheriteRecipes {
 
         GTValues.RA.stdBuilder()
             .fluidInputs(Materials.NetherSemiFluid.getFluid(100000))
-            .itemOutputs(ItemList.Heavy_Hellish_Mud.get(4))
+            .itemOutputs(ItemList.Heavy_Hellish_Mud.get(8))
             .fluidOutputs(
                 Materials.NefariousGas.getFluid(8000),
                 FluidUtils.getFluidStack("fluid.coalgas", 16000),
