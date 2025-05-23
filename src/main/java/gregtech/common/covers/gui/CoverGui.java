@@ -4,6 +4,7 @@ import net.minecraft.item.ItemStack;
 
 import com.cleanroommc.modularui.network.NetworkUtils;
 import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widgets.layout.Flow;
@@ -43,7 +44,7 @@ public class CoverGui<T extends Cover> {
      * Override this method if you want to implement more customized GUI. Otherwise, implement {@link #addUIWidgets}
      * instead.
      */
-    public ModularPanel createBasePanel(CoverGuiData guiData, PanelSyncManager syncManager) {
+    public ModularPanel createBasePanel(CoverGuiData guiData, PanelSyncManager syncManager, UISettings uiSettings) {
         syncManager.addCloseListener(player -> {
             if (!NetworkUtils.isClient(player)) {
                 guiData.getTileEntity()

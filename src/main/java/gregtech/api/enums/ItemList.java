@@ -100,8 +100,11 @@ public enum ItemList implements IItemContainer {
     IC2_AdvBattery,
     IC2_EnergyCrystal,
     IC2_LapotronCrystal,
+    Tool_Vajra,
+    Vajra_Core,
+    Magnetron,
+    Item_Power_Goggles,
     Shape_Empty,
-
     Shape_Mold_Bottle,
     Shape_Mold_Plate,
     Shape_Mold_Ingot,
@@ -1681,7 +1684,6 @@ public enum ItemList implements IItemContainer {
     LargeSteamTurbine,
     LargeGasTurbine,
     LargeHPSteamTurbine,
-    LargeAdvancedGasTurbine,
     LargePlasmaTurbine,
 
     Ingot_Heavy1,
@@ -1700,7 +1702,6 @@ public enum ItemList implements IItemContainer {
     Casing_Turbine3,
     Casing_EngineIntake,
     Casing_ExtremeEngineIntake,
-    Casing_TurbineGasAdvanced,
 
     Casing_Coil_Cupronickel,
     Casing_Coil_Kanthal,

@@ -12,9 +12,9 @@ import com.cleanroommc.modularui.utils.fluid.FluidStackTank;
 import com.cleanroommc.modularui.value.sync.EnumSyncValue;
 import com.cleanroommc.modularui.value.sync.FluidSlotSyncHandler;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
-import com.cleanroommc.modularui.widgets.FluidSlot;
 import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.cleanroommc.modularui.widgets.layout.Grid;
+import com.cleanroommc.modularui.widgets.slot.FluidSlot;
 
 import gregtech.api.modularui2.CoverGuiData;
 import gregtech.api.modularui2.GTGuiTextures;
@@ -23,7 +23,6 @@ import gregtech.common.covers.CoverFluidfilter;
 import gregtech.common.covers.modes.BlockMode;
 import gregtech.common.covers.modes.FilterDirectionMode;
 import gregtech.common.covers.modes.FilterType;
-import gregtech.common.modularui2.util.FlowActions;
 import gregtech.common.modularui2.widget.builder.EnumRowBuilder;
 
 public class CoverFluidfilterGui extends CoverGui<CoverFluidfilter> {
@@ -61,7 +60,6 @@ public class CoverFluidfilterGui extends CoverGui<CoverFluidfilter> {
         }, fluidStack -> {
             int fluidId = fluidStack != null ? FluidRegistry.getFluidID(fluidStack.getFluid()) : -1;
             cover.setFluidId(fluidId);
-            FlowActions.resize(column);
         }, 1);
 
         column.child(

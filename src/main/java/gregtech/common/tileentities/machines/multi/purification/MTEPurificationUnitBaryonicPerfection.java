@@ -230,7 +230,7 @@ public class MTEPurificationUnitBaryonicPerfection
 
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
-        return survivialBuildPiece(
+        return survivalBuildPiece(
             STRUCTURE_PIECE_MAIN,
             stackSize,
             STRUCTURE_X_OFFSET,
@@ -591,11 +591,6 @@ public class MTEPurificationUnitBaryonicPerfection
             StatCollector
                 .translateToLocalFormatted("GT5U.infodata.pubp.quark_combination", getCorrectlyDecodedString()));
         return info.toArray(new String[] {});
-    }
-
-    @Override
-    public boolean isCorrectMachinePart(ItemStack aStack) {
-        return true;
     }
 
     @Override

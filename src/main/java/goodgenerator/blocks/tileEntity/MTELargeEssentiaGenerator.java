@@ -446,11 +446,6 @@ public class MTELargeEssentiaGenerator extends MTETooltipMultiBlockBaseEM
     }
 
     @Override
-    public int getMaxEfficiency(ItemStack aStack) {
-        return 10000;
-    }
-
-    @Override
     public String[] getStructureDescription(ItemStack itemStack) {
         return DescTextLocalization.addText("LargeEssentiaGenerator.hint", 6);
     }
@@ -503,6 +498,6 @@ public class MTELargeEssentiaGenerator extends MTETooltipMultiBlockBaseEM
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
-        return survivialBuildPiece(mName, stackSize, 4, 0, 4, elementBudget, env, false, true);
+        return survivalBuildPiece(mName, stackSize, 4, 0, 4, elementBudget, env, false, true);
     }
 }
