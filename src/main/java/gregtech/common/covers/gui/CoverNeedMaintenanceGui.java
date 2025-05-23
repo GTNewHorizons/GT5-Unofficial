@@ -15,7 +15,6 @@ import gregtech.common.covers.CoverNeedMaintainance;
 import gregtech.common.covers.conditions.MaintenanceAlertCondition;
 import gregtech.common.covers.modes.RedstoneMode;
 import gregtech.common.modularui2.sync.LinkedBoolValue;
-import gregtech.common.modularui2.util.FlowActions;
 import gregtech.common.modularui2.widget.SelectButton;
 
 public class CoverNeedMaintenanceGui extends CoverGui<CoverNeedMaintainance> {
@@ -36,10 +35,7 @@ public class CoverNeedMaintenanceGui extends CoverGui<CoverNeedMaintainance> {
         EnumSyncValue<RedstoneMode> redstoneModeSyncValue = new EnumSyncValue<>(
             RedstoneMode.class,
             cover::getRedstoneMode,
-            mode -> {
-                cover.setRedstoneMode(mode);
-                FlowActions.resize(column);
-            });
+            cover::setRedstoneMode);
 
         column.child(
             Flow.row()
