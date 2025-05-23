@@ -531,4 +531,9 @@ public class MTELargeRocketEngine extends GTPPMultiBlockBase<MTELargeRocketEngin
     public int getMaxParallelRecipes() {
         return 1;
     }
+
+    @Override
+    public boolean showRecipeTextInGUI() {
+        return false;
+    }
 }
