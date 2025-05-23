@@ -25,11 +25,12 @@ import org.jetbrains.annotations.NotNull;
 import com.cleanroommc.modularui.api.IPanelHandler;
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.api.widget.IWidget;
-import com.cleanroommc.modularui.drawable.DrawableArray;
+import com.cleanroommc.modularui.drawable.DrawableStack;
 import com.cleanroommc.modularui.drawable.DynamicDrawable;
 import com.cleanroommc.modularui.drawable.UITexture;
 import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.utils.Alignment.MainAxis;
 import com.cleanroommc.modularui.utils.Color;
@@ -41,11 +42,9 @@ import com.cleanroommc.modularui.value.sync.LongSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.value.sync.StringSyncValue;
 import com.cleanroommc.modularui.widget.SingleChildWidget;
-import com.cleanroommc.modularui.widget.WidgetTree;
 import com.cleanroommc.modularui.widget.sizer.Area;
 import com.cleanroommc.modularui.widgets.ButtonWidget;
 import com.cleanroommc.modularui.widgets.CycleButtonWidget;
-import com.cleanroommc.modularui.widgets.ItemSlot;
 import com.cleanroommc.modularui.widgets.ListWidget;
 import com.cleanroommc.modularui.widgets.SlotGroupWidget;
 import com.cleanroommc.modularui.widgets.TextWidget;
@@ -53,6 +52,7 @@ import com.cleanroommc.modularui.widgets.ToggleButton;
 import com.cleanroommc.modularui.widgets.layout.Column;
 import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.cleanroommc.modularui.widgets.layout.Row;
+import com.cleanroommc.modularui.widgets.slot.ItemSlot;
 import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
 import com.gtnewhorizons.modularui.common.internal.network.NetworkUtils;
@@ -77,7 +77,7 @@ public class MTEMultiBlockBaseGui {
         this.base = base;
     }
 
-    public ModularPanel build(PosGuiData guiData, PanelSyncManager syncManager) {
+    public ModularPanel build(PosGuiData guiData, PanelSyncManager syncManager, UISettings uiSettings) {
 
         ModularPanel panel = new ModularPanel("MTEMultiblockBase").size(198, 181 + textBoxToInventoryGap)
             .padding(4);
@@ -120,8 +120,7 @@ public class MTEMultiBlockBaseGui {
 
         if (base.doesBindPlayerInventory()) {
             inventoryRow.child(
-                SlotGroupWidget.playerInventory(0)
-                    .leftRel(0)
+                SlotGroupWidget.playerInventory(false)
                     .marginLeft(4));
         }
 
@@ -321,11 +320,6 @@ public class MTEMultiBlockBaseGui {
             // Display current recipe
             resultWidget.child(createRecipeInfoWidget(syncManager));
         }
-        resultWidget.onUpdateListener((unused) -> {
-            if (NetworkUtils.isClient()) {
-                WidgetTree.resize(resultWidget);
-            }
-        });
 
         return resultWidget;
     }
@@ -547,13 +541,13 @@ public class MTEMultiBlockBaseGui {
                     if (base.supportsSingleRecipeLocking()) {
                         return GTGuiTextures.OVERLAY_BUTTON_RECIPE_LOCKED;
                     } else {
-                        return new DrawableArray(GTGuiTextures.OVERLAY_BUTTON_RECIPE_LOCKED_DISABLED);
+                        return new DrawableStack(GTGuiTextures.OVERLAY_BUTTON_RECIPE_LOCKED_DISABLED);
                     }
                 } else {
                     if (base.supportsSingleRecipeLocking()) {
                         return GTGuiTextures.OVERLAY_BUTTON_RECIPE_UNLOCKED;
                     } else {
-                        return new DrawableArray(GTGuiTextures.OVERLAY_BUTTON_RECIPE_UNLOCKED_DISABLED, forbidden);
+                        return new DrawableStack(GTGuiTextures.OVERLAY_BUTTON_RECIPE_UNLOCKED_DISABLED, forbidden);
                     }
                 }
             }))
@@ -587,14 +581,14 @@ public class MTEMultiBlockBaseGui {
                     if (base.supportsBatchMode()) {
                         return GTGuiTextures.OVERLAY_BUTTON_BATCH_MODE_ON;
                     } else {
-                        return new DrawableArray(GTGuiTextures.OVERLAY_BUTTON_BATCH_MODE_ON_DISABLED);
+                        return new DrawableStack(GTGuiTextures.OVERLAY_BUTTON_BATCH_MODE_ON_DISABLED);
                     }
                 } else {
 
                     if (base.supportsBatchMode()) {
                         return GTGuiTextures.OVERLAY_BUTTON_BATCH_MODE_OFF;
                     } else {
-                        return new DrawableArray(GTGuiTextures.OVERLAY_BUTTON_BATCH_MODE_OFF_DISABLED, forbidden);
+                        return new DrawableStack(GTGuiTextures.OVERLAY_BUTTON_BATCH_MODE_OFF_DISABLED, forbidden);
                     }
                 }
             }))
@@ -653,14 +647,14 @@ public class MTEMultiBlockBaseGui {
                     if (base.supportsInputSeparation()) {
                         return GTGuiTextures.OVERLAY_BUTTON_INPUT_SEPARATION_ON;
                     } else {
-                        return new DrawableArray(GTGuiTextures.OVERLAY_BUTTON_INPUT_SEPARATION_ON_DISABLED, forbidden);
+                        return new DrawableStack(GTGuiTextures.OVERLAY_BUTTON_INPUT_SEPARATION_ON_DISABLED, forbidden);
                     }
                 } else {
 
                     if (base.supportsInputSeparation()) {
                         return GTGuiTextures.OVERLAY_BUTTON_INPUT_SEPARATION_OFF;
                     } else {
-                        return new DrawableArray(GTGuiTextures.OVERLAY_BUTTON_INPUT_SEPARATION_OFF_DISABLED, forbidden);
+                        return new DrawableStack(GTGuiTextures.OVERLAY_BUTTON_INPUT_SEPARATION_OFF_DISABLED, forbidden);
                     }
                 }
             }))
@@ -704,7 +698,7 @@ public class MTEMultiBlockBaseGui {
                 new DynamicDrawable(
                     () -> base.supportsVoidProtection()
                         ? UITexture.fullImage(base.getVoidingMode().buttonOverlay.location)
-                        : new DrawableArray(
+                        : new DrawableStack(
                             UITexture.fullImage(base.getVoidingMode().buttonOverlay.location),
                             GTGuiTextures.OVERLAY_BUTTON_FORBIDDEN)))
             .tooltipBuilder(t -> {
@@ -790,14 +784,18 @@ public class MTEMultiBlockBaseGui {
                     .collect(Collectors.toList()) : Collections.emptyList(),
                 val -> base.mOutputFluids = val.toArray(new FluidStack[0]),
                 NetworkUtils::readFluidStack,
-                NetworkUtils::writeFluidStack));
+                NetworkUtils::writeFluidStack,
+                null,
+                null));
         syncManager.syncValue(
             "itemOutput",
             new GenericListSyncHandler<ItemStack>(
                 () -> base.mOutputItems != null ? Arrays.asList(base.mOutputItems) : Collections.emptyList(),
                 val -> base.mOutputItems = val.toArray(new ItemStack[0]),
                 NetworkUtils::readItemStack,
-                NetworkUtils::writeItemStack));
+                NetworkUtils::writeItemStack,
+                null,
+                null));
         syncManager
             .syncValue("progressTime", new IntSyncValue(() -> base.mProgresstime, val -> base.mProgresstime = val));
         syncManager.syncValue(

@@ -514,4 +514,6 @@ public interface IMetaTileEntity extends ISidedInventory, IFluidTank, IFluidHand
      * Returns GUI ID used for resource packs as a distinguishable id to customize UI elements in MUI2.
      */
     String getGuiId();
+
+    default void onTextureUpdate() {}
 }

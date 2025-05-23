@@ -130,8 +130,8 @@ public class MTEIndustrialCokeOven extends GTPPMultiBlockBase<MTEIndustrialCokeO
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
         if (stackSize.stackSize == 1)
-            return survivialBuildPiece(mName + "1", stackSize, 1, 2, 0, elementBudget, env, false, true);
-        else return survivialBuildPiece(mName + "2", stackSize, 1, 2, 0, elementBudget, env, false, true);
+            return survivalBuildPiece(mName + "1", stackSize, 1, 2, 0, elementBudget, env, false, true);
+        else return survivalBuildPiece(mName + "2", stackSize, 1, 2, 0, elementBudget, env, false, true);
     }
 
     @Override
