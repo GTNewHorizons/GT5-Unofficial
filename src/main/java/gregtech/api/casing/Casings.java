@@ -1,6 +1,9 @@
 package gregtech.api.casing;
 
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.lazy;
+
 import java.util.Arrays;
+import java.util.List;
 import java.util.Objects;
 
 import net.minecraft.block.Block;
@@ -16,11 +19,15 @@ import bartworks.API.BorosilicateGlass;
 import cpw.mods.fml.common.registry.GameRegistry;
 import goodgenerator.loader.Loaders;
 import gregtech.api.GregTechAPI;
+import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Mods;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.structure.IStructureProvider;
+import gregtech.api.structure.ISuperChestAcceptor;
+import gregtech.api.util.GTStructureUtility;
 import gregtech.api.util.GTUtility;
+import gregtech.common.tileentities.storage.MTEDigitalChestBase;
 import gtPlusPlus.core.block.ModBlocks;
 import tectech.thing.block.BlockQuantumGlass;
 import tectech.thing.casing.BlockGTCasingsTT;
@@ -270,6 +277,39 @@ public enum Casings implements ICasing {
 
     WardedGlass
         (() -> GameRegistry.findBlock(Mods.Thaumcraft.ID, "blockCosmeticOpaque"), 2, -1),
+
+    SuperChest(() -> GregTechAPI.sBlockMachines, 0, -1) {
+        @Override
+        public String getLocalizedName() {
+            return GTUtility.translate("GT5U.MBTT.SuperChest");
+        }
+
+        @Override
+        public boolean isTiered() {
+            return true;
+        }
+
+        @Override
+        public <T> IStructureElement<T> asElement(CasingElementContext<T> context) {
+            List<MTEDigitalChestBase> tiers = GTStructureUtility.extractMTEs(
+                MTEDigitalChestBase.class,
+                ItemList.Super_Chest_LV.get(1),
+                ItemList.Super_Chest_MV.get(1),
+                ItemList.Super_Chest_HV.get(1),
+                ItemList.Super_Chest_EV.get(1),
+                ItemList.Super_Chest_IV.get(1),
+                ItemList.Quantum_Chest_LV.get(1),
+                ItemList.Quantum_Chest_MV.get(1),
+                ItemList.Quantum_Chest_HV.get(1),
+                ItemList.Quantum_Chest_EV.get(1),
+                ItemList.Quantum_Chest_IV.get(1));
+
+            return lazy(() -> GTStructureUtility.ofGenericMTETiered(
+                MTEDigitalChestBase.class,
+                (t, mte, tier) -> ((ISuperChestAcceptor) t).onSuperChestAdded(context.getGroup(), mte, tier),
+                tiers));
+        }
+    },
 
     QuantumGlass
         (() -> BlockQuantumGlass.INSTANCE, 0, -1),
