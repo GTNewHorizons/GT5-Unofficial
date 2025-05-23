@@ -817,6 +817,8 @@ GT5U.MBTT.PCB.Tooltip.3=Allows for overclocking. Requires 10 L/s of distilled wa
 GT5U.MBTT.PCB.Tooltip.4=Enables perfect overclocking by allowing nanites to work with extreme speed and efficiency. Uses 10 L/s of Super Coolant.
 GT5U.MBTT.PCB.Tooltip.5=Set the trace size. Smaller traces allow material savings but take longer to fabricate. Larger traces waste material but are fast. 50-200 μm.
 GT5U.MBTT.PCB.Tooltip.6=Can't change configuration when running!
+GT5U.MBTT.AlchemyCasingAny=Alchemically Resistant/Inert/Immune Casing
+GT5U.MBTT.AlchemicalConstructAny=Alchemical Construct
 
 GT5U.MBTT.subchannel=Uses sub channel §6%s§r§7 for §6%s
 
@@ -1020,6 +1022,7 @@ gt.recipe.largeboilerfakefuels=Large Boiler
 gt.recipe.nanoforge=Nano Forge
 gt.recipe.pcbfactory=PCB Factory
 gt.recipe.ic2nuke=Nuclear Fission
+gt.recipe.entropic-processing=Entropic Processing
 gt.recipe.purificationplantclarifier=Clarifier
 gt.recipe.purificationplantflocculation=Flocculation
 gt.recipe.purificationplantphadjustment=pH Neutralization
