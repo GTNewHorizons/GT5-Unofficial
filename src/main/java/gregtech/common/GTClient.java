@@ -111,6 +111,7 @@ import gregtech.nei.NEIGTConfig;
 import ic2.api.tile.IWrenchable;
 import paulscode.sound.SoundSystemConfig;
 import paulscode.sound.SoundSystemException;
+import gregtech.common.handlers.SprayColorInfiniteKeybindHandler;
 
 // Referenced classes of package gregtech.common:
 // GTProxy
@@ -650,6 +651,7 @@ public class GTClient extends GTProxy implements Runnable {
         new InfiniteSprayCanRenderer();
         MinecraftForge.EVENT_BUS.register(new NEIGTConfig());
         MinecraftForge.EVENT_BUS.register(new GTMouseEventHandler());
+        SprayColorInfiniteKeybindHandler.init();
     }
 
     @Override
