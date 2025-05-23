@@ -2,8 +2,6 @@ package goodgenerator.blocks.tileEntity;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static goodgenerator.util.CharExchanger.formatNumber;
-import static gregtech.api.enums.Mods.GregTech;
-import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 import static gregtech.api.util.GTStructureUtility.*;
 import static java.lang.String.valueOf;
 import static net.minecraft.util.StatCollector.translateToLocal;
@@ -26,26 +24,6 @@ import net.minecraftforge.fluids.FluidTankInfo;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 
-import com.cleanroommc.modularui.api.drawable.IKey;
-import com.cleanroommc.modularui.api.widget.IWidget;
-import com.cleanroommc.modularui.drawable.DrawableArray;
-import com.cleanroommc.modularui.drawable.GuiTextures;
-import com.cleanroommc.modularui.factory.PosGuiData;
-import com.cleanroommc.modularui.screen.ModularPanel;
-import com.cleanroommc.modularui.utils.NumberFormat;
-import com.cleanroommc.modularui.utils.item.ItemStackHandler;
-import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
-import com.cleanroommc.modularui.value.sync.DoubleSyncValue;
-import com.cleanroommc.modularui.value.sync.PanelSyncManager;
-import com.cleanroommc.modularui.value.sync.StringSyncValue;
-import com.cleanroommc.modularui.value.sync.SyncHandlers;
-import com.cleanroommc.modularui.widget.SingleChildWidget;
-import com.cleanroommc.modularui.widgets.ItemSlot;
-import com.cleanroommc.modularui.widgets.ListWidget;
-import com.cleanroommc.modularui.widgets.SlotGroupWidget;
-import com.cleanroommc.modularui.widgets.layout.Column;
-import com.cleanroommc.modularui.widgets.layout.Flow;
-import com.cleanroommc.modularui.widgets.layout.Row;
 import com.gtnewhorizon.structurelib.alignment.constructable.IConstructable;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
@@ -53,18 +31,9 @@ import com.gtnewhorizon.structurelib.structure.IStructureElement;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.gtnewhorizons.modularui.api.NumberFormatMUI;
-import com.gtnewhorizons.modularui.api.drawable.IDrawable;
-import com.gtnewhorizons.modularui.api.drawable.UITexture;
-import com.gtnewhorizons.modularui.api.math.Alignment;
-import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
-import com.gtnewhorizons.modularui.common.widget.DynamicPositionedColumn;
-import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
-import com.gtnewhorizons.modularui.common.widget.SlotWidget;
-import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
 import goodgenerator.blocks.tileEntity.GTMetaTileEntity.MTEYOTTAHatch;
 import goodgenerator.blocks.tileEntity.base.MTETooltipMultiBlockBaseEM;
-import goodgenerator.client.GUI.GGUITextures;
 import goodgenerator.blocks.tileEntity.gui.MTEYottaFluidTankGui;
 import goodgenerator.loader.Loaders;
 import goodgenerator.util.DescTextLocalization;
@@ -86,10 +55,6 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.LongRunningAverage;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.misc.GTStructureChannels;
-import gregtech.common.modularui2.widget.TransparentSingleChildWidget;
-import gregtech.common.misc.GTStructureChannels;
-import tectech.TecTech;
-import tectech.thing.gui.TecTechUITextures;
 import tectech.thing.metaTileEntity.multi.base.Parameter;
 
 public class MTEYottaFluidTank extends MTETooltipMultiBlockBaseEM implements IConstructable, ISurvivalConstructable {
@@ -710,16 +675,6 @@ public class MTEYottaFluidTank extends MTETooltipMultiBlockBaseEM implements ICo
     @Override
     public boolean forceUseMui2() {
         return true;
-    }
-
-    @Override
-    protected int[] mainTerminalSize() {
-        return new int[] { 135, 91 };
-    }
-
-    @Override
-    protected int[] machineInfoSize() {
-        return new int[] { 123, 85 };
     }
 
     @Override

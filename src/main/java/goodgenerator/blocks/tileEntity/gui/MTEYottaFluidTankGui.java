@@ -2,6 +2,8 @@ package goodgenerator.blocks.tileEntity.gui;
 
 import static gregtech.api.enums.Mods.GregTech;
 
+import java.awt.Dimension;
+
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.FluidStack;
@@ -48,22 +50,23 @@ public class MTEYottaFluidTankGui extends TTMultiBlockBaseGui {
     }
 
     @Override
-    protected int[] mainTerminalSize() {
-        int[] superSize = super.mainTerminalSize();
-        int[] yottankSize = this.yottankDisplaySize();
-        return new int[] { superSize[0] - yottankSize[0] - 6, yottankSize[1] };
+    protected Dimension getTerminalDimensions() {
+        Dimension superSize = super.getTerminalDimensions();
+        Dimension yottankSize = this.yottankDisplaySize();
+        return new Dimension(superSize.width - yottankSize.width - 6, yottankSize.height);
     }
 
-    private int[] yottankDisplaySize() {
-        return new int[] { 48, 88 };
+    private Dimension yottankDisplaySize() {
+        return new Dimension(48, 88);
     }
 
     private IWidget createYottankDisplay(PanelSyncManager syncManager) {
-        return new ParentWidget<>().size(yottankDisplaySize()[0], yottankDisplaySize()[1])
+        Dimension yottankDisplaySize = this.yottankDisplaySize();
+        return new ParentWidget<>().size(yottankDisplaySize.width, yottankDisplaySize.height)
             .marginLeft(3)
             .child(
                 new SingleChildWidget<>().overlay(UITexture.fullImage(GregTech.ID, "gui/picture/yottank_overlay"))
-                    .size(yottankDisplaySize()[0], yottankDisplaySize()[1]))
+                    .size(yottankDisplaySize.width, yottankDisplaySize.height))
             .child(
                 createFluidDisplay(syncManager).size(34, 72)
                     .align(Alignment.Center))

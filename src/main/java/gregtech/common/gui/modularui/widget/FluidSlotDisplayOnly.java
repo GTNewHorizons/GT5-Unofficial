@@ -1,6 +1,6 @@
 package gregtech.common.gui.modularui.widget;
 
-import static com.cleanroommc.modularui.ModularUI.isGT5ULoaded;
+import static com.gtnewhorizons.modularui.ModularUI.isGT5ULoaded;
 
 import java.util.function.Supplier;
 
