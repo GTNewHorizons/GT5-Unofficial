@@ -1197,6 +1197,7 @@ public class MaterialsInit1 {
             .setColor(Dyes._NULL)
             .constructMaterial()
             .setHasCorrespondingFluid(true);
+
         Materials.ComplexityCatalyst = new MaterialBuilder(897, TextureSet.SET_DULL, "Complexity Catalyst")
             .setRGB(0x8b93a9)
             .addFluid()
@@ -1207,6 +1208,8 @@ public class MaterialsInit1 {
             .setRGB(0xa99da5)
             .addFluid()
             .addCell()
+            .constructMaterial();
+
         Materials.VO17_lubricant = new MaterialBuilder( 180, TextureSet.SET_FLUID, "VO-17 lubricant")
             .addFluid()
             .addCell()
