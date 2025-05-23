@@ -88,6 +88,7 @@ import gregtech.client.SeekingOggCodec;
 import gregtech.common.blocks.BlockFrameBox;
 import gregtech.common.blocks.ItemMachines;
 import gregtech.common.config.Client;
+import gregtech.common.handlers.SprayColorInfiniteKeybindHandler;
 import gregtech.common.pollution.Pollution;
 import gregtech.common.pollution.PollutionRenderer;
 import gregtech.common.render.BlackholeRenderer;
@@ -111,7 +112,6 @@ import gregtech.nei.NEIGTConfig;
 import ic2.api.tile.IWrenchable;
 import paulscode.sound.SoundSystemConfig;
 import paulscode.sound.SoundSystemException;
-import gregtech.common.handlers.SprayColorInfiniteKeybindHandler;
 
 // Referenced classes of package gregtech.common:
 // GTProxy

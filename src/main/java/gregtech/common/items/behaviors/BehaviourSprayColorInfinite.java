@@ -8,9 +8,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.Consumer;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.settings.GameSettings;
-import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -20,14 +18,11 @@ import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import org.lwjgl.input.Keyboard;
-
 import com.google.common.collect.ImmutableList;
 import com.gtnewhorizon.gtnhlib.GTNHLib;
 import com.gtnewhorizons.modularui.api.UIInfos;
 import com.gtnewhorizons.modularui.api.widget.Widget;
 
-import cpw.mods.fml.client.registry.ClientRegistry;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
@@ -145,7 +140,10 @@ public class BehaviourSprayColorInfinite extends BehaviourSprayColor {
         aList.add(StatCollector.translateToLocal("gt.behaviour.paintspray.infinite.tooltip.gui"));
         aList.add(StatCollector.translateToLocal("gt.behaviour.paintspray.infinite.tooltip.pick"));
         aList.add(StatCollector.translateToLocal("gt.behaviour.paintspray.infinite.tooltip.lock"));
-        aList.add(StatCollector.translateToLocalFormatted("gt.behaviour.paintspray.infinite.tooltip.prevent_shake", GameSettings.getKeyDisplayString(SprayColorInfiniteKeybindHandler.shakeLockKey.getKeyCode())));
+        aList.add(
+            StatCollector.translateToLocalFormatted(
+                "gt.behaviour.paintspray.infinite.tooltip.prevent_shake",
+                GameSettings.getKeyDisplayString(SprayColorInfiniteKeybindHandler.shakeLockKey.getKeyCode())));
         aList.add(" ");
         aList.add(AuthorQuerns);
 
@@ -181,10 +179,12 @@ public class BehaviourSprayColorInfinite extends BehaviourSprayColor {
 
             if (position != null && position.typeOfHit == BLOCK) {
                 final ColoredBlockContainer block = ColoredBlockContainer.getInstance(player, position);
-                if (block.getColor().isPresent()) {
+                if (block.getColor()
+                    .isPresent()) {
                     sendPacket(
                         GTPacketInfiniteSpraycan.Action.SET_COLOR,
-                        block.getColor().get());
+                        block.getColor()
+                            .get());
                     return true;
                 }
             }
@@ -194,7 +194,6 @@ public class BehaviourSprayColorInfinite extends BehaviourSprayColor {
 
         return true;
     }
-
 
     // endregion
 
