@@ -309,7 +309,7 @@ public class NetheriteRecipes {
             .itemInputs(ItemList.Hot_Netherite_Scrap.get(64), ItemList.Heavy_Hellish_Mud.get(64))
             .fluidInputs(Materials.PoorNetherWaste.getFluid(32000))
             .itemOutputs(
-                ItemList.Brittle_Netherite_Scrap.get(4),
+                ItemList.Brittle_Netherite_Scrap.get(12),
                 getModItem(EtFuturumRequiem.ID, "netherite_scrap", 64, missing))
             .duration(45 * SECONDS)
             .eut(TierEU.RECIPE_UHV)
