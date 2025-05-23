@@ -12,7 +12,6 @@ import com.cleanroommc.modularui.utils.fluid.FluidStackTank;
 import com.cleanroommc.modularui.value.sync.EnumSyncValue;
 import com.cleanroommc.modularui.value.sync.FluidSlotSyncHandler;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
-import com.cleanroommc.modularui.widget.WidgetTree;
 import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.cleanroommc.modularui.widgets.layout.Grid;
 import com.cleanroommc.modularui.widgets.slot.FluidSlot;
@@ -61,7 +60,6 @@ public class CoverFluidfilterGui extends CoverGui<CoverFluidfilter> {
         }, fluidStack -> {
             int fluidId = fluidStack != null ? FluidRegistry.getFluidID(fluidStack.getFluid()) : -1;
             cover.setFluidId(fluidId);
-            WidgetTree.resize(column);
         }, 1);
 
         column.child(
