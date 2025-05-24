@@ -368,7 +368,7 @@ public class MTEEnvironmentallyControlledChemicalFacility extends
             .addInfo(
                 EnumChatFormatting.GRAY + "Doesn't overclock, instead increases parallels by "
                     + EnumChatFormatting.GOLD
-                    + "4 ^ (Energy Hatch Tier - Recipe EU tier)")
+                    + "4 ^ (Energy Hatch Tier - Recipe EU tier) * parallel module values")
             .addInfo(EnumChatFormatting.GRAY + "Voltage tier is limited by Energy Hatch")
             .addSeparator()
             .addInfo(
@@ -774,8 +774,18 @@ public class MTEEnvironmentallyControlledChemicalFacility extends
 
     @Override
     public int getMaxParallelRecipes() {
-        return (int) Math.pow(4, getTier(this.getMaxInputVoltage()) - getTier(recipeEUt)) * (parallelModuleTierL + 2)
-            * (parallelModuleTierR + 2);
+        return (int) Math.pow(4, getTier(this.getMaxInputVoltage()) - getTier(recipeEUt))
+            * parallelModuleValue(parallelModuleTierL)
+            * parallelModuleValue(parallelModuleTierR);
+    }
+
+    private int parallelModuleValue(int tier) {
+        return switch (tier) {
+            case 0 -> 4;
+            case 1 -> 8;
+            case 2 -> 16;
+            default -> 1;
+        };
     }
 
     @Nonnull

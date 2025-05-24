@@ -852,6 +852,36 @@ public class RecipeLoader2 {
             .addTo(chemicalBathRecipes);
 
         GTValues.RA.stdBuilder()
+            .itemInputs(
+                ItemList.Casing_Chemically_Inert.get(1),
+                GTOreDictUnificator.get(OrePrefixes.plateDouble, Materials.Polytetrafluoroethylene, 8),
+                new Object[] { OrePrefixes.circuit.get(Materials.LuV), 4 },
+                ItemList.Cover_Screen.get(1),
+                ItemList.Electric_Piston_EV.get(2),
+                ItemList.Electric_Pump_EV.get(2),
+                GregtechItemList.TransmissionComponent_EV.get(1),
+                GTOreDictUnificator.get(OrePrefixes.ring, Materials.StyreneButadieneRubber, 4),
+                GTOreDictUnificator.get(OrePrefixes.screw, Materials.StainlessSteel, 4))
+            .itemOutputs(ItemList.Machine_Multi_ECCF.get(1))
+            .duration(4 * MINUTES)
+            .eut(TierEU.RECIPE_EV)
+            .addTo(assemblerRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                ItemList.Casing_Tank_4.get(1),
+                ItemList.FluidRegulator_EV.get(1),
+                ItemList.Sensor_EV.get(1),
+                GTOreDictUnificator.get(OrePrefixes.pipeMedium, Materials.StainlessSteel, 2),
+                GTOreDictUnificator.get(OrePrefixes.ring, Materials.StyreneButadieneRubber, 4),
+                GTOreDictUnificator.get(OrePrefixes.screw, Materials.StainlessSteel, 4),
+                GTOreDictUnificator.get(OrePrefixes.pipeTiny, Materials.Copper, 16))
+            .itemOutputs(ItemList.ECCF_cooling_block_0.get(1))
+            .duration(1 * MINUTES)
+            .eut(TierEU.RECIPE_EV)
+            .addTo(assemblerRecipes);
+
+        GTValues.RA.stdBuilder()
             .itemInputs(Materials.Firestone.getGems(1))
             .fluidInputs(GGMaterial.lightNaquadahFuel.getFluidOrGas(144))
             .itemOutputs(WerkstoffLoader.Tiberium.get(OrePrefixes.gem, 1))

@@ -36,9 +36,9 @@ public class BlockECCF2 extends BlockCasingsAbstract {
     public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean advancedTooltips) {
         super.addInformation(stack, player, tooltip, advancedTooltips);
         switch (stack.getItemDamage()) {
-            case 0 -> tooltip.add(StatCollector.translateToLocalFormatted("tooltip.blockECCFParallel", 2));
-            case 1 -> tooltip.add(StatCollector.translateToLocalFormatted("tooltip.blockECCFParallel", 3));
-            case 2 -> tooltip.add(StatCollector.translateToLocalFormatted("tooltip.blockECCFParallel", 4));
+            case 0 -> tooltip.add(StatCollector.translateToLocalFormatted("tooltip.blockECCFParallel", 4));
+            case 1 -> tooltip.add(StatCollector.translateToLocalFormatted("tooltip.blockECCFParallel", 8));
+            case 2 -> tooltip.add(StatCollector.translateToLocalFormatted("tooltip.blockECCFParallel", 16));
         }
     }
 }
