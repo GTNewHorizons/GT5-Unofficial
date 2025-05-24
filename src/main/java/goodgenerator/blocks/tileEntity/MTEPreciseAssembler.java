@@ -315,7 +315,7 @@ public class MTEPreciseAssembler extends MTEExtendedPowerMultiBlockBase<MTEPreci
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
-        return survivialBuildPiece(mName, stackSize, 4, 4, 0, elementBudget, env, false, true);
+        return survivalBuildPiece(mName, stackSize, 4, 4, 0, elementBudget, env, false, true);
     }
 
     @Override
