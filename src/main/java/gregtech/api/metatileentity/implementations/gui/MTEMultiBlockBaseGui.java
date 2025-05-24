@@ -4,7 +4,6 @@ import static gregtech.api.enums.Mods.GregTech;
 import static gregtech.api.metatileentity.BaseTileEntity.BUTTON_FORBIDDEN_TOOLTIP;
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 
-import java.awt.Dimension;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -124,22 +123,36 @@ public class MTEMultiBlockBaseGui {
     }
 
     protected Flow createTerminalRow(ModularPanel panel, PanelSyncManager syncManager) {
-        Dimension machineInfoDimensions = getTerminalRowDimensions();
-        Dimension mainTerminalDimensions = getTerminalDimensions();
-        return new Row().size(machineInfoDimensions.width, machineInfoDimensions.height)
+        return new Row().size(getTerminalRowWidth(), getTerminalRowHeight())
             .child(
-                new ParentWidget<>().size(mainTerminalDimensions.width, mainTerminalDimensions.height)
+                new ParentWidget<>().size(getTerminalWidgetWidth(), getTerminalWidgetHeight())
                     .padding(4)
                     .widgetTheme(GTWidgetThemes.BACKGROUND_TERMINAL)
                     .child(
                         createTerminalTextWidget(syncManager, panel)
-                            .size(mainTerminalDimensions.width - 10, mainTerminalDimensions.height - 8)
+                            .size(getTerminalWidgetWidth() - 10, getTerminalWidgetHeight() - 8)
                             .collapseDisabledChild())
                     .child(
                         new SingleChildWidget<>().bottomRel(0, 10, 0)
                             .rightRel(0, 10, 0)
                             .size(18, 18)
                             .widgetTheme(GTWidgetThemes.PICTURE_LOGO)));
+    }
+
+    protected int getTerminalRowWidth() {
+        return 190;
+    }
+
+    protected int getTerminalRowHeight() {
+        return base.doesBindPlayerInventory() ? 94 : 174;
+    }
+
+    protected int getTerminalWidgetWidth() {
+        return getTerminalRowWidth();
+    }
+
+    protected int getTerminalWidgetHeight() {
+        return getTerminalRowHeight();
     }
 
     protected ListWidget<IWidget, ?> createTerminalTextWidget(PanelSyncManager syncManager, ModularPanel parent) {
@@ -653,14 +666,6 @@ public class MTEMultiBlockBaseGui {
 
     protected boolean isPowerSwitchDisabled() {
         return false;
-    }
-
-    protected Dimension getTerminalDimensions() {
-        return getTerminalRowDimensions();
-    }
-
-    protected Dimension getTerminalRowDimensions() {
-        return base.doesBindPlayerInventory() ? new Dimension(190, 94) : new Dimension(190, 174);
     }
 
     protected void registerSyncValues(PanelSyncManager syncManager) {
