@@ -120,7 +120,7 @@ public class CoverPump extends CoverIOBase {
 
     @Override
     protected @NotNull CoverGui<?> getCoverGui() {
-        return new CoverIOBaseGui("cover.pump");
+        return new CoverIOBaseGui(this, "cover.pump");
     }
 
     @Override
