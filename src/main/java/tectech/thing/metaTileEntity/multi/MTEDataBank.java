@@ -363,4 +363,9 @@ public class MTEDataBank extends TTMultiblockBase implements ISurvivalConstructa
     public boolean isSafeVoidButtonEnabled() {
         return false;
     }
+
+    @Override
+    protected boolean forceUseMui2() {
+        return true;
+    }
 }

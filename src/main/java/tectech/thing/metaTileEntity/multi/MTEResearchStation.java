@@ -56,6 +56,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.metatileentity.implementations.MTEHatchEnergy;
+import gregtech.api.metatileentity.implementations.gui.MTEMultiBlockBaseGui;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
@@ -75,6 +76,7 @@ import tectech.thing.casing.TTCasingsContainer;
 import tectech.thing.metaTileEntity.hatch.MTEHatchEnergyMulti;
 import tectech.thing.metaTileEntity.hatch.MTEHatchObjectHolder;
 import tectech.thing.metaTileEntity.multi.base.TTMultiblockBase;
+import tectech.thing.metaTileEntity.multi.base.gui.MTEResearchStationGui;
 import tectech.thing.metaTileEntity.multi.base.render.TTRenderedExtendedFacingTexture;
 
 /**
@@ -86,15 +88,16 @@ public class MTEResearchStation extends TTMultiblockBase implements ISurvivalCon
     public static final String crafter = "EM Crafting";
     // region variables
     private final ArrayList<MTEHatchObjectHolder> eHolders = new ArrayList<>();
-    private GTRecipe.RecipeAssemblyLine tRecipe;
+    public GTRecipe.RecipeAssemblyLine tRecipe;
     private static final String assembly = "Assembly line";
     private static final String scanner = "Scanner";
     private String machineType = assembly;
     private ItemStack holdItem;
-    private long computationRemaining, computationRequired;
+    public long computationRemaining;
+    public long computationRequired;
 
     // Used to sync currently researching item to GUI
-    private String clientOutputName;
+    public String clientOutputName;
 
     private static final String[] description = new String[] {
         EnumChatFormatting.AQUA + translateToLocal("tt.keyphrase.Hint_Details") + ":",
@@ -142,8 +145,8 @@ public class MTEResearchStation extends TTMultiblockBase implements ISurvivalCon
     }
 
     private void makeStick() {
-        mInventory[1].setTagCompound(new NBTTagCompound());
-        mInventory[1].getTagCompound()
+        getControllerSlot().setTagCompound(new NBTTagCompound());
+        getControllerSlot().getTagCompound()
             .setString(
                 "author",
                 EnumChatFormatting.BLUE + "Tec"
@@ -153,7 +156,7 @@ public class MTEResearchStation extends TTMultiblockBase implements ISurvivalCon
                     + ' '
                     + machineType
                     + " Recipe Generator");
-        AssemblyLineUtils.setAssemblyLineRecipeOnDataStick(mInventory[1], tRecipe);
+        AssemblyLineUtils.setAssemblyLineRecipeOnDataStick(getControllerSlot(), tRecipe);
     }
 
     private boolean iterateRecipes() {
@@ -262,7 +265,7 @@ public class MTEResearchStation extends TTMultiblockBase implements ISurvivalCon
     @Override
     public void outputAfterRecipe_EM() {
         if (!eHolders.isEmpty()) {
-            if (tRecipe != null && ItemList.Tool_DataStick.isStackEqual(mInventory[1], false, true)) {
+            if (tRecipe != null && ItemList.Tool_DataStick.isStackEqual(getControllerSlot(), false, true)) {
                 eHolders.get(0)
                     .getBaseMetaTileEntity()
                     .setActive(false);
@@ -590,6 +593,16 @@ public class MTEResearchStation extends TTMultiblockBase implements ISurvivalCon
     }
 
     @Override
+    protected boolean forceUseMui2() {
+        return true;
+    }
+
+    @Override
+    protected @NotNull MTEMultiBlockBaseGui getGui() {
+        return new MTEResearchStationGui(this);
+    }
+
+    @Override
     public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
         int z) {
         tag.setBoolean("hasProblems", (getIdealStatus() - getRepairStatus()) > 0);
@@ -600,15 +613,15 @@ public class MTEResearchStation extends TTMultiblockBase implements ISurvivalCon
         tag.setLong("computationRequired", getComputationRequired());
     }
 
-    private long getComputationConsumed() {
+    public long getComputationConsumed() {
         return (computationRequired - computationRemaining) / 20L;
     }
 
-    private long getComputationRequired() {
+    public long getComputationRequired() {
         return computationRequired / 20L;
     }
 
-    private double getComputationProgress() {
+    public double getComputationProgress() {
         return 100d
             * (getComputationRequired() > 0d ? (double) getComputationConsumed() / getComputationRequired() : 0d);
     }

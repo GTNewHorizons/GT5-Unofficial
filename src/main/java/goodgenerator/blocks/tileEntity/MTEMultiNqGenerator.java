@@ -456,4 +456,9 @@ public class MTEMultiNqGenerator extends MTETooltipMultiBlockBaseEM implements I
     public boolean showRecipeTextInGUI() {
         return false;
     }
+
+    @Override
+    protected boolean forceUseMui2() {
+        return true;
+    }
 }

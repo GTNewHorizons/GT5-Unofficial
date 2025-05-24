@@ -17,6 +17,9 @@ public final class GTTextureIds {
     public static final String BACKGROUND_TITLE_STEEL = "gregtech:bg_title_steel";
     public static final String BACKGROUND_TITLE_PRIMITIVE = "gregtech:bg_title_primitive";
 
+    public static final String BACKGROUND_TERMINAL_STANDARD = "gregtech:bg_terminal_standard";
+    public static final String BACKGROUND_TERMINAL_TECTECH = "gregtech:bg_terminal_tectech";
+
     public static final String SLOT_ITEM_STANDARD = "gregtech:slot_item_standard";
     public static final String SLOT_ITEM_BRONZE = "gregtech:slot_item_bronze";
     public static final String SLOT_ITEM_STEEL = "gregtech:slot_item_steel";
@@ -26,6 +29,7 @@ public final class GTTextureIds {
     public static final String SLOT_FLUID_BRONZE = "gregtech:slot_fluid_bronze";
     public static final String SLOT_FLUID_STEEL = "gregtech:slot_fluid_steel";
     public static final String SLOT_FLUID_PRIMITIVE = "gregtech:slot_fluid_primitive";
+    public static final String SLOT_EMPTY = "gregtech:slot_fluid_empty";
 
     public static final String OVERLAY_SLOT_BLOCK_STANDARD = "gregtech:overlay_slot_block_standard";
     public static final String OVERLAY_SLOT_BLOCK_BRONZE = "gregtech:overlay_slot_block_bronze";
@@ -99,6 +103,8 @@ public final class GTTextureIds {
     public static final String PICTURE_GT_LOGO_STEEL = "gregtech:picture_gt_logo_steel";
     public static final String PICTURE_GT_LOGO_PRIMITIVE = "gregtech:picture_gt_logo_primitive";
     public static final String PICTURE_GT_SCREEN_BLACK = "gregtech:picture_gt_screen_black";
+	public static final String PICTURE_TECTECH_LOGO_DARK = "tectech:picture_tt_logo_dark";
+    public static final String PICTURE_INTERGALACTIC_LOGO = "intergalactic:picture_intergalactic_logo";
 
     public static final String PICTURE_TRANSPARENT = "gregtech:picture_transparent";
     public static final String PICTURE_BW_LOGO_STANDARD = "bartworks:picture_bw_logo";

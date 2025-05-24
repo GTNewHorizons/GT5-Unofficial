@@ -877,14 +877,6 @@ public class TileEntitySpaceElevator extends TTMultiblockBase implements ISurviv
     }
 
     /**
-     * @return Safe void button of this GUI
-     */
-    @Override
-    protected ButtonWidget createSafeVoidButton() {
-        return null;
-    }
-
-    /**
      * Will this machine explode in rain?
      *
      * @return False
@@ -913,5 +905,10 @@ public class TileEntitySpaceElevator extends TTMultiblockBase implements ISurviv
         if (elevatorCable != null) {
             elevatorCable.setShouldRender(false);
         }
+    }
+
+    @Override
+    protected boolean forceUseMui2() {
+        return false;
     }
 }

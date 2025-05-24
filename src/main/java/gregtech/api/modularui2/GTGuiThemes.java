@@ -25,6 +25,7 @@ public final class GTGuiThemes {
             Dyes.MACHINE_METAL.toInt())
         .themedTexture(GTWidgetThemes.BACKGROUND_POPUP, GTTextureIds.BACKGROUND_POPUP_STANDARD)
         .themedTexture(GTWidgetThemes.BACKGROUND_TITLE, GTTextureIds.BACKGROUND_TITLE_STANDARD)
+        .themedTexture(GTWidgetThemes.BACKGROUND_TERMINAL, GTTextureIds.BACKGROUND_TERMINAL_STANDARD)
         .themedOverlayItemSlot(GTWidgetThemes.OVERLAY_ITEM_SLOT_COAL, GTTextureIds.OVERLAY_SLOT_COAL_STANDARD)
         .themedOverlayItemSlot(GTWidgetThemes.OVERLAY_ITEM_SLOT_DUST, GTTextureIds.OVERLAY_SLOT_DUST_STANDARD)
         .themedOverlayItemSlot(GTWidgetThemes.OVERLAY_ITEM_SLOT_IN, GTTextureIds.OVERLAY_SLOT_IN_STANDARD)
@@ -146,5 +147,25 @@ public final class GTGuiThemes {
             GTTextureIds.BUTTON_COVER_TAB_HIGHLIGHT_PRIMITIVE)
         .themedButton(GTWidgetThemes.BUTTON_COVER_TAB_DISABLED, GTTextureIds.BUTTON_COVER_TAB_DISABLED_PRIMITIVE)
         .themedTexture(GTWidgetThemes.PICTURE_LOGO, GTTextureIds.PICTURE_GT_LOGO_PRIMITIVE)
+        .build();
+    public static final GTGuiTheme TRANSPARENT_FLUID_SLOT = GTGuiTheme.builder("gregtech:transparentFluidSlot")
+        .parent(STEEL)
+        .themedTexture(GTWidgetThemes.PICTURE_LOGO, GTTextureIds.PICTURE_TECTECH_LOGO_DARK)
+        .themedTexture(GTWidgetThemes.BACKGROUND_TERMINAL, GTTextureIds.BACKGROUND_TERMINAL_TECTECH)
+        .fluidSlot(GTTextureIds.SLOT_EMPTY)
+        .button(GTTextureIds.BUTTON_STANDARD)
+        .simpleToggleButton(
+            GTTextureIds.BUTTON_STANDARD,
+            GTTextureIds.BUTTON_STANDARD_PRESSED,
+            Dyes.MACHINE_METAL.toInt())
+        .build();
+    public static final GTGuiTheme TECTECH_STANDARD = GTGuiTheme.builder("tectech:standard")
+        .parent(STANDARD)
+        .themedTexture(GTWidgetThemes.PICTURE_LOGO, GTTextureIds.PICTURE_TECTECH_LOGO_DARK)
+        .themedTexture(GTWidgetThemes.BACKGROUND_TERMINAL, GTTextureIds.BACKGROUND_TERMINAL_TECTECH)
+        .build();
+    public static final GTGuiTheme INTERGALACTIC_STANDARD = GTGuiTheme.builder("inntergalactic:standard")
+        .parent(TECTECH_STANDARD)
+        .themedTexture(GTWidgetThemes.PICTURE_LOGO, GTTextureIds.PICTURE_INTERGALACTIC_LOGO)
         .build();
 }
