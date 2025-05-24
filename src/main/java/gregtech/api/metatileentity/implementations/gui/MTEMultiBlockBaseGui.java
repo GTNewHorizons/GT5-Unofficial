@@ -70,6 +70,7 @@ import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.shutdown.ShutDownReason;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
+import gregtech.common.modularui2.sync.Predicates;
 
 public class MTEMultiBlockBaseGui {
 
@@ -282,19 +283,13 @@ public class MTEMultiBlockBaseGui {
     }
 
     private IWidget createRecipeInfoWidget(PanelSyncManager syncManager) {
-        GenericListSyncHandler<ItemStack> itemOutputSyncer = (GenericListSyncHandler<ItemStack>) syncManager
-            .getSyncHandler("itemOutput:0");
-        GenericListSyncHandler<ItemStack> fluidOutputSyncer = (GenericListSyncHandler<ItemStack>) syncManager
-            .getSyncHandler("fluidOutput:0");
         return IKey.dynamic(() -> ((StringSyncValue) syncManager.getSyncHandler("recipeInfo:0")).getValue())
             .asWidget()
             .marginBottom(2)
             .widthRel(1)
             .setEnabledIf(
-                widget -> (itemOutputSyncer.getValue() != null && !itemOutputSyncer.getValue()
-                    .isEmpty()) || (fluidOutputSyncer.getValue() != null
-                        && !fluidOutputSyncer.getValue()
-                            .isEmpty()));
+                widget -> Predicates.isNonEmptyList(syncManager.getSyncHandler("itemOutput:0"))
+                    || Predicates.isNonEmptyList(syncManager.getSyncHandler("fluidOutput:0")));
 
     }
 
