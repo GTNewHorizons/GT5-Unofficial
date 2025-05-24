@@ -119,12 +119,9 @@ public class ItemMachines extends ItemBlock implements IFluidContainerItem {
             final NBTTagCompound aNBT = aStack.getTagCompound();
             if (aNBT != null) {
                 if (aNBT.getBoolean("mMuffler")) {
-                    aList.add(StatCollector.translateToLocal("gt.tileentity.has_muffler"));
+                    aList.add(GTLanguageManager.addStringLocalization("GT_TileEntity_MUFFLER", "has Muffler Upgrade"));
                 }
-                if (aNBT.getBoolean("mSteamConverter")) {
-                    aList.add(StatCollector.translateToLocal("gt.tileentity.has_steam_upgrade"));
-                }
-                int tAmount;
+                int tAmount = 0;
                 if ((tAmount = aNBT.getByte("mSteamTanks")) > 0) {
                     aList.add(StatCollector.translateToLocalFormatted("gt.tileentity.steamtanks", tAmount));
                 }
