@@ -23,6 +23,8 @@ public class CoverGui<T extends Cover> {
     }
 
     protected static final int WIDGET_MARGIN = 5;
+    protected static final int ROW_PADDING = 3;
+    protected static final int ROW_ELEMENT_PADDING = 2;
 
     /**
      * Override this method to provide GUI ID if this cover has GUI. It's used for resource packs to customize stuff.
@@ -104,6 +106,25 @@ public class CoverGui<T extends Cover> {
                 .child(
                     new com.cleanroommc.modularui.widgets.TextWidget(coverItem.getDisplayName()).marginLeft(4)
                         .widgetTheme(GTWidgetThemes.TEXT_TITLE)));
+    }
+
+    /**
+     * Creates a layout to which you can add rows positioned with {@link CoverGui#positionRow}.
+     */
+    protected Flow makeRowLayout() {
+        return Flow.column()
+            .coverChildren()
+            .crossAxisAlignment(Alignment.CrossAxis.START)
+            .marginLeft(WIDGET_MARGIN)
+            .childPadding(ROW_PADDING);
+    }
+
+    /**
+     * Positions a row to render nicely inside the layout returned by {@link CoverGui#makeRowLayout}.
+     */
+    protected Flow positionRow(Flow row) {
+        return row.coverChildren()
+            .childPadding(ROW_ELEMENT_PADDING);
     }
 
     protected int getGUIWidth() {
