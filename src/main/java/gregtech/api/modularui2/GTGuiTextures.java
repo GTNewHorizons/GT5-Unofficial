@@ -4,6 +4,7 @@ import static gregtech.api.enums.Mods.GTNHIntergalactic;
 import static gregtech.api.enums.Mods.GregTech;
 import static tectech.Reference.MODID;
 
+import com.cleanroommc.modularui.drawable.AdaptableUITexture;
 import com.cleanroommc.modularui.drawable.UITexture;
 
 import bartworks.MainMod;
@@ -532,17 +533,12 @@ public final class GTGuiTextures {
             GTTextureIds.PICTURE_GT_LOGO_STEEL,
             GTTextureIds.PICTURE_GT_LOGO_PRIMITIVE)
         .build();
-    public static final UITexture PICTURE_TECTECH_LOGO_DARK = UITexture.builder()
-        .location(MODID, "gui/picture/tectech_logo_dark")
-        .fullImage()
-        .name(GTTextureIds.PICTURE_TECTECH_LOGO_DARK)
+    public static final AdaptableUITexture PICTURE_SCREEN_BLACK = (AdaptableUITexture) AdaptableUITexture.builder()
+        .location(GregTech.ID, "gui/picture/screen_black")
+        .name(GTTextureIds.PICTURE_GT_SCREEN_BLACK)
+        .adaptable(2)
+        .tiled(16, 16)
         .build();
-    public static final UITexture PICTURE_INTERGALACTIC_LOGO = UITexture.builder()
-        .location(GTNHIntergalactic.ID, "gui/picture/space_elevator_logo")
-        .fullImage()
-        .name(GTTextureIds.PICTURE_INTERGALACTIC_LOGO)
-        .build();
-
     public static final UITexture PICTURE_BARTWORKS_LOGO_STANDARD = UITexture.builder()
         .location(MainMod.MOD_ID, "GUI/picture/bw_logo_47x21")
         .fullImage()

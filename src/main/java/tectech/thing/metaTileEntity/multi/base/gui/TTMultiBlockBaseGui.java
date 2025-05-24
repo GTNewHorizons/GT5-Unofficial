@@ -161,7 +161,7 @@ public class TTMultiBlockBaseGui extends MTEMultiBlockBaseGui {
             GTGuiTextures.OVERLAY_NEEDS_SCREWDRIVER.asIcon()
                 .size(16, 16))
             .add(" ");
-        if (!ttBase.mSoftHammer) t.add(
+        if (!ttBase.mSoftMallet) t.add(
             GTGuiTextures.OVERLAY_NEEDS_SOFTHAMMER.asIcon()
                 .size(16, 16))
             .add(" ");
@@ -331,7 +331,7 @@ public class TTMultiBlockBaseGui extends MTEMultiBlockBaseGui {
             maintIsuses += ttBase.mCrowbar ? 0 : 1;
             maintIsuses += ttBase.mHardHammer ? 0 : 1;
             maintIsuses += ttBase.mScrewdriver ? 0 : 1;
-            maintIsuses += ttBase.mSoftHammer ? 0 : 1;
+            maintIsuses += ttBase.mSoftMallet ? 0 : 1;
             maintIsuses += ttBase.mSolderingTool ? 0 : 1;
             maintIsuses += ttBase.mWrench ? 0 : 1;
             return maintIsuses;

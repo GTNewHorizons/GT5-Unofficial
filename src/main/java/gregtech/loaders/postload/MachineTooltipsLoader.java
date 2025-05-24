@@ -2,6 +2,7 @@ package gregtech.loaders.postload;
 
 import static gregtech.api.enums.GTValues.GT;
 
+import gregtech.api.util.GTLanguageManager;
 import net.minecraft.item.ItemStack;
 
 import gregtech.api.GregTechAPI;
