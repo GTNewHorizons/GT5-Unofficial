@@ -54,7 +54,8 @@ public class RecipeGenMetalRecipe extends RecipeGenBase {
             && ItemUtils.checkForInvalidItems(material.getRod(1))) {
             GTValues.RA.stdBuilder()
                 .itemInputs(material.getIngot(1))
-                .itemOutputs(material.getRod(1), material.getSmallDust(2))
+                .itemOutputs(material.getRod(1), material.getDust(1))
+                .outputChances(10000, 5000)
                 .duration(Math.max(material.getMass() / 8L, 1L))
                 .eut(material.vVoltageMultiplier)
                 .addTo(latheRecipes);

@@ -42,7 +42,8 @@ public class ProcessingLens implements gregtech.api.interfaces.IOreRecipeRegistr
                     .itemInputs(GTOreDictUnificator.get(OrePrefixes.plate, aMaterial, 1L))
                     .itemOutputs(
                         GTOreDictUnificator.get(OrePrefixes.lens, aMaterial, 1L),
-                        GTOreDictUnificator.get(OrePrefixes.dustSmall, aMaterial, 1L))
+                        GTOreDictUnificator.get(OrePrefixes.dust, aMaterial, 1L))
+                    .outputChances(10000, 2500)
                     .duration(1 * MINUTES)
                     .eut(TierEU.RECIPE_LV)
                     .addTo(latheRecipes);
@@ -68,12 +69,13 @@ public class ProcessingLens implements gregtech.api.interfaces.IOreRecipeRegistr
                 if (GTOreDictUnificator.get(OrePrefixes.plate, aMaterial, 1L) != null) {
                     GTRecipeBuilder recipeBuilder = GTValues.RA.stdBuilder();
                     recipeBuilder.itemInputs(GTOreDictUnificator.get(OrePrefixes.plate, aMaterial, 1L));
-                    if (GTOreDictUnificator.get(OrePrefixes.dustSmall, aMaterial, 1L) == null) {
+                    if (GTOreDictUnificator.get(OrePrefixes.dust, aMaterial, 1L) == null) {
                         recipeBuilder.itemOutputs(GTOreDictUnificator.get(OrePrefixes.lens, aMaterial, 1L));
                     } else {
                         recipeBuilder.itemOutputs(
                             GTOreDictUnificator.get(OrePrefixes.lens, aMaterial, 1L),
-                            GTOreDictUnificator.get(OrePrefixes.dustSmall, aMaterial, 1L));
+                            GTOreDictUnificator.get(OrePrefixes.dust, aMaterial, 1L));
+                        recipeBuilder.outputChances(10000, 2500);
                     }
                     recipeBuilder.duration(1 * MINUTES)
                         .eut(TierEU.RECIPE_MV)

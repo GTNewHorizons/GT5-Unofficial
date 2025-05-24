@@ -45,14 +45,15 @@ public class ProcessingStick implements gregtech.api.interfaces.IOreRecipeRegist
 
             if ((aMaterial.contains(SubTag.CRYSTAL) ? GTOreDictUnificator.get(OrePrefixes.gem, aMaterial, 1L)
                 : GTOreDictUnificator.get(OrePrefixes.ingot, aMaterial, 1L)) != null
-                && GTOreDictUnificator.get(OrePrefixes.dustSmall, aMaterial.mMacerateInto, 1L) != null) {
+                && GTOreDictUnificator.get(OrePrefixes.dust, aMaterial.mMacerateInto, 1L) != null) {
                 GTValues.RA.stdBuilder()
                     .itemInputs(
                         aMaterial.contains(SubTag.CRYSTAL) ? GTOreDictUnificator.get(OrePrefixes.gem, aMaterial, 1L)
                             : GTOreDictUnificator.get(OrePrefixes.ingot, aMaterial, 1L))
                     .itemOutputs(
                         GTOreDictUnificator.get(OrePrefixes.stick, aMaterial, 1L),
-                        GTOreDictUnificator.get(OrePrefixes.dustSmall, aMaterial.mMacerateInto, 2L))
+                        GTOreDictUnificator.get(OrePrefixes.dust, aMaterial.mMacerateInto, 1L))
+                    .outputChances(10000, 5000)
                     .duration(((int) Math.max(aMaterial.getMass() * 5L, 1L)) * TICKS)
                     .eut(calculateRecipeEU(aMaterial, 16))
                     .addTo(latheRecipes);
