@@ -2601,7 +2601,7 @@ public class AssemblyComplexStructureString {
             "                        C CCDD   DDCC C                       ",
             "                       C   CC     CC   C                      ",
             "                       C    CC   CC    C                      ",
-            "                       C     CCGCC     C                      ",
+            "                       C     CCCCC     C                      ",
             "                       C      CCC      C                      ",
             "                       C      BCB      C                      ",
             "                       C      BBB      C                      ",
