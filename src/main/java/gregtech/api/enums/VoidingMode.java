@@ -48,21 +48,21 @@ public enum VoidingMode {
     public static final Set<VoidingMode> ITEM_ONLY_MODES = EnumSet.of(VOID_ITEM, VOID_NONE);
     public final boolean protectItem;
     public final boolean protectFluid;
-    public final com.cleanroommc.modularui.drawable.UITexture buttonTextureNew;
-    public final com.cleanroommc.modularui.drawable.UITexture buttonOverlayNew;
-    public final UITexture buttonTexture;
-    public final UITexture buttonOverlay;
+    public final com.cleanroommc.modularui.drawable.UITexture buttonTexture;
+    public final com.cleanroommc.modularui.drawable.UITexture buttonOverlay;
+    public final UITexture buttonTextureLegacy;
+    public final UITexture buttonOverlayLegacy;
     public final String name;
 
-    VoidingMode(boolean protectItem, boolean protectFluid,
-        com.cleanroommc.modularui.drawable.UITexture buttonTextureNew, UITexture buttonTexture,
-        com.cleanroommc.modularui.drawable.UITexture buttonTextureOld, UITexture buttonOverlay, String name) {
+    VoidingMode(boolean protectItem, boolean protectFluid, com.cleanroommc.modularui.drawable.UITexture buttonTexture,
+        UITexture buttonTextureLegacy, com.cleanroommc.modularui.drawable.UITexture buttonOverlay,
+        UITexture buttonOverlayLegacy, String name) {
         this.protectItem = protectItem;
         this.protectFluid = protectFluid;
-        this.buttonTextureNew = buttonTextureNew;
-        this.buttonOverlayNew = buttonTextureOld;
         this.buttonTexture = buttonTexture;
         this.buttonOverlay = buttonOverlay;
+        this.buttonTextureLegacy = buttonTextureLegacy;
+        this.buttonOverlayLegacy = buttonOverlayLegacy;
         this.name = name;
     }
 

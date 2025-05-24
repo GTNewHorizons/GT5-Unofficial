@@ -331,8 +331,8 @@ public class MTEMultiBlockBaseGui {
     }
 
     private IDrawable getVoidExcessOverlay() {
-        return base.supportsVoidProtection() ? base.getVoidingMode().buttonOverlayNew
-            : new DrawableStack(base.getVoidingMode().buttonOverlayNew, GTGuiTextures.OVERLAY_BUTTON_FORBIDDEN);
+        return base.supportsVoidProtection() ? base.getVoidingMode().buttonOverlay
+            : new DrawableStack(base.getVoidingMode().buttonOverlay, GTGuiTextures.OVERLAY_BUTTON_FORBIDDEN);
     }
 
     private void createVoidExcessTooltip(RichTooltip t) {
