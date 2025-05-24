@@ -450,6 +450,11 @@ public abstract class MTELargeTurbine extends MTEEnhancedMultiBlockBase<MTELarge
     }
 
     @Override
+    public boolean showRecipeTextInGUI() {
+        return false;
+    }
+
+    @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
         buildPiece(STRUCTURE_PIECE_MAIN, stackSize, hintsOnly, 2, 2, 1);
     }
