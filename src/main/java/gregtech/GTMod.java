@@ -338,7 +338,6 @@ public class GTMod implements IGTMod {
         }
 
         gregtechproxy.onLoad();
-
         new MTERecipeLoader().run();
 
         new GTItemIterator().run();
