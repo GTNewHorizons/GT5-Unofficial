@@ -59,7 +59,7 @@ public class CoverLiquidMeter extends Cover {
         return this.threshold;
     }
 
-    public CoverLiquidMeter setThresdhold(int threshold) {
+    public CoverLiquidMeter setThreshold(int threshold) {
         this.threshold = threshold;
         return this;
     }

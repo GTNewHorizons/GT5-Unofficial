@@ -51,7 +51,7 @@ public class LiquidMeterUIFactory extends CoverUIFactory<CoverLiquidMeter> {
                     .addFollower(
                         new CoverDataFollowerNumericWidget<>(),
                         coverData -> (double) coverData.getThreshold(),
-                        (coverData, state) -> coverData.setThresdhold(state.intValue()),
+                        (coverData, state) -> coverData.setThreshold(state.intValue()),
                         widget -> widget.setBounds(0, maxCapacity > 0 ? maxCapacity : Integer.MAX_VALUE)
                             .setScrollValues(1000, 144, 100000)
                             .setFocusOnGuiOpen(true)

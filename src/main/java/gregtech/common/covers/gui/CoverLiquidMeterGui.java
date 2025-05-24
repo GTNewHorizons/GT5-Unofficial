@@ -47,7 +47,7 @@ public class CoverLiquidMeterGui extends CoverGui<CoverLiquidMeter> {
         return Flow.row()
             .debugName("fluid_threshold")
             .child(
-                makeNumberField().value(new IntSyncValue(cover::getThreshold, cover::setThresdhold))
+                makeNumberField().value(new IntSyncValue(cover::getThreshold, cover::setThreshold))
                     .setNumbers(0, maxCapacity)
                     .setFocusOnGuiOpen(true))
             .child(
