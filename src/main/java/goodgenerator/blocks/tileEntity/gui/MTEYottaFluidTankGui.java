@@ -50,10 +50,13 @@ public class MTEYottaFluidTankGui extends TTMultiBlockBaseGui {
     }
 
     @Override
-    protected Dimension getTerminalDimensions() {
-        Dimension superSize = super.getTerminalDimensions();
-        Dimension yottankSize = this.yottankDisplaySize();
-        return new Dimension(superSize.width - yottankSize.width - 6, yottankSize.height);
+    protected int getTerminalWidgetWidth() {
+        return super.getTerminalWidgetWidth() - this.yottankDisplaySize().width - 6;
+    }
+
+    @Override
+    protected int getTerminalWidgetHeight() {
+        return this.yottankDisplaySize().height;
     }
 
     private Dimension yottankDisplaySize() {
@@ -162,7 +165,7 @@ public class MTEYottaFluidTankGui extends TTMultiBlockBaseGui {
     }
 
     @Override
-    protected ListWidget<IWidget, ?> createTerminalTextWidget(PanelSyncManager syncManager) {
+    protected ListWidget<IWidget, ?> createTerminalTextWidget(PanelSyncManager syncManager, ModularPanel parent) {
         DoubleSyncValue maxStorageSyncer = (DoubleSyncValue) syncManager.getSyncHandler("maxStorage:0");
         DoubleSyncValue currentStorageSyncer = (DoubleSyncValue) syncManager.getSyncHandler("currentStorage:0");
         StringSyncValue percentageSyncer = (StringSyncValue) syncManager.getSyncHandler("percentage:0");

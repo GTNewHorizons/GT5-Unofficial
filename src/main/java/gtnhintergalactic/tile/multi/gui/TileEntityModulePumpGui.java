@@ -135,7 +135,7 @@ public class TileEntityModulePumpGui extends TileEntityModuleBaseGui {
                 WidgetTree.resize(fluidWidgets);
             }
         });
-        return fluidWidgets.children(super.createTerminalTextWidget(syncManager).getChildren());
+        return fluidWidgets.children(super.createTerminalTextWidget(syncManager, parent).getChildren());
     }
 
     private ModularPanel getFluidSelectorPanel(ModularPanel parent, PanelSyncManager syncManager,

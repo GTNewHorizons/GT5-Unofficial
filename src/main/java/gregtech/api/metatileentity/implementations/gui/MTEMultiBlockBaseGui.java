@@ -99,6 +99,7 @@ public class MTEMultiBlockBaseGui {
 
         ModularPanel panel = new ModularPanel("MTEMultiBlockBase").size(198, 181 + textBoxToInventoryGap)
             .padding(4);
+        initPanelMap(panel, syncManager);
         return panel.child(
             new Column().sizeRel(1)
                 .child(createTitleTextStyle(base.getLocalName()))
@@ -769,6 +770,8 @@ public class MTEMultiBlockBaseGui {
         syncManager.registerSlotGroup("item_inv", 1);
 
     }
+
+    protected void initPanelMap(ModularPanel parent, PanelSyncManager syncManager) {}
 
     protected void setMachineModeIcons() {}
 }

@@ -6,6 +6,7 @@ import net.minecraft.util.StatCollector;
 
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.api.widget.IWidget;
+import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.utils.Color;
 import com.cleanroommc.modularui.value.sync.LongSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
@@ -21,10 +22,10 @@ public class MTELargeFusionComputerGui extends TTMultiBlockBaseGui {
     }
 
     @Override
-    protected ListWidget<IWidget, ?> createTerminalTextWidget(PanelSyncManager syncManager) {
+    protected ListWidget<IWidget, ?> createTerminalTextWidget(PanelSyncManager syncManager, ModularPanel parent) {
         LongSyncValue storedEnergySyncer = (LongSyncValue) syncManager.getSyncHandler("storedEnergy:0");
         LongSyncValue energyCapacitySyncer = (LongSyncValue) syncManager.getSyncHandler("energyCapacity:0");
-        return super.createTerminalTextWidget(syncManager)
+        return super.createTerminalTextWidget(syncManager, parent)
             .child(
                 IKey.dynamic(
                     () -> StatCollector.translateToLocal("gui.LargeFusion.0") + " "

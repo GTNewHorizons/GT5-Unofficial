@@ -4,6 +4,7 @@ import net.minecraft.util.StatCollector;
 
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.api.widget.IWidget;
+import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.value.sync.LongSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.value.sync.StringSyncValue;
@@ -23,8 +24,8 @@ public class MTEResearchStationGui extends TTMultiBlockBaseGui {
     }
 
     @Override
-    protected ListWidget<IWidget, ?> createTerminalTextWidget(PanelSyncManager syncManager) {
-        return super.createTerminalTextWidget(syncManager)
+    protected ListWidget<IWidget, ?> createTerminalTextWidget(PanelSyncManager syncManager, ModularPanel parent) {
+        return super.createTerminalTextWidget(syncManager, parent)
             .child(
                 IKey.dynamic(
                     () -> StatCollector

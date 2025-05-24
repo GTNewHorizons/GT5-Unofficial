@@ -82,7 +82,7 @@ public class TileEntityModuleMinerGui extends TileEntityModuleBaseGui {
     }
 
     @Override
-    protected ListWidget<IWidget, ?> createTerminalTextWidget(PanelSyncManager syncManager) {
+    protected ListWidget<IWidget, ?> createTerminalTextWidget(PanelSyncManager syncManager, ModularPanel parent) {
         IntSyncValue distanceSyncer = (IntSyncValue) syncManager.getSyncHandler("distanceParameter:0");
         IntSyncValue cycleDistanceSyncer = (IntSyncValue) syncManager.getSyncHandler("cycleDistanceParameter:0");
         BooleanSyncValue cycleSyncer = (BooleanSyncValue) syncManager.getSyncHandler("cycleParameter:0");
@@ -98,7 +98,7 @@ public class TileEntityModuleMinerGui extends TileEntityModuleBaseGui {
                 WidgetTree.resize(minerInfo);
             }
         });
-        return minerInfo.children(super.createTerminalTextWidget(syncManager).getChildren());
+        return minerInfo.children(super.createTerminalTextWidget(syncManager, parent).getChildren());
     }
 
     @Override

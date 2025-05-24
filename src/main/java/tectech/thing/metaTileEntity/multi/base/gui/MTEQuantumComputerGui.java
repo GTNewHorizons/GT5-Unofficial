@@ -4,6 +4,7 @@ import net.minecraft.util.EnumChatFormatting;
 
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.api.widget.IWidget;
+import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.value.sync.DoubleSyncValue;
 import com.cleanroommc.modularui.value.sync.LongSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
@@ -22,10 +23,10 @@ public class MTEQuantumComputerGui extends TTMultiBlockBaseGui {
     }
 
     @Override
-    protected ListWidget<IWidget, ?> createTerminalTextWidget(PanelSyncManager syncManager) {
+    protected ListWidget<IWidget, ?> createTerminalTextWidget(PanelSyncManager syncManager, ModularPanel parent) {
         DoubleSyncValue tempSyncer = (DoubleSyncValue) syncManager.getSyncHandler("temp:0");
         LongSyncValue computationSyncer = (LongSyncValue) syncManager.getSyncHandler("computation:0");
-        return super.createTerminalTextWidget(syncManager)
+        return super.createTerminalTextWidget(syncManager, parent)
 
             .child(
                 IKey.dynamic(
