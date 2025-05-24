@@ -205,7 +205,7 @@ public class CoverItemFilter extends Cover {
 
     @Override
     protected @NotNull CoverGui<?> getCoverGui() {
-        return new CoverItemFilterGui();
+        return new CoverItemFilterGui(this);
     }
 
     @Override
