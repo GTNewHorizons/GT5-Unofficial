@@ -382,4 +382,7 @@ public class MTEUniversalChemicalFuelEngine extends MTETooltipMultiBlockBaseEM
         return true;
     }
 
+    public boolean showRecipeTextInGUI() {
+        return false;
+    }
 }

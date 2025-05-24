@@ -545,5 +545,8 @@ public class TileEntityDysonSwarm extends TTMultiblockBase implements ISurvivalC
     protected boolean forceUseMui2() {
         return true;
     }
-
+  
+    public boolean showRecipeTextInGUI() {
+        return false;
+    }
 }

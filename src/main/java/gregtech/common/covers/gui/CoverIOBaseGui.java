@@ -9,7 +9,6 @@ import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.cleanroommc.modularui.widgets.layout.Grid;
 
-import gregtech.api.modularui2.CoverGuiData;
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.util.GTUtility;
 import gregtech.common.covers.CoverIOBase;
@@ -22,7 +21,8 @@ public class CoverIOBaseGui extends CoverGui<CoverIOBase> {
 
     private final String string;
 
-    public CoverIOBaseGui(String string) {
+    public CoverIOBaseGui(CoverIOBase cover, String string) {
+        super(cover);
         this.string = string;
     }
 
@@ -32,8 +32,7 @@ public class CoverIOBaseGui extends CoverGui<CoverIOBase> {
     }
 
     @Override
-    public void addUIWidgets(CoverGuiData guiData, PanelSyncManager syncManager, Flow column) {
-        CoverIOBase cover = getCover(guiData);
+    public void addUIWidgets(PanelSyncManager syncManager, Flow column) {
         EnumSyncValue<TransferMode> ioModeSyncValue = new EnumSyncValue<>(
             TransferMode.class,
             cover::getIOMode,
