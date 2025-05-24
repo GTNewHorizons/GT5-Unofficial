@@ -9,6 +9,8 @@ import static gregtech.api.recipe.RecipeMaps.fluidSolidifierRecipes;
 import static gregtech.api.recipe.RecipeMaps.wiremillRecipes;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
+import static gregtech.api.util.GTRecipeConstants.ADDITIVE_AMOUNT;
+import static gregtech.api.util.GTRecipeConstants.BlastFurnaceWithGas;
 import static gregtech.api.util.GTRecipeConstants.COIL_HEAT;
 
 import net.minecraft.item.ItemStack;
@@ -19,7 +21,6 @@ import net.minecraftforge.fluids.FluidStack;
 import bartworks.system.material.Werkstoff;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.metatileentity.implementations.MTECable;
@@ -113,12 +114,12 @@ public class CrackRecipeAdder {
         if (gas) {
             GTValues.RA.stdBuilder()
                 .itemInputs(input, GTUtility.getIntegratedCircuit(11))
-                .fluidInputs(Materials.Helium.getGas(1000))
                 .itemOutputs(output)
                 .duration(duration * TICKS)
                 .eut(EUt)
                 .metadata(COIL_HEAT, level)
-                .addTo(blastFurnaceRecipes);
+                .metadata(ADDITIVE_AMOUNT, 1000)
+                .addTo(BlastFurnaceWithGas);
         } else {
             GTValues.RA.stdBuilder()
                 .itemInputs(input, GTUtility.getIntegratedCircuit(1))

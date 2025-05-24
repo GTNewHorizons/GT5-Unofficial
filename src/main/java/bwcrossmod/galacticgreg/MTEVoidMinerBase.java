@@ -194,7 +194,7 @@ public abstract class MTEVoidMinerBase extends MTEDrillerBase {
             for (int i = 0; i < VoidMinerUtility.NOBLE_GASSES.length; i++) {
                 FluidStack ng = VoidMinerUtility.NOBLE_GASSES[i];
                 if (ng.isFluidEqual(s)) {
-                    this.multiplier = this.TIER_MULTIPLIER * VoidMinerUtility.NOBEL_GASSES_MULTIPLIER[i];
+                    this.multiplier = this.TIER_MULTIPLIER * VoidMinerUtility.NOBLE_GASSES_MULTIPLIER[i];
                     return s;
                 }
             }
