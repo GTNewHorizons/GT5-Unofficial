@@ -3450,7 +3450,8 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
                     .setSize(180, 12)
                     .setEnabled(
                         widget -> (mOutputFluids != null && mOutputFluids.length > 0)
-                            || (mOutputItems != null && mOutputItems.length > 0)));
+                            || (mOutputItems != null && mOutputItems.length > 0)
+                            || (mMaxProgresstime > 0)));
             final ChangeableWidget recipeOutputItemsWidget = new ChangeableWidget(
                 this::generateCurrentRecipeInfoWidget);
             // Display current recipe
