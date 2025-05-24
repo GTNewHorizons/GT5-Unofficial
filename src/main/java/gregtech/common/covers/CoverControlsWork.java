@@ -226,7 +226,7 @@ public class CoverControlsWork extends CoverLegacyData {
 
     @Override
     protected @NotNull CoverGui<?> getCoverGui() {
-        return new CoverControlsWorkGui();
+        return new CoverControlsWorkGui(this);
     }
 
     @Override

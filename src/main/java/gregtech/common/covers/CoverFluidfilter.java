@@ -274,7 +274,7 @@ public class CoverFluidfilter extends Cover {
 
     @Override
     protected @NotNull CoverGui<?> getCoverGui() {
-        return new CoverFluidfilterGui();
+        return new CoverFluidfilterGui(this);
     }
 
     @Override
