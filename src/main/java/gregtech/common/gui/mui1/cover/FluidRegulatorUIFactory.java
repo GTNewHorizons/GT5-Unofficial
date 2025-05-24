@@ -5,6 +5,8 @@ import static gregtech.common.covers.CoverFluidRegulator.TICK_RATE_MIN;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import net.minecraft.util.StatCollector;
+
 import com.gtnewhorizons.modularui.api.NumberFormatMUI;
 import com.gtnewhorizons.modularui.api.drawable.Text;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
@@ -57,14 +59,14 @@ public class FluidRegulatorUIFactory extends CoverUIFactory<CoverFluidRegulator>
                     coverData -> coverData.getSpeed() >= 0,
                     (coverData, state) -> coverData.setSpeed(Math.abs(coverData.getSpeed())),
                     widget -> widget.setStaticTexture(GTUITextures.OVERLAY_BUTTON_EXPORT)
-                        .addTooltip(GTUtility.trans("006", "Export"))
+                        .addTooltip(StatCollector.translateToLocal("gt.interact.desc.o"))
                         .setPos(spaceX * 0, spaceY * 0))
                 .addFollower(
                     CoverDataFollowerToggleButtonWidget.ofDisableable(),
                     coverData -> coverData.getSpeed() <= 0,
                     (coverData, state) -> coverData.setSpeed(-Math.abs(coverData.getSpeed())),
                     widget -> widget.setStaticTexture(GTUITextures.OVERLAY_BUTTON_IMPORT)
-                        .addTooltip(GTUtility.trans("007", "Import"))
+                        .addTooltip(StatCollector.translateToLocal("gt.interact.desc.i"))
                         .setPos(spaceX * 1, spaceY * 0))
                 .addFollower(
                     CoverDataFollowerToggleButtonWidget.ofDisableable(),
