@@ -12,9 +12,9 @@ import gregtech.api.enums.SoundResource;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.items.MetaGeneratedTool;
 import gregtech.api.util.GTToolHarvestHelper;
-import gregtech.common.items.behaviors.BehaviourSoftHammer;
+import gregtech.common.items.behaviors.BehaviourSoftMallet;
 
-public class ToolSoftHammer extends GTTool {
+public class ToolSoftMallet extends GTTool {
 
     @Override
     public int getToolDamagePerBlockBreak() {
@@ -98,7 +98,7 @@ public class ToolSoftHammer extends GTTool {
 
     @Override
     public boolean isMinableBlock(Block aBlock, int aMetaData) {
-        return GTToolHarvestHelper.isAppropriateTool(aBlock, aMetaData, "softhammer");
+        return GTToolHarvestHelper.isAppropriateTool(aBlock, aMetaData, "softmallet");
     }
 
     @Override
@@ -123,7 +123,7 @@ public class ToolSoftHammer extends GTTool {
 
     @Override
     public void onStatsAddedToTool(MetaGeneratedTool aItem, int aID) {
-        aItem.addItemBehavior(aID, new BehaviourSoftHammer(100));
+        aItem.addItemBehavior(aID, new BehaviourSoftMallet(100));
     }
 
     @Override

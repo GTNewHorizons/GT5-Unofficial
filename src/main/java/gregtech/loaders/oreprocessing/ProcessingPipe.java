@@ -53,7 +53,7 @@ public class ProcessingPipe implements gregtech.api.interfaces.IOreRecipeRegistr
                             aMaterial == Materials.Wood ? OrePrefixes.plank.get(aMaterial)
                                 : OrePrefixes.plate.get(aMaterial),
                             'H',
-                            aMaterial.contains(SubTag.WOOD) ? ToolDictNames.craftingToolSoftHammer
+                            aMaterial.contains(SubTag.WOOD) ? ToolDictNames.craftingToolSoftMallet
                                 : ToolDictNames.craftingToolHardHammer,
                             'W', aMaterial.contains(SubTag.WOOD) ? ToolDictNames.craftingToolSaw
                                 : ToolDictNames.craftingToolWrench });
@@ -64,7 +64,7 @@ public class ProcessingPipe implements gregtech.api.interfaces.IOreRecipeRegistr
                             aMaterial == Materials.Wood ? OrePrefixes.plank.get(aMaterial)
                                 : OrePrefixes.plate.get(aMaterial),
                             'H',
-                            aMaterial.contains(SubTag.WOOD) ? ToolDictNames.craftingToolSoftHammer
+                            aMaterial.contains(SubTag.WOOD) ? ToolDictNames.craftingToolSoftMallet
                                 : ToolDictNames.craftingToolHardHammer,
                             'W', aMaterial.contains(SubTag.WOOD) ? ToolDictNames.craftingToolSaw
                                 : ToolDictNames.craftingToolWrench });
@@ -75,7 +75,7 @@ public class ProcessingPipe implements gregtech.api.interfaces.IOreRecipeRegistr
                             aMaterial == Materials.Wood ? OrePrefixes.plank.get(aMaterial)
                                 : OrePrefixes.plate.get(aMaterial),
                             'H',
-                            aMaterial.contains(SubTag.WOOD) ? ToolDictNames.craftingToolSoftHammer
+                            aMaterial.contains(SubTag.WOOD) ? ToolDictNames.craftingToolSoftMallet
                                 : ToolDictNames.craftingToolHardHammer,
                             'W', aMaterial.contains(SubTag.WOOD) ? ToolDictNames.craftingToolSaw
                                 : ToolDictNames.craftingToolWrench });

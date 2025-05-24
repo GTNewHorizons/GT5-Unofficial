@@ -1018,8 +1018,8 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
                 new TextWidget(GTUtility.trans("134", "Something is stuck. (Soft Mallet)"))
                     .setTextAlignment(Alignment.CenterLeft)
                     .setDefaultColor(COLOR_TEXT_WHITE.get())
-                    .setEnabled(widget -> !mSoftHammer))
-            .widget(new FakeSyncWidget.BooleanSyncer(() -> mSoftHammer, val -> mSoftHammer = val));
+                    .setEnabled(widget -> !mSoftMallet))
+            .widget(new FakeSyncWidget.BooleanSyncer(() -> mSoftMallet, val -> mSoftMallet = val));
         screenElements
             .widget(
                 new TextWidget(GTUtility.trans("135", "Platings are dented. (Hammer)"))
