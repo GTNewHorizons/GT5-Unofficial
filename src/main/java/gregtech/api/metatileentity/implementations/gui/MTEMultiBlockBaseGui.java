@@ -310,7 +310,7 @@ public class MTEMultiBlockBaseGui {
         IntSyncValue voidExcessSyncer = (IntSyncValue) syncManager.getSyncHandler("voidExcess:0");
         return new ButtonWidget<>().size(18, 18)
             .onMousePressed(mouseButton -> this.voidExcessOnMousePressed(mouseButton, voidExcessSyncer))
-            .overlay(new DynamicDrawable(this::getVoidExcessOverlay))
+            .overlay(base.supportsVoidProtection() ? getVoidExcessOverlay() : getForcedVoidExcessOverlay())
             .tooltipBuilder(this::createVoidExcessTooltip);
     }
 
@@ -330,9 +330,12 @@ public class MTEMultiBlockBaseGui {
         return true;
     }
 
+    private IDrawable getForcedVoidExcessOverlay() {
+        return new DrawableStack(base.getVoidingMode().buttonOverlay, GTGuiTextures.OVERLAY_BUTTON_FORBIDDEN);
+    }
+
     private IDrawable getVoidExcessOverlay() {
-        return base.supportsVoidProtection() ? base.getVoidingMode().buttonOverlay
-            : new DrawableStack(base.getVoidingMode().buttonOverlay, GTGuiTextures.OVERLAY_BUTTON_FORBIDDEN);
+        return new DynamicDrawable(() -> base.getVoidingMode().buttonOverlay);
     }
 
     private void createVoidExcessTooltip(RichTooltip t) {
@@ -359,7 +362,9 @@ public class MTEMultiBlockBaseGui {
             }
         }.size(18, 18)
             .value(getInputSeparationSyncValue(inputSeparationSyncer))
-            .overlay(new DynamicDrawable(() -> this.getInputSeparationOverlay(inputSeparationSyncer)))
+            .overlay(
+                base.supportsInputSeparation() ? getInputSeparationOverlay(inputSeparationSyncer)
+                    : getForcedInputSeparationOverlay())
             .tooltipBuilder(this::createInputSeparationTooltip);
     }
 
@@ -371,22 +376,16 @@ public class MTEMultiBlockBaseGui {
         });
     }
 
-    private IDrawable getInputSeparationOverlay(BooleanSyncValue inputSeparationSyncer) {
-        UITexture forbidden = GTGuiTextures.OVERLAY_BUTTON_FORBIDDEN;
-        if (inputSeparationSyncer.getValue()) {
-            if (base.supportsInputSeparation()) {
-                return GTGuiTextures.OVERLAY_BUTTON_INPUT_SEPARATION_ON;
-            } else {
-                return new DrawableStack(GTGuiTextures.OVERLAY_BUTTON_INPUT_SEPARATION_ON_DISABLED, forbidden);
-            }
-        } else {
+    private IDrawable getForcedInputSeparationOverlay() {
+        UITexture texture = base.isBatchModeEnabled() ? GTGuiTextures.OVERLAY_BUTTON_INPUT_SEPARATION_ON_DISABLED
+            : GTGuiTextures.OVERLAY_BUTTON_INPUT_SEPARATION_OFF_DISABLED;
+        return new DrawableStack(texture, GTGuiTextures.OVERLAY_BUTTON_FORBIDDEN);
+    }
 
-            if (base.supportsInputSeparation()) {
-                return GTGuiTextures.OVERLAY_BUTTON_INPUT_SEPARATION_OFF;
-            } else {
-                return new DrawableStack(GTGuiTextures.OVERLAY_BUTTON_INPUT_SEPARATION_OFF_DISABLED, forbidden);
-            }
-        }
+    private IDrawable getInputSeparationOverlay(BooleanSyncValue inputSeparationSyncer) {
+        return new DynamicDrawable(
+            () -> inputSeparationSyncer.getValue() ? GTGuiTextures.OVERLAY_BUTTON_INPUT_SEPARATION_ON
+                : GTGuiTextures.OVERLAY_BUTTON_INPUT_SEPARATION_OFF);
     }
 
     private void createInputSeparationTooltip(RichTooltip t) {
@@ -426,7 +425,7 @@ public class MTEMultiBlockBaseGui {
             }
         }.size(18, 18)
             .value(getBatchModeSyncValue(batchModeSyncer))
-            .overlay(new DynamicDrawable(() -> getBatchModeDrawable(batchModeSyncer)))
+            .overlay(base.supportsBatchMode() ? getBatchModeOverlay(batchModeSyncer) : getForcedBatchModeOverlay())
             .tooltipBuilder(this::createBatchModeTooltip);
     }
 
@@ -438,21 +437,16 @@ public class MTEMultiBlockBaseGui {
         });
     }
 
-    private IDrawable getBatchModeDrawable(BooleanSyncValue batchModeSyncer) {
-        UITexture forbidden = GTGuiTextures.OVERLAY_BUTTON_FORBIDDEN;
-        if (batchModeSyncer.getValue()) {
-            if (base.supportsBatchMode()) {
-                return GTGuiTextures.OVERLAY_BUTTON_BATCH_MODE_ON;
-            } else {
-                return GTGuiTextures.OVERLAY_BUTTON_BATCH_MODE_ON_DISABLED;
-            }
-        } else {
-            if (base.supportsBatchMode()) {
-                return GTGuiTextures.OVERLAY_BUTTON_BATCH_MODE_OFF;
-            } else {
-                return new DrawableStack(GTGuiTextures.OVERLAY_BUTTON_BATCH_MODE_OFF_DISABLED, forbidden);
-            }
-        }
+    private IDrawable getForcedBatchModeOverlay() {
+        UITexture texture = base.isBatchModeEnabled() ? GTGuiTextures.OVERLAY_BUTTON_BATCH_MODE_ON_DISABLED
+            : GTGuiTextures.OVERLAY_BUTTON_BATCH_MODE_OFF_DISABLED;
+        return new DrawableStack(texture, GTGuiTextures.OVERLAY_BUTTON_FORBIDDEN);
+    }
+
+    private IDrawable getBatchModeOverlay(BooleanSyncValue batchModeSyncer) {
+        return new DynamicDrawable(
+            () -> batchModeSyncer.getValue() ? GTGuiTextures.OVERLAY_BUTTON_BATCH_MODE_ON
+                : GTGuiTextures.OVERLAY_BUTTON_BATCH_MODE_OFF);
     }
 
     private void createBatchModeTooltip(RichTooltip t) {
@@ -472,7 +466,9 @@ public class MTEMultiBlockBaseGui {
             }
         }.size(18, 18)
             .value(getRecipeLockSyncValue(recipeLockSyncer))
-            .overlay(new DynamicDrawable(() -> getRecipeLockOverlay(recipeLockSyncer)))
+            .overlay(
+                base.supportsSingleRecipeLocking() ? getRecipeLockOverlay(recipeLockSyncer)
+                    : getForcedRecipeLockOverlay())
             .tooltipBuilder(this::createRecipeLockTooltip);
     }
 
@@ -484,21 +480,16 @@ public class MTEMultiBlockBaseGui {
         });
     }
 
+    private IDrawable getForcedRecipeLockOverlay() {
+        UITexture texture = base.mLockedToSingleRecipe ? GTGuiTextures.OVERLAY_BUTTON_RECIPE_LOCKED_DISABLED
+            : GTGuiTextures.OVERLAY_BUTTON_RECIPE_UNLOCKED_DISABLED;
+        return new DrawableStack(texture, GTGuiTextures.OVERLAY_BUTTON_FORBIDDEN);
+    }
+
     private IDrawable getRecipeLockOverlay(BooleanSyncValue recipeLockSyncer) {
-        UITexture forbidden = GTGuiTextures.OVERLAY_BUTTON_FORBIDDEN;
-        if (recipeLockSyncer.getValue()) {
-            if (base.supportsSingleRecipeLocking()) {
-                return GTGuiTextures.OVERLAY_BUTTON_RECIPE_LOCKED;
-            } else {
-                return GTGuiTextures.OVERLAY_BUTTON_RECIPE_LOCKED_DISABLED;
-            }
-        } else {
-            if (base.supportsSingleRecipeLocking()) {
-                return GTGuiTextures.OVERLAY_BUTTON_RECIPE_UNLOCKED;
-            } else {
-                return new DrawableStack(GTGuiTextures.OVERLAY_BUTTON_RECIPE_UNLOCKED_DISABLED, forbidden);
-            }
-        }
+        return new DynamicDrawable(
+            () -> recipeLockSyncer.getValue() ? GTGuiTextures.OVERLAY_BUTTON_RECIPE_LOCKED
+                : GTGuiTextures.OVERLAY_BUTTON_RECIPE_UNLOCKED);
     }
 
     private void createRecipeLockTooltip(RichTooltip t) {
