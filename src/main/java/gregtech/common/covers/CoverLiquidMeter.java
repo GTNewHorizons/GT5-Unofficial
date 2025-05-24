@@ -1,5 +1,7 @@
 package gregtech.common.covers;
 
+import java.util.Arrays;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
@@ -21,6 +23,8 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.metatileentity.BaseMetaTileEntity;
 import gregtech.api.util.GTUtility;
+import gregtech.common.covers.gui.CoverGui;
+import gregtech.common.covers.gui.CoverLiquidMeterGui;
 import gregtech.common.gui.mui1.cover.LiquidMeterUIFactory;
 import gregtech.common.tileentities.storage.MTEDigitalTankBase;
 import io.netty.buffer.ByteBuf;
@@ -56,7 +60,7 @@ public class CoverLiquidMeter extends Cover {
         return this.threshold;
     }
 
-    public CoverLiquidMeter setThresdhold(int threshold) {
+    public CoverLiquidMeter setThreshold(int threshold) {
         this.threshold = threshold;
         return this;
     }
@@ -180,6 +184,18 @@ public class CoverLiquidMeter extends Cover {
         return 5;
     }
 
+    private int getMaxCapacity() {
+        final ICoverable tile = getTile();
+        if (!tile.isDead() && tile instanceof IFluidHandler) {
+            FluidTankInfo[] tanks = ((IFluidHandler) tile).getTankInfo(ForgeDirection.UNKNOWN);
+            return Arrays.stream(tanks)
+                .mapToInt(tank -> tank.capacity)
+                .sum();
+        } else {
+            return -1;
+        }
+    }
+
     // GUI stuff
 
     @Override
@@ -188,8 +204,13 @@ public class CoverLiquidMeter extends Cover {
     }
 
     @Override
+    protected @NotNull CoverGui<CoverLiquidMeter> getCoverGui() {
+        return new CoverLiquidMeterGui(this, getMaxCapacity());
+    }
+
+    @Override
     public ModularWindow createWindow(CoverUIBuildContext buildContext) {
-        return new LiquidMeterUIFactory(buildContext).createWindow();
+        return new LiquidMeterUIFactory(buildContext, getMaxCapacity()).createWindow();
     }
 
 }
