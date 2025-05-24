@@ -457,11 +457,12 @@ public class OverclockCalculator {
         // Produces a fractional multiplier that corrects for inaccuracies resulting from discrete parallels and tick
         // durations. It is 1 / (duration of first OC to go below 1 tick)
         double correctionMultiplier = 1.0;
-        if (heatOverclocks >= neededHeatOverclocks || regularOverclocks >= neededOverclocks) {
-            double criticalDecreasePerOC = heatOverclocks >= neededHeatOverclocks ? durationDecreasePerHeatOC
-                : durationDecreasePerOC;
-            double criticalOverclock = Math.ceil(Math.log(originalDuration) / Math.log(criticalDecreasePerOC));
-            double criticalDuration = originalDuration / Math.pow(criticalDecreasePerOC, criticalOverclock);
+        if (heatOverclocks >= neededHeatOverclocks) {
+            double criticalDuration = originalDuration / Math.pow(durationDecreasePerHeatOC, neededHeatOverclocks);
+            correctionMultiplier = 1 / criticalDuration;
+        }
+        else if (regularOverclocks >= neededOverclocks) {
+            double criticalDuration = originalDuration / Math.pow(durationDecreasePerOC, neededOverclocks);
             correctionMultiplier = 1 / criticalDuration;
         }
 
