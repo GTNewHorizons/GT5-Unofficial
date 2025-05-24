@@ -460,8 +460,7 @@ public class OverclockCalculator {
         if (heatOverclocks >= neededHeatOverclocks) {
             double criticalDuration = originalDuration / Math.pow(durationDecreasePerHeatOC, neededHeatOverclocks);
             correctionMultiplier = 1 / criticalDuration;
-        }
-        else if (regularOverclocks >= neededOverclocks) {
+        } else if (regularOverclocks >= neededOverclocks) {
             double criticalDuration = originalDuration / Math.pow(durationDecreasePerOC, neededOverclocks);
             correctionMultiplier = 1 / criticalDuration;
         }
