@@ -4,7 +4,6 @@ import static gregtech.api.enums.Mods.GTNHIntergalactic;
 import static gregtech.api.enums.Mods.GregTech;
 import static tectech.Reference.MODID;
 
-import com.cleanroommc.modularui.drawable.AdaptableUITexture;
 import com.cleanroommc.modularui.drawable.UITexture;
 
 import bartworks.MainMod;

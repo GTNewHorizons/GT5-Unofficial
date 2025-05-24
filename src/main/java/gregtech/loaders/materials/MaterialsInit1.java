@@ -1220,7 +1220,7 @@ public class MaterialsInit1 {
             .setRGB(255,196,0)
             .setName("VO75")
             .setColor(Dyes._NULL)
-
+            .constructMaterial();
 
         Materials.ComplexityCatalyst = new MaterialBuilder(897, TextureSet.SET_DULL, "Complexity Catalyst")
             .setRGB(0x8b93a9)
