@@ -293,6 +293,9 @@ public final class GTGuiTextures {
             GTTextureIds.OVERLAY_SLOT_BLOCK_PRIMITIVE)
         .build();
 
+    public static final UITexture OVERLAY_BUTTON_THERMOMETER = UITexture
+        .fullImage(GregTech.ID, "gui/overlay_button/thermometer");
+
     public static final UITexture OVERLAY_BUTTON_VOID_EXCESS_NONE = UITexture.builder()
         .canApplyTheme(true)
         .location(GregTech.ID, "gui/overlay_button/void_excess_none")
@@ -581,6 +584,17 @@ public final class GTGuiTextures {
         .adaptable(1, 1, 1, 1)
         .canApplyTheme()
         .name(GTTextureIds.PICTURE_RADIATION_SHUTTER_INSIDE)
+        .build();
+
+    public static final UITexture PROGRESSBAR_ECCF_TEMPERATURE = UITexture.builder()
+        .location(GregTech.ID, "gui/progressbar/progressbar_eccf_temperature")
+        .fullImage()
+        .name(GTTextureIds.PROGRESSBAR_ECCF_TEMPERATURE)
+        .build();
+    public static final UITexture PROGRESSBAR_ECCF_PRESSURE = UITexture.builder()
+        .location(GregTech.ID, "gui/progressbar/progressbar_eccf_pressure")
+        .fullImage()
+        .name(GTTextureIds.PROGRESSBAR_ECCF_PRESSURE)
         .build();
 
     // endregion picture
