@@ -156,10 +156,6 @@ public class MTEMultiBlockBaseGui {
     }
 
     protected ListWidget<IWidget, ?> createTerminalTextWidget(PanelSyncManager syncManager, ModularPanel parent) {
-        return createTerminalTextWidget(syncManager);
-    }
-
-    protected ListWidget<IWidget, ?> createTerminalTextWidget(PanelSyncManager syncManager) {
         return new ListWidget<>()
             .child(
                 new TextWidget(GTUtility.trans("132", "Pipe is loose. (Wrench)")).color(Color.WHITE.main)
