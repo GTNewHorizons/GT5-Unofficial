@@ -8,6 +8,7 @@ import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widgets.layout.Flow;
+import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
 
 import gregtech.api.modularui2.GTWidgetThemes;
 import gregtech.api.util.GTUtility;
@@ -125,6 +126,12 @@ public class CoverGui<T extends Cover> {
     protected Flow positionRow(Flow row) {
         return row.coverChildren()
             .childPadding(ROW_ELEMENT_PADDING);
+    }
+
+    protected TextFieldWidget makeNumberField() {
+        return new TextFieldWidget().setFormatAsInteger(true)
+            .width(80)
+            .height(12);
     }
 
     protected int getGUIWidth() {

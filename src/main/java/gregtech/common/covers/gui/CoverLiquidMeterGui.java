@@ -1,14 +1,11 @@
 package gregtech.common.covers.gui;
 
 import com.cleanroommc.modularui.api.drawable.IKey;
-import com.cleanroommc.modularui.theme.Theme;
-import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
 import com.cleanroommc.modularui.value.sync.IntSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widgets.ToggleButton;
 import com.cleanroommc.modularui.widgets.layout.Flow;
-import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
 
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.util.GTUtility;
@@ -50,10 +47,8 @@ public class CoverLiquidMeterGui extends CoverGui<CoverLiquidMeter> {
         return Flow.row()
             .debugName("fluid_threshold")
             .child(
-                new TextFieldWidget().value(new IntSyncValue(cover::getThreshold, cover::setThresdhold))
+                makeNumberField().value(new IntSyncValue(cover::getThreshold, cover::setThresdhold))
                     .setNumbers(0, maxCapacity)
-                    .setFormatAsInteger(true)
-                    .width(80)
                     .setFocusOnGuiOpen(true))
             .child(
                 IKey.str(GTUtility.trans("222", "Fluid threshold"))
