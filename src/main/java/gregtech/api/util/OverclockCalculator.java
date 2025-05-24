@@ -445,9 +445,9 @@ public class OverclockCalculator {
         int regularOverclocks = overclocks - heatOverclocks;
 
         double originalDuration = duration;
-        int neededHeatOverclocks = (int) Math.max((Math.log(duration) / Math.log(durationDecreasePerHeatOC)), 0);
+        int neededHeatOverclocks = (int) Math.ceil((Math.log(duration) / Math.log(durationDecreasePerHeatOC)));
         duration /= Math.pow(durationDecreasePerHeatOC, heatOverclocks);
-        neededOverclocks = (int) Math.max((Math.log(duration) / Math.log(durationDecreasePerOC)), 0);
+        neededOverclocks = (int) Math.ceil((Math.log(duration) / Math.log(durationDecreasePerOC)));
 
         int heatMultiplier = (int) Math
             .pow(durationDecreasePerHeatOC, Math.max(heatOverclocks - neededHeatOverclocks, 0));
@@ -455,12 +455,12 @@ public class OverclockCalculator {
             .pow(durationDecreasePerOC, Math.max(regularOverclocks - neededOverclocks, 0));
 
         // Produces a fractional multiplier that corrects for inaccuracies resulting from discrete parallels and tick
-        // durations. It is 1 / (duration of first OC to go below 2 ticks)
+        // durations. It is 1 / (duration of first OC to go below 1 tick)
         double correctionMultiplier = 1.0;
         if (heatOverclocks >= neededHeatOverclocks || regularOverclocks >= neededOverclocks) {
             double criticalDecreasePerOC = heatOverclocks >= neededHeatOverclocks ? durationDecreasePerHeatOC
                 : durationDecreasePerOC;
-            double criticalOverclock = Math.ceil(Math.log(originalDuration / 2) / Math.log(criticalDecreasePerOC));
+            double criticalOverclock = Math.ceil(Math.log(originalDuration) / Math.log(criticalDecreasePerOC));
             double criticalDuration = originalDuration / Math.pow(criticalDecreasePerOC, criticalOverclock);
             correctionMultiplier = 1 / criticalDuration;
         }
