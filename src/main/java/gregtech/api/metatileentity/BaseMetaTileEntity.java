@@ -109,7 +109,9 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
     protected final long[] mAverageEUOutput = new long[] { 0, 0, 0, 0, 0 };
     private boolean mHasEnoughEnergy = true, mRunningThroughTick = false, mInputDisabled = false,
         mOutputDisabled = false, mMuffler = false, mLockUpgrade = false;
-    private boolean mActive = false, mWorkUpdate = false, mSteamConverter = false, mWorks = true;
+    private boolean mActive = false;
+    private boolean mWorkUpdate = false;
+    private boolean mWorks = true;
     private boolean oRedstone = false;
     private byte mColor = 0, oldColor = 0, oldStrongRedstone = 0, oldRedstoneData = 63, oldTextureData = 0,
         oldUpdateData = 0;
@@ -145,7 +147,6 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
             nbt.setString("mOwnerUuid", mOwnerUuid == null ? "" : mOwnerUuid.toString());
             nbt.setBoolean("mLockUpgrade", mLockUpgrade);
             nbt.setBoolean("mMuffler", mMuffler);
-            nbt.setBoolean("mSteamConverter", mSteamConverter);
             nbt.setBoolean("mActive", mActive);
             nbt.setBoolean("mWorks", !mWorks);
             nbt.setBoolean("mInputDisabled", mInputDisabled);
@@ -194,7 +195,6 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
             }
             mLockUpgrade = aNBT.getBoolean("mLockUpgrade");
             mMuffler = aNBT.getBoolean("mMuffler");
-            mSteamConverter = aNBT.getBoolean("mSteamConverter");
             mActive = aNBT.getBoolean("mActive");
             mWorks = !aNBT.getBoolean("mWorks");
             mInputDisabled = aNBT.getBoolean("mInputDisabled");
@@ -764,10 +764,6 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
             mMetaTileEntity.mSoundRequests = 0;
         }
         if (aLogLevel > 0) {
-            if (getSteamCapacity() > 0 && hasSteamEngineUpgrade()) tList.add(
-                GTUtility.formatNumbers(getStoredSteam()) + " of "
-                    + GTUtility.formatNumbers(getSteamCapacity())
-                    + " Steam");
             tList.add(
                 "Machine is " + (mActive ? EnumChatFormatting.GREEN + "active" + EnumChatFormatting.RESET
                     : EnumChatFormatting.RED + "inactive" + EnumChatFormatting.RESET));
@@ -1338,7 +1334,6 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
         final NBTTagCompound tNBT = new NBTTagCompound();
         if (mMuffler) tNBT.setBoolean("mMuffler", true);
         if (mLockUpgrade) tNBT.setBoolean("mLockUpgrade", true);
-        if (mSteamConverter) tNBT.setBoolean("mSteamConverter", true);
         if (mColor > 0) tNBT.setByte("mColor", mColor);
         if (mOtherUpgrades > 0) tNBT.setByte("mOtherUpgrades", mOtherUpgrades);
 
@@ -1352,7 +1347,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
     }
 
     public int getUpgradeCount() {
-        return (mMuffler ? 1 : 0) + (mLockUpgrade ? 1 : 0) + (mSteamConverter ? 1 : 0) + mOtherUpgrades;
+        return (mMuffler ? 1 : 0) + (mLockUpgrade ? 1 : 0) + mOtherUpgrades;
     }
 
     @Override
@@ -1653,27 +1648,6 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
     public byte getGeneralRS(ForgeDirection side) {
         if (mMetaTileEntity == null) return 0;
         return mMetaTileEntity.allowGeneralRedstoneOutput() ? mSidedRedstone[side.ordinal()] : 0;
-    }
-
-    @Override
-    public boolean isSteamEngineUpgradable() {
-        return isUpgradable() && !hasSteamEngineUpgrade() && getSteamCapacity() > 0;
-    }
-
-    @Override
-    public boolean addSteamEngineUpgrade() {
-        if (isSteamEngineUpgradable()) {
-            issueBlockUpdate();
-            mSteamConverter = true;
-            return true;
-        }
-        return false;
-    }
-
-    @Override
-    public boolean hasSteamEngineUpgrade() {
-        if (canAccessData() && mMetaTileEntity.isSteampowered()) return true;
-        return mSteamConverter;
     }
 
     @Override
