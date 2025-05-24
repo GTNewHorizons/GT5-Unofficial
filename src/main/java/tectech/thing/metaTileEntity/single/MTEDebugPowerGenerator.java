@@ -83,7 +83,7 @@ public class MTEDebugPowerGenerator extends MTETieredMachineBlock
         LASER = !LASER;
         GTUtility.sendChatToPlayer(
             aPlayer,
-            String.format(StatCollector.translateToLocal("tt.chat.debug.generator"), LASER ? "ON" : "OFF"));
+            StatCollector.translateToLocalFormatted("tt.chat.debug.generator", LASER ? "ON" : "OFF"));
     }
 
     @Override

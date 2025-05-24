@@ -456,7 +456,7 @@ public class GTAchievements {
         return null;
     }
 
-    public void issueAchivementHatch(EntityPlayer player, ItemStack stack) {
+    public void issueAchievementHatch(EntityPlayer player, ItemStack stack) {
         if (player == null || stack == null) {
             return;
         }
@@ -491,7 +491,7 @@ public class GTAchievements {
         }
     }
 
-    public void issueAchivementHatchFluid(EntityPlayer player, FluidStack fluid) {
+    public void issueAchievementHatchFluid(EntityPlayer player, FluidStack fluid) {
         if (player == null || fluid == null) {
             return;
         }
