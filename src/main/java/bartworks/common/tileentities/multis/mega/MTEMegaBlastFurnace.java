@@ -165,6 +165,7 @@ public class MTEMegaBlastFurnace extends MegaMultiBlockBase<MTEMegaBlastFurnace>
             .addTecTechHatchInfo()
             .addGlassEnergyLimitInfo()
             .addMinGlassForLaser(VoltageIndex.UV)
+            .addUnlimitedTierSkips()
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(15, 20, 15, true)
             .addController("3rd layer center")

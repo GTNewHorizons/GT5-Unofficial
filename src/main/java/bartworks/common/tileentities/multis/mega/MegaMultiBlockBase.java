@@ -134,6 +134,7 @@ public abstract class MegaMultiBlockBase<T extends MegaMultiBlockBase<T>> extend
     protected void setProcessingLogicPower(ProcessingLogic logic) {
         logic.setAvailableVoltage(this.getMaxInputEu());
         logic.setAvailableAmperage(1);
+        logic.setUnlimitedTierSkips();
     }
 
     protected static class StructureElementAirNoHint<T> implements IStructureElement<T> {

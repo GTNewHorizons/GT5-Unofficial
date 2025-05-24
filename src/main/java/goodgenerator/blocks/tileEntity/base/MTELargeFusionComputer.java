@@ -465,6 +465,7 @@ public abstract class MTELargeFusionComputer extends MTETooltipMultiBlockBaseEM
     protected void setProcessingLogicPower(ProcessingLogic logic) {
         logic.setAvailableVoltage(GTValues.V[tier()]);
         logic.setAvailableAmperage(getSingleHatchPower() * 32 / GTValues.V[tier()]);
+        logic.setUnlimitedTierSkips();
     }
 
     public int getChunkX() {
