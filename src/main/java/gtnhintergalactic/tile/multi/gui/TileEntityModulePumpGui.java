@@ -153,7 +153,7 @@ public class TileEntityModulePumpGui extends TileEntityModuleBaseGui {
         panel.size(planetTiers.length * 24, 90)
             .pos(parentArea.x, parentArea.y + 30);
 
-        AtomicReference<String> search = new AtomicReference<>(EnumChatFormatting.GRAY + "Search...");
+        AtomicReference<String> search = new AtomicReference<>("");
         StringSyncValue textFieldSyncer = new StringSyncValue(search::get, search::set);
 
         PagedWidget.Controller tabController = new PagedWidget.Controller();
@@ -267,6 +267,7 @@ public class TileEntityModulePumpGui extends TileEntityModuleBaseGui {
                         new TextFieldWidget().size(80, 9)
                             .bottomRel(0, 9 + 4, 0)
                             .left(4)
+                            .hintText("Search...")
                             .value(textFieldSyncer)));
         return panel;
     }
