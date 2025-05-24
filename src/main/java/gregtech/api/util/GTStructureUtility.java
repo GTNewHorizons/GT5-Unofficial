@@ -1,15 +1,19 @@
 package gregtech.api.util;
 
+import static com.gtnewhorizon.structurelib.item.ItemConstructableTrigger.TriggerMode.BUILDING;
+import static com.gtnewhorizon.structurelib.item.ItemConstructableTrigger.TriggerMode.REMOVING;
 import static com.gtnewhorizon.structurelib.structure.IStructureElement.PlaceResult.ACCEPT;
 import static com.gtnewhorizon.structurelib.structure.IStructureElement.PlaceResult.ACCEPT_STOP;
 import static com.gtnewhorizon.structurelib.structure.IStructureElement.PlaceResult.REJECT;
 import static com.gtnewhorizon.structurelib.structure.IStructureElement.PlaceResult.SKIP;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.checkForRemoving;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.lazy;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlocksTiered;
 import static com.gtnewhorizon.structurelib.util.ItemStackPredicate.NBTMode.EXACT;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.*;
 import java.util.function.BiConsumer;
 import java.util.function.BiPredicate;
 import java.util.function.Consumer;
@@ -36,6 +40,8 @@ import org.jetbrains.annotations.Nullable;
 
 import com.gtnewhorizon.gtnhlib.util.CoordinatePacker;
 import com.gtnewhorizon.structurelib.StructureLibAPI;
+import com.gtnewhorizon.structurelib.item.ItemConstructableTrigger;
+import com.gtnewhorizon.structurelib.item.ItemConstructableTrigger.TriggerMode;
 import com.gtnewhorizon.structurelib.structure.AutoPlaceEnvironment;
 import com.gtnewhorizon.structurelib.structure.IItemSource;
 import com.gtnewhorizon.structurelib.structure.IStructureElement;
@@ -194,7 +200,9 @@ public class GTStructureUtility {
             @Override
             public PlaceResult survivalPlaceBlock(T t, World world, int x, int y, int z, ItemStack trigger,
                 AutoPlaceEnvironment env) {
-                if (check(t, world, x, y, z)) return SKIP;
+                TriggerMode mode = ItemConstructableTrigger.getMode(trigger);
+                PlaceResult skipOrRejectBasedOnCheck = checkForRemoving(mode, check(t, world, x, y, z), world, x, y, z);
+                if (skipOrRejectBasedOnCheck != ACCEPT) return skipOrRejectBasedOnCheck;
                 ItemStack tFrameStack = getFrameStack();
                 if (!GTUtility.isStackValid(tFrameStack) || !(tFrameStack.getItem() instanceof ItemBlock))
                     return REJECT; // honestly, this is more like a programming error or pack issue
@@ -305,12 +313,16 @@ public class GTStructureUtility {
             @Override
             public PlaceResult survivalPlaceBlock(T t, World world, int x, int y, int z, ItemStack trigger,
                 AutoPlaceEnvironment env) {
-                if (shouldSkip != null) {
-                    TileEntity tileEntity = world.getTileEntity(x, y, z);
-                    if (tileEntity instanceof IGregTechTileEntity
-                        && shouldSkip.test(t, (IGregTechTileEntity) tileEntity)) return SKIP;
+                TriggerMode mode = ItemConstructableTrigger.getMode(trigger);
+                PlaceResult skipOrRejectBasedOnCheck = checkForRemoving(mode, check(t, world, x, y, z), world, x, y, z);
+                if (skipOrRejectBasedOnCheck != ACCEPT) return skipOrRejectBasedOnCheck;
+                if (mode != REMOVING && shouldSkip != null
+                    && world.getTileEntity(x, y, z) instanceof IGregTechTileEntity igte
+                    && shouldSkip.test(t, igte)) {
+                    return SKIP;
                 }
-                if (!StructureLibAPI.isBlockTriviallyReplaceable(world, x, y, z, env.getActor())) return REJECT;
+                if (mode == BUILDING && !StructureLibAPI.isBlockTriviallyReplaceable(world, x, y, z, env.getActor()))
+                    return REJECT;
                 Class<? extends IMetaTileEntity> clazz = aMetaId.apply(t);
                 if (clazz == null) return REJECT;
                 ItemStack taken = env.getSource()
@@ -390,12 +402,16 @@ public class GTStructureUtility {
             @Override
             public PlaceResult survivalPlaceBlock(T t, World world, int x, int y, int z, ItemStack trigger,
                 AutoPlaceEnvironment env) {
-                if (shouldSkip != null) {
-                    TileEntity tileEntity = world.getTileEntity(x, y, z);
-                    if (tileEntity instanceof IGregTechTileEntity
-                        && shouldSkip.test(t, (IGregTechTileEntity) tileEntity)) return SKIP;
+                TriggerMode mode = ItemConstructableTrigger.getMode(trigger);
+                PlaceResult skipOrRejectBasedOnCheck = checkForRemoving(mode, check(t, world, x, y, z), world, x, y, z);
+                if (skipOrRejectBasedOnCheck != ACCEPT) return skipOrRejectBasedOnCheck;
+                if (mode != REMOVING && shouldSkip != null
+                    && world.getTileEntity(x, y, z) instanceof IGregTechTileEntity igte
+                    && shouldSkip.test(t, igte)) {
+                    return SKIP;
                 }
-                if (!StructureLibAPI.isBlockTriviallyReplaceable(world, x, y, z, env.getActor())) return REJECT;
+                if (mode == BUILDING && !StructureLibAPI.isBlockTriviallyReplaceable(world, x, y, z, env.getActor()))
+                    return REJECT;
                 ItemMachines item = (ItemMachines) Item.getItemFromBlock(GregTechAPI.sBlockMachines);
                 int meta = aMetaId.applyAsInt(t);
                 if (meta < 0) return REJECT;
@@ -466,7 +482,9 @@ public class GTStructureUtility {
             @Override
             public PlaceResult survivalPlaceBlock(T t, World world, int x, int y, int z, ItemStack trigger,
                 IItemSource s, EntityPlayerMP actor, Consumer<IChatComponent> chatter) {
-                if (check(t, world, x, y, z)) return SKIP;
+                TriggerMode mode = ItemConstructableTrigger.getMode(trigger);
+                PlaceResult skipOrRejectBasedOnCheck = checkForRemoving(mode, check(t, world, x, y, z), world, x, y, z);
+                if (skipOrRejectBasedOnCheck != ACCEPT) return skipOrRejectBasedOnCheck;
                 return com.gtnewhorizon.structurelib.structure.StructureUtility
                     .survivalPlaceBlock(placeCasing, placeCasingMeta, world, x, y, z, s, actor, chatter);
             }
@@ -582,10 +600,13 @@ public class GTStructureUtility {
             @Override
             public PlaceResult survivalPlaceBlock(T t, World world, int x, int y, int z, ItemStack trigger,
                 AutoPlaceEnvironment env) {
+                TriggerMode mode = ItemConstructableTrigger.getMode(trigger);
                 Block block = world.getBlock(x, y, z);
-                boolean isCoil = block instanceof IHeatingCoil
-                    && ((IHeatingCoil) block).getCoilHeat(world.getBlockMetadata(x, y, z)) == getHeatFromHint(trigger);
-                if (isCoil) return SKIP;
+                boolean isCoil = block instanceof IHeatingCoil coilBlock
+                    && coilBlock.getCoilHeat(world.getBlockMetadata(x, y, z)) == getHeatFromHint(trigger);
+                if (mode == BUILDING && isCoil) return SKIP;
+                else if (mode != BUILDING && (!(block instanceof IHeatingCoil) && !world.isAirBlock(x, y, z)))
+                    return REJECT;
                 return com.gtnewhorizon.structurelib.structure.StructureUtility.survivalPlaceBlock(
                     GregTechAPI.sBlockCasings5,
                     getMetaFromHint(trigger),
@@ -696,12 +717,13 @@ public class GTStructureUtility {
             @Override
             public PlaceResult survivalPlaceBlock(T t, World world, int x, int y, int z, ItemStack trigger,
                 AutoPlaceEnvironment env) {
+                TriggerMode mode = ItemConstructableTrigger.getMode(trigger);
                 Block block = world.getBlock(x, y, z);
 
                 boolean isCoil = block == GregTechAPI.sSolenoidCoilCasings
                     && world.getBlockMetadata(x, y, z) == getMetaFromHint(trigger);
 
-                if (isCoil) return SKIP;
+                if (mode == BUILDING && isCoil) return SKIP;
 
                 return com.gtnewhorizon.structurelib.structure.StructureUtility.survivalPlaceBlock(
                     GregTechAPI.sSolenoidCoilCasings,
