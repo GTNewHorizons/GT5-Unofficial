@@ -263,6 +263,34 @@ public class GTRecipeConstants {
     public static final RecipeMetadataKey<Integer> EU_MULTIPLIER = SimpleRecipeMetadataKey
         .create(Integer.class, "eu_multiplier");
 
+    public static final RecipeMetadataKey<Double> HALF_LIFE = SimpleRecipeMetadataKey.create(Double.class, "half-life");
+
+    /**
+     * Just some trivia to show in the decay recipes, since they don't have a lot of relevant info.
+     * Maybe this will come in handy some day.
+     */
+    public enum DecayType {
+        Unknown,
+        /** Nucleus emits 2 protons and 2 neutrons, to form a single new nucleus. */
+        Alpha,
+        /** Nucleus splits into two smaller nuclei, often emitting several alpha particles. */
+        SpontaneousFission,
+        /** Nucleus emits a small cluster of protons/neutrons instead of individual protons or neutrons. */
+        Cluster,
+        /** Nucleus emits an alpha particle, often emitting or absorbing other particles in the process. */
+        AlphaTransfer,
+        /**
+         * Nucleus emits a positron, which typically converts a neutron into a proton, emitting a neutrino in the
+         * process.
+         */
+        BetaMinus,
+        /** A proton in the nucleus captures an electron to form a neutron, emitting a neutrino in the process. */
+        BetaPlus,
+    }
+
+    public static final RecipeMetadataKey<DecayType> DECAY_TYPE = SimpleRecipeMetadataKey
+        .create(DecayType.class, "decay-type");
+
     /**
      * Add a arc furnace recipe. Adds to both normal arc furnace and plasma arc furnace.
      * Will override the fluid input with oxygen/plasma for the respective recipe maps, so there is no point setting it.

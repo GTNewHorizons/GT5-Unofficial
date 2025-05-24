@@ -243,6 +243,9 @@ GT5U.MBTT.HatchInfo=Any %s
 GT5U.MBTT.HatchDots= (dots: %s)
 GT5U.MBTT.BoroGlassAny=Borosilicate Glass (any, mixed)
 GT5U.MBTT.BoroGlassTiered=Borosilicate Glass (any)
+GT5U.MBTT.AlchemyCasingAny=Alchemically Resistant/Inert/Immune Casing
+GT5U.MBTT.AlchemicalConstructAny=Alchemical Construct
+GT5U.MBTT.SuperChest=Super/Quantum Chest
 
 GT5U.MBTT.subchannel=Uses sub channel §6%s§r§7 for §6%s
 
@@ -446,6 +449,8 @@ gt.recipe.largeboilerfakefuels=Large Boiler
 gt.recipe.nanoforge=Nano Forge
 gt.recipe.pcbfactory=PCB Factory
 gt.recipe.ic2nuke=Nuclear Fission
+gt.recipe.entropic-processing=Entropic Processing
+gt.recipe.isotope-decay=Isotope Decay
 gt.recipe.purificationplantclarifier=Clarifier
 gt.recipe.purificationplantflocculation=Flocculation
 gt.recipe.purificationplantphadjustment=pH Neutralization
@@ -865,6 +870,20 @@ GT5U.gui.text.disabled=§cDisabled§f
 GT5U.gui.text.lma_craftingfx=Show Crafting Effects
 GT5U.gui.text.repair_tip=Click with Tool to repair.
 GT5U.gui.text.apiary_missing_flowers=Missing flowers: %s
+GT5U.gui.text.contents=§7Contents:§r
+GT5U.gui.text.content-entry=§7%s:§9 %s§r
+GT5U.gui.text.decay-rate=§7Decay Rate:§9 %s§7%s
+GT5U.gui.text.nothing=§7Nothing§r
+GT5U.gui.text.half-life=Half-life: %s %s
+GT5U.gui.text.isotope-prod-per-s=Prod/Stack/Second: %.2e
+GT5U.gui.text.decay-type=Decay Type: %s
+GT5U.gui.text.unknown=Unknown
+GT5U.gui.text.alpha=Alpha Decay
+GT5U.gui.text.spontaneous-fission=Spontaneous Fission
+GT5U.gui.text.cluster=Cluster Decay
+GT5U.gui.text.alpha-transfer=Alpha Transfer
+GT5U.gui.text.beta-minus=Beta Minus Decay
+GT5U.gui.text.beta-plus=Beta Plus Decay
 
 GT5U.gui.config.client=Client
 GT5U.gui.config.client.color_modulation=Color Modulation
@@ -2182,6 +2201,7 @@ GTPP.tooltip.meta_special.quantum_modulation=Provides quantum modulation
 GTPP.tooltip.meta_food.unless_starving=I wouldn't eat this unless I was starving
 GTPP.tooltip.meta_food.better_cooked=Doesn't look any better cooked
 GTPP.tooltip.meta_food.warm_touch=Warm to the touch
+GTPP.tooltip.dust-decay-hint=Only decays in a %s or a %s
 
 # GTPP structure hints
 GTPP.tooltip.structure.anvil=Anvil
