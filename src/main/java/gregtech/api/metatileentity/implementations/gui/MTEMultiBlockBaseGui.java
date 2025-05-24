@@ -787,5 +787,6 @@ public class MTEMultiBlockBaseGui {
         syncManager.registerSlotGroup("item_inv", 1);
 
     }
+
     protected void setMachineModeIcons() {}
 }
