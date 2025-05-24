@@ -17,13 +17,11 @@ import com.cleanroommc.modularui.drawable.UITexture;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.utils.Color;
-import com.cleanroommc.modularui.utils.serialization.ByteBufAdapters;
 import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
 import com.cleanroommc.modularui.value.sync.DoubleSyncValue;
-import com.cleanroommc.modularui.value.sync.GenericListSyncHandler;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
-import com.cleanroommc.modularui.value.sync.StringSyncValue;
 import com.cleanroommc.modularui.widget.ParentWidget;
+import com.cleanroommc.modularui.widget.SingleChildWidget;
 import com.cleanroommc.modularui.widget.WidgetTree;
 import com.cleanroommc.modularui.widget.scroll.ScrollData;
 import com.cleanroommc.modularui.widgets.ListWidget;
@@ -47,23 +45,35 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui {
     protected boolean isTalkModeActive = false;
     protected TerminalTextListWidget textList = new TerminalTextListWidget();
 
+    String fieldHintTalk = "Type 'talk' to enter talk mode";
+    String fieldHintExit = "Type 'exit' to exit talk mode";
+
     public MTENanochipAssemblyComplexGui(MTENanochipAssemblyComplex base) {
         super(base);
         this.base = base;
     }
 
+    // TODO: this implementation kinda super sucks. once things in basegui are more solid we should refactor this method
+    // TODO: there a bit so this is a little easier to do
     @Override
     protected Flow createTerminalRow(ModularPanel panel, PanelSyncManager syncManager) {
         Flow row = super.createTerminalRow(panel, syncManager);
-        List<IWidget> sisters = row.getChildren();
-        if (!sisters.isEmpty() && (sisters.get(0) instanceof ParentWidget<?>parent)) {
+        List<IWidget> aunts = row.getChildren();
+        // what a terrible way to add to the parent background widget
+        if (!aunts.isEmpty() && (aunts.get(0) instanceof ParentWidget<?>parent)) {
+            List<IWidget> sisters = parent.getChildren();
+            // what a terrible way to change the logo widget
+            if (!sisters.isEmpty() && (sisters.get(1) instanceof SingleChildWidget<?>logo)) {
+                logo.setEnabledIf(a -> !isTalkModeActive);
+            }
             Dimension mainTerminalDimensions = getTerminalDimensions();
-            textList.setEnabledIf(ignored -> isTalkModeActive)
+            textList.setEnabledIf(a -> isTalkModeActive)
                 .childSeparator(
                     IDrawable.EMPTY.asIcon()
                         .height(2))
                 .size(mainTerminalDimensions.width - 10, mainTerminalDimensions.height - 8);
             parent.child(textList);
+
         }
         return row.child(createGREGOSMeterPages(panel, syncManager));
     }
@@ -85,14 +95,7 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui {
 
     public IWidget createTalkTextField(ModularPanel panel, PanelSyncManager syncManager) {
         Dimension mainTerminalDimensions = super.getTerminalDimensions();
-        return new TerminalTextFieldWidget(textList).tooltip(t -> {
-            if (isTalkModeActive) {
-                t.add("Enter \"exit\" to exit talk mode");
-            } else {
-                t.add("Enter \"talk\" to enter talk mode");
-            }
-        })
-            .tooltipAutoUpdate(true)
+        return new TerminalTextFieldWidget(textList).hintText(fieldHintTalk)
             .setFocusOnGuiOpen(true)
             .size(mainTerminalDimensions.width - 27, 10);
     }
@@ -111,17 +114,7 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui {
     @Override
     protected void registerSyncValues(PanelSyncManager syncManager) {
         super.registerSyncValues(syncManager);
-        syncManager.syncValue(
-            "conversationSyncer",
-            new GenericListSyncHandler<String>(
-                () -> base.gregosConversation,
-                null,
-                ByteBufAdapters.STRING,
-                ByteBufAdapters.STRING,
-                ByteBufAdapters.STRING,
-                null));
-        syncManager
-            .syncValue("talkMode", new BooleanSyncValue(() -> isTalkModeActive, bool -> isTalkModeActive = bool));
+        syncManager.syncValue("talk", new BooleanSyncValue(() -> isTalkModeActive, b -> isTalkModeActive = b));
         syncManager.syncValue("mood", 0, new DoubleSyncValue(() -> base.gregosMood, dub -> base.gregosMood = dub));
         syncManager.syncValue("eff", 0, new DoubleSyncValue(() -> base.efficiency, dub -> base.efficiency = dub));
         syncManager.syncValue("speed", 0, new DoubleSyncValue(() -> base.moduleSpeed, dub -> base.moduleSpeed = dub));
@@ -165,10 +158,9 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui {
     }
 
     public ParentWidget<?> createMeter(String name, DoubleSyncValue syncer, UITexture meter, double min, double max) {
-        ParentWidget<?> ui = new ParentWidget<>();
         boolean isPercentage = (min == 0D && max == 1D);
         char end = isPercentage ? '%' : 'x';
-        ui.child(
+        return new ParentWidget<>().child(
             new ProgressWidget().progress(() -> (syncer.getValue() - min) / (max - min))
                 .texture(meter, 48)
                 .direction(ProgressWidget.Direction.UP)
@@ -187,14 +179,13 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui {
                     .tooltipAutoUpdate(true)
                     .pos(16, 16)
                     .size(24, 56))
-        // Un-comment for debug purposes
-        // .child(
-        // new TextFieldWidget().setNumbersDouble(val -> Math.min(max, Math.max(min, val)))
-        // .value(new StringSyncValue(syncer::getStringValue, syncer::setStringValue))
-        // .pos(12, 70)
-        // .size(30, 12))
-        ;
-        return ui.sizeRel(1);
+            // Un-comment for debug purposes
+            // .child(
+            // new TextFieldWidget().setNumbersDouble(val -> Math.min(max, Math.max(min, val)))
+            // .value(new StringSyncValue(syncer::getStringValue, syncer::setStringValue))
+            // .pos(12, 70)
+            // .size(30, 12))
+            .sizeRel(1);
     }
 
     public String getGREGOSResponse(String currentText) {
@@ -210,6 +201,12 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui {
             case "open the doors" -> "I'm sorry Player, I'm afraid I can't do that";
             case "d" -> "n";
             case "how fast are you" -> "2fast2quick";
+            case "knock knock" -> "Who's there?";
+            case "why did the chicken cross the road" -> switch (MathUtils.randInt(1, 10)) {
+                    case 1 -> "To get to the other side?";
+                    case 2 -> "Because it was too far to walk around?";
+                    default -> "I dont know. Why?";
+                };
             case "copypasta" -> switch (MathUtils.randInt(1, 6)) {
                     case 1 -> "Is it just me or does this pack actually seem really easy and not that hard..? People give it a bad rap but I've only been playing for a little while and I've already mined enough to make the big versions of the steam block things. They seem kinda busted because they just take a solar boiler and they run forever... I think there's a bug with the pipes or u can only have them be so long or something because sometimes they'll have a hiccup and I have to restart it, weird.";
                     case 2 -> "Who the fuck came up with that idea of using Dimensionally Shifted Superfluid as ingredient for UIV / UMV / UXV Components ? I would understand it if there was a reliable way of making the Stabilized Baryonic Matter but no there isnt - To make that SBM you need to use the same amount of it to produce it or dump shitloads of ressources into an overexpensive recipe for 250ml of it each and produce Unaligned Quark Releasing Housing as a waste product you cant do anything with ... Did i oversee something ? Seriously WTF is this recipe for Empty Quark  Release Catalyst Housing ? The Circuits used in there make UIV+ component crafting a bottleneck hell man Sry for the roast but i dont know if you played much in UIV+ Tier but this is super unbalanced and annoying. More complexity in recipes is perfectly fine but more grindy / tedious / bottlenecking (inefficient) recipes are just bad tbh.";
@@ -238,11 +235,9 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui {
     public class TerminalTextFieldWidget extends TextFieldWidget {
 
         TerminalTextListWidget parentList;
-        StringSyncValue dummySyncer = new StringSyncValue(() -> "");
 
         public TerminalTextFieldWidget(TerminalTextListWidget parent) {
             super();
-            this.value(dummySyncer);
             parentList = parent;
         }
 
@@ -251,40 +246,33 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui {
             if (keyCode == Keyboard.KEY_RETURN) {
                 String text = this.getText();
                 if (text.isEmpty()) return Result.IGNORE;
-                String response = getGREGOSResponse(text);
-                this.handler.clear();
                 // Reset the text box to be blank
-                dummySyncer.setValue("");
+                this.handler.clear();
                 if (!checkForKeywords(text) && isTalkModeActive) {
-                    saveTextToList(text, response);
+                    // base.gregosMood = Math.min(1, base.gregosMood + 0.05);
                     parentList.child(createPlayerTextWidget(text));
-                    parentList.child(createResponseTextWidget(response));
+                    parentList.child(createResponseTextWidget(getGREGOSResponse(text)));
                 }
+                return Result.SUCCESS;
             } else return super.onKeyPressed(character, keyCode);
-            return Result.SUCCESS;
         }
 
         public boolean checkForKeywords(String text) {
             return switch (text.toLowerCase()) {
                 case "talk" -> {
                     List<IWidget> texts = parentList.getChildren();
-                    if (texts.isEmpty()) {
-                        parentList.child(createGenericTextWidget("Ask GREGOS a question"));
-                    }
+                    if (texts.isEmpty()) parentList.child(createGenericTextWidget("Ask GREGOS a question"));
+                    this.hintText(fieldHintExit);
                     isTalkModeActive = true;
                     yield true;
                 }
                 case "exit" -> {
+                    this.hintText(fieldHintTalk);
                     isTalkModeActive = false;
                     yield true;
                 }
                 default -> false;
             };
-        }
-
-        public void saveTextToList(String playerText, String responseText) {
-            // parentList.textData.add(playerText);
-            // parentList.textData.add(responseText);
         }
 
         public TextWidget createResponseTextWidget(String text) {
