@@ -437,16 +437,16 @@ public class MTEMultiBlockBaseGui {
         });
     }
 
-    private IDrawable getForcedBatchModeOverlay() {
-        UITexture texture = base.isBatchModeEnabled() ? GTGuiTextures.OVERLAY_BUTTON_BATCH_MODE_ON_DISABLED
-            : GTGuiTextures.OVERLAY_BUTTON_BATCH_MODE_OFF_DISABLED;
-        return new DrawableStack(texture, GTGuiTextures.OVERLAY_BUTTON_FORBIDDEN);
-    }
-
     private IDrawable getBatchModeOverlay(BooleanSyncValue batchModeSyncer) {
         return new DynamicDrawable(
             () -> batchModeSyncer.getValue() ? GTGuiTextures.OVERLAY_BUTTON_BATCH_MODE_ON
                 : GTGuiTextures.OVERLAY_BUTTON_BATCH_MODE_OFF);
+    }
+
+    private IDrawable getForcedBatchModeOverlay() {
+        UITexture texture = base.isBatchModeEnabled() ? GTGuiTextures.OVERLAY_BUTTON_BATCH_MODE_ON_DISABLED
+            : GTGuiTextures.OVERLAY_BUTTON_BATCH_MODE_OFF_DISABLED;
+        return new DrawableStack(texture, GTGuiTextures.OVERLAY_BUTTON_FORBIDDEN);
     }
 
     private void createBatchModeTooltip(RichTooltip t) {
