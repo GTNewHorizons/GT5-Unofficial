@@ -464,6 +464,7 @@ public class OverclockCalculator {
         int heatOverclocks = Math.min(heatOC ? (machineHeat - recipeHeat) / HEAT_OVERCLOCK_THRESHOLD : 0, overclocks);
         int regularOverclocks = overclocks - heatOverclocks;
 
+        double originalDuration = duration;
         int neededHeatOverclocks = (int) Math.max((Math.log(duration) / Math.log(durationDecreasePerHeatOC)), 0);
         duration /= Math.pow(durationDecreasePerHeatOC, heatOverclocks);
         neededOverclocks = (int) Math.max((Math.log(duration) / Math.log(durationDecreasePerOC)), 0);
@@ -480,7 +481,15 @@ public class OverclockCalculator {
             .pow(durationDecreasePerHeatOC, Math.max(heatOverclocks - neededHeatOverclocks, 0));
         int regularMultiplier = (int) Math
             .pow(durationDecreasePerOC, Math.max(regularOverclocks - neededOverclocks, 0));
+        double correctionMultiplier = 1.0;
+        if (heatOverclocks >= neededHeatOverclocks || regularOverclocks >= neededOverclocks) {
+            double criticalDecreasePerOC = heatOverclocks >= neededHeatOverclocks ? durationDecreasePerHeatOC
+                : durationDecreasePerOC;
+            int criticalOverclock = (int) (Math.log(originalDuration / 2) / Math.log(criticalDecreasePerOC));
+            double criticalDuration = originalDuration / Math.pow(criticalDecreasePerOC, criticalOverclock);
+            correctionMultiplier = Math.max(Math.pow(criticalDuration, -1), 1);
+        }
 
-        return heatMultiplier * regularMultiplier;
+        return heatMultiplier * regularMultiplier * correctionMultiplier;
     }
 }
