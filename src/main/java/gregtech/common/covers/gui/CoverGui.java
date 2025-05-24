@@ -136,10 +136,14 @@ public class CoverGui<T extends Cover> {
             .child(name.asWidget());
     }
 
-    protected TextFieldWidget makeNumberField() {
+    protected TextFieldWidget makeNumberField(int width) {
         return new TextFieldWidget().setFormatAsInteger(true)
-            .width(80)
+            .width(width)
             .height(12);
+    }
+
+    protected TextFieldWidget makeNumberField() {
+        return makeNumberField(80);
     }
 
     protected int getGUIWidth() {
