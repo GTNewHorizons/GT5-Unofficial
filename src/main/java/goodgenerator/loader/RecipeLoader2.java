@@ -1,11 +1,43 @@
 package goodgenerator.loader;
 
+import bartworks.system.material.WerkstoffLoader;
+import goodgenerator.items.GGMaterial;
+import goodgenerator.util.CrackRecipeAdder;
+import goodgenerator.util.ItemRefer;
+import goodgenerator.util.MyRecipeAdder;
+import gregtech.api.enums.GTValues;
+import gregtech.api.enums.ItemList;
+import gregtech.api.enums.Materials;
+import gregtech.api.enums.MaterialsUEVplus;
+import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.TierEU;
+import gregtech.api.recipe.RecipeMaps;
+import gregtech.api.util.ExternalMaterials;
+import gregtech.api.util.GTModHandler;
+import gregtech.api.util.GTOreDictUnificator;
+import gregtech.api.util.GTRecipe;
+import gregtech.api.util.GTUtility;
+import gregtech.api.util.recipe.Scanning;
+import gtPlusPlus.core.material.MaterialsAlloy;
+import gtPlusPlus.core.material.MaterialsElements;
+import gtPlusPlus.core.recipe.common.CI;
+import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
+import gtneioreplugin.plugin.block.ModBlocks;
+import ic2.core.Ic2Items;
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.oredict.OreDictionary;
+import tectech.recipe.TTRecipeAdder;
+
 import static goodgenerator.api.recipe.GoodGeneratorRecipeMaps.neutronActivatorRecipes;
 import static goodgenerator.api.recipe.GoodGeneratorRecipeMaps.preciseAssemblerRecipes;
 import static goodgenerator.util.MyRecipeAdder.computeRangeNKE;
 import static gregtech.api.enums.Mods.AppliedEnergistics2;
 import static gregtech.api.enums.Mods.GalacticraftMars;
 import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
+import static gregtech.api.recipe.RecipeMaps.ECCFRecipes;
 import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
 import static gregtech.api.recipe.RecipeMaps.autoclaveRecipes;
 import static gregtech.api.recipe.RecipeMaps.blastFurnaceRecipes;
@@ -20,6 +52,7 @@ import static gregtech.api.recipe.RecipeMaps.fluidSolidifierRecipes;
 import static gregtech.api.recipe.RecipeMaps.fusionRecipes;
 import static gregtech.api.recipe.RecipeMaps.mixerRecipes;
 import static gregtech.api.recipe.RecipeMaps.multiblockChemicalReactorRecipes;
+import static gregtech.api.recipe.RecipeMaps.planetConditions;
 import static gregtech.api.recipe.RecipeMaps.plasmaForgeRecipes;
 import static gregtech.api.recipe.RecipeMaps.unpackagerRecipes;
 import static gregtech.api.recipe.RecipeMaps.vacuumFreezerRecipes;
@@ -28,41 +61,18 @@ import static gregtech.api.util.GTRecipeBuilder.MINUTES;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeConstants.AssemblyLine;
 import static gregtech.api.util.GTRecipeConstants.COIL_HEAT;
+import static gregtech.api.util.GTRecipeConstants.DIMENSION_NAME;
+import static gregtech.api.util.GTRecipeConstants.ECCF_PRESSURE;
+import static gregtech.api.util.GTRecipeConstants.ECCF_PRESSURE_DELTA;
+import static gregtech.api.util.GTRecipeConstants.ECCF_TEMPERATURE;
+import static gregtech.api.util.GTRecipeConstants.ECCF_TEMPERATURE_DELTA;
 import static gregtech.api.util.GTRecipeConstants.FUSION_THRESHOLD;
 import static gregtech.api.util.GTRecipeConstants.NKE_RANGE;
+import static gregtech.api.util.GTRecipeConstants.PLANET_TIER;
 import static gregtech.api.util.GTRecipeConstants.PRECISE_ASSEMBLER_CASING_TIER;
 import static gregtech.api.util.GTRecipeConstants.RESEARCH_ITEM;
 import static gregtech.api.util.GTRecipeConstants.SCANNING;
 import static gregtech.api.util.GTRecipeConstants.UniversalChemical;
-
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.oredict.OreDictionary;
-
-import bartworks.system.material.WerkstoffLoader;
-import goodgenerator.items.GGMaterial;
-import goodgenerator.util.CrackRecipeAdder;
-import goodgenerator.util.ItemRefer;
-import goodgenerator.util.MyRecipeAdder;
-import gregtech.api.enums.GTValues;
-import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
-import gregtech.api.enums.MaterialsUEVplus;
-import gregtech.api.enums.OrePrefixes;
-import gregtech.api.enums.TierEU;
-import gregtech.api.recipe.RecipeMaps;
-import gregtech.api.util.GTModHandler;
-import gregtech.api.util.GTOreDictUnificator;
-import gregtech.api.util.GTRecipe;
-import gregtech.api.util.GTUtility;
-import gregtech.api.util.recipe.Scanning;
-import gtPlusPlus.core.material.MaterialsAlloy;
-import gtPlusPlus.core.material.MaterialsElements;
-import gtPlusPlus.core.recipe.common.CI;
-import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
-import ic2.core.Ic2Items;
-import tectech.recipe.TTRecipeAdder;
 
 public class RecipeLoader2 {
 
@@ -840,6 +850,499 @@ public class RecipeLoader2 {
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_EV)
             .addTo(chemicalBathRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                ItemList.Casing_Chemically_Inert.get(1),
+                GTOreDictUnificator.get(OrePrefixes.plateDouble, Materials.Polytetrafluoroethylene, 8),
+                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.LuV, 4),
+                ItemList.Cover_Screen.get(1),
+                ItemList.Electric_Piston_EV.get(2),
+                ItemList.Electric_Pump_EV.get(2),
+                GregtechItemList.TransmissionComponent_EV.get(1),
+                GTOreDictUnificator.get(OrePrefixes.ring, Materials.StyreneButadieneRubber, 4), // Styrene-butadiene only is intended
+                GTOreDictUnificator.get(OrePrefixes.screw, Materials.StainlessSteel, 4))
+            .fluidInputs(Materials.SolderingAlloy.getMolten(144))
+            .itemOutputs(ItemList.Machine_Multi_ECCF.get(1))
+            .duration(1 * MINUTES)
+            .eut(TierEU.RECIPE_EV)
+            .addTo(assemblerRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                ItemList.Casing_Tank_4.get(1),
+                ItemList.FluidRegulator_EV.get(1),
+                ItemList.Sensor_EV.get(1),
+                GTOreDictUnificator.get(OrePrefixes.pipeMedium, Materials.StainlessSteel, 2),
+                GTOreDictUnificator.get(OrePrefixes.ring, Materials.StyreneButadieneRubber, 4), // Styrene-butadiene only is intended
+                GTOreDictUnificator.get(OrePrefixes.screw, Materials.StainlessSteel, 4),
+                GTOreDictUnificator.get(OrePrefixes.pipeTiny, Materials.Copper, 16))
+            .fluidInputs(Materials.SolderingAlloy.getMolten(144))
+            .itemOutputs(ItemList.ECCF_cooling_block_0.get(1))
+            .duration(1 * MINUTES)
+            .eut(TierEU.RECIPE_EV)
+            .addTo(assemblerRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                ItemList.Casing_Tank_4.get(1),
+                ItemList.FluidRegulator_EV.get(1),
+                ItemList.Sensor_EV.get(1),
+                MaterialsAlloy.INCONEL_792.getComponentByPrefix(OrePrefixes.pipeMedium, 2),
+                GTOreDictUnificator.get(OrePrefixes.ring, Materials.StyreneButadieneRubber, 4), // Styrene-butadiene only is intended
+                GTOreDictUnificator.get(OrePrefixes.screw, Materials.StainlessSteel, 4),
+                MaterialsAlloy.INCONEL_792.getComponentByPrefix(OrePrefixes.pipeTiny, 2))
+            .fluidInputs(Materials.SolderingAlloy.getMolten(144))
+            .itemOutputs(ItemList.ECCF_heating_block_0.get(1))
+            .duration(1 * MINUTES)
+            .eut(TierEU.RECIPE_EV)
+            .addTo(assemblerRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                ItemList.Casing_Tank_4.get(1),
+                ItemList.Electric_Motor_EV.get(1),
+                ItemList.Sensor_EV.get(1),
+                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.LuV, 2),
+                GTOreDictUnificator.get(OrePrefixes.rotor, Materials.BlackSteel, 4),
+                GTOreDictUnificator.get(OrePrefixes.ring, Materials.StyreneButadieneRubber, 4), // Styrene-butadiene only is intended
+                GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorEV, 4))
+            .fluidInputs(Materials.SolderingAlloy.getMolten(144))
+            .itemOutputs(ItemList.ECCF_vacuum_block_0.get(1))
+            .duration(1 * MINUTES)
+            .eut(TierEU.RECIPE_EV)
+            .addTo(assemblerRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                ItemList.Casing_Tank_4.get(1),
+                ItemList.Electric_Piston_EV.get(2),
+                ItemList.Sensor_EV.get(1),
+                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.LuV, 2),
+                ItemList.FluidRegulator_EV.get(2),
+                GTOreDictUnificator.get(OrePrefixes.ring, Materials.StyreneButadieneRubber, 4), // Styrene-butadiene only is intended
+                GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorEV, 4))
+            .fluidInputs(Materials.SolderingAlloy.getMolten(144))
+            .itemOutputs(ItemList.ECCF_pressure_block_0.get(1))
+            .duration(1 * MINUTES)
+            .eut(TierEU.RECIPE_EV)
+            .addTo(assemblerRecipes);
+
+        GTValues.RA.stdBuilder()
+            .metadata(RESEARCH_ITEM, ItemList.ECCF_cooling_block_0.get(1))
+            .metadata(SCANNING, new Scanning(2 * MINUTES + 20 * SECONDS, TierEU.RECIPE_IV))
+            .itemInputs(
+                ItemList.Casing_Tank_6.get(1),
+                ItemList.FluidRegulator_LuV.get(2),
+                ItemList.Sensor_LuV.get(1),
+                GTOreDictUnificator.get(OrePrefixes.ring, Materials.Epoxid, 8),
+                GTOreDictUnificator.get(OrePrefixes.pipeMedium, Materials.Europium, 2),
+                GTOreDictUnificator.get(OrePrefixes.pipeTiny, Materials.Europium, 16),
+                GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.Tetraindiumditindibariumtitaniumheptacoppertetrakaidekaoxid, 64),
+                GTOreDictUnificator.get(OrePrefixes.screw, Materials.Naquadah, 4),
+                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.UV, 4))
+            .fluidInputs(new FluidStack(solderIndalloy, 144*4))
+            .itemOutputs(ItemList.ECCF_cooling_block_1.get(1))
+            .duration(1 * MINUTES)
+            .eut(TierEU.RECIPE_LuV)
+            .addTo(AssemblyLine);
+
+        GTValues.RA.stdBuilder()
+            .metadata(RESEARCH_ITEM, ItemList.ECCF_heating_block_0.get(1))
+            .metadata(SCANNING, new Scanning(2 * MINUTES + 20 * SECONDS, TierEU.RECIPE_IV))
+            .itemInputs(
+                ItemList.Casing_Tank_6.get(1),
+                ItemList.Field_Generator_LuV.get(4),
+                ItemList.Sensor_LuV.get(1),
+                GTOreDictUnificator.get(OrePrefixes.ring, Materials.Epoxid, 8),
+                GTOreDictUnificator.get(OrePrefixes.pipeMedium, Materials.Naquadah, 2),
+                GTOreDictUnificator.get(OrePrefixes.pipeTiny, Materials.Naquadah, 16),
+                GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.Tetraindiumditindibariumtitaniumheptacoppertetrakaidekaoxid, 64),
+                GTOreDictUnificator.get(OrePrefixes.screw, Materials.Naquadah, 4),
+                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.UV, 4))
+            .fluidInputs(new FluidStack(solderIndalloy, 144*4))
+            .itemOutputs(ItemList.ECCF_heating_block_1.get(1))
+            .duration(1 * MINUTES)
+            .eut(TierEU.RECIPE_LuV)
+            .addTo(AssemblyLine);
+
+        GTValues.RA.stdBuilder()
+            .metadata(RESEARCH_ITEM, ItemList.ECCF_vacuum_block_0.get(1))
+            .metadata(SCANNING, new Scanning(2 * MINUTES + 20 * SECONDS, TierEU.RECIPE_IV))
+            .itemInputs(
+                ItemList.Casing_Tank_6.get(1),
+                ItemList.Electric_Motor_LuV.get(4),
+                ItemList.Sensor_LuV.get(1),
+                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.UV, 2),
+                GTOreDictUnificator.get(OrePrefixes.rotor, ExternalMaterials.getRuridit(), 16),
+                GTOreDictUnificator.get(OrePrefixes.ring, Materials.Epoxid, 8),
+                GTOreDictUnificator.get(OrePrefixes.gearGtSmall, ExternalMaterials.getRuridit(), 8),
+                GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorLuV, 4))
+            .fluidInputs(new FluidStack(solderIndalloy, 144*4))
+            .itemOutputs(ItemList.ECCF_vacuum_block_1.get(1))
+            .duration(1 * MINUTES)
+            .eut(TierEU.RECIPE_LuV)
+            .addTo(AssemblyLine);
+
+        GTValues.RA.stdBuilder()
+            .metadata(RESEARCH_ITEM, ItemList.ECCF_pressure_block_0.get(1))
+            .metadata(SCANNING, new Scanning(2 * MINUTES + 20 * SECONDS, TierEU.RECIPE_IV))
+            .itemInputs(
+                ItemList.Casing_Tank_6.get(1),
+                GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.Iridium, 2),
+                ItemList.Electric_Piston_LuV.get(4),
+                ItemList.Sensor_LuV.get(1),
+                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.UV, 2),
+                ItemList.FluidRegulator_LuV.get(2),
+                GTOreDictUnificator.get(OrePrefixes.ring, Materials.Epoxid, 8),
+                GTOreDictUnificator.get(OrePrefixes.gearGtSmall, ExternalMaterials.getRuridit(), 12),
+                GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorLuV, 4))
+            .fluidInputs(new FluidStack(solderIndalloy, 144*4))
+            .itemOutputs(ItemList.ECCF_pressure_block_1.get(1))
+            .duration(1 * MINUTES)
+            .eut(TierEU.RECIPE_LuV)
+            .addTo(AssemblyLine);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(Materials.Firestone.getGems(1))
+            .fluidInputs(GGMaterial.lightNaquadahFuel.getFluidOrGas(144))
+            .itemOutputs(WerkstoffLoader.Tiberium.get(OrePrefixes.gem, 1))
+            .duration(20 * SECONDS)
+            .eut(TierEU.RECIPE_EV)
+            .metadata(ECCF_PRESSURE, 110300)
+            .metadata(ECCF_TEMPERATURE, 280)
+            .addTo(ECCFRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(Materials.Stone.getDust(1))
+            .itemOutputs(Materials.Stone.getDust(1))
+            .duration(100 * SECONDS)
+            .eut(TierEU.RECIPE_ZPM)
+            .metadata(ECCF_PRESSURE, 101000)
+            .metadata(ECCF_TEMPERATURE, 290)
+            .metadata(ECCF_PRESSURE_DELTA, 10)
+            .metadata(ECCF_TEMPERATURE_DELTA, 5)
+            .addTo(ECCFRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(new ItemStack(ModBlocks.blocks.get("Ow"), 1, 0))
+            .duration(0)
+            .eut(0)
+            .metadata(PLANET_TIER, 0)
+            .metadata(DIMENSION_NAME, "OVERWORLD")
+            .addTo(planetConditions);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(new ItemStack(ModBlocks.blocks.get("Ne"), 1, 0))
+            .duration(0)
+            .eut(0)
+            .metadata(PLANET_TIER, 0)
+            .metadata(DIMENSION_NAME, "NETHER")
+            .addTo(planetConditions);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(new ItemStack(ModBlocks.blocks.get("TF"), 1, 0))
+            .duration(0)
+            .eut(0)
+            .metadata(PLANET_TIER, 0)
+            .metadata(DIMENSION_NAME, "TWILIGHT")
+            .addTo(planetConditions);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(new ItemStack(ModBlocks.blocks.get("ED"), 1, 0))
+            .duration(0)
+            .eut(0)
+            .metadata(PLANET_TIER, 0)
+            .metadata(DIMENSION_NAME, "END")
+            .addTo(planetConditions);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(new ItemStack(ModBlocks.blocks.get("Mo"), 1, 0))
+            .duration(0)
+            .eut(0)
+            .metadata(PLANET_TIER, 1)
+            .metadata(DIMENSION_NAME, "MOON")
+            .addTo(planetConditions);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(new ItemStack(ModBlocks.blocks.get("De"), 1, 0))
+            .duration(0)
+            .eut(0)
+            .metadata(PLANET_TIER, 2)
+            .metadata(DIMENSION_NAME, "DEIMOS")
+            .addTo(planetConditions);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(new ItemStack(ModBlocks.blocks.get("Ma"), 1, 0))
+            .duration(0)
+            .eut(0)
+            .metadata(PLANET_TIER, 2)
+            .metadata(DIMENSION_NAME, "MARS")
+            .addTo(planetConditions);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(new ItemStack(ModBlocks.blocks.get("Ph"), 1, 0))
+            .duration(0)
+            .eut(0)
+            .metadata(PLANET_TIER, 2)
+            .metadata(DIMENSION_NAME, "PHOBOS")
+            .addTo(planetConditions);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(new ItemStack(ModBlocks.blocks.get("As"), 1, 0))
+            .duration(0)
+            .eut(0)
+            .metadata(PLANET_TIER, 3)
+            .metadata(DIMENSION_NAME, "ASTEROIDS")
+            .addTo(planetConditions);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(new ItemStack(ModBlocks.blocks.get("Ca"), 1, 0))
+            .duration(0)
+            .eut(0)
+            .metadata(PLANET_TIER, 3)
+            .metadata(DIMENSION_NAME, "CALLISTO")
+            .addTo(planetConditions);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(new ItemStack(ModBlocks.blocks.get("Ce"), 1, 0))
+            .duration(0)
+            .eut(0)
+            .metadata(PLANET_TIER, 3)
+            .metadata(DIMENSION_NAME, "CERES")
+            .addTo(planetConditions);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(new ItemStack(ModBlocks.blocks.get("Eu"), 1, 0))
+            .duration(0)
+            .eut(0)
+            .metadata(PLANET_TIER, 3)
+            .metadata(DIMENSION_NAME, "EUROPA")
+            .addTo(planetConditions);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(new ItemStack(ModBlocks.blocks.get("Ga"), 1, 0))
+            .duration(0)
+            .eut(0)
+            .metadata(PLANET_TIER, 3)
+            .metadata(DIMENSION_NAME, "GANYMEDE")
+            .addTo(planetConditions);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(new ItemStack(ModBlocks.blocks.get("Rb"), 1, 0))
+            .duration(0)
+            .eut(0)
+            .metadata(PLANET_TIER, 3)
+            .metadata(DIMENSION_NAME, "ROSS128B")
+            .addTo(planetConditions);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(new ItemStack(ModBlocks.blocks.get("Io"), 1, 0))
+            .duration(0)
+            .eut(0)
+            .metadata(PLANET_TIER, 4)
+            .metadata(DIMENSION_NAME, "IO")
+            .addTo(planetConditions);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(new ItemStack(ModBlocks.blocks.get("Me"), 1, 0))
+            .duration(0)
+            .eut(0)
+            .metadata(PLANET_TIER, 4)
+            .metadata(DIMENSION_NAME, "MERCURY")
+            .addTo(planetConditions);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(new ItemStack(ModBlocks.blocks.get("Ve"), 1, 0))
+            .duration(0)
+            .eut(0)
+            .metadata(PLANET_TIER, 4)
+            .metadata(DIMENSION_NAME, "VENUS")
+            .addTo(planetConditions);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(new ItemStack(ModBlocks.blocks.get("En"), 1, 0))
+            .duration(0)
+            .eut(0)
+            .metadata(PLANET_TIER, 5)
+            .metadata(DIMENSION_NAME, "ENCELADUS")
+            .addTo(planetConditions);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(new ItemStack(ModBlocks.blocks.get("Mi"), 1, 0))
+            .duration(0)
+            .eut(0)
+            .metadata(PLANET_TIER, 5)
+            .metadata(DIMENSION_NAME, "MIRANDA")
+            .addTo(planetConditions);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(new ItemStack(ModBlocks.blocks.get("Ob"), 1, 0))
+            .duration(0)
+            .eut(0)
+            .metadata(PLANET_TIER, 5)
+            .metadata(DIMENSION_NAME, "OBERON")
+            .addTo(planetConditions);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(new ItemStack(ModBlocks.blocks.get("Ti"), 1, 0))
+            .duration(0)
+            .eut(0)
+            .metadata(PLANET_TIER, 5)
+            .metadata(DIMENSION_NAME, "TITAN")
+            .addTo(planetConditions);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(new ItemStack(ModBlocks.blocks.get("Ra"), 1, 0))
+            .duration(0)
+            .eut(0)
+            .metadata(PLANET_TIER, 5)
+            .metadata(DIMENSION_NAME, "ROSS128BA")
+            .addTo(planetConditions);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(new ItemStack(ModBlocks.blocks.get("Pr"), 1, 0))
+            .duration(0)
+            .eut(0)
+            .metadata(PLANET_TIER, 6)
+            .metadata(DIMENSION_NAME, "PROTEUS")
+            .addTo(planetConditions);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(new ItemStack(ModBlocks.blocks.get("Tr"), 1, 0))
+            .duration(0)
+            .eut(0)
+            .metadata(PLANET_TIER, 6)
+            .metadata(DIMENSION_NAME, "TRITON")
+            .addTo(planetConditions);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(new ItemStack(ModBlocks.blocks.get("Ha"), 1, 0))
+            .duration(0)
+            .eut(0)
+            .metadata(PLANET_TIER, 7)
+            .metadata(DIMENSION_NAME, "HAUMEA")
+            .addTo(planetConditions);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(new ItemStack(ModBlocks.blocks.get("KB"), 1, 0))
+            .duration(0)
+            .eut(0)
+            .metadata(PLANET_TIER, 7)
+            .metadata(DIMENSION_NAME, "KUIPERBELT")
+            .addTo(planetConditions);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(new ItemStack(ModBlocks.blocks.get("MM"), 1, 0))
+            .duration(0)
+            .eut(0)
+            .metadata(PLANET_TIER, 7)
+            .metadata(DIMENSION_NAME, "MAKEMAKE")
+            .addTo(planetConditions);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(new ItemStack(ModBlocks.blocks.get("Pl"), 1, 0))
+            .duration(0)
+            .eut(0)
+            .metadata(PLANET_TIER, 7)
+            .metadata(DIMENSION_NAME, "PLUTO")
+            .addTo(planetConditions);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(new ItemStack(ModBlocks.blocks.get("BC"), 1, 0))
+            .duration(0)
+            .eut(0)
+            .metadata(PLANET_TIER, 8)
+            .metadata(DIMENSION_NAME, "BARNARD_C")
+            .addTo(planetConditions);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(new ItemStack(ModBlocks.blocks.get("BE"), 1, 0))
+            .duration(0)
+            .eut(0)
+            .metadata(PLANET_TIER, 8)
+            .metadata(DIMENSION_NAME, "BARNARD_E")
+            .addTo(planetConditions);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(new ItemStack(ModBlocks.blocks.get("BF"), 1, 0))
+            .duration(0)
+            .eut(0)
+            .metadata(PLANET_TIER, 8)
+            .metadata(DIMENSION_NAME, "BARNARD_F")
+            .addTo(planetConditions);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(new ItemStack(ModBlocks.blocks.get("CB"), 1, 0))
+            .duration(0)
+            .eut(0)
+            .metadata(PLANET_TIER, 8)
+            .metadata(DIMENSION_NAME, "CENTAURI_A")
+            .addTo(planetConditions);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(new ItemStack(ModBlocks.blocks.get("TE"), 1, 0))
+            .duration(0)
+            .eut(0)
+            .metadata(PLANET_TIER, 8)
+            .metadata(DIMENSION_NAME, "TCETI_E")
+            .addTo(planetConditions);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(new ItemStack(ModBlocks.blocks.get("VB"), 1, 0))
+            .duration(0)
+            .eut(0)
+            .metadata(PLANET_TIER, 8)
+            .metadata(DIMENSION_NAME, "VEGA_B")
+            .addTo(planetConditions);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(new ItemStack(ModBlocks.blocks.get("An"), 1, 0))
+            .duration(0)
+            .eut(0)
+            .metadata(PLANET_TIER, 9)
+            .metadata(DIMENSION_NAME, "ANUBIS")
+            .addTo(planetConditions);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(new ItemStack(ModBlocks.blocks.get("Ho"), 1, 0))
+            .duration(0)
+            .eut(0)
+            .metadata(PLANET_TIER, 9)
+            .metadata(DIMENSION_NAME, "HORUS")
+            .addTo(planetConditions);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(new ItemStack(ModBlocks.blocks.get("Mh"), 1, 0))
+            .duration(0)
+            .eut(0)
+            .metadata(PLANET_TIER, 9)
+            .metadata(DIMENSION_NAME, "MAAHES")
+            .addTo(planetConditions);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(new ItemStack(ModBlocks.blocks.get("Np"), 1, 0))
+            .duration(0)
+            .eut(0)
+            .metadata(PLANET_TIER, 9)
+            .metadata(DIMENSION_NAME, "NEPER")
+            .addTo(planetConditions);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(new ItemStack(ModBlocks.blocks.get("Se"), 1, 0))
+            .duration(0)
+            .eut(0)
+            .metadata(PLANET_TIER, 9)
+            .metadata(DIMENSION_NAME, "SETH")
+            .addTo(planetConditions);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(new ItemStack(ModBlocks.blocks.get("DD"), 1, 0))
+            .duration(0)
+            .eut(0)
+            .metadata(PLANET_TIER, 9)
+            .metadata(DIMENSION_NAME, "UNDERDARK")
+            .addTo(planetConditions);
 
         GTValues.RA.stdBuilder()
             .itemInputs(Materials.Diamond.getGems(1))

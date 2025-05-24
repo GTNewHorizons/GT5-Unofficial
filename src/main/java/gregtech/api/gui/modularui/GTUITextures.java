@@ -60,6 +60,7 @@ public class GTUITextures {
     public static final UITexture OVERLAY_SLOT_CAULDRON = UITexture.fullImage(GregTech.ID, "gui/overlay_slot/cauldron");
     public static final UITexture OVERLAY_SLOT_CENTRIFUGE = UITexture
         .fullImage(GregTech.ID, "gui/overlay_slot/centrifuge");
+
     public static final UITexture OVERLAY_SLOT_CENTRIFUGE_FLUID = UITexture
         .fullImage(GregTech.ID, "gui/overlay_slot/centrifuge_fluid");
     public static final SteamTexture OVERLAY_SLOT_CENTRIFUGE_STEAM = SteamTexture
