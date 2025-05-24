@@ -3,18 +3,19 @@ package gregtech.api.metatileentity.implementations.gui;
 import static gregtech.api.enums.Mods.GregTech;
 import static gregtech.api.metatileentity.BaseTileEntity.BUTTON_FORBIDDEN_TOOLTIP;
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
-import static tectech.Reference.MODID;
 
+import java.awt.Dimension;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.EnumSet;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
@@ -23,6 +24,7 @@ import net.minecraftforge.fluids.FluidStack;
 import org.jetbrains.annotations.NotNull;
 
 import com.cleanroommc.modularui.api.IPanelHandler;
+import com.cleanroommc.modularui.api.drawable.IDrawable;
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.api.widget.IWidget;
 import com.cleanroommc.modularui.drawable.DrawableStack;
@@ -30,6 +32,7 @@ import com.cleanroommc.modularui.drawable.DynamicDrawable;
 import com.cleanroommc.modularui.drawable.UITexture;
 import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.screen.RichTooltip;
 import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.utils.Alignment.MainAxis;
@@ -41,6 +44,7 @@ import com.cleanroommc.modularui.value.sync.IntSyncValue;
 import com.cleanroommc.modularui.value.sync.LongSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.value.sync.StringSyncValue;
+import com.cleanroommc.modularui.widget.ParentWidget;
 import com.cleanroommc.modularui.widget.SingleChildWidget;
 import com.cleanroommc.modularui.widget.sizer.Area;
 import com.cleanroommc.modularui.widgets.ButtonWidget;
@@ -57,11 +61,12 @@ import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
 import com.gtnewhorizons.modularui.common.internal.network.NetworkUtils;
 
-import gregtech.GTMod;
 import gregtech.api.enums.StructureError;
 import gregtech.api.enums.VoidingMode;
+import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEMultiBlockBase;
 import gregtech.api.modularui2.GTGuiTextures;
+import gregtech.api.modularui2.GTWidgetThemes;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.shutdown.ShutDownReason;
@@ -69,183 +74,81 @@ import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 
 public class MTEMultiBlockBaseGui {
 
-    private final MTEMultiBlockBase base;
+    protected final MTEMultiBlockBase base;
+    private final IGregTechTileEntity baseMetaTileEntity;
     protected List<UITexture> machineModeIcons = new ArrayList<>();
-    private final int textBoxToInventoryGap = 26;
+    protected Map<String, UITexture> customIcons = new HashMap<>();
+    protected final int textBoxToInventoryGap = 26;
+    protected final Map<String, IPanelHandler> panelMap = new HashMap<>();
 
     public MTEMultiBlockBaseGui(MTEMultiBlockBase base) {
         this.base = base;
+        this.baseMetaTileEntity = base.getBaseMetaTileEntity();
+        initCustomIcons();
+    }
+
+    protected void initCustomIcons() {
+        this.customIcons.put("power_switch_disabled", GTGuiTextures.OVERLAY_BUTTON_POWER_SWITCH_DISABLED);
+        this.customIcons.put("power_switch_on", GTGuiTextures.OVERLAY_BUTTON_POWER_SWITCH_ON);
+        this.customIcons.put("power_switch_off", GTGuiTextures.OVERLAY_BUTTON_POWER_SWITCH_OFF);
     }
 
     public ModularPanel build(PosGuiData guiData, PanelSyncManager syncManager, UISettings uiSettings) {
-
-        ModularPanel panel = new ModularPanel("MTEMultiblockBase").size(198, 181 + textBoxToInventoryGap)
-            .padding(4);
-
         registerSyncValues(syncManager);
         setMachineModeIcons();
 
-        Flow panelColumn = new Column().sizeRel(1);
-        if (base.doesBindPlayerInventory()) {
-            panelColumn.child(
-                new SingleChildWidget<>().size(machineInfoSize()[0] + 4, machineInfoSize()[1] + 3)
-                    .padding(3)
-                    .background(
-                        UITexture.builder()
-                            .location(GregTech.ID, "gui/background/text_field")
-                            .adaptable(1)
-                            .imageSize(142, 28)
-                            .build()
-                            .asIcon())
+        ModularPanel panel = new ModularPanel("MTEMultiBlockBase").size(198, 181 + textBoxToInventoryGap)
+            .padding(4);
+        initPanelMap(panel, syncManager);
+        return panel.child(
+            new Column().sizeRel(1)
+                .child(createTitleTextStyle(base.getLocalName()))
+                .child(createTerminalRow(panel, syncManager))
+                .child(createPanelGap(panel, syncManager))
+                .child(createInventoryRow(panel, syncManager)));
+    }
+
+    private IWidget createTitleTextStyle(String title) {
+        return new SingleChildWidget<>().coverChildren()
+            .topRel(0, -4, 1)
+            .leftRel(0, -4, 0)
+            .widgetTheme(GTWidgetThemes.BACKGROUND_TITLE)
+            .child(
+                IKey.str(title)
+                    .asWidget()
+                    .alignment(Alignment.Center)
+                    .widgetTheme(GTWidgetThemes.TEXT_TITLE)
+                    .marginLeft(5)
+                    .marginRight(5)
+                    .marginTop(5)
+                    .marginBottom(1));
+    }
+
+    protected Flow createTerminalRow(ModularPanel panel, PanelSyncManager syncManager) {
+        Dimension machineInfoDimensions = getTerminalRowDimensions();
+        Dimension mainTerminalDimensions = getTerminalDimensions();
+        return new Row().size(machineInfoDimensions.width, machineInfoDimensions.height)
+            .child(
+                new ParentWidget<>().size(mainTerminalDimensions.width, mainTerminalDimensions.height)
+                    .padding(4)
+                    .widgetTheme(GTWidgetThemes.BACKGROUND_TERMINAL)
                     .child(
-                        createTerminalTextWidget(syncManager)
-                            .size(machineInfoSize()[0] - 4, machineInfoSize()[1] - 3)));
-        } else {
-            panelColumn.child(
-                new SingleChildWidget<>().size(190, 171)
-                    .background(
-                        UITexture.builder()
-                            .location(GregTech.ID, "gui/background/text_field")
-                            .adaptable(1)
-                            .imageSize(142, 28)
-                            .build()
-                            .asIcon())
+                        createTerminalTextWidget(syncManager, panel)
+                            .size(mainTerminalDimensions.width - 10, mainTerminalDimensions.height - 8)
+                            .collapseDisabledChild())
                     .child(
-                        createTerminalTextWidget(syncManager)
-                            .size(machineInfoSize()[0] - 4, machineInfoSize()[1] - 3)));
-        }
-        Flow inventoryRow = new Row().widthRel(1)
-            .height(76)
-            .alignX(0);
-
-        if (base.doesBindPlayerInventory()) {
-            inventoryRow.child(
-                SlotGroupWidget.playerInventory(false)
-                    .marginLeft(4));
-        }
-
-        panelColumn.child(createPanelGap(syncManager, panel))
-            .child(inventoryRow);
-
-        addTitleTextStyle(panel, base.getLocalName());
-        addGregtechLogo(panel);
-
-        Flow buttonColumn = new Column().width(18)
-            .leftRel(1, -2, 1)
-            .mainAxisAlignment(MainAxis.END)
-            .child(createStructureUpdateButton(syncManager))
-            .child(createPowerSwitchButton());
-
-        if (base.doesBindPlayerInventory()) {
-            buttonColumn
-                .child(
-                    new ItemSlot().slot(
-                        new ModularSlot(base.inventoryHandler, base.getControllerSlotIndex()).slotGroup("item_inv")))
-                .marginTop(4);
-        }
-        inventoryRow.child(buttonColumn);
-
-        return panel.child(panelColumn);
+                        new SingleChildWidget<>().bottomRel(0, 10, 0)
+                            .rightRel(0, 10, 0)
+                            .size(18, 18)
+                            .widgetTheme(GTWidgetThemes.PICTURE_LOGO)));
     }
 
-    private IWidget createPowerSwitchButton() {
-        UITexture powerSwitchOn = UITexture.fullImage(GregTech.ID, "gui/overlay_button/power_switch_on");
-        UITexture powerSwitchOff = UITexture.fullImage(GregTech.ID, "gui/overlay_button/power_switch_off");
-        UITexture powerSwitchDisabled = UITexture.fullImage(MODID, "gui/overlay_button/power_switch_disabled");
-
-        return new ToggleButton().value(new BooleanSyncValue(base::isAllowedToWork, bool -> {
-            if (!isAllowedToWorkButtonEnabled()) return;
-            if (bool) base.enableWorking();
-            else {
-                if (base.maxProgresstime() > 0) base.disableWorking();
-                else base.stopMachine(ShutDownReasonRegistry.NONE);
-            }
-        }))
-            .tooltip(tooltip -> tooltip.add("Power Switch"))
-            .size(18, 18)
-            .overlay(
-                new DynamicDrawable(
-                    () -> !isAllowedToWorkButtonEnabled() ? powerSwitchDisabled
-                        : base.getBaseMetaTileEntity()
-                            .isAllowedToWork() ? powerSwitchOn : powerSwitchOff));
+    protected ListWidget<IWidget, ?> createTerminalTextWidget(PanelSyncManager syncManager, ModularPanel parent) {
+        return createTerminalTextWidget(syncManager);
     }
 
-    private boolean isAllowedToWorkButtonEnabled() {
-        return true;
-    }
-
-    private void addTitleTextStyle(ModularPanel panel, String title) {
-        final int TAB_PADDING = 3;
-        final int TITLE_PADDING = 2;
-        int titleWidth = 0, titleHeight = 0;
-        if (NetworkUtils.isClient()) {
-            final FontRenderer fontRenderer = Minecraft.getMinecraft().fontRenderer;
-            final List<String> titleLines = fontRenderer
-                .listFormattedStringToWidth(title, base.getGUIWidth() - (TAB_PADDING + TITLE_PADDING) * 2);
-            titleWidth = titleLines.size() > 1 ? base.getGUIWidth() - (TAB_PADDING + TITLE_PADDING) * 2
-                : fontRenderer.getStringWidth(title);
-            // noinspection PointlessArithmeticExpression
-            titleHeight = titleLines.size() * fontRenderer.FONT_HEIGHT + (titleLines.size() - 1) * 1;
-        }
-
-        final TextWidget text = new TextWidget(title).color(0x404040)
-            .alignment(Alignment.CenterLeft)
-            .width(titleWidth);
-
-        UITexture angular = UITexture.builder()
-            .location(GregTech.ID, "gui/tab/title_angular_%s")
-            .adaptable(4)
-            .imageSize(18, 18)
-            .canApplyTheme(true)
-            .build();
-        UITexture dark = UITexture.builder()
-            .location(GregTech.ID, "gui/tab/title_dark")
-            .adaptable(4)
-            .imageSize(28, 28)
-            .canApplyTheme(true)
-            .build();
-        if (GTMod.gregtechproxy.mTitleTabStyle == 1) {
-            panel.child(
-                angular.asWidget()
-                    .pos(0, -(titleHeight + TAB_PADDING) + 1)
-                    .size(base.getGUIWidth(), titleHeight + TAB_PADDING * 2));
-            text.pos(TAB_PADDING + TITLE_PADDING, -titleHeight + TAB_PADDING);
-        } else {
-            panel.child(
-                dark.asWidget()
-                    .pos(0, -(titleHeight + TAB_PADDING * 2) + 1)
-                    .size(titleWidth + (TAB_PADDING + TITLE_PADDING) * 2, titleHeight + TAB_PADDING * 2 - 1));
-            text.pos(TAB_PADDING + TITLE_PADDING, -titleHeight);
-        }
-        panel.child(text);
-    }
-
-    private int[] machineInfoSize() {
-        return base.doesBindPlayerInventory() ? new int[] { 184, 91 } : new int[] { 184, 171 };
-    }
-
-    private int[] mainTerminalSize() {
-        return base.doesBindPlayerInventory() ? new int[] { 190, 91 } : new int[] { 190, 171 };
-    }
-
-    private IWidget createPanelGap(PanelSyncManager syncManager, ModularPanel parent) {
-        Flow panelGap = new Row().widthRel(1)
-            .paddingRight(6)
-            .paddingLeft(4)
-            .height(textBoxToInventoryGap)
-            .child(createVoidExcessButton(syncManager))
-            .child(createInputSeparationButton(syncManager));
-
-        if (!machineModeIcons.isEmpty()) panelGap.child(createModeSwitchButton(syncManager));
-        panelGap.child(createBatchModeButton(syncManager))
-            .child(createLockToSingleRecipeButton(syncManager));
-        if (base.supportsPowerPanel()) panelGap.child(createPowerPanelButton(syncManager, parent));
-
-        return panelGap;
-    }
-
-    private ListWidget<IWidget, ?> createTerminalTextWidget(PanelSyncManager syncManager) {
-        ListWidget<IWidget, ?> resultWidget = new ListWidget<>()
+    protected ListWidget<IWidget, ?> createTerminalTextWidget(PanelSyncManager syncManager) {
+        return new ListWidget<>()
             .child(
                 new TextWidget(GTUtility.trans("132", "Pipe is loose. (Wrench)")).color(Color.WHITE.main)
                     .setEnabledIf(widget -> !base.mWrench)
@@ -292,6 +195,7 @@ public class MTEMultiBlockBaseGui {
                     .setEnabledIf(widget -> (base.getErrorDisplayID() & 256) != 0)
                     .marginBottom(2)
                     .widthRel(1))
+
             .child(
                 new TextWidget(
                     GTUtility.trans("139", "Hit with Soft Mallet") + "\n"
@@ -299,46 +203,25 @@ public class MTEMultiBlockBaseGui {
                         + "\n"
                         + GTUtility.trans("141", "if it doesn't start.")).color(Color.WHITE.main)
                             .setEnabledIf(
-                                widget -> base.getErrorDisplayID() == 0 && !base.getBaseMetaTileEntity()
-                                    .isActive()
-                                    && !base.getBaseMetaTileEntity()
-                                        .isAllowedToWork())
+                                widget -> base.getErrorDisplayID() == 0 && !baseMetaTileEntity.isActive()
+                                    && !baseMetaTileEntity.isAllowedToWork())
                             .marginBottom(2)
                             .widthRel(1))
+
             .child(
                 new TextWidget(GTUtility.trans("142", "Running perfectly.")).color(Color.WHITE.main)
-                    .setEnabledIf(
-                        widget -> base.getErrorDisplayID() == 0 && base.getBaseMetaTileEntity()
-                            .isActive())
+                    .setEnabledIf(widget -> base.getErrorDisplayID() == 0 && baseMetaTileEntity.isActive())
                     .marginBottom(2)
                     .widthRel(1))
+
             .child(createShutdownDurationWidget())
             .child(createShutdownReasonWidget())
-            .child(createRecipeResultWidget());
-
-        if (base.showRecipeTextInGUI()) {
-            // Display current recipe
-            resultWidget.child(createRecipeInfoWidget(syncManager));
-        }
-
-        return resultWidget;
-    }
-
-    private IWidget createRecipeInfoWidget(PanelSyncManager syncManager) {
-        return IKey.dynamic(() -> ((StringSyncValue) syncManager.getSyncHandler("recipeInfo:0")).getValue())
-            .asWidget()
-            .marginBottom(2)
-            .widthRel(1)
-            .setEnabledIf(
-                widget -> (((GenericListSyncHandler<?>) syncManager.getSyncHandler("itemOutput:0")).getValue() != null
-                    && !((GenericListSyncHandler<?>) syncManager.getSyncHandler("itemOutput:0")).getValue()
-                        .isEmpty())
-                    || ((GenericListSyncHandler<?>) syncManager.getSyncHandler("fluidOutput:0")).getValue() != null
-                        && !((GenericListSyncHandler<?>) syncManager.getSyncHandler("fluidOutput:0")).getValue()
-                            .isEmpty());
+            .child(createRecipeResultWidget())
+            .childIf(base.showRecipeTextInGUI(), createRecipeInfoWidget(syncManager));
     }
 
     private IWidget createShutdownDurationWidget() {
+
         return IKey.dynamic(() -> {
             Duration time = Duration.ofSeconds((base.getTotalRunTime() - base.getLastWorkingTick()) / 20);
             return StatCollector.translateToLocalFormatted(
@@ -351,74 +234,283 @@ public class MTEMultiBlockBaseGui {
             .marginBottom(2)
             .widthRel(1)
             .setEnabledIf(
-                widget -> base.shouldDisplayShutDownReason() && !base.getBaseMetaTileEntity()
-                    .isActive()
-                    && !base.getBaseMetaTileEntity()
-                        .isAllowedToWork());
+                widget -> base.shouldDisplayShutDownReason() && !baseMetaTileEntity.isActive()
+                    && !baseMetaTileEntity.isAllowedToWork());
+
     }
 
     private IWidget createShutdownReasonWidget() {
+
         return IKey.dynamic(
-            () -> base.getBaseMetaTileEntity()
-                .getLastShutDownReason()
+            () -> baseMetaTileEntity.getLastShutDownReason()
                 .getDisplayString())
             .asWidget()
             .marginBottom(2)
             .widthRel(1)
-            .setEnabledIf(
-                widget -> base.shouldDisplayShutDownReason() && !base.getBaseMetaTileEntity()
-                    .isActive()
-                    && !base.getBaseMetaTileEntity()
-                        .isAllowedToWork()
-                    && GTUtility.isStringValid(
-                        base.getBaseMetaTileEntity()
-                            .getLastShutDownReason()
-                            .getDisplayString()));
+            .setEnabledIf(widget -> shouldShutdownReasonBeDisplayed());
+    }
+
+    private boolean shouldShutdownReasonBeDisplayed() {
+        return base.shouldDisplayShutDownReason() && !baseMetaTileEntity.isActive()
+            && !baseMetaTileEntity.isAllowedToWork()
+            && GTUtility.isStringValid(
+                baseMetaTileEntity.getLastShutDownReason()
+                    .getDisplayString());
     }
 
     private IWidget createRecipeResultWidget() {
+
         return IKey.dynamic(
             () -> base.getCheckRecipeResult()
                 .getDisplayString())
             .asWidget()
             .marginBottom(2)
             .widthRel(1)
+            .setEnabledIf(widget -> shouldRecipeResultBeDisplayed());
+
+    }
+
+    private boolean shouldRecipeResultBeDisplayed() {
+        CheckRecipeResult recipeResult = base.getCheckRecipeResult();
+        return base.shouldDisplayCheckRecipeResult() && GTUtility.isStringValid(recipeResult.getDisplayString())
+            && (base.isAllowedToWork() || baseMetaTileEntity.isActive() || recipeResult.persistsOnShutdown());
+    }
+
+    private IWidget createRecipeInfoWidget(PanelSyncManager syncManager) {
+
+        GenericListSyncHandler<ItemStack> itemOutputSyncer = (GenericListSyncHandler<ItemStack>) syncManager
+            .getSyncHandler("itemOutput:0");
+        GenericListSyncHandler<ItemStack> fluidOutputSyncer = (GenericListSyncHandler<ItemStack>) syncManager
+            .getSyncHandler("fluidOutput:0");
+        return IKey.dynamic(() -> ((StringSyncValue) syncManager.getSyncHandler("recipeInfo:0")).getValue())
+            .asWidget()
+            .marginBottom(2)
+            .widthRel(1)
             .setEnabledIf(
-                widget -> base.shouldDisplayCheckRecipeResult() && GTUtility.isStringValid(
-                    base.getCheckRecipeResult()
-                        .getDisplayString())
-                    && (base.isAllowedToWork() || base.getBaseMetaTileEntity()
-                        .isActive()
-                        || base.getCheckRecipeResult()
-                            .persistsOnShutdown()));
+                widget -> (itemOutputSyncer.getValue() != null && !itemOutputSyncer.getValue()
+                    .isEmpty()) || (fluidOutputSyncer.getValue() != null
+                        && !fluidOutputSyncer.getValue()
+                            .isEmpty()));
+
     }
 
-    private void addGregtechLogo(ModularPanel panel) {
-        panel.child(
-            new SingleChildWidget<>().overlay(UITexture.fullImage(MODID, "gui/picture/tectech_logo_dark"))
-                .size(18, 18)
-                .pos(mainTerminalSize()[0] - 18 - 2, mainTerminalSize()[1] - 18 - 2));
+    protected IWidget createPanelGap(ModularPanel parent, PanelSyncManager syncManager) {
+        return new Row().widthRel(1)
+            .paddingRight(6)
+            .paddingLeft(4)
+            .height(textBoxToInventoryGap)
+            .child(createVoidExcessButton(syncManager))
+            .child(createInputSeparationButton(syncManager))
+            .childIf(!machineModeIcons.isEmpty(), createModeSwitchButton(syncManager))
+            .child(createBatchModeButton(syncManager))
+            .child(createLockToSingleRecipeButton(syncManager))
+            .childIf(base.supportsPowerPanel(), createPowerPanelButton(syncManager, parent));
     }
 
-    private IWidget createStructureUpdateButton(PanelSyncManager syncManager) {
-        IntSyncValue structureUpdateSyncer = new IntSyncValue(
-            base::getStructureUpdateTime,
-            base::setStructureUpdateTime);
-        syncManager.syncValue("structureUpdate", structureUpdateSyncer);
-
-        return new ToggleButton().size(18, 18)
-            .value(
-                new BooleanSyncValue(
-                    () -> structureUpdateSyncer.getValue() > -20,
-                    val -> { if (val) structureUpdateSyncer.setValue(1); }))
-            .overlay(GTGuiTextures.OVERLAY_BUTTON_STRUCTURE_UPDATE)
-            .tooltipBuilder(t -> { t.addLine(IKey.lang("GT5U.gui.button.structure_update")); });
+    protected IWidget createVoidExcessButton(PanelSyncManager syncManager) {
+        IntSyncValue voidExcessSyncer = (IntSyncValue) syncManager.getSyncHandler("voidExcess:0");
+        return new ButtonWidget<>().size(18, 18)
+            .onMousePressed(mouseButton -> this.voidExcessOnMousePressed(mouseButton, voidExcessSyncer))
+            .overlay(new DynamicDrawable(this::getVoidExcessOverlay))
+            .tooltipBuilder(this::createVoidExcessTooltip);
     }
 
-    private IWidget createPowerPanelButton(PanelSyncManager syncManager, ModularPanel parent) {
+    private boolean voidExcessOnMousePressed(int mouseButton, IntSyncValue voidExcessSyncer) {
+        if (!base.supportsVoidProtection()) return false;
+        Set<VoidingMode> allowed = base.getAllowedVoidingModes();
+        int voidingMode = 0;
+        switch (mouseButton) {
+            case 0 -> voidingMode = base.getVoidingMode()
+                .nextInCollection(allowed)
+                .ordinal();
+            case 1 -> voidingMode = base.getVoidingMode()
+                .previousInCollection(allowed)
+                .ordinal();
+        }
+        voidExcessSyncer.setValue(voidingMode);
+        return true;
+    }
+
+    private IDrawable getVoidExcessOverlay() {
+        return base.supportsVoidProtection() ? base.getVoidingMode().buttonOverlayNew
+            : new DrawableStack(base.getVoidingMode().buttonOverlayNew, GTGuiTextures.OVERLAY_BUTTON_FORBIDDEN);
+    }
+
+    private void createVoidExcessTooltip(RichTooltip t) {
+        t.addLine(IKey.dynamic(() -> StatCollector.translateToLocal("GT5U.gui.button.voiding_mode")))
+            .addLine(
+                IKey.dynamic(
+                    () -> StatCollector.translateToLocal(
+                        base.getVoidingMode()
+                            .getTransKey())));
+        if (!base.supportsVoidProtection()) {
+            t.addLine(IKey.lang(BUTTON_FORBIDDEN_TOOLTIP));
+        }
+    }
+
+    protected IWidget createInputSeparationButton(PanelSyncManager syncManager) {
+
+        BooleanSyncValue inputSeparationSyncer = (BooleanSyncValue) syncManager.getSyncHandler("inputSeparation:0");
+        return new ToggleButton() {
+
+            @NotNull
+            @Override
+            public Result onMousePressed(int mouseButton) {
+                if (!base.supportsInputSeparation()) return Result.IGNORE;
+                return super.onMousePressed(mouseButton);
+            }
+        }.size(18, 18)
+            .value(getInputSeparationSyncValue(inputSeparationSyncer))
+            .overlay(new DynamicDrawable(() -> this.getInputSeparationOverlay(inputSeparationSyncer)))
+            .tooltipBuilder(this::createInputSeparationTooltip);
+    }
+
+    private BooleanSyncValue getInputSeparationSyncValue(BooleanSyncValue inputSeparationSyncer) {
+        return new BooleanSyncValue(() -> inputSeparationSyncer.getValue() || !base.supportsInputSeparation(), bool -> {
+            if (base.supportsInputSeparation()) {
+                inputSeparationSyncer.setValue(bool);
+            }
+        });
+    }
+
+    private IDrawable getInputSeparationOverlay(BooleanSyncValue inputSeparationSyncer) {
+        UITexture forbidden = GTGuiTextures.OVERLAY_BUTTON_FORBIDDEN;
+        if (inputSeparationSyncer.getValue()) {
+            if (base.supportsInputSeparation()) {
+                return GTGuiTextures.OVERLAY_BUTTON_INPUT_SEPARATION_ON;
+            } else {
+                return new DrawableStack(GTGuiTextures.OVERLAY_BUTTON_INPUT_SEPARATION_ON_DISABLED, forbidden);
+            }
+        } else {
+
+            if (base.supportsInputSeparation()) {
+                return GTGuiTextures.OVERLAY_BUTTON_INPUT_SEPARATION_OFF;
+            } else {
+                return new DrawableStack(GTGuiTextures.OVERLAY_BUTTON_INPUT_SEPARATION_OFF_DISABLED, forbidden);
+            }
+        }
+    }
+
+    private void createInputSeparationTooltip(RichTooltip t) {
+        t.addLine(IKey.lang("GT5U.gui.button.input_separation"));
+        if (!base.supportsInputSeparation()) t.addLine(IKey.lang(BUTTON_FORBIDDEN_TOOLTIP));
+    }
+
+    protected IWidget createModeSwitchButton(PanelSyncManager syncManager) {
+        IntSyncValue machineModeSyncer = (IntSyncValue) syncManager.getSyncHandler("machineMode:0");
+        return new CycleButtonWidget().size(18, 18)
+            .syncHandler("machineMode")
+            .length(machineModeIcons.size())
+            .overlay(new DynamicDrawable(() -> getMachineModeIcon(machineModeSyncer.getValue())))
+            .tooltipBuilder(this::createModeSwitchTooltip);
+    }
+
+    protected UITexture getMachineModeIcon(int index) {
+        if (index > machineModeIcons.size() - 1) return null;
+        return machineModeIcons.get(index);
+    }
+
+    private void createModeSwitchTooltip(RichTooltip t) {
+        t.addLine(IKey.dynamic(() -> StatCollector.translateToLocal("GT5U.gui.button.mode_switch")))
+            .addLine(IKey.dynamic(base::getMachineModeName));
+    }
+
+    protected IWidget createBatchModeButton(PanelSyncManager syncManager) {
+        BooleanSyncValue batchModeSyncer = (BooleanSyncValue) syncManager.getSyncHandler("batchMode:0");
+
+        return new ToggleButton() {
+
+            @NotNull
+            @Override
+            public Result onMousePressed(int mouseButton) {
+                if (!base.supportsBatchMode()) return Result.IGNORE;
+                return super.onMousePressed(mouseButton);
+            }
+        }.size(18, 18)
+            .value(getBatchModeSyncValue(batchModeSyncer))
+            .overlay(new DynamicDrawable(() -> getBatchModeDrawable(batchModeSyncer)))
+            .tooltipBuilder(this::createBatchModeTooltip);
+    }
+
+    private BooleanSyncValue getBatchModeSyncValue(BooleanSyncValue batchModeSyncer) {
+        return new BooleanSyncValue(() -> batchModeSyncer.getValue() || !base.supportsBatchMode(), bool -> {
+            if (base.supportsBatchMode()) {
+                batchModeSyncer.setValue(bool);
+            }
+        });
+    }
+
+    private IDrawable getBatchModeDrawable(BooleanSyncValue batchModeSyncer) {
+        UITexture forbidden = GTGuiTextures.OVERLAY_BUTTON_FORBIDDEN;
+        if (batchModeSyncer.getValue()) {
+            if (base.supportsBatchMode()) {
+                return GTGuiTextures.OVERLAY_BUTTON_BATCH_MODE_ON;
+            } else {
+                return GTGuiTextures.OVERLAY_BUTTON_BATCH_MODE_ON_DISABLED;
+            }
+        } else {
+            if (base.supportsBatchMode()) {
+                return GTGuiTextures.OVERLAY_BUTTON_BATCH_MODE_OFF;
+            } else {
+                return new DrawableStack(GTGuiTextures.OVERLAY_BUTTON_BATCH_MODE_OFF_DISABLED, forbidden);
+            }
+        }
+    }
+
+    private void createBatchModeTooltip(RichTooltip t) {
+        t.addLine(IKey.lang("GT5U.gui.button.batch_mode"));
+        if (!base.supportsBatchMode()) t.addLine(IKey.lang(BUTTON_FORBIDDEN_TOOLTIP));
+    }
+
+    protected IWidget createLockToSingleRecipeButton(PanelSyncManager syncManager) {
+        BooleanSyncValue recipeLockSyncer = (BooleanSyncValue) syncManager.getSyncHandler("recipeLock:0");
+        return new ToggleButton() {
+
+            @NotNull
+            @Override
+            public Result onMousePressed(int mouseButton) {
+                if (!base.supportsSingleRecipeLocking()) return Result.IGNORE;
+                return super.onMousePressed(mouseButton);
+            }
+        }.size(18, 18)
+            .value(getRecipeLockSyncValue(recipeLockSyncer))
+            .overlay(new DynamicDrawable(() -> getRecipeLockOverlay(recipeLockSyncer)))
+            .tooltipBuilder(this::createRecipeLockTooltip);
+    }
+
+    private BooleanSyncValue getRecipeLockSyncValue(BooleanSyncValue recipeLockSyncer) {
+        return new BooleanSyncValue(() -> recipeLockSyncer.getValue() || !base.supportsSingleRecipeLocking(), bool -> {
+            if (base.supportsSingleRecipeLocking()) {
+                recipeLockSyncer.setValue(bool);
+            }
+        });
+    }
+
+    private IDrawable getRecipeLockOverlay(BooleanSyncValue recipeLockSyncer) {
+        UITexture forbidden = GTGuiTextures.OVERLAY_BUTTON_FORBIDDEN;
+        if (recipeLockSyncer.getValue()) {
+            if (base.supportsSingleRecipeLocking()) {
+                return GTGuiTextures.OVERLAY_BUTTON_RECIPE_LOCKED;
+            } else {
+                return GTGuiTextures.OVERLAY_BUTTON_RECIPE_LOCKED_DISABLED;
+            }
+        } else {
+            if (base.supportsSingleRecipeLocking()) {
+                return GTGuiTextures.OVERLAY_BUTTON_RECIPE_UNLOCKED;
+            } else {
+                return new DrawableStack(GTGuiTextures.OVERLAY_BUTTON_RECIPE_UNLOCKED_DISABLED, forbidden);
+            }
+        }
+    }
+
+    private void createRecipeLockTooltip(RichTooltip t) {
+        t.addLine(IKey.lang("GT5U.gui.button.lock_recipe"));
+        if (!base.supportsSingleRecipeLocking()) t.addLine(IKey.lang(BUTTON_FORBIDDEN_TOOLTIP));
+    }
+
+    protected IWidget createPowerPanelButton(PanelSyncManager syncManager, ModularPanel parent) {
         IPanelHandler powerPanel = syncManager
             .panel("powerPanel", (p_syncManager, syncHandler) -> openPowerControlPanel(p_syncManager, parent), true);
-
         return new ButtonWidget<>().size(18, 18)
             .rightRel(0, 6, 0)
             .marginTop(4)
@@ -450,9 +542,7 @@ public class MTEMultiBlockBaseGui {
                         IKey.lang("GTPP.CC.parallel")
                             .asWidget()
                             .marginBottom(4))
-                    .child(makeParallelConfigurator(syncManager))
-
-            );
+                    .child(makeParallelConfigurator(syncManager)));
     }
 
     private IWidget makeTitleTextWidget() {
@@ -465,16 +555,18 @@ public class MTEMultiBlockBaseGui {
 
     private IWidget makeParallelConfigurator(PanelSyncManager syncManager) {
         IntSyncValue maxParallelSyncer = new IntSyncValue(base::getMaxParallelRecipes, base::setMaxParallelForPanel);
-        syncManager.syncValue("maxParallel", maxParallelSyncer);
         BooleanSyncValue alwaysMaxParallelSyncer = new BooleanSyncValue(
             base::isAlwaysMaxParallel,
             base::setAlwaysMaxParallel);
+        syncManager.syncValue("maxParallel", maxParallelSyncer);
         syncManager.syncValue("alwaysMaxParallel", alwaysMaxParallelSyncer);
 
+        // The PanelSyncManager seems to belong to absolutely nothing?
+        // Not sure how that works but trying to use .syncHandler instead of .value causes a crash because
+        // This PanelSyncManager has no panel and the widget tries to get a syncHandler from "powerPanel"
         IntSyncValue powerPanelMaxParallelSyncer = new IntSyncValue(
             base::getPowerPanelMaxParallel,
             base::setPowerPanelMaxParallel);
-
         return new Row().widthRel(1)
             .height(18)
             .paddingLeft(3)
@@ -503,9 +595,11 @@ public class MTEMultiBlockBaseGui {
             .child(
                 new ButtonWidget<>().size(18, 18)
                     .overlay(new DynamicDrawable(() -> {
-                        if (alwaysMaxParallelSyncer.getValue())
-                            return UITexture.fullImage(GTGuiTextures.OVERLAY_BUTTON_CHECKMARK.location);
-                        return UITexture.fullImage(GTGuiTextures.OVERLAY_BUTTON_CROSS.location);
+                        if (alwaysMaxParallelSyncer.getValue()) {
+                            return GTGuiTextures.OVERLAY_BUTTON_CHECKMARK;
+                        } else {
+                            return GTGuiTextures.OVERLAY_BUTTON_CROSS;
+                        }
                     }))
                     .onMousePressed(d -> {
                         alwaysMaxParallelSyncer.setValue(!alwaysMaxParallelSyncer.getValue());
@@ -516,205 +610,61 @@ public class MTEMultiBlockBaseGui {
                     .tooltipShowUpTimer(TOOLTIP_DELAY));
     }
 
-    private IWidget createLockToSingleRecipeButton(PanelSyncManager syncManager) {
-        BooleanSyncValue recipeLockSyncer = new BooleanSyncValue(base::isRecipeLockingEnabled, base::setRecipeLocking);
-        syncManager.syncValue("recipeLock", recipeLockSyncer);
-
-        return new ToggleButton() {
-
-            @NotNull
-            @Override
-            public Result onMousePressed(int mouseButton) {
-                if (!base.supportsSingleRecipeLocking()) return Result.IGNORE;
-                return super.onMousePressed(mouseButton);
-            }
-        }.size(18, 18)
-            .value(
-                new BooleanSyncValue(() -> recipeLockSyncer.getValue() || !base.supportsSingleRecipeLocking(), bool -> {
-                    if (base.supportsSingleRecipeLocking()) {
-                        recipeLockSyncer.setValue(bool);
-                    }
-                }))
-            .overlay(new DynamicDrawable(() -> {
-                UITexture forbidden = GTGuiTextures.OVERLAY_BUTTON_FORBIDDEN;
-                if (recipeLockSyncer.getValue()) {
-                    if (base.supportsSingleRecipeLocking()) {
-                        return GTGuiTextures.OVERLAY_BUTTON_RECIPE_LOCKED;
-                    } else {
-                        return new DrawableStack(GTGuiTextures.OVERLAY_BUTTON_RECIPE_LOCKED_DISABLED);
-                    }
-                } else {
-                    if (base.supportsSingleRecipeLocking()) {
-                        return GTGuiTextures.OVERLAY_BUTTON_RECIPE_UNLOCKED;
-                    } else {
-                        return new DrawableStack(GTGuiTextures.OVERLAY_BUTTON_RECIPE_UNLOCKED_DISABLED, forbidden);
-                    }
-                }
-            }))
-            .tooltipBuilder(t -> {
-                t.addLine(IKey.lang("GT5U.gui.button.lock_recipe"));
-                if (!base.supportsSingleRecipeLocking()) t.addLine(IKey.lang(BUTTON_FORBIDDEN_TOOLTIP));
-            });
+    private IWidget createInventoryRow(ModularPanel panel, PanelSyncManager syncManager) {
+        return new Row().widthRel(1)
+            .height(76)
+            .alignX(0)
+            .childIf(
+                base.doesBindPlayerInventory(),
+                SlotGroupWidget.playerInventory(false)
+                    .marginLeft(4))
+            .child(createButtonColumn(panel, syncManager));
     }
 
-    private IWidget createBatchModeButton(PanelSyncManager syncManager) {
-        BooleanSyncValue batchModeSyncer = new BooleanSyncValue(base::isBatchModeEnabled, base::setBatchMode);
-        syncManager.syncValue("batchMode", batchModeSyncer);
-
-        return new ToggleButton() {
-
-            @NotNull
-            @Override
-            public Result onMousePressed(int mouseButton) {
-                if (!base.supportsBatchMode()) return Result.IGNORE;
-                return super.onMousePressed(mouseButton);
-            }
-        }.size(18, 18)
-            .value(new BooleanSyncValue(() -> batchModeSyncer.getValue() || !base.supportsBatchMode(), bool -> {
-                if (base.supportsBatchMode()) {
-                    batchModeSyncer.setValue(bool);
-                }
-            }))
-            .overlay(new DynamicDrawable(() -> {
-                UITexture forbidden = GTGuiTextures.OVERLAY_BUTTON_FORBIDDEN;
-                if (batchModeSyncer.getValue()) {
-                    if (base.supportsBatchMode()) {
-                        return GTGuiTextures.OVERLAY_BUTTON_BATCH_MODE_ON;
-                    } else {
-                        return new DrawableStack(GTGuiTextures.OVERLAY_BUTTON_BATCH_MODE_ON_DISABLED);
-                    }
-                } else {
-
-                    if (base.supportsBatchMode()) {
-                        return GTGuiTextures.OVERLAY_BUTTON_BATCH_MODE_OFF;
-                    } else {
-                        return new DrawableStack(GTGuiTextures.OVERLAY_BUTTON_BATCH_MODE_OFF_DISABLED, forbidden);
-                    }
-                }
-            }))
-            .tooltipBuilder(t -> {
-                t.addLine(IKey.lang("GT5U.gui.button.batch_mode"));
-                if (!base.supportsBatchMode()) t.addLine(IKey.lang(BUTTON_FORBIDDEN_TOOLTIP));
-            });
+    protected Flow createButtonColumn(ModularPanel panel, PanelSyncManager syncManager) {
+        return new Column().width(18)
+            .leftRel(1, -2, 1)
+            .mainAxisAlignment(MainAxis.END)
+            .child(createStructureUpdateButton(syncManager))
+            .child(createPowerSwitchButton())
+            .childIf(
+                base.doesBindPlayerInventory(),
+                new ItemSlot()
+                    .slot(new ModularSlot(base.inventoryHandler, base.getControllerSlotIndex()).slotGroup("item_inv")));
     }
 
-    private IWidget createModeSwitchButton(PanelSyncManager syncManager) {
-        IntSyncValue machineModeSyncer = new IntSyncValue(base::getMachineMode, base::setMachineMode);
-        syncManager.syncValue("machineMode", machineModeSyncer);
-
-        return new CycleButtonWidget().size(18, 18)
-            .value(new IntSyncValue(machineModeSyncer::getValue, machineModeSyncer::setValue))
-            .length(machineModeIcons.size())
-            .overlay(new DynamicDrawable(() -> getMachineModeIcon(machineModeSyncer.getValue())))
-            .tooltipBuilder(t -> {
-                t.addLine(IKey.dynamic(() -> StatCollector.translateToLocal("GT5U.gui.button.mode_switch")))
-                    .addLine(IKey.dynamic(base::getMachineModeName));
-            });
+    protected IWidget createStructureUpdateButton(PanelSyncManager syncManager) {
+        return new ToggleButton().size(18, 18)
+            .syncHandler("structureUpdateButton")
+            .overlay(GTGuiTextures.OVERLAY_BUTTON_STRUCTURE_UPDATE)
+            .tooltipBuilder(t -> { t.addLine(IKey.lang("GT5U.gui.button.structure_update")); });
     }
 
-    private UITexture getMachineModeIcon(int index) {
-        if (index > machineModeIcons.size() - 1) return null;
-        return machineModeIcons.get(index);
-    }
-
-    private IWidget createInputSeparationButton(PanelSyncManager syncManager) {
-
-        BooleanSyncValue inputSeparationSyncer = new BooleanSyncValue(
-            base::isInputSeparationEnabled,
-            base::setInputSeparation);
-        syncManager.syncValue("inputSeparation", inputSeparationSyncer);
-
-        return new ToggleButton() {
-
-            @NotNull
-            @Override
-            public Result onMousePressed(int mouseButton) {
-                if (!base.supportsInputSeparation()) return Result.IGNORE;
-                return super.onMousePressed(mouseButton);
-            }
-        }.size(18, 18)
-            .value(
-                new BooleanSyncValue(
-                    () -> inputSeparationSyncer.getValue() || !base.supportsInputSeparation(),
-                    bool -> {
-                        if (base.supportsInputSeparation()) {
-                            inputSeparationSyncer.setValue(bool);
-                        }
-                    }))
-            .overlay(new DynamicDrawable(() -> {
-                UITexture forbidden = GTGuiTextures.OVERLAY_BUTTON_FORBIDDEN;
-                if (inputSeparationSyncer.getValue()) {
-                    if (base.supportsInputSeparation()) {
-                        return GTGuiTextures.OVERLAY_BUTTON_INPUT_SEPARATION_ON;
-                    } else {
-                        return new DrawableStack(GTGuiTextures.OVERLAY_BUTTON_INPUT_SEPARATION_ON_DISABLED, forbidden);
-                    }
-                } else {
-
-                    if (base.supportsInputSeparation()) {
-                        return GTGuiTextures.OVERLAY_BUTTON_INPUT_SEPARATION_OFF;
-                    } else {
-                        return new DrawableStack(GTGuiTextures.OVERLAY_BUTTON_INPUT_SEPARATION_OFF_DISABLED, forbidden);
-                    }
-                }
-            }))
-            .tooltipBuilder(t -> {
-                t.addLine(IKey.lang("GT5U.gui.button.input_separation"));
-                if (!base.supportsInputSeparation()) t.addLine(IKey.lang(BUTTON_FORBIDDEN_TOOLTIP));
-            });
-    }
-
-    private IWidget createVoidExcessButton(PanelSyncManager syncManager) {
-
-        IntSyncValue voidExcessSyncer = new IntSyncValue(
-            () -> base.getVoidingMode()
-                .ordinal(),
-            val -> base.setVoidingMode(VoidingMode.fromOrdinal(val)));
-        syncManager.syncValue("voidExcess", voidExcessSyncer);
-
-        return new CycleButtonWidget() {
-
-            @NotNull
-            @Override
-            public Result onMousePressed(int mouseButton) {
-                if (!base.supportsVoidProtection()) return Result.IGNORE;
-                return super.onMousePressed(mouseButton);
-            }
-        }.size(18, 18)
-            .value(
-                new IntSyncValue(
-                    voidExcessSyncer::getValue,
-                    val -> { if (base.supportsVoidProtection()) voidExcessSyncer.setValue(val); }))
-            .length(
-                base.getAllowedVoidingModes()
-                    .size())
-            .background(
-                new DynamicDrawable(
-                    () -> UITexture.builder()
-                        .location(base.getVoidingMode().buttonTexture.location)
-                        .canApplyTheme(true)
-                        .build()))
+    protected IWidget createPowerSwitchButton() {
+        return new ToggleButton().syncHandler("powerSwitch")
+            .tooltip(tooltip -> tooltip.add("Power Switch"))
+            .size(18, 18)
+            .marginBottom(4)
             .overlay(
                 new DynamicDrawable(
-                    () -> base.supportsVoidProtection()
-                        ? UITexture.fullImage(base.getVoidingMode().buttonOverlay.location)
-                        : new DrawableStack(
-                            UITexture.fullImage(base.getVoidingMode().buttonOverlay.location),
-                            GTGuiTextures.OVERLAY_BUTTON_FORBIDDEN)))
-            .tooltipBuilder(t -> {
-                t.addLine(IKey.dynamic(() -> StatCollector.translateToLocal("GT5U.gui.button.voiding_mode")))
-                    .addLine(
-                        IKey.dynamic(
-                            () -> StatCollector.translateToLocal(
-                                base.getVoidingMode()
-                                    .getTransKey())));
-                if (!base.supportsVoidProtection()) {
-                    t.addLine(IKey.lang(BUTTON_FORBIDDEN_TOOLTIP));
-                }
-            });
+                    () -> isPowerSwitchDisabled() ? this.customIcons.get("power_switch_disabled")
+                        : baseMetaTileEntity.isAllowedToWork() ? this.customIcons.get("power_switch_on")
+                            : this.customIcons.get("power_switch_off")));
     }
 
-    private void registerSyncValues(PanelSyncManager syncManager) {
+    protected boolean isPowerSwitchDisabled() {
+        return false;
+    }
+
+    protected Dimension getTerminalDimensions() {
+        return getTerminalRowDimensions();
+    }
+
+    protected Dimension getTerminalRowDimensions() {
+        return base.doesBindPlayerInventory() ? new Dimension(190, 94) : new Dimension(190, 174);
+    }
+
+    protected void registerSyncValues(PanelSyncManager syncManager) {
         syncManager.syncValue(
             "errors",
             new GenericSyncValue<EnumSet<StructureError>>(
@@ -724,11 +674,7 @@ public class MTEMultiBlockBaseGui {
         syncManager.syncValue("errorID", new IntSyncValue(base::getErrorDisplayID, base::setErrorDisplayID));
         syncManager.syncValue(
             "machineActive",
-            new BooleanSyncValue(
-                () -> base.getBaseMetaTileEntity()
-                    .isActive(),
-                val -> base.getBaseMetaTileEntity()
-                    .setActive(val)));
+            new BooleanSyncValue(baseMetaTileEntity::isActive, baseMetaTileEntity::setActive));
 
         syncManager.syncValue("wrench", new BooleanSyncValue(() -> base.mWrench, val -> base.mWrench = val));
         syncManager
@@ -746,20 +692,14 @@ public class MTEMultiBlockBaseGui {
         syncManager.syncValue("totalRunTime", new LongSyncValue(base::getTotalRunTime, base::setTotalRunTime));
         syncManager.syncValue("lastWorkingTick", new LongSyncValue(base::getLastWorkingTick, base::setLastWorkingTick));
         BooleanSyncValue wasShutDown = new BooleanSyncValue(
-            () -> base.getBaseMetaTileEntity()
-                .wasShutdown(),
-            val -> base.getBaseMetaTileEntity()
-                .setShutdownStatus(val));
+            baseMetaTileEntity::wasShutdown,
+            baseMetaTileEntity::setShutdownStatus);
         syncManager.syncValue("wasShutdown", wasShutDown);
         syncManager.syncValue(
             "shutdownReason",
             new GenericSyncValue<ShutDownReason>(
-                () -> base.getBaseMetaTileEntity()
-                    .getLastShutDownReason(),
-                reason -> {
-                    base.getBaseMetaTileEntity()
-                        .setShutDownReason(reason);
-                },
+                baseMetaTileEntity::getLastShutDownReason,
+                baseMetaTileEntity::setShutDownReason,
                 new ShutdownReasonAdapter()));
         syncManager.syncValue(
             "checkRecipeResult",
@@ -804,7 +744,51 @@ public class MTEMultiBlockBaseGui {
 
         StringSyncValue recipeInfoSyncer = new StringSyncValue(base::generateCurrentRecipeInfoString);
         syncManager.syncValue("recipeInfo", recipeInfoSyncer);
+
+        // Widget Specific
+        BooleanSyncValue powerSwitchSyncer = new BooleanSyncValue(base::isAllowedToWork, bool -> {
+            if (isPowerSwitchDisabled()) return;
+            if (bool) base.enableWorking();
+            else {
+                if (base.maxProgresstime() > 0) base.disableWorking();
+                else base.stopMachine(ShutDownReasonRegistry.NONE);
+            }
+        });
+        syncManager.syncValue("powerSwitch", powerSwitchSyncer);
+
+        IntSyncValue structureUpdateSyncer = new IntSyncValue(
+            base::getStructureUpdateTime,
+            base::setStructureUpdateTime);
+        BooleanSyncValue structureUpdateButtonSyncer = new BooleanSyncValue(
+            () -> structureUpdateSyncer.getValue() > -20,
+            val -> { if (val) structureUpdateSyncer.setValue(1); });
+        syncManager.syncValue("structureUpdate", structureUpdateSyncer);
+        syncManager.syncValue("structureUpdateButton", structureUpdateButtonSyncer);
+
+        BooleanSyncValue recipeLockSyncer = new BooleanSyncValue(base::isRecipeLockingEnabled, base::setRecipeLocking);
+        syncManager.syncValue("recipeLock", recipeLockSyncer);
+
+        BooleanSyncValue batchModeSyncer = new BooleanSyncValue(base::isBatchModeEnabled, base::setBatchMode);
+        syncManager.syncValue("batchMode", batchModeSyncer);
+
+        IntSyncValue machineModeSyncer = new IntSyncValue(base::getMachineMode, base::setMachineMode);
+        syncManager.syncValue("machineMode", machineModeSyncer);
+
+        BooleanSyncValue inputSeparationSyncer = new BooleanSyncValue(
+            base::isInputSeparationEnabled,
+            base::setInputSeparation);
+        syncManager.syncValue("inputSeparation", inputSeparationSyncer);
+
+        IntSyncValue voidExcessSyncer = new IntSyncValue(
+            () -> base.getVoidingMode()
+                .ordinal(),
+            val -> { if (base.supportsVoidProtection()) base.setVoidingMode(VoidingMode.fromOrdinal(val)); });
+        syncManager.syncValue("voidExcess", voidExcessSyncer);
+
+        syncManager.registerSlotGroup("item_inv", 1);
     }
+
+    protected void initPanelMap(ModularPanel parent, PanelSyncManager syncManager) {}
 
     protected void setMachineModeIcons() {}
 }

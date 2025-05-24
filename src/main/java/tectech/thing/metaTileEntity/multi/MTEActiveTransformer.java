@@ -217,6 +217,10 @@ public class MTEActiveTransformer extends TTMultiblockBase implements ISurvivalC
     }
 
     @Override
+    protected boolean forceUseMui2() {
+        return true;
+    }
+
     public boolean showRecipeTextInGUI() {
         return false;
     }
