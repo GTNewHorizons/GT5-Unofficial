@@ -48,9 +48,10 @@ public final class GTGuiThemes {
         .themedTexture(GTWidgetThemes.PICTURE_LOGO, GTTextureIds.PICTURE_GT_LOGO_STANDARD)
         .build();
     public static final GTGuiTheme COVER = GTGuiTheme.builder("gregtech:cover")
+        .parent(STANDARD)
         .textColor(0x555555)
         .customTextColor(GTWidgetThemes.TEXT_TITLE, 0x222222)
-        .parent(STANDARD)
+        .textField(Dyes.dyeWhite.toInt())
         .build();
     public static final GTGuiTheme BRONZE = GTGuiTheme.builder("gregtech:bronze")
         .parent(STANDARD)

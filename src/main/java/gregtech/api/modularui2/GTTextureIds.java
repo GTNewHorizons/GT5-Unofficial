@@ -17,6 +17,7 @@ public final class GTTextureIds {
     public static final String BACKGROUND_TITLE_STEEL = "gregtech:bg_title_steel";
     public static final String BACKGROUND_TITLE_PRIMITIVE = "gregtech:bg_title_primitive";
 
+    public static final String BACKGROUND_TERMINAL_STANDARD = "gregtech:bg_terminal_standard";
     public static final String BACKGROUND_TEXT_FIELD = "gregtech:bg_text_field";
     public static final String BACKGROUND_TEXT_FIELD_LIGHT_GRAY = "gregtech:bg_text_field_light_gray";
 

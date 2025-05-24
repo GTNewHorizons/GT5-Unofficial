@@ -33,6 +33,7 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
+import gtPlusPlus.core.material.MaterialsAlloy;
 import mods.railcraft.common.blocks.aesthetics.cube.EnumCube;
 
 public class MixerRecipes implements Runnable {
@@ -446,6 +447,34 @@ public class MixerRecipes implements Runnable {
                 GTOreDictUnificator.getDust(Materials.BorosilicateGlass, 8L * OrePrefixes.dust.mMaterialAmount))
             .duration(10 * SECONDS)
             .eut(8)
+            .addTo(mixerRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Sulfur, 3),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Iron, 23),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Nickel, 5),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Chrome, 1),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Silicon, 12),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Carbon, 3),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Aluminium, 1),
+                GTUtility.getIntegratedCircuit(20))
+            .itemOutputs(MaterialsAlloy.EGLIN_STEEL.getDust(48))
+            .duration(15 * SECONDS)
+            .eut(64)
+            .addTo(mixerRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Platinum, 1),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Silver, 1),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Tin, 2),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Thaumium, 2),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.EnderPearl, 2),
+                GTUtility.getIntegratedCircuit(16))
+            .itemOutputs(GTOreDictUnificator.getDust(Materials.Enderium, 8L))
+            .duration(10 * SECONDS)
+            .eut(64)
             .addTo(mixerRecipes);
 
         GTValues.RA.stdBuilder()

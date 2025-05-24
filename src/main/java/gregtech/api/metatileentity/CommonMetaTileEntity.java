@@ -458,7 +458,7 @@ public abstract class CommonMetaTileEntity implements IMetaTileEntity {
 
     @Override
     public FluidTankInfo[] getTankInfo(ForgeDirection side) {
-        if (getCapacity() <= 0 && !getBaseMetaTileEntity().hasSteamEngineUpgrade()) {
+        if (getCapacity() <= 0) {
             return new FluidTankInfo[] {};
         }
         return new FluidTankInfo[] { getInfo() };
