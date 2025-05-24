@@ -57,6 +57,8 @@ public enum GTStructureChannels implements IStructureChannels {
     ECCF_COMPRESSOR("eccf_compress", "ECCF Compressor Tier"),
     ECCF_PARALLEL_L("eccf_parallel_right", "ECCF Parallel Tier"),
     ECCF_PARALLEL_R("eccf_parallel_left", "ECCF Parallel Tier"),
+
+    EIC_PISTON("piston_block", "Metal Block Tier")
     //
     ;
 

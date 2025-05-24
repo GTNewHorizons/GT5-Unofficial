@@ -159,6 +159,7 @@ public class MTEFuelRefineFactory extends MTETooltipMultiBlockBaseEM implements 
             .addInfo("Use higher tier coils to unlock more fuel types and perform more overclocks.")
             .addInfo(StatCollector.translateToLocal("GT5U.machines.perfectoc.tooltip"))
             .addTecTechHatchInfo()
+            .addUnlimitedTierSkips()
             .beginStructureBlock(3, 15, 15, false)
             .addController("Mid of the third layer")
             .addCasingInfoExactly("Naquadah Fuel Refinery Casing", 114, false)
@@ -226,6 +227,7 @@ public class MTEFuelRefineFactory extends MTETooltipMultiBlockBaseEM implements 
     protected void setProcessingLogicPower(ProcessingLogic logic) {
         logic.setAvailableVoltage(getMaxInputEu());
         logic.setAvailableAmperage(1);
+        logic.setUnlimitedTierSkips();
     }
 
     @Override

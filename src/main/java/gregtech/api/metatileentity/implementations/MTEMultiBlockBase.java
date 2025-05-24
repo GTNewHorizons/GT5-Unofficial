@@ -1014,9 +1014,10 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
      * Unlike {@link #createProcessingLogic}, this method is called every time checking for recipes.
      */
     protected void setProcessingLogicPower(ProcessingLogic logic) {
+        boolean useSingleAmp = mEnergyHatches.size() == 1 && mExoticEnergyHatches.isEmpty();
         logic.setAvailableVoltage(getAverageInputVoltage());
-        logic.setAvailableAmperage(getMaxInputAmps());
-        logic.setAmperageOC(mExoticEnergyHatches.size() > 0 || mEnergyHatches.size() != 1);
+        logic.setAvailableAmperage(useSingleAmp ? 1 : getMaxInputAmps());
+        logic.setAmperageOC(true);
     }
 
     protected boolean supportsCraftingMEBuffer() {
