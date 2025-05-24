@@ -226,6 +226,26 @@ public class GTUITextures {
         .fullImage(GregTech.ID, "gui/progressbar/steam_fill_steel");
     public static final UITexture PROGRESSBAR_NAME_REMOVER = UITexture
         .fullImage(GregTech.ID, "gui/progressbar/name_remover");
+    public static final UITexture PROGRESSBAR_ASSEMBLY_COMPLEX = UITexture
+        .fullImage(GregTech.ID, "gui/progressbar/nanochip/assemblycomplex");
+    public static final UITexture PROGRESSBAR_ASSEMBLY_MATRIX = UITexture
+        .fullImage(GregTech.ID, "gui/progressbar/nanochip/assemblymatrix");
+    public static final UITexture PROGRESSBAR_SMD_PROCESSOR = UITexture
+        .fullImage(GregTech.ID, "gui/progressbar/nanochip/smdprocessor");
+    public static final UITexture PROGRESSBAR_BOARD_PROCESSOR = UITexture
+        .fullImage(GregTech.ID, "gui/progressbar/nanochip/boardprocessor");
+    public static final UITexture PROGRESSBAR_ETCHING_ARRAY = UITexture
+        .fullImage(GregTech.ID, "gui/progressbar/nanochip/etchingarray");
+    public static final UITexture PROGRESSBAR_CUTTING_CHAMBER = UITexture
+        .fullImage(GregTech.ID, "gui/progressbar/nanochip/cuttingchamber");
+    public static final UITexture PROGRESSBAR_WIRE_TRACER = UITexture
+        .fullImage(GregTech.ID, "gui/progressbar/nanochip/wiretracer");
+    public static final UITexture PROGRESSBAR_SUPERCONDUCTOR_SPLITTER = UITexture
+        .fullImage(GregTech.ID, "gui/progressbar/nanochip/superconductorsplitter");
+    public static final UITexture PROGRESSBAR_OPTICAL_ORGANIZER = UITexture
+        .fullImage(GregTech.ID, "gui/progressbar/nanochip/opticalorganizer");
+    public static final UITexture PROGRESSBAR_SHEET_SUPERVISOR = UITexture
+        .fullImage(GregTech.ID, "gui/progressbar/nanochip/sheetsupervisor");
 
     public static FallbackableUITexture fallbackableProgressbar(String name, UITexture fallback) {
         return new FallbackableUITexture(UITexture.fullImage(GregTech.ID, "gui/progressbar/" + name), fallback);

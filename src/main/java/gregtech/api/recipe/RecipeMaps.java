@@ -73,6 +73,16 @@ import gregtech.api.recipe.maps.ReplicatorBackend;
 import gregtech.api.recipe.maps.SpaceProjectFrontend;
 import gregtech.api.recipe.maps.TranscendentPlasmaMixerFrontend;
 import gregtech.api.recipe.maps.UnpackagerBackend;
+import gregtech.api.recipe.maps.nanochip.NanochipAssemblyComplexFrontend;
+import gregtech.api.recipe.maps.nanochip.NanochipAssemblyMatrixFrontend;
+import gregtech.api.recipe.maps.nanochip.NanochipBoardProcessorFrontend;
+import gregtech.api.recipe.maps.nanochip.NanochipCuttingChamberFrontend;
+import gregtech.api.recipe.maps.nanochip.NanochipEtchingArrayFrontend;
+import gregtech.api.recipe.maps.nanochip.NanochipOpticalOrganizerFrontend;
+import gregtech.api.recipe.maps.nanochip.NanochipSMDProcessorFrontend;
+import gregtech.api.recipe.maps.nanochip.NanochipSheetSupervisorFrontend;
+import gregtech.api.recipe.maps.nanochip.NanochipSuperconductorSplitterFrontend;
+import gregtech.api.recipe.maps.nanochip.NanochipWireTracerFrontend;
 import gregtech.api.recipe.metadata.CompressionTierKey;
 import gregtech.api.recipe.metadata.PCBFactoryTierKey;
 import gregtech.api.recipe.metadata.PurificationPlantBaseChanceKey;
@@ -1280,6 +1290,7 @@ public final class RecipeMaps {
             CircuitComponent output = CircuitComponent.getFromFakeStackUnsafe(recipe.mOutputs[0]);
             MTENanochipAssemblyComplex.registerLocalName(input, output);
         })
+        .frontend(NanochipAssemblyComplexFrontend::new)
         .build();
 
     public static final RecipeMap<RecipeMapBackend> nanochipAssemblyMatrixRecipes = RecipeMapBuilder
@@ -1294,7 +1305,7 @@ public final class RecipeMaps {
                 AssemblyMatrix.registerLocalName(output.realCircuit, output);
             }
         })
-        .frontend(AssemblyLineFrontend::new)
+        .frontend(NanochipAssemblyMatrixFrontend::new)
         .build();
 
     public static final RecipeMap<RecipeMapBackend> nanochipSMDProcessorRecipes = RecipeMapBuilder
@@ -1306,6 +1317,7 @@ public final class RecipeMaps {
             CircuitComponent input = CircuitComponent.getFromFakeStackUnsafe(recipe.mInputs[0]);
             SMDProcessor.registerLocalName(input.getLocalizedName(), output);
         })
+        .frontend(NanochipSMDProcessorFrontend::new)
         .build();
     public static final RecipeMap<RecipeMapBackend> nanochipBoardProcessorRecipes = RecipeMapBuilder
         .of("gt.recipe.nanochip.boardprocessor")
@@ -1316,6 +1328,7 @@ public final class RecipeMaps {
             CircuitComponent input = CircuitComponent.getFromFakeStackUnsafe(recipe.mInputs[0]);
             BoardProcessor.registerLocalName(input.getLocalizedName(), output);
         })
+        .frontend(NanochipBoardProcessorFrontend::new)
         .build();
     public static final RecipeMap<RecipeMapBackend> nanochipEtchingArray = RecipeMapBuilder
         .of("gt.recipe.nanochip.etchingarray")
@@ -1326,6 +1339,7 @@ public final class RecipeMaps {
             CircuitComponent input = CircuitComponent.getFromFakeStackUnsafe(recipe.mInputs[0]);
             EtchingArray.registerLocalName(input.getLocalizedName(), output);
         })
+        .frontend(NanochipEtchingArrayFrontend::new)
         .build();
     public static final RecipeMap<RecipeMapBackend> nanochipCuttingChamber = RecipeMapBuilder
         .of("gt.recipe.nanochip.cuttingchamber")
@@ -1336,6 +1350,7 @@ public final class RecipeMaps {
             CircuitComponent input = CircuitComponent.getFromFakeStackUnsafe(recipe.mInputs[0]);
             CuttingChamber.registerLocalName(input.getLocalizedName(), output);
         })
+        .frontend(NanochipCuttingChamberFrontend::new)
         .build();
     public static final RecipeMap<RecipeMapBackend> nanochipWireTracer = RecipeMapBuilder
         .of("gt.recipe.nanochip.wiretracer")
@@ -1346,6 +1361,7 @@ public final class RecipeMaps {
             CircuitComponent input = CircuitComponent.getFromFakeStackUnsafe(recipe.mInputs[0]);
             WireTracer.registerLocalName(input.getLocalizedName(), output);
         })
+        .frontend(NanochipWireTracerFrontend::new)
         .build();
     public static final RecipeMap<RecipeMapBackend> nanochipSuperconductorSplitter = RecipeMapBuilder
         .of("gt.recipe.nanochip.superconductorsplitter")
@@ -1356,6 +1372,7 @@ public final class RecipeMaps {
             CircuitComponent input = CircuitComponent.getFromFakeStackUnsafe(recipe.mInputs[0]);
             SuperconductorSplitter.registerLocalName(input.getLocalizedName(), output);
         })
+        .frontend(NanochipSuperconductorSplitterFrontend::new)
         .build();
     public static final RecipeMap<RecipeMapBackend> nanochipOpticalOrganizer = RecipeMapBuilder
         .of("gt.recipe.nanochip.opticalorganizer")
@@ -1366,6 +1383,7 @@ public final class RecipeMaps {
             CircuitComponent input = CircuitComponent.getFromFakeStackUnsafe(recipe.mInputs[0]);
             OpticalOrganizer.registerLocalName(input.getLocalizedName(), output);
         })
+        .frontend(NanochipOpticalOrganizerFrontend::new)
         .build();
     public static final RecipeMap<RecipeMapBackend> nanochipSheetSupervisor = RecipeMapBuilder
         .of("gt.recipe.nanochip.sheetsupervisor")
@@ -1376,5 +1394,6 @@ public final class RecipeMaps {
             CircuitComponent input = CircuitComponent.getFromFakeStackUnsafe(recipe.mInputs[0]);
             SheetSupervisor.registerLocalName(input.getLocalizedName(), output);
         })
+        .frontend(NanochipSheetSupervisorFrontend::new)
         .build();
 }
