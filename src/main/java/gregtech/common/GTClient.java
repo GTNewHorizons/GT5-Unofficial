@@ -1016,7 +1016,7 @@ public class GTClient extends GTProxy implements Runnable {
         if (tCurrentItem == null) return false;
         return GTUtility.isStackInList(tCurrentItem, GregTechAPI.sWrenchList)
             || GTUtility.isStackInList(tCurrentItem, GregTechAPI.sHardHammerList)
-            || GTUtility.isStackInList(tCurrentItem, GregTechAPI.sSoftHammerList)
+            || GTUtility.isStackInList(tCurrentItem, GregTechAPI.sSoftMalletList)
             || GTUtility.isStackInList(tCurrentItem, GregTechAPI.sWireCutterList)
             || GTUtility.isStackInList(tCurrentItem, GregTechAPI.sSolderingToolList)
             || GTUtility.isStackInList(tCurrentItem, GregTechAPI.sCrowbarList)

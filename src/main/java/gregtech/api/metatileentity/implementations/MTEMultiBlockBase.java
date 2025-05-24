@@ -158,7 +158,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
 
     public static boolean disableMaintenance;
     public boolean hasMaintenanceChecks = getDefaultHasMaintenanceChecks();
-    public boolean mMachine = false, mWrench = false, mScrewdriver = false, mSoftHammer = false, mHardHammer = false,
+    public boolean mMachine = false, mWrench = false, mScrewdriver = false, mSoftMallet = false, mHardHammer = false,
         mSolderingTool = false, mCrowbar = false, mRunningOnLoad = false;
     public boolean mStructureChanged = false;
     private int errorDisplayID;
@@ -342,7 +342,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
         }
         aNBT.setBoolean("mWrench", mWrench);
         aNBT.setBoolean("mScrewdriver", mScrewdriver);
-        aNBT.setBoolean("mSoftHammer", mSoftHammer);
+        aNBT.setBoolean("mSoftMallet", mSoftMallet);
         aNBT.setBoolean("mHardHammer", mHardHammer);
         aNBT.setBoolean("mSolderingTool", mSolderingTool);
         aNBT.setBoolean("mCrowbar", mCrowbar);
@@ -414,7 +414,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
         if (shouldCheckMaintenance()) {
             mWrench = aNBT.getBoolean("mWrench");
             mScrewdriver = aNBT.getBoolean("mScrewdriver");
-            mSoftHammer = aNBT.getBoolean("mSoftHammer");
+            mSoftMallet = aNBT.getBoolean("mSoftMallet");
             mHardHammer = aNBT.getBoolean("mHardHammer");
             mSolderingTool = aNBT.getBoolean("mSolderingTool");
             mCrowbar = aNBT.getBoolean("mCrowbar");
@@ -610,7 +610,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
             setErrorDisplayID(
                 (getErrorDisplayID() & ~127) | (mWrench ? 0 : 1)
                     | (mScrewdriver ? 0 : 2)
-                    | (mSoftHammer ? 0 : 4)
+                    | (mSoftMallet ? 0 : 4)
                     | (mHardHammer ? 0 : 8)
                     | (mSolderingTool ? 0 : 16)
                     | (mCrowbar ? 0 : 32)
@@ -652,14 +652,14 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
                 if (tHatch.mAuto) tHatch.autoMaintainance();
                 if (tHatch.mWrench) mWrench = true;
                 if (tHatch.mScrewdriver) mScrewdriver = true;
-                if (tHatch.mSoftHammer) mSoftHammer = true;
+                if (tHatch.mSoftMallet) mSoftMallet = true;
                 if (tHatch.mHardHammer) mHardHammer = true;
                 if (tHatch.mSolderingTool) mSolderingTool = true;
                 if (tHatch.mCrowbar) mCrowbar = true;
 
                 tHatch.mWrench = false;
                 tHatch.mScrewdriver = false;
-                tHatch.mSoftHammer = false;
+                tHatch.mSoftMallet = false;
                 tHatch.mHardHammer = false;
                 tHatch.mSolderingTool = false;
                 tHatch.mCrowbar = false;
@@ -1298,7 +1298,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
 
     public int getRepairStatus() {
         return (mWrench ? 1 : 0) + (mScrewdriver ? 1 : 0)
-            + (mSoftHammer ? 1 : 0)
+            + (mSoftMallet ? 1 : 0)
             + (mHardHammer ? 1 : 0)
             + (mSolderingTool ? 1 : 0)
             + (mCrowbar ? 1 : 0);
@@ -1346,7 +1346,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
         switch (getBaseMetaTileEntity().getRandomNumber(6)) {
             case 0 -> mWrench = false;
             case 1 -> mScrewdriver = false;
-            case 2 -> mSoftHammer = false;
+            case 2 -> mSoftMallet = false;
             case 3 -> mHardHammer = false;
             case 4 -> mSolderingTool = false;
             case 5 -> mCrowbar = false;
@@ -3341,8 +3341,8 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
                 new TextWidget(GTUtility.trans("134", "Something is stuck. (Soft Mallet)"))
                     .setTextAlignment(Alignment.CenterLeft)
                     .setDefaultColor(COLOR_TEXT_WHITE.get())
-                    .setEnabled(widget -> !mSoftHammer && mMachine))
-            .widget(new FakeSyncWidget.BooleanSyncer(() -> mSoftHammer, val -> mSoftHammer = val));
+                    .setEnabled(widget -> !mSoftMallet && mMachine))
+            .widget(new FakeSyncWidget.BooleanSyncer(() -> mSoftMallet, val -> mSoftMallet = val));
         screenElements
             .widget(
                 new TextWidget(GTUtility.trans("135", "Platings are dented. (Hammer)"))
@@ -3528,7 +3528,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
     public void fixAllIssues() {
         mWrench = true;
         mScrewdriver = true;
-        mSoftHammer = true;
+        mSoftMallet = true;
         mHardHammer = true;
         mSolderingTool = true;
         mCrowbar = true;
