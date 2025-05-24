@@ -941,7 +941,7 @@ public class RecipeLoader2 {
                 GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.Tetraindiumditindibariumtitaniumheptacoppertetrakaidekaoxid, 64),
                 GTOreDictUnificator.get(OrePrefixes.screw, Materials.Naquadah, 4),
                 GTOreDictUnificator.get(OrePrefixes.circuit, Materials.UV, 4))
-            .fluidInputs(Materials.SolderingAlloy.getMolten(288))
+            .fluidInputs(new FluidStack(solderIndalloy, 144*4))
             .itemOutputs(ItemList.ECCF_cooling_block_1.get(1))
             .duration(1 * MINUTES)
             .eut(TierEU.RECIPE_LuV)
@@ -960,7 +960,7 @@ public class RecipeLoader2 {
                 GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.Tetraindiumditindibariumtitaniumheptacoppertetrakaidekaoxid, 64),
                 GTOreDictUnificator.get(OrePrefixes.screw, Materials.Naquadah, 4),
                 GTOreDictUnificator.get(OrePrefixes.circuit, Materials.UV, 4))
-            .fluidInputs(Materials.SolderingAlloy.getMolten(288))
+            .fluidInputs(new FluidStack(solderIndalloy, 144*4))
             .itemOutputs(ItemList.ECCF_heating_block_1.get(1))
             .duration(1 * MINUTES)
             .eut(TierEU.RECIPE_LuV)
@@ -978,7 +978,7 @@ public class RecipeLoader2 {
                 GTOreDictUnificator.get(OrePrefixes.ring, Materials.Epoxid, 8),
                 GTOreDictUnificator.get(OrePrefixes.gearGtSmall, ExternalMaterials.getRuridit(), 8),
                 GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorLuV, 4))
-            .fluidInputs(Materials.SolderingAlloy.getMolten(288))
+            .fluidInputs(new FluidStack(solderIndalloy, 144*4))
             .itemOutputs(ItemList.ECCF_vacuum_block_1.get(1))
             .duration(1 * MINUTES)
             .eut(TierEU.RECIPE_LuV)
@@ -997,7 +997,7 @@ public class RecipeLoader2 {
                 GTOreDictUnificator.get(OrePrefixes.ring, Materials.Epoxid, 8),
                 GTOreDictUnificator.get(OrePrefixes.gearGtSmall, ExternalMaterials.getRuridit(), 12),
                 GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorLuV, 4))
-            .fluidInputs(Materials.SolderingAlloy.getMolten(288))
+            .fluidInputs(new FluidStack(solderIndalloy, 144*4))
             .itemOutputs(ItemList.ECCF_pressure_block_1.get(1))
             .duration(1 * MINUTES)
             .eut(TierEU.RECIPE_LuV)
