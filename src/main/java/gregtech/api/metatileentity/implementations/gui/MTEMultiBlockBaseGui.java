@@ -229,7 +229,6 @@ public class MTEMultiBlockBaseGui {
     }
 
     private IWidget createShutdownDurationWidget() {
-
         return IKey.dynamic(() -> {
             Duration time = Duration.ofSeconds((base.getTotalRunTime() - base.getLastWorkingTick()) / 20);
             return StatCollector.translateToLocalFormatted(
@@ -248,7 +247,6 @@ public class MTEMultiBlockBaseGui {
     }
 
     private IWidget createShutdownReasonWidget() {
-
         return IKey.dynamic(
             () -> baseMetaTileEntity.getLastShutDownReason()
                 .getDisplayString())
@@ -267,7 +265,6 @@ public class MTEMultiBlockBaseGui {
     }
 
     private IWidget createRecipeResultWidget() {
-
         return IKey.dynamic(
             () -> base.getCheckRecipeResult()
                 .getDisplayString())
@@ -285,7 +282,6 @@ public class MTEMultiBlockBaseGui {
     }
 
     private IWidget createRecipeInfoWidget(PanelSyncManager syncManager) {
-
         GenericListSyncHandler<ItemStack> itemOutputSyncer = (GenericListSyncHandler<ItemStack>) syncManager
             .getSyncHandler("itemOutput:0");
         GenericListSyncHandler<ItemStack> fluidOutputSyncer = (GenericListSyncHandler<ItemStack>) syncManager
@@ -357,7 +353,6 @@ public class MTEMultiBlockBaseGui {
     }
 
     protected IWidget createInputSeparationButton(PanelSyncManager syncManager) {
-
         BooleanSyncValue inputSeparationSyncer = (BooleanSyncValue) syncManager.getSyncHandler("inputSeparation:0");
         return new ToggleButton() {
 
