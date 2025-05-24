@@ -448,28 +448,23 @@ public class OverclockCalculator {
         int neededHeatOverclocks = (int) Math.max((Math.log(duration) / Math.log(durationDecreasePerHeatOC)), 0);
         duration /= Math.pow(durationDecreasePerHeatOC, heatOverclocks);
         neededOverclocks = (int) Math.max((Math.log(duration) / Math.log(durationDecreasePerOC)), 0);
-        duration /= Math.pow(durationDecreasePerOC, neededOverclocks);
-
-        // To avoid rounding issues, need to round neededOverclocks down,
-        // but this can cause the multiplier to happen even if the oc still
-        // decreases duration to 1 tick with duration decrease above 2
-        if (!(duration < 2)) {
-            neededOverclocks++;
-        }
 
         int heatMultiplier = (int) Math
             .pow(durationDecreasePerHeatOC, Math.max(heatOverclocks - neededHeatOverclocks, 0));
         int regularMultiplier = (int) Math
             .pow(durationDecreasePerOC, Math.max(regularOverclocks - neededOverclocks, 0));
+
+        // Produces a fractional multiplier that corrects for inaccuracies resulting from discrete parallels and tick durations
+        // It is 1 / (duration of first OC to go below 2 ticks)
         double correctionMultiplier = 1.0;
         if (heatOverclocks >= neededHeatOverclocks || regularOverclocks >= neededOverclocks) {
             double criticalDecreasePerOC = heatOverclocks >= neededHeatOverclocks ? durationDecreasePerHeatOC
                 : durationDecreasePerOC;
-            int criticalOverclock = (int) (Math.log(originalDuration / 2) / Math.log(criticalDecreasePerOC));
+            double criticalOverclock = Math.ceil(Math.log(originalDuration / 2) / Math.log(criticalDecreasePerOC));
             double criticalDuration = originalDuration / Math.pow(criticalDecreasePerOC, criticalOverclock);
-            correctionMultiplier = Math.max(Math.pow(criticalDuration, -1), 1);
+            correctionMultiplier = 1 / criticalDuration;
         }
 
-        return heatMultiplier * regularMultiplier * correctionMultiplier;
+        return Math.ceil(heatMultiplier * regularMultiplier * correctionMultiplier);
     }
 }
