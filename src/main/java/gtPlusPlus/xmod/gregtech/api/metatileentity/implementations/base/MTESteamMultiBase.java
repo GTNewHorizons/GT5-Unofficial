@@ -30,6 +30,7 @@ import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.GTMod;
+import gregtech.api.enums.Materials;
 import gregtech.api.enums.StructureError;
 import gregtech.api.enums.Textures;
 import gregtech.api.gui.modularui.CircularGaugeDrawable;
@@ -48,7 +49,6 @@ import gregtech.api.util.GTWaila;
 import gregtech.api.util.HatchElementBuilder;
 import gregtech.api.util.IGTHatchAdder;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
-import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchSteamBusInput;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchSteamBusOutput;
@@ -110,7 +110,7 @@ public abstract class MTESteamMultiBase<T extends MTESteamMultiBase<T>> extends 
 
     public ArrayList<FluidStack> getAllSteamStacks() {
         ArrayList<FluidStack> aFluids = new ArrayList<>();
-        FluidStack aSteam = FluidUtils.getSteam(1);
+        FluidStack aSteam = Materials.Steam.getGas(1);
         for (FluidStack aFluid : this.getStoredFluids()) {
             if (aFluid.isFluidEqual(aSteam)) {
                 aFluids.add(aFluid);
@@ -139,7 +139,7 @@ public abstract class MTESteamMultiBase<T extends MTESteamMultiBase<T>> extends 
         if (getTotalSteamStored() <= 0) {
             return false;
         } else {
-            return this.depleteInput(FluidUtils.getSteam(aAmount));
+            return this.depleteInput(Materials.Steam.getGas(aAmount));
         }
     }
 
