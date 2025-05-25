@@ -268,8 +268,8 @@ public class MTENeutronSensor extends MTEHatch {
                     .size(16, 16))
             .child(
                 IKey.dynamic(
-                    () -> invertedSyncer.getValue() ? GTUtility.trans("INVERTED", "Inverted")
-                        : GTUtility.trans("NORMAL", "Normal"))
+                    () -> invertedSyncer.getValue() ? StatCollector.translateToLocal("gt.interact.desc.inverted")
+                        : StatCollector.translateToLocal("gt.interact.desc.normal"))
                     .asWidget())
             .coverChildren()
             .childPadding(2);
