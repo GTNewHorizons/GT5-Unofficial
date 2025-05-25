@@ -120,9 +120,7 @@ public class Textures {
         INSULATION_MEDIUM_PLUS,
         INSULATION_LARGE,
         INSULATION_HUGE,
-        CFOAM_FRESH,
 
-        CFOAM_HARDENED,
         SOLARPANEL,
         SOLARPANEL_8V,
         SOLARPANEL_LV,
@@ -1550,31 +1548,6 @@ public class Textures {
         // semicolon after the comment to reduce merge conflicts
         ;
 
-        /**
-         * Icon for Fresh CFoam
-         */
-        public static final ITexture[] FRESHFOAM = { TextureFactory.of(CFOAM_FRESH) };
-        /**
-         * Icons for Hardened CFoam 0 = No Color 1 - 16 = Colors
-         */
-        public static final ITexture[][] HARDENEDFOAMS = {
-            new ITexture[] { TextureFactory.of(CFOAM_HARDENED, Dyes.CONSTRUCTION_FOAM.mRGBa) },
-            new ITexture[] { TextureFactory.of(CFOAM_HARDENED, Dyes.VALUES[0].mRGBa) },
-            new ITexture[] { TextureFactory.of(CFOAM_HARDENED, Dyes.VALUES[1].mRGBa) },
-            new ITexture[] { TextureFactory.of(CFOAM_HARDENED, Dyes.VALUES[2].mRGBa) },
-            new ITexture[] { TextureFactory.of(CFOAM_HARDENED, Dyes.VALUES[3].mRGBa) },
-            new ITexture[] { TextureFactory.of(CFOAM_HARDENED, Dyes.VALUES[4].mRGBa) },
-            new ITexture[] { TextureFactory.of(CFOAM_HARDENED, Dyes.VALUES[5].mRGBa) },
-            new ITexture[] { TextureFactory.of(CFOAM_HARDENED, Dyes.VALUES[6].mRGBa) },
-            new ITexture[] { TextureFactory.of(CFOAM_HARDENED, Dyes.VALUES[7].mRGBa) },
-            new ITexture[] { TextureFactory.of(CFOAM_HARDENED, Dyes.VALUES[8].mRGBa) },
-            new ITexture[] { TextureFactory.of(CFOAM_HARDENED, Dyes.VALUES[9].mRGBa) },
-            new ITexture[] { TextureFactory.of(CFOAM_HARDENED, Dyes.VALUES[10].mRGBa) },
-            new ITexture[] { TextureFactory.of(CFOAM_HARDENED, Dyes.VALUES[11].mRGBa) },
-            new ITexture[] { TextureFactory.of(CFOAM_HARDENED, Dyes.VALUES[12].mRGBa) },
-            new ITexture[] { TextureFactory.of(CFOAM_HARDENED, Dyes.VALUES[13].mRGBa) },
-            new ITexture[] { TextureFactory.of(CFOAM_HARDENED, Dyes.VALUES[14].mRGBa) },
-            new ITexture[] { TextureFactory.of(CFOAM_HARDENED, Dyes.VALUES[15].mRGBa) } };
         /**
          * Machine Casings by Tier 0 = 8V, 1 = LV, 2 = MV, 3 = HV, 4 = EV, 5 = IV, 6 = IV, 7 = IV, 8 = IV, 9 = IV
          */

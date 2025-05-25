@@ -9,16 +9,18 @@ import com.cleanroommc.modularui.widgets.ToggleButton;
 import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.cleanroommc.modularui.widgets.layout.Grid;
 
-import gregtech.api.modularui2.CoverGuiData;
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.util.GTUtility;
 import gregtech.common.covers.CoverDoesWork;
 import gregtech.common.covers.modes.DetectionMode;
 import gregtech.common.covers.modes.RedstoneMode;
-import gregtech.common.modularui2.sync.wrappers.WidgetResizer;
 import gregtech.common.modularui2.widget.builder.EnumRowBuilder;
 
 public class CoverDoesWorkGui extends CoverGui<CoverDoesWork> {
+
+    public CoverDoesWorkGui(CoverDoesWork cover) {
+        super(cover);
+    }
 
     @Override
     protected String getGuiId() {
@@ -26,18 +28,16 @@ public class CoverDoesWorkGui extends CoverGui<CoverDoesWork> {
     }
 
     @Override
-    public void addUIWidgets(CoverGuiData guiData, PanelSyncManager syncManager, Flow column) {
-        WidgetResizer resizer = WidgetResizer.of(column);
-        CoverDoesWork cover = getCover(guiData);
+    public void addUIWidgets(PanelSyncManager syncManager, Flow column) {
         EnumSyncValue<DetectionMode> detectionModeSyncValue = new EnumSyncValue<>(
             DetectionMode.class,
             cover::getDetectionMode,
-            resizer.wrap(cover::setDetectionMode));
+            cover::setDetectionMode);
         syncManager.syncValue("detection_mode", detectionModeSyncValue);
         BinaryEnumSyncValue<RedstoneMode> redstoneModeSyncValue = new BinaryEnumSyncValue<>(
             RedstoneMode.class,
             cover::getRedstoneMode,
-            resizer.wrap(cover::setRedstoneMode));
+            cover::setRedstoneMode);
 
         column.child(
             new Grid().marginLeft(WIDGET_MARGIN)
