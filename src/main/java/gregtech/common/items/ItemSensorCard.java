@@ -12,6 +12,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChunkCoordinates;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
 import cpw.mods.fml.common.Optional;
@@ -53,9 +54,9 @@ public class ItemSensorCard extends GTGenericItem implements IRemoteSensor, IPan
         if (aStack != null) {
             NBTTagCompound tNBT = aStack.getTagCompound();
             if (tNBT == null) {
-                aList.add(getItemDescLoc("miss_coord"));
+                aList.add(StatCollector.translateToLocal("gt.item.desc.miss_coord"));
             } else {
-                aList.add(getItemDescLoc("device_at"));
+                aList.add(StatCollector.translateToLocal("gt.item.desc.device_at"));
                 aList.add(
                     String.format(
                         "x: %d, y: %d, z: %d",

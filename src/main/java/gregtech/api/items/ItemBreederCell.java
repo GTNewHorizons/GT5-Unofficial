@@ -90,7 +90,7 @@ public class ItemBreederCell extends GTGenericItem implements IReactorComponent 
 
     @Override
     public void addAdditionalToolTips(List<String> aList, ItemStack aStack, EntityPlayer aPlayer) {
-        aList.add(getItemDescLoc("breeder_tip"));
+        aList.add(StatCollector.translateToLocal("gt.item.desc.breeder_tip"));
         int rDmg = aStack.getItemDamage() * 4 / getMaxDamage();
         EnumChatFormatting color2 = switch (rDmg) {
             case 0 -> EnumChatFormatting.DARK_GRAY;
@@ -99,10 +99,11 @@ public class ItemBreederCell extends GTGenericItem implements IReactorComponent 
         };
         aList.add(
             String.format(
-                getItemDescLoc("progress"),
+                StatCollector.translateToLocal("gt.item.desc.progress"),
                 color2 + formatNumbers(aStack.getItemDamage()) + EnumChatFormatting.RESET,
                 formatNumbers(getMaxDamage())));
-        if (aStack.getItemDamage() > 0) aList.add(EnumChatFormatting.RED + getItemDescLoc("haz_rad"));
+        if (aStack.getItemDamage() > 0)
+            aList.add(EnumChatFormatting.RED + StatCollector.translateToLocal("gt.item.desc.haz_rad"));
     }
 
     @Override

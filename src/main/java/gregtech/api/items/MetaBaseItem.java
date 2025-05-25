@@ -20,6 +20,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
@@ -233,18 +234,20 @@ public abstract class MetaBaseItem extends GTGenericItem
             if (tStats[3] > 0) {
                 aList.add(
                     EnumChatFormatting.AQUA + String.format(
-                        getItemDescLoc("stored_eu"),
+                        StatCollector.translateToLocal("gt.item.desc.stored_eu"),
                         formatNumbers(tStats[3]),
                         "" + (tStats[2] >= 0 ? tStats[2] : 0)) + EnumChatFormatting.GRAY);
             } else {
                 long tCharge = getRealCharge(aStack);
                 if (tStats[3] == -2 && tCharge <= 0) {
-                    aList.add(EnumChatFormatting.AQUA + getItemDescLoc("empty") + EnumChatFormatting.GRAY);
+                    aList.add(
+                        EnumChatFormatting.AQUA + StatCollector.translateToLocal("gt.item.desc.empty")
+                            + EnumChatFormatting.GRAY);
                 } else {
                     aList.add(
                         EnumChatFormatting.AQUA
                             + String.format(
-                                getItemDescLoc("eu_info"),
+                                StatCollector.translateToLocal("gt.item.desc.eu_info"),
                                 formatNumbers(tCharge),
                                 formatNumbers(Math.abs(tStats[0])),
                                 "" + V[(int) (tStats[2] >= 0 ? tStats[2] < V.length ? tStats[2] : V.length - 1 : 1)])
@@ -257,12 +260,11 @@ public abstract class MetaBaseItem extends GTGenericItem
         if (tStats != null && tStats[0] > 0) {
             FluidStack tFluid = getFluidContent(aStack);
             aList.add(
-                EnumChatFormatting.BLUE
-                    + ((tFluid == null ? getItemDescLoc("no_fluid") : GTUtility.getFluidName(tFluid, true)))
-                    + EnumChatFormatting.GRAY);
+                EnumChatFormatting.BLUE + ((tFluid == null ? StatCollector.translateToLocal("gt.item.desc.no_fluid")
+                    : GTUtility.getFluidName(tFluid, true))) + EnumChatFormatting.GRAY);
             aList.add(
                 EnumChatFormatting.BLUE + String.format(
-                    getItemDescLoc("fluid_info"),
+                    StatCollector.translateToLocal("gt.item.desc.fluid_info"),
                     tFluid == null ? 0 : formatNumbers(tFluid.amount),
                     formatNumbers(tStats[0])) + EnumChatFormatting.GRAY);
         }

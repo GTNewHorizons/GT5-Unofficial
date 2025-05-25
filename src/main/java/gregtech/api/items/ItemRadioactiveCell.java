@@ -8,6 +8,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 
 import gregtech.common.items.ItemDepletedCell;
 import ic2.api.item.IBoxable;
@@ -147,7 +148,7 @@ public class ItemRadioactiveCell extends GTGenericItem implements IBoxable {
             : EnumChatFormatting.WHITE;
         aList.add(
             color1 + String.format(
-                getItemDescLoc("durability"),
+                StatCollector.translateToLocal("gt.item.desc.durability"),
                 color2 + formatNumbers(this.maxDmg - getDurabilityOfStack(aStack)) + color1,
                 formatNumbers(this.maxDmg)));
     }

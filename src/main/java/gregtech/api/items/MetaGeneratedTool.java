@@ -434,24 +434,26 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
                 aList.add(
                     tOffset + 0,
                     EnumChatFormatting.GRAY + String.format(
-                        getItemDescLoc("durability"),
+                        StatCollector.translateToLocal("gt.item.desc.durability"),
                         EnumChatFormatting.GREEN + formatNumbers(turbine.getCurrentDurability()) + " ",
                         " " + formatNumbers(turbine.getMaxDurability())) + EnumChatFormatting.GRAY);
                 aList.add(
                     tOffset + 1,
                     EnumChatFormatting.GRAY + String.format(
-                        getItemDescLoc("tier"),
+                        StatCollector.translateToLocal("gt.item.desc.tier"),
                         tMaterial.mLocalizedName + ":" + EnumChatFormatting.YELLOW,
                         "" + getHarvestLevel(aStack, "")) + EnumChatFormatting.GRAY);
                 aList.add(
                     tOffset + 2,
                     EnumChatFormatting.WHITE
                         + String.format(
-                            getItemDescLoc("base_eff"),
+                            StatCollector.translateToLocal("gt.item.desc.base_eff"),
                             "" + EnumChatFormatting.BLUE + (int) Math.ceil(turbine.getBaseEfficiency() * 100))
                         + "%"
                         + EnumChatFormatting.GRAY);
-                aList.add(tOffset + 3, EnumChatFormatting.GRAY + getItemDescLoc("fuel_eff"));
+                aList.add(
+                    tOffset + 3,
+                    EnumChatFormatting.GRAY + StatCollector.translateToLocal("gt.item.desc.fuel_eff"));
                 aList.add(
                     tOffset + 4,
                     EnumChatFormatting.WHITE
@@ -567,31 +569,31 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
                 aList.add(
                     tOffset + 11,
                     EnumChatFormatting.LIGHT_PURPLE + String.format(
-                        getItemDescLoc("eff_tier"),
+                        StatCollector.translateToLocal("gt.item.desc.eff_tier"),
                         "" + EnumChatFormatting.GOLD + turbine.getOverflowEfficiency() + EnumChatFormatting.GRAY));
             } else {
                 aList.add(
                     tOffset,
                     EnumChatFormatting.WHITE + String.format(
-                        getItemDescLoc("durability"),
+                        StatCollector.translateToLocal("gt.item.desc.durability"),
                         EnumChatFormatting.GREEN + formatNumbers(tMaxDamage - getToolDamage(aStack)) + " ",
                         " " + formatNumbers(tMaxDamage)) + EnumChatFormatting.GRAY);
                 aList.add(
                     tOffset + 1,
                     EnumChatFormatting.WHITE + String.format(
-                        getItemDescLoc("level"),
+                        StatCollector.translateToLocal("gt.item.desc.level"),
                         tMaterial.mLocalizedName + EnumChatFormatting.YELLOW,
                         "" + getHarvestLevel(aStack, "")) + EnumChatFormatting.GRAY);
                 aList.add(
                     tOffset + 2,
-                    EnumChatFormatting.WHITE + String
-                        .format(getItemDescLoc("damage"), "" + EnumChatFormatting.BLUE + getToolCombatDamage(aStack))
-                        + EnumChatFormatting.GRAY);
+                    EnumChatFormatting.WHITE + String.format(
+                        StatCollector.translateToLocal("gt.item.desc.damage"),
+                        "" + EnumChatFormatting.BLUE + getToolCombatDamage(aStack)) + EnumChatFormatting.GRAY);
                 aList.add(
                     tOffset + 3,
                     EnumChatFormatting.WHITE
                         + String.format(
-                            getItemDescLoc("mine_speed"),
+                            StatCollector.translateToLocal("gt.item.desc.mine_speed"),
                             "" + EnumChatFormatting.GOLD
                                 + Math.max(
                                     Float.MIN_NORMAL,

@@ -145,10 +145,6 @@ public class GTGenericItem extends Item implements IProjectileItem {
         return getContainerItem(aStack) != null;
     }
 
-    public String getItemDescLoc(String aKey) {
-        return StatCollector.translateToLocal("gt.item.desc." + aKey);
-    }
-
     public static class GT_Item_Dispense extends BehaviorProjectileDispense {
 
         @Override
