@@ -17,6 +17,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
 import gregtech.api.enums.GTValues;
+import gregtech.api.enums.Materials;
 import gtPlusPlus.api.interfaces.RunnableWithInfo;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.material.Material;
@@ -207,7 +208,7 @@ public class RecipeGenFluorite extends RecipeGenBase {
                 MaterialsFluorides.FLUORITE.getDustImpure(2),
                 MaterialsFluorides.FLUORITE.getDustPurified(1))
             .outputChances(100_00, 50_00, 10_00)
-            .fluidInputs(FluidUtils.getFluidStack("hydrogen", 1000))
+            .fluidInputs(Materials.Hydrogen.getGas(1_000))
             .duration(15 * SECONDS)
             .eut(240)
             .addTo(chemicalBathRecipes);
@@ -262,7 +263,7 @@ public class RecipeGenFluorite extends RecipeGenBase {
                 ItemUtils.getItemStackOfAmountFromOreDict("dustTin", 1),
                 ItemUtils.getItemStackOfAmountFromOreDict("dustCopper", 2))
             .outputChances(100_00, 10_00, 10_00, 30_00, 20_00)
-            .fluidInputs(FluidUtils.getFluidStack("sulfuricacid", 8000))
+            .fluidInputs(Materials.SulfuricAcid.getFluid(8_000))
             .fluidOutputs(aGregtechHydro)
             .eut(240)
             .duration(10 * MINUTES)
