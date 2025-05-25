@@ -13,7 +13,7 @@
 
 package bartworks.system.material;
 
-import static gregtech.api.enums.GTValues.W;
+import static gregtech.api.util.GTRecipeBuilder.WILDCARD;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
@@ -105,7 +105,7 @@ public enum BWNonMetaMaterialItems implements IItemContainer {
         if (this.mHasNotBeenSet)
             throw new IllegalAccessError("The Enum '" + this.name() + "' has not been set to an Item at this time!");
         if (GTUtility.isStackInvalid(this.mStack)) return GTUtility.copyAmount(aAmount, aReplacements);
-        return GTUtility.copyAmountAndMetaData(aAmount, W, GTOreDictUnificator.get(this.mStack));
+        return GTUtility.copyAmountAndMetaData(aAmount, WILDCARD, GTOreDictUnificator.get(this.mStack));
     }
 
     @Override
