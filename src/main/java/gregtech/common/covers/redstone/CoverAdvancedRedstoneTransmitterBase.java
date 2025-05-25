@@ -1,12 +1,13 @@
 package gregtech.common.covers.redstone;
 
+import static net.minecraft.util.StatCollector.translateToLocal;
+
 import java.util.Objects;
 import java.util.UUID;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.StatCollector;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -104,8 +105,7 @@ public abstract class CoverAdvancedRedstoneTransmitterBase extends CoverAdvanced
         invert = !invert;
         GTUtility.sendChatToPlayer(
             aPlayer,
-            invert ? StatCollector.translateToLocal("gt.interact.desc.inverted")
-                : StatCollector.translateToLocal("gt.interact.desc.normal"));
+            invert ? translateToLocal("gt.interact.desc.inverted") : translateToLocal("gt.interact.desc.normal"));
     }
     // GUI stuff
 

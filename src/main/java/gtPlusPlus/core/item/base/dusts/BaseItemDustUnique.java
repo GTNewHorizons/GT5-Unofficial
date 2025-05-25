@@ -3,6 +3,8 @@ package gtPlusPlus.core.item.base.dusts;
 import static gregtech.api.enums.Mods.GTPlusPlus;
 import static gregtech.api.enums.Mods.GregTech;
 import static gtPlusPlus.core.creative.AddToCreativeTab.tabMisc;
+import static net.minecraft.util.StatCollector.translateToLocal;
+import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
 import java.util.HashMap;
 import java.util.List;
@@ -11,7 +13,6 @@ import java.util.Map;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.StatCollector;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.enums.OrePrefixes;
@@ -115,9 +116,9 @@ public class BaseItemDustUnique extends Item {
 
     @Override
     public String getItemStackDisplayName(final ItemStack iStack) {
-        return StatCollector.translateToLocalFormatted(
+        return translateToLocalFormatted(
             typeLoc,
-            StatCollector.translateToLocal("gtpp.material." + materialName.replaceAll("[^a-zA-Z0-9]", "")));
+            translateToLocal("gtpp.material." + materialName.replaceAll("[^a-zA-Z0-9]", "")));
     }
 
     private String getCorrectTexture(final String pileSize) {

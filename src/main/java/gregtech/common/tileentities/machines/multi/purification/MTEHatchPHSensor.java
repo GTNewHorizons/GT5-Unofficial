@@ -1,9 +1,10 @@
 package gregtech.common.tileentities.machines.multi.purification;
 
+import static net.minecraft.util.StatCollector.translateToLocal;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.gtnewhorizons.modularui.api.math.Alignment;
@@ -147,8 +148,8 @@ public class MTEHatchPHSensor extends MTEHatch {
     }
 
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
-        final String INVERTED = StatCollector.translateToLocal("gt.interact.desc.inverted");
-        final String NORMAL = StatCollector.translateToLocal("gt.interact.desc.normal");
+        final String INVERTED = translateToLocal("gt.interact.desc.inverted");
+        final String NORMAL = translateToLocal("gt.interact.desc.normal");
 
         builder.widget(
             new CoverCycleButtonWidget().setToggle(() -> inverted, (val) -> inverted = val)
@@ -177,8 +178,7 @@ public class MTEHatchPHSensor extends MTEHatch {
                     .setPos(10, 28)
                     .setSize(77, 12))
             .widget(
-                new TextWidget(StatCollector.translateToLocal("GT5U.gui.text.ph_sensor"))
-                    .setDefaultColor(COLOR_TEXT_GRAY.get())
+                new TextWidget(translateToLocal("GT5U.gui.text.ph_sensor")).setDefaultColor(COLOR_TEXT_GRAY.get())
                     .setTextAlignment(Alignment.CenterLeft)
                     .setPos(90, 30));
     }

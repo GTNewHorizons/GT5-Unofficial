@@ -2,6 +2,7 @@ package gregtech.api.util;
 
 import static gregtech.api.enums.GTValues.E;
 import static gregtech.api.enums.Mods.IC2CropPlugin;
+import static net.minecraft.util.StatCollector.translateToLocal;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
@@ -13,7 +14,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.StatCollector;
 
 import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
@@ -195,7 +195,7 @@ public class GTBaseCrop extends CropCard implements ICropCardInfo {
 
     @Override
     public String displayName() {
-        return StatCollector.translateToLocal(
+        return translateToLocal(
             "gt.crop." + mName.toLowerCase(Locale.ENGLISH)
                 .replace(" ", "_") + ".name");
     }

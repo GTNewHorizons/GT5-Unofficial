@@ -1,11 +1,12 @@
 package gregtech.common.covers;
 
+import static net.minecraft.util.StatCollector.translateToLocal;
+
 import java.util.Arrays;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
@@ -132,10 +133,10 @@ public class CoverLiquidMeter extends Cover {
     public void onCoverScrewdriverClick(EntityPlayer aPlayer, float aX, float aY, float aZ) {
         if (inverted) {
             inverted = false;
-            GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("gt.interact.desc.normal"));
+            GTUtility.sendChatToPlayer(aPlayer, translateToLocal("gt.interact.desc.normal"));
         } else {
             inverted = true;
-            GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("gt.interact.desc.inverted"));
+            GTUtility.sendChatToPlayer(aPlayer, translateToLocal("gt.interact.desc.inverted"));
         }
     }
 

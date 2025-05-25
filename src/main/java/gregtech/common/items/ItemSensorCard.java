@@ -1,5 +1,7 @@
 package gregtech.common.items;
 
+import static net.minecraft.util.StatCollector.translateToLocal;
+
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -12,7 +14,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChunkCoordinates;
-import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
 import cpw.mods.fml.common.Optional;
@@ -54,9 +55,9 @@ public class ItemSensorCard extends GTGenericItem implements IRemoteSensor, IPan
         if (aStack != null) {
             NBTTagCompound tNBT = aStack.getTagCompound();
             if (tNBT == null) {
-                aList.add(StatCollector.translateToLocal("gt.item.desc.miss_coord"));
+                aList.add(translateToLocal("gt.item.desc.miss_coord"));
             } else {
-                aList.add(StatCollector.translateToLocal("gt.item.desc.device_at"));
+                aList.add(translateToLocal("gt.item.desc.device_at"));
                 aList.add(
                     String.format(
                         "x: %d, y: %d, z: %d",

@@ -1,12 +1,13 @@
 package goodgenerator.blocks.tileEntity.GTMetaTileEntity;
 
+import static net.minecraft.util.StatCollector.translateToLocal;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.cleanroommc.modularui.api.drawable.IKey;
@@ -268,8 +269,8 @@ public class MTENeutronSensor extends MTEHatch {
                     .size(16, 16))
             .child(
                 IKey.dynamic(
-                    () -> invertedSyncer.getValue() ? StatCollector.translateToLocal("gt.interact.desc.inverted")
-                        : StatCollector.translateToLocal("gt.interact.desc.normal"))
+                    () -> invertedSyncer.getValue() ? translateToLocal("gt.interact.desc.inverted")
+                        : translateToLocal("gt.interact.desc.normal"))
                     .asWidget())
             .coverChildren()
             .childPadding(2);
@@ -292,8 +293,8 @@ public class MTENeutronSensor extends MTEHatch {
 
     @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
-        final String INVERTED = StatCollector.translateToLocal("gt.interact.desc.inverted");
-        final String NORMAL = StatCollector.translateToLocal("gt.interact.desc.normal");
+        final String INVERTED = translateToLocal("gt.interact.desc.inverted");
+        final String NORMAL = translateToLocal("gt.interact.desc.normal");
 
         builder.widget(
             new CoverCycleButtonWidget().setToggle(() -> inverted, (val) -> inverted = val)
@@ -320,8 +321,7 @@ public class MTENeutronSensor extends MTEHatch {
                     .setPos(10, 28)
                     .setSize(77, 12))
             .widget(
-                new TextWidget(StatCollector.translateToLocal("gui.NeutronSensor.4"))
-                    .setDefaultColor(COLOR_TEXT_GRAY.get())
+                new TextWidget(translateToLocal("gui.NeutronSensor.4")).setDefaultColor(COLOR_TEXT_GRAY.get())
                     .setTextAlignment(Alignment.CenterLeft)
                     .setPos(90, 30));
     }

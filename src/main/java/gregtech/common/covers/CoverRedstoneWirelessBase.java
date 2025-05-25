@@ -1,7 +1,8 @@
 package gregtech.common.covers;
 
+import static net.minecraft.util.StatCollector.translateToLocalFormatted;
+
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.Fluid;
 
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
@@ -30,9 +31,7 @@ public abstract class CoverRedstoneWirelessBase extends CoverLegacyData {
             GregTechAPI.sWirelessRedstone.put(coverData, (byte) 0);
             coverData = (coverData & (PRIVATE_MASK | CHECKBOX_MASK))
                 | (((Integer) GTUtility.stackToInt(aPlayer.inventory.getCurrentItem())).hashCode() & PUBLIC_MASK);
-            GTUtility.sendChatToPlayer(
-                aPlayer,
-                StatCollector.translateToLocalFormatted("gt.interact.desc.freq_format", coverData));
+            GTUtility.sendChatToPlayer(aPlayer, translateToLocalFormatted("gt.interact.desc.freq_format", coverData));
             return true;
         }
         return false;
@@ -66,7 +65,7 @@ public abstract class CoverRedstoneWirelessBase extends CoverLegacyData {
         }
         GTUtility.sendChatToPlayer(
             aPlayer,
-            StatCollector.translateToLocalFormatted("gt.interact.desc.freq_format", this.coverData & PUBLIC_MASK));
+            translateToLocalFormatted("gt.interact.desc.freq_format", this.coverData & PUBLIC_MASK));
     }
 
     @Override
@@ -101,7 +100,7 @@ public abstract class CoverRedstoneWirelessBase extends CoverLegacyData {
 
     @Override
     public String getDescription() {
-        return StatCollector.translateToLocalFormatted("gt.interact.desc.freq_format", coverData);
+        return translateToLocalFormatted("gt.interact.desc.freq_format", coverData);
     }
 
     @Override

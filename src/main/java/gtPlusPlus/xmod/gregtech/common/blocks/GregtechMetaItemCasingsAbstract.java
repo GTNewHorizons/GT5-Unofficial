@@ -1,12 +1,13 @@
 package gtPlusPlus.xmod.gregtech.common.blocks;
 
+import static net.minecraft.util.StatCollector.translateToLocal;
+
 import java.util.List;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.StatCollector;
 
 import gregtech.api.util.GTLanguageManager;
 
@@ -58,7 +59,7 @@ public abstract class GregtechMetaItemCasingsAbstract extends ItemBlock {
             default:
                 break;
         }
-        aList.add(StatCollector.translateToLocal("gt.casing.no-mob-spawning"));
-        aList.add(StatCollector.translateToLocal("gt.casing.not-tile-entity"));
+        aList.add(translateToLocal("gt.casing.no-mob-spawning"));
+        aList.add(translateToLocal("gt.casing.not-tile-entity"));
     }
 }

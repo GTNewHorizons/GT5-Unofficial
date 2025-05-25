@@ -1,6 +1,6 @@
 package gregtech.common.gui.mui1.cover;
 
-import net.minecraft.util.StatCollector;
+import static net.minecraft.util.StatCollector.translateToLocal;
 
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
@@ -37,8 +37,8 @@ public class LiquidMeterUIFactory extends CoverUIFactory<CoverLiquidMeter> {
     @SuppressWarnings("PointlessArithmeticExpression")
     @Override
     protected void addUIWidgets(ModularWindow.Builder builder) {
-        final String INVERTED = StatCollector.translateToLocal("gt.interact.desc.inverted");
-        final String NORMAL = StatCollector.translateToLocal("gt.interact.desc.normal");
+        final String INVERTED = translateToLocal("gt.interact.desc.inverted");
+        final String NORMAL = translateToLocal("gt.interact.desc.normal");
 
         builder
             .widget(

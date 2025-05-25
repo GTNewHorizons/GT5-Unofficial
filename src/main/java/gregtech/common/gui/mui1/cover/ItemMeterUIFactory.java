@@ -1,10 +1,11 @@
 package gregtech.common.gui.mui1.cover;
 
+import static net.minecraft.util.StatCollector.translateToLocal;
+
 import java.text.FieldPosition;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.StatCollector;
 
 import com.gtnewhorizons.modularui.api.NumberFormatMUI;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
@@ -62,8 +63,8 @@ public class ItemMeterUIFactory extends CoverUIFactory<CoverItemMeter> {
 
     @Override
     protected void addUIWidgets(ModularWindow.Builder builder) {
-        final String INVERTED = StatCollector.translateToLocal("gt.interact.desc.inverted");
-        final String NORMAL = StatCollector.translateToLocal("gt.interact.desc.normal");
+        final String INVERTED = translateToLocal("gt.interact.desc.inverted");
+        final String NORMAL = translateToLocal("gt.interact.desc.normal");
 
         setMaxSlot();
         setMaxThreshold();

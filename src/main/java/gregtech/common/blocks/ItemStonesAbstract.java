@@ -1,12 +1,13 @@
 package gregtech.common.blocks;
 
+import static net.minecraft.util.StatCollector.translateToLocal;
+
 import java.util.List;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.StatCollector;
 
 import gregtech.api.GregTechAPI;
 
@@ -33,7 +34,7 @@ public class ItemStonesAbstract extends ItemBlock {
     public void addInformation(ItemStack aStack, EntityPlayer aPlayer, List<String> aList, boolean aF3_H) {
         super.addInformation(aStack, aPlayer, aList, aF3_H);
         if (aStack.getItemDamage() % 8 >= 3) {
-            aList.add(StatCollector.translateToLocal("gt.casing.no-mob-spawning"));
+            aList.add(translateToLocal("gt.casing.no-mob-spawning"));
         }
     }
 }

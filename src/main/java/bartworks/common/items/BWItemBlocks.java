@@ -13,6 +13,8 @@
 
 package bartworks.common.items;
 
+import static net.minecraft.util.StatCollector.translateToLocal;
+
 import java.util.Arrays;
 import java.util.List;
 
@@ -22,7 +24,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
-import net.minecraft.util.StatCollector;
 
 import bartworks.API.ITileAddsInformation;
 import bartworks.MainMod;
@@ -55,9 +56,9 @@ public class BWItemBlocks extends ItemBlock {
         if (this.field_150939_a instanceof ITileAddsInformation) {
             aList.addAll(Arrays.asList(((ITileAddsInformation) this.field_150939_a).getInfoData()));
         }
-        aList.add(StatCollector.translateToLocal("gt.casing.no-mob-spawning"));
+        aList.add(translateToLocal("gt.casing.no-mob-spawning"));
         if (!(this.field_150939_a instanceof ITileEntityProvider))
-            aList.add(StatCollector.translateToLocal("gt.casing.not-tile-entity"));
+            aList.add(translateToLocal("gt.casing.not-tile-entity"));
     }
 
     @Override

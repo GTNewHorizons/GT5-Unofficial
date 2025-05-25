@@ -1,12 +1,14 @@
 package gregtech.common.covers.redstone;
 
+import static net.minecraft.util.StatCollector.translateToLocal;
+import static net.minecraft.util.StatCollector.translateToLocalFormatted;
+
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 
@@ -215,11 +217,10 @@ public abstract class CoverAdvancedWirelessRedstoneBase extends Cover {
 
     @Override
     public String getDescription() {
-        return StatCollector.translateToLocalFormatted(
+        return translateToLocalFormatted(
             "gt.interact.desc.freq_perm",
             frequency,
-            uuid == null ? StatCollector.translateToLocal("gt.interact.desc.public")
-                : StatCollector.translateToLocal("gt.interact.desc.private"));
+            uuid == null ? translateToLocal("gt.interact.desc.public") : translateToLocal("gt.interact.desc.private"));
     }
 
     @Override
