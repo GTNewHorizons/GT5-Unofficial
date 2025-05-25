@@ -32,7 +32,7 @@ public class FermenterRecipes implements Runnable {
             .addTo(fermentingRecipes);
 
         GTValues.RA.stdBuilder()
-            .fluidInputs(getFluidStack("milk", 50))
+            .fluidInputs(Materials.Milk.getFluid(50))
             .fluidOutputs(getFluidStack("potion.mundane", 25))
             .duration(51 * SECONDS + 4 * TICKS)
             .eut(2)
