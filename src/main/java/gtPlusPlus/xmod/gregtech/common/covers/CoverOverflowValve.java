@@ -82,6 +82,7 @@ public class CoverOverflowValve extends Cover {
     /**
      * Use {@link CoverOverflowValve#getFluidInputMode()}
      */
+    @Deprecated
     public boolean canFluidInput() {
         return canFluidInput;
     }
