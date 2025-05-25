@@ -39,7 +39,7 @@ public class VoidMinerUtility {
     public static final FluidStack[] NOBLE_GASSES = { WerkstoffLoader.Neon.getFluidOrGas(1),
         WerkstoffLoader.Krypton.getFluidOrGas(1), WerkstoffLoader.Xenon.getFluidOrGas(1),
         WerkstoffLoader.Oganesson.getFluidOrGas(1) };
-    public static final int[] NOBEL_GASSES_MULTIPLIER = { 4, 8, 16, 64 };
+    public static final int[] NOBLE_GASSES_MULTIPLIER = { 4, 8, 16, 64 };
 
     public static class DropMap {
 
