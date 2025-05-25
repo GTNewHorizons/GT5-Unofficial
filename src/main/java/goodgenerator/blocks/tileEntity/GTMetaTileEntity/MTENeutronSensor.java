@@ -9,6 +9,16 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import com.cleanroommc.modularui.api.drawable.IKey;
+import com.cleanroommc.modularui.factory.PosGuiData;
+import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.screen.UISettings;
+import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
+import com.cleanroommc.modularui.value.sync.IntSyncValue;
+import com.cleanroommc.modularui.value.sync.PanelSyncManager;
+import com.cleanroommc.modularui.widgets.ToggleButton;
+import com.cleanroommc.modularui.widgets.layout.Flow;
+import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
 import com.gtnewhorizons.modularui.api.math.Alignment;
 import com.gtnewhorizons.modularui.api.math.Color;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
@@ -24,6 +34,8 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatch;
+import gregtech.api.modularui2.GTGuiTextures;
+import gregtech.api.modularui2.GTGuis;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
 import gregtech.common.gui.modularui.widget.CoverCycleButtonWidget;
@@ -226,6 +238,57 @@ public class MTENeutronSensor extends MTEHatch {
     public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
         ItemStack aStack) {
         return false;
+    }
+
+    @Override
+    protected boolean useMui2() {
+        return true;
+    }
+
+    @Override
+    public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager, UISettings uiSettings) {
+        return GTGuis.mteTemplatePanelBuilder(this, data, syncManager, uiSettings)
+            .build()
+            .child(
+                Flow.column()
+                    .child(createInvertButtonRow())
+                    .child(createThresholdFieldRow())
+                    .coverChildren()
+                    .crossAxisAlignment(com.cleanroommc.modularui.utils.Alignment.CrossAxis.START)
+                    .childPadding(2)
+                    .pos(8, 6));
+    }
+
+    public Flow createInvertButtonRow() {
+        BooleanSyncValue invertedSyncer = new BooleanSyncValue(() -> inverted, val -> inverted = val);
+        return Flow.row()
+            .child(
+                new ToggleButton().value(invertedSyncer)
+                    .overlay(true, GTGuiTextures.OVERLAY_BUTTON_REDSTONE_ON)
+                    .overlay(false, GTGuiTextures.OVERLAY_BUTTON_REDSTONE_OFF)
+                    .size(16, 16))
+            .child(
+                IKey.dynamic(
+                    () -> invertedSyncer.getValue() ? GTUtility.trans("INVERTED", "Inverted")
+                        : GTUtility.trans("NORMAL", "Normal"))
+                    .asWidget())
+            .coverChildren()
+            .childPadding(2);
+    }
+
+    public Flow createThresholdFieldRow() {
+        return Flow.row()
+            .child(
+                new TextFieldWidget().setFormatAsInteger(true)
+                    .setNumbers(0, 1200000000)
+                    .size(77, 12)
+                    .value(new IntSyncValue(() -> threshold, val -> threshold = val))
+                    .setFocusOnGuiOpen(true))
+            .child(
+                IKey.lang("gui.NeutronSensor.4")
+                    .asWidget())
+            .coverChildren()
+            .childPadding(2);
     }
 
     @Override
