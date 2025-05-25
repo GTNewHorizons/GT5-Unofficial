@@ -172,7 +172,7 @@ public class MTENuclearSaltProcessingPlant extends GTPPMultiBlockBase<MTENuclear
     @Override
     public int survivalConstruct(ItemStack itemStack, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
-        return survivialBuildPiece(mName, itemStack, 4, 2, 0, elementBudget, env, false, true);
+        return survivalBuildPiece(mName, itemStack, 4, 2, 0, elementBudget, env, false, true);
     }
 
     @Override

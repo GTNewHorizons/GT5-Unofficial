@@ -237,6 +237,7 @@ public class GGMaterial implements Runnable {
         OffsetID + 18,
         TextureSet.SET_FLUID);
 
+    @Deprecated // use GT++ ThoriumTetraFluoride
     public static final Werkstoff thoriumTetrafluoride = new Werkstoff(
         new short[] { 0x15, 0x6a, 0x6a },
         "Thorium Tetrafluoride",
