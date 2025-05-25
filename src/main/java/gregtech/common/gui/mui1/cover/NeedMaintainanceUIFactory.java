@@ -23,13 +23,15 @@ public class NeedMaintainanceUIFactory extends CoverLegacyDataUIFactory {
     @SuppressWarnings("PointlessArithmeticExpression")
     @Override
     protected void addUIWidgets(ModularWindow.Builder builder) {
-        final String[] tooltipText = { maintLoc(1, false), maintLoc(2, false), maintLoc(3, false), maintLoc(4, false),
-            maintLoc(5, false), translateToLocal("gt.interact.desc.need_maint_rotor_lo"),
+        final String[] tooltipText = { getMaintenanceIssuesCount(1, false), getMaintenanceIssuesCount(2, false),
+            getMaintenanceIssuesCount(3, false), getMaintenanceIssuesCount(4, false),
+            getMaintenanceIssuesCount(5, false), translateToLocal("gt.interact.desc.need_maint_rotor_lo"),
             translateToLocal("gt.interact.desc.need_maint_rotor_hi") };
 
-        final String[] buttonText = { issueLoc(1), issueLoc(2), issueLoc(3), issueLoc(4), issueLoc(5),
-            translateToLocal("gt.interact.desc.issue_rotor_low"), translateToLocal("gt.interact.desc.issue_rotor_dead"),
-            translateToLocal("gt.interact.desc.inverted"), translateToLocal("gt.interact.desc.normal") };
+        final String[] buttonText = { getIssuesCount(1), getIssuesCount(2), getIssuesCount(3), getIssuesCount(4),
+            getIssuesCount(5), translateToLocal("gt.interact.desc.issue_rotor_low"),
+            translateToLocal("gt.interact.desc.issue_rotor_dead"), translateToLocal("gt.interact.desc.inverted"),
+            translateToLocal("gt.interact.desc.normal") };
 
         builder
             .widget(
@@ -121,14 +123,15 @@ public class NeedMaintainanceUIFactory extends CoverLegacyDataUIFactory {
         return (coverVariable >>> 1) == id;
     }
 
-    public static String maintLoc(int count, boolean inverted) {
+    // TODO make this private when MUI1 cover UIs are removed
+    public static String getMaintenanceIssuesCount(int count, boolean inverted) {
         return String.format(
             translateToLocal("gt.interact.desc.need_maint_count"),
             count,
             inverted ? translateToLocal("gt.interact.desc.inverted_b") : "");
     }
 
-    private static String issueLoc(int count) {
+    private static String getIssuesCount(int count) {
         return count == 1 ? translateToLocal("gt.interact.desc.issue")
             : String.format(translateToLocal("gt.interact.desc.issues"), count);
     }

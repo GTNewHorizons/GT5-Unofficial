@@ -1,7 +1,7 @@
 package gregtech.common.covers;
 
 import static gregtech.api.util.GTUtility.sendChatToPlayer;
-import static gregtech.common.gui.mui1.cover.NeedMaintainanceUIFactory.maintLoc;
+import static gregtech.common.gui.mui1.cover.NeedMaintainanceUIFactory.getMaintenanceIssuesCount;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -113,16 +113,16 @@ public class CoverNeedMaintainance extends CoverLegacyData {
             this.coverData = 13;
         }
         switch (this.coverData) {
-            case 0 -> sendChatToPlayer(aPlayer, maintLoc(1, false));
-            case 1 -> sendChatToPlayer(aPlayer, maintLoc(1, true));
-            case 2 -> sendChatToPlayer(aPlayer, maintLoc(2, false));
-            case 3 -> sendChatToPlayer(aPlayer, maintLoc(2, true));
-            case 4 -> sendChatToPlayer(aPlayer, maintLoc(3, false));
-            case 5 -> sendChatToPlayer(aPlayer, maintLoc(3, true));
-            case 6 -> sendChatToPlayer(aPlayer, maintLoc(4, false));
-            case 7 -> sendChatToPlayer(aPlayer, maintLoc(4, true));
-            case 8 -> sendChatToPlayer(aPlayer, maintLoc(5, false));
-            case 9 -> sendChatToPlayer(aPlayer, maintLoc(5, true));
+            case 0 -> sendChatToPlayer(aPlayer, getMaintenanceIssuesCount(1, false));
+            case 1 -> sendChatToPlayer(aPlayer, getMaintenanceIssuesCount(1, true));
+            case 2 -> sendChatToPlayer(aPlayer, getMaintenanceIssuesCount(2, false));
+            case 3 -> sendChatToPlayer(aPlayer, getMaintenanceIssuesCount(2, true));
+            case 4 -> sendChatToPlayer(aPlayer, getMaintenanceIssuesCount(3, false));
+            case 5 -> sendChatToPlayer(aPlayer, getMaintenanceIssuesCount(3, true));
+            case 6 -> sendChatToPlayer(aPlayer, getMaintenanceIssuesCount(4, false));
+            case 7 -> sendChatToPlayer(aPlayer, getMaintenanceIssuesCount(4, true));
+            case 8 -> sendChatToPlayer(aPlayer, getMaintenanceIssuesCount(5, false));
+            case 9 -> sendChatToPlayer(aPlayer, getMaintenanceIssuesCount(5, true));
             case 10 -> sendChatToPlayer(aPlayer, translateToLocal("gt.interact.desc.need_maint_rotor_lo"));
             case 11 -> sendChatToPlayer(
                 aPlayer,
