@@ -98,8 +98,8 @@ public class ItemBreederCell extends GTGenericItem implements IReactorComponent 
             default -> EnumChatFormatting.WHITE;
         };
         aList.add(
-            String.format(
-                StatCollector.translateToLocal("gt.item.desc.progress"),
+            StatCollector.translateToLocalFormatted(
+                "gt.item.desc.progress",
                 color2 + formatNumbers(aStack.getItemDamage()) + EnumChatFormatting.RESET,
                 formatNumbers(getMaxDamage())));
         if (aStack.getItemDamage() > 0)

@@ -433,21 +433,21 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
                 float aOptFlow = (Math.max(Float.MIN_NORMAL, turbine.getOptimalFlow()));
                 aList.add(
                     tOffset + 0,
-                    EnumChatFormatting.GRAY + String.format(
-                        StatCollector.translateToLocal("gt.item.desc.durability"),
+                    EnumChatFormatting.GRAY + StatCollector.translateToLocalFormatted(
+                        "gt.item.desc.durability",
                         EnumChatFormatting.GREEN + formatNumbers(turbine.getCurrentDurability()) + " ",
                         " " + formatNumbers(turbine.getMaxDurability())) + EnumChatFormatting.GRAY);
                 aList.add(
                     tOffset + 1,
-                    EnumChatFormatting.GRAY + String.format(
-                        StatCollector.translateToLocal("gt.item.desc.tier"),
+                    EnumChatFormatting.GRAY + StatCollector.translateToLocalFormatted(
+                        "gt.item.desc.tier",
                         tMaterial.mLocalizedName + ":" + EnumChatFormatting.YELLOW,
                         "" + getHarvestLevel(aStack, "")) + EnumChatFormatting.GRAY);
                 aList.add(
                     tOffset + 2,
                     EnumChatFormatting.WHITE
-                        + String.format(
-                            StatCollector.translateToLocal("gt.item.desc.base_eff"),
+                        + StatCollector.translateToLocalFormatted(
+                            "gt.item.desc.base_eff",
                             "" + EnumChatFormatting.BLUE + (int) Math.ceil(turbine.getBaseEfficiency() * 100))
                         + "%"
                         + EnumChatFormatting.GRAY);
@@ -568,32 +568,32 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
                                 + EnumChatFormatting.GRAY));
                 aList.add(
                     tOffset + 11,
-                    EnumChatFormatting.LIGHT_PURPLE + String.format(
-                        StatCollector.translateToLocal("gt.item.desc.eff_tier"),
+                    EnumChatFormatting.LIGHT_PURPLE + StatCollector.translateToLocalFormatted(
+                        "gt.item.desc.eff_tier",
                         "" + EnumChatFormatting.GOLD + turbine.getOverflowEfficiency() + EnumChatFormatting.GRAY));
             } else {
                 aList.add(
                     tOffset,
-                    EnumChatFormatting.WHITE + String.format(
-                        StatCollector.translateToLocal("gt.item.desc.durability"),
+                    EnumChatFormatting.WHITE + StatCollector.translateToLocalFormatted(
+                        "gt.item.desc.durability",
                         EnumChatFormatting.GREEN + formatNumbers(tMaxDamage - getToolDamage(aStack)) + " ",
                         " " + formatNumbers(tMaxDamage)) + EnumChatFormatting.GRAY);
                 aList.add(
                     tOffset + 1,
-                    EnumChatFormatting.WHITE + String.format(
-                        StatCollector.translateToLocal("gt.item.desc.level"),
+                    EnumChatFormatting.WHITE + StatCollector.translateToLocalFormatted(
+                        "gt.item.desc.level",
                         tMaterial.mLocalizedName + EnumChatFormatting.YELLOW,
                         "" + getHarvestLevel(aStack, "")) + EnumChatFormatting.GRAY);
                 aList.add(
                     tOffset + 2,
-                    EnumChatFormatting.WHITE + String.format(
-                        StatCollector.translateToLocal("gt.item.desc.damage"),
+                    EnumChatFormatting.WHITE + StatCollector.translateToLocalFormatted(
+                        "gt.item.desc.damage",
                         "" + EnumChatFormatting.BLUE + getToolCombatDamage(aStack)) + EnumChatFormatting.GRAY);
                 aList.add(
                     tOffset + 3,
                     EnumChatFormatting.WHITE
-                        + String.format(
-                            StatCollector.translateToLocal("gt.item.desc.mine_speed"),
+                        + StatCollector.translateToLocalFormatted(
+                            "gt.item.desc.mine_speed",
                             "" + EnumChatFormatting.GOLD
                                 + Math.max(
                                     Float.MIN_NORMAL,

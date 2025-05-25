@@ -233,8 +233,8 @@ public abstract class MetaBaseItem extends GTGenericItem
         if (tStats != null) {
             if (tStats[3] > 0) {
                 aList.add(
-                    EnumChatFormatting.AQUA + String.format(
-                        StatCollector.translateToLocal("gt.item.desc.stored_eu"),
+                    EnumChatFormatting.AQUA + StatCollector.translateToLocalFormatted(
+                        "gt.item.desc.stored_eu",
                         formatNumbers(tStats[3]),
                         "" + (tStats[2] >= 0 ? tStats[2] : 0)) + EnumChatFormatting.GRAY);
             } else {
@@ -246,8 +246,8 @@ public abstract class MetaBaseItem extends GTGenericItem
                 } else {
                     aList.add(
                         EnumChatFormatting.AQUA
-                            + String.format(
-                                StatCollector.translateToLocal("gt.item.desc.eu_info"),
+                            + StatCollector.translateToLocalFormatted(
+                                "gt.item.desc.eu_info",
                                 formatNumbers(tCharge),
                                 formatNumbers(Math.abs(tStats[0])),
                                 "" + V[(int) (tStats[2] >= 0 ? tStats[2] < V.length ? tStats[2] : V.length - 1 : 1)])
@@ -263,8 +263,8 @@ public abstract class MetaBaseItem extends GTGenericItem
                 EnumChatFormatting.BLUE + ((tFluid == null ? StatCollector.translateToLocal("gt.item.desc.no_fluid")
                     : GTUtility.getFluidName(tFluid, true))) + EnumChatFormatting.GRAY);
             aList.add(
-                EnumChatFormatting.BLUE + String.format(
-                    StatCollector.translateToLocal("gt.item.desc.fluid_info"),
+                EnumChatFormatting.BLUE + StatCollector.translateToLocalFormatted(
+                    "gt.item.desc.fluid_info",
                     tFluid == null ? 0 : formatNumbers(tFluid.amount),
                     formatNumbers(tStats[0])) + EnumChatFormatting.GRAY);
         }

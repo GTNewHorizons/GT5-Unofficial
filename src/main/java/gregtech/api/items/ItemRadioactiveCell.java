@@ -147,8 +147,8 @@ public class ItemRadioactiveCell extends GTGenericItem implements IBoxable {
         EnumChatFormatting color1 = this instanceof ItemDepletedCell ? color2 = EnumChatFormatting.DARK_GRAY
             : EnumChatFormatting.WHITE;
         aList.add(
-            color1 + String.format(
-                StatCollector.translateToLocal("gt.item.desc.durability"),
+            color1 + StatCollector.translateToLocalFormatted(
+                "gt.item.desc.durability",
                 color2 + formatNumbers(this.maxDmg - getDurabilityOfStack(aStack)) + color1,
                 formatNumbers(this.maxDmg)));
     }
