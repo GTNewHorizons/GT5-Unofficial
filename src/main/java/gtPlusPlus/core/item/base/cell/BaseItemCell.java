@@ -55,7 +55,7 @@ public class BaseItemCell extends BaseItemComponent {
             this.base = i.registerIcon(GTPlusPlus.ID + ":" + "item" + this.Cell.getComponent());
             this.overlay = i.registerIcon(GTPlusPlus.ID + ":" + "item" + this.Cell.getComponent() + "_Overlay");
         }
-        // this.overlay = cellMaterial.getFluid(1000).getFluid().get
+        // this.overlay = cellMaterial.getFluid(1_000).getFluid().get
     }
 
     private final short[] fluidColour;
