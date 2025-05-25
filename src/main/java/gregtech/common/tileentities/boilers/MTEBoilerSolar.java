@@ -18,6 +18,7 @@ import com.gtnewhorizons.modularui.api.widget.Widget;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 
 import gregtech.api.enums.Dyes;
+import gregtech.api.enums.Materials;
 import gregtech.api.enums.SteamVariant;
 import gregtech.api.enums.Textures.BlockIcons;
 import gregtech.api.interfaces.ITexture;
@@ -27,7 +28,6 @@ import gregtech.api.modularui2.GTGuiTheme;
 import gregtech.api.modularui2.GTGuiThemes;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTLanguageManager;
-import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
 import gregtech.common.config.MachineStats;
 import mcp.mobius.waila.api.IWailaConfigHandler;
@@ -125,7 +125,7 @@ public class MTEBoilerSolar extends MTEBoiler {
     protected void produceSteam(int aAmount) {
         super.produceSteam(aAmount);
         // Disable calcification when using distilled water
-        if (mFluid.isFluidEqual(GTModHandler.getWater(1))) {
+        if (mFluid.isFluidEqual(Materials.Water.getFluid(1))) {
             // produceSteam is getting called every 10 ticks
             if (mRunTimeTicks >= 0 && mRunTimeTicks < (Integer.MAX_VALUE - 10)) mRunTimeTicks += 10;
             else mRunTimeTicks = Integer.MAX_VALUE; // Prevent Integer overflow wrap
