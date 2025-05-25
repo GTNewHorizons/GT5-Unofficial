@@ -500,4 +500,9 @@ public class MTELargeEssentiaGenerator extends MTETooltipMultiBlockBaseEM
         if (mMachine) return -1;
         return survivalBuildPiece(mName, stackSize, 4, 0, 4, elementBudget, env, false, true);
     }
+
+    @Override
+    public boolean showRecipeTextInGUI() {
+        return false;
+    }
 }
