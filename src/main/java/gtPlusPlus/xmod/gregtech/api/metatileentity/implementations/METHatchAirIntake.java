@@ -11,7 +11,6 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gtPlusPlus.core.lib.GTPPCore;
-import gtPlusPlus.core.util.minecraft.FluidUtils;
 
 public class METHatchAirIntake extends MTEHatchFluidGenerator {
 
@@ -46,7 +45,7 @@ public class METHatchAirIntake extends MTEHatchFluidGenerator {
         if (id == -1) {
             return Materials.NetherAir.mFluid;
         } else {
-            return FluidUtils.getAir(1)
+            return Materials.Air.getGas(1)
                 .getFluid();
         }
     }
