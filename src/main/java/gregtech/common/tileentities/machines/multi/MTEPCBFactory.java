@@ -99,8 +99,8 @@ import gregtech.common.blocks.BlockCasings8;
 public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
     implements ISurvivalConstructable, INEIPreviewModifier {
 
-    private static final String xOffsetText = translateToLocal("GT5U.MBTT.PCB.XOffset");
-    private static final String zOffsetText = translateToLocal("GT5U.MBTT.ZOffset");
+    private static final String xOffsetText = "GT5U.MBTT.PCB.XOffset";
+    private static final String zOffsetText = "GT5U.MBTT.PCB.ZOffset";
     private static final String tier1 = "tier1";
     private static final String tier2 = "tier2";
     private static final String tier3 = "tier3";
@@ -1071,7 +1071,7 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
                     .setBounds(1, 3)
                     .setTextColor(Color.WHITE.normal)
                     .setTextAlignment(Alignment.Center)
-                    .addTooltip(translateToLocal("GT5U.MBTT.PCBTier"))
+                    .addTooltip(translateToLocal("GT5U.MBTT.PCB.Tier"))
                     .setBackground(GTUITextures.BACKGROUND_TEXT_FIELD)
                     .setSize(18, 18)
                     .setPos(173, 110));
@@ -1198,7 +1198,7 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
                                     .setBounds(-16, 16)
                                     .setTextColor(Color.WHITE.normal)
                                     .setTextAlignment(Alignment.Center)
-                                    .addTooltip(xOffsetText)
+                                    .addTooltip(translateToLocal(xOffsetText))
                                     .setBackground(GTUITextures.BACKGROUND_TEXT_FIELD)
                                     .setSize(36, 18))
                             .widget(
@@ -1207,7 +1207,7 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
                                     .setBounds(-16, 16)
                                     .setTextColor(Color.WHITE.normal)
                                     .setTextAlignment(Alignment.Center)
-                                    .addTooltip(zOffsetText)
+                                    .addTooltip(translateToLocal(zOffsetText))
                                     .setBackground(GTUITextures.BACKGROUND_TEXT_FIELD)
                                     .setSize(36, 18))
                             .setEnabled(widget -> !getBaseMetaTileEntity().isActive()))
@@ -1222,7 +1222,7 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
                                     .setBounds(-16, 16)
                                     .setTextColor(Color.WHITE.normal)
                                     .setTextAlignment(Alignment.Center)
-                                    .addTooltip(xOffsetText)
+                                    .addTooltip(translateToLocal(xOffsetText))
                                     .setBackground(GTUITextures.BACKGROUND_TEXT_FIELD)
                                     .setSize(36, 18))
                             .widget(
@@ -1231,7 +1231,7 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
                                     .setBounds(-16, 16)
                                     .setTextColor(Color.WHITE.normal)
                                     .setTextAlignment(Alignment.Center)
-                                    .addTooltip(zOffsetText)
+                                    .addTooltip(translateToLocal(zOffsetText))
                                     .setBackground(GTUITextures.BACKGROUND_TEXT_FIELD)
                                     .setSize(36, 18))
                             .setEnabled(widget -> !getBaseMetaTileEntity().isActive()))
@@ -1246,7 +1246,7 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
                                     .setBounds(-16, 16)
                                     .setTextColor(Color.WHITE.normal)
                                     .setTextAlignment(Alignment.Center)
-                                    .addTooltip(xOffsetText)
+                                    .addTooltip(translateToLocal(xOffsetText))
                                     .setBackground(GTUITextures.BACKGROUND_TEXT_FIELD)
                                     .setSize(36, 18))
                             .widget(
@@ -1255,7 +1255,7 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
                                     .setBounds(-16, 16)
                                     .setTextColor(Color.WHITE.normal)
                                     .setTextAlignment(Alignment.Center)
-                                    .addTooltip(zOffsetText)
+                                    .addTooltip(translateToLocal(zOffsetText))
                                     .setBackground(GTUITextures.BACKGROUND_TEXT_FIELD)
                                     .setSize(36, 18))
                             .setEnabled(widget -> !getBaseMetaTileEntity().isActive()))
