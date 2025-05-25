@@ -54,7 +54,7 @@ public class MTEHatchMaintenance extends MTEHatch implements IAddUIWidgets, IAli
     private Rotation rotation = Rotation.NORMAL;
 
     private static ItemStack[] sAutoMaintenanceInputs;
-    public boolean mWrench = false, mScrewdriver = false, mSoftHammer = false, mHardHammer = false,
+    public boolean mWrench = false, mScrewdriver = false, mSoftMallet = false, mHardHammer = false,
         mSolderingTool = false, mCrowbar = false, mAuto;
 
     public MTEHatchMaintenance(int aID, String aName, String aNameRegional, int aTier) {
@@ -177,7 +177,7 @@ public class MTEHatchMaintenance extends MTEHatch implements IAddUIWidgets, IAli
                 if (tStack.getItem() instanceof ItemToolbox) {
                     applyToolbox(tStack, aPlayer);
                 } else if (ItemList.Duct_Tape.isStackEqual(tStack)) {
-                    mWrench = mScrewdriver = mSoftHammer = mHardHammer = mCrowbar = mSolderingTool = true;
+                    mWrench = mScrewdriver = mSoftMallet = mHardHammer = mCrowbar = mSolderingTool = true;
                     getBaseMetaTileEntity().setActive(false);
                     if (--tStack.stackSize == 0) {
                         aPlayer.inventory.mainInventory[aPlayer.inventory.currentItem] = null;
@@ -270,7 +270,7 @@ public class MTEHatchMaintenance extends MTEHatch implements IAddUIWidgets, IAli
             mCrowbar = true;
             mHardHammer = true;
             mScrewdriver = true;
-            mSoftHammer = true;
+            mSoftMallet = true;
             mSolderingTool = true;
             mWrench = true;
             updateSlots();
@@ -291,15 +291,15 @@ public class MTEHatchMaintenance extends MTEHatch implements IAddUIWidgets, IAli
             && GTModHandler.damageOrDechargeItem(aStack, 1, 1000, aPlayer)) mWrench = true;
         if (GTUtility.isStackInList(aStack, GregTechAPI.sScrewdriverList) && !mScrewdriver
             && GTModHandler.damageOrDechargeItem(aStack, 1, 1000, aPlayer)) mScrewdriver = true;
-        if (GTUtility.isStackInList(aStack, GregTechAPI.sSoftHammerList) && !mSoftHammer
-            && GTModHandler.damageOrDechargeItem(aStack, 1, 1000, aPlayer)) mSoftHammer = true;
+        if (GTUtility.isStackInList(aStack, GregTechAPI.sSoftMalletList) && !mSoftMallet
+            && GTModHandler.damageOrDechargeItem(aStack, 1, 1000, aPlayer)) mSoftMallet = true;
         if (GTUtility.isStackInList(aStack, GregTechAPI.sHardHammerList) && !mHardHammer
             && GTModHandler.damageOrDechargeItem(aStack, 1, 1000, aPlayer)) mHardHammer = true;
         if (GTUtility.isStackInList(aStack, GregTechAPI.sCrowbarList) && !mCrowbar
             && GTModHandler.damageOrDechargeItem(aStack, 1, 1000, aPlayer)) mCrowbar = true;
         if (!mSolderingTool && GTModHandler.useSolderingIron(aStack, aPlayer, aToolboxInventory)) mSolderingTool = true;
         if (GTOreDictUnificator.isItemStackInstanceOf(aStack, "craftingDuctTape")) {
-            mWrench = mScrewdriver = mSoftHammer = mHardHammer = mCrowbar = mSolderingTool = true;
+            mWrench = mScrewdriver = mSoftMallet = mHardHammer = mCrowbar = mSolderingTool = true;
             getBaseMetaTileEntity().setActive(false);
             aStack.stackSize--;
         }
