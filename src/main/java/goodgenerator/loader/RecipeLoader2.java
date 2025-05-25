@@ -1,36 +1,5 @@
 package goodgenerator.loader;
 
-import bartworks.system.material.WerkstoffLoader;
-import goodgenerator.items.GGMaterial;
-import goodgenerator.util.CrackRecipeAdder;
-import goodgenerator.util.ItemRefer;
-import goodgenerator.util.MyRecipeAdder;
-import gregtech.api.enums.GTValues;
-import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
-import gregtech.api.enums.MaterialsUEVplus;
-import gregtech.api.enums.OrePrefixes;
-import gregtech.api.enums.TierEU;
-import gregtech.api.recipe.RecipeMaps;
-import gregtech.api.util.ExternalMaterials;
-import gregtech.api.util.GTModHandler;
-import gregtech.api.util.GTOreDictUnificator;
-import gregtech.api.util.GTRecipe;
-import gregtech.api.util.GTUtility;
-import gregtech.api.util.recipe.Scanning;
-import gtPlusPlus.core.material.MaterialsAlloy;
-import gtPlusPlus.core.material.MaterialsElements;
-import gtPlusPlus.core.recipe.common.CI;
-import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
-import gtneioreplugin.plugin.block.ModBlocks;
-import ic2.core.Ic2Items;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.oredict.OreDictionary;
-import tectech.recipe.TTRecipeAdder;
-
 import static goodgenerator.api.recipe.GoodGeneratorRecipeMaps.neutronActivatorRecipes;
 import static goodgenerator.api.recipe.GoodGeneratorRecipeMaps.preciseAssemblerRecipes;
 import static goodgenerator.util.MyRecipeAdder.computeRangeNKE;
@@ -73,6 +42,38 @@ import static gregtech.api.util.GTRecipeConstants.PRECISE_ASSEMBLER_CASING_TIER;
 import static gregtech.api.util.GTRecipeConstants.RESEARCH_ITEM;
 import static gregtech.api.util.GTRecipeConstants.SCANNING;
 import static gregtech.api.util.GTRecipeConstants.UniversalChemical;
+
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.oredict.OreDictionary;
+
+import bartworks.system.material.WerkstoffLoader;
+import goodgenerator.items.GGMaterial;
+import goodgenerator.util.CrackRecipeAdder;
+import goodgenerator.util.ItemRefer;
+import goodgenerator.util.MyRecipeAdder;
+import gregtech.api.enums.GTValues;
+import gregtech.api.enums.ItemList;
+import gregtech.api.enums.Materials;
+import gregtech.api.enums.MaterialsUEVplus;
+import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.TierEU;
+import gregtech.api.recipe.RecipeMaps;
+import gregtech.api.util.ExternalMaterials;
+import gregtech.api.util.GTModHandler;
+import gregtech.api.util.GTOreDictUnificator;
+import gregtech.api.util.GTRecipe;
+import gregtech.api.util.GTUtility;
+import gregtech.api.util.recipe.Scanning;
+import gtPlusPlus.core.material.MaterialsAlloy;
+import gtPlusPlus.core.material.MaterialsElements;
+import gtPlusPlus.core.recipe.common.CI;
+import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
+import gtneioreplugin.plugin.block.ModBlocks;
+import ic2.core.Ic2Items;
+import tectech.recipe.TTRecipeAdder;
 
 public class RecipeLoader2 {
 

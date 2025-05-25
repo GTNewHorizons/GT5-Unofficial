@@ -1,10 +1,11 @@
 package gregtech.api.modularui2;
 
-import bartworks.MainMod;
-import com.cleanroommc.modularui.drawable.UITexture;
-import gregtech.common.modularui2.util.SteamTextureRegisterer;
-
 import static gregtech.api.enums.Mods.GregTech;
+
+import com.cleanroommc.modularui.drawable.UITexture;
+
+import bartworks.MainMod;
+import gregtech.common.modularui2.util.SteamTextureRegisterer;
 
 /**
  * Holds all the references to GUI textures used within GregTech.
