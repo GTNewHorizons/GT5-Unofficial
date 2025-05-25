@@ -38,9 +38,6 @@ public class EUMeterUIFactory extends CoverUIFactory<CoverEUMeter> {
     @SuppressWarnings("PointlessArithmeticExpression")
     @Override
     protected void addUIWidgets(ModularWindow.Builder builder) {
-        final String INVERTED = translateToLocal("gt.interact.desc.inverted");
-        final String NORMAL = translateToLocal("gt.interact.desc.normal");
-
         final CoverDataFollowerNumericWidget<CoverEUMeter> numericWidget = new CoverDataFollowerNumericWidget<>();
 
         builder
@@ -61,8 +58,8 @@ public class EUMeterUIFactory extends CoverUIFactory<CoverEUMeter> {
                         CoverDataFollowerToggleButtonWidget.ofRedstone(),
                         CoverEUMeter::isInverted,
                         CoverEUMeter::setInverted,
-                        widget -> widget.addTooltip(0, NORMAL)
-                            .addTooltip(1, INVERTED)
+                        widget -> widget.addTooltip(0, translateToLocal("gt.interact.desc.normal"))
+                            .addTooltip(1, translateToLocal("gt.interact.desc.inverted"))
                             .setPos(spaceX * 0, spaceY * 1))
                     .addFollower(
                         numericWidget,
@@ -81,7 +78,11 @@ public class EUMeterUIFactory extends CoverUIFactory<CoverEUMeter> {
                     .setDefaultColor(COLOR_TEXT_GRAY.get())
                     .setPos(startX + spaceX, 4 + startY))
             .widget(
-                new TextWidget().setStringSupplier(getCoverString(c -> c.isInverted() ? INVERTED : NORMAL))
+                new TextWidget()
+                    .setStringSupplier(
+                        getCoverString(
+                            c -> c.isInverted() ? translateToLocal("gt.interact.desc.inverted")
+                                : translateToLocal("gt.interact.desc.normal")))
                     .setDefaultColor(COLOR_TEXT_GRAY.get())
                     .setPos(startX + spaceX, 4 + startY + spaceY))
             .widget(
