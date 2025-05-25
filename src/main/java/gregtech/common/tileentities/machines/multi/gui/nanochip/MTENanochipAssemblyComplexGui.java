@@ -243,7 +243,7 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui {
         public void onInit() {
             super.onInit();
             BooleanSyncValue talkSyncer = (BooleanSyncValue) syncManager.getSyncHandler("talk:0");
-            talkSyncer.setChangeListener(() -> this.hintText(talkSyncer.getValue() ? fieldHintExit : fieldHintTalk));
+            talkSyncer.setChangeListener(this::updateHintText);
         }
 
         @Override
@@ -259,6 +259,7 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui {
                     list.child(createPlayerTextWidget(text));
                     list.child(createResponseTextWidget(getGREGOSResponse(text)));
                 }
+                updateHintText();
                 return Result.SUCCESS;
             } else return super.onKeyPressed(character, keyCode);
         }
@@ -285,6 +286,11 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui {
         public TextWidget createPlayerTextWidget(String text) {
             return new TextWidget(text).alignX(1F)
                 .color(list.playerTextColor);
+        }
+
+        public void updateHintText() {
+            BooleanSyncValue talkSyncer = (BooleanSyncValue) syncManager.getSyncHandler("talk:0");
+            this.hintText(talkSyncer.getValue() ? fieldHintExit : fieldHintTalk);
         }
     }
 
