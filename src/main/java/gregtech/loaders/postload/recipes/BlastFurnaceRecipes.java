@@ -6,9 +6,11 @@ import static gregtech.api.util.GTRecipeBuilder.HALF_INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.MINUTES;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
-import static gregtech.api.util.GTRecipeBuilder.TICKS;
 import static gregtech.api.util.GTRecipeConstants.ADDITIVE_AMOUNT;
+import static gregtech.api.util.GTRecipeConstants.BlastFurnaceWithGas;
 import static gregtech.api.util.GTRecipeConstants.COIL_HEAT;
+import static gregtech.api.util.GTRecipeConstants.NO_GAS;
+import static gregtech.api.util.GTRecipeConstants.NO_GAS_CIRCUIT_CONFIG;
 
 import net.minecraft.item.ItemStack;
 
@@ -398,11 +400,11 @@ public class BlastFurnaceRecipes implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Phosphorus, 8),
                 GTUtility.getIntegratedCircuit(3))
             .itemOutputs(ItemList.Circuit_Silicon_Ingot2.get(1))
-            .fluidInputs(Materials.Nitrogen.getGas(8_000))
             .duration(10 * MINUTES)
             .eut((int) TierEU.RECIPE_HV)
             .metadata(COIL_HEAT, 2484)
-            .addTo(blastFurnaceRecipes);
+            .metadata(ADDITIVE_AMOUNT, 8000)
+            .addTo(BlastFurnaceWithGas);
 
         GTValues.RA.stdBuilder()
             .itemInputs(
@@ -411,11 +413,11 @@ public class BlastFurnaceRecipes implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Naquadah, 1),
                 GTUtility.getIntegratedCircuit(3))
             .itemOutputs(ItemList.Circuit_Silicon_Ingot3.get(1))
-            .fluidInputs(Materials.Argon.getGas(8_000))
             .duration(12 * MINUTES + 30 * SECONDS)
             .eut((int) TierEU.RECIPE_EV)
             .metadata(COIL_HEAT, 4484)
-            .addTo(blastFurnaceRecipes);
+            .metadata(ADDITIVE_AMOUNT, 8000)
+            .addTo(BlastFurnaceWithGas);
 
         GTValues.RA.stdBuilder()
             .itemInputs(
@@ -424,11 +426,11 @@ public class BlastFurnaceRecipes implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Europium, 2),
                 GTUtility.getIntegratedCircuit(3))
             .itemOutputs(ItemList.Circuit_Silicon_Ingot4.get(1))
-            .fluidInputs(Materials.Radon.getGas(8_000))
             .duration(15 * MINUTES)
             .eut((int) TierEU.RECIPE_IV)
             .metadata(COIL_HEAT, 6484)
-            .addTo(blastFurnaceRecipes);
+            .metadata(ADDITIVE_AMOUNT, 8000)
+            .addTo(BlastFurnaceWithGas);
 
         GTValues.RA.stdBuilder()
             .itemInputs(
@@ -437,11 +439,11 @@ public class BlastFurnaceRecipes implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Americium, 4),
                 GTUtility.getIntegratedCircuit(3))
             .itemOutputs(ItemList.Circuit_Silicon_Ingot5.get(1))
-            .fluidInputs(Materials.Radon.getGas(16_000))
             .duration(17 * MINUTES + 30 * SECONDS)
             .eut((int) TierEU.RECIPE_LuV)
             .metadata(COIL_HEAT, 9000)
-            .addTo(blastFurnaceRecipes);
+            .metadata(ADDITIVE_AMOUNT, 16000)
+            .addTo(BlastFurnaceWithGas);
 
         // CaH2 + 2Si = CaSi2 + 2H
 
@@ -459,71 +461,42 @@ public class BlastFurnaceRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.SuperconductorUEVBase, 1),
-                GTUtility.getIntegratedCircuit(1))
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.ingotHot, Materials.SuperconductorUEVBase, 1))
-            .duration(16 * MINUTES + 23 * SECONDS)
-            .eut((int) TierEU.RECIPE_UV)
-            .metadata(COIL_HEAT, 11800)
-            .addTo(blastFurnaceRecipes);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.SuperconductorUEVBase, 1),
                 GTUtility.getIntegratedCircuit(11))
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.ingotHot, Materials.SuperconductorUEVBase, 1))
-            .fluidInputs(Materials.Radon.getGas(1_000))
-            .duration(7 * MINUTES + 22 * SECONDS + 7 * TICKS)
+            .duration(13 * MINUTES + 6 * SECONDS)
             .eut((int) TierEU.RECIPE_UV)
             .metadata(COIL_HEAT, 11800)
-            .addTo(blastFurnaceRecipes);
-
-        // 0.45 * 19660 = 8847
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.SuperconductorUIVBase, 1),
-                GTUtility.getIntegratedCircuit(1))
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.ingotHot, Materials.SuperconductorUIVBase, 1))
-            .duration(16 * MINUTES + 23 * SECONDS)
-            .eut((int) TierEU.RECIPE_UHV)
-            .metadata(COIL_HEAT, 12700)
-            .addTo(blastFurnaceRecipes);
+            .metadata(ADDITIVE_AMOUNT, 1000)
+            .metadata(NO_GAS, true)
+            .metadata(NO_GAS_CIRCUIT_CONFIG, 1)
+            .addTo(BlastFurnaceWithGas);
 
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.SuperconductorUIVBase, 1),
                 GTUtility.getIntegratedCircuit(11))
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.ingotHot, Materials.SuperconductorUIVBase, 1))
-            .fluidInputs(Materials.Radon.getGas(1_000))
-            .duration(7 * MINUTES + 22 * SECONDS + 7 * TICKS)
+            .duration(13 * MINUTES + 6 * SECONDS)
             .eut((int) TierEU.RECIPE_UHV)
             .metadata(COIL_HEAT, 12700)
-            .addTo(blastFurnaceRecipes);
-
-        // 0.45 * 19660 = 8847
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.SuperconductorUMVBase, 1),
-                GTUtility.getIntegratedCircuit(1))
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.ingotHot, Materials.SuperconductorUMVBase, 1))
-            .duration(16 * MINUTES + 23 * SECONDS)
-            .eut((int) TierEU.RECIPE_UEV)
-            .metadata(COIL_HEAT, 13600)
-            .addTo(blastFurnaceRecipes);
+            .metadata(ADDITIVE_AMOUNT, 1000)
+            .metadata(NO_GAS, true)
+            .metadata(NO_GAS_CIRCUIT_CONFIG, 1)
+            .addTo(BlastFurnaceWithGas);
 
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.SuperconductorUMVBase, 1),
                 GTUtility.getIntegratedCircuit(11))
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.ingotHot, Materials.SuperconductorUMVBase, 1))
-            .fluidInputs(Materials.Radon.getGas(1_000))
-            .duration(7 * MINUTES + 22 * SECONDS + 7 * TICKS)
+            .duration(13 * MINUTES + 6 * SECONDS)
             .eut((int) TierEU.RECIPE_UEV)
             .metadata(COIL_HEAT, 13600)
-            .addTo(blastFurnaceRecipes);
+            .metadata(ADDITIVE_AMOUNT, 1000)
+            .metadata(NO_GAS, true)
+            .metadata(NO_GAS_CIRCUIT_CONFIG, 1)
+            .addTo(BlastFurnaceWithGas);
 
-        // 0.45 * 19660 = 8847
         // CaO + 3C = CaC2 + CO
 
         GTValues.RA.stdBuilder()
