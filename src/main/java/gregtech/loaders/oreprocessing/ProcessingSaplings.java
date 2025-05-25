@@ -42,7 +42,8 @@ public class ProcessingSaplings implements gregtech.api.interfaces.IOreRecipeReg
             .itemInputs(GTUtility.copyAmount(1, aStack))
             .itemOutputs(
                 GTOreDictUnificator.get(OrePrefixes.stick, Materials.Wood, 1L),
-                GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.Wood, 1L))
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 1L))
+            .outputChances(10000, 1111)
             .duration(16 * TICKS)
             .eut(8)
             .addTo(latheRecipes);
