@@ -211,11 +211,12 @@ public class MTEResearchStation extends TTMultiblockBase implements ISurvivalCon
         tRecipe = null;
         if (!eHolders.isEmpty() && eHolders.get(0).mInventory[0] != null) {
             holdItem = eHolders.get(0).mInventory[0].copy();
-            if (ItemList.Tool_DataStick.isStackEqual(controllerStack, false, true)
-                || ItemList.Tool_DataOrb.isStackEqual(controllerStack, false, true)) {
+            boolean isDataStick = ItemList.Tool_DataStick.isStackEqual(controllerStack, false, true);
+            boolean isDataOrb = ItemList.Tool_DataOrb.isStackEqual(controllerStack, false, true);
+            if (isDataStick || isDataOrb) {
                 switch (machineType) {
                     case scanner -> {
-                        if (ItemList.Tool_DataStick.isStackEqual(controllerStack, false, true)) {
+                        if (isDataStick) {
                             for (GTRecipe.RecipeAssemblyLine assRecipe : GTRecipe.RecipeAssemblyLine.sAssemblylineRecipes) {
                                 if (GTUtility.areStacksEqual(assRecipe.mResearchItem, holdItem, true)) {
                                     boolean failScanner = true;
@@ -243,7 +244,7 @@ public class MTEResearchStation extends TTMultiblockBase implements ISurvivalCon
                                     return SimpleCheckRecipeResult.ofSuccess("scanning");
                                 }
                             }
-                        } else if (ItemList.Tool_DataOrb.isStackEqual(controllerStack, false, true)) {
+                        } else {
                             ItemData tData = GTOreDictUnificator.getAssociation(holdItem);
                             if ((tData != null)
                                 && ((tData.mPrefix == OrePrefixes.dust) || (tData.mPrefix == OrePrefixes.cell))
@@ -269,7 +270,7 @@ public class MTEResearchStation extends TTMultiblockBase implements ISurvivalCon
                                 mEfficiencyIncrease = 10000;
                                 eRequiredData = 1;
                                 eAmpereFlow = 1;
-                                mEUt = -Math.max(30, (int) TierEU.RECIPE_UV);
+                                mEUt = (int) -TierEU.RECIPE_UV;
                                 eHolders.get(0)
                                     .getBaseMetaTileEntity()
                                     .setActive(true);
