@@ -860,7 +860,8 @@ public class RecipeLoader2 {
                 ItemList.Electric_Piston_EV.get(2),
                 ItemList.Electric_Pump_EV.get(2),
                 GregtechItemList.TransmissionComponent_EV.get(1),
-                GTOreDictUnificator.get(OrePrefixes.ring, Materials.StyreneButadieneRubber, 4), // Styrene-butadiene only is intended
+                GTOreDictUnificator.get(OrePrefixes.ring, Materials.StyreneButadieneRubber, 4), // Styrene-butadiene
+                                                                                                // only is intended
                 GTOreDictUnificator.get(OrePrefixes.screw, Materials.StainlessSteel, 4))
             .fluidInputs(Materials.SolderingAlloy.getMolten(144))
             .itemOutputs(ItemList.Machine_Multi_ECCF.get(1))
@@ -874,7 +875,8 @@ public class RecipeLoader2 {
                 ItemList.FluidRegulator_EV.get(1),
                 ItemList.Sensor_EV.get(1),
                 GTOreDictUnificator.get(OrePrefixes.pipeMedium, Materials.StainlessSteel, 2),
-                GTOreDictUnificator.get(OrePrefixes.ring, Materials.StyreneButadieneRubber, 4), // Styrene-butadiene only is intended
+                GTOreDictUnificator.get(OrePrefixes.ring, Materials.StyreneButadieneRubber, 4), // Styrene-butadiene
+                                                                                                // only is intended
                 GTOreDictUnificator.get(OrePrefixes.screw, Materials.StainlessSteel, 4),
                 GTOreDictUnificator.get(OrePrefixes.pipeTiny, Materials.Copper, 16))
             .fluidInputs(Materials.SolderingAlloy.getMolten(144))
@@ -889,7 +891,8 @@ public class RecipeLoader2 {
                 ItemList.FluidRegulator_EV.get(1),
                 ItemList.Sensor_EV.get(1),
                 MaterialsAlloy.INCONEL_792.getComponentByPrefix(OrePrefixes.pipeMedium, 2),
-                GTOreDictUnificator.get(OrePrefixes.ring, Materials.StyreneButadieneRubber, 4), // Styrene-butadiene only is intended
+                GTOreDictUnificator.get(OrePrefixes.ring, Materials.StyreneButadieneRubber, 4), // Styrene-butadiene
+                                                                                                // only is intended
                 GTOreDictUnificator.get(OrePrefixes.screw, Materials.StainlessSteel, 4),
                 MaterialsAlloy.INCONEL_792.getComponentByPrefix(OrePrefixes.pipeTiny, 2))
             .fluidInputs(Materials.SolderingAlloy.getMolten(144))
@@ -905,7 +908,8 @@ public class RecipeLoader2 {
                 ItemList.Sensor_EV.get(1),
                 GTOreDictUnificator.get(OrePrefixes.circuit, Materials.LuV, 2),
                 GTOreDictUnificator.get(OrePrefixes.rotor, Materials.BlackSteel, 4),
-                GTOreDictUnificator.get(OrePrefixes.ring, Materials.StyreneButadieneRubber, 4), // Styrene-butadiene only is intended
+                GTOreDictUnificator.get(OrePrefixes.ring, Materials.StyreneButadieneRubber, 4), // Styrene-butadiene
+                                                                                                // only is intended
                 GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorEV, 4))
             .fluidInputs(Materials.SolderingAlloy.getMolten(144))
             .itemOutputs(ItemList.ECCF_vacuum_block_0.get(1))
@@ -920,7 +924,8 @@ public class RecipeLoader2 {
                 ItemList.Sensor_EV.get(1),
                 GTOreDictUnificator.get(OrePrefixes.circuit, Materials.LuV, 2),
                 ItemList.FluidRegulator_EV.get(2),
-                GTOreDictUnificator.get(OrePrefixes.ring, Materials.StyreneButadieneRubber, 4), // Styrene-butadiene only is intended
+                GTOreDictUnificator.get(OrePrefixes.ring, Materials.StyreneButadieneRubber, 4), // Styrene-butadiene
+                                                                                                // only is intended
                 GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorEV, 4))
             .fluidInputs(Materials.SolderingAlloy.getMolten(144))
             .itemOutputs(ItemList.ECCF_pressure_block_0.get(1))
@@ -938,10 +943,13 @@ public class RecipeLoader2 {
                 GTOreDictUnificator.get(OrePrefixes.ring, Materials.Epoxid, 8),
                 GTOreDictUnificator.get(OrePrefixes.pipeMedium, Materials.Europium, 2),
                 GTOreDictUnificator.get(OrePrefixes.pipeTiny, Materials.Europium, 16),
-                GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.Tetraindiumditindibariumtitaniumheptacoppertetrakaidekaoxid, 64),
+                GTOreDictUnificator.get(
+                    OrePrefixes.wireFine,
+                    Materials.Tetraindiumditindibariumtitaniumheptacoppertetrakaidekaoxid,
+                    64),
                 GTOreDictUnificator.get(OrePrefixes.screw, Materials.Naquadah, 4),
                 GTOreDictUnificator.get(OrePrefixes.circuit, Materials.UV, 4))
-            .fluidInputs(new FluidStack(solderIndalloy, 144*4))
+            .fluidInputs(new FluidStack(solderIndalloy, 144 * 4))
             .itemOutputs(ItemList.ECCF_cooling_block_1.get(1))
             .duration(1 * MINUTES)
             .eut(TierEU.RECIPE_LuV)
@@ -957,10 +965,13 @@ public class RecipeLoader2 {
                 GTOreDictUnificator.get(OrePrefixes.ring, Materials.Epoxid, 8),
                 GTOreDictUnificator.get(OrePrefixes.pipeMedium, Materials.Naquadah, 2),
                 GTOreDictUnificator.get(OrePrefixes.pipeTiny, Materials.Naquadah, 16),
-                GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.Tetraindiumditindibariumtitaniumheptacoppertetrakaidekaoxid, 64),
+                GTOreDictUnificator.get(
+                    OrePrefixes.wireFine,
+                    Materials.Tetraindiumditindibariumtitaniumheptacoppertetrakaidekaoxid,
+                    64),
                 GTOreDictUnificator.get(OrePrefixes.screw, Materials.Naquadah, 4),
                 GTOreDictUnificator.get(OrePrefixes.circuit, Materials.UV, 4))
-            .fluidInputs(new FluidStack(solderIndalloy, 144*4))
+            .fluidInputs(new FluidStack(solderIndalloy, 144 * 4))
             .itemOutputs(ItemList.ECCF_heating_block_1.get(1))
             .duration(1 * MINUTES)
             .eut(TierEU.RECIPE_LuV)
@@ -978,7 +989,7 @@ public class RecipeLoader2 {
                 GTOreDictUnificator.get(OrePrefixes.ring, Materials.Epoxid, 8),
                 GTOreDictUnificator.get(OrePrefixes.gearGtSmall, ExternalMaterials.getRuridit(), 8),
                 GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorLuV, 4))
-            .fluidInputs(new FluidStack(solderIndalloy, 144*4))
+            .fluidInputs(new FluidStack(solderIndalloy, 144 * 4))
             .itemOutputs(ItemList.ECCF_vacuum_block_1.get(1))
             .duration(1 * MINUTES)
             .eut(TierEU.RECIPE_LuV)
@@ -997,7 +1008,7 @@ public class RecipeLoader2 {
                 GTOreDictUnificator.get(OrePrefixes.ring, Materials.Epoxid, 8),
                 GTOreDictUnificator.get(OrePrefixes.gearGtSmall, ExternalMaterials.getRuridit(), 12),
                 GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorLuV, 4))
-            .fluidInputs(new FluidStack(solderIndalloy, 144*4))
+            .fluidInputs(new FluidStack(solderIndalloy, 144 * 4))
             .itemOutputs(ItemList.ECCF_pressure_block_1.get(1))
             .duration(1 * MINUTES)
             .eut(TierEU.RECIPE_LuV)

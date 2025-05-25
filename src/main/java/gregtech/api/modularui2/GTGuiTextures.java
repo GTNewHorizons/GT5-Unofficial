@@ -1,11 +1,10 @@
 package gregtech.api.modularui2;
 
-import static gregtech.api.enums.Mods.GregTech;
-
-import com.cleanroommc.modularui.drawable.UITexture;
-
 import bartworks.MainMod;
+import com.cleanroommc.modularui.drawable.UITexture;
 import gregtech.common.modularui2.util.SteamTextureRegisterer;
+
+import static gregtech.api.enums.Mods.GregTech;
 
 /**
  * Holds all the references to GUI textures used within GregTech.
@@ -272,8 +271,25 @@ public final class GTGuiTextures {
         .canApplyTheme(true)
         .location(GregTech.ID, "gui/overlay_button/void_excess_all")
         .build();
+
     public static final UITexture OVERLAY_BUTTON_THERMOMETER = UITexture
         .fullImage(GregTech.ID, "gui/overlay_button/thermometer");
+    public static final UITexture COOL_MODULE_ECCF_INDICATOR = UITexture
+        .fullImage(GregTech.ID, "gui/picture/cool_module_ECCF_indicator");
+    public static final UITexture HEAT_MODULE_ECCF_INDICATOR = UITexture
+        .fullImage(GregTech.ID, "gui/picture/heat_module_ECCF_indicator");
+    public static final UITexture PRESSURE_MODULE_ECCF_INDICATOR = UITexture
+        .fullImage(GregTech.ID, "gui/picture/pressure_module_ECCF_indicator");
+    public static final UITexture VACUUM_MODULE_ECCF_INDICATOR = UITexture
+        .fullImage(GregTech.ID, "gui/picture/vacuum_module_ECCF_indicator");
+    public static final UITexture EMPTY_ECCF_INDICATOR_L = UITexture
+        .fullImage(GregTech.ID, "gui/picture/empty_ECCF_indicator_L");
+    public static final UITexture EMPTY_ECCF_INDICATOR_R = UITexture
+        .fullImage(GregTech.ID, "gui/picture/empty_ECCF_indicator_R");
+    public static final UITexture PARALLEL_ECCF_INDICATOR_L = UITexture
+        .fullImage(GregTech.ID, "gui/picture/parallel_ECCF_indicator_L");
+    public static final UITexture PARALLEL_ECCF_INDICATOR_R = UITexture
+        .fullImage(GregTech.ID, "gui/picture/parallel_ECCF_indicator_R");
 
     public static final UITexture OVERLAY_BUTTON_INPUT_SEPARATION_ON = UITexture
         .fullImage(GregTech.ID, "gui/overlay_button/input_separation_on");
