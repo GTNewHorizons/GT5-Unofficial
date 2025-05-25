@@ -23,7 +23,6 @@ import com.cleanroommc.modularui.utils.serialization.IByteBufAdapter;
 import com.cleanroommc.modularui.value.sync.GenericSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widget.ParentWidget;
-import com.cleanroommc.modularui.widget.WidgetTree;
 import com.cleanroommc.modularui.widgets.ButtonWidget;
 import com.cleanroommc.modularui.widgets.ListWidget;
 import com.google.common.collect.ImmutableList;
@@ -85,7 +84,6 @@ public class SplitterGui extends MTEMultiBlockBaseGui {
         return ui.child(list)
             .child(new ButtonWidget<>().onMousePressed(mouseButton -> {
                 list.child(createColorManager(syncManager, null, null, null));
-                WidgetTree.resize(ui);
                 return true;
             })
                 .pos(80, 4)
@@ -141,7 +139,9 @@ public class SplitterGui extends MTEMultiBlockBaseGui {
                 new ButtonWidget<>().tooltip(t -> t.add("Delete"))
                     .onMousePressed(a -> {
                         selector.removeColorData();
-                        WidgetTree.resize(selector.getParent());
+                        // spotless i hate you so much this is so yucky what the hell is your problem with 2 .'s
+                        selector.getParent()
+                            .scheduleResize();
                         return true;
                     })
                     .overlay(GTGuiTextures.OVERLAY_BUTTON_CROSS)
