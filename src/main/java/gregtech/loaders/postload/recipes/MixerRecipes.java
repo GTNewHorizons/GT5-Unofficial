@@ -472,7 +472,7 @@ public class MixerRecipes implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Thaumium, 2),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.EnderPearl, 2),
                 GTUtility.getIntegratedCircuit(16))
-            .itemOutputs(GTOreDictUnificator.getDust(Materials.Enderium, 8L))
+            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Enderium, 8L))
             .duration(10 * SECONDS)
             .eut(64)
             .addTo(mixerRecipes);
