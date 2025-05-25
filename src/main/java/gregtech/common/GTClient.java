@@ -103,6 +103,7 @@ import gregtech.common.render.MetaGeneratedToolRenderer;
 import gregtech.common.render.WormholeRenderer;
 import gregtech.common.render.items.DataStickRenderer;
 import gregtech.common.render.items.InfiniteSprayCanRenderer;
+import gregtech.common.render.items.MechanicalArmorRenderer;
 import gregtech.common.render.items.MetaGeneratedItemRenderer;
 import gregtech.common.tileentities.debug.MTEAdvDebugStructureWriter;
 import gregtech.loaders.ExtraIcons;
@@ -649,6 +650,7 @@ public class GTClient extends GTProxy implements Runnable {
         new FluidDisplayStackRenderer();
         new DataStickRenderer();
         new InfiniteSprayCanRenderer();
+        new MechanicalArmorRenderer();
         MinecraftForge.EVENT_BUS.register(new NEIGTConfig());
         MinecraftForge.EVENT_BUS.register(new GTMouseEventHandler());
         SprayColorInfiniteKeybindHandler.init();
