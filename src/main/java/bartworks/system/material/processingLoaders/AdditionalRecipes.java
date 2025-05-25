@@ -395,7 +395,7 @@ public class AdditionalRecipes {
             .fluidInputs(
                 WerkstoffLoader.Californium.getMolten(2 * NUGGETS),
                 WerkstoffLoader.Calcium.getMolten(5 * INGOTS))
-            .fluidOutputs(WerkstoffLoader.Oganesson.getFluidOrGas(5 * INGOTS))
+            .fluidOutputs(WerkstoffLoader.Oganesson.getFluidOrGas(720))
             .duration(24 * SECONDS)
             .eut(49152)
             .metadata(FUSION_THRESHOLD, 600_000_000L)

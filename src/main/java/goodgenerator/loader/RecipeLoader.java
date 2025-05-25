@@ -1446,7 +1446,7 @@ public class RecipeLoader {
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Bedrockium, 32),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Bedrockium, 32))
             .outputChances(9500, 9000, 8000, 7000, 5000, 4000)
-            .fluidOutputs(WerkstoffLoader.Oganesson.getFluidOrGas(5 * INGOTS))
+            .fluidOutputs(WerkstoffLoader.Oganesson.getFluidOrGas(720))
             .duration(1 * MINUTES + 40 * SECONDS)
             .eut(TierEU.RECIPE_LuV)
             .addTo(centrifugeRecipes);

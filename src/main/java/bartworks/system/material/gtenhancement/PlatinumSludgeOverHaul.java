@@ -73,6 +73,7 @@ import static gregtech.api.enums.OrePrefixes.ingot;
 import static gregtech.api.enums.OrePrefixes.nugget;
 import static gregtech.api.enums.OrePrefixes.rawOre;
 import static gregtech.api.recipe.RecipeMaps.*;
+import static gregtech.api.util.GTRecipeBuilder.HALF_INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.MINUTES;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
@@ -506,7 +507,7 @@ public class PlatinumSludgeOverHaul {
         GTValues.RA.stdBuilder()
             .itemInputs(PTResidue.get(dust), GTUtility.getIntegratedCircuit(11))
             .itemOutputs(LeachResidue.get(dust))
-            .fluidInputs(PotassiumDisulfate.getMolten(360))
+            .fluidInputs(PotassiumDisulfate.getMolten(2 * INGOTS + 1 * HALF_INGOTS))
             .fluidOutputs(RHSulfate.getFluidOrGas(360))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_MV)

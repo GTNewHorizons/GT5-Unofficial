@@ -2297,7 +2297,7 @@ public class Assembler implements Runnable {
                     GTOreDictUnificator.get(OrePrefixes.foil, Materials.Aluminium, 24),
                     GTOreDictUnificator.get(OrePrefixes.foil, Materials.Silicone, 24))
                 .itemOutputs(CustomItemList.teslaCapacitor.getWithDamage(1, 4))
-                .fluidInputs(Materials.Epoxid.getMolten(360))
+                .fluidInputs(Materials.Epoxid.getMolten(2 * INGOTS + 1 * HALF_INGOTS))
                 .duration(16 * SECONDS)
                 .eut(TierEU.RECIPE_IV)
                 .addTo(assemblerRecipes);

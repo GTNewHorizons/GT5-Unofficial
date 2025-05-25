@@ -4,6 +4,7 @@ import static goodgenerator.api.recipe.GoodGeneratorRecipeMaps.naquadahFuelRefin
 import static goodgenerator.api.recipe.GoodGeneratorRecipeMaps.naquadahReactorFuels;
 import static goodgenerator.main.GGConfigLoader.NaquadahFuelTime;
 import static goodgenerator.main.GGConfigLoader.NaquadahFuelVoltage;
+import static gregtech.api.util.GTRecipeBuilder.HALF_INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.STACKS;
@@ -169,7 +170,9 @@ public class FuelRecipeLoader {
             .itemInputs(
                 MaterialsElements.STANDALONE.ASTRAL_TITANIUM.getDust(64),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Tritanium, 32))
-            .fluidInputs(GGMaterial.naquadahBasedFuelMkV.getFluidOrGas(2_000), GGMaterial.shirabon.getMolten(360))
+            .fluidInputs(
+                GGMaterial.naquadahBasedFuelMkV.getFluidOrGas(2_000),
+                GGMaterial.shirabon.getMolten(2 * INGOTS + 1 * HALF_INGOTS))
             .fluidOutputs(GGMaterial.naquadahBasedFuelMkVI.getFluidOrGas(750))
             .duration(12 * SECONDS)
             .eut(320_000_000)
@@ -183,7 +186,7 @@ public class FuelRecipeLoader {
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Tritanium, 48))
             .fluidInputs(
                 GGMaterial.naquadahBasedFuelMkV.getFluidOrGas(2_000),
-                GGMaterial.shirabon.getMolten(360),
+                GGMaterial.shirabon.getMolten(2 * INGOTS + 1 * HALF_INGOTS),
                 MaterialsUEVplus.RawStarMatter.getFluid(60L))
             .fluidOutputs(GGMaterial.naquadahBasedFuelMkVI.getFluidOrGas(1_250))
             .duration(3 * SECONDS)

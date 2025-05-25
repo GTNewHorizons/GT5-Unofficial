@@ -11,7 +11,6 @@ import static gregtech.api.recipe.RecipeMaps.maceratorRecipes;
 import static gregtech.api.recipe.RecipeMaps.mixerRecipes;
 import static gregtech.api.recipe.RecipeMaps.multiblockChemicalReactorRecipes;
 import static gregtech.api.recipe.RecipeMaps.vacuumFreezerRecipes;
-import static gregtech.api.util.GTRecipeBuilder.HALF_INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.MINUTES;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
@@ -448,7 +447,7 @@ public class NaquadahReworkRecipeLoader {
 
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Shape_Mold_Ball.get(0))
-            .fluidInputs(GGMaterial.naquadahGoo.getFluidOrGas(1 * HALF_INGOTS))
+            .fluidInputs(GGMaterial.naquadahGoo.getFluidOrGas(72))
             .itemOutputs(ItemRefer.Naquadah_Mass.get(1))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_LV)
@@ -456,7 +455,7 @@ public class NaquadahReworkRecipeLoader {
 
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Shape_Mold_Ball.get(0))
-            .fluidInputs(GGMaterial.enrichedNaquadahGoo.getFluidOrGas(1 * HALF_INGOTS))
+            .fluidInputs(GGMaterial.enrichedNaquadahGoo.getFluidOrGas(72))
             .itemOutputs(ItemRefer.Enriched_Naquadah_Mass.get(1))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_LV)
@@ -464,7 +463,7 @@ public class NaquadahReworkRecipeLoader {
 
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Shape_Mold_Ball.get(0))
-            .fluidInputs(GGMaterial.naquadriaGoo.getFluidOrGas(1 * HALF_INGOTS))
+            .fluidInputs(GGMaterial.naquadriaGoo.getFluidOrGas(72))
             .itemOutputs(ItemRefer.Naquadria_Mass.get(1))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_LV)
