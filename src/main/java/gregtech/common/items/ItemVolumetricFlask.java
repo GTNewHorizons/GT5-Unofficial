@@ -43,6 +43,7 @@ import com.gtnewhorizons.modularui.common.widget.textfield.NumericWidget;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.enums.Materials;
 import gregtech.api.gui.modularui.GTUIInfos;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.items.GTGenericItem;
@@ -289,10 +290,10 @@ public class ItemVolumetricFlask extends GTGenericItem implements IFluidContaine
             FluidStack fluid = null;
             if (block != Blocks.water && block != Blocks.flowing_water) {
                 if (block == Blocks.lava || block == Blocks.flowing_lava) {
-                    fluid = new FluidStack(FluidRegistry.LAVA, 1000);
+                    fluid = Materials.Lava.getFluid(1_000);
                 }
             } else {
-                fluid = new FluidStack(FluidRegistry.WATER, 1000);
+                fluid = Materials.Water.getFluid(1_000);
             }
 
             if (fluid != null) {

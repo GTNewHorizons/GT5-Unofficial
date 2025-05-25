@@ -80,12 +80,18 @@ public class GTValues {
      * Renamed from "FLUID_MATERIAL_UNIT" to just "L"
      * <p/>
      * Fluid per Material Unit (Prime Factors: 3 * 3 * 2 * 2 * 2 * 2)
+     *
+     * @deprecated Use {@link gregtech.api.util.GTRecipeBuilder#INGOTS} instead.
      */
+    @Deprecated
     public static final long L = 144;
 
     /**
      * The Item WildCard Tag. Even shorter than the "-1" of the past
+     *
+     * @deprecated Use {@link gregtech.api.util.GTRecipeBuilder#WILDCARD} instead.
      */
+    @Deprecated
     public static final short W = OreDictionary.WILDCARD_VALUE;
 
     /**

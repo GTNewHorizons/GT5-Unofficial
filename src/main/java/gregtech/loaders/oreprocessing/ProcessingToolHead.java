@@ -4,6 +4,7 @@ import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
 import static gregtech.api.recipe.RecipeMaps.extruderRecipes;
 import static gregtech.api.recipe.RecipeMaps.fluidSolidifierRecipes;
 import static gregtech.api.recipe.RecipeMaps.formingPressRecipes;
+import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.MINUTES;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTUtility.calculateRecipeEU;
@@ -464,7 +465,7 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                         GTValues.RA.stdBuilder()
                             .itemInputs(ItemList.Shape_Mold_ToolHeadDrill.get(0))
                             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.toolHeadDrill, aMaterial, 1L))
-                            .fluidInputs(aMaterial.getMolten(144 * 4))
+                            .fluidInputs(aMaterial.getMolten(4 * INGOTS))
                             .duration(5 * SECONDS)
                             .eut(calculateRecipeEU(aMaterial, (int) TierEU.RECIPE_MV))
                             .addTo(fluidSolidifierRecipes);

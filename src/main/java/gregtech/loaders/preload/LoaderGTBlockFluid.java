@@ -14,6 +14,7 @@ import static gregtech.api.recipe.RecipeMaps.centrifugeRecipes;
 import static gregtech.api.recipe.RecipeMaps.fluidCannerRecipes;
 import static gregtech.api.recipe.RecipeMaps.maceratorRecipes;
 import static gregtech.api.recipe.RecipeMaps.thermalCentrifugeRecipes;
+import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
 import static gregtech.api.util.GTRecipeBuilder.WILDCARD;
@@ -105,10 +106,9 @@ public class LoaderGTBlockFluid implements Runnable {
 
     @Override
     public void run() {
-        Materials.Water.mFluid = (Materials.Ice.mFluid = GTModHandler.getWater(1000L)
-            .getFluid());
-        Materials.Lava.mFluid = GTModHandler.getLava(1000L)
-            .getFluid();
+        Materials.Water.mFluid = FluidRegistry.getFluid("water");
+        Materials.Ice.mFluid = FluidRegistry.getFluid("water");
+        Materials.Lava.mFluid = FluidRegistry.getFluid("lava");
 
         GTLog.out.println("GTMod: Register Books.");
 
@@ -856,7 +856,7 @@ public class LoaderGTBlockFluid implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(Materials.Empty.getCells(1))
             .itemOutputs(GTModHandler.getIC2Item("steamCell", 1))
-            .fluidInputs(GTModHandler.getSteam(1000))
+            .fluidInputs(Materials.Steam.getGas(1_000))
             .duration(16 * TICKS)
             .eut(1)
             .addTo(fluidCannerRecipes);
@@ -1395,29 +1395,29 @@ public class LoaderGTBlockFluid implements Runnable {
         if (ItemList.TF_Vial_FieryBlood.get(1L) != null) {
             FluidContainerRegistry.registerFluidContainer(
                 new FluidContainerRegistry.FluidContainerData(
-                    Materials.FierySteel.getFluid(250L),
+                    Materials.FierySteel.getFluid(250),
                     ItemList.TF_Vial_FieryBlood.get(1L),
                     ItemList.Bottle_Empty.get(1L)));
         }
 
         FluidContainerRegistry.registerFluidContainer(
             new FluidContainerRegistry.FluidContainerData(
-                Materials.Milk.getFluid(1000L),
+                Materials.Milk.getFluid(1_000),
                 GTOreDictUnificator.get(OrePrefixes.bucket, Materials.Milk, 1L),
                 GTOreDictUnificator.get(OrePrefixes.bucket, Materials.Empty, 1L)));
         FluidContainerRegistry.registerFluidContainer(
             new FluidContainerRegistry.FluidContainerData(
-                Materials.Milk.getFluid(250L),
+                Materials.Milk.getFluid(250),
                 ItemList.Bottle_Milk.get(1L),
                 ItemList.Bottle_Empty.get(1L)));
         FluidContainerRegistry.registerFluidContainer(
             new FluidContainerRegistry.FluidContainerData(
-                Materials.HolyWater.getFluid(250L),
+                Materials.HolyWater.getFluid(250),
                 ItemList.Bottle_Holy_Water.get(1L),
                 ItemList.Bottle_Empty.get(1L)));
         FluidContainerRegistry.registerFluidContainer(
             new FluidContainerRegistry.FluidContainerData(
-                Materials.McGuffium239.getFluid(250L),
+                Materials.McGuffium239.getFluid(250),
                 ItemList.McGuffium_239.get(1L),
                 ItemList.Bottle_Empty.get(1L)));
         FluidContainerRegistry.registerFluidContainer(
@@ -1427,7 +1427,7 @@ public class LoaderGTBlockFluid implements Runnable {
                 ItemList.Tool_Lighter_Invar_Empty.get(1L)));
         FluidContainerRegistry.registerFluidContainer(
             new FluidContainerRegistry.FluidContainerData(
-                Materials.Fuel.getFluid(1000L),
+                Materials.Fuel.getFluid(1_000),
                 ItemList.Tool_Lighter_Platinum_Full.get(1L),
                 ItemList.Tool_Lighter_Platinum_Empty.get(1L)));
 
@@ -1454,7 +1454,7 @@ public class LoaderGTBlockFluid implements Runnable {
                     .withColorRGBA(tDye.getRGBA())
                     .withStateAndTemperature(LIQUID, 295)
                     .buildAndRegister()
-                    .registerContainers(ItemList.SPRAY_CAN_DYES[i].get(1L), ItemList.Spray_Empty.get(1L), 2304)
+                    .registerContainers(ItemList.SPRAY_CAN_DYES[i].get(1L), ItemList.Spray_Empty.get(1L), 16 * INGOTS)
                     .asFluid());
         }
         GTFluidFactory.builder("ice")
@@ -1475,7 +1475,7 @@ public class LoaderGTBlockFluid implements Runnable {
             .registerContainers(
                 GTOreDictUnificator.get(OrePrefixes.cellMolten, Materials.Glass, 1L),
                 ItemList.Cell_Empty.get(1L),
-                144);
+                1 * INGOTS);
         GTFluidFactory.builder("molten.redstone")
             .withLocalizedName("Molten Redstone")
             .withStateAndTemperature(MOLTEN, 500)
@@ -1484,7 +1484,7 @@ public class LoaderGTBlockFluid implements Runnable {
             .registerContainers(
                 GTOreDictUnificator.get(OrePrefixes.cellMolten, Materials.Redstone, 1L),
                 ItemList.Cell_Empty.get(1L),
-                144);
+                1 * INGOTS);
         GTFluidFactory.builder("molten.blaze")
             .withLocalizedName("Molten Blaze")
             .withStateAndTemperature(MOLTEN, 6400)
@@ -1493,7 +1493,7 @@ public class LoaderGTBlockFluid implements Runnable {
             .registerContainers(
                 GTOreDictUnificator.get(OrePrefixes.cellMolten, Materials.Blaze, 1L),
                 ItemList.Cell_Empty.get(1L),
-                144);
+                1 * INGOTS);
         GTFluidFactory.builder("wet.concrete")
             .withLocalizedName("Wet Concrete")
             .withStateAndTemperature(MOLTEN, 300)
@@ -1502,7 +1502,7 @@ public class LoaderGTBlockFluid implements Runnable {
             .registerContainers(
                 GTOreDictUnificator.get(OrePrefixes.cellMolten, Materials.Concrete, 1L),
                 ItemList.Cell_Empty.get(1L),
-                144);
+                1 * INGOTS);
 
         for (Materials tMaterial : Materials.values()) {
             if ((tMaterial.mStandardMoltenFluid == null) && (tMaterial.contains(SubTag.SMELTING_TO_FLUID))

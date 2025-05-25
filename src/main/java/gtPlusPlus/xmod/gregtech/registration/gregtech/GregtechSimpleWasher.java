@@ -24,7 +24,6 @@ import gregtech.api.metatileentity.implementations.MTEBasicMachineWithRecipe;
 import gregtech.api.metatileentity.implementations.MTEBasicMachineWithRecipe.SpecialEffects;
 import gregtech.api.util.GTOreDictUnificator;
 import gtPlusPlus.core.lib.GTPPCore;
-import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 
 public class GregtechSimpleWasher {
@@ -191,7 +190,7 @@ public class GregtechSimpleWasher {
             GTValues.RA.stdBuilder()
                 .itemInputs(aInput)
                 .itemOutputs(aOutput)
-                .fluidInputs(FluidUtils.getFluidStack("water", 100))
+                .fluidInputs(Materials.Water.getFluid(100))
                 .duration(5 * TICKS)
                 .eut(8)
                 .addTo(simpleWasherRecipes);

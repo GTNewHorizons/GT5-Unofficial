@@ -12,6 +12,7 @@ import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.FluidStack;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -40,8 +41,10 @@ import gregtech.api.objects.XSTR;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gtPlusPlus.xmod.thermalfoundation.fluid.TFFluids;
 import tectech.thing.metaTileEntity.hatch.MTEHatchDynamoMulti;
 import tectech.thing.metaTileEntity.hatch.MTEHatchDynamoTunnel;
 import thaumcraft.api.aspects.Aspect;
@@ -297,13 +300,13 @@ public class MTELargeEssentiaGenerator extends MTETooltipMultiBlockBaseEM
         int ceoInput = (int) LargeEssentiaEnergyData.getAspectCeo(aspect) * 2;
         if (depleteInput(Materials.SuperCoolant.getFluid(ceoInput))) {
             ceoOutput = 9.0D;
-        } else if (depleteInput(FluidRegistry.getFluidStack("cryotheum", ceoInput))) {
+        } else if (depleteInput(new FluidStack(TFFluids.fluidCryotheum, ceoInput))) {
             ceoOutput = 5.0D;
-        } else if (depleteInput(FluidRegistry.getFluidStack("ic2coolant", ceoInput))) {
+        } else if (depleteInput(GTModHandler.getIC2Coolant(ceoInput))) {
             ceoOutput = 1.5D;
         } else if (depleteInput(Materials.Ice.getSolid(ceoInput))) {
             ceoOutput = 1.2D;
-        } else if (depleteInput(FluidRegistry.getFluidStack("ic2distilledwater", ceoInput))) {
+        } else if (depleteInput(GTModHandler.getDistilledWater(ceoInput))) {
             ceoOutput = 1.0D;
         } else if (depleteInput(Materials.Water.getFluid(ceoInput))) {
             ceoOutput = 0.5D;

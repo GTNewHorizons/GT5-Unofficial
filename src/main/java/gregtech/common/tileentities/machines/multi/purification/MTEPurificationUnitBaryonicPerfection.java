@@ -13,6 +13,7 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_PROCESSING_AR
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_PROCESSING_ARRAY_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_PROCESSING_ARRAY_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_PROCESSING_ARRAY_GLOW;
+import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 import static gregtech.api.util.GTUtility.validMTEList;
 
@@ -170,7 +171,7 @@ public class MTEPurificationUnitBaryonicPerfection
 
     private ArrayList<ItemStack> insertedCatalysts = new ArrayList<>();
 
-    private static final long CATALYST_BASE_COST = 144L;
+    private static final long CATALYST_BASE_COST = 1 * INGOTS;
 
     private int correctStartIndex = -1;
     private int numCasings = 0;

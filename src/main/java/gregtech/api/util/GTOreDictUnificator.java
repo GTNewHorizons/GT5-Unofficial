@@ -2,7 +2,7 @@ package gregtech.api.util;
 
 import static gregtech.api.enums.GTValues.E;
 import static gregtech.api.enums.GTValues.M;
-import static gregtech.api.enums.GTValues.W;
+import static gregtech.api.util.GTRecipeBuilder.WILDCARD;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -80,7 +80,7 @@ public class GTOreDictUnificator {
         boolean aAlreadyRegistered) {
         if (aMaterial == null || aPrefix == null
             || GTUtility.isStackInvalid(aStack)
-            || Items.feather.getDamage(aStack) == W) return;
+            || Items.feather.getDamage(aStack) == WILDCARD) return;
         isAddingOre++;
         aStack = GTUtility.copyAmount(1, aStack);
         if (!aAlreadyRegistered) registerOre(aPrefix.get(aMaterial), aStack);
@@ -402,7 +402,7 @@ public class GTOreDictUnificator {
     public static void addAssociation(OrePrefixes aPrefix, Materials aMaterial, ItemStack aStack,
         boolean aBlackListed) {
         if (aPrefix == null || aMaterial == null || GTUtility.isStackInvalid(aStack)) return;
-        if (Items.feather.getDamage(aStack) == W) for (byte i = 0; i < 16; i++)
+        if (Items.feather.getDamage(aStack) == WILDCARD) for (byte i = 0; i < 16; i++)
             setItemData(GTUtility.copyAmountAndMetaData(1, i, aStack), new ItemData(aPrefix, aMaterial, aBlackListed));
         setItemData(aStack, new ItemData(aPrefix, aMaterial, aBlackListed));
     }

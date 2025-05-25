@@ -16,6 +16,7 @@ import net.minecraftforge.fluids.FluidStack;
 
 import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
+import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -142,7 +143,7 @@ public class MTELargeTurbineHPSteam extends MTELargeTurbine {
         }
         if (totalFlow <= 0) return 0;
         tEU = totalFlow;
-        addOutput(GTModHandler.getSteam(totalFlow));
+        addOutput(Materials.Steam.getGas(totalFlow));
         if (totalFlow == (GTUtility.safeInt((long) realOptFlow))) {
             tEU = GTUtility
                 .safeInt((long) (tEU * (looseFit ? turbine.getLooseSteamEfficiency() : turbine.getSteamEfficiency())));

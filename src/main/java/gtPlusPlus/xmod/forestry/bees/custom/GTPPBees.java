@@ -76,9 +76,9 @@ public class GTPPBees {
     }
 
     private void addRecipes() {
-        addExtractorRecipe(ItemUtils.getSimpleStack(dropBiomassBlob), FluidUtils.getFluidStack("biomass", 30));
+        addExtractorRecipe(ItemUtils.getSimpleStack(dropBiomassBlob), Materials.Biomass.getFluid(30));
         addExtractorRecipe(ItemUtils.getSimpleStack(dropEthanolBlob), FluidUtils.getFluidStack("ethanol", 6));
-        addExtractorRecipe(ItemUtils.getSimpleStack(dropFluorineBlob), FluidUtils.getFluidStack("fluorine", 4));
+        addExtractorRecipe(ItemUtils.getSimpleStack(dropFluorineBlob), Materials.Fluorine.getGas(4));
     }
 
     private void addExtractorRecipe(ItemStack input, FluidStack output) {

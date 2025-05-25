@@ -7,6 +7,8 @@ import static gregtech.api.recipe.RecipeMaps.distilleryRecipes;
 import static gregtech.api.recipe.RecipeMaps.extruderRecipes;
 import static gregtech.api.recipe.RecipeMaps.fluidSolidifierRecipes;
 import static gregtech.api.recipe.RecipeMaps.wiremillRecipes;
+import static gregtech.api.util.GTRecipeBuilder.HALF_INGOTS;
+import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
 import static gregtech.api.util.GTRecipeConstants.COIL_HEAT;
@@ -113,7 +115,7 @@ public class CrackRecipeAdder {
         if (gas) {
             GTValues.RA.stdBuilder()
                 .itemInputs(input, GTUtility.getIntegratedCircuit(11))
-                .fluidInputs(Materials.Helium.getGas(1000))
+                .fluidInputs(Materials.Helium.getGas(1_000))
                 .itemOutputs(output)
                 .duration(duration * TICKS)
                 .eut(EUt)
@@ -291,7 +293,7 @@ public class CrackRecipeAdder {
             .addTo(extruderRecipes);
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Shape_Mold_Pipe_Tiny.get(0))
-            .fluidInputs(material.getMolten(72))
+            .fluidInputs(material.getMolten(1 * HALF_INGOTS))
             .itemOutputs(material.get(OrePrefixes.pipeTiny, 1))
             .duration(
                 material.getStats()
@@ -300,7 +302,7 @@ public class CrackRecipeAdder {
             .addTo(fluidSolidifierRecipes);
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Shape_Mold_Pipe_Small.get(0))
-            .fluidInputs(material.getMolten(144))
+            .fluidInputs(material.getMolten(1 * INGOTS))
             .itemOutputs(material.get(OrePrefixes.pipeSmall, 1))
             .duration(
                 material.getStats()
@@ -310,7 +312,7 @@ public class CrackRecipeAdder {
             .addTo(fluidSolidifierRecipes);
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Shape_Mold_Pipe_Medium.get(0))
-            .fluidInputs(material.getMolten(432))
+            .fluidInputs(material.getMolten(3 * INGOTS))
             .itemOutputs(material.get(OrePrefixes.pipeMedium, 1))
             .duration(
                 material.getStats()
@@ -320,7 +322,7 @@ public class CrackRecipeAdder {
             .addTo(fluidSolidifierRecipes);
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Shape_Mold_Pipe_Large.get(0))
-            .fluidInputs(material.getMolten(864))
+            .fluidInputs(material.getMolten(6 * INGOTS))
             .itemOutputs(material.get(OrePrefixes.pipeLarge, 1))
             .duration(
                 material.getStats()

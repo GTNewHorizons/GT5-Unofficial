@@ -1,6 +1,7 @@
 package gregtech.loaders.oreprocessing;
 
 import static gregtech.api.recipe.RecipeMaps.fluidSolidifierRecipes;
+import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
 import static gregtech.api.util.GTUtility.calculateRecipeEU;
@@ -37,7 +38,7 @@ public class ProcessingGear implements gregtech.api.interfaces.IOreRecipeRegistr
                         GTValues.RA.stdBuilder()
                             .itemInputs(ItemList.Shape_Mold_Gear.get(0L))
                             .itemOutputs(GTOreDictUnificator.get(aPrefix, aMaterial, 1L))
-                            .fluidInputs(aMaterial.getMolten(576L))
+                            .fluidInputs(aMaterial.getMolten(4 * INGOTS))
                             .duration(6 * SECONDS + 8 * TICKS)
                             .eut(calculateRecipeEU(aMaterial, 8))
                             .addTo(fluidSolidifierRecipes);
@@ -74,7 +75,7 @@ public class ProcessingGear implements gregtech.api.interfaces.IOreRecipeRegistr
                         GTValues.RA.stdBuilder()
                             .itemInputs(ItemList.Shape_Mold_Gear_Small.get(0L))
                             .itemOutputs(GTUtility.copyAmount(1, aStack))
-                            .fluidInputs(aMaterial.getMolten(144L))
+                            .fluidInputs(aMaterial.getMolten(1 * INGOTS))
                             .duration(16 * TICKS)
                             .eut(calculateRecipeEU(aMaterial, 8))
                             .addTo(fluidSolidifierRecipes);

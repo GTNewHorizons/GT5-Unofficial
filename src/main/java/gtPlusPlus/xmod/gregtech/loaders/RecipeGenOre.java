@@ -253,7 +253,7 @@ public class RecipeGenOre extends RecipeGenBase {
             .itemInputs(material.getCrushed(1))
             .itemOutputs(material.getCrushedPurified(1), matDustA, dustStone)
             .outputChances(100_00, 11_11, 100_00)
-            .fluidInputs(GTModHandler.getWater(1000))
+            .fluidInputs(Materials.Water.getFluid(1_000))
             .duration(25 * SECONDS)
             .eut(16)
             .addTo(oreWasherRecipes);

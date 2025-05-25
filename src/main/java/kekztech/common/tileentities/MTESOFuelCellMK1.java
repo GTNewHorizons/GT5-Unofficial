@@ -34,7 +34,6 @@ import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
@@ -171,7 +170,7 @@ public class MTESOFuelCellMK1 extends MTEEnhancedMultiBlockBase<MTESOFuelCellMK1
                         super.mMaxProgresstime = 20;
                         super.mEfficiencyIncrease = 40;
                         if (super.mEfficiency == getMaxEfficiency(null)) {
-                            super.addOutput(GTModHandler.getSteam(STEAM_PER_SEC));
+                            super.addOutput(Materials.Steam.getGas(STEAM_PER_SEC));
                         }
                         return CheckRecipeResultRegistry.GENERATING;
                     }

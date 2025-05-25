@@ -508,6 +508,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials ChromiumDioxide;
     public static Materials Cinnabar;
     public static Materials Water;
+    public static Materials Steam; // Alias for readability: Steam.getGas(..) reads better than Water.getGas(..)
     public static Materials Clay;
     public static Materials Coal;
     public static Materials Cobaltite;

@@ -1,6 +1,6 @@
 package gregtech.api.recipe.maps;
 
-import static gregtech.api.enums.GTValues.W;
+import static gregtech.api.util.GTRecipeBuilder.WILDCARD;
 import static gregtech.api.util.GTRecipeConstants.EXPLODE;
 import static gregtech.api.util.GTRecipeConstants.ON_FIRE;
 
@@ -50,7 +50,7 @@ public class MicrowaveBackend extends NonGTBackend {
 
         ItemStack output = GTModHandler.getSmeltingOutput(items[0], false, null);
 
-        if (GTUtility.areStacksEqual(items[0], new ItemStack(Items.book, 1, W))) {
+        if (GTUtility.areStacksEqual(items[0], new ItemStack(Items.book, 1, WILDCARD))) {
             return GTValues.RA.stdBuilder()
                 .itemInputs(GTUtility.copyAmount(1, items[0]))
                 .itemOutputs(GTUtility.getWrittenBook("Manual_Microwave", ItemList.Book_Written_03.get(1)))
@@ -65,12 +65,12 @@ public class MicrowaveBackend extends NonGTBackend {
         for (ItemStack item : new ItemStack[] { GTUtility.getContainerItem(items[0], true), items[0],
             GTUtility.getContainerItem(output, true), output }) {
             if (item == null) continue;
-            if (GTUtility.areStacksEqual(item, new ItemStack(Blocks.netherrack, 1, W), true)
-                || GTUtility.areStacksEqual(item, new ItemStack(Blocks.tnt, 1, W), true)
-                || GTUtility.areStacksEqual(item, new ItemStack(Items.egg, 1, W), true)
-                || GTUtility.areStacksEqual(item, new ItemStack(Items.firework_charge, 1, W), true)
-                || GTUtility.areStacksEqual(item, new ItemStack(Items.fireworks, 1, W), true)
-                || GTUtility.areStacksEqual(item, new ItemStack(Items.fire_charge, 1, W), true)) {
+            if (GTUtility.areStacksEqual(item, new ItemStack(Blocks.netherrack, 1, WILDCARD), true)
+                || GTUtility.areStacksEqual(item, new ItemStack(Blocks.tnt, 1, WILDCARD), true)
+                || GTUtility.areStacksEqual(item, new ItemStack(Items.egg, 1, WILDCARD), true)
+                || GTUtility.areStacksEqual(item, new ItemStack(Items.firework_charge, 1, WILDCARD), true)
+                || GTUtility.areStacksEqual(item, new ItemStack(Items.fireworks, 1, WILDCARD), true)
+                || GTUtility.areStacksEqual(item, new ItemStack(Items.fire_charge, 1, WILDCARD), true)) {
                 GTLog.exp.println("Microwave Explosion due to TNT || EGG || FIREWORKCHARGE || FIREWORK || FIRE CHARGE");
                 return GTRecipeBuilder.empty()
                     .metadata(EXPLODE, true)

@@ -5,6 +5,7 @@ import static gregtech.api.enums.Mods.GraviSuite;
 import static gregtech.api.enums.Mods.IndustrialCraft2;
 import static gregtech.api.enums.Mods.NotEnoughItems;
 import static gregtech.api.util.GTModHandler.getModItem;
+import static gregtech.api.util.GTRecipeBuilder.WILDCARD;
 
 import java.util.Arrays;
 import java.util.List;
@@ -17,7 +18,6 @@ import net.minecraft.item.ItemStack;
 import bartworks.system.material.WerkstoffLoader;
 import gregtech.GTMod;
 import gregtech.api.enums.Dyes;
-import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OreDictNames;
@@ -1728,7 +1728,7 @@ public class CraftingRecipeLoader implements Runnable {
                     Ic2Items.chargingEnergyCrystal.copy()
                         .getItem(),
                     1,
-                    GTValues.W) });
+                    WILDCARD) });
         GTModHandler.addCraftingRecipe(
             Ic2Items.miningLaser.copy(),
             GTModHandler.RecipeBits.BUFFERED,
@@ -1739,7 +1739,7 @@ public class CraftingRecipeLoader implements Runnable {
                     Ic2Items.chargingEnergyCrystal.copy()
                         .getItem(),
                     1,
-                    GTValues.W) });
+                    WILDCARD) });
         GTModHandler.addCraftingRecipe(
             Ic2Items.miningLaser.copy(),
             GTModHandler.RecipeBits.BUFFERED,
@@ -1750,7 +1750,7 @@ public class CraftingRecipeLoader implements Runnable {
                     Ic2Items.chargingEnergyCrystal.copy()
                         .getItem(),
                     1,
-                    GTValues.W) });
+                    WILDCARD) });
         GTModHandler.addCraftingRecipe(
             Ic2Items.miningLaser.copy(),
             GTModHandler.RecipeBits.BUFFERED,
@@ -1761,7 +1761,7 @@ public class CraftingRecipeLoader implements Runnable {
                     Ic2Items.chargingEnergyCrystal.copy()
                         .getItem(),
                     1,
-                    GTValues.W) });
+                    WILDCARD) });
 
         GTModHandler.removeRecipeDelayed(GTModHandler.getIC2Item("miningPipe", 8));
         GTModHandler.addCraftingRecipe(
@@ -1945,34 +1945,32 @@ public class CraftingRecipeLoader implements Runnable {
         GTModHandler.removeRecipeByOutputDelayed(GTModHandler.getIC2Item("electricTreetap", 1L));
 
         if (GraviSuite.isModLoaded()) {
-            GTModHandler.removeRecipeByOutputDelayed(
-                GTModHandler.getModItem(GraviSuite.ID, "advNanoChestPlate", 1, GTValues.W));
+            GTModHandler
+                .removeRecipeByOutputDelayed(GTModHandler.getModItem(GraviSuite.ID, "advNanoChestPlate", 1, WILDCARD));
             GTModHandler.addCraftingRecipe(
-                GTModHandler.getModItem(GraviSuite.ID, "advNanoChestPlate", 1, GTValues.W),
+                GTModHandler.getModItem(GraviSuite.ID, "advNanoChestPlate", 1, WILDCARD),
                 bits_no_remove_buffered,
                 new Object[] { "CJC", "TNT", "WPW", 'C', OrePrefixes.plateAlloy.get(Materials.Advanced), 'T',
                     OrePrefixes.plate.get(Materials.TungstenSteel), 'J',
-                    GTModHandler.getModItem(GraviSuite.ID, "advJetpack", 1, GTValues.W), 'N',
-                    GTModHandler.getModItem(IndustrialCraft2.ID, "itemArmorNanoChestplate", 1, GTValues.W), 'W',
+                    GTModHandler.getModItem(GraviSuite.ID, "advJetpack", 1, WILDCARD), 'N',
+                    GTModHandler.getModItem(IndustrialCraft2.ID, "itemArmorNanoChestplate", 1, WILDCARD), 'W',
                     OrePrefixes.wireGt12.get(Materials.Platinum), 'P', OrePrefixes.circuit.get(Materials.IV) });
 
-            GTModHandler
-                .removeRecipeByOutputDelayed(GTModHandler.getModItem(GraviSuite.ID, "advLappack", 1, GTValues.W));
+            GTModHandler.removeRecipeByOutputDelayed(GTModHandler.getModItem(GraviSuite.ID, "advLappack", 1, WILDCARD));
             GTModHandler.addCraftingRecipe(
-                GTModHandler.getModItem(GraviSuite.ID, "advLappack", 1, GTValues.W),
+                GTModHandler.getModItem(GraviSuite.ID, "advLappack", 1, WILDCARD),
                 bits_no_remove_buffered,
                 new Object[] { "CEC", "EJE", "WPW", 'C', OrePrefixes.plateAlloy.get(Materials.Carbon), 'J',
-                    GTModHandler.getModItem(IndustrialCraft2.ID, "itemArmorEnergypack", 1L, GTValues.W), 'E',
-                    GTModHandler.getModItem(IndustrialCraft2.ID, "itemBatCrystal", 1L, GTValues.W), 'W',
+                    GTModHandler.getModItem(IndustrialCraft2.ID, "itemArmorEnergypack", 1L, WILDCARD), 'E',
+                    GTModHandler.getModItem(IndustrialCraft2.ID, "itemBatCrystal", 1L, WILDCARD), 'W',
                     OrePrefixes.wireGt04.get(Materials.Platinum), 'P', OrePrefixes.circuit.get(Materials.EV) });
 
-            GTModHandler
-                .removeRecipeByOutputDelayed(GTModHandler.getModItem(GraviSuite.ID, "advJetpack", 1, GTValues.W));
+            GTModHandler.removeRecipeByOutputDelayed(GTModHandler.getModItem(GraviSuite.ID, "advJetpack", 1, WILDCARD));
             GTModHandler.addCraftingRecipe(
-                GTModHandler.getModItem(GraviSuite.ID, "advJetpack", 1, GTValues.W),
+                GTModHandler.getModItem(GraviSuite.ID, "advJetpack", 1, WILDCARD),
                 bits_no_remove_buffered,
                 new Object[] { "CJC", "EXE", "YZY", 'C', OrePrefixes.plateAlloy.get(Materials.Carbon), 'J',
-                    GTModHandler.getModItem(IndustrialCraft2.ID, "itemArmorJetpackElectric", 1, GTValues.W), 'E',
+                    GTModHandler.getModItem(IndustrialCraft2.ID, "itemArmorJetpackElectric", 1, WILDCARD), 'E',
                     OrePrefixes.plate.get(Materials.Titanium), 'X',
                     GTModHandler.getModItem(IndustrialCraft2.ID, "itemArmorAlloyChestplate", 1L), 'Z',
                     OrePrefixes.circuit.get(Materials.EV), 'Y', OrePrefixes.wireGt02.get(Materials.Platinum) });
