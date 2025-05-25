@@ -444,23 +444,27 @@ public class OverclockCalculator {
         int heatOverclocks = Math.min(heatOC ? (machineHeat - recipeHeat) / HEAT_OVERCLOCK_THRESHOLD : 0, overclocks);
         int regularOverclocks = overclocks - heatOverclocks;
 
-        int neededHeatOverclocks = (int) Math.max((Math.log(duration) / Math.log(durationDecreasePerHeatOC)), 0);
+        double originalDuration = duration;
+        int neededHeatOverclocks = (int) Math.ceil((Math.log(duration) / Math.log(durationDecreasePerHeatOC)));
         duration /= Math.pow(durationDecreasePerHeatOC, heatOverclocks);
-        neededOverclocks = (int) Math.max((Math.log(duration) / Math.log(durationDecreasePerOC)), 0);
-        duration /= Math.pow(durationDecreasePerOC, neededOverclocks);
-
-        // To avoid rounding issues, need to round neededOverclocks down,
-        // but this can cause the multiplier to happen even if the oc still
-        // decreases duration to 1 tick with duration decrease above 2
-        if (!(duration < 2)) {
-            neededOverclocks++;
-        }
+        neededOverclocks = (int) Math.ceil((Math.log(duration) / Math.log(durationDecreasePerOC)));
 
         int heatMultiplier = (int) Math
             .pow(durationDecreasePerHeatOC, Math.max(heatOverclocks - neededHeatOverclocks, 0));
         int regularMultiplier = (int) Math
             .pow(durationDecreasePerOC, Math.max(regularOverclocks - neededOverclocks, 0));
 
-        return heatMultiplier * regularMultiplier;
+        // Produces a fractional multiplier that corrects for inaccuracies resulting from discrete parallels and tick
+        // durations. It is 1 / (duration of first OC to go below 1 tick)
+        double correctionMultiplier = 1.0;
+        if (heatOverclocks >= neededHeatOverclocks) {
+            double criticalDuration = originalDuration / Math.pow(durationDecreasePerHeatOC, neededHeatOverclocks);
+            correctionMultiplier = 1 / criticalDuration;
+        } else if (regularOverclocks >= neededOverclocks) {
+            double criticalDuration = originalDuration / Math.pow(durationDecreasePerOC, neededOverclocks);
+            correctionMultiplier = 1 / criticalDuration;
+        }
+
+        return Math.ceil(heatMultiplier * regularMultiplier * correctionMultiplier);
     }
 }

@@ -124,8 +124,8 @@ public class MTEHatchDroneDownLink extends MTEHatchMaintenance {
     }
 
     private void doNormalMaintain() {
-        this.mWrench = this.mScrewdriver = this.mSoftHammer = this.mHardHammer = this.mCrowbar = this.mSolderingTool = true;
-        connection.machine.mWrench = connection.machine.mScrewdriver = connection.machine.mSoftHammer = connection.machine.mHardHammer = connection.machine.mCrowbar = connection.machine.mSolderingTool = true;
+        this.mWrench = this.mScrewdriver = this.mSoftMallet = this.mHardHammer = this.mCrowbar = this.mSolderingTool = true;
+        connection.machine.mWrench = connection.machine.mScrewdriver = connection.machine.mSoftMallet = connection.machine.mHardHammer = connection.machine.mCrowbar = connection.machine.mSolderingTool = true;
     }
 
     @Override

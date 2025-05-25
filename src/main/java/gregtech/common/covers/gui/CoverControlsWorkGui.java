@@ -5,6 +5,7 @@ import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
 import com.cleanroommc.modularui.value.sync.EnumSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
+import com.cleanroommc.modularui.widgets.ToggleButton;
 import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.cleanroommc.modularui.widgets.layout.Grid;
 
@@ -64,7 +65,7 @@ public class CoverControlsWorkGui extends CoverGui<CoverControlsWork> {
                     IKey.str(GTUtility.trans("245", "Disable machine"))
                         .asWidget())
                 .row(
-                    new SelectButton().value(safeModeSyncValue)
+                    new ToggleButton().value(safeModeSyncValue)
                         .overlay(true, GTGuiTextures.OVERLAY_BUTTON_CHECKMARK)
                         .overlay(false, GTGuiTextures.OVERLAY_BUTTON_CROSS)
                         .size(16),
