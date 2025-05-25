@@ -13,6 +13,7 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_PROCESSING_AR
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_PROCESSING_ARRAY_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_PROCESSING_ARRAY_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_PROCESSING_ARRAY_GLOW;
+import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 import static gregtech.api.util.GTUtility.validMTEList;
 
@@ -170,7 +171,7 @@ public class MTEPurificationUnitBaryonicPerfection
 
     private ArrayList<ItemStack> insertedCatalysts = new ArrayList<>();
 
-    private static final long CATALYST_BASE_COST = 144L;
+    private static final long CATALYST_BASE_COST = 1 * INGOTS;
 
     private int correctStartIndex = -1;
     private int numCasings = 0;
@@ -230,7 +231,7 @@ public class MTEPurificationUnitBaryonicPerfection
 
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
-        return survivialBuildPiece(
+        return survivalBuildPiece(
             STRUCTURE_PIECE_MAIN,
             stackSize,
             STRUCTURE_X_OFFSET,
@@ -591,11 +592,6 @@ public class MTEPurificationUnitBaryonicPerfection
             StatCollector
                 .translateToLocalFormatted("GT5U.infodata.pubp.quark_combination", getCorrectlyDecodedString()));
         return info.toArray(new String[] {});
-    }
-
-    @Override
-    public boolean isCorrectMachinePart(ItemStack aStack) {
-        return true;
     }
 
     @Override

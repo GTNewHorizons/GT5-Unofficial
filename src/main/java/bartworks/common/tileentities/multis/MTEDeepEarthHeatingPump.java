@@ -26,8 +26,11 @@ import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 
+import org.jetbrains.annotations.NotNull;
+
 import com.gtnewhorizons.modularui.api.math.Pos2d;
 
+import bartworks.common.tileentities.multis.gui.MTEDeepEarthHeatingPumpGui;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.TierEU;
@@ -229,8 +232,14 @@ public class MTEDeepEarthHeatingPump extends MTEDrillerBase {
             }
         } else if (this.machineMode == 1) {
             long coolantConverted = (long) (192L * this.mEfficiency / 10000L);
-            if (this.getFluidFromHatches(FluidRegistry.getFluid("ic2coolant")) - coolantConverted > 0) {
-                this.consumeFluid(FluidRegistry.getFluid("ic2coolant"), coolantConverted);
+            if (this.getFluidFromHatches(
+                GTModHandler.getIC2Coolant(0)
+                    .getFluid())
+                - coolantConverted > 0) {
+                this.consumeFluid(
+                    GTModHandler.getIC2Coolant(0)
+                        .getFluid(),
+                    coolantConverted);
                 this.addOutput(FluidRegistry.getFluidStack("ic2hotcoolant", (int) coolantConverted));
             } else {
                 this.explodeMultiblock();
@@ -301,5 +310,10 @@ public class MTEDeepEarthHeatingPump extends MTEDrillerBase {
     @Override
     public int calculateMaxProgressTime(int tier, boolean simulateWorking) {
         return 1;
+    }
+
+    @Override
+    protected @NotNull MTEDeepEarthHeatingPumpGui getGui() {
+        return new MTEDeepEarthHeatingPumpGui(this);
     }
 }

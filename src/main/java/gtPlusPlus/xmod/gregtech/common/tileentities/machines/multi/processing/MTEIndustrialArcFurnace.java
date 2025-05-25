@@ -170,7 +170,7 @@ public class MTEIndustrialArcFurnace extends GTPPMultiBlockBase<MTEIndustrialArc
         int maxTier = getTierFromHint(stackSize);
         int built;
         for (int tier = 1; tier <= maxTier; tier++) {
-            built = survivialBuildPiece(
+            built = survivalBuildPiece(
                 STRUCTURE_PIECE_FRONT + tier,
                 stackSize,
                 tier,
@@ -183,7 +183,7 @@ public class MTEIndustrialArcFurnace extends GTPPMultiBlockBase<MTEIndustrialArc
             if (built >= 0) return built;
         }
 
-        return survivialBuildPiece(
+        return survivalBuildPiece(
             STRUCTURE_PIECE_REST + maxTier,
             stackSize,
             maxTier,
@@ -264,18 +264,8 @@ public class MTEIndustrialArcFurnace extends GTPPMultiBlockBase<MTEIndustrialArc
     }
 
     @Override
-    public int getMaxEfficiency(final ItemStack aStack) {
-        return 10000;
-    }
-
-    @Override
     public int getPollutionPerSecond(final ItemStack aStack) {
         return PollutionConfig.pollutionPerSecondMultiIndustrialArcFurnace;
-    }
-
-    @Override
-    public boolean explodesOnComponentBreak(final ItemStack aStack) {
-        return false;
     }
 
     public Block getCasingBlock() {

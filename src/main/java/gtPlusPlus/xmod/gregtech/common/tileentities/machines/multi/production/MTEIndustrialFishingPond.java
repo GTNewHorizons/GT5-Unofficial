@@ -31,6 +31,7 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import cofh.asmhooks.block.BlockTickingWater;
 import cofh.asmhooks.block.BlockWater;
+import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.StructureError;
 import gregtech.api.enums.TAE;
@@ -49,7 +50,6 @@ import gregtech.api.util.ReflectionUtil;
 import gregtech.common.pollution.PollutionConfig;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.block.ModBlocks;
-import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase;
 import ic2.core.init.BlocksItems;
 import ic2.core.init.InternalName;
@@ -152,7 +152,7 @@ public class MTEIndustrialFishingPond extends GTPPMultiBlockBase<MTEIndustrialFi
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
-        return survivialBuildPiece(mName, stackSize, 4, 1, 0, elementBudget, env, false, true);
+        return survivalBuildPiece(mName, stackSize, 4, 1, 0, elementBudget, env, false, true);
     }
 
     @Override
@@ -235,11 +235,6 @@ public class MTEIndustrialFishingPond extends GTPPMultiBlockBase<MTEIndustrialFi
     }
 
     @Override
-    public int getMaxEfficiency(final ItemStack aStack) {
-        return 10000;
-    }
-
-    @Override
     public int getPollutionPerSecond(final ItemStack aStack) {
         return PollutionConfig.pollutionPerSecondMultiIndustrialFishingPond;
     }
@@ -278,7 +273,7 @@ public class MTEIndustrialFishingPond extends GTPPMultiBlockBase<MTEIndustrialFi
                     if (isNotStaticWater(tBlock, tMeta)) {
                         if (this.getStoredFluids() != null) {
                             for (FluidStack stored : this.getStoredFluids()) {
-                                if (stored.isFluidEqual(FluidUtils.getFluidStack("water", 1))) {
+                                if (stored.isFluidEqual(Materials.Water.getFluid(1))) {
                                     if (stored.amount >= 1000) {
                                         // Utils.LOG_WARNING("Going to try swap an air block for water from inut bus.");
                                         stored.amount -= 1000;

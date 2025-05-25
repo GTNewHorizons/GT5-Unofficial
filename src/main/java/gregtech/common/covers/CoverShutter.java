@@ -3,6 +3,8 @@ package gregtech.common.covers;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.fluids.Fluid;
 
+import org.jetbrains.annotations.NotNull;
+
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 
 import gregtech.api.covers.CoverContext;
@@ -11,12 +13,27 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IMachineProgress;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.util.GTUtility;
+import gregtech.common.covers.gui.CoverGui;
+import gregtech.common.covers.gui.CoverShutterGui;
+import gregtech.common.covers.modes.ShutterMode;
 import gregtech.common.gui.mui1.cover.ShutterUIFactory;
 
 public class CoverShutter extends CoverLegacyData {
 
     public CoverShutter(CoverContext context, ITexture coverTexture) {
         super(context, coverTexture);
+    }
+
+    public ShutterMode getShutterMode() {
+        int coverVariable = coverData;
+        if (coverVariable >= 0 && coverVariable < ShutterMode.values().length) {
+            return ShutterMode.values()[coverVariable];
+        }
+        return ShutterMode.OPEN_IF_ENABLED;
+    }
+
+    public void setShutterMode(ShutterMode mode) {
+        setVariable(mode.ordinal());
     }
 
     @Override
@@ -90,6 +107,11 @@ public class CoverShutter extends CoverLegacyData {
     }
 
     // GUI stuff
+
+    @Override
+    protected @NotNull CoverGui<?> getCoverGui() {
+        return new CoverShutterGui(this);
+    }
 
     @Override
     public boolean hasCoverGUI() {

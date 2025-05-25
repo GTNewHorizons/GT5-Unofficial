@@ -6,6 +6,7 @@ import static gregtech.GT_Version.VERSION_PATCH;
 import static gregtech.api.enums.Mods.Forestry;
 import static gregtech.api.util.GTRecipe.setItemStacks;
 
+import java.io.File;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.ArrayList;
@@ -56,6 +57,7 @@ import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.Textures;
 import gregtech.api.gui.modularui.GTUIInfos;
+import gregtech.api.interfaces.IBlockWithClientMeta;
 import gregtech.api.interfaces.internal.IGTMod;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.modularui2.GTGuiTextures;
@@ -87,7 +89,9 @@ import gregtech.common.config.MachineStats;
 import gregtech.common.config.OPStuff;
 import gregtech.common.config.Other;
 import gregtech.common.config.Worldgen;
+import gregtech.common.handlers.PowerGogglesConfigHandler;
 import gregtech.common.misc.GTCommand;
+import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.misc.spaceprojects.commands.SPCommand;
 import gregtech.common.misc.spaceprojects.commands.SPMCommand;
 import gregtech.common.misc.spaceprojects.commands.SpaceProjectCommand;
@@ -254,6 +258,8 @@ public class GTMod implements IGTMod {
             aEvent.getModConfigurationDirectory()
                 .getParentFile());
 
+        PowerGogglesConfigHandler.init(new File(aEvent.getModConfigurationDirectory() + "/GregTech/Goggles.cfg"));
+
         gregtechproxy.onPreLoad();
 
         GTLog.out.println("GTMod: Setting Configs");
@@ -301,6 +307,8 @@ public class GTMod implements IGTMod {
 
         GTUIInfos.init();
 
+        IBlockWithClientMeta.register();
+
         for (Runnable tRunnable : GregTechAPI.sAfterGTPreload) {
             tRunnable.run();
         }
@@ -343,6 +351,8 @@ public class GTMod implements IGTMod {
         if (Mods.HoloInventory.isModLoaded()) {
             HoloInventory.init();
         }
+
+        GTStructureChannels.register();
 
         LHECoolantRegistry.registerBaseCoolants();
 

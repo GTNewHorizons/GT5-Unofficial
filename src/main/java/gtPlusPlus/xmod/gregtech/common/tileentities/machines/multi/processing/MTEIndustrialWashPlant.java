@@ -46,6 +46,7 @@ import cofh.asmhooks.block.BlockTickingWater;
 import cofh.asmhooks.block.BlockWater;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.TAE;
@@ -66,10 +67,10 @@ import gregtech.common.pollution.PollutionConfig;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.block.ModBlocks;
-import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
+import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.gui.MTEIndustrialWashPlantGui;
 import ic2.core.init.BlocksItems;
 import ic2.core.init.InternalName;
 import mcp.mobius.waila.api.IWailaConfigHandler;
@@ -160,7 +161,7 @@ public class MTEIndustrialWashPlant extends GTPPMultiBlockBase<MTEIndustrialWash
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
-        return survivialBuildPiece(mName, stackSize, 2, 1, 0, elementBudget, env, false, true);
+        return survivalBuildPiece(mName, stackSize, 2, 1, 0, elementBudget, env, false, true);
     }
 
     @Override
@@ -249,20 +250,10 @@ public class MTEIndustrialWashPlant extends GTPPMultiBlockBase<MTEIndustrialWash
     }
 
     @Override
-    public int getMaxEfficiency(final ItemStack aStack) {
-        return 10000;
-    }
-
-    @Override
     public int getPollutionPerSecond(final ItemStack aStack) {
         if (machineMode == MACHINEMODE_CHEMBATH)
             return PollutionConfig.pollutionPerSecondMultiIndustrialWashPlant_ModeChemBath;
         return PollutionConfig.pollutionPerSecondMultiIndustrialWashPlant_ModeWasher;
-    }
-
-    @Override
-    public boolean explodesOnComponentBreak(final ItemStack aStack) {
-        return false;
     }
 
     public Block getCasingBlock() {
@@ -316,7 +307,7 @@ public class MTEIndustrialWashPlant extends GTPPMultiBlockBase<MTEIndustrialWash
                     if (tBlock == Blocks.air || tBlock == Blocks.flowing_water || tBlock == Blocks.water) {
                         if (this.getStoredFluids() != null) {
                             for (FluidStack stored : this.getStoredFluids()) {
-                                if (stored.isFluidEqual(FluidUtils.getFluidStack("water", 1))) {
+                                if (stored.isFluidEqual(Materials.Water.getFluid(1))) {
                                     if (stored.amount >= 1000) {
                                         stored.amount -= 1000;
                                         Block fluidUsed = null;
@@ -432,5 +423,10 @@ public class MTEIndustrialWashPlant extends GTPPMultiBlockBase<MTEIndustrialWash
     @Override
     protected SoundResource getActivitySoundLoop() {
         return SoundResource.GT_MACHINES_MULTI_ORE_WASHER_PLANT_LOOP;
+    }
+
+    @Override
+    protected @NotNull MTEIndustrialWashPlantGui getGui() {
+        return new MTEIndustrialWashPlantGui(this);
     }
 }

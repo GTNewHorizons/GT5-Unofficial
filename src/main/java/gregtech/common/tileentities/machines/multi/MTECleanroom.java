@@ -117,7 +117,7 @@ public class MTECleanroom extends MTETooltipMultiBlockBase
         mEfficiency = 0;
         mWrench = false;
         mScrewdriver = false;
-        mSoftHammer = false;
+        mSoftMallet = false;
         mHardHammer = false;
         mSolderingTool = false;
         mCrowbar = false;
@@ -706,26 +706,6 @@ public class MTECleanroom extends MTETooltipMultiBlockBase
                         .build()) };
         }
         return new ITexture[] { TextureFactory.of(BLOCK_PLASCRETE) };
-    }
-
-    @Override
-    public boolean isCorrectMachinePart(ItemStack aStack) {
-        return true;
-    }
-
-    @Override
-    public int getMaxEfficiency(ItemStack aStack) {
-        return 10000;
-    }
-
-    @Override
-    public int getDamageToComponent(ItemStack aStack) {
-        return 0;
-    }
-
-    @Override
-    public boolean explodesOnComponentBreak(ItemStack aStack) {
-        return false;
     }
 
     @Override

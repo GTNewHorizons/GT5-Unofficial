@@ -47,9 +47,11 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gtPlusPlus.xmod.thermalfoundation.fluid.TFFluids;
 import tectech.thing.metaTileEntity.hatch.MTEHatchDynamoMulti;
 
 public class MTEMultiNqGenerator extends MTETooltipMultiBlockBaseEM implements IConstructable, ISurvivalConstructable {
@@ -75,9 +77,9 @@ public class MTEMultiNqGenerator extends MTETooltipMultiBlockBaseEM implements I
             Pair.of(Materials.Caesium.getMolten(180L), ExcitedLiquidCoe[4]));
         coolant = Arrays.asList(
             Pair.of(MaterialsUEVplus.Time.getMolten(20L), CoolantEfficiency[0]),
-            Pair.of(FluidRegistry.getFluidStack("cryotheum", 1000), CoolantEfficiency[1]),
-            Pair.of(Materials.SuperCoolant.getFluid(1000L), CoolantEfficiency[2]),
-            Pair.of(FluidRegistry.getFluidStack("ic2coolant", 1000), CoolantEfficiency[3]));
+            Pair.of(new FluidStack(TFFluids.fluidCryotheum, 1_000), CoolantEfficiency[1]),
+            Pair.of(Materials.SuperCoolant.getFluid(1_000), CoolantEfficiency[2]),
+            Pair.of(GTModHandler.getIC2Coolant(1_000), CoolantEfficiency[3]));
     }
 
     @Override
@@ -163,11 +165,6 @@ public class MTEMultiNqGenerator extends MTETooltipMultiBlockBaseEM implements I
 
     public MTEMultiNqGenerator(int id, String name, String nameRegional) {
         super(id, name, nameRegional);
-    }
-
-    @Override
-    public boolean isCorrectMachinePart(ItemStack aStack) {
-        return true;
     }
 
     @Override
@@ -381,16 +378,6 @@ public class MTEMultiNqGenerator extends MTETooltipMultiBlockBaseEM implements I
     }
 
     @Override
-    public int getDamageToComponent(ItemStack aStack) {
-        return 0;
-    }
-
-    @Override
-    public boolean explodesOnComponentBreak(ItemStack aStack) {
-        return false;
-    }
-
-    @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new MTEMultiNqGenerator(this.mName);
     }
@@ -464,6 +451,11 @@ public class MTEMultiNqGenerator extends MTETooltipMultiBlockBaseEM implements I
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
-        return survivialBuildPiece(mName, stackSize, 3, 7, 0, elementBudget, env, false, true);
+        return survivalBuildPiece(mName, stackSize, 3, 7, 0, elementBudget, env, false, true);
+    }
+
+    @Override
+    public boolean showRecipeTextInGUI() {
+        return false;
     }
 }

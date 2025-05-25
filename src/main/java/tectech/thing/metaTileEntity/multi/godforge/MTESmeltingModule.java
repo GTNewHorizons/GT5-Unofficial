@@ -120,6 +120,7 @@ public class MTESmeltingModule extends MTEBaseModule {
                 currentParallel = calculatedParallels;
                 EUt = calculatedEut;
                 overwriteCalculatedEut(0);
+                setCurrentRecipeHeat(recipe.mSpecialValue);
                 return CheckRecipeResultRegistry.SUCCESSFUL;
             }
 
@@ -142,6 +143,7 @@ public class MTESmeltingModule extends MTEBaseModule {
         logic.setAvailableVoltage(Long.MAX_VALUE);
         logic.setAvailableAmperage(Integer.MAX_VALUE);
         logic.setAmperageOC(false);
+        logic.setUnlimitedTierSkips();
         logic.setMaxParallel(getActualParallel());
         logic.setSpeedBonus(getSpeedBonus());
         logic.setEuModifier(getEnergyDiscount());

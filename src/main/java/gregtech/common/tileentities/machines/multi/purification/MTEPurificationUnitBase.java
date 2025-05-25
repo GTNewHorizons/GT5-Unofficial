@@ -141,21 +141,6 @@ public abstract class MTEPurificationUnitBase<T extends MTEExtendedPowerMultiBlo
     }
 
     @Override
-    public int getMaxEfficiency(ItemStack aStack) {
-        return 10000;
-    }
-
-    @Override
-    public int getDamageToComponent(ItemStack aStack) {
-        return 0;
-    }
-
-    @Override
-    public boolean explodesOnComponentBreak(ItemStack aStack) {
-        return false;
-    }
-
-    @Override
     public boolean doRandomMaintenanceDamage() {
         // The individual purification unit structures cannot have maintenance issues, so do nothing.
         return true;
@@ -508,7 +493,7 @@ public abstract class MTEPurificationUnitBase<T extends MTEExtendedPowerMultiBlo
         this.mCrowbar = true;
         this.mWrench = true;
         this.mHardHammer = true;
-        this.mSoftHammer = true;
+        this.mSoftMallet = true;
         this.mSolderingTool = true;
         this.mScrewdriver = true;
         return true;
