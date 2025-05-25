@@ -81,6 +81,17 @@ import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTRecipeConstants;
 import gregtech.api.util.GTUtility;
+import gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex;
+import gregtech.common.tileentities.machines.multi.nanochip.modules.AssemblyMatrix;
+import gregtech.common.tileentities.machines.multi.nanochip.modules.BoardProcessor;
+import gregtech.common.tileentities.machines.multi.nanochip.modules.CuttingChamber;
+import gregtech.common.tileentities.machines.multi.nanochip.modules.EtchingArray;
+import gregtech.common.tileentities.machines.multi.nanochip.modules.OpticalOrganizer;
+import gregtech.common.tileentities.machines.multi.nanochip.modules.SMDProcessor;
+import gregtech.common.tileentities.machines.multi.nanochip.modules.SheetSupervisor;
+import gregtech.common.tileentities.machines.multi.nanochip.modules.SuperconductorSplitter;
+import gregtech.common.tileentities.machines.multi.nanochip.modules.WireTracer;
+import gregtech.common.tileentities.machines.multi.nanochip.util.CircuitComponent;
 import gregtech.common.tileentities.machines.multi.purification.PurifiedWaterHelpers;
 import gregtech.nei.formatter.FuelSpecialValueFormatter;
 import gregtech.nei.formatter.FusionSpecialValueFormatter;
@@ -1257,5 +1268,113 @@ public final class RecipeMaps {
         .logoPos(152, 41)
         .neiRecipeBackgroundSize(170, 60)
         .neiHandlerInfo(builder -> builder.setDisplayStack(GTModHandler.getIC2Item("nuclearReactor", 1, null)))
+        .build();
+
+    public static final RecipeMap<RecipeMapBackend> nanochipConversionRecipes = RecipeMapBuilder
+        .of("gt.recipe.nanochip.conversion")
+        .maxIO(1, 1, 0, 0)
+        .minInputs(1, 0)
+        .recipeTransformer(recipe -> {
+            // Register fallback localized name based on input item
+            ItemStack input = recipe.mInputs[0];
+            CircuitComponent output = CircuitComponent.getFromFakeStackUnsafe(recipe.mOutputs[0]);
+            MTENanochipAssemblyComplex.registerLocalName(input, output);
+        })
+        .build();
+
+    public static final RecipeMap<RecipeMapBackend> nanochipAssemblyMatrixRecipes = RecipeMapBuilder
+        .of("gt.recipe.nanochip.assemblymatrix")
+        .maxIO(16, 1, 4, 0)
+        .minInputs(0, 0)
+        .recipeTransformer(recipe -> {
+            CircuitComponent output = CircuitComponent.tryGetFromFakeStack(recipe.mOutputs[0]);
+            // Fake recipes for the assembly matrix may not have this
+            if (output == null) return;
+            if (output.realCircuit != null) {
+                AssemblyMatrix.registerLocalName(output.realCircuit, output);
+            }
+        })
+        .frontend(AssemblyLineFrontend::new)
+        .build();
+
+    public static final RecipeMap<RecipeMapBackend> nanochipSMDProcessorRecipes = RecipeMapBuilder
+        .of("gt.recipe.nanochip.smdprocessor")
+        .maxIO(1, 1, 0, 0)
+        .minInputs(1, 0)
+        .recipeTransformer(recipe -> {
+            CircuitComponent output = CircuitComponent.getFromFakeStackUnsafe(recipe.mOutputs[0]);
+            CircuitComponent input = CircuitComponent.getFromFakeStackUnsafe(recipe.mInputs[0]);
+            SMDProcessor.registerLocalName(input.getLocalizedName(), output);
+        })
+        .build();
+    public static final RecipeMap<RecipeMapBackend> nanochipBoardProcessorRecipes = RecipeMapBuilder
+        .of("gt.recipe.nanochip.boardprocessor")
+        .maxIO(1, 1, 1, 0)
+        .minInputs(1, 1)
+        .recipeTransformer(recipe -> {
+            CircuitComponent output = CircuitComponent.getFromFakeStackUnsafe(recipe.mOutputs[0]);
+            CircuitComponent input = CircuitComponent.getFromFakeStackUnsafe(recipe.mInputs[0]);
+            BoardProcessor.registerLocalName(input.getLocalizedName(), output);
+        })
+        .build();
+    public static final RecipeMap<RecipeMapBackend> nanochipEtchingArray = RecipeMapBuilder
+        .of("gt.recipe.nanochip.etchingarray")
+        .maxIO(2, 1, 2, 0)
+        .minInputs(0, 0)
+        .recipeTransformer(recipe -> {
+            CircuitComponent output = CircuitComponent.getFromFakeStackUnsafe(recipe.mOutputs[0]);
+            CircuitComponent input = CircuitComponent.getFromFakeStackUnsafe(recipe.mInputs[0]);
+            EtchingArray.registerLocalName(input.getLocalizedName(), output);
+        })
+        .build();
+    public static final RecipeMap<RecipeMapBackend> nanochipCuttingChamber = RecipeMapBuilder
+        .of("gt.recipe.nanochip.cuttingchamber")
+        .maxIO(1, 1, 1, 0)
+        .minInputs(1, 1)
+        .recipeTransformer(recipe -> {
+            CircuitComponent output = CircuitComponent.getFromFakeStackUnsafe(recipe.mOutputs[0]);
+            CircuitComponent input = CircuitComponent.getFromFakeStackUnsafe(recipe.mInputs[0]);
+            CuttingChamber.registerLocalName(input.getLocalizedName(), output);
+        })
+        .build();
+    public static final RecipeMap<RecipeMapBackend> nanochipWireTracer = RecipeMapBuilder
+        .of("gt.recipe.nanochip.wiretracer")
+        .maxIO(1, 1, 0, 0)
+        .minInputs(1, 0)
+        .recipeTransformer(recipe -> {
+            CircuitComponent output = CircuitComponent.getFromFakeStackUnsafe(recipe.mOutputs[0]);
+            CircuitComponent input = CircuitComponent.getFromFakeStackUnsafe(recipe.mInputs[0]);
+            WireTracer.registerLocalName(input.getLocalizedName(), output);
+        })
+        .build();
+    public static final RecipeMap<RecipeMapBackend> nanochipSuperconductorSplitter = RecipeMapBuilder
+        .of("gt.recipe.nanochip.superconductorsplitter")
+        .maxIO(1, 1, 0, 0)
+        .minInputs(1, 0)
+        .recipeTransformer(recipe -> {
+            CircuitComponent output = CircuitComponent.getFromFakeStackUnsafe(recipe.mOutputs[0]);
+            CircuitComponent input = CircuitComponent.getFromFakeStackUnsafe(recipe.mInputs[0]);
+            SuperconductorSplitter.registerLocalName(input.getLocalizedName(), output);
+        })
+        .build();
+    public static final RecipeMap<RecipeMapBackend> nanochipOpticalOrganizer = RecipeMapBuilder
+        .of("gt.recipe.nanochip.opticalorganizer")
+        .maxIO(1, 1, 0, 0)
+        .minInputs(1, 0)
+        .recipeTransformer(recipe -> {
+            CircuitComponent output = CircuitComponent.getFromFakeStackUnsafe(recipe.mOutputs[0]);
+            CircuitComponent input = CircuitComponent.getFromFakeStackUnsafe(recipe.mInputs[0]);
+            OpticalOrganizer.registerLocalName(input.getLocalizedName(), output);
+        })
+        .build();
+    public static final RecipeMap<RecipeMapBackend> nanochipSheetSupervisor = RecipeMapBuilder
+        .of("gt.recipe.nanochip.sheetsupervisor")
+        .maxIO(1, 1, 0, 0)
+        .minInputs(1, 0)
+        .recipeTransformer(recipe -> {
+            CircuitComponent output = CircuitComponent.getFromFakeStackUnsafe(recipe.mOutputs[0]);
+            CircuitComponent input = CircuitComponent.getFromFakeStackUnsafe(recipe.mInputs[0]);
+            SheetSupervisor.registerLocalName(input.getLocalizedName(), output);
+        })
         .build();
 }
