@@ -832,4 +832,9 @@ public abstract class MTELargerTurbineBase extends GTPPMultiBlockBase<MTELargerT
     public boolean supportsBatchMode() {
         return false;
     }
+
+    @Override
+    public boolean showRecipeTextInGUI() {
+        return false;
+    }
 }
