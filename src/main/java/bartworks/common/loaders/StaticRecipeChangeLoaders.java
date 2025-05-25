@@ -13,6 +13,8 @@
 
 package bartworks.common.loaders;
 
+import static gregtech.api.enums.Mods.TinkerConstruct;
+import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -114,7 +116,7 @@ public class StaticRecipeChangeLoaders {
         if (werkstoff.getGenerationFeatures().enforceUnification && werkstoff.hasItemType(OrePrefixes.cellMolten)) {
             try {
                 FluidContainerRegistry.FluidContainerData data = new FluidContainerRegistry.FluidContainerData(
-                    new FluidStack(Objects.requireNonNull(WerkstoffLoader.molten.get(werkstoff)), 144),
+                    new FluidStack(Objects.requireNonNull(WerkstoffLoader.molten.get(werkstoff)), 1 * INGOTS),
                     werkstoff.get(OrePrefixes.cellMolten),
                     Materials.Empty.getCells(1));
                 Field f = GTUtility.class.getDeclaredField("sFilledContainerToData");
