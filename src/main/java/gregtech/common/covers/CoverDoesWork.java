@@ -160,7 +160,7 @@ public class CoverDoesWork extends CoverLegacyData {
 
     @Override
     protected @NotNull CoverGui<?> getCoverGui() {
-        return new CoverDoesWorkGui();
+        return new CoverDoesWorkGui(this);
     }
 
     @Override
