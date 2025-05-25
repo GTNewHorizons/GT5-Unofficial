@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.Consumer;
 
-import net.minecraft.client.Minecraft;
+import net.minecraft.client.settings.GameSettings;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -17,8 +17,6 @@ import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
-
-import org.lwjgl.input.Keyboard;
 
 import com.google.common.collect.ImmutableList;
 import com.gtnewhorizon.gtnhlib.GTNHLib;
@@ -34,6 +32,7 @@ import gregtech.api.util.ColoredBlockContainer;
 import gregtech.api.util.GTUtility;
 import gregtech.common.config.Other;
 import gregtech.common.gui.modularui.uifactory.SelectItemUIFactory;
+import gregtech.common.handlers.SprayColorInfiniteKeybindHandler;
 
 public class BehaviourSprayColorInfinite extends BehaviourSprayColor {
 
@@ -134,17 +133,17 @@ public class BehaviourSprayColorInfinite extends BehaviourSprayColor {
     @Override
     public Optional<List<String>> getAdditionalToolTipsWhileSneaking(final MetaBaseItem aItem, final List<String> aList,
         final ItemStack aStack) {
-        final String ctrlKey = Minecraft.isRunningOnMac
-            ? StatCollector.translateToLocal("gt.behaviour.paintspray.infinite.tooltip.ctrl_mac")
-            : StatCollector.translateToLocal("gt.behaviour.paintspray.infinite.tooltip.ctrl_pc");
         aList.add(StatCollector.translateToLocal("gt.behaviour.paintspray.infinite.tooltip.infinite"));
         aList.add(mTooltipChain);
         aList.add(" ");
         aList.add(StatCollector.translateToLocal("gt.behaviour.paintspray.infinite.tooltip.switch"));
         aList.add(StatCollector.translateToLocal("gt.behaviour.paintspray.infinite.tooltip.gui"));
         aList.add(StatCollector.translateToLocal("gt.behaviour.paintspray.infinite.tooltip.pick"));
-        aList.add(StatCollector.translateToLocalFormatted("gt.behaviour.paintspray.infinite.tooltip.lock", ctrlKey));
-        aList.add(StatCollector.translateToLocal("gt.behaviour.paintspray.infinite.tooltip.prevent_shake"));
+        aList.add(StatCollector.translateToLocal("gt.behaviour.paintspray.infinite.tooltip.lock"));
+        aList.add(
+            StatCollector.translateToLocalFormatted(
+                "gt.behaviour.paintspray.infinite.tooltip.prevent_shake",
+                GameSettings.getKeyDisplayString(SprayColorInfiniteKeybindHandler.shakeLockKey.getKeyCode())));
         aList.add(" ");
         aList.add(AuthorQuerns);
 
@@ -169,9 +168,9 @@ public class BehaviourSprayColorInfinite extends BehaviourSprayColor {
 
     @Override
     public boolean onMiddleClick(final MetaBaseItem item, final ItemStack itemStack, final EntityPlayer player) {
-        if (isCtrlDown()) {
+        if (player.isSneaking()) {
             sendPacket(GTPacketInfiniteSpraycan.Action.LOCK_CAN);
-        } else if (isShiftDown()) {
+        } else if (SprayColorInfiniteKeybindHandler.shakeLockKey.isPressed()) {
             sendPacket(GTPacketInfiniteSpraycan.Action.TOGGLE_SHAKE_LOCK);
         } else if (isLocked(itemStack)) {
             displayLockedMessage();
@@ -196,41 +195,6 @@ public class BehaviourSprayColorInfinite extends BehaviourSprayColor {
         return true;
     }
 
-    private boolean isShiftDown() {
-        // Yes, there's a duplicate method in GT++, but I didn't feel right including GT++ code here. We can extract
-        // this later if it is useful elsewhere.
-        try {
-            // noinspection DuplicatedCode
-            if (!Keyboard.isCreated()) {
-                return false;
-            }
-
-            boolean isShiftKeyDown = Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT);
-            return isShiftKeyDown;
-        } catch (IllegalStateException ignored) {
-            return false;
-        }
-    }
-
-    private boolean isCtrlDown() {
-        // Yes, there's a duplicate method in GT++, but I didn't feel right including GT++ code here. We can extract
-        // this later if it is useful elsewhere.
-        try {
-            // noinspection DuplicatedCode
-            if (!Keyboard.isCreated()) {
-                return false;
-            }
-
-            boolean isCtrlKeyDown = Keyboard.isKeyDown(Keyboard.KEY_LCONTROL)
-                || Keyboard.isKeyDown(Keyboard.KEY_RCONTROL);
-            if (!isCtrlKeyDown && Minecraft.isRunningOnMac)
-                isCtrlKeyDown = Keyboard.isKeyDown(Keyboard.KEY_LMETA) || Keyboard.isKeyDown(Keyboard.KEY_RMETA);
-
-            return isCtrlKeyDown;
-        } catch (IllegalStateException ignored) {
-            return false;
-        }
-    }
     // endregion
 
     // region GUI

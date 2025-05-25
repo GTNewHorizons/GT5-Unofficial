@@ -203,6 +203,7 @@ public class MTEExoticModule extends MTEBaseModule {
         logic.setAvailableVoltage(Long.MAX_VALUE);
         logic.setAvailableAmperage(Integer.MAX_VALUE);
         logic.setAmperageOC(false);
+        logic.setUnlimitedTierSkips();
         logic.setSpeedBonus(getSpeedBonus());
         logic.setEuModifier(getEnergyDiscount());
     }

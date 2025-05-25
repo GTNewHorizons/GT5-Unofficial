@@ -27,7 +27,7 @@ public enum GGItemList implements IItemContainer {
     SingleUseCrowbar,
     SingleUseWireCutter,
     SingleUseHardHammer,
-    SingleUseSoftHammer,
+    SingleUseSoftMallet,
     SingleUseScrewdriver,
     SingleUseSaw,
 
@@ -36,7 +36,7 @@ public enum GGItemList implements IItemContainer {
     SingleUseCrowbarMold,
     SingleUseWireCutterMold,
     SingleUseHardHammerMold,
-    SingleUseSoftHammerMold,
+    SingleUseSoftMalletMold,
     SingleUseScrewdriverMold,
     SingleUseSawMold,
     // ordered section ends

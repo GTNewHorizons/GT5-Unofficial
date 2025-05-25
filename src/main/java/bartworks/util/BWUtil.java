@@ -474,7 +474,7 @@ public class BWUtil {
                         break;
                     case 'r':
                         tRecipeList.add(c);
-                        tRecipeList.add(ToolDictNames.craftingToolSoftHammer.name());
+                        tRecipeList.add(ToolDictNames.craftingToolSoftMallet.name());
                         break;
                     case 's':
                         tRecipeList.add(c);
