@@ -1,6 +1,5 @@
 package gregtech.common.tileentities.machines.multi.gui.nanochip;
 
-import java.awt.*;
 import java.util.List;
 
 import net.minecraft.init.Items;
@@ -15,7 +14,6 @@ import com.cleanroommc.modularui.drawable.GuiTextures;
 import com.cleanroommc.modularui.drawable.ItemDrawable;
 import com.cleanroommc.modularui.drawable.UITexture;
 import com.cleanroommc.modularui.screen.ModularPanel;
-import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.utils.Color;
 import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
 import com.cleanroommc.modularui.value.sync.DoubleSyncValue;
@@ -41,7 +39,7 @@ import gtPlusPlus.core.util.math.MathUtils;
 public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui {
 
     private final MTENanochipAssemblyComplex base;
-    protected boolean isTalkModeActive = false;
+
     protected TerminalTextListWidget textList = new TerminalTextListWidget();
 
     String fieldHintTalk = "Type 'talk' to enter talk mode";
@@ -63,9 +61,9 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui {
             List<IWidget> sisters = parent.getChildren();
             // what a terrible way to change the logo widget
             if (!sisters.isEmpty() && (sisters.get(1) instanceof SingleChildWidget<?>logo)) {
-                logo.setEnabledIf(a -> !isTalkModeActive);
+                logo.setEnabledIf(a -> !base.isTalkModeActive);
             }
-            textList.setEnabledIf(a -> isTalkModeActive)
+            textList.setEnabledIf(a -> base.isTalkModeActive)
                 .childSeparator(
                     IDrawable.EMPTY.asIcon()
                         .height(2))
@@ -78,7 +76,7 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui {
 
     @Override
     protected ListWidget<IWidget, ?> createTerminalTextWidget(PanelSyncManager syncManager, ModularPanel parent) {
-        return super.createTerminalTextWidget(syncManager, parent).setEnabledIf(flow -> !isTalkModeActive);
+        return super.createTerminalTextWidget(syncManager, parent).setEnabledIf(flow -> !base.isTalkModeActive);
     }
 
     @Override
@@ -92,8 +90,7 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui {
     }
 
     public IWidget createTalkTextField(ModularPanel panel, PanelSyncManager syncManager) {
-        return new TerminalTextFieldWidget(textList).hintText(fieldHintTalk)
-            .setFocusOnGuiOpen(true)
+        return new TerminalTextFieldWidget(textList, syncManager).setFocusOnGuiOpen(true)
             .size(getTerminalRowWidth() - 27, 10);
     }
 
@@ -113,7 +110,8 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui {
     @Override
     protected void registerSyncValues(PanelSyncManager syncManager) {
         super.registerSyncValues(syncManager);
-        syncManager.syncValue("talk", new BooleanSyncValue(() -> isTalkModeActive, b -> isTalkModeActive = b));
+        syncManager
+            .syncValue("talk", 0, new BooleanSyncValue(() -> base.isTalkModeActive, b -> base.isTalkModeActive = b));
         syncManager.syncValue("mood", 0, new DoubleSyncValue(() -> base.gregosMood, dub -> base.gregosMood = dub));
         syncManager.syncValue("eff", 0, new DoubleSyncValue(() -> base.efficiency, dub -> base.efficiency = dub));
         syncManager.syncValue("speed", 0, new DoubleSyncValue(() -> base.moduleSpeed, dub -> base.moduleSpeed = dub));
@@ -151,7 +149,8 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui {
                     // preventative comment so spotless doesnt move addPage call up
                     .addPage(createMeter("Mood", moodSyncer, GTGuiTextures.PROGRESSBAR_METER_ROSE, 0, 1))
                     .addPage(createMeter("Speed", speedSyncer, GTGuiTextures.PROGRESSBAR_METER_ORANGE, 0.1, 1))
-                    .addPage(createMeter("Efficiency", effSyncer, GTGuiTextures.PROGRESSBAR_METER_MINT, 1, 1.25)))
+                    .addPage(createMeter("Efficiency", effSyncer, GTGuiTextures.PROGRESSBAR_METER_MINT, 1, 1.25))
+                    .sizeRel(1F))
             .size(getMeterViewerWidth(), getMeterViewerHeight());
     }
 
@@ -159,15 +158,14 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui {
         boolean isPercentage = (min == 0D && max == 1D);
         char end = isPercentage ? '%' : 'x';
         return new ParentWidget<>().child(
-            new ProgressWidget().progress(() -> (syncer.getValue() - min) / (max - min))
-                .texture(meter, 48)
-                .direction(ProgressWidget.Direction.UP)
-                .pos(20, 20)
-                .size(16, 48))
+            new TextWidget(name).leftRel(0.5F)
+                .top(5))
             .child(
-                new TextWidget(name).alignment(Alignment.Center)
-                    .pos(0, 5)
-                    .size(56, 8))
+                new ProgressWidget().progress(() -> (syncer.getValue() - min) / (max - min))
+                    .texture(meter, 48)
+                    .direction(ProgressWidget.Direction.UP)
+                    .posRel(0.5F, 0.5F)
+                    .size(16, 48))
             .child(
                 GTGuiTextures.PICTURE_DECAY_TIME_CONTAINER.asWidget()
                     .tooltipDynamic(tooltip -> {
@@ -175,7 +173,7 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui {
                         tooltip.add(name + ": " + amount + end);
                     })
                     .tooltipAutoUpdate(true)
-                    .pos(16, 16)
+                    .posRel(0.5F, 0.5F)
                     .size(24, 56))
             // Un-comment for debug purposes
             // .child(
@@ -232,11 +230,20 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui {
 
     public class TerminalTextFieldWidget extends TextFieldWidget {
 
-        TerminalTextListWidget parentList;
+        TerminalTextListWidget list;
+        PanelSyncManager syncManager;
 
-        public TerminalTextFieldWidget(TerminalTextListWidget parent) {
+        public TerminalTextFieldWidget(TerminalTextListWidget parent, PanelSyncManager manager) {
             super();
-            parentList = parent;
+            list = parent;
+            syncManager = manager;
+        }
+
+        @Override
+        public void onInit() {
+            super.onInit();
+            BooleanSyncValue talkSyncer = (BooleanSyncValue) syncManager.getSyncHandler("talk:0");
+            talkSyncer.setChangeListener(() -> this.hintText(talkSyncer.getValue() ? fieldHintExit : fieldHintTalk));
         }
 
         @Override
@@ -246,27 +253,25 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui {
                 if (text.isEmpty()) return Result.IGNORE;
                 // Reset the text box to be blank
                 this.handler.clear();
-                if (!checkForKeywords(text) && isTalkModeActive) {
-                    // base.gregosMood = Math.min(1, base.gregosMood + 0.05);
-                    parentList.child(createPlayerTextWidget(text));
-                    parentList.child(createResponseTextWidget(getGREGOSResponse(text)));
+                if (!checkForKeywords(text) && base.isTalkModeActive) {
+                    DoubleSyncValue moodSyncer = (DoubleSyncValue) syncManager.getSyncHandler("mood:0");
+                    moodSyncer.setValue(Math.min(1, moodSyncer.getValue() + 0.05));
+                    list.child(createPlayerTextWidget(text));
+                    list.child(createResponseTextWidget(getGREGOSResponse(text)));
                 }
                 return Result.SUCCESS;
             } else return super.onKeyPressed(character, keyCode);
         }
 
         public boolean checkForKeywords(String text) {
+            BooleanSyncValue talkSyncer = (BooleanSyncValue) syncManager.getSyncHandler("talk:0");
             return switch (text.toLowerCase()) {
                 case "talk" -> {
-                    List<IWidget> texts = parentList.getChildren();
-                    if (texts.isEmpty()) parentList.child(createGenericTextWidget("Ask GREGOS a question"));
-                    this.hintText(fieldHintExit);
-                    isTalkModeActive = true;
+                    talkSyncer.setValue(true);
                     yield true;
                 }
                 case "exit" -> {
-                    this.hintText(fieldHintTalk);
-                    isTalkModeActive = false;
+                    talkSyncer.setValue(false);
                     yield true;
                 }
                 default -> false;
@@ -274,29 +279,12 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui {
         }
 
         public TextWidget createResponseTextWidget(String text) {
-            return new TextWidget(text).color(parentList.responseTextColor);
+            return new TextWidget(text).color(list.responseTextColor);
         }
 
         public TextWidget createPlayerTextWidget(String text) {
-            return new TextWidget(text) {
-
-                @Override
-                public int getDefaultWidth() {
-                    return Math.max(super.getDefaultWidth(), getParentArea().width - 4);
-                }
-            }.alignment(Alignment.CenterRight)
-                .color(parentList.playerTextColor);
-        }
-
-        public TextWidget createGenericTextWidget(String text) {
-            return new TextWidget(text) {
-
-                @Override
-                public int getDefaultWidth() {
-                    return Math.max(super.getDefaultWidth(), getParentArea().width - 4);
-                }
-            }.alignment(Alignment.Center)
-                .color(parentList.genericTextColor);
+            return new TextWidget(text).alignX(1F)
+                .color(list.playerTextColor);
         }
     }
 
@@ -308,6 +296,14 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui {
 
         public TerminalTextListWidget() {
             super();
+        }
+
+        @Override
+        public void onInit() {
+            super.onInit();
+            this.child(
+                new TextWidget("Ask GREGOS a question").alignX(0.5F)
+                    .color(genericTextColor));
         }
 
         @Override
