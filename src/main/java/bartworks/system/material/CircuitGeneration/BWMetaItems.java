@@ -14,6 +14,7 @@
 package bartworks.system.material.CircuitGeneration;
 
 import static gregtech.api.recipe.RecipeMaps.formingPressRecipes;
+import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 
 import java.util.ArrayList;
@@ -86,7 +87,7 @@ public class BWMetaItems {
                 new ItemStack[] { BWMetaItems.NEW_CIRCUIT_PARTS.getStack(3) },
                 null,
                 new int[] { 7500 },
-                new FluidStack[] { Materials.SolderingAlloy.getMolten(576) },
+                new FluidStack[] { Materials.SolderingAlloy.getMolten(4 * INGOTS) },
                 null,
                 300,
                 (int) TierEU.RECIPE_EV,

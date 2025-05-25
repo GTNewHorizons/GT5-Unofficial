@@ -1,6 +1,6 @@
 package tectech.thing;
 
-import static gregtech.api.enums.GTValues.W;
+import static gregtech.api.util.GTRecipeBuilder.WILDCARD;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
@@ -514,7 +514,7 @@ public enum CustomItemList implements IItemContainer {
         if (GTUtility.isStackInvalid(mStack)) {
             return GTUtility.copyAmount(aAmount, aReplacements);
         }
-        return GTUtility.copyAmountAndMetaData(aAmount, W, GTOreDictUnificator.get(mStack));
+        return GTUtility.copyAmountAndMetaData(aAmount, WILDCARD, GTOreDictUnificator.get(mStack));
     }
 
     @Override
