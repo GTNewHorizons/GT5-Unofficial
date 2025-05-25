@@ -1,5 +1,6 @@
 package gtPlusPlus.core.material;
 
+import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gtPlusPlus.api.recipe.GTPPRecipeMaps.chemicalDehydratorRecipes;
 
 import java.util.ArrayList;
@@ -246,7 +247,7 @@ public class MaterialGenerator {
             GTValues.RA.stdBuilder()
                 .itemInputs(GTUtility.getIntegratedCircuit(20))
                 .itemOutputs(matInfo.getDust(1))
-                .fluidInputs(matInfo.getFluidStack(144))
+                .fluidInputs(matInfo.getFluidStack(1 * INGOTS))
                 .eut(matInfo.vVoltageMultiplier)
                 .duration(10 * (matInfo.vVoltageMultiplier / 5))
                 .addTo(chemicalDehydratorRecipes);
