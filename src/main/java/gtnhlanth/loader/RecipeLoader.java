@@ -28,7 +28,9 @@ import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.MINUTES;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
+import static gregtech.api.util.GTRecipeConstants.ADDITIVE_AMOUNT;
 import static gregtech.api.util.GTRecipeConstants.AssemblyLine;
+import static gregtech.api.util.GTRecipeConstants.BlastFurnaceWithGas;
 import static gregtech.api.util.GTRecipeConstants.COIL_HEAT;
 import static gregtech.api.util.GTRecipeConstants.DISSOLUTION_TANK_RATIO;
 import static gregtech.api.util.GTRecipeConstants.SCANNING;
@@ -653,7 +655,6 @@ public class RecipeLoader {
 
         // Etch pt. 2 with LiCl
         GTValues.RA.stdBuilder()
-            .fluidInputs(Materials.Argon.getGas(1_000))
             .itemInputs(
                 new ItemStack(LanthItemList.MASKED_MASK),
                 GGMaterial.lithiumChloride.get(OrePrefixes.dust, 2),
@@ -661,8 +662,9 @@ public class RecipeLoader {
             .itemOutputs(new ItemStack(LanthItemList.maskMap.get(MaskList.BLANK2)))
             .duration(80 * GTRecipeBuilder.SECONDS)
             .eut(TierEU.RECIPE_ZPM)
-            .specialValue(2400)
-            .addTo(blastFurnaceRecipes);
+            .metadata(COIL_HEAT, 2400)
+            .metadata(ADDITIVE_AMOUNT, 1000)
+            .addTo(BlastFurnaceWithGas);
 
         GTValues.RA.stdBuilder()
             .itemInputs(
