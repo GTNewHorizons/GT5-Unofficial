@@ -66,9 +66,18 @@ public final class GTGuiTextures {
             GTTextureIds.BACKGROUND_POPUP_STEEL,
             GTTextureIds.BACKGROUND_POPUP_PRIMITIVE)
         .build();
-
+    public static final UITexture BACKGROUND_TEXT_FIELD = UITexture.builder()
+        .location(GregTech.ID, "gui/background/text_field")
+        .imageSize(142, 28)
+        .adaptable(1)
+        .name(GTTextureIds.BACKGROUND_TERMINAL_STANDARD)
+        .build();
     // endregion background
 
+    // region overlay
+    public static final UITexture OVERLAY_GREGTECH_LOGO = fullImageGT("picture/gt_logo_standard");
+
+    // endregion overlay
     // region slot
 
     public static final UITexture SLOT_ITEM_STANDARD = UITexture.builder()
@@ -248,6 +257,22 @@ public final class GTGuiTextures {
             GTTextureIds.OVERLAY_SLOT_BLOCK_PRIMITIVE)
         .build();
 
+    public static final UITexture OVERLAY_BUTTON_VOID_EXCESS_NONE = UITexture.builder()
+        .canApplyTheme(true)
+        .location(GregTech.ID, "gui/overlay_button/void_excess_none")
+        .build();
+    public static final UITexture OVERLAY_BUTTON_VOID_EXCESS_ITEM = UITexture.builder()
+        .canApplyTheme(true)
+        .location(GregTech.ID, "gui/overlay_button/void_excess_item")
+        .build();
+    public static final UITexture OVERLAY_BUTTON_VOID_EXCESS_FLUID = UITexture.builder()
+        .canApplyTheme(true)
+        .location(GregTech.ID, "gui/overlay_button/void_excess_fluid")
+        .build();
+    public static final UITexture OVERLAY_BUTTON_VOID_EXCESS_ALL = UITexture.builder()
+        .canApplyTheme(true)
+        .location(GregTech.ID, "gui/overlay_button/void_excess_all")
+        .build();
     public static final UITexture OVERLAY_BUTTON_INPUT_SEPARATION_ON = UITexture
         .fullImage(GregTech.ID, "gui/overlay_button/input_separation_on");
     public static final UITexture OVERLAY_BUTTON_INPUT_SEPARATION_ON_DISABLED = UITexture
@@ -341,7 +366,7 @@ public final class GTGuiTextures {
         .name(GTTextureIds.BUTTON_STANDARD_TOGGLE)
         .build();
     private static final SteamTextureRegisterer BUTTON_STEAM_PRESSED = SteamTextureRegisterer.builder()
-        .location("gui/button%s_pressed")
+        .location("gui/button/%s_pressed")
         .imageSize(18, 18)
         .adaptable(1)
         .canApplyTheme()
@@ -413,6 +438,9 @@ public final class GTGuiTextures {
     public static final UITexture OVERLAY_BUTTON_AUTOOUTPUT_ITEM = fullImageGT("overlay_button/autooutput_item");
     public static final UITexture OVERLAY_BUTTON_AUTOOUTPUT_FLUID = fullImageGT("overlay_button/autooutput_fluid");
     public static final UITexture OVERLAY_BUTTON_POWER_SWITCH_ON = fullImageGT("overlay_button/power_switch_on");
+    public static final UITexture OVERLAY_BUTTON_POWER_SWITCH_OFF = fullImageGT("overlay_button/power_switch_off");
+    public static final UITexture OVERLAY_BUTTON_POWER_SWITCH_DISABLED = fullImageGT(
+        "overlay_button/power_switch_disabled");
     public static final UITexture OVERLAY_BUTTON_PROGRESS = fullImageGT("overlay_button/progress");
     public static final UITexture OVERLAY_BUTTON_REDSTONE_OFF = fullImageGT("overlay_button/redstone_off");
     public static final UITexture OVERLAY_BUTTON_REDSTONE_ON = fullImageGT("overlay_button/redstone_on");

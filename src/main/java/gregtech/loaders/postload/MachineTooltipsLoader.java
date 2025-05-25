@@ -30,7 +30,6 @@ public class MachineTooltipsLoader implements Runnable {
         GTLanguageManager.addStringLocalization("TileEntity_CHEST_INFO", "Contains Item: ");
         GTLanguageManager.addStringLocalization("TileEntity_CHEST_AMOUNT", "Item Amount: ");
         GTLanguageManager.addStringLocalization("GT_TileEntity_MUFFLER", "has Muffler Upgrade");
-        GTLanguageManager.addStringLocalization("GT_TileEntity_STEAMCONVERTER", "has Steam Upgrade");
         GTLanguageManager.addStringLocalization("GT_TileEntity_STEAMTANKS", "Steam Tank Upgrades");
     }
 }
