@@ -53,6 +53,9 @@ public enum GTStructureChannels implements IStructureChannels {
     ECCF_COMPRESSOR("eccf_compress", "ECCF Compressor Tier"),
     ECCF_PARALLEL_L("eccf_parallel_right", "ECCF Parallel Tier"),
     ECCF_PARALLEL_R("eccf_parallel_left", "ECCF Parallel Tier"),
+    ALCHEMICAL_CASING("casing", "Alchemical Casing Tier"),
+    ALCHEMICAL_CONSTRUCT("construct", "Alchemical Construct Tier"),
+    SUPER_CHEST("super_chest", "Super Chest Tier")
     //
     ;
 
