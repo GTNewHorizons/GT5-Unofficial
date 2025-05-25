@@ -125,6 +125,7 @@ public class ItemMachines extends ItemBlock implements IFluidContainerItem {
                     aList.add(StatCollector.translateToLocal("gt.tileentity.has_steam_upgrade"));
                 }
                 int tAmount;
+
                 if ((tAmount = aNBT.getByte("mSteamTanks")) > 0) {
                     aList.add(StatCollector.translateToLocalFormatted("gt.tileentity.steamtanks", tAmount));
                 }

@@ -451,4 +451,9 @@ public class MTEMultiNqGenerator extends MTETooltipMultiBlockBaseEM implements I
         if (mMachine) return -1;
         return survivalBuildPiece(mName, stackSize, 3, 7, 0, elementBudget, env, false, true);
     }
+
+    @Override
+    public boolean showRecipeTextInGUI() {
+        return false;
+    }
 }

@@ -118,7 +118,7 @@ public abstract class MTELongDistancePipelineBase extends MTEBasicHullNonElectri
         if (aBaseMetaTileEntity.isClientSide()) return true;
         ItemStack tCurrentItem = aPlayer.inventory.getCurrentItem();
         if (tCurrentItem != null) {
-            if (GTUtility.isStackInList(tCurrentItem, GregTechAPI.sSoftHammerList)) {
+            if (GTUtility.isStackInList(tCurrentItem, GregTechAPI.sSoftMalletList)) {
                 scanPipes();
                 return true;
             }

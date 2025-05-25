@@ -113,13 +113,13 @@ public class CommonProxy implements IFuelHandler {
         CompatHandler.InitialiseHandlerThenAddRecipes();
         Logger.INFO("Loading Intermod staging.");
         CompatIntermodStaging.postInit(e);
+        // Moved last, to prevent recipes being generated post initialisation.
+        Logger.INFO("Loading Gregtech API recipes.");
+        CompatHandler.startLoadingGregAPIBasedRecipes();
         Logger.INFO("Loading queued recipes.");
         CompatHandler.runQueuedRecipes();
         Logger.INFO("Registering custom mob drops.");
         registerCustomMobDrops();
-        // Moved last, to prevent recipes being generated post initialisation.
-        Logger.INFO("Loading Gregtech API recipes.");
-        CompatHandler.startLoadingGregAPIBasedRecipes();
     }
 
     public void serverStarting(final FMLServerStartingEvent e) {
