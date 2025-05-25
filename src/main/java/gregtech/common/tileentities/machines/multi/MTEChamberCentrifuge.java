@@ -14,16 +14,20 @@ import static gregtech.api.util.GTStructureUtility.ofFrame;
 //import fox.spiteful.avaritia.blocks.LudicrousBlocks;
 import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import gregtech.GTMod;
+import gregtech.api.interfaces.IToolStats;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
 import gregtech.api.modularui2.GTGuis;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
+import gregtech.api.items.MetaGeneratedTool;
 import gregtech.api.util.*;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.common.blocks.BlockCasings1;
+import gregtech.common.tools.ToolTurbine;
 import gtPlusPlus.GTplusplus;
 import gtPlusPlus.core.material.MaterialsAlloy;
 import net.minecraft.item.ItemStack;
@@ -56,14 +60,16 @@ public class MTEChamberCentrifuge extends MTEExtendedPowerMultiBlockBase<MTECham
     implements ISurvivalConstructable {
     private int horizontalOffset = 4; //base offset for tier 1
     private int verticalOffset = 6; //base offset for tier 2
-    private boolean tier1fluid = false;
+    private boolean tier1fluid = false; //flag for ternary operations, true means t1, false means t2.
     private final int amountToDrain = 10; //constant drain amount.
     private int mTier;
-    private int[] modules = {1,2,3,4,5}; //TODO: replace this with actual rotors
+    private int[] modules = {1,2,3,4,5};
+    private  ItemStack[] turbines = new ItemStack[8]; //list of turbines TODO: implement adding functionality
     private static final String STRUCTURE_TIER_1 = "t1";
     private static final String STRUCTURE_TIER_2 = "t2";
     private static final String STRUCTURE_TIER_3 = "t3";
     private static final String STRUCTURE_TIER_4 = "t4";
+    private static  MetaGeneratedTool toolchecker;
     private static final IStructureDefinition<MTEChamberCentrifuge> STRUCTURE_DEFINITION = StructureDefinition
         .<MTEChamberCentrifuge>builder()
         .addShape(
@@ -262,16 +268,52 @@ public class MTEChamberCentrifuge extends MTEExtendedPowerMultiBlockBase<MTECham
     public int survivalConstruct(ItemStack holoStack, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
         if (holoStack.stackSize == 1) {
-            return survivialBuildPiece(STRUCTURE_TIER_1, holoStack, horizontalOffset, verticalOffset, 0, elementBudget, env, false, true);
+            return survivalBuildPiece(
+                STRUCTURE_TIER_1,
+                holoStack,
+                horizontalOffset,
+                verticalOffset,
+                0,
+                elementBudget,
+                env,
+                false,
+                true);
         }
         if (holoStack.stackSize == 2) {
-            return survivialBuildPiece(STRUCTURE_TIER_2, holoStack, horizontalOffset, verticalOffset+1, 0, elementBudget, env, false, true);
+            return survivalBuildPiece(
+                STRUCTURE_TIER_2,
+                holoStack,
+                horizontalOffset,
+                verticalOffset + 1,
+                0,
+                elementBudget,
+                env,
+                false,
+                true);
         }
         if (holoStack.stackSize == 3) {
-            return survivialBuildPiece(STRUCTURE_TIER_3, holoStack, horizontalOffset, verticalOffset+2, 0, elementBudget, env, false, true);
+            return survivalBuildPiece(
+                STRUCTURE_TIER_3,
+                holoStack,
+                horizontalOffset,
+                verticalOffset + 2,
+                0,
+                elementBudget,
+                env,
+                false,
+                true);
         }
         if (holoStack.stackSize >= 4) {
-            return survivialBuildPiece(STRUCTURE_TIER_4, holoStack, horizontalOffset, verticalOffset+3, 0, elementBudget, env, false, true);
+            return survivalBuildPiece(
+                STRUCTURE_TIER_4,
+                holoStack,
+                horizontalOffset,
+                verticalOffset + 3,
+                0,
+                elementBudget,
+                env,
+                false,
+                true);
         }
         return 0;
     }
@@ -338,10 +380,15 @@ public class MTEChamberCentrifuge extends MTEExtendedPowerMultiBlockBase<MTECham
 
     private int getSumRotorLevels(){
         int sumRotorLevels = 0;
-        for (int i : modules)
+        /*for (ItemStack item : turbines)
         {
-            sumRotorLevels += i; //TODO: implement counting logic, should sum each modules held rotor's tier.
-        }
+            IToolStats tStats = toolchecker.getToolStats(item);
+            if( tStats instanceof ToolTurbine)
+            {
+                int level = toolchecker.getHarvestLevel(item, "");
+                sumRotorLevels += level;
+            }
+        }*/
         return sumRotorLevels;
     }
 
@@ -359,15 +406,14 @@ public class MTEChamberCentrifuge extends MTEExtendedPowerMultiBlockBase<MTECham
     }
     @Override
     public int getMaxParallelRecipes() {
-        int parallels = 4*getSumRotorLevels();
-        if (!tier1fluid) //tier 2 fluid, dont ask why im doing it like this idk either
+        int parallels = 7*getSumRotorLevels();
+        if (!tier1fluid) //==tier2fluid
         {
             parallels = (int) Math.floor(parallels*1.25);
         }
-        return parallels;
+        return parallels > 0 ? parallels : 1; //if its 1, something messed up lol, just a failsafe in case i mess up during testing
     }
-
-    private int ticker = 1; //shoutout pcb fac source code
+    private int ticker = 1; //shoutout pcb fac source code, just increments and drains (amountToDrain) of the given fluid every second
     @Override
     public boolean onRunningTick(ItemStack aStack)
     {
@@ -392,15 +438,19 @@ public class MTEChamberCentrifuge extends MTEExtendedPowerMultiBlockBase<MTECham
         return true;
     }
 
+
+    //mui2 stuff goes here
+
     @Override
-    public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager, UISettings uiSettings) {
-        ModularPanel panel = GTGuis.mteTemplatePanelBuilder(this, data, syncManager, uiSettings).build();
-        return panel;
+    protected boolean useMui2() {
+        return true;
     }
+
     @Override
     public RecipeMap<?> getRecipeMap() {
         return RecipeMaps.centrifugeRecipes;
     }
+
 
     @Override
     public int getMaxEfficiency(ItemStack aStack) {
@@ -410,11 +460,6 @@ public class MTEChamberCentrifuge extends MTEExtendedPowerMultiBlockBase<MTECham
     @Override
     public int getDamageToComponent(ItemStack aStack) {
         return 0;
-    }
-
-    @Override
-    public boolean explodesOnComponentBreak(ItemStack aStack) {
-        return false;
     }
 
     @Override

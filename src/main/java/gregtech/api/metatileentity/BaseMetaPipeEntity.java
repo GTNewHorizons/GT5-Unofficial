@@ -189,23 +189,17 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
 
                 if (mNeedsUpdate) {
                     worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+                    mMetaTileEntity.onTextureUpdate();
                     mNeedsUpdate = false;
                 }
             }
             if (isServerSide && mTickTimer > 10) {
                 if (!doCoverThings()) return;
 
-                final byte oldConnections = mConnections;
-                // Mask-out connection direction bits to keep only Foam related connections
-                mConnections = (byte) (mMetaTileEntity.mConnections | (mConnections & ~IConnectable.CONNECTED_ALL));
-                // If foam not hardened, tries roll chance to harden
-                if ((mConnections & IConnectable.HAS_FOAM) == IConnectable.HAS_FRESHFOAM
-                    && getRandomNumber(1000) == 0) {
-                    mConnections = (byte) ((mConnections & ~IConnectable.HAS_FRESHFOAM)
-                        | IConnectable.HAS_HARDENEDFOAM);
-                }
-                if (mTickTimer > 12 && oldConnections != mConnections)
+                if (mTickTimer > 12 && mConnections != mMetaTileEntity.mConnections) {
+                    mConnections = mMetaTileEntity.mConnections;
                     GregTechAPI.causeCableUpdate(worldObj, xCoord, yCoord, zCoord);
+                }
             }
             mMetaTileEntity.onPreTick(this, mTickTimer);
             if (!hasValidMetaTileEntity()) return;
@@ -715,9 +709,6 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
 
     @Override
     public ITexture[] getTextureUncovered(ForgeDirection sideDirection) {
-        if ((mConnections & IConnectable.HAS_FRESHFOAM) != 0) return Textures.BlockIcons.FRESHFOAM;
-        if ((mConnections & IConnectable.HAS_HARDENEDFOAM) != 0) return Textures.BlockIcons.HARDENEDFOAMS[mColor];
-        if ((mConnections & IConnectable.HAS_FOAM) != 0) return Textures.BlockIcons.ERROR_RENDERING;
         int tConnections = mConnections;
         if (tConnections == IConnectable.CONNECTED_WEST || tConnections == IConnectable.CONNECTED_EAST)
             tConnections = IConnectable.CONNECTED_WEST | IConnectable.CONNECTED_EAST;
@@ -980,25 +971,6 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
 
     @Override
     public boolean isUpgradable() {
-        return false;
-    }
-
-    @Override
-    public boolean isSteamEngineUpgradable() {
-        return isUpgradable() && !hasSteamEngineUpgrade() && getSteamCapacity() > 0;
-    }
-
-    @Override
-    public boolean addSteamEngineUpgrade() {
-        if (isSteamEngineUpgradable()) {
-            issueBlockUpdate();
-            return true;
-        }
-        return false;
-    }
-
-    @Override
-    public boolean hasSteamEngineUpgrade() {
         return false;
     }
 

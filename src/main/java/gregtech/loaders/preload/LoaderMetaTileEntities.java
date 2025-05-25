@@ -438,7 +438,6 @@ import static gregtech.api.enums.MetaTileEntityIDs.ITEM_FILTER_UHV;
 import static gregtech.api.enums.MetaTileEntityIDs.ITEM_FILTER_ULV;
 import static gregtech.api.enums.MetaTileEntityIDs.ITEM_FILTER_UV;
 import static gregtech.api.enums.MetaTileEntityIDs.ITEM_FILTER_ZPM;
-import static gregtech.api.enums.MetaTileEntityIDs.LARGE_ADVANCED_GAS_TURBINE_CONTROLLER;
 import static gregtech.api.enums.MetaTileEntityIDs.LARGE_BRONZE_BOILER_CONTROLLER;
 import static gregtech.api.enums.MetaTileEntityIDs.LARGE_GAS_TURBINE_CONTROLLER;
 import static gregtech.api.enums.MetaTileEntityIDs.LARGE_HEAT_EXCHANGER_CONTROLLER;
@@ -926,7 +925,6 @@ import static gregtech.api.recipe.RecipeMaps.slicerRecipes;
 import static gregtech.api.recipe.RecipeMaps.thermalCentrifugeRecipes;
 import static gregtech.api.recipe.RecipeMaps.wiremillRecipes;
 
-import gregtech.common.tileentities.machines.multi.*;
 import net.minecraft.util.EnumChatFormatting;
 
 import gregtech.api.enums.ItemList;
@@ -1007,6 +1005,65 @@ import gregtech.common.tileentities.machines.basic.MTETurboCharger;
 import gregtech.common.tileentities.machines.basic.MTEWorldAccelerator;
 import gregtech.common.tileentities.machines.long_distance.MTELongDistancePipelineFluid;
 import gregtech.common.tileentities.machines.long_distance.MTELongDistancePipelineItem;
+import gregtech.common.tileentities.machines.multi.MTEAirFilter1;
+import gregtech.common.tileentities.machines.multi.MTEAirFilter2;
+import gregtech.common.tileentities.machines.multi.MTEAirFilter3;
+import gregtech.common.tileentities.machines.multi.MTEAssemblyLine;
+import gregtech.common.tileentities.machines.multi.MTEBrickedBlastFurnace;
+import gregtech.common.tileentities.machines.multi.MTECharcoalPit;
+import gregtech.common.tileentities.machines.multi.MTECleanroom;
+import gregtech.common.tileentities.machines.multi.MTEConcreteBackfiller1;
+import gregtech.common.tileentities.machines.multi.MTEConcreteBackfiller2;
+import gregtech.common.tileentities.machines.multi.MTEDieselEngine;
+import gregtech.common.tileentities.machines.multi.MTEDistillationTower;
+import gregtech.common.tileentities.machines.multi.MTEElectricBlastFurnace;
+import gregtech.common.tileentities.machines.multi.MTEExtremeDieselEngine;
+import gregtech.common.tileentities.machines.multi.MTEFusionComputer1;
+import gregtech.common.tileentities.machines.multi.MTEFusionComputer2;
+import gregtech.common.tileentities.machines.multi.MTEFusionComputer3;
+import gregtech.common.tileentities.machines.multi.MTEHeatExchanger;
+import gregtech.common.tileentities.machines.multi.MTEImplosionCompressor;
+import gregtech.common.tileentities.machines.multi.MTEIndustrialBrewery;
+import gregtech.common.tileentities.machines.multi.MTEIndustrialElectromagneticSeparator;
+import gregtech.common.tileentities.machines.multi.MTEIndustrialExtractor;
+import gregtech.common.tileentities.machines.multi.MTEIndustrialLaserEngraver;
+import gregtech.common.tileentities.machines.multi.MTEIntegratedOreFactory;
+import gregtech.common.tileentities.machines.multi.MTELargeBoilerBronze;
+import gregtech.common.tileentities.machines.multi.MTELargeBoilerSteel;
+import gregtech.common.tileentities.machines.multi.MTELargeBoilerTitanium;
+import gregtech.common.tileentities.machines.multi.MTELargeBoilerTungstenSteel;
+import gregtech.common.tileentities.machines.multi.MTELargeChemicalReactor;
+import gregtech.common.tileentities.machines.multi.MTELargeFluidExtractor;
+import gregtech.common.tileentities.machines.multi.MTELargeMolecularAssembler;
+import gregtech.common.tileentities.machines.multi.MTELargeTurbineGas;
+import gregtech.common.tileentities.machines.multi.MTELargeTurbineHPSteam;
+import gregtech.common.tileentities.machines.multi.MTELargeTurbinePlasma;
+import gregtech.common.tileentities.machines.multi.MTELargeTurbineSteam;
+import gregtech.common.tileentities.machines.multi.MTEMultiAutoclave;
+import gregtech.common.tileentities.machines.multi.MTEMultiCanner;
+import gregtech.common.tileentities.machines.multi.MTEMultiFurnace;
+import gregtech.common.tileentities.machines.multi.MTEMultiLathe;
+import gregtech.common.tileentities.machines.multi.MTEMultiSolidifier;
+import gregtech.common.tileentities.machines.multi.MTENanoForge;
+import gregtech.common.tileentities.machines.multi.MTEOilCracker;
+import gregtech.common.tileentities.machines.multi.MTEOilDrill1;
+import gregtech.common.tileentities.machines.multi.MTEOilDrill2;
+import gregtech.common.tileentities.machines.multi.MTEOilDrill3;
+import gregtech.common.tileentities.machines.multi.MTEOilDrill4;
+import gregtech.common.tileentities.machines.multi.MTEOilDrillInfinite;
+import gregtech.common.tileentities.machines.multi.MTEOreDrillingPlant1;
+import gregtech.common.tileentities.machines.multi.MTEOreDrillingPlant2;
+import gregtech.common.tileentities.machines.multi.MTEOreDrillingPlant3;
+import gregtech.common.tileentities.machines.multi.MTEOreDrillingPlant4;
+import gregtech.common.tileentities.machines.multi.MTEPCBFactory;
+import gregtech.common.tileentities.machines.multi.MTEPlasmaForge;
+import gregtech.common.tileentities.machines.multi.MTEProcessingArray;
+import gregtech.common.tileentities.machines.multi.MTEPyrolyseOven;
+import gregtech.common.tileentities.machines.multi.MTEResearchCompleter;
+import gregtech.common.tileentities.machines.multi.MTESolarFactory;
+import gregtech.common.tileentities.machines.multi.MTETranscendentPlasmaMixer;
+import gregtech.common.tileentities.machines.multi.MTEVacuumFreezer;
+import gregtech.common.tileentities.machines.multi.MTEWormholeGenerator;
 import gregtech.common.tileentities.machines.multi.compressor.MTEBlackHoleCompressor;
 import gregtech.common.tileentities.machines.multi.compressor.MTEBlackHoleUtility;
 import gregtech.common.tileentities.machines.multi.compressor.MTEHIPCompressor;
@@ -1388,11 +1445,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 LARGE_HP_STEAM_TURBINE_CONTROLLER.ID,
                 "multimachine.largehpturbine",
                 "Large HP Steam Turbine").getStackForm(1L));
-        ItemList.LargeAdvancedGasTurbine.set(
-            new MTELargeTurbineGasAdvanced(
-                LARGE_ADVANCED_GAS_TURBINE_CONTROLLER.ID,
-                "multimachine.largeadvancedgasturbine",
-                "Large Advanced Gas Turbine").getStackForm(1L));
         ItemList.Machine_Multi_TranscendentPlasmaMixer.set(
             new MTETranscendentPlasmaMixer(
                 TRANSCENDENT_PLASMA_MIXER_CONTROLLER.ID,
@@ -1563,10 +1615,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
 
         ItemList.LargeFluidExtractor.set(
             new MTELargeFluidExtractor(LARGE_FLUID_EXTRACTOR.ID, "multimachine.fluidextractor", "Large Fluid Extractor")
-                .getStackForm(1));
-
-        ItemList.Machine_Multi_ChamberCentrifuge.set(
-            new MTEChamberCentrifuge(Chamber_Centrifuge_Controller.ID, "multimachine.chambercentrifuge", "Kinetic Chamber Centrifuge")
                 .getStackForm(1));
 
         if (Thaumcraft.isModLoaded()) {

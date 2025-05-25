@@ -182,7 +182,7 @@ public class CoverNeedMaintainance extends CoverLegacyData {
 
     @Override
     protected @NotNull CoverGui<?> getCoverGui() {
-        return new CoverNeedMaintenanceGui();
+        return new CoverNeedMaintenanceGui(this);
     }
 
     @Override
