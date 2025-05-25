@@ -99,7 +99,6 @@ gt.tileentity.eup_amount=Amperage: §e%d§7
 gt.tileentity.eup_store=Capacity: §9%d§7 EU
 gt.tileentity.has_muffler=has Muffler Upgrade
 gt.tileentity.has_steam_upgrade=has Steam Upgrade
-gt.tileentity.steamtanks=%d Steam Tank Upgrades
 gt.tileentity.colored=Colored (%s%s§7)
 
 item.gt.advancedsensorcard.name=GregTech Advanced Sensor Card

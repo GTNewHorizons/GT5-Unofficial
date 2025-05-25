@@ -125,11 +125,6 @@ public class ItemMachines extends ItemBlock implements IFluidContainerItem {
                 if (aNBT.getBoolean("mSteamConverter")) {
                     aList.add(translateToLocal("gt.tileentity.has_steam_upgrade"));
                 }
-                int tAmount;
-
-                if ((tAmount = aNBT.getByte("mSteamTanks")) > 0) {
-                    aList.add(translateToLocalFormatted("gt.tileentity.steamtanks", tAmount));
-                }
 
                 CoverableTileEntity.addInstalledCoversInformation(aNBT, aList);
                 if (aNBT.hasKey("mColor") && aNBT.getByte("mColor") != -1) {
