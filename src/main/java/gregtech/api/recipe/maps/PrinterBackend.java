@@ -1,6 +1,6 @@
 package gregtech.api.recipe.maps;
 
-import static gregtech.api.enums.GTValues.L;
+import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -103,7 +103,7 @@ public class PrinterBackend extends RecipeMapBackend {
             return GTValues.RA.stdBuilder()
                 .itemInputs(GTUtility.copyAmount(8, items[0]))
                 .itemOutputs(batchRecolorOutput)
-                .fluidInputs(new FluidStack(fluids[0].getFluid(), (int) L))
+                .fluidInputs(new FluidStack(fluids[0].getFluid(), 1 * INGOTS))
                 .duration(256)
                 .eut(2)
                 .hidden()
@@ -118,7 +118,7 @@ public class PrinterBackend extends RecipeMapBackend {
             return GTValues.RA.stdBuilder()
                 .itemInputs(GTUtility.copyAmount(1, items[0]))
                 .itemOutputs(singleRecolorOutput)
-                .fluidInputs(new FluidStack(fluids[0].getFluid(), (int) L))
+                .fluidInputs(new FluidStack(fluids[0].getFluid(), 1 * INGOTS))
                 .duration(32)
                 .eut(2)
                 .hidden()
