@@ -13,8 +13,8 @@
 
 package bartworks.common.loaders;
 
-import static gregtech.api.enums.Mods.TinkerConstruct;
 import static gregtech.api.util.GTRecipeBuilder.INGOTS;
+
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashSet;
