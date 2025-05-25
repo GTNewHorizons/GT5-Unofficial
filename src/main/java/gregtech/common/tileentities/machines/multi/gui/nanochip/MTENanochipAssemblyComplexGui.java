@@ -22,7 +22,6 @@ import com.cleanroommc.modularui.value.sync.DoubleSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widget.ParentWidget;
 import com.cleanroommc.modularui.widget.SingleChildWidget;
-import com.cleanroommc.modularui.widget.WidgetTree;
 import com.cleanroommc.modularui.widget.scroll.ScrollData;
 import com.cleanroommc.modularui.widgets.ListWidget;
 import com.cleanroommc.modularui.widgets.PageButton;
@@ -66,12 +65,11 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui {
             if (!sisters.isEmpty() && (sisters.get(1) instanceof SingleChildWidget<?>logo)) {
                 logo.setEnabledIf(a -> !isTalkModeActive);
             }
-            Dimension mainTerminalDimensions = getTerminalDimensions();
             textList.setEnabledIf(a -> isTalkModeActive)
                 .childSeparator(
                     IDrawable.EMPTY.asIcon()
                         .height(2))
-                .size(mainTerminalDimensions.width - 10, mainTerminalDimensions.height - 8);
+                .size(getTerminalWidgetWidth() - 10, getTerminalWidgetHeight() - 8);
             parent.child(textList);
 
         }
@@ -79,8 +77,8 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui {
     }
 
     @Override
-    protected ListWidget<IWidget, ?> createTerminalTextWidget(PanelSyncManager syncManager) {
-        return super.createTerminalTextWidget(syncManager).setEnabledIf(flow -> !isTalkModeActive);
+    protected ListWidget<IWidget, ?> createTerminalTextWidget(PanelSyncManager syncManager, ModularPanel parent) {
+        return super.createTerminalTextWidget(syncManager, parent).setEnabledIf(flow -> !isTalkModeActive);
     }
 
     @Override
@@ -94,21 +92,22 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui {
     }
 
     public IWidget createTalkTextField(ModularPanel panel, PanelSyncManager syncManager) {
-        Dimension mainTerminalDimensions = super.getTerminalDimensions();
         return new TerminalTextFieldWidget(textList).hintText(fieldHintTalk)
             .setFocusOnGuiOpen(true)
-            .size(mainTerminalDimensions.width - 27, 10);
+            .size(getTerminalRowWidth() - 27, 10);
     }
 
     @Override
-    protected Dimension getTerminalDimensions() {
-        Dimension base = super.getTerminalDimensions();
-        return new Dimension(base.width - getMeterViewerDimensions().width, base.height);
+    protected int getTerminalWidgetWidth() {
+        return super.getTerminalWidgetWidth() - getMeterViewerWidth();
     }
 
-    public Dimension getMeterViewerDimensions() {
-        Dimension base = super.getTerminalDimensions();
-        return new Dimension(56, base.height);
+    public int getMeterViewerWidth() {
+        return 56;
+    }
+
+    public int getMeterViewerHeight() {
+        return getTerminalWidgetHeight();
     }
 
     @Override
@@ -121,7 +120,6 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui {
     }
 
     public IWidget createGREGOSMeterPages(ModularPanel panel, PanelSyncManager syncManager) {
-        Dimension area = getMeterViewerDimensions();
 
         DoubleSyncValue moodSyncer = (DoubleSyncValue) syncManager.getSyncHandler("mood:0");
         DoubleSyncValue effSyncer = (DoubleSyncValue) syncManager.getSyncHandler("eff:0");
@@ -154,7 +152,7 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui {
                     .addPage(createMeter("Mood", moodSyncer, GTGuiTextures.PROGRESSBAR_METER_ROSE, 0, 1))
                     .addPage(createMeter("Speed", speedSyncer, GTGuiTextures.PROGRESSBAR_METER_ORANGE, 0.1, 1))
                     .addPage(createMeter("Efficiency", effSyncer, GTGuiTextures.PROGRESSBAR_METER_MINT, 1, 1.25)))
-            .size(area.width, area.height);
+            .size(getMeterViewerWidth(), getMeterViewerHeight());
     }
 
     public ParentWidget<?> createMeter(String name, DoubleSyncValue syncer, UITexture meter, double min, double max) {
@@ -313,9 +311,8 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui {
         }
 
         @Override
-        public void onChildAdd(IWidget child) {
-            super.onChildAdd(child);
-            WidgetTree.resize(this.getParent());
+        public void postResize() {
+            super.onResized();
             ScrollData data = this.getScrollData();
             // Scroll to the bottom
             data.scrollTo(getScrollArea(), data.getScrollSize());
