@@ -12,13 +12,16 @@ import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 
 //import fox.spiteful.avaritia.blocks.LudicrousBlocks;
+import com.cleanroommc.modularui.factory.PosGuiData;
+import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import gregtech.GTMod;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
+import gregtech.api.modularui2.GTGuis;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
-import gregtech.api.util.GTModHandler;
-import gregtech.api.util.GTRecipe;
+import gregtech.api.util.*;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.common.blocks.BlockCasings1;
 import gtPlusPlus.GTplusplus;
@@ -44,8 +47,6 @@ import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBas
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GTUtility;
-import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.blocks.BlockCasings10;
 import gregtech.common.misc.GTStructureChannels;
 import net.minecraftforge.fluids.FluidStack;
@@ -322,8 +323,14 @@ public class MTEChamberCentrifuge extends MTEExtendedPowerMultiBlockBase<MTECham
             protected CheckRecipeResult validateRecipe(@NotNull GTRecipe recipe)
             {
                 if (!checkFluid(amountToDrain*10)) return CheckRecipeResultRegistry.NO_FUEL_FOUND;
-
                 return super.validateRecipe(recipe);
+            }
+
+            @NotNull
+            @Override
+            protected OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) { //implements Hatch+1 OC, just like BHC.
+                return super.createOverclockCalculator(recipe)
+                    .setMaxOverclocks((GTUtility.getTier(getAverageInputVoltage()) - GTUtility.getTier(recipe.mEUt)));
             }
         }.setSpeedBonus(1F / 3F) //base speed, 200% faster
             .setMaxParallelSupplier(this::getTrueParallel);
@@ -383,6 +390,12 @@ public class MTEChamberCentrifuge extends MTEExtendedPowerMultiBlockBase<MTECham
         }
         ticker++;
         return true;
+    }
+
+    @Override
+    public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager, UISettings uiSettings) {
+        ModularPanel panel = GTGuis.mteTemplatePanelBuilder(this, data, syncManager, uiSettings).build();
+        return panel;
     }
     @Override
     public RecipeMap<?> getRecipeMap() {
