@@ -944,22 +944,22 @@ GT5U.item.pipe.empty=Empty
 GT5U.item.pipe.swap=Pipe Swapped:
 
 gt.behaviour.paintspray.infinite.gui.header=Select a Color
-gt.behaviour.paintspray.infinite.gui.lock_error=§eSpray can is §clocked§e! §bCtrl middle-click to unlock.
+gt.behaviour.paintspray.infinite.gui.lock_error=§eSpray can is §clocked§e! §bSneak + MMB to unlock.
 gt.behaviour.paintspray.infinite.gui.solvent=Solvent
 gt.behaviour.paintspray.infinite.gui.shake_toggle=Allow/disallow color iteration
 
 gt.behaviour.paintspray.infinite.tooltip.infinite=Infinite uses
 gt.behaviour.paintspray.infinite.tooltip.more_info=Hold SHIFT for more information
 gt.behaviour.paintspray.infinite.tooltip.locked=Locked
-gt.behaviour.paintspray.infinite.tooltip.preventing_shake=Left click action disabled
+gt.behaviour.paintspray.infinite.tooltip.preventing_shake=LMB action disabled
 
-gt.behaviour.paintspray.infinite.tooltip.switch=Left Click: Change color (sneak to reverse direction)
-gt.behaviour.paintspray.infinite.tooltip.pick=Middle Click block: Copy color to spray can
-gt.behaviour.paintspray.infinite.tooltip.lock=%s Middle Click: Lock or unlock spray can
-gt.behaviour.paintspray.infinite.tooltip.gui=Middle Click: Open color choice GUI
-gt.behaviour.paintspray.infinite.tooltip.prevent_shake=Shift Middle Click: Allow/prevent left click action
-gt.behaviour.paintspray.infinite.tooltip.ctrl_pc=Ctrl
-gt.behaviour.paintspray.infinite.tooltip.ctrl_mac=Command
+gt.behaviour.paintspray.infinite.tooltip.switch=LMB: Cycle color (Sneak to reverse direction)
+gt.behaviour.paintspray.infinite.tooltip.pick=MMB: On a Surface block to Copy color to spray can
+gt.behaviour.paintspray.infinite.tooltip.lock=Sneak + MMB: Lock or unlock spray can
+gt.behaviour.paintspray.infinite.tooltip.gui=MMB: Open color choice GUI
+gt.behaviour.paintspray.infinite.tooltip.prevent_shake=%s + MMB: Toggle Color Cycle Lock
+GTPacketInfiniteSpraycan.Action.TOGGLE_SHAKE_LOCK=Infinite Spray Can : Color Cycle Lock
+
 
 gt.behaviour.trowel.tooltip1=Places a random block from your hotbar
 gt.behaviour.trowel.tooltip2=§o"Don't forget to bring a trowel!"§r -§cQuerns§r
