@@ -110,7 +110,7 @@ public class CoverConveyor extends CoverIOBase {
 
     @Override
     protected @NotNull CoverGui<?> getCoverGui() {
-        return new CoverIOBaseGui("cover.conveyor");
+        return new CoverIOBaseGui(this, "cover.conveyor");
     }
 
     @Override
