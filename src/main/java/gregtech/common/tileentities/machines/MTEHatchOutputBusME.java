@@ -259,10 +259,8 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus implements IPowerChan
     }
 
     protected void flushCachedStack() {
+        if (!isActive() || itemCache.isEmpty()) return;
         AENetworkProxy proxy = getProxy();
-        if (proxy == null) {
-            return;
-        }
         try {
             IMEMonitor<IAEItemStack> sg = proxy.getStorage()
                 .getItemInventory();
@@ -275,9 +273,7 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus implements IPowerChan
                 }
                 s.setStackSize(0);
             }
-        } catch (final GridAccessException ignored) {
-
-        }
+        } catch (final GridAccessException ignored) {}
         lastOutputTick = tickCounter;
     }
 

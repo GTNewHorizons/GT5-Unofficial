@@ -286,6 +286,14 @@ public class OverclockCalculator {
         return overclocks;
     }
 
+    public boolean hasDurationUnderOneTickSupplier() {
+        return durationUnderOneTickSupplier != null;
+    }
+
+    public double getDurationUnderOneTickSupplier() {
+        return durationUnderOneTickSupplier.get();
+    }
+
     /** Call this when all values have been put it. */
     @Nonnull
     public OverclockCalculator calculate() {
@@ -373,10 +381,14 @@ public class OverclockCalculator {
     }
 
     /**
-     * Returns duration as a double to show how much it is overclocking too much to determine extra parallel. This
-     * doesn't count as calculating
+     * Returns a multiplier to parallel based on much it is overclock too much. This doesn't count as calculating
      */
-    public double calculateDurationUnderOneTick() {
+    public double calculateMultiplierUnderOneTick() {
+        int neededOverclocks = 0;
+
+        // If overclocking is disabled, get no multiplier.
+        if (noOverclock) return 1;
+
         // Determine the base duration, using the custom supplier if available.
         double duration = durationUnderOneTickSupplier != null ? durationUnderOneTickSupplier.get()
             : this.duration * durationModifier;
@@ -387,9 +399,6 @@ public class OverclockCalculator {
         double machinePower = machineVoltage * (amperageOC ? machineAmperage : Math.min(machineAmperage, parallel));
         double machinePowerTier = Math.max(Math.log(machinePower / 8) / LOG4, 1);
 
-        // If overclocking is disabled, use the base values and return.
-        if (noOverclock) return duration;
-
         // Special handling for laser overclocking.
         if (laserOC) {
             double eutOverclock = recipePower;
@@ -399,6 +408,9 @@ public class OverclockCalculator {
             while (eutOverclock * 4.0 < machinePower && regularOverclocks < maxRegularOverclocks) {
                 eutOverclock *= 4.0;
                 regularOverclocks++;
+                if (duration / Math.pow(durationDecreasePerOC, overclocks) < 2 && neededOverclocks == 0) {
+                    neededOverclocks = regularOverclocks;
+                }
             }
 
             // Keep increasing power until it hits the machine's limit.
@@ -406,10 +418,13 @@ public class OverclockCalculator {
             while (eutOverclock * (4.0 + 0.3 * (laserOverclocks + 1)) < machinePower) {
                 eutOverclock *= (4.0 + 0.3 * (laserOverclocks + 1));
                 laserOverclocks++;
+                if (duration / Math.pow(durationDecreasePerOC, overclocks) < 2 && neededOverclocks == 0) {
+                    neededOverclocks = overclocks + laserOverclocks;
+                }
             }
 
             int overclocks = regularOverclocks + laserOverclocks;
-            return duration / Math.pow(durationDecreasePerOC, overclocks);
+            return Math.pow(durationDecreasePerOC, Math.max(neededOverclocks - overclocks, 0));
         }
 
         // Limit overclocks allowed by power tier.
@@ -429,10 +444,27 @@ public class OverclockCalculator {
         int heatOverclocks = Math.min(heatOC ? (machineHeat - recipeHeat) / HEAT_OVERCLOCK_THRESHOLD : 0, overclocks);
         int regularOverclocks = overclocks - heatOverclocks;
 
-        // Adjust power consumption and processing time based on overclocks.
+        double originalDuration = duration;
+        int neededHeatOverclocks = (int) Math.ceil((Math.log(duration) / Math.log(durationDecreasePerHeatOC)));
         duration /= Math.pow(durationDecreasePerHeatOC, heatOverclocks);
-        duration /= Math.pow(durationDecreasePerOC, regularOverclocks);
+        neededOverclocks = (int) Math.ceil((Math.log(duration) / Math.log(durationDecreasePerOC)));
 
-        return duration;
+        int heatMultiplier = (int) Math
+            .pow(durationDecreasePerHeatOC, Math.max(heatOverclocks - neededHeatOverclocks, 0));
+        int regularMultiplier = (int) Math
+            .pow(durationDecreasePerOC, Math.max(regularOverclocks - neededOverclocks, 0));
+
+        // Produces a fractional multiplier that corrects for inaccuracies resulting from discrete parallels and tick
+        // durations. It is 1 / (duration of first OC to go below 1 tick)
+        double correctionMultiplier = 1.0;
+        if (heatOverclocks >= neededHeatOverclocks) {
+            double criticalDuration = originalDuration / Math.pow(durationDecreasePerHeatOC, neededHeatOverclocks);
+            correctionMultiplier = 1 / criticalDuration;
+        } else if (regularOverclocks >= neededOverclocks) {
+            double criticalDuration = originalDuration / Math.pow(durationDecreasePerOC, neededOverclocks);
+            correctionMultiplier = 1 / criticalDuration;
+        }
+
+        return Math.ceil(heatMultiplier * regularMultiplier * correctionMultiplier);
     }
 }
