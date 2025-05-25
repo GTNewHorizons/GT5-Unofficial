@@ -350,7 +350,7 @@ public class DustLoader implements IWerkstoffRunnable {
                             .itemOutputs(
                                 werkstoffStats.getMeltingPoint() < 1750 ? werkstoff.get(ingot)
                                     : werkstoff.get(ingotHot))
-                            .fluidInputs(Materials.Nitrogen.getGas(1000))
+                            .fluidInputs(Materials.Nitrogen.getGas(1_000))
                             .duration(Math.max(werkstoffStats.getMass() / 40L, 1L) * werkstoffStats.getMeltingPoint())
                             .eut(werkstoffStats.getMeltingVoltage())
                             .metadata(COIL_HEAT, werkstoffStats.getMeltingPoint())
@@ -362,7 +362,7 @@ public class DustLoader implements IWerkstoffRunnable {
                             .itemOutputs(
                                 werkstoffStats.getMeltingPoint() < 1750 ? werkstoff.get(ingot)
                                     : werkstoff.get(ingotHot))
-                            .fluidInputs(Materials.Argon.getGas(1000))
+                            .fluidInputs(Materials.Argon.getGas(1_000))
                             .duration(Math.max(werkstoffStats.getMass() / 40L, 1L) * werkstoffStats.getMeltingPoint())
                             .eut(werkstoffStats.getMeltingVoltage())
                             .metadata(COIL_HEAT, werkstoffStats.getMeltingPoint())
