@@ -114,12 +114,12 @@ public class CoverDrain extends CoverLegacyData {
             this.coverData = 5;
         }
         switch (this.coverData) {
-            case 0 -> GTUtility.sendChatToPlayer(aPlayer, translateToLocal("gt.interact.desc.i"));
-            case 1 -> GTUtility.sendChatToPlayer(aPlayer, translateToLocal("gt.interact.desc.i_c"));
-            case 2 -> GTUtility.sendChatToPlayer(aPlayer, translateToLocal("gt.interact.desc.i_c_i"));
+            case 0 -> GTUtility.sendChatToPlayer(aPlayer, translateToLocal("gt.interact.desc.import"));
+            case 1 -> GTUtility.sendChatToPlayer(aPlayer, translateToLocal("gt.interact.desc.import_cond"));
+            case 2 -> GTUtility.sendChatToPlayer(aPlayer, translateToLocal("gt.interact.desc.import_invert_cond"));
             case 3 -> GTUtility.sendChatToPlayer(aPlayer, translateToLocal("gt.interact.desc.no_fluid"));
-            case 4 -> GTUtility.sendChatToPlayer(aPlayer, translateToLocal("gt.interact.desc.no_fluid_c"));
-            case 5 -> GTUtility.sendChatToPlayer(aPlayer, translateToLocal("gt.interact.desc.no_fluid_c_i"));
+            case 4 -> GTUtility.sendChatToPlayer(aPlayer, translateToLocal("gt.interact.desc.no_fluid_cond"));
+            case 5 -> GTUtility.sendChatToPlayer(aPlayer, translateToLocal("gt.interact.desc.no_fluid_invert_cond"));
         }
     }
 

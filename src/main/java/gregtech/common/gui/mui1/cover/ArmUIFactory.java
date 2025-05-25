@@ -64,7 +64,7 @@ public class ArmUIFactory extends CoverLegacyDataUIFactory {
                     }
                 },
                 widget -> widget.setStaticTexture(GTUITextures.OVERLAY_BUTTON_EXPORT)
-                    .addTooltip(translateToLocal("gt.interact.desc.o"))
+                    .addTooltip(translateToLocal("gt.interact.desc.export"))
                     .setPos(spaceX * 0, spaceY * 0))
                 .addFollower(
                     CoverDataFollowerToggleButtonWidget.ofDisableable(),
@@ -79,7 +79,7 @@ public class ArmUIFactory extends CoverLegacyDataUIFactory {
                         }
                     },
                     widget -> widget.setStaticTexture(GTUITextures.OVERLAY_BUTTON_IMPORT)
-                        .addTooltip(translateToLocal("gt.interact.desc.i"))
+                        .addTooltip(translateToLocal("gt.interact.desc.import"))
                         .setPos(spaceX * 1, spaceY * 0))
                 .addFollower(
                     new CoverDataFollowerNumericWidget<>(),
@@ -134,8 +134,9 @@ public class ArmUIFactory extends CoverLegacyDataUIFactory {
                 new TextWidget()
                     .setStringSupplier(
                         getCoverString(
-                            c -> (c.getVariable() & CoverArm.EXPORT_MASK) > 0 ? translateToLocal("gt.interact.desc.o")
-                                : translateToLocal("gt.interact.desc.i")))
+                            c -> (c.getVariable() & CoverArm.EXPORT_MASK) > 0
+                                ? translateToLocal("gt.interact.desc.export")
+                                : translateToLocal("gt.interact.desc.import")))
                     .setDefaultColor(COLOR_TEXT_GRAY.get())
                     .setPos(startX + spaceX * 3, 4 + startY + spaceY * 0))
             .widget(

@@ -41,13 +41,13 @@ public class ConveyorUIFactory extends CoverLegacyDataUIFactory {
                         0,
                         CoverDataFollowerToggleButtonWidget.ofDisableable(),
                         widget -> widget.setStaticTexture(GTUITextures.OVERLAY_BUTTON_EXPORT)
-                            .addTooltip(translateToLocal("gt.interact.desc.o"))
+                            .addTooltip(translateToLocal("gt.interact.desc.export"))
                             .setPos(spaceX * 0, spaceY * 0))
                     .addToggleButton(
                         1,
                         CoverDataFollowerToggleButtonWidget.ofDisableable(),
                         widget -> widget.setStaticTexture(GTUITextures.OVERLAY_BUTTON_IMPORT)
-                            .addTooltip(translateToLocal("gt.interact.desc.i"))
+                            .addTooltip(translateToLocal("gt.interact.desc.import"))
                             .setPos(spaceX * 1, spaceY * 0))
                     .addToggleButton(
                         2,
