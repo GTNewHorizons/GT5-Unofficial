@@ -31,7 +31,9 @@ import static gregtech.api.util.GTRecipeBuilder.QUARTER_INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.STACKS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
+import static gregtech.api.util.GTRecipeConstants.ADDITIVE_AMOUNT;
 import static gregtech.api.util.GTRecipeConstants.AssemblyLine;
+import static gregtech.api.util.GTRecipeConstants.BlastFurnaceWithGas;
 import static gregtech.api.util.GTRecipeConstants.CHEMPLANT_CASING_TIER;
 import static gregtech.api.util.GTRecipeConstants.COIL_HEAT;
 import static gregtech.api.util.GTRecipeConstants.FUEL_TYPE;
@@ -1624,11 +1626,11 @@ public class RecipesGregTech {
             .itemOutputs(
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Graphite, 1L),
                 GTOreDictUnificator.get(OrePrefixes.dustSmall, Materials.Silicon, 1L))
-            .fluidInputs(Materials.Nitrogen.getGas(500))
             .duration(7 * SECONDS + 10 * TICKS)
             .eut(TierEU.RECIPE_IV)
             .metadata(COIL_HEAT, 4500)
-            .addTo(blastFurnaceRecipes);
+            .metadata(ADDITIVE_AMOUNT, 500)
+            .addTo(BlastFurnaceWithGas);
 
     }
 
