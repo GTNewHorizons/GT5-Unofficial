@@ -32,7 +32,6 @@ import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gregtech.loaders.postload.PCBFactoryMaterialLoader;
-import gregtech.loaders.postload.ProcessingArrayRecipeLoader;
 import ic2.core.Ic2Items;
 
 public class MTERecipeLoader implements Runnable {
@@ -3468,7 +3467,6 @@ public class MTERecipeLoader implements Runnable {
                 OrePrefixes.circuit.get(Materials.ZPM), 'W', OrePrefixes.wireGt04.get(Materials.Naquadah), 'U',
                 OrePrefixes.stick.get(Materials.Americium) });
 
-        ProcessingArrayRecipeLoader.registerDefaultGregtechMaps();
         GTModHandler.addCraftingRecipe(
             ItemList.Distillation_Tower.get(1L),
             bitsd,
