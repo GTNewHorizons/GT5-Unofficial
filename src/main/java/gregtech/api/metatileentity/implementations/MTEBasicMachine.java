@@ -1447,8 +1447,7 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
             .setSynced(true, false)
             .dynamicTooltip(
                 () -> Collections.singletonList(
-                    StatCollector
-                        .translateToLocalFormatted("GT5U.gui.tooltip.steam_progress", getSteamVar, maxSteamStore())))
+                    translateToLocalFormatted("GT5U.gui.tooltip.steam_progress", getSteamVar, maxSteamStore())))
             .setTooltipShowUpDelay(TOOLTIP_DELAY)
             .setUpdateTooltipEveryTick(true)
             .setSize(10, 54)

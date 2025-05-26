@@ -1098,7 +1098,7 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
             .widget(
                 new TextWidget()
                     .setStringSupplier(
-                        () -> StatCollector.translateToLocalFormatted(
+                        () -> translateToLocalFormatted(
                             "kekztech.infodata.lapotronic_super_capacitor.total_capacity",
                             EnumChatFormatting.BLUE + capacityCache + EnumChatFormatting.WHITE))
                     .setTextAlignment(Alignment.CenterLeft)
@@ -1108,7 +1108,7 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
             .widget(
                 new TextWidget()
                     .setStringSupplier(
-                        () -> StatCollector.translateToLocalFormatted(
+                        () -> translateToLocalFormatted(
                             "kekztech.gui.lapotronic_super_capacitor.text.stored",
                             EnumChatFormatting.RED + storedEUCache + EnumChatFormatting.WHITE))
                     .setTextAlignment(Alignment.CenterLeft)
@@ -1118,7 +1118,7 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
             .widget(
                 new TextWidget()
                     .setStringSupplier(
-                        () -> StatCollector.translateToLocalFormatted(
+                        () -> translateToLocalFormatted(
                             "kekztech.infodata.lapotronic_super_capacitor.used_capacity",
                             EnumChatFormatting.RED + usedPercentCache))
                     .setDefaultColor(COLOR_TEXT_WHITE.get())
@@ -1127,7 +1127,7 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
             .widget(
                 new TextWidget()
                     .setStringSupplier(
-                        () -> StatCollector.translateToLocalFormatted(
+                        () -> translateToLocalFormatted(
                             "kekztech.infodata.lapotronic_super_capacitor.passive_loss",
                             EnumChatFormatting.RED + passiveDischargeAmountCache + EnumChatFormatting.WHITE))
                     .setTextAlignment(Alignment.CenterLeft)
@@ -1139,7 +1139,7 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
                     val -> passiveDischargeAmountCache = val))
             .widget(
                 new TextWidget().setStringSupplier(
-                    () -> StatCollector.translateToLocalFormatted(
+                    () -> translateToLocalFormatted(
                         "kekztech.gui.lapotronic_super_capacitor.text.avg_eu_in",
                         EnumChatFormatting.GREEN + (avgInCache > 100_000_000_000L ? standardFormat.format(avgInCache)
                             : numberFormat.format(avgInCache)) + EnumChatFormatting.WHITE))
@@ -1149,7 +1149,7 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
             .widget(new FakeSyncWidget.LongSyncer(energyInputValues::avgLong, val -> avgInCache = val))
             .widget(
                 new TextWidget().setStringSupplier(
-                    () -> StatCollector.translateToLocalFormatted(
+                    () -> translateToLocalFormatted(
                         "kekztech.gui.lapotronic_super_capacitor.text.avg_eu_out",
                         EnumChatFormatting.RED + (avgOutCache > 100_000_000_000L ? standardFormat.format(avgOutCache)
                             : numberFormat.format(avgOutCache)) + EnumChatFormatting.WHITE))
@@ -1165,7 +1165,7 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
             .widget(
                 new TextWidget()
                     .setStringSupplier(
-                        () -> StatCollector.translateToLocalFormatted(
+                        () -> translateToLocalFormatted(
                             "kekztech.infodata.lapotronic_super_capacitor.wireless_eu",
                             EnumChatFormatting.BLUE + wirelessStoreCache + EnumChatFormatting.WHITE))
                     .setTextAlignment(Alignment.CenterLeft)

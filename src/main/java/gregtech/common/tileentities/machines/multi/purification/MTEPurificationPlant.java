@@ -33,7 +33,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.google.common.collect.ImmutableList;
@@ -564,7 +563,7 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
 
         screenElements
             .widget(
-                new TextWidget(StatCollector.translateToLocal("GT5U.gui.text.purification_plant.hit_to_start"))
+                new TextWidget(translateToLocal("GT5U.gui.text.purification_plant.hit_to_start"))
                     .setTextAlignment(Alignment.CenterLeft)
                     .setDefaultColor(EnumChatFormatting.BLACK)
                     .setEnabled(widget -> getErrorDisplayID() == 0 && !getBaseMetaTileEntity().isActive()))
@@ -742,7 +741,7 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
                     return ret.toArray(new IDrawable[0]);
                 })
                 .attachSyncer(new FakeSyncWidget.BooleanSyncer(() -> debugMode, b -> debugMode = b), builder)
-                .addTooltip(StatCollector.translateToLocal("GT5U.gui.tooltip.purification_plant.debug_mode"))
+                .addTooltip(translateToLocal("GT5U.gui.tooltip.purification_plant.debug_mode"))
                 .setTooltipShowUpDelay(TOOLTIP_DELAY)
                 .setPos(174, 112)
                 .setSize(16, 16));
