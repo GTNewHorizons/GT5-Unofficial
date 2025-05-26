@@ -6,8 +6,8 @@ import gregtech.api.interfaces.modularui.KeyProvider;
 
 public enum TransferMode implements KeyProvider {
 
-    EXPORT(IKey.lang(() -> "gt.interact.desc.export")),
-    IMPORT(IKey.lang(() -> "gt.interact.desc.import"));
+    EXPORT(IKey.lang("gt.interact.desc.export")),
+    IMPORT(IKey.lang("gt.interact.desc.import"));
 
     private final IKey key;
 

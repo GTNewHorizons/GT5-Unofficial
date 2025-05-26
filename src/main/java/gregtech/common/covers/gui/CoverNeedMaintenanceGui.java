@@ -56,7 +56,7 @@ public class CoverNeedMaintenanceGui extends CoverGui<CoverNeedMaintainance> {
                                 .overlay(true, GTGuiTextures.OVERLAY_BUTTON_CHECKMARK)
                                 .addTooltipLine(IKey.lang("gt.interact.desc.need_maint_count", "1", ""))
                                 .size(16),
-                            IKey.lang(() -> "gt.interact.desc.issue")
+                            IKey.lang("gt.interact.desc.issue")
                                 .asWidget())
                         .row(
                             new SelectButton()
@@ -64,7 +64,7 @@ public class CoverNeedMaintenanceGui extends CoverGui<CoverNeedMaintainance> {
                                 .overlay(true, GTGuiTextures.OVERLAY_BUTTON_CHECKMARK)
                                 .addTooltipLine(IKey.lang("gt.interact.desc.need_maint_count", "2", ""))
                                 .size(16),
-                            IKey.lang(() -> "gt.interact.desc.issues", () -> new Object[] { "2" })
+                            IKey.lang("gt.interact.desc.issues", "2")
                                 .asWidget())
                         .row(
                             new SelectButton()
@@ -72,7 +72,7 @@ public class CoverNeedMaintenanceGui extends CoverGui<CoverNeedMaintainance> {
                                 .overlay(true, GTGuiTextures.OVERLAY_BUTTON_CHECKMARK)
                                 .addTooltipLine(IKey.lang("gt.interact.desc.need_maint_count", "3", ""))
                                 .size(16),
-                            IKey.lang(() -> "gt.interact.desc.issues", () -> new Object[] { "3" })
+                            IKey.lang("gt.interact.desc.issues", "3")
                                 .asWidget())
                         .row(
                             new SelectButton()
@@ -80,7 +80,7 @@ public class CoverNeedMaintenanceGui extends CoverGui<CoverNeedMaintainance> {
                                 .overlay(true, GTGuiTextures.OVERLAY_BUTTON_CHECKMARK)
                                 .addTooltipLine(IKey.lang("gt.interact.desc.need_maint_count", "4", ""))
                                 .size(16),
-                            IKey.lang(() -> "gt.interact.desc.issues", () -> new Object[] { "4" })
+                            IKey.lang("gt.interact.desc.issues", "4")
                                 .asWidget()))
                 .child(
                     new Grid().coverChildren()
@@ -92,15 +92,15 @@ public class CoverNeedMaintenanceGui extends CoverGui<CoverNeedMaintainance> {
                                 .overlay(true, GTGuiTextures.OVERLAY_BUTTON_CHECKMARK)
                                 .addTooltipLine(IKey.lang("gt.interact.desc.need_maint_count", "5", ""))
                                 .size(16),
-                            IKey.lang(() -> "gt.interact.desc.issues", () -> new Object[] { "5" })
+                            IKey.lang("gt.interact.desc.issues", "5")
                                 .asWidget())
                         .row(
                             new SelectButton()
                                 .value(LinkedBoolValue.of(thresholdSyncValue, MaintenanceAlertCondition.ROTOR_20))
                                 .overlay(true, GTGuiTextures.OVERLAY_BUTTON_CHECKMARK)
-                                .addTooltipLine(IKey.lang(() -> "gt.interact.desc.need_maint_rotor_lo"))
+                                .addTooltipLine(IKey.lang("gt.interact.desc.need_maint_rotor_lo"))
                                 .size(16),
-                            IKey.lang(() -> "gt.interact.desc.issue_rotor_low")
+                            IKey.lang("gt.interact.desc.issue_rotor_low")
                                 .asWidget())
                         .row(
                             new SelectButton()
@@ -108,7 +108,7 @@ public class CoverNeedMaintenanceGui extends CoverGui<CoverNeedMaintainance> {
                                 .overlay(true, GTGuiTextures.OVERLAY_BUTTON_CHECKMARK)
                                 .addTooltipLine(IKey.lang("gt.interact.desc.need_maint_rotor_hi"))
                                 .size(16),
-                            IKey.lang(() -> "gt.interact.desc.issue_rotor_dead")
+                            IKey.lang("gt.interact.desc.issue_rotor_dead")
                                 .asWidget())
                         .row(
                             new CycleButtonWidget().value(redstoneModeSyncValue)
