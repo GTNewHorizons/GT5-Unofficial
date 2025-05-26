@@ -11,8 +11,6 @@ import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 
-import com.cleanroommc.modularui.utils.item.ItemStackHandler;
-import com.cleanroommc.modularui.utils.item.LimitingItemStackHandler;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -20,6 +18,7 @@ import net.minecraftforge.fluids.FluidStack;
 
 import org.jetbrains.annotations.NotNull;
 
+import com.cleanroommc.modularui.utils.item.LimitingItemStackHandler;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
@@ -55,7 +54,7 @@ public class MTEChamberCentrifuge extends MTEExtendedPowerMultiBlockBase<MTECham
     private int verticalOffset = 6; // base offset for tier 2
     private final int amountToDrain = 10; // constant drain amount.
     private int mTier;
-    public final LimitingItemStackHandler inventoryHandler = new LimitingItemStackHandler(8,1);
+    public final LimitingItemStackHandler inventoryHandler = new LimitingItemStackHandler(8, 1);
     private int[] modules = { 1, 2, 3, 4, 5 };
     private static final String STRUCTURE_TIER_1 = "t1";
     private static final String STRUCTURE_TIER_2 = "t2";
@@ -388,7 +387,9 @@ public class MTEChamberCentrifuge extends MTEExtendedPowerMultiBlockBase<MTECham
     private boolean checkFluid(int amount) // checks if [amount] fluid is found in ANY of the machines input hatches
     {
         // checks for fluid in hatch, does not drain it.
-        FluidStack tFluid = tier2Fluid ? GTModHandler.getDistilledWater(amount) : Materials.Lubricant.getFluid(amount); // t2 : t1
+        FluidStack tFluid = tier2Fluid ? GTModHandler.getDistilledWater(amount) : Materials.Lubricant.getFluid(amount); // t2
+                                                                                                                        // :
+                                                                                                                        // t1
 
         for (MTEHatchInput mInputHatch : mInputHatches) {
             if (drain(mInputHatch, tFluid, false)) {
@@ -417,8 +418,8 @@ public class MTEChamberCentrifuge extends MTEExtendedPowerMultiBlockBase<MTECham
             return false;
         }
         if (ticker % 21 == 0) {
-            FluidStack tFluid = tier2Fluid ? GTModHandler.getDistilledWater(amountToDrain):
-                Materials.Lubricant.getFluid(amountToDrain); // gets fluid to drain
+            FluidStack tFluid = tier2Fluid ? GTModHandler.getDistilledWater(amountToDrain)
+                : Materials.Lubricant.getFluid(amountToDrain); // gets fluid to drain
             for (MTEHatchInput mInputHatch : mInputHatches) { // worst case, checks all hatches fluid not found, stops
                                                               // machine
                 if (drain(mInputHatch, tFluid, true)) {

@@ -11,15 +11,13 @@ import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
-import com.cleanroommc.modularui.value.sync.SyncHandlers;
 import com.cleanroommc.modularui.widget.sizer.Area;
 import com.cleanroommc.modularui.widgets.*;
 import com.cleanroommc.modularui.widgets.layout.Column;
 import com.cleanroommc.modularui.widgets.layout.Row;
-
 import com.cleanroommc.modularui.widgets.slot.ItemSlot;
 import com.cleanroommc.modularui.widgets.slot.ModularSlot;
-import gregtech.api.metatileentity.implementations.MTEMultiBlockBase;
+
 import gregtech.api.metatileentity.implementations.gui.MTEMultiBlockBaseGui;
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.common.tileentities.machines.multi.MTEChamberCentrifuge;
@@ -87,16 +85,20 @@ public class MTEChamberCentrifugeGui extends MTEMultiBlockBaseGui {
                             .marginRight(20)
                             .child(
                                 new TextWidget("Turbines").size(60, 18)
-                                    .alignment(Alignment.Center).marginBottom(5))
-                            .child(SlotGroupWidget.builder()
-                                .row("II")
-                                .row("II")
-                                .row("II")
-                                .row("II")
-                                .key('I', index -> {
-                                    return new ItemSlot().slot(new ModularSlot(base.inventoryHandler,index));
-                                })
-                                .build())
+                                    .alignment(Alignment.Center)
+                                    .marginBottom(5))
+                            .child(
+                                SlotGroupWidget.builder()
+                                    .row("II")
+                                    .row("II")
+                                    .row("II")
+                                    .row("II")
+                                    .key(
+                                        'I',
+                                        index -> {
+                                            return new ItemSlot().slot(new ModularSlot(base.inventoryHandler, index));
+                                        })
+                                    .build())
 
                     )
 
@@ -109,13 +111,14 @@ public class MTEChamberCentrifugeGui extends MTEMultiBlockBaseGui {
                                 new TextWidget("T2\nFluid").size(40, 18)
                                     .alignment(Alignment.Center))
                             .marginBottom(5)
-                    .crossAxisAlignment(Alignment.CrossAxis.CENTER)
-                    .child(
-                        new ToggleButton().value(new BooleanSyncValue(() -> base.tier2Fluid, bool -> base.tier2Fluid = bool))
-                            .overlay(true, GTGuiTextures.OVERLAY_BUTTON_REDSTONE_ON)
-                            .overlay(false, GTGuiTextures.OVERLAY_BUTTON_REDSTONE_OFF))
+                            .crossAxisAlignment(Alignment.CrossAxis.CENTER)
+                            .child(
+                                new ToggleButton()
+                                    .value(new BooleanSyncValue(() -> base.tier2Fluid, bool -> base.tier2Fluid = bool))
+                                    .overlay(true, GTGuiTextures.OVERLAY_BUTTON_REDSTONE_ON)
+                                    .overlay(false, GTGuiTextures.OVERLAY_BUTTON_REDSTONE_OFF))
 
-            ));
+                    ));
 
     }
 
