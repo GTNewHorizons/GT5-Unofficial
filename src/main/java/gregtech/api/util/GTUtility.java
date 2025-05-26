@@ -5,13 +5,13 @@ import static gregtech.api.enums.GTValues.COMPASS_DIRECTIONS;
 import static gregtech.api.enums.GTValues.D1;
 import static gregtech.api.enums.GTValues.E;
 import static gregtech.api.enums.GTValues.GT;
-import static gregtech.api.enums.GTValues.L;
 import static gregtech.api.enums.GTValues.M;
 import static gregtech.api.enums.GTValues.NW;
 import static gregtech.api.enums.GTValues.V;
-import static gregtech.api.enums.GTValues.W;
 import static gregtech.api.enums.Materials.FLUID_MAP;
 import static gregtech.api.enums.Mods.Translocator;
+import static gregtech.api.util.GTRecipeBuilder.INGOTS;
+import static gregtech.api.util.GTRecipeBuilder.WILDCARD;
 import static gregtech.common.UndergroundOil.undergroundOilReadInformation;
 import static net.minecraftforge.common.util.ForgeDirection.DOWN;
 import static net.minecraftforge.common.util.ForgeDirection.EAST;
@@ -116,6 +116,7 @@ import net.minecraftforge.fluids.IFluidContainerItem;
 import net.minecraftforge.fluids.IFluidHandler;
 import net.minecraftforge.oredict.OreDictionary;
 
+import org.jetbrains.annotations.Contract;
 import org.joml.Vector3i;
 
 import com.google.auto.value.AutoValue;
@@ -1730,8 +1731,8 @@ public class GTUtility {
                 && (aStack1.getTagCompound() == null || aStack1.getTagCompound()
                     .equals(aStack2.getTagCompound()))
                 && (Items.feather.getDamage(aStack1) == Items.feather.getDamage(aStack2)
-                    || Items.feather.getDamage(aStack1) == W
-                    || Items.feather.getDamage(aStack2) == W);
+                    || Items.feather.getDamage(aStack1) == WILDCARD
+                    || Items.feather.getDamage(aStack2) == WILDCARD);
         }
         return false;
     }
@@ -1755,8 +1756,8 @@ public class GTUtility {
         return aStack1 != null && aStack2 != null
             && aStack1.getItem() == aStack2.getItem()
             && (Items.feather.getDamage(aStack1) == Items.feather.getDamage(aStack2)
-                || Items.feather.getDamage(aStack1) == W
-                || Items.feather.getDamage(aStack2) == W)
+                || Items.feather.getDamage(aStack1) == WILDCARD
+                || Items.feather.getDamage(aStack2) == WILDCARD)
             && (aIgnoreNBT || (((aStack1.getTagCompound() == null) == (aStack2.getTagCompound() == null))
                 && (aStack1.getTagCompound() == null || aStack1.getTagCompound()
                     .equals(aStack2.getTagCompound()))));
@@ -2324,7 +2325,7 @@ public class GTUtility {
 
     public static int stackToWildcard(ItemStack aStack) {
         if (isStackInvalid(aStack)) return 0;
-        return Item.getIdFromItem(aStack.getItem()) | (W << 16);
+        return Item.getIdFromItem(aStack.getItem()) | (WILDCARD << 16);
     }
 
     public static ItemStack intToStack(int aStack) {
@@ -2772,8 +2773,8 @@ public class GTUtility {
         return null;
     }
 
-    @Nullable
-    public static ItemStack copyOrNull(@Nullable ItemStack stack) {
+    @Contract("null -> null")
+    public static ItemStack copyOrNull(ItemStack stack) {
         if (isStackValid(stack)) return stack.copy();
         return null;
     }
@@ -2906,6 +2907,35 @@ public class GTUtility {
         return t;
     }
 
+    public static NBTTagList saveItemList(List<ItemStack> stacks) {
+        NBTTagList list = new NBTTagList();
+
+        if (stacks != null) {
+            for (ItemStack stack : stacks) {
+                if (isStackInvalid(stack)) continue;
+
+                list.appendTag(stack.writeToNBT(new NBTTagCompound()));
+            }
+        }
+
+        return list;
+    }
+
+    @SuppressWarnings("unchecked")
+    public static ArrayList<ItemStack> loadItemList(NBTTagList list) {
+        ArrayList<ItemStack> stacks = new ArrayList<>();
+
+        for (NBTTagCompound tag : (List<NBTTagCompound>) list.tagList) {
+            ItemStack stack = ItemStack.loadItemStackFromNBT(tag);
+
+            if (isStackInvalid(stack)) continue;
+
+            stacks.add(stack);
+        }
+
+        return stacks;
+    }
+
     /**
      * Loads an FluidStack properly.
      */
@@ -2944,7 +2974,7 @@ public class GTUtility {
     }
 
     public static boolean isStackInList(@Nonnull GTItemStack aStack, @Nonnull Collection<GTItemStack> aList) {
-        return aList.contains(aStack) || aList.contains(new GTItemStack(aStack.mItem, aStack.mStackSize, W));
+        return aList.contains(aStack) || aList.contains(new GTItemStack(aStack.mItem, aStack.mStackSize, WILDCARD));
     }
 
     /**
@@ -3014,7 +3044,7 @@ public class GTUtility {
      * Translates a Material Amount into an Amount of Fluid in Fluid Material Units.
      */
     public static long translateMaterialToFluidAmount(long aMaterialAmount, boolean aRoundUp) {
-        return translateMaterialToAmount(aMaterialAmount, L, aRoundUp);
+        return translateMaterialToAmount(aMaterialAmount, 1 * INGOTS, aRoundUp);
     }
 
     /**
@@ -3661,19 +3691,11 @@ public class GTUtility {
     }
 
     /**
-     * @deprecated Use standard translation with {@link StatCollector}.
+     * @deprecated Use {@link StatCollector}
      */
     @Deprecated
     public static String trans(String aKey, String aEnglish) {
         return GTLanguageManager.addStringLocalization("Interaction_DESCRIPTION_Index_" + aKey, aEnglish);
-    }
-
-    /**
-     * @deprecated Use standard translation with {@link StatCollector}.
-     */
-    @Deprecated
-    public static String getTrans(String aKey) {
-        return GTLanguageManager.getTranslation("Interaction_DESCRIPTION_Index_" + aKey);
     }
 
     /**
@@ -4804,7 +4826,7 @@ public class GTUtility {
          * This method stores metadata as wildcard and NBT as null.
          */
         public static ItemId createAsWildcard(ItemStack itemStack) {
-            return new AutoValue_GTUtility_ItemId(itemStack.getItem(), W, null, null);
+            return new AutoValue_GTUtility_ItemId(itemStack.getItem(), WILDCARD, null, null);
         }
 
         public static ItemId createAsWildcardWithNBT(ItemStack itemStack) {
@@ -4812,7 +4834,7 @@ public class GTUtility {
             if (nbt != null) {
                 nbt = (NBTTagCompound) nbt.copy();
             }
-            return new AutoValue_GTUtility_ItemId(itemStack.getItem(), W, nbt, null);
+            return new AutoValue_GTUtility_ItemId(itemStack.getItem(), WILDCARD, nbt, null);
         }
 
         /**
