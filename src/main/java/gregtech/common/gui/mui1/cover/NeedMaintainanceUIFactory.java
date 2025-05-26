@@ -1,6 +1,7 @@
 package gregtech.common.gui.mui1.cover;
 
 import static net.minecraft.util.StatCollector.translateToLocal;
+import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
@@ -120,14 +121,14 @@ public class NeedMaintainanceUIFactory extends CoverLegacyDataUIFactory {
 
     // TODO make this private when MUI1 cover UIs are removed
     public static String getMaintenanceIssuesCount(int count, boolean inverted) {
-        return String.format(
-            translateToLocal("gt.interact.desc.need_maint_count"),
+        return translateToLocalFormatted(
+            "gt.interact.desc.need_maint_count",
             count,
             inverted ? translateToLocal("gt.interact.desc.inverted_b") : "");
     }
 
     private static String getIssuesCount(int count) {
         return count == 1 ? translateToLocal("gt.interact.desc.issue")
-            : String.format(translateToLocal("gt.interact.desc.issues"), count);
+            : translateToLocalFormatted("gt.interact.desc.issues", count);
     }
 }
