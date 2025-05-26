@@ -1,5 +1,55 @@
 package gregtech.common.tileentities.machines.multi;
 
+import com.google.common.collect.ImmutableList;
+import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
+import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
+import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
+import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+import gregtech.api.GregTechAPI;
+import gregtech.api.enums.Materials;
+import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.logic.ProcessingLogic;
+import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
+import gregtech.api.metatileentity.implementations.MTEHatch;
+import gregtech.api.metatileentity.implementations.MTEHatchEnergy;
+import gregtech.api.metatileentity.implementations.MTEHatchInput;
+import gregtech.api.metatileentity.implementations.gui.MTEMultiBlockBaseGui;
+import gregtech.api.recipe.RecipeMap;
+import gregtech.api.recipe.RecipeMaps;
+import gregtech.api.recipe.check.CheckRecipeResult;
+import gregtech.api.recipe.check.CheckRecipeResultRegistry;
+import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GTRecipe;
+import gregtech.api.util.GTUtility;
+import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.api.util.OverclockCalculator;
+import gregtech.api.util.shutdown.SimpleShutDownReason;
+import gregtech.common.blocks.BlockCasings8;
+import gregtech.common.misc.GTStructureChannels;
+import gregtech.common.tileentities.machines.multi.gui.MTEEnvironmentallyCCFGUI;
+import mcp.mobius.waila.api.IWailaConfigHandler;
+import mcp.mobius.waila.api.IWailaDataAccessor;
+import net.minecraft.block.Block;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
+import net.minecraft.world.World;
+import net.minecraft.world.WorldProvider;
+import net.minecraftforge.common.util.ForgeDirection;
+import org.apache.commons.lang3.tuple.Pair;
+import org.jetbrains.annotations.NotNull;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
+
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlockAnyMeta;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlocksTiered;
@@ -27,60 +77,6 @@ import static gregtech.api.util.GTStructureUtility.ofFrame;
 import static gregtech.api.util.GTUtility.getTier;
 import static java.lang.Math.min;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
-import net.minecraft.block.Block;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
-import net.minecraft.world.World;
-import net.minecraft.world.WorldProvider;
-import net.minecraftforge.common.util.ForgeDirection;
-
-import org.apache.commons.lang3.tuple.Pair;
-import org.jetbrains.annotations.NotNull;
-
-import com.google.common.collect.ImmutableList;
-import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
-import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
-import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
-import com.gtnewhorizon.structurelib.structure.StructureDefinition;
-
-import gregtech.api.GregTechAPI;
-import gregtech.api.enums.Materials;
-import gregtech.api.interfaces.ITexture;
-import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
-import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.logic.ProcessingLogic;
-import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
-import gregtech.api.metatileentity.implementations.MTEHatch;
-import gregtech.api.metatileentity.implementations.MTEHatchEnergy;
-import gregtech.api.metatileentity.implementations.MTEHatchInput;
-import gregtech.api.metatileentity.implementations.gui.MTEMultiBlockBaseGui;
-import gregtech.api.recipe.RecipeMap;
-import gregtech.api.recipe.RecipeMaps;
-import gregtech.api.recipe.check.CheckRecipeResult;
-import gregtech.api.recipe.check.CheckRecipeResultRegistry;
-import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GTRecipe;
-import gregtech.api.util.GTUtility;
-import gregtech.api.util.MultiblockTooltipBuilder;
-import gregtech.api.util.OverclockCalculator;
-import gregtech.api.util.shutdown.SimpleShutDownReason;
-import gregtech.common.blocks.BlockCasings8;
-import gregtech.common.misc.GTStructureChannels;
-import gregtech.common.tileentities.machines.multi.gui.MTEEnvironmentallyCCFGUI;
-import mcp.mobius.waila.api.IWailaConfigHandler;
-import mcp.mobius.waila.api.IWailaDataAccessor;
-
 public class MTEEnvironmentallyControlledChemicalFacility extends
     MTEExtendedPowerMultiBlockBase<MTEEnvironmentallyControlledChemicalFacility> implements ISurvivalConstructable {
 
@@ -92,8 +88,13 @@ public class MTEEnvironmentallyControlledChemicalFacility extends
     private static final String PARALLEL_MODULE_R = "ParallelR";
     private static final String PARALLEL_MODULE_L = "ParallelL";
 
-    public double ECCFCurrentTemp = 0;
-    public double ECCFCurrentPressure = 0;
+    public double currentTemp = 0;
+    public double currentPressure = 0;
+    public double pressureLeakValue = 0;
+    public double pressureLossValue = 0;
+    public double temperatureLossValue = 0;
+    public double tempChange = 0;
+    public double presChange = 0;
 
     public int coolCoilTier = 0;
     public int vacuumCoilTier = 0;
@@ -132,8 +133,8 @@ public class MTEEnvironmentallyControlledChemicalFacility extends
     static final int MODULE_OFFSET_RIGHT = -3;
     static final int MODULE_OFFSET_DEPTH = -1;
 
-    private int deltaPressure;
-    private int deltaTemp;
+    public int deltaPressure;
+    public int deltaTemp;
 
     private static final String ECCFPressureNBTTag = "ECCFPressure";
     private static final String ECCFTempNBTTag = "ECCFTemperature";
@@ -384,7 +385,7 @@ public class MTEEnvironmentallyControlledChemicalFacility extends
             .addInfo(
                 EnumChatFormatting.GRAY + "Every second, ECCF temperature drifts towards ambient, to: "
                     + EnumChatFormatting.GOLD
-                    + "(current - ambient) * 0.98 + ambient")
+                    + "(current - ambient) * loss% + ambient")
             .addInfo(
                 EnumChatFormatting.GRAY + "It drains "
                     + EnumChatFormatting.YELLOW
@@ -394,7 +395,11 @@ public class MTEEnvironmentallyControlledChemicalFacility extends
             .addInfo(
                 EnumChatFormatting.GRAY + "And changes temperature to: "
                     + EnumChatFormatting.GOLD
-                    + "current + (fluid amount / 10000) * coolant value")
+                    + "current + (fluid amount / 10000) * "
+                    + EnumChatFormatting.WHITE
+                    + EnumChatFormatting.BOLD
+                    + EnumChatFormatting.UNDERLINE
+                    + "T")
             .addInfo(
                 EnumChatFormatting.GRAY + "ECCF drains energy hatch buffer of pressure module "
                     + EnumChatFormatting.YELLOW
@@ -402,13 +407,36 @@ public class MTEEnvironmentallyControlledChemicalFacility extends
             .addInfo(
                 EnumChatFormatting.GRAY + "Every second, ECCF pressure drifts towards ambient, to: "
                     + EnumChatFormatting.GOLD
-                    + "(current - ambient) * 0.95 + ambient")
+                    + "(current - ambient) * loss% + ambient")
+            .addInfo(
+                EnumChatFormatting.GRAY + "Then applies pressure leaks: "
+                    + EnumChatFormatting.GOLD
+                    + "(current * "
+                    + EnumChatFormatting.WHITE
+                    + EnumChatFormatting.BOLD
+                    + EnumChatFormatting.UNDERLINE
+                    + "VO"
+                    + EnumChatFormatting.GOLD
+                    + " + initial * (1 - "
+                    + EnumChatFormatting.WHITE
+                    + EnumChatFormatting.BOLD
+                    + EnumChatFormatting.UNDERLINE
+                    + "VO"
+                    + EnumChatFormatting.GOLD
+                    + ")) - current")
             .addInfo(
                 EnumChatFormatting.GRAY + "And applies pressure changes depending on the module type: "
                     + EnumChatFormatting.GOLD
                     + "current + (buffer EU ^ 0.7)")
             .addSeparator()
-            .addInfo("" + EnumChatFormatting.WHITE + EnumChatFormatting.BOLD + "Temperature")
+            .addInfo(
+                "" + EnumChatFormatting.WHITE
+                    + EnumChatFormatting.BOLD
+                    + EnumChatFormatting.UNDERLINE
+                    + "T"
+                    + EnumChatFormatting.WHITE
+                    + EnumChatFormatting.BOLD
+                    + "emperature")
             .addInfo("" + EnumChatFormatting.RED + EnumChatFormatting.BOLD + "Heating Module")
             .addInfo(
                 EnumChatFormatting.GOLD + "Lava"
@@ -496,7 +524,14 @@ public class MTEEnvironmentallyControlledChemicalFacility extends
                     + EnumChatFormatting.GRAY
                     + "used")
             .addSeparator()
-            .addInfo("" + EnumChatFormatting.WHITE + EnumChatFormatting.BOLD + "VO Lubricants Values")
+            .addInfo(
+                "" + EnumChatFormatting.WHITE
+                    + EnumChatFormatting.BOLD
+                    + EnumChatFormatting.UNDERLINE
+                    + "VO"
+                    + EnumChatFormatting.WHITE
+                    + EnumChatFormatting.BOLD
+                    + " Lubricants Values")
             .addInfo(EnumChatFormatting.GOLD + "No lubricant " + EnumChatFormatting.GRAY + "- 80% loss")
             .addInfo(EnumChatFormatting.GOLD + "VO-17 " + EnumChatFormatting.GRAY + "- 30% loss")
             .addInfo(EnumChatFormatting.GOLD + "VO-43 " + EnumChatFormatting.GRAY + "- 10% loss")
@@ -751,8 +786,8 @@ public class MTEEnvironmentallyControlledChemicalFacility extends
                 tempThreshold = (int) (1.5 * Math.pow(requiredTemp, 0.55));
                 pressureThreshold = (int) (1.5 * Math.pow(requiredPressure, 0.55));
                 recipeEUt = recipe.mEUt;
-                if (Math.abs(ECCFCurrentTemp - requiredTemp) <= tempThreshold
-                    && Math.abs(ECCFCurrentPressure - requiredPressure) <= pressureThreshold) {
+                if (Math.abs(currentTemp - requiredTemp) <= tempThreshold
+                    && Math.abs(currentPressure - requiredPressure) <= pressureThreshold) {
                     return super.validateRecipe(recipe);
                 }
                 if (recipeEUt > availableVoltage) {
@@ -903,8 +938,8 @@ public class MTEEnvironmentallyControlledChemicalFacility extends
     public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
         int z) {
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
-        tag.setDouble("temperature", ECCFCurrentTemp);
-        tag.setDouble("pressure", ECCFCurrentPressure);
+        tag.setDouble("temperature", currentTemp);
+        tag.setDouble("pressure", currentPressure);
         tag.setInteger("parallels", getMaxParallelRecipes());
     }
 
@@ -932,7 +967,7 @@ public class MTEEnvironmentallyControlledChemicalFacility extends
 
             StatCollector.translateToLocal("GT5U.ECCF.pressure") + ": "
                 + EnumChatFormatting.GREEN
-                + GTUtility.formatNumbers(ECCFCurrentPressure)
+                + GTUtility.formatNumbers(currentPressure)
                 + EnumChatFormatting.RESET
                 + " Pa",
             StatCollector.translateToLocal("GT5U.ECCF.pressure_required") + ": "
@@ -947,7 +982,7 @@ public class MTEEnvironmentallyControlledChemicalFacility extends
                 + " Pa",
             StatCollector.translateToLocal("GT5U.ECCF.temperature") + ": "
                 + EnumChatFormatting.GREEN
-                + GTUtility.formatNumbers(ECCFCurrentTemp)
+                + GTUtility.formatNumbers(currentTemp)
                 + EnumChatFormatting.RESET
                 + " K",
             StatCollector.translateToLocal("GT5U.ECCF.temperature_required") + ": "
@@ -974,15 +1009,15 @@ public class MTEEnvironmentallyControlledChemicalFacility extends
 
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
-        aNBT.setDouble(ECCFPressureNBTTag, ECCFCurrentPressure);
-        aNBT.setDouble(ECCFTempNBTTag, ECCFCurrentTemp);
+        aNBT.setDouble(ECCFPressureNBTTag, currentPressure);
+        aNBT.setDouble(ECCFTempNBTTag, currentTemp);
         super.saveNBTData(aNBT);
     }
 
     @Override
     public void loadNBTData(final NBTTagCompound aNBT) {
-        ECCFCurrentPressure = aNBT.getDouble(ECCFPressureNBTTag);
-        ECCFCurrentTemp = aNBT.getDouble(ECCFTempNBTTag);
+        currentPressure = aNBT.getDouble(ECCFPressureNBTTag);
+        currentTemp = aNBT.getDouble(ECCFTempNBTTag);
         super.loadNBTData(aNBT);
     }
 
@@ -1177,9 +1212,9 @@ public class MTEEnvironmentallyControlledChemicalFacility extends
                 .decreaseStoredEnergyUnits(drainAmountEU, false);
         }
         if (mMachine && (aTick % 20 == 0)) {
-            if ((ECCFCurrentTemp == 0) && (ECCFCurrentPressure == 0)) {
-                ECCFCurrentPressure = initialPressure;
-                ECCFCurrentTemp = initialTemp;
+            if ((currentTemp == 0) && (currentPressure == 0)) {
+                currentPressure = initialPressure;
+                currentTemp = initialTemp;
             }
 
             if (isVacuumModule || isCompressModule)
@@ -1187,8 +1222,10 @@ public class MTEEnvironmentallyControlledChemicalFacility extends
             if (isCoolModule || isHeatModule) coeffTemp = getTempCoefficient(Math.max(coolCoilTier, heatCoilTier));
 
             // returns temperature values to atmosphere conditions
-            ECCFCurrentTemp = (ECCFCurrentTemp - initialTemp) * coeffTemp + initialTemp;
+            temperatureLossValue = (currentTemp - initialTemp) * coeffTemp + initialTemp - currentTemp;
+            currentTemp += temperatureLossValue;
             // Temperature calculation
+            tempChange = 0;
             if (isCoolModule || isHeatModule) {
                 // drain all coolant from hatches and change temperature
                 if (mCoolantInputHatch != null) {
@@ -1205,29 +1242,34 @@ public class MTEEnvironmentallyControlledChemicalFacility extends
                         // Apply coolant (linear function)
                         double coolantTempImpact = mCoolantInputHatch.mFluid.amount / 10000f * coolantTemp;
                         if ((isCoolModule || isCoolant) || (isHeatModule || isHot)) {
+                            double tempBeforeChange = currentTemp;
                             if (coolantTemp < initialTemp)
-                                ECCFCurrentTemp = Math.max(ECCFCurrentTemp - coolantTempImpact, coolantTemp);
+                                currentTemp = Math.max(currentTemp - coolantTempImpact, coolantTemp);
                             if (coolantTemp > initialTemp)
-                                ECCFCurrentTemp = min(ECCFCurrentTemp + coolantTempImpact, coolantTemp);
+                                currentTemp = min(currentTemp + coolantTempImpact, coolantTemp);
+                            tempChange = tempBeforeChange - currentTemp;
                             drain(mCoolantInputHatch, mCoolantInputHatch.mFluid, true);
                         }
                     }
                 }
             }
-
-            // returns pressure values to atmosphere conditions
-            ECCFCurrentPressure = (ECCFCurrentPressure - initialPressure) * coeffPressure + initialPressure;
+            // return pressure values to atmosphere conditions
+            pressureLossValue = (currentPressure - initialPressure) * coeffPressure + initialPressure - currentPressure;
+            currentPressure += pressureLossValue;
             // Pressure calculation
+            double leakCoeff = 0.8;
+            presChange = 0;
             if (isCompressModule || isVacuumModule) {
                 // Apply pressure changes
                 if (mPressureEnergyHatch != null) {
                     drainAmountEU /= 20;
-                    ECCFCurrentPressure += Math.pow(drainAmountEU, 0.7) * (isCompressModule ? 1 : -1);
-                    ECCFCurrentPressure = Math.max(ECCFCurrentPressure, 0);
+                    presChange = Math.pow(drainAmountEU, 0.7) * (isCompressModule ? 1 : -1);
+                    currentPressure += presChange;
+                    currentPressure = Math.max(currentPressure, 0);
+                    if (currentPressure == 0) presChange = 0;
                     drainAmountEU = 0;
                 }
                 // Apply lubricant depressurization (leakCoeff is loss percentage)
-                double leakCoeff = 0.8;
                 // check if there is a hatch for lubricant and apply depressurization if there is too few lubricant
                 if (mLubricantInputHatch != null) {
                     if (mLubricantInputHatch.mFluid != null) {
@@ -1243,17 +1285,17 @@ public class MTEEnvironmentallyControlledChemicalFacility extends
                             mLubricantInputHatch.drain(5, true);
                         }
                     }
-                    ECCFCurrentPressure = ECCFCurrentPressure * leakCoeff + initialPressure * (1 - leakCoeff);
                 }
             }
+            pressureLeakValue = (currentPressure * leakCoeff + initialPressure * (1 - leakCoeff)) - currentPressure;
+            currentPressure += pressureLeakValue;
 
-            ECCFCurrentPressure += deltaPressure;
-            ECCFCurrentTemp += deltaTemp;
-
+            currentPressure += deltaPressure;
+            currentTemp += deltaTemp;
             // Range check
             if (mMaxProgresstime != 0) {
-                if ((Math.abs(ECCFCurrentTemp - requiredTemp) > tempThreshold)
-                    || (Math.abs(ECCFCurrentPressure - requiredPressure) > pressureThreshold)) {
+                if ((Math.abs(currentTemp - requiredTemp) > tempThreshold)
+                    || (Math.abs(currentPressure - requiredPressure) > pressureThreshold)) {
                     stopMachine(SimpleShutDownReason.ofCritical("conditions_range"));
                 }
             }
