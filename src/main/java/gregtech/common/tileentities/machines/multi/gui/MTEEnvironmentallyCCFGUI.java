@@ -1,7 +1,5 @@
 package gregtech.common.tileentities.machines.multi.gui;
 
-import net.minecraft.util.EnumChatFormatting;
-
 import com.cleanroommc.modularui.api.IPanelHandler;
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.drawable.DynamicDrawable;
@@ -16,10 +14,10 @@ import com.cleanroommc.modularui.widget.ParentWidget;
 import com.cleanroommc.modularui.widgets.ButtonWidget;
 import com.cleanroommc.modularui.widgets.PagedWidget;
 import com.cleanroommc.modularui.widgets.TextWidget;
-
 import gregtech.api.metatileentity.implementations.gui.MTEMultiBlockBaseGui;
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.common.tileentities.machines.multi.MTEEnvironmentallyControlledChemicalFacility;
+import net.minecraft.util.EnumChatFormatting;
 
 public class MTEEnvironmentallyCCFGUI extends MTEMultiBlockBaseGui {
 
@@ -69,7 +67,7 @@ public class MTEEnvironmentallyCCFGUI extends MTEMultiBlockBaseGui {
         })
             .background(GTGuiTextures.BUTTON_STANDARD, GTGuiTextures.OVERLAY_BUTTON_THERMOMETER)
             .disableHoverBackground()
-            .tooltip(tooltip -> tooltip.add("Temperature Control"))
+            .tooltip(tooltip -> tooltip.add("Condition Control"))
             .pos(156, 102)
             .size(18, 18));
     }
