@@ -13,6 +13,7 @@ import net.minecraftforge.client.IItemRenderer;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.util.Color;
 
 import gregtech.api.interfaces.IGT_ItemWithMaterialRenderer;
 
@@ -49,20 +50,21 @@ public class GTRenderUtil {
         if (icon == null) {
             return;
         }
-        Tessellator.instance.startDrawingQuads();
-        Tessellator.instance.setNormal(nx, ny, nz);
+        Tessellator tessellator = Tessellator.instance;
+        tessellator.startDrawingQuads();
+        tessellator.setNormal(nx, ny, nz);
         if (nz > 0.0F) {
-            Tessellator.instance.addVertexWithUV(xStart, yStart, z, icon.getMinU(), icon.getMinV());
-            Tessellator.instance.addVertexWithUV(xEnd, yStart, z, icon.getMaxU(), icon.getMinV());
-            Tessellator.instance.addVertexWithUV(xEnd, yEnd, z, icon.getMaxU(), icon.getMaxV());
-            Tessellator.instance.addVertexWithUV(xStart, yEnd, z, icon.getMinU(), icon.getMaxV());
+            tessellator.addVertexWithUV(xStart, yStart, z, icon.getMinU(), icon.getMinV());
+            tessellator.addVertexWithUV(xEnd, yStart, z, icon.getMaxU(), icon.getMinV());
+            tessellator.addVertexWithUV(xEnd, yEnd, z, icon.getMaxU(), icon.getMaxV());
+            tessellator.addVertexWithUV(xStart, yEnd, z, icon.getMinU(), icon.getMaxV());
         } else {
-            Tessellator.instance.addVertexWithUV(xStart, yEnd, z, icon.getMinU(), icon.getMaxV());
-            Tessellator.instance.addVertexWithUV(xEnd, yEnd, z, icon.getMaxU(), icon.getMaxV());
-            Tessellator.instance.addVertexWithUV(xEnd, yStart, z, icon.getMaxU(), icon.getMinV());
-            Tessellator.instance.addVertexWithUV(xStart, yStart, z, icon.getMinU(), icon.getMinV());
+            tessellator.addVertexWithUV(xStart, yEnd, z, icon.getMinU(), icon.getMaxV());
+            tessellator.addVertexWithUV(xEnd, yEnd, z, icon.getMaxU(), icon.getMaxV());
+            tessellator.addVertexWithUV(xEnd, yStart, z, icon.getMaxU(), icon.getMinV());
+            tessellator.addVertexWithUV(xStart, yStart, z, icon.getMinU(), icon.getMinV());
         }
-        Tessellator.instance.draw();
+        tessellator.draw();
     }
 
     @SuppressWarnings("RedundantLabeledSwitchRuleCodeBlock")
@@ -137,5 +139,14 @@ public class GTRenderUtil {
                 GL11.glTranslatef(-0.5F, -0.25F, 0.0421875F);
             }
         }
+    }
+
+    public static Color getColorFromARGB(int argb) {
+        int a = (argb >> 24) & 0xFF;
+        int r = (argb >> 16) & 0xFF;
+        int g = (argb >> 8) & 0xFF;
+        int b = argb & 0xFF;
+
+        return new Color(r, g, b, a);
     }
 }

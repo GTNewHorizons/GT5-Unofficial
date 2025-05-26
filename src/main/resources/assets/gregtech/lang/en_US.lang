@@ -2602,3 +2602,16 @@ achievement.gt.blockmachines.moleculartransformer.controller.tier.single.desc=[A
 achievement.gt.blockmachines.gtpp.multimachine.replicator=Elemental Duplicator
 achievement.gt.blockmachines.gtpp.multimachine.replicator.desc=[AL] Pickup this item to see the recipe in NEI
 
+# BEC Material System
+prefix.plate.name=%s Plate
+prefix.foil.name=%s Foil
+prefix.stickLong.name=Long %s Rod
+prefix.stick.name=%s Rod
+prefix.bolt.name=%s Bolt
+prefix.ring.name=%s Ring
+prefix.wireFine.name=Fire %s Wire
+prefix.lens.name=%s Lens
+
+material.ThermalCont1.name=UHV-Q-624 Thermal Containment
+
+#override.plateTest2.name=Test 2 Overrided Plate

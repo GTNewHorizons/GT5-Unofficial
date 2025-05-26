@@ -31,7 +31,6 @@ import com.google.common.base.Stopwatch;
 import com.google.common.collect.SetMultimap;
 import com.gtnewhorizon.gtnhlib.config.ConfigException;
 import com.gtnewhorizon.gtnhlib.config.ConfigurationManager;
-
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.SidedProxy;
@@ -59,6 +58,7 @@ import gregtech.api.enums.Textures;
 import gregtech.api.gui.modularui.GTUIInfos;
 import gregtech.api.interfaces.IBlockWithClientMeta;
 import gregtech.api.interfaces.internal.IGTMod;
+import gregtech.api.materials.bec.BECMaterialList;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.modularui2.GTGuiTheme;
@@ -345,6 +345,8 @@ public class GTMod implements IGTMod {
         new GTItemIterator().run();
         gregtechproxy.registerUnificationEntries();
         new FuelLoader().run();
+
+        BECMaterialList.init();
 
         if (Mods.Waila.isModLoaded()) {
             Waila.init();

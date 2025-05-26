@@ -5037,4 +5037,12 @@ public class GTUtility {
             return text.substring(0, limit) + "...";
         }
     }
+
+    public static boolean isClient() {
+        return FMLCommonHandler.instance().getSide().isClient();
+    }
+
+    public static boolean isServer() {
+        return FMLCommonHandler.instance().getSide().isServer();
+    }
 }

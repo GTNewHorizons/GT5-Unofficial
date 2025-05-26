@@ -1,14 +1,31 @@
 package gregtech.api.util;
 
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.IntFunction;
 import java.util.function.Predicate;
 
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.resources.IResource;
+import net.minecraft.client.resources.IResourceManager;
+import net.minecraft.util.ResourceLocation;
+
+import com.google.common.reflect.TypeToken;
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonPrimitive;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import it.unimi.dsi.fastutil.Pair;
 
 /**
@@ -100,5 +117,53 @@ public class GTDataUtils {
 
     public static <T> Iterable<T> oneshot(Iterator<T> iter) {
         return () -> iter;
+    }
+
+    public static final Gson GSON = new Gson();
+
+    @SideOnly(Side.CLIENT)
+    public static <K, V> Map<K, V> loadResourceMerged(Class<K> key, Class<V> value, ResourceLocation resource) {
+        return loadResourceMerged(GSON, key, value, resource);
+    }
+
+    @SideOnly(Side.CLIENT)
+    public static <K, V> Map<K, V> loadResourceMerged(Gson gson, Class<K> key, Class<V> value, ResourceLocation resource) {
+        Map<String, JsonElement> temp = new HashMap<>();
+
+        loadResourceMerged(gson, new TypeToken<Map<String, JsonElement>>(){}.getType(), resource, temp::putAll);
+
+        Map<K, V> out = new HashMap<>();
+
+        for (var e : temp.entrySet()) {
+            out.put(gson.fromJson(new JsonPrimitive(e.getKey()), key), gson.fromJson(e.getValue(), value));
+        }
+
+        return out;
+    }
+
+    @SideOnly(Side.CLIENT)
+    public static <T> void loadResourceMerged(Gson gson, Type type, ResourceLocation resource, Consumer<T> fn) {
+        IResourceManager manager = Minecraft.getMinecraft().getResourceManager();
+
+        try {
+            for (IResource colourMap : manager.getAllResources(resource)) {
+                fn.accept(gson.fromJson(new InputStreamReader(colourMap.getInputStream()), type));
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @SideOnly(Side.CLIENT)
+    public static <T> T loadResource(Gson gson, Type type, ResourceLocation location) {
+        IResourceManager manager = Minecraft.getMinecraft().getResourceManager();
+
+        try {
+            IResource resource = manager.getResource(location);
+
+            return gson.fromJson(new InputStreamReader(resource.getInputStream()), type);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
