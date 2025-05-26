@@ -308,7 +308,7 @@ public final class RecipeMaps {
         .build();
     public static final RecipeMap<FormingPressBackend> formingPressRecipes = RecipeMapBuilder
         .of("gt.recipe.press", FormingPressBackend::new)
-        .maxIO(6, 1, 0, 0)
+        .maxIO(6, 1, 1, 0)
         .minInputs(2, 0)
         .slotOverlays((index, isFluid, isOutput, isSpecial) -> {
             if (isOutput) {
@@ -388,7 +388,7 @@ public final class RecipeMaps {
         .neiHandlerInfo(builder -> builder.setDisplayStack(ItemList.Machine_LV_Macerator.get(1)))
         .build();
     public static final RecipeMap<RecipeMapBackend> chemicalBathRecipes = RecipeMapBuilder.of("gt.recipe.chemicalbath")
-        .maxIO(2, 3, 1, 1)
+        .maxIO(2, 3, 2, 2)
         .minInputs(1, 1)
         .progressBar(GTUITextures.PROGRESSBAR_BATH, ProgressBar.Direction.CIRCULAR_CW)
         .build();
