@@ -207,10 +207,10 @@ public class MTEMultiBlockBaseGui {
 
             .child(
                 new TextWidget(
-                    GTUtility.trans("139", "Hit with Soft Mallet") + "\n"
-                        + GTUtility.trans("140", "to (re-)start the Machine")
-                        + "\n"
-                        + GTUtility.trans("141", "if it doesn't start.")).color(Color.WHITE.main)
+                    IKey.comp(
+                        IKey.lang(() -> "gt.interact.desc.mb.idle.1"),
+                        IKey.lang(() -> "gt.interact.desc.mb.idle.2"),
+                        IKey.lang(() -> "gt.interact.desc.mb.idle.3"))).color(Color.WHITE.main)
                             .setEnabledIf(
                                 widget -> base.getErrorDisplayID() == 0 && !baseMetaTileEntity.isActive()
                                     && !baseMetaTileEntity.isAllowedToWork())
