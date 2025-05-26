@@ -17,7 +17,6 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TextureSet;
-import gregtech.api.enums.ToolDictNames;
 import gregtech.api.metatileentity.implementations.MTEFluidPipe;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
@@ -689,20 +688,17 @@ public class GregtechConduits {
         GTModHandler.addCraftingRecipe(
             ItemUtils.getItemStackOfAmountFromOreDict("pipe" + "Small" + output, 6),
             GTModHandler.RecipeBits.BUFFERED,
-            new Object[] { "PWP", "P P", "PHP", 'P', pipePlate, 'H', ToolDictNames.craftingToolHardHammer, 'W',
-                ToolDictNames.craftingToolWrench });
+            new Object[] { "PwP", "P P", "PhP", 'P', pipePlate });
 
         GTModHandler.addCraftingRecipe(
             ItemUtils.getItemStackOfAmountFromOreDict("pipe" + "Medium" + output, 2),
             GTModHandler.RecipeBits.BUFFERED,
-            new Object[] { "PPP", "W H", "PPP", 'P', pipePlate, 'H', ToolDictNames.craftingToolHardHammer, 'W',
-                ToolDictNames.craftingToolWrench });
+            new Object[] { "PPP", "w h", "PPP", 'P', pipePlate });
 
         GTModHandler.addCraftingRecipe(
             ItemUtils.getItemStackOfAmountFromOreDict("pipe" + "Large" + output, 1),
             GTModHandler.RecipeBits.BUFFERED,
-            new Object[] { "PHP", "P P", "PWP", 'P', pipePlate, 'H', ToolDictNames.craftingToolHardHammer, 'W',
-                ToolDictNames.craftingToolWrench });
+            new Object[] { "PhP", "P P", "PwP", 'P', pipePlate });
 
         if (pipeIngot != null && ItemUtils.checkForInvalidItems(pipeIngot)) {
             // 1 Clay Plate = 1 Clay Dust = 2 Clay Ball
