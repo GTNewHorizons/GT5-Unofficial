@@ -208,9 +208,9 @@ public class MTEMultiBlockBaseGui {
             .child(
                 new TextWidget(
                     IKey.comp(
-                        IKey.lang(() -> "gt.interact.desc.mb.idle.1"),
-                        IKey.lang(() -> "gt.interact.desc.mb.idle.2"),
-                        IKey.lang(() -> "gt.interact.desc.mb.idle.3"))).color(Color.WHITE.main)
+                        IKey.lang("gt.interact.desc.mb.idle.1"),
+                        IKey.lang("gt.interact.desc.mb.idle.2"),
+                        IKey.lang("gt.interact.desc.mb.idle.3"))).color(Color.WHITE.main)
                             .setEnabledIf(
                                 widget -> base.getErrorDisplayID() == 0 && !baseMetaTileEntity.isActive()
                                     && !baseMetaTileEntity.isAllowedToWork())
