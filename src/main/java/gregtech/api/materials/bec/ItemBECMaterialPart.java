@@ -58,7 +58,7 @@ public class ItemBECMaterialPart extends Item implements ItemWithTextures {
 
                 if (stack == null) continue;
 
-                OreDictionary.registerOre(prefix + material.name, stack);
+                OreDictionary.registerOre(prefix + material.name.replaceAll("[^a-zA-Z0-9]", ""), stack);
             }
         }
     }
