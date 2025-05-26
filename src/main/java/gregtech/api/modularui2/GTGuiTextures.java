@@ -274,46 +274,54 @@ public final class GTGuiTextures {
         .canApplyTheme(true)
         .location(GregTech.ID, "gui/overlay_button/void_excess_all")
         .build();
-    public static final UITexture OVERLAY_BUTTON_INPUT_SEPARATION_ON = fullImage(
-        GregTech.ID,
-        "gui/overlay_button/input_separation_on");
-    public static final UITexture OVERLAY_BUTTON_INPUT_SEPARATION_ON_DISABLED = fullImage(
-        GregTech.ID,
-        "gui/overlay_button/input_separation_on_disabled");
-    public static final UITexture OVERLAY_BUTTON_INPUT_SEPARATION_OFF = fullImage(
-        GregTech.ID,
-        "gui/overlay_button/input_separation_off");
-    public static final UITexture OVERLAY_BUTTON_INPUT_SEPARATION_OFF_DISABLED = fullImage(
-        GregTech.ID,
-        "gui/overlay_button/input_separation_off_disabled");
-    public static final UITexture OVERLAY_BUTTON_RECIPE_UNLOCKED = fullImage(
-        GregTech.ID,
-        "gui/overlay_button/recipe_unlocked");
-    public static final UITexture OVERLAY_BUTTON_RECIPE_UNLOCKED_DISABLED = fullImage(
-        GregTech.ID,
-        "gui/overlay_button/recipe_unlocked_disabled");
-    public static final UITexture OVERLAY_BUTTON_RECIPE_LOCKED = fullImage(
-        GregTech.ID,
-        "gui/overlay_button/recipe_locked");
-    public static final UITexture OVERLAY_BUTTON_RECIPE_LOCKED_DISABLED = fullImage(
-        GregTech.ID,
-        "gui/overlay_button/recipe_locked_disabled");
-    public static final UITexture OVERLAY_BUTTON_BATCH_MODE_ON = fullImage(
-        GregTech.ID,
-        "gui/overlay_button/batch_mode_on");
-    public static final UITexture OVERLAY_BUTTON_BATCH_MODE_ON_DISABLED = fullImage(
-        GregTech.ID,
-        "gui/overlay_button/batch_mode_on_disabled");
-    public static final UITexture OVERLAY_BUTTON_BATCH_MODE_OFF = fullImage(
-        GregTech.ID,
-        "gui/overlay_button/batch_mode_off");
-    public static final UITexture OVERLAY_BUTTON_BATCH_MODE_OFF_DISABLED = fullImage(
-        GregTech.ID,
-        "gui/overlay_button/batch_mode_off_disabled");
-    public static final UITexture OVERLAY_BUTTON_STRUCTURE_UPDATE = fullImage(
-        GregTech.ID,
-        "gui/overlay_button/structure_update");
-    public static final UITexture OVERLAY_BUTTON_FORBIDDEN = fullImage(GregTech.ID, "gui/overlay_button/forbidden");
+
+    public static final UITexture OVERLAY_BUTTON_THERMOMETER = UITexture
+        .fullImage(GregTech.ID, "gui/overlay_button/thermometer");
+    public static final UITexture COOL_MODULE_ECCF_INDICATOR = UITexture
+        .fullImage(GregTech.ID, "gui/picture/cool_module_ECCF_indicator");
+    public static final UITexture HEAT_MODULE_ECCF_INDICATOR = UITexture
+        .fullImage(GregTech.ID, "gui/picture/heat_module_ECCF_indicator");
+    public static final UITexture PRESSURE_MODULE_ECCF_INDICATOR = UITexture
+        .fullImage(GregTech.ID, "gui/picture/pressure_module_ECCF_indicator");
+    public static final UITexture VACUUM_MODULE_ECCF_INDICATOR = UITexture
+        .fullImage(GregTech.ID, "gui/picture/vacuum_module_ECCF_indicator");
+    public static final UITexture EMPTY_ECCF_INDICATOR_L = UITexture
+        .fullImage(GregTech.ID, "gui/picture/empty_ECCF_indicator_L");
+    public static final UITexture EMPTY_ECCF_INDICATOR_R = UITexture
+        .fullImage(GregTech.ID, "gui/picture/empty_ECCF_indicator_R");
+    public static final UITexture PARALLEL_ECCF_INDICATOR_L = UITexture
+        .fullImage(GregTech.ID, "gui/picture/parallel_ECCF_indicator_L");
+    public static final UITexture PARALLEL_ECCF_INDICATOR_R = UITexture
+        .fullImage(GregTech.ID, "gui/picture/parallel_ECCF_indicator_R");
+
+    public static final UITexture OVERLAY_BUTTON_INPUT_SEPARATION_ON = UITexture
+        .fullImage(GregTech.ID, "gui/overlay_button/input_separation_on");
+    public static final UITexture OVERLAY_BUTTON_INPUT_SEPARATION_ON_DISABLED = UITexture
+        .fullImage(GregTech.ID, "gui/overlay_button/input_separation_on_disabled");
+    public static final UITexture OVERLAY_BUTTON_INPUT_SEPARATION_OFF = UITexture
+        .fullImage(GregTech.ID, "gui/overlay_button/input_separation_off");
+    public static final UITexture OVERLAY_BUTTON_INPUT_SEPARATION_OFF_DISABLED = UITexture
+        .fullImage(GregTech.ID, "gui/overlay_button/input_separation_off_disabled");
+    public static final UITexture OVERLAY_BUTTON_RECIPE_UNLOCKED = UITexture
+        .fullImage(GregTech.ID, "gui/overlay_button/recipe_unlocked");
+    public static final UITexture OVERLAY_BUTTON_RECIPE_UNLOCKED_DISABLED = UITexture
+        .fullImage(GregTech.ID, "gui/overlay_button/recipe_unlocked_disabled");
+    public static final UITexture OVERLAY_BUTTON_RECIPE_LOCKED = UITexture
+        .fullImage(GregTech.ID, "gui/overlay_button/recipe_locked");
+    public static final UITexture OVERLAY_BUTTON_RECIPE_LOCKED_DISABLED = UITexture
+        .fullImage(GregTech.ID, "gui/overlay_button/recipe_locked_disabled");
+    public static final UITexture OVERLAY_BUTTON_BATCH_MODE_ON = UITexture
+        .fullImage(GregTech.ID, "gui/overlay_button/batch_mode_on");
+    public static final UITexture OVERLAY_BUTTON_BATCH_MODE_ON_DISABLED = UITexture
+        .fullImage(GregTech.ID, "gui/overlay_button/batch_mode_on_disabled");
+    public static final UITexture OVERLAY_BUTTON_BATCH_MODE_OFF = UITexture
+        .fullImage(GregTech.ID, "gui/overlay_button/batch_mode_off");
+    public static final UITexture OVERLAY_BUTTON_BATCH_MODE_OFF_DISABLED = UITexture
+        .fullImage(GregTech.ID, "gui/overlay_button/batch_mode_off_disabled");
+    public static final UITexture OVERLAY_BUTTON_STRUCTURE_UPDATE = UITexture
+        .fullImage(GregTech.ID, "gui/overlay_button/structure_update");
+    public static final UITexture OVERLAY_BUTTON_FORBIDDEN = UITexture
+        .fullImage(GregTech.ID, "gui/overlay_button/forbidden");
 
     // endregion slot overlay
 
@@ -538,6 +546,17 @@ public final class GTGuiTextures {
         .adaptable(1, 1, 1, 1)
         .canApplyTheme()
         .name(GTTextureIds.PICTURE_RADIATION_SHUTTER_INSIDE)
+        .build();
+
+    public static final UITexture PROGRESSBAR_ECCF_TEMPERATURE = UITexture.builder()
+        .location(GregTech.ID, "gui/progressbar/progressbar_eccf_temperature")
+        .fullImage()
+        .name(GTTextureIds.PROGRESSBAR_ECCF_TEMPERATURE)
+        .build();
+    public static final UITexture PROGRESSBAR_ECCF_PRESSURE = UITexture.builder()
+        .location(GregTech.ID, "gui/progressbar/progressbar_eccf_pressure")
+        .fullImage()
+        .name(GTTextureIds.PROGRESSBAR_ECCF_PRESSURE)
         .build();
 
     // endregion picture

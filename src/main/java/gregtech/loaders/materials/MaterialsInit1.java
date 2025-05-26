@@ -1199,6 +1199,31 @@ public class MaterialsInit1 {
             .constructMaterial()
             .setHasCorrespondingFluid(true);
 
+
+        Materials.VO17_lubricant = new MaterialBuilder( 180, TextureSet.SET_FLUID, "VO-17 lubricant")
+            .addFluid()
+            .addCell()
+            .setRGB(255,196,0)
+            .setName("VO17")
+            .setColor(Dyes._NULL)
+            .constructMaterial();
+
+        Materials.VO43_lubricant = new MaterialBuilder( 181, TextureSet.SET_FLUID, "VO-43 lubricant")
+            .addFluid()
+            .addCell()
+            .setRGB(255,196,0)
+            .setName("VO43")
+            .setColor(Dyes._NULL)
+            .constructMaterial();
+
+        Materials.VO75_lubricant = new MaterialBuilder( 182, TextureSet.SET_FLUID, "VO-75 lubricant")
+            .addFluid()
+            .addCell()
+            .setRGB(255,196,0)
+            .setName("VO75")
+            .setColor(Dyes._NULL)
+            .constructMaterial();
+
         Materials.ComplexityCatalyst = new MaterialBuilder(897, TextureSet.SET_DULL, "Complexity Catalyst")
             .setRGB(0x8b93a9)
             .addFluid()
