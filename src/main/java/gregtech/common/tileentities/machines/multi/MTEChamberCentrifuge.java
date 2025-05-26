@@ -29,6 +29,7 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.MaterialsUEVplus;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.IToolStats;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.items.MetaGeneratedTool;
@@ -43,8 +44,10 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.*;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.common.blocks.BlockCasings1;
+import gregtech.common.items.MetaGeneratedTool01;
 import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.tileentities.machines.multi.gui.MTEChamberCentrifugeGui;
+import gregtech.common.tools.*;
 
 public class MTEChamberCentrifuge extends MTEExtendedPowerMultiBlockBase<MTEChamberCentrifuge>
     implements ISurvivalConstructable {
@@ -55,13 +58,10 @@ public class MTEChamberCentrifuge extends MTEExtendedPowerMultiBlockBase<MTECham
     private final int amountToDrain = 10; // constant drain amount.
     private int mTier;
     public final LimitingItemStackHandler inventoryHandler = new LimitingItemStackHandler(8, 1);
-    private int[] modules = { 1, 2, 3, 4, 5 };
     private static final String STRUCTURE_TIER_1 = "t1";
     private static final String STRUCTURE_TIER_2 = "t2";
     private static final String STRUCTURE_TIER_3 = "t3";
     private static final String STRUCTURE_TIER_4 = "t4";
-    private static MetaGeneratedTool toolchecker;
-
     private static final IStructureDefinition<MTEChamberCentrifuge> STRUCTURE_DEFINITION = StructureDefinition
         .<MTEChamberCentrifuge>builder()
         .addShape(
@@ -159,20 +159,23 @@ public class MTEChamberCentrifuge extends MTEExtendedPowerMultiBlockBase<MTECham
     }
 
     @Override
-    public boolean isCorrectMachinePart(ItemStack aStack) {
-        return true;
-    }
-
-    @Override
     public void loadNBTData(NBTTagCompound aNBT) {
-        mTier = aNBT.getInteger("multiTier");
         super.loadNBTData(aNBT);
+        mTier = aNBT.getInteger("multiTier");
+        if (inventoryHandler != null) {
+            inventoryHandler.deserializeNBT(aNBT.getCompoundTag("inventory"));
+        }
     }
 
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
-        aNBT.setInteger("multiTier", mTier);
         super.saveNBTData(aNBT);
+        aNBT.setInteger("multiTier", mTier);
+        aNBT.setBoolean("tier2FluidOn", tier2Fluid);
+        if (inventoryHandler != null) {
+            aNBT.setTag("inventory", inventoryHandler.serializeNBT());
+        }
+
     }
 
     @Override
@@ -368,19 +371,48 @@ public class MTEChamberCentrifuge extends MTEExtendedPowerMultiBlockBase<MTECham
             .setMaxParallelSupplier(this::getTrueParallel);
     }
 
+    @Override
+    public boolean isCorrectMachinePart(ItemStack aStack) {
+        if (aStack == null) return false;
+        if (!(aStack.getItem() instanceof MetaGeneratedTool01 tool)) return false;
+        if (aStack.getItemDamage() < 170 || aStack.getItemDamage() > 179) return false;
+
+        IToolStats stats = tool.getToolStats(aStack);
+        if (stats == null || stats.getSpeedMultiplier() <= 0) return false;
+
+        Materials material = MetaGeneratedTool.getPrimaryMaterial(aStack);
+        return material != null && material.mToolSpeed > 0;
+    }
+
     private int getSumRotorLevels() {
-        int sumRotorLevels = 100;
-        /*
-         * for (ItemStack item : turbines)
-         * {
-         * IToolStats tStats = toolchecker.getToolStats(item);
-         * if( tStats instanceof ToolTurbine)
-         * {
-         * int level = toolchecker.getHarvestLevel(item, "");
-         * sumRotorLevels += level;
-         * }
-         * }
-         */
+        int sumRotorLevels = 0;
+
+        for (int i = 0; i < mTier * 2; i++) {
+            if (inventoryHandler.getStackInSlot(i) != null) { // operate under the assumption the tool in the slot IS a
+                                                              // rotor.
+                ItemStack currentItem = inventoryHandler.getStackInSlot(i);
+                IToolStats toolStats = ((MetaGeneratedTool) currentItem.getItem()).getToolStats(currentItem);
+                int harvestLevel = ((MetaGeneratedTool) currentItem.getItem()).getHarvestLevel(currentItem, "test");
+
+                if (toolStats instanceof ToolTurbineHuge) {
+                    sumRotorLevels += harvestLevel;
+                    continue;
+                }
+                if (toolStats instanceof ToolTurbineLarge) {
+                    sumRotorLevels += (int) (0.75F * harvestLevel);
+                    continue;
+                }
+                if (toolStats instanceof ToolTurbineNormal) {
+                    sumRotorLevels += (int) (0.5F * harvestLevel);
+                    continue;
+                }
+                if (toolStats instanceof ToolTurbineSmall) {
+                    sumRotorLevels += (int) (0.25F * harvestLevel);
+                }
+
+            }
+        }
+
         return sumRotorLevels;
     }
 
@@ -434,8 +466,6 @@ public class MTEChamberCentrifuge extends MTEExtendedPowerMultiBlockBase<MTECham
         ticker++;
         return true;
     }
-
-    // mui2 stuff goes here
 
     @Override
     protected @NotNull MTEChamberCentrifugeGui getGui() {

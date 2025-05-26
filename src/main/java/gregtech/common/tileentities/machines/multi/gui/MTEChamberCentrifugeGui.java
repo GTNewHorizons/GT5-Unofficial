@@ -89,14 +89,13 @@ public class MTEChamberCentrifugeGui extends MTEMultiBlockBaseGui {
                                     .marginBottom(5))
                             .child(
                                 SlotGroupWidget.builder()
-                                    .row("II")
-                                    .row("II")
-                                    .row("II")
-                                    .row("II")
+                                    .matrix("II", "II", "II", "II")
                                     .key(
                                         'I',
                                         index -> {
-                                            return new ItemSlot().slot(new ModularSlot(base.inventoryHandler, index));
+                                            return new ItemSlot().slot(
+                                                new ModularSlot(base.inventoryHandler, index)
+                                                    .filter(base::isCorrectMachinePart));
                                         })
                                     .build())
 
