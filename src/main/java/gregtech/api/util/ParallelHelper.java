@@ -400,6 +400,10 @@ public class ParallelHelper {
             result = CheckRecipeResultRegistry.insufficientPower(tRecipeEUt);
             return;
         }
+        if (!calculator.getAllowedTierSkip()) {
+            result = CheckRecipeResultRegistry.insufficientVoltage(tRecipeEUt);
+            return;
+        }
 
         // Save the original max parallel before calculating our overclocking under 1 tick
         int originalMaxParallel = maxParallel;

@@ -1,5 +1,7 @@
 package gregtech.common.covers.gui;
 
+import static net.minecraft.util.StatCollector.translateToLocal;
+
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
 import com.cleanroommc.modularui.value.sync.IntSyncValue;
@@ -38,8 +40,8 @@ public class CoverLiquidMeterGui extends CoverGui<CoverLiquidMeter> {
                     .size(16))
             .child(
                 IKey.dynamic(
-                    () -> isInvertedSyncValue.getValue() ? GTUtility.trans("INVERTED", "Inverted")
-                        : GTUtility.trans("NORMAL", "Normal"))
+                    () -> isInvertedSyncValue.getValue() ? translateToLocal("gt.interact.desc.normal")
+                        : translateToLocal("gt.interact.desc.inverted"))
                     .asWidget());
     }
 

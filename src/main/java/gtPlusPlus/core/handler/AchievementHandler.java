@@ -213,13 +213,6 @@ public class AchievementHandler {
             ItemUtils.getSimpleStack(ModItems.dustRadium226),
             "multi.cyclo",
             false);
-        this.registerAchievement(
-            "decay.molybdenum99",
-            13,
-            8,
-            ItemUtils.getSimpleStack(ModItems.dustMolybdenum99),
-            "multi.cyclo",
-            false);
 
         AchievementPage.registerAchievementPage(
             new AchievementPage(
@@ -272,7 +265,7 @@ public class AchievementHandler {
      * @param aStack  - The Itemstack to check for achievements.
      * @param aPlayer - The player to unlock for.
      */
-    private void handleAchivement(ItemStack aStack, EntityPlayer aPlayer) {
+    private void handleAchievement(ItemStack aStack, EntityPlayer aPlayer) {
 
         if (aPlayer != null && aStack != null) {
             /*
@@ -460,7 +453,7 @@ public class AchievementHandler {
         EntityPlayer player = event.player;
         ItemStack stack = event.crafting;
         if (player != null && stack != null) {
-            handleAchivement(stack, player);
+            handleAchievement(stack, player);
         }
     }
 
@@ -469,7 +462,7 @@ public class AchievementHandler {
         EntityPlayer player = event.player;
         ItemStack stack = event.smelting;
         if (player != null && stack != null) {
-            handleAchivement(stack, player);
+            handleAchievement(stack, player);
         }
     }
 
@@ -478,7 +471,7 @@ public class AchievementHandler {
         EntityPlayer player = event.entityPlayer;
         ItemStack stack = event.item.getEntityItem();
         if (player != null && stack != null) {
-            handleAchivement(stack, player);
+            handleAchievement(stack, player);
         }
     }
 }

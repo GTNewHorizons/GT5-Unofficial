@@ -1,7 +1,7 @@
 package gregtech.api.enums;
 
 import static gregtech.api.enums.GTValues.NI;
-import static gregtech.api.enums.GTValues.W;
+import static gregtech.api.util.GTRecipeBuilder.WILDCARD;
 
 import java.util.Locale;
 
@@ -2142,6 +2142,11 @@ public enum ItemList implements IItemContainer {
     BlockQuarkReleaseChamber,
     BlockQuarkContainmentCasing,
     LargeFluidExtractor,
+    CasingThaumium,
+    CasingVoid,
+    CasingIchorium,
+    EntropicProcessor,
+    DecayWarehouse,
     AcceleratorLV,
     AcceleratorMV,
     AcceleratorHV,
@@ -2804,7 +2809,7 @@ public enum ItemList implements IItemContainer {
     public ItemStack getWildcard(long aAmount, Object... aReplacements) {
         sanityCheck();
         if (GTUtility.isStackInvalid(mStack)) return GTUtility.copyAmount(aAmount, aReplacements);
-        return GTUtility.copyAmountAndMetaData(aAmount, W, GTOreDictUnificator.get(mStack));
+        return GTUtility.copyAmountAndMetaData(aAmount, WILDCARD, GTOreDictUnificator.get(mStack));
     }
 
     @Override

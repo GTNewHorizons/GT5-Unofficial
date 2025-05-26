@@ -4,9 +4,11 @@ import java.util.Locale;
 
 import net.minecraft.util.ResourceLocation;
 
+import com.gtnewhorizon.gtnhlib.util.data.IMod;
+
 import cpw.mods.fml.common.Loader;
 
-public enum Mods {
+public enum Mods implements IMod {
 
     // See "Names" below to see why the mods are in this specific order
 
@@ -583,11 +585,22 @@ public enum Mods {
         this.resourceDomain = ID.toLowerCase(Locale.ENGLISH);
     }
 
+    @Override
     public boolean isModLoaded() {
         if (this.modLoaded == null) {
             this.modLoaded = Loader.isModLoaded(ID);
         }
         return this.modLoaded;
+    }
+
+    @Override
+    public String getID() {
+        return ID;
+    }
+
+    @Override
+    public String getResourceLocation() {
+        return resourceDomain;
     }
 
     public String getResourcePath(String... path) {
