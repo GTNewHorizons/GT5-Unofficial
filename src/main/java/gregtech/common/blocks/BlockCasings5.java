@@ -24,7 +24,6 @@ import java.util.function.Supplier;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
 import org.jetbrains.annotations.Nullable;
@@ -32,19 +31,23 @@ import org.jetbrains.annotations.Nullable;
 import gregtech.api.enums.HeatingCoilLevel;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Textures;
+import gregtech.api.interfaces.IBlockWithClientMeta;
 import gregtech.api.interfaces.IBlockWithTextures;
 import gregtech.api.interfaces.IHeatingCoil;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.render.TextureFactory;
 import gregtech.common.config.Client;
+import gregtech.common.data.GTCoilTracker;
+import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.render.GTRendererBlock;
 
 /**
  * The casings are split into separate files because they are registered as regular blocks, and a regular block can have
  * 16 subtypes at most.
  */
-public class BlockCasings5 extends BlockCasingsAbstract implements IHeatingCoil, IBlockWithTextures {
+public class BlockCasings5 extends BlockCasingsAbstract
+    implements IHeatingCoil, IBlockWithTextures, IBlockWithClientMeta {
 
     public static final Supplier<String> COIL_HEAT_TOOLTIP = translatedText("gt.coilheattooltip");
     public static final Supplier<String> COIL_UNIT_TOOLTIP = translatedText("gt.coilunittooltip");
@@ -68,6 +71,11 @@ public class BlockCasings5 extends BlockCasingsAbstract implements IHeatingCoil,
         register(11, ItemList.Casing_Coil_Infinity, "Infinity Coil Block");
         register(12, ItemList.Casing_Coil_Hypogen, "Hypogen Coil Block");
         register(13, ItemList.Casing_Coil_Eternal, "Eternal Coil Block");
+
+        for (int i = 0; i < 14; i++) {
+            GTStructureChannels.HEATING_COIL
+                .registerAsIndicator(new ItemStack(this, 1, i), getCoilHeat(i).ordinal() - 1);
+        }
     }
 
     @Override
@@ -78,6 +86,15 @@ public class BlockCasings5 extends BlockCasingsAbstract implements IHeatingCoil,
     @Override
     public int getDamageValue(World aWorld, int aX, int aY, int aZ) {
         return super.getDamageValue(aWorld, aX, aY, aZ) % ACTIVE_OFFSET;
+    }
+
+    @Override
+    public int getClientMeta(World world, int x, int y, int z) {
+        int meta = world.getBlockMetadata(x, y, z);
+
+        if (GTCoilTracker.isCoilActive(world, x, y, z)) meta += ACTIVE_OFFSET;
+
+        return meta;
     }
 
     @Override
@@ -232,7 +249,5 @@ public class BlockCasings5 extends BlockCasingsAbstract implements IHeatingCoil,
 
         HeatingCoilLevel coilLevel = BlockCasings5.getCoilHeatFromDamage(metadata);
         tooltip.add(COIL_HEAT_TOOLTIP.get() + coilLevel.getHeat() + COIL_UNIT_TOOLTIP.get());
-
-        tooltip.add(StatCollector.translateToLocalFormatted("GT5U.tooltip.channelvalue", metadata + 1, "coil"));
     }
 }

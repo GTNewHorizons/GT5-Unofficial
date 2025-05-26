@@ -1,6 +1,7 @@
 package gregtech.common.covers;
 
 import static gregtech.api.enums.GTValues.E;
+import static net.minecraft.util.StatCollector.translateToLocal;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -21,6 +22,11 @@ import gregtech.api.covers.CoverContext;
 import gregtech.api.gui.modularui.CoverUIBuildContext;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.util.GTUtility;
+import gregtech.common.covers.gui.CoverFluidfilterGui;
+import gregtech.common.covers.gui.CoverGui;
+import gregtech.common.covers.modes.BlockMode;
+import gregtech.common.covers.modes.FilterDirectionMode;
+import gregtech.common.covers.modes.FilterType;
 import gregtech.common.gui.mui1.cover.FluidFilterUIFactory;
 import io.netty.buffer.ByteBuf;
 
@@ -61,6 +67,57 @@ public class CoverFluidfilter extends Cover {
     public CoverFluidfilter setFilterMode(int filterMode) {
         this.mFilterMode = filterMode;
         return this;
+    }
+
+    public FilterDirectionMode getFilterDirection() {
+        return (getFilterMode() >> 2 & 0x1) == 0 ? FilterDirectionMode.INPUT : FilterDirectionMode.OUTPUT;
+    }
+
+    public void setFilterDirection(FilterDirectionMode ioMode) {
+        FilterDirectionMode oldMode = getFilterDirection();
+        if (ioMode == oldMode) return;
+
+        int filterMode = getFilterMode();
+        if (ioMode == FilterDirectionMode.INPUT) {
+            filterMode &= 0x3;
+        } else {
+            filterMode |= 0x4;
+        }
+        setFilterMode(filterMode);
+    }
+
+    public FilterType getFilterType() {
+        return (getFilterMode() & 0x1) == 0 ? FilterType.WHITELIST : FilterType.BLACKLIST;
+    }
+
+    public void setFilterType(FilterType filterType) {
+        FilterType oldFilterType = getFilterType();
+        if (filterType == oldFilterType) return;
+
+        int filterMode = getFilterMode();
+        if (filterType == FilterType.WHITELIST) {
+            filterMode &= 0x6;
+        } else {
+            filterMode |= 0x1;
+        }
+        setFilterMode(filterMode);
+    }
+
+    public BlockMode getBlockMode() {
+        return (getFilterMode() >> 1 & 0x1) == 0 ? BlockMode.BLOCK : BlockMode.ALLOW;
+    }
+
+    public void setBlockMode(BlockMode blockMode) {
+        BlockMode oldBlockMode = getBlockMode();
+        if (blockMode == oldBlockMode) return;
+
+        int filterMode = getFilterMode();
+        if (blockMode == BlockMode.BLOCK) {
+            filterMode &= 0x5;
+        } else {
+            filterMode |= 0x2;
+        }
+        setFilterMode(filterMode);
     }
 
     @Override
@@ -106,14 +163,14 @@ public class CoverFluidfilter extends Cover {
 
     public String getFilterMode(int aFilterMode) {
         return switch (aFilterMode) {
-            case FILTER_INPUT_DENY_OUTPUT -> GTUtility.trans("043", "Filter input, Deny output");
-            case INVERT_INPUT_DENY_OUTPUT -> GTUtility.trans("044", "Invert input, Deny output");
-            case FILTER_INPUT_ANY_OUTPUT -> GTUtility.trans("045", "Filter input, Permit any output");
-            case INVERT_INPUT_ANY_OUTPUT -> GTUtility.trans("046", "Invert input, Permit any output");
-            case DENY_INPUT_FILTER_OUTPUT -> GTUtility.trans("307", "Deny input, Filter output");
-            case DENY_INPUT_INVERT_OUTPUT -> GTUtility.trans("308", "Deny input, Invert output");
-            case ANY_INPUT_FILTER_OUTPUT -> GTUtility.trans("309", "Permit any input, Filter output");
-            case ANY_INPUT_INVERT_OUTPUT -> GTUtility.trans("310", "Permit any input, Invert output");
+            case FILTER_INPUT_DENY_OUTPUT -> translateToLocal("gt.interact.desc.filter_i_deny_o");
+            case INVERT_INPUT_DENY_OUTPUT -> translateToLocal("gt.interact.desc.invert_i_deny_o");
+            case FILTER_INPUT_ANY_OUTPUT -> translateToLocal("gt.interact.desc.filter_i_any_o");
+            case INVERT_INPUT_ANY_OUTPUT -> translateToLocal("gt.interact.desc.invert_i_any_o");
+            case DENY_INPUT_FILTER_OUTPUT -> translateToLocal("gt.interact.desc.deny_i_filter_o");
+            case DENY_INPUT_INVERT_OUTPUT -> translateToLocal("gt.interact.desc.deny_i_invert_o");
+            case ANY_INPUT_FILTER_OUTPUT -> translateToLocal("gt.interact.desc.any_i_filter_o");
+            case ANY_INPUT_INVERT_OUTPUT -> translateToLocal("gt.interact.desc.any_i_invert_o");
             default -> ("UNKNOWN");
         };
     }
@@ -214,6 +271,11 @@ public class CoverFluidfilter extends Cover {
     }
 
     // GUI stuff
+
+    @Override
+    protected @NotNull CoverGui<?> getCoverGui() {
+        return new CoverFluidfilterGui(this);
+    }
 
     @Override
     public boolean hasCoverGUI() {

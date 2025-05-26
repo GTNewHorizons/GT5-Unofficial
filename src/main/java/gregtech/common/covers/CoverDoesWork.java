@@ -1,7 +1,11 @@
 package gregtech.common.covers;
 
+import static net.minecraft.util.StatCollector.translateToLocal;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.fluids.Fluid;
+
+import org.jetbrains.annotations.NotNull;
 
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 
@@ -11,16 +15,50 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IMachineProgress;
 import gregtech.api.util.GTUtility;
+import gregtech.common.covers.gui.CoverDoesWorkGui;
+import gregtech.common.covers.gui.CoverGui;
+import gregtech.common.covers.modes.DetectionMode;
+import gregtech.common.covers.modes.RedstoneMode;
 import gregtech.common.gui.mui1.cover.DoesWorkUIFactory;
 
 public class CoverDoesWork extends CoverLegacyData {
 
+    // TODO: Make those fields private when DoesWorkUIFactory is removed
     public static final int FLAG_INVERTED = 0x1;
     public static final int FLAG_PROGRESS = 0x2;
     public static final int FLAG_ENABLED = 0x4;
 
     public CoverDoesWork(CoverContext context, ITexture coverTexture) {
         super(context, coverTexture);
+    }
+
+    public DetectionMode getDetectionMode() {
+        if (isFlagSet(coverData, FLAG_PROGRESS)) {
+            return DetectionMode.MACHINE_IDLE;
+        } else if (isFlagSet(coverData, FLAG_ENABLED)) {
+            return DetectionMode.MACHINE_ENABLED;
+        } else {
+            return DetectionMode.RECIPE_PROGRESS;
+        }
+    }
+
+    public void setDetectionMode(DetectionMode mode) {
+        coverData = switch (mode) {
+            case RECIPE_PROGRESS -> (coverData & ~FLAG_ENABLED) & ~FLAG_PROGRESS;
+            case MACHINE_IDLE -> (coverData & ~FLAG_ENABLED) | FLAG_PROGRESS;
+            case MACHINE_ENABLED -> (coverData & ~FLAG_PROGRESS) | FLAG_ENABLED;
+        };
+    }
+
+    public RedstoneMode getRedstoneMode() {
+        return isFlagSet(coverData, FLAG_INVERTED) ? RedstoneMode.INVERTED : RedstoneMode.NORMAL;
+    }
+
+    public void setRedstoneMode(RedstoneMode mode) {
+        coverData = switch (mode) {
+            case NORMAL -> coverData & ~FLAG_INVERTED;
+            case INVERTED -> coverData | FLAG_INVERTED;
+        };
     }
 
     @Override
@@ -65,17 +103,17 @@ public class CoverDoesWork extends CoverLegacyData {
             this.coverData = 5;
         }
         switch (this.coverData) {
-            case 0 -> GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("018", "Normal"));
+            case 0 -> GTUtility.sendChatToPlayer(aPlayer, translateToLocal("gt.interact.desc.normal"));
             // Progress scaled
-            case 1 -> GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("019", "Inverted"));
+            case 1 -> GTUtility.sendChatToPlayer(aPlayer, translateToLocal("gt.interact.desc.inverted"));
             // ^ inverted
-            case 2 -> GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("020", "Ready to work"));
+            case 2 -> GTUtility.sendChatToPlayer(aPlayer, translateToLocal("gt.interact.desc.ready"));
             // Not Running
-            case 3 -> GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("021", "Not ready to work"));
+            case 3 -> GTUtility.sendChatToPlayer(aPlayer, translateToLocal("gt.interact.desc.not_ready"));
             // Running
-            case 4 -> GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("028", "Machine Enabled"));
+            case 4 -> GTUtility.sendChatToPlayer(aPlayer, translateToLocal("gt.interact.desc.mach_on"));
             // Enabled
-            case 5 -> GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("029", "Machine Disabled"));
+            case 5 -> GTUtility.sendChatToPlayer(aPlayer, translateToLocal("gt.interact.desc.mach_off"));
             // Disabled
         }
     }
@@ -123,6 +161,11 @@ public class CoverDoesWork extends CoverLegacyData {
     // GUI stuff
 
     @Override
+    protected @NotNull CoverGui<?> getCoverGui() {
+        return new CoverDoesWorkGui(this);
+    }
+
+    @Override
     public boolean hasCoverGUI() {
         return true;
     }
@@ -132,6 +175,7 @@ public class CoverDoesWork extends CoverLegacyData {
         return new DoesWorkUIFactory(buildContext).createWindow();
     }
 
+    // TODO: Make it a private instance method when DoesWorkUIFactory is removed
     public static boolean isFlagSet(int coverVariable, int flag) {
         return (coverVariable & flag) == flag;
     }

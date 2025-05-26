@@ -9,6 +9,7 @@ import static gregtech.api.enums.Mods.NotEnoughItems;
 import static gregtech.api.enums.Mods.Thaumcraft;
 import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
+import static gregtech.api.util.GTRecipeBuilder.WILDCARD;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -3624,7 +3625,7 @@ public class MTERecipeLoader implements Runnable {
             ItemList.MicroTransmitter_EV.get(1L),
             bitsd,
             new Object[] { "CPC", aTextCableHull, "GBG", 'M', ItemList.Hull_EV, 'B',
-                GTModHandler.getIC2Item("lapotronCrystal", 1L, GTValues.W), 'C', ItemList.Emitter_EV, 'G',
+                GTModHandler.getIC2Item("lapotronCrystal", 1L, WILDCARD), 'C', ItemList.Emitter_EV, 'G',
                 OrePrefixes.circuit.get(Materials.EV), 'P', ItemList.Field_Generator_EV });
         GTModHandler.addCraftingRecipe(
             ItemList.MicroTransmitter_IV.get(1L),
@@ -3736,7 +3737,7 @@ public class MTERecipeLoader implements Runnable {
                 GalacticraftCore.isModLoaded() ? GTModHandler.getModItem(GalacticraftCore.ID, "item.basicItem", 1, 19)
                     : ItemList.Sensor_EV.get(4))
             .itemOutputs(ItemList.Machine_Multi_DroneCentre.get(1L))
-            .fluidInputs(Materials.AdvancedGlue.getFluid(8000L))
+            .fluidInputs(Materials.AdvancedGlue.getFluid(8_000))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_IV)
             .addTo(assemblerRecipes);

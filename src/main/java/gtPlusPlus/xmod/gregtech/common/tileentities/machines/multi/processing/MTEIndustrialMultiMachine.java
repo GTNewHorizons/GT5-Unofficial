@@ -12,6 +12,8 @@ import static gregtech.api.enums.HatchElement.OutputBus;
 import static gregtech.api.enums.HatchElement.OutputHatch;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTUtility.validMTEList;
+import static net.minecraft.util.StatCollector.translateToLocal;
+import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -28,11 +30,11 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
+import org.apache.commons.lang3.ArrayUtils;
 import org.jetbrains.annotations.NotNull;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
@@ -184,7 +186,7 @@ public class MTEIndustrialMultiMachine extends GTPPMultiBlockBase<MTEIndustrialM
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
-        return survivialBuildPiece(mName, stackSize, 1, 1, 0, elementBudget, env, false, true);
+        return survivalBuildPiece(mName, stackSize, 1, 1, 0, elementBudget, env, false, true);
     }
 
     @Override
@@ -214,11 +216,6 @@ public class MTEIndustrialMultiMachine extends GTPPMultiBlockBase<MTEIndustrialM
     }
 
     @Override
-    public int getMaxEfficiency(final ItemStack aStack) {
-        return 10000;
-    }
-
-    @Override
     public int getPollutionPerSecond(final ItemStack aStack) {
         switch (machineMode) {
             case MACHINEMODE_METAL -> {
@@ -235,11 +232,6 @@ public class MTEIndustrialMultiMachine extends GTPPMultiBlockBase<MTEIndustrialM
 
     public int getTextureIndex() {
         return TAE.getIndexFromPage(2, 2);
-    }
-
-    @Override
-    public boolean explodesOnComponentBreak(final ItemStack aStack) {
-        return false;
     }
 
     private ItemStack getCircuit(ItemStack[] t) {
@@ -352,7 +344,7 @@ public class MTEIndustrialMultiMachine extends GTPPMultiBlockBase<MTEIndustrialM
 
     @Override
     public String getMachineModeName() {
-        return StatCollector.translateToLocal("GT5U.GTPP_MULTI_INDUSTRIAL_MULTI_MACHINE.mode." + machineMode);
+        return translateToLocal("GT5U.GTPP_MULTI_INDUSTRIAL_MULTI_MACHINE.mode." + machineMode);
     }
 
     @Override
@@ -361,9 +353,9 @@ public class MTEIndustrialMultiMachine extends GTPPMultiBlockBase<MTEIndustrialM
         ArrayList<String> mInfo = new ArrayList<>(Arrays.asList(data));
         String mode;
         switch (machineMode) {
-            case MACHINEMODE_METAL -> mode = StatCollector.translateToLocal("GTPP.multiblock.multimachine.metal");
-            case MACHINEMODE_FLUID -> mode = StatCollector.translateToLocal("GTPP.multiblock.multimachine.fluid");
-            default -> mode = StatCollector.translateToLocal("GTPP.multiblock.multimachine.misc");
+            case MACHINEMODE_METAL -> mode = translateToLocal("GTPP.multiblock.multimachine.metal");
+            case MACHINEMODE_FLUID -> mode = translateToLocal("GTPP.multiblock.multimachine.fluid");
+            default -> mode = translateToLocal("GTPP.multiblock.multimachine.misc");
         }
         mInfo.add(mode);
         return mInfo.toArray(new String[0]);
@@ -393,9 +385,10 @@ public class MTEIndustrialMultiMachine extends GTPPMultiBlockBase<MTEIndustrialM
             // check crafting input hatches first
             if (supportsCraftingMEBuffer()) {
                 for (IDualInputHatch dualInputHatch : mDualInputHatches) {
+                    ItemStack[] sharedItems = dualInputHatch.getSharedItems();
                     for (var it = dualInputHatch.inventories(); it.hasNext();) {
                         IDualInputInventory slot = it.next();
-                        processingLogic.setInputItems(slot.getItemInputs());
+                        processingLogic.setInputItems(ArrayUtils.addAll(sharedItems, slot.getItemInputs()));
                         processingLogic.setInputFluids(slot.getFluidInputs());
                         CheckRecipeResult foundResult = processingLogic.process();
                         if (foundResult.wasSuccessful()) {
@@ -411,16 +404,14 @@ public class MTEIndustrialMultiMachine extends GTPPMultiBlockBase<MTEIndustrialM
 
             // Logic for MTEHatchInput
             for (MTEHatchInput solidifierHatch : mInputHatches) {
-                if (solidifierHatch instanceof MTEHatchSolidifier) {
-                    ItemStack mold = ((MTEHatchSolidifier) solidifierHatch).getMold();
+                if (solidifierHatch instanceof MTEHatchSolidifier hatch) {
+                    List<ItemStack> items = hatch.getNonConsumableItems();
                     FluidStack fluid = solidifierHatch.getFluid();
 
-                    if (mold != null && fluid != null) {
-                        List<ItemStack> inputItems = new ArrayList<>();
-                        inputItems.add(mold);
-                        inputItems.add(GTUtility.getIntegratedCircuit(22));
+                    if (items != null && fluid != null) {
+                        items.add(GTUtility.getIntegratedCircuit(22));
 
-                        processingLogic.setInputItems(inputItems.toArray(new ItemStack[0]));
+                        processingLogic.setInputItems(items.toArray(new ItemStack[0]));
                         processingLogic.setInputFluids(fluid);
 
                         CheckRecipeResult foundResult = processingLogic.process();
@@ -512,10 +503,9 @@ public class MTEIndustrialMultiMachine extends GTPPMultiBlockBase<MTEIndustrialM
         final NBTTagCompound tag = accessor.getNBTData();
         if (tag.hasKey("mode")) {
             currentTip.add(
-                StatCollector.translateToLocal("GT5U.machines.oreprocessor1") + " "
+                translateToLocal("GT5U.machines.oreprocessor1") + " "
                     + EnumChatFormatting.WHITE
-                    + StatCollector
-                        .translateToLocal("GT5U.GTPP_MULTI_INDUSTRIAL_MULTI_MACHINE.mode." + tag.getInteger("mode"))
+                    + translateToLocal("GT5U.GTPP_MULTI_INDUSTRIAL_MULTI_MACHINE.mode." + tag.getInteger("mode"))
                     + EnumChatFormatting.RESET);
         }
     }
@@ -528,9 +518,8 @@ public class MTEIndustrialMultiMachine extends GTPPMultiBlockBase<MTEIndustrialM
     @Override
     public void onModeChangeByScrewdriver(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
         setMachineMode(nextMachineMode());
-        PlayerUtils.messagePlayer(
-            aPlayer,
-            String.format(StatCollector.translateToLocal("GT5U.MULTI_MACHINE_CHANGE"), getMachineModeName()));
+        PlayerUtils
+            .messagePlayer(aPlayer, translateToLocalFormatted("GT5U.MULTI_MACHINE_CHANGE", getMachineModeName()));
     }
 
     @Override

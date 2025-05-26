@@ -6,6 +6,7 @@ import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
+import gregtech.api.enums.ToolDictNames;
 import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 
@@ -101,15 +102,33 @@ public class RecipesTools {
     public static String ingotElectricalSteel = "ingotElectricalSteel";
 
     // Crafting Tools
-    public static String craftingToolHardHammer = "craftingToolHardHammer";
-    public static String craftingToolSoftHammer = "craftingToolSoftHammer";
-    public static String craftingToolFile = "craftingToolFile";
-    public static String craftingToolSaw = "craftingToolSaw";
-    public static String craftingToolPickaxe = "craftingToolPickaxe";
-    public static String craftingToolWrench = "craftingToolWrench";
-    public static String craftingToolCrowbar = "craftingToolCrowbar";
-    public static String craftingToolKnife = "craftingToolKnife";
-    public static String craftingToolScrewdriver = "craftingToolScrewdriver";
+    /** @deprecated Use {@link gregtech.api.enums.ToolDictNames} instead. */
+    @Deprecated
+    public static String craftingToolHardHammer = ToolDictNames.craftingToolHardHammer.name();
+    /** @deprecated Use {@link gregtech.api.enums.ToolDictNames} instead. */
+    @Deprecated
+    public static String craftingToolSoftMallet = ToolDictNames.craftingToolSoftMallet.name();
+    /** @deprecated Use {@link gregtech.api.enums.ToolDictNames} instead. */
+    @Deprecated
+    public static String craftingToolFile = ToolDictNames.craftingToolFile.name();
+    /** @deprecated Use {@link gregtech.api.enums.ToolDictNames} instead. */
+    @Deprecated
+    public static String craftingToolSaw = ToolDictNames.craftingToolSaw.name();
+    /** @deprecated Use {@link gregtech.api.enums.ToolDictNames} instead. */
+    @Deprecated
+    public static String craftingToolPickaxe = ToolDictNames.craftingToolPickaxe.name();
+    /** @deprecated Use {@link gregtech.api.enums.ToolDictNames} instead. */
+    @Deprecated
+    public static String craftingToolWrench = ToolDictNames.craftingToolWrench.name();
+    /** @deprecated Use {@link gregtech.api.enums.ToolDictNames} instead. */
+    @Deprecated
+    public static String craftingToolCrowbar = ToolDictNames.craftingToolCrowbar.name();
+    /** @deprecated Use {@link gregtech.api.enums.ToolDictNames} instead. */
+    @Deprecated
+    public static String craftingToolKnife = ToolDictNames.craftingToolKnife.name();
+    /** @deprecated Use {@link gregtech.api.enums.ToolDictNames} instead. */
+    @Deprecated
+    public static String craftingToolScrewdriver = ToolDictNames.craftingToolScrewdriver.name();
 
     public static ItemStack personalCloakingDevice = ItemUtils.getSimpleStack(ModItems.itemPersonalCloakingDevice);
     public static String plateDoubleNiChrome = "plateDoubleNichrome";

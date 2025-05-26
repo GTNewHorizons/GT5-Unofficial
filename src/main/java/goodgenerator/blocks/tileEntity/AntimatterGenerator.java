@@ -136,11 +136,6 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase
     }
 
     @Override
-    public boolean isCorrectMachinePart(ItemStack aStack) {
-        return true;
-    }
-
-    @Override
     public RecipeMap<?> getRecipeMap() {
         return null;
     }
@@ -189,8 +184,6 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase
             modifier = 1.02F;
         } else if (catalyst.isFluidEqual(Materials.SuperconductorUMVBase.getMolten(1L))) {
             modifier = 1.03F;
-        } else if (catalyst.isFluidEqual(MaterialsUEVplus.BlackDwarfMatter.getMolten(1L))) {
-            modifier = 1.04F;
         }
         long catalystCount = catalyst.amount;
         long generatedEU = 0;
@@ -244,7 +237,7 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
         int realBudget = elementBudget >= 200 ? elementBudget : Math.min(200, elementBudget * 5);
-        return survivialBuildPiece(MAIN_NAME, stackSize, 17, 41, 0, realBudget, env, false, true);
+        return survivalBuildPiece(MAIN_NAME, stackSize, 17, 41, 0, realBudget, env, false, true);
     }
 
     @Override
@@ -262,21 +255,6 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase
     public void loadNBTData(NBTTagCompound nbt) {
         wirelessEnabled = nbt.getBoolean("wirelessEnabled");
         super.loadNBTData(nbt);
-    }
-
-    @Override
-    public int getMaxEfficiency(ItemStack aStack) {
-        return 10000;
-    }
-
-    @Override
-    public int getDamageToComponent(ItemStack aStack) {
-        return 0;
-    }
-
-    @Override
-    public boolean explodesOnComponentBreak(ItemStack aStack) {
-        return false;
     }
 
     @Override
@@ -314,35 +292,110 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Antimatter Generator")
-            .addInfo("Annihilating antimatter like it's 2205!")
+        tt.addMachineType("Antimatter Generator, SLAM")
+            .addInfo("Annihilating Antimatter like it's 2205!")
             .addSeparator()
-            .addInfo("Generates energy by reacting Semi-Stable Antimatter with matter")
-            .addInfo("Annihilation uses an equal amount of antimatter and matter")
+            .addInfo(
+                "Generates energy by reacting " + EnumChatFormatting.DARK_AQUA
+                    + "Semi-Stable Antimatter"
+                    + EnumChatFormatting.GRAY
+                    + " with "
+                    + EnumChatFormatting.GOLD
+                    + "Matter")
+            .addInfo(
+                "Annihilation uses an equal amount of " + EnumChatFormatting.DARK_AQUA
+                    + "Antimatter"
+                    + EnumChatFormatting.GRAY
+                    + " and "
+                    + EnumChatFormatting.GOLD
+                    + "Matter")
             .addInfo(
                 "Consumes " + EnumChatFormatting.GOLD
                     + "all inputs"
                     + EnumChatFormatting.GRAY
                     + " every processing cycle")
+            .addInfo(EnumChatFormatting.RED + "Voids any invalid fluid!")
+            .addInfo("A cycle lasts 1 tick")
             .addInfo(
-                "Imbalance between antimatter and matter " + EnumChatFormatting.RED
-                    + "will waste energy!"
+                "Imbalance between " + EnumChatFormatting.DARK_AQUA
+                    + "Antimatter"
+                    + EnumChatFormatting.GRAY
+                    + " and "
+                    + EnumChatFormatting.GOLD
+                    + "Matter"
+                    + EnumChatFormatting.RED
+                    + " will decrease efficiency!"
                     + EnumChatFormatting.GRAY)
             .addInfo(
-                "Any EU that does not fit in laser hatches will be " + EnumChatFormatting.RED
-                    + "voided"
-                    + EnumChatFormatting.GRAY)
+                "Efficiency formula: Min(" + EnumChatFormatting.DARK_AQUA
+                    + "Antimatter"
+                    + EnumChatFormatting.GRAY
+                    + "/"
+                    + EnumChatFormatting.GOLD
+                    + "Matter"
+                    + EnumChatFormatting.GRAY
+                    + ", "
+                    + EnumChatFormatting.GOLD
+                    + "Matter"
+                    + EnumChatFormatting.GRAY
+                    + "/"
+                    + EnumChatFormatting.DARK_AQUA
+                    + "Antimatter"
+                    + EnumChatFormatting.GRAY
+                    + ")")
+            .addInfo("Any excess EU generated will be " + EnumChatFormatting.RED + "voided!" + EnumChatFormatting.GRAY)
             .addSeparator()
-            .addInfo("Antimatter base energy value: " + GTUtility.formatNumbers(ANTIMATTER_FUEL_VALUE) + " EU/L")
-            .addInfo("Cannot produce more than 9.2e18 EU per cycle")
-            .addInfo("Energy production is exponentially increased depending on the matter used:")
-            .addInfo("Molten Copper: 1.00")
-            .addInfo("Molten SC UIV Base: 1.02")
-            .addInfo("Molten SC UMV Base: 1.03")
-            .addInfo("Molten Black Dwarf Matter: 1.04")
+            .addInfo(
+                "Energy production formula: " + EnumChatFormatting.GREEN
+                    + EnumChatFormatting.BOLD
+                    + EnumChatFormatting.UNDERLINE
+                    + "A"
+                    + EnumChatFormatting.RESET
+                    + EnumChatFormatting.GRAY
+                    + "*("
+                    + EnumChatFormatting.DARK_AQUA
+                    + "Antimatter"
+                    + EnumChatFormatting.GRAY
+                    + ")^"
+                    + EnumChatFormatting.GOLD
+                    + EnumChatFormatting.BOLD
+                    + EnumChatFormatting.UNDERLINE
+                    + "E"
+                    + EnumChatFormatting.RESET
+                    + EnumChatFormatting.GRAY
+                    + " EU/Cycle")
+            .addInfo("Cannot produce more than " + GTUtility.formatNumbers(9.2e18) + " EU per cycle")
+            .addInfo(
+                "" + EnumChatFormatting.GREEN
+                    + EnumChatFormatting.BOLD
+                    + EnumChatFormatting.UNDERLINE
+                    + "A"
+                    + EnumChatFormatting.RESET
+                    + EnumChatFormatting.GREEN
+                    + "ntimatter energy"
+                    + EnumChatFormatting.GRAY
+                    + " base value : "
+                    + EnumChatFormatting.GREEN
+                    + GTUtility.formatNumbers(ANTIMATTER_FUEL_VALUE)
+                    + EnumChatFormatting.GRAY
+                    + " EU/L")
+            .addInfo(
+                "" + EnumChatFormatting.GOLD
+                    + EnumChatFormatting.BOLD
+                    + EnumChatFormatting.UNDERLINE
+                    + "E"
+                    + EnumChatFormatting.RESET
+                    + EnumChatFormatting.GOLD
+                    + "nergy production boost"
+                    + EnumChatFormatting.RESET
+                    + EnumChatFormatting.GRAY
+                    + ":")
+            .addInfo("1. Molten Copper: " + EnumChatFormatting.GOLD + "1.00")
+            .addInfo("2. Molten Superconductor Base UIV: " + EnumChatFormatting.GOLD + "1.02")
+            .addInfo("3. Molten Superconductor Base UMV: " + EnumChatFormatting.GOLD + "1.03")
             .addSeparator()
-            .addInfo("Enable wireless EU mode with screwdriver")
-            .addInfo("Wireless mode requires SC UMV Base or better")
+            .addInfo("Switch the power destination to your wireless network with a screwdriver")
+            .addInfo("Wireless mode requires Superconductor Base UMV to work")
             .addInfo("Wireless mode uses hatch capacity limit")
             .beginStructureBlock(35, 43, 35, false)
             .addCasingInfoMin("Transcendentally Reinforced Borosilicate Glass", 1008, false)
@@ -631,6 +684,11 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase
 
     @Override
     public boolean getDefaultHasMaintenanceChecks() {
+        return false;
+    }
+
+    @Override
+    public boolean showRecipeTextInGUI() {
         return false;
     }
 

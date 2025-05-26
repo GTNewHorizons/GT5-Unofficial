@@ -119,6 +119,7 @@ public class MTEPlasmaModule extends MTEBaseModule {
         logic.setAvailableVoltage(Long.MAX_VALUE);
         logic.setAvailableAmperage(Integer.MAX_VALUE);
         logic.setAmperageOC(false);
+        logic.setUnlimitedTierSkips();
         logic.setMaxParallel(getActualParallel());
         logic.setSpeedBonus(getSpeedBonus());
         logic.setEuModifier(getEnergyDiscount());

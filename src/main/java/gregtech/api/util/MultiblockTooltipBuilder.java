@@ -20,6 +20,7 @@ import com.gtnewhorizon.structurelib.StructureLibAPI;
 
 import gregtech.GTMod;
 import gregtech.api.enums.GTValues;
+import gregtech.api.structure.IStructureChannels;
 
 /**
  * This makes it easier to build multi tooltips, with a standardized format. <br>
@@ -622,6 +623,40 @@ public class MultiblockTooltipBuilder {
 
     /**
      * Add a line of information about the structure:<br>
+     * This machine can run recipes regardless of tier, if given enough energy.
+     *
+     * @return Instance this method was called on.
+     */
+    public MultiblockTooltipBuilder addNoTierSkips() {
+        iLines.add(StatCollector.translateToLocal("GT5U.MBTT.Structure.NoTierSkips"));
+        return this;
+    }
+
+    /**
+     * Add a line of information about the structure:<br>
+     * This machine can run recipes regardless of tier, if given enough energy.
+     *
+     * @return Instance this method was called on.
+     */
+    public MultiblockTooltipBuilder addUnlimitedTierSkips() {
+        iLines.add(StatCollector.translateToLocal("GT5U.MBTT.Structure.UnlimitedTierSkips"));
+        return this;
+    }
+
+    /**
+     * Add a line of information about the structure:<br>
+     * This machine can run recipes at most n tiers above the average energy hatch tier.
+     *
+     * @param n The max amount of tier skips allowed
+     * @return Instance this method was called on.
+     */
+    public MultiblockTooltipBuilder addMaxTierSkips(int n) {
+        iLines.add(StatCollector.translateToLocalFormatted("GT5U.MBTT.Structure.MaxTierSkips", n));
+        return this;
+    }
+
+    /**
+     * Add a line of information about the structure:<br>
      * (indent)Maintenance Hatch: info
      *
      * @param info Positional information.
@@ -782,6 +817,15 @@ public class MultiblockTooltipBuilder {
     }
 
     /**
+     * @deprecated use overload that accepts {@link IStructureChannels} instead
+     */
+    @Deprecated
+    public MultiblockTooltipBuilder addSubChannelUsage(String channel, String purpose) {
+        sLines.add(TAB + StatCollector.translateToLocalFormatted("GT5U.MBTT.subchannel", channel, purpose));
+        return this;
+    }
+
+    /**
      * Use this method to add non-standard structural info.<br>
      * (indent)info
      *
@@ -789,8 +833,22 @@ public class MultiblockTooltipBuilder {
      * @param purpose the purpose of subchannel
      * @return Instance this method was called on.
      */
-    public MultiblockTooltipBuilder addSubChannelUsage(String channel, String purpose) {
-        sLines.add(TAB + StatCollector.translateToLocalFormatted("GT5U.MBTT.subchannel", channel, purpose));
+    public MultiblockTooltipBuilder addSubChannelUsage(IStructureChannels channel, String purpose) {
+        sLines.add(TAB + StatCollector.translateToLocalFormatted("GT5U.MBTT.subchannel", channel.get(), purpose));
+        return this;
+    }
+
+    /**
+     * Use this method to add non-standard structural info.<br>
+     * (indent)info
+     *
+     * @param channel the name of subchannel
+     * @return Instance this method was called on.
+     */
+    public MultiblockTooltipBuilder addSubChannelUsage(IStructureChannels channel) {
+        sLines.add(
+            TAB + StatCollector
+                .translateToLocalFormatted("GT5U.MBTT.subchannel", channel.get(), channel.getDefaultTooltip()));
         return this;
     }
 

@@ -46,6 +46,7 @@ import gregtech.api.util.GTStructureUtility;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
+import gregtech.common.misc.GTStructureChannels;
 
 public class MTEComponentAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTEComponentAssemblyLine>
     implements ISurvivalConstructable {
@@ -219,10 +220,9 @@ public class MTEComponentAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTE
                     + "limits the recipes the machine can perform. See the NEI pages for details.")
             .addInfo("Using casings above the required recipe tier provides a speed bonus:")
             .addInfo(EnumChatFormatting.YELLOW + "Halves recipe time per tier above recipe")
-            .addTecTechHatchInfo()
-            .addInfo("Supports overclocking beyond MAX!")
             .addInfo(EnumChatFormatting.ITALIC + "Much more efficient than other competing brands!")
             .addTecTechHatchInfo()
+            .addUnlimitedTierSkips()
             .beginStructureBlock(9, 10, 33, false)
             .addController("Mid of the eighth layer")
             .addCasingInfoExactly("Advanced Iridium Plated Machine Casing", 644, false)
@@ -238,7 +238,7 @@ public class MTEComponentAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTE
             .addEnergyHatch("Second-top layer", 3)
             .addMaintenanceHatch("Around the controller", 4)
             .addInputHatch("Bottom left and right corners", 5)
-            .addSubChannelUsage("glass", "Glass Tier")
+            .addSubChannelUsage(GTStructureChannels.BOROGLASS)
             .toolTipFinisher(EnumChatFormatting.AQUA + "MadMan310");
         return tt;
     }
@@ -290,11 +290,6 @@ public class MTEComponentAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTE
     }
 
     @Override
-    public boolean isCorrectMachinePart(ItemStack aStack) {
-        return true;
-    }
-
-    @Override
     protected ProcessingLogic createProcessingLogic() {
         return new ProcessingLogic() {
 
@@ -320,13 +315,14 @@ public class MTEComponentAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTE
     protected void setProcessingLogicPower(ProcessingLogic logic) {
         logic.setAvailableVoltage(getMaxInputEu());
         logic.setAvailableAmperage(1);
+        logic.setUnlimitedTierSkips();
     }
 
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
         int realBudget = elementBudget >= 200 ? elementBudget : Math.min(200, elementBudget * 5);
-        return survivialBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 4, 2, 0, realBudget, env, false, true);
+        return survivalBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 4, 2, 0, realBudget, env, false, true);
     }
 
     private void setCasingTier(int tier) {
@@ -377,21 +373,6 @@ public class MTEComponentAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTE
     @Override
     public boolean supportsBatchMode() {
         return true;
-    }
-
-    @Override
-    public int getMaxEfficiency(ItemStack aStack) {
-        return 10000;
-    }
-
-    @Override
-    public int getDamageToComponent(ItemStack aStack) {
-        return 0;
-    }
-
-    @Override
-    public boolean explodesOnComponentBreak(ItemStack aStack) {
-        return false;
     }
 
     @Override

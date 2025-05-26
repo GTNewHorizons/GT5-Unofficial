@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
@@ -23,6 +24,7 @@ import net.minecraftforge.fluids.FluidStack;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.GTMod;
+import gregtech.api.enums.Materials;
 import gregtech.api.enums.StructureError;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IHatchElement;
@@ -39,7 +41,6 @@ import gregtech.api.util.GTWaila;
 import gregtech.api.util.HatchElementBuilder;
 import gregtech.api.util.IGTHatchAdder;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
-import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchSteamBusInput;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchSteamBusOutput;
@@ -96,11 +97,12 @@ public abstract class MTESteamMultiBase<T extends MTESteamMultiBase<T>> extends 
         // We need to trick the GT_ParallelHelper we have enough amps for all recipe parallels.
         logic.setAvailableAmperage(getMaxParallelRecipes());
         logic.setAmperageOC(false);
+        logic.setMaxTierSkips(0);
     }
 
     public ArrayList<FluidStack> getAllSteamStacks() {
         ArrayList<FluidStack> aFluids = new ArrayList<>();
-        FluidStack aSteam = FluidUtils.getSteam(1);
+        FluidStack aSteam = Materials.Steam.getGas(1);
         for (FluidStack aFluid : this.getStoredFluids()) {
             if (aFluid.isFluidEqual(aSteam)) {
                 aFluids.add(aFluid);
@@ -121,7 +123,7 @@ public abstract class MTESteamMultiBase<T extends MTESteamMultiBase<T>> extends 
         if (getTotalSteamStored() <= 0) {
             return false;
         } else {
-            return this.depleteInput(FluidUtils.getSteam(aAmount));
+            return this.depleteInput(Materials.Steam.getGas(aAmount));
         }
     }
 
@@ -253,23 +255,32 @@ public abstract class MTESteamMultiBase<T extends MTESteamMultiBase<T>> extends 
     }
 
     @Override
-    public ArrayList<FluidStack> getStoredFluids() {
+    public ArrayList<FluidStack> getStoredFluidsForColor(Optional<Byte> color) {
         ArrayList<FluidStack> rList = new ArrayList<>();
         for (MTEHatchCustomFluidBase tHatch : validMTEList(mSteamInputFluids)) {
+            byte hatchColor = tHatch.getBaseMetaTileEntity()
+                .getColorization();
+            if (color.isPresent() && hatchColor != -1 && hatchColor != color.get()) continue;
             if (tHatch.getFillableStack() != null) {
                 rList.add(tHatch.getFillableStack());
             }
         }
         for (MTEHatchInput hatch : this.mInputHatches) if (hatch.getFillableStack() != null) {
+            byte hatchColor = hatch.getBaseMetaTileEntity()
+                .getColorization();
+            if (color.isPresent() && hatchColor != -1 && hatchColor != color.get()) continue;
             rList.add(hatch.getFillableStack());
         }
         return rList;
     }
 
     @Override
-    public ArrayList<ItemStack> getStoredInputs() {
+    public ArrayList<ItemStack> getStoredInputsForColor(Optional<Byte> color) {
         ArrayList<ItemStack> rList = new ArrayList<>();
         for (MTEHatchSteamBusInput tHatch : validMTEList(mSteamInputs)) {
+            byte hatchColor = tHatch.getBaseMetaTileEntity()
+                .getColorization();
+            if (color.isPresent() && hatchColor != -1 && hatchColor != color.get()) continue;
             tHatch.mRecipeMap = getRecipeMap();
             for (int i = tHatch.getBaseMetaTileEntity()
                 .getSizeInventory() - 1; i >= 0; i--) {

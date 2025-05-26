@@ -31,7 +31,6 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
-import gregtech.GTMod;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
@@ -186,9 +185,6 @@ public abstract class MTELargerTurbineBase extends GTPPMultiBlockBase<MTELargerT
     }
 
     private boolean requiresMufflers() {
-        if (!GTMod.gregtechproxy.mPollution) {
-            return false;
-        }
         return getPollutionPerSecond(null) > 0;
     }
 
@@ -248,7 +244,7 @@ public abstract class MTELargerTurbineBase extends GTPPMultiBlockBase<MTELargerT
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
         int realBudget = elementBudget >= 200 ? elementBudget : Math.min(200, elementBudget * 2);
-        return survivialBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 3, 3, 0, realBudget, env, false, true);
+        return survivalBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 3, 3, 0, realBudget, env, false, true);
     }
 
     public boolean addTurbineHatch(final IGregTechTileEntity aTileEntity, final int aBaseCasingIndex) {
@@ -554,11 +550,6 @@ public abstract class MTELargerTurbineBase extends GTPPMultiBlockBase<MTELargerT
         return this.getMaxParallelRecipes() == 12 ? 10000 : 0;
     }
 
-    @Override
-    public boolean explodesOnComponentBreak(ItemStack aStack) {
-        return false;
-    }
-
     public boolean isLooseMode() {
         return looseFit;
     }
@@ -839,6 +830,11 @@ public abstract class MTELargerTurbineBase extends GTPPMultiBlockBase<MTELargerT
 
     @Override
     public boolean supportsBatchMode() {
+        return false;
+    }
+
+    @Override
+    public boolean showRecipeTextInGUI() {
         return false;
     }
 }

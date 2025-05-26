@@ -10,6 +10,7 @@ import static gregtech.api.recipe.RecipeMaps.electrolyzerRecipes;
 import static gregtech.api.recipe.RecipeMaps.implosionRecipes;
 import static gregtech.api.recipe.RecipeMaps.packagerRecipes;
 import static gregtech.api.util.GTRecipeBuilder.MINUTES;
+import static gregtech.api.util.GTRecipeBuilder.QUARTER_INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
 import static gregtech.api.util.GTRecipeConstants.ADDITIVE_AMOUNT;
@@ -271,7 +272,7 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
                         .itemInputs(GTUtility.copyAmount(1, aStack), GTUtility.getIntegratedCircuit(3))
                         .itemOutputs(GTOreDictUnificator.get(OrePrefixes.gem, aMaterial, 1L))
                         .outputChances(10000)
-                        .fluidInputs(Materials.Void.getMolten(36L))
+                        .fluidInputs(Materials.Void.getMolten(1 * QUARTER_INGOTS))
                         .duration(1 * MINUTES)
                         .eut(24)
                         .addTo(autoclaveRecipes);
@@ -297,7 +298,7 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
                     case "Oilsands":
                         GTValues.RA.stdBuilder()
                             .itemInputs(GTUtility.copyAmount(1, aStack))
-                            .fluidOutputs(Materials.OilHeavy.getFluid(1000))
+                            .fluidOutputs(Materials.OilHeavy.getFluid(1_000))
                             .duration(33 * SECONDS)
                             .eut(8)
                             .addTo(centrifugeRecipes);
@@ -430,7 +431,7 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
                         .itemInputs(GTUtility.copyAmount(1, aStack), GTUtility.getIntegratedCircuit(3))
                         .itemOutputs(GTOreDictUnificator.get(OrePrefixes.gem, aMaterial, 1L))
                         .outputChances(10000)
-                        .fluidInputs(Materials.Void.getMolten(36L))
+                        .fluidInputs(Materials.Void.getMolten(1 * QUARTER_INGOTS))
                         .duration(1 * MINUTES)
                         .eut(24)
                         .addTo(autoclaveRecipes);
