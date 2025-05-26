@@ -1,5 +1,7 @@
 package gregtech.common.gui.mui1.cover;
 
+import static net.minecraft.util.StatCollector.translateToLocal;
+
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
@@ -36,9 +38,6 @@ public class EUMeterUIFactory extends CoverUIFactory<CoverEUMeter> {
     @SuppressWarnings("PointlessArithmeticExpression")
     @Override
     protected void addUIWidgets(ModularWindow.Builder builder) {
-        final String INVERTED = GTUtility.trans("INVERTED", "Inverted");
-        final String NORMAL = GTUtility.trans("NORMAL", "Normal");
-
         final CoverDataFollowerNumericWidget<CoverEUMeter> numericWidget = new CoverDataFollowerNumericWidget<>();
 
         builder
@@ -59,8 +58,8 @@ public class EUMeterUIFactory extends CoverUIFactory<CoverEUMeter> {
                         CoverDataFollowerToggleButtonWidget.ofRedstone(),
                         CoverEUMeter::isInverted,
                         CoverEUMeter::setInverted,
-                        widget -> widget.addTooltip(0, NORMAL)
-                            .addTooltip(1, INVERTED)
+                        widget -> widget.addTooltip(0, translateToLocal("gt.interact.desc.normal"))
+                            .addTooltip(1, translateToLocal("gt.interact.desc.inverted"))
                             .setPos(spaceX * 0, spaceY * 1))
                     .addFollower(
                         numericWidget,
@@ -79,7 +78,11 @@ public class EUMeterUIFactory extends CoverUIFactory<CoverEUMeter> {
                     .setDefaultColor(COLOR_TEXT_GRAY.get())
                     .setPos(startX + spaceX, 4 + startY))
             .widget(
-                new TextWidget().setStringSupplier(getCoverString(c -> c.isInverted() ? INVERTED : NORMAL))
+                new TextWidget()
+                    .setStringSupplier(
+                        getCoverString(
+                            c -> c.isInverted() ? translateToLocal("gt.interact.desc.inverted")
+                                : translateToLocal("gt.interact.desc.normal")))
                     .setDefaultColor(COLOR_TEXT_GRAY.get())
                     .setPos(startX + spaceX, 4 + startY + spaceY))
             .widget(

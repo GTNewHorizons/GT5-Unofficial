@@ -2,7 +2,6 @@ package tectech.loader.recipe;
 
 import static gregtech.api.enums.Mods.EternalSingularity;
 import static gregtech.api.util.GTModHandler.getModItem;
-import static gregtech.api.util.GTRecipeBuilder.BUCKETS;
 import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
@@ -72,7 +71,7 @@ public class Godforge implements Runnable {
             String dict = OreDictionary.getOreName(OreDictionary.getOreIDs(itemStack)[0]);
             // substring 4 because dust is 4 characters long and there is no other possible oreDict
             String strippedOreDict = dict.substring(4);
-            molten.add(FluidRegistry.getFluidStack("molten." + strippedOreDict.toLowerCase(), 144));
+            molten.add(FluidRegistry.getFluidStack("molten." + strippedOreDict.toLowerCase(), 1 * INGOTS));
 
         }
 
@@ -120,44 +119,47 @@ public class Godforge implements Runnable {
 
                 FluidStack[] molten_t0_1step = convertToFluid(solids_t0_1step);
 
-                FluidStack[] solid_plasmas_t0_1step = { Materials.Aluminium.getPlasma(144),
-                    Materials.Iron.getPlasma(144), Materials.Calcium.getPlasma(144), Materials.Sulfur.getPlasma(144),
-                    Materials.Zinc.getPlasma(144), Materials.Niobium.getPlasma(144), Materials.Tin.getPlasma(144),
-                    Materials.Titanium.getPlasma(144), Materials.Nickel.getPlasma(144), Materials.Silver.getPlasma(144),
-                    Materials.Americium.getPlasma(144), Materials.Antimony.getPlasma(144),
-                    Materials.Ardite.getPlasma(144), Materials.Arsenic.getPlasma(144), Materials.Barium.getPlasma(144),
-                    Materials.Beryllium.getPlasma(144), Materials.Caesium.getPlasma(144),
-                    Materials.Cadmium.getPlasma(144), Materials.Carbon.getPlasma(144), Materials.Cerium.getPlasma(144),
-                    Materials.Cobalt.getPlasma(144), Materials.Copper.getPlasma(144), Materials.Desh.getPlasma(144),
-                    Materials.Dysprosium.getPlasma(144), Materials.Erbium.getPlasma(144),
-                    Materials.Europium.getPlasma(144), Materials.Gadolinium.getPlasma(144),
-                    Materials.Gallium.getPlasma(144), Materials.Gold.getPlasma(144), Materials.Holmium.getPlasma(144),
-                    Materials.Indium.getPlasma(144), Materials.Lanthanum.getPlasma(144),
-                    Materials.Lithium.getPlasma(144), Materials.Lutetium.getPlasma(144),
-                    Materials.Magnesium.getPlasma(144), Materials.Manganese.getPlasma(144),
-                    Materials.MeteoricIron.getPlasma(144), Materials.Molybdenum.getPlasma(144),
-                    Materials.Neodymium.getPlasma(144), Materials.Oriharukon.getPlasma(144),
-                    Materials.Palladium.getPlasma(144), Materials.Phosphorus.getPlasma(144),
-                    Materials.Potassium.getPlasma(144), Materials.Praseodymium.getPlasma(144),
-                    Materials.Promethium.getPlasma(144), Materials.Rubidium.getPlasma(144),
-                    Materials.Samarium.getPlasma(144), Materials.Silicon.getPlasma(144),
-                    Materials.Sodium.getPlasma(144), Materials.Strontium.getPlasma(144),
-                    Materials.Tantalum.getPlasma(144), Materials.Tellurium.getPlasma(144),
-                    Materials.Terbium.getPlasma(144), Materials.Thulium.getPlasma(144),
-                    Materials.Tungsten.getPlasma(144), Materials.Uranium.getPlasma(144),
-                    Materials.Uranium235.getPlasma(144), Materials.Vanadium.getPlasma(144),
-                    Materials.Ytterbium.getPlasma(144), Materials.Yttrium.getPlasma(144),
-                    Materials.Chrome.getPlasma(144),
-                    new FluidStack(MaterialsElements.getInstance().ZIRCONIUM.getPlasma(), 144),
-                    new FluidStack(MaterialsElements.getInstance().THORIUM232.getPlasma(), 144),
-                    new FluidStack(MaterialsElements.getInstance().GERMANIUM.getPlasma(), 144),
-                    new FluidStack(MaterialsElements.getInstance().THALLIUM.getPlasma(), 144),
-                    new FluidStack(MaterialsElements.getInstance().RUTHENIUM.getPlasma(), 144),
-                    new FluidStack(MaterialsElements.getInstance().RHENIUM.getPlasma(), 144),
-                    new FluidStack(MaterialsElements.getInstance().RHODIUM.getPlasma(), 144),
-                    new FluidStack(MaterialsElements.getInstance().IODINE.getPlasma(), 144),
-                    new FluidStack(MaterialsElements.getInstance().HAFNIUM.getPlasma(), 144),
-                    new FluidStack(MaterialsElements.getInstance().CURIUM.getPlasma(), 144) };
+                FluidStack[] solid_plasmas_t0_1step = { Materials.Aluminium.getPlasma(1 * INGOTS),
+                    Materials.Iron.getPlasma(1 * INGOTS), Materials.Calcium.getPlasma(1 * INGOTS),
+                    Materials.Sulfur.getPlasma(1 * INGOTS), Materials.Zinc.getPlasma(1 * INGOTS),
+                    Materials.Niobium.getPlasma(1 * INGOTS), Materials.Tin.getPlasma(1 * INGOTS),
+                    Materials.Titanium.getPlasma(1 * INGOTS), Materials.Nickel.getPlasma(1 * INGOTS),
+                    Materials.Silver.getPlasma(1 * INGOTS), Materials.Americium.getPlasma(1 * INGOTS),
+                    Materials.Antimony.getPlasma(1 * INGOTS), Materials.Ardite.getPlasma(1 * INGOTS),
+                    Materials.Arsenic.getPlasma(1 * INGOTS), Materials.Barium.getPlasma(1 * INGOTS),
+                    Materials.Beryllium.getPlasma(1 * INGOTS), Materials.Caesium.getPlasma(1 * INGOTS),
+                    Materials.Cadmium.getPlasma(1 * INGOTS), Materials.Carbon.getPlasma(1 * INGOTS),
+                    Materials.Cerium.getPlasma(1 * INGOTS), Materials.Cobalt.getPlasma(1 * INGOTS),
+                    Materials.Copper.getPlasma(1 * INGOTS), Materials.Desh.getPlasma(1 * INGOTS),
+                    Materials.Dysprosium.getPlasma(1 * INGOTS), Materials.Erbium.getPlasma(1 * INGOTS),
+                    Materials.Europium.getPlasma(1 * INGOTS), Materials.Gadolinium.getPlasma(1 * INGOTS),
+                    Materials.Gallium.getPlasma(1 * INGOTS), Materials.Gold.getPlasma(1 * INGOTS),
+                    Materials.Holmium.getPlasma(1 * INGOTS), Materials.Indium.getPlasma(1 * INGOTS),
+                    Materials.Lanthanum.getPlasma(1 * INGOTS), Materials.Lithium.getPlasma(1 * INGOTS),
+                    Materials.Lutetium.getPlasma(1 * INGOTS), Materials.Magnesium.getPlasma(1 * INGOTS),
+                    Materials.Manganese.getPlasma(1 * INGOTS), Materials.MeteoricIron.getPlasma(1 * INGOTS),
+                    Materials.Molybdenum.getPlasma(1 * INGOTS), Materials.Neodymium.getPlasma(1 * INGOTS),
+                    Materials.Oriharukon.getPlasma(1 * INGOTS), Materials.Palladium.getPlasma(1 * INGOTS),
+                    Materials.Phosphorus.getPlasma(1 * INGOTS), Materials.Potassium.getPlasma(1 * INGOTS),
+                    Materials.Praseodymium.getPlasma(1 * INGOTS), Materials.Promethium.getPlasma(1 * INGOTS),
+                    Materials.Rubidium.getPlasma(1 * INGOTS), Materials.Samarium.getPlasma(1 * INGOTS),
+                    Materials.Silicon.getPlasma(1 * INGOTS), Materials.Sodium.getPlasma(1 * INGOTS),
+                    Materials.Strontium.getPlasma(1 * INGOTS), Materials.Tantalum.getPlasma(1 * INGOTS),
+                    Materials.Tellurium.getPlasma(1 * INGOTS), Materials.Terbium.getPlasma(1 * INGOTS),
+                    Materials.Thulium.getPlasma(1 * INGOTS), Materials.Tungsten.getPlasma(1 * INGOTS),
+                    Materials.Uranium.getPlasma(1 * INGOTS), Materials.Uranium235.getPlasma(1 * INGOTS),
+                    Materials.Vanadium.getPlasma(1 * INGOTS), Materials.Ytterbium.getPlasma(1 * INGOTS),
+                    Materials.Yttrium.getPlasma(1 * INGOTS), Materials.Chrome.getPlasma(1 * INGOTS),
+                    new FluidStack(MaterialsElements.getInstance().ZIRCONIUM.getPlasma(), 1 * INGOTS),
+                    new FluidStack(MaterialsElements.getInstance().THORIUM232.getPlasma(), 1 * INGOTS),
+                    new FluidStack(MaterialsElements.getInstance().GERMANIUM.getPlasma(), 1 * INGOTS),
+                    new FluidStack(MaterialsElements.getInstance().THALLIUM.getPlasma(), 1 * INGOTS),
+                    new FluidStack(MaterialsElements.getInstance().RUTHENIUM.getPlasma(), 1 * INGOTS),
+                    new FluidStack(MaterialsElements.getInstance().RHENIUM.getPlasma(), 1 * INGOTS),
+                    new FluidStack(MaterialsElements.getInstance().RHODIUM.getPlasma(), 1 * INGOTS),
+                    new FluidStack(MaterialsElements.getInstance().IODINE.getPlasma(), 1 * INGOTS),
+                    new FluidStack(MaterialsElements.getInstance().HAFNIUM.getPlasma(), 1 * INGOTS),
+                    new FluidStack(MaterialsElements.getInstance().CURIUM.getPlasma(), 1 * INGOTS) };
 
                 for (int i = 0; i < solids_t0_1step.length; i++) {
                     GTValues.RA.stdBuilder()
@@ -192,16 +194,18 @@ public class Godforge implements Runnable {
 
             FluidStack[] molten_t0_xstep = convertToFluid(solids_t0_xstep);
 
-            FluidStack[] solid_plasmas_t0_xstep = { new FluidStack(MaterialsElements.STANDALONE.FORCE.getPlasma(), 144),
-                Materials.Bismuth.getPlasma(144),
-                new FluidStack(MaterialsElements.STANDALONE.ADVANCED_NITINOL.getPlasma(), 144),
-                Materials.Boron.getPlasma(144),
-                new FluidStack(MaterialsElements.STANDALONE.ASTRAL_TITANIUM.getPlasma(), 144),
-                new FluidStack(MaterialsElements.STANDALONE.RUNITE.getPlasma(), 144),
-                new FluidStack(MaterialsElements.STANDALONE.CELESTIAL_TUNGSTEN.getPlasma(), 144),
-                Materials.Iridium.getPlasma(144), Materials.Naquadah.getPlasma(144), Materials.Osmium.getPlasma(144),
-                Materials.Platinum.getPlasma(144), Materials.Plutonium.getPlasma(144),
-                new FluidStack(MaterialsElements.getInstance().CALIFORNIUM.getPlasma(), 144) };
+            FluidStack[] solid_plasmas_t0_xstep = {
+                new FluidStack(MaterialsElements.STANDALONE.FORCE.getPlasma(), 1 * INGOTS),
+                Materials.Bismuth.getPlasma(1 * INGOTS),
+                new FluidStack(MaterialsElements.STANDALONE.ADVANCED_NITINOL.getPlasma(), 1 * INGOTS),
+                Materials.Boron.getPlasma(1 * INGOTS),
+                new FluidStack(MaterialsElements.STANDALONE.ASTRAL_TITANIUM.getPlasma(), 1 * INGOTS),
+                new FluidStack(MaterialsElements.STANDALONE.RUNITE.getPlasma(), 1 * INGOTS),
+                new FluidStack(MaterialsElements.STANDALONE.CELESTIAL_TUNGSTEN.getPlasma(), 1 * INGOTS),
+                Materials.Iridium.getPlasma(1 * INGOTS), Materials.Naquadah.getPlasma(1 * INGOTS),
+                Materials.Osmium.getPlasma(1 * INGOTS), Materials.Platinum.getPlasma(1 * INGOTS),
+                Materials.Plutonium.getPlasma(1 * INGOTS),
+                new FluidStack(MaterialsElements.getInstance().CALIFORNIUM.getPlasma(), 1 * INGOTS) };
 
             for (int i = 0; i < solids_t0_xstep.length; i++) {
                 GTValues.RA.stdBuilder()
@@ -233,9 +237,9 @@ public class Godforge implements Runnable {
 
             FluidStack[] molten_t1_1step = convertToFluid(solids_t1_1step);
 
-            FluidStack[] solid_plasmas_t1_1step = { Materials.Lead.getPlasma(144),
-                Materials.Plutonium241.getPlasma(144), Materials.Thorium.getPlasma(144),
-                Materials.Naquadria.getPlasma(144) };
+            FluidStack[] solid_plasmas_t1_1step = { Materials.Lead.getPlasma(1 * INGOTS),
+                Materials.Plutonium241.getPlasma(1 * INGOTS), Materials.Thorium.getPlasma(1 * INGOTS),
+                Materials.Naquadria.getPlasma(1 * INGOTS) };
 
             for (int i = 0; i < solids_t1_1step.length; i++) {
                 GTValues.RA.stdBuilder()
@@ -267,8 +271,8 @@ public class Godforge implements Runnable {
             FluidStack[] molten_t1_xstep = convertToFluid(solids_t1_xstep);
 
             FluidStack[] solid_plasmas_t1_xstep = {
-                new FluidStack(MaterialsElements.getInstance().NEPTUNIUM.getPlasma(), 144),
-                new FluidStack(MaterialsElements.getInstance().FERMIUM.getPlasma(), 144) };
+                new FluidStack(MaterialsElements.getInstance().NEPTUNIUM.getPlasma(), 1 * INGOTS),
+                new FluidStack(MaterialsElements.getInstance().FERMIUM.getPlasma(), 1 * INGOTS) };
 
             for (int i = 0; i < solids_t1_xstep.length; i++) {
                 GTValues.RA.stdBuilder()
@@ -304,12 +308,12 @@ public class Godforge implements Runnable {
             FluidStack[] molten_t2_1step = convertToFluid(solids_t2_1step);
 
             FluidStack[] solid_plasmas_t2_1step = {
-                new FluidStack(MaterialsElements.STANDALONE.RHUGNOR.getPlasma(), 144),
-                new FluidStack(MaterialsElements.STANDALONE.DRAGON_METAL.getPlasma(), 144),
-                new FluidStack(MaterialsElements.STANDALONE.CHRONOMATIC_GLASS.getPlasma(), 144),
-                Materials.Bedrockium.getPlasma(144), Materials.CosmicNeutronium.getPlasma(144),
-                Materials.Draconium.getPlasma(144), Materials.DraconiumAwakened.getPlasma(144),
-                Materials.Ichorium.getPlasma(144), };
+                new FluidStack(MaterialsElements.STANDALONE.RHUGNOR.getPlasma(), 1 * INGOTS),
+                new FluidStack(MaterialsElements.STANDALONE.DRAGON_METAL.getPlasma(), 1 * INGOTS),
+                new FluidStack(MaterialsElements.STANDALONE.CHRONOMATIC_GLASS.getPlasma(), 1 * INGOTS),
+                Materials.Bedrockium.getPlasma(1 * INGOTS), Materials.CosmicNeutronium.getPlasma(1 * INGOTS),
+                Materials.Draconium.getPlasma(1 * INGOTS), Materials.DraconiumAwakened.getPlasma(1 * INGOTS),
+                Materials.Ichorium.getPlasma(1 * INGOTS), };
 
             for (int i = 0; i < solids_t2_1step.length; i++) {
                 GTValues.RA.stdBuilder()
@@ -343,9 +347,9 @@ public class Godforge implements Runnable {
 
             FluidStack[] solid_plasmas_t2_xstep = {
                 new FluidStack(MaterialsElements.STANDALONE.HYPOGEN.getPlasma(), 144),
-                Materials.Tritanium.getPlasma(144), Materials.Flerovium.getPlasma(144),
-                Materials.Neutronium.getPlasma(144), Materials.Infinity.getPlasma(144),
-                MaterialsUEVplus.SixPhasedCopper.getPlasma(144), };
+                Materials.Tritanium.getPlasma(1 * INGOTS), Materials.Flerovium.getPlasma(1 * INGOTS),
+                Materials.Neutronium.getPlasma(1 * INGOTS), Materials.Infinity.getPlasma(1 * INGOTS),
+                MaterialsUEVplus.SixPhasedCopper.getPlasma(1 * INGOTS), };
 
             for (int i = 0; i < solids_t2_xstep.length; i++) {
                 GTValues.RA.stdBuilder()
@@ -440,7 +444,7 @@ public class Godforge implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(Materials.Iron.getDust(1))
                 .fluidInputs(Materials.Iron.getMolten(1))
-                .fluidOutputs(MaterialsUEVplus.QuarkGluonPlasma.getFluid(1000))
+                .fluidOutputs(MaterialsUEVplus.QuarkGluonPlasma.getFluid(1_000))
                 .duration(10 * SECONDS)
                 .eut(TierEU.RECIPE_MAX)
                 .metadata(FOG_EXOTIC_TIER, 1)
@@ -451,7 +455,7 @@ public class Godforge implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(Materials.Iron.getDust(1))
                 .fluidInputs(Materials.Iron.getMolten(1), Materials.Bismuth.getMolten(1))
-                .fluidOutputs(MaterialsUEVplus.MagMatter.getMolten(576))
+                .fluidOutputs(MaterialsUEVplus.MagMatter.getMolten(4 * INGOTS))
                 .duration(10 * SECONDS)
                 .eut(TierEU.RECIPE_MAX)
                 .metadata(FOG_EXOTIC_TIER, 1)
@@ -794,7 +798,7 @@ public class Godforge implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(ArrayUtils.addAll(ForgeOfGodsUpgrade.QGPIU.getExtraCost()))
             .itemOutputs(CustomItemList.Machine_Multi_QuarkGluonPlasmaModule.get(1))
-            .fluidOutputs(MaterialsUEVplus.QuarkGluonPlasma.getFluid(1000))
+            .fluidOutputs(MaterialsUEVplus.QuarkGluonPlasma.getFluid(1_000))
             .duration(1)
             .eut(1)
             .metadata(FOG_UPGRADE_NAME_SHORT, ForgeOfGodsUpgrade.QGPIU.getShortNameText())
@@ -819,7 +823,7 @@ public class Godforge implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(ArrayUtils.addAll(ForgeOfGodsUpgrade.END.getExtraCost()))
             .itemOutputs(MaterialsUEVplus.GravitonShard.getGems(1))
-            .fluidOutputs(MaterialsUEVplus.MagMatter.getMolten(576), Materials.Neutronium.getPlasma(1000))
+            .fluidOutputs(MaterialsUEVplus.MagMatter.getMolten(4 * INGOTS), Materials.Neutronium.getPlasma(1_000))
             .duration(1)
             .eut(1)
             .metadata(FOG_UPGRADE_NAME_SHORT, ForgeOfGodsUpgrade.END.getShortNameText())
@@ -880,7 +884,7 @@ public class Godforge implements Runnable {
             if (mat.mStandardMoltenFluid != null) {
                 return mat.getMolten(INGOTS * data.mMaterial.mAmount / GTValues.M);
             } else if (mat.mFluid != null) {
-                return mat.getFluid(BUCKETS);
+                return mat.getFluid(1_000);
             }
         }
         int[] oreIDs = OreDictionary.getOreIDs(stack);
@@ -897,7 +901,7 @@ public class Godforge implements Runnable {
             strippedOreDict = dict.substring(11);
         }
         if (strippedOreDict != null) {
-            return FluidRegistry.getFluidStack("molten." + strippedOreDict.toLowerCase(), INGOTS);
+            return FluidRegistry.getFluidStack("molten." + strippedOreDict.toLowerCase(), 1 * INGOTS);
         }
         return null;
     }

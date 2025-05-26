@@ -4,8 +4,10 @@ import static gregtech.api.enums.Mods.AppliedEnergistics2;
 import static gregtech.api.recipe.RecipeMaps.compressorRecipes;
 import static gregtech.api.util.GTModHandler.getModItem;
 import static gregtech.api.util.GTRecipeBuilder.HOURS;
+import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.MINUTES;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
+import static gregtech.api.util.GTRecipeBuilder.STACKS;
 import static gtPlusPlus.xmod.bop.blocks.BOPBlockRegistrator.sapling_Rainforest;
 
 import net.minecraft.init.Blocks;
@@ -274,7 +276,7 @@ public class CompressorRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.Infinity, 1))
-            .fluidInputs(MaterialsUEVplus.MoltenProtoHalkoniteBase.getFluid(64 * 144))
+            .fluidInputs(MaterialsUEVplus.MoltenProtoHalkoniteBase.getFluid(1 * STACKS))
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.plateSuperdense, MaterialsUEVplus.HotProtoHalkonite, 1))
             // Require stabilized black hole
             .metadata(CompressionTierKey.INSTANCE, 2)
@@ -284,7 +286,7 @@ public class CompressorRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(GTOreDictUnificator.get(OrePrefixes.plateSuperdense, MaterialsUEVplus.Creon, 1))
-            .fluidInputs(MaterialsUEVplus.MoltenProtoHalkoniteBase.getFluid(32 * 144))
+            .fluidInputs(MaterialsUEVplus.MoltenProtoHalkoniteBase.getFluid(32 * INGOTS))
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.plateSuperdense, MaterialsUEVplus.HotProtoHalkonite, 1))
             // Require stabilized black hole
             .metadata(CompressionTierKey.INSTANCE, 2)
@@ -294,7 +296,7 @@ public class CompressorRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(GTOreDictUnificator.get(OrePrefixes.plateSuperdense, MaterialsUEVplus.Mellion, 1))
-            .fluidInputs(MaterialsUEVplus.MoltenProtoHalkoniteBase.getFluid(32 * 144))
+            .fluidInputs(MaterialsUEVplus.MoltenProtoHalkoniteBase.getFluid(32 * INGOTS))
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.plateSuperdense, MaterialsUEVplus.HotProtoHalkonite, 1))
             // Require stabilized black hole
             .metadata(CompressionTierKey.INSTANCE, 2)

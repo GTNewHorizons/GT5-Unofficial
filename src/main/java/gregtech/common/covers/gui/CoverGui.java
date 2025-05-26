@@ -2,6 +2,7 @@ package gregtech.common.covers.gui;
 
 import net.minecraft.item.ItemStack;
 
+import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.network.NetworkUtils;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.UISettings;
@@ -128,10 +129,21 @@ public class CoverGui<T extends Cover> {
             .childPadding(ROW_ELEMENT_PADDING);
     }
 
-    protected TextFieldWidget makeNumberField() {
+    protected Flow makeNamedColumn(IKey name) {
+        return Flow.column()
+            .coverChildren()
+            .crossAxisAlignment(Alignment.CrossAxis.START)
+            .child(name.asWidget());
+    }
+
+    protected TextFieldWidget makeNumberField(int width) {
         return new TextFieldWidget().setFormatAsInteger(true)
-            .width(80)
+            .width(width)
             .height(12);
+    }
+
+    protected TextFieldWidget makeNumberField() {
+        return makeNumberField(80);
     }
 
     protected int getGUIWidth() {

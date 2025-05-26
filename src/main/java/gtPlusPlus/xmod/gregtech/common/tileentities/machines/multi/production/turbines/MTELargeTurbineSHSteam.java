@@ -9,7 +9,6 @@ import gregtech.GTMod;
 import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.util.GTModHandler;
 import gregtech.api.util.TurbineStatCalculator;
 import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.util.math.MathUtils;
@@ -135,7 +134,7 @@ public class MTELargeTurbineSHSteam extends MTELargerTurbineBase {
         if (isUsingDenseSteam) {
             addOutput(Materials.DenseSteam.getGas((long) steamFlowForNextSteam));
         } else {
-            addOutput(GTModHandler.getSteam(totalFlow));
+            addOutput(Materials.Steam.getGas(totalFlow));
         }
         if (totalFlow != realOptFlow) {
             float efficiency = 1.0f - Math.abs((totalFlow - (float) realOptFlow) / (float) realOptFlow);
