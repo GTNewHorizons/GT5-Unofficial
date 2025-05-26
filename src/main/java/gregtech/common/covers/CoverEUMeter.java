@@ -22,10 +22,12 @@ import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEBasicBatteryBuffer;
 import gregtech.api.util.GTUtility;
+import gregtech.common.covers.gui.CoverEUMeterGui;
+import gregtech.common.covers.gui.CoverGui;
 import gregtech.common.gui.mui1.cover.EUMeterUIFactory;
 import io.netty.buffer.ByteBuf;
 
-public class CoverEUMeter extends Cover {
+public class CoverEUMeter extends Cover implements Invertable {
 
     private EnergyType type;
     private boolean inverted;
@@ -221,6 +223,11 @@ public class CoverEUMeter extends Cover {
     @Override
     public boolean hasCoverGUI() {
         return true;
+    }
+
+    @Override
+    protected @NotNull CoverGui<?> getCoverGui() {
+        return new CoverEUMeterGui(this);
     }
 
     @Override
