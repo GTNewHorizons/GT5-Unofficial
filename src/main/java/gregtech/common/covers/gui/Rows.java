@@ -1,12 +1,13 @@
 package gregtech.common.covers.gui;
 
+import static net.minecraft.util.StatCollector.translateToLocal;
+
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
 import com.cleanroommc.modularui.widgets.ToggleButton;
 import com.cleanroommc.modularui.widgets.layout.Flow;
 
 import gregtech.api.modularui2.GTGuiTextures;
-import gregtech.api.util.GTUtility;
 import gregtech.common.covers.Invertable;
 
 public class Rows {
@@ -22,8 +23,8 @@ public class Rows {
                     .size(16))
             .child(
                 IKey.dynamic(
-                    () -> isInvertedSyncValue.getValue() ? GTUtility.trans("INVERTED", "Inverted")
-                        : GTUtility.trans("NORMAL", "Normal"))
+                    () -> isInvertedSyncValue.getValue() ? translateToLocal("gt.interact.desc.normal")
+                        : translateToLocal("gt.interact.desc.inverted"))
                     .asWidget());
     }
 }

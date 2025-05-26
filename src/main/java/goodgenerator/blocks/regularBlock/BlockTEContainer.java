@@ -175,8 +175,8 @@ public class BlockTEContainer extends BlockContainer {
                             ((MTEEssentiaHatch) tile).setLockedAspect(tLocked);
                             GTUtility.sendChatToPlayer(
                                 player,
-                                String.format(
-                                    StatCollector.translateToLocal("essentiahatch.chat.0"),
+                                StatCollector.translateToLocalFormatted(
+                                    "essentiahatch.chat.0",
                                     tLocked.getLocalizedDescription()));
                         }
                     } else {

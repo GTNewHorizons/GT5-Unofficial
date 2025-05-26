@@ -1,5 +1,7 @@
 package gregtech.common.covers;
 
+import static net.minecraft.util.StatCollector.translateToLocal;
+
 import java.util.Arrays;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -133,10 +135,10 @@ public class CoverLiquidMeter extends Cover implements Invertable {
     public void onCoverScrewdriverClick(EntityPlayer aPlayer, float aX, float aY, float aZ) {
         if (inverted) {
             inverted = false;
-            GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("055", "Normal"));
+            GTUtility.sendChatToPlayer(aPlayer, translateToLocal("gt.interact.desc.normal"));
         } else {
             inverted = true;
-            GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("054", "Inverted"));
+            GTUtility.sendChatToPlayer(aPlayer, translateToLocal("gt.interact.desc.inverted"));
         }
     }
 
