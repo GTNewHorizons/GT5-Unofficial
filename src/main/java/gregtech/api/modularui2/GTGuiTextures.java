@@ -294,34 +294,46 @@ public final class GTGuiTextures {
     public static final UITexture PARALLEL_ECCF_INDICATOR_R = UITexture
         .fullImage(GregTech.ID, "gui/picture/parallel_ECCF_indicator_R");
 
-    public static final UITexture OVERLAY_BUTTON_INPUT_SEPARATION_ON = UITexture
-        .fullImage(GregTech.ID, "gui/overlay_button/input_separation_on");
-    public static final UITexture OVERLAY_BUTTON_INPUT_SEPARATION_ON_DISABLED = UITexture
-        .fullImage(GregTech.ID, "gui/overlay_button/input_separation_on_disabled");
-    public static final UITexture OVERLAY_BUTTON_INPUT_SEPARATION_OFF = UITexture
-        .fullImage(GregTech.ID, "gui/overlay_button/input_separation_off");
-    public static final UITexture OVERLAY_BUTTON_INPUT_SEPARATION_OFF_DISABLED = UITexture
-        .fullImage(GregTech.ID, "gui/overlay_button/input_separation_off_disabled");
-    public static final UITexture OVERLAY_BUTTON_RECIPE_UNLOCKED = UITexture
-        .fullImage(GregTech.ID, "gui/overlay_button/recipe_unlocked");
-    public static final UITexture OVERLAY_BUTTON_RECIPE_UNLOCKED_DISABLED = UITexture
-        .fullImage(GregTech.ID, "gui/overlay_button/recipe_unlocked_disabled");
-    public static final UITexture OVERLAY_BUTTON_RECIPE_LOCKED = UITexture
-        .fullImage(GregTech.ID, "gui/overlay_button/recipe_locked");
-    public static final UITexture OVERLAY_BUTTON_RECIPE_LOCKED_DISABLED = UITexture
-        .fullImage(GregTech.ID, "gui/overlay_button/recipe_locked_disabled");
-    public static final UITexture OVERLAY_BUTTON_BATCH_MODE_ON = UITexture
-        .fullImage(GregTech.ID, "gui/overlay_button/batch_mode_on");
-    public static final UITexture OVERLAY_BUTTON_BATCH_MODE_ON_DISABLED = UITexture
-        .fullImage(GregTech.ID, "gui/overlay_button/batch_mode_on_disabled");
-    public static final UITexture OVERLAY_BUTTON_BATCH_MODE_OFF = UITexture
-        .fullImage(GregTech.ID, "gui/overlay_button/batch_mode_off");
-    public static final UITexture OVERLAY_BUTTON_BATCH_MODE_OFF_DISABLED = UITexture
-        .fullImage(GregTech.ID, "gui/overlay_button/batch_mode_off_disabled");
-    public static final UITexture OVERLAY_BUTTON_STRUCTURE_UPDATE = UITexture
-        .fullImage(GregTech.ID, "gui/overlay_button/structure_update");
-    public static final UITexture OVERLAY_BUTTON_FORBIDDEN = UITexture
-        .fullImage(GregTech.ID, "gui/overlay_button/forbidden");
+    public static final UITexture OVERLAY_BUTTON_INPUT_SEPARATION_ON = fullImage(
+        GregTech.ID,
+        "gui/overlay_button/input_separation_on");
+    public static final UITexture OVERLAY_BUTTON_INPUT_SEPARATION_ON_DISABLED = fullImage(
+        GregTech.ID,
+        "gui/overlay_button/input_separation_on_disabled");
+    public static final UITexture OVERLAY_BUTTON_INPUT_SEPARATION_OFF = fullImage(
+        GregTech.ID,
+        "gui/overlay_button/input_separation_off");
+    public static final UITexture OVERLAY_BUTTON_INPUT_SEPARATION_OFF_DISABLED = fullImage(
+        GregTech.ID,
+        "gui/overlay_button/input_separation_off_disabled");
+    public static final UITexture OVERLAY_BUTTON_RECIPE_UNLOCKED = fullImage(
+        GregTech.ID,
+        "gui/overlay_button/recipe_unlocked");
+    public static final UITexture OVERLAY_BUTTON_RECIPE_UNLOCKED_DISABLED = fullImage(
+        GregTech.ID,
+        "gui/overlay_button/recipe_unlocked_disabled");
+    public static final UITexture OVERLAY_BUTTON_RECIPE_LOCKED = fullImage(
+        GregTech.ID,
+        "gui/overlay_button/recipe_locked");
+    public static final UITexture OVERLAY_BUTTON_RECIPE_LOCKED_DISABLED = fullImage(
+        GregTech.ID,
+        "gui/overlay_button/recipe_locked_disabled");
+    public static final UITexture OVERLAY_BUTTON_BATCH_MODE_ON = fullImage(
+        GregTech.ID,
+        "gui/overlay_button/batch_mode_on");
+    public static final UITexture OVERLAY_BUTTON_BATCH_MODE_ON_DISABLED = fullImage(
+        GregTech.ID,
+        "gui/overlay_button/batch_mode_on_disabled");
+    public static final UITexture OVERLAY_BUTTON_BATCH_MODE_OFF = fullImage(
+        GregTech.ID,
+        "gui/overlay_button/batch_mode_off");
+    public static final UITexture OVERLAY_BUTTON_BATCH_MODE_OFF_DISABLED = fullImage(
+        GregTech.ID,
+        "gui/overlay_button/batch_mode_off_disabled");
+    public static final UITexture OVERLAY_BUTTON_STRUCTURE_UPDATE = fullImage(
+        GregTech.ID,
+        "gui/overlay_button/structure_update");
+    public static final UITexture OVERLAY_BUTTON_FORBIDDEN = fullImage(GregTech.ID, "gui/overlay_button/forbidden");
 
     public static final UITexture OVERLAY_BUTTON_BOUNDING_BOX = UITexture.builder()
         .location(GregTech.ID, "gui/overlay_button/bounding_box")
