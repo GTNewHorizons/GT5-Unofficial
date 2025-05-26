@@ -6,6 +6,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.event.world.WorldEvent;
 
+import com.gtnewhorizon.gtnhlib.datastructs.spatialhashgrid.SpatialHashGrid;
 import com.gtnewhorizon.gtnhlib.eventbus.EventBusSubscriber;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
@@ -13,7 +14,6 @@ import cpw.mods.fml.common.gameevent.PlayerEvent;
 import cpw.mods.fml.common.network.FMLNetworkEvent;
 import gregtech.common.tileentities.machines.basic.MTEMagLevPylon;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
-import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet;
 
 @EventBusSubscriber
 public class TetherManager {
@@ -23,8 +23,7 @@ public class TetherManager {
      * <br>
      * Initialized with empty set on world load and removed on unload
      **/
-    // TODO: Replace with Octree
-    public static final Int2ObjectOpenHashMap<ObjectOpenHashSet<MTEMagLevPylon>> ACTIVE_PYLONS = new Int2ObjectOpenHashMap<>();
+    public static final Int2ObjectOpenHashMap<SpatialHashGrid<MTEMagLevPylon>> ACTIVE_PYLONS = new Int2ObjectOpenHashMap<>();
     public static final WeakHashMap<EntityPlayer, Tether> PLAYER_TETHERS = new WeakHashMap<>();
 
     // client clean up
@@ -52,7 +51,17 @@ public class TetherManager {
 
     @SubscribeEvent
     public static void onWorldLoad(WorldEvent.Load event) {
-        ACTIVE_PYLONS.computeIfAbsent(event.world.provider.dimensionId, v -> new ObjectOpenHashSet<>());
+        ACTIVE_PYLONS.computeIfAbsent(
+            event.world.provider.dimensionId,
+            v -> new SpatialHashGrid<>(
+                16,
+                (vec, pylon) -> vec.set(
+                    pylon.getBaseMetaTileEntity()
+                        .getXCoord(),
+                    pylon.getBaseMetaTileEntity()
+                        .getYCoord(),
+                    pylon.getBaseMetaTileEntity()
+                        .getZCoord())));
     }
 
     @SubscribeEvent

@@ -24,6 +24,7 @@ public class MTEMagLevPylon extends MTETieredMachineBlock {
     public int mRange = 16;
     public Tether machineTether;
 
+    // TODO Power/Range balancing
     public MTEMagLevPylon(int aID, String aName, String aNameRegional, int aTier) {
         super(
             aID,
@@ -55,7 +56,7 @@ public class MTEMagLevPylon extends MTETieredMachineBlock {
             8 * mTier,
             mTier);
         TetherManager.ACTIVE_PYLONS.get(baseMetaTileEntity.getWorld().provider.dimensionId)
-            .add(this);
+            .insert(this);
     }
 
     @Override

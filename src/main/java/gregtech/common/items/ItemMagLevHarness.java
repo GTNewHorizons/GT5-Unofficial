@@ -1,9 +1,14 @@
 package gregtech.common.items;
 
+import java.util.Map;
+import java.util.stream.Collectors;
+
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.FakePlayer;
+
+import com.gtnewhorizon.gtnhlib.util.DistanceUtil;
 
 import baubles.api.BaubleType;
 import baubles.api.expanded.IBaubleExpanded;
@@ -12,11 +17,9 @@ import gregtech.api.items.GTGenericItem;
 import gregtech.common.data.maglev.Tether;
 import gregtech.common.data.maglev.TetherManager;
 import gregtech.common.tileentities.machines.basic.MTEMagLevPylon;
-import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet;
+import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 
 public class ItemMagLevHarness extends GTGenericItem implements IBaubleExpanded {
-
-    // private Tether activeTether;
 
     public ItemMagLevHarness() {
         super("MaglevHarness", "MagLev Harness", null);
@@ -32,7 +35,7 @@ public class ItemMagLevHarness extends GTGenericItem implements IBaubleExpanded 
 
     @Override
     public String[] getBaubleTypes(ItemStack itemstack) {
-        return new String[] { "universal" };
+        return new String[] { "belt" };
     }
 
     @Override
@@ -40,32 +43,45 @@ public class ItemMagLevHarness extends GTGenericItem implements IBaubleExpanded 
         if (!(entityLivingBase instanceof EntityPlayer player)) return;
         if (player instanceof FakePlayer) return;
 
-        Tether activeTether = TetherManager.PLAYER_TETHERS.get(player);
-        if (activeTether != null) {
-            if (player.worldObj.provider.dimensionId != activeTether.dimID()
-                || player.getDistance(activeTether.sourceX(), activeTether.sourceY(), activeTether.sourceZ())
-                    > activeTether.range()) {
+        Tether activeTether;
+        var grid = TetherManager.ACTIVE_PYLONS.get(player.dimension);
+        var nearby = (ObjectArrayList<MTEMagLevPylon>) grid
+            .findNearbyChebyshev((int) player.posX, (int) player.posY, (int) player.posZ, 64);
+
+        if (!nearby.isEmpty()) {
+            // set pylon distances
+            var pylonDistances = nearby.stream()
+                .collect(
+                    Collectors.toMap(
+                        pylon -> pylon,
+                        pylon -> DistanceUtil.chebyshevDistance(
+                            player.posX,
+                            player.posY,
+                            player.posZ,
+                            pylon.getBaseMetaTileEntity()
+                                .getXCoord(),
+                            pylon.getBaseMetaTileEntity()
+                                .getYCoord(),
+                            pylon.getBaseMetaTileEntity()
+                                .getZCoord())));
+            // get closest one
+            MTEMagLevPylon closest = pylonDistances.entrySet()
+                .stream()
+                .min(Map.Entry.comparingByValue())
+                .orElse(null)
+                .getKey();
+
+            if (closest != null && pylonDistances.get(closest) <= closest.machineTether.range()) {
+                activeTether = closest.machineTether;
+            } else {
                 activeTether = null;
-                TetherManager.PLAYER_TETHERS.replace(player, null);
             }
+        } else {
+            activeTether = null;
         }
 
-        if (activeTether == null) {
-            ObjectOpenHashSet<MTEMagLevPylon> pylons = TetherManager.ACTIVE_PYLONS
-                .get(player.worldObj.provider.dimensionId);
-            var iterator = pylons.iterator();
-            while (iterator.hasNext()) {
-                MTEMagLevPylon pylon = iterator.next();
-                if (player.getDistance(
-                    pylon.machineTether.sourceX(),
-                    pylon.machineTether.sourceY(),
-                    pylon.machineTether.sourceZ()) <= pylon.machineTether.range()) {
-                    activeTether = pylon.machineTether;
-                    TetherManager.PLAYER_TETHERS.replace(player, activeTether);
-                    break;
-                }
-            }
-        }
+        TetherManager.PLAYER_TETHERS.replace(player, activeTether);
+
         setFly(player, player.capabilities.isCreativeMode || activeTether != null);
     }
 
