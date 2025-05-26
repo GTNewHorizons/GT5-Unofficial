@@ -896,6 +896,8 @@ GT5U.armor.message.installed=%s Installed
 
 GT5U.armor.tooltip.energycoreminimum=Minimum Energy Core Tier: %s
 GT5U.armor.tooltip.energycore=Energy Core Tier: %s
+GT5U.armor.tooltip.chargetier=Charge Tier: %s
+GT5U.armor.tooltip.maxenergy=Maximum Energy: %s
 GT5U.armor.tooltip.applicable=Applicable To:
 GT5U.armor.tooltip.effects=Adds Effect:
 GT5U.armor.tooltip.requires=Requires Effect:

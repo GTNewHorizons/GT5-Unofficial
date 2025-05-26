@@ -5,6 +5,7 @@ import static gregtech.api.enums.Mods.Thaumcraft;
 import static gregtech.api.items.armor.ArmorHelper.APIARIST_KEY;
 import static gregtech.api.items.armor.ArmorHelper.FORCE_FIELD_KEY;
 import static gregtech.api.items.armor.ArmorHelper.GOGGLES_OF_REVEALING_KEY;
+import static gregtech.api.items.armor.ArmorHelper.INFINITE_ENERGY_KEY;
 import static gregtech.api.items.armor.ArmorHelper.JETPACK_KEY;
 import static gregtech.api.items.armor.ArmorHelper.SLOT_CHEST;
 import static gregtech.api.items.armor.ArmorHelper.SLOT_LEGS;
@@ -17,6 +18,8 @@ import static gregtech.api.util.GTUtility.getOrCreateNbtCompound;
 import java.util.ArrayList;
 import java.util.List;
 
+import gregtech.api.enums.GTValues;
+import gregtech.api.items.armor.MechArmorAugmentRegistries.Cores;
 import ic2.api.item.ElectricItem;
 import ic2.core.item.ElectricItemManager;
 import net.minecraft.client.model.ModelBiped;
@@ -222,22 +225,25 @@ public class MechArmorBase extends ItemArmor implements IKeyPressedListener, ISp
         model.jettank1.showModel = (armorSlot == SLOT_CHEST && itemStack.getTagCompound()
             .hasKey(JETPACK_KEY));
 
-        switch (getCore(itemStack)) {
-            case 1 -> model.core1.showModel = true;
-            case 2 -> model.core2.showModel = true;
-            case 3 -> model.core3.showModel = true;
-            case 4 -> model.core4.showModel = true;
+        Cores core = getCore(itemStack);
+        if (core != null) {
+            switch (core.tier) {
+                case 1 -> model.core1.showModel = true;
+                case 2 -> model.core2.showModel = true;
+                case 3 -> model.core3.showModel = true;
+                case 4 -> model.core4.showModel = true;
+            }
         }
         return model;
     }
 
-    protected int getCore(ItemStack stack) {
+    protected Cores getCore(ItemStack stack) {
         String core = stack.getTagCompound()
             .getString(MECH_CORE_KEY);
         if (coresMap.containsKey(core)) {
-            return (coresMap.get(core).tier);
+            return (coresMap.get(core));
         }
-        return 0;
+        return null;
     }
 
     protected Frames getFrame(ItemStack stack) {
@@ -251,8 +257,9 @@ public class MechArmorBase extends ItemArmor implements IKeyPressedListener, ISp
 
     @Override
     public boolean showDurabilityBar(ItemStack stack) {
-        int core = getCore(stack);
-        return core != 0 && core != 4;
+        Cores core = getCore(stack);
+        if (core == null) return false;
+        return (!stack.getTagCompound().hasKey(INFINITE_ENERGY_KEY));
     }
 
     @Override
@@ -348,16 +355,22 @@ public class MechArmorBase extends ItemArmor implements IKeyPressedListener, ISp
 
     @Override
     public double getMaxCharge(ItemStack itemStack) {
-        return 10000 * getCore(itemStack);
+        Cores core = getCore(itemStack);
+        if (core != null) return getCore(itemStack).charge;
+        return 0;
     }
 
     @Override
     public int getTier(ItemStack itemStack) {
-        return 3;
+        Cores core = getCore(itemStack);
+        if (core != null) return getCore(itemStack).chargeTier;
+        return -1;
     }
 
     @Override
     public double getTransferLimit(ItemStack itemStack) {
-        return 1600;
+        Cores core = getCore(itemStack);
+        if (core != null) return GTValues.V[getCore(itemStack).chargeTier];
+        return 0;
     }
 }

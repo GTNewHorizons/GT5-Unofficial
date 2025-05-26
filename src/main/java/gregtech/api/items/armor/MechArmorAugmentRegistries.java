@@ -4,6 +4,9 @@ import java.util.HashMap;
 
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.Tier;
+import gregtech.api.enums.TierEU;
+import gregtech.api.enums.VoltageIndex;
 
 public class MechArmorAugmentRegistries {
 
@@ -79,19 +82,23 @@ public class MechArmorAugmentRegistries {
 
     public enum Cores {
 
-        Nano("Nano", 1, ItemList.Armor_Core_T1),
-        Quantum("Quantum", 2, ItemList.Armor_Core_T2),
-        Living("Living", 3, ItemList.Armor_Core_T3),
-        Singularity("Singularity", 4, ItemList.Armor_Core_T4);
+        Nano("Nano", 1, ItemList.Armor_Core_T1, 1_000_000, VoltageIndex.HV),
+        Quantum("Quantum", 2, ItemList.Armor_Core_T2, 10_000_000, VoltageIndex.IV),
+        Living("Living", 3, ItemList.Armor_Core_T3, 100_000_000, VoltageIndex.ZPM),
+        Singularity("Singularity", 4, ItemList.Armor_Core_T4, 0, VoltageIndex.UHV);
 
         public final String id;
         public final int tier;
         public final ItemList item;
+        public final int charge;
+        public final int chargeTier;
 
-        Cores(String id, int tier, ItemList item) {
+        Cores(String id, int tier, ItemList item, int charge, int chargeTier) {
             this.id = id;
             this.tier = tier;
             this.item = item;
+            this.charge = charge;
+            this.chargeTier = chargeTier;
         }
 
         static {

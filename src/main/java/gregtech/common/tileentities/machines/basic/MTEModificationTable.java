@@ -235,6 +235,9 @@ public class MTEModificationTable extends MetaTileEntity {
                     augmentItem.getAttachedBehaviors()
                         .forEach(behavior -> behavior.removeBehaviorNBT(armorTag));
                     installedAugments--;
+                    armorTag.setInteger(
+                        ArmorHelper.VIS_DISCOUNT_KEY,
+                        armorTag.getInteger(ArmorHelper.VIS_DISCOUNT_KEY) - augmentItem.getVisDiscount());
                 }
             }
         }
