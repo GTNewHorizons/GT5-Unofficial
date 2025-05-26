@@ -23,12 +23,10 @@ import goodgenerator.blocks.tileEntity.GTMetaTileEntity.MTENeutronSensor;
 import goodgenerator.blocks.tileEntity.GTMetaTileEntity.MTEYOTTAHatch;
 import goodgenerator.blocks.tileEntity.MTEComponentAssemblyLine;
 import goodgenerator.blocks.tileEntity.MTECoolantTower;
-import goodgenerator.blocks.tileEntity.MTEEssentiaHatch;
 import goodgenerator.blocks.tileEntity.MTEEssentiaOutputHatch;
 import goodgenerator.blocks.tileEntity.MTEEssentiaOutputHatchME;
 import goodgenerator.blocks.tileEntity.MTEExtremeHeatExchanger;
 import goodgenerator.blocks.tileEntity.MTEFuelRefineFactory;
-import goodgenerator.blocks.tileEntity.MTELargeEssentiaGenerator;
 import goodgenerator.blocks.tileEntity.MTELargeEssentiaSmeltery;
 import goodgenerator.blocks.tileEntity.MTELargeFusionComputer1;
 import goodgenerator.blocks.tileEntity.MTELargeFusionComputer2;
@@ -44,7 +42,6 @@ import goodgenerator.blocks.tileEntity.MTEYottaFluidTank;
 import goodgenerator.blocks.tileEntity.render.TileAntimatter;
 import goodgenerator.crossmod.ic2.CropsLoader;
 import goodgenerator.crossmod.nei.NEIConfig;
-import goodgenerator.crossmod.thaumcraft.LargeEssentiaEnergyData;
 import goodgenerator.items.GGItem;
 import goodgenerator.items.GGItemBlocks;
 import goodgenerator.items.GGMaterial;
@@ -126,14 +123,6 @@ public class Loaders {
             GoodGenerator.MOD_ID + ":fluidCore/5", GoodGenerator.MOD_ID + ":fluidCore/6",
             GoodGenerator.MOD_ID + ":fluidCore/7", GoodGenerator.MOD_ID + ":fluidCore/8",
             GoodGenerator.MOD_ID + ":fluidCore/9", GoodGenerator.MOD_ID + ":fluidCore/10" });
-    public static final Item upgradeEssentia = new GGItem(
-        "upgradeEssentia",
-        GoodGenerator.GG,
-        new String[] { GoodGenerator.MOD_ID + ":upgradeEssentia/null", GoodGenerator.MOD_ID + ":upgradeEssentia/air",
-            GoodGenerator.MOD_ID + ":upgradeEssentia/thermal", GoodGenerator.MOD_ID + ":upgradeEssentia/unstable",
-            GoodGenerator.MOD_ID + ":upgradeEssentia/victus", GoodGenerator.MOD_ID + ":upgradeEssentia/tainted",
-            GoodGenerator.MOD_ID + ":upgradeEssentia/mechanics", GoodGenerator.MOD_ID + ":upgradeEssentia/spirit",
-            GoodGenerator.MOD_ID + ":upgradeEssentia/radiation", GoodGenerator.MOD_ID + ":upgradeEssentia/electric" });
     public static final Item highEnergyMixture = new GGItem(
         "highEnergyMixture",
         GoodGenerator.GG,
@@ -249,7 +238,6 @@ public class Loaders {
     public static final Block essentiaFilterCasing = new BlockCasing(
         "essentiaFilterCasing",
         new String[] { GoodGenerator.MOD_ID + ":essentiaFilterCasing" });
-    public static Block essentiaHatch;
     public static Block essentiaOutputHatch;
     public static Block essentiaOutputHatch_ME;
     public static final Block componentAssemblylineCasing = new BlockCasing(
@@ -272,7 +260,6 @@ public class Loaders {
     public static ItemStack MAR;
     public static ItemStack FRF;
     public static ItemStack UCFE;
-    public static ItemStack LEG;
     public static ItemStack NS;
     public static ItemStack NA;
     public static ItemStack YFT;
@@ -467,23 +454,12 @@ public class Loaders {
 
     public static void compactMod() {
         if (!Mods.Thaumcraft.isModLoaded()) return;
-        LargeEssentiaEnergyData.processEssentiaData();
-        GameRegistry.registerItem(upgradeEssentia, "upgradeEssentia", GoodGenerator.MOD_ID);
-        GameRegistry.registerTileEntity(MTEEssentiaHatch.class, "EssentiaHatch");
         GameRegistry.registerTileEntity(MTEEssentiaOutputHatch.class, "EssentiaOutputHatch");
         GameRegistry.registerTileEntity(MTEEssentiaOutputHatchME.class, "EssentiaOutputHatch_ME");
-        Loaders.LEG = new MTELargeEssentiaGenerator(
-            MetaTileEntityIDs.LargeEssentiaGenerator.ID,
-            "LargeEssentiaGenerator",
-            "Large Essentia Generator - Marked for Deprecation").getStackForm(1L);
         Loaders.LES = new MTELargeEssentiaSmeltery(
             MetaTileEntityIDs.LargeEssentiaSmeltery.ID,
             "LargeEssentiaSmeltery",
             "Large Essentia Smeltery").getStackForm(1L);
-        essentiaHatch = new BlockTEContainer(
-            "essentiaHatch",
-            new String[] { GoodGenerator.MOD_ID + ":essentiaHatch" },
-            1);
         essentiaOutputHatch = new BlockTEContainer(
             "essentiaOutputHatch",
             new String[] { GoodGenerator.MOD_ID + ":essentiaOutputHatch" },
@@ -494,7 +470,6 @@ public class Loaders {
             3);
         GameRegistry.registerBlock(magicCasing, GGItemBlocks.class, "magicCasing");
         GameRegistry.registerBlock(essentiaCell, GGItemBlocks.class, "essentiaCell");
-        GameRegistry.registerBlock(essentiaHatch, GGItemBlocks.class, "essentiaHatch");
         GameRegistry.registerBlock(essentiaOutputHatch, GGItemBlocks.class, "essentiaOutputHatch");
         GameRegistry.registerBlock(essentiaFilterCasing, GGItemBlocks.class, "essentiaFilterCasing");
         GameRegistry.registerBlock(essentiaOutputHatch_ME, GGItemBlocks.class, "essentiaOutputHatch_ME");
