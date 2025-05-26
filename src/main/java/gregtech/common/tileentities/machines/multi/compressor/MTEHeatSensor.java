@@ -2,6 +2,7 @@ package gregtech.common.tileentities.machines.multi.compressor;
 
 import static net.minecraft.util.StatCollector.translateToLocal;
 
+import gregtech.api.util.GTUtility;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
