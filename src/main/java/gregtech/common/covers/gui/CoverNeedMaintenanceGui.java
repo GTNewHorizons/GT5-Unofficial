@@ -54,8 +54,7 @@ public class CoverNeedMaintenanceGui extends CoverGui<CoverNeedMaintainance> {
                             new SelectButton()
                                 .value(LinkedBoolValue.of(thresholdSyncValue, MaintenanceAlertCondition.ISSUE_1))
                                 .overlay(true, GTGuiTextures.OVERLAY_BUTTON_CHECKMARK)
-                                .addTooltipLine(
-                                    IKey.lang(() -> "gt.interact.desc.need_maint_count", () -> new Object[] { "1" }))
+                                .addTooltipLine(IKey.lang("gt.interact.desc.need_maint_count", "1", ""))
                                 .size(16),
                             IKey.lang(() -> "gt.interact.desc.issue")
                                 .asWidget())
@@ -63,8 +62,7 @@ public class CoverNeedMaintenanceGui extends CoverGui<CoverNeedMaintainance> {
                             new SelectButton()
                                 .value(LinkedBoolValue.of(thresholdSyncValue, MaintenanceAlertCondition.ISSUES_2))
                                 .overlay(true, GTGuiTextures.OVERLAY_BUTTON_CHECKMARK)
-                                .addTooltipLine(
-                                    IKey.lang(() -> "gt.interact.desc.need_maint_count", () -> new Object[] { "2" }))
+                                .addTooltipLine(IKey.lang("gt.interact.desc.need_maint_count", "2", ""))
                                 .size(16),
                             IKey.lang(() -> "gt.interact.desc.issues", () -> new Object[] { "2" })
                                 .asWidget())
@@ -72,8 +70,7 @@ public class CoverNeedMaintenanceGui extends CoverGui<CoverNeedMaintainance> {
                             new SelectButton()
                                 .value(LinkedBoolValue.of(thresholdSyncValue, MaintenanceAlertCondition.ISSUES_3))
                                 .overlay(true, GTGuiTextures.OVERLAY_BUTTON_CHECKMARK)
-                                .addTooltipLine(
-                                    IKey.lang(() -> "gt.interact.desc.need_maint_count", () -> new Object[] { "3" }))
+                                .addTooltipLine(IKey.lang("gt.interact.desc.need_maint_count", "3", ""))
                                 .size(16),
                             IKey.lang(() -> "gt.interact.desc.issues", () -> new Object[] { "3" })
                                 .asWidget())
@@ -81,8 +78,7 @@ public class CoverNeedMaintenanceGui extends CoverGui<CoverNeedMaintainance> {
                             new SelectButton()
                                 .value(LinkedBoolValue.of(thresholdSyncValue, MaintenanceAlertCondition.ISSUES_4))
                                 .overlay(true, GTGuiTextures.OVERLAY_BUTTON_CHECKMARK)
-                                .addTooltipLine(
-                                    IKey.lang(() -> "gt.interact.desc.need_maint_count", () -> new Object[] { "4" }))
+                                .addTooltipLine(IKey.lang("gt.interact.desc.need_maint_count", "4", ""))
                                 .size(16),
                             IKey.lang(() -> "gt.interact.desc.issues", () -> new Object[] { "4" })
                                 .asWidget()))
@@ -94,8 +90,7 @@ public class CoverNeedMaintenanceGui extends CoverGui<CoverNeedMaintainance> {
                             new SelectButton()
                                 .value(LinkedBoolValue.of(thresholdSyncValue, MaintenanceAlertCondition.ISSUES_5))
                                 .overlay(true, GTGuiTextures.OVERLAY_BUTTON_CHECKMARK)
-                                .addTooltipLine(
-                                    IKey.lang(() -> "gt.interact.desc.need_maint_count", () -> new Object[] { "5" }))
+                                .addTooltipLine(IKey.lang("gt.interact.desc.need_maint_count", "5", ""))
                                 .size(16),
                             IKey.lang(() -> "gt.interact.desc.issues", () -> new Object[] { "5" })
                                 .asWidget())
