@@ -18,6 +18,7 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TextureSet;
 import gregtech.api.metatileentity.implementations.MTEFluidPipe;
+import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gtPlusPlus.api.objects.Logger;
@@ -679,53 +680,25 @@ public class GregtechConduits {
         int eut = (int) (8 * vMulti);
 
         // Add the Four Shaped Recipes First
-        RecipeUtils.addShapedRecipe(
-            pipePlate,
-            pipePlate,
-            pipePlate,
-            "craftingToolHardHammer",
-            null,
-            "craftingToolWrench",
-            pipePlate,
-            pipePlate,
-            pipePlate,
-            ItemUtils.getItemStackOfAmountFromOreDict("pipe" + "Tiny" + output, 8));
+        GTModHandler.addCraftingRecipe(
+            ItemUtils.getItemStackOfAmountFromOreDict("pipe" + "Tiny" + output, 8),
+            GTModHandler.RecipeBits.BUFFERED,
+            new Object[] { "PPP", "h w", "PPP", 'P', pipePlate });
 
-        RecipeUtils.addShapedRecipe(
-            pipePlate,
-            "craftingToolWrench",
-            pipePlate,
-            pipePlate,
-            null,
-            pipePlate,
-            pipePlate,
-            "craftingToolHardHammer",
-            pipePlate,
-            ItemUtils.getItemStackOfAmountFromOreDict("pipe" + "Small" + output, 6));
+        GTModHandler.addCraftingRecipe(
+            ItemUtils.getItemStackOfAmountFromOreDict("pipe" + "Small" + output, 6),
+            GTModHandler.RecipeBits.BUFFERED,
+            new Object[] { "PwP", "P P", "PhP", 'P', pipePlate });
 
-        RecipeUtils.addShapedRecipe(
-            pipePlate,
-            pipePlate,
-            pipePlate,
-            "craftingToolWrench",
-            null,
-            "craftingToolHardHammer",
-            pipePlate,
-            pipePlate,
-            pipePlate,
-            ItemUtils.getItemStackOfAmountFromOreDict("pipe" + "Medium" + output, 2));
+        GTModHandler.addCraftingRecipe(
+            ItemUtils.getItemStackOfAmountFromOreDict("pipe" + "Medium" + output, 2),
+            GTModHandler.RecipeBits.BUFFERED,
+            new Object[] { "PPP", "w h", "PPP", 'P', pipePlate });
 
-        RecipeUtils.addShapedRecipe(
-            pipePlate,
-            "craftingToolHardHammer",
-            pipePlate,
-            pipePlate,
-            null,
-            pipePlate,
-            pipePlate,
-            "craftingToolWrench",
-            pipePlate,
-            ItemUtils.getItemStackOfAmountFromOreDict("pipe" + "Large" + output, 1));
+        GTModHandler.addCraftingRecipe(
+            ItemUtils.getItemStackOfAmountFromOreDict("pipe" + "Large" + output, 1),
+            GTModHandler.RecipeBits.BUFFERED,
+            new Object[] { "PhP", "P P", "PwP", 'P', pipePlate });
 
         if (pipeIngot != null && ItemUtils.checkForInvalidItems(pipeIngot)) {
             // 1 Clay Plate = 1 Clay Dust = 2 Clay Ball
