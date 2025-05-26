@@ -2,7 +2,6 @@ package gregtech.common.tileentities.machines.multi.compressor;
 
 import static net.minecraft.util.StatCollector.translateToLocal;
 
-import gregtech.api.util.GTUtility;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -35,6 +34,7 @@ import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.modularui2.GTGuis;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GTUtility;
 import gregtech.common.gui.modularui.widget.CoverCycleButtonWidget;
 
 public class MTEHeatSensor extends MTEHatch {
