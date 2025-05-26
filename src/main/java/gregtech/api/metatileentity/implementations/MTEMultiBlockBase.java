@@ -1933,7 +1933,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
         if (aMetaTileEntity instanceof IDualInputHatch hatch) {
             hatch.updateCraftingIcon(this.getMachineCraftingIcon());
             if (hatch instanceof IDualInputHatchWithPattern withPattern) {
-                withPattern.setProcessingLogic(processingLogic);
+                withPattern.addProcessingLogic(processingLogic);
             }
             return mDualInputHatches.add(hatch);
         }
@@ -3268,6 +3268,33 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
         numberFormat.setMinimumFractionDigits(0);
         numberFormat.setMaximumFractionDigits(2);
         return ret.toString();
+    }
+
+    protected void generateRecipeProgressString(StringBuffer ret) {
+        numberFormat.setMinimumFractionDigits(2);
+        numberFormat.setMaximumFractionDigits(2);
+        numberFormat.format((double) mProgresstime / 20, ret);
+        ret.append("s / ");
+        numberFormat.format((double) mMaxProgresstime / 20, ret);
+        ret.append("s (");
+        numberFormat.setMinimumFractionDigits(1);
+        numberFormat.setMaximumFractionDigits(1);
+        numberFormat.format((double) mProgresstime / mMaxProgresstime * 100, ret);
+        ret.append("%)\n");
+        numberFormat.setMinimumFractionDigits(0);
+        numberFormat.setMaximumFractionDigits(2);
+    }
+
+    protected void generateRate(StringBuffer ret, double amount) {
+        double processPerTick = amount / mMaxProgresstime * 20;
+        ret.append(" (");
+        if (processPerTick > 1) {
+            numberFormat.format(Math.round(processPerTick * 10) / 10.0, ret);
+            ret.append("/s)");
+        } else {
+            numberFormat.format(Math.round(1 / processPerTick * 10) / 10.0, ret);
+            ret.append("s/ea)");
+        }
     }
 
     protected void drawTexts(DynamicPositionedColumn screenElements, SlotWidget inventorySlot) {

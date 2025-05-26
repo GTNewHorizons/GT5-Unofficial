@@ -11,7 +11,6 @@ public interface IDualInputInventory {
     ItemStack[] getItemInputs();
 
     /** The list of real fluids stored in this sandboxed inventory. */
-
     FluidStack[] getFluidInputs();
 
 }

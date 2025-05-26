@@ -27,6 +27,7 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
 
@@ -576,7 +577,7 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
     }
 
     @Override
-    protected String generateCurrentRecipeInfoString() {
+    public String generateCurrentRecipeInfoString() {
         StringBuilder ret = new StringBuilder();
 
         ret.append(EnumChatFormatting.WHITE);
@@ -597,19 +598,17 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
     }
 
     @Override
-    protected void generateRecipeProgressString(StringBuffer ret) {
-        numberFormat.setMinimumFractionDigits(0);
-        numberFormat.setMaximumFractionDigits(0);
-        numberFormat.format(mProgresstime, ret);
-        ret.append(" / ");
-        numberFormat.format(mMaxProgresstime, ret);
-        ret.append(" (");
+    protected String generateCurrentProgress() {
+        StringBuffer ret = new StringBuffer(StatCollector.translateToLocal("GT5U.gui.text.progress"));
+        ret.append(" ");
+
         numberFormat.setMinimumFractionDigits(1);
         numberFormat.setMaximumFractionDigits(1);
         numberFormat.format((double) mProgresstime / mMaxProgresstime * 100, ret);
-        ret.append("%)\n");
+        ret.append("%\n");
         numberFormat.setMinimumFractionDigits(0);
         numberFormat.setMaximumFractionDigits(2);
+        return ret.toString();
     }
 
     @Override
