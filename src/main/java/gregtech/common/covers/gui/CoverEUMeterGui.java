@@ -37,7 +37,8 @@ public class CoverEUMeterGui extends CoverGui<CoverEUMeter> {
             .child(
                 addEnergyTypeTooltips(
                     new CycleButtonWidget().overlay(OVERLAY_BUTTON_CYCLIC)
-                        .value(energyTypeSyncValue)))
+                        .value(energyTypeSyncValue)
+                        .size(16)))
             .child(
                 IKey.dynamic(
                     () -> cover.getType()
