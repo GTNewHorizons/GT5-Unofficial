@@ -78,8 +78,8 @@ public class MTEEnvironmentallyCCFGUI extends MTEMultiBlockBaseGui {
         EnumChatFormatting format = EnumChatFormatting.RESET;
         String plus = (changeFormat && pressure > 0.1) ? "+" : "";
         if (changeFormat) {
-            if (pressure > 0.1) format = EnumChatFormatting.YELLOW;
-            if (pressure < 0.1) format = EnumChatFormatting.RED;
+            if (pressure > 0) format = EnumChatFormatting.YELLOW;
+            if (pressure < 0) format = EnumChatFormatting.RED;
         }
         if (Math.abs(pressure) > 1e10) return format + plus + String.format("%.1f GPa", pressure / 1e9);
         if (Math.abs(pressure) > 1e7) return format + plus + String.format("%.1f MPa", pressure / 1e6);
@@ -91,8 +91,8 @@ public class MTEEnvironmentallyCCFGUI extends MTEMultiBlockBaseGui {
         EnumChatFormatting format = EnumChatFormatting.RESET;
         String plus = (changeFormat && temp > 0.1) ? "+" : "";
         if (changeFormat) {
-            if (temp > 0.1) format = EnumChatFormatting.YELLOW;
-            if (temp < 0.1) format = EnumChatFormatting.RED;
+            if (temp > 0) format = EnumChatFormatting.YELLOW;
+            if (temp < 0) format = EnumChatFormatting.RED;
         }
         if (Math.abs(temp) > 1e7) return format + plus + String.format("%.1f MK", temp / 1e6);
         if (Math.abs(temp) > 1e4) return format + plus + String.format("%.1f kK", temp / 1e3);
