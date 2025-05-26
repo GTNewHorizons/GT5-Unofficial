@@ -294,7 +294,7 @@ public final class GTGuiTextures {
     public static final UITexture PARALLEL_ECCF_INDICATOR_R = UITexture
         .fullImage(GregTech.ID, "gui/picture/parallel_ECCF_indicator_R");
 
-   public static final UITexture OVERLAY_BUTTON_INPUT_SEPARATION_ON = fullImage(
+    public static final UITexture OVERLAY_BUTTON_INPUT_SEPARATION_ON = fullImage(
         GregTech.ID,
         "gui/overlay_button/input_separation_on");
     public static final UITexture OVERLAY_BUTTON_INPUT_SEPARATION_ON_DISABLED = fullImage(
