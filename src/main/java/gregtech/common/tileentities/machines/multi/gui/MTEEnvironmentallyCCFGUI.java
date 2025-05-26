@@ -1,7 +1,5 @@
 package gregtech.common.tileentities.machines.multi.gui;
 
-import net.minecraft.util.EnumChatFormatting;
-
 import com.cleanroommc.modularui.api.IPanelHandler;
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.drawable.DynamicDrawable;
@@ -16,10 +14,10 @@ import com.cleanroommc.modularui.widget.ParentWidget;
 import com.cleanroommc.modularui.widgets.ButtonWidget;
 import com.cleanroommc.modularui.widgets.PagedWidget;
 import com.cleanroommc.modularui.widgets.TextWidget;
-
 import gregtech.api.metatileentity.implementations.gui.MTEMultiBlockBaseGui;
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.common.tileentities.machines.multi.MTEEnvironmentallyControlledChemicalFacility;
+import net.minecraft.util.EnumChatFormatting;
 
 public class MTEEnvironmentallyCCFGUI extends MTEMultiBlockBaseGui {
 
@@ -76,10 +74,10 @@ public class MTEEnvironmentallyCCFGUI extends MTEMultiBlockBaseGui {
 
     private String pressureConverter(double pressure, boolean changeFormat) {
         EnumChatFormatting format = EnumChatFormatting.RESET;
-        String plus = (changeFormat && pressure >= 0.1) ? "+" : "";
+        String plus = (changeFormat && pressure > 0.1) ? "+" : "";
         if (changeFormat) {
-            if (pressure > 0) format = EnumChatFormatting.YELLOW;
-            if (pressure < 0) format = EnumChatFormatting.RED;
+            if (pressure > 0.1) format = EnumChatFormatting.YELLOW;
+            if (pressure < 0.1) format = EnumChatFormatting.RED;
         }
         if (Math.abs(pressure) > 1e10) return format + plus + String.format("%.1f GPa", pressure / 1e9);
         if (Math.abs(pressure) > 1e7) return format + plus + String.format("%.1f MPa", pressure / 1e6);
@@ -89,10 +87,10 @@ public class MTEEnvironmentallyCCFGUI extends MTEMultiBlockBaseGui {
 
     private String temperatureConverter(double temp, boolean changeFormat) {
         EnumChatFormatting format = EnumChatFormatting.RESET;
-        String plus = (changeFormat && temp >= 0.1) ? "+" : "";
+        String plus = (changeFormat && temp > 0.1) ? "+" : "";
         if (changeFormat) {
-            if (temp > 0) format = EnumChatFormatting.YELLOW;
-            if (temp < 0) format = EnumChatFormatting.RED;
+            if (temp > 0.1) format = EnumChatFormatting.YELLOW;
+            if (temp < 0.1) format = EnumChatFormatting.RED;
         }
         if (Math.abs(temp) > 1e7) return format + plus + String.format("%.1f MK", temp / 1e6);
         if (Math.abs(temp) > 1e4) return format + plus + String.format("%.1f kK", temp / 1e3);
