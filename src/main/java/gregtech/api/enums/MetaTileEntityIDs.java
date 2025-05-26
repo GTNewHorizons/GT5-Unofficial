@@ -1925,7 +1925,6 @@ public enum MetaTileEntityIDs {
     RedstoneStrengthScale(31805),
     WaterPump(31085),
     UniversalChemicalFuelEngine(32001),
-    LargeEssentiaGenerator(32002),
     NeutronAcceleratorULV(32003),
     NeutronAcceleratorLV(32004),
     NeutronAcceleratorMV(32005),
