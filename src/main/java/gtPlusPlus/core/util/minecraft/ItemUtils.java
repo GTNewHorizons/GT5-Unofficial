@@ -765,7 +765,7 @@ public class ItemUtils {
         } catch (Throwable ignored) {
 
         }
-        if (aDisplay == null || aDisplay.length() <= 0) {
+        if (aDisplay == null || aDisplay.length() == 0) {
             aDisplay = aStack.getUnlocalizedName() + ":" + aStack.getItemDamage();
         } else {
             aDisplay += " | Meta: " + aStack.getItemDamage();
@@ -784,7 +784,7 @@ public class ItemUtils {
             aDisplay = aStack.getItem()
                 .getUnlocalizedName();
         }
-        if (aDisplay == null || aDisplay.length() <= 0) {
+        if (aDisplay == null || aDisplay.length() == 0) {
             aDisplay = aStack.getItem()
                 .getUnlocalizedNameInefficiently(aStack);
         }
