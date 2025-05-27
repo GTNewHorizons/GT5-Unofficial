@@ -95,7 +95,7 @@ public class MTEChamberCentrifugeGui extends MTEMultiBlockBaseGui {
                                         index -> {
                                             return new ItemSlot().slot(
                                                 new ModularSlot(base.inventoryHandler, index)
-                                                    .filter(base::isCorrectMachinePart));
+                                                    .filter(base::isTurbine));
                                         })
                                     .build())
 

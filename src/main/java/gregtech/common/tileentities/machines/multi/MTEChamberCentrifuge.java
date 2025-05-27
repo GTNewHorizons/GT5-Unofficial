@@ -11,6 +11,7 @@ import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 
+import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -162,6 +163,7 @@ public class MTEChamberCentrifuge extends MTEExtendedPowerMultiBlockBase<MTECham
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
         mTier = aNBT.getInteger("multiTier");
+        tier2Fluid = aNBT.getBoolean("tier2FluidOn");
         if (inventoryHandler != null) {
             inventoryHandler.deserializeNBT(aNBT.getCompoundTag("inventory"));
         }
@@ -368,11 +370,11 @@ public class MTEChamberCentrifuge extends MTEExtendedPowerMultiBlockBase<MTECham
                     .setMaxOverclocks((GTUtility.getTier(getAverageInputVoltage()) - GTUtility.getTier(recipe.mEUt)));
             }
         }.setSpeedBonus(1F / 3F) // base speed, 200% faster
-            .setMaxParallelSupplier(this::getTrueParallel);
+            .setMaxParallelSupplier(this::getTrueParallel).setEuModifier(0.7F);
     }
 
-    @Override
-    public boolean isCorrectMachinePart(ItemStack aStack) {
+
+    public boolean isTurbine(ItemStack aStack) { //thank you airfilter!
         if (aStack == null) return false;
         if (!(aStack.getItem() instanceof MetaGeneratedTool01 tool)) return false;
         if (aStack.getItemDamage() < 170 || aStack.getItemDamage() > 179) return false;
@@ -479,7 +481,7 @@ public class MTEChamberCentrifuge extends MTEExtendedPowerMultiBlockBase<MTECham
 
     @Override
     public RecipeMap<?> getRecipeMap() {
-        return RecipeMaps.centrifugeRecipes;
+        return GTPPRecipeMaps.centrifugeNonCellRecipes;
     }
 
     @Override
