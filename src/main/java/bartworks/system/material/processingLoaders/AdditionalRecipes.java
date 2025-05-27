@@ -176,7 +176,7 @@ public class AdditionalRecipes {
             if (!Objects.equals(DNA.getName(), Plasmid.getName())) {
                 if ("TCetiEis Fucus Serratus".equals(DNA.getName())) {
                     energyUsageWithTransformModule = TierEU.RECIPE_LuV;
-                } else if (Objects.equals(DNA.getName(), "Escherichia koli")) {
+                } else if ("Escherichia koli".equals(DNA.getName())) {
                     energyUsageWithTransformModule = TierEU.RECIPE_EV;
                 }
                 GTValues.RA.stdBuilder()
