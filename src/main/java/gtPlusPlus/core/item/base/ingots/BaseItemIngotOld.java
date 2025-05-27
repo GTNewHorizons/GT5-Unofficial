@@ -65,37 +65,6 @@ public class BaseItemIngotOld extends Item {
         return this.colour;
     }
 
-    private void generateCompressorRecipe() {
-        if (this.unlocalName.contains("itemIngot")) {
-            final ItemStack tempStack = ItemUtils.getSimpleStack(this, 9);
-            ItemStack tempOutput = null;
-            String temp = this.getUnlocalizedName()
-                .replace("item.itemIngot", "block");
-            Logger.WARNING("Unlocalized name for OreDict nameGen: " + this.getUnlocalizedName());
-            if (this.getUnlocalizedName()
-                .contains("item.")) {
-                temp = this.getUnlocalizedName()
-                    .replace("item.", "");
-                Logger.WARNING("Generating OreDict Name: " + temp);
-            }
-            temp = temp.replace("itemIngot", "block");
-            Logger.WARNING("Generating OreDict Name: " + temp);
-            if (!temp.isEmpty()) {
-                tempOutput = ItemUtils.getItemStackOfAmountFromOreDict(temp, 1);
-                if (tempOutput != null) {
-                    GTValues.RA.stdBuilder()
-                        .itemInputs(tempStack)
-                        .itemOutputs(tempOutput)
-                        .duration(15 * SECONDS)
-                        .eut(2)
-                        .addTo(compressorRecipes);
-                }
-            }
-        } else if (this.unlocalName.contains("itemHotIngot")) {
-            return;
-        }
-    }
-
     protected final int sRadiation;
 
     @Override
