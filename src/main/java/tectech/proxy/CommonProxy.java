@@ -1,5 +1,6 @@
 package tectech.proxy;
 
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.AxisAlignedBB;
@@ -51,13 +52,10 @@ public class CommonProxy implements IGuiHandler {
 
     public String getUUID(String name) {
         for (WorldServer worldServer : MinecraftServer.getServer().worldServers) {
-            for (Object o : worldServer.playerEntities) {
-                if (o instanceof EntityPlayer && ((EntityPlayer) o).getGameProfile()
-                    .getName()
-                    .equals(name)) {
-                    return ((EntityPlayer) o).getGameProfile()
-                        .getId()
-                        .toString();
+            for (EntityPlayer player : worldServer.playerEntities) {
+                if (player == null) continue;
+                if (player.getGameProfile().getName().equals(name)) {
+                    return player.getGameProfile().getId().toString();
                 }
             }
         }
@@ -66,10 +64,9 @@ public class CommonProxy implements IGuiHandler {
 
     public boolean isOnlineName(String name) {
         for (WorldServer worldServer : MinecraftServer.getServer().worldServers) {
-            for (Object o : worldServer.playerEntities) {
-                if (o instanceof EntityPlayer && ((EntityPlayer) o).getGameProfile()
-                    .getName()
-                    .equals(name)) {
+            for (EntityPlayer player : worldServer.playerEntities) {
+                if (player == null) continue;
+                if (player.getGameProfile().getName().equals(name)) {
                     return true;
                 }
             }
@@ -79,11 +76,9 @@ public class CommonProxy implements IGuiHandler {
 
     public boolean isOnlineUUID(String uuid) {
         for (WorldServer worldServer : MinecraftServer.getServer().worldServers) {
-            for (Object o : worldServer.playerEntities) {
-                if (o instanceof EntityPlayer && ((EntityPlayer) o).getGameProfile()
-                    .getId()
-                    .toString()
-                    .equals(uuid)) {
+            for (EntityPlayer player : worldServer.playerEntities) {
+                if (player == null) continue;
+                if (player.getGameProfile().getId().toString().equals(uuid)) {
                     return true;
                 }
             }
