@@ -76,9 +76,6 @@ public class GUIPestKiller extends GuiContainer {
                 if (aTier <= 0 || aTier > 2) {
                     if (aTank != null && aTank.getFluidAmount() > 0) {
                         aPercentage = MathUtils.findPercentage(aTank.getFluidAmount(), aTank.getCapacity());
-                        // Logger.INFO("Percent = "+aPercentage);
-                        // aFrameHeight = (int) (aPercentage / aDivisor);
-                        // Logger.INFO("Frame Height = "+aFrameHeight);
                     }
                     this.fontRendererObj.drawString("Tier: 0", 4, 18, 4210752);
                     this.fontRendererObj.drawString("Range: 1x1", 4, 30, 4210752);
@@ -115,9 +112,7 @@ public class GUIPestKiller extends GuiContainer {
                 } else if (aTier == 2) {
                     if (aTank != null && aTank.getFluidAmount() > 0) {
                         aPercentage = MathUtils.findPercentage(aTank.getFluidAmount(), aTank.getCapacity());
-                        // Logger.INFO("Percent = "+aPercentage);
                         aFrameHeight = (int) (aPercentage / aDivisor);
-                        // Logger.INFO("Frame Height = "+aFrameHeight);
                     }
                     short[] aRGB = MaterialMisc.HYDROGEN_CYANIDE.getRGB();
                     startGrad = new Color(aRGB[0], aRGB[1], aRGB[2]);
@@ -148,28 +143,6 @@ public class GUIPestKiller extends GuiContainer {
             endGrad = new Color(255, 0, 50);
             drawGradientRect(x, y, x + 16, y + 16, startGrad.getRGB(), endGrad.getRGB());
             this.fontRendererObj.drawString("Tier: 0", 4, 18, 4210752);
-        }
-
-        /*
-         * FluidStack fluid = tank.getFluid(); TextureManager manager = mc.getTextureManager(); if (fluid != null) {
-         * manager.bindTexture(manager.getResourceLocation(0)); float amount = fluid.amount; float capacity =
-         * tank.getCapacity(); float scale = amount / capacity; int fluidTankHeight = 60; int fluidAmount = (int) (scale
-         * * fluidTankHeight); drawFluid(x, y + fluidTankHeight - fluidAmount, fluid.getFluid().getIcon(fluid), 16,
-         * fluidAmount); }
-         */
-    }
-
-    private void drawFluid(int x, int y, IIcon icon, int width, int height) {
-        int i = 0;
-        int j = 0;
-        int drawHeight = 0;
-        int drawWidth = 0;
-        for (i = 0; i < width; i += 16) {
-            for (j = 0; j < height; j += 16) {
-                drawWidth = Math.min(width - i, 16);
-                drawHeight = Math.min(height - j, 16);
-                drawTexturedModelRectFromIcon(x + i, y + j, icon, drawWidth, drawHeight);
-            }
         }
     }
 }
