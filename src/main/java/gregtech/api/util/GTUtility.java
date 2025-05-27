@@ -4933,7 +4933,7 @@ public class GTUtility {
         }
 
         public static FluidId createWithAmount(FluidStack fluidStack) {
-            return createWithCopy(fluidStack.getFluid(), (Integer) fluidStack.amount, fluidStack.tag);
+            return createWithCopy(fluidStack.getFluid(), fluidStack.amount, fluidStack.tag);
         }
 
         public static FluidId create(Fluid fluid) {
