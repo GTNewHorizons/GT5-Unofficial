@@ -118,7 +118,7 @@ public class InventoryProjectMain implements IInventory {
     // 1.7.2+ renamed to hasCustomInventoryName
     @Override
     public boolean hasCustomInventoryName() {
-        return !this.name.isEmpty();
+        return true;
     }
 
     @Override
