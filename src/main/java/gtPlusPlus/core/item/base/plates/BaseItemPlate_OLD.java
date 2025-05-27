@@ -53,7 +53,7 @@ public class BaseItemPlate_OLD extends Item {
         if (this.unlocalName.toLowerCase()
             .contains("itemplate")) {
             temp = this.unlocalName.replace("itemP", "p");
-            if ((temp != null) && !temp.isEmpty()) {
+            if (!temp.isEmpty()) {
                 GTOreDictUnificator.registerOre(temp, ItemUtils.getSimpleStack(this));
             }
         }
