@@ -250,7 +250,7 @@ public abstract class MTEBasicTank extends MTETieredMachineBlock implements IAdd
 
     @Override
     public FluidTankInfo[] getTankInfo(ForgeDirection side) {
-        if (getCapacity() <= 0) return new FluidTankInfo[] {};
+        if (getCapacity() <= 0 && !isSteampowered()) return new FluidTankInfo[] {};
         if (isDrainableStackSeparate()) {
             return new FluidTankInfo[] { new FluidTankInfo(getFillableStack(), getCapacity()),
                 new FluidTankInfo(getDrainableStack(), getCapacity()) };
