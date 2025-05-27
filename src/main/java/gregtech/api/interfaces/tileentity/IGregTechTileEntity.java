@@ -182,7 +182,7 @@ public interface IGregTechTileEntity extends ITexturedTileEntity, ICoverable, IF
     default void startTimeStatistics() {}
 
     /**
-     * Returns tree if steam powers the tile entity
+     * Returns true if steam powers the tile entity
      */
     default boolean isSteampowered() {
         return false;
