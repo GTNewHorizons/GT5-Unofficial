@@ -83,7 +83,7 @@ public class MaterialGenerator {
         FluidStack rFluidOut, Integer aTime, Integer aEu) {
 
         RecipeGenFluidCanning g = new RecipeGenFluidCanning(false, aEmpty, aFullContainer, aFluidIn, null, null, 0);
-        return g != null && g.valid();
+        return g.valid();
     }
 
     public static void generate(final Material matInfo) {
@@ -321,12 +321,6 @@ public class MaterialGenerator {
 
             final String unlocalizedName = matInfo.getUnlocalizedName();
             final String materialName = matInfo.getLocalizedName();
-            final Integer Colour = Utils.rgbtoHexValue(customRGB[0], customRGB[1], customRGB[2]);
-
-            if (Colour == null) {
-                Logger.DEBUG_MATERIALS("Invalid Material while constructing " + materialName + ".");
-                return;
-            }
 
             int sRadiation = 0;
             if (matInfo.vRadiationLevel > 0) {
