@@ -74,7 +74,6 @@ public class ForestryTreeHandler {
             nbtTagCompound.setString("species", speciesUID);
             leaves.setTagCompound(nbtTagCompound);
 
-
             ItemStack fruit = null;
             if (individual.canBearFruit()) {
                 ItemStack[] produceList = individual.getProduceList();

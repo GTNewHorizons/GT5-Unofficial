@@ -246,7 +246,8 @@ public class ItemHealingDevice extends Item implements IElectricItem, IElectricI
 
     @Override // TODO
     public void onWornTick(final ItemStack baubleStack, final EntityLivingBase arg1) {
-        if (arg1 == null || arg1.worldObj == null || arg1.worldObj.isRemote || !(arg1 instanceof EntityPlayer g)) return;
+        if (arg1 == null || arg1.worldObj == null || arg1.worldObj.isRemote || !(arg1 instanceof EntityPlayer g))
+            return;
         // Try Charge First
 
         // Inv Slots
@@ -269,7 +270,9 @@ public class ItemHealingDevice extends Item implements IElectricItem, IElectricI
                 mTier = electricItem.getTier(aInvStack);
                 aCurrentChargeForThisBauble = ElectricItem.manager.getCharge(baubleStack);
 
-                if (aCurrentChargeForThisBauble < maxValueEU && (ElectricItem.manager.getCharge(aInvStack) >= aTransferRate) && electricItem.canProvideEnergy(aInvStack)) {
+                if (aCurrentChargeForThisBauble < maxValueEU
+                    && (ElectricItem.manager.getCharge(aInvStack) >= aTransferRate)
+                    && electricItem.canProvideEnergy(aInvStack)) {
                     double d = ElectricItem.manager.discharge(aInvStack, aTransferRate, mTier, false, true, false);
                     ElectricItem.manager.charge(baubleStack, d, mTier, true, false);
                 }
@@ -311,18 +314,16 @@ public class ItemHealingDevice extends Item implements IElectricItem, IElectricI
         // Only show Messages if they're enabled.
         if (!getShowMessages(baubleStack)) return;
 
-        if (hp > 0 || hunger > 0 || saturation > 0) PlayerUtils
-            .messagePlayer((EntityPlayer) arg1, "Your NanoBooster Whirs! Leaving you feeling stronger.");
+        if (hp > 0 || hunger > 0 || saturation > 0)
+            PlayerUtils.messagePlayer((EntityPlayer) arg1, "Your NanoBooster Whirs! Leaving you feeling stronger.");
 
-        if (hp > 0) PlayerUtils
-            .messagePlayer((EntityPlayer) arg1, "Healed " + GTUtility.formatNumbers(hp) + " hp.");
+        if (hp > 0) PlayerUtils.messagePlayer((EntityPlayer) arg1, "Healed " + GTUtility.formatNumbers(hp) + " hp.");
 
-        if (hunger > 0) PlayerUtils
-            .messagePlayer((EntityPlayer) arg1, "Healed " + GTUtility.formatNumbers(hunger) + " hunger.");
+        if (hunger > 0)
+            PlayerUtils.messagePlayer((EntityPlayer) arg1, "Healed " + GTUtility.formatNumbers(hunger) + " hunger.");
 
-        if (saturation > 0) PlayerUtils.messagePlayer(
-            (EntityPlayer) arg1,
-            "Satured Hunger by " + GTUtility.formatNumbers(saturation) + ".");
+        if (saturation > 0) PlayerUtils
+            .messagePlayer((EntityPlayer) arg1, "Satured Hunger by " + GTUtility.formatNumbers(saturation) + ".");
 
         if (hp > 0 || hunger > 0 || saturation > 0) PlayerUtils.messagePlayer(
             (EntityPlayer) arg1,

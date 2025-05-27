@@ -2,13 +2,13 @@ package gtPlusPlus.core.util.minecraft;
 
 import static gtPlusPlus.core.item.ModItems.ZZZ_Empty;
 
+import java.util.Objects;
+
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 
 import gregtech.api.util.GTUtility;
-
-import java.util.Objects;
 
 public class NBTUtils {
 

@@ -937,15 +937,15 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
             if (tEntry.getKey() == 33 || (tEntry.getKey() == 20 && tEntry.getValue() > 2)
                 || tEntry.getKey() == EnchantmentRadioactivity.INSTANCE.effectId)
                 tResult.put(tEntry.getKey(), tEntry.getValue());
-            else{
+            else {
                 switch (Enchantment.enchantmentsList[tEntry.getKey()].type) {
-                    case weapon  -> {
+                    case weapon -> {
                         if (tStats.isWeapon()) tResult.put(tEntry.getKey(), tEntry.getValue());
                     }
                     case all -> {
                         tResult.put(tEntry.getKey(), tEntry.getValue());
                     }
-                    case armor, armor_feet, armor_head, armor_legs, armor_torso, breakable, fishing_rod ->{}
+                    case armor, armor_feet, armor_head, armor_legs, armor_torso, breakable, fishing_rod -> {}
                     case bow -> {
                         if (tStats.isRangedWeapon()) tResult.put(tEntry.getKey(), tEntry.getValue());
                     }

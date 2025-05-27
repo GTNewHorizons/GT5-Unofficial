@@ -1322,8 +1322,7 @@ public class Material {
                                 if (!aChemSymbol.equals("??")) {
                                     if (dummyFormulaArray[e] > 1) {
 
-                                        if (aChemFormula.length() > 3
-                                            || StringUtils.uppercaseCount(aChemFormula) > 1) {
+                                        if (aChemFormula.length() > 3 || StringUtils.uppercaseCount(aChemFormula) > 1) {
                                             dummyFormula.append("(")
                                                 .append(aChemFormula)
                                                 .append(")")
@@ -1333,8 +1332,7 @@ public class Material {
                                                 .append(dummyFormulaArray[e]);
                                         }
                                     } else if (dummyFormulaArray[e] == 1) {
-                                        if (aChemFormula.length() > 3
-                                            || StringUtils.uppercaseCount(aChemFormula) > 1) {
+                                        if (aChemFormula.length() > 3 || StringUtils.uppercaseCount(aChemFormula) > 1) {
                                             dummyFormula.append("(")
                                                 .append(aChemFormula)
                                                 .append(")");

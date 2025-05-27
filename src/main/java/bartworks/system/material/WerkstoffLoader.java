@@ -1767,7 +1767,6 @@ public class WerkstoffLoader {
             }
             DebugLog.log("Loading New Circuits" + " " + (System.nanoTime() - timepreone));
 
-
             if (BetterLoadingScreen.isModLoaded()) {
                 CLSCompat.disableCls();
             }

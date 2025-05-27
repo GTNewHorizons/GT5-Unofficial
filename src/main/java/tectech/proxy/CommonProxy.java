@@ -1,6 +1,5 @@
 package tectech.proxy;
 
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.AxisAlignedBB;
@@ -54,8 +53,12 @@ public class CommonProxy implements IGuiHandler {
         for (WorldServer worldServer : MinecraftServer.getServer().worldServers) {
             for (EntityPlayer player : worldServer.playerEntities) {
                 if (player == null) continue;
-                if (player.getGameProfile().getName().equals(name)) {
-                    return player.getGameProfile().getId().toString();
+                if (player.getGameProfile()
+                    .getName()
+                    .equals(name)) {
+                    return player.getGameProfile()
+                        .getId()
+                        .toString();
                 }
             }
         }
@@ -66,7 +69,9 @@ public class CommonProxy implements IGuiHandler {
         for (WorldServer worldServer : MinecraftServer.getServer().worldServers) {
             for (EntityPlayer player : worldServer.playerEntities) {
                 if (player == null) continue;
-                if (player.getGameProfile().getName().equals(name)) {
+                if (player.getGameProfile()
+                    .getName()
+                    .equals(name)) {
                     return true;
                 }
             }
@@ -78,7 +83,10 @@ public class CommonProxy implements IGuiHandler {
         for (WorldServer worldServer : MinecraftServer.getServer().worldServers) {
             for (EntityPlayer player : worldServer.playerEntities) {
                 if (player == null) continue;
-                if (player.getGameProfile().getId().toString().equals(uuid)) {
+                if (player.getGameProfile()
+                    .getId()
+                    .toString()
+                    .equals(uuid)) {
                     return true;
                 }
             }

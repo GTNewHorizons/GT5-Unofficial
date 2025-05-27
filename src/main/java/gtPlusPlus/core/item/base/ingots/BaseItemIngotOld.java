@@ -1,8 +1,6 @@
 package gtPlusPlus.core.item.base.ingots;
 
 import static gregtech.api.enums.Mods.GTPlusPlus;
-import static gregtech.api.recipe.RecipeMaps.compressorRecipes;
-import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.item.Item;
@@ -10,9 +8,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
 import cpw.mods.fml.common.registry.GameRegistry;
-import gregtech.api.enums.GTValues;
 import gregtech.api.util.GTOreDictUnificator;
-import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.minecraft.EntityUtils;

@@ -221,7 +221,6 @@ public class BaseItemComponent extends Item {
         try {
             if (this.materialName != null && !this.materialName.isEmpty() && (this.componentMaterial != null)) {
 
-
                 if (!this.componentMaterial.vChemicalFormula.contains("?")) {
                     list.add(Utils.sanitizeStringKeepBrackets(this.componentMaterial.vChemicalFormula));
                 } else if (this.componentMaterial.vChemicalFormula.contains("?")) {
@@ -246,7 +245,6 @@ public class BaseItemComponent extends Item {
                         list.add(StatCollector.translateToLocal("gtpp.tooltip.ingot.very_hot"));
                     }
                 }
-
 
                 // Hidden Tooltip
                 if (KeyboardUtils.isCtrlKeyDown()) {

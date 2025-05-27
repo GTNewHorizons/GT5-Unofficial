@@ -101,7 +101,8 @@ public class MTERedstoneButtonPanel extends MTERedstoneBase {
                     case 2:
                         switch (side) {
                             case DOWN, UP -> mRedstoneStrength = (byte) (mRedstoneStrength ^ (1 << ((byte) (aZ * 4))));
-                            case NORTH, SOUTH, WEST, EAST -> mRedstoneStrength = (byte) (mRedstoneStrength ^ (1 << ((byte) (4 - aY * 4))));
+                            case NORTH, SOUTH, WEST, EAST -> mRedstoneStrength = (byte) (mRedstoneStrength
+                                ^ (1 << ((byte) (4 - aY * 4))));
                         }
                         break;
                 }

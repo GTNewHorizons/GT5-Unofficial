@@ -198,11 +198,11 @@ public class PowerGogglesHudHandler {
                     : "0 EU/t");
                 change1hString = "1h: " + (change1hDiff != 0
                     ? String.format(
-                    "(%s EU/t)",
-                    toFormatted(
-                        change1h.divide(
-                            BigInteger
-                                .valueOf(Math.min(measurements.size() * ticksBetweenMeasurements, 60 * MINUTES)))))
+                        "(%s EU/t)",
+                        toFormatted(
+                            change1h.divide(
+                                BigInteger
+                                    .valueOf(Math.min(measurements.size() * ticksBetweenMeasurements, 60 * MINUTES)))))
                     : "0 EU/t");
             }
             default -> {}

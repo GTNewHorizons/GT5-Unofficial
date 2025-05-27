@@ -82,7 +82,7 @@ public class GregtechMetaCasingBlocks6 extends GregtechMetaCasingBlocksAbstract 
             aWorld.getBlock(xCoord - 1, yCoord, zCoord) == thisBlock
                 && aWorld.getBlockMetadata(xCoord - 1, yCoord, zCoord) == tMeta,
             aWorld.getBlock(xCoord, yCoord, zCoord - 1) == thisBlock
-                && aWorld.getBlockMetadata(xCoord, yCoord, zCoord - 1) == tMeta};
+                && aWorld.getBlockMetadata(xCoord, yCoord, zCoord - 1) == tMeta };
         switch (ordinalSide) {
             case 0: {
                 if (tConnectedSides[0]) {
