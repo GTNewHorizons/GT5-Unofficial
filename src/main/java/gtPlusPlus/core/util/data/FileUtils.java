@@ -77,7 +77,7 @@ public class FileUtils {
             long newSize;
             if (doesFileExist(file)) {
                 Path p = Paths.get(file.getPath());
-                if (p != null && Files.isWritable(p)) {
+                if (Files.isWritable(p)) {
                     oldSize = Files.size(p);
                     try {
                         Files.write(p, content, utf8, StandardOpenOption.APPEND);
