@@ -538,7 +538,7 @@ public class Material {
                 this.vDurability = aTempDura > 0 ? aTempDura
                     : (this.getComposites()
                         .isEmpty() ? 51200
-                            : 32000 * this.getComposites()
+                            : 32_000L * this.getComposites()
                                 .size());
             }
 

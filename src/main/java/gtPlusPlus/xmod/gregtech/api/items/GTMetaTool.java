@@ -85,7 +85,7 @@ public abstract class GTMetaTool extends MetaGeneratedTool implements IDamagable
         if (this.isItemStackUsable(aStack) && (this.getDigSpeed(aStack, aBlock, aMetaData) > 0.0F)) {
             this.doDamage(
                 aStack,
-                tStats.convertBlockDrops(
+                (long) tStats.convertBlockDrops(
                     aDrops,
                     aStack,
                     aPlayer,
