@@ -178,15 +178,9 @@ public class Utils {
             String code = "" + (int) (Math.random() * 256);
             code = code + code + code;
             final int i = Integer.parseInt(code);
-            hexColorMap.put(
-                a,
-                Integer.toHexString(0x1000000 | i)
-                    .substring(1)
-                    .toUpperCase());
-            Logger.WARNING(
-                Integer.toHexString(0x1000000 | i)
-                    .substring(1)
-                    .toUpperCase());
+            String hexString = Integer.toHexString(0x1000000 | i).substring(1).toUpperCase();
+            hexColorMap.put(a, hexString);
+            Logger.WARNING(hexString);
         }
         return hexColorMap;
     }
