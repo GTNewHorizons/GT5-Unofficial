@@ -404,32 +404,6 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
         return result;
     }
 
-    public ItemStack findItemInInventory(Item aSearchStack) {
-        return findItemInInventory(aSearchStack, 0);
-    }
-
-    public ItemStack findItemInInventory(Item aSearchStack, int aMeta) {
-        return findItemInInventory(ItemUtils.simpleMetaStack(aSearchStack, aMeta, 1));
-    }
-
-    public ItemStack findItemInInventory(ItemStack aSearchStack) {
-        if (aSearchStack != null && !this.mInputBusses.isEmpty()) {
-            for (MTEHatchInputBus bus : this.mInputBusses) {
-                if (bus != null) {
-                    for (ItemStack uStack : bus.mInventory) {
-                        if (uStack != null) {
-                            if (aSearchStack.getClass()
-                                .isInstance(uStack.getItem())) {
-                                return uStack;
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        return null;
-    }
-
     /**
      * Deplete fluid input from a set of restricted hatches. This assumes these hatches can store nothing else but your
      * expected fluid
