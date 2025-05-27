@@ -468,11 +468,7 @@ public class Material {
                     }
 
                     String valueR;
-                    if (b != null) {
-                        valueR = a + b;
-                    } else {
-                        valueR = a;
-                    }
+                    valueR = a + b;
                     short[] fc = new short[3];
                     int aIndex = 0;
                     for (char gg : valueR.toCharArray()) {
@@ -718,7 +714,7 @@ public class Material {
             } else if (aTestCell2 != null) {
                 Logger.INFO("Registering existing cell for " + material.localizedName + ", " + aName2);
                 material.registerComponentForMaterial(OrePrefixes.cell, aTestCell2);
-            } else if (aTestCell3 != null) {
+            } else {
                 Logger.INFO("Registering existing cell for " + material.localizedName + ", " + aName3);
                 material.registerComponentForMaterial(OrePrefixes.cell, aTestCell3);
             }
@@ -936,7 +932,7 @@ public class Material {
             Materials Erf = MaterialUtils.getMaterial(this.unlocalizedName);
             if (Erf != null && !MaterialUtils.isNullGregtechMaterial(Erf)) {
                 ItemStack Erg = ItemUtils.getOrePrefixStack(aPrefix, Erf, stacksize);
-                if (Erg != null && ItemUtils.checkForInvalidItems(Erg)) {
+                if (ItemUtils.checkForInvalidItems(Erg)) {
                     Logger.MATERIALS("Found \"" + aKey + this.unlocalizedName + "\" using backup GT Materials option.");
                     g.put(aKey, Erg);
                     mComponentMap.put(unlocalizedName, g);
@@ -945,7 +941,7 @@ public class Material {
                     // Try get a molten cell
                     if (aPrefix == OrePrefixes.cell) {
                         Erg = ItemUtils.getOrePrefixStack(OrePrefixes.cellMolten, Erf, stacksize);
-                        if (Erg != null && ItemUtils.checkForInvalidItems(Erg)) {
+                        if (ItemUtils.checkForInvalidItems(Erg)) {
                             Logger.MATERIALS(
                                 "Found \"" + OrePrefixes.cellMolten.name()
                                     + this.unlocalizedName
@@ -1259,8 +1255,7 @@ public class Material {
         if (tempInput != null) {
             if (!tempInput.isEmpty()) {
                 Logger.MATERIALS("length: " + tempInput.size());
-                Logger.MATERIALS("(inputs != null): " + (tempInput != null));
-                // Utils.LOG_MATERIALS("length: "+inputs.length);
+                Logger.MATERIALS("(inputs != null): true");
                 final long[] tempRatio = new long[tempInput.size()];
                 for (int x = 0; x < tempInput.size(); x++) {
                     if (tempInput.get(x) != null) {
@@ -1308,47 +1303,43 @@ public class Material {
             if (!tempInput.isEmpty()) {
                 StringBuilder dummyFormula = new StringBuilder();
                 final long[] dummyFormulaArray = this.getSmallestRatio(tempInput);
-                if (dummyFormulaArray != null) {
-                    if (dummyFormulaArray.length >= 1) {
-                        for (int e = 0; e < tempInput.size(); e++) {
-                            MaterialStack g = tempInput.get(e);
-                            if (g != null) {
-                                if (g.getStackMaterial() != null) {
+                if (dummyFormulaArray.length >= 1) {
+                    for (int e = 0; e < tempInput.size(); e++) {
+                        MaterialStack g = tempInput.get(e);
+                        if (g != null) {
+                            if (g.getStackMaterial() != null) {
 
-                                    String aChemSymbol = g.getStackMaterial().vChemicalSymbol;
-                                    String aChemFormula = g.getStackMaterial().vChemicalFormula;
+                                String aChemSymbol = g.getStackMaterial().vChemicalSymbol;
+                                String aChemFormula = g.getStackMaterial().vChemicalFormula;
 
-                                    if (aChemSymbol == null) {
-                                        aChemSymbol = "??";
-                                    }
-                                    if (aChemFormula == null) {
-                                        aChemFormula = "??";
-                                    }
+                                if (aChemSymbol == null) {
+                                    aChemSymbol = "??";
+                                }
+                                if (aChemFormula == null) {
+                                    aChemFormula = "??";
+                                }
 
-                                    if (!aChemSymbol.equals("??")) {
-                                        if (dummyFormulaArray[e] > 1) {
+                                if (!aChemSymbol.equals("??")) {
+                                    if (dummyFormulaArray[e] > 1) {
 
-                                            if (aChemFormula.length() > 3
-                                                || StringUtils.uppercaseCount(aChemFormula) > 1) {
-                                                dummyFormula.append("(")
-                                                    .append(aChemFormula)
-                                                    .append(")")
-                                                    .append(dummyFormulaArray[e]);
-                                            } else {
-                                                dummyFormula.append(aChemFormula)
-                                                    .append(dummyFormulaArray[e]);
-                                            }
-                                        } else if (dummyFormulaArray[e] == 1) {
-                                            if (aChemFormula.length() > 3
-                                                || StringUtils.uppercaseCount(aChemFormula) > 1) {
-                                                dummyFormula.append("(")
-                                                    .append(aChemFormula)
-                                                    .append(")");
-                                            } else {
-                                                dummyFormula.append(aChemFormula);
-                                            }
+                                        if (aChemFormula.length() > 3
+                                            || StringUtils.uppercaseCount(aChemFormula) > 1) {
+                                            dummyFormula.append("(")
+                                                .append(aChemFormula)
+                                                .append(")")
+                                                .append(dummyFormulaArray[e]);
                                         } else {
-                                            dummyFormula.append("??");
+                                            dummyFormula.append(aChemFormula)
+                                                .append(dummyFormulaArray[e]);
+                                        }
+                                    } else if (dummyFormulaArray[e] == 1) {
+                                        if (aChemFormula.length() > 3
+                                            || StringUtils.uppercaseCount(aChemFormula) > 1) {
+                                            dummyFormula.append("(")
+                                                .append(aChemFormula)
+                                                .append(")");
+                                        } else {
+                                            dummyFormula.append(aChemFormula);
                                         }
                                     } else {
                                         dummyFormula.append("??");
@@ -1356,13 +1347,15 @@ public class Material {
                                 } else {
                                     dummyFormula.append("??");
                                 }
+                            } else {
+                                dummyFormula.append("??");
                             }
                         }
-                        return StringUtils.subscript(dummyFormula.toString());
-                        // return dummyFormula;
                     }
-                    Logger.MATERIALS("dummyFormulaArray <= 0");
+                    return StringUtils.subscript(dummyFormula.toString());
+                    // return dummyFormula;
                 }
+                Logger.MATERIALS("dummyFormulaArray <= 0");
                 Logger.MATERIALS("dummyFormulaArray == null");
             }
             Logger.MATERIALS("tempInput.length <= 0");
@@ -1676,13 +1669,13 @@ public class Material {
     public static Materials tryFindGregtechMaterialEquivalent(Material aMaterial) {
         String aMaterialName = aMaterial.getLocalizedName();
         Materials aGregtechMaterial = Materials.get(aMaterialName);
-        if (aGregtechMaterial == null || MaterialUtils.isNullGregtechMaterial(aGregtechMaterial)) {
+        if (MaterialUtils.isNullGregtechMaterial(aGregtechMaterial)) {
             aMaterialName = aMaterialName.replace(" ", "_");
             aGregtechMaterial = Materials.get(aMaterialName);
-            if (aGregtechMaterial == null || MaterialUtils.isNullGregtechMaterial(aGregtechMaterial)) {
+            if (MaterialUtils.isNullGregtechMaterial(aGregtechMaterial)) {
                 aMaterialName = aMaterialName.replace(" ", "");
                 aGregtechMaterial = Materials.get(aMaterialName);
-                if (aGregtechMaterial == null || MaterialUtils.isNullGregtechMaterial(aGregtechMaterial)) {
+                if (MaterialUtils.isNullGregtechMaterial(aGregtechMaterial)) {
                     return null;
                 } else {
                     return aGregtechMaterial;
