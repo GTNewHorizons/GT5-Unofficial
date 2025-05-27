@@ -117,7 +117,7 @@ public class DecayableRecipeHandler extends TemplateRecipeHandler {
         for (CachedRecipe u : arecipes) {
             g.add((DecayableRecipeNEI) u);
         }
-        if (g != null && !g.isEmpty()) {
+        if (!g.isEmpty()) {
             Collections.sort(g);
         }
     }
