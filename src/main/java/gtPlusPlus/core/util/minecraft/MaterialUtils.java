@@ -75,7 +75,7 @@ public class MaterialUtils {
             int radioactivity = 0;
             if (material.isRadioactive()) {
                 ItemStack aDustStack = ItemUtils.getOrePrefixStack(OrePrefixes.dust, material, 1);
-                radioactivity = aDustStack != null ? GTUtility.getRadioactivityLevel(aDustStack) : 0;
+                radioactivity = GTUtility.getRadioactivityLevel(aDustStack);
                 if (radioactivity == 0) {
                     long aProtons = material.getProtons();
                     radioactivity = (int) Math.min(Math.max((aProtons / 30), 1), 9);
