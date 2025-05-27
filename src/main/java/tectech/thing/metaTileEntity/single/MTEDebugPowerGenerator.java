@@ -2,6 +2,7 @@ package tectech.thing.metaTileEntity.single;
 
 import static gregtech.api.enums.GTValues.VN;
 import static net.minecraft.util.StatCollector.translateToLocal;
+import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
 import java.util.function.Consumer;
 import java.util.function.IntConsumer;
@@ -12,7 +13,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.gtnewhorizons.modularui.api.NumberFormatMUI;
@@ -81,9 +81,7 @@ public class MTEDebugPowerGenerator extends MTETieredMachineBlock
     public final void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
         ItemStack aTool) {
         LASER = !LASER;
-        GTUtility.sendChatToPlayer(
-            aPlayer,
-            String.format(StatCollector.translateToLocal("tt.chat.debug.generator"), LASER ? "ON" : "OFF"));
+        GTUtility.sendChatToPlayer(aPlayer, translateToLocalFormatted("tt.chat.debug.generator", LASER ? "ON" : "OFF"));
     }
 
     @Override

@@ -261,15 +261,6 @@ public class PollutionConfig {
     @Config.Comment("pollution rate in gibbl/s for the Industrial mixing machine")
     @Config.DefaultInt(800)
     public static int pollutionPerSecondMultiIndustrialMixer;
-    @Config.Comment("pollution rate in gibbl/s for the Large processing factory in metal mode")
-    @Config.DefaultInt(400)
-    public static int pollutionPerSecondMultiIndustrialMultiMachine_ModeMetal;
-    @Config.Comment("pollution rate in gibbl/s for the Large processing factory in fluid mode")
-    @Config.DefaultInt(400)
-    public static int pollutionPerSecondMultiIndustrialMultiMachine_ModeFluid;
-    @Config.Comment("pollution rate in gibbl/s for the Large processing factory in misc mode")
-    @Config.DefaultInt(600)
-    public static int pollutionPerSecondMultiIndustrialMultiMachine_ModeMisc;
     @Config.Comment("pollution rate in gibbl/s for the Industrial material press in forming mode")
     @Config.DefaultInt(240)
     public static int pollutionPerSecondMultiIndustrialPlatePress_ModeForming;

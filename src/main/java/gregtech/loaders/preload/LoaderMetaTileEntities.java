@@ -642,7 +642,6 @@ import static gregtech.api.enums.MetaTileEntityIDs.PRECISION_LASER_ENGRAVER_UIV;
 import static gregtech.api.enums.MetaTileEntityIDs.PRECISION_LASER_ENGRAVER_UMV;
 import static gregtech.api.enums.MetaTileEntityIDs.PRECISION_LASER_ENGRAVER_UV;
 import static gregtech.api.enums.MetaTileEntityIDs.PRECISION_LASER_ENGRAVER_ZPM;
-import static gregtech.api.enums.MetaTileEntityIDs.PROCESSING_ARRAY_CONTROLLER;
 import static gregtech.api.enums.MetaTileEntityIDs.PUMP_HV;
 import static gregtech.api.enums.MetaTileEntityIDs.PUMP_LV;
 import static gregtech.api.enums.MetaTileEntityIDs.PUMP_MV;
@@ -1010,14 +1009,15 @@ import gregtech.common.tileentities.machines.multi.MTEAirFilter2;
 import gregtech.common.tileentities.machines.multi.MTEAirFilter3;
 import gregtech.common.tileentities.machines.multi.MTEAssemblyLine;
 import gregtech.common.tileentities.machines.multi.MTEBrickedBlastFurnace;
-import gregtech.common.tileentities.machines.multi.MTEChamberCentrifuge;
 import gregtech.common.tileentities.machines.multi.MTECharcoalPit;
 import gregtech.common.tileentities.machines.multi.MTECleanroom;
 import gregtech.common.tileentities.machines.multi.MTEConcreteBackfiller1;
 import gregtech.common.tileentities.machines.multi.MTEConcreteBackfiller2;
+import gregtech.common.tileentities.machines.multi.MTEDecayWarehouse;
 import gregtech.common.tileentities.machines.multi.MTEDieselEngine;
 import gregtech.common.tileentities.machines.multi.MTEDistillationTower;
 import gregtech.common.tileentities.machines.multi.MTEElectricBlastFurnace;
+import gregtech.common.tileentities.machines.multi.MTEEntropicProcessor;
 import gregtech.common.tileentities.machines.multi.MTEExtremeDieselEngine;
 import gregtech.common.tileentities.machines.multi.MTEFusionComputer1;
 import gregtech.common.tileentities.machines.multi.MTEFusionComputer2;
@@ -1058,7 +1058,6 @@ import gregtech.common.tileentities.machines.multi.MTEOreDrillingPlant3;
 import gregtech.common.tileentities.machines.multi.MTEOreDrillingPlant4;
 import gregtech.common.tileentities.machines.multi.MTEPCBFactory;
 import gregtech.common.tileentities.machines.multi.MTEPlasmaForge;
-import gregtech.common.tileentities.machines.multi.MTEProcessingArray;
 import gregtech.common.tileentities.machines.multi.MTEPyrolyseOven;
 import gregtech.common.tileentities.machines.multi.MTEResearchCompleter;
 import gregtech.common.tileentities.machines.multi.MTESolarFactory;
@@ -1419,9 +1418,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 "fusioncomputer.tier.08",
                 "Fusion Control Computer Mark III").getStackForm(1L));
 
-        ItemList.Processing_Array.set(
-            new MTEProcessingArray(PROCESSING_ARRAY_CONTROLLER.ID, "multimachine.processingarray", "Processing Array")
-                .getStackForm(1L));
         ItemList.Distillation_Tower.set(
             new MTEDistillationTower(
                 DISTILLATION_TOWER_CONTROLLER.ID,
@@ -1618,13 +1614,13 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
             new MTELargeFluidExtractor(LARGE_FLUID_EXTRACTOR.ID, "multimachine.fluidextractor", "Large Fluid Extractor")
                 .getStackForm(1));
 
-        ItemList.Machine_Multi_ChamberCentrifuge.set(
-            new MTEChamberCentrifuge(
-                Chamber_Centrifuge_Controller.ID,
-                "multimachine.chambercentrifuge",
-                "Kinetic Chamber Centrifuge")
+        ItemList.EntropicProcessor.set(
+            new MTEEntropicProcessor(ENTROPIC_PROCESSOR.ID, "multimachine.entropic-processor", "Entropic Processor")
+                .getStackForm(1));
 
-                    .getStackForm(1));
+        ItemList.DecayWarehouse.set(
+            new MTEDecayWarehouse(DECAY_WAREHOUSE.ID, "multimachine.decay-warehouse", "Decay Warehouse")
+                .getStackForm(1));
 
         if (Thaumcraft.isModLoaded()) {
             ItemList.ResearchCompleter.set(

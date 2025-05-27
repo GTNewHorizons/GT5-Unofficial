@@ -1,6 +1,8 @@
 package gtPlusPlus.core.recipe;
 
+import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.MINUTES;
+import static gregtech.api.util.GTRecipeBuilder.QUARTER_INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gtPlusPlus.api.recipe.GTPPRecipeMaps.*;
 
@@ -28,16 +30,16 @@ public class RecipesSeleniumProcessing {
         // Liquify the Dried Dioxide
         GTValues.RA.stdBuilder()
             .itemInputs(MaterialMisc.SELENIUM_DIOXIDE.getDust(1))
-            .fluidInputs(FluidUtils.getSteam(500))
-            .fluidOutputs(MaterialMisc.SELENIUM_DIOXIDE.getFluidStack(1000))
+            .fluidInputs(Materials.Steam.getGas(500))
+            .fluidOutputs(MaterialMisc.SELENIUM_DIOXIDE.getFluidStack(1_000))
             .duration(24 * SECONDS)
             .eut(1024)
             .addTo(cokeOvenRecipes);
 
         // Produce Selenious Acid
         GTValues.RA.stdBuilder()
-            .fluidInputs(FluidUtils.getHotWater(4000), MaterialMisc.SELENIUM_DIOXIDE.getFluidStack(1000))
-            .fluidOutputs(MaterialMisc.SELENIOUS_ACID.getFluidStack(1000))
+            .fluidInputs(FluidUtils.getHotWater(4_000), MaterialMisc.SELENIUM_DIOXIDE.getFluidStack(1_000))
+            .fluidOutputs(MaterialMisc.SELENIOUS_ACID.getFluidStack(1_000))
             .duration(24 * SECONDS)
             .eut(TierEU.RECIPE_EV)
             .addTo(cokeOvenRecipes);
@@ -45,10 +47,10 @@ public class RecipesSeleniumProcessing {
         // Make Selenium
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(14), MaterialsElements.getInstance().CARBON.getDust(16))
-            .fluidInputs(MaterialMisc.SELENIOUS_ACID.getFluidStack(750), Materials.SulfuricAcid.getFluid(8000))
+            .fluidInputs(MaterialMisc.SELENIOUS_ACID.getFluidStack(750), Materials.SulfuricAcid.getFluid(8_000))
             .fluidOutputs(
-                MaterialsElements.getInstance().SELENIUM.getFluidStack(144 * 2 + 36),
-                Materials.DilutedSulfuricAcid.getFluid(12000))
+                MaterialsElements.getInstance().SELENIUM.getFluidStack(2 * INGOTS + 1 * QUARTER_INGOTS),
+                Materials.DilutedSulfuricAcid.getFluid(12_000))
             .eut(TierEU.RECIPE_IV)
             .duration(5 * MINUTES)
             .addTo(alloyBlastSmelterRecipes);
@@ -63,7 +65,7 @@ public class RecipesSeleniumProcessing {
                 ItemUtils.getOrePrefixStack(OrePrefixes.crushedCentrifuged, Materials.Copper, 1),
                 MaterialMisc.SELENIUM_DIOXIDE.getDust(1))
             .outputChances(100_00, 3_00)
-            .fluidInputs(FluidUtils.getHotWater(1000))
+            .fluidInputs(FluidUtils.getHotWater(1_000))
             .fluidOutputs(MaterialMisc.SELENIUM_DIOXIDE.getFluidStack(20))
             .eut(1024)
             .duration(40 * SECONDS)
@@ -76,7 +78,7 @@ public class RecipesSeleniumProcessing {
                 ItemUtils.getOrePrefixStack(OrePrefixes.crushedCentrifuged, Materials.Tetrahedrite, 1),
                 MaterialMisc.SELENIUM_DIOXIDE.getDust(1))
             .outputChances(100_00, 2_50)
-            .fluidInputs(FluidUtils.getHotWater(1000))
+            .fluidInputs(FluidUtils.getHotWater(1_000))
             .fluidOutputs(MaterialMisc.SELENIUM_DIOXIDE.getFluidStack(10))
             .eut(1024)
             .duration(40 * SECONDS)
@@ -89,7 +91,7 @@ public class RecipesSeleniumProcessing {
                 ItemUtils.getOrePrefixStack(OrePrefixes.crushedCentrifuged, Materials.Chalcopyrite, 1),
                 MaterialMisc.SELENIUM_DIOXIDE.getDust(1))
             .outputChances(100_00, 2_50)
-            .fluidInputs(FluidUtils.getHotWater(1000))
+            .fluidInputs(FluidUtils.getHotWater(1_000))
             .fluidOutputs(MaterialMisc.SELENIUM_DIOXIDE.getFluidStack(10))
             .eut(1024)
             .duration(40 * SECONDS)
@@ -102,7 +104,7 @@ public class RecipesSeleniumProcessing {
                 ItemUtils.getOrePrefixStack(OrePrefixes.crushedCentrifuged, Materials.Malachite, 1),
                 MaterialMisc.SELENIUM_DIOXIDE.getDust(1))
             .outputChances(100_00, 2_50)
-            .fluidInputs(FluidUtils.getHotWater(1000))
+            .fluidInputs(FluidUtils.getHotWater(1_000))
             .fluidOutputs(MaterialMisc.SELENIUM_DIOXIDE.getFluidStack(10))
             .eut(1024)
             .duration(40 * SECONDS)
