@@ -300,7 +300,7 @@ public class MTECropHarvestor extends MTEBasicTank {
             .getUniversalEnergyStored() >= getMinimumStoredEU()
             && getBaseMetaTileEntity().decreaseStoredEnergyUnits(powerUsageSecondary(), true)
             && applyWeedEx(aCrop)) {
-            consumeWeedEX(false)
+            consumeWeedEX(false);
         }
         if (aCrop.getCrop() == null || aCrop.getCrop()
             .equals(Crops.weed)) return;
