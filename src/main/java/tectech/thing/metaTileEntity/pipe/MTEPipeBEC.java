@@ -28,6 +28,7 @@ import tectech.mechanics.boseEinsteinCondensate.BECInventory;
 public class MTEPipeBEC extends MTEBaseFactoryPipe implements BECFactoryElement {
 
     private BECFactoryNetwork network;
+    private int oldColour;
 
     public MTEPipeBEC(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -132,17 +133,17 @@ public class MTEPipeBEC extends MTEBaseFactoryPipe implements BECFactoryElement 
         if (base == null || base.isDead()) return;
 
         for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
-            if (base.getTileEntityAtSide(dir) instanceof IGregTechTileEntity igte) {
-                if (igte.getColorization() == base.getColorization()) {
-                    if (igte.getMetaTileEntity() instanceof BECFactoryElement element) {
-                        if (this.getConnectionOnSide(dir) == ConnectionType.CONNECTABLE) {
-                            if (element.getConnectionOnSide(dir.getOpposite()) == ConnectionType.CONNECTABLE) {
-                                neighbours.add(element);
-                            }
-                        }
-                    }
-                }
-            }
+            if (this.getConnectionOnSide(dir) != ConnectionType.CONNECTABLE) continue;
+
+            if (!(base.getTileEntityAtSide(dir) instanceof IGregTechTileEntity igte)) continue;
+
+            if (igte.getColorization() != base.getColorization()) continue;
+
+            if (!(igte.getMetaTileEntity() instanceof BECFactoryElement element)) continue;
+
+            if (element.getConnectionOnSide(dir.getOpposite()) != ConnectionType.CONNECTABLE) continue;
+
+            neighbours.add(element);
         }
     }
 
@@ -230,6 +231,7 @@ public class MTEPipeBEC extends MTEBaseFactoryPipe implements BECFactoryElement 
         super.onFirstTick(aBaseMetaTileEntity);
 
         BECFactoryGrid.INSTANCE.addElement(this);
+        oldColour = aBaseMetaTileEntity.getColorization();
     }
 
     @Override
@@ -241,8 +243,13 @@ public class MTEPipeBEC extends MTEBaseFactoryPipe implements BECFactoryElement 
 
     @Override
     public void onColorChangeServer(byte aColor) {
-        if (getBaseMetaTileEntity() != null && getBaseMetaTileEntity().getTimer() > 0) {
-            BECFactoryGrid.INSTANCE.addElement(this);
-        }
+        IGregTechTileEntity base = getBaseMetaTileEntity();
+
+        if (base == null || base.getTimer() == 0) return;
+
+       if (oldColour == aColor) return;
+       oldColour = aColor;
+
+        BECFactoryGrid.INSTANCE.addElement(this);
     }
 }
