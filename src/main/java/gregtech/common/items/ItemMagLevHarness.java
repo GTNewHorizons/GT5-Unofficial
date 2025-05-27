@@ -42,6 +42,7 @@ public class ItemMagLevHarness extends GTGenericItem implements IBaubleExpanded 
     public void onWornTick(ItemStack itemstack, EntityLivingBase entityLivingBase) {
         if (!(entityLivingBase instanceof EntityPlayer player)) return;
         if (player instanceof FakePlayer) return;
+        if (player.worldObj.isRemote) return;
 
         Tether activeTether;
         var grid = TetherManager.ACTIVE_PYLONS.get(player.dimension);
@@ -91,7 +92,6 @@ public class ItemMagLevHarness extends GTGenericItem implements IBaubleExpanded 
         }
         if (fly) {
             player.capabilities.allowFlying = true;
-            if (player.worldObj.isRemote) player.capabilities.setFlySpeed(0.05f);
         } else {
             player.capabilities.isFlying = false;
             // so that the player doesnt go splat when going from inside range to outside range
