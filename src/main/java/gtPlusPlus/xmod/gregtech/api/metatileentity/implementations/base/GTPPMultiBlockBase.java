@@ -541,13 +541,11 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
                 IGregTechTileEntity b = ((IMetaTileEntity) m).getBaseMetaTileEntity();
                 if (b != null) {
                     BlockPos aPos = new BlockPos(b);
-                    if (aPos != null) {
-                        if (aCurPos.equals(aPos)) {
-                            if (GTplusplus.CURRENT_LOAD_PHASE == INIT_PHASE.STARTED) {
-                                log("Found Duplicate " + b.getInventoryName() + " at " + aPos.getLocationString());
-                            }
-                            return false;
+                    if (aCurPos.equals(aPos)) {
+                        if (GTplusplus.CURRENT_LOAD_PHASE == INIT_PHASE.STARTED) {
+                            log("Found Duplicate " + b.getInventoryName() + " at " + aPos.getLocationString());
                         }
+                        return false;
                     }
                 }
             }
@@ -745,7 +743,7 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
                 } else {
                     log("Cleared Input Hatch.");
                 }
-            } else if (aTileEntity instanceof MTEHatchInputBus) {
+            } else {
                 ((MTEHatchInputBus) aTileEntity).mRecipeMap = null;
                 ((MTEHatchInputBus) aTileEntity).mRecipeMap = aMap;
                 if (aMap != null) {
