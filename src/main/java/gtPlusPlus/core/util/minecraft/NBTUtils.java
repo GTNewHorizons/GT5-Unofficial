@@ -8,6 +8,8 @@ import net.minecraft.nbt.NBTTagList;
 
 import gregtech.api.util.GTUtility;
 
+import java.util.Objects;
+
 public class NBTUtils {
 
     public static NBTTagCompound getNBT(ItemStack aStack) {
@@ -29,7 +31,7 @@ public class NBTUtils {
             final NBTTagCompound data = list.getCompoundTagAt(i);
             final int slot = data.getInteger("Slot");
             if ((slot >= 0) && (slot < list.tagCount())) {
-                if (ItemStack.loadItemStackFromNBT(data) == ItemUtils.getSimpleStack(ZZZ_Empty)) {
+                if (Objects.equals(ItemStack.loadItemStackFromNBT(data), ItemUtils.getSimpleStack(ZZZ_Empty))) {
                     inventory[slot] = null;
                 } else {
                     inventory[slot] = ItemStack.loadItemStackFromNBT(data);
