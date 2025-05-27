@@ -439,7 +439,7 @@ public class NetheriteRecipes {
             .itemOutputs(outputStack)
             .fluidInputs(Materials.Boron.getPlasma(2L * inverseMultiplier))
             .fluidOutputs(Materials.Boron.getMolten(2L * inverseMultiplier))
-            .duration(32 * SECONDS)
+            .duration(4 * SECONDS)
             .eut(TierEU.RECIPE_ZPM)
             .addTo(plasmaArcFurnaceRecipes);
 
