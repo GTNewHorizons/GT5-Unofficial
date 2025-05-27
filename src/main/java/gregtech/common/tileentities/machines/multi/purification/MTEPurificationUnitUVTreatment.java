@@ -123,13 +123,15 @@ public class MTEPurificationUnitUVTreatment extends MTEPurificationUnitBase<MTEP
         // Lens indicator hatch
         .addElement(
             'I',
-            lazy(
-                t -> GTStructureUtility.<MTEPurificationUnitUVTreatment>buildHatchAdder()
-                    .atLeast(SpecialHatchElement.LensIndicator)
-                    .dot(3)
-                    .cacheHint(() -> "Lens Indicator")
-                    .casingIndex(CASING_INDEX_MAIN)
-                    .build()))
+            ofChain(
+                lazy(
+                    t -> GTStructureUtility.<MTEPurificationUnitUVTreatment>buildHatchAdder()
+                        .atLeast(SpecialHatchElement.LensIndicator)
+                        .dot(3)
+                        .cacheHint(() -> "Lens Indicator")
+                        .casingIndex(CASING_INDEX_MAIN)
+                        .build()),
+                ofBlock(GregTechAPI.sBlockCasings9, 12)))
         // Input or output hatch
         .addElement(
             'H',
