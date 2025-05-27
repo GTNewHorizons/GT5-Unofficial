@@ -4501,15 +4501,15 @@ public class GTUtility {
     }
 
     public static long clamp(long val, long lo, long hi) {
-        return val < lo ? lo : val > hi ? hi : val;
+        return Math.min(hi, Math.max(val, lo));
     }
 
     public static int clamp(int val, int lo, int hi) {
-        return MathHelper.clamp_int(val, lo, hi);
+        return Math.min(hi, Math.max(val, lo));
     }
 
     public static float clamp(float val, float lo, float hi) {
-        return val < lo ? lo : val > hi ? hi : val;
+        return Math.min(hi, Math.max(val, lo));
     }
 
     public static int min(int first, int... rest) {
