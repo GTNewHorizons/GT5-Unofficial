@@ -601,14 +601,31 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
     protected String generateCurrentProgress() {
         StringBuffer ret = new StringBuffer(StatCollector.translateToLocal("GT5U.gui.text.progress"));
         ret.append(" ");
+        ret.append(mProgresstime);
+        ret.append(" / ");
+        ret.append(mMaxProgresstime);
+        ret.append(" (");
 
         numberFormat.setMinimumFractionDigits(1);
         numberFormat.setMaximumFractionDigits(1);
         numberFormat.format((double) mProgresstime / mMaxProgresstime * 100, ret);
-        ret.append("%\n");
+        ret.append("%");
         numberFormat.setMinimumFractionDigits(0);
         numberFormat.setMaximumFractionDigits(2);
+
+        ret.append(")");
+
         return ret.toString();
+    }
+
+    @Override
+    protected boolean showRecipeOutputTooltips() {
+        return false;
+    }
+
+    @Override
+    protected String appendRate(boolean isLiquid, Long amount, boolean isFormatShortened) {
+        return "";
     }
 
     @Override
