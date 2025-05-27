@@ -219,13 +219,6 @@ public class BaseItemComponent extends Item {
         final boolean bool) {
 
         try {
-
-            if (this.componentMaterial == null) {
-                if (this.materialName != null) {
-                    // list.add(Utils.sanitizeStringKeepBrackets(materialName));
-                }
-            }
-
             if (this.materialName != null && !this.materialName.isEmpty() && (this.componentMaterial != null)) {
 
 

@@ -141,7 +141,7 @@ public class MTEHatchInputBattery extends MTEHatch {
                             }
                         }
                     }
-                } else {}
+                }
             }
         }
         super.onPostTick(aBaseMetaTileEntity, aTimer);

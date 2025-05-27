@@ -369,7 +369,7 @@ public class Material {
         final long neutrons, final boolean blastFurnace, String chemicalSymbol, final int radiationLevel,
         boolean generateCells, boolean generateFluid, final MaterialStack... inputs) {
 
-        if (mMaterialMap.add(this)) {}
+        mMaterialMap.add(this);
 
         if (defaultState == MaterialState.ORE) {
             rgba = null;
@@ -1363,19 +1363,6 @@ public class Material {
         Logger.MATERIALS("tempInput == null");
         return "??";
     }
-
-    public final boolean queueFluidGeneration() {
-        return isFluidQueued = true;
-    }
-
-    public static void generateQueuedFluids() {
-        for (Material m : mMaterialMap) {
-            if (m.isFluidQueued) {}
-        }
-    }
-
-    // If we need a fluid, let's just queue it for later.
-    public boolean isFluidQueued = false;
 
     public final Fluid generateFluid() {
         if (this.materialState == MaterialState.ORE) {

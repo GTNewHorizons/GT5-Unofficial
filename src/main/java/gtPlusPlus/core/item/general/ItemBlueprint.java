@@ -171,8 +171,6 @@ public class ItemBlueprint extends Item implements IItemBlueprint {
                     if (stack.getTagCompound()
                         .getCompoundTag("Items") != null) {
                         stack.stackTagCompound.setBoolean("mBlueprint", true);
-                    } else {
-                        // Invalid BP saved?
                     }
                     hasBP = (boolean) this.getNBT(stack, "mBlueprint");
                 }
