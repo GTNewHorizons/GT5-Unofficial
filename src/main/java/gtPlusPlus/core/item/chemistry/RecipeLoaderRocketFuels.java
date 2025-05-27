@@ -178,8 +178,8 @@ public class RecipeLoaderRocketFuels {
     private static void addRocketFuelsToMap() {
         addFuelRecipe(GTPPFluids.RP1RocketFuel, 512);
         addFuelRecipe(GTPPFluids.DenseHydrazineFuelMixture, 1024);
-        addFuelRecipe(GTPPFluids.H8N4C2O4RocketFuel, 2048);
-        addFuelRecipe(GTPPFluids.CN3H7O3RocketFuel, 4196);
+        addFuelRecipe(GTPPFluids.CN3H7O3RocketFuel, 2048);
+        addFuelRecipe(GTPPFluids.H8N4C2O4RocketFuel, 4196);
     }
 
     private static void addFuelRecipe(Fluid fluid, int fuelValue) {
