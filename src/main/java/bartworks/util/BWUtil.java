@@ -393,7 +393,7 @@ public class BWUtil {
         aResult = GTOreDictUnificator.get(true, aResult);
         if (aOnlyAddIfResultIsNotNull && aResult == null) return null;
         if (aResult != null && Items.feather.getDamage(aResult) == WILDCARD) Items.feather.setDamage(aResult, 0);
-        if (aRecipe == null || aRecipe.length <= 0) return null;
+        if (aRecipe == null || aRecipe.length == 0) return null;
 
         boolean tThereWasARecipe = false;
 

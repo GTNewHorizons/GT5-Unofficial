@@ -657,7 +657,6 @@ public class GTAchievements {
         if (stack.getUnlocalizedName()
             .startsWith("gt.blockmachines.basicmachine.replicator.tier.")) {
             issueAchievement(player, "replication");
-            return;
         }
 
     }

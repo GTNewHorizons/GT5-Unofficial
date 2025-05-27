@@ -77,20 +77,6 @@ public class DustDecayable extends BaseItemTickable {
             // don't decay when held by a player
             return;
         }
-
-        boolean a1, a2;
-
-        a1 = this.isTicking(world, stack);
-        a2 = tickItemTag(world, stack);
-
-        if (!a1 && !a2) {
-            if (entityHolding instanceof EntityPlayer player) {
-                // sanity check to make sure we aren't about to delete an item, this should always be true
-                if (player.inventory.mainInventory[slot] == stack) {
-                    player.inventory.mainInventory[slot] = GTUtility.copyAmount(stack.stackSize, turnsIntoItem);
-                }
-            }
-        }
     }
 
     public ItemStack getDecayResult() {
