@@ -221,7 +221,7 @@ public class MTEBoilerLava extends MTEBoiler {
                                 (double) aBaseMetaTileEntity.getXCoord() + 0.5D,
                                 (double) aBaseMetaTileEntity.getYCoord() + 1.5D,
                                 (double) aBaseMetaTileEntity.getZCoord() + 0.5D,
-                                equippedItemStack));
+                                returnedItemStack));
                 } else if (aPlayer instanceof EntityPlayerMP) {
                     ((EntityPlayerMP) aPlayer).sendContainerToPlayer(aPlayer.inventoryContainer);
                 }
