@@ -300,9 +300,7 @@ public class MTECropHarvestor extends MTEBasicTank {
             .getUniversalEnergyStored() >= getMinimumStoredEU()
             && getBaseMetaTileEntity().decreaseStoredEnergyUnits(powerUsageSecondary(), true)
             && applyWeedEx(aCrop)) {
-            if (consumeWeedEX(false)) {
-                // Logger.INFO("Consumed Weed-EX.");
-            }
+            consumeWeedEX(false);
         }
         if (aCrop.getCrop() == null || aCrop.getCrop()
             .equals(Crops.weed)) return;
@@ -311,9 +309,7 @@ public class MTECropHarvestor extends MTEBasicTank {
                 .getUniversalEnergyStored() >= getMinimumStoredEU()
             && getBaseMetaTileEntity().decreaseStoredEnergyUnits(powerUsageSecondary(), true)
             && applyFertilizer(aCrop)) {
-            if (consumeFertilizer(false)) {
-                // Logger.INFO("Consumed Fert.");
-            }
+            consumeFertilizer(false);
         }
         if (this.getFluidAmount() > 0 && this.getBaseMetaTileEntity()
             .getUniversalEnergyStored() >= getMinimumStoredEU()

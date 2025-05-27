@@ -301,7 +301,7 @@ public class ItemUtils {
                 final String MaterialName = oredictName.toLowerCase()
                     .replace("dust", "");
                 final Materials m = Materials.get(MaterialName);
-                if (m != null && m != Materials._NULL) {
+                if (m != Materials._NULL) {
                     returnValue = getGregtechDust(m, amount);
                     if (checkForInvalidItems(returnValue)) {
                         return returnValue;
@@ -529,11 +529,11 @@ public class ItemUtils {
             if (alph == null) {
                 continue;
             }
-            if (alph != null) {
-                final String temp = itemNames;
-                itemNames = temp + (aPos > 0 ? ", " : "") + alph.getDisplayName() + " x" + alph.stackSize;
-                aPos++;
-            }
+
+            final String temp = itemNames;
+            itemNames = temp + (aPos > 0 ? ", " : "") + alph.getDisplayName() + " x" + alph.stackSize;
+            aPos++;
+
         }
         return itemNames;
     }
@@ -549,14 +549,14 @@ public class ItemUtils {
             final GameRegistry.UniqueIdentifier id = GameRegistry.findUniqueIdentifierFor(item);
             if (id != null) {
                 final String modname = (id.modId == null ? id.name : id.modId);
-                value = ((id == null) || id.modId.isEmpty()) ? Minecraft.ID : modname;
+                value = (id.modId.isEmpty()) ? Minecraft.ID : modname;
             }
         } catch (final Throwable t) {
             try {
                 final UniqueIdentifier t2 = GameRegistry.findUniqueIdentifierFor(Block.getBlockFromItem(item));
                 if (t2 != null) {
                     final String modname = (t2.modId == null ? t2.name : t2.modId);
-                    value = ((t2 == null) || t2.modId.isEmpty()) ? Minecraft.ID : modname;
+                    value = (t2.modId.isEmpty()) ? Minecraft.ID : modname;
                 }
             } catch (final Throwable t3) {
                 t3.printStackTrace();
@@ -765,7 +765,7 @@ public class ItemUtils {
         } catch (Throwable ignored) {
 
         }
-        if (aDisplay == null || aDisplay.length() <= 0) {
+        if (aDisplay == null || aDisplay.length() == 0) {
             aDisplay = aStack.getUnlocalizedName() + ":" + aStack.getItemDamage();
         } else {
             aDisplay += " | Meta: " + aStack.getItemDamage();
@@ -784,7 +784,7 @@ public class ItemUtils {
             aDisplay = aStack.getItem()
                 .getUnlocalizedName();
         }
-        if (aDisplay == null || aDisplay.length() <= 0) {
+        if (aDisplay == null || aDisplay.length() == 0) {
             aDisplay = aStack.getItem()
                 .getUnlocalizedNameInefficiently(aStack);
         }

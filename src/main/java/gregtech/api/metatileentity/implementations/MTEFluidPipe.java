@@ -596,7 +596,6 @@ public class MTEFluidPipe extends MetaPipeEntity {
                 aPlayer.inventory.setInventorySlotContents(aPlayer.inventory.currentItem, null);
             }
         }
-        return;
     }
 
     @Override
