@@ -13,6 +13,9 @@
 
 package bartworks.system.material;
 
+import static gregtech.api.util.GTRecipeBuilder.INGOTS;
+import static net.minecraft.util.StatCollector.translateToLocal;
+
 import java.util.List;
 
 import net.minecraft.block.Block;
@@ -120,14 +123,13 @@ public class BWMetaGeneratedItems extends MetaGeneratedItem implements IRadMater
     @Override
     protected void addAdditionalToolTips(List<String> aList, ItemStack aStack, EntityPlayer aPlayer) {
         if (this.orePrefixes == OrePrefixes.dustImpure || this.orePrefixes == OrePrefixes.dustPure) {
-            aList.add(GTLanguageManager.getTranslation("metaitem.01.tooltip.purify"));
+            aList.add(translateToLocal("GT5U.tooltip.purify.1"));
         }
-        if (this.orePrefixes == OrePrefixes.crushed)
-            aList.add(GTLanguageManager.getTranslation("metaitem.01.tooltip.purify.2"));
+        if (this.orePrefixes == OrePrefixes.crushed) aList.add(translateToLocal("GT5U.tooltip.purify.2"));
 
         if (aStack != null && aStack.getItem() instanceof BWMetaGeneratedItems
             && aStack.getItemDamage() == WerkstoffLoader.Tiberium.getmID())
-            aList.add(GTLanguageManager.getTranslation("metaitem.01.tooltip.nqgen"));
+            aList.add(translateToLocal("GT5U.tooltip.nqgen"));
 
         Werkstoff werkstoff = Werkstoff.werkstoffHashMap.get((short) this.getDamage(aStack));
         if (werkstoff != null) {
@@ -245,8 +247,11 @@ public class BWMetaGeneratedItems extends MetaGeneratedItem implements IRadMater
     @Override
     public int getCapacity(ItemStack aStack) {
         return this.orePrefixes == OrePrefixes.capsule || this.orePrefixes == OrePrefixes.cell
-            || this.orePrefixes == OrePrefixes.cellPlasma ? 1000
-                : this.orePrefixes == OrePrefixes.cellMolten || this.orePrefixes == OrePrefixes.capsuleMolten ? 144 : 0;
+            || this.orePrefixes == OrePrefixes.cellPlasma
+                ? 1_000
+                : this.orePrefixes == OrePrefixes.cellMolten || this.orePrefixes == OrePrefixes.capsuleMolten
+                    ? 1 * INGOTS
+                    : 0;
     }
 
     @Override

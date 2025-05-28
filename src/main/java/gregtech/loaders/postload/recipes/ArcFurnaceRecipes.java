@@ -470,7 +470,7 @@ public class ArcFurnaceRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Silicon, 1L))
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.SiliconDioxide, 3))
-            .fluidInputs(Materials.Oxygen.getGas(2000L))
+            .fluidInputs(Materials.Oxygen.getGas(2_000))
             .duration(60 * SECONDS)
             .eut((int) TierEU.RECIPE_LV)
             .addTo(arcFurnaceRecipes);

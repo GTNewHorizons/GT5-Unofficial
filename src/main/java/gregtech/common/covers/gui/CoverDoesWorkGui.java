@@ -1,5 +1,7 @@
 package gregtech.common.covers.gui;
 
+import static net.minecraft.util.StatCollector.translateToLocal;
+
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.value.sync.BinaryEnumSyncValue;
@@ -72,8 +74,8 @@ public class CoverDoesWorkGui extends CoverGui<CoverDoesWork> {
                         .size(16),
                     IKey.dynamic(
                         () -> redstoneModeSyncValue.getValue() == RedstoneMode.INVERTED
-                            ? GTUtility.trans("INVERTED", "Inverted")
-                            : GTUtility.trans("NORMAL", "Normal"))
+                            ? translateToLocal("gt.interact.desc.inverted")
+                            : translateToLocal("gt.interact.desc.normal"))
                         .asWidget()));
     }
 
