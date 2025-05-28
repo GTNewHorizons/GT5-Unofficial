@@ -749,14 +749,6 @@ public class ItemUtils {
         return getNullStack();
     }
 
-    public static boolean isControlCircuit(ItemStack aStack) {
-        if (aStack != null) {
-            return aStack.getItem() == GTUtility.getIntegratedCircuit(0)
-                .getItem();
-        }
-        return false;
-    }
-
     private static final List<ItemStack> additionalMillingBalls = Lists.newArrayList();
 
     public static void registerMillingBall(@NotNull ItemStack stack) {
