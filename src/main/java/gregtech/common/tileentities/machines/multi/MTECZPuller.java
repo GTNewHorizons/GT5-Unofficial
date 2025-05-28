@@ -21,7 +21,6 @@ import static gregtech.api.util.GTStructureUtility.ofFrame;
 import java.util.ArrayList;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -59,9 +58,8 @@ public class MTECZPuller extends MTEEnhancedMultiBlockBase<MTECZPuller> implemen
 
     private int mHeatingCapacity = 0;
     private HeatingCoilLevel mCoilLevel = null;
-    @Nullable
-    private static final String tier1 = "tier1";
-    private static final String tier2 = "tier2";
+    private static final String TIER_1 = "tier1";
+    private static final String TIER_2 = "tier2";
     private static final int mTier1BitMap = 0b1;
     private static final int mTier2BitMap = 0b10;
 
@@ -77,7 +75,7 @@ public class MTECZPuller extends MTEEnhancedMultiBlockBase<MTECZPuller> implemen
         .<MTECZPuller>builder()
         // spotless:off
         .addShape(
-            tier1,
+            TIER_1,
             transpose(
                 new String[][] {
                     { "     ", "     ", "  E  ", "     ", "     " },
@@ -90,7 +88,7 @@ public class MTECZPuller extends MTEEnhancedMultiBlockBase<MTECZPuller> implemen
                     { " DAD ", "DCCCD", "AC CA", "DCCCD", " DAD " },
                     { " A~A ", "AAAAA", "AAAAA", "AAAAA", " AAA " }}))
         .addShape(
-            tier2,
+            TIER_2,
             transpose(
                 new String[][] {
                     { "           ", "           ", "           ", "           ", "           ", "     F     ", "           ", "           ", "           ", "           ", "           " },
@@ -142,7 +140,7 @@ public class MTECZPuller extends MTEEnhancedMultiBlockBase<MTECZPuller> implemen
                 .dot(2)
                 .buildAndChain(ofBlock(GregTechAPI.sBlockCasings9, 11)))
         .build();
-    private byte mSpecialTier = 0;
+    private byte mSpecialTier = 1;
 
     public MTECZPuller(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -206,11 +204,6 @@ public class MTECZPuller extends MTEEnhancedMultiBlockBase<MTECZPuller> implemen
                 mSpecialTier = 2;
             }
         }
-    }
-
-    @Override
-    public boolean explodesOnComponentBreak(ItemStack aStack) {
-        return false;
     }
 
     @Override
@@ -279,8 +272,7 @@ public class MTECZPuller extends MTEEnhancedMultiBlockBase<MTECZPuller> implemen
         seedBus.clear();
 
         setCoilLevel(HeatingCoilLevel.None);
-        if (!checkPiece(tier1, 2, 8, 0)) return false;
-        if (!checkPiece(tier2, 5, 10, 2)) return false;
+        if (!checkPiece(TIER_1, 2, 8, 0) && !checkPiece(TIER_2, 5, 10, 2)) return false;
 
         if (getCoilLevel() == HeatingCoilLevel.None) return false;
 
@@ -293,9 +285,9 @@ public class MTECZPuller extends MTEEnhancedMultiBlockBase<MTECZPuller> implemen
         if (!mEnergyHatches.isEmpty()) {
             if (mEnergyHatches.size() > 2) return false;
 
-            byte tier_of_hatch = mEnergyHatches.get(0).mTier;
+            byte hatchTier = mEnergyHatches.get(0).mTier;
             for (MTEHatchEnergy energyHatch : mEnergyHatches) {
-                if (energyHatch.mTier != tier_of_hatch) {
+                if (energyHatch.mTier != hatchTier) {
                     return false;
                 }
             }
@@ -323,10 +315,10 @@ public class MTECZPuller extends MTEEnhancedMultiBlockBase<MTECZPuller> implemen
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
         if (mSpecialTier == 1) {
-            buildPiece(tier1, stackSize, hintsOnly, 2, 8, 0);
+            buildPiece(TIER_1, stackSize, hintsOnly, 2, 8, 0);
         }
         if (mSpecialTier == 2) {
-            buildPiece(tier2, stackSize, hintsOnly, 5, 10, 2);
+            buildPiece(TIER_2, stackSize, hintsOnly, 5, 10, 2);
         }
 
     }
@@ -336,10 +328,10 @@ public class MTECZPuller extends MTEEnhancedMultiBlockBase<MTECZPuller> implemen
         int built = 0;
         if (mMachine) return -1;
         if (mSpecialTier == 1) {
-            built += survivialBuildPiece(tier1, stackSize, 2, 8, 0, elementBudget, env, false, true);
+            built += survivialBuildPiece(TIER_1, stackSize, 2, 8, 0, elementBudget, env, false, true);
         }
         if (mSpecialTier == 2) {
-            built += survivialBuildPiece(tier2, stackSize, 5, 10, 2, elementBudget, env, false, true);
+            built += survivialBuildPiece(TIER_2, stackSize, 5, 10, 2, elementBudget, env, false, true);
         }
         return built;
     }
