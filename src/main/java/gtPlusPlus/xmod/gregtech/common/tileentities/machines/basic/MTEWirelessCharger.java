@@ -445,9 +445,13 @@ public class MTEWirelessCharger extends MTETieredMachineBlock implements IWirele
             }
 
             for (EntityPlayer player : baseMetaTileEntity.getWorld().playerEntities) {
+                final double distSq = player.getDistanceSq(
+                    baseMetaTileEntity.getXCoord(),
+                    baseMetaTileEntity.getYCoord(),
+                    baseMetaTileEntity.getZCoord());
                 if (this.mode == MODE_LOCAL || this.mode == MODE_MIXED) {
-                    if (WirelessChargerManager.calcDistance(player, baseMetaTileEntity)
-                        < this.getLocalRange(this.mode == MODE_MIXED)) {
+                    final int range = this.getLocalRange(this.mode == MODE_MIXED);
+                    if (distSq < range * range) {
                         if (this.isValidPlayer(player) && !localRangeMap.containsKey(player.getDisplayName())) {
                             localRangeMap.put(player.getDisplayName(), player.getPersistentID());
                         }
@@ -457,7 +461,7 @@ public class MTEWirelessCharger extends MTETieredMachineBlock implements IWirele
                 }
                 if (this.mode == MODE_LONG_RANGE || this.mode == MODE_MIXED) {
                     int range = getLongRange(this.mode == MODE_MIXED);
-                    if (WirelessChargerManager.calcDistance(player, baseMetaTileEntity) <= range) {
+                    if (distSq <= range * range) {
                         if (!longRangeMap.containsKey(player.getDisplayName())) {
                             if (this.isValidPlayer(player)) {
                                 longRangeMap.put(player.getDisplayName(), player.getPersistentID());
