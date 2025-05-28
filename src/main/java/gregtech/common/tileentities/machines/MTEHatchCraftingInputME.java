@@ -70,6 +70,7 @@ import appeng.api.storage.IMEMonitor;
 import appeng.api.storage.data.IAEFluidStack;
 import appeng.api.storage.data.IAEItemStack;
 import appeng.api.util.AECableType;
+import appeng.api.util.AEColor;
 import appeng.api.util.DimensionalCoord;
 import appeng.api.util.IInterfaceViewable;
 import appeng.core.AppEng;
@@ -86,6 +87,7 @@ import appeng.util.PatternMultiplierHelper;
 import appeng.util.Platform;
 import appeng.util.ReadableNumberConverter;
 import gregtech.GTMod;
+import gregtech.api.enums.Dyes;
 import gregtech.api.enums.ItemList;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.IConfigurationCircuitSupport;
@@ -507,6 +509,20 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
     }
 
     @Override
+    public void onColorChangeServer(byte aColor) {
+        updateAE2ProxyColor();
+    }
+
+    public void updateAE2ProxyColor() {
+        AENetworkProxy proxy = getProxy();
+        proxy.setColor(AEColor.values()[Dyes.transformDyeIndex(this.getColor())]);
+        if (proxy.getNode() != null) {
+            proxy.getNode()
+                .updateState();
+        }
+    }
+
+    @Override
     public AECableType getCableConnectionType(ForgeDirection forgeDirection) {
         return isOutputFacing(forgeDirection) ? AECableType.SMART : AECableType.NONE;
     }
@@ -706,6 +722,7 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
         disablePatternOptimization = aNBT.getBoolean("disablePatternOptimization");
 
         getProxy().readFromNBT(aNBT);
+        updateAE2ProxyColor();
     }
 
     @Override
