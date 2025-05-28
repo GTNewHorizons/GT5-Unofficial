@@ -130,7 +130,7 @@ public class MTEIndustrialRockBreaker extends GTPPMultiBlockBase<MTEIndustrialRo
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
-        return survivialBuildPiece(mName, stackSize, 1, 3, 0, elementBudget, env, false, true);
+        return survivalBuildPiece(mName, stackSize, 1, 3, 0, elementBudget, env, false, true);
     }
 
     @Override
@@ -223,11 +223,6 @@ public class MTEIndustrialRockBreaker extends GTPPMultiBlockBase<MTEIndustrialRo
     @Override
     public int getMaxParallelRecipes() {
         return 8 * GTUtility.getTier(this.getMaxInputVoltage());
-    }
-
-    @Override
-    public int getMaxEfficiency(final ItemStack aStack) {
-        return 10000;
     }
 
     @Override

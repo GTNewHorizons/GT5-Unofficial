@@ -1,13 +1,14 @@
 package gregtech.api.enums;
 
 import static gregtech.api.enums.GTValues.NI;
-import static gregtech.api.enums.GTValues.W;
+import static gregtech.api.util.GTRecipeBuilder.WILDCARD;
 
 import java.util.Locale;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.client.IItemRenderer;
 import net.minecraftforge.fluids.Fluid;
 
 import gregtech.api.interfaces.IItemContainer;
@@ -16,6 +17,7 @@ import gregtech.api.util.GTLog;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
+import gregtech.common.render.items.MetaGeneratedItemRenderer;
 
 /**
  * Class containing all non-OreDict Items of GregTech.
@@ -100,8 +102,11 @@ public enum ItemList implements IItemContainer {
     IC2_AdvBattery,
     IC2_EnergyCrystal,
     IC2_LapotronCrystal,
+    Tool_Vajra,
+    Vajra_Core,
+    Magnetron,
+    Item_Power_Goggles,
     Shape_Empty,
-
     Shape_Mold_Bottle,
     Shape_Mold_Plate,
     Shape_Mold_Ingot,
@@ -1619,7 +1624,6 @@ public enum ItemList implements IItemContainer {
     Depleted_Thorium_2,
     Depleted_Thorium_4,
 
-    Processing_Array,
     Distillation_Tower,
     Energy_LapotronicOrb2,
     Ore_Processor,
@@ -1681,7 +1685,6 @@ public enum ItemList implements IItemContainer {
     LargeSteamTurbine,
     LargeGasTurbine,
     LargeHPSteamTurbine,
-    LargeAdvancedGasTurbine,
     LargePlasmaTurbine,
 
     Ingot_Heavy1,
@@ -1700,7 +1703,6 @@ public enum ItemList implements IItemContainer {
     Casing_Turbine3,
     Casing_EngineIntake,
     Casing_ExtremeEngineIntake,
-    Casing_TurbineGasAdvanced,
 
     Casing_Coil_Cupronickel,
     Casing_Coil_Kanthal,
@@ -2139,6 +2141,11 @@ public enum ItemList implements IItemContainer {
     BlockQuarkReleaseChamber,
     BlockQuarkContainmentCasing,
     LargeFluidExtractor,
+    CasingThaumium,
+    CasingVoid,
+    CasingIchorium,
+    EntropicProcessor,
+    DecayWarehouse,
     AcceleratorLV,
     AcceleratorMV,
     AcceleratorHV,
@@ -2809,7 +2816,7 @@ public enum ItemList implements IItemContainer {
     public ItemStack getWildcard(long aAmount, Object... aReplacements) {
         sanityCheck();
         if (GTUtility.isStackInvalid(mStack)) return GTUtility.copyAmount(aAmount, aReplacements);
-        return GTUtility.copyAmountAndMetaData(aAmount, W, GTOreDictUnificator.get(mStack));
+        return GTUtility.copyAmountAndMetaData(aAmount, WILDCARD, GTOreDictUnificator.get(mStack));
     }
 
     @Override
@@ -2889,6 +2896,12 @@ public enum ItemList implements IItemContainer {
      */
     public ItemStack getInternalStack_unsafe() {
         return mStack;
+    }
+
+    @Override
+    public IItemContainer setRender(IItemRenderer aRenderer) {
+        MetaGeneratedItemRenderer.registerSpecialRenderer(this, aRenderer);
+        return this;
     }
 
     private void sanityCheck() {

@@ -9,6 +9,8 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_EMS_GLOW;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
+import static net.minecraft.util.StatCollector.translateToLocal;
+import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -22,7 +24,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -56,6 +57,7 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.blocks.BlockCasings10;
 import gregtech.common.items.MetaGeneratedItem01;
 import gregtech.common.misc.GTStructureChannels;
+import gregtech.common.tileentities.machines.multi.gui.MTEIndustrialElectromagneticSeparatorGui;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
@@ -162,11 +164,6 @@ public class MTEIndustrialElectromagneticSeparator
     }
 
     @Override
-    public boolean isCorrectMachinePart(ItemStack aStack) {
-        return true;
-    }
-
-    @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new MTEIndustrialElectromagneticSeparator(this.mName);
     }
@@ -224,7 +221,7 @@ public class MTEIndustrialElectromagneticSeparator
             .addCasingInfoExactly("Any Tiered Glass", 12, false)
             .addOtherStructurePart("Magnetic Neodymium Frame Box", "x37")
             .addOtherStructurePart(
-                StatCollector.translateToLocal("GT5U.tooltip.structure.electromagnet_housing"),
+                translateToLocal("GT5U.tooltip.structure.electromagnet_housing"),
                 "1 Block Above/Behind Controller",
                 2)
             .addInputBus("Any Casing", 1)
@@ -232,7 +229,7 @@ public class MTEIndustrialElectromagneticSeparator
             .addEnergyHatch("Any Casing", 1)
             .addMaintenanceHatch("Any Casing", 1)
             .addSubChannelUsage(GTStructureChannels.BOROGLASS)
-            .toolTipFinisher(GTValues.AuthorFourIsTheNumber, GTValues.authorBaps);
+            .toolTipFinisher(GTValues.authorBaps);
         return tt;
     }
 
@@ -244,7 +241,7 @@ public class MTEIndustrialElectromagneticSeparator
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
-        return survivialBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 3, 5, 0, elementBudget, env, false, true);
+        return survivalBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 3, 5, 0, elementBudget, env, false, true);
     }
 
     private int mCasingAmount;
@@ -336,9 +333,8 @@ public class MTEIndustrialElectromagneticSeparator
     public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
         ItemStack aTool) {
         setMachineMode(nextMachineMode());
-        PlayerUtils.messagePlayer(
-            aPlayer,
-            String.format(StatCollector.translateToLocal("GT5U.MULTI_MACHINE_CHANGE"), getMachineModeName()));
+        PlayerUtils
+            .messagePlayer(aPlayer, translateToLocalFormatted("GT5U.MULTI_MACHINE_CHANGE", getMachineModeName()));
     }
 
     @Override
@@ -349,7 +345,7 @@ public class MTEIndustrialElectromagneticSeparator
 
     @Override
     public String getMachineModeName() {
-        return StatCollector.translateToLocal("GT5U.INDUSTRIAL_ELECTROMAGNETIC_SEPARATOR.mode." + machineMode);
+        return translateToLocal("GT5U.INDUSTRIAL_ELECTROMAGNETIC_SEPARATOR.mode." + machineMode);
     }
 
     @Override
@@ -371,26 +367,10 @@ public class MTEIndustrialElectromagneticSeparator
         super.getWailaBody(itemStack, currentTip, accessor, config);
         final NBTTagCompound tag = accessor.getNBTData();
         currentTip.add(
-            StatCollector.translateToLocal("GT5U.machines.oreprocessor1") + " "
+            translateToLocal("GT5U.machines.oreprocessor1") + " "
                 + EnumChatFormatting.WHITE
-                + StatCollector
-                    .translateToLocal("GT5U.INDUSTRIAL_ELECTROMAGNETIC_SEPARATOR.mode." + tag.getInteger("mode"))
+                + translateToLocal("GT5U.INDUSTRIAL_ELECTROMAGNETIC_SEPARATOR.mode." + tag.getInteger("mode"))
                 + EnumChatFormatting.RESET);
-    }
-
-    @Override
-    public int getMaxEfficiency(ItemStack aStack) {
-        return 10000;
-    }
-
-    @Override
-    public int getDamageToComponent(ItemStack aStack) {
-        return 0;
-    }
-
-    @Override
-    public boolean explodesOnComponentBreak(ItemStack aStack) {
-        return false;
     }
 
     @Override
@@ -411,17 +391,6 @@ public class MTEIndustrialElectromagneticSeparator
     @Override
     public boolean supportsSingleRecipeLocking() {
         return true;
-    }
-
-    @Override
-    protected void setProcessingLogicPower(ProcessingLogic logic) {
-        // This fix works for normal energy hatches, preventing over-paralleling with 1 energy hatch
-        // However, it does not work with multiamp.
-
-        if (mExoticEnergyHatches.isEmpty()) {
-            logic.setAvailableVoltage(GTUtility.roundUpVoltage(this.getMaxInputVoltage()));
-            logic.setAvailableAmperage(1L);
-        } else super.setProcessingLogicPower(logic);
     }
 
     private void findMagnet() {
@@ -467,10 +436,15 @@ public class MTEIndustrialElectromagneticSeparator
         float aX, float aY, float aZ, ItemStack aTool) {
         batchMode = !batchMode;
         if (batchMode) {
-            GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOn"));
+            GTUtility.sendChatToPlayer(aPlayer, translateToLocal("misc.BatchModeTextOn"));
         } else {
-            GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOff"));
+            GTUtility.sendChatToPlayer(aPlayer, translateToLocal("misc.BatchModeTextOff"));
         }
         return true;
+    }
+
+    @Override
+    protected @NotNull MTEIndustrialElectromagneticSeparatorGui getGui() {
+        return new MTEIndustrialElectromagneticSeparatorGui(this);
     }
 }

@@ -3,7 +3,6 @@ package gregtech.common.tileentities.machines.multi.compressor;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
-import static gregtech.api.enums.GTValues.AuthorFourIsTheNumber;
 import static gregtech.api.enums.GTValues.Ollie;
 import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.InputBus;
@@ -98,11 +97,6 @@ public class MTENeutroniumCompressor extends MTEExtendedPowerMultiBlockBase<MTEN
     }
 
     @Override
-    public boolean isCorrectMachinePart(ItemStack aStack) {
-        return true;
-    }
-
-    @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new MTENeutroniumCompressor(this.mName);
     }
@@ -165,7 +159,7 @@ public class MTENeutroniumCompressor extends MTEExtendedPowerMultiBlockBase<MTEN
             .addEnergyHatch("Any Neutronium Casing", 1)
             .addMaintenanceHatch("Any Neutronium Casing", 1)
             .addSubChannelUsage(GTStructureChannels.BOROGLASS)
-            .toolTipFinisher(AuthorFourIsTheNumber, Ollie);
+            .toolTipFinisher(Ollie);
         return tt;
     }
 
@@ -177,7 +171,7 @@ public class MTENeutroniumCompressor extends MTEExtendedPowerMultiBlockBase<MTEN
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
-        return survivialBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 5, 9, 1, elementBudget, env, false, true);
+        return survivalBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 5, 9, 1, elementBudget, env, false, true);
     }
 
     private int mCasingAmount;
@@ -191,12 +185,6 @@ public class MTENeutroniumCompressor extends MTEExtendedPowerMultiBlockBase<MTEN
         mCasingAmount = 0;
 
         return (checkPiece(STRUCTURE_PIECE_MAIN, 5, 9, 1)) && mCasingAmount >= 220;
-    }
-
-    @Override
-    protected void setProcessingLogicPower(ProcessingLogic logic) {
-        logic.setAvailableVoltage(GTUtility.roundUpVoltage(this.getMaxInputVoltage()));
-        logic.setAvailableAmperage(1L);
     }
 
     @Override
@@ -223,21 +211,6 @@ public class MTENeutroniumCompressor extends MTEExtendedPowerMultiBlockBase<MTEN
     @Override
     public RecipeMap<?> getRecipeMap() {
         return RecipeMaps.neutroniumCompressorRecipes;
-    }
-
-    @Override
-    public int getMaxEfficiency(ItemStack aStack) {
-        return 10000;
-    }
-
-    @Override
-    public int getDamageToComponent(ItemStack aStack) {
-        return 0;
-    }
-
-    @Override
-    public boolean explodesOnComponentBreak(ItemStack aStack) {
-        return false;
     }
 
     @Override

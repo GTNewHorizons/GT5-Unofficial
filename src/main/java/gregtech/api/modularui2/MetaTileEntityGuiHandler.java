@@ -19,6 +19,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 public final class MetaTileEntityGuiHandler extends AbstractUIFactory<PosGuiData> {
 
     public static final MetaTileEntityGuiHandler INSTANCE = new MetaTileEntityGuiHandler();
+    public static final int MAX_INTERACTION_DISTANCE = 64;
 
     private MetaTileEntityGuiHandler() {
         super("gregtech:mte");
@@ -58,6 +59,13 @@ public final class MetaTileEntityGuiHandler extends AbstractUIFactory<PosGuiData
                 data.getX(),
                 data.getY(),
                 data.getZ()));
+    }
+
+    @Override
+    public boolean canInteractWith(EntityPlayer player, PosGuiData guiData) {
+        return super.canInteractWith(player, guiData) && guiData.getTileEntity() instanceof IGregTechTileEntity baseTE
+            && baseTE.canAccessData()
+            && guiData.getSquaredDistance(player) <= MAX_INTERACTION_DISTANCE;
     }
 
     @Override

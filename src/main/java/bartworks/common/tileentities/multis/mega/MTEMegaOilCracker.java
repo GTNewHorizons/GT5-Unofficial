@@ -28,6 +28,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import javax.annotation.Nonnull;
 
@@ -155,6 +156,7 @@ public class MTEMegaOilCracker extends MegaMultiBlockBase<MTEMegaOilCracker> imp
             .addGlassEnergyLimitInfo()
             .addTecTechHatchInfo()
             .addMinGlassForLaser(VoltageIndex.UV)
+            .addUnlimitedTierSkips()
             .addInfo("Gets 10% EU/t reduction per coil tier, up to a maximum of 50%")
             .beginStructureBlock(13, 7, 9, true)
             .addController("Front bottom")
@@ -243,7 +245,7 @@ public class MTEMegaOilCracker extends MegaMultiBlockBase<MTEMegaOilCracker> imp
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (this.mMachine) return -1;
         int realBudget = elementBudget >= 200 ? elementBudget : Math.min(200, elementBudget * 5);
-        return this.survivialBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 6, 6, 0, realBudget, env, false, true);
+        return this.survivalBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 6, 6, 0, realBudget, env, false, true);
     }
     // -------------- TEC TECH COMPAT ----------------
 
@@ -352,10 +354,13 @@ public class MTEMegaOilCracker extends MegaMultiBlockBase<MTEMegaOilCracker> imp
     }
 
     @Override
-    public ArrayList<FluidStack> getStoredFluids() {
+    public ArrayList<FluidStack> getStoredFluidsForColor(Optional<Byte> color) {
         final ArrayList<FluidStack> rList = new ArrayList<>();
         Map<Fluid, FluidStack> inputsFromME = new HashMap<>();
         for (final MTEHatchInput tHatch : validMTEList(mInputHatches)) {
+            byte hatchColor = tHatch.getBaseMetaTileEntity()
+                .getColorization();
+            if (color.isPresent() && hatchColor != -1 && hatchColor != color.get()) continue;
             tHatch.mRecipeMap = getRecipeMap();
             if (tHatch instanceof MTEHatchInputME meHatch) {
                 for (FluidStack tFluid : meHatch.getStoredFluids()) {
@@ -379,6 +384,9 @@ public class MTEMegaOilCracker extends MegaMultiBlockBase<MTEMegaOilCracker> imp
             }
         }
         for (final MTEHatchInput tHatch : validMTEList(mMiddleInputHatches)) {
+            byte hatchColor = tHatch.getBaseMetaTileEntity()
+                .getColorization();
+            if (color.isPresent() && hatchColor != -1 && hatchColor != color.get()) continue;
             tHatch.mRecipeMap = getRecipeMap();
             if (tHatch instanceof MTEHatchInputME meHatch) {
                 for (FluidStack tFluid : meHatch.getStoredFluids()) {
@@ -441,7 +449,7 @@ public class MTEMegaOilCracker extends MegaMultiBlockBase<MTEMegaOilCracker> imp
     }
 
     @Override
-    protected void startRecipeProcessing() {
+    public void startRecipeProcessing() {
         for (MTEHatchInput hatch : validMTEList(mMiddleInputHatches)) {
             if (hatch instanceof IRecipeProcessingAwareHatch aware) {
                 aware.startRecipeProcessing();
@@ -451,7 +459,7 @@ public class MTEMegaOilCracker extends MegaMultiBlockBase<MTEMegaOilCracker> imp
     }
 
     @Override
-    protected void endRecipeProcessing() {
+    public void endRecipeProcessing() {
         super.endRecipeProcessing();
         for (MTEHatchInput hatch : validMTEList(mMiddleInputHatches)) {
             if (hatch instanceof IRecipeProcessingAwareHatch aware) {

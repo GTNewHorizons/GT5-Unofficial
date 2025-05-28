@@ -233,11 +233,6 @@ public class MTEPreciseAssembler extends MTEExtendedPowerMultiBlockBase<MTEPreci
     }
 
     @Override
-    public boolean isCorrectMachinePart(ItemStack aStack) {
-        return true;
-    }
-
-    @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         aNBT.setInteger("casingTier", casingTier);
         aNBT.setInteger("machineTier", machineTier);
@@ -267,9 +262,6 @@ public class MTEPreciseAssembler extends MTEExtendedPowerMultiBlockBase<MTEPreci
                         return CheckRecipeResultRegistry.insufficientMachineTier(recipe.mSpecialValue);
                     }
                 }
-                if (availableVoltage < recipe.mEUt) {
-                    return CheckRecipeResultRegistry.insufficientPower(recipe.mEUt);
-                }
                 return CheckRecipeResultRegistry.SUCCESSFUL;
             }
 
@@ -292,11 +284,7 @@ public class MTEPreciseAssembler extends MTEExtendedPowerMultiBlockBase<MTEPreci
         logic.setAvailableVoltage(getMachineVoltageLimit());
         logic.setAvailableAmperage(useSingleAmp ? 1 : getMaxInputAmps());
         logic.setAmperageOC(true);
-    }
-
-    @Override
-    public int getMaxEfficiency(ItemStack aStack) {
-        return 10000;
+        logic.setMaxTierSkips(0);
     }
 
     public long getMachineVoltageLimit() {
@@ -325,7 +313,7 @@ public class MTEPreciseAssembler extends MTEExtendedPowerMultiBlockBase<MTEPreci
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
-        return survivialBuildPiece(mName, stackSize, 4, 4, 0, elementBudget, env, false, true);
+        return survivalBuildPiece(mName, stackSize, 4, 4, 0, elementBudget, env, false, true);
     }
 
     @Override
@@ -356,12 +344,17 @@ public class MTEPreciseAssembler extends MTEExtendedPowerMultiBlockBase<MTEPreci
             .addInfo("Can assemble precise components in Precise Mode.")
             .addInfo("Can work like a normal assembler in Normal Mode.")
             .addInfo("Use a screwdriver to change the mode.")
-            .addInfo("Machine Casing and Energy Hatch limits the voltage tier the machine can work on.")
-            .addInfo("UHV Machine Casing unlocks all recipe voltages, but Energy Hatch limits still apply.")
             .addInfo("It is 100% faster than single block assemblers in Normal Mode.")
             .addInfo("More advanced Electronic Unit Casings increase maximum parallel in Normal Mode.")
             .addInfo("Imprecise (MK-0) = 16x, MK-I = 32x, MK-II = 64x, MK-III = 128x, MK-IV = 256x")
+            .addInfo(
+                "Machine Casing limits the voltage tier the machine can work on, "
+                    + GTValues.TIER_COLORS[VoltageIndex.UHV]
+                    + "UHV"
+                    + EnumChatFormatting.GRAY
+                    + "-tier Machine Casing unlocks all.")
             .addTecTechHatchInfo()
+            .addNoTierSkips()
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(9, 5, 5, true)
             .addController("Front bottom")
@@ -385,16 +378,6 @@ public class MTEPreciseAssembler extends MTEExtendedPowerMultiBlockBase<MTEPreci
     @Override
     public int getPollutionPerSecond(ItemStack aStack) {
         return 780;
-    }
-
-    @Override
-    public int getDamageToComponent(ItemStack aStack) {
-        return 0;
-    }
-
-    @Override
-    public boolean explodesOnComponentBreak(ItemStack aStack) {
-        return false;
     }
 
     @Override

@@ -306,11 +306,6 @@ public class MTELESU extends MTEMultiBlockBase {
     }
 
     @Override
-    public boolean isCorrectMachinePart(ItemStack itemStack) {
-        return true;
-    }
-
-    @Override
     public @NotNull CheckRecipeResult checkProcessing() {
         return CheckRecipeResultRegistry.SUCCESSFUL;
     }
@@ -396,10 +391,10 @@ public class MTELESU extends MTEMultiBlockBase {
         }
 
         this.mEfficiency = this.getMaxEfficiency(null);
-        this.mStorage = Configuration.multiblocks.energyPerCell * this.connectedcells.hashset.size()
+        this.mStorage = (long) Configuration.multiblocks.energyPerCell * this.connectedcells.hashset.size()
             >= Long.MAX_VALUE - 1 || Configuration.multiblocks.energyPerCell * this.connectedcells.hashset.size() < 0
                 ? Long.MAX_VALUE - 1
-                : Configuration.multiblocks.energyPerCell * this.connectedcells.hashset.size();
+                : (long) Configuration.multiblocks.energyPerCell * this.connectedcells.hashset.size();
         this.mMaxProgresstime = 1;
         this.mProgresstime = 0;
 
@@ -430,21 +425,6 @@ public class MTELESU extends MTEMultiBlockBase {
                 + this.getBaseMetaTileEntity()
                     .getWorld().provider.dimensionId);
         return true;
-    }
-
-    @Override
-    public int getMaxEfficiency(ItemStack itemStack) {
-        return 10000;
-    }
-
-    @Override
-    public int getDamageToComponent(ItemStack itemStack) {
-        return 0;
-    }
-
-    @Override
-    public boolean explodesOnComponentBreak(ItemStack itemStack) {
-        return false;
     }
 
     public World getWorld() {

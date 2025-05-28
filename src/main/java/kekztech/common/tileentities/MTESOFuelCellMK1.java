@@ -34,7 +34,6 @@ import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
@@ -145,11 +144,6 @@ public class MTESOFuelCellMK1 extends MTEEnhancedMultiBlockBase<MTESOFuelCellMK1
         return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_TEXTURE_ID) };
     }
 
-    @Override
-    public boolean isCorrectMachinePart(ItemStack stack) {
-        return true;
-    }
-
     @Nonnull
     @Override
     public CheckRecipeResult checkProcessing() {
@@ -176,7 +170,7 @@ public class MTESOFuelCellMK1 extends MTEEnhancedMultiBlockBase<MTESOFuelCellMK1
                         super.mMaxProgresstime = 20;
                         super.mEfficiencyIncrease = 40;
                         if (super.mEfficiency == getMaxEfficiency(null)) {
-                            super.addOutput(GTModHandler.getSteam(STEAM_PER_SEC));
+                            super.addOutput(Materials.Steam.getGas(STEAM_PER_SEC));
                         }
                         return CheckRecipeResultRegistry.GENERATING;
                     }
@@ -199,22 +193,12 @@ public class MTESOFuelCellMK1 extends MTEEnhancedMultiBlockBase<MTESOFuelCellMK1
     }
 
     @Override
-    public int getMaxEfficiency(ItemStack stack) {
-        return 10000;
-    }
-
-    @Override
-    public int getDamageToComponent(ItemStack stack) {
-        return 0;
-    }
-
-    @Override
-    public boolean explodesOnComponentBreak(ItemStack stack) {
-        return false;
-    }
-
-    @Override
     public void construct(ItemStack itemStack, boolean b) {
         buildPiece(STRUCTURE_PIECE_MAIN, itemStack, b, 1, 1, 0);
+    }
+
+    @Override
+    public boolean showRecipeTextInGUI() {
+        return false;
     }
 }

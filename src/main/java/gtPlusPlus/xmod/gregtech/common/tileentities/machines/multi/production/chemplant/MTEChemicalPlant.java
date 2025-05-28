@@ -350,7 +350,7 @@ public class MTEChemicalPlant extends GTPPMultiBlockBase<MTEChemicalPlant> imple
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
-        return survivialBuildPiece(mName, stackSize, 3, 6, 0, elementBudget, env, false, true);
+        return survivalBuildPiece(mName, stackSize, 3, 6, 0, elementBudget, env, false, true);
     }
 
     @Override
@@ -528,16 +528,6 @@ public class MTEChemicalPlant extends GTPPMultiBlockBase<MTEChemicalPlant> imple
             return addToMachineListInternal(mCatalystBuses, aMetaTileEntity, aBaseCasingIndex);
         }
         return super.addToMachineList(aTileEntity, aBaseCasingIndex);
-    }
-
-    @Override
-    public int getMaxEfficiency(final ItemStack aStack) {
-        return 10000;
-    }
-
-    @Override
-    public boolean explodesOnComponentBreak(final ItemStack aStack) {
-        return false;
     }
 
     public int getMaxCatalystDurability() {

@@ -170,7 +170,7 @@ public class MTEIndustrialMacerator extends GTPPMultiBlockBase<MTEIndustrialMace
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (this.mMachine) return -1;
-        return survivialBuildPiece(
+        return survivalBuildPiece(
             STRUCTURE_PIECE_MAIN,
             stackSize,
             HORIZONTAL_OFF_SET,
@@ -361,11 +361,6 @@ public class MTEIndustrialMacerator extends GTPPMultiBlockBase<MTEIndustrialMace
         final long tVoltage = getMaxInputVoltage();
         final byte tTier = (byte) Math.max(1, GTUtility.getTier(tVoltage));
         return Math.max(1, (controllerTier == 1 ? 2 : 8) * tTier);
-    }
-
-    @Override
-    public int getMaxEfficiency(final ItemStack aStack) {
-        return 10000;
     }
 
     @Override

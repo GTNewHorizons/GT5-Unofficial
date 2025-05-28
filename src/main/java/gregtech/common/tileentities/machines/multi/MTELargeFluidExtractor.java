@@ -186,27 +186,15 @@ public class MTELargeFluidExtractor extends MTEExtendedPowerMultiBlockBase<MTELa
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
-        return survivialBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 2, 8, 0, elementBudget, env, false, true);
+        return survivalBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 2, 8, 0, elementBudget, env, false, true);
     }
 
     @Override
     protected ProcessingLogic createProcessingLogic() {
-        return new ProcessingLogic();
-    }
 
-    @Override
-    protected void setProcessingLogicPower(ProcessingLogic logic) {
-        logic.setAmperageOC(true);
-        logic.setAvailableVoltage(GTUtility.roundUpVoltage(this.getMaxInputVoltage()));
-        logic.setAvailableAmperage(1);
-        logic.setEuModifier(getEUMultiplier());
-        logic.setMaxParallel(getTrueParallel());
-        logic.setSpeedBonus(1.0f / getSpeedBonus());
-    }
-
-    @Override
-    public boolean isCorrectMachinePart(ItemStack aStack) {
-        return true;
+        return new ProcessingLogic().setMaxParallelSupplier(this::getTrueParallel)
+            .setEuModifier(getEUMultiplier())
+            .setSpeedBonus(1.0f / getSpeedBonus());
     }
 
     @Override
@@ -339,21 +327,6 @@ public class MTELargeFluidExtractor extends MTEExtendedPowerMultiBlockBase<MTELa
             return "";
         })
             .setTextAlignment(Alignment.CenterLeft));
-    }
-
-    @Override
-    public boolean explodesOnComponentBreak(ItemStack aStack) {
-        return false;
-    }
-
-    @Override
-    public int getDamageToComponent(ItemStack aStack) {
-        return 0;
-    }
-
-    @Override
-    public int getMaxEfficiency(ItemStack aStack) {
-        return 10_000;
     }
 
     @Override

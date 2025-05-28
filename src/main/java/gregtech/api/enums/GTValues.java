@@ -80,12 +80,18 @@ public class GTValues {
      * Renamed from "FLUID_MATERIAL_UNIT" to just "L"
      * <p/>
      * Fluid per Material Unit (Prime Factors: 3 * 3 * 2 * 2 * 2 * 2)
+     *
+     * @deprecated Use {@link gregtech.api.util.GTRecipeBuilder#INGOTS} instead.
      */
+    @Deprecated
     public static final long L = 144;
 
     /**
      * The Item WildCard Tag. Even shorter than the "-1" of the past
+     *
+     * @deprecated Use {@link gregtech.api.util.GTRecipeBuilder#WILDCARD} instead.
      */
+    @Deprecated
     public static final short W = OreDictionary.WILDCARD_VALUE;
 
     /**
@@ -548,18 +554,6 @@ public class GTValues {
     public static final String AuthorQuerns = "Author: " + EnumChatFormatting.RED + "Querns";
     public static final String AuthorSilverMoon = "Author: " + EnumChatFormatting.AQUA + "SilverMoon";
     public static final String AuthorTheEpicGamer274 = "Author: " + EnumChatFormatting.DARK_AQUA + "TheEpicGamer274";
-    public static final String AuthorFourIsTheNumber = "Author: " + EnumChatFormatting.LIGHT_PURPLE
-        + EnumChatFormatting.ITALIC
-        + "Four"
-        + EnumChatFormatting.WHITE
-        + EnumChatFormatting.ITALIC
-        + "Is"
-        + EnumChatFormatting.LIGHT_PURPLE
-        + EnumChatFormatting.ITALIC
-        + "The"
-        + EnumChatFormatting.WHITE
-        + EnumChatFormatting.ITALIC
-        + "Number";
     public static final String Ollie = EnumChatFormatting.GREEN.toString() + EnumChatFormatting.BOLD + "Ollie";
     public static final String authorBaps = "Author: " + EnumChatFormatting.GOLD
         + "Ba"
