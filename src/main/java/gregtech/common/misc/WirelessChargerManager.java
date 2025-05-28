@@ -4,7 +4,6 @@ import static gregtech.api.enums.Mods.Baubles;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.stream.Stream;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
@@ -17,6 +16,7 @@ import com.gtnewhorizon.gtnhlib.util.CoordinatePacker;
 import baubles.api.BaublesApi;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
+import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.IWirelessCharger;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
 
@@ -38,11 +38,8 @@ public class WirelessChargerManager {
     }
 
     public static void addCharger(@NotNull IWirelessCharger charger) {
-        CHARGER_MAP.put(
-            CoordinatePacker.pack(
-                charger.getChargerTE()
-                    .getCoords()),
-            charger);
+        final IGregTechTileEntity te = charger.getChargerTE();
+        CHARGER_MAP.put(CoordinatePacker.pack(te.getXCoord(), te.getYCoord(), te.getZCoord()), charger);
     }
 
     public static IWirelessCharger getCharger(int x, int y, int z) {
@@ -50,10 +47,8 @@ public class WirelessChargerManager {
     }
 
     public static void removeCharger(@NotNull IWirelessCharger charger) {
-        CHARGER_MAP.remove(
-            CoordinatePacker.pack(
-                charger.getChargerTE()
-                    .getCoords()));
+        final IGregTechTileEntity te = charger.getChargerTE();
+        CHARGER_MAP.remove(CoordinatePacker.pack(te.getXCoord(), te.getYCoord(), te.getZCoord()));
     }
 
     public static void clearChargerMap() {
@@ -61,9 +56,24 @@ public class WirelessChargerManager {
     }
 
     private void chargePlayerItems(@NotNull EntityPlayer player) {
-        ItemStack[] armourItems = player.inventory.armorInventory;
-        ItemStack[] inventoryItems = player.inventory.mainInventory;
-        ItemStack[] baubleItems = {};
+        ItemStack[] baubleItems = null;
+        boolean checkedBaubles = false;
+        for (IWirelessCharger charger : CHARGER_MAP.values()) {
+            if (charger.canChargePlayerItems(player)) {
+                charger.chargePlayerItems(player.inventory.armorInventory, player);
+                charger.chargePlayerItems(player.inventory.mainInventory, player);
+                if (!checkedBaubles) {
+                    baubleItems = getBaublesItems(player);
+                }
+                if (baubleItems != null) {
+                    charger.chargePlayerItems(baubleItems, player);
+                }
+            }
+        }
+    }
+
+    private static ItemStack[] getBaublesItems(@NotNull EntityPlayer player) {
+        ItemStack[] baubleItems = null;
         if (Baubles.isModLoaded()) {
             IInventory baubleInv = BaublesApi.getBaubles(player);
             if (baubleInv != null) {
@@ -73,14 +83,6 @@ public class WirelessChargerManager {
                 }
             }
         }
-
-        ItemStack[] stacks = Stream
-            .concat(Stream.concat(Stream.of(armourItems), Stream.of(inventoryItems)), Stream.of(baubleItems))
-            .toArray(ItemStack[]::new);
-
-        for (IWirelessCharger charger : CHARGER_MAP.values()) {
-            if (!charger.canChargePlayerItems(player)) continue;
-            charger.chargePlayerItems(stacks, player);
-        }
+        return baubleItems;
     }
 }

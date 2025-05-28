@@ -11,7 +11,6 @@ import java.util.UUID;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -438,8 +437,11 @@ public class MTEWirelessCharger extends MTETieredMachineBlock implements IWirele
         }
 
         if (tick % 20 == 0) {
-            final ChunkCoordinates coord = baseMetaTileEntity.getCoords();
-            boolean mapped = this.equals(WirelessChargerManager.getCharger(coord.posX, coord.posY, coord.posZ));
+            boolean mapped = this.equals(
+                WirelessChargerManager.getCharger(
+                    baseMetaTileEntity.getXCoord(),
+                    baseMetaTileEntity.getYCoord(),
+                    baseMetaTileEntity.getZCoord()));
             if (!mapped) {
                 WirelessChargerManager.addCharger(this);
             }
