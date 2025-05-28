@@ -166,8 +166,7 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 implements IItemFi
 
         final String RAW = "Raw Circuit";
 
-        ItemList.Circuit_Silicon_Ingot
-            .set(addItem(Circuit_Silicon_Ingot.ID, "Monocrystalline Silicon Boule", RAW, o));
+        ItemList.Circuit_Silicon_Ingot.set(addItem(Circuit_Silicon_Ingot.ID, "Monocrystalline Silicon Boule", RAW, o));
         ItemList.Circuit_Silicon_Ingot2
             .set(addItem(Circuit_Silicon_Ingot2.ID, "Phosphorus doped Monocrystalline Silicon Boule", RAW, o));
         ItemList.Circuit_Silicon_Ingot3
@@ -1024,14 +1023,10 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 implements IItemFi
             .set(addItem(Silicon_Seed_Crystal.ID, "Silicon Seed Crystal", "Something to begin with"));
         ItemList.AlGaAs_Seed_Crystal
             .set(addItem(AlGaAs_Seed_Crystal.ID, "AlGaAs Seed Crystal", "The seed of the new era"));
-        ItemList.AlGaAs_Monocrystal
-            .set(addItem(AlGaAs_Monocrystal.ID, "AlGaAs Monocrystal", "Perfection"));
-        ItemList.Raw_Crude_Si_Wafer
-            .set(addItem(Raw_Crude_Si_Wafer.ID, "Raw Crude Si Wafer", ""));
-        ItemList.Crude_Si_Wafer
-            .set(addItem(Crude_Si_Wafer.ID, "Crude Si Wafer", ""));
-        ItemList.Diamond_Infused_Wire_Saw
-            .set(addItem(Diamond_Infused_Wire_Saw.ID, "Diamond Infused Wire", ""));
+        ItemList.AlGaAs_Monocrystal.set(addItem(AlGaAs_Monocrystal.ID, "AlGaAs Monocrystal", "Perfection"));
+        ItemList.Raw_Crude_Si_Wafer.set(addItem(Raw_Crude_Si_Wafer.ID, "Raw Crude Si Wafer", ""));
+        ItemList.Crude_Si_Wafer.set(addItem(Crude_Si_Wafer.ID, "Crude Si Wafer", ""));
+        ItemList.Diamond_Infused_Wire_Saw.set(addItem(Diamond_Infused_Wire_Saw.ID, "Diamond Infused Wire", ""));
 
         ItemList.White_Dwarf_Shape_Extruder_Plate.set(
             addItem(
