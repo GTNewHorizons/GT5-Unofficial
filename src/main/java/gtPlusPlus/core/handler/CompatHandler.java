@@ -20,7 +20,6 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GTOreDictUnificator;
 import gtPlusPlus.api.interfaces.RunnableWithInfo;
 import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.core.common.compat.CompatWitchery;
 import gtPlusPlus.core.handler.Recipes.LateRegistrationHandler;
 import gtPlusPlus.core.handler.Recipes.RegistrationHandler;
 import gtPlusPlus.core.item.chemistry.IonParticles;
@@ -210,7 +209,10 @@ public class CompatHandler {
             FishTrapHandler.pamsHarvestCraftCompat();
         }
         if (Witchery.isModLoaded()) {
-            CompatWitchery.OreDict();
+            // Koboldite
+            GTOreDictUnificator.registerOre("dustKoboldite", getModItem(Witchery.ID, "ingredient", 1, 148));
+            GTOreDictUnificator.registerOre("nuggetKoboldite", getModItem(Witchery.ID, "ingredient", 1, 149));
+            GTOreDictUnificator.registerOre("ingotKoboldite", getModItem(Witchery.ID, "ingredient", 1, 150));
         }
     }
 
