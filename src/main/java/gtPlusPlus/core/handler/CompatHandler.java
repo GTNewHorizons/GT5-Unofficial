@@ -3,12 +3,15 @@ package gtPlusPlus.core.handler;
 import static gregtech.api.enums.Mods.ExtraUtilities;
 import static gregtech.api.enums.Mods.PamsHarvestCraft;
 import static gregtech.api.enums.Mods.Witchery;
+import static gregtech.api.util.GTModHandler.getModItem;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Set;
 
+import gregtech.api.enums.Mods;
+import gtPlusPlus.core.recipe.RecipesTools;
 import net.minecraft.item.ItemStack;
 
 import gregtech.api.enums.GTValues;
@@ -16,7 +19,6 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GTOreDictUnificator;
 import gtPlusPlus.api.interfaces.RunnableWithInfo;
 import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.core.common.compat.CompatExtraUtils;
 import gtPlusPlus.core.common.compat.CompatHarvestCraft;
 import gtPlusPlus.core.common.compat.CompatWitchery;
 import gtPlusPlus.core.handler.Recipes.LateRegistrationHandler;
@@ -201,7 +203,8 @@ public class CompatHandler {
     // InterMod
     public static void intermodOreDictionarySupport() {
         if (ExtraUtilities.isModLoaded()) {
-            CompatExtraUtils.OreDict();
+            RecipesTools.RECIPE_DivisionSigil = getModItem(Mods.ExtraUtilities.ID, "divisionSigil", 1);
+            GTOreDictUnificator.registerOre("ingotBedrockium", getModItem(Mods.ExtraUtilities.ID, "bedrockiumIngot", 1, 0));
         }
         if (PamsHarvestCraft.isModLoaded()) {
             CompatHarvestCraft.OreDict();
