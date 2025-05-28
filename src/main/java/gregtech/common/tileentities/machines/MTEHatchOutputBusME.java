@@ -318,9 +318,8 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus implements IPowerChan
     }
 
     public void updateAE2ProxyColor() {
-        this.getProxy()
-            .setColor(AEColor.values()[Dyes.transformDyeIndex(this.getColor())]);
         AENetworkProxy proxy = getProxy();
+        proxy.setColor(AEColor.values()[Dyes.transformDyeIndex(this.getColor())]);
         if (proxy.getNode() != null) {
             proxy.getNode()
                 .updateState();
