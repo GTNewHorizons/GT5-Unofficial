@@ -268,20 +268,20 @@ public class MTEComponentAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTE
         if (side == facing) {
             if (aActive) return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(183),
                 TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_PROCESSING_ARRAY_ACTIVE)
+                    .addIcon(OVERLAY_FRONT_COMPONENT_ASSEMBLY_LINE_ACTIVE)
                     .extFacing()
                     .build(),
                 TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_PROCESSING_ARRAY_ACTIVE_GLOW)
+                    .addIcon(OVERLAY_FRONT_COMPONENT_ASSEMBLY_LINE_ACTIVE_GLOW)
                     .extFacing()
                     .glow()
                     .build() };
             return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(183), TextureFactory.builder()
-                .addIcon(OVERLAY_FRONT_PROCESSING_ARRAY)
+                .addIcon(OVERLAY_FRONT_COMPONENT_ASSEMBLY_LINE)
                 .extFacing()
                 .build(),
                 TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_PROCESSING_ARRAY_GLOW)
+                    .addIcon(OVERLAY_FRONT_COMPONENT_ASSEMBLY_LINE_GLOW)
                     .extFacing()
                     .glow()
                     .build() };

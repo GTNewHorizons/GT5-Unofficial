@@ -129,7 +129,7 @@ public abstract class EIGBucket {
         if (!GTUtility.areStacksEqual(this.seed, input, false)) return 0;
 
         // no support items, consume and exit early.
-        if (this.supportItems == null || this.supportItems.length <= 0) {
+        if (this.supportItems == null || this.supportItems.length == 0) {
             if (!simulate) {
                 input.stackSize -= maxConsume;
                 this.seedCount += maxConsume;

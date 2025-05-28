@@ -2,6 +2,8 @@ package gtPlusPlus.core.util.minecraft;
 
 import static gtPlusPlus.core.item.ModItems.ZZZ_Empty;
 
+import java.util.Objects;
+
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -29,7 +31,7 @@ public class NBTUtils {
             final NBTTagCompound data = list.getCompoundTagAt(i);
             final int slot = data.getInteger("Slot");
             if ((slot >= 0) && (slot < list.tagCount())) {
-                if (ItemStack.loadItemStackFromNBT(data) == ItemUtils.getSimpleStack(ZZZ_Empty)) {
+                if (Objects.equals(ItemStack.loadItemStackFromNBT(data), ItemUtils.getSimpleStack(ZZZ_Empty))) {
                     inventory[slot] = null;
                 } else {
                     inventory[slot] = ItemStack.loadItemStackFromNBT(data);

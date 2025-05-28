@@ -575,11 +575,6 @@ public class TexturesGtBlock {
     public static final CustomIcon oMCAQFTActiveGlow = new CustomIcon(
         "iconsets/controllerFaces/quantumForceTransformerActiveGlow");
 
-    public static final CustomIcon oMCAIndustrialMultiMachine = new CustomIcon(
-        "iconsets/controllerFaces/industrialMultiMachine");
-    public static final CustomIcon oMCAIndustrialMultiMachineActive = new CustomIcon(
-        "iconsets/controllerFaces/industrialMultiMachineActive");
-
     public static final CustomIcon oMCAAdvancedImplosion = new CustomIcon("iconsets/controllerFaces/advancedImplosion");
     public static final CustomIcon oMCAAdvancedImplosionGlow = new CustomIcon(
         "iconsets/controllerFaces/advancedImplosionGlow");

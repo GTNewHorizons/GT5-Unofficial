@@ -178,7 +178,6 @@ public class MTEPyrolyseOven extends MTEEnhancedMultiBlockBase<MTEPyrolyseOven> 
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         coilHeat = HeatingCoilLevel.None;
         mCasingAmount = 0;
-        replaceDeprecatedCoils(aBaseMetaTileEntity);
         return checkPiece("main", 2, 3, 0) && mCasingAmount >= 60
             && mMaintenanceHatches.size() == 1
             && !mMufflerHatches.isEmpty();
@@ -192,23 +191,6 @@ public class MTEPyrolyseOven extends MTEEnhancedMultiBlockBase<MTEPyrolyseOven> 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new MTEPyrolyseOven(this.mName);
-    }
-
-    private void replaceDeprecatedCoils(IGregTechTileEntity aBaseMetaTileEntity) {
-        final int xDir = aBaseMetaTileEntity.getBackFacing().offsetX;
-        final int zDir = aBaseMetaTileEntity.getBackFacing().offsetZ;
-        final int tX = aBaseMetaTileEntity.getXCoord() + xDir * 2;
-        final int tY = aBaseMetaTileEntity.getYCoord();
-        final int tZ = aBaseMetaTileEntity.getZCoord() + zDir * 2;
-        for (int xPos = tX - 1; xPos <= tX + 1; xPos++) {
-            for (int zPos = tZ - 1; zPos <= tZ + 1; zPos++) {
-                if (aBaseMetaTileEntity.getBlock(xPos, tY, zPos) == GregTechAPI.sBlockCasings1
-                    && aBaseMetaTileEntity.getMetaID(xPos, tY, zPos) == 13) {
-                    aBaseMetaTileEntity.getWorld()
-                        .setBlock(xPos, tY, zPos, GregTechAPI.sBlockCasings5, 1, 3);
-                }
-            }
-        }
     }
 
     @Override
