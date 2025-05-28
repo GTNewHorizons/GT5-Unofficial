@@ -5,6 +5,7 @@ import static gregtech.api.enums.Mods.GregTech;
 import static gregtech.api.enums.Mods.IndustrialCraft2;
 import static gregtech.api.enums.Mods.Minecraft;
 import static gregtech.api.recipe.RecipeMaps.packagerRecipes;
+import static gregtech.api.util.GTModHandler.getModItem;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 
 import java.util.ArrayList;
@@ -12,6 +13,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import gregtech.api.enums.Mods;
 import net.minecraft.block.Block;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.IInventory;
@@ -94,7 +96,7 @@ public class ItemUtils {
     }
 
     public static ItemStack getIC2Cell(final int meta) {
-        return GTModHandler.getModItem(IndustrialCraft2.ID, "itemCellEmpty", 1L, meta);
+        return getModItem(IndustrialCraft2.ID, "itemCellEmpty", 1L, meta);
     }
 
     public static ItemStack getEmptyCell() {
@@ -105,7 +107,7 @@ public class ItemUtils {
         if (ItemList.Cell_Empty.hasBeenSet()) {
             return ItemList.Cell_Empty.get(i);
         }
-        return GTModHandler.getModItem(IndustrialCraft2.ID, "itemCellEmpty", i, 0);
+        return getModItem(IndustrialCraft2.ID, "itemCellEmpty", i, 0);
     }
 
     public static void addItemToOreDictionary(ItemStack stack, final String oreDictName, boolean useWildcardMeta) {
@@ -566,20 +568,6 @@ public class ItemUtils {
         return g;
     }
 
-    public static ItemStack[] getStackOfAllOreDictGroup(String oredictname) {
-        final ArrayList<ItemStack> oreDictList = OreDictionary.getOres(oredictname);
-        if (!oreDictList.isEmpty()) {
-            final ItemStack[] returnValues = new ItemStack[oreDictList.size()];
-            for (int i = 0; i < oreDictList.size(); i++) {
-                if (oreDictList.get(i) != null) {
-                    returnValues[i] = oreDictList.get(i);
-                }
-            }
-            return returnValues;
-        } else {
-            return null;
-        }
-    }
 
     public static boolean registerFuel(ItemStack aBurnable, int burn) {
         return GTPPCore.burnables.add(Pair.of(burn, aBurnable));
@@ -713,24 +701,6 @@ public class ItemUtils {
                 .getUnlocalizedNameInefficiently(aStack);
         }
         return aDisplay;
-    }
-
-    public static boolean isItemGregtechTool(ItemStack aStack) {
-        if (aStack == null) {
-            return false;
-        }
-        final Item mItem = aStack.getItem();
-        final Item aSkookum = ItemUtils.getItemFromFQRN("miscutils:gt.plusplus.metatool.01");
-        final Class aSkookClass = aSkookum.getClass();
-        return aSkookClass.isInstance(mItem) || mItem instanceof MetaGeneratedTool01
-            || mItem instanceof MetaGeneratedGregtechTools
-            || mItem instanceof GTMetaTool
-            || mItem == aSkookum;
-    }
-
-    public static boolean isToolScrewdriver(ItemStack aScrewdriver) {
-        return isItemGregtechTool(aScrewdriver)
-            && (aScrewdriver.getItemDamage() == 22 || aScrewdriver.getItemDamage() == 150);
     }
 
     public static ItemStack[] cleanItemStackArray(ItemStack[] input) {
