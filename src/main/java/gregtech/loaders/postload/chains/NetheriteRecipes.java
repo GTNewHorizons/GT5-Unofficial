@@ -306,12 +306,12 @@ public class NetheriteRecipes {
             .addTo(autoclaveRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(ItemList.Hot_Netherite_Scrap.get(64), ItemList.Heavy_Hellish_Mud.get(64))
-            .fluidInputs(Materials.PoorNetherWaste.getFluid(32_000))
+            .itemInputs(ItemList.Hot_Netherite_Scrap.get(16), ItemList.Heavy_Hellish_Mud.get(16))
+            .fluidInputs(Materials.PoorNetherWaste.getFluid(8_000))
             .itemOutputs(
-                ItemList.Brittle_Netherite_Scrap.get(12),
-                getModItem(EtFuturumRequiem.ID, "netherite_scrap", 64, missing))
-            .duration(45 * SECONDS)
+                ItemList.Brittle_Netherite_Scrap.get(3),
+                getModItem(EtFuturumRequiem.ID, "netherite_scrap", 16, missing))
+            .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_UHV)
             .addTo(chemicalBathRecipes);
 
@@ -439,7 +439,7 @@ public class NetheriteRecipes {
             .itemOutputs(outputStack)
             .fluidInputs(Materials.Boron.getPlasma(2L * inverseMultiplier))
             .fluidOutputs(Materials.Boron.getMolten(2L * inverseMultiplier))
-            .duration(32 * SECONDS)
+            .duration(4 * SECONDS)
             .eut(TierEU.RECIPE_ZPM)
             .addTo(plasmaArcFurnaceRecipes);
 
