@@ -129,8 +129,6 @@ public final class MainMod {
         if (SideReference.Side.Client) {
             GregTechAPI.sBeforeGTLoad.add(new PrefixTextureLinker());
         }
-
-        GlassTier.RegisterGlassTiers.run();
     }
 
     @Mod.EventHandler
@@ -149,6 +147,7 @@ public final class MainMod {
         WerkstoffLoader.runInit();
 
         ItemRegistry.run();
+        GlassTier.RegisterGlassTiers.run();
     }
 
     @Mod.EventHandler

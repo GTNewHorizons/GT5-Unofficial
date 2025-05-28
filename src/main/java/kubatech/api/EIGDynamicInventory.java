@@ -257,7 +257,6 @@ public class EIGDynamicInventory<T> {
                             player.inventory.setItemStack(stack);
                             ((EntityPlayerMP) player).isChangingQuantityOnly = false;
                             ((EntityPlayerMP) player).updateHeldItem();
-                            return;
                         }
                     } else if (clickData.shift) {
                         if (inventoryExtractor == null) return;
@@ -269,7 +268,6 @@ public class EIGDynamicInventory<T> {
                             if (player.inventory.addItemStackToInventory(removed))
                                 player.inventoryContainer.detectAndSendChanges();
                             else player.entityDropItem(removed, 0.f);
-                            return;
                         }
                     } else {
                         ItemStack input = player.inventory.getItemStack();
@@ -306,7 +304,6 @@ public class EIGDynamicInventory<T> {
                                 player.inventory.setItemStack(removed);
                                 ((EntityPlayerMP) player).isChangingQuantityOnly = false;
                                 ((EntityPlayerMP) player).updateHeldItem();
-                                return;
                             }
                         }
                     }
@@ -392,7 +389,6 @@ public class EIGDynamicInventory<T> {
                         } else player.inventory.setItemStack(null);
                         ((EntityPlayerMP) player).isChangingQuantityOnly = false;
                         ((EntityPlayerMP) player).updateHeldItem();
-                        return;
                     }
                 })
                 .setBackground(() -> {
