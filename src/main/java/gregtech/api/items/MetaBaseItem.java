@@ -253,7 +253,8 @@ public abstract class MetaBaseItem extends GTGenericItem
                                 "gt.item.desc.eu_info",
                                 formatNumbers(tCharge),
                                 formatNumbers(Math.abs(tStats[0])),
-                                formatNumbers(V[voltageTier]))
+                                "" + formatNumbers(
+                                    V[(int) (tStats[2] >= 0 ? tStats[2] < V.length ? tStats[2] : V.length - 1 : 1)]))
                             + EnumChatFormatting.GRAY);
                 }
             }
