@@ -116,271 +116,268 @@ public class GregtechMetaCasingBlocks3 extends GregtechMetaCasingBlocksAbstract 
             return getIcon(ordinalSide, tMeta);
         }
         final int tStartIndex = 0;
-        if (tMeta == 12) {
-            final boolean[] tConnectedSides = {
-                aWorld.getBlock(xCoord, yCoord - 1, zCoord) == thisBlock
-                    && aWorld.getBlockMetadata(xCoord, yCoord - 1, zCoord) == tMeta,
-                aWorld.getBlock(xCoord, yCoord + 1, zCoord) == thisBlock
-                    && aWorld.getBlockMetadata(xCoord, yCoord + 1, zCoord) == tMeta,
-                aWorld.getBlock(xCoord + 1, yCoord, zCoord) == thisBlock
-                    && aWorld.getBlockMetadata(xCoord + 1, yCoord, zCoord) == tMeta,
-                aWorld.getBlock(xCoord, yCoord, zCoord + 1) == thisBlock
-                    && aWorld.getBlockMetadata(xCoord, yCoord, zCoord + 1) == tMeta,
-                aWorld.getBlock(xCoord - 1, yCoord, zCoord) == thisBlock
-                    && aWorld.getBlockMetadata(xCoord - 1, yCoord, zCoord) == tMeta,
-                aWorld.getBlock(xCoord, yCoord, zCoord - 1) == thisBlock
-                    && aWorld.getBlockMetadata(xCoord, yCoord, zCoord - 1) == tMeta };
-            switch (ordinalSide) {
-                case 0: {
-                    if (tConnectedSides[0]) {
-                        return TexturesGtBlock.CONNECTED_FUSION_HULLS[tStartIndex + 7].getIcon();
-                    }
-                    if (tConnectedSides[4] && tConnectedSides[5] && tConnectedSides[2] && tConnectedSides[3]) {
-                        return TexturesGtBlock.CONNECTED_FUSION_HULLS[tStartIndex + 6].getIcon();
-                    }
-                    if (!tConnectedSides[4] && tConnectedSides[5] && tConnectedSides[2] && tConnectedSides[3]) {
-                        return TexturesGtBlock.CONNECTED_FUSION_HULLS[tStartIndex + 2].getIcon();
-                    }
-                    if (tConnectedSides[4] && !tConnectedSides[5] && tConnectedSides[2] && tConnectedSides[3]) {
-                        return TexturesGtBlock.CONNECTED_FUSION_HULLS[tStartIndex + 3].getIcon();
-                    }
-                    if (tConnectedSides[4] && tConnectedSides[5] && !tConnectedSides[2] && tConnectedSides[3]) {
-                        return TexturesGtBlock.CONNECTED_FUSION_HULLS[tStartIndex + 4].getIcon();
-                    }
-                    if (tConnectedSides[4] && tConnectedSides[5] && tConnectedSides[2] && !tConnectedSides[3]) {
-                        return TexturesGtBlock.CONNECTED_FUSION_HULLS[tStartIndex + 5].getIcon();
-                    }
-                    if (!tConnectedSides[4] && !tConnectedSides[5] && tConnectedSides[2] && tConnectedSides[3]) {
-                        return TexturesGtBlock.CONNECTED_FUSION_HULLS[tStartIndex + 8].getIcon();
-                    }
-                    if (tConnectedSides[4] && !tConnectedSides[5] && !tConnectedSides[2] && tConnectedSides[3]) {
-                        return TexturesGtBlock.CONNECTED_FUSION_HULLS[tStartIndex + 9].getIcon();
-                    }
-                    if (tConnectedSides[4] && tConnectedSides[5] && !tConnectedSides[2] && !tConnectedSides[3]) {
-                        return TexturesGtBlock.CONNECTED_FUSION_HULLS[tStartIndex + 10].getIcon();
-                    }
-                    if (!tConnectedSides[4] && tConnectedSides[5] && tConnectedSides[2] && !tConnectedSides[3]) {
-                        return TexturesGtBlock.CONNECTED_FUSION_HULLS[tStartIndex + 11].getIcon();
-                    }
-                    if (!tConnectedSides[4] && !tConnectedSides[5] && !tConnectedSides[2] && !tConnectedSides[3]) {
-                        return TexturesGtBlock.CONNECTED_FUSION_HULLS[tStartIndex + 7].getIcon();
-                    }
-                    if (!tConnectedSides[4] && !tConnectedSides[2]) {
-                        return TexturesGtBlock.CONNECTED_FUSION_HULLS[tStartIndex + 1].getIcon();
-                    }
-                    if (!tConnectedSides[5] && !tConnectedSides[3]) {
-                        return TexturesGtBlock.CONNECTED_FUSION_HULLS[tStartIndex + 0].getIcon();
-                    }
+        final boolean[] tConnectedSides = {
+            aWorld.getBlock(xCoord, yCoord - 1, zCoord) == thisBlock
+                && aWorld.getBlockMetadata(xCoord, yCoord - 1, zCoord) == tMeta,
+            aWorld.getBlock(xCoord, yCoord + 1, zCoord) == thisBlock
+                && aWorld.getBlockMetadata(xCoord, yCoord + 1, zCoord) == tMeta,
+            aWorld.getBlock(xCoord + 1, yCoord, zCoord) == thisBlock
+                && aWorld.getBlockMetadata(xCoord + 1, yCoord, zCoord) == tMeta,
+            aWorld.getBlock(xCoord, yCoord, zCoord + 1) == thisBlock
+                && aWorld.getBlockMetadata(xCoord, yCoord, zCoord + 1) == tMeta,
+            aWorld.getBlock(xCoord - 1, yCoord, zCoord) == thisBlock
+                && aWorld.getBlockMetadata(xCoord - 1, yCoord, zCoord) == tMeta,
+            aWorld.getBlock(xCoord, yCoord, zCoord - 1) == thisBlock
+                && aWorld.getBlockMetadata(xCoord, yCoord, zCoord - 1) == tMeta };
+        switch (ordinalSide) {
+            case 0: {
+                if (tConnectedSides[0]) {
+                    return TexturesGtBlock.CONNECTED_FUSION_HULLS[tStartIndex + 7].getIcon();
                 }
-                case 1: {
-                    if (tConnectedSides[1]) {
-                        return TexturesGtBlock.CONNECTED_FUSION_HULLS[tStartIndex + 7].getIcon();
-                    }
-                    if (tConnectedSides[4] && tConnectedSides[5] && tConnectedSides[2] && tConnectedSides[3]) {
-                        return TexturesGtBlock.CONNECTED_FUSION_HULLS[tStartIndex + 6].getIcon();
-                    }
-                    if (!tConnectedSides[4] && tConnectedSides[5] && tConnectedSides[2] && tConnectedSides[3]) {
-                        return TexturesGtBlock.CONNECTED_FUSION_HULLS[tStartIndex + 2].getIcon();
-                    }
-                    if (tConnectedSides[4] && !tConnectedSides[5] && tConnectedSides[2] && tConnectedSides[3]) {
-                        return TexturesGtBlock.CONNECTED_FUSION_HULLS[tStartIndex + 3].getIcon();
-                    }
-                    if (tConnectedSides[4] && tConnectedSides[5] && !tConnectedSides[2] && tConnectedSides[3]) {
-                        return TexturesGtBlock.CONNECTED_FUSION_HULLS[tStartIndex + 4].getIcon();
-                    }
-                    if (tConnectedSides[4] && tConnectedSides[5] && tConnectedSides[2] && !tConnectedSides[3]) {
-                        return TexturesGtBlock.CONNECTED_FUSION_HULLS[tStartIndex + 5].getIcon();
-                    }
-                    if (!tConnectedSides[4] && !tConnectedSides[5] && tConnectedSides[2] && tConnectedSides[3]) {
-                        return TexturesGtBlock.CONNECTED_FUSION_HULLS[tStartIndex + 8].getIcon();
-                    }
-                    if (tConnectedSides[4] && !tConnectedSides[5] && !tConnectedSides[2] && tConnectedSides[3]) {
-                        return TexturesGtBlock.CONNECTED_FUSION_HULLS[tStartIndex + 9].getIcon();
-                    }
-                    if (tConnectedSides[4] && tConnectedSides[5] && !tConnectedSides[2] && !tConnectedSides[3]) {
-                        return TexturesGtBlock.CONNECTED_FUSION_HULLS[tStartIndex + 10].getIcon();
-                    }
-                    if (!tConnectedSides[4] && tConnectedSides[5] && tConnectedSides[2] && !tConnectedSides[3]) {
-                        return TexturesGtBlock.CONNECTED_FUSION_HULLS[tStartIndex + 11].getIcon();
-                    }
-                    if (!tConnectedSides[4] && !tConnectedSides[5] && !tConnectedSides[2] && !tConnectedSides[3]) {
-                        return TexturesGtBlock.CONNECTED_FUSION_HULLS[tStartIndex + 7].getIcon();
-                    }
-                    if (!tConnectedSides[2] && !tConnectedSides[4]) {
-                        return TexturesGtBlock.CONNECTED_FUSION_HULLS[tStartIndex + 1].getIcon();
-                    }
-                    if (!tConnectedSides[3] && !tConnectedSides[5]) {
-                        return TexturesGtBlock.CONNECTED_FUSION_HULLS[tStartIndex + 0].getIcon();
-                    }
+                if (tConnectedSides[4] && tConnectedSides[5] && tConnectedSides[2] && tConnectedSides[3]) {
+                    return TexturesGtBlock.CONNECTED_FUSION_HULLS[tStartIndex + 6].getIcon();
                 }
-                case 2: {
-                    if (tConnectedSides[5]) {
-                        return TexturesGtBlock.CONNECTED_FUSION_HULLS[tStartIndex + 7].getIcon();
-                    }
-                    if (tConnectedSides[2] && tConnectedSides[0] && tConnectedSides[4] && tConnectedSides[1]) {
-                        return TexturesGtBlock.CONNECTED_FUSION_HULLS[tStartIndex + 6].getIcon();
-                    }
-                    if (!tConnectedSides[2] && tConnectedSides[0] && tConnectedSides[4] && tConnectedSides[1]) {
-                        return TexturesGtBlock.CONNECTED_FUSION_HULLS[tStartIndex + 2].getIcon();
-                    }
-                    if (tConnectedSides[2] && !tConnectedSides[0] && tConnectedSides[4] && tConnectedSides[1]) {
-                        return TexturesGtBlock.CONNECTED_FUSION_HULLS[tStartIndex + 5].getIcon();
-                    }
-                    if (tConnectedSides[2] && tConnectedSides[0] && !tConnectedSides[4] && tConnectedSides[1]) {
-                        return TexturesGtBlock.CONNECTED_FUSION_HULLS[tStartIndex + 4].getIcon();
-                    }
-                    if (tConnectedSides[2] && tConnectedSides[0] && tConnectedSides[4] && !tConnectedSides[1]) {
-                        return TexturesGtBlock.CONNECTED_FUSION_HULLS[tStartIndex + 3].getIcon();
-                    }
-                    if (!tConnectedSides[2] && !tConnectedSides[0] && tConnectedSides[4] && tConnectedSides[1]) {
-                        return TexturesGtBlock.CONNECTED_FUSION_HULLS[tStartIndex + 11].getIcon();
-                    }
-                    if (tConnectedSides[2] && !tConnectedSides[0] && !tConnectedSides[4] && tConnectedSides[1]) {
-                        return TexturesGtBlock.CONNECTED_FUSION_HULLS[tStartIndex + 10].getIcon();
-                    }
-                    if (tConnectedSides[2] && tConnectedSides[0] && !tConnectedSides[4] && !tConnectedSides[1]) {
-                        return TexturesGtBlock.CONNECTED_FUSION_HULLS[tStartIndex + 9].getIcon();
-                    }
-                    if (!tConnectedSides[2] && tConnectedSides[0] && tConnectedSides[4] && !tConnectedSides[1]) {
-                        return TexturesGtBlock.CONNECTED_FUSION_HULLS[tStartIndex + 8].getIcon();
-                    }
-                    if (!tConnectedSides[2] && !tConnectedSides[0] && !tConnectedSides[4] && !tConnectedSides[1]) {
-                        return TexturesGtBlock.CONNECTED_FUSION_HULLS[tStartIndex + 7].getIcon();
-                    }
-                    if (!tConnectedSides[2] && !tConnectedSides[4]) {
-                        return TexturesGtBlock.CONNECTED_FUSION_HULLS[tStartIndex + 1].getIcon();
-                    }
-                    if (!tConnectedSides[0] && !tConnectedSides[1]) {
-                        return TexturesGtBlock.CONNECTED_FUSION_HULLS[tStartIndex + 0].getIcon();
-                    }
+                if (!tConnectedSides[4] && tConnectedSides[5] && tConnectedSides[2] && tConnectedSides[3]) {
+                    return TexturesGtBlock.CONNECTED_FUSION_HULLS[tStartIndex + 2].getIcon();
                 }
-                case 3: {
-                    if (tConnectedSides[3]) {
-                        return TexturesGtBlock.CONNECTED_FUSION_HULLS[tStartIndex + 7].getIcon();
-                    }
-                    if (tConnectedSides[2] && tConnectedSides[0] && tConnectedSides[4] && tConnectedSides[1]) {
-                        return TexturesGtBlock.CONNECTED_FUSION_HULLS[tStartIndex + 6].getIcon();
-                    }
-                    if (!tConnectedSides[2] && tConnectedSides[0] && tConnectedSides[4] && tConnectedSides[1]) {
-                        return TexturesGtBlock.CONNECTED_FUSION_HULLS[tStartIndex + 4].getIcon();
-                    }
-                    if (tConnectedSides[2] && !tConnectedSides[0] && tConnectedSides[4] && tConnectedSides[1]) {
-                        return TexturesGtBlock.CONNECTED_FUSION_HULLS[tStartIndex + 5].getIcon();
-                    }
-                    if (tConnectedSides[2] && tConnectedSides[0] && !tConnectedSides[4] && tConnectedSides[1]) {
-                        return TexturesGtBlock.CONNECTED_FUSION_HULLS[tStartIndex + 2].getIcon();
-                    }
-                    if (tConnectedSides[2] && tConnectedSides[0] && tConnectedSides[4] && !tConnectedSides[1]) {
-                        return TexturesGtBlock.CONNECTED_FUSION_HULLS[tStartIndex + 3].getIcon();
-                    }
-                    if (!tConnectedSides[2] && !tConnectedSides[0] && tConnectedSides[4] && tConnectedSides[1]) {
-                        return TexturesGtBlock.CONNECTED_FUSION_HULLS[tStartIndex + 10].getIcon();
-                    }
-                    if (tConnectedSides[2] && !tConnectedSides[0] && !tConnectedSides[4] && tConnectedSides[1]) {
-                        return TexturesGtBlock.CONNECTED_FUSION_HULLS[tStartIndex + 11].getIcon();
-                    }
-                    if (tConnectedSides[2] && tConnectedSides[0] && !tConnectedSides[4] && !tConnectedSides[1]) {
-                        return TexturesGtBlock.CONNECTED_FUSION_HULLS[tStartIndex + 8].getIcon();
-                    }
-                    if (!tConnectedSides[2] && tConnectedSides[0] && tConnectedSides[4] && !tConnectedSides[1]) {
-                        return TexturesGtBlock.CONNECTED_FUSION_HULLS[tStartIndex + 9].getIcon();
-                    }
-                    if (!tConnectedSides[2] && !tConnectedSides[0] && !tConnectedSides[4] && !tConnectedSides[1]) {
-                        return TexturesGtBlock.CONNECTED_FUSION_HULLS[tStartIndex + 7].getIcon();
-                    }
-                    if (!tConnectedSides[2] && !tConnectedSides[4]) {
-                        return TexturesGtBlock.CONNECTED_FUSION_HULLS[tStartIndex + 1].getIcon();
-                    }
-                    if (!tConnectedSides[0] && !tConnectedSides[1]) {
-                        return TexturesGtBlock.CONNECTED_FUSION_HULLS[tStartIndex + 0].getIcon();
-                    }
+                if (tConnectedSides[4] && !tConnectedSides[5] && tConnectedSides[2] && tConnectedSides[3]) {
+                    return TexturesGtBlock.CONNECTED_FUSION_HULLS[tStartIndex + 3].getIcon();
                 }
-                case 4: {
-                    if (tConnectedSides[4]) {
-                        return TexturesGtBlock.CONNECTED_FUSION_HULLS[tStartIndex + 7].getIcon();
-                    }
-                    if (tConnectedSides[0] && tConnectedSides[3] && tConnectedSides[1] && tConnectedSides[5]) {
-                        return TexturesGtBlock.CONNECTED_FUSION_HULLS[tStartIndex + 6].getIcon();
-                    }
-                    if (!tConnectedSides[0] && tConnectedSides[3] && tConnectedSides[1] && tConnectedSides[5]) {
-                        return TexturesGtBlock.CONNECTED_FUSION_HULLS[tStartIndex + 5].getIcon();
-                    }
-                    if (tConnectedSides[0] && !tConnectedSides[3] && tConnectedSides[1] && tConnectedSides[5]) {
-                        return TexturesGtBlock.CONNECTED_FUSION_HULLS[tStartIndex + 4].getIcon();
-                    }
-                    if (tConnectedSides[0] && tConnectedSides[3] && !tConnectedSides[1] && tConnectedSides[5]) {
-                        return TexturesGtBlock.CONNECTED_FUSION_HULLS[tStartIndex + 3].getIcon();
-                    }
-                    if (tConnectedSides[0] && tConnectedSides[3] && tConnectedSides[1] && !tConnectedSides[5]) {
-                        return TexturesGtBlock.CONNECTED_FUSION_HULLS[tStartIndex + 2].getIcon();
-                    }
-                    if (!tConnectedSides[0] && !tConnectedSides[3] && tConnectedSides[1] && tConnectedSides[5]) {
-                        return TexturesGtBlock.CONNECTED_FUSION_HULLS[tStartIndex + 10].getIcon();
-                    }
-                    if (tConnectedSides[0] && !tConnectedSides[3] && !tConnectedSides[1] && tConnectedSides[5]) {
-                        return TexturesGtBlock.CONNECTED_FUSION_HULLS[tStartIndex + 9].getIcon();
-                    }
-                    if (tConnectedSides[0] && tConnectedSides[3] && !tConnectedSides[1] && !tConnectedSides[5]) {
-                        return TexturesGtBlock.CONNECTED_FUSION_HULLS[tStartIndex + 8].getIcon();
-                    }
-                    if (!tConnectedSides[0] && tConnectedSides[3] && tConnectedSides[1] && !tConnectedSides[5]) {
-                        return TexturesGtBlock.CONNECTED_FUSION_HULLS[tStartIndex + 11].getIcon();
-                    }
-                    if (!tConnectedSides[0] && !tConnectedSides[3] && !tConnectedSides[1] && !tConnectedSides[5]) {
-                        return TexturesGtBlock.CONNECTED_FUSION_HULLS[tStartIndex + 7].getIcon();
-                    }
-                    if (!tConnectedSides[0] && !tConnectedSides[1]) {
-                        return TexturesGtBlock.CONNECTED_FUSION_HULLS[tStartIndex + 0].getIcon();
-                    }
-                    if (!tConnectedSides[3] && !tConnectedSides[5]) {
-                        return TexturesGtBlock.CONNECTED_FUSION_HULLS[tStartIndex + 1].getIcon();
-                    }
+                if (tConnectedSides[4] && tConnectedSides[5] && !tConnectedSides[2] && tConnectedSides[3]) {
+                    return TexturesGtBlock.CONNECTED_FUSION_HULLS[tStartIndex + 4].getIcon();
                 }
-                case 5: {
-                    if (tConnectedSides[2]) {
-                        return TexturesGtBlock.CONNECTED_FUSION_HULLS[tStartIndex + 7].getIcon();
-                    }
-                    if (tConnectedSides[0] && tConnectedSides[3] && tConnectedSides[1] && tConnectedSides[5]) {
-                        return TexturesGtBlock.CONNECTED_FUSION_HULLS[tStartIndex + 6].getIcon();
-                    }
-                    if (!tConnectedSides[0] && tConnectedSides[3] && tConnectedSides[1] && tConnectedSides[5]) {
-                        return TexturesGtBlock.CONNECTED_FUSION_HULLS[tStartIndex + 5].getIcon();
-                    }
-                    if (tConnectedSides[0] && !tConnectedSides[3] && tConnectedSides[1] && tConnectedSides[5]) {
-                        return TexturesGtBlock.CONNECTED_FUSION_HULLS[tStartIndex + 2].getIcon();
-                    }
-                    if (tConnectedSides[0] && tConnectedSides[3] && !tConnectedSides[1] && tConnectedSides[5]) {
-                        return TexturesGtBlock.CONNECTED_FUSION_HULLS[tStartIndex + 3].getIcon();
-                    }
-                    if (tConnectedSides[0] && tConnectedSides[3] && tConnectedSides[1] && !tConnectedSides[5]) {
-                        return TexturesGtBlock.CONNECTED_FUSION_HULLS[tStartIndex + 4].getIcon();
-                    }
-                    if (!tConnectedSides[0] && !tConnectedSides[3] && tConnectedSides[1] && tConnectedSides[5]) {
-                        return TexturesGtBlock.CONNECTED_FUSION_HULLS[tStartIndex + 11].getIcon();
-                    }
-                    if (tConnectedSides[0] && !tConnectedSides[3] && !tConnectedSides[1] && tConnectedSides[5]) {
-                        return TexturesGtBlock.CONNECTED_FUSION_HULLS[tStartIndex + 8].getIcon();
-                    }
-                    if (tConnectedSides[0] && tConnectedSides[3] && !tConnectedSides[1] && !tConnectedSides[5]) {
-                        return TexturesGtBlock.CONNECTED_FUSION_HULLS[tStartIndex + 9].getIcon();
-                    }
-                    if (!tConnectedSides[0] && tConnectedSides[3] && tConnectedSides[1] && !tConnectedSides[5]) {
-                        return TexturesGtBlock.CONNECTED_FUSION_HULLS[tStartIndex + 10].getIcon();
-                    }
-                    if (!tConnectedSides[0] && !tConnectedSides[3] && !tConnectedSides[1] && !tConnectedSides[5]) {
-                        return TexturesGtBlock.CONNECTED_FUSION_HULLS[tStartIndex + 7].getIcon();
-                    }
-                    if (!tConnectedSides[0] && !tConnectedSides[1]) {
-                        return TexturesGtBlock.CONNECTED_FUSION_HULLS[tStartIndex + 0].getIcon();
-                    }
-                    if (!tConnectedSides[3] && !tConnectedSides[5]) {
-                        return TexturesGtBlock.CONNECTED_FUSION_HULLS[tStartIndex + 1].getIcon();
-                    }
-                    break;
+                if (tConnectedSides[4] && tConnectedSides[5] && tConnectedSides[2] && !tConnectedSides[3]) {
+                    return TexturesGtBlock.CONNECTED_FUSION_HULLS[tStartIndex + 5].getIcon();
+                }
+                if (!tConnectedSides[4] && !tConnectedSides[5] && tConnectedSides[2] && tConnectedSides[3]) {
+                    return TexturesGtBlock.CONNECTED_FUSION_HULLS[tStartIndex + 8].getIcon();
+                }
+                if (tConnectedSides[4] && !tConnectedSides[5] && !tConnectedSides[2] && tConnectedSides[3]) {
+                    return TexturesGtBlock.CONNECTED_FUSION_HULLS[tStartIndex + 9].getIcon();
+                }
+                if (tConnectedSides[4] && tConnectedSides[5] && !tConnectedSides[2] && !tConnectedSides[3]) {
+                    return TexturesGtBlock.CONNECTED_FUSION_HULLS[tStartIndex + 10].getIcon();
+                }
+                if (!tConnectedSides[4] && tConnectedSides[5] && tConnectedSides[2] && !tConnectedSides[3]) {
+                    return TexturesGtBlock.CONNECTED_FUSION_HULLS[tStartIndex + 11].getIcon();
+                }
+                if (!tConnectedSides[4] && !tConnectedSides[5] && !tConnectedSides[2] && !tConnectedSides[3]) {
+                    return TexturesGtBlock.CONNECTED_FUSION_HULLS[tStartIndex + 7].getIcon();
+                }
+                if (!tConnectedSides[4] && !tConnectedSides[2]) {
+                    return TexturesGtBlock.CONNECTED_FUSION_HULLS[tStartIndex + 1].getIcon();
+                }
+                if (!tConnectedSides[5] && !tConnectedSides[3]) {
+                    return TexturesGtBlock.CONNECTED_FUSION_HULLS[tStartIndex + 0].getIcon();
                 }
             }
-            return TexturesGtBlock.CONNECTED_FUSION_HULLS[tStartIndex + 7].getIcon();
+            case 1: {
+                if (tConnectedSides[1]) {
+                    return TexturesGtBlock.CONNECTED_FUSION_HULLS[tStartIndex + 7].getIcon();
+                }
+                if (tConnectedSides[4] && tConnectedSides[5] && tConnectedSides[2] && tConnectedSides[3]) {
+                    return TexturesGtBlock.CONNECTED_FUSION_HULLS[tStartIndex + 6].getIcon();
+                }
+                if (!tConnectedSides[4] && tConnectedSides[5] && tConnectedSides[2] && tConnectedSides[3]) {
+                    return TexturesGtBlock.CONNECTED_FUSION_HULLS[tStartIndex + 2].getIcon();
+                }
+                if (tConnectedSides[4] && !tConnectedSides[5] && tConnectedSides[2] && tConnectedSides[3]) {
+                    return TexturesGtBlock.CONNECTED_FUSION_HULLS[tStartIndex + 3].getIcon();
+                }
+                if (tConnectedSides[4] && tConnectedSides[5] && !tConnectedSides[2] && tConnectedSides[3]) {
+                    return TexturesGtBlock.CONNECTED_FUSION_HULLS[tStartIndex + 4].getIcon();
+                }
+                if (tConnectedSides[4] && tConnectedSides[5] && tConnectedSides[2] && !tConnectedSides[3]) {
+                    return TexturesGtBlock.CONNECTED_FUSION_HULLS[tStartIndex + 5].getIcon();
+                }
+                if (!tConnectedSides[4] && !tConnectedSides[5] && tConnectedSides[2] && tConnectedSides[3]) {
+                    return TexturesGtBlock.CONNECTED_FUSION_HULLS[tStartIndex + 8].getIcon();
+                }
+                if (tConnectedSides[4] && !tConnectedSides[5] && !tConnectedSides[2] && tConnectedSides[3]) {
+                    return TexturesGtBlock.CONNECTED_FUSION_HULLS[tStartIndex + 9].getIcon();
+                }
+                if (tConnectedSides[4] && tConnectedSides[5] && !tConnectedSides[2] && !tConnectedSides[3]) {
+                    return TexturesGtBlock.CONNECTED_FUSION_HULLS[tStartIndex + 10].getIcon();
+                }
+                if (!tConnectedSides[4] && tConnectedSides[5] && tConnectedSides[2] && !tConnectedSides[3]) {
+                    return TexturesGtBlock.CONNECTED_FUSION_HULLS[tStartIndex + 11].getIcon();
+                }
+                if (!tConnectedSides[4] && !tConnectedSides[5] && !tConnectedSides[2] && !tConnectedSides[3]) {
+                    return TexturesGtBlock.CONNECTED_FUSION_HULLS[tStartIndex + 7].getIcon();
+                }
+                if (!tConnectedSides[2] && !tConnectedSides[4]) {
+                    return TexturesGtBlock.CONNECTED_FUSION_HULLS[tStartIndex + 1].getIcon();
+                }
+                if (!tConnectedSides[3] && !tConnectedSides[5]) {
+                    return TexturesGtBlock.CONNECTED_FUSION_HULLS[tStartIndex + 0].getIcon();
+                }
+            }
+            case 2: {
+                if (tConnectedSides[5]) {
+                    return TexturesGtBlock.CONNECTED_FUSION_HULLS[tStartIndex + 7].getIcon();
+                }
+                if (tConnectedSides[2] && tConnectedSides[0] && tConnectedSides[4] && tConnectedSides[1]) {
+                    return TexturesGtBlock.CONNECTED_FUSION_HULLS[tStartIndex + 6].getIcon();
+                }
+                if (!tConnectedSides[2] && tConnectedSides[0] && tConnectedSides[4] && tConnectedSides[1]) {
+                    return TexturesGtBlock.CONNECTED_FUSION_HULLS[tStartIndex + 2].getIcon();
+                }
+                if (tConnectedSides[2] && !tConnectedSides[0] && tConnectedSides[4] && tConnectedSides[1]) {
+                    return TexturesGtBlock.CONNECTED_FUSION_HULLS[tStartIndex + 5].getIcon();
+                }
+                if (tConnectedSides[2] && tConnectedSides[0] && !tConnectedSides[4] && tConnectedSides[1]) {
+                    return TexturesGtBlock.CONNECTED_FUSION_HULLS[tStartIndex + 4].getIcon();
+                }
+                if (tConnectedSides[2] && tConnectedSides[0] && tConnectedSides[4] && !tConnectedSides[1]) {
+                    return TexturesGtBlock.CONNECTED_FUSION_HULLS[tStartIndex + 3].getIcon();
+                }
+                if (!tConnectedSides[2] && !tConnectedSides[0] && tConnectedSides[4] && tConnectedSides[1]) {
+                    return TexturesGtBlock.CONNECTED_FUSION_HULLS[tStartIndex + 11].getIcon();
+                }
+                if (tConnectedSides[2] && !tConnectedSides[0] && !tConnectedSides[4] && tConnectedSides[1]) {
+                    return TexturesGtBlock.CONNECTED_FUSION_HULLS[tStartIndex + 10].getIcon();
+                }
+                if (tConnectedSides[2] && tConnectedSides[0] && !tConnectedSides[4] && !tConnectedSides[1]) {
+                    return TexturesGtBlock.CONNECTED_FUSION_HULLS[tStartIndex + 9].getIcon();
+                }
+                if (!tConnectedSides[2] && tConnectedSides[0] && tConnectedSides[4] && !tConnectedSides[1]) {
+                    return TexturesGtBlock.CONNECTED_FUSION_HULLS[tStartIndex + 8].getIcon();
+                }
+                if (!tConnectedSides[2] && !tConnectedSides[0] && !tConnectedSides[4] && !tConnectedSides[1]) {
+                    return TexturesGtBlock.CONNECTED_FUSION_HULLS[tStartIndex + 7].getIcon();
+                }
+                if (!tConnectedSides[2] && !tConnectedSides[4]) {
+                    return TexturesGtBlock.CONNECTED_FUSION_HULLS[tStartIndex + 1].getIcon();
+                }
+                if (!tConnectedSides[0] && !tConnectedSides[1]) {
+                    return TexturesGtBlock.CONNECTED_FUSION_HULLS[tStartIndex + 0].getIcon();
+                }
+            }
+            case 3: {
+                if (tConnectedSides[3]) {
+                    return TexturesGtBlock.CONNECTED_FUSION_HULLS[tStartIndex + 7].getIcon();
+                }
+                if (tConnectedSides[2] && tConnectedSides[0] && tConnectedSides[4] && tConnectedSides[1]) {
+                    return TexturesGtBlock.CONNECTED_FUSION_HULLS[tStartIndex + 6].getIcon();
+                }
+                if (!tConnectedSides[2] && tConnectedSides[0] && tConnectedSides[4] && tConnectedSides[1]) {
+                    return TexturesGtBlock.CONNECTED_FUSION_HULLS[tStartIndex + 4].getIcon();
+                }
+                if (tConnectedSides[2] && !tConnectedSides[0] && tConnectedSides[4] && tConnectedSides[1]) {
+                    return TexturesGtBlock.CONNECTED_FUSION_HULLS[tStartIndex + 5].getIcon();
+                }
+                if (tConnectedSides[2] && tConnectedSides[0] && !tConnectedSides[4] && tConnectedSides[1]) {
+                    return TexturesGtBlock.CONNECTED_FUSION_HULLS[tStartIndex + 2].getIcon();
+                }
+                if (tConnectedSides[2] && tConnectedSides[0] && tConnectedSides[4] && !tConnectedSides[1]) {
+                    return TexturesGtBlock.CONNECTED_FUSION_HULLS[tStartIndex + 3].getIcon();
+                }
+                if (!tConnectedSides[2] && !tConnectedSides[0] && tConnectedSides[4] && tConnectedSides[1]) {
+                    return TexturesGtBlock.CONNECTED_FUSION_HULLS[tStartIndex + 10].getIcon();
+                }
+                if (tConnectedSides[2] && !tConnectedSides[0] && !tConnectedSides[4] && tConnectedSides[1]) {
+                    return TexturesGtBlock.CONNECTED_FUSION_HULLS[tStartIndex + 11].getIcon();
+                }
+                if (tConnectedSides[2] && tConnectedSides[0] && !tConnectedSides[4] && !tConnectedSides[1]) {
+                    return TexturesGtBlock.CONNECTED_FUSION_HULLS[tStartIndex + 8].getIcon();
+                }
+                if (!tConnectedSides[2] && tConnectedSides[0] && tConnectedSides[4] && !tConnectedSides[1]) {
+                    return TexturesGtBlock.CONNECTED_FUSION_HULLS[tStartIndex + 9].getIcon();
+                }
+                if (!tConnectedSides[2] && !tConnectedSides[0] && !tConnectedSides[4] && !tConnectedSides[1]) {
+                    return TexturesGtBlock.CONNECTED_FUSION_HULLS[tStartIndex + 7].getIcon();
+                }
+                if (!tConnectedSides[2] && !tConnectedSides[4]) {
+                    return TexturesGtBlock.CONNECTED_FUSION_HULLS[tStartIndex + 1].getIcon();
+                }
+                if (!tConnectedSides[0] && !tConnectedSides[1]) {
+                    return TexturesGtBlock.CONNECTED_FUSION_HULLS[tStartIndex + 0].getIcon();
+                }
+            }
+            case 4: {
+                if (tConnectedSides[4]) {
+                    return TexturesGtBlock.CONNECTED_FUSION_HULLS[tStartIndex + 7].getIcon();
+                }
+                if (tConnectedSides[0] && tConnectedSides[3] && tConnectedSides[1] && tConnectedSides[5]) {
+                    return TexturesGtBlock.CONNECTED_FUSION_HULLS[tStartIndex + 6].getIcon();
+                }
+                if (!tConnectedSides[0] && tConnectedSides[3] && tConnectedSides[1] && tConnectedSides[5]) {
+                    return TexturesGtBlock.CONNECTED_FUSION_HULLS[tStartIndex + 5].getIcon();
+                }
+                if (tConnectedSides[0] && !tConnectedSides[3] && tConnectedSides[1] && tConnectedSides[5]) {
+                    return TexturesGtBlock.CONNECTED_FUSION_HULLS[tStartIndex + 4].getIcon();
+                }
+                if (tConnectedSides[0] && tConnectedSides[3] && !tConnectedSides[1] && tConnectedSides[5]) {
+                    return TexturesGtBlock.CONNECTED_FUSION_HULLS[tStartIndex + 3].getIcon();
+                }
+                if (tConnectedSides[0] && tConnectedSides[3] && tConnectedSides[1] && !tConnectedSides[5]) {
+                    return TexturesGtBlock.CONNECTED_FUSION_HULLS[tStartIndex + 2].getIcon();
+                }
+                if (!tConnectedSides[0] && !tConnectedSides[3] && tConnectedSides[1] && tConnectedSides[5]) {
+                    return TexturesGtBlock.CONNECTED_FUSION_HULLS[tStartIndex + 10].getIcon();
+                }
+                if (tConnectedSides[0] && !tConnectedSides[3] && !tConnectedSides[1] && tConnectedSides[5]) {
+                    return TexturesGtBlock.CONNECTED_FUSION_HULLS[tStartIndex + 9].getIcon();
+                }
+                if (tConnectedSides[0] && tConnectedSides[3] && !tConnectedSides[1] && !tConnectedSides[5]) {
+                    return TexturesGtBlock.CONNECTED_FUSION_HULLS[tStartIndex + 8].getIcon();
+                }
+                if (!tConnectedSides[0] && tConnectedSides[3] && tConnectedSides[1] && !tConnectedSides[5]) {
+                    return TexturesGtBlock.CONNECTED_FUSION_HULLS[tStartIndex + 11].getIcon();
+                }
+                if (!tConnectedSides[0] && !tConnectedSides[3] && !tConnectedSides[1] && !tConnectedSides[5]) {
+                    return TexturesGtBlock.CONNECTED_FUSION_HULLS[tStartIndex + 7].getIcon();
+                }
+                if (!tConnectedSides[0] && !tConnectedSides[1]) {
+                    return TexturesGtBlock.CONNECTED_FUSION_HULLS[tStartIndex + 0].getIcon();
+                }
+                if (!tConnectedSides[3] && !tConnectedSides[5]) {
+                    return TexturesGtBlock.CONNECTED_FUSION_HULLS[tStartIndex + 1].getIcon();
+                }
+            }
+            case 5: {
+                if (tConnectedSides[2]) {
+                    return TexturesGtBlock.CONNECTED_FUSION_HULLS[tStartIndex + 7].getIcon();
+                }
+                if (tConnectedSides[0] && tConnectedSides[3] && tConnectedSides[1] && tConnectedSides[5]) {
+                    return TexturesGtBlock.CONNECTED_FUSION_HULLS[tStartIndex + 6].getIcon();
+                }
+                if (!tConnectedSides[0] && tConnectedSides[3] && tConnectedSides[1] && tConnectedSides[5]) {
+                    return TexturesGtBlock.CONNECTED_FUSION_HULLS[tStartIndex + 5].getIcon();
+                }
+                if (tConnectedSides[0] && !tConnectedSides[3] && tConnectedSides[1] && tConnectedSides[5]) {
+                    return TexturesGtBlock.CONNECTED_FUSION_HULLS[tStartIndex + 2].getIcon();
+                }
+                if (tConnectedSides[0] && tConnectedSides[3] && !tConnectedSides[1] && tConnectedSides[5]) {
+                    return TexturesGtBlock.CONNECTED_FUSION_HULLS[tStartIndex + 3].getIcon();
+                }
+                if (tConnectedSides[0] && tConnectedSides[3] && tConnectedSides[1] && !tConnectedSides[5]) {
+                    return TexturesGtBlock.CONNECTED_FUSION_HULLS[tStartIndex + 4].getIcon();
+                }
+                if (!tConnectedSides[0] && !tConnectedSides[3] && tConnectedSides[1] && tConnectedSides[5]) {
+                    return TexturesGtBlock.CONNECTED_FUSION_HULLS[tStartIndex + 11].getIcon();
+                }
+                if (tConnectedSides[0] && !tConnectedSides[3] && !tConnectedSides[1] && tConnectedSides[5]) {
+                    return TexturesGtBlock.CONNECTED_FUSION_HULLS[tStartIndex + 8].getIcon();
+                }
+                if (tConnectedSides[0] && tConnectedSides[3] && !tConnectedSides[1] && !tConnectedSides[5]) {
+                    return TexturesGtBlock.CONNECTED_FUSION_HULLS[tStartIndex + 9].getIcon();
+                }
+                if (!tConnectedSides[0] && tConnectedSides[3] && tConnectedSides[1] && !tConnectedSides[5]) {
+                    return TexturesGtBlock.CONNECTED_FUSION_HULLS[tStartIndex + 10].getIcon();
+                }
+                if (!tConnectedSides[0] && !tConnectedSides[3] && !tConnectedSides[1] && !tConnectedSides[5]) {
+                    return TexturesGtBlock.CONNECTED_FUSION_HULLS[tStartIndex + 7].getIcon();
+                }
+                if (!tConnectedSides[0] && !tConnectedSides[1]) {
+                    return TexturesGtBlock.CONNECTED_FUSION_HULLS[tStartIndex + 0].getIcon();
+                }
+                if (!tConnectedSides[3] && !tConnectedSides[5]) {
+                    return TexturesGtBlock.CONNECTED_FUSION_HULLS[tStartIndex + 1].getIcon();
+                }
+                break;
+            }
         }
-        return CasingTextureHandler3.getIcon(ordinalSide, tMeta);
+        return TexturesGtBlock.CONNECTED_FUSION_HULLS[tStartIndex + 7].getIcon();
     }
 }

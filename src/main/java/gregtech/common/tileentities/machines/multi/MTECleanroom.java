@@ -488,7 +488,6 @@ public class MTECleanroom extends MTETooltipMultiBlockBase
             for (int dz = dzMin; dz <= dzMax; ++dz) {
                 if (dx == 0 && dz == 0) {
                     // Controller.
-                    continue;
                 } else if (dx == dxMin || dx == dxMax || dz == dzMin || dz == dzMax) {
                     // Edge.
                     if (!addStructureBlock(aBaseMetaTileEntity, dx, 0, dz, MASK_CEILING_EDGE)) return false;

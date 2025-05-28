@@ -1900,6 +1900,11 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
         return false;
     }
 
+    @Override
+    public boolean isSteampowered() {
+        return getSteamCapacity() > 0;
+    }
+
     public int demandsEnergy() {
         if (mReleaseEnergy || !canAccessData() || !mMetaTileEntity.isEnetInput()) return 0;
         return getCapacity() - getStored();
