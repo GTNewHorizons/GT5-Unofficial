@@ -82,7 +82,7 @@ public class GTSpawnEventHandler {
         mobReps.computeIfAbsent(
             event.world.provider.dimensionId,
             v -> new SpatialHashGrid<>(
-                MAX_RANGE_CHECK / 2,
+                16,
                 (vec, te) -> vec.set(
                     te.getBaseMetaTileEntity()
                         .getXCoord(),
