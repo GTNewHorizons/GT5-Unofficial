@@ -279,20 +279,17 @@ public class MTEEnergyInfuser extends TTMultiblockBase implements ISurvivalConst
         super.onPostTick(aBaseMetaTileEntity, aTick);
         for (MTEHatchInputBus inputBus : mInputBusses) {
             if (inputBus instanceof MTEHatchInputBusME) continue;
-            for (int i = 0; i < inputBus.getSizeInventory(); i++) {
-                ItemStack itemStackInBus = inputBus.getStackInSlot(i);
-                if (itemStackInBus == null) continue;
-                if (itemStackInBus.stackSize != 1) continue;
-                if (isItemStackFullyCharged(itemStackInBus)) continue;
+            for (ItemStack stack : inputBus.mInventory) {
+                if (stack == null || stack.stackSize != 1 || isItemStackFullyCharged(stack)) continue;
 
-                Item item = itemStackInBus.getItem();
+                Item item = stack.getItem();
                 if (item == null) continue;
 
                 if (item instanceof IElectricItem) {
-                    doChargeItemStack((IElectricItem) item, itemStackInBus);
+                    doChargeItemStack((IElectricItem) item, stack);
                     return;
                 } else if (TecTech.hasCOFH && item instanceof IEnergyContainerItem) {
-                    doChargeItemStackRF((IEnergyContainerItem) item, itemStackInBus);
+                    doChargeItemStackRF((IEnergyContainerItem) item, stack);
                     return;
                 }
             }
