@@ -373,8 +373,8 @@ public class MTEEnvironmentallyControlledChemicalFacility extends
             .addInfo(
                 EnumChatFormatting.GRAY + "Doesn't overclock, instead increases parallels by "
                     + EnumChatFormatting.GOLD
-                    + "4 ^ (Energy Hatch Tier - Recipe EU tier) * parallel module values")
-            .addInfo(EnumChatFormatting.GRAY + "Voltage tier is limited by Energy Hatch")
+                    + "4 ^ (Energy Hatch Tier - Recipe tier) * Parallel Modules")
+            .addNoTierSkips()
             .addSeparator()
             .addInfo(
                 EnumChatFormatting.GRAY + "Conditions are shown in NEI and can be achieved by placing ECCF on another "
