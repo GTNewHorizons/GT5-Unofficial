@@ -282,11 +282,11 @@ public class MTEEnergyInfuser extends TTMultiblockBase implements ISurvivalConst
             for (int i = 0; i < inputBus.getSizeInventory(); i++) {
                 ItemStack itemStackInBus = inputBus.getStackInSlot(i);
                 if (itemStackInBus == null) continue;
-                Item item = itemStackInBus.getItem();
-
                 if (itemStackInBus.stackSize != 1) continue;
-                if (item == null) continue;
                 if (isItemStackFullyCharged(itemStackInBus)) continue;
+
+                Item item = itemStackInBus.getItem();
+                if (item == null) continue;
 
                 if (item instanceof IElectricItem) {
                     doChargeItemStack((IElectricItem) item, itemStackInBus);
