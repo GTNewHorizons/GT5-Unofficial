@@ -179,7 +179,12 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
 
     public void updateAE2ProxyColor() {
         AENetworkProxy proxy = getProxy();
-        proxy.setColor(AEColor.values()[Dyes.transformDyeIndex(this.getColor())]);
+        byte color = this.getColor();
+        if (color == -1) {
+            proxy.setColor(AEColor.Transparent);
+        } else {
+            proxy.setColor(AEColor.values()[Dyes.transformDyeIndex(color)]);
+        }
         if (proxy.getNode() != null) {
             proxy.getNode()
                 .updateState();
