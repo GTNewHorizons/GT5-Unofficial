@@ -7,20 +7,38 @@ import static gregtech.api.enums.HatchElement.InputBus;
 import static gregtech.api.enums.HatchElement.InputHatch;
 import static gregtech.api.enums.HatchElement.Maintenance;
 import static gregtech.api.enums.HatchElement.OutputBus;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ENGRAVER;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ENGRAVER_ACTIVE;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ENGRAVER_ACTIVE_GLOW;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ENGRAVER_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.*;
 import static gregtech.api.util.GTStructureUtility.activeCoils;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.ofCoil;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 
 import java.util.ArrayList;
+import java.util.List;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
+import com.gtnewhorizons.modularui.api.widget.Widget;
+import com.gtnewhorizons.modularui.api.drawable.IDrawable;
+import com.gtnewhorizons.modularui.api.drawable.Text;
+import com.gtnewhorizons.modularui.api.drawable.UITexture;
+import com.gtnewhorizons.modularui.api.math.Alignment;
+import com.gtnewhorizons.modularui.api.math.Color;
+import com.gtnewhorizons.modularui.api.math.Pos2d;
+import com.gtnewhorizons.modularui.api.screen.ModularWindow;
+import com.gtnewhorizons.modularui.common.widget.*;
+import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
+import com.gtnewhorizons.modularui.common.widget.textfield.NumericWidget;
+import gregtech.api.gui.modularui.GTUITextures;
+import gregtech.api.recipe.check.CheckRecipeResult;
+import gregtech.api.recipe.check.CheckRecipeResultRegistry;
+import gregtech.api.util.GTRecipe;
+import gregtech.common.blocks.BlockCasings9;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
@@ -55,22 +73,45 @@ public class MTECZPuller extends MTEEnhancedMultiBlockBase<MTECZPuller> implemen
     @Nullable
     private static final String tier1 = "tier1";
     private static final String tier2 = "tier2";
+    private static final int mTier1BitMap = 0b1;
+    private static final int mTier2BitMap = 0b10;
+
+    private enum MaterialType {
+        NONE, SI, ALGaaS
+    }
+
+    private MaterialType materialType = MaterialType.NONE;
+    private int materialAmount = 0;
     private static final IStructureDefinition<MTECZPuller> STRUCTURE_DEFINITION = StructureDefinition
         .<MTECZPuller>builder()
         // spotless:off
         .addShape(
             tier1,
             transpose(
-                new String[][] {
-                    { "     ", "     ", "  E  ", "     ", "     " },
-                    { "     ", "     ", "  E  ", "     ", "     " },
-                    { "     ", "  E  ", " EBE ", "  E  ", "     " },
-                    { "     ", "  E  ", " E E ", "  E  ", "     " },
-                    { "  A  ", " AAA ", "AA AA", " AAA ", "  A  " },
-                    { " DAD ", "DCCCD", "AC CA", "DCCCD", " DAD " },
-                    { " DAD ", "DCCCD", "AC CA", "DCCCD", " DAD " },
-                    { " DAD ", "DCCCD", "AC CA", "DCCCD", " DAD " },
-                    { " A~A ", "AAAAA", "AAAAA", "AAAAA", " AAA " } }))
+                new String[][]{{"     ", "     ", "  E  ", "     ", "     "},
+                    {"     ", "     ", "  E  ", "     ", "     "}, {"     ", "  E  ", " EBE ", "  E  ", "     "},
+                    {"     ", "  E  ", " E E ", "  E  ", "     "}, {"  A  ", " AAA ", "AA AA", " AAA ", "  A  "},
+                    {" DAD ", "DCCCD", "AC CA", "DCCCD", " DAD "}, {" DAD ", "DCCCD", "AC CA", "DCCCD", " DAD "},
+                    {" DAD ", "DCCCD", "AC CA", "DCCCD", " DAD "}, {" A~A ", "AAAAA", "AAAAA", "AAAAA", " AAA "}}))
+        .addShape(
+            tier2,
+            transpose(
+                new String[][]{
+                    {"           ", "           ", "           ", "           ", "           ", "     F     ", "           ", "           ", "           ", "           ", "           "},
+                    {"           ", "           ", "           ", "           ", "           ", "     F     ", "           ", "           ", "           ", "           ", "           "},
+                    {"           ", "           ", "           ", "           ", "    G G    ", "     F     ", "    G G    ", "           ", "           ", "           ", "           "},
+                    {"           ", "           ", "  HGGHGGH  ", "  GG   GG  ", "  G G G G  ", "  H  F  H  ", "  G G G G  ", "  GG   GG  ", "  HGGHGGH  ", "           ", "           "},
+                    {"           ", " HG     GH ", " G  CCC  G ", "   CJJJC   ", "  CJ G JC  ", "  CJGFGJC  ", "  CJ G JC  ", "   CJJJC   ", " G  CCC  G ", " HG     GH ", "           "},
+                    {"HG       GH", "G         G", "    CCC    ", "   CHHHC   ", "  CHHHHHC  ", "  CHH HHC  ", "  CHHHHHC  ", "   CHHHC   ", "    CCC    ", "G         G", "HG       GH"},
+                    {"G         G", "           ", "    FFF    ", "   FHHHF   ", "  FH   HF  ", "  FH   HF  ", "  FH   HF  ", "   FHHHF   ", "    FFF    ", "           ", "G         G"},
+                    {"G         G", "           ", "    CCC    ", "   CHHHC   ", "  CH   HC  ", "  CH   HC  ", "  CH   HC  ", "   CHHHC   ", "    CCC    ", "           ", "G         G"},
+                    {"G         G", "           ", "    CCC    ", "   CHHHC   ", "  CH   HC  ", "  CH   HC  ", "  CH   HC  ", "   CHHHC   ", "    CCC    ", "           ", "G         G"},
+                    {"G         G", "           ", "    HHH    ", "   GHHHG   ", "  HH   HH  ", "  HH   HH  ", "  HH   HH  ", "   GHHHG   ", "    HHH    ", "           ", "G         G"},
+                    {"GG       GG", "G         G", "    H~H    ", "   GHHHG   ", "  HHHHHHH  ", "  HHHHHHH  ", "  HHHHHHH  ", "   GHHHG   ", "    HHH    ", "G         G", "GG       GG"}
+                }
+
+            )
+        )
         .addElement(
             'A',
             buildHatchAdder(MTECZPuller.class)
@@ -84,12 +125,29 @@ public class MTECZPuller extends MTEEnhancedMultiBlockBase<MTECZPuller> implemen
             GTStructureChannels.HEATING_COIL
                 .use(activeCoils(ofCoil(MTECZPuller::setCoilLevel, MTECZPuller::getCoilLevel))))
         .addElement('D', ofFrame(Materials.Steel))
-        .addElement('E',
+        .addElement(
+            'E',
             buildHatchAdder(MTECZPuller.class).atLeast(InputBus)
-                .casingIndex(((BlockCasings2)GregTechAPI.sBlockCasings2).getTextureIndex(0))
+                .casingIndex(((BlockCasings2) GregTechAPI.sBlockCasings2).getTextureIndex(0))
                 .dot(2)
-                .buildAndChain(ofBlock(GregTechAPI.sBlockCasings2,0)))
+                .buildAndChain(ofBlock(GregTechAPI.sBlockCasings2, 0)))
+        .addElement('F', ofFrame(Materials.TengamAttuned))
+        .addElement('G', ofFrame(Materials.SuperconductorZPM))
+        .addElement(
+            'H',
+            buildHatchAdder(MTECZPuller.class)
+                .atLeast(InputHatch, OutputBus, InputBus, Maintenance, Energy.or(ExoticEnergy))
+                .dot(1)
+                .casingIndex(((BlockCasings9) GregTechAPI.sBlockCasings9).getTextureIndex(11))
+                .buildAndChain(onElementPass(MTECZPuller::onCasingAdded, ofBlock(GregTechAPI.sBlockCasings9, 11))))
+        .addElement(
+            'J',
+            buildHatchAdder(MTECZPuller.class).atLeast(InputBus)
+                .casingIndex(((BlockCasings9) GregTechAPI.sBlockCasings9).getTextureIndex(11))
+                .dot(2)
+                .buildAndChain(ofBlock(GregTechAPI.sBlockCasings9, 11)))
         .build();
+    private byte mSpecialTier = 0;
 
     public MTECZPuller(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -123,7 +181,7 @@ public class MTECZPuller extends MTEEnhancedMultiBlockBase<MTECZPuller> implemen
         tt.addMachineType("CZ Puller")
             .addInfo("Growing your monocrystals")
             .addStructureInfo("")
-            .toolTipFinisher("");
+            .toolTipFinisher("Mireska_le_Fay");
         return tt;
     }
 
@@ -133,48 +191,27 @@ public class MTECZPuller extends MTEEnhancedMultiBlockBase<MTECZPuller> implemen
         return super.addToMachineList(aTileEntity, aBaseCasingIndex) || exotic;
     }
 
-    @Override
-    public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
-        int colorIndex, boolean aActive, boolean redstoneLevel) {
-        ITexture[] rTexture;
-        if (side == aFacing) {
-            if (aActive) {
-                rTexture = new ITexture[] {
-                    Textures.BlockIcons
-                        .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings2, 0)),
-                    TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_ENGRAVER_ACTIVE)
-                        .extFacing()
-                        .build(),
-                    TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_ENGRAVER_ACTIVE_GLOW)
-                        .extFacing()
-                        .glow()
-                        .build() };
-            } else {
-                rTexture = new ITexture[] {
-                    Textures.BlockIcons
-                        .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings2, 0)),
-                    TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_ENGRAVER)
-                        .extFacing()
-                        .build(),
-                    TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_ENGRAVER_GLOW)
-                        .extFacing()
-                        .glow()
-                        .build() };
-            }
-        } else {
-            rTexture = new ITexture[] { Textures.BlockIcons
-                .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings2, 0)) };
-        }
-        return rTexture;
-    }
 
     @Override
     public int getDamageToComponent(ItemStack aStack) {
         return 0;
+    }
+
+    private int getTier() {
+        return mSpecialTier;
+    }
+
+    @Override
+    public void receiveClientEvent(byte aEventID, byte aValue) {
+        if (aEventID == 1) {
+            if ((aValue & mTier1BitMap) == mTier1BitMap) {
+                mSpecialTier = 1;
+            }
+
+            if ((aValue & mTier2BitMap) == mTier2BitMap) {
+                mSpecialTier = 2;
+            }
+        }
     }
 
     @Override
@@ -185,6 +222,30 @@ public class MTECZPuller extends MTEEnhancedMultiBlockBase<MTECZPuller> implemen
     @Override
     public RecipeMap<?> getRecipeMap() {
         return RecipeMaps.czRecipes;
+    }
+
+    @Override
+    public void saveNBTData(NBTTagCompound aNBT) {
+        super.saveNBTData(aNBT);
+        aNBT.setByte("mSpecialTier", mSpecialTier);
+        aNBT.setString("czMaterialType", materialType.name());
+        aNBT.setInteger("czMaterialAmount", materialAmount);
+    }
+
+    @Override
+    public void loadNBTData(final NBTTagCompound aNBT) {
+        super.loadNBTData(aNBT);
+        if (aNBT.hasKey("mSeparate")) {
+            inputSeparation = aNBT.getBoolean("mSeparate");
+        }
+        mSpecialTier = aNBT.getByte("mSpecialTier");
+        try {
+            materialType = MaterialType.valueOf(aNBT.getString("czMaterialType"));
+        } catch (IllegalArgumentException ignored) {
+            materialType = MaterialType.NONE;
+        }
+
+        materialAmount = aNBT.getInteger("czMaterialAmount");
     }
 
     @Override
@@ -199,7 +260,15 @@ public class MTECZPuller extends MTEEnhancedMultiBlockBase<MTECZPuller> implemen
 
     @Override
     protected ProcessingLogic createProcessingLogic() {
-        return new ProcessingLogic().enablePerfectOverclock();
+        return new ProcessingLogic() {
+
+
+            @Override
+            protected @Nonnull CheckRecipeResult validateRecipe(@Nonnull GTRecipe recipe) {
+                return recipe.mSpecialValue <= mSpecialTier ? CheckRecipeResultRegistry.SUCCESSFUL
+                    : CheckRecipeResultRegistry.NO_RECIPE;
+            }
+        };
     }
 
     private int mCasingAmount;
@@ -214,11 +283,15 @@ public class MTECZPuller extends MTEEnhancedMultiBlockBase<MTECZPuller> implemen
         mHeatingCapacity = 0;
         mEnergyHatches.clear();
         mExoticEnergyHatches.clear();
+        seedBus.clear();
 
         setCoilLevel(HeatingCoilLevel.None);
         if (!checkPiece(tier1, 2, 8, 0)) return false;
+        if (!checkPiece(tier2, 5, 10, 2)) return false;
 
         if (getCoilLevel() == HeatingCoilLevel.None) return false;
+
+        if (seedBus.size() != 1) return false;
 
         if (!mExoticEnergyHatches.isEmpty()) {
             if (!mEnergyHatches.isEmpty()) return false;
@@ -256,13 +329,26 @@ public class MTECZPuller extends MTEEnhancedMultiBlockBase<MTECZPuller> implemen
 
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
-        buildPiece(tier1, stackSize, hintsOnly, 2, 8, 0);
+        if (mSpecialTier == 1) {
+            buildPiece(tier1, stackSize, hintsOnly, 2, 8, 0);
+        }
+        if (mSpecialTier == 2) {
+            buildPiece(tier2, stackSize, hintsOnly, 5, 10, 2);
+        }
+
     }
 
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
+        int built = 0;
         if (mMachine) return -1;
-        return survivialBuildPiece(tier1, stackSize, 2, 8, 0, elementBudget, env, false, true);
+        if (mSpecialTier == 1) {
+            built += survivialBuildPiece(tier1, stackSize, 2, 8, 0, elementBudget, env, false, true);
+        }
+        if (mSpecialTier == 2) {
+            built += survivialBuildPiece(tier2, stackSize, 5, 10, 2, elementBudget, env, false, true);
+        }
+        return built;
     }
 
     @Override
@@ -278,5 +364,109 @@ public class MTECZPuller extends MTEEnhancedMultiBlockBase<MTECZPuller> implemen
     @Override
     public boolean getDefaultHasMaintenanceChecks() {
         return false;
+    }
+
+    @Override
+    public byte getUpdateData() {
+        byte data = 0;
+        if (mSpecialTier == 1) {
+            data += mTier1BitMap;
+        }
+        if (mSpecialTier == 2) {
+            data += mTier2BitMap;
+        }
+
+        return data;
+    }
+
+    public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection sideDirection,
+                                 ForgeDirection facingDirection, int colorIndex, boolean active, boolean redstoneLevel) {
+        if (sideDirection == facingDirection) {
+            if (active) return new ITexture[]{
+                Textures.BlockIcons.getCasingTextureForId(
+                    getTier() == 1 ? GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings2, 0)
+                        : GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings9, 11)),
+                TextureFactory.builder()
+                    .addIcon(OVERLAY_FRONT_ENGRAVER_ACTIVE)
+                    .extFacing()
+                    .build(),
+                TextureFactory.builder()
+                    .addIcon(OVERLAY_FRONT_ENGRAVER_ACTIVE_GLOW)
+                    .extFacing()
+                    .glow()
+                    .build()};
+            return new ITexture[]{
+                Textures.BlockIcons.getCasingTextureForId(
+                    getTier() == 1 ? GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings2, 0)
+                        : GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings9, 11)),
+                TextureFactory.builder()
+                    .addIcon(OVERLAY_FRONT_ENGRAVER)
+                    .extFacing()
+                    .build(),
+                TextureFactory.builder()
+                    .addIcon(OVERLAY_FRONT_ENGRAVER_GLOW)
+                    .extFacing()
+                    .glow()
+                    .build()};
+        }
+        return new ITexture[]{Textures.BlockIcons.getCasingTextureForId(
+            mSpecialTier == 1 ? ((BlockCasings2) GregTechAPI.sBlockCasings2).getTextureIndex(0)
+                : ((BlockCasings9) GregTechAPI.sBlockCasings9).getTextureIndex(11))};
+    }
+
+    @Override
+    public Pos2d getStructureUpdateButtonPos() {
+        return new Pos2d(80, 91);
+    }
+
+    @Override
+    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
+        super.addUIWidgets(builder, buildContext);
+        buildContext.addSyncedWindow(11, this::createConfigurationWindow);
+        builder.widget(
+            new ButtonWidget().setOnClick(
+                    (clickData, widget) -> {
+                        if (!widget.isClient()) widget.getContext()
+                            .openSyncedWindow(11);
+                    })
+                .setSize(16, 16)
+                .setBackground(() -> {
+                    List<UITexture> ret = new ArrayList<>();
+                    ret.add(GTUITextures.BUTTON_STANDARD);
+                    ret.add(GTUITextures.OVERLAY_BUTTON_CYCLIC);
+                    return ret.toArray(new IDrawable[0]);
+                })
+                .addTooltip("Configuration Menu")
+                .setPos(174, 130))
+        ;
+    }
+
+
+    protected ModularWindow createConfigurationWindow(final EntityPlayer player) {
+        ModularWindow.Builder builder = ModularWindow.builder(200, 160);
+        builder.setBackground(GTUITextures.BACKGROUND_SINGLEBLOCK_DEFAULT);
+        builder.setGuiTint(getGUIColorization());
+        builder.widget(
+                new DrawableWidget().setDrawable(GTUITextures.OVERLAY_BUTTON_CYCLIC)
+                    .setPos(5, 5)
+                    .setSize(16, 16))
+            .widget(new TextWidget("Configuration Menu").setPos(25, 9))
+            .widget(
+                ButtonWidget.closeWindowButton(true)
+                    .setPos(185, 3))
+            .widget(new TextWidget("CZ Puller tier").setPos(25, 25))
+            .widget(
+            new ButtonWidget()
+                .setPos(10, 60)
+                .setSize(20, 18)
+                .setOnClick((clickData, widget) -> {
+                    if (!widget.isClient()) {
+                        System.out.println("Кнопка '1' нажата");
+                    }
+                })
+                .setBackground(() -> new IDrawable[] { GTUITextures.BUTTON_STANDARD })
+                .addTooltip("Button 1")
+        );
+        return builder.build();
     }
 }

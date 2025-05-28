@@ -899,7 +899,6 @@ import static gregtech.api.recipe.RecipeMaps.chemicalReactorRecipes;
 import static gregtech.api.recipe.RecipeMaps.circuitAssemblerRecipes;
 import static gregtech.api.recipe.RecipeMaps.compressorRecipes;
 import static gregtech.api.recipe.RecipeMaps.cutterRecipes;
-import static gregtech.api.recipe.RecipeMaps.czRecipes;
 import static gregtech.api.recipe.RecipeMaps.distilleryRecipes;
 import static gregtech.api.recipe.RecipeMaps.electroMagneticSeparatorRecipes;
 import static gregtech.api.recipe.RecipeMaps.electrolyzerRecipes;
@@ -12377,9 +12376,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
     }
 
     private static void registerCZPuller() {
-        ItemList.CZPuller.set(
-            new MTECZPuller(CZPuller.ID, "multimachine.czpuller", "CZ Puller")
-                .getStackForm(1L));
+        ItemList.CZPuller.set(new MTECZPuller(CZPuller.ID, "multimachine.czpuller", "CZ Puller").getStackForm(1L));
     }
 
     @Override

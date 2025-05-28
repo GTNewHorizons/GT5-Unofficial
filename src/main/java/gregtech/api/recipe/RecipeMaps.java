@@ -1216,9 +1216,10 @@ public final class RecipeMaps {
         .neiRecipeBackgroundSize(170, 60)
         .neiHandlerInfo(builder -> builder.setDisplayStack(GTModHandler.getIC2Item("nuclearReactor", 1, null)))
         .build();
-    public static final RecipeMap<RecipeMapBackend> czRecipes = RecipeMapBuilder.of("gt.recipe.czpuller")
-        .maxIO(1, 1, 2, 0)
-        .minInputs(0, 1)
+    public static final RecipeMap<RecipeMapBackend> czRecipes = RecipeMapBuilder
+        .of("gt.recipe.czpuller")
+        .maxIO(1, 1, 1, 0)
+        .minInputs(1, 1)
         .progressBar(GTUITextures.PROGRESSBAR_ASSEMBLE)
         .build();
 }
