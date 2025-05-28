@@ -79,39 +79,34 @@ public class MTECZPuller extends MTEEnhancedMultiBlockBase<MTECZPuller> implemen
         .addShape(
             tier1,
             transpose(
-                new String[][] { { "     ", "     ", "  E  ", "     ", "     " },
-                    { "     ", "     ", "  E  ", "     ", "     " }, { "     ", "  E  ", " EBE ", "  E  ", "     " },
-                    { "     ", "  E  ", " E E ", "  E  ", "     " }, { "  A  ", " AAA ", "AA AA", " AAA ", "  A  " },
-                    { " DAD ", "DCCCD", "AC CA", "DCCCD", " DAD " }, { " DAD ", "DCCCD", "AC CA", "DCCCD", " DAD " },
-                    { " DAD ", "DCCCD", "AC CA", "DCCCD", " DAD " }, { " A~A ", "AAAAA", "AAAAA", "AAAAA", " AAA " } }))
+                new String[][] {
+                    { "     ", "     ", "  E  ", "     ", "     " },
+                    { "     ", "     ", "  E  ", "     ", "     " },
+                    { "     ", "  E  ", " EBE ", "  E  ", "     " },
+                    { "     ", "  E  ", " E E ", "  E  ", "     " },
+                    { "  A  ", " AAA ", "AA AA", " AAA ", "  A  " },
+                    { " DAD ", "DCCCD", "AC CA", "DCCCD", " DAD " },
+                    { " DAD ", "DCCCD", "AC CA", "DCCCD", " DAD " },
+                    { " DAD ", "DCCCD", "AC CA", "DCCCD", " DAD " },
+                    { " A~A ", "AAAAA", "AAAAA", "AAAAA", " AAA " }}))
         .addShape(
             tier2,
             transpose(
                 new String[][] {
-                    { "           ", "           ", "           ", "           ", "           ", "     F     ",
-                        "           ", "           ", "           ", "           ", "           " },
-                    { "           ", "           ", "           ", "           ", "           ", "     F     ",
-                        "           ", "           ", "           ", "           ", "           " },
-                    { "           ", "           ", "           ", "           ", "    G G    ", "     F     ",
-                        "    G G    ", "           ", "           ", "           ", "           " },
-                    { "           ", "           ", "  HGGHGGH  ", "  GG   GG  ", "  G G G G  ", "  H  F  H  ",
-                        "  G G G G  ", "  GG   GG  ", "  HGGHGGH  ", "           ", "           " },
-                    { "           ", " HG     GH ", " G  CCC  G ", "   CJJJC   ", "  CJ G JC  ", "  CJGFGJC  ",
-                        "  CJ G JC  ", "   CJJJC   ", " G  CCC  G ", " HG     GH ", "           " },
-                    { "HG       GH", "G         G", "    CCC    ", "   CHHHC   ", "  CHHHHHC  ", "  CHH HHC  ",
-                        "  CHHHHHC  ", "   CHHHC   ", "    CCC    ", "G         G", "HG       GH" },
-                    { "G         G", "           ", "    FFF    ", "   FHHHF   ", "  FH   HF  ", "  FH   HF  ",
-                        "  FH   HF  ", "   FHHHF   ", "    FFF    ", "           ", "G         G" },
-                    { "G         G", "           ", "    CCC    ", "   CHHHC   ", "  CH   HC  ", "  CH   HC  ",
-                        "  CH   HC  ", "   CHHHC   ", "    CCC    ", "           ", "G         G" },
-                    { "G         G", "           ", "    CCC    ", "   CHHHC   ", "  CH   HC  ", "  CH   HC  ",
-                        "  CH   HC  ", "   CHHHC   ", "    CCC    ", "           ", "G         G" },
-                    { "G         G", "           ", "    HHH    ", "   GHHHG   ", "  HH   HH  ", "  HH   HH  ",
-                        "  HH   HH  ", "   GHHHG   ", "    HHH    ", "           ", "G         G" },
-                    { "GG       GG", "G         G", "    H~H    ", "   GHHHG   ", "  HHHHHHH  ", "  HHHHHHH  ",
-                        "  HHHHHHH  ", "   GHHHG   ", "    HHH    ", "G         G", "GG       GG" } }
+                    { "           ", "           ", "           ", "           ", "           ", "     F     ", "           ", "           ", "           ", "           ", "           " },
+                    { "           ", "           ", "           ", "           ", "           ", "     F     ", "           ", "           ", "           ", "           ", "           " },
+                    { "           ", "           ", "           ", "           ", "    G G    ", "     F     ", "    G G    ", "           ", "           ", "           ", "           " },
+                    { "           ", "           ", "  HGGHGGH  ", "  GG   GG  ", "  G G G G  ", "  H  F  H  ", "  G G G G  ", "  GG   GG  ", "  HGGHGGH  ", "           ", "           " },
+                    { "           ", " HG     GH ", " G  CCC  G ", "   CJJJC   ", "  CJ G JC  ", "  CJGFGJC  ", "  CJ G JC  ", "   CJJJC   ", " G  CCC  G ", " HG     GH ", "           " },
+                    { "HG       GH", "G         G", "    CCC    ", "   CHHHC   ", "  CHHHHHC  ", "  CHH HHC  ", "  CHHHHHC  ", "   CHHHC   ", "    CCC    ", "G         G", "HG       GH" },
+                    { "G         G", "           ", "    FFF    ", "   FHHHF   ", "  FH   HF  ", "  FH   HF  ", "  FH   HF  ", "   FHHHF   ", "    FFF    ", "           ", "G         G" },
+                    { "G         G", "           ", "    CCC    ", "   CHHHC   ", "  CH   HC  ", "  CH   HC  ", "  CH   HC  ", "   CHHHC   ", "    CCC    ", "           ", "G         G" },
+                    { "G         G", "           ", "    CCC    ", "   CHHHC   ", "  CH   HC  ", "  CH   HC  ", "  CH   HC  ", "   CHHHC   ", "    CCC    ", "           ", "G         G" },
+                    { "G         G", "           ", "    HHH    ", "   GHHHG   ", "  HH   HH  ", "  HH   HH  ", "  HH   HH  ", "   GHHHG   ", "    HHH    ", "           ", "G         G" },
+                    { "GG       GG", "G         G", "    H~H    ", "   GHHHG   ", "  HHHHHHH  ", "  HHHHHHH  ", "  HHHHHHH  ", "   GHHHG   ", "    HHH    ", "G         G", "GG       GG" } }
 
             ))
+        // spotless:on
         .addElement(
             'A',
             buildHatchAdder(MTECZPuller.class)
