@@ -174,7 +174,7 @@ public class MTEHatchInputBusME extends MTEHatchInputBus
         if (color == -1) {
             proxy.setColor(AEColor.Transparent);
         } else {
-            proxy.setColor(AEColor.values()[Dyes.transformDyeIndex(this.getColor())]);
+            proxy.setColor(AEColor.values()[Dyes.transformDyeIndex(color)]);
         }
         if (proxy.getNode() != null) {
             proxy.getNode()
