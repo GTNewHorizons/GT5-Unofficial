@@ -229,60 +229,38 @@ public class CI {
     }
 
     public static String getTieredCircuitOreDictName(int tier) {
-        if (tier == 0) {
-            return "circuitPrimitive";
-        } else if (tier == 1) {
-            return "circuitBasic";
-        } else if (tier == 2) {
-            return "circuitGood";
-        } else if (tier == 3) {
-            return "circuitAdvanced";
-        } else if (tier == 4) {
-            return "circuitData";
-        } else if (tier == 5) {
-            return "circuitElite";
-        } else if (tier == 6) {
-            return "circuitMaster";
-        } else if (tier == 7) {
-            return "circuitUltimate";
-        } else if (tier == 8) {
-            return "circuitSuperconductor";
-        } else if (tier == 9) {
-            return "circuitInfinite";
-        } else if (tier == 10) {
-            return "circuitQuantum";
-        } else {
-            return "circuitPrimitive";
-        }
+        return switch(tier) {
+            case 0 -> "circuitPrimitive";
+            case 1 -> "circuitBasic";
+            case 2 -> "circuitGood";
+            case 3 -> "circuitAdvanced";
+            case 4 -> "circuitData";
+            case 5 -> "circuitElite";
+            case 6 -> "circuitMaster";
+            case 7 -> "circuitUltimate";
+            case 8 -> "circuitSuperconductor";
+            case 9 -> "circuitInfinite";
+            case 10 -> "circuitQuantum";
+            default -> "circuitPrimitive";
+        };
     }
 
     private static Object getMaterialFromTier(int tier) {
-        if (tier == 0) {
-            return Materials.Wood;
-        } else if (tier == 1) {
-            return Materials.Lead;
-        } else if (tier == 2) {
-            return Materials.Bronze;
-        } else if (tier == 3) {
-            return Materials.Steel;
-        } else if (tier == 4) {
-            return MaterialsAlloy.EGLIN_STEEL;
-        } else if (tier == 5) {
-            return Materials.Aluminium;
-        } else if (tier == 6) {
-            return MaterialsAlloy.MARAGING250;
-        } else if (tier == 7) {
-            return MaterialsAlloy.TANTALLOY_61;
-        } else if (tier == 8) {
-            return MaterialsAlloy.INCONEL_792;
-        } else if (tier == 9) {
-            return MaterialsAlloy.ZERON_100;
-        } else if (tier == 10) {
-            return Materials.NaquadahEnriched;
-        } else if (tier == 11) {
-            return Materials.Neutronium;
-        }
-        return Materials._NULL;
+        return switch (tier){
+            case 0 -> Materials.Wood;
+            case 1 -> Materials.Lead;
+            case 2 -> Materials.Bronze;
+            case 3 -> Materials.Steel;
+            case 4 -> MaterialsAlloy.EGLIN_STEEL;
+            case 5 -> Materials.Aluminium;
+            case 6 -> MaterialsAlloy.MARAGING250;
+            case 7 -> MaterialsAlloy.TANTALLOY_61;
+            case 8 -> MaterialsAlloy.INCONEL_792;
+            case 9 -> MaterialsAlloy.ZERON_100;
+            case 10 -> Materials.NaquadahEnriched;
+            case 11 -> Materials.Neutronium;
+            default -> Materials._NULL;
+        };
     }
 
     public static String getTieredComponent(OrePrefixes type, int tier) {
@@ -290,12 +268,9 @@ public class CI {
         if (material != null) {
             String materialName;
             if (material instanceof Materials) {
-                // return (ItemStack) type.get(material);
                 materialName = ((Materials) material).mDefaultLocalName;
-                // return ItemUtils.getItemStackOfAmountFromOreDict(type.name()+materialName, 1);
             } else {
                 materialName = (Utils.sanitizeString(((Material) material).getLocalizedName()));
-                // return ItemUtils.getItemStackOfAmountFromOreDict(type.name()+materialName, 1);
             }
             Logger.INFO("Searching for a component named " + type.name() + materialName);
             return (type.name() + materialName);
@@ -313,58 +288,35 @@ public class CI {
     }
 
     public static ItemStack getTieredMachineHull(int tier) {
-        if (tier == 0) {
-            return machineHull_ULV;
-        } else if (tier == 1) {
-            return machineHull_LV;
-        } else if (tier == 2) {
-            return machineHull_MV;
-        } else if (tier == 3) {
-            return machineHull_HV;
-        } else if (tier == 4) {
-            return machineHull_EV;
-        } else if (tier == 5) {
-            return machineHull_IV;
-        } else if (tier == 6) {
-            return machineHull_LuV;
-        } else if (tier == 7) {
-            return machineHull_ZPM;
-        } else if (tier == 8) {
-            return machineHull_UV;
-        } else if (tier == 9) {
-            return machineHull_UHV;
-        } else {
-            return GregtechItemList.Casing_Multi_Use.get(1);
-        }
+        return switch (tier){
+            case 0 -> machineHull_ULV;
+            case 1 -> machineHull_LV;
+            case 2 -> machineHull_MV;
+            case 3 -> machineHull_HV;
+            case 4 -> machineHull_EV;
+            case 5 -> machineHull_IV;
+            case 6 -> machineHull_LuV;
+            case 7 -> machineHull_ZPM;
+            case 8 -> machineHull_UV;
+            case 9 -> machineHull_UHV;
+            default -> GregtechItemList.Casing_Multi_Use.get(1);
+        };
     }
 
     public static ItemStack getTieredMachineCasing(int tier) {
-        if (tier == 0) {
-            if (machineCasing_ULV == null) {
-                machineCasing_ULV = ItemList.Casing_ULV.get(1);
-            }
-            return machineCasing_ULV;
-        } else if (tier == 1) {
-            return machineCasing_LV;
-        } else if (tier == 2) {
-            return machineCasing_MV;
-        } else if (tier == 3) {
-            return machineCasing_HV;
-        } else if (tier == 4) {
-            return machineCasing_EV;
-        } else if (tier == 5) {
-            return machineCasing_IV;
-        } else if (tier == 6) {
-            return machineCasing_LuV;
-        } else if (tier == 7) {
-            return machineCasing_ZPM;
-        } else if (tier == 8) {
-            return machineCasing_UV;
-        } else if (tier == 9) {
-            return machineCasing_UHV;
-        } else {
-            return GregtechItemList.Casing_Multi_Use.get(1);
-        }
+        return switch (tier){
+            case 0 -> machineCasing_ULV;
+            case 1 -> machineCasing_LV;
+            case 2 -> machineCasing_MV;
+            case 3 -> machineCasing_HV;
+            case 4 -> machineCasing_EV;
+            case 5 -> machineCasing_IV;
+            case 6 -> machineCasing_LuV;
+            case 7 -> machineCasing_ZPM;
+            case 8 -> machineCasing_UV;
+            case 9 -> machineCasing_UHV;
+            default -> GregtechItemList.Casing_Multi_Use.get(1);
+        };
     }
 
     public static void init() {
@@ -652,285 +604,156 @@ public class CI {
         return aReturn;
     }
 
-    public static ItemStack getElectricMotor(int aTier, int aSize) {
-        ItemStack aType;
-        int aLazyTier = 1;
-        if (aTier == aLazyTier++) {
-            aType = CI.electricMotor_LV;
-        } else if (aTier == aLazyTier++) {
-            aType = CI.electricMotor_MV;
-        } else if (aTier == aLazyTier++) {
-            aType = CI.electricMotor_HV;
-        } else if (aTier == aLazyTier++) {
-            aType = CI.electricMotor_EV;
-        } else if (aTier == aLazyTier++) {
-            aType = CI.electricMotor_IV;
-        } else if (aTier == aLazyTier++) {
-            aType = CI.electricMotor_LuV;
-        } else if (aTier == aLazyTier++) {
-            aType = CI.electricMotor_ZPM;
-        } else if (aTier == aLazyTier++) {
-            aType = CI.electricMotor_UV;
-        } else if (aTier == aLazyTier) {
-            aType = CI.electricMotor_UHV;
-        } else {
-            throw new IllegalArgumentException();
-        }
-        return ItemUtils.getSimpleStack(aType, aSize);
+    public static ItemStack getElectricMotor(int tier, int size) {
+        return switch (tier){
+            case 1 -> GTUtility.copyAmount(size, CI.electricMotor_LV);
+            case 2 -> GTUtility.copyAmount(size, CI.electricMotor_MV);
+            case 3 -> GTUtility.copyAmount(size, CI.electricMotor_HV);
+            case 4 -> GTUtility.copyAmount(size, CI.electricMotor_EV);
+            case 5 -> GTUtility.copyAmount(size, CI.electricMotor_IV);
+            case 6 -> GTUtility.copyAmount(size, CI.electricMotor_LuV);
+            case 7 -> GTUtility.copyAmount(size, CI.electricMotor_ZPM);
+            case 8 -> GTUtility.copyAmount(size, CI.electricMotor_UV);
+            case 9 -> GTUtility.copyAmount(size, CI.electricMotor_UHV);
+            default -> throw new IllegalArgumentException();
+        };
     }
 
     public static ItemStack getFluidRegulator(int aTier, int aSize) {
-        ItemStack aType;
-        int aLazyTier = 0;
-        if (aTier == aLazyTier++) {
-            aType = CI.fluidRegulator_LV;
-        } else if (aTier == aLazyTier++) {
-            aType = CI.fluidRegulator_LV;
-        } else if (aTier == aLazyTier++) {
-            aType = CI.fluidRegulator_MV;
-        } else if (aTier == aLazyTier++) {
-            aType = CI.fluidRegulator_HV;
-        } else if (aTier == aLazyTier++) {
-            aType = CI.fluidRegulator_EV;
-        } else if (aTier == aLazyTier++) {
-            aType = CI.fluidRegulator_IV;
-        } else if (aTier == aLazyTier++) {
-            aType = CI.fluidRegulator_LuV;
-        } else if (aTier == aLazyTier++) {
-            aType = CI.fluidRegulator_ZPM;
-        } else if (aTier == aLazyTier++) {
-            aType = CI.fluidRegulator_UV;
-        } else if (aTier == aLazyTier) {
-            aType = CI.fluidRegulator_UV;
-        } else {
-            throw new IllegalArgumentException();
-        }
-        return ItemUtils.getSimpleStack(aType, aSize);
+        return switch(aTier){
+            case 0 -> GTUtility.copyAmount(aSize, CI.fluidRegulator_LV);
+            case 1 -> GTUtility.copyAmount(aSize, CI.fluidRegulator_LV);
+            case 2 -> GTUtility.copyAmount(aSize, CI.fluidRegulator_MV);
+            case 3 -> GTUtility.copyAmount(aSize, CI.fluidRegulator_HV);
+            case 4 -> GTUtility.copyAmount(aSize, CI.fluidRegulator_EV);
+            case 5 -> GTUtility.copyAmount(aSize, CI.fluidRegulator_IV);
+            case 6 -> GTUtility.copyAmount(aSize, CI.fluidRegulator_LuV);
+            case 7 -> GTUtility.copyAmount(aSize, CI.fluidRegulator_ZPM);
+            case 8 -> GTUtility.copyAmount(aSize, CI.fluidRegulator_UV);
+            case 9 -> GTUtility.copyAmount(aSize, CI.fluidRegulator_UV);
+            default -> throw new IllegalArgumentException();
+        };
     }
 
-    public static ItemStack getElectricPiston(int aTier, int aSize) {
-        ItemStack aType;
-        int aLazyTier = 1;
-        if (aTier == aLazyTier++) {
-            aType = CI.electricPiston_LV;
-        } else if (aTier == aLazyTier++) {
-            aType = CI.electricPiston_MV;
-        } else if (aTier == aLazyTier++) {
-            aType = CI.electricPiston_HV;
-        } else if (aTier == aLazyTier++) {
-            aType = CI.electricPiston_EV;
-        } else if (aTier == aLazyTier++) {
-            aType = CI.electricPiston_IV;
-        } else if (aTier == aLazyTier++) {
-            aType = CI.electricPiston_LuV;
-        } else if (aTier == aLazyTier++) {
-            aType = CI.electricPiston_ZPM;
-        } else if (aTier == aLazyTier++) {
-            aType = CI.electricPiston_UV;
-        } else if (aTier == aLazyTier) {
-            aType = CI.electricPiston_UHV;
-        } else {
-            throw new IllegalArgumentException();
-        }
-        return ItemUtils.getSimpleStack(aType, aSize);
+    public static ItemStack getElectricPiston(int tier, int size) {
+        return switch (tier){
+            case 1 -> GTUtility.copyAmount(size, CI.electricPiston_LV);
+            case 2 -> GTUtility.copyAmount(size, CI.electricPiston_MV);
+            case 3 -> GTUtility.copyAmount(size, CI.electricPiston_HV);
+            case 4 -> GTUtility.copyAmount(size, CI.electricPiston_EV);
+            case 5 -> GTUtility.copyAmount(size, CI.electricPiston_IV);
+            case 6 -> GTUtility.copyAmount(size, CI.electricPiston_LuV);
+            case 7 -> GTUtility.copyAmount(size, CI.electricPiston_ZPM);
+            case 8 -> GTUtility.copyAmount(size, CI.electricPiston_UV);
+            case 9 -> GTUtility.copyAmount(size, CI.electricPiston_UHV);
+            default -> throw new IllegalArgumentException();
+        };
     }
 
-    public static ItemStack getElectricPump(int aTier, int aSize) {
-        ItemStack aType;
-        int aLazyTier = 1;
-        if (aTier == aLazyTier++) {
-            aType = CI.electricPump_LV;
-        } else if (aTier == aLazyTier++) {
-            aType = CI.electricPump_MV;
-        } else if (aTier == aLazyTier++) {
-            aType = CI.electricPump_HV;
-        } else if (aTier == aLazyTier++) {
-            aType = CI.electricPump_EV;
-        } else if (aTier == aLazyTier++) {
-            aType = CI.electricPump_IV;
-        } else if (aTier == aLazyTier++) {
-            aType = CI.electricPump_LuV;
-        } else if (aTier == aLazyTier++) {
-            aType = CI.electricPump_ZPM;
-        } else if (aTier == aLazyTier++) {
-            aType = CI.electricPump_UV;
-        } else if (aTier == aLazyTier) {
-            aType = CI.electricPump_UHV;
-        } else {
-            throw new IllegalArgumentException();
-        }
-        return ItemUtils.getSimpleStack(aType, aSize);
+    public static ItemStack getElectricPump(int tier, int size) {
+        return switch (tier){
+            case 1 -> GTUtility.copyAmount(size, CI.electricPump_LV);
+            case 2 -> GTUtility.copyAmount(size, CI.electricPump_MV);
+            case 3 -> GTUtility.copyAmount(size, CI.electricPump_HV);
+            case 4 -> GTUtility.copyAmount(size, CI.electricPump_EV);
+            case 5 -> GTUtility.copyAmount(size, CI.electricPump_IV);
+            case 6 -> GTUtility.copyAmount(size, CI.electricPump_LuV);
+            case 7 -> GTUtility.copyAmount(size, CI.electricPump_ZPM);
+            case 8 -> GTUtility.copyAmount(size, CI.electricPump_UV);
+            case 9 -> GTUtility.copyAmount(size, CI.electricPump_UHV);
+            default -> throw new IllegalArgumentException();
+        };
     }
 
-    public static ItemStack getRobotArm(int aTier, int aSize) {
-        ItemStack aType;
-        int aLazyTier = 1;
-        if (aTier == aLazyTier++) {
-            aType = CI.robotArm_LV;
-        } else if (aTier == aLazyTier++) {
-            aType = CI.robotArm_MV;
-        } else if (aTier == aLazyTier++) {
-            aType = CI.robotArm_HV;
-        } else if (aTier == aLazyTier++) {
-            aType = CI.robotArm_EV;
-        } else if (aTier == aLazyTier++) {
-            aType = CI.robotArm_IV;
-        } else if (aTier == aLazyTier++) {
-            aType = CI.robotArm_LuV;
-        } else if (aTier == aLazyTier++) {
-            aType = CI.robotArm_ZPM;
-        } else if (aTier == aLazyTier++) {
-            aType = CI.robotArm_UV;
-        } else if (aTier == aLazyTier) {
-            aType = CI.robotArm_UHV;
-        } else {
-            throw new IllegalArgumentException();
-        }
-        return ItemUtils.getSimpleStack(aType, aSize);
+    public static ItemStack getRobotArm(int tier, int size) {
+        return switch (tier){
+            case 1 -> GTUtility.copyAmount(size, CI.robotArm_LV);
+            case 2 -> GTUtility.copyAmount(size, CI.robotArm_MV);
+            case 3 -> GTUtility.copyAmount(size, CI.robotArm_HV);
+            case 4 -> GTUtility.copyAmount(size, CI.robotArm_EV);
+            case 5 -> GTUtility.copyAmount(size, CI.robotArm_IV);
+            case 6 -> GTUtility.copyAmount(size, CI.robotArm_LuV);
+            case 7 -> GTUtility.copyAmount(size, CI.robotArm_ZPM);
+            case 8 -> GTUtility.copyAmount(size, CI.robotArm_UV);
+            case 9 -> GTUtility.copyAmount(size, CI.robotArm_UHV);
+            default -> throw new IllegalArgumentException();
+        };
     }
 
-    public static ItemStack getConveyor(int aTier, int aSize) {
-        ItemStack aType;
-        int aLazyTier = 1;
-        if (aTier == aLazyTier++) {
-            aType = CI.conveyorModule_LV;
-        } else if (aTier == aLazyTier++) {
-            aType = CI.conveyorModule_MV;
-        } else if (aTier == aLazyTier++) {
-            aType = CI.conveyorModule_HV;
-        } else if (aTier == aLazyTier++) {
-            aType = CI.conveyorModule_EV;
-        } else if (aTier == aLazyTier++) {
-            aType = CI.conveyorModule_IV;
-        } else if (aTier == aLazyTier++) {
-            aType = CI.conveyorModule_LuV;
-        } else if (aTier == aLazyTier++) {
-            aType = CI.conveyorModule_ZPM;
-        } else if (aTier == aLazyTier++) {
-            aType = CI.conveyorModule_UV;
-        } else if (aTier == aLazyTier) {
-            aType = CI.conveyorModule_UHV;
-        } else {
-            throw new IllegalArgumentException();
-        }
-        return ItemUtils.getSimpleStack(aType, aSize);
+    public static ItemStack getConveyor(int tier, int size) {
+        return switch (tier){
+            case 1 -> GTUtility.copyAmount(size, CI.conveyorModule_LV);
+            case 2 -> GTUtility.copyAmount(size, CI.conveyorModule_MV);
+            case 3 -> GTUtility.copyAmount(size, CI.conveyorModule_HV);
+            case 4 -> GTUtility.copyAmount(size, CI.conveyorModule_EV);
+            case 5 -> GTUtility.copyAmount(size, CI.conveyorModule_IV);
+            case 6 -> GTUtility.copyAmount(size, CI.conveyorModule_LuV);
+            case 7 -> GTUtility.copyAmount(size, CI.conveyorModule_ZPM);
+            case 8 -> GTUtility.copyAmount(size, CI.conveyorModule_UV);
+            case 9 -> GTUtility.copyAmount(size, CI.conveyorModule_UHV);
+            default -> throw new IllegalArgumentException();
+        };
     }
 
-    public static ItemStack getEmitter(int aTier, int aSize) {
-        ItemStack aType;
-        int aLazyTier = 1;
-        if (aTier == aLazyTier++) {
-            aType = CI.emitter_LV;
-        } else if (aTier == aLazyTier++) {
-            aType = CI.emitter_MV;
-        } else if (aTier == aLazyTier++) {
-            aType = CI.emitter_HV;
-        } else if (aTier == aLazyTier++) {
-            aType = CI.emitter_EV;
-        } else if (aTier == aLazyTier++) {
-            aType = CI.emitter_IV;
-        } else if (aTier == aLazyTier++) {
-            aType = CI.emitter_LuV;
-        } else if (aTier == aLazyTier++) {
-            aType = CI.emitter_ZPM;
-        } else if (aTier == aLazyTier++) {
-            aType = CI.emitter_UV;
-        } else if (aTier == aLazyTier) {
-            aType = CI.emitter_UHV;
-        } else {
-            throw new IllegalArgumentException();
-        }
-        return ItemUtils.getSimpleStack(aType, aSize);
+    public static ItemStack getEmitter(int tier, int size) {
+        return switch (tier){
+            case 1 -> GTUtility.copyAmount(size, CI.emitter_LV);
+            case 2 -> GTUtility.copyAmount(size, CI.emitter_MV);
+            case 3 -> GTUtility.copyAmount(size, CI.emitter_HV);
+            case 4 -> GTUtility.copyAmount(size, CI.emitter_EV);
+            case 5 -> GTUtility.copyAmount(size, CI.emitter_IV);
+            case 6 -> GTUtility.copyAmount(size, CI.emitter_LuV);
+            case 7 -> GTUtility.copyAmount(size, CI.emitter_ZPM);
+            case 8 -> GTUtility.copyAmount(size, CI.emitter_UV);
+            case 9 -> GTUtility.copyAmount(size, CI.emitter_UHV);
+            default -> throw new IllegalArgumentException();
+        };
     }
 
-    public static ItemStack getSensor(int aTier, int aSize) {
-        ItemStack aType;
-        int aLazyTier = 1;
-        if (aTier == aLazyTier++) {
-            aType = CI.sensor_LV;
-        } else if (aTier == aLazyTier++) {
-            aType = CI.sensor_MV;
-        } else if (aTier == aLazyTier++) {
-            aType = CI.sensor_HV;
-        } else if (aTier == aLazyTier++) {
-            aType = CI.sensor_EV;
-        } else if (aTier == aLazyTier++) {
-            aType = CI.sensor_IV;
-        } else if (aTier == aLazyTier++) {
-            aType = CI.sensor_LuV;
-        } else if (aTier == aLazyTier++) {
-            aType = CI.sensor_ZPM;
-        } else if (aTier == aLazyTier++) {
-            aType = CI.sensor_UV;
-        } else if (aTier == aLazyTier) {
-            aType = CI.sensor_UHV;
-        } else {
-            throw new IllegalArgumentException();
-        }
-        return ItemUtils.getSimpleStack(aType, aSize);
+    public static ItemStack getSensor(int tier, int size) {
+        return switch (tier){
+            case 1 -> GTUtility.copyAmount(size, CI.electricMotor_LV);
+            case 2 -> GTUtility.copyAmount(size, CI.electricMotor_MV);
+            case 3 -> GTUtility.copyAmount(size, CI.electricMotor_HV);
+            case 4 -> GTUtility.copyAmount(size, CI.electricMotor_EV);
+            case 5 -> GTUtility.copyAmount(size, CI.electricMotor_IV);
+            case 6 -> GTUtility.copyAmount(size, CI.electricMotor_LuV);
+            case 7 -> GTUtility.copyAmount(size, CI.electricMotor_ZPM);
+            case 8 -> GTUtility.copyAmount(size, CI.electricMotor_UV);
+            case 9 -> GTUtility.copyAmount(size, CI.electricMotor_UHV);
+            default -> throw new IllegalArgumentException();
+        };
     }
 
-    public static ItemStack getFieldGenerator(int aTier, int aSize) {
-        ItemStack aType;
-        int aLazyTier = 1;
-        if (aTier == aLazyTier++) {
-            aType = CI.fieldGenerator_LV;
-        } else if (aTier == aLazyTier++) {
-            aType = CI.fieldGenerator_MV;
-        } else if (aTier == aLazyTier++) {
-            aType = CI.fieldGenerator_HV;
-        } else if (aTier == aLazyTier++) {
-            aType = CI.fieldGenerator_EV;
-        } else if (aTier == aLazyTier++) {
-            aType = CI.fieldGenerator_IV;
-        } else if (aTier == aLazyTier++) {
-            aType = CI.fieldGenerator_LuV;
-        } else if (aTier == aLazyTier++) {
-            aType = CI.fieldGenerator_ZPM;
-        } else if (aTier == aLazyTier++) {
-            aType = CI.fieldGenerator_UV;
-        } else if (aTier == aLazyTier) {
-            aType = CI.fieldGenerator_UHV;
-        } else {
-            throw new IllegalArgumentException();
-        }
-        return ItemUtils.getSimpleStack(aType, aSize);
+    public static ItemStack getFieldGenerator(int tier, int size) {
+        return switch (tier){
+            case 1 -> GTUtility.copyAmount(size, CI.fieldGenerator_LV);
+            case 2 -> GTUtility.copyAmount(size, CI.fieldGenerator_MV);
+            case 3 -> GTUtility.copyAmount(size, CI.fieldGenerator_HV);
+            case 4 -> GTUtility.copyAmount(size, CI.fieldGenerator_EV);
+            case 5 -> GTUtility.copyAmount(size, CI.fieldGenerator_IV);
+            case 6 -> GTUtility.copyAmount(size, CI.fieldGenerator_LuV);
+            case 7 -> GTUtility.copyAmount(size, CI.fieldGenerator_ZPM);
+            case 8 -> GTUtility.copyAmount(size, CI.fieldGenerator_UV);
+            case 9 -> GTUtility.copyAmount(size, CI.fieldGenerator_UHV);
+            default -> throw new IllegalArgumentException();
+        };
     }
 
-    public static ItemStack getTieredMachineHull(int aTier, int aSize) {
-        ItemStack aType;
-        int aLazyTier = 0;
-        if (aTier == aLazyTier++) {
-            aType = CI.machineHull_ULV;
-        } else if (aTier == aLazyTier++) {
-            aType = CI.machineHull_LV;
-        } else if (aTier == aLazyTier++) {
-            aType = CI.machineHull_MV;
-        } else if (aTier == aLazyTier++) {
-            aType = CI.machineHull_HV;
-        } else if (aTier == aLazyTier++) {
-            aType = CI.machineHull_EV;
-        } else if (aTier == aLazyTier++) {
-            aType = CI.machineHull_IV;
-        } else if (aTier == aLazyTier++) {
-            aType = CI.machineHull_LuV;
-        } else if (aTier == aLazyTier++) {
-            aType = CI.machineHull_ZPM;
-        } else if (aTier == aLazyTier++) {
-            aType = CI.machineHull_UV;
-        } else if (aTier == aLazyTier) {
-            aType = CI.machineHull_UHV;
-        } else {
-            throw new IllegalArgumentException();
-        }
-        return ItemUtils.getSimpleStack(aType, aSize);
-    }
-
-    public static ItemStack getHeatCoil(int i) {
-        if (i > 8) {
-            i = 8;
-        }
-        return ItemUtils.simpleMetaStack(GregTechAPI.sBlockCasings5, i, 1);
+    public static ItemStack getTieredMachineHull(int tier, int size) {
+        return switch (tier){
+            case 0 -> GTUtility.copyAmount(size, CI.machineHull_ULV);
+            case 1 -> GTUtility.copyAmount(size, CI.machineHull_LV);
+            case 2 -> GTUtility.copyAmount(size, CI.machineHull_MV);
+            case 3 -> GTUtility.copyAmount(size, CI.machineHull_HV);
+            case 4 -> GTUtility.copyAmount(size, CI.machineHull_EV);
+            case 5 -> GTUtility.copyAmount(size, CI.machineHull_IV);
+            case 6 -> GTUtility.copyAmount(size, CI.machineHull_LuV);
+            case 7 -> GTUtility.copyAmount(size, CI.machineHull_ZPM);
+            case 8 -> GTUtility.copyAmount(size, CI.machineHull_UV);
+            case 9 -> GTUtility.copyAmount(size, CI.machineHull_UHV);
+            default -> throw new IllegalArgumentException();
+        };
     }
 
     public static ItemStack getTieredGTPPMachineCasing(int aTier, int aAmount) {
