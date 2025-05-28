@@ -187,7 +187,7 @@ public class ItemGenericChemBase extends Item {
             }
             double currentDamage = getMillingBallDamage(aStack);
             return currentDamage / getMaxBallDurability(aStack);
-        } else if (ItemUtils.isCatalyst(aStack)) {
+        } else if (MTEChemicalPlant.isCatalyst(aStack)) {
             if (aStack.getTagCompound() == null || aStack.getTagCompound()
                 .hasNoTags()) {
                 createCatalystNBT(aStack);
@@ -214,7 +214,7 @@ public class ItemGenericChemBase extends Item {
             aDam = aMaxDamage - getMillingBallDamage(aStack);
             aHasSpecialTooltips = true;
         }
-        if (ItemUtils.isCatalyst(aStack)) {
+        if (MTEChemicalPlant.isCatalyst(aStack)) {
             list.add(
                 EnumChatFormatting.GRAY
                     + StatCollector.translateToLocal("GTPP.tooltip.catalyst.active_reaction_agent"));
@@ -243,7 +243,7 @@ public class ItemGenericChemBase extends Item {
         if (ItemUtils.isMillingBall(aStack)) {
             int aDam = getMillingBallDamage(aStack);
             return aDam > 0;
-        } else if (ItemUtils.isCatalyst(aStack)) {
+        } else if (MTEChemicalPlant.isCatalyst(aStack)) {
             int aDam = getCatalystDamage(aStack);
             return aDam > 0;
         }
