@@ -12,6 +12,7 @@ import java.util.Set;
 
 import gregtech.api.enums.Mods;
 import gtPlusPlus.core.recipe.RecipesTools;
+import gtPlusPlus.xmod.pamsharvest.fishtrap.FishTrapHandler;
 import net.minecraft.item.ItemStack;
 
 import gregtech.api.enums.GTValues;
@@ -19,7 +20,6 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GTOreDictUnificator;
 import gtPlusPlus.api.interfaces.RunnableWithInfo;
 import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.core.common.compat.CompatHarvestCraft;
 import gtPlusPlus.core.common.compat.CompatWitchery;
 import gtPlusPlus.core.handler.Recipes.LateRegistrationHandler;
 import gtPlusPlus.core.handler.Recipes.RegistrationHandler;
@@ -207,7 +207,7 @@ public class CompatHandler {
             GTOreDictUnificator.registerOre("ingotBedrockium", getModItem(Mods.ExtraUtilities.ID, "bedrockiumIngot", 1, 0));
         }
         if (PamsHarvestCraft.isModLoaded()) {
-            CompatHarvestCraft.OreDict();
+            FishTrapHandler.pamsHarvestCraftCompat();
         }
         if (Witchery.isModLoaded()) {
             CompatWitchery.OreDict();
