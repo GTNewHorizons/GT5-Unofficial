@@ -29,7 +29,7 @@ public class WirelessChargerManager {
     @SubscribeEvent
     public void onServerTick(TickEvent.ServerTickEvent event) {
         if (event.phase == TickEvent.Phase.END) {
-            if (++tickCounter % CHARGE_TICK == 0) {
+            if (!CHARGER_MAP.isEmpty() && ++tickCounter % CHARGE_TICK == 0) {
                 for (EntityPlayer player : PlayerUtils.getOnlinePlayers()) {
                     chargePlayerItems(player);
                 }
