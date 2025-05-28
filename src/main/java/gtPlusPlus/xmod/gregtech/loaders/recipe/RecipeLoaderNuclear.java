@@ -13,6 +13,7 @@ import static gregtech.api.recipe.RecipeMaps.maceratorRecipes;
 import static gregtech.api.recipe.RecipeMaps.mixerRecipes;
 import static gregtech.api.recipe.RecipeMaps.multiblockChemicalReactorRecipes;
 import static gregtech.api.recipe.RecipeMaps.sifterRecipes;
+import static gregtech.api.util.GTModHandler.getModItem;
 import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.MINUTES;
 import static gregtech.api.util.GTRecipeBuilder.NUGGETS;
@@ -23,6 +24,7 @@ import static gregtech.api.util.GTRecipeConstants.FUSION_THRESHOLD;
 import static gregtech.api.util.GTRecipeConstants.UniversalChemical;
 import static gtPlusPlus.api.recipe.GTPPRecipeMaps.chemicalDehydratorRecipes;
 
+import gregtech.api.enums.Mods;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -104,9 +106,9 @@ public class RecipeLoaderNuclear {
 
         // Uranium
         for (ItemStack depletedRod : new ItemStack[] {
-            ItemUtils.getItemStackFromFQRN("IC2:reactorUraniumSimpledepleted", 8),
-            ItemUtils.getItemStackFromFQRN("IC2:reactorUraniumDualdepleted", 4),
-            ItemUtils.getItemStackFromFQRN("IC2:reactorUraniumQuaddepleted", 2) }) {
+            getModItem(Mods.IndustrialCraft2.ID, "reactorUraniumSimpledepleted", 8),
+            getModItem(Mods.IndustrialCraft2.ID, "reactorUraniumDualdepleted", 4),
+            getModItem(Mods.IndustrialCraft2.ID, "reactorUraniumQuaddepleted", 2) }) {
             GTValues.RA.stdBuilder()
                 .itemInputs(depletedRod, GTUtility.getIntegratedCircuit(20))
                 .itemOutputs(
@@ -125,9 +127,9 @@ public class RecipeLoaderNuclear {
 
         // Mox
         for (ItemStack depletedRod : new ItemStack[] {
-            ItemUtils.getItemStackFromFQRN("IC2:reactorMOXSimpledepleted", 8),
-            ItemUtils.getItemStackFromFQRN("IC2:reactorMOXDualdepleted", 4),
-            ItemUtils.getItemStackFromFQRN("IC2:reactorMOXQuaddepleted", 2) }) {
+            getModItem(Mods.IndustrialCraft2.ID, "reactorMOXSimpledepleted", 8),
+            getModItem(Mods.IndustrialCraft2.ID, "reactorMOXDualdepleted", 4),
+            getModItem(Mods.IndustrialCraft2.ID, "reactorMOXQuaddepleted", 2) }) {
             GTValues.RA.stdBuilder()
                 .itemInputs(depletedRod, GTUtility.getIntegratedCircuit(20))
                 .itemOutputs(

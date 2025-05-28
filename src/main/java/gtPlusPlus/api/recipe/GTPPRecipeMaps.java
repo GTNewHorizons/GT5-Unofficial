@@ -1,5 +1,6 @@
 package gtPlusPlus.api.recipe;
 
+import static gregtech.api.util.GTModHandler.getModItem;
 import static gregtech.api.util.GTRecipeConstants.LFTR_OUTPUT_POWER;
 import static gregtech.api.util.GTRecipeConstants.QFT_CATALYST;
 
@@ -8,6 +9,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import gregtech.api.enums.Mods;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
 
@@ -142,7 +144,7 @@ public class GTPPRecipeMaps {
                 : null)
         .neiHandlerInfo(
             builder -> builder
-                .setDisplayStack(ItemUtils.getItemStackFromFQRN("AdvancedSolarPanel:BlockMolecularTransformer", 1)))
+                .setDisplayStack(getModItem(Mods.AdvancedSolarPanel.ID,"BlockMolecularTransformer", 1)))
         .build();
     public static final RecipeMap<RecipeMapBackend> chemicalPlantRecipes = RecipeMapBuilder
         .of("gtpp.recipe.fluidchemicaleactor")

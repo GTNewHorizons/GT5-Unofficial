@@ -1,5 +1,6 @@
 package gtPlusPlus.core.recipe.common;
 
+import gregtech.api.enums.Mods;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
@@ -22,6 +23,8 @@ import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import ic2.core.Ic2Items;
+
+import static gregtech.api.util.GTModHandler.getModItem;
 
 public class CI {
 
@@ -465,16 +468,16 @@ public class CI {
 
     public static ItemStack getEnergyCore(int aTier, int aAmount) {
         ItemStack[] aOutput = new ItemStack[] {
-            ItemUtils.getItemStackFromFQRN("miscutils:item.itemBufferCore" + "1", 1),
-            ItemUtils.getItemStackFromFQRN("miscutils:item.itemBufferCore" + "2", 1),
-            ItemUtils.getItemStackFromFQRN("miscutils:item.itemBufferCore" + "3", 1),
-            ItemUtils.getItemStackFromFQRN("miscutils:item.itemBufferCore" + "4", 1),
-            ItemUtils.getItemStackFromFQRN("miscutils:item.itemBufferCore" + "5", 1),
-            ItemUtils.getItemStackFromFQRN("miscutils:item.itemBufferCore" + "6", 1),
-            ItemUtils.getItemStackFromFQRN("miscutils:item.itemBufferCore" + "7", 1),
-            ItemUtils.getItemStackFromFQRN("miscutils:item.itemBufferCore" + "8", 1),
-            ItemUtils.getItemStackFromFQRN("miscutils:item.itemBufferCore" + "9", 1),
-            ItemUtils.getItemStackFromFQRN("miscutils:item.itemBufferCore" + "10", 1) };
+            getModItem(Mods.GTPlusPlus.ID,"item.itemBufferCore" + "1", 1),
+            getModItem(Mods.GTPlusPlus.ID,"item.itemBufferCore" + "2", 1),
+            getModItem(Mods.GTPlusPlus.ID,"item.itemBufferCore" + "3", 1),
+            getModItem(Mods.GTPlusPlus.ID,"item.itemBufferCore" + "4", 1),
+            getModItem(Mods.GTPlusPlus.ID,"item.itemBufferCore" + "5", 1),
+            getModItem(Mods.GTPlusPlus.ID,"item.itemBufferCore" + "6", 1),
+            getModItem(Mods.GTPlusPlus.ID,"item.itemBufferCore" + "7", 1),
+            getModItem(Mods.GTPlusPlus.ID,"item.itemBufferCore" + "8", 1),
+            getModItem(Mods.GTPlusPlus.ID,"item.itemBufferCore" + "9", 1),
+            getModItem(Mods.GTPlusPlus.ID,"item.itemBufferCore" + "10", 1) };
         return ItemUtils.getSimpleStack(aOutput[MathUtils.balance(aTier, 0, 9)], aAmount);
     }
 

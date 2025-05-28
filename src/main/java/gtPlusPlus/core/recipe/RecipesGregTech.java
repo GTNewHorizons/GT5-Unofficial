@@ -3,6 +3,7 @@ package gtPlusPlus.core.recipe;
 import static gregtech.api.enums.GTValues.RA;
 import static gregtech.api.enums.Mods.Backpack;
 import static gregtech.api.enums.Mods.Baubles;
+import static gregtech.api.enums.Mods.GTPlusPlus;
 import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
 import static gregtech.api.recipe.RecipeMaps.alloySmelterRecipes;
 import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
@@ -21,6 +22,7 @@ import static gregtech.api.recipe.RecipeMaps.laserEngraverRecipes;
 import static gregtech.api.recipe.RecipeMaps.maceratorRecipes;
 import static gregtech.api.recipe.RecipeMaps.mixerRecipes;
 import static gregtech.api.recipe.RecipeMaps.multiblockChemicalReactorRecipes;
+import static gregtech.api.util.GTModHandler.getModItem;
 import static gregtech.api.util.GTRecipeBuilder.EIGHTH_INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.HALF_INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.HOURS;
@@ -503,7 +505,7 @@ public class RecipesGregTech {
                     CI.getTertiaryTieredFluid(7, 4 * STACKS + 32 * INGOTS),
                     CI.getAlternativeTieredFluid(6, 4 * STACKS + 32 * INGOTS),
                     CI.getAlternativeTieredFluid(7, 4 * STACKS + 32 * INGOTS))
-                .itemOutputs(ItemUtils.getItemStackFromFQRN("miscutils:personalHealingDevice", 1))
+                .itemOutputs(getModItem(Mods.GTPlusPlus.ID, "personalHealingDevice", 1))
                 .eut(TierEU.RECIPE_ZPM)
                 .duration(3 * MINUTES)
                 .addTo(AssemblyLine);
@@ -511,10 +513,10 @@ public class RecipesGregTech {
             // Charge Pack LuV-UV
 
             ItemStack[] aChargeResearch = new ItemStack[] {
-                ItemUtils.getItemStackFromFQRN("miscutils:item.itemBufferCore7", 1),
-                ItemUtils.getItemStackFromFQRN("miscutils:item.itemBufferCore8", 1),
-                ItemUtils.getItemStackFromFQRN("miscutils:item.itemBufferCore9", 1),
-                ItemUtils.getItemStackFromFQRN("miscutils:item.itemBufferCore10", 1), };
+                getModItem(Mods.GTPlusPlus.ID, "item.itemBufferCore7", 1),
+                getModItem(Mods.GTPlusPlus.ID, "item.itemBufferCore8", 1),
+                getModItem(Mods.GTPlusPlus.ID, "item.itemBufferCore9", 1),
+                getModItem(Mods.GTPlusPlus.ID, "item.itemBufferCore10", 1), };
 
             ItemStack[] aChargeOutputs = new ItemStack[] { ItemUtils.getSimpleStack(ModItems.itemChargePack_High_1, 1),
                 ItemUtils.getSimpleStack(ModItems.itemChargePack_High_2, 1),
@@ -590,7 +592,7 @@ public class RecipesGregTech {
                     CI.getTieredFluid(8, 4 * STACKS + 32 * INGOTS),
                     CI.getTertiaryTieredFluid(8, 4 * STACKS + 32 * INGOTS),
                     CI.getAlternativeTieredFluid(7, 9 * STACKS))
-                .itemOutputs(ItemUtils.getItemStackFromFQRN("miscutils:personalCloakingDevice-0.0", 1))
+                .itemOutputs(getModItem(GTPlusPlus.ID,"personalCloakingDevice-0.0", 1))
                 .eut(TierEU.RECIPE_UV)
                 .duration(3 * MINUTES)
                 .addTo(AssemblyLine);
@@ -1058,7 +1060,7 @@ public class RecipesGregTech {
                 GTValues.RA.stdBuilder()
                     .itemInputs(
                         GTUtility.getIntegratedCircuit(18),
-                        GTModHandler.getModItem(NewHorizonsCoreMod.ID, "item.ArtificialLeather", 2L, 0))
+                        getModItem(NewHorizonsCoreMod.ID, "item.ArtificialLeather", 2L, 0))
                     .itemOutputs(ItemUtils.getCorrectStacktype("Backpack:tannedLeather", 1))
                     .fluidInputs(FluidUtils.getFluidStack("fluid.ethylbenzene", 1_000))
                     .eut(180)

@@ -2,6 +2,7 @@ package gtPlusPlus.nei;
 
 import java.util.Arrays;
 
+import gregtech.api.enums.Mods;
 import net.minecraft.item.ItemStack;
 
 import codechicken.nei.api.API;
@@ -13,6 +14,8 @@ import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
+
+import static gregtech.api.util.GTModHandler.getModItem;
 
 public class NEIGTPPConfig implements IConfigureNEI {
 
@@ -39,8 +42,8 @@ public class NEIGTPPConfig implements IConfigureNEI {
             API.addRecipeCatalyst(item.get(1), "crafting", -10);
         }
         // Bronze workbench
-        API.removeRecipeCatalyst(ItemUtils.getItemStackFromFQRN("gregtech:gt.blockmachines:31081", 1), "crafting");
-        API.removeRecipeCatalyst(ItemUtils.getItemStackFromFQRN("gregtech:gt.blockmachines:31082", 1), "crafting");
+        API.removeRecipeCatalyst(getModItem(Mods.GregTech.ID, "gt.blockmachines:31081", 1), "crafting");
+        API.removeRecipeCatalyst(getModItem(Mods.GregTech.ID, "gt.blockmachines:31082", 1), "crafting");
 
         // Moved to its own handler
         API.removeRecipeCatalyst(
@@ -49,17 +52,17 @@ public class NEIGTPPConfig implements IConfigureNEI {
 
         // ULV simple washer
         API.removeRecipeCatalyst(
-            ItemUtils.getItemStackFromFQRN("gregtech:gt.blockmachines:767", 1),
+            getModItem(Mods.GregTech.ID, "gt.blockmachines:767", 1),
             GTPPRecipeMaps.simpleWasherRecipes.unlocalizedName);
 
         // ULV combustion generator
         API.removeRecipeCatalyst(
-            ItemUtils.getItemStackFromFQRN("gregtech:gt.blockmachines:960", 1),
+            getModItem(Mods.GregTech.ID, "gt.blockmachines:960", 1),
             RecipeMaps.dieselFuels.unlocalizedName);
 
         // ULV gas turbine
         API.removeRecipeCatalyst(
-            ItemUtils.getItemStackFromFQRN("gregtech:gt.blockmachines:961", 1),
+            getModItem(Mods.GregTech.ID, "gt.blockmachines:961", 1),
             RecipeMaps.gasTurbineFuels.unlocalizedName);
 
         // Hide Flasks

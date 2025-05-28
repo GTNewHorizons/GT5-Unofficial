@@ -21,6 +21,7 @@ import static gtPlusPlus.api.recipe.GTPPRecipeMaps.chemicalPlantRecipes;
 
 import java.util.List;
 
+import gregtech.api.enums.Mods;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -2239,7 +2240,7 @@ public class RecipesMachines {
             "plateDoubleHastelloyC276",
             RECIPE_LFTRInnerCasing);
 
-        ItemStack IC2HeatPlate = ItemUtils.getItemStackFromFQRN("IC2:reactorPlatingHeat", 1);
+        ItemStack IC2HeatPlate = getModItem(Mods.IndustrialCraft2.ID, "reactorPlatingHeat", 1);
         RecipeUtils.addShapedGregtechRecipe(
             "plateDoubleHastelloyN",
             IC2HeatPlate,
@@ -2913,16 +2914,16 @@ public class RecipesMachines {
             TierEU.RECIPE_IV, TierEU.RECIPE_LuV, TierEU.RECIPE_ZPM, TierEU.RECIPE_UV, TierEU.RECIPE_UHV };
 
         ItemStack[] aOutput = new ItemStack[] {
-            ItemUtils.getItemStackFromFQRN("miscutils:item.itemBufferCore" + "1", 1),
-            ItemUtils.getItemStackFromFQRN("miscutils:item.itemBufferCore" + "2", 1),
-            ItemUtils.getItemStackFromFQRN("miscutils:item.itemBufferCore" + "3", 1),
-            ItemUtils.getItemStackFromFQRN("miscutils:item.itemBufferCore" + "4", 1),
-            ItemUtils.getItemStackFromFQRN("miscutils:item.itemBufferCore" + "5", 1),
-            ItemUtils.getItemStackFromFQRN("miscutils:item.itemBufferCore" + "6", 1),
-            ItemUtils.getItemStackFromFQRN("miscutils:item.itemBufferCore" + "7", 1),
-            ItemUtils.getItemStackFromFQRN("miscutils:item.itemBufferCore" + "8", 1),
-            ItemUtils.getItemStackFromFQRN("miscutils:item.itemBufferCore" + "9", 1),
-            ItemUtils.getItemStackFromFQRN("miscutils:item.itemBufferCore" + "10", 1) };
+            getModItem(Mods.GTPlusPlus.ID,"item.itemBufferCore" + "1", 1),
+            getModItem(Mods.GTPlusPlus.ID,"item.itemBufferCore" + "2", 1),
+            getModItem(Mods.GTPlusPlus.ID,"item.itemBufferCore" + "3", 1),
+            getModItem(Mods.GTPlusPlus.ID,"item.itemBufferCore" + "4", 1),
+            getModItem(Mods.GTPlusPlus.ID,"item.itemBufferCore" + "5", 1),
+            getModItem(Mods.GTPlusPlus.ID,"item.itemBufferCore" + "6", 1),
+            getModItem(Mods.GTPlusPlus.ID,"item.itemBufferCore" + "7", 1),
+            getModItem(Mods.GTPlusPlus.ID,"item.itemBufferCore" + "8", 1),
+            getModItem(Mods.GTPlusPlus.ID,"item.itemBufferCore" + "9", 1),
+            getModItem(Mods.GTPlusPlus.ID,"item.itemBufferCore" + "10", 1) };
 
         for (int i = 0; i < 10; i++) {
 
