@@ -761,7 +761,11 @@ public class MTEEnvironmentallyControlledChemicalFacility extends
         isFreezerModule = checkPiece(COOL_MODULE_L, MODULE_OFFSET_LEFT, MODULE_OFFSET_V, MODULE_OFFSET_DEPTH);
         if (coolantInputHatchAmount > 1) return false;
         isVacuumModule = checkPiece(VACUUM_MODULE_R, MODULE_OFFSET_RIGHT, MODULE_OFFSET_V, MODULE_OFFSET_DEPTH);
-        isCompressorModule = checkPiece(COMPRESSION_MODULE_R, MODULE_OFFSET_RIGHT, MODULE_OFFSET_V, MODULE_OFFSET_DEPTH);
+        isCompressorModule = checkPiece(
+            COMPRESSION_MODULE_R,
+            MODULE_OFFSET_RIGHT,
+            MODULE_OFFSET_V,
+            MODULE_OFFSET_DEPTH);
         checkPiece(PARALLEL_MODULE_L, MODULE_OFFSET_LEFT, MODULE_OFFSET_V, MODULE_OFFSET_DEPTH);
         checkPiece(PARALLEL_MODULE_R, MODULE_OFFSET_RIGHT, MODULE_OFFSET_V, MODULE_OFFSET_DEPTH);
         if (mExoticEnergyHatches.size() > 1) return false;
@@ -1134,15 +1138,15 @@ public class MTEEnvironmentallyControlledChemicalFacility extends
     public double getCoolantTemp(String name) {
         return switch (name) {
             // cooling
-            case "ic2coolant"-> 250;
-            case "cryotheum"-> 25;
-            case "supercoolant"-> 5;
-            case "molten.spacetime"-> 0;
+            case "ic2coolant" -> 250;
+            case "cryotheum" -> 25;
+            case "supercoolant" -> 5;
+            case "molten.spacetime" -> 0;
             // heating
-            case "lava"-> 1300;
-            case "pyrotheum"-> 4000;
-            case "plasma.helium"-> 10000;
-            case "rawstarmatter"-> 10000000;
+            case "lava" -> 1300;
+            case "pyrotheum" -> 4000;
+            case "plasma.helium" -> 10000;
+            case "rawstarmatter" -> 10000000;
             // don't change temperature
             default -> ambientTemp;
         };
@@ -1198,7 +1202,7 @@ public class MTEEnvironmentallyControlledChemicalFacility extends
         }
         if (mMachine && (aTick % 20 == 0)) {
             if ((currentTemp == 0) && (currentPressure == 0)) {
-                currentPressure =  ambientPressure;
+                currentPressure = ambientPressure;
                 currentTemp = ambientTemp;
             }
 
