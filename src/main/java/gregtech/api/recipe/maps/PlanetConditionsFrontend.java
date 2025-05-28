@@ -39,7 +39,6 @@ public class PlanetConditionsFrontend extends RecipeMapFrontend {
 
     private void drawPlanetConditions(String text, String text_value, int height, float fontScale, int xOffset,
         int colonOffset) {
-        // Draw main text
         drawNEIOverlayText(
             text,
             new PositionedStack(Materials.Acetone.getCells(1), 27 + xOffset, height, false),
@@ -48,7 +47,6 @@ public class PlanetConditionsFrontend extends RecipeMapFrontend {
             false,
             Alignment.CenterLeft);
 
-        // Draw :
         drawNEIOverlayText(
             ":",
             new PositionedStack(Materials.Acetone.getCells(1), 27 + 18 * 4 + xOffset + colonOffset, height, false),
@@ -57,7 +55,6 @@ public class PlanetConditionsFrontend extends RecipeMapFrontend {
             false,
             Alignment.CenterLeft);
 
-        // Draw value
         drawNEIOverlayText(
             text_value,
             new PositionedStack(Materials.Acetone.getCells(1), 27 + 18 * 4 + 6 + xOffset + colonOffset, height, false),
@@ -77,11 +74,10 @@ public class PlanetConditionsFrontend extends RecipeMapFrontend {
         int planetTier = recipeInfo.recipe.getMetadataOrDefault(PLANET_TIER, 0);
         String dimName = recipeInfo.recipe.getMetadata(DIMENSION_NAME);
         int temperature = MTEEnvironmentallyControlledChemicalFacility.DimensionConditions.fromDimensionName(dimName)
-            .getInitialTemp();
+            .getAmbientTemp();
         int pressure = MTEEnvironmentallyControlledChemicalFacility.DimensionConditions.fromDimensionName(dimName)
-            .getInitialPressure();
+            .getAmbientPressure();
 
-        // Name
         drawPlanetConditions(
             StatCollector.translateToLocalFormatted("GT5U.nei.bare_name"),
             displayName,
@@ -90,7 +86,6 @@ public class PlanetConditionsFrontend extends RecipeMapFrontend {
             0,
             -24);
 
-        // Tier
         drawPlanetConditions(
             StatCollector.translateToLocalFormatted("GT5U.nei.bare_tier"),
             formatNumbers(planetTier),
@@ -99,8 +94,7 @@ public class PlanetConditionsFrontend extends RecipeMapFrontend {
             0,
             -24);
 
-        // Pressure
-        if (pressure < 1000) {
+        if (pressure < 1e3) {
             drawPlanetConditions(
                 StatCollector.translateToLocalFormatted("GT5U.nei.bare_pressure"),
                 formatNumbers(pressure) + " Pa",
@@ -108,17 +102,24 @@ public class PlanetConditionsFrontend extends RecipeMapFrontend {
                 fontScale,
                 -24,
                 0);
+        } else if (pressure < 1e6) {
+            drawPlanetConditions(
+                StatCollector.translateToLocalFormatted("GT5U.nei.bare_pressure"),
+                formatNumbers(pressure / 1e3) + " kPa",
+                yOffset + 2 * yStepOffset,
+                fontScale,
+                -24,
+                0);
         } else {
             drawPlanetConditions(
                 StatCollector.translateToLocalFormatted("GT5U.nei.bare_pressure"),
-                formatNumbers(pressure / 1000) + " kPa",
+                formatNumbers(pressure / 1e6) + " MPa",
                 yOffset + 2 * yStepOffset,
                 fontScale,
                 -24,
                 0);
         }
 
-        // Temperature
         drawPlanetConditions(
             StatCollector.translateToLocalFormatted("GT5U.nei.bare_temperature"),
             formatNumbers(temperature) + " K",

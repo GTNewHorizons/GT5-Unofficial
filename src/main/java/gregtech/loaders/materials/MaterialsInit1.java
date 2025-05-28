@@ -1204,7 +1204,7 @@ public class MaterialsInit1 {
             .addFluid()
             .addCell()
             .setRGB(255,196,0)
-            .setName("VO17")
+            .setName("vo17")
             .setColor(Dyes._NULL)
             .constructMaterial();
 
@@ -1212,7 +1212,7 @@ public class MaterialsInit1 {
             .addFluid()
             .addCell()
             .setRGB(255,196,0)
-            .setName("VO43")
+            .setName("vo43")
             .setColor(Dyes._NULL)
             .constructMaterial();
 
@@ -1220,7 +1220,7 @@ public class MaterialsInit1 {
             .addFluid()
             .addCell()
             .setRGB(255,196,0)
-            .setName("VO75")
+            .setName("vo75")
             .setColor(Dyes._NULL)
             .constructMaterial();
 
