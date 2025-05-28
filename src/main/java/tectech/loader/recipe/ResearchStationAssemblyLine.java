@@ -125,7 +125,7 @@ public class ResearchStationAssemblyLine implements Runnable {
             new Object[] { new Object[] { OrePrefixes.circuit.get(Materials.UHV), 1L },
                 GTOreDictUnificator.get(OrePrefixes.wireGt02, Materials.Infinity, 8),
                 GTOreDictUnificator.get(OrePrefixes.screw, Materials.Infinity, 8),
-                ItemList.Naquarite_Universal_Insulator_Foil.get(16) },
+                ItemList.Naquarite_Universal_Insulator_Foil.get(24) },
             new FluidStack[] { Materials.DraconiumAwakened.getMolten(576), },
             ItemList.Casing_Coil_Infinity.get(1),
             60 * 20,
