@@ -250,10 +250,10 @@ public abstract class MetaBaseItem extends GTGenericItem
                     aList.add(
                         EnumChatFormatting.AQUA
                             + translateToLocalFormatted(
-                            "gt.item.desc.eu_info",
-                            formatNumbers(tCharge),
-                            formatNumbers(Math.abs(tStats[0])),
-                            formatNumbers(V[voltageTier]))
+                                "gt.item.desc.eu_info",
+                                formatNumbers(tCharge),
+                                formatNumbers(Math.abs(tStats[0])),
+                                formatNumbers(V[voltageTier]))
                             + EnumChatFormatting.GRAY);
                 }
             }
