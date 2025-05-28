@@ -84,7 +84,7 @@ public class BaseItemDustUnique extends Item {
             temp = temp.replace("itemD", "d");
             Logger.WARNING("Generating OreDict Name: " + temp);
         }
-        if ((temp != null) && !temp.isEmpty()) {
+        if (!temp.isEmpty()) {
             GTOreDictUnificator.registerOre(temp, ItemUtils.getSimpleStack(this));
         }
         registerComponent();
@@ -145,8 +145,7 @@ public class BaseItemDustUnique extends Item {
         if (this.sRadiation > 0) {
             list.add(GTPPCore.GT_Tooltip_Radioactive.get());
         }
-        if (!this.chemicalNotation.isEmpty() && !chemicalNotation.isEmpty()
-            && !chemicalNotation.equals("NullFormula")) {
+        if (!this.chemicalNotation.isEmpty() && !chemicalNotation.equals("NullFormula")) {
             list.add(this.chemicalNotation);
         }
         super.addInformation(stack, aPlayer, list, bool);

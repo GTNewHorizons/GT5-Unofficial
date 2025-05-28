@@ -391,10 +391,10 @@ public class MTELESU extends MTEMultiBlockBase {
         }
 
         this.mEfficiency = this.getMaxEfficiency(null);
-        this.mStorage = Configuration.multiblocks.energyPerCell * this.connectedcells.hashset.size()
+        this.mStorage = (long) Configuration.multiblocks.energyPerCell * this.connectedcells.hashset.size()
             >= Long.MAX_VALUE - 1 || Configuration.multiblocks.energyPerCell * this.connectedcells.hashset.size() < 0
                 ? Long.MAX_VALUE - 1
-                : Configuration.multiblocks.energyPerCell * this.connectedcells.hashset.size();
+                : (long) Configuration.multiblocks.energyPerCell * this.connectedcells.hashset.size();
         this.mMaxProgresstime = 1;
         this.mProgresstime = 0;
 

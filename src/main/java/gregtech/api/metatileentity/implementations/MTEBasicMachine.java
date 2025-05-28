@@ -1172,13 +1172,13 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
                         currenttip.add(
                             translateToLocalFormatted(
                                 "GTPP.waila.steam.use",
-                                GTUtility.formatNumbers(mEUt * 40),
+                                GTUtility.formatNumbers(mEUt * 40L),
                                 GTUtility.getColoredTierNameFromVoltage(mEUt)));
                     } else if (mEUt < 0) {
                         currenttip.add(
                             translateToLocalFormatted(
                                 "GTPP.waila.steam.use",
-                                GTUtility.formatNumbers(-mEUt * 40),
+                                GTUtility.formatNumbers(-mEUt * 40L),
                                 GTUtility.getColoredTierNameFromVoltage(-mEUt)));
                     }
                 }

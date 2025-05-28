@@ -1645,7 +1645,6 @@ public enum ItemList implements IItemContainer {
     Depleted_Thorium_2,
     Depleted_Thorium_4,
 
-    Processing_Array,
     Distillation_Tower,
     Energy_LapotronicOrb2,
     Ore_Processor,

@@ -322,17 +322,12 @@ public class MTEAtmosphericReconditioner extends MTEBasicMachine {
                                     } // End of valid air sides block.
                                 } // End of valid toolstats block.
                             } // End of correct inventory item block.
-                            else {
-                                // Utils.LOG_WARNING("Wrong Tool metaitem Found.");
-                            }
                         }
                     } else if (!aBaseMetaTileEntity.isActive()) {
                         return;
                     }
                 } // End of can work block.
-                else { // Disable Machine.
-                       // aBaseMetaTileEntity.setActive(false);
-                }
+
             } // End of 1/sec action block.
             else {
 
@@ -412,11 +407,8 @@ public class MTEAtmosphericReconditioner extends MTEBasicMachine {
                 && rotorStack.getItemDamage() <= 179) {
                     // Logger.INFO("Found Turbine Rotor.");
                     return true;
-                } else {
-                    // Logger.INFO("Found: "+rotorStack.getDisplayName()+":"+rotorStack.getItemDamage());
                 }
         }
-        // Logger.INFO("Found No Turbine Rotor.");
         return false;
     }
 
