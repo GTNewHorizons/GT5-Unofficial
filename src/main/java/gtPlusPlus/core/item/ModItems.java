@@ -6,10 +6,12 @@ import static gregtech.api.enums.Mods.GTPlusPlus;
 import static gregtech.api.enums.Mods.GregTech;
 import static gregtech.api.enums.Mods.Thaumcraft;
 import static gregtech.api.recipe.RecipeMaps.fluidExtractionRecipes;
+import static gregtech.api.util.GTModHandler.getModItem;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
 import static gtPlusPlus.core.creative.AddToCreativeTab.tabMisc;
 import static gtPlusPlus.core.util.minecraft.ItemUtils.hideItemFromNEI;
 
+import gregtech.api.enums.Mods;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
@@ -462,18 +464,10 @@ public final class ModItems {
             shardTerra = new BaseItemTCShard("Terra", Utils.rgbtoHexValue(5, 255, 5));
             shardAqua = new BaseItemTCShard("Aqua", Utils.rgbtoHexValue(5, 5, 255));
         } else {
-            shardAer = ItemUtils
-                .getItemStackWithMeta(Thaumcraft.isModLoaded(), "Thaumcraft:ItemShard", "Air Shard", 0, 1)
-                .getItem();
-            shardIgnis = ItemUtils
-                .getItemStackWithMeta(Thaumcraft.isModLoaded(), "Thaumcraft:ItemShard", "Fire Shard", 1, 1)
-                .getItem();
-            shardAqua = ItemUtils
-                .getItemStackWithMeta(Thaumcraft.isModLoaded(), "Thaumcraft:ItemShard", "Warer Shard", 2, 1)
-                .getItem();
-            shardTerra = ItemUtils
-                .getItemStackWithMeta(Thaumcraft.isModLoaded(), "Thaumcraft:ItemShard", "Earth Shard", 3, 1)
-                .getItem();
+            shardAer = getModItem(Thaumcraft.ID, "ItemShard", 1,0).getItem();
+            shardIgnis = getModItem(Thaumcraft.ID, "ItemShard", 1,1).getItem();
+            shardAqua = getModItem(Thaumcraft.ID, "ItemShard", 1, 2).getItem();
+            shardTerra = getModItem(Thaumcraft.ID, "ItemShard", 1, 3).getItem();
         }
         // Generates a set of four special dusts to be used in my recipes.
         dustAer = ItemUtils.generateSpecialUseDusts(MaterialsElements.getInstance().AER, true)[0];

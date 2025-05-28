@@ -1050,7 +1050,7 @@ public class RecipesGregTech {
         if (Backpack.isModLoaded()) {
             GTValues.RA.stdBuilder()
                 .itemInputs(GTUtility.getIntegratedCircuit(18), new ItemStack(Items.leather, 2))
-                .itemOutputs(ItemUtils.getCorrectStacktype("Backpack:tannedLeather", 1))
+                .itemOutputs(getModItem(Backpack.ID, "tannedLeather", 1))
                 .fluidInputs(FluidUtils.getFluidStack("fluid.ethylbenzene", 1_000))
                 .eut(180)
                 .duration(5 * SECONDS)
@@ -1061,7 +1061,7 @@ public class RecipesGregTech {
                     .itemInputs(
                         GTUtility.getIntegratedCircuit(18),
                         getModItem(NewHorizonsCoreMod.ID, "item.ArtificialLeather", 2L, 0))
-                    .itemOutputs(ItemUtils.getCorrectStacktype("Backpack:tannedLeather", 1))
+                    .itemOutputs(getModItem(Backpack.ID, "tannedLeather", 1))
                     .fluidInputs(FluidUtils.getFluidStack("fluid.ethylbenzene", 1_000))
                     .eut(180)
                     .duration(5 * SECONDS)

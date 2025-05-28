@@ -108,19 +108,6 @@ public class ItemUtils {
         return GTModHandler.getModItem(IndustrialCraft2.ID, "itemCellEmpty", i, 0);
     }
 
-    public static void getItemForOreDict(final String FQRN, final String oreDictName, final String itemName,
-        final int meta) {
-        try {
-            final Item em1 = getItemFromFQRN(FQRN);
-            if (em1 != null) {
-                final ItemStack metaStack = new ItemStack(em1, 1, meta);
-                GTOreDictUnificator.registerOre(oreDictName, metaStack);
-            }
-        } catch (final NullPointerException e) {
-            Logger.ERROR(itemName + " not found. [NULL]");
-        }
-    }
-
     public static void addItemToOreDictionary(ItemStack stack, final String oreDictName, boolean useWildcardMeta) {
         if (useWildcardMeta) {
             stack = ItemUtils.getWildcardStack(stack);
@@ -136,22 +123,6 @@ public class ItemUtils {
         addItemToOreDictionary(stack, oreDictName, false);
     }
 
-    public static ItemStack getItemStackWithMeta(final boolean MOD, final String FQRN, final String itemName,
-        final int meta, final int itemstackSize) {
-        if (MOD) {
-            try {
-                final Item em1 = getItemFromFQRN(FQRN);
-                if (em1 != null) {
-                    return new ItemStack(em1, itemstackSize, meta);
-                }
-                return null;
-            } catch (final NullPointerException e) {
-                Logger.ERROR(itemName + " not found. [NULL]");
-                return null;
-            }
-        }
-        return null;
-    }
 
     public static ItemStack simpleMetaStack(final String FQRN, final int meta, final int itemstackSize) {
         try {
@@ -187,57 +158,10 @@ public class ItemUtils {
         return simpleMetaStack(Item.getItemFromBlock(block), meta, size);
     }
 
-    public static ItemStack getCorrectStacktype(final String fqrn, final int stackSize) {
-        final String oreDict = "ore:";
-        ItemStack temp;
-        if (fqrn.toLowerCase()
-            .contains(oreDict.toLowerCase())) {
-            final String sanitizedName = fqrn.replace(oreDict, "");
-            temp = ItemUtils.getItemStackFromFQRN(sanitizedName, stackSize);
-            return temp;
-        }
-        final String[] fqrnSplit = fqrn.split(":");
-        String temp1;
-        String temp2;
-        temp1 = fqrnSplit[1];
-        if (fqrnSplit.length < 3) {
-            temp2 = "0";
-        } else {
-            temp2 = fqrnSplit[2];
-        }
-        temp = ItemUtils.getItemStackWithMeta(true, fqrn, temp1, Integer.parseInt(temp2), stackSize);
-        return temp;
-    }
-
     public static Item getItemFromFQRN(final String fqrn) // fqrn = fully qualified resource name
     {
         final String[] fqrnSplit = fqrn.split(":");
         return GameRegistry.findItem(fqrnSplit[0], fqrnSplit[1]);
-    }
-
-    public static ItemStack getItemStackFromFQRN(final String fqrn, final int Size) // fqrn = fully qualified resource
-                                                                                    // name
-    {
-        Logger.INFO("Trying to split string '" + fqrn + "'.");
-        final String[] fqrnSplit = fqrn.split(":");
-        if (fqrnSplit.length < 2) {
-            return null;
-        } else {
-            if (fqrnSplit.length == 2) {
-                Logger.INFO("Mod: " + fqrnSplit[0] + ", Item: " + fqrnSplit[1]);
-                return GameRegistry.findItemStack(fqrnSplit[0], fqrnSplit[1], Size);
-            } else if (fqrnSplit.length == 3 && fqrnSplit[2] != null && !fqrnSplit[2].isEmpty()) {
-                Logger.INFO("Mod: " + fqrnSplit[0] + ", Item: " + fqrnSplit[1] + ", Meta: " + fqrnSplit[2]);
-                ItemStack aStack = GameRegistry.findItemStack(fqrnSplit[0], fqrnSplit[1], Size);
-                int aMeta = Integer.parseInt(fqrnSplit[2]);
-                if (aStack != null && (aMeta >= 0 && aMeta <= Short.MAX_VALUE)) {
-                    return ItemUtils.simpleMetaStack(aStack, aMeta, Size);
-                } else {
-                    Logger.INFO("Could not find instance of Item: " + fqrnSplit[1]);
-                }
-            }
-        }
-        return null;
     }
 
     public static ItemStack[] validItemsForOreDict(final String oredictName) {

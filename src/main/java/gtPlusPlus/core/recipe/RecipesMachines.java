@@ -912,8 +912,8 @@ public class RecipesMachines {
     }
 
     private static void initModItems() {
-        IC2MFE = ItemUtils.getItemStackWithMeta(true, "IC2:blockElectric", "IC2_MFE", 1, 1);
-        IC2MFSU = ItemUtils.getItemStackWithMeta(true, "IC2:blockElectric", "IC2_MFSU", 2, 1);
+        IC2MFE = getModItem(Mods.IndustrialCraft2.ID, "blockElectric", 1, 1);
+        IC2MFSU = getModItem(Mods.IndustrialCraft2.ID, "blockElectric", 1, 2);
 
         // Lava Boiler
         boiler_Coal = ItemList.Machine_Bronze_Boiler.get(1);
@@ -935,8 +935,7 @@ public class RecipesMachines {
         EV_MACHINE_ChemicalBath = ItemList.Machine_EV_ChemicalBath.get(1);
         if (Railcraft.isModLoaded()) {
             // Misc
-            INPUT_RCCokeOvenBlock = ItemUtils
-                .getItemStackWithMeta(Railcraft.isModLoaded(), "Railcraft:machine.alpha", "Coke_Oven_RC", 7, 1);
+            INPUT_RCCokeOvenBlock = getModItem(Railcraft.ID,"machine.alpha", 1, 7);
         }
         runModRecipes();
     }
@@ -987,7 +986,7 @@ public class RecipesMachines {
         // RTG
         GTValues.RA.stdBuilder()
             .itemInputs(
-                ItemUtils.getItemStackWithMeta(true, "IC2:blockGenerator:6", "IC2-RTG", 6, 1),
+                getModItem(Mods.IndustrialCraft2.ID, "blockGenerator:6", 1, 6),
                 MaterialsAlloy.NITINOL_60.getPlate(8),
                 MaterialsAlloy.MARAGING350.getGear(4),
                 ItemList.Field_Generator_EV.get(8),
@@ -2167,7 +2166,7 @@ public class RecipesMachines {
                 ItemUtils.getItemStackOfAmountFromOreDict("wireFineSteel", 32),
                 ItemUtils.getItemStackOfAmountFromOreDict("ringTumbaga", 16),
                 ItemUtils.getItemStackOfAmountFromOreDict("foilCopper", 4),
-                ItemUtils.getItemStackWithMeta(true, "IC2:itemPartCarbonMesh", "RawCarbonMesh", 0, 64))
+                getModItem(Mods.IndustrialCraft2.ID, "itemPartCarbonMesh", 64, 0))
             .itemOutputs(ItemUtils.getSimpleStack(ModItems.itemLavaFilter, 16))
             .fluidInputs(CI.getTieredFluid(3, 1 * INGOTS))
             .duration(1 * MINUTES + 20 * SECONDS)

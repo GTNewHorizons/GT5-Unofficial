@@ -116,9 +116,7 @@ public class CompatHandler {
         // In-house
 
         for (int i = 1; i <= 10; i++) {
-            GTOreDictUnificator.registerOre(
-                "bufferCore_" + GTValues.VN[i - 1],
-                new ItemStack(ItemUtils.getItemFromFQRN("miscutils:item.itemBufferCore" + i)));
+            GTOreDictUnificator.registerOre("bufferCore_" + GTValues.VN[i - 1], getModItem(Mods.GTPlusPlus.ID, "item.itemBufferCore" + i, 1));
         }
         for (Particle i : Particle.aMap) {
             GTOreDictUnificator

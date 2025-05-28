@@ -1,10 +1,12 @@
 package gtPlusPlus.core.recipe;
 
 import static gregtech.api.recipe.RecipeMaps.laserEngraverRecipes;
+import static gregtech.api.util.GTModHandler.getModItem;
 import static gregtech.api.util.GTRecipeBuilder.HOURS;
 import static gregtech.api.util.GTRecipeBuilder.MINUTES;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 
+import gregtech.api.enums.Mods;
 import net.minecraft.item.ItemStack;
 
 import gregtech.api.enums.GTValues;
@@ -48,14 +50,10 @@ public class RecipesLaserEngraver implements IOreRecipeRegistrator {
 
         } else if (aOreDictName.equals(OreDictNames.craftingLensLime.toString())) {
             // Coil Wires
-            ItemStack coilWire1 = ItemUtils
-                .getItemStackWithMeta(true, "miscutils:itemDehydratorCoilWire", "coilWire1", 0, 1);
-            ItemStack coilWire2 = ItemUtils
-                .getItemStackWithMeta(true, "miscutils:itemDehydratorCoilWire:1", "coilWire2", 1, 1);
-            ItemStack coilWire3 = ItemUtils
-                .getItemStackWithMeta(true, "miscutils:itemDehydratorCoilWire:2", "coilWire3", 2, 1);
-            ItemStack coilWire4 = ItemUtils
-                .getItemStackWithMeta(true, "miscutils:itemDehydratorCoilWire:3", "coilWire4", 3, 1);
+            ItemStack coilWire1 = getModItem(Mods.GTPlusPlus.ID, "itemDehydratorCoilWire", 1, 0);
+            ItemStack coilWire2 = getModItem(Mods.GTPlusPlus.ID, "itemDehydratorCoilWire:1", 1, 1);
+            ItemStack coilWire3 = getModItem(Mods.GTPlusPlus.ID, "itemDehydratorCoilWire:2", 1, 2);
+            ItemStack coilWire4 = getModItem(Mods.GTPlusPlus.ID, "itemDehydratorCoilWire:3", 1, 3);
 
             // Simple Life
             String wire = "wireGt02";
