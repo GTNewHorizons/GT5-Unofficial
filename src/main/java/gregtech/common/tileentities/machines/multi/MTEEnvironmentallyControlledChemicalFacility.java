@@ -100,23 +100,23 @@ public class MTEEnvironmentallyControlledChemicalFacility extends
     public double tempChange = 0;
     public double presChange = 0;
 
-    public int coolCoilTier = 0;
-    public int vacuumCoilTier = 0;
-    public int heatCoilTier = 0;
-    public int compressCoilTier = 0;
+    public int freezerTier = 0;
+    public int vacuumTier = 0;
+    public int heaterTier = 0;
+    public int compressorTier = 0;
     public int parallelModuleTierR = 0;
     public int parallelModuleTierL = 0;
 
-    private boolean isHeatModule;
-    private boolean isCoolModule;
+    private boolean isHeaterModule;
+    private boolean isFreezerModule;
     private boolean isVacuumModule;
-    private boolean isCompressModule;
+    private boolean isCompressorModule;
 
     private double coeffTemp = 0.98;
     private double coeffPressure = 0.95;
 
-    public double initialPressure = 0;
-    public double initialTemp = 0;
+    public double ambientPressure = 0;
+    public double ambientTemp = 0;
     private double coolantTemp = 0;
     private int recipeEUt = 0;
 
@@ -209,61 +209,61 @@ public class MTEEnvironmentallyControlledChemicalFacility extends
                 .buildAndChain(GregTechAPI.sBlockCasings8, 0))
         .addElement(
             'C',
-            GTStructureChannels.ECCF_COOLER.use(
+            GTStructureChannels.ECCF_FREEZER.use(
                 ofBlocksTiered(
-                    MTEEnvironmentallyControlledChemicalFacility::getCoolCoilMeta,
+                    MTEEnvironmentallyControlledChemicalFacility::getFreezerTier,
                     ImmutableList.of(
                         Pair.of(sBlockCoilECCF, 0),
                         Pair.of(sBlockCoilECCF, 1),
                         Pair.of(sBlockCoilECCF, 2),
                         Pair.of(sBlockCoilECCF, 3)),
                     -1,
-                    (MTEEnvironmentallyControlledChemicalFacility t, Integer m) -> t.coolCoilTier = m,
-                    (MTEEnvironmentallyControlledChemicalFacility t) -> t.coolCoilTier)))
+                    (MTEEnvironmentallyControlledChemicalFacility t, Integer m) -> t.freezerTier = m,
+                    (MTEEnvironmentallyControlledChemicalFacility t) -> t.freezerTier)))
         .addElement(
             'H',
             GTStructureChannels.ECCF_HEATER.use(
                 ofBlocksTiered(
-                    MTEEnvironmentallyControlledChemicalFacility::getHeatCoilMeta,
+                    MTEEnvironmentallyControlledChemicalFacility::getHeaterTier,
                     ImmutableList.of(
                         Pair.of(sBlockCoilECCF, 4),
                         Pair.of(sBlockCoilECCF, 5),
                         Pair.of(sBlockCoilECCF, 6),
                         Pair.of(sBlockCoilECCF, 7)),
                     -1,
-                    (MTEEnvironmentallyControlledChemicalFacility t, Integer m) -> t.heatCoilTier = m,
-                    (MTEEnvironmentallyControlledChemicalFacility t) -> t.heatCoilTier)))
+                    (MTEEnvironmentallyControlledChemicalFacility t, Integer m) -> t.heaterTier = m,
+                    (MTEEnvironmentallyControlledChemicalFacility t) -> t.heaterTier)))
         .addElement(
             'K',
             GTStructureChannels.ECCF_COMPRESSOR.use(
                 ofBlocksTiered(
-                    MTEEnvironmentallyControlledChemicalFacility::getCompressCoilMeta,
+                    MTEEnvironmentallyControlledChemicalFacility::getCompressorTier,
                     ImmutableList.of(
                         Pair.of(sBlockCoilECCF, 8),
                         Pair.of(sBlockCoilECCF, 9),
                         Pair.of(sBlockCoilECCF, 10),
                         Pair.of(sBlockCoilECCF, 11)),
                     -1,
-                    (MTEEnvironmentallyControlledChemicalFacility t, Integer m) -> t.compressCoilTier = m,
-                    (MTEEnvironmentallyControlledChemicalFacility t) -> t.compressCoilTier)))
+                    (MTEEnvironmentallyControlledChemicalFacility t, Integer m) -> t.compressorTier = m,
+                    (MTEEnvironmentallyControlledChemicalFacility t) -> t.compressorTier)))
         .addElement(
             'V',
             GTStructureChannels.ECCF_VACUUM.use(
                 ofBlocksTiered(
-                    MTEEnvironmentallyControlledChemicalFacility::getVacuumCoilMeta,
+                    MTEEnvironmentallyControlledChemicalFacility::getVacuumTier,
                     ImmutableList.of(
                         Pair.of(sBlockCoilECCF, 12),
                         Pair.of(sBlockCoilECCF, 13),
                         Pair.of(sBlockCoilECCF, 14),
                         Pair.of(sBlockCoilECCF, 15)),
                     -1,
-                    (MTEEnvironmentallyControlledChemicalFacility t, Integer m) -> t.vacuumCoilTier = m,
-                    (MTEEnvironmentallyControlledChemicalFacility t) -> t.vacuumCoilTier)))
+                    (MTEEnvironmentallyControlledChemicalFacility t, Integer m) -> t.vacuumTier = m,
+                    (MTEEnvironmentallyControlledChemicalFacility t) -> t.vacuumTier)))
         .addElement(
             'W',
             GTStructureChannels.ECCF_PARALLEL_R.use(
                 ofBlocksTiered(
-                    MTEEnvironmentallyControlledChemicalFacility::getParallelMeta,
+                    MTEEnvironmentallyControlledChemicalFacility::getParallelTier,
                     ImmutableList
                         .of(Pair.of(sBlockCoilECCF2, 0), Pair.of(sBlockCoilECCF2, 1), Pair.of(sBlockCoilECCF2, 2)),
                     -1,
@@ -273,7 +273,7 @@ public class MTEEnvironmentallyControlledChemicalFacility extends
             'I',
             GTStructureChannels.ECCF_PARALLEL_L.use(
                 ofBlocksTiered(
-                    MTEEnvironmentallyControlledChemicalFacility::getParallelMeta,
+                    MTEEnvironmentallyControlledChemicalFacility::getParallelTier,
                     ImmutableList
                         .of(Pair.of(sBlockCoilECCF2, 0), Pair.of(sBlockCoilECCF2, 1), Pair.of(sBlockCoilECCF2, 2)),
                     -1,
@@ -447,50 +447,50 @@ public class MTEEnvironmentallyControlledChemicalFacility extends
                     + EnumChatFormatting.GRAY
                     + ": "
                     + EnumChatFormatting.YELLOW
-                    + "1,300K")
+                    + "1,300 K")
             .addInfo(
                 EnumChatFormatting.GOLD + "Blazing Pyrotheum"
                     + EnumChatFormatting.GRAY
                     + ": "
                     + EnumChatFormatting.YELLOW
-                    + "4,000K")
+                    + "4,000 K")
             .addInfo(
                 EnumChatFormatting.GOLD + "Helium Plasma"
                     + EnumChatFormatting.GRAY
                     + ": "
                     + EnumChatFormatting.YELLOW
-                    + "10,000K")
+                    + "10,000 K")
             .addInfo(
                 EnumChatFormatting.GOLD + "Raw Stellar Plasma"
                     + EnumChatFormatting.GRAY
                     + ": "
                     + EnumChatFormatting.YELLOW
-                    + "10,000,000K")
+                    + "10,000,000 K")
             .addInfo("" + EnumChatFormatting.BLUE + EnumChatFormatting.BOLD + "Cooling Module")
             .addInfo(
                 EnumChatFormatting.DARK_AQUA + "IC2 Coolant"
                     + EnumChatFormatting.GRAY
                     + ": "
                     + EnumChatFormatting.AQUA
-                    + "250K")
+                    + "250 K")
             .addInfo(
                 EnumChatFormatting.DARK_AQUA + "Gelid Cryotheum"
                     + EnumChatFormatting.GRAY
                     + ": "
                     + EnumChatFormatting.AQUA
-                    + "25K")
+                    + "25 K")
             .addInfo(
                 EnumChatFormatting.DARK_AQUA + "Super Coolant"
                     + EnumChatFormatting.GRAY
                     + ": "
                     + EnumChatFormatting.AQUA
-                    + "5K")
+                    + "5 K")
             .addInfo(
                 EnumChatFormatting.DARK_AQUA + "Molten Spacetime"
                     + EnumChatFormatting.GRAY
                     + ": "
                     + EnumChatFormatting.AQUA
-                    + "0K")
+                    + "0 K")
             .addSeparator()
             .addInfo("" + EnumChatFormatting.WHITE + EnumChatFormatting.BOLD + "Pressure")
             .addInfo(
@@ -556,7 +556,7 @@ public class MTEEnvironmentallyControlledChemicalFacility extends
             .addSubChannelUsage(GTStructureChannels.ECCF_COMPRESSOR)
             .addSubChannelUsage(GTStructureChannels.ECCF_VACUUM)
             .addSubChannelUsage(GTStructureChannels.ECCF_HEATER)
-            .addSubChannelUsage(GTStructureChannels.ECCF_COOLER)
+            .addSubChannelUsage(GTStructureChannels.ECCF_FREEZER)
             .toolTipFinisher(
                 "" + EnumChatFormatting.BLUE
                     + EnumChatFormatting.BOLD
@@ -708,7 +708,7 @@ public class MTEEnvironmentallyControlledChemicalFacility extends
          */
         int moduleLeft = 0;
         int moduleRight = 0;
-        boolean cooler = false;
+        boolean freezer = false;
         boolean heater = false;
         boolean vacuum = false;
         boolean compressor = false;
@@ -719,18 +719,16 @@ public class MTEEnvironmentallyControlledChemicalFacility extends
                 .getCompoundTag("channels");
             if (channels != null) {
                 heater = channels.getInteger("eccf_heater") > 0;
-                cooler = channels.getInteger("eccf_cooler") > 0;
+                freezer = channels.getInteger("eccf_freezer") > 0;
                 compressor = channels.getInteger("eccf_compress") > 0;
                 vacuum = channels.getInteger("eccf_vacuum") > 0;
                 lParallel = channels.getInteger("eccf_parallel_left") > 0;
                 rParallel = channels.getInteger("eccf_parallel_right") > 0;
             }
         }
-        // right
         if (heater) moduleLeft = 1;
-        if (cooler) moduleLeft = 2;
+        if (freezer) moduleLeft = 2;
         if (lParallel) moduleLeft = 5;
-        // left
         if (compressor) moduleRight = 3;
         if (vacuum) moduleRight = 4;
         if (rParallel) moduleRight = 5;
@@ -740,30 +738,30 @@ public class MTEEnvironmentallyControlledChemicalFacility extends
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        coolCoilTier = -1;
-        heatCoilTier = -1;
-        vacuumCoilTier = -1;
-        compressCoilTier = -1;
+        freezerTier = -1;
+        heaterTier = -1;
+        vacuumTier = -1;
+        compressorTier = -1;
         parallelModuleTierL = -1;
         parallelModuleTierR = -1;
 
-        isHeatModule = false;
-        isCoolModule = false;
+        isHeaterModule = false;
+        isFreezerModule = false;
         isVacuumModule = false;
-        isCompressModule = false;
+        isCompressorModule = false;
 
         getDimConditions();
         if (!checkPiece(STRUCTURE_PIECE_MAIN, 2, 4, 0)) {
             return false;
         }
         coolantInputHatchAmount = 0;
-        isHeatModule = checkPiece(HEAT_MODULE_L, MODULE_OFFSET_LEFT, MODULE_OFFSET_V, MODULE_OFFSET_DEPTH);
+        isHeaterModule = checkPiece(HEAT_MODULE_L, MODULE_OFFSET_LEFT, MODULE_OFFSET_V, MODULE_OFFSET_DEPTH);
         if (coolantInputHatchAmount > 1) return false;
         coolantInputHatchAmount = 0;
-        isCoolModule = checkPiece(COOL_MODULE_L, MODULE_OFFSET_LEFT, MODULE_OFFSET_V, MODULE_OFFSET_DEPTH);
+        isFreezerModule = checkPiece(COOL_MODULE_L, MODULE_OFFSET_LEFT, MODULE_OFFSET_V, MODULE_OFFSET_DEPTH);
         if (coolantInputHatchAmount > 1) return false;
         isVacuumModule = checkPiece(VACUUM_MODULE_R, MODULE_OFFSET_RIGHT, MODULE_OFFSET_V, MODULE_OFFSET_DEPTH);
-        isCompressModule = checkPiece(COMPRESSION_MODULE_R, MODULE_OFFSET_RIGHT, MODULE_OFFSET_V, MODULE_OFFSET_DEPTH);
+        isCompressorModule = checkPiece(COMPRESSION_MODULE_R, MODULE_OFFSET_RIGHT, MODULE_OFFSET_V, MODULE_OFFSET_DEPTH);
         checkPiece(PARALLEL_MODULE_L, MODULE_OFFSET_LEFT, MODULE_OFFSET_V, MODULE_OFFSET_DEPTH);
         checkPiece(PARALLEL_MODULE_R, MODULE_OFFSET_RIGHT, MODULE_OFFSET_V, MODULE_OFFSET_DEPTH);
         if (mExoticEnergyHatches.size() > 1) return false;
@@ -794,16 +792,13 @@ public class MTEEnvironmentallyControlledChemicalFacility extends
                     && Math.abs(currentPressure - requiredPressure) <= pressureThreshold) {
                     return super.validateRecipe(recipe);
                 }
-                if (recipeEUt > availableVoltage) {
-                    return CheckRecipeResultRegistry.insufficientPower(recipe.mEUt);
-                }
                 stopMachine(SimpleShutDownReason.ofCritical("conditions_range"));
                 return CheckRecipeResultRegistry.RECIPE_CONDITIONS;
             }
-        }.setMaxParallelSupplier(this::getMaxParallelRecipes);
+        }.setMaxParallelSupplier(this::getMaxParallelRecipes)
+            .setMaxTierSkips(0);
     }
 
-    @Override
     protected void setProcessingLogicPower(ProcessingLogic logic) {
         // without getMaxParallelRecipes() the first recipe runs with more than allowed parallel
         getMaxParallelRecipes();
@@ -869,7 +864,7 @@ public class MTEEnvironmentallyControlledChemicalFacility extends
     }
 
     @Nullable
-    public static Integer getCoolCoilMeta(Block block, int meta) {
+    public static Integer getFreezerTier(Block block, int meta) {
         if (block == sBlockCoilECCF) {
             return switch (meta) {
                 case 0 -> 0;
@@ -883,7 +878,7 @@ public class MTEEnvironmentallyControlledChemicalFacility extends
     }
 
     @Nullable
-    public static Integer getHeatCoilMeta(Block block, int meta) {
+    public static Integer getHeaterTier(Block block, int meta) {
         if (block == sBlockCoilECCF) {
             return switch (meta) {
                 case 4 -> 0;
@@ -897,7 +892,7 @@ public class MTEEnvironmentallyControlledChemicalFacility extends
     }
 
     @Nullable
-    public static Integer getCompressCoilMeta(Block block, int meta) {
+    public static Integer getCompressorTier(Block block, int meta) {
         if (block == sBlockCoilECCF) {
             return switch (meta) {
                 case 8 -> 0;
@@ -911,7 +906,7 @@ public class MTEEnvironmentallyControlledChemicalFacility extends
     }
 
     @Nullable
-    public static Integer getVacuumCoilMeta(Block block, int meta) {
+    public static Integer getVacuumTier(Block block, int meta) {
         if (block == sBlockCoilECCF) {
             return switch (meta) {
                 case 12 -> 0;
@@ -925,7 +920,7 @@ public class MTEEnvironmentallyControlledChemicalFacility extends
     }
 
     @Nullable
-    public static Integer getParallelMeta(Block block, int meta) {
+    public static Integer getParallelTier(Block block, int meta) {
         if (block == sBlockCoilECCF2) {
             return switch (meta) {
                 case 0 -> 0;
@@ -1080,21 +1075,21 @@ public class MTEEnvironmentallyControlledChemicalFacility extends
         UNDERDARK("Underdark", 270, 131000);
 
         private final String dimensionName;
-        private final int initialTemp;
-        private final int initialPressure;
+        private final int ambientTemp;
+        private final int ambientPressure;
 
-        DimensionConditions(String dimensionName, int initialTemp, int initialPressure) {
+        DimensionConditions(String dimensionName, int ambientTemp, int ambientPressure) {
             this.dimensionName = dimensionName;
-            this.initialTemp = initialTemp;
-            this.initialPressure = initialPressure;
+            this.ambientTemp = ambientTemp;
+            this.ambientPressure = ambientPressure;
         }
 
-        public int getInitialTemp() {
-            return initialTemp;
+        public int getAmbientTemp() {
+            return ambientTemp;
         }
 
-        public int getInitialPressure() {
-            return initialPressure;
+        public int getAmbientPressure() {
+            return ambientPressure;
         }
 
         public static DimensionConditions fromDimensionName(String dimensionName) {
@@ -1112,8 +1107,8 @@ public class MTEEnvironmentallyControlledChemicalFacility extends
             .getWorld().provider;
         String dimName = provider.getDimensionName();
         DimensionConditions condition = DimensionConditions.fromDimensionName(dimName);
-        initialTemp = condition.getInitialTemp();
-        initialPressure = condition.getInitialPressure();
+        ambientTemp = condition.getAmbientTemp();
+        ambientPressure = condition.getAmbientPressure();
     }
 
     public double getTempCoefficient(int blockTier) {
@@ -1136,35 +1131,21 @@ public class MTEEnvironmentallyControlledChemicalFacility extends
         };
     }
 
-    public void setTempFromCoolant(String name) {
-        switch (name) {
+    public double getCoolantTemp(String name) {
+        return switch (name) {
             // cooling
-            case "ic2coolant":
-                coolantTemp = 250;
-                break;
-            case "cryotheum":
-                coolantTemp = 25;
-                break;
-            case "supercoolant":
-                coolantTemp = 5;
-                break;
-            case "molten.spacetime":
-                coolantTemp = 0;
-                break;
+            case "ic2coolant"-> 250;
+            case "cryotheum"-> 25;
+            case "supercoolant"-> 5;
+            case "molten.spacetime"-> 0;
             // heating
-            case "lava":
-                coolantTemp = 1300;
-                break;
-            case "pyrotheum":
-                coolantTemp = 4000;
-                break;
-            case "plasma.helium":
-                coolantTemp = 10000;
-                break;
-            case "rawstarmatter":
-                coolantTemp = 10000000;
-                break;
-        }
+            case "lava"-> 1300;
+            case "pyrotheum"-> 4000;
+            case "plasma.helium"-> 10000;
+            case "rawstarmatter"-> 10000000;
+            // don't change temperature
+            default -> ambientTemp;
+        };
     }
 
     public boolean addCoolantInputToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
@@ -1217,26 +1198,26 @@ public class MTEEnvironmentallyControlledChemicalFacility extends
         }
         if (mMachine && (aTick % 20 == 0)) {
             if ((currentTemp == 0) && (currentPressure == 0)) {
-                currentPressure = initialPressure;
-                currentTemp = initialTemp;
+                currentPressure =  ambientPressure;
+                currentTemp = ambientTemp;
             }
 
-            if (isVacuumModule || isCompressModule)
-                coeffPressure = getPresCoefficient(Math.max(vacuumCoilTier, compressCoilTier));
-            if (isCoolModule || isHeatModule) coeffTemp = getTempCoefficient(Math.max(coolCoilTier, heatCoilTier));
+            if (isVacuumModule || isCompressorModule)
+                coeffPressure = getPresCoefficient(Math.max(vacuumTier, compressorTier));
+            if (isFreezerModule || isHeaterModule) coeffTemp = getTempCoefficient(Math.max(freezerTier, heaterTier));
 
             // returns temperature values to atmosphere conditions
-            temperatureLossValue = (currentTemp - initialTemp) * coeffTemp + initialTemp - currentTemp;
+            temperatureLossValue = (currentTemp - ambientTemp) * coeffTemp + ambientTemp - currentTemp;
             currentTemp += temperatureLossValue;
             // Temperature calculation
             tempChange = 0;
-            if (isCoolModule || isHeatModule) {
+            if (isFreezerModule || isHeaterModule) {
                 // drain all coolant from hatches and change temperature
                 if (mCoolantInputHatch != null) {
                     if (mCoolantInputHatch.mFluid != null) {
                         String coolantName = mCoolantInputHatch.mFluid.getFluid()
                             .getName();
-                        setTempFromCoolant(coolantName);
+                        coolantTemp = getCoolantTemp(coolantName);
                         boolean isCoolant = ((coolantName.equals("ic2coolant")) || (coolantName.equals("cryotheum"))
                             || (coolantName.equals("supercoolant"))
                             || (coolantName.equals("molten.spacetime")));
@@ -1245,11 +1226,11 @@ public class MTEEnvironmentallyControlledChemicalFacility extends
                             || (coolantName.equals("lava")));
                         // Apply coolant (linear function)
                         double coolantTempImpact = mCoolantInputHatch.mFluid.amount / 10000f * coolantTemp;
-                        if ((isCoolModule || isCoolant) || (isHeatModule || isHot)) {
+                        if ((isFreezerModule || isCoolant) || (isHeaterModule || isHot)) {
                             double tempBeforeChange = currentTemp;
-                            if (coolantTemp < initialTemp)
+                            if (coolantTemp < ambientTemp)
                                 currentTemp = Math.max(currentTemp - coolantTempImpact, coolantTemp);
-                            if (coolantTemp > initialTemp)
+                            if (coolantTemp > ambientTemp)
                                 currentTemp = min(currentTemp + coolantTempImpact, coolantTemp);
                             tempChange = tempBeforeChange - currentTemp;
                             drain(mCoolantInputHatch, mCoolantInputHatch.mFluid, true);
@@ -1258,16 +1239,16 @@ public class MTEEnvironmentallyControlledChemicalFacility extends
                 }
             }
             // return pressure values to atmosphere conditions
-            pressureLossValue = (currentPressure - initialPressure) * coeffPressure + initialPressure - currentPressure;
+            pressureLossValue = (currentPressure - ambientPressure) * coeffPressure + ambientPressure - currentPressure;
             currentPressure += pressureLossValue;
             // Pressure calculation
             double leakCoeff = 0.8;
             presChange = 0;
-            if (isCompressModule || isVacuumModule) {
+            if (isCompressorModule || isVacuumModule) {
                 // Apply pressure changes
                 if (mPressureEnergyHatch != null) {
                     drainAmountEU /= 20;
-                    presChange = Math.pow(drainAmountEU, 0.7) * (isCompressModule ? 1 : -1);
+                    presChange = Math.pow(drainAmountEU, 0.7) * (isCompressorModule ? 1 : -1);
                     currentPressure += presChange;
                     currentPressure = Math.max(currentPressure, 0);
                     if (currentPressure == 0) presChange = 0;
@@ -1291,7 +1272,7 @@ public class MTEEnvironmentallyControlledChemicalFacility extends
                     }
                 }
             }
-            pressureLeakValue = (currentPressure * leakCoeff + initialPressure * (1 - leakCoeff)) - currentPressure;
+            pressureLeakValue = (currentPressure * leakCoeff + ambientPressure * (1 - leakCoeff)) - currentPressure;
             currentPressure += pressureLeakValue;
 
             currentPressure += deltaPressure;

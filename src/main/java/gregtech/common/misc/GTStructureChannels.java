@@ -48,7 +48,7 @@ public enum GTStructureChannels implements IStructureChannels {
     NO_HATCH("gt_no_hatch", ""),
     TFFT_FIELD("field", "Storage Field Tier"),
     ECCF_HEATER("eccf_heater", "ECCF Heater Tier"),
-    ECCF_COOLER("eccf_cooler", "ECCF Cooler Tier"),
+    ECCF_FREEZER("eccf_freezer", "ECCF Freezer Tier"),
     ECCF_VACUUM("eccf_vacuum", "ECCF Vacuum Tier"),
     ECCF_COMPRESSOR("eccf_compress", "ECCF Compressor Tier"),
     ECCF_PARALLEL_L("eccf_parallel_right", "ECCF Parallel Tier"),

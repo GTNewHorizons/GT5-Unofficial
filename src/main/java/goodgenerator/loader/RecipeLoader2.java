@@ -880,10 +880,32 @@ public class RecipeLoader2 {
                 GTOreDictUnificator.get(OrePrefixes.screw, Materials.StainlessSteel, 4),
                 GTOreDictUnificator.get(OrePrefixes.pipeTiny, Materials.Copper, 16))
             .fluidInputs(Materials.SolderingAlloy.getMolten(144))
-            .itemOutputs(ItemList.ECCF_cooling_block_0.get(1))
+            .itemOutputs(ItemList.ECCF_freezer_block_0.get(1))
             .duration(1 * MINUTES)
             .eut(TierEU.RECIPE_IV)
             .addTo(assemblerRecipes);
+
+        GTValues.RA.stdBuilder()
+            .metadata(RESEARCH_ITEM, ItemList.ECCF_freezer_block_0.get(1))
+            .metadata(SCANNING, new Scanning(2 * MINUTES + 20 * SECONDS, TierEU.RECIPE_IV))
+            .itemInputs(
+                ItemList.Casing_Tank_6.get(1),
+                ItemList.FluidRegulator_LuV.get(2),
+                ItemList.Sensor_LuV.get(1),
+                GTOreDictUnificator.get(OrePrefixes.ring, Materials.Epoxid, 8),
+                GTOreDictUnificator.get(OrePrefixes.pipeMedium, Materials.Europium, 2),
+                GTOreDictUnificator.get(OrePrefixes.pipeTiny, Materials.Europium, 16),
+                GTOreDictUnificator.get(
+                    OrePrefixes.wireFine,
+                    Materials.Tetraindiumditindibariumtitaniumheptacoppertetrakaidekaoxid,
+                    64),
+                GTOreDictUnificator.get(OrePrefixes.screw, Materials.Naquadah, 4),
+                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.UV, 4))
+            .fluidInputs(MaterialsAlloy.INDALLOY_140.getFluidStack(4 * INGOTS))
+            .itemOutputs(ItemList.ECCF_freezer_block_1.get(1))
+            .duration(1 * MINUTES)
+            .eut(TierEU.RECIPE_LuV)
+            .addTo(AssemblyLine);
 
         GTValues.RA.stdBuilder()
             .itemInputs(
@@ -896,10 +918,32 @@ public class RecipeLoader2 {
                 GTOreDictUnificator.get(OrePrefixes.screw, Materials.StainlessSteel, 4),
                 MaterialsAlloy.INCONEL_792.getComponentByPrefix(OrePrefixes.pipeTiny, 2))
             .fluidInputs(Materials.SolderingAlloy.getMolten(144))
-            .itemOutputs(ItemList.ECCF_heating_block_0.get(1))
+            .itemOutputs(ItemList.ECCF_heater_block_0.get(1))
             .duration(1 * MINUTES)
             .eut(TierEU.RECIPE_IV)
             .addTo(assemblerRecipes);
+
+        GTValues.RA.stdBuilder()
+            .metadata(RESEARCH_ITEM, ItemList.ECCF_heater_block_0.get(1))
+            .metadata(SCANNING, new Scanning(2 * MINUTES + 20 * SECONDS, TierEU.RECIPE_IV))
+            .itemInputs(
+                ItemList.Casing_Tank_6.get(1),
+                ItemList.Field_Generator_LuV.get(4),
+                ItemList.Sensor_LuV.get(1),
+                GTOreDictUnificator.get(OrePrefixes.ring, Materials.Epoxid, 8),
+                GTOreDictUnificator.get(OrePrefixes.pipeMedium, Materials.Naquadah, 2),
+                GTOreDictUnificator.get(OrePrefixes.pipeTiny, Materials.Naquadah, 16),
+                GTOreDictUnificator.get(
+                    OrePrefixes.wireFine,
+                    Materials.Tetraindiumditindibariumtitaniumheptacoppertetrakaidekaoxid,
+                    64),
+                GTOreDictUnificator.get(OrePrefixes.screw, Materials.Naquadah, 4),
+                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.UV, 4))
+            .fluidInputs(MaterialsAlloy.INDALLOY_140.getFluidStack(4 * INGOTS))
+            .itemOutputs(ItemList.ECCF_heater_block_1.get(1))
+            .duration(1 * MINUTES)
+            .eut(TierEU.RECIPE_LuV)
+            .addTo(AssemblyLine);
 
         GTValues.RA.stdBuilder()
             .itemInputs(
@@ -916,66 +960,6 @@ public class RecipeLoader2 {
             .duration(1 * MINUTES)
             .eut(TierEU.RECIPE_IV)
             .addTo(assemblerRecipes);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                ItemList.Casing_Tank_5.get(1),
-                ItemList.Electric_Piston_IV.get(2),
-                ItemList.Sensor_IV.get(1),
-                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.ZPM, 2),
-                ItemList.FluidRegulator_IV.get(2),
-                // Styrene-butadiene only is intended
-                GTOreDictUnificator.get(OrePrefixes.ring, Materials.StyreneButadieneRubber, 4),
-                GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorEV, 4))
-            .fluidInputs(Materials.SolderingAlloy.getMolten(144))
-            .itemOutputs(ItemList.ECCF_pressure_block_0.get(1))
-            .duration(1 * MINUTES)
-            .eut(TierEU.RECIPE_IV)
-            .addTo(assemblerRecipes);
-
-        GTValues.RA.stdBuilder()
-            .metadata(RESEARCH_ITEM, ItemList.ECCF_cooling_block_0.get(1))
-            .metadata(SCANNING, new Scanning(2 * MINUTES + 20 * SECONDS, TierEU.RECIPE_IV))
-            .itemInputs(
-                ItemList.Casing_Tank_6.get(1),
-                ItemList.FluidRegulator_LuV.get(2),
-                ItemList.Sensor_LuV.get(1),
-                GTOreDictUnificator.get(OrePrefixes.ring, Materials.Epoxid, 8),
-                GTOreDictUnificator.get(OrePrefixes.pipeMedium, Materials.Europium, 2),
-                GTOreDictUnificator.get(OrePrefixes.pipeTiny, Materials.Europium, 16),
-                GTOreDictUnificator.get(
-                    OrePrefixes.wireFine,
-                    Materials.Tetraindiumditindibariumtitaniumheptacoppertetrakaidekaoxid,
-                    64),
-                GTOreDictUnificator.get(OrePrefixes.screw, Materials.Naquadah, 4),
-                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.UV, 4))
-            .fluidInputs(MaterialsAlloy.INDALLOY_140.getFluidStack(4 * INGOTS))
-            .itemOutputs(ItemList.ECCF_cooling_block_1.get(1))
-            .duration(1 * MINUTES)
-            .eut(TierEU.RECIPE_LuV)
-            .addTo(AssemblyLine);
-
-        GTValues.RA.stdBuilder()
-            .metadata(RESEARCH_ITEM, ItemList.ECCF_heating_block_0.get(1))
-            .metadata(SCANNING, new Scanning(2 * MINUTES + 20 * SECONDS, TierEU.RECIPE_IV))
-            .itemInputs(
-                ItemList.Casing_Tank_6.get(1),
-                ItemList.Field_Generator_LuV.get(4),
-                ItemList.Sensor_LuV.get(1),
-                GTOreDictUnificator.get(OrePrefixes.ring, Materials.Epoxid, 8),
-                GTOreDictUnificator.get(OrePrefixes.pipeMedium, Materials.Naquadah, 2),
-                GTOreDictUnificator.get(OrePrefixes.pipeTiny, Materials.Naquadah, 16),
-                GTOreDictUnificator.get(
-                    OrePrefixes.wireFine,
-                    Materials.Tetraindiumditindibariumtitaniumheptacoppertetrakaidekaoxid,
-                    64),
-                GTOreDictUnificator.get(OrePrefixes.screw, Materials.Naquadah, 4),
-                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.UV, 4))
-            .fluidInputs(MaterialsAlloy.INDALLOY_140.getFluidStack(4 * INGOTS))
-            .itemOutputs(ItemList.ECCF_heating_block_1.get(1))
-            .duration(1 * MINUTES)
-            .eut(TierEU.RECIPE_LuV)
-            .addTo(AssemblyLine);
 
         GTValues.RA.stdBuilder()
             .metadata(RESEARCH_ITEM, ItemList.ECCF_vacuum_block_0.get(1))
@@ -996,7 +980,23 @@ public class RecipeLoader2 {
             .addTo(AssemblyLine);
 
         GTValues.RA.stdBuilder()
-            .metadata(RESEARCH_ITEM, ItemList.ECCF_pressure_block_0.get(1))
+            .itemInputs(
+                ItemList.Casing_Tank_5.get(1),
+                ItemList.Electric_Piston_IV.get(2),
+                ItemList.Sensor_IV.get(1),
+                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.ZPM, 2),
+                ItemList.FluidRegulator_IV.get(2),
+                // Styrene-butadiene only is intended
+                GTOreDictUnificator.get(OrePrefixes.ring, Materials.StyreneButadieneRubber, 4),
+                GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorEV, 4))
+            .fluidInputs(Materials.SolderingAlloy.getMolten(144))
+            .itemOutputs(ItemList.ECCF_compressor_block_0.get(1))
+            .duration(1 * MINUTES)
+            .eut(TierEU.RECIPE_IV)
+            .addTo(assemblerRecipes);
+
+        GTValues.RA.stdBuilder()
+            .metadata(RESEARCH_ITEM, ItemList.ECCF_compressor_block_0.get(1))
             .metadata(SCANNING, new Scanning(2 * MINUTES + 20 * SECONDS, TierEU.RECIPE_IV))
             .itemInputs(
                 ItemList.Casing_Tank_6.get(1),
@@ -1009,7 +1009,7 @@ public class RecipeLoader2 {
                 GTOreDictUnificator.get(OrePrefixes.gearGtSmall, ExternalMaterials.getRuridit(), 12),
                 GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorLuV, 4))
             .fluidInputs(MaterialsAlloy.INDALLOY_140.getFluidStack(4 * INGOTS))
-            .itemOutputs(ItemList.ECCF_pressure_block_1.get(1))
+            .itemOutputs(ItemList.ECCF_compressor_block_1.get(1))
             .duration(1 * MINUTES)
             .eut(TierEU.RECIPE_LuV)
             .addTo(AssemblyLine);
