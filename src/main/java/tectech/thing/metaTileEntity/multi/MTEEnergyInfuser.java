@@ -109,7 +109,12 @@ public class MTEEnergyInfuser extends TTMultiblockBase implements ISurvivalConst
         try {
             double euDiff = item.getMaxCharge(stack) - ElectricItem.manager.getCharge(stack);
             long remove = (long) Math.ceil(
-                ElectricItem.manager.charge(stack, Math.min(euDiff, getEUVar()), item.getTier(stack), true, false));
+                ElectricItem.manager.charge(
+                    stack,
+                    Math.min(euDiff, getAverageInputVoltage() * getMaxInputAmps()),
+                    item.getTier(stack),
+                    true,
+                    false));
             setEUVar(getEUVar() - remove);
             if (getEUVar() < 0) {
                 setEUVar(0);
@@ -213,13 +218,6 @@ public class MTEEnergyInfuser extends TTMultiblockBase implements ISurvivalConst
                             }
                         }
                     }
-                    if (item instanceof IElectricItem) {
-                        doChargeItemStack((IElectricItem) item, itemStackInBus);
-                        return;
-                    } else if (TecTech.hasCOFH && item instanceof IEnergyContainerItem) {
-                        doChargeItemStackRF((IEnergyContainerItem) item, itemStackInBus);
-                        return;
-                    }
                 }
             }
         }
@@ -274,6 +272,29 @@ public class MTEEnergyInfuser extends TTMultiblockBase implements ISurvivalConst
     @Override
     protected SoundResource getActivitySoundLoop() {
         return SoundResource.TECTECH_MACHINES_FX_WHOOUM;
+    }
+
+    @Override
+    public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
+        super.onPostTick(aBaseMetaTileEntity, aTick);
+        for (MTEHatchInputBus inputBus : mInputBusses) {
+            if (inputBus instanceof MTEHatchInputBusME) continue;
+            for (int i = 0; i < inputBus.getSizeInventory(); i++) {
+                ItemStack itemStackInBus = inputBus.getStackInSlot(i);
+                if (itemStackInBus == null) continue;
+                Item item = itemStackInBus.getItem();
+                if (itemStackInBus.stackSize != 1 || item == null) continue;
+                if (!isItemStackFullyCharged(itemStackInBus) || !isItemStackFullyRepaired(itemStackInBus)) {
+                    if (item instanceof IElectricItem) {
+                        doChargeItemStack((IElectricItem) item, itemStackInBus);
+                        return;
+                    } else if (TecTech.hasCOFH && item instanceof IEnergyContainerItem) {
+                        doChargeItemStackRF((IEnergyContainerItem) item, itemStackInBus);
+                        return;
+                    }
+                }
+            }
+        }
     }
 
     @Override
