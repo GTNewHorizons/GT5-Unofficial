@@ -56,6 +56,10 @@ public class WirelessChargerManager {
                     .getCoords()));
     }
 
+    public static void clearChargerMap() {
+        CHARGER_MAP.clear();
+    }
+
     private void chargePlayerItems(@NotNull EntityPlayer player) {
         ItemStack[] armourItems = player.inventory.armorInventory;
         ItemStack[] inventoryItems = player.inventory.mainInventory;
