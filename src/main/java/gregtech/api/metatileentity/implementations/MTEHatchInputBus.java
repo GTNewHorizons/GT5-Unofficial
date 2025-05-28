@@ -329,6 +329,13 @@ public class MTEHatchInputBus extends MTEHatch implements IConfigurationCircuitS
         }
     }
 
+    @Override
+    public void onFirstTick(IGregTechTileEntity baseMetaTileEntity) {
+        super.onFirstTick(baseMetaTileEntity);
+        this.getBaseMetaTileEntity()
+            .setColorization((byte) Dyes.dyePurple.ordinal());
+    }
+
     private Widget createToggleButton(Supplier<Boolean> getter, Consumer<Boolean> setter, UITexture picture,
         Supplier<GTTooltipDataCache.TooltipData> tooltipDataSupplier) {
         return new CycleButtonWidget().setToggle(getter, setter)
