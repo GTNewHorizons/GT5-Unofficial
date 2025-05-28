@@ -14,7 +14,6 @@
 package bartworks.system.material.werkstoff_loaders.recipe;
 
 import static gregtech.api.enums.OrePrefixes.bolt;
-import static gregtech.api.enums.OrePrefixes.cellMolten;
 import static gregtech.api.enums.OrePrefixes.gearGt;
 import static gregtech.api.enums.OrePrefixes.gearGtSmall;
 import static gregtech.api.enums.OrePrefixes.gem;
@@ -217,26 +216,6 @@ public class CraftingMaterialLoader implements IWerkstoffRunnable {
                 .duration(10 * SECONDS)
                 .eut(60)
                 .addTo(extruderRecipes);
-
-            // molten -> metal
-            if (werkstoff.hasItemType(cellMolten)) {
-
-                /*
-                 * !! No more hardcoded gear, etc. recipe gen, now must go through GenerationFeatures() !!
-                 * GT_Values.RA.addFluidSolidifierRecipe( ItemList.Shape_Mold_Gear.get(0L), werkstoff.getMolten(4 *
-                 * INGOTS),
-                 * werkstoff.get(gearGt), 128, 8); GT_Values.RA.addFluidSolidifierRecipe(
-                 * ItemList.Shape_Mold_Gear_Small.get(0L), werkstoff.getMolten(1 * INGOTS), werkstoff.get(gearGtSmall),
-                 * 16, 8);
-                 * if (WerkstoffLoader.ringMold != null) GT_Values.RA.addFluidSolidifierRecipe(
-                 * WerkstoffLoader.ringMold.get(0L), werkstoff.getMolten(1 * QUARTER_INGOT), werkstoff.get(ring), 100, 4
-                 * *
-                 * tVoltageMultiplier); if (WerkstoffLoader.boltMold != null) GT_Values.RA.addFluidSolidifierRecipe(
-                 * WerkstoffLoader.boltMold.get(0L), werkstoff.getMolten(1 * EIGHTH_INGOT), werkstoff.get(bolt), 50, 2 *
-                 * tVoltageMultiplier); if (WerkstoffLoader.rotorMold != null) GT_Values.RA.addFluidSolidifierRecipe(
-                 * WerkstoffLoader.rotorMold.get(0L), werkstoff.getMolten(612), werkstoff.get(rotor), 100, 60);
-                 */
-            }
         }
     }
 }

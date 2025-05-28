@@ -17,6 +17,7 @@ import net.minecraftforge.fluids.FluidTankInfo;
 
 import appeng.api.config.AccessRestriction;
 import appeng.api.config.Actionable;
+import appeng.api.implementations.IPowerChannelState;
 import appeng.api.networking.GridFlags;
 import appeng.api.networking.IGridNode;
 import appeng.api.networking.events.MENetworkCellArrayUpdate;
@@ -51,7 +52,7 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
 
 public class MTEYOTTAHatch extends MTEHatch implements IGridProxyable, IActionHost, ICellContainer,
-    IMEInventory<IAEFluidStack>, IMEInventoryHandler<IAEFluidStack> {
+    IMEInventory<IAEFluidStack>, IMEInventoryHandler<IAEFluidStack>, IPowerChannelState {
 
     private static final IIconContainer textureFont = new Textures.BlockIcons.CustomIcon("icons/YOTTAHatch");
     private static final BigInteger LONG_MAX = BigInteger.valueOf(Long.MAX_VALUE);
@@ -174,6 +175,16 @@ public class MTEYOTTAHatch extends MTEHatch implements IGridProxyable, IActionHo
             gridProxy.setFlags(GridFlags.REQUIRE_CHANNEL);
         }
         return this.gridProxy;
+    }
+
+    @Override
+    public boolean isPowered() {
+        return getProxy() != null && getProxy().isPowered();
+    }
+
+    @Override
+    public boolean isActive() {
+        return getProxy() != null && getProxy().isActive();
     }
 
     // not sure if needed

@@ -1804,9 +1804,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
 
         if (supportsCraftingMEBuffer()) {
             for (IDualInputHatch dualInputHatch : mDualInputHatches) {
-                for (ItemStack item : dualInputHatch.getAllItems()) {
-                    rList.add(item);
-                }
+                rList.addAll(Arrays.asList(dualInputHatch.getAllItems()));
             }
         }
 
@@ -2292,9 +2290,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
             // Display locked recipe when the machine is idle
             currentTip.add(translateToLocal("GT5U.waila.multiblock.status.locked_recipe"));
             String[] lines = lockedRecipe.split("\n");
-            for (String line : lines) {
-                currentTip.add(line);
-            }
+            currentTip.addAll(Arrays.asList(lines));
         } else if (isActive) {
             int outputItemLength = tag.getInteger("outputItemLength");
             int outputFluidLength = tag.getInteger("outputFluidLength");
