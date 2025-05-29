@@ -11,9 +11,7 @@ import java.util.Queue;
 import java.util.Set;
 
 import gregtech.api.enums.Mods;
-import gtPlusPlus.core.recipe.RecipesTools;
 import gtPlusPlus.xmod.pamsharvest.fishtrap.FishTrapHandler;
-import net.minecraft.item.ItemStack;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.OrePrefixes;
@@ -34,7 +32,6 @@ import gtPlusPlus.core.material.Particle;
 import gtPlusPlus.core.recipe.RecipesGregTech;
 import gtPlusPlus.core.recipe.RecipesLaserEngraver;
 import gtPlusPlus.core.recipe.ShapedRecipeObject;
-import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.minecraft.RecipeUtils;
 import gtPlusPlus.xmod.gregtech.loaders.RecipeGenFluidCanning;
 import gtPlusPlus.xmod.gregtech.loaders.RecipeGenRecycling;
@@ -200,7 +197,6 @@ public class CompatHandler {
     // InterMod
     public static void intermodOreDictionarySupport() {
         if (ExtraUtilities.isModLoaded()) {
-            RecipesTools.RECIPE_DivisionSigil = getModItem(Mods.ExtraUtilities.ID, "divisionSigil", 1);
             GTOreDictUnificator.registerOre("ingotBedrockium", getModItem(Mods.ExtraUtilities.ID, "bedrockiumIngot", 1, 0));
         }
         if (PamsHarvestCraft.isModLoaded()) {
