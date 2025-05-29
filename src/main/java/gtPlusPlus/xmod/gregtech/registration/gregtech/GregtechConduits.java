@@ -706,7 +706,7 @@ public class GregtechConduits {
             int inputMultiplier = materialName.equals("Clay") ? 2 : 1;
             GTValues.RA.stdBuilder()
                 .itemInputs(
-                    ItemUtils.getSimpleStack(pipeIngot, 1 * inputMultiplier),
+                    GTUtility.copyAmount(1 * inputMultiplier, pipeIngot),
                     ItemList.Shape_Extruder_Pipe_Tiny.get(0))
                 .itemOutputs(ItemUtils.getItemStackOfAmountFromOreDictNoBroken("pipe" + "Tiny" + output, 2))
                 .duration(5 * TICKS)
@@ -714,7 +714,7 @@ public class GregtechConduits {
                 .addTo(extruderRecipes);
             GTValues.RA.stdBuilder()
                 .itemInputs(
-                    ItemUtils.getSimpleStack(pipeIngot, 1 * inputMultiplier),
+                    GTUtility.copyAmount(1 * inputMultiplier, pipeIngot),
                     ItemList.Shape_Extruder_Pipe_Small.get(0))
                 .itemOutputs(ItemUtils.getItemStackOfAmountFromOreDict("pipe" + "Small" + output, 1))
                 .duration(10 * TICKS)
@@ -722,7 +722,7 @@ public class GregtechConduits {
                 .addTo(extruderRecipes);
             GTValues.RA.stdBuilder()
                 .itemInputs(
-                    ItemUtils.getSimpleStack(pipeIngot, 3 * inputMultiplier),
+                    GTUtility.copyAmount(3 * inputMultiplier, pipeIngot),
                     ItemList.Shape_Extruder_Pipe_Medium.get(0))
                 .itemOutputs(ItemUtils.getItemStackOfAmountFromOreDict("pipe" + "Medium" + output, 1))
                 .duration(20 * TICKS)
@@ -730,7 +730,7 @@ public class GregtechConduits {
                 .addTo(extruderRecipes);
             GTValues.RA.stdBuilder()
                 .itemInputs(
-                    ItemUtils.getSimpleStack(pipeIngot, 6 * inputMultiplier),
+                    GTUtility.copyAmount(6 * inputMultiplier, pipeIngot),
                     ItemList.Shape_Extruder_Pipe_Large.get(0))
                 .itemOutputs(ItemUtils.getItemStackOfAmountFromOreDict("pipe" + "Large" + output, 1))
                 .duration(2 * SECONDS)
@@ -738,7 +738,7 @@ public class GregtechConduits {
                 .addTo(extruderRecipes);
             GTValues.RA.stdBuilder()
                 .itemInputs(
-                    ItemUtils.getSimpleStack(pipeIngot, 12 * inputMultiplier),
+                    GTUtility.copyAmount(12 * inputMultiplier, pipeIngot),
                     ItemList.Shape_Extruder_Pipe_Huge.get(0))
                 .itemOutputs(ItemUtils.getItemStackOfAmountFromOreDict("pipe" + "Huge" + output, 1))
                 .duration(4 * SECONDS)

@@ -239,7 +239,7 @@ public class CI {
             getModItem(Mods.GTPlusPlus.ID,"item.itemBufferCore" + "8", 1),
             getModItem(Mods.GTPlusPlus.ID,"item.itemBufferCore" + "9", 1),
             getModItem(Mods.GTPlusPlus.ID,"item.itemBufferCore" + "10", 1) };
-        return ItemUtils.getSimpleStack(aOutput[MathUtils.balance(aTier, 0, 9)], aAmount);
+        return GTUtility.copyAmount(aAmount, aOutput[MathUtils.balance(aTier, 0, 9)]);
     }
 
     public static ItemStack getPlate(int aTier, int aAmount) {

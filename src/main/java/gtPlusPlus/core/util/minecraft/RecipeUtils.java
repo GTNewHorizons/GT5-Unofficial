@@ -337,7 +337,7 @@ public class RecipeUtils {
             Object o = Inputs[i];
 
             if (o instanceof ItemStack) {
-                Slots[i] = ItemUtils.getSimpleStack((ItemStack) o, 1);
+                Slots[i] = GTUtility.copyAmount(1, (ItemStack) o);
                 aFullString.append(aFullStringExpanded.charAt(i));
             } else if (o instanceof Item) {
                 Slots[i] = ItemUtils.getSimpleStack((Item) o, 1);

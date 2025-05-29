@@ -10,6 +10,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import gregtech.api.util.GTUtility;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
@@ -926,7 +927,7 @@ public class Material {
         }
         ItemStack i = g.get(aKey);
         if (i != null) {
-            return ItemUtils.getSimpleStack(i, stacksize);
+            return GTUtility.copyAmount(stacksize, i);
         } else {
             // Try get a GT Material
             Materials Erf = MaterialUtils.getMaterial(this.unlocalizedName);

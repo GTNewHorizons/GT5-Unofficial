@@ -1,6 +1,7 @@
 package gtPlusPlus.core.common;
 
 import cofh.CoFHCore;
+import gregtech.api.util.GTUtility;
 import net.minecraft.entity.monster.EntityBlaze;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -205,7 +206,7 @@ public class CommonProxy implements IFuelHandler {
             if (aStackID == burnID) {
                 int burn = temp.getKey();
                 ItemStack fuel = temp.getValue();
-                ItemStack testItem = ItemUtils.getSimpleStack(fuel, aStack.stackSize);
+                ItemStack testItem = GTUtility.copyAmount(aStack.stackSize, fuel);
 
                 if (aStack.isItemEqual(testItem)) {
                     return burn;

@@ -73,15 +73,6 @@ public class ItemUtils {
         return new ItemStack(item, stackSize);
     }
 
-    public static ItemStack getSimpleStack(final ItemStack stack, final int stackSize) {
-        if (stack == null) {
-            return null;
-        }
-        final ItemStack r = stack.copy();
-        r.stackSize = stackSize;
-        return r;
-    }
-
     public static ItemStack getIC2Cell(final int meta) {
         return getModItem(IndustrialCraft2.ID, "itemCellEmpty", 1L, meta);
     }
@@ -307,7 +298,7 @@ public class ItemUtils {
                 null,
                 null,
                 null,
-                ItemUtils.getSimpleStack(tinyDust, 9))) {
+                GTUtility.copyAmount(9, tinyDust))) {
                 Logger.WARNING("9 Tiny dust from 1 Recipe: " + materialName + " - Success");
             } else {
                 Logger.WARNING("9 Tiny dust from 1 Recipe: " + materialName + " - Failed");
@@ -340,7 +331,7 @@ public class ItemUtils {
                 null,
                 null,
                 null,
-                ItemUtils.getSimpleStack(smallDust, 4))) {
+                GTUtility.copyAmount(4, smallDust))) {
                 Logger.WARNING("4 Small dust from 1 Dust Recipe: " + materialName + " - Success");
             } else {
                 Logger.WARNING("4 Small dust from 1 Dust Recipe: " + materialName + " - Failed");

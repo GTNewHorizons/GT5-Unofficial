@@ -5,6 +5,7 @@ import static gregtech.api.enums.Mods.GTPlusPlus;
 import java.util.List;
 import java.util.Random;
 
+import gregtech.api.util.GTUtility;
 import net.minecraft.block.BlockLeaves;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
@@ -50,7 +51,7 @@ public class LeavesBase extends BlockLeaves {
         Logger.INFO("Dropping Bonus Drops");
         for (ItemStack bonusDrop : this.bonusDrops) {
             if (bonusDrop != null && world.rand.nextInt(randomChance) == 0) {
-                this.dropBlockAsItem(world, x, y, z, ItemUtils.getSimpleStack(bonusDrop, 1));
+                this.dropBlockAsItem(world, x, y, z, GTUtility.copyAmount(1, bonusDrop));
             }
         }
     }

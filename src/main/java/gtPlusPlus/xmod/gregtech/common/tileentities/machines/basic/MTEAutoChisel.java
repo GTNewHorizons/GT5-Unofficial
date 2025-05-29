@@ -187,7 +187,7 @@ public class MTEAutoChisel extends MTEBasicMachine {
                         return FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS;
                     }
                     if (!tIsCached) {
-                        cacheItem(ItemUtils.getSimpleStack(aInput, 1), ItemUtils.getSimpleStack(tOutput, 1));
+                        cacheItem(GTUtility.copyAmount(1, aInput), GTUtility.copyAmount(1, tOutput));
                     }
                     this.mOutputItems[0] = tOutput.copy();
                     return FOUND_AND_SUCCESSFULLY_USED_RECIPE;

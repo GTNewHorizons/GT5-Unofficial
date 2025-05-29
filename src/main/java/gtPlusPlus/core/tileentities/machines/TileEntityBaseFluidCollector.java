@@ -3,6 +3,7 @@ package gtPlusPlus.core.tileentities.machines;
 import java.util.ArrayList;
 import java.util.List;
 
+import gregtech.api.util.GTUtility;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -195,7 +196,7 @@ public abstract class TileEntityBaseFluidCollector extends TileEntityBase implem
                     .max(Math.min(this.tank.getCapacity() - this.tank.getFluidAmount(), aFluidAmount), 1);
                 this.tank.fill(FluidUtils.getFluidStack(fluidToProvide(), aFluidAmount), true);
             } else {
-                ItemStack aDirtStack = ItemUtils.getSimpleStack(itemToSpawnInWorldIfTankIsFull(), 1);
+                ItemStack aDirtStack = GTUtility.copyAmount(1, itemToSpawnInWorldIfTankIsFull());
                 if (!ItemUtils.checkForInvalidItems(aDirtStack)) {
                     return;
                 }

@@ -468,7 +468,7 @@ public class RecipesGregTech {
                 .metadata(SCANNING, new Scanning(1 * MINUTES, GTValues.VP[aCasingSlot + 7]))
                 .itemInputs(
                     aGemCasings[aCasingSlot],
-                    ItemUtils.getSimpleStack(aExoticInputs[aCasingSlot], 16),
+                    GTUtility.copyAmount(16, aExoticInputs[aCasingSlot]),
                     CI.getTieredComponent(OrePrefixes.plate, j, 16),
                     new Object[] { CI.circuits[j], 8 },
                     CI.getTieredComponent(OrePrefixes.wireGt16, j + 1, 32),
@@ -491,7 +491,7 @@ public class RecipesGregTech {
                 .metadata(RESEARCH_ITEM, ItemUtils.simpleMetaStack(Items.golden_apple, 1, 1))
                 .metadata(SCANNING, new Scanning(2 * MINUTES, TierEU.RECIPE_LuV))
                 .itemInputs(
-                    ItemUtils.getSimpleStack(aGemCasings[2], 4),
+                    GTUtility.copyAmount(4, aGemCasings[2]),
                     CI.getTieredComponent(OrePrefixes.plate, 8, 32),
                     new Object[] { "circuitUltimate", 16 },
                     CI.getTieredComponent(OrePrefixes.cableGt02, 7, 16),
@@ -529,7 +529,7 @@ public class RecipesGregTech {
                     .metadata(RESEARCH_ITEM, aChargeResearch[aCurrSlot])
                     .metadata(SCANNING, new Scanning(30 * SECONDS, GTValues.VP[aCurrSlot + 5]))
                     .itemInputs(
-                        ItemUtils.getSimpleStack(aGemBatteries[aCurrSlot], 2),
+                        GTUtility.copyAmount(2, aGemBatteries[aCurrSlot]),
                         aCoilWire[aCurrSlot],
                         CI.getTieredComponent(OrePrefixes.plate, h, 8),
                         new Object[] { CI.circuits[h], 4 },
@@ -554,7 +554,7 @@ public class RecipesGregTech {
                 .metadata(RESEARCH_ITEM, aChargeResearch[aCurrSlot])
                 .metadata(SCANNING, new Scanning(30 * SECONDS, GTValues.VP[aCurrSlot + 5]))
                 .itemInputs(
-                    ItemUtils.getSimpleStack(aGemBatteries[aCurrSlot], 2),
+                    GTUtility.copyAmount(2, aGemBatteries[aCurrSlot]),
                     aCoilWire[aCurrSlot],
                     CI.getTieredComponent(OrePrefixes.plate, 9, 8),
                     new Object[] { "circuitInfinite", 4 },
@@ -579,7 +579,7 @@ public class RecipesGregTech {
                     ItemDummyResearch.getResearchStack(ASSEMBLY_LINE_RESEARCH.RESEARCH_9_CLOAKING, 1))
                 .metadata(SCANNING, new Scanning(1 * MINUTES + 40 * SECONDS, TierEU.RECIPE_ZPM))
                 .itemInputs(
-                    ItemUtils.getSimpleStack(aGemCasings[3], 4),
+                    GTUtility.copyAmount(4, aGemCasings[3]),
                     CI.getTieredComponent(OrePrefixes.plate, 8, 32),
                     new Object[] { "circuitUltimate", 16 },
                     CI.getTieredComponent(OrePrefixes.cableGt04, 8, 16),
@@ -1121,7 +1121,7 @@ public class RecipesGregTech {
                 GTOreDictUnificator.get(OrePrefixes.plateDense, Materials.Lead, 4L),
                 GTOreDictUnificator.get(OrePrefixes.circuit, Materials.HV, 4),
                 GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorHV, 2L))
-            .itemOutputs(ItemUtils.getSimpleStack(GregtechItemList.Casing_Vanadium_Redox.get(1), 1))
+            .itemOutputs(GregtechItemList.Casing_Vanadium_Redox.get(1))
             .fluidInputs(Materials.Oxygen.getGas(16_000))
             .duration(3 * SECONDS + 4 * TICKS)
             .eut(TierEU.RECIPE_HV / 2)
@@ -1189,8 +1189,8 @@ public class RecipesGregTech {
 
         RA.stdBuilder()
             .itemInputs(
-                ItemUtils.getSimpleStack(CI.explosiveITNT, 2),
-                ItemUtils.getSimpleStack(CI.explosiveTNT, 4),
+                GTUtility.copyAmount(2, CI.explosiveITNT),
+                GTUtility.copyAmount(4, CI.explosiveTNT),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Sulfur, 2L),
                 GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Iron, 1L))
             .itemOutputs(GregtechItemList.MiningExplosives.get(3))

@@ -229,8 +229,8 @@ public class MTEIndustrialChisel extends GTPPMultiBlockBase<MTEIndustrialChisel>
                 // We can chisel this
                 GTRecipe aRecipe = new GTRecipe(
                     false,
-                    new ItemStack[] { ItemUtils.getSimpleStack(aInput, 1) },
-                    new ItemStack[] { ItemUtils.getSimpleStack(tOutput, 1) },
+                    new ItemStack[] { GTUtility.copyAmount(1, aInput) },
+                    new ItemStack[] { GTUtility.copyAmount(1, tOutput) },
                     null,
                     new int[] { 10000 },
                     new FluidStack[] {},

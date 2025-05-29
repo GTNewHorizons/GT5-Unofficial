@@ -316,7 +316,7 @@ public class RecipesMachines {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                ItemUtils.getSimpleStack(ItemList.Hull_IV.get(1), 2),
+                ItemList.Hull_IV.get(2),
                 ItemList.Machine_IV_Hammer.get(1),
                 CI.getPlate(4, 8),
                 CI.getBolt(5, 32),
@@ -945,7 +945,7 @@ public class RecipesMachines {
         // Computer Cube
         GTValues.RA.stdBuilder()
             .itemInputs(
-                ItemUtils.getSimpleStack(CI.getDataOrb(), 4 * (1)),
+                GTUtility.copyAmount(4, CI.getDataOrb()),
                 ItemList.Cover_Screen.get(4),
                 ItemList.Hull_IV.get(1),
                 ItemUtils.getItemStackOfAmountFromOreDict("circuitUltimate", 2))
@@ -957,7 +957,7 @@ public class RecipesMachines {
         // Circuit programmer
         GTValues.RA.stdBuilder()
             .itemInputs(
-                ItemUtils.getSimpleStack(ItemList.Robot_Arm_LV.get(1), 4 * (1)),
+                ItemList.Robot_Arm_LV.get(4),
                 ItemList.Cover_Controller.get(1, ItemList.Electric_Motor_MV.get(1)),
                 ItemList.Hull_MV.get(1),
                 GTOreDictUnificator.get(OrePrefixes.circuit, Materials.LV, 2),
@@ -2414,7 +2414,7 @@ public class RecipesMachines {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 ItemList.Hull_IV.get(1),
-                ItemUtils.getSimpleStack(RECIPE_CyclotronInnerCoil, 2),
+                GTUtility.copyAmount(2, RECIPE_CyclotronInnerCoil),
                 MaterialsAlloy.INCOLOY_020.getPlate(8),
                 MaterialsAlloy.TANTALLOY_61.getGear(2),
                 MaterialsAlloy.INCOLOY_MA956.getScrew(16),
@@ -2528,7 +2528,7 @@ public class RecipesMachines {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                ItemUtils.getSimpleStack(GregtechItemList.Casing_Multi_Use.get(1), 1),
+                GregtechItemList.Casing_Multi_Use.get(1),
                 ItemList.Block_IridiumTungstensteel.get(1),
                 CI.getTieredComponent(OrePrefixes.circuit, 2, 16),
                 CI.getTieredComponent(OrePrefixes.screw, 5, 32),
@@ -2553,7 +2553,7 @@ public class RecipesMachines {
             .addTo(assemblerRecipes);
         GTValues.RA.stdBuilder()
             .itemInputs(
-                ItemUtils.getSimpleStack(GregtechItemList.Casing_Multi_Use.get(1), 1),
+                GregtechItemList.Casing_Multi_Use.get(1),
                 CI.getEmitter(4, 2),
                 CI.getRobotArm(4, 2),
                 CI.getTieredComponent(OrePrefixes.circuit, 2, 8),
@@ -2864,7 +2864,7 @@ public class RecipesMachines {
                 ItemUtils.getItemStackOfAmountFromOreDict("plateDoubleTriniumTitaniumAlloy", 1 * (1)),
                 ItemUtils.getItemStackOfAmountFromOreDict("gearGtPikyonium64B", 2 * (1)),
                 MaterialsAlloy.TRINIUM_REINFORCED_STEEL.getPlateDouble(4 * 1),
-                ItemUtils.getSimpleStack((ItemList.Hull_LuV.get(1)), 1 * 1))
+                ItemList.Hull_LuV.get(1))
             .itemOutputs(GregtechItemList.Casing_BedrockMiner.get(1))
             .fluidInputs(MaterialsAlloy.MARAGING350.getFluidStack(16 * INGOTS))
             .duration((int) GTValues.V[4])
@@ -2945,7 +2945,7 @@ public class RecipesMachines {
             // Energy Buffer
             GTValues.RA.stdBuilder()
                 .itemInputs(
-                    ItemUtils.getSimpleStack(aOutput[i], 4),
+                    GTUtility.copyAmount(4, aOutput[i]),
                     CI.getTieredComponent(OrePrefixes.plate, aTier, 8),
                     CI.getTieredComponent(OrePrefixes.wireGt08, i, 4),
                     CI.getTieredComponent(OrePrefixes.circuit, i, 4),

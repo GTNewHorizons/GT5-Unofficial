@@ -3,6 +3,7 @@ package gtPlusPlus.core.handler.events;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import gregtech.api.util.GTUtility;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -59,7 +60,7 @@ public class EntityDeathHandler implements IMobExtraInfoProvider {
         int aMaxDrop = aData.getMiddle();
         int aChanceOutOf10000 = aData.getRight();
         if (MathUtils.randInt(0, 10000) <= aChanceOutOf10000) {
-            aLoot = ItemUtils.getSimpleStack(aLoot, MathUtils.randInt(1, aMaxDrop));
+            aLoot = GTUtility.copyAmount(MathUtils.randInt(1, aMaxDrop), aLoot);
             if (ItemUtils.checkForInvalidItems(aLoot)) {
                 return aLoot;
             }
