@@ -342,21 +342,6 @@ public class ItemUtils {
         return output;
     }
 
-    public static boolean isRadioactive(final String materialName) {
-        int sRadiation = 0;
-        if (materialName.toLowerCase()
-            .contains("uranium")) {
-            sRadiation = 2;
-        } else if (materialName.toLowerCase()
-            .contains("plutonium")) {
-                sRadiation = 4;
-            } else if (materialName.toLowerCase()
-                .contains("thorium")) {
-                    sRadiation = 1;
-                }
-        return sRadiation >= 1;
-    }
-
     public static int getRadioactivityLevel(final String materialName) {
         int sRadiation = 0;
         if (materialName.toLowerCase()
