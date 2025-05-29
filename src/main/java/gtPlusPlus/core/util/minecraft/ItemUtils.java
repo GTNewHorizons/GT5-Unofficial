@@ -141,8 +141,7 @@ public class ItemUtils {
             return returnValue;
         }
         Logger.INFO("Failed to find `" + oredictName + "` in OD.");
-        return getErrorStack(amount, oredictName + " x" + amount);
-        // return getItemStackOfAmountFromOreDictNoBroken(mTemp, amount);
+        return null;
     }
 
     public static ItemStack getItemStackOfAmountFromOreDictNoBroken(String oredictName, final int amount) {
@@ -471,24 +470,9 @@ public class ItemUtils {
         }
         ItemStack aGtStack = GTOreDictUnificator.get(mPrefix, mMat, mAmount);
         if (aGtStack == null) {
-            Logger
-                .INFO("Failed to find `" + mPrefix + MaterialUtils.getMaterialName(mMat) + "` in OD. [Prefix Search]");
-            return getErrorStack(mAmount, (mPrefix.toString() + MaterialUtils.getMaterialName(mMat) + " x" + mAmount));
-        } else {
-            return aGtStack;
+            Logger.INFO("Failed to find `" + mPrefix + MaterialUtils.getMaterialName(mMat) + "` in OD. [Prefix Search]");
         }
-    }
-
-    public static ItemStack getErrorStack(int mAmount) {
-        return getErrorStack(mAmount, null);
-    }
-
-    public static ItemStack getErrorStack(int mAmount, String aName) {
-        ItemStack g = new ItemStack(ModItems.AAA_Broken, 1);
-        if (aName != null) {
-            NBTUtils.setBookTitle(g, EnumChatFormatting.RED + aName);
-        }
-        return g;
+        return aGtStack;
     }
 
     public static boolean registerFuel(ItemStack aBurnable, int burn) {
@@ -514,28 +498,10 @@ public class ItemUtils {
         }
 
         for (ItemStack stack : mInputs) {
-            if (stack != null) {
-                if (stack.getItem() != null) {
-                    if (stack.getItem() == ModItems.AAA_Broken || stack.getItem()
-                        .getClass() == ModItems.AAA_Broken.getClass()) {
-                        return false;
-                    }
-                }
-            } else {
-                return false;
-            }
+            if (stack == null) return false;
         }
         for (ItemStack stack : mOutputs) {
-            if (stack != null) {
-                if (stack.getItem() != null) {
-                    if (stack.getItem() == ModItems.AAA_Broken || stack.getItem()
-                        .getClass() == ModItems.AAA_Broken.getClass()) {
-                        return false;
-                    }
-                }
-            } else {
-                return false;
-            }
+            if (stack == null) return false;
         }
 
         return true;

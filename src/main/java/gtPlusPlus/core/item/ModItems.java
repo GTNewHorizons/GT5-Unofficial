@@ -92,8 +92,6 @@ import toxiceverglades.GTPPEverglades;
 
 public final class ModItems {
 
-    public static Item AAA_Broken;
-
     public static ItemCustomSpawnEgg itemCustomSpawnEgg;
 
     public static Item itemIngotBatteryAlloy;
@@ -198,13 +196,6 @@ public final class ModItems {
     public static ItemDummyResearch itemDummyResearch;
 
     public static BaseItemMetaFood itemMetaFood;
-
-    static {
-        Logger.INFO("Items!");
-        // Default item used when recipes fail, handy for debugging. Let's make sure they exist when this class is
-        // called upon.
-        AAA_Broken = new BaseItemIngotOld("AAA_Broken", "Errors - Tell Alkalus", Utils.rgbtoHexValue(128, 128, 128), 0);
-    }
 
     public static void init() {
 

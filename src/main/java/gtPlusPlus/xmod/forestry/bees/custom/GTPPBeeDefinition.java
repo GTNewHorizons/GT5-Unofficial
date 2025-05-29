@@ -573,7 +573,7 @@ public enum GTPPBeeDefinition implements IBeeDefinition {
             slagComb.stackSize = 1;
             return slagComb;
         }
-        return ItemUtils.getErrorStack(1);
+        return null;
     }
 
     private static ItemStack getStoneComb() {
@@ -582,6 +582,6 @@ public enum GTPPBeeDefinition implements IBeeDefinition {
             stoneComb.stackSize = 1;
             return stoneComb;
         }
-        return ItemUtils.getErrorStack(1);
+        return null;
     }
 }
