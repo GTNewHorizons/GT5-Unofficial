@@ -22,6 +22,8 @@ import java.util.ArrayList;
 
 import javax.annotation.Nonnull;
 
+import gregtech.api.metatileentity.implementations.gui.MTEMultiBlockBaseGui;
+import gregtech.common.tileentities.machines.multi.gui.MTECZPullerGui;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -53,6 +55,7 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.blocks.BlockCasings2;
 import gregtech.common.blocks.BlockCasings9;
 import gregtech.common.misc.GTStructureChannels;
+import org.jetbrains.annotations.NotNull;
 
 public class MTECZPuller extends MTEEnhancedMultiBlockBase<MTECZPuller> implements ISurvivalConstructable {
 
@@ -399,6 +402,15 @@ public class MTECZPuller extends MTEEnhancedMultiBlockBase<MTECZPuller> implemen
                 : ((BlockCasings9) GregTechAPI.sBlockCasings9).getTextureIndex(11)) };
     }
 
+    @Override
+    protected boolean forceUseMui2() {
+        return true;
+    }
+
+    @Override
+    protected @NotNull MTEMultiBlockBaseGui getGui() {
+        return new MTECZPullerGui(this);
+    }
     // @Override
     // public Pos2d getStructureUpdateButtonPos() {
     // return new Pos2d(80, 91);
