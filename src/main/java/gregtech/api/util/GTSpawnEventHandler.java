@@ -94,7 +94,9 @@ public class GTSpawnEventHandler {
 
     @SubscribeEvent
     public static void onWorldUnload(WorldEvent.Unload event) {
-        mobReps.remove(event.world.provider.dimensionId);
+        if (mobReps.containsKey(event.world.provider.dimensionId)) {
+            mobReps.remove(event.world.provider.dimensionId);
+        }
     }
 
     @SubscribeEvent
