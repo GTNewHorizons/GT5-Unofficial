@@ -284,6 +284,7 @@ import gregtech.common.covers.CoverMetricsTransmitter;
 import gregtech.common.covers.CoverSolarPanel;
 import gregtech.common.render.items.GlitchEffectMetaItemRenderer;
 import gregtech.common.render.items.InfinityMetaItemRenderer;
+import gregtech.common.render.items.RainbowOverlayMetaItemRenderer;
 import mods.railcraft.common.items.firestone.IItemFirestoneBurning;
 
 @Optional.Interface(iface = "mods.railcraft.common.items.firestone.IItemFirestoneBurning", modid = Mods.Names.RAILCRAFT)
@@ -1268,11 +1269,13 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 implements IItemFi
         ItemList.Hot_Netherite_Scrap.set(addItem(Hot_Netherite_Scrap.ID, "Hot Netherite Scrap", "Activated?"));
         ItemList.Prismarine_Precipitate.set(addItem(Prismarine_Precipitate.ID, "Prismarine Precipitate", ""));
         ItemList.Prismatic_Crystal.set(addItem(Prismatic_Crystal.ID, "Prismatic Crystal", ""));
-        ItemList.Radiation_Proof_Prismatic_Naquadah_Composite_Sheet.set(
-            addItem(
-                Radiation_Proof_Prismatic_Naquadah_Composite_Sheet.ID,
-                "Radiation-Proof Prismatic Naquadah Composite Sheet",
-                "Attenuates all forms of radiation almost perfectly"));
+        ItemList.Radiation_Proof_Prismatic_Naquadah_Composite_Sheet
+            .set(
+                addItem(
+                    Radiation_Proof_Prismatic_Naquadah_Composite_Sheet.ID,
+                    "Radiation-Proof Prismatic Naquadah Composite Sheet",
+                    "Attenuates all forms of radiation almost perfectly"))
+            .setRender(new RainbowOverlayMetaItemRenderer(new short[] { 255, 255, 255, 255 }));
         ItemList.Naquarite_Universal_Insulator_Foil.set(
             addItem(
                 Naquarite_Universal_Insulator_Foil.ID,
