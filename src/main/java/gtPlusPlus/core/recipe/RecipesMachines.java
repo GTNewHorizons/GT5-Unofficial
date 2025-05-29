@@ -957,8 +957,8 @@ public class RecipesMachines {
         // Circuit programmer
         GTValues.RA.stdBuilder()
             .itemInputs(
-                ItemUtils.getSimpleStack(CI.robotArm_LV, 4 * (1)),
-                ItemList.Cover_Controller.get(1, CI.electricMotor_MV),
+                ItemUtils.getSimpleStack(ItemList.Robot_Arm_LV.get(1), 4 * (1)),
+                ItemList.Cover_Controller.get(1, ItemList.Electric_Motor_MV.get(1)),
                 CI.machineHull_MV,
                 GTOreDictUnificator.get(OrePrefixes.circuit, Materials.LV, 2),
                 GTOreDictUnificator.get(OrePrefixes.circuit, Materials.MV, 2))
@@ -1519,7 +1519,7 @@ public class RecipesMachines {
             pipeTier2,
             CI.component_Plate[3],
             CI.component_Plate[3],
-            CI.electricPump_LV,
+            ItemList.Electric_Pump_LV.get(1),
             CI.component_Plate[3],
             GregtechItemList.GTFluidTank_LV.get(1));
         RecipeUtils.addShapedGregtechRecipe(
@@ -1530,7 +1530,7 @@ public class RecipesMachines {
             pipeTier3,
             CI.component_Plate[5],
             CI.component_Plate[5],
-            CI.electricPump_LV,
+            ItemList.Electric_Pump_LV.get(1),
             CI.component_Plate[5],
             GregtechItemList.GTFluidTank_MV.get(1));
         RecipeUtils.addShapedGregtechRecipe(
@@ -2010,10 +2010,10 @@ public class RecipesMachines {
             // Pollution Detector
             RecipeUtils.addShapedGregtechRecipe(
                 "plateSteel",
-                CI.sensor_LV,
+                ItemList.Sensor_LV.get(1),
                 "plateSteel",
                 "plateSteel",
-                CI.electricMotor_LV,
+                ItemList.Electric_Motor_LV.get(1),
                 "plateSteel",
                 "circuitBasic",
                 CI.machineHull_LV,
@@ -2026,7 +2026,7 @@ public class RecipesMachines {
                 ItemUtils.simpleMetaStack(ModItems.itemAirFilter, 0, 1),
                 CI.component_Plate[1],
                 CI.component_Plate[1],
-                CI.electricMotor_LV,
+                ItemList.Electric_Motor_LV.get(1),
                 CI.component_Plate[1],
                 "circuitBasic",
                 CI.machineHull_LV,
@@ -2038,7 +2038,7 @@ public class RecipesMachines {
                 ItemUtils.simpleMetaStack(ModItems.itemAirFilter, 0, 1),
                 CI.component_Plate[2],
                 CI.component_Plate[2],
-                CI.electricMotor_MV,
+                ItemList.Electric_Motor_MV.get(1),
                 CI.component_Plate[2],
                 "circuitGood",
                 CI.machineHull_MV,
@@ -2050,7 +2050,7 @@ public class RecipesMachines {
                 ItemUtils.simpleMetaStack(ModItems.itemAirFilter, 0, 1),
                 CI.component_Plate[3],
                 CI.component_Plate[3],
-                CI.electricMotor_HV,
+                ItemList.Electric_Motor_HV.get(1),
                 CI.component_Plate[3],
                 "circuitAdvanced",
                 CI.machineHull_HV,
@@ -2062,7 +2062,7 @@ public class RecipesMachines {
                 ItemUtils.simpleMetaStack(ModItems.itemAirFilter, 0, 1),
                 CI.component_Plate[4],
                 CI.component_Plate[4],
-                CI.electricMotor_EV,
+                ItemList.Electric_Motor_EV.get(1),
                 CI.component_Plate[4],
                 "circuitData",
                 CI.machineHull_EV,
@@ -2074,7 +2074,7 @@ public class RecipesMachines {
                 ItemUtils.simpleMetaStack(ModItems.itemAirFilter, 1, 1),
                 CI.component_Plate[5],
                 CI.component_Plate[5],
-                CI.electricMotor_IV,
+                ItemList.Electric_Motor_IV.get(1),
                 CI.component_Plate[5],
                 "circuitElite",
                 CI.machineHull_IV,
@@ -2086,7 +2086,7 @@ public class RecipesMachines {
                 ItemUtils.simpleMetaStack(ModItems.itemAirFilter, 1, 1),
                 CI.component_Plate[6],
                 CI.component_Plate[6],
-                CI.electricMotor_LuV,
+                ItemList.Electric_Motor_LuV.get(1),
                 CI.component_Plate[6],
                 "circuitMaster",
                 CI.machineHull_LuV,
@@ -2098,7 +2098,7 @@ public class RecipesMachines {
                 ItemUtils.simpleMetaStack(ModItems.itemAirFilter, 1, 1),
                 CI.component_Plate[7],
                 CI.component_Plate[7],
-                CI.electricMotor_ZPM,
+                ItemList.Electric_Motor_ZPM.get(1),
                 CI.component_Plate[7],
                 "circuitUltimate",
                 CI.machineHull_ZPM,
@@ -2110,7 +2110,7 @@ public class RecipesMachines {
                 ItemUtils.simpleMetaStack(ModItems.itemAirFilter, 1, 1),
                 CI.component_Plate[8],
                 CI.component_Plate[8],
-                CI.electricMotor_UV,
+                ItemList.Electric_Motor_UV.get(1),
                 CI.component_Plate[8],
                 "circuitSuperconductor",
                 CI.machineHull_UV,
@@ -2122,7 +2122,7 @@ public class RecipesMachines {
                 ItemUtils.simpleMetaStack(ModItems.itemAirFilter, 1, 1),
                 CI.component_Plate[9],
                 CI.component_Plate[9],
-                CI.electricMotor_UHV,
+                ItemList.Electric_Motor_UHV.get(1),
                 CI.component_Plate[9],
                 "circuitInfinite",
                 CI.machineHull_UHV,
@@ -2232,7 +2232,7 @@ public class RecipesMachines {
             ToolDictNames.craftingToolScrewdriver,
             "plateDoubleHastelloyC276",
             "gearGtTalonite",
-            CI.fieldGenerator_LV,
+            ItemList.Field_Generator_LV.get(1),
             "gearGtTalonite",
             "plateDoubleHastelloyC276",
             ToolDictNames.craftingToolHardHammer,
@@ -2256,7 +2256,7 @@ public class RecipesMachines {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 ItemUtils.getItemStackOfAmountFromOreDict("circuitMaster", 1),
-                CI.fieldGenerator_HV)
+                ItemList.Field_Generator_HV.get(1))
             .itemOutputs(controlCircuit)
             .duration(4 * MINUTES)
             .eut(TierEU.RECIPE_HV)
@@ -2628,9 +2628,9 @@ public class RecipesMachines {
             plate,
             "circuitElite",
             plate,
-            CI.electricPiston_IV,
+            ItemList.Electric_Piston_IV.get(1),
             IV_MACHINE_Extruder,
-            CI.electricPiston_IV,
+            ItemList.Electric_Piston_IV.get(1),
             plate,
             "circuitElite",
             plate,
@@ -2693,9 +2693,9 @@ public class RecipesMachines {
             gear,
             "circuitMaster",
             gear,
-            CI.electricPiston_IV,
+            ItemList.Electric_Piston_IV.get(1),
             GregtechItemList.Casing_AdvancedVacuum.get(1),
-            CI.electricPiston_IV,
+            ItemList.Electric_Piston_IV.get(1),
             plate,
             GregtechItemList.Gregtech_Computer_Cube.get(1),
             plate,
@@ -2724,9 +2724,9 @@ public class RecipesMachines {
             gear,
             "circuitMaster",
             gear,
-            CI.robotArm_IV,
+            ItemList.Robot_Arm_IV.get(1),
             GregtechItemList.Casing_Adv_BlastFurnace.get(1),
-            CI.robotArm_IV,
+            ItemList.Robot_Arm_IV.get(1),
             plate,
             GregtechItemList.Gregtech_Computer_Cube.get(1),
             plate,
@@ -2770,9 +2770,9 @@ public class RecipesMachines {
             gear,
             "circuitMaster",
             gear,
-            CI.fieldGenerator_IV,
+            ItemList.Field_Generator_IV.get(1),
             CI.machineHull_ZPM,
-            CI.robotArm_IV,
+            ItemList.Robot_Arm_IV.get(1),
             plate,
             GregtechItemList.Gregtech_Computer_Cube.get(1),
             plate,
@@ -2781,8 +2781,8 @@ public class RecipesMachines {
         // Supply Depot
         plate = MaterialsAlloy.HASTELLOY_C276.getPlateDouble(1);
         frame = MaterialsAlloy.TUNGSTEN_CARBIDE.getFrameBox(1);
-        cell1 = CI.conveyorModule_HV;
-        cell2 = CI.electricMotor_HV;
+        cell1 = ItemList.Conveyor_Module_HV.get(1);
+        cell2 = ItemList.Electric_Motor_HV.get(1);
         ItemStack casingAmazon = GregtechItemList.Casing_AmazonWarehouse.get(1);
 
         RecipeUtils.addShapedRecipe(
@@ -2811,12 +2811,12 @@ public class RecipesMachines {
             casingAmazon,
             "circuitElite",
             casingAmazon,
-            CI.electricPiston_IV,
+            ItemList.Electric_Piston_IV.get(1),
             ItemList.Machine_IV_Boxinator.get(1),
-            CI.electricPiston_IV,
-            CI.conveyorModule_IV,
+            ItemList.Electric_Piston_IV.get(1),
+            ItemList.Conveyor_Module_IV.get(1),
             casingAmazon,
-            CI.conveyorModule_IV,
+            ItemList.Conveyor_Module_IV.get(1),
             GregtechItemList.Amazon_Warehouse_Controller.get(1));
 
         // Industrial Mixing Machine

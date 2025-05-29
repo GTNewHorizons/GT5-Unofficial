@@ -1210,8 +1210,8 @@ public class RecipesGregTech {
 
         RA.stdBuilder()
             .itemInputs(
-                CI.fluidRegulator_LV,
-                CI.electricMotor_LV,
+                ItemList.FluidRegulator_LV.get(1),
+                ItemList.Electric_Motor_LV.get(1),
                 CI.getTieredComponent(OrePrefixes.bolt, 1, 8),
                 GTOreDictUnificator.get(OrePrefixes.ring, Materials.Brass, 1L),
                 GTOreDictUnificator.get(OrePrefixes.stick, Materials.Brass, 1L),
@@ -1223,8 +1223,8 @@ public class RecipesGregTech {
 
         RA.stdBuilder()
             .itemInputs(
-                CI.fluidRegulator_MV,
-                CI.electricMotor_MV,
+                ItemList.FluidRegulator_MV.get(1),
+                ItemList.Electric_Motor_MV.get(1),
                 CI.getTieredComponent(OrePrefixes.bolt, 2, 8),
                 GTOreDictUnificator.get(OrePrefixes.ring, Materials.Invar, 1L),
                 GTOreDictUnificator.get(OrePrefixes.stick, Materials.Invar, 1L),
@@ -1236,8 +1236,8 @@ public class RecipesGregTech {
 
         RA.stdBuilder()
             .itemInputs(
-                CI.fluidRegulator_HV,
-                CI.electricMotor_HV,
+                ItemList.FluidRegulator_HV.get(1),
+                ItemList.Electric_Motor_HV.get(1),
                 CI.getTieredComponent(OrePrefixes.bolt, 3, 8),
                 GTOreDictUnificator.get(OrePrefixes.ring, Materials.Chrome, 1L),
                 GTOreDictUnificator.get(OrePrefixes.stick, Materials.Chrome, 1L),
@@ -1249,8 +1249,8 @@ public class RecipesGregTech {
 
         RA.stdBuilder()
             .itemInputs(
-                CI.fluidRegulator_EV,
-                CI.electricMotor_EV,
+                ItemList.FluidRegulator_EV.get(1),
+                ItemList.Electric_Motor_EV.get(1),
                 CI.getTieredComponent(OrePrefixes.bolt, 4, 8),
                 GTOreDictUnificator.get(OrePrefixes.ring, Materials.Titanium, 1L),
                 GTOreDictUnificator.get(OrePrefixes.stick, Materials.Titanium, 1L),

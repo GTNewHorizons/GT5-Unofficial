@@ -17,7 +17,6 @@ import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.material.MaterialsAlloy;
 import gtPlusPlus.core.material.MaterialsElements;
-import gtPlusPlus.core.recipe.LoaderMachineComponents;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
@@ -28,9 +27,6 @@ import static gregtech.api.util.GTModHandler.getModItem;
 
 public class CI {
 
-    // null
-    public static ItemStack _NULL = ItemUtils.getErrorStack(1);
-
     // bits
     public static long bits = GTModHandler.RecipeBits.NOT_REMOVABLE | GTModHandler.RecipeBits.REVERSIBLE
         | GTModHandler.RecipeBits.BUFFERED;
@@ -39,78 +35,6 @@ public class CI {
         | GTModHandler.RecipeBits.BUFFERED;
 
     // Machine Components
-    public static ItemStack electricMotor_LV;
-    public static ItemStack electricMotor_MV;
-    public static ItemStack electricMotor_HV;
-    public static ItemStack electricMotor_EV;
-    public static ItemStack electricMotor_IV;
-    public static ItemStack electricMotor_LuV;
-    public static ItemStack electricMotor_ZPM;
-    public static ItemStack electricMotor_UV;
-    public static ItemStack electricMotor_UHV;
-    public static ItemStack electricPump_LV;
-    public static ItemStack electricPump_MV;
-    public static ItemStack electricPump_HV;
-    public static ItemStack electricPump_EV;
-    public static ItemStack electricPump_IV;
-    public static ItemStack electricPump_LuV;
-    public static ItemStack electricPump_ZPM;
-    public static ItemStack electricPump_UV;
-    public static ItemStack electricPump_UHV;
-    public static ItemStack electricPiston_LV;
-    public static ItemStack electricPiston_MV;
-    public static ItemStack electricPiston_HV;
-    public static ItemStack electricPiston_EV;
-    public static ItemStack electricPiston_IV;
-    public static ItemStack electricPiston_LuV;
-    public static ItemStack electricPiston_ZPM;
-    public static ItemStack electricPiston_UV;
-    public static ItemStack electricPiston_UHV;
-    public static ItemStack robotArm_LV;
-    public static ItemStack robotArm_MV;
-    public static ItemStack robotArm_HV;
-    public static ItemStack robotArm_EV;
-    public static ItemStack robotArm_IV;
-    public static ItemStack robotArm_LuV;
-    public static ItemStack robotArm_ZPM;
-    public static ItemStack robotArm_UV;
-    public static ItemStack robotArm_UHV;
-    public static ItemStack conveyorModule_LV;
-    public static ItemStack conveyorModule_MV;
-    public static ItemStack conveyorModule_HV;
-    public static ItemStack conveyorModule_EV;
-    public static ItemStack conveyorModule_IV;
-    public static ItemStack conveyorModule_LuV;
-    public static ItemStack conveyorModule_ZPM;
-    public static ItemStack conveyorModule_UV;
-    public static ItemStack conveyorModule_UHV;
-    public static ItemStack emitter_LV;
-    public static ItemStack emitter_MV;
-    public static ItemStack emitter_HV;
-    public static ItemStack emitter_EV;
-    public static ItemStack emitter_IV;
-    public static ItemStack emitter_LuV;
-    public static ItemStack emitter_ZPM;
-    public static ItemStack emitter_UV;
-    public static ItemStack emitter_UHV;
-    public static ItemStack fieldGenerator_LV;
-    public static ItemStack fieldGenerator_MV;
-    public static ItemStack fieldGenerator_HV;
-    public static ItemStack fieldGenerator_EV;
-    public static ItemStack fieldGenerator_IV;
-    public static ItemStack fieldGenerator_LuV;
-    public static ItemStack fieldGenerator_ZPM;
-    public static ItemStack fieldGenerator_UV;
-    public static ItemStack fieldGenerator_UHV;
-    public static ItemStack sensor_LV;
-    public static ItemStack sensor_MV;
-    public static ItemStack sensor_HV;
-    public static ItemStack sensor_EV;
-    public static ItemStack sensor_IV;
-    public static ItemStack sensor_LuV;
-    public static ItemStack sensor_ZPM;
-    public static ItemStack sensor_UV;
-    public static ItemStack sensor_UHV;
 
     public static ItemStack fluidRegulator_LV;
     public static ItemStack fluidRegulator_MV;
@@ -304,9 +228,6 @@ public class CI {
         gearboxCasing_Tier_2 = ItemList.Casing_Gearbox_Steel.get(1);
         gearboxCasing_Tier_3 = ItemList.Casing_Gearbox_Titanium.get(1);
         gearboxCasing_Tier_4 = ItemList.Casing_Gearbox_TungstenSteel.get(1);
-
-        // Machine Components
-        LoaderMachineComponents.initialise();
     }
 
     public static ItemStack emptyCells(int i) {
@@ -555,136 +476,136 @@ public class CI {
 
     public static ItemStack getElectricMotor(int tier, int size) {
         return switch (tier){
-            case 1 -> GTUtility.copyAmount(size, CI.electricMotor_LV);
-            case 2 -> GTUtility.copyAmount(size, CI.electricMotor_MV);
-            case 3 -> GTUtility.copyAmount(size, CI.electricMotor_HV);
-            case 4 -> GTUtility.copyAmount(size, CI.electricMotor_EV);
-            case 5 -> GTUtility.copyAmount(size, CI.electricMotor_IV);
-            case 6 -> GTUtility.copyAmount(size, CI.electricMotor_LuV);
-            case 7 -> GTUtility.copyAmount(size, CI.electricMotor_ZPM);
-            case 8 -> GTUtility.copyAmount(size, CI.electricMotor_UV);
-            case 9 -> GTUtility.copyAmount(size, CI.electricMotor_UHV);
+            case 1 -> ItemList.Electric_Motor_LV.get(size);
+            case 2 -> ItemList.Electric_Motor_MV.get(size);
+            case 3 -> ItemList.Electric_Motor_HV.get(size);
+            case 4 -> ItemList.Electric_Motor_EV.get(size);
+            case 5 -> ItemList.Electric_Motor_IV.get(size);
+            case 6 -> ItemList.Electric_Motor_LuV.get(size);
+            case 7 -> ItemList.Electric_Motor_ZPM.get(size);
+            case 8 -> ItemList.Electric_Motor_UV.get(size);
+            case 9 -> ItemList.Electric_Motor_UHV.get(size);
             default -> throw new IllegalArgumentException();
         };
     }
 
     public static ItemStack getFluidRegulator(int aTier, int aSize) {
         return switch(aTier){
-            case 0 -> GTUtility.copyAmount(aSize, CI.fluidRegulator_LV);
-            case 1 -> GTUtility.copyAmount(aSize, CI.fluidRegulator_LV);
-            case 2 -> GTUtility.copyAmount(aSize, CI.fluidRegulator_MV);
-            case 3 -> GTUtility.copyAmount(aSize, CI.fluidRegulator_HV);
-            case 4 -> GTUtility.copyAmount(aSize, CI.fluidRegulator_EV);
-            case 5 -> GTUtility.copyAmount(aSize, CI.fluidRegulator_IV);
-            case 6 -> GTUtility.copyAmount(aSize, CI.fluidRegulator_LuV);
-            case 7 -> GTUtility.copyAmount(aSize, CI.fluidRegulator_ZPM);
-            case 8 -> GTUtility.copyAmount(aSize, CI.fluidRegulator_UV);
-            case 9 -> GTUtility.copyAmount(aSize, CI.fluidRegulator_UV);
+            case 0 -> GTUtility.copyAmount(aSize, ItemList.FluidRegulator_LV.get(1));
+            case 1 -> GTUtility.copyAmount(aSize, ItemList.FluidRegulator_LV.get(1));
+            case 2 -> GTUtility.copyAmount(aSize, ItemList.FluidRegulator_MV.get(1));
+            case 3 -> GTUtility.copyAmount(aSize, ItemList.FluidRegulator_HV.get(1));
+            case 4 -> GTUtility.copyAmount(aSize, ItemList.FluidRegulator_EV.get(1));
+            case 5 -> GTUtility.copyAmount(aSize, ItemList.FluidRegulator_IV.get(1));
+            case 6 -> GTUtility.copyAmount(aSize, ItemList.FluidRegulator_LuV.get(1));
+            case 7 -> GTUtility.copyAmount(aSize, ItemList.FluidRegulator_ZPM.get(1));
+            case 8 -> GTUtility.copyAmount(aSize, ItemList.FluidRegulator_UV.get(1));
+            case 9 -> GTUtility.copyAmount(aSize, ItemList.FluidRegulator_UV.get(1));
             default -> throw new IllegalArgumentException();
         };
     }
 
     public static ItemStack getElectricPiston(int tier, int size) {
         return switch (tier){
-            case 1 -> GTUtility.copyAmount(size, CI.electricPiston_LV);
-            case 2 -> GTUtility.copyAmount(size, CI.electricPiston_MV);
-            case 3 -> GTUtility.copyAmount(size, CI.electricPiston_HV);
-            case 4 -> GTUtility.copyAmount(size, CI.electricPiston_EV);
-            case 5 -> GTUtility.copyAmount(size, CI.electricPiston_IV);
-            case 6 -> GTUtility.copyAmount(size, CI.electricPiston_LuV);
-            case 7 -> GTUtility.copyAmount(size, CI.electricPiston_ZPM);
-            case 8 -> GTUtility.copyAmount(size, CI.electricPiston_UV);
-            case 9 -> GTUtility.copyAmount(size, CI.electricPiston_UHV);
+            case 1 -> ItemList.Electric_Piston_LV.get(size);
+            case 2 -> ItemList.Electric_Piston_MV.get(size);
+            case 3 -> ItemList.Electric_Piston_HV.get(size);
+            case 4 -> ItemList.Electric_Piston_EV.get(size);
+            case 5 -> ItemList.Electric_Piston_IV.get(size);
+            case 6 -> ItemList.Electric_Piston_LuV.get(size);
+            case 7 -> ItemList.Electric_Piston_ZPM.get(size);
+            case 8 -> ItemList.Electric_Piston_UV.get(size);
+            case 9 -> ItemList.Electric_Piston_UHV.get(size);
             default -> throw new IllegalArgumentException();
         };
     }
 
     public static ItemStack getElectricPump(int tier, int size) {
         return switch (tier){
-            case 1 -> GTUtility.copyAmount(size, CI.electricPump_LV);
-            case 2 -> GTUtility.copyAmount(size, CI.electricPump_MV);
-            case 3 -> GTUtility.copyAmount(size, CI.electricPump_HV);
-            case 4 -> GTUtility.copyAmount(size, CI.electricPump_EV);
-            case 5 -> GTUtility.copyAmount(size, CI.electricPump_IV);
-            case 6 -> GTUtility.copyAmount(size, CI.electricPump_LuV);
-            case 7 -> GTUtility.copyAmount(size, CI.electricPump_ZPM);
-            case 8 -> GTUtility.copyAmount(size, CI.electricPump_UV);
-            case 9 -> GTUtility.copyAmount(size, CI.electricPump_UHV);
+            case 1 -> ItemList.Electric_Pump_LV.get(size);
+            case 2 -> ItemList.Electric_Pump_MV.get(size);
+            case 3 -> ItemList.Electric_Pump_HV.get(size);
+            case 4 -> ItemList.Electric_Pump_EV.get(size);
+            case 5 -> ItemList.Electric_Pump_IV.get(size);
+            case 6 -> ItemList.Electric_Pump_LuV.get(size);
+            case 7 -> ItemList.Electric_Pump_ZPM.get(size);
+            case 8 -> ItemList.Electric_Pump_UV.get(size);
+            case 9 -> ItemList.Electric_Pump_UHV.get(size);
             default -> throw new IllegalArgumentException();
         };
     }
 
     public static ItemStack getRobotArm(int tier, int size) {
         return switch (tier){
-            case 1 -> GTUtility.copyAmount(size, CI.robotArm_LV);
-            case 2 -> GTUtility.copyAmount(size, CI.robotArm_MV);
-            case 3 -> GTUtility.copyAmount(size, CI.robotArm_HV);
-            case 4 -> GTUtility.copyAmount(size, CI.robotArm_EV);
-            case 5 -> GTUtility.copyAmount(size, CI.robotArm_IV);
-            case 6 -> GTUtility.copyAmount(size, CI.robotArm_LuV);
-            case 7 -> GTUtility.copyAmount(size, CI.robotArm_ZPM);
-            case 8 -> GTUtility.copyAmount(size, CI.robotArm_UV);
-            case 9 -> GTUtility.copyAmount(size, CI.robotArm_UHV);
+            case 1 -> ItemList.Robot_Arm_LV.get(size);
+            case 2 -> ItemList.Robot_Arm_MV.get(size);
+            case 3 -> ItemList.Robot_Arm_HV.get(size);
+            case 4 -> ItemList.Robot_Arm_EV.get(size);
+            case 5 -> ItemList.Robot_Arm_IV.get(size);
+            case 6 -> ItemList.Robot_Arm_LuV.get(size);
+            case 7 -> ItemList.Robot_Arm_ZPM.get(size);
+            case 8 -> ItemList.Robot_Arm_UV.get(size);
+            case 9 -> ItemList.Robot_Arm_UHV.get(size);
             default -> throw new IllegalArgumentException();
         };
     }
 
     public static ItemStack getConveyor(int tier, int size) {
         return switch (tier){
-            case 1 -> GTUtility.copyAmount(size, CI.conveyorModule_LV);
-            case 2 -> GTUtility.copyAmount(size, CI.conveyorModule_MV);
-            case 3 -> GTUtility.copyAmount(size, CI.conveyorModule_HV);
-            case 4 -> GTUtility.copyAmount(size, CI.conveyorModule_EV);
-            case 5 -> GTUtility.copyAmount(size, CI.conveyorModule_IV);
-            case 6 -> GTUtility.copyAmount(size, CI.conveyorModule_LuV);
-            case 7 -> GTUtility.copyAmount(size, CI.conveyorModule_ZPM);
-            case 8 -> GTUtility.copyAmount(size, CI.conveyorModule_UV);
-            case 9 -> GTUtility.copyAmount(size, CI.conveyorModule_UHV);
+            case 1 -> ItemList.Conveyor_Module_LV.get(size);
+            case 2 -> ItemList.Conveyor_Module_MV.get(size);
+            case 3 -> ItemList.Conveyor_Module_HV.get(size);
+            case 4 -> ItemList.Conveyor_Module_EV.get(size);
+            case 5 -> ItemList.Conveyor_Module_IV.get(size);
+            case 6 -> ItemList.Conveyor_Module_LuV.get(size);
+            case 7 -> ItemList.Conveyor_Module_ZPM.get(size);
+            case 8 -> ItemList.Conveyor_Module_UV.get(size);
+            case 9 -> ItemList.Conveyor_Module_UHV.get(size);
             default -> throw new IllegalArgumentException();
         };
     }
 
     public static ItemStack getEmitter(int tier, int size) {
         return switch (tier){
-            case 1 -> GTUtility.copyAmount(size, CI.emitter_LV);
-            case 2 -> GTUtility.copyAmount(size, CI.emitter_MV);
-            case 3 -> GTUtility.copyAmount(size, CI.emitter_HV);
-            case 4 -> GTUtility.copyAmount(size, CI.emitter_EV);
-            case 5 -> GTUtility.copyAmount(size, CI.emitter_IV);
-            case 6 -> GTUtility.copyAmount(size, CI.emitter_LuV);
-            case 7 -> GTUtility.copyAmount(size, CI.emitter_ZPM);
-            case 8 -> GTUtility.copyAmount(size, CI.emitter_UV);
-            case 9 -> GTUtility.copyAmount(size, CI.emitter_UHV);
+            case 1 -> ItemList.Emitter_LV.get(size);
+            case 2 -> ItemList.Emitter_MV.get(size);
+            case 3 -> ItemList.Emitter_HV.get(size);
+            case 4 -> ItemList.Emitter_EV.get(size);
+            case 5 -> ItemList.Emitter_IV.get(size);
+            case 6 -> ItemList.Emitter_LuV.get(size);
+            case 7 -> ItemList.Emitter_ZPM.get(size);
+            case 8 -> ItemList.Emitter_UV.get(size);
+            case 9 -> ItemList.Emitter_UHV.get(size);
             default -> throw new IllegalArgumentException();
         };
     }
 
     public static ItemStack getSensor(int tier, int size) {
         return switch (tier){
-            case 1 -> GTUtility.copyAmount(size, CI.electricMotor_LV);
-            case 2 -> GTUtility.copyAmount(size, CI.electricMotor_MV);
-            case 3 -> GTUtility.copyAmount(size, CI.electricMotor_HV);
-            case 4 -> GTUtility.copyAmount(size, CI.electricMotor_EV);
-            case 5 -> GTUtility.copyAmount(size, CI.electricMotor_IV);
-            case 6 -> GTUtility.copyAmount(size, CI.electricMotor_LuV);
-            case 7 -> GTUtility.copyAmount(size, CI.electricMotor_ZPM);
-            case 8 -> GTUtility.copyAmount(size, CI.electricMotor_UV);
-            case 9 -> GTUtility.copyAmount(size, CI.electricMotor_UHV);
+            case 1 -> ItemList.Sensor_LV.get(size);
+            case 2 -> ItemList.Sensor_MV.get(size);
+            case 3 -> ItemList.Sensor_HV.get(size);
+            case 4 -> ItemList.Sensor_EV.get(size);
+            case 5 -> ItemList.Sensor_IV.get(size);
+            case 6 -> ItemList.Sensor_LuV.get(size);
+            case 7 -> ItemList.Sensor_ZPM.get(size);
+            case 8 -> ItemList.Sensor_UV.get(size);
+            case 9 -> ItemList.Sensor_UHV.get(size);
             default -> throw new IllegalArgumentException();
         };
     }
 
     public static ItemStack getFieldGenerator(int tier, int size) {
         return switch (tier){
-            case 1 -> GTUtility.copyAmount(size, CI.fieldGenerator_LV);
-            case 2 -> GTUtility.copyAmount(size, CI.fieldGenerator_MV);
-            case 3 -> GTUtility.copyAmount(size, CI.fieldGenerator_HV);
-            case 4 -> GTUtility.copyAmount(size, CI.fieldGenerator_EV);
-            case 5 -> GTUtility.copyAmount(size, CI.fieldGenerator_IV);
-            case 6 -> GTUtility.copyAmount(size, CI.fieldGenerator_LuV);
-            case 7 -> GTUtility.copyAmount(size, CI.fieldGenerator_ZPM);
-            case 8 -> GTUtility.copyAmount(size, CI.fieldGenerator_UV);
-            case 9 -> GTUtility.copyAmount(size, CI.fieldGenerator_UHV);
+            case 1 -> ItemList.Field_Generator_LV.get(size);
+            case 2 -> ItemList.Field_Generator_MV.get(size);
+            case 3 -> ItemList.Field_Generator_HV.get(size);
+            case 4 -> ItemList.Field_Generator_EV.get(size);
+            case 5 -> ItemList.Field_Generator_IV.get(size);
+            case 6 -> ItemList.Field_Generator_LuV.get(size);
+            case 7 -> ItemList.Field_Generator_ZPM.get(size);
+            case 8 -> ItemList.Field_Generator_UV.get(size);
+            case 9 -> ItemList.Field_Generator_UHV.get(size);
             default -> throw new IllegalArgumentException();
         };
     }
