@@ -277,6 +277,7 @@ public class MTEEnergyInfuser extends TTMultiblockBase implements ISurvivalConst
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         super.onPostTick(aBaseMetaTileEntity, aTick);
+        if (!this.isAllowedToWork()) return;
         for (MTEHatchInputBus inputBus : mInputBusses) {
             if (inputBus instanceof MTEHatchInputBusME) continue;
             for (ItemStack stack : inputBus.mInventory) {
