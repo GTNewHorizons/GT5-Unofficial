@@ -849,6 +849,7 @@ public enum ItemList implements IItemContainer {
     Casing_Pipe_TungstenSteel,
     Casing_Pipe_Polytetrafluoroethylene,
     Casing_Pipe_Polybenzimidazole,
+    Casing_Polybenzimidazole,
 
     Casing_Stripes_A,
     Casing_Stripes_B,

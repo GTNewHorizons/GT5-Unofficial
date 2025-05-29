@@ -75,7 +75,7 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
 import gregtech.api.util.shutdown.SimpleShutDownReason;
-import gregtech.common.blocks.BlockCasings8;
+import gregtech.common.blocks.BlockCasings12;
 import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.tileentities.machines.multi.gui.MTEEnvironmentallyCCFGUI;
 import mcp.mobius.waila.api.IWailaConfigHandler;
@@ -198,15 +198,15 @@ public class MTEEnvironmentallyControlledChemicalFacility extends
                 {"P ", "PF", "PF", "QQ"}}
         )
         // spotless:on
-        .addElement('Q', ofBlock(GregTechAPI.sBlockCasings8, 0))
-        .addElement('P', ofBlock(GregTechAPI.sBlockCasings8, 1))
+        .addElement('Q', ofBlock(GregTechAPI.sBlockCasings12, 15))
+        .addElement('P', ofBlock(GregTechAPI.sBlockCasings9, 0))
         .addElement('J', ofBlock(GregTechAPI.sBlockCasings2, 0))
         .addElement(
             'D',
             buildHatchAdder(MTEEnvironmentallyControlledChemicalFacility.class).atLeast(InputHatch, OutputHatch)
-                .casingIndex(((BlockCasings8) GregTechAPI.sBlockCasings8).getTextureIndex(0))
+                .casingIndex(((BlockCasings12) GregTechAPI.sBlockCasings12).getTextureIndex(15))
                 .dot(2)
-                .buildAndChain(GregTechAPI.sBlockCasings8, 0))
+                .buildAndChain(GregTechAPI.sBlockCasings12, 15))
         .addElement(
             'C',
             GTStructureChannels.ECCF_FREEZER.use(
@@ -283,32 +283,32 @@ public class MTEEnvironmentallyControlledChemicalFacility extends
             'A',
             buildHatchAdder(MTEEnvironmentallyControlledChemicalFacility.class)
                 .atLeast(OutputHatch, InputHatch, InputBus, OutputBus, Maintenance, Energy.or(ExoticEnergy))
-                .casingIndex(((BlockCasings8) GregTechAPI.sBlockCasings8).getTextureIndex(0))
+                .casingIndex(((BlockCasings12) GregTechAPI.sBlockCasings12).getTextureIndex(15))
                 .dot(1)
-                .buildAndChain(ofBlock(GregTechAPI.sBlockCasings8, 0)))
+                .buildAndChain(ofBlock(GregTechAPI.sBlockCasings12, 15)))
         .addElement(
             'Y',
             buildHatchAdder(MTEEnvironmentallyControlledChemicalFacility.class).hatchClass(MTEHatchInput.class)
                 .adder(MTEEnvironmentallyControlledChemicalFacility::addCoolantInputToMachineList)
-                .casingIndex(((BlockCasings8) GregTechAPI.sBlockCasings8).getTextureIndex(0))
+                .casingIndex(((BlockCasings12) GregTechAPI.sBlockCasings12).getTextureIndex(15))
                 .dot(2)
-                .buildAndChain(GregTechAPI.sBlockCasings8, 0))
+                .buildAndChain(GregTechAPI.sBlockCasings12, 15))
         .addElement(
             'U',
             buildHatchAdder(MTEEnvironmentallyControlledChemicalFacility.class).hatchClass(MTEHatchInput.class)
                 .adder(MTEEnvironmentallyControlledChemicalFacility::addLubricantInputToMachineList)
-                .casingIndex(((BlockCasings8) GregTechAPI.sBlockCasings8).getTextureIndex(0))
+                .casingIndex(((BlockCasings12) GregTechAPI.sBlockCasings12).getTextureIndex(15))
                 .dot(2)
-                .buildAndChain(GregTechAPI.sBlockCasings8, 0))
+                .buildAndChain(GregTechAPI.sBlockCasings12, 15))
         .addElement(
             'E',
             buildHatchAdder(MTEEnvironmentallyControlledChemicalFacility.class).hatchClass(MTEHatchEnergy.class)
                 .adder(MTEEnvironmentallyControlledChemicalFacility::addPressureEnergyToMachineList)
-                .casingIndex(((BlockCasings8) GregTechAPI.sBlockCasings8).getTextureIndex(0))
+                .casingIndex(((BlockCasings12) GregTechAPI.sBlockCasings12).getTextureIndex(15))
                 .dot(2)
-                .buildAndChain(GregTechAPI.sBlockCasings8, 0))
-        .addElement('F', ofFrame(Materials.Polytetrafluoroethylene))
-        .addElement('G', ofBlockAnyMeta(sBlockTintedGlass, 1))
+                .buildAndChain(GregTechAPI.sBlockCasings12, 15))
+        .addElement('F', ofFrame(Materials.Polybenzimidazole))
+        .addElement('G', ofBlockAnyMeta(sBlockTintedGlass, 2))
         .build();
 
     public MTEEnvironmentallyControlledChemicalFacility(final int aID, final String aName, final String aNameRegional) {
@@ -446,50 +446,50 @@ public class MTEEnvironmentallyControlledChemicalFacility extends
                     + EnumChatFormatting.GRAY
                     + ": "
                     + EnumChatFormatting.YELLOW
-                    + "1,300 K")
+                    + String.format("%,.0f K", getCoolantTemp("lava")))
             .addInfo(
                 EnumChatFormatting.GOLD + "Blazing Pyrotheum"
                     + EnumChatFormatting.GRAY
                     + ": "
                     + EnumChatFormatting.YELLOW
-                    + "4,000 K")
+                    + String.format("%,.0f K", getCoolantTemp("pyrotheum")))
             .addInfo(
                 EnumChatFormatting.GOLD + "Helium Plasma"
                     + EnumChatFormatting.GRAY
                     + ": "
                     + EnumChatFormatting.YELLOW
-                    + "10,000 K")
+                    + String.format("%,.0f K", getCoolantTemp("plasma.helium")))
             .addInfo(
                 EnumChatFormatting.GOLD + "Raw Stellar Plasma"
                     + EnumChatFormatting.GRAY
                     + ": "
                     + EnumChatFormatting.YELLOW
-                    + "10,000,000 K")
+                    + String.format("%,.0f K", getCoolantTemp("rawstarmatter")))
             .addInfo("" + EnumChatFormatting.BLUE + EnumChatFormatting.BOLD + "Cooling Module")
             .addInfo(
                 EnumChatFormatting.DARK_AQUA + "IC2 Coolant"
                     + EnumChatFormatting.GRAY
                     + ": "
                     + EnumChatFormatting.AQUA
-                    + "250 K")
+                    + String.format("%,.0f K", getCoolantTemp("ic2coolant")))
             .addInfo(
                 EnumChatFormatting.DARK_AQUA + "Gelid Cryotheum"
                     + EnumChatFormatting.GRAY
                     + ": "
                     + EnumChatFormatting.AQUA
-                    + "25 K")
+                    + String.format("%,.0f K", getCoolantTemp("cryotheum")))
             .addInfo(
                 EnumChatFormatting.DARK_AQUA + "Super Coolant"
                     + EnumChatFormatting.GRAY
                     + ": "
                     + EnumChatFormatting.AQUA
-                    + "5 K")
+                    + String.format("%,.0f K", getCoolantTemp("supercoolant")))
             .addInfo(
                 EnumChatFormatting.DARK_AQUA + "Molten Spacetime"
                     + EnumChatFormatting.GRAY
                     + ": "
                     + EnumChatFormatting.AQUA
-                    + "0 K")
+                    + String.format("%,.0f K", getCoolantTemp("molten.spacetime")))
             .addSeparator()
             .addInfo("" + EnumChatFormatting.WHITE + EnumChatFormatting.BOLD + "Pressure")
             .addInfo(
