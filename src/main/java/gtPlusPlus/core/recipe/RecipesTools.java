@@ -130,7 +130,7 @@ public class RecipesTools {
     @Deprecated
     public static String craftingToolScrewdriver = ToolDictNames.craftingToolScrewdriver.name();
 
-    public static ItemStack personalCloakingDevice = ItemUtils.getSimpleStack(ModItems.itemPersonalCloakingDevice);
+    public static ItemStack personalCloakingDevice = new ItemStack(ModItems.itemPersonalCloakingDevice);
     public static String plateDoubleNiChrome = "plateDoubleNichrome";
     public static String plateIridiumAlloy = "plateAlloyIridium";
 

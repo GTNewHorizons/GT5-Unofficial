@@ -21,7 +21,7 @@ public class BaseItemBurnable extends CoreItem {
     }
 
     public final void registerOrdictionary(String name) {
-        ItemUtils.addItemToOreDictionary(ItemUtils.getSimpleStack(this), name);
+        ItemUtils.addItemToOreDictionary(new ItemStack(this), name);
     }
 
     @Override

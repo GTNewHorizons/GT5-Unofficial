@@ -53,7 +53,7 @@ public class BaseItemMisc extends Item {
             }
         }
         GameRegistry.registerItem(this, this.unlocalName);
-        GTOreDictUnificator.registerOre(miscType.getOreDictPrefix() + unlocalName, ItemUtils.getSimpleStack(this));
+        GTOreDictUnificator.registerOre(miscType.getOreDictPrefix() + unlocalName, new ItemStack(this));
     }
 
     private String getCorrectTextures() {

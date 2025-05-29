@@ -31,7 +31,7 @@ public class NBTUtils {
             final NBTTagCompound data = list.getCompoundTagAt(i);
             final int slot = data.getInteger("Slot");
             if ((slot >= 0) && (slot < list.tagCount())) {
-                if (Objects.equals(ItemStack.loadItemStackFromNBT(data), ItemUtils.getSimpleStack(ZZZ_Empty))) {
+                if (Objects.equals(ItemStack.loadItemStackFromNBT(data), new ItemStack(ZZZ_Empty))) {
                     inventory[slot] = null;
                 } else {
                     inventory[slot] = ItemStack.loadItemStackFromNBT(data);
@@ -53,7 +53,7 @@ public class NBTUtils {
                 list.appendTag(data);
             } else {
                 final NBTTagCompound data = new NBTTagCompound();
-                ItemStack nullstack = ItemUtils.getSimpleStack(ZZZ_Empty);
+                ItemStack nullstack = new ItemStack(ZZZ_Empty);
                 nullstack.writeToNBT(data);
                 data.setInteger("Slot", i);
                 list.appendTag(data);

@@ -1,7 +1,6 @@
 package gtPlusPlus.core.item.materials;
 
 import static gregtech.api.enums.Mods.GregTech;
-import static gtPlusPlus.core.util.minecraft.ItemUtils.getSimpleStack;
 
 import java.util.List;
 
@@ -33,8 +32,8 @@ public class DustDecayable extends BaseItemTickable {
         this.turnsIntoItem = turnsInto;
         this.radLevel = radLevel;
         this.maxStackSize = 64;
-        GTOreDictUnificator.registerOre(unlocal, ItemUtils.getSimpleStack(this));
-        new DecayableRecipe(maxTicks, getSimpleStack(this), turnsInto, decayType);
+        GTOreDictUnificator.registerOre(unlocal, new ItemStack(this));
+        new DecayableRecipe(maxTicks, new ItemStack(this), turnsInto, decayType);
     }
 
     @Override

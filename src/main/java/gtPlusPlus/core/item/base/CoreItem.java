@@ -269,7 +269,7 @@ public class CoreItem extends Item {
     }
 
     public ItemStack getStack() {
-        return ItemUtils.getSimpleStack(this);
+        return new ItemStack(this);
     }
 
     public void setItemDescription(String[] description) {

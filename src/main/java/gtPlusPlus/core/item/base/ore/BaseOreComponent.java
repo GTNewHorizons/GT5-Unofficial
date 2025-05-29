@@ -56,7 +56,7 @@ public class BaseOreComponent extends Item {
         GameRegistry.registerItem(this, this.unlocalName);
         registerComponent();
         GTOreDictUnificator
-            .registerOre(componentType.getComponent() + material.getUnlocalizedName(), ItemUtils.getSimpleStack(this));
+            .registerOre(componentType.getComponent() + material.getUnlocalizedName(), new ItemStack(this));
     }
 
     public boolean registerComponent() {
@@ -84,7 +84,7 @@ public class BaseOreComponent extends Item {
 
         ItemStack x = aMap.get(aKey);
         if (x == null) {
-            aMap.put(aKey, ItemUtils.getSimpleStack(this));
+            aMap.put(aKey, new ItemStack(this));
             Logger.MATERIALS(
                 "Registering a material component. Item: [" + componentMaterial.getUnlocalizedName()
                     + "] Map: ["

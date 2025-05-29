@@ -38,7 +38,7 @@ public class BaseItemIngotOld extends Item {
             temp = this.unlocalName.replace("itemHotIngot", "ingotHot");
         }
         if (!temp.isEmpty()) {
-            GTOreDictUnificator.registerOre(temp, ItemUtils.getSimpleStack(this));
+            GTOreDictUnificator.registerOre(temp, new ItemStack(this));
         }
         // this.generateCompressorRecipe();
     }

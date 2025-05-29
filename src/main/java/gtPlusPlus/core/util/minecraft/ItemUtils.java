@@ -49,10 +49,6 @@ import gtPlusPlus.xmod.gregtech.loaders.RecipeGenDustGeneration;
 
 public class ItemUtils {
 
-    public static ItemStack getSimpleStack(final Item x) {
-        return getSimpleStack(x, 1);
-    }
-
     public static ItemStack getSimpleStack(final Block x) {
         return simpleMetaStack(Item.getItemFromBlock(x), 0, 1);
     }
@@ -249,9 +245,9 @@ public class ItemUtils {
 
         // Generate Shaped/Shapeless Recipes
 
-        final ItemStack normalDust = ItemUtils.getSimpleStack(output[0]);
-        final ItemStack smallDust = ItemUtils.getSimpleStack(output[1]);
-        final ItemStack tinyDust = ItemUtils.getSimpleStack(output[2]);
+        final ItemStack normalDust = new ItemStack(output[0]);
+        final ItemStack smallDust = new ItemStack(output[1]);
+        final ItemStack tinyDust = new ItemStack(output[2]);
 
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.copyAmount(4, smallDust), ItemList.Schematic_Dust.get(0))

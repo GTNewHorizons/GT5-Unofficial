@@ -43,7 +43,7 @@ public class ItemCloakingDevice extends Item implements IElectricItem, IElectric
         this.setUnlocalizedName(this.unlocalizedName);
         this.setMaxStackSize(1);
         this.setTextureName(GTPlusPlus.ID + ":" + "personalCloakingDevice");
-        this.thisStack = ItemUtils.getSimpleStack(this);
+        this.thisStack = new ItemStack(this);
         this.charge(this.thisStack, charge, 3, true, false);
         if (charge == (10000 * 20 * 500)) {
             this.setDamage(this.thisStack, 13);

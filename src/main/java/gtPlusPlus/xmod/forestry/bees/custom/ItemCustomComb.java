@@ -116,17 +116,17 @@ public class ItemCustomComb extends Item {
 
         // Fuels
         tComb = getStackForType(CustomCombs.BIOMASS);
-        addSpecialCent(tComb, ItemUtils.getSimpleStack(GTPPBees.dropBiomassBlob), 5);
+        addSpecialCent(tComb, new ItemStack(GTPPBees.dropBiomassBlob), 5);
         tComb = getStackForType(CustomCombs.PBS);
-        addSpecialCent(tComb, ItemUtils.getSimpleStack(GTPPBees.dropEthanolBlob), 5);
+        addSpecialCent(tComb, new ItemStack(GTPPBees.dropEthanolBlob), 5);
 
         // Misc Materials
         tComb = getStackForType(CustomCombs.FORCE);
-        addSpecialCent(tComb, ItemUtils.getSimpleStack(GTPPBees.dropForceGem), 5);
+        addSpecialCent(tComb, new ItemStack(GTPPBees.dropForceGem), 5);
         tComb = getStackForType(CustomCombs.FLUORINE);
-        addSpecialCent(tComb, ItemUtils.getSimpleStack(GTPPBees.dropFluorineBlob), 5);
+        addSpecialCent(tComb, new ItemStack(GTPPBees.dropFluorineBlob), 5);
         tComb = getStackForType(CustomCombs.NIKOLITE);
-        addSpecialCent(tComb, ItemUtils.getSimpleStack(GTPPBees.dropNikoliteDust), 5);
+        addSpecialCent(tComb, new ItemStack(GTPPBees.dropNikoliteDust), 5);
     }
 
     public void addSpecialCent(ItemStack tComb, ItemStack aOutput, int chance) {

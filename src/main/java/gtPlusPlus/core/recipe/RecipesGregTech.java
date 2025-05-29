@@ -1304,11 +1304,11 @@ public class RecipesGregTech {
         final ItemStack[] aPackRing = new ItemStack[] { CI.getTieredComponent(OrePrefixes.ring, 1, 12),
             CI.getTieredComponent(OrePrefixes.ring, 2, 12), CI.getTieredComponent(OrePrefixes.ring, 3, 12),
             CI.getTieredComponent(OrePrefixes.ring, 4, 12), CI.getTieredComponent(OrePrefixes.ring, 5, 12), };
-        final ItemStack[] aPackOutput = new ItemStack[] { ItemUtils.getSimpleStack(ModItems.itemChargePack_Low_1),
-            ItemUtils.getSimpleStack(ModItems.itemChargePack_Low_2),
-            ItemUtils.getSimpleStack(ModItems.itemChargePack_Low_3),
-            ItemUtils.getSimpleStack(ModItems.itemChargePack_Low_4),
-            ItemUtils.getSimpleStack(ModItems.itemChargePack_Low_5) };
+        final ItemStack[] aPackOutput = new ItemStack[] { new ItemStack(ModItems.itemChargePack_Low_1),
+            new ItemStack(ModItems.itemChargePack_Low_2),
+            new ItemStack(ModItems.itemChargePack_Low_3),
+            new ItemStack(ModItems.itemChargePack_Low_4),
+            new ItemStack(ModItems.itemChargePack_Low_5) };
 
         for (int i = 1; i < 6; i++) {
 
@@ -1469,7 +1469,7 @@ public class RecipesGregTech {
         Logger.INFO("Registering New Fuels.");
 
         RA.stdBuilder()
-            .itemInputs(ItemUtils.getSimpleStack(Items.lava_bucket))
+            .itemInputs(new ItemStack(Items.lava_bucket))
             .metadata(FUEL_VALUE, 32)
             .metadata(FUEL_TYPE, 2)
             .duration(0)
@@ -1728,7 +1728,7 @@ public class RecipesGregTech {
         // Neptunium
         GTValues.RA.stdBuilder()
             .itemInputs(MaterialsElements.getInstance().URANIUM238.getDust(1))
-            .itemOutputs(ItemUtils.getSimpleStack(ModItems.dustNeptunium238))
+            .itemOutputs(new ItemStack(ModItems.dustNeptunium238))
             .outputChances(500)
             .fluidInputs(Materials.Deuterium.getGas(400))
             .duration(5 * SECONDS)

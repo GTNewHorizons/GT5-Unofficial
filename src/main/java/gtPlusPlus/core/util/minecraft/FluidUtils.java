@@ -368,7 +368,7 @@ public class FluidUtils {
             }
             Logger.INFO("Generating cell for " + aMatName + ", " + aLocalName);
             tempCell = new BaseItemComponent(aMatName, aLocalName, aRGBa);
-            aFullContainer = ItemUtils.getSimpleStack(tempCell);
+            aFullContainer = new ItemStack(tempCell);
         }
 
         if ((rFluid.getTemperature() == new Fluid("test").getTemperature()) || (rFluid.getTemperature() <= 0)) {

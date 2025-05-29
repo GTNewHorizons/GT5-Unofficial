@@ -75,9 +75,9 @@ public class BaseItemComponent extends Item {
 
         GTOreDictUnificator.registerOre(
             componentType.getOreDictName() + material.getUnlocalizedName(),
-            ItemUtils.getSimpleStack(this));
+            new ItemStack(this));
         if (componentType == ComponentTypes.GEAR) {
-            GTOreDictUnificator.registerOre("gear" + material.getUnlocalizedName(), ItemUtils.getSimpleStack(this));
+            GTOreDictUnificator.registerOre("gear" + material.getUnlocalizedName(), new ItemStack(this));
         }
         registerComponent();
 
@@ -113,7 +113,7 @@ public class BaseItemComponent extends Item {
         GameRegistry.registerItem(this, aFormattedNameForFluids);
         GTOreDictUnificator.registerOre(
             ComponentTypes.CELL.getOreDictName() + Utils.sanitizeStringKeepBrackets(localName),
-            ItemUtils.getSimpleStack(this));
+            new ItemStack(this));
         registerComponent();
 
         GTLanguageManager
@@ -138,7 +138,7 @@ public class BaseItemComponent extends Item {
             .name();
         ItemStack x = aMap.get(aKey);
         if (x == null) {
-            aMap.put(aKey, ItemUtils.getSimpleStack(this));
+            aMap.put(aKey, new ItemStack(this));
             Logger.MATERIALS(
                 "Registering a material component. Item: [" + componentMaterial.getUnlocalizedName()
                     + "] Map: ["

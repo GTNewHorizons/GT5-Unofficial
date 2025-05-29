@@ -274,24 +274,24 @@ public class GTplusplus {
     }
 
     private static void fixVanillaOreDict() {
-        registerToOreDict(ItemUtils.getSimpleStack(Items.blaze_rod), "rodBlaze");
-        registerToOreDict(ItemUtils.getSimpleStack(Items.nether_wart), "cropNetherWart");
-        registerToOreDict(ItemUtils.getSimpleStack(Items.reeds), "sugarcane");
-        registerToOreDict(ItemUtils.getSimpleStack(Items.paper), "paper");
-        registerToOreDict(ItemUtils.getSimpleStack(Items.ender_pearl), "enderpearl");
-        registerToOreDict(ItemUtils.getSimpleStack(Items.bone), "bone");
-        registerToOreDict(ItemUtils.getSimpleStack(Items.gunpowder), "gunpowder");
-        registerToOreDict(ItemUtils.getSimpleStack(Items.string), "string");
-        registerToOreDict(ItemUtils.getSimpleStack(Items.nether_star), "netherStar");
-        registerToOreDict(ItemUtils.getSimpleStack(Items.leather), "leather");
-        registerToOreDict(ItemUtils.getSimpleStack(Items.feather), "feather");
-        registerToOreDict(ItemUtils.getSimpleStack(Items.egg), "egg");
-        registerToOreDict(ItemUtils.getSimpleStack(Blocks.end_stone), "endstone");
-        registerToOreDict(ItemUtils.getSimpleStack(Blocks.vine), "vine");
-        registerToOreDict(ItemUtils.getSimpleStack(Blocks.cactus), "blockCactus");
-        registerToOreDict(ItemUtils.getSimpleStack(Blocks.grass), "grass");
-        registerToOreDict(ItemUtils.getSimpleStack(Blocks.obsidian), "obsidian");
-        registerToOreDict(ItemUtils.getSimpleStack(Blocks.crafting_table), "workbench");
+        registerToOreDict(new ItemStack(Items.blaze_rod), "rodBlaze");
+        registerToOreDict(new ItemStack(Items.nether_wart), "cropNetherWart");
+        registerToOreDict(new ItemStack(Items.reeds), "sugarcane");
+        registerToOreDict(new ItemStack(Items.paper), "paper");
+        registerToOreDict(new ItemStack(Items.ender_pearl), "enderpearl");
+        registerToOreDict(new ItemStack(Items.bone), "bone");
+        registerToOreDict(new ItemStack(Items.gunpowder), "gunpowder");
+        registerToOreDict(new ItemStack(Items.string), "string");
+        registerToOreDict(new ItemStack(Items.nether_star), "netherStar");
+        registerToOreDict(new ItemStack(Items.leather), "leather");
+        registerToOreDict(new ItemStack(Items.feather), "feather");
+        registerToOreDict(new ItemStack(Items.egg), "egg");
+        registerToOreDict(new ItemStack(Blocks.end_stone), "endstone");
+        registerToOreDict(new ItemStack(Blocks.vine), "vine");
+        registerToOreDict(new ItemStack(Blocks.cactus), "blockCactus");
+        registerToOreDict(new ItemStack(Blocks.grass), "grass");
+        registerToOreDict(new ItemStack(Blocks.obsidian), "obsidian");
+        registerToOreDict(new ItemStack(Blocks.crafting_table), "workbench");
     }
 
     private static void registerToOreDict(ItemStack aStack, String aString) {

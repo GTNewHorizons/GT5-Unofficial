@@ -101,11 +101,11 @@ public class ThreadAspectScanner extends Thread {
                                 }
                             }
                         } else {
-                            tryCacheObject(ItemUtils.getSimpleStack(item));
+                            tryCacheObject(new ItemStack(item));
                             mItemsCounter++;
                         }
                     } else {
-                        tryCacheObject(ItemUtils.getSimpleStack(item));
+                        tryCacheObject(new ItemStack(item));
                         mItemsCounter++;
                     }
                 }

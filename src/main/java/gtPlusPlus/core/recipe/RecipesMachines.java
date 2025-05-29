@@ -1491,7 +1491,7 @@ public class RecipesMachines {
         CI.component_Plate[6] = "plateRedstone";
         CI.component_Plate[7] = "plateAluminium";
         CI.component_Plate[8] = "plateDarkSteel";
-        ItemStack waterBucket = ItemUtils.getSimpleStack(Items.water_bucket);
+        ItemStack waterBucket = new ItemStack(Items.water_bucket);
 
         // Allows clearing stored fluids.
         GregtechItemList[] aTanks = new GregtechItemList[] { GregtechItemList.GTFluidTank_ULV,
@@ -2215,7 +2215,7 @@ public class RecipesMachines {
         RECIPE_LFTRInnerCasing = GregtechItemList.Casing_Reactor_II.get(1); // Zeron
         RECIPE_LFTROuterCasing = GregtechItemList.Casing_Reactor_I.get(1); // Hastelloy
 
-        ItemStack controlCircuit = ItemUtils.getSimpleStack(ModItems.itemCircuitLFTR);
+        ItemStack controlCircuit = new ItemStack(ModItems.itemCircuitLFTR);
         RecipeUtils.addShapedGregtechRecipe(
             controlCircuit,
             "cableGt12Naquadah",
@@ -2445,7 +2445,7 @@ public class RecipesMachines {
             "screwTitanium",
             GregtechItemList.Casing_Power_SubStation.get(1));
 
-        ItemStack mBattery = ItemUtils.getSimpleStack(ModItems.itemCircuitLFTR);
+        ItemStack mBattery = new ItemStack(ModItems.itemCircuitLFTR);
 
         RecipeUtils.addShapedRecipe(
             "plateIncoloyMA956",

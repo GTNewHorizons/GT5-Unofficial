@@ -124,7 +124,7 @@ public class RecipesLaserEngraver implements IOreRecipeRegistrator {
         } else if (aOreDictName.equals(OreDictNames.craftingLensOrange.toString())) {
             GTValues.RA.stdBuilder()
                 .itemInputs(GregtechItemList.AlkalusDisk.get(1), GTUtility.copyAmount(0L, aStack))
-                .itemOutputs(ItemUtils.getSimpleStack(DimensionEverglades.portalItem))
+                .itemOutputs(new ItemStack(DimensionEverglades.portalItem))
                 .duration(3 * HOURS)
                 .eut(TierEU.RECIPE_IV)
                 .addTo(laserEngraverRecipes);

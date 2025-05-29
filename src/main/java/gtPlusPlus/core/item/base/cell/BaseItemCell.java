@@ -32,7 +32,7 @@ public class BaseItemCell extends BaseItemComponent {
         FluidStack aFluid = FluidUtils.getFluidStack(unlocalName.toLowerCase(), 1000);
         if (aFluid != null) {
             FluidContainerRegistry
-                .registerFluidContainer(aFluid, ItemUtils.getSimpleStack(this), ItemList.Cell_Empty.get(1));
+                .registerFluidContainer(aFluid, new ItemStack(this), ItemList.Cell_Empty.get(1));
         }
     }
 
@@ -41,7 +41,7 @@ public class BaseItemCell extends BaseItemComponent {
         this.fluidColour = RGBa;
         FluidContainerRegistry.registerFluidContainer(
             FluidUtils.getFluidStack(cellFluid, 1000),
-            ItemUtils.getSimpleStack(this),
+            new ItemStack(this),
             ItemList.Cell_Empty.get(1));
     }
 

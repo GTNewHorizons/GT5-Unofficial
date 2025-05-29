@@ -203,14 +203,14 @@ public class AchievementHandler {
             "decay.neptunium238",
             11,
             8,
-            ItemUtils.getSimpleStack(ModItems.dustNeptunium238),
+            new ItemStack(ModItems.dustNeptunium238),
             "multi.cyclo",
             false);
         this.registerAchievement(
             "decay.radium226",
             12,
             8,
-            ItemUtils.getSimpleStack(ModItems.dustRadium226),
+            new ItemStack(ModItems.dustRadium226),
             "multi.cyclo",
             false);
 

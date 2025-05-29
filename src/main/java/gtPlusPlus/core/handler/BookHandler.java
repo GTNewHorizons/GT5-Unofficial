@@ -427,24 +427,24 @@ public class BookHandler {
 
         // Multiblock Manuals
         RecipeUtils.addShapelessGregtechRecipe(
-            new ItemStack[] { ItemUtils.getSimpleStack(Items.writable_book),
-                ItemUtils.getSimpleStack(Items.lava_bucket) },
+            new ItemStack[] { new ItemStack(Items.writable_book),
+                new ItemStack(Items.lava_bucket) },
             ItemBookWritten_ThermalBoiler);
         GTModHandler.addCraftingRecipe(
             ItemBookWritten_MultiMachineManual,
             GTModHandler.RecipeBits.NOT_REMOVABLE | GTModHandler.RecipeBits.REVERSIBLE
                 | GTModHandler.RecipeBits.BUFFERED,
-            new Object[] { "Xw", 'X', ItemUtils.getSimpleStack(Items.writable_book) });
+            new Object[] { "Xw", 'X', new ItemStack(Items.writable_book) });
         RecipeUtils.addShapelessGregtechRecipe(
-            new ItemStack[] { ItemUtils.getSimpleStack(Items.writable_book),
+            new ItemStack[] { new ItemStack(Items.writable_book),
                 ItemUtils.getItemStackOfAmountFromOreDict("wireGt01Tin", 1) },
             ItemBookWritten_MultiPowerStorage);
         RecipeUtils.addShapelessGregtechRecipe(
-            new ItemStack[] { ItemUtils.getSimpleStack(Items.writable_book),
+            new ItemStack[] { new ItemStack(Items.writable_book),
                 ItemUtils.getItemStackOfAmountFromOreDict("dustUranium", 1) },
             ItemBookWritten_NuclearManual);
         RecipeUtils.addShapelessGregtechRecipe(
-            new ItemStack[] { ItemUtils.getSimpleStack(Items.writable_book),
+            new ItemStack[] { new ItemStack(Items.writable_book),
                 ItemUtils.getItemStackOfAmountFromOreDict("wireGt01Copper", 1) },
             ItemBookWritten_MultiChemicalPlant);
 

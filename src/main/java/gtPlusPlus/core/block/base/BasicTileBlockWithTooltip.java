@@ -274,7 +274,7 @@ public abstract class BasicTileBlockWithTooltip extends BlockContainer implement
                 aList.add(ItemUtils.simpleMetaStack(aItem, i, 1));
             }
         } else {
-            aList.add(ItemUtils.getSimpleStack(aItem));
+            aList.add(new ItemStack(aItem));
         }
     }
 

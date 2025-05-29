@@ -517,7 +517,7 @@ public final class ModItems {
                 "Calcium Sulfate (Gypsum)",
                 "CaSO4",
                 Utils.rgbtoHexValue(255, 255, 255))[0]; // https://en.wikipedia.org/wiki/Calcium_sulfate
-            GTOreDictUnificator.registerOre("dustCalciumSulfate", ItemUtils.getSimpleStack(dustCalciumSulfate));
+            GTOreDictUnificator.registerOre("dustCalciumSulfate", new ItemStack(dustCalciumSulfate));
         } else {
             GTOreDictUnificator
                 .registerOre("dustCalciumSulfate", ItemUtils.getItemStackOfAmountFromOreDictNoBroken("dustGypsum", 1));
@@ -537,7 +537,7 @@ public final class ModItems {
         Material.registerComponentForMaterial(
             MaterialsNuclides.Li2BeF4,
             OrePrefixes.dust,
-            ItemUtils.getSimpleStack(dustLi2BeF4));
+            new ItemStack(dustLi2BeF4));
 
         Item[] phthalicAnhydride = ItemUtils.generateSpecialUseDusts(
             "PhthalicAnhydride",
@@ -735,7 +735,7 @@ public final class ModItems {
             90000,
             new String[] { StringUtils.superscript("226Ra"),
                 "Result: Radon (" + StringUtils.superscript("222Rn") + ")" },
-            ItemUtils.getSimpleStack(dustDecayedRadium226),
+            new ItemStack(dustDecayedRadium226),
             5,
             GTRecipeConstants.DecayType.Alpha);
         dustProtactinium233 = new DustDecayable(
@@ -1051,8 +1051,7 @@ public final class ModItems {
         }
         // Krypton Processing
         if (ItemUtils.getItemStackOfAmountFromOreDictNoBroken("ingotHotTitanium", 1) == null) {
-            itemHotTitaniumIngot = ItemUtils
-                .getSimpleStack(new BaseItemIngot(MaterialsElements.getInstance().TITANIUM, ComponentTypes.HOTINGOT));
+            itemHotTitaniumIngot = new ItemStack(new BaseItemIngot(MaterialsElements.getInstance().TITANIUM, ComponentTypes.HOTINGOT));
         } else {
             itemHotTitaniumIngot = ItemUtils.getItemStackOfAmountFromOreDictNoBroken("ingotHotTitanium", 1);
         }

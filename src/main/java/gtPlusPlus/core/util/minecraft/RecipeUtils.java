@@ -214,9 +214,9 @@ public class RecipeUtils {
                 if (o instanceof ItemStack) {
                     aFiltered[aValid++] = o;
                 } else if (o instanceof Item) {
-                    aFiltered[aValid++] = ItemUtils.getSimpleStack((Item) o);
+                    aFiltered[aValid++] = new ItemStack((Item) o);
                 } else if (o instanceof Block) {
-                    aFiltered[aValid++] = ItemUtils.getSimpleStack((Block) o);
+                    aFiltered[aValid++] = new ItemStack((Block) o);
                 } else if (o instanceof String) {
                     aFiltered[aValid++] = o;
                 } else if (o == null) {

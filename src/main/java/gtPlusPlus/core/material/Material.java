@@ -1408,7 +1408,7 @@ public class Material {
         if (!ItemUtils.checkForInvalidItems(new ItemStack[] { aFullCell, aFullCell2, aFullCell3, aFullCell4 })) {
             if (this.vGenerateCells) {
                 Item g = new BaseItemCell(this);
-                aFullCell = ItemUtils.getSimpleStack(g);
+                aFullCell = new ItemStack(g);
                 Logger.MATERIALS("Generated a cell for " + this.getUnlocalizedName());
             } else {
                 Logger.MATERIALS("Did not generate a cell for " + this.getUnlocalizedName());

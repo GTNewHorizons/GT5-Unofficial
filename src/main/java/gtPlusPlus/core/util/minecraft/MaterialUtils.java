@@ -356,15 +356,15 @@ public class MaterialUtils {
         }
 
         Logger.MATERIALS("[Lang] " + aGC.getUnlocalizedName() + ".name=" + aFormattedLangName);
-        aMaterial.registerComponentForMaterial(aType, ItemUtils.getSimpleStack(aGC));
+        aMaterial.registerComponentForMaterial(aType, new ItemStack(aGC));
     }
 
     public static void generateSpecialDustAndAssignToAMaterial(Material aMaterial, boolean generateMixerRecipes) {
         Item[] aDusts = ItemUtils.generateSpecialUseDusts(aMaterial, false, !generateMixerRecipes);
         if (aDusts.length > 0) {
-            aMaterial.registerComponentForMaterial(OrePrefixes.dust, ItemUtils.getSimpleStack(aDusts[0]));
-            aMaterial.registerComponentForMaterial(OrePrefixes.dustSmall, ItemUtils.getSimpleStack(aDusts[1]));
-            aMaterial.registerComponentForMaterial(OrePrefixes.dustTiny, ItemUtils.getSimpleStack(aDusts[2]));
+            aMaterial.registerComponentForMaterial(OrePrefixes.dust, new ItemStack(aDusts[0]));
+            aMaterial.registerComponentForMaterial(OrePrefixes.dustSmall, new ItemStack(aDusts[1]));
+            aMaterial.registerComponentForMaterial(OrePrefixes.dustTiny, new ItemStack(aDusts[2]));
         }
     }
 
