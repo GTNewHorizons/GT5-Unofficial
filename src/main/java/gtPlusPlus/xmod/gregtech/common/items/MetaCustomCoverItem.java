@@ -1,5 +1,6 @@
 package gtPlusPlus.xmod.gregtech.common.items;
 
+import static codechicken.nei.api.API.hideItem;
 import static gregtech.api.enums.Mods.GTPlusPlus;
 
 import java.util.List;
@@ -69,7 +70,7 @@ public class MetaCustomCoverItem extends Item {
         for (int i = 0; i < icons.length; i++) {
             ItemStack thisStack = ItemUtils.simpleMetaStack(this, i, 1);
             if (i > 0 && hide()) {
-                ItemUtils.hideItemFromNEI(thisStack);
+                hideItem(thisStack);
             }
             CoverRegistry.registerCover(thisStack, TextureFactory.of(mTextures[i]), CoverToggleVisual::new);
         }

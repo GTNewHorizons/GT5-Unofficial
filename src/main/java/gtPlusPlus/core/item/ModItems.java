@@ -1,5 +1,6 @@
 package gtPlusPlus.core.item;
 
+import static codechicken.nei.api.API.hideItem;
 import static gregtech.api.enums.Mods.Baubles;
 import static gregtech.api.enums.Mods.Forestry;
 import static gregtech.api.enums.Mods.GTPlusPlus;
@@ -9,7 +10,6 @@ import static gregtech.api.recipe.RecipeMaps.fluidExtractionRecipes;
 import static gregtech.api.util.GTModHandler.getModItem;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
 import static gtPlusPlus.core.creative.AddToCreativeTab.tabMisc;
-import static gtPlusPlus.core.util.minecraft.ItemUtils.hideItemFromNEI;
 
 import gregtech.api.enums.Mods;
 import net.minecraft.init.Blocks;
@@ -817,7 +817,7 @@ public final class ModItems {
 
         // TODO Remove after 2.8
         Item bioSelector = new GTPPIntegratedCircuitItem("BioRecipeSelector", "bioscience/BioCircuit");
-        hideItemFromNEI(new ItemStack(bioSelector));
+        hideItem(new ItemStack(bioSelector));
 
         Item agrichemItem = new ItemAgrichemBase();
         GregtechItemList.AlgaeBiomass.set(new ItemStack(agrichemItem));
@@ -868,7 +868,7 @@ public final class ModItems {
         // General Chemistry
         // TODO Remove after 2.8
         Item t3Selector = new GTPPIntegratedCircuitItem("T3RecipeSelector", "science/general/AdvancedCircuit");
-        hideItemFromNEI(new ItemStack(t3Selector));
+        hideItem(new ItemStack(t3Selector));
 
         Item genericChemItem = new ItemGenericChemBase();
 

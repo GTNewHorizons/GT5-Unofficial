@@ -658,10 +658,6 @@ public class ItemUtils {
         return aOutput;
     }
 
-    public static void hideItemFromNEI(ItemStack aItemToHide) {
-        codechicken.nei.api.API.hideItem(aItemToHide);
-    }
-
     public static ItemStack getNullStack() {
         return GTValues.NI;
     }
