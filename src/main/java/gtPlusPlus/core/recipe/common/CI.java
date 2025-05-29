@@ -5,7 +5,6 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
-import gregtech.api.GregTechAPI;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
@@ -33,41 +32,6 @@ public class CI {
     public static long bitsd = GTModHandler.RecipeBits.DISMANTLEABLE | GTModHandler.RecipeBits.NOT_REMOVABLE
         | GTModHandler.RecipeBits.REVERSIBLE
         | GTModHandler.RecipeBits.BUFFERED;
-
-    // Machine Components
-
-    public static ItemStack fluidRegulator_LV;
-    public static ItemStack fluidRegulator_MV;
-    public static ItemStack fluidRegulator_HV;
-    public static ItemStack fluidRegulator_EV;
-    public static ItemStack fluidRegulator_IV;
-    public static ItemStack fluidRegulator_LuV;
-    public static ItemStack fluidRegulator_ZPM;
-    public static ItemStack fluidRegulator_UV;
-
-    // Machine Casings
-    public static ItemStack machineCasing_ULV;
-    public static ItemStack machineCasing_LV;
-    public static ItemStack machineCasing_MV;
-    public static ItemStack machineCasing_HV;
-    public static ItemStack machineCasing_EV;
-    public static ItemStack machineCasing_IV;
-    public static ItemStack machineCasing_LuV;
-    public static ItemStack machineCasing_ZPM;
-    public static ItemStack machineCasing_UV;
-    public static ItemStack machineCasing_UHV;
-
-    // Machine Hulls
-    public static ItemStack machineHull_ULV;
-    public static ItemStack machineHull_LV;
-    public static ItemStack machineHull_MV;
-    public static ItemStack machineHull_HV;
-    public static ItemStack machineHull_EV;
-    public static ItemStack machineHull_IV;
-    public static ItemStack machineHull_LuV;
-    public static ItemStack machineHull_ZPM;
-    public static ItemStack machineHull_UV;
-    public static ItemStack machineHull_UHV;
 
     // Gearbox Casings
     public static ItemStack gearboxCasing_Tier_1;
@@ -162,32 +126,32 @@ public class CI {
 
     public static ItemStack getTieredMachineHull(int tier) {
         return switch (tier){
-            case 0 -> machineHull_ULV;
-            case 1 -> machineHull_LV;
-            case 2 -> machineHull_MV;
-            case 3 -> machineHull_HV;
-            case 4 -> machineHull_EV;
-            case 5 -> machineHull_IV;
-            case 6 -> machineHull_LuV;
-            case 7 -> machineHull_ZPM;
-            case 8 -> machineHull_UV;
-            case 9 -> machineHull_UHV;
+            case 0 -> ItemList.Hull_ULV.get(1);
+            case 1 -> ItemList.Hull_LV.get(1);
+            case 2 -> ItemList.Hull_MV.get(1);
+            case 3 -> ItemList.Hull_HV.get(1);
+            case 4 -> ItemList.Hull_EV.get(1);
+            case 5 -> ItemList.Hull_IV.get(1);
+            case 6 -> ItemList.Hull_LuV.get(1);
+            case 7 -> ItemList.Hull_ZPM.get(1);
+            case 8 -> ItemList.Hull_UV.get(1);
+            case 9 -> ItemList.Hull_MAX.get(1);
             default -> GregtechItemList.Casing_Multi_Use.get(1);
         };
     }
 
     public static ItemStack getTieredMachineCasing(int tier) {
         return switch (tier){
-            case 0 -> machineCasing_ULV;
-            case 1 -> machineCasing_LV;
-            case 2 -> machineCasing_MV;
-            case 3 -> machineCasing_HV;
-            case 4 -> machineCasing_EV;
-            case 5 -> machineCasing_IV;
-            case 6 -> machineCasing_LuV;
-            case 7 -> machineCasing_ZPM;
-            case 8 -> machineCasing_UV;
-            case 9 -> machineCasing_UHV;
+            case 0 -> ItemList.Casing_ULV.get(1);
+            case 1 -> ItemList.Casing_LV.get(1);
+            case 2 -> ItemList.Casing_MV.get(1);
+            case 3 -> ItemList.Casing_HV.get(1);
+            case 4 -> ItemList.Casing_EV.get(1);
+            case 5 -> ItemList.Casing_IV.get(1);
+            case 6 -> ItemList.Casing_LuV.get(1);
+            case 7 -> ItemList.Casing_ZPM.get(1);
+            case 8 -> ItemList.Casing_UV.get(1);
+            case 9 -> ItemList.Casing_MAX.get(1);
             default -> GregtechItemList.Casing_Multi_Use.get(1);
         };
     }
@@ -195,33 +159,8 @@ public class CI {
     public static void init() {
         // Set Explosives
         explosivePowderKeg = ItemList.Block_Powderbarrel.get(1);
-        explosiveTNT = ItemUtils.getSimpleStack(Blocks.tnt)
-            .copy();
+        explosiveTNT = ItemUtils.getSimpleStack(Blocks.tnt).copy();
         explosiveITNT = Ic2Items.industrialTnt.copy();
-
-        // Machine Casings
-        machineCasing_ULV = ItemList.Casing_ULV.get(1);
-        machineCasing_LV = ItemList.Casing_LV.get(1);
-        machineCasing_MV = ItemList.Casing_MV.get(1);
-        machineCasing_HV = ItemList.Casing_HV.get(1);
-        machineCasing_EV = ItemList.Casing_EV.get(1);
-        machineCasing_IV = ItemList.Casing_IV.get(1);
-        machineCasing_LuV = ItemList.Casing_LuV.get(1);
-        machineCasing_ZPM = ItemList.Casing_ZPM.get(1);
-        machineCasing_UV = ItemList.Casing_UV.get(1);
-        machineCasing_UHV = ItemList.Casing_MAX.get(1);
-
-        // Machine Hulls
-        machineHull_ULV = ItemList.Hull_ULV.get(1);
-        machineHull_LV = ItemList.Hull_LV.get(1);
-        machineHull_MV = ItemList.Hull_MV.get(1);
-        machineHull_HV = ItemList.Hull_HV.get(1);
-        machineHull_EV = ItemList.Hull_EV.get(1);
-        machineHull_IV = ItemList.Hull_IV.get(1);
-        machineHull_LuV = ItemList.Hull_LuV.get(1);
-        machineHull_ZPM = ItemList.Hull_ZPM.get(1);
-        machineHull_UV = ItemList.Hull_UV.get(1);
-        machineHull_UHV = ItemList.Hull_MAX.get(1);
 
         // Gear box Casings
         gearboxCasing_Tier_1 = ItemList.Casing_Gearbox_Bronze.get(1);
@@ -489,18 +428,18 @@ public class CI {
         };
     }
 
-    public static ItemStack getFluidRegulator(int aTier, int aSize) {
-        return switch(aTier){
-            case 0 -> GTUtility.copyAmount(aSize, ItemList.FluidRegulator_LV.get(1));
-            case 1 -> GTUtility.copyAmount(aSize, ItemList.FluidRegulator_LV.get(1));
-            case 2 -> GTUtility.copyAmount(aSize, ItemList.FluidRegulator_MV.get(1));
-            case 3 -> GTUtility.copyAmount(aSize, ItemList.FluidRegulator_HV.get(1));
-            case 4 -> GTUtility.copyAmount(aSize, ItemList.FluidRegulator_EV.get(1));
-            case 5 -> GTUtility.copyAmount(aSize, ItemList.FluidRegulator_IV.get(1));
-            case 6 -> GTUtility.copyAmount(aSize, ItemList.FluidRegulator_LuV.get(1));
-            case 7 -> GTUtility.copyAmount(aSize, ItemList.FluidRegulator_ZPM.get(1));
-            case 8 -> GTUtility.copyAmount(aSize, ItemList.FluidRegulator_UV.get(1));
-            case 9 -> GTUtility.copyAmount(aSize, ItemList.FluidRegulator_UV.get(1));
+    public static ItemStack getFluidRegulator(int tier, int size) {
+        return switch(tier){
+            case 0 -> ItemList.FluidRegulator_LV.get(size);
+            case 1 -> ItemList.FluidRegulator_LV.get(size);
+            case 2 -> ItemList.FluidRegulator_MV.get(size);
+            case 3 -> ItemList.FluidRegulator_HV.get(size);
+            case 4 -> ItemList.FluidRegulator_EV.get(size);
+            case 5 -> ItemList.FluidRegulator_IV.get(size);
+            case 6 -> ItemList.FluidRegulator_LuV.get(size);
+            case 7 -> ItemList.FluidRegulator_ZPM.get(size);
+            case 8 -> ItemList.FluidRegulator_UV.get(size);
+            case 9 -> ItemList.FluidRegulator_UV.get(size);
             default -> throw new IllegalArgumentException();
         };
     }
@@ -612,16 +551,16 @@ public class CI {
 
     public static ItemStack getTieredMachineHull(int tier, int size) {
         return switch (tier){
-            case 0 -> GTUtility.copyAmount(size, CI.machineHull_ULV);
-            case 1 -> GTUtility.copyAmount(size, CI.machineHull_LV);
-            case 2 -> GTUtility.copyAmount(size, CI.machineHull_MV);
-            case 3 -> GTUtility.copyAmount(size, CI.machineHull_HV);
-            case 4 -> GTUtility.copyAmount(size, CI.machineHull_EV);
-            case 5 -> GTUtility.copyAmount(size, CI.machineHull_IV);
-            case 6 -> GTUtility.copyAmount(size, CI.machineHull_LuV);
-            case 7 -> GTUtility.copyAmount(size, CI.machineHull_ZPM);
-            case 8 -> GTUtility.copyAmount(size, CI.machineHull_UV);
-            case 9 -> GTUtility.copyAmount(size, CI.machineHull_UHV);
+            case 0 -> GTUtility.copyAmount(size, ItemList.Hull_ULV.get(1));
+            case 1 -> GTUtility.copyAmount(size, ItemList.Hull_LV.get(1));
+            case 2 -> GTUtility.copyAmount(size, ItemList.Hull_MV.get(1));
+            case 3 -> GTUtility.copyAmount(size, ItemList.Hull_HV.get(1));
+            case 4 -> GTUtility.copyAmount(size, ItemList.Hull_EV.get(1));
+            case 5 -> GTUtility.copyAmount(size, ItemList.Hull_IV.get(1));
+            case 6 -> GTUtility.copyAmount(size, ItemList.Hull_LuV.get(1));
+            case 7 -> GTUtility.copyAmount(size, ItemList.Hull_ZPM.get(1));
+            case 8 -> GTUtility.copyAmount(size, ItemList.Hull_UV.get(1));
+            case 9 -> GTUtility.copyAmount(size, ItemList.Hull_MAX.get(1));
             default -> throw new IllegalArgumentException();
         };
     }

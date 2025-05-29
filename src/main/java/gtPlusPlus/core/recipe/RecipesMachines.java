@@ -316,7 +316,7 @@ public class RecipesMachines {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                ItemUtils.getSimpleStack(CI.machineHull_IV, 2),
+                ItemUtils.getSimpleStack(ItemList.Hull_IV.get(1), 2),
                 ItemList.Machine_IV_Hammer.get(1),
                 CI.getPlate(4, 8),
                 CI.getBolt(5, 32),
@@ -947,7 +947,7 @@ public class RecipesMachines {
             .itemInputs(
                 ItemUtils.getSimpleStack(CI.getDataOrb(), 4 * (1)),
                 ItemList.Cover_Screen.get(4),
-                CI.machineHull_IV,
+                ItemList.Hull_IV.get(1),
                 ItemUtils.getItemStackOfAmountFromOreDict("circuitUltimate", 2))
             .itemOutputs(GregtechItemList.Gregtech_Computer_Cube.get(1))
             .fluidInputs(MaterialsElements.getInstance().TANTALUM.getFluidStack(16 * INGOTS))
@@ -959,7 +959,7 @@ public class RecipesMachines {
             .itemInputs(
                 ItemUtils.getSimpleStack(ItemList.Robot_Arm_LV.get(1), 4 * (1)),
                 ItemList.Cover_Controller.get(1, ItemList.Electric_Motor_MV.get(1)),
-                CI.machineHull_MV,
+                ItemList.Hull_MV.get(1),
                 GTOreDictUnificator.get(OrePrefixes.circuit, Materials.LV, 2),
                 GTOreDictUnificator.get(OrePrefixes.circuit, Materials.MV, 2))
             .itemOutputs(ItemUtils.getSimpleStack(ModBlocks.blockCircuitProgrammer))
@@ -972,7 +972,7 @@ public class RecipesMachines {
         for (ItemStack plateRubber : OreDictionary.getOres("plateAnyRubber")) {
             GTValues.RA.stdBuilder()
                 .itemInputs(
-                    CI.machineHull_LV,
+                    ItemList.Hull_LV.get(1),
                     GTUtility.copyAmount(32, plateRubber),
                     ItemUtils.getItemStackOfAmountFromOreDict("plateDenseLead", 9),
                     ItemUtils.getSimpleStack(Blocks.chest))
@@ -1001,7 +1001,7 @@ public class RecipesMachines {
         // Super Jukebox
         GTValues.RA.stdBuilder()
             .itemInputs(
-                CI.machineHull_LV,
+                ItemList.Hull_LV.get(1),
                 GTOreDictUnificator.get(OrePrefixes.circuit, Materials.LV, 4),
                 ItemUtils.getItemStackOfAmountFromOreDict("plateTumbaga", 8),
                 ItemUtils.getSimpleStack(Blocks.jukebox))
@@ -1013,7 +1013,7 @@ public class RecipesMachines {
         // Poo Collector
         GTValues.RA.stdBuilder()
             .itemInputs(
-                CI.machineHull_MV,
+                ItemList.Hull_MV.get(1),
                 ItemList.FluidRegulator_MV.get(2),
                 CI.getTieredComponent(OrePrefixes.pipeMedium, 2, 2),
                 MaterialsAlloy.EGLIN_STEEL.getPlate(4),
@@ -1197,7 +1197,7 @@ public class RecipesMachines {
             EV_MACHINE_Centrifuge,
             CI.component_Plate[6],
             CI.component_Plate[8],
-            CI.machineCasing_EV,
+            ItemList.Casing_EV.get(1),
             CI.component_Plate[8],
             RECIPE_IndustrialCentrifugeController);
         // Centrifuge Casing
@@ -1236,9 +1236,9 @@ public class RecipesMachines {
                 CI.component_Plate[7],
                 "circuitData",
                 CI.component_Plate[7],
-                CI.machineCasing_EV,
+                ItemList.Casing_EV.get(1),
                 INPUT_RCCokeOvenBlock,
-                CI.machineCasing_EV,
+                ItemList.Casing_EV.get(1),
                 CI.component_Plate[7],
                 "circuitData",
                 CI.component_Plate[7],
@@ -1336,9 +1336,9 @@ public class RecipesMachines {
             "plateStellite",
             "circuitElite",
             "plateStellite",
-            CI.machineCasing_IV,
+            ItemList.Casing_IV.get(1),
             IV_MACHINE_Electrolyzer,
-            CI.machineCasing_IV,
+            ItemList.Casing_IV.get(1),
             "plateStellite",
             "rotorStellite",
             "plateStellite",
@@ -1377,9 +1377,9 @@ public class RecipesMachines {
             "plateTitanium",
             "circuitData",
             "plateTitanium",
-            CI.machineCasing_EV,
+            ItemList.Casing_EV.get(1),
             EV_MACHINE_BendingMachine,
-            CI.machineCasing_EV,
+            ItemList.Casing_EV.get(1),
             "plateTitanium",
             "circuitData",
             "plateTitanium",
@@ -1783,7 +1783,7 @@ public class RecipesMachines {
             "circuitSuperconductor",
             CI.getPlate(8, 1),
             GTOreDictUnificator.get(OrePrefixes.cableGt04.get(Materials.NaquadahAlloy), 1L),
-            CI.machineCasing_UV,
+            ItemList.Casing_UV.get(1),
             GTOreDictUnificator.get(OrePrefixes.cableGt04.get(Materials.NaquadahAlloy), 1L),
             CI.getPlate(8, 1),
             "circuitSuperconductor",
@@ -1817,7 +1817,7 @@ public class RecipesMachines {
             CI.getPlate(7, 1),
             CI.getPlate(6, 1),
             "frameGtStellite",
-            CI.machineCasing_UV,
+            ItemList.Casing_UV.get(1),
             "frameGtStellite",
             CI.getPlate(6, 1),
             CI.getPlate(7, 1),
@@ -1825,7 +1825,7 @@ public class RecipesMachines {
             RECIPE_IndustrialMatterFabCoil);
         GTValues.RA.stdBuilder()
             .itemInputs(
-                CI.machineCasing_UV,
+                ItemList.Casing_UV.get(1),
                 MaterialsAlloy.ZERON_100.getPlate(4),
                 MaterialsAlloy.PIKYONIUM.getPlate(2),
                 MaterialsAlloy.STELLITE.getFrameBox(2),
@@ -1950,7 +1950,7 @@ public class RecipesMachines {
             ItemUtils.getSimpleStack(Blocks.ender_chest),
             "circuitElite",
             "plateTitanium",
-            CI.machineHull_EV,
+            ItemList.Hull_EV.get(1),
             "plateTitanium",
             RECIPE_TesseractTerminal);
 
@@ -2016,7 +2016,7 @@ public class RecipesMachines {
                 ItemList.Electric_Motor_LV.get(1),
                 "plateSteel",
                 "circuitBasic",
-                CI.machineHull_LV,
+                ItemList.Hull_LV.get(1),
                 "circuitBasic",
                 GregtechItemList.Pollution_Detector.get(1));
 
@@ -2029,7 +2029,7 @@ public class RecipesMachines {
                 ItemList.Electric_Motor_LV.get(1),
                 CI.component_Plate[1],
                 "circuitBasic",
-                CI.machineHull_LV,
+                ItemList.Hull_LV.get(1),
                 "circuitBasic",
                 GregtechItemList.Pollution_Cleaner_LV.get(1));
             // MV
@@ -2041,7 +2041,7 @@ public class RecipesMachines {
                 ItemList.Electric_Motor_MV.get(1),
                 CI.component_Plate[2],
                 "circuitGood",
-                CI.machineHull_MV,
+                ItemList.Hull_MV.get(1),
                 "circuitGood",
                 GregtechItemList.Pollution_Cleaner_MV.get(1));
             // HV
@@ -2053,7 +2053,7 @@ public class RecipesMachines {
                 ItemList.Electric_Motor_HV.get(1),
                 CI.component_Plate[3],
                 "circuitAdvanced",
-                CI.machineHull_HV,
+                ItemList.Hull_HV.get(1),
                 "circuitAdvanced",
                 GregtechItemList.Pollution_Cleaner_HV.get(1));
             // EV
@@ -2065,7 +2065,7 @@ public class RecipesMachines {
                 ItemList.Electric_Motor_EV.get(1),
                 CI.component_Plate[4],
                 "circuitData",
-                CI.machineHull_EV,
+                ItemList.Hull_EV.get(1),
                 "circuitData",
                 GregtechItemList.Pollution_Cleaner_EV.get(1));
             // IV
@@ -2077,7 +2077,7 @@ public class RecipesMachines {
                 ItemList.Electric_Motor_IV.get(1),
                 CI.component_Plate[5],
                 "circuitElite",
-                CI.machineHull_IV,
+                ItemList.Hull_IV.get(1),
                 "circuitElite",
                 GregtechItemList.Pollution_Cleaner_IV.get(1));
             // LuV
@@ -2089,7 +2089,7 @@ public class RecipesMachines {
                 ItemList.Electric_Motor_LuV.get(1),
                 CI.component_Plate[6],
                 "circuitMaster",
-                CI.machineHull_LuV,
+                ItemList.Hull_LuV.get(1),
                 "circuitMaster",
                 GregtechItemList.Pollution_Cleaner_LuV.get(1));
             // ZPM
@@ -2101,7 +2101,7 @@ public class RecipesMachines {
                 ItemList.Electric_Motor_ZPM.get(1),
                 CI.component_Plate[7],
                 "circuitUltimate",
-                CI.machineHull_ZPM,
+                ItemList.Hull_ZPM.get(1),
                 "circuitUltimate",
                 GregtechItemList.Pollution_Cleaner_ZPM.get(1));
             // UV
@@ -2113,7 +2113,7 @@ public class RecipesMachines {
                 ItemList.Electric_Motor_UV.get(1),
                 CI.component_Plate[8],
                 "circuitSuperconductor",
-                CI.machineHull_UV,
+                ItemList.Hull_UV.get(1),
                 "circuitSuperconductor",
                 GregtechItemList.Pollution_Cleaner_UV.get(1));
             // MAX
@@ -2125,7 +2125,7 @@ public class RecipesMachines {
                 ItemList.Electric_Motor_UHV.get(1),
                 CI.component_Plate[9],
                 "circuitInfinite",
-                CI.machineHull_UHV,
+                ItemList.Hull_MAX.get(1),
                 "circuitInfinite",
                 GregtechItemList.Pollution_Cleaner_MAX.get(1));
         }
@@ -2151,7 +2151,7 @@ public class RecipesMachines {
             "plateStainlessSteel",
             MaterialsAlloy.MARAGING350.getPlate(1),
             "circuitAdvanced",
-            CI.machineCasing_HV,
+            ItemList.Casing_HV.get(1),
             "circuitAdvanced",
             MaterialsAlloy.MARAGING350.getPlate(1),
             MaterialsAlloy.MARAGING350.getPlate(1),
@@ -2224,7 +2224,7 @@ public class RecipesMachines {
             GregtechItemList.Gregtech_Computer_Cube.get(1),
             "plateDoubleHastelloyN",
             "plateThorium232",
-            CI.machineHull_IV,
+            ItemList.Hull_IV.get(1),
             "plateThorium232",
             RECIPE_LFTRController);
         RecipeUtils.addShapedGregtechRecipe(
@@ -2271,7 +2271,7 @@ public class RecipesMachines {
             GregtechItemList.Gregtech_Computer_Cube.get(1),
             "plateDenseTungstenSteel",
             "gearGtStellite",
-            CI.machineHull_IV,
+            ItemList.Hull_IV.get(1),
             "gearGtStellite",
             GregtechItemList.Industrial_FuelRefinery.get(1));
 
@@ -2413,7 +2413,7 @@ public class RecipesMachines {
         // Controller
         GTValues.RA.stdBuilder()
             .itemInputs(
-                CI.machineHull_IV,
+                ItemList.Hull_IV.get(1),
                 ItemUtils.getSimpleStack(RECIPE_CyclotronInnerCoil, 2),
                 MaterialsAlloy.INCOLOY_020.getPlate(8),
                 MaterialsAlloy.TANTALLOY_61.getGear(2),
@@ -2771,7 +2771,7 @@ public class RecipesMachines {
             "circuitMaster",
             gear,
             ItemList.Field_Generator_IV.get(1),
-            CI.machineHull_ZPM,
+            ItemList.Hull_ZPM.get(1),
             ItemList.Robot_Arm_IV.get(1),
             plate,
             GregtechItemList.Gregtech_Computer_Cube.get(1),
@@ -2864,7 +2864,7 @@ public class RecipesMachines {
                 ItemUtils.getItemStackOfAmountFromOreDict("plateDoubleTriniumTitaniumAlloy", 1 * (1)),
                 ItemUtils.getItemStackOfAmountFromOreDict("gearGtPikyonium64B", 2 * (1)),
                 MaterialsAlloy.TRINIUM_REINFORCED_STEEL.getPlateDouble(4 * 1),
-                ItemUtils.getSimpleStack((CI.machineHull_LuV), 1 * 1))
+                ItemUtils.getSimpleStack((ItemList.Hull_LuV.get(1)), 1 * 1))
             .itemOutputs(GregtechItemList.Casing_BedrockMiner.get(1))
             .fluidInputs(MaterialsAlloy.MARAGING350.getFluidStack(16 * INGOTS))
             .duration((int) GTValues.V[4])
