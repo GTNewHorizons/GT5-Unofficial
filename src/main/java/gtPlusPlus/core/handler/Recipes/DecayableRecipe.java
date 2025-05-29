@@ -44,6 +44,6 @@ public class DecayableRecipe {
     }
 
     public boolean isValid() {
-        return (mTime > 0 && ItemUtils.checkForInvalidItems(mInput) && ItemUtils.checkForInvalidItems(mOutput));
+        return (mTime > 0 && null != (mInput) && null != (mOutput));
     }
 }

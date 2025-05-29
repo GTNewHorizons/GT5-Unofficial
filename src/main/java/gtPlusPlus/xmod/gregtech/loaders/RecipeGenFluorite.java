@@ -143,8 +143,8 @@ public class RecipeGenFluorite extends RecipeGenBase {
          * Package
          */
         // Allow ore dusts to be packaged
-        if (ItemUtils.checkForInvalidItems(material.getSmallDust(1))
-            && ItemUtils.checkForInvalidItems(material.getTinyDust(1))) {
+        if (null != (material.getSmallDust(1))
+            && null != (material.getTinyDust(1))) {
             RecipeGenDustGeneration.generatePackagerRecipes(material);
         }
 

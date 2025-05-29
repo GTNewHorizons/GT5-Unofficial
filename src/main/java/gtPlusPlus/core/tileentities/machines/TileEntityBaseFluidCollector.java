@@ -197,9 +197,9 @@ public abstract class TileEntityBaseFluidCollector extends TileEntityBase implem
                 this.tank.fill(FluidUtils.getFluidStack(fluidToProvide(), aFluidAmount), true);
             } else {
                 ItemStack aDirtStack = GTUtility.copyAmount(1, itemToSpawnInWorldIfTankIsFull());
-                if (!ItemUtils.checkForInvalidItems(aDirtStack)) {
-                    return;
-                }
+
+                if (aDirtStack == null) return;
+
                 if (!this.mInventory.addItemStack(aDirtStack)) {
                     EntityItem entity = new EntityItem(worldObj, xCoord, yCoord + 1.5, zCoord, aDirtStack);
                     worldObj.spawnEntityInWorld(entity);

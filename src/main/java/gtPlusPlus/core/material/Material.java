@@ -934,7 +934,7 @@ public class Material {
             Materials Erf = MaterialUtils.getMaterial(this.unlocalizedName);
             if (Erf != null && !MaterialUtils.isNullGregtechMaterial(Erf)) {
                 ItemStack Erg = ItemUtils.getOrePrefixStack(aPrefix, Erf, stacksize);
-                if (ItemUtils.checkForInvalidItems(Erg)) {
+                if (null != Erg) {
                     Logger.MATERIALS("Found \"" + aKey + this.unlocalizedName + "\" using backup GT Materials option.");
                     g.put(aKey, Erg);
                     mComponentMap.put(unlocalizedName, g);
@@ -943,7 +943,7 @@ public class Material {
                     // Try get a molten cell
                     if (aPrefix == OrePrefixes.cell) {
                         Erg = ItemUtils.getOrePrefixStack(OrePrefixes.cellMolten, Erf, stacksize);
-                        if (ItemUtils.checkForInvalidItems(Erg)) {
+                        if (null != Erg) {
                             Logger.MATERIALS(
                                 "Found \"" + OrePrefixes.cellMolten.name()
                                     + this.unlocalizedName

@@ -219,7 +219,7 @@ public class RecipeGenBlastSmelter extends RecipeGenBase {
             if ((M.getComposites()
                 .get(irc)
                 .getStackMaterial()
-                .getState() != MaterialState.SOLID) || !ItemUtils.checkForInvalidItems(
+                .getState() != MaterialState.SOLID) || null == (
                     M.getComposites()
                         .get(irc)
                         .getDustStack(r))) {

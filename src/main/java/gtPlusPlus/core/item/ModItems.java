@@ -482,7 +482,7 @@ public final class ModItems {
             "LiOH",
             Utils.rgbtoHexValue(250, 250, 250))[0]; // https://en.wikipedia.org/wiki/Lithium_hydroxide
 
-        if (!ItemUtils.checkForInvalidItems(ItemUtils.getItemStackOfAmountFromOreDict("dustQuicklime", 1))) {
+        if (null == (ItemUtils.getItemStackOfAmountFromOreDict("dustQuicklime", 1))) {
             dustQuicklime = ItemUtils
                 .generateSpecialUseDusts("Quicklime", "Quicklime", "CaO", Utils.rgbtoHexValue(255, 255, 175))[0]; // https://en.wikipedia.org/wiki/Calcium_oxide
         }
@@ -986,14 +986,14 @@ public final class ModItems {
         /*
          * Try to generate dusts for missing rare earth materials if they don't exist
          */
-        if (!ItemUtils.checkForInvalidItems(ItemUtils.getItemStackOfAmountFromOreDictNoBroken("dustGadolinium", 1))) {
+        if (null == (ItemUtils.getItemStackOfAmountFromOreDictNoBroken("dustGadolinium", 1))) {
             ItemUtils.generateSpecialUseDusts(
                 "Gadolinium",
                 "Gadolinium",
                 Materials.Gadolinium.mElement.name(),
                 Utils.rgbtoHexValue(226, 172, 9));
         }
-        if (!ItemUtils.checkForInvalidItems(ItemUtils.getItemStackOfAmountFromOreDictNoBroken("dustYtterbium", 1))) {
+        if (null == (ItemUtils.getItemStackOfAmountFromOreDictNoBroken("dustYtterbium", 1))) {
             ItemUtils.generateSpecialUseDusts(
                 "Ytterbium",
                 "Ytterbium",
@@ -1003,14 +1003,14 @@ public final class ModItems {
                     Materials.Yttrium.mRGBa[1] - 60,
                     Materials.Yttrium.mRGBa[2] - 60));
         }
-        if (!ItemUtils.checkForInvalidItems(ItemUtils.getItemStackOfAmountFromOreDictNoBroken("dustSamarium", 1))) {
+        if (null == ItemUtils.getItemStackOfAmountFromOreDictNoBroken("dustSamarium", 1)) {
             ItemUtils.generateSpecialUseDusts(
                 "Samarium",
                 "Samarium",
                 Materials.Samarium.mElement.name(),
                 Utils.rgbtoHexValue(161, 168, 114));
         }
-        if (!ItemUtils.checkForInvalidItems(ItemUtils.getItemStackOfAmountFromOreDictNoBroken("dustLanthanum", 1))) {
+        if (null == ItemUtils.getItemStackOfAmountFromOreDictNoBroken("dustLanthanum", 1)) {
             ItemUtils.generateSpecialUseDusts(
                 "Lanthanum",
                 "Lanthanum",

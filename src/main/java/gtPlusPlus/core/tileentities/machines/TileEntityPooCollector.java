@@ -52,9 +52,8 @@ public class TileEntityPooCollector extends TileEntityBaseFluidCollector {
             } else {
                 return false;
             }
-            if (!ItemUtils.checkForInvalidItems(aPoop)) {
-                return false;
-            }
+
+            if (aPoop == null) return false;
 
             // Add poop to world
             // Logger.INFO("Adding animal waste for "+aPooMaker.getCommandSenderName());

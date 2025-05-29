@@ -111,7 +111,7 @@ public class RecipeGenRecycling implements Runnable {
             final ItemStack mDust = getDust(material, validPrefix.getKey());
 
             // Maceration
-            if (ItemUtils.checkForInvalidItems(tempStack) && mDust != null) {
+            if (null != (tempStack) && mDust != null) {
                 RA.stdBuilder()
                     .itemInputs(tempStack)
                     .itemOutputs(mDust)
@@ -127,7 +127,7 @@ public class RecipeGenRecycling implements Runnable {
             }
 
             // Fluid Extractor
-            if (ItemUtils.checkForInvalidItems(tempStack)) {
+            if (null != (tempStack)) {
                 int aFluidAmount = (int) ((144 * validPrefix.getKey().mMaterialAmount) / (M * tempStack.stackSize));
                 int aDuration = (int) Math.max(1, (24 * validPrefix.getKey().mMaterialAmount) / M);
                 FluidStack fluidOutput = material.getFluidStack(aFluidAmount);
@@ -302,14 +302,14 @@ public class RecipeGenRecycling implements Runnable {
             final Materials m = Materials.get(MaterialName);
             if (m != null && m != Materials._NULL) {
                 returnValue = ItemUtils.getGregtechDust(m, amount);
-                if (ItemUtils.checkForInvalidItems(returnValue)) {
+                if (null != (returnValue)) {
                     return returnValue;
                 }
             }
         }
         if (returnValue == null) {
             returnValue = getItemStackOfAmountFromOreDict(oredictName, amount);
-            if (ItemUtils.checkForInvalidItems(returnValue)) {
+            if (null != (returnValue)) {
                 return returnValue.copy();
             }
         }

@@ -345,20 +345,20 @@ public class CI {
 
         ItemStack aReturn = ItemUtils.getOrePrefixStack(aPrefix, m, aAmount);
         // If valid, return
-        if (ItemUtils.checkForInvalidItems(aReturn)) return aReturn;
+        if (null != (aReturn)) return aReturn;
 
         // If Invalid, Try First Material
 
         m = aMaster[0][aTier];
         aReturn = ItemUtils.getOrePrefixStack(aPrefix, m, aAmount);
 
-        if (ItemUtils.checkForInvalidItems(aReturn)) return aReturn;
+        if (null != (aReturn)) return aReturn;
 
         // If Invalid, Try Second Materialqcv  v
         m = aMaster[1][aTier];
         aReturn = ItemUtils.getOrePrefixStack(aPrefix, m, aAmount);
 
-        if (ItemUtils.checkForInvalidItems(aReturn)) return aReturn;
+        if (null != (aReturn)) return aReturn;
 
         // If Invalid, Try Third Material
 
@@ -367,7 +367,7 @@ public class CI {
 
         // All Invalid?
         // Let's add a special error ingot.
-        if (!ItemUtils.checkForInvalidItems(aReturn)) {
+        if (null == (aReturn)) {
             aReturn = null;
         }
 

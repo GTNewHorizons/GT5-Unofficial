@@ -701,7 +701,7 @@ public class GregtechConduits {
             GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "PhP", "P P", "PwP", 'P', pipePlate });
 
-        if (pipeIngot != null && ItemUtils.checkForInvalidItems(pipeIngot)) {
+        if (pipeIngot != null) {
             // 1 Clay Plate = 1 Clay Dust = 2 Clay Ball
             int inputMultiplier = materialName.equals("Clay") ? 2 : 1;
             GTValues.RA.stdBuilder()

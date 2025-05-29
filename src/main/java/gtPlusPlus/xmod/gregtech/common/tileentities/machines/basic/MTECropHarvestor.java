@@ -201,7 +201,7 @@ public class MTECropHarvestor extends MTEBasicTank {
                 if (aHarvest == null) continue;
 
                 for (ItemStack aStack : aHarvest) {
-                    if (!ItemUtils.checkForInvalidItems(aStack)) continue;
+                    if (aStack == null) continue;
                     if (this.mTier * 5 > MathUtils.randInt(1, 100)) {
                         aStack.stackSize += Math.floor(tCrop.getGain() / 10);
                         Logger.INFO("Bonus output given for " + aCrop.displayName());

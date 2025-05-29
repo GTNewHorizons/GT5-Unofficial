@@ -166,14 +166,14 @@ public class ItemUtils {
                 final Materials m = Materials.get(MaterialName);
                 if (m != Materials._NULL) {
                     returnValue = getGregtechDust(m, amount);
-                    if (checkForInvalidItems(returnValue)) {
+                    if (null != returnValue) {
                         return returnValue;
                     }
                 }
             }
             if (returnValue == null) {
                 returnValue = getItemStackOfAmountFromOreDict(oredictName, amount);
-                if (ItemUtils.checkForInvalidItems(returnValue)) {
+                if (null != returnValue) {
                     return returnValue.copy();
                 }
             }
@@ -188,7 +188,7 @@ public class ItemUtils {
     public static ItemStack getGregtechDust(final Materials material, final int amount) {
         final ItemStack returnValue = GTOreDictUnificator.get(OrePrefixes.dust, material, 1L);
         if (returnValue != null) {
-            if (ItemUtils.checkForInvalidItems(returnValue)) {
+            if (null != (returnValue)) {
                 return returnValue.copy();
             }
         }
@@ -230,7 +230,7 @@ public class ItemUtils {
             .eut(4)
             .addTo(packagerRecipes);
 
-        if (ItemUtils.checkForInvalidItems(tinyDust) && ItemUtils.checkForInvalidItems(normalDust)) {
+        if (null != (tinyDust) && null != (normalDust)) {
             if (RecipeUtils.addShapedRecipe(
                 tinyDust,
                 tinyDust,
@@ -264,7 +264,7 @@ public class ItemUtils {
             }
         }
 
-        if (ItemUtils.checkForInvalidItems(smallDust) && ItemUtils.checkForInvalidItems(normalDust)) {
+        if (null != (smallDust) && null != (normalDust)) {
             if (RecipeUtils.addShapedRecipe(
                 smallDust,
                 smallDust,
@@ -479,9 +479,6 @@ public class ItemUtils {
         return GTPPCore.burnables.add(Pair.of(burn, aBurnable));
     }
 
-    public static boolean checkForInvalidItems(ItemStack mInput) {
-        return checkForInvalidItems(new ItemStack[] { mInput });
-    }
 
     public static boolean checkForInvalidItems(ItemStack[] mInput) {
         return checkForInvalidItems(mInput, new ItemStack[] {});
@@ -572,7 +569,7 @@ public class ItemUtils {
         ItemStack[] aOutput = new ItemStack[aArraySize];
         ArrayList<ItemStack> aCleanedItems = new ArrayList<>();
         for (ItemStack checkStack : input) {
-            if (ItemUtils.checkForInvalidItems(checkStack)) {
+            if (null != (checkStack)) {
                 aCleanedItems.add(checkStack);
             }
         }

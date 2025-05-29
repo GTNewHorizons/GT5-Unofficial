@@ -61,7 +61,7 @@ public class EntityDeathHandler implements IMobExtraInfoProvider {
         int aChanceOutOf10000 = aData.getRight();
         if (MathUtils.randInt(0, 10000) <= aChanceOutOf10000) {
             aLoot = GTUtility.copyAmount(MathUtils.randInt(1, aMaxDrop), aLoot);
-            if (ItemUtils.checkForInvalidItems(aLoot)) {
+            if (aLoot != null) {
                 return aLoot;
             }
         }
