@@ -1262,6 +1262,7 @@ public abstract class GTProxy implements IGTMod, IFuelHandler {
         File tSaveDirectory = getSaveDirectory();
         GregTechAPI.sWirelessRedstone.clear();
         GregTechAPI.sAdvancedWirelessRedstone.clear();
+        WirelessChargerManager.clearChargerMap();
         if (tSaveDirectory != null) {
             for (int i = 1; i < GregTechAPI.METATILEENTITIES.length; i++) {
                 if (GregTechAPI.METATILEENTITIES[i] != null) {
