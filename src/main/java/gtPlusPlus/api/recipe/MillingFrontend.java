@@ -6,6 +6,7 @@ import java.util.List;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 
+import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.MTEIsaMill;
 import net.minecraft.util.StatCollector;
 
 import gregtech.api.recipe.BasicUIPropertiesBuilder;
@@ -27,7 +28,7 @@ public class MillingFrontend extends RecipeMapFrontend {
     @Override
     protected List<String> handleNEIItemInputTooltip(List<String> currentTip,
         GTNEIDefaultHandler.FixedPositionedStack pStack) {
-        if (ItemUtils.isMillingBall(pStack.item)) {
+        if (MTEIsaMill.isMillingBall(pStack.item)) {
             currentTip.add(GRAY + StatCollector.translateToLocal("gtpp.nei.milling.not_consumed"));
         } else {
             super.handleNEIItemInputTooltip(currentTip, pStack);
@@ -37,7 +38,7 @@ public class MillingFrontend extends RecipeMapFrontend {
 
     @Override
     protected void drawNEIOverlayForInput(GTNEIDefaultHandler.FixedPositionedStack stack) {
-        if (ItemUtils.isMillingBall(stack.item)) {
+        if (MTEIsaMill.isMillingBall(stack.item)) {
             drawNEIOverlayText("NC*", stack);
         } else {
             super.drawNEIOverlayForInput(stack);

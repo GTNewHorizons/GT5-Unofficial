@@ -2,6 +2,7 @@ package gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.nbthandlers;
 
 import java.util.ArrayList;
 
+import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.MTEIsaMill;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -62,7 +63,7 @@ public class MTEHatchMillingBalls extends MTEHatchNbtConsumable {
 
     @Override
     public boolean isItemValidForUsageSlot(ItemStack aStack) {
-        return ItemUtils.isMillingBall(aStack);
+        return MTEIsaMill.isMillingBall(aStack);
     }
 
     @Override

@@ -19,6 +19,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 
+import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import net.minecraft.block.Block;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -441,27 +442,35 @@ public class MTEIsaMill extends GTPPMultiBlockBase<MTEIsaMill> implements ISurvi
         return ItemGenericChemBase.getMaxBallDurability(aStack);
     }
 
-    private ItemStack findMillingBall(ItemStack[] aItemInputs) {
-        if (mMillingBallBuses.size() != 1) {
-            return null;
-        } else {
-            MTEHatchMillingBalls aBus = mMillingBallBuses.get(0);
-            if (aBus != null) {
-                ArrayList<ItemStack> aAvailableItems = aBus.getContentUsageSlots();
-                if (!aAvailableItems.isEmpty()) {
-                    for (final ItemStack aInput : aItemInputs) {
-                        if (ItemUtils.isMillingBall(aInput)) {
-                            for (ItemStack aBall : aAvailableItems) {
-                                if (GTUtility.areStacksEqual(aBall, aInput, true)) {
-                                    Logger.INFO("Found a valid milling ball to use.");
-                                    return aBall;
-                                }
-                            }
-                        }
-                    }
-                }
-            }
+    public static boolean isMillingBall(ItemStack aStack) {
+        if (GTUtility.areStacksEqual(aStack, GregtechItemList.Milling_Ball_Alumina.get(1), true)) {
+            return true;
         }
+        return GTUtility.areStacksEqual(aStack, GregtechItemList.Milling_Ball_Soapstone.get(1), true);
+    }
+    private ItemStack findMillingBall(ItemStack[] aItemInputs) {
+        if (mMillingBallBuses.size() != 1) return null;
+
+        MTEHatchMillingBalls aBus = mMillingBallBuses.get(0);
+
+        if (aBus == null) return null;
+
+        ArrayList<ItemStack> aAvailableItems = aBus.getContentUsageSlots();
+
+        if (aAvailableItems.isEmpty()) return null;
+
+        for (final ItemStack aInput : aItemInputs) {
+            if (!isMillingBall(aInput)) continue;
+
+            for (ItemStack aBall : aAvailableItems) {
+                if (!GTUtility.areStacksEqual(aBall, aInput, true)) continue;
+
+                Logger.INFO("Found a valid milling ball to use.");
+                return aBall;
+            }
+
+        }
+
         return null;
     }
 

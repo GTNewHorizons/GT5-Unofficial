@@ -4,6 +4,7 @@ import static gregtech.api.enums.Mods.GTPlusPlus;
 
 import java.util.List;
 
+import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.MTEIsaMill;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.chemplant.MTEChemicalPlant;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
@@ -77,7 +78,7 @@ public class ItemGenericChemBase extends Item {
 
     @Override
     public int getItemStackLimit(ItemStack stack) {
-        if (ItemUtils.isMillingBall(stack)) {
+        if (MTEIsaMill.isMillingBall(stack)) {
             return 16;
         }
         return super.getItemStackLimit(stack);
@@ -181,7 +182,7 @@ public class ItemGenericChemBase extends Item {
 
     @Override
     public double getDurabilityForDisplay(ItemStack aStack) {
-        if (ItemUtils.isMillingBall(aStack)) {
+        if (MTEIsaMill.isMillingBall(aStack)) {
             if (aStack.getTagCompound() == null || aStack.getTagCompound()
                 .hasNoTags()) {
                 createMillingBallNBT(aStack);
@@ -208,7 +209,7 @@ public class ItemGenericChemBase extends Item {
         int aDamageSegment = 0;
         int aDam = 0;
         EnumChatFormatting durability = EnumChatFormatting.GRAY;
-        if (ItemUtils.isMillingBall(aStack)) {
+        if (MTEIsaMill.isMillingBall(aStack)) {
             list.add(EnumChatFormatting.GRAY + StatCollector.translateToLocal("GTPP.tooltip.milling_ball.tumble"));
             aMaxDamage = getMillingBallMaxDamage(aStack);
             aDamageSegment = aMaxDamage / 5;
@@ -241,7 +242,7 @@ public class ItemGenericChemBase extends Item {
 
     @Override
     public boolean showDurabilityBar(ItemStack aStack) {
-        if (ItemUtils.isMillingBall(aStack)) {
+        if (MTEIsaMill.isMillingBall(aStack)) {
             int aDam = getMillingBallDamage(aStack);
             return aDam > 0;
         } else if (MTEChemicalPlant.isCatalyst(aStack)) {

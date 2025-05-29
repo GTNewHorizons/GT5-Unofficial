@@ -670,13 +670,4 @@ public class ItemUtils {
         return null;
     }
 
-    public static boolean isMillingBall(ItemStack aStack) {
-        if (GTUtility.areStacksEqual(aStack, GregtechItemList.Milling_Ball_Alumina.get(1), true)) {
-            return true;
-        }
-        if (GTUtility.areStacksEqual(aStack, GregtechItemList.Milling_Ball_Soapstone.get(1), true)) {
-            return true;
-        }
-        return false;
-    }
 }
