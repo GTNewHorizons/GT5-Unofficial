@@ -454,27 +454,44 @@ public class MTEWirelessCharger extends MTETieredMachineBlock implements IWirele
                 if (this.mode == MODE_LOCAL || this.mode == MODE_MIXED) {
                     final int range = this.getLocalRange(this.mode == MODE_MIXED);
                     if (distSq < range * range) {
-                        if (this.isValidPlayer(player) && !localRangeMap.containsKey(player.getDisplayName())) {
-                            localRangeMap.put(player.getDisplayName(), player.getPersistentID());
+                        if (this.isValidPlayer(player) && !localRangeMap.containsKey(
+                            player.getGameProfile()
+                                .getName())) {
+                            localRangeMap.put(
+                                player.getGameProfile()
+                                    .getName(),
+                                player.getPersistentID());
                         }
                     } else {
-                        localRangeMap.remove(player.getDisplayName());
+                        localRangeMap.remove(
+                            player.getGameProfile()
+                                .getName());
                     }
                 }
                 if (this.mode == MODE_LONG_RANGE || this.mode == MODE_MIXED) {
                     int range = getLongRange(this.mode == MODE_MIXED);
                     if (distSq <= range * range) {
-                        if (!longRangeMap.containsKey(player.getDisplayName())) {
+                        if (!longRangeMap.containsKey(
+                            player.getGameProfile()
+                                .getName())) {
                             if (this.isValidPlayer(player)) {
-                                longRangeMap.put(player.getDisplayName(), player.getPersistentID());
+                                longRangeMap.put(
+                                    player.getGameProfile()
+                                        .getName(),
+                                    player.getPersistentID());
                                 GTUtility.sendChatToPlayer(
                                     player,
                                     translateChat("enter", range, translateChat("mode.long")));
                             }
                         }
                     } else {
-                        if (longRangeMap.containsKey(player.getDisplayName())) {
-                            if (longRangeMap.remove(player.getDisplayName()) != null) {
+                        if (longRangeMap.containsKey(
+                            player.getGameProfile()
+                                .getName())) {
+                            if (longRangeMap.remove(
+                                player.getGameProfile()
+                                    .getName())
+                                != null) {
                                 GTUtility.sendChatToPlayer(
                                     player,
                                     translateChat("leave", range, translateChat("mode.long")));
@@ -593,27 +610,39 @@ public class MTEWirelessCharger extends MTETieredMachineBlock implements IWirele
                     .getWorld().provider.dimensionId)
             return false;
         if (this.mode == 0) {
-            return longRangeMap.containsKey(player.getDisplayName());
+            return longRangeMap.containsKey(
+                player.getGameProfile()
+                    .getName());
         } else if (this.mode == 1) {
-            return localRangeMap.containsKey(player.getDisplayName());
+            return localRangeMap.containsKey(
+                player.getGameProfile()
+                    .getName());
         } else {
-            if (longRangeMap.containsKey(player.getDisplayName())) {
+            if (longRangeMap.containsKey(
+                player.getGameProfile()
+                    .getName())) {
                 return true;
             }
-            return localRangeMap.containsKey(player.getDisplayName());
+            return localRangeMap.containsKey(
+                player.getGameProfile()
+                    .getName());
         }
     }
 
     @Override
     public void chargePlayerItems(EntityPlayer player, ItemStack[]... inventories) {
         final int amp;
-        if (localRangeMap.containsKey(player.getDisplayName())) {
+        if (localRangeMap.containsKey(
+            player.getGameProfile()
+                .getName())) {
             amp = 2;
-        } else if (longRangeMap.containsKey(player.getDisplayName())) {
-            amp = 1;
-        } else {
-            return;
-        }
+        } else if (longRangeMap.containsKey(
+            player.getGameProfile()
+                .getName())) {
+                    amp = 1;
+                } else {
+                    return;
+                }
 
         final long storedEU = this.getEUVar();
         final long maxChargeableEU = Math.min(storedEU, this.maxEUInput() * amp * WirelessChargerManager.CHARGE_TICK);
