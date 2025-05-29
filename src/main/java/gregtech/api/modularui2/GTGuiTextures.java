@@ -334,6 +334,12 @@ public final class GTGuiTextures {
     public static final UITexture PARALLEL_ECCF_INDICATOR_R = UITexture
         .fullImage(GregTech.ID, "gui/picture/parallel_ECCF_indicator_R");
 
+    public static final UITexture OVERLAY_BUTTON_BOUNDING_BOX = UITexture.builder()
+        .location(GregTech.ID, "gui/overlay_button/bounding_box")
+        .fullImage()
+        .canApplyTheme(true)
+        .build();
+
     // endregion slot overlay
 
     // region progressbar
