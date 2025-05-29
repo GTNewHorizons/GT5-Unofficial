@@ -452,7 +452,7 @@ public class MTEWirelessCharger extends MTETieredMachineBlock implements IWirele
                     baseMetaTileEntity.getYCoord(),
                     baseMetaTileEntity.getZCoord());
                 if (this.mode == MODE_LOCAL || this.mode == MODE_MIXED) {
-                    final int range = this.getLocalRange(this.mode == MODE_MIXED);
+                    final double range = this.getLocalRange(this.mode == MODE_MIXED);
                     if (distSq < range * range) {
                         if (this.isValidPlayer(player) && !localRangeMap.containsKey(
                             player.getGameProfile()
@@ -469,7 +469,7 @@ public class MTEWirelessCharger extends MTETieredMachineBlock implements IWirele
                     }
                 }
                 if (this.mode == MODE_LONG_RANGE || this.mode == MODE_MIXED) {
-                    int range = getLongRange(this.mode == MODE_MIXED);
+                    final double range = getLongRange(this.mode == MODE_MIXED);
                     if (distSq <= range * range) {
                         if (!longRangeMap.containsKey(
                             player.getGameProfile()
@@ -481,7 +481,7 @@ public class MTEWirelessCharger extends MTETieredMachineBlock implements IWirele
                                     player.getPersistentID());
                                 GTUtility.sendChatToPlayer(
                                     player,
-                                    translateChat("enter", range, translateChat("mode.long")));
+                                    translateChat("enter", (int) range, translateChat("mode.long")));
                             }
                         }
                     } else {
@@ -494,7 +494,7 @@ public class MTEWirelessCharger extends MTETieredMachineBlock implements IWirele
                                 != null) {
                                 GTUtility.sendChatToPlayer(
                                     player,
-                                    translateChat("leave", range, translateChat("mode.long")));
+                                    translateChat("leave", (int) range, translateChat("mode.long")));
                             }
                         }
                     }
