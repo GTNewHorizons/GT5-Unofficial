@@ -293,7 +293,7 @@ public class MTESteamAlloySmelter extends MTESteamMultiBase<MTESteamAlloySmelter
             .addInfo("Only consumes steam at 62.5% of the L/s normally required")
             .addInfo("Processes up to 8 items at once")
             .addInfo(HIGH_PRESSURE_TOOLTIP_NOTICE)
-            .beginStructureBlock(3, 3, 4, true)
+            .beginStructureBlock(3, 3, 4, false)
             .addInputBus(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + " Any casing", 1)
             .addOutputBus(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + " Any casing", 1)
             .addStructureInfo(
@@ -303,12 +303,16 @@ public class MTESteamAlloySmelter extends MTESteamMultiBase<MTESteamAlloySmelter
                     + EnumChatFormatting.GRAY
                     + " Any casing")
             .addStructureInfo("")
+            .addStructureInfo(EnumChatFormatting.GOLD + "4x" + EnumChatFormatting.GRAY + " Any Glass")
+            .addStructureInfo("")
             .addStructureInfo(EnumChatFormatting.BLUE + "Basic " + EnumChatFormatting.DARK_PURPLE + "Tier")
-            .addStructureInfo(EnumChatFormatting.GOLD + "25-30x" + EnumChatFormatting.GRAY + " Bronze Plated Bricks")
+            .addStructureInfo(EnumChatFormatting.GOLD + "16-26x" + EnumChatFormatting.GRAY + " Bronze Plated Bricks")
+            .addStructureInfo(EnumChatFormatting.GOLD + "2x" + EnumChatFormatting.GRAY + " Bronze Pipe Casing")
             .addStructureInfo("")
             .addStructureInfo(EnumChatFormatting.BLUE + "High Pressure " + EnumChatFormatting.DARK_PURPLE + "Tier")
             .addStructureInfo(
-                EnumChatFormatting.GOLD + "25-30x" + EnumChatFormatting.GRAY + " Solid Steel Machine Casing")
+                EnumChatFormatting.GOLD + "16-26x" + EnumChatFormatting.GRAY + " Solid Steel Machine Casing")
+            .addStructureInfo(EnumChatFormatting.GOLD + "2x" + EnumChatFormatting.GRAY + " Steel Pipe Casing")
             .toolTipFinisher();
         return tt;
     }
