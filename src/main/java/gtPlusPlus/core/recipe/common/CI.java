@@ -38,18 +38,6 @@ public class CI {
         | GTModHandler.RecipeBits.REVERSIBLE
         | GTModHandler.RecipeBits.BUFFERED;
 
-    // Circuits
-    public static Object circuitPrimitive;
-    public static Object circuitTier1;
-    public static Object circuitTier2;
-    public static Object circuitTier3;
-    public static Object circuitTier4;
-    public static Object circuitTier5;
-    public static Object circuitTier6;
-    public static Object circuitTier7;
-    public static Object circuitTier8;
-    public static Object circuitTier9;
-
     // Machine Components
     public static ItemStack electricMotor_LV;
     public static ItemStack electricMotor_MV;
@@ -200,40 +188,11 @@ public class CI {
             getTieredComponent(OrePrefixes.ingot, 7), getTieredComponent(OrePrefixes.ingot, 8),
             getTieredComponent(OrePrefixes.ingot, 9), getTieredComponent(OrePrefixes.ingot, 10),
             getTieredComponent(OrePrefixes.ingot, 11) };
-
-        // Circuits
-        circuitPrimitive = getTieredCircuit(0);
-        circuitTier1 = getTieredCircuit(1);
-        circuitTier2 = getTieredCircuit(2);
-        circuitTier3 = getTieredCircuit(3);
-        circuitTier4 = getTieredCircuit(4);
-        circuitTier5 = getTieredCircuit(5);
-        circuitTier6 = getTieredCircuit(6);
-        circuitTier7 = getTieredCircuit(7);
-        circuitTier8 = getTieredCircuit(8);
-        circuitTier9 = getTieredCircuit(9);
     }
 
-    public static Object getTieredCircuit(int tier) {
-        return getTieredCircuitOreDictName(tier);
-    }
-
-    public static String getTieredCircuitOreDictName(int tier) {
-        return switch(tier) {
-            case 0 -> "circuitPrimitive";
-            case 1 -> "circuitBasic";
-            case 2 -> "circuitGood";
-            case 3 -> "circuitAdvanced";
-            case 4 -> "circuitData";
-            case 5 -> "circuitElite";
-            case 6 -> "circuitMaster";
-            case 7 -> "circuitUltimate";
-            case 8 -> "circuitSuperconductor";
-            case 9 -> "circuitInfinite";
-            case 10 -> "circuitQuantum";
-            default -> "circuitPrimitive";
-        };
-    }
+    public static final String[] circuits = new String[]{"circuitPrimitive", "circuitBasic", "circuitGood",
+        "circuitAdvanced", "circuitData", "circuitElite", "circuitMaster", "circuitUltimate",
+        "circuitSuperconductor", "circuitInfinite",  "circuitQuantum"};
 
     private static Object getMaterialFromTier(int tier) {
         return switch (tier){

@@ -373,9 +373,9 @@ public class RecipesGregTech {
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Gadolinium, 32L),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Samarium, 16L),
                 MaterialsAlloy.ARCANITE.getGear(8),
-                new Object[] { CI.getTieredCircuitOreDictName(5), 64 },
-                new Object[] { CI.getTieredCircuitOreDictName(6), 32 },
-                new Object[] { CI.getTieredCircuitOreDictName(7), 16 },
+                new Object[] { "circuitElite", 64 },
+                new Object[] { "circuitMaster", 32 },
+                new Object[] { "circuitUltimate", 16 },
                 GregtechItemList.Laser_Lens_Special.get(1),
                 ItemUtils.simpleMetaStack("miscutils:itemDehydratorCoilWire", 3, 64))
             .fluidInputs(
@@ -404,7 +404,7 @@ public class RecipesGregTech {
                 CI.getTieredComponent(OrePrefixes.screw, 8, 48),
                 CI.getTieredComponent(OrePrefixes.bolt, 7, 32),
                 CI.getTieredComponent(OrePrefixes.rod, 6, 12),
-                new Object[] { CI.getTieredCircuitOreDictName(7), 20 },
+                new Object[] { "circuitUltimate", 20 },
                 CI.getTieredComponent(OrePrefixes.rotor, 6, 16))
             .fluidInputs(
                 CI.getTieredFluid(8, 32 * INGOTS),
@@ -470,7 +470,7 @@ public class RecipesGregTech {
                     aGemCasings[aCasingSlot],
                     ItemUtils.getSimpleStack(aExoticInputs[aCasingSlot], 16),
                     CI.getTieredComponent(OrePrefixes.plate, j, 16),
-                    new Object[] { CI.getTieredCircuitOreDictName(j), 8 },
+                    new Object[] { CI.circuits[j], 8 },
                     CI.getTieredComponent(OrePrefixes.wireGt16, j + 1, 32),
                     CI.getTieredComponent(OrePrefixes.bolt, j, 8),
                     CI.getTieredComponent(OrePrefixes.screw, j - 1, 8))
@@ -493,7 +493,7 @@ public class RecipesGregTech {
                 .itemInputs(
                     ItemUtils.getSimpleStack(aGemCasings[2], 4),
                     CI.getTieredComponent(OrePrefixes.plate, 8, 32),
-                    new Object[] { CI.getTieredCircuitOreDictName(7), 16 },
+                    new Object[] { "circuitUltimate", 16 },
                     CI.getTieredComponent(OrePrefixes.cableGt02, 7, 16),
                     CI.getTieredComponent(OrePrefixes.gearGt, 6, 6),
                     CI.getTieredComponent(OrePrefixes.screw, 7, 16),
@@ -532,8 +532,8 @@ public class RecipesGregTech {
                         ItemUtils.getSimpleStack(aGemBatteries[aCurrSlot], 2),
                         aCoilWire[aCurrSlot],
                         CI.getTieredComponent(OrePrefixes.plate, h, 8),
-                        new Object[] { CI.getTieredCircuitOreDictName(h), 4 },
-                        new Object[] { CI.getTieredCircuitOreDictName(h - 1), 8 },
+                        new Object[] { CI.circuits[h], 4 },
+                        new Object[] { CI.circuits[h - 1], 8 },
                         CI.getTieredComponent(OrePrefixes.cableGt12, h - 1, 16),
                         CI.getTieredComponent(OrePrefixes.screw, h, 16),
                         CI.getTieredComponent(OrePrefixes.bolt, h - 2, 32),
@@ -557,8 +557,8 @@ public class RecipesGregTech {
                     ItemUtils.getSimpleStack(aGemBatteries[aCurrSlot], 2),
                     aCoilWire[aCurrSlot],
                     CI.getTieredComponent(OrePrefixes.plate, 9, 8),
-                    new Object[] { CI.getTieredCircuitOreDictName(9), 4 },
-                    new Object[] { CI.getTieredCircuitOreDictName(8), 8 },
+                    new Object[] { "circuitInfinite", 4 },
+                    new Object[] { "circuitSuperconductor", 8 },
                     CI.getTieredComponent(OrePrefixes.cableGt12, 8, 16),
                     CI.getTieredComponent(OrePrefixes.screw, 9, 16),
                     CI.getTieredComponent(OrePrefixes.bolt, 7, 32),
@@ -581,7 +581,7 @@ public class RecipesGregTech {
                 .itemInputs(
                     ItemUtils.getSimpleStack(aGemCasings[3], 4),
                     CI.getTieredComponent(OrePrefixes.plate, 8, 32),
-                    new Object[] { CI.getTieredCircuitOreDictName(7), 16 },
+                    new Object[] { "circuitUltimate", 16 },
                     CI.getTieredComponent(OrePrefixes.cableGt04, 8, 16),
                     CI.getTieredComponent(OrePrefixes.gearGt, 7, 6),
                     CI.getTieredComponent(OrePrefixes.screw, 8, 16),
@@ -1339,7 +1339,7 @@ public class RecipesGregTech {
                     CI.getSensor(6, 6),
                     CI.getBolt(7, 64),
                     GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.Platinum, 64L),
-                    ItemUtils.getItemStackOfAmountFromOreDict(CI.getTieredCircuitOreDictName(7), 12))
+                    ItemUtils.getItemStackOfAmountFromOreDict("circuitUltimate", 12))
                 .itemOutputs(
                     ItemDummyResearch.getResearchStack(ASSEMBLY_LINE_RESEARCH.RESEARCH_8_TURBINE_AUTOMATION, 1))
                 .fluidInputs(CI.getAlternativeTieredFluid(7, 32 * INGOTS))
@@ -1354,7 +1354,7 @@ public class RecipesGregTech {
                     ItemUtils.getSimpleStack(ModItems.itemCircuitLFTR, 4),
                     CI.getFieldGenerator(6, 16),
                     GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.Palladium, 32L),
-                    ItemUtils.getItemStackOfAmountFromOreDict(CI.getTieredCircuitOreDictName(6), 12))
+                    ItemUtils.getItemStackOfAmountFromOreDict("circuitMaster", 12))
                 .itemOutputs(ItemDummyResearch.getResearchStack(ASSEMBLY_LINE_RESEARCH.RESEARCH_9_CLOAKING, 1))
                 .fluidInputs(CI.getAlternativeTieredFluid(7, 32 * INGOTS))
                 .duration(10 * MINUTES)
