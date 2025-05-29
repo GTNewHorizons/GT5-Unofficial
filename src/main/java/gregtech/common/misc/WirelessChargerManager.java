@@ -64,6 +64,7 @@ public class WirelessChargerManager {
                 charger.chargePlayerItems(player.inventory.mainInventory, player);
                 if (!checkedBaubles) {
                     baubleItems = getBaublesItems(player);
+                    checkedBaubles = true;
                 }
                 if (baubleItems != null) {
                     charger.chargePlayerItems(baubleItems, player);
