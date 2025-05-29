@@ -1445,7 +1445,9 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
                     : GTUITextures.PROGRESSBAR_STEAM_FILL_STEEL,
                 54)
             .setSynced(true, false)
-            .dynamicTooltip(() -> Collections.singletonList("Steam: " + getSteamVar + "/" + maxSteamStore() + "L"))
+            .dynamicTooltip(
+                () -> Collections.singletonList(
+                    translateToLocalFormatted("GT5U.gui.tooltip.steam_progress", getSteamVar, maxSteamStore())))
             .setTooltipShowUpDelay(TOOLTIP_DELAY)
             .setUpdateTooltipEveryTick(true)
             .setSize(10, 54)
