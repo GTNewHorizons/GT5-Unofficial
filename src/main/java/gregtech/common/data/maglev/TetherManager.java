@@ -66,6 +66,8 @@ public class TetherManager {
 
     @SubscribeEvent
     public static void onWorldUnload(WorldEvent.Unload event) {
-        ACTIVE_PYLONS.remove(event.world.provider.dimensionId);
+        if (ACTIVE_PYLONS.containsKey(event.world.provider.dimensionId)) {
+            ACTIVE_PYLONS.remove(event.world.provider.dimensionId);
+        }
     }
 }
