@@ -152,7 +152,7 @@ public class RecipeGenMultisUsingFluidInsteadOfCells {
                     aNewFluidOutputs[i] = aOutputFluidsMap.get(i);
                 }
 
-                if (!ItemUtils.checkForInvalidItems(aNewItemInputs, aNewItemOutputs)) {
+                if (!(ItemUtils.checkForInvalidItems(aNewItemInputs) && ItemUtils.checkForInvalidItems(aNewItemOutputs))) {
                     aInvalidRecipesToConvert++;
                     continue; // Skip this recipe entirely if we find an item we don't like
                 }

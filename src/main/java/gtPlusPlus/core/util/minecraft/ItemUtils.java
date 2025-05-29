@@ -479,30 +479,23 @@ public class ItemUtils {
         return GTPPCore.burnables.add(Pair.of(burn, aBurnable));
     }
 
-
-    public static boolean checkForInvalidItems(ItemStack[] mInput) {
-        return checkForInvalidItems(mInput, new ItemStack[] {});
-    }
-
     /**
      *
-     * @param mInputs
+     * @param mInput
      * @return {@link Boolean} - True if {@link ItemStack}[] only contains valid items.
      */
-    public static boolean checkForInvalidItems(ItemStack[] mInputs, ItemStack[] mOutputs) {
-        if (mInputs == null || mOutputs == null) {
+    public static boolean checkForInvalidItems(ItemStack[] mInput) {
+        if (mInput == null) {
             return false;
         }
 
-        for (ItemStack stack : mInputs) {
-            if (stack == null) return false;
-        }
-        for (ItemStack stack : mOutputs) {
+        for (ItemStack stack : mInput) {
             if (stack == null) return false;
         }
 
         return true;
     }
+
 
     public static IInventory organiseInventory(IInventory aInputInventory) {
         ItemStack[] p = new ItemStack[aInputInventory.getSizeInventory()];
