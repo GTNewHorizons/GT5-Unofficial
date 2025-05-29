@@ -1,5 +1,6 @@
 package gtPlusPlus.core.common;
 
+import cofh.CoFHCore;
 import net.minecraft.entity.monster.EntityBlaze;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -8,6 +9,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
 
+import net.minecraftforge.oredict.OreDictionary;
 import org.apache.commons.lang3.tuple.Pair;
 
 import baubles.common.container.InventoryBaubles;
@@ -151,7 +153,7 @@ public class CommonProxy implements IFuelHandler {
     public void registerCustomMobDrops() {
 
         // Blazes
-        if (ItemUtils.doesOreDictHaveEntryFor("dustPyrotheum")) {
+        if (Mods.COFHCore.isModLoaded()) {
             EntityUtils.registerDropsForMob(
                 EntityBlaze.class,
                 ItemUtils.getItemStackOfAmountFromOreDict("dustPyrotheum", 1),

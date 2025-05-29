@@ -567,22 +567,21 @@ public enum GTPPBeeDefinition implements IBeeDefinition {
         return BeeManager.beeRoot.getMemberStack(bee, beeType.ordinal());
     }
 
-    public final IBeeDefinition getRainResist() {
-        return new BeeVariation.RainResist(this);
-    }
-
     private static ItemStack getSlagComb() {
-        return issStackValid(ItemUtils.getSimpleStack(GTPPBees.Comb_Slag, 1));
+        if (GTPPBees.Comb_Slag != null){
+            ItemStack slagComb = GTPPBees.Comb_Slag.copy();
+            slagComb.stackSize = 1;
+            return slagComb;
+        }
+        return ItemUtils.getErrorStack(1);
     }
 
     private static ItemStack getStoneComb() {
-        return issStackValid(ItemUtils.getSimpleStack(GTPPBees.Comb_Stone, 1));
-    }
-
-    private static ItemStack issStackValid(ItemStack result) {
-        if (result == null) {
-            return ItemUtils.getErrorStack(1);
+        if (GTPPBees.Comb_Stone != null) {
+            ItemStack stoneComb = GTPPBees.Comb_Stone.copy();
+            stoneComb.stackSize = 1;
+            return stoneComb;
         }
-        return result;
+        return ItemUtils.getErrorStack(1);
     }
 }

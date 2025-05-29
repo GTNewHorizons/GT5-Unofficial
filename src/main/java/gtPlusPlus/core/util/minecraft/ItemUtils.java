@@ -13,7 +13,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import gregtech.api.enums.Mods;
+import gregtech.api.util.GTRecipeBuilder;
 import net.minecraft.block.Block;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.IInventory;
@@ -26,9 +26,6 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
 
 import org.apache.commons.lang3.tuple.Pair;
-import org.jetbrains.annotations.NotNull;
-
-import com.google.common.collect.Lists;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.GameRegistry.UniqueIdentifier;
@@ -37,10 +34,8 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GTLanguageManager;
-import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
-import gregtech.common.items.MetaGeneratedTool01;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.config.ASMConfiguration;
 import gtPlusPlus.core.item.ModItems;
@@ -50,8 +45,6 @@ import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
-import gtPlusPlus.xmod.gregtech.api.items.GTMetaTool;
-import gtPlusPlus.xmod.gregtech.common.items.MetaGeneratedGregtechTools;
 import gtPlusPlus.xmod.gregtech.loaders.RecipeGenDustGeneration;
 
 public class ItemUtils {
@@ -89,12 +82,6 @@ public class ItemUtils {
         return r;
     }
 
-    public static final int WILDCARD_VALUE = Short.MAX_VALUE;
-
-    public static ItemStack getWildcardStack(final ItemStack x) {
-        return ItemUtils.simpleMetaStack(x, WILDCARD_VALUE, 1);
-    }
-
     public static ItemStack getIC2Cell(final int meta) {
         return getModItem(IndustrialCraft2.ID, "itemCellEmpty", 1L, meta);
     }
@@ -112,7 +99,7 @@ public class ItemUtils {
 
     public static void addItemToOreDictionary(ItemStack stack, final String oreDictName, boolean useWildcardMeta) {
         if (useWildcardMeta) {
-            stack = ItemUtils.getWildcardStack(stack);
+            stack = new ItemStack(stack.getItem(), stack.stackSize, GTRecipeBuilder.WILDCARD);
         }
         try {
             OreDictionary.registerOre(oreDictName, stack);
@@ -568,7 +555,6 @@ public class ItemUtils {
         return g;
     }
 
-
     public static boolean registerFuel(ItemStack aBurnable, int burn) {
         return GTPPCore.burnables.add(Pair.of(burn, aBurnable));
     }
@@ -721,10 +707,6 @@ public class ItemUtils {
         return aOutput;
     }
 
-    public static boolean doesOreDictHaveEntryFor(String string) {
-        return OreDictUtils.containsValidEntries(string);
-    }
-
     public static void hideItemFromNEI(ItemStack aItemToHide) {
         codechicken.nei.api.API.hideItem(aItemToHide);
     }
@@ -749,12 +731,6 @@ public class ItemUtils {
         return getNullStack();
     }
 
-    private static final List<ItemStack> additionalMillingBalls = Lists.newArrayList();
-
-    public static void registerMillingBall(@NotNull ItemStack stack) {
-        additionalMillingBalls.add(stack);
-    }
-
     public static boolean isMillingBall(ItemStack aStack) {
         if (GTUtility.areStacksEqual(aStack, GregtechItemList.Milling_Ball_Alumina.get(1), true)) {
             return true;
@@ -762,7 +738,6 @@ public class ItemUtils {
         if (GTUtility.areStacksEqual(aStack, GregtechItemList.Milling_Ball_Soapstone.get(1), true)) {
             return true;
         }
-        return additionalMillingBalls.stream()
-            .anyMatch(it -> GTUtility.areStacksEqual(aStack, it, true));
+        return false;
     }
 }
