@@ -37,6 +37,7 @@ import ic2.api.item.ElectricItem;
 import ic2.api.item.IElectricItem;
 import ic2.core.crop.TileEntityCrop;
 import mods.railcraft.common.blocks.machine.TileMultiBlock;
+import thaumcraft.common.tiles.TileOwned;
 
 public class ToolVajra extends ItemTool implements IElectricItem {
 
@@ -160,7 +161,8 @@ public class ToolVajra extends ItemTool implements IElectricItem {
         if (target.blockHardness < 0) return super.onItemUse(stack, player, world, x, y, z, side, hitX, hitY, hitZ);
         if (!ElectricItem.manager.canUse(stack, baseCost))
             return super.onItemUse(stack, player, world, x, y, z, side, hitX, hitY, hitZ);
-        if (!isHarvestableTileEntity(tileEntity, target, player) && !player.isSneaking())
+        if (!isHarvestableTileEntity(tileEntity, target, player) && !player.isSneaking()
+            || !isHarvestableOwned(tileEntity, player))
             return super.onItemUse(stack, player, world, x, y, z, side, hitX, hitY, hitZ);
 
         if (world.isRemote) {
@@ -177,6 +179,11 @@ public class ToolVajra extends ItemTool implements IElectricItem {
             .setBoolean("harvested", true); // prevent onItemRightClick from going through
         ElectricItem.manager.use(stack, baseCost, player);
         return super.onItemUse(stack, player, world, x, y, z, side, hitX, hitY, hitZ);
+    }
+
+    private boolean isHarvestableOwned(TileEntity tileEntity, EntityPlayer player) {
+        if (!(tileEntity instanceof TileOwned owned)) return true;
+        return owned.owner.equals(player.getDisplayName());
     }
 
     private boolean isHarvestableTileEntity(TileEntity tileEntity, Block target, EntityPlayer player) {
