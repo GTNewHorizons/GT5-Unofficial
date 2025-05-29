@@ -246,16 +246,15 @@ public abstract class MetaBaseItem extends GTGenericItem
                     aList.add(
                         EnumChatFormatting.AQUA + translateToLocal("gt.item.desc.empty") + EnumChatFormatting.GRAY);
                 } else {
-                    aList
-                        .add(
-                            EnumChatFormatting.AQUA
-                                + translateToLocalFormatted(
-                                    "gt.item.desc.eu_info",
-                                    formatNumbers(tCharge),
-                                    formatNumbers(Math.abs(tStats[0])),
-                                    "" + V[(int) (tStats[2] >= 0 ? tStats[2] < V.length ? tStats[2] : V.length - 1
-                                        : 1)])
-                                + EnumChatFormatting.GRAY);
+                    int voltageTier = (int) GTUtility.clamp(tStats[2], 0, V.length - 1);
+                    aList.add(
+                        EnumChatFormatting.AQUA
+                            + translateToLocalFormatted(
+                                "gt.item.desc.eu_info",
+                                formatNumbers(tCharge),
+                                formatNumbers(Math.abs(tStats[0])),
+                                formatNumbers(V[voltageTier]))
+                            + EnumChatFormatting.GRAY);
                 }
             }
         }
