@@ -634,6 +634,9 @@ public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelSta
     public NBTTagCompound getDescriptionData() {
         NBTTagCompound tag = new NBTTagCompound();
 
+        // Sync the hatch capacity to the client so that MM can show its exchanging preview properly
+        // This is only called when the hatch is placed since it will never change over its lifetime
+
         tag.setLong("baseCapacity", baseCapacity);
 
         return tag;
