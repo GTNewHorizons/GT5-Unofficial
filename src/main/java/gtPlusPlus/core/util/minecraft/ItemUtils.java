@@ -48,11 +48,6 @@ import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.loaders.RecipeGenDustGeneration;
 
 public class ItemUtils {
-
-    public static ItemStack getSimpleStack(final Item item, final int stackSize) {
-        return new ItemStack(item, stackSize);
-    }
-
     public static ItemStack getIC2Cell(final int meta) {
         return getModItem(IndustrialCraft2.ID, "itemCellEmpty", 1L, meta);
     }
@@ -150,7 +145,7 @@ public class ItemUtils {
 
         if (oredictName.toLowerCase()
             .contains("ingotclay")) {
-            return getSimpleStack(Items.clay_ball, amount);
+            return new ItemStack(Items.clay_ball, amount);
         }
 
         final ArrayList<ItemStack> oreDictList = OreDictionary.getOres(mTemp);
@@ -519,7 +514,7 @@ public class ItemUtils {
     }
 
     public static ItemStack getErrorStack(int mAmount, String aName) {
-        ItemStack g = getSimpleStack(ModItems.AAA_Broken, 1);
+        ItemStack g = new ItemStack(ModItems.AAA_Broken, 1);
         if (aName != null) {
             NBTUtils.setBookTitle(g, EnumChatFormatting.RED + aName);
         }

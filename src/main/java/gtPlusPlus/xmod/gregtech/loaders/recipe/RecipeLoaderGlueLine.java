@@ -167,7 +167,7 @@ public class RecipeLoaderGlueLine {
 
         // CaCO3 + 2HCl = CaCl2 + CO2 + H2O
         GTValues.RA.stdBuilder()
-            .itemInputs(ItemUtils.getSimpleStack(ModItems.dustCalciumCarbonate, 5), GTUtility.getIntegratedCircuit(8))
+            .itemInputs(new ItemStack(ModItems.dustCalciumCarbonate, 5), GTUtility.getIntegratedCircuit(8))
             .itemOutputs(getModItem(Mods.BartWorks.ID,"gt.bwMetaGenerateddust:63", 3))
             .fluidInputs(Materials.HydrochloricAcid.getFluid(2_000))
             .fluidOutputs(Materials.CarbonDioxide.getGas(1_000))

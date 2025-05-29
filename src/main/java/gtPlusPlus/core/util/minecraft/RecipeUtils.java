@@ -340,7 +340,7 @@ public class RecipeUtils {
                 Slots[i] = GTUtility.copyAmount(1, (ItemStack) o);
                 aFullString.append(aFullStringExpanded.charAt(i));
             } else if (o instanceof Item) {
-                Slots[i] = ItemUtils.getSimpleStack((Item) o, 1);
+                Slots[i] = new ItemStack((Item) o, 1);
                 aFullString.append(aFullStringExpanded.charAt(i));
             } else if (o instanceof Block) {
                 Slots[i] = new ItemStack((Block) o, 1);

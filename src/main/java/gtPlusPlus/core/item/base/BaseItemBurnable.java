@@ -17,7 +17,7 @@ public class BaseItemBurnable extends CoreItem {
         if (oredictName != null && !oredictName.isEmpty()) {
             registerOrdictionary(oredictName);
         }
-        ItemUtils.registerFuel(ItemUtils.getSimpleStack(this, 1), burnTime);
+        ItemUtils.registerFuel(new ItemStack(this, 1), burnTime);
     }
 
     public final void registerOrdictionary(String name) {

@@ -518,10 +518,10 @@ public class RecipesGregTech {
                 getModItem(Mods.GTPlusPlus.ID, "item.itemBufferCore9", 1),
                 getModItem(Mods.GTPlusPlus.ID, "item.itemBufferCore10", 1), };
 
-            ItemStack[] aChargeOutputs = new ItemStack[] { ItemUtils.getSimpleStack(ModItems.itemChargePack_High_1, 1),
-                ItemUtils.getSimpleStack(ModItems.itemChargePack_High_2, 1),
-                ItemUtils.getSimpleStack(ModItems.itemChargePack_High_3, 1),
-                ItemUtils.getSimpleStack(ModItems.itemChargePack_High_4, 1), };
+            ItemStack[] aChargeOutputs = new ItemStack[] { new ItemStack(ModItems.itemChargePack_High_1, 1),
+                new ItemStack(ModItems.itemChargePack_High_2, 1),
+                new ItemStack(ModItems.itemChargePack_High_3, 1),
+                new ItemStack(ModItems.itemChargePack_High_4, 1), };
 
             int aCurrSlot = 0;
             for (int h = 6; h < 9; h++) {
@@ -757,7 +757,7 @@ public class RecipesGregTech {
 
     private static void electrolyzerRecipes() {
         RA.stdBuilder()
-            .itemInputs(ItemUtils.getSimpleStack(ModItems.dustDecayedRadium226, 1))
+            .itemInputs(new ItemStack(ModItems.dustDecayedRadium226, 1))
             .fluidOutputs(Materials.Radon.getGas(1 * INGOTS))
             .duration(1 * MINUTES + 30 * SECONDS)
             .eut(TierEU.RECIPE_HV / 2)
@@ -1351,7 +1351,7 @@ public class RecipesGregTech {
             RA.stdBuilder()
                 .itemInputs(
                     GTUtility.getIntegratedCircuit(17),
-                    ItemUtils.getSimpleStack(ModItems.itemCircuitLFTR, 4),
+                    new ItemStack(ModItems.itemCircuitLFTR, 4),
                     CI.getFieldGenerator(6, 16),
                     GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.Palladium, 32L),
                     ItemUtils.getItemStackOfAmountFromOreDict("circuitMaster", 12))

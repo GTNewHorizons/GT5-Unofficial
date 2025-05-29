@@ -2167,7 +2167,7 @@ public class RecipesMachines {
                 ItemUtils.getItemStackOfAmountFromOreDict("ringTumbaga", 16),
                 ItemUtils.getItemStackOfAmountFromOreDict("foilCopper", 4),
                 getModItem(Mods.IndustrialCraft2.ID, "itemPartCarbonMesh", 64, 0))
-            .itemOutputs(ItemUtils.getSimpleStack(ModItems.itemLavaFilter, 16))
+            .itemOutputs(new ItemStack(ModItems.itemLavaFilter, 16))
             .fluidInputs(CI.getTieredFluid(3, 1 * INGOTS))
             .duration(1 * MINUTES + 20 * SECONDS)
             .eut(240)
@@ -2542,7 +2542,7 @@ public class RecipesMachines {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GregtechItemList.Casing_Refinery_Structural.get(4),
-                ItemUtils.getSimpleStack(ModItems.itemCircuitLFTR, 1),
+                new ItemStack(ModItems.itemCircuitLFTR, 1),
                 CI.getTieredComponent(OrePrefixes.cableGt08, 6, 16),
                 CI.getTransmissionComponent(5, 2),
                 GregtechItemList.Gregtech_Computer_Cube.get(1))
