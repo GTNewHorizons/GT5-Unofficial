@@ -2,6 +2,7 @@ package gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.nbthandlers;
 
 import java.util.ArrayList;
 
+import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.chemplant.MTEChemicalPlant;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 

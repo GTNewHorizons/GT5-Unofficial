@@ -4,6 +4,7 @@ import static gregtech.api.enums.Mods.GTPlusPlus;
 
 import java.util.List;
 
+import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.chemplant.MTEChemicalPlant;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
