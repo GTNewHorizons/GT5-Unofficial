@@ -779,6 +779,10 @@ public class MTEEnvironmentallyControlledChemicalFacility extends
             MODULE_OFFSET_DEPTH);
         checkPiece(PARALLEL_MODULE_L, MODULE_OFFSET_LEFT, MODULE_OFFSET_V, MODULE_OFFSET_DEPTH);
         checkPiece(PARALLEL_MODULE_R, MODULE_OFFSET_RIGHT, MODULE_OFFSET_V, MODULE_OFFSET_DEPTH);
+
+        coeffPressure = getPresCoefficient(Math.max(vacuumTier, compressorTier));
+        coeffTemp = getTempCoefficient(Math.max(freezerTier, heaterTier));
+
         if (mExoticEnergyHatches.size() > 1) return false;
         return true;
     }
@@ -1132,7 +1136,7 @@ public class MTEEnvironmentallyControlledChemicalFacility extends
             case 1 -> 1 - 0.35;
             case 2 -> 1 - 0.15;
             case 3 -> 1 - 0.05;
-            default -> 0;
+            default -> 1 - 0.8;
         };
     }
 
@@ -1142,7 +1146,7 @@ public class MTEEnvironmentallyControlledChemicalFacility extends
             case 1 -> 1 - 0.35;
             case 2 -> 1 - 0.20;
             case 3 -> 1 - 0.05;
-            default -> 0;
+            default -> 1 - 0.8;
         };
     }
 
@@ -1225,10 +1229,6 @@ public class MTEEnvironmentallyControlledChemicalFacility extends
                 currentPressure = ambientPressure;
                 currentTemp = ambientTemp;
             }
-
-            if (isVacuumModule || isCompressorModule)
-                coeffPressure = getPresCoefficient(Math.max(vacuumTier, compressorTier));
-            if (isFreezerModule || isHeaterModule) coeffTemp = getTempCoefficient(Math.max(freezerTier, heaterTier));
 
             // returns temperature values to atmosphere conditions
             temperatureLossValue = (currentTemp - ambientTemp) * coeffTemp + ambientTemp - currentTemp;
