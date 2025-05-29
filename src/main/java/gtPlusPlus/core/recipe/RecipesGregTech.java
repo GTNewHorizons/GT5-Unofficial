@@ -383,7 +383,7 @@ public class RecipesGregTech {
                 MaterialsAlloy.ENERGYCRYSTAL.getFluidStack(1 * STACKS + 8 * INGOTS),
                 MaterialsAlloy.TUMBAGA.getFluidStack(4 * STACKS + 32 * INGOTS),
                 Materials.Nichrome.getMolten(16 * INGOTS))
-            .itemOutputs(ItemUtils.getSimpleStack(ModBlocks.blockCasings3Misc, 15, 32))
+            .itemOutputs(new ItemStack(ModBlocks.blockCasings3Misc, 32,15))
             .eut(TierEU.RECIPE_LuV)
             .duration(20 * MINUTES)
             .addTo(AssemblyLine);

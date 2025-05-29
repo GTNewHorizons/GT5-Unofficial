@@ -1031,7 +1031,7 @@ public class RecipesMachines {
                 ItemList.FluidRegulator_IV.get(2),
                 CI.getTieredComponent(OrePrefixes.pipeHuge, 6, 4),
                 CI.getTieredComponent(OrePrefixes.screw, 6, 16))
-            .itemOutputs(ItemUtils.getSimpleStack(ModBlocks.blockPooCollector, 8, 1))
+            .itemOutputs(new ItemStack(ModBlocks.blockPooCollector, 1,8))
             .fluidInputs(CI.getAlternativeTieredFluid(5, 9 * INGOTS))
             .duration(5 * MINUTES)
             .eut(TierEU.RECIPE_HV)

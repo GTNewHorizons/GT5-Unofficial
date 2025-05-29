@@ -59,14 +59,10 @@ public class ItemUtils {
 
     public static ItemStack getSimpleStack(final Block x, int i) {
         if (i == 0) {
-            return getSimpleStack(x, i, 1);
+            return new ItemStack(x, 1,i);
         }
 
-        return getSimpleStack(x, 0, i);
-    }
-
-    public static ItemStack getSimpleStack(final Block x, int meta, int i) {
-        return simpleMetaStack(Item.getItemFromBlock(x), meta, i);
+        return new ItemStack(x, i, 0);
     }
 
     public static ItemStack getSimpleStack(final Item item, final int stackSize) {
