@@ -378,7 +378,7 @@ public class RecipesGregTech {
                 new Object[] { "circuitMaster", 32 },
                 new Object[] { "circuitUltimate", 16 },
                 GregtechItemList.Laser_Lens_Special.get(1),
-                ItemUtils.simpleMetaStack("miscutils:itemDehydratorCoilWire", 3, 64))
+                getModItem(GTPlusPlus.ID, "itemDehydratorCoilWire", 64, 3))
             .fluidInputs(
                 MaterialsAlloy.NITINOL_60.getFluidStack(36 * INGOTS),
                 MaterialsAlloy.ENERGYCRYSTAL.getFluidStack(1 * STACKS + 8 * INGOTS),
@@ -420,10 +420,10 @@ public class RecipesGregTech {
         /*
          * Containment casings
          */
-        ItemStack[] aCoilWire = new ItemStack[] { ItemUtils.simpleMetaStack("miscutils:itemDehydratorCoilWire", 0, 64),
-            ItemUtils.simpleMetaStack("miscutils:itemDehydratorCoilWire", 1, 64),
-            ItemUtils.simpleMetaStack("miscutils:itemDehydratorCoilWire", 2, 64),
-            ItemUtils.simpleMetaStack("miscutils:itemDehydratorCoilWire", 3, 64), };
+        ItemStack[] aCoilWire = new ItemStack[] { getModItem(GTPlusPlus.ID, "itemDehydratorCoilWire", 64, 0),
+            getModItem(GTPlusPlus.ID, "itemDehydratorCoilWire", 64, 1),
+            getModItem(GTPlusPlus.ID, "itemDehydratorCoilWire", 64, 2),
+            getModItem(GTPlusPlus.ID, "itemDehydratorCoilWire", 64, 3), };
         ItemStack[] aGemCasings = new ItemStack[] { GregtechItemList.Battery_Casing_Gem_1.get(1),
             GregtechItemList.Battery_Casing_Gem_2.get(1), GregtechItemList.Battery_Casing_Gem_3.get(1),
             GregtechItemList.Battery_Casing_Gem_4.get(1), };
@@ -500,7 +500,7 @@ public class RecipesGregTech {
                     CI.getTieredComponent(OrePrefixes.screw, 7, 16),
                     CI.getTieredComponent(OrePrefixes.bolt, 5, 24),
                     CI.getTieredComponent(OrePrefixes.frameGt, 4, 12),
-                    ItemUtils.simpleMetaStack("miscutils:itemDehydratorCoilWire", 3, 64))
+                    getModItem(GTPlusPlus.ID, "itemDehydratorCoilWire", 64, 3))
                 .fluidInputs(
                     CI.getTieredFluid(7, 4 * STACKS + 32 * INGOTS),
                     CI.getTertiaryTieredFluid(7, 4 * STACKS + 32 * INGOTS),
@@ -588,7 +588,7 @@ public class RecipesGregTech {
                     CI.getTieredComponent(OrePrefixes.screw, 8, 16),
                     CI.getTieredComponent(OrePrefixes.bolt, 7, 24),
                     CI.getTieredComponent(OrePrefixes.frameGt, 5, 12),
-                    ItemUtils.simpleMetaStack("miscutils:itemDehydratorCoilWire", 3, 64))
+                    getModItem(GTPlusPlus.ID, "itemDehydratorCoilWire", 64, 3))
                 .fluidInputs(
                     CI.getTieredFluid(8, 4 * STACKS + 32 * INGOTS),
                     CI.getTertiaryTieredFluid(8, 4 * STACKS + 32 * INGOTS),
@@ -1654,7 +1654,7 @@ public class RecipesGregTech {
 
     private static void macerationRecipes() {
 
-        if (ItemUtils.simpleMetaStack("chisel:limestone", 0, 1) != null) {
+        if (getModItem(Mods.Chisel.ID, "limestone", 1, 0) != null) {
             RA.stdBuilder()
                 .itemInputs(ItemUtils.getItemStackOfAmountFromOreDict("limestone", 1))
                 .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Calcite, 4L))

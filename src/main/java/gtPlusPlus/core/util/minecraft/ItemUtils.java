@@ -63,20 +63,6 @@ public class ItemUtils {
         addItemToOreDictionary(stack, oreDictName, false);
     }
 
-
-    public static ItemStack simpleMetaStack(final String FQRN, final int meta, final int itemstackSize) {
-        try {
-            final Item em1 = getItemFromFQRN(FQRN);
-            if (em1 != null) {
-                return new ItemStack(em1, itemstackSize, meta);
-            }
-            return null;
-        } catch (final NullPointerException e) {
-            Logger.ERROR(FQRN + " not found. [NULL]");
-            return null;
-        }
-    }
-
     public static ItemStack simpleMetaStack(ItemStack simpleStack, int meta, int size) {
         return simpleMetaStack(simpleStack.getItem(), meta, size);
     }

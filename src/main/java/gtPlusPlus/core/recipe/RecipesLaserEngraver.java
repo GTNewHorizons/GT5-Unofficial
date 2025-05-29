@@ -51,9 +51,9 @@ public class RecipesLaserEngraver implements IOreRecipeRegistrator {
         } else if (aOreDictName.equals(OreDictNames.craftingLensLime.toString())) {
             // Coil Wires
             ItemStack coilWire1 = getModItem(Mods.GTPlusPlus.ID, "itemDehydratorCoilWire", 1, 0);
-            ItemStack coilWire2 = getModItem(Mods.GTPlusPlus.ID, "itemDehydratorCoilWire:1", 1, 1);
-            ItemStack coilWire3 = getModItem(Mods.GTPlusPlus.ID, "itemDehydratorCoilWire:2", 1, 2);
-            ItemStack coilWire4 = getModItem(Mods.GTPlusPlus.ID, "itemDehydratorCoilWire:3", 1, 3);
+            ItemStack coilWire2 = getModItem(Mods.GTPlusPlus.ID, "itemDehydratorCoilWire", 1, 1);
+            ItemStack coilWire3 = getModItem(Mods.GTPlusPlus.ID, "itemDehydratorCoilWire", 1, 2);
+            ItemStack coilWire4 = getModItem(Mods.GTPlusPlus.ID, "itemDehydratorCoilWire", 1, 3);
 
             // Simple Life
             String wire = "wireGt02";

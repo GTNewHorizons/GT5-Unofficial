@@ -987,7 +987,7 @@ public class RecipesMachines {
         // RTG
         GTValues.RA.stdBuilder()
             .itemInputs(
-                getModItem(Mods.IndustrialCraft2.ID, "blockGenerator:6", 1, 6),
+                getModItem(Mods.IndustrialCraft2.ID, "blockGenerator", 1, 6),
                 MaterialsAlloy.NITINOL_60.getPlate(8),
                 MaterialsAlloy.MARAGING350.getGear(4),
                 ItemList.Field_Generator_EV.get(8),
@@ -2386,7 +2386,7 @@ public class RecipesMachines {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 ItemList.Casing_FrostProof.get(1),
-                ItemUtils.simpleMetaStack("miscutils:itemDehydratorCoilWire", 0, 4),
+                getModItem("miscutils", "itemDehydratorCoilWire", 4, 0),
                 MaterialsAlloy.INCOLOY_DS.getPlate(8),
                 MaterialsAlloy.INCONEL_690.getScrew(16),
                 MaterialsAlloy.EGLIN_STEEL.getLongRod(4),
@@ -2400,7 +2400,7 @@ public class RecipesMachines {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 ItemList.Casing_Coil_Nichrome.get(1),
-                ItemUtils.simpleMetaStack("miscutils:itemDehydratorCoilWire", 1, 8),
+                getModItem("miscutils", "itemDehydratorCoilWire", 8,1),
                 MaterialsAlloy.INCOLOY_MA956.getPlate(8),
                 MaterialsAlloy.TANTALLOY_61.getBolt(16),
                 MaterialsAlloy.INCOLOY_020.getScrew(32),
@@ -2705,9 +2705,9 @@ public class RecipesMachines {
         plate = MaterialsAlloy.HASTELLOY_N.getPlateDouble(1);
         gear = MaterialsAlloy.HASTELLOY_W.getGear(1);
         frame = MaterialsAlloy.HASTELLOY_X.getFrameBox(1);
-        cell1 = ItemUtils.simpleMetaStack("IC2:reactorHeatSwitchDiamond:1", 1, 1);
-        cell2 = ItemUtils.simpleMetaStack("IC2:reactorVentGold:1", 1, 1);
-        ItemStack cell3 = ItemUtils.simpleMetaStack("IC2:reactorVentDiamond:1:1", 1, 1);
+        cell1 = getModItem(Mods.IndustrialCraft2.ID, "reactorHeatSwitchDiamond", 1, 1);
+        cell2 = getModItem(Mods.IndustrialCraft2.ID, "reactorVentGold", 1, 1);
+        ItemStack cell3 = getModItem(Mods.IndustrialCraft2.ID, "reactorVentDiamond", 1, 1);
 
         RecipeUtils.addShapedRecipe(
             plate,
@@ -2750,9 +2750,9 @@ public class RecipesMachines {
                 MaterialsAlloy.HASTELLOY_X.getFrameBox(1),
                 MaterialsAlloy.HASTELLOY_N.getPlateDouble(4),
                 MaterialsAlloy.HASTELLOY_W.getGear(1),
-                ItemUtils.simpleMetaStack("IC2:reactorHeatSwitchDiamond:1", 1, 1),
-                ItemUtils.simpleMetaStack("IC2:reactorVentGold:1", 1, 1),
-                ItemUtils.simpleMetaStack("IC2:reactorVentDiamond:1:1", 1, 1),
+                getModItem(Mods.IndustrialCraft2.ID, "reactorHeatSwitchDiamond", 1, 1),
+                getModItem(Mods.IndustrialCraft2.ID, "reactorVentGold", 1, 1),
+                getModItem(Mods.IndustrialCraft2.ID, "reactorVentDiamond", 1, 1),
                 GTUtility.getIntegratedCircuit(1))
             .itemOutputs(GregtechItemList.Casing_Adv_BlastFurnace.get(1L))
             .duration(2 * SECONDS + 10 * TICKS)
@@ -2763,8 +2763,8 @@ public class RecipesMachines {
         plate = ItemUtils.getItemStackOfAmountFromOreDict("plateAlloyIridium", 1);
         gear = MaterialsAlloy.LEAGRISIUM.getGear(1);
         frame = MaterialsAlloy.CINOBITE.getFrameBox(1);
-        cell1 = ItemUtils.simpleMetaStack("IC2:reactorHeatSwitchDiamond:1", 1, 1);
-        cell2 = ItemUtils.simpleMetaStack("IC2:reactorVentGold:1", 1, 1);
+        cell1 = getModItem(Mods.IndustrialCraft2.ID, "reactorHeatSwitchDiamond", 1, 1);
+        cell2 = getModItem(Mods.IndustrialCraft2.ID, "reactorVentGold", 1, 1);
 
         RecipeUtils.addShapedRecipe(
             gear,
