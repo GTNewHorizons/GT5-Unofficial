@@ -24,8 +24,8 @@ import static net.minecraft.util.StatCollector.translateToLocal;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
-import java.util.stream.Stream;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -85,6 +85,7 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
 import gregtech.api.util.ParallelHelper;
+import it.unimi.dsi.fastutil.objects.ObjectIterators;
 import tectech.thing.gui.TecTechUITextures;
 
 public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForge> implements ISurvivalConstructable {
@@ -742,9 +743,9 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
         return new ProcessingLogic() {
 
             @Nonnull
-            protected Stream<GTRecipe> findRecipeMatches(@Nullable RecipeMap<?> map) {
+            protected Iterator<GTRecipe> findRecipeMatches(@Nullable RecipeMap<?> map) {
                 if (map == null) {
-                    return Stream.empty();
+                    return ObjectIterators.emptyIterator();
                 }
 
                 recalculateDiscount();

@@ -11,15 +11,17 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
-import java.util.Objects;
-import java.util.function.Function;
+import java.util.Set;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
@@ -30,12 +32,18 @@ import com.google.common.collect.LinkedHashMultimap;
 import com.google.common.collect.SetMultimap;
 
 import gregtech.api.GregTechAPI;
+import gregtech.api.enums.GTValues;
+import gregtech.api.objects.FastGTItemStack;
 import gregtech.api.objects.GTItemStack;
+import gregtech.api.objects.iterators.Generator;
+import gregtech.api.objects.iterators.MergedIterator;
+import gregtech.api.objects.iterators.NonNullGenerator;
+import gregtech.api.util.GTDataUtils;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTRecipeBuilder;
-import gregtech.api.util.GTStreamUtil;
 import gregtech.api.util.MethodsReturnNonnullByDefault;
+import it.unimi.dsi.fastutil.objects.ObjectIterators;
 
 /**
  * Responsible for recipe addition / search for recipemap.
@@ -292,8 +300,8 @@ public class RecipeMapBackend {
      * @return True if collision is found.
      */
     boolean checkCollision(GTRecipe recipe) {
-        return matchRecipeStream(recipe.mInputs, recipe.mFluidInputs, null, null, false, true, true).findAny()
-            .isPresent();
+        return matchRecipeStream(recipe.mInputs, recipe.mFluidInputs, null, null, false, true, true, -1, null)
+            .hasNext();
     }
 
     /**
@@ -344,15 +352,16 @@ public class RecipeMapBackend {
      * @param forCollisionCheck   If this method is called to check collision with already registered recipes.
      * @return Stream of matches recipes.
      */
-    Stream<GTRecipe> matchRecipeStream(ItemStack[] rawItems, FluidStack[] fluids, @Nullable ItemStack specialSlot,
-        @Nullable GTRecipe cachedRecipe, boolean notUnificated, boolean dontCheckStackSizes,
-        boolean forCollisionCheck) {
+    Iterator<GTRecipe> matchRecipeStream(ItemStack[] rawItems, FluidStack[] fluids, @Nullable ItemStack specialSlot,
+        @Nullable GTRecipe cachedRecipe, boolean notUnificated, boolean dontCheckStackSizes, boolean forCollisionCheck,
+        long maxEUt, @Nullable Predicate<GTRecipe> filter) {
+
         if (doesOverwriteFindRecipe()) {
-            return GTStreamUtil.ofNullable(overwriteFindRecipe(rawItems, fluids, specialSlot, cachedRecipe));
+            return ObjectIterators.singleton(overwriteFindRecipe(rawItems, fluids, specialSlot, cachedRecipe));
         }
 
         if (recipesByCategory.isEmpty()) {
-            return Stream.empty();
+            return ObjectIterators.emptyIterator();
         }
 
         // Some recipe classes require a certain amount of inputs of certain kinds. Like "at least 1 fluid + 1 item"
@@ -362,22 +371,19 @@ public class RecipeMapBackend {
         // For checking collision, we assume min inputs check already has been passed as of building the recipe.
         if (!forCollisionCheck) {
             if (properties.minFluidInputs > 0) {
-                int count = 0;
-                for (FluidStack fluid : fluids) if (fluid != null) count++;
-                if (count < properties.minFluidInputs) {
-                    return Stream.empty();
+                if (GTDataUtils.countNonNulls(fluids) < properties.minFluidInputs) {
+                    return ObjectIterators.emptyIterator();
                 }
             }
             if (properties.minItemInputs > 0) {
-                int count = 0;
-                for (ItemStack item : rawItems) if (item != null) count++;
-                if (count < properties.minItemInputs) {
-                    return Stream.empty();
+                if (GTDataUtils.countNonNulls(rawItems) < properties.minItemInputs) {
+                    return ObjectIterators.emptyIterator();
                 }
             }
         }
 
         ItemStack[] items;
+
         // Unification happens here in case the item input isn't already unificated.
         if (notUnificated) {
             items = GTOreDictUnificator.getStackArray(true, (Object[]) rawItems);
@@ -385,39 +391,161 @@ public class RecipeMapBackend {
             items = rawItems;
         }
 
-        return Stream.<Stream<GTRecipe>>of(
-            // Check the recipe which has been used last time in order to not have to search for it again, if possible.
-            GTStreamUtil.ofNullable(cachedRecipe)
-                .filter(recipe -> recipe.mCanBeBuffered)
-                .filter(recipe -> filterFindRecipe(recipe, items, fluids, specialSlot, dontCheckStackSizes))
-                .map(recipe -> modifyFoundRecipe(recipe, items, fluids, specialSlot))
-                .filter(Objects::nonNull),
-            // Now look for the recipes inside the item index, but only when the recipes actually can have items inputs.
-            GTStreamUtil.ofConditional(!itemIndex.isEmpty(), items)
-                .filter(Objects::nonNull)
-                .flatMap(item -> Stream.of(new GTItemStack(item), new GTItemStack(item, true)))
-                .map(itemIndex::get)
-                .flatMap(Collection::stream)
-                .filter(recipe -> filterFindRecipe(recipe, items, fluids, specialSlot, dontCheckStackSizes))
-                .map(recipe -> modifyFoundRecipe(recipe, items, fluids, specialSlot))
-                .filter(Objects::nonNull),
-            // If the minimum amount of items required for the recipes is 0, then it could match to fluid-only recipes,
-            // so check fluid index too.
-            GTStreamUtil.ofConditional(properties.minItemInputs == 0, fluids)
-                .filter(Objects::nonNull)
-                .map(
-                    fluidStack -> fluidIndex.get(
-                        fluidStack.getFluid()
-                            .getName()))
-                .flatMap(Collection::stream)
-                .filter(recipe -> filterFindRecipe(recipe, items, fluids, specialSlot, dontCheckStackSizes))
-                .map(recipe -> modifyFoundRecipe(recipe, items, fluids, specialSlot))
-                .filter(Objects::nonNull),
-            // Lastly, find fallback.
-            forCollisionCheck ? Stream.empty()
-                : GTStreamUtil.ofSupplier(() -> findFallback(items, fluids, specialSlot))
-                    .filter(Objects::nonNull))
-            .flatMap(Function.identity());
+        // Check the recipe which has been used last time in order to not have to search for it again, if possible.
+        if (cachedRecipe != null && cachedRecipe.mCanBeBuffered) {
+            if (filterFindRecipe(cachedRecipe, items, fluids, specialSlot, dontCheckStackSizes)) {
+                GTRecipe modified = modifyFoundRecipe(cachedRecipe, items, fluids, specialSlot);
+
+                if (modified != null) return ObjectIterators.singleton(modified);
+            }
+        }
+
+        List<Iterator<GTRecipe>> iters = new ArrayList<>();
+
+        // Now look for the recipes inside the item index, but only when the recipes actually can have items inputs.
+        if (!itemIndex.isEmpty()) {
+
+            /*
+             * What this does:
+             * 1. Get the next item from the list of input items
+             * 2. First, find the recipes in itemIndex with the exact item (no wildcard meta)
+             * 3. Check each recipe in the returned set to see if it's valid
+             * 4. If it is, then try to modify the recipe
+             * 5. If the recipe was rejected by the modifier method, skip it
+             * 6. Test the recipe with the given dynamic predicate
+             * 7. If the recipe is valid, yield it
+             * 8. Repeat 2-7 with a wildcard item (meta = GTValues.V)
+             * 9. Repeat 1-8 for the next item in the list of input items
+             */
+
+            iters.add(new NonNullGenerator<>(new Generator<>() {
+
+                private final Iterator<ItemStack> itemIter = ObjectIterators.wrap(items);
+
+                private boolean wasExact = false;
+                private Iterator<GTRecipe> recipeIter = null;
+
+                private final FastGTItemStack key = new FastGTItemStack(Items.feather, 0);
+
+                @Override
+                public @Nullable GTRecipe next() {
+                    while (true) {
+                        if (this.recipeIter == null || !this.recipeIter.hasNext()) {
+                            boolean doExact = !wasExact;
+                            wasExact ^= true;
+
+                            if (!itemIter.hasNext()) return null;
+
+                            ItemStack item = itemIter.next();
+
+                            if (item == null) continue;
+
+                            key.item = item.getItem();
+                            key.metadata = doExact ? item.itemDamage : GTValues.W;
+
+                            Set<GTRecipe> recipeSet = itemIndex.get(key);
+
+                            if (recipeSet == null || recipeSet.isEmpty()) continue;
+
+                            this.recipeIter = recipeSet.iterator();
+                        }
+
+                        GTRecipe recipe = this.recipeIter.next();
+
+                        if (maxEUt != -1 && recipe.mEUt > maxEUt) continue;
+
+                        if (!filterFindRecipe(recipe, items, fluids, specialSlot, dontCheckStackSizes)) continue;
+
+                        recipe = modifyFoundRecipe(recipe, items, fluids, specialSlot);
+
+                        if (recipe == null) continue;
+
+                        if (filter != null && !filter.test(recipe)) continue;
+
+                        return recipe;
+                    }
+                }
+            }));
+        }
+
+        // If the minimum amount of items required for the recipes is 0, then it could match to fluid-only recipes,
+        // so check fluid index too.
+        if (properties.minItemInputs == 0) {
+
+            /*
+             * What this does:
+             * 1. Get the next fluid from the list of input fluids
+             * 2. Find the recipes in fluidIndex with that fluid
+             * 3. Check each recipe in the returned set to see if it's valid
+             * 4. If it is, then try to modify the recipe
+             * 5. If the recipe was rejected by the modifier method, skip it
+             * 6. Test the recipe with the given dynamic predicate
+             * 7. If the recipe is valid, yield it
+             * 9. Repeat 1-8 for the next fluid in the list of input fluids
+             */
+
+            iters.add(new NonNullGenerator<>(new Generator<>() {
+
+                private final Iterator<FluidStack> fluidIter = ObjectIterators.wrap(fluids);
+
+                private Iterator<GTRecipe> recipes = null;
+
+                @Override
+                public @Nullable GTRecipe next() {
+                    while (true) {
+                        if (recipes == null || !recipes.hasNext()) {
+                            if (!fluidIter.hasNext()) return null;
+
+                            FluidStack fluid = fluidIter.next();
+
+                            if (fluid == null) continue;
+
+                            Set<GTRecipe> recipes = fluidIndex.get(
+                                fluid.getFluid()
+                                    .getName());
+
+                            if (recipes == null || recipes.isEmpty()) continue;
+
+                            this.recipes = recipes.iterator();
+                        }
+
+                        GTRecipe recipe = this.recipes.next();
+
+                        if (recipe.mEUt < maxEUt) continue;
+
+                        if (!filterFindRecipe(recipe, items, fluids, specialSlot, dontCheckStackSizes)) continue;
+
+                        recipe = modifyFoundRecipe(recipe, items, fluids, specialSlot);
+
+                        if (recipe == null) continue;
+
+                        if (filter != null && !filter.test(recipe)) continue;
+
+                        return recipe;
+                    }
+                }
+            }));
+        }
+
+        // Lastly, find fallback.
+        if (!forCollisionCheck) {
+            iters.add(new NonNullGenerator<>(new Generator<>() {
+
+                private boolean called = false;
+
+                @Override
+                public @Nullable GTRecipe next() {
+                    if (called) return null;
+
+                    called = true;
+
+                    return findFallback(items, fluids, specialSlot);
+                }
+            }));
+        }
+
+        // noinspection unchecked
+        return new MergedIterator<>(iters.toArray(new Iterator[0]));
     }
 
     /**
@@ -429,11 +557,11 @@ public class RecipeMapBackend {
      */
     protected boolean filterFindRecipe(GTRecipe recipe, ItemStack[] items, FluidStack[] fluids,
         @Nullable ItemStack specialSlot, boolean dontCheckStackSizes) {
-        if (recipe.mEnabled && !recipe.mFakeRecipe
-            && recipe.isRecipeInputEqual(false, dontCheckStackSizes, fluids, items)) {
-            return !properties.specialSlotSensitive
-                || areStacksEqualOrNull((ItemStack) recipe.mSpecialItems, specialSlot);
+        // spotless:off
+        if (recipe.mEnabled && !recipe.mFakeRecipe && recipe.isRecipeInputEqual(false, dontCheckStackSizes, fluids, items)) {
+            return !properties.specialSlotSensitive || areStacksEqualOrNull((ItemStack) recipe.mSpecialItems, specialSlot);
         }
+        // spotless:on
         return false;
     }
 

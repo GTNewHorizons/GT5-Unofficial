@@ -5,11 +5,11 @@ import static gregtech.api.enums.Mods.HardcoreEnderExpansion;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.stream.Stream;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
@@ -999,7 +999,7 @@ public class SpaceMiningRecipes {
         public int totalWeight;
         public int totalTimedensity;
 
-        public WeightedAsteroidList(Stream<GTRecipe> inRecipes) {
+        public WeightedAsteroidList(Collection<GTRecipe> inRecipes) {
             recipes = new ArrayList<>();
             inRecipes.forEach(r -> {
                 SpaceMiningData data = r.getMetadata(IGRecipeMaps.SPACE_MINING_DATA);

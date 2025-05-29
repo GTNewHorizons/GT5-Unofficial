@@ -173,7 +173,9 @@ public class MTEHatchCraftingInputSlave extends MTEHatchInputBus implements IDua
 
     @Override
     public boolean justUpdated() {
-        return getMaster() != null && getMaster().justUpdated();
+        MTEHatchCraftingInputME master = getMaster();
+
+        return master != null && master.justUpdated();
     }
 
     public MTEHatchCraftingInputME trySetMasterFromCoord(int x, int y, int z) {

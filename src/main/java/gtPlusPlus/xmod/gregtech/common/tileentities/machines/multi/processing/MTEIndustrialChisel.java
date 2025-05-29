@@ -10,8 +10,8 @@ import static gregtech.api.enums.HatchElement.Muffler;
 import static gregtech.api.enums.HatchElement.OutputBus;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 
+import java.util.Iterator;
 import java.util.List;
-import java.util.stream.Stream;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -33,8 +33,8 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
 import gregtech.api.recipe.RecipeMap;
+import gregtech.api.util.GTDataUtils;
 import gregtech.api.util.GTRecipe;
-import gregtech.api.util.GTStreamUtil;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.pollution.PollutionConfig;
@@ -285,8 +285,8 @@ public class MTEIndustrialChisel extends GTPPMultiBlockBase<MTEIndustrialChisel>
 
             @Nonnull
             @Override
-            protected Stream<GTRecipe> findRecipeMatches(@Nullable RecipeMap<?> map) {
-                return GTStreamUtil.ofNullable(getRecipe());
+            protected Iterator<GTRecipe> findRecipeMatches(@Nullable RecipeMap<?> map) {
+                return GTDataUtils.nullableIterator(getRecipe());
             }
         }.setSpeedBonus(1F / 3F)
             .setEuModifier(0.75F)

@@ -9,7 +9,6 @@ import static gregtech.api.enums.HatchElement.Muffler;
 import static gregtech.api.enums.HatchElement.OutputBus;
 import static gregtech.api.enums.HatchElement.OutputHatch;
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
-import static gregtech.api.util.GTUtility.filterValidMTEs;
 import static gregtech.api.util.GTUtility.validMTEList;
 import static java.lang.Math.min;
 import static tectech.thing.casing.BlockGTCasingsTT.texturePage;
@@ -91,6 +90,7 @@ import gregtech.api.util.shutdown.ShutDownReason;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.api.util.shutdown.SimpleShutDownReason;
 import gregtech.common.tileentities.machines.IDualInputHatch;
+import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import tectech.TecTech;
 import tectech.loader.ConfigHandler;
 import tectech.thing.gui.TecTechUITextures;
@@ -1619,10 +1619,10 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
 
     @Override
     public List<MTEHatch> getExoticAndNormalEnergyHatchList() {
-        List<MTEHatch> list = new ArrayList<>();
-        list.addAll(filterValidMTEs(mEnergyHatches));
-        list.addAll(filterValidMTEs(eEnergyMulti));
-        return list;
+        ObjectArrayList<MTEHatch> tHatches = new ObjectArrayList<>(eEnergyMulti.size() + mEnergyHatches.size());
+        GTUtility.copyValid(eEnergyMulti, tHatches);
+        GTUtility.copyValid(mEnergyHatches, tHatches);
+        return tHatches;
     }
 
     @Override

@@ -10,7 +10,7 @@ import static gregtech.api.enums.HatchElement.OutputBus;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 
 import java.util.ArrayList;
-import java.util.stream.Stream;
+import java.util.Iterator;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -44,8 +44,8 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
+import gregtech.api.util.GTDataUtils;
 import gregtech.api.util.GTRecipe;
-import gregtech.api.util.GTStreamUtil;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.ReflectionUtil;
@@ -340,8 +340,8 @@ public class MTEAlgaePondBase extends GTPPMultiBlockBase<MTEAlgaePondBase> imple
 
             @Nonnull
             @Override
-            protected Stream<GTRecipe> findRecipeMatches(@Nullable RecipeMap<?> map) {
-                return GTStreamUtil.ofNullable(getTieredRecipe(mLevel, inputItems));
+            protected Iterator<GTRecipe> findRecipeMatches(@Nullable RecipeMap<?> map) {
+                return GTDataUtils.nullableIterator(getTieredRecipe(mLevel, inputItems));
             }
 
             @NotNull

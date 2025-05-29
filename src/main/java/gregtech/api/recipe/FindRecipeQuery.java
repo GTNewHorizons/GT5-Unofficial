@@ -1,7 +1,9 @@
 package gregtech.api.recipe;
 
+import java.util.Iterator;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -11,6 +13,8 @@ import net.minecraftforge.fluids.FluidStack;
 
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.MethodsReturnNonnullByDefault;
+import it.unimi.dsi.fastutil.objects.ObjectIterators;
+import it.unimi.dsi.fastutil.objects.ObjectList;
 
 // spotless:off spotless likes formatting @code to &#64;code
 /**
@@ -43,8 +47,9 @@ public final class FindRecipeQuery {
     private FluidStack[] fluids;
     @Nullable
     private ItemStack specialSlot;
-    private Predicate<GTRecipe> filter = ALWAYS;
-    private long voltage = Integer.MAX_VALUE;
+    @Nullable
+    private Predicate<GTRecipe> filter;
+    private long voltage = -1;
     @Nullable
     private GTRecipe cachedRecipe;
     private boolean notUnificated;
@@ -62,14 +67,15 @@ public final class FindRecipeQuery {
      */
     @Nullable
     public GTRecipe find() {
-        return findAll().findFirst()
-            .orElse(null);
+        Iterator<GTRecipe> iter = findAll();
+
+        return iter.hasNext() ? iter.next() : null;
     }
 
     /**
      * @return All the matched recipes in the form of Stream.
      */
-    public Stream<GTRecipe> findAll() {
+    public Iterator<GTRecipe> findAll() {
         if (items == null) {
             items = new ItemStack[0];
         }
@@ -85,8 +91,21 @@ public final class FindRecipeQuery {
                 cachedRecipe,
                 notUnificated,
                 dontCheckStackSizes,
-                forCollisionCheck)
-            .filter(recipe -> voltage * recipeMap.getAmperage() >= recipe.mEUt && filter.test(recipe));
+                forCollisionCheck,
+                voltage != -1 ? voltage * recipeMap.getAmperage() : 0,
+                filter);
+    }
+
+    public ObjectList<GTRecipe> getAll() {
+        return ObjectIterators.pour(findAll());
+    }
+
+    public Stream<GTRecipe> streamAll() {
+        Iterator<GTRecipe> iter = findAll();
+
+        Iterable<GTRecipe> iterable = () -> iter;
+
+        return StreamSupport.stream(iterable.spliterator(), false);
     }
 
     /**
@@ -97,8 +116,7 @@ public final class FindRecipeQuery {
     public boolean checkCollision() {
         dontCheckStackSizes = true;
         forCollisionCheck = true;
-        return findAll().findAny()
-            .isPresent();
+        return findAll().hasNext();
     }
 
     // endregion
@@ -135,7 +153,7 @@ public final class FindRecipeQuery {
      * @param filter Matched recipe will be tested by this function. If it returns false, the query will attempt to
      *               find next recipe.
      */
-    public FindRecipeQuery filter(Predicate<GTRecipe> filter) {
+    public FindRecipeQuery filter(@Nullable Predicate<GTRecipe> filter) {
         this.filter = filter;
         return this;
     }

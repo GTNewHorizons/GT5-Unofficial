@@ -369,23 +369,25 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
         if (prevRecipes != null && prevDistance == distance && prevAvailDroneMask == availDroneMask) {
             recipes = prevRecipes;
         } else {
-            recipes = new WeightedAsteroidList(
-                IGRecipeMaps.spaceMiningRecipes.findRecipeQuery()
-                    .items(inputs)
-                    .fluids(fluidInputs)
-                    .voltage(tVoltage)
-                    .findAll()
-                    .filter(r -> {
-                        // Check module tier
-                        int recipeTier = r.getMetadataOrDefault(IGRecipeMaps.MODULE_TIER, 1);
-                        if (recipeTier > tModuleTier) return false;
+            List<GTRecipe> list = IGRecipeMaps.spaceMiningRecipes.findRecipeQuery()
+                .items(inputs)
+                .fluids(fluidInputs)
+                .voltage(tVoltage)
+                .filter(r -> {
+                    // Check module tier
+                    int recipeTier = r.getMetadataOrDefault(IGRecipeMaps.MODULE_TIER, 1);
+                    if (recipeTier > tModuleTier) return false;
 
-                        // Check mining recipe distance
-                        SpaceMiningData data = r.getMetadata(IGRecipeMaps.SPACE_MINING_DATA);
-                        if (data == null) return false;
-                        return data.minDistance <= distance && data.maxDistance >= distance;
-                    })
-                    .distinct());
+                    // Check mining recipe distance
+                    SpaceMiningData data = r.getMetadata(IGRecipeMaps.SPACE_MINING_DATA);
+                    if (data == null) return false;
+                    return data.minDistance <= distance && data.maxDistance >= distance;
+                })
+                .streamAll()
+                .distinct()
+                .collect(Collectors.toList());
+
+            recipes = new WeightedAsteroidList(list);
             // The original implementation had each recipe added multiple times redundantly, so I implemented
             // hashCode/equals
             // and use .distinct() here

@@ -157,8 +157,9 @@ public abstract class MetaTileEntity extends CommonMetaTileEntity implements ICr
     }
 
     public boolean isValid() {
-        return getBaseMetaTileEntity() != null && getBaseMetaTileEntity().getMetaTileEntity() == this
-            && !getBaseMetaTileEntity().isDead();
+        IGregTechTileEntity igte = getBaseMetaTileEntity();
+
+        return igte != null && igte.getMetaTileEntity() == this && !igte.isDead();
     }
 
     /**

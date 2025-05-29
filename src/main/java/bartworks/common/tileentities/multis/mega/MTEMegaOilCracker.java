@@ -15,17 +15,24 @@ package bartworks.common.tileentities.multis.mega;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
-import static gregtech.api.enums.HatchElement.*;
+import static gregtech.api.enums.HatchElement.Energy;
+import static gregtech.api.enums.HatchElement.ExoticEnergy;
+import static gregtech.api.enums.HatchElement.InputBus;
+import static gregtech.api.enums.HatchElement.InputHatch;
+import static gregtech.api.enums.HatchElement.Maintenance;
+import static gregtech.api.enums.HatchElement.OutputHatch;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_OIL_CRACKER;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_OIL_CRACKER_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_OIL_CRACKER_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_OIL_CRACKER_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.casingTexturePages;
-import static gregtech.api.util.GTStructureUtility.*;
+import static gregtech.api.util.GTStructureUtility.activeCoils;
+import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
+import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
+import static gregtech.api.util.GTStructureUtility.ofCoil;
 import static gregtech.api.util.GTUtility.validMTEList;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -67,6 +74,8 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.tileentities.machines.IRecipeProcessingAwareHatch;
 import gregtech.common.tileentities.machines.MTEHatchInputME;
+import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
+import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 
 public class MTEMegaOilCracker extends MegaMultiBlockBase<MTEMegaOilCracker> implements ISurvivalConstructable {
 
@@ -355,8 +364,8 @@ public class MTEMegaOilCracker extends MegaMultiBlockBase<MTEMegaOilCracker> imp
 
     @Override
     public ArrayList<FluidStack> getStoredFluidsForColor(Optional<Byte> color) {
-        final ArrayList<FluidStack> rList = new ArrayList<>();
-        Map<Fluid, FluidStack> inputsFromME = new HashMap<>();
+        final ObjectArrayList<FluidStack> rList = new ObjectArrayList<>();
+        Map<Fluid, FluidStack> inputsFromME = new Object2ObjectOpenHashMap<>();
         for (final MTEHatchInput tHatch : validMTEList(mInputHatches)) {
             byte hatchColor = tHatch.getBaseMetaTileEntity()
                 .getColorization();
@@ -415,7 +424,7 @@ public class MTEMegaOilCracker extends MegaMultiBlockBase<MTEMegaOilCracker> imp
         if (!inputsFromME.isEmpty()) {
             rList.addAll(inputsFromME.values());
         }
-        return rList;
+        return new ArrayList<>(rList);
     }
 
     @Override

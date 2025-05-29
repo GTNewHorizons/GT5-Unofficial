@@ -19,9 +19,9 @@ import static tectech.loader.recipe.Godforge.exoticModulePlasmaItemMap;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Stream;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -69,9 +69,9 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
+import gregtech.api.util.GTDataUtils;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
-import gregtech.api.util.GTStreamUtil;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
@@ -119,7 +119,7 @@ public class MTEExoticModule extends MTEBaseModule {
 
             @NotNull
             @Override
-            protected Stream<GTRecipe> findRecipeMatches(@Nullable RecipeMap<?> map) {
+            protected Iterator<GTRecipe> findRecipeMatches(@Nullable RecipeMap<?> map) {
                 if (!recipeInProgress) {
                     if (magmatterMode) {
                         plasmaRecipe = generateMagmatterRecipe();
@@ -127,7 +127,7 @@ public class MTEExoticModule extends MTEBaseModule {
                         plasmaRecipe = generateQuarkGluonRecipe();
                     }
                 }
-                return GTStreamUtil.ofNullable(plasmaRecipe);
+                return GTDataUtils.nullableIterator(plasmaRecipe);
             }
 
             @NotNull

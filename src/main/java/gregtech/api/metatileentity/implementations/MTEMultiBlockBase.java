@@ -146,7 +146,9 @@ import gregtech.common.tileentities.machines.multi.MTELargeTurbine;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchSteamBusInput;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.MTESteamMultiBase;
 import it.unimi.dsi.fastutil.longs.LongArrayList;
+import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import it.unimi.dsi.fastutil.objects.Object2ReferenceOpenHashMap;
+import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import it.unimi.dsi.fastutil.objects.Reference2ReferenceOpenHashMap;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
@@ -691,21 +693,31 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
     private boolean shouldCheckRecipeThisTick(long aTick) {
         // do a recipe check if any crafting input hatch just got pushed in items
         boolean shouldCheck = false;
+
         // check all of them (i.e. do not return early) to reset the state of all of them.
-        for (IDualInputHatch craftingInputMe : mDualInputHatches) {
-            shouldCheck |= craftingInputMe.justUpdated();
+        int size = mDualInputHatches.size();
+        for (int i = 0; i < size; i++) {
+            shouldCheck |= mDualInputHatches.get(i)
+                .justUpdated();
         }
+
         if (shouldCheck) return true;
+
+        size = mSmartInputHatches.size();
+
         // Do the same for Smart Input Hatches
-        for (ISmartInputHatch smartInputHatch : mSmartInputHatches) {
-            shouldCheck |= smartInputHatch.justUpdated();
+        for (int i = 0; i < size; i++) {
+            shouldCheck |= mSmartInputHatches.get(i)
+                .justUpdated();
         }
+
         if (shouldCheck) return true;
 
         // Perform more frequent recipe change after the machine just shuts down.
         long timeElapsed = mTotalRunTime - mLastWorkingTick;
 
         if (timeElapsed >= CHECK_INTERVAL) return (mTotalRunTime + randomTickOffset) % CHECK_INTERVAL == 0;
+
         // Batch mode should be a lot less aggressive at recipe checking
         if (!isBatchModeEnabled()) {
             return timeElapsed == 5 || timeElapsed == 12
@@ -716,6 +728,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
                 || timeElapsed == 70
                 || timeElapsed == 85;
         }
+
         return false;
     }
 
@@ -1686,8 +1699,8 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
     }
 
     public ArrayList<FluidStack> getStoredFluidsForColor(Optional<Byte> color) {
-        ArrayList<FluidStack> rList = new ArrayList<>();
-        Map<Fluid, FluidStack> inputsFromME = new HashMap<>();
+        ObjectArrayList<FluidStack> rList = new ObjectArrayList<>();
+        Map<Fluid, FluidStack> inputsFromME = new Object2ObjectOpenHashMap<>();
         for (MTEHatchInput tHatch : validMTEList(mInputHatches)) {
             byte hatchColor = tHatch.getColor();
             if (color.isPresent() && hatchColor != -1 && hatchColor != color.get()) continue;
@@ -1716,7 +1729,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
         if (!inputsFromME.isEmpty()) {
             rList.addAll(inputsFromME.values());
         }
-        return rList;
+        return new ArrayList<>(rList);
     }
 
     /**
@@ -2411,7 +2424,9 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
     }
 
     protected void setMufflers(boolean state) {
-        for (MTEHatchMuffler aMuffler : mMufflerHatches) {
+        int l = mMufflerHatches.size();
+        for (int i = 0; i < l; i++) {
+            MTEHatchMuffler aMuffler = mMufflerHatches.get(i);
             final IGregTechTileEntity iGTTileEntity = aMuffler.getBaseMetaTileEntity();
             if (iGTTileEntity != null && !iGTTileEntity.isDead()) {
                 iGTTileEntity.setActive(state);

@@ -1,12 +1,10 @@
 package gregtech.api.logic;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.function.Supplier;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -25,6 +23,8 @@ import gregtech.api.util.GTRecipe;
 import gregtech.api.util.OverclockCalculator;
 import gregtech.api.util.ParallelHelper;
 import gregtech.common.tileentities.machines.IDualInputInventoryWithPattern;
+import it.unimi.dsi.fastutil.objects.ObjectIterators;
+import it.unimi.dsi.fastutil.objects.ObjectList;
 
 /**
  * Logic class to calculate result of recipe check from inputs, based on recipemap.
@@ -78,7 +78,7 @@ public class ProcessingLogic {
      * <p>
      * It will also be fully cleared when the {@link #getCurrentRecipeMap()} is not same to the last.
      */
-    protected Map<IDualInputInventoryWithPattern, Set<GTRecipe>> dualInvWithPatternToRecipeCache = new HashMap<>();
+    protected Map<IDualInputInventoryWithPattern, List<GTRecipe>> dualInvWithPatternToRecipeCache = new HashMap<>();
 
     public ProcessingLogic() {}
 
@@ -154,7 +154,7 @@ public class ProcessingLogic {
         GTDualInputPattern inputs = inv.getPatternInputs();
         setInputItems(inputs.inputItems);
         setInputFluids(inputs.inputFluid);
-        Set<GTRecipe> recipes = findRecipeMatches(getCurrentRecipeMap()).collect(Collectors.toSet());
+        List<GTRecipe> recipes = getRecipeMatches(getCurrentRecipeMap());
 
         // reset the status
         setInputItems();
@@ -373,7 +373,7 @@ public class ProcessingLogic {
         }
 
         if (activeDualInv != null) {
-            Set<GTRecipe> matchedRecipes = dualInvWithPatternToRecipeCache.get(activeDualInv);
+            List<GTRecipe> matchedRecipes = dualInvWithPatternToRecipeCache.get(activeDualInv);
             for (GTRecipe matchedRecipe : matchedRecipes) {
                 if (matchedRecipe.maxParallelCalculatedByInputs(1, inputFluids, inputItems) == 1) {
                     CalculationResult foundResult = validateAndCalculateRecipe(matchedRecipe);
@@ -397,10 +397,11 @@ public class ProcessingLogic {
                 recipeLockableMachine.getSingleRecipeCheck()
                     .getRecipe()).checkRecipeResult;
         }
-        Stream<GTRecipe> matchedRecipes = findRecipeMatches(recipeMap);
-        Iterable<GTRecipe> recipeIterable = matchedRecipes::iterator;
+
+        Iterator<GTRecipe> iter = findRecipeMatches(recipeMap);
+
         CheckRecipeResult checkRecipeResult = CheckRecipeResultRegistry.NO_RECIPE;
-        for (GTRecipe matchedRecipe : recipeIterable) {
+        for (GTRecipe matchedRecipe : (Iterable<? extends GTRecipe>) (() -> iter)) {
             CalculationResult foundResult = validateAndCalculateRecipe(matchedRecipe);
             if (foundResult.successfullyConsumedInputs) {
                 // Successfully found and set recipe, so return it
@@ -496,9 +497,9 @@ public class ProcessingLogic {
      * Override this method if it doesn't work with normal recipemaps.
      */
     @Nonnull
-    protected Stream<GTRecipe> findRecipeMatches(@Nullable RecipeMap<?> map) {
+    protected Iterator<GTRecipe> findRecipeMatches(@Nullable RecipeMap<?> map) {
         if (map == null) {
-            return Stream.empty();
+            return ObjectIterators.emptyIterator();
         }
         return map.findRecipeQuery()
             .items(inputItems)
@@ -506,6 +507,11 @@ public class ProcessingLogic {
             .specialSlot(specialSlotItem)
             .cachedRecipe(lastRecipe)
             .findAll();
+    }
+
+    @Nonnull
+    protected ObjectList<GTRecipe> getRecipeMatches(@Nullable RecipeMap<?> map) {
+        return ObjectIterators.pour(findRecipeMatches(map));
     }
 
     /**

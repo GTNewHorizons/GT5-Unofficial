@@ -1,7 +1,7 @@
 package gregtech.api.util;
 
-import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Objects;
 import java.util.function.Function;
 
@@ -17,6 +17,7 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SingleRecipeCheck;
+import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 
 @SuppressWarnings({ "unused", "UnusedReturnValue" })
 public class ParallelHelper {
@@ -548,7 +549,8 @@ public class ParallelHelper {
             return;
         }
         if (truncatedItemOutputs.length == 0) return;
-        ArrayList<ItemStack> itemOutputsList = new ArrayList<>();
+        ObjectArrayList<ItemStack> itemOutputsList = new ObjectArrayList<>(0);
+        itemOutputsList.ensureCapacity(truncatedItemOutputs.length);
         for (int i = 0; i < truncatedItemOutputs.length; i++) {
             if (recipe.getOutput(i) == null) continue;
             ItemStack origin = recipe.getOutput(i)
@@ -569,7 +571,8 @@ public class ParallelHelper {
             return;
         }
         if (truncatedFluidOutputs.length == 0) return;
-        ArrayList<FluidStack> fluidOutputsList = new ArrayList<>();
+        ObjectArrayList<FluidStack> fluidOutputsList = new ObjectArrayList<>(0);
+        fluidOutputsList.ensureCapacity(truncatedFluidOutputs.length);
         for (int i = 0; i < truncatedFluidOutputs.length; i++) {
             if (recipe.getFluidOutput(i) == null) continue;
             FluidStack origin = recipe.getFluidOutput(i)
@@ -617,7 +620,7 @@ public class ParallelHelper {
         return (long) multiplier;
     }
 
-    public static void addItemsLong(ArrayList<ItemStack> itemList, ItemStack origin, long amount) {
+    public static void addItemsLong(List<ItemStack> itemList, ItemStack origin, long amount) {
         if (amount > 0) {
             while (amount > Integer.MAX_VALUE) {
                 itemList.add(GTUtility.copyAmountUnsafe(Integer.MAX_VALUE, origin));
@@ -627,7 +630,7 @@ public class ParallelHelper {
         }
     }
 
-    public static void addFluidsLong(ArrayList<FluidStack> fluidList, FluidStack origin, long amount) {
+    public static void addFluidsLong(List<FluidStack> fluidList, FluidStack origin, long amount) {
         if (amount > 0) {
             while (amount > Integer.MAX_VALUE) {
                 fluidList.add(GTUtility.copyAmount(Integer.MAX_VALUE, origin));

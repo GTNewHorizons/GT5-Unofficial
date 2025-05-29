@@ -11,7 +11,7 @@ import static gregtech.api.enums.HatchElement.OutputBus;
 import static gregtech.api.enums.HatchElement.OutputHatch;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 
-import java.util.stream.Stream;
+import java.util.Iterator;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -51,6 +51,7 @@ import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
+import it.unimi.dsi.fastutil.objects.ObjectIterators;
 
 public class MTEThermalBoiler extends GTPPMultiBlockBase<MTEThermalBoiler> implements ISurvivalConstructable {
 
@@ -127,16 +128,17 @@ public class MTEThermalBoiler extends GTPPMultiBlockBase<MTEThermalBoiler> imple
             // We still want to run if we lack water (and subsequently explode).
             @NotNull
             @Override
-            protected Stream<GTRecipe> findRecipeMatches(@Nullable RecipeMap<?> map) {
+            protected Iterator<GTRecipe> findRecipeMatches(@Nullable RecipeMap<?> map) {
                 if (lastRecipe != null && depleteInput(lastRecipe.mFluidInputs[0], true)) {
-                    return Stream.of(lastRecipe);
+                    return ObjectIterators.singleton(lastRecipe);
                 }
                 if (map == null) {
-                    return Stream.empty();
+                    return ObjectIterators.emptyIterator();
                 }
                 return map.getAllRecipes()
                     .stream()
-                    .filter(recipe -> depleteInput(recipe.mFluidInputs[0], true));
+                    .filter(recipe -> depleteInput(recipe.mFluidInputs[0], true))
+                    .iterator();
             }
 
             @NotNull

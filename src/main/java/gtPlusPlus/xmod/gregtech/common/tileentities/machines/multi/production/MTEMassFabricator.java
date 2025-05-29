@@ -14,8 +14,8 @@ import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
-import java.util.stream.Stream;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -62,6 +62,7 @@ import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
+import it.unimi.dsi.fastutil.objects.ObjectIterators;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
@@ -270,7 +271,7 @@ public class MTEMassFabricator extends GTPPMultiBlockBase<MTEMassFabricator> imp
 
             @Nonnull
             @Override
-            protected Stream<GTRecipe> findRecipeMatches(@Nullable RecipeMap<?> map) {
+            protected Iterator<GTRecipe> findRecipeMatches(@Nullable RecipeMap<?> map) {
                 if (mMode == MODE_SCRAP) {
                     if (inputItems != null) {
                         for (ItemStack item : inputItems) {
@@ -288,10 +289,10 @@ public class MTEMassFabricator extends GTPPMultiBlockBase<MTEMassFabricator> imp
                                 40,
                                 (int) TierEU.RECIPE_LV,
                                 0);
-                            return Stream.of(recipe);
+                            return ObjectIterators.singleton(recipe);
                         }
                     }
-                    return Stream.empty();
+                    return ObjectIterators.emptyIterator();
                 }
                 return super.findRecipeMatches(map);
             }

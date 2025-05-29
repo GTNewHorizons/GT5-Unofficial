@@ -19,8 +19,6 @@ import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 import javax.annotation.Nonnull;
 
@@ -311,10 +309,12 @@ public class MTEMultiSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMultiS
                 GTDualInputPattern inputs = inv.getPatternInputs();
                 setInputItems(inputs.inputItems);
                 setInputFluids(inputs.inputFluid);
-                Set<GTRecipe> recipes = findRecipeMatches(RecipeMaps.fluidSolidifierRecipes)
-                    .collect(Collectors.toSet());
-                if (recipes.isEmpty())
-                    recipes = findRecipeMatches(GGFabRecipeMaps.toolCastRecipes).collect(Collectors.toSet());
+                List<GTRecipe> recipes = getRecipeMatches(RecipeMaps.fluidSolidifierRecipes);
+
+                if (recipes.isEmpty()) {
+                    recipes = getRecipeMatches(GGFabRecipeMaps.toolCastRecipes);
+                }
+
                 if (!recipes.isEmpty()) {
                     dualInvWithPatternToRecipeCache.put(inv, recipes);
                     activeDualInv = inv;

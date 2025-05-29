@@ -8,6 +8,8 @@ import java.util.List;
 import java.util.function.Function;
 import java.util.function.IntFunction;
 
+import it.unimi.dsi.fastutil.objects.ObjectIterators;
+
 /**
  * Various util methods for managing raw data structures that are minecraft/gt agnostic.
  */
@@ -65,5 +67,21 @@ public class GTDataUtils {
         l.removeIf(t -> !set.add(t));
 
         return set;
+    }
+
+    public static int countNonNulls(Object[] array) {
+        int l = array.length;
+        int count = 0;
+
+        // noinspection ForLoopReplaceableByForEach
+        for (int i = 0; i < l; i++) {
+            if (array[i] != null) count++;
+        }
+
+        return count;
+    }
+
+    public static <T> Iterator<T> nullableIterator(T value) {
+        return value == null ? ObjectIterators.emptyIterator() : ObjectIterators.singleton(value);
     }
 }

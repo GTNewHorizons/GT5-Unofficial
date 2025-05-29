@@ -35,12 +35,10 @@ public class GTItemStack {
     };
 
     public final Item mItem;
-    public final byte mStackSize;
     public final short mMetaData;
 
-    public GTItemStack(Item aItem, long aStackSize, long aMetaData) {
+    public GTItemStack(Item aItem, long aMetaData) {
         mItem = aItem;
-        mStackSize = (byte) aStackSize;
         mMetaData = (short) aMetaData;
     }
 
@@ -51,7 +49,6 @@ public class GTItemStack {
     public GTItemStack(ItemStack aStack, boolean wildcard) {
         this(
             aStack == null ? null : aStack.getItem(),
-            aStack == null ? 0 : aStack.stackSize,
             aStack == null ? 0 : wildcard ? WILDCARD : Items.feather.getDamage(aStack));
     }
 
@@ -83,7 +80,7 @@ public class GTItemStack {
 
     @Override
     public int hashCode() {
-        return GTUtility.stackToInt(toStack());
+        return GTUtility.itemToInt(mItem, mMetaData);
     }
 
     /**

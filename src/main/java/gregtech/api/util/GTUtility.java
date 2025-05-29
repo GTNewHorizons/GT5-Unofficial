@@ -28,6 +28,7 @@ import java.math.BigInteger;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
+import java.text.MessageFormat;
 import java.util.AbstractCollection;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -2384,6 +2385,57 @@ public class GTUtility {
         return rList;
     }
 
+    public static String toString(ItemStack stack) {
+        if (stack.hasTagCompound()) {
+            return MessageFormat.format(
+                "{0} x {1} ({2} @ {3}) {4}",
+                stack.stackSize,
+                stack.getDisplayName(),
+                stack.getItem(),
+                stack.itemDamage,
+                stack.getTagCompound());
+        } else {
+            return MessageFormat.format(
+                "{0} x {1} ({2} @ {3})",
+                stack.stackSize,
+                stack.getDisplayName(),
+                stack.getItem(),
+                stack.itemDamage);
+        }
+    }
+
+    public static String toString(ItemStack[] stacks) {
+        StringBuilder sb = new StringBuilder();
+
+        for (ItemStack stack : stacks) {
+            if (!sb.isEmpty()) sb.append(", ");
+
+            sb.append(stack);
+        }
+
+        return sb.toString();
+    }
+
+    public static String toString(FluidStack stack) {
+        if (stack.tag != null) {
+            return MessageFormat.format("{0} x {1} {2}", stack.amount, stack.getLocalizedName(), stack.tag);
+        } else {
+            return MessageFormat.format("{0} x {1}", stack.amount, stack.getLocalizedName());
+        }
+    }
+
+    public static String toString(FluidStack[] stacks) {
+        StringBuilder sb = new StringBuilder();
+
+        for (FluidStack stack : stacks) {
+            if (!sb.isEmpty()) sb.append(", ");
+
+            sb.append(stack);
+        }
+
+        return sb.toString();
+    }
+
     public static Block getBlockFromStack(ItemStack itemStack) {
         if (isStackInvalid(itemStack)) return Blocks.air;
         return getBlockFromItem(itemStack.getItem());
@@ -2970,7 +3022,7 @@ public class GTUtility {
     }
 
     public static boolean isStackInList(@Nonnull GTItemStack aStack, @Nonnull Collection<GTItemStack> aList) {
-        return aList.contains(aStack) || aList.contains(new GTItemStack(aStack.mItem, aStack.mStackSize, WILDCARD));
+        return aList.contains(aStack) || aList.contains(new GTItemStack(aStack.mItem, WILDCARD));
     }
 
     /**
@@ -3946,6 +3998,18 @@ public class GTUtility {
     public static <T extends Collection<E>, E extends MetaTileEntity> T filterValidMTEs(T metaTileEntities) {
         metaTileEntities.removeIf(mte -> mte == null || !mte.isValid());
         return metaTileEntities;
+    }
+
+    public static <T extends MetaTileEntity> void copyValid(List<? extends T> src, Collection<T> dest) {
+        int size = src.size();
+
+        for (int i = 0; i < size; i++) {
+            T hatch = src.get(i);
+
+            if (hatch == null || !hatch.isValid()) continue;
+
+            dest.add(hatch);
+        }
     }
 
     /**

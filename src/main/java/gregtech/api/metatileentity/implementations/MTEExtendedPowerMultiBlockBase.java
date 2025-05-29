@@ -1,9 +1,7 @@
 package gregtech.api.metatileentity.implementations;
 
 import static gregtech.api.enums.GTValues.VN;
-import static gregtech.api.util.GTUtility.filterValidMTEs;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Nonnull;
@@ -25,6 +23,7 @@ import gregtech.api.util.ExoticEnergyInputHelper;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.shutdown.ShutDownReason;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
+import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 
 /**
  * Multiblock base class that allows machine to use power over int.
@@ -82,15 +81,22 @@ public abstract class MTEExtendedPowerMultiBlockBase<T extends MTEEnhancedMultiB
     }
 
     public List<MTEHatch> getExoticAndNormalEnergyHatchList() {
-        List<MTEHatch> tHatches = new ArrayList<>();
-        tHatches.addAll(filterValidMTEs(mExoticEnergyHatches));
-        tHatches.addAll(filterValidMTEs(mEnergyHatches));
+        ObjectArrayList<MTEHatch> tHatches = new ObjectArrayList<>(mExoticEnergyHatches.size() + mEnergyHatches.size());
+        GTUtility.copyValid(mExoticEnergyHatches, tHatches);
+        GTUtility.copyValid(mEnergyHatches, tHatches);
         return tHatches;
     }
 
     @Override
     public boolean drainEnergyInput(long aEU) {
-        return ExoticEnergyInputHelper.drainEnergy(aEU, getExoticAndNormalEnergyHatchList());
+        boolean hasExotic = !mExoticEnergyHatches.isEmpty();
+        boolean hasNormal = !mEnergyHatches.isEmpty();
+
+        if (hasExotic ^ hasNormal) {
+            return ExoticEnergyInputHelper.drainEnergy(aEU, hasExotic ? mExoticEnergyHatches : mEnergyHatches);
+        } else {
+            return ExoticEnergyInputHelper.drainEnergy(aEU, getExoticAndNormalEnergyHatchList());
+        }
     }
 
     @Override

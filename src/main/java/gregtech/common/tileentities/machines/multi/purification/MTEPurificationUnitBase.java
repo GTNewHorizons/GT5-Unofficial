@@ -9,7 +9,6 @@ import java.util.EnumSet;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
-import java.util.stream.Stream;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
@@ -201,11 +200,10 @@ public abstract class MTEPurificationUnitBase<T extends MTEExtendedPowerMultiBlo
         RecipeMap<?> recipeMap = this.getRecipeMap();
 
         // Grab a stream of recipes and find the one with the highest success chance
-        Stream<GTRecipe> recipes = recipeMap.findRecipeQuery()
+        GTRecipe recipe = recipeMap.findRecipeQuery()
             .fluids(fluidInputs)
             .items(itemInputs)
-            .findAll();
-        GTRecipe recipe = recipes
+            .streamAll()
             .max(Comparator.comparing(r -> r.getMetadataOrDefault(PurificationPlantBaseChanceKey.INSTANCE, 0.0f)))
             .orElse(null);
 

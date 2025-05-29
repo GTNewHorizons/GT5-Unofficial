@@ -44,6 +44,7 @@ import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchSteamBusInput;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchSteamBusOutput;
+import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
@@ -255,7 +256,7 @@ public abstract class MTESteamMultiBase<T extends MTESteamMultiBase<T>> extends 
 
     @Override
     public ArrayList<FluidStack> getStoredFluidsForColor(Optional<Byte> color) {
-        ArrayList<FluidStack> rList = new ArrayList<>();
+        ObjectArrayList<FluidStack> rList = new ObjectArrayList<>();
         for (MTEHatchCustomFluidBase tHatch : validMTEList(mSteamInputFluids)) {
             byte hatchColor = tHatch.getBaseMetaTileEntity()
                 .getColorization();
@@ -270,7 +271,7 @@ public abstract class MTESteamMultiBase<T extends MTESteamMultiBase<T>> extends 
             if (color.isPresent() && hatchColor != -1 && hatchColor != color.get()) continue;
             rList.add(hatch.getFillableStack());
         }
-        return rList;
+        return new ArrayList<>(rList);
     }
 
     @Override
