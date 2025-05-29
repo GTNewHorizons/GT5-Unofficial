@@ -11,7 +11,6 @@ import static gregtech.api.util.GTModHandler.getModItem;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
 import static gtPlusPlus.core.creative.AddToCreativeTab.tabMisc;
 
-import gregtech.api.enums.Mods;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
@@ -58,7 +57,6 @@ import gtPlusPlus.core.item.general.ItemAirFilter;
 import gtPlusPlus.core.item.general.ItemBasicScrubberTurbine;
 import gtPlusPlus.core.item.general.ItemBlueprint;
 import gtPlusPlus.core.item.general.ItemBufferCore;
-import gtPlusPlus.core.item.general.ItemEmpty;
 import gtPlusPlus.core.item.general.ItemGenericToken;
 import gtPlusPlus.core.item.general.ItemHalfCompleteCasings;
 import gtPlusPlus.core.item.general.ItemLavaFilter;
@@ -80,7 +78,6 @@ import gtPlusPlus.core.material.MaterialsElements;
 import gtPlusPlus.core.material.MaterialsOther;
 import gtPlusPlus.core.material.nuclear.MaterialsFluorides;
 import gtPlusPlus.core.material.nuclear.MaterialsNuclides;
-import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.data.StringUtils;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
@@ -95,7 +92,6 @@ import toxiceverglades.GTPPEverglades;
 
 public final class ModItems {
 
-    public static Item ZZZ_Empty;
     public static Item AAA_Broken;
 
     public static ItemCustomSpawnEgg itemCustomSpawnEgg;
@@ -208,7 +204,6 @@ public final class ModItems {
         // Default item used when recipes fail, handy for debugging. Let's make sure they exist when this class is
         // called upon.
         AAA_Broken = new BaseItemIngotOld("AAA_Broken", "Errors - Tell Alkalus", Utils.rgbtoHexValue(128, 128, 128), 0);
-        ZZZ_Empty = new ItemEmpty();
     }
 
     public static void init() {

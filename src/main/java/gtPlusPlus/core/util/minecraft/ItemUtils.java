@@ -519,10 +519,7 @@ public class ItemUtils {
                     if (stack.getItem() == ModItems.AAA_Broken || stack.getItem()
                         .getClass() == ModItems.AAA_Broken.getClass()) {
                         return false;
-                    } else if (stack.getItem() == ModItems.ZZZ_Empty || stack.getItem()
-                        .getClass() == ModItems.ZZZ_Empty.getClass()) {
-                            return false;
-                        }
+                    }
                 }
             } else {
                 return false;
@@ -534,10 +531,7 @@ public class ItemUtils {
                     if (stack.getItem() == ModItems.AAA_Broken || stack.getItem()
                         .getClass() == ModItems.AAA_Broken.getClass()) {
                         return false;
-                    } else if (stack.getItem() == ModItems.ZZZ_Empty || stack.getItem()
-                        .getClass() == ModItems.ZZZ_Empty.getClass()) {
-                            return false;
-                        }
+                    }
                 }
             } else {
                 return false;
