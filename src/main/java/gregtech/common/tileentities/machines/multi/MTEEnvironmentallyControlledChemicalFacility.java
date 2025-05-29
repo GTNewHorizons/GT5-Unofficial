@@ -538,19 +538,19 @@ public class MTEEnvironmentallyControlledChemicalFacility extends
             .addInfo(
                 EnumChatFormatting.GOLD + "No lubricant "
                     + EnumChatFormatting.GRAY
-                    + String.format("- %.1f%% loss", getLeakPercentage("nothing") * 100))
+                    + String.format("- %.0f%% loss", getLeakPercentage("nothing") * 100))
             .addInfo(
                 EnumChatFormatting.GOLD + "VO-17 "
                     + EnumChatFormatting.GRAY
-                    + String.format("- %.1f%% loss", getLeakPercentage("vo17") * 100))
+                    + String.format("- %.0f%% loss", getLeakPercentage("vo17") * 100))
             .addInfo(
                 EnumChatFormatting.GOLD + "VO-43 "
                     + EnumChatFormatting.GRAY
-                    + String.format("- %.1f%% loss", getLeakPercentage("vo43") * 100))
+                    + String.format("- %.0f%% loss", getLeakPercentage("vo43") * 100))
             .addInfo(
                 EnumChatFormatting.GOLD + "VO-75 "
                     + EnumChatFormatting.GRAY
-                    + String.format("- %.1f%% loss", getLeakPercentage("vo75") * 100))
+                    + String.format("- %.0f%% loss", getLeakPercentage("vo75") * 100))
             .addSeparator()
             .addTecTechHatchInfo()
             .beginStructureBlock(5, 6, 5, true)

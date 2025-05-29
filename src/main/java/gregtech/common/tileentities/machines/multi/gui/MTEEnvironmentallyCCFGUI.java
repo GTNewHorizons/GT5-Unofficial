@@ -165,7 +165,7 @@ public class MTEEnvironmentallyCCFGUI extends MTEMultiBlockBaseGui {
             infoPage,
             IKey.dynamic(() -> temperatureConverter(initTemp.getValue(), false)),
             IKey.dynamic(() -> pressureConverter(initPres.getValue(), false)),
-            IKey.str("Initial"),
+            IKey.str("Ambient"),
             57 + 10);
 
         addTextWidgets(
