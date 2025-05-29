@@ -176,8 +176,8 @@ public class RecipesGregTech {
             .itemInputs(
                 GTUtility.getIntegratedCircuit(17),
                 CI.getPurpleCatalyst(0),
-                ItemUtils.getSimpleStack(Blocks.sandstone, 64),
-                ItemUtils.getSimpleStack(Blocks.sandstone, 64))
+                new ItemStack(Blocks.sandstone, 64),
+                new ItemStack(Blocks.sandstone, 64))
             .itemOutputs(
                 MaterialsFluorides.FLUORITE.getOre(8),
                 MaterialsFluorides.FLUORITE.getOre(4),
@@ -193,8 +193,8 @@ public class RecipesGregTech {
             .itemInputs(
                 GTUtility.getIntegratedCircuit(17),
                 CI.getPurpleCatalyst(0),
-                ItemUtils.getSimpleStack(Blocks.sand, 64),
-                ItemUtils.getSimpleStack(Blocks.sand, 64))
+                new ItemStack(Blocks.sand, 64),
+                new ItemStack(Blocks.sand, 64))
             .itemOutputs(
                 MaterialsFluorides.FLUORITE.getOre(4),
                 MaterialsFluorides.FLUORITE.getOre(2),
@@ -243,8 +243,8 @@ public class RecipesGregTech {
 
         // Modify Sapling into Pine Sapling
         GTValues.RA.stdBuilder()
-            .itemInputs(GTUtility.getIntegratedCircuit(6), ItemUtils.getSimpleStack(Blocks.sapling, 32))
-            .itemOutputs(ItemUtils.getSimpleStack(BOPBlockRegistrator.sapling_Pine, 16))
+            .itemInputs(GTUtility.getIntegratedCircuit(6), new ItemStack(Blocks.sapling, 32))
+            .itemOutputs(new ItemStack(BOPBlockRegistrator.sapling_Pine, 16))
             .fluidInputs(FluidUtils.getFluidStack("fluid.geneticmutagen", 2_000), GTModHandler.getDistilledWater(8_000))
             .duration(120 * SECONDS)
             .eut(64)

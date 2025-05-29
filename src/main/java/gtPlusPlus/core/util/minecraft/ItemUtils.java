@@ -49,14 +49,6 @@ import gtPlusPlus.xmod.gregtech.loaders.RecipeGenDustGeneration;
 
 public class ItemUtils {
 
-    public static ItemStack getSimpleStack(final Block x, int i) {
-        if (i == 0) {
-            return new ItemStack(x, 1,i);
-        }
-
-        return new ItemStack(x, i, 0);
-    }
-
     public static ItemStack getSimpleStack(final Item item, final int stackSize) {
         return new ItemStack(item, stackSize);
     }

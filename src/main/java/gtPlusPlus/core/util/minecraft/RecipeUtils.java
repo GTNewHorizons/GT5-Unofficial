@@ -343,7 +343,7 @@ public class RecipeUtils {
                 Slots[i] = ItemUtils.getSimpleStack((Item) o, 1);
                 aFullString.append(aFullStringExpanded.charAt(i));
             } else if (o instanceof Block) {
-                Slots[i] = ItemUtils.getSimpleStack((Block) o, 1);
+                Slots[i] = new ItemStack((Block) o, 1);
                 aFullString.append(aFullStringExpanded.charAt(i));
             } else if (o instanceof String) {
                 Slots[i] = o;

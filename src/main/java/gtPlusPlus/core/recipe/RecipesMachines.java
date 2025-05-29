@@ -410,7 +410,7 @@ public class RecipesMachines {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GTUtility.getIntegratedCircuit(16),
-                ItemUtils.getSimpleStack(Blocks.glowstone, 16),
+                new ItemStack(Blocks.glowstone, 16),
                 CI.getGear(5, 8),
                 MaterialsElements.getInstance().TITANIUM.getWire04(4),
                 CI.getFieldGenerator(4, 2),
@@ -1178,7 +1178,7 @@ public class RecipesMachines {
                 VolumetricFlaskHelper.getVolumetricFlask(8),
                 CI.getTieredComponent(OrePrefixes.pipeSmall, 2, 2),
                 CI.getPlate(2, 4))
-            .itemOutputs(ItemUtils.getSimpleStack(ModBlocks.blockVolumetricFlaskSetter, 1))
+            .itemOutputs(new ItemStack(ModBlocks.blockVolumetricFlaskSetter, 1))
             .fluidInputs(CI.getAlternativeTieredFluid(1, 8 * INGOTS))
             .duration(60 * SECONDS)
             .eut(TierEU.RECIPE_MV)
@@ -2894,7 +2894,7 @@ public class RecipesMachines {
                 ItemList.Sensor_HV.get(1),
                 CI.getTieredComponent(OrePrefixes.plate, 7, 8 * aCostMultiplier),
                 CI.getTieredComponent(OrePrefixes.wireGt08, 8, 4 * aCostMultiplier))
-            .itemOutputs(ItemUtils.getSimpleStack(DimensionEverglades.blockPortalFrame, 2))
+            .itemOutputs(new ItemStack(DimensionEverglades.blockPortalFrame, 2))
             .fluidInputs(CI.getTieredFluid(6, (8 * INGOTS)))
             .duration(4 * MINUTES + 30 * SECONDS)
             .eut(TierEU.RECIPE_LuV)
