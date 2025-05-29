@@ -13,6 +13,7 @@ import static gtPlusPlus.api.recipe.GTPPRecipeMaps.chemicalDehydratorRecipes;
 import java.util.HashSet;
 import java.util.Set;
 
+import gregtech.api.enums.ToolDictNames;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -45,7 +46,7 @@ public class RecipeGenFluorite extends RecipeGenBase {
          * Shaped Crafting
          */
         RecipeUtils.addShapedRecipe(
-            CI.craftingToolHammer_Hard,
+            ToolDictNames.craftingToolHardHammer,
             null,
             null,
             material.getCrushedPurified(1),
@@ -57,7 +58,7 @@ public class RecipeGenFluorite extends RecipeGenBase {
             material.getDustPurified(1));
 
         RecipeUtils.addShapedRecipe(
-            CI.craftingToolHammer_Hard,
+            ToolDictNames.craftingToolHardHammer,
             null,
             null,
             material.getCrushed(1),
@@ -69,7 +70,7 @@ public class RecipeGenFluorite extends RecipeGenBase {
             material.getDustImpure(1));
 
         RecipeUtils.addShapedRecipe(
-            CI.craftingToolHammer_Hard,
+            ToolDictNames.craftingToolHardHammer,
             null,
             null,
             material.getCrushedCentrifuged(1),

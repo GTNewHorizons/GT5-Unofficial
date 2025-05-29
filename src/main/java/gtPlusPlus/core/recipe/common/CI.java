@@ -167,16 +167,6 @@ public class CI {
     public static String[] component_Rod;
     public static String[] component_Ingot;
 
-    // Crafting Tools
-    public static String craftingToolWrench = "craftingToolWrench";
-    public static String craftingToolHammer_Hard = "craftingToolHardHammer";
-    public static String craftingToolScrewdriver = "craftingToolScrewdriver";
-    public static String craftingToolFile = "craftingToolFile";
-    public static String craftingToolMortar = "craftingToolMortar";
-    public static String craftingToolSaw = "craftingToolSaw";
-    public static String craftingToolWireCutter = "craftingToolWirecutter";
-    public static String craftingToolSolderingIron = "craftingToolSolderingIron";
-
     // Explosives
     public static ItemStack explosivePowderKeg;
     public static ItemStack explosiveTNT;

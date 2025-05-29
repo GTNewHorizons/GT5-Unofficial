@@ -22,6 +22,7 @@ import static gtPlusPlus.api.recipe.GTPPRecipeMaps.chemicalPlantRecipes;
 import java.util.List;
 
 import gregtech.api.enums.Mods;
+import gregtech.api.enums.ToolDictNames;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -1702,13 +1703,13 @@ public class RecipesMachines {
         // Blast Smelter Frame Casing
         RecipeUtils.addShapedGregtechRecipe(
             "plateZirconiumCarbide",
-            CI.craftingToolHammer_Hard,
+            ToolDictNames.craftingToolHardHammer,
             "plateZirconiumCarbide",
             "plateZirconiumCarbide",
             "frameGtZirconiumCarbide",
             "plateZirconiumCarbide",
             "plateZirconiumCarbide",
-            CI.craftingToolWrench,
+            ToolDictNames.craftingToolWrench,
             "plateZirconiumCarbide",
             RECIPE_IndustrialBlastSmelterFrame);
         GTValues.RA.stdBuilder()
@@ -2229,13 +2230,13 @@ public class RecipesMachines {
             RECIPE_LFTRController);
         RecipeUtils.addShapedGregtechRecipe(
             "plateDoubleHastelloyC276",
-            CI.craftingToolScrewdriver,
+            ToolDictNames.craftingToolScrewdriver,
             "plateDoubleHastelloyC276",
             "gearGtTalonite",
             CI.fieldGenerator_LV,
             "gearGtTalonite",
             "plateDoubleHastelloyC276",
-            CI.craftingToolHammer_Hard,
+            ToolDictNames.craftingToolHardHammer,
             "plateDoubleHastelloyC276",
             RECIPE_LFTRInnerCasing);
 
@@ -2265,7 +2266,7 @@ public class RecipesMachines {
         // Fission Fuel Plant
         RecipeUtils.addShapedGregtechRecipe(
             CI.getTieredCircuitOreDictName(5),
-            CI.craftingToolSolderingIron,
+            ToolDictNames.craftingToolSolderingIron,
             CI.getTieredCircuitOreDictName(5),
             "plateDenseTungstenSteel",
             GregtechItemList.Gregtech_Computer_Cube.get(1),
@@ -2308,9 +2309,9 @@ public class RecipesMachines {
             "ringInconel792",
             "gearGtHastelloyX",
             CI.component_Plate[5],
-            CI.craftingToolHammer_Hard,
+            ToolDictNames.craftingToolHardHammer,
             "frameGtHastelloyC276",
-            CI.craftingToolWrench,
+            ToolDictNames.craftingToolWrench,
             CI.component_Plate[5],
             CI.getTieredMachineCasing(4),
             "ringInconel792",
@@ -2461,13 +2462,13 @@ public class RecipesMachines {
 
         RecipeUtils.addShapedRecipe(
             "plateRedSteel",
-            CI.craftingToolHammer_Hard,
+            ToolDictNames.craftingToolHardHammer,
             "plateRedSteel",
             "plateRedSteel",
             "frameGtBlackSteel",
             "plateRedSteel",
             "plateRedSteel",
-            CI.craftingToolWrench,
+            ToolDictNames.craftingToolWrench,
             "plateRedSteel",
             GregtechItemList.Casing_ThermalCentrifuge.get(1));
         GTValues.RA.stdBuilder()
@@ -2494,13 +2495,13 @@ public class RecipesMachines {
 
         RecipeUtils.addShapedRecipe(
             "plateGrisium",
-            CI.craftingToolHammer_Hard,
+            ToolDictNames.craftingToolHardHammer,
             "plateGrisium",
             "plateTalonite",
             "frameGtGrisium",
             "plateTalonite",
             "plateGrisium",
-            CI.craftingToolWrench,
+            ToolDictNames.craftingToolWrench,
             "plateGrisium",
             GregtechItemList.Casing_WashPlant.get(1));
         GTValues.RA.stdBuilder()
@@ -2568,13 +2569,13 @@ public class RecipesMachines {
         ItemStack plate = MaterialsAlloy.MARAGING300.getPlate(1);
         RecipeUtils.addShapedRecipe(
             plate,
-            CI.craftingToolHammer_Hard,
+            ToolDictNames.craftingToolHardHammer,
             plate,
             "plateStellite",
             "frameGtTalonite",
             "plateStellite",
             plate,
-            CI.craftingToolWrench,
+            ToolDictNames.craftingToolWrench,
             plate,
             GregtechItemList.Casing_CuttingFactoryFrame.get(1));
         GTValues.RA.stdBuilder()
@@ -2604,13 +2605,13 @@ public class RecipesMachines {
         plate = MaterialsAlloy.INCONEL_690.getPlate(1);
         RecipeUtils.addShapedRecipe(
             plate,
-            CI.craftingToolHammer_Hard,
+            ToolDictNames.craftingToolHardHammer,
             plate,
             "plateTalonite",
             "frameGtStaballoy",
             "plateTalonite",
             plate,
-            CI.craftingToolWrench,
+            ToolDictNames.craftingToolWrench,
             plate,
             GregtechItemList.Casing_Extruder.get(1));
         GTValues.RA.stdBuilder()
@@ -2639,13 +2640,13 @@ public class RecipesMachines {
         plate = MaterialsAlloy.AQUATIC_STEEL.getPlate(1);
         RecipeUtils.addShapedRecipe(
             plate,
-            CI.craftingToolHammer_Hard,
+            ToolDictNames.craftingToolHardHammer,
             plate,
             "plateEglinSteel",
             "frameGtEglinSteel",
             "plateEglinSteel",
             plate,
-            CI.craftingToolWrench,
+            ToolDictNames.craftingToolWrench,
             plate,
             GregtechItemList.Casing_FishPond.get(1));
         GTValues.RA.stdBuilder()
@@ -2789,9 +2790,9 @@ public class RecipesMachines {
             plate,
             cell2,
             plate,
-            CI.craftingToolWrench,
+            ToolDictNames.craftingToolWrench,
             frame,
-            CI.craftingToolHammer_Hard,
+            ToolDictNames.craftingToolHardHammer,
             plate,
             cell1,
             plate,
@@ -2836,13 +2837,13 @@ public class RecipesMachines {
 
         RecipeUtils.addShapedRecipe(
             staballoyPlate,
-            CI.craftingToolHammer_Hard,
+            ToolDictNames.craftingToolHardHammer,
             staballoyPlate,
             "plateStainlessSteel",
             "frameGtZirconiumCarbide",
             "plateStainlessSteel",
             staballoyPlate,
-            CI.craftingToolWrench,
+            ToolDictNames.craftingToolWrench,
             staballoyPlate,
             GregtechItemList.Casing_Multi_Use.get(1));
 
@@ -3023,7 +3024,7 @@ public class RecipesMachines {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GregtechItemList.Casing_Multi_Use.get(1),
-                CI.getHeatCoil(2),
+                ItemUtils.simpleMetaStack(GregTechAPI.sBlockCasings5, 2, 1),
                 CI.getElectricPiston(3, 2),
                 CI.getTieredComponent(OrePrefixes.plate, 6, 4),
                 CI.getTieredComponent(OrePrefixes.gearGt, 6, 2))

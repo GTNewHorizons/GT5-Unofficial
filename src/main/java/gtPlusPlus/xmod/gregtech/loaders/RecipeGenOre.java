@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
+import gregtech.api.enums.ToolDictNames;
 import net.minecraft.item.ItemStack;
 
 import org.apache.commons.lang3.tuple.Pair;
@@ -612,7 +613,7 @@ public class RecipeGenOre extends RecipeGenBase {
         // Shaped Crafting
 
         RecipeUtils.addShapedRecipe(
-            CI.craftingToolHammer_Hard,
+            ToolDictNames.craftingToolHardHammer,
             null,
             null,
             material.getCrushedPurified(1),
@@ -624,7 +625,7 @@ public class RecipeGenOre extends RecipeGenBase {
             material.getDustPurified(1));
 
         RecipeUtils.addShapedRecipe(
-            CI.craftingToolHammer_Hard,
+            ToolDictNames.craftingToolHardHammer,
             null,
             null,
             material.getCrushed(1),
@@ -636,7 +637,7 @@ public class RecipeGenOre extends RecipeGenBase {
             material.getDustImpure(1));
 
         RecipeUtils.addShapedRecipe(
-            CI.craftingToolHammer_Hard,
+            ToolDictNames.craftingToolHardHammer,
             null,
             null,
             material.getCrushedCentrifuged(1),

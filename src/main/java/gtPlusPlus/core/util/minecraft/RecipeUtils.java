@@ -6,6 +6,7 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
+import gregtech.api.enums.ToolDictNames;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -196,11 +197,6 @@ public class RecipeUtils {
         }
         // let gregtech handle shapeless recipes.
         return GTModHandler.addShapelessCraftingRecipe(OutputItem, inputItems);
-    }
-
-    public static boolean generateMortarRecipe(ItemStack aStack, ItemStack aOutput) {
-        return RecipeUtils
-            .addShapedGregtechRecipe(aStack, null, null, CI.craftingToolMortar, null, null, null, null, null, aOutput);
     }
 
     public static class InternalRecipeObject implements RunnableWithInfo<String> {
