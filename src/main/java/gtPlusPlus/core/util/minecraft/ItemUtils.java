@@ -658,10 +658,6 @@ public class ItemUtils {
         return aOutput;
     }
 
-    public static ItemStack depleteStack(ItemStack aStack) {
-        return depleteStack(aStack, 1);
-    }
-
     public static ItemStack depleteStack(ItemStack aStack, int aAmount) {
         final int cap = aStack.stackSize;
         if (cap >= 1 && cap >= aAmount) {
