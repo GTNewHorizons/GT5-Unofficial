@@ -605,7 +605,7 @@ public class MTEWirelessCharger extends MTETieredMachineBlock implements IWirele
     }
 
     @Override
-    public void chargePlayerItems(ItemStack[] stacks, EntityPlayer player) {
+    public void chargePlayerItems(EntityPlayer player, ItemStack[]... inventories) {
         final int amp;
         if (localRangeMap.containsKey(player.getDisplayName())) {
             amp = 2;
@@ -619,25 +619,30 @@ public class MTEWirelessCharger extends MTETieredMachineBlock implements IWirele
         final long maxChargeableEU = Math.min(storedEU, this.maxEUInput() * amp * WirelessChargerManager.CHARGE_TICK);
 
         long chargedEU = 0;
-        for (ItemStack stack : stacks) {
+        for (ItemStack[] stacks : inventories) {
             if (chargedEU >= maxChargeableEU) break;
-            if (stack == null) continue;
+            if (stacks == null) continue;
+            for (ItemStack stack : stacks) {
+                if (chargedEU >= maxChargeableEU) break;
+                if (stack == null) continue;
 
-            final int chargeableEU = (int) Math.min(
-                Integer.MAX_VALUE,
-                Math.min(maxChargeableEU - chargedEU, this.maxEUInput() * WirelessChargerManager.CHARGE_TICK));
-            if (stack.getItem() instanceof ic2.api.item.IElectricItem electricItem) {
-                final int charged = Math.max(
-                    0,
-                    (int) ic2.api.item.ElectricItem.manager
-                        .charge(stack, chargeableEU, Integer.MAX_VALUE, true, false));
-                chargedEU += charged;
-            } else if (COFHCore.isModLoaded() && stack.getItem() instanceof IEnergyContainerItem rfItem) {
-                int chargeableRF = Math.min(
-                    rfItem.getMaxEnergyStored(stack) - rfItem.getEnergyStored(stack),
-                    (int) Math.min(Integer.MAX_VALUE, (long) chargeableEU * mEUtoRF / 100));
-                int chargedRF = rfItem.receiveEnergy(stack, chargeableRF, false);
-                chargedEU += (long) chargedRF * 100L / mEUtoRF;
+                final int chargeableEU = (int) Math.min(
+                    Integer.MAX_VALUE,
+                    Math.min(maxChargeableEU - chargedEU, this.maxEUInput() * WirelessChargerManager.CHARGE_TICK));
+
+                if (stack.getItem() instanceof ic2.api.item.IElectricItem) {
+                    final int charged = Math.max(
+                        0,
+                        (int) ic2.api.item.ElectricItem.manager
+                            .charge(stack, chargeableEU, Integer.MAX_VALUE, true, false));
+                    chargedEU += charged;
+                } else if (COFHCore.isModLoaded() && stack.getItem() instanceof IEnergyContainerItem rfItem) {
+                    int chargeableRF = Math.min(
+                        rfItem.getMaxEnergyStored(stack) - rfItem.getEnergyStored(stack),
+                        (int) Math.min(Integer.MAX_VALUE, (long) chargeableEU * mEUtoRF / 100));
+                    int chargedRF = rfItem.receiveEnergy(stack, chargeableRF, false);
+                    chargedEU += (long) chargedRF * 100L / mEUtoRF;
+                }
             }
         }
 

@@ -60,15 +60,15 @@ public class WirelessChargerManager {
         boolean checkedBaubles = false;
         for (IWirelessCharger charger : CHARGER_MAP.values()) {
             if (charger.canChargePlayerItems(player)) {
-                charger.chargePlayerItems(player.inventory.armorInventory, player);
-                charger.chargePlayerItems(player.inventory.mainInventory, player);
                 if (!checkedBaubles) {
                     baubleItems = getBaublesItems(player);
                     checkedBaubles = true;
                 }
-                if (baubleItems != null) {
-                    charger.chargePlayerItems(baubleItems, player);
-                }
+                charger.chargePlayerItems(
+                    player,
+                    player.inventory.armorInventory,
+                    player.inventory.mainInventory,
+                    baubleItems);
             }
         }
     }
