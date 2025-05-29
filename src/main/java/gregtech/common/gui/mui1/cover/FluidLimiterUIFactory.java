@@ -1,5 +1,7 @@
 package gregtech.common.gui.mui1.cover;
 
+import net.minecraft.util.StatCollector;
+
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
@@ -41,7 +43,8 @@ public class FluidLimiterUIFactory extends CoverUIFactory<CoverFluidLimiter> {
                         .setPos(startX, startY + spaceY * 2 - 24)
                         .setSize(spaceX * 4 - 3, 12)))
             .widget(
-                new TextWidget("Percent threshold").setDefaultColor(COLOR_TEXT_GRAY.get())
+                new TextWidget(StatCollector.translateToLocal("GT5U.gui.text.fluid_limiter.threshold"))
+                    .setDefaultColor(COLOR_TEXT_GRAY.get())
                     .setPos(startX, startY + spaceY * 2 - 35));
     }
 }

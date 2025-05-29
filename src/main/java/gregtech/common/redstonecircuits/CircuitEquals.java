@@ -1,5 +1,7 @@
 package gregtech.common.redstonecircuits;
 
+import net.minecraft.util.StatCollector;
+
 import gregtech.api.interfaces.IRedstoneCircuitBlock;
 import gregtech.api.util.CircuitryBehavior;
 
@@ -41,19 +43,21 @@ public class CircuitEquals extends CircuitryBehavior {
 
     @Override
     public String getName() {
-        return "Equals";
+        return StatCollector.translateToLocal("GT5U.gui.circuit.equals.name");
     }
 
     @Override
     public String getDescription() {
-        return "signal == this";
+        return StatCollector.translateToLocal("GT5U.gui.circuit.equals.description");
     }
 
     @Override
     public String getDataDescription(int[] aCircuitData, int aCircuitDataIndex) {
         return switch (aCircuitDataIndex) {
-            case 0 -> "Signal";
-            case 1 -> aCircuitData[1] == 0 ? "Equal" : "Unequal";
+            case 0 -> StatCollector.translateToLocal("GT5U.gui.circuit.equals.data_description.signal");
+            case 1 -> StatCollector.translateToLocal(
+                aCircuitData[1] == 0 ? "GT5U.gui.circuit.equals.data_description.equal"
+                    : "GT5U.gui.circuit.equals.data_description.unequal");
             default -> "";
         };
     }
