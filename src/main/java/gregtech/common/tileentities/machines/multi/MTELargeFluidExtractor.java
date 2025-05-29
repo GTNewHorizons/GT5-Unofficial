@@ -230,12 +230,22 @@ public class MTELargeFluidExtractor extends MTEExtendedPowerMultiBlockBase<MTELa
                 return new ITexture[] { getCasingTextureForId(CASING_INDEX), TextureFactory.builder()
                     .addIcon(TexturesGtBlock.oMCALargeFluidExtractorActive)
                     .extFacing()
-                    .build() };
+                    .build(),
+                    TextureFactory.builder()
+                        .addIcon(TexturesGtBlock.oMCALargeFluidExtractorActiveGlow)
+                        .extFacing()
+                        .glow()
+                        .build() };
             } else {
                 return new ITexture[] { getCasingTextureForId(CASING_INDEX), TextureFactory.builder()
                     .addIcon(TexturesGtBlock.oMCALargeFluidExtractor)
                     .extFacing()
-                    .build() };
+                    .build(),
+                    TextureFactory.builder()
+                        .addIcon(TexturesGtBlock.oMCALargeFluidExtractorGlow)
+                        .extFacing()
+                        .glow()
+                        .build() };
             }
         }
         return new ITexture[] { getCasingTextureForId(CASING_INDEX) };
