@@ -272,8 +272,7 @@ public class AchievementHandler {
              * Copy this to all events because I am lazy - Alk 2019
              */
 
-            // Safe name
-            String aUnlocalName = ItemUtils.getUnlocalizedItemName(aStack);
+            String aUnlocalName = aStack.getUnlocalizedName();
 
             boolean isValid = false;
             // Check if valid name // mod
