@@ -360,7 +360,6 @@ public class MTEEnvironmentallyControlledChemicalFacility extends
         return new ITexture[] { casingTexturePages[1][48] };
     }
 
-    @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Environmentally Controlled Chemical Facility, ECCF")
@@ -536,10 +535,22 @@ public class MTEEnvironmentallyControlledChemicalFacility extends
                     + EnumChatFormatting.WHITE
                     + EnumChatFormatting.BOLD
                     + " Lubricants Values")
-            .addInfo(EnumChatFormatting.GOLD + "No lubricant " + EnumChatFormatting.GRAY + "- 80% loss")
-            .addInfo(EnumChatFormatting.GOLD + "VO-17 " + EnumChatFormatting.GRAY + "- 30% loss")
-            .addInfo(EnumChatFormatting.GOLD + "VO-43 " + EnumChatFormatting.GRAY + "- 10% loss")
-            .addInfo(EnumChatFormatting.GOLD + "VO-75 " + EnumChatFormatting.GRAY + "- 0% loss")
+            .addInfo(
+                EnumChatFormatting.GOLD + "No lubricant "
+                    + EnumChatFormatting.GRAY
+                    + String.format("- %.1f%% loss", getLeakPercentage("nothing") * 100))
+            .addInfo(
+                EnumChatFormatting.GOLD + "VO-17 "
+                    + EnumChatFormatting.GRAY
+                    + String.format("- %.1f%% loss", getLeakPercentage("vo17") * 100))
+            .addInfo(
+                EnumChatFormatting.GOLD + "VO-43 "
+                    + EnumChatFormatting.GRAY
+                    + String.format("- %.1f%% loss", getLeakPercentage("vo43") * 100))
+            .addInfo(
+                EnumChatFormatting.GOLD + "VO-75 "
+                    + EnumChatFormatting.GRAY
+                    + String.format("- %.1f%% loss", getLeakPercentage("vo75") * 100))
             .addSeparator()
             .addTecTechHatchInfo()
             .beginStructureBlock(5, 6, 5, true)
@@ -1191,6 +1202,15 @@ public class MTEEnvironmentallyControlledChemicalFacility extends
         return false;
     }
 
+    public double getLeakPercentage(String lubricantType) {
+        return switch (lubricantType) {
+            case "vo17" -> 0.3;
+            case "vo43" -> 0.1;
+            case "vo75" -> 0;
+            default -> 0.8;
+        };
+    }
+
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         super.onPostTick(aBaseMetaTileEntity, aTick);
@@ -1265,12 +1285,7 @@ public class MTEEnvironmentallyControlledChemicalFacility extends
                         // if more than 5mb of fluid is in hatch:
                         if (mLubricantInputHatch.mFluid.amount >= 5) {
                             String lubricantType = mLubricantInputHatch.mFluid.getUnlocalizedName();
-                            leakCoeff = switch (lubricantType) {
-                                case "vo17" -> 0.3;
-                                case "vo43" -> 0.1;
-                                case "vo75" -> 0;
-                                default -> 0.8;
-                            };
+                            leakCoeff = getLeakPercentage(lubricantType);
                             mLubricantInputHatch.drain(5, true);
                         }
                     }
