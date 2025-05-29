@@ -169,10 +169,6 @@ public class CI {
         gearboxCasing_Tier_4 = ItemList.Casing_Gearbox_TungstenSteel.get(1);
     }
 
-    public static ItemStack emptyCells(int i) {
-        return ItemUtils.getEmptyCell(i);
-    }
-
     private static final Material[] aMaterial_Main = new Material[] { MaterialsAlloy.POTIN, MaterialsAlloy.TUMBAGA,
         MaterialsAlloy.EGLIN_STEEL, MaterialsAlloy.TANTALUM_CARBIDE, MaterialsAlloy.INCOLOY_DS,
         MaterialsAlloy.INCONEL_625, MaterialsAlloy.ZERON_100, MaterialsAlloy.PIKYONIUM,

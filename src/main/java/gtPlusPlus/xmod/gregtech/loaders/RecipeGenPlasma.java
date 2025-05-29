@@ -7,6 +7,7 @@ import static gregtech.api.util.GTRecipeConstants.FUEL_VALUE;
 import java.util.HashSet;
 import java.util.Set;
 
+import gregtech.api.enums.ItemList;
 import net.minecraft.item.ItemStack;
 
 import gregtech.api.enums.GTValues;
@@ -44,7 +45,7 @@ public class RecipeGenPlasma extends RecipeGenBase {
             ItemStack aCell = material.getCell(1);
             ItemStack aContainerItem = GTUtility.getFluidForFilledItem(aPlasmaCell, true) == null
                 ? GTUtility.getContainerItem(aPlasmaCell, true)
-                : CI.emptyCells(1);
+                : ItemList.Cell_Empty.get(1);
             if (ItemUtils.checkForInvalidItems(new ItemStack[] { aPlasmaCell, aContainerItem })) {
                 switch (material.getUnlocalizedName()) {
                     case "Runite" -> GTValues.RA.stdBuilder()

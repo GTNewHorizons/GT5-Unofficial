@@ -3,6 +3,7 @@ package gtPlusPlus.core.tileentities.machines;
 import java.util.ArrayList;
 import java.util.List;
 
+import gregtech.api.enums.ItemList;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.passive.EntityBat;
 import net.minecraft.entity.player.EntityPlayer;
@@ -469,7 +470,7 @@ public class TileEntityPestKiller extends TileEntity implements ISidedInventory,
         if (this.getInventory() != null && drainCell()) {
             this.decrStackSize(0, 1);
             if (this.getStackInSlot(1) == null) {
-                this.setInventorySlotContents(1, CI.emptyCells(1));
+                this.setInventorySlotContents(1, ItemList.Cell_Empty.get(1));
             } else {
                 this.getStackInSlot(1).stackSize++;
             }

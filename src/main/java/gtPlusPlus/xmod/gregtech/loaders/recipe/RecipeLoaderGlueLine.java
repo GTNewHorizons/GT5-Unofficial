@@ -234,7 +234,7 @@ public class RecipeLoaderGlueLine {
     private static void mixerRecipes() {
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(1), MaterialMisc.DICHLOROACETIC_ACID.getCell(1))
-            .itemOutputs(CI.emptyCells(1))
+            .itemOutputs(ItemList.Cell_Empty.get(1))
             .fluidInputs(MaterialMisc.TRICHLOROACETIC_ACID.getFluidStack(1_000))
             .fluidOutputs(MaterialMisc.CHLOROACETIC_MIXTURE.getFluidStack(2_000))
             .duration(5 * SECONDS)
@@ -244,7 +244,7 @@ public class RecipeLoaderGlueLine {
             .itemInputs(
                 ItemUtils.getItemStackOfAmountFromOreDict("cellSulfurTrioxide", 1),
                 GTUtility.getIntegratedCircuit(2))
-            .itemOutputs(CI.emptyCells(1))
+            .itemOutputs(ItemList.Cell_Empty.get(1))
             .fluidInputs(Materials.SulfuricAcid.getFluid(1_000))
             .fluidOutputs(MaterialMisc.SOLID_ACID_MIXTURE.getFluidStack(1_000))
             .duration(5 * SECONDS)

@@ -580,7 +580,7 @@ public final class ModItems {
             0,
             1000,
             null,
-            CI.emptyCells(1),
+            ItemList.Cell_Empty.get(1),
             1000,
             true);
 

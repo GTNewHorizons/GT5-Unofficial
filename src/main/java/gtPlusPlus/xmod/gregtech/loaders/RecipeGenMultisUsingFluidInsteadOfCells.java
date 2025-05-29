@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import gregtech.api.enums.ItemList;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
@@ -26,14 +27,14 @@ public class RecipeGenMultisUsingFluidInsteadOfCells {
         if (!mInit) {
             mInit = true;
 
-            mEmptyItems.add(CI.emptyCells(1));
+            mEmptyItems.add(ItemList.Cell_Empty.get(1));
             mEmptyItems.add(new ItemStack(Items.bowl));
             mEmptyItems.add(new ItemStack(Items.bucket));
             mEmptyItems.add(new ItemStack(Items.glass_bottle));
 
             mItemsToIgnore.add(
                 ItemUtils.simpleMetaStack(
-                    CI.emptyCells(1)
+                    ItemList.Cell_Empty.get(1)
                         .getItem(),
                     8,
                     1));

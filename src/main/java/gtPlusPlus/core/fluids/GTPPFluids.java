@@ -478,7 +478,7 @@ public class GTPPFluids {
             4,
             5,
             null,
-            ItemUtils.getEmptyCell(),
+            ItemList.Cell_Empty.get(1),
             1000);
 
         Pyrotheum = FluidUtils.addGtFluid(
@@ -488,7 +488,7 @@ public class GTPPFluids {
             4,
             4000,
             null,
-            ItemUtils.getEmptyCell(),
+            ItemList.Cell_Empty.get(1),
             1000);
 
         IndustrialStrengthHydrofluoricAcid = FluidUtils.addGtFluid(
@@ -498,7 +498,7 @@ public class GTPPFluids {
             1,
             120,
             null,
-            ItemUtils.getEmptyCell(),
+            ItemList.Cell_Empty.get(1),
             1000,
             false);
         generateIC2FluidCell(15, "HydrofluoricAcid");
@@ -516,7 +516,7 @@ public class GTPPFluids {
             4,
             75,
             null,
-            ItemUtils.getEmptyCell(),
+            ItemList.Cell_Empty.get(1),
             1000,
             false);
         generateIC2FluidCell(16, "SulfurousAcid");
@@ -528,7 +528,7 @@ public class GTPPFluids {
             4,
             500,
             null,
-            ItemUtils.getEmptyCell(),
+            ItemList.Cell_Empty.get(1),
             1000,
             false);
         generateIC2FluidCell(17, "SulfuricApatite");
@@ -540,7 +540,7 @@ public class GTPPFluids {
             4,
             75,
             null,
-            ItemUtils.getEmptyCell(),
+            ItemList.Cell_Empty.get(1),
             1000,
             false);
         generateIC2FluidCell(18, "HydrogenChloride");
@@ -552,7 +552,7 @@ public class GTPPFluids {
             4,
             280,
             null,
-            ItemUtils.getEmptyCell(),
+            ItemList.Cell_Empty.get(1),
             1000,
             false);
         generateIC2FluidCell(19, "SulfuricLithium");
@@ -564,7 +564,7 @@ public class GTPPFluids {
             4,
             500,
             null,
-            ItemUtils.getEmptyCell(),
+            ItemList.Cell_Empty.get(1),
             1000,
             false);
         generateIC2FluidCell(20, "LithiumHydroxide");

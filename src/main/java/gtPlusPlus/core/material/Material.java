@@ -10,6 +10,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import gregtech.api.enums.ItemList;
 import gregtech.api.util.GTUtility;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
@@ -1441,7 +1442,7 @@ public class Material {
                 4,
                 this.getMeltingPointK(),
                 aFullCell,
-                ItemUtils.getEmptyCell(),
+                ItemList.Cell_Empty.get(1),
                 1000,
                 this.vGenerateCells);
         } else if (this.materialState == MaterialState.LIQUID || this.materialState == MaterialState.PURE_LIQUID) {
@@ -1452,7 +1453,7 @@ public class Material {
                 0,
                 this.getMeltingPointK(),
                 aFullCell,
-                ItemUtils.getEmptyCell(),
+                ItemList.Cell_Empty.get(1),
                 1000,
                 this.vGenerateCells);
         } else if (this.materialState == MaterialState.GAS || this.materialState == MaterialState.PURE_GAS) {
@@ -1460,7 +1461,7 @@ public class Material {
                 .generateGas(unlocalizedName, this.getLocalizedName(), getMeltingPointK(), getRGBA(), vGenerateCells);
             /*
              * return FluidUtils.addGTFluid( this.getUnlocalizedName(), this.getLocalizedName()+" Gas", this.RGBA, 2,
-             * this.getMeltingPointK(), aFullCell, ItemUtils.getEmptyCell(), 1000, this.vGenerateCells);
+             * this.getMeltingPointK(), aFullCell, ItemList.Cell_Empty.get(1), 1000, this.vGenerateCells);
              */
         } else { // Plasma
             return this.generatePlasma();

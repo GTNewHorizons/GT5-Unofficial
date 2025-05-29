@@ -48,21 +48,6 @@ import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.loaders.RecipeGenDustGeneration;
 
 public class ItemUtils {
-    public static ItemStack getIC2Cell(final int meta) {
-        return getModItem(IndustrialCraft2.ID, "itemCellEmpty", 1L, meta);
-    }
-
-    public static ItemStack getEmptyCell() {
-        return getEmptyCell(1);
-    }
-
-    public static ItemStack getEmptyCell(int i) {
-        if (ItemList.Cell_Empty.hasBeenSet()) {
-            return ItemList.Cell_Empty.get(i);
-        }
-        return getModItem(IndustrialCraft2.ID, "itemCellEmpty", i, 0);
-    }
-
     public static void addItemToOreDictionary(ItemStack stack, final String oreDictName, boolean useWildcardMeta) {
         if (useWildcardMeta) {
             stack = new ItemStack(stack.getItem(), stack.stackSize, GTRecipeBuilder.WILDCARD);

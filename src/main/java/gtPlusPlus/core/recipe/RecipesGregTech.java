@@ -4,6 +4,7 @@ import static gregtech.api.enums.GTValues.RA;
 import static gregtech.api.enums.Mods.Backpack;
 import static gregtech.api.enums.Mods.Baubles;
 import static gregtech.api.enums.Mods.GTPlusPlus;
+import static gregtech.api.enums.Mods.IndustrialCraft2;
 import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
 import static gregtech.api.recipe.RecipeMaps.alloySmelterRecipes;
 import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
@@ -1035,7 +1036,7 @@ public class RecipesGregTech {
 
         // C8H10 = C8H8 + 2H
         GTValues.RA.stdBuilder()
-            .itemInputs(GTUtility.getIntegratedCircuit(17), CI.emptyCells(3))
+            .itemInputs(GTUtility.getIntegratedCircuit(17), ItemList.Cell_Empty.get(3))
             .itemOutputs(
                 ItemUtils.getItemStackOfAmountFromOreDict("cellStyrene", 1),
                 ItemUtils.getItemStackOfAmountFromOreDict("cellHydrogen", 2))
@@ -1071,7 +1072,7 @@ public class RecipesGregTech {
         // Alternative ACETIC ANHYDRIDE recipe for Kevlar Line
         // 2C2H4O2 = C4H6O3 + H2O
         GTValues.RA.stdBuilder()
-            .itemInputs(CI.emptyCells(1))
+            .itemInputs(ItemList.Cell_Empty.get(1))
             .itemOutputs(ItemUtils.getItemStackOfAmountFromOreDict("cellWater", 1))
             .fluidInputs(FluidUtils.getFluidStack("aceticacid", 2_000))
             .fluidOutputs(MaterialMisc.ACETIC_ANHYDRIDE.getFluidStack(1_000))
@@ -1476,14 +1477,14 @@ public class RecipesGregTech {
             .eut(0)
             .addTo(GTRecipeConstants.Fuel);
         RA.stdBuilder()
-            .itemInputs(ItemUtils.getIC2Cell(2))
+            .itemInputs(getModItem(IndustrialCraft2.ID, "itemCellEmpty", 1L, 2))
             .metadata(FUEL_VALUE, 32)
             .metadata(FUEL_TYPE, 2)
             .duration(0)
             .eut(0)
             .addTo(GTRecipeConstants.Fuel);
         RA.stdBuilder()
-            .itemInputs(ItemUtils.getIC2Cell(11))
+            .itemInputs(getModItem(IndustrialCraft2.ID, "itemCellEmpty", 1L, 11))
             .metadata(FUEL_VALUE, 24)
             .metadata(FUEL_TYPE, 2)
             .duration(0)
@@ -1538,7 +1539,7 @@ public class RecipesGregTech {
             .itemOutputs(
                 MaterialMisc.SODIUM_NITRATE.getDust(3),
                 MaterialMisc.POTASSIUM_NITRATE.getDust(2),
-                CI.emptyCells(1))
+                ItemList.Cell_Empty.get(1))
             .duration(6 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(centrifugeRecipes);
@@ -1549,7 +1550,7 @@ public class RecipesGregTech {
         RA.stdBuilder()
             .itemInputs(
                 GTUtility.getIntegratedCircuit(2),
-                CI.emptyCells(1),
+                ItemList.Cell_Empty.get(1),
                 MaterialMisc.SODIUM_NITRATE.getDust(3),
                 MaterialMisc.POTASSIUM_NITRATE.getDust(2))
             .itemOutputs(MaterialMisc.SOLAR_SALT_COLD.getCell(1))

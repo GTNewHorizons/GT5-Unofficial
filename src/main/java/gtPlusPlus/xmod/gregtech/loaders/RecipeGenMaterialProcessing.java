@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
+import gregtech.api.enums.ItemList;
 import net.minecraft.item.ItemStack;
 
 import org.apache.commons.lang3.tuple.Pair;
@@ -243,7 +244,7 @@ public class RecipeGenMaterialProcessing extends RecipeGenBase {
 
                 ItemStack emptyCell = null;
                 if (mCellCount > 0) {
-                    emptyCell = CI.emptyCells(mCellCount);
+                    emptyCell = ItemList.Cell_Empty.get(mCellCount);
                     Logger.MATERIALS("[Dehydrator] Recipe now requires " + mCellCount + " empty cells as input.");
                 }
 

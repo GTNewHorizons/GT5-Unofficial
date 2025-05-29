@@ -231,7 +231,7 @@ public class RecipeLoaderNuclear {
             .itemInputs(
                 ItemUtils.getItemStackOfAmountFromOreDict("cellOxygen", 8),
                 ItemUtils.getItemStackOfAmountFromOreDict("dustLithium7", 16))
-            .itemOutputs(CI.emptyCells(8))
+            .itemOutputs(ItemList.Cell_Empty.get(8))
             .fluidInputs(Materials.Water.getFluid(8_000))
             .fluidOutputs(FluidUtils.getFluidStack("lithiumhydroxide", 48 * INGOTS))
             .duration(5 * MINUTES)
@@ -242,7 +242,7 @@ public class RecipeLoaderNuclear {
         // Hydroxide
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(3), MaterialsElements.getInstance().OXYGEN.getCell(1))
-            .itemOutputs(CI.emptyCells(1))
+            .itemOutputs(ItemList.Cell_Empty.get(1))
             .fluidInputs(MaterialsElements.getInstance().HYDROGEN.getFluidStack(1_000))
             .fluidOutputs(MaterialMisc.HYDROXIDE.getFluidStack(1_000))
             .duration(8 * SECONDS)
@@ -263,7 +263,7 @@ public class RecipeLoaderNuclear {
             .itemInputs(
                 GTUtility.getIntegratedCircuit(3),
                 ItemUtils.getItemStackOfAmountFromOreDict("cellHydrofluoricAcid", 1))
-            .itemOutputs(CI.emptyCells(1))
+            .itemOutputs(ItemList.Cell_Empty.get(1))
             .fluidInputs(MaterialMisc.AMMONIA.getFluidStack(1_000))
             .fluidOutputs(MaterialsFluorides.AMMONIUM_BIFLUORIDE.getFluidStack(4 * INGOTS))
             .duration(20 * SECONDS)
@@ -273,7 +273,7 @@ public class RecipeLoaderNuclear {
         // Ammonium Bifluoride
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(3), aGtHydrofluoricAcid)
-            .itemOutputs(CI.emptyCells(2))
+            .itemOutputs(ItemList.Cell_Empty.get(2))
             .fluidInputs(MaterialMisc.AMMONIA.getFluidStack(1_000))
             .fluidOutputs(MaterialsFluorides.AMMONIUM_BIFLUORIDE.getFluidStack(4 * INGOTS))
             .duration(40 * SECONDS)
@@ -284,7 +284,7 @@ public class RecipeLoaderNuclear {
         // To be deprecated now that it is no longer needed for ammonium bifluoride
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(3), MaterialsElements.getInstance().HYDROGEN.getCell(1))
-            .itemOutputs(CI.emptyCells(1))
+            .itemOutputs(ItemList.Cell_Empty.get(1))
             .fluidInputs(MaterialMisc.AMMONIA.getFluidStack(1_000))
             .fluidOutputs(MaterialMisc.AMMONIUM.getFluidStack(2_000))
             .duration(20 * SECONDS)
@@ -328,7 +328,7 @@ public class RecipeLoaderNuclear {
 
         // Makes Lithium Carbonate
         GTValues.RA.stdBuilder()
-            .itemInputs(CI.emptyCells(12), ItemUtils.getItemStackOfAmountFromOreDict("dustLepidolite", 20))
+            .itemInputs(ItemList.Cell_Empty.get(12), ItemUtils.getItemStackOfAmountFromOreDict("dustLepidolite", 20))
             .itemOutputs(
                 ItemUtils.getItemStackOfAmountFromOreDict("dustPotassium", 1),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Aluminium, 4),
@@ -406,7 +406,7 @@ public class RecipeLoaderNuclear {
         // Inputs use solid rule because they are molten forms of solids
         // Outputs use fluid rule because they are not molten forms of solids
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialsFluorides.BERYLLIUM_HYDROXIDE.getDust(3), CI.emptyCells(2))
+            .itemInputs(MaterialsFluorides.BERYLLIUM_HYDROXIDE.getDust(3), ItemList.Cell_Empty.get(2))
             .itemOutputs(ItemUtils.getItemStackOfAmountFromOreDict("cellWater", 2))
             .fluidInputs(MaterialsFluorides.AMMONIUM_BIFLUORIDE.getFluidStack(8 * INGOTS))
             .fluidOutputs(MaterialsFluorides.AMMONIUM_TETRAFLUOROBERYLLATE.getFluidStack(1_000))
@@ -430,7 +430,7 @@ public class RecipeLoaderNuclear {
         // Industrial strength hydrofluoric acid follows its usual convention where it is twice as dense as regular
         // hydrofluoric acid
         GTValues.RA.stdBuilder()
-            .itemInputs(GTUtility.getIntegratedCircuit(17), CI.emptyCells(3))
+            .itemInputs(GTUtility.getIntegratedCircuit(17), ItemList.Cell_Empty.get(3))
             .itemOutputs(
                 MaterialMisc.AMMONIA.getCell(2),
                 ItemUtils.getItemStackOfAmountFromOreDict("cellHydrofluoricAcid", 1),

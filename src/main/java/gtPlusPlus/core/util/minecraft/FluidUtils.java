@@ -272,7 +272,7 @@ public class FluidUtils {
                 3,
                 10000,
                 temp,
-                ItemUtils.getEmptyCell(),
+                ItemList.Cell_Empty.get(1),
                 1000,
                 false);
         }
@@ -458,7 +458,7 @@ public class FluidUtils {
             return aStack.getItem()
                 .getContainerItem(aStack);
         }
-        if (equal(aStack, ItemUtils.getEmptyCell(), true)) {
+        if (equal(aStack, ItemList.Cell_Empty.get(1), true)) {
             return null;
         }
         if (aCheckIFluidContainerItems && (aStack.getItem() instanceof IFluidContainerItem)
@@ -526,7 +526,7 @@ public class FluidUtils {
                 4,
                 MeltingPoint,
                 null,
-                ItemUtils.getEmptyCell(),
+                ItemList.Cell_Empty.get(1),
                 1000,
                 aGenerateCell);
 
@@ -571,7 +571,7 @@ public class FluidUtils {
                 4,
                 MeltingPoint,
                 null,
-                ItemUtils.getEmptyCell(),
+                ItemList.Cell_Empty.get(1),
                 1000,
                 aGenerateCell);
         } else {
@@ -593,7 +593,7 @@ public class FluidUtils {
                 3,
                 MeltingPoint,
                 null,
-                ItemUtils.getEmptyCell(),
+                ItemList.Cell_Empty.get(1),
                 1000,
                 aGenerateCell);
         } else {
