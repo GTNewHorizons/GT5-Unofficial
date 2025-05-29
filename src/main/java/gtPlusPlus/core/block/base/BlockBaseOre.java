@@ -58,7 +58,7 @@ public class BlockBaseOre extends BasicBlock implements ITexturedBlock {
                 Utils.sanitizeString("ore" + Utils.sanitizeString(this.blockMaterial.getLocalizedName())));
             GTOreDictUnificator.registerOre(
                 "ore" + Utils.sanitizeString(this.blockMaterial.getLocalizedName()),
-                ItemUtils.getSimpleStack(this));
+                new ItemStack(this));
         } catch (Throwable t) {
             t.printStackTrace();
         }

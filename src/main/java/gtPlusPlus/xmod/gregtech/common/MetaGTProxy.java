@@ -59,7 +59,7 @@ public class MetaGTProxy {
 
             Block b = BlocksItems.getFluidBlock(InternalName.fluidHotWater);
             if (b != null) {
-                LanguageRegistry.addName(ItemUtils.getSimpleStack(b), aNewHeatedWaterName);
+                LanguageRegistry.addName(new ItemStack(b), aNewHeatedWaterName);
                 LanguageRegistry.instance()
                     .addStringLocalization(b.getUnlocalizedName(), aNewHeatedWaterName);
                 GTLanguageManager.addStringLocalization(b.getUnlocalizedName(), aNewHeatedWaterName);

@@ -159,7 +159,7 @@ public class CI {
     public static void init() {
         // Set Explosives
         explosivePowderKeg = ItemList.Block_Powderbarrel.get(1);
-        explosiveTNT = ItemUtils.getSimpleStack(Blocks.tnt).copy();
+        explosiveTNT = new ItemStack(Blocks.tnt).copy();
         explosiveITNT = Ic2Items.industrialTnt.copy();
 
         // Gear box Casings

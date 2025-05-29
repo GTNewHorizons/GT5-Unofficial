@@ -32,25 +32,25 @@ public class BOPBlockRegistrator {
         log_Rainforest = new LogRainforestTree();
         leaves_Rainforest = new LeavesRainforestTree();
         sapling_Rainforest = new SaplingRainforestTree();
-        ItemUtils.addItemToOreDictionary(ItemUtils.getSimpleStack(log_Rainforest), "logWood", true);
-        ItemUtils.addItemToOreDictionary(ItemUtils.getSimpleStack(leaves_Rainforest), "treeLeaves", true);
-        ItemUtils.addItemToOreDictionary(ItemUtils.getSimpleStack(sapling_Rainforest), "treeSapling", true);
+        ItemUtils.addItemToOreDictionary(new ItemStack(log_Rainforest), "logWood", true);
+        ItemUtils.addItemToOreDictionary(new ItemStack(leaves_Rainforest), "treeLeaves", true);
+        ItemUtils.addItemToOreDictionary(new ItemStack(sapling_Rainforest), "treeSapling", true);
     }
 
     private static void registerTree_Pine() {
         log_Pine = new LogPineTree();
         leaves_Pine = new LeavesPineTree();
         sapling_Pine = new SaplingPineTree();
-        ItemUtils.addItemToOreDictionary(ItemUtils.getSimpleStack(log_Pine), "logWood", true);
-        ItemUtils.addItemToOreDictionary(ItemUtils.getSimpleStack(leaves_Pine), "treeLeaves", true);
-        ItemUtils.addItemToOreDictionary(ItemUtils.getSimpleStack(sapling_Pine), "treeSapling", true);
+        ItemUtils.addItemToOreDictionary(new ItemStack(log_Pine), "logWood", true);
+        ItemUtils.addItemToOreDictionary(new ItemStack(leaves_Pine), "treeLeaves", true);
+        ItemUtils.addItemToOreDictionary(new ItemStack(sapling_Pine), "treeSapling", true);
     }
 
     public static void recipes() {
         // Rainforest Oak
-        addRecipeLogsToPlanks(ItemUtils.getSimpleStack(log_Rainforest));
+        addRecipeLogsToPlanks(new ItemStack(log_Rainforest));
         // Pine
-        addRecipeLogsToPlanks(ItemUtils.getSimpleStack(log_Pine));
+        addRecipeLogsToPlanks(new ItemStack(log_Pine));
     }
 
     public static void addRecipeLogsToPlanks(ItemStack aStack) {

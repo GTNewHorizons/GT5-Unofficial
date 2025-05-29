@@ -76,7 +76,7 @@ public class ThreadAspectScanner extends Thread {
                 String s = (String) iterator.next();
                 Block block = (Block) Block.blockRegistry.getObject(s);
                 if (block != null) {
-                    tryCacheObject(ItemUtils.getSimpleStack(block));
+                    tryCacheObject(new ItemStack(block));
                     mBlocksCounter++;
                 }
             }

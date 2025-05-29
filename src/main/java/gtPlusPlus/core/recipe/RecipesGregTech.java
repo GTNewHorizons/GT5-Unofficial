@@ -733,21 +733,21 @@ public class RecipesGregTech {
         }
 
         RA.stdBuilder()
-            .itemInputs(ItemUtils.getSimpleStack(BOPBlockRegistrator.sapling_Rainforest))
+            .itemInputs(new ItemStack(BOPBlockRegistrator.sapling_Rainforest))
             .fluidInputs(Materials.Water.getFluid(100))
             .fluidOutputs(Materials.Biomass.getFluid(100))
             .duration(1 * MINUTES)
             .eut(3)
             .addTo(brewingRecipes);
         RA.stdBuilder()
-            .itemInputs(ItemUtils.getSimpleStack(BOPBlockRegistrator.sapling_Rainforest))
+            .itemInputs(new ItemStack(BOPBlockRegistrator.sapling_Rainforest))
             .fluidInputs(Materials.Honey.getFluid(100))
             .fluidOutputs(Materials.Biomass.getFluid(100))
             .duration(1 * MINUTES)
             .eut(3)
             .addTo(brewingRecipes);
         RA.stdBuilder()
-            .itemInputs(ItemUtils.getSimpleStack(BOPBlockRegistrator.sapling_Rainforest))
+            .itemInputs(new ItemStack(BOPBlockRegistrator.sapling_Rainforest))
             .fluidInputs(FluidUtils.getFluidStack("juice", 100))
             .fluidOutputs(Materials.Biomass.getFluid(100))
             .duration(1 * MINUTES)
@@ -1017,7 +1017,7 @@ public class RecipesGregTech {
         // Process Waste Water
         GTValues.RA.stdBuilder()
             .itemOutputs(
-                ItemUtils.getSimpleStack(Blocks.dirt),
+                new ItemStack(Blocks.dirt),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Clay, 1),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Iron, 1L),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Copper, 1L),

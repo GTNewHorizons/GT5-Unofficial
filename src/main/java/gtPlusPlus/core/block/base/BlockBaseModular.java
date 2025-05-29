@@ -80,13 +80,13 @@ public class BlockBaseModular extends BasicBlock {
             Utils.sanitizeString(blockType.getTexture() + unlocalizedName));
         if (fx == 0) {
             GTOreDictUnificator
-                .registerOre("block" + unifyMaterialName(thisBlockMaterial), ItemUtils.getSimpleStack(this));
+                .registerOre("block" + unifyMaterialName(thisBlockMaterial), new ItemStack(this));
         } else if (fx == 1) {
             GTOreDictUnificator
-                .registerOre("frameGt" + unifyMaterialName(thisBlockMaterial), ItemUtils.getSimpleStack(this));
+                .registerOre("frameGt" + unifyMaterialName(thisBlockMaterial), new ItemStack(this));
         } else if (fx == 2) {
             GTOreDictUnificator
-                .registerOre("frameGt" + unifyMaterialName(thisBlockMaterial), ItemUtils.getSimpleStack(this));
+                .registerOre("frameGt" + unifyMaterialName(thisBlockMaterial), new ItemStack(this));
         }
     }
 
@@ -113,7 +113,7 @@ public class BlockBaseModular extends BasicBlock {
             : (fx == 1 ? OrePrefixes.frameGt.name() : OrePrefixes.ore.name()));
         ItemStack x = aMap.get(aKey);
         if (x == null) {
-            aMap.put(aKey, ItemUtils.getSimpleStack(this));
+            aMap.put(aKey, new ItemStack(this));
             Logger.MATERIALS("Registering a material component. Item: [" + aName + "] Map: [" + aKey + "]");
             Material.mComponentMap.put(aName, aMap);
         } else {

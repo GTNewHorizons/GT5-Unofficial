@@ -99,17 +99,17 @@ public class GregtechHiAmpTransformer {
         ItemStack mItem_3;
 
         mItem_1 = ItemUtils.simpleMetaStack(
-            ItemUtils.getSimpleStack(GregTechAPI.sBlockCasings5)
+            new ItemStack(GregTechAPI.sBlockCasings5)
                 .getItem(),
             3,
             1);
         mItem_2 = ItemUtils.simpleMetaStack(
-            ItemUtils.getSimpleStack(GregTechAPI.sBlockCasings5)
+            new ItemStack(GregTechAPI.sBlockCasings5)
                 .getItem(),
             4,
             1);
         mItem_3 = ItemUtils.simpleMetaStack(
-            ItemUtils.getSimpleStack(GregTechAPI.sBlockCasings5)
+            new ItemStack(GregTechAPI.sBlockCasings5)
                 .getItem(),
             9,
             1);

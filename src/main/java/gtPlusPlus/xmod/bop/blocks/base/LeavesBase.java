@@ -36,7 +36,7 @@ public class LeavesBase extends BlockLeaves {
         String blockName = "block" + Utils.sanitizeString(blockNameLocalized) + "Leaves";
         GameRegistry.registerBlock(this, ItemBlock.class, blockName);
         this.setBlockName(blockName);
-        ItemUtils.addItemToOreDictionary(ItemUtils.getSimpleStack(this), "treeLeaves", true);
+        ItemUtils.addItemToOreDictionary(new ItemStack(this), "treeLeaves", true);
         this.setCreativeTab(AddToCreativeTab.tabBOP);
         Blocks.fire.setFireInfo(this, 80, 150);
     }

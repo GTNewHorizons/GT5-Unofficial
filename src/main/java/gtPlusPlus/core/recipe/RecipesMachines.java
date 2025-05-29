@@ -299,7 +299,7 @@ public class RecipesMachines {
         for (int i = 0; i < 8; i++) {
             RecipeUtils.addShapedRecipe(
                 ItemUtils.getOrePrefixStack(OrePrefixes.plate, CI.tieredMaterials[aTier], 1),
-                ItemUtils.getSimpleStack(Blocks.crafting_table),
+                new ItemStack(Blocks.crafting_table),
                 ItemUtils.getOrePrefixStack(OrePrefixes.plate, CI.tieredMaterials[aTier], 1),
                 CI.circuits[aTier],
                 CI.getTieredMachineHull(aTier),
@@ -962,7 +962,7 @@ public class RecipesMachines {
                 ItemList.Hull_MV.get(1),
                 GTOreDictUnificator.get(OrePrefixes.circuit, Materials.LV, 2),
                 GTOreDictUnificator.get(OrePrefixes.circuit, Materials.MV, 2))
-            .itemOutputs(ItemUtils.getSimpleStack(ModBlocks.blockCircuitProgrammer))
+            .itemOutputs(new ItemStack(ModBlocks.blockCircuitProgrammer))
             .fluidInputs(MaterialsElements.getInstance().IRON.getFluidStack(4 * INGOTS))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_LV)
@@ -975,8 +975,8 @@ public class RecipesMachines {
                     ItemList.Hull_LV.get(1),
                     GTUtility.copyAmount(32, plateRubber),
                     ItemUtils.getItemStackOfAmountFromOreDict("plateDenseLead", 9),
-                    ItemUtils.getSimpleStack(Blocks.chest))
-                .itemOutputs(ItemUtils.getSimpleStack(ModBlocks.blockDecayablesChest))
+                    new ItemStack(Blocks.chest))
+                .itemOutputs(new ItemStack(ModBlocks.blockDecayablesChest))
                 .fluidInputs(MaterialsElements.getInstance().LEAD.getFluidStack(16 * INGOTS))
                 .duration(1 * MINUTES + 30 * SECONDS)
                 .eut(60)
@@ -1004,8 +1004,8 @@ public class RecipesMachines {
                 ItemList.Hull_LV.get(1),
                 GTOreDictUnificator.get(OrePrefixes.circuit, Materials.LV, 4),
                 ItemUtils.getItemStackOfAmountFromOreDict("plateTumbaga", 8),
-                ItemUtils.getSimpleStack(Blocks.jukebox))
-            .itemOutputs(ItemUtils.getSimpleStack(ModBlocks.blockCustomJukebox))
+                new ItemStack(Blocks.jukebox))
+            .itemOutputs(new ItemStack(ModBlocks.blockCustomJukebox))
             .fluidInputs(MaterialsElements.getInstance().COPPER.getFluidStack(2 * INGOTS))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_LV)
@@ -1018,7 +1018,7 @@ public class RecipesMachines {
                 CI.getTieredComponent(OrePrefixes.pipeMedium, 2, 2),
                 MaterialsAlloy.EGLIN_STEEL.getPlate(4),
                 MaterialsAlloy.POTIN.getScrew(6))
-            .itemOutputs(ItemUtils.getSimpleStack(ModBlocks.blockPooCollector))
+            .itemOutputs(new ItemStack(ModBlocks.blockPooCollector))
             .fluidInputs(MaterialsAlloy.TUMBAGA.getFluidStack(4 * INGOTS))
             .duration(60 * SECONDS)
             .eut(TierEU.RECIPE_LV)
@@ -1027,7 +1027,7 @@ public class RecipesMachines {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 CI.getTieredMachineHull(-1),
-                ItemUtils.getSimpleStack(ModBlocks.blockPooCollector),
+                new ItemStack(ModBlocks.blockPooCollector),
                 ItemList.FluidRegulator_IV.get(2),
                 CI.getTieredComponent(OrePrefixes.pipeHuge, 6, 4),
                 CI.getTieredComponent(OrePrefixes.screw, 6, 16))
@@ -1149,7 +1149,7 @@ public class RecipesMachines {
             MaterialsAlloy.TUMBAGA.getPlate(1),
             "plateBronze",
             "plateTin",
-            ItemUtils.getSimpleStack(Blocks.hopper),
+            new ItemStack(Blocks.hopper),
             "plateTin",
             "plateBronze",
             MaterialsAlloy.TUMBAGA.getPlate(1),
@@ -1162,7 +1162,7 @@ public class RecipesMachines {
             "plateTin",
             "plateBronze",
             MaterialsAlloy.TUMBAGA.getPlate(1),
-            ItemUtils.getSimpleStack(Blocks.hopper),
+            new ItemStack(Blocks.hopper),
             MaterialsAlloy.TUMBAGA.getPlate(1),
             "plateBronze",
             "plateTin",
@@ -1174,7 +1174,7 @@ public class RecipesMachines {
             .itemInputs(
                 GTUtility.getIntegratedCircuit(17),
                 CI.getTieredMachineHull(2),
-                ItemUtils.getSimpleStack(ModBlocks.blockCircuitProgrammer),
+                new ItemStack(ModBlocks.blockCircuitProgrammer),
                 VolumetricFlaskHelper.getVolumetricFlask(8),
                 CI.getTieredComponent(OrePrefixes.pipeSmall, 2, 2),
                 CI.getPlate(2, 4))
@@ -1935,7 +1935,7 @@ public class RecipesMachines {
             "circuitMaster",
             "plateTitanium",
             "circuitMaster",
-            ItemUtils.getSimpleStack(Blocks.ender_chest),
+            new ItemStack(Blocks.ender_chest),
             "circuitMaster",
             "plateTitanium",
             GregtechItemList.Gregtech_Computer_Cube.get(1),
@@ -1947,7 +1947,7 @@ public class RecipesMachines {
             "circuitElite",
             "plateTitanium",
             "circuitElite",
-            ItemUtils.getSimpleStack(Blocks.ender_chest),
+            new ItemStack(Blocks.ender_chest),
             "circuitElite",
             "plateTitanium",
             ItemList.Hull_EV.get(1),
@@ -2559,7 +2559,7 @@ public class RecipesMachines {
                 CI.getTieredComponent(OrePrefixes.circuit, 2, 8),
                 CI.getTieredComponent(OrePrefixes.screw, 3, 8),
                 CI.getTieredComponent(OrePrefixes.plate, 5, 4))
-            .itemOutputs(ItemUtils.getSimpleStack(ModBlocks.blockProjectTable))
+            .itemOutputs(new ItemStack(ModBlocks.blockProjectTable))
             .fluidInputs(CI.getAlternativeTieredFluid(5, 4 * INGOTS))
             .duration(1 * MINUTES + 30 * SECONDS)
             .eut(TierEU.RECIPE_EV)
@@ -3394,7 +3394,7 @@ public class RecipesMachines {
                     CI.getSensor(tier, 1),
                     CI.getRobotArm(tier, 2),
                     CI.getBolt(tier, 16),
-                    ItemUtils.getSimpleStack(Blocks.chest))
+                    new ItemStack(Blocks.chest))
                 .itemOutputs(mChiselBuses[tier - 1])
                 .fluidInputs(CI.getAlternativeTieredFluid(tier, 2 * INGOTS))
                 .duration(60 * SECONDS)
@@ -3421,7 +3421,7 @@ public class RecipesMachines {
                     CI.getSensor(componentTier, 1),
                     CI.getFluidRegulator(componentTier, 1),
                     CI.getTieredComponent(OrePrefixes.circuit, componentTier + 1, 4),
-                    ItemUtils.getSimpleStack(Blocks.chest))
+                    new ItemStack(Blocks.chest))
                 .itemOutputs(mSolidifierHatches[i])
                 .fluidInputs(CI.getTieredFluid(componentTier, 2 * INGOTS))
                 .duration(30 * SECONDS)

@@ -59,7 +59,7 @@ public class LocaleUtils {
 
                 if (B != null) {
                     if (B instanceof Block R) {
-                        ItemStack IS = ItemUtils.getSimpleStack(R);
+                        ItemStack IS = new ItemStack(R);
                         String modid = ItemUtils.getModId(IS);
                         if (modid.equals(GTPlusPlus.ID) || modid.equals(GTPlusPlusEverglades.ID)) {
                             String S = "[" + modid + "] " + IS.getUnlocalizedName() + ".name=";

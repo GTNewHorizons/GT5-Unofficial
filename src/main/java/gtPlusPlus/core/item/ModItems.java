@@ -1130,7 +1130,7 @@ public final class ModItems {
         // A Block of Meat.
         if (ItemUtils.getItemStackOfAmountFromOreDictNoBroken("blockMeatRaw", 1) == null) {
             blockRawMeat = new BlockBaseModular(MaterialsOther.MEAT, BlockTypes.STANDARD);
-            ItemUtils.registerFuel(ItemUtils.getSimpleStack(blockRawMeat), 900);
+            ItemUtils.registerFuel(new ItemStack(blockRawMeat), 900);
         }
 
         // A plate of Vanadium.

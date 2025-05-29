@@ -44,7 +44,7 @@ public class SaplingBase extends BlockSapling {
         String blockName = "block" + Utils.sanitizeString(blockNameLocalized);
         GameRegistry.registerBlock(this, ItemBlock.class, blockName);
         this.setBlockName(blockName);
-        ItemUtils.addItemToOreDictionary(ItemUtils.getSimpleStack(this), "treeSapling", true);
+        ItemUtils.addItemToOreDictionary(new ItemStack(this), "treeSapling", true);
         this.setCreativeTab(AddToCreativeTab.tabBOP);
         this.setStepSound(Block.soundTypeGrass);
     }
