@@ -658,10 +658,6 @@ public class ItemUtils {
         return aOutput;
     }
 
-    public static ItemStack getNullStack() {
-        return GTValues.NI;
-    }
-
     public static ItemStack depleteStack(ItemStack aStack) {
         return depleteStack(aStack, 1);
     }
@@ -675,7 +671,7 @@ public class ItemUtils {
                 return aDepStack;
             }
         }
-        return getNullStack();
+        return null;
     }
 
     public static boolean isMillingBall(ItemStack aStack) {
