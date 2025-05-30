@@ -31,12 +31,14 @@ import org.jetbrains.annotations.Nullable;
 import gregtech.api.enums.HeatingCoilLevel;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Textures;
+import gregtech.api.interfaces.IBlockWithClientMeta;
 import gregtech.api.interfaces.IBlockWithTextures;
 import gregtech.api.interfaces.IHeatingCoil;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.render.TextureFactory;
 import gregtech.common.config.Client;
+import gregtech.common.data.GTCoilTracker;
 import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.render.GTRendererBlock;
 
@@ -44,7 +46,8 @@ import gregtech.common.render.GTRendererBlock;
  * The casings are split into separate files because they are registered as regular blocks, and a regular block can have
  * 16 subtypes at most.
  */
-public class BlockCasings5 extends BlockCasingsAbstract implements IHeatingCoil, IBlockWithTextures {
+public class BlockCasings5 extends BlockCasingsAbstract
+    implements IHeatingCoil, IBlockWithTextures, IBlockWithClientMeta {
 
     public static final Supplier<String> COIL_HEAT_TOOLTIP = translatedText("gt.coilheattooltip");
     public static final Supplier<String> COIL_UNIT_TOOLTIP = translatedText("gt.coilunittooltip");
@@ -86,6 +89,15 @@ public class BlockCasings5 extends BlockCasingsAbstract implements IHeatingCoil,
     }
 
     @Override
+    public int getClientMeta(World world, int x, int y, int z) {
+        int meta = world.getBlockMetadata(x, y, z);
+
+        if (GTCoilTracker.isCoilActive(world, x, y, z)) meta += ACTIVE_OFFSET;
+
+        return meta;
+    }
+
+    @Override
     public int getTextureIndex(int aMeta) {
         return (1 << 7) | (aMeta % ACTIVE_OFFSET);
     }
@@ -96,7 +108,6 @@ public class BlockCasings5 extends BlockCasingsAbstract implements IHeatingCoil,
 
         if (Client.render.useOldCoils) {
             IIconContainer icon = switch (metadata % ACTIVE_OFFSET) {
-                case 0 -> Textures.BlockIcons.MACHINE_COIL_CUPRONICKEL;
                 case 1 -> Textures.BlockIcons.MACHINE_COIL_KANTHAL;
                 case 2 -> Textures.BlockIcons.MACHINE_COIL_NICHROME;
                 case 3 -> Textures.BlockIcons.MACHINE_COIL_TUNGSTENSTEEL;
@@ -116,7 +127,6 @@ public class BlockCasings5 extends BlockCasingsAbstract implements IHeatingCoil,
             textures.add(TextureFactory.of(icon));
         } else {
             IIconContainer background = switch (metadata % ACTIVE_OFFSET) {
-                case 0 -> Textures.BlockIcons.MACHINE_COIL_CUPRONICKEL_BACKGROUND;
                 case 1 -> Textures.BlockIcons.MACHINE_COIL_KANTHAL_BACKGROUND;
                 case 2 -> Textures.BlockIcons.MACHINE_COIL_NICHROME_BACKGROUND;
                 case 3 -> Textures.BlockIcons.MACHINE_COIL_TUNGSTENSTEEL_BACKGROUND;
@@ -141,7 +151,6 @@ public class BlockCasings5 extends BlockCasingsAbstract implements IHeatingCoil,
 
             if (metadata >= ACTIVE_OFFSET) {
                 IIconContainer foreground = switch (metadata % ACTIVE_OFFSET) {
-                    case 0 -> Textures.BlockIcons.MACHINE_COIL_CUPRONICKEL_FOREGROUND;
                     case 1 -> Textures.BlockIcons.MACHINE_COIL_KANTHAL_FOREGROUND;
                     case 2 -> Textures.BlockIcons.MACHINE_COIL_NICHROME_FOREGROUND;
                     case 3 -> Textures.BlockIcons.MACHINE_COIL_TUNGSTENSTEEL_FOREGROUND;
@@ -206,7 +215,6 @@ public class BlockCasings5 extends BlockCasingsAbstract implements IHeatingCoil,
 
     public static int getMetaFromCoilHeat(HeatingCoilLevel level) {
         return switch (level) {
-            case LV -> 0;
             case MV -> 1;
             case HV -> 2;
             case EV -> 3;

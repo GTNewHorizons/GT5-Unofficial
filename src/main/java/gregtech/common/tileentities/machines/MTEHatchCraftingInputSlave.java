@@ -33,7 +33,7 @@ import gregtech.api.render.TextureFactory;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
-public class MTEHatchCraftingInputSlave extends MTEHatchInputBus implements IDualInputHatch, IDataCopyable {
+public class MTEHatchCraftingInputSlave extends MTEHatchInputBus implements IDualInputHatchWithPattern, IDataCopyable {
 
     public static final String COPIED_DATA_IDENTIFIER = "craftingInputProxy";
     private MTEHatchCraftingInputME master; // use getMaster() to access
@@ -152,7 +152,7 @@ public class MTEHatchCraftingInputSlave extends MTEHatchInputBus implements IDua
     }
 
     @Override
-    public Iterator<MTEHatchCraftingInputME.PatternSlot> inventories() {
+    public Iterator<MTEHatchCraftingInputME.PatternSlot<MTEHatchCraftingInputME>> inventories() {
         return getMaster() != null ? getMaster().inventories() : Collections.emptyIterator();
     }
 

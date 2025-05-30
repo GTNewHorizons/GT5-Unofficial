@@ -465,6 +465,7 @@ public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge> i
         logic.setAvailableVoltage(getMaxInputEu());
         logic.setAvailableAmperage(1);
         logic.setAmperageOC(false);
+        logic.setUnlimitedTierSkips();
     }
 
     private int timer = 0;
@@ -567,21 +568,6 @@ public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge> i
     }
 
     @Override
-    public int getMaxEfficiency(ItemStack aStack) {
-        return 10000;
-    }
-
-    @Override
-    public int getDamageToComponent(ItemStack aStack) {
-        return 0;
-    }
-
-    @Override
-    public boolean explodesOnComponentBreak(ItemStack aStack) {
-        return false;
-    }
-
-    @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
         int built = survivalBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 4, 37, 1, elementBudget, env, false, true);
@@ -647,6 +633,7 @@ public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge> i
             .addInfo("If a recipe's tier is lower than the tier of the Nano Forge")
             .addInfo("it gains " + EnumChatFormatting.RED + "perfect overclock" + EnumChatFormatting.GRAY + ".")
             .addTecTechHatchInfo()
+            .addUnlimitedTierSkips()
             .beginStructureBlock(30, 38, 13, false)
             .addStructureInfo("Tier " + EnumChatFormatting.DARK_PURPLE + 1 + EnumChatFormatting.GRAY)
             .addStructureInfo(

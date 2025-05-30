@@ -40,11 +40,7 @@ public class IonParticles extends BaseItemParticle {
             MetaToNameMap.put(key, Utils.sanitizeString(s.toLowerCase()));
             Materials m = Materials.get(s);
             int aColour = 0;
-            if (m == null) {
-                aColour = Utils.rgbtoHexValue(128, 128, 128);
-            } else {
-                aColour = Utils.rgbtoHexValue(m.mRGBa[0], m.mRGBa[1], m.mRGBa[2]);
-            }
+            aColour = Utils.rgbtoHexValue(m.mRGBa[0], m.mRGBa[1], m.mRGBa[2]);
             aColourMap.put(key++, aColour);
         }
     }

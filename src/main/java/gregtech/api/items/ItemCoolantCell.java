@@ -1,12 +1,14 @@
 package gregtech.api.items;
 
+import static net.minecraft.util.StatCollector.translateToLocal;
+import static net.minecraft.util.StatCollector.translateToLocalFormatted;
+
 import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
 
 import gregtech.api.GregTechAPI;
 import ic2.core.util.StackUtil;
@@ -63,10 +65,10 @@ public class ItemCoolantCell extends GTGenericItem {
         };
         aList.add(
             EnumChatFormatting.WHITE
-                + String.format(transItem("000", "Stored Heat: %s"), "" + color + getHeatOfStack(aStack)));
+                + translateToLocalFormatted("gt.item.desc.stored_heat", "" + color + getHeatOfStack(aStack)));
         if (getControlTagOfStack(aStack) == 1) {
-            aList.add(StatCollector.translateToLocal("ic2.reactoritem.heatwarning.line1"));
-            aList.add(StatCollector.translateToLocal("ic2.reactoritem.heatwarning.line2"));
+            aList.add(translateToLocal("ic2.reactoritem.heatwarning.line1"));
+            aList.add(translateToLocal("ic2.reactoritem.heatwarning.line2"));
         }
     }
 
