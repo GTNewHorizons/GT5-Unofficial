@@ -1,14 +1,10 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing;
 
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
 import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.InputBus;
 import static gregtech.api.enums.HatchElement.Maintenance;
 import static gregtech.api.enums.HatchElement.Muffler;
 import static gregtech.api.enums.HatchElement.OutputBus;
-import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 
 import java.util.List;
 import java.util.stream.Stream;
@@ -20,11 +16,6 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.FluidStack;
-
-import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
-import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
-import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
-import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.enums.SoundResource;
 import gregtech.api.interfaces.IIconContainer;
@@ -41,26 +32,40 @@ import gregtech.common.pollution.PollutionConfig;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchChiselBus;
-import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
+import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.SimpleCuboidMultiblockBase;
 import team.chisel.carving.Carving;
 
-public class MTEIndustrialChisel extends GTPPMultiBlockBase<MTEIndustrialChisel> implements ISurvivalConstructable {
-
-    private int mCasing;
+public class MTEIndustrialChisel extends SimpleCuboidMultiblockBase {
 
     private ItemStack target;
-    private static IStructureDefinition<MTEIndustrialChisel> STRUCTURE_DEFINITION = null;
     private ItemStack mInputCache;
     private ItemStack mOutputCache;
     private GTRecipe mCachedRecipe;
 
     public MTEIndustrialChisel(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
+        initStructure();
     }
 
     public MTEIndustrialChisel(String aName) {
         super(aName);
+        initStructure();
+    }
+
+    protected void initStructure() {
+        setWidth(3);
+        setHeight(3);
+        setMinLength(3);
+        setMaxLength(12);
+
+        setMinCasingsBase(0);
+        setMinCasingsPerLayer(2);
+
+        setCasingTextureIndex(90);
+        setCasingBlock(ModBlocks.blockCasings5Misc, 5);
+
+        setValidHatches(InputBus, OutputBus, Energy, Maintenance, Muffler);
     }
 
     @Override
@@ -82,60 +87,10 @@ public class MTEIndustrialChisel extends GTPPMultiBlockBase<MTEIndustrialChisel>
             .addInfo("You can also set a target block in each Chisel Input Bus and use them as an Input Bus")
             .addInfo("If no target is provided for common buses, the result of the first chisel is used")
             .addInfo("Speed: +200% | EU Usage: 75% | Parallel: Tier x 16")
-            .addPollutionAmount(getPollutionPerSecond(null))
-            .beginStructureBlock(3, 3, 3, true)
-            .addController("Front center")
-            .addCasingInfoMin("Sturdy Printer Casing", 6, false)
-            .addInputBus("Any casing", 1)
-            .addOutputBus("Any casing", 1)
-            .addEnergyHatch("Any casing", 1)
-            .addMaintenanceHatch("Any casing", 1)
-            .addMufflerHatch("Any casing", 1)
-            .toolTipFinisher();
+            .addPollutionAmount(getPollutionPerSecond(null));
+        addStructureInfoToTooltip(tt);
+        tt.toolTipFinisher();
         return tt;
-    }
-
-    @Override
-    public IStructureDefinition<MTEIndustrialChisel> getStructureDefinition() {
-        if (STRUCTURE_DEFINITION == null) {
-            STRUCTURE_DEFINITION = StructureDefinition.<MTEIndustrialChisel>builder()
-                .addShape(
-                    mName,
-                    transpose(
-                        // spotless:off
-                                    new String[][] {
-                                            { "CCC", "CCC", "CCC" },
-                                            { "C~C", "C-C", "CCC" },
-                                            { "CCC", "CCC", "CCC" },
-                                    }))
-                                    // spotless:on
-                .addElement(
-                    'C',
-                    buildHatchAdder(MTEIndustrialChisel.class)
-                        .atLeast(InputBus, OutputBus, Maintenance, Energy, Muffler)
-                        .casingIndex(90)
-                        .dot(1)
-                        .buildAndChain(onElementPass(x -> ++x.mCasing, ofBlock(ModBlocks.blockCasings5Misc, 5))))
-                .build();
-        }
-        return STRUCTURE_DEFINITION;
-    }
-
-    @Override
-    public void construct(ItemStack stackSize, boolean hintsOnly) {
-        buildPiece(mName, stackSize, hintsOnly, 1, 1, 0);
-    }
-
-    @Override
-    public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
-        if (mMachine) return -1;
-        return survivalBuildPiece(mName, stackSize, 1, 1, 0, elementBudget, env, false, true);
-    }
-
-    @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        mCasing = 0;
-        return checkPiece(mName, 1, 1, 0) && mCasing >= 6 && checkHatch();
     }
 
     @Override
@@ -156,11 +111,6 @@ public class MTEIndustrialChisel extends GTPPMultiBlockBase<MTEIndustrialChisel>
     @Override
     protected IIconContainer getInactiveGlowOverlay() {
         return TexturesGtBlock.oMCAIndustrialChiselGlow;
-    }
-
-    @Override
-    protected int getCasingTextureId() {
-        return 90;
     }
 
     private boolean hasValidCache(ItemStack aStack, ItemStack aSpecialSlot, boolean aClearOnFailure) {

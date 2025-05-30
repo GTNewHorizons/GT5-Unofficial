@@ -1,14 +1,10 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing;
 
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
 import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.InputBus;
 import static gregtech.api.enums.HatchElement.Maintenance;
 import static gregtech.api.enums.HatchElement.Muffler;
 import static gregtech.api.enums.HatchElement.OutputBus;
-import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static net.minecraft.util.StatCollector.translateToLocal;
 import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
@@ -29,10 +25,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
 
-import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
-import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
-import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.enums.SoundResource;
 import gregtech.api.gui.modularui.GTUITextures;
@@ -47,16 +40,13 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.pollution.PollutionConfig;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
-import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
+import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.SimpleCuboidMultiblockBase;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.gui.MTEIndustrialPlatePressGui;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
-public class MTEIndustrialPlatePress extends GTPPMultiBlockBase<MTEIndustrialPlatePress>
-    implements ISurvivalConstructable {
-
-    private int mCasing;
+public class MTEIndustrialPlatePress extends SimpleCuboidMultiblockBase {
 
     private static final int MACHINEMODE_BENDER = 0;
     private static final int MACHINEMODE_FORMER = 1;
@@ -65,10 +55,27 @@ public class MTEIndustrialPlatePress extends GTPPMultiBlockBase<MTEIndustrialPla
 
     public MTEIndustrialPlatePress(final int aID, final String aName, final String aNameRegional) {
         super(aID, aName, aNameRegional);
+        initStructure();
     }
 
     public MTEIndustrialPlatePress(final String aName) {
         super(aName);
+        initStructure();
+    }
+
+    protected void initStructure() {
+        setWidth(3);
+        setHeight(3);
+        setMinLength(3);
+        setMaxLength(12);
+
+        setMinCasingsBase(0);
+        setMinCasingsPerLayer(2);
+
+        setCasingTextureIndex(50);
+        setCasingBlock(ModBlocks.blockCasingsMisc, 4);
+
+        setValidHatches(InputBus, OutputBus, Energy, Maintenance, Muffler);
     }
 
     @Override
@@ -89,54 +96,10 @@ public class MTEIndustrialPlatePress extends GTPPMultiBlockBase<MTEIndustrialPla
             .addInfo("Processes four items per voltage tier")
             .addInfo("Circuit for recipe goes in the Input Bus")
             .addInfo("Each Input Bus can have a different Circuit/Shape!")
-            .addPollutionAmount(getPollutionPerSecond(null))
-            .beginStructureBlock(3, 3, 3, true)
-            .addController("Front Center")
-            .addCasingInfoMin("Material Press Machine Casings", 6, false)
-            .addInputBus("Any Casing", 1)
-            .addOutputBus("Any Casing", 1)
-            .addEnergyHatch("Any Casing", 1)
-            .addMaintenanceHatch("Any Casing", 1)
-            .addMufflerHatch("Any Casing", 1)
-            .toolTipFinisher();
+            .addPollutionAmount(getPollutionPerSecond(null));
+        addStructureInfoToTooltip(tt);
+        tt.toolTipFinisher();
         return tt;
-    }
-
-    @Override
-    public IStructureDefinition<MTEIndustrialPlatePress> getStructureDefinition() {
-        if (STRUCTURE_DEFINITION == null) {
-            STRUCTURE_DEFINITION = StructureDefinition.<MTEIndustrialPlatePress>builder()
-                .addShape(
-                    mName,
-                    transpose(
-                        new String[][] { { "CCC", "CCC", "CCC" }, { "C~C", "C-C", "CCC" }, { "CCC", "CCC", "CCC" }, }))
-                .addElement(
-                    'C',
-                    buildHatchAdder(MTEIndustrialPlatePress.class)
-                        .atLeast(InputBus, OutputBus, Maintenance, Energy, Muffler)
-                        .casingIndex(50)
-                        .dot(1)
-                        .buildAndChain(onElementPass(x -> ++x.mCasing, ofBlock(ModBlocks.blockCasingsMisc, 4))))
-                .build();
-        }
-        return STRUCTURE_DEFINITION;
-    }
-
-    @Override
-    public void construct(ItemStack stackSize, boolean hintsOnly) {
-        buildPiece(mName, stackSize, hintsOnly, 1, 1, 0);
-    }
-
-    @Override
-    public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
-        if (mMachine) return -1;
-        return survivalBuildPiece(mName, stackSize, 1, 1, 0, elementBudget, env, false, true);
-    }
-
-    @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        mCasing = 0;
-        return checkPiece(mName, 1, 1, 0) && mCasing >= 6 && checkHatch();
     }
 
     @Override

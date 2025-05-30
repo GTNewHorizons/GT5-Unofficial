@@ -1,8 +1,5 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing;
 
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
 import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.InputBus;
 import static gregtech.api.enums.HatchElement.InputHatch;
@@ -11,12 +8,10 @@ import static gregtech.api.enums.HatchElement.Muffler;
 import static gregtech.api.enums.HatchElement.OutputBus;
 import static gregtech.api.enums.HatchElement.OutputHatch;
 import static gregtech.api.enums.Textures.BlockIcons.*;
-import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -24,13 +19,8 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
 
-import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.alignment.enumerable.ExtendedFacing;
-import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
-import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
-import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
-import gregtech.api.enums.TAE;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.INEIPreviewModifier;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -46,15 +36,12 @@ import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
-import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase;
+import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.SimpleCuboidMultiblockBase;
 
-public class MTEIndustrialCentrifuge extends GTPPMultiBlockBase<MTEIndustrialCentrifuge>
-    implements ISurvivalConstructable, INEIPreviewModifier {
+public class MTEIndustrialCentrifuge extends SimpleCuboidMultiblockBase implements INEIPreviewModifier {
 
     private boolean mIsAnimated;
-    private int mCasing;
-    private static IStructureDefinition<MTEIndustrialCentrifuge> STRUCTURE_DEFINITION = null;
-    // public static double recipesComplete = 0;
+
     // client side stuff
     // mMachine got overwritten by StructureLib extended facing query response
     // so we use a separate field for this
@@ -63,12 +50,29 @@ public class MTEIndustrialCentrifuge extends GTPPMultiBlockBase<MTEIndustrialCen
 
     public MTEIndustrialCentrifuge(final int aID, final String aName, final String aNameRegional) {
         super(aID, aName, aNameRegional);
+        initStructure();
         mIsAnimated = true;
     }
 
     public MTEIndustrialCentrifuge(final String aName) {
         super(aName);
+        initStructure();
         mIsAnimated = true;
+    }
+
+    protected void initStructure() {
+        setWidth(3);
+        setHeight(3);
+        setMinLength(3);
+        setMaxLength(12);
+
+        setMinCasingsBase(0);
+        setMinCasingsPerLayer(2);
+
+        setCasingTextureIndex(64);
+        setCasingBlock(ModBlocks.blockCasingsMisc, 0);
+
+        setValidHatches(InputBus, OutputBus, InputHatch, OutputHatch, Energy, Maintenance, Muffler);
     }
 
     @Override
@@ -89,56 +93,10 @@ public class MTEIndustrialCentrifuge extends GTPPMultiBlockBase<MTEIndustrialCen
             .addInfo("Disable animations with a screwdriver")
             .addInfo("Only uses 90% of the EU/t normally required")
             .addInfo("Processes six items per voltage tier")
-            .addPollutionAmount(getPollutionPerSecond(null))
-            .beginStructureBlock(3, 3, 3, true)
-            .addController("Front Center")
-            .addCasingInfoMin("Centrifuge Casings", 6, false)
-            .addInputBus("Any Casing", 1)
-            .addOutputBus("Any Casing", 1)
-            .addInputHatch("Any Casing", 1)
-            .addOutputHatch("Any Casing", 1)
-            .addEnergyHatch("Any Casing", 1)
-            .addMaintenanceHatch("Any Casing", 1)
-            .addMufflerHatch("Any Casing", 1)
-            .toolTipFinisher();
+            .addPollutionAmount(getPollutionPerSecond(null));
+        addStructureInfoToTooltip(tt);
+        tt.toolTipFinisher();
         return tt;
-    }
-
-    @Override
-    public IStructureDefinition<MTEIndustrialCentrifuge> getStructureDefinition() {
-        if (STRUCTURE_DEFINITION == null) {
-            STRUCTURE_DEFINITION = StructureDefinition.<MTEIndustrialCentrifuge>builder()
-                .addShape(
-                    mName,
-                    transpose(
-                        new String[][] { { "CCC", "CCC", "CCC" }, { "C~C", "C-C", "CCC" }, { "CCC", "CCC", "CCC" }, }))
-                .addElement(
-                    'C',
-                    buildHatchAdder(MTEIndustrialCentrifuge.class)
-                        .atLeast(InputBus, OutputBus, Maintenance, Energy, Muffler, InputHatch, OutputHatch)
-                        .casingIndex(getCasingTextureIndex())
-                        .dot(1)
-                        .buildAndChain(onElementPass(x -> ++x.mCasing, ofBlock(ModBlocks.blockCasingsMisc, 0))))
-                .build();
-        }
-        return STRUCTURE_DEFINITION;
-    }
-
-    @Override
-    public void construct(ItemStack stackSize, boolean hintsOnly) {
-        buildPiece(mName, stackSize, hintsOnly, 1, 1, 0);
-    }
-
-    @Override
-    public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
-        if (mMachine) return -1;
-        return survivalBuildPiece(mName, stackSize, 1, 1, 0, elementBudget, env, false, true);
-    }
-
-    @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        mCasing = 0;
-        return checkPiece(mName, 1, 1, 0) && mCasing >= 6 && checkHatch();
     }
 
     @Override
@@ -194,11 +152,6 @@ public class MTEIndustrialCentrifuge extends GTPPMultiBlockBase<MTEIndustrialCen
     }
 
     @Override
-    protected int getCasingTextureId() {
-        return TAE.GTPP_INDEX(0);
-    }
-
-    @Override
     public RecipeMap<?> getRecipeMap() {
         return GTPPRecipeMaps.centrifugeNonCellRecipes;
     }
@@ -213,18 +166,6 @@ public class MTEIndustrialCentrifuge extends GTPPMultiBlockBase<MTEIndustrialCen
     @Override
     public int getMaxParallelRecipes() {
         return (6 * GTUtility.getTier(this.getMaxInputVoltage()));
-    }
-
-    public Block getCasingBlock() {
-        return ModBlocks.blockCasingsMisc;
-    }
-
-    public byte getCasingMeta() {
-        return 0;
-    }
-
-    public byte getCasingTextureIndex() {
-        return (byte) TAE.GTPP_INDEX(0);
     }
 
     @Override

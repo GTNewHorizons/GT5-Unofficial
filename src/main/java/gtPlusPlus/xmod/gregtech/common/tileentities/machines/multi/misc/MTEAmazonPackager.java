@@ -1,14 +1,10 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.misc;
 
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
 import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.InputBus;
 import static gregtech.api.enums.HatchElement.Maintenance;
 import static gregtech.api.enums.HatchElement.Muffler;
 import static gregtech.api.enums.HatchElement.OutputBus;
-import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static net.minecraft.util.StatCollector.translateToLocal;
 import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
@@ -29,12 +25,6 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
 
-import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
-import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
-import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
-import com.gtnewhorizon.structurelib.structure.StructureDefinition;
-
-import gregtech.api.enums.TAE;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -47,20 +37,16 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.pollution.PollutionConfig;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
-import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
+import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.SimpleCuboidMultiblockBase;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.gui.MTEAmazonPackagerGui;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
-public class MTEAmazonPackager extends GTPPMultiBlockBase<MTEAmazonPackager> implements ISurvivalConstructable {
-
-    private int mCasing;
+public class MTEAmazonPackager extends SimpleCuboidMultiblockBase {
 
     private static final int MACHINEMODE_PACKAGER = 0;
     private static final int MACHINEMODE_UNPACKAGER = 1;
-
-    private static IStructureDefinition<MTEAmazonPackager> STRUCTURE_DEFINITION = null;
 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
@@ -69,34 +55,32 @@ public class MTEAmazonPackager extends GTPPMultiBlockBase<MTEAmazonPackager> imp
 
     public MTEAmazonPackager(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
+        initStructure();
     }
 
     public MTEAmazonPackager(String aName) {
         super(aName);
+        initStructure();
+    }
+
+    protected void initStructure() {
+        setWidth(3);
+        setHeight(3);
+        setMinLength(3);
+        setMaxLength(12);
+
+        setMinCasingsBase(0);
+        setMinCasingsPerLayer(3);
+
+        setCasingTextureIndex(105);
+        setCasingBlock(ModBlocks.blockCasings3Misc, 9);
+
+        setValidHatches(InputBus, OutputBus, Energy, Maintenance, Muffler);
     }
 
     @Override
     public String getMachineType() {
         return "Packager, Unpackager";
-    }
-
-    @Override
-    public IStructureDefinition<MTEAmazonPackager> getStructureDefinition() {
-        if (STRUCTURE_DEFINITION == null) {
-            STRUCTURE_DEFINITION = StructureDefinition.<MTEAmazonPackager>builder()
-                .addShape(
-                    mName,
-                    transpose(
-                        new String[][] { { "CCC", "CCC", "CCC" }, { "C~C", "C-C", "CCC" }, { "CCC", "CCC", "CCC" }, }))
-                .addElement(
-                    'C',
-                    buildHatchAdder(MTEAmazonPackager.class).atLeast(InputBus, OutputBus, Maintenance, Energy, Muffler)
-                        .casingIndex(TAE.getIndexFromPage(2, 9))
-                        .dot(1)
-                        .buildAndChain(onElementPass(x -> ++x.mCasing, ofBlock(ModBlocks.blockCasings3Misc, 9))))
-                .build();
-        }
-        return STRUCTURE_DEFINITION;
     }
 
     @Override
@@ -111,16 +95,9 @@ public class MTEAmazonPackager extends GTPPMultiBlockBase<MTEAmazonPackager> imp
             .addInfo("500% faster than using single block machines of the same voltage")
             .addInfo("Only uses 75% of the EU/t normally required")
             .addInfo("Processes 16 items per voltage tier")
-            .addPollutionAmount(getPollutionPerSecond(null))
-            .beginStructureBlock(3, 3, 3, true)
-            .addController("Front center")
-            .addCasingInfoMin("Supply Depot Casings", 10, false)
-            .addInputBus("Any casing", 1)
-            .addOutputBus("Any casing", 1)
-            .addEnergyHatch("Any casing", 1)
-            .addMaintenanceHatch("Any casing", 1)
-            .addMufflerHatch("Any casing", 1)
-            .toolTipFinisher();
+            .addPollutionAmount(getPollutionPerSecond(null));
+        addStructureInfoToTooltip(tt);
+        tt.toolTipFinisher();
         return tt;
     }
 
@@ -145,11 +122,6 @@ public class MTEAmazonPackager extends GTPPMultiBlockBase<MTEAmazonPackager> imp
     }
 
     @Override
-    protected int getCasingTextureId() {
-        return TAE.getIndexFromPage(2, 9);
-    }
-
-    @Override
     public RecipeMap<?> getRecipeMap() {
         return (machineMode == MACHINEMODE_PACKAGER) ? RecipeMaps.packagerRecipes : RecipeMaps.unpackagerRecipes;
     }
@@ -168,12 +140,6 @@ public class MTEAmazonPackager extends GTPPMultiBlockBase<MTEAmazonPackager> imp
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        mCasing = 0;
-        return checkPiece(mName, 1, 1, 0) && mCasing >= 10 && checkHatch();
-    }
-
-    @Override
     public int getPollutionPerSecond(ItemStack arg0) {
         return PollutionConfig.pollutionPerSecondMultiPackager;
     }
@@ -181,17 +147,6 @@ public class MTEAmazonPackager extends GTPPMultiBlockBase<MTEAmazonPackager> imp
     @Override
     public int getMaxParallelRecipes() {
         return (16 * GTUtility.getTier(this.getMaxInputVoltage()));
-    }
-
-    @Override
-    public void construct(ItemStack stackSize, boolean hintsOnly) {
-        buildPiece(mName, stackSize, hintsOnly, 1, 1, 0);
-    }
-
-    @Override
-    public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
-        if (mMachine) return -1;
-        return survivalBuildPiece(mName, stackSize, 1, 1, 0, elementBudget, env, false, true);
     }
 
     @Override
