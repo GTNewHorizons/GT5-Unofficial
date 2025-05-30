@@ -12,7 +12,6 @@ import com.gtnewhorizon.gtnhlib.util.DistanceUtil;
 
 import cpw.mods.fml.common.eventhandler.Event;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import cpw.mods.fml.common.network.FMLNetworkEvent;
 import gregtech.common.tileentities.machines.basic.MTEMonsterRepellent;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 
@@ -79,6 +78,8 @@ public class GTSpawnEventHandler {
 
     @SubscribeEvent
     public static void onWorldLoad(WorldEvent.Load event) {
+        if (event.world.isRemote) return;
+
         mobReps.computeIfAbsent(
             event.world.provider.dimensionId,
             v -> new SpatialHashGrid<>(
@@ -94,13 +95,11 @@ public class GTSpawnEventHandler {
 
     @SubscribeEvent
     public static void onWorldUnload(WorldEvent.Unload event) {
+        if (event.world.isRemote) return;
+
         if (mobReps.containsKey(event.world.provider.dimensionId)) {
             mobReps.remove(event.world.provider.dimensionId);
         }
     }
 
-    @SubscribeEvent
-    public static void onClientDisconnect(FMLNetworkEvent.ClientDisconnectionFromServerEvent ignored) {
-        mobReps.clear();
-    }
 }
