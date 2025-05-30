@@ -43,10 +43,10 @@ public class TAE {
             mFreeSlots.remove(aID);
             mTAE.put(aID, texture);
             return true;
-        } else {
-            GTPPCore.crash("Tried to register texture with ID " + aID + " to TAE, but it is already in use.");
-            return false; // Dead Code
         }
+
+        Logger.ERROR("Tried to register texture with ID " + aID + " to TAE, but it is already in use.");
+        throw new IllegalStateException();
     }
 
     public static void finalizeTAE() {

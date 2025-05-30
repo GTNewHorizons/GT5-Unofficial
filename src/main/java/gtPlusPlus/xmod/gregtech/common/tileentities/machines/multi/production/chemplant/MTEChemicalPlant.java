@@ -22,6 +22,8 @@ import java.util.stream.IntStream;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import gtPlusPlus.GTplusplus;
+import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
@@ -135,9 +137,9 @@ public class MTEChemicalPlant extends GTPPMultiBlockBase<MTEChemicalPlant> imple
     public static boolean registerMachineCasingForTier(int aTier, Block aBlock, int aMeta, int aCasingTextureID) {
         Triple<Block, Integer, Integer> aCasingData = Triple.of(aBlock, aMeta, aCasingTextureID);
         if (mTieredBlockRegistry.containsKey(aTier)) {
-            GTPPCore.crash(
-                "Tried to register a Machine casing for tier " + aTier
+            Logger.ERROR("Tried to register a Machine casing for tier " + aTier
                     + " to the Chemical Plant, however this tier already contains one.");
+            throw new IllegalStateException();
         }
         mTieredBlockRegistry.put(aTier, aCasingData);
         GTStructureChannels.METAL_MACHINE_CASING.registerAsIndicator(new ItemStack(aBlock, 1, aMeta), aTier + 1);

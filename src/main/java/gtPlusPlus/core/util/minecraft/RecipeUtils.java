@@ -164,11 +164,12 @@ public class RecipeUtils {
             InputItem9 };
 
         if (gtPlusPlus.GTplusplus.CURRENT_LOAD_PHASE != GTplusplus.INIT_PHASE.POST_INIT) {
-            GTPPCore.crash(
+            Logger.ERROR(
                 "Load Phase " + gtPlusPlus.GTplusplus.CURRENT_LOAD_PHASE
                     + " should be "
                     + GTplusplus.INIT_PHASE.POST_INIT
                     + ". Unable to register recipe.");
+            throw new IllegalStateException();
         }
 
         int size = CompatHandler.mGtRecipesToGenerate.size();
@@ -361,7 +362,6 @@ public class RecipeUtils {
                     "Cleaned a " + o.getClass()
                         .getSimpleName() + " from recipe input.");
                 Logger.INFO("ERROR");
-                GTPPCore.crash("Bad Shaped Recipe.");
             }
         }
         Logger.RECIPE("Using String: " + aFullString);

@@ -277,7 +277,7 @@ public class MaterialUtils {
                     + "' & fallback '"
                     + aFallbackMaterialName
                     + "', returning _NULL.");
-            GTPPCore.crash();
+            throw new IllegalStateException();
         }
         return g;
     }
