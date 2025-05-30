@@ -5,6 +5,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 
 import gregtech.api.enums.Textures;
+import gregtech.api.enums.ToolModes;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.items.MetaGeneratedTool;
 
@@ -38,5 +39,10 @@ public class ToolWrenchLV extends ToolWrench {
     public short[] getRGBa(boolean aIsToolHead, ItemStack aStack) {
         return aIsToolHead ? MetaGeneratedTool.getPrimaryMaterial(aStack).mRGBa
             : MetaGeneratedTool.getSecondaryMaterial(aStack).mRGBa;
+    }
+
+    @Override
+    public byte getMaxMode() {
+        return (byte) (ToolModes.WRENCH_PRECISION.get() + 1);
     }
 }
