@@ -201,7 +201,7 @@ public class BaseItemMetaFood extends ItemFood {
         for (int aMetaID = 0; aMetaID < mTotalMetaItems; aMetaID++) {
             ArrayList<String> aOreDictNames = mOreDictNames.get(aMetaID);
             if (aOreDictNames != null && !aOreDictNames.isEmpty()) {
-                ItemStack aFoodStack = ItemUtils.simpleMetaStack(ModItems.itemMetaFood, aMetaID, 1);
+                ItemStack aFoodStack = new ItemStack(ModItems.itemMetaFood,1, aMetaID);
                 for (String aOreName : aOreDictNames) {
                     ItemUtils.addItemToOreDictionary(aFoodStack, aOreName);
                 }
@@ -328,7 +328,7 @@ public class BaseItemMetaFood extends ItemFood {
     @Override
     public void getSubItems(Item aItem, CreativeTabs p_150895_2_, List aList) {
         for (int i = 0; i < mIconMap.size(); i++) {
-            aList.add(ItemUtils.simpleMetaStack(aItem, i, 1));
+            aList.add(new ItemStack(aItem,1, i));
         }
     }
 

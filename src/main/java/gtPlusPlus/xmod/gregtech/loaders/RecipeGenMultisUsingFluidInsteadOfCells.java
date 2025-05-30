@@ -31,13 +31,7 @@ public class RecipeGenMultisUsingFluidInsteadOfCells {
             mEmptyItems.add(new ItemStack(Items.bowl));
             mEmptyItems.add(new ItemStack(Items.bucket));
             mEmptyItems.add(new ItemStack(Items.glass_bottle));
-
-            mItemsToIgnore.add(
-                ItemUtils.simpleMetaStack(
-                    ItemList.Cell_Empty.get(1)
-                        .getItem(),
-                    8,
-                    1));
+            mItemsToIgnore.add(new ItemStack(ItemList.Cell_Empty.get(1).getItem(), 1,8));
         }
     }
 

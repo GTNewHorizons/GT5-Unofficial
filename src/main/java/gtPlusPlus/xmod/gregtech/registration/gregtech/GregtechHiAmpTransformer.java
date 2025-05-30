@@ -98,21 +98,9 @@ public class GregtechHiAmpTransformer {
         ItemStack mItem_2;
         ItemStack mItem_3;
 
-        mItem_1 = ItemUtils.simpleMetaStack(
-            new ItemStack(GregTechAPI.sBlockCasings5)
-                .getItem(),
-            3,
-            1);
-        mItem_2 = ItemUtils.simpleMetaStack(
-            new ItemStack(GregTechAPI.sBlockCasings5)
-                .getItem(),
-            4,
-            1);
-        mItem_3 = ItemUtils.simpleMetaStack(
-            new ItemStack(GregTechAPI.sBlockCasings5)
-                .getItem(),
-            9,
-            1);
+        mItem_1 = new ItemStack(GregTechAPI.sBlockCasings5,1,3);
+        mItem_2 = new ItemStack(GregTechAPI.sBlockCasings5,1,4);
+        mItem_3 = new ItemStack(GregTechAPI.sBlockCasings5,1,9);
 
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Transformer_HA_LV_ULV.get(1L),

@@ -92,26 +92,26 @@ public class EntityDeathHandler implements IMobExtraInfoProvider {
         // always drop some meat.
         int aBigMeatStackSize1 = MathUtils.randInt(4, 8);
         aPlayer.entityDropItem(
-            ItemUtils.simpleMetaStack(ModItems.itemMetaFood, 0, aBigMeatStackSize1),
+            new ItemStack(ModItems.itemMetaFood, aBigMeatStackSize1, 0),
             MathUtils.randInt(0, 1));
 
         // additional chances for more meat.
         if (MathUtils.randInt(0, 10) < 7) {
             int aBigMeatStackSize2 = MathUtils.randInt(4, 8);
             aPlayer.entityDropItem(
-                ItemUtils.simpleMetaStack(ModItems.itemMetaFood, 0, aBigMeatStackSize2),
+                new ItemStack(ModItems.itemMetaFood, aBigMeatStackSize2, 0),
                 MathUtils.randInt(0, 1));
         }
         if (MathUtils.randInt(0, 10) < 4) {
             int aBigMeatStackSize3 = MathUtils.randInt(4, 8);
             aPlayer.entityDropItem(
-                ItemUtils.simpleMetaStack(ModItems.itemMetaFood, 0, aBigMeatStackSize3),
+                new ItemStack(ModItems.itemMetaFood, aBigMeatStackSize3, 0),
                 MathUtils.randInt(0, 1));
         }
         if (MathUtils.randInt(0, 10) < 2) {
             int aBigMeatStackSize4 = MathUtils.randInt(4, 8);
             aPlayer.entityDropItem(
-                ItemUtils.simpleMetaStack(ModItems.itemMetaFood, 0, aBigMeatStackSize4),
+                new ItemStack(ModItems.itemMetaFood, aBigMeatStackSize4, 0),
                 MathUtils.randInt(0, 1));
         }
     }

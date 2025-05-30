@@ -118,7 +118,7 @@ public class ItemGenericChemBase extends Item {
     @Override
     public void getSubItems(Item aItem, CreativeTabs p_150895_2_, List aList) {
         for (int i = 0; i < aMetaSize; i++) {
-            aList.add(ItemUtils.simpleMetaStack(aItem, i, 1));
+            aList.add(new ItemStack(aItem,1, i));
         }
     }
 

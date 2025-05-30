@@ -108,7 +108,7 @@ public class TileEntityFishTrap extends TileEntity implements ISidedInventory {
         } else if (lootWeight <= 15) {
             loot = new ItemStack(Blocks.sand);
         } else if (lootWeight <= 20) {
-            loot = ItemUtils.simpleMetaStack(Items.dye, 0, 1);
+            loot = new ItemStack(Items.dye, 1, 0);
         }
         // Junk Loot
         else if (lootWeight <= 23) {

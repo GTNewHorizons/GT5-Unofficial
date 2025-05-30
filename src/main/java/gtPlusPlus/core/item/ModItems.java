@@ -687,6 +687,12 @@ public final class ModItems {
         toolGregtechPump.registerPumpType(3, "Ultimate Hand Pump", 512000, 3);
         toolGregtechPump.registerPumpType(4, "Expandable Hand Pump", 0, 4);
 
+        GregtechItemList.SimpleHandPump.set(new ItemStack(ModItems.toolGregtechPump, 1,1000));
+        GregtechItemList.AdvancedHandPump.set(new ItemStack(ModItems.toolGregtechPump, 1,1001));
+        GregtechItemList.SuperHandPump.set(new ItemStack(ModItems.toolGregtechPump, 1,1002));
+        GregtechItemList.UltimateHandPump.set(new ItemStack(ModItems.toolGregtechPump, 1,1003));
+        GregtechItemList.ExpandableHandPump.set(new ItemStack(ModItems.toolGregtechPump, 1,1004));
+
         // Xp Fluids - Dev
         if (!FluidRegistry.isFluidRegistered("mobessence")) {
             FluidUtils.generateFluidNoPrefix("mobessence", "Mob Essence", 0, new short[] { 125, 175, 125, 100 });

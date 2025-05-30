@@ -489,7 +489,7 @@ public class RecipesGregTech {
         if (Baubles.isModLoaded()) {
             // Personal Healing Nanobooster
             RA.stdBuilder()
-                .metadata(RESEARCH_ITEM, ItemUtils.simpleMetaStack(Items.golden_apple, 1, 1))
+                .metadata(RESEARCH_ITEM, new ItemStack(Items.golden_apple,1, 1))
                 .metadata(SCANNING, new Scanning(2 * MINUTES, TierEU.RECIPE_LuV))
                 .itemInputs(
                     GTUtility.copyAmount(4, aGemCasings[2]),
@@ -626,7 +626,7 @@ public class RecipesGregTech {
 
         // Expandable Hand Pump
         RA.stdBuilder()
-            .metadata(RESEARCH_ITEM, ItemUtils.simpleMetaStack(ModItems.itemGenericToken, 4, 1))
+            .metadata(RESEARCH_ITEM, new ItemStack(ModItems.itemGenericToken, 1,4))
             .metadata(SCANNING, new Scanning(1 * MINUTES + 30 * SECONDS, TierEU.RECIPE_IV))
             .itemInputs(
                 ItemList.Electric_Pump_LuV.get(4),
@@ -639,7 +639,7 @@ public class RecipesGregTech {
             .fluidInputs(
                 MaterialsAlloy.HELICOPTER.getFluidStack(32 * INGOTS),
                 MaterialsAlloy.INDALLOY_140.getFluidStack(1 * STACKS))
-            .itemOutputs(ItemUtils.simpleMetaStack(ModItems.toolGregtechPump, 1004, 1))
+            .itemOutputs(GregtechItemList.ExpandableHandPump.get(1))
             .eut(TierEU.RECIPE_LuV)
             .duration(30 * SECONDS)
             .addTo(AssemblyLine);
@@ -1100,7 +1100,7 @@ public class RecipesGregTech {
             .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.Vanadium, 32L),
                 GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.VanadiumSteel, 8L))
-            .itemOutputs(ItemUtils.simpleMetaStack(ModItems.itemHalfCompleteCasings, 0, 4))
+            .itemOutputs(new ItemStack(ModItems.itemHalfCompleteCasings, 4,0))
             .fluidInputs(Materials.Oxygen.getGas(8_000))
             .duration(16 * SECONDS)
             .eut(TierEU.RECIPE_MV / 2)
@@ -1108,9 +1108,9 @@ public class RecipesGregTech {
 
         RA.stdBuilder()
             .itemInputs(
-                ItemUtils.simpleMetaStack(ModItems.itemHalfCompleteCasings, 0, 2),
+                new ItemStack(ModItems.itemHalfCompleteCasings, 2,0),
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.VanadiumGallium, 8L))
-            .itemOutputs(ItemUtils.simpleMetaStack(ModItems.itemHalfCompleteCasings, 1, 8))
+            .itemOutputs(new ItemStack(ModItems.itemHalfCompleteCasings, 8,1))
             .fluidInputs(Materials.Tantalum.getMolten(4 * INGOTS))
             .duration(32 * SECONDS)
             .eut(TierEU.RECIPE_MV)
@@ -1118,7 +1118,7 @@ public class RecipesGregTech {
 
         RA.stdBuilder()
             .itemInputs(
-                ItemUtils.simpleMetaStack(ModItems.itemHalfCompleteCasings, 1, 1),
+                new ItemStack(ModItems.itemHalfCompleteCasings, 1, 1),
                 GTOreDictUnificator.get(OrePrefixes.plateDense, Materials.Lead, 4L),
                 GTOreDictUnificator.get(OrePrefixes.circuit, Materials.HV, 4),
                 GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorHV, 2L))
@@ -1217,7 +1217,7 @@ public class RecipesGregTech {
                 GTOreDictUnificator.get(OrePrefixes.ring, Materials.Brass, 1L),
                 GTOreDictUnificator.get(OrePrefixes.stick, Materials.Brass, 1L),
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.Steel, 2L))
-            .itemOutputs(ItemUtils.simpleMetaStack(ModItems.itemGenericToken, 1, 1))
+            .itemOutputs(new ItemStack(ModItems.itemGenericToken, 1,1))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(assemblerRecipes);
@@ -1230,7 +1230,7 @@ public class RecipesGregTech {
                 GTOreDictUnificator.get(OrePrefixes.ring, Materials.Invar, 1L),
                 GTOreDictUnificator.get(OrePrefixes.stick, Materials.Invar, 1L),
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.Aluminium, 2L))
-            .itemOutputs(ItemUtils.simpleMetaStack(ModItems.itemGenericToken, 2, 1))
+            .itemOutputs(new ItemStack(ModItems.itemGenericToken, 1,2))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(assemblerRecipes);
@@ -1243,7 +1243,7 @@ public class RecipesGregTech {
                 GTOreDictUnificator.get(OrePrefixes.ring, Materials.Chrome, 1L),
                 GTOreDictUnificator.get(OrePrefixes.stick, Materials.Chrome, 1L),
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.StainlessSteel, 2L))
-            .itemOutputs(ItemUtils.simpleMetaStack(ModItems.itemGenericToken, 3, 1))
+            .itemOutputs(new ItemStack(ModItems.itemGenericToken, 1,3))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(assemblerRecipes);
@@ -1256,35 +1256,35 @@ public class RecipesGregTech {
                 GTOreDictUnificator.get(OrePrefixes.ring, Materials.Titanium, 1L),
                 GTOreDictUnificator.get(OrePrefixes.stick, Materials.Titanium, 1L),
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.TungstenSteel, 2L))
-            .itemOutputs(ItemUtils.simpleMetaStack(ModItems.itemGenericToken, 4, 1))
+            .itemOutputs(new ItemStack(ModItems.itemGenericToken, 1,4))
             .duration(40 * SECONDS)
             .eut(TierEU.RECIPE_EV)
             .addTo(assemblerRecipes);
 
         RA.stdBuilder()
-            .itemInputs(ItemUtils.simpleMetaStack(ModItems.itemGenericToken, 1, 1), GTUtility.getIntegratedCircuit(20))
-            .itemOutputs(ItemUtils.simpleMetaStack(ModItems.toolGregtechPump, 1000, 1))
+            .itemInputs(new ItemStack(ModItems.itemGenericToken, 1, 1), GTUtility.getIntegratedCircuit(20))
+            .itemOutputs(GregtechItemList.SimpleHandPump.get(1))
             .duration(1 * SECONDS + 10 * TICKS)
             .eut(TierEU.RECIPE_LV)
             .addTo(assemblerRecipes);
 
         RA.stdBuilder()
-            .itemInputs(ItemUtils.simpleMetaStack(ModItems.itemGenericToken, 2, 1), GTUtility.getIntegratedCircuit(20))
-            .itemOutputs(ItemUtils.simpleMetaStack(ModItems.toolGregtechPump, 1001, 1))
+            .itemInputs(new ItemStack(ModItems.itemGenericToken, 1,2), GTUtility.getIntegratedCircuit(20))
+            .itemOutputs(GregtechItemList.AdvancedHandPump.get(1))
             .duration(6 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(assemblerRecipes);
 
         RA.stdBuilder()
-            .itemInputs(ItemUtils.simpleMetaStack(ModItems.itemGenericToken, 3, 1), GTUtility.getIntegratedCircuit(20))
-            .itemOutputs(ItemUtils.simpleMetaStack(ModItems.toolGregtechPump, 1002, 1))
+            .itemInputs(new ItemStack(ModItems.itemGenericToken, 1,3), GTUtility.getIntegratedCircuit(20))
+            .itemOutputs(GregtechItemList.SuperHandPump.get(1))
             .duration(24 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(assemblerRecipes);
 
         RA.stdBuilder()
-            .itemInputs(ItemUtils.simpleMetaStack(ModItems.itemGenericToken, 4, 1), GTUtility.getIntegratedCircuit(20))
-            .itemOutputs(ItemUtils.simpleMetaStack(ModItems.toolGregtechPump, 1003, 1))
+            .itemInputs(new ItemStack(ModItems.itemGenericToken, 1,4), GTUtility.getIntegratedCircuit(20))
+            .itemOutputs(GregtechItemList.UltimateHandPump.get(1))
             .duration(1 * MINUTES + 36 * SECONDS)
             .eut(TierEU.RECIPE_EV)
             .addTo(assemblerRecipes);
@@ -1999,9 +1999,8 @@ public class RecipesGregTech {
             ItemList.Quantum_Tank_IV);
 
         for (int i = 0; i < 10; i++) {
-            ItemStack tank = tankList.get(i)
-                .get(1);
-            ItemStack handPump = ItemUtils.simpleMetaStack(ModItems.toolGregtechPump, 1004, 1);
+            ItemStack tank = tankList.get(i).get(1);
+            ItemStack handPump = GregtechItemList.ExpandableHandPump.get(1);
             ItemStack pumpWithNBT = handPump.copy();
             NBTTagCompound nbt = new NBTTagCompound();
             int capacity = i == 9 ? Integer.MAX_VALUE : 4_000_000 * (int) Math.pow(2, i);

@@ -117,7 +117,7 @@ public class ItemAlgaeBase extends Item implements IAlgalItem {
     @Override
     public void getSubItems(Item aItem, CreativeTabs p_150895_2_, List aList) {
         for (int i = 0; i < AlgaeDefinition.values().length; i++) {
-            aList.add(ItemUtils.simpleMetaStack(aItem, i, 1));
+            aList.add(new ItemStack(aItem, 1,i));
         }
     }
 

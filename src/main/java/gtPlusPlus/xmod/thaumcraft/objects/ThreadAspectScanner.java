@@ -93,7 +93,7 @@ public class ThreadAspectScanner extends Thread {
                         item.getSubItems(item, item.getCreativeTab(), q1);
                         if (q1 != null && !q1.isEmpty()) {
                             for (int e = 0; e < q1.size(); e++) {
-                                ItemStack check = ItemUtils.simpleMetaStack(item, e, 1);
+                                ItemStack check = new ItemStack(item,1, e);
                                 if (check != null) {
                                     tryCacheObject(check);
                                     mItemsCounter++;

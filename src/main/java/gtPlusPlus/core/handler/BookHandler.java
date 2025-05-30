@@ -418,12 +418,12 @@ public class BookHandler {
     public static ItemStack ItemBookWritten_MultiChemicalPlant;
 
     public static void runLater() {
-        ItemBookWritten_ThermalBoiler = ItemUtils.simpleMetaStack(ModItems.itemCustomBook, 0, 1);
-        ItemBookWritten_MultiPowerStorage = ItemUtils.simpleMetaStack(ModItems.itemCustomBook, 1, 1);
-        ItemBookWritten_ModularBaubles = ItemUtils.simpleMetaStack(ModItems.itemCustomBook, 2, 1);
-        ItemBookWritten_MultiMachineManual = ItemUtils.simpleMetaStack(ModItems.itemCustomBook, 3, 1);
-        ItemBookWritten_NuclearManual = ItemUtils.simpleMetaStack(ModItems.itemCustomBook, 4, 1);
-        ItemBookWritten_MultiChemicalPlant = ItemUtils.simpleMetaStack(ModItems.itemCustomBook, 5, 1);
+        ItemBookWritten_ThermalBoiler = new ItemStack(ModItems.itemCustomBook,1, 0);
+        ItemBookWritten_MultiPowerStorage = new ItemStack(ModItems.itemCustomBook,1, 1);
+        ItemBookWritten_ModularBaubles = new ItemStack(ModItems.itemCustomBook,1, 2);
+        ItemBookWritten_MultiMachineManual = new ItemStack(ModItems.itemCustomBook,1, 3);
+        ItemBookWritten_NuclearManual = new ItemStack(ModItems.itemCustomBook,1, 4);
+        ItemBookWritten_MultiChemicalPlant = new ItemStack(ModItems.itemCustomBook,1, 5);
 
         // Multiblock Manuals
         RecipeUtils.addShapelessGregtechRecipe(
@@ -449,7 +449,7 @@ public class BookHandler {
             ItemBookWritten_MultiChemicalPlant);
 
         for (int i = 0; i < mBookKeeperCount; i++) {
-            ItemStack bookstack = ItemUtils.simpleMetaStack(ModItems.itemCustomBook, i, 1);
+            ItemStack bookstack = new ItemStack(ModItems.itemCustomBook,1, i);
             GTOreDictUnificator.registerOre("bookWritten", bookstack);
             GTOreDictUnificator.registerOre("craftingBook", bookstack);
         }

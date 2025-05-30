@@ -90,7 +90,7 @@ public class GTPPIntegratedCircuitItem extends Item implements INetworkUpdatable
 
     @Override
     public void getSubItems(Item aItem, CreativeTabs p_150895_2_, List<ItemStack> aList) {
-        aList.add(ItemUtils.simpleMetaStack(aItem, 0, 1));
+        aList.add(new ItemStack(aItem, 1,0));
     }
 
     @Override

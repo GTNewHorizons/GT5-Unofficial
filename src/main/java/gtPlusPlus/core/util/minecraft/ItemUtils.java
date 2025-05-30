@@ -58,27 +58,6 @@ public class ItemUtils {
         addItemToOreDictionary(stack, oreDictName, false);
     }
 
-    public static ItemStack simpleMetaStack(ItemStack simpleStack, int meta, int size) {
-        return simpleMetaStack(simpleStack.getItem(), meta, size);
-    }
-
-    public static ItemStack simpleMetaStack(final Item item, int meta, int size) {
-        if (item == null) {
-            return null;
-        }
-        if (meta < 0 || meta > Short.MAX_VALUE) {
-            meta = 0;
-        }
-        if (size < 0 || size > 64) {
-            size = 1;
-        }
-        return new ItemStack(item, size, meta);
-    }
-
-    public static ItemStack simpleMetaStack(final Block block, final int meta, final int size) {
-        return simpleMetaStack(Item.getItemFromBlock(block), meta, size);
-    }
-
     public static ItemStack[] validItemsForOreDict(final String oredictName) {
         final List<?> validNames = MaterialUtils.oreDictValuesForEntry(oredictName);
         final ItemStack[] inputs = new ItemStack[validNames.size()];

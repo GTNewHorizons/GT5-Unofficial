@@ -128,7 +128,7 @@ public class Particle {
                 if (meta == null) {
                     meta = 0;
                 }
-                ItemStack aIon = ItemUtils.simpleMetaStack(ModItems.itemIonParticleBase, meta, 1);
+                ItemStack aIon = new ItemStack(ModItems.itemIonParticleBase,1, meta);
                 if (aCharge != 0) {
                     IonParticles.setChargeState(aIon, aCharge);
                 }
@@ -147,7 +147,7 @@ public class Particle {
                 if (meta == null) {
                     meta = 0;
                 }
-                return ItemUtils.simpleMetaStack(ModItems.itemStandarParticleBase, meta, 1);
+                return new ItemStack(ModItems.itemStandarParticleBase,1, meta);
             }
         }
         return null;

@@ -734,7 +734,7 @@ public class RecipesMachines {
                 CI.getDoublePlate(aCasingTier, 1),
                 CI.getFieldGenerator(aFieldTier, 1),
                 CI.getDoublePlate(aCasingTier, 1),
-                ItemUtils.simpleMetaStack(ModBlocks.blockSpecialMultiCasings2, i, 1));
+                new ItemStack(ModBlocks.blockSpecialMultiCasings2,1, i));
             aCasingTier++;
             aFieldTier++;
         }
@@ -753,7 +753,7 @@ public class RecipesMachines {
                 CI.circuits[aCasingTier],
                 CI.getPlate(aCasingTier, 1),
                 CI.circuits[aCasingTier],
-                ItemUtils.simpleMetaStack(ModBlocks.blockSpecialMultiCasings2, i, 1));
+                new ItemStack(ModBlocks.blockSpecialMultiCasings2, 1,i));
             aCasingTier++;
         }
     }
@@ -1037,7 +1037,7 @@ public class RecipesMachines {
             .eut(TierEU.RECIPE_HV)
             .addTo(assemblerRecipes);
 
-        ItemStack aBronzeBricks = ItemUtils.simpleMetaStack(GregTechAPI.sBlockCasings1, 10, 1);
+        ItemStack aBronzeBricks = new ItemStack(GregTechAPI.sBlockCasings1, 1,10);
         // Steam Macerator Multi
         RecipeUtils.addShapedGregtechRecipe(
             aBronzeBricks,
@@ -1077,7 +1077,7 @@ public class RecipesMachines {
             aBronzeBricks,
             GregtechItemList.Controller_SteamMixerMulti.get(1));
 
-        ItemStack aWoodenCasing = ItemUtils.simpleMetaStack(GregTechAPI.sBlockCasings9, 2, 1);
+        ItemStack aWoodenCasing = new ItemStack(GregTechAPI.sBlockCasings9, 1,2);
         // WaterPump
         RecipeUtils.addShapedGregtechRecipe(
             "frameGtBronze",
@@ -1993,7 +1993,7 @@ public class RecipesMachines {
                 "plateCarbon",
                 "plateCarbon",
                 "plateCarbon",
-                ItemUtils.simpleMetaStack(ModItems.itemAirFilter, 0, 1));
+                new ItemStack(ModItems.itemAirFilter, 1,0));
 
             RecipeUtils.addShapedGregtechRecipe(
                 "plateCarbon",
@@ -2005,7 +2005,7 @@ public class RecipesMachines {
                 "plateCarbon",
                 "plateCarbon",
                 "plateCarbon",
-                ItemUtils.simpleMetaStack(ModItems.itemAirFilter, 1, 1));
+                new ItemStack(ModItems.itemAirFilter, 1, 1));
 
             // Pollution Detector
             RecipeUtils.addShapedGregtechRecipe(
@@ -2023,7 +2023,7 @@ public class RecipesMachines {
             // LV
             RecipeUtils.addShapedGregtechRecipe(
                 CI.component_Plate[1],
-                ItemUtils.simpleMetaStack(ModItems.itemAirFilter, 0, 1),
+                new ItemStack(ModItems.itemAirFilter,1, 0),
                 CI.component_Plate[1],
                 CI.component_Plate[1],
                 ItemList.Electric_Motor_LV.get(1),
@@ -2035,7 +2035,7 @@ public class RecipesMachines {
             // MV
             RecipeUtils.addShapedGregtechRecipe(
                 CI.component_Plate[2],
-                ItemUtils.simpleMetaStack(ModItems.itemAirFilter, 0, 1),
+                new ItemStack(ModItems.itemAirFilter,1, 0),
                 CI.component_Plate[2],
                 CI.component_Plate[2],
                 ItemList.Electric_Motor_MV.get(1),
@@ -2047,7 +2047,7 @@ public class RecipesMachines {
             // HV
             RecipeUtils.addShapedGregtechRecipe(
                 CI.component_Plate[3],
-                ItemUtils.simpleMetaStack(ModItems.itemAirFilter, 0, 1),
+                new ItemStack(ModItems.itemAirFilter,1, 0),
                 CI.component_Plate[3],
                 CI.component_Plate[3],
                 ItemList.Electric_Motor_HV.get(1),
@@ -2059,7 +2059,7 @@ public class RecipesMachines {
             // EV
             RecipeUtils.addShapedGregtechRecipe(
                 CI.component_Plate[4],
-                ItemUtils.simpleMetaStack(ModItems.itemAirFilter, 0, 1),
+                new ItemStack(ModItems.itemAirFilter,1, 0),
                 CI.component_Plate[4],
                 CI.component_Plate[4],
                 ItemList.Electric_Motor_EV.get(1),
@@ -2071,7 +2071,7 @@ public class RecipesMachines {
             // IV
             RecipeUtils.addShapedGregtechRecipe(
                 CI.component_Plate[5],
-                ItemUtils.simpleMetaStack(ModItems.itemAirFilter, 1, 1),
+                new ItemStack(ModItems.itemAirFilter, 1, 1),
                 CI.component_Plate[5],
                 CI.component_Plate[5],
                 ItemList.Electric_Motor_IV.get(1),
@@ -2083,7 +2083,7 @@ public class RecipesMachines {
             // LuV
             RecipeUtils.addShapedGregtechRecipe(
                 CI.component_Plate[6],
-                ItemUtils.simpleMetaStack(ModItems.itemAirFilter, 1, 1),
+                new ItemStack(ModItems.itemAirFilter, 1, 1),
                 CI.component_Plate[6],
                 CI.component_Plate[6],
                 ItemList.Electric_Motor_LuV.get(1),
@@ -2095,7 +2095,7 @@ public class RecipesMachines {
             // ZPM
             RecipeUtils.addShapedGregtechRecipe(
                 CI.component_Plate[7],
-                ItemUtils.simpleMetaStack(ModItems.itemAirFilter, 1, 1),
+                new ItemStack(ModItems.itemAirFilter, 1, 1),
                 CI.component_Plate[7],
                 CI.component_Plate[7],
                 ItemList.Electric_Motor_ZPM.get(1),
@@ -2107,7 +2107,7 @@ public class RecipesMachines {
             // UV
             RecipeUtils.addShapedGregtechRecipe(
                 CI.component_Plate[8],
-                ItemUtils.simpleMetaStack(ModItems.itemAirFilter, 1, 1),
+                new ItemStack(ModItems.itemAirFilter, 1, 1),
                 CI.component_Plate[8],
                 CI.component_Plate[8],
                 ItemList.Electric_Motor_UV.get(1),
@@ -2119,7 +2119,7 @@ public class RecipesMachines {
             // MAX
             RecipeUtils.addShapedGregtechRecipe(
                 CI.component_Plate[9],
-                ItemUtils.simpleMetaStack(ModItems.itemAirFilter, 1, 1),
+                new ItemStack(ModItems.itemAirFilter, 1, 1),
                 CI.component_Plate[9],
                 CI.component_Plate[9],
                 ItemList.Electric_Motor_UHV.get(1),
@@ -3023,7 +3023,7 @@ public class RecipesMachines {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GregtechItemList.Casing_Multi_Use.get(1),
-                ItemUtils.simpleMetaStack(GregTechAPI.sBlockCasings5, 2, 1),
+                new ItemStack(GregTechAPI.sBlockCasings5,1, 2),
                 CI.getElectricPiston(3, 2),
                 CI.getTieredComponent(OrePrefixes.plate, 6, 4),
                 CI.getTieredComponent(OrePrefixes.gearGt, 6, 2))
@@ -3303,7 +3303,7 @@ public class RecipesMachines {
         int aMaxTier = GTValues.VOLTAGE_NAMES.length;
         ItemStack[] aTier = new ItemStack[aMaxTier];
         for (int i = 0; i < aMaxTier; i++) {
-            aTier[i] = ItemUtils.simpleMetaStack(CoverManager.Cover_Gt_Machine_Casing, i, 7);
+            aTier[i] = new ItemStack(CoverManager.Cover_Gt_Machine_Casing, 7,i);
         }
         // Add recipes for new ones
         for (int i = 0; i < aMaxTier - 1; i++) {

@@ -29,7 +29,7 @@ public class ItemsFoods {
     }
 
     private static ItemStack getMetaFoodStack(int aID) {
-        return ItemUtils.simpleMetaStack(ModItems.itemMetaFood, aID, 1);
+        return new ItemStack(ModItems.itemMetaFood,1, aID);
     }
 
     private static void addCookingRecipes() {

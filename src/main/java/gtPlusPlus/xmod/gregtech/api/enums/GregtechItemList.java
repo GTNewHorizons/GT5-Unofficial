@@ -908,6 +908,11 @@ public enum GregtechItemList implements IGregtechItemContainer {
     SmallAmmoniumNitrateDust,
     TinyAmmoniumNitrateDust,
 
+    SimpleHandPump,
+    AdvancedHandPump,
+    SuperHandPump,
+    UltimateHandPump,
+    ExpandableHandPump,
     ;
 
     private ItemStack mStack;

@@ -50,7 +50,7 @@ public class ItemDummyResearch extends ItemGenericToken {
         if (aMeta == null) {
             aMeta = 0;
         }
-        return ItemUtils.simpleMetaStack(ModItems.itemDummyResearch, aMeta, aStacksize);
+        return new ItemStack(ModItems.itemDummyResearch,aStacksize, aMeta);
     }
 
     private int aID = 0;

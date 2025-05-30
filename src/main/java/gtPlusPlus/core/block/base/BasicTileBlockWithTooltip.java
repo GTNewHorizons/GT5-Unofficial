@@ -271,7 +271,7 @@ public abstract class BasicTileBlockWithTooltip extends BlockContainer implement
     public final void getSubBlocks(Item aItem, CreativeTabs p_149666_2_, List aList) {
         if (hasMeta()) {
             for (int i = 0; i < getMetaCount(); i++) {
-                aList.add(ItemUtils.simpleMetaStack(aItem, i, 1));
+                aList.add(new ItemStack(aItem, 1, i));
             }
         } else {
             aList.add(new ItemStack(aItem));
@@ -301,7 +301,7 @@ public abstract class BasicTileBlockWithTooltip extends BlockContainer implement
     @Override
     public ArrayList<ItemStack> getDrops(World world, int x, int y, int z, int metadata, int fortune) {
         ArrayList<ItemStack> drops = new ArrayList<>();
-        drops.add(ItemUtils.simpleMetaStack(this, metadata, 1));
+        drops.add(new ItemStack(this, 1,metadata));
         return drops;
     }
 }

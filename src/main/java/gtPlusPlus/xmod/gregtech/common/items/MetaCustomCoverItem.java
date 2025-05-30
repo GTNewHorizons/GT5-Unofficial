@@ -66,9 +66,8 @@ public class MetaCustomCoverItem extends Item {
     }
 
     private void registerCover() {
-        // CommonProxy.registerItemRendererGlobal(this, new CustomItemBlockRenderer());
         for (int i = 0; i < icons.length; i++) {
-            ItemStack thisStack = ItemUtils.simpleMetaStack(this, i, 1);
+            ItemStack thisStack = new ItemStack(this, 1,i);
             if (i > 0 && hide()) {
                 hideItem(thisStack);
             }
@@ -76,11 +75,6 @@ public class MetaCustomCoverItem extends Item {
         }
     }
 
-    /*
-     * @Override public void registerIcons(IIconRegister reg) { for (int i = 0; i < icons.length; i++) { this.icons[i] =
-     * mTextures[i].getIcon(); } }
-     * @Override public IIcon getIconFromDamage(int meta) { return this.icons[meta]; }
-     */
 
     @Override
     public void getSubItems(Item item, CreativeTabs tab, List list) {

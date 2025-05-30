@@ -13,7 +13,7 @@ public class BiomesOPlentyHandler {
         BOPBlockRegistrator.run();
         if (Mods.BiomesOPlenty.isModLoaded()) {
             if (BOPCItems.misc != null) {
-                ItemStack aPinecone = ItemUtils.simpleMetaStack(BOPCItems.misc, 13, 1);
+                ItemStack aPinecone = new ItemStack(BOPCItems.misc,1, 13);
                 if (aPinecone != null) {
                     ItemUtils.addItemToOreDictionary(aPinecone, "pinecone");
                 }
