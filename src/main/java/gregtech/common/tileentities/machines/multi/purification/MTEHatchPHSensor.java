@@ -7,6 +7,16 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import com.cleanroommc.modularui.api.drawable.IKey;
+import com.cleanroommc.modularui.factory.PosGuiData;
+import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.screen.UISettings;
+import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
+import com.cleanroommc.modularui.value.sync.DoubleSyncValue;
+import com.cleanroommc.modularui.value.sync.PanelSyncManager;
+import com.cleanroommc.modularui.widgets.ToggleButton;
+import com.cleanroommc.modularui.widgets.layout.Flow;
+import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
 import com.gtnewhorizons.modularui.api.math.Alignment;
 import com.gtnewhorizons.modularui.api.math.Color;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
@@ -21,6 +31,8 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatch;
+import gregtech.api.modularui2.GTGuiTextures;
+import gregtech.api.modularui2.GTGuis;
 import gregtech.api.render.TextureFactory;
 import gregtech.common.gui.modularui.widget.CoverCycleButtonWidget;
 
@@ -28,7 +40,7 @@ public class MTEHatchPHSensor extends MTEHatch {
 
     // This implementation was largely copied from the neutron sensor hatch
 
-    protected float threshold = 0;
+    protected double threshold = 0;
     protected boolean inverted = false;
     private boolean isOn = false;
 
@@ -96,14 +108,14 @@ public class MTEHatchPHSensor extends MTEHatch {
 
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
-        threshold = aNBT.getFloat("mThreshold");
+        threshold = aNBT.getDouble("mThreshold");
         inverted = aNBT.getBoolean("mInverted");
         super.loadNBTData(aNBT);
     }
 
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
-        aNBT.setFloat("mThreshold", threshold);
+        aNBT.setDouble("mThreshold", threshold);
         aNBT.setBoolean("mInverted", inverted);
         super.saveNBTData(aNBT);
     }
@@ -111,7 +123,7 @@ public class MTEHatchPHSensor extends MTEHatch {
     /**
      * Updates redstone output strength based on the pH of the multiblock.
      */
-    public void updateRedstoneOutput(float pH) {
+    public void updateRedstoneOutput(double pH) {
         isOn = (pH > threshold) ^ inverted;
     }
 
@@ -147,6 +159,56 @@ public class MTEHatchPHSensor extends MTEHatch {
         return new ITexture[] { aBaseTexture, TextureFactory.of(textureFont) };
     }
 
+    @Override
+    protected boolean useMui2() {
+        return true;
+    }
+
+    @Override
+    public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager, UISettings uiSettings) {
+        return GTGuis.mteTemplatePanelBuilder(this, data, syncManager, uiSettings)
+            .build()
+            .child(
+                Flow.column()
+                    .child(createInvertButtonRow())
+                    .child(createThresholdFieldRow())
+                    .coverChildren()
+                    .crossAxisAlignment(com.cleanroommc.modularui.utils.Alignment.CrossAxis.START)
+                    .childPadding(2)
+                    .pos(8, 6));
+    }
+
+    public Flow createInvertButtonRow() {
+        BooleanSyncValue invertedSyncer = new BooleanSyncValue(() -> inverted, val -> inverted = val);
+        return Flow.row()
+            .child(
+                new ToggleButton().value(invertedSyncer)
+                    .overlay(true, GTGuiTextures.OVERLAY_BUTTON_REDSTONE_ON)
+                    .overlay(false, GTGuiTextures.OVERLAY_BUTTON_REDSTONE_OFF)
+                    .size(16, 16))
+            .child(
+                IKey.dynamic(
+                    () -> invertedSyncer.getValue() ? translateToLocal("gt.interact.desc.inverted")
+                        : translateToLocal("gt.interact.desc.normal"))
+                    .asWidget())
+            .coverChildren()
+            .childPadding(2);
+    }
+
+    public Flow createThresholdFieldRow() {
+        return Flow.row()
+            .child(
+                new TextFieldWidget().setNumbersDouble(val -> Math.min(14, Math.max(0, val)))
+                    .size(77, 12)
+                    .value(new DoubleSyncValue(() -> threshold, val -> threshold = val))
+                    .setFocusOnGuiOpen(false))
+            .child(
+                IKey.lang("gui.NeutronSensor.4")
+                    .asWidget())
+            .coverChildren()
+            .childPadding(2);
+    }
+
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
         builder.widget(
             new CoverCycleButtonWidget().setToggle(() -> inverted, (val) -> inverted = val)
@@ -167,8 +229,8 @@ public class MTEHatchPHSensor extends MTEHatch {
             .widget(
                 new NumericWidget().setBounds(0, 14.0)
                     .setIntegerOnly(false)
-                    .setGetter(() -> (double) threshold)
-                    .setSetter((value) -> threshold = (float) Math.round(value * 100.0) / 100.0f)
+                    .setGetter(() -> threshold)
+                    .setSetter((value) -> threshold = Math.round(value * 100.0) / 100.0f)
                     .setScrollValues(0.1, 0.01, 1.0)
                     .setMaximumFractionDigits(2)
                     .setTextColor(Color.WHITE.dark(1))
