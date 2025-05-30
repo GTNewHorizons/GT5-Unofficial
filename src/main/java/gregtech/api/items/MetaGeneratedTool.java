@@ -989,18 +989,4 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
         return (short) (aStack.getItemDamage() + 1 - (aStack.getItemDamage() % 2));
     }
 
-    @Override
-    public int getItemEnchantability() {
-        return 0;
-    }
-
-    @Override
-    public boolean isBookEnchantable(ItemStack aStack, ItemStack aBook) {
-        return false;
-    }
-
-    @Override
-    public boolean getIsRepairable(ItemStack aStack, ItemStack aMaterial) {
-        return false;
-    }
 }

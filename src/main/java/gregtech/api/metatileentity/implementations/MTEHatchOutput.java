@@ -92,11 +92,6 @@ public class MTEHatchOutput extends MTEHatch implements IFluidStore, IFluidLocka
     }
 
     @Override
-    public boolean isAccessAllowed(EntityPlayer aPlayer) {
-        return true;
-    }
-
-    @Override
     public boolean isLiquidInput(ForgeDirection side) {
         return false;
     }
@@ -151,11 +146,6 @@ public class MTEHatchOutput extends MTEHatch implements IFluidStore, IFluidLocka
     @Override
     public boolean doesFillContainers() {
         return true;
-    }
-
-    @Override
-    public boolean doesEmptyContainers() {
-        return false;
     }
 
     @Override

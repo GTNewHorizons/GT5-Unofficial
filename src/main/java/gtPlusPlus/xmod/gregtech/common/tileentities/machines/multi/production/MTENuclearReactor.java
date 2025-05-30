@@ -134,12 +134,6 @@ public class MTENuclearReactor extends GTPPMultiBlockBase<MTENuclearReactor> imp
     }
 
     @Override
-    public boolean allowCoverOnSide(final ForgeDirection side, ItemStack coverItem) {
-        return side != this.getBaseMetaTileEntity()
-            .getFrontFacing();
-    }
-
-    @Override
     public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final ForgeDirection side,
         final ForgeDirection facing, final int aColorIndex, final boolean aActive, final boolean aRedstone) {
         boolean aWarmedUp = this.mEfficiency == this.getMaxEfficiency(null);
@@ -413,11 +407,6 @@ public class MTENuclearReactor extends GTPPMultiBlockBase<MTENuclearReactor> imp
             }
         }
         return result;
-    }
-
-    @Override
-    public int getMaxParallelRecipes() {
-        return 1;
     }
 
     @Override

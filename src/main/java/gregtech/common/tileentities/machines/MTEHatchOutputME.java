@@ -650,11 +650,6 @@ public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelSta
     }
 
     @Override
-    public boolean isGivingInformation() {
-        return true;
-    }
-
-    @Override
     public String[] getInfoData() {
         List<String> ss = new ArrayList<>();
         ss.add(
