@@ -9,5 +9,5 @@ public interface IWirelessCharger {
 
     boolean canChargePlayerItems(EntityPlayer player);
 
-    void chargePlayerItems(ItemStack[] stack, EntityPlayer player);
+    void chargePlayerItems(EntityPlayer player, ItemStack[]... inventories);
 }
