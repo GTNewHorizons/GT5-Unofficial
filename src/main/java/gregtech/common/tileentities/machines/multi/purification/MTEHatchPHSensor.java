@@ -201,9 +201,9 @@ public class MTEHatchPHSensor extends MTEHatch {
                 new TextFieldWidget().setNumbersDouble(val -> Math.min(14, Math.max(0, val)))
                     .size(77, 12)
                     .value(new DoubleSyncValue(() -> threshold, val -> threshold = val))
-                    .setFocusOnGuiOpen(false))
+                    .setFocusOnGuiOpen(true))
             .child(
-                IKey.lang("gui.NeutronSensor.4")
+                IKey.lang("GT5U.gui.text.ph_sensor")
                     .asWidget())
             .coverChildren()
             .childPadding(2);
