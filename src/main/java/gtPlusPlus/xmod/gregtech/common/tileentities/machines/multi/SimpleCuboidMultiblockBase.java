@@ -1,6 +1,5 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi;
 
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.isAir;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static gregtech.api.enums.HatchElement.Energy;
@@ -18,6 +17,7 @@ import java.util.List;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
@@ -30,7 +30,6 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.StringUtils;
 import gregtech.common.misc.GTStructureChannels;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase;
-import net.minecraftforge.common.util.ForgeDirection;
 
 public abstract class SimpleCuboidMultiblockBase extends GTPPMultiBlockBase<SimpleCuboidMultiblockBase>
     implements ISurvivalConstructable {
@@ -206,7 +205,7 @@ public abstract class SimpleCuboidMultiblockBase extends GTPPMultiBlockBase<Simp
         if (GTStructureChannels.STRUCTURE_LENGTH.hasValue(stackSize)) {
             length = Math.max(GTStructureChannels.STRUCTURE_LENGTH.getValueClamped(stackSize, 1, maxLength), minLength);
         } else {
-            length = Math.min(Math.max(stackSize.stackSize + 2, minLength), maxLength);
+            length = Math.min(stackSize.stackSize + minLength - 1, maxLength);
         }
 
         buildPiece(STRUCTURE_PIECE_FRONT, stackSize, hintsOnly, width / 2, height / 2, 0);
@@ -214,7 +213,7 @@ public abstract class SimpleCuboidMultiblockBase extends GTPPMultiBlockBase<Simp
         for (int i = 1; i < length - 1; i++) {
             buildPiece(STRUCTURE_PIECE_MIDDLE, stackSize, hintsOnly, width / 2, height / 2, -i);
         }
-        buildPiece(STRUCTURE_PIECE_BACK, stackSize, hintsOnly, width / 2, height / 2, -(length-1));
+        buildPiece(STRUCTURE_PIECE_BACK, stackSize, hintsOnly, width / 2, height / 2, -(length - 1));
     }
 
     @Override
@@ -225,7 +224,7 @@ public abstract class SimpleCuboidMultiblockBase extends GTPPMultiBlockBase<Simp
         if (GTStructureChannels.STRUCTURE_LENGTH.hasValue(stackSize)) {
             length = Math.max(GTStructureChannels.STRUCTURE_LENGTH.getValueClamped(stackSize, 1, maxLength), minLength);
         } else {
-            length = Math.min(Math.max(stackSize.stackSize + 2, minLength), maxLength);
+            length = Math.min(stackSize.stackSize + minLength - 1, maxLength);
         }
 
         int built = survivalBuildPiece(
@@ -259,7 +258,7 @@ public abstract class SimpleCuboidMultiblockBase extends GTPPMultiBlockBase<Simp
             stackSize,
             width / 2,
             height / 2,
-            -(length-1),
+            -(length - 1),
             elementBudget,
             env,
             false,
@@ -271,7 +270,7 @@ public abstract class SimpleCuboidMultiblockBase extends GTPPMultiBlockBase<Simp
         return casingTextureIndex;
     }
 
-    protected MultiblockTooltipBuilder addStructureInfo(MultiblockTooltipBuilder builder) {
+    protected MultiblockTooltipBuilder addStructureInfoToTooltip(MultiblockTooltipBuilder builder) {
         builder
             .beginVariableStructureBlock(width, width, height, height, minLength, maxLength, innerBlock == Blocks.air);
 
@@ -287,6 +286,9 @@ public abstract class SimpleCuboidMultiblockBase extends GTPPMultiBlockBase<Simp
         } else {
             builder.addOtherStructurePart(casingName, "", 1);
         }
+
+        builder.addStructureInfo("Additional length provides no benefit,")
+            .addStructureInfo("only more space for buses/hatches.");
 
         if (innerBlock == Blocks.air) {
             for (var hatchType : validHatches) {
