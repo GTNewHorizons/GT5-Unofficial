@@ -375,13 +375,6 @@ public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge> i
     }
 
     @Override
-    public boolean isCorrectMachinePart(ItemStack aStack) {
-        return true;
-    }
-
-    int drainedMagmatter = 0;
-
-    @Override
     protected ProcessingLogic createProcessingLogic() {
         return new ProcessingLogic() {
 
@@ -591,56 +584,13 @@ public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge> i
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
-        int built = 0;
-        if (stackSize.stackSize <= 2) {
-            built += survivialBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 4, 37, 1, elementBudget, env, false, true);
-            if (built >= 0) return built;
-            if (stackSize.stackSize > 1) {
-                built += survivialBuildPiece(
-                    STRUCTURE_PIECE_TIER2,
-                    stackSize,
-                    -7,
-                    14,
-                    4,
-                    elementBudget,
-                    env,
-                    false,
-                    true);
-            }
-            if (stackSize.stackSize > 2) {
-                built += survivialBuildPiece(
-                    STRUCTURE_PIECE_TIER3,
-                    stackSize,
-                    14,
-                    26,
-                    4,
-                    elementBudget,
-                    env,
-                    false,
-                    true);
-            }
-        } else {
-            built += survivialBuildPiece(
-                STRUCTURE_PIECE_TIER4_BASE,
-                stackSize,
-                20,
-                12,
-                0,
-                elementBudget,
-                env,
-                false,
-                true);
-            if (built >= 0) return built;
-            built += survivialBuildPiece(
-                STRUCTURE_PIECE_TIER4_RENDER,
-                stackSize,
-                20,
-                49,
-                0,
-                elementBudget,
-                env,
-                false,
-                true);
+        int built = survivalBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 4, 37, 1, elementBudget, env, false, true);
+        if (built >= 0) return built;
+        if (stackSize.stackSize > 1) {
+            built += survivalBuildPiece(STRUCTURE_PIECE_TIER2, stackSize, -7, 14, 4, elementBudget, env, false, true);
+        }
+        if (stackSize.stackSize > 2) {
+            built += survivalBuildPiece(STRUCTURE_PIECE_TIER3, stackSize, 14, 26, 4, elementBudget, env, false, true);
         }
         return built;
     }
