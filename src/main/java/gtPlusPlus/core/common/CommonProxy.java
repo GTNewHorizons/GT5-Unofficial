@@ -110,8 +110,6 @@ public class CommonProxy implements IFuelHandler {
     public void postInit(final FMLPostInitializationEvent e) {
         GameRegistry.registerFuelHandler(this);
         // Compat Handling
-        Logger.INFO("Removing recipes from other mods.");
-        CompatHandler.RemoveRecipesFromOtherMods();
         Logger.INFO("Initialising Handler, Then Adding Recipes");
         CompatHandler.InitialiseHandlerThenAddRecipes();
         Logger.INFO("Loading Intermod staging.");

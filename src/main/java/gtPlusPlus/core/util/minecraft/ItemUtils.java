@@ -2,10 +2,8 @@ package gtPlusPlus.core.util.minecraft;
 
 import static gregtech.api.enums.Mods.GTPlusPlus;
 import static gregtech.api.enums.Mods.GregTech;
-import static gregtech.api.enums.Mods.IndustrialCraft2;
 import static gregtech.api.enums.Mods.Minecraft;
 import static gregtech.api.recipe.RecipeMaps.packagerRecipes;
-import static gregtech.api.util.GTModHandler.getModItem;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 
 import java.util.ArrayList;
@@ -20,7 +18,6 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
@@ -38,13 +35,11 @@ import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.config.ASMConfiguration;
-import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.item.base.dusts.BaseItemDustUnique;
 import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.math.MathUtils;
-import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.loaders.RecipeGenDustGeneration;
 
 public class ItemUtils {
@@ -82,12 +77,6 @@ public class ItemUtils {
 
     public static ItemStack simpleMetaStack(final Block block, final int meta, final int size) {
         return simpleMetaStack(Item.getItemFromBlock(block), meta, size);
-    }
-
-    public static Item getItemFromFQRN(final String fqrn) // fqrn = fully qualified resource name
-    {
-        final String[] fqrnSplit = fqrn.split(":");
-        return GameRegistry.findItem(fqrnSplit[0], fqrnSplit[1]);
     }
 
     public static ItemStack[] validItemsForOreDict(final String oredictName) {

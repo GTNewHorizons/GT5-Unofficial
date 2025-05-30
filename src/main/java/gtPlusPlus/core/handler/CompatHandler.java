@@ -32,7 +32,6 @@ import gtPlusPlus.core.material.Particle;
 import gtPlusPlus.core.recipe.RecipesGregTech;
 import gtPlusPlus.core.recipe.RecipesLaserEngraver;
 import gtPlusPlus.core.recipe.ShapedRecipeObject;
-import gtPlusPlus.core.util.minecraft.RecipeUtils;
 import gtPlusPlus.xmod.gregtech.loaders.RecipeGenFluidCanning;
 import gtPlusPlus.xmod.gregtech.loaders.RecipeGenRecycling;
 import gtPlusPlus.xmod.gregtech.loaders.recipe.RecipeLoaderChemicalSkips;
@@ -103,7 +102,6 @@ import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechWirelessChargers;
 
 public class CompatHandler {
 
-    public static Queue<Object> RemoveRecipeQueue = new LinkedList<>();
     public static Queue<ShapedRecipeObject> AddRecipeQueue = new LinkedList<>();
     public static Boolean areInitItemsLoaded = false;
 
@@ -207,13 +205,6 @@ public class CompatHandler {
             GTOreDictUnificator.registerOre("dustKoboldite", getModItem(Witchery.ID, "ingredient", 1, 148));
             GTOreDictUnificator.registerOre("nuggetKoboldite", getModItem(Witchery.ID, "ingredient", 1, 149));
             GTOreDictUnificator.registerOre("ingotKoboldite", getModItem(Witchery.ID, "ingredient", 1, 150));
-        }
-    }
-
-    public static void RemoveRecipesFromOtherMods() {
-        // Removal of Recipes
-        for (final Object item : RemoveRecipeQueue) {
-            RecipeUtils.removeCraftingRecipe(item);
         }
     }
 
