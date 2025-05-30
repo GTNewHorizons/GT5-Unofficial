@@ -58,15 +58,6 @@ public class ItemUtils {
         addItemToOreDictionary(stack, oreDictName, false);
     }
 
-    public static ItemStack[] validItemsForOreDict(final String oredictName) {
-        final List<?> validNames = MaterialUtils.oreDictValuesForEntry(oredictName);
-        final ItemStack[] inputs = new ItemStack[validNames.size()];
-        for (int i = 0; i < validNames.size(); i++) {
-            inputs[i] = (ItemStack) validNames.get(i);
-        }
-        return inputs;
-    }
-
     public static ItemStack getItemStackOfAmountFromOreDict(String oredictName, final int amount) {
         String mTemp = oredictName;
 
