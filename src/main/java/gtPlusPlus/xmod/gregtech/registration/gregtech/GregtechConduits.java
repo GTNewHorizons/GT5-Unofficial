@@ -805,7 +805,7 @@ public class GregtechConduits {
         // Adds manual crafting recipe
         if (ItemUtils.checkForInvalidItems(new ItemStack[] { aPlate, aWire01 })) {
             RecipeUtils
-                .addShapedRecipe(aPlate, ToolDictNames.craftingToolWireCutter, null, null, null, null, null, null, null, aWire01);
+                .addShapedRecipe(aPlate, ToolDictNames.craftingToolWireCutter.name(), null, null, null, null, null, null, null, aWire01);
         }
 
         // Wire mill

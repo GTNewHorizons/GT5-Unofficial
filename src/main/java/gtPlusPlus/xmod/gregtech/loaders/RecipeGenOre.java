@@ -613,7 +613,7 @@ public class RecipeGenOre extends RecipeGenBase {
         // Shaped Crafting
 
         RecipeUtils.addShapedRecipe(
-            ToolDictNames.craftingToolHardHammer,
+            ToolDictNames.craftingToolHardHammer.name(),
             null,
             null,
             material.getCrushedPurified(1),
@@ -625,7 +625,7 @@ public class RecipeGenOre extends RecipeGenBase {
             material.getDustPurified(1));
 
         RecipeUtils.addShapedRecipe(
-            ToolDictNames.craftingToolHardHammer,
+            ToolDictNames.craftingToolHardHammer.name(),
             null,
             null,
             material.getCrushed(1),
@@ -637,7 +637,7 @@ public class RecipeGenOre extends RecipeGenBase {
             material.getDustImpure(1));
 
         RecipeUtils.addShapedRecipe(
-            ToolDictNames.craftingToolHardHammer,
+            ToolDictNames.craftingToolHardHammer.name(),
             null,
             null,
             material.getCrushedCentrifuged(1),
