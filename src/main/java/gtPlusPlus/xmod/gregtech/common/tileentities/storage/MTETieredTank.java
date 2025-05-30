@@ -99,11 +99,6 @@ public class MTETieredTank extends MTEBasicTank {
     }
 
     @Override
-    public boolean isAccessAllowed(final EntityPlayer aPlayer) {
-        return true;
-    }
-
-    @Override
     public final byte getUpdateData() {
         return 0x00;
     }

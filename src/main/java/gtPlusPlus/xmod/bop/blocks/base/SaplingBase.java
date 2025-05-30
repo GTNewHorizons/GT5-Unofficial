@@ -14,7 +14,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
-import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.feature.WorldGenBigTree;
 import net.minecraft.world.gen.feature.WorldGenTrees;
@@ -125,20 +124,6 @@ public class SaplingBase extends BlockSapling {
         if (!((WorldGenerator) object).generate(world, rand, x + i1, y, z + j1)) {
             world.setBlock(x, y, z, this, l, 4);
         }
-    }
-
-    @Override
-    public boolean func_149880_a(World world, int p_149880_2_, int p_149880_3_, int p_149880_4_, int p_149880_5_) {
-        return world.getBlock(p_149880_2_, p_149880_3_, p_149880_4_) == this
-            && (world.getBlockMetadata(p_149880_2_, p_149880_3_, p_149880_4_) & 7) == p_149880_5_;
-    }
-
-    /**
-     * Determines the damage on the item the block drops. Used in cloth and wood.
-     */
-    @Override
-    public int damageDropped(int meta) {
-        return MathHelper.clamp_int(meta & 7, 0, 5);
     }
 
     /**

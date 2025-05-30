@@ -9,8 +9,6 @@ import static gregtech.common.misc.WirelessNetworkManager.totalStorage;
 
 import java.util.UUID;
 
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -42,16 +40,6 @@ public class MTEWirelessDynamo extends MTEHatchDynamo {
     }
 
     @Override
-    public boolean isFacingValid(ForgeDirection facing) {
-        return true;
-    }
-
-    @Override
-    public boolean isAccessAllowed(EntityPlayer aPlayer) {
-        return true;
-    }
-
-    @Override
     public boolean isEnetOutput() {
         return false;
     }
@@ -62,18 +50,8 @@ public class MTEWirelessDynamo extends MTEHatchDynamo {
     }
 
     @Override
-    public boolean isValidSlot(int aIndex) {
-        return false;
-    }
-
-    @Override
     public long getMinimumStoredEU() {
         return 2 * V[mTier];
-    }
-
-    @Override
-    public long maxEUOutput() {
-        return V[mTier];
     }
 
     @Override
@@ -101,18 +79,6 @@ public class MTEWirelessDynamo extends MTEHatchDynamo {
     @Override
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new MTEWirelessDynamo(mName, mTier, new String[] { "" }, mTextures);
-    }
-
-    @Override
-    public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
-        ItemStack aStack) {
-        return false;
-    }
-
-    @Override
-    public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
-        ItemStack aStack) {
-        return false;
     }
 
     @Override

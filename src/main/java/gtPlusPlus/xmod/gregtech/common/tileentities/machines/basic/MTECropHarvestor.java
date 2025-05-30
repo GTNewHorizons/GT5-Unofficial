@@ -70,11 +70,6 @@ public class MTECropHarvestor extends MTEBasicTank {
     }
 
     @Override
-    public boolean isAccessAllowed(EntityPlayer aPlayer) {
-        return true;
-    }
-
-    @Override
     public boolean isInputFacing(ForgeDirection side) {
         return true;
     }
@@ -486,11 +481,6 @@ public class MTECropHarvestor extends MTEBasicTank {
             "Has " + (this.mTier * 5) + "% chance for extra drops",
             "Holds " + this.getCapacity() + "L of Water",
             GTPPCore.GT_Tooltip.get());
-    }
-
-    @Override
-    public boolean allowCoverOnSide(ForgeDirection side, ItemStack coverItem) {
-        return true;
     }
 
     @Override

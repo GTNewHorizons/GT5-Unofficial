@@ -134,11 +134,6 @@ public class MTEDebugPollutor extends MTETieredMachineBlock implements IAddUIWid
     }
 
     @Override
-    public boolean isAccessAllowed(EntityPlayer aPlayer) {
-        return true;
-    }
-
-    @Override
     public boolean isElectric() {
         return false;
     }

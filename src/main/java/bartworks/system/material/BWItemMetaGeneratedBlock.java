@@ -34,17 +34,6 @@ public class BWItemMetaGeneratedBlock extends BWItemBlocks {
     }
 
     @Override
-    public boolean onItemUseFirst(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side,
-        float hitX, float hitY, float hitZ) {
-        return false;
-    }
-
-    @Override
-    public String getUnlocalizedName(ItemStack aStack) {
-        return this.field_150939_a.getUnlocalizedName() + "." + this.getDamage(aStack);
-    }
-
-    @Override
     public String getItemStackDisplayName(ItemStack aStack) {
         Block block = Block.getBlockFromItem(aStack.getItem());
         if (block instanceof BWMetaGeneratedBlocks metaBlock) {
