@@ -1452,10 +1452,10 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
                 .setTooltipShowUpDelay(TOOLTIP_DELAY)
                 .setUpdateTooltipEveryTick(true)
                 .setSize(48, 42)
-                .setPos(-48, 100));
+                .setPos(-48, 132));
 
         return new DrawableWidget().setDrawable(new CircularGaugeDrawable(() -> (float) getSteamVar / maxSteamStore()))
-            .setPos(-48 + 21, 100 + 21)
+            .setPos(-48 + 21, 132 + 21)
             .setSize(18, 4);
     }
 

@@ -445,11 +445,11 @@ public abstract class MTESteamMultiBase<T extends MTESteamMultiBase<T>> extends 
                 .setTooltipShowUpDelay(TOOLTIP_DELAY)
                 .setUpdateTooltipEveryTick(true)
                 .setSize(48, 42)
-                .setPos(-48, 100));
+                .setPos(-48, 142));
 
         builder.widget(
             new DrawableWidget().setDrawable(new CircularGaugeDrawable(() -> (float) uiSteamStored / uiSteamCapacity))
-                .setPos(-48 + 21, 100 + 21)
+                .setPos(-48 + 21, 142 + 21)
                 .setSize(18, 4));
     }
 
