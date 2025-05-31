@@ -2060,7 +2060,7 @@ public class RecipesMachines {
             // EV
             RecipeUtils.addShapedGregtechRecipe(
                 CI.component_Plate[4],
-                new ItemStack(ModItems.itemAirFilter, 1, 0),
+                new ItemStack(ModItems.itemAirFilter, 1),
                 CI.component_Plate[4],
                 CI.component_Plate[4],
                 ItemList.Electric_Motor_EV.get(1),
