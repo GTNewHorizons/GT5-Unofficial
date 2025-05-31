@@ -20,6 +20,7 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 
 import cofh.api.energy.IEnergyContainerItem;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.Mods;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -30,7 +31,6 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.tileentities.machines.MTEHatchInputBusME;
 import ic2.api.item.ElectricItem;
 import ic2.api.item.IElectricItem;
-import tectech.TecTech;
 import tectech.loader.ConfigHandler;
 import tectech.thing.casing.BlockGTCasingsTT;
 import tectech.thing.casing.TTCasingsContainer;
@@ -89,7 +89,7 @@ public class MTEEnergyInfuser extends TTMultiblockBase implements ISurvivalConst
         if (stack.stackSize == 1) {
             if (item instanceof IElectricItem) {
                 return ElectricItem.manager.getCharge(stack) >= ((IElectricItem) item).getMaxCharge(stack);
-            } else if (TecTech.hasCOFH && item instanceof IEnergyContainerItem) {
+            } else if (Mods.COFHCore.isModLoaded() && item instanceof IEnergyContainerItem) {
                 return ((IEnergyContainerItem) item).getEnergyStored(stack)
                     >= ((IEnergyContainerItem) item).getMaxEnergyStored(stack);
             }
@@ -289,7 +289,7 @@ public class MTEEnergyInfuser extends TTMultiblockBase implements ISurvivalConst
                 if (item instanceof IElectricItem) {
                     doChargeItemStack((IElectricItem) item, stack);
                     return;
-                } else if (TecTech.hasCOFH && item instanceof IEnergyContainerItem) {
+                } else if (Mods.COFHCore.isModLoaded() && item instanceof IEnergyContainerItem) {
                     doChargeItemStackRF((IEnergyContainerItem) item, stack);
                     return;
                 }
