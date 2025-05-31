@@ -353,13 +353,13 @@ public class CI {
         m = aMaster[0][aTier];
         aReturn = ItemUtils.getOrePrefixStack(aPrefix, m, aAmount);
 
-        if (null != (aReturn)) return aReturn;
+        if (aReturn != null) return aReturn;
 
         // If Invalid, Try Second Materialqcv v
         m = aMaster[1][aTier];
         aReturn = ItemUtils.getOrePrefixStack(aPrefix, m, aAmount);
 
-        if (null != (aReturn)) return aReturn;
+        if (aReturn  != null) return aReturn;
 
         // If Invalid, Try Third Material
 
@@ -368,7 +368,7 @@ public class CI {
 
         // All Invalid?
         // Let's add a special error ingot.
-        if (null == (aReturn)) {
+        if (aReturn == null) {
             aReturn = null;
         }
 
