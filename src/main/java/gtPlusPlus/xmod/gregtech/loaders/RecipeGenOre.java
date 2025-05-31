@@ -24,6 +24,7 @@ import org.apache.commons.lang3.tuple.Pair;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.ToolDictNames;
 import gregtech.api.util.GTModHandler;
 import gtPlusPlus.api.interfaces.RunnableWithInfo;
 import gtPlusPlus.api.objects.Logger;
@@ -31,7 +32,6 @@ import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.material.MaterialGenerator;
 import gtPlusPlus.core.material.MaterialStack;
 import gtPlusPlus.core.material.state.MaterialState;
-import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.minecraft.MaterialUtils;
 import gtPlusPlus.core.util.minecraft.RecipeUtils;
@@ -612,7 +612,7 @@ public class RecipeGenOre extends RecipeGenBase {
         // Shaped Crafting
 
         RecipeUtils.addShapedRecipe(
-            CI.craftingToolHammer_Hard,
+            ToolDictNames.craftingToolHardHammer.name(),
             null,
             null,
             material.getCrushedPurified(1),
@@ -624,7 +624,7 @@ public class RecipeGenOre extends RecipeGenBase {
             material.getDustPurified(1));
 
         RecipeUtils.addShapedRecipe(
-            CI.craftingToolHammer_Hard,
+            ToolDictNames.craftingToolHardHammer.name(),
             null,
             null,
             material.getCrushed(1),
@@ -636,7 +636,7 @@ public class RecipeGenOre extends RecipeGenBase {
             material.getDustImpure(1));
 
         RecipeUtils.addShapedRecipe(
-            CI.craftingToolHammer_Hard,
+            ToolDictNames.craftingToolHardHammer.name(),
             null,
             null,
             material.getCrushedCentrifuged(1),
