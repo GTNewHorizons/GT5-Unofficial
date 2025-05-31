@@ -20,7 +20,6 @@ import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTOreDictUnificator;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.util.Utils;
-import gtPlusPlus.core.util.minecraft.ItemUtils;
 
 public class BaseItemMisc extends Item {
 
@@ -53,7 +52,7 @@ public class BaseItemMisc extends Item {
             }
         }
         GameRegistry.registerItem(this, this.unlocalName);
-        GTOreDictUnificator.registerOre(miscType.getOreDictPrefix() + unlocalName, ItemUtils.getSimpleStack(this));
+        GTOreDictUnificator.registerOre(miscType.getOreDictPrefix() + unlocalName, new ItemStack(this));
     }
 
     private String getCorrectTextures() {

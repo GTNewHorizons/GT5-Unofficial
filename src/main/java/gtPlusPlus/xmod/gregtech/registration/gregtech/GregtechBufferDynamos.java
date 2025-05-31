@@ -16,7 +16,6 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GTModHandler;
-import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchDynamoBuffer;
 
@@ -90,52 +89,52 @@ public class GregtechBufferDynamos {
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Hatch_Buffer_Dynamo_ULV.get(1L),
             bitsd,
-            new Object[] { "TMC", 'M', ItemList.Hatch_Dynamo_ULV, 'T', CI.getTieredCircuit(0), 'C',
+            new Object[] { "TMC", 'M', ItemList.Hatch_Dynamo_ULV, 'T', "circuitPrimitive", 'C',
                 OrePrefixes.cableGt04.get(Materials.Lead) });
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Hatch_Buffer_Dynamo_LV.get(1L),
             bitsd,
-            new Object[] { "TMC", 'M', ItemList.Hatch_Dynamo_LV, 'T', CI.getTieredCircuit(1), 'C',
+            new Object[] { "TMC", 'M', ItemList.Hatch_Dynamo_LV, 'T', "circuitBasic", 'C',
                 OrePrefixes.cableGt04.get(Materials.Tin) });
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Hatch_Buffer_Dynamo_MV.get(1L),
             bitsd,
-            new Object[] { "TMC", 'M', ItemList.Hatch_Dynamo_MV, 'T', CI.getTieredCircuit(2), 'C',
+            new Object[] { "TMC", 'M', ItemList.Hatch_Dynamo_MV, 'T', "circuitGood", 'C',
                 OrePrefixes.cableGt04.get(Materials.AnyCopper) });
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Hatch_Buffer_Dynamo_HV.get(1L),
             bitsd,
-            new Object[] { "TMC", 'M', ItemList.Hatch_Dynamo_HV, 'T', CI.getTieredCircuit(3), 'C',
+            new Object[] { "TMC", 'M', ItemList.Hatch_Dynamo_HV, 'T', "circuitAdvanced", 'C',
                 OrePrefixes.cableGt04.get(Materials.Gold) });
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Hatch_Buffer_Dynamo_EV.get(1L),
             bitsd,
-            new Object[] { "TMC", 'M', ItemList.Hatch_Dynamo_EV, 'T', CI.getTieredCircuit(4), 'C',
+            new Object[] { "TMC", 'M', ItemList.Hatch_Dynamo_EV, 'T', "circuitData", 'C',
                 OrePrefixes.cableGt04.get(Materials.Aluminium) });
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Hatch_Buffer_Dynamo_IV.get(1L),
             bitsd,
-            new Object[] { "TMC", 'M', ItemList.Hatch_Dynamo_IV, 'T', CI.getTieredCircuit(5), 'C',
+            new Object[] { "TMC", 'M', ItemList.Hatch_Dynamo_IV, 'T', "circuitElite", 'C',
                 OrePrefixes.cableGt04.get(Materials.Tungsten) });
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Hatch_Buffer_Dynamo_LuV.get(1L),
             bitsd,
-            new Object[] { "TMC", 'M', ItemList.Hatch_Dynamo_LuV, 'T', CI.getTieredCircuit(6), 'C',
+            new Object[] { "TMC", 'M', ItemList.Hatch_Dynamo_LuV, 'T', "circuitMaster", 'C',
                 OrePrefixes.cableGt04.get(Materials.VanadiumGallium) });
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Hatch_Buffer_Dynamo_ZPM.get(1L),
             bitsd,
-            new Object[] { "TMC", 'M', ItemList.Hatch_Dynamo_ZPM, 'T', CI.getTieredCircuit(7), 'C',
+            new Object[] { "TMC", 'M', ItemList.Hatch_Dynamo_ZPM, 'T', "circuitUltimate", 'C',
                 OrePrefixes.cableGt04.get(Materials.Naquadah) });
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Hatch_Buffer_Dynamo_UV.get(1L),
             bitsd,
-            new Object[] { "TMC", 'M', ItemList.Hatch_Dynamo_UV, 'T', CI.getTieredCircuit(8), 'C',
+            new Object[] { "TMC", 'M', ItemList.Hatch_Dynamo_UV, 'T', "circuitSuperconductor", 'C',
                 OrePrefixes.wireGt12.get(Materials.NaquadahAlloy) });
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Hatch_Buffer_Dynamo_MAX.get(1L),
             bitsd,
-            new Object[] { "TMC", 'M', ItemList.Hatch_Dynamo_UHV, 'T', CI.getTieredCircuit(9), 'C',
+            new Object[] { "TMC", 'M', ItemList.Hatch_Dynamo_UHV, 'T', "circuitInfinite", 'C',
                 OrePrefixes.wireGt04.get(Materials.SuperconductorUHV) });
     }
 }
