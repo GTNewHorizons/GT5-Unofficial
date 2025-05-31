@@ -1,6 +1,8 @@
 package goodgenerator.items;
 
 import static goodgenerator.util.DescTextLocalization.addText;
+import static net.minecraft.util.StatCollector.translateToLocal;
+import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,7 +12,6 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.StatCollector;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -207,10 +208,10 @@ public class ItemFuelRod extends RadioactiveItem implements IReactorComponent, I
                 getMaxCustomDamage(item)));
         double tMut = this.Heat / 4.0;
         if (this.Heat == 4) {
-            tooltip.add(StatCollector.translateToLocal("fuelrodheat.tooltip.0"));
+            tooltip.add(translateToLocal("fuelrodheat.tooltip.0"));
         } else {
-            tooltip.add(String.format(StatCollector.translateToLocal("fuelrodheat.tooltip.1"), tMut));
+            tooltip.add(translateToLocalFormatted("fuelrodheat.tooltip.1", tMut));
         }
-        if (this.HeatBonus != 0) tooltip.add(StatCollector.translateToLocal("fuelrodheat.tooltip.2"));
+        if (this.HeatBonus != 0) tooltip.add(translateToLocal("fuelrodheat.tooltip.2"));
     }
 }

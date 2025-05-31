@@ -4,12 +4,10 @@ import static gregtech.api.enums.Mods.Baubles;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.stream.Stream;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.MathHelper;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -28,10 +26,10 @@ public class WirelessChargerManager {
     private static final Map<Long, IWirelessCharger> CHARGER_MAP = new HashMap<>();
     private int tickCounter = 0;
 
-    @SubscribeEvent()
+    @SubscribeEvent
     public void onServerTick(TickEvent.ServerTickEvent event) {
         if (event.phase == TickEvent.Phase.END) {
-            if (++tickCounter % CHARGE_TICK == 0) {
+            if (!CHARGER_MAP.isEmpty() && ++tickCounter % CHARGE_TICK == 0) {
                 for (EntityPlayer player : PlayerUtils.getOnlinePlayers()) {
                     chargePlayerItems(player);
                 }
@@ -40,11 +38,8 @@ public class WirelessChargerManager {
     }
 
     public static void addCharger(@NotNull IWirelessCharger charger) {
-        CHARGER_MAP.put(
-            CoordinatePacker.pack(
-                charger.getChargerTE()
-                    .getCoords()),
-            charger);
+        final IGregTechTileEntity te = charger.getChargerTE();
+        CHARGER_MAP.put(CoordinatePacker.pack(te.getXCoord(), te.getYCoord(), te.getZCoord()), charger);
     }
 
     public static IWirelessCharger getCharger(int x, int y, int z) {
@@ -52,24 +47,34 @@ public class WirelessChargerManager {
     }
 
     public static void removeCharger(@NotNull IWirelessCharger charger) {
-        CHARGER_MAP.remove(
-            CoordinatePacker.pack(
-                charger.getChargerTE()
-                    .getCoords()));
+        final IGregTechTileEntity te = charger.getChargerTE();
+        CHARGER_MAP.remove(CoordinatePacker.pack(te.getXCoord(), te.getYCoord(), te.getZCoord()));
     }
 
-    public static double calcDistance(@NotNull EntityPlayer player, @NotNull IGregTechTileEntity te) {
-        final int x = MathHelper.floor_double(player.posX) - te.getXCoord();
-        final int y = MathHelper.floor_double(player.boundingBox.minY) + 1 - te.getYCoord();
-        final int z = MathHelper.floor_double(player.posZ) - te.getZCoord();
-
-        return Math.sqrt(x * x + y * y + z * z);
+    public static void clearChargerMap() {
+        CHARGER_MAP.clear();
     }
 
     private void chargePlayerItems(@NotNull EntityPlayer player) {
-        ItemStack[] armourItems = player.inventory.armorInventory;
-        ItemStack[] inventoryItems = player.inventory.mainInventory;
-        ItemStack[] baubleItems = {};
+        ItemStack[] baubleItems = null;
+        boolean checkedBaubles = false;
+        for (IWirelessCharger charger : CHARGER_MAP.values()) {
+            if (charger.canChargePlayerItems(player)) {
+                if (!checkedBaubles) {
+                    baubleItems = getBaublesItems(player);
+                    checkedBaubles = true;
+                }
+                charger.chargePlayerItems(
+                    player,
+                    player.inventory.armorInventory,
+                    player.inventory.mainInventory,
+                    baubleItems);
+            }
+        }
+    }
+
+    private static ItemStack[] getBaublesItems(@NotNull EntityPlayer player) {
+        ItemStack[] baubleItems = null;
         if (Baubles.isModLoaded()) {
             IInventory baubleInv = BaublesApi.getBaubles(player);
             if (baubleInv != null) {
@@ -79,14 +84,6 @@ public class WirelessChargerManager {
                 }
             }
         }
-
-        ItemStack[] stacks = Stream
-            .concat(Stream.concat(Stream.of(armourItems), Stream.of(inventoryItems)), Stream.of(baubleItems))
-            .toArray(ItemStack[]::new);
-
-        for (IWirelessCharger charger : CHARGER_MAP.values()) {
-            if (!charger.canChargePlayerItems(player)) continue;
-            charger.chargePlayerItems(stacks, player);
-        }
+        return baubleItems;
     }
 }

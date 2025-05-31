@@ -1,6 +1,9 @@
 package gregtech.loaders.postload.recipes;
 
 import static gregtech.api.recipe.RecipeMaps.fusionRecipes;
+import static gregtech.api.util.GTRecipeBuilder.HALF_INGOTS;
+import static gregtech.api.util.GTRecipeBuilder.INGOTS;
+import static gregtech.api.util.GTRecipeBuilder.NUGGETS;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
 import static gregtech.api.util.GTRecipeConstants.FUSION_THRESHOLD;
@@ -22,8 +25,8 @@ public class FusionReactorRecipes implements Runnable {
         // available on the tier)
 
         GTValues.RA.stdBuilder()
-            .fluidInputs(Materials.Lithium.getMolten(16), Materials.Tungsten.getMolten(16))
-            .fluidOutputs(Materials.Iridium.getMolten(16))
+            .fluidInputs(Materials.Lithium.getMolten(1 * NUGGETS), Materials.Tungsten.getMolten(1 * NUGGETS))
+            .fluidOutputs(Materials.Iridium.getMolten(1 * NUGGETS))
             .duration(3 * SECONDS + 4 * TICKS)
             .eut(TierEU.RECIPE_LuV)
             .metadata(FUSION_THRESHOLD, 300_000_000L)
@@ -46,15 +49,15 @@ public class FusionReactorRecipes implements Runnable {
             .addTo(fusionRecipes); // FT1 Expensive //
 
         GTValues.RA.stdBuilder()
-            .fluidInputs(Materials.Aluminium.getMolten(16), Materials.Lithium.getMolten(16))
-            .fluidOutputs(Materials.Sulfur.getPlasma(144))
+            .fluidInputs(Materials.Aluminium.getMolten(1 * NUGGETS), Materials.Lithium.getMolten(1 * NUGGETS))
+            .fluidOutputs(Materials.Sulfur.getPlasma(1 * INGOTS))
             .duration(1 * SECONDS + 12 * TICKS)
             .eut(10240)
             .metadata(FUSION_THRESHOLD, 240_000_000L)
             .addTo(fusionRecipes); // FT1+ Cheap
 
         GTValues.RA.stdBuilder()
-            .fluidInputs(Materials.Beryllium.getMolten(16), Materials.Deuterium.getGas(375))
+            .fluidInputs(Materials.Beryllium.getMolten(1 * NUGGETS), Materials.Deuterium.getGas(375))
             .fluidOutputs(Materials.Nitrogen.getPlasma(125))
             .duration(16 * TICKS)
             .eut(16384)
@@ -62,64 +65,64 @@ public class FusionReactorRecipes implements Runnable {
             .addTo(fusionRecipes); // FT1+ Expensive //
 
         GTValues.RA.stdBuilder()
-            .fluidInputs(Materials.Silicon.getMolten(16), Materials.Magnesium.getMolten(16))
-            .fluidOutputs(Materials.Iron.getPlasma(144))
+            .fluidInputs(Materials.Silicon.getMolten(1 * NUGGETS), Materials.Magnesium.getMolten(1 * NUGGETS))
+            .fluidOutputs(Materials.Iron.getPlasma(1 * INGOTS))
             .duration(1 * SECONDS + 12 * TICKS)
             .eut(TierEU.RECIPE_IV)
             .metadata(FUSION_THRESHOLD, 360_000_000L)
             .addTo(fusionRecipes); // FT1++ Cheap //
 
         GTValues.RA.stdBuilder()
-            .fluidInputs(Materials.Potassium.getMolten(16), Materials.Fluorine.getGas(144))
-            .fluidOutputs(Materials.Nickel.getPlasma(144))
+            .fluidInputs(Materials.Potassium.getMolten(1 * NUGGETS), Materials.Fluorine.getGas(1 * INGOTS))
+            .fluidOutputs(Materials.Nickel.getPlasma(1 * INGOTS))
             .duration(16 * TICKS)
             .eut(TierEU.RECIPE_LuV)
             .metadata(FUSION_THRESHOLD, 480_000_000L)
             .addTo(fusionRecipes); // FT1++ Expensive //
 
         GTValues.RA.stdBuilder()
-            .fluidInputs(Materials.Beryllium.getMolten(16), Materials.Tungsten.getMolten(16))
-            .fluidOutputs(Materials.Platinum.getMolten(16))
+            .fluidInputs(Materials.Beryllium.getMolten(1 * NUGGETS), Materials.Tungsten.getMolten(1 * NUGGETS))
+            .fluidOutputs(Materials.Platinum.getMolten(1 * NUGGETS))
             .duration(1 * SECONDS + 12 * TICKS)
             .eut(TierEU.RECIPE_LuV)
             .metadata(FUSION_THRESHOLD, 150_000_000L)
             .addTo(fusionRecipes); // FT1 - utility
 
         GTValues.RA.stdBuilder()
-            .fluidInputs(Materials.Neodymium.getMolten(16), Materials.Hydrogen.getGas(48))
-            .fluidOutputs(Materials.Europium.getMolten(16))
+            .fluidInputs(Materials.Neodymium.getMolten(1 * NUGGETS), Materials.Hydrogen.getGas(3 * NUGGETS))
+            .fluidOutputs(Materials.Europium.getMolten(1 * NUGGETS))
             .duration(1 * SECONDS + 12 * TICKS)
             .eut(24576)
             .metadata(FUSION_THRESHOLD, 150_000_000L)
             .addTo(fusionRecipes); // FT1 - utility
 
         GTValues.RA.stdBuilder()
-            .fluidInputs(Materials.Lutetium.getMolten(16), Materials.Chrome.getMolten(16))
-            .fluidOutputs(Materials.Americium.getMolten(16))
+            .fluidInputs(Materials.Lutetium.getMolten(1 * NUGGETS), Materials.Chrome.getMolten(1 * NUGGETS))
+            .fluidOutputs(Materials.Americium.getMolten(1 * NUGGETS))
             .duration(4 * SECONDS + 16 * TICKS)
             .eut(49152)
             .metadata(FUSION_THRESHOLD, 200_000_000L)
             .addTo(fusionRecipes); // FT2 - utility
 
         GTValues.RA.stdBuilder()
-            .fluidInputs(Materials.Plutonium.getMolten(16), Materials.Thorium.getMolten(16))
-            .fluidOutputs(Materials.Naquadah.getMolten(16))
+            .fluidInputs(Materials.Plutonium.getMolten(1 * NUGGETS), Materials.Thorium.getMolten(1 * NUGGETS))
+            .fluidOutputs(Materials.Naquadah.getMolten(1 * NUGGETS))
             .duration(3 * SECONDS + 4 * TICKS)
             .eut(TierEU.RECIPE_LuV)
             .metadata(FUSION_THRESHOLD, 300_000_000L)
             .addTo(fusionRecipes); // FT1+ - utility
 
         GTValues.RA.stdBuilder()
-            .fluidInputs(Materials.Americium.getMolten(144), Materials.Naquadria.getMolten(144))
-            .fluidOutputs(Materials.Neutronium.getMolten(144))
+            .fluidInputs(Materials.Americium.getMolten(1 * INGOTS), Materials.Naquadria.getMolten(1 * INGOTS))
+            .fluidOutputs(Materials.Neutronium.getMolten(1 * INGOTS))
             .duration(12 * SECONDS)
             .eut(TierEU.RECIPE_ZPM)
             .metadata(FUSION_THRESHOLD, 600_000_000L)
             .addTo(fusionRecipes); // FT3 - utility
 
         GTValues.RA.stdBuilder()
-            .fluidInputs(Materials.Glowstone.getMolten(16), Materials.Helium.getPlasma(4))
-            .fluidOutputs(Materials.Sunnarium.getMolten(16))
+            .fluidInputs(Materials.Glowstone.getMolten(1 * NUGGETS), Materials.Helium.getPlasma(4))
+            .fluidOutputs(Materials.Sunnarium.getMolten(1 * NUGGETS))
             .duration(1 * SECONDS + 12 * TICKS)
             .eut(TierEU.RECIPE_IV)
             .metadata(FUSION_THRESHOLD, 40_000_000L)
@@ -127,176 +130,178 @@ public class FusionReactorRecipes implements Runnable {
                                    // //
 
         GTValues.RA.stdBuilder()
-            .fluidInputs(Materials.Tungsten.getMolten(16), Materials.Helium.getGas(16))
-            .fluidOutputs(Materials.Osmium.getMolten(16))
+            .fluidInputs(Materials.Tungsten.getMolten(1 * NUGGETS), Materials.Helium.getGas(1 * NUGGETS))
+            .fluidOutputs(Materials.Osmium.getMolten(1 * NUGGETS))
             .duration(12 * SECONDS + 16 * TICKS)
             .eut(24578)
             .metadata(FUSION_THRESHOLD, 150_000_000L)
             .addTo(fusionRecipes); // FT1 - utility
 
         GTValues.RA.stdBuilder()
-            .fluidInputs(Materials.Manganese.getMolten(16), Materials.Hydrogen.getGas(16))
-            .fluidOutputs(Materials.Iron.getMolten(16))
+            .fluidInputs(Materials.Manganese.getMolten(1 * NUGGETS), Materials.Hydrogen.getGas(1 * NUGGETS))
+            .fluidOutputs(Materials.Iron.getMolten(1 * NUGGETS))
             .duration(3 * SECONDS + 4 * TICKS)
             .eut(TierEU.RECIPE_IV)
             .metadata(FUSION_THRESHOLD, 120_000_000L)
             .addTo(fusionRecipes); // FT1 - utility
 
         GTValues.RA.stdBuilder()
-            .fluidInputs(Materials.Magnesium.getMolten(128), Materials.Oxygen.getGas(128))
-            .fluidOutputs(Materials.Calcium.getPlasma(16))
+            .fluidInputs(Materials.Magnesium.getMolten(8 * NUGGETS), Materials.Oxygen.getGas(8 * NUGGETS))
+            .fluidOutputs(Materials.Calcium.getPlasma(1 * NUGGETS))
             .duration(6 * SECONDS + 8 * TICKS)
             .eut(TierEU.RECIPE_IV)
             .metadata(FUSION_THRESHOLD, 120_000_000L)
             .addTo(fusionRecipes); //
 
         GTValues.RA.stdBuilder()
-            .fluidInputs(Materials.Mercury.getFluid(16), Materials.Magnesium.getMolten(16))
-            .fluidOutputs(Materials.Uranium.getMolten(16))
+            .fluidInputs(Materials.Mercury.getFluid(1 * NUGGETS), Materials.Magnesium.getMolten(1 * NUGGETS))
+            .fluidOutputs(Materials.Uranium.getMolten(1 * NUGGETS))
             .duration(3 * SECONDS + 4 * TICKS)
             .eut(49152)
             .metadata(FUSION_THRESHOLD, 240_000_000L)
             .addTo(fusionRecipes); // FT2 - utility
 
         GTValues.RA.stdBuilder()
-            .fluidInputs(Materials.Gold.getMolten(16), Materials.Aluminium.getMolten(16))
-            .fluidOutputs(Materials.Uranium.getMolten(16))
+            .fluidInputs(Materials.Gold.getMolten(1 * NUGGETS), Materials.Aluminium.getMolten(1 * NUGGETS))
+            .fluidOutputs(Materials.Uranium.getMolten(1 * NUGGETS))
             .duration(3 * SECONDS + 4 * TICKS)
             .eut(49152)
             .metadata(FUSION_THRESHOLD, 240_000_000L)
             .addTo(fusionRecipes); // FT2 - utility
 
         GTValues.RA.stdBuilder()
-            .fluidInputs(Materials.Uranium.getMolten(16), Materials.Helium.getGas(16))
-            .fluidOutputs(Materials.Plutonium.getMolten(16))
+            .fluidInputs(Materials.Uranium.getMolten(1 * NUGGETS), Materials.Helium.getGas(1 * NUGGETS))
+            .fluidOutputs(Materials.Plutonium.getMolten(1 * NUGGETS))
             .duration(6 * SECONDS + 8 * TICKS)
             .eut(49152)
             .metadata(FUSION_THRESHOLD, 480_000_000L)
             .addTo(fusionRecipes); // FT2+ - utility
 
         GTValues.RA.stdBuilder()
-            .fluidInputs(Materials.Vanadium.getMolten(16), Materials.Hydrogen.getGas(125))
-            .fluidOutputs(Materials.Chrome.getMolten(16))
+            .fluidInputs(Materials.Vanadium.getMolten(1 * NUGGETS), Materials.Hydrogen.getGas(125))
+            .fluidOutputs(Materials.Chrome.getMolten(1 * NUGGETS))
             .duration(3 * SECONDS + 4 * TICKS)
             .eut(24576)
             .metadata(FUSION_THRESHOLD, 140_000_000L)
             .addTo(fusionRecipes); // FT1 - utility
 
         GTValues.RA.stdBuilder()
-            .fluidInputs(Materials.Gallium.getMolten(16), Materials.Radon.getGas(125))
-            .fluidOutputs(Materials.Duranium.getMolten(16))
+            .fluidInputs(Materials.Gallium.getMolten(1 * NUGGETS), Materials.Radon.getGas(125))
+            .fluidOutputs(Materials.Duranium.getMolten(1 * NUGGETS))
             .duration(3 * SECONDS + 4 * TICKS)
             .eut(16384)
             .metadata(FUSION_THRESHOLD, 140_000_000L)
             .addTo(fusionRecipes);
 
         GTValues.RA.stdBuilder()
-            .fluidInputs(Materials.Titanium.getMolten(48), Materials.Duranium.getMolten(32))
-            .fluidOutputs(Materials.Tritanium.getMolten(16))
+            .fluidInputs(Materials.Titanium.getMolten(3 * NUGGETS), Materials.Duranium.getMolten(2 * NUGGETS))
+            .fluidOutputs(Materials.Tritanium.getMolten(1 * NUGGETS))
             .duration(3 * SECONDS + 4 * TICKS)
             .eut(TierEU.RECIPE_LuV)
             .metadata(FUSION_THRESHOLD, 200_000_000L)
             .addTo(fusionRecipes);
 
         GTValues.RA.stdBuilder()
-            .fluidInputs(Materials.Tantalum.getMolten(16), Materials.Tritium.getGas(16))
-            .fluidOutputs(Materials.Tungsten.getMolten(16))
+            .fluidInputs(Materials.Tantalum.getMolten(1 * NUGGETS), Materials.Tritium.getGas(1 * NUGGETS))
+            .fluidOutputs(Materials.Tungsten.getMolten(1 * NUGGETS))
             .duration(16 * TICKS)
             .eut(24576)
             .metadata(FUSION_THRESHOLD, 200_000_000L)
             .addTo(fusionRecipes); //
 
         GTValues.RA.stdBuilder()
-            .fluidInputs(Materials.Silver.getMolten(16), Materials.Lithium.getMolten(16))
-            .fluidOutputs(Materials.Indium.getMolten(16))
+            .fluidInputs(Materials.Silver.getMolten(1 * NUGGETS), Materials.Lithium.getMolten(1 * NUGGETS))
+            .fluidOutputs(Materials.Indium.getMolten(1 * NUGGETS))
             .duration(1 * SECONDS + 12 * TICKS)
             .eut(24576)
             .metadata(FUSION_THRESHOLD, 380_000_000L)
             .addTo(fusionRecipes); //
 
         GTValues.RA.stdBuilder()
-            .fluidInputs(Materials.Copper.getMolten(72), Materials.Tritium.getGas(250))
-            .fluidOutputs(Materials.Zinc.getPlasma(72))
+            .fluidInputs(Materials.Copper.getMolten(1 * HALF_INGOTS), Materials.Tritium.getGas(250))
+            .fluidOutputs(Materials.Zinc.getPlasma(1 * HALF_INGOTS))
             .duration(16 * TICKS)
             .eut(49152)
             .metadata(FUSION_THRESHOLD, 180_000_000L)
             .addTo(fusionRecipes); // FT2 - farmable
 
         GTValues.RA.stdBuilder()
-            .fluidInputs(Materials.Cobalt.getMolten(144), Materials.Silicon.getMolten(144))
-            .fluidOutputs(Materials.Niobium.getPlasma(144))
+            .fluidInputs(Materials.Cobalt.getMolten(1 * INGOTS), Materials.Silicon.getMolten(1 * INGOTS))
+            .fluidOutputs(Materials.Niobium.getPlasma(1 * INGOTS))
             .duration(16 * TICKS)
             .eut(49152)
             .metadata(FUSION_THRESHOLD, 200_000_000L)
             .addTo(fusionRecipes); // FT2 - utility
 
         GTValues.RA.stdBuilder()
-            .fluidInputs(Materials.Gold.getMolten(144), Materials.Arsenic.getMolten(144))
-            .fluidOutputs(Materials.Silver.getPlasma(144))
+            .fluidInputs(Materials.Gold.getMolten(1 * INGOTS), Materials.Arsenic.getMolten(1 * INGOTS))
+            .fluidOutputs(Materials.Silver.getPlasma(1 * INGOTS))
             .duration(16 * TICKS)
             .eut(49152)
             .metadata(FUSION_THRESHOLD, 350_000_000L)
             .addTo(fusionRecipes); // FT2+
 
         GTValues.RA.stdBuilder()
-            .fluidInputs(Materials.Silver.getMolten(144), Materials.Helium_3.getGas(375))
-            .fluidOutputs(Materials.Tin.getPlasma(288))
+            .fluidInputs(Materials.Silver.getMolten(1 * INGOTS), Materials.Helium_3.getGas(375))
+            .fluidOutputs(Materials.Tin.getPlasma(2 * INGOTS))
             .duration(16 * TICKS)
             .eut(49152)
             .metadata(FUSION_THRESHOLD, 280_000_000L)
             .addTo(fusionRecipes); // FT2
 
         GTValues.RA.stdBuilder()
-            .fluidInputs(Materials.Tantalum.getMolten(144), Materials.Zinc.getPlasma(72))
-            .fluidOutputs(Materials.Bismuth.getPlasma(144))
+            .fluidInputs(Materials.Tantalum.getMolten(1 * INGOTS), Materials.Zinc.getPlasma(72))
+            .fluidOutputs(Materials.Bismuth.getPlasma(1 * INGOTS))
             .duration(16 * TICKS)
             .eut(98304)
             .metadata(FUSION_THRESHOLD, 350_000_000L)
             .addTo(fusionRecipes); // FT3 - farmable
 
         GTValues.RA.stdBuilder()
-            .fluidInputs(Materials.Iridium.getMolten(144), Materials.Fluorine.getGas(500))
-            .fluidOutputs(Materials.Radon.getPlasma(144))
+            .fluidInputs(Materials.Iridium.getMolten(1 * INGOTS), Materials.Fluorine.getGas(500))
+            .fluidOutputs(Materials.Radon.getPlasma(1 * INGOTS))
             .duration(1 * SECONDS + 12 * TICKS)
             .eut(98304)
             .metadata(FUSION_THRESHOLD, 450_000_000L)
             .addTo(fusionRecipes); // FT3 - utility
 
         GTValues.RA.stdBuilder()
-            .fluidInputs(Materials.Plutonium241.getMolten(144), Materials.Hydrogen.getGas(2000))
-            .fluidOutputs(Materials.Americium.getPlasma(144))
+            .fluidInputs(Materials.Plutonium241.getMolten(1 * INGOTS), Materials.Hydrogen.getGas(2_000))
+            .fluidOutputs(Materials.Americium.getPlasma(1 * INGOTS))
             .duration(3 * SECONDS + 4 * TICKS)
             .eut(98304)
             .metadata(FUSION_THRESHOLD, 500_000_000L)
             .addTo(fusionRecipes); // FT3
 
         GTValues.RA.stdBuilder()
-            .fluidInputs(Materials.Cobalt.getMolten(144), MaterialsElements.getInstance().NEON.getFluidStack(144))
-            .fluidOutputs(Materials.Rubidium.getMolten(144))
+            .fluidInputs(
+                Materials.Cobalt.getMolten(1 * INGOTS),
+                MaterialsElements.getInstance().NEON.getFluidStack(1 * INGOTS))
+            .fluidOutputs(Materials.Rubidium.getMolten(1 * INGOTS))
             .duration(1 * SECONDS + 4 * TICKS)
             .eut(98304)
             .metadata(FUSION_THRESHOLD, 500_000_000L)
             .addTo(fusionRecipes); // FT3
 
         GTValues.RA.stdBuilder()
-            .fluidInputs(Materials.Lutetium.getMolten(576), Materials.Vanadium.getMolten(576))
-            .fluidOutputs(Materials.Plutonium241.getPlasma(576))
+            .fluidInputs(Materials.Lutetium.getMolten(4 * INGOTS), Materials.Vanadium.getMolten(4 * INGOTS))
+            .fluidOutputs(Materials.Plutonium241.getPlasma(4 * INGOTS))
             .duration(4 * TICKS)
             .eut(TierEU.RECIPE_UEV / 2)
             .metadata(FUSION_THRESHOLD, 6_000_000_000L)
             .addTo(fusionRecipes); // FT5 because of UEV voltage
 
         GTValues.RA.stdBuilder()
-            .fluidInputs(Materials.Tellurium.getMolten(576), Materials.Zinc.getMolten(576))
-            .fluidOutputs(Materials.Lead.getPlasma(576))
+            .fluidInputs(Materials.Tellurium.getMolten(4 * INGOTS), Materials.Zinc.getMolten(4 * INGOTS))
+            .fluidOutputs(Materials.Lead.getPlasma(4 * INGOTS))
             .duration(4 * TICKS)
             .eut(TierEU.RECIPE_UEV / 2)
             .metadata(FUSION_THRESHOLD, 6_000_000_000L)
             .addTo(fusionRecipes); // FT5 because of UEV voltage
 
         GTValues.RA.stdBuilder()
-            .fluidInputs(Materials.Osmium.getMolten(576), Materials.Silicon.getMolten(576))
-            .fluidOutputs(Materials.Thorium.getPlasma(576))
+            .fluidInputs(Materials.Osmium.getMolten(4 * INGOTS), Materials.Silicon.getMolten(4 * INGOTS))
+            .fluidOutputs(Materials.Thorium.getPlasma(4 * INGOTS))
             .duration(4 * TICKS)
             .eut(TierEU.RECIPE_UEV / 2)
             .metadata(FUSION_THRESHOLD, 6_000_000_000L)

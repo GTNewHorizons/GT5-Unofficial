@@ -33,6 +33,7 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTValues;
+import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -270,7 +271,7 @@ public class MTEHeatExchanger extends MTEEnhancedMultiBlockBase<MTEHeatExchanger
                                                                                                      // superheated
                                                                                                      // steam
                     } else {
-                        addOutput(GTModHandler.getSteam(tGeneratedEU)); // Generate regular steam
+                        addOutput(Materials.Steam.getGas(tGeneratedEU)); // Generate regular steam
                     }
                     dryHeatCounter = 0;
                 } else {
