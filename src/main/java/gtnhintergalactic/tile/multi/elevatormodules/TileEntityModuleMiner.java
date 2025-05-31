@@ -518,7 +518,7 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
             <= ItemMiningDrones.DroneTiers.UXV.ordinal(); ++tier) {
             if (Arrays.stream(SpaceMiningRecipes.getTieredInputs(tier))
                 .allMatch(
-                    input -> itemCounts.getOrDefault(GTUtility.ItemId.createWithoutNBT(input), 0l)
+                    input -> itemCounts.getOrDefault(GTUtility.ItemId.createWithoutNBT(input), 0L)
                         >= Math.max(input.stackSize, 1))) {
                 res |= 1 << tier;
             }

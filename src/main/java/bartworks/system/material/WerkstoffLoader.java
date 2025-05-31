@@ -92,7 +92,6 @@ import bartworks.API.SideReference;
 import bartworks.API.WerkstoffAdderRegistry;
 import bartworks.MainMod;
 import bartworks.client.renderer.BWBlockOreRenderer;
-import bartworks.system.material.CircuitGeneration.BWCircuitsLoader;
 import bartworks.system.material.gtenhancement.GTMetaItemEnhancer;
 import bartworks.system.material.processingLoaders.AdditionalRecipes;
 import bartworks.system.material.werkstoff_loaders.IWerkstoffRunnable;
@@ -142,7 +141,14 @@ public class WerkstoffLoader {
 
     public static final SubTag NOBLE_GAS = SubTag.getNewSubTag("NobleGas");
     public static final SubTag ANAEROBE_GAS = SubTag.getNewSubTag("AnaerobeGas");
+    /**
+     * Was used to add Nitrogen, Xenon and Oganesson to blast furnace smelting recipe. Now it just adds all types of
+     * gasses.
+     */
     public static final SubTag ANAEROBE_SMELTING = SubTag.getNewSubTag("AnaerobeSmelting");
+    /**
+     * Was used to add noble gasses to blast furnace smelting recipe. Now it just adds all types of gasses.
+     */
     public static final SubTag NOBLE_GAS_SMELTING = SubTag.getNewSubTag("NobleGasSmelting");
     public static final SubTag NO_BLAST = SubTag.getNewSubTag("NoBlast");
 
@@ -1760,7 +1766,6 @@ public class WerkstoffLoader {
                 progressBar.step(werkstoff.getDefaultName());
             }
             DebugLog.log("Loading New Circuits" + " " + (System.nanoTime() - timepreone));
-            BWCircuitsLoader.initNewCircuits();
 
             if (BetterLoadingScreen.isModLoaded()) {
                 CLSCompat.disableCls();

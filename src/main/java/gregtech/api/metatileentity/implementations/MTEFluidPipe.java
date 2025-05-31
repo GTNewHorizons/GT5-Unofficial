@@ -596,7 +596,6 @@ public class MTEFluidPipe extends MetaPipeEntity {
                 aPlayer.inventory.setInventorySlotContents(aPlayer.inventory.currentItem, null);
             }
         }
-        return;
     }
 
     @Override
@@ -785,7 +784,7 @@ public class MTEFluidPipe extends MetaPipeEntity {
 
     @Override
     public FluidTankInfo[] getTankInfo(ForgeDirection side) {
-        if (getCapacity() <= 0 && !getBaseMetaTileEntity().hasSteamEngineUpgrade()) return new FluidTankInfo[] {};
+        if (getCapacity() <= 0 && !getBaseMetaTileEntity().isSteampowered()) return new FluidTankInfo[] {};
         ArrayList<FluidTankInfo> tList = new ArrayList<>();
         for (FluidStack tFluid : mFluids) tList.add(new FluidTankInfo(tFluid, mCapacity * 20));
         return tList.toArray(new FluidTankInfo[mPipeAmount]);
