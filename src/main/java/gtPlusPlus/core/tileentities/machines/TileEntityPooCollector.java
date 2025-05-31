@@ -16,7 +16,6 @@ import net.minecraftforge.fluids.Fluid;
 
 import gtPlusPlus.core.fluids.GTPPFluids;
 import gtPlusPlus.core.util.math.MathUtils;
-import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 
 public class TileEntityPooCollector extends TileEntityBaseFluidCollector {

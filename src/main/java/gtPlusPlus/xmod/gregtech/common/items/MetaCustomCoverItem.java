@@ -24,7 +24,6 @@ import gregtech.api.render.TextureFactory;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.util.Utils;
-import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.sys.KeyboardUtils;
 import gtPlusPlus.xmod.gregtech.common.covers.CoverToggleVisual;
 
@@ -67,14 +66,13 @@ public class MetaCustomCoverItem extends Item {
 
     private void registerCover() {
         for (int i = 0; i < icons.length; i++) {
-            ItemStack thisStack = new ItemStack(this, 1,i);
+            ItemStack thisStack = new ItemStack(this, 1, i);
             if (i > 0 && hide()) {
                 hideItem(thisStack);
             }
             CoverRegistry.registerCover(thisStack, TextureFactory.of(mTextures[i]), CoverToggleVisual::new);
         }
     }
-
 
     @Override
     public void getSubItems(Item item, CreativeTabs tab, List list) {

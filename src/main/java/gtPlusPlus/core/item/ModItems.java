@@ -11,7 +11,6 @@ import static gregtech.api.util.GTModHandler.getModItem;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
 import static gtPlusPlus.core.creative.AddToCreativeTab.tabMisc;
 
-import gtPlusPlus.core.lib.GTPPCore;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
@@ -21,6 +20,8 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
+
+import org.apache.commons.lang3.tuple.Pair;
 
 import cpw.mods.fml.common.FMLCommonHandler;
 import gregtech.api.enums.GTValues;
@@ -43,7 +44,6 @@ import gtPlusPlus.core.item.base.dusts.BaseItemDust;
 import gtPlusPlus.core.item.base.foil.BaseItemFoil;
 import gtPlusPlus.core.item.base.gears.BaseItemSmallGear;
 import gtPlusPlus.core.item.base.ingots.BaseItemIngot;
-import gtPlusPlus.core.item.base.ingots.BaseItemIngotOld;
 import gtPlusPlus.core.item.base.ore.BaseItemMilledOre;
 import gtPlusPlus.core.item.base.plates.BaseItemPlate;
 import gtPlusPlus.core.item.base.plates.BaseItemPlateDouble;
@@ -71,6 +71,7 @@ import gtPlusPlus.core.item.init.ItemsFoods;
 import gtPlusPlus.core.item.materials.DustDecayable;
 import gtPlusPlus.core.item.tool.misc.ItemGregtechPump;
 import gtPlusPlus.core.item.wearable.WearableLoader;
+import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.material.MaterialGenerator;
 import gtPlusPlus.core.material.MaterialMisc;
@@ -89,7 +90,6 @@ import gtPlusPlus.plugin.agrichem.item.algae.ItemAlgaeBase;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.common.helpers.VolumetricFlaskHelper;
 import gtPlusPlus.xmod.gregtech.common.items.MetaGeneratedGregtechItems;
-import org.apache.commons.lang3.tuple.Pair;
 import toxiceverglades.GTPPEverglades;
 
 public final class ModItems {
@@ -452,8 +452,8 @@ public final class ModItems {
             shardTerra = new BaseItemTCShard("Terra", Utils.rgbtoHexValue(5, 255, 5));
             shardAqua = new BaseItemTCShard("Aqua", Utils.rgbtoHexValue(5, 5, 255));
         } else {
-            shardAer = getModItem(Thaumcraft.ID, "ItemShard", 1,0).getItem();
-            shardIgnis = getModItem(Thaumcraft.ID, "ItemShard", 1,1).getItem();
+            shardAer = getModItem(Thaumcraft.ID, "ItemShard", 1, 0).getItem();
+            shardIgnis = getModItem(Thaumcraft.ID, "ItemShard", 1, 1).getItem();
             shardAqua = getModItem(Thaumcraft.ID, "ItemShard", 1, 2).getItem();
             shardTerra = getModItem(Thaumcraft.ID, "ItemShard", 1, 3).getItem();
         }
@@ -522,10 +522,7 @@ public final class ModItems {
             "Lithium Tetrafluoroberyllate Fuel Compound",
             "Li2BeF4",
             Utils.rgbtoHexValue(255, 255, 255))[0]; // https://en.wikipedia.org/wiki/FLiBe
-        Material.registerComponentForMaterial(
-            MaterialsNuclides.Li2BeF4,
-            OrePrefixes.dust,
-            new ItemStack(dustLi2BeF4));
+        Material.registerComponentForMaterial(MaterialsNuclides.Li2BeF4, OrePrefixes.dust, new ItemStack(dustLi2BeF4));
 
         Item[] phthalicAnhydride = ItemUtils.generateSpecialUseDusts(
             "PhthalicAnhydride",
@@ -689,11 +686,11 @@ public final class ModItems {
         toolGregtechPump.registerPumpType(3, "Ultimate Hand Pump", 512000, 3);
         toolGregtechPump.registerPumpType(4, "Expandable Hand Pump", 0, 4);
 
-        GregtechItemList.SimpleHandPump.set(new ItemStack(ModItems.toolGregtechPump, 1,1000));
-        GregtechItemList.AdvancedHandPump.set(new ItemStack(ModItems.toolGregtechPump, 1,1001));
-        GregtechItemList.SuperHandPump.set(new ItemStack(ModItems.toolGregtechPump, 1,1002));
-        GregtechItemList.UltimateHandPump.set(new ItemStack(ModItems.toolGregtechPump, 1,1003));
-        GregtechItemList.ExpandableHandPump.set(new ItemStack(ModItems.toolGregtechPump, 1,1004));
+        GregtechItemList.SimpleHandPump.set(new ItemStack(ModItems.toolGregtechPump, 1, 1000));
+        GregtechItemList.AdvancedHandPump.set(new ItemStack(ModItems.toolGregtechPump, 1, 1001));
+        GregtechItemList.SuperHandPump.set(new ItemStack(ModItems.toolGregtechPump, 1, 1002));
+        GregtechItemList.UltimateHandPump.set(new ItemStack(ModItems.toolGregtechPump, 1, 1003));
+        GregtechItemList.ExpandableHandPump.set(new ItemStack(ModItems.toolGregtechPump, 1, 1004));
 
         // Xp Fluids - Dev
         if (!FluidRegistry.isFluidRegistered("mobessence")) {
@@ -1049,7 +1046,8 @@ public final class ModItems {
         }
         // Krypton Processing
         if (ItemUtils.getItemStackOfAmountFromOreDictNoBroken("ingotHotTitanium", 1) == null) {
-            itemHotTitaniumIngot = new ItemStack(new BaseItemIngot(MaterialsElements.getInstance().TITANIUM, ComponentTypes.HOTINGOT));
+            itemHotTitaniumIngot = new ItemStack(
+                new BaseItemIngot(MaterialsElements.getInstance().TITANIUM, ComponentTypes.HOTINGOT));
         } else {
             itemHotTitaniumIngot = ItemUtils.getItemStackOfAmountFromOreDictNoBroken("ingotHotTitanium", 1);
         }

@@ -10,7 +10,6 @@ import org.apache.commons.lang3.tuple.Pair;
 
 import gregtech.mixin.interfaces.accessors.IRecipeMutableAccess;
 import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.core.util.minecraft.ItemUtils;
 
 public class ShapedRecipe implements IRecipeMutableAccess {
 

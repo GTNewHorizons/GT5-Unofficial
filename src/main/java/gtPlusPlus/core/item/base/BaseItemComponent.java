@@ -36,7 +36,6 @@ import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.data.StringUtils;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.minecraft.EntityUtils;
-import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.sys.KeyboardUtils;
 
 public class BaseItemComponent extends Item {
@@ -73,9 +72,8 @@ public class BaseItemComponent extends Item {
 
         // if (componentType != ComponentTypes.DUST)
 
-        GTOreDictUnificator.registerOre(
-            componentType.getOreDictName() + material.getUnlocalizedName(),
-            new ItemStack(this));
+        GTOreDictUnificator
+            .registerOre(componentType.getOreDictName() + material.getUnlocalizedName(), new ItemStack(this));
         if (componentType == ComponentTypes.GEAR) {
             GTOreDictUnificator.registerOre("gear" + material.getUnlocalizedName(), new ItemStack(this));
         }

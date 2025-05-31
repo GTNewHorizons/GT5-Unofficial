@@ -8,7 +8,6 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.util.GTRecipeConstants;
 import gregtech.api.util.GTUtility;
-import gtPlusPlus.core.util.minecraft.ItemUtils;
 
 public class DecayableRecipe {
 

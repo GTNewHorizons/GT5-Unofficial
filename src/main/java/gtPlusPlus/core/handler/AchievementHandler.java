@@ -206,13 +206,7 @@ public class AchievementHandler {
             new ItemStack(ModItems.dustNeptunium238),
             "multi.cyclo",
             false);
-        this.registerAchievement(
-            "decay.radium226",
-            12,
-            8,
-            new ItemStack(ModItems.dustRadium226),
-            "multi.cyclo",
-            false);
+        this.registerAchievement("decay.radium226", 12, 8, new ItemStack(ModItems.dustRadium226), "multi.cyclo", false);
 
         AchievementPage.registerAchievementPage(
             new AchievementPage(

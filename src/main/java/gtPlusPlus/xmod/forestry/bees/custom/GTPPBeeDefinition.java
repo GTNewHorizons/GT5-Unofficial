@@ -22,14 +22,12 @@ import forestry.api.genetics.AlleleManager;
 import forestry.api.genetics.IAllele;
 import forestry.apiculture.genetics.Bee;
 import forestry.apiculture.genetics.BeeDefinition;
-import forestry.apiculture.genetics.BeeVariation;
 import forestry.apiculture.genetics.IBeeDefinition;
 import forestry.core.genetics.alleles.AlleleHelper;
 import gregtech.loaders.misc.GTBeeDefinition;
 import gregtech.loaders.misc.GTBranchDefinition;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.util.Utils;
-import gtPlusPlus.core.util.minecraft.ItemUtils;
 
 public enum GTPPBeeDefinition implements IBeeDefinition {
 
@@ -568,7 +566,7 @@ public enum GTPPBeeDefinition implements IBeeDefinition {
     }
 
     private static ItemStack getSlagComb() {
-        if (GTPPBees.Comb_Slag != null){
+        if (GTPPBees.Comb_Slag != null) {
             ItemStack slagComb = GTPPBees.Comb_Slag.copy();
             slagComb.stackSize = 1;
             return slagComb;

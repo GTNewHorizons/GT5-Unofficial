@@ -8,7 +8,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
-import gregtech.api.util.GTUtility;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
@@ -22,6 +21,7 @@ import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
+import net.minecraftforge.oredict.OreDictionary;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.enums.Materials;
@@ -32,8 +32,6 @@ import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.minecraft.EntityUtils;
-import gtPlusPlus.core.util.minecraft.ItemUtils;
-import net.minecraftforge.oredict.OreDictionary;
 
 public class BaseItemMetaFood extends ItemFood {
 
@@ -203,7 +201,7 @@ public class BaseItemMetaFood extends ItemFood {
         for (int aMetaID = 0; aMetaID < mTotalMetaItems; aMetaID++) {
             ArrayList<String> aOreDictNames = mOreDictNames.get(aMetaID);
             if (aOreDictNames != null && !aOreDictNames.isEmpty()) {
-                ItemStack aFoodStack = new ItemStack(ModItems.itemMetaFood,1, aMetaID);
+                ItemStack aFoodStack = new ItemStack(ModItems.itemMetaFood, 1, aMetaID);
                 for (String aOreName : aOreDictNames) {
                     OreDictionary.registerOre(aOreName, aFoodStack);
                 }
@@ -330,7 +328,7 @@ public class BaseItemMetaFood extends ItemFood {
     @Override
     public void getSubItems(Item aItem, CreativeTabs p_150895_2_, List aList) {
         for (int i = 0; i < mIconMap.size(); i++) {
-            aList.add(new ItemStack(aItem,1, i));
+            aList.add(new ItemStack(aItem, 1, i));
         }
     }
 

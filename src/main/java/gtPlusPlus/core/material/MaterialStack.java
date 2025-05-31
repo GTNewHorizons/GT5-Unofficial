@@ -7,7 +7,6 @@ import net.minecraft.item.ItemStack;
 
 import gregtech.api.enums.OrePrefixes;
 import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.xmod.bartworks.BWUtils;
 
 public class MaterialStack {
