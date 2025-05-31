@@ -353,7 +353,7 @@ public class RecipeLoaderNuclear {
 
         } else {
             Logger.INFO("[dustCalciumHydroxide] FAILED TO LOAD RECIPE");
-            if (null == (ItemUtils.getItemStackOfAmountFromOreDict("dustQuicklime", 1))) {
+            if (ItemUtils.getItemStackOfAmountFromOreDict("dustQuicklime", 1) == null) {
                 Logger.INFO("Could not find dustQuicklime, cannot make dustCalciumHydroxide.");
             }
         }
