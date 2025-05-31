@@ -8,6 +8,7 @@ import com.gtnewhorizon.gtnhlib.config.ConfigurationManager;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.SidedProxy;
+import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLLoadCompleteEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
@@ -73,6 +74,12 @@ public class TecTech {
 
         TecTechRecipeMaps.init();
         MainLoader.preLoad();
+    }
+
+    @Mod.EventHandler
+    @SuppressWarnings("unused")
+    public void Load(FMLInitializationEvent event) {
+        MainLoader.load();
     }
 
     @Mod.EventHandler
