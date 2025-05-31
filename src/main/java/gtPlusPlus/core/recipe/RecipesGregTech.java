@@ -52,7 +52,6 @@ import static gtPlusPlus.core.material.MaterialsAlloy.TITANSTEEL;
 import java.util.Arrays;
 import java.util.List;
 
-import ic2.core.Ic2Items;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -95,6 +94,7 @@ import gtPlusPlus.core.util.minecraft.MaterialUtils;
 import gtPlusPlus.xmod.bop.blocks.BOPBlockRegistrator;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.thermalfoundation.fluid.TFFluids;
+import ic2.core.Ic2Items;
 
 public class RecipesGregTech {
 

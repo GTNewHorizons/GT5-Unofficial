@@ -359,7 +359,7 @@ public class CI {
         m = aMaster[1][aTier];
         aReturn = ItemUtils.getOrePrefixStack(aPrefix, m, aAmount);
 
-        if (aReturn  != null) return aReturn;
+        if (aReturn != null) return aReturn;
 
         // If Invalid, Try Third Material
 
