@@ -98,7 +98,7 @@ public class ItemUtils {
             }
             if (returnValue == null) {
                 returnValue = getItemStackOfAmountFromOreDict(oredictName, amount);
-                if (null != returnValue) {
+                if (returnValue != null) {
                     return returnValue.copy();
                 }
             }
