@@ -378,7 +378,7 @@ public class RecipesGregTech {
                 new Object[] { "circuitMaster", 32 },
                 new Object[] { "circuitUltimate", 16 },
                 GregtechItemList.Laser_Lens_Special.get(1),
-                getModItem(GTPlusPlus.ID, "itemDehydratorCoilWire", 64, 3))
+                GregtechItemList.DehydratorCoilWireZPM.get(64))
             .fluidInputs(
                 MaterialsAlloy.NITINOL_60.getFluidStack(36 * INGOTS),
                 MaterialsAlloy.ENERGYCRYSTAL.getFluidStack(1 * STACKS + 8 * INGOTS),
@@ -420,10 +420,12 @@ public class RecipesGregTech {
         /*
          * Containment casings
          */
-        ItemStack[] aCoilWire = new ItemStack[] { getModItem(GTPlusPlus.ID, "itemDehydratorCoilWire", 64, 0),
-            getModItem(GTPlusPlus.ID, "itemDehydratorCoilWire", 64, 1),
-            getModItem(GTPlusPlus.ID, "itemDehydratorCoilWire", 64, 2),
-            getModItem(GTPlusPlus.ID, "itemDehydratorCoilWire", 64, 3), };
+        ItemStack[] aCoilWire = new ItemStack[] {
+            GregtechItemList.DehydratorCoilWireEV.get(64),
+            GregtechItemList.DehydratorCoilWireIV.get(64),
+            GregtechItemList.DehydratorCoilWireLuV.get(64),
+            GregtechItemList.DehydratorCoilWireZPM.get(64)
+        };
         ItemStack[] aGemCasings = new ItemStack[] { GregtechItemList.Battery_Casing_Gem_1.get(1),
             GregtechItemList.Battery_Casing_Gem_2.get(1), GregtechItemList.Battery_Casing_Gem_3.get(1),
             GregtechItemList.Battery_Casing_Gem_4.get(1), };
@@ -500,7 +502,7 @@ public class RecipesGregTech {
                     CI.getTieredComponent(OrePrefixes.screw, 7, 16),
                     CI.getTieredComponent(OrePrefixes.bolt, 5, 24),
                     CI.getTieredComponent(OrePrefixes.frameGt, 4, 12),
-                    getModItem(GTPlusPlus.ID, "itemDehydratorCoilWire", 64, 3))
+                    GregtechItemList.DehydratorCoilWireZPM.get(64))
                 .fluidInputs(
                     CI.getTieredFluid(7, 4 * STACKS + 32 * INGOTS),
                     CI.getTertiaryTieredFluid(7, 4 * STACKS + 32 * INGOTS),
@@ -514,10 +516,11 @@ public class RecipesGregTech {
             // Charge Pack LuV-UV
 
             ItemStack[] aChargeResearch = new ItemStack[] {
-                getModItem(Mods.GTPlusPlus.ID, "item.itemBufferCore7", 1),
-                getModItem(Mods.GTPlusPlus.ID, "item.itemBufferCore8", 1),
-                getModItem(Mods.GTPlusPlus.ID, "item.itemBufferCore9", 1),
-                getModItem(Mods.GTPlusPlus.ID, "item.itemBufferCore10", 1), };
+                GregtechItemList.Energy_Core_LuV.get(1),
+                GregtechItemList.Energy_Core_ZPM.get(1),
+                GregtechItemList.Energy_Core_UV.get(1),
+                GregtechItemList.Energy_Core_UHV.get(1)
+            };
 
             ItemStack[] aChargeOutputs = new ItemStack[] { new ItemStack(ModItems.itemChargePack_High_1, 1),
                 new ItemStack(ModItems.itemChargePack_High_2, 1),
@@ -588,12 +591,12 @@ public class RecipesGregTech {
                     CI.getTieredComponent(OrePrefixes.screw, 8, 16),
                     CI.getTieredComponent(OrePrefixes.bolt, 7, 24),
                     CI.getTieredComponent(OrePrefixes.frameGt, 5, 12),
-                    getModItem(GTPlusPlus.ID, "itemDehydratorCoilWire", 64, 3))
+                    GregtechItemList.DehydratorCoilWireZPM.get(64))
                 .fluidInputs(
                     CI.getTieredFluid(8, 4 * STACKS + 32 * INGOTS),
                     CI.getTertiaryTieredFluid(8, 4 * STACKS + 32 * INGOTS),
                     CI.getAlternativeTieredFluid(7, 9 * STACKS))
-                .itemOutputs(getModItem(GTPlusPlus.ID,"personalCloakingDevice-0.0", 1))
+                .itemOutputs(GregtechItemList.PersonalCloakingDevice.get(1))
                 .eut(TierEU.RECIPE_UV)
                 .duration(3 * MINUTES)
                 .addTo(AssemblyLine);

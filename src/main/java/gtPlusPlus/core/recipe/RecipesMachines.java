@@ -2387,7 +2387,7 @@ public class RecipesMachines {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 ItemList.Casing_FrostProof.get(1),
-                getModItem("miscutils", "itemDehydratorCoilWire", 4, 0),
+                GregtechItemList.DehydratorCoilWireEV.get(4),
                 MaterialsAlloy.INCOLOY_DS.getPlate(8),
                 MaterialsAlloy.INCONEL_690.getScrew(16),
                 MaterialsAlloy.EGLIN_STEEL.getLongRod(4),
@@ -2401,7 +2401,7 @@ public class RecipesMachines {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 ItemList.Casing_Coil_Nichrome.get(1),
-                getModItem("miscutils", "itemDehydratorCoilWire", 8,1),
+                GregtechItemList.DehydratorCoilWireIV.get(8),
                 MaterialsAlloy.INCOLOY_MA956.getPlate(8),
                 MaterialsAlloy.TANTALLOY_61.getBolt(16),
                 MaterialsAlloy.INCOLOY_020.getScrew(32),
@@ -2914,16 +2914,17 @@ public class RecipesMachines {
             TierEU.RECIPE_IV, TierEU.RECIPE_LuV, TierEU.RECIPE_ZPM, TierEU.RECIPE_UV, TierEU.RECIPE_UHV };
 
         ItemStack[] aOutput = new ItemStack[] {
-            getModItem(Mods.GTPlusPlus.ID,"item.itemBufferCore" + "1", 1),
-            getModItem(Mods.GTPlusPlus.ID,"item.itemBufferCore" + "2", 1),
-            getModItem(Mods.GTPlusPlus.ID,"item.itemBufferCore" + "3", 1),
-            getModItem(Mods.GTPlusPlus.ID,"item.itemBufferCore" + "4", 1),
-            getModItem(Mods.GTPlusPlus.ID,"item.itemBufferCore" + "5", 1),
-            getModItem(Mods.GTPlusPlus.ID,"item.itemBufferCore" + "6", 1),
-            getModItem(Mods.GTPlusPlus.ID,"item.itemBufferCore" + "7", 1),
-            getModItem(Mods.GTPlusPlus.ID,"item.itemBufferCore" + "8", 1),
-            getModItem(Mods.GTPlusPlus.ID,"item.itemBufferCore" + "9", 1),
-            getModItem(Mods.GTPlusPlus.ID,"item.itemBufferCore" + "10", 1) };
+            GregtechItemList.Energy_Core_ULV.get(1),
+            GregtechItemList.Energy_Core_LV.get(1),
+            GregtechItemList.Energy_Core_MV.get(1),
+            GregtechItemList.Energy_Core_HV.get(1),
+            GregtechItemList.Energy_Core_EV.get(1),
+            GregtechItemList.Energy_Core_IV.get(1),
+            GregtechItemList.Energy_Core_LuV.get(1),
+            GregtechItemList.Energy_Core_ZPM.get(1),
+            GregtechItemList.Energy_Core_UV.get(1),
+            GregtechItemList.Energy_Core_UHV.get(1),
+        };
 
         for (int i = 0; i < 10; i++) {
 

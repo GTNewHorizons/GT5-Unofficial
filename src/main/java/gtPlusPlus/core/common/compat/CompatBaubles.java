@@ -12,6 +12,7 @@ import static gregtech.client.GTTooltipHandler.Tier.UV;
 import static gregtech.client.GTTooltipHandler.Tier.ZPM;
 import static gregtech.client.GTTooltipHandler.registerTieredTooltip;
 
+import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 
@@ -33,6 +34,7 @@ public class CompatBaubles {
     public static void baublesLoaded() {
         Logger.INFO("Baubles Found - Loading Wearables.");
         ModItems.itemPersonalCloakingDevice = new ItemCloakingDevice(0);
+        GregtechItemList.PersonalCloakingDevice.set(new ItemStack(ModItems.itemPersonalCloakingDevice, 1));
         ModItems.itemPersonalHealingDevice = new ItemHealingDevice();
         ModItems.itemSupremePizzaGloves = new FireProtectionBauble();
 

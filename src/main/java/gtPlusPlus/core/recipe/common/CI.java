@@ -235,16 +235,17 @@ public class CI {
 
     public static ItemStack getEnergyCore(int aTier, int aAmount) {
         ItemStack[] aOutput = new ItemStack[] {
-            getModItem(Mods.GTPlusPlus.ID,"item.itemBufferCore" + "1", 1),
-            getModItem(Mods.GTPlusPlus.ID,"item.itemBufferCore" + "2", 1),
-            getModItem(Mods.GTPlusPlus.ID,"item.itemBufferCore" + "3", 1),
-            getModItem(Mods.GTPlusPlus.ID,"item.itemBufferCore" + "4", 1),
-            getModItem(Mods.GTPlusPlus.ID,"item.itemBufferCore" + "5", 1),
-            getModItem(Mods.GTPlusPlus.ID,"item.itemBufferCore" + "6", 1),
-            getModItem(Mods.GTPlusPlus.ID,"item.itemBufferCore" + "7", 1),
-            getModItem(Mods.GTPlusPlus.ID,"item.itemBufferCore" + "8", 1),
-            getModItem(Mods.GTPlusPlus.ID,"item.itemBufferCore" + "9", 1),
-            getModItem(Mods.GTPlusPlus.ID,"item.itemBufferCore" + "10", 1) };
+            GregtechItemList.Energy_Core_ULV.get(1),
+            GregtechItemList.Energy_Core_LV.get(1),
+            GregtechItemList.Energy_Core_MV.get(1),
+            GregtechItemList.Energy_Core_HV.get(1),
+            GregtechItemList.Energy_Core_EV.get(1),
+            GregtechItemList.Energy_Core_IV.get(1),
+            GregtechItemList.Energy_Core_LuV.get(1),
+            GregtechItemList.Energy_Core_ZPM.get(1),
+            GregtechItemList.Energy_Core_UV.get(1),
+            GregtechItemList.Energy_Core_UHV.get(1),
+        };
         return GTUtility.copyAmount(aAmount, aOutput[MathUtils.balance(aTier, 0, 9)]);
     }
 

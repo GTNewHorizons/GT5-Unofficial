@@ -757,6 +757,10 @@ public final class ModItems {
         itemBoilerChassis = new ItemBoilerChassis();
         itemDehydratorCoilWire = new ItemDehydratorCoilWire();
         itemDehydratorCoil = new ItemDehydratorCoil();
+        GregtechItemList.DehydratorCoilWireEV.set(new ItemStack(itemDehydratorCoilWire, 1, 0));
+        GregtechItemList.DehydratorCoilWireIV.set(new ItemStack(itemDehydratorCoilWire, 1, 1));
+        GregtechItemList.DehydratorCoilWireLuV.set(new ItemStack(itemDehydratorCoilWire, 1, 2));
+        GregtechItemList.DehydratorCoilWireZPM.set(new ItemStack(itemDehydratorCoilWire, 1, 3));
 
         itemAirFilter = new ItemAirFilter();
         itemLavaFilter = new ItemLavaFilter();

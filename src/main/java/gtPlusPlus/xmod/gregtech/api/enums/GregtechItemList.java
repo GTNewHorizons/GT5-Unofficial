@@ -913,6 +913,11 @@ public enum GregtechItemList implements IGregtechItemContainer {
     SuperHandPump,
     UltimateHandPump,
     ExpandableHandPump,
+    DehydratorCoilWireEV,
+    DehydratorCoilWireIV,
+    DehydratorCoilWireLuV,
+    DehydratorCoilWireZPM,
+    PersonalCloakingDevice,
     ;
 
     private ItemStack mStack;
