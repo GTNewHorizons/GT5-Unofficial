@@ -8,6 +8,7 @@ import static gregtech.api.util.GTUtility.validMTEList;
 import static mcp.mobius.waila.api.SpecialChars.GREEN;
 import static mcp.mobius.waila.api.SpecialChars.RED;
 import static mcp.mobius.waila.api.SpecialChars.RESET;
+import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -40,6 +41,7 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
+import gregtech.api.metatileentity.implementations.MTEBasicMachine;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
 import gregtech.api.metatileentity.implementations.MTEHatchOutput;
@@ -435,7 +437,11 @@ public abstract class MTESteamMultiBase<T extends MTESteamMultiBase<T>> extends 
         builder.widget(
             new DrawableWidget().setDrawable(GTUITextures.STEAM_GAUGE_BG)
                 .dynamicTooltip(
-                    () -> Collections.singletonList("Steam: " + uiSteamStored + "/" + uiSteamCapacity + "L"))
+                    () -> Collections.singletonList(
+                        translateToLocalFormatted(
+                            MTEBasicMachine.STEAM_AMOUNT_LANGKEY,
+                            numberFormat.format(uiSteamStored),
+                            numberFormat.format(uiSteamCapacity))))
                 .setTooltipShowUpDelay(TOOLTIP_DELAY)
                 .setUpdateTooltipEveryTick(true)
                 .setSize(64, 42)

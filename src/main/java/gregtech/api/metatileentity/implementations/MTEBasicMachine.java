@@ -104,6 +104,7 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
      */
     protected static final int DID_NOT_FIND_RECIPE = 0, FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS = 1,
         FOUND_AND_SUCCESSFULLY_USED_RECIPE = 2;
+    public static final String STEAM_AMOUNT_LANGKEY = "GT5U.machines.steam.amount";
 
     public static final int OTHER_SLOT_COUNT = 5;
     public final ItemStack[] mOutputItems;
@@ -1440,7 +1441,12 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
 
         builder.widget(
             new DrawableWidget().setDrawable(GTUITextures.STEAM_GAUGE_BG)
-                .dynamicTooltip(() -> Collections.singletonList("Steam: " + getSteamVar + "/" + maxSteamStore() + "L"))
+                .dynamicTooltip(
+                    () -> Collections.singletonList(
+                        translateToLocalFormatted(
+                            STEAM_AMOUNT_LANGKEY,
+                            numberFormat.format(getSteamVar),
+                            numberFormat.format(maxSteamStore()))))
                 .setTooltipShowUpDelay(TOOLTIP_DELAY)
                 .setUpdateTooltipEveryTick(true)
                 .setSize(64, 42)
