@@ -68,7 +68,6 @@ import bartworks.common.loaders.BioCultureLoader;
 import bartworks.common.loaders.BioItemList;
 import bartworks.common.loaders.FluidLoader;
 import bartworks.common.loaders.ItemRegistry;
-import bartworks.system.material.BWNonMetaMaterialItems;
 import bartworks.system.material.WerkstoffLoader;
 import bartworks.util.BioCulture;
 import bartworks.util.BioDNA;
@@ -490,44 +489,38 @@ public class AdditionalRecipes {
 
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Large_Fluid_Cell_TungstenSteel.get(1L), WerkstoffLoader.Tiberium.get(dust, 3))
-            .itemOutputs(BWNonMetaMaterialItems.TiberiumCell_1.get(1L))
+            .itemOutputs(ItemList.RodTiberium.get(1))
             .duration(1 * SECONDS + 10 * TICKS)
             .eut(16)
             .addTo(cannerRecipes);
         GTValues.RA.stdBuilder()
-            .itemInputs(
-                BWNonMetaMaterialItems.TiberiumCell_1.get(2L),
-                GTOreDictUnificator.get(stick, Materials.TungstenSteel, 4L))
-            .itemOutputs(BWNonMetaMaterialItems.TiberiumCell_2.get(1L))
+            .itemInputs(ItemList.RodTiberium.get(2), GTOreDictUnificator.get(stick, Materials.TungstenSteel, 4L))
+            .itemOutputs(ItemList.RodTiberium2.get(1))
             .duration(5 * SECONDS)
             .eut(400)
             .addTo(assemblerRecipes);
         GTValues.RA.stdBuilder()
-            .itemInputs(
-                BWNonMetaMaterialItems.TiberiumCell_1.get(4L),
-                GTOreDictUnificator.get(stickLong, Materials.TungstenSteel, 6L))
-            .itemOutputs(BWNonMetaMaterialItems.TiberiumCell_4.get(1L))
+            .itemInputs(ItemList.RodTiberium.get(4), GTOreDictUnificator.get(stickLong, Materials.TungstenSteel, 6L))
+            .itemOutputs(ItemList.RodTiberium4.get(1))
             .duration(7 * SECONDS + 10 * TICKS)
             .eut(400)
             .addTo(assemblerRecipes);
         GTValues.RA.stdBuilder()
-            .itemInputs(
-                BWNonMetaMaterialItems.TiberiumCell_2.get(2L),
-                GTOreDictUnificator.get(stick, Materials.TungstenSteel, 4L))
-            .itemOutputs(BWNonMetaMaterialItems.TiberiumCell_4.get(1L))
+            .itemInputs(ItemList.RodTiberium2.get(2), GTOreDictUnificator.get(stick, Materials.TungstenSteel, 4L))
+            .itemOutputs(ItemList.RodTiberium4.get(1))
             .duration(5 * SECONDS)
             .eut(400)
             .addTo(assemblerRecipes);
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                ItemList.NaquadahCell_1.get(32L),
+                ItemList.RodNaquadah.get(32L),
                 GTOreDictUnificator.get(stickLong, Materials.TungstenSteel, 64L),
                 GTOreDictUnificator.get(stickLong, Materials.TungstenSteel, 64L),
                 GTOreDictUnificator.get(stickLong, Materials.TungstenSteel, 64L),
                 WerkstoffLoader.Tiberium.get(dust, 64),
                 WerkstoffLoader.Tiberium.get(dust, 64))
-            .itemOutputs(BWNonMetaMaterialItems.TheCoreCell.get(1L))
+            .itemOutputs(ItemList.RodNaquadah32.get(1))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_LuV)
             .addTo(assemblerRecipes);

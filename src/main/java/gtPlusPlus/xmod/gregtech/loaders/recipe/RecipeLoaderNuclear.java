@@ -145,8 +145,8 @@ public class RecipeLoaderNuclear {
         }
 
         // Thorium
-        for (ItemStack depletedRod : new ItemStack[] { ItemList.Depleted_Thorium_1.get(8),
-            ItemList.Depleted_Thorium_2.get(4), ItemList.Depleted_Thorium_4.get(2) }) {
+        for (ItemStack depletedRod : new ItemStack[] { ItemList.DepletedRodThorium.get(8),
+            ItemList.DepletedRodThorium2.get(4), ItemList.DepletedRodThorium4.get(2) }) {
             GTValues.RA.stdBuilder()
                 .itemInputs(depletedRod, GTUtility.getIntegratedCircuit(20))
                 .itemOutputs(

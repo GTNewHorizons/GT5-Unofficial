@@ -20,7 +20,6 @@ import static gregtech.api.util.GTRecipeBuilder.MINUTES;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
 
-import bartworks.system.material.BWNonMetaMaterialItems;
 import bartworks.system.material.WerkstoffLoader;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
@@ -33,7 +32,7 @@ public class AddSomeRecipes implements Runnable {
     public void run() {
 
         GTValues.RA.stdBuilder()
-            .itemInputs(BWNonMetaMaterialItems.Depleted_Tiberium_1.get(1))
+            .itemInputs(ItemList.DepletedRodTiberium.get(1))
             .itemOutputs(
                 WerkstoffLoader.Zirconium.get(dust),
                 WerkstoffLoader.Zirconium.get(dust),
@@ -48,7 +47,7 @@ public class AddSomeRecipes implements Runnable {
             .addTo(centrifugeRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(BWNonMetaMaterialItems.Depleted_Tiberium_2.get(1))
+            .itemInputs(ItemList.DepletedRodTiberium2.get(1))
             .itemOutputs(
                 WerkstoffLoader.Zirconium.get(dust, 2),
                 WerkstoffLoader.Zirconium.get(dust, 2),
@@ -63,7 +62,7 @@ public class AddSomeRecipes implements Runnable {
             .addTo(centrifugeRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(BWNonMetaMaterialItems.Depleted_Tiberium_4.get(1))
+            .itemInputs(ItemList.DepletedRodTiberium4.get(1))
             .itemOutputs(
                 WerkstoffLoader.Zirconium.get(dust, 4),
                 WerkstoffLoader.Zirconium.get(dust, 4),
@@ -78,9 +77,9 @@ public class AddSomeRecipes implements Runnable {
             .addTo(centrifugeRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(BWNonMetaMaterialItems.Depleted_TheCoreCell.get(1))
+            .itemInputs(ItemList.DepletedRodNaquadah32.get(1))
             .itemOutputs(
-                ItemList.Depleted_Naquadah_4.get(8),
+                ItemList.DepletedRodNaquadah4.get(8),
                 WerkstoffLoader.Zirconium.get(dust, 64),
                 WerkstoffLoader.Zirconium.get(dust, 64),
                 GTOreDictUnificator.get(dust, Materials.TungstenSteel, 64L),

@@ -197,88 +197,88 @@ public class LoaderGTBlockFluid implements Runnable {
 
         ItemList.Neutron_Reflector.set(new ItemNeutronReflector("neutronreflector", "Iridium Neutron Reflector", 0));
         ItemList.Reactor_Coolant_He_1
-            .set(new ItemCoolantCellIC("60k_Helium_Coolantcell", "60k He Coolant Cell", 60000));
+            .set(new ItemCoolantCellIC("60k_Helium_Coolantcell", "60k He Coolant Cell", 60_000));
         ItemList.Reactor_Coolant_He_3
-            .set(new ItemCoolantCellIC("180k_Helium_Coolantcell", "180k He Coolant Cell", 180000));
+            .set(new ItemCoolantCellIC("180k_Helium_Coolantcell", "180k He Coolant Cell", 180_000));
         ItemList.Reactor_Coolant_He_6
-            .set(new ItemCoolantCellIC("360k_Helium_Coolantcell", "360k He Coolant Cell", 360000));
-        ItemList.Reactor_Coolant_NaK_1.set(new ItemCoolantCellIC("60k_NaK_Coolantcell", "60k NaK Coolant Cell", 60000));
+            .set(new ItemCoolantCellIC("360k_Helium_Coolantcell", "360k He Coolant Cell", 360_000));
+        ItemList.Reactor_Coolant_NaK_1
+            .set(new ItemCoolantCellIC("60k_NaK_Coolantcell", "60k NaK Coolant Cell", 60_000));
         ItemList.Reactor_Coolant_NaK_3
-            .set(new ItemCoolantCellIC("180k_NaK_Coolantcell", "180k NaK Coolant Cell", 180000));
+            .set(new ItemCoolantCellIC("180k_NaK_Coolantcell", "180k NaK Coolant Cell", 180_000));
         ItemList.Reactor_Coolant_NaK_6
-            .set(new ItemCoolantCellIC("360k_NaK_Coolantcell", "360k NaK Coolant Cell", 360000));
+            .set(new ItemCoolantCellIC("360k_NaK_Coolantcell", "360k NaK Coolant Cell", 360_000));
 
         ItemList.Reactor_Coolant_Sp_1
-            .set(new ItemCoolantCellIC("180k_Space_Coolantcell", "180k Sp Coolant Cell", 180000));
+            .set(new ItemCoolantCellIC("180k_Space_Coolantcell", "180k Sp Coolant Cell", 180_000));
 
         ItemList.Reactor_Coolant_Sp_2
-            .set(new ItemCoolantCellIC("360k_Space_Coolantcell", "360k Sp Coolant Cell", 360000));
+            .set(new ItemCoolantCellIC("360k_Space_Coolantcell", "360k Sp Coolant Cell", 360_000));
 
         ItemList.Reactor_Coolant_Sp_3
-            .set(new ItemCoolantCellIC("540k_Space_Coolantcell", "540k Sp Coolant Cell", 540000));
+            .set(new ItemCoolantCellIC("540k_Space_Coolantcell", "540k Sp Coolant Cell", 540_000));
 
         ItemList.Reactor_Coolant_Sp_6
-            .set(new ItemCoolantCellIC("1080k_Space_Coolantcell", "1080k Sp Coolant Cell", 1080000));
-
-        ItemList.GlowstoneCell.set(
-            new ItemBreederCell(
-                "glowstoneCell",
-                "Glowstone Fuel Rod",
-                "Source of sunnarium",
-                3000,
-                1,
-                10000,
-                () -> ItemList.SunnariumCell.get(1)));
-        ItemList.SunnariumCell.set(new ItemDepletedCell("sunnariumCell", "Sunnarium Fuel Rod", 1));
+            .set(new ItemCoolantCellIC("1080k_Space_Coolantcell", "1080k Sp Coolant Cell", 1_080_000));
 
         ItemList.neutroniumHeatCapacitor
-            .set(new ItemCoolantCellIC("neutroniumHeatCapacitor", "1G Neutronium Heat Capacitor", 1000000000));
+            .set(new ItemCoolantCellIC("neutroniumHeatCapacitor", "1G Neutronium Heat Capacitor", 1_000_000_000));
 
-        ItemList.Depleted_Thorium_1.set(new ItemDepletedCell("ThoriumcellDep", "Fuel Rod (Depleted Thorium)", 1));
-        ItemList.Depleted_Thorium_2
-            .set(new ItemDepletedCell("Double_ThoriumcellDep", "Dual Fuel Rod (Depleted Thorium)", 1)); // TODO
-        // CHECK
-        // num
-        ItemList.Depleted_Thorium_4
-            .set(new ItemDepletedCell("Quad_ThoriumcellDep", "Quad Fuel Rod (Depleted Thorium)", 1)); // TODO
-        // CHECK
-        // num
-        ItemList.ThoriumCell_1.set(
+        // Glowstone
+        ItemList.DepletedRodGlowstone.set(new ItemDepletedCell("depletedRodGlowstone", "Fuel Rod (Sunnarium)", 1));
+        ItemList.RodGlowstone.set(
+            new ItemBreederCell(
+                "rodGlowstone",
+                "Fuel Rod (Glowstone)",
+                "Source of sunnarium",
+                3_000,
+                1,
+                10_000,
+                () -> ItemList.DepletedRodGlowstone.get(1)));
+
+        // Thorium
+        ItemList.DepletedRodThorium.set(new ItemDepletedCell("depletedRodThorium", "Fuel Rod (Depleted Thorium)", 1));
+        ItemList.DepletedRodThorium2
+            .set(new ItemDepletedCell("depletedRodThorium2", "Dual Fuel Rod (Depleted Thorium)", 1));
+        ItemList.DepletedRodThorium4
+            .set(new ItemDepletedCell("depletedRodThorium4", "Quad Fuel Rod (Depleted Thorium)", 1));
+
+        ItemList.RodThorium.set(
             new ItemRadioactiveCellIC(
-                "Thoriumcell",
+                "rodThorium",
                 "Fuel Rod (Thorium)",
                 1,
-                50000,
+                50_000,
                 0.4F,
                 0,
                 0.25F,
-                ItemList.Depleted_Thorium_1.get(1),
+                ItemList.DepletedRodThorium.get(1),
                 false));
-        ItemList.ThoriumCell_2.set(
+        ItemList.RodThorium2.set(
             new ItemRadioactiveCellIC(
-                "Double_Thoriumcell",
+                "rodThorium2",
                 "Dual Fuel Rod (Thorium)",
                 2,
-                50000,
+                50_000,
                 0.4F,
                 0,
                 0.25F,
-                ItemList.Depleted_Thorium_2.get(1),
+                ItemList.DepletedRodThorium2.get(1),
                 false));
-        ItemList.ThoriumCell_4.set(
+        ItemList.RodThorium4.set(
             new ItemRadioactiveCellIC(
-                "Quad_Thoriumcell",
+                "rodThorium4",
                 "Quad Fuel Rod (Thorium)",
                 4,
-                50000,
+                50_000,
                 0.4F,
                 0,
                 0.25F,
-                ItemList.Depleted_Thorium_4.get(1),
+                ItemList.DepletedRodThorium4.get(1),
                 false));
 
         GTValues.RA.stdBuilder()
-            .itemInputs(ItemList.Depleted_Thorium_1.get(1))
+            .itemInputs(ItemList.DepletedRodThorium.get(1))
             .itemOutputs(
                 GTOreDictUnificator.get(OrePrefixes.dustSmall, Materials.Lutetium, 2L),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Thorium, 1L),
@@ -286,9 +286,8 @@ public class LoaderGTBlockFluid implements Runnable {
             .duration(25 * SECONDS)
             .eut(48)
             .addTo(thermalCentrifugeRecipes);
-
         GTValues.RA.stdBuilder()
-            .itemInputs(ItemList.Depleted_Thorium_2.get(1))
+            .itemInputs(ItemList.DepletedRodThorium2.get(1))
             .itemOutputs(
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Lutetium, 1L),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Thorium, 2L),
@@ -296,9 +295,8 @@ public class LoaderGTBlockFluid implements Runnable {
             .duration(25 * SECONDS)
             .eut(48)
             .addTo(thermalCentrifugeRecipes);
-
         GTValues.RA.stdBuilder()
-            .itemInputs(ItemList.Depleted_Thorium_4.get(1))
+            .itemInputs(ItemList.DepletedRodThorium4.get(1))
             .itemOutputs(
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Lutetium, 2L),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Thorium, 4L),
@@ -307,172 +305,13 @@ public class LoaderGTBlockFluid implements Runnable {
             .eut(48)
             .addTo(thermalCentrifugeRecipes);
 
-        ItemList.Depleted_Naquadah_1.set(new ItemDepletedCell("NaquadahcellDep", "Fuel Rod (Depleted Naquadah)", 1));
-        ItemList.Depleted_Naquadah_2
-            .set(new ItemDepletedCell("Double_NaquadahcellDep", "Dual Fuel Rod (Depleted Naquadah)", 1));
-        ItemList.Depleted_Naquadah_4
-            .set(new ItemDepletedCell("Quad_NaquadahcellDep", "Quad Fuel Rod (Depleted Naquadah)", 1));
-        ItemList.NaquadahCell_1.set(
-            new ItemRadioactiveCellIC(
-                "Naquadahcell",
-                "Fuel Rod (Naquadah)",
-                1,
-                100000,
-                4F,
-                1,
-                1F,
-                ItemList.Depleted_Naquadah_1.get(1),
-                false));
-        ItemList.NaquadahCell_2.set(
-            new ItemRadioactiveCellIC(
-                "Double_Naquadahcell",
-                "Dual Fuel Rod (Naquadah)",
-                2,
-                100000,
-                4F,
-                1,
-                1F,
-                ItemList.Depleted_Naquadah_2.get(1),
-                false));
-        ItemList.NaquadahCell_4.set(
-            new ItemRadioactiveCellIC(
-                "Quad_Naquadahcell",
-                "Quad Fuel Rod (Naquadah)",
-                4,
-                100000,
-                4F,
-                1,
-                1F,
-                ItemList.Depleted_Naquadah_4.get(1),
-                false));
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(ItemList.Depleted_Naquadah_1.get(1))
-            .itemOutputs(
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Naquadah, 1L),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Naquadah, 1L),
-                GTOreDictUnificator.get(OrePrefixes.dustSmall, Materials.Naquadria, 2L),
-                GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.NaquadahEnriched, 2L),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.TungstenSteel, 8L),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Platinum, 1L))
-            .outputChances(10_000, 5_000, 5_000, 2_500, 10_000, 10_000)
-            .duration(25 * SECONDS)
-            .eut(TierEU.RECIPE_EV)
-            .addTo(centrifugeRecipes);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(ItemList.Depleted_Naquadah_2.get(1))
-            .itemOutputs(
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Naquadah, 2L),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Naquadah, 2L),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Naquadria, 1L),
-                GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.NaquadahEnriched, 4L),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.TungstenSteel, 18L),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Platinum, 2L))
-            .outputChances(10_000, 5_000, 5_000, 2_500, 10_000, 10_000)
-            .duration(50 * SECONDS)
-            .eut(TierEU.RECIPE_EV)
-            .addTo(centrifugeRecipes);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(ItemList.Depleted_Naquadah_4.get(1))
-            .itemOutputs(
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Naquadah, 4L),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Naquadah, 4L),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Naquadria, 2L),
-                GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.NaquadahEnriched, 8L),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.TungstenSteel, 38L),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Platinum, 4L))
-            .outputChances(10_000, 5_000, 5_000, 2_500, 10_000, 10_000)
-            .duration(100 * SECONDS)
-            .eut(TierEU.RECIPE_EV)
-            .addTo(centrifugeRecipes);
-
-        ItemList.Depleted_MNq_1.set(new ItemDepletedCell("MNqCellDep", "Fuel Rod (Depleted Nq*)", 1));
-        ItemList.Depleted_MNq_2.set(new ItemDepletedCell("Double_MNqCellDep", "Dual Fuel Rod (Depleted Nq*)", 1));
-        ItemList.Depleted_MNq_4.set(new ItemDepletedCell("Quad_MNqCellDep", "Quad Fuel Rod (Depleted Nq*)", 1));
-        ItemList.MNqCell_1.set(
-            new ItemRadioactiveCellIC(
-                "MNqCell",
-                "Fuel Rod (Nq* - MOX like behaviour)",
-                1,
-                100000,
-                4F,
-                1,
-                1F,
-                ItemList.Depleted_MNq_1.get(1),
-                true));
-        ItemList.MNqCell_2.set(
-            new ItemRadioactiveCellIC(
-                "Double_MNqCell",
-                "Dual Fuel Rod (Nq* - MOX like behaviour)",
-                2,
-                100000,
-                4F,
-                1,
-                1F,
-                ItemList.Depleted_MNq_2.get(1),
-                true));
-        ItemList.MNqCell_4.set(
-            new ItemRadioactiveCellIC(
-                "Quad_MNqCell",
-                "Quad Fuel Rod (Nq* - MOX like behaviour)",
-                4,
-                100000,
-                4F,
-                1,
-                1F,
-                ItemList.Depleted_MNq_4.get(1),
-                true));
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(ItemList.Depleted_MNq_1.get(1))
-            .itemOutputs(
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Naquadah, 1L),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Naquadah, 1L),
-                GTOreDictUnificator.get(OrePrefixes.dustSmall, Materials.NaquadahEnriched, 2L),
-                GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.Naquadria, 2L),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.TungstenSteel, 8L),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Platinum, 1L))
-            .outputChances(10_000, 5_000, 5_000, 2_500, 10_000, 10_000)
-            .duration(25 * SECONDS)
-            .eut(TierEU.RECIPE_EV)
-            .addTo(centrifugeRecipes);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(ItemList.Depleted_MNq_2.get(1))
-            .itemOutputs(
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Naquadah, 2L),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Naquadah, 2L),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.NaquadahEnriched, 1L),
-                GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.Naquadria, 4L),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.TungstenSteel, 18L),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Platinum, 2L))
-            .outputChances(10_000, 5_000, 5_000, 2_500, 10_000, 10_000)
-            .duration(50 * SECONDS)
-            .eut(TierEU.RECIPE_EV)
-            .addTo(centrifugeRecipes);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(ItemList.Depleted_MNq_4.get(1))
-            .itemOutputs(
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Naquadah, 4L),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Naquadah, 4L),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.NaquadahEnriched, 2L),
-                GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.Naquadria, 8L),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.TungstenSteel, 38L),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Platinum, 4L))
-            .outputChances(10_000, 5_000, 5_000, 2_500, 10_000, 10_000)
-            .duration(100 * SECONDS)
-            .eut(TierEU.RECIPE_EV)
-            .addTo(centrifugeRecipes);
-
+        // Uranium
         ItemList.Uraniumcell_1.set(
             new ItemRadioactiveCellIC(
                 "reactorUraniumSimple",
                 "Fuel Rod (Uranium)",
                 1,
-                20000,
+                20_000,
                 2F,
                 1,
                 1F,
@@ -483,7 +322,7 @@ public class LoaderGTBlockFluid implements Runnable {
                 "reactorUraniumDual",
                 "Dual Fuel Rod (Uranium)",
                 2,
-                20000,
+                20_000,
                 2F,
                 1,
                 1F,
@@ -494,18 +333,20 @@ public class LoaderGTBlockFluid implements Runnable {
                 "reactorUraniumQuad",
                 "Quad Fuel Rod (Uranium)",
                 4,
-                20000,
+                20_000,
                 2F,
                 1,
                 1F,
                 GTModHandler.getIC2Item("reactorDepletedUraniumQuad", 1),
                 false));
+
+        // MOX
         ItemList.Moxcell_1.set(
             new ItemRadioactiveCellIC(
                 "reactorMOXSimple",
                 "Fuel Rod (Mox)",
                 1,
-                10000,
+                10_000,
                 2F,
                 1,
                 1F,
@@ -516,7 +357,7 @@ public class LoaderGTBlockFluid implements Runnable {
                 "reactorMOXDual",
                 "Dual Fuel Rod (Mox)",
                 2,
-                10000,
+                10_000,
                 2F,
                 1,
                 1F,
@@ -527,7 +368,7 @@ public class LoaderGTBlockFluid implements Runnable {
                 "reactorMOXQuad",
                 "Quad Fuel Rod (Mox)",
                 4,
-                10000,
+                10_000,
                 2F,
                 1,
                 1F,
@@ -713,6 +554,223 @@ public class LoaderGTBlockFluid implements Runnable {
                 64,
                 ItemList.DepletedRodExcitedPlutonium4.get(1),
                 true));
+
+        // Naquadah
+        ItemList.DepletedRodNaquadah
+            .set(new ItemDepletedCell("depletedRodNaquadah", "Fuel Rod (Depleted Naquadah)", 1));
+        ItemList.DepletedRodNaquadah2
+            .set(new ItemDepletedCell("depletedRodNaquadah2", "Dual Fuel Rod (Depleted Naquadah)", 1));
+        ItemList.DepletedRodNaquadah4
+            .set(new ItemDepletedCell("depletedRodNaquadah4", "Quad Fuel Rod (Depleted Naquadah)", 1));
+        ItemList.DepletedRodNaquadah32.set(new ItemDepletedCell("depletedRodNaquadah32", "The Core (Depleted)", 32));
+
+        ItemList.RodNaquadah.set(
+            new ItemRadioactiveCellIC(
+                "rodNaquadah",
+                "Fuel Rod (Naquadah)",
+                1,
+                100_000,
+                4F,
+                1,
+                1F,
+                ItemList.DepletedRodNaquadah.get(1),
+                false));
+        ItemList.RodNaquadah2.set(
+            new ItemRadioactiveCellIC(
+                "rodNaquadah2",
+                "Dual Fuel Rod (Naquadah)",
+                2,
+                100_000,
+                4F,
+                1,
+                1F,
+                ItemList.DepletedRodNaquadah2.get(1),
+                false));
+        ItemList.RodNaquadah4.set(
+            new ItemRadioactiveCellIC(
+                "rodNaquadah4",
+                "Quad Fuel Rod (Naquadah)",
+                4,
+                100_000,
+                4F,
+                1,
+                1F,
+                ItemList.DepletedRodNaquadah4.get(1),
+                false));
+        ItemList.RodNaquadah32.set(
+            new ItemRadioactiveCellIC(
+                "rodNaquadah32",
+                "The Core",
+                32,
+                100_000,
+                8F,
+                32,
+                1F,
+                ItemList.DepletedRodNaquadah32.get(1),
+                false));
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(ItemList.DepletedRodNaquadah.get(1))
+            .itemOutputs(
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Naquadah, 1L),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Naquadah, 1L),
+                GTOreDictUnificator.get(OrePrefixes.dustSmall, Materials.Naquadria, 2L),
+                GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.NaquadahEnriched, 2L),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.TungstenSteel, 8L),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Platinum, 1L))
+            .outputChances(10_000, 5_000, 5_000, 2_500, 10_000, 10_000)
+            .duration(25 * SECONDS)
+            .eut(TierEU.RECIPE_EV)
+            .addTo(centrifugeRecipes);
+        GTValues.RA.stdBuilder()
+            .itemInputs(ItemList.DepletedRodNaquadah2.get(1))
+            .itemOutputs(
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Naquadah, 2L),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Naquadah, 2L),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Naquadria, 1L),
+                GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.NaquadahEnriched, 4L),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.TungstenSteel, 18L),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Platinum, 2L))
+            .outputChances(10_000, 5_000, 5_000, 2_500, 10_000, 10_000)
+            .duration(50 * SECONDS)
+            .eut(TierEU.RECIPE_EV)
+            .addTo(centrifugeRecipes);
+        GTValues.RA.stdBuilder()
+            .itemInputs(ItemList.DepletedRodNaquadah4.get(1))
+            .itemOutputs(
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Naquadah, 4L),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Naquadah, 4L),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Naquadria, 2L),
+                GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.NaquadahEnriched, 8L),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.TungstenSteel, 38L),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Platinum, 4L))
+            .outputChances(10_000, 5_000, 5_000, 2_500, 10_000, 10_000)
+            .duration(100 * SECONDS)
+            .eut(TierEU.RECIPE_EV)
+            .addTo(centrifugeRecipes);
+
+        // Naquadria
+        ItemList.DepletedRodNaquadria
+            .set(new ItemDepletedCell("depletedRodNaquadria", "Fuel Rod (Depleted Naquadria)", 1));
+        ItemList.DepletedRodNaquadria2
+            .set(new ItemDepletedCell("depletedRodNaquadria2", "Dual Fuel Rod (Depleted Naquadria)", 1));
+        ItemList.DepletedRodNaquadria4
+            .set(new ItemDepletedCell("depletedRodNaquadria4", "Quad Fuel Rod (Depleted Naquadria)", 1));
+
+        ItemList.RodNaquadria.set(
+            new ItemRadioactiveCellIC(
+                "rodNaquadria",
+                "Fuel Rod (Naquadria)",
+                1,
+                100_000,
+                4F,
+                1,
+                1F,
+                ItemList.DepletedRodNaquadria.get(1),
+                true));
+        ItemList.RodNaquadria2.set(
+            new ItemRadioactiveCellIC(
+                "rodNaquadria2",
+                "Dual Fuel Rod (Naquadria)",
+                2,
+                100_000,
+                4F,
+                1,
+                1F,
+                ItemList.DepletedRodNaquadria2.get(1),
+                true));
+        ItemList.RodNaquadria4.set(
+            new ItemRadioactiveCellIC(
+                "rodNaquadria4",
+                "Quad Fuel Rod (Naquadria)",
+                4,
+                100_000,
+                4F,
+                1,
+                1F,
+                ItemList.DepletedRodNaquadria4.get(1),
+                true));
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(ItemList.DepletedRodNaquadria.get(1))
+            .itemOutputs(
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Naquadah, 1L),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Naquadah, 1L),
+                GTOreDictUnificator.get(OrePrefixes.dustSmall, Materials.NaquadahEnriched, 2L),
+                GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.Naquadria, 2L),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.TungstenSteel, 8L),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Platinum, 1L))
+            .outputChances(10_000, 5_000, 5_000, 2_500, 10_000, 10_000)
+            .duration(25 * SECONDS)
+            .eut(TierEU.RECIPE_EV)
+            .addTo(centrifugeRecipes);
+        GTValues.RA.stdBuilder()
+            .itemInputs(ItemList.DepletedRodNaquadria2.get(1))
+            .itemOutputs(
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Naquadah, 2L),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Naquadah, 2L),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.NaquadahEnriched, 1L),
+                GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.Naquadria, 4L),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.TungstenSteel, 18L),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Platinum, 2L))
+            .outputChances(10_000, 5_000, 5_000, 2_500, 10_000, 10_000)
+            .duration(50 * SECONDS)
+            .eut(TierEU.RECIPE_EV)
+            .addTo(centrifugeRecipes);
+        GTValues.RA.stdBuilder()
+            .itemInputs(ItemList.DepletedRodNaquadria4.get(1))
+            .itemOutputs(
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Naquadah, 4L),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Naquadah, 4L),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.NaquadahEnriched, 2L),
+                GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.Naquadria, 8L),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.TungstenSteel, 38L),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Platinum, 4L))
+            .outputChances(10_000, 5_000, 5_000, 2_500, 10_000, 10_000)
+            .duration(100 * SECONDS)
+            .eut(TierEU.RECIPE_EV)
+            .addTo(centrifugeRecipes);
+
+        // Tiberium
+        ItemList.DepletedRodTiberium
+            .set(new ItemDepletedCell("depletedRodTiberium", "Fuel Rod (Depleted Tiberium)", 1));
+        ItemList.DepletedRodTiberium2
+            .set(new ItemDepletedCell("depletedRodTiberium2", "Dual Fuel Rod (Depleted Tiberium)", 1));
+        ItemList.DepletedRodTiberium4
+            .set(new ItemDepletedCell("depletedRodTiberium4", "Quad Fuel Rod (Depleted Tiberium)", 1));
+        ItemList.RodTiberium.set(
+            new ItemRadioactiveCellIC(
+                "rodTiberium",
+                "Fuel Rod (Tiberium)",
+                1,
+                50_000,
+                2F,
+                1,
+                0.5F,
+                ItemList.DepletedRodTiberium.get(1),
+                false));
+        ItemList.RodTiberium2.set(
+            new ItemRadioactiveCellIC(
+                "rodTiberium2",
+                "Dual Fuel Rod (Tiberium)",
+                2,
+                50_000,
+                2F,
+                1,
+                0.5F,
+                ItemList.DepletedRodTiberium2.get(1),
+                false));
+        ItemList.RodTiberium4.set(
+            new ItemRadioactiveCellIC(
+                "rodTiberium4",
+                "Quad Fuel Rod (Tiberium)",
+                4,
+                50_000,
+                2F,
+                1,
+                0.5F,
+                ItemList.DepletedRodTiberium4.get(1),
+                false));
 
         GTLog.out.println("GTMod: Adding Blocks.");
         GregTechAPI.sBlockMachines = new BlockMachines();

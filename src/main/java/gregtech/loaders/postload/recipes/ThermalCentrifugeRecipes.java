@@ -20,7 +20,7 @@ public class ThermalCentrifugeRecipes implements Runnable {
     @Override
     public void run() {
         GTValues.RA.stdBuilder()
-            .itemInputs(ItemList.SunnariumCell.get(1))
+            .itemInputs(ItemList.DepletedRodGlowstone.get(1))
             .itemOutputs(
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Sunnarium, 1),
                 new ItemStack(Items.glowstone_dust, 2),
