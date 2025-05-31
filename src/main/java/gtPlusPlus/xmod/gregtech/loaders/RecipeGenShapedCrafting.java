@@ -151,9 +151,9 @@ public class RecipeGenShapedCrafting extends RecipeGenBase {
         }
 
         // Gear Recipe
-        if (!material.isRadioactive && null != (material.getGear(1))
-            && null != (material.getPlate(1))
-            && null != (material.getRod(1))) {
+        if (!material.isRadioactive && material.getGear(1) != null
+            && material.getPlate(1) != null
+            && material.getRod(1) != null) {
             if (GTModHandler.addCraftingRecipe(
                 material.getGear(1),
                 GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
