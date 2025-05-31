@@ -118,6 +118,7 @@ public class ProspectingPacket extends DetravPacket {
             packet.map[i][j] = new HashMap<>();
             for (int k = 0; k < kSize; k++) {
                 final byte y = aData.readByte();
+                if (y == 0) continue;
                 final short meta = aData.readShort();
                 packet.map[i][j].put(y, meta);
                 if (packet.ptype != 2 || y == 1) addOre(packet, y, i, j, meta);

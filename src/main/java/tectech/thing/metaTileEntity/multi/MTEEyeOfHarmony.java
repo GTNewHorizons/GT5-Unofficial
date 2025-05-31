@@ -976,7 +976,7 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements IConstructable,
             if (GTUtility.getBlockFromStack(heldItem) instanceof BlockDimensionDisplay) {
                 mInventory[getControllerSlotIndex()] = heldItem.copy();
                 mInventory[getControllerSlotIndex()].stackSize = 1;
-                aPlayer.setCurrentItemOrArmor(0, ItemUtils.depleteStack(heldItem));
+                aPlayer.setCurrentItemOrArmor(0, ItemUtils.depleteStack(heldItem, 1));
                 return true;
             }
         }

@@ -85,7 +85,7 @@ public class BaseItemDustUnique extends Item {
             Logger.WARNING("Generating OreDict Name: " + temp);
         }
         if (!temp.isEmpty()) {
-            GTOreDictUnificator.registerOre(temp, ItemUtils.getSimpleStack(this));
+            GTOreDictUnificator.registerOre(temp, new ItemStack(this));
         }
         registerComponent();
     }
@@ -103,7 +103,7 @@ public class BaseItemDustUnique extends Item {
         String aKey = OrePrefixes.dust.name();
         ItemStack x = aMap.get(aKey);
         if (x == null) {
-            aMap.put(aKey, ItemUtils.getSimpleStack(this));
+            aMap.put(aKey, new ItemStack(this));
             Logger.MATERIALS("Registering a material component. Item: [" + aName + "] Map: [" + aKey + "]");
             Material.mComponentMap.put(aName, aMap);
             return true;
