@@ -359,7 +359,7 @@ public class RecipeLoaderGlueLine {
             .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.cableGt01, Materials.Naquadah, 2),
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.RedSteel, 18))
-            .itemOutputs(getModItem(Mods.GregTech.ID, "gt.metaitem.01", 1, 32505))
+            .itemOutputs(ItemList.BatteryHull_LuV.get(1))
             .fluidInputs(MaterialMisc.ETHYL_CYANOACRYLATE.getFluidStack(144))
             .duration(15 * SECONDS)
             .eut(TierEU.RECIPE_IV)
@@ -368,7 +368,7 @@ public class RecipeLoaderGlueLine {
             .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.cableGt01, Materials.NaquadahAlloy, 2),
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.Europium, 6))
-            .itemOutputs(getModItem(Mods.GregTech.ID, "gt.metaitem.01", 1, 32506))
+            .itemOutputs(ItemList.BatteryHull_ZPM.get(1))
             .fluidInputs(MaterialMisc.ETHYL_CYANOACRYLATE.getFluidStack(288))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_LuV)
@@ -377,7 +377,7 @@ public class RecipeLoaderGlueLine {
             .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.cableGt01, Materials.ElectrumFlux, 2),
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.Americium, 18))
-            .itemOutputs(getModItem(Mods.GregTech.ID, "gt.metaitem.01", 1, 32507))
+            .itemOutputs(ItemList.BatteryHull_UV.get(1))
             .fluidInputs(MaterialMisc.ETHYL_CYANOACRYLATE.getFluidStack(576))
             .duration(15 * SECONDS)
             .eut(TierEU.RECIPE_ZPM)
@@ -386,7 +386,7 @@ public class RecipeLoaderGlueLine {
             .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.cableGt02, Materials.ElectrumFlux, 2),
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.Naquadah, 24))
-            .itemOutputs(getModItem(Mods.GregTech.ID, "gt.metaitem.01", 1 , 32561))
+            .itemOutputs(ItemList.BatteryHull_UHV.get(1))
             .fluidInputs(MaterialMisc.ETHYL_CYANOACRYLATE.getFluidStack(1152))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_UV)
@@ -395,7 +395,7 @@ public class RecipeLoaderGlueLine {
             .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.cableGt04, Materials.ElectrumFlux, 2),
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.NaquadahEnriched, 36))
-            .itemOutputs(getModItem(Mods.GregTech.ID, "gt.metaitem.01", 1, 32562))
+            .itemOutputs(ItemList.BatteryHull_UEV.get(1))
             .fluidInputs(MaterialMisc.ETHYL_CYANOACRYLATE.getFluidStack(2304))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_UHV)
@@ -404,7 +404,7 @@ public class RecipeLoaderGlueLine {
             .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.cableGt08, Materials.ElectrumFlux, 2),
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.NaquadahAlloy, 48))
-            .itemOutputs(getModItem(Mods.GregTech.ID, "gt.metaitem.01", 1, 32563))
+            .itemOutputs(ItemList.BatteryHull_UIV.get(1))
             .fluidInputs(MaterialMisc.ETHYL_CYANOACRYLATE.getFluidStack(4608))
             .duration(15 * SECONDS)
             .eut(TierEU.RECIPE_UHV)
@@ -413,7 +413,7 @@ public class RecipeLoaderGlueLine {
             .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.wireGt16, Materials.SuperconductorUHV, 2),
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.Neutronium, 56))
-            .itemOutputs(getModItem(Mods.GregTech.ID, "gt.metaitem.01", 1, 32564))
+            .itemOutputs(ItemList.BatteryHull_UMV.get(1))
             .fluidInputs(MaterialMisc.ETHYL_CYANOACRYLATE.getFluidStack(9216))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_UHV)
@@ -422,7 +422,7 @@ public class RecipeLoaderGlueLine {
             .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.wireGt16, Materials.SuperconductorUHV, 2),
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.DraconiumAwakened, 64))
-            .itemOutputs(getModItem(Mods.GregTech.ID, "gt.metaitem.01", 1, 32565))
+            .itemOutputs(ItemList.BatteryHull_UxV.get(1))
             .fluidInputs(MaterialMisc.ETHYL_CYANOACRYLATE.getFluidStack(18432))
             .duration(60 * SECONDS)
             .eut(TierEU.RECIPE_UHV)

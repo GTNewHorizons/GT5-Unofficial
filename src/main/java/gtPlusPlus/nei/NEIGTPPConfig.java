@@ -41,9 +41,6 @@ public class NEIGTPPConfig implements IConfigureNEI {
             GregtechItemList.GT4_Electric_Auto_Workbench_UV)) {
             API.addRecipeCatalyst(item.get(1), "crafting", -10);
         }
-        // Bronze workbench
-        API.removeRecipeCatalyst(getModItem(Mods.GregTech.ID, "gt.blockmachines", 1, 31081), "crafting");
-        API.removeRecipeCatalyst(getModItem(Mods.GregTech.ID, "gt.blockmachines", 1, 31082), "crafting");
 
         // Moved to its own handler
         API.removeRecipeCatalyst(
@@ -52,18 +49,9 @@ public class NEIGTPPConfig implements IConfigureNEI {
 
         // ULV simple washer
         API.removeRecipeCatalyst(
-            getModItem(Mods.GregTech.ID, "gt.blockmachines", 1, 767),
+            GregtechItemList.SimpleDustWasher_ULV.get(1),
             GTPPRecipeMaps.simpleWasherRecipes.unlocalizedName);
 
-        // ULV combustion generator
-        API.removeRecipeCatalyst(
-            getModItem(Mods.GregTech.ID, "gt.blockmachines", 1, 960),
-            RecipeMaps.dieselFuels.unlocalizedName);
-
-        // ULV gas turbine
-        API.removeRecipeCatalyst(
-            getModItem(Mods.GregTech.ID, "gt.blockmachines", 1, 961),
-            RecipeMaps.gasTurbineFuels.unlocalizedName);
 
         // Hide Flasks
         if (Utils.isClient()) {
