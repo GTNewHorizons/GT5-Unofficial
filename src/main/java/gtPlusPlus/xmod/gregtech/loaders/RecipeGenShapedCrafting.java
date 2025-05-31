@@ -165,7 +165,7 @@ public class RecipeGenShapedCrafting extends RecipeGenBase {
         }
 
         // Screws
-        if (!material.isRadioactive && null != (material.getScrew(1)) && null != (material.getBolt(1))) {
+        if (!material.isRadioactive && material.getScrew(1) != null && material.getBolt(1) != null) {
             if (GTModHandler.addCraftingRecipe(
                 material.getScrew(1),
                 GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
