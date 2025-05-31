@@ -92,7 +92,7 @@ public class RecipeGenShapedCrafting extends RecipeGenBase {
         }
 
         // Shaped Recipe - Foil
-        if (null != (material.getFoil(1)) && null != (material.getPlate(1))) {
+        if (material.getFoil(1) != null && material.getPlate(1) != null) {
             if (GTModHandler.addCraftingRecipe(
                 material.getFoil(2),
                 GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
