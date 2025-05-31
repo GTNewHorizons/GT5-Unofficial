@@ -11,6 +11,7 @@ import static gregtech.api.util.GTModHandler.getModItem;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
 import static gtPlusPlus.core.creative.AddToCreativeTab.tabMisc;
 
+import gtPlusPlus.core.lib.GTPPCore;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
@@ -88,6 +89,7 @@ import gtPlusPlus.plugin.agrichem.item.algae.ItemAlgaeBase;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.common.helpers.VolumetricFlaskHelper;
 import gtPlusPlus.xmod.gregtech.common.items.MetaGeneratedGregtechItems;
+import org.apache.commons.lang3.tuple.Pair;
 import toxiceverglades.GTPPEverglades;
 
 public final class ModItems {
@@ -1122,7 +1124,7 @@ public final class ModItems {
         // A Block of Meat.
         if (ItemUtils.getItemStackOfAmountFromOreDictNoBroken("blockMeatRaw", 1) == null) {
             blockRawMeat = new BlockBaseModular(MaterialsOther.MEAT, BlockTypes.STANDARD);
-            ItemUtils.registerFuel(new ItemStack(blockRawMeat), 900);
+            GTPPCore.burnables.add(Pair.of(900, new ItemStack(blockRawMeat)));
         }
 
         // A plate of Vanadium.

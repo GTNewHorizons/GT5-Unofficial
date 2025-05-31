@@ -4,6 +4,7 @@ import static gregtech.api.enums.Mods.GTPlusPlus;
 
 import java.util.List;
 
+import gtPlusPlus.core.lib.GTPPCore;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -17,6 +18,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gtPlusPlus.core.item.base.itemblock.ItemBlockMeta;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
+import org.apache.commons.lang3.tuple.Pair;
 
 public class BlockCactusCharcoal extends Block {
 
@@ -28,7 +30,7 @@ public class BlockCactusCharcoal extends Block {
         this.setStepSound(soundTypeStone);
         GameRegistry.registerBlock(this, ItemBlockMeta.class, "blockCactusCharcoal");
         for (int i = 0; i < textureArray.length; i++) {
-            ItemUtils.registerFuel(new ItemStack(Item.getItemFromBlock(this), 1, i), 4000 * (int) Math.pow(9, i));
+            GTPPCore.burnables.add(Pair.of(4000 * (int) Math.pow(9, i), new ItemStack(this, 1, i)));
         }
     }
 

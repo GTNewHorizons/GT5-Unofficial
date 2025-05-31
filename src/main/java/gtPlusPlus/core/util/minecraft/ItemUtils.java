@@ -394,10 +394,6 @@ public class ItemUtils {
         return aGtStack;
     }
 
-    public static boolean registerFuel(ItemStack aBurnable, int burn) {
-        return GTPPCore.burnables.add(Pair.of(burn, aBurnable));
-    }
-
     /**
      *
      * @param mInput

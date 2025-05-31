@@ -24,6 +24,7 @@ import static gtPlusPlus.api.recipe.GTPPRecipeMaps.chemicalDehydratorRecipes;
 import static gtPlusPlus.api.recipe.GTPPRecipeMaps.chemicalPlantRecipes;
 import static gtPlusPlus.api.recipe.GTPPRecipeMaps.cokeOvenRecipes;
 
+import gtPlusPlus.core.lib.GTPPCore;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -47,6 +48,7 @@ import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.railcraft.utils.RailcraftUtils;
 import ic2.core.Ic2Items;
+import org.apache.commons.lang3.tuple.Pair;
 
 public class BioRecipes {
 
@@ -84,8 +86,8 @@ public class BioRecipes {
 
     private static void registerFuels() {
         // Burnables
-        ItemUtils.registerFuel(GregtechItemList.WoodPellet.get(1), 800);
-        ItemUtils.registerFuel(GregtechItemList.WoodBrick.get(1), 4800);
+        GTPPCore.burnables.add(Pair.of(800, GregtechItemList.WoodPellet.get(1)));
+        GTPPCore.burnables.add(Pair.of(4800, GregtechItemList.WoodBrick.get(1)));
 
         // Combustion Fuels
         GTValues.RA.stdBuilder()
