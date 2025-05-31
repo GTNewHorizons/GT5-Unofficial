@@ -2,7 +2,8 @@ package gregtech.common.tileentities.machines.multi;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
-import static gregtech.api.enums.GTValues.AuthorFourIsTheNumber;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
+import static gregtech.api.enums.GTValues.AuthorNoc;
 import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.InputBus;
 import static gregtech.api.enums.HatchElement.InputHatch;
@@ -15,7 +16,6 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_BREWERY
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_BREWERY_GLOW;
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
-import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
@@ -67,37 +67,34 @@ public class MTENeutronCollector extends MTEExtendedPowerMultiBlockBase<MTENeutr
         .<MTENeutronCollector>builder()
         .addShape(
             STRUCTURE_PIECE_MAIN,
-            // spotless:off
-            new String[][]{{
-                "BBB",
-                "BBB",
-                "B~B",
-                "BBB",
-                "C C"
-            },{
-                "BBB",
-                "A A",
-                "A A",
-                "BBB",
-                "   "
-            },{
-                "BBB",
-                "BAB",
-                "BAB",
-                "BBB",
-                "C C"
-            }})
+            transpose(
+                // spotless:off
+            new String[][]{
+                {"  CCC             "," CCCCC            ","CCCCCCC           ","CCCCCCC           ","CCCCC             "," CCC              ","  CC              ","                  ","                  ","                  ","                  ","                  ","                  ","                  ","                  ","                  ","                  ","                  "},
+                {"                  ","  AAA             "," A   A            "," A   DC           "," A  C             ","  AD              ","   C              ","                  ","                  ","                  ","                  ","                  ","                  ","                  ","                  ","                  ","                  ","                  "},
+                {"                  ","  AAA             "," A   A            "," A   DC           "," A  C             ","  AD              ","   C              ","                  ","                  ","                  ","                  ","                  ","                  ","                  ","                  ","                  ","                  ","                  "},
+                {"                  ","  AAA             "," A   A            "," A   DC           "," A  C             ","  AD              ","   C              ","                  ","                  ","                  ","                  ","                  ","                  ","                  ","                  ","                  ","                  ","                  "},
+                {"                  ","  AAA  CCCCC      "," A   ACCCCCCCCC   "," A   DC     CCCC  "," A  C          CC ","  AD           CC ","  CC           CC "," CC             CC"," CC             CC"," CC             CC"," CC             CC"," CC             CC","  CC           CC ","  CC           CC ","  CC           CC ","   CCCC     CCCC  ","    CCCCCCCCCCC   ","       CCCCC      "},
+                {"                  ","  AAA             "," A   A DDDDD      "," A  DDD  E  DDD   "," A DC E  E  E  D  ","  AD  E  E  E  D  ","   DEEE  E  EEED  ","  D    E E E    D ","  D     BBB     D ","  DEEEEEBFBEEEEED ","  D     BBB     D ","  D    E E E    D ","   DEEE  E  EEED  ","   D  E  E  E  D  ","   D  E  E  E  D  ","    DDD  E  DDD   ","       DDDDD      ","                  "},
+                {"                  ","  A~A             "," A   A BBBBB      "," A  BBBGGFGGBBB   "," A BGGFGGFGGFGGB  ","  ABGGFGGFGGFGGB  ","   BFFFGGFGGFFFB  ","  BGGGGFGFGFGGGGB ","  BGGGGGBBBGGGGGB ","  BFFFFFB BFFFFFB ","  BGGGGGBBBGGGGGB ","  BGGGGFGFGFGGGGB ","   BFFFGGFGGFFFB  ","   BGGFGGFGGFGGB  ","   BGGFGGFGGFGGB  ","    BBBGGFGGBBB   ","       BBBBB      ","                  "},
+                {"                  ","  AAA             "," A   A DDDDD      "," A  DDD     DDD   "," A D           D  ","  AD           D  ","   D           D  ","  D             D ","  D     BBB     D ","  D     BBB     D ","  D     BBB     D ","  D             D ","   D           D  ","   D           D  ","   D           D  ","    DDD     DDD   ","       DDDDD      ","                  "},
+                {"  CCC             "," CCCCC CCCCC      ","CCCCCCCCCCCCCCC   ","CCCCCCCCCCCCCCCC  ","CCCCCCCCCCCCCCCCC "," CCCCCCCCCCCCCCCC ","  CCCCCCCCCCCCCCC "," CCCCCCCCCCCCCCCCC"," CCCCCCCCCCCCCCCCC"," CCCCCCCCCCCCCCCCC"," CCCCCCCCCCCCCCCCC"," CCCCCCCCCCCCCCCCC","  CCCCCCCCCCCCCCC ","  CCCCCCCCCCCCCCC ","  CCCCCCCCCCCCCCC ","   CCCCCCCCCCCCC  ","    CCCCCCCCCCC   ","       CCCCC      "}
+            }))
         //spotless:on
         .addElement(
-            'B',
+            'A',
             buildHatchAdder(MTENeutronCollector.class)
                 .atLeast(InputBus, OutputBus, InputHatch, OutputHatch, Maintenance, Energy)
-                .casingIndex(((BlockCasings10) GregTechAPI.sBlockCasings10).getTextureIndex(15))
+                .casingIndex(((BlockCasings10) GregTechAPI.sBlockCasings10).getTextureIndex(6))
                 .dot(1)
                 .buildAndChain(
-                    onElementPass(MTENeutronCollector::onCasingAdded, ofBlock(GregTechAPI.sBlockCasings10, 15))))
-        .addElement('A', chainAllGlasses())
-        .addElement('C', ofFrame(Materials.Steel))
+                    onElementPass(MTENeutronCollector::onCasingAdded, ofBlock(GregTechAPI.sBlockCasings10, 6))))
+        .addElement('B', ofBlock(GregTechAPI.sBlockCasings10, 7))
+        .addElement('C', ofBlock(GregTechAPI.sBlockCasings10, 11))
+        .addElement('D', ofBlock(GregTechAPI.sBlockCasings10, 12))
+        .addElement('E', ofFrame(Materials.BlackPlutonium))
+        .addElement('F', ofBlock(GregTechAPI.sBlockGlass1, 4))
+        .addElement('G', ofBlock(GregTechAPI.sBlockCasings8, 2))
         .build();
 
     public MTENeutronCollector(final int aID, final String aName, final String aNameRegional) {
@@ -215,19 +212,19 @@ public class MTENeutronCollector extends MTEExtendedPowerMultiBlockBase<MTENeutr
             .addOutputHatch("Any Wooden Casing", 1)
             .addEnergyHatch("Any Wooden Casing", 1)
             .addMaintenanceHatch("Any Wooden Casing", 1)
-            .toolTipFinisher(AuthorFourIsTheNumber);
+            .toolTipFinisher(String.valueOf(AuthorNoc));
         return tt;
     }
 
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
-        buildPiece(STRUCTURE_PIECE_MAIN, stackSize, hintsOnly, 1, 2, 0);
+        buildPiece(STRUCTURE_PIECE_MAIN, stackSize, hintsOnly, 3, 6, 1);
     }
 
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
-        return survivialBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 1, 2, 0, elementBudget, env, false, true);
+        return survivialBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 3, 6, 1, elementBudget, env, false, true);
     }
 
     private int mCasingAmount;
@@ -239,7 +236,7 @@ public class MTENeutronCollector extends MTEExtendedPowerMultiBlockBase<MTENeutr
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         mCasingAmount = 0;
-        return checkPiece(STRUCTURE_PIECE_MAIN, 1, 2, 0) && mCasingAmount >= 14;
+        return checkPiece(STRUCTURE_PIECE_MAIN, 3, 6, 1) && mCasingAmount >= 14;
     }
 
     @Override
