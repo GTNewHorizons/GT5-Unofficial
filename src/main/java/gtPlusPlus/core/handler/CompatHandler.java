@@ -118,9 +118,10 @@ public class CompatHandler {
             GregtechItemList.Energy_Core_IV.get(1), GregtechItemList.Energy_Core_LuV.get(1),
             GregtechItemList.Energy_Core_ZPM.get(1), GregtechItemList.Energy_Core_UV.get(1),
             GregtechItemList.Energy_Core_UHV.get(1), };
-        for (int i = 1; i <= 10; i++) {
+        for (int i = 1; i < 10; i++) {
             GTOreDictUnificator.registerOre("bufferCore_" + GTValues.VN[i - 1], bufferCores[i]);
         }
+
         for (Particle i : Particle.aMap) {
             GTOreDictUnificator
                 .registerOre(OrePrefixes.particle + i.mParticleName.replace(" ", ""), Particle.getBaseParticle(i));
