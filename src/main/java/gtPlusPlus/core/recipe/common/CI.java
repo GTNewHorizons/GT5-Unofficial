@@ -346,7 +346,7 @@ public class CI {
 
         ItemStack aReturn = ItemUtils.getOrePrefixStack(aPrefix, m, aAmount);
         // If valid, return
-        if (null != (aReturn)) return aReturn;
+        if (aReturn != null) return aReturn;
 
         // If Invalid, Try First Material
 
