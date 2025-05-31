@@ -1095,7 +1095,7 @@ public class RecipesGregTech {
             .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.Vanadium, 32L),
                 GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.VanadiumSteel, 8L))
-            .itemOutputs(new ItemStack(ModItems.itemHalfCompleteCasings, 4, 0))
+            .itemOutputs(new ItemStack(ModItems.itemHalfCompleteCasings, 4))
             .fluidInputs(Materials.Oxygen.getGas(8_000))
             .duration(16 * SECONDS)
             .eut(TierEU.RECIPE_MV / 2)
@@ -1103,7 +1103,7 @@ public class RecipesGregTech {
 
         RA.stdBuilder()
             .itemInputs(
-                new ItemStack(ModItems.itemHalfCompleteCasings, 2, 0),
+                new ItemStack(ModItems.itemHalfCompleteCasings, 2),
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.VanadiumGallium, 8L))
             .itemOutputs(new ItemStack(ModItems.itemHalfCompleteCasings, 8, 1))
             .fluidInputs(Materials.Tantalum.getMolten(4 * INGOTS))
@@ -1470,14 +1470,14 @@ public class RecipesGregTech {
             .eut(0)
             .addTo(GTRecipeConstants.Fuel);
         RA.stdBuilder()
-            .itemInputs(getModItem(IndustrialCraft2.ID, "itemCellEmpty", 1L, 2))
+            .itemInputs(GTUtility.copyAmount(2, Ic2Items.lavaCell))
             .metadata(FUEL_VALUE, 32)
             .metadata(FUEL_TYPE, 2)
             .duration(0)
             .eut(0)
             .addTo(GTRecipeConstants.Fuel);
         RA.stdBuilder()
-            .itemInputs(getModItem(IndustrialCraft2.ID, "itemCellEmpty", 1L, 11))
+            .itemInputs(Ic2Items.pahoehoelavaCell.copy())
             .metadata(FUEL_VALUE, 24)
             .metadata(FUEL_TYPE, 2)
             .duration(0)

@@ -341,7 +341,7 @@ public class RecipeLoaderNuclear {
             .addTo(chemicalDehydratorRecipes);
 
         // Calcium Hydroxide
-        if (null != (ItemUtils.getItemStackOfAmountFromOreDict("dustQuicklime", 1))) {
+        if (ItemUtils.getItemStackOfAmountFromOreDict("dustQuicklime", 1) != null) {
             // CaO + H2O = Ca(OH)2
             GTValues.RA.stdBuilder()
                 .itemInputs(ItemUtils.getItemStackOfAmountFromOreDict("dustQuicklime", 2))
@@ -353,7 +353,7 @@ public class RecipeLoaderNuclear {
 
         } else {
             Logger.INFO("[dustCalciumHydroxide] FAILED TO LOAD RECIPE");
-            if (null == (ItemUtils.getItemStackOfAmountFromOreDict("dustQuicklime", 1))) {
+            if (ItemUtils.getItemStackOfAmountFromOreDict("dustQuicklime", 1) == null) {
                 Logger.INFO("Could not find dustQuicklime, cannot make dustCalciumHydroxide.");
             }
         }

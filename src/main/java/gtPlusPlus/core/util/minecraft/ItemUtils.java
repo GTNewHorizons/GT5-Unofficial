@@ -91,14 +91,14 @@ public class ItemUtils {
                 final Materials m = Materials.get(MaterialName);
                 if (m != Materials._NULL) {
                     returnValue = GTOreDictUnificator.get(OrePrefixes.dust, m, 1);
-                    if (null != returnValue) {
+                    if (returnValue != null) {
                         return returnValue;
                     }
                 }
             }
             if (returnValue == null) {
                 returnValue = getItemStackOfAmountFromOreDict(oredictName, amount);
-                if (null != returnValue) {
+                if (returnValue != null) {
                     return returnValue.copy();
                 }
             }
@@ -144,7 +144,7 @@ public class ItemUtils {
             .eut(4)
             .addTo(packagerRecipes);
 
-        if (null != (tinyDust) && null != (normalDust)) {
+        if (tinyDust != null && normalDust != null) {
             if (RecipeUtils.addShapedRecipe(
                 tinyDust,
                 tinyDust,
@@ -178,7 +178,7 @@ public class ItemUtils {
             }
         }
 
-        if (null != (smallDust) && null != (normalDust)) {
+        if (smallDust != null && normalDust != null) {
             if (RecipeUtils.addShapedRecipe(
                 smallDust,
                 smallDust,
@@ -472,7 +472,7 @@ public class ItemUtils {
         ItemStack[] aOutput = new ItemStack[aArraySize];
         ArrayList<ItemStack> aCleanedItems = new ArrayList<>();
         for (ItemStack checkStack : input) {
-            if (null != (checkStack)) {
+            if (checkStack != null) {
                 aCleanedItems.add(checkStack);
             }
         }
