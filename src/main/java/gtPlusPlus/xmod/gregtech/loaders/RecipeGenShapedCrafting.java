@@ -104,7 +104,7 @@ public class RecipeGenShapedCrafting extends RecipeGenBase {
         }
 
         // Shaped Recipe - Ingot to Rod
-        if (null != (material.getRod(1)) && null != (material.getIngot(1))) if (GTModHandler.addCraftingRecipe(
+        if (material.getRod(1) != null && material.getIngot(1) != null) if (GTModHandler.addCraftingRecipe(
             material.getRod(1),
             GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "f ", " I", 'I', material.getIngot(1) })) {
