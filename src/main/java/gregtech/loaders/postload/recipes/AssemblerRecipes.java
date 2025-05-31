@@ -3092,60 +3092,60 @@ public class AssemblerRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                ItemList.Uraniumcell_1.get(2),
+                ItemList.RodUranium.get(2),
                 GTOreDictUnificator.get(OrePrefixes.stick, Materials.Steel, 4),
                 GTUtility.getIntegratedCircuit(2))
-            .itemOutputs(ItemList.Uraniumcell_2.get(1))
+            .itemOutputs(ItemList.RodUranium2.get(1))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(assemblerRecipes);
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                ItemList.Uraniumcell_1.get(4),
+                ItemList.RodUranium.get(4),
                 GTOreDictUnificator.get(OrePrefixes.stickLong, Materials.Steel, 6),
                 GTUtility.getIntegratedCircuit(4))
-            .itemOutputs(ItemList.Uraniumcell_4.get(1))
+            .itemOutputs(ItemList.RodUranium4.get(1))
             .duration(15 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(assemblerRecipes);
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                ItemList.Uraniumcell_2.get(2),
+                ItemList.RodUranium2.get(2),
                 GTOreDictUnificator.get(OrePrefixes.stick, Materials.Steel, 4),
                 GTUtility.getIntegratedCircuit(5))
-            .itemOutputs(ItemList.Uraniumcell_4.get(1))
+            .itemOutputs(ItemList.RodUranium4.get(1))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(assemblerRecipes);
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                ItemList.Moxcell_1.get(2),
+                ItemList.RodMOX.get(2),
                 GTOreDictUnificator.get(OrePrefixes.stick, Materials.Steel, 4),
                 GTUtility.getIntegratedCircuit(2))
-            .itemOutputs(ItemList.Moxcell_2.get(1))
+            .itemOutputs(ItemList.RodMOX2.get(1))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(assemblerRecipes);
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                ItemList.Moxcell_1.get(4),
+                ItemList.RodMOX.get(4),
                 GTOreDictUnificator.get(OrePrefixes.stickLong, Materials.Steel, 6),
                 GTUtility.getIntegratedCircuit(4))
-            .itemOutputs(ItemList.Moxcell_4.get(1))
+            .itemOutputs(ItemList.RodMOX4.get(1))
             .duration(15 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(assemblerRecipes);
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                ItemList.Moxcell_2.get(2),
+                ItemList.RodMOX2.get(2),
                 GTOreDictUnificator.get(OrePrefixes.stick, Materials.Steel, 4),
                 GTUtility.getIntegratedCircuit(5))
-            .itemOutputs(ItemList.Moxcell_4.get(1))
+            .itemOutputs(ItemList.RodMOX4.get(1))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(assemblerRecipes);

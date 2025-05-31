@@ -40,13 +40,13 @@ public final class BioVatLogicAdder {
             giveItemStackRadioHatchAbilites(ItemList.RodNaquadah2.get(1), Materials.Naquadah, 6);
             giveItemStackRadioHatchAbilites(ItemList.RodNaquadah4.get(1), Materials.Naquadah, 12);
 
-            giveItemStackRadioHatchAbilites(ItemList.Moxcell_1.get(1), Materials.Plutonium, 3);
-            giveItemStackRadioHatchAbilites(ItemList.Moxcell_2.get(1), Materials.Plutonium, 6);
-            giveItemStackRadioHatchAbilites(ItemList.Moxcell_4.get(1), Materials.Plutonium, 12);
+            giveItemStackRadioHatchAbilites(ItemList.RodMOX.get(1), Materials.Plutonium, 3);
+            giveItemStackRadioHatchAbilites(ItemList.RodMOX2.get(1), Materials.Plutonium, 6);
+            giveItemStackRadioHatchAbilites(ItemList.RodMOX4.get(1), Materials.Plutonium, 12);
 
-            giveItemStackRadioHatchAbilites(ItemList.Uraniumcell_1.get(1), Materials.Uranium, 3);
-            giveItemStackRadioHatchAbilites(ItemList.Uraniumcell_2.get(1), Materials.Uranium, 6);
-            giveItemStackRadioHatchAbilites(ItemList.Uraniumcell_4.get(1), Materials.Uranium, 12);
+            giveItemStackRadioHatchAbilites(ItemList.RodUranium.get(1), Materials.Uranium, 3);
+            giveItemStackRadioHatchAbilites(ItemList.RodUranium2.get(1), Materials.Uranium, 6);
+            giveItemStackRadioHatchAbilites(ItemList.RodUranium4.get(1), Materials.Uranium, 12);
 
             giveItemStackRadioHatchAbilites(
                 ItemList.RodTiberium.get(1),

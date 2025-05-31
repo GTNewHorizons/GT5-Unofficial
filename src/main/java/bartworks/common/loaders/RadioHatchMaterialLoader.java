@@ -111,12 +111,12 @@ public class RadioHatchMaterialLoader {
         radioHatchMaterialAdder(ItemList.RodNaquadah.get(1), 140, (byte) 3);
         radioHatchMaterialAdder(ItemList.RodNaquadah2.get(1), 140, (byte) 6);
         radioHatchMaterialAdder(ItemList.RodNaquadah4.get(1), 140, (byte) 12);
-        radioHatchMaterialAdder(ItemList.Moxcell_1.get(1), (int) Materials.Plutonium.getProtons(), (byte) 3);
-        radioHatchMaterialAdder(ItemList.Moxcell_2.get(1), (int) Materials.Plutonium.getProtons(), (byte) 6);
-        radioHatchMaterialAdder(ItemList.Moxcell_4.get(1), (int) Materials.Plutonium.getProtons(), (byte) 12);
-        radioHatchMaterialAdder(ItemList.Uraniumcell_1.get(1), (int) Materials.Uranium.getProtons(), (byte) 3);
-        radioHatchMaterialAdder(ItemList.Uraniumcell_2.get(1), (int) Materials.Uranium.getProtons(), (byte) 6);
-        radioHatchMaterialAdder(ItemList.Uraniumcell_4.get(1), (int) Materials.Uranium.getProtons(), (byte) 12);
+        radioHatchMaterialAdder(ItemList.RodMOX.get(1), (int) Materials.Plutonium.getProtons(), (byte) 3);
+        radioHatchMaterialAdder(ItemList.RodMOX2.get(1), (int) Materials.Plutonium.getProtons(), (byte) 6);
+        radioHatchMaterialAdder(ItemList.RodMOX4.get(1), (int) Materials.Plutonium.getProtons(), (byte) 12);
+        radioHatchMaterialAdder(ItemList.RodUranium.get(1), (int) Materials.Uranium.getProtons(), (byte) 3);
+        radioHatchMaterialAdder(ItemList.RodUranium2.get(1), (int) Materials.Uranium.getProtons(), (byte) 6);
+        radioHatchMaterialAdder(ItemList.RodUranium4.get(1), (int) Materials.Uranium.getProtons(), (byte) 12);
         radioHatchMaterialAdder(
             ItemList.RodTiberium.get(1),
             (int) WerkstoffLoader.Tiberium.getBridgeMaterial()

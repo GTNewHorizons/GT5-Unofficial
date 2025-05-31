@@ -306,73 +306,83 @@ public class LoaderGTBlockFluid implements Runnable {
             .addTo(thermalCentrifugeRecipes);
 
         // Uranium
-        ItemList.Uraniumcell_1.set(
+        ItemList.DepletedRodUranium.set(new ItemDepletedCell("depletedRodUranium", "Fuel Rod (Depleted Uranium)", 1));
+        ItemList.DepletedRodUranium2
+            .set(new ItemDepletedCell("depletedRodUranium2", "Dual Fuel Rod (Depleted Uranium)", 1));
+        ItemList.DepletedRodUranium4
+            .set(new ItemDepletedCell("depletedRodUranium4", "Quad Fuel Rod (Depleted Uranium)", 1));
+
+        ItemList.RodUranium.set(
             new ItemRadioactiveCellIC(
-                "reactorUraniumSimple",
+                "rodUranium",
                 "Fuel Rod (Uranium)",
                 1,
                 20_000,
                 2F,
                 1,
                 1F,
-                GTModHandler.getIC2Item("reactorDepletedUraniumSimple", 1),
+                ItemList.DepletedRodUranium.get(1),
                 false));
-        ItemList.Uraniumcell_2.set(
+        ItemList.RodUranium2.set(
             new ItemRadioactiveCellIC(
-                "reactorUraniumDual",
+                "rodUranium2",
                 "Dual Fuel Rod (Uranium)",
                 2,
                 20_000,
                 2F,
                 1,
                 1F,
-                GTModHandler.getIC2Item("reactorDepletedUraniumDual", 1),
+                ItemList.DepletedRodUranium2.get(1),
                 false));
-        ItemList.Uraniumcell_4.set(
+        ItemList.RodUranium4.set(
             new ItemRadioactiveCellIC(
-                "reactorUraniumQuad",
+                "rodUranium4",
                 "Quad Fuel Rod (Uranium)",
                 4,
                 20_000,
                 2F,
                 1,
                 1F,
-                GTModHandler.getIC2Item("reactorDepletedUraniumQuad", 1),
+                ItemList.DepletedRodUranium4.get(1),
                 false));
 
         // MOX
-        ItemList.Moxcell_1.set(
+        ItemList.DepletedRodMOX.set(new ItemDepletedCell("depletedRodMOX", "Fuel Rod (Depleted MOX)", 1));
+        ItemList.DepletedRodMOX2.set(new ItemDepletedCell("depletedRodMOX2", "Dual Fuel Rod (Depleted MOX)", 1));
+        ItemList.DepletedRodMOX4.set(new ItemDepletedCell("depletedRodMOX4", "Quad Fuel Rod (Depleted MOX)", 1));
+
+        ItemList.RodMOX.set(
             new ItemRadioactiveCellIC(
-                "reactorMOXSimple",
+                "rodMOX",
                 "Fuel Rod (Mox)",
                 1,
                 10_000,
                 2F,
                 1,
                 1F,
-                GTModHandler.getIC2Item("reactorDepletedMOXSimple", 1),
+                ItemList.DepletedRodMOX.get(1),
                 true));
-        ItemList.Moxcell_2.set(
+        ItemList.RodMOX2.set(
             new ItemRadioactiveCellIC(
-                "reactorMOXDual",
+                "rodMOX2",
                 "Dual Fuel Rod (Mox)",
                 2,
                 10_000,
                 2F,
                 1,
                 1F,
-                GTModHandler.getIC2Item("reactorDepletedMOXDual", 1),
+                ItemList.DepletedRodMOX2.get(1),
                 true));
-        ItemList.Moxcell_4.set(
+        ItemList.RodMOX4.set(
             new ItemRadioactiveCellIC(
-                "reactorMOXQuad",
+                "rodMOX4",
                 "Quad Fuel Rod (Mox)",
                 4,
                 10_000,
                 2F,
                 1,
                 1F,
-                GTModHandler.getIC2Item("reactorDepletedMOXQuad", 1),
+                ItemList.DepletedRodMOX4.get(1),
                 true));
 
         // High Density Uranium

@@ -217,14 +217,14 @@ public class CannerRecipes implements Runnable {
 
             GTValues.RA.stdBuilder()
                 .itemInputs(ItemList.IC2_Fuel_Rod_Empty.get(1), GTModHandler.getIC2Item("UranFuel", 1))
-                .itemOutputs(ItemList.Uraniumcell_1.get(1))
+                .itemOutputs(ItemList.RodUranium.get(1))
                 .duration(1 * SECONDS + 10 * TICKS)
                 .eut(16)
                 .addTo(cannerRecipes);
 
             GTValues.RA.stdBuilder()
                 .itemInputs(ItemList.IC2_Fuel_Rod_Empty.get(1), GTModHandler.getIC2Item("MOXFuel", 1))
-                .itemOutputs(ItemList.Moxcell_1.get(1))
+                .itemOutputs(ItemList.RodMOX.get(1))
                 .duration(1 * SECONDS + 10 * TICKS)
                 .eut(16)
                 .addTo(cannerRecipes);
