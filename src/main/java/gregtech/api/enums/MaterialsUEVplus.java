@@ -467,7 +467,7 @@ public class MaterialsUEVplus {
         new TextureSet("universium", true),
         1.0F,
         4 * 2621440,
-        25,
+        30,
         1 | 2 | 64 | 128,
         38,
         49,
