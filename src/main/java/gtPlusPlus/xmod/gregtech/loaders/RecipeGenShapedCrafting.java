@@ -31,14 +31,14 @@ public class RecipeGenShapedCrafting extends RecipeGenBase {
         Logger.WARNING("Generating Shaped Crafting recipes for " + material.getLocalizedName()); // TODO
 
         // Single Plate Shaped/Shapeless
-        if (null != (material.getPlate(1)) && null != (material.getIngot(1)))
+        if (material.getPlate(1) != null && material.getIngot(1) != null)
             if (material.getPlate(1) != null && material.getIngot(1) != null) GTModHandler.addCraftingRecipe(
                 material.getPlate(1),
                 GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
                 new Object[] { "h", "B", "I", 'I', material.getIngot(1), 'B', material.getIngot(1) });
 
         // Double Plate Shaped/Shapeless
-        if (null != (material.getPlateDouble(1)) && null != (material.getPlate(1))) GTModHandler.addCraftingRecipe(
+        if (material.getPlateDouble(1) != null && material.getPlate(1) != null) GTModHandler.addCraftingRecipe(
             material.getPlateDouble(1),
             GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "I", "B", "h", 'I', material.getPlate(1), 'B', material.getPlate(1) });
