@@ -24,13 +24,13 @@ import static gregtech.api.util.GTRecipeConstants.FUSION_THRESHOLD;
 import static gregtech.api.util.GTRecipeConstants.UniversalChemical;
 import static gtPlusPlus.api.recipe.GTPPRecipeMaps.chemicalDehydratorRecipes;
 
-import gregtech.api.enums.Mods;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.util.GTOreDictUnificator;
@@ -41,7 +41,6 @@ import gtPlusPlus.core.material.MaterialsAlloy;
 import gtPlusPlus.core.material.MaterialsElements;
 import gtPlusPlus.core.material.nuclear.MaterialsFluorides;
 import gtPlusPlus.core.material.nuclear.MaterialsNuclides;
-import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 

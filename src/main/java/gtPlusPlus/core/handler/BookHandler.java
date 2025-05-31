@@ -6,17 +6,16 @@ import static gtPlusPlus.core.util.Utils.addBookTitleLocalization;
 import java.util.HashMap;
 import java.util.Map;
 
-import gregtech.api.enums.Materials;
-import gregtech.api.enums.OrePrefixes;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 
 import gregtech.api.enums.GTValues;
+import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.item.ModItems;
-import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.minecraft.RecipeUtils;
 
 public class BookHandler {
@@ -420,17 +419,16 @@ public class BookHandler {
     public static ItemStack ItemBookWritten_MultiChemicalPlant;
 
     public static void runLater() {
-        ItemBookWritten_ThermalBoiler = new ItemStack(ModItems.itemCustomBook,1, 0);
-        ItemBookWritten_MultiPowerStorage = new ItemStack(ModItems.itemCustomBook,1, 1);
-        ItemBookWritten_ModularBaubles = new ItemStack(ModItems.itemCustomBook,1, 2);
-        ItemBookWritten_MultiMachineManual = new ItemStack(ModItems.itemCustomBook,1, 3);
-        ItemBookWritten_NuclearManual = new ItemStack(ModItems.itemCustomBook,1, 4);
-        ItemBookWritten_MultiChemicalPlant = new ItemStack(ModItems.itemCustomBook,1, 5);
+        ItemBookWritten_ThermalBoiler = new ItemStack(ModItems.itemCustomBook, 1, 0);
+        ItemBookWritten_MultiPowerStorage = new ItemStack(ModItems.itemCustomBook, 1, 1);
+        ItemBookWritten_ModularBaubles = new ItemStack(ModItems.itemCustomBook, 1, 2);
+        ItemBookWritten_MultiMachineManual = new ItemStack(ModItems.itemCustomBook, 1, 3);
+        ItemBookWritten_NuclearManual = new ItemStack(ModItems.itemCustomBook, 1, 4);
+        ItemBookWritten_MultiChemicalPlant = new ItemStack(ModItems.itemCustomBook, 1, 5);
 
         // Multiblock Manuals
         RecipeUtils.addShapelessGregtechRecipe(
-            new ItemStack[] { new ItemStack(Items.writable_book),
-                new ItemStack(Items.lava_bucket) },
+            new ItemStack[] { new ItemStack(Items.writable_book), new ItemStack(Items.lava_bucket) },
             ItemBookWritten_ThermalBoiler);
         GTModHandler.addCraftingRecipe(
             ItemBookWritten_MultiMachineManual,
@@ -443,7 +441,7 @@ public class BookHandler {
             ItemBookWritten_MultiPowerStorage);
         RecipeUtils.addShapelessGregtechRecipe(
             new ItemStack[] { new ItemStack(Items.writable_book),
-                GTOreDictUnificator.get(OrePrefixes.dust,Materials.Uranium, 1) },
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Uranium, 1) },
             ItemBookWritten_NuclearManual);
         RecipeUtils.addShapelessGregtechRecipe(
             new ItemStack[] { new ItemStack(Items.writable_book),
@@ -451,7 +449,7 @@ public class BookHandler {
             ItemBookWritten_MultiChemicalPlant);
 
         for (int i = 0; i < mBookKeeperCount; i++) {
-            ItemStack bookstack = new ItemStack(ModItems.itemCustomBook,1, i);
+            ItemStack bookstack = new ItemStack(ModItems.itemCustomBook, 1, i);
             GTOreDictUnificator.registerOre("bookWritten", bookstack);
             GTOreDictUnificator.registerOre("craftingBook", bookstack);
         }

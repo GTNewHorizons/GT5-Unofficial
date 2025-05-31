@@ -22,7 +22,6 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.util.GTUtility;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.util.math.MathUtils;
-import gtPlusPlus.core.util.minecraft.ItemUtils;
 import ic2.api.item.ElectricItem;
 import ic2.api.item.IElectricItem;
 import ic2.api.item.IElectricItemManager;

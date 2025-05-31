@@ -1,13 +1,12 @@
 package gtPlusPlus.core.item.base;
 
-import gregtech.api.util.GTUtility;
-import gtPlusPlus.core.lib.GTPPCore;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemStack;
-
-import gtPlusPlus.core.util.minecraft.ItemUtils;
 import net.minecraftforge.oredict.OreDictionary;
+
 import org.apache.commons.lang3.tuple.Pair;
+
+import gtPlusPlus.core.lib.GTPPCore;
 
 public class BaseItemBurnable extends CoreItem {
 

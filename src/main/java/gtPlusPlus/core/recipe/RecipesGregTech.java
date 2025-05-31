@@ -3,7 +3,6 @@ package gtPlusPlus.core.recipe;
 import static gregtech.api.enums.GTValues.RA;
 import static gregtech.api.enums.Mods.Backpack;
 import static gregtech.api.enums.Mods.Baubles;
-import static gregtech.api.enums.Mods.GTPlusPlus;
 import static gregtech.api.enums.Mods.IndustrialCraft2;
 import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
 import static gregtech.api.recipe.RecipeMaps.alloySmelterRecipes;
@@ -384,7 +383,7 @@ public class RecipesGregTech {
                 MaterialsAlloy.ENERGYCRYSTAL.getFluidStack(1 * STACKS + 8 * INGOTS),
                 MaterialsAlloy.TUMBAGA.getFluidStack(4 * STACKS + 32 * INGOTS),
                 Materials.Nichrome.getMolten(16 * INGOTS))
-            .itemOutputs(new ItemStack(ModBlocks.blockCasings3Misc, 32,15))
+            .itemOutputs(new ItemStack(ModBlocks.blockCasings3Misc, 32, 15))
             .eut(TierEU.RECIPE_LuV)
             .duration(20 * MINUTES)
             .addTo(AssemblyLine);
@@ -420,12 +419,9 @@ public class RecipesGregTech {
         /*
          * Containment casings
          */
-        ItemStack[] aCoilWire = new ItemStack[] {
-            GregtechItemList.DehydratorCoilWireEV.get(64),
-            GregtechItemList.DehydratorCoilWireIV.get(64),
-            GregtechItemList.DehydratorCoilWireLuV.get(64),
-            GregtechItemList.DehydratorCoilWireZPM.get(64)
-        };
+        ItemStack[] aCoilWire = new ItemStack[] { GregtechItemList.DehydratorCoilWireEV.get(64),
+            GregtechItemList.DehydratorCoilWireIV.get(64), GregtechItemList.DehydratorCoilWireLuV.get(64),
+            GregtechItemList.DehydratorCoilWireZPM.get(64) };
         ItemStack[] aGemCasings = new ItemStack[] { GregtechItemList.Battery_Casing_Gem_1.get(1),
             GregtechItemList.Battery_Casing_Gem_2.get(1), GregtechItemList.Battery_Casing_Gem_3.get(1),
             GregtechItemList.Battery_Casing_Gem_4.get(1), };
@@ -491,7 +487,7 @@ public class RecipesGregTech {
         if (Baubles.isModLoaded()) {
             // Personal Healing Nanobooster
             RA.stdBuilder()
-                .metadata(RESEARCH_ITEM, new ItemStack(Items.golden_apple,1, 1))
+                .metadata(RESEARCH_ITEM, new ItemStack(Items.golden_apple, 1, 1))
                 .metadata(SCANNING, new Scanning(2 * MINUTES, TierEU.RECIPE_LuV))
                 .itemInputs(
                     GTUtility.copyAmount(4, aGemCasings[2]),
@@ -515,16 +511,12 @@ public class RecipesGregTech {
 
             // Charge Pack LuV-UV
 
-            ItemStack[] aChargeResearch = new ItemStack[] {
-                GregtechItemList.Energy_Core_LuV.get(1),
-                GregtechItemList.Energy_Core_ZPM.get(1),
-                GregtechItemList.Energy_Core_UV.get(1),
-                GregtechItemList.Energy_Core_UHV.get(1)
-            };
+            ItemStack[] aChargeResearch = new ItemStack[] { GregtechItemList.Energy_Core_LuV.get(1),
+                GregtechItemList.Energy_Core_ZPM.get(1), GregtechItemList.Energy_Core_UV.get(1),
+                GregtechItemList.Energy_Core_UHV.get(1) };
 
             ItemStack[] aChargeOutputs = new ItemStack[] { new ItemStack(ModItems.itemChargePack_High_1, 1),
-                new ItemStack(ModItems.itemChargePack_High_2, 1),
-                new ItemStack(ModItems.itemChargePack_High_3, 1),
+                new ItemStack(ModItems.itemChargePack_High_2, 1), new ItemStack(ModItems.itemChargePack_High_3, 1),
                 new ItemStack(ModItems.itemChargePack_High_4, 1), };
 
             int aCurrSlot = 0;
@@ -629,7 +621,7 @@ public class RecipesGregTech {
 
         // Expandable Hand Pump
         RA.stdBuilder()
-            .metadata(RESEARCH_ITEM, new ItemStack(ModItems.itemGenericToken, 1,4))
+            .metadata(RESEARCH_ITEM, new ItemStack(ModItems.itemGenericToken, 1, 4))
             .metadata(SCANNING, new Scanning(1 * MINUTES + 30 * SECONDS, TierEU.RECIPE_IV))
             .itemInputs(
                 ItemList.Electric_Pump_LuV.get(4),
@@ -1103,7 +1095,7 @@ public class RecipesGregTech {
             .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.Vanadium, 32L),
                 GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.VanadiumSteel, 8L))
-            .itemOutputs(new ItemStack(ModItems.itemHalfCompleteCasings, 4,0))
+            .itemOutputs(new ItemStack(ModItems.itemHalfCompleteCasings, 4, 0))
             .fluidInputs(Materials.Oxygen.getGas(8_000))
             .duration(16 * SECONDS)
             .eut(TierEU.RECIPE_MV / 2)
@@ -1111,9 +1103,9 @@ public class RecipesGregTech {
 
         RA.stdBuilder()
             .itemInputs(
-                new ItemStack(ModItems.itemHalfCompleteCasings, 2,0),
+                new ItemStack(ModItems.itemHalfCompleteCasings, 2, 0),
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.VanadiumGallium, 8L))
-            .itemOutputs(new ItemStack(ModItems.itemHalfCompleteCasings, 8,1))
+            .itemOutputs(new ItemStack(ModItems.itemHalfCompleteCasings, 8, 1))
             .fluidInputs(Materials.Tantalum.getMolten(4 * INGOTS))
             .duration(32 * SECONDS)
             .eut(TierEU.RECIPE_MV)
@@ -1220,7 +1212,7 @@ public class RecipesGregTech {
                 GTOreDictUnificator.get(OrePrefixes.ring, Materials.Brass, 1L),
                 GTOreDictUnificator.get(OrePrefixes.stick, Materials.Brass, 1L),
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.Steel, 2L))
-            .itemOutputs(new ItemStack(ModItems.itemGenericToken, 1,1))
+            .itemOutputs(new ItemStack(ModItems.itemGenericToken, 1, 1))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(assemblerRecipes);
@@ -1233,7 +1225,7 @@ public class RecipesGregTech {
                 GTOreDictUnificator.get(OrePrefixes.ring, Materials.Invar, 1L),
                 GTOreDictUnificator.get(OrePrefixes.stick, Materials.Invar, 1L),
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.Aluminium, 2L))
-            .itemOutputs(new ItemStack(ModItems.itemGenericToken, 1,2))
+            .itemOutputs(new ItemStack(ModItems.itemGenericToken, 1, 2))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(assemblerRecipes);
@@ -1246,7 +1238,7 @@ public class RecipesGregTech {
                 GTOreDictUnificator.get(OrePrefixes.ring, Materials.Chrome, 1L),
                 GTOreDictUnificator.get(OrePrefixes.stick, Materials.Chrome, 1L),
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.StainlessSteel, 2L))
-            .itemOutputs(new ItemStack(ModItems.itemGenericToken, 1,3))
+            .itemOutputs(new ItemStack(ModItems.itemGenericToken, 1, 3))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(assemblerRecipes);
@@ -1259,7 +1251,7 @@ public class RecipesGregTech {
                 GTOreDictUnificator.get(OrePrefixes.ring, Materials.Titanium, 1L),
                 GTOreDictUnificator.get(OrePrefixes.stick, Materials.Titanium, 1L),
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.TungstenSteel, 2L))
-            .itemOutputs(new ItemStack(ModItems.itemGenericToken, 1,4))
+            .itemOutputs(new ItemStack(ModItems.itemGenericToken, 1, 4))
             .duration(40 * SECONDS)
             .eut(TierEU.RECIPE_EV)
             .addTo(assemblerRecipes);
@@ -1272,21 +1264,21 @@ public class RecipesGregTech {
             .addTo(assemblerRecipes);
 
         RA.stdBuilder()
-            .itemInputs(new ItemStack(ModItems.itemGenericToken, 1,2), GTUtility.getIntegratedCircuit(20))
+            .itemInputs(new ItemStack(ModItems.itemGenericToken, 1, 2), GTUtility.getIntegratedCircuit(20))
             .itemOutputs(GregtechItemList.AdvancedHandPump.get(1))
             .duration(6 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(assemblerRecipes);
 
         RA.stdBuilder()
-            .itemInputs(new ItemStack(ModItems.itemGenericToken, 1,3), GTUtility.getIntegratedCircuit(20))
+            .itemInputs(new ItemStack(ModItems.itemGenericToken, 1, 3), GTUtility.getIntegratedCircuit(20))
             .itemOutputs(GregtechItemList.SuperHandPump.get(1))
             .duration(24 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(assemblerRecipes);
 
         RA.stdBuilder()
-            .itemInputs(new ItemStack(ModItems.itemGenericToken, 1,4), GTUtility.getIntegratedCircuit(20))
+            .itemInputs(new ItemStack(ModItems.itemGenericToken, 1, 4), GTUtility.getIntegratedCircuit(20))
             .itemOutputs(GregtechItemList.UltimateHandPump.get(1))
             .duration(1 * MINUTES + 36 * SECONDS)
             .eut(TierEU.RECIPE_EV)
@@ -1309,10 +1301,8 @@ public class RecipesGregTech {
             CI.getTieredComponent(OrePrefixes.ring, 2, 12), CI.getTieredComponent(OrePrefixes.ring, 3, 12),
             CI.getTieredComponent(OrePrefixes.ring, 4, 12), CI.getTieredComponent(OrePrefixes.ring, 5, 12), };
         final ItemStack[] aPackOutput = new ItemStack[] { new ItemStack(ModItems.itemChargePack_Low_1),
-            new ItemStack(ModItems.itemChargePack_Low_2),
-            new ItemStack(ModItems.itemChargePack_Low_3),
-            new ItemStack(ModItems.itemChargePack_Low_4),
-            new ItemStack(ModItems.itemChargePack_Low_5) };
+            new ItemStack(ModItems.itemChargePack_Low_2), new ItemStack(ModItems.itemChargePack_Low_3),
+            new ItemStack(ModItems.itemChargePack_Low_4), new ItemStack(ModItems.itemChargePack_Low_5) };
 
         for (int i = 1; i < 6; i++) {
 
@@ -2002,7 +1992,8 @@ public class RecipesGregTech {
             ItemList.Quantum_Tank_IV);
 
         for (int i = 0; i < 10; i++) {
-            ItemStack tank = tankList.get(i).get(1);
+            ItemStack tank = tankList.get(i)
+                .get(1);
             ItemStack handPump = GregtechItemList.ExpandableHandPump.get(1);
             ItemStack pumpWithNBT = handPump.copy();
             NBTTagCompound nbt = new NBTTagCompound();

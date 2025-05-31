@@ -21,7 +21,6 @@ import gregtech.api.metatileentity.implementations.MTEBasicMachine;
 import gregtech.api.recipe.BasicUIProperties;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
-import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import team.chisel.carving.Carving;
 

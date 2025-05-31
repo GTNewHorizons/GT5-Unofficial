@@ -7,7 +7,6 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.render.TextureFactory;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.ModBlocks;
-import gtPlusPlus.core.lib.GTPPCore;
 
 public class TAE {
 

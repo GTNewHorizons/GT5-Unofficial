@@ -19,7 +19,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 
-import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import net.minecraft.block.Block;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -58,8 +57,8 @@ import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.item.chemistry.general.ItemGenericChemBase;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.minecraft.EntityUtils;
-import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
+import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.nbthandlers.MTEHatchMillingBalls;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock.CustomIcon;
@@ -448,6 +447,7 @@ public class MTEIsaMill extends GTPPMultiBlockBase<MTEIsaMill> implements ISurvi
         }
         return GTUtility.areStacksEqual(aStack, GregtechItemList.Milling_Ball_Soapstone.get(1), true);
     }
+
     private ItemStack findMillingBall(ItemStack[] aItemInputs) {
         if (mMillingBallBuses.size() != 1) return null;
 

@@ -7,17 +7,16 @@ import static gregtech.api.util.GTRecipeConstants.FUEL_VALUE;
 import java.util.HashSet;
 import java.util.Set;
 
-import gregtech.api.enums.ItemList;
 import net.minecraft.item.ItemStack;
 
 import gregtech.api.enums.GTValues;
+import gregtech.api.enums.ItemList;
 import gregtech.api.enums.TierEU;
 import gregtech.api.util.GTRecipeConstants;
 import gregtech.api.util.GTUtility;
 import gtPlusPlus.api.interfaces.RunnableWithInfo;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.material.MaterialGenerator;
-import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 
 public class RecipeGenPlasma extends RecipeGenBase {

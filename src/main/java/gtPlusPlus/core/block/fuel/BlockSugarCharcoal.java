@@ -4,7 +4,6 @@ import static gregtech.api.enums.Mods.GTPlusPlus;
 
 import java.util.List;
 
-import gtPlusPlus.core.lib.GTPPCore;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -13,12 +12,13 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 
+import org.apache.commons.lang3.tuple.Pair;
+
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gtPlusPlus.core.item.base.itemblock.ItemBlockMeta;
-import gtPlusPlus.core.util.minecraft.ItemUtils;
-import org.apache.commons.lang3.tuple.Pair;
+import gtPlusPlus.core.lib.GTPPCore;
 
 public class BlockSugarCharcoal extends Block {
 

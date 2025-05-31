@@ -9,12 +9,12 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import gregtech.api.enums.Mods;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
 
 import com.gtnewhorizons.modularui.common.widget.ProgressBar;
 
+import gregtech.api.enums.Mods;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMapBackend;
@@ -27,7 +27,6 @@ import gregtech.nei.formatter.FuelSpecialValueFormatter;
 import gregtech.nei.formatter.HeatingCoilSpecialValueFormatter;
 import gregtech.nei.formatter.SimpleSpecialValueFormatter;
 import gtPlusPlus.core.util.math.MathUtils;
-import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.xmod.gregtech.api.gui.GTPPUITextures;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.MTETreeFarm;
 
@@ -143,8 +142,7 @@ public class GTPPRecipeMaps {
             (index, isFluid, isOutput, isSpecial) -> !isFluid && !isOutput ? GTUITextures.OVERLAY_SLOT_MICROSCOPE
                 : null)
         .neiHandlerInfo(
-            builder -> builder
-                .setDisplayStack(getModItem(Mods.AdvancedSolarPanel.ID,"BlockMolecularTransformer", 1)))
+            builder -> builder.setDisplayStack(getModItem(Mods.AdvancedSolarPanel.ID, "BlockMolecularTransformer", 1)))
         .build();
     public static final RecipeMap<RecipeMapBackend> chemicalPlantRecipes = RecipeMapBuilder
         .of("gtpp.recipe.fluidchemicaleactor")

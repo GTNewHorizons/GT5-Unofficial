@@ -20,7 +20,6 @@ import gtPlusPlus.api.objects.minecraft.ItemStackData;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
-import gtPlusPlus.core.util.minecraft.ItemUtils;
 
 public class RecipeGenBlastSmelterGTNH {
 
@@ -177,7 +176,8 @@ public class RecipeGenBlastSmelterGTNH {
                     // Build correct input stack
                     ArrayList<ItemStack> aTempList = new ArrayList<>();
                     for (ItemStack recipeItem : inputs) {
-                        if (recipeItem != null && recipeItem.getItem() == GTUtility.getIntegratedCircuit(0).getItem()){
+                        if (recipeItem != null && recipeItem.getItem() == GTUtility.getIntegratedCircuit(0)
+                            .getItem()) {
                             circuitFound = true;
                         }
                         aTempList.add(recipeItem);

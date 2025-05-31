@@ -18,7 +18,6 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.util.GTLanguageManager;
 import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.core.util.minecraft.ItemUtils;
 
 public class CoreItem extends Item {
 

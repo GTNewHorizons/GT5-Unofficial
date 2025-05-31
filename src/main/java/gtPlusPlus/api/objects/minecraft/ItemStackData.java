@@ -4,8 +4,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
-import gtPlusPlus.core.util.minecraft.ItemUtils;
-
 public class ItemStackData {
 
     protected final Item mItem;

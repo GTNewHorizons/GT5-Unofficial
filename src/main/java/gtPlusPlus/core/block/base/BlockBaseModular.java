@@ -24,7 +24,6 @@ import gtPlusPlus.core.item.base.itemblock.ItemBlockGtBlock;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.math.MathUtils;
-import gtPlusPlus.core.util.minecraft.ItemUtils;
 
 public class BlockBaseModular extends BasicBlock {
 
@@ -79,14 +78,11 @@ public class BlockBaseModular extends BasicBlock {
             ItemBlockGtBlock.class,
             Utils.sanitizeString(blockType.getTexture() + unlocalizedName));
         if (fx == 0) {
-            GTOreDictUnificator
-                .registerOre("block" + unifyMaterialName(thisBlockMaterial), new ItemStack(this));
+            GTOreDictUnificator.registerOre("block" + unifyMaterialName(thisBlockMaterial), new ItemStack(this));
         } else if (fx == 1) {
-            GTOreDictUnificator
-                .registerOre("frameGt" + unifyMaterialName(thisBlockMaterial), new ItemStack(this));
+            GTOreDictUnificator.registerOre("frameGt" + unifyMaterialName(thisBlockMaterial), new ItemStack(this));
         } else if (fx == 2) {
-            GTOreDictUnificator
-                .registerOre("frameGt" + unifyMaterialName(thisBlockMaterial), new ItemStack(this));
+            GTOreDictUnificator.registerOre("frameGt" + unifyMaterialName(thisBlockMaterial), new ItemStack(this));
         }
     }
 

@@ -6,7 +6,6 @@ import java.util.List;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 
-import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.MTEIsaMill;
 import net.minecraft.util.StatCollector;
 
 import gregtech.api.recipe.BasicUIPropertiesBuilder;
@@ -14,7 +13,7 @@ import gregtech.api.recipe.NEIRecipePropertiesBuilder;
 import gregtech.api.recipe.RecipeMapFrontend;
 import gregtech.api.util.MethodsReturnNonnullByDefault;
 import gregtech.nei.GTNEIDefaultHandler;
-import gtPlusPlus.core.util.minecraft.ItemUtils;
+import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.MTEIsaMill;
 
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault

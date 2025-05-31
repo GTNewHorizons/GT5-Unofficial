@@ -320,7 +320,8 @@ public class RecipeGenRecycling implements Runnable {
 
         // Banned Materials and replacements for GT5.8 compat.
 
-        if (oredictName.toLowerCase().contains("ingotclay")) {
+        if (oredictName.toLowerCase()
+            .contains("ingotclay")) {
             return new ItemStack(Items.clay_ball, amount);
         }
 

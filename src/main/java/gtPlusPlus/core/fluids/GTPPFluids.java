@@ -21,7 +21,6 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
-import gtPlusPlus.core.util.minecraft.ItemUtils;
 import ic2.core.init.InternalName;
 import ic2.core.item.resources.ItemCell;
 

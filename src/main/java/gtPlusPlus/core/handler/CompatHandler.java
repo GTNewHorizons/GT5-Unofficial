@@ -10,11 +10,10 @@ import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Set;
 
-import gregtech.api.enums.Mods;
-import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
-import gtPlusPlus.xmod.pamsharvest.fishtrap.FishTrapHandler;
+import net.minecraft.item.ItemStack;
 
 import gregtech.api.enums.GTValues;
+import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GTOreDictUnificator;
 import gtPlusPlus.api.interfaces.RunnableWithInfo;
@@ -33,6 +32,7 @@ import gtPlusPlus.core.material.Particle;
 import gtPlusPlus.core.recipe.RecipesGregTech;
 import gtPlusPlus.core.recipe.RecipesLaserEngraver;
 import gtPlusPlus.core.recipe.ShapedRecipeObject;
+import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.loaders.RecipeGenFluidCanning;
 import gtPlusPlus.xmod.gregtech.loaders.RecipeGenRecycling;
 import gtPlusPlus.xmod.gregtech.loaders.recipe.RecipeLoaderChemicalSkips;
@@ -100,7 +100,7 @@ import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechThreadedBuffers;
 import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechTieredFluidTanks;
 import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechWaterPump;
 import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechWirelessChargers;
-import net.minecraft.item.ItemStack;
+import gtPlusPlus.xmod.pamsharvest.fishtrap.FishTrapHandler;
 
 public class CompatHandler {
 
@@ -112,18 +112,12 @@ public class CompatHandler {
         Logger.INFO("Registering Materials with OreDict.");
         // In-house
 
-        ItemStack[] bufferCores = new ItemStack[]{
-            GregtechItemList.Energy_Core_ULV.get(1),
-            GregtechItemList.Energy_Core_LV.get(1),
-            GregtechItemList.Energy_Core_MV.get(1),
-            GregtechItemList.Energy_Core_HV.get(1),
-            GregtechItemList.Energy_Core_EV.get(1),
-            GregtechItemList.Energy_Core_IV.get(1),
-            GregtechItemList.Energy_Core_LuV.get(1),
-            GregtechItemList.Energy_Core_ZPM.get(1),
-            GregtechItemList.Energy_Core_UV.get(1),
-            GregtechItemList.Energy_Core_UHV.get(1),
-        };
+        ItemStack[] bufferCores = new ItemStack[] { GregtechItemList.Energy_Core_ULV.get(1),
+            GregtechItemList.Energy_Core_LV.get(1), GregtechItemList.Energy_Core_MV.get(1),
+            GregtechItemList.Energy_Core_HV.get(1), GregtechItemList.Energy_Core_EV.get(1),
+            GregtechItemList.Energy_Core_IV.get(1), GregtechItemList.Energy_Core_LuV.get(1),
+            GregtechItemList.Energy_Core_ZPM.get(1), GregtechItemList.Energy_Core_UV.get(1),
+            GregtechItemList.Energy_Core_UHV.get(1), };
         for (int i = 1; i <= 10; i++) {
             GTOreDictUnificator.registerOre("bufferCore_" + GTValues.VN[i - 1], bufferCores[i]);
         }
@@ -209,7 +203,8 @@ public class CompatHandler {
     // InterMod
     public static void intermodOreDictionarySupport() {
         if (ExtraUtilities.isModLoaded()) {
-            GTOreDictUnificator.registerOre("ingotBedrockium", getModItem(Mods.ExtraUtilities.ID, "bedrockiumIngot", 1, 0));
+            GTOreDictUnificator
+                .registerOre("ingotBedrockium", getModItem(Mods.ExtraUtilities.ID, "bedrockiumIngot", 1, 0));
         }
         if (PamsHarvestCraft.isModLoaded()) {
             FishTrapHandler.pamsHarvestCraftCompat();

@@ -1,12 +1,10 @@
 package gtPlusPlus.core.recipe;
 
 import static gregtech.api.recipe.RecipeMaps.laserEngraverRecipes;
-import static gregtech.api.util.GTModHandler.getModItem;
 import static gregtech.api.util.GTRecipeBuilder.HOURS;
 import static gregtech.api.util.GTRecipeBuilder.MINUTES;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 
-import gregtech.api.enums.Mods;
 import net.minecraft.item.ItemStack;
 
 import gregtech.api.enums.GTValues;
@@ -55,16 +53,15 @@ public class RecipesLaserEngraver implements IOreRecipeRegistrator {
             ItemStack coilWire3 = GregtechItemList.DehydratorCoilWireLuV.get(1);
             ItemStack coilWire4 = GregtechItemList.DehydratorCoilWireZPM.get(1);
 
-
             // Wires to Laser
-            ItemStack wireT1a =  GTOreDictUnificator.get(OrePrefixes.wireGt02, Materials.Aluminium, 1);
-            ItemStack wireT1b =  GTOreDictUnificator.get(OrePrefixes.wireGt02, Materials.Nichrome, 1);
-            ItemStack wireT2a =  GTOreDictUnificator.get(OrePrefixes.wireGt02, Materials.Osmium, 1);
-            ItemStack wireT2b =  GTOreDictUnificator.get(OrePrefixes.wireGt02, Materials.Platinum, 1);
-            ItemStack wireT3a =  GTOreDictUnificator.get(OrePrefixes.wireGt02, Materials.VanadiumGallium, 1);
-            ItemStack wireT3b =  GTOreDictUnificator.get(OrePrefixes.wireGt02, Materials.YttriumBariumCuprate, 1);
-            ItemStack wireT3c =  GTOreDictUnificator.get(OrePrefixes.wireGt02, Materials.NiobiumTitanium, 1);
-            ItemStack wireT4a =  GTOreDictUnificator.get(OrePrefixes.wireGt02, Materials.Naquadah, 1);
+            ItemStack wireT1a = GTOreDictUnificator.get(OrePrefixes.wireGt02, Materials.Aluminium, 1);
+            ItemStack wireT1b = GTOreDictUnificator.get(OrePrefixes.wireGt02, Materials.Nichrome, 1);
+            ItemStack wireT2a = GTOreDictUnificator.get(OrePrefixes.wireGt02, Materials.Osmium, 1);
+            ItemStack wireT2b = GTOreDictUnificator.get(OrePrefixes.wireGt02, Materials.Platinum, 1);
+            ItemStack wireT3a = GTOreDictUnificator.get(OrePrefixes.wireGt02, Materials.VanadiumGallium, 1);
+            ItemStack wireT3b = GTOreDictUnificator.get(OrePrefixes.wireGt02, Materials.YttriumBariumCuprate, 1);
+            ItemStack wireT3c = GTOreDictUnificator.get(OrePrefixes.wireGt02, Materials.NiobiumTitanium, 1);
+            ItemStack wireT4a = GTOreDictUnificator.get(OrePrefixes.wireGt02, Materials.Naquadah, 1);
 
             // T1
             GTValues.RA.stdBuilder()

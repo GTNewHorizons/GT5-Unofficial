@@ -17,7 +17,6 @@ import org.apache.commons.lang3.tuple.Pair;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.data.FileUtils;
-import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.xmod.thaumcraft.commands.CommandDumpAspects;
 
 public class ThreadAspectScanner extends Thread {
@@ -45,7 +44,8 @@ public class ThreadAspectScanner extends Thread {
                         .toLowerCase());
             } catch (NullPointerException n2) {
                 try {
-                    nameKey = aStack.getItem().getUnlocalizedName();
+                    nameKey = aStack.getItem()
+                        .getUnlocalizedName();
                 } catch (NullPointerException n3) {
                     nameKey = "BadItemsGalore";
                 }
@@ -93,7 +93,7 @@ public class ThreadAspectScanner extends Thread {
                         item.getSubItems(item, item.getCreativeTab(), q1);
                         if (q1 != null && !q1.isEmpty()) {
                             for (int e = 0; e < q1.size(); e++) {
-                                ItemStack check = new ItemStack(item,1, e);
+                                ItemStack check = new ItemStack(item, 1, e);
                                 if (check != null) {
                                     tryCacheObject(check);
                                     mItemsCounter++;

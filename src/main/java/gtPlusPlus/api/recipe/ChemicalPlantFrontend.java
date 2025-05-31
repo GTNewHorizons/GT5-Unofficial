@@ -14,7 +14,6 @@ import gregtech.api.recipe.RecipeMapFrontend;
 import gregtech.api.util.MethodsReturnNonnullByDefault;
 import gregtech.common.gui.modularui.UIHelper;
 import gregtech.nei.GTNEIDefaultHandler;
-import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.chemplant.MTEChemicalPlant;
 
 @ParametersAreNonnullByDefault

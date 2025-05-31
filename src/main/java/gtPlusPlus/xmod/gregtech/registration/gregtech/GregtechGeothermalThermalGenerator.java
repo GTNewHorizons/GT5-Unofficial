@@ -12,7 +12,6 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GTModHandler;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.material.MaterialsAlloy;
-import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.common.tileentities.generators.MTEGeothermalGenerator;
 

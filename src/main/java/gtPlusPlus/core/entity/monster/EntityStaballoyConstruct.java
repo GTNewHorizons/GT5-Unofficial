@@ -1,8 +1,5 @@
 package gtPlusPlus.core.entity.monster;
 
-import gregtech.api.enums.OrePrefixes;
-import gregtech.api.util.GTOreDictUnificator;
-import gtPlusPlus.core.material.MaterialsAlloy;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.monster.EntityIronGolem;
@@ -11,8 +8,8 @@ import net.minecraft.world.World;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gtPlusPlus.core.material.MaterialsAlloy;
 import gtPlusPlus.core.util.math.MathUtils;
-import gtPlusPlus.core.util.minecraft.ItemUtils;
 
 public class EntityStaballoyConstruct extends EntityIronGolem {
 

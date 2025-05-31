@@ -918,8 +918,7 @@ public enum GregtechItemList implements IGregtechItemContainer {
     DehydratorCoilWireLuV,
     DehydratorCoilWireZPM,
     PersonalCloakingDevice,
-    PersonalHealingDevice,
-    ;
+    PersonalHealingDevice,;
 
     private ItemStack mStack;
     private boolean mHasNotBeenSet = true;

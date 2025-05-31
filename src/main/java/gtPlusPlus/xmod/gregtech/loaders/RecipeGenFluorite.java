@@ -13,18 +13,17 @@ import static gtPlusPlus.api.recipe.GTPPRecipeMaps.chemicalDehydratorRecipes;
 import java.util.HashSet;
 import java.util.Set;
 
-import gregtech.api.enums.ToolDictNames;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.ToolDictNames;
 import gtPlusPlus.api.interfaces.RunnableWithInfo;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.material.MaterialGenerator;
 import gtPlusPlus.core.material.nuclear.MaterialsFluorides;
-import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.minecraft.MaterialUtils;
@@ -143,8 +142,7 @@ public class RecipeGenFluorite extends RecipeGenBase {
          * Package
          */
         // Allow ore dusts to be packaged
-        if (null != (material.getSmallDust(1))
-            && null != (material.getTinyDust(1))) {
+        if (null != (material.getSmallDust(1)) && null != (material.getTinyDust(1))) {
             RecipeGenDustGeneration.generatePackagerRecipes(material);
         }
 

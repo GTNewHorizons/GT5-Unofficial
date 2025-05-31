@@ -31,7 +31,6 @@ import gtPlusPlus.api.objects.minecraft.CubicObject;
 import gtPlusPlus.api.objects.minecraft.SafeTexture;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.minecraft.InventoryUtils;
-import gtPlusPlus.core.util.minecraft.ItemUtils;
 
 public abstract class BasicTileBlockWithTooltip extends BlockContainer implements ITileTooltip {
 
@@ -294,14 +293,13 @@ public abstract class BasicTileBlockWithTooltip extends BlockContainer implement
 
     @Override
     public Item getItemDropped(int meta, Random rand, int p_149650_3_) {
-        return new ItemStack(this, 1)
-            .getItem();
+        return new ItemStack(this, 1).getItem();
     }
 
     @Override
     public ArrayList<ItemStack> getDrops(World world, int x, int y, int z, int metadata, int fortune) {
         ArrayList<ItemStack> drops = new ArrayList<>();
-        drops.add(new ItemStack(this, 1,metadata));
+        drops.add(new ItemStack(this, 1, metadata));
         return drops;
     }
 }

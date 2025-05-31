@@ -17,7 +17,6 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GTModHandler;
-import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.MTETransformerHiAmp;
 
@@ -98,9 +97,9 @@ public class GregtechHiAmpTransformer {
         ItemStack mItem_2;
         ItemStack mItem_3;
 
-        mItem_1 = new ItemStack(GregTechAPI.sBlockCasings5,1,3);
-        mItem_2 = new ItemStack(GregTechAPI.sBlockCasings5,1,4);
-        mItem_3 = new ItemStack(GregTechAPI.sBlockCasings5,1,9);
+        mItem_1 = new ItemStack(GregTechAPI.sBlockCasings5, 1, 3);
+        mItem_2 = new ItemStack(GregTechAPI.sBlockCasings5, 1, 4);
+        mItem_3 = new ItemStack(GregTechAPI.sBlockCasings5, 1, 9);
 
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Transformer_HA_LV_ULV.get(1L),

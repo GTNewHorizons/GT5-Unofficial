@@ -1,10 +1,5 @@
 package gtPlusPlus.core.common;
 
-import cofh.CoFHCore;
-import gregtech.api.enums.Materials;
-import gregtech.api.enums.OrePrefixes;
-import gregtech.api.util.GTOreDictUnificator;
-import gregtech.api.util.GTUtility;
 import net.minecraft.entity.monster.EntityBlaze;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -13,7 +8,6 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
 
-import net.minecraftforge.oredict.OreDictionary;
 import org.apache.commons.lang3.tuple.Pair;
 
 import baubles.common.container.InventoryBaubles;
@@ -29,7 +23,11 @@ import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import cpw.mods.fml.common.registry.GameRegistry;
 import galaxyspace.core.entity.mob.EntityEvolvedColdBlaze;
+import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
+import gregtech.api.enums.OrePrefixes;
+import gregtech.api.util.GTOreDictUnificator;
+import gregtech.api.util.GTUtility;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.config.ASMConfiguration;
@@ -50,7 +48,6 @@ import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.tileentities.ModTileEntities;
 import gtPlusPlus.core.util.minecraft.EntityUtils;
-import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.xmod.gregtech.common.modularui2.GTPPGuiTextures;
 import gtPlusPlus.xmod.ic2.CustomInternalName;
 
@@ -156,18 +153,9 @@ public class CommonProxy implements IFuelHandler {
 
         // Blazes
         if (Mods.COFHCore.isModLoaded()) {
-            EntityUtils.registerDropsForMob(
-                EntityBlaze.class,
-                Materials.Pyrotheum.getDust(1),
-                1,
-                10);
-            EntityUtils.registerDropsForMob(
-                EntityBlaze.class,
-                Materials.Pyrotheum.getDust(1),
-                1,
-                10);
+            EntityUtils.registerDropsForMob(EntityBlaze.class, Materials.Pyrotheum.getDust(1), 1, 10);
+            EntityUtils.registerDropsForMob(EntityBlaze.class, Materials.Pyrotheum.getDust(1), 1, 10);
         }
-
 
         // GalaxySpace Support
         if (Mods.GalaxySpace.isModLoaded()) {

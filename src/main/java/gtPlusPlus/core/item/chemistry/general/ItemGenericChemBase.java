@@ -4,8 +4,6 @@ import static gregtech.api.enums.Mods.GTPlusPlus;
 
 import java.util.List;
 
-import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.MTEIsaMill;
-import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.chemplant.MTEChemicalPlant;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
@@ -21,8 +19,9 @@ import net.minecraft.world.World;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.util.GTUtility;
-import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
+import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.MTEIsaMill;
+import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.chemplant.MTEChemicalPlant;
 
 public class ItemGenericChemBase extends Item {
 
@@ -118,7 +117,7 @@ public class ItemGenericChemBase extends Item {
     @Override
     public void getSubItems(Item aItem, CreativeTabs p_150895_2_, List aList) {
         for (int i = 0; i < aMetaSize; i++) {
-            aList.add(new ItemStack(aItem,1, i));
+            aList.add(new ItemStack(aItem, 1, i));
         }
     }
 

@@ -15,7 +15,6 @@ import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTOreDictUnificator;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.util.Utils;
-import gtPlusPlus.core.util.minecraft.ItemUtils;
 
 public class BaseItemTCShard extends Item {
 
