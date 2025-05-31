@@ -134,8 +134,8 @@ public class RecipeGenShapedCrafting extends RecipeGenBase {
             }
 
         // Rotor Recipe
-        if (!material.isRadioactive && null != (material.getRotor(1))
-            && null != (material.getRing(1))
+        if (!material.isRadioactive && material.getRotor(1) != null
+            && material.getRing(1) != null
             && !material.isRadioactive
             && material.getPlate(1) != null
             && material.getScrew(1) != null) {
