@@ -330,7 +330,7 @@ public class EntityPrimedMiningExplosive extends EntityTNTPrimed {
                         0.0D,
                         0.0D,
                         0.0D);
-                } else if (e >= 2) {
+                } else {
                     this.worldObj.spawnParticle(
                         "explode",
                         this.posX + MathUtils.randDouble(0, 1),

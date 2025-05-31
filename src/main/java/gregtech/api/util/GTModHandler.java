@@ -1678,9 +1678,10 @@ public class GTModHandler {
         if (isElectricItem(aStack)) {
             int tTier = ((ic2.api.item.IElectricItem) aStack.getItem()).getTier(aStack);
             if (tTier < 0 || tTier == aTier || aTier == Integer.MAX_VALUE) {
-                if (!aIgnoreLimit && tTier >= 0) aCharge = (int) Math.min(
-                    aCharge,
-                    V[Math.max(0, Math.min(V.length - 1, tTier))] + B[Math.max(0, Math.min(V.length - 1, tTier))]);
+                if (!aIgnoreLimit && tTier >= 0) {
+                    int tier = Math.max(0, Math.min(V.length - 1, tTier));
+                    aCharge = (int) Math.min(aCharge, V[tier] + B[tier]);
+                }
                 if (aCharge > 0) {
                     int rCharge = (int) Math.max(
                         0,

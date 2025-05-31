@@ -153,7 +153,7 @@ public class MTERedstoneCircuitBlock extends MTERedstoneBase implements IRedston
         try {
             Set<Integer> tKeys = GregTechAPI.sCircuitryBehaviors.keySet();
             ArrayList<Integer> tList = new ArrayList<>(tKeys);
-            if (tList.size() <= 0) return;
+            if (tList.size() == 0) return;
             Collections.sort(tList);
             if (!GregTechAPI.sCircuitryBehaviors.containsKey(mGate)) mGate = tList.get(0);
             int tIndex = Collections.binarySearch(tList, mGate);
@@ -170,7 +170,7 @@ public class MTERedstoneCircuitBlock extends MTERedstoneBase implements IRedston
         try {
             Set<Integer> tKeys = GregTechAPI.sCircuitryBehaviors.keySet();
             ArrayList<Integer> tList = new ArrayList<>(tKeys);
-            if (tList.size() <= 0) return;
+            if (tList.size() == 0) return;
             Collections.sort(tList);
             if (!GregTechAPI.sCircuitryBehaviors.containsKey(mGate)) mGate = tList.get(0);
             int tIndex = Collections.binarySearch(tList, mGate);

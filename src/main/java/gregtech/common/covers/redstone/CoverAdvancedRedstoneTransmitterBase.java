@@ -50,7 +50,7 @@ public abstract class CoverAdvancedRedstoneTransmitterBase extends CoverAdvanced
     }
 
     private void unregisterOldSignal(UUID oldUuid, String oldFrequency) {
-        if (oldUuid != null && (!Objects.equals(uuid, oldUuid) || frequency != oldFrequency)) {
+        if (oldUuid != null && (!Objects.equals(uuid, oldUuid) || !Objects.equals(frequency, oldFrequency))) {
             unregisterSignal(oldUuid, oldFrequency);
         }
     }
