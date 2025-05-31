@@ -282,39 +282,35 @@ public class GTPreLoad {
             OrePrefixes tPrefix = OrePrefixes.getOrePrefix(reEnable);
             if (tPrefix != null) {
                 Materials tName = Materials.get(reEnable.replaceFirst(tPrefix.toString(), ""));
-                if (tName != null) {
-                    tPrefix.mDisabledItems.remove(tName);
-                    tPrefix.mGeneratedItems.add(tName);
-                    if (tPrefix == OrePrefixes.screw) {
-                        OrePrefixes.bolt.mDisabledItems.remove(tName);
-                        OrePrefixes.bolt.mGeneratedItems.add(tName);
-                        OrePrefixes.stick.mDisabledItems.remove(tName);
-                        OrePrefixes.stick.mGeneratedItems.add(tName);
-                    }
-                    if (tPrefix == OrePrefixes.round) {
-                        OrePrefixes.nugget.mDisabledItems.remove(tName);
-                        OrePrefixes.nugget.mGeneratedItems.add(tName);
-                    }
-                    if (tPrefix == OrePrefixes.spring) {
-                        OrePrefixes.stickLong.mDisabledItems.remove(tName);
-                        OrePrefixes.stickLong.mGeneratedItems.add(tName);
-                        OrePrefixes.stick.mDisabledItems.remove(tName);
-                        OrePrefixes.stick.mGeneratedItems.add(tName);
-                    }
-                    if (tPrefix == OrePrefixes.springSmall) {
-                        OrePrefixes.stick.mDisabledItems.remove(tName);
-                        OrePrefixes.stick.mGeneratedItems.add(tName);
-                    }
-                    if (tPrefix == OrePrefixes.stickLong) {
-                        OrePrefixes.stick.mDisabledItems.remove(tName);
-                        OrePrefixes.stick.mGeneratedItems.add(tName);
-                    }
-                    if (tPrefix == OrePrefixes.rotor) {
-                        OrePrefixes.ring.mDisabledItems.remove(tName);
-                        OrePrefixes.ring.mGeneratedItems.add(tName);
-                    }
-                } else {
-                    GT_FML_LOGGER.info("noMaterial " + reEnable);
+                tPrefix.mDisabledItems.remove(tName);
+                tPrefix.mGeneratedItems.add(tName);
+                if (tPrefix == OrePrefixes.screw) {
+                    OrePrefixes.bolt.mDisabledItems.remove(tName);
+                    OrePrefixes.bolt.mGeneratedItems.add(tName);
+                    OrePrefixes.stick.mDisabledItems.remove(tName);
+                    OrePrefixes.stick.mGeneratedItems.add(tName);
+                }
+                if (tPrefix == OrePrefixes.round) {
+                    OrePrefixes.nugget.mDisabledItems.remove(tName);
+                    OrePrefixes.nugget.mGeneratedItems.add(tName);
+                }
+                if (tPrefix == OrePrefixes.spring) {
+                    OrePrefixes.stickLong.mDisabledItems.remove(tName);
+                    OrePrefixes.stickLong.mGeneratedItems.add(tName);
+                    OrePrefixes.stick.mDisabledItems.remove(tName);
+                    OrePrefixes.stick.mGeneratedItems.add(tName);
+                }
+                if (tPrefix == OrePrefixes.springSmall) {
+                    OrePrefixes.stick.mDisabledItems.remove(tName);
+                    OrePrefixes.stick.mGeneratedItems.add(tName);
+                }
+                if (tPrefix == OrePrefixes.stickLong) {
+                    OrePrefixes.stick.mDisabledItems.remove(tName);
+                    OrePrefixes.stick.mGeneratedItems.add(tName);
+                }
+                if (tPrefix == OrePrefixes.rotor) {
+                    OrePrefixes.ring.mDisabledItems.remove(tName);
+                    OrePrefixes.ring.mGeneratedItems.add(tName);
                 }
             } else {
                 GT_FML_LOGGER.info("noPrefix " + reEnable);
@@ -537,11 +533,6 @@ public class GTPreLoad {
                         dye.mRGBa[0] = (short) sanitizeConfigInt(Client.colorModulation.cableInsulation.red);
                         dye.mRGBa[1] = (short) sanitizeConfigInt(Client.colorModulation.cableInsulation.green);
                         dye.mRGBa[2] = (short) sanitizeConfigInt(Client.colorModulation.cableInsulation.blue);
-                    }
-                    case "construction_foam" -> {
-                        dye.mRGBa[0] = (short) sanitizeConfigInt(Client.colorModulation.constructionFoam.red);
-                        dye.mRGBa[1] = (short) sanitizeConfigInt(Client.colorModulation.constructionFoam.green);
-                        dye.mRGBa[2] = (short) sanitizeConfigInt(Client.colorModulation.constructionFoam.blue);
                     }
                     case "machine_metal" -> {
                         dye.mRGBa[0] = (short) sanitizeConfigInt(Client.colorModulation.machineMetal.red);

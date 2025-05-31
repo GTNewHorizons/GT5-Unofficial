@@ -338,13 +338,6 @@ item.itemControlCore.tooltip.2=Lower tiers may be used to underclock, which is u
 item.thekeytothecity.tooltip.0=You feel like you're on top of the world.
 item.thekeytothecity.tooltip.1=Wear it around your neck like an amulet.
 
-# Conversion Dusts
-item.dustNeptunium238.name=Neptunium 238 Dust
-item.dustRadium226.name=Radium 226 Dust
-item.itemDustDecayedRadium226.name=Decayed Radium 226 Dust
-item.itemDustSmallDecayedRadium226.name=Small Decayed Radium 226 Dust
-item.itemDustTinyDecayedRadium226.name=Tiny Decayed Radium 226 Dust
-
 # Material Items
 item.itemDustGadolinium.name=Gadolinium Dust
 item.itemDustSmallGadolinium.name=Small Pile of Gadolinium Dust
@@ -2868,9 +2861,12 @@ tile.Block of Abyssal Alloy.name=Block of Abyssal Alloy
 tile.Abyssal Alloy Frame Box.name=Abyssal Alloy Frame Box
 
 # Radioactive
-item.dustTechnetium99M.name=Technetium 99M Dust
-item.dustTechnetium99.name=Technetium 99 Dust
-item.dustMolybdenum99.name=Molybdenum 99 Dust
+item.dustNeptunium238.name=Neptunium 238 Dust
+item.dustNeptunium239.name=Neptunium 239 Dust
+item.dustRadium226.name=Radium 226 Dust
+item.itemDustDecayedRadium226.name=Decayed Radium 226 Dust
+item.itemDustSmallDecayedRadium226.name=Small Decayed Radium 226 Dust
+item.itemDustTinyDecayedRadium226.name=Tiny Decayed Radium 226 Dust
 
 # Bags
 item.item.MysticBag.name=Mystic Pouch
