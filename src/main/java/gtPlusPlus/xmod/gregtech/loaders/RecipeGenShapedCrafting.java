@@ -137,8 +137,8 @@ public class RecipeGenShapedCrafting extends RecipeGenBase {
         if (!material.isRadioactive && null != (material.getRotor(1))
             && null != (material.getRing(1))
             && !material.isRadioactive
-            && null != (material.getPlate(1))
-            && null != (material.getScrew(1))) {
+            && material.getPlate(1) != null
+            && material.getScrew(1) != null) {
             if (GTModHandler.addCraftingRecipe(
                 material.getRotor(1),
                 GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
