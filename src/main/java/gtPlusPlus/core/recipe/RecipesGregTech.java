@@ -1103,7 +1103,7 @@ public class RecipesGregTech {
 
         RA.stdBuilder()
             .itemInputs(
-                new ItemStack(ModItems.itemHalfCompleteCasings, 2, 0),
+                new ItemStack(ModItems.itemHalfCompleteCasings, 2),
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.VanadiumGallium, 8L))
             .itemOutputs(new ItemStack(ModItems.itemHalfCompleteCasings, 8, 1))
             .fluidInputs(Materials.Tantalum.getMolten(4 * INGOTS))
