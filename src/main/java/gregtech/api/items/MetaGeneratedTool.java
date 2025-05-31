@@ -937,29 +937,22 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
             if (tEntry.getKey() == 33 || (tEntry.getKey() == 20 && tEntry.getValue() > 2)
                 || tEntry.getKey() == EnchantmentRadioactivity.INSTANCE.effectId)
                 tResult.put(tEntry.getKey(), tEntry.getValue());
-            else switch (Enchantment.enchantmentsList[tEntry.getKey()].type) {
-                case weapon:
-                    if (tStats.isWeapon()) tResult.put(tEntry.getKey(), tEntry.getValue());
-                    break;
-                case all:
-                    tResult.put(tEntry.getKey(), tEntry.getValue());
-                    break;
-                case armor:
-                case armor_feet:
-                case armor_head:
-                case armor_legs:
-                case armor_torso:
-                    break;
-                case bow:
-                    if (tStats.isRangedWeapon()) tResult.put(tEntry.getKey(), tEntry.getValue());
-                    break;
-                case breakable:
-                    break;
-                case fishing_rod:
-                    break;
-                case digger:
-                    if (tStats.isMiningTool()) tResult.put(tEntry.getKey(), tEntry.getValue());
-                    break;
+            else {
+                switch (Enchantment.enchantmentsList[tEntry.getKey()].type) {
+                    case weapon -> {
+                        if (tStats.isWeapon()) tResult.put(tEntry.getKey(), tEntry.getValue());
+                    }
+                    case all -> {
+                        tResult.put(tEntry.getKey(), tEntry.getValue());
+                    }
+                    case armor, armor_feet, armor_head, armor_legs, armor_torso, breakable, fishing_rod -> {}
+                    case bow -> {
+                        if (tStats.isRangedWeapon()) tResult.put(tEntry.getKey(), tEntry.getValue());
+                    }
+                    case digger -> {
+                        if (tStats.isMiningTool()) tResult.put(tEntry.getKey(), tEntry.getValue());
+                    }
+                }
             }
         }
         EnchantmentHelper.setEnchantments(tResult, aStack);

@@ -16,7 +16,6 @@ package bartworks.common.tileentities.multis;
 import static bartworks.common.loaders.ItemRegistry.BW_BLOCKS;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.isAir;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
 import static gregtech.api.enums.HatchElement.Energy;
@@ -116,7 +115,7 @@ public class MTEElectricImplosionCompressor extends MTEExtendedPowerMultiBlockBa
     private static final int CASING_INDEX = 16;
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final String STRUCTURE_PIECE_MAIN_SUCCESSFUL = "main_successful";
-    private static final String[][] shape = new String[][] { { "AAA", "ABA", "AAA" }, { "DDD", "DGD", "DDD" },
+    private static final String[][] shape = new String[][] { { "CCC", "CBC", "CCC" }, { "DDD", "DGD", "DDD" },
         { "DDD", "DGD", "DDD" }, { "EEE", "EEE", "EEE" }, { "EFE", "FFF", "EFE" }, { "EEE", "EEE", "EEE" },
         { "D~D", "DGD", "DDD" }, { "DDD", "DGD", "DDD" }, { "CCC", "CBC", "CCC" } };
 
@@ -166,7 +165,6 @@ public class MTEElectricImplosionCompressor extends MTEExtendedPowerMultiBlockBa
                             .map(s -> s.replaceAll("F", "H"))
                             .toArray(String[]::new))
                     .toArray(String[][]::new))
-            .addElement('A', ofChain(ofBlock(GregTechAPI.sBlockCasings2, 0), ofBlock(GregTechAPI.sBlockCasings3, 4)))
             .addElement(
                 'B',
                 buildHatchAdder(MTEElectricImplosionCompressor.class).atLeast(Energy.or(ExoticEnergy))
@@ -231,10 +229,10 @@ public class MTEElectricImplosionCompressor extends MTEExtendedPowerMultiBlockBa
             .addOtherStructurePart("Transformer-Winding Blocks", "Outer layer 2,3,7,8")
             .addOtherStructurePart("Nickel-Zinc-Ferrite Blocks", "Inner layer 2,3,7,8")
             .addOtherStructurePart("Containment Blocks", "Layer 4,5,6")
-            .addMaintenanceHatch("Any bottom casing", 1)
-            .addInputBus("Any bottom casing", 1)
-            .addInputHatch("Any bottom casing", 1)
-            .addOutputBus("Any bottom casing", 1)
+            .addMaintenanceHatch("Any Solid Steel Machine casing", 1)
+            .addInputBus("Any Solid Steel Machine casing", 1)
+            .addInputHatch("Any Solid Steel Machine casing", 1)
+            .addOutputBus("Any Solid Steel Machine casing", 1)
             .addEnergyHatch("Bottom middle and/or top middle", 2)
             .addSubChannelUsage(GTStructureChannels.EIC_PISTON)
             .toolTipFinisher();
