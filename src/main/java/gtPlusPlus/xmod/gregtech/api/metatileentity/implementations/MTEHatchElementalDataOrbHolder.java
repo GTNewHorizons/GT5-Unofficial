@@ -126,7 +126,8 @@ public class MTEHatchElementalDataOrbHolder extends MTEHatch implements IConfigu
     public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
         ItemStack aStack) {
         Logger.INFO("Checking if we can pull " + aStack.getDisplayName() + " from slot " + aIndex);
-        return aIndex == mInventory.length - 1 && aStack != null && aStack.getItem() instanceof ItemIntegratedCircuit
+        return aIndex == mInventory.length - 1 && aStack != null
+            && aStack.getItem() instanceof ItemIntegratedCircuit
             && side == getBaseMetaTileEntity().getFrontFacing();
     }
 
@@ -134,7 +135,8 @@ public class MTEHatchElementalDataOrbHolder extends MTEHatch implements IConfigu
     public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
         ItemStack aStack) {
         Logger.INFO("Checking if we can put " + aStack.getDisplayName() + " into slot " + aIndex);
-        return aIndex == mInventory.length - 1 && aStack != null && aStack.getItem() instanceof ItemIntegratedCircuit
+        return aIndex == mInventory.length - 1 && aStack != null
+            && aStack.getItem() instanceof ItemIntegratedCircuit
             && side == getBaseMetaTileEntity().getFrontFacing();
     }
 
@@ -163,7 +165,8 @@ public class MTEHatchElementalDataOrbHolder extends MTEHatch implements IConfigu
 
     @Override
     public boolean canInsertItem(int aIndex, ItemStack aStack, int ordinalSide) {
-        if (aIndex == mInventory.length - 1 && aStack != null && aStack.getItem() instanceof ItemIntegratedCircuit
+        if (aIndex == mInventory.length - 1 && aStack != null
+            && aStack.getItem() instanceof ItemIntegratedCircuit
             && ordinalSide == getBaseMetaTileEntity().getFrontFacing()
                 .ordinal()) {
             Logger.INFO("Putting " + aStack.getDisplayName() + " into slot " + aIndex);
