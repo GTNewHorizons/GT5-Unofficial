@@ -10,8 +10,6 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TELEPORTER_GLOW;
 import java.util.function.Consumer;
 
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
@@ -23,7 +21,6 @@ import net.minecraftforge.fluids.FluidStack;
 
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.drawable.DynamicDrawable;
-import com.cleanroommc.modularui.drawable.ItemDrawable;
 import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.UISettings;
@@ -31,7 +28,6 @@ import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.value.sync.IntSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widgets.layout.Flow;
-import com.cleanroommc.modularui.widgets.layout.Row;
 import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
 import com.gtnewhorizons.modularui.api.NumberFormatMUI;
 import com.gtnewhorizons.modularui.api.drawable.IDrawable;
@@ -59,7 +55,6 @@ import gregtech.api.modularui2.GTGuis;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
 import gregtech.common.config.MachineStats;
-import gtneioreplugin.plugin.block.ModBlocks;
 
 public class MTEMicrowaveEnergyTransmitter extends MTEBasicTank implements IAddGregtechLogo, IAddUIWidgets {
 
@@ -414,67 +409,56 @@ public class MTEMicrowaveEnergyTransmitter extends MTEBasicTank implements IAddG
             .doesAddGregTechLogo(false)
             .build()
             .child(
-                Flow.column()
-                    .child(createCoordinateRow())
-                    .child(createDimensionRow())
+                Flow.row()
+                    .child(
+                        Flow.column()
+                            .child(
+                                GTGuiTextures.OVERLAY_BUTTON_BOUNDING_BOX.asWidget()
+                                    .size(18, 18)
+                                    .topRel(0.5F))
+                            .heightRel(1)
+                            .coverChildrenWidth())
+                    .child(createSelectionColumn())
                     .crossAxisAlignment(Alignment.CrossAxis.START)
-                    .childPadding(2)
                     .pos(4, 6)
                     .coverChildren());
     }
 
-    public Flow createCoordinateRow() {
-        return new Row().child(
-            GTGuiTextures.OVERLAY_BUTTON_BOUNDING_BOX.asWidget()
-                .size(18, 18))
+    public Flow createSelectionColumn() {
+        return Flow.column()
             .child(
-                Flow.column()
+                Flow.row()
                     .child(
-                        Flow.row()
-                            .child(
-                                new TextFieldWidget().setFormatAsInteger(true)
-                                    .value(new IntSyncValue(() -> mTargetX, i -> mTargetX = i))
-                                    .size(77, 12)
-                                    .margin(2, 0))
-                            .child(
-                                IKey.lang("GT5U.gui.text.microwave_energy_transmitter.x")
-                                    .asWidget())
-                            .coverChildren())
+                        new TextFieldWidget().setFormatAsInteger(true)
+                            .value(new IntSyncValue(() -> mTargetX, i -> mTargetX = i))
+                            .size(77, 12)
+                            .margin(2, 0))
                     .child(
-                        Flow.row()
-                            .child(
-                                new TextFieldWidget().setFormatAsInteger(true)
-                                    .value(new IntSyncValue(() -> mTargetY, i -> mTargetY = i))
-                                    .size(77, 12)
-                                    .margin(2, 0))
-                            .child(
-                                IKey.lang("GT5U.gui.text.microwave_energy_transmitter.y")
-                                    .asWidget())
-                            .coverChildren())
-                    .child(
-                        Flow.row()
-                            .child(
-                                new TextFieldWidget().setFormatAsInteger(true)
-                                    .value(new IntSyncValue(() -> mTargetZ, i -> mTargetZ = i))
-                                    .size(77, 12)
-                                    .margin(2, 0))
-                            .child(
-                                IKey.lang("GT5U.gui.text.microwave_energy_transmitter.z")
-                                    .asWidget())
-                            .coverChildren())
-                    .childPadding(2)
+                        IKey.lang("GT5U.gui.text.microwave_energy_transmitter.x")
+                            .asWidget())
                     .coverChildren())
-            .coverChildren();
-    }
-
-    public Flow createDimensionRow() {
-        // Overworld
-        Item planetItem = ModBlocks.blocks.get("Ow")
-            .getItemDropped(0, null, 0);
-        return Flow.row()
             .child(
-                new ItemDrawable(new ItemStack(planetItem)).asWidget()
-                    .size(18, 18))
+                Flow.row()
+                    .child(
+                        new TextFieldWidget().setFormatAsInteger(true)
+                            .value(new IntSyncValue(() -> mTargetY, i -> mTargetY = i))
+                            .size(77, 12)
+                            .margin(2, 0))
+                    .child(
+                        IKey.lang("GT5U.gui.text.microwave_energy_transmitter.y")
+                            .asWidget())
+                    .coverChildren())
+            .child(
+                Flow.row()
+                    .child(
+                        new TextFieldWidget().setFormatAsInteger(true)
+                            .value(new IntSyncValue(() -> mTargetZ, i -> mTargetZ = i))
+                            .size(77, 12)
+                            .margin(2, 0))
+                    .child(
+                        IKey.lang("GT5U.gui.text.microwave_energy_transmitter.z")
+                            .asWidget())
+                    .coverChildren())
             .child(
                 Flow.row()
                     .child(
@@ -491,6 +475,8 @@ public class MTEMicrowaveEnergyTransmitter extends MTEBasicTank implements IAddG
                                 : GTGuiTextures.OVERLAY_BUTTON_CROSS).asWidget()
                                     .size(16, 16))
                     .coverChildren())
+            .crossAxisAlignment(Alignment.CrossAxis.START)
+            .childPadding(2)
             .coverChildren();
     }
 
