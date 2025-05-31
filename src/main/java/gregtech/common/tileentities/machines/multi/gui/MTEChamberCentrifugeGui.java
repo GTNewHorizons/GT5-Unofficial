@@ -7,23 +7,21 @@ import com.cleanroommc.modularui.api.GuiAxis;
 import com.cleanroommc.modularui.api.IPanelHandler;
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.api.widget.IWidget;
+import com.cleanroommc.modularui.drawable.GuiTextures;
 import com.cleanroommc.modularui.drawable.UITexture;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.utils.Alignment;
-import com.cleanroommc.modularui.value.DoubleValue;
 import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
 import com.cleanroommc.modularui.value.sync.DoubleSyncValue;
 import com.cleanroommc.modularui.value.sync.IntSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.value.sync.StringSyncValue;
-import com.cleanroommc.modularui.widget.ScrollWidget;
 import com.cleanroommc.modularui.widget.sizer.Area;
 import com.cleanroommc.modularui.widgets.*;
 import com.cleanroommc.modularui.widgets.layout.Column;
 import com.cleanroommc.modularui.widgets.layout.Row;
 import com.cleanroommc.modularui.widgets.slot.ItemSlot;
 import com.cleanroommc.modularui.widgets.slot.ModularSlot;
-import com.cleanroommc.modularui.drawable.GuiTextures;
 
 import gregtech.api.metatileentity.implementations.gui.MTEMultiBlockBaseGui;
 import gregtech.api.modularui2.GTGuiTextures;
@@ -37,15 +35,15 @@ public class MTEChamberCentrifugeGui extends MTEMultiBlockBaseGui {
         super(base);
         this.base = base;
     }
+
     @Override
-    protected void registerSyncValues(PanelSyncManager syncManager)
-    {
+    protected void registerSyncValues(PanelSyncManager syncManager) {
         super.registerSyncValues(syncManager);
         syncManager.syncValue("RP", new IntSyncValue(base::getRP));
         syncManager.syncValue("Parallels", new IntSyncValue(base::getTrueParallel));
         syncManager.syncValue("Speed", new StringSyncValue(base::getSpeedStr));
         syncManager.syncValue("modeString", new StringSyncValue(base::modeToString));
-        syncManager.syncValue("modeValue",new DoubleSyncValue(()->base.mMode,dub -> base.mMode = dub));
+        syncManager.syncValue("modeValue", new DoubleSyncValue(() -> base.mMode, dub -> base.mMode = dub));
     }
 
     @Override
@@ -57,7 +55,7 @@ public class MTEChamberCentrifugeGui extends MTEMultiBlockBaseGui {
             .child(createVoidExcessButton(syncManager))
             .child(createInputSeparationButton(syncManager))
             .child(createConfigButton(syncManager, parent))
-            .child(createOverviewButton(syncManager,parent))
+            .child(createOverviewButton(syncManager, parent))
             .childIf(!machineModeIcons.isEmpty(), createModeSwitchButton(syncManager))
             .child(createBatchModeButton(syncManager))
             .child(createLockToSingleRecipeButton(syncManager))
@@ -67,7 +65,10 @@ public class MTEChamberCentrifugeGui extends MTEMultiBlockBaseGui {
 
     protected IWidget createOverviewButton(PanelSyncManager syncManager, ModularPanel parent) {
         IPanelHandler statsPanel = syncManager // calls the panel itself.
-            .panel("statsPanel", (p_syncManager, syncHandler) -> openInfoPanel(p_syncManager, parent, syncManager), true);
+            .panel(
+                "statsPanel",
+                (p_syncManager, syncHandler) -> openInfoPanel(p_syncManager, parent, syncManager),
+                true);
         return new ButtonWidget<>().size(18, 18)
             .rightRel(0, 28, 0)
             .marginTop(4)
@@ -84,40 +85,43 @@ public class MTEChamberCentrifugeGui extends MTEMultiBlockBaseGui {
             .tooltipShowUpTimer(TOOLTIP_DELAY);
     }
 
-    private ModularPanel openInfoPanel(PanelSyncManager p_syncManager, ModularPanel parent, PanelSyncManager syncManager){
+    private ModularPanel openInfoPanel(PanelSyncManager p_syncManager, ModularPanel parent,
+        PanelSyncManager syncManager) {
         Area area = parent.getArea();
         int x = area.x + area.width;
         int y = area.y;
-        IntSyncValue RPSync = (IntSyncValue)syncManager.getSyncHandler("RP:0");
+        IntSyncValue RPSync = (IntSyncValue) syncManager.getSyncHandler("RP:0");
         IntSyncValue paraSync = (IntSyncValue) syncManager.getSyncHandler("Parallels:0");
         StringSyncValue speedSync = (StringSyncValue) syncManager.getSyncHandler("Speed:0");
         StringSyncValue typeSTRSync = (StringSyncValue) syncManager.getSyncHandler("modeString:0");
         DoubleSyncValue typeVALSync = (DoubleSyncValue) syncManager.getSyncHandler("modeValue:0");
-        return new ModularPanel("statsPanel").pos(x,y)
+        return new ModularPanel("statsPanel").pos(x, y)
             .size(160, 130)
             .widgetTheme("backgroundPopup")
             .child(
                 new Row().sizeRel(1)
                     .widgetTheme("backgroundPopup")
                     .child(
-                        new Column().size(100,120)
+                        new Column().size(100, 120)
                             .paddingRight(40)
-                            .child(new TextWidget(IKey.dynamic(()-> "Type: "+typeSTRSync.getValue())).size(80,20))
-                            .child(new TextWidget(IKey.dynamic(() -> "Speed Bonus: "+speedSync.getValue())).size(80,20))
-                            .child(new TextWidget(IKey.dynamic(() -> "Rotational Power: " +RPSync.getValue())).size(80,20))
-                            .child(new TextWidget(IKey.dynamic(() -> "Parallels: "+paraSync.getValue())).size(80,20))
-                    )
+                            .child(new TextWidget(IKey.dynamic(() -> "Type: " + typeSTRSync.getValue())).size(80, 20))
+                            .child(
+                                new TextWidget(IKey.dynamic(() -> "Speed Bonus: " + speedSync.getValue())).size(80, 20))
+                            .child(
+                                new TextWidget(IKey.dynamic(() -> "Rotational Power: " + RPSync.getValue()))
+                                    .size(80, 20))
+                            .child(
+                                new TextWidget(IKey.dynamic(() -> "Parallels: " + paraSync.getValue())).size(80, 20)))
                     .child(
-                        new SliderWidget().size(15,110)
+                        new SliderWidget().size(15, 110)
                             .background(GuiTextures.MC_BUTTON)
 
                             .setAxis(GuiAxis.Y)
-                            .stopper(0,1,2)
-                            .bounds(0,2)
-                            .sliderSize(10,20)
+                            .stopper(0, 1, 2)
+                            .bounds(0, 2)
+                            .sliderSize(10, 20)
 
-                            .value(typeVALSync)
-                    )
+                            .value(typeVALSync))
 
             );
 
