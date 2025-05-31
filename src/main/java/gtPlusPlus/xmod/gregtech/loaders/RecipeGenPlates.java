@@ -56,7 +56,7 @@ public class RecipeGenPlates extends RecipeGenBase {
         Logger.WARNING("Generating Plate recipes for " + material.getLocalizedName());
 
         // Forge Hammer
-        if (null != (ingotStackTwo) && null != (plate_Single)) {
+        if (ingotStackTwo != null && plate_Single != null) {
             GTValues.RA.stdBuilder()
                 .itemInputs(ingotStackThree)
                 .itemOutputs(plate_SingleTwo)
@@ -68,7 +68,7 @@ public class RecipeGenPlates extends RecipeGenBase {
         }
 
         // Bender
-        if (null != (ingotStackOne) && null != (plate_Single)) {
+        if (ingotStackOne != null && plate_Single != null) {
             GTValues.RA.stdBuilder()
                 .itemInputs(ingotStackOne, GTUtility.getIntegratedCircuit(1))
                 .itemOutputs(plate_Single)
@@ -79,7 +79,7 @@ public class RecipeGenPlates extends RecipeGenBase {
             Logger.WARNING("Bender Recipe: " + material.getLocalizedName() + " - Success");
         }
 
-        if (null != (ingotStackOne) && null != (foil_SingleFour)) {
+        if (ingotStackOne != null && foil_SingleFour != null) {
             GTValues.RA.stdBuilder()
                 .itemInputs(ingotStackOne, GTUtility.getIntegratedCircuit(10))
                 .itemOutputs(foil_SingleFour)
@@ -91,7 +91,7 @@ public class RecipeGenPlates extends RecipeGenBase {
         }
 
         // Alloy Smelter
-        if (null != (ingotStackTwo) && null != (plate_Single)) {
+        if (ingotStackTwo != null && plate_Single != null) {
             GTValues.RA.stdBuilder()
                 .itemInputs(ingotStackTwo, shape_Mold)
                 .itemOutputs(plate_Single)
@@ -102,7 +102,7 @@ public class RecipeGenPlates extends RecipeGenBase {
             Logger.WARNING("Alloy Smelter Recipe: " + material.getLocalizedName() + " - Success");
         }
         // Cutting Machine
-        if (null != (block) && null != (plate_Single)) {
+        if (block != null && plate_Single != null) {
             GTValues.RA.stdBuilder()
                 .itemInputs(block)
                 .itemOutputs(plate_SingleNine)
@@ -114,7 +114,7 @@ public class RecipeGenPlates extends RecipeGenBase {
         }
 
         // Making Double Plates
-        if (null != (ingotStackTwo) && null != (plate_Double)) {
+        if (ingotStackTwo != null && plate_Double != null) {
             GTValues.RA.stdBuilder()
                 .itemInputs(ingotStackTwo, GTUtility.getIntegratedCircuit(2))
                 .itemOutputs(plate_Double)
@@ -125,7 +125,7 @@ public class RecipeGenPlates extends RecipeGenBase {
             Logger.WARNING("Bender Recipe: " + material.getLocalizedName() + " - Success");
         }
 
-        if (null != (plate_SingleTwo) && null != (plate_Double)) {
+        if (plate_SingleTwo != null && plate_Double != null) {
             GTValues.RA.stdBuilder()
                 .itemInputs(plate_SingleTwo, GTUtility.getIntegratedCircuit(2))
                 .itemOutputs(plate_Double)
@@ -136,7 +136,7 @@ public class RecipeGenPlates extends RecipeGenBase {
         }
 
         // Bender
-        if (null != (material.getPlate(1)) && null != (material.getFoil(1))) {
+        if (material.getPlate(1) != null && material.getFoil(1) != null) {
             GTValues.RA.stdBuilder()
                 .itemInputs(material.getPlate(1), GTUtility.getIntegratedCircuit(1))
                 .itemOutputs(material.getFoil(4))
@@ -151,7 +151,7 @@ public class RecipeGenPlates extends RecipeGenBase {
         }
 
         // Making Dense Plates
-        if (null != (ingotStackNine) && null != (plate_Dense)) {
+        if (ingotStackNine != null && plate_Dense != null) {
             GTValues.RA.stdBuilder()
                 .itemInputs(ingotStackNine, GTUtility.getIntegratedCircuit(9))
                 .itemOutputs(plate_Dense)
@@ -162,7 +162,7 @@ public class RecipeGenPlates extends RecipeGenBase {
             Logger.WARNING("Bender Recipe: " + material.getLocalizedName() + " - Success");
         }
 
-        if (null != (plate_SingleNine) && null != (plate_Dense)) {
+        if (plate_SingleNine != null && plate_Dense != null) {
             GTValues.RA.stdBuilder()
                 .itemInputs(plate_SingleNine, GTUtility.getIntegratedCircuit(9))
                 .itemOutputs(plate_Dense)

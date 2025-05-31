@@ -43,6 +43,6 @@ public class DecayableRecipe {
     }
 
     public boolean isValid() {
-        return (mTime > 0 && null != (mInput) && null != (mOutput));
+        return (mTime > 0 && mInput != null && mOutput != null);
     }
 }

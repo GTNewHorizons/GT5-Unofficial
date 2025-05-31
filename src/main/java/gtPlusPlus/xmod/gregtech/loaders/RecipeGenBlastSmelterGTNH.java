@@ -176,8 +176,7 @@ public class RecipeGenBlastSmelterGTNH {
                     // Build correct input stack
                     ArrayList<ItemStack> aTempList = new ArrayList<>();
                     for (ItemStack recipeItem : inputs) {
-                        if (recipeItem != null && recipeItem.getItem() == GTUtility.getIntegratedCircuit(0)
-                            .getItem()) {
+                        if (recipeItem != null && recipeItem.getItem() instanceof ItemIntegratedCircuit) {
                             circuitFound = true;
                         }
                         aTempList.add(recipeItem);

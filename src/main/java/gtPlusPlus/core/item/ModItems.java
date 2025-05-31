@@ -484,7 +484,7 @@ public final class ModItems {
             "LiOH",
             Utils.rgbtoHexValue(250, 250, 250))[0]; // https://en.wikipedia.org/wiki/Lithium_hydroxide
 
-        if (null == (ItemUtils.getItemStackOfAmountFromOreDict("dustQuicklime", 1))) {
+        if (ItemUtils.getItemStackOfAmountFromOreDict("dustQuicklime", 1) == null) {
             dustQuicklime = ItemUtils
                 .generateSpecialUseDusts("Quicklime", "Quicklime", "CaO", Utils.rgbtoHexValue(255, 255, 175))[0]; // https://en.wikipedia.org/wiki/Calcium_oxide
         }
@@ -995,14 +995,14 @@ public final class ModItems {
         /*
          * Try to generate dusts for missing rare earth materials if they don't exist
          */
-        if (null == (ItemUtils.getItemStackOfAmountFromOreDictNoBroken("dustGadolinium", 1))) {
+        if (ItemUtils.getItemStackOfAmountFromOreDictNoBroken("dustGadolinium", 1) == null) {
             ItemUtils.generateSpecialUseDusts(
                 "Gadolinium",
                 "Gadolinium",
                 Materials.Gadolinium.mElement.name(),
                 Utils.rgbtoHexValue(226, 172, 9));
         }
-        if (null == (ItemUtils.getItemStackOfAmountFromOreDictNoBroken("dustYtterbium", 1))) {
+        if (ItemUtils.getItemStackOfAmountFromOreDictNoBroken("dustYtterbium", 1) == null) {
             ItemUtils.generateSpecialUseDusts(
                 "Ytterbium",
                 "Ytterbium",
@@ -1012,14 +1012,14 @@ public final class ModItems {
                     Materials.Yttrium.mRGBa[1] - 60,
                     Materials.Yttrium.mRGBa[2] - 60));
         }
-        if (null == ItemUtils.getItemStackOfAmountFromOreDictNoBroken("dustSamarium", 1)) {
+        if (ItemUtils.getItemStackOfAmountFromOreDictNoBroken("dustSamarium", 1) == null) {
             ItemUtils.generateSpecialUseDusts(
                 "Samarium",
                 "Samarium",
                 Materials.Samarium.mElement.name(),
                 Utils.rgbtoHexValue(161, 168, 114));
         }
-        if (null == ItemUtils.getItemStackOfAmountFromOreDictNoBroken("dustLanthanum", 1)) {
+        if (ItemUtils.getItemStackOfAmountFromOreDictNoBroken("dustLanthanum", 1) == null) {
             ItemUtils.generateSpecialUseDusts(
                 "Lanthanum",
                 "Lanthanum",
