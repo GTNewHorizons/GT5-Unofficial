@@ -80,7 +80,7 @@ public class RecipeGenShapedCrafting extends RecipeGenBase {
         }
 
         // Shaped Recipe - Fine Wire
-        if (!material.isRadioactive && null != (material.getFoil(1)) && null != (material.getFineWire(1))) {
+        if (!material.isRadioactive && material.getFoil(1) != null && material.getFineWire(1) != null) {
             if (GTModHandler.addCraftingRecipe(
                 material.getFineWire(1),
                 GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
