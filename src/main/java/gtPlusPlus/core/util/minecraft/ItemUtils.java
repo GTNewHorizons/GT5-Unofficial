@@ -91,7 +91,7 @@ public class ItemUtils {
                 final Materials m = Materials.get(MaterialName);
                 if (m != Materials._NULL) {
                     returnValue = GTOreDictUnificator.get(OrePrefixes.dust, m, 1);
-                    if (null != returnValue) {
+                    if (returnValue != null) {
                         return returnValue;
                     }
                 }
