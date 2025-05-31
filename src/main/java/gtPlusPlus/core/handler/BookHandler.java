@@ -6,6 +6,8 @@ import static gtPlusPlus.core.util.Utils.addBookTitleLocalization;
 import java.util.HashMap;
 import java.util.Map;
 
+import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 
@@ -437,15 +439,15 @@ public class BookHandler {
             new Object[] { "Xw", 'X', new ItemStack(Items.writable_book) });
         RecipeUtils.addShapelessGregtechRecipe(
             new ItemStack[] { new ItemStack(Items.writable_book),
-                ItemUtils.getItemStackOfAmountFromOreDict("wireGt01Tin", 1) },
+                GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.Tin, 1) },
             ItemBookWritten_MultiPowerStorage);
         RecipeUtils.addShapelessGregtechRecipe(
             new ItemStack[] { new ItemStack(Items.writable_book),
-                ItemUtils.getItemStackOfAmountFromOreDict("dustUranium", 1) },
+                GTOreDictUnificator.get(OrePrefixes.dust,Materials.Uranium, 1) },
             ItemBookWritten_NuclearManual);
         RecipeUtils.addShapelessGregtechRecipe(
             new ItemStack[] { new ItemStack(Items.writable_book),
-                ItemUtils.getItemStackOfAmountFromOreDict("wireGt01Copper", 1) },
+                GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.Copper, 1) },
             ItemBookWritten_MultiChemicalPlant);
 
         for (int i = 0; i < mBookKeeperCount; i++) {

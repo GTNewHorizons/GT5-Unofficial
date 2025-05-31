@@ -78,9 +78,19 @@ public class CI {
             getTieredComponent(OrePrefixes.ingot, 11) };
     }
 
-    public static final String[] circuits = new String[]{"circuitPrimitive", "circuitBasic", "circuitGood",
-        "circuitAdvanced", "circuitData", "circuitElite", "circuitMaster", "circuitUltimate",
-        "circuitSuperconductor", "circuitInfinite",  "circuitQuantum"};
+    public static final String[] circuits = new String[]{
+        "circuitPrimitive", //ULV
+        "circuitBasic",//LV
+        "circuitGood",//MV
+        "circuitAdvanced",//HV
+        "circuitData",//EV
+        "circuitElite",//IV
+        "circuitMaster",//LUV
+        "circuitUltimate",//ZPM
+        "circuitSuperconductor",//UV
+        "circuitInfinite", //UHV
+        "circuitQuantum"//UEV
+    };
 
     private static Object getMaterialFromTier(int tier) {
         return switch (tier){

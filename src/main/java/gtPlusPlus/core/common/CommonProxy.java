@@ -1,6 +1,9 @@
 package gtPlusPlus.core.common;
 
 import cofh.CoFHCore;
+import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
+import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import net.minecraft.entity.monster.EntityBlaze;
 import net.minecraft.entity.player.EntityPlayer;
@@ -155,23 +158,24 @@ public class CommonProxy implements IFuelHandler {
         if (Mods.COFHCore.isModLoaded()) {
             EntityUtils.registerDropsForMob(
                 EntityBlaze.class,
-                ItemUtils.getItemStackOfAmountFromOreDict("dustPyrotheum", 1),
+                Materials.Pyrotheum.getDust(1),
                 1,
                 10);
             EntityUtils.registerDropsForMob(
                 EntityBlaze.class,
-                ItemUtils.getItemStackOfAmountFromOreDict("dustPyrotheum", 1),
+                Materials.Pyrotheum.getDust(1),
                 1,
                 10);
         }
 
+
         // GalaxySpace Support
         if (Mods.GalaxySpace.isModLoaded()) {
-            ItemStack aBlizz = ItemUtils.getItemStackOfAmountFromOreDict("dustBlizz", 1);
-            ItemStack aCryo = ItemUtils.getItemStackOfAmountFromOreDict("dustCryotheum", 1);
+            ItemStack aBlizz = Materials.Blizz.getDust(1);
+            ItemStack aCryo = Materials.Cryotheum.getDust(1);
             EntityUtils.registerDropsForMob(
                 EntityEvolvedColdBlaze.class,
-                ItemUtils.getItemStackOfAmountFromOreDict("stickBlizz", 1),
+                GTOreDictUnificator.get(OrePrefixes.stick, Materials.Blizz, 1),
                 1,
                 2500);
             if (aBlizz != null) {

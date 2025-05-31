@@ -1,5 +1,8 @@
 package gtPlusPlus.core.entity.monster;
 
+import gregtech.api.enums.OrePrefixes;
+import gregtech.api.util.GTOreDictUnificator;
+import gtPlusPlus.core.material.MaterialsAlloy;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.monster.EntityIronGolem;
@@ -63,13 +66,13 @@ public class EntityStaballoyConstruct extends EntityIronGolem {
         int j = this.rand.nextInt(3);
         int k;
         for (k = 0; k < j; ++k) {
-            this.entityDropItem(ItemUtils.getItemStackOfAmountFromOreDict("blockStaballoy", 1), 0f);
+            this.entityDropItem(MaterialsAlloy.STABALLOY.getBlock(1), 0f);
         }
         k = 3 + this.rand.nextInt(3);
         for (int l = 0; l < k; ++l) {
-            this.entityDropItem(ItemUtils.getItemStackOfAmountFromOreDict("ingotStaballoy", lootingChance), 0f);
+            this.entityDropItem(MaterialsAlloy.STABALLOY.getIngot(lootingChance), 0f);
             if (MathUtils.randInt(0, 2) == 0) {
-                this.entityDropItem(ItemUtils.getItemStackOfAmountFromOreDict("plateStaballoy", lootingChance), 0f);
+                this.entityDropItem(MaterialsAlloy.STABALLOY.getPlate(lootingChance), 0f);
             }
         }
     }

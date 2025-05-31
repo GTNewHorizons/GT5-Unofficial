@@ -46,7 +46,6 @@ public class ItemUtils {
 
     public static ItemStack getItemStackOfAmountFromOreDict(String oredictName, final int amount) {
         String mTemp = oredictName;
-
         if (oredictName.contains("-") || oredictName.contains("_")) {
             mTemp = Utils.sanitizeString(mTemp, new char[] { '-', '_' });
         } else {

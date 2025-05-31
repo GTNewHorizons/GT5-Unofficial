@@ -276,28 +276,28 @@ public class RecipeLoaderGlueLine {
         // Graphene recipes from later wafer tiers, using superglue instead of the bronze age glue
         GTValues.RA.stdBuilder()
             .itemInputs(
-                ItemUtils.getItemStackOfAmountFromOreDict("dustGraphite", 64),
+                Materials.Graphite.getDust(64),
                 ItemList.Circuit_Silicon_Wafer2.get(8L),
                 GTUtility.getIntegratedCircuit(2))
-            .itemOutputs(ItemUtils.getItemStackOfAmountFromOreDict("dustGraphene", 64))
+            .itemOutputs(Materials.Graphene.getDust(64))
             .fluidInputs(MaterialMisc.ETHYL_CYANOACRYLATE.getFluidStack(1000))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_IV)
             .addTo(assemblerRecipes);
         GTValues.RA.stdBuilder()
             .itemInputs(
-                ItemUtils.getItemStackOfAmountFromOreDict("dustGraphite", 64),
+                Materials.Graphite.getDust(64),
                 ItemList.Circuit_Silicon_Wafer3.get(2L),
                 GTUtility.getIntegratedCircuit(2))
-            .itemOutputs(ItemUtils.getItemStackOfAmountFromOreDict("dustGraphene", 64))
+            .itemOutputs(Materials.Graphene.getDust(64))
             .fluidInputs(MaterialMisc.ETHYL_CYANOACRYLATE.getFluidStack(750))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_LuV)
             .addTo(assemblerRecipes);
         GTValues.RA.stdBuilder()
             .itemInputs(
-                ItemUtils.getItemStackOfAmountFromOreDict("dustGraphite", 64),
-                ItemUtils.getItemStackOfAmountFromOreDict("dustGraphite", 64),
+                Materials.Graphite.getDust(64),
+                Materials.Graphite.getDust(64),
                 ItemList.Circuit_Silicon_Wafer4.get(1L),
                 GTUtility.getIntegratedCircuit(2))
             .itemOutputs(ItemUtils.getItemStackOfAmountFromOreDict("dustGraphene", 128))
@@ -307,15 +307,15 @@ public class RecipeLoaderGlueLine {
             .addTo(assemblerRecipes);
         GTValues.RA.stdBuilder()
             .itemInputs(
-                ItemUtils.getItemStackOfAmountFromOreDict("dustGraphite", 64),
-                ItemUtils.getItemStackOfAmountFromOreDict("dustGraphite", 64),
-                ItemUtils.getItemStackOfAmountFromOreDict("dustGraphite", 64),
-                ItemUtils.getItemStackOfAmountFromOreDict("dustGraphite", 64),
+                Materials.Graphite.getDust(64),
+                Materials.Graphite.getDust(64),
+                Materials.Graphite.getDust(64),
+                Materials.Graphite.getDust(64),
                 ItemList.Circuit_Silicon_Wafer5.get(1L),
-                ItemUtils.getItemStackOfAmountFromOreDict("dustGraphite", 64),
-                ItemUtils.getItemStackOfAmountFromOreDict("dustGraphite", 64),
-                ItemUtils.getItemStackOfAmountFromOreDict("dustGraphite", 64),
-                ItemUtils.getItemStackOfAmountFromOreDict("dustGraphite", 64))
+                Materials.Graphite.getDust(64),
+                Materials.Graphite.getDust(64),
+                Materials.Graphite.getDust(64),
+                Materials.Graphite.getDust(64))
             .itemOutputs(ItemUtils.getItemStackOfAmountFromOreDict("dustGraphene", 512))
             .fluidInputs(MaterialMisc.ETHYL_CYANOACRYLATE.getFluidStack(250))
             .duration(5 * SECONDS)

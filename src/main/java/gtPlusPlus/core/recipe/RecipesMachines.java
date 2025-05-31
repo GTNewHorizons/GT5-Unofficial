@@ -18,6 +18,7 @@ import static gregtech.api.util.GTRecipeConstants.CHEMPLANT_CASING_TIER;
 import static gregtech.api.util.GTRecipeConstants.RESEARCH_ITEM;
 import static gregtech.api.util.GTRecipeConstants.SCANNING;
 import static gtPlusPlus.api.recipe.GTPPRecipeMaps.chemicalPlantRecipes;
+import static gtPlusPlus.core.recipe.common.CI.circuits;
 
 import java.util.List;
 
@@ -343,7 +344,7 @@ public class RecipesMachines {
                 CI.getBolt(5, 32),
                 MaterialsAlloy.HG1223.getFineWire(64),
                 CI.getEmitter(4, 8),
-                ItemUtils.getItemStackOfAmountFromOreDict("circuitMaster", 10))
+                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.LuV, 10))
             .itemOutputs(
                 ItemDummyResearch.getResearchStack(ASSEMBLY_LINE_RESEARCH.RESEARCH_11_MOLECULAR_TRANSFORMER, 1))
             .fluidInputs(CI.getTieredFluid(5, 16 * INGOTS))
@@ -388,7 +389,7 @@ public class RecipesMachines {
                 CI.getScrew(6, 8),
                 MaterialsElements.getInstance().PALLADIUM.getFineWire(16),
                 CI.getSensor(5, 2),
-                ItemUtils.getItemStackOfAmountFromOreDict("circuitElite", 4))
+                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.IV, 4))
             .itemOutputs(GregtechItemList.Casing_Molecular_Transformer_1.get(1))
             .fluidInputs(CI.getTieredFluid(5, 4 * INGOTS))
             .duration(20 * SECONDS)
@@ -401,7 +402,7 @@ public class RecipesMachines {
                 CI.getScrew(5, 8),
                 ItemList.Casing_Coil_Nichrome.get(2),
                 CI.getFieldGenerator(3, 2),
-                ItemUtils.getItemStackOfAmountFromOreDict("circuitData", 8))
+                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.EV, 8))
             .itemOutputs(GregtechItemList.Casing_Molecular_Transformer_2.get(1))
             .fluidInputs(CI.getTieredFluid(5, 4 * INGOTS))
             .duration(20 * SECONDS)
@@ -414,7 +415,7 @@ public class RecipesMachines {
                 CI.getGear(5, 8),
                 MaterialsElements.getInstance().TITANIUM.getWire04(4),
                 CI.getFieldGenerator(4, 2),
-                ItemUtils.getItemStackOfAmountFromOreDict("circuitData", 8))
+                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.EV, 8))
             .itemOutputs(GregtechItemList.Casing_Molecular_Transformer_3.get(1))
             .fluidInputs(CI.getTieredFluid(5, 4 * INGOTS))
             .duration(60 * SECONDS)
@@ -744,15 +745,15 @@ public class RecipesMachines {
         int aCasingTier = 4;
         for (int i = 4; i < 8; i++) {
             RecipeUtils.addShapedRecipe(
-                CI.circuits[aCasingTier],
+                circuits[aCasingTier],
                 CI.getPlate(aCasingTier, 1),
-                CI.circuits[aCasingTier],
+                circuits[aCasingTier],
                 CI.getPlate(aCasingTier, 1),
                 CI.getTieredMachineCasing(aCasingTier),
                 CI.getPlate(aCasingTier, 1),
-                CI.circuits[aCasingTier],
+                circuits[aCasingTier],
                 CI.getPlate(aCasingTier, 1),
-                CI.circuits[aCasingTier],
+                circuits[aCasingTier],
                 new ItemStack(ModBlocks.blockSpecialMultiCasings2, 1,i));
             aCasingTier++;
         }
@@ -948,7 +949,7 @@ public class RecipesMachines {
                 GTUtility.copyAmount(4, CI.getDataOrb()),
                 ItemList.Cover_Screen.get(4),
                 ItemList.Hull_IV.get(1),
-                ItemUtils.getItemStackOfAmountFromOreDict("circuitUltimate", 2))
+                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.ZPM, 2))
             .itemOutputs(GregtechItemList.Gregtech_Computer_Cube.get(1))
             .fluidInputs(MaterialsElements.getInstance().TANTALUM.getFluidStack(16 * INGOTS))
             .duration(3 * MINUTES)
@@ -992,7 +993,7 @@ public class RecipesMachines {
                 MaterialsAlloy.MARAGING350.getGear(4),
                 ItemList.Field_Generator_EV.get(8),
                 GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.Platinum, 32),
-                ItemUtils.getItemStackOfAmountFromOreDict("circuitMaster", 4))
+                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.LuV, 4))
             .itemOutputs(GregtechItemList.RTG.get(1))
             .fluidInputs(MaterialsAlloy.NIOBIUM_CARBIDE.getFluidStack(16 * INGOTS))
             .duration(10 * MINUTES)
@@ -2255,7 +2256,7 @@ public class RecipesMachines {
         // LFTR Control Circuit
         GTValues.RA.stdBuilder()
             .itemInputs(
-                ItemUtils.getItemStackOfAmountFromOreDict("circuitMaster", 1),
+                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.LuV, 1),
                 ItemList.Field_Generator_HV.get(1))
             .itemOutputs(controlCircuit)
             .duration(4 * MINUTES)
@@ -2418,7 +2419,7 @@ public class RecipesMachines {
                 MaterialsAlloy.INCOLOY_020.getPlate(8),
                 MaterialsAlloy.TANTALLOY_61.getGear(2),
                 MaterialsAlloy.INCOLOY_MA956.getScrew(16),
-                ItemUtils.getItemStackOfAmountFromOreDict("circuitElite", 16))
+                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.IV, 16))
             .itemOutputs(RECIPE_CyclotronController)
             .fluidInputs(MaterialsAlloy.INCOLOY_020.getFluidStack(9 * INGOTS))
             .duration(5 * MINUTES)
