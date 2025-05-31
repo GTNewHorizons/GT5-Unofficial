@@ -13,6 +13,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 
 import org.lwjgl.opengl.GL11;
 
@@ -314,9 +315,9 @@ public class DynamicInventory<T> {
                         List<String> tip = new ArrayList<>(
                             Collections.singletonList(drawables.get(finalID).stack.getDisplayName()));
                         if (drawables.get(finalID).count > 1) tip.add(
-                            EnumChatFormatting.DARK_PURPLE + "There are "
-                                + drawables.get(finalID).count
-                                + " identical slots");
+                            EnumChatFormatting.DARK_PURPLE + StatCollector.translateToLocalFormatted(
+                                "kubatech.gui.tooltip.dynamic_inventory.identical_slots",
+                                drawables.get(finalID).count));
                         return tip;
                     }
                     return Collections.emptyList();
@@ -382,9 +383,14 @@ public class DynamicInventory<T> {
                                 .alignment(Alignment.TopLeft)
                                 .withOffset(1, 1) })
             .dynamicTooltip(() -> {
-                List<String> tip = new ArrayList<>(Collections.singleton(EnumChatFormatting.GRAY + "Empty slot"));
-                if (slots - usedSlots > 1)
-                    tip.add(EnumChatFormatting.DARK_PURPLE + "There are " + (slots - usedSlots) + " identical slots");
+                List<String> tip = new ArrayList<>(
+                    Collections.singleton(
+                        EnumChatFormatting.GRAY
+                            + StatCollector.translateToLocal("kubatech.gui.tooltip.dynamic_inventory.empty_slot")));
+                if (slots - usedSlots > 1) tip.add(
+                    EnumChatFormatting.DARK_PURPLE + StatCollector.translateToLocalFormatted(
+                        "kubatech.gui.tooltip.dynamic_inventory.identical_slots",
+                        slots - usedSlots));
                 return tip;
             })
             .setSize(18, 18));
