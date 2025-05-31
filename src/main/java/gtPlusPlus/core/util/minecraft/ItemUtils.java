@@ -178,7 +178,7 @@ public class ItemUtils {
             }
         }
 
-        if (null != (smallDust) && null != (normalDust)) {
+        if (smallDust != null && normalDust != null) {
             if (RecipeUtils.addShapedRecipe(
                 smallDust,
                 smallDust,
