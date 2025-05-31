@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import gregtech.common.items.ItemIntegratedCircuit;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
@@ -16,6 +15,7 @@ import gregtech.api.recipe.RecipeCategories;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
+import gregtech.common.items.ItemIntegratedCircuit;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.minecraft.ItemStackData;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
