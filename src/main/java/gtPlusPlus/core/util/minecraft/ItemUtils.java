@@ -472,7 +472,7 @@ public class ItemUtils {
         ItemStack[] aOutput = new ItemStack[aArraySize];
         ArrayList<ItemStack> aCleanedItems = new ArrayList<>();
         for (ItemStack checkStack : input) {
-            if (null != (checkStack)) {
+            if (checkStack != null) {
                 aCleanedItems.add(checkStack);
             }
         }
