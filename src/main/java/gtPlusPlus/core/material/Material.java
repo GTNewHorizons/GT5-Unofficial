@@ -1458,10 +1458,7 @@ public class Material {
         } else if (this.materialState == MaterialState.GAS || this.materialState == MaterialState.PURE_GAS) {
             return FluidUtils
                 .generateGas(unlocalizedName, this.getLocalizedName(), getMeltingPointK(), getRGBA(), vGenerateCells);
-            /*
-             * return FluidUtils.addGTFluid( this.getUnlocalizedName(), this.getLocalizedName()+" Gas", this.RGBA, 2,
-             * this.getMeltingPointK(), aFullCell, ItemList.Cell_Empty.get(1), 1000, this.vGenerateCells);
-             */
+
         } else { // Plasma
             return this.generatePlasma();
         }
