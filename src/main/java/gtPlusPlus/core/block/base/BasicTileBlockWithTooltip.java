@@ -293,7 +293,7 @@ public abstract class BasicTileBlockWithTooltip extends BlockContainer implement
 
     @Override
     public Item getItemDropped(int meta, Random rand, int p_149650_3_) {
-        return new ItemStack(this, 1).getItem();
+        return Item.getItemFromBlock(this);
     }
 
     @Override
