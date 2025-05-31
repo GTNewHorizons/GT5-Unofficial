@@ -56,7 +56,7 @@ public class RecipeGenShapedCrafting extends RecipeGenBase {
         }
 
         // Framebox Recipe
-        if (!material.isRadioactive && null != (material.getFrameBox(1)) && null != (material.getRod(1))) {
+        if (!material.isRadioactive && material.getFrameBox(1) != null && material.getRod(1) != null) {
             if (GTModHandler.addCraftingRecipe(
                 material.getFrameBox(2),
                 GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
