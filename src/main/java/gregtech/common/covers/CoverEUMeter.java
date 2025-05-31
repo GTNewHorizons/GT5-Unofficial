@@ -1,5 +1,7 @@
 package gregtech.common.covers;
 
+import static net.minecraft.util.StatCollector.translateToLocal;
+
 import java.util.function.Function;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -20,10 +22,12 @@ import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEBasicBatteryBuffer;
 import gregtech.api.util.GTUtility;
+import gregtech.common.covers.gui.CoverEUMeterGui;
+import gregtech.common.covers.gui.CoverGui;
 import gregtech.common.gui.mui1.cover.EUMeterUIFactory;
 import io.netty.buffer.ByteBuf;
 
-public class CoverEUMeter extends Cover {
+public class CoverEUMeter extends Cover implements Invertable {
 
     private EnergyType type;
     private boolean inverted;
@@ -152,20 +156,18 @@ public class CoverEUMeter extends Cover {
         int num = (getNum() + (aPlayer.isSneaking() ? -1 : 1) + EnergyType.values().length * 2)
             % (EnergyType.values().length * 2);
         switch (num) {
-            case 0 -> GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("031", "Normal Universal Storage"));
-            case 1 -> GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("032", "Inverted Universal Storage"));
-            case 2 -> GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("033", "Normal Electricity Storage"));
-            case 3 -> GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("034", "Inverted Electricity Storage"));
-            case 4 -> GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("035", "Normal Steam Storage"));
-            case 5 -> GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("036", "Inverted Steam Storage"));
-            case 6 -> GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("037", "Normal Average Electric Input"));
-            case 7 -> GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("038", "Inverted Average Electric Input"));
-            case 8 -> GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("039", "Normal Average Electric Output"));
-            case 9 -> GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("040", "Inverted Average Electric Output"));
-            case 10 -> GTUtility
-                .sendChatToPlayer(aPlayer, GTUtility.trans("041", "Normal Electricity Storage(Including Batteries)"));
-            case 11 -> GTUtility
-                .sendChatToPlayer(aPlayer, GTUtility.trans("042", "Inverted Electricity Storage(Including Batteries)"));
+            case 0 -> GTUtility.sendChatToPlayer(aPlayer, translateToLocal("gt.interact.desc.univ_normal"));
+            case 1 -> GTUtility.sendChatToPlayer(aPlayer, translateToLocal("gt.interact.desc.univ_invert"));
+            case 2 -> GTUtility.sendChatToPlayer(aPlayer, translateToLocal("gt.interact.desc.eu_normal"));
+            case 3 -> GTUtility.sendChatToPlayer(aPlayer, translateToLocal("gt.interact.desc.eu_invert"));
+            case 4 -> GTUtility.sendChatToPlayer(aPlayer, translateToLocal("gt.interact.desc.steam_normal"));
+            case 5 -> GTUtility.sendChatToPlayer(aPlayer, translateToLocal("gt.interact.desc.steam_invert"));
+            case 6 -> GTUtility.sendChatToPlayer(aPlayer, translateToLocal("gt.interact.desc.eu_avg_i_normal"));
+            case 7 -> GTUtility.sendChatToPlayer(aPlayer, translateToLocal("gt.interact.desc.eu_avg_i_invert"));
+            case 8 -> GTUtility.sendChatToPlayer(aPlayer, translateToLocal("gt.interact.desc.eu_avg_o_normal"));
+            case 9 -> GTUtility.sendChatToPlayer(aPlayer, translateToLocal("gt.interact.desc.eu_avg_o_invert"));
+            case 10 -> GTUtility.sendChatToPlayer(aPlayer, translateToLocal("gt.interact.desc.eu_batt_normal"));
+            case 11 -> GTUtility.sendChatToPlayer(aPlayer, translateToLocal("gt.interact.desc.eu_batt_invert"));
         }
         setNum(num);
     }
@@ -221,6 +223,11 @@ public class CoverEUMeter extends Cover {
     @Override
     public boolean hasCoverGUI() {
         return true;
+    }
+
+    @Override
+    protected @NotNull CoverGui<?> getCoverGui() {
+        return new CoverEUMeterGui(this);
     }
 
     @Override
