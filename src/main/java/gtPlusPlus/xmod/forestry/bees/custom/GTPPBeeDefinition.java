@@ -3,7 +3,6 @@ package gtPlusPlus.xmod.forestry.bees.custom;
 import java.util.Arrays;
 import java.util.Locale;
 
-import gregtech.api.util.GTUtility;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.BiomeDictionary.Type;
 
@@ -25,6 +24,7 @@ import forestry.apiculture.genetics.Bee;
 import forestry.apiculture.genetics.BeeDefinition;
 import forestry.apiculture.genetics.IBeeDefinition;
 import forestry.core.genetics.alleles.AlleleHelper;
+import gregtech.api.util.GTUtility;
 import gregtech.loaders.misc.GTBeeDefinition;
 import gregtech.loaders.misc.GTBranchDefinition;
 import gtPlusPlus.api.objects.Logger;
