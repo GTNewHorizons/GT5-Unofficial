@@ -231,7 +231,7 @@ public class MTEDeepEarthHeatingPump extends MTEDrillerBase {
                 return false;
             }
         } else if (this.machineMode == 1) {
-            long coolantConverted = (long) (192L * this.mEfficiency / 10000L);
+            long coolantConverted = 192L * this.mEfficiency / 10_000L;
             if (this.getFluidFromHatches(
                 GTModHandler.getIC2Coolant(0)
                     .getFluid())
