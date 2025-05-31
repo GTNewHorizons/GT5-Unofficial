@@ -534,12 +534,23 @@ public class LoaderGTBlockFluid implements Runnable {
                 GTModHandler.getIC2Item("reactorDepletedMOXQuad", 1),
                 true));
 
-        // GG Fuels
-        ItemList.DepletedRodHighDensityUranium
-            .set(new ItemDepletedCell("rodCompressedUraniumDepleted", "Fuel Rod (Depleted High Density Uranium)", 100));
+        // High Density Uranium
+        ItemList.DepletedRodHighDensityUranium.set(
+            new ItemDepletedCell("depletedRodHighDensityUranium", "Fuel Rod (Depleted High Density Uranium)", 100));
+        ItemList.DepletedRodHighDensityUranium2.set(
+            new ItemDepletedCell(
+                "depletedRodHighDensityUranium2",
+                "Dual Fuel Rod (Depleted High Density Uranium)",
+                200));
+        ItemList.DepletedRodHighDensityUranium4.set(
+            new ItemDepletedCell(
+                "depletedRodHighDensityUranium4",
+                "Quad Fuel Rod (Depleted High Density Uranium)",
+                400));
+
         ItemList.RodHighDensityUranium.set(
             new ItemRadioactiveCellIC(
-                "rodCompressedUranium",
+                "rodHighDensityUranium",
                 "Fuel Rod (High Density Uranium)",
                 1,
                 70_000,
@@ -548,15 +559,9 @@ public class LoaderGTBlockFluid implements Runnable {
                 4,
                 ItemList.DepletedRodHighDensityUranium.get(1),
                 false));
-
-        ItemList.DepletedRodHighDensityUranium2.set(
-            new ItemDepletedCell(
-                "rodCompressedUraniumDepleted2",
-                "Dual Fuel Rod (Depleted High Density Uranium)",
-                200));
         ItemList.RodHighDensityUranium2.set(
             new ItemRadioactiveCellIC(
-                "rodCompressedUranium2",
+                "rodHighDensityUranium2",
                 "Dual Fuel Rod (High Density Uranium)",
                 2,
                 70_000,
@@ -565,15 +570,9 @@ public class LoaderGTBlockFluid implements Runnable {
                 4,
                 ItemList.DepletedRodHighDensityUranium2.get(1),
                 false));
-
-        ItemList.DepletedRodHighDensityUranium4.set(
-            new ItemDepletedCell(
-                "rodCompressedUraniumDepleted4",
-                "Quad Fuel Rod (Depleted High Density Uranium)",
-                400));
         ItemList.RodHighDensityUranium4.set(
             new ItemRadioactiveCellIC(
-                "rodCompressedUranium4",
+                "rodHighDensityUranium4",
                 "Quad Fuel Rod (High Density Uranium)",
                 4,
                 70_000,
@@ -583,11 +582,23 @@ public class LoaderGTBlockFluid implements Runnable {
                 ItemList.DepletedRodHighDensityUranium4.get(1),
                 false));
 
+        // High Density Plutonium
         ItemList.DepletedRodHighDensityPlutonium.set(
-            new ItemDepletedCell("rodCompressedPlutoniumDepleted", "Fuel Rod (Depleted High Density Plutonium)", 120));
+            new ItemDepletedCell("depletedRodHighDensityPlutonium", "Fuel Rod (Depleted High Density Plutonium)", 120));
+        ItemList.DepletedRodHighDensityPlutonium2.set(
+            new ItemDepletedCell(
+                "depletedRodHighDensityPlutonium2",
+                "Dual Fuel Rod (Depleted High Density Plutonium)",
+                240));
+        ItemList.DepletedRodHighDensityPlutonium4.set(
+            new ItemDepletedCell(
+                "depletedRodHighDensityPlutonium4",
+                "Quad Fuel Rod (Depleted High Density Plutonium)",
+                480));
+
         ItemList.RodHighDensityPlutonium.set(
             new ItemRadioactiveCellIC(
-                "rodCompressedPlutonium",
+                "rodHighDensityPlutonium",
                 "Fuel Rod (High Density Plutonium)",
                 1,
                 70_000,
@@ -596,15 +607,9 @@ public class LoaderGTBlockFluid implements Runnable {
                 4,
                 ItemList.DepletedRodHighDensityPlutonium.get(1),
                 true));
-
-        ItemList.DepletedRodHighDensityPlutonium2.set(
-            new ItemDepletedCell(
-                "rodCompressedPlutoniumDepleted2",
-                "Dual Fuel Rod (Depleted High Density Plutonium)",
-                240));
         ItemList.RodHighDensityPlutonium2.set(
             new ItemRadioactiveCellIC(
-                "rodCompressedPlutonium2",
+                "rodHighDensityPlutonium2",
                 "Dual Fuel Rod (High Density Plutonium)",
                 2,
                 70_000,
@@ -613,15 +618,9 @@ public class LoaderGTBlockFluid implements Runnable {
                 4,
                 ItemList.DepletedRodHighDensityPlutonium2.get(1),
                 true));
-
-        ItemList.DepletedRodHighDensityPlutonium4.set(
-            new ItemDepletedCell(
-                "rodCompressedPlutoniumDepleted4",
-                "Quad Fuel Rod (Depleted High Density Plutonium)",
-                480));
         ItemList.RodHighDensityPlutonium4.set(
             new ItemRadioactiveCellIC(
-                "rodCompressedPlutonium4",
+                "rodHighDensityPlutonium4",
                 "Quad Fuel Rod (High Density Plutonium)",
                 4,
                 70_000,
@@ -631,11 +630,17 @@ public class LoaderGTBlockFluid implements Runnable {
                 ItemList.DepletedRodHighDensityPlutonium4.get(1),
                 true));
 
+        // Excited Uranium
         ItemList.DepletedRodExcitedUranium
-            .set(new ItemDepletedCell("rodLiquidUraniumDepleted", "Fuel Rod (Depleted Excited Uranium)", 800));
+            .set(new ItemDepletedCell("depletedRodExcitedUranium", "Fuel Rod (Depleted Excited Uranium)", 800));
+        ItemList.DepletedRodExcitedUranium2
+            .set(new ItemDepletedCell("depletedRodExcitedUranium2", "Dual Fuel Rod (Depleted Excited Uranium)", 1_600));
+        ItemList.DepletedRodExcitedUranium4
+            .set(new ItemDepletedCell("depletedRodExcitedUranium4", "Quad Fuel Rod (Depleted Excited Uranium)", 3_200));
+
         ItemList.RodExcitedUranium.set(
             new ItemRadioactiveCellIC(
-                "rodLiquidUranium",
+                "rodExcitedUranium",
                 "Fuel Rod (Excited Uranium)",
                 1,
                 6_000,
@@ -644,12 +649,9 @@ public class LoaderGTBlockFluid implements Runnable {
                 64,
                 ItemList.DepletedRodExcitedUranium.get(1),
                 false));
-
-        ItemList.DepletedRodExcitedUranium2
-            .set(new ItemDepletedCell("rodLiquidUraniumDepleted2", "Dual Fuel Rod (Depleted Excited Uranium)", 1_600));
         ItemList.RodExcitedUranium2.set(
             new ItemRadioactiveCellIC(
-                "rodLiquidUranium2",
+                "rodExcitedUranium2",
                 "Dual Fuel Rod (Excited Uranium)",
                 2,
                 6_000,
@@ -658,12 +660,9 @@ public class LoaderGTBlockFluid implements Runnable {
                 64,
                 ItemList.DepletedRodExcitedUranium2.get(1),
                 false));
-
-        ItemList.DepletedRodExcitedUranium4
-            .set(new ItemDepletedCell("rodLiquidUraniumDepleted4", "Quad Fuel Rod (Depleted Excited Uranium)", 3_200));
         ItemList.RodExcitedUranium4.set(
             new ItemRadioactiveCellIC(
-                "rodLiquidUranium4",
+                "rodExcitedUranium4",
                 "Quad Fuel Rod (Excited Uranium)",
                 4,
                 6_000,
@@ -673,11 +672,17 @@ public class LoaderGTBlockFluid implements Runnable {
                 ItemList.DepletedRodExcitedUranium4.get(1),
                 false));
 
+        // Excited Plutonium
         ItemList.DepletedRodExcitedPlutonium
-            .set(new ItemDepletedCell("rodLiquidPlutoniumDepleted", "Fuel Rod (Depleted Excited Plutonium)", 1_000));
+            .set(new ItemDepletedCell("depletedRodExcitedPlutonium", "Fuel Rod (Depleted Excited Plutonium)", 1_000));
+        ItemList.DepletedRodExcitedPlutonium2.set(
+            new ItemDepletedCell("depletedRodExcitedPlutonium2", "Dual Fuel Rod (Depleted Excited Plutonium)", 2_000));
+        ItemList.DepletedRodExcitedPlutonium4.set(
+            new ItemDepletedCell("depletedRodExcitedPlutonium4", "Quad Fuel Rod (Depleted Excited Plutonium)", 4_000));
+
         ItemList.RodExcitedPlutonium.set(
             new ItemRadioactiveCellIC(
-                "rodLiquidPlutonium",
+                "rodExcitedPlutonium",
                 "Fuel Rod (Excited Plutonium)",
                 1,
                 10_000,
@@ -686,12 +691,9 @@ public class LoaderGTBlockFluid implements Runnable {
                 64,
                 ItemList.DepletedRodExcitedPlutonium.get(1),
                 true));
-
-        ItemList.DepletedRodExcitedPlutonium2.set(
-            new ItemDepletedCell("rodLiquidPlutoniumDepleted2", "Dual Fuel Rod (Depleted Excited Plutonium)", 2_000));
         ItemList.RodExcitedPlutonium2.set(
             new ItemRadioactiveCellIC(
-                "rodLiquidPlutonium2",
+                "rodExcitedPlutonium2",
                 "Fuel Rod (Excited Plutonium)",
                 2,
                 10_000,
@@ -700,12 +702,9 @@ public class LoaderGTBlockFluid implements Runnable {
                 64,
                 ItemList.DepletedRodExcitedPlutonium2.get(1),
                 true));
-
-        ItemList.DepletedRodExcitedPlutonium4.set(
-            new ItemDepletedCell("rodLiquidPlutoniumDepleted4", "Quad Fuel Rod (Depleted Excited Plutonium)", 4_000));
         ItemList.RodExcitedPlutonium4.set(
             new ItemRadioactiveCellIC(
-                "rodLiquidPlutonium4",
+                "rodExcitedPlutonium4",
                 "Fuel Rod (Excited Plutonium)",
                 4,
                 10_000,
