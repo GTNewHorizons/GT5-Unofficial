@@ -52,6 +52,7 @@ import static gtPlusPlus.core.material.MaterialsAlloy.TITANSTEEL;
 import java.util.Arrays;
 import java.util.List;
 
+import ic2.core.Ic2Items;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
