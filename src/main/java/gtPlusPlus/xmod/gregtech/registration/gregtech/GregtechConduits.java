@@ -19,6 +19,7 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TextureSet;
+import gregtech.api.enums.ToolDictNames;
 import gregtech.api.metatileentity.implementations.MTEFluidPipe;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
@@ -26,7 +27,6 @@ import gregtech.api.util.GTUtility;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.material.MaterialsElements;
-import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
@@ -703,12 +703,12 @@ public class GregtechConduits {
             GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "PhP", "P P", "PwP", 'P', pipePlate });
 
-        if (pipeIngot != null && ItemUtils.checkForInvalidItems(pipeIngot)) {
+        if (pipeIngot != null) {
             // 1 Clay Plate = 1 Clay Dust = 2 Clay Ball
             int inputMultiplier = materialName.equals("Clay") ? 2 : 1;
             GTValues.RA.stdBuilder()
                 .itemInputs(
-                    ItemUtils.getSimpleStack(pipeIngot, 1 * inputMultiplier),
+                    GTUtility.copyAmount(1 * inputMultiplier, pipeIngot),
                     ItemList.Shape_Extruder_Pipe_Tiny.get(0))
                 .itemOutputs(ItemUtils.getItemStackOfAmountFromOreDictNoBroken("pipe" + "Tiny" + output, 2))
                 .duration(5 * TICKS)
@@ -716,7 +716,7 @@ public class GregtechConduits {
                 .addTo(extruderRecipes);
             GTValues.RA.stdBuilder()
                 .itemInputs(
-                    ItemUtils.getSimpleStack(pipeIngot, 1 * inputMultiplier),
+                    GTUtility.copyAmount(1 * inputMultiplier, pipeIngot),
                     ItemList.Shape_Extruder_Pipe_Small.get(0))
                 .itemOutputs(ItemUtils.getItemStackOfAmountFromOreDict("pipe" + "Small" + output, 1))
                 .duration(10 * TICKS)
@@ -724,7 +724,7 @@ public class GregtechConduits {
                 .addTo(extruderRecipes);
             GTValues.RA.stdBuilder()
                 .itemInputs(
-                    ItemUtils.getSimpleStack(pipeIngot, 3 * inputMultiplier),
+                    GTUtility.copyAmount(3 * inputMultiplier, pipeIngot),
                     ItemList.Shape_Extruder_Pipe_Medium.get(0))
                 .itemOutputs(ItemUtils.getItemStackOfAmountFromOreDict("pipe" + "Medium" + output, 1))
                 .duration(20 * TICKS)
@@ -732,7 +732,7 @@ public class GregtechConduits {
                 .addTo(extruderRecipes);
             GTValues.RA.stdBuilder()
                 .itemInputs(
-                    ItemUtils.getSimpleStack(pipeIngot, 6 * inputMultiplier),
+                    GTUtility.copyAmount(6 * inputMultiplier, pipeIngot),
                     ItemList.Shape_Extruder_Pipe_Large.get(0))
                 .itemOutputs(ItemUtils.getItemStackOfAmountFromOreDict("pipe" + "Large" + output, 1))
                 .duration(2 * SECONDS)
@@ -740,7 +740,7 @@ public class GregtechConduits {
                 .addTo(extruderRecipes);
             GTValues.RA.stdBuilder()
                 .itemInputs(
-                    ItemUtils.getSimpleStack(pipeIngot, 12 * inputMultiplier),
+                    GTUtility.copyAmount(12 * inputMultiplier, pipeIngot),
                     ItemList.Shape_Extruder_Pipe_Huge.get(0))
                 .itemOutputs(ItemUtils.getItemStackOfAmountFromOreDict("pipe" + "Huge" + output, 1))
                 .duration(4 * SECONDS)
@@ -848,8 +848,17 @@ public class GregtechConduits {
 
         // Adds manual crafting recipe
         if (ItemUtils.checkForInvalidItems(new ItemStack[] { aPlate, aWire01 })) {
-            RecipeUtils
-                .addShapedRecipe(aPlate, CI.craftingToolWireCutter, null, null, null, null, null, null, null, aWire01);
+            RecipeUtils.addShapedRecipe(
+                aPlate,
+                ToolDictNames.craftingToolWireCutter.name(),
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                aWire01);
         }
 
         // Wire mill
