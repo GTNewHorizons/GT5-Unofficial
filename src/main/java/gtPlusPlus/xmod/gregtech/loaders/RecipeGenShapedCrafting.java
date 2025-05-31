@@ -44,7 +44,7 @@ public class RecipeGenShapedCrafting extends RecipeGenBase {
             new Object[] { "I", "B", "h", 'I', material.getPlate(1), 'B', material.getPlate(1) });
 
         // Ring Recipe
-        if (!material.isRadioactive && null != (material.getRing(1)) && null != (material.getRod(1))) {
+        if (!material.isRadioactive && material.getRing(1) != null && material.getRod(1) != null) {
             if (GTModHandler.addCraftingRecipe(
                 material.getRing(1),
                 GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
