@@ -17,6 +17,7 @@ import static gregtech.api.util.GTRecipeConstants.UniversalChemical;
 import static gtPlusPlus.api.recipe.GTPPRecipeMaps.chemicalDehydratorRecipes;
 import static gtPlusPlus.api.recipe.GTPPRecipeMaps.chemicalPlantRecipes;
 
+import bartworks.system.material.WerkstoffLoader;
 import gregtech.api.enums.Mods;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -168,7 +169,7 @@ public class RecipeLoaderGlueLine {
         // CaCO3 + 2HCl = CaCl2 + CO2 + H2O
         GTValues.RA.stdBuilder()
             .itemInputs(new ItemStack(ModItems.dustCalciumCarbonate, 5), GTUtility.getIntegratedCircuit(8))
-            .itemOutputs(getModItem(Mods.BartWorks.ID,"gt.bwMetaGenerateddust:63", 3))
+            .itemOutputs(WerkstoffLoader.CalciumChloride.get(OrePrefixes.dust, 3))
             .fluidInputs(Materials.HydrochloricAcid.getFluid(2_000))
             .fluidOutputs(Materials.CarbonDioxide.getGas(1_000))
             .duration(5 * SECONDS)

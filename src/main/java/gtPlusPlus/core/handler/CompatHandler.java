@@ -11,6 +11,7 @@ import java.util.Queue;
 import java.util.Set;
 
 import gregtech.api.enums.Mods;
+import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.pamsharvest.fishtrap.FishTrapHandler;
 
 import gregtech.api.enums.GTValues;
@@ -99,6 +100,7 @@ import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechThreadedBuffers;
 import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechTieredFluidTanks;
 import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechWaterPump;
 import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechWirelessChargers;
+import net.minecraft.item.ItemStack;
 
 public class CompatHandler {
 
@@ -110,8 +112,20 @@ public class CompatHandler {
         Logger.INFO("Registering Materials with OreDict.");
         // In-house
 
+        ItemStack[] bufferCores = new ItemStack[]{
+            GregtechItemList.Energy_Core_ULV.get(1),
+            GregtechItemList.Energy_Core_LV.get(1),
+            GregtechItemList.Energy_Core_MV.get(1),
+            GregtechItemList.Energy_Core_HV.get(1),
+            GregtechItemList.Energy_Core_EV.get(1),
+            GregtechItemList.Energy_Core_IV.get(1),
+            GregtechItemList.Energy_Core_LuV.get(1),
+            GregtechItemList.Energy_Core_ZPM.get(1),
+            GregtechItemList.Energy_Core_UV.get(1),
+            GregtechItemList.Energy_Core_UHV.get(1),
+        };
         for (int i = 1; i <= 10; i++) {
-            GTOreDictUnificator.registerOre("bufferCore_" + GTValues.VN[i - 1], getModItem(Mods.GTPlusPlus.ID, "item.itemBufferCore" + i, 1));
+            GTOreDictUnificator.registerOre("bufferCore_" + GTValues.VN[i - 1], bufferCores[i]);
         }
         for (Particle i : Particle.aMap) {
             GTOreDictUnificator

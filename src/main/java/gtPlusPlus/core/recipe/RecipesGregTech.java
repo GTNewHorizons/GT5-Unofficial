@@ -508,7 +508,7 @@ public class RecipesGregTech {
                     CI.getTertiaryTieredFluid(7, 4 * STACKS + 32 * INGOTS),
                     CI.getAlternativeTieredFluid(6, 4 * STACKS + 32 * INGOTS),
                     CI.getAlternativeTieredFluid(7, 4 * STACKS + 32 * INGOTS))
-                .itemOutputs(getModItem(Mods.GTPlusPlus.ID, "personalHealingDevice", 1))
+                .itemOutputs(GregtechItemList.PersonalHealingDevice.get(1))
                 .eut(TierEU.RECIPE_ZPM)
                 .duration(3 * MINUTES)
                 .addTo(AssemblyLine);
