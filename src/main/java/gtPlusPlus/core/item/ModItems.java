@@ -1,14 +1,15 @@
 package gtPlusPlus.core.item;
 
+import static codechicken.nei.api.API.hideItem;
 import static gregtech.api.enums.Mods.Baubles;
 import static gregtech.api.enums.Mods.Forestry;
 import static gregtech.api.enums.Mods.GTPlusPlus;
 import static gregtech.api.enums.Mods.GregTech;
 import static gregtech.api.enums.Mods.Thaumcraft;
 import static gregtech.api.recipe.RecipeMaps.fluidExtractionRecipes;
+import static gregtech.api.util.GTModHandler.getModItem;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
 import static gtPlusPlus.core.creative.AddToCreativeTab.tabMisc;
-import static gtPlusPlus.core.util.minecraft.ItemUtils.hideItemFromNEI;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.item.EnumRarity;
@@ -19,6 +20,8 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
+
+import org.apache.commons.lang3.tuple.Pair;
 
 import cpw.mods.fml.common.FMLCommonHandler;
 import gregtech.api.enums.GTValues;
@@ -41,7 +44,6 @@ import gtPlusPlus.core.item.base.dusts.BaseItemDust;
 import gtPlusPlus.core.item.base.foil.BaseItemFoil;
 import gtPlusPlus.core.item.base.gears.BaseItemSmallGear;
 import gtPlusPlus.core.item.base.ingots.BaseItemIngot;
-import gtPlusPlus.core.item.base.ingots.BaseItemIngotOld;
 import gtPlusPlus.core.item.base.ore.BaseItemMilledOre;
 import gtPlusPlus.core.item.base.plates.BaseItemPlate;
 import gtPlusPlus.core.item.base.plates.BaseItemPlateDouble;
@@ -56,7 +58,6 @@ import gtPlusPlus.core.item.general.ItemAirFilter;
 import gtPlusPlus.core.item.general.ItemBasicScrubberTurbine;
 import gtPlusPlus.core.item.general.ItemBlueprint;
 import gtPlusPlus.core.item.general.ItemBufferCore;
-import gtPlusPlus.core.item.general.ItemEmpty;
 import gtPlusPlus.core.item.general.ItemGenericToken;
 import gtPlusPlus.core.item.general.ItemHalfCompleteCasings;
 import gtPlusPlus.core.item.general.ItemLavaFilter;
@@ -70,6 +71,7 @@ import gtPlusPlus.core.item.init.ItemsFoods;
 import gtPlusPlus.core.item.materials.DustDecayable;
 import gtPlusPlus.core.item.tool.misc.ItemGregtechPump;
 import gtPlusPlus.core.item.wearable.WearableLoader;
+import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.material.MaterialGenerator;
 import gtPlusPlus.core.material.MaterialMisc;
@@ -78,7 +80,6 @@ import gtPlusPlus.core.material.MaterialsElements;
 import gtPlusPlus.core.material.MaterialsOther;
 import gtPlusPlus.core.material.nuclear.MaterialsFluorides;
 import gtPlusPlus.core.material.nuclear.MaterialsNuclides;
-import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.data.StringUtils;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
@@ -92,9 +93,6 @@ import gtPlusPlus.xmod.gregtech.common.items.MetaGeneratedGregtechItems;
 import toxiceverglades.GTPPEverglades;
 
 public final class ModItems {
-
-    public static Item ZZZ_Empty;
-    public static Item AAA_Broken;
 
     public static ItemCustomSpawnEgg itemCustomSpawnEgg;
 
@@ -200,14 +198,6 @@ public final class ModItems {
     public static ItemDummyResearch itemDummyResearch;
 
     public static BaseItemMetaFood itemMetaFood;
-
-    static {
-        Logger.INFO("Items!");
-        // Default item used when recipes fail, handy for debugging. Let's make sure they exist when this class is
-        // called upon.
-        AAA_Broken = new BaseItemIngotOld("AAA_Broken", "Errors - Tell Alkalus", Utils.rgbtoHexValue(128, 128, 128), 0);
-        ZZZ_Empty = new ItemEmpty();
-    }
 
     public static void init() {
 
@@ -462,18 +452,10 @@ public final class ModItems {
             shardTerra = new BaseItemTCShard("Terra", Utils.rgbtoHexValue(5, 255, 5));
             shardAqua = new BaseItemTCShard("Aqua", Utils.rgbtoHexValue(5, 5, 255));
         } else {
-            shardAer = ItemUtils
-                .getItemStackWithMeta(Thaumcraft.isModLoaded(), "Thaumcraft:ItemShard", "Air Shard", 0, 1)
-                .getItem();
-            shardIgnis = ItemUtils
-                .getItemStackWithMeta(Thaumcraft.isModLoaded(), "Thaumcraft:ItemShard", "Fire Shard", 1, 1)
-                .getItem();
-            shardAqua = ItemUtils
-                .getItemStackWithMeta(Thaumcraft.isModLoaded(), "Thaumcraft:ItemShard", "Warer Shard", 2, 1)
-                .getItem();
-            shardTerra = ItemUtils
-                .getItemStackWithMeta(Thaumcraft.isModLoaded(), "Thaumcraft:ItemShard", "Earth Shard", 3, 1)
-                .getItem();
+            shardAer = getModItem(Thaumcraft.ID, "ItemShard", 1, 0).getItem();
+            shardIgnis = getModItem(Thaumcraft.ID, "ItemShard", 1, 1).getItem();
+            shardAqua = getModItem(Thaumcraft.ID, "ItemShard", 1, 2).getItem();
+            shardTerra = getModItem(Thaumcraft.ID, "ItemShard", 1, 3).getItem();
         }
         // Generates a set of four special dusts to be used in my recipes.
         dustAer = ItemUtils.generateSpecialUseDusts(MaterialsElements.getInstance().AER, true)[0];
@@ -502,7 +484,7 @@ public final class ModItems {
             "LiOH",
             Utils.rgbtoHexValue(250, 250, 250))[0]; // https://en.wikipedia.org/wiki/Lithium_hydroxide
 
-        if (!ItemUtils.checkForInvalidItems(ItemUtils.getItemStackOfAmountFromOreDict("dustQuicklime", 1))) {
+        if (ItemUtils.getItemStackOfAmountFromOreDict("dustQuicklime", 1) == null) {
             dustQuicklime = ItemUtils
                 .generateSpecialUseDusts("Quicklime", "Quicklime", "CaO", Utils.rgbtoHexValue(255, 255, 175))[0]; // https://en.wikipedia.org/wiki/Calcium_oxide
         }
@@ -523,7 +505,7 @@ public final class ModItems {
                 "Calcium Sulfate (Gypsum)",
                 "CaSO4",
                 Utils.rgbtoHexValue(255, 255, 255))[0]; // https://en.wikipedia.org/wiki/Calcium_sulfate
-            GTOreDictUnificator.registerOre("dustCalciumSulfate", ItemUtils.getSimpleStack(dustCalciumSulfate));
+            GTOreDictUnificator.registerOre("dustCalciumSulfate", new ItemStack(dustCalciumSulfate));
         } else {
             GTOreDictUnificator
                 .registerOre("dustCalciumSulfate", ItemUtils.getItemStackOfAmountFromOreDictNoBroken("dustGypsum", 1));
@@ -540,10 +522,7 @@ public final class ModItems {
             "Lithium Tetrafluoroberyllate Fuel Compound",
             "Li2BeF4",
             Utils.rgbtoHexValue(255, 255, 255))[0]; // https://en.wikipedia.org/wiki/FLiBe
-        Material.registerComponentForMaterial(
-            MaterialsNuclides.Li2BeF4,
-            OrePrefixes.dust,
-            ItemUtils.getSimpleStack(dustLi2BeF4));
+        Material.registerComponentForMaterial(MaterialsNuclides.Li2BeF4, OrePrefixes.dust, new ItemStack(dustLi2BeF4));
 
         Item[] phthalicAnhydride = ItemUtils.generateSpecialUseDusts(
             "PhthalicAnhydride",
@@ -586,7 +565,7 @@ public final class ModItems {
             0,
             1000,
             null,
-            CI.emptyCells(1),
+            ItemList.Cell_Empty.get(1),
             1000,
             true);
 
@@ -707,6 +686,12 @@ public final class ModItems {
         toolGregtechPump.registerPumpType(3, "Ultimate Hand Pump", 512000, 3);
         toolGregtechPump.registerPumpType(4, "Expandable Hand Pump", 0, 4);
 
+        GregtechItemList.SimpleHandPump.set(new ItemStack(ModItems.toolGregtechPump, 1, 1000));
+        GregtechItemList.AdvancedHandPump.set(new ItemStack(ModItems.toolGregtechPump, 1, 1001));
+        GregtechItemList.SuperHandPump.set(new ItemStack(ModItems.toolGregtechPump, 1, 1002));
+        GregtechItemList.UltimateHandPump.set(new ItemStack(ModItems.toolGregtechPump, 1, 1003));
+        GregtechItemList.ExpandableHandPump.set(new ItemStack(ModItems.toolGregtechPump, 1, 1004));
+
         // Xp Fluids - Dev
         if (!FluidRegistry.isFluidRegistered("mobessence")) {
             FluidUtils.generateFluidNoPrefix("mobessence", "Mob Essence", 0, new short[] { 125, 175, 125, 100 });
@@ -741,7 +726,7 @@ public final class ModItems {
             90000,
             new String[] { StringUtils.superscript("226Ra"),
                 "Result: Radon (" + StringUtils.superscript("222Rn") + ")" },
-            ItemUtils.getSimpleStack(dustDecayedRadium226),
+            new ItemStack(dustDecayedRadium226),
             5,
             GTRecipeConstants.DecayType.Alpha);
         dustProtactinium233 = new DustDecayable(
@@ -769,6 +754,10 @@ public final class ModItems {
         itemBoilerChassis = new ItemBoilerChassis();
         itemDehydratorCoilWire = new ItemDehydratorCoilWire();
         itemDehydratorCoil = new ItemDehydratorCoil();
+        GregtechItemList.DehydratorCoilWireEV.set(new ItemStack(itemDehydratorCoilWire, 1, 0));
+        GregtechItemList.DehydratorCoilWireIV.set(new ItemStack(itemDehydratorCoilWire, 1, 1));
+        GregtechItemList.DehydratorCoilWireLuV.set(new ItemStack(itemDehydratorCoilWire, 1, 2));
+        GregtechItemList.DehydratorCoilWireZPM.set(new ItemStack(itemDehydratorCoilWire, 1, 3));
 
         itemAirFilter = new ItemAirFilter();
         itemLavaFilter = new ItemLavaFilter();
@@ -823,7 +812,7 @@ public final class ModItems {
 
         // TODO Remove after 2.8
         Item bioSelector = new GTPPIntegratedCircuitItem("BioRecipeSelector", "bioscience/BioCircuit");
-        hideItemFromNEI(new ItemStack(bioSelector));
+        hideItem(new ItemStack(bioSelector));
 
         Item agrichemItem = new ItemAgrichemBase();
         GregtechItemList.AlgaeBiomass.set(new ItemStack(agrichemItem));
@@ -874,7 +863,7 @@ public final class ModItems {
         // General Chemistry
         // TODO Remove after 2.8
         Item t3Selector = new GTPPIntegratedCircuitItem("T3RecipeSelector", "science/general/AdvancedCircuit");
-        hideItemFromNEI(new ItemStack(t3Selector));
+        hideItem(new ItemStack(t3Selector));
 
         Item genericChemItem = new ItemGenericChemBase();
 
@@ -1006,14 +995,14 @@ public final class ModItems {
         /*
          * Try to generate dusts for missing rare earth materials if they don't exist
          */
-        if (!ItemUtils.checkForInvalidItems(ItemUtils.getItemStackOfAmountFromOreDictNoBroken("dustGadolinium", 1))) {
+        if (ItemUtils.getItemStackOfAmountFromOreDictNoBroken("dustGadolinium", 1) == null) {
             ItemUtils.generateSpecialUseDusts(
                 "Gadolinium",
                 "Gadolinium",
                 Materials.Gadolinium.mElement.name(),
                 Utils.rgbtoHexValue(226, 172, 9));
         }
-        if (!ItemUtils.checkForInvalidItems(ItemUtils.getItemStackOfAmountFromOreDictNoBroken("dustYtterbium", 1))) {
+        if (ItemUtils.getItemStackOfAmountFromOreDictNoBroken("dustYtterbium", 1) == null) {
             ItemUtils.generateSpecialUseDusts(
                 "Ytterbium",
                 "Ytterbium",
@@ -1023,14 +1012,14 @@ public final class ModItems {
                     Materials.Yttrium.mRGBa[1] - 60,
                     Materials.Yttrium.mRGBa[2] - 60));
         }
-        if (!ItemUtils.checkForInvalidItems(ItemUtils.getItemStackOfAmountFromOreDictNoBroken("dustSamarium", 1))) {
+        if (ItemUtils.getItemStackOfAmountFromOreDictNoBroken("dustSamarium", 1) == null) {
             ItemUtils.generateSpecialUseDusts(
                 "Samarium",
                 "Samarium",
                 Materials.Samarium.mElement.name(),
                 Utils.rgbtoHexValue(161, 168, 114));
         }
-        if (!ItemUtils.checkForInvalidItems(ItemUtils.getItemStackOfAmountFromOreDictNoBroken("dustLanthanum", 1))) {
+        if (ItemUtils.getItemStackOfAmountFromOreDictNoBroken("dustLanthanum", 1) == null) {
             ItemUtils.generateSpecialUseDusts(
                 "Lanthanum",
                 "Lanthanum",
@@ -1057,8 +1046,8 @@ public final class ModItems {
         }
         // Krypton Processing
         if (ItemUtils.getItemStackOfAmountFromOreDictNoBroken("ingotHotTitanium", 1) == null) {
-            itemHotTitaniumIngot = ItemUtils
-                .getSimpleStack(new BaseItemIngot(MaterialsElements.getInstance().TITANIUM, ComponentTypes.HOTINGOT));
+            itemHotTitaniumIngot = new ItemStack(
+                new BaseItemIngot(MaterialsElements.getInstance().TITANIUM, ComponentTypes.HOTINGOT));
         } else {
             itemHotTitaniumIngot = ItemUtils.getItemStackOfAmountFromOreDictNoBroken("ingotHotTitanium", 1);
         }
@@ -1137,7 +1126,7 @@ public final class ModItems {
         // A Block of Meat.
         if (ItemUtils.getItemStackOfAmountFromOreDictNoBroken("blockMeatRaw", 1) == null) {
             blockRawMeat = new BlockBaseModular(MaterialsOther.MEAT, BlockTypes.STANDARD);
-            ItemUtils.registerFuel(ItemUtils.getSimpleStack(blockRawMeat), 900);
+            GTPPCore.burnables.add(Pair.of(900, new ItemStack(blockRawMeat)));
         }
 
         // A plate of Vanadium.
