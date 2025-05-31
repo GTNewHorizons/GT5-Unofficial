@@ -208,10 +208,9 @@ public class ContainerSuperJukebox extends Container {
         isPlaying = tile_entity.mIsPlaying;
         isLooping = tile_entity.mIsLooping;
 
-        for (Object crafter : this.crafters) {
-            ICrafting var1 = (ICrafting) crafter;
-            var1.sendProgressBarUpdate(this, 102, isPlaying ? 1 : 0);
-            var1.sendProgressBarUpdate(this, 103, isLooping ? 1 : 0);
+        for (ICrafting crafter : this.crafters) {
+            crafter.sendProgressBarUpdate(this, 102, isPlaying ? 1 : 0);
+            crafter.sendProgressBarUpdate(this, 103, isLooping ? 1 : 0);
         }
     }
 

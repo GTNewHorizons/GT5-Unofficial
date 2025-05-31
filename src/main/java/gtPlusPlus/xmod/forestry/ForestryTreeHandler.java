@@ -49,7 +49,7 @@ public class ForestryTreeHandler {
                 speciesUID,
                 sapling == null ? null : sapling.copy(),
                 log == null ? null : log.copy(),
-                leaves == null ? null : leaves.copy(),
+                leaves.copy(),
                 fruit == null ? null : fruit.copy());
         }
     }
@@ -69,11 +69,10 @@ public class ForestryTreeHandler {
             }
 
             ItemStack leaves = new ItemStack(PluginArboriculture.blocks.leaves, 1, 0);
-            if (speciesUID != null) {
-                NBTTagCompound nbtTagCompound = new NBTTagCompound();
-                nbtTagCompound.setString("species", speciesUID);
-                leaves.setTagCompound(nbtTagCompound);
-            }
+
+            NBTTagCompound nbtTagCompound = new NBTTagCompound();
+            nbtTagCompound.setString("species", speciesUID);
+            leaves.setTagCompound(nbtTagCompound);
 
             ItemStack fruit = null;
             if (individual.canBearFruit()) {
@@ -87,7 +86,7 @@ public class ForestryTreeHandler {
                 speciesUID,
                 sapling == null ? null : sapling.copy(),
                 log == null ? null : log.copy(),
-                leaves == null ? null : leaves.copy(),
+                leaves.copy(),
                 fruit == null ? null : fruit.copy());
         }
     }
