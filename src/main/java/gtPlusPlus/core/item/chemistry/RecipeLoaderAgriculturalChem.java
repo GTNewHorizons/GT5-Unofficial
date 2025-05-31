@@ -4,14 +4,18 @@ import static gregtech.api.recipe.RecipeMaps.centrifugeRecipes;
 import static gregtech.api.recipe.RecipeMaps.compressorRecipes;
 import static gregtech.api.recipe.RecipeMaps.mixerRecipes;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
+import static gregtech.api.util.GTRecipeConstants.CHEMPLANT_CASING_TIER;
 import static gregtech.api.util.GTRecipeConstants.FUEL_VALUE;
 import static gregtech.api.util.GTRecipeConstants.UniversalChemical;
 import static gtPlusPlus.api.recipe.GTPPRecipeMaps.chemicalDehydratorRecipes;
+import static gtPlusPlus.api.recipe.GTPPRecipeMaps.chemicalPlantRecipes;
 import static gtPlusPlus.api.recipe.GTPPRecipeMaps.semiFluidFuels;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
@@ -23,9 +27,11 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
+import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gtPlusPlus.core.fluids.GTPPFluids;
+import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.plugin.agrichem.BioRecipes;
@@ -61,6 +67,7 @@ public class RecipeLoaderAgriculturalChem {
         addBasicOrganiseFertRecipes();
         addAdvancedOrganiseFertRecipes();
 
+        recipeFermentationBase();
         addMiscRecipes();
 
         BioRecipes.init();
@@ -244,6 +251,102 @@ public class RecipeLoaderAgriculturalChem {
                     .addTo(UniversalChemical);
             }
         }
+    }
+
+    private static void recipeFermentationBase() {
+        List<ItemStack> aMap = OreDictionary.getOres("cropSugarbeet");
+        for (ItemStack a : mList_Master_FruitVege) {
+            if (aMap.contains(a)) {
+                continue;
+            }
+            if (a != null) {
+                GTValues.RA.stdBuilder()
+                    .itemInputs(GTUtility.getIntegratedCircuit(2), GTUtility.copyAmount(10, a))
+                    .fluidInputs(GTModHandler.getDistilledWater(1_000))
+                    .fluidOutputs(new FluidStack(GTPPFluids.FermentationBase, 1_000))
+                    .duration(30 * SECONDS)
+                    .eut(2)
+                    .metadata(CHEMPLANT_CASING_TIER, 0)
+                    .addTo(chemicalPlantRecipes);
+            }
+        }
+
+        for (ItemStack a : mList_Master_Seeds) {
+            if (a != null) {
+                GTValues.RA.stdBuilder()
+                    .itemInputs(GTUtility.getIntegratedCircuit(3), GTUtility.copyAmount(20, a))
+                    .fluidInputs(GTModHandler.getDistilledWater(1_000))
+                    .fluidOutputs(new FluidStack(GTPPFluids.FermentationBase, 1_000))
+                    .duration(30 * SECONDS)
+                    .eut(2)
+                    .metadata(CHEMPLANT_CASING_TIER, 0)
+                    .addTo(chemicalPlantRecipes);
+            }
+        }
+
+        // Sugar Cane
+        GTValues.RA.stdBuilder()
+            .itemInputs(GTUtility.getIntegratedCircuit(4), new ItemStack(Items.reeds, 32))
+            .fluidInputs(GTModHandler.getDistilledWater(1_000))
+            .fluidOutputs(new FluidStack(GTPPFluids.FermentationBase, 1_000))
+            .duration(30 * SECONDS)
+            .eut(TierEU.RECIPE_LV)
+            .metadata(CHEMPLANT_CASING_TIER, 0)
+            .addTo(chemicalPlantRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                GTUtility.getIntegratedCircuit(5),
+                new ItemStack(Items.reeds, 32),
+                new ItemStack(ModItems.dustCalciumCarbonate, 2))
+            .fluidInputs(FluidUtils.getHotWater(2_000))
+            .fluidOutputs(new FluidStack(GTPPFluids.FermentationBase, 2_000))
+            .duration(10 * SECONDS)
+            .eut(TierEU.RECIPE_LV)
+            .metadata(CHEMPLANT_CASING_TIER, 0)
+            .addTo(chemicalPlantRecipes);
+
+        // Sugar Beet
+        if (!GTOreDictUnificator.getOres("cropSugarbeet")
+            .isEmpty()) {
+
+            GTValues.RA.stdBuilder()
+                .itemInputs(GTUtility.getIntegratedCircuit(4), GTOreDictUnificator.get("cropSugarbeet", 4))
+                .fluidInputs(GTModHandler.getDistilledWater(1_000))
+                .fluidOutputs(new FluidStack(GTPPFluids.FermentationBase, 1_000))
+                .duration(30 * SECONDS)
+                .eut(TierEU.RECIPE_LV)
+                .metadata(CHEMPLANT_CASING_TIER, 0)
+                .addTo(chemicalPlantRecipes);
+
+            GTValues.RA.stdBuilder()
+                .itemInputs(
+                    GTUtility.getIntegratedCircuit(5),
+                    GTOreDictUnificator.get("cropSugarbeet", 4),
+                    new ItemStack(ModItems.dustCalciumCarbonate, 2))
+                .fluidInputs(FluidUtils.getHotWater(2_000))
+                .fluidOutputs(new FluidStack(GTPPFluids.FermentationBase, 2_000))
+                .duration(10 * SECONDS)
+                .eut(TierEU.RECIPE_LV)
+                .metadata(CHEMPLANT_CASING_TIER, 0)
+                .addTo(chemicalPlantRecipes);
+        }
+
+        // Produce Acetone, Butanol and Ethanol
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                GTUtility.getIntegratedCircuit(5),
+                GregtechItemList.GoldenBrownCelluloseFiber.get(6),
+                GregtechItemList.RedCelluloseFiber.get(16))
+            .fluidInputs(new FluidStack(GTPPFluids.FermentationBase, 48_000))
+            .fluidOutputs(
+                new FluidStack(GTPPFluids.Butanol, 18_000),
+                Materials.Acetone.getFluid(9_000),
+                Materials.Ethanol.getFluid(3_000))
+            .duration(100 * SECONDS)
+            .eut(TierEU.RECIPE_LV)
+            .metadata(CHEMPLANT_CASING_TIER, 1)
+            .addTo(chemicalPlantRecipes);
     }
 
     private static void addMiscRecipes() {
