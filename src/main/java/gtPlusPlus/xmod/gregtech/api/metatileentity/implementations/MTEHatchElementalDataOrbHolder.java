@@ -126,7 +126,7 @@ public class MTEHatchElementalDataOrbHolder extends MTEHatch implements IConfigu
     public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
         ItemStack aStack) {
         Logger.INFO("Checking if we can pull " + aStack.getDisplayName() + " from slot " + aIndex);
-        return aIndex == mInventory.length - 1 && aStack.getItem() instanceof ItemIntegratedCircuit
+        return aIndex == mInventory.length - 1 && aStack != null && aStack.getItem() instanceof ItemIntegratedCircuit
             && side == getBaseMetaTileEntity().getFrontFacing();
     }
 
@@ -134,7 +134,7 @@ public class MTEHatchElementalDataOrbHolder extends MTEHatch implements IConfigu
     public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
         ItemStack aStack) {
         Logger.INFO("Checking if we can put " + aStack.getDisplayName() + " into slot " + aIndex);
-        return aIndex == mInventory.length - 1 && aStack.getItem() instanceof ItemIntegratedCircuit
+        return aIndex == mInventory.length - 1 && aStack != null && aStack.getItem() instanceof ItemIntegratedCircuit
             && side == getBaseMetaTileEntity().getFrontFacing();
     }
 
@@ -149,7 +149,7 @@ public class MTEHatchElementalDataOrbHolder extends MTEHatch implements IConfigu
 
     public ItemStack getOrbByCircuit() {
         ItemStack aCirc = getBaseMetaTileEntity().getStackInSlot(getCircuitSlot());
-        if (aCirc.getItem() instanceof ItemIntegratedCircuit) {
+        if (aCirc != null && aCirc.getItem() instanceof ItemIntegratedCircuit) {
             int slot = aCirc.getItemDamage() - 1; // slots are 0 indexed but there's no 0 circuit
             if (slot < getBaseMetaTileEntity().getSizeInventory() - 1) {
                 return getBaseMetaTileEntity().getStackInSlot(slot);
@@ -163,7 +163,7 @@ public class MTEHatchElementalDataOrbHolder extends MTEHatch implements IConfigu
 
     @Override
     public boolean canInsertItem(int aIndex, ItemStack aStack, int ordinalSide) {
-        if (aIndex == mInventory.length - 1 && aStack.getItem() instanceof ItemIntegratedCircuit
+        if (aIndex == mInventory.length - 1 && aStack != null && aStack.getItem() instanceof ItemIntegratedCircuit
             && ordinalSide == getBaseMetaTileEntity().getFrontFacing()
                 .ordinal()) {
             Logger.INFO("Putting " + aStack.getDisplayName() + " into slot " + aIndex);
@@ -174,7 +174,7 @@ public class MTEHatchElementalDataOrbHolder extends MTEHatch implements IConfigu
 
     @Override
     public boolean canExtractItem(int aIndex, ItemStack aStack, int ordinalSide) {
-        if (aIndex == mInventory.length - 1 && aStack.getItem() instanceof ItemIntegratedCircuit) {
+        if (aIndex == mInventory.length - 1 && aStack != null && aStack.getItem() instanceof ItemIntegratedCircuit) {
             Logger.INFO("Pulling " + aStack.getDisplayName() + " from slot " + aIndex);
             return true;
         }
