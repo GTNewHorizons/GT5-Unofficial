@@ -144,7 +144,7 @@ public class ItemUtils {
             .eut(4)
             .addTo(packagerRecipes);
 
-        if (null != (tinyDust) && null != (normalDust)) {
+        if (tinyDust != null && normalDust != null) {
             if (RecipeUtils.addShapedRecipe(
                 tinyDust,
                 tinyDust,
