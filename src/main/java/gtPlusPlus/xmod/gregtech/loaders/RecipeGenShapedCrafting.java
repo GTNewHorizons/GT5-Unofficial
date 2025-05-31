@@ -124,7 +124,7 @@ public class RecipeGenShapedCrafting extends RecipeGenBase {
             }
 
         // Two small to long rod
-        if (null != (material.getLongRod(1)) && null != (material.getRod(1))) if (GTModHandler.addCraftingRecipe(
+        if (material.getLongRod(1) != null && material.getRod(1) != null) if (GTModHandler.addCraftingRecipe(
             material.getLongRod(1),
             GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "RhR", 'R', material.getRod(1) })) {
