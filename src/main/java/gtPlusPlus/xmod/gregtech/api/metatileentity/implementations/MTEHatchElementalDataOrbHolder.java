@@ -4,7 +4,6 @@ import static gregtech.common.modularui2.util.CommonGuiComponents.gridTemplate4b
 
 import java.util.ArrayList;
 
-import gregtech.common.items.ItemIntegratedCircuit;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -30,7 +29,7 @@ import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.modularui2.GTGuis;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GTUtility;
+import gregtech.common.items.ItemIntegratedCircuit;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
@@ -130,7 +129,6 @@ public class MTEHatchElementalDataOrbHolder extends MTEHatch implements IConfigu
         return aIndex == mInventory.length - 1 && aStack.getItem() instanceof ItemIntegratedCircuit
             && side == getBaseMetaTileEntity().getFrontFacing();
     }
-
 
     @Override
     public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
