@@ -301,7 +301,7 @@ public class RecipeGenRecycling implements Runnable {
                 .replace("dust", "");
             final Materials m = Materials.get(MaterialName);
             if (m != null && m != Materials._NULL) {
-                returnValue = ItemUtils.getGregtechDust(m, amount);
+                returnValue = GTOreDictUnificator.get(OrePrefixes.dust, m, 1L);
                 if (null != (returnValue)) {
                     return returnValue;
                 }

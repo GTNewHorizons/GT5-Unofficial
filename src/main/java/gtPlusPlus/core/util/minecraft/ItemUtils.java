@@ -95,7 +95,7 @@ public class ItemUtils {
                     .replace("dust", "");
                 final Materials m = Materials.get(MaterialName);
                 if (m != Materials._NULL) {
-                    returnValue = getGregtechDust(m, amount);
+                    returnValue = GTOreDictUnificator.get(OrePrefixes.dust, m, 1);
                     if (null != returnValue) {
                         return returnValue;
                     }
@@ -113,17 +113,6 @@ public class ItemUtils {
         } catch (final Throwable t) {
             return null;
         }
-    }
-
-    public static ItemStack getGregtechDust(final Materials material, final int amount) {
-        final ItemStack returnValue = GTOreDictUnificator.get(OrePrefixes.dust, material, 1L);
-        if (returnValue != null) {
-            if (null != (returnValue)) {
-                return returnValue.copy();
-            }
-        }
-        Logger.WARNING(material + " was not valid.");
-        return null;
     }
 
     // NullFormula
