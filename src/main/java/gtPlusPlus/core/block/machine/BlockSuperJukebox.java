@@ -412,10 +412,10 @@ public class BlockSuperJukebox extends BlockJukebox {
 
             ItemStack g;
 
-            for (int i = 17; i >= 0; i--) {
+            for (int i = aSlotCounter; i >= 0; i--) {
                 g = this.getInventory()
                     .getInventory()[i];
-                if (g == null && aSlotCounter >= 0) {
+                if (g == null) {
                     IInventory aThisInv = this.getInventory();
                     GTUtility
                         .moveStackFromSlotAToSlotB(aThisInv, aThisInv, 20, i, (byte) 1, (byte) 1, (byte) 1, (byte) 1);

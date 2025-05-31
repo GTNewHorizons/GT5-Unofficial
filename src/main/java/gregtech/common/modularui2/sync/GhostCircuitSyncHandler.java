@@ -10,6 +10,7 @@ import net.minecraft.network.PacketBuffer;
 import com.cleanroommc.modularui.network.NetworkUtils;
 import com.cleanroommc.modularui.utils.MouseData;
 import com.cleanroommc.modularui.utils.item.IItemHandler;
+import com.cleanroommc.modularui.value.sync.ItemSlotSH;
 import com.cleanroommc.modularui.value.sync.PhantomItemSlotSH;
 import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 
@@ -56,10 +57,11 @@ public class GhostCircuitSyncHandler extends PhantomItemSlotSH {
         GhostCircuitItemStackHandler handler = getGhostCircuitHandler();
         if (handler.getCircuitConfig() != config) {
             handler.setCircuitConfig(config);
-            syncToClient(1, buf -> {
-                buf.writeBoolean(false);
+            syncToClient(ItemSlotSH.SYNC_ITEM, buf -> {
+                buf.writeBoolean(false);// onlyAmountChanged
                 NetworkUtils.writeItemStack(buf, handler.getStackInSlot(0));
-                buf.writeBoolean(false);
+                buf.writeBoolean(false);// init
+                buf.writeBoolean(false);// force sync
             });
         }
     }

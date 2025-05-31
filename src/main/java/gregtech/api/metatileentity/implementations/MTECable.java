@@ -166,7 +166,6 @@ public class MTECable extends MetaPipeEntity implements IMetaTileEntityCable {
         if (!(baseEntity.getNodePath() instanceof PowerNodePath powerPath)) return;
 
         if (isCoverOnSide(baseEntity, livingEntity)) return;
-        if ((baseEntity.mConnections & IConnectable.HAS_HARDENEDFOAM) == 1) return;
 
         final long amperage = powerPath.getAmperage();
         final long voltage = powerPath.getVoltage();
@@ -206,7 +205,7 @@ public class MTECable extends MetaPipeEntity implements IMetaTileEntityCable {
         if (!isConnectedAtSide(side) && side != ForgeDirection.UNKNOWN) return 0;
         if (!getBaseMetaTileEntity().getCoverAtSide(side)
             .letsEnergyIn()) return 0;
-        return transferElectricity(side, voltage, amperage, (HashSet<TileEntity>) null);
+        return transferElectricity(side, voltage, amperage, null);
     }
 
     @Override

@@ -14,6 +14,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
+import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -559,6 +560,12 @@ public abstract class MetaTileEntity extends CommonMetaTileEntity implements ICr
 
     }
 
+    /**
+     * Implement {@link #fill(ForgeDirection, FluidStack, boolean)} instead.
+     */
+    @SuppressWarnings("DeprecatedIsStillUsed")
+    @Deprecated
+    @ApiStatus.ScheduledForRemoval
     public int fill_default(ForgeDirection side, FluidStack aFluid, boolean doFill) {
         int filled = fill(aFluid, doFill);
         if (filled > 0) {
@@ -569,7 +576,7 @@ public abstract class MetaTileEntity extends CommonMetaTileEntity implements ICr
 
     @Override
     public int fill(ForgeDirection side, FluidStack aFluid, boolean doFill) {
-        if (getBaseMetaTileEntity().hasSteamEngineUpgrade() && GTModHandler.isSteam(aFluid) && aFluid.amount > 1) {
+        if (getBaseMetaTileEntity().isSteampowered() && GTModHandler.isSteam(aFluid) && aFluid.amount > 1) {
             int tSteam = (int) Math.min(
                 Integer.MAX_VALUE,
                 Math.min(
