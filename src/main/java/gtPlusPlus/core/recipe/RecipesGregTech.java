@@ -1470,7 +1470,7 @@ public class RecipesGregTech {
             .eut(0)
             .addTo(GTRecipeConstants.Fuel);
         RA.stdBuilder()
-            .itemInputs(getModItem(IndustrialCraft2.ID, "itemCellEmpty", 1L, 2))
+            .itemInputs(GTUtility.copyAmount(2, Ic2Items.lavaCell))
             .metadata(FUEL_VALUE, 32)
             .metadata(FUEL_TYPE, 2)
             .duration(0)
