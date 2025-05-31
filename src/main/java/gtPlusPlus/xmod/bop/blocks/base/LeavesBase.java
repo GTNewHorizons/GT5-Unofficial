@@ -5,6 +5,7 @@ import static gregtech.api.enums.Mods.GTPlusPlus;
 import java.util.List;
 import java.util.Random;
 
+import gregtech.api.util.GTRecipeBuilder;
 import gregtech.api.util.GTUtility;
 import net.minecraft.block.BlockLeaves;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -23,6 +24,7 @@ import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
+import net.minecraftforge.oredict.OreDictionary;
 
 public class LeavesBase extends BlockLeaves {
 
@@ -36,7 +38,7 @@ public class LeavesBase extends BlockLeaves {
         String blockName = "block" + Utils.sanitizeString(blockNameLocalized) + "Leaves";
         GameRegistry.registerBlock(this, ItemBlock.class, blockName);
         this.setBlockName(blockName);
-        ItemUtils.addItemToOreDictionary(new ItemStack(this), "treeLeaves", true);
+        OreDictionary.registerOre("treeLeaves", new ItemStack(this, 1, GTRecipeBuilder.WILDCARD));
         this.setCreativeTab(AddToCreativeTab.tabBOP);
         Blocks.fire.setFireInfo(this, 80, 150);
     }

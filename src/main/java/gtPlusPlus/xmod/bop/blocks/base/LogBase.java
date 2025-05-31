@@ -4,6 +4,7 @@ import static gregtech.api.enums.Mods.GTPlusPlus;
 
 import java.util.List;
 
+import gregtech.api.util.GTRecipeBuilder;
 import net.minecraft.block.BlockLog;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
@@ -19,6 +20,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
+import net.minecraftforge.oredict.OreDictionary;
 
 public abstract class LogBase extends BlockLog {
 
@@ -31,7 +33,7 @@ public abstract class LogBase extends BlockLog {
         String blockName = "block" + Utils.sanitizeString(blockNameLocalized) + "Log";
         GameRegistry.registerBlock(this, ItemBlock.class, blockName);
         this.setBlockName(blockName);
-        ItemUtils.addItemToOreDictionary(new ItemStack(this), "logWood", true);
+        OreDictionary.registerOre("logWood", new ItemStack(this, 1, GTRecipeBuilder.WILDCARD));
         this.setCreativeTab(AddToCreativeTab.tabBOP);
         Blocks.fire.setFireInfo(this, 20, 100);
     }

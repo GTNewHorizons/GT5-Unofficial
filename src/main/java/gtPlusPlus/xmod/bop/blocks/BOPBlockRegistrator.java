@@ -1,5 +1,6 @@
 package gtPlusPlus.xmod.bop.blocks;
 
+import gregtech.api.util.GTRecipeBuilder;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
@@ -12,6 +13,7 @@ import gtPlusPlus.xmod.bop.blocks.pine.SaplingPineTree;
 import gtPlusPlus.xmod.bop.blocks.rainforest.LeavesRainforestTree;
 import gtPlusPlus.xmod.bop.blocks.rainforest.LogRainforestTree;
 import gtPlusPlus.xmod.bop.blocks.rainforest.SaplingRainforestTree;
+import net.minecraftforge.oredict.OreDictionary;
 
 public class BOPBlockRegistrator {
 
@@ -32,18 +34,18 @@ public class BOPBlockRegistrator {
         log_Rainforest = new LogRainforestTree();
         leaves_Rainforest = new LeavesRainforestTree();
         sapling_Rainforest = new SaplingRainforestTree();
-        ItemUtils.addItemToOreDictionary(new ItemStack(log_Rainforest), "logWood", true);
-        ItemUtils.addItemToOreDictionary(new ItemStack(leaves_Rainforest), "treeLeaves", true);
-        ItemUtils.addItemToOreDictionary(new ItemStack(sapling_Rainforest), "treeSapling", true);
+        OreDictionary.registerOre("logWood", new ItemStack(log_Rainforest, 1, GTRecipeBuilder.WILDCARD));
+        OreDictionary.registerOre("treeLeaves", new ItemStack(leaves_Rainforest, 1, GTRecipeBuilder.WILDCARD));
+        OreDictionary.registerOre("treeSapling", new ItemStack(sapling_Rainforest, 1, GTRecipeBuilder.WILDCARD));
     }
 
     private static void registerTree_Pine() {
         log_Pine = new LogPineTree();
         leaves_Pine = new LeavesPineTree();
         sapling_Pine = new SaplingPineTree();
-        ItemUtils.addItemToOreDictionary(new ItemStack(log_Pine), "logWood", true);
-        ItemUtils.addItemToOreDictionary(new ItemStack(leaves_Pine), "treeLeaves", true);
-        ItemUtils.addItemToOreDictionary(new ItemStack(sapling_Pine), "treeSapling", true);
+        OreDictionary.registerOre("logWood", new ItemStack(log_Pine, 1, GTRecipeBuilder.WILDCARD));
+        OreDictionary.registerOre("treeLeaves", new ItemStack(leaves_Pine, 1, GTRecipeBuilder.WILDCARD));
+        OreDictionary.registerOre("treeSapling", new ItemStack(sapling_Pine, 1, GTRecipeBuilder.WILDCARD));
     }
 
     public static void recipes() {

@@ -1,9 +1,11 @@
 package gtPlusPlus.core.item.base;
 
+import gregtech.api.util.GTUtility;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemStack;
 
 import gtPlusPlus.core.util.minecraft.ItemUtils;
+import net.minecraftforge.oredict.OreDictionary;
 
 public class BaseItemBurnable extends CoreItem {
 
@@ -15,13 +17,9 @@ public class BaseItemBurnable extends CoreItem {
         this.itemName = displayName;
         this.meta = meta;
         if (oredictName != null && !oredictName.isEmpty()) {
-            registerOrdictionary(oredictName);
+            OreDictionary.registerOre(oredictName, new ItemStack(this));
         }
         ItemUtils.registerFuel(new ItemStack(this, 1), burnTime);
-    }
-
-    public final void registerOrdictionary(String name) {
-        ItemUtils.addItemToOreDictionary(new ItemStack(this), name);
     }
 
     @Override

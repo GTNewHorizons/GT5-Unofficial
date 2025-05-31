@@ -8,6 +8,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
+import gregtech.api.util.GTUtility;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
@@ -32,6 +33,7 @@ import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.minecraft.EntityUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
+import net.minecraftforge.oredict.OreDictionary;
 
 public class BaseItemMetaFood extends ItemFood {
 
@@ -203,7 +205,7 @@ public class BaseItemMetaFood extends ItemFood {
             if (aOreDictNames != null && !aOreDictNames.isEmpty()) {
                 ItemStack aFoodStack = new ItemStack(ModItems.itemMetaFood,1, aMetaID);
                 for (String aOreName : aOreDictNames) {
-                    ItemUtils.addItemToOreDictionary(aFoodStack, aOreName);
+                    OreDictionary.registerOre(aOreName, aFoodStack);
                 }
             }
         }

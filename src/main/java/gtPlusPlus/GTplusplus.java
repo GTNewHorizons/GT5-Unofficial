@@ -3,6 +3,7 @@ package gtPlusPlus;
 import static gregtech.api.enums.Mods.Names;
 import static gregtech.api.enums.Mods.Thaumcraft;
 
+import gregtech.api.util.GTUtility;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -44,6 +45,7 @@ import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtTools;
 import gtPlusPlus.xmod.gregtech.loaders.RecipeGenBlastSmelterGTNH;
 import gtPlusPlus.xmod.gregtech.loaders.RecipeGenMultisUsingFluidInsteadOfCells;
 import gtPlusPlus.xmod.thaumcraft.commands.CommandDumpAspects;
+import net.minecraftforge.oredict.OreDictionary;
 
 @Mod(
     modid = Names.G_T_PLUS_PLUS,
@@ -274,37 +276,23 @@ public class GTplusplus {
     }
 
     private static void fixVanillaOreDict() {
-        registerToOreDict(new ItemStack(Items.blaze_rod), "rodBlaze");
-        registerToOreDict(new ItemStack(Items.nether_wart), "cropNetherWart");
-        registerToOreDict(new ItemStack(Items.reeds), "sugarcane");
-        registerToOreDict(new ItemStack(Items.paper), "paper");
-        registerToOreDict(new ItemStack(Items.ender_pearl), "enderpearl");
-        registerToOreDict(new ItemStack(Items.bone), "bone");
-        registerToOreDict(new ItemStack(Items.gunpowder), "gunpowder");
-        registerToOreDict(new ItemStack(Items.string), "string");
-        registerToOreDict(new ItemStack(Items.nether_star), "netherStar");
-        registerToOreDict(new ItemStack(Items.leather), "leather");
-        registerToOreDict(new ItemStack(Items.feather), "feather");
-        registerToOreDict(new ItemStack(Items.egg), "egg");
-        registerToOreDict(new ItemStack(Blocks.end_stone), "endstone");
-        registerToOreDict(new ItemStack(Blocks.vine), "vine");
-        registerToOreDict(new ItemStack(Blocks.cactus), "blockCactus");
-        registerToOreDict(new ItemStack(Blocks.grass), "grass");
-        registerToOreDict(new ItemStack(Blocks.obsidian), "obsidian");
-        registerToOreDict(new ItemStack(Blocks.crafting_table), "workbench");
-    }
-
-    private static void registerToOreDict(ItemStack aStack, String aString) {
-        if (aStack.getItem() == Items.blaze_rod) {
-            Logger
-                .INFO("Registering " + aStack.getDisplayName() + " to OreDictionary under the tag '" + aString + "'.");
-        } else {
-            Logger.INFO(
-                "Registering " + aStack.getDisplayName()
-                    + " to OreDictionary under the tag '"
-                    + aString
-                    + "'. (Added to Forge in 1.8.9)");
-        }
-        ItemUtils.addItemToOreDictionary(aStack, aString);
+        OreDictionary.registerOre("rodBlaze", new ItemStack(Items.blaze_rod));
+        OreDictionary.registerOre("cropNetherWart", new ItemStack(Items.nether_wart));
+        OreDictionary.registerOre("sugarcane", new ItemStack(Items.reeds));
+        OreDictionary.registerOre("paper", new ItemStack(Items.paper));
+        OreDictionary.registerOre("enderpearl", new ItemStack(Items.ender_pearl));
+        OreDictionary.registerOre("bone", new ItemStack(Items.bone));
+        OreDictionary.registerOre("gunpowder", new ItemStack(Items.gunpowder));
+        OreDictionary.registerOre("string", new ItemStack(Items.string));
+        OreDictionary.registerOre("netherStar", new ItemStack(Items.nether_star));
+        OreDictionary.registerOre("leather", new ItemStack(Items.leather));
+        OreDictionary.registerOre("feather", new ItemStack(Items.feather));
+        OreDictionary.registerOre("egg", new ItemStack(Items.egg));
+        OreDictionary.registerOre("endstone", new ItemStack(Blocks.end_stone));
+        OreDictionary.registerOre("vine", new ItemStack(Blocks.vine));
+        OreDictionary.registerOre("blockCactus", new ItemStack(Blocks.cactus));
+        OreDictionary.registerOre("grass", new ItemStack(Blocks.grass));
+        OreDictionary.registerOre("obsidian", new ItemStack(Blocks.obsidian));
+        OreDictionary.registerOre("workbench", new ItemStack(Blocks.crafting_table));
     }
 }

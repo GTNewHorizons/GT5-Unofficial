@@ -5,6 +5,7 @@ import static gregtech.api.enums.Mods.GTPlusPlus;
 import java.util.List;
 import java.util.Random;
 
+import gregtech.api.util.GTRecipeBuilder;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockSapling;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -27,6 +28,7 @@ import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
+import net.minecraftforge.oredict.OreDictionary;
 
 public class SaplingBase extends BlockSapling {
 
@@ -44,7 +46,7 @@ public class SaplingBase extends BlockSapling {
         String blockName = "block" + Utils.sanitizeString(blockNameLocalized);
         GameRegistry.registerBlock(this, ItemBlock.class, blockName);
         this.setBlockName(blockName);
-        ItemUtils.addItemToOreDictionary(new ItemStack(this), "treeSapling", true);
+        OreDictionary.registerOre("treeSapling", new ItemStack(this, 1, GTRecipeBuilder.WILDCARD));
         this.setCreativeTab(AddToCreativeTab.tabBOP);
         this.setStepSound(Block.soundTypeGrass);
     }

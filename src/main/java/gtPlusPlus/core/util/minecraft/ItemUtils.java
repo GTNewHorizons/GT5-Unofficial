@@ -43,20 +43,6 @@ import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.xmod.gregtech.loaders.RecipeGenDustGeneration;
 
 public class ItemUtils {
-    public static void addItemToOreDictionary(ItemStack stack, final String oreDictName, boolean useWildcardMeta) {
-        if (useWildcardMeta) {
-            stack = new ItemStack(stack.getItem(), stack.stackSize, GTRecipeBuilder.WILDCARD);
-        }
-        try {
-            OreDictionary.registerOre(oreDictName, stack);
-        } catch (final NullPointerException e) {
-            Logger.ERROR(ItemUtils.getItemName(stack) + " not registered. [NULL]");
-        }
-    }
-
-    public static void addItemToOreDictionary(final ItemStack stack, final String oreDictName) {
-        addItemToOreDictionary(stack, oreDictName, false);
-    }
 
     public static ItemStack getItemStackOfAmountFromOreDict(String oredictName, final int amount) {
         String mTemp = oredictName;

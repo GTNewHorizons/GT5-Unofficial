@@ -6,6 +6,7 @@ import biomesoplenty.api.content.BOPCItems;
 import gregtech.api.enums.Mods;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.xmod.bop.blocks.BOPBlockRegistrator;
+import net.minecraftforge.oredict.OreDictionary;
 
 public class BiomesOPlentyHandler {
 
@@ -13,9 +14,9 @@ public class BiomesOPlentyHandler {
         BOPBlockRegistrator.run();
         if (Mods.BiomesOPlenty.isModLoaded()) {
             if (BOPCItems.misc != null) {
-                ItemStack aPinecone = new ItemStack(BOPCItems.misc,1, 13);
-                if (aPinecone != null) {
-                    ItemUtils.addItemToOreDictionary(aPinecone, "pinecone");
+                ItemStack pinecone = new ItemStack(BOPCItems.misc,1, 13);
+                if (pinecone != null) {
+                    OreDictionary.registerOre("pinecone", pinecone);
                 }
             }
         }
