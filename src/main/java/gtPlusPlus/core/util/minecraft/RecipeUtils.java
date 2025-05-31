@@ -3,10 +3,8 @@ package gtPlusPlus.core.util.minecraft;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
 
-import gregtech.api.enums.ToolDictNames;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -28,8 +26,6 @@ import gtPlusPlus.api.objects.minecraft.ShapedRecipe;
 import gtPlusPlus.core.handler.CompatHandler;
 import gtPlusPlus.core.handler.Recipes.LateRegistrationHandler;
 import gtPlusPlus.core.handler.Recipes.RegistrationHandler;
-import gtPlusPlus.core.lib.GTPPCore;
-import gtPlusPlus.core.recipe.common.CI;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 
 public class RecipeUtils {

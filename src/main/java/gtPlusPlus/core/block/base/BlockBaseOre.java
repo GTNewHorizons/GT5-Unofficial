@@ -56,9 +56,8 @@ public class BlockBaseOre extends BasicBlock implements ITexturedBlock {
                 this,
                 ItemBlockOre.class,
                 Utils.sanitizeString("ore" + Utils.sanitizeString(this.blockMaterial.getLocalizedName())));
-            GTOreDictUnificator.registerOre(
-                "ore" + Utils.sanitizeString(this.blockMaterial.getLocalizedName()),
-                new ItemStack(this));
+            GTOreDictUnificator
+                .registerOre("ore" + Utils.sanitizeString(this.blockMaterial.getLocalizedName()), new ItemStack(this));
         } catch (Throwable t) {
             t.printStackTrace();
         }
@@ -145,7 +144,7 @@ public class BlockBaseOre extends BasicBlock implements ITexturedBlock {
     public ArrayList<ItemStack> getDrops(World world, int x, int y, int z, int metadata, int fortune) {
         ArrayList<ItemStack> drops = new ArrayList<>();
         if (shouldSilkTouch) {
-            drops.add(new ItemStack(this,1, metadata));
+            drops.add(new ItemStack(this, 1, metadata));
         } else {
             switch (GTMod.gregtechproxy.oreDropSystem) {
                 case Item -> drops.add(
@@ -175,7 +174,7 @@ public class BlockBaseOre extends BasicBlock implements ITexturedBlock {
                     }
                 }
                 // Unified ore, Dimension ore, Regular ore
-                case UnifiedBlock, PerDimBlock, Block -> drops.add(new ItemStack(this,1, metadata));
+                case UnifiedBlock, PerDimBlock, Block -> drops.add(new ItemStack(this, 1, metadata));
 
             }
         }

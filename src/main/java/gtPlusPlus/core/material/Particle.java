@@ -7,7 +7,6 @@ import net.minecraft.item.ItemStack;
 import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.item.chemistry.IonParticles;
 import gtPlusPlus.core.util.Utils;
-import gtPlusPlus.core.util.minecraft.ItemUtils;
 
 public class Particle {
 
@@ -128,7 +127,7 @@ public class Particle {
                 if (meta == null) {
                     meta = 0;
                 }
-                ItemStack aIon = new ItemStack(ModItems.itemIonParticleBase,1, meta);
+                ItemStack aIon = new ItemStack(ModItems.itemIonParticleBase, 1, meta);
                 if (aCharge != 0) {
                     IonParticles.setChargeState(aIon, aCharge);
                 }
@@ -147,7 +146,7 @@ public class Particle {
                 if (meta == null) {
                     meta = 0;
                 }
-                return new ItemStack(ModItems.itemStandarParticleBase,1, meta);
+                return new ItemStack(ModItems.itemStandarParticleBase, 1, meta);
             }
         }
         return null;

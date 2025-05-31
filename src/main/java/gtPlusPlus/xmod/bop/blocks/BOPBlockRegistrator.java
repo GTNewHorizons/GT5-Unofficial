@@ -1,19 +1,18 @@
 package gtPlusPlus.xmod.bop.blocks;
 
-import gregtech.api.util.GTRecipeBuilder;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.oredict.OreDictionary;
 
 import cpw.mods.fml.common.registry.GameRegistry;
-import gtPlusPlus.core.util.minecraft.ItemUtils;
+import gregtech.api.util.GTRecipeBuilder;
 import gtPlusPlus.xmod.bop.blocks.pine.LeavesPineTree;
 import gtPlusPlus.xmod.bop.blocks.pine.LogPineTree;
 import gtPlusPlus.xmod.bop.blocks.pine.SaplingPineTree;
 import gtPlusPlus.xmod.bop.blocks.rainforest.LeavesRainforestTree;
 import gtPlusPlus.xmod.bop.blocks.rainforest.LogRainforestTree;
 import gtPlusPlus.xmod.bop.blocks.rainforest.SaplingRainforestTree;
-import net.minecraftforge.oredict.OreDictionary;
 
 public class BOPBlockRegistrator {
 

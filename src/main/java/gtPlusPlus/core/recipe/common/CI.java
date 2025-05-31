@@ -1,6 +1,5 @@
 package gtPlusPlus.core.recipe.common;
 
-import gregtech.api.enums.Mods;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
@@ -21,8 +20,6 @@ import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import ic2.core.Ic2Items;
-
-import static gregtech.api.util.GTModHandler.getModItem;
 
 public class CI {
 
@@ -78,22 +75,21 @@ public class CI {
             getTieredComponent(OrePrefixes.ingot, 11) };
     }
 
-    public static final String[] circuits = new String[]{
-        "circuitPrimitive", //ULV
-        "circuitBasic",//LV
-        "circuitGood",//MV
-        "circuitAdvanced",//HV
-        "circuitData",//EV
-        "circuitElite",//IV
-        "circuitMaster",//LUV
-        "circuitUltimate",//ZPM
-        "circuitSuperconductor",//UV
-        "circuitInfinite", //UHV
-        "circuitQuantum"//UEV
+    public static final String[] circuits = new String[] { "circuitPrimitive", // ULV
+        "circuitBasic", // LV
+        "circuitGood", // MV
+        "circuitAdvanced", // HV
+        "circuitData", // EV
+        "circuitElite", // IV
+        "circuitMaster", // LUV
+        "circuitUltimate", // ZPM
+        "circuitSuperconductor", // UV
+        "circuitInfinite", // UHV
+        "circuitQuantum"// UEV
     };
 
     private static Object getMaterialFromTier(int tier) {
-        return switch (tier){
+        return switch (tier) {
             case 0 -> Materials.Wood;
             case 1 -> Materials.Lead;
             case 2 -> Materials.Bronze;
@@ -135,7 +131,7 @@ public class CI {
     }
 
     public static ItemStack getTieredMachineHull(int tier) {
-        return switch (tier){
+        return switch (tier) {
             case 0 -> ItemList.Hull_ULV.get(1);
             case 1 -> ItemList.Hull_LV.get(1);
             case 2 -> ItemList.Hull_MV.get(1);
@@ -151,7 +147,7 @@ public class CI {
     }
 
     public static ItemStack getTieredMachineCasing(int tier) {
-        return switch (tier){
+        return switch (tier) {
             case 0 -> ItemList.Casing_ULV.get(1);
             case 1 -> ItemList.Casing_LV.get(1);
             case 2 -> ItemList.Casing_MV.get(1);
@@ -234,18 +230,12 @@ public class CI {
     }
 
     public static ItemStack getEnergyCore(int aTier, int aAmount) {
-        ItemStack[] aOutput = new ItemStack[] {
-            GregtechItemList.Energy_Core_ULV.get(1),
-            GregtechItemList.Energy_Core_LV.get(1),
-            GregtechItemList.Energy_Core_MV.get(1),
-            GregtechItemList.Energy_Core_HV.get(1),
-            GregtechItemList.Energy_Core_EV.get(1),
-            GregtechItemList.Energy_Core_IV.get(1),
-            GregtechItemList.Energy_Core_LuV.get(1),
-            GregtechItemList.Energy_Core_ZPM.get(1),
-            GregtechItemList.Energy_Core_UV.get(1),
-            GregtechItemList.Energy_Core_UHV.get(1),
-        };
+        ItemStack[] aOutput = new ItemStack[] { GregtechItemList.Energy_Core_ULV.get(1),
+            GregtechItemList.Energy_Core_LV.get(1), GregtechItemList.Energy_Core_MV.get(1),
+            GregtechItemList.Energy_Core_HV.get(1), GregtechItemList.Energy_Core_EV.get(1),
+            GregtechItemList.Energy_Core_IV.get(1), GregtechItemList.Energy_Core_LuV.get(1),
+            GregtechItemList.Energy_Core_ZPM.get(1), GregtechItemList.Energy_Core_UV.get(1),
+            GregtechItemList.Energy_Core_UHV.get(1), };
         return GTUtility.copyAmount(aAmount, aOutput[MathUtils.balance(aTier, 0, 9)]);
     }
 
@@ -299,7 +289,7 @@ public class CI {
             || aPrefix == OrePrefixes.cableGt12) {
             // Special Handler
             if (aTier == 10) {
-                switch (aPrefix){
+                switch (aPrefix) {
                     case cableGt01 -> aPrefix = OrePrefixes.wireGt02;
                     case cableGt02 -> aPrefix = OrePrefixes.wireGt04;
                     case cableGt04 -> aPrefix = OrePrefixes.wireGt08;
@@ -327,7 +317,7 @@ public class CI {
             if (aPrefix == OrePrefixes.pipe) {
                 aPrefix = OrePrefixes.pipeMedium;
             }
-            return switch(aTier){
+            return switch (aTier) {
                 case 0 -> ItemUtils.getOrePrefixStack(aPrefix, Materials.Lead, aAmount);
                 case 1 -> ItemUtils.getOrePrefixStack(aPrefix, Materials.Steel, aAmount);
                 case 2 -> ItemUtils.getOrePrefixStack(aPrefix, Materials.StainlessSteel, aAmount);
@@ -347,7 +337,7 @@ public class CI {
             aPrefix = OrePrefixes.stick;
         }
 
-        switch (aPrefix){
+        switch (aPrefix) {
             case gear, gearGt, rod, stick, screw, plate, plateDouble -> m = aMaster[0][aTier];
             case stickLong, ingot, rotor, cell -> m = aMaster[1][aTier];
             case bolt, ring, frame, frameGt -> m = aMaster[2][aTier];
@@ -365,7 +355,7 @@ public class CI {
 
         if (null != (aReturn)) return aReturn;
 
-        // If Invalid, Try Second Materialqcv  v
+        // If Invalid, Try Second Materialqcv v
         m = aMaster[1][aTier];
         aReturn = ItemUtils.getOrePrefixStack(aPrefix, m, aAmount);
 
@@ -386,7 +376,7 @@ public class CI {
     }
 
     public static ItemStack getElectricMotor(int tier, int size) {
-        return switch (tier){
+        return switch (tier) {
             case 1 -> ItemList.Electric_Motor_LV.get(size);
             case 2 -> ItemList.Electric_Motor_MV.get(size);
             case 3 -> ItemList.Electric_Motor_HV.get(size);
@@ -401,7 +391,7 @@ public class CI {
     }
 
     public static ItemStack getFluidRegulator(int tier, int size) {
-        return switch(tier){
+        return switch (tier) {
             case 0 -> ItemList.FluidRegulator_LV.get(size);
             case 1 -> ItemList.FluidRegulator_LV.get(size);
             case 2 -> ItemList.FluidRegulator_MV.get(size);
@@ -417,7 +407,7 @@ public class CI {
     }
 
     public static ItemStack getElectricPiston(int tier, int size) {
-        return switch (tier){
+        return switch (tier) {
             case 1 -> ItemList.Electric_Piston_LV.get(size);
             case 2 -> ItemList.Electric_Piston_MV.get(size);
             case 3 -> ItemList.Electric_Piston_HV.get(size);
@@ -432,7 +422,7 @@ public class CI {
     }
 
     public static ItemStack getElectricPump(int tier, int size) {
-        return switch (tier){
+        return switch (tier) {
             case 1 -> ItemList.Electric_Pump_LV.get(size);
             case 2 -> ItemList.Electric_Pump_MV.get(size);
             case 3 -> ItemList.Electric_Pump_HV.get(size);
@@ -447,7 +437,7 @@ public class CI {
     }
 
     public static ItemStack getRobotArm(int tier, int size) {
-        return switch (tier){
+        return switch (tier) {
             case 1 -> ItemList.Robot_Arm_LV.get(size);
             case 2 -> ItemList.Robot_Arm_MV.get(size);
             case 3 -> ItemList.Robot_Arm_HV.get(size);
@@ -462,7 +452,7 @@ public class CI {
     }
 
     public static ItemStack getConveyor(int tier, int size) {
-        return switch (tier){
+        return switch (tier) {
             case 1 -> ItemList.Conveyor_Module_LV.get(size);
             case 2 -> ItemList.Conveyor_Module_MV.get(size);
             case 3 -> ItemList.Conveyor_Module_HV.get(size);
@@ -477,7 +467,7 @@ public class CI {
     }
 
     public static ItemStack getEmitter(int tier, int size) {
-        return switch (tier){
+        return switch (tier) {
             case 1 -> ItemList.Emitter_LV.get(size);
             case 2 -> ItemList.Emitter_MV.get(size);
             case 3 -> ItemList.Emitter_HV.get(size);
@@ -492,7 +482,7 @@ public class CI {
     }
 
     public static ItemStack getSensor(int tier, int size) {
-        return switch (tier){
+        return switch (tier) {
             case 1 -> ItemList.Sensor_LV.get(size);
             case 2 -> ItemList.Sensor_MV.get(size);
             case 3 -> ItemList.Sensor_HV.get(size);
@@ -507,7 +497,7 @@ public class CI {
     }
 
     public static ItemStack getFieldGenerator(int tier, int size) {
-        return switch (tier){
+        return switch (tier) {
             case 1 -> ItemList.Field_Generator_LV.get(size);
             case 2 -> ItemList.Field_Generator_MV.get(size);
             case 3 -> ItemList.Field_Generator_HV.get(size);
@@ -522,7 +512,7 @@ public class CI {
     }
 
     public static ItemStack getTieredMachineHull(int tier, int size) {
-        return switch (tier){
+        return switch (tier) {
             case 0 -> GTUtility.copyAmount(size, ItemList.Hull_ULV.get(1));
             case 1 -> GTUtility.copyAmount(size, ItemList.Hull_LV.get(1));
             case 2 -> GTUtility.copyAmount(size, ItemList.Hull_MV.get(1));

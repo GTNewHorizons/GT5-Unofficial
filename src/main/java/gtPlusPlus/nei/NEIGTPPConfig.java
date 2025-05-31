@@ -2,20 +2,15 @@ package gtPlusPlus.nei;
 
 import java.util.Arrays;
 
-import gregtech.api.enums.Mods;
 import net.minecraft.item.ItemStack;
 
 import codechicken.nei.api.API;
 import codechicken.nei.api.IConfigureNEI;
-import gregtech.api.recipe.RecipeMaps;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.util.Utils;
-import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
-
-import static gregtech.api.util.GTModHandler.getModItem;
 
 public class NEIGTPPConfig implements IConfigureNEI {
 
@@ -51,7 +46,6 @@ public class NEIGTPPConfig implements IConfigureNEI {
         API.removeRecipeCatalyst(
             GregtechItemList.SimpleDustWasher_ULV.get(1),
             GTPPRecipeMaps.simpleWasherRecipes.unlocalizedName);
-
 
         // Hide Flasks
         if (Utils.isClient()) {

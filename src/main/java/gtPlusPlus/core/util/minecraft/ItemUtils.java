@@ -8,10 +8,8 @@ import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
-import gregtech.api.util.GTRecipeBuilder;
 import net.minecraft.block.Block;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.IInventory;
@@ -21,8 +19,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
-
-import org.apache.commons.lang3.tuple.Pair;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.GameRegistry.UniqueIdentifier;
@@ -36,7 +32,6 @@ import gregtech.api.util.GTUtility;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.config.ASMConfiguration;
 import gtPlusPlus.core.item.base.dusts.BaseItemDustUnique;
-import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.math.MathUtils;
@@ -389,7 +384,8 @@ public class ItemUtils {
         }
         ItemStack aGtStack = GTOreDictUnificator.get(mPrefix, mMat, mAmount);
         if (aGtStack == null) {
-            Logger.INFO("Failed to find `" + mPrefix + MaterialUtils.getMaterialName(mMat) + "` in OD. [Prefix Search]");
+            Logger
+                .INFO("Failed to find `" + mPrefix + MaterialUtils.getMaterialName(mMat) + "` in OD. [Prefix Search]");
         }
         return aGtStack;
     }
@@ -410,7 +406,6 @@ public class ItemUtils {
 
         return true;
     }
-
 
     public static IInventory organiseInventory(IInventory aInputInventory) {
         ItemStack[] p = new ItemStack[aInputInventory.getSizeInventory()];

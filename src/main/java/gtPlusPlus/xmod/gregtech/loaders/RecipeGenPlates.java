@@ -19,7 +19,6 @@ import gtPlusPlus.api.interfaces.RunnableWithInfo;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.material.MaterialGenerator;
-import gtPlusPlus.core.util.minecraft.ItemUtils;
 
 public class RecipeGenPlates extends RecipeGenBase {
 
@@ -137,8 +136,7 @@ public class RecipeGenPlates extends RecipeGenBase {
         }
 
         // Bender
-        if (null != (material.getPlate(1))
-            && null != (material.getFoil(1))) {
+        if (null != (material.getPlate(1)) && null != (material.getFoil(1))) {
             GTValues.RA.stdBuilder()
                 .itemInputs(material.getPlate(1), GTUtility.getIntegratedCircuit(1))
                 .itemOutputs(material.getFoil(4))

@@ -22,8 +22,6 @@ import static gtPlusPlus.core.recipe.common.CI.circuits;
 
 import java.util.List;
 
-import gregtech.api.enums.Mods;
-import gregtech.api.enums.ToolDictNames;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -40,8 +38,10 @@ import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
+import gregtech.api.enums.ToolDictNames;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
@@ -735,7 +735,7 @@ public class RecipesMachines {
                 CI.getDoublePlate(aCasingTier, 1),
                 CI.getFieldGenerator(aFieldTier, 1),
                 CI.getDoublePlate(aCasingTier, 1),
-                new ItemStack(ModBlocks.blockSpecialMultiCasings2,1, i));
+                new ItemStack(ModBlocks.blockSpecialMultiCasings2, 1, i));
             aCasingTier++;
             aFieldTier++;
         }
@@ -754,7 +754,7 @@ public class RecipesMachines {
                 circuits[aCasingTier],
                 CI.getPlate(aCasingTier, 1),
                 circuits[aCasingTier],
-                new ItemStack(ModBlocks.blockSpecialMultiCasings2, 1,i));
+                new ItemStack(ModBlocks.blockSpecialMultiCasings2, 1, i));
             aCasingTier++;
         }
     }
@@ -937,7 +937,7 @@ public class RecipesMachines {
         EV_MACHINE_ChemicalBath = ItemList.Machine_EV_ChemicalBath.get(1);
         if (Railcraft.isModLoaded()) {
             // Misc
-            INPUT_RCCokeOvenBlock = getModItem(Railcraft.ID,"machine.alpha", 1, 7);
+            INPUT_RCCokeOvenBlock = getModItem(Railcraft.ID, "machine.alpha", 1, 7);
         }
         runModRecipes();
     }
@@ -1032,13 +1032,13 @@ public class RecipesMachines {
                 ItemList.FluidRegulator_IV.get(2),
                 CI.getTieredComponent(OrePrefixes.pipeHuge, 6, 4),
                 CI.getTieredComponent(OrePrefixes.screw, 6, 16))
-            .itemOutputs(new ItemStack(ModBlocks.blockPooCollector, 1,8))
+            .itemOutputs(new ItemStack(ModBlocks.blockPooCollector, 1, 8))
             .fluidInputs(CI.getAlternativeTieredFluid(5, 9 * INGOTS))
             .duration(5 * MINUTES)
             .eut(TierEU.RECIPE_HV)
             .addTo(assemblerRecipes);
 
-        ItemStack aBronzeBricks = new ItemStack(GregTechAPI.sBlockCasings1, 1,10);
+        ItemStack aBronzeBricks = new ItemStack(GregTechAPI.sBlockCasings1, 1, 10);
         // Steam Macerator Multi
         RecipeUtils.addShapedGregtechRecipe(
             aBronzeBricks,
@@ -1078,7 +1078,7 @@ public class RecipesMachines {
             aBronzeBricks,
             GregtechItemList.Controller_SteamMixerMulti.get(1));
 
-        ItemStack aWoodenCasing = new ItemStack(GregTechAPI.sBlockCasings9, 1,2);
+        ItemStack aWoodenCasing = new ItemStack(GregTechAPI.sBlockCasings9, 1, 2);
         // WaterPump
         RecipeUtils.addShapedGregtechRecipe(
             "frameGtBronze",
@@ -1994,7 +1994,7 @@ public class RecipesMachines {
                 "plateCarbon",
                 "plateCarbon",
                 "plateCarbon",
-                new ItemStack(ModItems.itemAirFilter, 1,0));
+                new ItemStack(ModItems.itemAirFilter, 1, 0));
 
             RecipeUtils.addShapedGregtechRecipe(
                 "plateCarbon",
@@ -2024,7 +2024,7 @@ public class RecipesMachines {
             // LV
             RecipeUtils.addShapedGregtechRecipe(
                 CI.component_Plate[1],
-                new ItemStack(ModItems.itemAirFilter,1, 0),
+                new ItemStack(ModItems.itemAirFilter, 1, 0),
                 CI.component_Plate[1],
                 CI.component_Plate[1],
                 ItemList.Electric_Motor_LV.get(1),
@@ -2036,7 +2036,7 @@ public class RecipesMachines {
             // MV
             RecipeUtils.addShapedGregtechRecipe(
                 CI.component_Plate[2],
-                new ItemStack(ModItems.itemAirFilter,1, 0),
+                new ItemStack(ModItems.itemAirFilter, 1, 0),
                 CI.component_Plate[2],
                 CI.component_Plate[2],
                 ItemList.Electric_Motor_MV.get(1),
@@ -2048,7 +2048,7 @@ public class RecipesMachines {
             // HV
             RecipeUtils.addShapedGregtechRecipe(
                 CI.component_Plate[3],
-                new ItemStack(ModItems.itemAirFilter,1, 0),
+                new ItemStack(ModItems.itemAirFilter, 1, 0),
                 CI.component_Plate[3],
                 CI.component_Plate[3],
                 ItemList.Electric_Motor_HV.get(1),
@@ -2060,7 +2060,7 @@ public class RecipesMachines {
             // EV
             RecipeUtils.addShapedGregtechRecipe(
                 CI.component_Plate[4],
-                new ItemStack(ModItems.itemAirFilter,1, 0),
+                new ItemStack(ModItems.itemAirFilter, 1, 0),
                 CI.component_Plate[4],
                 CI.component_Plate[4],
                 ItemList.Electric_Motor_EV.get(1),
@@ -2913,18 +2913,12 @@ public class RecipesMachines {
         long[] voltageTiers = new long[] { 16, TierEU.RECIPE_LV, TierEU.RECIPE_MV, TierEU.RECIPE_HV, TierEU.RECIPE_EV,
             TierEU.RECIPE_IV, TierEU.RECIPE_LuV, TierEU.RECIPE_ZPM, TierEU.RECIPE_UV, TierEU.RECIPE_UHV };
 
-        ItemStack[] aOutput = new ItemStack[] {
-            GregtechItemList.Energy_Core_ULV.get(1),
-            GregtechItemList.Energy_Core_LV.get(1),
-            GregtechItemList.Energy_Core_MV.get(1),
-            GregtechItemList.Energy_Core_HV.get(1),
-            GregtechItemList.Energy_Core_EV.get(1),
-            GregtechItemList.Energy_Core_IV.get(1),
-            GregtechItemList.Energy_Core_LuV.get(1),
-            GregtechItemList.Energy_Core_ZPM.get(1),
-            GregtechItemList.Energy_Core_UV.get(1),
-            GregtechItemList.Energy_Core_UHV.get(1),
-        };
+        ItemStack[] aOutput = new ItemStack[] { GregtechItemList.Energy_Core_ULV.get(1),
+            GregtechItemList.Energy_Core_LV.get(1), GregtechItemList.Energy_Core_MV.get(1),
+            GregtechItemList.Energy_Core_HV.get(1), GregtechItemList.Energy_Core_EV.get(1),
+            GregtechItemList.Energy_Core_IV.get(1), GregtechItemList.Energy_Core_LuV.get(1),
+            GregtechItemList.Energy_Core_ZPM.get(1), GregtechItemList.Energy_Core_UV.get(1),
+            GregtechItemList.Energy_Core_UHV.get(1), };
 
         for (int i = 0; i < 10; i++) {
 
@@ -3025,7 +3019,7 @@ public class RecipesMachines {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GregtechItemList.Casing_Multi_Use.get(1),
-                new ItemStack(GregTechAPI.sBlockCasings5,1, 2),
+                new ItemStack(GregTechAPI.sBlockCasings5, 1, 2),
                 CI.getElectricPiston(3, 2),
                 CI.getTieredComponent(OrePrefixes.plate, 6, 4),
                 CI.getTieredComponent(OrePrefixes.gearGt, 6, 2))
@@ -3305,7 +3299,7 @@ public class RecipesMachines {
         int aMaxTier = GTValues.VOLTAGE_NAMES.length;
         ItemStack[] aTier = new ItemStack[aMaxTier];
         for (int i = 0; i < aMaxTier; i++) {
-            aTier[i] = new ItemStack(CoverManager.Cover_Gt_Machine_Casing, 7,i);
+            aTier[i] = new ItemStack(CoverManager.Cover_Gt_Machine_Casing, 7, i);
         }
         // Add recipes for new ones
         for (int i = 0; i < aMaxTier - 1; i++) {
