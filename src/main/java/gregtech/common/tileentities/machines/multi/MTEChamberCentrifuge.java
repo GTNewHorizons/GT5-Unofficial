@@ -11,7 +11,6 @@ import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 
-import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -38,7 +37,6 @@ import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
 import gregtech.api.recipe.RecipeMap;
-import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
@@ -49,11 +47,15 @@ import gregtech.common.items.MetaGeneratedTool01;
 import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.tileentities.machines.multi.gui.MTEChamberCentrifugeGui;
 import gregtech.common.tools.*;
+import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 
 public class MTEChamberCentrifuge extends MTEExtendedPowerMultiBlockBase<MTEChamberCentrifuge>
     implements ISurvivalConstructable {
 
     public boolean tier2Fluid = false;
+    public double mMode = 1.0; //i think it has to be a double cuz slider. 0 = speed, 1 = normal, 2 = heavy
+    public int RP = 0;
+    public float speed = 3F;
     private int horizontalOffset = 4; // base offset for tier 1
     private int verticalOffset = 6; // base offset for tier 2
     private final int amountToDrain = 10; // constant drain amount.
@@ -163,6 +165,8 @@ public class MTEChamberCentrifuge extends MTEExtendedPowerMultiBlockBase<MTECham
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
         mTier = aNBT.getInteger("multiTier");
+        mMode = aNBT.getDouble("multiMode");
+        RP = aNBT.getInteger("RP");
         tier2Fluid = aNBT.getBoolean("tier2FluidOn");
         if (inventoryHandler != null) {
             inventoryHandler.deserializeNBT(aNBT.getCompoundTag("inventory"));
@@ -173,7 +177,9 @@ public class MTEChamberCentrifuge extends MTEExtendedPowerMultiBlockBase<MTECham
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
         aNBT.setInteger("multiTier", mTier);
+        aNBT.setDouble("multiMode",mMode);
         aNBT.setBoolean("tier2FluidOn", tier2Fluid);
+        aNBT.setInteger("RP",RP);
         if (inventoryHandler != null) {
             aNBT.setTag("inventory", inventoryHandler.serializeNBT());
         }
@@ -358,6 +364,8 @@ public class MTEChamberCentrifuge extends MTEExtendedPowerMultiBlockBase<MTECham
             @NotNull
             @Override
             protected CheckRecipeResult validateRecipe(@NotNull GTRecipe recipe) {
+                getSpeed();
+                setSpeedBonus(1F/speed);
                 if (!checkFluid(amountToDrain * 10)) return CheckRecipeResultRegistry.NO_FUEL_FOUND;
                 return super.validateRecipe(recipe);
             }
@@ -369,12 +377,13 @@ public class MTEChamberCentrifuge extends MTEExtendedPowerMultiBlockBase<MTECham
                 return super.createOverclockCalculator(recipe)
                     .setMaxOverclocks((GTUtility.getTier(getAverageInputVoltage()) - GTUtility.getTier(recipe.mEUt)));
             }
-        }.setSpeedBonus(1F / 3F) // base speed, 200% faster
-            .setMaxParallelSupplier(this::getTrueParallel).setEuModifier(0.7F);
+        } // base speed, 200% faster
+            .setMaxParallelSupplier(this::getTrueParallel)
+
+            .setEuModifier(0.7F);
     }
 
-
-    public boolean isTurbine(ItemStack aStack) { //thank you airfilter!
+    public boolean isTurbine(ItemStack aStack) { // thank you airfilter!
         if (aStack == null) return false;
         if (!(aStack.getItem() instanceof MetaGeneratedTool01 tool)) return false;
         if (aStack.getItemDamage() < 170 || aStack.getItemDamage() > 179) return false;
@@ -418,13 +427,11 @@ public class MTEChamberCentrifuge extends MTEExtendedPowerMultiBlockBase<MTECham
         return sumRotorLevels;
     }
 
+
     private boolean checkFluid(int amount) // checks if [amount] fluid is found in ANY of the machines input hatches
     {
         // checks for fluid in hatch, does not drain it.
-        FluidStack tFluid = tier2Fluid ? GTModHandler.getDistilledWater(amount) : Materials.Lubricant.getFluid(amount); // t2
-                                                                                                                        // :
-                                                                                                                        // t1
-
+        FluidStack tFluid = tier2Fluid ? GTModHandler.getDistilledWater(amount) : Materials.Lubricant.getFluid(amount);
         for (MTEHatchInput mInputHatch : mInputHatches) {
             if (drain(mInputHatch, tFluid, false)) {
                 return true;
@@ -435,9 +442,15 @@ public class MTEChamberCentrifuge extends MTEExtendedPowerMultiBlockBase<MTECham
 
     @Override
     public int getMaxParallelRecipes() {
-        int parallels = 7 * getSumRotorLevels();
+
+        getRP(); //updates RP
+        int parallels = RP;
         if (tier2Fluid) {
             parallels = (int) Math.floor(parallels * 1.25);
+        }
+        if(mMode == 2.0)
+        {
+            parallels /=32;
         }
         return parallels > 0 ? parallels : 1; // if its 1, something messed up lol, just a failsafe in case i mess up
                                               // during testing
@@ -477,6 +490,65 @@ public class MTEChamberCentrifuge extends MTEExtendedPowerMultiBlockBase<MTECham
     @Override
     protected boolean useMui2() {
         return true;
+    }
+
+
+    //helper methods for all the silly variables in this class
+
+    public int getRP()
+    {
+        RP = 6*getSumRotorLevels();
+        if(mMode == 0.0)
+        {
+            RP = (int) (RP * 0.9);
+        }
+        return RP;
+    }
+
+    public float getSpeed()
+    {
+        speed = 3F;
+        if(mMode == 0.0)
+        {
+            speed = 4F;
+        }
+        return speed;
+    }
+
+    public String getSpeedStr()
+    {
+        return getSpeed()*100+"%";
+    }
+
+    public String modeToString()
+    {
+        if(mMode == 0.0)
+        {
+            return "Light";
+        }
+        if(mMode == 1.0)
+        {
+            return "Standard";
+        }
+        if(mMode == 2.0)
+        {
+            return "Heavy";
+        }
+        return "Unset";
+    }
+
+
+
+
+
+
+
+
+
+
+    @Override //sorry frosty your panel will live on in my heart and maybe my new panel
+    public boolean supportsPowerPanel() {
+        return false;
     }
 
     @Override
