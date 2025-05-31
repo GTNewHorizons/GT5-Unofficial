@@ -81,6 +81,7 @@ import gregtech.api.util.shutdown.ShutDownReason;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.common.covers.Cover;
 import gregtech.common.pollution.Pollution;
+import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.MTESteamMultiBase;
 import ic2.api.Direction;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
@@ -1900,6 +1901,11 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
         return false;
     }
 
+    @Override
+    public boolean isSteampowered() {
+        return getSteamCapacity() > 0;
+    }
+
     public int demandsEnergy() {
         if (mReleaseEnergy || !canAccessData() || !mMetaTileEntity.isEnetInput()) return 0;
         return getCapacity() - getStored();
@@ -2208,5 +2214,10 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
     @Override
     public void setCustomName(String name) {
         if (getMetaTileEntity() instanceof ICustomNameObject customNameObject) customNameObject.setCustomName(name);
+    }
+
+    @Override
+    protected int getCoverTabHeightOffset() {
+        return isSteampowered() || getMetaTileEntity() instanceof MTESteamMultiBase<?> ? 32 : 0;
     }
 }

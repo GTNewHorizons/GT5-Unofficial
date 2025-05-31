@@ -85,7 +85,7 @@ public abstract class GTMetaTool extends MetaGeneratedTool implements IDamagable
         if (this.isItemStackUsable(aStack) && (this.getDigSpeed(aStack, aBlock, aMetaData) > 0.0F)) {
             this.doDamage(
                 aStack,
-                tStats.convertBlockDrops(
+                (long) tStats.convertBlockDrops(
                     aDrops,
                     aStack,
                     aPlayer,
@@ -480,7 +480,6 @@ public abstract class GTMetaTool extends MetaGeneratedTool implements IDamagable
         }
         this.doDamage(aStack, tStats.getToolDamagePerContainerCraft());
         aStack = aStack.stackSize > 0 ? aStack : null;
-        if (playSound) {}
         return aStack;
     }
 
@@ -630,34 +629,25 @@ public abstract class GTMetaTool extends MetaGeneratedTool implements IDamagable
                 tResult.put(tEntry.getKey(), tEntry.getValue());
             } else {
                 switch (Enchantment.enchantmentsList[tEntry.getKey()].type) {
-                    case weapon:
+                    case weapon -> {
                         if (tStats.isWeapon()) {
                             tResult.put(tEntry.getKey(), tEntry.getValue());
                         }
-                        break;
-                    case all:
+                    }
+                    case all -> {
                         tResult.put(tEntry.getKey(), tEntry.getValue());
-                        break;
-                    case armor:
-                    case armor_feet:
-                    case armor_head:
-                    case armor_legs:
-                    case armor_torso:
-                        break;
-                    case bow:
+                    }
+                    case armor, armor_feet, armor_head, armor_legs, armor_torso, fishing_rod, breakable -> {}
+                    case bow -> {
                         if (tStats.isRangedWeapon()) {
                             tResult.put(tEntry.getKey(), tEntry.getValue());
                         }
-                        break;
-                    case breakable:
-                        break;
-                    case fishing_rod:
-                        break;
-                    case digger:
+                    }
+                    case digger -> {
                         if (tStats.isMiningTool()) {
                             tResult.put(tEntry.getKey(), tEntry.getValue());
                         }
-                        break;
+                    }
                 }
             }
         }

@@ -200,75 +200,12 @@ public class GTLanguageManager {
     }
 
     public static void writePlaceholderStrings() {
-        addStringLocalization("Interaction_DESCRIPTION_Index_001", "Puts out into adjacent Slot #");
-        addStringLocalization("Interaction_DESCRIPTION_Index_002", "Grabs in for own Slot #");
-        addStringLocalization("Interaction_DESCRIPTION_Index_003", "Enable with Signal");
-        addStringLocalization("Interaction_DESCRIPTION_Index_004", "Disable with Signal");
-        addStringLocalization("Interaction_DESCRIPTION_Index_005", "Disabled");
-        addStringLocalization("Interaction_DESCRIPTION_Index_006", "Export");
-        addStringLocalization("Interaction_DESCRIPTION_Index_007", "Import");
-        addStringLocalization("Interaction_DESCRIPTION_Index_008", "Export (conditional)");
-        addStringLocalization("Interaction_DESCRIPTION_Index_009", "Import (conditional)");
-        addStringLocalization("Interaction_DESCRIPTION_Index_010", "Export (invert cond)");
-        addStringLocalization("Interaction_DESCRIPTION_Index_011", "Import (invert cond)");
-        addStringLocalization("Interaction_DESCRIPTION_Index_012", "Export allow Input");
-        addStringLocalization("Interaction_DESCRIPTION_Index_013", "Import allow Output");
-        addStringLocalization("Interaction_DESCRIPTION_Index_014", "Export allow Input (conditional)");
-        addStringLocalization("Interaction_DESCRIPTION_Index_015", "Import allow Output (conditional)");
-        addStringLocalization("Interaction_DESCRIPTION_Index_016", "Export allow Input (invert cond)");
-        addStringLocalization("Interaction_DESCRIPTION_Index_017", "Import allow Output (invert cond)");
-        addStringLocalization("Interaction_DESCRIPTION_Index_018", "Normal");
-        addStringLocalization("Interaction_DESCRIPTION_Index_019", "Inverted");
-        addStringLocalization("Interaction_DESCRIPTION_Index_020", "Ready to work");
-        addStringLocalization("Interaction_DESCRIPTION_Index_021", "Not ready to work");
-        addStringLocalization("Interaction_DESCRIPTION_Index_022", "Import");
-        addStringLocalization("Interaction_DESCRIPTION_Index_023", "Import (conditional)");
-        addStringLocalization("Interaction_DESCRIPTION_Index_024", "Import (invert cond)");
-        addStringLocalization("Interaction_DESCRIPTION_Index_025", "Keep Liquids Away");
-        addStringLocalization("Interaction_DESCRIPTION_Index_026", "Keep Liquids Away (conditional)");
-        addStringLocalization("Interaction_DESCRIPTION_Index_027", "Keep Liquids Away (invert cond)");
-        addStringLocalization("Interaction_DESCRIPTION_Index_031", "Normal Universal Storage");
-        addStringLocalization("Interaction_DESCRIPTION_Index_032", "Inverted Universal Storage");
-        addStringLocalization("Interaction_DESCRIPTION_Index_033", "Normal Electricity Storage");
-        addStringLocalization("Interaction_DESCRIPTION_Index_034", "Inverted Electricity Storage");
-        addStringLocalization("Interaction_DESCRIPTION_Index_035", "Normal Steam Storage");
-        addStringLocalization("Interaction_DESCRIPTION_Index_036", "Inverted Steam Storage");
-        addStringLocalization("Interaction_DESCRIPTION_Index_037", "Normal Average Electric Input");
-        addStringLocalization("Interaction_DESCRIPTION_Index_038", "Inverted Average Electric Input");
-        addStringLocalization("Interaction_DESCRIPTION_Index_039", "Normal Average Electric Output");
-        addStringLocalization("Interaction_DESCRIPTION_Index_040", "Inverted Average Electric Output");
-        addStringLocalization("Interaction_DESCRIPTION_Index_041", "Normal Electricity Storage(Including Batteries)");
-        addStringLocalization("Interaction_DESCRIPTION_Index_042", "Inverted Electricity Storage(Including Batteries)");
-        addStringLocalization("Interaction_DESCRIPTION_Index_043", "Filter input, Deny output");
-        addStringLocalization("Interaction_DESCRIPTION_Index_044", "Invert input, Deny output");
-        addStringLocalization("Interaction_DESCRIPTION_Index_045", "Filter input, Permit any output");
-        addStringLocalization("Interaction_DESCRIPTION_Index_046", "Invert input, Permit any output");
         addStringLocalization("Interaction_DESCRIPTION_Index_047", "Filter Fluid: ");
         addStringLocalization("Interaction_DESCRIPTION_Index_048", "Pump speed: ");
         addStringLocalization("Interaction_DESCRIPTION_Index_049", "L/tick ");
         addStringLocalization("Interaction_DESCRIPTION_Index_050", "L/sec");
         addStringLocalization("Interaction_DESCRIPTION_Index_053", "Slot: ");
-        addStringLocalization("Interaction_DESCRIPTION_Index_054", "Inverted");
-        addStringLocalization("Interaction_DESCRIPTION_Index_055", "Normal");
-        addStringLocalization("Interaction_DESCRIPTION_Index_056", "Emit if 1 Maintenance Needed");
-        addStringLocalization("Interaction_DESCRIPTION_Index_057", "Emit if 1 Maintenance Needed(inverted)");
-        addStringLocalization("Interaction_DESCRIPTION_Index_058", "Emit if 2 Maintenance Needed");
-        addStringLocalization("Interaction_DESCRIPTION_Index_059", "Emit if 2 Maintenance Needed(inverted)");
-        addStringLocalization("Interaction_DESCRIPTION_Index_060", "Emit if 3 Maintenance Needed");
-        addStringLocalization("Interaction_DESCRIPTION_Index_061", "Emit if 3 Maintenance Needed(inverted)");
-        addStringLocalization("Interaction_DESCRIPTION_Index_062", "Emit if 4 Maintenance Needed");
-        addStringLocalization("Interaction_DESCRIPTION_Index_063", "Emit if 4 Maintenance Needed(inverted)");
-        addStringLocalization("Interaction_DESCRIPTION_Index_064", "Emit if 5 Maintenance Needed");
-        addStringLocalization("Interaction_DESCRIPTION_Index_065", "Emit if 5 Maintenance Needed(inverted)");
-        addStringLocalization("Interaction_DESCRIPTION_Index_066", "Emit if rotor needs maintenance low accuracy mod");
-        addStringLocalization(
-            "Interaction_DESCRIPTION_Index_067",
-            "Emit if rotor needs maintenance low accuracy mod(inverted)");
-        addStringLocalization("Interaction_DESCRIPTION_Index_068", "Emit if rotor needs maintenance high accuracy mod");
         addStringLocalization("Interaction_DESCRIPTION_Index_068.1", "Emit if any Player is close");
-        addStringLocalization(
-            "Interaction_DESCRIPTION_Index_069",
-            "Emit if rotor needs maintenance high accuracy mod(inverted)");
         addStringLocalization("Interaction_DESCRIPTION_Index_069.1", "Emit if other Player is close");
         addStringLocalization("Interaction_DESCRIPTION_Index_070", "Emit if you are close");
         addStringLocalization("Interaction_DESCRIPTION_Index_071", "Conducts strongest Input");
@@ -281,7 +218,6 @@ public class GTLanguageManager {
         addStringLocalization("Interaction_DESCRIPTION_Index_078", "Signal = ");
         addStringLocalization("Interaction_DESCRIPTION_Index_079", "Conditional Signal = ");
         addStringLocalization("Interaction_DESCRIPTION_Index_080", "Inverted Conditional Signal = ");
-        addStringLocalization("Interaction_DESCRIPTION_Index_081", "Frequency: ");
         addStringLocalization("Interaction_DESCRIPTION_Index_082", "Open if work enabled");
         addStringLocalization("Interaction_DESCRIPTION_Index_083", "Open if work disabled");
         addStringLocalization("Interaction_DESCRIPTION_Index_084", "Only Output allowed");
@@ -296,8 +232,6 @@ public class GTLanguageManager {
         addStringLocalization("Interaction_DESCRIPTION_Index_093", "Strong");
         addStringLocalization("Interaction_DESCRIPTION_Index_094", "Weak");
         addStringLocalization("Interaction_DESCRIPTION_Index_094.1", "Not enough soldering material!");
-        addStringLocalization("Interaction_DESCRIPTION_Index_095", "Input from Output Side allowed");
-        addStringLocalization("Interaction_DESCRIPTION_Index_096", "Input from Output Side forbidden");
         addStringLocalization("Interaction_DESCRIPTION_Index_098", "Do not regulate Item Stack Size");
         addStringLocalization("Interaction_DESCRIPTION_Index_099", "Regulate Item Stack Size to: ");
         addStringLocalization("Interaction_DESCRIPTION_Index_100", "This is ");
@@ -345,9 +279,7 @@ public class GTLanguageManager {
         addStringLocalization("Interaction_DESCRIPTION_Index_136", "Circuitry burned out. (Soldering)");
         addStringLocalization("Interaction_DESCRIPTION_Index_137", "That doesn't belong there. (Crowbar)");
         addStringLocalization("Interaction_DESCRIPTION_Index_138", "Incomplete Structure.");
-        addStringLocalization("Interaction_DESCRIPTION_Index_139", "Hit with Soft Mallet");
-        addStringLocalization("Interaction_DESCRIPTION_Index_140", "to (re-)start the Machine");
-        addStringLocalization("Interaction_DESCRIPTION_Index_141", "if it doesn't start.");
+        // NOTE: the below key is used in HydroEnergy, take care to fix it there when this line is removed
         addStringLocalization("Interaction_DESCRIPTION_Index_142", "Running perfectly.");
         addStringLocalization("Interaction_DESCRIPTION_Index_143", "Missing Mining Pipe");
         addStringLocalization("Interaction_DESCRIPTION_Index_144", "Missing Turbine Rotor");
@@ -429,14 +361,10 @@ public class GTLanguageManager {
         addStringLocalization("Interaction_DESCRIPTION_Index_215", "Disconnected");
         addStringLocalization("Interaction_DESCRIPTION_Index_216", "Deprecated Recipe");
         addStringLocalization("Interaction_DESCRIPTION_Index_219", "Extended Facing: ");
-        addStringLocalization("Interaction_DESCRIPTION_Index_220", "Single recipe locking disabled.");
         addStringLocalization("Interaction_DESCRIPTION_Index_221", "Item threshold");
         addStringLocalization("Interaction_DESCRIPTION_Index_222", "Fluid threshold");
         addStringLocalization("Interaction_DESCRIPTION_Index_222.1", "Energy threshold");
 
-        addStringLocalization(
-            "Interaction_DESCRIPTION_Index_223",
-            "Single recipe locking enabled. Will lock to next recipe.");
         addStringLocalization("Interaction_DESCRIPTION_Index_224", "Always On");
         addStringLocalization("Interaction_DESCRIPTION_Index_225", "Active with Redstone Signal");
         addStringLocalization("Interaction_DESCRIPTION_Index_226", "Inactive with Redstone Signal");
@@ -459,14 +387,6 @@ public class GTLanguageManager {
         addStringLocalization("Interaction_DESCRIPTION_Index_243", "Enable with Redstone");
         addStringLocalization("Interaction_DESCRIPTION_Index_244", "Disable with Redstone");
         addStringLocalization("Interaction_DESCRIPTION_Index_245", "Disable machine");
-        addStringLocalization("Interaction_DESCRIPTION_Index_246", "Frequency");
-        addStringLocalization("Interaction_DESCRIPTION_Index_247", "1 Issue");
-        addStringLocalization("Interaction_DESCRIPTION_Index_248", "2 Issues");
-        addStringLocalization("Interaction_DESCRIPTION_Index_249", "3 Issues");
-        addStringLocalization("Interaction_DESCRIPTION_Index_250", "4 Issues");
-        addStringLocalization("Interaction_DESCRIPTION_Index_251", "5 Issues");
-        addStringLocalization("Interaction_DESCRIPTION_Index_252", "Rotor < 20%");
-        addStringLocalization("Interaction_DESCRIPTION_Index_253", "Rotor ≈ 0%");
         addStringLocalization("Interaction_DESCRIPTION_Index_254", "Detect slot#");
         addStringLocalization("Interaction_DESCRIPTION_Index_254.0", "Detect Slot");
         addStringLocalization("Interaction_DESCRIPTION_Index_254.1", "Internal slot#");
@@ -502,10 +422,6 @@ public class GTLanguageManager {
         addStringLocalization("Interaction_DESCRIPTION_Index_304", "Avg. Input");
         addStringLocalization("Interaction_DESCRIPTION_Index_305", "Avg. Output");
         addStringLocalization("Interaction_DESCRIPTION_Index_306", "EU stored");
-        addStringLocalization("Interaction_DESCRIPTION_Index_307", "Deny input, Filter output");
-        addStringLocalization("Interaction_DESCRIPTION_Index_308", "Deny input, Invert output");
-        addStringLocalization("Interaction_DESCRIPTION_Index_309", "Permit any input, Filter output");
-        addStringLocalization("Interaction_DESCRIPTION_Index_310", "Permit any input, Invert output");
         addStringLocalization("Interaction_DESCRIPTION_Index_311", "Block Output");
         addStringLocalization("Interaction_DESCRIPTION_Index_312", "Allow Output");
         addStringLocalization("Interaction_DESCRIPTION_Index_313", "Block Input");
@@ -520,10 +436,6 @@ public class GTLanguageManager {
         addStringLocalization("Interaction_DESCRIPTION_Index_323", "L");
         addStringLocalization("Interaction_DESCRIPTION_Index_324", "Now");
         addStringLocalization("Interaction_DESCRIPTION_Index_325", "Max");
-        addStringLocalization("Interaction_DESCRIPTION_Index_326", "Public");
-        addStringLocalization("Interaction_DESCRIPTION_Index_327", "Private");
-        addStringLocalization("Interaction_DESCRIPTION_Index_328", "Channel");
-        addStringLocalization("Interaction_DESCRIPTION_Index_329", "Public/Private");
         addStringLocalization("Interaction_DESCRIPTION_Index_330", "Sneak Rightclick to switch Mode");
         addStringLocalization("Interaction_DESCRIPTION_Index_331", "AND Gate");
         addStringLocalization("Interaction_DESCRIPTION_Index_332", "NAND Gate");
@@ -533,19 +445,10 @@ public class GTLanguageManager {
         addStringLocalization("Interaction_DESCRIPTION_Index_336", "PCB Factory Tier: ");
         addStringLocalization("Interaction_DESCRIPTION_Index_337", "Upgrade Required: ");
         addStringLocalization("Interaction_DESCRIPTION_Index_338", "Bio");
-        addStringLocalization("Interaction_DESCRIPTION_Index_339", "Biochamber Upgrade Enabled");
-        addStringLocalization("Interaction_DESCRIPTION_Index_339.1", "Biochamber Upgrade Disabled");
-        addStringLocalization("Interaction_DESCRIPTION_Index_340", "Rotated biochamber enabled");
-        addStringLocalization("Interaction_DESCRIPTION_Index_340.1", "Rotated biochamber disabled");
-        addStringLocalization("Interaction_DESCRIPTION_Index_341", "Tier 1 cooling enabled");
-        addStringLocalization("Interaction_DESCRIPTION_Index_341.1", "Tier 1 cooling disabled");
-        addStringLocalization("Interaction_DESCRIPTION_Index_342", "Tier 2 cooling enabled");
-        addStringLocalization("Interaction_DESCRIPTION_Index_342.1", "Tier 2 cooling disabled");
         addStringLocalization("Interaction_DESCRIPTION_Index_343", "Use Machine Processing State");
         addStringLocalization("Interaction_DESCRIPTION_Index_343.1", "Use Inverted Machine Processing State");
         addStringLocalization("Interaction_DESCRIPTION_Index_344", "Input Blocking");
         addStringLocalization("Interaction_DESCRIPTION_Index_344.1", "Output Blocking");
-        addStringLocalization("Interaction_DESCRIPTION_Index_400", "Running mode: ");
         addStringLocalization("Interaction_DESCRIPTION_Index_500", "Fitting: Loose - More Flow");
         addStringLocalization("Interaction_DESCRIPTION_Index_501", "Fitting: Tight - More Efficiency");
         addStringLocalization("Interaction_DESCRIPTION_Index_502", "Mining chunk loading enabled");
@@ -560,35 +463,7 @@ public class GTLanguageManager {
         addStringLocalization("Interaction_DESCRIPTION_Index_756", "Connectable: ");
         addStringLocalization("Interaction_DESCRIPTION_Index_ALL", "All");
         addStringLocalization("Interaction_DESCRIPTION_Index_ANY", "Any");
-        addStringLocalization("Interaction_DESCRIPTION_Index_INVERTED", "Inverted");
-        addStringLocalization("Interaction_DESCRIPTION_Index_NORMAL", "Normal");
         addStringLocalization("Interaction_DESCRIPTION_Index_SIDE", "Side: ");
-
-        addStringLocalization("Item_DESCRIPTION_Index_000", "Stored Heat: %s");
-        addStringLocalization("Item_DESCRIPTION_Index_001", "Durability: %s/%s");
-        addStringLocalization("Item_DESCRIPTION_Index_002", "%s Tier %s");
-        addStringLocalization("Item_DESCRIPTION_Index_003", "Attack Damage: %s");
-        addStringLocalization("Item_DESCRIPTION_Index_004", "Mining Speed: %s");
-        addStringLocalization("Item_DESCRIPTION_Index_005", "Base Efficiency: %s");
-        addStringLocalization("Item_DESCRIPTION_Index_006", "Fuel | Optimal Flow > EU/t Produced | Efficiency");
-        addStringLocalization("Item_DESCRIPTION_Index_007", "Energy from Optimal Gas Flow: %s EU/t");
-        addStringLocalization("Item_DESCRIPTION_Index_008", "Energy from Optimal Plasma Flow: %s EU/t");
-        addStringLocalization("Item_DESCRIPTION_Index_009", "Contains %s EU   Tier: %s");
-        addStringLocalization("Item_DESCRIPTION_Index_010", "Empty. You should recycle it properly.");
-        addStringLocalization("Item_DESCRIPTION_Index_011", "%s / %s EU - Voltage: %s");
-        addStringLocalization("Item_DESCRIPTION_Index_012", "No Fluids Contained");
-        addStringLocalization("Item_DESCRIPTION_Index_013", "%sL / %sL");
-        addStringLocalization("Item_DESCRIPTION_Index_014", "Missing Coodinates!");
-        addStringLocalization("Item_DESCRIPTION_Index_015", "Device at:");
-        addStringLocalization("Item_DESCRIPTION_Index_018", "State: %s");
-        addStringLocalization("Item_DESCRIPTION_Index_019", "Bath with neutron in a hot reactor");
-        addStringLocalization("Item_DESCRIPTION_Index_020", "Progress: %s/%s");
-        addStringLocalization("Item_DESCRIPTION_Index_021", "Radiation Hazard");
-        addStringLocalization("Item_DESCRIPTION_Index_500", "Turbine Efficiency (Loose): %s");
-        addStringLocalization("Item_DESCRIPTION_Index_501", "Optimal Steam flow (Loose): %s L/t");
-        addStringLocalization("Item_DESCRIPTION_Index_502", "Overflow Efficiency Tier: %s");
-        addStringLocalization("Item_DESCRIPTION_Index_900", "Energy from Optimal Steam Flow: %s EU/t");
-        addStringLocalization("Item_DESCRIPTION_Index_901", "Energy from Optimal Steam Flow (Loose): %s EU/t");
 
         addStringLocalization(FACE_ANY, "Any Side");
         addStringLocalization(FACE_BOTTOM, "Bottom");

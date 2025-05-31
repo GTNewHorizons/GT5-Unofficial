@@ -1,8 +1,6 @@
 package gtPlusPlus.core.item.base.ingots;
 
 import static gregtech.api.enums.Mods.GTPlusPlus;
-import static gregtech.api.recipe.RecipeMaps.compressorRecipes;
-import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.item.Item;
@@ -10,13 +8,10 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
 import cpw.mods.fml.common.registry.GameRegistry;
-import gregtech.api.enums.GTValues;
 import gregtech.api.util.GTOreDictUnificator;
-import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.minecraft.EntityUtils;
-import gtPlusPlus.core.util.minecraft.ItemUtils;
 
 public class BaseItemIngotOld extends Item {
 
@@ -41,8 +36,8 @@ public class BaseItemIngotOld extends Item {
         } else if (this.unlocalName.contains("itemHotIngot")) {
             temp = this.unlocalName.replace("itemHotIngot", "ingotHot");
         }
-        if ((temp != null) && !temp.isEmpty()) {
-            GTOreDictUnificator.registerOre(temp, ItemUtils.getSimpleStack(this));
+        if (!temp.isEmpty()) {
+            GTOreDictUnificator.registerOre(temp, new ItemStack(this));
         }
         // this.generateCompressorRecipe();
     }
@@ -63,37 +58,6 @@ public class BaseItemIngotOld extends Item {
             return MathUtils.generateSingularRandomHexValue();
         }
         return this.colour;
-    }
-
-    private void generateCompressorRecipe() {
-        if (this.unlocalName.contains("itemIngot")) {
-            final ItemStack tempStack = ItemUtils.getSimpleStack(this, 9);
-            ItemStack tempOutput = null;
-            String temp = this.getUnlocalizedName()
-                .replace("item.itemIngot", "block");
-            Logger.WARNING("Unlocalized name for OreDict nameGen: " + this.getUnlocalizedName());
-            if (this.getUnlocalizedName()
-                .contains("item.")) {
-                temp = this.getUnlocalizedName()
-                    .replace("item.", "");
-                Logger.WARNING("Generating OreDict Name: " + temp);
-            }
-            temp = temp.replace("itemIngot", "block");
-            Logger.WARNING("Generating OreDict Name: " + temp);
-            if ((temp != null) && !temp.isEmpty()) {
-                tempOutput = ItemUtils.getItemStackOfAmountFromOreDict(temp, 1);
-                if (tempOutput != null) {
-                    GTValues.RA.stdBuilder()
-                        .itemInputs(tempStack)
-                        .itemOutputs(tempOutput)
-                        .duration(15 * SECONDS)
-                        .eut(2)
-                        .addTo(compressorRecipes);
-                }
-            }
-        } else if (this.unlocalName.contains("itemHotIngot")) {
-            return;
-        }
     }
 
     protected final int sRadiation;

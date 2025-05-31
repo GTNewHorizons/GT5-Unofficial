@@ -67,6 +67,7 @@ public class RecipeLoaderAgriculturalChem {
         addBasicOrganiseFertRecipes();
         addAdvancedOrganiseFertRecipes();
 
+        recipeFermentationBase();
         addMiscRecipes();
 
         BioRecipes.init();
@@ -258,7 +259,7 @@ public class RecipeLoaderAgriculturalChem {
             if (aMap.contains(a)) {
                 continue;
             }
-            if (ItemUtils.checkForInvalidItems(a)) {
+            if (a != null) {
                 GTValues.RA.stdBuilder()
                     .itemInputs(GTUtility.getIntegratedCircuit(2), GTUtility.copyAmount(10, a))
                     .fluidInputs(GTModHandler.getDistilledWater(1_000))
@@ -271,7 +272,7 @@ public class RecipeLoaderAgriculturalChem {
         }
 
         for (ItemStack a : mList_Master_Seeds) {
-            if (ItemUtils.checkForInvalidItems(a)) {
+            if (a != null) {
                 GTValues.RA.stdBuilder()
                     .itemInputs(GTUtility.getIntegratedCircuit(3), GTUtility.copyAmount(20, a))
                     .fluidInputs(GTModHandler.getDistilledWater(1_000))

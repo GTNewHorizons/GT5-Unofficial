@@ -77,7 +77,7 @@ public interface IGregTechTileEntity extends ITexturedTileEntity, ICoverable, IF
     /**
      * Causes the machine to send a tile entity description packet to the client.
      * Only has an effect on the server.
-     * 
+     *
      * @see IMetaTileEntity#getDescriptionData()
      * @see IMetaTileEntity#onDescriptionPacket(NBTTagCompound)
      * @see TileEntity#getDescriptionPacket()
@@ -180,4 +180,11 @@ public interface IGregTechTileEntity extends ITexturedTileEntity, ICoverable, IF
     }
 
     default void startTimeStatistics() {}
+
+    /**
+     * Returns true if steam powers the tile entity
+     */
+    default boolean isSteampowered() {
+        return false;
+    };
 }

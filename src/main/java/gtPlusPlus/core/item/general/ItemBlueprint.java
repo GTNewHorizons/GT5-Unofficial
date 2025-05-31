@@ -171,8 +171,6 @@ public class ItemBlueprint extends Item implements IItemBlueprint {
                     if (stack.getTagCompound()
                         .getCompoundTag("Items") != null) {
                         stack.stackTagCompound.setBoolean("mBlueprint", true);
-                    } else {
-                        // Invalid BP saved?
                     }
                     hasBP = (boolean) this.getNBT(stack, "mBlueprint");
                 }
@@ -244,16 +242,6 @@ public class ItemBlueprint extends Item implements IItemBlueprint {
                             return false;
                         }
             return false;
-        } else if (!itemStack.hasTagCompound()) {
-            final int bpID = MathUtils.randInt(0, 1000);
-            final boolean hasRecipe = false;
-            final String recipeName = "";
-            Logger.WARNING("Creating Blueprint, setting up it's NBT data. " + bpID);
-            itemStack.stackTagCompound = new NBTTagCompound();
-            itemStack.stackTagCompound.setInteger("mID", bpID);
-            itemStack.stackTagCompound.setBoolean("mBlueprint", hasRecipe);
-            itemStack.stackTagCompound.setString("mName", recipeName);
-            return true;
         } else {
             final int bpID = MathUtils.randInt(0, 1000);
             final boolean hasRecipe = false;
