@@ -435,7 +435,7 @@ public abstract class MTESteamMultiBase<T extends MTESteamMultiBase<T>> extends 
         builder.widget(new FakeSyncWidget.IntegerSyncer(this::getTotalSteamStored, val -> uiSteamStored = val));
 
         builder.widget(
-            new DrawableWidget().setDrawable(GTUITextures.STEAM_GAUGE_BG)
+            new DrawableWidget().setDrawable(GTUITextures.STEAM_GAUGE_BG_STEEL)
                 .dynamicTooltip(
                     () -> Collections.singletonList(
                         translateToLocalFormatted(
@@ -444,12 +444,12 @@ public abstract class MTESteamMultiBase<T extends MTESteamMultiBase<T>> extends 
                             numberFormat.format(uiSteamCapacity))))
                 .setTooltipShowUpDelay(TOOLTIP_DELAY)
                 .setUpdateTooltipEveryTick(true)
-                .setSize(64, 42)
-                .setPos(-64, 100));
+                .setSize(48, 42)
+                .setPos(-48, 100));
 
         builder.widget(
             new DrawableWidget().setDrawable(new CircularGaugeDrawable(() -> (float) uiSteamStored / uiSteamCapacity))
-                .setPos(-64 + 21, 100 + 21)
+                .setPos(-48 + 21, 100 + 21)
                 .setSize(18, 4));
     }
 

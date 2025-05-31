@@ -61,6 +61,7 @@ import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import gregtech.GTMod;
 import gregtech.api.covers.CoverRegistry;
 import gregtech.api.enums.SoundResource;
+import gregtech.api.enums.SteamVariant;
 import gregtech.api.gui.modularui.CircularGaugeDrawable;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.gui.modularui.SteamTexture;
@@ -1439,8 +1440,9 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
     protected Widget createSteamProgressBar(ModularWindow.Builder builder) {
         builder.widget(new FakeSyncWidget.LongSyncer(this::getSteamVar, val -> getSteamVar = val));
 
+        boolean isSteel = getSteamVariant() == SteamVariant.STEEL;
         builder.widget(
-            new DrawableWidget().setDrawable(GTUITextures.STEAM_GAUGE_BG)
+            new DrawableWidget().setDrawable(isSteel ? GTUITextures.STEAM_GAUGE_BG_STEEL : GTUITextures.STEAM_GAUGE_BG)
                 .dynamicTooltip(
                     () -> Collections.singletonList(
                         translateToLocalFormatted(
@@ -1449,11 +1451,11 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
                             numberFormat.format(maxSteamStore()))))
                 .setTooltipShowUpDelay(TOOLTIP_DELAY)
                 .setUpdateTooltipEveryTick(true)
-                .setSize(64, 42)
-                .setPos(-64, 100));
+                .setSize(48, 42)
+                .setPos(-48, 100));
 
         return new DrawableWidget().setDrawable(new CircularGaugeDrawable(() -> (float) getSteamVar / maxSteamStore()))
-            .setPos(-64 + 21, 100 + 21)
+            .setPos(-48 + 21, 100 + 21)
             .setSize(18, 4);
     }
 
