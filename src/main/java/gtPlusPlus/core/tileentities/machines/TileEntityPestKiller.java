@@ -26,12 +26,12 @@ import net.minecraftforge.fluids.IFluidHandler;
 import net.minecraftforge.oredict.OreDictionary;
 
 import forestry.lepidopterology.entities.EntityButterfly;
+import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Mods;
 import gregtech.api.util.GTUtility;
 import gtPlusPlus.api.objects.minecraft.BTF_FluidTank;
 import gtPlusPlus.core.inventories.InventoryPestKiller;
 import gtPlusPlus.core.material.MaterialMisc;
-import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.minecraft.EntityUtils;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
@@ -469,7 +469,7 @@ public class TileEntityPestKiller extends TileEntity implements ISidedInventory,
         if (this.getInventory() != null && drainCell()) {
             this.decrStackSize(0, 1);
             if (this.getStackInSlot(1) == null) {
-                this.setInventorySlotContents(1, CI.emptyCells(1));
+                this.setInventorySlotContents(1, ItemList.Cell_Empty.get(1));
             } else {
                 this.getStackInSlot(1).stackSize++;
             }

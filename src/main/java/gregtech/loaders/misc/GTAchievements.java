@@ -260,7 +260,6 @@ public class GTAchievements {
             false);
         registerAchievement("highpowersmelt", 8, 2, ItemList.Machine_Multi_Furnace.get(1), "gtaluminium", false);
         registerAchievement("oilplant", 8, 4, ItemList.Distillation_Tower.get(1), "highpowersmelt", false);
-        registerAchievement("factory", 8, 6, ItemList.Processing_Array.get(1), "oilplant", false);
         registerAchievement("upgradeebf", 8, -2, ItemList.Hatch_Energy_MV.get(1), "gtaluminium", false);
         registerAchievement("maintainance", 10, -2, ItemList.Hatch_Maintenance.get(1), "upgradeebf", false);
 
@@ -559,7 +558,6 @@ public class GTAchievements {
             case "gt.blockmachines.hatch.energy.tier.02" -> issueAchievement(player, "upgradeebf");
             case "gt.blockmachines.multimachine.multifurnace" -> issueAchievement(player, "highpowersmelt");
             case "gt.blockmachines.hatch.energy.tier.01" -> issueAchievement(player, "energyhatch");
-            case "gt.blockmachines.multimachine.processingarray" -> issueAchievement(player, "factory");
             case "gt.blockmachines.basicgenerator.magicenergyconverter.tier.01" -> issueAchievement(player, "magic");
             case "gt.blockmachines.basicgenerator.magicenergyabsorber.tier.03" -> issueAchievement(player, "highmage");
             case "gt.blockmachines.basicgenerator.plasmagenerator.tier.07" -> issueAchievement(
@@ -659,7 +657,6 @@ public class GTAchievements {
         if (stack.getUnlocalizedName()
             .startsWith("gt.blockmachines.basicmachine.replicator.tier.")) {
             issueAchievement(player, "replication");
-            return;
         }
 
     }

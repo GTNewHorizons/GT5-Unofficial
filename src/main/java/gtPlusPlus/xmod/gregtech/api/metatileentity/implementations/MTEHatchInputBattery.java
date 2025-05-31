@@ -141,7 +141,7 @@ public class MTEHatchInputBattery extends MTEHatch {
                             }
                         }
                     }
-                } else {}
+                }
             }
         }
         super.onPostTick(aBaseMetaTileEntity, aTimer);
@@ -190,11 +190,8 @@ public class MTEHatchInputBattery extends MTEHatch {
 
     @Override
     public int rechargerSlotCount() {
-        return switch (mTier) {
-            case 2 -> 4;
-            case 4 -> 16;
-            default -> 16;
-        };
+        if (mTier == 2) return 2;
+        return 16;
     }
 
     @Override
