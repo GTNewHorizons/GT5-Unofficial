@@ -174,9 +174,9 @@ public class AdditionalRecipes {
                 stack.getTagCompound()
                     .getCompoundTag("Plasmid"));
             if (!Objects.equals(DNA.getName(), Plasmid.getName())) {
-                if (DNA.getName() == "TCetiEis Fucus Serratus") {
+                if ("TCetiEis Fucus Serratus".equals(DNA.getName())) {
                     energyUsageWithTransformModule = TierEU.RECIPE_LuV;
-                } else if (DNA.getName() == "Escherichia koli") {
+                } else if ("Escherichia koli".equals(DNA.getName())) {
                     energyUsageWithTransformModule = TierEU.RECIPE_EV;
                 }
                 GTValues.RA.stdBuilder()

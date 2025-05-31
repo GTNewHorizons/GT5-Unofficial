@@ -57,7 +57,7 @@ public class ReflectionUtils {
      * @return - Valid, non-final, {@link Field} object, or {@link null}.
      */
     public static Field getField(final Class<?> aClass, final String aFieldName) {
-        if (aClass == null || aFieldName == null || aFieldName.length() <= 0) {
+        if (aClass == null || aFieldName == null || aFieldName.length() == 0) {
             return null;
         }
         CachedField y = mCachedFields.get(aClass.getName() + "." + aFieldName);
