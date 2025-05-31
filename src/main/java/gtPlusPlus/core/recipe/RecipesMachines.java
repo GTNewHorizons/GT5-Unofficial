@@ -959,7 +959,7 @@ public class RecipesMachines {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 ItemList.Robot_Arm_LV.get(4),
-                ItemList.Cover_Controller.get(1, ItemList.Electric_Motor_MV.get(1)),
+                ItemList.Cover_Controller.get(1),
                 ItemList.Hull_MV.get(1),
                 GTOreDictUnificator.get(OrePrefixes.circuit, Materials.LV, 2),
                 GTOreDictUnificator.get(OrePrefixes.circuit, Materials.MV, 2))
@@ -2024,7 +2024,7 @@ public class RecipesMachines {
             // LV
             RecipeUtils.addShapedGregtechRecipe(
                 CI.component_Plate[1],
-                new ItemStack(ModItems.itemAirFilter, 1, 0),
+                new ItemStack(ModItems.itemAirFilter, 1),
                 CI.component_Plate[1],
                 CI.component_Plate[1],
                 ItemList.Electric_Motor_LV.get(1),
@@ -2036,7 +2036,7 @@ public class RecipesMachines {
             // MV
             RecipeUtils.addShapedGregtechRecipe(
                 CI.component_Plate[2],
-                new ItemStack(ModItems.itemAirFilter, 1, 0),
+                new ItemStack(ModItems.itemAirFilter, 1),
                 CI.component_Plate[2],
                 CI.component_Plate[2],
                 ItemList.Electric_Motor_MV.get(1),
@@ -2048,7 +2048,7 @@ public class RecipesMachines {
             // HV
             RecipeUtils.addShapedGregtechRecipe(
                 CI.component_Plate[3],
-                new ItemStack(ModItems.itemAirFilter, 1, 0),
+                new ItemStack(ModItems.itemAirFilter, 1),
                 CI.component_Plate[3],
                 CI.component_Plate[3],
                 ItemList.Electric_Motor_HV.get(1),
