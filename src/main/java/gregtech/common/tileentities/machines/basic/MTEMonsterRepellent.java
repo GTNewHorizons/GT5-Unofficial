@@ -7,8 +7,6 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TELEPORTER_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TELEPORTER_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TELEPORTER_GLOW;
 
-import java.util.Arrays;
-
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -73,11 +71,6 @@ public class MTEMonsterRepellent extends MTETieredMachineBlock {
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTimer) {
         if (aBaseMetaTileEntity.isAllowedToWork() && aBaseMetaTileEntity.isServerSide()) {
-            int[] tCoords = { aBaseMetaTileEntity.getXCoord(), aBaseMetaTileEntity.getYCoord(),
-                aBaseMetaTileEntity.getZCoord(), aBaseMetaTileEntity.getWorld().provider.dimensionId };
-            if ((aTimer % 600 == 0) && !GTSpawnEventHandler.mobReps.contains(tCoords)) {
-                GTSpawnEventHandler.mobReps.add(tCoords);
-            }
             if (aBaseMetaTileEntity.isUniversalEnergyStored(getMinimumStoredEU())
                 && aBaseMetaTileEntity.decreaseStoredEnergyUnits(1L << (this.mTier * 2), false)) {
                 mRange = GTSpawnEventHandler.getPoweredRepellentRange(mTier);
@@ -89,22 +82,18 @@ public class MTEMonsterRepellent extends MTETieredMachineBlock {
 
     @Override
     public void onFirstTick(IGregTechTileEntity aBaseMetaTileEntity) {
-        int[] tCoords = { aBaseMetaTileEntity.getXCoord(), aBaseMetaTileEntity.getYCoord(),
-            aBaseMetaTileEntity.getZCoord(), aBaseMetaTileEntity.getWorld().provider.dimensionId };
-        GTSpawnEventHandler.mobReps.add(tCoords);
+        if (!aBaseMetaTileEntity.isServerSide()) return;
+
+        GTSpawnEventHandler.mobReps.get(aBaseMetaTileEntity.getWorld().provider.dimensionId)
+            .insert(this);
     }
 
     @Override
     public void onRemoval() {
-        int[] tCoords = { this.getBaseMetaTileEntity()
-            .getXCoord(),
+        GTSpawnEventHandler.mobReps.get(
             this.getBaseMetaTileEntity()
-                .getYCoord(),
-            this.getBaseMetaTileEntity()
-                .getZCoord(),
-            this.getBaseMetaTileEntity()
-                .getWorld().provider.dimensionId };
-        GTSpawnEventHandler.mobReps.removeIf(coords -> Arrays.equals(coords, tCoords));
+                .getWorld().provider.dimensionId)
+            .remove(this);
     }
 
     @Override
