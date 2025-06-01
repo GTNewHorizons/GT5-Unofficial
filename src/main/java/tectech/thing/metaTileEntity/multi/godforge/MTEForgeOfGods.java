@@ -1645,7 +1645,8 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
                 () -> gravitonShardsAvailable,
                 () -> completeUpgrade(upgrade),
                 () -> respecUpgrade(upgrade),
-                () -> isUpgradeActive(upgrade)));
+                () -> isUpgradeActive(upgrade),
+                () -> formattingMode));
 
         if (upgrade.hasExtraCost()) {
             builder.widget(
@@ -2929,9 +2930,9 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
 
     private Text storedFuel() {
         if (internalBattery == 0) {
-            return new Text(stellarFuelAmount + "/" + neededStartupFuel);
+            return new Text(formattingMode.format(stellarFuelAmount) + "/" + formattingMode.format(neededStartupFuel));
         }
-        return new Text(internalBattery + "/" + maxBatteryCharge);
+        return new Text(formattingMode.format(internalBattery) + "/" + formattingMode.format(maxBatteryCharge));
     }
 
     private Text storedFuelHeaderText() {
@@ -3127,7 +3128,9 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
         }
         sum = progress * (progress + 1) / 2;
         return new Text(
-            translateToLocal("gt.blockmachines.multimachine.FOG.shardgain") + ": " + EnumChatFormatting.GRAY + sum);
+            translateToLocal("gt.blockmachines.multimachine.FOG.shardgain") + ": "
+                + EnumChatFormatting.GRAY
+                + formattingMode.format(sum));
     }
 
     private Text totalMilestoneProgress(int milestoneID) {
