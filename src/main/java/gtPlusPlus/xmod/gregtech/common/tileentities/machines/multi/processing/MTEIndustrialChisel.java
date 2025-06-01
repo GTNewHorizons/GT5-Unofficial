@@ -39,7 +39,6 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.pollution.PollutionConfig;
 import gtPlusPlus.core.block.ModBlocks;
-import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchChiselBus;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
@@ -129,7 +128,7 @@ public class MTEIndustrialChisel extends GTPPMultiBlockBase<MTEIndustrialChisel>
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
-        return survivialBuildPiece(mName, stackSize, 1, 1, 0, elementBudget, env, false, true);
+        return survivalBuildPiece(mName, stackSize, 1, 1, 0, elementBudget, env, false, true);
     }
 
     @Override
@@ -229,8 +228,8 @@ public class MTEIndustrialChisel extends GTPPMultiBlockBase<MTEIndustrialChisel>
                 // We can chisel this
                 GTRecipe aRecipe = new GTRecipe(
                     false,
-                    new ItemStack[] { ItemUtils.getSimpleStack(aInput, 1) },
-                    new ItemStack[] { ItemUtils.getSimpleStack(tOutput, 1) },
+                    new ItemStack[] { GTUtility.copyAmount(1, aInput) },
+                    new ItemStack[] { GTUtility.copyAmount(1, tOutput) },
                     null,
                     new int[] { 10000 },
                     new FluidStack[] {},

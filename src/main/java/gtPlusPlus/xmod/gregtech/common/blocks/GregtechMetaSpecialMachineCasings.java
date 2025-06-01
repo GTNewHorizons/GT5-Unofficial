@@ -34,10 +34,6 @@ public class GregtechMetaSpecialMachineCasings extends GregtechMetaCasingBlocksA
 
     public GregtechMetaSpecialMachineCasings() {
         super(SpecialCasingItemBlock.class, "gtplusplus.blockspecialcasings.2", MaterialCasings.INSTANCE);
-        for (byte i = 0; i < 16; i = (byte) (i + 1)) {
-            // TAE.registerTextures(new GT_CopiedBlockTexture(this, 6, i));
-            // Don't register these Textures, They already exist within vanilla GT. (May not exist in 5.08)
-        }
         GTLanguageManager.addStringLocalization(this.getUnlocalizedName() + ".0.name", "Strong Bronze Machine Casing");
         GTLanguageManager
             .addStringLocalization(this.getUnlocalizedName() + ".1.name", "Sturdy Aluminium Machine Casing");

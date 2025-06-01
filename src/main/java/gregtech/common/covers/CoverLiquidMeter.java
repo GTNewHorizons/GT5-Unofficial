@@ -1,5 +1,9 @@
 package gregtech.common.covers;
 
+import static net.minecraft.util.StatCollector.translateToLocal;
+
+import java.util.Arrays;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
@@ -20,6 +24,8 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.metatileentity.BaseMetaTileEntity;
 import gregtech.api.util.GTUtility;
+import gregtech.common.covers.gui.CoverGui;
+import gregtech.common.covers.gui.CoverLiquidMeterGui;
 import gregtech.common.gui.mui1.cover.LiquidMeterUIFactory;
 import gregtech.common.tileentities.storage.MTEDigitalTankBase;
 import io.netty.buffer.ByteBuf;
@@ -28,7 +34,7 @@ import io.netty.buffer.ByteBuf;
  * TODO: Implement overlay rendering only with
  * {@link Cover#getOverlayTexture()}
  */
-public class CoverLiquidMeter extends Cover {
+public class CoverLiquidMeter extends Cover implements Invertable {
 
     private boolean inverted;
     /**
@@ -42,10 +48,12 @@ public class CoverLiquidMeter extends Cover {
         threshold = 0;
     }
 
+    @Override
     public boolean isInverted() {
         return this.inverted;
     }
 
+    @Override
     public CoverLiquidMeter setInverted(boolean inverted) {
         this.inverted = inverted;
         return this;
@@ -55,7 +63,7 @@ public class CoverLiquidMeter extends Cover {
         return this.threshold;
     }
 
-    public CoverLiquidMeter setThresdhold(int threshold) {
+    public CoverLiquidMeter setThreshold(int threshold) {
         this.threshold = threshold;
         return this;
     }
@@ -127,10 +135,10 @@ public class CoverLiquidMeter extends Cover {
     public void onCoverScrewdriverClick(EntityPlayer aPlayer, float aX, float aY, float aZ) {
         if (inverted) {
             inverted = false;
-            GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("055", "Normal"));
+            GTUtility.sendChatToPlayer(aPlayer, translateToLocal("gt.interact.desc.normal"));
         } else {
             inverted = true;
-            GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("054", "Inverted"));
+            GTUtility.sendChatToPlayer(aPlayer, translateToLocal("gt.interact.desc.inverted"));
         }
     }
 
@@ -179,6 +187,18 @@ public class CoverLiquidMeter extends Cover {
         return 5;
     }
 
+    private int getMaxCapacity() {
+        final ICoverable tile = getTile();
+        if (!tile.isDead() && tile instanceof IFluidHandler) {
+            FluidTankInfo[] tanks = ((IFluidHandler) tile).getTankInfo(ForgeDirection.UNKNOWN);
+            return Arrays.stream(tanks)
+                .mapToInt(tank -> tank.capacity)
+                .sum();
+        } else {
+            return -1;
+        }
+    }
+
     // GUI stuff
 
     @Override
@@ -187,8 +207,13 @@ public class CoverLiquidMeter extends Cover {
     }
 
     @Override
+    protected @NotNull CoverGui<CoverLiquidMeter> getCoverGui() {
+        return new CoverLiquidMeterGui(this, getMaxCapacity());
+    }
+
+    @Override
     public ModularWindow createWindow(CoverUIBuildContext buildContext) {
-        return new LiquidMeterUIFactory(buildContext).createWindow();
+        return new LiquidMeterUIFactory(buildContext, getMaxCapacity()).createWindow();
     }
 
 }

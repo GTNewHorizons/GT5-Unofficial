@@ -7,7 +7,7 @@ import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
 
 import gregtech.api.enums.GTValues;
-import gtPlusPlus.core.util.minecraft.FluidUtils;
+import gregtech.api.enums.Materials;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 
 public class FishTrapHandler {
@@ -34,13 +34,13 @@ public class FishTrapHandler {
                     .addTo(maceratorRecipes);
                 GTValues.RA.stdBuilder()
                     .itemInputs(ItemUtils.getItemStackOfAmountFromOreDict(itemName, 1))
-                    .fluidOutputs(FluidUtils.getFluidStack("methane", 48))
+                    .fluidOutputs(Materials.Methane.getGas(48))
                     .duration(19 * SECONDS + 4 * TICKS)
                     .eut(5)
                     .addTo(centrifugeRecipes);
                 GTValues.RA.stdBuilder()
                     .itemInputs(ItemUtils.getItemStackOfAmountFromOreDict(itemName, 1))
-                    .fluidOutputs(FluidUtils.getFluidStack("fishoil", 50))
+                    .fluidOutputs(Materials.FishOil.getFluid(50))
                     .duration(16 * TICKS)
                     .eut(4)
                     .addTo(fluidExtractionRecipes);
@@ -58,13 +58,13 @@ public class FishTrapHandler {
                 .addTo(maceratorRecipes);
             GTValues.RA.stdBuilder()
                 .itemInputs(ItemUtils.getItemStackOfAmountFromOreDict(greenheartFish, 1))
-                .fluidOutputs(FluidUtils.getFluidStack("methane", 48))
+                .fluidOutputs(Materials.Methane.getGas(48))
                 .duration(19 * SECONDS + 4 * TICKS)
                 .eut(5)
                 .addTo(centrifugeRecipes);
             GTValues.RA.stdBuilder()
                 .itemInputs(ItemUtils.getItemStackOfAmountFromOreDict(greenheartFish, 1))
-                .fluidOutputs(FluidUtils.getFluidStack("fishoil", 50))
+                .fluidOutputs(Materials.FishOil.getFluid(50))
                 .duration(16 * TICKS)
                 .eut(4)
                 .addTo(fluidExtractionRecipes);

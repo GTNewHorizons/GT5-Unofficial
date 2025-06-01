@@ -58,6 +58,7 @@ import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTLanguageManager;
+import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
@@ -356,7 +357,7 @@ public class MTEHighTempGasCooledReactor extends MTEEnhancedMultiBlockBase<MTEHi
 
             for (MTEHatchInput tHatch : validMTEList(mInputHatches)) {
                 FluidStack tLiquid = tHatch.getFluid();
-                if (tLiquid != null && tLiquid.isFluidEqual(FluidRegistry.getFluidStack("ic2coolant", 1))) {
+                if (tLiquid != null && tLiquid.isFluidEqual(GTModHandler.getIC2Coolant(1))) {
                     FluidStack drained = tHatch.drain(takecoolant, true);
                     takecoolant -= drained.amount;
                     drainedamount += drained.amount;

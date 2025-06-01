@@ -161,7 +161,7 @@ public class MTECoolantTower extends MTETooltipMultiBlockBaseEM implements ICons
 
     private int maybeDrainSteam(MTEHatchInput tHatch, FluidStack maybeSteam) {
         if (maybeSteam == null) return 0;
-        if (!GTUtility.areFluidsEqual(maybeSteam, GTModHandler.getSteam(1))) return 0;
+        if (!GTUtility.areFluidsEqual(maybeSteam, Materials.Steam.getGas(1))) return 0;
         FluidStack defoSteam = tHatch.drain(ForgeDirection.UNKNOWN, maybeSteam, true);
         return defoSteam.amount;
     }
@@ -195,7 +195,7 @@ public class MTECoolantTower extends MTETooltipMultiBlockBaseEM implements ICons
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
-        return survivialBuildPiece(mName, stackSize, 5, 11, 0, elementBudget, env, false, true);
+        return survivalBuildPiece(mName, stackSize, 5, 11, 0, elementBudget, env, false, true);
     }
 
     @Override

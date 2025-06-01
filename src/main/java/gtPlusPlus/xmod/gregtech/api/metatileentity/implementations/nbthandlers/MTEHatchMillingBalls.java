@@ -12,8 +12,8 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.render.TextureFactory;
 import gtPlusPlus.core.lib.GTPPCore;
-import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
+import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.MTEIsaMill;
 
 public class MTEHatchMillingBalls extends MTEHatchNbtConsumable {
 
@@ -62,7 +62,7 @@ public class MTEHatchMillingBalls extends MTEHatchNbtConsumable {
 
     @Override
     public boolean isItemValidForUsageSlot(ItemStack aStack) {
-        return ItemUtils.isMillingBall(aStack);
+        return MTEIsaMill.isMillingBall(aStack);
     }
 
     @Override
