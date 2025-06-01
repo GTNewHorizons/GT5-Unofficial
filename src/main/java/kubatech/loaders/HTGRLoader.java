@@ -236,7 +236,7 @@ public class HTGRLoader {
         GTValues.RA.stdBuilder()
                 .itemInputs(ItemList.Beryllium_Shielding_Plate.get(1L),
                     GTOreDictUnificator.get(OrePrefixes.plate, Materials.TungstenSteel, 4L),
-                    GTOreDictUnificator.get(OrePrefixes.screw, Materials.TungstenSteel, 16L),
+                    GTOreDictUnificator.get(OrePrefixes.screw, Materials.TungstenSteel, 8L),
                     GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.TungstenSteel, 1L))
             .fluidInputs(Materials.Lead.getMolten(1152L))
             .itemOutputs(ItemList.Casing_Beryllium_Integrated_Reactor.get(1L))
@@ -247,7 +247,7 @@ public class HTGRLoader {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.plateDense, Materials.Beryllium, 1L),
-                GTOreDictUnificator.get(OrePrefixes.screw, Materials.StainlessSteel, 16L))
+                GTOreDictUnificator.get(OrePrefixes.screw, Materials.StainlessSteel, 4L))
             .fluidInputs(Materials.Beryllium.getMolten(144L))
             .itemOutputs(ItemList.Beryllium_Shielding_Plate.get(1L))
             .duration(GTRecipeBuilder.SECONDS * 30)
@@ -264,7 +264,6 @@ public class HTGRLoader {
 
         GTValues.RA.stdBuilder()
             .itemInputs(Materials.Aluminiumoxide.getDust(4),
-                ItemList.Shape_Mold_Ring.get(0),
                 ItemList.Shape_Mold_Ring.get(0))
             .itemOutputs(ItemList.Alumina_Support_Ring_Raw.get(1L))
             .duration(GTRecipeBuilder.SECONDS * 60)
