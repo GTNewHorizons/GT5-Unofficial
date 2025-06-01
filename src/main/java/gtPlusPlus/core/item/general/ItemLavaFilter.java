@@ -77,8 +77,4 @@ public class ItemLavaFilter extends CoreItem {
         return true;
     }
 
-    @Override
-    public boolean isRepairable() {
-        return false;
-    }
 }
