@@ -277,7 +277,7 @@ public class MTEIndustrialMacerator extends GTPPMultiBlockBase<MTEIndustrialMace
             ItemStack aGuiStack = this.getControllerSlot();
             if (GregtechItemList.Maceration_Upgrade_Chip.isStackEqual(aGuiStack, false, true)) {
                 controllerTier = 2;
-                mInventory[1] = ItemUtils.depleteStack(aGuiStack);
+                mInventory[1] = ItemUtils.depleteStack(aGuiStack, 1);
                 markDirty();
                 // schedule a structure check
                 mUpdated = true;
@@ -292,7 +292,7 @@ public class MTEIndustrialMacerator extends GTPPMultiBlockBase<MTEIndustrialMace
             ItemStack heldItem = aPlayer.getHeldItem();
             if (GregtechItemList.Maceration_Upgrade_Chip.isStackEqual(heldItem, false, true)) {
                 controllerTier = 2;
-                aPlayer.setCurrentItemOrArmor(0, ItemUtils.depleteStack(heldItem));
+                aPlayer.setCurrentItemOrArmor(0, ItemUtils.depleteStack(heldItem, 1));
                 if (getBaseMetaTileEntity().isServerSide()) {
                     markDirty();
                     aPlayer.inventory.markDirty();

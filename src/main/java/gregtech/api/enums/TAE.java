@@ -7,7 +7,6 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.render.TextureFactory;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.ModBlocks;
-import gtPlusPlus.core.lib.GTPPCore;
 
 public class TAE {
 
@@ -43,10 +42,10 @@ public class TAE {
             mFreeSlots.remove(aID);
             mTAE.put(aID, texture);
             return true;
-        } else {
-            GTPPCore.crash("Tried to register texture with ID " + aID + " to TAE, but it is already in use.");
-            return false; // Dead Code
         }
+
+        Logger.ERROR("Tried to register texture with ID " + aID + " to TAE, but it is already in use.");
+        throw new IllegalStateException();
     }
 
     public static void finalizeTAE() {
