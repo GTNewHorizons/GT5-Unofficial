@@ -62,9 +62,11 @@ public class BWMetaItems {
         return BWMetaItems.NEW_CIRCUIT_PARTS;
     }
 
-    private static final BWMetaItems.BW_GT_MetaGenCircuits NEW_CIRCUIT_PARTS = new BWMetaItems.BW_GT_MetaGenCircuits();
+    private static BWMetaItems.BW_GT_MetaGenCircuits NEW_CIRCUIT_PARTS;
 
-    static {
+    public static void init() {
+        NEW_CIRCUIT_PARTS = new BWMetaItems.BW_GT_MetaGenCircuits();
+
         BWMetaItems.NEW_CIRCUIT_PARTS.addItem(0, "Circuit Imprint", "", SubTag.NO_UNIFICATION, SubTag.NO_RECYCLING);
         BWMetaItems.NEW_CIRCUIT_PARTS.addItem(1, "Sliced Circuit", "", SubTag.NO_UNIFICATION, SubTag.NO_RECYCLING);
         BWMetaItems.NEW_CIRCUIT_PARTS
