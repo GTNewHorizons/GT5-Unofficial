@@ -124,7 +124,7 @@ public class GregTechAPI {
      * The List of Tools, which can be used. Accepts regular damageable Items and Electric Items
      */
     public static final GTHashSet sToolList = new GTHashSet(), sCrowbarList = new GTHashSet(),
-        sScrewdriverList = new GTHashSet(), sWrenchList = new GTHashSet(), sSoftHammerList = new GTHashSet(),
+        sScrewdriverList = new GTHashSet(), sWrenchList = new GTHashSet(), sSoftMalletList = new GTHashSet(),
         sHardHammerList = new GTHashSet(), sWireCutterList = new GTHashSet(), sSolderingToolList = new GTHashSet(),
         sSolderingMetalList = new GTHashSet(), sJackhammerList = new GTHashSet();
 
@@ -183,7 +183,7 @@ public class GregTechAPI {
     public static Block sBlockGranites, sBlockConcretes, sBlockStones;
     public static Block sBlockCasings1, sBlockCasings2, sBlockCasings3, sBlockCasings4, sBlockCasings5, sBlockCasings6,
         sBlockCasings8, sBlockCasings9, sBlockCasings10, sBlockCasings11, sBlockCasings12, sSolenoidCoilCasings,
-        sBlockCasingsNH;
+        sBlockCasingsNH, sBlockCasingsSE, sBlockCasingsSEMotor, sBlockCasingsDyson, sBlockCasingsSiphon;
     public static Block sBlockLongDistancePipes;
     public static Block sDroneRender;
     public static Block sBlockFrames;
@@ -192,6 +192,7 @@ public class GregTechAPI {
     public static Block sLaserRender;
     public static Block sWormholeRender;
     public static Block sBlackholeRender;
+    public static Block sSpaceElevatorCable;
     /**
      * Getting assigned by the Config
      */
@@ -399,8 +400,8 @@ public class GregTechAPI {
      * You need to register Tools in the Load Phase, because otherwise the Auto-detection will assign a Tool Type in
      * certain Cases during postload (When IToolWrench or similar Interfaces are implemented).
      */
-    public static boolean registerSoftHammer(ItemStack aTool) {
-        return registerTool(aTool, sSoftHammerList);
+    public static boolean registerSoftMallet(ItemStack aTool) {
+        return registerTool(aTool, sSoftMalletList);
     }
 
     /**

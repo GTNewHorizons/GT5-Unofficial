@@ -450,7 +450,8 @@ public class MTEPollutionDetector extends MTETieredMachineBlock {
     }
 
     @Override
-    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
+        ItemStack aTool) {
 
         if (side == this.getBaseMetaTileEntity()
             .getFrontFacing()) {
@@ -465,7 +466,7 @@ public class MTEPollutionDetector extends MTETieredMachineBlock {
             GTUtility.sendChatToPlayer(aPlayer, "Emit Redstone at Pollution Level: " + this.mRedstoneLevel);
         }
 
-        super.onScrewdriverRightClick(side, aPlayer, aX, aY, aZ);
+        super.onScrewdriverRightClick(side, aPlayer, aX, aY, aZ, aTool);
     }
 
     @Override
@@ -486,14 +487,5 @@ public class MTEPollutionDetector extends MTETieredMachineBlock {
     @Override
     public void onMachineBlockUpdate() {
         super.onMachineBlockUpdate();
-    }
-
-    @Override
-    public boolean hasSidedRedstoneOutputBehavior() {
-        if (this.getCurrentChunkPollution() >= this.mRedstoneLevel) {
-            this.markDirty();
-            return true;
-        }
-        return false;
     }
 }

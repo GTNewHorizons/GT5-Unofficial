@@ -14,6 +14,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
+import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -191,18 +192,12 @@ public abstract class MetaTileEntity extends CommonMetaTileEntity implements ICr
 
     @Override
     public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
-        ItemStack aTool) {
-        onScrewdriverRightClick(side, aPlayer, aX, aY, aZ);
-    }
+        ItemStack aTool) {}
 
     @Override
     public boolean onWrenchRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer entityPlayer,
         float aX, float aY, float aZ, ItemStack aTool) {
 
-        // glue
-        if (onWrenchRightClick(side, wrenchingSide, entityPlayer, aX, aY, aZ)) {
-            return true;
-        }
         if (getBaseMetaTileEntity().isValidFacing(wrenchingSide)) {
             getBaseMetaTileEntity().setFrontFacing(wrenchingSide);
             return true;
@@ -213,10 +208,7 @@ public abstract class MetaTileEntity extends CommonMetaTileEntity implements ICr
     @Override
     public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
         float aX, float aY, float aZ, ItemStack aTool) {
-        // glue
-        if (onWireCutterRightClick(side, wrenchingSide, aPlayer, aX, aY, aZ)) {
-            return true;
-        }
+
         if (!aPlayer.isSneaking()) return false;
         final ForgeDirection oppositeSide = wrenchingSide.getOpposite();
         final TileEntity tTileEntity = getBaseMetaTileEntity().getTileEntityAtSide(wrenchingSide);
@@ -233,11 +225,6 @@ public abstract class MetaTileEntity extends CommonMetaTileEntity implements ICr
     public boolean onSolderingToolRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
         float aX, float aY, float aZ, ItemStack aTool) {
 
-        // glue
-        if (onSolderingToolRightClick(side, wrenchingSide, aPlayer, aX, aY, aZ)) {
-            return true;
-        }
-
         if (!aPlayer.isSneaking()) return false;
         final ForgeDirection oppositeSide = wrenchingSide.getOpposite();
         TileEntity tTileEntity = getBaseMetaTileEntity().getTileEntityAtSide(wrenchingSide);
@@ -248,29 +235,6 @@ public abstract class MetaTileEntity extends CommonMetaTileEntity implements ICr
                 .onSolderingToolRightClick(wrenchingSide, oppositeSide, aPlayer, aX, aY, aZ, aTool);
         }
         return false;
-    }
-
-    @Deprecated
-    public boolean onSolderingToolRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
-        float aX, float aY, float aZ) {
-        return false;
-    }
-
-    @Deprecated
-    public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
-        float aX, float aY, float aZ) {
-        return false;
-    }
-
-    @Deprecated
-    public boolean onWrenchRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer, float aX,
-        float aY, float aZ) {
-        return false;
-    }
-
-    @Deprecated
-    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-
     }
 
     @Override
@@ -551,14 +515,6 @@ public abstract class MetaTileEntity extends CommonMetaTileEntity implements ICr
     }
 
     /**
-     * If this TileEntity makes use of Sided Redstone behaviors. Determines only, if the Output Redstone Array is
-     * getting filled with 0 for true, or 15 for false.
-     */
-    public boolean hasSidedRedstoneOutputBehavior() {
-        return false;
-    }
-
-    /**
      * When the Facing gets changed.
      */
     public void onFacingChange() {
@@ -604,6 +560,12 @@ public abstract class MetaTileEntity extends CommonMetaTileEntity implements ICr
 
     }
 
+    /**
+     * Implement {@link #fill(ForgeDirection, FluidStack, boolean)} instead.
+     */
+    @SuppressWarnings("DeprecatedIsStillUsed")
+    @Deprecated
+    @ApiStatus.ScheduledForRemoval
     public int fill_default(ForgeDirection side, FluidStack aFluid, boolean doFill) {
         int filled = fill(aFluid, doFill);
         if (filled > 0) {
@@ -614,7 +576,7 @@ public abstract class MetaTileEntity extends CommonMetaTileEntity implements ICr
 
     @Override
     public int fill(ForgeDirection side, FluidStack aFluid, boolean doFill) {
-        if (getBaseMetaTileEntity().hasSteamEngineUpgrade() && GTModHandler.isSteam(aFluid) && aFluid.amount > 1) {
+        if (getBaseMetaTileEntity().isSteampowered() && GTModHandler.isSteam(aFluid) && aFluid.amount > 1) {
             int tSteam = (int) Math.min(
                 Integer.MAX_VALUE,
                 Math.min(
@@ -823,6 +785,10 @@ public abstract class MetaTileEntity extends CommonMetaTileEntity implements ICr
     @Override
     public int getTextColorOrDefault(String textType, int defaultColor) {
         return colorOverride.getTextColorOrDefault(textType, defaultColor);
+    }
+
+    final public byte getColor() {
+        return getBaseMetaTileEntity().getColorization();
     }
 
     protected Supplier<Integer> COLOR_TITLE = () -> getTextColorOrDefault("title", 0x404040);

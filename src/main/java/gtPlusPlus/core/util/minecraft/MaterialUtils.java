@@ -22,7 +22,6 @@ import gtPlusPlus.core.item.base.BaseItemComponent;
 import gtPlusPlus.core.item.base.BaseItemComponent.ComponentTypes;
 import gtPlusPlus.core.item.base.foil.BaseItemFoil;
 import gtPlusPlus.core.item.base.wire.BaseItemFineWire;
-import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.material.MaterialStack;
 import gtPlusPlus.core.material.state.MaterialState;
@@ -75,7 +74,7 @@ public class MaterialUtils {
             int radioactivity = 0;
             if (material.isRadioactive()) {
                 ItemStack aDustStack = ItemUtils.getOrePrefixStack(OrePrefixes.dust, material, 1);
-                radioactivity = aDustStack != null ? GTUtility.getRadioactivityLevel(aDustStack) : 0;
+                radioactivity = GTUtility.getRadioactivityLevel(aDustStack);
                 if (radioactivity == 0) {
                     long aProtons = material.getProtons();
                     radioactivity = (int) Math.min(Math.max((aProtons / 30), 1), 9);
@@ -277,7 +276,7 @@ public class MaterialUtils {
                     + "' & fallback '"
                     + aFallbackMaterialName
                     + "', returning _NULL.");
-            GTPPCore.crash();
+            throw new IllegalStateException();
         }
         return g;
     }
@@ -356,15 +355,15 @@ public class MaterialUtils {
         }
 
         Logger.MATERIALS("[Lang] " + aGC.getUnlocalizedName() + ".name=" + aFormattedLangName);
-        aMaterial.registerComponentForMaterial(aType, ItemUtils.getSimpleStack(aGC));
+        aMaterial.registerComponentForMaterial(aType, new ItemStack(aGC));
     }
 
     public static void generateSpecialDustAndAssignToAMaterial(Material aMaterial, boolean generateMixerRecipes) {
         Item[] aDusts = ItemUtils.generateSpecialUseDusts(aMaterial, false, !generateMixerRecipes);
         if (aDusts.length > 0) {
-            aMaterial.registerComponentForMaterial(OrePrefixes.dust, ItemUtils.getSimpleStack(aDusts[0]));
-            aMaterial.registerComponentForMaterial(OrePrefixes.dustSmall, ItemUtils.getSimpleStack(aDusts[1]));
-            aMaterial.registerComponentForMaterial(OrePrefixes.dustTiny, ItemUtils.getSimpleStack(aDusts[2]));
+            aMaterial.registerComponentForMaterial(OrePrefixes.dust, new ItemStack(aDusts[0]));
+            aMaterial.registerComponentForMaterial(OrePrefixes.dustSmall, new ItemStack(aDusts[1]));
+            aMaterial.registerComponentForMaterial(OrePrefixes.dustTiny, new ItemStack(aDusts[2]));
         }
     }
 

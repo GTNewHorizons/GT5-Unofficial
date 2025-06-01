@@ -24,7 +24,6 @@ import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
 import bartworks.API.SideReference;
@@ -41,6 +40,7 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.TierEU;
 import gregtech.api.fluid.GTFluidFactory;
+import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
 import gregtech.common.items.MetaGeneratedItem98;
 
@@ -75,12 +75,12 @@ public class FluidLoader {
 
         MetaGeneratedItem98.FluidCell[] fluidCells = { MetaGeneratedItem98.FluidCell.FLUORESCENT_DNA,
             MetaGeneratedItem98.FluidCell.ENZYME_SOLUTION, MetaGeneratedItem98.FluidCell.PENICILLIN,
-            MetaGeneratedItem98.FluidCell.POLYMERASE, };
+            MetaGeneratedItem98.FluidCell.POLYMERASE };
         for (int i = 0; i < fluidCells.length; i++) {
             BioLabFluidCells[i] = fluidCells[i].get();
         }
 
-        FluidStack dnaFluid = Gendustry.isModLoaded() ? FluidRegistry.getFluidStack("liquiddna", 100)
+        FluidStack dnaFluid = Gendustry.isModLoaded() ? GTModHandler.getLiquidDNA(100)
             : Materials.Biomass.getFluid(100L);
         for (BioCulture B : BioCulture.BIO_CULTURE_ARRAY_LIST) {
             if (B.isBreedable()) {

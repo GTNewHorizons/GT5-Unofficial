@@ -130,6 +130,10 @@ public class MTELargeTurbinePlasma extends MTELargeTurbine {
             FluidStack firstFuelType = new FluidStack(aFluids.get(0), 0); // Identify a SINGLE type of fluid to process.
             // Doesn't matter which one. Ignore the rest!
             int fuelValue = getFuelValue(firstFuelType);
+            if (fuelValue <= 0) {
+                return 0;
+            }
+
             actualOptimalFlow = GTUtility.safeInt(
                 (long) Math.ceil(
                     (double) (looseFit ? turbine.getOptimalLoosePlasmaFlow() : turbine.getOptimalPlasmaFlow()) * 20

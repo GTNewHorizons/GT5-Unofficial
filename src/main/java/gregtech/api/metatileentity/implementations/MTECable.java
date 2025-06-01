@@ -166,7 +166,6 @@ public class MTECable extends MetaPipeEntity implements IMetaTileEntityCable {
         if (!(baseEntity.getNodePath() instanceof PowerNodePath powerPath)) return;
 
         if (isCoverOnSide(baseEntity, livingEntity)) return;
-        if ((baseEntity.mConnections & IConnectable.HAS_HARDENEDFOAM) == 1) return;
 
         final long amperage = powerPath.getAmperage();
         final long voltage = powerPath.getVoltage();
@@ -206,7 +205,7 @@ public class MTECable extends MetaPipeEntity implements IMetaTileEntityCable {
         if (!isConnectedAtSide(side) && side != ForgeDirection.UNKNOWN) return 0;
         if (!getBaseMetaTileEntity().getCoverAtSide(side)
             .letsEnergyIn()) return 0;
-        return transferElectricity(side, voltage, amperage, (HashSet<TileEntity>) null);
+        return transferElectricity(side, voltage, amperage, null);
     }
 
     @Override
@@ -390,7 +389,7 @@ public class MTECable extends MetaPipeEntity implements IMetaTileEntityCable {
 
     @Override
     public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
-        float aX, float aY, float aZ) {
+        float aX, float aY, float aZ, ItemStack aTool) {
         if (GTMod.gregtechproxy.gt6Cable
             && GTModHandler.damageOrDechargeItem(aPlayer.inventory.getCurrentItem(), 1, 500, aPlayer)) {
             if (isConnectedAtSide(wrenchingSide)) {
@@ -407,7 +406,7 @@ public class MTECable extends MetaPipeEntity implements IMetaTileEntityCable {
 
     @Override
     public boolean onSolderingToolRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
-        float aX, float aY, float aZ) {
+        float aX, float aY, float aZ, ItemStack aTool) {
         if (GTMod.gregtechproxy.gt6Cable
             && GTModHandler.damageOrDechargeItem(aPlayer.inventory.getCurrentItem(), 1, 500, aPlayer)) {
             if (isConnectedAtSide(wrenchingSide)) {

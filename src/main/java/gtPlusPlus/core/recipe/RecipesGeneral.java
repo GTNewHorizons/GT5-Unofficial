@@ -4,6 +4,7 @@ import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
 import static gregtech.api.recipe.RecipeMaps.compressorRecipes;
 import static gregtech.api.recipe.RecipeMaps.fluidSolidifierRecipes;
 import static gregtech.api.util.GTModHandler.RecipeBits.BITSD;
+import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.MINUTES;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechConduits.generatePipeRecipes;
@@ -91,7 +92,7 @@ public class RecipesGeneral {
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Tesseract.get(1))
             .itemOutputs(GregtechItemList.KLEIN_BOTTLE.get(1))
-            .fluidInputs(MaterialsElements.STANDALONE.CHRONOMATIC_GLASS.getFluidStack(2304))
+            .fluidInputs(MaterialsElements.STANDALONE.CHRONOMATIC_GLASS.getFluidStack(16 * INGOTS))
             .duration(15 * SECONDS)
             .eut(TierEU.RECIPE_UHV)
             .addTo(fluidSolidifierRecipes);
@@ -126,7 +127,7 @@ public class RecipesGeneral {
                 Materials.Sapphire.getBlocks(32),
                 new ItemStack(Blocks.gold_block, 32))
             .itemOutputs(GregtechItemList.MagicFeather.get(1))
-            .fluidInputs(Materials.Silver.getMolten(32 * 144))
+            .fluidInputs(Materials.Silver.getMolten(32 * INGOTS))
             .duration(2 * MINUTES)
             .eut(TierEU.RECIPE_EV)
             .addTo(assemblerRecipes);
@@ -204,6 +205,15 @@ public class RecipesGeneral {
         addCompressionRecipe(withCrafting, four, five);
     }
 
+    private static void addCompressionRecipes(boolean withCrafting, ItemStack item, ItemStack block, ItemStack one,
+        ItemStack two, ItemStack three) {
+
+        addCompressionRecipe(withCrafting, item, block);
+        addCompressionRecipe(withCrafting, block, one);
+        addCompressionRecipe(withCrafting, one, two);
+        addCompressionRecipe(withCrafting, two, three);
+    }
+
     private static void addCompressionRecipe(boolean crafting, ItemStack raw, ItemStack compressed) {
         if (raw == null || compressed == null) return;
 
@@ -256,6 +266,37 @@ public class RecipesGeneral {
             true,
             GregtechItemList.QuadrupleCompressedGlowstone.get(1),
             GregtechItemList.QuintupleCompressedGlowstone.get(1));
+
+        // Compressed Netherrack
+        addCompressionRecipes(
+            true,
+            null,
+            new ItemStack(Blocks.netherrack, 1),
+            GregtechItemList.CompressedNetherrack.get(1),
+            GregtechItemList.DoubleCompressedNetherrack.get(1),
+            GregtechItemList.TripleCompressedNetherrack.get(1));
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(new ItemStack(Blocks.netherrack, 9))
+            .itemOutputs(GregtechItemList.CompressedNetherrack.get(1))
+            .duration(15 * SECONDS)
+            .eut(TierEU.RECIPE_LV)
+            .addTo(compressorRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(GregtechItemList.CompressedNetherrack.get(9))
+            .itemOutputs(GregtechItemList.DoubleCompressedNetherrack.get(1))
+            .duration(15 * SECONDS)
+            .eut(TierEU.RECIPE_LV)
+            .addTo(compressorRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(GregtechItemList.DoubleCompressedNetherrack.get(9))
+            .itemOutputs(GregtechItemList.TripleCompressedNetherrack.get(1))
+            .duration(15 * SECONDS)
+            .eut(TierEU.RECIPE_LV)
+            .addTo(compressorRecipes);
+
     }
 
     private static void addPipesAndWires() {
@@ -276,7 +317,7 @@ public class RecipesGeneral {
         generatePipeRecipes(MaterialsAlloy.INCONEL_792);
         generatePipeRecipes(MaterialsAlloy.HASTELLOY_X);
         generatePipeRecipes(MaterialsAlloy.TRINIUM_NAQUADAH_CARBON);
-        generatePipeRecipes(Materials.Clay.mDefaultLocalName, Materials.Clay.getMass(), 15);
+        generatePipeRecipes(null, Materials.Clay.mDefaultLocalName, Materials.Clay.getMass(), 15);
     }
 
     private static void migratedRecipes() {

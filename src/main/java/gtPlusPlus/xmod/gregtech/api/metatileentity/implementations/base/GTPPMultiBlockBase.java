@@ -20,7 +20,6 @@ import javax.annotation.Nullable;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
@@ -55,7 +54,6 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.items.MetaGeneratedTool;
-import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.metatileentity.implementations.MTEHatch;
@@ -333,21 +331,6 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
     public static final String TAG_HIDE_POLLUTION = "TAG_HIDE_POLLUTION";
     public static final String TAG_HIDE_MACHINE_TYPE = "TAG_HIDE_MACHINE_TYPE";
 
-    @Override
-    public boolean isCorrectMachinePart(final ItemStack paramItemStack) {
-        return true;
-    }
-
-    @Override
-    public int getDamageToComponent(final ItemStack paramItemStack) {
-        return 0;
-    }
-
-    @Override
-    public boolean explodesOnComponentBreak(ItemStack p0) {
-        return false;
-    }
-
     /**
      * A Static {@link Method} object which holds the current status of logging.
      */
@@ -361,12 +344,6 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
                 Logger.MACHINE_INFO(s);
             }
         }
-    }
-
-    @Override
-    protected void setProcessingLogicPower(ProcessingLogic logic) {
-        logic.setAvailableVoltage(GTUtility.roundUpVoltage(this.getMaxInputVoltage()));
-        logic.setAvailableAmperage(1L);
     }
 
     public long getMaxInputEnergy() {
@@ -424,32 +401,6 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
             result = true;
         }
         return result;
-    }
-
-    public ItemStack findItemInInventory(Item aSearchStack) {
-        return findItemInInventory(aSearchStack, 0);
-    }
-
-    public ItemStack findItemInInventory(Item aSearchStack, int aMeta) {
-        return findItemInInventory(ItemUtils.simpleMetaStack(aSearchStack, aMeta, 1));
-    }
-
-    public ItemStack findItemInInventory(ItemStack aSearchStack) {
-        if (aSearchStack != null && !this.mInputBusses.isEmpty()) {
-            for (MTEHatchInputBus bus : this.mInputBusses) {
-                if (bus != null) {
-                    for (ItemStack uStack : bus.mInventory) {
-                        if (uStack != null) {
-                            if (aSearchStack.getClass()
-                                .isInstance(uStack.getItem())) {
-                                return uStack;
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        return null;
     }
 
     /**
@@ -589,13 +540,11 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
                 IGregTechTileEntity b = ((IMetaTileEntity) m).getBaseMetaTileEntity();
                 if (b != null) {
                     BlockPos aPos = new BlockPos(b);
-                    if (aPos != null) {
-                        if (aCurPos.equals(aPos)) {
-                            if (GTplusplus.CURRENT_LOAD_PHASE == INIT_PHASE.STARTED) {
-                                log("Found Duplicate " + b.getInventoryName() + " at " + aPos.getLocationString());
-                            }
-                            return false;
+                    if (aCurPos.equals(aPos)) {
+                        if (GTplusplus.CURRENT_LOAD_PHASE == INIT_PHASE.STARTED) {
+                            log("Found Duplicate " + b.getInventoryName() + " at " + aPos.getLocationString());
                         }
+                        return false;
                     }
                 }
             }
@@ -793,7 +742,7 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
                 } else {
                     log("Cleared Input Hatch.");
                 }
-            } else if (aTileEntity instanceof MTEHatchInputBus) {
+            } else {
                 ((MTEHatchInputBus) aTileEntity).mRecipeMap = null;
                 ((MTEHatchInputBus) aTileEntity).mRecipeMap = aMap;
                 if (aMap != null) {
@@ -809,8 +758,9 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
     }
 
     @Override
-    public final void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        super.onScrewdriverRightClick(side, aPlayer, aX, aY, aZ);
+    public final void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
+        ItemStack aTool) {
+        super.onScrewdriverRightClick(side, aPlayer, aX, aY, aZ, aTool);
         clearRecipeMapForAllInputHatches();
         onModeChangeByScrewdriver(side, aPlayer, aX, aY, aZ);
         mLastRecipe = null;
@@ -1273,12 +1223,12 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
                     .setPos(167, 103))
             .widget(new FakeSyncWidget.BooleanSyncer(() -> mHardHammer, val -> mHardHammer = val));
         builder.widget(
-            new ItemDrawable(() -> mToolStacks.get(mSoftHammer + "SOFTHAMMER")).asWidget()
+            new ItemDrawable(() -> mToolStacks.get(mSoftMallet + "SOFTMALLET")).asWidget()
                 .setPos(156, 112))
             .widget(
                 new TextWidget("M").setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setPos(167, 121))
-            .widget(new FakeSyncWidget.BooleanSyncer(() -> mSoftHammer, val -> mSoftHammer = val));
+            .widget(new FakeSyncWidget.BooleanSyncer(() -> mSoftMallet, val -> mSoftMallet = val));
         builder.widget(
             new ItemDrawable(() -> mToolStacks.get(mScrewdriver + "SCREWDRIVER")).asWidget()
                 .setPos(156, 130))
@@ -1578,7 +1528,7 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
             MetaGeneratedTool01.INSTANCE
                 .getToolWithStats(IDMetaTool01.HARDHAMMER.ID, 1, GOOD, Materials.Tungsten, null));
         mToolStacks.put(
-            true + "SOFTHAMMER",
+            true + "SOFTMALLET",
             MetaGeneratedTool01.INSTANCE
                 .getToolWithStats(IDMetaTool01.SOFTMALLET.ID, 1, GOOD, Materials.Tungsten, null));
         mToolStacks.put(
@@ -1601,7 +1551,7 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
             MetaGeneratedTool01.INSTANCE
                 .getToolWithStats(IDMetaTool01.HARDHAMMER.ID, 1, BAD, Materials.Tungsten, null));
         mToolStacks.put(
-            false + "SOFTHAMMER",
+            false + "SOFTMALLET",
             MetaGeneratedTool01.INSTANCE
                 .getToolWithStats(IDMetaTool01.SOFTMALLET.ID, 1, BAD, Materials.Tungsten, null));
         mToolStacks.put(

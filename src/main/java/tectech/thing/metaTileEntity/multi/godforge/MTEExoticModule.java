@@ -203,6 +203,7 @@ public class MTEExoticModule extends MTEBaseModule {
         logic.setAvailableVoltage(Long.MAX_VALUE);
         logic.setAvailableAmperage(Integer.MAX_VALUE);
         logic.setAmperageOC(false);
+        logic.setUnlimitedTierSkips();
         logic.setSpeedBonus(getSpeedBonus());
         logic.setEuModifier(getEnergyDiscount());
     }
@@ -436,7 +437,7 @@ public class MTEExoticModule extends MTEBaseModule {
 
             FluidStack outputFluid;
             if (magmatterMode) {
-                outputFluid = MaterialsUEVplus.MagMatter.getMolten(576L * actualParallel);
+                outputFluid = MaterialsUEVplus.MagMatter.getMolten(actualParallel * 4 * INGOTS);
             } else {
                 outputFluid = MaterialsUEVplus.QuarkGluonPlasma.getFluid(1000L * actualParallel);
             }

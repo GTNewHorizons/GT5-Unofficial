@@ -22,6 +22,7 @@ import net.minecraftforge.fluids.IFluidBlock;
 
 import com.gtnewhorizons.modularui.api.drawable.FallbackableUITexture;
 
+import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
@@ -258,8 +259,9 @@ public class MTEPump extends MTEBasicMachine {
     }
 
     @Override
-    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        super.onScrewdriverRightClick(side, aPlayer, aX, aY, aZ);
+    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
+        ItemStack aTool) {
+        super.onScrewdriverRightClick(side, aPlayer, aX, aY, aZ, aTool);
 
         if (side == getBaseMetaTileEntity().getFrontFacing() || side == mMainFacing) {
             // Configuring "input from output side allowed".
@@ -290,8 +292,7 @@ public class MTEPump extends MTEBasicMachine {
 
     @Override
     public boolean onSolderingToolRightClick(ForgeDirection side, ForgeDirection wrenchingSide,
-        EntityPlayer entityPlayer, float aX, float aY, float aZ) {
-        if (super.onSolderingToolRightClick(side, wrenchingSide, entityPlayer, aX, aY, aZ)) return true;
+        EntityPlayer entityPlayer, float aX, float aY, float aZ, ItemStack aTool) {
         mDisallowRetract = !mDisallowRetract;
         GTUtility.sendChatToPlayer(
             entityPlayer,
@@ -751,8 +752,8 @@ public class MTEPump extends MTEBasicMachine {
 
             } else if (getDrainableStack() == null) {
                 // The pump has no internal fluid
-                if (this.mPrimaryPumpedBlock == Blocks.water) setDrainableStack(GTModHandler.getWater(1000L));
-                else if (this.mPrimaryPumpedBlock == Blocks.lava) setDrainableStack(GTModHandler.getLava(1000L));
+                if (this.mPrimaryPumpedBlock == Blocks.water) setDrainableStack(Materials.Water.getFluid(1_000));
+                else if (this.mPrimaryPumpedBlock == Blocks.lava) setDrainableStack(Materials.Lava.getFluid(1_000));
                 else {
                     // Not water or lava; try to drain and set to air
                     setDrainableStack(

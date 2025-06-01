@@ -83,7 +83,7 @@ public class MTEWorldAccelerator extends MTETieredMachineBlock {
         return _mRadiusTierOverride;
     }
 
-    private byte mMode = 0; // 0: RandomTicks around 1: TileEntities with range 1
+    private byte mMode = 1; // 0: RandomTicks around 1: TileEntities with range 1
     private static Textures.BlockIcons.CustomIcon _mGTIco_Norm_Idle;
     private static Textures.BlockIcons.CustomIcon _mGTIco_Norm_Active;
     private static Textures.BlockIcons.CustomIcon _mGTIco_TE_Idle;
@@ -282,7 +282,7 @@ public class MTEWorldAccelerator extends MTETieredMachineBlock {
     // This uses the Wrench as second tool to cycle speeds
     @Override
     public boolean onWrenchRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer pPlayer, float aX,
-        float aY, float aZ) {
+        float aY, float aZ, ItemStack aTool) {
         incSpeedTierOverride();
 
         markDirty();
@@ -294,7 +294,8 @@ public class MTEWorldAccelerator extends MTETieredMachineBlock {
     }
 
     @Override
-    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer pPlayer, float pX, float pY, float pZ) {
+    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer pPlayer, float pX, float pY, float pZ,
+        ItemStack aTool) {
         if (pPlayer.isSneaking()) {
             if (mMode == 0) {
                 incRadiusTierOverride();

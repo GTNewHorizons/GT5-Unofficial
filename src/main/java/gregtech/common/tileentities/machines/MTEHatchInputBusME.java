@@ -54,11 +54,13 @@ import appeng.api.networking.security.MachineSource;
 import appeng.api.storage.IMEMonitor;
 import appeng.api.storage.data.IAEItemStack;
 import appeng.api.util.AECableType;
+import appeng.api.util.AEColor;
 import appeng.core.localization.WailaText;
 import appeng.me.GridAccessException;
 import appeng.me.helpers.AENetworkProxy;
 import appeng.me.helpers.IGridProxyable;
 import appeng.util.item.AEItemStack;
+import gregtech.api.enums.Dyes;
 import gregtech.api.enums.ItemList;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.IConfigurationCircuitSupport;
@@ -162,6 +164,25 @@ public class MTEHatchInputBusME extends MTEHatchInputBus
     }
 
     @Override
+    public void onColorChangeServer(byte aColor) {
+        updateAE2ProxyColor();
+    }
+
+    public void updateAE2ProxyColor() {
+        AENetworkProxy proxy = getProxy();
+        byte color = this.getColor();
+        if (color == -1) {
+            proxy.setColor(AEColor.Transparent);
+        } else {
+            proxy.setColor(AEColor.values()[Dyes.transformDyeIndex(color)]);
+        }
+        if (proxy.getNode() != null) {
+            proxy.getNode()
+                .updateState();
+        }
+    }
+
+    @Override
     public void onFirstTick(IGregTechTileEntity aBaseMetaTileEntity) {
         super.onFirstTick(aBaseMetaTileEntity);
         getProxy().onReady();
@@ -187,7 +208,7 @@ public class MTEHatchInputBusME extends MTEHatchInputBus
 
     @Override
     public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
-        float aX, float aY, float aZ) {
+        float aX, float aY, float aZ, ItemStack aTool) {
         additionalConnection = !additionalConnection;
         updateValidGridProxySides();
         aPlayer.addChatComponentMessage(
@@ -293,7 +314,7 @@ public class MTEHatchInputBusME extends MTEHatchInputBus
             autoPullRefreshTime = aNBT.getInteger("refreshTime");
         }
         getProxy().readFromNBT(aNBT);
-
+        updateAE2ProxyColor();
     }
 
     @Override
@@ -322,7 +343,8 @@ public class MTEHatchInputBusME extends MTEHatchInputBus
     }
 
     @Override
-    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
+        ItemStack aTool) {
         if (!autoPullAvailable) {
             return;
         }
@@ -540,6 +562,7 @@ public class MTEHatchInputBusME extends MTEHatchInputBus
     }
 
     protected void refreshItemList() {
+        if (!isActive()) return;
         AENetworkProxy proxy = getProxy();
         try {
             IMEMonitor<IAEItemStack> sg = proxy.getStorage()
@@ -666,6 +689,45 @@ public class MTEHatchInputBusME extends MTEHatchInputBus
             return null;
         }
         return shadowInventory[index];
+    }
+
+    public int getShadowInventorySize() {
+        return shadowInventory.length;
+    }
+
+    /**
+     * Gets the first non-null shadow item stack.
+     *
+     * @return The first shadow item stack, or null if this doesn't exist.
+     */
+    public ItemStack getFirstShadowItemStack() {
+        return getFirstShadowItemStack(false);
+    }
+
+    /**
+     * Gets the first non-null shadow item stack.
+     *
+     * @param hasToMatchGhost Whether the first item stack returned has to match the first non-null ghost stack
+     * @return The first shadow item stack, or null if this doesn't exist.
+     */
+    public ItemStack getFirstShadowItemStack(boolean hasToMatchGhost) {
+        ItemStack itemStack;
+        ItemStack lockedSlot = null;
+        if (hasToMatchGhost) {
+            byte slotToCheck = 0;
+            do {
+                lockedSlot = mInventory[slotToCheck];
+                slotToCheck++;
+            } while (lockedSlot == null && slotToCheck < getSizeInventory());
+            if (lockedSlot == null) return null;
+        }
+        byte slotToCheck = 0;
+        do {
+            itemStack = getShadowItemStack(slotToCheck);
+            slotToCheck++;
+        } while ((itemStack == null || !(hasToMatchGhost && lockedSlot.getItem() == itemStack.getItem()))
+            && slotToCheck < getSizeInventory());
+        return itemStack;
     }
 
     @Override
@@ -944,7 +1006,7 @@ public class MTEHatchInputBusME extends MTEHatchInputBus
         }
 
         strings.add("Change ME connection behavior by right-clicking with wire cutter.");
-        strings.add("Configuration data can be copy+pasted using a data stick.");
+        strings.add("Configuration data can be copy/pasted using a data stick.");
         return strings.toArray(new String[0]);
     }
 }

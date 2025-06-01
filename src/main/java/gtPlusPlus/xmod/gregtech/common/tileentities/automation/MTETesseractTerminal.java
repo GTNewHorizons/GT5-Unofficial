@@ -84,7 +84,7 @@ public class MTETesseractTerminal extends MTEBasicTank {
 
     @Override
     public long maxEUStore() {
-        return TESSERACT_ENERGY_COST_DIMENSIONAL * 8 * 32;
+        return (long) TESSERACT_ENERGY_COST_DIMENSIONAL * 8 * 32;
     }
 
     @Override
@@ -189,7 +189,7 @@ public class MTETesseractTerminal extends MTEBasicTank {
 
     @Override
     public void onScrewdriverRightClick(final ForgeDirection side, final EntityPlayer aPlayer, final float aX,
-        final float aY, final float aZ) {
+        final float aY, final float aZ, ItemStack aTool) {
         if (aPlayer.getUniqueID()
             .compareTo(this.mOwner) == 0) {
             if (side == this.getBaseMetaTileEntity()
@@ -461,7 +461,7 @@ public class MTETesseractTerminal extends MTEBasicTank {
     }
 
     @Override
-    public int fill_default(final ForgeDirection aDirection, final FluidStack aFluid, final boolean doFill) {
+    public int fill(final ForgeDirection aDirection, final FluidStack aFluid, final boolean doFill) {
         final MTETesseractGenerator tTileEntity = this.getTesseract(this.mFrequency, false);
         if ((tTileEntity == null) || (!this.getBaseMetaTileEntity()
             .isAllowedToWork())) {

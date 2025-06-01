@@ -2,6 +2,7 @@ package tectech.thing.metaTileEntity.single;
 
 import static gregtech.api.enums.GTValues.VN;
 import static net.minecraft.util.StatCollector.translateToLocal;
+import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
 import java.util.function.Consumer;
 import java.util.function.IntConsumer;
@@ -12,7 +13,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.gtnewhorizons.modularui.api.NumberFormatMUI;
@@ -40,6 +40,7 @@ import gregtech.api.util.GTUtility;
 import tectech.mechanics.pipe.IConnectsToEnergyTunnel;
 import tectech.thing.metaTileEntity.hatch.MTEHatchEnergyTunnel;
 import tectech.thing.metaTileEntity.pipe.MTEPipeLaser;
+import tectech.thing.metaTileEntity.pipe.MTEPipeLaserMirror;
 import tectech.util.CommonValues;
 
 /**
@@ -77,11 +78,10 @@ public class MTEDebugPowerGenerator extends MTETieredMachineBlock
     }
 
     @Override
-    public final void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+    public final void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
+        ItemStack aTool) {
         LASER = !LASER;
-        GTUtility.sendChatToPlayer(
-            aPlayer,
-            String.format(StatCollector.translateToLocal("tt.chat.debug.generator"), LASER ? "ON" : "OFF"));
+        GTUtility.sendChatToPlayer(aPlayer, translateToLocalFormatted("tt.chat.debug.generator", LASER ? "ON" : "OFF"));
     }
 
     @Override
@@ -264,35 +264,52 @@ public class MTEDebugPowerGenerator extends MTETieredMachineBlock
     private void moveAround(IGregTechTileEntity aBaseMetaTileEntity) {
         for (final ForgeDirection face : ForgeDirection.VALID_DIRECTIONS) {
             if (face == aBaseMetaTileEntity.getFrontFacing()) continue;
-            final ForgeDirection opposite = face.getOpposite();
+            ForgeDirection opposite = face.getOpposite();
             for (short dist = 1; dist < 1000; dist++) {
                 IGregTechTileEntity tGTTileEntity = aBaseMetaTileEntity
                     .getIGregTechTileEntityAtSideAndDistance(face, dist);
-                if (tGTTileEntity != null) {
-                    IMetaTileEntity aMetaTileEntity = tGTTileEntity.getMetaTileEntity();
-                    if (aMetaTileEntity != null) {
-                        if (aMetaTileEntity instanceof MTEHatchEnergyTunnel
-                            && opposite == tGTTileEntity.getFrontFacing()) {
-                            if (maxEUOutput() > ((MTEHatchEnergyTunnel) aMetaTileEntity).maxEUInput()) {
-                                aMetaTileEntity.doExplosion(maxEUOutput());
-                            } else {
-                                long diff = Math.min(
-                                    AMP * 20L * maxEUOutput(),
-                                    Math.min(
-                                        ((MTEHatchEnergyTunnel) aMetaTileEntity).maxEUStore()
-                                            - aMetaTileEntity.getBaseMetaTileEntity()
-                                                .getStoredEU(),
-                                        aBaseMetaTileEntity.getStoredEU()));
-                                ((MTEHatchEnergyTunnel) aMetaTileEntity).setEUVar(
-                                    aMetaTileEntity.getBaseMetaTileEntity()
-                                        .getStoredEU() + diff);
-                            }
-                        } else if (aMetaTileEntity instanceof MTEPipeLaser) {
-                            if (((MTEPipeLaser) aMetaTileEntity).connectionCount < 2) {} else {
-                                ((MTEPipeLaser) aMetaTileEntity).markUsed();
-                            }
-                        }
+                if (tGTTileEntity == null) {
+                    break;
+                }
+                IMetaTileEntity aMetaTileEntity = tGTTileEntity.getMetaTileEntity();
+                if (aMetaTileEntity == null) {
+                    break;
+                }
+
+                // If we hit a mirror, use the mirror's view instead
+                if (aMetaTileEntity instanceof MTEPipeLaserMirror tMirror) {
+                    tGTTileEntity = tMirror.bendAround(opposite);
+                    if (tGTTileEntity == null) {
+                        break;
+                    } else {
+                        aMetaTileEntity = tGTTileEntity.getMetaTileEntity();
+                        opposite = tMirror.getChainedFrontFacing();
                     }
+                }
+
+                if (aMetaTileEntity instanceof MTEHatchEnergyTunnel && opposite == tGTTileEntity.getFrontFacing()) {
+                    if (maxEUOutput() > ((MTEHatchEnergyTunnel) aMetaTileEntity).maxEUInput()) {
+                        aMetaTileEntity.doExplosion(maxEUOutput());
+                    } else {
+                        long diff = Math.min(
+                            AMP * 20L * maxEUOutput(),
+                            Math.min(
+                                ((MTEHatchEnergyTunnel) aMetaTileEntity).maxEUStore()
+                                    - aMetaTileEntity.getBaseMetaTileEntity()
+                                        .getStoredEU(),
+                                aBaseMetaTileEntity.getStoredEU()));
+                        ((MTEHatchEnergyTunnel) aMetaTileEntity).setEUVar(
+                            aMetaTileEntity.getBaseMetaTileEntity()
+                                .getStoredEU() + diff);
+                    }
+                } else if (aMetaTileEntity instanceof MTEPipeLaser) {
+                    if (((MTEPipeLaser) aMetaTileEntity).connectionCount < 2) {
+                        break;
+                    } else {
+                        ((MTEPipeLaser) aMetaTileEntity).markUsed();
+                    }
+                } else {
+                    break;
                 }
             }
         }

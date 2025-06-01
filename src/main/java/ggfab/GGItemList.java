@@ -1,6 +1,6 @@
 package ggfab;
 
-import static gregtech.api.enums.GTValues.W;
+import static gregtech.api.util.GTRecipeBuilder.WILDCARD;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
@@ -15,27 +15,30 @@ public enum GGItemList implements IItemContainer {
 
     LinkedInputBus,
     AdvAssLine,
+
     // region single use tool
     ToolCast_MV,
     ToolCast_HV,
     ToolCast_EV,
+
     // order matters, do not insert randomly like a n00b
-    One_Use_craftingToolFile,
-    One_Use_craftingToolWrench,
-    One_Use_craftingToolCrowbar,
-    One_Use_craftingToolWireCutter,
-    One_Use_craftingToolHardHammer,
-    One_Use_craftingToolSoftHammer,
-    One_Use_craftingToolScrewdriver,
-    One_Use_craftingToolSaw,
-    Shape_One_Use_craftingToolFile,
-    Shape_One_Use_craftingToolWrench,
-    Shape_One_Use_craftingToolCrowbar,
-    Shape_One_Use_craftingToolWireCutter,
-    Shape_One_Use_craftingToolHardHammer,
-    Shape_One_Use_craftingToolSoftHammer,
-    Shape_One_Use_craftingToolScrewdriver,
-    Shape_One_Use_craftingToolSaw,
+    SingleUseFile,
+    SingleUseWrench,
+    SingleUseCrowbar,
+    SingleUseWireCutter,
+    SingleUseHardHammer,
+    SingleUseSoftMallet,
+    SingleUseScrewdriver,
+    SingleUseSaw,
+
+    SingleUseFileMold,
+    SingleUseWrenchMold,
+    SingleUseCrowbarMold,
+    SingleUseWireCutterMold,
+    SingleUseHardHammerMold,
+    SingleUseSoftMalletMold,
+    SingleUseScrewdriverMold,
+    SingleUseSawMold,
     // ordered section ends
     // endregion
     //
@@ -124,7 +127,7 @@ public enum GGItemList implements IItemContainer {
         if (GTUtility.isStackInvalid(mStack)) {
             return GTUtility.copyAmount(aAmount, aReplacements);
         }
-        return GTUtility.copyAmountAndMetaData(aAmount, W, GTOreDictUnificator.get(mStack));
+        return GTUtility.copyAmountAndMetaData(aAmount, WILDCARD, GTOreDictUnificator.get(mStack));
     }
 
     @Override

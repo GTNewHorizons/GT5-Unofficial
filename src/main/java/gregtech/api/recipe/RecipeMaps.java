@@ -18,6 +18,7 @@ import static gregtech.api.util.GTUtility.copyAmount;
 import static gregtech.api.util.GTUtility.getFluidForFilledItem;
 import static gregtech.api.util.GTUtility.isArrayEmptyOrNull;
 import static gregtech.api.util.GTUtility.isArrayOfLength;
+import static gregtech.api.util.GTUtility.min;
 import static gregtech.api.util.GTUtility.multiplyStack;
 
 import java.util.ArrayList;
@@ -53,6 +54,7 @@ import gregtech.api.recipe.maps.FluidOnlyFrontend;
 import gregtech.api.recipe.maps.FormingPressBackend;
 import gregtech.api.recipe.maps.FuelBackend;
 import gregtech.api.recipe.maps.FurnaceBackend;
+import gregtech.api.recipe.maps.IsotopeDecayFrontend;
 import gregtech.api.recipe.maps.LargeBoilerFuelBackend;
 import gregtech.api.recipe.maps.LargeBoilerFuelFrontend;
 import gregtech.api.recipe.maps.LargeNEIFrontend;
@@ -271,7 +273,7 @@ public final class RecipeMaps {
      */
     public static final RecipeMap<RecipeMapBackend> plasmaArcFurnaceRecipes = RecipeMapBuilder
         .of("gt.recipe.plasmaarcfurnace")
-        .maxIO(1, 9, 1, 1)
+        .maxIO(2, 9, 1, 1)
         .minInputs(1, 1)
         .build();
     /**
@@ -386,7 +388,7 @@ public final class RecipeMaps {
         .neiHandlerInfo(builder -> builder.setDisplayStack(ItemList.Machine_LV_Macerator.get(1)))
         .build();
     public static final RecipeMap<RecipeMapBackend> chemicalBathRecipes = RecipeMapBuilder.of("gt.recipe.chemicalbath")
-        .maxIO(1, 3, 1, 1)
+        .maxIO(2, 3, 1, 1)
         .minInputs(1, 1)
         .progressBar(GTUITextures.PROGRESSBAR_BATH, ProgressBar.Direction.CIRCULAR_CW)
         .build();
@@ -629,32 +631,73 @@ public final class RecipeMaps {
                 return Collections.emptyList();
             int aCoalAmount = builder.getMetadataOrDefault(ADDITIVE_AMOUNT, 0);
             if (aCoalAmount <= 0) return Collections.emptyList();
+
+            int aDustAmount;
+            int[] baseChances = new int[] { 10000, 10000, 10000 };
+            if (builder.getChances() != null) {
+                System.arraycopy(builder.getChances(), 0, baseChances, 0, min(2, builder.getChances().length));
+            }
+
+            int[] coalChances = baseChances.clone();
+            if (aCoalAmount < 9) {
+                aDustAmount = 1;
+                coalChances[2] = aCoalAmount * 10000 / 9;
+            } else {
+                aDustAmount = aCoalAmount / 9;
+                coalChances[2] = 10000;
+            }
+
             GTRecipeTemplate coll = asTemplate(rr.get());
             for (Materials coal : new Materials[] { Materials.Coal, Materials.Charcoal }) {
                 coll.derive()
                     .setInputs(aInput1, aInput2, coal.getGems(aCoalAmount))
-                    .setOutputs(aOutput1, aOutput2, Materials.DarkAsh.getDustTiny(aCoalAmount));
+                    .setOutputs(aOutput1, aOutput2, Materials.DarkAsh.getDust(aDustAmount))
+                    .setChances(coalChances);
                 coll.derive()
                     .setInputs(aInput1, aInput2, coal.getDust(aCoalAmount))
-                    .setOutputs(aOutput1, aOutput2, Materials.DarkAsh.getDustTiny(aCoalAmount));
+                    .setOutputs(aOutput1, aOutput2, Materials.DarkAsh.getDust(aDustAmount))
+                    .setChances(coalChances);
             }
             int aDuration = builder.getDuration();
             if (Railcraft.isModLoaded()) {
+                int[] cokeChances = baseChances.clone();
+                int aCokeAmount = aCoalAmount / 2;
+                if (aCokeAmount < 9) {
+                    aDustAmount = 1;
+                    cokeChances[2] = aCokeAmount * 10000 / 9;
+                } else {
+                    aDustAmount = aCokeAmount / 9;
+                    cokeChances[2] = 10000;
+                }
                 coll.derive()
-                    .setInputs(aInput1, aInput2, RailcraftToolItems.getCoalCoke(aCoalAmount / 2))
-                    .setOutputs(aOutput1, aOutput2, Materials.Ash.getDustTiny(aCoalAmount / 2))
-                    .setDuration(aDuration * 2 / 3);
+                    .setInputs(aInput1, aInput2, RailcraftToolItems.getCoalCoke(aCokeAmount))
+                    .setOutputs(aOutput1, aOutput2, Materials.Ash.getDust(aDustAmount))
+                    .setDuration(aDuration * 2 / 3)
+                    .setChances(cokeChances);
             }
-            ItemStack cactusCoke = GregtechItemList.CactusCoke.get(aCoalAmount * 2L);
-            ItemStack sugarCoke = GregtechItemList.SugarCoke.get(aCoalAmount * 2L);
+            long aCactusSugarCokeAmount = aCoalAmount * 2L;
+            int[] cactusSugarCokeChances = baseChances.clone();
+            if (aCactusSugarCokeAmount < 9) {
+                aDustAmount = 1;
+                // Simple Cast to Int ok here
+                cactusSugarCokeChances[2] = (int) (aCactusSugarCokeAmount * 10000 / 9);
+            } else {
+                // Simple Cast to Int ok here
+                aDustAmount = (int) (aCactusSugarCokeAmount / 9);
+                cactusSugarCokeChances[2] = 10000;
+            }
+            ItemStack cactusCoke = GregtechItemList.CactusCoke.get(aCactusSugarCokeAmount);
+            ItemStack sugarCoke = GregtechItemList.SugarCoke.get(aCactusSugarCokeAmount);
             coll.derive()
                 .setInputs(aInput1, aInput2, cactusCoke)
-                .setOutputs(aOutput1, aOutput2, Materials.Ash.getDustTiny(aCoalAmount * 2))
-                .setDuration(aDuration * 2 / 3);
+                .setOutputs(aOutput1, aOutput2, Materials.Ash.getDust(aDustAmount))
+                .setDuration(aDuration * 2 / 3)
+                .setChances(cactusSugarCokeChances);
             coll.derive()
                 .setInputs(aInput1, aInput2, sugarCoke)
-                .setOutputs(aOutput1, aOutput2, Materials.Ash.getDustTiny(aCoalAmount * 2))
-                .setDuration(aDuration * 2 / 3);
+                .setOutputs(aOutput1, aOutput2, Materials.Ash.getDust(aDustAmount))
+                .setDuration(aDuration * 2 / 3)
+                .setChances(cactusSugarCokeChances);
             if ((aInput1 == null || aInput1.stackSize <= 6) && (aInput2 == null || aInput2.stackSize <= 6)
                 && (aOutput1 == null || aOutput1.stackSize <= 6)
                 && (aOutput2 == null || aOutput2.stackSize <= 6)) {
@@ -1215,5 +1258,20 @@ public final class RecipeMaps {
         .logoPos(152, 41)
         .neiRecipeBackgroundSize(170, 60)
         .neiHandlerInfo(builder -> builder.setDisplayStack(GTModHandler.getIC2Item("nuclearReactor", 1, null)))
+        .build();
+
+    public static final RecipeMap<RecipeMapBackend> entropicProcessing = RecipeMapBuilder
+        .of("gt.recipe.entropic-processing")
+        .maxIO(6, 6, 3, 3)
+        .minInputs(0, 1)
+        .progressBar(GTUITextures.PROGRESSBAR_ARROW_MULTIPLE)
+        .frontend(LargeNEIFrontend::new)
+        .build();
+
+    public static final RecipeMap<RecipeMapBackend> isotopeDecay = RecipeMapBuilder.of("gt.recipe.isotope-decay")
+        .maxIO(1, 1, 0, 0)
+        .minInputs(1, 0)
+        .progressBar(GTUITextures.PROGRESSBAR_ARROW)
+        .frontend(IsotopeDecayFrontend::new)
         .build();
 }

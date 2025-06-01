@@ -59,11 +59,13 @@ import appeng.api.networking.security.MachineSource;
 import appeng.api.storage.IMEMonitor;
 import appeng.api.storage.data.IAEFluidStack;
 import appeng.api.util.AECableType;
+import appeng.api.util.AEColor;
 import appeng.core.localization.WailaText;
 import appeng.me.GridAccessException;
 import appeng.me.helpers.AENetworkProxy;
 import appeng.me.helpers.IGridProxyable;
 import appeng.util.item.AEFluidStack;
+import gregtech.api.enums.Dyes;
 import gregtech.api.enums.ItemList;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.IDataCopyable;
@@ -167,6 +169,25 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
     public void onEnableWorking() {
         if (expediteRecipeCheck) {
             justHadNewFluids = true;
+        }
+    }
+
+    @Override
+    public void onColorChangeServer(byte aColor) {
+        updateAE2ProxyColor();
+    }
+
+    public void updateAE2ProxyColor() {
+        AENetworkProxy proxy = getProxy();
+        byte color = this.getColor();
+        if (color == -1) {
+            proxy.setColor(AEColor.Transparent);
+        } else {
+            proxy.setColor(AEColor.values()[Dyes.transformDyeIndex(color)]);
+        }
+        if (proxy.getNode() != null) {
+            proxy.getNode()
+                .updateState();
         }
     }
 
@@ -335,7 +356,7 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
 
     @Override
     public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
-        float aX, float aY, float aZ) {
+        float aX, float aY, float aZ, ItemStack aTool) {
         additionalConnection = !additionalConnection;
         updateValidGridProxySides();
         aPlayer.addChatComponentMessage(
@@ -491,6 +512,45 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
         return shadowStoredFluids[index];
     }
 
+    /**
+     * Gets the first non-null shadow fluid stack.
+     *
+     * @return The first shadow fluid stack, or null if this doesn't exist.
+     */
+    public FluidStack getFirstShadowFluidStack() {
+        return getFirstShadowFluidStack(false);
+    }
+
+    /**
+     * Gets the first non-null shadow fluid stack.
+     *
+     * @param hasToMatchGhost Whether the first fluid stack returned has to match the first non-null ghost stack
+     * @return The first shadow fluid stack, or null if this doesn't exist.
+     */
+    public FluidStack getFirstShadowFluidStack(boolean hasToMatchGhost) {
+        FluidStack fluidStack;
+        FluidStack lockedSlot = null;
+        if (hasToMatchGhost) {
+            byte slotToCheck = 0;
+            do {
+                lockedSlot = storedFluids[slotToCheck];
+                slotToCheck++;
+            } while (lockedSlot == null && slotToCheck < storedFluids.length);
+            if (lockedSlot == null) return null;
+        }
+        byte slotToCheck = 0;
+        do {
+            fluidStack = getShadowFluidStack(slotToCheck);
+            slotToCheck++;
+        } while ((fluidStack == null || !(hasToMatchGhost && lockedSlot.getFluid() == fluidStack.getFluid()))
+            && slotToCheck < getShadowStoredFluidsSize());
+        return fluidStack;
+    }
+
+    public int getShadowStoredFluidsSize() {
+        return shadowStoredFluids.length;
+    }
+
     public int getFluidSlot(FluidStack fluidStack) {
         if (fluidStack == null) return -1;
 
@@ -578,10 +638,12 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
             autoPullRefreshTime = aNBT.getInteger("refreshTime");
         }
         getProxy().readFromNBT(aNBT);
+        updateAE2ProxyColor();
     }
 
     @Override
-    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
+        ItemStack aTool) {
         if (!autoPullAvailable) {
             return;
         }
@@ -668,13 +730,6 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
         dataStick.stackTagCompound = getCopiedData(aPlayer);
         dataStick.setStackDisplayName("Stocking Input Hatch Configuration");
         aPlayer.addChatMessage(new ChatComponentTranslation("GT5U.machines.stocking_bus.saved"));
-    }
-
-    @Override
-    public void onExplosion() {
-        for (int i = 0; i < SLOT_COUNT; i++) {
-            mInventory[i] = null;
-        }
     }
 
     public boolean containsSuchStack(FluidStack tStack) {
@@ -981,7 +1036,7 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
         }
 
         strings.add("Change ME connection behavior by right-clicking with wire cutter.");
-        strings.add("Configuration data can be copy+pasted using a data stick.");
+        strings.add("Configuration data can be copy/pasted using a data stick.");
         return strings.toArray(new String[0]);
     }
 }
