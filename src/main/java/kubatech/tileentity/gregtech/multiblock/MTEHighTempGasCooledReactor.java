@@ -35,6 +35,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import gregtech.api.util.GTModHandler;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
@@ -442,7 +443,7 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
 
         for (MTEHatchInput tHatch : validMTEList(mInputHatches)) {
             FluidStack tLiquid = tHatch.getFluid();
-            if (tLiquid != null && tLiquid.isFluidEqual(FluidRegistry.getFluidStack("ic2coolant", 1))) {
+            if (tLiquid != null && tLiquid.isFluidEqual(GTModHandler.getIC2Coolant(1))) {
                 FluidStack drained = tHatch.drain(takecoolant, true);
                 takecoolant -= drained.amount;
                 drainedamount += drained.amount;
