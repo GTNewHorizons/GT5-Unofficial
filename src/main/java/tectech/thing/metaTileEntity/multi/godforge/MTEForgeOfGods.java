@@ -2925,7 +2925,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
     }
 
     private Text fuelUsage() {
-        return new Text(fuelConsumption + " L/5s");
+        return new Text(formattingMode.format(fuelConsumption) + " L/5s");
     }
 
     private Text storedFuel() {
