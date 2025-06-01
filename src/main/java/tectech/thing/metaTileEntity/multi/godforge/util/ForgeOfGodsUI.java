@@ -566,7 +566,7 @@ public class ForgeOfGodsUI {
     }
 
     public static Widget getIndividualUpgradeGroup(ForgeOfGodsUpgrade upgrade, Supplier<Integer> shardGetter,
-        Runnable complete, Runnable respec, Supplier<Boolean> check) {
+        Runnable complete, Runnable respec, Supplier<Boolean> check, Supplier<MilestoneFormatter> formatGetter) {
         MultiChildWidget widget = new MultiChildWidget();
         widget.setSize(upgrade.getWindowSize());
 
@@ -633,7 +633,7 @@ public class ForgeOfGodsUI {
 
         // Available shards amount
         widget.addChild(
-            TextWidget.dynamicText(() -> getAvailableShardsText(upgrade, shardGetter))
+            TextWidget.dynamicText(() -> getAvailableShardsText(upgrade, shardGetter, formatGetter))
                 .setTextAlignment(Alignment.Center)
                 .setScale(0.7f)
                 .setMaxWidth(90)
@@ -690,12 +690,15 @@ public class ForgeOfGodsUI {
                 EnumChatFormatting.GRAY + translateToLocal("fog.button.materialrequirements.tooltip.clickhere"));
     }
 
-    private static Text getAvailableShardsText(ForgeOfGodsUpgrade upgrade, Supplier<Integer> shardGetter) {
+    private static Text getAvailableShardsText(ForgeOfGodsUpgrade upgrade, Supplier<Integer> shardGetter,
+        Supplier<MilestoneFormatter> formatGetter) {
         EnumChatFormatting enoughShards = EnumChatFormatting.RED;
         if (shardGetter.get() >= upgrade.getShardCost()) {
             enoughShards = EnumChatFormatting.GREEN;
         }
-        return new Text(enoughShards + Integer.toString(shardGetter.get()));
+        return new Text(
+            enoughShards + formatGetter.get()
+                .format(shardGetter.get()));
     }
 
     private static List<String> constructionStatusString(Supplier<Boolean> check) {
