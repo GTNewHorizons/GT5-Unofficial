@@ -1,6 +1,7 @@
 package gregtech.api.logic;
 
 import java.util.HashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -154,7 +155,8 @@ public class ProcessingLogic {
         GTDualInputPattern inputs = inv.getPatternInputs();
         setInputItems(inputs.inputItems);
         setInputFluids(inputs.inputFluid);
-        Set<GTRecipe> recipes = findRecipeMatches(getCurrentRecipeMap()).collect(Collectors.toSet());
+        Set<GTRecipe> recipes = findRecipeMatches(getCurrentRecipeMap())
+            .collect(Collectors.toCollection(LinkedHashSet::new));
 
         // reset the status
         setInputItems();
