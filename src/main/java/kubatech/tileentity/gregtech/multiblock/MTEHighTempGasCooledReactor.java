@@ -36,6 +36,7 @@ import java.util.List;
 import java.util.Map;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.StatCollector;
@@ -76,52 +77,62 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
 
     private static final int BASECASINGINDEX = 181;
 
-    // TODO: Wypierdolić strukture
+    // spotless:off
+
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final IStructureDefinition<MTEHighTempGasCooledReactor> STRUCTURE_DEFINITION = StructureDefinition
         .<MTEHighTempGasCooledReactor>builder()
         .addShape(
             STRUCTURE_PIECE_MAIN,
             transpose(
-                new String[][] {
-                    { "  BBBBBBB  ", " BBBBBBBBB ", "BBBBBBBBBBB", "BBBBBBBBBBB", "BBBBBBBBBBB", "BBBBBBBBBBB",
-                        "BBBBBBBBBBB", "BBBBBBBBBBB", "BBBBBBBBBBB", " BBBBBBBBB ", "  BBBBBBB  " },
-                    { "  ccccccc  ", " c-------c ", "c---------c", "c---------c", "c---------c", "c---------c",
-                        "c---------c", "c---------c", "c---------c", " c-------c ", "  ccccccc  " },
-                    { "  ccccccc  ", " c-------c ", "c---------c", "c---------c", "c---------c", "c---------c",
-                        "c---------c", "c---------c", "c---------c", " c-------c ", "  ccccccc  " },
-                    { "  ccccccc  ", " c-------c ", "c---------c", "c---------c", "c---------c", "c---------c",
-                        "c---------c", "c---------c", "c---------c", " c-------c ", "  ccccccc  " },
-                    { "  ccccccc  ", " c-------c ", "c---------c", "c---------c", "c---------c", "c---------c",
-                        "c---------c", "c---------c", "c---------c", " c-------c ", "  ccccccc  " },
-                    { "  ccccccc  ", " c-------c ", "c---------c", "c---------c", "c---------c", "c---------c",
-                        "c---------c", "c---------c", "c---------c", " c-------c ", "  ccccccc  " },
-                    { "  ccccccc  ", " c-------c ", "c---------c", "c---------c", "c---------c", "c---------c",
-                        "c---------c", "c---------c", "c---------c", " c-------c ", "  ccccccc  " },
-                    { "  ccccccc  ", " c-------c ", "c---------c", "c---------c", "c---------c", "c---------c",
-                        "c---------c", "c---------c", "c---------c", " c-------c ", "  ccccccc  " },
-                    { "  ccccccc  ", " c-------c ", "c---------c", "c---------c", "c---------c", "c---------c",
-                        "c---------c", "c---------c", "c---------c", " c-------c ", "  ccccccc  " },
-                    { "  ccccccc  ", " c-------c ", "c---------c", "c---------c", "c---------c", "c---------c",
-                        "c---------c", "c---------c", "c---------c", " c-------c ", "  ccccccc  " },
-                    { "  ccccccc  ", " c-------c ", "c---------c", "c---------c", "c---------c", "c---------c",
-                        "c---------c", "c---------c", "c---------c", " c-------c ", "  ccccccc  " },
-                    { "  bbb~bbb  ", " bbbbbbbbb ", "bbbbbbbbbbb", "bbbbbbbbbbb", "bbbbbbbbbbb", "bbbbbbbbbbb",
-                        "bbbbbbbbbbb", "bbbbbbbbbbb", "bbbbbbbbbbb", " bbbbbbbbb ", "  bbbbbbb  " }, }))
-        .addElement('c', onElementPass(x -> x.mCasing++, ofBlock(GregTechAPI.sBlockCasings8, 5)))
-        .addElement(
-            'b',
-            ofChain(
-                ofHatchAdder(MTEHighTempGasCooledReactor::addOutputToMachineList, BASECASINGINDEX, 1),
-                ofHatchAdder(MTEHighTempGasCooledReactor::addMaintenanceToMachineList, BASECASINGINDEX, 1),
-                ofHatchAdder(MTEHighTempGasCooledReactor::addEnergyInputToMachineList, BASECASINGINDEX, 1),
-                onElementPass(x -> x.mCasing++, ofBlock(GregTechAPI.sBlockCasings8, 5))))
-        .addElement(
-            'B',
-            ofChain(
-                ofHatchAdder(MTEHighTempGasCooledReactor::addInputToMachineList, BASECASINGINDEX, 2),
-                onElementPass(x -> x.mCasing++, ofBlock(GregTechAPI.sBlockCasings8, 5))))
+                new String[][]{
+                    {"                    ","                    ","                    ","                    ","                    ","                    ","                    ","                    ","                    ","             C      ","            COC     ","           CCCCC    ","            CCC     ","             C      ","                    ","                    ","                    ","                    ","                    ","                    ","                    ","                    ","                    ","                    ","                    ","                    ","                    ","                    ","                    "},
+                    {"                    ","                    ","                    ","                    ","                    ","                    ","                    ","                    ","                    ","            CCC     ","           C H C    ","           C   C    ","           C   C    ","            CCC     ","                    ","                    ","                    ","                    ","                    ","                    ","                    ","                    ","                    ","                    ","                    ","                    ","                    ","                    ","                    "},
+                    {"                    ","                    ","                    ","                    ","                    ","                    ","                    ","                    ","                    ","            CCC     ","           CHH C    ","           C   C    ","           C IIC    ","            CJC     ","             J      ","             J      ","             J      ","             J      ","             J      ","             J      ","                    ","            NNN     ","            NON     ","            NNN     ","                    ","                    ","                    ","                    ","                    "},
+                    {"                    ","                    ","                    ","                    ","                    ","                    ","                    ","                    ","                    ","            CCC     ","           C IIC    ","           CH IC    ","           CHH C    ","            CCC     ","                    ","                    ","                    ","                    ","                    ","            NJN     ","           NNNNN    ","          NNNNNNN   ","          NNN NNN   ","          NNNNNNN   ","           NNNNN    ","            NNN     ","                    ","                    ","                    "},
+                    {"                    ","                    ","                    ","                    ","                    ","                    ","                    ","                    ","                    ","            CCC     ","           CI HC    ","           CI HC    ","           CI HC    ","            CCC     ","                    ","                    ","                    ","                    ","            NNN     ","           NNJNN    ","          NNNMNNN   ","         NNN   NNN  ","         NNM   MNN  ","         NNN   NNN  ","          NNNMNNN   ","           NNNNN    ","            NNN     ","                    ","                    "},
+                    {"                    ","             C      ","            CCC     ","           CCCCC    ","            CCC     ","             C      ","                    ","                    ","                    ","            CCC     ","           CHH C    ","           CH IC    ","           C IIC    ","            CCC     ","                    ","                    ","                    ","            NNN     ","          NNMMMNN   ","         NNM   MNN  ","         NM  M  MN  ","        NM       MN ","        NMNM   M MN ","        NM       MN ","         NM  M  MN  ","         NNM   MNN  ","          NNMMMNN   ","            NNN     ","                    "},
+                    {"                    ","            COC     ","           C GGC    ","           C   C    ","           C   C    ","            CCC     ","                    ","                    ","                    ","            CCC     ","           CIIIC    ","           C   C    ","           CHHHC    ","            CCC     ","                    ","                    ","                    ","            NNN     ","          NNMMMNN   ","         NNM   MNN  ","         NM  M  MN  ","        NM       MN ","        NM M   M MN ","        NM       MN ","         NM  M  MN  ","         NNM   MNN  ","          NNMMMNN   ","            NNN     ","                    "},
+                    {"                    ","            CCC     ","           CI  C    ","         JJJI GC    ","           C GGC    ","            CCC     ","                    ","                    ","                    ","            CCC     ","           C HHC    ","           CI HC    ","           CII C    ","            CCC     ","                    ","                    ","                    ","            NNN     ","          NNMMMNN   ","         NNM   MNN  ","         NM  M  MN  ","        NM       MN ","        NM M   M MN ","        NM       MN ","         NM  M  MN  ","         NNM   MNN  ","          NNMMMNN   ","            NNN     ","                    "},
+                    {"                    ","            CCC     ","           CGIIC    ","         J CG IC    ","           CG  C    ","            CCC     ","                    ","                    ","                    ","            CCC     ","           CH IC    ","           CH IC    ","           CH IC    ","            CCC     ","                    ","                    ","                    ","            NNN     ","          NNMMMNN   ","         NNM   MNN  ","         NM  M  MN  ","        NM       MN ","        NM M   M MN ","        NM       MN ","         NM  M  MN  ","         NNM   MNN  ","          NNMMMNN   ","            NNN     ","                    "},
+                    {"                    ","            CCC     ","           C GGC    ","         J CI GC    ","           CII C    ","            CCC     ","                    ","                    ","                    ","            CCC     ","           CII C    ","           CI HC    ","           C HHC    ","            CCC     ","                    ","                    ","                    ","            NNN     ","          NNMMMNN   ","         NNM   MNN  ","         NM     MN  ","        NM       MN ","        NM       MN ","        NM       MN ","         NM     MN  ","         NNM   MNN  ","          NNMMMNN   ","            NNN     ","                    "},
+                    {"                    ","            CCC     ","           CIIIC    ","         J C   C    ","           CGGGC    ","            CCC     ","                    ","                    ","                    ","           LCCCL    ","           CHHHC    ","           C   C    ","           CIIIC    ","           LCCCL    ","                    ","                    ","                    ","          LLLLLLL   ","         LL NNN LL  ","        LLNNNJNNNLL ","        L NNN NNN L ","        LNNN   NNNL ","        LNB     NNL ","        LNNN   NNNL ","        L NNN NNN L ","        LLNNNNNNNLL ","         LL NNN LL  ","          LLLLLLL   ","                    "},
+                    {"                    ","           LCOCL    ","           CGG C    ","         J CG IC    ","           C IIC    ","           LCICL    ","             J      ","             J      ","             J      ","           LCICL    ","           C IIC    ","           CH IC    ","           CHH C    ","           LCOCL    ","                    ","                    ","                    ","          L     L   ","                    ","        L    J    L ","           NNNNN    ","           NN NN    ","          BN   N    ","           NN NN    ","           NNNNN    ","        L         L ","                    ","          L     L   ","                    "},
+                    {"                    ","           LCCCL    ","           CCCCC    ","         J CCCCC    ","           CCCCC    ","           LCCCL    ","                    ","                    ","                    ","           LCCCL    ","           CCCCC    ","         O CCCCC    ","         F CCCCC    ","         O LCCCL    ","                    ","                    ","                    ","          L     L   ","                    ","        L    J    L ","                    ","            NNN     ","          B N N     ","            NNN     ","                    ","        L         L ","                    ","          L     L   ","                    "},
+                    {"                    ","           LLLLL    ","           L   L    ","         J L   L    ","         J L   L    ","         J LLLLL    ","         J          ","         J          ","         J          ","         J LLLLL    ","         J L   L    ","   AAA   E L   L    ","   ODA   E L   L    ","   AAA   E LLLLL    ","         J          ","         JJJJJ      ","             J      ","          L  J  L   ","             J      ","        L    J    L ","                    ","                    ","          B  O      ","                    ","                    ","        L         L ","                    ","          L     L   ","                    "},
+                    {"                    ","           L   L    ","                    ","         C          ","                    ","           L   L    ","         C          ","                    ","                    ","         C L   L    ","                    ","   AAA   F          ","   AABBBBB          ","   ABA   F L   L    ","    B               ","    B    C C C      ","    B               ","    B     L  C  L   ","    B               ","    B   L    C    L ","    B               ","    B               ","    BBBBBBB         ","                    ","                    ","        L         L ","                    ","          L     L   ","                    "},
+                    {"KKKKKKKKKKKKKKKKKKKK","KKKKKKKKKKKKKKKKKKKK","KKKKKKKKKKKKKKKKKKKK","KKKKKKKKKKKKKKKKKKKK","KKKKKKKKKKKKKKKKKKKK","KKKKKKKKKKKKKKKKKKKK","KKKKKKKKKKKKKKKKKKKK","KKKKKKKKKKKKKKKKKKKK","KKKKKKKKKKKKKKKKKKKK","KKKKKKKKKKKKKKKKKKKK","KKKKKKKKKKKKKKKKKKKK","KKKKKKKKKKKKKKKKKKKK","KKKKKKKKKKKKKKKKKKKK","KKKKKKKKKKKMKKKKKKKK","KKKKKKKKKKKKKKKKKKKK","KKKKKKKKKKKKKKKKKKKK","KKKKKKKKKKKKKKKKKKKK","KKKKKKKKKKKKKKKKKKKK","KKKKKKKKKKKKKKKKKKKK","KKKKKKKKKKKKKKKKKKKK","KKKKKKKKKKKKKKKKKKKK","KKKKKKKKKKKKKKKKKKKK","KKKKKKKKKKKKKKKKKKKK","KKKKKKKKKKKKKKKKKKKK","KKKKKKKKKKKKKKKKKKKK","KKKKKKKKKKKKKKKKKKKK","KKKKKKKKKKKKKKKKKKKK","KKKKKKKKKKKKKKKKKKKK","KKKKKKKKKKKKKKKKKKKK"}
+                }))
+        .addElement('A', ofBlock(GregTechAPI.sBlockCasings1, 5))
+        .addElement('B', ofBlock(GregTechAPI.sSolenoidCoilCasings, 6))
+        .addElement('C', ofBlock(GregTechAPI.sBlockCasings10, 3))
+        .addElement('D', ofBlock(GregTechAPI.sBlockCasings2, 6))
+        .addElement('E', ofBlock(GregTechAPI.sBlockCasings2, 10))
+        .addElement('F', ofBlock(GregTechAPI.sBlockCasings2, 11))
+        .addElement('G', ofBlock(GregTechAPI.sBlockCasings2, 13))
+        .addElement('H', ofBlock(GregTechAPI.sBlockCasings2, 14))
+        .addElement('I', ofBlock(GregTechAPI.sBlockCasings2, 15))
+        .addElement('J', ofBlock(GregTechAPI.sBlockCasings9, 4))
+        .addElement('K', ofBlock(GregTechAPI.sBlockConcretes, 8))
+        .addElement('L', ofBlock(GregTechAPI.sBlockFrames, 81))
+        .addElement('M', ofBlock(WerkstoffLoader.BWBlockCasingsAdvanced, 31776))
+        .addElement('N', ofBlock(WerkstoffLoader.BWBlockCasings, 31847))
+        .addElement('O', ofBlock(Blocks.wool, 0))
+//        .addElement(
+//            'b',
+//            ofChain(
+//                ofHatchAdder(MTEHighTempGasCooledReactor::addOutputToMachineList, BASECASINGINDEX, 1),
+//                ofHatchAdder(MTEHighTempGasCooledReactor::addMaintenanceToMachineList, BASECASINGINDEX, 1),
+//                ofHatchAdder(MTEHighTempGasCooledReactor::addEnergyInputToMachineList, BASECASINGINDEX, 1),
+//                onElementPass(x -> x.mCasing++, ofBlock(GregTechAPI.sBlockCasings8, 5))))
+//        .addElement(
+//            'B',
+//            ofChain(
+//                ofHatchAdder(MTEHighTempGasCooledReactor::addInputToMachineList, BASECASINGINDEX, 2),
+//                onElementPass(x -> x.mCasing++, ofBlock(GregTechAPI.sBlockCasings8, 5))))
         .build();
+
+    // spotless:on
 
     private static final int HELIUM_NEEDED = 512000;
 
@@ -492,7 +503,7 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
     }
 
     @Override
-    protected String generateCurrentRecipeInfoString() {
+    public String generateCurrentRecipeInfoString() {
         StringBuilder sb = new StringBuilder();
         sb.append("Stored Fuel: ");
         for (Map.Entry<Materials, Double> entry : mStoredFuels.entrySet()) {
