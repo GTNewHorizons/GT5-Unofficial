@@ -34,6 +34,7 @@ import java.util.List;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import gregtech.api.enums.Textures;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
@@ -338,7 +339,8 @@ public class MTEEnvironmentallyControlledChemicalFacility extends
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
         int colorIndex, boolean aActive, boolean redstoneLevel) {
         if (side == aFacing) {
-            if (aActive) return new ITexture[] { casingTexturePages[1][48], TextureFactory.builder()
+            if (aActive) return new ITexture[] { Textures.BlockIcons
+                .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings12, 15)), TextureFactory.builder()
                 .addIcon(OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_ACTIVE)
                 .extFacing()
                 .build(),
@@ -347,7 +349,8 @@ public class MTEEnvironmentallyControlledChemicalFacility extends
                     .extFacing()
                     .glow()
                     .build() };
-            return new ITexture[] { casingTexturePages[1][48], TextureFactory.builder()
+            return new ITexture[] { Textures.BlockIcons
+                .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings12, 15)), TextureFactory.builder()
                 .addIcon(OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR)
                 .extFacing()
                 .build(),
@@ -357,7 +360,8 @@ public class MTEEnvironmentallyControlledChemicalFacility extends
                     .glow()
                     .build() };
         }
-        return new ITexture[] { casingTexturePages[1][48] };
+        return new ITexture[] { Textures.BlockIcons
+            .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings12, 15)) };
     }
 
     protected MultiblockTooltipBuilder createTooltip() {
@@ -811,6 +815,9 @@ public class MTEEnvironmentallyControlledChemicalFacility extends
                     && Math.abs(currentPressure - requiredPressure) <= pressureThreshold) {
                     return super.validateRecipe(recipe);
                 }
+                // if recipe doesn't start, clear delta
+                deltaTemp = 0;
+                deltaPressure = 0;
                 stopMachine(SimpleShutDownReason.ofCritical("conditions_range"));
                 return CheckRecipeResultRegistry.RECIPE_CONDITIONS;
             }
