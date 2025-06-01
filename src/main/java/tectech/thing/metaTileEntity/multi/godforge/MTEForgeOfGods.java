@@ -520,7 +520,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
                                 if (itemStack != null && itemStack.isItemEqual(itemToAbsorb)) {
                                     int stacksize = itemStack.stackSize;
                                     if (inputBus instanceof MTEHatchInputBusME meBus) {
-                                        ItemStack realItem = meBus.getRealInventory()[i + 16];
+                                        ItemStack realItem = meBus.getStackInSlot(i);
                                         if (realItem == null) {
                                             break;
                                         }

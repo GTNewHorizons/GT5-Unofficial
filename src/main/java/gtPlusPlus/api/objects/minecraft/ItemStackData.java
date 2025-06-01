@@ -4,8 +4,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
-import gtPlusPlus.core.util.minecraft.ItemUtils;
-
 public class ItemStackData {
 
     protected final Item mItem;
@@ -27,7 +25,7 @@ public class ItemStackData {
     }
 
     public ItemStack getStack() {
-        ItemStack aTemp = ItemUtils.simpleMetaStack(mItem, mDamage, mStackSize);
+        ItemStack aTemp = new ItemStack(mItem, mStackSize, mDamage);
         aTemp.setTagCompound(mNBT);
         return aTemp;
     }

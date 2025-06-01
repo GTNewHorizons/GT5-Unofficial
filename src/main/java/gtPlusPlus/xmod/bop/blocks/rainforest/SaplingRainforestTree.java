@@ -30,19 +30,11 @@ public class SaplingRainforestTree extends SaplingBase {
         new WorldGenTrees(true);
         int i1 = 0;
         int j1 = 0;
-        boolean flag = false;
 
         Block block = Blocks.air;
 
-        if (flag) {
-            world.setBlock(x + i1, y, z + j1, block, 0, 4);
-            world.setBlock(x + i1 + 1, y, z + j1, block, 0, 4);
-            world.setBlock(x + i1, y, z + j1 + 1, block, 0, 4);
-            world.setBlock(x + i1 + 1, y, z + j1 + 1, block, 0, 4);
-        } else {
-            world.setBlock(x, y, z, block, 0, 4);
-        }
-        Object o = new WorldGenRainForestTree_Ex(
+        world.setBlock(x, y, z, block, 0, 4);
+        WorldGenerator worldGenRainForestTreeEx = new WorldGenRainForestTree_Ex(
             BOPBlockRegistrator.log_Rainforest,
             BOPBlockRegistrator.leaves_Rainforest,
             0,
@@ -51,15 +43,8 @@ public class SaplingRainforestTree extends SaplingBase {
             50,
             75);
 
-        if (!((WorldGenerator) o).generate(world, rand, x + i1, y, z + j1)) {
-            if (flag) {
-                world.setBlock(x + i1, y, z + j1, this, l, 4);
-                world.setBlock(x + i1 + 1, y, z + j1, this, l, 4);
-                world.setBlock(x + i1, y, z + j1 + 1, this, l, 4);
-                world.setBlock(x + i1 + 1, y, z + j1 + 1, this, l, 4);
-            } else {
-                world.setBlock(x, y, z, this, l, 4);
-            }
+        if (!worldGenRainForestTreeEx.generate(world, rand, x + i1, y, z + j1)) {
+            world.setBlock(x, y, z, this, l, 4);
         }
     }
 }
