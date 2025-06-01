@@ -182,7 +182,7 @@ public class ToolVajra extends ItemTool implements IElectricItem {
     }
 
     private boolean isHarvestableOwned(TileEntity tileEntity, EntityPlayer player) {
-        if (!(tileEntity instanceof TileOwned owned)) return true;
+        if (!Mods.Thaumcraft.isModLoaded() || !(tileEntity instanceof TileOwned owned)) return true;
         return owned.owner.equals(player.getDisplayName());
     }
 
