@@ -112,11 +112,6 @@ public class MTEHatchInputBus extends MTEHatch implements IConfigurationCircuitS
     }
 
     @Override
-    public boolean isAccessAllowed(EntityPlayer aPlayer) {
-        return true;
-    }
-
-    @Override
     public boolean isValidSlot(int aIndex) {
         return aIndex != getCircuitSlot();
     }
