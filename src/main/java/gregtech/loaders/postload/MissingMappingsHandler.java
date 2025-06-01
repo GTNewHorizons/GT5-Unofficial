@@ -63,6 +63,7 @@ public class MissingMappingsHandler {
         .remapItem("GalaxySpace:item.MiningDrone", ItemList.MiningDroneLV.getItem())
         .remapItem("GalaxySpace:item.DysonSwarmParts", ItemList.DysonSwarmModule.getItem())
 
+        .remapItem("IC2:reactorLithiumCell", ItemList.RodLithium.getItem())
         .remapItem("gregtech:gt.glowstoneCell", ItemList.RodGlowstone.getItem())
         .remapItem("gregtech:gt.Thoriumcell", ItemList.RodThorium.getItem())
         .remapItem("gregtech:gt.Double_Thoriumcell", ItemList.RodThorium2.getItem())
@@ -96,6 +97,7 @@ public class MissingMappingsHandler {
         .remapItem("bartworks:gt.Double_Tiberiumcell", ItemList.RodTiberium2.getItem())
         .remapItem("bartworks:gt.Quad_Tiberiumcell", ItemList.RodTiberium4.getItem())
 
+        .remapItem("IC2:itemTritiumCell", ItemList.DepletedRodLithium.getItem())
         .remapItem("gregtech:gt.sunnariumCell", ItemList.DepletedRodGlowstone.getItem())
         .remapItem("gregtech:gt.ThoriumcellDep", ItemList.DepletedRodThorium.getItem())
         .remapItem("gregtech:gt.Double_ThoriumcellDep", ItemList.DepletedRodThorium2.getItem())

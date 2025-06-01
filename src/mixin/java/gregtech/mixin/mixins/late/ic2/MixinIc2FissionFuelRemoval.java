@@ -22,6 +22,8 @@ public class MixinIc2FissionFuelRemoval {
             && !name.equals("reactorMOXQuaddepleted")
             && !name.equals("reactorUraniumSimpledepleted")
             && !name.equals("reactorUraniumDualdepleted")
-            && !name.equals("reactorUraniumQuaddepleted");
+            && !name.equals("reactorUraniumQuaddepleted")
+            && !name.equals("reactorLithiumCell")
+            && !name.equals("itemTritiumCell");
     }
 }

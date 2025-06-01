@@ -3181,6 +3181,7 @@ achievement.gt.blockmachines.gtpp.multimachine.replicator=Elemental Duplicator
 achievement.gt.blockmachines.gtpp.multimachine.replicator.desc=[AL] Pickup this item to see the recipe in NEI
 
 # Fission Fuels
+item.gt.rodLithium.name=Fuel Rod (Lithium)
 item.gt.rodGlowstone.name=Fuel Rod (Glowstone)
 item.gt.rodThorium.name=Fuel Rod (Thorium)
 item.gt.rodThorium2.name=Dual Fuel Rod (Thorium)
@@ -3211,6 +3212,7 @@ item.gt.rodNaquadria.name=Fuel Rod (Naquadria)
 item.gt.rodNaquadria2.name=Dual Fuel Rod (Naquadria)
 item.gt.rodNaquadria4.name=Quad Fuel Rod (Naquadria)
 
+item.gt.depletedRodLithium.name=Fuel Rod (Tritium)
 item.gt.depletedRodGlowstone.name=Fuel Rod (Sunnarium)
 item.gt.depletedRodThorium.name=Fuel Rod (Depleted Thorium)
 item.gt.depletedRodThorium2.name=Dual Fuel Rod (Depleted Thorium)

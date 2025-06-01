@@ -89,6 +89,11 @@ public enum ItemList implements IItemContainer {
     IC2_Compressed_Coal_Ball,
     IC2_Compressed_Coal_Chunk,
     IC2_Fuel_Rod_Empty,
+    IC2_Uranium_238,
+    IC2_Plutonium,
+    IC2_Small_Plutonium,
+    IC2_Uranium_Fuel,
+    IC2_MOX_Fuel,
     IC2_Food_Can_Empty,
     IC2_Food_Can_Filled,
     IC2_Food_Can_Spoiled,
@@ -1836,6 +1841,7 @@ public enum ItemList implements IItemContainer {
     SFMixture,
     MSFMixture,
 
+    RodLithium,
     RodGlowstone,
     RodThorium,
     RodThorium2,
@@ -1861,7 +1867,7 @@ public enum ItemList implements IItemContainer {
     RodNaquadah,
     RodNaquadah2,
     RodNaquadah4,
-    RodNaquadah32,
+    RodNaquadah32, // the core
     RodNaquadria,
     RodNaquadria2,
     RodNaquadria4,
@@ -1869,7 +1875,8 @@ public enum ItemList implements IItemContainer {
     RodTiberium2,
     RodTiberium4,
 
-    DepletedRodGlowstone,
+    DepletedRodLithium, // tritium
+    DepletedRodGlowstone, // sunnarium
     DepletedRodThorium,
     DepletedRodThorium2,
     DepletedRodThorium4,
@@ -1894,7 +1901,7 @@ public enum ItemList implements IItemContainer {
     DepletedRodNaquadah,
     DepletedRodNaquadah2,
     DepletedRodNaquadah4,
-    DepletedRodNaquadah32,
+    DepletedRodNaquadah32, // the core
     DepletedRodNaquadria,
     DepletedRodNaquadria2,
     DepletedRodNaquadria4,
