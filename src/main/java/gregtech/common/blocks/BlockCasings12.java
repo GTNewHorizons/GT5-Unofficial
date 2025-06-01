@@ -21,9 +21,10 @@ public class BlockCasings12 extends BlockCasingsAbstract {
         register(10, ItemList.CasingThaumium, "Alchemically Resistant Thaumium Casing");
         register(11, ItemList.CasingVoid, "Alchemically Inert Void Casing");
         register(12, ItemList.CasingIchorium, "Alchemically Immune Ichorium Casing");
-        for (int i = 0; i < 3; i++) {
+        for (int i = 0; i < 2; i++) {
             GTStructureChannels.METAL_MACHINE_CASING.registerAsIndicator(new ItemStack(this, 1, i + 10), i + 1);
         }
+        register(15, ItemList.Casing_Polybenzimidazole, "Polybenzimidazole Machine Casing");
     }
 
     @Override
@@ -38,6 +39,7 @@ public class BlockCasings12 extends BlockCasingsAbstract {
             case 10 -> Textures.BlockIcons.MACHINE_CASING_THAUMIUM.getIcon();
             case 11 -> Textures.BlockIcons.MACHINE_CASING_VOID.getIcon();
             case 12 -> Textures.BlockIcons.MACHINE_CASING_ICHORIUM.getIcon();
+            case 15 -> Textures.BlockIcons.MACHINE_CASING_PBI.getIcon();
             default -> Textures.BlockIcons.MACHINE_CASING_ROBUST_TUNGSTENSTEEL.getIcon();
         };
     }
