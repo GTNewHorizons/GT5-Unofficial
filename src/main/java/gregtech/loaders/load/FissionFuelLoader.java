@@ -16,9 +16,6 @@ import static gregtech.api.util.GTRecipeBuilder.MINUTES;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
 
-import net.minecraft.init.Items;
-import net.minecraft.item.ItemStack;
-
 import bartworks.system.material.WerkstoffLoader;
 import goodgenerator.items.GGMaterial;
 import goodgenerator.util.ItemRefer;
@@ -37,9 +34,7 @@ public class FissionFuelLoader implements Runnable {
     public void run() {
         // Lithium
         GTValues.RA.stdBuilder()
-            .itemInputs(
-                ItemList.IC2_Fuel_Rod_Empty.get(1),
-                GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.Lithium, 1L))
+            .itemInputs(ItemList.IC2_Fuel_Rod_Empty.get(1), Materials.Lithium.getDustTiny(1))
             .itemOutputs(ItemList.RodLithium.get(1))
             .duration(16 * TICKS)
             .eut(64)
@@ -55,7 +50,7 @@ public class FissionFuelLoader implements Runnable {
 
         // Glowstone
         GTValues.RA.stdBuilder()
-            .itemInputs(ItemList.IC2_Fuel_Rod_Empty.get(1), new ItemStack(Items.glowstone_dust, 9))
+            .itemInputs(ItemList.IC2_Fuel_Rod_Empty.get(1), Materials.Glowstone.getDust(9))
             .itemOutputs(ItemList.RodGlowstone.get(1))
             .fluidInputs(Materials.Helium.getGas(250))
             .duration(1 * SECONDS + 10 * TICKS)
@@ -64,19 +59,14 @@ public class FissionFuelLoader implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.DepletedRodGlowstone.get(1))
-            .itemOutputs(
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Sunnarium, 1),
-                new ItemStack(Items.glowstone_dust, 2),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Iron, 1))
+            .itemOutputs(Materials.Sunnarium.getDust(1), Materials.Glowstone.getDust(2), Materials.Iron.getDust(1))
             .duration(25 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(thermalCentrifugeRecipes);
 
         // Thorium
         GTValues.RA.stdBuilder()
-            .itemInputs(
-                ItemList.IC2_Fuel_Rod_Empty.get(1),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Thorium, 3))
+            .itemInputs(ItemList.IC2_Fuel_Rod_Empty.get(1), Materials.Thorium.getDust(3))
             .itemOutputs(ItemList.RodThorium.get(1L))
             .duration(1 * SECONDS + 10 * TICKS)
             .eut(16)
@@ -112,28 +102,19 @@ public class FissionFuelLoader implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.DepletedRodThorium.get(1))
-            .itemOutputs(
-                GTOreDictUnificator.get(OrePrefixes.dustSmall, Materials.Lutetium, 2L),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Thorium, 1L),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Iron, 1L))
+            .itemOutputs(Materials.Lutetium.getDustSmall(2), Materials.Thorium.getDust(1), Materials.Iron.getDust(1))
             .duration(25 * SECONDS)
             .eut(48)
             .addTo(thermalCentrifugeRecipes);
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.DepletedRodThorium2.get(1))
-            .itemOutputs(
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Lutetium, 1L),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Thorium, 2L),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Iron, 3L))
+            .itemOutputs(Materials.Lutetium.getDust(1), Materials.Thorium.getDust(2), Materials.Iron.getDust(3))
             .duration(25 * SECONDS)
             .eut(48)
             .addTo(thermalCentrifugeRecipes);
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.DepletedRodThorium4.get(1))
-            .itemOutputs(
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Lutetium, 2L),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Thorium, 4L),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Iron, 6L))
+            .itemOutputs(Materials.Lutetium.getDust(2), Materials.Thorium.getDust(4), Materials.Iron.getDust(6))
             .duration(25 * SECONDS)
             .eut(48)
             .addTo(thermalCentrifugeRecipes);
@@ -142,9 +123,9 @@ public class FissionFuelLoader implements Runnable {
             .itemInputs(ItemList.DepletedRodThorium.get(8))
             .itemOutputs(
                 ItemList.IC2_Fuel_Rod_Empty.get(8),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Thorium, 2L),
+                Materials.Thorium.getDust(2),
                 MaterialsElements.getInstance().THORIUM232.getDust(1),
-                GTOreDictUnificator.get(OrePrefixes.dustSmall, Materials.Lutetium, 1L),
+                Materials.Lutetium.getDustSmall(1),
                 MaterialsElements.getInstance().POLONIUM.getSmallDust(1),
                 MaterialsElements.getInstance().THALLIUM.getTinyDust(1))
             .outputChances(100_00, 100_00, 50_00, 50_00, 50_00, 25_00)
@@ -156,9 +137,9 @@ public class FissionFuelLoader implements Runnable {
             .itemInputs(ItemList.DepletedRodThorium2.get(4))
             .itemOutputs(
                 ItemList.IC2_Fuel_Rod_Empty.get(8),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Thorium, 2L),
+                Materials.Thorium.getDust(2),
                 MaterialsElements.getInstance().THORIUM232.getDust(1),
-                GTOreDictUnificator.get(OrePrefixes.dustSmall, Materials.Lutetium, 1L),
+                Materials.Lutetium.getDustSmall(1),
                 MaterialsElements.getInstance().POLONIUM.getSmallDust(1),
                 MaterialsElements.getInstance().THALLIUM.getTinyDust(1))
             .outputChances(100_00, 100_00, 50_00, 50_00, 50_00, 25_00)
@@ -170,9 +151,9 @@ public class FissionFuelLoader implements Runnable {
             .itemInputs(ItemList.DepletedRodThorium4.get(2))
             .itemOutputs(
                 ItemList.IC2_Fuel_Rod_Empty.get(8),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Thorium, 2L),
+                Materials.Thorium.getDust(2),
                 MaterialsElements.getInstance().THORIUM232.getDust(1),
-                GTOreDictUnificator.get(OrePrefixes.dustSmall, Materials.Lutetium, 1L),
+                Materials.Lutetium.getDustSmall(1),
                 MaterialsElements.getInstance().POLONIUM.getSmallDust(1),
                 MaterialsElements.getInstance().THALLIUM.getTinyDust(1))
             .outputChances(100_00, 100_00, 50_00, 50_00, 50_00, 25_00)
@@ -222,7 +203,7 @@ public class FissionFuelLoader implements Runnable {
             .itemOutputs(
                 ItemList.IC2_Small_Plutonium.get(1),
                 ItemList.IC2_Uranium_238.get(4),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Iron, 1))
+                Materials.Iron.getDust(1))
             .duration(25 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(thermalCentrifugeRecipes);
@@ -231,7 +212,7 @@ public class FissionFuelLoader implements Runnable {
             .itemOutputs(
                 ItemList.IC2_Small_Plutonium.get(2),
                 ItemList.IC2_Uranium_238.get(8),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Iron, 3))
+                Materials.Iron.getDust(3))
             .duration(25 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(thermalCentrifugeRecipes);
@@ -240,7 +221,7 @@ public class FissionFuelLoader implements Runnable {
             .itemOutputs(
                 ItemList.IC2_Small_Plutonium.get(4),
                 ItemList.IC2_Uranium_238.get(16),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Iron, 6))
+                Materials.Iron.getDust(6))
             .duration(25 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(thermalCentrifugeRecipes);
@@ -249,11 +230,11 @@ public class FissionFuelLoader implements Runnable {
             .itemInputs(ItemList.DepletedRodUranium.get(8))
             .itemOutputs(
                 ItemList.IC2_Fuel_Rod_Empty.get(8),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Uranium, 2L),
+                Materials.Uranium.getDust(2),
                 MaterialsElements.getInstance().URANIUM232.getSmallDust(1),
                 MaterialsElements.getInstance().URANIUM233.getSmallDust(1),
-                GTOreDictUnificator.get(OrePrefixes.dustSmall, Materials.Uranium235, 1L),
-                GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.Plutonium, 1L))
+                Materials.Uranium235.getDustSmall(1),
+                Materials.Plutonium.getDustTiny(1))
             .outputChances(100_00, 100_00, 10_00, 10_00, 10_00, 5_00)
             .fluidOutputs(WerkstoffLoader.Krypton.getFluidOrGas(60))
             .duration(4 * MINUTES + 10 * SECONDS)
@@ -263,11 +244,11 @@ public class FissionFuelLoader implements Runnable {
             .itemInputs(ItemList.DepletedRodUranium2.get(4))
             .itemOutputs(
                 ItemList.IC2_Fuel_Rod_Empty.get(8),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Uranium, 2L),
+                Materials.Uranium.getDust(2),
                 MaterialsElements.getInstance().URANIUM232.getSmallDust(1),
                 MaterialsElements.getInstance().URANIUM233.getSmallDust(1),
-                GTOreDictUnificator.get(OrePrefixes.dustSmall, Materials.Uranium235, 1L),
-                GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.Plutonium, 1L))
+                Materials.Uranium235.getDustSmall(1),
+                Materials.Plutonium.getDustTiny(1))
             .outputChances(100_00, 100_00, 10_00, 10_00, 10_00, 5_00)
             .fluidOutputs(WerkstoffLoader.Krypton.getFluidOrGas(60))
             .duration(4 * MINUTES + 10 * SECONDS)
@@ -277,11 +258,11 @@ public class FissionFuelLoader implements Runnable {
             .itemInputs(ItemList.DepletedRodUranium4.get(2))
             .itemOutputs(
                 ItemList.IC2_Fuel_Rod_Empty.get(8),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Uranium, 2L),
+                Materials.Uranium.getDust(2),
                 MaterialsElements.getInstance().URANIUM232.getSmallDust(1),
                 MaterialsElements.getInstance().URANIUM233.getSmallDust(1),
-                GTOreDictUnificator.get(OrePrefixes.dustSmall, Materials.Uranium235, 1L),
-                GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.Plutonium, 1L))
+                Materials.Uranium235.getDustSmall(1),
+                Materials.Plutonium.getDustTiny(1))
             .outputChances(100_00, 100_00, 10_00, 10_00, 10_00, 5_00)
             .fluidOutputs(WerkstoffLoader.Krypton.getFluidOrGas(60))
             .duration(4 * MINUTES + 10 * SECONDS)
@@ -326,28 +307,19 @@ public class FissionFuelLoader implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.DepletedRodMOX.get(1))
-            .itemOutputs(
-                ItemList.IC2_Small_Plutonium.get(1),
-                ItemList.IC2_Plutonium.get(3),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Iron, 1))
+            .itemOutputs(ItemList.IC2_Small_Plutonium.get(1), ItemList.IC2_Plutonium.get(3), Materials.Iron.getDust(1))
             .duration(25 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(thermalCentrifugeRecipes);
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.DepletedRodMOX2.get(1))
-            .itemOutputs(
-                ItemList.IC2_Small_Plutonium.get(2),
-                ItemList.IC2_Plutonium.get(6),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Iron, 3))
+            .itemOutputs(ItemList.IC2_Small_Plutonium.get(2), ItemList.IC2_Plutonium.get(6), Materials.Iron.getDust(3))
             .duration(25 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(thermalCentrifugeRecipes);
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.DepletedRodMOX4.get(1))
-            .itemOutputs(
-                ItemList.IC2_Small_Plutonium.get(4),
-                ItemList.IC2_Plutonium.get(12),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Iron, 6))
+            .itemOutputs(ItemList.IC2_Small_Plutonium.get(4), ItemList.IC2_Plutonium.get(12), Materials.Iron.getDust(6))
             .duration(25 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(thermalCentrifugeRecipes);
@@ -356,11 +328,11 @@ public class FissionFuelLoader implements Runnable {
             .itemInputs(ItemList.DepletedRodMOX.get(8))
             .itemOutputs(
                 ItemList.IC2_Fuel_Rod_Empty.get(8),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Plutonium, 2L),
-                GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.Plutonium241, 1L),
-                GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.Plutonium, 1L),
+                Materials.Plutonium.getDust(2),
+                Materials.Plutonium241.getDustTiny(1),
+                Materials.Plutonium.getDustTiny(1),
                 MaterialsElements.getInstance().PLUTONIUM238.getTinyDust(1),
-                GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.Plutonium, 1L))
+                Materials.Plutonium.getDustTiny(1))
             .outputChances(100_00, 100_00, 5_00, 5_00, 5_00, 5_00)
             .fluidOutputs(WerkstoffLoader.Krypton.getFluidOrGas(90))
             .duration(6 * MINUTES + 15 * SECONDS)
@@ -370,11 +342,11 @@ public class FissionFuelLoader implements Runnable {
             .itemInputs(ItemList.DepletedRodMOX2.get(4))
             .itemOutputs(
                 ItemList.IC2_Fuel_Rod_Empty.get(8),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Plutonium, 2L),
-                GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.Plutonium241, 1L),
-                GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.Plutonium, 1L),
+                Materials.Plutonium.getDust(2),
+                Materials.Plutonium241.getDustTiny(1),
+                Materials.Plutonium.getDustTiny(1),
                 MaterialsElements.getInstance().PLUTONIUM238.getTinyDust(1),
-                GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.Plutonium, 1L))
+                Materials.Plutonium.getDustTiny(1))
             .outputChances(100_00, 100_00, 5_00, 5_00, 5_00, 5_00)
             .fluidOutputs(WerkstoffLoader.Krypton.getFluidOrGas(90))
             .duration(6 * MINUTES + 15 * SECONDS)
@@ -384,11 +356,11 @@ public class FissionFuelLoader implements Runnable {
             .itemInputs(ItemList.DepletedRodMOX4.get(2))
             .itemOutputs(
                 ItemList.IC2_Fuel_Rod_Empty.get(8),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Plutonium, 2L),
-                GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.Plutonium241, 1L),
-                GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.Plutonium, 1L),
+                Materials.Plutonium.getDust(2),
+                Materials.Plutonium241.getDustTiny(1),
+                Materials.Plutonium.getDustTiny(1),
                 MaterialsElements.getInstance().PLUTONIUM238.getTinyDust(1),
-                GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.Plutonium, 1L))
+                Materials.Plutonium.getDustTiny(1))
             .outputChances(100_00, 100_00, 5_00, 5_00, 5_00, 5_00)
             .fluidOutputs(WerkstoffLoader.Krypton.getFluidOrGas(90))
             .duration(6 * MINUTES + 15 * SECONDS)
@@ -673,9 +645,7 @@ public class FissionFuelLoader implements Runnable {
 
         // Naquadah
         GTValues.RA.stdBuilder()
-            .itemInputs(
-                ItemList.Large_Fluid_Cell_TungstenSteel.get(1L),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.NaquadahEnriched, 3))
+            .itemInputs(ItemList.Large_Fluid_Cell_TungstenSteel.get(1L), Materials.NaquadahEnriched.getDust(3))
             .itemOutputs(ItemList.RodNaquadah.get(1L))
             .duration(1 * SECONDS + 10 * TICKS)
             .eut(16)
@@ -724,12 +694,12 @@ public class FissionFuelLoader implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.DepletedRodNaquadah.get(1))
             .itemOutputs(
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Naquadah, 1L),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Naquadah, 1L),
-                GTOreDictUnificator.get(OrePrefixes.dustSmall, Materials.Naquadria, 2L),
-                GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.NaquadahEnriched, 2L),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.TungstenSteel, 8L),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Platinum, 1L))
+                Materials.Naquadah.getDust(1),
+                Materials.Naquadah.getDust(1),
+                Materials.Naquadria.getDustSmall(2),
+                Materials.NaquadahEnriched.getDustTiny(2),
+                Materials.TungstenSteel.getDust(8),
+                Materials.Platinum.getDust(1))
             .outputChances(100_00, 50_00, 50_00, 25_00, 100_00, 100_00)
             .duration(25 * SECONDS)
             .eut(TierEU.RECIPE_EV)
@@ -737,12 +707,12 @@ public class FissionFuelLoader implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.DepletedRodNaquadah2.get(1))
             .itemOutputs(
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Naquadah, 2L),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Naquadah, 2L),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Naquadria, 1L),
-                GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.NaquadahEnriched, 4L),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.TungstenSteel, 18L),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Platinum, 2L))
+                Materials.Naquadah.getDust(2),
+                Materials.Naquadah.getDust(2),
+                Materials.Naquadria.getDust(1),
+                Materials.NaquadahEnriched.getDustTiny(4),
+                Materials.TungstenSteel.getDust(18),
+                Materials.Platinum.getDust(2))
             .outputChances(100_00, 50_00, 50_00, 25_00, 100_00, 100_00)
             .duration(50 * SECONDS)
             .eut(TierEU.RECIPE_EV)
@@ -750,12 +720,12 @@ public class FissionFuelLoader implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.DepletedRodNaquadah4.get(1))
             .itemOutputs(
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Naquadah, 4L),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Naquadah, 4L),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Naquadria, 2L),
-                GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.NaquadahEnriched, 8L),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.TungstenSteel, 38L),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Platinum, 4L))
+                Materials.Naquadah.getDust(4),
+                Materials.Naquadah.getDust(4),
+                Materials.Naquadria.getDust(2),
+                Materials.NaquadahEnriched.getDustTiny(8),
+                Materials.TungstenSteel.getDust(38),
+                Materials.Platinum.getDust(4))
             .outputChances(100_00, 50_00, 50_00, 25_00, 100_00, 100_00)
             .duration(100 * SECONDS)
             .eut(TierEU.RECIPE_EV)
@@ -766,9 +736,9 @@ public class FissionFuelLoader implements Runnable {
                 ItemList.DepletedRodNaquadah4.get(8),
                 WerkstoffLoader.Zirconium.get(dust, 64),
                 WerkstoffLoader.Zirconium.get(dust, 64),
-                GTOreDictUnificator.get(dust, Materials.TungstenSteel, 64L),
-                GTOreDictUnificator.get(dust, Materials.TungstenSteel, 64L),
-                GTOreDictUnificator.get(dust, Materials.TungstenSteel, 48L))
+                Materials.TungstenSteel.getDust(64),
+                Materials.TungstenSteel.getDust(64),
+                Materials.TungstenSteel.getDust(16))
             .outputChances(100_00, 50_00, 50_00, 100_00, 100_00, 100_00)
             .duration(1 * MINUTES + 40 * SECONDS)
             .eut(TierEU.RECIPE_IV)
@@ -776,9 +746,7 @@ public class FissionFuelLoader implements Runnable {
 
         // Naquadria
         GTValues.RA.stdBuilder()
-            .itemInputs(
-                ItemList.Large_Fluid_Cell_TungstenSteel.get(1L),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Naquadria, 3))
+            .itemInputs(ItemList.Large_Fluid_Cell_TungstenSteel.get(1L), Materials.Naquadria.getDust(3))
             .itemOutputs(ItemList.RodNaquadria.get(1L))
             .duration(1 * SECONDS + 10 * TICKS)
             .eut(16)
@@ -815,12 +783,12 @@ public class FissionFuelLoader implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.DepletedRodNaquadria.get(1))
             .itemOutputs(
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Naquadah, 1L),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Naquadah, 1L),
-                GTOreDictUnificator.get(OrePrefixes.dustSmall, Materials.NaquadahEnriched, 2L),
-                GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.Naquadria, 2L),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.TungstenSteel, 8L),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Platinum, 1L))
+                Materials.Naquadah.getDust(1),
+                Materials.Naquadah.getDust(1),
+                Materials.NaquadahEnriched.getDustSmall(2),
+                Materials.Naquadria.getDustTiny(2),
+                Materials.TungstenSteel.getDust(8),
+                Materials.Platinum.getDust(1))
             .outputChances(100_00, 50_00, 50_00, 25_00, 100_00, 100_00)
             .duration(25 * SECONDS)
             .eut(TierEU.RECIPE_EV)
@@ -828,12 +796,12 @@ public class FissionFuelLoader implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.DepletedRodNaquadria2.get(1))
             .itemOutputs(
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Naquadah, 2L),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Naquadah, 2L),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.NaquadahEnriched, 1L),
-                GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.Naquadria, 4L),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.TungstenSteel, 18L),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Platinum, 2L))
+                Materials.Naquadah.getDust(2),
+                Materials.Naquadah.getDust(2),
+                Materials.NaquadahEnriched.getDust(1),
+                Materials.Naquadria.getDustTiny(4),
+                Materials.TungstenSteel.getDust(18),
+                Materials.Platinum.getDust(2))
             .outputChances(100_00, 50_00, 50_00, 25_00, 100_00, 100_00)
             .duration(50 * SECONDS)
             .eut(TierEU.RECIPE_EV)
@@ -841,12 +809,12 @@ public class FissionFuelLoader implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.DepletedRodNaquadria4.get(1))
             .itemOutputs(
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Naquadah, 4L),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Naquadah, 4L),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.NaquadahEnriched, 2L),
-                GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.Naquadria, 8L),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.TungstenSteel, 38L),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Platinum, 4L))
+                Materials.Naquadah.getDust(4),
+                Materials.Naquadah.getDust(4),
+                Materials.NaquadahEnriched.getDust(2),
+                Materials.Naquadria.getDustTiny(8),
+                Materials.TungstenSteel.getDust(38),
+                Materials.Platinum.getDust(4))
             .outputChances(100_00, 50_00, 50_00, 25_00, 100_00, 100_00)
             .duration(100 * SECONDS)
             .eut(TierEU.RECIPE_EV)
@@ -886,8 +854,8 @@ public class FissionFuelLoader implements Runnable {
                 WerkstoffLoader.Zirconium.get(dust),
                 WerkstoffLoader.Tiberium.get(dustSmall, 2),
                 WerkstoffLoader.Zirconium.get(dust, 2),
-                GTOreDictUnificator.get(dust, Materials.TungstenSteel, 8L),
-                GTOreDictUnificator.get(dust, Materials.Platinum, 1L))
+                Materials.TungstenSteel.getDust(8),
+                Materials.Platinum.getDust(1))
             .outputChances(100_00, 50_00, 50_00, 25_00, 100_00, 100_00)
             .fluidOutputs(WerkstoffLoader.Xenon.getFluidOrGas(1))
             .duration(12 * SECONDS + 10 * TICKS)
@@ -900,8 +868,8 @@ public class FissionFuelLoader implements Runnable {
                 WerkstoffLoader.Zirconium.get(dust, 2),
                 WerkstoffLoader.Tiberium.get(dust),
                 WerkstoffLoader.Zirconium.get(dust, 4),
-                GTOreDictUnificator.get(dust, Materials.TungstenSteel, 18L),
-                GTOreDictUnificator.get(dust, Materials.Platinum, 2L))
+                Materials.TungstenSteel.getDust(18),
+                Materials.Platinum.getDust(2))
             .outputChances(100_00, 50_00, 50_00, 25_00, 100_00, 100_00)
             .fluidOutputs(WerkstoffLoader.Xenon.getFluidOrGas(2))
             .duration(12 * SECONDS + 10 * TICKS)
@@ -914,8 +882,8 @@ public class FissionFuelLoader implements Runnable {
                 WerkstoffLoader.Zirconium.get(dust, 4),
                 WerkstoffLoader.Tiberium.get(dust, 2),
                 WerkstoffLoader.Zirconium.get(dust, 8),
-                GTOreDictUnificator.get(dust, Materials.TungstenSteel, 38L),
-                GTOreDictUnificator.get(dust, Materials.Platinum, 4L))
+                Materials.TungstenSteel.getDust(38),
+                Materials.Platinum.getDust(4))
             .outputChances(100_00, 50_00, 50_00, 25_00, 100_00, 100_00)
             .fluidOutputs(WerkstoffLoader.Xenon.getFluidOrGas(4))
             .duration(50 * SECONDS)

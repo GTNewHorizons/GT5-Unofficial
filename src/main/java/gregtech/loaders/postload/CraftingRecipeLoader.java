@@ -1709,13 +1709,13 @@ public class CraftingRecipeLoader implements Runnable {
         GTModHandler.addCraftingRecipe(
             ItemList.IC2_Uranium_Fuel.get(1),
             bits_no_remove_buffered,
-            new Object[] { "UUU", "NNN", "UUU", 'U', OrePrefixes.ingot.get(Materials.Uranium), 'N',
-                OrePrefixes.nugget.get(Materials.Uranium235) });
+            new Object[] { "UUU", "NNN", "UUU", 'U', Materials.Uranium.getIngots(1), 'N',
+                Materials.Uranium235.getNuggets(1) });
         GTModHandler.addCraftingRecipe(
             ItemList.IC2_MOX_Fuel.get(1),
             bits_no_remove_buffered,
-            new Object[] { "UUU", "NNN", "UUU", 'U', OrePrefixes.ingot.get(Materials.Uranium), 'N',
-                OrePrefixes.ingot.get(Materials.Plutonium) });
+            new Object[] { "UUU", "NNN", "UUU", 'U', Materials.Uranium.getIngots(1), 'N',
+                Materials.Plutonium.getIngots(1) });
 
         GTModHandler.removeRecipeByOutputDelayed(Ic2Items.miningLaser.copy());
         GTModHandler.addCraftingRecipe(

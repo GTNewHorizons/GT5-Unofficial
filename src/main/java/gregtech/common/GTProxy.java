@@ -908,11 +908,11 @@ public abstract class GTProxy implements IGTMod, IFuelHandler {
         ItemList.IC2_Scrap.set(GTModHandler.getIC2Item("scrap", 1L));
         ItemList.IC2_Scrapbox.set(GTModHandler.getIC2Item("scrapBox", 1L));
         ItemList.IC2_Fuel_Rod_Empty.set(GTModHandler.getIC2Item("fuelRod", 1L));
-        ItemList.IC2_Uranium_238.set(GTModHandler.getIC2Item("itemUran238", 1L));
-        ItemList.IC2_Plutonium.set(GTModHandler.getIC2Item("itemPlutonium", 1L));
-        ItemList.IC2_Small_Plutonium.set(GTModHandler.getIC2Item("itemPlutoniumSmall", 1L));
+        ItemList.IC2_Uranium_238.set(GTModHandler.getIC2Item("Uran238", 1L));
+        ItemList.IC2_Plutonium.set(GTModHandler.getIC2Item("Plutonium", 1L));
+        ItemList.IC2_Small_Plutonium.set(GTModHandler.getIC2Item("smallPlutonium", 1L));
         ItemList.IC2_Uranium_Fuel.set(GTModHandler.getIC2Item("UranFuel", 1L));
-        ItemList.IC2_MOX_Fuel.set(GTModHandler.getIC2Item("itemMOX", 1L));
+        ItemList.IC2_MOX_Fuel.set(GTModHandler.getIC2Item("MOXFuel", 1L));
         ItemList.IC2_Food_Can_Empty.set(GTModHandler.getIC2Item("tinCan", 1L));
         ItemList.IC2_Food_Can_Filled.set(GTModHandler.getIC2Item("filledTinCan", 1L, 0));
         ItemList.IC2_Food_Can_Spoiled.set(GTModHandler.getIC2Item("filledTinCan", 1L, 1));
