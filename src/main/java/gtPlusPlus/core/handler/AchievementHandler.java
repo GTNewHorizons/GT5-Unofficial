@@ -203,16 +203,10 @@ public class AchievementHandler {
             "decay.neptunium238",
             11,
             8,
-            ItemUtils.getSimpleStack(ModItems.dustNeptunium238),
+            new ItemStack(ModItems.dustNeptunium238),
             "multi.cyclo",
             false);
-        this.registerAchievement(
-            "decay.radium226",
-            12,
-            8,
-            ItemUtils.getSimpleStack(ModItems.dustRadium226),
-            "multi.cyclo",
-            false);
+        this.registerAchievement("decay.radium226", 12, 8, new ItemStack(ModItems.dustRadium226), "multi.cyclo", false);
 
         AchievementPage.registerAchievementPage(
             new AchievementPage(
@@ -272,8 +266,7 @@ public class AchievementHandler {
              * Copy this to all events because I am lazy - Alk 2019
              */
 
-            // Safe name
-            String aUnlocalName = ItemUtils.getUnlocalizedItemName(aStack);
+            String aUnlocalName = aStack.getUnlocalizedName();
 
             boolean isValid = false;
             // Check if valid name // mod
