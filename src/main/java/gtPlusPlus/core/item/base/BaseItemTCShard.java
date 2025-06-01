@@ -4,11 +4,9 @@ import static gregtech.api.enums.Mods.GTPlusPlus;
 
 import java.util.List;
 
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.world.World;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.util.GTLanguageManager;
@@ -62,7 +60,4 @@ public class BaseItemTCShard extends Item {
         return this.itemColour;
     }
 
-    @Override
-    public void onUpdate(final ItemStack iStack, final World world, final Entity entityHolding, final int p_77663_4_,
-        final boolean p_77663_5_) {}
 }

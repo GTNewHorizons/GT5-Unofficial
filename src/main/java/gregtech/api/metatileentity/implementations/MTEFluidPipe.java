@@ -220,11 +220,6 @@ public class MTEFluidPipe extends MetaPipeEntity {
     }
 
     @Override
-    public boolean isFacingValid(ForgeDirection facing) {
-        return false;
-    }
-
-    @Override
     public boolean isValidSlot(int aIndex) {
         return false;
     }
