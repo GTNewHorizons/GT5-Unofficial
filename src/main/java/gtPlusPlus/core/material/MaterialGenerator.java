@@ -109,7 +109,7 @@ public class MaterialGenerator {
             }
 
             int sRadiation = 0;
-            if (ItemUtils.isRadioactive(materialName) || (matInfo.vRadiationLevel != 0)) {
+            if (ItemUtils.getRadioactivityLevel(materialName) > 0 || (matInfo.vRadiationLevel != 0)) {
                 sRadiation = matInfo.vRadiationLevel;
             }
 
@@ -210,7 +210,7 @@ public class MaterialGenerator {
         }
 
         int sRadiation = 0;
-        if (ItemUtils.isRadioactive(materialName) || (matInfo.vRadiationLevel != 0)) {
+        if (ItemUtils.getRadioactivityLevel(materialName) > 0 || (matInfo.vRadiationLevel != 0)) {
             sRadiation = matInfo.vRadiationLevel;
         }
 

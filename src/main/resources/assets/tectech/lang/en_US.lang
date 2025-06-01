@@ -1997,6 +1997,10 @@ tt.infodata.fog.rings=Number of Rings: %s
 tt.infodata.fog.upgrades.unlocked=Total Upgrades Unlocked: %s
 tt.infodata.fog.connected=Connected Modules: %s
 
+## Tesla Tower
+tt.infodata.tesla.energy=Tesla Energy: %s EU / %s EU
+tt.infodata.tesla.current_output=Current Output: %s EU / %s EU
+
 ## Base factory pipe
 tt.infodata.pipe.active=Active.
 tt.infodata.pipe.inactive=Not active.
