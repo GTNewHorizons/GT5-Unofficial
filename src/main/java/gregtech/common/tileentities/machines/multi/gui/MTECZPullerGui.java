@@ -1,9 +1,8 @@
 package gregtech.common.tileentities.machines.multi.gui;
 
-import gregtech.api.metatileentity.implementations.MTEMultiBlockBase;
+import com.cleanroommc.modularui.value.sync.StringSyncValue;
 import gregtech.api.metatileentity.implementations.gui.MTEMultiBlockBaseGui;
 import gregtech.api.modularui2.GTGuiTextures;
-package gregtech.common.tileentities.machines.multi.gui;
 
 import com.cleanroommc.modularui.api.IPanelHandler;
 import com.cleanroommc.modularui.api.drawable.IKey;
@@ -19,8 +18,6 @@ import com.cleanroommc.modularui.widgets.ButtonWidget;
 import com.cleanroommc.modularui.widgets.PagedWidget;
 import com.cleanroommc.modularui.widgets.TextWidget;
 
-import gregtech.api.metatileentity.implementations.gui.MTEMultiBlockBaseGui;
-import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.common.tileentities.machines.multi.MTECZPuller;
 
 public class MTECZPullerGui extends MTEMultiBlockBaseGui {
@@ -35,15 +32,15 @@ public class MTECZPullerGui extends MTEMultiBlockBaseGui {
     @Override
     protected void registerSyncValues (PanelSyncManager syncManager) {
         super.registerSyncValues (syncManager);
-        syncManager.syncValue("Pressure", new DoubleSyncValue(()-> base., dub -> base.ECCFCurrentPressure = dub));
-        syncManager.syncValue("Temperature", new DoubleSyncValue(() -> base.ECCFCurrentTemp, dub-> base.ECCFCurrentTemp = dub));
-        syncManager.syncValue("Compress", new IntSyncValue(() -> base.compressCoilTier, dub -> base.compressCoilTier = dub));
+        syncManager.syncValue("Type", new StringSyncValue(()-> base.materialType, dub -> base.materialType = dub));
+        syncManager.syncValue("Heat", new IntSyncValue(() -> base.mHeat, dub-> base.mHeat = dub));
+        syncManager.syncValue("Amount", new IntSyncValue(() -> base., dub -> base.compressCoilTier = dub));
     }
 
     @Override
     public ModularPanel build(PosGuiData data, PanelSyncManager syncManager, UISettings uiSettings) {
         ModularPanel ui = super.build(data, syncManager, uiSettings);
-        IPanelHandler popupPanel = syncManager.panel("popup", (m, h) -> createECCFPanel(syncManager), true);
+        IPanelHandler popupPanel = syncManager.panel("popup", (m, h) -> createCZPanel(syncManager), true);
 
         return ui.child(new ButtonWidget<>().onMousePressed(mouseButton -> {
                 if (!popupPanel.isPanelOpen()) {
@@ -60,8 +57,8 @@ public class MTECZPullerGui extends MTEMultiBlockBaseGui {
             .size(18, 18));
     }
 
-    public ModularPanel createECCFPanel(PanelSyncManager syncManager) {
-        ModularPanel ui = ModularPanel.defaultPanel("gt:eccf")
+    public ModularPanel createCZPanel(PanelSyncManager syncManager) {
+        ModularPanel ui = ModularPanel.defaultPanel("gt:czpuller")
             .size(176, 207)
             .background(GTGuiTextures.BACKGROUND_STANDARD);
 

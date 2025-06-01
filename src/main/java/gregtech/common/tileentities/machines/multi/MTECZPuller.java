@@ -23,9 +23,7 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 
-import appeng.items.materials.MaterialType;
 import gregtech.api.metatileentity.implementations.MTEHatch;
-import gregtech.api.metatileentity.implementations.MTEHatchInput;
 import gregtech.api.metatileentity.implementations.gui.MTEMultiBlockBaseGui;
 import gregtech.common.tileentities.machines.multi.gui.MTECZPullerGui;
 import net.minecraft.item.ItemStack;
@@ -59,14 +57,14 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.blocks.BlockCasings2;
 import gregtech.common.blocks.BlockCasings9;
 import gregtech.common.misc.GTStructureChannels;
-import net.minecraftforge.fluids.FluidStack;
 import org.jetbrains.annotations.NotNull;
 
 public class MTECZPuller extends MTEEnhancedMultiBlockBase<MTECZPuller> implements ISurvivalConstructable {
 
-    private MTEHatchInput mSpecialInputHatch;
-
-    private int mHeatingCapacity = 0;
+    private List<MTEHatch> mSeedInputHatch = new ArrayList<>();
+    public int mHeat = 0;
+    public int capacityLimit = 0;
+    private int seedInputAmount = 0;
     private HeatingCoilLevel mCoilLevel = null;
     private static final String TIER_1 = "tier1";
     private static final String TIER_2 = "tier2";
@@ -75,12 +73,13 @@ public class MTECZPuller extends MTEEnhancedMultiBlockBase<MTECZPuller> implemen
 
     public String materialType;
     private String getMaterialType() {
-        if (mSpecialInputHatch == null) return "none";
-        if (mSpecialInputHatch.mFluid == null) return "none";
-        if (mSpecialInputHatch.mFluid.getFluid() == null) return "none";
-        String fluidName = mSpecialInputHatch.mFluid.getFluid().getName();
-        if (fluidName != "Silicon")
-        return mSpecialInputHatch.mFluid.getFluid().getName();
+        seedBus
+        if (mSeedInputHatch == null) return null;
+        if (mSeedInputHatch.mFluid == null) return null;
+        if (mSeedInputHatch.mFluid.getFluid() == null) return null;
+        String fluidName = mSeedInputHatch.mFluid.getFluid().getName();
+        if (fluidName.equals("Silicon") || fluidName.equals("AlGaAs")) return fluidName;
+        return null;
     }
 
     private int materialAmount = 0;
@@ -155,7 +154,7 @@ public class MTECZPuller extends MTEEnhancedMultiBlockBase<MTECZPuller> implemen
         .addElement(
             'Z',
             buildHatchAdder(MTECZPuller.class).hatchClass(MTEHatchEnergy.class)
-                .adder(MTECZPuller::addSpecialInputToMachineList)
+                .adder(MTECZPuller::addSeedBusToMachineList)
                 .casingIndex(((BlockCasings9) GregTechAPI.sBlockCasings9).getTextureIndex(11))
                 .dot(2)
                 .buildAndChain(ofBlock(GregTechAPI.sBlockCasings9, 11)))
@@ -170,15 +169,15 @@ public class MTECZPuller extends MTEEnhancedMultiBlockBase<MTECZPuller> implemen
         super(aName);
     }
 
-    private final ArrayList<MTEHatchInputBus> seedBus = new ArrayList<>();
-
-    private boolean addSeedBus(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
-        if (aTileEntity != null) {
-            if (aTileEntity.getMetaTileEntity() instanceof MTEHatchInputBus bus) {
-                bus.updateTexture(aBaseCasingIndex);
-                seedBus.add(bus);
-                return true;
-            }
+    public boolean addSeedBusToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
+        if (aTileEntity == null) return false;
+        IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
+        if (aMetaTileEntity == null) return false;
+        if (aMetaTileEntity instanceof MTEHatchInputBus) {
+            ((MTEHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+            ((MTEHatchInputBus) aMetaTileEntity).mRecipeMap = null;
+            mSeedInputHatch = (MTEHatchInputBus) aMetaTileEntity;
+            return true;
         }
         return false;
     }
@@ -234,7 +233,7 @@ public class MTECZPuller extends MTEEnhancedMultiBlockBase<MTECZPuller> implemen
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
         aNBT.setByte("mSpecialTier", mSpecialTier);
-        aNBT.setString("czMaterialType", materialType);
+        aNBT.setString("czMaterialType", getMaterialType());
         aNBT.setInteger("czMaterialAmount", materialAmount);
     }
 
@@ -245,8 +244,9 @@ public class MTECZPuller extends MTEEnhancedMultiBlockBase<MTECZPuller> implemen
             inputSeparation = aNBT.getBoolean("mSeparate");
         }
         mSpecialTier = aNBT.getByte("mSpecialTier");
-        materialType = getMaterialType();
+        materialType = aNBT.getString("czMaterialType");
         materialAmount = aNBT.getInteger("czMaterialAmount");
+
     }
 
     @Override
@@ -280,17 +280,16 @@ public class MTECZPuller extends MTEEnhancedMultiBlockBase<MTECZPuller> implemen
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         mCasingAmount = 0;
-        mHeatingCapacity = 0;
         mEnergyHatches.clear();
         mExoticEnergyHatches.clear();
-        seedBus.clear();
+        mSeedInputHatch.clear()
 
         setCoilLevel(HeatingCoilLevel.None);
         if (!checkPiece(TIER_1, 2, 8, 0) && !checkPiece(TIER_2, 5, 10, 2)) return false;
 
         if (getCoilLevel() == HeatingCoilLevel.None) return false;
 
-        if (seedBus.size() != 1) return false;
+        if (seedInputAmount > 1) return false;
 
         if (!mExoticEnergyHatches.isEmpty()) {
             if (!mEnergyHatches.isEmpty()) return false;
@@ -307,9 +306,6 @@ public class MTECZPuller extends MTEEnhancedMultiBlockBase<MTECZPuller> implemen
             }
         }
         if (mMaintenanceHatches.size() > 1) return false;
-
-        mHeatingCapacity = (int) getCoilLevel().getHeat();
-
         return true;
     }
 
@@ -422,16 +418,11 @@ public class MTECZPuller extends MTEEnhancedMultiBlockBase<MTECZPuller> implemen
         return new MTECZPullerGui(this);
     }
 
-    public boolean addSpecialInputToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
-        if (aTileEntity == null) return false;
-        IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
-        if (aMetaTileEntity == null) return false;
-        if (aMetaTileEntity instanceof MTEHatchInput) {
-            ((MTEHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
-            ((MTEHatchInput) aMetaTileEntity).mRecipeMap = null;
-            mSpecialInputHatch = (MTEHatchInput) aMetaTileEntity;
-            return true;
+    @Override
+    public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
+        if (aTick % 20 == 0) {
+            materialType = getMaterialType();
+
         }
-        return false;
     }
 }
