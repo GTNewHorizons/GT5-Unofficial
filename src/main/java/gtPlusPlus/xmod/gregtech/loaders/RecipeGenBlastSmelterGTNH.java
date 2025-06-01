@@ -15,12 +15,12 @@ import gregtech.api.recipe.RecipeCategories;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
+import gregtech.common.items.ItemIntegratedCircuit;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.minecraft.ItemStackData;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
-import gtPlusPlus.core.util.minecraft.ItemUtils;
 
 public class RecipeGenBlastSmelterGTNH {
 
@@ -177,7 +177,7 @@ public class RecipeGenBlastSmelterGTNH {
                     // Build correct input stack
                     ArrayList<ItemStack> aTempList = new ArrayList<>();
                     for (ItemStack recipeItem : inputs) {
-                        if (ItemUtils.isControlCircuit(recipeItem)) {
+                        if (recipeItem != null && recipeItem.getItem() instanceof ItemIntegratedCircuit) {
                             circuitFound = true;
                         }
                         aTempList.add(recipeItem);

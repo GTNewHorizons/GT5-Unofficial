@@ -18,7 +18,7 @@ import net.minecraft.world.World;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import gtPlusPlus.core.item.chemistry.general.ItemGenericChemBase;
-import gtPlusPlus.core.util.minecraft.ItemUtils;
+import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.chemplant.MTEChemicalPlant;
 
 public class ItemAgrichemBase extends Item {
 
@@ -135,7 +135,7 @@ public class ItemAgrichemBase extends Item {
 
     @Override
     public double getDurabilityForDisplay(ItemStack aStack) {
-        if (ItemUtils.isCatalyst(aStack)) {
+        if (MTEChemicalPlant.isCatalyst(aStack)) {
             if (aStack.getTagCompound() == null || aStack.getTagCompound()
                 .hasNoTags()) {
                 createCatalystNBT(aStack);
@@ -155,7 +155,7 @@ public class ItemAgrichemBase extends Item {
         int aDamageSegment = 0;
         int aDam = 0;
         EnumChatFormatting durability = EnumChatFormatting.GRAY;
-        if (ItemUtils.isCatalyst(aStack)) {
+        if (MTEChemicalPlant.isCatalyst(aStack)) {
             list.add(
                 EnumChatFormatting.GRAY
                     + StatCollector.translateToLocal("GTPP.tooltip.catalyst.active_reaction_agent"));
@@ -181,7 +181,7 @@ public class ItemAgrichemBase extends Item {
 
     @Override
     public boolean showDurabilityBar(ItemStack aStack) {
-        if (ItemUtils.isCatalyst(aStack)) {
+        if (MTEChemicalPlant.isCatalyst(aStack)) {
             int aDam = getCatalystDamage(aStack);
             return aDam > 0;
         }

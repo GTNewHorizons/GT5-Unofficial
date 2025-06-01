@@ -18,14 +18,15 @@ import net.minecraft.world.World;
 import net.minecraft.world.gen.feature.WorldGenBigTree;
 import net.minecraft.world.gen.feature.WorldGenTrees;
 import net.minecraft.world.gen.feature.WorldGenerator;
+import net.minecraftforge.oredict.OreDictionary;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.util.GTRecipeBuilder;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.util.Utils;
-import gtPlusPlus.core.util.minecraft.ItemUtils;
 
 public class SaplingBase extends BlockSapling {
 
@@ -43,7 +44,7 @@ public class SaplingBase extends BlockSapling {
         String blockName = "block" + Utils.sanitizeString(blockNameLocalized);
         GameRegistry.registerBlock(this, ItemBlock.class, blockName);
         this.setBlockName(blockName);
-        ItemUtils.addItemToOreDictionary(ItemUtils.getSimpleStack(this), "treeSapling", true);
+        OreDictionary.registerOre("treeSapling", new ItemStack(this, 1, GTRecipeBuilder.WILDCARD));
         this.setCreativeTab(AddToCreativeTab.tabBOP);
         this.setStepSound(Block.soundTypeGrass);
     }

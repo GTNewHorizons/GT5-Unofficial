@@ -15,7 +15,6 @@ import net.minecraftforge.fluids.Fluid;
 
 import gtPlusPlus.core.fluids.GTPPFluids;
 import gtPlusPlus.core.util.math.MathUtils;
-import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 
 public class TileEntityPooCollector extends TileEntityBaseFluidCollector {
@@ -41,9 +40,8 @@ public class TileEntityPooCollector extends TileEntityBaseFluidCollector {
             } else {
                 return false;
             }
-            if (!ItemUtils.checkForInvalidItems(aPoop)) {
-                return false;
-            }
+
+            if (aPoop == null) return false;
 
             // Add poop to world
             // Logger.INFO("Adding animal waste for "+aPooMaker.getCommandSenderName());
