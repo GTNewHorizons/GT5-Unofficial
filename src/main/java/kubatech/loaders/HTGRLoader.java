@@ -1,13 +1,26 @@
 package kubatech.loaders;
 
+import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
+import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
+import static gregtech.api.recipe.RecipeMaps.blastFurnaceRecipes;
 import static gregtech.api.recipe.RecipeMaps.centrifugeRecipes;
+import static gregtech.api.recipe.RecipeMaps.compressorRecipes;
 import static gregtech.api.recipe.RecipeMaps.formingPressRecipes;
 import static gregtech.api.recipe.RecipeMaps.mixerRecipes;
+import static gregtech.api.util.GTRecipeConstants.COIL_HEAT;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 
+import gregtech.api.enums.ItemList;
+import gregtech.api.enums.TierEU;
+import gregtech.api.util.GTModHandler;
+import gregtech.api.util.GTRecipeBuilder;
+import gregtech.loaders.postload.recipes.FormingPressRecipes;
+import kekztech.common.recipeLoaders.FormingPress;
+import minetweaker.mods.ic2.machines.BlastFurnace;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
 import org.apache.commons.lang3.tuple.Pair;
@@ -195,6 +208,77 @@ public class HTGRLoader {
             .duration(1)
             .eut(1)
             .addTo(HTGRRecipes);
+
+        // Structure blocks and items for HTGR
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(ItemList.Beryllium_Shielding_Plate.get(1L),
+            ItemList.Casing_Refined_Graphite.get(1L),
+            GTOreDictUnificator.get(OrePrefixes.rod, Materials.StainlessSteel, 6L),
+            GTOreDictUnificator.get(OrePrefixes.screw, Materials.StainlessSteel, 12L))
+            .itemOutputs(ItemList.Casing_Graphite_Moderator.get(1L))
+            .duration(GTRecipeBuilder.SECONDS * 15)
+            .eut(TierEU.RECIPE_EV)
+            .addTo(assemblerRecipes);
+
+        GTValues.RA.stdBuilder()
+                .itemInputs(
+            GTOreDictUnificator.get(OrePrefixes.pipeLarge, Materials.Titanium, 1L),
+            GTOreDictUnificator.get(OrePrefixes.pipeMedium, Materials.Titanium, 1L),
+            GTModHandler.getModItem(NewHorizonsCoreMod.ID, "item.MicaInsulatorFoil", 16),
+            GTOreDictUnificator.get(OrePrefixes.plate, Materials.StainlessSteel, 4L),
+            ItemList.Alumina_Support_Ring.get(2L))
+            .itemOutputs(ItemList.Casing_Insulated_Fluid_Pipe.get(1L))
+            .duration(GTRecipeBuilder.SECONDS * 20)
+            .eut(TierEU.RECIPE_EV)
+            .addTo(assemblerRecipes);
+
+        GTValues.RA.stdBuilder()
+                .itemInputs(ItemList.Beryllium_Shielding_Plate.get(1L),
+                    GTOreDictUnificator.get(OrePrefixes.plate, Materials.TungstenSteel, 4L),
+                    GTOreDictUnificator.get(OrePrefixes.screw, Materials.TungstenSteel, 16L),
+                    GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.TungstenSteel, 1L))
+            .fluidInputs(Materials.Lead.getMolten(1152L))
+            .itemOutputs(ItemList.Casing_Beryllium_Integrated_Reactor.get(1L))
+            .duration(GTRecipeBuilder.SECONDS * 30)
+            .eut(TierEU.RECIPE_EV)
+            .addTo(assemblerRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                GTOreDictUnificator.get(OrePrefixes.plateDense, Materials.Beryllium, 1L),
+                GTOreDictUnificator.get(OrePrefixes.screw, Materials.StainlessSteel, 16L))
+            .fluidInputs(Materials.Beryllium.getMolten(144L))
+            .itemOutputs(ItemList.Beryllium_Shielding_Plate.get(1L))
+            .duration(GTRecipeBuilder.SECONDS * 30)
+            .eut(TierEU.RECIPE_EV)
+            .addTo(assemblerRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(ItemList.Alumina_Support_Ring_Raw.get(1L))
+            .itemOutputs(ItemList.Alumina_Support_Ring.get(1L))
+            .duration(GTRecipeBuilder.SECONDS * 30)
+            .eut(TierEU.RECIPE_EV)
+            .metadata(COIL_HEAT, 4000)
+            .addTo(blastFurnaceRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(Materials.Aluminiumoxide.getDust(4),
+                ItemList.Shape_Mold_Ring.get(0),
+                ItemList.Shape_Mold_Ring.get(0))
+            .itemOutputs(ItemList.Alumina_Support_Ring_Raw.get(1L))
+            .duration(GTRecipeBuilder.SECONDS * 60)
+            .eut(TierEU.RECIPE_HV)
+            .addTo(formingPressRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(Materials.Graphite.getDust(18))
+            .itemOutputs(ItemList.Casing_Refined_Graphite.get(1L))
+            .duration(GTRecipeBuilder.SECONDS * 30)
+            .eut(TierEU.RECIPE_MV)
+            .addTo(compressorRecipes);
+
+
     }
 
 }

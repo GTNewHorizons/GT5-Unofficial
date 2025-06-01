@@ -16,6 +16,7 @@ public class BlockCasings12 extends BlockCasingsAbstract {
     public BlockCasings12() {
         super(ItemCasings.class, "gt.blockcasings12", MaterialCasings.INSTANCE, 16);
         register(0, ItemList.Casing_Cable, "Cable Casing");
+
     }
 
     @Override

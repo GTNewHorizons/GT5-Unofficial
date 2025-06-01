@@ -1746,6 +1746,10 @@ public enum ItemList implements IItemContainer {
     Casing_Item_Pipe_Black_Plutonium,
 
     Casing_Cable,
+    Casing_Graphite_Moderator,
+    Casing_Insulated_Fluid_Pipe,
+    Casing_Beryllium_Integrated_Reactor,
+    Casing_Refined_Graphite,
 
     MobRep_LV,
     MobRep_MV,
@@ -2614,6 +2618,9 @@ public enum ItemList implements IItemContainer {
     Intensely_Bonded_Netherite_Nanoparticles,
     Hot_Netherite_Scrap,
     LargeMolecularAssembler,
+    Beryllium_Shielding_Plate,
+    Alumina_Support_Ring,
+    Alumina_Support_Ring_Raw,
 
     SpaceElevatorController,
     SpaceElevatorModuleAssemblerT1,
