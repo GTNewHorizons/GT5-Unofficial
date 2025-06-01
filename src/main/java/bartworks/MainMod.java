@@ -38,12 +38,12 @@ import bartworks.common.loaders.ArtificialMicaLine;
 import bartworks.common.loaders.BioCultureLoader;
 import bartworks.common.loaders.BioLabLoader;
 import bartworks.common.loaders.ItemRegistry;
-import bartworks.common.loaders.LocalisationLoader;
 import bartworks.common.loaders.RadioHatchMaterialLoader;
 import bartworks.common.loaders.RecipeLoader;
 import bartworks.common.loaders.RegisterServerCommands;
 import bartworks.common.loaders.StaticRecipeChangeLoaders;
 import bartworks.server.EventHandler.ServerEventHandler;
+import bartworks.system.material.CircuitGeneration.BWMetaItems;
 import bartworks.system.material.CircuitGeneration.CircuitImprintLoader;
 import bartworks.system.material.CircuitGeneration.CircuitPartLoader;
 import bartworks.system.material.Werkstoff;
@@ -125,13 +125,13 @@ public final class MainMod {
 
         BioCultureLoader.run();
 
+        BWMetaItems.init();
+
         Werkstoff.init();
         GregTechAPI.sAfterGTPostload.add(new CircuitPartLoader());
         if (SideReference.Side.Client) {
             GregTechAPI.sBeforeGTLoad.add(new PrefixTextureLinker());
         }
-
-        GlassTier.RegisterGlassTiers.run();
     }
 
     @Mod.EventHandler
@@ -150,6 +150,7 @@ public final class MainMod {
         WerkstoffLoader.runInit();
 
         ItemRegistry.run();
+        GlassTier.RegisterGlassTiers.run();
     }
 
     @Mod.EventHandler
@@ -163,7 +164,6 @@ public final class MainMod {
         BioObjectAdder.regenerateBioFluids();
 
         WerkstoffLoader.run();
-        LocalisationLoader.localiseAll();
 
         CheckRecipeResultRegistry.register(new ResultWrongSievert(0, ResultWrongSievert.NeededSievertType.EXACTLY));
 

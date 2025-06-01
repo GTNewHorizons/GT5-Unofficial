@@ -13,6 +13,7 @@ import static gregtech.api.recipe.RecipeMaps.maceratorRecipes;
 import static gregtech.api.recipe.RecipeMaps.mixerRecipes;
 import static gregtech.api.recipe.RecipeMaps.multiblockChemicalReactorRecipes;
 import static gregtech.api.recipe.RecipeMaps.sifterRecipes;
+import static gregtech.api.util.GTModHandler.getModItem;
 import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.MINUTES;
 import static gregtech.api.util.GTRecipeBuilder.NUGGETS;
@@ -29,6 +30,7 @@ import net.minecraftforge.fluids.FluidStack;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.util.GTOreDictUnificator;
@@ -39,7 +41,6 @@ import gtPlusPlus.core.material.MaterialsAlloy;
 import gtPlusPlus.core.material.MaterialsElements;
 import gtPlusPlus.core.material.nuclear.MaterialsFluorides;
 import gtPlusPlus.core.material.nuclear.MaterialsNuclides;
-import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 
@@ -104,9 +105,9 @@ public class RecipeLoaderNuclear {
 
         // Uranium
         for (ItemStack depletedRod : new ItemStack[] {
-            ItemUtils.getItemStackFromFQRN("IC2:reactorUraniumSimpledepleted", 8),
-            ItemUtils.getItemStackFromFQRN("IC2:reactorUraniumDualdepleted", 4),
-            ItemUtils.getItemStackFromFQRN("IC2:reactorUraniumQuaddepleted", 2) }) {
+            getModItem(Mods.IndustrialCraft2.ID, "reactorUraniumSimpledepleted", 8),
+            getModItem(Mods.IndustrialCraft2.ID, "reactorUraniumDualdepleted", 4),
+            getModItem(Mods.IndustrialCraft2.ID, "reactorUraniumQuaddepleted", 2) }) {
             GTValues.RA.stdBuilder()
                 .itemInputs(depletedRod, GTUtility.getIntegratedCircuit(20))
                 .itemOutputs(
@@ -125,9 +126,9 @@ public class RecipeLoaderNuclear {
 
         // Mox
         for (ItemStack depletedRod : new ItemStack[] {
-            ItemUtils.getItemStackFromFQRN("IC2:reactorMOXSimpledepleted", 8),
-            ItemUtils.getItemStackFromFQRN("IC2:reactorMOXDualdepleted", 4),
-            ItemUtils.getItemStackFromFQRN("IC2:reactorMOXQuaddepleted", 2) }) {
+            getModItem(Mods.IndustrialCraft2.ID, "reactorMOXSimpledepleted", 8),
+            getModItem(Mods.IndustrialCraft2.ID, "reactorMOXDualdepleted", 4),
+            getModItem(Mods.IndustrialCraft2.ID, "reactorMOXQuaddepleted", 2) }) {
             GTValues.RA.stdBuilder()
                 .itemInputs(depletedRod, GTUtility.getIntegratedCircuit(20))
                 .itemOutputs(
@@ -229,7 +230,7 @@ public class RecipeLoaderNuclear {
             .itemInputs(
                 ItemUtils.getItemStackOfAmountFromOreDict("cellOxygen", 8),
                 ItemUtils.getItemStackOfAmountFromOreDict("dustLithium7", 16))
-            .itemOutputs(CI.emptyCells(8))
+            .itemOutputs(ItemList.Cell_Empty.get(8))
             .fluidInputs(Materials.Water.getFluid(8_000))
             .fluidOutputs(FluidUtils.getFluidStack("lithiumhydroxide", 48 * INGOTS))
             .duration(5 * MINUTES)
@@ -240,7 +241,7 @@ public class RecipeLoaderNuclear {
         // Hydroxide
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(3), MaterialsElements.getInstance().OXYGEN.getCell(1))
-            .itemOutputs(CI.emptyCells(1))
+            .itemOutputs(ItemList.Cell_Empty.get(1))
             .fluidInputs(MaterialsElements.getInstance().HYDROGEN.getFluidStack(1_000))
             .fluidOutputs(MaterialMisc.HYDROXIDE.getFluidStack(1_000))
             .duration(8 * SECONDS)
@@ -261,7 +262,7 @@ public class RecipeLoaderNuclear {
             .itemInputs(
                 GTUtility.getIntegratedCircuit(3),
                 ItemUtils.getItemStackOfAmountFromOreDict("cellHydrofluoricAcid", 1))
-            .itemOutputs(CI.emptyCells(1))
+            .itemOutputs(ItemList.Cell_Empty.get(1))
             .fluidInputs(MaterialMisc.AMMONIA.getFluidStack(1_000))
             .fluidOutputs(MaterialsFluorides.AMMONIUM_BIFLUORIDE.getFluidStack(4 * INGOTS))
             .duration(20 * SECONDS)
@@ -271,7 +272,7 @@ public class RecipeLoaderNuclear {
         // Ammonium Bifluoride
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(3), aGtHydrofluoricAcid)
-            .itemOutputs(CI.emptyCells(2))
+            .itemOutputs(ItemList.Cell_Empty.get(2))
             .fluidInputs(MaterialMisc.AMMONIA.getFluidStack(1_000))
             .fluidOutputs(MaterialsFluorides.AMMONIUM_BIFLUORIDE.getFluidStack(4 * INGOTS))
             .duration(40 * SECONDS)
@@ -282,7 +283,7 @@ public class RecipeLoaderNuclear {
         // To be deprecated now that it is no longer needed for ammonium bifluoride
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(3), MaterialsElements.getInstance().HYDROGEN.getCell(1))
-            .itemOutputs(CI.emptyCells(1))
+            .itemOutputs(ItemList.Cell_Empty.get(1))
             .fluidInputs(MaterialMisc.AMMONIA.getFluidStack(1_000))
             .fluidOutputs(MaterialMisc.AMMONIUM.getFluidStack(2_000))
             .duration(20 * SECONDS)
@@ -326,7 +327,7 @@ public class RecipeLoaderNuclear {
 
         // Makes Lithium Carbonate
         GTValues.RA.stdBuilder()
-            .itemInputs(CI.emptyCells(12), ItemUtils.getItemStackOfAmountFromOreDict("dustLepidolite", 20))
+            .itemInputs(ItemList.Cell_Empty.get(12), ItemUtils.getItemStackOfAmountFromOreDict("dustLepidolite", 20))
             .itemOutputs(
                 ItemUtils.getItemStackOfAmountFromOreDict("dustPotassium", 1),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Aluminium, 4),
@@ -340,7 +341,7 @@ public class RecipeLoaderNuclear {
             .addTo(chemicalDehydratorRecipes);
 
         // Calcium Hydroxide
-        if (ItemUtils.checkForInvalidItems(ItemUtils.getItemStackOfAmountFromOreDict("dustQuicklime", 1))) {
+        if (ItemUtils.getItemStackOfAmountFromOreDict("dustQuicklime", 1) != null) {
             // CaO + H2O = Ca(OH)2
             GTValues.RA.stdBuilder()
                 .itemInputs(ItemUtils.getItemStackOfAmountFromOreDict("dustQuicklime", 2))
@@ -352,7 +353,7 @@ public class RecipeLoaderNuclear {
 
         } else {
             Logger.INFO("[dustCalciumHydroxide] FAILED TO LOAD RECIPE");
-            if (!ItemUtils.checkForInvalidItems(ItemUtils.getItemStackOfAmountFromOreDict("dustQuicklime", 1))) {
+            if (ItemUtils.getItemStackOfAmountFromOreDict("dustQuicklime", 1) == null) {
                 Logger.INFO("Could not find dustQuicklime, cannot make dustCalciumHydroxide.");
             }
         }
@@ -404,7 +405,7 @@ public class RecipeLoaderNuclear {
         // Inputs use solid rule because they are molten forms of solids
         // Outputs use fluid rule because they are not molten forms of solids
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialsFluorides.BERYLLIUM_HYDROXIDE.getDust(3), CI.emptyCells(2))
+            .itemInputs(MaterialsFluorides.BERYLLIUM_HYDROXIDE.getDust(3), ItemList.Cell_Empty.get(2))
             .itemOutputs(ItemUtils.getItemStackOfAmountFromOreDict("cellWater", 2))
             .fluidInputs(MaterialsFluorides.AMMONIUM_BIFLUORIDE.getFluidStack(8 * INGOTS))
             .fluidOutputs(MaterialsFluorides.AMMONIUM_TETRAFLUOROBERYLLATE.getFluidStack(1_000))
@@ -428,7 +429,7 @@ public class RecipeLoaderNuclear {
         // Industrial strength hydrofluoric acid follows its usual convention where it is twice as dense as regular
         // hydrofluoric acid
         GTValues.RA.stdBuilder()
-            .itemInputs(GTUtility.getIntegratedCircuit(17), CI.emptyCells(3))
+            .itemInputs(GTUtility.getIntegratedCircuit(17), ItemList.Cell_Empty.get(3))
             .itemOutputs(
                 MaterialMisc.AMMONIA.getCell(2),
                 ItemUtils.getItemStackOfAmountFromOreDict("cellHydrofluoricAcid", 1),
