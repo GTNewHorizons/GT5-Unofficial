@@ -43,7 +43,6 @@ import bartworks.common.loaders.RecipeLoader;
 import bartworks.common.loaders.RegisterServerCommands;
 import bartworks.common.loaders.StaticRecipeChangeLoaders;
 import bartworks.server.EventHandler.ServerEventHandler;
-import bartworks.system.material.CircuitGeneration.BWMetaItems;
 import bartworks.system.material.CircuitGeneration.CircuitImprintLoader;
 import bartworks.system.material.CircuitGeneration.CircuitPartLoader;
 import bartworks.system.material.Werkstoff;
@@ -124,8 +123,6 @@ public final class MainMod {
         WerkstoffLoader.setUp();
 
         BioCultureLoader.run();
-
-        BWMetaItems.init();
 
         Werkstoff.init();
         GregTechAPI.sAfterGTPostload.add(new CircuitPartLoader());

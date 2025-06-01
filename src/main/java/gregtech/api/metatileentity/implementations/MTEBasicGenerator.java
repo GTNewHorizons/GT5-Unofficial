@@ -140,11 +140,6 @@ public abstract class MTEBasicGenerator extends MTEBasicTank implements RecipeMa
     }
 
     @Override
-    public boolean isAccessAllowed(EntityPlayer aPlayer) {
-        return true;
-    }
-
-    @Override
     public long maxEUOutput() {
         return getBaseMetaTileEntity().isAllowedToWork() ? V[mTier] : 0L;
     }
