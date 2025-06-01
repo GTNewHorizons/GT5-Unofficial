@@ -365,11 +365,6 @@ public class MTESteamWaterPump extends MTESteamMultiBase<MTESteamWaterPump> impl
     }
 
     @Override
-    public int getMaxParallelRecipes() {
-        return 1;
-    }
-
-    @Override
     protected IAlignmentLimits getInitialAlignmentLimits() {
         return (d, r, f) -> d.offsetY == 0 && r.isNotRotated() && !f.isVerticallyFliped();
     }

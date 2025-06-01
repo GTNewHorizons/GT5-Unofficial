@@ -314,11 +314,6 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
         return maxEnergy;
     }
 
-    @Override
-    public boolean isGivingInformation() {
-        return true;
-    }
-
     private String[] aCachedToolTip;
 
     /*

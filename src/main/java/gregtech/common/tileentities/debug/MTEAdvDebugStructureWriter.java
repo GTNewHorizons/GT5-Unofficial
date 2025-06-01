@@ -204,11 +204,6 @@ public class MTEAdvDebugStructureWriter extends MTETieredMachineBlock implements
     }
 
     @Override
-    public boolean isAccessAllowed(EntityPlayer aPlayer) {
-        return true;
-    }
-
-    @Override
     public String[] getDescription() {
         return new String[] { translateToLocal("GT5U.machines.advdebugstructurewriter.tooltip"), // Scans Blocks Around
             translateToLocal("GT5U.machines.advdebugstructurewriter.tooltip.1"), // Prints Multiblock NonTE

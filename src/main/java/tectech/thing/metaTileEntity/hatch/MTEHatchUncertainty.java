@@ -161,11 +161,6 @@ public class MTEHatchUncertainty extends MTEHatch implements IAddGregtechLogo, I
     }
 
     @Override
-    public boolean isAccessAllowed(EntityPlayer aPlayer) {
-        return true;
-    }
-
-    @Override
     public boolean isValidSlot(int aIndex) {
         return false;
     }

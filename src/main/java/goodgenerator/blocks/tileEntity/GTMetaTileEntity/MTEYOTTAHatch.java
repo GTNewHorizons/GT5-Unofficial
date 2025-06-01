@@ -116,11 +116,6 @@ public class MTEYOTTAHatch extends MTEHatch implements IGridProxyable, IActionHo
     }
 
     @Override
-    public boolean isAccessAllowed(EntityPlayer aPlayer) {
-        return true;
-    }
-
-    @Override
     public final void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
         ItemStack toolStack) {
         if (aPlayer.isSneaking()) this.priority -= 10;

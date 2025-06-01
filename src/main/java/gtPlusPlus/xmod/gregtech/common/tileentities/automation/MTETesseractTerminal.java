@@ -78,11 +78,6 @@ public class MTETesseractTerminal extends MTEBasicTank {
     }
 
     @Override
-    public boolean isAccessAllowed(final EntityPlayer aPlayer) {
-        return true;
-    }
-
-    @Override
     public long maxEUStore() {
         return (long) TESSERACT_ENERGY_COST_DIMENSIONAL * 8 * 32;
     }

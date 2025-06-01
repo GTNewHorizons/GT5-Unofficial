@@ -28,12 +28,6 @@ public class ItemOres extends ItemBlock implements IItemFirestoneBurning {
     }
 
     @Override
-    public boolean onItemUseFirst(ItemStack stack, EntityPlayer player, World world, int x, int y, int z,
-        int ordinalSide, float hitX, float hitY, float hitZ) {
-        return false;
-    }
-
-    @Override
     public String getUnlocalizedName(ItemStack aStack) {
         return this.field_150939_a.getUnlocalizedName() + "." + getDamage(aStack);
     }

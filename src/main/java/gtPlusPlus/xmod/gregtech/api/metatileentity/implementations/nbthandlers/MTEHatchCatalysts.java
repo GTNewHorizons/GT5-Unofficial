@@ -3,7 +3,6 @@ package gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.nbthandlers;
 import java.util.ArrayList;
 
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.common.util.ForgeDirection;
 
 import org.apache.commons.lang3.ArrayUtils;
 
@@ -54,11 +53,6 @@ public class MTEHatchCatalysts extends MTEHatchNbtConsumable {
     @Override
     public String[] getDescription() {
         return ArrayUtils.add(this.mDescriptionArray, GTPPCore.GT_Tooltip.get());
-    }
-
-    @Override
-    public boolean isFacingValid(ForgeDirection facing) {
-        return true;
     }
 
     @Override

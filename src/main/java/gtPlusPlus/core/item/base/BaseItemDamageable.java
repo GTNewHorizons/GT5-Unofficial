@@ -163,11 +163,6 @@ public class BaseItemDamageable extends Item {
     }
 
     @Override
-    public boolean getShareTag() {
-        return true;
-    }
-
-    @Override
     public boolean hasContainerItem(ItemStack stack) {
         return true;
     }

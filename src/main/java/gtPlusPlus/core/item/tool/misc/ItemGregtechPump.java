@@ -71,11 +71,6 @@ public class ItemGregtechPump extends Item implements ISpecialElectricItem, IEle
         return tryDrainTile(aStack, aWorld, aPlayer, aX, aY, aZ);
     }
 
-    @Override
-    public ItemStack onItemRightClick(ItemStack p_77659_1_, World p_77659_2_, EntityPlayer p_77659_3_) {
-        return p_77659_1_;
-    }
-
     /**
      * GT Code
      */

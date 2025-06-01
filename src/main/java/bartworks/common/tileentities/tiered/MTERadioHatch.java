@@ -296,11 +296,6 @@ public class MTERadioHatch extends MTEHatch implements RecipeMapWorkable, IAddGr
     }
 
     @Override
-    public boolean isAccessAllowed(EntityPlayer aPlayer) {
-        return true;
-    }
-
-    @Override
     public boolean isValidSlot(int aIndex) {
         return true;
     }

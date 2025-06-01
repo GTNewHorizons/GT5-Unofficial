@@ -376,11 +376,6 @@ public class MTEExoticModule extends MTEBaseModule {
     }
 
     @Override
-    public boolean supportsBatchMode() {
-        return true;
-    }
-
-    @Override
     public void saveNBTData(NBTTagCompound NBT) {
 
         NBT.setBoolean("recipeInProgress", recipeInProgress);

@@ -86,11 +86,6 @@ public class ItemAgrichemBase extends Item {
     }
 
     @Override
-    public boolean getIsRepairable(ItemStack p_82789_1_, ItemStack p_82789_2_) {
-        return false;
-    }
-
-    @Override
     public boolean isRepairable() {
         return false;
     }
@@ -98,11 +93,6 @@ public class ItemAgrichemBase extends Item {
     @Override
     public boolean isBookEnchantable(ItemStack stack, ItemStack book) {
         return false;
-    }
-
-    @Override
-    public int getItemEnchantability() {
-        return 0;
     }
 
     @Override

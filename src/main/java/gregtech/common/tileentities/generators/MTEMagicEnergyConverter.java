@@ -46,11 +46,6 @@ public class MTEMagicEnergyConverter extends MTEBasicGenerator {
     }
 
     @Override
-    public int getCapacity() {
-        return 16000;
-    }
-
-    @Override
     public int getEfficiency() {
         return 100 - this.mTier * 5;
     }

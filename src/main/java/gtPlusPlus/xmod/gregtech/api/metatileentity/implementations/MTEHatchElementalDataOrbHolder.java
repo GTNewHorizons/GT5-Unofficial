@@ -67,11 +67,6 @@ public class MTEHatchElementalDataOrbHolder extends MTEHatch implements IConfigu
     }
 
     @Override
-    public boolean isAccessAllowed(EntityPlayer aPlayer) {
-        return true;
-    }
-
-    @Override
     public boolean isValidSlot(int aIndex) {
         return true;
     }
@@ -117,10 +112,6 @@ public class MTEHatchElementalDataOrbHolder extends MTEHatch implements IConfigu
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
     }
-
-    @Override
-    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
-        ItemStack aTool) {}
 
     @Override
     public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,

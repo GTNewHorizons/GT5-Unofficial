@@ -60,11 +60,6 @@ public class MTEChestBuffer extends MTEBuffer {
     }
 
     @Override
-    public boolean isValidSlot(int aIndex) {
-        return aIndex < this.mInventory.length - 1;
-    }
-
-    @Override
     protected void moveItems(IGregTechTileEntity aBaseMetaTileEntity, long aTimer) {
         if (aTimer % tickRate[mTier] > 0) return;
 

@@ -1127,11 +1127,6 @@ public class MachineBlockRenderer extends GTRendererBlock {
     }
 
     @Override
-    public boolean shouldRender3DInInventory(int aModel) {
-        return true;
-    }
-
-    @Override
     public int getRenderId() {
         return this.mRenderID;
     }

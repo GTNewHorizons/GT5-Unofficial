@@ -135,11 +135,6 @@ public class TileEntityBase extends TileEntity
         return true;
     }
 
-    @Override
-    public boolean canUpdate() {
-        return true;
-    }
-
     public String getOwner() {
         if (this.mOwnerName == null) {
             return "null";

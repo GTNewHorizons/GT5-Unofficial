@@ -121,11 +121,6 @@ public class ItemAlgaeBase extends Item implements IAlgalItem {
     }
 
     @Override
-    public boolean getIsRepairable(ItemStack p_82789_1_, ItemStack p_82789_2_) {
-        return false;
-    }
-
-    @Override
     public boolean isRepairable() {
         return false;
     }
@@ -138,11 +133,6 @@ public class ItemAlgaeBase extends Item implements IAlgalItem {
     @Override
     public boolean showDurabilityBar(ItemStack stack) {
         return false;
-    }
-
-    @Override
-    public int getItemEnchantability() {
-        return 0;
     }
 
     @Override

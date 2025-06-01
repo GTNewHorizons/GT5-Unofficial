@@ -294,11 +294,6 @@ public class MTEMicrowaveEnergyTransmitter extends MTEBasicTank implements IAddG
     }
 
     @Override
-    public boolean isElectric() {
-        return true;
-    }
-
-    @Override
     public boolean isFacingValid(ForgeDirection facing) {
         return true;
     }
@@ -311,11 +306,6 @@ public class MTEMicrowaveEnergyTransmitter extends MTEBasicTank implements IAddG
     @Override
     public boolean isInputFacing(ForgeDirection side) {
         return true;
-    }
-
-    @Override
-    public boolean isOutputFacing(ForgeDirection side) {
-        return false;
     }
 
     @Override
@@ -346,21 +336,6 @@ public class MTEMicrowaveEnergyTransmitter extends MTEBasicTank implements IAddG
     @Override
     public long maxAmperesIn() {
         return 3;
-    }
-
-    @Override
-    public int getStackDisplaySlot() {
-        return 2;
-    }
-
-    @Override
-    public boolean isAccessAllowed(EntityPlayer aPlayer) {
-        return true;
-    }
-
-    @Override
-    public int getInputSlot() {
-        return 0;
     }
 
     @Override

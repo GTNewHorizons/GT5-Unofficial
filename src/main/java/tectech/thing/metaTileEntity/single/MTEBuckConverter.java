@@ -123,16 +123,6 @@ public class MTEBuckConverter extends MTETieredMachineBlock implements IAddUIWid
     }
 
     @Override
-    public boolean isAccessAllowed(EntityPlayer aPlayer) {
-        return true;
-    }
-
-    @Override
-    public boolean isElectric() {
-        return true;
-    }
-
-    @Override
     public boolean isEnetOutput() {
         return true;
     }

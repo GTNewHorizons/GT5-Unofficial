@@ -55,7 +55,6 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.metatileentity.implementations.MTEHatch;
-import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
@@ -133,11 +132,6 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase
     @Override
     public boolean supportsPowerPanel() {
         return false;
-    }
-
-    @Override
-    public RecipeMap<?> getRecipeMap() {
-        return null;
     }
 
     @Override

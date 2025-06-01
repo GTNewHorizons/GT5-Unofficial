@@ -98,11 +98,6 @@ public class MTEHatchInput extends MTEHatch {
     }
 
     @Override
-    public boolean isAccessAllowed(EntityPlayer aPlayer) {
-        return true;
-    }
-
-    @Override
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new MTEHatchInput(mName, mTier, mDescriptionArray, mTextures);
     }

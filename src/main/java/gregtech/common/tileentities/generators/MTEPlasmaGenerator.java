@@ -113,11 +113,6 @@ public class MTEPlasmaGenerator extends MTEBasicGenerator {
     }
 
     @Override
-    public int getCapacity() {
-        return 16000;
-    }
-
-    @Override
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new MTEPlasmaGenerator(this.mName, this.mTier, this.mDescriptionArray, this.mTextures);
     }

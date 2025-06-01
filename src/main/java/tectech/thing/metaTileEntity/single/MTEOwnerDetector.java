@@ -146,32 +146,7 @@ public class MTEOwnerDetector extends MTETieredMachineBlock {
     }
 
     @Override
-    public boolean isAccessAllowed(EntityPlayer aPlayer) {
-        return true;
-    }
-
-    @Override
     public boolean isElectric() {
-        return false;
-    }
-
-    @Override
-    public boolean isEnetOutput() {
-        return false;
-    }
-
-    @Override
-    public boolean isEnetInput() {
-        return false;
-    }
-
-    @Override
-    public boolean isInputFacing(ForgeDirection side) {
-        return false;
-    }
-
-    @Override
-    public boolean isOutputFacing(ForgeDirection side) {
         return false;
     }
 
@@ -188,16 +163,6 @@ public class MTEOwnerDetector extends MTETieredMachineBlock {
     @Override
     public long maxEUInput() {
         return Integer.MAX_VALUE;
-    }
-
-    @Override
-    public long maxEUOutput() {
-        return 0;
-    }
-
-    @Override
-    public long maxEUStore() {
-        return 0;
     }
 
     @Override

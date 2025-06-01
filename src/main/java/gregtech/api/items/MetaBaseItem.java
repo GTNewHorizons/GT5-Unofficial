@@ -635,17 +635,7 @@ public abstract class MetaBaseItem extends GTGenericItem
     } // just to be sure.
 
     @Override
-    public int getItemEnchantability() {
-        return 0;
-    }
-
-    @Override
     public boolean isBookEnchantable(ItemStack aStack, ItemStack aBook) {
-        return false;
-    }
-
-    @Override
-    public boolean getIsRepairable(ItemStack aStack, ItemStack aMaterial) {
         return false;
     }
 

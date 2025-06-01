@@ -55,11 +55,6 @@ public abstract class MTERedstoneBase extends MTETieredMachineBlock {
     @Override
     public abstract void loadNBTData(NBTTagCompound aNBT);
 
-    @Override
-    public boolean onRightclick(final IGregTechTileEntity aBaseMetaTileEntity, final EntityPlayer aPlayer) {
-        return false;
-    }
-
     public boolean hasRedstoneSignal() {
         if (getBaseMetaTileEntity().getStrongestRedstone() > 0) {
             return true;

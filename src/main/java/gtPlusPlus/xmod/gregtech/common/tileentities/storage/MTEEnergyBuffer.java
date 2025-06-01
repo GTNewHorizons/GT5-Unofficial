@@ -148,16 +148,6 @@ public class MTEEnergyBuffer extends MTETieredMachineBlock {
     }
 
     @Override
-    public boolean isElectric() {
-        return true;
-    }
-
-    @Override
-    public boolean isValidSlot(final int aIndex) {
-        return true;
-    }
-
-    @Override
     public boolean isFacingValid(final ForgeDirection facing) {
         return true;
     }
@@ -220,26 +210,6 @@ public class MTEEnergyBuffer extends MTETieredMachineBlock {
     }
 
     @Override
-    public int rechargerSlotStartIndex() {
-        return 0;
-    }
-
-    @Override
-    public int dechargerSlotStartIndex() {
-        return 0;
-    }
-
-    @Override
-    public int rechargerSlotCount() {
-        return 0;
-    }
-
-    @Override
-    public int dechargerSlotCount() {
-        return 0;
-    }
-
-    @Override
     public int getProgresstime() {
         return (int) this.getBaseMetaTileEntity()
             .getUniversalEnergyStored();
@@ -249,11 +219,6 @@ public class MTEEnergyBuffer extends MTETieredMachineBlock {
     public int maxProgresstime() {
         return (int) this.getBaseMetaTileEntity()
             .getUniversalEnergyCapacity();
-    }
-
-    @Override
-    public boolean isAccessAllowed(final EntityPlayer aPlayer) {
-        return true;
     }
 
     @Override
@@ -371,11 +336,6 @@ public class MTEEnergyBuffer extends MTETieredMachineBlock {
     }
 
     @Override
-    public ItemStack getStackInSlotOnClosing(final int p_70304_1_) {
-        return null;
-    }
-
-    @Override
     public void setInventorySlotContents(final int p_70299_1_, final ItemStack p_70299_2_) {}
 
     @Override
@@ -384,25 +344,9 @@ public class MTEEnergyBuffer extends MTETieredMachineBlock {
     }
 
     @Override
-    public boolean hasCustomInventoryName() {
-        return false;
-    }
-
-    @Override
     public int getInventoryStackLimit() {
         return 0;
     }
-
-    @Override
-    public boolean isUseableByPlayer(final EntityPlayer p_70300_1_) {
-        return false;
-    }
-
-    @Override
-    public void openInventory() {}
-
-    @Override
-    public void closeInventory() {}
 
     @Override
     public boolean isItemValidForSlot(final int p_94041_1_, final ItemStack p_94041_2_) {
