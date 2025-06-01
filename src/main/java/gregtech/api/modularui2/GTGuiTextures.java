@@ -315,6 +315,12 @@ public final class GTGuiTextures {
         "gui/overlay_button/structure_update");
     public static final UITexture OVERLAY_BUTTON_FORBIDDEN = fullImage(GregTech.ID, "gui/overlay_button/forbidden");
 
+    public static final UITexture OVERLAY_BUTTON_BOUNDING_BOX = UITexture.builder()
+        .location(GregTech.ID, "gui/overlay_button/bounding_box")
+        .fullImage()
+        .canApplyTheme(true)
+        .build();
+
     public static final UITexture OVERLAY_BUTTON_THERMOMETER = UITexture
         .fullImage(GregTech.ID, "gui/overlay_button/thermometer");
     public static final UITexture COOL_MODULE_ECCF_INDICATOR = UITexture
