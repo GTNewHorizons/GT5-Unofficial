@@ -9,11 +9,6 @@ import gregtech.api.items.MetaGeneratedTool;
 public class ToolScrewdriverLV extends ToolScrewdriver {
 
     @Override
-    public float getMaxDurabilityMultiplier() {
-        return 1.0F;
-    }
-
-    @Override
     public int getToolDamagePerContainerCraft() {
         return 200;
     }
@@ -26,9 +21,4 @@ public class ToolScrewdriverLV extends ToolScrewdriver {
             : Textures.ItemIcons.HANDLE_ELECTRIC_SCREWDRIVER;
     }
 
-    @Override
-    public short[] getRGBa(boolean aIsToolHead, ItemStack aStack) {
-        return !aIsToolHead ? MetaGeneratedTool.getPrimaryMaterial(aStack).mRGBa
-            : MetaGeneratedTool.getSecondaryMaterial(aStack).mRGBa;
-    }
 }

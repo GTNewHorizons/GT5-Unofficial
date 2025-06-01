@@ -186,12 +186,6 @@ public class ItemMachines extends ItemBlock implements IFluidContainerItem {
     }
 
     @Override
-    public boolean onItemUseFirst(ItemStack stack, EntityPlayer player, World world, int x, int y, int z,
-        int ordinalSide, float hitX, float hitY, float hitZ) {
-        return false;
-    }
-
-    @Override
     public String getUnlocalizedName(ItemStack aStack) {
         final short tDamage = (short) getDamage(aStack);
         if ((tDamage < 0) || (tDamage >= GregTechAPI.METATILEENTITIES.length)) {
