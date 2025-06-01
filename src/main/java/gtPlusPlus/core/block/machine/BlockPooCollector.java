@@ -3,7 +3,6 @@ package gtPlusPlus.core.block.machine;
 import static gregtech.api.enums.Mods.GTPlusPlus;
 
 import java.util.List;
-import java.util.Random;
 
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
@@ -133,11 +132,6 @@ public class BlockPooCollector extends BlockContainer {
     @Override
     public int damageDropped(final int damage) {
         return damage;
-    }
-
-    @Override
-    public Item getItemDropped(final int meta, final Random rand, final int fortune) {
-        return Item.getItemFromBlock(this);
     }
 
     @Override
