@@ -1,6 +1,5 @@
 package gtPlusPlus.xmod.gregtech.api.metatileentity.implementations;
 
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
@@ -66,16 +65,6 @@ public abstract class MTEHatchFluidGenerator extends MTEHatchInput {
     }
 
     @Override
-    public boolean isFacingValid(final ForgeDirection facing) {
-        return true;
-    }
-
-    @Override
-    public boolean isAccessAllowed(final EntityPlayer aPlayer) {
-        return true;
-    }
-
-    @Override
     public boolean isValidSlot(final int aIndex) {
         return false;
     }
@@ -133,11 +122,6 @@ public abstract class MTEHatchFluidGenerator extends MTEHatchInput {
     @Override
     public abstract int getCapacity();
 
-    @Override
-    public boolean canTankBeEmptied() {
-        return true;
-    }
-
     public abstract boolean doesHatchMeetConditionsToGenerate();
 
     public boolean addFluidToHatch(long aTick) {
@@ -155,11 +139,6 @@ public abstract class MTEHatchFluidGenerator extends MTEHatchInput {
             }
         }
         return aFillAmount > 0;
-    }
-
-    @Override
-    public boolean canTankBeFilled() {
-        return true;
     }
 
     @Override

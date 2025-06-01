@@ -51,8 +51,4 @@ public abstract class ToolTurbine extends GTTool {
     @Override
     public abstract float getMaxDurabilityMultiplier();
 
-    @Override
-    public ItemStack getBrokenItem(ItemStack aStack) {
-        return null;
-    }
 }

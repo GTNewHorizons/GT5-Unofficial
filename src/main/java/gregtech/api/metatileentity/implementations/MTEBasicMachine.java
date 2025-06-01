@@ -291,11 +291,6 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
     }
 
     @Override
-    public boolean isElectric() {
-        return true;
-    }
-
-    @Override
     public boolean isValidSlot(int aIndex) {
         return aIndex > 0 && super.isValidSlot(aIndex)
             && aIndex != getCircuitSlot()
@@ -316,11 +311,6 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
     @Override
     public boolean isInputFacing(ForgeDirection side) {
         return side != mMainFacing;
-    }
-
-    @Override
-    public boolean isOutputFacing(ForgeDirection side) {
-        return false;
     }
 
     @Override
@@ -378,11 +368,6 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
     }
 
     @Override
-    public int getStackDisplaySlot() {
-        return 2;
-    }
-
-    @Override
     public int rechargerSlotStartIndex() {
         return 1;
     }
@@ -400,11 +385,6 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
     @Override
     public int dechargerSlotCount() {
         return mDecharge ? 1 : 0;
-    }
-
-    @Override
-    public boolean isAccessAllowed(EntityPlayer aPlayer) {
-        return true;
     }
 
     @Override
@@ -426,11 +406,6 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
     @Override
     public boolean isFluidInputAllowed(FluidStack aFluid) {
         return getFillableStack() != null || (getRecipeMap() != null && getRecipeMap().containsInput(aFluid));
-    }
-
-    @Override
-    public boolean isFluidChangingAllowed() {
-        return true;
     }
 
     @Override

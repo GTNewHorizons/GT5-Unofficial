@@ -56,26 +56,6 @@ public class ToolWrench extends GTTool {
     }
 
     @Override
-    public int getToolDamagePerDropConversion() {
-        return 100;
-    }
-
-    @Override
-    public int getToolDamagePerContainerCraft() {
-        return 800;
-    }
-
-    @Override
-    public int getToolDamagePerEntityAttack() {
-        return 200;
-    }
-
-    @Override
-    public int getBaseQuality() {
-        return 0;
-    }
-
-    @Override
     public float getBaseDamage() {
         return 3.0F;
     }
@@ -86,38 +66,13 @@ public class ToolWrench extends GTTool {
     }
 
     @Override
-    public float getSpeedMultiplier() {
-        return 1.0F;
-    }
-
-    @Override
-    public float getMaxDurabilityMultiplier() {
-        return 1.0F;
-    }
-
-    @Override
     public String getCraftingSound() {
         return SoundResource.IC2_TOOLS_WRENCH.toString();
     }
 
     @Override
-    public String getEntityHitSound() {
-        return null;
-    }
-
-    @Override
     public String getMiningSound() {
         return SoundResource.IC2_TOOLS_WRENCH.toString();
-    }
-
-    @Override
-    public boolean canBlock() {
-        return false;
-    }
-
-    @Override
-    public boolean isCrowbar() {
-        return false;
     }
 
     @Override
@@ -133,11 +88,6 @@ public class ToolWrench extends GTTool {
             || GTToolHarvestHelper.isSpecialBlock(block, Blocks.crafting_table, Blocks.bookshelf)
             || BehaviourWrench.isVanillaRotatable(block)
             || GTToolHarvestHelper.isIC2Wrenchable(block);
-    }
-
-    @Override
-    public ItemStack getBrokenItem(ItemStack aStack) {
-        return null;
     }
 
     @Override
