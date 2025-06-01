@@ -1598,8 +1598,6 @@ GT5U.gui.circuit.timer.description=Pulses Redstone
 GT5U.gui.circuit.timer.data_description.pulses=Pulses
 GT5U.gui.circuit.timer.data_description.time=Time
 
-GT5U.gui.tooltip.steam_progress=Steam: %d/%dL
-
 # Note to translators: this translation entry is supposed to be a number indicating how many taunts you define here
 # Game will randomly display one of them
 GT5U.item.programmed_circuit.no_screwdriver.count=3
