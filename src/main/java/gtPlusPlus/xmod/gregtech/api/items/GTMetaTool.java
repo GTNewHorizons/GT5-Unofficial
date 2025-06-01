@@ -412,11 +412,6 @@ public abstract class GTMetaTool extends MetaGeneratedTool implements IDamagable
     }
 
     @Override
-    public Long[] getFluidContainerStats(final ItemStack aStack) {
-        return null;
-    }
-
-    @Override
     public Long[] getElectricStats(final ItemStack aStack) {
         NBTTagCompound aNBT = aStack.getTagCompound();
         if (aNBT != null) {
@@ -585,11 +580,6 @@ public abstract class GTMetaTool extends MetaGeneratedTool implements IDamagable
     }
 
     @Override
-    public boolean isFull3D() {
-        return true;
-    }
-
-    @Override
     public boolean isItemStackUsable(final ItemStack aStack) {
         final IToolStats tStats = this.getToolStatsInternal(aStack);
         if (((aStack.getItemDamage() % 2) == 1) || (tStats == null)) {
@@ -655,32 +645,4 @@ public abstract class GTMetaTool extends MetaGeneratedTool implements IDamagable
         return true;
     }
 
-    @Override
-    public short getChargedMetaData(final ItemStack aStack) {
-        return (short) (aStack.getItemDamage() - (aStack.getItemDamage() % 2));
-    }
-
-    @Override
-    public short getEmptyMetaData(final ItemStack aStack) {
-        final NBTTagCompound aNBT = aStack.getTagCompound();
-        if (aNBT != null) {
-            aNBT.removeTag("ench");
-        }
-        return (short) ((aStack.getItemDamage() + 1) - (aStack.getItemDamage() % 2));
-    }
-
-    @Override
-    public int getItemEnchantability() {
-        return 0;
-    }
-
-    @Override
-    public boolean isBookEnchantable(final ItemStack aStack, final ItemStack aBook) {
-        return false;
-    }
-
-    @Override
-    public boolean getIsRepairable(final ItemStack aStack, final ItemStack aMaterial) {
-        return false;
-    }
 }

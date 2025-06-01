@@ -404,18 +404,8 @@ public class MTEIsaMill extends GTPPMultiBlockBase<MTEIsaMill> implements ISurvi
     }
 
     @Override
-    public boolean isGivingInformation() {
-        return true;
-    }
-
-    @Override
     public String getMachineType() {
         return "Grinding Machine";
-    }
-
-    @Override
-    public int getMaxParallelRecipes() {
-        return 1;
     }
 
     /*
