@@ -33,6 +33,15 @@ public class FissionFuelLoader implements Runnable {
 
     @Override
     public void run() {
+        // Remove IC2 recipes
+        GTModHandler.removeRecipeByOutputDelayed(ItemList.IC2_Uranium_238.get(1));
+        GTModHandler.removeRecipeByOutputDelayed(ItemList.IC2_Uranium_235.get(1));
+        GTModHandler.removeRecipeByOutputDelayed(ItemList.IC2_Uranium_235_Small.get(1));
+        GTModHandler.removeRecipeByOutputDelayed(ItemList.IC2_Plutonium.get(1));
+        GTModHandler.removeRecipeByOutputDelayed(ItemList.IC2_Plutonium_Small.get(1));
+        GTModHandler.removeRecipeByOutputDelayed(ItemList.IC2_Uranium_Fuel.get(1));
+        GTModHandler.removeRecipeByOutputDelayed(ItemList.IC2_MOX_Fuel.get(1));
+
         // Lithium
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.IC2_Fuel_Rod_Empty.get(1), Materials.Lithium.getDustTiny(1))
@@ -164,8 +173,6 @@ public class FissionFuelLoader implements Runnable {
             .addTo(centrifugeRecipes);
 
         // Uranium
-        GTModHandler.removeRecipeByOutputDelayed(ItemList.IC2_Uranium_Fuel.get(1));
-
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.IC2_Uranium_238.get(6), ItemList.IC2_Uranium_235_Small.get(3))
             .itemOutputs(ItemList.IC2_Uranium_Fuel.get(1))
@@ -281,8 +288,6 @@ public class FissionFuelLoader implements Runnable {
             .addTo(centrifugeRecipes);
 
         // MOX
-        GTModHandler.removeRecipeByOutputDelayed(ItemList.IC2_MOX_Fuel.get(1));
-
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.IC2_Uranium_238.get(6), ItemList.IC2_Plutonium_Small.get(3))
             .itemOutputs(ItemList.IC2_MOX_Fuel.get(1))
