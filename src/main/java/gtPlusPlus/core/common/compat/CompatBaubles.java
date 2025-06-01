@@ -21,6 +21,7 @@ import gtPlusPlus.core.item.bauble.BatteryPackBaseBauble;
 import gtPlusPlus.core.item.bauble.FireProtectionBauble;
 import gtPlusPlus.core.item.general.ItemCloakingDevice;
 import gtPlusPlus.core.item.general.ItemHealingDevice;
+import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 
 public class CompatBaubles {
 
@@ -33,7 +34,9 @@ public class CompatBaubles {
     public static void baublesLoaded() {
         Logger.INFO("Baubles Found - Loading Wearables.");
         ModItems.itemPersonalCloakingDevice = new ItemCloakingDevice(0);
+        GregtechItemList.PersonalCloakingDevice.set(new ItemStack(ModItems.itemPersonalCloakingDevice, 1));
         ModItems.itemPersonalHealingDevice = new ItemHealingDevice();
+        GregtechItemList.PersonalHealingDevice.set(new ItemStack(ModItems.itemPersonalHealingDevice, 1));
         ModItems.itemSupremePizzaGloves = new FireProtectionBauble();
 
         ModItems.itemChargePack_Low_1 = new BatteryPackBaseBauble(1);

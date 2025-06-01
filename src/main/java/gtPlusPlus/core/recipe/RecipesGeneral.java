@@ -317,7 +317,7 @@ public class RecipesGeneral {
         generatePipeRecipes(MaterialsAlloy.INCONEL_792);
         generatePipeRecipes(MaterialsAlloy.HASTELLOY_X);
         generatePipeRecipes(MaterialsAlloy.TRINIUM_NAQUADAH_CARBON);
-        generatePipeRecipes(Materials.Clay.mDefaultLocalName, Materials.Clay.getMass(), 15);
+        generatePipeRecipes(null, Materials.Clay.mDefaultLocalName, Materials.Clay.getMass(), 15);
     }
 
     private static void migratedRecipes() {

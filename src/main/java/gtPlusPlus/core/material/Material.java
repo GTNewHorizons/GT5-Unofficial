@@ -17,10 +17,12 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 
+import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TextureSet;
 import gregtech.api.util.GTLanguageManager;
+import gregtech.api.util.GTUtility;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.item.base.BaseItemComponent.ComponentTypes;
 import gtPlusPlus.core.item.base.cell.BaseItemCell;
@@ -926,13 +928,13 @@ public class Material {
         }
         ItemStack i = g.get(aKey);
         if (i != null) {
-            return ItemUtils.getSimpleStack(i, stacksize);
+            return GTUtility.copyAmount(stacksize, i);
         } else {
             // Try get a GT Material
             Materials Erf = MaterialUtils.getMaterial(this.unlocalizedName);
             if (Erf != null && !MaterialUtils.isNullGregtechMaterial(Erf)) {
                 ItemStack Erg = ItemUtils.getOrePrefixStack(aPrefix, Erf, stacksize);
-                if (ItemUtils.checkForInvalidItems(Erg)) {
+                if (Erg != null) {
                     Logger.MATERIALS("Found \"" + aKey + this.unlocalizedName + "\" using backup GT Materials option.");
                     g.put(aKey, Erg);
                     mComponentMap.put(unlocalizedName, g);
@@ -941,7 +943,7 @@ public class Material {
                     // Try get a molten cell
                     if (aPrefix == OrePrefixes.cell) {
                         Erg = ItemUtils.getOrePrefixStack(OrePrefixes.cellMolten, Erf, stacksize);
-                        if (ItemUtils.checkForInvalidItems(Erg)) {
+                        if (Erg != null) {
                             Logger.MATERIALS(
                                 "Found \"" + OrePrefixes.cellMolten.name()
                                     + this.unlocalizedName
@@ -960,8 +962,7 @@ public class Material {
                     return u;
                 }
             }
-            // Logger.MATERIALS("Unabled to find \"" + aKey + this.unlocalizedName + "\"");
-            return ItemUtils.getErrorStack(stacksize, (aKey + this.unlocalizedName + " x" + stacksize));
+            return null;
         }
     }
 
@@ -1407,7 +1408,7 @@ public class Material {
         if (!ItemUtils.checkForInvalidItems(new ItemStack[] { aFullCell, aFullCell2, aFullCell3, aFullCell4 })) {
             if (this.vGenerateCells) {
                 Item g = new BaseItemCell(this);
-                aFullCell = ItemUtils.getSimpleStack(g);
+                aFullCell = new ItemStack(g);
                 Logger.MATERIALS("Generated a cell for " + this.getUnlocalizedName());
             } else {
                 Logger.MATERIALS("Did not generate a cell for " + this.getUnlocalizedName());
@@ -1440,7 +1441,7 @@ public class Material {
                 4,
                 this.getMeltingPointK(),
                 aFullCell,
-                ItemUtils.getEmptyCell(),
+                ItemList.Cell_Empty.get(1),
                 1000,
                 this.vGenerateCells);
         } else if (this.materialState == MaterialState.LIQUID || this.materialState == MaterialState.PURE_LIQUID) {
@@ -1451,16 +1452,13 @@ public class Material {
                 0,
                 this.getMeltingPointK(),
                 aFullCell,
-                ItemUtils.getEmptyCell(),
+                ItemList.Cell_Empty.get(1),
                 1000,
                 this.vGenerateCells);
         } else if (this.materialState == MaterialState.GAS || this.materialState == MaterialState.PURE_GAS) {
             return FluidUtils
                 .generateGas(unlocalizedName, this.getLocalizedName(), getMeltingPointK(), getRGBA(), vGenerateCells);
-            /*
-             * return FluidUtils.addGTFluid( this.getUnlocalizedName(), this.getLocalizedName()+" Gas", this.RGBA, 2,
-             * this.getMeltingPointK(), aFullCell, ItemUtils.getEmptyCell(), 1000, this.vGenerateCells);
-             */
+
         } else { // Plasma
             return this.generatePlasma();
         }
