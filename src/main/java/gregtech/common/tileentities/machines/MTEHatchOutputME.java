@@ -651,7 +651,7 @@ public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelSta
 
     @Override
     public NBTTagCompound getDescriptionData() {
-        NBTTagCompound tag = new NBTTagCompound();
+        NBTTagCompound tag = super.getDescriptionData();
 
         // Sync the hatch capacity to the client so that MM can show its exchanging preview properly
         // This is only called when the hatch is placed since it will never change over its lifetime
@@ -663,6 +663,7 @@ public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelSta
 
     @Override
     public void onDescriptionPacket(NBTTagCompound data) {
+        super.onDescriptionPacket(data);
         baseCapacity = data.getLong("baseCapacity");
     }
 
