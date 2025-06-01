@@ -171,9 +171,8 @@ public class TileEntityPestKiller extends TileEntity implements ISidedInventory,
     }
 
     public Chunk getChunkFromOffsetIfLoaded(int x, int y) {
-        Chunk c = this.worldObj.getChunkFromChunkCoords(mChunkX + x, mChunkZ + y);
-        if (c.isChunkLoaded) {
-            return c;
+        if (this.worldObj.blockExists((mChunkX + x) << 4, 0, (mChunkZ + y) << 4)) {
+            return this.worldObj.getChunkFromBlockCoords(mChunkX + x, mChunkZ + y);
         }
         return null;
     }
