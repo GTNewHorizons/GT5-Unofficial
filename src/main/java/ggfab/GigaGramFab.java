@@ -23,7 +23,6 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.metatileentity.implementations.MTEBasicMachineWithRecipe;
-import gregtech.api.util.ProcessingArrayManager;
 
 @Mod(
     modid = GGConstants.MODID,
@@ -126,7 +125,7 @@ public class GigaGramFab {
                 INSTANCE.mToolStats.get((short) HARDHAMMER.ID),
                 6 * ingot);
             GigaGramFabAPI.addSingleUseToolType(
-                craftingToolSoftHammer,
+                craftingToolSoftMallet,
                 INSTANCE.mToolStats.get((short) SOFTMALLET.ID),
                 6 * ingot);
             GigaGramFabAPI.addSingleUseToolType(
@@ -134,7 +133,6 @@ public class GigaGramFab {
                 INSTANCE.mToolStats.get((short) SCREWDRIVER.ID),
                 2 * rod);
             GigaGramFabAPI.addSingleUseToolType(craftingToolSaw, INSTANCE.mToolStats.get((short) SAW.ID), 2 * plate);
-            ProcessingArrayManager.addRecipeMapToPA("ggfab.toolcast", GGFabRecipeMaps.toolCastRecipes);
         });
         GregTechAPI.sBeforeGTPostload.add(new ComponentRecipeLoader());
         GregTechAPI.sBeforeGTPostload.add(new SingleUseToolRecipeLoader());
@@ -150,19 +148,19 @@ public class GigaGramFab {
 
     private void initDumbItem1() {
         GGMetaItemDumbItems i1 = new GGMetaItemDumbItems("ggfab.d1");
-        int id = 0;
-        int idShape = 30;
-        final int budget = idShape;
-
         for (SingleUseTool singleUseTool : SingleUseTool.values()) {
             GGItemList tool = singleUseTool.tool;
-            tool.set(i1.addItem(id++, GGUtils.processSentence(tool.name(), ' ', true, true), null, tool, tool.name()));
+            tool.set(
+                i1.addItem(
+                    singleUseTool.toolID,
+                    GGUtils.processSentence(tool.name(), ' ', true, true),
+                    null,
+                    tool,
+                    singleUseTool.toolDictName.name()));
 
             GGItemList mold = singleUseTool.mold;
             String moldLabel = "Mold (" + GGUtils.processSentence(tool.name() + ")", ' ', true, true);
-            mold.set(i1.addItem(idShape++, moldLabel, null, mold, mold.name()));
+            mold.set(i1.addItem(singleUseTool.moldID, moldLabel, null, mold, mold.name()));
         }
-
-        if (id >= budget || idShape >= 2 * budget || idShape - id != budget) throw new AssertionError();
     }
 }

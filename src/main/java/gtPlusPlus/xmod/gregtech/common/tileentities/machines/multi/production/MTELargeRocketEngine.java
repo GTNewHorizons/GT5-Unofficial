@@ -30,6 +30,7 @@ import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.enums.GTValues;
+import gregtech.api.enums.Materials;
 import gregtech.api.enums.TAE;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -95,6 +96,11 @@ public class MTELargeRocketEngine extends GTPPMultiBlockBase<MTELargeRocketEngin
 
     @Override
     public boolean supportsPowerPanel() {
+        return false;
+    }
+
+    @Override
+    protected boolean filtersFluid() {
         return false;
     }
 
@@ -221,7 +227,7 @@ public class MTELargeRocketEngine extends GTPPMultiBlockBase<MTELargeRocketEngin
 
     public static void setAir() {
         if (sAirFluidStack == null) {
-            sAirFluidStack = FluidUtils.getFluidStack("air", 1);
+            sAirFluidStack = Materials.Air.getGas(1);
         }
         if (sAirFluid == null && sAirFluidStack != null) {
             sAirFluid = sAirFluidStack.getFluid();
@@ -525,5 +531,10 @@ public class MTELargeRocketEngine extends GTPPMultiBlockBase<MTELargeRocketEngin
     @Override
     public int getMaxParallelRecipes() {
         return 1;
+    }
+
+    @Override
+    public boolean showRecipeTextInGUI() {
+        return false;
     }
 }

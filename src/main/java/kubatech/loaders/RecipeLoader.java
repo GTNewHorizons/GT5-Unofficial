@@ -38,8 +38,10 @@ import static gregtech.api.enums.Mods.PamsHarvestCraft;
 import static gregtech.api.recipe.RecipeMaps.benderRecipes;
 import static gregtech.api.recipe.RecipeMaps.cutterRecipes;
 import static gregtech.api.recipe.RecipeMaps.mixerRecipes;
+import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.MINUTES;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
+import static gregtech.api.util.GTRecipeBuilder.STACKS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
 import static gregtech.api.util.GTRecipeConstants.AssemblyLine;
 import static gregtech.api.util.GTRecipeConstants.RESEARCH_ITEM;
@@ -92,6 +94,7 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.recipe.Scanning;
+import gtPlusPlus.core.material.MaterialsAlloy;
 import kubatech.api.enums.ItemList;
 import kubatech.tileentity.gregtech.multiblock.MTEDEFusionCrafter;
 import kubatech.tileentity.gregtech.multiblock.MTEExtremeEntityCrusher;
@@ -166,8 +169,8 @@ public class RecipeLoader {
                     gregtech.api.enums.ItemList.Robot_Arm_UV.get(16L),
                     new Object[] { OrePrefixes.circuit.get(Materials.UV), 16L })
                 .fluidInputs(
-                    FluidRegistry.getFluidStack("molten.indalloy140", 28800),
-                    FluidRegistry.getFluidStack("for.honey", 20000))
+                    MaterialsAlloy.INDALLOY_140.getFluidStack(3 * STACKS + 8 * INGOTS),
+                    Materials.Honey.getFluid(20_000))
                 .itemOutputs(ExtremeIndustrialApiary.get(1))
                 .eut(TierEU.RECIPE_UHV)
                 .duration(5 * MINUTES)
@@ -230,7 +233,7 @@ public class RecipeLoader {
             GTValues.RA.stdBuilder()
                 .itemInputs(TeaLeafDehydrated.get(1))
                 .itemOutputs(SteamedTeaLeaf.get(1))
-                .fluidInputs(FluidRegistry.getFluidStack("water", 50))
+                .fluidInputs(Materials.Water.getFluid(50))
                 .eut(TierEU.RECIPE_LV)
                 .duration(5 * SECONDS)
                 .addTo(mixerRecipes);
@@ -328,7 +331,7 @@ public class RecipeLoader {
             GTValues.RA.stdBuilder()
                 .itemInputs(BlackTea.get(1))
                 .itemOutputs(MilkTea.get(1))
-                .fluidInputs(FluidRegistry.getFluidStack("milk", 100))
+                .fluidInputs(Materials.Milk.getFluid(100))
                 .eut(TierEU.RECIPE_LV)
                 .duration(5 * SECONDS)
                 .addTo(mixerRecipes);
@@ -338,7 +341,7 @@ public class RecipeLoader {
             GTValues.RA.stdBuilder()
                 .itemInputs(GameRegistry.findItemStack("harvestcraft", "peppermintItem", 1))
                 .itemOutputs(PeppermintTea.get(1))
-                .fluidInputs(FluidRegistry.getFluidStack("water", 1000))
+                .fluidInputs(Materials.Water.getFluid(1_000))
                 .eut(TierEU.RECIPE_LV)
                 .duration(5 * SECONDS)
                 .addTo(mixerRecipes);
@@ -358,7 +361,7 @@ public class RecipeLoader {
                     gregtech.api.enums.ItemList.Quantum_Tank_EV.get(1),
                     FluidExtractorUHV.get(10),
                     new Object[] { OrePrefixes.circuit.get(Materials.UV), 16L })
-                .fluidInputs(FluidRegistry.getFluidStack("molten.indalloy140", 28800))
+                .fluidInputs(MaterialsAlloy.INDALLOY_140.getFluidStack(3 * STACKS + 8 * INGOTS))
                 .itemOutputs(TeaAcceptor.get(1))
                 .eut(TierEU.RECIPE_UHV)
                 .duration(5 * MINUTES)

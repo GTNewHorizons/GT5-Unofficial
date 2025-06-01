@@ -22,9 +22,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 
@@ -49,6 +46,8 @@ import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.mixin.hooks.BWCoreStaticReplacementMethodes;
+import gtPlusPlus.core.material.MaterialMisc;
+import gtPlusPlus.core.material.MaterialsAlloy;
 
 public class CircuitImprintLoader {
 
@@ -96,17 +95,9 @@ public class CircuitImprintLoader {
             CircuitImprintLoader.recipeTagMap
                 .put(CircuitImprintLoader.getTagFromStack(outputs[0]), circuitRecipe.copy());
 
-            Fluid solderIndalloy = FluidRegistry.getFluid("molten.indalloy140") != null
-                ? FluidRegistry.getFluid("molten.indalloy140")
-                : FluidRegistry.getFluid("molten.solderingalloy");
-
-            Fluid solderUEV = FluidRegistry.getFluid("molten.mutatedlivingsolder") != null
-                ? FluidRegistry.getFluid("molten.mutatedlivingsolder")
-                : FluidRegistry.getFluid("molten.solderingalloy");
-
             if (circuitRecipe.mFluidInputs[0].isFluidEqual(Materials.SolderingAlloy.getMolten(0))
-                || circuitRecipe.mFluidInputs[0].isFluidEqual(new FluidStack(solderIndalloy, 0))
-                || circuitRecipe.mFluidInputs[0].isFluidEqual(new FluidStack(solderUEV, 0))) {
+                || circuitRecipe.mFluidInputs[0].isFluidEqual(MaterialsAlloy.INDALLOY_140.getFluidStack(0))
+                || circuitRecipe.mFluidInputs[0].isFluidEqual(MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack(0))) {
                 GTRecipe newRecipe = CircuitImprintLoader.reBuildRecipe(circuitRecipe);
                 if (newRecipe != null) BartWorksRecipeMaps.circuitAssemblyLineRecipes.addRecipe(newRecipe);
                 addCutoffRecipeToSets(toRem, toAdd, circuitRecipe);
@@ -241,7 +232,7 @@ public class CircuitImprintLoader {
                         in[index] = GTOreDictUnificator.get(
                             OrePrefixes.wireFine,
                             GTOreDictUnificator.getAssociation(original.mInputs[index]).mMaterial.mMaterial,
-                            original.mInputs[index].stackSize * 16);
+                            original.mInputs[index].stackSize * 16L);
                     }
                     // other components
                 } else {

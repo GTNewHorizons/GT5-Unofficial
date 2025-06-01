@@ -626,14 +626,10 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase
     }
 
     public Block getCoilBlock(int type) {
-        switch (type) {
-            case 1:
-                return Loaders.antimatterAnnihilationMatrix;
-            case 2:
-                return Loaders.protomatterActivationCoil;
-            default:
-                return Loaders.antimatterAnnihilationMatrix;
+        if (type == 2) {
+            return Loaders.protomatterActivationCoil;
         }
+        return Loaders.antimatterAnnihilationMatrix;
     }
 
     public int getCoilMeta(int type) {
@@ -641,14 +637,8 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase
     }
 
     public Block getCasingBlock(int type) {
-        switch (type) {
-            case 1:
-                return Loaders.magneticFluxCasing;
-            case 2:
-                return Loaders.gravityStabilizationCasing;
-            default:
-                return Loaders.magneticFluxCasing;
-        }
+        if (type == 2) return Loaders.gravityStabilizationCasing;
+        return Loaders.magneticFluxCasing;
     }
 
     public int getCasingMeta(int type) {
@@ -672,18 +662,19 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase
     }
 
     public int textureIndex(int type) {
-        switch (type) {
-            case 1:
-                return (12 << 7) + 9;
-            case 2:
-                return (12 << 7) + 10;
-            default:
-                return (12 << 7) + 9;
+        if (type == 2) {
+            return (12 << 7) + 10;
         }
+        return (12 << 7) + 9;
     }
 
     @Override
     public boolean getDefaultHasMaintenanceChecks() {
+        return false;
+    }
+
+    @Override
+    public boolean showRecipeTextInGUI() {
         return false;
     }
 

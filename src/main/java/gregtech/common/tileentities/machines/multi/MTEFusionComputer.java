@@ -351,6 +351,7 @@ public abstract class MTEFusionComputer extends MTEEnhancedMultiBlockBase<MTEFus
         logic.setAvailableVoltage(GTValues.V[tier()]);
         logic.setAvailableAmperage(1);
         logic.setAmperageOC(false);
+        logic.setUnlimitedTierSkips();
     }
 
     public boolean turnCasingActive(boolean status) {
@@ -421,7 +422,7 @@ public abstract class MTEFusionComputer extends MTEEnhancedMultiBlockBase<MTEFus
                             mLastWorkingTick = mTotalRunTime;
                             if (mOutputFluids != null && mOutputFluids.length > 0) {
                                 try {
-                                    GTMod.achievements.issueAchivementHatchFluid(
+                                    GTMod.achievements.issueAchievementHatchFluid(
                                         aBaseMetaTileEntity.getWorld()
                                             .getPlayerEntityByName(aBaseMetaTileEntity.getOwnerName()),
                                         mOutputFluids[0]);

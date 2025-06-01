@@ -3,6 +3,7 @@ package gregtech.loaders.postload.recipes;
 import static gregtech.api.enums.Mods.HardcoreEnderExpansion;
 import static gregtech.api.recipe.RecipeMaps.hammerRecipes;
 import static gregtech.api.util.GTModHandler.getModItem;
+import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
 
@@ -138,8 +139,8 @@ public class ForgeHammerRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Tesseract.get(1L), GregtechItemList.Laser_Lens_Special.get(1))
-            .fluidInputs(MaterialsUEVplus.SpaceTime.getMolten(2880L))
-            .fluidOutputs(MaterialsUEVplus.Space.getMolten(1440L), MaterialsUEVplus.Time.getMolten(1440L))
+            .fluidInputs(MaterialsUEVplus.SpaceTime.getMolten(20 * INGOTS))
+            .fluidOutputs(MaterialsUEVplus.Space.getMolten(10 * INGOTS), MaterialsUEVplus.Time.getMolten(10 * INGOTS))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_UXV)
             .addTo(hammerRecipes);

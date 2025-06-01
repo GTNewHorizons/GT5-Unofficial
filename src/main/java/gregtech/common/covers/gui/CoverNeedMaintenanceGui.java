@@ -1,5 +1,7 @@
 package gregtech.common.covers.gui;
 
+import static net.minecraft.util.StatCollector.translateToLocal;
+
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.value.sync.EnumSyncValue;
@@ -8,9 +10,7 @@ import com.cleanroommc.modularui.widgets.CycleButtonWidget;
 import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.cleanroommc.modularui.widgets.layout.Grid;
 
-import gregtech.api.modularui2.CoverGuiData;
 import gregtech.api.modularui2.GTGuiTextures;
-import gregtech.api.util.GTUtility;
 import gregtech.common.covers.CoverNeedMaintainance;
 import gregtech.common.covers.conditions.MaintenanceAlertCondition;
 import gregtech.common.covers.modes.RedstoneMode;
@@ -19,14 +19,17 @@ import gregtech.common.modularui2.widget.SelectButton;
 
 public class CoverNeedMaintenanceGui extends CoverGui<CoverNeedMaintainance> {
 
+    public CoverNeedMaintenanceGui(CoverNeedMaintainance cover) {
+        super(cover);
+    }
+
     @Override
     protected String getGuiId() {
         return "cover.maintenance";
     }
 
     @Override
-    public void addUIWidgets(CoverGuiData guiData, PanelSyncManager syncManager, Flow column) {
-        CoverNeedMaintainance cover = getCover(guiData);
+    public void addUIWidgets(PanelSyncManager syncManager, Flow column) {
         EnumSyncValue<MaintenanceAlertCondition> thresholdSyncValue = new EnumSyncValue<>(
             MaintenanceAlertCondition.class,
             cover::getMaintenanceAlertCondition,
@@ -51,33 +54,33 @@ public class CoverNeedMaintenanceGui extends CoverGui<CoverNeedMaintainance> {
                             new SelectButton()
                                 .value(LinkedBoolValue.of(thresholdSyncValue, MaintenanceAlertCondition.ISSUE_1))
                                 .overlay(true, GTGuiTextures.OVERLAY_BUTTON_CHECKMARK)
-                                .addTooltipLine(IKey.str(GTUtility.trans("056", "Emit if 1 Maintenance Needed")))
+                                .addTooltipLine(IKey.lang("gt.interact.desc.need_maint_count", "1", ""))
                                 .size(16),
-                            IKey.str(GTUtility.trans("247", "1 Issue"))
+                            IKey.lang("gt.interact.desc.issue")
                                 .asWidget())
                         .row(
                             new SelectButton()
                                 .value(LinkedBoolValue.of(thresholdSyncValue, MaintenanceAlertCondition.ISSUES_2))
                                 .overlay(true, GTGuiTextures.OVERLAY_BUTTON_CHECKMARK)
-                                .addTooltipLine(IKey.str(GTUtility.trans("058", "Emit if 2 Maintenance Needed")))
+                                .addTooltipLine(IKey.lang("gt.interact.desc.need_maint_count", "2", ""))
                                 .size(16),
-                            IKey.str(GTUtility.trans("248", "2 Issues"))
+                            IKey.lang("gt.interact.desc.issues", "2")
                                 .asWidget())
                         .row(
                             new SelectButton()
                                 .value(LinkedBoolValue.of(thresholdSyncValue, MaintenanceAlertCondition.ISSUES_3))
                                 .overlay(true, GTGuiTextures.OVERLAY_BUTTON_CHECKMARK)
-                                .addTooltipLine(IKey.str(GTUtility.trans("060", "Emit if 3 Maintenance Needed")))
+                                .addTooltipLine(IKey.lang("gt.interact.desc.need_maint_count", "3", ""))
                                 .size(16),
-                            IKey.str(GTUtility.trans("249", "3 Issues"))
+                            IKey.lang("gt.interact.desc.issues", "3")
                                 .asWidget())
                         .row(
                             new SelectButton()
                                 .value(LinkedBoolValue.of(thresholdSyncValue, MaintenanceAlertCondition.ISSUES_4))
                                 .overlay(true, GTGuiTextures.OVERLAY_BUTTON_CHECKMARK)
-                                .addTooltipLine(IKey.str(GTUtility.trans("062", "Emit if 4 Maintenance Needed")))
+                                .addTooltipLine(IKey.lang("gt.interact.desc.need_maint_count", "4", ""))
                                 .size(16),
-                            IKey.str(GTUtility.trans("250", "4 Issues"))
+                            IKey.lang("gt.interact.desc.issues", "4")
                                 .asWidget()))
                 .child(
                     new Grid().coverChildren()
@@ -87,29 +90,25 @@ public class CoverNeedMaintenanceGui extends CoverGui<CoverNeedMaintainance> {
                             new SelectButton()
                                 .value(LinkedBoolValue.of(thresholdSyncValue, MaintenanceAlertCondition.ISSUES_5))
                                 .overlay(true, GTGuiTextures.OVERLAY_BUTTON_CHECKMARK)
-                                .addTooltipLine(IKey.str(GTUtility.trans("064", "Emit if 5 Maintenance Needed")))
+                                .addTooltipLine(IKey.lang("gt.interact.desc.need_maint_count", "5", ""))
                                 .size(16),
-                            IKey.str(GTUtility.trans("251", "5 Issues"))
+                            IKey.lang("gt.interact.desc.issues", "5")
                                 .asWidget())
                         .row(
                             new SelectButton()
                                 .value(LinkedBoolValue.of(thresholdSyncValue, MaintenanceAlertCondition.ROTOR_20))
                                 .overlay(true, GTGuiTextures.OVERLAY_BUTTON_CHECKMARK)
-                                .addTooltipLine(
-                                    IKey.str(
-                                        GTUtility.trans("066", "Emit if rotor needs maintenance low accuracy mod")))
+                                .addTooltipLine(IKey.lang("gt.interact.desc.need_maint_rotor_lo"))
                                 .size(16),
-                            IKey.str(GTUtility.trans("252", "Rotor < 20%"))
+                            IKey.lang("gt.interact.desc.issue_rotor_low")
                                 .asWidget())
                         .row(
                             new SelectButton()
                                 .value(LinkedBoolValue.of(thresholdSyncValue, MaintenanceAlertCondition.ROTOR_0))
                                 .overlay(true, GTGuiTextures.OVERLAY_BUTTON_CHECKMARK)
-                                .addTooltipLine(
-                                    IKey.str(
-                                        GTUtility.trans("068", "Emit if rotor needs maintenance high accuracy mod")))
+                                .addTooltipLine(IKey.lang("gt.interact.desc.need_maint_rotor_hi"))
                                 .size(16),
-                            IKey.str(GTUtility.trans("253", "Rotor ≈ 0%"))
+                            IKey.lang("gt.interact.desc.issue_rotor_dead")
                                 .asWidget())
                         .row(
                             new CycleButtonWidget().value(redstoneModeSyncValue)
@@ -118,8 +117,8 @@ public class CoverNeedMaintenanceGui extends CoverGui<CoverNeedMaintainance> {
                                 .size(16),
                             IKey.dynamic(
                                 () -> redstoneModeSyncValue.getValue() == RedstoneMode.NORMAL
-                                    ? GTUtility.trans("NORMAL", "Normal")
-                                    : GTUtility.trans("INVERTED", "Inverted"))
+                                    ? translateToLocal("gt.interact.desc.normal")
+                                    : translateToLocal("gt.interact.desc.inverted"))
                                 .asWidget())));
     }
 }

@@ -160,7 +160,7 @@ public class BehaviourDetravToolElectricProspector extends BehaviourDetravToolPr
             }
             packet.level = aItem.getHarvestLevel(aStack, "");
             DetravNetwork.INSTANCE.sendToPlayer(packet, (EntityPlayerMP) aPlayer);
-            if (!aPlayer.capabilities.isCreativeMode) tool.doDamage(aStack, this.mCosts * chunks.size());
+            if (!aPlayer.capabilities.isCreativeMode) tool.doDamage(aStack, (long) this.mCosts * chunks.size());
 
             if (VisualProspecting.isModLoaded()) {
                 if (data == 0 || data == 1) {

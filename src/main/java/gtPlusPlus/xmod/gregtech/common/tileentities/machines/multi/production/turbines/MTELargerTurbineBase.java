@@ -666,7 +666,9 @@ public abstract class MTELargerTurbineBase extends GTPPMultiBlockBase<MTELargerT
     @Override
     public void onModeChangeByScrewdriver(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
         if (side == getBaseMetaTileEntity().getFrontFacing()) {
-            looseFit ^= true;
+            looseFit = !looseFit;
+            // Clear recipe maps so they don't attempt to filter off of a dummy recipe map
+            clearRecipeMapForAllInputHatches();
             GTUtility.sendChatToPlayer(
                 aPlayer,
                 looseFit ? "Fitting: Loose - More Flow" : "Fitting: Tight - More Efficiency");
@@ -830,6 +832,11 @@ public abstract class MTELargerTurbineBase extends GTPPMultiBlockBase<MTELargerT
 
     @Override
     public boolean supportsBatchMode() {
+        return false;
+    }
+
+    @Override
+    public boolean showRecipeTextInGUI() {
         return false;
     }
 }

@@ -191,17 +191,10 @@ public class MTELargeFluidExtractor extends MTEExtendedPowerMultiBlockBase<MTELa
 
     @Override
     protected ProcessingLogic createProcessingLogic() {
-        return new ProcessingLogic();
-    }
 
-    @Override
-    protected void setProcessingLogicPower(ProcessingLogic logic) {
-        logic.setAmperageOC(true);
-        logic.setAvailableVoltage(GTUtility.roundUpVoltage(this.getMaxInputVoltage()));
-        logic.setAvailableAmperage(1);
-        logic.setEuModifier(getEUMultiplier());
-        logic.setMaxParallel(getTrueParallel());
-        logic.setSpeedBonus(1.0f / getSpeedBonus());
+        return new ProcessingLogic().setMaxParallelSupplier(this::getTrueParallel)
+            .setEuModifier(getEUMultiplier())
+            .setSpeedBonus(1.0f / getSpeedBonus());
     }
 
     @Override
@@ -235,14 +228,24 @@ public class MTELargeFluidExtractor extends MTEExtendedPowerMultiBlockBase<MTELa
         if (side == facing) {
             if (active) {
                 return new ITexture[] { getCasingTextureForId(CASING_INDEX), TextureFactory.builder()
-                    .addIcon(TexturesGtBlock.Overlay_Machine_Controller_Advanced_Active)
+                    .addIcon(TexturesGtBlock.oMCALargeFluidExtractorActive)
                     .extFacing()
-                    .build() };
+                    .build(),
+                    TextureFactory.builder()
+                        .addIcon(TexturesGtBlock.oMCALargeFluidExtractorActiveGlow)
+                        .extFacing()
+                        .glow()
+                        .build() };
             } else {
                 return new ITexture[] { getCasingTextureForId(CASING_INDEX), TextureFactory.builder()
-                    .addIcon(TexturesGtBlock.Overlay_Machine_Controller_Advanced)
+                    .addIcon(TexturesGtBlock.oMCALargeFluidExtractor)
                     .extFacing()
-                    .build() };
+                    .build(),
+                    TextureFactory.builder()
+                        .addIcon(TexturesGtBlock.oMCALargeFluidExtractorGlow)
+                        .extFacing()
+                        .glow()
+                        .build() };
             }
         }
         return new ITexture[] { getCasingTextureForId(CASING_INDEX) };
@@ -407,12 +410,15 @@ public class MTELargeFluidExtractor extends MTEExtendedPowerMultiBlockBase<MTELa
     @Override
     public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
         float aX, float aY, float aZ, ItemStack aTool) {
-        batchMode = !batchMode;
-        if (batchMode) {
-            GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOn"));
-        } else {
-            GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOff"));
+        if (aPlayer.isSneaking()) {
+            batchMode = !batchMode;
+            if (batchMode) {
+                GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOn"));
+            } else {
+                GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOff"));
+            }
+            return true;
         }
-        return true;
+        return false;
     }
 }
