@@ -1,7 +1,6 @@
 package bartworks.common.loaders;
 
 import static bartworks.API.recipe.BartWorksRecipeMaps.radioHatchFakeRecipes;
-import static gregtech.api.enums.Mods.IndustrialCraft2;
 import static gregtech.api.util.GTRecipeConstants.MASS;
 import static gregtech.api.util.GTRecipeConstants.SIEVERT;
 
@@ -16,7 +15,6 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.recipe.Sievert;
 
@@ -148,28 +146,22 @@ public class RadioHatchMaterialLoader {
         radioHatchMaterialAdder(ItemList.DepletedRodNaquadah.get(1), 14, (byte) 3);
         radioHatchMaterialAdder(ItemList.DepletedRodNaquadah2.get(1), 14, (byte) 6);
         radioHatchMaterialAdder(ItemList.DepletedRodNaquadah4.get(1), 14, (byte) 12);
+        radioHatchMaterialAdder(ItemList.DepletedRodMOX.get(1), (int) Materials.Plutonium.getProtons() / 10, (byte) 3);
+        radioHatchMaterialAdder(ItemList.DepletedRodMOX2.get(1), (int) Materials.Plutonium.getProtons() / 10, (byte) 6);
         radioHatchMaterialAdder(
-            GTModHandler.getModItem(IndustrialCraft2.ID, "reactorMOXSimpledepleted", 1),
-            (int) Materials.Plutonium.getProtons() / 10,
-            (byte) 3);
-        radioHatchMaterialAdder(
-            GTModHandler.getModItem(IndustrialCraft2.ID, "reactorMOXDualdepleted", 1),
-            (int) Materials.Plutonium.getProtons() / 10,
-            (byte) 6);
-        radioHatchMaterialAdder(
-            GTModHandler.getModItem(IndustrialCraft2.ID, "reactorMOXQuaddepleted", 1),
+            ItemList.DepletedRodMOX4.get(1),
             (int) Materials.Plutonium.getProtons() / 10,
             (byte) 12);
         radioHatchMaterialAdder(
-            GTModHandler.getModItem(IndustrialCraft2.ID, "reactorUraniumSimpledepleted", 1),
+            ItemList.DepletedRodUranium.get(1),
             (int) Materials.Uranium.getProtons() / 10,
             (byte) 3);
         radioHatchMaterialAdder(
-            GTModHandler.getModItem(IndustrialCraft2.ID, "reactorUraniumDualdepleted", 1),
+            ItemList.DepletedRodUranium2.get(1),
             (int) Materials.Uranium.getProtons() / 10,
             (byte) 6);
         radioHatchMaterialAdder(
-            GTModHandler.getModItem(IndustrialCraft2.ID, "reactorUraniumQuaddepleted", 1),
+            ItemList.DepletedRodUranium4.get(1),
             (int) Materials.Uranium.getProtons() / 10,
             (byte) 12);
         radioHatchMaterialAdder(

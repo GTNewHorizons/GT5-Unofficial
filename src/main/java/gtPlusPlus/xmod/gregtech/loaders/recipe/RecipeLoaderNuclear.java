@@ -13,7 +13,6 @@ import static gregtech.api.recipe.RecipeMaps.maceratorRecipes;
 import static gregtech.api.recipe.RecipeMaps.mixerRecipes;
 import static gregtech.api.recipe.RecipeMaps.multiblockChemicalReactorRecipes;
 import static gregtech.api.recipe.RecipeMaps.sifterRecipes;
-import static gregtech.api.util.GTModHandler.getModItem;
 import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.MINUTES;
 import static gregtech.api.util.GTRecipeBuilder.NUGGETS;
@@ -30,7 +29,6 @@ import net.minecraftforge.fluids.FluidStack;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
-import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.util.GTOreDictUnificator;
@@ -104,10 +102,8 @@ public class RecipeLoaderNuclear {
         // Process Used Fuel Rods for Krypton
 
         // Uranium
-        for (ItemStack depletedRod : new ItemStack[] {
-            getModItem(Mods.IndustrialCraft2.ID, "reactorUraniumSimpledepleted", 8),
-            getModItem(Mods.IndustrialCraft2.ID, "reactorUraniumDualdepleted", 4),
-            getModItem(Mods.IndustrialCraft2.ID, "reactorUraniumQuaddepleted", 2) }) {
+        for (ItemStack depletedRod : new ItemStack[] { ItemList.DepletedRodUranium.get(8),
+            ItemList.DepletedRodUranium2.get(4), ItemList.DepletedRodUranium4.get(2) }) {
             GTValues.RA.stdBuilder()
                 .itemInputs(depletedRod, GTUtility.getIntegratedCircuit(20))
                 .itemOutputs(
@@ -125,10 +121,8 @@ public class RecipeLoaderNuclear {
         }
 
         // Mox
-        for (ItemStack depletedRod : new ItemStack[] {
-            getModItem(Mods.IndustrialCraft2.ID, "reactorMOXSimpledepleted", 8),
-            getModItem(Mods.IndustrialCraft2.ID, "reactorMOXDualdepleted", 4),
-            getModItem(Mods.IndustrialCraft2.ID, "reactorMOXQuaddepleted", 2) }) {
+        for (ItemStack depletedRod : new ItemStack[] { ItemList.DepletedRodMOX.get(8), ItemList.DepletedRodMOX2.get(4),
+            ItemList.DepletedRodMOX4.get(2) }) {
             GTValues.RA.stdBuilder()
                 .itemInputs(depletedRod, GTUtility.getIntegratedCircuit(20))
                 .itemOutputs(

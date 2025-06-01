@@ -13,8 +13,6 @@
 
 package bartworks.API;
 
-import static gregtech.api.enums.Mods.IndustrialCraft2;
-
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Objects;
@@ -25,7 +23,6 @@ import bartworks.system.material.WerkstoffLoader;
 import bartworks.util.BWUtil;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
-import gregtech.api.util.GTModHandler;
 
 public final class BioVatLogicAdder {
 
@@ -71,37 +68,13 @@ public final class BioVatLogicAdder {
             giveItemStackRadioHatchAbilites(ItemList.DepletedRodNaquadah2.get(1), Materials.Naquadah, 6, 10);
             giveItemStackRadioHatchAbilites(ItemList.DepletedRodNaquadah4.get(1), Materials.Naquadah, 12, 10);
 
-            giveItemStackRadioHatchAbilites(
-                GTModHandler.getModItem(IndustrialCraft2.ID, "reactorMOXSimpledepleted", 1),
-                Materials.Plutonium,
-                3,
-                10);
-            giveItemStackRadioHatchAbilites(
-                GTModHandler.getModItem(IndustrialCraft2.ID, "reactorMOXDualdepleted", 1),
-                Materials.Plutonium,
-                6,
-                10);
-            giveItemStackRadioHatchAbilites(
-                GTModHandler.getModItem(IndustrialCraft2.ID, "reactorMOXQuaddepleted", 1),
-                Materials.Plutonium,
-                12,
-                10);
+            giveItemStackRadioHatchAbilites(ItemList.DepletedRodMOX.get(1), Materials.Plutonium, 3, 10);
+            giveItemStackRadioHatchAbilites(ItemList.DepletedRodMOX2.get(1), Materials.Plutonium, 6, 10);
+            giveItemStackRadioHatchAbilites(ItemList.DepletedRodMOX4.get(1), Materials.Plutonium, 12, 10);
 
-            giveItemStackRadioHatchAbilites(
-                GTModHandler.getModItem(IndustrialCraft2.ID, "reactorUraniumSimpledepleted", 1),
-                Materials.Uranium,
-                3,
-                10);
-            giveItemStackRadioHatchAbilites(
-                GTModHandler.getModItem(IndustrialCraft2.ID, "reactorUraniumDualdepleted", 1),
-                Materials.Uranium,
-                6,
-                10);
-            giveItemStackRadioHatchAbilites(
-                GTModHandler.getModItem(IndustrialCraft2.ID, "reactorUraniumQuaddepleted", 1),
-                Materials.Uranium,
-                12,
-                10);
+            giveItemStackRadioHatchAbilites(ItemList.DepletedRodUranium.get(1), Materials.Uranium, 3, 10);
+            giveItemStackRadioHatchAbilites(ItemList.DepletedRodUranium2.get(1), Materials.Uranium, 6, 10);
+            giveItemStackRadioHatchAbilites(ItemList.DepletedRodUranium4.get(1), Materials.Uranium, 12, 10);
 
             giveItemStackRadioHatchAbilites(
                 ItemList.DepletedRodTiberium.get(1),
