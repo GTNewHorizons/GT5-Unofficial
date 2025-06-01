@@ -35,12 +35,9 @@ public class MTECZPullerGui extends MTEMultiBlockBaseGui {
     @Override
     protected void registerSyncValues (PanelSyncManager syncManager) {
         super.registerSyncValues (syncManager);
-        syncManager.syncValue("Pressure", new DoubleSyncValue(()-> base.ECCFCurrentPressure, dub -> base.ECCFCurrentPressure = dub));
+        syncManager.syncValue("Pressure", new DoubleSyncValue(()-> base., dub -> base.ECCFCurrentPressure = dub));
         syncManager.syncValue("Temperature", new DoubleSyncValue(() -> base.ECCFCurrentTemp, dub-> base.ECCFCurrentTemp = dub));
         syncManager.syncValue("Compress", new IntSyncValue(() -> base.compressCoilTier, dub -> base.compressCoilTier = dub));
-        syncManager.syncValue("Vacuum", new IntSyncValue(() -> base.vacuumCoilTier, dub -> base.vacuumCoilTier = dub));
-        syncManager.syncValue("Heat", new IntSyncValue(() -> base.heatCoilTier, dub -> base.heatCoilTier = dub));
-        syncManager.syncValue("Cool", new IntSyncValue(() -> base.coolCoilTier, dub -> base.coolCoilTier = dub));
     }
 
     @Override
@@ -56,10 +53,10 @@ public class MTECZPullerGui extends MTEMultiBlockBaseGui {
                 }
                 return true;
             })
-            .background(GTGuiTextures.BUTTON_STANDARD, GTGuiTextures.OVERLAY_BUTTON_THERMOMETER)
+            .background(GTGuiTextures.BUTTON_STANDARD, GTGuiTextures.OVERLAY_BUTTON_CYCLIC)
             .disableHoverBackground()
-            .tooltip(tooltip -> tooltip.add("Temperature Control"))
-            .pos(156, 102)
+            .tooltip(tooltip -> tooltip.add("Configuration Menu"))
+            .pos(174, 130)
             .size(18, 18));
     }
 
@@ -71,36 +68,20 @@ public class MTECZPullerGui extends MTEMultiBlockBaseGui {
         DoubleSyncValue pressureSyncer = (DoubleSyncValue) syncManager.getSyncHandler ("Pressure:0");
         DoubleSyncValue tempSyncer = (DoubleSyncValue) syncManager.getSyncHandler("Temperature:0");
         DoubleSyncValue heatCoilSyncer = (DoubleSyncValue) syncManager.getSyncHandler ("Heat:0");
-        DoubleSyncValue coolCoilSyncer = (DoubleSyncValue) syncManager.getSyncHandler ("Cool:0");
-        DoubleSyncValue vacuumCoilSyncer = (DoubleSyncValue) syncManager.getSyncHandler ("Vacuum:0");
-        DoubleSyncValue compressCoilSyncer = (DoubleSyncValue) syncManager.getSyncHandler ("Compress:0");
 
         PagedWidget.Controller tabController = new PagedWidget.Controller();
         PagedWidget<?> pagedWidget = new PagedWidget<>().controller(tabController);
-        ParentWidget<?> infoPage = new ParentWidget<>().child(
-                GTGuiTextures.PROGRESSBAR_ECCF_TEMPERATURE.asWidget()
-                    .pos(40 - 24 / 2, 5)
-                    .size(24, 100))
+        ParentWidget<?> infoPage = new ParentWidget<>()
             .child(
                 new TextWidget(IKey.dynamic(() -> String.format("Temperature: %.2f K", tempSyncer.getValue())))
                     .pos(5, 110)
                     .size(70, 10)
                     .alignment(Alignment.Center))
             .child(
-                GTGuiTextures.PROGRESSBAR_ECCF_PRESSURE.asWidget()
-                    .pos(140 - 24 / 2, 5)
-                    .size(24, 100))
-            .child(
                 new TextWidget(IKey.dynamic(() -> String.format("Pressure: %.2f Pa", pressureSyncer.getValue())))
                     .pos(105, 110)
                     .size(70, 10)
                     .alignment(Alignment.Center));
-        if (coolCoilSyncer.getValue() > 0) {
-            infoPage.child(
-                GTGuiTextures.COOL_MODULE_ECCF_INDICATOR.asWidget()
-                    .pos(10, 130)
-                    .size(24, 48));
-        }
         infoPage.sizeRel(1.0f);
         return ui.child(
             pagedWidget
