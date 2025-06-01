@@ -75,12 +75,11 @@ public class MTECZPuller extends MTEEnhancedMultiBlockBase<MTECZPuller> implemen
 
     public String materialType;
     private String getMaterialType() {
-        enum acceptableMaterials {
-
-        }
         if (mSpecialInputHatch == null) return "none";
         if (mSpecialInputHatch.mFluid == null) return "none";
         if (mSpecialInputHatch.mFluid.getFluid() == null) return "none";
+        String fluidName = mSpecialInputHatch.mFluid.getFluid().getName();
+        if (fluidName != "Silicon")
         return mSpecialInputHatch.mFluid.getFluid().getName();
     }
 
@@ -104,19 +103,19 @@ public class MTECZPuller extends MTEEnhancedMultiBlockBase<MTECZPuller> implemen
         .addShape(
             TIER_2,
             transpose(
-                new String[][] {
-                    { "           ", "           ", "           ", "           ", "           ", "     F     ", "           ", "           ", "           ", "           ", "           " },
-                    { "           ", "           ", "           ", "           ", "           ", "     F     ", "           ", "           ", "           ", "           ", "           " },
-                    { "           ", "           ", "           ", "           ", "    G G    ", "     F     ", "    G G    ", "           ", "           ", "           ", "           " },
-                    { "           ", "           ", "  HGGHGGH  ", "  GG   GG  ", "  G G G G  ", "  H  F  H  ", "  G G G G  ", "  GG   GG  ", "  HGGHGGH  ", "           ", "           " },
-                    { "           ", " HG     GH ", " G  CCC  G ", "   CJJJC   ", "  CJ G JC  ", "  CJGFGJC  ", "  CJ G JC  ", "   CJJJC   ", " G  CCC  G ", " HG     GH ", "           " },
-                    { "HG       GH", "G         G", "    CCC    ", "   CHHHC   ", "  CHHHHHC  ", "  CHH HHC  ", "  CHHHHHC  ", "   CHHHC   ", "    CCC    ", "G         G", "HG       GH" },
-                    { "G         G", "           ", "    FFF    ", "   FHHHF   ", "  FH   HF  ", "  FH   HF  ", "  FH   HF  ", "   FHHHF   ", "    FFF    ", "           ", "G         G" },
-                    { "G         G", "           ", "    CCC    ", "   CHHHC   ", "  CH   HC  ", "  CH   HC  ", "  CH   HC  ", "   CHHHC   ", "    CCC    ", "           ", "G         G" },
-                    { "G         G", "           ", "    CCC    ", "   CHHHC   ", "  CH   HC  ", "  CH   HC  ", "  CH   HC  ", "   CHHHC   ", "    CCC    ", "           ", "G         G" },
-                    { "G         G", "           ", "    HHH    ", "   GHHHG   ", "  HH   HH  ", "  HH   HH  ", "  HH   HH  ", "   GHHHG   ", "    HHH    ", "           ", "G         G" },
-                    { "GG       GG", "G         G", "    H~H    ", "   GHHHG   ", "  HHHHHHH  ", "  HHHHHHH  ", "  HHHHHHH  ", "   GHHHG   ", "    HHH    ", "G         G", "GG       GG" } }
-
+                    new String[][]{
+                            {"           ","           ","           ","           ","           ","     F     ","           ","           ","           ","           ","           "},
+                            {"           ","           ","           ","           ","           ","     F     ","           ","           ","           ","           ","           "},
+                            {"           ","           ","           ","           ","    G G    ","     F     ","    G G    ","           ","           ","           ","           "},
+                            {"           ","           ","  HGGZGGH  ","  GG   GG  ","  G G G G  ","  Z  F  Z  ","  G G G G  ","  GG   GG  ","  HGGZGGH  ","           ","           "},
+                            {"           "," HG     GH "," G  HHH  G ","   GHHHG   ","  HH G HH  ","  HHGFGHH  ","  HH G HH  ","   GHHHG   "," G  HHH  G "," HG     GH ","           "},
+                            {"HG       GH","G         G","    CCC    ","   CHHHC   ","  CHHHHHC  ","  CHHFHHC  ","  CHHHHHC  ","   CHHHC   ","    CCC    ","G         G","HG       GH"},
+                            {"G         G","           ","    CCC    ","   CHHHC   ","  CH   HC  ","  CH   HC  ","  CH   HC  ","   CHHHC   ","    CCC    ","           ","G         G"},
+                            {"G         G","           ","    FFF    ","   FHHHF   ","  FH   HF  ","  FH   HF  ","  FH   HF  ","   FHHHF   ","    FFF    ","           ","G         G"},
+                            {"G         G","           ","    CCC    ","   CHHHC   ","  CH   HC  ","  CH   HC  ","  CH   HC  ","   CHHHC   ","    CCC    ","           ","G         G"},
+                            {"G         G","           ","    CCC    ","   CHHHC   ","  CH   HC  ","  CH   HC  ","  CH   HC  ","   CHHHC   ","    CCC    ","           ","G         G"},
+                            {"GG       GG","G         G","    HZH    ","   GHHHG   ","  HHHHHHH  ","  HHHHHHH  ","  HHHHHHH  ","   GHHHG   ","    HHH    ","G         G","GG       GG"}
+                    }
             ))
         // spotless:on
         .addElement(
@@ -154,7 +153,7 @@ public class MTECZPuller extends MTEEnhancedMultiBlockBase<MTECZPuller> implemen
                 .dot(2)
                 .buildAndChain(ofBlock(GregTechAPI.sBlockCasings9, 11)))
         .addElement(
-            'E',
+            'Z',
             buildHatchAdder(MTECZPuller.class).hatchClass(MTEHatchEnergy.class)
                 .adder(MTECZPuller::addSpecialInputToMachineList)
                 .casingIndex(((BlockCasings9) GregTechAPI.sBlockCasings9).getTextureIndex(11))
@@ -435,25 +434,4 @@ public class MTECZPuller extends MTEEnhancedMultiBlockBase<MTECZPuller> implemen
         }
         return false;
     }
-
-    // protected ModularWindow createConfigurationWindow(final EntityPlayer player) {
-    // ModularWindow.Builder builder = ModularWindow.builder(200, 160);
-    // builder.setBackground(GTUITextures.BACKGROUND_SINGLEBLOCK_DEFAULT);
-    // builder.setGuiTint(getGUIColorization());
-    // builder.widget(
-    // new DrawableWidget().setDrawable(GTUITextures.OVERLAY_BUTTON_CYCLIC)
-    // .setPos(5, 5)
-    // .setSize(16, 16))
-    // .widget(new TextWidget("Configuration Menu").setPos(25, 9))
-    // .widget(
-    // ButtonWidget.closeWindowButton(true)
-    // .setPos(185, 3))
-    // .widget(new TextWidget("CZ Puller tier").setPos(25, 25))
-    // .widget(
-    // new ButtonWidget()
-    // .setPos(10, 60)
-    // .setSize(20, 18)
-    // .setOnClick((clickData, widget) -> {
-    // if (!widget.isClient()) {
-    // System.out.println("Кнопка '1' нажата");
 }
