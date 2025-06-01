@@ -24,6 +24,7 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
+import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gtPlusPlus.core.material.MaterialsElements;
@@ -163,6 +164,16 @@ public class FissionFuelLoader implements Runnable {
             .addTo(centrifugeRecipes);
 
         // Uranium
+        GTModHandler.removeRecipeByOutputDelayed(ItemList.IC2_Uranium_Fuel.get(1));
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(ItemList.IC2_Uranium_238.get(6), ItemList.IC2_Uranium_235_Small.get(3))
+            .itemOutputs(ItemList.IC2_Uranium_Fuel.get(1))
+            .fluidInputs(GTModHandler.getIC2Coolant(1_000))
+            .duration(20 * SECONDS)
+            .eut(120)
+            .addTo(assemblerRecipes);
+
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.IC2_Fuel_Rod_Empty.get(1), ItemList.IC2_Uranium_Fuel.get(1))
             .itemOutputs(ItemList.RodUranium.get(1))
@@ -201,7 +212,7 @@ public class FissionFuelLoader implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.DepletedRodUranium.get(1))
             .itemOutputs(
-                ItemList.IC2_Small_Plutonium.get(1),
+                ItemList.IC2_Plutonium_Small.get(1),
                 ItemList.IC2_Uranium_238.get(4),
                 Materials.Iron.getDust(1))
             .duration(25 * SECONDS)
@@ -210,7 +221,7 @@ public class FissionFuelLoader implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.DepletedRodUranium2.get(1))
             .itemOutputs(
-                ItemList.IC2_Small_Plutonium.get(2),
+                ItemList.IC2_Plutonium_Small.get(2),
                 ItemList.IC2_Uranium_238.get(8),
                 Materials.Iron.getDust(3))
             .duration(25 * SECONDS)
@@ -219,7 +230,7 @@ public class FissionFuelLoader implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.DepletedRodUranium4.get(1))
             .itemOutputs(
-                ItemList.IC2_Small_Plutonium.get(4),
+                ItemList.IC2_Plutonium_Small.get(4),
                 ItemList.IC2_Uranium_238.get(16),
                 Materials.Iron.getDust(6))
             .duration(25 * SECONDS)
@@ -270,6 +281,16 @@ public class FissionFuelLoader implements Runnable {
             .addTo(centrifugeRecipes);
 
         // MOX
+        GTModHandler.removeRecipeByOutputDelayed(ItemList.IC2_MOX_Fuel.get(1));
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(ItemList.IC2_Uranium_238.get(6), ItemList.IC2_Plutonium_Small.get(3))
+            .itemOutputs(ItemList.IC2_MOX_Fuel.get(1))
+            .fluidInputs(GTModHandler.getIC2Coolant(1_000))
+            .duration(20 * SECONDS)
+            .eut(120)
+            .addTo(assemblerRecipes);
+
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.IC2_Fuel_Rod_Empty.get(1), ItemList.IC2_MOX_Fuel.get(1))
             .itemOutputs(ItemList.RodMOX.get(1))
@@ -307,19 +328,19 @@ public class FissionFuelLoader implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.DepletedRodMOX.get(1))
-            .itemOutputs(ItemList.IC2_Small_Plutonium.get(1), ItemList.IC2_Plutonium.get(3), Materials.Iron.getDust(1))
+            .itemOutputs(ItemList.IC2_Plutonium_Small.get(1), ItemList.IC2_Plutonium.get(3), Materials.Iron.getDust(1))
             .duration(25 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(thermalCentrifugeRecipes);
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.DepletedRodMOX2.get(1))
-            .itemOutputs(ItemList.IC2_Small_Plutonium.get(2), ItemList.IC2_Plutonium.get(6), Materials.Iron.getDust(3))
+            .itemOutputs(ItemList.IC2_Plutonium_Small.get(2), ItemList.IC2_Plutonium.get(6), Materials.Iron.getDust(3))
             .duration(25 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(thermalCentrifugeRecipes);
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.DepletedRodMOX4.get(1))
-            .itemOutputs(ItemList.IC2_Small_Plutonium.get(4), ItemList.IC2_Plutonium.get(12), Materials.Iron.getDust(6))
+            .itemOutputs(ItemList.IC2_Plutonium_Small.get(4), ItemList.IC2_Plutonium.get(12), Materials.Iron.getDust(6))
             .duration(25 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(thermalCentrifugeRecipes);

@@ -1706,16 +1706,6 @@ public class CraftingRecipeLoader implements Runnable {
             codechicken.nei.api.API.hideItem(GTModHandler.getIC2Item("reactorMOXDual", 1L, 1));
             codechicken.nei.api.API.hideItem(GTModHandler.getIC2Item("reactorMOXQuad", 1L, 1));
         }
-        GTModHandler.addCraftingRecipe(
-            ItemList.IC2_Uranium_Fuel.get(1),
-            bits_no_remove_buffered,
-            new Object[] { "UUU", "NNN", "UUU", 'U', Materials.Uranium.getIngots(1), 'N',
-                Materials.Uranium235.getNuggets(1) });
-        GTModHandler.addCraftingRecipe(
-            ItemList.IC2_MOX_Fuel.get(1),
-            bits_no_remove_buffered,
-            new Object[] { "UUU", "NNN", "UUU", 'U', Materials.Uranium.getIngots(1), 'N',
-                Materials.Plutonium.getIngots(1) });
 
         GTModHandler.removeRecipeByOutputDelayed(Ic2Items.miningLaser.copy());
         GTModHandler.addCraftingRecipe(
