@@ -147,11 +147,6 @@ public class MTEHatchMaintenance extends MTEHatch implements IAddUIWidgets, IAli
     }
 
     @Override
-    public boolean isAccessAllowed(EntityPlayer aPlayer) {
-        return true;
-    }
-
-    @Override
     public boolean isValidSlot(int aIndex) {
         return mAuto && GTMod.gregtechproxy.mAMHInteraction;
     }

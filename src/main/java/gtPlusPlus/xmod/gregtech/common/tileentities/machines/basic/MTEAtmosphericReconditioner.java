@@ -164,11 +164,6 @@ public class MTEAtmosphericReconditioner extends MTEBasicMachine {
     }
 
     @Override
-    public long maxEUInput() {
-        return V[mTier];
-    }
-
-    @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         super.onPostTick(aBaseMetaTileEntity, aTick);
         if (aBaseMetaTileEntity.isServerSide()) {
@@ -781,11 +776,6 @@ public class MTEAtmosphericReconditioner extends MTEBasicMachine {
         }
 
         return mBuiltOutput;
-    }
-
-    @Override
-    public boolean isGivingInformation() {
-        return true;
     }
 
     @Override
