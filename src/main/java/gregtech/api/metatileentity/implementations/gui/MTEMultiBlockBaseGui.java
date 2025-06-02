@@ -107,7 +107,7 @@ public class MTEMultiBlockBaseGui {
                 .child(createInventoryRow(panel, syncManager)));
     }
 
-    private IWidget createTitleTextStyle(String title) {
+    protected IWidget createTitleTextStyle(String title) {
         return new SingleChildWidget<>().coverChildren()
             .topRel(0, -4, 1)
             .leftRel(0, -4, 0)
@@ -599,7 +599,7 @@ public class MTEMultiBlockBaseGui {
                     .tooltipShowUpTimer(TOOLTIP_DELAY));
     }
 
-    private IWidget createInventoryRow(ModularPanel panel, PanelSyncManager syncManager) {
+    protected IWidget createInventoryRow(ModularPanel panel, PanelSyncManager syncManager) {
         return new Row().widthRel(1)
             .height(76)
             .alignX(0)

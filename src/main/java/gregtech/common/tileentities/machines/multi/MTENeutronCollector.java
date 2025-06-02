@@ -23,6 +23,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import gregtech.api.metatileentity.implementations.gui.MTEMultiBlockBaseGui;
+import gregtech.common.tileentities.machines.multi.gui.MTENeutronCollectorGui;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
@@ -58,6 +60,7 @@ import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.blocks.BlockCasings10;
+import org.jetbrains.annotations.NotNull;
 
 public class MTENeutronCollector extends MTEExtendedPowerMultiBlockBase<MTENeutronCollector>
     implements ISurvivalConstructable {
@@ -138,7 +141,7 @@ public class MTENeutronCollector extends MTEExtendedPowerMultiBlockBase<MTENeutr
         speedCost = aNBT.getInteger("mSpeedCost");
         capacityCost = aNBT.getInteger("mCapacityCost");
         autoCost = aNBT.getInteger("mAutoCost");
-        super.saveNBTData(aNBT);
+        super.loadNBTData(aNBT);
     }
 
     @Override
@@ -361,6 +364,16 @@ public class MTENeutronCollector extends MTEExtendedPowerMultiBlockBase<MTENeutr
     }
 
     // UI
+
+
+    @Override
+    protected boolean useMui2() {
+        return false;
+    }
+
+    protected @NotNull MTEMultiBlockBaseGui getGui() {
+        return new MTENeutronCollectorGui(this);
+    }
 
     @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
