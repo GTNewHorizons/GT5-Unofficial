@@ -308,10 +308,10 @@ public class MTEVoidMiners {
                         { "H~H", "HHH", "HHH" } }))
             // spotless:on
             .addElement('A', ofBlock(GregTechAPI.sBlockCasings11, 7))
-            .addElement('B', ofBlock(GregTechAPI.sBlockCasings8,2))
+            .addElement('B', ofBlock(GregTechAPI.sBlockCasings8, 2))
             .addElement('C', ofFrame(Materials.Adamantium))
-            .addElement('D', ofBlock(WerkstoffLoader.BWBlockCasingsAdvanced,31850))
-            .addElement('E', ofBlock(WerkstoffLoader.BWBlockCasings,31850))
+            .addElement('D', ofBlock(WerkstoffLoader.BWBlockCasingsAdvanced, 31850))
+            .addElement('E', ofBlock(WerkstoffLoader.BWBlockCasings, 31850))
             .addElement(
                 'F',
                 buildHatchAdder(VMUV.class).atLeast(InputHatch, OutputBus, InputBus, Maintenance, Energy)
