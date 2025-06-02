@@ -130,7 +130,7 @@ public class MTEVoidMiners {
 
         public VMLUV(String aName, int tier) {
             super(aName, tier);
-            casingTextureIndex = 8;
+            casingTextureIndex = ((BlockCasings4) GregTechAPI.sBlockCasings4).getTextureIndex(14);
         }
 
         public VMLUV(int aID, String aName, String aNameRegional) {
@@ -139,7 +139,7 @@ public class MTEVoidMiners {
 
         @Override
         protected int getControllerTextureIndex() {
-            return 8;
+            return ((BlockCasings4) GregTechAPI.sBlockCasings4).getTextureIndex(14);
         }
 
         @Override
