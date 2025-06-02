@@ -117,11 +117,6 @@ public class MTERefinery extends GTPPMultiBlockBase<MTERefinery> implements ISur
     }
 
     @Override
-    public int getMaxParallelRecipes() {
-        return 1;
-    }
-
-    @Override
     public boolean addMufflerToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
         if (aTileEntity == null) {
             return false;
