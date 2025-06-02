@@ -73,7 +73,7 @@ public class MTESteamAlloySmelter extends MTESteamMultiBase<MTESteamAlloySmelter
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity arg0) {
         return new MTESteamAlloySmelter(this.mName);
     }
-    
+
     private static final int HORIZONTAL_OFF_SET = 1;
     private static final int VERTICAL_OFF_SET = 1;
     private static final int DEPTH_OFF_SET = 0;
@@ -155,16 +155,16 @@ public class MTESteamAlloySmelter extends MTESteamMultiBase<MTESteamAlloySmelter
                     + EnumChatFormatting.GRAY
                     + " Any casing")
             .addStructureInfo("")
-            .addStructureInfo(EnumChatFormatting.GOLD + "4x" + EnumChatFormatting.GRAY + " Any Glass")
-            .addStructureInfo("")
             .addStructureInfo(EnumChatFormatting.BLUE + "Basic " + EnumChatFormatting.DARK_PURPLE + "Tier")
             .addStructureInfo(EnumChatFormatting.GOLD + "16-26x" + EnumChatFormatting.GRAY + " Bronze Plated Bricks")
             .addStructureInfo(EnumChatFormatting.GOLD + "2x" + EnumChatFormatting.GRAY + " Bronze Pipe Casing")
+            .addCasingInfoExactly("Any Tiered Glass", 4, true)
             .addStructureInfo("")
             .addStructureInfo(EnumChatFormatting.BLUE + "High Pressure " + EnumChatFormatting.DARK_PURPLE + "Tier")
             .addStructureInfo(
                 EnumChatFormatting.GOLD + "16-26x" + EnumChatFormatting.GRAY + " Solid Steel Machine Casing")
             .addStructureInfo(EnumChatFormatting.GOLD + "2x" + EnumChatFormatting.GRAY + " Steel Pipe Casing")
+            .addCasingInfoExactly("Any Tiered Glass", 4, true)
             .toolTipFinisher();
         return tt;
     }
