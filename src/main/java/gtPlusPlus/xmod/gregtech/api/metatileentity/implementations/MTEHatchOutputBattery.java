@@ -86,11 +86,6 @@ public class MTEHatchOutputBattery extends MTEHatch {
     }
 
     @Override
-    public boolean isAccessAllowed(EntityPlayer aPlayer) {
-        return true;
-    }
-
-    @Override
     public boolean isValidSlot(int aIndex) {
         return true;
     }
@@ -138,21 +133,6 @@ public class MTEHatchOutputBattery extends MTEHatch {
                         (byte) 64,
                         (byte) 1);
                 }
-    }
-
-    @Override
-    public int rechargerSlotStartIndex() {
-        return 0;
-    }
-
-    @Override
-    public int rechargerSlotCount() {
-        return 0;
-    }
-
-    @Override
-    public int dechargerSlotStartIndex() {
-        return 0;
     }
 
     @Override
