@@ -199,12 +199,6 @@ public abstract class MTEFusionComputer extends MTEEnhancedMultiBlockBase<MTEFus
     public abstract MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity);
 
     @Override
-    public boolean allowCoverOnSide(ForgeDirection side, ItemStack coverItem) {
-
-        return side != getBaseMetaTileEntity().getFrontFacing();
-    }
-
-    @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
         if (mEUt > 0) {
@@ -509,11 +503,6 @@ public abstract class MTEFusionComputer extends MTEEnhancedMultiBlockBase<MTEFus
                 + GTUtility.formatNumbers(plasmaOut)
                 + EnumChatFormatting.RESET
                 + "L/t" };
-    }
-
-    @Override
-    public boolean isGivingInformation() {
-        return true;
     }
 
     @Override

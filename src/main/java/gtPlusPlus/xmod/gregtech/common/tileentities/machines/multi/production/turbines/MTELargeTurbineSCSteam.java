@@ -48,11 +48,6 @@ public class MTELargeTurbineSCSteam extends MTELargerTurbineBase {
     }
 
     @Override
-    public int getPollutionPerSecond(ItemStack aStack) {
-        return 0;
-    }
-
-    @Override
     public int getFuelValue(FluidStack aLiquid) {
         return 0;
     }

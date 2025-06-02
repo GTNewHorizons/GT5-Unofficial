@@ -2154,16 +2154,6 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
     // region ModularUI
 
     @Override
-    public int getGUIWidth() {
-        return 198;
-    }
-
-    @Override
-    public int getGUIHeight() {
-        return 192;
-    }
-
-    @Override
     public void bindPlayerInventoryUI(ModularWindow.Builder builder, UIBuildContext buildContext) {
         builder.bindPlayerInventory(buildContext.getPlayer(), new Pos2d(7, 109), getGUITextureSet().getItemSlot());
     }

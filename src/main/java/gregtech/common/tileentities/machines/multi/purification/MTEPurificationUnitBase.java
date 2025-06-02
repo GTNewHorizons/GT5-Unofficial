@@ -797,11 +797,6 @@ public abstract class MTEPurificationUnitBase<T extends MTEExtendedPowerMultiBlo
     }
 
     @Override
-    public boolean supportsVoidProtection() {
-        return false;
-    }
-
-    @Override
     public Set<VoidingMode> getAllowedVoidingModes() {
         return EnumSet.of(VoidingMode.VOID_NONE);
     }
