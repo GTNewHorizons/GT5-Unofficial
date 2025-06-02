@@ -32,7 +32,6 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
-import gregtech.api.GregTechAPI;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
@@ -41,7 +40,6 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
-import gregtech.common.blocks.BlockCasings4;
 import gtPlusPlus.core.block.ModBlocks;
 
 public class MTEVoidMiners {
@@ -167,7 +165,7 @@ public class MTEVoidMiners {
 
         public VMLUV(String aName, int tier) {
             super(aName, tier);
-            casingTextureIndex = ((BlockCasings4) GregTechAPI.sBlockCasings4).getTextureIndex(14);
+            casingTextureIndex = Casings.MiningOsmiridiumCasing.getTextureId();
         }
 
         public VMLUV(int aID, String aName, String aNameRegional) {
@@ -176,7 +174,7 @@ public class MTEVoidMiners {
 
         @Override
         protected int getControllerTextureIndex() {
-            return ((BlockCasings4) GregTechAPI.sBlockCasings4).getTextureIndex(14);
+            return Casings.MiningOsmiridiumCasing.getTextureId();
         }
 
         @Override
@@ -322,7 +320,7 @@ public class MTEVoidMiners {
 
         public VMZPM(String aName, int tier) {
             super(aName, tier);
-            casingTextureIndex = 179;
+            casingTextureIndex = Casings.MiningBlackPlutoniumCasing.getTextureId();
         }
 
         public VMZPM(int aID, String aName, String aNameRegional) {
@@ -332,7 +330,7 @@ public class MTEVoidMiners {
 
         @Override
         protected int getControllerTextureIndex() {
-            return 179;
+            return Casings.MiningBlackPlutoniumCasing.getTextureId();
         }
 
         @Override
@@ -471,7 +469,7 @@ public class MTEVoidMiners {
 
         public VMUV(String aName, int tier) {
             super(aName, tier);
-            casingTextureIndex = 178;
+            casingTextureIndex = Casings.MiningNeutroniumCasing.getTextureId();
         }
 
         public VMUV(int aID, String aName, String aNameRegional) {
@@ -480,7 +478,7 @@ public class MTEVoidMiners {
 
         @Override
         protected int getControllerTextureIndex() {
-            return 178;
+            return Casings.MiningNeutroniumCasing.getTextureId();
         }
 
         @Override
