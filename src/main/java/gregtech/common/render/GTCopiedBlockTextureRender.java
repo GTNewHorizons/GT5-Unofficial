@@ -1,5 +1,7 @@
 package gregtech.common.render;
 
+import static gregtech.api.enums.Mods.Angelica;
+
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.util.IIcon;
@@ -32,9 +34,13 @@ public class GTCopiedBlockTextureRender extends GTTextureBase implements ITextur
     }
 
     private IIcon getIcon(int ordinalSide, IBlockAccess access, int x, int y, int z) {
-        if (mSide == 6)
-            return CTMUtils.getBlockIcon(mBlock.getIcon(ordinalSide, mMeta), mBlock, access, x, y, z, ordinalSide);
-        return CTMUtils.getBlockIcon(mBlock.getIcon(mSide, mMeta), mBlock, access, x, y, z, ordinalSide);
+        IIcon icon;
+        if (mSide == 6) icon = mBlock.getIcon(ordinalSide, mMeta);
+        icon = mBlock.getIcon(mSide, mMeta);
+        if (!Angelica.isModLoaded()) return icon;
+        else {
+            return CTMUtils.getBlockIcon(icon, mBlock, access, x, y, z, ordinalSide);
+        }
     }
 
     @Override
