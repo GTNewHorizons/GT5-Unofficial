@@ -3,6 +3,7 @@ package gregtech.common.tileentities.machines.multi;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlockAnyMeta;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlocksTiered;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
 import static gregtech.api.GregTechAPI.sBlockCoilECCF;
 import static gregtech.api.GregTechAPI.sBlockCoilECCF2;
 import static gregtech.api.GregTechAPI.sBlockTintedGlass;
@@ -92,6 +93,7 @@ public class MTEEnvironmentallyControlledChemicalFacility extends
     private static final String PARALLEL_MODULE_R = "ParallelR";
     private static final String PARALLEL_MODULE_L = "ParallelL";
 
+    private int mCasing = 0;
     public double currentTemp = 0;
     public double currentPressure = 0;
     public double pressureLeakValue = 0;
@@ -132,10 +134,10 @@ public class MTEEnvironmentallyControlledChemicalFacility extends
     private long drainAmountEU = 0;
     private int coolantInputHatchAmount = 0;
 
-    static final int MODULE_OFFSET_V = 2;
-    static final int MODULE_OFFSET_LEFT = 4;
-    static final int MODULE_OFFSET_RIGHT = -3;
-    static final int MODULE_OFFSET_DEPTH = -1;
+    static final int MODULE_OFFSET_V = 10;
+    static final int MODULE_OFFSET_LEFT = 10;
+    static final int MODULE_OFFSET_RIGHT = -6;
+    static final int MODULE_OFFSET_DEPTH = 0;
 
     public int deltaPressure;
     public int deltaTemp;
@@ -148,59 +150,107 @@ public class MTEEnvironmentallyControlledChemicalFacility extends
         // spotless:off
         .addShape(
             STRUCTURE_PIECE_MAIN,
-            new String[][]{
-                {"     "," AAA "," AFA "," AFA "," A~A "," AAA "},
-                {" AAA ","AJJJA","PJJJP","AJJJA","AJJJA","AAAAA"},
-                {" AAA ","AJJJA","AJ JA","AJ JA","AJJJA","AAAAA"},
-                {" AAA ","AJJJA","PJJJP","AJJJA","AJJJA","AAAAA"},
-                {"     "," AAA "," AFA "," AFA "," AFA "," AAA "}}
-        )
-        .addShape(
+            transpose(new String[][]{
+                    {"           ","           ","   AAAAA   ","  AAAAAAA  ","  AAAAAAA  ","  AAAAAAA  ","  AAAAAAA  ","  AAAAAAA  ","   AAAAA   ","           ","           "},
+                    {"           ","   AAAAA   ","  AFFFFFA  "," AF JJJ FA "," AFJJJJJFA "," AFJJJJJFA "," AFJJJJJFA "," AF JJJ FA ","  AFFFFFA  ","   AAAAA   ","           "},
+                    {"   FFFFF   ","  FAAAAAF  "," FA     AF ","FA  JJJ  AF","FA J   J AF","FA J   J AF","FA J   J AF","FA  JJJ  AF"," FA     AF ","  FAAAAAF  ","   FFFFF   "},
+                    {"           ","   AAAAA   ","  A     A  "," A  JJJ  A "," A J   J A "," A J   J A "," A J   J A "," A  JJJ  A ","  A     A  ","   AAAAA   ","           "},
+                    {"           ","   AAGAA   ","  A     A  "," A  JJJ  A ","PPPJ   JPPP","PPPJ   JPPP","PPPJ   JPPP"," A  JJJ  A ","  A     A  ","   AAGAA   ","           "},
+                    {"           ","   AAGAA   ","  A     A  "," A  JJJ  A ","PPPJ   JPPP","           ","PPPJ   JPPP"," A  JJJ  A ","  A     A  ","   AAGAA   ","           "},
+                    {"           ","   AAGAA   ","  A     A  "," A  JJJ  A ","PPPJ   JPPP","PPPJ   JPPP","PPPJ   JPPP"," A  JJJ  A ","  A     A  ","   AAGAA   ","           "},
+                    {"           ","   AAAAA   ","  A     A  "," A  JJJ  A "," A J   J A "," A J   J A "," A J   J A "," A  JJJ  A ","  A     A  ","   AAAAA   ","           "},
+                    {"   FFFFF   ","  FAAAAAF  "," FA     AF ","FA  JJJ  AF","FA J   J AF","FA J   J AF","FA J   J AF","FA  JJJ  AF"," FA     AF ","  FAAAAAF  ","   FFFFF   "},
+                    {"           ","   AAAAA   ","  A     A  "," A  JJJ  A "," A JJJJJ A "," A JJJJJ A "," A JJJJJ A "," A  JJJ  A ","  A     A  ","   AAAAA   ","           "},
+                    {"   AA~AA   ","  AAAAAAA  "," AAAAAAAAA ","AAAAAAAAAAA","AAAAAAAAAAA","AAAAAAAAAAA","AAAAAAAAAAA","AAAAAAAAAAA"," AAAAAAAAA ","  AAAAAAA  ","   AAAAA   "}}))
+                .addShape(
             HEAT_MODULE_L,
-            new String[][]{
-                {" P", "QP", "PF", "QY"},
-                {"  ", "QQ", "FH", "QQ"},
-                {" P", "QP", "PF", "QQ"}}
-        )
+            transpose(new String[][]{
+                    {"     ","     ","     ","     ","     ","     ","     ","     ","     ","     ","     "},
+                    {"     ","     ","     ","     ","     ","     ","     ","     ","     ","     ","     "},
+                    {"     ","     ","     ","     ","     ","     ","     ","     ","     ","     ","     "},
+                    {"     ","     ","     ","  Q  "," QQQ "," QQQ "," QQQ ","  Q  ","     ","     ","     "},
+                    {"     ","     ","     "," QQQ ","  cQP","  cQP","  cQP"," QQQ ","     ","     ","     "},
+                    {"     ","     ","     "," QQQ ","  cQP","  HQ ","  cQP"," QQQ ","     ","     ","     "},
+                    {"     ","     ","     "," QQQ ","  cQP","  cQP","  cQP"," QQQ ","     ","     ","     "},
+                    {"     ","     ","     "," FQF "," QQQ "," QQQ "," QQQ "," FQF ","     ","     ","     "},
+                    {"     ","     ","     ","     "," FQF "," QQQ "," FQF ","     ","     ","     ","     "},
+                    {"     ","     ","     ","     "," FQF "," QQQ "," FQF ","     ","     ","     ","     "},
+                    {"     ","     ","     ","     ","QQQF ","QQQQ ","QQQF ","     ","     ","     ","     "}}))
         .addShape(
             COOL_MODULE_L,
-            new String[][]{
-                {" P", "QP", "PF", "QY"},
-                {"  ", "QQ", "FC", "QQ"},
-                {" P", "QP", "PF", "QQ"}}
-        )
+            transpose(new String[][]{
+                    {"     ","     ","     ","     ","     ","     ","     ","     ","     ","     ","     "},
+                    {"     ","     ","     ","     ","     ","     ","     ","     ","     ","     ","     "},
+                    {"     ","     ","     ","     ","     ","     ","     ","     ","     ","     ","     "},
+                    {"     ","     ","     ","  i  "," ipi "," ipi "," ipi ","  i  ","     ","     ","     "},
+                    {"     ","     ","     "," ipi "," giiP"," giiP"," giiP"," ipi ","     ","     ","     "},
+                    {"     ","     ","     "," ipi "," giiP"," Cii "," giiP"," ipi ","     ","     ","     "},
+                    {"     ","     ","     "," ipi "," giiP"," giiP"," giiP"," ipi ","     ","     ","     "},
+                    {"     ","     ","     ","  i  "," iii "," iii "," iii ","  i  ","     ","     ","     "},
+                    {"     ","     ","     ","     ","  i  "," iii ","  i  ","     ","     ","     ","     "},
+                    {"     ","     ","     ","     ","  i  "," iii ","  i  ","     ","     ","     ","     "},
+                    {"     ","     ","     ","     ","iii  ","iiii ","iii  ","     ","     ","     ","     "}
+                }))
         .addShape(
             VACUUM_MODULE_R,
-            new String[][]{
-                {"P ", "PQ", "FQ", "QU"},
-                {"  ", "FQ", "VP", "QQ"},
-                {"P ", "PQ", "FQ", "PE"}}
+            transpose(new String[][]{
+                {"     ","     ","     ","     ","     ","     ","     ","     ","     ","     ","     "},
+                {"     ","     ","     ","     ","  Y  "," YYY ","  Y  ","     ","     ","     ","     "},
+                {"     ","     ","     ","     "," YYY "," YYY "," YYY ","     ","     ","     ","     "},
+                {"     ","     ","     ","  F  "," YYY "," Y P "," YYY ","  F  ","     ","     ","     "},
+                {"     ","     ","     ","  F  ","PYYY ","PY Y ","PYYY ","  F  ","     ","     ","     "},
+                {"     ","     ","     ","  F  ","PYYr "," Y V ","PYYr ","  F  ","     ","     ","     "},
+                {"     ","     ","     ","  F  ","PYYr ","PY V ","PYYr ","  F  ","     ","     ","     "},
+                {"     ","     ","     ","  F  "," YYr "," Y V "," YYr ","  F  ","     ","     ","     "},
+                {"     ","     ","     ","  F  "," YYY "," Y Y "," YYY ","  F  ","     ","     ","     "},
+                {"     ","     ","     ","  F  "," YYY "," Y P "," YYY ","  F  ","     ","     ","     "},
+                {"     ","     ","     ","     "," UUU "," UUU "," UUU ","     ","     ","     ","     "}})
         )
         .addShape(
             COMPRESSION_MODULE_R,
-            new String[][]{
-                {"P ", "P ", "PF", "QU"},
-                {"  ", "Q ", "KF", "QQ"},
-                {"P ", "P ", "PF", "QE"}}
+            transpose(new String[][]{
+                {"     ","     ","     ","     ","     ","     ","     ","     ","     ","     ","     "},
+                {"     ","     ","     ","     ","  Y  "," YYY ","  Y  ","     ","     ","     ","     "},
+                {"     ","     ","     ","     "," YYY "," YYY "," YYY ","     ","     ","     ","     "},
+                {"     ","     ","     ","  F  "," YYY "," Y P "," YYY ","  F  ","     ","     ","     "},
+                {"     ","     ","     ","  F  ","PYYY ","PY Y ","PYYY ","  F  ","     ","     ","     "},
+                {"     ","     ","     ","  F  ","PYYr "," Y K ","PYYr ","  F  ","     ","     ","     "},
+                {"     ","     ","     ","  F  ","PYYr ","PY K ","PYYr ","  F  ","     ","     ","     "},
+                {"     ","     ","     ","  F  "," YYr "," Y K "," YYr ","  F  ","     ","     ","     "},
+                {"     ","     ","     ","  F  "," YYY "," Y Y "," YYY ","  F  ","     ","     ","     "},
+                {"     ","     ","     ","  F  "," YYY "," Y P "," YYY ","  F  ","     ","     ","     "},
+                {"     ","     ","     ","     "," UUU "," UUU "," UUU ","     ","     ","     ","     "}})
         )
         .addShape(
             PARALLEL_MODULE_L,
-            new String[][]{
-                {" P", "FP", "FP", "QQ"},
-                {" Q", "GW", "GW", "QQ"},
-                {" P", "FP", "FP", "QQ"}}
+            transpose(new String[][]{
+                {"     ","     ","     ","     ","  Q  "," QQQ ","  Q  ","     ","     ","     ","     "},
+                {"     ","     ","     "," FFF ","FQQQF","FQWQF","FQQQF"," FFF ","     ","     ","     "},
+                {"     ","     ","     ","     "," QQQ "," Q Q "," QQQ ","     ","     ","     ","     "},
+                {"     ","     ","     ","     "," QQQ "," Q Q "," QQQ ","     ","     ","     ","     "},
+                {"     ","     ","     ","     "," QGQP"," Q GP"," QGQP","     ","     ","     ","     "},
+                {"     ","     ","     ","     "," QGQP"," Q G "," QGQP","     ","     ","     ","     "},
+                {"     ","     ","     ","     "," QGQP"," Q GP"," QGQP","     ","     ","     ","     "},
+                {"     ","     ","     ","     "," QQQ "," Q Q "," QQQ ","     ","     ","     ","     "},
+                {"     ","     ","     ","     "," QQQ "," Q Q "," QQQ ","     ","     ","     ","     "},
+                {"     ","     ","     "," FFF ","FQQQF","FQIQF","FQQQF"," FFF ","     ","     ","     "},
+                {"     ","     ","     ","     "," QQQ "," QQQ "," QQQ ","     ","     ","     ","     "}})
         )
         .addShape(
             PARALLEL_MODULE_R,
-            new String[][]{
-                {"P ", "PF", "PF", "QQ"},
-                {"Q ", "IG", "IG", "QQ"},
-                {"P ", "PF", "PF", "QQ"}}
+            transpose(new String[][]{
+                {"     ","     ","     ","     ","  Q  "," QQQ ","  Q  ","     ","     ","     ","     "},
+                {"     ","     ","     "," FFF ","FQQQF","FQWQF","FQQQF"," FFF ","     ","     ","     "},
+                {"     ","     ","     ","     "," QQQ "," Q Q "," QQQ ","     ","     ","     ","     "},
+                {"     ","     ","     ","     "," QQQ "," Q Q "," QQQ ","     ","     ","     ","     "},
+                {"     ","     ","     ","     ","PQGQ ","PQ G ","PQGQ ","     ","     ","     ","     "},
+                {"     ","     ","     ","     ","PQGQ "," Q G ","PQGQ ","     ","     ","     ","     "},
+                {"     ","     ","     ","     ","PQGQ ","PQ G ","PQGQ ","     ","     ","     ","     "},
+                {"     ","     ","     ","     "," QQQ "," Q Q "," QQQ ","     ","     ","     ","     "},
+                {"     ","     ","     ","     "," QQQ "," Q Q "," QQQ ","     ","     ","     ","     "},
+                {"     ","     ","     "," FFF ","FQQQF","FQWQF","FQQQF"," FFF ","     ","     ","     "},
+                {"     ","     ","     ","     "," QQQ "," QQQ "," QQQ ","     ","     ","     ","     "}})
         )
-        // spotless:on
-        .addElement('Q', ofBlock(GregTechAPI.sBlockCasings12, 15))
-        .addElement('P', ofBlock(GregTechAPI.sBlockCasings9, 0))
-        .addElement('J', ofBlock(GregTechAPI.sBlockCasings2, 0))
         .addElement(
             'D',
             buildHatchAdder(MTEEnvironmentallyControlledChemicalFacility.class).atLeast(InputHatch, OutputHatch)
@@ -289,28 +339,37 @@ public class MTEEnvironmentallyControlledChemicalFacility extends
         .addElement(
             'Y',
             buildHatchAdder(MTEEnvironmentallyControlledChemicalFacility.class).hatchClass(MTEHatchInput.class)
-                .adder(MTEEnvironmentallyControlledChemicalFacility::addCoolantInputToMachineList)
-                .casingIndex(((BlockCasings12) GregTechAPI.sBlockCasings12).getTextureIndex(15))
-                .dot(2)
-                .buildAndChain(GregTechAPI.sBlockCasings12, 15))
-        .addElement(
-            'U',
-            buildHatchAdder(MTEEnvironmentallyControlledChemicalFacility.class).hatchClass(MTEHatchInput.class)
                 .adder(MTEEnvironmentallyControlledChemicalFacility::addLubricantInputToMachineList)
                 .casingIndex(((BlockCasings12) GregTechAPI.sBlockCasings12).getTextureIndex(15))
                 .dot(2)
                 .buildAndChain(GregTechAPI.sBlockCasings12, 15))
         .addElement(
-            'E',
+            'U',
             buildHatchAdder(MTEEnvironmentallyControlledChemicalFacility.class).hatchClass(MTEHatchEnergy.class)
                 .adder(MTEEnvironmentallyControlledChemicalFacility::addPressureEnergyToMachineList)
                 .casingIndex(((BlockCasings12) GregTechAPI.sBlockCasings12).getTextureIndex(15))
-                .dot(2)
+                .dot(3)
+                .buildAndChain(GregTechAPI.sBlockCasings12, 15))
+        .addElement(
+            'E',
+            buildHatchAdder(MTEEnvironmentallyControlledChemicalFacility.class).hatchClass(MTEHatchInput.class)
+                .adder(MTEEnvironmentallyControlledChemicalFacility::addCoolantInputToMachineList)
+                .casingIndex(((BlockCasings12) GregTechAPI.sBlockCasings12).getTextureIndex(15))
+                .dot(4)
                 .buildAndChain(GregTechAPI.sBlockCasings12, 15))
         .addElement('F', ofFrame(Materials.Polybenzimidazole))
+        .addElement('r', ofFrame(Materials.RedstoneAlloy))
         .addElement('G', ofBlockAnyMeta(sBlockTintedGlass, 2))
+        .addElement('p', ofBlock(GregTechAPI.sBlockCasings8, 1)) // ptfe pipe casing
+        .addElement('P', ofBlock(GregTechAPI.sBlockCasings9, 0)) // pbi pipe casing
+        .addElement('g', ofBlock(GregTechAPI.sBlockCasings3, 10)) // grate machine casing
+        .addElement('Q', ofBlock(GregTechAPI.sBlockCasings12, 15)) // pbi machine casing
+        .addElement('J', ofBlock(GregTechAPI.sBlockCasings2, 0)) // solid steel machine casing
+        .addElement('i', ofBlock(GregTechAPI.sBlockCasings8, 0)) // chemically inert casing
+        .addElement('c', ofBlock(GregTechAPI.sBlockCasings5, 0)) // cupronickel coil
         .build();
-
+    // TODO: fix coolant hatch
+    // spotless:on
     public MTEEnvironmentallyControlledChemicalFacility(final int aID, final String aName, final String aNameRegional) {
         super(aID, aName, aNameRegional);
     }
@@ -560,7 +619,7 @@ public class MTEEnvironmentallyControlledChemicalFacility extends
                     + String.format("- %.0f%% loss", getLeakPercentage("vo75") * 100))
             .addSeparator()
             .addTecTechHatchInfo()
-            .beginStructureBlock(5, 6, 5, true)
+            .beginStructureBlock(11, 11, 11, true)
             .addController("Front Center")
             .addCasingInfoMin("Chemically Inert Casing", 0, false)
             .addInputBus("Any Chemically Inert Casing", 1)
@@ -589,7 +648,7 @@ public class MTEEnvironmentallyControlledChemicalFacility extends
 
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
-        buildPiece(STRUCTURE_PIECE_MAIN, stackSize, hintsOnly, 2, 4, 0);
+        buildPiece(STRUCTURE_PIECE_MAIN, stackSize, hintsOnly, 5, 10, 0);
         Pair<Integer, Integer> modules = create_modules(stackSize);
         int MODULE_LEFT = modules.getLeft();
         int MODULE_RIGHT = modules.getRight();
@@ -646,7 +705,7 @@ public class MTEEnvironmentallyControlledChemicalFacility extends
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine && (create_modules(stackSize).getLeft() == 0) && (create_modules(stackSize).getRight() == 0))
             return -1;
-        int built = survivialBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 2, 4, 0, elementBudget, env, false, true);
+        int built = survivialBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 5, 10, 0, elementBudget, env, false, true);
         Pair<Integer, Integer> modules = create_modules(stackSize);
         switch (modules.getLeft()) {
             case 1 -> built += survivialBuildPiece(
@@ -769,7 +828,7 @@ public class MTEEnvironmentallyControlledChemicalFacility extends
         isCompressorModule = false;
 
         getDimConditions();
-        if (!checkPiece(STRUCTURE_PIECE_MAIN, 2, 4, 0)) {
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, 5, 10, 0)) {
             return false;
         }
         coolantInputHatchAmount = 0;
