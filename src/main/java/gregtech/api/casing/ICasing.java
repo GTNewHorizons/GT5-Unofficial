@@ -85,6 +85,10 @@ public interface ICasing extends ImmutableBlockMeta {
         return StructureUtility.lazy(() -> StructureUtility.ofBlock(getBlock(), getBlockMeta()));
     }
 
+    default <T> IStructureElement<T> asElement() {
+        return StructureUtility.lazy(() -> StructureUtility.ofBlock(getBlock(), getBlockMeta()));
+    }
+
     static ICasing ofBlock(ImmutableBlockMeta block) {
         return new ICasing() {
 
