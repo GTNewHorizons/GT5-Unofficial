@@ -32,6 +32,7 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.NaniteTier;
+import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IDataCopyable;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
@@ -41,6 +42,7 @@ import gregtech.api.metatileentity.implementations.MTEHatchNanite;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
+import gregtech.api.render.TextureFactory;
 import gregtech.api.structure.StructureWrapperTooltipBuilder;
 import gregtech.api.util.IGTHatchAdder;
 import gregtech.api.util.MultiblockTooltipBuilder;
@@ -121,13 +123,34 @@ public class MTEBECAssembler extends MTEBECMultiblockBase<MTEBECAssembler> imple
     }
 
     @Override
+    protected ITexture getActiveTexture() {
+        return TextureFactory.builder()
+            .addIcon(Textures.BlockIcons.BEC_ASSEMBLER_ACTIVE)
+            .extFacing()
+            .glow()
+            .build();
+    }
+
+    @Override
     public RecipeMap<?> getRecipeMap() {
         return TecTechRecipeMaps.condensateAssemblingRecipes;
     }
 
     @Override
     protected @NotNull CheckRecipeResult checkProcessing_EM() {
-        return CheckRecipeResultRegistry.SUCCESSFUL;
+        boolean active = false;
+
+        for (var node : ioNodes) {
+            if (node.mMaxProgresstime > 0) {
+                active = true;
+                break;
+            }
+        }
+
+        mMaxProgresstime = 20;
+        mEfficiency = 10_000;
+
+        return active ? CheckRecipeResultRegistry.SUCCESSFUL : CheckRecipeResultRegistry.NONE;
     }
 
     @Override
@@ -176,8 +199,8 @@ public class MTEBECAssembler extends MTEBECMultiblockBase<MTEBECAssembler> imple
                         continue;
                     }
 
-                    // intentionally share the same nanite count between every io node even though it doesn't make
-                    // physical sense so that proper automation is incentivized even more
+                    // Intentionally share the same nanite count between every io node even though it doesn't make
+                    // physical sense so that proper automation is incentivized even more.
                     node.setNaniteShare(currentNaniteTier, availableNanites);
                 }
 

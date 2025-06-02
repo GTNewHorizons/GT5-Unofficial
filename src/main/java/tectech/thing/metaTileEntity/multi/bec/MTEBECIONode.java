@@ -1,5 +1,7 @@
 package tectech.thing.metaTileEntity.multi.bec;
 
+import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.GOLD;
+import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.WHITE;
 import static gregtech.api.casing.Casings.AdvancedFusionCoilII;
 import static gregtech.api.casing.Casings.ElectromagneticWaveguide;
 import static gregtech.api.casing.Casings.ElectromagneticallyIsolatedCasing;
@@ -36,13 +38,16 @@ import org.jetbrains.annotations.Nullable;
 
 import com.github.bsideup.jabel.Desugar;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
+import com.gtnewhorizons.modularui.api.math.Alignment;
 import com.gtnewhorizons.modularui.common.widget.DynamicPositionedColumn;
 import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
+import com.gtnewhorizons.modularui.common.widget.TextWidget;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.NaniteTier;
+import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IDataCopyable;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
@@ -52,6 +57,7 @@ import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
+import gregtech.api.render.TextureFactory;
 import gregtech.api.structure.StructureWrapperTooltipBuilder;
 import gregtech.api.util.GTBECRecipe;
 import gregtech.api.util.GTDataUtils;
@@ -149,6 +155,15 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
     @Override
     protected ITexture getCasingTexture() {
         return SuperconductivePlasmaEnergyConduit.getCasingTexture();
+    }
+
+    @Override
+    protected ITexture getActiveTexture() {
+        return TextureFactory.builder()
+            .addIcon(Textures.BlockIcons.BEC_IONODE_ACTIVE)
+            .extFacing()
+            .glow()
+            .build();
     }
 
     @Override
@@ -574,27 +589,39 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
             new FakeSyncWidget.IntegerSyncer(
                 () -> saveNanite(requiredTier),
                 matId -> requiredTier = loadNanite(matId)));
-    }
 
-    @Override
-    public String generateCurrentRecipeInfoString() {
-        StringBuilder ret = new StringBuilder();
+        screenElements.widget(TextWidget.dynamicString(() -> {
+            StringBuffer ret = new StringBuffer();
 
-        ret.append(EnumChatFormatting.WHITE);
+            ret.append(translate("GT5U.gui.text.provided", providedTier == null ? translate("GT5U.gui.text.nil") : translate("GT5U.gui.text.nanite_desc", availableNanites, providedTier.describe())));
+            ret.append("\n");
 
-        if (providedTier == null) {
-            ret.append("Provided: None\n");
-        } else {
-            ret.append(MessageFormat.format("Provided: {0} x {1}\n", availableNanites, providedTier.describe()));
-        }
+            ret.append(translate("GT5U.gui.text.required", requiredTier == null ? translate("GT5U.gui.text.nil") : (GOLD + requiredTier.describe() + WHITE)));
+            ret.append("\n");
 
-        if (requiredTier == null) {
-            ret.append("Required: None\n");
-        } else {
-            ret.append(MessageFormat.format("Required: {0}\n", requiredTier.describe()));
-        }
+        ret.append(translate("GT5U.gui.text.required_condensate"));
+            ret.append("\n");
 
-        return ret + super.generateCurrentRecipeInfoString();
+            boolean hasAny = false;
+
+            if (requiredCondensate != null && consumedCondensate != null && mMaxProgresstime > 0) {
+                for (var e : requiredCondensate.object2LongEntrySet()) {
+                    hasAny = true;
+
+                    long consumed = consumedCondensate.getLong(e.getKey());
+
+                    String matName = new CondensateStack(e.getKey(), 0).getDisplayName();
+
+                    ret.append(translate("GT5U.gui.text.remaining_condensate", matName, consumed, e.getLongValue()));
+                }
+            }
+
+            if (!hasAny) {
+                ret.append("None");
+            }
+
+            return ret.toString();
+        }).setSynced(true).setTextAlignment(Alignment.CenterLeft).setDefaultColor(EnumChatFormatting.WHITE));
     }
 
     @Override
@@ -701,7 +728,7 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
             aNBT.setTag("consumed", CondensateStack.save(consumedCondensate));
         }
 
-        if (mMaxProgresstime > 0) {
+        if (recipeSteps != null) {
             NBTTagList steps = new NBTTagList();
             aNBT.setTag("steps", steps);
 
@@ -735,9 +762,9 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
         requiredCondensate = CondensateStack.loadMap(aNBT.getTagList("required", Constants.NBT.TAG_COMPOUND));
         consumedCondensate = CondensateStack.loadMap(aNBT.getTagList("consumed", Constants.NBT.TAG_COMPOUND));
 
-        NBTTagList steps = aNBT.getTagList("steps", Constants.NBT.TAG_COMPOUND);
+        if (aNBT.hasKey("steps")) {
+            NBTTagList steps = aNBT.getTagList("steps", Constants.NBT.TAG_COMPOUND);
 
-        if (mMaxProgresstime > 0) {
             recipeSteps = new ArrayList<>();
 
             List<NaniteTier> tiers = new ArrayList<>();

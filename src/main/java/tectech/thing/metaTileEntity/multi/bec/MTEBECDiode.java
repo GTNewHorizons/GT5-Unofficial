@@ -14,6 +14,7 @@ import java.util.List;
 import org.jetbrains.annotations.NotNull;
 
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
+import gregtech.api.enums.Textures;
 import gregtech.api.enums.TierEU;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
@@ -21,6 +22,7 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
+import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTStructureUtility;
 import gregtech.api.util.IGTHatchAdder;
 import gregtech.api.util.shutdown.ShutDownReason;
@@ -67,6 +69,15 @@ public class MTEBECDiode extends MTEBECMultiblockBase<MTEBECDiode> {
     @Override
     protected ITexture getCasingTexture() {
         return ElectromagneticallyIsolatedCasing.getCasingTexture();
+    }
+
+    @Override
+    protected ITexture getActiveTexture() {
+        return TextureFactory.builder()
+            .addIcon(Textures.BlockIcons.BEC_MAXWELL_GATE_ACTIVE)
+            .extFacing()
+            .glow()
+            .build();
     }
 
     @Override

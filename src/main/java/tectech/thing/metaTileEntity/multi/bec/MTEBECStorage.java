@@ -32,12 +32,14 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.SoundResource;
+import gregtech.api.enums.Textures;
 import gregtech.api.enums.TierEU;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
+import gregtech.api.render.TextureFactory;
 import gregtech.api.structure.StructureWrapperTooltipBuilder;
 import gregtech.api.util.IntFraction;
 import gregtech.api.util.MultiblockTooltipBuilder;
@@ -98,6 +100,15 @@ public class MTEBECStorage extends MTEBECMultiblockBase<MTEBECStorage> implement
         structure.addCasing('1', FineStructureConstantManipulator).withHatches(2, 4, Arrays.asList(BECHatches.Hatch));
 
         return structure.buildStructure(definition);
+    }
+
+    @Override
+    protected ITexture getActiveTexture() {
+        return TextureFactory.builder()
+            .addIcon(Textures.BlockIcons.BEC_STORAGE_ACTIVE)
+            .extFacing()
+            .glow()
+            .build();
     }
 
     @Override

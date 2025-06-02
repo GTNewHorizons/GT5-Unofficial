@@ -128,17 +128,6 @@ public class TecTechRecipeMaps {
         .neiHandlerInfo(builder -> builder.setDisplayStack(ItemCondensate.getForMaterial("Deuterium", 0)))
         .neiRecipeComparator(Comparator.comparingLong(BECRecipeLoader::getRecipeCost))
         .build();
-    public static final RecipeMap<BECRecipeMapBackend> condensateLiquificationRecipes = RecipeMapBuilder
-        .of("gt.recipe.liquify-condensate", BECRecipeMapBackend::new)
-        .maxIO(1, 0, 0, 1)
-        .logo(TecTechUITextures.PICTURE_TECTECH_LOGO)
-        .logoSize(18, 18)
-        .logoPos(151, 63)
-        .neiRecipeBackgroundSize(170, 90)
-        .frontend(LiquidCondensateFrontend::new)
-        .neiHandlerInfo(builder -> builder.setDisplayStack(ItemCondensate.getForMaterial("Water", 0)))
-        .neiRecipeComparator(Comparator.comparingLong(BECRecipeLoader::getRecipeCost))
-        .build();
     public static final RecipeMap<BECRecipeMapBackend> condensateAssemblingRecipes = RecipeMapBuilder
         .of("gt.recipe.assemble-condensate", BECRecipeMapBackend::new)
         .maxIO(16, 1, 4, 0)

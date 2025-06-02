@@ -26,9 +26,9 @@ import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
 import gregtech.api.enums.StructureError;
+import gregtech.api.enums.Textures;
 import gregtech.api.factory.RoutedNode;
 import gregtech.api.interfaces.IHatchElement;
-import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -92,30 +92,10 @@ public abstract class MTEBECMultiblockBase<TSelf extends MTEBECMultiblockBase<TS
         textures.add(getCasingTexture());
 
         if (side == facing) {
+            textures.add(getBackgroundTexture());
+
             if (active) {
-                textures.add(
-                    TextureFactory.builder()
-                        .addIcon(getActiveTexture())
-                        .extFacing()
-                        .build());
-                textures.add(
-                    TextureFactory.builder()
-                        .addIcon(getActiveTextureGlow())
-                        .extFacing()
-                        .glow()
-                        .build());
-            } else {
-                textures.add(
-                    TextureFactory.builder()
-                        .addIcon(getInactiveTexture())
-                        .extFacing()
-                        .build());
-                textures.add(
-                    TextureFactory.builder()
-                        .addIcon(getInactiveTextureGlow())
-                        .extFacing()
-                        .glow()
-                        .build());
+                textures.add(getActiveTexture());
             }
         }
 
@@ -126,20 +106,19 @@ public abstract class MTEBECMultiblockBase<TSelf extends MTEBECMultiblockBase<TS
         return MolecularCasing.getCasingTexture();
     }
 
-    protected IIconContainer getActiveTexture() {
-        return TexturesGtBlock.oMCAAdvancedEBFActive;
+    protected ITexture getBackgroundTexture() {
+        return TextureFactory.builder()
+            .addIcon(Textures.BlockIcons.BEC_CONTROLLER_BACKGROUND)
+            .extFacing()
+            .build();
     }
 
-    protected IIconContainer getActiveTextureGlow() {
-        return TexturesGtBlock.oMCAAdvancedEBFActiveGlow;
-    }
-
-    protected IIconContainer getInactiveTexture() {
-        return TexturesGtBlock.oMCAAdvancedEBF;
-    }
-
-    protected IIconContainer getInactiveTextureGlow() {
-        return TexturesGtBlock.oMCAAdvancedEBFGlow;
+    protected ITexture getActiveTexture() {
+        return TextureFactory.builder()
+            .addIcon(TexturesGtBlock.oMCAAdvancedEBFActive)
+            .extFacing()
+            .glow()
+            .build();
     }
 
     @Override

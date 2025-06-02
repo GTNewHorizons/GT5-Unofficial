@@ -178,7 +178,7 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
     protected long eMaxAmpereFlow = 0, eMaxAmpereGen = 0;
 
     // What is the max and minimal tier of eu hatches installed
-    private long maxEUinputMin = 0, maxEUinputMax = 0, maxEUoutputMin = 0, maxEUoutputMax = 0;
+    protected long maxEUinputMin = 0, maxEUinputMax = 0, maxEUoutputMin = 0, maxEUoutputMax = 0;
 
     // read only unless you are making computation generator - read computer class
     protected long eAvailableData = 0; // data being available
@@ -1346,30 +1346,6 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
         }
     }
 
-    protected final void powerInput_EM() {
-        long euVar;
-        for (MTEHatchEnergy tHatch : validMTEList(mEnergyHatches)) {
-            if (getEUVar() > getMinimumStoredEU()) {
-                break;
-            }
-            euVar = tHatch.maxEUInput();
-            if (tHatch.getBaseMetaTileEntity()
-                .decreaseStoredEnergyUnits(euVar, false)) {
-                setEUVar(getEUVar() + euVar);
-            }
-        }
-        for (MTEHatchEnergyMulti tHatch : validMTEList(eEnergyMulti)) {
-            if (getEUVar() > getMinimumStoredEU()) {
-                break;
-            }
-            euVar = tHatch.maxEUInput() * tHatch.Amperes;
-            if (tHatch.getBaseMetaTileEntity()
-                .decreaseStoredEnergyUnits(euVar, false)) {
-                setEUVar(getEUVar() + euVar);
-            }
-        }
-    }
-
     // endregion
 
     // region EFFICIENCY AND FIXING LIMITS
@@ -1533,7 +1509,6 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
         }
         // sub eu
         setEUVar(getEUVar() - EUuse);
-        onEnergyDrained(EUuse, EUtEffective, Amperes);
         return true;
     }
 
@@ -1556,12 +1531,7 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
         }
         // sub eu
         setEUVar(getEUVar() - EUuse);
-        onEnergyDrained(EUuse, EUtEffective, Amperes);
         return true;
-    }
-
-    protected void onEnergyDrained(long consumedEU, long eut, long amperes) {
-
     }
 
     // new method
