@@ -36,7 +36,7 @@ public class GTCopiedBlockTextureRender extends GTTextureBase implements ITextur
     private IIcon getIcon(int ordinalSide, IBlockAccess access, int x, int y, int z) {
         IIcon icon;
         if (mSide == 6) icon = mBlock.getIcon(ordinalSide, mMeta);
-        icon = mBlock.getIcon(mSide, mMeta);
+        else icon = mBlock.getIcon(mSide, mMeta);
         if (!Angelica.isModLoaded()) return icon;
         else {
             return CTMUtils.getBlockIcon(icon, mBlock, access, x, y, z, ordinalSide);
