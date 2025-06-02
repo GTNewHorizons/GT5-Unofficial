@@ -155,16 +155,6 @@ public abstract class MTEVoidMinerBase<T extends MTEVoidMinerBase<T>> extends MT
                     + "VOIDED"
                     + EnumChatFormatting.RESET
                     + ".")
-            .beginStructureBlock(3, 7, 3, false)
-            .addController("Front bottom")
-            .addOtherStructurePart("a", "form the 3x1x3 Base")
-            .addOtherStructurePart("a", "1x3x1 pillar above the center of the base (2 minimum total)")
-            .addOtherStructurePart(" Frame Boxes", "Each pillar's side and 1x3x1 on top")
-            .addEnergyHatch(VN[this.getMinTier()] + "+, Any base casing")
-            .addMaintenanceHatch("Any base casing")
-            .addInputBus("Mining Pipes or Ores, optional, any base casing")
-            .addInputHatch("Optional noble gas, any base casing")
-            .addOutputBus("Any base casing")
             .toolTipFinisher();
         return tt;
     }

@@ -15,6 +15,7 @@ package bwcrossmod.galacticgreg;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
+import static gregtech.api.enums.GTValues.VN;
 import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.InputBus;
 import static gregtech.api.enums.HatchElement.InputHatch;
@@ -23,6 +24,8 @@ import static gregtech.api.enums.HatchElement.OutputBus;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 
+import gregtech.api.enums.GTValues;
+import gregtech.api.util.MultiblockTooltipBuilder;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 
@@ -40,6 +43,9 @@ import gregtech.api.util.GTUtility;
 import gregtech.common.blocks.BlockCasings4;
 import gregtech.common.blocks.BlockCasings8;
 import gtPlusPlus.core.block.ModBlocks;
+import net.minecraft.util.EnumChatFormatting;
+
+import java.text.NumberFormat;
 
 public class MTEVoidMiners {
 
@@ -108,6 +114,37 @@ public class MTEVoidMiners {
         @Override
         public IStructureDefinition<VMLUV> getStructureDefinition() {
             return STRUCTURE_DEFINITION;
+        }
+
+        @Override
+        protected MultiblockTooltipBuilder createTooltip() {
+            final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+            tt.addMachineType("Miner")
+                .addInfo("Consumes " + numberFormat.format(GTValues.V[this.getMinTier()]) + " EU/t")
+                .addInfo(
+                    "Can be supplied with 2L/s of Neon(x4), Krypton(x8), Xenon(x16) or Oganesson(x64) for higher outputs.")
+                .addInfo(
+                    "Will output " + 2 * this.TIER_MULTIPLIER
+                        + " Ores per Second depending on the Dimension it is build in")
+                .addInfo("Put the Ore into the input bus to set the Whitelist/Blacklist")
+                .addInfo("Use a screwdriver to toggle Whitelist/Blacklist")
+                .addInfo(
+                    "Blacklist or non Whitelist Ore will be " + EnumChatFormatting.DARK_RED
+                        + "VOIDED"
+                        + EnumChatFormatting.RESET
+                        + ".")
+                .beginStructureBlock(7,9,7,false)
+                .addStructureInfo(EnumChatFormatting.GOLD + "20x" + EnumChatFormatting.GRAY + " Mining Osmiridium Casing")
+                .addStructureInfo(EnumChatFormatting.GOLD + "42x" + EnumChatFormatting.GRAY + " Osmiridium Frame Box")
+                .addStructureInfo(EnumChatFormatting.GOLD + "6x" + EnumChatFormatting.GRAY + " Bolted Osmiridium Casing")
+                .addStructureInfo(EnumChatFormatting.GOLD + "6x" + EnumChatFormatting.GRAY + " Rebolted Osmiridium Casing")
+                .addEnergyHatch(VN[this.getMinTier()] + "+, Any base casing")
+                .addMaintenanceHatch("Any base casing")
+                .addInputBus("Mining Pipes or Ores, optional, any base casing")
+                .addInputHatch("Optional noble gas, any base casing")
+                .addOutputBus("Any base casing")
+                .toolTipFinisher();
+            return tt;
         }
 
         public void construct(ItemStack stackSize, boolean hintsOnly) {
@@ -228,6 +265,38 @@ public class MTEVoidMiners {
             return STRUCTURE_DEFINITION;
         }
 
+        @Override
+        protected MultiblockTooltipBuilder createTooltip() {
+            final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+            tt.addMachineType("Miner")
+                .addInfo("Consumes " + numberFormat.format(GTValues.V[this.getMinTier()]) + "EU/t")
+                .addInfo(
+                    "Can be supplied with 2L/s of Neon(x4), Krypton(x8), Xenon(x16) or Oganesson(x64) for higher outputs.")
+                .addInfo(
+                    "Will output " + 2 * this.TIER_MULTIPLIER
+                        + " Ores per Second depending on the Dimension it is build in")
+                .addInfo("Put the Ore into the input bus to set the Whitelist/Blacklist")
+                .addInfo("Use a screwdriver to toggle Whitelist/Blacklist")
+                .addInfo(
+                    "Blacklist or non Whitelist Ore will be " + EnumChatFormatting.DARK_RED
+                        + "VOIDED"
+                        + EnumChatFormatting.RESET
+                        + ".")
+                .beginStructureBlock(9,13,8,false)
+                .addStructureInfo(EnumChatFormatting.GOLD + "29x" + EnumChatFormatting.GRAY + " Mining Black Plutonium Casing")
+                .addStructureInfo(EnumChatFormatting.GOLD + "20x" + EnumChatFormatting.GRAY + " Black Plutonium Item Pipe Casing")
+                .addStructureInfo(EnumChatFormatting.GOLD + "72x" + EnumChatFormatting.GRAY + " Naquadah Alloy Frame Box")
+                .addStructureInfo(EnumChatFormatting.GOLD + "10x" + EnumChatFormatting.GRAY + " Bolted Naquadah Alloy Casing")
+                .addStructureInfo(EnumChatFormatting.GOLD + "9x" + EnumChatFormatting.GRAY + " Rebolted Naquadah Alloy Casing")
+                .addEnergyHatch(VN[this.getMinTier()] + "+, Any base casing")
+                .addMaintenanceHatch("Any base casing")
+                .addInputBus("Mining Pipes or Ores, optional, any base casing")
+                .addInputHatch("Optional noble gas, any base casing")
+                .addOutputBus("Any base casing")
+                .toolTipFinisher();
+            return tt;
+        }
+
         public void construct(ItemStack stackSize, boolean hintsOnly) {
             buildPiece(STRUCTURE_PIECE_MAIN, stackSize, hintsOnly, 4, 10, 1);
         }
@@ -340,6 +409,38 @@ public class MTEVoidMiners {
         @Override
         public IStructureDefinition<VMUV> getStructureDefinition() {
             return STRUCTURE_DEFINITION;
+        }
+
+        @Override
+        protected MultiblockTooltipBuilder createTooltip() {
+            final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+            tt.addMachineType("Miner")
+                .addInfo("Consumes " + numberFormat.format(GTValues.V[this.getMinTier()]) + "EU/t")
+                .addInfo(
+                    "Can be supplied with 2L/s of Neon(x4), Krypton(x8), Xenon(x16) or Oganesson(x64) for higher outputs.")
+                .addInfo(
+                    "Will output " + 2 * this.TIER_MULTIPLIER
+                        + " Ores per Second depending on the Dimension it is build in")
+                .addInfo("Put the Ore into the input bus to set the Whitelist/Blacklist")
+                .addInfo("Use a screwdriver to toggle Whitelist/Blacklist")
+                .addInfo(
+                    "Blacklist or non Whitelist Ore will be " + EnumChatFormatting.DARK_RED
+                        + "VOIDED"
+                        + EnumChatFormatting.RESET
+                        + ".")
+                .beginStructureBlock(9,16,9,false)
+                .addStructureInfo(EnumChatFormatting.GOLD + "47x" + EnumChatFormatting.GRAY + " Mining Neutronium Casing")
+                .addStructureInfo(EnumChatFormatting.GOLD + "8x" + EnumChatFormatting.GRAY + " Black Plutonium Item Pipe Casing")
+                .addStructureInfo(EnumChatFormatting.GOLD + "72x" + EnumChatFormatting.GRAY + " Adamantium Frame Box")
+                .addStructureInfo(EnumChatFormatting.GOLD + "20x" + EnumChatFormatting.GRAY + " Bolted Iridium Casing")
+                .addStructureInfo(EnumChatFormatting.GOLD + "36x" + EnumChatFormatting.GRAY + " Rebolted Iridium Casing")
+                .addEnergyHatch(VN[this.getMinTier()] + "+, Any base casing")
+                .addMaintenanceHatch("Any base casing")
+                .addInputBus("Mining Pipes or Ores, optional, any base casing")
+                .addInputHatch("Optional noble gas, any base casing")
+                .addOutputBus("Any base casing")
+                .toolTipFinisher();
+            return tt;
         }
 
         public void construct(ItemStack stackSize, boolean hintsOnly) {
