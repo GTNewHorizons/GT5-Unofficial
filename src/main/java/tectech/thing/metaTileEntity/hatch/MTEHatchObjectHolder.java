@@ -79,11 +79,6 @@ public class MTEHatchObjectHolder extends MTEHatch implements IAddGregtechLogo {
     }
 
     @Override
-    public boolean isAccessAllowed(EntityPlayer aPlayer) {
-        return true;
-    }
-
-    @Override
     public boolean isValidSlot(int aIndex) {
         return true;
     }

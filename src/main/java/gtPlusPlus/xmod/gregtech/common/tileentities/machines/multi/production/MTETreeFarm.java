@@ -185,11 +185,6 @@ public class MTETreeFarm extends GTPPMultiBlockBase<MTETreeFarm> implements ISur
     }
 
     @Override
-    public int getMaxParallelRecipes() {
-        return 1;
-    }
-
-    @Override
     public boolean supportsBatchMode() {
         // Batch mode would not do anything, processing time is fixed at 100 ticks.
         return false;

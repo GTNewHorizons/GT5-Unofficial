@@ -72,11 +72,6 @@ public class MTETesseractGenerator extends MTEBasicTank {
     }
 
     @Override
-    public boolean isEnetOutput() {
-        return false;
-    }
-
-    @Override
     public boolean isInputFacing(final ForgeDirection side) {
         return true;
     }
@@ -104,11 +99,6 @@ public class MTETesseractGenerator extends MTEBasicTank {
     }
 
     @Override
-    public long maxEUOutput() {
-        return 0;
-    }
-
-    @Override
     public long maxEUStore() {
         return 512 * 32;
     }
@@ -116,11 +106,6 @@ public class MTETesseractGenerator extends MTEBasicTank {
     @Override
     public long maxSteamStore() {
         return this.maxEUStore();
-    }
-
-    @Override
-    public boolean isAccessAllowed(final EntityPlayer aPlayer) {
-        return true;
     }
 
     @Override
