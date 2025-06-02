@@ -3,6 +3,7 @@ package gregtech.loaders.oreprocessing;
 import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
 import static gregtech.api.recipe.RecipeMaps.cutterRecipes;
 import static gregtech.api.recipe.RecipeMaps.maceratorRecipes;
+import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 
 import net.minecraft.block.Block;
@@ -34,7 +35,7 @@ public class ProcessingStone implements IOreRecipeRegistrator {
                 GTValues.RA.stdBuilder()
                     .itemInputs(GTUtility.copyAmount(3, aStack), new ItemStack(Blocks.redstone_torch, 2))
                     .itemOutputs(new ItemStack(Items.repeater, 1))
-                    .fluidInputs(Materials.Redstone.getMolten(144L))
+                    .fluidInputs(Materials.Redstone.getMolten(1 * INGOTS))
                     .duration(5 * SECONDS)
                     .eut(48)
                     .addTo(assemblerRecipes);

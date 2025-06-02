@@ -38,7 +38,6 @@ import bartworks.common.loaders.ArtificialMicaLine;
 import bartworks.common.loaders.BioCultureLoader;
 import bartworks.common.loaders.BioLabLoader;
 import bartworks.common.loaders.ItemRegistry;
-import bartworks.common.loaders.LocalisationLoader;
 import bartworks.common.loaders.RadioHatchMaterialLoader;
 import bartworks.common.loaders.RecipeLoader;
 import bartworks.common.loaders.RegisterServerCommands;
@@ -130,8 +129,6 @@ public final class MainMod {
         if (SideReference.Side.Client) {
             GregTechAPI.sBeforeGTLoad.add(new PrefixTextureLinker());
         }
-
-        GlassTier.RegisterGlassTiers.run();
     }
 
     @Mod.EventHandler
@@ -150,6 +147,7 @@ public final class MainMod {
         WerkstoffLoader.runInit();
 
         ItemRegistry.run();
+        GlassTier.RegisterGlassTiers.run();
     }
 
     @Mod.EventHandler
@@ -163,7 +161,6 @@ public final class MainMod {
         BioObjectAdder.regenerateBioFluids();
 
         WerkstoffLoader.run();
-        LocalisationLoader.localiseAll();
 
         CheckRecipeResultRegistry.register(new ResultWrongSievert(0, ResultWrongSievert.NeededSievertType.EXACTLY));
 
@@ -197,9 +194,6 @@ public final class MainMod {
         OreDictHandler.adaptCacheForWorld();
         CircuitImprintLoader.run();
         BioVatLogicAdder.RadioHatch.runBasicItemIntegration();
-        if (!recipesAdded) {
-            StaticRecipeChangeLoaders.addEBFGasRecipes();
-        }
 
         // Accept recipe map changes into Buffers
         RecipeMap.ALL_RECIPE_MAPS.values()

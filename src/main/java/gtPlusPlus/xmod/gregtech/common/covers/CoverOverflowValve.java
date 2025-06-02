@@ -20,7 +20,10 @@ import gregtech.api.metatileentity.implementations.MTEBasicTank;
 import gregtech.api.metatileentity.implementations.MTEFluidPipe;
 import gregtech.api.util.GTUtility;
 import gregtech.common.covers.Cover;
+import gregtech.common.covers.gui.CoverGui;
+import gregtech.common.covers.modes.BlockMode;
 import gregtech.common.gui.mui1.cover.OverflowUIFactory;
+import gtPlusPlus.xmod.gregtech.common.covers.gui.CoverOverflowValveGui;
 import io.netty.buffer.ByteBuf;
 
 public class CoverOverflowValve extends Cover {
@@ -67,19 +70,53 @@ public class CoverOverflowValve extends Cover {
         return this;
     }
 
+    public BlockMode getFluidInputMode() {
+        return canFluidInput ? BlockMode.ALLOW : BlockMode.BLOCK;
+    }
+
+    public CoverOverflowValve setFluidInputMode(BlockMode fluidInputMode) {
+        canFluidInput = fluidInputMode == BlockMode.ALLOW;
+        return this;
+    }
+
+    /**
+     * Use {@link CoverOverflowValve#getFluidInputMode()}
+     */
+    @Deprecated
     public boolean canFluidInput() {
         return canFluidInput;
     }
 
+    /**
+     * Use {@link CoverOverflowValve#setFluidInputMode(BlockMode)}
+     */
+    @Deprecated
     public CoverOverflowValve setCanFluidInput(boolean canFluidInput) {
         this.canFluidInput = canFluidInput;
         return this;
     }
 
+    public BlockMode getFluidOutputMode() {
+        return canFluidOutput ? BlockMode.ALLOW : BlockMode.BLOCK;
+    }
+
+    public CoverOverflowValve setFluidOutputMode(BlockMode fluidOutputMode) {
+        canFluidOutput = fluidOutputMode == BlockMode.ALLOW;
+        return this;
+    }
+
+    /**
+     * Use {@link CoverOverflowValve#getFluidOutputMode()}
+     */
+    @Deprecated
     public boolean canFluidOutput() {
         return canFluidOutput;
     }
 
+    /**
+     * Use {@link CoverOverflowValve#setFluidOutputMode(BlockMode)}
+     */
+    @Deprecated
     public CoverOverflowValve setCanFluidOutput(boolean canFluidOutput) {
         this.canFluidOutput = canFluidOutput;
         return this;
@@ -237,6 +274,11 @@ public class CoverOverflowValve extends Cover {
     @Override
     public boolean hasCoverGUI() {
         return true;
+    }
+
+    @Override
+    protected @NotNull CoverGui<CoverOverflowValve> getCoverGui() {
+        return new CoverOverflowValveGui(this);
     }
 
     @Override

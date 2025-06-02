@@ -199,4 +199,9 @@ public class MTESOFuelCellMK2 extends MTEEnhancedMultiBlockBase<MTESOFuelCellMK2
     public void construct(ItemStack itemStack, boolean b) {
         buildPiece(STRUCTURE_PIECE_MAIN, itemStack, b, 1, 1, 0);
     }
+
+    @Override
+    public boolean showRecipeTextInGUI() {
+        return false;
+    }
 }

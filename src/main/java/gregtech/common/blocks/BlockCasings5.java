@@ -108,7 +108,6 @@ public class BlockCasings5 extends BlockCasingsAbstract
 
         if (Client.render.useOldCoils) {
             IIconContainer icon = switch (metadata % ACTIVE_OFFSET) {
-                case 0 -> Textures.BlockIcons.MACHINE_COIL_CUPRONICKEL;
                 case 1 -> Textures.BlockIcons.MACHINE_COIL_KANTHAL;
                 case 2 -> Textures.BlockIcons.MACHINE_COIL_NICHROME;
                 case 3 -> Textures.BlockIcons.MACHINE_COIL_TUNGSTENSTEEL;
@@ -128,7 +127,6 @@ public class BlockCasings5 extends BlockCasingsAbstract
             textures.add(TextureFactory.of(icon));
         } else {
             IIconContainer background = switch (metadata % ACTIVE_OFFSET) {
-                case 0 -> Textures.BlockIcons.MACHINE_COIL_CUPRONICKEL_BACKGROUND;
                 case 1 -> Textures.BlockIcons.MACHINE_COIL_KANTHAL_BACKGROUND;
                 case 2 -> Textures.BlockIcons.MACHINE_COIL_NICHROME_BACKGROUND;
                 case 3 -> Textures.BlockIcons.MACHINE_COIL_TUNGSTENSTEEL_BACKGROUND;
@@ -153,7 +151,6 @@ public class BlockCasings5 extends BlockCasingsAbstract
 
             if (metadata >= ACTIVE_OFFSET) {
                 IIconContainer foreground = switch (metadata % ACTIVE_OFFSET) {
-                    case 0 -> Textures.BlockIcons.MACHINE_COIL_CUPRONICKEL_FOREGROUND;
                     case 1 -> Textures.BlockIcons.MACHINE_COIL_KANTHAL_FOREGROUND;
                     case 2 -> Textures.BlockIcons.MACHINE_COIL_NICHROME_FOREGROUND;
                     case 3 -> Textures.BlockIcons.MACHINE_COIL_TUNGSTENSTEEL_FOREGROUND;
@@ -218,7 +215,6 @@ public class BlockCasings5 extends BlockCasingsAbstract
 
     public static int getMetaFromCoilHeat(HeatingCoilLevel level) {
         return switch (level) {
-            case LV -> 0;
             case MV -> 1;
             case HV -> 2;
             case EV -> 3;

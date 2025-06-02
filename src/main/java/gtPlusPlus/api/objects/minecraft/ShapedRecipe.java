@@ -10,7 +10,6 @@ import org.apache.commons.lang3.tuple.Pair;
 
 import gregtech.mixin.interfaces.accessors.IRecipeMutableAccess;
 import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.core.util.minecraft.ItemUtils;
 
 public class ShapedRecipe implements IRecipeMutableAccess {
 
@@ -43,7 +42,7 @@ public class ShapedRecipe implements IRecipeMutableAccess {
                     Logger.RECIPE("Input slot " + xSlot++ + " contains " + mInfo);
                 } else if (u instanceof ItemStack || u instanceof Item) {
                     if (u instanceof Item) {
-                        u = ItemUtils.getSimpleStack((Item) u);
+                        u = new ItemStack((Item) u);
                     }
                     mInfo = ((ItemStack) u).getDisplayName();
                     Logger.RECIPE("Input slot " + xSlot++ + " contains " + mInfo);
@@ -86,7 +85,7 @@ public class ShapedRecipe implements IRecipeMutableAccess {
                             mInfo = (String) stack;
                         } else if (stack instanceof ItemStack || stack instanceof Item) {
                             if (stack instanceof Item) {
-                                stack = ItemUtils.getSimpleStack((Item) stack);
+                                stack = new ItemStack((Item) stack);
                             }
                             mInfo = ((ItemStack) stack).getDisplayName();
                         }
@@ -150,7 +149,7 @@ public class ShapedRecipe implements IRecipeMutableAccess {
                                 mInfo = (String) stack;
                             } else if (stack instanceof ItemStack || stack instanceof Item) {
                                 if (stack instanceof Item) {
-                                    stack = ItemUtils.getSimpleStack((Item) stack);
+                                    stack = new ItemStack((Item) stack);
                                 }
                                 mInfo = ((ItemStack) stack).getDisplayName();
                             }
@@ -190,7 +189,7 @@ public class ShapedRecipe implements IRecipeMutableAccess {
 
                         if (o instanceof ItemStack || o instanceof Item) {
                             if (o instanceof Item) {
-                                o = ItemUtils.getSimpleStack((Item) o);
+                                o = new ItemStack((Item) o);
                             }
                             o = ((ItemStack) o).copy();
                         }

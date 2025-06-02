@@ -1,5 +1,7 @@
 package gregtech.common.covers;
 
+import static net.minecraft.util.StatCollector.translateToLocal;
+
 import java.lang.ref.WeakReference;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -14,7 +16,6 @@ import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 
 import gregtech.api.covers.CoverContext;
 import gregtech.api.gui.modularui.CoverUIBuildContext;
-import gregtech.api.gui.modularui.GTUIInfos;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IMachineProgress;
@@ -87,8 +88,7 @@ public class CoverControlsWork extends CoverLegacyData {
         if (coverable != null && hasCoverGUI() && aPlayer instanceof EntityPlayerMP) {
             lastPlayer = new WeakReference<>(aPlayer);
             mPlayerNotified = false;
-            GTUIInfos.openCoverUI(coverable, aPlayer, coverSide);
-            return true;
+            return super.onCoverShiftRightClick(aPlayer);
         }
         return false;
     }
@@ -197,19 +197,19 @@ public class CoverControlsWork extends CoverLegacyData {
             newCoverData = 2;
         }
         if (newCoverData == 0) {
-            GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("003", "Enable with Signal"));
+            GTUtility.sendChatToPlayer(aPlayer, translateToLocal("gt.interact.desc.signal_on"));
         }
         if (newCoverData == 1) {
-            GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("004", "Disable with Signal"));
+            GTUtility.sendChatToPlayer(aPlayer, translateToLocal("gt.interact.desc.signal_inverted"));
         }
         if (newCoverData == 2) {
-            GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("005", "Disabled"));
+            GTUtility.sendChatToPlayer(aPlayer, translateToLocal("gt.interact.desc.signal_off"));
         }
         if (newCoverData == 3) {
-            GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("505", "Enable with Signal (Safe)"));
+            GTUtility.sendChatToPlayer(aPlayer, translateToLocal("gt.interact.desc.signal_on_safe"));
         }
         if (newCoverData == 4) {
-            GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("506", "Disable with Signal (Safe)"));
+            GTUtility.sendChatToPlayer(aPlayer, translateToLocal("gt.interact.desc.signal_inverted_safe"));
         }
         // TODO: Set lastPlayer
         coverData = newCoverData;
@@ -224,7 +224,7 @@ public class CoverControlsWork extends CoverLegacyData {
 
     @Override
     protected @NotNull CoverGui<?> getCoverGui() {
-        return new CoverControlsWorkGui();
+        return new CoverControlsWorkGui(this);
     }
 
     @Override

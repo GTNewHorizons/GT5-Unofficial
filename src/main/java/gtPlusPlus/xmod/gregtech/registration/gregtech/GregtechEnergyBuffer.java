@@ -18,7 +18,6 @@ import gtPlusPlus.xmod.gregtech.common.tileentities.storage.MTEEnergyBuffer;
 public class GregtechEnergyBuffer {
 
     // Misc Items
-    // public static Item itemBufferCore;
 
     public static void run() {
         Logger.INFO("Gregtech5u Content | Registering Energy Buffer Blocks.");

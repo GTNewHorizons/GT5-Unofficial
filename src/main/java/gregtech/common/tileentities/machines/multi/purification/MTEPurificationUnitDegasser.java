@@ -11,6 +11,7 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LARGE_CHEMICA
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_GLOW;
+import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 
 import java.util.ArrayList;
@@ -110,9 +111,9 @@ public class MTEPurificationUnitDegasser extends MTEPurificationUnitBase<MTEPuri
     private static final int STRUCTURE_Z_OFFSET = 1;
 
     // Supplier because werkstoff loads later than multiblock controllers... fml
-    private static final Supplier<FluidStack[]> INERT_GASES = () -> new FluidStack[] { Materials.Helium.getGas(10000L),
-        WerkstoffLoader.Neon.getFluidOrGas(7500), WerkstoffLoader.Krypton.getFluidOrGas(5000),
-        WerkstoffLoader.Xenon.getFluidOrGas(2500) };
+    private static final Supplier<FluidStack[]> INERT_GASES = () -> new FluidStack[] { Materials.Helium.getGas(10_000),
+        WerkstoffLoader.Neon.getFluidOrGas(7_500), WerkstoffLoader.Krypton.getFluidOrGas(5_000),
+        WerkstoffLoader.Xenon.getFluidOrGas(2_500) };
 
     private static final class SuperconductorMaterial {
 
@@ -125,7 +126,7 @@ public class MTEPurificationUnitDegasser extends MTEPurificationUnitBase<MTEPuri
         }
     }
 
-    private static final long SUPERCON_FLUID_AMOUNT = 1440L;
+    private static final long SUPERCON_FLUID_AMOUNT = 10 * INGOTS;
 
     private static final Supplier<SuperconductorMaterial[]> SUPERCONDUCTOR_MATERIALS = () -> new SuperconductorMaterial[] {
         new SuperconductorMaterial(Materials.Longasssuperconductornameforuvwire.getMolten(SUPERCON_FLUID_AMOUNT), 1.0f),
@@ -136,8 +137,8 @@ public class MTEPurificationUnitDegasser extends MTEPurificationUnitBase<MTEPuri
         new SuperconductorMaterial(Materials.SuperconductorUIVBase.getMolten(SUPERCON_FLUID_AMOUNT), 1.75f),
         new SuperconductorMaterial(Materials.SuperconductorUMVBase.getMolten(SUPERCON_FLUID_AMOUNT), 2.0f), };
 
-    private static final FluidStack CATALYST_FLUID = Materials.Neutronium.getMolten(4608L);
-    private static final FluidStack COOLANT_FLUID = Materials.SuperCoolant.getFluid(10000L);
+    private static final FluidStack CATALYST_FLUID = Materials.Neutronium.getMolten(32 * INGOTS);
+    private static final FluidStack COOLANT_FLUID = Materials.SuperCoolant.getFluid(10_000);
 
     private static final long CONSUME_INTERVAL = 20;
 

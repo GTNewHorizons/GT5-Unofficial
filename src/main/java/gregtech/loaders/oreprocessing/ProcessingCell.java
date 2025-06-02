@@ -120,7 +120,7 @@ public class ProcessingCell implements IOreRecipeRegistrator {
 
                     tItemAmount = GTUtility.ceilDiv(tItemAmount * tDensityMultiplier, aMaterial.getDensity());
 
-                    if (tList.size() <= 0) {
+                    if (tList.size() == 0) {
                         break;
                     }
 

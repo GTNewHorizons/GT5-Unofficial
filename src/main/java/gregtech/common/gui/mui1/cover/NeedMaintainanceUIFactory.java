@@ -1,10 +1,12 @@
 package gregtech.common.gui.mui1.cover;
 
+import static net.minecraft.util.StatCollector.translateToLocal;
+import static net.minecraft.util.StatCollector.translateToLocalFormatted;
+
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
 import gregtech.api.gui.modularui.CoverUIBuildContext;
-import gregtech.api.util.GTUtility;
 import gregtech.common.gui.modularui.widget.CoverDataControllerWidget;
 import gregtech.common.gui.modularui.widget.CoverDataFollowerToggleButtonWidget;
 
@@ -22,20 +24,6 @@ public class NeedMaintainanceUIFactory extends CoverLegacyDataUIFactory {
     @SuppressWarnings("PointlessArithmeticExpression")
     @Override
     protected void addUIWidgets(ModularWindow.Builder builder) {
-        final String[] tooltipText = { GTUtility.trans("056", "Emit if 1 " + "Maintenance Needed"),
-            GTUtility.trans("058", "Emit if 2 Maintenance Needed"),
-            GTUtility.trans("060", "Emit if 3 Maintenance Needed"),
-            GTUtility.trans("062", "Emit if 4 Maintenance Needed"),
-            GTUtility.trans("064", "Emit if 5 Maintenance Needed"),
-            GTUtility.trans("066", "Emit if rotor needs maintenance low " + "accuracy mod"),
-            GTUtility.trans("068", "Emit if rotor needs maintenance high " + "accuracy mod"), };
-
-        final String[] buttonText = { GTUtility.trans("247", "1 Issue"), GTUtility.trans("248", "2 Issues"),
-            GTUtility.trans("249", "3 Issues"), GTUtility.trans("250", "4 " + "Issues"),
-            GTUtility.trans("251", "5 Issues"), GTUtility.trans("252", "Rotor" + " < 20%"),
-            GTUtility.trans("253", "Rotor ≈ 0%"), GTUtility.trans("INVERTED", "Inverted"),
-            GTUtility.trans("NORMAL", "Normal"), };
-
         builder
             .widget(
                 new CoverDataControllerWidget.CoverDataIndexedControllerWidget_ToggleButtons<>(
@@ -46,37 +34,37 @@ public class NeedMaintainanceUIFactory extends CoverLegacyDataUIFactory {
                         .addToggleButton(
                             0,
                             CoverDataFollowerToggleButtonWidget.ofCheck(),
-                            widget -> widget.addTooltip(tooltipText[0])
+                            widget -> widget.addTooltip(getMaintenanceIssuesCount(1, false))
                                 .setPos(spaceX * 0, spaceY * 0))
                         .addToggleButton(
                             1,
                             CoverDataFollowerToggleButtonWidget.ofCheck(),
-                            widget -> widget.addTooltip(tooltipText[1])
+                            widget -> widget.addTooltip(getMaintenanceIssuesCount(2, false))
                                 .setPos(spaceX * 0, spaceY * 1))
                         .addToggleButton(
                             2,
                             CoverDataFollowerToggleButtonWidget.ofCheck(),
-                            widget -> widget.addTooltip(tooltipText[2])
+                            widget -> widget.addTooltip(getMaintenanceIssuesCount(3, false))
                                 .setPos(spaceX * 0, spaceY * 2))
                         .addToggleButton(
                             3,
                             CoverDataFollowerToggleButtonWidget.ofCheck(),
-                            widget -> widget.addTooltip(tooltipText[3])
+                            widget -> widget.addTooltip(getMaintenanceIssuesCount(4, false))
                                 .setPos(spaceX * 0, spaceY * 3))
                         .addToggleButton(
                             4,
                             CoverDataFollowerToggleButtonWidget.ofCheck(),
-                            widget -> widget.addTooltip(tooltipText[4])
+                            widget -> widget.addTooltip(getMaintenanceIssuesCount(5, false))
                                 .setPos(spaceX * 4 + 4, spaceY * 0))
                         .addToggleButton(
                             5,
                             CoverDataFollowerToggleButtonWidget.ofCheck(),
-                            widget -> widget.addTooltip(tooltipText[5])
+                            widget -> widget.addTooltip(translateToLocal("gt.interact.desc.need_maint_rotor_lo"))
                                 .setPos(spaceX * 4 + 4, spaceY * 1))
                         .addToggleButton(
                             6,
                             CoverDataFollowerToggleButtonWidget.ofCheck(),
-                            widget -> widget.addTooltip(tooltipText[6])
+                            widget -> widget.addTooltip(translateToLocal("gt.interact.desc.need_maint_rotor_hi"))
                                 .setPos(spaceX * 4 + 4, spaceY * 2))
                         .addToggleButton(
                             7,
@@ -84,29 +72,34 @@ public class NeedMaintainanceUIFactory extends CoverLegacyDataUIFactory {
                             widget -> widget.setPos(spaceX * 4 + 4, spaceY * 3))
                         .setPos(startX, startY))
             .widget(
-                new TextWidget(buttonText[0]).setDefaultColor(COLOR_TEXT_GRAY.get())
+                new TextWidget(getIssuesCount(1)).setDefaultColor(COLOR_TEXT_GRAY.get())
                     .setPos(startX + spaceX * 1, 4 + startY + spaceY * 0))
             .widget(
-                new TextWidget(buttonText[1]).setDefaultColor(COLOR_TEXT_GRAY.get())
+                new TextWidget(getIssuesCount(2)).setDefaultColor(COLOR_TEXT_GRAY.get())
                     .setPos(startX + spaceX * 1, 4 + startY + spaceY * 1))
             .widget(
-                new TextWidget(buttonText[2]).setDefaultColor(COLOR_TEXT_GRAY.get())
+                new TextWidget(getIssuesCount(3)).setDefaultColor(COLOR_TEXT_GRAY.get())
                     .setPos(startX + spaceX * 1, 4 + startY + spaceY * 2))
             .widget(
-                new TextWidget(buttonText[3]).setDefaultColor(COLOR_TEXT_GRAY.get())
+                new TextWidget(getIssuesCount(4)).setDefaultColor(COLOR_TEXT_GRAY.get())
                     .setPos(startX + spaceX * 1, 4 + startY + spaceY * 3))
             .widget(
-                new TextWidget(buttonText[4]).setDefaultColor(COLOR_TEXT_GRAY.get())
+                new TextWidget(getIssuesCount(5)).setDefaultColor(COLOR_TEXT_GRAY.get())
                     .setPos(startX + spaceX * 5 + 4, 4 + startY + spaceY * 0))
             .widget(
-                new TextWidget(buttonText[5]).setDefaultColor(COLOR_TEXT_GRAY.get())
+                new TextWidget(translateToLocal("gt.interact.desc.issue_rotor_low"))
+                    .setDefaultColor(COLOR_TEXT_GRAY.get())
                     .setPos(startX + spaceX * 5 + 4, 4 + startY + spaceY * 1))
             .widget(
-                new TextWidget(buttonText[6]).setDefaultColor(COLOR_TEXT_GRAY.get())
+                new TextWidget(translateToLocal("gt.interact.desc.issue_rotor_dead"))
+                    .setDefaultColor(COLOR_TEXT_GRAY.get())
                     .setPos(startX + spaceX * 5 + 4, 4 + startY + spaceY * 2))
             .widget(
                 TextWidget
-                    .dynamicString(getCoverString(c -> isEnabled(7, c.getVariable()) ? buttonText[7] : buttonText[8]))
+                    .dynamicString(
+                        getCoverString(
+                            c -> isEnabled(7, c.getVariable()) ? translateToLocal("gt.interact.desc.inverted")
+                                : translateToLocal("gt.interact.desc.normal")))
                     .setSynced(false)
                     .setDefaultColor(COLOR_TEXT_GRAY.get())
                     .setPos(startX + spaceX * 5 + 4, 4 + startY + spaceY * 3));
@@ -124,5 +117,18 @@ public class NeedMaintainanceUIFactory extends CoverLegacyDataUIFactory {
     private boolean isEnabled(int id, int coverVariable) {
         if (id == 7) return (coverVariable & 0x1) > 0;
         return (coverVariable >>> 1) == id;
+    }
+
+    // TODO make this private when MUI1 cover UIs are removed
+    public static String getMaintenanceIssuesCount(int count, boolean inverted) {
+        return translateToLocalFormatted(
+            "gt.interact.desc.need_maint_count",
+            count,
+            inverted ? translateToLocal("gt.interact.desc.inverted_b") : "");
+    }
+
+    private static String getIssuesCount(int count) {
+        return count == 1 ? translateToLocal("gt.interact.desc.issue")
+            : translateToLocalFormatted("gt.interact.desc.issues", count);
     }
 }

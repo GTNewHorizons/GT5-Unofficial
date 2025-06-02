@@ -11,7 +11,6 @@ import gregtech.api.enums.TAE;
 import gregtech.api.util.GTLanguageManager;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.handler.AchievementHandler;
-import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.minecraft.LangUtils;
 import gtPlusPlus.core.util.minecraft.gregtech.PollutionUtils;
 import gtPlusPlus.xmod.gregtech.common.covers.CoverManager;
@@ -59,7 +58,7 @@ public class MetaGTProxy {
 
             Block b = BlocksItems.getFluidBlock(InternalName.fluidHotWater);
             if (b != null) {
-                LanguageRegistry.addName(ItemUtils.getSimpleStack(b), aNewHeatedWaterName);
+                LanguageRegistry.addName(new ItemStack(b), aNewHeatedWaterName);
                 LanguageRegistry.instance()
                     .addStringLocalization(b.getUnlocalizedName(), aNewHeatedWaterName);
                 GTLanguageManager.addStringLocalization(b.getUnlocalizedName(), aNewHeatedWaterName);

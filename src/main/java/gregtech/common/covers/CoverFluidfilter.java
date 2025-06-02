@@ -1,6 +1,7 @@
 package gregtech.common.covers;
 
 import static gregtech.api.enums.GTValues.E;
+import static net.minecraft.util.StatCollector.translateToLocal;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -162,14 +163,14 @@ public class CoverFluidfilter extends Cover {
 
     public String getFilterMode(int aFilterMode) {
         return switch (aFilterMode) {
-            case FILTER_INPUT_DENY_OUTPUT -> GTUtility.trans("043", "Filter input, Deny output");
-            case INVERT_INPUT_DENY_OUTPUT -> GTUtility.trans("044", "Invert input, Deny output");
-            case FILTER_INPUT_ANY_OUTPUT -> GTUtility.trans("045", "Filter input, Permit any output");
-            case INVERT_INPUT_ANY_OUTPUT -> GTUtility.trans("046", "Invert input, Permit any output");
-            case DENY_INPUT_FILTER_OUTPUT -> GTUtility.trans("307", "Deny input, Filter output");
-            case DENY_INPUT_INVERT_OUTPUT -> GTUtility.trans("308", "Deny input, Invert output");
-            case ANY_INPUT_FILTER_OUTPUT -> GTUtility.trans("309", "Permit any input, Filter output");
-            case ANY_INPUT_INVERT_OUTPUT -> GTUtility.trans("310", "Permit any input, Invert output");
+            case FILTER_INPUT_DENY_OUTPUT -> translateToLocal("gt.interact.desc.filter_i_deny_o");
+            case INVERT_INPUT_DENY_OUTPUT -> translateToLocal("gt.interact.desc.invert_i_deny_o");
+            case FILTER_INPUT_ANY_OUTPUT -> translateToLocal("gt.interact.desc.filter_i_any_o");
+            case INVERT_INPUT_ANY_OUTPUT -> translateToLocal("gt.interact.desc.invert_i_any_o");
+            case DENY_INPUT_FILTER_OUTPUT -> translateToLocal("gt.interact.desc.deny_i_filter_o");
+            case DENY_INPUT_INVERT_OUTPUT -> translateToLocal("gt.interact.desc.deny_i_invert_o");
+            case ANY_INPUT_FILTER_OUTPUT -> translateToLocal("gt.interact.desc.any_i_filter_o");
+            case ANY_INPUT_INVERT_OUTPUT -> translateToLocal("gt.interact.desc.any_i_invert_o");
             default -> ("UNKNOWN");
         };
     }
@@ -273,7 +274,7 @@ public class CoverFluidfilter extends Cover {
 
     @Override
     protected @NotNull CoverGui<?> getCoverGui() {
-        return new CoverFluidfilterGui();
+        return new CoverFluidfilterGui(this);
     }
 
     @Override

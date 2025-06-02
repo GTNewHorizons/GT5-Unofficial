@@ -1,5 +1,7 @@
 package gregtech.common.gui.mui1.cover;
 
+import static net.minecraft.util.StatCollector.translateToLocal;
+
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
@@ -51,7 +53,7 @@ public class RedstoneWirelessBaseUIFactory extends CoverLegacyDataUIFactory {
                         widget -> widget.setPos(spaceX * 0, spaceY * 2))
                     .setPos(startX, startY))
             .widget(
-                new TextWidget(GTUtility.trans("246", "Frequency")).setDefaultColor(COLOR_TEXT_GRAY.get())
+                new TextWidget(translateToLocal("gt.interact.desc.freq")).setDefaultColor(COLOR_TEXT_GRAY.get())
                     .setPos(startX + spaceX * 4, 4 + startY + spaceY * 0))
             .widget(
                 new TextWidget(GTUtility.trans("602", "Use Private Frequency")).setDefaultColor(COLOR_TEXT_GRAY.get())

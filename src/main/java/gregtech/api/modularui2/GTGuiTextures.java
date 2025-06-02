@@ -1,5 +1,6 @@
 package gregtech.api.modularui2;
 
+import static com.cleanroommc.modularui.drawable.UITexture.fullImage;
 import static gregtech.api.enums.Mods.GregTech;
 
 import com.cleanroommc.modularui.drawable.UITexture;
@@ -65,9 +66,18 @@ public final class GTGuiTextures {
             GTTextureIds.BACKGROUND_POPUP_STEEL,
             GTTextureIds.BACKGROUND_POPUP_PRIMITIVE)
         .build();
-
+    public static final UITexture BACKGROUND_TEXT_FIELD = UITexture.builder()
+        .location(GregTech.ID, "gui/background/text_field")
+        .imageSize(142, 28)
+        .adaptable(1)
+        .name(GTTextureIds.BACKGROUND_TERMINAL_STANDARD)
+        .build();
     // endregion background
 
+    // region overlay
+    public static final UITexture OVERLAY_GREGTECH_LOGO = fullImageGT("picture/gt_logo_standard");
+
+    // endregion overlay
     // region slot
 
     public static final UITexture SLOT_ITEM_STANDARD = UITexture.builder()
@@ -247,34 +257,68 @@ public final class GTGuiTextures {
             GTTextureIds.OVERLAY_SLOT_BLOCK_PRIMITIVE)
         .build();
 
-    public static final UITexture OVERLAY_BUTTON_INPUT_SEPARATION_ON = UITexture
-        .fullImage(GregTech.ID, "gui/overlay_button/input_separation_on");
-    public static final UITexture OVERLAY_BUTTON_INPUT_SEPARATION_ON_DISABLED = UITexture
-        .fullImage(GregTech.ID, "gui/overlay_button/input_separation_on_disabled");
-    public static final UITexture OVERLAY_BUTTON_INPUT_SEPARATION_OFF = UITexture
-        .fullImage(GregTech.ID, "gui/overlay_button/input_separation_off");
-    public static final UITexture OVERLAY_BUTTON_INPUT_SEPARATION_OFF_DISABLED = UITexture
-        .fullImage(GregTech.ID, "gui/overlay_button/input_separation_off_disabled");
-    public static final UITexture OVERLAY_BUTTON_RECIPE_UNLOCKED = UITexture
-        .fullImage(GregTech.ID, "gui/overlay_button/recipe_unlocked");
-    public static final UITexture OVERLAY_BUTTON_RECIPE_UNLOCKED_DISABLED = UITexture
-        .fullImage(GregTech.ID, "gui/overlay_button/recipe_unlocked_disabled");
-    public static final UITexture OVERLAY_BUTTON_RECIPE_LOCKED = UITexture
-        .fullImage(GregTech.ID, "gui/overlay_button/recipe_locked");
-    public static final UITexture OVERLAY_BUTTON_RECIPE_LOCKED_DISABLED = UITexture
-        .fullImage(GregTech.ID, "gui/overlay_button/recipe_locked_disabled");
-    public static final UITexture OVERLAY_BUTTON_BATCH_MODE_ON = UITexture
-        .fullImage(GregTech.ID, "gui/overlay_button/batch_mode_on");
-    public static final UITexture OVERLAY_BUTTON_BATCH_MODE_ON_DISABLED = UITexture
-        .fullImage(GregTech.ID, "gui/overlay_button/batch_mode_on_disabled");
-    public static final UITexture OVERLAY_BUTTON_BATCH_MODE_OFF = UITexture
-        .fullImage(GregTech.ID, "gui/overlay_button/batch_mode_off");
-    public static final UITexture OVERLAY_BUTTON_BATCH_MODE_OFF_DISABLED = UITexture
-        .fullImage(GregTech.ID, "gui/overlay_button/batch_mode_off_disabled");
-    public static final UITexture OVERLAY_BUTTON_STRUCTURE_UPDATE = UITexture
-        .fullImage(GregTech.ID, "gui/overlay_button/structure_update");
-    public static final UITexture OVERLAY_BUTTON_FORBIDDEN = UITexture
-        .fullImage(GregTech.ID, "gui/overlay_button/forbidden");
+    public static final UITexture OVERLAY_BUTTON_VOID_EXCESS_NONE = UITexture.builder()
+        .canApplyTheme(true)
+        .location(GregTech.ID, "gui/overlay_button/void_excess_none")
+        .build();
+    public static final UITexture OVERLAY_BUTTON_VOID_EXCESS_ITEM = UITexture.builder()
+        .canApplyTheme(true)
+        .location(GregTech.ID, "gui/overlay_button/void_excess_item")
+        .build();
+    public static final UITexture OVERLAY_BUTTON_VOID_EXCESS_FLUID = UITexture.builder()
+        .canApplyTheme(true)
+        .location(GregTech.ID, "gui/overlay_button/void_excess_fluid")
+        .build();
+    public static final UITexture OVERLAY_BUTTON_VOID_EXCESS_ALL = UITexture.builder()
+        .canApplyTheme(true)
+        .location(GregTech.ID, "gui/overlay_button/void_excess_all")
+        .build();
+    public static final UITexture OVERLAY_BUTTON_INPUT_SEPARATION_ON = fullImage(
+        GregTech.ID,
+        "gui/overlay_button/input_separation_on");
+    public static final UITexture OVERLAY_BUTTON_INPUT_SEPARATION_ON_DISABLED = fullImage(
+        GregTech.ID,
+        "gui/overlay_button/input_separation_on_disabled");
+    public static final UITexture OVERLAY_BUTTON_INPUT_SEPARATION_OFF = fullImage(
+        GregTech.ID,
+        "gui/overlay_button/input_separation_off");
+    public static final UITexture OVERLAY_BUTTON_INPUT_SEPARATION_OFF_DISABLED = fullImage(
+        GregTech.ID,
+        "gui/overlay_button/input_separation_off_disabled");
+    public static final UITexture OVERLAY_BUTTON_RECIPE_UNLOCKED = fullImage(
+        GregTech.ID,
+        "gui/overlay_button/recipe_unlocked");
+    public static final UITexture OVERLAY_BUTTON_RECIPE_UNLOCKED_DISABLED = fullImage(
+        GregTech.ID,
+        "gui/overlay_button/recipe_unlocked_disabled");
+    public static final UITexture OVERLAY_BUTTON_RECIPE_LOCKED = fullImage(
+        GregTech.ID,
+        "gui/overlay_button/recipe_locked");
+    public static final UITexture OVERLAY_BUTTON_RECIPE_LOCKED_DISABLED = fullImage(
+        GregTech.ID,
+        "gui/overlay_button/recipe_locked_disabled");
+    public static final UITexture OVERLAY_BUTTON_BATCH_MODE_ON = fullImage(
+        GregTech.ID,
+        "gui/overlay_button/batch_mode_on");
+    public static final UITexture OVERLAY_BUTTON_BATCH_MODE_ON_DISABLED = fullImage(
+        GregTech.ID,
+        "gui/overlay_button/batch_mode_on_disabled");
+    public static final UITexture OVERLAY_BUTTON_BATCH_MODE_OFF = fullImage(
+        GregTech.ID,
+        "gui/overlay_button/batch_mode_off");
+    public static final UITexture OVERLAY_BUTTON_BATCH_MODE_OFF_DISABLED = fullImage(
+        GregTech.ID,
+        "gui/overlay_button/batch_mode_off_disabled");
+    public static final UITexture OVERLAY_BUTTON_STRUCTURE_UPDATE = fullImage(
+        GregTech.ID,
+        "gui/overlay_button/structure_update");
+    public static final UITexture OVERLAY_BUTTON_FORBIDDEN = fullImage(GregTech.ID, "gui/overlay_button/forbidden");
+
+    public static final UITexture OVERLAY_BUTTON_BOUNDING_BOX = UITexture.builder()
+        .location(GregTech.ID, "gui/overlay_button/bounding_box")
+        .fullImage()
+        .canApplyTheme(true)
+        .build();
 
     // endregion slot overlay
 
@@ -333,7 +377,7 @@ public final class GTGuiTextures {
         .name(GTTextureIds.BUTTON_STANDARD_PRESSED)
         .build();
     private static final SteamTextureRegisterer BUTTON_STEAM_PRESSED = SteamTextureRegisterer.builder()
-        .location("gui/button%s_pressed")
+        .location("gui/button/%s_pressed")
         .imageSize(18, 18)
         .adaptable(1)
         .canApplyTheme()
@@ -399,10 +443,14 @@ public final class GTGuiTextures {
     public static final UITexture OVERLAY_BUTTON_BLOCK_OUTPUT = fullImageGT("overlay_button/block_output");
     public static final UITexture OVERLAY_BUTTON_CHECKMARK = fullImageGT("overlay_button/checkmark");
     public static final UITexture OVERLAY_BUTTON_CROSS = fullImageGT("overlay_button/cross");
+    public static final UITexture OVERLAY_BUTTON_CYCLIC = fullImageGT("overlay_button/cyclic");
     public static final UITexture OVERLAY_BUTTON_EXPORT = fullImageGT("overlay_button/export");
     public static final UITexture OVERLAY_BUTTON_HOURGLASS = fullImageGT("overlay_button/hourglass");
     public static final UITexture OVERLAY_BUTTON_IMPORT = fullImageGT("overlay_button/import");
     public static final UITexture OVERLAY_BUTTON_POWER_SWITCH_ON = fullImageGT("overlay_button/power_switch_on");
+    public static final UITexture OVERLAY_BUTTON_POWER_SWITCH_OFF = fullImageGT("overlay_button/power_switch_off");
+    public static final UITexture OVERLAY_BUTTON_POWER_SWITCH_DISABLED = fullImageGT(
+        "overlay_button/power_switch_disabled");
     public static final UITexture OVERLAY_BUTTON_PROGRESS = fullImageGT("overlay_button/progress");
     public static final UITexture OVERLAY_BUTTON_REDSTONE_OFF = fullImageGT("overlay_button/redstone_off");
     public static final UITexture OVERLAY_BUTTON_REDSTONE_ON = fullImageGT("overlay_button/redstone_on");
@@ -481,40 +529,57 @@ public final class GTGuiTextures {
 
     // region machine modes
 
-    public static final UITexture OVERLAY_BUTTON_MACHINEMODE_DEFAULT = UITexture
-        .fullImage(GregTech.ID, "gui/overlay_button/machine_mode_default");
-    public static final UITexture OVERLAY_BUTTON_MACHINEMODE_CHEMBATH = UITexture
-        .fullImage(GregTech.ID, "gui/overlay_button/machine_mode_chembath");
-    public static final UITexture OVERLAY_BUTTON_MACHINEMODE_WASHPLANT = UITexture
-        .fullImage(GregTech.ID, "gui/overlay_button/machine_mode_washplant");
-    public static final UITexture OVERLAY_BUTTON_MACHINEMODE_SIMPLEWASHER = UITexture
-        .fullImage(GregTech.ID, "gui/overlay_button/machine_mode_simplewasher");
-    public static final UITexture OVERLAY_BUTTON_MACHINEMODE_PACKAGER = UITexture
-        .fullImage(GregTech.ID, "gui/overlay_button/machine_mode_packager");
-    public static final UITexture OVERLAY_BUTTON_MACHINEMODE_UNPACKAGER = UITexture
-        .fullImage(GregTech.ID, "gui/overlay_button/machine_mode_unpackager");
-    public static final UITexture OVERLAY_BUTTON_MACHINEMODE_SEPARATOR = UITexture
-        .fullImage(GregTech.ID, "gui/overlay_button/machine_mode_separator");
-    public static final UITexture OVERLAY_BUTTON_MACHINEMODE_POLARIZER = UITexture
-        .fullImage(GregTech.ID, "gui/overlay_button/machine_mode_polarizer");
-    public static final UITexture OVERLAY_BUTTON_MACHINEMODE_LPF_FLUID = UITexture
-        .fullImage(GregTech.ID, "gui/overlay_button/machine_mode_lpf_fluid");
-    public static final UITexture OVERLAY_BUTTON_MACHINEMODE_LPF_METAL = UITexture
-        .fullImage(GregTech.ID, "gui/overlay_button/machine_mode_lpf_metal");
-    public static final UITexture OVERLAY_BUTTON_MACHINEMODE_BENDING = UITexture
-        .fullImage(GregTech.ID, "gui/overlay_button/machine_mode_bending");
-    public static final UITexture OVERLAY_BUTTON_MACHINEMODE_FORMING = UITexture
-        .fullImage(GregTech.ID, "gui/overlay_button/machine_mode_forming");
-    public static final UITexture OVERLAY_BUTTON_MACHINEMODE_SLICING = UITexture
-        .fullImage(GregTech.ID, "gui/overlay_button/machine_mode_slicing");
-    public static final UITexture OVERLAY_BUTTON_MACHINEMODE_CUTTING = UITexture
-        .fullImage(GregTech.ID, "gui/overlay_button/machine_mode_cutting");
-    public static final UITexture OVERLAY_BUTTON_MACHINEMODE_COMPRESSING = UITexture
-        .fullImage(GregTech.ID, "gui/overlay_button/machine_mode_compressing");
-    public static final UITexture OVERLAY_BUTTON_MACHINEMODE_SINGULARITY = UITexture
-        .fullImage(GregTech.ID, "gui/overlay_button/machine_mode_singularity");
-    public static final UITexture OVERLAY_BUTTON_MACHINEMODE_STEAM = UITexture
-        .fullImage(GregTech.ID, "gui/overlay_button/machine_mode_dehp_steam");
+    public static final UITexture OVERLAY_BUTTON_MACHINEMODE_DEFAULT = fullImage(
+        GregTech.ID,
+        "gui/overlay_button/machine_mode_default");
+    public static final UITexture OVERLAY_BUTTON_MACHINEMODE_CHEMBATH = fullImage(
+        GregTech.ID,
+        "gui/overlay_button/machine_mode_chembath");
+    public static final UITexture OVERLAY_BUTTON_MACHINEMODE_WASHPLANT = fullImage(
+        GregTech.ID,
+        "gui/overlay_button/machine_mode_washplant");
+    public static final UITexture OVERLAY_BUTTON_MACHINEMODE_SIMPLEWASHER = fullImage(
+        GregTech.ID,
+        "gui/overlay_button/machine_mode_simplewasher");
+    public static final UITexture OVERLAY_BUTTON_MACHINEMODE_PACKAGER = fullImage(
+        GregTech.ID,
+        "gui/overlay_button/machine_mode_packager");
+    public static final UITexture OVERLAY_BUTTON_MACHINEMODE_UNPACKAGER = fullImage(
+        GregTech.ID,
+        "gui/overlay_button/machine_mode_unpackager");
+    public static final UITexture OVERLAY_BUTTON_MACHINEMODE_SEPARATOR = fullImage(
+        GregTech.ID,
+        "gui/overlay_button/machine_mode_separator");
+    public static final UITexture OVERLAY_BUTTON_MACHINEMODE_POLARIZER = fullImage(
+        GregTech.ID,
+        "gui/overlay_button/machine_mode_polarizer");
+    public static final UITexture OVERLAY_BUTTON_MACHINEMODE_LPF_FLUID = fullImage(
+        GregTech.ID,
+        "gui/overlay_button/machine_mode_lpf_fluid");
+    public static final UITexture OVERLAY_BUTTON_MACHINEMODE_LPF_METAL = fullImage(
+        GregTech.ID,
+        "gui/overlay_button/machine_mode_lpf_metal");
+    public static final UITexture OVERLAY_BUTTON_MACHINEMODE_BENDING = fullImage(
+        GregTech.ID,
+        "gui/overlay_button/machine_mode_bending");
+    public static final UITexture OVERLAY_BUTTON_MACHINEMODE_FORMING = fullImage(
+        GregTech.ID,
+        "gui/overlay_button/machine_mode_forming");
+    public static final UITexture OVERLAY_BUTTON_MACHINEMODE_SLICING = fullImage(
+        GregTech.ID,
+        "gui/overlay_button/machine_mode_slicing");
+    public static final UITexture OVERLAY_BUTTON_MACHINEMODE_CUTTING = fullImage(
+        GregTech.ID,
+        "gui/overlay_button/machine_mode_cutting");
+    public static final UITexture OVERLAY_BUTTON_MACHINEMODE_COMPRESSING = fullImage(
+        GregTech.ID,
+        "gui/overlay_button/machine_mode_compressing");
+    public static final UITexture OVERLAY_BUTTON_MACHINEMODE_SINGULARITY = fullImage(
+        GregTech.ID,
+        "gui/overlay_button/machine_mode_singularity");
+    public static final UITexture OVERLAY_BUTTON_MACHINEMODE_STEAM = fullImage(
+        GregTech.ID,
+        "gui/overlay_button/machine_mode_dehp_steam");
 
     // endregion machine modes
     /**
@@ -524,7 +589,7 @@ public final class GTGuiTextures {
      * @return Texture of full image
      */
     private static UITexture fullImageGT(String path) {
-        return UITexture.fullImage(GregTech.ID, "gui/" + path);
+        return fullImage(GregTech.ID, "gui/" + path);
     }
 
     /**
@@ -534,6 +599,6 @@ public final class GTGuiTextures {
      * @return Texture of full image
      */
     private static UITexture fullImageColorableGT(String path) {
-        return UITexture.fullImage(GregTech.ID, "gui/" + path, true);
+        return fullImage(GregTech.ID, "gui/" + path, true);
     }
 }

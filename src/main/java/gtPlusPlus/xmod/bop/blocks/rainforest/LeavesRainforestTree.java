@@ -6,14 +6,13 @@ import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
-import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.xmod.bop.blocks.BOPBlockRegistrator;
 import gtPlusPlus.xmod.bop.blocks.base.LeavesBase;
 
 public class LeavesRainforestTree extends LeavesBase {
 
     public LeavesRainforestTree() {
-        super("Rainforest Oak", "rainforestoak", new ItemStack[] { ItemUtils.getSimpleStack(Items.apple) });
+        super("Rainforest Oak", "rainforestoak", new ItemStack[] { new ItemStack(Items.apple) });
         this.treeType = new String[] { "rainforest" };
         this.leafType = new String[][] { { "rainforest" }, { "rainforest_opaque" } };
     }

@@ -124,7 +124,7 @@ public class GregTechAPI {
      * The List of Tools, which can be used. Accepts regular damageable Items and Electric Items
      */
     public static final GTHashSet sToolList = new GTHashSet(), sCrowbarList = new GTHashSet(),
-        sScrewdriverList = new GTHashSet(), sWrenchList = new GTHashSet(), sSoftHammerList = new GTHashSet(),
+        sScrewdriverList = new GTHashSet(), sWrenchList = new GTHashSet(), sSoftMalletList = new GTHashSet(),
         sHardHammerList = new GTHashSet(), sWireCutterList = new GTHashSet(), sSolderingToolList = new GTHashSet(),
         sSolderingMetalList = new GTHashSet(), sJackhammerList = new GTHashSet();
 
@@ -400,8 +400,8 @@ public class GregTechAPI {
      * You need to register Tools in the Load Phase, because otherwise the Auto-detection will assign a Tool Type in
      * certain Cases during postload (When IToolWrench or similar Interfaces are implemented).
      */
-    public static boolean registerSoftHammer(ItemStack aTool) {
-        return registerTool(aTool, sSoftHammerList);
+    public static boolean registerSoftMallet(ItemStack aTool) {
+        return registerTool(aTool, sSoftMalletList);
     }
 
     /**

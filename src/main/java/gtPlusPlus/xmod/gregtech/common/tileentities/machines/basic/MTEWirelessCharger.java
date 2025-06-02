@@ -11,7 +11,6 @@ import java.util.UUID;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -188,16 +187,6 @@ public class MTEWirelessCharger extends MTETieredMachineBlock implements IWirele
     }
 
     @Override
-    public boolean isElectric() {
-        return true;
-    }
-
-    @Override
-    public boolean isValidSlot(final int aIndex) {
-        return true;
-    }
-
-    @Override
     public boolean isFacingValid(final ForgeDirection facing) {
         return true;
     }
@@ -205,11 +194,6 @@ public class MTEWirelessCharger extends MTETieredMachineBlock implements IWirele
     @Override
     public boolean isEnetInput() {
         return true;
-    }
-
-    @Override
-    public boolean isEnetOutput() {
-        return false;
     }
 
     @Override
@@ -250,11 +234,6 @@ public class MTEWirelessCharger extends MTETieredMachineBlock implements IWirele
     }
 
     @Override
-    public long maxEUOutput() {
-        return 0;
-    }
-
-    @Override
     public long maxAmperesIn() {
         if (this.mode == MODE_LONG_RANGE) {
             return this.longRangeMap.size() + 1L;
@@ -271,26 +250,6 @@ public class MTEWirelessCharger extends MTETieredMachineBlock implements IWirele
     }
 
     @Override
-    public int rechargerSlotStartIndex() {
-        return 0;
-    }
-
-    @Override
-    public int dechargerSlotStartIndex() {
-        return 0;
-    }
-
-    @Override
-    public int rechargerSlotCount() {
-        return 0;
-    }
-
-    @Override
-    public int dechargerSlotCount() {
-        return 0;
-    }
-
-    @Override
     public int getProgresstime() {
         return (int) this.getBaseMetaTileEntity()
             .getUniversalEnergyStored();
@@ -300,11 +259,6 @@ public class MTEWirelessCharger extends MTETieredMachineBlock implements IWirele
     public int maxProgresstime() {
         return (int) this.getBaseMetaTileEntity()
             .getUniversalEnergyCapacity();
-    }
-
-    @Override
-    public boolean isAccessAllowed(final EntityPlayer aPlayer) {
-        return true;
     }
 
     @Override
@@ -365,11 +319,6 @@ public class MTEWirelessCharger extends MTETieredMachineBlock implements IWirele
     }
 
     @Override
-    public ItemStack getStackInSlotOnClosing(final int p_70304_1_) {
-        return null;
-    }
-
-    @Override
     public void setInventorySlotContents(final int p_70299_1_, final ItemStack p_70299_2_) {}
 
     @Override
@@ -378,25 +327,9 @@ public class MTEWirelessCharger extends MTETieredMachineBlock implements IWirele
     }
 
     @Override
-    public boolean hasCustomInventoryName() {
-        return false;
-    }
-
-    @Override
     public int getInventoryStackLimit() {
         return 0;
     }
-
-    @Override
-    public boolean isUseableByPlayer(final EntityPlayer p_70300_1_) {
-        return false;
-    }
-
-    @Override
-    public void openInventory() {}
-
-    @Override
-    public void closeInventory() {}
 
     @Override
     public boolean isItemValidForSlot(final int p_94041_1_, final ItemStack p_94041_2_) {
@@ -438,40 +371,64 @@ public class MTEWirelessCharger extends MTETieredMachineBlock implements IWirele
         }
 
         if (tick % 20 == 0) {
-            final ChunkCoordinates coord = baseMetaTileEntity.getCoords();
-            boolean mapped = this.equals(WirelessChargerManager.getCharger(coord.posX, coord.posY, coord.posZ));
+            boolean mapped = this.equals(
+                WirelessChargerManager.getCharger(
+                    baseMetaTileEntity.getXCoord(),
+                    baseMetaTileEntity.getYCoord(),
+                    baseMetaTileEntity.getZCoord()));
             if (!mapped) {
                 WirelessChargerManager.addCharger(this);
             }
 
             for (EntityPlayer player : baseMetaTileEntity.getWorld().playerEntities) {
+                final double distSq = player.getDistanceSq(
+                    baseMetaTileEntity.getXCoord(),
+                    baseMetaTileEntity.getYCoord(),
+                    baseMetaTileEntity.getZCoord());
                 if (this.mode == MODE_LOCAL || this.mode == MODE_MIXED) {
-                    if (WirelessChargerManager.calcDistance(player, baseMetaTileEntity)
-                        < this.getLocalRange(this.mode == MODE_MIXED)) {
-                        if (this.isValidPlayer(player) && !localRangeMap.containsKey(player.getDisplayName())) {
-                            localRangeMap.put(player.getDisplayName(), player.getPersistentID());
+                    final double range = this.getLocalRange(this.mode == MODE_MIXED);
+                    if (distSq < range * range) {
+                        if (this.isValidPlayer(player) && !localRangeMap.containsKey(
+                            player.getGameProfile()
+                                .getName())) {
+                            localRangeMap.put(
+                                player.getGameProfile()
+                                    .getName(),
+                                player.getPersistentID());
                         }
                     } else {
-                        localRangeMap.remove(player.getDisplayName());
+                        localRangeMap.remove(
+                            player.getGameProfile()
+                                .getName());
                     }
                 }
                 if (this.mode == MODE_LONG_RANGE || this.mode == MODE_MIXED) {
-                    int range = getLongRange(this.mode == MODE_MIXED);
-                    if (WirelessChargerManager.calcDistance(player, baseMetaTileEntity) <= range) {
-                        if (!longRangeMap.containsKey(player.getDisplayName())) {
+                    final double range = getLongRange(this.mode == MODE_MIXED);
+                    if (distSq <= range * range) {
+                        if (!longRangeMap.containsKey(
+                            player.getGameProfile()
+                                .getName())) {
                             if (this.isValidPlayer(player)) {
-                                longRangeMap.put(player.getDisplayName(), player.getPersistentID());
+                                longRangeMap.put(
+                                    player.getGameProfile()
+                                        .getName(),
+                                    player.getPersistentID());
                                 GTUtility.sendChatToPlayer(
                                     player,
-                                    translateChat("enter", range, translateChat("mode.long")));
+                                    translateChat("enter", (int) range, translateChat("mode.long")));
                             }
                         }
                     } else {
-                        if (longRangeMap.containsKey(player.getDisplayName())) {
-                            if (longRangeMap.remove(player.getDisplayName()) != null) {
+                        if (longRangeMap.containsKey(
+                            player.getGameProfile()
+                                .getName())) {
+                            if (longRangeMap.remove(
+                                player.getGameProfile()
+                                    .getName())
+                                != null) {
                                 GTUtility.sendChatToPlayer(
                                     player,
-                                    translateChat("leave", range, translateChat("mode.long")));
+                                    translateChat("leave", (int) range, translateChat("mode.long")));
                             }
                         }
                     }
@@ -587,57 +544,68 @@ public class MTEWirelessCharger extends MTETieredMachineBlock implements IWirele
                     .getWorld().provider.dimensionId)
             return false;
         if (this.mode == 0) {
-            return longRangeMap.containsKey(player.getDisplayName());
+            return longRangeMap.containsKey(
+                player.getGameProfile()
+                    .getName());
         } else if (this.mode == 1) {
-            return localRangeMap.containsKey(player.getDisplayName());
+            return localRangeMap.containsKey(
+                player.getGameProfile()
+                    .getName());
         } else {
-            if (longRangeMap.containsKey(player.getDisplayName())) {
+            if (longRangeMap.containsKey(
+                player.getGameProfile()
+                    .getName())) {
                 return true;
             }
-            return localRangeMap.containsKey(player.getDisplayName());
+            return localRangeMap.containsKey(
+                player.getGameProfile()
+                    .getName());
         }
     }
 
     @Override
-    public void chargePlayerItems(ItemStack[] stacks, EntityPlayer player) {
+    public void chargePlayerItems(EntityPlayer player, ItemStack[]... inventories) {
         final int amp;
-        if (localRangeMap.containsKey(player.getDisplayName())) {
+        if (localRangeMap.containsKey(
+            player.getGameProfile()
+                .getName())) {
             amp = 2;
-        } else if (longRangeMap.containsKey(player.getDisplayName())) {
-            amp = 1;
-        } else {
-            return;
-        }
+        } else if (longRangeMap.containsKey(
+            player.getGameProfile()
+                .getName())) {
+                    amp = 1;
+                } else {
+                    return;
+                }
 
         final long storedEU = this.getEUVar();
         final long maxChargeableEU = Math.min(storedEU, this.maxEUInput() * amp * WirelessChargerManager.CHARGE_TICK);
 
         long chargedEU = 0;
-        for (ItemStack stack : stacks) {
+        for (ItemStack[] stacks : inventories) {
             if (chargedEU >= maxChargeableEU) break;
-            if (stack == null) continue;
+            if (stacks == null) continue;
+            for (ItemStack stack : stacks) {
+                if (chargedEU >= maxChargeableEU) break;
+                if (stack == null) continue;
 
-            final int chargeableEU = (int) Math.min(
-                Integer.MAX_VALUE,
-                Math.min(maxChargeableEU - chargedEU, this.maxEUInput() * WirelessChargerManager.CHARGE_TICK));
-            if (stack.getItem() instanceof ic2.api.item.IElectricItem electricItem) {
-                final int charged = Math.max(
-                    0,
-                    (int) ic2.api.item.ElectricItem.manager.charge(
-                        stack,
-                        Math.min(
-                            chargeableEU,
-                            electricItem.getTransferLimit(stack) * WirelessChargerManager.CHARGE_TICK),
-                        Integer.MAX_VALUE,
-                        true,
-                        false));
-                chargedEU += charged;
-            } else if (COFHCore.isModLoaded() && stack.getItem() instanceof IEnergyContainerItem rfItem) {
-                int chargeableRF = Math.min(
-                    rfItem.getMaxEnergyStored(stack) - rfItem.getEnergyStored(stack),
-                    (int) Math.min(Integer.MAX_VALUE, (long) chargeableEU * mEUtoRF / 100));
-                int chargedRF = rfItem.receiveEnergy(stack, chargeableRF, false);
-                chargedEU += (long) chargedRF * 100L / mEUtoRF;
+                final int chargeableEU = (int) Math.min(
+                    Integer.MAX_VALUE,
+                    Math.min(maxChargeableEU - chargedEU, this.maxEUInput() * WirelessChargerManager.CHARGE_TICK));
+
+                if (stack.getItem() instanceof ic2.api.item.IElectricItem) {
+                    final int charged = Math.max(
+                        0,
+                        (int) ic2.api.item.ElectricItem.manager
+                            .charge(stack, chargeableEU, Integer.MAX_VALUE, true, false));
+                    chargedEU += charged;
+                } else if (COFHCore.isModLoaded() && stack.getItem() instanceof IEnergyContainerItem rfItem) {
+                    int chargeableRF = Math.min(
+                        rfItem.getMaxEnergyStored(stack) - rfItem.getEnergyStored(stack),
+                        (int) Math.min(Integer.MAX_VALUE, (long) chargeableEU * mEUtoRF / 100));
+                    int chargedRF = rfItem.receiveEnergy(stack, chargeableRF, false);
+                    chargedEU += (long) chargedRF * 100L / mEUtoRF;
+                }
             }
         }
 

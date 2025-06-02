@@ -442,11 +442,6 @@ public class MTEMagicalEnergyAbsorber extends MTEBasicGenerator implements Magic
         return (isDisenchantableItem(aStack) || isEnchantedBook(aStack));
     }
 
-    @Override
-    public int getCapacity() {
-        return 16000;
-    }
-
     private boolean isDisenchantableItem(ItemStack aStack) {
         return ((aStack.isItemEnchanted()) && (aStack.getItem()
             .getItemEnchantability() > 0));

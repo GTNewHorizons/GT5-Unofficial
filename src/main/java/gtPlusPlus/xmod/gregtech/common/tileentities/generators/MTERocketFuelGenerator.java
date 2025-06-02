@@ -1,7 +1,6 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.generators;
 
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.common.util.ForgeDirection;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.enums.ItemList;
@@ -31,12 +30,6 @@ public class MTERocketFuelGenerator extends MTERocketFuelGeneratorBase {
     }
 
     @Override
-    public boolean isOutputFacing(final ForgeDirection side) {
-        return side == this.getBaseMetaTileEntity()
-            .getFrontFacing();
-    }
-
-    @Override
     public MetaTileEntity newMetaEntity(final IGregTechTileEntity aTileEntity) {
         return new MTERocketFuelGenerator(this.mName, this.mTier, this.mDescriptionArray, this.mTextures);
     }
@@ -44,11 +37,6 @@ public class MTERocketFuelGenerator extends MTERocketFuelGeneratorBase {
     @Override
     public RecipeMap<?> getRecipeMap() {
         return GTPPRecipeMaps.rocketFuels;
-    }
-
-    @Override
-    public int getCapacity() {
-        return 32000;
     }
 
     @Override

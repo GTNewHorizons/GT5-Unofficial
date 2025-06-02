@@ -48,11 +48,6 @@ public class MTELargeTurbineSteam extends MTELargerTurbineBase {
         return true;
     }
 
-    @Override
-    public int getPollutionPerSecond(ItemStack aStack) {
-        return 0;
-    }
-
     private int useWater(float input) {
         water = water + input;
         int usage = (int) water;

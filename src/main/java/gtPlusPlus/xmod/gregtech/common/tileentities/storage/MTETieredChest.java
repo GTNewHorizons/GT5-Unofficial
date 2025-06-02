@@ -59,16 +59,6 @@ public class MTETieredChest extends MTETieredMachineBlock implements IAddUIWidge
     }
 
     @Override
-    public boolean isAccessAllowed(EntityPlayer aPlayer) {
-        return true;
-    }
-
-    @Override
-    public boolean isValidSlot(int aIndex) {
-        return true;
-    }
-
-    @Override
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new MTETieredChest(this.mName, this.mTier, this.mDescriptionArray, this.mTextures);
     }

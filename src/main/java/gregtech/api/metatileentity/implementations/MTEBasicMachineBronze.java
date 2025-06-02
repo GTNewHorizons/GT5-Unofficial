@@ -145,11 +145,6 @@ public abstract class MTEBasicMachineBronze extends MTEBasicMachine {
     }
 
     @Override
-    public boolean isLiquidOutput(ForgeDirection side) {
-        return side != mMainFacing;
-    }
-
-    @Override
     public boolean doesAutoOutput() {
         return false;
     }

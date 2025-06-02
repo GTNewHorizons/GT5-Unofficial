@@ -10,6 +10,7 @@ import static gregtech.api.util.GTRecipeBuilder.TICKS;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 
+import bartworks.common.loaders.ItemRegistry;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
@@ -182,6 +183,15 @@ public class FormingPressRecipes implements Runnable {
                 ItemList.Shape_Mold_Ingot.get(0L))
             .itemOutputs(new ItemStack(Items.brick, 1, 0))
             .duration(5 * SECONDS)
+            .eut(16)
+            .addTo(formingPressRecipes);
+        // Bartworks Glass Tube
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Glass, 2L),
+                ItemList.Shape_Mold_Rod_Long.get(0L))
+            .itemOutputs(new ItemStack(ItemRegistry.PUMPPARTS, 1, 0))
+            .duration(15 * SECONDS)
             .eut(16)
             .addTo(formingPressRecipes);
     }

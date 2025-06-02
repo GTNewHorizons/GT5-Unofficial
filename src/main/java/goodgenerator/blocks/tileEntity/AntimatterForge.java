@@ -336,25 +336,14 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
     }
 
     public Block getCasingBlock(int type) {
-        switch (type) {
-            case 1:
-                return Loaders.magneticFluxCasing;
-            case 2:
-                return Loaders.gravityStabilizationCasing;
-            default:
-                return Loaders.magneticFluxCasing;
+        if (type == 2) {
+            return Loaders.gravityStabilizationCasing;
         }
+        return Loaders.magneticFluxCasing;
     }
 
     public int getCasingMeta(int type) {
-        switch (type) {
-            case 1:
-                return 0;
-            case 2:
-                return 0;
-            default:
-                return 0;
-        }
+        return 0;
     }
 
     public Block getCoilBlock() {
@@ -374,19 +363,10 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
     }
 
     public int textureIndex(int type) {
-        switch (type) {
-            case 1:
-                return (12 << 7) + 9;
-            case 2:
-                return (12 << 7) + 10;
-            default:
-                return (12 << 7) + 9;
+        if (type == 2) {
+            return (12 << 7) + 10;
         }
-    }
-
-    @Override
-    public boolean allowCoverOnSide(ForgeDirection side, ItemStack coverItem) {
-        return side != getBaseMetaTileEntity().getFrontFacing();
+        return (12 << 7) + 9;
     }
 
     @Override

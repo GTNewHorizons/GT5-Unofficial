@@ -3,7 +3,6 @@ package gtPlusPlus.api.objects.minecraft;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
-import net.minecraftforge.fluids.FluidTankInfo;
 
 public class BTF_FluidTank extends FluidTank {
 
@@ -159,11 +158,6 @@ public class BTF_FluidTank extends FluidTank {
     @Override
     public int getCapacity() {
         return super.getCapacity();
-    }
-
-    @Override
-    public FluidTankInfo getInfo() {
-        return new FluidTankInfo(this);
     }
 
     @Override

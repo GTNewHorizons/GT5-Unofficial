@@ -110,7 +110,7 @@ public class CoverShutter extends CoverLegacyData {
 
     @Override
     protected @NotNull CoverGui<?> getCoverGui() {
-        return new CoverShutterGui();
+        return new CoverShutterGui(this);
     }
 
     @Override

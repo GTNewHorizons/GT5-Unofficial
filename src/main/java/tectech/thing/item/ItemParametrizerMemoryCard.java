@@ -1,6 +1,7 @@
 package tectech.thing.item;
 
 import static net.minecraft.util.StatCollector.translateToLocal;
+import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,7 +17,6 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
-import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
 
@@ -69,8 +69,8 @@ public final class ItemParametrizerMemoryCard extends Item {
                     if (!tNBT.hasKey("controller")) {
                         reason = translateToLocal("item.em.parametrizerMemoryCard.noConfig");
                     } else {
-                        reason = String.format(
-                            translateToLocal("item.em.parametrizerMemoryCard.controllerMismatch"),
+                        reason = translateToLocalFormatted(
+                            "item.em.parametrizerMemoryCard.controllerMismatch",
                             tNBT.getString("controller"),
                             controller.getLocalName());
                     }
@@ -193,7 +193,7 @@ public final class ItemParametrizerMemoryCard extends Item {
         if (tNBT == null) return;
         if (tNBT.hasKey("controller")) {
             aList.add(
-                StatCollector.translateToLocalFormatted(
+                translateToLocalFormatted(
                     "item.em.parametrizerMemoryCard.desc.copied_controller",
                     EnumChatFormatting.RED + tNBT.getString("controller") + EnumChatFormatting.RESET,
                     EnumChatFormatting.GREEN + tNBT.getString("coords")));

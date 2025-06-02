@@ -12,16 +12,16 @@ import net.minecraftforge.fluids.FluidStack;
 import org.apache.commons.lang3.tuple.Pair;
 
 import gregtech.api.enums.GTValues;
+import gregtech.api.enums.Materials;
 import gregtech.api.recipe.RecipeMaps;
 import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.core.util.minecraft.FluidUtils;
 
 public class SemiFluidFuelHandler {
 
     public static boolean generateFuels() {
-        final FluidStack aCreosote = FluidUtils.getFluidStack("creosote", 1000);
-        final FluidStack aHeavyFuel = FluidUtils.getFluidStack("liquid_heavy_fuel", 1000);
-        final FluidStack aHeavyOil = FluidUtils.getFluidStack("liquid_heavy_oil", 1000);
+        final FluidStack aCreosote = Materials.Creosote.getFluid(1_000);
+        final FluidStack aHeavyFuel = Materials.HeavyFuel.getFluid(1_000);
+        final FluidStack aHeavyOil = Materials.OilHeavy.getFluid(1_000);
         final HashMap<Integer, Pair<FluidStack, Integer>> aFoundFluidsFromItems = new HashMap<>();
         // Find Fluids From items
         for (final GTRecipe r : RecipeMaps.denseLiquidFuels.getAllRecipes()) {

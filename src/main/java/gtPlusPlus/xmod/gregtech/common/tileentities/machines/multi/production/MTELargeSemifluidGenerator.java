@@ -327,11 +327,6 @@ public class MTELargeSemifluidGenerator extends GTPPMultiBlockBase<MTELargeSemif
     }
 
     @Override
-    public boolean isGivingInformation() {
-        return true;
-    }
-
-    @Override
     public String getMachineType() {
         return "Semifluid Generator";
     }
@@ -339,6 +334,11 @@ public class MTELargeSemifluidGenerator extends GTPPMultiBlockBase<MTELargeSemif
     @Override
     public int getMaxParallelRecipes() {
         return 0;
+    }
+
+    @Override
+    public boolean showRecipeTextInGUI() {
+        return false;
     }
 
 }

@@ -252,7 +252,7 @@ public class CellLoader implements IWerkstoffRunnable {
 
             GTValues.RA.stdBuilder()
                 .itemInputs(werkstoff.get(dust))
-                .fluidOutputs(werkstoff.getFluidOrGas(1000))
+                .fluidOutputs(werkstoff.getFluidOrGas(1_000))
                 .duration(
                     werkstoff.getStats()
                         .getMass())
@@ -265,7 +265,7 @@ public class CellLoader implements IWerkstoffRunnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(GTUtility.getIntegratedCircuit(1))
                 .itemOutputs(werkstoff.get(dust))
-                .fluidInputs(werkstoff.getFluidOrGas(1000))
+                .fluidInputs(werkstoff.getFluidOrGas(1_000))
                 .duration(
                     (int) werkstoff.getStats()
                         .getMass())

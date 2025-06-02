@@ -24,7 +24,6 @@ import gtPlusPlus.core.item.base.itemblock.ItemBlockGtBlock;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.math.MathUtils;
-import gtPlusPlus.core.util.minecraft.ItemUtils;
 
 public class BlockBaseModular extends BasicBlock {
 
@@ -79,14 +78,11 @@ public class BlockBaseModular extends BasicBlock {
             ItemBlockGtBlock.class,
             Utils.sanitizeString(blockType.getTexture() + unlocalizedName));
         if (fx == 0) {
-            GTOreDictUnificator
-                .registerOre("block" + unifyMaterialName(thisBlockMaterial), ItemUtils.getSimpleStack(this));
+            GTOreDictUnificator.registerOre("block" + unifyMaterialName(thisBlockMaterial), new ItemStack(this));
         } else if (fx == 1) {
-            GTOreDictUnificator
-                .registerOre("frameGt" + unifyMaterialName(thisBlockMaterial), ItemUtils.getSimpleStack(this));
+            GTOreDictUnificator.registerOre("frameGt" + unifyMaterialName(thisBlockMaterial), new ItemStack(this));
         } else if (fx == 2) {
-            GTOreDictUnificator
-                .registerOre("frameGt" + unifyMaterialName(thisBlockMaterial), ItemUtils.getSimpleStack(this));
+            GTOreDictUnificator.registerOre("frameGt" + unifyMaterialName(thisBlockMaterial), new ItemStack(this));
         }
     }
 
@@ -113,7 +109,7 @@ public class BlockBaseModular extends BasicBlock {
             : (fx == 1 ? OrePrefixes.frameGt.name() : OrePrefixes.ore.name()));
         ItemStack x = aMap.get(aKey);
         if (x == null) {
-            aMap.put(aKey, ItemUtils.getSimpleStack(this));
+            aMap.put(aKey, new ItemStack(this));
             Logger.MATERIALS("Registering a material component. Item: [" + aName + "] Map: [" + aKey + "]");
             Material.mComponentMap.put(aName, aMap);
         } else {

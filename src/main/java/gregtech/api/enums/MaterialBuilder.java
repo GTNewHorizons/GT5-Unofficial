@@ -152,6 +152,13 @@ public class MaterialBuilder {
         return this;
     }
 
+    public MaterialBuilder setRGB(int rgb) {
+        this.r = (rgb >> 16) & 0xFF;
+        this.g = (rgb >> 8) & 0xFF;
+        this.b = b & 0xFF;
+        return this;
+    }
+
     public MaterialBuilder setTransparent(boolean transparent) {
         this.transparent = transparent;
         return this;

@@ -5,6 +5,7 @@ import javax.annotation.Nonnull;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.client.IItemRenderer;
 
 public interface IItemContainer {
 
@@ -43,6 +44,10 @@ public interface IItemContainer {
     ItemStack getWithName(long aAmount, String aDisplayName, Object... aReplacements);
 
     boolean hasBeenSet();
+
+    default IItemContainer setRender(IItemRenderer aRender) {
+        return this;
+    };
 
     default @Nonnull String getDisplayName() {
         ItemStack stack = get(1);

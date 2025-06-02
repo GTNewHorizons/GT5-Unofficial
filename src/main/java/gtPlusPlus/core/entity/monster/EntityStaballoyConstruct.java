@@ -8,8 +8,8 @@ import net.minecraft.world.World;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gtPlusPlus.core.material.MaterialsAlloy;
 import gtPlusPlus.core.util.math.MathUtils;
-import gtPlusPlus.core.util.minecraft.ItemUtils;
 
 public class EntityStaballoyConstruct extends EntityIronGolem {
 
@@ -63,13 +63,13 @@ public class EntityStaballoyConstruct extends EntityIronGolem {
         int j = this.rand.nextInt(3);
         int k;
         for (k = 0; k < j; ++k) {
-            this.entityDropItem(ItemUtils.getItemStackOfAmountFromOreDict("blockStaballoy", 1), 0f);
+            this.entityDropItem(MaterialsAlloy.STABALLOY.getBlock(1), 0f);
         }
         k = 3 + this.rand.nextInt(3);
         for (int l = 0; l < k; ++l) {
-            this.entityDropItem(ItemUtils.getItemStackOfAmountFromOreDict("ingotStaballoy", lootingChance), 0f);
+            this.entityDropItem(MaterialsAlloy.STABALLOY.getIngot(lootingChance), 0f);
             if (MathUtils.randInt(0, 2) == 0) {
-                this.entityDropItem(ItemUtils.getItemStackOfAmountFromOreDict("plateStaballoy", lootingChance), 0f);
+                this.entityDropItem(MaterialsAlloy.STABALLOY.getPlate(lootingChance), 0f);
             }
         }
     }

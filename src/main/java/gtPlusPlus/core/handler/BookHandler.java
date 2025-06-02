@@ -10,11 +10,12 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 
 import gregtech.api.enums.GTValues;
+import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.item.ModItems;
-import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.minecraft.RecipeUtils;
 
 public class BookHandler {
@@ -418,38 +419,37 @@ public class BookHandler {
     public static ItemStack ItemBookWritten_MultiChemicalPlant;
 
     public static void runLater() {
-        ItemBookWritten_ThermalBoiler = ItemUtils.simpleMetaStack(ModItems.itemCustomBook, 0, 1);
-        ItemBookWritten_MultiPowerStorage = ItemUtils.simpleMetaStack(ModItems.itemCustomBook, 1, 1);
-        ItemBookWritten_ModularBaubles = ItemUtils.simpleMetaStack(ModItems.itemCustomBook, 2, 1);
-        ItemBookWritten_MultiMachineManual = ItemUtils.simpleMetaStack(ModItems.itemCustomBook, 3, 1);
-        ItemBookWritten_NuclearManual = ItemUtils.simpleMetaStack(ModItems.itemCustomBook, 4, 1);
-        ItemBookWritten_MultiChemicalPlant = ItemUtils.simpleMetaStack(ModItems.itemCustomBook, 5, 1);
+        ItemBookWritten_ThermalBoiler = new ItemStack(ModItems.itemCustomBook, 1, 0);
+        ItemBookWritten_MultiPowerStorage = new ItemStack(ModItems.itemCustomBook, 1, 1);
+        ItemBookWritten_ModularBaubles = new ItemStack(ModItems.itemCustomBook, 1, 2);
+        ItemBookWritten_MultiMachineManual = new ItemStack(ModItems.itemCustomBook, 1, 3);
+        ItemBookWritten_NuclearManual = new ItemStack(ModItems.itemCustomBook, 1, 4);
+        ItemBookWritten_MultiChemicalPlant = new ItemStack(ModItems.itemCustomBook, 1, 5);
 
         // Multiblock Manuals
         RecipeUtils.addShapelessGregtechRecipe(
-            new ItemStack[] { ItemUtils.getSimpleStack(Items.writable_book),
-                ItemUtils.getSimpleStack(Items.lava_bucket) },
+            new ItemStack[] { new ItemStack(Items.writable_book), new ItemStack(Items.lava_bucket) },
             ItemBookWritten_ThermalBoiler);
         GTModHandler.addCraftingRecipe(
             ItemBookWritten_MultiMachineManual,
             GTModHandler.RecipeBits.NOT_REMOVABLE | GTModHandler.RecipeBits.REVERSIBLE
                 | GTModHandler.RecipeBits.BUFFERED,
-            new Object[] { "Xw", 'X', ItemUtils.getSimpleStack(Items.writable_book) });
+            new Object[] { "Xw", 'X', new ItemStack(Items.writable_book) });
         RecipeUtils.addShapelessGregtechRecipe(
-            new ItemStack[] { ItemUtils.getSimpleStack(Items.writable_book),
-                ItemUtils.getItemStackOfAmountFromOreDict("wireGt01Tin", 1) },
+            new ItemStack[] { new ItemStack(Items.writable_book),
+                GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.Tin, 1) },
             ItemBookWritten_MultiPowerStorage);
         RecipeUtils.addShapelessGregtechRecipe(
-            new ItemStack[] { ItemUtils.getSimpleStack(Items.writable_book),
-                ItemUtils.getItemStackOfAmountFromOreDict("dustUranium", 1) },
+            new ItemStack[] { new ItemStack(Items.writable_book),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Uranium, 1) },
             ItemBookWritten_NuclearManual);
         RecipeUtils.addShapelessGregtechRecipe(
-            new ItemStack[] { ItemUtils.getSimpleStack(Items.writable_book),
-                ItemUtils.getItemStackOfAmountFromOreDict("wireGt01Copper", 1) },
+            new ItemStack[] { new ItemStack(Items.writable_book),
+                GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.Copper, 1) },
             ItemBookWritten_MultiChemicalPlant);
 
         for (int i = 0; i < mBookKeeperCount; i++) {
-            ItemStack bookstack = ItemUtils.simpleMetaStack(ModItems.itemCustomBook, i, 1);
+            ItemStack bookstack = new ItemStack(ModItems.itemCustomBook, 1, i);
             GTOreDictUnificator.registerOre("bookWritten", bookstack);
             GTOreDictUnificator.registerOre("craftingBook", bookstack);
         }

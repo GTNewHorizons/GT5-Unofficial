@@ -88,6 +88,7 @@ import gregtech.client.SeekingOggCodec;
 import gregtech.common.blocks.BlockFrameBox;
 import gregtech.common.blocks.ItemMachines;
 import gregtech.common.config.Client;
+import gregtech.common.handlers.SprayColorInfiniteKeybindHandler;
 import gregtech.common.pollution.Pollution;
 import gregtech.common.pollution.PollutionRenderer;
 import gregtech.common.render.BlackholeRenderer;
@@ -650,6 +651,7 @@ public class GTClient extends GTProxy implements Runnable {
         new InfiniteSprayCanRenderer();
         MinecraftForge.EVENT_BUS.register(new NEIGTConfig());
         MinecraftForge.EVENT_BUS.register(new GTMouseEventHandler());
+        SprayColorInfiniteKeybindHandler.init();
     }
 
     @Override
@@ -1014,7 +1016,7 @@ public class GTClient extends GTProxy implements Runnable {
         if (tCurrentItem == null) return false;
         return GTUtility.isStackInList(tCurrentItem, GregTechAPI.sWrenchList)
             || GTUtility.isStackInList(tCurrentItem, GregTechAPI.sHardHammerList)
-            || GTUtility.isStackInList(tCurrentItem, GregTechAPI.sSoftHammerList)
+            || GTUtility.isStackInList(tCurrentItem, GregTechAPI.sSoftMalletList)
             || GTUtility.isStackInList(tCurrentItem, GregTechAPI.sWireCutterList)
             || GTUtility.isStackInList(tCurrentItem, GregTechAPI.sSolderingToolList)
             || GTUtility.isStackInList(tCurrentItem, GregTechAPI.sCrowbarList)

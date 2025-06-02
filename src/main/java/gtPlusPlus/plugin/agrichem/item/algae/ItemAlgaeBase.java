@@ -19,7 +19,6 @@ import net.minecraft.world.World;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.util.GTLog;
-import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.plugin.agrichem.AlgaeDefinition;
 import gtPlusPlus.plugin.agrichem.IAlgalItem;
 import gtPlusPlus.plugin.agrichem.logic.AlgaeGeneticData;
@@ -117,13 +116,8 @@ public class ItemAlgaeBase extends Item implements IAlgalItem {
     @Override
     public void getSubItems(Item aItem, CreativeTabs p_150895_2_, List aList) {
         for (int i = 0; i < AlgaeDefinition.values().length; i++) {
-            aList.add(ItemUtils.simpleMetaStack(aItem, i, 1));
+            aList.add(new ItemStack(aItem, 1, i));
         }
-    }
-
-    @Override
-    public boolean getIsRepairable(ItemStack p_82789_1_, ItemStack p_82789_2_) {
-        return false;
     }
 
     @Override
@@ -139,11 +133,6 @@ public class ItemAlgaeBase extends Item implements IAlgalItem {
     @Override
     public boolean showDurabilityBar(ItemStack stack) {
         return false;
-    }
-
-    @Override
-    public int getItemEnchantability() {
-        return 0;
     }
 
     @Override

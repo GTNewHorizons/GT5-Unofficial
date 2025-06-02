@@ -1,12 +1,13 @@
 package gregtech.common.gui.mui1.cover;
 
+import static net.minecraft.util.StatCollector.translateToLocal;
+
 import org.jetbrains.annotations.NotNull;
 
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
 import gregtech.api.gui.modularui.CoverUIBuildContext;
-import gregtech.api.util.GTUtility;
 import gregtech.common.covers.redstone.CoverAdvancedWirelessRedstoneBase;
 import gregtech.common.gui.modularui.widget.CoverDataControllerWidget;
 import gregtech.common.gui.modularui.widget.CoverDataFollowerTextFieldWidget;
@@ -41,10 +42,10 @@ public abstract class AdvancedWirelessRedstoneBaseUIFactory<C extends CoverAdvan
 
         builder.widget(dataController)
             .widget(
-                new TextWidget(GTUtility.trans("246", "Frequency")).setDefaultColor(COLOR_TEXT_GRAY.get())
+                new TextWidget(translateToLocal("gt.interact.desc.freq")).setDefaultColor(COLOR_TEXT_GRAY.get())
                     .setPos(startX + spaceX * 5, 4 + startY + spaceY * getFrequencyRow()))
             .widget(
-                new TextWidget(GTUtility.trans("602", "Use Private Frequency")).setDefaultColor(COLOR_TEXT_GRAY.get())
+                new TextWidget(translateToLocal("gt.interact.desc.freq")).setDefaultColor(COLOR_TEXT_GRAY.get())
                     .setPos(startX + spaceX * privateExtraColumn, 4 + startY + spaceY * getButtonRow()));
     }
 

@@ -159,7 +159,7 @@ public interface IToolStats {
     /**
      * {@link Block#getHarvestTool(int)} can return the following Values for example. "axe", "pickaxe", "sword",
      * "shovel", "hoe", "grafter", "saw", "wrench", "crowbar", "file", "hammer", "plow", "plunger", "scoop",
-     * "screwdriver", "sense", "scythe", "softhammer", "cutter", "plasmatorch"
+     * "screwdriver", "sense", "scythe", "softmallet", "cutter", "plasmatorch"
      *
      * @return If this is a minable Block. Tool Quality checks (like Diamond Tier or something) are separate from this
      *         check.

@@ -94,11 +94,6 @@ public class MTEHatchOutputBus extends MTEHatch implements IAddUIWidgets, IItemL
     }
 
     @Override
-    public boolean isAccessAllowed(EntityPlayer aPlayer) {
-        return true;
-    }
-
-    @Override
     public boolean isValidSlot(int aIndex) {
         return true;
     }

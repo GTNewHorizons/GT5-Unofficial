@@ -83,11 +83,6 @@ public class MTEHatchWirelessDataItemsInput extends MTEHatchDataAccess {
     }
 
     @Override
-    public boolean isOutputFacing(ForgeDirection side) {
-        return false;
-    }
-
-    @Override
     public boolean isInputFacing(ForgeDirection side) {
         return side == getBaseMetaTileEntity().getFrontFacing();
     }

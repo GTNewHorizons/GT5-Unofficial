@@ -1,5 +1,6 @@
 package ggfab;
 
+import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 
 import java.util.ArrayList;
@@ -71,7 +72,7 @@ class SingleUseToolRecipeLoader implements Runnable {
             float durabilityMultiplier = toolStats.getMaxDurabilityMultiplier();
             int damagePerCraft = toolStats.getToolDamagePerContainerCraft();
 
-            long fluidPerCraft = toolCost * GTValues.L / GTValues.M;
+            long fluidPerCraft = toolCost * INGOTS / GTValues.M;
             long recipeDuration = RECIPE_DURATION;
             long outputQuantity = (long) (material.mDurability * durabilityMultiplier * 100 / damagePerCraft);
 

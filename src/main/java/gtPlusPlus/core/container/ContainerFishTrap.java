@@ -69,11 +69,6 @@ public class ContainerFishTrap extends Container {
     public ItemStack slotClick(final int aSlotIndex, final int aMouseclick, final int aShifthold,
         final EntityPlayer aPlayer) {
 
-        if (!aPlayer.worldObj.isRemote) {
-            if ((aSlotIndex == 999) || (aSlotIndex == -999)) {
-                // Utils.LOG_WARNING("??? - "+aSlotIndex);
-            }
-        }
         return super.slotClick(aSlotIndex, aMouseclick, aShifthold, aPlayer);
     }
 

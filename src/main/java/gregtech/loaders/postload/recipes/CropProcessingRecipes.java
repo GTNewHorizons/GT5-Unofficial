@@ -1,6 +1,7 @@
 package gregtech.loaders.postload.recipes;
 
 import static gregtech.api.recipe.RecipeMaps.autoclaveRecipes;
+import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
 import static gregtech.api.util.GTRecipeConstants.UniversalChemical;
@@ -128,13 +129,13 @@ public class CropProcessingRecipes implements Runnable {
 
         FluidStack fluidOutputChemReactor = aMaterialOut.mOreByProducts.isEmpty() ? null
             : aMaterialOut.mOreByProducts.get(0)
-                .getMolten(144);
+                .getMolten(1 * INGOTS);
 
         GTRecipeBuilder recipeBuilder = GTValues.RA.stdBuilder();
         recipeBuilder
             .itemInputs(GTUtility.copyAmount(9, tCrop), GTOreDictUnificator.get(OrePrefixes.crushed, aMaterial, 1))
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.crushedPurified, aMaterial, 4))
-            .fluidInputs(Materials.Water.getFluid(1000));
+            .fluidInputs(Materials.Water.getFluid(1_000));
         if (fluidOutputChemReactor != null) {
             recipeBuilder.fluidOutputs(fluidOutputChemReactor);
         }

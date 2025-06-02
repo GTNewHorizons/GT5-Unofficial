@@ -571,11 +571,6 @@ public class MTEPowerSubStation extends GTPPMultiBlockBase<MTEPowerSubStation> i
         return SimpleCheckRecipeResult.ofSuccess("managing_power");
     }
 
-    @Override
-    public int getMaxParallelRecipes() {
-        return 1;
-    }
-
     private long drawEnergyFromHatch(MetaTileEntity aHatch) {
         long stored = aHatch.getEUVar();
         long voltage = aHatch.maxEUInput() * aHatch.maxAmperesIn();
@@ -757,11 +752,6 @@ public class MTEPowerSubStation extends GTPPMultiBlockBase<MTEPowerSubStation> i
     @Override
     public long getMaxInputVoltage() {
         return 32768;
-    }
-
-    @Override
-    public boolean isElectric() {
-        return true;
     }
 
     @Override

@@ -20,6 +20,7 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.util.GTLanguageManager;
+import gregtech.api.util.GTModHandler;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.minecraft.FluidGT6;
 import gtPlusPlus.core.item.base.BaseItemComponent;
@@ -32,28 +33,44 @@ public class FluidUtils {
 
     private static final HashMap<String, Fluid> sFluidCache = new HashMap<>();
 
+    /**
+     * @deprecated Use {@link gregtech.api.enums.Materials} instead.
+     */
+    @Deprecated
     public static FluidStack getWater(final int amount) {
-        return FluidUtils.getFluidStack("water", amount);
+        return Materials.Water.getFluid(amount);
     }
 
+    /**
+     * @deprecated Use {@link GTModHandler#getDistilledWater(long)} instead.
+     */
+    @Deprecated
     public static FluidStack getDistilledWater(final int amount) {
-        return FluidUtils.getFluidStack("ic2distilledwater", amount);
+        return GTModHandler.getDistilledWater(amount);
     }
 
     public static FluidStack getHotWater(final int amount) {
         return FluidUtils.getFluidStack("ic2hotwater", amount);
     }
 
+    /**
+     * @deprecated Use {@link gregtech.api.enums.Materials} instead.
+     */
+    @Deprecated
     public static FluidStack getLava(final int amount) {
-        return FluidUtils.getFluidStack("lava", amount);
+        return Materials.Lava.getFluid(amount);
     }
 
     public static FluidStack getPahoehoeLava(final int amount) {
         return FluidUtils.getFluidStack("ic2pahoehoelava", amount);
     }
 
+    /**
+     * @deprecated Use {@link gregtech.api.enums.Materials} instead.
+     */
+    @Deprecated
     public static FluidStack getSteam(final int amount) {
-        return FluidUtils.getFluidStack("steam", amount);
+        return Materials.Steam.getGas(amount);
     }
 
     public static FluidStack getSuperHeatedSteam(final int amount) {
@@ -255,7 +272,7 @@ public class FluidUtils {
                 3,
                 10000,
                 temp,
-                ItemUtils.getEmptyCell(),
+                ItemList.Cell_Empty.get(1),
                 1000,
                 false);
         }
@@ -351,7 +368,7 @@ public class FluidUtils {
             }
             Logger.INFO("Generating cell for " + aMatName + ", " + aLocalName);
             tempCell = new BaseItemComponent(aMatName, aLocalName, aRGBa);
-            aFullContainer = ItemUtils.getSimpleStack(tempCell);
+            aFullContainer = new ItemStack(tempCell);
         }
 
         if ((rFluid.getTemperature() == new Fluid("test").getTemperature()) || (rFluid.getTemperature() <= 0)) {
@@ -441,7 +458,7 @@ public class FluidUtils {
             return aStack.getItem()
                 .getContainerItem(aStack);
         }
-        if (equal(aStack, ItemUtils.getEmptyCell(), true)) {
+        if (equal(aStack, ItemList.Cell_Empty.get(1), true)) {
             return null;
         }
         if (aCheckIFluidContainerItems && (aStack.getItem() instanceof IFluidContainerItem)
@@ -509,7 +526,7 @@ public class FluidUtils {
                 4,
                 MeltingPoint,
                 null,
-                ItemUtils.getEmptyCell(),
+                ItemList.Cell_Empty.get(1),
                 1000,
                 aGenerateCell);
 
@@ -554,7 +571,7 @@ public class FluidUtils {
                 4,
                 MeltingPoint,
                 null,
-                ItemUtils.getEmptyCell(),
+                ItemList.Cell_Empty.get(1),
                 1000,
                 aGenerateCell);
         } else {
@@ -576,7 +593,7 @@ public class FluidUtils {
                 3,
                 MeltingPoint,
                 null,
-                ItemUtils.getEmptyCell(),
+                ItemList.Cell_Empty.get(1),
                 1000,
                 aGenerateCell);
         } else {
@@ -639,7 +656,11 @@ public class FluidUtils {
         } else return aFStack4;
     }
 
+    /**
+     * @deprecated Use {@link gregtech.api.enums.Materials} instead.
+     */
+    @Deprecated
     public static FluidStack getAir(int aAmount) {
-        return FluidUtils.getFluidStack("air", aAmount);
+        return Materials.Air.getGas(aAmount);
     }
 }

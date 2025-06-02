@@ -18,7 +18,6 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.util.GTLanguageManager;
 import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.core.util.minecraft.ItemUtils;
 
 public class CoreItem extends Item {
 
@@ -269,7 +268,7 @@ public class CoreItem extends Item {
     }
 
     public ItemStack getStack() {
-        return ItemUtils.getSimpleStack(this);
+        return new ItemStack(this);
     }
 
     public void setItemDescription(String[] description) {

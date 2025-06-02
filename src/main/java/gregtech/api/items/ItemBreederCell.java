@@ -1,6 +1,8 @@
 package gregtech.api.items;
 
 import static gregtech.api.util.GTUtility.formatNumbers;
+import static net.minecraft.util.StatCollector.translateToLocal;
+import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
 import java.util.List;
 import java.util.function.Supplier;
@@ -10,7 +12,6 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
 import gregtech.api.GregTechAPI;
@@ -51,15 +52,14 @@ public class ItemBreederCell extends GTGenericItem implements IReactorComponent 
                     .itemOutputs(mProduct)
                     .setNEIDesc(
                         GTUtility.breakLines(
-                            StatCollector.translateToLocal(
+                            translateToLocal(
                                 deflector ? "GT5U.nei.nuclear.breeder.neutron_reflecting"
                                     : "GT5U.nei.nuclear.breeder.heat_neutral"),
-                            StatCollector.translateToLocalFormatted(
+                            translateToLocalFormatted(
                                 "GT5U.nei.nuclear.breeder.reactor_hull_heat",
                                 mHeatBonusStep,
                                 mHeatBonusMultiplier),
-                            StatCollector
-                                .translateToLocalFormatted("GT5U.nei.nuclear.breeder.required_pulse", getMaxDamage())))
+                            translateToLocalFormatted("GT5U.nei.nuclear.breeder.required_pulse", getMaxDamage())))
                     .duration(0)
                     .eut(0)
                     .addTo(RecipeMaps.ic2NuclearFakeRecipes);
@@ -90,7 +90,7 @@ public class ItemBreederCell extends GTGenericItem implements IReactorComponent 
 
     @Override
     public void addAdditionalToolTips(List<String> aList, ItemStack aStack, EntityPlayer aPlayer) {
-        aList.add(transItem("019", "Bath with neutron in a hot reactor"));
+        aList.add(translateToLocal("gt.item.desc.breeder_tip"));
         int rDmg = aStack.getItemDamage() * 4 / getMaxDamage();
         EnumChatFormatting color2 = switch (rDmg) {
             case 0 -> EnumChatFormatting.DARK_GRAY;
@@ -98,11 +98,11 @@ public class ItemBreederCell extends GTGenericItem implements IReactorComponent 
             default -> EnumChatFormatting.WHITE;
         };
         aList.add(
-            String.format(
-                transItem("020", "Progress: %s/%s"),
+            translateToLocalFormatted(
+                "gt.item.desc.progress",
                 color2 + formatNumbers(aStack.getItemDamage()) + EnumChatFormatting.RESET,
                 formatNumbers(getMaxDamage())));
-        if (aStack.getItemDamage() > 0) aList.add(EnumChatFormatting.RED + transItem("021", "Radiation Hazard"));
+        if (aStack.getItemDamage() > 0) aList.add(EnumChatFormatting.RED + translateToLocal("gt.item.desc.haz_rad"));
     }
 
     @Override

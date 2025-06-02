@@ -21,6 +21,8 @@ import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
 
+import bartworks.system.material.Werkstoff;
+import bartworks.system.material.WerkstoffLoader;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.GTValues;
@@ -128,11 +130,11 @@ public class ItemFluidDisplay extends GTGenericItem {
                             return "";
                         } else {
                             if (!tMaterial.mChemicalFormula.isEmpty()) {
-                                // See `bartworks.system.material.Werkstoff.getLocalizedToolTip`
-                                String werkstoffKey = String
-                                    .format("bw.werkstoff.%05d.tooltip", tContainer.getItemDamage());
-                                if (StatCollector.canTranslate(werkstoffKey)) {
-                                    return StatCollector.translateToLocal(werkstoffKey);
+                                // Check if its a werkstoff. If so, use that tooltip instead
+                                Werkstoff w = WerkstoffLoader.fluids.inverse()
+                                    .get(fluid);
+                                if (w != null) {
+                                    return w.getLocalizedToolTip();
                                 }
                             }
                             return tMaterial.mChemicalFormula;

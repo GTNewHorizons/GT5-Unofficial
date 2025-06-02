@@ -15,6 +15,7 @@ import static gtPlusPlus.api.recipe.GTPPRecipeMaps.reactorProcessingUnitRecipes;
 import net.minecraftforge.fluids.FluidStack;
 
 import gregtech.api.enums.GTValues;
+import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.TierEU;
 import gregtech.api.util.GTUtility;
@@ -22,7 +23,6 @@ import gtPlusPlus.core.fluids.GTPPFluids;
 import gtPlusPlus.core.material.MaterialsElements;
 import gtPlusPlus.core.material.nuclear.MaterialsFluorides;
 import gtPlusPlus.core.material.nuclear.MaterialsNuclides;
-import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 
@@ -82,7 +82,7 @@ public class RecipeLoaderNuclearFuelProcessing {
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(17), MaterialsElements.getInstance().FLUORINE.getCell(6))
             .itemOutputs(
-                CI.emptyCells(5),
+                ItemList.Cell_Empty.get(5),
                 MaterialsFluorides.LITHIUM_FLUORIDE.getCell(1),
                 MaterialsElements.getInstance().PROTACTINIUM.getDust(1),
                 MaterialsElements.getInstance().PROTACTINIUM.getDust(1),
@@ -99,7 +99,7 @@ public class RecipeLoaderNuclearFuelProcessing {
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(18), MaterialsElements.getInstance().FLUORINE.getCell(6))
             .itemOutputs(
-                CI.emptyCells(4),
+                ItemList.Cell_Empty.get(4),
                 MaterialsFluorides.LITHIUM_FLUORIDE.getCell(1),
                 MaterialsFluorides.BERYLLIUM_FLUORIDE.getCell(1),
                 MaterialsElements.getInstance().PROTACTINIUM.getDust(1),
@@ -118,7 +118,7 @@ public class RecipeLoaderNuclearFuelProcessing {
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(7), MaterialsElements.getInstance().FLUORINE.getCell(6))
             .itemOutputs(
-                CI.emptyCells(4),
+                ItemList.Cell_Empty.get(4),
                 MaterialsFluorides.LITHIUM_FLUORIDE.getCell(2),
                 MaterialsElements.getInstance().PROTACTINIUM.getDust(1),
                 MaterialsElements.getInstance().PROTACTINIUM.getDust(1),
@@ -135,7 +135,7 @@ public class RecipeLoaderNuclearFuelProcessing {
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(8), MaterialsElements.getInstance().FLUORINE.getCell(6))
             .itemOutputs(
-                CI.emptyCells(2),
+                ItemList.Cell_Empty.get(2),
                 MaterialsFluorides.LITHIUM_FLUORIDE.getCell(2),
                 MaterialsFluorides.BERYLLIUM_FLUORIDE.getCell(2),
                 MaterialsElements.getInstance().PROTACTINIUM.getDust(1),
@@ -182,7 +182,7 @@ public class RecipeLoaderNuclearFuelProcessing {
         // Reactor Core step 1 - Process Burnt Salt
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(1), MaterialsElements.getInstance().FLUORINE.getCell(3))
-            .itemOutputs(CI.emptyCells(1), MaterialsNuclides.UF6F2FP.getCell(2))
+            .itemOutputs(ItemList.Cell_Empty.get(1), MaterialsNuclides.UF6F2FP.getCell(2))
             .fluidInputs(MaterialsNuclides.Sparged_LiFBeF2UF4FP.getFluidStack(1000))
             .fluidOutputs(new FluidStack(GTPPFluids.ImpureMoltenSaltBase, 2000))
             .duration(60 * MINUTES)
@@ -220,7 +220,7 @@ public class RecipeLoaderNuclearFuelProcessing {
         // UF6 + LiFBeF2 + H2 -> LiFBeF2UF4 + HF
         GTValues.RA.stdBuilder()
             .itemInputs(MaterialsFluorides.URANIUM_HEXAFLUORIDE.getCell(1), MaterialsNuclides.LiFBeF2.getCell(1))
-            .fluidInputs(Materials.Hydrogen.getGas(2000L))
+            .fluidInputs(Materials.Hydrogen.getGas(2_000))
             .itemOutputs(ItemUtils.getItemStackOfAmountFromOreDict("cellHydrofluoricAcid", 2))
             .fluidOutputs(MaterialsNuclides.LiFBeF2UF4.getFluidStack(3000))
             .duration(2 * MINUTES + 30 * SECONDS)

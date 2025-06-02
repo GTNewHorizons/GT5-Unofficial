@@ -3,6 +3,8 @@ package gtPlusPlus.xmod.gregtech.registration.gregtech;
 import static gregtech.api.enums.Mods.EnderIO;
 import static gregtech.api.enums.Mods.Thaumcraft;
 import static gregtech.api.recipe.RecipeMaps.*;
+import static gregtech.api.util.GTRecipeBuilder.HALF_INGOTS;
+import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
 import static gregtech.api.util.GTUtility.formatStringSafe;
@@ -17,13 +19,14 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TextureSet;
+import gregtech.api.enums.ToolDictNames;
 import gregtech.api.metatileentity.implementations.MTEFluidPipe;
+import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.material.MaterialsElements;
-import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
@@ -630,10 +633,11 @@ public class GregtechConduits {
 
     public static void generatePipeRecipes(final Material material) {
         // generatePipeRecipes multiplies the voltage multiplier by 8 because ??! reasons.
-        generatePipeRecipes(material.getLocalizedName(), material.getMass(), material.vVoltageMultiplier / 8);
+        generatePipeRecipes(material, material.getLocalizedName(), material.getMass(), material.vVoltageMultiplier / 8);
     }
 
-    public static void generatePipeRecipes(final String materialName, final long Mass, final long vMulti) {
+    public static void generatePipeRecipes(final Material material, final String materialName, final long Mass,
+        final long vMulti) {
 
         String output = materialName.substring(0, 1)
             .toUpperCase() + materialName.substring(1);
@@ -679,60 +683,32 @@ public class GregtechConduits {
         int eut = (int) (8 * vMulti);
 
         // Add the Four Shaped Recipes First
-        RecipeUtils.addShapedRecipe(
-            pipePlate,
-            pipePlate,
-            pipePlate,
-            "craftingToolHardHammer",
-            null,
-            "craftingToolWrench",
-            pipePlate,
-            pipePlate,
-            pipePlate,
-            ItemUtils.getItemStackOfAmountFromOreDict("pipe" + "Tiny" + output, 8));
+        GTModHandler.addCraftingRecipe(
+            ItemUtils.getItemStackOfAmountFromOreDict("pipe" + "Tiny" + output, 8),
+            GTModHandler.RecipeBits.BUFFERED,
+            new Object[] { "PPP", "h w", "PPP", 'P', pipePlate });
 
-        RecipeUtils.addShapedRecipe(
-            pipePlate,
-            "craftingToolWrench",
-            pipePlate,
-            pipePlate,
-            null,
-            pipePlate,
-            pipePlate,
-            "craftingToolHardHammer",
-            pipePlate,
-            ItemUtils.getItemStackOfAmountFromOreDict("pipe" + "Small" + output, 6));
+        GTModHandler.addCraftingRecipe(
+            ItemUtils.getItemStackOfAmountFromOreDict("pipe" + "Small" + output, 6),
+            GTModHandler.RecipeBits.BUFFERED,
+            new Object[] { "PwP", "P P", "PhP", 'P', pipePlate });
 
-        RecipeUtils.addShapedRecipe(
-            pipePlate,
-            pipePlate,
-            pipePlate,
-            "craftingToolWrench",
-            null,
-            "craftingToolHardHammer",
-            pipePlate,
-            pipePlate,
-            pipePlate,
-            ItemUtils.getItemStackOfAmountFromOreDict("pipe" + "Medium" + output, 2));
+        GTModHandler.addCraftingRecipe(
+            ItemUtils.getItemStackOfAmountFromOreDict("pipe" + "Medium" + output, 2),
+            GTModHandler.RecipeBits.BUFFERED,
+            new Object[] { "PPP", "w h", "PPP", 'P', pipePlate });
 
-        RecipeUtils.addShapedRecipe(
-            pipePlate,
-            "craftingToolHardHammer",
-            pipePlate,
-            pipePlate,
-            null,
-            pipePlate,
-            pipePlate,
-            "craftingToolWrench",
-            pipePlate,
-            ItemUtils.getItemStackOfAmountFromOreDict("pipe" + "Large" + output, 1));
+        GTModHandler.addCraftingRecipe(
+            ItemUtils.getItemStackOfAmountFromOreDict("pipe" + "Large" + output, 1),
+            GTModHandler.RecipeBits.BUFFERED,
+            new Object[] { "PhP", "P P", "PwP", 'P', pipePlate });
 
-        if (pipeIngot != null && ItemUtils.checkForInvalidItems(pipeIngot)) {
+        if (pipeIngot != null) {
             // 1 Clay Plate = 1 Clay Dust = 2 Clay Ball
             int inputMultiplier = materialName.equals("Clay") ? 2 : 1;
             GTValues.RA.stdBuilder()
                 .itemInputs(
-                    ItemUtils.getSimpleStack(pipeIngot, 1 * inputMultiplier),
+                    GTUtility.copyAmount(1 * inputMultiplier, pipeIngot),
                     ItemList.Shape_Extruder_Pipe_Tiny.get(0))
                 .itemOutputs(ItemUtils.getItemStackOfAmountFromOreDictNoBroken("pipe" + "Tiny" + output, 2))
                 .duration(5 * TICKS)
@@ -740,7 +716,7 @@ public class GregtechConduits {
                 .addTo(extruderRecipes);
             GTValues.RA.stdBuilder()
                 .itemInputs(
-                    ItemUtils.getSimpleStack(pipeIngot, 1 * inputMultiplier),
+                    GTUtility.copyAmount(1 * inputMultiplier, pipeIngot),
                     ItemList.Shape_Extruder_Pipe_Small.get(0))
                 .itemOutputs(ItemUtils.getItemStackOfAmountFromOreDict("pipe" + "Small" + output, 1))
                 .duration(10 * TICKS)
@@ -748,7 +724,7 @@ public class GregtechConduits {
                 .addTo(extruderRecipes);
             GTValues.RA.stdBuilder()
                 .itemInputs(
-                    ItemUtils.getSimpleStack(pipeIngot, 3 * inputMultiplier),
+                    GTUtility.copyAmount(3 * inputMultiplier, pipeIngot),
                     ItemList.Shape_Extruder_Pipe_Medium.get(0))
                 .itemOutputs(ItemUtils.getItemStackOfAmountFromOreDict("pipe" + "Medium" + output, 1))
                 .duration(20 * TICKS)
@@ -756,7 +732,7 @@ public class GregtechConduits {
                 .addTo(extruderRecipes);
             GTValues.RA.stdBuilder()
                 .itemInputs(
-                    ItemUtils.getSimpleStack(pipeIngot, 6 * inputMultiplier),
+                    GTUtility.copyAmount(6 * inputMultiplier, pipeIngot),
                     ItemList.Shape_Extruder_Pipe_Large.get(0))
                 .itemOutputs(ItemUtils.getItemStackOfAmountFromOreDict("pipe" + "Large" + output, 1))
                 .duration(2 * SECONDS)
@@ -764,7 +740,7 @@ public class GregtechConduits {
                 .addTo(extruderRecipes);
             GTValues.RA.stdBuilder()
                 .itemInputs(
-                    ItemUtils.getSimpleStack(pipeIngot, 12 * inputMultiplier),
+                    GTUtility.copyAmount(12 * inputMultiplier, pipeIngot),
                     ItemList.Shape_Extruder_Pipe_Huge.get(0))
                 .itemOutputs(ItemUtils.getItemStackOfAmountFromOreDict("pipe" + "Huge" + output, 1))
                 .duration(4 * SECONDS)
@@ -792,6 +768,48 @@ public class GregtechConduits {
                 Logger.INFO(
                     "Failed to add a recipe for " + materialName + " Huge pipes. Double plates probably do not exist.");
             }
+        }
+
+        if (material != null && material.getFluid() != null) {
+            GTValues.RA.stdBuilder()
+                .itemInputs(ItemList.Shape_Mold_Pipe_Tiny.get(0L))
+                .itemOutputs(ItemUtils.getItemStackOfAmountFromOreDictNoBroken("pipe" + "Tiny" + output, 1))
+                .fluidInputs(material.getFluidStack(1 * HALF_INGOTS))
+                .duration(1 * SECONDS)
+                .eut(eut)
+                .addTo(fluidSolidifierRecipes);
+
+            GTValues.RA.stdBuilder()
+                .itemInputs(ItemList.Shape_Mold_Pipe_Small.get(0L))
+                .itemOutputs(ItemUtils.getItemStackOfAmountFromOreDict("pipe" + "Small" + output, 1))
+                .fluidInputs(material.getFluidStack(1 * INGOTS))
+                .duration(2 * SECONDS)
+                .eut(eut)
+                .addTo(fluidSolidifierRecipes);
+
+            GTValues.RA.stdBuilder()
+                .itemInputs(ItemList.Shape_Mold_Pipe_Medium.get(0L))
+                .itemOutputs(ItemUtils.getItemStackOfAmountFromOreDict("pipe" + "Medium" + output, 1))
+                .fluidInputs(material.getFluidStack(3 * INGOTS))
+                .duration(4 * SECONDS)
+                .eut(eut)
+                .addTo(fluidSolidifierRecipes);
+
+            GTValues.RA.stdBuilder()
+                .itemInputs(ItemList.Shape_Mold_Pipe_Large.get(0L))
+                .itemOutputs(ItemUtils.getItemStackOfAmountFromOreDict("pipe" + "Large" + output, 1))
+                .fluidInputs(material.getFluidStack(6 * INGOTS))
+                .duration(8 * SECONDS)
+                .eut(eut)
+                .addTo(fluidSolidifierRecipes);
+
+            GTValues.RA.stdBuilder()
+                .itemInputs(ItemList.Shape_Mold_Pipe_Huge.get(0L))
+                .itemOutputs(ItemUtils.getItemStackOfAmountFromOreDict("pipe" + "Huge" + output, 1))
+                .fluidInputs(material.getFluidStack(12 * INGOTS))
+                .duration(16 * SECONDS)
+                .eut(eut)
+                .addTo(fluidSolidifierRecipes);
         }
     }
 
@@ -830,8 +848,17 @@ public class GregtechConduits {
 
         // Adds manual crafting recipe
         if (ItemUtils.checkForInvalidItems(new ItemStack[] { aPlate, aWire01 })) {
-            RecipeUtils
-                .addShapedRecipe(aPlate, CI.craftingToolWireCutter, null, null, null, null, null, null, null, aWire01);
+            RecipeUtils.addShapedRecipe(
+                aPlate,
+                ToolDictNames.craftingToolWireCutter.name(),
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                aWire01);
         }
 
         // Wire mill

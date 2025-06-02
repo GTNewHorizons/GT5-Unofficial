@@ -16,33 +16,22 @@ import gregtech.common.covers.Cover;
 public class CoverGuiData extends SidedPosGuiData {
 
     private final int coverID;
-    private final boolean anotherWindow;
 
     /**
-     * @param player        Player opened this UI
-     * @param coverID       ID of the cover
-     * @param x             X position of the tile this cover is attached to
-     * @param y             Y position of the tile this cover is attached to
-     * @param z             Z position of the tile this cover is attached to
-     * @param side          Side this cover is attached to
-     * @param anotherWindow If cover UI is shown on top of another window
+     * @param player  Player opened this UI
+     * @param coverID ID of the cover
+     * @param x       X position of the tile this cover is attached to
+     * @param y       Y position of the tile this cover is attached to
+     * @param z       Z position of the tile this cover is attached to
+     * @param side    Side this cover is attached to
      */
-    public CoverGuiData(EntityPlayer player, int coverID, int x, int y, int z, ForgeDirection side,
-        boolean anotherWindow) {
+    public CoverGuiData(EntityPlayer player, int coverID, int x, int y, int z, ForgeDirection side) {
         super(player, x, y, z, side);
         this.coverID = coverID;
-        this.anotherWindow = anotherWindow;
     }
 
     public int getCoverID() {
         return coverID;
-    }
-
-    /**
-     * If cover GUI is shown in opened on top of another window.
-     */
-    public boolean isAnotherWindow() {
-        return anotherWindow;
     }
 
     public ICoverable getCoverable() {

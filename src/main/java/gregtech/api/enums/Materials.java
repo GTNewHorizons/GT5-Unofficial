@@ -987,6 +987,13 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials Netherite;
     public static Materials ActivatedNetherite;
 
+    // Misc GT Magic Materials
+    public static Materials ComplexityCatalyst;
+    public static Materials EntropicCatalyst;
+
+    // Aliases
+    public static Materials Steam; // Steam.getGas(..) reads better than Water.getGas(..)
+
     // spotless:on
 
     static {

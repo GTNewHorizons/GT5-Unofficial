@@ -57,7 +57,7 @@ public class RenderSpaceElevatorCable extends TileEntitySpecialRenderer implemen
     boolean isInitialized = false;
 
     /** Distance from center to edge of cable octagon */
-    private static final float LONG_DISTANCE = (float) (1.0f + Math.sqrt(2.0f)) / 5.4f;
+    private static final float LONG_DISTANCE = (1.0f + Math.sqrt(2.0f)) / 5.4f;
     /** Distance from center to end of parallel side */
     private static final float SHORT_DISTANCE = 1.0f / 5.4f;
     /** Height of the full rendered cable */

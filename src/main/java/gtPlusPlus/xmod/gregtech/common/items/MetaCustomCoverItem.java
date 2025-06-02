@@ -1,5 +1,6 @@
 package gtPlusPlus.xmod.gregtech.common.items;
 
+import static codechicken.nei.api.API.hideItem;
 import static gregtech.api.enums.Mods.GTPlusPlus;
 
 import java.util.List;
@@ -23,7 +24,6 @@ import gregtech.api.render.TextureFactory;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.util.Utils;
-import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.sys.KeyboardUtils;
 import gtPlusPlus.xmod.gregtech.common.covers.CoverToggleVisual;
 
@@ -65,21 +65,14 @@ public class MetaCustomCoverItem extends Item {
     }
 
     private void registerCover() {
-        // CommonProxy.registerItemRendererGlobal(this, new CustomItemBlockRenderer());
         for (int i = 0; i < icons.length; i++) {
-            ItemStack thisStack = ItemUtils.simpleMetaStack(this, i, 1);
+            ItemStack thisStack = new ItemStack(this, 1, i);
             if (i > 0 && hide()) {
-                ItemUtils.hideItemFromNEI(thisStack);
+                hideItem(thisStack);
             }
             CoverRegistry.registerCover(thisStack, TextureFactory.of(mTextures[i]), CoverToggleVisual::new);
         }
     }
-
-    /*
-     * @Override public void registerIcons(IIconRegister reg) { for (int i = 0; i < icons.length; i++) { this.icons[i] =
-     * mTextures[i].getIcon(); } }
-     * @Override public IIcon getIconFromDamage(int meta) { return this.icons[meta]; }
-     */
 
     @Override
     public void getSubItems(Item item, CreativeTabs tab, List list) {

@@ -82,8 +82,8 @@ public class BartWorksCrossmod {
 
     @Mod.EventHandler
     public void onFMLServerStart(FMLServerStartingEvent event) {
-        for (Object s : RadioHatchCompat.TranslateSet) {
-            StringTranslate.inject(new ReaderInputStream(new StringReader((String) s)));
+        for (String s : RadioHatchCompat.TranslateSet) {
+            StringTranslate.inject(new ReaderInputStream(new StringReader(s)));
         }
     }
 }

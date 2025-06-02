@@ -115,7 +115,7 @@ public class TileEntityDecayablesChest extends TileEntity implements ISidedInven
         Logger.MACHINE_INFO("| " + b.getUnlocalizedName() + " | " + a1 + "/" + a2);
 
         if (!a1 && !a2) {
-            ItemStack replacement = ItemUtils.getSimpleStack(b.getDecayResult());
+            ItemStack replacement = b.getDecayResult();
             replacement.stackSize = 1;
             // iStack = replacement.copy();
             for (int fff = 0; fff < this.inventoryContents.getSizeInventory(); fff++) {

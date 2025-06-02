@@ -1,36 +1,38 @@
 package gtPlusPlus.core.item.materials;
 
 import static gregtech.api.enums.Mods.GregTech;
-import static gtPlusPlus.core.util.minecraft.ItemUtils.getSimpleStack;
 
 import java.util.List;
 
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
+import gregtech.api.enums.ItemList;
 import gregtech.api.util.GTOreDictUnificator;
+import gregtech.api.util.GTRecipeConstants;
+import gregtech.api.util.GTUtility;
+import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.handler.Recipes.DecayableRecipe;
 import gtPlusPlus.core.item.base.BaseItemTickable;
 import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.util.minecraft.EntityUtils;
-import gtPlusPlus.core.util.minecraft.ItemUtils;
 
 public class DustDecayable extends BaseItemTickable {
 
-    private final Item turnsIntoItem;
+    private final ItemStack turnsIntoItem;
     private final int radLevel;
 
-    public DustDecayable(String unlocal, int colour, int maxTicks, String[] desc1, Item turnsInto, int radLevel) {
-        super(true, true, unlocal, colour, (maxTicks / 1), desc1);
+    public DustDecayable(String unlocal, int colour, int maxTicks, String[] desc1, ItemStack turnsInto, int radLevel,
+        GTRecipeConstants.DecayType decayType) {
+        super(true, true, unlocal, colour, maxTicks, desc1);
         this.turnsIntoItem = turnsInto;
         this.radLevel = radLevel;
         this.maxStackSize = 64;
-        GTOreDictUnificator.registerOre(unlocal, ItemUtils.getSimpleStack(this));
-        new DecayableRecipe(maxTicks, getSimpleStack(this), getSimpleStack(turnsInto));
+        GTOreDictUnificator.registerOre(unlocal, new ItemStack(this));
+        new DecayableRecipe(maxTicks, new ItemStack(this), turnsInto, decayType);
     }
 
     @Override
@@ -48,12 +50,18 @@ public class DustDecayable extends BaseItemTickable {
         if (this.radLevel > 0) {
             list.add(GTPPCore.GT_Tooltip_Radioactive.get());
         }
+        list.add(
+            GTUtility.translate(
+                "GTPP.tooltip.dust-decay-hint",
+                ModBlocks.blockDecayablesChest.getLocalizedName(),
+                ItemList.DecayWarehouse.get(1)
+                    .getDisplayName()));
     }
 
     @Override
-    public void onUpdate(final ItemStack iStack, final World world, final Entity entityHolding, final int p_77663_4_,
-        final boolean p_77663_5_) {
-        if (world == null || iStack == null) {
+    public void onUpdate(final ItemStack stack, final World world, final Entity entityHolding, final int slot,
+        final boolean heldInHand) {
+        if (world == null || stack == null) {
             return;
         }
         if (world.isRemote) {
@@ -62,39 +70,14 @@ public class DustDecayable extends BaseItemTickable {
 
         if (entityHolding instanceof EntityPlayer) {
             if (!((EntityPlayer) entityHolding).capabilities.isCreativeMode) {
-                EntityUtils.applyRadiationDamageToEntity(iStack.stackSize, this.radLevel, world, entityHolding);
+                EntityUtils.applyRadiationDamageToEntity(stack.stackSize, this.radLevel, world, entityHolding);
             }
             // don't decay when held by a player
             return;
         }
-        boolean a1, a2;
-
-        a1 = this.isTicking(world, iStack);
-        a2 = tickItemTag(world, iStack);
-
-        if (!a1 && !a2) {
-            if (entityHolding instanceof EntityPlayer) {
-                // Logger.INFO("Replacing "+iStack.getDisplayName()+" with "+replacement.getDisplayName()+".");
-                if (iStack.stackSize > 1) {
-                    int u = iStack.stackSize;
-                    ItemUtils.getSimpleStack(getDecayResult()).stackSize = u;
-                    ((EntityPlayer) entityHolding).inventory
-                        .addItemStackToInventory((ItemUtils.getSimpleStack(getDecayResult())));
-                    for (int l = 0; l < u; l++) {
-                        ((EntityPlayer) entityHolding).inventory.consumeInventoryItem(this);
-                    }
-
-                } else {
-                    ItemUtils.getSimpleStack(getDecayResult()).stackSize = 1;
-                    ((EntityPlayer) entityHolding).inventory
-                        .addItemStackToInventory((ItemUtils.getSimpleStack(getDecayResult())));
-                    ((EntityPlayer) entityHolding).inventory.consumeInventoryItem(this);
-                }
-            }
-        }
     }
 
-    public Item getDecayResult() {
+    public ItemStack getDecayResult() {
         return turnsIntoItem;
     }
 }

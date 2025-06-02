@@ -43,7 +43,6 @@ public enum Dyes implements IColorModulationContainer {
      * Additional Colors only used for direct Color referencing
      */
     CABLE_INSULATION(-1, 64, 64, 64, "Cable Insulation"),
-    CONSTRUCTION_FOAM(-1, 64, 64, 64, "Construction Foam"),
     MACHINE_METAL(-1, 210, 220, 255, "Machine Metal");
 
     public static final Dyes[] VALUES = { dyeBlack, dyeRed, dyeGreen, dyeBrown, dyeBlue, dyePurple, dyeCyan,

@@ -1,6 +1,7 @@
 package gregtech.api.logic;
 
 import java.util.HashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -47,6 +48,7 @@ public class ProcessingLogic {
     protected double speedBoost = 1.0;
     protected long availableVoltage;
     protected long availableAmperage;
+    protected int maxTierSkips = 1;
     protected boolean protectItems;
     protected boolean protectFluids;
     protected double overClockTimeReduction = 2.0;
@@ -154,7 +156,8 @@ public class ProcessingLogic {
         setInputItems(inputs.inputItems);
         setInputFluids(inputs.inputFluid);
 
-        Set<GTRecipe> recipes = findRecipeMatches(getCurrentRecipeMap()).collect(Collectors.toSet());
+        Set<GTRecipe> recipes = findRecipeMatches(getCurrentRecipeMap())
+            .collect(Collectors.toCollection(LinkedHashSet::new));
 
         // reset the status
         setInputItems();
@@ -232,6 +235,20 @@ public class ProcessingLogic {
      */
     public ProcessingLogic setAvailableAmperage(long amperage) {
         this.availableAmperage = amperage;
+        return this;
+    }
+
+    /**
+     * Sets the max amount of tier skips, which is how many voltage tiers above the input voltage
+     * a recipe is valid. For unlimited tier skips, use {@link #setUnlimitedTierSkips()}
+     */
+    public ProcessingLogic setMaxTierSkips(int tierSkips) {
+        this.maxTierSkips = tierSkips;
+        return this;
+    }
+
+    public ProcessingLogic setUnlimitedTierSkips() {
+        this.maxTierSkips = Integer.MAX_VALUE;
         return this;
     }
 
@@ -528,6 +545,7 @@ public class ProcessingLogic {
         return new OverclockCalculator().setRecipeEUt(recipe.mEUt)
             .setAmperage(availableAmperage)
             .setEUt(availableVoltage)
+            .setMaxTierSkips(maxTierSkips)
             .setDuration(recipe.mDuration)
             .setDurationModifier(speedBoost)
             .setEUtDiscount(euModifier)

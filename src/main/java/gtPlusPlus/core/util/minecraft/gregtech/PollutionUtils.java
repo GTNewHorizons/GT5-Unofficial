@@ -22,7 +22,7 @@ public class PollutionUtils {
             Logger.INFO("[PollutionCompat] Found carbon dioxide fluid, registering it.");
             MaterialMisc.CARBON_DIOXIDE.registerComponentForMaterial(CD);
             ItemStack cellCD = ItemUtils.getItemStackOfAmountFromOreDict("cellCarbonDioxide", 1);
-            if (ItemUtils.checkForInvalidItems(cellCD)) {
+            if (cellCD != null) {
                 Logger.INFO("[PollutionCompat] Found carbon dioxide cell, registering component.");
                 MaterialMisc.CARBON_DIOXIDE.registerComponentForMaterial(OrePrefixes.cell, cellCD);
             } else {
@@ -36,7 +36,7 @@ public class PollutionUtils {
             Logger.INFO("[PollutionCompat] Found carbon monoxide fluid, registering it.");
             MaterialMisc.CARBON_MONOXIDE.registerComponentForMaterial(CM);
             ItemStack cellCD = ItemUtils.getItemStackOfAmountFromOreDict("cellCarbonMonoxide", 1);
-            if (ItemUtils.checkForInvalidItems(cellCD)) {
+            if (cellCD != null) {
                 Logger.INFO("[PollutionCompat] Found carbon monoxide cell, registering component.");
                 MaterialMisc.CARBON_MONOXIDE.registerComponentForMaterial(OrePrefixes.cell, cellCD);
             } else {

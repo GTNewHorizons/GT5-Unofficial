@@ -89,6 +89,11 @@ public class MTENuclearReactor extends GTPPMultiBlockBase<MTENuclearReactor> imp
     }
 
     @Override
+    public boolean showRecipeTextInGUI() {
+        return false;
+    }
+
+    @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
@@ -126,12 +131,6 @@ public class MTENuclearReactor extends GTPPMultiBlockBase<MTENuclearReactor> imp
             "Current Output: " + this.lEUt + " EU/t", "Fuel Remaining: " + this.mFuelRemaining + " Litres",
             "Current Efficiency: " + (this.mEfficiency / 5) + "%", "Current Efficiency (Raw): " + (this.mEfficiency),
             "It requires you to have 100% Efficiency." };
-    }
-
-    @Override
-    public boolean allowCoverOnSide(final ForgeDirection side, ItemStack coverItem) {
-        return side != this.getBaseMetaTileEntity()
-            .getFrontFacing();
     }
 
     @Override
@@ -408,11 +407,6 @@ public class MTENuclearReactor extends GTPPMultiBlockBase<MTENuclearReactor> imp
             }
         }
         return result;
-    }
-
-    @Override
-    public int getMaxParallelRecipes() {
-        return 1;
     }
 
     @Override

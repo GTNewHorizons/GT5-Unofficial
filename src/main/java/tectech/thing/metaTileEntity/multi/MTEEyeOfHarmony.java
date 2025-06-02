@@ -976,7 +976,7 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements IConstructable,
             if (GTUtility.getBlockFromStack(heldItem) instanceof BlockDimensionDisplay) {
                 mInventory[getControllerSlotIndex()] = heldItem.copy();
                 mInventory[getControllerSlotIndex()].stackSize = 1;
-                aPlayer.setCurrentItemOrArmor(0, ItemUtils.depleteStack(heldItem));
+                aPlayer.setCurrentItemOrArmor(0, ItemUtils.depleteStack(heldItem, 1));
                 return true;
             }
         }
@@ -1558,12 +1558,14 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements IConstructable,
         while (amount >= Integer.MAX_VALUE) {
             ItemStack tmpItem = item.copy();
             tmpItem.stackSize = Integer.MAX_VALUE;
-            ((MTEHatchOutputBusME) mOutputBusses.get(0)).storePartial(tmpItem);
+            mOutputBusses.get(0)
+                .storePartial(tmpItem);
             amount -= Integer.MAX_VALUE;
         }
         ItemStack tmpItem = item.copy();
         tmpItem.stackSize = (int) amount;
-        ((MTEHatchOutputBusME) mOutputBusses.get(0)).storePartial(tmpItem);
+        mOutputBusses.get(0)
+            .storePartial(tmpItem);
     }
 
     private void outputFluidToAENetwork(FluidStack fluid, long amount) {

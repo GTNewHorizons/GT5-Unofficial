@@ -230,11 +230,6 @@ public class MTEWorldAccelerator extends MTETieredMachineBlock {
     }
 
     @Override
-    public boolean isAccessAllowed(EntityPlayer pPlayer) {
-        return true;
-    }
-
-    @Override
     public boolean isFacingValid(ForgeDirection facing) {
         return true;
     }
@@ -252,11 +247,6 @@ public class MTEWorldAccelerator extends MTETieredMachineBlock {
     @Override
     public boolean isTeleporterCompatible() {
         return false;
-    }
-
-    @Override
-    public long getMinimumStoredEU() {
-        return 512;
     }
 
     @Override

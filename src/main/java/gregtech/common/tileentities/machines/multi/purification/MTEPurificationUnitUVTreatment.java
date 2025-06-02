@@ -123,13 +123,15 @@ public class MTEPurificationUnitUVTreatment extends MTEPurificationUnitBase<MTEP
         // Lens indicator hatch
         .addElement(
             'I',
-            lazy(
-                t -> GTStructureUtility.<MTEPurificationUnitUVTreatment>buildHatchAdder()
-                    .atLeast(SpecialHatchElement.LensIndicator)
-                    .dot(3)
-                    .cacheHint(() -> "Lens Indicator")
-                    .casingIndex(CASING_INDEX_MAIN)
-                    .build()))
+            ofChain(
+                lazy(
+                    t -> GTStructureUtility.<MTEPurificationUnitUVTreatment>buildHatchAdder()
+                        .atLeast(SpecialHatchElement.LensIndicator)
+                        .dot(3)
+                        .cacheHint(() -> "Lens Indicator")
+                        .casingIndex(CASING_INDEX_MAIN)
+                        .build()),
+                ofBlock(GregTechAPI.sBlockCasings9, 12)))
         // Input or output hatch
         .addElement(
             'H',
@@ -368,7 +370,7 @@ public class MTEPurificationUnitUVTreatment extends MTEPurificationUnitBase<MTEP
         if (timeUntilNextSwap > 0) {
             timeUntilNextSwap -= 1;
             // Set the indicator to not output a signal for now
-            lensIndicator.updateRedstoneOutput(false);
+            if (lensIndicator != null) lensIndicator.updateRedstoneOutput(false);
 
             // If we are counting down to the next swap, and there is no correct lens in the bus, we removed a lens
             // too early
@@ -390,7 +392,7 @@ public class MTEPurificationUnitUVTreatment extends MTEPurificationUnitBase<MTEP
         // Time until next swap is zero, this means we are waiting for the user to output a lens.
         else if (timeUntilNextSwap == 0) {
             // Set the indicator to output a signal
-            lensIndicator.updateRedstoneOutput(true);
+            if (lensIndicator != null) lensIndicator.updateRedstoneOutput(true);
 
             // If we now have a matching lens, we can accept it and move on to the next swap
             if (currentLens != null && currentLens.isItemEqual(lensCycle.current())) {

@@ -376,4 +376,9 @@ public class MTEUniversalChemicalFuelEngine extends MTETooltipMultiBlockBaseEM
         if (mMachine) return -1;
         return survivalBuildPiece(mName, stackSize, 2, 2, 0, elementBudget, env, false, true);
     }
+
+    @Override
+    public boolean showRecipeTextInGUI() {
+        return false;
+    }
 }

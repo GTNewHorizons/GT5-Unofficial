@@ -3,7 +3,6 @@ package gtPlusPlus.core.util.minecraft;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
 
 import net.minecraft.block.Block;
@@ -27,8 +26,6 @@ import gtPlusPlus.api.objects.minecraft.ShapedRecipe;
 import gtPlusPlus.core.handler.CompatHandler;
 import gtPlusPlus.core.handler.Recipes.LateRegistrationHandler;
 import gtPlusPlus.core.handler.Recipes.RegistrationHandler;
-import gtPlusPlus.core.lib.GTPPCore;
-import gtPlusPlus.core.recipe.common.CI;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 
 public class RecipeUtils {
@@ -87,74 +84,6 @@ public class RecipeUtils {
         }
     }
 
-    public static void removeCraftingRecipe(Object x) {
-        if (null == x) {
-            return;
-        }
-        if (x instanceof String) {
-            final Item R = ItemUtils.getItemFromFQRN((String) x);
-            if (R != null) {
-                x = R;
-            } else {
-                return;
-            }
-        }
-        if ((x instanceof Item) || (x instanceof ItemStack)) {
-            if (x instanceof Item) {
-                final ItemStack r = new ItemStack((Item) x);
-                Logger.RECIPE("Removing Recipe for " + r.getUnlocalizedName());
-            } else {
-                Logger.RECIPE("Removing Recipe for " + ((ItemStack) x).getUnlocalizedName());
-            }
-            if (x instanceof ItemStack) {
-                final Item r = ((ItemStack) x).getItem();
-                if (null != r) {
-                    x = r;
-                } else {
-                    Logger.RECIPE("Recipe removal failed - Tell Alkalus.");
-                    return;
-                }
-            }
-            if (RecipeUtils.attemptRecipeRemoval((Item) x)) {
-                Logger.RECIPE("Recipe removal successful");
-                return;
-            }
-            Logger.RECIPE("Recipe removal failed - Tell Alkalus.");
-        }
-    }
-
-    private static boolean attemptRecipeRemoval(final Item I) {
-        Logger.RECIPE("Create list of recipes.");
-        final List<IRecipe> recipes = CraftingManager.getInstance()
-            .getRecipeList();
-        final Iterator<IRecipe> items = recipes.iterator();
-        Logger.RECIPE("Begin list iteration.");
-        while (items.hasNext()) {
-            final ItemStack is = items.next()
-                .getRecipeOutput();
-            if ((is != null) && (is.getItem() == I)) {
-                items.remove();
-                Logger.RECIPE("Remove a recipe with " + I.getUnlocalizedName() + " as output.");
-            }
-        }
-        Logger.RECIPE("All recipes should be gone?");
-        if (!items.hasNext()) {
-            Logger.RECIPE("We iterated once, let's try again to double check.");
-            for (IRecipe recipe : recipes) {
-                final ItemStack is = recipe.getRecipeOutput();
-                if ((is != null) && (is.getItem() == I)) {
-                    items.remove();
-                    Logger.RECIPE("REMOVING MISSED RECIPE - RECHECK CONSTRUCTORS");
-                    return true;
-                }
-            }
-            Logger.RECIPE("Should be all gone now after double checking, so return true.");
-            return true;
-        }
-        Logger.RECIPE("Return false, because something went wrong.");
-        return false;
-    }
-
     public static boolean addShapedGregtechRecipe(final Object InputItem1, final Object InputItem2,
         final Object InputItem3, final Object InputItem4, final Object InputItem5, final Object InputItem6,
         final Object InputItem7, final Object InputItem8, final Object InputItem9, final ItemStack OutputItem) {
@@ -163,11 +92,12 @@ public class RecipeUtils {
             InputItem9 };
 
         if (gtPlusPlus.GTplusplus.CURRENT_LOAD_PHASE != GTplusplus.INIT_PHASE.POST_INIT) {
-            GTPPCore.crash(
+            Logger.ERROR(
                 "Load Phase " + gtPlusPlus.GTplusplus.CURRENT_LOAD_PHASE
                     + " should be "
                     + GTplusplus.INIT_PHASE.POST_INIT
                     + ". Unable to register recipe.");
+            throw new IllegalStateException();
         }
 
         int size = CompatHandler.mGtRecipesToGenerate.size();
@@ -198,11 +128,6 @@ public class RecipeUtils {
         return GTModHandler.addShapelessCraftingRecipe(OutputItem, inputItems);
     }
 
-    public static boolean generateMortarRecipe(ItemStack aStack, ItemStack aOutput) {
-        return RecipeUtils
-            .addShapedGregtechRecipe(aStack, null, null, CI.craftingToolMortar, null, null, null, null, null, aOutput);
-    }
-
     public static class InternalRecipeObject implements RunnableWithInfo<String> {
 
         final ItemStack mOutput;
@@ -218,9 +143,9 @@ public class RecipeUtils {
                 if (o instanceof ItemStack) {
                     aFiltered[aValid++] = o;
                 } else if (o instanceof Item) {
-                    aFiltered[aValid++] = ItemUtils.getSimpleStack((Item) o);
+                    aFiltered[aValid++] = new ItemStack((Item) o);
                 } else if (o instanceof Block) {
-                    aFiltered[aValid++] = ItemUtils.getSimpleStack((Block) o);
+                    aFiltered[aValid++] = new ItemStack((Block) o);
                 } else if (o instanceof String) {
                     aFiltered[aValid++] = o;
                 } else if (o == null) {
@@ -341,13 +266,13 @@ public class RecipeUtils {
             Object o = Inputs[i];
 
             if (o instanceof ItemStack) {
-                Slots[i] = ItemUtils.getSimpleStack((ItemStack) o, 1);
+                Slots[i] = GTUtility.copyAmount(1, (ItemStack) o);
                 aFullString.append(aFullStringExpanded.charAt(i));
             } else if (o instanceof Item) {
-                Slots[i] = ItemUtils.getSimpleStack((Item) o, 1);
+                Slots[i] = new ItemStack((Item) o, 1);
                 aFullString.append(aFullStringExpanded.charAt(i));
             } else if (o instanceof Block) {
-                Slots[i] = ItemUtils.getSimpleStack((Block) o, 1);
+                Slots[i] = new ItemStack((Block) o, 1);
                 aFullString.append(aFullStringExpanded.charAt(i));
             } else if (o instanceof String) {
                 Slots[i] = o;
@@ -365,7 +290,6 @@ public class RecipeUtils {
                     "Cleaned a " + o.getClass()
                         .getSimpleName() + " from recipe input.");
                 Logger.INFO("ERROR");
-                GTPPCore.crash("Bad Shaped Recipe.");
             }
         }
         Logger.RECIPE("Using String: " + aFullString);

@@ -3,6 +3,7 @@ package goodgenerator.items;
 import static goodgenerator.loader.Loaders.essentiaCell;
 import static goodgenerator.loader.Loaders.yottaFluidTankCell;
 import static goodgenerator.util.CharExchanger.tierName;
+import static net.minecraft.util.StatCollector.translateToLocal;
 
 import java.util.Arrays;
 import java.util.List;
@@ -12,7 +13,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
-import net.minecraft.util.StatCollector;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -21,14 +21,8 @@ import goodgenerator.blocks.tileEntity.MTEEssentiaOutputHatch;
 import goodgenerator.main.GoodGenerator;
 import goodgenerator.util.CharExchanger;
 import goodgenerator.util.DescTextLocalization;
-import gregtech.api.util.GTLanguageManager;
 
 public class GGItemBlocks extends ItemBlock {
-
-    private final String mNoMobsToolTip = GTLanguageManager
-        .addStringLocalization("gt.nomobspawnsonthisblock", "Mobs cannot Spawn on this Block");
-    private final String mNoTileEntityToolTip = GTLanguageManager
-        .addStringLocalization("gt.notileentityinthisblock", "This is NOT a TileEntity!");
 
     public GGItemBlocks(Block block) {
         super(block);
@@ -70,18 +64,16 @@ public class GGItemBlocks extends ItemBlock {
     @SideOnly(Side.CLIENT)
     public void addInformation(ItemStack stack, EntityPlayer playerIn, List tooltip, boolean advanced) {
         if (stack == null) return;
-        tooltip.add(mNoMobsToolTip);
+        tooltip.add(translateToLocal("gt.casing.no-mob-spawning"));
         if (Block.getBlockFromItem(stack.getItem()) instanceof BlockTEContainer tile) {
             if (tile.getIndex() == 1)
                 tooltip.addAll(Arrays.asList(DescTextLocalization.addText("EssentiaHatch.tooltip", 2)));
             if (tile.getIndex() == 2) {
-                tooltip.add(StatCollector.translateToLocal("EssentiaOutputHatch.tooltip.0"));
-                tooltip.add(
-                    StatCollector.translateToLocal("EssentiaOutputHatch.tooltip.1") + " "
-                        + MTEEssentiaOutputHatch.CAPACITY);
+                tooltip.add(translateToLocal("EssentiaOutputHatch.tooltip.0"));
+                tooltip.add(translateToLocal("EssentiaOutputHatch.tooltip.1") + " " + MTEEssentiaOutputHatch.CAPACITY);
             }
         } else {
-            tooltip.add(mNoTileEntityToolTip);
+            tooltip.add(translateToLocal("gt.casing.not-tile-entity"));
         }
 
         if (Block.getBlockFromItem(stack.getItem())
@@ -90,15 +82,13 @@ public class GGItemBlocks extends ItemBlock {
             cap.append(" 1000000");
             for (int i = 0; i < stack.getItemDamage(); i++) cap.append("00");
             cap.append(" L");
-            tooltip.add(
-                StatCollector.translateToLocal("YOTTankCell.tooltip.0") + CharExchanger.formatNumber(cap.toString()));
-            tooltip.add(StatCollector.translateToLocal("YOTTankCell.tooltip.1"));
+            tooltip.add(translateToLocal("YOTTankCell.tooltip.0") + CharExchanger.formatNumber(cap.toString()));
+            tooltip.add(translateToLocal("YOTTankCell.tooltip.1"));
         }
 
         if (Block.getBlockFromItem(stack.getItem())
             .equals(essentiaCell)) {
-            tooltip
-                .add(StatCollector.translateToLocal("hatchTier.tooltip.0") + " " + tierName[stack.getItemDamage() + 4]);
+            tooltip.add(translateToLocal("hatchTier.tooltip.0") + " " + tierName[stack.getItemDamage() + 4]);
         }
     }
 }

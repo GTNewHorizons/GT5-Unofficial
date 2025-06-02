@@ -111,7 +111,7 @@ public class RecipeGenRecycling implements Runnable {
             final ItemStack mDust = getDust(material, validPrefix.getKey());
 
             // Maceration
-            if (ItemUtils.checkForInvalidItems(tempStack) && mDust != null) {
+            if (tempStack != null && mDust != null) {
                 RA.stdBuilder()
                     .itemInputs(tempStack)
                     .itemOutputs(mDust)
@@ -127,7 +127,7 @@ public class RecipeGenRecycling implements Runnable {
             }
 
             // Fluid Extractor
-            if (ItemUtils.checkForInvalidItems(tempStack)) {
+            if (tempStack != null) {
                 int aFluidAmount = (int) ((144 * validPrefix.getKey().mMaterialAmount) / (M * tempStack.stackSize));
                 int aDuration = (int) Math.max(1, (24 * validPrefix.getKey().mMaterialAmount) / M);
                 FluidStack fluidOutput = material.getFluidStack(aFluidAmount);
@@ -301,15 +301,15 @@ public class RecipeGenRecycling implements Runnable {
                 .replace("dust", "");
             final Materials m = Materials.get(MaterialName);
             if (m != null && m != Materials._NULL) {
-                returnValue = ItemUtils.getGregtechDust(m, amount);
-                if (ItemUtils.checkForInvalidItems(returnValue)) {
+                returnValue = GTOreDictUnificator.get(OrePrefixes.dust, m, 1L);
+                if (returnValue != null) {
                     return returnValue;
                 }
             }
         }
         if (returnValue == null) {
             returnValue = getItemStackOfAmountFromOreDict(oredictName, amount);
-            if (ItemUtils.checkForInvalidItems(returnValue)) {
+            if (returnValue != null) {
                 return returnValue.copy();
             }
         }
@@ -322,7 +322,7 @@ public class RecipeGenRecycling implements Runnable {
 
         if (oredictName.toLowerCase()
             .contains("ingotclay")) {
-            return ItemUtils.getSimpleStack(Items.clay_ball, amount);
+            return new ItemStack(Items.clay_ball, amount);
         }
 
         final ArrayList<ItemStack> oreDictList = OreDictionary.getOres(oredictName);

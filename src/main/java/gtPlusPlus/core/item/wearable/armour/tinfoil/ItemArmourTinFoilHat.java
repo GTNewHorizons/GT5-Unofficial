@@ -118,39 +118,37 @@ public class ItemArmourTinFoilHat extends BaseArmourHelm {
     @Override
     public void onArmorTick(World world, EntityPlayer player, ItemStack itemStack) {
         if (itemStack != null && player != null && world != null && !world.isRemote) {
-            if (player instanceof EntityPlayer) {
-                // Apply Slow
-                if (!player.isPotionActive(Potion.moveSlowdown.id)) {
-                    player.addPotionEffect(new PotionEffect(Potion.moveSlowdown.id, 2, 1, true));
-                }
-                // Move Xp orbs away
-                final AxisAlignedBB box = player.getBoundingBox();
-                if (box != null) {
-                    List<Entity> list = world.getEntitiesWithinAABBExcludingEntity(
-                        player,
-                        box.expand(5, 5, 5),
-                        e -> e instanceof EntityXPOrb || e instanceof EntityBoat
-                            || e instanceof EntitySnowball
-                            || e instanceof EntityFireball
-                            || e instanceof EntityEgg
-                            || e instanceof EntityExpBottle
-                            || e instanceof EntityEnderEye
-                            || e instanceof EntityEnderPearl);
-                    for (Entity e : list) {
-                        final float dist = e.getDistanceToEntity(player);
-                        if (dist == 0) continue;
-                        double distX = player.posX - e.posX;
-                        double distZ = player.posZ - e.posZ;
-                        double distY = e.posY + 1.5D - player.posY;
-                        double dir = Math.atan2(distZ, distX);
-                        double speed = 1F / dist * 0.5;
-                        speed = -speed;
-                        if (distY < 0) {
-                            e.motionY += speed;
-                        }
-                        e.motionX = Math.cos(dir) * speed;
-                        e.motionZ = Math.sin(dir) * speed;
+            // Apply Slow
+            if (!player.isPotionActive(Potion.moveSlowdown.id)) {
+                player.addPotionEffect(new PotionEffect(Potion.moveSlowdown.id, 2, 1, true));
+            }
+            // Move Xp orbs away
+            final AxisAlignedBB box = player.getBoundingBox();
+            if (box != null) {
+                List<Entity> list = world.getEntitiesWithinAABBExcludingEntity(
+                    player,
+                    box.expand(5, 5, 5),
+                    e -> e instanceof EntityXPOrb || e instanceof EntityBoat
+                        || e instanceof EntitySnowball
+                        || e instanceof EntityFireball
+                        || e instanceof EntityEgg
+                        || e instanceof EntityExpBottle
+                        || e instanceof EntityEnderEye
+                        || e instanceof EntityEnderPearl);
+                for (Entity e : list) {
+                    final float dist = e.getDistanceToEntity(player);
+                    if (dist == 0) continue;
+                    double distX = player.posX - e.posX;
+                    double distZ = player.posZ - e.posZ;
+                    double distY = e.posY + 1.5D - player.posY;
+                    double dir = Math.atan2(distZ, distX);
+                    double speed = 1F / dist * 0.5;
+                    speed = -speed;
+                    if (distY < 0) {
+                        e.motionY += speed;
                     }
+                    e.motionX = Math.cos(dir) * speed;
+                    e.motionZ = Math.sin(dir) * speed;
                 }
             }
         }

@@ -397,8 +397,8 @@ public class MTEDieselEngine extends MTEEnhancedMultiBlockBase<MTEDieselEngine> 
     }
 
     @Override
-    public boolean isGivingInformation() {
-        return true;
+    public boolean showRecipeTextInGUI() {
+        return false;
     }
 
     @Override

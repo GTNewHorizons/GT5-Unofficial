@@ -27,7 +27,6 @@ import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.minecraft.EntityUtils;
-import gtPlusPlus.core.util.minecraft.ItemUtils;
 
 public class BaseOreComponent extends Item {
 
@@ -56,7 +55,7 @@ public class BaseOreComponent extends Item {
         GameRegistry.registerItem(this, this.unlocalName);
         registerComponent();
         GTOreDictUnificator
-            .registerOre(componentType.getComponent() + material.getUnlocalizedName(), ItemUtils.getSimpleStack(this));
+            .registerOre(componentType.getComponent() + material.getUnlocalizedName(), new ItemStack(this));
     }
 
     public boolean registerComponent() {
@@ -84,7 +83,7 @@ public class BaseOreComponent extends Item {
 
         ItemStack x = aMap.get(aKey);
         if (x == null) {
-            aMap.put(aKey, ItemUtils.getSimpleStack(this));
+            aMap.put(aKey, new ItemStack(this));
             Logger.MATERIALS(
                 "Registering a material component. Item: [" + componentMaterial.getUnlocalizedName()
                     + "] Map: ["

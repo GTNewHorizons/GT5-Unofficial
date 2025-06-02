@@ -34,9 +34,6 @@ public class BWMetaGeneratedSmallOres extends BWMetaGeneratedOres {
     }
 
     @Override
-    protected void doRegistrationStuff(Werkstoff w) {}
-
-    @Override
     public String getUnlocalizedName() {
         return "bw.blockores.02";
     }

@@ -102,20 +102,20 @@ public class TileEntityFishTrap extends TileEntity implements ISidedInventory {
         final int lootWeight = MathUtils.randInt(0, 100);
         ItemStack loot = null;
         if (lootWeight <= 5) {
-            loot = ItemUtils.getSimpleStack(Items.slime_ball);
+            loot = new ItemStack(Items.slime_ball);
         } else if (lootWeight <= 10) {
-            loot = ItemUtils.getSimpleStack(Items.bone);
+            loot = new ItemStack(Items.bone);
         } else if (lootWeight <= 15) {
-            loot = ItemUtils.getSimpleStack(Blocks.sand);
+            loot = new ItemStack(Blocks.sand);
         } else if (lootWeight <= 20) {
-            loot = ItemUtils.simpleMetaStack(Items.dye, 0, 1);
+            loot = new ItemStack(Items.dye, 1, 0);
         }
         // Junk Loot
         else if (lootWeight <= 23) {
             if (PamsHarvestCraft.isModLoaded()) {
                 loot = ItemUtils.getItemStackOfAmountFromOreDictNoBroken("cropSeaweed", 1);
             } else {
-                loot = ItemUtils.getSimpleStack(Blocks.dirt);
+                loot = new ItemStack(Blocks.dirt);
             }
         }
         // Pam Fish
@@ -127,11 +127,11 @@ public class TileEntityFishTrap extends TileEntity implements ISidedInventory {
             if (rareLoot <= 4) {
                 loot = Materials.Iron.getNuggets(1);
             } else if (rareLoot <= 7) {
-                loot = ItemUtils.getSimpleStack(Items.gold_nugget);
+                loot = new ItemStack(Items.gold_nugget);
             } else if (rareLoot <= 9) {
-                loot = ItemUtils.getSimpleStack(Items.emerald);
+                loot = new ItemStack(Items.emerald);
             } else {
-                loot = ItemUtils.getSimpleStack(Items.diamond);
+                loot = new ItemStack(Items.diamond);
             }
         }
         if (loot != null) {

@@ -9,21 +9,20 @@ import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.cleanroommc.modularui.widgets.layout.Grid;
 
-import gregtech.api.modularui2.CoverGuiData;
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.util.GTUtility;
 import gregtech.common.covers.CoverIOBase;
 import gregtech.common.covers.modes.BlockMode;
 import gregtech.common.covers.modes.MachineProcessingCondition;
 import gregtech.common.covers.modes.TransferMode;
-import gregtech.common.modularui2.util.FlowActions;
 import gregtech.common.modularui2.widget.builder.EnumRowBuilder;
 
 public class CoverIOBaseGui extends CoverGui<CoverIOBase> {
 
     private final String string;
 
-    public CoverIOBaseGui(String string) {
+    public CoverIOBaseGui(CoverIOBase cover, String string) {
+        super(cover);
         this.string = string;
     }
 
@@ -33,15 +32,11 @@ public class CoverIOBaseGui extends CoverGui<CoverIOBase> {
     }
 
     @Override
-    public void addUIWidgets(CoverGuiData guiData, PanelSyncManager syncManager, Flow column) {
-        CoverIOBase cover = getCover(guiData);
+    public void addUIWidgets(PanelSyncManager syncManager, Flow column) {
         EnumSyncValue<TransferMode> ioModeSyncValue = new EnumSyncValue<>(
             TransferMode.class,
             cover::getIOMode,
-            mode -> {
-                cover.setIOMode(mode);
-                FlowActions.resize(column);
-            });
+            cover::setIOMode);
         syncManager.syncValue("io_mode", ioModeSyncValue);
         IWidget exportImportButtons = new EnumRowBuilder<>(TransferMode.class).value(ioModeSyncValue)
             .overlay(GTGuiTextures.OVERLAY_BUTTON_EXPORT, GTGuiTextures.OVERLAY_BUTTON_IMPORT)

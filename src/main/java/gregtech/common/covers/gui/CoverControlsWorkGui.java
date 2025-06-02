@@ -5,10 +5,10 @@ import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
 import com.cleanroommc.modularui.value.sync.EnumSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
+import com.cleanroommc.modularui.widgets.ToggleButton;
 import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.cleanroommc.modularui.widgets.layout.Grid;
 
-import gregtech.api.modularui2.CoverGuiData;
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.util.GTUtility;
 import gregtech.common.covers.CoverControlsWork;
@@ -18,14 +18,17 @@ import gregtech.common.modularui2.widget.SelectButton;
 
 public class CoverControlsWorkGui extends CoverGui<CoverControlsWork> {
 
+    public CoverControlsWorkGui(CoverControlsWork cover) {
+        super(cover);
+    }
+
     @Override
     protected String getGuiId() {
         return "cover.machine_controller";
     }
 
     @Override
-    public void addUIWidgets(CoverGuiData guiData, PanelSyncManager syncManager, Flow column) {
-        CoverControlsWork cover = getCover(guiData);
+    public void addUIWidgets(PanelSyncManager syncManager, Flow column) {
         EnumSyncValue<RedstoneCondition> conditionModeSyncValue = new EnumSyncValue<>(
             RedstoneCondition.class,
             cover::getRedstoneCondition,
@@ -62,7 +65,7 @@ public class CoverControlsWorkGui extends CoverGui<CoverControlsWork> {
                     IKey.str(GTUtility.trans("245", "Disable machine"))
                         .asWidget())
                 .row(
-                    new SelectButton().value(safeModeSyncValue)
+                    new ToggleButton().value(safeModeSyncValue)
                         .overlay(true, GTGuiTextures.OVERLAY_BUTTON_CHECKMARK)
                         .overlay(false, GTGuiTextures.OVERLAY_BUTTON_CROSS)
                         .size(16),

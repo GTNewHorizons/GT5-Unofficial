@@ -16,17 +16,19 @@ import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.cleanroommc.modularui.widgets.layout.Grid;
 import com.cleanroommc.modularui.widgets.slot.FluidSlot;
 
-import gregtech.api.modularui2.CoverGuiData;
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.util.GTUtility;
 import gregtech.common.covers.CoverFluidfilter;
 import gregtech.common.covers.modes.BlockMode;
 import gregtech.common.covers.modes.FilterDirectionMode;
 import gregtech.common.covers.modes.FilterType;
-import gregtech.common.modularui2.util.FlowActions;
 import gregtech.common.modularui2.widget.builder.EnumRowBuilder;
 
 public class CoverFluidfilterGui extends CoverGui<CoverFluidfilter> {
+
+    public CoverFluidfilterGui(CoverFluidfilter cover) {
+        super(cover);
+    }
 
     @Override
     protected String getGuiId() {
@@ -34,8 +36,7 @@ public class CoverFluidfilterGui extends CoverGui<CoverFluidfilter> {
     }
 
     @Override
-    public void addUIWidgets(CoverGuiData guiData, PanelSyncManager syncManager, Flow column) {
-        CoverFluidfilter cover = getCover(guiData);
+    public void addUIWidgets(PanelSyncManager syncManager, Flow column) {
         EnumSyncValue<FilterDirectionMode> ioModeSyncValue = new EnumSyncValue<>(
             FilterDirectionMode.class,
             cover::getFilterDirection,
@@ -61,7 +62,6 @@ public class CoverFluidfilterGui extends CoverGui<CoverFluidfilter> {
         }, fluidStack -> {
             int fluidId = fluidStack != null ? FluidRegistry.getFluidID(fluidStack.getFluid()) : -1;
             cover.setFluidId(fluidId);
-            FlowActions.resize(column);
         }, 1);
 
         column.child(

@@ -32,6 +32,7 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
+import gregtech.api.enums.Materials;
 import gregtech.api.enums.TAE;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -40,6 +41,7 @@ import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.util.GTLog;
+import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.ParallelHelper;
@@ -62,9 +64,9 @@ public class MTEThermalBoiler extends GTPPMultiBlockBase<MTEThermalBoiler> imple
     private static final Item itemLavaFilter = ItemList.Component_LavaFilter.getItem();
     private static final Item itemObsidian = Item.getItemFromBlock(Blocks.obsidian);
     private static final Fluid fluidWater = FluidRegistry.WATER;
-    private static final Fluid fluidDistilledWater = FluidUtils.getDistilledWater(1)
+    private static final Fluid fluidDistilledWater = GTModHandler.getDistilledWater(1)
         .getFluid();
-    private static final Fluid fluidSteam = FluidUtils.getSteam(1)
+    private static final Fluid fluidSteam = Materials.Steam.getGas(1)
         .getFluid();
     private static final Fluid fluidSHSteam = FluidUtils.getSuperHeatedSteam(1)
         .getFluid();
@@ -105,11 +107,6 @@ public class MTEThermalBoiler extends GTPPMultiBlockBase<MTEThermalBoiler> imple
     @Override
     protected boolean filtersFluid() {
         return false;
-    }
-
-    @Override
-    public boolean supportsVoidProtection() {
-        return true;
     }
 
     @Override
@@ -246,7 +243,8 @@ public class MTEThermalBoiler extends GTPPMultiBlockBase<MTEThermalBoiler> imple
     private boolean useWater(int steamAmount) {
         // Round up to not dupe decimal amounts of water.
         int waterAmount = Math.floorDiv(steamAmount + GTValues.STEAM_PER_WATER - 1, GTValues.STEAM_PER_WATER);
-        if (depleteInput(FluidUtils.getWater(waterAmount)) || depleteInput(FluidUtils.getDistilledWater(waterAmount))) {
+        if (depleteInput(Materials.Water.getFluid(waterAmount))
+            || depleteInput(GTModHandler.getDistilledWater(waterAmount))) {
             dryHeatCounter = 0;
             return true;
         } else {
@@ -259,11 +257,6 @@ public class MTEThermalBoiler extends GTPPMultiBlockBase<MTEThermalBoiler> imple
             }
             return false;
         }
-    }
-
-    @Override
-    public int getMaxParallelRecipes() {
-        return 1;
     }
 
     public int getEfficiencyIncrease() {

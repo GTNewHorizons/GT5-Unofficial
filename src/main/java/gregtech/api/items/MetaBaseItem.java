@@ -3,6 +3,8 @@ package gregtech.api.items;
 import static gregtech.api.enums.GTValues.D1;
 import static gregtech.api.enums.GTValues.V;
 import static gregtech.api.util.GTUtility.formatNumbers;
+import static net.minecraft.util.StatCollector.translateToLocal;
+import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -232,24 +234,26 @@ public abstract class MetaBaseItem extends GTGenericItem
         if (tStats != null) {
             if (tStats[3] > 0) {
                 aList.add(
-                    EnumChatFormatting.AQUA + String.format(
-                        transItem("009", "Contains %s EU   Tier: %s"),
-                        formatNumbers(tStats[3]),
-                        "" + (tStats[2] >= 0 ? tStats[2] : 0)) + EnumChatFormatting.GRAY);
+                    EnumChatFormatting.AQUA
+                        + translateToLocalFormatted(
+                            "gt.item.desc.stored_eu",
+                            formatNumbers(tStats[3]),
+                            "" + (tStats[2] >= 0 ? tStats[2] : 0))
+                        + EnumChatFormatting.GRAY);
             } else {
                 long tCharge = getRealCharge(aStack);
                 if (tStats[3] == -2 && tCharge <= 0) {
                     aList.add(
-                        EnumChatFormatting.AQUA + transItem("010", "Empty. You should recycle it properly.")
-                            + EnumChatFormatting.GRAY);
+                        EnumChatFormatting.AQUA + translateToLocal("gt.item.desc.empty") + EnumChatFormatting.GRAY);
                 } else {
+                    int voltageTier = (int) GTUtility.clamp(tStats[2], 0, V.length - 1);
                     aList.add(
                         EnumChatFormatting.AQUA
-                            + String.format(
-                                transItem("011", "%s / %s EU - Voltage: %s"),
+                            + translateToLocalFormatted(
+                                "gt.item.desc.eu_info",
                                 formatNumbers(tCharge),
                                 formatNumbers(Math.abs(tStats[0])),
-                                "" + V[(int) (tStats[2] >= 0 ? tStats[2] < V.length ? tStats[2] : V.length - 1 : 1)])
+                                formatNumbers(V[voltageTier]))
                             + EnumChatFormatting.GRAY);
                 }
             }
@@ -259,13 +263,15 @@ public abstract class MetaBaseItem extends GTGenericItem
         if (tStats != null && tStats[0] > 0) {
             FluidStack tFluid = getFluidContent(aStack);
             aList.add(
-                EnumChatFormatting.BLUE + ((tFluid == null ? transItem("012", "No Fluids Contained")
+                EnumChatFormatting.BLUE + ((tFluid == null ? translateToLocal("gt.item.desc.no_fluid")
                     : GTUtility.getFluidName(tFluid, true))) + EnumChatFormatting.GRAY);
             aList.add(
-                EnumChatFormatting.BLUE + String.format(
-                    transItem("013", "%sL / %sL"),
-                    tFluid == null ? 0 : formatNumbers(tFluid.amount),
-                    formatNumbers(tStats[0])) + EnumChatFormatting.GRAY);
+                EnumChatFormatting.BLUE
+                    + translateToLocalFormatted(
+                        "gt.item.desc.fluid_info",
+                        tFluid == null ? 0 : formatNumbers(tFluid.amount),
+                        formatNumbers(tStats[0]))
+                    + EnumChatFormatting.GRAY);
         }
 
         ArrayList<IItemBehaviour<MetaBaseItem>> behaviours = mItemBehaviors.get((short) getDamage(aStack));
@@ -629,17 +635,7 @@ public abstract class MetaBaseItem extends GTGenericItem
     } // just to be sure.
 
     @Override
-    public int getItemEnchantability() {
-        return 0;
-    }
-
-    @Override
     public boolean isBookEnchantable(ItemStack aStack, ItemStack aBook) {
-        return false;
-    }
-
-    @Override
-    public boolean getIsRepairable(ItemStack aStack, ItemStack aMaterial) {
         return false;
     }
 

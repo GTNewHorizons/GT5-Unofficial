@@ -15,7 +15,7 @@ jobs:
       - name: Detect forbidden isModLoaded calls
         shell: bash
         run: |
-          ! grep -E -r '(BartWorks|GalactiGreg|GGFab|GoodGenerator|GTNHIntergalactic|GTNHLanthanides|GregTech|GTPlusPlus|KekzTech|KubaTech|TecTech|NEIOrePlugin)\.isModLoaded' src/main/java
-          ! grep -E -r 'isModLoaded\(".*")' src/main/java
-          ! grep -E -r '@(Optional.|)Method\(modid = ".*")' src/main/java
-          ! grep -E -r '@(Optional.|)Interface\(.*modid = ".*".*)' src/main/java
+          ! grep -E -r '(BartWorks|GalactiGreg|GGFab|GoodGenerator|GTNHIntergalactic|GTNHLanthanides|GregTech|GTPlusPlus|KekzTech|KubaTech|TecTech|NEIOrePlugin)\.isModLoaded' src/main/java || exit 1
+          ! grep -E -r 'isModLoaded\(".*")' src/main/java || exit 1
+          ! grep -E -r '@(Optional.|)Method\(modid = ".*")' src/main/java || exit 1
+          ! grep -E -r '@(Optional.|)Interface\(.*modid = ".*".*)' src/main/java || exit 1

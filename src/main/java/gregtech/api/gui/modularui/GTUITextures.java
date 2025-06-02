@@ -224,6 +224,9 @@ public class GTUITextures {
         .fullImage(GregTech.ID, "gui/progressbar/steam_fill");
     public static final UITexture PROGRESSBAR_STEAM_FILL_STEEL = UITexture
         .fullImage(GregTech.ID, "gui/progressbar/steam_fill_steel");
+    public static final UITexture STEAM_GAUGE_BG = UITexture.fullImage(GregTech.ID, "gui/background/steam_dial");
+    public static final UITexture STEAM_GAUGE_BG_STEEL = UITexture
+        .fullImage(GregTech.ID, "gui/background/steam_dial_steel");
     public static final UITexture PROGRESSBAR_NAME_REMOVER = UITexture
         .fullImage(GregTech.ID, "gui/progressbar/name_remover");
 

@@ -238,7 +238,7 @@ public abstract class MetaPipeEntity extends CommonMetaTileEntity implements ICo
 
     @Override
     public float getExplosionResistance(ForgeDirection side) {
-        return (mConnections & IConnectable.HAS_FOAM) != 0 ? 50.0F : 5.0F;
+        return 5.0F;
     }
 
     @Override

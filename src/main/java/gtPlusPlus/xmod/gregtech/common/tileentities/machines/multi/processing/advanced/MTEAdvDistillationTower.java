@@ -372,7 +372,7 @@ public class MTEAdvDistillationTower extends GTPPMultiBlockBase<MTEAdvDistillati
     @Override
     public int getMaxParallelRecipes() {
         return switch (mMode) {
-            case DistillationTower -> getTierOfTower() == 1 ? 4 : getTierOfTower() == 2 ? 12 : 0;
+            case DistillationTower -> getTierOfTower() == 1 ? 4 : 12;
             case Distillery -> getTierOfTower() * (4 * GTUtility.getTier(this.getMaxInputVoltage()));
             default -> 0;
         };
@@ -415,7 +415,7 @@ public class MTEAdvDistillationTower extends GTPPMultiBlockBase<MTEAdvDistillati
             if (aGuiStack != null) {
                 if (GTUtility.areStacksEqual(aGuiStack, GregtechItemList.Distillus_Upgrade_Chip.get(1))) {
                     this.mUpgraded = true;
-                    mInventory[1] = ItemUtils.depleteStack(aGuiStack);
+                    mInventory[1] = ItemUtils.depleteStack(aGuiStack, 1);
                 }
             }
         }
