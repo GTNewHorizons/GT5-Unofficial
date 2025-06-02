@@ -207,7 +207,7 @@ public abstract class MTEVoidMinerBase<T extends MTEVoidMinerBase<T>> extends MT
             for (int i = 0; i < VoidMinerUtility.NOBLE_GASSES.length; i++) {
                 FluidStack ng = VoidMinerUtility.NOBLE_GASSES[i];
                 if (ng.isFluidEqual(s)) {
-                    this.multiplier = this.TIER_MULTIPLIER * VoidMinerUtility.NOBEL_GASSES_MULTIPLIER[i];
+                    this.multiplier = this.TIER_MULTIPLIER * VoidMinerUtility.NOBLE_GASSES_MULTIPLIER[i];
                     return s;
                 }
             }
@@ -304,7 +304,7 @@ public abstract class MTEVoidMinerBase<T extends MTEVoidMinerBase<T>> extends MT
     }
 
     @Override
-    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ, ItemStack aTool) {
         this.mBlacklist = !this.mBlacklist;
         GTUtility.sendChatToPlayer(aPlayer, "Mode: " + (this.mBlacklist ? "Blacklist" : "Whitelist"));
     }
