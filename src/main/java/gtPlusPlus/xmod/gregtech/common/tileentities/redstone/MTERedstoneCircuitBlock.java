@@ -75,28 +75,8 @@ public class MTERedstoneCircuitBlock extends MTERedstoneBase implements IRedston
     }
 
     @Override
-    public boolean isElectric() {
-        return true;
-    }
-
-    @Override
-    public boolean isPneumatic() {
-        return false;
-    }
-
-    @Override
-    public boolean isSteampowered() {
-        return false;
-    }
-
-    @Override
     public boolean isOutputFacing(ForgeDirection side) {
         return side == this.getOutputFacing();
-    }
-
-    @Override
-    public long getMinimumStoredEU() {
-        return 512;
     }
 
     @Override
@@ -112,11 +92,6 @@ public class MTERedstoneCircuitBlock extends MTERedstoneBase implements IRedston
     @Override
     public long maxAmperesIn() {
         return 2;
-    }
-
-    @Override
-    public long maxAmperesOut() {
-        return 1;
     }
 
     @Override
@@ -329,18 +304,6 @@ public class MTERedstoneCircuitBlock extends MTERedstoneBase implements IRedston
      * return aRedstone ? 53 : 52; return aRedstone ? 94 : 93; } if (side == ForgeDirection.DOWN) return aRedstone ? 60
      * : 59; if (side == ForgeDirection.UP) return aRedstone ? 58 : 57; return aRedstone ? 62 : 61; }
      */
-
-    @Override
-    public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
-        ItemStack aStack) {
-        return false;
-    }
-
-    @Override
-    public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
-        ItemStack aStack) {
-        return false;
-    }
 
     public byte getOutputRedstone(ForgeDirection side) {
         return getBaseMetaTileEntity().getOutputRedstoneSignal(side);
