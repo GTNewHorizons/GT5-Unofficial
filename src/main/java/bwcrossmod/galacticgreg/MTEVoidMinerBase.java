@@ -104,9 +104,9 @@ public abstract class MTEVoidMinerBase<T extends MTEVoidMinerBase<T>> extends MT
     public CheckRecipeResult checkProcessing() {
         setElectricityStats();
         if (working()) {
-            return SimpleCheckRecipeResult.ofSuccess("Extracting Ores");
+            return SimpleCheckRecipeResult.ofSuccess("drill_extracting_ores");
         } else {
-            return SimpleCheckRecipeResult.ofFailure("Extraction Failed");
+            return SimpleCheckRecipeResult.ofFailure("drill_extracting_ores_failed");
         }
     }
 
