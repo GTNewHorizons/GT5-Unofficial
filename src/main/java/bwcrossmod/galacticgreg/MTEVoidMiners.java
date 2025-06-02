@@ -24,28 +24,25 @@ import static gregtech.api.enums.HatchElement.OutputBus;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 
-import gregtech.api.enums.GTValues;
-import gregtech.api.util.MultiblockTooltipBuilder;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumChatFormatting;
 
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
-import bartworks.system.material.WerkstoffLoader;
 import gregtech.api.GregTechAPI;
+import gregtech.api.casing.Casings;
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.util.GTUtility;
+import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.blocks.BlockCasings4;
-import gregtech.common.blocks.BlockCasings8;
 import gtPlusPlus.core.block.ModBlocks;
-import net.minecraft.util.EnumChatFormatting;
-
-import java.text.NumberFormat;
 
 public class MTEVoidMiners {
 
@@ -82,17 +79,17 @@ public class MTEVoidMiners {
                         { " G ", "GFG", " G " },
                         { "H~H", "HHH", "HHH" } }))
             // spotless:on
-            .addElement('A', ofBlock(GregTechAPI.sBlockCasings4, 14))
+            .addElement('A', Casings.MiningOsmiridiumCasing.asElement())
             .addElement('B', ofFrame(Materials.Osmiridium))
-            .addElement('C', ofBlock(WerkstoffLoader.BWBlockCasingsAdvanced, 32083))
-            .addElement('D', ofBlock(WerkstoffLoader.BWBlockCasings, 32083))
+            .addElement('C', Casings.ReboltedOsmiridiumCasing.asElement())
+            .addElement('D', Casings.BoltedOsmiridiumCasing.asElement())
             .addElement(
                 'E',
                 buildHatchAdder(VMLUV.class).atLeast(InputHatch, OutputBus, InputBus, Maintenance, Energy)
                     .dot(1)
-                    .casingIndex(((BlockCasings4) GregTechAPI.sBlockCasings4).getTextureIndex(14))
-                    .buildAndChain(GregTechAPI.sBlockCasings4, 14))
-            // for compatibility with the old structure
+                    .casingIndex(Casings.MiningOsmiridiumCasing.getTextureId())
+                    .buildAndChain(Casings.MiningOsmiridiumCasing.asElement()))
+            // for compatibility with the old structure #TODO remove for 2.9
             .addElement(
                 'F',
                 ofBlock(
@@ -133,11 +130,14 @@ public class MTEVoidMiners {
                         + "VOIDED"
                         + EnumChatFormatting.RESET
                         + ".")
-                .beginStructureBlock(7,9,7,false)
-                .addStructureInfo(EnumChatFormatting.GOLD + "20x" + EnumChatFormatting.GRAY + " Mining Osmiridium Casing")
+                .beginStructureBlock(7, 9, 7, false)
+                .addStructureInfo(
+                    EnumChatFormatting.GOLD + "20x" + EnumChatFormatting.GRAY + " Mining Osmiridium Casing")
                 .addStructureInfo(EnumChatFormatting.GOLD + "42x" + EnumChatFormatting.GRAY + " Osmiridium Frame Box")
-                .addStructureInfo(EnumChatFormatting.GOLD + "6x" + EnumChatFormatting.GRAY + " Bolted Osmiridium Casing")
-                .addStructureInfo(EnumChatFormatting.GOLD + "6x" + EnumChatFormatting.GRAY + " Rebolted Osmiridium Casing")
+                .addStructureInfo(
+                    EnumChatFormatting.GOLD + "6x" + EnumChatFormatting.GRAY + " Bolted Osmiridium Casing")
+                .addStructureInfo(
+                    EnumChatFormatting.GOLD + "6x" + EnumChatFormatting.GRAY + " Rebolted Osmiridium Casing")
                 .addEnergyHatch(VN[this.getMinTier()] + "+, Any base casing")
                 .addMaintenanceHatch("Any base casing")
                 .addInputBus("Mining Pipes or Ores, optional, any base casing")
@@ -230,18 +230,18 @@ public class MTEVoidMiners {
                         { " G ", "GIG", " G " },
                         { "H~H", "HHH", "HHH" } }))
             // spotless:on
-            .addElement('A', ofBlock(GregTechAPI.sBlockCasings11, 7))
-            .addElement('B', ofBlock(GregTechAPI.sBlockCasings8, 3))
+            .addElement('A', Casings.BlackPlutoniumItemPipeCasing.asElement())
+            .addElement('B', Casings.MiningBlackPlutoniumCasing.asElement())
             .addElement('C', ofFrame(Materials.NaquadahAlloy))
-            .addElement('D', ofBlock(WerkstoffLoader.BWBlockCasings, 32091))
-            .addElement('E', ofBlock(WerkstoffLoader.BWBlockCasingsAdvanced, 32091))
+            .addElement('D', Casings.BoltedNaquadahAlloyCasing.asElement())
+            .addElement('E', Casings.ReboltedNaquadahAlloyCasing.asElement())
             .addElement(
                 'F',
                 buildHatchAdder(VMZPM.class).atLeast(InputHatch, OutputBus, InputBus, Maintenance, Energy)
                     .dot(1)
-                    .casingIndex(((BlockCasings8) GregTechAPI.sBlockCasings8).getTextureIndex(3))
-                    .buildAndChain(GregTechAPI.sBlockCasings8, 3))
-            // for compatibility with the old structure
+                    .casingIndex(Casings.MiningBlackPlutoniumCasing.getTextureId())
+                    .buildAndChain(Casings.MiningBlackPlutoniumCasing.asElement()))
+            // for compatibility with the old structure #TODO remove for 2.9
             .addElement(
                 'I',
                 ofBlock(
@@ -282,12 +282,17 @@ public class MTEVoidMiners {
                         + "VOIDED"
                         + EnumChatFormatting.RESET
                         + ".")
-                .beginStructureBlock(9,13,8,false)
-                .addStructureInfo(EnumChatFormatting.GOLD + "29x" + EnumChatFormatting.GRAY + " Mining Black Plutonium Casing")
-                .addStructureInfo(EnumChatFormatting.GOLD + "20x" + EnumChatFormatting.GRAY + " Black Plutonium Item Pipe Casing")
-                .addStructureInfo(EnumChatFormatting.GOLD + "72x" + EnumChatFormatting.GRAY + " Naquadah Alloy Frame Box")
-                .addStructureInfo(EnumChatFormatting.GOLD + "10x" + EnumChatFormatting.GRAY + " Bolted Naquadah Alloy Casing")
-                .addStructureInfo(EnumChatFormatting.GOLD + "9x" + EnumChatFormatting.GRAY + " Rebolted Naquadah Alloy Casing")
+                .beginStructureBlock(9, 13, 8, false)
+                .addStructureInfo(
+                    EnumChatFormatting.GOLD + "29x" + EnumChatFormatting.GRAY + " Mining Black Plutonium Casing")
+                .addStructureInfo(
+                    EnumChatFormatting.GOLD + "20x" + EnumChatFormatting.GRAY + " Black Plutonium Item Pipe Casing")
+                .addStructureInfo(
+                    EnumChatFormatting.GOLD + "72x" + EnumChatFormatting.GRAY + " Naquadah Alloy Frame Box")
+                .addStructureInfo(
+                    EnumChatFormatting.GOLD + "10x" + EnumChatFormatting.GRAY + " Bolted Naquadah Alloy Casing")
+                .addStructureInfo(
+                    EnumChatFormatting.GOLD + "9x" + EnumChatFormatting.GRAY + " Rebolted Naquadah Alloy Casing")
                 .addEnergyHatch(VN[this.getMinTier()] + "+, Any base casing")
                 .addMaintenanceHatch("Any base casing")
                 .addInputBus("Mining Pipes or Ores, optional, any base casing")
@@ -363,7 +368,7 @@ public class MTEVoidMiners {
                         {"   E E   ","   B B   ","  CB~BC  ","EBB   BBE","  B D B  ","EBB   BBE","  CBBBC  ","   B B   ","   E E   "},
                         {"   F F   ","         ","  CBBBC  ","F B   B F","  B D B  ","F B   B F","  CBBBC  ","         ","   F F   "},
                         {"   F F   ","  C   C  "," CCCCCCC ","F C   C F","  C D C  ","F C   C F"," CCCCCCC ","  C   C  ","   F F   "}}))
-            // old structure (to be deprecated on future version)
+            // old structure (to be deprecated on future version) #TODO remove for 2.9
             .addShape(
                 STRUCTURE_PIECE_OLD,
                 transpose(
@@ -376,18 +381,18 @@ public class MTEVoidMiners {
                         { " G ", "GIG", " G " },
                         { "H~H", "HHH", "HHH" } }))
             // spotless:on
-            .addElement('A', ofBlock(GregTechAPI.sBlockCasings11, 7))
-            .addElement('B', ofBlock(GregTechAPI.sBlockCasings8, 2))
+            .addElement('A', Casings.BlackPlutoniumItemPipeCasing.asElement())
+            .addElement('B', Casings.MiningNeutroniumCasing.asElement())
             .addElement('C', ofFrame(Materials.Adamantium))
-            .addElement('D', ofBlock(WerkstoffLoader.BWBlockCasingsAdvanced, 31850))
-            .addElement('E', ofBlock(WerkstoffLoader.BWBlockCasings, 31850))
+            .addElement('D', Casings.ReboltedIridiumCasing.asElement())
+            .addElement('E', Casings.BoltedIridiumCasing.asElement())
             .addElement(
                 'F',
                 buildHatchAdder(VMUV.class).atLeast(InputHatch, OutputBus, InputBus, Maintenance, Energy)
                     .dot(1)
-                    .casingIndex(((BlockCasings8) GregTechAPI.sBlockCasings8).getTextureIndex(2))
-                    .buildAndChain(GregTechAPI.sBlockCasings8, 2))
-            // for compatibility with the old structure
+                    .casingIndex(Casings.MiningNeutroniumCasing.getTextureId())
+                    .buildAndChain(Casings.MiningNeutroniumCasing.asElement()))
+            // for compatibility with the old structure #TODO remove for 2.9
             .addElement(
                 'I',
                 ofBlock(
@@ -428,12 +433,15 @@ public class MTEVoidMiners {
                         + "VOIDED"
                         + EnumChatFormatting.RESET
                         + ".")
-                .beginStructureBlock(9,16,9,false)
-                .addStructureInfo(EnumChatFormatting.GOLD + "47x" + EnumChatFormatting.GRAY + " Mining Neutronium Casing")
-                .addStructureInfo(EnumChatFormatting.GOLD + "8x" + EnumChatFormatting.GRAY + " Black Plutonium Item Pipe Casing")
+                .beginStructureBlock(9, 16, 9, false)
+                .addStructureInfo(
+                    EnumChatFormatting.GOLD + "47x" + EnumChatFormatting.GRAY + " Mining Neutronium Casing")
+                .addStructureInfo(
+                    EnumChatFormatting.GOLD + "8x" + EnumChatFormatting.GRAY + " Black Plutonium Item Pipe Casing")
                 .addStructureInfo(EnumChatFormatting.GOLD + "72x" + EnumChatFormatting.GRAY + " Adamantium Frame Box")
                 .addStructureInfo(EnumChatFormatting.GOLD + "20x" + EnumChatFormatting.GRAY + " Bolted Iridium Casing")
-                .addStructureInfo(EnumChatFormatting.GOLD + "36x" + EnumChatFormatting.GRAY + " Rebolted Iridium Casing")
+                .addStructureInfo(
+                    EnumChatFormatting.GOLD + "36x" + EnumChatFormatting.GRAY + " Rebolted Iridium Casing")
                 .addEnergyHatch(VN[this.getMinTier()] + "+, Any base casing")
                 .addMaintenanceHatch("Any base casing")
                 .addInputBus("Mining Pipes or Ores, optional, any base casing")
