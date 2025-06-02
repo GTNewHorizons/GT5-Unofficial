@@ -18,17 +18,13 @@ import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.ofCoil;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.annotation.Nonnull;
 
-import gregtech.api.metatileentity.implementations.MTEHatch;
-import gregtech.api.metatileentity.implementations.gui.MTEMultiBlockBaseGui;
-import gregtech.common.tileentities.machines.multi.gui.MTECZPullerGui;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
+
+import org.jetbrains.annotations.NotNull;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
@@ -44,8 +40,10 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEEnhancedMultiBlockBase;
+import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.metatileentity.implementations.MTEHatchEnergy;
 import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
+import gregtech.api.metatileentity.implementations.gui.MTEMultiBlockBaseGui;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
@@ -57,12 +55,13 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.blocks.BlockCasings2;
 import gregtech.common.blocks.BlockCasings9;
 import gregtech.common.misc.GTStructureChannels;
-import org.jetbrains.annotations.NotNull;
+import gregtech.common.tileentities.machines.multi.gui.MTECZPullerGui;
 
 public class MTECZPuller extends MTEEnhancedMultiBlockBase<MTECZPuller> implements ISurvivalConstructable {
 
-    private List<MTEHatch> mSeedInputHatch = new ArrayList<>();
+    private MTEHatchInputBus mSeedInputHatch;
     public int mHeat = 0;
+    public int mAmount = 0;
     public int capacityLimit = 0;
     private int seedInputAmount = 0;
     private HeatingCoilLevel mCoilLevel = null;
@@ -72,12 +71,13 @@ public class MTECZPuller extends MTEEnhancedMultiBlockBase<MTECZPuller> implemen
     private static final int tier2Value = 2;
 
     public String materialType;
+
     private String getMaterialType() {
-        seedBus
         if (mSeedInputHatch == null) return null;
         if (mSeedInputHatch.mFluid == null) return null;
         if (mSeedInputHatch.mFluid.getFluid() == null) return null;
-        String fluidName = mSeedInputHatch.mFluid.getFluid().getName();
+        String fluidName = mSeedInputHatch.mFluid.getFluid()
+            .getName();
         if (fluidName.equals("Silicon") || fluidName.equals("AlGaAs")) return fluidName;
         return null;
     }
@@ -177,6 +177,7 @@ public class MTECZPuller extends MTEEnhancedMultiBlockBase<MTECZPuller> implemen
             ((MTEHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
             ((MTEHatchInputBus) aMetaTileEntity).mRecipeMap = null;
             mSeedInputHatch = (MTEHatchInputBus) aMetaTileEntity;
+            seedInputAmount++;
             return true;
         }
         return false;
@@ -282,30 +283,24 @@ public class MTECZPuller extends MTEEnhancedMultiBlockBase<MTECZPuller> implemen
         mCasingAmount = 0;
         mEnergyHatches.clear();
         mExoticEnergyHatches.clear();
-        mSeedInputHatch.clear()
+        seedInputAmount = 0;
 
-        setCoilLevel(HeatingCoilLevel.None);
         if (!checkPiece(TIER_1, 2, 8, 0) && !checkPiece(TIER_2, 5, 10, 2)) return false;
-
-        if (getCoilLevel() == HeatingCoilLevel.None) return false;
-
         if (seedInputAmount > 1) return false;
-
-        if (!mExoticEnergyHatches.isEmpty()) {
-            if (!mEnergyHatches.isEmpty()) return false;
-            if (mExoticEnergyHatches.size() > 1) return false;
+        int energyHatchAmount = mEnergyHatches.size();
+        if (energyHatchAmount == 0) return false;
+        if (energyHatchAmount > 1) {
+            if (energyHatchAmount > 2) return false;
+            return (mEnergyHatches.get(0).mTier == mEnergyHatches.get(1).mTier);
         }
-        if (!mEnergyHatches.isEmpty()) {
-            if (mEnergyHatches.size() > 2) return false;
-
-            byte hatchTier = mEnergyHatches.get(0).mTier;
-            for (MTEHatchEnergy energyHatch : mEnergyHatches) {
-                if (energyHatch.mTier != hatchTier) {
-                    return false;
-                }
-            }
-        }
+        if (mExoticEnergyHatches.size() > 1) return false;
         if (mMaintenanceHatches.size() > 1) return false;
+
+        capacityLimit = switch (mSpecialTier) {
+            case 1 -> 1024;
+            case 2 -> 65536;
+            default -> 0;
+        };
         return true;
     }
 
