@@ -41,7 +41,6 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEEnhancedMultiBlockBase;
 import gregtech.api.metatileentity.implementations.MTEHatch;
-import gregtech.api.metatileentity.implementations.MTEHatchEnergy;
 import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
 import gregtech.api.metatileentity.implementations.gui.MTEMultiBlockBaseGui;
 import gregtech.api.recipe.RecipeMap;
@@ -59,7 +58,7 @@ import gregtech.common.tileentities.machines.multi.gui.MTECZPullerGui;
 
 public class MTECZPuller extends MTEEnhancedMultiBlockBase<MTECZPuller> implements ISurvivalConstructable {
 
-    private MTEHatchInputBus mSeedInputHatch;
+    private MTEHatchInputBus mSeedInputBus;
     public int mHeat = 0;
     public int mAmount = 0;
     public int capacityLimit = 0;
@@ -73,10 +72,10 @@ public class MTECZPuller extends MTEEnhancedMultiBlockBase<MTECZPuller> implemen
     public String materialType;
 
     private String getMaterialType() {
-        if (mSeedInputHatch == null) return null;
-        if (mSeedInputHatch.mFluid == null) return null;
-        if (mSeedInputHatch.mFluid.getFluid() == null) return null;
-        String fluidName = mSeedInputHatch.mFluid.getFluid()
+        if (mSeedInputBus == null) return null;
+        if (mSeedInputBus.mFluid == null) return null;
+        if (mSeedInputBus.mFluid.getFluid() == null) return null;
+        String fluidName = mSeedInputBus.mFluid.getFluid()
             .getName();
         if (fluidName.equals("Silicon") || fluidName.equals("AlGaAs")) return fluidName;
         return null;
@@ -153,7 +152,7 @@ public class MTECZPuller extends MTEEnhancedMultiBlockBase<MTECZPuller> implemen
                 .buildAndChain(ofBlock(GregTechAPI.sBlockCasings9, 11)))
         .addElement(
             'Z',
-            buildHatchAdder(MTECZPuller.class).hatchClass(MTEHatchEnergy.class)
+            buildHatchAdder(MTECZPuller.class).hatchClass(MTEHatchInputBus.class)
                 .adder(MTECZPuller::addSeedBusToMachineList)
                 .casingIndex(((BlockCasings9) GregTechAPI.sBlockCasings9).getTextureIndex(11))
                 .dot(2)
@@ -176,7 +175,7 @@ public class MTECZPuller extends MTEEnhancedMultiBlockBase<MTECZPuller> implemen
         if (aMetaTileEntity instanceof MTEHatchInputBus) {
             ((MTEHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
             ((MTEHatchInputBus) aMetaTileEntity).mRecipeMap = null;
-            mSeedInputHatch = (MTEHatchInputBus) aMetaTileEntity;
+            mSeedInputBus = (MTEHatchInputBus) aMetaTileEntity;
             seedInputAmount++;
             return true;
         }
@@ -285,7 +284,8 @@ public class MTECZPuller extends MTEEnhancedMultiBlockBase<MTECZPuller> implemen
         mExoticEnergyHatches.clear();
         seedInputAmount = 0;
 
-        if (!checkPiece(TIER_1, 2, 8, 0) && !checkPiece(TIER_2, 5, 10, 2)) return false;
+        if (mSpecialTier == 1 && !checkPiece(TIER_1, 2, 8, 0)) return false;
+        if (mSpecialTier == 2 && !checkPiece(TIER_2, 5, 10, 2)) return false;
         if (seedInputAmount > 1) return false;
         int energyHatchAmount = mEnergyHatches.size();
         if (energyHatchAmount == 0) return false;
