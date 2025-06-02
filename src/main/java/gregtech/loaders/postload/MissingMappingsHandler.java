@@ -140,7 +140,9 @@ public class MissingMappingsHandler {
         .ignore("kekztech:kekztech_tfftstoragefieldblock4_block")
         .ignore("kekztech:kekztech_tfftstoragefieldblock5_block")
 
-        .ignore("miscutils:itemPlateMeatRaw");
+        .ignore("miscutils:itemPlateMeatRaw")
+        .ignore("miscutils:AAA_Broken")
+        .ignore("miscutils:item.empty");
 
     // spotless:on
 
