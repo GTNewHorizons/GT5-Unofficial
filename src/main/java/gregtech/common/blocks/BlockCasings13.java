@@ -1,10 +1,11 @@
 package gregtech.common.blocks;
 
+import net.minecraft.util.IIcon;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Textures;
-import net.minecraft.util.IIcon;
 
 /**
  * The casings are split into separate files because they are registered as regular blocks, and a regular block can have
@@ -18,7 +19,7 @@ public class BlockCasings13 extends BlockCasingsAbstract {
         register(1, ItemList.Casing_Graphite_Moderator, "Graphite Moderator Casing");
         register(2, ItemList.Casing_Insulated_Fluid_Pipe, "Insulated Fluid Pipe Casing");
         register(3, ItemList.Casing_Beryllium_Integrated_Reactor, "Beryllium Integrated Reactor Casing");
-        register (4, ItemList.Casing_Refined_Graphite, "Refined Graphite Block");
+        register(4, ItemList.Casing_Refined_Graphite, "Refined Graphite Block");
 
     }
 
@@ -36,7 +37,6 @@ public class BlockCasings13 extends BlockCasingsAbstract {
             case 2 -> Textures.BlockIcons.MACHINE_CASING_INSULATED_FLUID_PIPE.getIcon();
             case 3 -> Textures.BlockIcons.MACHINE_CASING_BERYLLIUM_INTEGRATED_REACTOR.getIcon();
             default -> Textures.BlockIcons.MACHINE_CASING_REFINED_GRAPHITE.getIcon();
-
 
         };
     }

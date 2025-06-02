@@ -22,12 +22,9 @@ package kubatech.tileentity.gregtech.multiblock;
 
 import static bartworks.API.recipe.BartWorksRecipeMaps.htgrFakeRecipes;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
 import static gregtech.api.enums.GTValues.AuthorKuba;
 import static gregtech.api.util.GTRecipeBuilder.HOURS;
-import static gregtech.api.util.GTStructureUtility.ofHatchAdder;
 import static gregtech.api.util.GTUtility.validMTEList;
 
 import java.util.ArrayList;
@@ -35,7 +32,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import gregtech.api.util.GTModHandler;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
@@ -69,6 +65,7 @@ import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTLanguageManager;
+import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import kubatech.api.implementations.KubaTechGTMultiBlockBase;

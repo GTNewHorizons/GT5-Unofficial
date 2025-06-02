@@ -1271,16 +1271,12 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 implements IItemFi
                 "Beryllium Shielding Plate",
                 "A plate made of Beryllium, used for reactor shielding"));
         ItemList.Alumina_Support_Ring.set(
-            addItem(
-                Alumina_Support_Ring.ID,
-                "Alumina Support Ring",
-                "A support ring used for insulated fluid pipes"));
+            addItem(Alumina_Support_Ring.ID, "Alumina Support Ring", "A support ring used for insulated fluid pipes"));
         ItemList.Alumina_Support_Ring_Raw.set(
             addItem(
                 Alumina_Support_Ring_Raw.ID,
                 "Raw Alumina Support Ring",
                 "An unfired support ring used for insulated fluid pipes"));
-
 
         ItemList.White_Dwarf_Shape_Extruder_Plate.set(
             addItem(

@@ -21,7 +21,6 @@ import static gregtech.api.util.GTRecipeBuilder.WILDCARD;
 
 import java.util.Locale;
 
-import gregtech.common.blocks.BlockCasings13;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -60,6 +59,7 @@ import gregtech.common.blocks.BlockCasings1;
 import gregtech.common.blocks.BlockCasings10;
 import gregtech.common.blocks.BlockCasings11;
 import gregtech.common.blocks.BlockCasings12;
+import gregtech.common.blocks.BlockCasings13;
 import gregtech.common.blocks.BlockCasings2;
 import gregtech.common.blocks.BlockCasings3;
 import gregtech.common.blocks.BlockCasings4;
