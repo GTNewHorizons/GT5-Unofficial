@@ -104,7 +104,7 @@ public class MTEChamberCentrifugeGui extends MTEMultiBlockBaseGui {
                     .child(
                         new Column().size(100, 120)
                             .paddingRight(40)
-                            .child(new TextWidget(IKey.dynamic(() -> "Type: " + typeSTRSync.getValue())).size(80, 20))
+                            .child(new TextWidget(IKey.dynamic(() -> "Mode: " + typeSTRSync.getValue())).size(80, 20))
                             .child(
                                 new TextWidget(IKey.dynamic(() -> "Speed Bonus: " + speedSync.getValue())).size(80, 20))
                             .child(

@@ -601,6 +601,17 @@ public class GTValues {
             EnumChatFormatting.DARK_GREEN + BOLD,
             EnumChatFormatting.DARK_GREEN + OBFUSCATED + BOLD));
 
+    public static final Supplier<String> AuthorNocDynamic = chain(
+        animatedText(
+            "Noc",
+            0,
+            1000,
+            EnumChatFormatting.GOLD + BOLD,
+            EnumChatFormatting.DARK_GREEN + BOLD,
+            EnumChatFormatting.GOLD + BOLD,
+            EnumChatFormatting.DARK_GREEN + BOLD,
+            EnumChatFormatting.DARK_GREEN + OBFUSCATED + BOLD));
+
     public static final String TecTechHatches = "Supports " + TT + " laser and multi-amp hatches";
 
     public static final String AuthorPureBluez = "Author: " + EnumChatFormatting.WHITE
@@ -613,21 +624,14 @@ public class GTValues {
         + "u"
         + EnumChatFormatting.DARK_BLUE
         + "ez";
-    public static final String AuthorChrom = "Author: " + EnumChatFormatting.BLUE
-        + EnumChatFormatting.BOLD
-        + "C"
-        + EnumChatFormatting.DARK_AQUA
-        + EnumChatFormatting.BOLD
-        + "h"
-        + EnumChatFormatting.LIGHT_PURPLE
-        + EnumChatFormatting.BOLD
-        + "r"
-        + EnumChatFormatting.DARK_AQUA
-        + EnumChatFormatting.BOLD
-        + "o"
-        + EnumChatFormatting.BLUE
-        + EnumChatFormatting.BOLD
-        + "m";
+    public static final String AuthorChrom = "Author: " + EnumChatFormatting.BLUE + BOLD +"Chrom";
+    public static final Supplier<String> fancyAuthorChrom = chain(text("Author: "),
+        animatedText("Chrom",
+            0,
+            1000,
+            EnumChatFormatting.WHITE + BOLD,
+            EnumChatFormatting.BLUE + BOLD
+    , EnumChatFormatting.GOLD + BOLD));
 
     // 7.5F comes from GT_Tool_Turbine_Large#getBaseDamage() given huge turbines are the most efficient now.
     public static double getMaxPlasmaTurbineEfficiencyFromMaterial(Materials material) {

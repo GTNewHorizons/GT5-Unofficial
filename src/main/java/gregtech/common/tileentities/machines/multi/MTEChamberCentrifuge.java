@@ -1,7 +1,6 @@
 package gregtech.common.tileentities.machines.multi;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
-import static gregtech.api.enums.GTValues.AuthorChrom;
 import static gregtech.api.enums.HatchElement.*;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_BREWERY;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_BREWERY_ACTIVE;
@@ -11,8 +10,10 @@ import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 
+import gregtech.api.enums.GTValues;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -23,6 +24,8 @@ import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructa
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.chain;
+import static net.minecraft.util.EnumChatFormatting.BOLD;
 
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Materials;
@@ -39,6 +42,7 @@ import gregtech.api.metatileentity.implementations.MTEHatchInput;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
+import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.*;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
@@ -48,6 +52,8 @@ import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.tileentities.machines.multi.gui.MTEChamberCentrifugeGui;
 import gregtech.common.tools.*;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
+
+import java.util.function.Supplier;
 
 public class MTEChamberCentrifuge extends MTEExtendedPowerMultiBlockBase<MTEChamberCentrifuge>
     implements ISurvivalConstructable {
@@ -232,11 +238,20 @@ public class MTEChamberCentrifuge extends MTEExtendedPowerMultiBlockBase<MTECham
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
-        MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+        final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Centrifuge")
+            .addInfo("3 Modes: "+EnumChatFormatting.LIGHT_PURPLE+"Light"+EnumChatFormatting.GRAY+" | "+EnumChatFormatting.GOLD+"Standard"+EnumChatFormatting.GRAY+" | "+EnumChatFormatting.GREEN+"Heavy")
             .addInfo("200% faster than singleblock machines of the same voltage")
-            .addInfo("Gains 4 * (Total Rotor Tier) Parallels")
-            .addInfo("Requires 10L/s of Lubricant to operate, supply {Fluid2} for a 1.25x Parallel multiplier")
+            .addInfo("Only uses 80% of the EU/t normally required")
+            .addSeparator()
+            .addInfo("Gains "+ EnumChatFormatting.WHITE+"2"+EnumChatFormatting.GRAY+" Turbine Slots per Structure Tier")
+            .addInfo("Gains "+ EnumChatFormatting.WHITE+"4"+EnumChatFormatting.GRAY+" * (Total Rotor Tier) Parallels.")
+            .addInfo("Requires "+EnumChatFormatting.BLUE+"10L/s"+EnumChatFormatting.GRAY+" of Lubricant to operate, supply {Fluid2} instead for a "+ EnumChatFormatting.WHITE+"1.25x"+EnumChatFormatting.GRAY+" Parallel multiplier")
+            .addSeparator()
+            .addInfo(EnumChatFormatting.LIGHT_PURPLE+"Light Mode"+EnumChatFormatting.GRAY+": +"+EnumChatFormatting.LIGHT_PURPLE+"100%"+EnumChatFormatting.GRAY+" Speed Bonus, "+EnumChatFormatting.LIGHT_PURPLE+"0.9x"+EnumChatFormatting.GRAY+" Parallels, Maximum Recipe Tier is "+EnumChatFormatting.LIGHT_PURPLE+"Voltage Tier - 3")
+            .addInfo(EnumChatFormatting.GOLD+"Standard Mode"+EnumChatFormatting.GRAY+": No Changes")
+            .addInfo(EnumChatFormatting.GREEN+"Heavy Mode"+EnumChatFormatting.GRAY+": Divides Parallels by "+EnumChatFormatting.GREEN+"32"+EnumChatFormatting.GRAY+", Requires T3 Structure, and {Fluid2}.")
+            .addInfo("Some recipes "+EnumChatFormatting.RED + BOLD+"require"+EnumChatFormatting.GRAY+" Heavy Mode.")
             .beginStructureBlock(9, 9, 9, false)
             .addController("Front Center")
             .addCasingInfoMin("Chamber Casing", 120, false)
@@ -249,8 +264,8 @@ public class MTEChamberCentrifuge extends MTEExtendedPowerMultiBlockBase<MTECham
             .addOutputHatch("Any Chamber Casing", 1)
             .addEnergyHatch("Any Chamber Casing", 1)
             .addMaintenanceHatch("Any Chamber Casing", 1)
-            .addSubChannelUsage(GTStructureChannels.BOROGLASS)
-            .toolTipFinisher(AuthorChrom);
+            .addSubChannelUsage(GTStructureChannels.BOROGLASS).toolTipFinisher(EnumChatFormatting.BLUE,73);
+
         return tt;
     }
 
@@ -365,9 +380,10 @@ public class MTEChamberCentrifuge extends MTEExtendedPowerMultiBlockBase<MTECham
             @Override
             protected CheckRecipeResult validateRecipe(@NotNull GTRecipe recipe) {
 
-                if (!checkFluid(amountToDrain * 10)) return CheckRecipeResultRegistry.NO_FUEL_FOUND;
+                if (!checkFluid(amountToDrain * 10)) return SimpleCheckRecipeResult.ofFailure("invalidfluidsup");
                 if (mMode == 0.0 && GTUtility.getTier(getAverageInputVoltage()) - GTUtility.getTier(recipe.mEUt) < 3)
                     return CheckRecipeResultRegistry.NO_RECIPE;
+                if (mMode == 2.0 && !tier2Fluid) return SimpleCheckRecipeResult.ofFailure("invalidfluidsup");
                 getSpeed();
                 setSpeedBonus(1F / speed);
                 return super.validateRecipe(recipe);
@@ -380,10 +396,9 @@ public class MTEChamberCentrifuge extends MTEExtendedPowerMultiBlockBase<MTECham
                 return super.createOverclockCalculator(recipe)
                     .setMaxOverclocks((GTUtility.getTier(getAverageInputVoltage()) - GTUtility.getTier(recipe.mEUt)));
             }
-        } // base speed, 200% faster
+        }
             .setMaxParallelSupplier(this::getTrueParallel)
-
-            .setEuModifier(0.8F);
+            .setEuModifier(0.7F);
     }
 
     public boolean isTurbine(ItemStack aStack) { // thank you airfilter!
