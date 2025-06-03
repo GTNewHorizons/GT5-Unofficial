@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.FakePlayer;
 
 import com.gtnewhorizon.gtnhlib.util.DistanceUtil;
@@ -41,9 +42,10 @@ public class ItemMagLevHarness extends GTGenericItem implements IBaubleExpanded 
     }
 
     @Override
-    public void addInformation(ItemStack aStack, EntityPlayer aPlayer, List<String> aList, boolean aF3_H) {
-        BaubleItemHelper.addSlotInformation(aList, getBaubleTypes(aStack));
-        super.addInformation(aStack, aPlayer, aList, aF3_H);
+    public void addInformation(ItemStack aStack, EntityPlayer aPlayer, List<String> tooltip, boolean aF3_H) {
+        BaubleItemHelper.addSlotInformation(tooltip, getBaubleTypes(aStack));
+        tooltip.add(StatCollector.translateToLocalFormatted("GT5U.maglevHarness.tooltip"));
+        super.addInformation(aStack, aPlayer, tooltip, aF3_H);
     }
 
     @Override
