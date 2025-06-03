@@ -2746,7 +2746,10 @@ public class AssemblerRecipes implements Runnable {
             .addTo(assemblerRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(GTOreDictUnificator.get(OrePrefixes.plate, Materials.HSSS, 4), ItemList.Casing_LuV.get(1))
+            .itemInputs(
+                GTOreDictUnificator.get(OrePrefixes.plate, Materials.Netherite, 1),
+                GTOreDictUnificator.get(OrePrefixes.plate, Materials.HSSS, 4),
+                ItemList.Casing_LuV.get(1))
             .itemOutputs(ItemList.Casing_Fusion.get(1))
             .fluidInputs(Materials.HSSG.getMolten(2 * INGOTS))
             .duration(5 * SECONDS)
@@ -2755,6 +2758,7 @@ public class AssemblerRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
+                GTOreDictUnificator.get(OrePrefixes.plate, Materials.Netherite, 4),
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.Americium, 4),
                 ItemList.Casing_Fusion.get(1))
             .itemOutputs(ItemList.Casing_Fusion2.get(1))
