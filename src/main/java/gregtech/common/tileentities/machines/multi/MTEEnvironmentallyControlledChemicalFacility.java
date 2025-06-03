@@ -77,6 +77,7 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
 import gregtech.api.util.shutdown.SimpleShutDownReason;
 import gregtech.common.blocks.BlockCasings12;
+import gregtech.common.blocks.BlockCasings8;
 import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.tileentities.machines.multi.gui.MTEEnvironmentallyCCFGUI;
 import mcp.mobius.waila.api.IWailaConfigHandler;
@@ -151,46 +152,46 @@ public class MTEEnvironmentallyControlledChemicalFacility extends
         .addShape(
             STRUCTURE_PIECE_MAIN,
             transpose(new String[][]{
-                    {"           ","           ","   AAAAA   ","  AAAAAAA  ","  AAAAAAA  ","  AAAAAAA  ","  AAAAAAA  ","  AAAAAAA  ","   AAAAA   ","           ","           "},
-                    {"           ","   AAAAA   ","  AFFFFFA  "," AF JJJ FA "," AFJJJJJFA "," AFJJJJJFA "," AFJJJJJFA "," AF JJJ FA ","  AFFFFFA  ","   AAAAA   ","           "},
-                    {"   FFFFF   ","  FAAAAAF  "," FA     AF ","FA  JJJ  AF","FA J   J AF","FA J   J AF","FA J   J AF","FA  JJJ  AF"," FA     AF ","  FAAAAAF  ","   FFFFF   "},
-                    {"           ","   AAAAA   ","  A     A  "," A  JJJ  A "," A J   J A "," A J   J A "," A J   J A "," A  JJJ  A ","  A     A  ","   AAAAA   ","           "},
-                    {"           ","   AAGAA   ","  A     A  "," A  JJJ  A ","PPPJ   JPPP","PPPJ   JPPP","PPPJ   JPPP"," A  JJJ  A ","  A     A  ","   AAGAA   ","           "},
-                    {"           ","   AAGAA   ","  A     A  "," A  JJJ  A ","PPPJ   JPPP","           ","PPPJ   JPPP"," A  JJJ  A ","  A     A  ","   AAGAA   ","           "},
-                    {"           ","   AAGAA   ","  A     A  "," A  JJJ  A ","PPPJ   JPPP","PPPJ   JPPP","PPPJ   JPPP"," A  JJJ  A ","  A     A  ","   AAGAA   ","           "},
-                    {"           ","   AAAAA   ","  A     A  "," A  JJJ  A "," A J   J A "," A J   J A "," A J   J A "," A  JJJ  A ","  A     A  ","   AAAAA   ","           "},
-                    {"   FFFFF   ","  FAAAAAF  "," FA     AF ","FA  JJJ  AF","FA J   J AF","FA J   J AF","FA J   J AF","FA  JJJ  AF"," FA     AF ","  FAAAAAF  ","   FFFFF   "},
-                    {"           ","   AAAAA   ","  A     A  "," A  JJJ  A "," A JJJJJ A "," A JJJJJ A "," A JJJJJ A "," A  JJJ  A ","  A     A  ","   AAAAA   ","           "},
-                    {"   AA~AA   ","  AAAAAAA  "," AAAAAAAAA ","AAAAAAAAAAA","AAAAAAAAAAA","AAAAAAAAAAA","AAAAAAAAAAA","AAAAAAAAAAA"," AAAAAAAAA ","  AAAAAAA  ","   AAAAA   "}}))
-                .addShape(
+                {"           ","           ","   AAAAA   ","  AAAAAAA  ","  AAAAAAA  ","  AAAAAAA  ","  AAAAAAA  ","  AAAAAAA  ","   AAAAA   ","           ","           "},
+                {"           ","   AAAAA   ","  AFFFFFA  "," AF JJJ FA "," AFJJJJJFA "," AFJJJJJFA "," AFJJJJJFA "," AF JJJ FA ","  AFFFFFA  ","   AAAAA   ","           "},
+                {"   FFFFF   ","  FAAAAAF  "," FA     AF ","FA  JJJ  AF","FA J   J AF","FA J   J AF","FA J   J AF","FA  JJJ  AF"," FA     AF ","  FAAAAAF  ","   FFFFF   "},
+                {"           ","   AAAAA   ","  A     A  "," A  JJJ  A "," A J   J A "," A J   J A "," A J   J A "," A  JJJ  A ","  A     A  ","   AAAAA   ","           "},
+                {"           ","   AAGAA   ","  A     A  "," A  JJJ  A ","PPPJ   JPPP","PPPJ   JPPP","PPPJ   JPPP"," A  JJJ  A ","  A     A  ","   AAGAA   ","           "},
+                {"           ","   AAGAA   ","  A     A  "," A  JJJ  A ","PPPJ   JPPP","           ","PPPJ   JPPP"," A  JJJ  A ","  A     A  ","   AAGAA   ","           "},
+                {"           ","   AAGAA   ","  A     A  "," A  JJJ  A ","PPPJ   JPPP","PPPJ   JPPP","PPPJ   JPPP"," A  JJJ  A ","  A     A  ","   AAGAA   ","           "},
+                {"           ","   AAAAA   ","  A     A  "," A  JJJ  A "," A J   J A "," A J   J A "," A J   J A "," A  JJJ  A ","  A     A  ","   AAAAA   ","           "},
+                {"   FFFFF   ","  FAAAAAF  "," FA     AF ","FA  JJJ  AF","FA J   J AF","FA J   J AF","FA J   J AF","FA  JJJ  AF"," FA     AF ","  FAAAAAF  ","   FFFFF   "},
+                {"           ","   AAAAA   ","  A     A  "," A  JJJ  A "," A JJJJJ A "," A JJJJJ A "," A JJJJJ A "," A  JJJ  A ","  A     A  ","   AAAAA   ","           "},
+                {"   AA~AA   ","  AAAAAAA  "," AAAAAAAAA ","AAAAAAAAAAA","AAAAAAAAAAA","AAAAAAAAAAA","AAAAAAAAAAA","AAAAAAAAAAA"," AAAAAAAAA ","  AAAAAAA  ","   AAAAA   "}}))
+        .addShape(
             HEAT_MODULE_L,
             transpose(new String[][]{
-                    {"     ","     ","     ","     ","     ","     ","     ","     ","     ","     ","     "},
-                    {"     ","     ","     ","     ","     ","     ","     ","     ","     ","     ","     "},
-                    {"     ","     ","     ","     ","     ","     ","     ","     ","     ","     ","     "},
-                    {"     ","     ","     ","  Q  "," QQQ "," QQQ "," QQQ ","  Q  ","     ","     ","     "},
-                    {"     ","     ","     "," QQQ ","  cQP","  cQP","  cQP"," QQQ ","     ","     ","     "},
-                    {"     ","     ","     "," QQQ ","  cQP","  HQ ","  cQP"," QQQ ","     ","     ","     "},
-                    {"     ","     ","     "," QQQ ","  cQP","  cQP","  cQP"," QQQ ","     ","     ","     "},
-                    {"     ","     ","     "," FQF "," QQQ "," QQQ "," QQQ "," FQF ","     ","     ","     "},
-                    {"     ","     ","     ","     "," FQF "," QQQ "," FQF ","     ","     ","     ","     "},
-                    {"     ","     ","     ","     "," FQF "," QQQ "," FQF ","     ","     ","     ","     "},
-                    {"     ","     ","     ","     ","QQQF ","QQQQ ","QQQF ","     ","     ","     ","     "}}))
+                {"     ","     ","     ","     ","     ","     ","     ","     ","     ","     ","     "},
+                {"     ","     ","     ","     ","     ","     ","     ","     ","     ","     ","     "},
+                {"     ","     ","     ","     ","     ","     ","     ","     ","     ","     ","     "},
+                {"     ","     ","     ","  Q  "," QQQ "," QQQ "," QQQ ","  Q  ","     ","     ","     "},
+                {"     ","     ","     "," QQQ ","  cQP","  cQP","  cQP"," QQQ ","     ","     ","     "},
+                {"     ","     ","     "," QQQ ","  cQP","  HQ ","  cQP"," QQQ ","     ","     ","     "},
+                {"     ","     ","     "," QQQ ","  cQP","  cQP","  cQP"," QQQ ","     ","     ","     "},
+                {"     ","     ","     "," FQF "," QQQ "," QQQ "," QQQ "," FQF ","     ","     ","     "},
+                {"     ","     ","     ","     "," FQF "," QQQ "," FQF ","     ","     ","     ","     "},
+                {"     ","     ","     ","     "," FQF "," QQQ "," FQF ","     ","     ","     ","     "},
+                {"     ","     ","     ","     ","EEEF ","EEEE ","EEEF ","     ","     ","     ","     "}}))
         .addShape(
             COOL_MODULE_L,
             transpose(new String[][]{
-                    {"     ","     ","     ","     ","     ","     ","     ","     ","     ","     ","     "},
-                    {"     ","     ","     ","     ","     ","     ","     ","     ","     ","     ","     "},
-                    {"     ","     ","     ","     ","     ","     ","     ","     ","     ","     ","     "},
-                    {"     ","     ","     ","  i  "," ipi "," ipi "," ipi ","  i  ","     ","     ","     "},
-                    {"     ","     ","     "," ipi "," giiP"," giiP"," giiP"," ipi ","     ","     ","     "},
-                    {"     ","     ","     "," ipi "," giiP"," Cii "," giiP"," ipi ","     ","     ","     "},
-                    {"     ","     ","     "," ipi "," giiP"," giiP"," giiP"," ipi ","     ","     ","     "},
-                    {"     ","     ","     ","  i  "," iii "," iii "," iii ","  i  ","     ","     ","     "},
-                    {"     ","     ","     ","     ","  i  "," iii ","  i  ","     ","     ","     ","     "},
-                    {"     ","     ","     ","     ","  i  "," iii ","  i  ","     ","     ","     ","     "},
-                    {"     ","     ","     ","     ","iii  ","iiii ","iii  ","     ","     ","     ","     "}
-                }))
+                {"     ","     ","     ","     ","     ","     ","     ","     ","     ","     ","     "},
+                {"     ","     ","     ","     ","     ","     ","     ","     ","     ","     ","     "},
+                {"     ","     ","     ","     ","     ","     ","     ","     ","     ","     ","     "},
+                {"     ","     ","     ","  i  "," ipi "," ipi "," ipi ","  i  ","     ","     ","     "},
+                {"     ","     ","     "," ipi "," giiP"," giiP"," giiP"," ipi ","     ","     ","     "},
+                {"     ","     ","     "," ipi "," giiP"," Cii "," giiP"," ipi ","     ","     ","     "},
+                {"     ","     ","     "," ipi "," giiP"," giiP"," giiP"," ipi ","     ","     ","     "},
+                {"     ","     ","     "," lil "," iii "," iii "," iii "," lil ","     ","     ","     "},
+                {"     ","     ","     ","     "," lil "," iii "," lil ","     ","     ","     ","     "},
+                {"     ","     ","     ","     "," lil "," iii "," lil ","     ","     ","     ","     "},
+                {"     ","     ","     ","     ","eeel ","eeee ","eeel ","     ","     ","     ","     "}
+            }))
         .addShape(
             VACUUM_MODULE_R,
             transpose(new String[][]{
@@ -357,8 +358,16 @@ public class MTEEnvironmentallyControlledChemicalFacility extends
                 .casingIndex(((BlockCasings12) GregTechAPI.sBlockCasings12).getTextureIndex(15))
                 .dot(4)
                 .buildAndChain(GregTechAPI.sBlockCasings12, 15))
+        .addElement(
+            'e',
+            buildHatchAdder(MTEEnvironmentallyControlledChemicalFacility.class).hatchClass(MTEHatchInput.class)
+                .adder(MTEEnvironmentallyControlledChemicalFacility::addCoolantInputToMachineList)
+                .casingIndex(((BlockCasings8) GregTechAPI.sBlockCasings8).getTextureIndex(0))
+                .dot(4)
+                .buildAndChain(GregTechAPI.sBlockCasings8, 0))
         .addElement('F', ofFrame(Materials.Polybenzimidazole))
         .addElement('r', ofFrame(Materials.RedstoneAlloy))
+        .addElement('l', ofFrame(Materials.Polytetrafluoroethylene))
         .addElement('G', ofBlockAnyMeta(sBlockTintedGlass, 2))
         .addElement('p', ofBlock(GregTechAPI.sBlockCasings8, 1)) // ptfe pipe casing
         .addElement('P', ofBlock(GregTechAPI.sBlockCasings9, 0)) // pbi pipe casing
@@ -368,7 +377,6 @@ public class MTEEnvironmentallyControlledChemicalFacility extends
         .addElement('i', ofBlock(GregTechAPI.sBlockCasings8, 0)) // chemically inert casing
         .addElement('c', ofBlock(GregTechAPI.sBlockCasings5, 0)) // cupronickel coil
         .build();
-    // TODO: fix coolant hatch
     // spotless:on
     public MTEEnvironmentallyControlledChemicalFacility(final int aID, final String aName, final String aNameRegional) {
         super(aID, aName, aNameRegional);
