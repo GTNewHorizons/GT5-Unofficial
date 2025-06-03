@@ -62,6 +62,7 @@ import gregtech.GTMod;
 import gregtech.api.covers.CoverRegistry;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.SteamVariant;
+import gregtech.api.gui.modularui.CircularGaugeDrawable;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.gui.modularui.SteamTexture;
 import gregtech.api.interfaces.ICleanroom;
@@ -104,6 +105,7 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
      */
     protected static final int DID_NOT_FIND_RECIPE = 0, FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS = 1,
         FOUND_AND_SUCCESSFULLY_USED_RECIPE = 2;
+    public static final String STEAM_AMOUNT_LANGKEY = "GT5U.machines.steam.amount";
 
     public static final int OTHER_SLOT_COUNT = 5;
     public final ItemStack[] mOutputItems;
@@ -289,11 +291,6 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
     }
 
     @Override
-    public boolean isElectric() {
-        return true;
-    }
-
-    @Override
     public boolean isValidSlot(int aIndex) {
         return aIndex > 0 && super.isValidSlot(aIndex)
             && aIndex != getCircuitSlot()
@@ -314,11 +311,6 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
     @Override
     public boolean isInputFacing(ForgeDirection side) {
         return side != mMainFacing;
-    }
-
-    @Override
-    public boolean isOutputFacing(ForgeDirection side) {
-        return false;
     }
 
     @Override
@@ -376,11 +368,6 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
     }
 
     @Override
-    public int getStackDisplaySlot() {
-        return 2;
-    }
-
-    @Override
     public int rechargerSlotStartIndex() {
         return 1;
     }
@@ -398,11 +385,6 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
     @Override
     public int dechargerSlotCount() {
         return mDecharge ? 1 : 0;
-    }
-
-    @Override
-    public boolean isAccessAllowed(EntityPlayer aPlayer) {
-        return true;
     }
 
     @Override
@@ -424,11 +406,6 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
     @Override
     public boolean isFluidInputAllowed(FluidStack aFluid) {
         return getFillableStack() != null || (getRecipeMap() != null && getRecipeMap().containsInput(aFluid));
-    }
-
-    @Override
-    public boolean isFluidChangingAllowed() {
-        return true;
     }
 
     @Override
@@ -1438,18 +1415,23 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
     protected Widget createSteamProgressBar(ModularWindow.Builder builder) {
         builder.widget(new FakeSyncWidget.LongSyncer(this::getSteamVar, val -> getSteamVar = val));
 
-        return new ProgressBar().setProgress(() -> (float) getSteamVar() / maxSteamStore())
-            .setDirection(ProgressBar.Direction.UP)
-            .setTexture(
-                getSteamVariant() == SteamVariant.BRONZE ? GTUITextures.PROGRESSBAR_STEAM_FILL
-                    : GTUITextures.PROGRESSBAR_STEAM_FILL_STEEL,
-                54)
-            .setSynced(true, false)
-            .dynamicTooltip(() -> Collections.singletonList("Steam: " + getSteamVar + "/" + maxSteamStore() + "L"))
-            .setTooltipShowUpDelay(TOOLTIP_DELAY)
-            .setUpdateTooltipEveryTick(true)
-            .setSize(10, 54)
-            .setPos(7, 24);
+        boolean isSteel = getSteamVariant() == SteamVariant.STEEL;
+        builder.widget(
+            new DrawableWidget().setDrawable(isSteel ? GTUITextures.STEAM_GAUGE_BG_STEEL : GTUITextures.STEAM_GAUGE_BG)
+                .dynamicTooltip(
+                    () -> Collections.singletonList(
+                        translateToLocalFormatted(
+                            STEAM_AMOUNT_LANGKEY,
+                            numberFormat.format(getSteamVar),
+                            numberFormat.format(maxSteamStore()))))
+                .setTooltipShowUpDelay(TOOLTIP_DELAY)
+                .setUpdateTooltipEveryTick(true)
+                .setSize(48, 42)
+                .setPos(-48, -8));
+
+        return new DrawableWidget().setDrawable(new CircularGaugeDrawable(() -> (float) getSteamVar / maxSteamStore()))
+            .setPos(-48 + 21, -8 + 21)
+            .setSize(18, 4);
     }
 
     protected Widget setNEITransferRect(Widget widget, String transferRectID) {

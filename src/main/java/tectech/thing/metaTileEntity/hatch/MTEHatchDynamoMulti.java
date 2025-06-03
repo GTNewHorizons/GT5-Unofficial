@@ -3,7 +3,6 @@ package tectech.thing.metaTileEntity.hatch;
 import static gregtech.api.enums.GTValues.V;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -58,11 +57,6 @@ public class MTEHatchDynamoMulti extends MTEHatch {
 
     @Override
     public boolean isFacingValid(ForgeDirection facing) {
-        return true;
-    }
-
-    @Override
-    public boolean isAccessAllowed(EntityPlayer aPlayer) {
         return true;
     }
 

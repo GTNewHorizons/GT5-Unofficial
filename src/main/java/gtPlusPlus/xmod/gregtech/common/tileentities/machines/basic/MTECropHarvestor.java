@@ -34,7 +34,6 @@ import gregtech.api.util.GTUtility;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.util.math.MathUtils;
-import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.xmod.gregtech.api.gui.GTPPUITextures;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import ic2.api.crops.CropCard;
@@ -66,11 +65,6 @@ public class MTECropHarvestor extends MTEBasicTank {
     public MTECropHarvestor(final String aName, final int aTier, final String[] aDescription,
         final ITexture[][][] aTextures) {
         super(aName, aTier, 21, aDescription, aTextures);
-    }
-
-    @Override
-    public boolean isAccessAllowed(EntityPlayer aPlayer) {
-        return true;
     }
 
     @Override
@@ -201,7 +195,7 @@ public class MTECropHarvestor extends MTEBasicTank {
                 if (aHarvest == null) continue;
 
                 for (ItemStack aStack : aHarvest) {
-                    if (!ItemUtils.checkForInvalidItems(aStack)) continue;
+                    if (aStack == null) continue;
                     if (this.mTier * 5 > MathUtils.randInt(1, 100)) {
                         aStack.stackSize += Math.floor(tCrop.getGain() / 10);
                         Logger.INFO("Bonus output given for " + aCrop.displayName());
@@ -485,11 +479,6 @@ public class MTECropHarvestor extends MTEBasicTank {
             "Has " + (this.mTier * 5) + "% chance for extra drops",
             "Holds " + this.getCapacity() + "L of Water",
             GTPPCore.GT_Tooltip.get());
-    }
-
-    @Override
-    public boolean allowCoverOnSide(ForgeDirection side, ItemStack coverItem) {
-        return true;
     }
 
     @Override
