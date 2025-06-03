@@ -1,5 +1,6 @@
 package gregtech.common.items;
 
+import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -11,6 +12,7 @@ import net.minecraftforge.common.util.FakePlayer;
 import com.gtnewhorizon.gtnhlib.util.DistanceUtil;
 
 import baubles.api.BaubleType;
+import baubles.api.expanded.BaubleItemHelper;
 import baubles.api.expanded.IBaubleExpanded;
 import gregtech.api.enums.ItemList;
 import gregtech.api.items.GTGenericItem;
@@ -35,7 +37,13 @@ public class ItemMagLevHarness extends GTGenericItem implements IBaubleExpanded 
 
     @Override
     public String[] getBaubleTypes(ItemStack itemstack) {
-        return new String[] { "belt" };
+        return new String[] { "belt", "wings" };
+    }
+
+    @Override
+    public void addInformation(ItemStack aStack, EntityPlayer aPlayer, List<String> aList, boolean aF3_H) {
+        BaubleItemHelper.addSlotInformation(aList, getBaubleTypes(aStack));
+        super.addInformation(aStack, aPlayer, aList, aF3_H);
     }
 
     @Override
@@ -65,7 +73,7 @@ public class ItemMagLevHarness extends GTGenericItem implements IBaubleExpanded 
                                 .getYCoord(),
                             pylon.getBaseMetaTileEntity()
                                 .getZCoord())));
-            // get closest one
+            // get the closest one
             MTEMagLevPylon closest = pylonDistances.entrySet()
                 .stream()
                 .min(Map.Entry.comparingByValue())
@@ -94,7 +102,7 @@ public class ItemMagLevHarness extends GTGenericItem implements IBaubleExpanded 
             player.capabilities.allowFlying = true;
         } else {
             player.capabilities.isFlying = false;
-            // so that the player doesnt go splat when going from inside range to outside range
+            // so that the player doesn't go splat when going from inside range to outside range
             // it does allow them to double space to try to fly again, but it is only for a tick
             if (player.onGround && player.fallDistance < 1F) {
                 player.capabilities.allowFlying = false;
