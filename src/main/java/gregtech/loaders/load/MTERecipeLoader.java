@@ -32,7 +32,6 @@ import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gregtech.loaders.postload.PCBFactoryMaterialLoader;
-import gregtech.loaders.postload.ProcessingArrayRecipeLoader;
 import ic2.core.Ic2Items;
 
 public class MTERecipeLoader implements Runnable {
@@ -2165,12 +2164,12 @@ public class MTERecipeLoader implements Runnable {
             new Object[] { "PhP", "PFP", aTextPlateWrench, 'P', OrePrefixes.plate.get(Materials.Osmiridium), 'F',
                 OrePrefixes.frameGt.get(Materials.Osmiridium) });
         GTModHandler.addCraftingRecipe(
-            ItemList.Casing_MiningNeutronium.get(1L),
+            ItemList.Casing_MiningNeutronium.get(3L),
             bits,
             new Object[] { "PhP", "PFP", aTextPlateWrench, 'P', OrePrefixes.plate.get(Materials.Neutronium), 'F',
                 OrePrefixes.frameGt.get(Materials.Neutronium) });
         GTModHandler.addCraftingRecipe(
-            ItemList.Casing_MiningBlackPlutonium.get(1L),
+            ItemList.Casing_MiningBlackPlutonium.get(2L),
             bits,
             new Object[] { "PhP", "PFP", aTextPlateWrench, 'P', OrePrefixes.plate.get(Materials.BlackPlutonium), 'F',
                 OrePrefixes.frameGt.get(Materials.BlackPlutonium) });
@@ -3468,7 +3467,6 @@ public class MTERecipeLoader implements Runnable {
                 OrePrefixes.circuit.get(Materials.ZPM), 'W', OrePrefixes.wireGt04.get(Materials.Naquadah), 'U',
                 OrePrefixes.stick.get(Materials.Americium) });
 
-        ProcessingArrayRecipeLoader.registerDefaultGregtechMaps();
         GTModHandler.addCraftingRecipe(
             ItemList.Distillation_Tower.get(1L),
             bitsd,

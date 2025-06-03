@@ -575,11 +575,6 @@ public class TexturesGtBlock {
     public static final CustomIcon oMCAQFTActiveGlow = new CustomIcon(
         "iconsets/controllerFaces/quantumForceTransformerActiveGlow");
 
-    public static final CustomIcon oMCAIndustrialMultiMachine = new CustomIcon(
-        "iconsets/controllerFaces/industrialMultiMachine");
-    public static final CustomIcon oMCAIndustrialMultiMachineActive = new CustomIcon(
-        "iconsets/controllerFaces/industrialMultiMachineActive");
-
     public static final CustomIcon oMCAAdvancedImplosion = new CustomIcon("iconsets/controllerFaces/advancedImplosion");
     public static final CustomIcon oMCAAdvancedImplosionGlow = new CustomIcon(
         "iconsets/controllerFaces/advancedImplosionGlow");
@@ -587,6 +582,15 @@ public class TexturesGtBlock {
         "iconsets/controllerFaces/advancedImplosionActive");
     public static final CustomIcon oMCAAdvancedImplosionActiveGlow = new CustomIcon(
         "iconsets/controllerFaces/advancedImplosionActiveGlow");
+
+    public static final CustomIcon oMCALargeFluidExtractor = new CustomIcon(
+        "iconsets/controllerFaces/largeFluidExtractor");
+    public static final CustomIcon oMCALargeFluidExtractorGlow = new CustomIcon(
+        "iconsets/controllerFaces/largeFluidExtractorGlow");
+    public static final CustomIcon oMCALargeFluidExtractorActive = new CustomIcon(
+        "iconsets/controllerFaces/largeFluidExtractorActive");
+    public static final CustomIcon oMCALargeFluidExtractorActiveGlow = new CustomIcon(
+        "iconsets/controllerFaces/largeFluidExtractorActiveGlow");
 
     // Crafting Overlays
     public static final CustomIcon Casing_Adv_Workbench_Crafting_Overlay = new CustomIcon(

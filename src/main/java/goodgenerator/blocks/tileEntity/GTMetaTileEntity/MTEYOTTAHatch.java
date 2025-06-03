@@ -1,5 +1,8 @@
 package goodgenerator.blocks.tileEntity.GTMetaTileEntity;
 
+import static net.minecraft.util.StatCollector.translateToLocal;
+import static net.minecraft.util.StatCollector.translateToLocalFormatted;
+
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -8,13 +11,13 @@ import java.util.List;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 
 import appeng.api.config.AccessRestriction;
 import appeng.api.config.Actionable;
+import appeng.api.implementations.IPowerChannelState;
 import appeng.api.networking.GridFlags;
 import appeng.api.networking.IGridNode;
 import appeng.api.networking.events.MENetworkCellArrayUpdate;
@@ -49,7 +52,7 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
 
 public class MTEYOTTAHatch extends MTEHatch implements IGridProxyable, IActionHost, ICellContainer,
-    IMEInventory<IAEFluidStack>, IMEInventoryHandler<IAEFluidStack> {
+    IMEInventory<IAEFluidStack>, IMEInventoryHandler<IAEFluidStack>, IPowerChannelState {
 
     private static final IIconContainer textureFont = new Textures.BlockIcons.CustomIcon("icons/YOTTAHatch");
     private static final BigInteger LONG_MAX = BigInteger.valueOf(Long.MAX_VALUE);
@@ -113,11 +116,6 @@ public class MTEYOTTAHatch extends MTEHatch implements IGridProxyable, IActionHo
     }
 
     @Override
-    public boolean isAccessAllowed(EntityPlayer aPlayer) {
-        return true;
-    }
-
-    @Override
     public final void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
         ItemStack toolStack) {
         if (aPlayer.isSneaking()) this.priority -= 10;
@@ -131,16 +129,14 @@ public class MTEYOTTAHatch extends MTEHatch implements IGridProxyable, IActionHo
         } catch (GridAccessException e) {
             // :P
         }
-        GTUtility
-            .sendChatToPlayer(aPlayer, String.format(StatCollector.translateToLocal("yothatch.chat.0"), this.priority));
+        GTUtility.sendChatToPlayer(aPlayer, translateToLocalFormatted("yothatch.chat.0", this.priority));
     }
 
     @Override
     public boolean onSolderingToolRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
         float aX, float aY, float aZ, ItemStack toolStack) {
         this.readMode = AEModes[(readMode.ordinal() + 1) % 4];
-        GTUtility
-            .sendChatToPlayer(aPlayer, String.format(StatCollector.translateToLocal("yothatch.chat.1"), this.readMode));
+        GTUtility.sendChatToPlayer(aPlayer, translateToLocalFormatted("yothatch.chat.1", this.readMode));
         return true;
     }
 
@@ -148,9 +144,7 @@ public class MTEYOTTAHatch extends MTEHatch implements IGridProxyable, IActionHo
     public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
         float aX, float aY, float aZ, ItemStack aTool) {
         this.isSticky = !this.isSticky;
-        GTUtility.sendChatToPlayer(
-            aPlayer,
-            StatCollector.translateToLocal(this.isSticky ? "yothatch.chat.2" : "yothatch.chat.3"));
+        GTUtility.sendChatToPlayer(aPlayer, translateToLocal(this.isSticky ? "yothatch.chat.2" : "yothatch.chat.3"));
         return true;
     }
 
@@ -176,6 +170,16 @@ public class MTEYOTTAHatch extends MTEHatch implements IGridProxyable, IActionHo
             gridProxy.setFlags(GridFlags.REQUIRE_CHANNEL);
         }
         return this.gridProxy;
+    }
+
+    @Override
+    public boolean isPowered() {
+        return getProxy() != null && getProxy().isPowered();
+    }
+
+    @Override
+    public boolean isActive() {
+        return getProxy() != null && getProxy().isActive();
     }
 
     // not sure if needed

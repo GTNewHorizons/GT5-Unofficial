@@ -327,9 +327,6 @@ public class MTEHatchMufflerAdvanced extends MTEHatchMuffler implements IAddGreg
     }
 
     @Override
-    public void addGregTechLogo(ModularWindow.Builder builder) {}
-
-    @Override
     public GUITextureSet getGUITextureSet() {
         return new GUITextureSet().setMainBackground(GTPPUITextures.BACKGROUND_YELLOW)
             .setItemSlot(GTPPUITextures.SLOT_ITEM_YELLOW)

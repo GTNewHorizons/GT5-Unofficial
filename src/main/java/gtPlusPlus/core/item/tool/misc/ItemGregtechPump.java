@@ -71,11 +71,6 @@ public class ItemGregtechPump extends Item implements ISpecialElectricItem, IEle
         return tryDrainTile(aStack, aWorld, aPlayer, aX, aY, aZ);
     }
 
-    @Override
-    public ItemStack onItemRightClick(ItemStack p_77659_1_, World p_77659_2_, EntityPlayer p_77659_3_) {
-        return p_77659_1_;
-    }
-
     /**
      * GT Code
      */
@@ -683,7 +678,7 @@ public class ItemGregtechPump extends Item implements ISpecialElectricItem, IEle
             Integer amount = 0;
             fluidname = NBTUtils.getString(container, "mFluid");
             amount = NBTUtils.getInteger(container, "mFluidAmount");
-            if (fluidname != null && amount != null && amount > 0) {
+            if (fluidname != null && amount > 0) {
                 return FluidUtils.getFluidStack(fluidname, amount);
             } else {
                 return null;
@@ -1011,9 +1006,8 @@ public class ItemGregtechPump extends Item implements ISpecialElectricItem, IEle
     public boolean setStoredFluidOfGTMachine(MTEBasicTank aTileEntity, FluidStack aSetFluid) {
         try {
             aTileEntity.mFluid = aSetFluid;
-            boolean b = aTileEntity.mFluid == aSetFluid;
-            Logger.INFO("Trying to set Tile's tank. - Behaviour Class. [3] " + b);
-            return b;
+            Logger.INFO("Trying to set Tile's tank. - Behaviour Class. [3] success.");
+            return true;
         } catch (Throwable t) {
             Logger.INFO("Trying to clear Tile's tank. FAILED - Behaviour Class. [x]");
             return false;

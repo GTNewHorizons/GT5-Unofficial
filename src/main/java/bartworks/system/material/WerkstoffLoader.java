@@ -92,7 +92,7 @@ import bartworks.API.SideReference;
 import bartworks.API.WerkstoffAdderRegistry;
 import bartworks.MainMod;
 import bartworks.client.renderer.BWBlockOreRenderer;
-import bartworks.system.material.CircuitGeneration.BWCircuitsLoader;
+import bartworks.system.material.CircuitGeneration.BWMetaItems;
 import bartworks.system.material.gtenhancement.GTMetaItemEnhancer;
 import bartworks.system.material.processingLoaders.AdditionalRecipes;
 import bartworks.system.material.werkstoff_loaders.IWerkstoffRunnable;
@@ -1767,7 +1767,7 @@ public class WerkstoffLoader {
                 progressBar.step(werkstoff.getDefaultName());
             }
             DebugLog.log("Loading New Circuits" + " " + (System.nanoTime() - timepreone));
-            BWCircuitsLoader.initNewCircuits();
+            BWMetaItems.init();
 
             if (BetterLoadingScreen.isModLoaded()) {
                 CLSCompat.disableCls();
