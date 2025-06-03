@@ -25,23 +25,8 @@ public class ToolDrillLV extends GTTool {
     }
 
     @Override
-    public int getToolDamagePerDropConversion() {
-        return 100;
-    }
-
-    @Override
     public int getToolDamagePerContainerCraft() {
         return 100;
-    }
-
-    @Override
-    public int getToolDamagePerEntityAttack() {
-        return 200;
-    }
-
-    @Override
-    public int getBaseQuality() {
-        return 0;
     }
 
     @Override
@@ -52,11 +37,6 @@ public class ToolDrillLV extends GTTool {
     @Override
     public float getSpeedMultiplier() {
         return 3.0F;
-    }
-
-    @Override
-    public float getMaxDurabilityMultiplier() {
-        return 1.0F;
     }
 
     @Override
@@ -80,16 +60,6 @@ public class ToolDrillLV extends GTTool {
     }
 
     @Override
-    public boolean canBlock() {
-        return false;
-    }
-
-    @Override
-    public boolean isCrowbar() {
-        return false;
-    }
-
-    @Override
     public boolean isMinableBlock(Block aBlock, int aMetaData) {
         return GTToolHarvestHelper.isAppropriateTool(aBlock, aMetaData, "pickaxe", "shovel")
             || GTToolHarvestHelper.isAppropriateMaterial(
@@ -106,11 +76,6 @@ public class ToolDrillLV extends GTTool {
     }
 
     @Override
-    public ItemStack getBrokenItem(ItemStack aStack) {
-        return null;
-    }
-
-    @Override
     public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack) {
         return aIsToolHead
             ? MetaGeneratedTool.getPrimaryMaterial(
@@ -123,9 +88,6 @@ public class ToolDrillLV extends GTTool {
         return aIsToolHead ? MetaGeneratedTool.getPrimaryMaterial(aStack).mRGBa
             : MetaGeneratedTool.getSecondaryMaterial(aStack).mRGBa;
     }
-
-    @Override
-    public void onStatsAddedToTool(MetaGeneratedTool aItem, int aID) {}
 
     @Override
     public void onToolCrafted(ItemStack aStack, EntityPlayer aPlayer) {

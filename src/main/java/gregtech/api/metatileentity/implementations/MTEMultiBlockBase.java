@@ -271,11 +271,6 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
     }
 
     @Override
-    public boolean isAccessAllowed(EntityPlayer aPlayer) {
-        return true;
-    }
-
-    @Override
     public boolean isValidSlot(int aIndex) {
         return aIndex > 0;
     }
@@ -412,7 +407,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
         if (shouldCheckMaintenance()) {
             mWrench = aNBT.getBoolean("mWrench");
             mScrewdriver = aNBT.getBoolean("mScrewdriver");
-            mSoftMallet = aNBT.getBoolean("mSoftMallet");
+            mSoftMallet = aNBT.getBoolean("mSoftMallet") || aNBT.getBoolean("mSoftHammer");
             mHardHammer = aNBT.getBoolean("mHardHammer");
             mSolderingTool = aNBT.getBoolean("mSolderingTool");
             mCrowbar = aNBT.getBoolean("mCrowbar");
@@ -2976,9 +2971,6 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
         return (ButtonWidget) button;
     }
 
-    @Override
-    public void addGregTechLogo(ModularWindow.Builder builder) {}
-
     public boolean shouldDisplayCheckRecipeResult() {
         return true;
     }
@@ -3531,11 +3523,6 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
 
     protected @NotNull MTEMultiBlockBaseGui getGui() {
         return new MTEMultiBlockBaseGui(this);
-    }
-
-    @Override
-    protected boolean useMui2() {
-        return false;
     }
 
     public boolean getDefaultHasMaintenanceChecks() {
