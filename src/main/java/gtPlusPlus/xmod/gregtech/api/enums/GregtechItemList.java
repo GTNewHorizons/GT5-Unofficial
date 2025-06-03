@@ -376,6 +376,8 @@ public enum GregtechItemList implements IGregtechItemContainer {
     Controller_SteamMixerMulti,
     // Big Steam Mixer
     Controller_SteamCompressorMulti,
+    // Big Steam Alloy Smelter
+    Controller_SteamAlloySmelterMulti,
 
     // Industrial Rock Breaker
     Controller_IndustrialRockBreaker,

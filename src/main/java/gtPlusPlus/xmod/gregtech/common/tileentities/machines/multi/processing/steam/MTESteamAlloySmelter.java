@@ -6,6 +6,7 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose
 import static gregtech.api.GregTechAPI.sBlockCasings1;
 import static gregtech.api.GregTechAPI.sBlockCasings2;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
+import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -58,36 +59,20 @@ import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.MTESteam
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
-public class MTESteamCompressor extends MTESteamMultiBase<MTESteamCompressor> implements ISurvivalConstructable {
+public class MTESteamAlloySmelter extends MTESteamMultiBase<MTESteamAlloySmelter> implements ISurvivalConstructable {
 
-    public MTESteamCompressor(String aName) {
+    public MTESteamAlloySmelter(String aName) {
         super(aName);
     }
 
-    public MTESteamCompressor(int aID, String aName, String aNameRegional) {
+    public MTESteamAlloySmelter(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
     }
 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity arg0) {
-        return new MTESteamCompressor(this.mName);
+        return new MTESteamAlloySmelter(this.mName);
     }
-
-    @Override
-    public String getMachineType() {
-        return "Compressor";
-    }
-
-    private static final String STRUCTUR_PIECE_MAIN = "main";
-
-    private IStructureDefinition<MTESteamCompressor> STRUCTURE_DEFINITION = null;
-
-    // spotless:off
-    private final String[][] shape = new String[][] {
-        { "CCC", "CCC", "CCC", "CCC" },
-        { "C~C", "C-C", "C-C", "CCC" },
-        { "CCC", "CCC", "CCC", "CCC" } };
-    //spotless:on
 
     private static final int HORIZONTAL_OFF_SET = 1;
     private static final int VERTICAL_OFF_SET = 1;
@@ -98,6 +83,91 @@ public class MTESteamCompressor extends MTESteamMultiBase<MTESteamCompressor> im
     private int tierMachine = 1;
 
     private int tierMachineCasing = -1;
+    private int tierPipeCasing = -1;
+
+    @Override
+    public String getMachineType() {
+        return "Alloy Smelter";
+    }
+
+    private static final String STRUCTURE_PIECE_MAIN = "main";
+
+    private IStructureDefinition<MTESteamAlloySmelter> STRUCTURE_DEFINITION = null;
+
+    // spotless:off
+    private final String[][] shape = new String[][] {
+        { "CCC", "CCC", "CCC", "CCC" },
+        { "C~C", "GPG", "GPG", "CCC" },
+        { "CCC", "CCC", "CCC", "CCC" } };
+    //spotless:on
+
+    @Override
+    public IStructureDefinition<MTESteamAlloySmelter> getStructureDefinition() {
+        if (STRUCTURE_DEFINITION == null) {
+            STRUCTURE_DEFINITION = StructureDefinition.<MTESteamAlloySmelter>builder()
+                .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
+                .addElement(
+                    'C',
+                    ofChain(
+                        buildSteamInput(MTESteamAlloySmelter.class).casingIndex(10)
+                            .dot(1)
+                            .build(),
+                        buildHatchAdder(MTESteamAlloySmelter.class)
+                            .atLeast(SteamHatchElement.InputBus_Steam, SteamHatchElement.OutputBus_Steam)
+                            .casingIndex(10)
+                            .dot(1)
+                            .buildAndChain(),
+                        ofBlocksTiered(
+                            this::getTierMachineCasing,
+                            ImmutableList.of(Pair.of(sBlockCasings1, 10), Pair.of(sBlockCasings2, 0)),
+                            -1,
+                            (t, m) -> t.tierMachineCasing = m,
+                            t -> t.tierMachineCasing)))
+                .addElement(
+                    'P',
+                    ofBlocksTiered(
+                        MTESteamCentrifuge::getTierPipeCasing,
+                        ImmutableList.of(Pair.of(sBlockCasings2, 12), Pair.of(sBlockCasings2, 13)),
+                        -1,
+                        (t, m) -> t.tierPipeCasing = m,
+                        t -> t.tierPipeCasing))
+                .addElement('G', chainAllGlasses())
+                .build();
+        }
+        return STRUCTURE_DEFINITION;
+    }
+
+    @Override
+    protected MultiblockTooltipBuilder createTooltip() {
+        MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+        tt.addMachineType(getMachineType())
+            .addInfo("25% faster than using single block steam machines of the same pressure")
+            .addInfo("Only consumes steam at 62.5% of the flowrate normally required")
+            .addInfo("Processes up to 8 items at once")
+            .addInfo(HIGH_PRESSURE_TOOLTIP_NOTICE)
+            .beginStructureBlock(3, 3, 4, false)
+            .addSteamInputBus(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + " Any casing", 1)
+            .addSteamOutputBus(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + " Any casing", 1)
+            .addStructureInfo(
+                EnumChatFormatting.WHITE + "Steam Input Hatch "
+                    + EnumChatFormatting.GOLD
+                    + "1"
+                    + EnumChatFormatting.GRAY
+                    + " Any casing")
+            .addStructureInfo("")
+            .addStructureInfo(EnumChatFormatting.BLUE + "Basic " + EnumChatFormatting.DARK_PURPLE + "Tier")
+            .addStructureInfo(EnumChatFormatting.GOLD + "16-26x" + EnumChatFormatting.GRAY + " Bronze Plated Bricks")
+            .addStructureInfo(EnumChatFormatting.GOLD + "2x" + EnumChatFormatting.GRAY + " Bronze Pipe Casing")
+            .addCasingInfoExactly("Any Tiered Glass", 4, true)
+            .addStructureInfo("")
+            .addStructureInfo(EnumChatFormatting.BLUE + "High Pressure " + EnumChatFormatting.DARK_PURPLE + "Tier")
+            .addStructureInfo(
+                EnumChatFormatting.GOLD + "16-26x" + EnumChatFormatting.GRAY + " Solid Steel Machine Casing")
+            .addStructureInfo(EnumChatFormatting.GOLD + "2x" + EnumChatFormatting.GRAY + " Steel Pipe Casing")
+            .addCasingInfoExactly("Any Tiered Glass", 4, true)
+            .toolTipFinisher();
+        return tt;
+    }
 
     @Nullable
     public Integer getTierMachineCasing(Block block, int meta) {
@@ -119,7 +189,8 @@ public class MTESteamCompressor extends MTESteamMultiBase<MTESteamCompressor> im
     }
 
     private int getCasingTextureID() {
-        if (tierMachineCasing == 2) return ((BlockCasings2) GregTechAPI.sBlockCasings2).getTextureIndex(0);
+        if (tierMachineCasing == 2 || tierPipeCasing == 2)
+            return ((BlockCasings2) GregTechAPI.sBlockCasings2).getTextureIndex(0);
         return ((BlockCasings1) GregTechAPI.sBlockCasings1).getTextureIndex(10);
     }
 
@@ -136,7 +207,7 @@ public class MTESteamCompressor extends MTESteamMultiBase<MTESteamCompressor> im
     @Override
     protected ITexture getFrontOverlay() {
         return TextureFactory.builder()
-            .addIcon(Textures.BlockIcons.OVERLAY_FRONT_STEAM_COMPRESSOR)
+            .addIcon(Textures.BlockIcons.OVERLAY_FRONT_STEAM_ALLOY_SMELTER_MULTI)
             .extFacing()
             .build();
     }
@@ -144,7 +215,7 @@ public class MTESteamCompressor extends MTESteamMultiBase<MTESteamCompressor> im
     @Override
     protected ITexture getFrontOverlayActive() {
         return TextureFactory.builder()
-            .addIcon(Textures.BlockIcons.OVERLAY_FRONT_STEAM_COMPRESSOR_ACTIVE)
+            .addIcon(Textures.BlockIcons.OVERLAY_FRONT_STEAM_ALLOY_SMELTER_MULTI_ACTIVE)
             .extFacing()
             .build();
     }
@@ -160,41 +231,14 @@ public class MTESteamCompressor extends MTESteamMultiBase<MTESteamCompressor> im
     }
 
     @Override
-    public IStructureDefinition<MTESteamCompressor> getStructureDefinition() {
-        if (STRUCTURE_DEFINITION == null) {
-            STRUCTURE_DEFINITION = StructureDefinition.<MTESteamCompressor>builder()
-                .addShape(STRUCTUR_PIECE_MAIN, transpose(shape))
-                .addElement(
-                    'C',
-                    ofChain(
-                        buildSteamInput(MTESteamCompressor.class).casingIndex(10)
-                            .dot(1)
-                            .build(),
-                        buildHatchAdder(MTESteamCompressor.class)
-                            .atLeast(SteamHatchElement.InputBus_Steam, SteamHatchElement.OutputBus_Steam)
-                            .casingIndex(10)
-                            .dot(1)
-                            .buildAndChain(),
-                        ofBlocksTiered(
-                            this::getTierMachineCasing,
-                            ImmutableList.of(Pair.of(sBlockCasings1, 10), Pair.of(sBlockCasings2, 0)),
-                            -1,
-                            (t, m) -> t.tierMachineCasing = m,
-                            t -> t.tierMachineCasing)))
-                .build();
-        }
-        return STRUCTURE_DEFINITION;
-    }
-
-    @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
-        buildPiece(STRUCTUR_PIECE_MAIN, stackSize, hintsOnly, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET);
+        buildPiece(STRUCTURE_PIECE_MAIN, stackSize, hintsOnly, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET);
     }
 
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         return survivalBuildPiece(
-            STRUCTUR_PIECE_MAIN,
+            STRUCTURE_PIECE_MAIN,
             stackSize,
             HORIZONTAL_OFF_SET,
             VERTICAL_OFF_SET,
@@ -209,13 +253,14 @@ public class MTESteamCompressor extends MTESteamMultiBase<MTESteamCompressor> im
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         mCountCasing = 0;
         tierMachineCasing = -1;
-        if (!checkPiece(STRUCTUR_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET)) return false;
-        if (tierMachineCasing == 1 && mCountCasing >= 25 && checkHatches()) {
+        tierPipeCasing = -1;
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET)) return false;
+        if (tierMachineCasing == 1 && tierPipeCasing == 1 && mCountCasing >= 25 && checkHatches()) {
             updateHatchTexture();
             tierMachine = 1;
             return true;
         }
-        if (tierMachineCasing == 2 && mCountCasing >= 25 && checkHatches()) {
+        if (tierMachineCasing == 2 && tierPipeCasing == 2 && mCountCasing >= 25 && checkHatches()) {
             updateHatchTexture();
             tierMachine = 2;
             return true;
@@ -238,7 +283,7 @@ public class MTESteamCompressor extends MTESteamMultiBase<MTESteamCompressor> im
 
     @Override
     public RecipeMap<?> getRecipeMap() {
-        return RecipeMaps.compressorRecipes;
+        return RecipeMaps.alloySmelterRecipes;
     }
 
     // note that a basic steam machine has .setEUtDiscount(2F).setSpeedBoost(2F). So these are bonuses.
@@ -270,34 +315,6 @@ public class MTESteamCompressor extends MTESteamMultiBase<MTESteamCompressor> im
     @Override
     public int getTierRecipes() {
         return 1;
-    }
-
-    @Override
-    protected MultiblockTooltipBuilder createTooltip() {
-        MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType(getMachineType())
-            .addInfo("25% faster than using single block steam machines of the same pressure")
-            .addInfo("Only consumes steam at 62.5% of the steam flowrate normally required")
-            .addInfo("Processes up to 8 items at once")
-            .addInfo(HIGH_PRESSURE_TOOLTIP_NOTICE)
-            .beginStructureBlock(3, 3, 4, true)
-            .addSteamInputBus(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + " Any casing", 1)
-            .addSteamOutputBus(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + " Any casing", 1)
-            .addStructureInfo(
-                EnumChatFormatting.WHITE + "Steam Input Hatch "
-                    + EnumChatFormatting.GOLD
-                    + "1"
-                    + EnumChatFormatting.GRAY
-                    + " Any casing")
-            .addStructureInfo("")
-            .addStructureInfo(EnumChatFormatting.BLUE + "Basic " + EnumChatFormatting.DARK_PURPLE + "Tier")
-            .addStructureInfo(EnumChatFormatting.GOLD + "25-30x" + EnumChatFormatting.GRAY + " Bronze Plated Bricks")
-            .addStructureInfo("")
-            .addStructureInfo(EnumChatFormatting.BLUE + "High Pressure " + EnumChatFormatting.DARK_PURPLE + "Tier")
-            .addStructureInfo(
-                EnumChatFormatting.GOLD + "25-30x" + EnumChatFormatting.GRAY + " Solid Steel Machine Casing")
-            .toolTipFinisher();
-        return tt;
     }
 
     @Override
