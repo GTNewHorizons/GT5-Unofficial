@@ -7,6 +7,7 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 
+import gregtech.api.enums.TextureSet;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
@@ -142,7 +143,7 @@ public class ToolWrench extends GTTool {
 
     @Override
     public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack) {
-        return aIsToolHead ? Textures.ItemIcons.WRENCH : null;
+        return aIsToolHead ? MetaGeneratedTool.getPrimaryMaterial(aStack).mIconSet.mTextures[TextureSet.INDEX_wrench] : null;
     }
 
     @Override
