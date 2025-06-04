@@ -463,9 +463,9 @@ public enum GTBeeDefinition implements IBeeDefinition {
         AlleleHelper.instance.set(template, FLOWER_PROVIDER, Flowers.END);
         AlleleHelper.instance.set(template, FLOWERING, Flowering.SLOWEST);
     }, dis -> {
-        IBeeMutationCustom tMutation = dis.registerMutation(CERTUS, getSpecies(EXTRABEES, "ocean"), 5);
-        tMutation.requireResource(GregTechAPI.sBlockCasings5, 11);
+        IBeeMutationCustom tMutation = dis.registerMutation(CERTUS, getSpecies(EXTRABEES, "ocean"), 10);
         tMutation.restrictHumidity(DAMP);
+        tMutation.requireResource("blockPrismarine");
     }),
     // Metal Line
     COPPER(GTBranchDefinition.METAL, "Copper", true, new Color(0xFF6600), new Color(0xE65C00), beeSpecies -> {
@@ -754,8 +754,8 @@ public enum GTBeeDefinition implements IBeeDefinition {
             AlleleHelper.instance.set(template, FLOWERING, Flowering.SLOWEST);
         }, dis -> {
             IBeeMutationCustom tMutation = dis.registerMutation(getSpecies(FORESTRY, "Demonic"), DIAMOND, 3);
-            tMutation.requireResource(GregTechAPI.sBlockMetal9, 12);
             tMutation.restrictTemperature(HELLISH);
+            tMutation.requireResource(GregTechAPI.sBlockMetal9, 12);
         }),
 
     // IC2
