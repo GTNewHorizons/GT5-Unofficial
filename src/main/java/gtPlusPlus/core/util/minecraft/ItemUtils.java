@@ -930,6 +930,9 @@ public class ItemUtils {
         if (GTUtility.areStacksEqual(aStack, GregtechItemList.HellishForceCatalyst.get(1), true)) {
             return true;
         }
+        if (GTUtility.areStacksEqual(aStack, GregtechItemList.CrystalColorizationCatalyst.get(1), true)) {
+            return true;
+        }
         if (GTUtility.areStacksEqual(aStack, GregtechItemList.AdvancedNaquadahCatalyst.get(1), true)) {
             return true;
         }

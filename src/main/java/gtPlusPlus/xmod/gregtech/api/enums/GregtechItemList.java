@@ -717,6 +717,7 @@ public enum GregtechItemList implements IGregtechItemContainer {
     RareEarthGroupCatalyst,
     SimpleNaquadahCatalyst,
     HellishForceCatalyst,
+    CrystalColorizationCatalyst,
     AdvancedNaquadahCatalyst,
     RawIntelligenceCatalyst,
     UltimatePlasticCatalyst,

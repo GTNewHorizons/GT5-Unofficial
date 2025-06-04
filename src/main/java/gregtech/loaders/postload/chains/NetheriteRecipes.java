@@ -285,6 +285,14 @@ public class NetheriteRecipes {
             .addTo(electricImplosionCompressorRecipes);
 
         GTValues.RA.stdBuilder()
+            .itemInputs(getModItem(EtFuturumRequiem.ID, "netherite_scrap", 3, missing))
+            .fluidInputs(Materials.NefariousOil.getFluid(16_000))
+            .itemOutputs(getModItem(EtFuturumRequiem.ID, "ancient_debris", 1))
+            .duration(1 * TICKS)
+            .eut(TierEU.RECIPE_UEV)
+            .addTo(electricImplosionCompressorRecipes);
+
+        GTValues.RA.stdBuilder()
             .itemInputs(getModItem(EtFuturumRequiem.ID, "ancient_debris", 1, missing))
             .itemOutputs(
                 getModItem(EtFuturumRequiem.ID, "netherite_scrap", 1, missing),

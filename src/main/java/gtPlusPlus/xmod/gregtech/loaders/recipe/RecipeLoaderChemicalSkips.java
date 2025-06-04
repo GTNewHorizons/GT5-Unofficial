@@ -27,6 +27,7 @@ import goodgenerator.items.GGMaterial;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.MaterialsGTNH;
 import gregtech.api.enums.MaterialsKevlar;
 import gregtech.api.enums.MaterialsUEVplus;
 import gregtech.api.enums.Mods;
@@ -286,7 +287,7 @@ public class RecipeLoaderChemicalSkips {
                 .itemInputs(
                     GTUtility
                         .copyAmountUnsafe(64 * 16, GTOreDictUnificator.get(OrePrefixes.dust, Materials.Netherrack, 1)),
-                    getModItem(EtFuturumRequiem.ID, "ancient_debris", 4))
+                    getModItem(EtFuturumRequiem.ID, "ancient_debris", 1))
                 .fluidInputs(
                     Materials.NetherAir.getFluid(64_000),
                     Materials.HellishMetal.getMolten(8 * INGOTS),
@@ -301,6 +302,22 @@ public class RecipeLoaderChemicalSkips {
                 .metadata(QFT_FOCUS_TIER, 2)
                 .addTo(quantumForceTransformerRecipes);
         }
+        // Prismarine
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                GTOreDictUnificator.get(OrePrefixes.shard, MaterialsGTNH.Prismarine, 12),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.NaquadahEnriched, 32))
+            .fluidInputs(
+                Materials.Hydrogen.getGas(2_000),
+                Materials.Oxygen.getGas(2_000),
+                Materials.Nitrogen.getGas(24_000))
+            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.PrismaticNaquadah, 16))
+            .fluidOutputs(Materials.PrismaticAcid.getFluid(32_000))
+            .duration(20 * SECONDS)
+            .eut(TierEU.RECIPE_UHV)
+            .metadata(QFT_CATALYST, GregtechItemList.CrystalColorizationCatalyst.get(0))
+            .metadata(QFT_FOCUS_TIER, 2)
+            .addTo(quantumForceTransformerRecipes);
         // Stem Cells
         GTValues.RA.stdBuilder()
             .itemInputs(
@@ -580,6 +597,18 @@ public class RecipeLoaderChemicalSkips {
                 .eut(TierEU.RECIPE_UEV)
                 .addTo(assemblerRecipes);
         }
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                GTUtility.getIntegratedCircuit(10),
+                CI.getEmptyCatalyst(1),
+                Materials.PrismaticNaquadah.getDust(64),
+                GTOreDictUnificator.get(OrePrefixes.shard, MaterialsGTNH.Prismarine, 64),
+                Materials.Silver.getNanite(1))
+            .itemOutputs(GregtechItemList.CrystalColorizationCatalyst.get(1))
+            .fluidInputs(MaterialsElements.STANDALONE.HYPOGEN.getFluidStack(1 * STACKS))
+            .duration(60 * SECONDS)
+            .eut(TierEU.RECIPE_UEV)
+            .addTo(assemblerRecipes);
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GTUtility.getIntegratedCircuit(10),
