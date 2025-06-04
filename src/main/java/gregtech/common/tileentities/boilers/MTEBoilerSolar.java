@@ -19,7 +19,6 @@ import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.Materials;
-import gregtech.api.enums.SteamVariant;
 import gregtech.api.enums.Textures.BlockIcons;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -102,11 +101,6 @@ public class MTEBoilerSolar extends MTEBoiler {
             return mTextures[3][i];
         }
         return mTextures[sideDirection.ordinal()][i];
-    }
-
-    @Override
-    public int maxProgresstime() {
-        return 500;
     }
 
     @Override
@@ -219,11 +213,6 @@ public class MTEBoilerSolar extends MTEBoiler {
         } else {
             mProcessingEnergy += basicTemperatureMod;
         }
-    }
-
-    @Override
-    public SteamVariant getSteamVariant() {
-        return SteamVariant.BRONZE;
     }
 
     @Override

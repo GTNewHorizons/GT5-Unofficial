@@ -57,8 +57,8 @@ import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.item.chemistry.general.ItemGenericChemBase;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.minecraft.EntityUtils;
-import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
+import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.nbthandlers.MTEHatchMillingBalls;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock.CustomIcon;
@@ -404,18 +404,8 @@ public class MTEIsaMill extends GTPPMultiBlockBase<MTEIsaMill> implements ISurvi
     }
 
     @Override
-    public boolean isGivingInformation() {
-        return true;
-    }
-
-    @Override
     public String getMachineType() {
         return "Grinding Machine";
-    }
-
-    @Override
-    public int getMaxParallelRecipes() {
-        return 1;
     }
 
     /*
@@ -441,27 +431,36 @@ public class MTEIsaMill extends GTPPMultiBlockBase<MTEIsaMill> implements ISurvi
         return ItemGenericChemBase.getMaxBallDurability(aStack);
     }
 
-    private ItemStack findMillingBall(ItemStack[] aItemInputs) {
-        if (mMillingBallBuses.size() != 1) {
-            return null;
-        } else {
-            MTEHatchMillingBalls aBus = mMillingBallBuses.get(0);
-            if (aBus != null) {
-                ArrayList<ItemStack> aAvailableItems = aBus.getContentUsageSlots();
-                if (!aAvailableItems.isEmpty()) {
-                    for (final ItemStack aInput : aItemInputs) {
-                        if (ItemUtils.isMillingBall(aInput)) {
-                            for (ItemStack aBall : aAvailableItems) {
-                                if (GTUtility.areStacksEqual(aBall, aInput, true)) {
-                                    Logger.INFO("Found a valid milling ball to use.");
-                                    return aBall;
-                                }
-                            }
-                        }
-                    }
-                }
-            }
+    public static boolean isMillingBall(ItemStack aStack) {
+        if (GTUtility.areStacksEqual(aStack, GregtechItemList.Milling_Ball_Alumina.get(1), true)) {
+            return true;
         }
+        return GTUtility.areStacksEqual(aStack, GregtechItemList.Milling_Ball_Soapstone.get(1), true);
+    }
+
+    private ItemStack findMillingBall(ItemStack[] aItemInputs) {
+        if (mMillingBallBuses.size() != 1) return null;
+
+        MTEHatchMillingBalls aBus = mMillingBallBuses.get(0);
+
+        if (aBus == null) return null;
+
+        ArrayList<ItemStack> aAvailableItems = aBus.getContentUsageSlots();
+
+        if (aAvailableItems.isEmpty()) return null;
+
+        for (final ItemStack aInput : aItemInputs) {
+            if (!isMillingBall(aInput)) continue;
+
+            for (ItemStack aBall : aAvailableItems) {
+                if (!GTUtility.areStacksEqual(aBall, aInput, true)) continue;
+
+                Logger.INFO("Found a valid milling ball to use.");
+                return aBall;
+            }
+
+        }
+
         return null;
     }
 

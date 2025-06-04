@@ -36,7 +36,6 @@ import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.data.StringUtils;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.minecraft.EntityUtils;
-import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.sys.KeyboardUtils;
 
 public class BaseItemComponent extends Item {
@@ -73,11 +72,10 @@ public class BaseItemComponent extends Item {
 
         // if (componentType != ComponentTypes.DUST)
 
-        GTOreDictUnificator.registerOre(
-            componentType.getOreDictName() + material.getUnlocalizedName(),
-            ItemUtils.getSimpleStack(this));
+        GTOreDictUnificator
+            .registerOre(componentType.getOreDictName() + material.getUnlocalizedName(), new ItemStack(this));
         if (componentType == ComponentTypes.GEAR) {
-            GTOreDictUnificator.registerOre("gear" + material.getUnlocalizedName(), ItemUtils.getSimpleStack(this));
+            GTOreDictUnificator.registerOre("gear" + material.getUnlocalizedName(), new ItemStack(this));
         }
         registerComponent();
 
@@ -113,7 +111,7 @@ public class BaseItemComponent extends Item {
         GameRegistry.registerItem(this, aFormattedNameForFluids);
         GTOreDictUnificator.registerOre(
             ComponentTypes.CELL.getOreDictName() + Utils.sanitizeStringKeepBrackets(localName),
-            ItemUtils.getSimpleStack(this));
+            new ItemStack(this));
         registerComponent();
 
         GTLanguageManager
@@ -138,7 +136,7 @@ public class BaseItemComponent extends Item {
             .name();
         ItemStack x = aMap.get(aKey);
         if (x == null) {
-            aMap.put(aKey, ItemUtils.getSimpleStack(this));
+            aMap.put(aKey, new ItemStack(this));
             Logger.MATERIALS(
                 "Registering a material component. Item: [" + componentMaterial.getUnlocalizedName()
                     + "] Map: ["

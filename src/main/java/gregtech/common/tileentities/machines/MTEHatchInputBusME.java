@@ -1006,7 +1006,7 @@ public class MTEHatchInputBusME extends MTEHatchInputBus
         }
 
         strings.add("Change ME connection behavior by right-clicking with wire cutter.");
-        strings.add("Configuration data can be copy+pasted using a data stick.");
+        strings.add("Configuration data can be copy/pasted using a data stick.");
         return strings.toArray(new String[0]);
     }
 }

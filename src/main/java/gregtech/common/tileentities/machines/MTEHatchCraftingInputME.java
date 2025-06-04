@@ -172,7 +172,7 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
         }
 
         public boolean hasChanged(ItemStack newPattern, World world) {
-            return newPattern == null
+            return newPattern == null || patternDetails == null
                 || (!ItemStack.areItemStacksEqual(pattern, newPattern) && !this.patternDetails.equals(
                     ((ICraftingPatternItem) Objects.requireNonNull(pattern.getItem()))
                         .getPatternForItem(newPattern, world)));

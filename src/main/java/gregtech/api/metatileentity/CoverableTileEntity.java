@@ -571,7 +571,7 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
         builder.widget(columnWidget);
         final int xPos = flipHorizontally ? (getGUIWidth() - COVER_TAB_LEFT - COVER_TAB_WIDTH) : COVER_TAB_LEFT;
         if (GTMod.gregtechproxy.mCoverTabsVisible) {
-            columnWidget.setPos(xPos, COVER_TAB_TOP)
+            columnWidget.setPos(xPos, COVER_TAB_TOP + getCoverTabHeightOffset())
                 .setEnabled(
                     widget -> ((Column) widget).getChildren()
                         .stream()
@@ -620,6 +620,10 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
                             (COVER_TAB_HEIGHT - ICON_SIZE) / 2))
                 .setEnabled(widget -> getCoverItemAtSide(direction) != null));
         }
+    }
+
+    protected int getCoverTabHeightOffset() {
+        return 0;
     }
 
     @SideOnly(Side.CLIENT)

@@ -13,7 +13,6 @@ import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.passive.IAnimals;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 
 import gtPlusPlus.core.fluids.GTPPFluids;
@@ -24,16 +23,6 @@ public class TileEntityAdvPooCollector extends TileEntityBaseFluidCollector {
 
     public TileEntityAdvPooCollector() {
         super(18, 128000);
-    }
-
-    @Override
-    public boolean canFill(ForgeDirection from, Fluid fluid) {
-        return false;
-    }
-
-    @Override
-    public boolean canDrain(ForgeDirection from, Fluid fluid) {
-        return true;
     }
 
     @Override
