@@ -44,7 +44,7 @@ public class TextureSet {
         "/pipeHuge", "/frameGt", "/pipeQuadruple", "/pipeNonuple", aTextVoidDir, aTextVoidDir, aTextVoidDir,
         aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir,
         "/crateGtDust", "/crateGtIngot", "/crateGtGem", "/crateGtPlate", "/turbineBlade", "/turbine", "/wrench",
-        aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir,
+        "/crowbar", aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir,
         aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir,
         aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir, "/plateSuperdense",
         "/handleMallet", "/toolHeadMallet", };
@@ -85,7 +85,7 @@ public class TextureSet {
     /**
      * For Tools that don't have a prefix associated with them
      */
-    public static final short INDEX_turbine = 101, INDEX_wrench = 102;
+    public static final short INDEX_turbine = 101, INDEX_wrench = 102, INDEX_crowbar = 103;
 
     public final IIconContainer[] mTextures = new IIconContainer[128];
     public final String mSetName;

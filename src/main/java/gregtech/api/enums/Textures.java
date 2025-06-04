@@ -1974,9 +1974,7 @@ public class Textures {
 
         VOID, // The Empty Texture
         RENDERING_ERROR,
-        WRENCH,
         MORTAR,
-        CROWBAR,
         JACKHAMMER,
         WIRE_CUTTER,
         KNIFE,
@@ -2014,10 +2012,6 @@ public class Textures {
         ENERGY_BAR_6,
         ENERGY_BAR_7,
         ENERGY_BAR_8,
-        TURBINE,
-        TURBINE_SMALL,
-        TURBINE_LARGE,
-        TURBINE_HUGE,
         WIRELESS_HEADPHONES,
         POCKET_MULTITOOL_CLOSED,
         POCKET_MULTITOOL_BRANCHCUTTER,
