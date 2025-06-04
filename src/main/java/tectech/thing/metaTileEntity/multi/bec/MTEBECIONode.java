@@ -222,6 +222,55 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
         return assembler2;
     }
 
+    // @Override
+    // public long getEUVar() {
+    //     if (assembler == null) return 0;
+
+    //     return assembler.getEUVar();
+    // }
+
+    // @Override
+    // public void setEUVar(long aEnergy) {
+    //     if (assembler == null) return;
+
+    //     assembler.setEUVar(aEnergy);
+    // }
+
+    // @Override
+    // public long maxEUStore() {
+    //     return super.maxEUStore();
+    // }
+
+    // @Override
+    // public long getMaxInputVoltage() {
+    //     return super.getMaxInputVoltage();
+    // }
+
+    // @Override
+    // public long getAverageInputVoltage() {
+    //     return super.getAverageInputVoltage();
+    // }
+
+    // @Override
+    // public long getMaxInputAmps() {
+    //     return super.getMaxInputAmps();
+    // }
+
+    // @Override
+    // public long getMaxInputEu() {
+    //     return super.getMaxInputEu();
+    // }
+
+    // @Override
+    // public boolean drainEnergyInput_EM(long EUtTierVoltage, long EUtEffective, long Amperes) {
+    //     return super.drainEnergyInput_EM(EUtTierVoltage, EUtEffective, Amperes);
+    // }
+
+    // @Override
+    // public boolean drainEnergyInput(long EUtEffective, long Amperes) {
+    //     return super.drainEnergyInput(EUtEffective, Amperes);
+    // }
+
     private static final CheckRecipeResult NO_ASSEMBLER = SimpleCheckRecipeResult.ofFailure("no_bec_assembler");
 
     @Override
