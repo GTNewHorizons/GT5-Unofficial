@@ -64,7 +64,7 @@ public class NetheriteRecipes {
                 .fluidInputs(
                     FluidRegistry.getFluidStack("fluid.hydrogenperoxide", 4000), // Hydrogen Peroxide
                     FluidUtils.getHydrofluoricAcid(4000)) // Industrial Strength Hydrofluoric Acid
-                .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.NetherQuartz, 4))
+                .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.CertusQuartz, 4))
                 .fluidOutputs(Materials.PrismarineSolution.getFluid(8000))
                 .duration(20 * SECONDS)
                 .eut(TierEU.RECIPE_IV)
@@ -75,7 +75,7 @@ public class NetheriteRecipes {
                 .itemInputs(GTOreDictUnificator.get(OrePrefixes.shard, MaterialsGTNH.Prismarine, 6))
                 .fluidInputs(
                     Materials.PrismarineContaminatedHydrogenPeroxide.getFluid(6000),
-                    FluidUtils.getHydrofluoricAcid(2000)) // Industrial Strength Hydrofluoric Acid
+                    FluidRegistry.getFluidStack("fluid.hydrogenperoxide", 2000)) // Hydrogen Peroxide
                 .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.NetherQuartz, 1))
                 .fluidOutputs(Materials.PrismarineSolution.getFluid(8000))
                 .duration(20 * SECONDS)
@@ -271,6 +271,14 @@ public class NetheriteRecipes {
             .itemInputs(
                 GregtechItemList.TripleCompressedNetherrack.get(1),
                 getModItem(ThaumicTinkerer.ID, "kamiResource", 64, 6, missing))
+            .itemOutputs(getModItem(EtFuturumRequiem.ID, "ancient_debris", 1))
+            .duration(1 * TICKS)
+            .eut(TierEU.RECIPE_UEV)
+            .addTo(electricImplosionCompressorRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(getModItem(EtFuturumRequiem.ID, "netherite_scrap", 3, missing))
+            .fluidInputs(Materials.NefariousOil.getFluid(16_000))
             .itemOutputs(getModItem(EtFuturumRequiem.ID, "ancient_debris", 1))
             .duration(1 * TICKS)
             .eut(TierEU.RECIPE_UEV)
