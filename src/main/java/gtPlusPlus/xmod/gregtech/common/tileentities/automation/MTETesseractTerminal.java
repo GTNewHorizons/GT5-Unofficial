@@ -78,13 +78,8 @@ public class MTETesseractTerminal extends MTEBasicTank {
     }
 
     @Override
-    public boolean isAccessAllowed(final EntityPlayer aPlayer) {
-        return true;
-    }
-
-    @Override
     public long maxEUStore() {
-        return TESSERACT_ENERGY_COST_DIMENSIONAL * 8 * 32;
+        return (long) TESSERACT_ENERGY_COST_DIMENSIONAL * 8 * 32;
     }
 
     @Override
@@ -461,7 +456,7 @@ public class MTETesseractTerminal extends MTEBasicTank {
     }
 
     @Override
-    public int fill_default(final ForgeDirection aDirection, final FluidStack aFluid, final boolean doFill) {
+    public int fill(final ForgeDirection aDirection, final FluidStack aFluid, final boolean doFill) {
         final MTETesseractGenerator tTileEntity = this.getTesseract(this.mFrequency, false);
         if ((tTileEntity == null) || (!this.getBaseMetaTileEntity()
             .isAllowedToWork())) {

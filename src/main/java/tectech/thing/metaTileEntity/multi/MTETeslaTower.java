@@ -14,8 +14,10 @@ import static gregtech.api.util.GTStructureUtility.ofFrame;
 import static gregtech.api.util.GTUtility.validMTEList;
 import static java.lang.Math.min;
 import static net.minecraft.util.StatCollector.translateToLocal;
+import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -58,6 +60,7 @@ import gregtech.api.metatileentity.implementations.MTEHatchMaintenance;
 import gregtech.api.metatileentity.implementations.MTEHatchOutput;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
+import gregtech.api.util.GTUtility;
 import gregtech.api.util.IGTHatchAdder;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReason;
@@ -936,6 +939,24 @@ public class MTETeslaTower extends TTMultiblockBase implements ISurvivalConstruc
             return true;
         }
         return false;
+    }
+
+    @Override
+    public String[] getInfoData() {
+        List<String> data = new ArrayList<>(Arrays.asList(super.getInfoData()));
+
+        data.add(
+            translateToLocalFormatted(
+                "tt.infodata.multi.energy_hatches",
+                EnumChatFormatting.GREEN + GTUtility.formatNumbers(getTeslaStoredEnergy()) + EnumChatFormatting.RESET,
+                EnumChatFormatting.YELLOW + GTUtility.formatNumbers(energyCapacity) + EnumChatFormatting.RESET));
+        data.add(
+            translateToLocalFormatted(
+                "tt.infodata.multi.current_output",
+                EnumChatFormatting.GREEN + GTUtility.formatNumbers(getTeslaOutputCurrent()) + EnumChatFormatting.RESET,
+                EnumChatFormatting.YELLOW + GTUtility.formatNumbers(outputCurrentMax) + EnumChatFormatting.RESET));
+
+        return data.toArray(new String[0]);
     }
 
     private enum CapacitorHatchElement implements IHatchElement<MTETeslaTower> {

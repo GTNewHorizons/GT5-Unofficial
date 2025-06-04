@@ -114,55 +114,6 @@ import static gregtech.api.enums.MetaTileEntityIDs.EnergyDistributor_ZPM;
 import static gregtech.api.enums.MetaTileEntityIDs.GiantOutputHatch;
 import static gregtech.api.enums.MetaTileEntityIDs.HighTemperatureGasCooledReactor;
 import static gregtech.api.enums.MetaTileEntityIDs.HumongousInputHatch;
-import static gregtech.api.enums.MetaTileEntityIDs.LowPowerLaserConverter128A_EV;
-import static gregtech.api.enums.MetaTileEntityIDs.LowPowerLaserConverter128A_IV;
-import static gregtech.api.enums.MetaTileEntityIDs.LowPowerLaserConverter128A_LuV;
-import static gregtech.api.enums.MetaTileEntityIDs.LowPowerLaserConverter128A_ZPM;
-import static gregtech.api.enums.MetaTileEntityIDs.LowPowerLaserConverter32A_EV;
-import static gregtech.api.enums.MetaTileEntityIDs.LowPowerLaserConverter32A_IV;
-import static gregtech.api.enums.MetaTileEntityIDs.LowPowerLaserConverter32A_LuV;
-import static gregtech.api.enums.MetaTileEntityIDs.LowPowerLaserConverter32A_ZPM;
-import static gregtech.api.enums.MetaTileEntityIDs.LowPowerLaserConverter64A_EV;
-import static gregtech.api.enums.MetaTileEntityIDs.LowPowerLaserConverter64A_IV;
-import static gregtech.api.enums.MetaTileEntityIDs.LowPowerLaserConverter64A_LuV;
-import static gregtech.api.enums.MetaTileEntityIDs.LowPowerLaserConverter64A_ZPM;
-import static gregtech.api.enums.MetaTileEntityIDs.LowPowerLaserConverter96A_EV;
-import static gregtech.api.enums.MetaTileEntityIDs.LowPowerLaserConverter96A_IV;
-import static gregtech.api.enums.MetaTileEntityIDs.LowPowerLaserConverter96A_LuV;
-import static gregtech.api.enums.MetaTileEntityIDs.LowPowerLaserConverter96A_ZPM;
-import static gregtech.api.enums.MetaTileEntityIDs.LowPowerLaserPipe;
-import static gregtech.api.enums.MetaTileEntityIDs.LowPowerLaserSourceHatch128A_EV;
-import static gregtech.api.enums.MetaTileEntityIDs.LowPowerLaserSourceHatch128A_IV;
-import static gregtech.api.enums.MetaTileEntityIDs.LowPowerLaserSourceHatch128A_LuV;
-import static gregtech.api.enums.MetaTileEntityIDs.LowPowerLaserSourceHatch128A_ZPM;
-import static gregtech.api.enums.MetaTileEntityIDs.LowPowerLaserSourceHatch32A_EV;
-import static gregtech.api.enums.MetaTileEntityIDs.LowPowerLaserSourceHatch32A_IV;
-import static gregtech.api.enums.MetaTileEntityIDs.LowPowerLaserSourceHatch32A_LuV;
-import static gregtech.api.enums.MetaTileEntityIDs.LowPowerLaserSourceHatch32A_ZPM;
-import static gregtech.api.enums.MetaTileEntityIDs.LowPowerLaserSourceHatch64A_EV;
-import static gregtech.api.enums.MetaTileEntityIDs.LowPowerLaserSourceHatch64A_IV;
-import static gregtech.api.enums.MetaTileEntityIDs.LowPowerLaserSourceHatch64A_LuV;
-import static gregtech.api.enums.MetaTileEntityIDs.LowPowerLaserSourceHatch64A_ZPM;
-import static gregtech.api.enums.MetaTileEntityIDs.LowPowerLaserSourceHatch96A_EV;
-import static gregtech.api.enums.MetaTileEntityIDs.LowPowerLaserSourceHatch96A_IV;
-import static gregtech.api.enums.MetaTileEntityIDs.LowPowerLaserSourceHatch96A_LuV;
-import static gregtech.api.enums.MetaTileEntityIDs.LowPowerLaserSourceHatch96A_ZPM;
-import static gregtech.api.enums.MetaTileEntityIDs.LowPowerLaserTargetHatch128A_EV;
-import static gregtech.api.enums.MetaTileEntityIDs.LowPowerLaserTargetHatch128A_IV;
-import static gregtech.api.enums.MetaTileEntityIDs.LowPowerLaserTargetHatch128A_LuV;
-import static gregtech.api.enums.MetaTileEntityIDs.LowPowerLaserTargetHatch128A_ZPM;
-import static gregtech.api.enums.MetaTileEntityIDs.LowPowerLaserTargetHatch32A_EV;
-import static gregtech.api.enums.MetaTileEntityIDs.LowPowerLaserTargetHatch32A_IV;
-import static gregtech.api.enums.MetaTileEntityIDs.LowPowerLaserTargetHatch32A_LuV;
-import static gregtech.api.enums.MetaTileEntityIDs.LowPowerLaserTargetHatch32A_ZPM;
-import static gregtech.api.enums.MetaTileEntityIDs.LowPowerLaserTargetHatch64A_EV;
-import static gregtech.api.enums.MetaTileEntityIDs.LowPowerLaserTargetHatch64A_IV;
-import static gregtech.api.enums.MetaTileEntityIDs.LowPowerLaserTargetHatch64A_LuV;
-import static gregtech.api.enums.MetaTileEntityIDs.LowPowerLaserTargetHatch64A_ZPM;
-import static gregtech.api.enums.MetaTileEntityIDs.LowPowerLaserTargetHatch96A_EV;
-import static gregtech.api.enums.MetaTileEntityIDs.LowPowerLaserTargetHatch96A_IV;
-import static gregtech.api.enums.MetaTileEntityIDs.LowPowerLaserTargetHatch96A_LuV;
-import static gregtech.api.enums.MetaTileEntityIDs.LowPowerLaserTargetHatch96A_ZPM;
 import static gregtech.api.enums.MetaTileEntityIDs.MegaBlastFurnace;
 import static gregtech.api.enums.MetaTileEntityIDs.MegaChemicalReactor;
 import static gregtech.api.enums.MetaTileEntityIDs.MegaDistillationTower;
@@ -216,10 +167,6 @@ import bartworks.common.tileentities.tiered.MTEHumongousInputHatch;
 import bartworks.system.material.WerkstoffLoader;
 import bartworks.system.material.processingLoaders.LoadItemContainers;
 import bwcrossmod.galacticgreg.MTEVoidMiners;
-import bwcrossmod.tectech.tileentites.tiered.MTELowPowerLaserBox;
-import bwcrossmod.tectech.tileentites.tiered.MTELowPowerLaserDynamo;
-import bwcrossmod.tectech.tileentites.tiered.MTELowPowerLaserHatch;
-import bwcrossmod.tectech.tileentites.tiered.MTELowPowerLaserPipe;
 import cpw.mods.fml.common.registry.GameRegistry;
 import fox.spiteful.avaritia.blocks.LudicrousBlocks;
 import gregtech.api.GregTechAPI;
@@ -384,11 +331,6 @@ public class ItemRegistry {
     public static ItemStack compressedHatch;
     public static ItemStack giantOutputHatch;
     public static ItemStack humongousInputHatch;
-
-    @Deprecated
-    public static ItemStack[][][] TecTechLaserAdditions = new ItemStack[3][4][4];
-    @Deprecated
-    public static ItemStack TecTechPipeEnergyLowPower;
 
     public static void run() {
         GameRegistry.registerBlock(ItemRegistry.bw_fake_glasses, "BW_FakeGlasBlock");
@@ -578,77 +520,6 @@ public class ItemRegistry {
             .getStackForm(1L);
         ItemRegistry.voidminer[0] = new MTEVoidMiners.VMLUV(VoidMinerI.ID, "VoidMiner1", "Void Miner I")
             .getStackForm(1L);
-
-        TecTechPipeEnergyLowPower = new MTELowPowerLaserPipe(
-            LowPowerLaserPipe.ID,
-            "pipe.lowpowerlaser",
-            "Low Power Laser Pipe").getStackForm(1L);
-
-        int[] LowPowerLaserConverter32A = new int[] { LowPowerLaserConverter32A_EV.ID, LowPowerLaserConverter32A_IV.ID,
-            LowPowerLaserConverter32A_LuV.ID, LowPowerLaserConverter32A_ZPM.ID };
-        int[] LowPowerLaserConverter64A = new int[] { LowPowerLaserConverter64A_EV.ID, LowPowerLaserConverter64A_IV.ID,
-            LowPowerLaserConverter64A_LuV.ID, LowPowerLaserConverter64A_ZPM.ID };
-        int[] LowPowerLaserConverter96A = new int[] { LowPowerLaserConverter96A_EV.ID, LowPowerLaserConverter96A_IV.ID,
-            LowPowerLaserConverter96A_LuV.ID, LowPowerLaserConverter96A_ZPM.ID };
-        int[] LowPowerLaserConverter128A = new int[] { LowPowerLaserConverter128A_EV.ID,
-            LowPowerLaserConverter128A_IV.ID, LowPowerLaserConverter128A_LuV.ID, LowPowerLaserConverter128A_ZPM.ID };
-        int[][] LowPowerLaserConverter = new int[][] { LowPowerLaserConverter32A, LowPowerLaserConverter64A,
-            LowPowerLaserConverter96A, LowPowerLaserConverter128A };
-
-        for (int amps = 32; amps <= 128; amps += 32) {
-            for (int tier = 4; tier < 8; tier++) {
-                TecTechLaserAdditions[0][amps / 32 - 1][tier - 4] = new MTELowPowerLaserBox(
-                    LowPowerLaserConverter[amps / 32 - 1][tier - 4],
-                    GTValues.VN[tier] + "_LPLaser_Converter_" + amps,
-                    GTValues.VN[tier] + " " + amps + "A" + " Low Power Laser Converter",
-                    tier,
-                    amps).getStackForm(1L);
-            }
-        }
-
-        int[] LowPowerLaserTargetHatch32A = new int[] { LowPowerLaserTargetHatch32A_EV.ID,
-            LowPowerLaserTargetHatch32A_IV.ID, LowPowerLaserTargetHatch32A_LuV.ID, LowPowerLaserTargetHatch32A_ZPM.ID };
-        int[] LowPowerLaserTargetHatch64A = new int[] { LowPowerLaserTargetHatch64A_EV.ID,
-            LowPowerLaserTargetHatch64A_IV.ID, LowPowerLaserTargetHatch64A_LuV.ID, LowPowerLaserTargetHatch64A_ZPM.ID };
-        int[] LowPowerLaserTargetHatch96A = new int[] { LowPowerLaserTargetHatch96A_EV.ID,
-            LowPowerLaserTargetHatch96A_IV.ID, LowPowerLaserTargetHatch96A_LuV.ID, LowPowerLaserTargetHatch96A_ZPM.ID };
-        int[] LowPowerLaserTargetHatch128A = new int[] { LowPowerLaserTargetHatch128A_EV.ID,
-            LowPowerLaserTargetHatch128A_IV.ID, LowPowerLaserTargetHatch128A_LuV.ID,
-            LowPowerLaserTargetHatch128A_ZPM.ID };
-        int[][] LowPowerLaserTargetHatch = new int[][] { LowPowerLaserTargetHatch32A, LowPowerLaserTargetHatch64A,
-            LowPowerLaserTargetHatch96A, LowPowerLaserTargetHatch128A };
-        for (int amps = 32; amps <= 128; amps += 32) {
-            for (int tier = 4; tier < 8; tier++) {
-                TecTechLaserAdditions[1][amps / 32 - 1][tier - 4] = new MTELowPowerLaserHatch(
-                    LowPowerLaserTargetHatch[amps / 32 - 1][tier - 4],
-                    GTValues.VN[tier] + "_LPLaser_Hatch_" + amps,
-                    GTValues.VN[tier] + " " + amps + "A" + " Low Power Laser Target Hatch",
-                    tier,
-                    amps).getStackForm(1L);
-            }
-        }
-
-        int[] LowPowerLaserSourceHatch32A = new int[] { LowPowerLaserSourceHatch32A_EV.ID,
-            LowPowerLaserSourceHatch32A_IV.ID, LowPowerLaserSourceHatch32A_LuV.ID, LowPowerLaserSourceHatch32A_ZPM.ID };
-        int[] LowPowerLaserSourceHatch64A = new int[] { LowPowerLaserSourceHatch64A_EV.ID,
-            LowPowerLaserSourceHatch64A_IV.ID, LowPowerLaserSourceHatch64A_LuV.ID, LowPowerLaserSourceHatch64A_ZPM.ID };
-        int[] LowPowerLaserSourceHatch96A = new int[] { LowPowerLaserSourceHatch96A_EV.ID,
-            LowPowerLaserSourceHatch96A_IV.ID, LowPowerLaserSourceHatch96A_LuV.ID, LowPowerLaserSourceHatch96A_ZPM.ID };
-        int[] LowPowerLaserSourceHatch128A = new int[] { LowPowerLaserSourceHatch128A_EV.ID,
-            LowPowerLaserSourceHatch128A_IV.ID, LowPowerLaserSourceHatch128A_LuV.ID,
-            LowPowerLaserSourceHatch128A_ZPM.ID };
-        int[][] LowPowerLaserSourceHatch = new int[][] { LowPowerLaserSourceHatch32A, LowPowerLaserSourceHatch64A,
-            LowPowerLaserSourceHatch96A, LowPowerLaserSourceHatch128A };
-        for (int amps = 32; amps <= 128; amps += 32) {
-            for (int tier = 4; tier < 8; tier++) {
-                TecTechLaserAdditions[2][amps / 32 - 1][tier - 4] = new MTELowPowerLaserDynamo(
-                    LowPowerLaserSourceHatch[amps / 32 - 1][tier - 4],
-                    GTValues.VN[tier] + "_LPLaser_Dynamo_" + amps,
-                    GTValues.VN[tier] + " " + amps + "A" + " Low Power Laser Source Hatch",
-                    tier,
-                    amps).getStackForm(1L);
-            }
-        }
 
         LoadItemContainers.run();
     }

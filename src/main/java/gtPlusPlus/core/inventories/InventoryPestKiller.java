@@ -102,7 +102,7 @@ public class InventoryPestKiller implements IInventory {
     // 1.7.2+ renamed to hasCustomInventoryName
     @Override
     public boolean hasCustomInventoryName() {
-        return !this.name.isEmpty();
+        return true;
     }
 
     @Override
@@ -120,10 +120,6 @@ public class InventoryPestKiller implements IInventory {
     public void markDirty() {
         for (int i = 0; i < this.getSizeInventory(); ++i) {
             final ItemStack temp = this.getStackInSlot(i);
-            if (temp != null) {
-                // Utils.LOG_INFO("Slot "+i+" contains "+temp.getDisplayName()+" x"+temp.stackSize);
-            }
-
             if ((temp != null) && (temp.stackSize == 0)) {
                 this.inventory[i] = null;
             }

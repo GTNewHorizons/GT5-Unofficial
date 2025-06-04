@@ -49,10 +49,7 @@ public class GregtechMetaSpecialMultiCasings2 extends GregtechMetaCasingBlocksAb
 
     public GregtechMetaSpecialMultiCasings2() {
         super(SpecialCasingItemBlock.class, "gtplusplus.blockspecialcasings.3", MaterialCasings.INSTANCE);
-        for (byte i = 0; i < 16; i = (byte) (i + 1)) {
-            // TAE.registerTextures(new GT_CopiedBlockTexture(this, 6, i));
-            // Don't register these Textures, They already exist within vanilla GT. (May not exist in 5.08)
-        }
+
         GTLanguageManager.addStringLocalization(this.getUnlocalizedName() + ".0.name", "Resonance Chamber I");
         GTLanguageManager.addStringLocalization(this.getUnlocalizedName() + ".1.name", "Resonance Chamber II");
         GTLanguageManager.addStringLocalization(this.getUnlocalizedName() + ".2.name", "Resonance Chamber III");

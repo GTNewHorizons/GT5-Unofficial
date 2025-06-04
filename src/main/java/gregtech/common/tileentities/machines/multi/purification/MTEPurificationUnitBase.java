@@ -493,7 +493,7 @@ public abstract class MTEPurificationUnitBase<T extends MTEExtendedPowerMultiBlo
         this.mCrowbar = true;
         this.mWrench = true;
         this.mHardHammer = true;
-        this.mSoftHammer = true;
+        this.mSoftMallet = true;
         this.mSolderingTool = true;
         this.mScrewdriver = true;
         return true;
@@ -794,11 +794,6 @@ public abstract class MTEPurificationUnitBase<T extends MTEExtendedPowerMultiBlo
                         new FakeSyncWidget.IntegerSyncer(() -> maxParallel, (val) -> maxParallel = val),
                         builder));
         return builder.build();
-    }
-
-    @Override
-    public boolean supportsVoidProtection() {
-        return false;
     }
 
     @Override

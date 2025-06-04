@@ -13,11 +13,7 @@ public abstract class BaseHarvestableCrop extends BaseCrop {
     @Override
     public int stat(int n) {
         return switch (n) {
-            case 0 -> 0;
-            case 1 -> 4;
-            case 2 -> 0;
-            case 3 -> 4;
-            case 4 -> 0;
+            case 1, 3 -> 4;
             default -> 0;
         };
     }
@@ -66,8 +62,4 @@ public abstract class BaseHarvestableCrop extends BaseCrop {
         return 3;
     }
 
-    @Override
-    public String discoveredBy() {
-        return "Alkalus";
-    }
 }

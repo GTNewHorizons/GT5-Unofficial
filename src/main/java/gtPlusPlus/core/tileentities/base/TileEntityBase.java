@@ -135,11 +135,6 @@ public class TileEntityBase extends TileEntity
         return true;
     }
 
-    @Override
-    public boolean canUpdate() {
-        return true;
-    }
-
     public String getOwner() {
         if (this.mOwnerName == null) {
             return "null";
@@ -306,7 +301,6 @@ public class TileEntityBase extends TileEntity
     private final boolean mActive = false;
     private boolean mRedstone = false;
     private final boolean mWorkUpdate = false;
-    private final boolean mSteamConverter = false;
     private boolean mInventoryChanged = false;
     private final boolean mWorks = true;
     private final boolean mNeedsUpdate = true;

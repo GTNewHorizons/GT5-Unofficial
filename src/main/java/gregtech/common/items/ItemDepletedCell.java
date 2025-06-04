@@ -22,21 +22,6 @@ public class ItemDepletedCell extends ItemRadioactiveCellIC {
     }
 
     @Override
-    public boolean canStoreHeat(IReactor paramIReactor, ItemStack paramItemStack, int paramInt1, int paramInt2) {
-        return false;
-    }
-
-    @Override
-    public int getMaxHeat(IReactor paramIReactor, ItemStack paramItemStack, int paramInt1, int paramInt2) {
-        return 0;
-    }
-
-    @Override
-    public int getCurrentHeat(IReactor paramIReactor, ItemStack paramItemStack, int paramInt1, int paramInt2) {
-        return 0;
-    }
-
-    @Override
     public int alterHeat(IReactor paramIReactor, ItemStack paramItemStack, int paramInt1, int paramInt2,
         int paramInt3) {
         return 0;

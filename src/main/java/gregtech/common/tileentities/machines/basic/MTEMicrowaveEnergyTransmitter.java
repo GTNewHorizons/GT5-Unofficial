@@ -19,6 +19,16 @@ import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
+import com.cleanroommc.modularui.api.drawable.IKey;
+import com.cleanroommc.modularui.drawable.DynamicDrawable;
+import com.cleanroommc.modularui.factory.PosGuiData;
+import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.screen.UISettings;
+import com.cleanroommc.modularui.utils.Alignment;
+import com.cleanroommc.modularui.value.sync.IntSyncValue;
+import com.cleanroommc.modularui.value.sync.PanelSyncManager;
+import com.cleanroommc.modularui.widgets.layout.Flow;
+import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
 import com.gtnewhorizons.modularui.api.NumberFormatMUI;
 import com.gtnewhorizons.modularui.api.drawable.IDrawable;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
@@ -40,6 +50,8 @@ import gregtech.api.interfaces.tileentity.IEnergyConnected;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.BaseMetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEBasicTank;
+import gregtech.api.modularui2.GTGuiTextures;
+import gregtech.api.modularui2.GTGuis;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
 import gregtech.common.config.MachineStats;
@@ -282,11 +294,6 @@ public class MTEMicrowaveEnergyTransmitter extends MTEBasicTank implements IAddG
     }
 
     @Override
-    public boolean isElectric() {
-        return true;
-    }
-
-    @Override
     public boolean isFacingValid(ForgeDirection facing) {
         return true;
     }
@@ -299,11 +306,6 @@ public class MTEMicrowaveEnergyTransmitter extends MTEBasicTank implements IAddG
     @Override
     public boolean isInputFacing(ForgeDirection side) {
         return true;
-    }
-
-    @Override
-    public boolean isOutputFacing(ForgeDirection side) {
-        return false;
     }
 
     @Override
@@ -334,21 +336,6 @@ public class MTEMicrowaveEnergyTransmitter extends MTEBasicTank implements IAddG
     @Override
     public long maxAmperesIn() {
         return 3;
-    }
-
-    @Override
-    public int getStackDisplaySlot() {
-        return 2;
-    }
-
-    @Override
-    public boolean isAccessAllowed(EntityPlayer aPlayer) {
-        return true;
-    }
-
-    @Override
-    public int getInputSlot() {
-        return 0;
     }
 
     @Override
@@ -384,6 +371,88 @@ public class MTEMicrowaveEnergyTransmitter extends MTEBasicTank implements IAddG
     @Override
     public ITexture[][][] getTextureSet(ITexture[] aTextures) {
         return null;
+    }
+
+    @Override
+    protected boolean useMui2() {
+        return true;
+    }
+
+    @Override
+    public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager, UISettings uiSettings) {
+        return GTGuis.mteTemplatePanelBuilder(this, data, syncManager, uiSettings)
+            .doesAddGregTechLogo(false)
+            .build()
+            .child(
+                Flow.row()
+                    .child(
+                        Flow.column()
+                            .child(
+                                GTGuiTextures.OVERLAY_BUTTON_BOUNDING_BOX.asWidget()
+                                    .size(18, 18)
+                                    .topRel(0.5F))
+                            .heightRel(1)
+                            .coverChildrenWidth())
+                    .child(createSelectionColumn())
+                    .crossAxisAlignment(Alignment.CrossAxis.START)
+                    .pos(4, 6)
+                    .coverChildren());
+    }
+
+    public Flow createSelectionColumn() {
+        return Flow.column()
+            .child(
+                Flow.row()
+                    .child(
+                        new TextFieldWidget().setFormatAsInteger(true)
+                            .value(new IntSyncValue(() -> mTargetX, i -> mTargetX = i))
+                            .size(77, 12)
+                            .margin(2, 0))
+                    .child(
+                        IKey.lang("GT5U.gui.text.microwave_energy_transmitter.x")
+                            .asWidget())
+                    .coverChildren())
+            .child(
+                Flow.row()
+                    .child(
+                        new TextFieldWidget().setFormatAsInteger(true)
+                            .value(new IntSyncValue(() -> mTargetY, i -> mTargetY = i))
+                            .size(77, 12)
+                            .margin(2, 0))
+                    .child(
+                        IKey.lang("GT5U.gui.text.microwave_energy_transmitter.y")
+                            .asWidget())
+                    .coverChildren())
+            .child(
+                Flow.row()
+                    .child(
+                        new TextFieldWidget().setFormatAsInteger(true)
+                            .value(new IntSyncValue(() -> mTargetZ, i -> mTargetZ = i))
+                            .size(77, 12)
+                            .margin(2, 0))
+                    .child(
+                        IKey.lang("GT5U.gui.text.microwave_energy_transmitter.z")
+                            .asWidget())
+                    .coverChildren())
+            .child(
+                Flow.row()
+                    .child(
+                        new TextFieldWidget().setFormatAsInteger(true)
+                            .value(new IntSyncValue(() -> mTargetD, i -> mTargetD = i))
+                            .size(77, 12)
+                            .margin(2, 0))
+                    .child(
+                        IKey.lang("GT5U.gui.text.microwave_energy_transmitter.d")
+                            .asWidget())
+                    .child(
+                        new DynamicDrawable(
+                            () -> GTUtility.isRealDimension(mTargetD) ? GTGuiTextures.OVERLAY_BUTTON_CHECKMARK
+                                : GTGuiTextures.OVERLAY_BUTTON_CROSS).asWidget()
+                                    .size(16, 16))
+                    .coverChildren())
+            .crossAxisAlignment(Alignment.CrossAxis.START)
+            .childPadding(2)
+            .coverChildren();
     }
 
     protected static final NumberFormatMUI numberFormat = new NumberFormatMUI();

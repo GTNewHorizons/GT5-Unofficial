@@ -1,6 +1,9 @@
 package gregtech.api.items;
 
 import static gregtech.api.util.GTUtility.formatNumbers;
+import static net.minecraft.util.StatCollector.canTranslate;
+import static net.minecraft.util.StatCollector.translateToLocal;
+import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -29,7 +32,6 @@ import net.minecraft.stats.StatList;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.MathHelper;
-import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.IShearable;
 import net.minecraftforge.event.entity.player.PlayerEvent;
@@ -433,31 +435,33 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
                 float aOptFlow = (Math.max(Float.MIN_NORMAL, turbine.getOptimalFlow()));
                 aList.add(
                     tOffset + 0,
-                    EnumChatFormatting.GRAY + String.format(
-                        transItem("001", "Durability: %s/%s"),
-                        EnumChatFormatting.GREEN + formatNumbers(turbine.getCurrentDurability()) + " ",
-                        " " + formatNumbers(turbine.getMaxDurability())) + EnumChatFormatting.GRAY);
+                    EnumChatFormatting.GRAY
+                        + translateToLocalFormatted(
+                            "gt.item.desc.durability",
+                            EnumChatFormatting.GREEN + formatNumbers(turbine.getCurrentDurability()) + " ",
+                            " " + formatNumbers(turbine.getMaxDurability()))
+                        + EnumChatFormatting.GRAY);
                 aList.add(
                     tOffset + 1,
-                    EnumChatFormatting.GRAY + String.format(
-                        transItem("002", "%s Tier %s"),
-                        tMaterial.mLocalizedName + ":" + EnumChatFormatting.YELLOW,
-                        "" + getHarvestLevel(aStack, "")) + EnumChatFormatting.GRAY);
+                    EnumChatFormatting.GRAY
+                        + translateToLocalFormatted(
+                            "gt.item.desc.tier",
+                            tMaterial.mLocalizedName + ":" + EnumChatFormatting.YELLOW,
+                            "" + getHarvestLevel(aStack, ""))
+                        + EnumChatFormatting.GRAY);
                 aList.add(
                     tOffset + 2,
                     EnumChatFormatting.WHITE
-                        + String.format(
-                            transItem("005", "Base Efficiency: %s"),
+                        + translateToLocalFormatted(
+                            "gt.item.desc.base_eff",
                             "" + EnumChatFormatting.BLUE + (int) Math.ceil(turbine.getBaseEfficiency() * 100))
                         + "%"
                         + EnumChatFormatting.GRAY);
-                aList.add(
-                    tOffset + 3,
-                    EnumChatFormatting.GRAY + transItem("006", "Fuel | Optimal Flow > EU/t Produced | Efficiency"));
+                aList.add(tOffset + 3, EnumChatFormatting.GRAY + translateToLocal("gt.item.desc.fuel_eff"));
                 aList.add(
                     tOffset + 4,
                     EnumChatFormatting.WHITE
-                        + String.format("  %s ", StatCollector.translateToLocal("GT5U.tootlip.tool.turbine.steam"))
+                        + String.format("  %s ", translateToLocal("GT5U.tootlip.tool.turbine.steam"))
                         + EnumChatFormatting.GRAY
                         + " | "
                         + String.format(
@@ -475,7 +479,7 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
                 aList.add(
                     tOffset + 5,
                     EnumChatFormatting.WHITE
-                        + String.format("  %s ", StatCollector.translateToLocal("GT5U.tootlip.tool.turbine.loose"))
+                        + String.format("  %s ", translateToLocal("GT5U.tootlip.tool.turbine.loose"))
                         + EnumChatFormatting.GRAY
                         + " | "
                         + String.format(
@@ -493,11 +497,10 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
                 aList.add(
                     tOffset + 6,
                     EnumChatFormatting.DARK_GRAY
-                        + String.format("  %s", StatCollector.translateToLocal("GT5U.tootlip.tool.turbine.super")));
+                        + String.format("  %s", translateToLocal("GT5U.tootlip.tool.turbine.super")));
                 aList.add(
                     tOffset + 7,
-                    EnumChatFormatting.AQUA
-                        + String.format("  %s ", StatCollector.translateToLocal("GT5U.tootlip.tool.turbine.gas"))
+                    EnumChatFormatting.AQUA + String.format("  %s ", translateToLocal("GT5U.tootlip.tool.turbine.gas"))
                         + EnumChatFormatting.GRAY
                         + " | "
                         + String.format(
@@ -515,7 +518,7 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
                 aList.add(
                     tOffset + 8,
                     EnumChatFormatting.AQUA
-                        + String.format("  %s ", StatCollector.translateToLocal("GT5U.tootlip.tool.turbine.loose"))
+                        + String.format("  %s ", translateToLocal("GT5U.tootlip.tool.turbine.loose"))
                         + EnumChatFormatting.GRAY
                         + " | "
                         + String.format(
@@ -533,7 +536,7 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
                 aList.add(
                     tOffset + 9,
                     EnumChatFormatting.LIGHT_PURPLE
-                        + String.format("  %s", StatCollector.translateToLocal("GT5U.tootlip.tool.turbine.plasma"))
+                        + String.format("  %s", translateToLocal("GT5U.tootlip.tool.turbine.plasma"))
                         + EnumChatFormatting.GRAY
                         + " | "
                         + String.format(
@@ -551,7 +554,7 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
                 aList.add(
                     tOffset + 10,
                     EnumChatFormatting.LIGHT_PURPLE
-                        + String.format("  %s", StatCollector.translateToLocal("GT5U.tootlip.tool.turbine.loose"))
+                        + String.format("  %s", translateToLocal("GT5U.tootlip.tool.turbine.loose"))
                         + EnumChatFormatting.GRAY
                         + " | "
                         + String.format(
@@ -568,32 +571,38 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
                                 + EnumChatFormatting.GRAY));
                 aList.add(
                     tOffset + 11,
-                    EnumChatFormatting.LIGHT_PURPLE + String.format(
-                        transItem("502", "Overflow Efficiency Tier: %s"),
+                    EnumChatFormatting.LIGHT_PURPLE + translateToLocalFormatted(
+                        "gt.item.desc.eff_tier",
                         "" + EnumChatFormatting.GOLD + turbine.getOverflowEfficiency() + EnumChatFormatting.GRAY));
             } else {
                 aList.add(
                     tOffset,
-                    EnumChatFormatting.WHITE + String.format(
-                        transItem("001", "Durability: %s/%s"),
-                        EnumChatFormatting.GREEN + formatNumbers(tMaxDamage - getToolDamage(aStack)) + " ",
-                        " " + formatNumbers(tMaxDamage)) + EnumChatFormatting.GRAY);
+                    EnumChatFormatting.WHITE
+                        + translateToLocalFormatted(
+                            "gt.item.desc.durability",
+                            EnumChatFormatting.GREEN + formatNumbers(tMaxDamage - getToolDamage(aStack)) + " ",
+                            " " + formatNumbers(tMaxDamage))
+                        + EnumChatFormatting.GRAY);
                 aList.add(
                     tOffset + 1,
-                    EnumChatFormatting.WHITE + String.format(
-                        transItem("002", "%s lvl %s"),
-                        tMaterial.mLocalizedName + EnumChatFormatting.YELLOW,
-                        "" + getHarvestLevel(aStack, "")) + EnumChatFormatting.GRAY);
+                    EnumChatFormatting.WHITE
+                        + translateToLocalFormatted(
+                            "gt.item.desc.level",
+                            tMaterial.mLocalizedName + EnumChatFormatting.YELLOW,
+                            "" + getHarvestLevel(aStack, ""))
+                        + EnumChatFormatting.GRAY);
                 aList.add(
                     tOffset + 2,
-                    EnumChatFormatting.WHITE + String.format(
-                        transItem("003", "Attack Damage: %s"),
-                        "" + EnumChatFormatting.BLUE + getToolCombatDamage(aStack)) + EnumChatFormatting.GRAY);
+                    EnumChatFormatting.WHITE
+                        + translateToLocalFormatted(
+                            "gt.item.desc.damage",
+                            "" + EnumChatFormatting.BLUE + getToolCombatDamage(aStack))
+                        + EnumChatFormatting.GRAY);
                 aList.add(
                     tOffset + 3,
                     EnumChatFormatting.WHITE
-                        + String.format(
-                            transItem("004", "Mining Speed: %s"),
+                        + translateToLocalFormatted(
+                            "gt.item.desc.mine_speed",
                             "" + EnumChatFormatting.GOLD
                                 + Math.max(
                                     Float.MIN_NORMAL,
@@ -619,8 +628,7 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
                         aList.add(
                             tOffset + 3,
                             EnumChatFormatting.RED
-                                + StatCollector
-                                    .translateToLocalFormatted("GT5U.tooltip.tool.heat", aNBT.getInteger("Heat"))
+                                + translateToLocalFormatted("GT5U.tooltip.tool.heat", aNBT.getInteger("Heat"))
                                 + EnumChatFormatting.GRAY);
                     }
                 }
@@ -673,7 +681,7 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
             if (tNewDamage >= getToolMaxDamage(aStack)) {
                 IToolStats tStats = getToolStats(aStack);
                 if (tStats == null || GTUtility.setStack(aStack, tStats.getBrokenItem(aStack)) == null) {
-                    if (tStats != null && playSound) GTUtility.doSoundAtClient(tStats.getBreakingSound(), 1, 1.0F);
+                    if (tStats != null && playSound) playSound(tStats);
                     if (aStack.stackSize > 0) aStack.stackSize--;
                 }
             }
@@ -687,7 +695,7 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
                 if (tNewDamage >= getToolMaxDamage(aStack)) {
                     IToolStats tStats = getToolStats(aStack);
                     if (tStats == null || GTUtility.setStack(aStack, tStats.getBrokenItem(aStack)) == null) {
-                        if (tStats != null && playSound) GTUtility.doSoundAtClient(tStats.getBreakingSound(), 1, 1.0F);
+                        if (tStats != null && playSound) playSound(tStats);
                         if (aStack.stackSize > 0) aStack.stackSize--;
                     }
                 }
@@ -695,6 +703,10 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
             return true;
         }
         return false;
+    }
+
+    protected void playSound(IToolStats aStats) {
+        GTUtility.doSoundAtClient(aStats.getBreakingSound(), 1, 1.0F);
     }
 
     @Override
@@ -733,25 +745,30 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
 
     @Override
     public final ItemStack getContainerItem(ItemStack aStack) {
-        return getContainerItem(aStack, true);
+        return getContainerItem(aStack, true, true);
     }
 
     @Override
     public final boolean hasContainerItem(ItemStack aStack) {
-        return getContainerItem(aStack, false) != null;
+        return getContainerItem(aStack, false, false) != null;
     }
 
-    private ItemStack getContainerItem(ItemStack aStack, boolean playSound) {
+    private ItemStack getContainerItem(ItemStack aStack, boolean playSound, boolean doDamage) {
         if (!isItemStackUsable(aStack)) return null;
         aStack = GTUtility.copyAmount(1, aStack);
         IToolStats tStats = getToolStats(aStack);
         if (tStats == null) return null;
-        if (playSound) {
-            doDamage(aStack, tStats.getToolDamagePerContainerCraft());
-        } else {
-            doDamageNoSound(aStack, tStats.getToolDamagePerContainerCraft());
+
+        if (doDamage) {
+            if (playSound) {
+                doDamage(aStack, tStats.getToolDamagePerContainerCraft());
+            } else {
+                doDamageNoSound(aStack, tStats.getToolDamagePerContainerCraft());
+            }
+            aStack = aStack != null && aStack.stackSize > 0 ? aStack : null;
+        } else if (playSound) {
+            playSound(tStats);
         }
-        aStack = aStack.stackSize > 0 ? aStack : null;
         return aStack;
     }
 
@@ -900,6 +917,7 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
 
     @Override
     public boolean isItemStackUsable(ItemStack aStack) {
+        if (aStack == null) return false;
         IToolStats tStats = getToolStatsInternal(aStack);
         if (aStack.getItemDamage() % 2 != 0 || tStats == null) {
             NBTTagCompound aNBT = aStack.getTagCompound();
@@ -929,29 +947,22 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
             if (tEntry.getKey() == 33 || (tEntry.getKey() == 20 && tEntry.getValue() > 2)
                 || tEntry.getKey() == EnchantmentRadioactivity.INSTANCE.effectId)
                 tResult.put(tEntry.getKey(), tEntry.getValue());
-            else switch (Enchantment.enchantmentsList[tEntry.getKey()].type) {
-                case weapon:
-                    if (tStats.isWeapon()) tResult.put(tEntry.getKey(), tEntry.getValue());
-                    break;
-                case all:
-                    tResult.put(tEntry.getKey(), tEntry.getValue());
-                    break;
-                case armor:
-                case armor_feet:
-                case armor_head:
-                case armor_legs:
-                case armor_torso:
-                    break;
-                case bow:
-                    if (tStats.isRangedWeapon()) tResult.put(tEntry.getKey(), tEntry.getValue());
-                    break;
-                case breakable:
-                    break;
-                case fishing_rod:
-                    break;
-                case digger:
-                    if (tStats.isMiningTool()) tResult.put(tEntry.getKey(), tEntry.getValue());
-                    break;
+            else {
+                switch (Enchantment.enchantmentsList[tEntry.getKey()].type) {
+                    case weapon -> {
+                        if (tStats.isWeapon()) tResult.put(tEntry.getKey(), tEntry.getValue());
+                    }
+                    case all -> {
+                        tResult.put(tEntry.getKey(), tEntry.getValue());
+                    }
+                    case armor, armor_feet, armor_head, armor_legs, armor_torso, breakable, fishing_rod -> {}
+                    case bow -> {
+                        if (tStats.isRangedWeapon()) tResult.put(tEntry.getKey(), tEntry.getValue());
+                    }
+                    case digger -> {
+                        if (tStats.isMiningTool()) tResult.put(tEntry.getKey(), tEntry.getValue());
+                    }
+                }
             }
         }
         EnchantmentHelper.setEnchantments(tResult, aStack);
@@ -968,8 +979,8 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
             if (toolName == null) return result;
 
             String key = "gt." + toolName + ".mode." + getToolMode(aStack);
-            if (StatCollector.canTranslate(key)) {
-                result += " (" + StatCollector.translateToLocal(key) + ")";
+            if (canTranslate(key)) {
+                result += " (" + translateToLocal(key) + ")";
             }
         }
         return result;
@@ -988,18 +999,4 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
         return (short) (aStack.getItemDamage() + 1 - (aStack.getItemDamage() % 2));
     }
 
-    @Override
-    public int getItemEnchantability() {
-        return 0;
-    }
-
-    @Override
-    public boolean isBookEnchantable(ItemStack aStack, ItemStack aBook) {
-        return false;
-    }
-
-    @Override
-    public boolean getIsRepairable(ItemStack aStack, ItemStack aMaterial) {
-        return false;
-    }
 }
