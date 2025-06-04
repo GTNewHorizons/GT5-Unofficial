@@ -1,5 +1,6 @@
 package gregtech.common.tools;
 
+import gregtech.api.enums.TextureSet;
 import net.minecraft.block.Block;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
@@ -22,7 +23,7 @@ public abstract class ToolTurbine extends GTTool {
 
     @Override
     public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack) {
-        return aIsToolHead ? getTurbineIcon() : null;
+        return aIsToolHead ? MetaGeneratedTool.getPrimaryMaterial(aStack).mIconSet.mTextures[TextureSet.INDEX_turbine] : null;
     }
 
     @Override
@@ -42,8 +43,6 @@ public abstract class ToolTurbine extends GTTool {
                 + EnumChatFormatting.WHITE
                 + " head into a turbine");
     }
-
-    public abstract IIconContainer getTurbineIcon();
 
     @Override
     public abstract float getSpeedMultiplier();

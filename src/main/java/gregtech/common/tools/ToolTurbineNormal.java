@@ -19,9 +19,4 @@ public class ToolTurbineNormal extends ToolTurbine {
     public float getBaseDamage() {
         return 2.5F;
     }
-
-    @Override
-    public IIconContainer getTurbineIcon() {
-        return Textures.ItemIcons.TURBINE;
-    }
 }
