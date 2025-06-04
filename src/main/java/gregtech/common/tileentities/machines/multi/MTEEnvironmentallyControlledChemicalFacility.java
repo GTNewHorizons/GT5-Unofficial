@@ -347,13 +347,6 @@ public class MTEEnvironmentallyControlledChemicalFacility extends
                 .dot(2)
                 .buildAndChain(ofBlock(GregTechAPI.sBlockCasings10, 3)))
         .addElement(
-            'Y',
-            buildHatchAdder(MTEEnvironmentallyControlledChemicalFacility.class).hatchClass(MTEHatchInput.class)
-                .adder(MTEEnvironmentallyControlledChemicalFacility::addLubricantInputToMachineList)
-                .casingIndex(((BlockCasings10) GregTechAPI.sBlockCasings10).getTextureIndex(3))
-                .dot(2)
-                .buildAndChain(ofBlock(GregTechAPI.sBlockCasings10, 3)))
-        .addElement(
             'y',
             buildHatchAdder(MTEEnvironmentallyControlledChemicalFacility.class).hatchClass(MTEHatchInput.class)
                 .adder(MTEEnvironmentallyControlledChemicalFacility::addLubricantInputToMachineList)
