@@ -68,6 +68,8 @@ public class MTECZPuller extends MTEEnhancedMultiBlockBase<MTECZPuller> implemen
     private static final String TIER_2 = "tier2";
     private static final int tier1Value = 1;
     private static final int tier2Value = 2;
+    private byte mSpecialTier = 1;
+    private byte mActualTier = 0;
 
     public String materialType;
 
@@ -158,7 +160,6 @@ public class MTECZPuller extends MTEEnhancedMultiBlockBase<MTECZPuller> implemen
                 .dot(2)
                 .buildAndChain(ofBlock(GregTechAPI.sBlockCasings9, 11)))
         .build();
-    private byte mSpecialTier = 1;
 
     public MTECZPuller(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -284,15 +285,20 @@ public class MTECZPuller extends MTEEnhancedMultiBlockBase<MTECZPuller> implemen
         mExoticEnergyHatches.clear();
         seedInputAmount = 0;
 
-        if (mSpecialTier == 1 && !checkPiece(TIER_1, 2, 8, 0)) return false;
-        if (mSpecialTier == 2 && !checkPiece(TIER_2, 5, 10, 2)) return false;
-        if (seedInputAmount > 1) return false;
-        int energyHatchAmount = mEnergyHatches.size();
-        if (energyHatchAmount == 0) return false;
-        if (energyHatchAmount > 1) {
-            if (energyHatchAmount > 2) return false;
-            return (mEnergyHatches.get(0).mTier == mEnergyHatches.get(1).mTier);
+        boolean t1 = checkPiece(TIER_1, 2, 8, 0);
+        boolean t2 = checkPiece(TIER_2, 5, 10, 2);
+        if (mSpecialTier == 1) {
+            if (!t1) return false;
+            mActualTier = 1;
         }
+        if (mSpecialTier == 2) {
+            if (!t2) return false;
+            mActualTier = 2;
+        }
+        if (seedInputAmount > 1) return false;
+        if (mEnergyHatches.isEmpty()) return false;
+        if (mEnergyHatches.size() > 2) return false;
+        if (mEnergyHatches.size() == 2 && !(mEnergyHatches.get(0).mTier == mEnergyHatches.get(1).mTier)) return false;
         if (mExoticEnergyHatches.size() > 1) return false;
         if (mMaintenanceHatches.size() > 1) return false;
 
