@@ -15,6 +15,7 @@ import cpw.mods.fml.common.network.FMLNetworkEvent;
 import gregtech.common.tileentities.machines.basic.MTEMagLevPylon;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 
+@SuppressWarnings("unused")
 @EventBusSubscriber
 public class TetherManager {
 

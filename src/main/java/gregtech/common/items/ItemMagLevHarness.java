@@ -1,8 +1,6 @@
 package gregtech.common.items;
 
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -19,8 +17,6 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.items.GTGenericItem;
 import gregtech.common.data.maglev.Tether;
 import gregtech.common.data.maglev.TetherManager;
-import gregtech.common.tileentities.machines.basic.MTEMagLevPylon;
-import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 
 public class ItemMagLevHarness extends GTGenericItem implements IBaubleExpanded {
 
@@ -43,50 +39,33 @@ public class ItemMagLevHarness extends GTGenericItem implements IBaubleExpanded 
 
     @Override
     public void addInformation(ItemStack aStack, EntityPlayer aPlayer, List<String> tooltip, boolean aF3_H) {
-        BaubleItemHelper.addSlotInformation(tooltip, getBaubleTypes(aStack));
-        tooltip.add(StatCollector.translateToLocalFormatted("GT5U.maglevHarness.tooltip"));
         super.addInformation(aStack, aPlayer, tooltip, aF3_H);
+        tooltip.add(StatCollector.translateToLocalFormatted("GT5U.maglevHarness.tooltip"));
+        BaubleItemHelper.addSlotInformation(tooltip, getBaubleTypes(aStack));
     }
 
     @Override
     public void onWornTick(ItemStack itemstack, EntityLivingBase entityLivingBase) {
+        if (entityLivingBase.worldObj != null && entityLivingBase.worldObj.isRemote) return;
         if (!(entityLivingBase instanceof EntityPlayer player)) return;
         if (player instanceof FakePlayer) return;
-        if (player.worldObj.isRemote) return;
 
         Tether activeTether;
         var grid = TetherManager.ACTIVE_PYLONS.get(player.dimension);
-        var nearby = (ObjectArrayList<MTEMagLevPylon>) grid
-            .findNearbyChebyshev((int) player.posX, (int) player.posY, (int) player.posZ, 64);
+        var nearbyPylon = grid.findClosestNearbyChebyshev((int) player.posX, (int) player.posY, (int) player.posZ, 64);
 
-        if (!nearby.isEmpty()) {
-            // set pylon distances
-            var pylonDistances = nearby.stream()
-                .collect(
-                    Collectors.toMap(
-                        pylon -> pylon,
-                        pylon -> DistanceUtil.chebyshevDistance(
-                            player.posX,
-                            player.posY,
-                            player.posZ,
-                            pylon.getBaseMetaTileEntity()
-                                .getXCoord(),
-                            pylon.getBaseMetaTileEntity()
-                                .getYCoord(),
-                            pylon.getBaseMetaTileEntity()
-                                .getZCoord())));
-            // get the closest one
-            MTEMagLevPylon closest = pylonDistances.entrySet()
-                .stream()
-                .min(Map.Entry.comparingByValue())
-                .orElse(null)
-                .getKey();
-
-            if (closest != null && pylonDistances.get(closest) <= closest.machineTether.range()) {
-                activeTether = closest.machineTether;
-            } else {
-                activeTether = null;
-            }
+        if (nearbyPylon != null && DistanceUtil.chebyshevDistance(
+            player.posX,
+            player.posY,
+            player.posZ,
+            nearbyPylon.getBaseMetaTileEntity()
+                .getXCoord(),
+            nearbyPylon.getBaseMetaTileEntity()
+                .getYCoord(),
+            nearbyPylon.getBaseMetaTileEntity()
+                .getZCoord())
+            <= nearbyPylon.machineTether.range()) {
+            activeTether = nearbyPylon.machineTether;
         } else {
             activeTether = null;
         }
@@ -115,22 +94,24 @@ public class ItemMagLevHarness extends GTGenericItem implements IBaubleExpanded 
 
     @Override
     public void onEquipped(ItemStack itemstack, EntityLivingBase entityLivingBase) {
+        if (entityLivingBase.worldObj != null && entityLivingBase.worldObj.isRemote) return;
         if (!(entityLivingBase instanceof EntityPlayer player)) return;
         if (player instanceof FakePlayer) return;
+
         TetherManager.PLAYER_TETHERS.replace(player, null);
     }
 
     @Override
     public void onUnequipped(ItemStack itemstack, EntityLivingBase entityLivingBase) {
+        if (entityLivingBase.worldObj != null && entityLivingBase.worldObj.isRemote) return;
         if (!(entityLivingBase instanceof EntityPlayer player)) return;
         if (player instanceof FakePlayer) return;
+
         TetherManager.PLAYER_TETHERS.replace(player, null);
         if (!player.capabilities.isCreativeMode) {
             player.capabilities.allowFlying = false;
             player.capabilities.isFlying = false;
-            if (!player.worldObj.isRemote) {
-                player.sendPlayerAbilities();
-            }
+            player.sendPlayerAbilities();
         }
     }
 
