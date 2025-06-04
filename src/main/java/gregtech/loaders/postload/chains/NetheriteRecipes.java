@@ -59,14 +59,6 @@ public class NetheriteRecipes {
                 .eut(TierEU.RECIPE_LuV)
                 .addTo(autoclaveRecipes);
 
-            GTValues.RA.stdBuilder() // Red Algae Duping
-                .itemInputs(GregtechItemList.RedAlgaeBiomass.get(32), ItemList.IC2_Fertilizer.get(16))
-                .fluidInputs(Materials.UUMatter.getFluid(1))
-                .itemOutputs(GregtechItemList.RedAlgaeBiomass.get(64))
-                .duration(15 * SECONDS)
-                .eut(TierEU.RECIPE_UV)
-                .addTo(chemicalBathRecipes);
-
             GTValues.RA.stdBuilder() // Leaching
                 .itemInputs(GTOreDictUnificator.get(OrePrefixes.shard, MaterialsGTNH.Prismarine, 24))
                 .fluidInputs(
