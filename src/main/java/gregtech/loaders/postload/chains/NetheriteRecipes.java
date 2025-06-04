@@ -59,12 +59,20 @@ public class NetheriteRecipes {
                 .eut(TierEU.RECIPE_LuV)
                 .addTo(autoclaveRecipes);
 
+            GTValues.RA.stdBuilder() // Red Algae Duping
+                .itemInputs(GregtechItemList.RedAlgaeBiomass.get(32), ItemList.IC2_Fertilizer.get(16))
+                .fluidInputs(Materials.UUMatter.getFluid(1))
+                .itemOutputs(GregtechItemList.RedAlgaeBiomass.get(32))
+                .duration(15 * SECONDS)
+                .eut(TierEU.RECIPE_UV)
+                .addTo(chemicalBathRecipes);
+
             GTValues.RA.stdBuilder() // Leaching
                 .itemInputs(GTOreDictUnificator.get(OrePrefixes.shard, MaterialsGTNH.Prismarine, 24))
                 .fluidInputs(
                     FluidRegistry.getFluidStack("fluid.hydrogenperoxide", 4000), // Hydrogen Peroxide
                     FluidUtils.getHydrofluoricAcid(4000)) // Industrial Strength Hydrofluoric Acid
-                .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.NetherQuartz, 4))
+                .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.CertusQuartz, 4))
                 .fluidOutputs(Materials.PrismarineSolution.getFluid(8000))
                 .duration(20 * SECONDS)
                 .eut(TierEU.RECIPE_IV)
@@ -75,7 +83,7 @@ public class NetheriteRecipes {
                 .itemInputs(GTOreDictUnificator.get(OrePrefixes.shard, MaterialsGTNH.Prismarine, 6))
                 .fluidInputs(
                     Materials.PrismarineContaminatedHydrogenPeroxide.getFluid(6000),
-                    FluidUtils.getHydrofluoricAcid(2000)) // Industrial Strength Hydrofluoric Acid
+                    FluidRegistry.getFluidStack("fluid.hydrogenperoxide", 2000)) // Hydrogen Peroxide
                 .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.NetherQuartz, 1))
                 .fluidOutputs(Materials.PrismarineSolution.getFluid(8000))
                 .duration(20 * SECONDS)

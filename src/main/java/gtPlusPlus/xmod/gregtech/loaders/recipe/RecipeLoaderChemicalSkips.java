@@ -755,7 +755,7 @@ public class RecipeLoaderChemicalSkips {
             32,
             new ItemStack[] { MaterialsAlloy.QUANTUM.getFrameBox(1),
                 GTOreDictUnificator.get("plateDensePreciousMetalsAlloy", 4),
-                GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.Neutronium, 2),
+                GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.Netherite, 2),
                 ItemList.Field_Generator_UV.get(1), MaterialsElements.STANDALONE.CHRONOMATIC_GLASS.getScrew(16) },
             new FluidStack[] { MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack(10 * INGOTS), },
             GregtechItemList.NeutronShieldingCore.get(1),
@@ -816,7 +816,8 @@ public class RecipeLoaderChemicalSkips {
             .itemInputs(
                 new ItemStack(BlockQuantumGlass.INSTANCE, 1),
                 ItemList.Field_Generator_ZPM.get(1),
-                MaterialsElements.STANDALONE.CELESTIAL_TUNGSTEN.getLongRod(6),
+                MaterialsElements.STANDALONE.CELESTIAL_TUNGSTEN.getLongRod(4),
+                GTOreDictUnificator.get(OrePrefixes.stickLong, Materials.Netherite, 4),
                 MaterialsElements.STANDALONE.CHRONOMATIC_GLASS.getPlate(6))
             .itemOutputs(GregtechItemList.ForceFieldGlass.get(1))
             .fluidInputs(MaterialsAlloy.QUANTUM.getFluidStack(6 * INGOTS))
