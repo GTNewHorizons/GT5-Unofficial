@@ -33,12 +33,12 @@ public class ForgeOfGodsStarColor {
     public static final int DEFAULT_CYCLE_SPEED = 1;
 
     public static final ForgeOfGodsStarColor DEFAULT = new ForgeOfGodsStarColor("Default")
-        .setUnlocalizedName("tt.godforge.star_color.preset.default")
+        .setNameKey("tt.godforge.star_color.preset.default")
         .addColor(DEFAULT_RED, DEFAULT_GREEN, DEFAULT_BLUE, DEFAULT_GAMMA)
         .registerPreset();
 
     public static final ForgeOfGodsStarColor RAINBOW = new ForgeOfGodsStarColor("Rainbow")
-        .setUnlocalizedName("tt.godforge.star_color.preset.rainbow")
+        .setNameKey("tt.godforge.star_color.preset.rainbow")
         .addColor(255, 0, 0, 3.0f)
         .addColor(255, 255, 0, 3.0f)
         .addColor(0, 255, 0, 3.0f)
@@ -49,7 +49,7 @@ public class ForgeOfGodsStarColor {
         .registerPreset();
 
     public static final ForgeOfGodsStarColor CLOUDS_PICK = new ForgeOfGodsStarColor("Cloud's Pick")
-        .setUnlocalizedName("tt.godforge.star_color.preset.clouds_pick")
+        .setNameKey("tt.godforge.star_color.preset.clouds_pick")
         .addColor(255, 255, 0, 0.8f)
         .addColor(0, 0, 0, 0)
         .addColor(0, 255, 255, 0.4f)
@@ -61,7 +61,7 @@ public class ForgeOfGodsStarColor {
         .registerPreset();
 
     public static final ForgeOfGodsStarColor MAYAS_PICK = new ForgeOfGodsStarColor("Maya's Pick")
-        .setUnlocalizedName("tt.godforge.star_color.preset.mayas_pick")
+        .setNameKey("tt.godforge.star_color.preset.mayas_pick")
         .addColor(0, 0, 0, 0.0f)
         .addColor(109, 201, 225, 1.0f)
         .addColor(255, 255, 255, 3.0f)
@@ -86,7 +86,7 @@ public class ForgeOfGodsStarColor {
     private final int version;
     private boolean isPreset;
     private IDrawable drawable;
-    private String unlocalizedName = "";
+    private String nameKey = "";
 
     // Star render settings
     private final List<StarColorSetting> settings = new ArrayList<>();
@@ -118,19 +118,19 @@ public class ForgeOfGodsStarColor {
     public void setName(String name) {
         this.name = name;
         // Only presets need unlocalized name
-        this.unlocalizedName = "";
+        this.nameKey = "";
     }
 
-    public ForgeOfGodsStarColor setUnlocalizedName(String key) {
-        this.unlocalizedName = key;
+    public ForgeOfGodsStarColor setNameKey(String key) {
+        this.nameKey = key;
         return this;
     }
 
     public String getLocalizedName() {
-        if (this.unlocalizedName.isEmpty()) {
+        if (this.nameKey.isEmpty()) {
             return this.getName();
         }
-        return StatCollector.translateToLocal(this.unlocalizedName);
+        return StatCollector.translateToLocal(this.nameKey);
     }
 
     public ForgeOfGodsStarColor setCycleSpeed(int speed) {
