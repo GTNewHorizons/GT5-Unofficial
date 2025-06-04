@@ -402,7 +402,7 @@ public class BioRecipes {
             .itemOutputs(Materials.SodiumHydroxide.getDust(3))
             .fluidInputs(Materials.SaltWater.getFluid(1_000))
             .fluidOutputs(Materials.Chlorine.getGas(1_000), Materials.Hydrogen.getGas(1_000))
-            .duration(5 * MINUTES)
+            .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .metadata(CHEMPLANT_CASING_TIER, 1)
             .addTo(chemicalPlantRecipes);
@@ -414,7 +414,7 @@ public class BioRecipes {
             .fluidInputs(GTModHandler.getDistilledWater(5_000))
             .fluidOutputs(Materials.Hydrogen.getGas(5_000))
             .duration(60 * SECONDS)
-            .eut(60)
+            .eut(TierEU.RECIPE_MV / 2)
             .metadata(CHEMPLANT_CASING_TIER, 1)
             .addTo(chemicalPlantRecipes);
     }
