@@ -62,7 +62,7 @@ public class NetheriteRecipes {
             GTValues.RA.stdBuilder() // Red Algae Duping
                 .itemInputs(GregtechItemList.RedAlgaeBiomass.get(32), ItemList.IC2_Fertilizer.get(16))
                 .fluidInputs(Materials.UUMatter.getFluid(1))
-                .itemOutputs(GregtechItemList.RedAlgaeBiomass.get(32))
+                .itemOutputs(GregtechItemList.RedAlgaeBiomass.get(64))
                 .duration(15 * SECONDS)
                 .eut(TierEU.RECIPE_UV)
                 .addTo(chemicalBathRecipes);
