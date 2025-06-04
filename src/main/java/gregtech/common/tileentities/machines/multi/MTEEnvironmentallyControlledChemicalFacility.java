@@ -401,6 +401,7 @@ public class MTEEnvironmentallyControlledChemicalFacility extends
         .addElement('i', ofBlock(GregTechAPI.sBlockCasings8, 0)) // chemically inert casing
         .addElement('c', ofBlock(GregTechAPI.sBlockCasings5, 0)) // cupronickel coil
         .build();
+        // All used letters: DCHKVWIAYyUuEeFrolGpPgQJicRo
     // spotless:on
     public MTEEnvironmentallyControlledChemicalFacility(final int aID, final String aName, final String aNameRegional) {
         super(aID, aName, aNameRegional);
