@@ -92,6 +92,11 @@ public class TetherManager {
         }
     }
 
+    public static void onPlayerChangeDim(PlayerEvent.PlayerChangedDimensionEvent event) {
+        if (event.player instanceof FakePlayer) return;
+        PLAYER_TETHERS.replace(event.player, null);
+    }
+
     @SubscribeEvent
     public static void onClientTick(TickEvent.ClientTickEvent e) {
         if (e.phase != TickEvent.Phase.END) return;
