@@ -113,15 +113,25 @@ public class TetherManager {
     @SubscribeEvent
     @SideOnly(Side.CLIENT)
     public static void onRenderWorldLast(RenderWorldLastEvent e) {
+        if (PLAYER_RENDER_LINES.isEmpty()) return;
         Entity entity = Minecraft.getMinecraft().renderViewEntity;
 
         double pX = entity.prevPosX + (entity.posX - entity.prevPosX) * e.partialTicks;
         double pY = entity.prevPosY + (entity.posY - entity.prevPosY) * e.partialTicks;
-        double PZ = entity.prevPosZ + (entity.posZ - entity.prevPosZ) * e.partialTicks;
+        double pZ = entity.prevPosZ + (entity.posZ - entity.prevPosZ) * e.partialTicks;
 
         GL11.glPushMatrix();
-        GL11.glTranslated(-pX, -pY, -PZ);
-        PLAYER_RENDER_LINES.forEach((b, tick) -> renderLineToPlayer(b, pX, pY, PZ, tick, e.partialTicks));
+        GL11.glTranslated(-pX, -pY, -pZ);
+
+        var iter = PLAYER_RENDER_LINES.object2IntEntrySet()
+            .fastIterator();
+        while (iter.hasNext()) {
+            var entry = iter.next();
+            BlockPos b = entry.getKey();
+            int tick = entry.getIntValue();
+            renderLineToPlayer(b, pX, pY, pZ, tick, e.partialTicks);
+        }
+
         GL11.glPopMatrix();
     }
 

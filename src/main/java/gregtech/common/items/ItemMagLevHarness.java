@@ -9,6 +9,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.FakePlayer;
 
+import com.gtnewhorizon.gtnhlib.util.AboveHotbarHUD;
 import com.gtnewhorizon.gtnhlib.util.DistanceUtil;
 
 import baubles.api.BaubleType;
@@ -75,10 +76,19 @@ public class ItemMagLevHarness extends GTGenericItem implements IBaubleExpanded 
         }
 
         if (activeTether == newTether) return;
+        // only trigger the below if the player's tether changes
         if (newTether != null) {
             GTValues.NW.sendToPlayer(
                 new GTPacketTether(newTether.sourceX(), newTether.sourceY(), newTether.sourceZ()),
                 (EntityPlayerMP) player);
+        } else { // only run on tether disconnect
+            if (Math.random() <= 0.05) {
+                AboveHotbarHUD.renderTextAboveHotbar(
+                    StatCollector.translateToLocal("GT5U.maglevHarness.pylons"),
+                    25,
+                    false,
+                    false);
+            }
         }
 
         TetherManager.PLAYER_TETHERS.replace(player, newTether);
