@@ -55,6 +55,7 @@ import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.GregTechAPI;
+import gregtech.api.casing.Casings;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
@@ -76,6 +77,7 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
 import gregtech.api.util.shutdown.SimpleShutDownReason;
+import gregtech.common.blocks.BlockCasings10;
 import gregtech.common.blocks.BlockCasings12;
 import gregtech.common.blocks.BlockCasings8;
 import gregtech.common.misc.GTStructureChannels;
@@ -196,16 +198,16 @@ public class MTEEnvironmentallyControlledChemicalFacility extends
             VACUUM_MODULE_R,
             transpose(new String[][]{
                 {"     ","     ","     ","     ","     ","     ","     ","     ","     ","     ","     "},
-                {"     ","     ","     ","     ","  Y  "," YYY ","  Y  ","     ","     ","     ","     "},
-                {"     ","     ","     ","     "," YYY "," YYY "," YYY ","     ","     ","     ","     "},
-                {"     ","     ","     ","  F  "," YYY "," Y P "," YYY ","  F  ","     ","     ","     "},
-                {"     ","     ","     ","  F  ","PYYY ","PY Y ","PYYY ","  F  ","     ","     ","     "},
-                {"     ","     ","     ","  F  ","PYYr "," Y V ","PYYr ","  F  ","     ","     ","     "},
-                {"     ","     ","     ","  F  ","PYYr ","PY V ","PYYr ","  F  ","     ","     ","     "},
-                {"     ","     ","     ","  F  "," YYr "," Y V "," YYr ","  F  ","     ","     ","     "},
-                {"     ","     ","     ","  F  "," YYY "," Y Y "," YYY ","  F  ","     ","     ","     "},
-                {"     ","     ","     ","  F  "," YYY "," Y P "," YYY ","  F  ","     ","     ","     "},
-                {"     ","     ","     ","     "," UUU "," UUU "," UUU ","     ","     ","     ","     "}})
+                {"     ","     ","     ","     ","  y  "," yyy ","  y  ","     ","     ","     ","     "},
+                {"     ","     ","     ","     "," yyy "," yyy "," yyy ","     ","     ","     ","     "},
+                {"     ","     ","     ","  o  "," yyy "," y P "," yyy ","  o  ","     ","     ","     "},
+                {"     ","     ","     ","  o  ","Pyyy ","Py y ","Pyyy ","  o  ","     ","     ","     "},
+                {"     ","     ","     ","  o  ","Pyyo "," y V ","Pyyo ","  o  ","     ","     ","     "},
+                {"     ","     ","     ","  o  ","Pyyo ","Py V ","Pyyo ","  o  ","     ","     ","     "},
+                {"     ","     ","     ","  o  "," yyo "," y V "," yyo ","  o  ","     ","     ","     "},
+                {"     ","     ","     ","  o  "," yyy "," y y "," yyy ","  o  ","     ","     ","     "},
+                {"     ","     ","     ","  o  "," yyy "," y P "," yyy ","  o  ","     ","     ","     "},
+                {"     ","     ","     ","     "," uuu "," uuu "," uuu ","     ","     ","     ","     "}})
         )
         .addShape(
             COMPRESSION_MODULE_R,
@@ -213,13 +215,13 @@ public class MTEEnvironmentallyControlledChemicalFacility extends
                 {"     ","     ","     ","     ","     ","     ","     ","     ","     ","     ","     "},
                 {"     ","     ","     ","     ","  Y  "," YYY ","  Y  ","     ","     ","     ","     "},
                 {"     ","     ","     ","     "," YYY "," YYY "," YYY ","     ","     ","     ","     "},
-                {"     ","     ","     ","  F  "," YYY "," Y P "," YYY ","  F  ","     ","     ","     "},
-                {"     ","     ","     ","  F  ","PYYY ","PY Y ","PYYY ","  F  ","     ","     ","     "},
-                {"     ","     ","     ","  F  ","PYYr "," Y K ","PYYr ","  F  ","     ","     ","     "},
-                {"     ","     ","     ","  F  ","PYYr ","PY K ","PYYr ","  F  ","     ","     ","     "},
-                {"     ","     ","     ","  F  "," YYr "," Y K "," YYr ","  F  ","     ","     ","     "},
-                {"     ","     ","     ","  F  "," YYY "," Y Y "," YYY ","  F  ","     ","     ","     "},
-                {"     ","     ","     ","  F  "," YYY "," Y P "," YYY ","  F  ","     ","     ","     "},
+                {"     ","     ","     ","  r  "," YYY "," Y P "," YYY ","  r  ","     ","     ","     "},
+                {"     ","     ","     ","  r  ","PYYY ","PY Y ","PYYY ","  r  ","     ","     ","     "},
+                {"     ","     ","     ","  r  ","PYYr "," Y K ","PYYr ","  r  ","     ","     ","     "},
+                {"     ","     ","     ","  r  ","PYYr ","PY K ","PYYr ","  r  ","     ","     ","     "},
+                {"     ","     ","     ","  r  "," YYr "," Y K "," YYr ","  r  ","     ","     ","     "},
+                {"     ","     ","     ","  r  "," YYY "," Y Y "," YYY ","  r  ","     ","     ","     "},
+                {"     ","     ","     ","  r  "," YYY "," Y P "," YYY ","  r  ","     ","     ","     "},
                 {"     ","     ","     ","     "," UUU "," UUU "," UUU ","     ","     ","     ","     "}})
         )
         .addShape(
@@ -341,16 +343,30 @@ public class MTEEnvironmentallyControlledChemicalFacility extends
             'Y',
             buildHatchAdder(MTEEnvironmentallyControlledChemicalFacility.class).hatchClass(MTEHatchInput.class)
                 .adder(MTEEnvironmentallyControlledChemicalFacility::addLubricantInputToMachineList)
-                .casingIndex(((BlockCasings12) GregTechAPI.sBlockCasings12).getTextureIndex(15))
+                .casingIndex(((BlockCasings10) GregTechAPI.sBlockCasings10).getTextureIndex(3))
                 .dot(2)
-                .buildAndChain(GregTechAPI.sBlockCasings12, 15))
+                .buildAndChain(ofBlock(GregTechAPI.sBlockCasings10, 3)))
+        .addElement(
+            'y',
+            buildHatchAdder(MTEEnvironmentallyControlledChemicalFacility.class).hatchClass(MTEHatchInput.class)
+                .adder(MTEEnvironmentallyControlledChemicalFacility::addLubricantInputToMachineList)
+                .casingIndex(Casings.ThermalProcessingCasing.getTextureId())
+                .dot(2)
+                .buildAndChain(Casings.ThermalProcessingCasing.asElement()))
         .addElement(
             'U',
             buildHatchAdder(MTEEnvironmentallyControlledChemicalFacility.class).hatchClass(MTEHatchEnergy.class)
                 .adder(MTEEnvironmentallyControlledChemicalFacility::addPressureEnergyToMachineList)
-                .casingIndex(((BlockCasings12) GregTechAPI.sBlockCasings12).getTextureIndex(15))
+                .casingIndex(((BlockCasings10) GregTechAPI.sBlockCasings10).getTextureIndex(3))
                 .dot(3)
-                .buildAndChain(GregTechAPI.sBlockCasings12, 15))
+                .buildAndChain(ofBlock(GregTechAPI.sBlockCasings10, 3)))
+        .addElement(
+            'u',
+            buildHatchAdder(MTEEnvironmentallyControlledChemicalFacility.class).hatchClass(MTEHatchEnergy.class)
+                .adder(MTEEnvironmentallyControlledChemicalFacility::addPressureEnergyToMachineList)
+                .casingIndex(Casings.ThermalProcessingCasing.textureId)
+                .dot(3)
+                .buildAndChain(Casings.ThermalProcessingCasing.asElement()))
         .addElement(
             'E',
             buildHatchAdder(MTEEnvironmentallyControlledChemicalFacility.class).hatchClass(MTEHatchInput.class)
@@ -366,7 +382,8 @@ public class MTEEnvironmentallyControlledChemicalFacility extends
                 .dot(4)
                 .buildAndChain(GregTechAPI.sBlockCasings8, 0))
         .addElement('F', ofFrame(Materials.Polybenzimidazole))
-        .addElement('r', ofFrame(Materials.RedstoneAlloy))
+        .addElement('r', ofFrame(Materials.Nickel))
+        .addElement('o', ofFrame(Materials.RedstoneAlloy))
         .addElement('l', ofFrame(Materials.Polytetrafluoroethylene))
         .addElement('G', ofBlockAnyMeta(sBlockTintedGlass, 2))
         .addElement('p', ofBlock(GregTechAPI.sBlockCasings8, 1)) // ptfe pipe casing
@@ -377,6 +394,7 @@ public class MTEEnvironmentallyControlledChemicalFacility extends
         .addElement('i', ofBlock(GregTechAPI.sBlockCasings8, 0)) // chemically inert casing
         .addElement('c', ofBlock(GregTechAPI.sBlockCasings5, 0)) // cupronickel coil
         .build();
+        // All used letters: DCHKVWIAYyUuEeFrolGpPgQJicRo
     // spotless:on
     public MTEEnvironmentallyControlledChemicalFacility(final int aID, final String aName, final String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -629,13 +647,13 @@ public class MTEEnvironmentallyControlledChemicalFacility extends
             .addTecTechHatchInfo()
             .beginStructureBlock(11, 11, 11, true)
             .addController("Front Center")
-            .addCasingInfoMin("Chemically Inert Casing", 0, false)
-            .addInputBus("Any Chemically Inert Casing", 1)
-            .addOutputBus("Any Chemically Inert Casing", 1)
-            .addInputHatch("Any Chemically Inert Casing", 1)
-            .addOutputHatch("Any Chemically Inert Casing", 1)
-            .addEnergyHatch("Any Chemically Inert Casing", 1)
-            .addMaintenanceHatch("Any Chemically Inert Casing", 1)
+            .addCasingInfoMin("Polybenzimidazole Machine Casing", 0, false)
+            .addInputBus("Any Polybenzimidazole Machine Casing", 1)
+            .addOutputBus("Any Polybenzimidazole Machine Casing", 1)
+            .addInputHatch("Any Polybenzimidazole Machine Casing", 1)
+            .addOutputHatch("Any Polybenzimidazole Machine Casing", 1)
+            .addEnergyHatch("Any Polybenzimidazole Machine Casing", 1)
+            .addMaintenanceHatch("Any Polybenzimidazole Machine Casing", 1)
             .addSubChannelUsage(GTStructureChannels.ECCF_PARALLEL_L)
             .addSubChannelUsage(GTStructureChannels.ECCF_PARALLEL_R)
             .addSubChannelUsage(GTStructureChannels.ECCF_COMPRESSOR)
