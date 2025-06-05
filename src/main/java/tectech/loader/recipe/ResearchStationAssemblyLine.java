@@ -7,6 +7,7 @@ import static gregtech.api.enums.Mods.Avaritia;
 import static gregtech.api.enums.Mods.AvaritiaAddons;
 import static gregtech.api.enums.Mods.BloodMagic;
 import static gregtech.api.enums.Mods.DraconicEvolution;
+import static gregtech.api.enums.Mods.EtFuturumRequiem;
 import static gregtech.api.enums.Mods.EternalSingularity;
 import static gregtech.api.enums.Mods.ExtraUtilities;
 import static gregtech.api.enums.Mods.GalacticraftAmunRa;
@@ -994,24 +995,27 @@ public class ResearchStationAssemblyLine implements Runnable {
             1200,
             (int) TierEU.RECIPE_UHV);
 
-        // MK4 Casing
-        TTRecipeAdder.addResearchableAssemblylineRecipe(
-            ItemList.Casing_Fusion2.get(1L),
-            80000,
-            512,
-            (int) TierEU.RECIPE_UHV,
-            1,
-            new Object[] { new Object[] { OrePrefixes.circuit.get(Materials.EV), 16L },
-                new Object[] { OrePrefixes.circuit.get(Materials.IV), 8L },
-                GTOreDictUnificator.get(OrePrefixes.block, Materials.Netherite, 2),
-                GTOreDictUnificator.get(OrePrefixes.plate, Materials.Neutronium, 8), ItemList.Electric_Motor_UHV.get(2),
-                ItemList.Electric_Piston_UHV.get(1), ItemList.Casing_Fusion2.get(1L), },
-            new FluidStack[] { Materials.UUMatter.getFluid(1_000), CINOBITE.getFluidStack(4 * INGOTS),
-                MaterialsAlloy.OCTIRON.getFluidStack(4 * INGOTS),
-                MaterialsElements.STANDALONE.ASTRAL_TITANIUM.getFluidStack(4 * INGOTS), },
-            GregtechItemList.Casing_Fusion_External.get(1),
-            300,
-            (int) TierEU.RECIPE_UHV);
+        if (EtFuturumRequiem.isModLoaded()) {
+            // MK4 Casing
+            TTRecipeAdder.addResearchableAssemblylineRecipe(
+                ItemList.Casing_Fusion2.get(1L),
+                80000,
+                512,
+                (int) TierEU.RECIPE_UHV,
+                1,
+                new Object[] { new Object[] { OrePrefixes.circuit.get(Materials.EV), 16L },
+                    new Object[] { OrePrefixes.circuit.get(Materials.IV), 8L },
+                    getModItem(EtFuturumRequiem.ID, "netherite_block", 2),
+                    GTOreDictUnificator.get(OrePrefixes.plate, Materials.Neutronium, 8),
+                    ItemList.Electric_Motor_UHV.get(2), ItemList.Electric_Piston_UHV.get(1),
+                    ItemList.Casing_Fusion2.get(1L), },
+                new FluidStack[] { Materials.UUMatter.getFluid(1_000), CINOBITE.getFluidStack(4 * INGOTS),
+                    MaterialsAlloy.OCTIRON.getFluidStack(4 * INGOTS),
+                    MaterialsElements.STANDALONE.ASTRAL_TITANIUM.getFluidStack(4 * INGOTS), },
+                GregtechItemList.Casing_Fusion_External.get(1),
+                300,
+                (int) TierEU.RECIPE_UHV);
+        }
 
         // MK5 Computer
         TTRecipeAdder.addResearchableAssemblylineRecipe(
@@ -1055,25 +1059,27 @@ public class ResearchStationAssemblyLine implements Runnable {
             1200,
             (int) TierEU.RECIPE_UEV);
 
-        // MK5 Casing
-        TTRecipeAdder.addResearchableAssemblylineRecipe(
-            GregtechItemList.Casing_Fusion_External.get(1L),
-            2560000,
-            4096,
-            (int) TierEU.RECIPE_UEV,
-            8,
-            new Object[] { new Object[] { OrePrefixes.circuit.get(Materials.IV), 16L },
-                new Object[] { OrePrefixes.circuit.get(Materials.LuV), 8L },
-                GTOreDictUnificator.get(OrePrefixes.block, Materials.Netherite, 8),
-                MaterialsElements.STANDALONE.CHRONOMATIC_GLASS.getPlate(8), ItemList.Electric_Motor_UEV.get(2),
-                ItemList.Electric_Piston_UEV.get(1), GregtechItemList.Casing_Fusion_External.get(1L) },
-            new FluidStack[] { MaterialsElements.getInstance().FERMIUM.getFluidStack(8 * INGOTS),
-                MaterialsElements.STANDALONE.CHRONOMATIC_GLASS.getFluidStack(8 * INGOTS),
-                MaterialsAlloy.ABYSSAL.getFluidStack(8 * INGOTS),
-                MaterialsElements.STANDALONE.DRAGON_METAL.getFluidStack(8 * INGOTS) },
-            GregtechItemList.Casing_Fusion_External2.get(1),
-            300,
-            (int) TierEU.RECIPE_UEV);
+        if (EtFuturumRequiem.isModLoaded()) {
+            // MK5 Casing
+            TTRecipeAdder.addResearchableAssemblylineRecipe(
+                GregtechItemList.Casing_Fusion_External.get(1L),
+                2560000,
+                4096,
+                (int) TierEU.RECIPE_UEV,
+                8,
+                new Object[] { new Object[] { OrePrefixes.circuit.get(Materials.IV), 16L },
+                    new Object[] { OrePrefixes.circuit.get(Materials.LuV), 8L },
+                    getModItem(EtFuturumRequiem.ID, "netherite_block", 8),
+                    MaterialsElements.STANDALONE.CHRONOMATIC_GLASS.getPlate(8), ItemList.Electric_Motor_UEV.get(2),
+                    ItemList.Electric_Piston_UEV.get(1), GregtechItemList.Casing_Fusion_External.get(1L) },
+                new FluidStack[] { MaterialsElements.getInstance().FERMIUM.getFluidStack(8 * INGOTS),
+                    MaterialsElements.STANDALONE.CHRONOMATIC_GLASS.getFluidStack(8 * INGOTS),
+                    MaterialsAlloy.ABYSSAL.getFluidStack(8 * INGOTS),
+                    MaterialsElements.STANDALONE.DRAGON_METAL.getFluidStack(8 * INGOTS) },
+                GregtechItemList.Casing_Fusion_External2.get(1),
+                300,
+                (int) TierEU.RECIPE_UEV);
+        }
 
         if (BloodMagic.isModLoaded() && DraconicEvolution.isModLoaded()) {
             // Draconic Evolution Fusion Crafter Controller
