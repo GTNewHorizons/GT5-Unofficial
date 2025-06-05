@@ -4100,6 +4100,12 @@ gtpp.gui.text.power_sub_station.turn_on_with_mallet=Turn on with Mallet
 gtpp.gui.atmospheric_reconditioner.tooltip.reduction=Reduction: %s/s
 gtpp.gui.crop_harvestor.tooltip.water=Water: %sL / %sL
 
+gtpp.gui.multiblock.progress.text=Progress: %s s / %s s
+gtpp.gui.multiblock.eu_t_p.text=%s EU/t/parallel
+gtpp.gui.multiblock.duration.text=Duration: %s ticks
+gtpp.gui.multiblock.max_voltage.txt=%s EU/t(*2A) Tier: %s
+gtpp.gui.multiblock.pollution.txt=Pollution: %s/sec
+
 gtpp.chat.wireless_charger.mode_change=Now in %s %s.
 gtpp.chat.wireless_charger.mode_info=Current: %s %s
 gtpp.chat.wireless_charger.mode_info_player=Players with access:
