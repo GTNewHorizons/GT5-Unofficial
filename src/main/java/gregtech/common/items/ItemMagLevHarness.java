@@ -4,6 +4,7 @@ import java.util.List;
 
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.FakePlayer;
@@ -13,8 +14,11 @@ import com.gtnewhorizon.gtnhlib.util.DistanceUtil;
 import baubles.api.BaubleType;
 import baubles.api.expanded.BaubleItemHelper;
 import baubles.api.expanded.IBaubleExpanded;
+import baubles.common.lib.PlayerHandler;
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.items.GTGenericItem;
+import gregtech.api.net.GTPacketTether;
 import gregtech.common.data.maglev.Tether;
 import gregtech.common.data.maglev.TetherManager;
 
@@ -50,10 +54,12 @@ public class ItemMagLevHarness extends GTGenericItem implements IBaubleExpanded 
         if (!(entityLivingBase instanceof EntityPlayer player)) return;
         if (player instanceof FakePlayer) return;
 
-        Tether activeTether;
+        Tether activeTether = TetherManager.PLAYER_TETHERS.get(player);
         var grid = TetherManager.ACTIVE_PYLONS.get(player.dimension);
         var nearbyPylon = grid.findClosestNearbyChebyshev((int) player.posX, (int) player.posY, (int) player.posZ, 64);
 
+        Tether newTether = null;
+        // recheck distance again with the pylon's tether's distance
         if (nearbyPylon != null && DistanceUtil.chebyshevDistance(
             player.posX,
             player.posY,
@@ -65,14 +71,19 @@ public class ItemMagLevHarness extends GTGenericItem implements IBaubleExpanded 
             nearbyPylon.getBaseMetaTileEntity()
                 .getZCoord())
             <= nearbyPylon.machineTether.range()) {
-            activeTether = nearbyPylon.machineTether;
-        } else {
-            activeTether = null;
+            newTether = nearbyPylon.machineTether;
         }
 
-        TetherManager.PLAYER_TETHERS.replace(player, activeTether);
+        if (activeTether == newTether) return;
+        if (newTether != null) {
+            GTValues.NW.sendToPlayer(
+                new GTPacketTether(newTether.sourceX(), newTether.sourceY(), newTether.sourceZ()),
+                (EntityPlayerMP) player);
+        }
 
-        setFly(player, player.capabilities.isCreativeMode || activeTether != null);
+        TetherManager.PLAYER_TETHERS.replace(player, newTether);
+
+        setFly(player, player.capabilities.isCreativeMode || newTether != null);
     }
 
     private static void setFly(EntityPlayer player, boolean fly) {
@@ -82,11 +93,10 @@ public class ItemMagLevHarness extends GTGenericItem implements IBaubleExpanded 
         if (fly) {
             player.capabilities.allowFlying = true;
         } else {
-            player.capabilities.isFlying = false;
-            // so that the player doesn't go splat when going from inside range to outside range
-            // it does allow them to double space to try to fly again, but it is only for a tick
-            if (player.onGround && player.fallDistance < 1F) {
+            if (!player.capabilities.isCreativeMode) {
+                player.fallDistance = 0;
                 player.capabilities.allowFlying = false;
+                player.capabilities.isFlying = false;
             }
         }
         player.sendPlayerAbilities();
@@ -108,16 +118,21 @@ public class ItemMagLevHarness extends GTGenericItem implements IBaubleExpanded 
         if (player instanceof FakePlayer) return;
 
         TetherManager.PLAYER_TETHERS.replace(player, null);
-        if (!player.capabilities.isCreativeMode) {
-            player.capabilities.allowFlying = false;
-            player.capabilities.isFlying = false;
-            player.sendPlayerAbilities();
-        }
+        setFly(player, false);
     }
 
     @Override
     public boolean canEquip(ItemStack itemstack, EntityLivingBase entityLivingBase) {
-        return (entityLivingBase instanceof EntityPlayer player) && !(player instanceof FakePlayer);
+        if (!(entityLivingBase instanceof EntityPlayer player)) return false;
+        if (player instanceof FakePlayer) return false;
+
+        var baubleInv = PlayerHandler.getPlayerBaubles(player);
+
+        for (int i = 0; i < baubleInv.getSizeInventory(); i++) {
+            ItemStack stack = baubleInv.getStackInSlot(i);
+            if (stack != null && stack.getItem() == this) return false;
+        }
+        return true;
     }
 
     @Override
