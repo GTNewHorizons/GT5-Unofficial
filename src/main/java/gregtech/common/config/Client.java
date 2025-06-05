@@ -168,6 +168,11 @@ public class Client {
         @Config.DefaultBoolean(false)
         @Config.Name("Use Old Coil Textures")
         public boolean useOldCoils;
+
+        @Config.Comment("Renders lines to maglev pylons when tethering")
+        @Config.DefaultBoolean(true)
+        @Config.Name("Render MagLev Tethers")
+        public boolean renderMagLevTethers;
     }
 
     @Config.LangKey("GT5U.gui.config.client.waila")

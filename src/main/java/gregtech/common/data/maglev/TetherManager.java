@@ -22,6 +22,7 @@ import cpw.mods.fml.common.gameevent.TickEvent;
 import cpw.mods.fml.common.network.FMLNetworkEvent;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.common.config.Client;
 import gregtech.common.tileentities.machines.basic.MTEMagLevPylon;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import it.unimi.dsi.fastutil.objects.Object2IntArrayMap;
@@ -43,8 +44,8 @@ public class TetherManager {
     public static final WeakHashMap<EntityPlayer, Tether> PLAYER_TETHERS = new WeakHashMap<>();
 
     public static final Object2IntArrayMap<BlockPos> PLAYER_RENDER_LINES = new Object2IntArrayMap<>();
-    private static final int MAX_LINE_TICKS = 5;
-    private static final float MAX_LINE_WIDTH = 5f;
+    private static final int MAX_LINE_TICKS = 12;
+    private static final float MAX_LINE_WIDTH = 8f;
 
     // client clean up
     @SubscribeEvent
@@ -113,6 +114,7 @@ public class TetherManager {
     @SubscribeEvent
     @SideOnly(Side.CLIENT)
     public static void onRenderWorldLast(RenderWorldLastEvent e) {
+        if (!Client.render.renderMagLevTethers) return;
         if (PLAYER_RENDER_LINES.isEmpty()) return;
         Entity entity = Minecraft.getMinecraft().renderViewEntity;
 
@@ -147,7 +149,7 @@ public class TetherManager {
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
         GL11.glDisable(GL11.GL_LIGHTING);
         double progress = (double) renderTick / MAX_LINE_TICKS;
-        double timeFactor = (Math.sin(Math.PI * progress) + 1.0) / 2.0;;
+        double timeFactor = (Math.sin(Math.PI * progress) + 1.0) / 2.0;
 
         GL11.glLineWidth((float) (MAX_LINE_WIDTH * timeFactor));
 

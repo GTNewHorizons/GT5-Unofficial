@@ -57,7 +57,7 @@ public class ItemMagLevHarness extends GTGenericItem implements IBaubleExpanded 
 
         Tether activeTether = TetherManager.PLAYER_TETHERS.get(player);
         var grid = TetherManager.ACTIVE_PYLONS.get(player.dimension);
-        var nearbyPylon = grid.findClosestNearbyChebyshev((int) player.posX, (int) player.posY, (int) player.posZ, 64);
+        var nearbyPylon = grid.findClosestChebyshev((int) player.posX, (int) player.posY, (int) player.posZ, 64);
 
         Tether newTether = null;
         // recheck distance again with the pylon's tether's distance
