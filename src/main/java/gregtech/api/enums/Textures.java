@@ -1986,7 +1986,6 @@ public class Textures {
         ROLLING_PIN,
         HANDLE_SWORD,
         HANDLE_FILE,
-        HANDLE_SAW,
         HANDLE_SCREWDRIVER,
         HANDLE_BUZZSAW,
         HANDLE_ELECTRIC_SCREWDRIVER,
