@@ -77,7 +77,6 @@ import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTRecipeRegistrator;
-import gregtech.api.util.GTSpawnEventHandler;
 import gregtech.api.util.GTUtility;
 import gregtech.common.GTDummyWorld;
 import gregtech.common.GTNetwork;
@@ -295,7 +294,6 @@ public class GTMod implements IGTMod {
         new LoaderMetaPipeEntities().run();
 
         new LoaderCircuitBehaviors().run();
-        new GTSpawnEventHandler();
 
         // populate itemstack instance for NBT check in GTRecipe
         setItemStacks();
