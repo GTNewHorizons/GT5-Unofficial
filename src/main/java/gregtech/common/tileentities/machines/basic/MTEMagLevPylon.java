@@ -86,16 +86,6 @@ public class MTEMagLevPylon extends MTETieredMachineBlock {
     public void onRemoval() {
         TetherManager.ACTIVE_PYLONS.get(getBaseMetaTileEntity().getWorld().provider.dimensionId)
             .remove(this);
-        TetherManager.PLAYER_TETHERS.entrySet()
-            .forEach(entry -> {
-                Tether value = entry.getValue();
-                if (getBaseMetaTileEntity().getWorld().provider.dimensionId == value.dimID()
-                    && getBaseMetaTileEntity().getXCoord() == value.sourceX()
-                    && getBaseMetaTileEntity().getYCoord() == value.sourceY()
-                    && getBaseMetaTileEntity().getZCoord() == value.sourceZ()) {
-                    entry.setValue(null);
-                }
-            });
     }
 
     @Override
