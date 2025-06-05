@@ -85,13 +85,6 @@ public class TetherManager {
                         .getZCoord())));
     }
 
-    @SubscribeEvent
-    public static void onWorldUnload(WorldEvent.Unload event) {
-        if (ACTIVE_PYLONS.containsKey(event.world.provider.dimensionId)) {
-            ACTIVE_PYLONS.remove(event.world.provider.dimensionId);
-        }
-    }
-
     public static void onPlayerChangeDim(PlayerEvent.PlayerChangedDimensionEvent event) {
         if (event.player instanceof FakePlayer) return;
         PLAYER_TETHERS.replace(event.player, null);

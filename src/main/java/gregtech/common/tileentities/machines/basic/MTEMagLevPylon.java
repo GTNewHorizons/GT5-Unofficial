@@ -63,12 +63,6 @@ public class MTEMagLevPylon extends MTETieredMachineBlock {
     public void onPostTick(IGregTechTileEntity baseMetaTileEntity, long tick) {
         if (!baseMetaTileEntity.isServerSide()) return;
 
-        if (tick % 60 == 0 && !TetherManager.ACTIVE_PYLONS.get(baseMetaTileEntity.getWorld().provider.dimensionId)
-            .contains(this)) {
-            TetherManager.ACTIVE_PYLONS.get(baseMetaTileEntity.getWorld().provider.dimensionId)
-                .insert(this);
-        }
-
         if (baseMetaTileEntity.isAllowedToWork()) {
             if (baseMetaTileEntity.isUniversalEnergyStored(32)) {
                 machineTether.range(16 * mTier);
