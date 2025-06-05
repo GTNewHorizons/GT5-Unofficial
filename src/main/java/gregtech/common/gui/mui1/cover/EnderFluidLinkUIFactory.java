@@ -123,9 +123,9 @@ public class EnderFluidLinkUIFactory extends CoverLegacyDataUIFactory {
         return switch (id) {
             case PUBLIC_BUTTON_ID -> CoverEnderFluidLink.testBit(coverVariable, PUBLIC_PRIVATE_MASK);
             case PRIVATE_BUTTON_ID -> !CoverEnderFluidLink.testBit(coverVariable, PUBLIC_PRIVATE_MASK);
-            case IMPORT_BUTTON_ID -> CoverEnderFluidLink.testBit(coverVariable, CoverEnderFluidLink.IMPORT_EXPORT_MASK);
-            case EXPORT_BUTTON_ID -> !CoverEnderFluidLink
+            case IMPORT_BUTTON_ID -> !CoverEnderFluidLink
                 .testBit(coverVariable, CoverEnderFluidLink.IMPORT_EXPORT_MASK);
+            case EXPORT_BUTTON_ID -> CoverEnderFluidLink.testBit(coverVariable, CoverEnderFluidLink.IMPORT_EXPORT_MASK);
             default -> false;
         };
     }
