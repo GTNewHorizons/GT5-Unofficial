@@ -3,6 +3,7 @@ package gtPlusPlus.xmod.gregtech.common.tools;
 import java.util.Arrays;
 import java.util.List;
 
+import gregtech.api.enums.TextureSet;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -22,7 +23,6 @@ import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.items.MetaGeneratedTool;
 import gregtech.common.items.behaviors.BehaviourNone;
 import gregtech.common.tools.GTTool;
-import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtTools;
 
 public class ToolAngleGrinder extends GTTool {
 
@@ -91,7 +91,7 @@ public class ToolAngleGrinder extends GTTool {
 
     @Override
     public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack) {
-        return aIsToolHead ? TexturesGtTools.ANGLE_GRINDER : ItemIcons.POWER_UNIT_HV;
+        return aIsToolHead ? MetaGeneratedTool.getPrimaryMaterial(aStack).mIconSet.mTextures[TextureSet.INDEX_angleGrinder] : ItemIcons.POWER_UNIT_HV;
     }
 
     @Override

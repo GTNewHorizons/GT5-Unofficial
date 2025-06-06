@@ -46,11 +46,11 @@ public class TextureSet {
         "/block3", "/block4", "/block5", "/block6", "/pipeSide", "/pipeTiny", "/pipeSmall", "/pipeMedium", "/pipeLarge",
         "/pipeHuge", "/frameGt", "/pipeQuadruple", "/pipeNonuple", aTextVoidDir, aTextVoidDir, aTextVoidDir,
         aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir,
-        "/crateGtDust", "/crateGtIngot", "/crateGtGem", "/crateGtPlate", "/turbineBlade", "/turbine", "/wrench",
-        "/crowbar", "/wireCutter", "/scoop", "/branchCutter", "/knife", "/knifeButchery", "/plunger", "/jackHammer",
+        "/crateGtDust", "/crateGtIngot", "/crateGtGem", "/crateGtPlate", "/turbineBlade", "/toolTurbine", "/toolWrench",
+        "/toolCrowbar", "/toolWireCutter", "/toolScoop", "/toolBranchCutter", "/toolKnife", "/toolKnifeButchery", "/toolPlunger", "/toolJackHammer",
         "/pocketMultiToolClosed", "/pocketMultiToolKnife", "/pocketMultiToolSaw", "/pocketMultiToolFile",
-        "/pocketMultiToolScrewdriver", "/pocketMultiToolWireCutter", "/pocketMultiToolBranchCutter", "/trowel",
-        aTextVoidDir, aTextVoidDir, "/handleFile", "/handleTrowel", "/handleSaw", "/handleScrewdriver",
+        "/pocketMultiToolScrewdriver", "/pocketMultiToolWireCutter", "/pocketMultiToolBranchCutter", "/toolTrowel",
+        "/toolHeadAngleGrinder", "/toolHeadElectricSnips", "/handleFile", "/handleTrowel", "/handleSaw", "/handleScrewdriver",
         "/plateSuperdense", "/handleMallet", "/toolHeadMallet", aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir,
         aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir,
         aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir };
@@ -94,7 +94,7 @@ public class TextureSet {
         INDEX_scoop = 105, INDEX_branchCutter = 106, INDEX_knife = 107, INDEX_butcheryKnife = 108, INDEX_plunger = 109,
         INDEX_jackHammer = 110, INDEX_pocketMultiToolClosed = 111, INDEX_pocketMultiToolKnife = 112,
         INDEX_pocketMultiToolSaw = 113, INDEX_pocketMultiToolFile = 114, INDEX_pocketMultiToolScrewdriver = 115,
-        INDEX_pocketMultiToolWireCutter = 116, INDEX_pocketMultiToolBranchCutter = 117, INDEX_trowel = 118,
+        INDEX_pocketMultiToolWireCutter = 116, INDEX_pocketMultiToolBranchCutter = 117, INDEX_trowel = 118, INDEX_angleGrinder = 119, INDEX_electricSnips = 120,
         INDEX_handleFile = 121, INDEX_handleTrowel = 122, INDEX_handleSaw = 123, INDEX_handleScrewdriver = 124;
 
     public final IIconContainer[] mTextures = new IIconContainer[144];
