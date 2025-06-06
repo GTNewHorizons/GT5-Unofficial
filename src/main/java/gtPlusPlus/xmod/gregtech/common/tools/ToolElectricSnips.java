@@ -1,6 +1,5 @@
 package gtPlusPlus.xmod.gregtech.common.tools;
 
-import gregtech.api.enums.TextureSet;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -11,6 +10,7 @@ import net.minecraft.util.IChatComponent;
 
 import gregtech.GTMod;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.TextureSet;
 import gregtech.api.enums.Textures.ItemIcons;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.items.MetaGeneratedTool;
@@ -40,7 +40,9 @@ public class ToolElectricSnips extends ToolWireCutter {
 
     @Override
     public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack) {
-        return aIsToolHead ? MetaGeneratedTool.getPrimaryMaterial(aStack).mIconSet.mTextures[TextureSet.INDEX_electricSnips] : ItemIcons.POWER_UNIT_MV;
+        return aIsToolHead
+            ? MetaGeneratedTool.getPrimaryMaterial(aStack).mIconSet.mTextures[TextureSet.INDEX_electricSnips]
+            : ItemIcons.POWER_UNIT_MV;
     }
 
     @Override

@@ -1,5 +1,6 @@
 package detrav.enums;
 
+import gregtech.api.enums.TextureSet;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
 
@@ -8,10 +9,11 @@ import gregtech.api.interfaces.IIconContainer;
  */
 public class Textures01 {
 
-    public static final IIconContainer[] mTextures = new IIconContainer[] {
-        new Textures.ItemIcons.CustomIcon("gt.detrav.metatool.01/PRO_PICK_HEAD"),
-        new Textures.ItemIcons.CustomIcon("gt.detrav.metatool.01/ELECTRIC_LuV_PRO_PICK_HEAD"),
-        new Textures.ItemIcons.CustomIcon("gt.detrav.metatool.01/ELECTRIC_ZPM_PRO_PICK_HEAD"),
-        new Textures.ItemIcons.CustomIcon("gt.detrav.metatool.01/ELECTRIC_UV_PRO_PICK_HEAD"),
-        new Textures.ItemIcons.CustomIcon("gt.detrav.metatool.01/ELECTRIC_UHV_PRO_PICK_HEAD"), };
+    public static final short[] mTextures = new short[] {
+        TextureSet.INDEX_prospector,
+        TextureSet.INDEX_prospectorElectricLuV,
+        TextureSet.INDEX_prospectorElectricZPM,
+        TextureSet.INDEX_prospectorElectricUV,
+        TextureSet.INDEX_prospectorElectricUHV
+    };
 }
