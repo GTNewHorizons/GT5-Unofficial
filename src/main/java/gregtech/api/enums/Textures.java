@@ -1975,14 +1975,6 @@ public class Textures {
         VOID, // The Empty Texture
         RENDERING_ERROR,
         MORTAR,
-        JACKHAMMER,
-        WIRE_CUTTER,
-        KNIFE,
-        BUTCHERYKNIFE,
-        SICKLE,
-        SCOOP,
-        GRAFTER,
-        PLUNGER,
         ROLLING_PIN,
         HANDLE_SWORD,
         HANDLE_FILE,
@@ -2012,17 +2004,8 @@ public class Textures {
         ENERGY_BAR_7,
         ENERGY_BAR_8,
         WIRELESS_HEADPHONES,
-        POCKET_MULTITOOL_CLOSED,
-        POCKET_MULTITOOL_BRANCHCUTTER,
-        POCKET_MULTITOOL_FILE,
-        POCKET_MULTITOOL_KNIFE,
-        POCKET_MULTITOOL_SAW,
-        POCKET_MULTITOOL_SCREWDRIVER,
-        POCKET_MULTITOOL_WIRECUTTER,
         HALO,
-        HALO_FUZZY,
-        TROWEL,
-        HANDLE_TROWEL;
+        HALO_FUZZY;
 
         public static final IIconContainer[] DURABILITY_BAR = { DURABILITY_BAR_0, DURABILITY_BAR_1, DURABILITY_BAR_2,
             DURABILITY_BAR_3, DURABILITY_BAR_4, DURABILITY_BAR_5, DURABILITY_BAR_6, DURABILITY_BAR_7,
