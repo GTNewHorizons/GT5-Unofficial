@@ -40,21 +40,21 @@ public class VolumeMembershipCheck {
         return null;
     }
 
-    public void addVolume(int dim, int centerX, int centerY, int centerZ, int radius) {
+    public void addVolume(int dim, int x, int y, int z, int radius) {
         DimensionData dimData = getDataForDim(dim);
         if (dimData == null) {
             dimData = new DimensionData(dim);
             dimList.add(dimData);
         }
-        dimData.add(centerX, centerY, centerZ, radius);
+        dimData.add(x, y, z, radius);
     }
 
-    public void removeVolume(int dim, int centerX, int centerY, int centerZ) {
+    public void removeVolume(int dim, int x, int y, int z) {
         final DimensionData dimData = getDataForDim(dim);
         if (dimData == null) {
             return;
         }
-        dimData.remove(centerX, centerY, centerZ);
+        dimData.remove(x, y, z);
         if (dimData.isEmpty()) {
             dimList.remove(dimData);
         }
@@ -80,18 +80,18 @@ public class VolumeMembershipCheck {
         // so that all the "alive data" in the array
         // remains at the start
 
-        // the data array contains blocks of 4 doubles
-        // 1 = centerX, 2 = centerY, 3 = centerZ, 4 = radius
+        // the data array contains blocks of 4 ints
+        // 1 = positionX, 2 = positionY, 3 = positionZ, 4 = radius
 
         private final int dimId;
-        private double[] data;
+        private int[] data;
         private int size;
 
         private static final int INITIAL_CAPACITY = 8;
 
         public DimensionData(int dimensionId) {
             this.dimId = dimensionId;
-            this.data = new double[INITIAL_CAPACITY * 4];
+            this.data = new int[INITIAL_CAPACITY * 4];
             this.size = 0;
         }
 
@@ -99,12 +99,9 @@ public class VolumeMembershipCheck {
             return dimId;
         }
 
-        public void add(int centerX, int centerY, int centerZ, int radius) {
-            final double x = centerX + 0.5D;
-            final double y = centerY + 0.5D;
-            final double z = centerZ + 0.5D;
+        public void add(int x, int y, int z, int radius) {
             final int maxIndex = size * 4;
-            final double[] a = data;
+            final int[] a = data;
             for (int i = 0; i < maxIndex; i += 4) {
                 if (x == a[i] && y == a[i + 1] && z == a[i + 2]) {
                     a[i + 3] = radius;
@@ -121,12 +118,9 @@ public class VolumeMembershipCheck {
             size++;
         }
 
-        public void remove(int centerX, int centerY, int centerZ) {
-            final double x = centerX + 0.5D;
-            final double y = centerY + 0.5D;
-            final double z = centerZ + 0.5D;
+        public void remove(int x, int y, int z) {
             final int maxIndex = size * 4;
-            final double[] a = data;
+            final int[] a = data;
             for (int i = 0; i < maxIndex; i += 4) {
                 if (x == a[i] && y == a[i + 1] && z == a[i + 2]) {
                     int numMoved = maxIndex - i - 4;
@@ -144,12 +138,12 @@ public class VolumeMembershipCheck {
 
         public boolean isInVolume(double x, double y, double z) {
             final int maxIndex = size * 4;
-            final double[] a = data;
+            final int[] a = data;
             if (shape == VolumeShape.SPHERE) {
                 for (int i = 0; i < maxIndex; i += 4) {
-                    final double dx = x - a[i];
-                    final double dy = y - a[i + 1];
-                    final double dz = z - a[i + 2];
+                    final double dx = x - a[i] - 0.5D;
+                    final double dy = y - a[i + 1] - 0.5D;
+                    final double dz = z - a[i + 2] - 0.5D;
                     final double radius = a[i + 3];
                     if (dx * dx + dy * dy + dz * dz < radius * radius) {
                         return true;
@@ -157,10 +151,10 @@ public class VolumeMembershipCheck {
                 }
             } else if (shape == VolumeShape.CUBE) {
                 for (int i = 0; i < maxIndex; i += 4) {
-                    final double centerX = a[i];
-                    final double centerY = a[i + 1];
-                    final double centerZ = a[i + 2];
-                    final double radius = a[i + 3];
+                    final double centerX = a[i] + 0.5D;
+                    final double centerY = a[i + 1] + 0.5D;
+                    final double centerZ = a[i + 2] + 0.5D;
+                    final double radius = a[i + 3] + 0.5D;
                     if (centerX - radius < x && x < centerX + radius
                         && centerY - radius < y
                         && y < centerY + radius
@@ -179,28 +173,23 @@ public class VolumeMembershipCheck {
 
         @Override
         public String toString() {
+            // spotless:off
             final int maxIndex = size * 4;
-            final double[] a = data;
+            final int[] a = data;
             final StringBuilder sb = new StringBuilder("DimensionData{");
-            sb.append(" dimId=")
-                .append(dimId);
-            sb.append(", size=")
-                .append(size);
+            sb.append("dimId=").append(dimId);
+            sb.append(", size=").append(size);
             sb.append(", data={");
             for (int i = 0; i < maxIndex; i += 4) {
-                if (i != 0) sb.append(',');
-                sb.append(" {x=")
-                    .append(String.format("%.4f", a[i]));
-                sb.append(", y=")
-                    .append(String.format("%.4f", a[i + 1]));
-                sb.append(", z=")
-                    .append(String.format("%.4f", a[i + 2]));
-                sb.append(", radius=")
-                    .append(String.format("%.4f", a[i + 3]))
-                    .append('}');
+                if (i != 0) sb.append(", ");
+                sb.append("{x=").append(a[i]);
+                sb.append(", y=").append(a[i + 1]);
+                sb.append(", z=").append(a[i + 2]);
+                sb.append(", radius=").append(a[i + 3]).append('}');
             }
-            sb.append("}");
+            sb.append("}}");
             return sb.toString();
+            // spotless:on
         }
     }
 
