@@ -1,8 +1,5 @@
 package gregtech.common.tools;
 
-import gregtech.api.enums.Textures;
-import gregtech.api.interfaces.IIconContainer;
-
 public class ToolTurbineLarge extends ToolTurbine {
 
     @Override
