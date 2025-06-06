@@ -9,15 +9,14 @@ public final class Tether {
     private final int sourceZ;
     private final int dimID;
     private int range;
-    private byte tier;
+    private boolean active = false;
 
-    public Tether(int sourceX, int sourceY, int sourceZ, int dimID, int range, byte tier) {
+    public Tether(int sourceX, int sourceY, int sourceZ, int dimID, int range) {
         this.sourceX = sourceX;
         this.sourceY = sourceY;
         this.sourceZ = sourceZ;
         this.dimID = dimID;
         this.range = range;
-        this.tier = tier;
     }
 
     public int sourceX() {
@@ -44,12 +43,12 @@ public final class Tether {
         range = value;
     }
 
-    public byte tier() {
-        return tier;
+    public boolean active() {
+        return active;
     }
 
-    public void tier(byte value) {
-        tier = value;
+    public void active(boolean value) {
+        active = value;
     }
 
     @Override
@@ -61,12 +60,12 @@ public final class Tether {
             && this.sourceZ == that.sourceZ
             && this.dimID == that.dimID
             && this.range == that.range
-            && this.tier == that.tier;
+            && this.active == that.active;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(sourceX, sourceY, sourceZ, dimID, range, tier);
+        return Objects.hash(sourceX, sourceY, sourceZ, dimID, range, active);
     }
 
     @Override
@@ -86,8 +85,8 @@ public final class Tether {
             + "range="
             + range
             + ", "
-            + "tier="
-            + tier
+            + "active="
+            + active
             + ']';
     }
 

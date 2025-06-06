@@ -22,6 +22,7 @@ import cpw.mods.fml.common.gameevent.TickEvent;
 import cpw.mods.fml.common.network.FMLNetworkEvent;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.enums.GTValues;
 import gregtech.common.config.Client;
 import gregtech.common.tileentities.machines.basic.MTEMagLevPylon;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
@@ -44,8 +45,23 @@ public class TetherManager {
     public static final WeakHashMap<EntityPlayer, Tether> PLAYER_TETHERS = new WeakHashMap<>();
 
     public static final Object2IntArrayMap<BlockPos> PLAYER_RENDER_LINES = new Object2IntArrayMap<>();
-    private static final int MAX_LINE_TICKS = 12;
-    private static final float MAX_LINE_WIDTH = 8f;
+    private static final int MAX_LINE_TICKS = 16;
+    private static final float MAX_LINE_WIDTH = 20f;
+
+    private final static int BASE_PYLON_RANGE = 16;
+
+    /**
+     * MV (2) = 16
+     * HV (3) = 32
+     * EV (4) = 48
+     */
+    public static int getRange(int tier, boolean powered) {
+        return (int) ((powered ? 1 : 0.5) * (tier - 1) * BASE_PYLON_RANGE);
+    }
+
+    public static long getPowerCost(int tier) {
+        return GTValues.VP[tier];
+    }
 
     // client clean up
     @SubscribeEvent

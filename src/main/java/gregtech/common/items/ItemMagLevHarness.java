@@ -1,5 +1,6 @@
 package gregtech.common.items;
 
+import java.util.Iterator;
 import java.util.List;
 
 import net.minecraft.entity.EntityLivingBase;
@@ -9,6 +10,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.FakePlayer;
 
+import com.gtnewhorizon.gtnhlib.datastructs.spatialhashgrid.SpatialHashGrid;
 import com.gtnewhorizon.gtnhlib.util.AboveHotbarHUD;
 import com.gtnewhorizon.gtnhlib.util.DistanceUtil;
 
@@ -22,6 +24,7 @@ import gregtech.api.items.GTGenericItem;
 import gregtech.api.net.GTPacketTether;
 import gregtech.common.data.maglev.Tether;
 import gregtech.common.data.maglev.TetherManager;
+import gregtech.common.tileentities.machines.basic.MTEMagLevPylon;
 
 public class ItemMagLevHarness extends GTGenericItem implements IBaubleExpanded {
 
@@ -57,7 +60,7 @@ public class ItemMagLevHarness extends GTGenericItem implements IBaubleExpanded 
 
         Tether activeTether = TetherManager.PLAYER_TETHERS.get(player);
         var grid = TetherManager.ACTIVE_PYLONS.get(player.dimension);
-        var nearbyPylon = grid.findClosestChebyshev((int) player.posX, (int) player.posY, (int) player.posZ, 64);
+        var nearbyPylon = getClosestActivePylon(grid, (int) player.posX, (int) player.posY, (int) player.posZ, 64);
 
         Tether newTether = null;
         // recheck distance again with the pylon's tether's distance
@@ -82,7 +85,7 @@ public class ItemMagLevHarness extends GTGenericItem implements IBaubleExpanded 
                 new GTPacketTether(newTether.sourceX(), newTether.sourceY(), newTether.sourceZ()),
                 (EntityPlayerMP) player);
         } else { // only run on tether disconnect
-            if (Math.random() <= 0.05) {
+            if (Math.random() <= 0.03) {
                 AboveHotbarHUD.renderTextAboveHotbar(
                     StatCollector.translateToLocal("GT5U.maglevHarness.pylons"),
                     25,
@@ -150,4 +153,33 @@ public class ItemMagLevHarness extends GTGenericItem implements IBaubleExpanded 
         return true;
     }
 
+    private MTEMagLevPylon getClosestActivePylon(SpatialHashGrid<MTEMagLevPylon> grid, int x, int y, int z,
+        int radius) {
+        Iterator<MTEMagLevPylon> iterator = grid
+            .iterNearbyWithMetric(x, y, z, radius, SpatialHashGrid.DistanceFormula.Chebyshev);
+        MTEMagLevPylon closestObject = null;
+        double closestDistance = Double.MAX_VALUE;
+
+        while (iterator.hasNext()) {
+            MTEMagLevPylon obj = iterator.next();
+            if (!obj.machineTether.active()) continue;
+            double distance = DistanceUtil.chebyshevDistance(
+                x,
+                y,
+                z,
+                obj.getBaseMetaTileEntity()
+                    .getXCoord(),
+                obj.getBaseMetaTileEntity()
+                    .getYCoord(),
+                obj.getBaseMetaTileEntity()
+                    .getZCoord());
+
+            if (distance < closestDistance) {
+                closestDistance = distance;
+                closestObject = obj;
+            }
+        }
+
+        return closestObject;
+    }
 }

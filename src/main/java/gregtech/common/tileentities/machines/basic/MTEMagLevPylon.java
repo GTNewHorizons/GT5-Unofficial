@@ -5,11 +5,11 @@ import static gregtech.api.enums.Textures.BlockIcons.*;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.gtnewhorizon.gtnhlib.eventbus.EventBusSubscriber;
 
-import gregtech.api.enums.GTValues;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -21,8 +21,10 @@ import gregtech.common.data.maglev.TetherManager;
 @EventBusSubscriber
 public class MTEMagLevPylon extends MTETieredMachineBlock {
 
-    public int mRange = 16;
     public Tether machineTether;
+    private final int poweredRange = TetherManager.getRange(mTier, true);
+    private final int unpoweredRange = TetherManager.getRange(mTier, false);
+    private final long powerCost = TetherManager.getPowerCost(mTier);
 
     // TODO Power/Range balancing
     public MTEMagLevPylon(int aID, String aName, String aNameRegional, int aTier) {
@@ -32,12 +34,20 @@ public class MTEMagLevPylon extends MTETieredMachineBlock {
             aNameRegional,
             aTier,
             0,
-            "Grants flight with the power of magnets. Range: " + (4 + (12 * aTier))
-                + " unpowered / "
-                + (16 + (48 * aTier))
-                + " powered. Costs "
-                + (GTValues.VP[aTier])
-                + " EU/t");
+            new String[] { "Grants creative flight to those wearing a maglev harness.",
+                "Range is a cube centered on the pylon.",
+                String.format(
+                    "Unpowered Range: %s%d blocks",
+                    EnumChatFormatting.WHITE,
+                    TetherManager.getRange(aTier, false)),
+                String.format(
+                    "Powered Range: %s%d blocks",
+                    EnumChatFormatting.WHITE,
+                    TetherManager.getRange(aTier, true)),
+                String.format(
+                    "Cost: %s%d EU/t if tethered",
+                    EnumChatFormatting.WHITE,
+                    TetherManager.getPowerCost(aTier)), });
     }
 
     public MTEMagLevPylon(String aName, int aTier, int aInvSlotCount, String[] aDescription, ITexture[][][] aTextures) {
@@ -53,8 +63,7 @@ public class MTEMagLevPylon extends MTETieredMachineBlock {
             baseMetaTileEntity.getYCoord(),
             baseMetaTileEntity.getZCoord(),
             baseMetaTileEntity.getWorld().provider.dimensionId,
-            8 * mTier,
-            mTier);
+            poweredRange);
         TetherManager.ACTIVE_PYLONS.get(baseMetaTileEntity.getWorld().provider.dimensionId)
             .insert(this);
     }
@@ -63,21 +72,27 @@ public class MTEMagLevPylon extends MTETieredMachineBlock {
     public void onPostTick(IGregTechTileEntity baseMetaTileEntity, long tick) {
         if (!baseMetaTileEntity.isServerSide()) return;
 
+        /*
+         * Active state of machine is used to control the animated texture
+         * Should only be active when a player is connected
+         * If machine is fully disabled, also disable the tether and active state
+         * EU should only drain when a player is connected
+         * Tether range is determined if the machine has enough EU
+         */
         if (baseMetaTileEntity.isAllowedToWork()) {
-            if (baseMetaTileEntity.isUniversalEnergyStored(32)) {
-                machineTether.range(16 * mTier);
-                // only drain power if a player is connected
-                if (TetherManager.PLAYER_TETHERS.containsValue(this.machineTether)) {
-                    baseMetaTileEntity.setActive(true);
-                    baseMetaTileEntity.decreaseStoredEnergyUnits(32, false);
-                } else {
-                    baseMetaTileEntity.setActive(false);
+            machineTether.active(true);
+            boolean playerConnected = TetherManager.PLAYER_TETHERS.containsValue(this.machineTether);
+            baseMetaTileEntity.setActive(playerConnected);
+            if (baseMetaTileEntity.isUniversalEnergyStored(powerCost)) {
+                machineTether.range(poweredRange);
+                if (playerConnected) {
+                    baseMetaTileEntity.decreaseStoredEnergyUnits(powerCost, false);
                 }
             } else {
-                baseMetaTileEntity.setActive(false);
-                machineTether.range(8 * mTier);
+                machineTether.range(unpoweredRange);
             }
         } else {
+            machineTether.active(false);
             baseMetaTileEntity.setActive(false);
         }
     }
