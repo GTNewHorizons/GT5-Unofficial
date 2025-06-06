@@ -13,12 +13,12 @@ public class GTSpawnEventHandler {
     private final VolumeMembershipCheck volumeCheck = new VolumeMembershipCheck(
         VolumeMembershipCheck.VolumeShape.SPHERE);
 
-    public void addRepellent(int dim, int centerX, int centerY, int centerZ, int radius) {
-        volumeCheck.addVolume(dim, centerX, centerY, centerZ, radius);
+    public void addRepellent(int dim, int x, int y, int z, int radius) {
+        volumeCheck.addVolume(dim, x, y, z, radius);
     }
 
-    public void removeRepellent(int dim, int centerX, int centerY, int centerZ) {
-        volumeCheck.removeVolume(dim, centerX, centerY, centerZ);
+    public void removeRepellent(int dim, int x, int y, int z) {
+        volumeCheck.removeVolume(dim, x, y, z);
     }
 
     @SubscribeEvent
