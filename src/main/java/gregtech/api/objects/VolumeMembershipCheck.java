@@ -40,13 +40,13 @@ public class VolumeMembershipCheck {
         return null;
     }
 
-    public void addVolume(int dim, int x, int y, int z, int radius) {
+    public void putVolume(int dim, int x, int y, int z, int radius) {
         DimensionData dimData = getDataForDim(dim);
         if (dimData == null) {
             dimData = new DimensionData(dim);
             dimList.add(dimData);
         }
-        dimData.add(x, y, z, radius);
+        dimData.put(x, y, z, radius);
     }
 
     public void removeVolume(int dim, int x, int y, int z) {
@@ -99,7 +99,7 @@ public class VolumeMembershipCheck {
             return dimId;
         }
 
-        public void add(int x, int y, int z, int radius) {
+        public void put(int x, int y, int z, int radius) {
             final int maxIndex = size * 4;
             final int[] a = data;
             for (int i = 0; i < maxIndex; i += 4) {

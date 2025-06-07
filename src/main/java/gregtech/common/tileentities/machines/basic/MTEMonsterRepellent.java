@@ -79,7 +79,7 @@ public class MTEMonsterRepellent extends MTETieredMachineBlock {
                 mRange = getRepellentRange(mTier, false);
             }
             if (prevRange != mRange) {
-                GTMod.gregtechproxy.spawnEventHandler.addRepellent(
+                GTMod.gregtechproxy.spawnEventHandler.putRepellent(
                     mte.getWorld().provider.dimensionId,
                     mte.getXCoord(),
                     mte.getYCoord(),
