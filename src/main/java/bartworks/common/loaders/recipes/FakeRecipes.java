@@ -1,6 +1,6 @@
 package bartworks.common.loaders.recipes;
 
-import bartworks.common.tileentities.multis.MTEHighTempGasCooledReactor;
+import kubatech.tileentity.gregtech.multiblock.MTEHighTempGasCooledReactor;
 
 public class FakeRecipes implements Runnable {
 
