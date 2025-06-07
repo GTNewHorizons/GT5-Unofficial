@@ -9,6 +9,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.apache.commons.lang3.ArrayUtils;
@@ -621,7 +622,11 @@ public class MTECropHarvestor extends MTEBasicTank {
                     .setProgress(() -> (float) getFluidAmount() / getCapacity())
                     .setSynced(false, false)
                     .dynamicTooltip(
-                        () -> Collections.singletonList("Water: " + getFluidAmount() + "L / " + getCapacity() + "L"))
+                        () -> Collections.singletonList(
+                            StatCollector.translateToLocalFormatted(
+                                "gtpp.gui.crop_harvestor.tooltip.water",
+                                getFluidAmount(),
+                                getCapacity())))
                     .setPos(47, 7)
                     .setSize(10, 54))
             .widget(new FakeSyncWidget.FluidStackSyncer(this::getDrainableStack, this::setDrainableStack));
