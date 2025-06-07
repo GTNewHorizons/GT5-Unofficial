@@ -27,7 +27,7 @@ public class ItemGenericChemBase extends Item {
 
     protected final IIcon[] base;
 
-    private final int aMetaSize = 35;
+    private final int aMetaSize = 36;
 
     /*
      * 0 - Red Metal Catalyst //FeCu
@@ -63,6 +63,7 @@ public class ItemGenericChemBase extends Item {
      * 30 - Flawless Water Catalyst (for advanced waterline skip)
      * 33 - Algagenic Growth Promoter Catalyst (for seaweed skip)
      * 34 - Hellish Force Catalyst (for Netherite skip)
+     * 35 - Crystal Colorization Catalyst (for Prismatic Acid)
      */
 
     public ItemGenericChemBase() {

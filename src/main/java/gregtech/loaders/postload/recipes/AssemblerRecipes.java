@@ -49,7 +49,6 @@ import gregtech.api.util.ExternalMaterials;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
-import gtPlusPlus.core.material.MaterialsAlloy;
 import tectech.thing.CustomItemList;
 
 public class AssemblerRecipes implements Runnable {
@@ -2746,7 +2745,10 @@ public class AssemblerRecipes implements Runnable {
             .addTo(assemblerRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(GTOreDictUnificator.get(OrePrefixes.plate, Materials.HSSS, 4), ItemList.Casing_LuV.get(1))
+            .itemInputs(
+                GTOreDictUnificator.get(OrePrefixes.plate, Materials.Netherite, 1),
+                GTOreDictUnificator.get(OrePrefixes.plate, Materials.HSSS, 4),
+                ItemList.Casing_LuV.get(1))
             .itemOutputs(ItemList.Casing_Fusion.get(1))
             .fluidInputs(Materials.HSSG.getMolten(2 * INGOTS))
             .duration(5 * SECONDS)
@@ -2755,6 +2757,7 @@ public class AssemblerRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
+                GTOreDictUnificator.get(OrePrefixes.plate, Materials.Netherite, 4),
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.Americium, 4),
                 ItemList.Casing_Fusion.get(1))
             .itemOutputs(ItemList.Casing_Fusion2.get(1))
@@ -3213,7 +3216,7 @@ public class AssemblerRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.plateDense, Materials.Neutronium, 8),
-                GTOreDictUnificator.get(OrePrefixes.stickLong, Materials.Iridium, 4))
+                GTOreDictUnificator.get(OrePrefixes.stickLong, Materials.Netherite, 4))
             .itemOutputs(ItemList.neutroniumHeatCapacitor.get(1))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_ZPM)
@@ -3313,7 +3316,7 @@ public class AssemblerRecipes implements Runnable {
             .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.pipeHuge, MaterialsUEVplus.TranscendentMetal, 1),
                 GTOreDictUnificator.get(OrePrefixes.foil, Materials.SuperconductorUIVBase, 64),
-                MaterialsAlloy.QUANTUM.getPlate(8),
+                GTOreDictUnificator.get(OrePrefixes.plate, Materials.Netherite, 32),
                 ItemList.Electric_Pump_UIV.get(1))
             .fluidInputs(MaterialsUEVplus.PhononMedium.getFluid(100))
             .itemOutputs(ItemList.Thermal_Superconductor.get(1))
@@ -3324,7 +3327,7 @@ public class AssemblerRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 ItemList.Thermal_Superconductor.get(2),
-                MaterialsAlloy.QUANTUM.getPlate(12),
+                ItemList.Naquarite_Universal_Insulator_Foil.get(16),
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.SuperconductorUIVBase, 8),
                 GTOreDictUnificator.get(OrePrefixes.rotor, MaterialsUEVplus.SixPhasedCopper, 3),
                 ItemList.Field_Generator_UEV.get(1))
