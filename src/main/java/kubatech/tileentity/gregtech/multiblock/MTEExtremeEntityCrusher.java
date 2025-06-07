@@ -98,6 +98,7 @@ import WayofTime.alchemicalWizardry.api.soulNetwork.SoulNetworkHandler;
 import WayofTime.alchemicalWizardry.api.tile.IBloodAltar;
 import WayofTime.alchemicalWizardry.common.rituals.RitualEffectWellOfSuffering;
 import WayofTime.alchemicalWizardry.common.tileEntity.TEMasterStone;
+import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.eventhandler.EventPriority;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.relauncher.Side;
@@ -152,7 +153,9 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
     public MTEExtremeEntityCrusher(String aName) {
         super(aName);
         weaponCache = new WeaponCache(mInventory);
-        if (BloodMagic.isModLoaded() && eventHandler == null) {
+        if (BloodMagic.isModLoaded() && FMLCommonHandler.instance()
+            .getEffectiveSide()
+            .isServer()) {
             eventHandler = new EECEventHandler();
             MinecraftForge.EVENT_BUS.register(eventHandler);
         }
