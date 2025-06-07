@@ -1327,7 +1327,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
                     metaGeneratedTool.doDamage(
                         mInventory[1],
                         (long) getDamageToComponent(getControllerSlot())
-                            * (long) Math.min(mEUt / this.damageFactorLow, Math.pow(mEUt, this.damageFactorHigh)));
+                            * (long) Math.min(Math.abs(mEUt) / this.damageFactorLow, Math.pow(Math.abs(mEUt), this.damageFactorHigh)));
                     if (mInventory[1].stackSize == 0) mInventory[1] = null;
                 }
             }
