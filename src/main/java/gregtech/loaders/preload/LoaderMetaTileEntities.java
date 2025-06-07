@@ -1659,10 +1659,10 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
         ItemList.MagLevPython_MV.set(
             new MTEMagLevPylon(MAGLEV_PYLON_MV.ID, "basicmachine.maglev.tier.02", "Advanced MagLev Pylon", 2)
                 .getStackForm(1L));
-        ItemList.MagLevPython_MV.set(
+        ItemList.MagLevPython_HV.set(
             new MTEMagLevPylon(MAGLEV_PYLON_HV.ID, "basicmachine.maglev.tier.03", "Advanced MagLev Pylon II", 3)
                 .getStackForm(1L));
-        ItemList.MagLevPython_MV.set(
+        ItemList.MagLevPython_EV.set(
             new MTEMagLevPylon(MAGLEV_PYLON_EV.ID, "basicmachine.maglev.tier.04", "Advanced MagLev Pylon III", 4)
                 .getStackForm(1L));
     }
