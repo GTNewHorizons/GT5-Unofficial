@@ -624,14 +624,16 @@ public class GTValues {
         + "u"
         + EnumChatFormatting.DARK_BLUE
         + "ez";
-    public static final String AuthorChrom = "Author: " + EnumChatFormatting.BLUE + BOLD +"Chrom";
-    public static final Supplier<String> fancyAuthorChrom = chain(text("Author: "),
-        animatedText("Chrom",
+    public static final String AuthorChrom = "Author: " + EnumChatFormatting.BLUE + BOLD + "Chrom";
+    public static final Supplier<String> fancyAuthorChrom = chain(
+        text("Author: "),
+        animatedText(
+            "Chrom",
             0,
             1000,
             EnumChatFormatting.WHITE + BOLD,
-            EnumChatFormatting.BLUE + BOLD
-    , EnumChatFormatting.GOLD + BOLD));
+            EnumChatFormatting.BLUE + BOLD,
+            EnumChatFormatting.GOLD + BOLD));
 
     // 7.5F comes from GT_Tool_Turbine_Large#getBaseDamage() given huge turbines are the most efficient now.
     public static double getMaxPlasmaTurbineEfficiencyFromMaterial(Materials material) {

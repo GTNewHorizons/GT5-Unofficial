@@ -926,9 +926,11 @@ import static gregtech.api.recipe.RecipeMaps.slicerRecipes;
 import static gregtech.api.recipe.RecipeMaps.thermalCentrifugeRecipes;
 import static gregtech.api.recipe.RecipeMaps.wiremillRecipes;
 
-import gregtech.api.enums.GTValues;
+import java.util.function.Supplier;
+
 import net.minecraft.util.EnumChatFormatting;
 
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.MachineType;
 import gregtech.api.enums.SoundResource;
@@ -1107,8 +1109,6 @@ import gregtech.common.tileentities.storage.MTEQuantumTank;
 import gregtech.common.tileentities.storage.MTESuperChest;
 import gregtech.common.tileentities.storage.MTESuperTank;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.MTETransformerHiAmp;
-
-import java.util.function.Supplier;
 
 // Free IDs left for machines in GT as of 29th of July 2022 - Colen. Please try use them up in order.
 // 366
@@ -1616,12 +1616,17 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
             new MTEChamberCentrifuge(
                 Chamber_Centrifuge_Controller.ID,
                 "multimachine.chambercentrifuge",
-                "Kinetic Chamber Centrifuge")
-                    .getStackForm(1));
-        addItemTooltip(ItemList.Machine_Multi_ChamberCentrifuge.get(1), chain(
-            GTValues.fancyAuthorChrom
-            , new Supplier<String>() { @Override public String get() {return EnumChatFormatting.GRAY+" & ";}}
-            ,GTValues.AuthorNocDynamic));
+                "Kinetic Chamber Centrifuge").getStackForm(1));
+        addItemTooltip(
+            ItemList.Machine_Multi_ChamberCentrifuge.get(1),
+            chain(GTValues.fancyAuthorChrom, new Supplier<String>() {
+
+                @Override
+                public String get() {
+                    return EnumChatFormatting.GRAY + " & ";
+                }
+            }, GTValues.AuthorNocDynamic));
+
         ItemList.Machine_Multi_Autoclave.set(
             new MTEMultiAutoclave(MULTI_AUTOCLAVE_CONTROLLER.ID, "multimachine.autoclave", "Industrial Autoclave")
                 .getStackForm(1));

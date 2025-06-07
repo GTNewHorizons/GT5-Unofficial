@@ -1,7 +1,15 @@
 package gregtech.common.tileentities.machines.multi;
 
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
-import static gregtech.api.enums.HatchElement.*;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
+import static gregtech.api.enums.HatchElement.Energy;
+import static gregtech.api.enums.HatchElement.ExoticEnergy;
+import static gregtech.api.enums.HatchElement.InputBus;
+import static gregtech.api.enums.HatchElement.InputHatch;
+import static gregtech.api.enums.HatchElement.Maintenance;
+import static gregtech.api.enums.HatchElement.OutputBus;
+import static gregtech.api.enums.HatchElement.OutputHatch;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_BREWERY;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_BREWERY_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_BREWERY_ACTIVE_GLOW;
@@ -9,8 +17,8 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_BREWERY
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
+import static net.minecraft.util.EnumChatFormatting.BOLD;
 
-import gregtech.api.enums.GTValues;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
@@ -24,8 +32,6 @@ import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructa
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
-import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.chain;
-import static net.minecraft.util.EnumChatFormatting.BOLD;
 
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Materials;
@@ -44,16 +50,21 @@ import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.*;
+import gregtech.api.util.GTModHandler;
+import gregtech.api.util.GTRecipe;
+import gregtech.api.util.GTUtility;
+import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.api.util.OverclockCalculator;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.common.blocks.BlockCasings1;
 import gregtech.common.items.MetaGeneratedTool01;
 import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.tileentities.machines.multi.gui.MTEChamberCentrifugeGui;
-import gregtech.common.tools.*;
+import gregtech.common.tools.ToolTurbineHuge;
+import gregtech.common.tools.ToolTurbineLarge;
+import gregtech.common.tools.ToolTurbineNormal;
+import gregtech.common.tools.ToolTurbineSmall;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
-
-import java.util.function.Supplier;
 
 public class MTEChamberCentrifuge extends MTEExtendedPowerMultiBlockBase<MTEChamberCentrifuge>
     implements ISurvivalConstructable {
@@ -240,18 +251,65 @@ public class MTEChamberCentrifuge extends MTEExtendedPowerMultiBlockBase<MTECham
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Centrifuge")
-            .addInfo("3 Modes: "+EnumChatFormatting.LIGHT_PURPLE+"Light"+EnumChatFormatting.GRAY+" | "+EnumChatFormatting.GOLD+"Standard"+EnumChatFormatting.GRAY+" | "+EnumChatFormatting.GREEN+"Heavy")
+            .addInfo(
+                "3 Modes: " + EnumChatFormatting.LIGHT_PURPLE
+                    + "Light"
+                    + EnumChatFormatting.GRAY
+                    + " | "
+                    + EnumChatFormatting.GOLD
+                    + "Standard"
+                    + EnumChatFormatting.GRAY
+                    + " | "
+                    + EnumChatFormatting.GREEN
+                    + "Heavy")
             .addInfo("200% faster than singleblock machines of the same voltage")
             .addInfo("Only uses 80% of the EU/t normally required")
             .addSeparator()
-            .addInfo("Gains "+ EnumChatFormatting.WHITE+"2"+EnumChatFormatting.GRAY+" Turbine Slots per Structure Tier")
-            .addInfo("Gains "+ EnumChatFormatting.WHITE+"4"+EnumChatFormatting.GRAY+" * (Total Rotor Tier) Parallels.")
-            .addInfo("Requires "+EnumChatFormatting.BLUE+"10L/s"+EnumChatFormatting.GRAY+" of Lubricant to operate, supply {Fluid2} instead for a "+ EnumChatFormatting.WHITE+"1.25x"+EnumChatFormatting.GRAY+" Parallel multiplier")
+            .addInfo(
+                "Gains " + EnumChatFormatting.WHITE
+                    + "2"
+                    + EnumChatFormatting.GRAY
+                    + " Turbine Slots per Structure Tier")
+            .addInfo(
+                "Gains " + EnumChatFormatting.WHITE
+                    + "4"
+                    + EnumChatFormatting.GRAY
+                    + " * (Total Rotor Tier) Parallels.")
+            .addInfo(
+                "Requires " + EnumChatFormatting.BLUE
+                    + "10L/s"
+                    + EnumChatFormatting.GRAY
+                    + " of Lubricant to operate, supply {Fluid2} instead for a "
+                    + EnumChatFormatting.WHITE
+                    + "1.25x"
+                    + EnumChatFormatting.GRAY
+                    + " Parallel multiplier")
             .addSeparator()
-            .addInfo(EnumChatFormatting.LIGHT_PURPLE+"Light Mode"+EnumChatFormatting.GRAY+": +"+EnumChatFormatting.LIGHT_PURPLE+"100%"+EnumChatFormatting.GRAY+" Speed Bonus, "+EnumChatFormatting.LIGHT_PURPLE+"0.9x"+EnumChatFormatting.GRAY+" Parallels, Maximum Recipe Tier is "+EnumChatFormatting.LIGHT_PURPLE+"Voltage Tier - 3")
-            .addInfo(EnumChatFormatting.GOLD+"Standard Mode"+EnumChatFormatting.GRAY+": No Changes")
-            .addInfo(EnumChatFormatting.GREEN+"Heavy Mode"+EnumChatFormatting.GRAY+": Divides Parallels by "+EnumChatFormatting.GREEN+"32"+EnumChatFormatting.GRAY+", Requires T3 Structure, and {Fluid2}.")
-            .addInfo("Some recipes "+EnumChatFormatting.RED + BOLD+"require"+EnumChatFormatting.GRAY+" Heavy Mode.")
+            .addInfo(
+                EnumChatFormatting.LIGHT_PURPLE + "Light Mode"
+                    + EnumChatFormatting.GRAY
+                    + ": +"
+                    + EnumChatFormatting.LIGHT_PURPLE
+                    + "100%"
+                    + EnumChatFormatting.GRAY
+                    + " Speed Bonus, "
+                    + EnumChatFormatting.LIGHT_PURPLE
+                    + "0.9x"
+                    + EnumChatFormatting.GRAY
+                    + " Parallels, Maximum Recipe Tier is "
+                    + EnumChatFormatting.LIGHT_PURPLE
+                    + "Voltage Tier - 3")
+            .addInfo(EnumChatFormatting.GOLD + "Standard Mode" + EnumChatFormatting.GRAY + ": No Changes")
+            .addInfo(
+                EnumChatFormatting.GREEN + "Heavy Mode"
+                    + EnumChatFormatting.GRAY
+                    + ": Divides Parallels by "
+                    + EnumChatFormatting.GREEN
+                    + "32"
+                    + EnumChatFormatting.GRAY
+                    + ", Requires T3 Structure and {Fluid2}.")
+            .addInfo(
+                "Some recipes " + EnumChatFormatting.RED + BOLD + "require" + EnumChatFormatting.GRAY + " Heavy Mode.")
             .beginStructureBlock(9, 9, 9, false)
             .addController("Front Center")
             .addCasingInfoMin("Chamber Casing", 120, false)
@@ -264,7 +322,8 @@ public class MTEChamberCentrifuge extends MTEExtendedPowerMultiBlockBase<MTECham
             .addOutputHatch("Any Chamber Casing", 1)
             .addEnergyHatch("Any Chamber Casing", 1)
             .addMaintenanceHatch("Any Chamber Casing", 1)
-            .addSubChannelUsage(GTStructureChannels.BOROGLASS).toolTipFinisher(EnumChatFormatting.BLUE,73);
+            .addSubChannelUsage(GTStructureChannels.BOROGLASS)
+            .toolTipFinisher(EnumChatFormatting.BLUE, 73);
 
         return tt;
     }
@@ -366,6 +425,7 @@ public class MTEChamberCentrifuge extends MTEExtendedPowerMultiBlockBase<MTECham
 
     @Override
     protected void setProcessingLogicPower(ProcessingLogic logic) {
+        logic.setMaxParallel(getTrueParallel());
         if (mExoticEnergyHatches.isEmpty()) {
             logic.setAvailableVoltage(GTUtility.roundUpVoltage(this.getMaxInputVoltage()));
             logic.setAvailableAmperage(1L);
@@ -392,14 +452,15 @@ public class MTEChamberCentrifuge extends MTEExtendedPowerMultiBlockBase<MTECham
             @NotNull
             @Override
             protected OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) { // implements Hatch+1
-                                                                                                // OC, just like BHC.
+                // OC, just like BHC.
                 return super.createOverclockCalculator(recipe)
                     .setMaxOverclocks((GTUtility.getTier(getAverageInputVoltage()) - GTUtility.getTier(recipe.mEUt)));
             }
+
         }
-            .setMaxParallelSupplier(this::getTrueParallel)
             .setEuModifier(0.7F);
     }
+
 
     public boolean isTurbine(ItemStack aStack) { // thank you airfilter!
         if (aStack == null) return false;
