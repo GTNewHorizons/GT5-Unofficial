@@ -532,7 +532,6 @@ public class Loaders {
         addTexturePage();
         compactMod();
         FluidsBuilder.Register();
-        FuelRodLoader.RegisterRod();
     }
 
     public static void initLoad() {
