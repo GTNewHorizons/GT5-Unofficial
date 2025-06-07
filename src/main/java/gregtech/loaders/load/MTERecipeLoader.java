@@ -3739,6 +3739,24 @@ public class MTERecipeLoader implements Runnable {
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_IV)
             .addTo(assemblerRecipes);
+
+        GTModHandler.addCraftingRecipe(
+            ItemList.MagLevPython_MV.get(1L),
+            bits,
+            new Object[] { "CCC", "CHC", "CMC", 'C', ItemList.MV_Coil, 'H', ItemList.Hull_MV, 'M',
+                OrePrefixes.block.get(Materials.SteelMagnetic) });
+
+        GTModHandler.addCraftingRecipe(
+            ItemList.MagLevPython_HV.get(1L),
+            bits,
+            new Object[] { "CCC", "CHC", "CMC", 'C', ItemList.HV_Coil, 'H', ItemList.Hull_HV, 'M',
+                OrePrefixes.block.get(Materials.SteelMagnetic) });
+
+        GTModHandler.addCraftingRecipe(
+            ItemList.MagLevPython_EV.get(1L),
+            bits,
+            new Object[] { "CCC", "CHC", "CMC", 'C', ItemList.EV_Coil, 'H', ItemList.Hull_EV, 'M',
+                OrePrefixes.block.get(Materials.NeodymiumMagnetic) });
     }
 
     private static void registerShapelessCraftingRecipes() {
