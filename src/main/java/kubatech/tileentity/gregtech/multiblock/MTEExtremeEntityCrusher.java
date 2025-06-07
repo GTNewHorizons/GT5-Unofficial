@@ -98,6 +98,7 @@ import WayofTime.alchemicalWizardry.api.soulNetwork.SoulNetworkHandler;
 import WayofTime.alchemicalWizardry.api.tile.IBloodAltar;
 import WayofTime.alchemicalWizardry.common.rituals.RitualEffectWellOfSuffering;
 import WayofTime.alchemicalWizardry.common.tileEntity.TEMasterStone;
+import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.eventhandler.EventPriority;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.relauncher.Side;
@@ -141,6 +142,7 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
     public static final int MOB_SPAWN_INTERVAL = 55;
     public final Random rand = new FastRandom();
     private final WeaponCache weaponCache;
+    private EECEventHandler eventHandler;
 
     @SuppressWarnings("unused")
     public MTEExtremeEntityCrusher(int aID, String aName, String aNameRegional) {
@@ -151,12 +153,17 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
     public MTEExtremeEntityCrusher(String aName) {
         super(aName);
         weaponCache = new WeaponCache(mInventory);
-        if (BloodMagic.isModLoaded()) MinecraftForge.EVENT_BUS.register(this);
+        if (BloodMagic.isModLoaded() && FMLCommonHandler.instance()
+            .getEffectiveSide()
+            .isServer()) {
+            eventHandler = new EECEventHandler();
+            MinecraftForge.EVENT_BUS.register(eventHandler);
+        }
     }
 
     @Override
     public void onRemoval() {
-        if (BloodMagic.isModLoaded()) MinecraftForge.EVENT_BUS.unregister(this);
+        if (eventHandler != null) MinecraftForge.EVENT_BUS.unregister(eventHandler);
         if (getBaseMetaTileEntity().isClientSide() && entityRenderer != null) {
             entityRenderer.setDead();
         }
@@ -164,7 +171,7 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
 
     @Override
     public void onUnload() {
-        if (BloodMagic.isModLoaded()) MinecraftForge.EVENT_BUS.unregister(this);
+        if (eventHandler != null) MinecraftForge.EVENT_BUS.unregister(eventHandler);
     }
 
     private static final String WellOfSufferingRitualName = "AW013Suffering";
@@ -178,13 +185,13 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
             STRUCTURE_PIECE_MAIN,
             transpose(
                 new String[][] { // spotless:off
-                    { "ccccc", "ccccc", "ccccc", "ccccc", "ccccc" },
-                    { "fgggf", "g---g", "g---g", "g---g", "fgggf" },
-                    { "fgggf", "g---g", "g---g", "g---g", "fgggf" },
-                    { "fgggf", "g---g", "g---g", "g---g", "fgggf" },
-                    { "fgggf", "g---g", "g---g", "g---g", "fgggf" },
-                    { "fgggf", "gsssg", "gsssg", "gsssg", "fgggf" },
-                    { "CC~CC", "CCCCC", "CCCCC", "CCCCC", "CCCCC" },
+                    {"ccccc", "ccccc", "ccccc", "ccccc", "ccccc"},
+                    {"fgggf", "g---g", "g---g", "g---g", "fgggf"},
+                    {"fgggf", "g---g", "g---g", "g---g", "fgggf"},
+                    {"fgggf", "g---g", "g---g", "g---g", "fgggf"},
+                    {"fgggf", "g---g", "g---g", "g---g", "fgggf"},
+                    {"fgggf", "gsssg", "gsssg", "gsssg", "fgggf"},
+                    {"CC~CC", "CCCCC", "CCCCC", "CCCCC", "CCCCC"},
                 })) // spotless:on
         .addElement('c', onElementPass(t -> t.mCasing++, ofBlock(GregTechAPI.sBlockCasings2, 0)))
         .addElement(
@@ -424,53 +431,61 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
         } else return super.onSolderingToolRightClick(side, wrenchingSide, aPlayer, aX, aY, aZ, aTool);
     }
 
-    @SuppressWarnings("unused")
-    @SubscribeEvent(priority = EventPriority.LOWEST)
-    public void onRitualPerform(RitualRunEvent event) {
-        if (!isInRitualMode) return;
-        if (masterStoneRitual == null) return;
-        if (this.mMaxProgresstime == 0) return;
-        if (event.mrs.equals(masterStoneRitual) && event.ritualKey.equals(WellOfSufferingRitualName)) {
-            Rituals ritual = Rituals.ritualMap.get(WellOfSufferingRitualName);
-            if (ritual != null && ritual.effect instanceof RitualEffectWellOfSuffering effect) {
-                event.setCanceled(true); // we will handle that
-                String owner = event.mrs.getOwner();
-                int currentEssence = SoulNetworkHandler.getCurrentEssence(owner);
-                World world = event.mrs.getWorld();
-                int x = event.mrs.getXCoord();
-                int y = event.mrs.getYCoord();
-                int z = event.mrs.getZCoord();
+    // We place the event handler in an inner
+    // class to prevent high costs of registering
+    // the event because forge event bus reflects
+    // through all the methods and super of the class
+    // in order to find the @SubscribeEvent annotations
+    public class EECEventHandler {
 
-                if (world.getWorldTime() % RitualEffectWellOfSuffering.timeDelay != 0) return;
+        @SuppressWarnings("unused")
+        @SubscribeEvent(priority = EventPriority.LOWEST)
+        public void onRitualPerform(RitualRunEvent event) {
+            if (!isInRitualMode) return;
+            if (masterStoneRitual == null) return;
+            if (mMaxProgresstime == 0) return;
+            if (event.mrs.equals(masterStoneRitual) && event.ritualKey.equals(WellOfSufferingRitualName)) {
+                Rituals ritual = Rituals.ritualMap.get(WellOfSufferingRitualName);
+                if (ritual != null && ritual.effect instanceof RitualEffectWellOfSuffering effect) {
+                    event.setCanceled(true); // we will handle that
+                    String owner = event.mrs.getOwner();
+                    int currentEssence = SoulNetworkHandler.getCurrentEssence(owner);
+                    World world = event.mrs.getWorld();
+                    int x = event.mrs.getXCoord();
+                    int y = event.mrs.getYCoord();
+                    int z = event.mrs.getZCoord();
 
-                if (tileAltar == null || tileAltar.isInvalid()) {
-                    tileAltar = null;
-                    for (int i = -5; i <= 5; i++) for (int j = -5; j <= 5; j++) for (int k = -10; k <= 10; k++)
-                        if (world.getTileEntity(x + i, y + k, z + j) instanceof IBloodAltar)
-                            tileAltar = world.getTileEntity(x + i, y + k, z + j);
+                    if (world.getWorldTime() % RitualEffectWellOfSuffering.timeDelay != 0) return;
+
+                    if (tileAltar == null || tileAltar.isInvalid()) {
+                        tileAltar = null;
+                        for (int i = -5; i <= 5; i++) for (int j = -5; j <= 5; j++) for (int k = -10; k <= 10; k++)
+                            if (world.getTileEntity(x + i, y + k, z + j) instanceof IBloodAltar)
+                                tileAltar = world.getTileEntity(x + i, y + k, z + j);
+                    }
+                    if (tileAltar == null) return;
+
+                    if (currentEssence < effect.getCostPerRefresh() * 100) {
+                        SoulNetworkHandler.causeNauseaToPlayer(owner);
+                        return;
+                    }
+
+                    ((IBloodAltar) tileAltar).sacrificialDaggerCall(
+                        100 * RitualEffectWellOfSuffering.amount
+                            * (effect.canDrainReagent(
+                                event.mrs,
+                                ReagentRegistry.offensaReagent,
+                                RitualEffectWellOfSuffering.offensaDrain,
+                                true) ? 2 : 1)
+                            * (effect.canDrainReagent(
+                                event.mrs,
+                                ReagentRegistry.tenebraeReagent,
+                                RitualEffectWellOfSuffering.tennebraeDrain,
+                                true) ? 2 : 1),
+                        true);
+
+                    SoulNetworkHandler.syphonFromNetwork(owner, effect.getCostPerRefresh() * 100);
                 }
-                if (tileAltar == null) return;
-
-                if (currentEssence < effect.getCostPerRefresh() * 100) {
-                    SoulNetworkHandler.causeNauseaToPlayer(owner);
-                    return;
-                }
-
-                ((IBloodAltar) tileAltar).sacrificialDaggerCall(
-                    100 * RitualEffectWellOfSuffering.amount
-                        * (effect.canDrainReagent(
-                            event.mrs,
-                            ReagentRegistry.offensaReagent,
-                            RitualEffectWellOfSuffering.offensaDrain,
-                            true) ? 2 : 1)
-                        * (effect.canDrainReagent(
-                            event.mrs,
-                            ReagentRegistry.tenebraeReagent,
-                            RitualEffectWellOfSuffering.tennebraeDrain,
-                            true) ? 2 : 1),
-                    true);
-
-                SoulNetworkHandler.syphonFromNetwork(owner, effect.getCostPerRefresh() * 100);
             }
         }
     }
