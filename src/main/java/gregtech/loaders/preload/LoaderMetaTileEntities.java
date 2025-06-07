@@ -137,6 +137,7 @@ import gregtech.common.tileentities.machines.multi.MTEDieselEngine;
 import gregtech.common.tileentities.machines.multi.MTEDistillationTower;
 import gregtech.common.tileentities.machines.multi.MTEElectricBlastFurnace;
 import gregtech.common.tileentities.machines.multi.MTEEntropicProcessor;
+import gregtech.common.tileentities.machines.multi.MTEEnvironmentallyControlledChemicalFacility;
 import gregtech.common.tileentities.machines.multi.MTEExtremeDieselEngine;
 import gregtech.common.tileentities.machines.multi.MTEFusionComputer1;
 import gregtech.common.tileentities.machines.multi.MTEFusionComputer2;
@@ -550,6 +551,11 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
         ItemList.Machine_Multi_IndustrialBrewery.set(
             new MTEIndustrialBrewery(INDUSTRIAL_BREWERY_CONTROLLER.ID, "multimachine.brewery", "Big Barrel Brewery")
                 .getStackForm(1));
+        ItemList.Machine_Multi_ECCF.set(
+            new MTEEnvironmentallyControlledChemicalFacility(
+                ENVIRONMENTALLY_CONTROLLED_CHEM_FACILITY_CONTROLLER.ID,
+                "multimachine.eccf",
+                "Environmentally Controlled Chemical Facility").getStackForm(1));
 
         ItemList.Machine_Multi_Autoclave.set(
             new MTEMultiAutoclave(MULTI_AUTOCLAVE_CONTROLLER.ID, "multimachine.autoclave", "Industrial Autoclave")
