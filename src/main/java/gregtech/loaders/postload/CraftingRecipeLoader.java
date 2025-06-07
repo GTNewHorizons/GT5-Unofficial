@@ -2023,8 +2023,8 @@ public class CraftingRecipeLoader implements Runnable {
         if (Thaumcraft.isModLoaded()) {
             GTModHandler.addCraftingRecipe(
                 ItemList.MagLevHarness.get(1),
-                bits,
-                new Object[] { "RAR", "SBS", "RSR", 'R', OrePrefixes.rod.get(Materials.Thaumium), 'A',
+                bits_no_remove_buffered,
+                new Object[] { "RAR", "SBS", "RSR", 'R', OrePrefixes.stick.get(Materials.Thaumium), 'A',
                     OrePrefixes.plate.get(Materials.InfusedAir), 'S', OrePrefixes.plate.get(Materials.SteelMagnetic),
                     'B', GTModHandler.getModItem(Thaumcraft.ID, "ItemBaubleBlanks", 1, 2), });
         }
