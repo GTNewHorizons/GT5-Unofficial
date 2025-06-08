@@ -40,13 +40,13 @@ public class VolumeMembershipCheck {
         return null;
     }
 
-    public void addVolume(int dim, int x, int y, int z, int radius) {
+    public void putVolume(int dim, int x, int y, int z, int radius) {
         DimensionData dimData = getDataForDim(dim);
         if (dimData == null) {
             dimData = new DimensionData(dim);
             dimList.add(dimData);
         }
-        dimData.add(x, y, z, radius);
+        dimData.put(x, y, z, radius);
     }
 
     public void removeVolume(int dim, int x, int y, int z) {
@@ -76,7 +76,7 @@ public class VolumeMembershipCheck {
 
         // implementation note : since we want fast
         // isInVolume() checks, when removing volumes,
-        // we shift any subsequent elements to the left
+        // we move the last element to the removed index
         // so that all the "alive data" in the array
         // remains at the start
 
@@ -99,7 +99,7 @@ public class VolumeMembershipCheck {
             return dimId;
         }
 
-        public void add(int x, int y, int z, int radius) {
+        public void put(int x, int y, int z, int radius) {
             final int maxIndex = size * 4;
             final int[] a = data;
             for (int i = 0; i < maxIndex; i += 4) {
@@ -125,7 +125,7 @@ public class VolumeMembershipCheck {
                 if (x == a[i] && y == a[i + 1] && z == a[i + 2]) {
                     int numMoved = maxIndex - i - 4;
                     if (numMoved > 0) {
-                        System.arraycopy(data, i + 4, data, i, numMoved);
+                        System.arraycopy(data, maxIndex - 4, data, i, 4);
                     }
                     size--;
                     if (data.length >= INITIAL_CAPACITY * 4 * 2 && size * 4 < data.length / 4) {
