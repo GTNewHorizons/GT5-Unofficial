@@ -1,8 +1,11 @@
 package gregtech.common.tileentities.machines.multi;
 
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.lazy;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlockAnyMeta;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
+import static goodgenerator.loader.Loaders.supercriticalFluidTurbineCasing;
 import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.ExoticEnergy;
 import static gregtech.api.enums.HatchElement.InputBus;
@@ -10,15 +13,16 @@ import static gregtech.api.enums.HatchElement.InputHatch;
 import static gregtech.api.enums.HatchElement.Maintenance;
 import static gregtech.api.enums.HatchElement.OutputBus;
 import static gregtech.api.enums.HatchElement.OutputHatch;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_BREWERY;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_BREWERY_ACTIVE;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_BREWERY_ACTIVE_GLOW;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_BREWERY_GLOW;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 import static net.minecraft.util.EnumChatFormatting.BOLD;
 
+import com.gtnewhorizon.structurelib.structure.IStructureElement;
+import cpw.mods.fml.common.Mod;
+import gregtech.api.interfaces.IIconContainer;
+import gregtech.common.blocks.BlockCasings12;
+import gtPlusPlus.core.block.ModBlocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
@@ -75,6 +79,7 @@ public class MTEChamberCentrifuge extends MTEExtendedPowerMultiBlockBase<MTECham
     public float speed = 3F;
     private int horizontalOffset = 4; // base offset for tier 1
     private int verticalOffset = 6; // base offset for tier 2
+    private int depthOffset = 2;
     private final int amountToDrain = 10; // constant drain amount.
     private int mTier;
     public final LimitingItemStackHandler inventoryHandler = new LimitingItemStackHandler(8, 1);
@@ -82,7 +87,13 @@ public class MTEChamberCentrifuge extends MTEExtendedPowerMultiBlockBase<MTECham
     private static final String STRUCTURE_TIER_2 = "t2";
     private static final String STRUCTURE_TIER_3 = "t3";
     private static final String STRUCTURE_TIER_4 = "t4";
-    private static final IStructureDefinition<MTEChamberCentrifuge> STRUCTURE_DEFINITION = StructureDefinition
+
+    private static final IIconContainer TEXTURE_CONTROLLER = new Textures.BlockIcons.CustomIcon("iconsets/TFFT");
+    private static final IIconContainer TEXTURE_CONTROLLER_ACTIVE = new Textures.BlockIcons.CustomIcon(
+        "iconsets/TFFT_ACTIVE");
+    private static final IIconContainer TEXTURE_CONTROLLER_ACTIVE_GLOW = new Textures.BlockIcons.CustomIcon(
+        "iconsets/TFFT_ACTIVE_GLOW");
+    /*private static final IStructureDefinition<MTEChamberCentrifuge> STRUCTURE_DEFINITION = StructureDefinition
         .<MTEChamberCentrifuge>builder()
         .addShape(
             STRUCTURE_TIER_1,
@@ -146,10 +157,10 @@ public class MTEChamberCentrifuge extends MTEExtendedPowerMultiBlockBase<MTECham
             'C', // main casing block
             buildHatchAdder(MTEChamberCentrifuge.class)
                 .atLeast(InputBus, OutputBus, InputHatch, OutputHatch, Maintenance, Energy, ExoticEnergy)
-                .casingIndex(((BlockCasings1) GregTechAPI.sBlockCasings1).getTextureIndex(12))
+                .casingIndex(((BlockCasings12) GregTechAPI.sBlockCasings12).getTextureIndex(9))
                 .dot(1)
                 .buildAndChain(
-                    onElementPass(MTEChamberCentrifuge::onCasingAdded, ofBlock(GregTechAPI.sBlockCasings1, 12))))
+                    onElementPass(MTEChamberCentrifuge::onCasingAdded, ofBlock(GregTechAPI.sBlockCasings12, 9))))
         .addElement('E', ofBlock(GregTechAPI.sBlockCasings2, 4)) // titanium turbine casings, for top section.
         .addElement('B', ofFrame(Materials.NaquadahAlloy)) // central shaft piece for tier 1
         .addElement('D', ofBlock(GregTechAPI.sBlockMetal4, 14)) // central rotor piece for tier 1
@@ -163,8 +174,44 @@ public class MTEChamberCentrifuge extends MTEExtendedPowerMultiBlockBase<MTECham
         .addElement('K', ofBlock(GregTechAPI.sBlockMetal9, 3)) // central rotor piece for tier 4, ~shirabon time. is
                                                                // spacetime atm
 
+        .build();*/
+    private static final IStructureDefinition<MTEChamberCentrifuge> STRUCTURE_DEFINITION = StructureDefinition
+        .<MTEChamberCentrifuge>builder()
+        .addShape(STRUCTURE_TIER_1,transpose(new String[][]{
+            {"      GGGGG      ","    GGGGGGGGG    ","  GGGGGGGGGGGGG  ","  GGGGGGGGGGGGG  "," GGGGGGGGGGGGGGG "," GGGGGGGGGGGGGGG ","GGGGGGGGGGGGGGGGG","GGGGGGGGGGGGGGGGG","GGGGGGGGGGGGGGGGG","GGGGGGGGGGGGGGGGG","GGGGGGGGGGGGGGGGG"," GGGGGGGGGGGGGGG "," GGGGGGGGGGGGGGG ","  GGGGGGGGGGGGG  ","  GGGGGGGGGGGGG  ","    GGGGGGGGG    ","      GGGGG      "},
+            {"                 ","                 ","      GGGGG      ","    BG     GB    ","   B         B   ","   G         G   ","  G           G  ","  G    BAB    G  ","  G    AAA    G  ","  G    BAB    G  ","  G           G  ","   G         G   ","   B         B   ","    BG     GB    ","      GGGGG      ","                 ","                 "},
+            {"                 ","                 ","      GHHHG      ","    BG     GB    ","   B  CCCCC  B   ","   G CCCCCCC G   ","  G CCCCCCCCC G  ","  H CCCAAACCC H  ","  H CCCAAACCC H  ","  H CCCAAACCC H  ","  G CCCCCCCCC G  ","   G CCCCCCC G   ","   B  CCCCC  B   ","    BG     GB    ","      GHHHG      ","                 ","                 "},
+            {"                 ","                 ","      GHHHG      ","    BG     GB    ","   B         B   ","   G   DDD   G   ","  G   D   D   G  ","  H  D     D  H  ","  H  D     D  H  ","  H  D     D  H  ","  G   D   D   G  ","   G   DDD   G   ","   B         B   ","    BG     GB    ","      GHHHG      ","                 ","                 "},
+            {"                 ","                 ","      GHHHG      ","    BG     GB    ","   B         B   ","   G   DDD   G   ","  G   D   D   G  ","  H  D     D  H  ","  H  D     D  H  ","  H  D     D  H  ","  G   D   D   G  ","   G   DDD   G   ","   B         B   ","    BG     GB    ","      GHHHG      ","                 ","                 "},
+            {"                 ","                 ","      GHHHG      ","    BG     GB    ","   B         B   ","   G   DDD   G   ","  G   D   D   G  ","  H  D     D  H  ","  H  D     D  H  ","  H  D     D  H  ","  G   D   D   G  ","   G   DDD   G   ","   B         B   ","    BG     GB    ","      GHHHG      ","                 ","                 "},
+            {"                 ","                 ","      GG~GG      ","    BG     GB    ","   B         B   ","   G   DDD   G   ","  G   D   D   G  ","  H  D     D  H  ","  H  D     D  H  ","  H  D     D  H  ","  G   D   D   G  ","   G   DDD   G   ","   B         B   ","    BG     GB    ","      GHHHG      ","                 ","                 "},
+            {"                 ","                 ","      GHHHG      ","    BG     GB    ","   B         B   ","   G   DDD   G   ","  G   D   D   G  ","  H  D     D  H  ","  H  D     D  H  ","  H  D     D  H  ","  G   D   D   G  ","   G   DDD   G   ","   B         B   ","    BG     GB    ","      GHHHG      ","                 ","                 "},
+            {"                 ","                 ","      GHHHG      ","    BG     GB    ","   B         B   ","   G   DDD   G   ","  G   D   D   G  ","  H  D     D  H  ","  H  D     D  H  ","  H  D     D  H  ","  G   D   D   G  ","   G   DDD   G   ","   B         B   ","    BG     GB    ","      GHHHG      ","                 ","                 "},
+            {"                 ","                 ","      GHHHG      ","    BG     GB    ","   B         B   ","   G   DDD   G   ","  G   D   D   G  ","  H  D     D  H  ","  H  D     D  H  ","  H  D     D  H  ","  G   D   D   G  ","   G   DDD   G   ","   B         B   ","    BG     GB    ","      GHHHG      ","                 ","                 "},
+            {"                 ","                 ","      GHHHG      ","    BG     GB    ","   B  CCCCC  B   ","   G CCCCCCC G   ","  G CCCCCCCCC G  ","  H CCCAAACCC H  ","  H CCCAAACCC H  ","  H CCCAAACCC H  ","  G CCCCCCCCC G  ","   G CCCCCCC G   ","   B  CCCCC  B   ","    BG     GB    ","      GHHHG      ","                 ","                 "},
+            {"                 ","                 ","      GHHHG      ","    BG     GB    ","   B         B   ","   G         G   ","  G           G  ","  G    BAB    G  ","  G    AAA    G  ","  G    BAB    G  ","  G           G  ","   G         G   ","   B         B   ","    BG     GB    ","      GHHHG      ","                 ","                 "},
+            {"                 ","                 ","      GHHHG      ","    BG     GB    ","   B         B   ","   G         G   ","  G           G  "," FFFF  BAB  FFFF "," FFFF  AAA  FFFF "," FFFF  BAB  FFFF ","  G           G  ","   G         G   ","   B         B   ","    BG     GB    ","      GHHHG      ","                 ","                 "},
+            {"                 ","                 ","      GHHHG      ","    BG     GB    ","   B         B   ","   G         G   ","  G           G  "," FFFF  BAB  FFFF "," IEEEEEEAEEEEEEI "," FFFF  BAB  FFFF ","  G           G  ","   G         G   ","   B         B   ","    BG     GB    ","      GHHHG      ","                 ","                 "},
+            {"                 ","                 ","      GGGGG      ","    BG     GB    ","   B         B   ","   G         G   ","  G     A     G  "," FFFF  AAA  FFFF "," FFFF AAAAA FFFF "," FFFF  AAA  FFFF ","  G     A     G  ","   G         G   ","   B         B   ","    BG     GB    ","      GGGGG      ","                 ","                 "},
+            {"      GGGGG      ","    GGGGGGGGG    ","  GGGGGGGGGGGGG  ","  GGGGGGGGGGGGG  "," GGGGGGGGGGGGGGG "," GGGGGGGGGGGGGGG ","GGGGGGGGGGGGGGGGG","GGGGGGGGGGGGGGGGG","GGGGGGGGGGGGGGGGG","GGGGGGGGGGGGGGGGG","GGGGGGGGGGGGGGGGG"," GGGGGGGGGGGGGGG "," GGGGGGGGGGGGGGG ","  GGGGGGGGGGGGG  ","  GGGGGGGGGGGGG  ","    GGGGGGGGG    ","      GGGGG      "}
+        }))
+        .addElement('A', ofBlock(GregTechAPI.sBlockCasings2, 5))
+        .addElement('B', ofBlock(GregTechAPI.sBlockCasings9,0))
+        .addElement('C',ofBlock(GregTechAPI.sBlockMetal9, 3))
+        //.addElement('D',ofBlock(ModBlocks.blockCasings2Misc,6))
+        //.addElement('E',ofBlock(ModBlocks.blockSpecialMultiCasings,0))
+        .addElement('D', ofBlock(GregTechAPI.sBlockCasings2, 5))
+        .addElement('E',ofBlock(GregTechAPI.sBlockCasings2, 5))
+        .addElement('F', lazy(t->ofBlock(supercriticalFluidTurbineCasing,0)))
+        .addElement('G',buildHatchAdder(MTEChamberCentrifuge.class)
+            .atLeast(InputBus, OutputBus, InputHatch, OutputHatch, Maintenance, Energy, ExoticEnergy)
+            .casingIndex(((BlockCasings12) GregTechAPI.sBlockCasings12).getTextureIndex(9))
+            .dot(1)
+            .buildAndChain(
+                onElementPass(MTEChamberCentrifuge::onCasingAdded, ofBlock(GregTechAPI.sBlockCasings12, 9))))
+        .addElement('H',chainAllGlasses())
+        .addElement('I',ofBlock(GregTechAPI.sBlockMetal9, 4))
         .build();
-
     public MTEChamberCentrifuge(final int aID, final String aName, final String aNameRegional) {
         super(aID, aName, aNameRegional);
     }
@@ -216,33 +263,29 @@ public class MTEChamberCentrifuge extends MTEExtendedPowerMultiBlockBase<MTECham
             if (aActive) {
                 rTexture = new ITexture[] {
                     Textures.BlockIcons
-                        .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings10, 15)),
+                        .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings12, 9)),
                     TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_MULTI_BREWERY_ACTIVE)
+                        .addIcon(TEXTURE_CONTROLLER_ACTIVE)
                         .extFacing()
                         .build(),
                     TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_MULTI_BREWERY_ACTIVE_GLOW)
+                        .addIcon(TEXTURE_CONTROLLER_ACTIVE_GLOW)
                         .extFacing()
                         .glow()
                         .build() };
             } else {
                 rTexture = new ITexture[] {
                     Textures.BlockIcons
-                        .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings10, 15)),
+                        .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings12, 9)),
                     TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_MULTI_BREWERY)
+                        .addIcon(TEXTURE_CONTROLLER)
                         .extFacing()
-                        .build(),
-                    TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_MULTI_BREWERY_GLOW)
-                        .extFacing()
-                        .glow()
-                        .build() };
+                        .build()
+                    };
             }
         } else {
             rTexture = new ITexture[] { Textures.BlockIcons
-                .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings10, 15)) };
+                .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings12, 9)) };
         }
         return rTexture;
     }
@@ -290,7 +333,7 @@ public class MTEChamberCentrifuge extends MTEExtendedPowerMultiBlockBase<MTECham
                     + EnumChatFormatting.GRAY
                     + ": +"
                     + EnumChatFormatting.LIGHT_PURPLE
-                    + "100%"
+                    + "150%"
                     + EnumChatFormatting.GRAY
                     + " Speed Bonus, "
                     + EnumChatFormatting.LIGHT_PURPLE
@@ -331,8 +374,8 @@ public class MTEChamberCentrifuge extends MTEExtendedPowerMultiBlockBase<MTECham
     @Override
     public void construct(ItemStack holoStack, boolean hintsOnly) {
         if (holoStack.stackSize == 1) {
-            buildPiece(STRUCTURE_TIER_1, holoStack, hintsOnly, horizontalOffset, verticalOffset, 0);
-        }
+            buildPiece(STRUCTURE_TIER_1, holoStack, hintsOnly, 8, 6, 2);
+        }/*
         if (holoStack.stackSize == 2) {
             buildPiece(STRUCTURE_TIER_2, holoStack, hintsOnly, horizontalOffset, verticalOffset + 1, 0);
         }
@@ -341,7 +384,7 @@ public class MTEChamberCentrifuge extends MTEExtendedPowerMultiBlockBase<MTECham
         }
         if (holoStack.stackSize >= 4) {
             buildPiece(STRUCTURE_TIER_4, holoStack, hintsOnly, horizontalOffset, verticalOffset + 3, 0);
-        }
+        }*/
 
     }
 
@@ -352,9 +395,9 @@ public class MTEChamberCentrifuge extends MTEExtendedPowerMultiBlockBase<MTECham
             return survivalBuildPiece(
                 STRUCTURE_TIER_1,
                 holoStack,
-                horizontalOffset,
-                verticalOffset,
-                0,
+                8,
+                6,
+                2,
                 elementBudget,
                 env,
                 false,
@@ -413,13 +456,13 @@ public class MTEChamberCentrifuge extends MTEExtendedPowerMultiBlockBase<MTECham
         boolean hasEnoughCasings = false;
         if (checkPiece(STRUCTURE_TIER_1, horizontalOffset, verticalOffset, 0)) {
             mTier = 1;
-        } else if (checkPiece(STRUCTURE_TIER_2, horizontalOffset, verticalOffset + 1, 0)) {
+        }/* else if (checkPiece(STRUCTURE_TIER_2, horizontalOffset, verticalOffset + 1, 0)) {
             mTier = 2;
         } else if (checkPiece(STRUCTURE_TIER_3, horizontalOffset, verticalOffset + 2, 0)) {
             mTier = 3;
         } else if (checkPiece(STRUCTURE_TIER_4, horizontalOffset, verticalOffset + 3, 0)) {
             mTier = 4;
-        }
+        }*/
         return mTier > 0 && mCasingAmount >= 120;
     }
 
@@ -451,12 +494,10 @@ public class MTEChamberCentrifuge extends MTEExtendedPowerMultiBlockBase<MTECham
 
             @NotNull
             @Override
-            protected OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) { // implements Hatch+1
-                // OC, just like BHC.
+            protected OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) { // implements Hatch+1 OC
                 return super.createOverclockCalculator(recipe)
                     .setMaxOverclocks((GTUtility.getTier(getAverageInputVoltage()) - GTUtility.getTier(recipe.mEUt)));
             }
-
         }
             .setEuModifier(0.7F);
     }
@@ -582,7 +623,7 @@ public class MTEChamberCentrifuge extends MTEExtendedPowerMultiBlockBase<MTECham
     public float getSpeed() {
         speed = 3F;
         if (mMode == 0.0) {
-            speed = 4F;
+            speed = 4.5F;
         }
         return speed;
     }
