@@ -39,19 +39,19 @@ GT5U.gui.text.EIG_ic2glass=Insufficient glass tier!
 
 kubatech.gui.text.configuration=Configuration
 
-kubatech.gui.text.tee_ultimate.status=STATUS
-kubatech.gui.text.tee_ultimate.tea=Tea
-kubatech.gui.text.tee_ultimate.tea_limit=Tea limit
-kubatech.gui.text.tee_ultimate.exchange=EXCHANGE
-kubatech.gui.text.tee_ultimate.exchange.cost=Cost: %s Tea
-kubatech.gui.text.tee_ultimate.benefits=BENEFITS
-kubatech.gui.tooltip.tee_ultimate.tea_acceptor_research_note=Tea Acceptor Research Note
+kubatech.gui.text.tea_ultimate.status=STATUS
+kubatech.gui.text.tea_ultimate.tea=Tea
+kubatech.gui.text.tea_ultimate.tea_limit=Tea limit
+kubatech.gui.text.tea_ultimate.exchange=EXCHANGE
+kubatech.gui.text.tea_ultimate.exchange.cost=Cost: %s Tea
+kubatech.gui.text.tea_ultimate.benefits=BENEFITS
+kubatech.gui.tooltip.tea_ultimate.tea_acceptor_research_note=Tea Acceptor Research Note
 
-kubatech.gui.text.tee_acceptor.name=Tea Acceptor
-kubatech.gui.text.tee_acceptor.tea=[Tea]
-kubatech.gui.text.tee_acceptor.not_owner=This is not your block
-kubatech.gui.text.tee_acceptor.in=IN: %s/t
-kubatech.gui.text.tee_acceptor.in.tooltip=Average input from the last 5 seconds
+kubatech.gui.text.tea_acceptor.name=Tea Acceptor
+kubatech.gui.text.tea_acceptor.tea=[Tea]
+kubatech.gui.text.tea_acceptor.not_owner=This is not your block
+kubatech.gui.text.tea_acceptor.in=IN: %s/t
+kubatech.gui.text.tea_acceptor.in.tooltip=Average input from the last 5 seconds
 
 kubatech.gui.text.eec.infernal_drop=Is allowed to spawn infernal mobs
 kubatech.gui.text.eec.infernal_drop.always=Does not affect mobs that are always infernal !
