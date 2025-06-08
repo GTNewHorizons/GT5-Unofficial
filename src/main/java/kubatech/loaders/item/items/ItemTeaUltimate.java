@@ -122,14 +122,14 @@ public class ItemTeaUltimate extends ItemTeaCollection implements IItemProxyGUI 
                     new MultiChildWidget()
                         .addChild(
                             new TextWidget(
-                                new Text(StatCollector.translateToLocal("kubatech.gui.text.tee_ultimate.status"))
+                                new Text(StatCollector.translateToLocal("kubatech.gui.text.tea_ultimate.status"))
                                     .format(EnumChatFormatting.BOLD)
                                     .format(EnumChatFormatting.GOLD)
                                     .shadow()).setPos(10, 5))
                         .addChild(
                             new DynamicTextWidget(
                                 () -> new Text(
-                                    StatCollector.translateToLocal("kubatech.gui.text.tee_ultimate.tea") + ": "
+                                    StatCollector.translateToLocal("kubatech.gui.text.tea_ultimate.tea") + ": "
                                         + (NEIClientUtils.shiftKey() ? numberFormat.format(teaAmount.get())
                                             : numberFormatScientific.format(teaAmount.get())))
                                                 .color(Color.GREEN.dark(3))).setSynced(false)
@@ -142,7 +142,7 @@ public class ItemTeaUltimate extends ItemTeaCollection implements IItemProxyGUI 
                         .addChild(
                             new DynamicTextWidget(
                                 () -> new Text(
-                                    StatCollector.translateToLocal("kubatech.gui.text.tee_ultimate.tea_limit") + ": "
+                                    StatCollector.translateToLocal("kubatech.gui.text.tea_ultimate.tea_limit") + ": "
                                         + (NEIClientUtils.shiftKey() ? numberFormat.format(teaLimit.get())
                                             : numberFormatScientific.format(teaLimit.get())))
                                                 .color(Color.GREEN.dark(3))).setSynced(false)
@@ -156,7 +156,7 @@ public class ItemTeaUltimate extends ItemTeaCollection implements IItemProxyGUI 
                     new MultiChildWidget()
                         .addChild(
                             new TextWidget(
-                                new Text(StatCollector.translateToLocal("kubatech.gui.text.tee_ultimate.exchange"))
+                                new Text(StatCollector.translateToLocal("kubatech.gui.text.tea_ultimate.exchange"))
                                     .format(EnumChatFormatting.BOLD)
                                     .format(EnumChatFormatting.GOLD)
                                     .shadow()).setPos(10, 5))
@@ -170,18 +170,18 @@ public class ItemTeaUltimate extends ItemTeaCollection implements IItemProxyGUI 
                             .setBackground(new ItemDrawable().setItem(ItemList.TeaAcceptorResearchNote.get(1)))
                             .addTooltip(
                                 StatCollector
-                                    .translateToLocal("kubatech.gui.tooltip.tee_ultimate.tea_acceptor_research_note"))
+                                    .translateToLocal("kubatech.gui.tooltip.tea_ultimate.tea_acceptor_research_note"))
                             .addTooltip(
                                 new Text(
                                     StatCollector.translateToLocalFormatted(
-                                        "kubatech.gui.text.tee_ultimate.exchange.cost",
+                                        "kubatech.gui.text.tea_ultimate.exchange.cost",
                                         NumberFormat.getInstance()
                                             .format(50_000))).color(Color.GRAY.normal))
                             .setPos(20, 20)))
                 .addPage(
                     new MultiChildWidget().addChild(
                         new TextWidget(
-                            new Text(StatCollector.translateToLocal("kubatech.gui.text.tee_ultimate.benefits"))
+                            new Text(StatCollector.translateToLocal("kubatech.gui.text.tea_ultimate.benefits"))
                                 .format(EnumChatFormatting.BOLD)
                                 .format(EnumChatFormatting.GOLD)
                                 .shadow()).setPos(10, 5))

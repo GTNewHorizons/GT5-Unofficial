@@ -195,15 +195,15 @@ public class TeaAcceptorTile extends TileEntity
             posCenteredHorizontally(
                 10,
                 new TextWidget(
-                    new Text(StatCollector.translateToLocal("kubatech.gui.text.tee_acceptor.name"))
+                    new Text(StatCollector.translateToLocal("kubatech.gui.text.tea_acceptor.name"))
                         .format(EnumChatFormatting.BOLD)
                         .format(EnumChatFormatting.DARK_RED))),
             posCenteredHorizontally(30, new DynamicTextWidget(() -> {
                 if (player.getPersistentID()
                     .equals(tileOwner))
-                    return new Text(StatCollector.translateToLocal("kubatech.gui.text.tee_acceptor.tea"))
+                    return new Text(StatCollector.translateToLocal("kubatech.gui.text.tea_acceptor.tea"))
                         .color(Color.GREEN.normal);
-                else return new Text(StatCollector.translateToLocal("kubatech.gui.text.tee_acceptor.not_owner"))
+                else return new Text(StatCollector.translateToLocal("kubatech.gui.text.tea_acceptor.not_owner"))
                     .color(Color.RED.normal);
             })),
             posCenteredHorizontally(
@@ -223,9 +223,9 @@ public class TeaAcceptorTile extends TileEntity
                 50,
                 new DynamicTextWidget(
                     () -> new Text(
-                        StatCollector.translateToLocalFormatted("kubatech.gui.text.tee_acceptor.in", averageInput))
+                        StatCollector.translateToLocalFormatted("kubatech.gui.text.tea_acceptor.in", averageInput))
                             .color(Color.BLACK.normal))).addTooltip(
-                                new Text(StatCollector.translateToLocal("kubatech.gui.text.tee_acceptor.in.tooltip"))
+                                new Text(StatCollector.translateToLocal("kubatech.gui.text.tea_acceptor.in.tooltip"))
                                     .color(Color.GRAY.normal)));
         return builder.build();
     }
