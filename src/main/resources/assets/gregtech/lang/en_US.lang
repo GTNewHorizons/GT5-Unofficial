@@ -1493,7 +1493,7 @@ GT5U.gui.config.worldgen=Worldgen
 GT5U.gui.config.worldgen.end_asteroids=End Asteroids
 GT5U.gui.config.worldgen.general=General
 
-GT5U.gui.text.cannot_change_when_running=Can't change configuration when running !
+GT5U.gui.text.cannot_change_when_running=Can't change configuration when running!
 
 GT5U.gui.tooltip.purification_plant.debug_mode=Toggle debug mode.
 GT5U.gui.text.purification_plant.hit_to_start=Hit with Soft Mallet to start.
