@@ -76,7 +76,7 @@ public class VolumeMembershipCheck {
 
         // implementation note : since we want fast
         // isInVolume() checks, when removing volumes,
-        // we shift any subsequent elements to the left
+        // we move the last element to the removed index
         // so that all the "alive data" in the array
         // remains at the start
 
@@ -125,7 +125,7 @@ public class VolumeMembershipCheck {
                 if (x == a[i] && y == a[i + 1] && z == a[i + 2]) {
                     int numMoved = maxIndex - i - 4;
                     if (numMoved > 0) {
-                        System.arraycopy(data, i + 4, data, i, numMoved);
+                        System.arraycopy(data, maxIndex - 4, data, i, 4);
                     }
                     size--;
                     if (data.length >= INITIAL_CAPACITY * 4 * 2 && size * 4 < data.length / 4) {
