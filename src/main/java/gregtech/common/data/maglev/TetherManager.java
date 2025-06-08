@@ -45,8 +45,8 @@ public class TetherManager {
     public static final WeakHashMap<EntityPlayer, Tether> PLAYER_TETHERS = new WeakHashMap<>();
 
     public static final Object2IntArrayMap<BlockPos> PLAYER_RENDER_LINES = new Object2IntArrayMap<>();
-    private static final int MAX_LINE_TICKS = 16;
-    private static final float MAX_LINE_WIDTH = 20f;
+    private static final int MAX_LINE_TICKS = 14;
+    private static final float MAX_LINE_WIDTH = 13f;
 
     private final static int BASE_PYLON_RANGE = 16;
 

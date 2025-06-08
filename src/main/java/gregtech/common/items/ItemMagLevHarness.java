@@ -63,18 +63,8 @@ public class ItemMagLevHarness extends GTGenericItem implements IBaubleExpanded 
         var nearbyPylon = getClosestActivePylon(grid, (int) player.posX, (int) player.posY, (int) player.posZ, 48);
 
         Tether newTether = null;
-        // recheck distance again with the pylon's tether's distance
-        if (nearbyPylon != null && DistanceUtil.chebyshevDistance(
-            player.posX,
-            player.posY,
-            player.posZ,
-            nearbyPylon.getBaseMetaTileEntity()
-                .getXCoord(),
-            nearbyPylon.getBaseMetaTileEntity()
-                .getYCoord(),
-            nearbyPylon.getBaseMetaTileEntity()
-                .getZCoord())
-            <= nearbyPylon.machineTether.range()) {
+
+        if (nearbyPylon != null) {
             newTether = nearbyPylon.machineTether;
         }
 
@@ -173,6 +163,10 @@ public class ItemMagLevHarness extends GTGenericItem implements IBaubleExpanded 
                     .getYCoord(),
                 obj.getBaseMetaTileEntity()
                     .getZCoord());
+
+            if (distance > obj.machineTether.range()) {
+                continue;
+            }
 
             if (distance < closestDistance) {
                 closestDistance = distance;
