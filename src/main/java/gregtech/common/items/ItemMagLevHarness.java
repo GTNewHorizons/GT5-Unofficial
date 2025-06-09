@@ -24,7 +24,6 @@ import gregtech.api.items.GTGenericItem;
 import gregtech.api.net.GTPacketTether;
 import gregtech.common.data.maglev.Tether;
 import gregtech.common.data.maglev.TetherManager;
-import gregtech.common.tileentities.machines.basic.MTEMagLevPylon;
 
 public class ItemMagLevHarness extends GTGenericItem implements IBaubleExpanded {
 
@@ -65,7 +64,7 @@ public class ItemMagLevHarness extends GTGenericItem implements IBaubleExpanded 
         Tether newTether = null;
 
         if (nearbyPylon != null) {
-            newTether = nearbyPylon.machineTether;
+            newTether = nearbyPylon;
         }
 
         if (activeTether == newTether) return;
@@ -143,37 +142,27 @@ public class ItemMagLevHarness extends GTGenericItem implements IBaubleExpanded 
         return true;
     }
 
-    private MTEMagLevPylon getClosestActivePylon(SpatialHashGrid<MTEMagLevPylon> grid, int x, int y, int z,
-        int radius) {
-        Iterator<MTEMagLevPylon> iterator = grid
+    private Tether getClosestActivePylon(SpatialHashGrid<Tether> grid, int x, int y, int z, int radius) {
+        Iterator<Tether> iterator = grid
             .iterNearbyWithMetric(x, y, z, radius, SpatialHashGrid.DistanceFormula.Chebyshev);
-        MTEMagLevPylon closestObject = null;
+        Tether closestTether = null;
         double closestDistance = Double.MAX_VALUE;
 
         while (iterator.hasNext()) {
-            MTEMagLevPylon obj = iterator.next();
-            if (!obj.machineTether.active()) continue;
-            double distance = DistanceUtil.chebyshevDistance(
-                x,
-                y,
-                z,
-                obj.getBaseMetaTileEntity()
-                    .getXCoord(),
-                obj.getBaseMetaTileEntity()
-                    .getYCoord(),
-                obj.getBaseMetaTileEntity()
-                    .getZCoord());
+            Tether obj = iterator.next();
+            if (!obj.active()) continue;
+            double distance = DistanceUtil.chebyshevDistance(x, y, z, obj.sourceX(), obj.sourceY(), obj.sourceZ());
 
-            if (distance > obj.machineTether.range()) {
+            if (distance > obj.range()) {
                 continue;
             }
 
             if (distance < closestDistance) {
                 closestDistance = distance;
-                closestObject = obj;
+                closestTether = obj;
             }
         }
 
-        return closestObject;
+        return closestTether;
     }
 }
