@@ -771,7 +771,7 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
             .setSize(16, 16)
             .addTooltip(StatCollector.translateToLocal("kubatech.gui.text.eec.void_all_damaged"))
             .addTooltip(
-                new Text(StatCollector.translateToLocal("kubatech.gui.text.eec.void_all_damaged.always"))
+                new Text(StatCollector.translateToLocal("kubatech.gui.text.eec.void_all_damaged.warning"))
                     .color(Color.GRAY.normal))
             .setTooltipShowUpDelay(TOOLTIP_DELAY));
     }

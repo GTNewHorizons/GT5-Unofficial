@@ -54,9 +54,9 @@ kubatech.gui.text.tea_acceptor.in=IN: %s/t
 kubatech.gui.text.tea_acceptor.in.tooltip=Average input from the last 5 seconds
 
 kubatech.gui.text.eec.infernal_drop=Is allowed to spawn infernal mobs
-kubatech.gui.text.eec.infernal_drop.always=Does not affect mobs that are always infernal !
+kubatech.gui.text.eec.infernal_drop.always=Does not affect mobs that are always infernal!
 kubatech.gui.text.eec.void_all_damaged=Void all damaged and enchanted items
-kubatech.gui.text.eec.void_all_damaged.always=Does not affect infernal drops and some special drops like Sticky Sword!
+kubatech.gui.text.eec.void_all_damaged.warning=Does not affect infernal drops and some special drops like Sticky Sword!
 kubatech.gui.tooltip.eec.ritual_mode=Ritual mode
 
 kubatech.gui.text.inventory=Inventory
