@@ -24,7 +24,6 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.GTValues;
 import gregtech.common.config.Client;
-import gregtech.common.tileentities.machines.basic.MTEMagLevPylon;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import it.unimi.dsi.fastutil.objects.Object2IntArrayMap;
 
@@ -37,7 +36,7 @@ public class TetherManager {
      * <br>
      * Initialized with empty set on world load and removed on unload
      **/
-    public static final Int2ObjectOpenHashMap<SpatialHashGrid<MTEMagLevPylon>> ACTIVE_PYLONS = new Int2ObjectOpenHashMap<>();
+    public static final Int2ObjectOpenHashMap<SpatialHashGrid<Tether>> ACTIVE_PYLONS = new Int2ObjectOpenHashMap<>();
 
     /**
      * Used by pylons to determine if a player is connected
@@ -92,13 +91,7 @@ public class TetherManager {
             event.world.provider.dimensionId,
             v -> new SpatialHashGrid<>(
                 16,
-                (vec, pylon) -> vec.set(
-                    pylon.getBaseMetaTileEntity()
-                        .getXCoord(),
-                    pylon.getBaseMetaTileEntity()
-                        .getYCoord(),
-                    pylon.getBaseMetaTileEntity()
-                        .getZCoord())));
+                (vec, tether) -> vec.set(tether.sourceX(), tether.sourceY(), tether.sourceZ())));
     }
 
     public static void onPlayerChangeDim(PlayerEvent.PlayerChangedDimensionEvent event) {

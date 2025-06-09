@@ -65,7 +65,7 @@ public class MTEMagLevPylon extends MTETieredMachineBlock {
             baseMetaTileEntity.getWorld().provider.dimensionId,
             poweredRange);
         TetherManager.ACTIVE_PYLONS.get(baseMetaTileEntity.getWorld().provider.dimensionId)
-            .insert(this);
+            .insert(this.machineTether);
     }
 
     @Override
@@ -99,8 +99,11 @@ public class MTEMagLevPylon extends MTETieredMachineBlock {
 
     @Override
     public void onRemoval() {
-        TetherManager.ACTIVE_PYLONS.get(getBaseMetaTileEntity().getWorld().provider.dimensionId)
-            .remove(this);
+        if (TetherManager.ACTIVE_PYLONS.get(getBaseMetaTileEntity().getWorld().provider.dimensionId)
+            .contains(this.machineTether)) {
+            TetherManager.ACTIVE_PYLONS.get(getBaseMetaTileEntity().getWorld().provider.dimensionId)
+                .remove(this.machineTether);
+        }
     }
 
     @Override
