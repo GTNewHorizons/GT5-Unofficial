@@ -947,6 +947,7 @@ import gregtech.api.metatileentity.implementations.MTEHatchNanite;
 import gregtech.api.metatileentity.implementations.MTEHatchOutput;
 import gregtech.api.metatileentity.implementations.MTEHatchOutputBus;
 import gregtech.api.metatileentity.implementations.MTEHatchQuadrupleHumongous;
+import gregtech.api.metatileentity.implementations.MTEHatchVoid;
 import gregtech.api.metatileentity.implementations.MTETransformer;
 import gregtech.api.metatileentity.implementations.MTEWetTransformer;
 import gregtech.api.metatileentity.implementations.MTEWirelessDynamo;
@@ -10640,6 +10641,10 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
             new MTEHatchOutput(OUTPUT_HATCH_MAX.ID, "hatch.output.tier.14", "Output Hatch (MAX)", 14).getStackForm(1L));
     }
 
+    private static void registerVoidHatch() {
+        ItemList.Hatch_Void.set(new MTEHatchVoid(VOID_HATCH.ID, "hatch.void.tier.00", "Void Hatch").getStackForm(1L));
+    }
+
     private static void registerQuantumTank() {
         ItemList.Quantum_Tank_LV
             .set(new MTEQuantumTank(QUANTUM_TANK_LV.ID, "quantum.tank.tier.06", "Quantum Tank I", 6).getStackForm(1L));
@@ -12377,6 +12382,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
         registerInputHatch();
         registerQuadrupleInputHatch();
         registerOutputHatch();
+        registerVoidHatch();
         registerQuantumTank();
         registerQuantumChest();
         registerSuperTank();
