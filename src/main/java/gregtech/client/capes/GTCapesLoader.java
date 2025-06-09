@@ -30,12 +30,28 @@ public class GTCapesLoader implements Runnable {
 
     @Override
     public void run() {
+        GTLog.out.println("GTMod: Downloading Cape List");
+        Map<UUID, ResourceLocation> uuidMap = new HashMap<>();
+        Map<String, ResourceLocation> nameMap = new HashMap<>();
+        downloadGTNHUUIDCapes(uuidMap);
+        downloadGTNHNameCapes(nameMap);
+        downloadGregoriusCapes(nameMap);
+        addHarcodedCapes(nameMap);
+        // add scheduled task on the main thread
+        Minecraft.getMinecraft().func_152343_a(() -> {
+            if (!uuidMap.isEmpty() || !nameMap.isEmpty()) {
+                MinecraftForge.EVENT_BUS.register(new GTCapesEventHandler(uuidMap, nameMap));
+            }
+            GTLog.out.println("GTMod: Loaded " + (uuidMap.size() + nameMap.size()) + " Capes");
+            return null;
+        });
+    }
+
+    private static void downloadGTNHUUIDCapes(Map<UUID, ResourceLocation> map) {
         /*                                       |------------------------------UUID------------------------------|:capeName(optional)*/
         Pattern pattern = Pattern.compile("^([0-9a-z]{8}-?[0-9a-z]{4}-?[0-9a-z]{4}-?[0-9a-z]{4}-?[0-9a-z]{12})(?:$|\\:(cape\\w+).*$)");
-        GTLog.out.println("GTMod: Downloading Cape List");
-        String GTNH_CAPE_LIST_URL = "https://raw.githubusercontent.com/GTNewHorizons/CustomGTCapeHook-Cape-List/master/capes.txt";
-        Map<UUID, ResourceLocation> map = new HashMap<>();
-        try (final Scanner scanner = new Scanner(new URL(GTNH_CAPE_LIST_URL).openStream())) {
+        String url = "https://raw.githubusercontent.com/GTNewHorizons/CustomGTCapeHook-Cape-List/master/capes.txt";
+        try (final Scanner scanner = new Scanner(new URL(url).openStream())) {
             while (scanner.hasNextLine()) {
                 String line = scanner.nextLine().toLowerCase();
                 Matcher matcher = pattern.matcher(line);
@@ -46,7 +62,7 @@ public class GTCapesLoader implements Runnable {
                         if (matcher.groupCount() == 2) {
                             cape = capeFromString(matcher.group(2));
                         } else {
-                            cape = capeFromString("");
+                            cape = CAPE_GREGTECHCAPE;
                         }
                         map.put(uuid, cape);
                     }
@@ -55,16 +71,67 @@ public class GTCapesLoader implements Runnable {
         } catch (Throwable e) {
             e.printStackTrace(GTLog.err);
         }
-        // add scheduled task on the main thread
-        Minecraft.getMinecraft().func_152343_a(() -> {
-            if (!map.isEmpty()) {
-                MinecraftForge.EVENT_BUS.register(new GTCapesEventHandler(map));
+    }
+
+    private static void downloadGTNHNameCapes(Map<String, ResourceLocation> map) {
+        String url = "https://raw.githubusercontent.com/GTNewHorizons/CustomGTCapeHook-Cape-List/master/capes.txt";
+        try (final Scanner scanner = new Scanner(new URL(url).openStream())) {
+            while (scanner.hasNextLine()) {
+                String line = scanner.nextLine().toLowerCase();
+                if (line.contains(":")) {
+                    int index = line.indexOf(":");
+                    String name = line.substring(0, index);
+                    String capeName = line.substring(index);
+                    if (!map.containsKey(name)) {
+                        map.put(name, capeFromString(capeName));
+                    }
+                } else {
+                    map.put(line, CAPE_GREGTECHCAPE);
+                }
             }
-            GTLog.out.println("GTMod: Loaded " + map.size() + " Capes");
-            return null;
-        });
+        } catch (Throwable e) {
+            e.printStackTrace(GTLog.err);
+        }
+    }
+
+    private static void downloadGregoriusCapes(Map<String, ResourceLocation> nameMap) {
+        String url = "http://gregtech.overminddl1.com/com/gregoriust/gregtech/supporterlist.txt";
+        try (final Scanner scanner = new Scanner(new URL(url).openStream())) {
+            while (scanner.hasNextLine()) {
+                final String line = scanner.nextLine().toLowerCase();
+                nameMap.put(line, CAPE_GREGTECHCAPE);
+            }
+        } catch (Throwable e) {
+            e.printStackTrace(GTLog.err);
+        }
     }
     // spotless:on
+
+    private static void addHarcodedCapes(Map<String, ResourceLocation> map) {
+        map.put("friedi4321", CAPE_BRAINTECHCAPE);
+        map.put("mr_brain", CAPE_MRBRAINCAPE);
+        map.put("gregoriust", CAPE_GREGORIUSCAPE);
+        final String[] arr = { "renadi", "hanakocz", "MysteryDump", "Flaver4", "x_Fame", "Peluche321",
+            "Goshen_Ithilien", "manf", "Bimgo", "leagris", "IAmMinecrafter02", "Cerous", "Devilin_Pixy", "Bkarlsson87",
+            "BadAlchemy", "CaballoCraft", "melanclock", "Resursator", "demanzke", "AndrewAmmerlaan", "Deathlycraft",
+            "Jirajha", "Axlegear", "kei_kouma", "Dracion", "dungi", "Dorfschwein", "Zero Tw0", "mattiagraz85",
+            "sebastiank30", "Plem", "invultri", "grillo126", "malcanteth", "Malevolence_", "Nicholas_Manuel", "Sirbab",
+            "kehaan", "bpgames123", "semig0d", "9000bowser", "Sovereignty89", "Kris1432", "xander_cage_", "samuraijp",
+            "bsaa", "SpwnX", "tworf", "Kadah", "kanni", "Stute", "Hegik", "Onlyme", "t3hero", "Hotchi", "jagoly",
+            "Nullav", "BH5432", "Sibmer", "inceee", "foxxx0", "Hartok", "TMSama", "Shlnen", "Carsso", "zessirb",
+            "meep310", "Seldron", "yttr1um", "hohounk", "freebug", "Sylphio", "jmarler", "Saberawr", "r00teniy",
+            "Neonbeta", "yinscape", "voooon24", "Quintine", "peach774", "lepthymo", "bildeman", "Kremnari", "Aerosalo",
+            "OndraSter", "oscares91", "mr10movie", "Daxx367x2", "EGERTRONx", "aka13_404", "Abouttabs", "Johnstaal",
+            "djshiny99", "megatronp", "DZCreeper", "Kane_Hart", "Truculent", "vidplace7", "simon6689", "MomoNasty",
+            "UnknownXLV", "goreacraft", "Fluttermine", "Daddy_Cecil", "MrMaleficus", "TigersFangs", "cublikefoot",
+            "chainman564", "NikitaBuker", "Misha999777", "25FiveDetail", "AntiCivilBoy", "michaelbrady",
+            "xXxIceFirexXx", "Speedynutty68", "GarretSidzaka", "HallowCharm977", "mastermind1919", "The_Hypersonic",
+            "diamondguy2798", "zF4ll3nPr3d4t0r", "CrafterOfMines57", "XxELIT3xSNIP3RxX", "SuterusuKusanagi",
+            "xavier0014", "adamros", "alexbegt" };
+        for (String name : arr) {
+            map.put(name.toLowerCase(), CAPE_GREGTECHCAPE);
+        }
+    }
 
     private static UUID uuidFromString(String uuid) {
         if (uuid == null) return null;
